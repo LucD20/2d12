@@ -216,6 +216,23 @@ const TYPE = `
 /* Lucas, 2026-11-13: the "On you" cell leaves the strip (the Effects tab lists them, and the cell grew too much) */
 .twod12-type .twod12.sheet.pcs .ps-onyou { display: none !important; }
 .twod12-type .twod12.sheet.pcs .ps-strip.v349 { grid-template-columns: minmax(0, 1fr) 150px 150px; } .twod12-type .twod12.sheet.pcs.npcs .ps-strip.v349 { grid-template-columns: minmax(0, 1fr); } .twod12-type .twod12.sheet.pcs.npcs.elite .ps-strip.v349 { grid-template-columns: minmax(0, 1fr) 160px; }
+/* the class's Levels window (the editor inside the class window) */
+.twod12-type .classwin .at-body { color: #7a1626; font-weight: 600; } .twod12-type .classwin .at-mind { color: #17327a; font-weight: 600; } .twod12-type .classwin .at-appeal { color: #6b4e00; font-weight: 600; } .twod12-type .classwin .at-instinct { color: #14532d; font-weight: 600; }
+.twod12-type .application.classwin .cw-ttl img { border-radius: 2px; } .twod12-type .application.classwin .cw-head h1 small { font: 600 13px "Signika", sans-serif; letter-spacing: 0; text-transform: none; }
+.twod12-type .application.classwin .ce-lvb { border-radius: 0; border-color: #8c7d63; background: transparent; font-family: "Signika", sans-serif; } .twod12-type .application.classwin .ce-lvb[aria-pressed="true"] { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
+.twod12-type .application.classwin .ce-sec { border-radius: 0; border: 0; border-top: 2px solid ${LIGHT.rule}; background: none; } .twod12-type .application.classwin .ce-sh { border-radius: 0; background: none; padding: 6px 0; border-bottom: 1px solid ${LIGHT.hair}; }
+.twod12-type .application.classwin .ce-sh input.ce-title { border: 0; border-radius: 0; background: transparent; color: ${LIGHT.ink}; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; padding: 0 2px; }
+.twod12-type .application.classwin .ce-sb { padding: 6px 0; gap: 0; } .twod12-type .application.classwin .ce-row { border: 0; border-bottom: 1px solid ${LIGHT.hair}; border-radius: 0; background: none; padding: 4px 2px; }
+.twod12-type .application.classwin .ce-pair { padding: 3px 2px; } .twod12-type .application.classwin .ce-drop { border-radius: 0; border: 1px dashed ${LIGHT.hair}; margin-top: 6px; padding: 5px 8px; font-size: 12.5px; }
+.twod12-type .application.classwin .ce-prev { border-top: 0; padding: 2px 2px 6px; } .twod12-type .application.classwin .ce-x { border: 0; border-radius: 0; background: none; color: ${LIGHT.mute}; }
+.twod12-type .application.classwin .ce-btn { border-radius: 0; border-color: #8c7d63; background: transparent; font-family: "Signika", sans-serif; }
+.twod12-type .application.classwin .ce-lib h2 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.rule}; padding-bottom: 2px; }
+.twod12-type .application.classwin .ce-lib h4 { font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; margin: 10px 0 0; }
+.twod12-type .application.classwin .ce-li { border: 0; border-bottom: 1px solid ${LIGHT.hair}; border-radius: 0; background: none; margin: 0; padding: 4px 2px; }
+.twod12-type .application.classwin .ce-sh select, .twod12-type .application.classwin .ce-pair select, .twod12-type .application.classwin .ce-drop select, .twod12-type .application.classwin .ce-num input { border-radius: 0; }
+.twod12-dark .application.classwin .ce-lvb { color: ${T.ink}; } .twod12-dark .application.classwin .ce-lvb[aria-pressed="true"] { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
+.twod12-dark .application.classwin .ce-sec { border-top-color: ${T.rule}; } .twod12-dark .application.classwin .ce-sh, .twod12-dark .application.classwin .ce-row, .twod12-dark .application.classwin .ce-li { border-color: ${T.hair}; } .twod12-dark .application.classwin .ce-drop { border-color: ${T.hair}; }
+.twod12-dark .application.classwin .ce-sh input.ce-title, .twod12-dark .application.classwin .ce-lib h2 { color: ${T.ink}; } .twod12-dark .application.classwin .ce-lib h2 { border-color: ${T.rule}; } .twod12-dark .application.classwin .ce-x { color: ${T.mute}; } .twod12-dark .application.classwin .ce-btn { color: ${T.ink}; }
 /* the encounter log and the Generate window */
 .twod12-type .enclog .el-round { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; border-bottom: 1px solid ${LIGHT.rule}; color: ${LIGHT.ink}; }
 .twod12-type .enclog .el-turn { border-left: 2px solid ${LIGHT.rule}; border-radius: 0; background: none; padding: 2px 8px; } .twod12-type .enclog .el-own { color: ${LIGHT.ink}; }
@@ -557,7 +574,7 @@ ${Object.entries(SETS).map(([k, css]) => `/* ==== ${k} ==== */\n${css}`).join("\
 ${BY_HAND}`);
 
 /* ------------------------------------------------------------------ the page shell */
-const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["carousel-dark.html", "7a. Carousel"], ["rest-dark.html", "7b. Action, Effect and Class sheets"], ["tools-dark.html", "7c. Generate Action and the log"], ["combat-pc-dark.html", "7d. PC sheet in combat"], ["combat-npc-dark.html", "7e. NPC sheet in combat"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
+const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["carousel-dark.html", "7a. Carousel"], ["rest-dark.html", "7b. Action, Effect and Class sheets"], ["tools-dark.html", "7c. Generate Action and the log"], ["levels-dark.html", "7f. Levels window"], ["combat-pc-dark.html", "7d. PC sheet in combat"], ["combat-npc-dark.html", "7e. NPC sheet in combat"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
 const SHELL = `
 * { box-sizing: border-box; }
 body { margin: 0; background: #2a2723; color: #eee6d6; font: 14px/1.45 "Signika", "Segoe UI", system-ui, sans-serif; padding: 22px 22px 60px; --font-primary: "Signika", sans-serif; }
@@ -1072,12 +1089,12 @@ const cls2Raw = `<div class="twod12 sheet item sk">
       <span class="fr-pl">Rally</span><div class="fr-pc">${stp(6)} <span class="fr-m">Rally Points: this + the Stage</span></div>
       <span class="fr-pl">Speed</span><div class="fr-pc">${stp("+0")} <span class="fr-m">added to the species' Speed</span></div>
     </div></section>
-    <section class="fr-sec"><h3>Health <small>the player puts the high one on Vigor or Resolve</small></h3>
+    <section class="fr-sec"><h3>Health <small>the player puts the high one on <span class="hp-v">Vigor</span> or <span class="hp-r">Resolve</span></small></h3>
       <table class="cls-st"><thead><tr><th></th><th>Stage 1 <small>levels 1-4</small></th><th>Stage 2 <small>levels 5-7</small></th><th>Stage 3 <small>levels 8-10</small></th></tr></thead><tbody>
         <tr><th>High</th><td><input class="fr-in n" value="20"></td><td><span class="pl">+</span><input class="fr-in n" value="12"><span class="eq">= 32</span></td><td><span class="pl">+</span><input class="fr-in n" value="14"><span class="eq">= 46</span></td></tr>
         <tr><th>Low</th><td><input class="fr-in n" value="10"></td><td><span class="pl">+</span><input class="fr-in n" value="6"><span class="eq">= 16</span></td><td><span class="pl">+</span><input class="fr-in n" value="7"><span class="eq">= 23</span></td></tr>
       </tbody></table></section>
-    <section class="fr-sec"><h3>Modifiers <small>Weapon and Power; never above +4</small></h3>
+    <section class="fr-sec"><h3>Modifiers <small>${hl("Weapon Modifier and Power Modifier")}; never above +4</small></h3>
       <table class="cls-st"><thead><tr><th></th><th>Stage 1</th><th>Stage 2</th><th>Stage 3</th></tr></thead><tbody>
         <tr><th>High</th><td>${stp("+2")}</td><td rowspan="2" class="mid"><span class="eq">+1 to</span> ${seg(["the higher", "Weapon", "Power"], "the higher")}</td><td rowspan="2" class="mid"><span class="eq">+1 to both</span></td></tr>
         <tr><th>Low</th><td>${stp("+1")}</td></tr>
@@ -1085,7 +1102,7 @@ const cls2Raw = `<div class="twod12 sheet item sk">
       <div class="fr-pgrid">
         <span class="fr-pl">High one is</span><div class="fr-pc">${seg(["the player's choice", "Weapon", "Power"], "the player's choice")}</div>
         <span class="fr-pl">Leads with</span><div class="fr-pc">${seg(["Weapon", "Power"], "Weapon")} <span class="fr-m">breaks a tie of the Signature Modifier</span></div>
-        <span class="fr-pl">Attributes</span><div class="fr-pc"><b>Body or Appeal +1, Mind or Instinct +1</b> <span class="fr-m">set on level 1, in the Levels window</span></div>
+        <span class="fr-pl">Attributes</span><div class="fr-pc"><b>${hl("Body or Appeal +1, Mind or Instinct +1")}</b> <span class="fr-m">set on level 1, in the Levels window</span></div>
       </div></section>
     <section class="fr-sec"><h3 class="cls-h">Levels <small>what the player gets at each level</small><button type="button">${ic("layer-group")} Edit levels…</button></h3>
       <div class="cls-levels"><div><b>Level 1</b><span>10 sections · 10 choices to make</span></div><div><b>Level 2</b><span>1 section · 1 choice to make</span></div><div><b>Level 3</b><span>2 sections · 2 choices to make</span></div><div><b>Level 4</b><span>1 section · 1 choice to make</span></div></div></section>
@@ -1109,7 +1126,11 @@ const CLS2_CSS = `
 .cls2 table.cls-st .fr-in.n { width: 46px; text-align: center; } .cls2 table.cls-st .pl { color: var(--cf-mute); margin-right: 3px; } .cls2 table.cls-st .eq { color: var(--cf-mute); margin: 0 6px; font-weight: 400; } .cls2 table.cls-st td .eq:last-child { color: var(--cf-ink); font-weight: 700; }
 .cls2 .cls-levels { display: grid; gap: 0; margin: 0 0 4px; } .cls2 .cls-levels > div { display: flex; gap: 12px; padding: 4px 2px; border: 0; border-bottom: 1px solid var(--cf-hair); border-radius: 0; background: none; font-size: 13px; color: var(--cf-ink); } .cls2 .cls-levels > div b { width: 58px; } .cls2 .cls-levels span { color: var(--cf-mute); }
 .cls2 .cls-grp { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 0 10px; align-items: baseline; margin: 0; padding: 5px 2px; border-bottom: 1px solid var(--cf-hair); }
-.cls2 .cls-gl { font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; color: color-mix(in srgb, var(--fq, #5F5E5A), #fff var(--cf-mix)); }
+.cls2 .cls-grp { align-items: stretch; padding: 0; gap: 0 10px; } .cls2 .cls-chips { padding: 5px 0; align-items: baseline; }
+.cls2 .hp-v { color: #a3271f; font-weight: 600; } .cls2 .hp-r { color: #1f4f9e; font-weight: 600; } .twod12-dark .cls2 .hp-v { color: #ef8a80; } .twod12-dark .cls2 .hp-r { color: #8fb3ee; }
+.twod12-dark .cls2 .at-body, .twod12-dark.twod12-dark .classwin .at-body { color: #f08a8a; } .twod12-dark .cls2 .at-mind, .twod12-dark.twod12-dark .classwin .at-mind { color: #8fb3ee; } .twod12-dark .cls2 .at-appeal, .twod12-dark.twod12-dark .classwin .at-appeal { color: #e3c15a; } .twod12-dark .cls2 .at-instinct, .twod12-dark.twod12-dark .classwin .at-instinct { color: #7fcf95; } .twod12-dark .cls2 .mod-weapon { color: #f0a35e; } .twod12-dark .cls2 .mod-power { color: #b79cf0; }
+.twod12-type.twod12-type .application.twod12-styled .sk .cls2 .cls-gl { color: #fff; }
+.cls2 .cls-gl { display: flex; align-items: center; padding: 4px 8px; background: color-mix(in srgb, var(--fq, #5F5E5A), #000 22%); color: #fff; font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; }
 .cls2 .cls-chips { display: flex; flex-wrap: wrap; gap: 2px 14px; } .cls2 .cls-chip { display: inline-flex; align-items: center; padding: 0; border: 0; border-radius: 0; background: none; gap: 2px; font-size: 13.5px; } .cls2 .cls-chip a { color: var(--cf-ink); font-weight: 600; } .cls2 .cls-chip i { color: var(--cf-mute); font-size: 11.5px; margin-left: 3px; }
 .cls2 .cls-chip button { width: 16px; height: 16px; min-height: 0; padding: 0; border: 0; background: none; color: var(--cf-mute); font-size: 13px; line-height: 1; opacity: .7; }
 .cls2 .drop-zone { margin: 7px 0 0; padding: 5px; border: 1px dashed var(--cf-hair); border-radius: 0; background: none; color: var(--cf-mute); font-size: 12px; opacity: 1; text-align: center; }`;
@@ -1134,6 +1155,16 @@ ${threeW("710px", fxWin)}
 <style>${MWIN_CSS}
 .sk .tab { display: none; } .sk .tab.active { display: block; } .sk input, .sk select, .sk textarea { font: inherit; }${CLS2_CSS}</style>`, [...R.item, ...R.card]);
 
+const lvRaw = rd("levels-window-paladin.html", 'src="icons/svg/angel.svg"', `src="${ANGEL}"`).replace(/(<div class="ce-prev"><b>Player sees:<\/b> )(Body[^<]*)/, (m, a, b) => a + hl(b));
+const lvWin = () => `<div class="mwin" style="width:1040px"><div class="mwin-head">Class: Paladin<span>&times;</span></div><div class="application twod12 classwin classed" style="position:static;width:auto;height:760px;display:flex;flex-direction:column"><section class="window-content" style="flex:1;min-height:0;overflow:hidden">${lvRaw}</section></div></div>`;
+page("levels-dark.html", "Style 7f: the class's Levels window", `The window "Edit levels…" opens (Paladin, level 1), <b>from its real HTML, copied from Lucas's Foundry</b>. <b>A style change only.</b> The left column scrolls in each copy.`, `
+<h2>Dark ${PICK}</h2>
+<div class="stage dk twod12-dark twod12-type" style="width:1070px">${lvWin()}</div>
+<h2>Light ${PICK}</h2>
+<div class="stage twod12-type" style="width:1070px">${lvWin()}</div>
+<h2>Today ${TODAY}</h2>
+<div class="stage" style="width:1070px">${lvWin()}</div>
+<style>${MWIN_CSS} .classwin input, .classwin select { font: inherit; }</style>`, R.wins);
 const genRaw = rd("generate-action.html", "", ""), logRaw = rd("encounter-log.html", "", "");
 const genWin = () => `<div class="mwin" style="width:980px"><div class="mwin-head">Generate Action: Ogre Chieftain<span>&times;</span></div><div class="application twod12 twod12-styled twod12-builder twod12-gencard" style="position:static;width:auto;display:flex;flex-direction:column"><section class="window-content">${genRaw}</section></div></div>`;
 const logWin = () => `<div class="mwin" style="width:560px"><div class="mwin-head">Encounter Log<span>&times;</span></div><div class="application twod12 enclog-app" style="position:static;width:auto;height:330px;display:flex;flex-direction:column"><section class="window-content" style="flex:1">${logRaw}</section></div></div>`;
