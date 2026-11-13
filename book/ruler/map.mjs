@@ -109,6 +109,7 @@ const NB = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]
  * onLeave(c, next) is called before each step (an Interrupt can stop it: return false). Returns the squares moved.
  */
 export function walk(c, score, budget, W, onLeave = null) {
+  c.walked = [{ ...c.pos }];   // the squares walked, for the viewer's trail (move events carry them as `path`)
   if (W.M?.grid) return walkGrid(c, score, budget, W, onLeave);   // SIM-2: on a map, a path around walls and through terrain
   const occ = free(W, c);
   let used = 0, diag = 0, moved = 0;
@@ -122,7 +123,7 @@ export function walk(c, score, budget, W, onLeave = null) {
     }
     if (!best) break;
     if (onLeave && onLeave(c, best.np) === false) break;
-    c.pos = best.np; used += best.cost; if (best.isD) diag++; moved++;
+    c.pos = best.np; c.walked.push(best.np); used += best.cost; if (best.isD) diag++; moved++;
   }
   return moved;
 }
@@ -285,7 +286,7 @@ function walkGrid(c, score, budget, W, onLeave) {
     const isD = np.x !== c.pos.x && np.y !== c.pos.y, cost = GR.stepCost(isD, diag, G.rough.has(`${np.x},${np.y}`));
     if (used + cost > budget || occ.has(`${np.x},${np.y}`)) break;
     if (onLeave && onLeave(c, np) === false) break;
-    c.pos = np; used += cost; if (isD) diag++; moved++;
+    c.pos = np; c.walked.push(np); used += cost; if (isD) diag++; moved++;
   }
   return moved;
 }

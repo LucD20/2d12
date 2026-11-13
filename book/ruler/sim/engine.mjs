@@ -104,7 +104,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const alive = () => (RULES.outAtOnce ? foes.filter(f => !f.dead && f.damage < f.pool) : foes.filter(f => !f.dead)), up = () => pcs.filter(p => !p.down);
   // The engine's view of the fight for the policy (policy.mjs), and the log (opts.log: every thing that happens, in order; nothing reads it back).
   const E = { pcs, foes, alive, up, R, M, get round() { return round; }, get W() { return W; } };
-  const nameOf = c => c.label ?? (c.label = c.build ? `${c.build.name} ${pcs.indexOf(c) + 1}` : `${c.name} ${foes.indexOf(c) + 1}`), at = c => (c?.pos ? [c.pos.x, c.pos.y] : null);
+  const nameOf = c => c.label ?? (c.label = c.build ? `${c.build.name} ${pcs.indexOf(c) + 1}` : `${c.name} ${foes.indexOf(c) + 1}`), at = c => (c?.pos ? [c.pos.x, c.pos.y] : null), trail = c => c.walked?.map(q => [q.x, q.y]);
   // Each event also carries `ch`: the creatures whose state changed since the last event ({ i: its place in the start list, dmg, pos, out, guard, esc,
   // cond }), so a viewer follows Health, Guard, places (Forced Movement too) and conditions without knowing any rule.
   const seen = new Map(), condOf = c => { const k = c.cond ?? {}; return [k.prone && "Prone", k.hindered && "Hindered", k.immob && "Immobilized", k.slowed && `Slowed ${k.slowed}`, k.dazed && `Dazed ${k.dazed}`, k.staggered && "Staggered", k.blinded && "Blinded", k.frightened && "Frightened", k.bleed && "Bleed", c.vulnerable && `Vulnerable ${c.vulnerable}`, c.taunt && "Taunted"].filter(Boolean).join(", "); };
@@ -386,7 +386,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (p.melee) {
       if (foesUp.some(f => MP.adj(p, f))) return false;   // already Engaged: it stays
       const t = P.meleeGoal?.(E, p, foesUp) ?? MP.nearest(p, foesUp, W);
-      const from = at(p), n = MP.walk(p, MP.toward(t), sq, W, evade ? null : pcLeave(++actionId)); if (n) ev("move", { who: nameOf(p), how: evade ? "Evade" : "Advance", from, to: at(p) });
+      const from = at(p), n = MP.walk(p, MP.toward(t), sq, W, evade ? null : pcLeave(++actionId)); if (n) ev("move", { who: nameOf(p), how: evade ? "Evade" : "Advance", from, to: at(p) , path: trail(p) });
       if (n) { p.leftSquare = round; p.stanceOff = true; }
       if (n && !step.free) p.st.moveAP += step.ap ?? 0;
       return n > 0 || step.free ? undefined : false;
@@ -398,7 +398,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     // Away from the enemies (up to one NPC Advance + 1 from the nearest), but within the weapon's normal range of its target.
     const tg = p.quarry && !p.quarry.dead ? p.quarry : MP.nearest(p, foesUp, W);
     const cap = Math.max(...foesUp.map(f => f.speed)) + 1, away = MP.awayFrom(foesUp, cap);
-    const from = at(p), n = MP.walk(p, MP.sightScore(q => away(q) + 3 * Math.max(0, MP.dist(q, tg.pos) - p.range[0]), tg, W), sq, W, evade || careful ? null : pcLeave(++actionId)); if (n) ev("move", { who: nameOf(p), how: evade || careful ? "Evade" : "Advance", from, to: at(p) });
+    const from = at(p), n = MP.walk(p, MP.sightScore(q => away(q) + 3 * Math.max(0, MP.dist(q, tg.pos) - p.range[0]), tg, W), sq, W, evade || careful ? null : pcLeave(++actionId)); if (n) ev("move", { who: nameOf(p), how: evade || careful ? "Evade" : "Advance", from, to: at(p) , path: trail(p) });
     if (n) { p.leftSquare = round; p.stanceOff = true; }
     if (n && !step.free) p.st.moveAP += step.ap ?? 0;
     if (p.cond.hindered === "move") p.cond.hindered = null;
@@ -416,7 +416,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (pc.cond.immob === "escape") { pc.cond.immob = null; out.ap++; }
         const from = at(pc), n = MP.walk(pc, MP.sightScore(q => 0.2 * MP.dist(q, tg.pos) + 3 * Math.max(0, MP.dist(q, tg.pos) - pc.range[0]) - 0.1 * Math.min(4, ...alive().map(f => MP.dist(q, f.pos))), tg, W), MP.speedOf(pc), W, pcLeave(++actionId));
         if (!n) break;
-        out.ap++; pc.leftSquare = round; pc.stanceOff = true; ev("move", { who: nameOf(pc), how: "Advance", from, to: at(pc) });
+        out.ap++; pc.leftSquare = round; pc.stanceOff = true; ev("move", { who: nameOf(pc), how: "Advance", from, to: at(pc) , path: trail(pc) });
       }
       pc.st.moveAP += out.ap - kiteAp; return out;
     }
@@ -429,11 +429,11 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (sp <= 0) return out;
     const hasWA = turn.steps.some(x => /^weapon attack/i.test(x));
     if (!pc.cond.hindered && gap >= 3 && gap <= sp && hasWA && MP.canTarget(pc, t, W)) {   // Charge: the Advance part costs 1 AP here, its Weapon Attack is the turn's first one, with 1 Boon
-      const from = at(pc); if (MP.walk(pc, MP.toward(t), sp, W, pcLeave(++actionId))) { pc.leftSquare = round; pc.stanceOff = true; } out.ap++; pc.st.charges++; ev("move", { who: nameOf(pc), how: "Charge", from, to: at(pc) });
+      const from = at(pc); if (MP.walk(pc, MP.toward(t), sp, W, pcLeave(++actionId))) { pc.leftSquare = round; pc.stanceOff = true; } out.ap++; pc.st.charges++; ev("move", { who: nameOf(pc), how: "Charge", from, to: at(pc) , path: trail(pc) });
       out.startNext.push({ kind: "boon", n: 1, scope: "next", name: "weapon attack", quarry: false, traits: [] });
     } else {
       while (!alive().some(f => MP.adj(pc, f)) && out.ap < RULES.ap && !pc.down) {
-        out.ap++; const from = at(pc), n = MP.walk(pc, MP.toward(t), MP.speedOf(pc), W, pcLeave(++actionId)); if (n) { pc.leftSquare = round; pc.stanceOff = true; ev("move", { who: nameOf(pc), how: "Advance", from, to: at(pc) }); }
+        out.ap++; const from = at(pc), n = MP.walk(pc, MP.toward(t), MP.speedOf(pc), W, pcLeave(++actionId)); if (n) { pc.leftSquare = round; pc.stanceOff = true; ev("move", { who: nameOf(pc), how: "Advance", from, to: at(pc) , path: trail(pc) }); }
         if (pc.cond.hindered === "move") pc.cond.hindered = null;
         if (!n) break;
       }
@@ -469,7 +469,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
       if (f.cond.immob === "escape") { ap--; f.cond.immob = null; continue; }
       const sp = MP.speedOf(f); if (sp <= 0) break;
       ap--;
-      const from0 = at(f), n = MP.walk(f, f.melee ? MP.toward(t) : (MP.engaged(f, W) ? MP.awayFrom(up(), 3) : MP.sightScore(p => Math.max(0, MP.dist(p, t.pos) - f.range[0]), t, W)), sp, W, npcLeave(++actionId)); if (n) ev("move", { who: nameOf(f), how: "Advance", from: from0, to: at(f) });
+      const from0 = at(f), n = MP.walk(f, f.melee ? MP.toward(t) : (MP.engaged(f, W) ? MP.awayFrom(up(), 3) : MP.sightScore(p => Math.max(0, MP.dist(p, t.pos) - f.range[0]), t, W)), sp, W, npcLeave(++actionId)); if (n) ev("move", { who: nameOf(f), how: "Advance", from: from0, to: at(f) , path: trail(f) });
       if (f.cond.hindered === "move") f.cond.hindered = null;
       if (!n) break;
       if (!f.melee) break;   // a ranged NPC moves once

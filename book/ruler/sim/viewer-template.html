@@ -200,7 +200,7 @@ function go(i) {
     const who = e.who != null ? names.indexOf(e.who) : -1, tg = names.indexOf(good && e.protects ? e.protects : e.type === "reaction" ? e.on : e.target);
     if (good && who >= 0 && tg >= 0) { const [a, b] = px(st[who].pos), [c, d] = px(st[tg].pos); if (tg !== who) el("line", { x1: a, y1: b, x2: c, y2: d, stroke: "var(--heal)", class: e.type === "reaction" ? "rx" : "" }, fx); el("circle", { cx: c, cy: d, r: 21, fill: "none", stroke: "var(--heal)", "stroke-width": 3 }, fx); el("text", { x: c, y: d - 26, fill: "var(--heal)" }, fx, e.amount ? `+${n1(e.amount)}` : e.type === "reaction" ? "blocked" : (e.what ?? "")); }
     else
-    if (e.type === "move" && e.from) { const [a, b] = px(e.from), [c, d] = px(e.to); el("line", { class: "trail", x1: a, y1: b, x2: c, y2: d }, $("map")._trail); }
+    if (e.type === "move" && e.from) el("polyline", { class: "trail", points: (e.path ?? [e.from, e.to]).map(q => px(q).join(",")).join(" ") }, $("map")._trail);   // the squares walked (the path around walls), not a straight line
     if (["action", "attack", "reaction", "collision"].includes(e.type) && who >= 0 && tg >= 0 && tg !== who) {
       const [a, b] = px(st[who].pos), [c, d] = px(st[tg].pos), tier = e.type === "attack" ? (e.damage ? 2 : 1) : e.type === "reaction" ? (e.tier ?? (e.damage ? 2 : 1)) : e.tier, col = `var(--t${e.save ? 4 - tier : tier})`;
       el("line", { x1: a, y1: b, x2: c, y2: d, stroke: col, class: e.type === "reaction" ? "rx" : "" }, fx);
