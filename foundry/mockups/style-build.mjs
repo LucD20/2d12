@@ -11,6 +11,7 @@
 // swap can't know. The scope class .twod12-dark stands for "the system's setting says dark" (Lucas: a setting of the system).
 import { writeFileSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 import { ICONS } from "./npc-hud-icons.mjs";
 import { SIGNIKA } from "./npc-hud-signika.mjs";
 
@@ -23,12 +24,12 @@ const FA = html => html.replace(/<i class="fa-solid fa-([a-z0-9-]+)([^"]*)"([^>]
 // Dark is the default. One name for one job: the page, a shaded row, a band (a heading or a table's head), a rule (a strong line), a
 // hairline, ink, muted ink, faint ink, gold (stars, diamonds, links, the open tab), the stamp (the one thing clicked) and its ink.
 const DARK = { pg: "#1f1c18", pg2: "#28241d", band: "#332c22", rule: "#7a683f", hair: "#4a4132", ink: "#ece3cf", mute: "#b3a68e", faint: "#8a7f6b", gold: "#d4a548", stamp: "#eadfc8", stampInk: "#221d16", stampHover: "#fff8e8",
-  t1: "#f3a79e", t1bg: "#3a201d", t2: "#cbd86e", t2bg: "#2c3319", t2n: "#a4b53c", t3: "#8fd69b", t3bg: "#1d3a25", crit: "#8db8f0", critbg: "#17263a",
+  t1: "#f3a79e", t1bg: "#3a201d", t2: "#e0d65a", t2bg: "#35321a", t2n: "#bdb230", t3: "#8fd69b", t3bg: "#1d3a25", crit: "#8db8f0", critbg: "#17263a",
   vig: "#d0564f", res: "#6f90e6", boon: "#8db8f0", bane: "#f3a79e", good: "#8fd69b", bad: "#ff9c92",
   fqAtwill: "#6aa82e", fqRound: "#4a90de", fqEncounter: "#d65a5a", fqTurn: "#25a3a3", fqDaily: "#9279e0",
   rkMinion: "#4d545c", rkGrunt: "#4b5a26", rkStandard: "#6e2318", rkElite: "#4f2c69" };
 const LIGHT = { pg: "#f4ede0", pg2: "#eae0c8", band: "#dfd2b6", rule: "#8a6d3b", hair: "#cdb88a", ink: "#2a241d", mute: "#5d5446", faint: "#8f8774", gold: "#96670f", stamp: "#3b3128", stampInk: "#f4ede0", stampHover: "#2a231c",
-  t1: "#a8261c", t1bg: "#fbefed", t2: "#5d6e10", t2bg: "#f3f5d8", t2n: "#a4b53c", t3: "#2b5a2f", t3bg: "#e8f1e3", crit: "#1d5a9e", critbg: "#e6eef8",
+  t1: "#a8261c", t1bg: "#fbefed", t2: "#6f6800", t2bg: "#f7f3cf", t2n: "#bdb230", t3: "#2b5a2f", t3bg: "#e8f1e3", crit: "#1d5a9e", critbg: "#e6eef8",
   vig: "#9b2c2c", res: "#2c4a9b", boon: "#1d4f8f", bane: "#a8261c", good: "#234d27", bad: "#8a1c13",
   fqAtwill: "#3B6D11", fqRound: "#185FA5", fqEncounter: "#A32D2D", fqTurn: "#0F6E6E", fqDaily: "#5B3FA6",
   rkMinion: "#4d545c", rkGrunt: "#4b5a26", rkStandard: "#6e2318", rkElite: "#4f2c69" };
@@ -58,7 +59,7 @@ const MAP = {
     "#d5ebe6": "#17332f", "#1d5a53": "#7fd3c8", "#a9cfc7": "#2c5a54", "#dbe5f2": "#1a2a44", "#24467a": "#9dbcf5", "#b3c5df": "#2f4a78",          // traits: Roll, Requires
     "#f4ddd5": "#3a211b", "#8a3324": "#f29f84", "#e2b8aa": "#6a3a2e", "#f2e6d0": "#33290f", "#6b4410": "#e8c25a", "#dcc7a0": "#5c4a1c",          // Kind, Damage
     "#e5e0d6": "#2c2924", "#4a443b": "#c2bbae", "#cfc6b5": "#4a463e", "#e3eef1": "#16303a", "#b6d0d6": "#2c5560", "#1d4f5a": "#8fd0e0",          // Keywords, the Trigger
-    "#fbefed": T.t1bg, "#f2cdc7": T.t1bg, "#a8261c": T.t1, "#8a1c13": T.t1, "#f1f7ec": T.t2bg, "#cfe3c2": "#3a4220", "#3f6e31": T.t2, "#234d27": T.t2, "#7fae6c": T.t2n,   // the Tiers (Tier 2 yellowish)
+    "#fbefed": T.t1bg, "#f2cdc7": T.t1bg, "#a8261c": T.t1, "#8a1c13": T.t1, "#f1f7ec": T.t2bg, "#cfe3c2": "#453f18", "#3f6e31": T.t2, "#234d27": T.t2, "#7fae6c": T.t2n,   // the Tiers (Tier 2 yellowish)
     "#e8f1e3": T.t3bg, "#1c3a1f": "#12301a", "#e6eef8": T.critbg, "#eef3fa": T.critbg, "#eef4fb": T.critbg, "#1d5a9e": T.crit, "#1d3f6b": T.crit,
     "#9b2226": T.vig, "#9b2c2c": T.vig, "#2c4a9b": T.res, "#7d5400": "#e3ba62", "#1d4f8f": T.boon, "#b07a12": T.gold, "#e0b23a": "#e0b23a",
     "#26241f": T.ink, "#2a241d": T.ink, "#3a3329": T.ink, "#2c2a26": T.ink, "#2b2216": T.ink, "#2a2010": T.ink, "#5d5446": T.mute, "#6b6152": T.mute, "#7a6f5f": T.mute, "#6b665a": T.mute, "#6f6a5c": T.mute, "#6b6358": T.mute, "#6b5a3a": T.mute, "#8f8774": T.faint, "#a99f8a": T.faint,
@@ -145,6 +146,11 @@ const TYPE = `
 .twod12-type .twod12.chat.rx2 .rx-it.rx-base { background: ${LIGHT.band}; border-color: ${LIGHT.hair}; }
 .twod12-type .twod12.chat select { background: transparent; color: ${LIGHT.ink}; border: 1px solid #8c7d63; border-radius: 2px; font-family: "Signika", sans-serif; }
 .twod12-type .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: ${LIGHT.ink}; border-radius: 2px; }
+.twod12-type .twod12.chat.initcard > .orn { display: none; }
+.twod12-type .twod12.chat.action.sysmsg.initcard { padding: 0 0 4px; overflow: hidden; }
+.twod12-type .twod12.chat.action.sysmsg.initcard > .ahead { background: ${LIGHT.band} !important; border-bottom: 1px solid ${LIGHT.hair} !important; padding: 4px 8px; margin: 0; justify-content: center; }
+.twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > b { flex: none; text-align: center; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > .aright:empty, .twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > .aright { display: none; }
 .twod12-type .twod12.chat.initcard .ic-band { font: 700 13.5px/1.2 "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
 .twod12-type .twod12.chat.initcard .ic-name { font: 600 13.5px/1.3 "Signika", sans-serif; letter-spacing: 0; color: ${LIGHT.ink}; }
 .twod12-type .twod12.chat.dmg { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
@@ -155,7 +161,10 @@ const TYPE = `
 .twod12-type .twod12.chat .dbtns button:first-child { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
 .twod12-type .twod12.chat.turnend > summary { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; }
 .twod12-type .twod12.chat.turnend .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
-.twod12-type .twod12-dock .td-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; }
+.twod12-type .twod12-dock { background: ${LIGHT.pg}; color: ${LIGHT.ink}; border: 1px solid #bfae8c; border-radius: 5px; box-shadow: none; font-size: 13px; }
+.twod12-type .twod12-dock .td-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; min-height: 28px; padding: 3px 8px 3px 10px; gap: 8px; }
+.twod12-type .twod12-dock:not(.open) .td-hd { border-bottom: 0; }
+.twod12-type .twod12-dock .td-ttl { font-size: 15px; } .twod12-type .twod12-dock .td-who { font-size: 14px; } .twod12-type .twod12-dock .td-rd { color: ${LIGHT.mute}; opacity: 1; font-size: 12px; }
 .twod12-type .twod12-dock .td-who { color: ${LIGHT.ink}; }
 .twod12-type .twod12-dock .td-pips i, .twod12-type .twod12.chat.turnend .td-pips i { background: rgba(42, 36, 29, .2); }
 .twod12-type .twod12-dock .td-pips i.on, .twod12-type .twod12.chat.turnend .td-pips i.on { background: #3b4cb8; }
@@ -163,8 +172,8 @@ const TYPE = `
 .twod12-type .twod12.chat.follow i[data-ic^="shield"] { color: #2f6fb3; }
 /* Tier 2, more yellow (Lucas): still a green, toward yellow. The light theme's values; the dark set has its own. */
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: ${LIGHT.t2}; --bg: ${LIGHT.t2bg}; --n: ${LIGHT.t2n}; }
-.twod12-type .twod12.chat.cc { --cc-t2: #d3df8e; --cc-t2i: #36420a; }
-.twod12-type .twod12.chat.cc .cc-srow.t2 { --c: #6f7f17; --n: ${LIGHT.t2n}; --bg: ${LIGHT.t2bg}; }
+.twod12-type .twod12.chat.cc { --cc-t2: #e4dd80; --cc-t2i: #423d00; }
+.twod12-type .twod12.chat.cc .cc-srow.t2 { --c: #857c12; --n: ${LIGHT.t2n}; --bg: ${LIGHT.t2bg}; }
 `;
 
 /* ------------------------------------------------------------------ the dark sets */
@@ -195,7 +204,7 @@ const BY_HAND = `
 .twod12-dark .twod12.acard.d2 .ap-fxh { color: ${T.gold}; }
 /* ---- by hand: the chat cards (their variables, the primary button as the stamp, the pills) */
 .twod12-dark .twod12.chat.cc { --cc-bg: ${T.pg}; --cc-line: ${T.rule}; --cc-ink: ${T.ink}; --cc-mute: ${T.mute}; --cc-panel: ${T.band}; --cc-gold: ${T.gold}; --cc-gline: ${T.hair};
-  --cc-t1: #8f2a22; --cc-t1p: ${T.t1bg}; --cc-t1i: ${T.t1}; --cc-t2: #3a4220; --cc-t2i: ${T.t2}; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-critp: rgba(141,184,240,.3); --cc-criti: ${T.crit};
+  --cc-t1: #8f2a22; --cc-t1p: ${T.t1bg}; --cc-t1i: ${T.t1}; --cc-t2: #453f18; --cc-t2i: ${T.t2}; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-critp: rgba(141,184,240,.3); --cc-criti: ${T.crit};
   --cc-plus: ${T.boon}; --cc-minus: ${T.bane}; --cc-vig: ${T.vig}; --cc-res: ${T.res}; --cc-btn: ${T.stamp}; --cc-btn2: #8c7d63; color: ${T.ink}; }
 .twod12-dark .twod12.chat.cc .cc-card { background: ${T.pg}; }
 .twod12-dark .twod12.chat.cc .cc-btn.primary { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; border-radius: 2px; }
@@ -209,7 +218,7 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.cc .cc-card .cc-pools:hover { background: ${T.pg2}; }
 .twod12-dark .twod12.chat.cc button { color: ${T.ink}; }
 .twod12-dark .twod12.chat.cc .cc-stamp.t1 { color: #fff; }
-.twod12-dark .twod12.chat.cc .cc-srow.t2 { --c: #6f7f17; --bg: ${T.t2bg}; --n: ${T.t2n}; }
+.twod12-dark .twod12.chat.cc .cc-srow.t2 { --c: #7d7414; --bg: ${T.t2bg}; --n: ${T.t2n}; }
 .twod12-dark .twod12.chat.cc .cc-srow.t3 { --c: #2f6b3a; --bg: ${T.t3bg}; }
 .twod12-dark .twod12.chat.cc .cc-sub { color: #e3ba62 !important; }
 .twod12-dark .twod12.chat.cc .cc-stotal { background: ${T.stamp}; color: ${T.stampInk}; }
@@ -221,7 +230,7 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.sysline > i[data-ic^="shield"], .twod12-dark .twod12.chat .kw-guard { color: #7fb4ee; }
 /* the ladder: every segment's range can be read when it is not the lit one */
 .twod12-dark .twod12.chat.cc .cc-seg.s1 { background: rgba(143, 42, 34, .38); color: #f3a79e; } .twod12-dark .twod12.chat.cc .cc-seg.s1.lit { background: #8f2a22; color: #fff; }
-.twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(111, 127, 23, .32); color: #cbd86e; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #5f6d14; color: #fff; }
+.twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(140, 130, 24, .32); color: #e0d65a; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #7d7414; color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-seg.s3 { background: rgba(47, 107, 58, .38); color: #8fd69b; } .twod12-dark .twod12.chat.cc .cc-seg.s3.lit { background: #2f6b3a; color: #fff; }
 .twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: ${T.bane}; } .twod12-dark .twod12.chat .kw-boon { color: ${T.boon}; }
 /* ---- by hand: the other chat messages */
@@ -239,6 +248,7 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: ${T.ink}; }
 .twod12-dark .twod12.chat.initcard { --ic-foe: #8f2626; --ic-ally: #3b6d11; --ic-neutral: #6b6456; }
 .twod12-dark .twod12.chat.initcard .ic-name { color: ${T.ink}; }
+.twod12-dark .twod12.chat.action.sysmsg.initcard > .ahead { background: ${T.band} !important; border-bottom: 1px solid ${T.rule} !important; }
 .twod12-dark .twod12.chat.dmg > .ahead { background: none !important; border-bottom: 1px solid ${T.hair} !important; }
 .twod12-dark .twod12.chat .dbtns button, .twod12-dark .twod12.chat .dbtns select { background: transparent; color: ${T.ink}; border: 1px solid #8c7d63; }
 .twod12-dark .twod12.chat .dbtns button:first-child { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
@@ -247,7 +257,8 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.follow i[data-ic^="shield"] { color: #7fb4ee; }
 .twod12-dark .twod12.chat.turnend .td-ttl, .twod12-dark .twod12.chat.turnend > summary { color: ${T.ink}; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
-.twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: ${T.pg}; color: ${T.ink}; border-color: ${T.rule}; border-radius: 2px; }
+.twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: ${T.pg}; color: ${T.ink}; border-color: ${T.rule}; border-radius: 5px; }
+.twod12-dark .twod12-dock .td-hd { border-bottom-color: ${T.rule}; }
 .twod12-dark .twod12-dock .td-hd, .twod12-dark .twod12.chat.turnend > summary { background: ${T.band}; color: ${T.ink}; }
 .twod12-dark .twod12-dock .td-who { color: ${T.ink}; }
 .twod12-dark .twod12-dock .td-pips i, .twod12-dark .twod12.chat.turnend .td-pips i { background: rgba(236, 227, 207, .22); }
@@ -285,6 +296,8 @@ h3 { font: 600 14px "Signika", sans-serif; margin: 0 0 6px; color: #f3e9d2; disp
 .tag { font: 700 10.5px "Signika", sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; background: #5a4a2a; color: #e9dfc8; } .tag.pick { background: #2f6b3a; color: #fff; }
 .cols { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin-top: 14px; }
 .col { width: var(--w, 450px); max-width: 100%; }
+.cols > .col { max-width: 100%; }
+.stage > .twod12-linebar { flex-wrap: wrap; }
 .stage { padding: 14px; background: #efebe3; border-radius: 4px; } .stage.dk { background: #14120f; }
 .stage.side { padding: 8px; background: #d9d3c5; display: flex; flex-direction: column; gap: 8px; } .stage.side.dk { background: #171513; }
 .stage.map { background: #3d4c3c; padding: 40px 14px 14px; }
@@ -481,7 +494,12 @@ const initRows = [
   { id: "g1", name: "Goblin Sneak", side: -1, attr: "instinct", mod: 1, r: Rr2([3], [2], 1, 6) }];
 const cInit = safe(() => IC.initCardHtml(IC.initCardData(initRows, initRows.map(r => r.id))));
 const cFollow = safe(() => FU.followHtml([{ icon: "fa-shield-heart", html: "<b>Ogre Chieftain</b> gains <b>Guard 6</b>." }, { icon: "fa-hand", html: "<b>Orc Warrior</b> is Pushed 1." }]));
-const cMulti = safe(() => DC.multiDamageHtml({ title: "Ground Slam", rows: [{ uuid: "a", name: "Aveline", tier: 1, comps: [{ pool: "B", sub: "Bl", total: 11 }], fx: [], applied: "", blocked: false }, { uuid: "b", name: "Durgan", tier: 2, comps: [{ pool: "B", sub: "Bl", total: 6 }], fx: [], applied: "", blocked: false }, { uuid: "c", name: "Sylwen", tier: 3, comps: [], fx: [], applied: "", blocked: false }] }));
+// The area damage as the system posts it today: the damage message with a group per Tier and a row per creature (chatcards.mjs).
+// The older card with a block of four buttons per creature (dmgcard.mjs multiDamageHtml) is no longer posted by anything.
+const cMulti = safe(() => `<div class="twod12 chat cc">${CC.damageCardHtml({ kind: "dmg", name: "Ground Slam", nl: false, groups: [
+  { tier: 1, comps: [{ pool: "B", sub: "Bl", total: 11, formula: "7 + 1d6", dice: [{ faces: 6, results: [4] }] }], riders: ["Prone"], rows: [0] },
+  { tier: 2, comps: [{ pool: "B", sub: "Bl", total: 6, formula: "4 + 1d6", dice: [{ faces: 6, results: [2] }] }], riders: [], rows: [1, 2] }],
+  rows: [{ name: "Aveline", mods: [], choice: "", applied: null }, { name: "Durgan", mods: [{ v: -5, label: "Guard", kind: "guard" }], choice: "", applied: null }, { name: "Sylwen", mods: [], choice: "", applied: null }] }, CC.viewOf({ gm: true }))}</div>`);
 const tStart = TK.makeLine("start", "Turn start", 0, 4, 4, { b: 0, a: 1 }), tAct = { ...TK.makeLine("act", "Cleaver", 4, 3, 4), at: "2:1" }, tMove = { ...TK.makeLine("move", "Advance", 3, 2, 4), at: "2:1" };
 const tOn = TD.onRows([{ name: "Hindered", flags: { duration: { type: "eot" } } }], { apGuard: 0, guard: 4 });
 const dockFull = safe(() => TD.dockHtml(TD.dockModel({ who: "Orc Warrior", round: 2, lines: [tStart, tAct, tMove], on: tOn, ap: 2, rap: 1, max: 4 }), true));
@@ -491,8 +509,11 @@ page("chat-older-dark.html", "Style 3b: the other chat messages", `The rest of t
 ${side(cRx + cRxDone + cRxUsed)}
 <h2>The initiative card</h2>
 ${side(cInit)}
-<h2>Follow-up lines, and the area damage card</h2>
-${side(cFollow + cMulti)}
+<h2>Follow-up lines</h2>
+${side(cFollow)}
+<h2>Area damage: the message the system posts today</h2>
+<p class="why">Lucas found the area damage card bare. <b>The card shown before (a block of four buttons under each name) is an old one that nothing in the system posts any more;</b> I should not have drawn it. This is the real one: the damage message with a group per Tier and a row per creature, in the chat card's look already. If it still needs work, it is this one to rework.</p>
+${side(cMulti)}
 <h2>The End of Turn line (open)</h2>
 ${side(cEnd)}
 <h2>Notes</h2>
@@ -506,17 +527,22 @@ const bar = FA(pickBarHtml({ icon: "fa-shield-halved", text: "<b>Shield of Faith
 const bar2 = FA(pickBarHtml({ icon: "fa-up-down-left-right", text: "<b>Pushed 2</b>: pick the square the Orc Warrior ends in.", options: [], done: "Done" }));
 const barHtml = `<div class="twod12-linebar twod12-pickbar">${bar}</div><div style="height:12px"></div><div class="twod12-linebar twod12-pickbar">${bar2}</div>`;
 const dockOpen = dockFull || dockHtml(dockModel({ who: "Orc Warrior", round: 2, ap: 2, rap: 1, max: 4 }), true), dockShut = dockHtml(dockModel({ who: "Aveline", round: 2, ap: 4, rap: 1, max: 4 }), false);
+const thumbPc = execFileSync("python3", ["-c", "import sys,io,base64;from PIL import Image;im=Image.open(sys.argv[1]).convert('RGB');im.thumbnail((160,160));b=io.BytesIO();im.save(b,'WEBP',quality=80);sys.stdout.write(base64.b64encode(b.getvalue()).decode())", here("../twod12/art/pcs/aveline.png")]).toString();
+const hot = `<div class="hud-hot"><div class="hot-grid">${Array.from({ length: 10 }, (_, i) => `<i class="${[0, 1, 2, 4].includes(i) ? "f" : ""}" data-k="${(i + 1) % 10}">${[0, 1, 2, 4].includes(i) ? ic(["dice-d20", "campground", "lightbulb", "", "music"][i]) : ""}</i>`).join("")}</div></div>`;
+const hudAsk = q => `<div class="hud asking"><div class="hud-id"><img src="data:image/webp;base64,${thumbPc}" alt=""><div><div class="nm">Aveline</div><div class="sb">Human Paladin &middot; Level 1</div></div></div><div class="twod12-linebar twod12-pickbar hud-ask">${q}</div>${hot}</div>`;
 const bars2 = (html, stage, w) => `<div class="cols">${col("Dark", PICK, "", html, `${stage} dk twod12-dark twod12-type`, w)}${col("Today", TODAY, "", html, stage, w)}</div>`;
 page("bars-dark.html", "Style 4: the pick bar and the Turn dock", `The two pieces that sit beside the HUD. <b>The pick bar</b> (a choice on the map; inside the HUD when one is open, floating when not) is dark already, but a cold blue-black with rounded blue-grey buttons: here it takes the HUD's look (the warm page, a gold line, outlined buttons, the hovered pick as a stamp). <b>The Turn dock</b> (above the chat's input) takes the dark page and a band for its head.`, `
-<h2>The pick bar, floating over the map</h2>
-${bars2(barHtml, "map", "720px")}
+<h2>A choice on the map: the HUD asks (decided, 5c)</h2>
+<p class="why"><b>Yes: with the HUD, the pick bar no longer floats.</b> The HUD is always there (a player's own character, or the GM's empty bar), so every choice on the map is asked in the HUD's frame and gives it back when done. The same goes for the Line bar, the Charge bar and the Setup bar. The floating bar on the right is today's, for comparison; it would only remain for someone who turns the HUD off, if that is allowed at all.</p>
+<div class="cols">${col("In the HUD", '<span class="tag pick">Decided</span>', "", hudAsk(bar) + '<div style="height:12px"></div>' + hudAsk(bar2), "map", "980px")}${col("Today: floating", TODAY, "", barHtml, "map", "720px")}</div>
 <h2>The Turn dock: open and closed</h2>
-${bars2(`<div class="twod12-dockwrap">${dockOpen}</div><div class="twod12-dockwrap">${dockShut}</div>`, "side", "330px")}
+<p class="why">Redone to be the same piece as the Reactions card and the End of Turn line: the same header band and type, the same frame, on both themes.</p>
+${side(`<div class="twod12-dockwrap">${dockOpen}</div><div class="twod12-dockwrap">${dockShut}</div>`)}
 <h2>Notes</h2>
 <ul class="notes">
 <li>The Line bar, the Charge bar and the Setup bar share the pick bar's rules, so they take the same look; they are not drawn here.</li>
 <li>The open dock shows a real turn: its start, an Action, a movement, and what is on the creature.</li>
-</ul>`, [...R.bars, ...R.dock]);
+</ul>`, [readFileSync(here("./npc-hud.css"), "utf8").replace(/body\.mock[^{]*\{[^}]*\}/g, ""), ...R.bars, ...R.dock]);
 
 console.log(`built: style-tokens.css/.html, style-dark.css, action-card-dark.html, chat-cards-dark.html, bars-dark.html`);
 for (const [k, s] of Object.entries(autoUsed)) console.log(`  ${k}: ${R[k].length} rules, ${s.size} colors by AUTO${s.size ? `: ${[...s].join(" ")}` : ""}`);

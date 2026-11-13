@@ -16,6 +16,577 @@
   --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55;
   --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00; --c-wmod: #9a4a00; --c-pmod: #5b3a9e; --c-smod: #455566;
   --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }
+/* NPC-HUD mockups (pack-npc-hud-mockups, 2026-11-12). The pages also link ../twod12/styles/system.css: the Action card (D2), the Turn dock
+   and the pick bar below are the system's real markup and CSS. Everything in this file is NEW (the one-page sheet, the HUD) or a stand-in for
+   Foundry's own screen. The palette is the system's: the NPC sheet's navy and amber (--np-*), the pick bar's dark bar and gold line, the
+   Action card's amber Version button (.ap-vbtn), the frequency colors (config.mjs FREQ_COLORS). */
+:root {
+  --navy: #1e2a3a; --navy2: #243246; --navy-line: #3a4a62; --navy-edge: #0f1622; --dim: #c3cddc; --amber: #e09a3a; --gold: #f0b35e;
+  --par: #efebe3; --card: #fffefb; --cline: #c9bfab; --ink: #26241f; --mut: #6b665a;
+  --fq-atwill: #3B6D11; --fq-round: #185FA5; --fq-enc: #A32D2D; --fq-turn: #0F6E6E; --fq-daily: #5B3FA6;
+  --g-basic: #3B6D11; --g-special: #185FA5; --g-react: #1d2738; --g-esc: #b0731a;
+  --vig: #E24B4A; --res: #7F77DD;
+  --bar: rgba(20, 24, 32, .92); --bar-line: #c9a24a; --bar-ink: #f4e9d0; --bar-btn: #2e3442;
+}
+* { box-sizing: border-box; }
+
+
+
+
+.lead { color: #c9c0ad; max-width: 1100px; margin: 0 0 8px; }
+.lead b, .why b { color: #f3e9d2; }
+.nav { display: flex; gap: 14px; margin: 6px 0 0; font-size: 13px; }
+.nav a { color: #f0b35e; }
+.nav a.here { color: #eee6d6; text-decoration: none; font-weight: 700; }
+.why { color: #c9c0ad; font-size: 13px; margin: 0 0 10px; max-width: 1100px; }
+.tag { font: 700 10.5px "Signika", sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; background: #4a443a; color: #e9dfc8; }
+.tag.pick { background: #2f6b3a; color: #fff; }
+.tag.alt { background: #5a4a2a; }
+.cols { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; margin-top: 14px; }
+.col { min-width: 0; }
+.stack { display: flex; flex-direction: column; gap: 22px; margin-top: 14px; }
+.ic { width: 1em; height: 1em; fill: currentColor; vertical-align: -.125em; flex: none; }
+.measure { display: inline-block; margin-top: 6px; font-size: 12px; color: #a9d6a0; }
+
+/* ---------- the amber Version button: the Action card's .ap-vbtn, at the size of a row ---------- */
+.vb { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 4px; min-width: 38px; height: 22px; padding: 0 7px; margin: 0; font: 700 11.5px "Signika", sans-serif; line-height: 1;
+  background: #d9902f; color: #1b2433; box-shadow: 0 2px 0 #7a4f12; cursor: pointer; white-space: nowrap; }
+.vb:hover { background: #e8a345; }
+.vb.no { background: transparent; color: #9aa6ba; box-shadow: none; border: 1px dashed #5d6b85; cursor: not-allowed; }
+.vb.used { background: transparent; color: #9aa6ba; box-shadow: none; border: 1px solid #5d6b85; text-decoration: line-through; cursor: not-allowed; }
+
+/* ---------- a stand-in for a Foundry window ---------- */
+.win { width: 548px; border-radius: 6px; overflow: hidden; box-shadow: 0 6px 22px rgba(0, 0, 0, .55); background: var(--navy); border: 1px solid #000; font-family: "Signika", sans-serif; }
+.win-head { display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 8px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }
+.win-head .sp { margin-left: auto; display: flex; gap: 12px; opacity: .8; font-size: 12px; }
+
+/* ---------- the one-page NPC sheet (NEW) ---------- */
+.ops { color: var(--ink); }
+.ops-hb { display: flex; align-items: center; gap: 12px; padding: 10px 14px 8px; background: var(--navy); color: #fff; }
+.ops-hb .nm { font-size: 22px; font-weight: 700; line-height: 1.1; flex: 1; min-width: 0; }
+.ops-hb .who { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; font-size: 12px; color: var(--dim); }
+.ops-hb .who .l1 { display: flex; align-items: center; gap: 6px; }
+.ops-hb .rank { font-weight: 700; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 1px 7px; border-radius: 3px; background: var(--amber); color: #1e2430; }
+.ops-hb .who b { color: #fff; }
+.ops-hb .tools { display: flex; gap: 2px; }
+.ops-hb .tools a { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; color: var(--dim); }
+.ops-tabs { display: flex; background: #18222f; border-bottom: 1px solid var(--navy-edge); padding: 0 8px; }
+.ops-tabs a { padding: 6px 13px 5px; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9fabbf; }
+.ops-tabs a.on { color: #fff; box-shadow: inset 0 -2px 0 var(--amber); }
+/* the dense block: Health (pack HP's model: one HP bar, the Vigor and Resolve gauges), Defenses, Speed, Resist / Weak */
+.ops-stats { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; padding: 10px 14px; background: var(--navy); color: #fff; }
+.ops-hp { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ops-hp .hph { display: flex; align-items: baseline; gap: 8px; font-size: 12px; color: var(--dim); }
+.ops-hp .hph b { font-size: 19px; color: #fff; line-height: 1; }
+.ops-hp .hph .st { margin-left: auto; display: flex; gap: 4px; }
+.ops-hp .state { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; background: #5a1d1d; color: #ffd9d6; }
+.ops-hp .state.s { background: #2d2a66; color: #dedcff; }
+.track { height: 9px; border-radius: 5px; background: var(--navy-line); overflow: hidden; }
+.track i { display: block; height: 100%; border-radius: 5px; }
+.ops-hp .hpbar i { background: linear-gradient(90deg, #58a55c, #7fdc95); }
+.gauges { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gauge { font-size: 11.5px; color: var(--dim); }
+.gauge .gh { display: flex; justify-content: space-between; }
+.gauge .gh b { color: #fff; }
+.gauge .gh b.neg { color: #ff8f86; }
+.gauge .track { height: 5px; margin-top: 2px; }
+.gauge.v .track i { background: var(--vig); } .gauge.r .track i { background: var(--res); }
+.tiles { display: flex; gap: 6px; align-items: stretch; }
+.tile { min-width: 52px; padding: 5px 8px 4px; border-radius: 6px; background: var(--navy2); border: 1px solid var(--navy-line); text-align: center; display: flex; flex-direction: column; justify-content: center; }
+.tile span { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #b8c3d6; white-space: nowrap; }
+.tile b { font-size: 20px; line-height: 1.15; }
+.ops-rw { grid-column: 1 / -1; display: flex; gap: 14px; font-size: 12px; color: var(--dim); border-top: 1px solid var(--navy-line); padding-top: 6px; }
+.ops-rw b { color: #fff; font-weight: 600; }
+.ops-rw .esc { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+.pips { display: inline-flex; gap: 3px; align-items: center; }
+.pips i { width: 11px; height: 11px; border-radius: 50%; border: 2px solid #b0731a; }
+.pips i.on { background: #e39a1c; }
+.ops-body { background: var(--par); padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 6px; }
+.band { display: flex; align-items: center; gap: 8px; height: 21px; padding: 0 8px; border-radius: 3px; background: var(--gc); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-top: 2px; }
+.band .r { margin-left: auto; font-weight: 500; letter-spacing: 0; text-transform: none; font-size: 11.5px; opacity: .95; display: flex; align-items: center; gap: 6px; }
+.band.react { color: #ecdcae; }
+.band .pips i { border-color: #fff; } .band .pips i.on { background: #fff; }
+.oa { background: var(--card); border: 1px solid var(--cline); border-left: 4px solid var(--fq); border-radius: 4px; }
+.oa.dim > * { opacity: .55; }
+.oa-h { display: flex; align-items: center; gap: 7px; padding: 4px 6px 4px 7px; min-height: 30px; }
+.oa-h .n { font-weight: 700; font-size: 14px; white-space: nowrap; }
+.oa-h .tr { font-size: 11.5px; color: var(--mut); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.oa-h .fq { margin-left: auto; font-size: 10.5px; font-weight: 700; color: #fff; background: var(--fq); border-radius: 3px; padding: 1px 6px; white-space: nowrap; }
+.oa-tools { display: inline-flex; gap: 7px; color: #9a927f; font-size: 11.5px; padding-left: 2px; }
+.oa-meta { padding: 0 8px 4px; font-size: 12px; color: #3a3329; }
+.oa-meta b { color: #1b2433; }
+.oa-meta .sep { color: #d9902f; margin: 0 5px; font-size: 10px; }
+.oa-t { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #e6d6b2; }
+.oa-t > div { padding: 3px 8px 4px; font-size: 12.5px; line-height: 1.35; background: var(--bg); box-shadow: inset 0 3px 0 var(--n, var(--c)); }
+.oa-t > div + div { border-left: 1px dotted #d9b26a; }
+.oa-t .tl { display: block; font: 700 10.5px "Cinzel", serif; color: var(--c); letter-spacing: .02em; }
+.oa-t .t1 { --c: #a8261c; --bg: #fbefed; } .oa-t .t2 { --n: #7fae6c; --c: #3f6e31; --bg: #f1f7ec; } .oa-t .t3 { --c: #2b5a2f; --bg: #e8f1e3; }
+.oa-t .none { color: #8f8774; }
+.oa-fx { padding: 4px 8px 5px; font-size: 12.5px; border-top: 1px solid #e6d6b2; }
+.pool { display: inline-block; font: 700 10px "Signika", sans-serif; padding: 0 4px; border-radius: 3px; color: #fff; vertical-align: 1px; margin-right: 2px; }
+.pool.v { background: #9b2226; } .pool.r { background: #2c4a9b; }
+.sub { color: #7d5400; font-weight: 700; }
+.cond { font-weight: 700; color: #1b2433; border-bottom: 1px dashed #b07a12; }
+/* (b) the Bestiary's one line */
+.ol { display: flex; align-items: flex-start; gap: 7px; padding: 4px 6px 4px 7px; background: var(--card); border: 1px solid var(--cline); border-left: 4px solid var(--fq); border-radius: 4px; font-size: 13px; line-height: 1.4; }
+.ol.dim > * { opacity: .55; }
+.ol .vb { margin-top: 0; }
+.ol .tx { flex: 1; min-width: 0; padding-top: 1px; }
+.ol .tx i.n { font-weight: 700; }
+.ol .oa-tools { padding-top: 4px; }
+.passive { display: flex; gap: 8px; align-items: baseline; padding: 3px 8px; font-size: 12.5px; background: #f6efdd; border: 1px solid #e3d3a8; border-radius: 4px; }
+.passive.off { opacity: .55; }
+.passive .num { font: 700 11px "Cinzel", serif; color: #fff; background: var(--g-esc); border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; flex: none; align-self: center; }
+.ops-attrs { display: flex; gap: 5px; margin-top: 4px; padding-top: 8px; border-top: 2px solid var(--cline); }
+.attr { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 3px 4px; border-radius: 5px; background: var(--card); border: 1px solid var(--cline); border-top: 3px solid var(--c); cursor: pointer; }
+.attr span { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--c); white-space: nowrap; }
+.attr b { font-size: 16px; line-height: 1.15; }
+.attr small { font-size: 10px; color: var(--mut); }
+.attr.gap { margin-left: 8px; }
+.ops-note { font-size: 11px; color: var(--mut); text-align: right; }
+/* the right-click Action card: a floating copy of the system's card */
+.cardpop { width: 400px; box-shadow: 0 6px 22px rgba(0, 0, 0, .55); border-radius: 4px; }
+.rc { font-size: 12px; color: #c9c0ad; margin: 0 0 6px; display: flex; align-items: center; gap: 6px; }
+
+/* ---------- the HUD (NEW): the pick bar's look, across the bottom ---------- */
+.hud { position: relative; display: flex; align-items: stretch; min-height: 58px; background: var(--bar); border: 1px solid var(--bar-line); border-radius: 8px; color: var(--bar-ink); box-shadow: 0 4px 14px rgba(0, 0, 0, .5); font: 13px/1.2 "Signika", sans-serif; }
+.hud-id { display: flex; align-items: center; gap: 9px; padding: 5px 12px 5px 8px; border-right: 1px solid rgba(201, 162, 74, .45); flex: none; }
+.hud-id img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid var(--amber); background: var(--navy-line); }
+.hud-id .nm { font: 700 14.5px "Cinzel", serif; color: #f3d39c; white-space: nowrap; }
+.hud-id .sb { font-size: 11px; color: #c9cfda; white-space: nowrap; margin-top: 2px; }
+.hud.noimg .hud-id { padding-left: 12px; }
+.hud-main { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 5px 0; padding: 5px 2px; }
+.hud-g { display: flex; flex-direction: column; gap: 3px; padding: 0 10px; border-left: 1px solid rgba(201, 162, 74, .22); }
+.hud-g:first-child { border-left: 0; }
+.hud-gl { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gl); display: flex; align-items: center; gap: 5px; height: 12px; }
+.hud-gl .pips i { width: 7px; height: 7px; border-width: 1px; border-color: #e6bd5a; } .hud-gl .pips i.on { background: #e6bd5a; }
+.hud-acts { display: flex; gap: 5px; }
+.g-basic { --gl: #a9d98a; } .g-special { --gl: #8dbdf5; } .g-react { --gl: #e6bd5a; } .g-esc { --gl: #f0a24a; } .g-saves { --gl: #c9cfda; }
+.ha { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 4px 0 8px; background: var(--bar-btn); border: 1px solid #4a5266; border-left: 3px solid var(--fq); border-radius: 5px; white-space: nowrap; }
+.ha b { font-weight: 600; font-size: 13px; color: var(--bar-ink); }
+.ha .vs { display: inline-flex; gap: 3px; }
+.ha.dim b { opacity: .5; }
+.ha .lk { font-size: 10px; color: #9aa6ba; }
+.sv { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 7px; background: var(--bar-btn); border: 1px solid #4a5266; border-bottom: 3px solid var(--c); border-radius: 5px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.sv b { font-weight: 700; color: #fff; }
+.hud-more { align-self: center; margin: 0 8px 0 2px; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid #4a5266; background: var(--bar-btn); color: #c9a24a; }
+/* slim: one line, the group names in the line */
+.hud.slim { min-height: 40px; }
+.hud.slim .hud-main { padding: 2px; }
+.hud.slim .hud-id, .hud.slim .hud-hot { padding-top: 2px; padding-bottom: 2px; }
+.hud.slim .hud-g { flex-direction: row; align-items: center; gap: 7px; }
+.hud.slim .hud-id .sb { display: none; }
+.hud.slim .ha, .hud.slim .sv { height: 26px; }
+/* the hotbar row inside the HUD */
+.hud-hot { flex: none; display: flex; align-items: center; gap: 5px; padding: 4px 8px; border-left: 1px solid rgba(201, 162, 74, .45); }
+.hot-grid { display: grid; grid-template-columns: repeat(5, 24px); gap: 2px; }
+.hot-grid i { position: relative; width: 24px; height: 24px; border-radius: 4px; background: #1b1f28; border: 1px solid #4a5266; display: flex; align-items: center; justify-content: center; font-style: normal; font-size: 12px; color: #c9a24a; }
+.hot-grid i.f { background: #33405a; border-color: #6b7a99; color: #f4e9d0; }
+.hot-grid i::after { content: attr(data-k); position: absolute; right: 1px; bottom: -1px; font-size: 8px; color: #8e96a8; }
+.hud.slim .hot-grid { grid-template-columns: repeat(10, 24px); }
+.hot-pg { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #c9a24a; gap: 1px; }
+/* PC: the categories, opened by a click */
+.hud-cats { display: flex; align-items: center; gap: 6px; padding: 0 10px; flex: 1; flex-wrap: wrap; }
+.cat { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 11px; background: var(--bar-btn); color: var(--bar-ink); border: 1px solid var(--bar-line); border-radius: 5px; font: 600 13px "Signika", sans-serif; white-space: nowrap; cursor: pointer; }
+.cat .ct { font-size: 10.5px; color: #c9a24a; font-weight: 700; }
+.cat.on { background: #c9a24a; color: #1b1f28; font-weight: 700; }
+.cat.on .ct { color: #1b1f28; }
+.cat .ic { font-size: 12px; opacity: .9; }
+.hud-pop { position: absolute; bottom: calc(100% + 6px); background: var(--bar); border: 1px solid var(--bar-line); border-radius: 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); padding: 8px 10px 10px; display: flex; gap: 16px; }
+.hud-pop::after { content: ""; position: absolute; left: var(--ax, 40px); bottom: -6px; width: 10px; height: 10px; background: #171b24; border-right: 1px solid var(--bar-line); border-bottom: 1px solid var(--bar-line); transform: rotate(45deg); }
+.pop-col { display: flex; flex-direction: column; gap: 3px; min-width: 190px; }
+.pop-h { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gl); padding: 0 2px 2px; border-bottom: 1px solid rgba(201, 162, 74, .3); margin-bottom: 2px; }
+.pr { display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 4px 0 8px; background: var(--bar-btn); border: 1px solid #4a5266; border-left: 3px solid var(--fq); border-radius: 5px; white-space: nowrap; }
+.pr b { font-weight: 600; font-size: 13px; }
+.pr small { color: #9aa6ba; font-size: 11px; }
+.pr .vs { margin-left: auto; display: inline-flex; gap: 3px; padding-left: 10px; }
+.pr.dim b, .pr.dim small { opacity: .5; }
+.pr.txt { border-left-color: var(--c, #4a5266); }
+.pr .go { margin-left: auto; color: #c9a24a; font-size: 11px; padding: 0 4px 0 10px; }
+.pop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 6px; }
+/* several tokens selected: the list */
+.hud-list { display: flex; align-items: center; gap: 6px; padding: 5px 10px; flex: 1; flex-wrap: wrap; }
+.hud-list .lbl { font-size: 11px; color: #c9cfda; margin-right: 4px; }
+.tk { display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 11px 0 4px; background: var(--bar-btn); border: 1px solid var(--bar-line); border-radius: 20px 6px 6px 20px; cursor: pointer; }
+.tk img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid var(--tc, #c8503f); }
+.tk.pc img { --tc: #4b9ad8; }
+.tk b { font-weight: 600; font-size: 13px; display: block; }
+.tk small { font-size: 10.5px; color: #c9cfda; }
+.tk.hov { background: #c9a24a; color: #1b1f28; } .tk.hov small { color: #1b1f28; }
+.hud.noimg .tk { border-radius: 6px; padding-left: 11px; }
+.hud-empty { flex: 1; display: flex; align-items: center; padding: 0 14px; color: #8e96a8; font-size: 12.5px; font-style: italic; }
+/* the players list, above the HUD's left end */
+.players { position: absolute; left: 0; bottom: calc(100% + 6px); background: var(--bar); border: 1px solid #4a5266; border-radius: 6px; color: var(--bar-ink); font-size: 12.5px; box-shadow: 0 2px 8px rgba(0, 0, 0, .4); }
+.players .ph { display: flex; align-items: center; gap: 7px; height: 26px; padding: 0 9px; cursor: pointer; white-space: nowrap; }
+.players .dots { display: inline-flex; gap: 3px; }
+.players .dots i, .players li i { width: 9px; height: 9px; border-radius: 50%; background: var(--pc); border: 1px solid rgba(0, 0, 0, .5); display: inline-block; }
+.players ul { list-style: none; margin: 0; padding: 4px 9px 6px; border-bottom: 1px solid #4a5266; display: flex; flex-direction: column; gap: 4px; }
+.players li { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+.players li small { color: #9aa6ba; }
+.players li.off { opacity: .5; }
+
+/* ---------- the whole screen (a stand-in for Foundry's canvas and its own interface) ---------- */
+.screenwrap { position: relative; overflow: hidden; border: 1px solid #000; border-radius: 6px; box-shadow: 0 6px 22px rgba(0, 0, 0, .55); }
+.screen { position: relative; width: 1600px; height: 900px; transform-origin: 0 0; overflow: hidden; font-family: "Signika", sans-serif;
+  background: #3b4a3a; background-image: linear-gradient(rgba(0, 0, 0, .16) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, .16) 1px, transparent 1px), radial-gradient(ellipse at 40% 45%, #56684f 0%, #3d4c3c 45%, #26302a 100%); background-size: 64px 64px, 64px 64px, 100% 100%; }
+.s-tok { position: absolute; width: 58px; height: 58px; border-radius: 50%; object-fit: cover; object-position: top; border: 3px solid var(--tc, #c8503f); box-shadow: 0 2px 6px rgba(0, 0, 0, .6); }
+.s-tok.pc { --tc: #4b9ad8; }
+.s-tok.sel { outline: 3px solid #ff9829; outline-offset: 2px; }
+.s-tok.big { width: 122px; height: 122px; }
+.s-tok.cand { outline: 3px solid #c9a24a; outline-offset: 2px; box-shadow: 0 0 0 9px rgba(201, 162, 74, .25); }
+.s-ctl { position: absolute; left: 12px; top: 64px; display: grid; grid-template-columns: 34px 34px; gap: 5px; }
+.s-ctl i { width: 34px; height: 34px; border-radius: 6px; background: rgba(20, 22, 30, .8); border: 1px solid #555; display: flex; align-items: center; justify-content: center; color: #cfc8b8; font-size: 14px; font-style: normal; }
+.s-ctl i.on { border-color: #ff9829; color: #ffb866; }
+.s-nav { position: absolute; left: 12px; top: 12px; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: rgba(20, 22, 30, .8); border: 1px solid #555; border-radius: 6px; color: #e2dccd; font-size: 13px; }
+.s-car { position: absolute; left: 50%; top: 10px; transform: translateX(-50%); display: flex; gap: 4px; }
+.s-car div { width: 62px; height: 78px; border-radius: 5px; background: #f4ecdc; border: 1px solid #c8b48a; border-top: 4px solid var(--tc, #a32d2d); overflow: hidden; display: flex; flex-direction: column; }
+.s-car div.now { transform: translateY(6px) scale(1.08); box-shadow: 0 0 0 2px #BA7517; }
+.s-car img { width: 100%; height: 58px; object-fit: cover; object-position: top; }
+.s-car span { font-size: 9.5px; text-align: center; color: #2c2a26; font-weight: 600; white-space: nowrap; overflow: hidden; }
+.s-side { position: absolute; right: 0; top: 0; bottom: 0; width: 300px; background: #1f1d1a; border-left: 1px solid #000; display: flex; flex-direction: column; }
+.s-side .tabs { display: flex; gap: 2px; padding: 7px; border-bottom: 1px solid #3a362f; }
+.s-side .tabs i { flex: 1; height: 22px; display: flex; align-items: center; justify-content: center; font-style: normal; font-size: 12px; color: #8e8676; border-radius: 4px; }
+.s-side .tabs i.on { background: #3a362f; color: #f0e6d0; }
+.s-side .log { flex: 1; padding: 8px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; overflow: hidden; }
+.s-msg { background: #f4eddc; border: 1px solid #bfae86; border-radius: 5px; color: #2b2216; font-size: 12px; overflow: hidden; }
+.s-msg .h { background: #1e2a3a; color: #ecdcae; padding: 3px 8px; font-weight: 700; font-size: 12px; }
+.s-msg p { margin: 0; padding: 5px 8px; }
+.s-side .inp { margin: 0 6px 8px; height: 54px; border-radius: 5px; background: #2b2824; border: 1px solid #3a362f; color: #7d7667; font-size: 12px; padding: 6px 8px; }
+.s-hud { position: absolute; left: 12px; right: 312px; bottom: 10px; }
+.s-hud.float .twod12-linebar { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); width: min(860px, 100%); min-height: 0; }
+.s-hud.float .hud { opacity: .45; filter: saturate(.6); }
+.s-cap { position: absolute; left: 96px; top: 150px; max-width: 360px; background: rgba(20, 22, 30, .82); border: 1px dashed #c9a24a; border-radius: 6px; padding: 8px 12px; color: #f4e9d0; font-size: 13px; line-height: 1.4; }
+.s-cap b { color: #f3d39c; }
+.lb-ic .ic { color: #e05a4f; }
+.cols > .col { max-width: 560px; }
+
+/* ---------- after Lucas's review (2026-11-12) ---------- */
+/* one height for every HUD (the PC's two lines: Quick, categories), so nothing jumps */
+.hud { min-height: 70px; }
+.hud.slim { min-height: 40px; }
+/* an NPC's bar that doesn't fit: one row per group, the names in a column, the Saves on the right */
+.hud.rows .hud-main { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 0; align-items: center; padding: 7px 2px; }
+.hud.rows .hud-g { grid-column: 1; flex-direction: row; align-items: center; gap: 8px; border-left: 0; }
+.hud.rows .hud-gl { width: 138px; flex: none; }
+.hud.rows .hud-acts { flex-wrap: wrap; }
+.hud.rows .hud-g.g-saves { grid-column: 2; flex-direction: column; align-items: flex-start; align-self: center; border-left: 1px solid rgba(201, 162, 74, .22); }
+.hud.rows .hud-g.g-saves .hud-gl { width: auto; }
+/* the PC: the Quick row over the categories */
+.hud-pcmain { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 5px 10px; }
+.hud-quick { display: flex; align-items: center; gap: 5px; min-height: 28px; }
+.hud-quick .hud-gl { --gl: #f3d39c; margin-right: 3px; }
+.hud-hint { font-size: 12px; font-style: italic; color: #8e96a8; }
+.hud-pcmain .hud-cats { padding: 0; flex: none; gap: 4px; flex-wrap: wrap; }
+.hud-pcmain .cat { height: 24px; padding: 0 7px; font-size: 12px; gap: 4px; }
+.hud-pcmain .cat .ic { font-size: 11px; }
+.cat.later { border-style: dashed; border-color: #5d6b85; color: #9aa6ba; }
+.cat.later .ct { color: #9aa6ba; font-weight: 500; font-style: italic; }
+/* a choice on the map: the HUD's middle asks */
+.hud.asking { box-shadow: 0 0 0 2px rgba(201, 162, 74, .55), 0 0 18px rgba(201, 162, 74, .45); }
+.hud .hud-ask { position: static; transform: none; flex: 1; min-width: 0; width: auto; max-width: none; background: none; border: 0; border-radius: 0; box-shadow: none; padding: 6px 14px; flex-wrap: nowrap; font-size: 14px; }
+.hud .hud-ask .lb-text { flex: 0 1 auto; }
+.hud .hud-ask .lb-opts { flex-wrap: nowrap; margin-left: 6px; }
+.hud .hud-ask .lb-give { margin-left: auto; }
+
+/* ---------- after Lucas's second review (2026-11-12): the NPC's bar is the PC's frame (two lines, 70 px, it never grows) ---------- */
+.hud-npcmain { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 5px 10px; }
+.hn-line { display: flex; align-items: center; min-width: 0; overflow: hidden; white-space: nowrap; }
+.hn-line.l1 { height: 28px; } .hn-line.l2 { height: 24px; }
+.hn-g { display: inline-flex; align-items: center; gap: 5px; flex: none; margin-right: 12px; }
+.hn-g .hud-gl { margin-right: 1px; }
+.ha[hidden] { display: none; }
+.hn-line.l2 .ha, .hn-line.l2 .sv { height: 24px; }
+.hn-line.l2 .ha b { font-size: 12.5px; }
+.hn-line.l2 .vb { height: 18px; min-width: 32px; font-size: 11px; box-shadow: 0 1px 0 #7a4f12; }
+.hn-line.l2 .sv { border-bottom-width: 2px; font-size: 11.5px; }
+.hn-more { flex: none; height: 22px; padding: 0 8px; border-radius: 5px; border: 1px dashed #c9a24a; background: none; color: #c9a24a; font: 600 11.5px "Signika", sans-serif; cursor: pointer; }
+img[class*="art-"] { background: #3a4a62; }
+.hn-line .sv-all { display: none; height: 24px; padding: 0 8px; font-size: 12px; gap: 5px; }
+.hn-line.nosv .sv, .hn-line.nosv .g-saves .hud-gl { display: none; }
+.hn-line.nosv .sv-all { display: inline-flex; }
+.hn-more { margin-left: auto; }
+
+/* ============================================================================================================================================
+   THE TABLE LOOK (Lucas, 2026-11-12): the chat card (.twod12.chat.cc in system.css) is the base of the system's design from here on: a flat
+   surface with a thin line, gold stars and diamonds, one filled primary button, outlined secondary buttons, small square frequency pills.
+   DARK IS THE DEFAULT (Lucas, same day: it is the common theme and the one he uses); the light set is the chat card's own parchment tokens
+   (body.light, the toggle at the top of each page). READABILITY (Lucas): Cinzel only for the sheet's big name; everything else is Signika.
+   Group names are all one color; a frequency's color is only on a row's left edge and on its pill.
+   ============================================================================================================================================ */
+:root {
+  --t-bg: #211d18; --t-panel: #2a251e; --t-field: #2f2a22; --t-line: #5c503c; --t-gline: #463d2f; --t-ink: #efe6d3; --t-mute: #b3a68e; --t-gold: #dba63f;
+  --t-btn: #e8dec8; --t-btn-ink: #241f18; --t-btn-hover: #fbf5e6; --t-out: #8c7d63; --t-track: #40382c; --t-hp: #62a653; --t-vig: #d0564f; --t-res: #6688de;
+  --t-bad-bg: #5a1d1d; --t-bad-ink: #ffd9d6; --t-str-bg: #27306a; --t-str-ink: #dfe3ff; --t-neg: #ff8f86; --t-you: #8fd69b; --t-cancel: #ff9c92; --t-sub: #e3ba62;
+  --t1-bg: #3a201d; --t1-ink: #f3a79e; --t1-n: #c8483d; --t2-bg: #26331f; --t2-ink: #aed79e; --t2-n: #7fae6c; --t3-bg: #1d3a25; --t3-ink: #93d99f; --t3-n: #3f8f4c;
+  --fq-atwill: #5a9a23; --fq-round: #3a86d6; --fq-encounter: #cf4f4f; --fq-turn: #1f9c9c; --fq-daily: #8467d8; --fq-none: #8a8272;
+  --c-body: #ef8a96; --c-mind: #8db3ff; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6;
+  --hc-body: var(--c-body); --hc-mind: var(--c-mind); --hc-instinct: var(--c-instinct); --hc-appeal: var(--c-appeal);
+}
+body.light {
+  --t-bg: #f4ede0; --t-panel: #e8dec8; --t-field: #fbf7ee; --t-line: #bfae8c; --t-gline: #cdb88a; --t-ink: #2a241d; --t-mute: #5d5446; --t-gold: #b07a12;
+  --t-btn: #3b3128; --t-btn-ink: #f4ede0; --t-btn-hover: #2a231c; --t-out: #8c7d63; --t-track: #d3c6a8; --t-hp: #3f6e31; --t-vig: #9b2c2c; --t-res: #2c4a9b;
+  --t-bad-bg: #f2cdc7; --t-bad-ink: #8a1c13; --t-str-bg: #d6def2; --t-str-ink: #1d3f6b; --t-neg: #a8261c; --t-you: #234d27; --t-cancel: #8a1c13; --t-sub: #7d5400;
+  --t1-bg: #fbefed; --t1-ink: #a8261c; --t1-n: #a8261c; --t2-bg: #f1f7ec; --t2-ink: #3f6e31; --t2-n: #7fae6c; --t3-bg: #e8f1e3; --t3-ink: #2b5a2f; --t3-n: #2b5a2f;
+  --fq-atwill: #3B6D11; --fq-round: #185FA5; --fq-encounter: #A32D2D; --fq-turn: #0F6E6E; --fq-daily: #5B3FA6; --fq-none: #5F5E5A;
+  --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00; --c-wmod: #9a4a00; --c-pmod: #5b3a9e;
+}
+.themes { display: inline-flex; gap: 0; margin-left: 18px; border: 1px solid #6b6252; border-radius: 4px; overflow: hidden; vertical-align: middle; }
+.themes button { border: 0; background: none; color: #c9c0ad; font: 600 12px "Signika", sans-serif; padding: 3px 10px; cursor: pointer; }
+body:not(.light) .themes .d, body.light .themes .l { background: #e8dec8; color: #241f18; }
+/* the Version button: the card's primary button */
+.vb { background: var(--t-btn); color: var(--t-btn-ink); box-shadow: none; border-radius: 4px; font-weight: 700; font-size: 12px; }
+.vb:hover { background: var(--t-btn-hover); }
+.vb.no { background: transparent; color: var(--t-mute); border: 1px dashed var(--t-out); }
+.vb.used { background: transparent; color: var(--t-mute); border: 1px solid var(--t-gline); }
+.hn-line.l2 .vb { box-shadow: none; font-size: 11.5px; }
+/* ---- the HUD */
+.hud, .hud-pop, .players { background: var(--t-bg); border: 1px solid var(--t-line); border-radius: 5px; color: var(--t-ink); box-shadow: 0 3px 12px rgba(0, 0, 0, .6); }
+.hud-pop::after { background: var(--t-bg); border-color: var(--t-line); }
+.hud-id, .hud-hot { border-color: var(--t-gline); }
+.hud-id img { border: 2px solid var(--t-out); background: var(--t-panel); }
+.hud-id .nm { color: var(--t-ink); font: 700 16px "Signika", sans-serif; }
+.hud-id .sb { color: var(--t-mute); font-size: 12px; }
+.hud-gl, .hud-quick .hud-gl, .pop-h { --gl: var(--t-mute); color: var(--t-mute); font-size: 10.5px; }
+.hud-quick .hud-gl .ic { color: var(--t-gold); }
+.hud-gl .pips i, .pips i { border-color: var(--t-gold); } .hud-gl .pips i.on, .pips i.on { background: var(--t-gold); }
+.pop-h { border-bottom: 1px solid var(--t-gline); }
+.ha, .pr { background: var(--t-field); border: 1px solid var(--t-gline); border-left: 3px solid var(--fq); border-radius: 4px; }
+.ha b, .pr b { color: var(--t-ink); }
+.ha.dim b, .pr.dim b { opacity: .5; }
+.pr small, .ha .lk { color: var(--t-mute); }
+.pr .go { color: var(--t-gold); }
+.sv { background: transparent; border: 1px solid var(--t-out); border-bottom: 2px solid var(--c); border-radius: 4px; color: var(--t-ink); }
+.sv b { color: var(--t-ink); }
+.cat { background: transparent; color: var(--t-ink); border: 1px solid var(--t-out); border-radius: 4px; }
+.cat:hover { background: var(--t-panel); }
+.cat.on { background: var(--t-btn); border-color: var(--t-btn); color: var(--t-btn-ink); font-weight: 700; }
+.cat.later { border: 1px dashed var(--t-out); color: var(--t-mute); } .cat.later .ct { color: var(--t-mute); }
+.hn-more { border: 1px dashed var(--t-out); color: var(--t-ink); }
+.hud-hint, .hud-empty { color: var(--t-mute); }
+.hot-grid i { background: var(--t-panel); border: 1px solid var(--t-gline); color: var(--t-mute); }
+.hot-grid i.f { background: var(--t-field); border-color: var(--t-out); color: var(--t-ink); }
+.hot-grid i::after, .hot-grid i.f::after { color: var(--t-mute); }
+.hot-pg { color: var(--t-mute); }
+.hud-list .lbl, .tk small { color: var(--t-mute); }
+.tk { background: var(--t-field); border: 1px solid var(--t-out); }
+.tk.hov { background: var(--t-btn); border-color: var(--t-btn); color: var(--t-btn-ink); } .tk.hov small { color: var(--t-btn-ink); }
+.players { border-radius: 4px; } .players ul { border-color: var(--t-gline); } .players li small { color: var(--t-mute); }
+/* the HUD asking (5c, decided): the pick bar's content with the card's buttons */
+.hud.asking { box-shadow: 0 0 0 2px var(--t-gold), 0 3px 14px rgba(0, 0, 0, .6); }
+.hud .hud-ask { color: var(--t-ink); }
+.hud .hud-ask .lb-ic .ic { color: var(--t-gold); }
+.hud .hud-ask .lb-opt { background: transparent; color: var(--t-ink); border: 1px solid var(--t-out); border-radius: 4px; font-weight: 600; }
+.hud .hud-ask .lb-opt.you { background: transparent; border-color: var(--t-you); color: var(--t-you); }
+.hud .hud-ask .lb-opt.hover { background: var(--t-btn); border-color: var(--t-btn); color: var(--t-btn-ink); }
+.hud .hud-ask .lb-give { background: transparent; color: var(--t-cancel); border: 1px solid var(--t-cancel); border-radius: 4px; }
+/* ---- the one-page sheet */
+.win { background: var(--t-bg); }
+.ops { color: var(--t-ink); }
+.ops-hb { background: var(--t-bg); color: var(--t-ink); padding-bottom: 6px; }
+.ops-hb .nm { font: 700 21px "Cinzel", serif; letter-spacing: .01em; }
+.ops-hb .who { color: var(--t-mute); font-size: 12.5px; } .ops-hb .who b { color: var(--t-ink); }
+.ops-hb .rank { background: var(--t-btn); color: var(--t-btn-ink); border-radius: 3px; }
+.ops-hb .tools a { color: var(--t-mute); border: 1px solid var(--t-out); border-radius: 4px; margin-left: 3px; }
+.ops-tabs { background: var(--t-bg); border-bottom: 1px solid var(--t-line); padding: 0 10px; }
+.ops-tabs a { color: var(--t-mute); font: 700 12px "Signika", sans-serif; letter-spacing: .08em; }
+.ops-tabs a.on { color: var(--t-ink); box-shadow: inset 0 -2px 0 var(--t-gold); }
+.ops-stats { background: var(--t-panel); color: var(--t-ink); border-bottom: 1px solid var(--t-line); }
+.ops-hp .hph, .gauge, .ops-rw { color: var(--t-mute); font-size: 12.5px; }
+.ops-hp .hph b, .gauge .gh b, .ops-rw b { color: var(--t-ink); }
+.gauge .gh b.neg { color: var(--t-neg); }
+.track { background: var(--t-track); }
+.ops-hp .hpbar i { background: var(--t-hp); }
+.gauge.v .track i { background: var(--t-vig); } .gauge.r .track i { background: var(--t-res); }
+.ops-hp .state { background: var(--t-bad-bg); color: var(--t-bad-ink); border-radius: 3px; } .ops-hp .state.s { background: var(--t-str-bg); color: var(--t-str-ink); }
+.tile { background: var(--t-bg); border: 1px solid var(--t-line); border-radius: 4px; }
+.tile span { color: var(--t-mute); } .tile b { font-family: "Signika", sans-serif; font-weight: 700; color: var(--t-ink); }
+.ops-rw { border-top: 1px solid var(--t-gline); }
+.ops-body { background: var(--t-bg); }
+/* the group names: the card's divider (a gold diamond, capitals, a line), all the same */
+.band, .band.react { background: none; color: var(--t-ink); height: auto; padding: 4px 0 0; border-radius: 0; font: 700 12px "Signika", sans-serif; letter-spacing: .12em; }
+.band::before { content: "\25C6"; color: var(--t-gold); font-size: 8px; }
+.band::after { content: ""; flex: 1; height: 1px; background: var(--t-gline); order: 2; }
+.band .r { order: 3; margin-left: 0; color: var(--t-mute); }
+.band .pips i { border-color: var(--t-gold); } .band .pips i.on { background: var(--t-gold); }
+.oa, .ol { background: var(--t-field); border: 1px solid var(--t-gline); border-left: 4px solid var(--fq); color: var(--t-ink); }
+.oa-h .n { font-size: 14.5px; }
+.oa-h .tr, .oa-tools { color: var(--t-mute); }
+.oa-h .fq { border-radius: 3px; font-size: 11px; padding: 1px 6px; color: #fff; }
+.oa-meta, .oa-meta b { color: var(--t-ink); } .oa-meta { opacity: .95; } .oa-meta .sep { color: var(--t-gold); }
+.oa-t, .oa-fx { border-top: 1px solid var(--t-gline); }
+.oa-t > div + div { border-left: 1px dotted var(--t-gline); }
+.oa-t > div { font-size: 13px; }
+.oa-t .tl { font: 700 10.5px "Signika", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.oa-t .t1 { --c: var(--t1-ink); --bg: var(--t1-bg); --n: var(--t1-n); } .oa-t .t2 { --c: var(--t2-ink); --bg: var(--t2-bg); --n: var(--t2-n); } .oa-t .t3 { --c: var(--t3-ink); --bg: var(--t3-bg); --n: var(--t3-n); }
+.oa-t .none { color: var(--t-mute); }
+.pool.v { background: var(--t-vig); } .pool.r { background: var(--t-res); }
+.sub { color: var(--t-sub); }
+.cond { color: var(--t-ink); border-bottom: 1px dashed var(--t-gold); }
+.passive { background: var(--t-panel); border: 1px solid var(--t-gline); color: var(--t-ink); }
+.passive .num { background: var(--t-btn); color: var(--t-btn-ink); font-family: "Signika", sans-serif; }
+.ops-attrs { border-top: 1px solid var(--t-line); }
+.attr { background: var(--t-field); border: 1px solid var(--t-gline); border-top: 3px solid var(--c); border-radius: 4px; }
+.attr b { font-family: "Signika", sans-serif; font-weight: 700; color: var(--t-ink); }
+.attr small { color: var(--t-mute); }
+/* the PC's nine categories on one line: words only (the icons cost 150 px and said less than the words) */
+.hud-pcmain .cat .ic { display: none; }
+.hud-pcmain .cat { padding: 0 9px; font-size: 12.5px; }
+.hud-pcmain .hud-cats { flex-wrap: nowrap; }
+
+/* ============================================================================================================================================
+   THE SHEET AS A PRINTED STAT BLOCK (Lucas, fifth and sixth reviews, 2026-11-12). Only the one-page sheet: THE HUD KEEPS THE TABLE LOOK
+   ABOVE (he reverted it: "it was fine"). Everything here is scoped to .ops.
+   Kept from the book look: the name plate, the tabs, the stats as ruled lines (the top part, which he liked). Redone for the sixth review:
+   an Action has a header bar in its frequency's color (as 4e shades a power's header: it says where one Action ends and the next begins),
+   its Tiers are a ruled table (lines on every side), and the Attributes and Modifiers are tiles again (the table look's).
+   One color per rank on the name plate (Lucas), as 4e colors its monsters.
+   ============================================================================================================================================ */
+:root { --pg: #1f1c18; --pg2: #28241d; --rule: #7a683f; --hair: #40382c; --ink: #ece3cf; --mute: #b3a68e; --gold: #d4a548; --head-ink: #f8eed8; --head-sub: #e6d3b6;
+  --stamp: #eadfc8; --stamp-ink: #221d16; --stamp-hover: #fff8e8; --neg: #ff8f86; --subc: #e3ba62; --tk1: #f09a90; --tk2: #b9d9a6; --tk3: #7fd08c; --hd-mix: 34%;
+  --rk-minion: #4d545c; --rk-grunt: #4b5a26; --rk-standard: #6e2318; --rk-elite: #4f2c69;
+  --rkl-minion: #aab2bc; --rkl-grunt: #a9bd6a; --rkl-standard: #d98a78; --rkl-elite: #c29be0; }
+body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --ink: #231e17; --mute: #5d5446; --gold: #96670f;
+  --stamp: #2b2520; --stamp-ink: #f4ecd9; --stamp-hover: #46392c; --neg: #a8261c; --subc: #7d5400; --tk1: #a8261c; --tk2: #3f6e31; --tk3: #1f5a2a; --hd-mix: 22%;
+  --rkl-minion: #4d545c; --rkl-grunt: #4b5a26; --rkl-standard: #6e2318; --rkl-elite: #4f2c69; }
+.rk-minion { --rk: var(--rk-minion); --rkl: var(--rkl-minion); } .rk-grunt { --rk: var(--rk-grunt); --rkl: var(--rkl-grunt); }
+.rk-standard { --rk: var(--rk-standard); --rkl: var(--rkl-standard); } .rk-elite { --rk: var(--rk-elite); --rkl: var(--rkl-elite); }
+.hud[class*="rk-"] .hud-id img { border-color: var(--rkl); }
+.win { background: var(--pg); }
+.ops { color: var(--ink); font-size: 13.5px; line-height: 1.4; background: var(--pg); }
+/* the top part (kept) */
+.ops .ops-hb, .ops-hb[class*="rk-"] { display: flex; align-items: center; gap: 12px; padding: 6px 12px 5px; background: var(--rk, #6e2318); color: var(--head-ink); }
+.ops .ops-hb .nm { font: 700 20px "Cinzel", serif; letter-spacing: .01em; flex: 1; min-width: 0; }
+.ops .ops-hb .who { display: flex; flex-direction: column; align-items: flex-end; gap: 0; font-size: 12.5px; line-height: 1.25; color: var(--head-sub); }
+.ops .ops-hb .who b { color: var(--head-ink); font-size: 14px; }
+.ops .ops-tabs { display: flex; align-items: center; padding: 0 12px; background: var(--pg); border-bottom: 2px solid var(--rule); }
+.ops .ops-tabs a { padding: 4px 12px 3px 0; margin-right: 6px; font: 600 14px "Signika", sans-serif; font-variant: small-caps; letter-spacing: 0; text-transform: none; color: var(--mute); box-shadow: none; }
+.ops .ops-tabs a.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--gold); }
+.ops .ops-tabs .tools { margin-left: auto; display: flex; gap: 10px; color: var(--mute); }
+.ops .ops-tabs .tools a { padding: 0; margin: 0; font-size: 13px; }
+.ops .ops-stats { display: block; padding: 0; background: var(--pg); color: var(--ink); border-bottom: 0; }
+.ops .k { font-weight: 700; }
+.ops .sbl { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 5px; padding: 3px 12px; }
+.ops .sbl:nth-child(even) { background: var(--pg2); }
+.ops .sbl .sp { width: 14px; }
+.ops .sbl .big { font-size: 16px; }
+.ops .sbl.two { gap: 0 22px; }
+.ops .track { display: inline-block; width: 130px; height: 6px; border-radius: 0; background: var(--t-track); align-self: center; margin: 0 0 0 6px; overflow: visible; }
+.ops .track i { display: block; height: 100%; border-radius: 0; }
+.ops .hpbar { flex: 1; min-width: 80px; } .ops .hpbar i { background: var(--t-hp); }
+.ops .gauge { display: inline-flex; align-items: baseline; gap: 5px; flex: 1; font-size: inherit; color: inherit; }
+.ops .gauge .track { flex: 1; width: auto; height: 4px; margin-top: 0; }
+.ops .gauge b.neg { color: var(--neg); }
+.ops .state { margin-left: 8px; padding: 0; background: none; font-weight: 700; font-variant: small-caps; font-size: 14px; letter-spacing: 0; text-transform: none; color: var(--neg); }
+.ops .state.s { background: none; color: var(--t-res); }
+/* the bottom part */
+.ops .ops-body { display: block; padding: 0 12px 12px; background: var(--pg); }
+/* a group: a heading on a rule (not a filled band), all one color */
+.ops .band { display: flex; align-items: baseline; gap: 8px; height: auto; margin: 12px 0 6px; padding: 0 0 1px; background: none; border-radius: 0; border-bottom: 2px solid var(--rule); font: 700 16px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; color: var(--gold); }
+.ops .band::before, .ops .band::after { content: none; }
+.ops .band .r { margin-left: auto; order: 0; font: 500 12.5px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; color: var(--mute); display: flex; align-items: center; gap: 6px; }
+.ops .pips i { width: 9px; height: 9px; border: 1px solid var(--gold); border-radius: 0; transform: rotate(45deg); margin: 0 2px; }
+.ops .pips i.on { background: var(--gold); }
+/* an Action: a header bar in its frequency's color, its line of rules text, its Tiers as a ruled table */
+.ops .oa { margin: 0 0 9px; padding: 0; background: none; border: 0; border-radius: 0; }
+.ops .oa.dim > * { opacity: .5; }
+.ops .oa-h { display: flex; align-items: center; gap: 8px; min-height: 0; padding: 3px 8px 3px 5px; background: color-mix(in srgb, var(--fq) var(--hd-mix), var(--pg)); border-left: 0; }
+.ops .oa-h .n { font-weight: 700; font-size: 15px; white-space: nowrap; }
+.ops .oa-h .tr { color: var(--ink); opacity: .8; font-style: italic; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.ops .oa-h .fq { margin-left: auto; padding: 0; background: none; border-radius: 0; font-weight: 700; font-variant: small-caps; font-size: 14.5px; color: var(--ink); white-space: nowrap; }
+.ops .oa-h .fq i { font-style: normal; font-size: 10px; color: var(--gold); margin-right: 2px; }
+.ops .oa-tools { display: inline-flex; gap: 8px; color: var(--ink); opacity: .65; font-size: 11.5px; padding-left: 4px; }
+.ops .oa-meta { padding: 3px 6px 4px; font-size: 13.5px; color: var(--ink); opacity: 1; }
+.ops .oa-meta b { color: var(--ink); }
+.ops .oa-meta .sep { margin: 0 4px 0 0; color: inherit; font-size: inherit; }
+.ops .oa-t { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border: 1px solid var(--rule); }
+.ops .oa-t > div { padding: 0; background: none; box-shadow: none; font-size: 13.5px; line-height: 1.35; }
+.ops .oa-t > div + div { border-left: 1px solid var(--rule); }
+.ops .oa-t .tl { display: block; padding: 1px 7px 1px; background: var(--pg2); border-bottom: 1px solid var(--rule); font: 700 13.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; color: var(--c); }
+.ops .oa-t .tv { display: block; padding: 3px 7px 4px; }
+.ops .oa-t .t1 { --c: var(--tk1); } .ops .oa-t .t2 { --c: var(--tk2); } .ops .oa-t .t3 { --c: var(--tk3); }
+.ops .oa-t .none { color: var(--mute); }
+.ops .oa-fx { padding: 3px 6px 4px; border: 1px solid var(--rule); border-top: 1px solid var(--rule); font-size: 13.5px; }
+.ops .pool { display: inline; padding: 0; background: none; border-radius: 0; font: inherit; font-weight: 700; margin-right: 2px; vertical-align: baseline; }
+.ops .pool.v { color: var(--t-vig); background: none; } .ops .pool.r { color: var(--t-res); background: none; }
+.ops .pool::before { content: "["; } .ops .pool::after { content: "]"; }
+.ops .sub { color: var(--subc); font-weight: 700; }
+.ops .cond { font-weight: 700; color: var(--ink); border-bottom: 1px dotted var(--gold); }
+.ops .ol { display: flex; align-items: baseline; gap: 7px; margin: 0 0 6px; padding: 4px 6px; background: color-mix(in srgb, var(--fq) 14%, var(--pg)); border: 0; border-radius: 0; font-size: 13.5px; }
+.ops .ol.dim > * { opacity: .5; }
+.ops .ol .vb { align-self: center; }
+.ops .passive { display: flex; gap: 8px; align-items: baseline; padding: 2px 6px; background: none; border: 0; border-bottom: 1px solid var(--hair); border-radius: 0; font-size: 13.5px; margin-bottom: 0; }
+.ops .passive:last-of-type { margin-bottom: 9px; }
+.ops .passive.off { opacity: .5; }
+.ops .passive .num { width: auto; height: auto; background: none; border-radius: 0; font: 700 13.5px "Signika", sans-serif; color: var(--gold); min-width: 12px; }
+.ops .passive .num::after { content: "."; }
+/* the cost stamp on the sheet: square */
+.ops .vb { border-radius: 2px; min-width: 38px; height: 21px; background: var(--stamp); color: var(--stamp-ink); font-weight: 700; }
+.ops .vb:hover { background: var(--stamp-hover); }
+.ops .vb.no { background: none; color: var(--ink); border: 1px dashed var(--ink); }
+.ops .vb.used { background: none; color: var(--ink); border: 1px solid var(--ink); }
+/* the Attributes and Modifiers: the tiles, as before */
+.ops .ops-attrs { margin-top: 12px; padding-top: 10px; border-top: 2px solid var(--rule); }
+
+/* Seventh review (Lucas, 2026-11-12): no table for the Tiers (it looked worst on a description-only Action). The Tiers are side by side
+   again, each under a rule in its Tier's color; a faint tint of the frequency's color fills the whole Action (the header bar stays stronger). */
+:root { --bd-mix: 13%; } body.light { --bd-mix: 9%; }
+.ops .oa { background: color-mix(in srgb, var(--fq) var(--bd-mix), var(--pg)); padding-bottom: 6px; }
+.ops .oa-meta { padding: 4px 8px 5px; }
+.ops .oa-t { border: 0; margin: 1px 8px 0; gap: 0 12px; }
+.ops .oa-t > div { border-top: 3px solid var(--c); }
+.ops .oa-t > div + div { border-left: 0; }
+.ops .oa-t .tl { padding: 1px 0 0; background: none; border-bottom: 0; font-size: 14.5px; }
+.ops .oa-t .tv { padding: 0 0 2px; }
+.ops .oa-fx { border: 0; padding: 3px 8px 0; }
+.ops .oa-meta + .oa-fx { padding-top: 0; }
+.ops .tplus { font-variant: small-caps; font-size: 14.5px; color: var(--tk2); margin-right: 3px; }
+
+/* Eighth review (Lucas, 2026-11-12): the Action's Effects under a line, named "Effects" in their own color; five ways to draw the Tiers. */
+.ops .oa-fx { margin: 6px 8px 0; padding: 4px 0 0; border-top: 1px solid var(--rule); }
+.ops .oa-meta + .oa-fx { margin-top: 0; padding-top: 4px; }
+.ops .fxl { font-weight: 700; font-variant: small-caps; font-size: 14.5px; color: var(--gold); margin-right: 4px; }
+/* B: three lines */
+.ops .oa-t.vB { display: block; margin: 0 8px; }
+.ops .oa-t.vB > div { display: flex; align-items: baseline; gap: 10px; border-top: 1px solid var(--hair); padding: 2px 0; }
+.ops .oa-t.vB > div:first-child { border-top: 1px solid var(--rule); }
+.ops .oa-t.vB .tl { flex: none; width: 54px; padding: 0; }
+.ops .oa-t.vB .tv { padding: 0; }
+/* C: the chat card's ladder */
+.ops .oa-t.vC { gap: 0; }
+.ops .oa-t.vC > div { border-top: 0; }
+.ops .oa-t.vC .tl { padding: 1px 8px 2px; text-align: center; color: var(--lad-ink); background: var(--lad); }
+.ops .oa-t.vC .t1 { --lad: #e9b3aa; --lad-ink: #6e150e; } .ops .oa-t.vC .t2 { --lad: #cfe3c2; --lad-ink: #234d27; } .ops .oa-t.vC .t3 { --lad: #2f6b3a; --lad-ink: #f1f7ec; }
+.ops .oa-t.vC .tv { padding: 3px 8px 2px; text-align: center; }
+.ops .oa-t.vC > div + div .tv { border-left: 1px solid var(--hair); }
+/* D: one line, numbered */
+.ops .oa-t.vD { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 8px; padding-top: 4px; border-top: 1px solid var(--rule); }
+.ops .oa-t.vD > div { display: inline-flex; align-items: baseline; gap: 6px; border-top: 0; }
+.ops .oa-t.vD .tl { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; padding: 0; font-size: 0; background: var(--c); align-self: center; }
+.ops .oa-t.vD .tl::after { font: 700 12.5px "Signika", sans-serif; color: var(--pg); }
+.ops .oa-t.vD .t1 .tl::after { content: "1"; } .ops .oa-t.vD .t2 .tl::after { content: "2"; } .ops .oa-t.vD .t3 .tl::after { content: "3"; }
+.ops .oa-t.vD .tv { padding: 0; }
+/* E: tinted cells */
+.ops .oa-t.vE { gap: 0 3px; }
+.ops .oa-t.vE > div { border-top: 2px solid var(--c); background: color-mix(in srgb, var(--c) 15%, var(--pg)); padding: 1px 8px 3px; }
+
+/* From Lucas's 4e reference (the alternate NPC sheet): "+ Add" at the right of each group's heading. */
+.ops .band .add { margin-left: auto; font: 600 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: 0; color: var(--mute); cursor: pointer; }
+.ops .band .r + .add { margin-left: 12px; }
+
+/* Lucas, 2026-11-12: the stat lines on one grid of six equal columns (AD, WD, Speed, Reach, Steadiness, Size; Immune, Resist and Weak each take
+   two, so they start under AD, Speed and Steadiness); the window's own header takes the rank's color. */
+.ops .sbl.grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; align-items: baseline; }
+.ops .sbl.grid > span { white-space: nowrap; }
+.ops .sbl.grid .s2 { grid-column: span 2; }
+.win[class*="rk-"] .win-head { background: color-mix(in srgb, var(--rk) 78%, #000); color: var(--head-ink); }
+.ops .sbl.two { gap: 0; } .ops .sbl.two .gauge { flex: 1 1 50%; } .ops .sbl.two .gauge:first-child { padding-right: 22px; }   /* Resolve starts on the grid's fourth column, over Reach */
+.ops .sbl.grid { grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.15fr) minmax(0, 1.75fr); }   /* room for "Size Gargantuan (6)"; Immune, Resist and Weak still start under AD, Speed and Steadiness */
+.ops .sbl.two .gauge:first-child { flex: 0 0 calc(300% / 6.9); } .ops .sbl.two .gauge { flex: 1 1 0; }   /* Resolve stays over Reach on the new columns */
+
+/* Lucas, 2026-11-12: Tier 2 more yellow (still a green, toward yellow), as in style-tokens.css */
+:root { --tk2: #e0d65a; } body.light { --tk2: #6f6800; }
+.hud .hud-ask .lb-go { background: var(--t-btn); color: var(--t-btn-ink); border: 1px solid var(--t-btn); border-radius: 4px; font-weight: 700; }   /* Done: the filled button, as a Version */
+
 .twod12-linebar { position: fixed; bottom: 86px; left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; max-width: calc(100vw - 340px); padding: 8px 16px; border-radius: 8px; background: rgba(20, 24, 32, .92); color: #f4e9d0; border: 1px solid #c9a24a; font-size: 14px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
 .twod12-linebar .lb-ic { color: #e05a4f; }
 .twod12-linebar .lb-side { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
@@ -126,6 +697,11 @@
 .twod12-type .twod12.chat.rx2 .rx-it.rx-base { background: #dfd2b6; border-color: #cdb88a; }
 .twod12-type .twod12.chat select { background: transparent; color: #2a241d; border: 1px solid #8c7d63; border-radius: 2px; font-family: "Signika", sans-serif; }
 .twod12-type .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: #2a241d; border-radius: 2px; }
+.twod12-type .twod12.chat.initcard > .orn { display: none; }
+.twod12-type .twod12.chat.action.sysmsg.initcard { padding: 0 0 4px; overflow: hidden; }
+.twod12-type .twod12.chat.action.sysmsg.initcard > .ahead { background: #dfd2b6 !important; border-bottom: 1px solid #cdb88a !important; padding: 4px 8px; margin: 0; justify-content: center; }
+.twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > b { flex: none; text-align: center; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > .aright:empty, .twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > .aright { display: none; }
 .twod12-type .twod12.chat.initcard .ic-band { font: 700 13.5px/1.2 "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
 .twod12-type .twod12.chat.initcard .ic-name { font: 600 13.5px/1.3 "Signika", sans-serif; letter-spacing: 0; color: #2a241d; }
 .twod12-type .twod12.chat.dmg { background: #f4ede0; border: 1px solid #bfae8c; border-radius: 5px; color: #2a241d; font-family: "Signika", sans-serif; }
@@ -136,16 +712,19 @@
 .twod12-type .twod12.chat .dbtns button:first-child { background: #3b3128; border-color: #3b3128; color: #f4ede0; }
 .twod12-type .twod12.chat.turnend > summary { background: #dfd2b6; color: #2a241d; border-bottom: 1px solid #cdb88a; }
 .twod12-type .twod12.chat.turnend .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
-.twod12-type .twod12-dock .td-hd { background: #dfd2b6; color: #2a241d; border-bottom: 1px solid #cdb88a; }
+.twod12-type .twod12-dock { background: #f4ede0; color: #2a241d; border: 1px solid #bfae8c; border-radius: 5px; box-shadow: none; font-size: 13px; }
+.twod12-type .twod12-dock .td-hd { background: #dfd2b6; color: #2a241d; border-bottom: 1px solid #cdb88a; min-height: 28px; padding: 3px 8px 3px 10px; gap: 8px; }
+.twod12-type .twod12-dock:not(.open) .td-hd { border-bottom: 0; }
+.twod12-type .twod12-dock .td-ttl { font-size: 15px; } .twod12-type .twod12-dock .td-who { font-size: 14px; } .twod12-type .twod12-dock .td-rd { color: #5d5446; opacity: 1; font-size: 12px; }
 .twod12-type .twod12-dock .td-who { color: #2a241d; }
 .twod12-type .twod12-dock .td-pips i, .twod12-type .twod12.chat.turnend .td-pips i { background: rgba(42, 36, 29, .2); }
 .twod12-type .twod12-dock .td-pips i.on, .twod12-type .twod12.chat.turnend .td-pips i.on { background: #3b4cb8; }
 .twod12-type .twod12-dock .td-pips i.r.on, .twod12-type .twod12.chat.turnend .td-pips i.r.on { background: #b07a12; }
 .twod12-type .twod12.chat.follow i[data-ic^="shield"] { color: #2f6fb3; }
 /* Tier 2, more yellow (Lucas): still a green, toward yellow. The light theme's values; the dark set has its own. */
-.twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: #5d6e10; --bg: #f3f5d8; --n: #a4b53c; }
-.twod12-type .twod12.chat.cc { --cc-t2: #d3df8e; --cc-t2i: #36420a; }
-.twod12-type .twod12.chat.cc .cc-srow.t2 { --c: #6f7f17; --n: #a4b53c; --bg: #f3f5d8; }
+.twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: #6f6800; --bg: #f7f3cf; --n: #bdb230; }
+.twod12-type .twod12.chat.cc { --cc-t2: #e4dd80; --cc-t2i: #423d00; }
+.twod12-type .twod12.chat.cc .cc-srow.t2 { --c: #857c12; --n: #bdb230; --bg: #f7f3cf; }
 
 .twod12-dark .twod12.acard.d2 { background: #1f1c18; color: #ece3cf; border: 1px solid #7a683f; outline: 1px solid #4a4132; }
 .twod12-dark .twod12.acard.d2 .ap-tg > i { color: #b3a68e; }
@@ -172,7 +751,7 @@
 .twod12-dark .twod12.acard.d2 table.ap-tt td { border-bottom: 1px solid #4a4132; color: #ece3cf; }
 .twod12-dark .twod12.acard.d2 table.ap-tt td + td { border-left: 1px dotted #4a4132; }
 .twod12-dark .twod12.acard.d2 table.ap-tt tr.t1 { --c: #f3a79e; --bg: #3a201d; }
-.twod12-dark .twod12.acard.d2 table.ap-tt tr.t2 { --n: #a4b53c; --c: #cbd86e; --bg: #2c3319; }
+.twod12-dark .twod12.acard.d2 table.ap-tt tr.t2 { --n: #bdb230; --c: #e0d65a; --bg: #35321a; }
 .twod12-dark .twod12.acard.d2 table.ap-tt tr.t3, .twod12-dark .twod12.acard.d2 table.ap-tt tr.tall { --c: #8fd69b; --bg: #1d3a25; }
 .twod12-dark .twod12.acard.d2 table.ap-tt tr.crit { --c: #8db8f0; --bg: #17263a; }
 .twod12-dark .twod12.acard.d2 table.ap-tt tr.crit td:not(.tl) { background: #17263a; }
@@ -322,7 +901,7 @@
 .twod12-dark .twod12.chat.cc .cc-rwi.resist { color: #94b5d0; }
 .twod12-dark .twod12.chat.cc .cc-srows { border-top: 1px solid #4a4132; }
 .twod12-dark .twod12.chat.cc .cc-srow { --c: #f3a79e; --bg: #3a201d; border-bottom: 1px solid #4a4132; background: #28241d !important; color: #ece3cf !important; }
-.twod12-dark .twod12.chat.cc .cc-srow.t2 { --c: #cbd86e; --bg: #2c3319; --n: #a4b53c; }
+.twod12-dark .twod12.chat.cc .cc-srow.t2 { --c: #e0d65a; --bg: #35321a; --n: #bdb230; }
 .twod12-dark .twod12.chat.cc .cc-srow.t3 { --c: #8fd69b; --bg: #1d3a25; }
 .twod12-dark .twod12.chat.cc .cc-srow .cc-pv { color: var(--c-body, #ef8a96) !important; }
 .twod12-dark .twod12.chat.cc .cc-srow .cc-pr { color: var(--c-mind, #8db3ff) !important; }
@@ -635,13 +1214,13 @@
 .twod12-dark .twod12.acard.d2 table.ap-tt td { border-bottom-color: #4a4132; }
 .twod12-dark .twod12.acard.d2 table.ap-tt td:not(.tl) { color: #ece3cf; }
 .twod12-dark .twod12.acard.d2 table.ap-tt td.dim { color: #8a7f6b; }
-.twod12-dark .twod12.acard.d2 table.ap-tt tr.t2 { --c: #cbd86e; --bg: #2c3319; --n: #a4b53c; }
+.twod12-dark .twod12.acard.d2 table.ap-tt tr.t2 { --c: #e0d65a; --bg: #35321a; --n: #bdb230; }
 .twod12-dark .twod12.acard.d2 a.twod12-inline.book, .twod12-dark .twod12.acard.d2 a.content-link { border: 0; border-bottom: 1px dashed #d4a548; background: none; color: #d4a548; }
 .twod12-dark .twod12.acard.d2 .ap-ac .pg, .twod12-dark .twod12.acard.d2 .ap-freq { color: #fff; }
 .twod12-dark .twod12.acard.d2 .ap-fxh { color: #d4a548; }
 /* ---- by hand: the chat cards (their variables, the primary button as the stamp, the pills) */
 .twod12-dark .twod12.chat.cc { --cc-bg: #1f1c18; --cc-line: #7a683f; --cc-ink: #ece3cf; --cc-mute: #b3a68e; --cc-panel: #332c22; --cc-gold: #d4a548; --cc-gline: #4a4132;
-  --cc-t1: #8f2a22; --cc-t1p: #3a201d; --cc-t1i: #f3a79e; --cc-t2: #3a4220; --cc-t2i: #cbd86e; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-critp: rgba(141,184,240,.3); --cc-criti: #8db8f0;
+  --cc-t1: #8f2a22; --cc-t1p: #3a201d; --cc-t1i: #f3a79e; --cc-t2: #453f18; --cc-t2i: #e0d65a; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-critp: rgba(141,184,240,.3); --cc-criti: #8db8f0;
   --cc-plus: #8db8f0; --cc-minus: #f3a79e; --cc-vig: #d0564f; --cc-res: #6f90e6; --cc-btn: #eadfc8; --cc-btn2: #8c7d63; color: #ece3cf; }
 .twod12-dark .twod12.chat.cc .cc-card { background: #1f1c18; }
 .twod12-dark .twod12.chat.cc .cc-btn.primary { background: #eadfc8; border-color: #eadfc8; color: #221d16; border-radius: 2px; }
@@ -655,7 +1234,7 @@
 .twod12-dark .twod12.chat.cc .cc-card .cc-pools:hover { background: #28241d; }
 .twod12-dark .twod12.chat.cc button { color: #ece3cf; }
 .twod12-dark .twod12.chat.cc .cc-stamp.t1 { color: #fff; }
-.twod12-dark .twod12.chat.cc .cc-srow.t2 { --c: #6f7f17; --bg: #2c3319; --n: #a4b53c; }
+.twod12-dark .twod12.chat.cc .cc-srow.t2 { --c: #7d7414; --bg: #35321a; --n: #bdb230; }
 .twod12-dark .twod12.chat.cc .cc-srow.t3 { --c: #2f6b3a; --bg: #1d3a25; }
 .twod12-dark .twod12.chat.cc .cc-sub { color: #e3ba62 !important; }
 .twod12-dark .twod12.chat.cc .cc-stotal { background: #eadfc8; color: #221d16; }
@@ -667,7 +1246,7 @@
 .twod12-dark .twod12.chat.sysline > i[data-ic^="shield"], .twod12-dark .twod12.chat .kw-guard { color: #7fb4ee; }
 /* the ladder: every segment's range can be read when it is not the lit one */
 .twod12-dark .twod12.chat.cc .cc-seg.s1 { background: rgba(143, 42, 34, .38); color: #f3a79e; } .twod12-dark .twod12.chat.cc .cc-seg.s1.lit { background: #8f2a22; color: #fff; }
-.twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(111, 127, 23, .32); color: #cbd86e; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #5f6d14; color: #fff; }
+.twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(140, 130, 24, .32); color: #e0d65a; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #7d7414; color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-seg.s3 { background: rgba(47, 107, 58, .38); color: #8fd69b; } .twod12-dark .twod12.chat.cc .cc-seg.s3.lit { background: #2f6b3a; color: #fff; }
 .twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: #f3a79e; } .twod12-dark .twod12.chat .kw-boon { color: #8db8f0; }
 /* ---- by hand: the other chat messages */
@@ -685,6 +1264,7 @@
 .twod12-dark .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: #ece3cf; }
 .twod12-dark .twod12.chat.initcard { --ic-foe: #8f2626; --ic-ally: #3b6d11; --ic-neutral: #6b6456; }
 .twod12-dark .twod12.chat.initcard .ic-name { color: #ece3cf; }
+.twod12-dark .twod12.chat.action.sysmsg.initcard > .ahead { background: #332c22 !important; border-bottom: 1px solid #7a683f !important; }
 .twod12-dark .twod12.chat.dmg > .ahead { background: none !important; border-bottom: 1px solid #4a4132 !important; }
 .twod12-dark .twod12.chat .dbtns button, .twod12-dark .twod12.chat .dbtns select { background: transparent; color: #ece3cf; border: 1px solid #8c7d63; }
 .twod12-dark .twod12.chat .dbtns button:first-child { background: #eadfc8; border-color: #eadfc8; color: #221d16; }
@@ -693,7 +1273,8 @@
 .twod12-dark .twod12.chat.follow i[data-ic^="shield"] { color: #7fb4ee; }
 .twod12-dark .twod12.chat.turnend .td-ttl, .twod12-dark .twod12.chat.turnend > summary { color: #ece3cf; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
-.twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: #1f1c18; color: #ece3cf; border-color: #7a683f; border-radius: 2px; }
+.twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: #1f1c18; color: #ece3cf; border-color: #7a683f; border-radius: 5px; }
+.twod12-dark .twod12-dock .td-hd { border-bottom-color: #7a683f; }
 .twod12-dark .twod12-dock .td-hd, .twod12-dark .twod12.chat.turnend > summary { background: #332c22; color: #ece3cf; }
 .twod12-dark .twod12-dock .td-who { color: #ece3cf; }
 .twod12-dark .twod12-dock .td-pips i, .twod12-dark .twod12.chat.turnend .td-pips i { background: rgba(236, 227, 207, .22); }
@@ -722,6 +1303,8 @@ h3 { font: 600 14px "Signika", sans-serif; margin: 0 0 6px; color: #f3e9d2; disp
 .tag { font: 700 10.5px "Signika", sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; background: #5a4a2a; color: #e9dfc8; } .tag.pick { background: #2f6b3a; color: #fff; }
 .cols { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin-top: 14px; }
 .col { width: var(--w, 450px); max-width: 100%; }
+.cols > .col { max-width: 100%; }
+.stage > .twod12-linebar { flex-wrap: wrap; }
 .stage { padding: 14px; background: #efebe3; border-radius: 4px; } .stage.dk { background: #14120f; }
 .stage.side { padding: 8px; background: #d9d3c5; display: flex; flex-direction: column; gap: 8px; } .stage.side.dk { background: #171513; }
 .stage.map { background: #3d4c3c; padding: 40px 14px 14px; }
@@ -737,10 +1320,12 @@ ul.notes { color: #c9c0ad; max-width: 1000px; margin: 6px 0 0; padding-left: 20p
 <div class="nav"><a href="style-tokens.html">1. Colors and type</a><a href="action-card-dark.html">2. Action card</a><a href="chat-cards-dark.html">3. Chat cards</a><a href="chat-older-dark.html">3b. The other chat messages</a><a href="bars-dark.html" class="here">4. Pick bar and Turn dock</a><a href="npc-hud-sheet.html">The NPC sheet</a><a href="npc-hud-hud.html">The HUD</a></div>
 <p class="lead">The two pieces that sit beside the HUD. <b>The pick bar</b> (a choice on the map; inside the HUD when one is open, floating when not) is dark already, but a cold blue-black with rounded blue-grey buttons: here it takes the HUD's look (the warm page, a gold line, outlined buttons, the hovered pick as a stamp). <b>The Turn dock</b> (above the chat's input) takes the dark page and a band for its head.</p>
 
-<h2>The pick bar, floating over the map</h2>
-<div class="cols"><div class="col" style="--w:720px"><h3>Dark <span class="tag pick">Proposed</span></h3><div class="stage map dk twod12-dark twod12-type"><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i><span class="lb-text"><b>Shield of Faith</b>: who gains the <b>Guard 5</b>? Click a button, or the creature on the map.</span><span class="lb-side lb-opts"><button type="button" class="lb-opt you" data-id="a">Aveline</button><button type="button" class="lb-opt" data-id="d">Durgan</button><button type="button" class="lb-opt hover" data-id="s">Sylwen</button></span><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div><div style="height:12px"></div><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="up-down-left-right"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9S179.1 128 192 128l32 0 0 96-96 0 0-32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c9.2 9.2 22.9 11.9 34.9 6.9S128 332.9 128 320l0-32 96 0 0 96-32 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9S332.9 384 320 384l-32 0 0-96 96 0 0 32c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-9.2-9.2-22.9-11.9-34.9-6.9S384 179.1 384 192l0 32-96 0 0-96 32 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64z"/></svg></i><span class="lb-text"><b>Pushed 2</b>: pick the square the Orc Warrior ends in.</span><span class="lb-side lb-opts"></span><button type="button" class="lb-go" data-id="__done"><i class="" data-ic="check"><svg class="ic" viewBox="0 0 448 512" aria-hidden="true"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></svg></i> Done</button><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div></div></div><div class="col" style="--w:720px"><h3>Today <span class="tag">Today</span></h3><div class="stage map"><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i><span class="lb-text"><b>Shield of Faith</b>: who gains the <b>Guard 5</b>? Click a button, or the creature on the map.</span><span class="lb-side lb-opts"><button type="button" class="lb-opt you" data-id="a">Aveline</button><button type="button" class="lb-opt" data-id="d">Durgan</button><button type="button" class="lb-opt hover" data-id="s">Sylwen</button></span><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div><div style="height:12px"></div><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="up-down-left-right"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9S179.1 128 192 128l32 0 0 96-96 0 0-32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c9.2 9.2 22.9 11.9 34.9 6.9S128 332.9 128 320l0-32 96 0 0 96-32 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9S332.9 384 320 384l-32 0 0-96 96 0 0 32c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-9.2-9.2-22.9-11.9-34.9-6.9S384 179.1 384 192l0 32-96 0 0-96 32 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64z"/></svg></i><span class="lb-text"><b>Pushed 2</b>: pick the square the Orc Warrior ends in.</span><span class="lb-side lb-opts"></span><button type="button" class="lb-go" data-id="__done"><i class="" data-ic="check"><svg class="ic" viewBox="0 0 448 512" aria-hidden="true"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></svg></i> Done</button><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div></div></div></div>
+<h2>A choice on the map: the HUD asks (decided, 5c)</h2>
+<p class="why"><b>Yes: with the HUD, the pick bar no longer floats.</b> The HUD is always there (a player's own character, or the GM's empty bar), so every choice on the map is asked in the HUD's frame and gives it back when done. The same goes for the Line bar, the Charge bar and the Setup bar. The floating bar on the right is today's, for comparison; it would only remain for someone who turns the HUD off, if that is allowed at all.</p>
+<div class="cols"><div class="col" style="--w:980px"><h3>In the HUD <span class="tag pick">Decided</span></h3><div class="stage map"><div class="hud asking"><div class="hud-id"><img src="data:image/webp;base64,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" alt=""><div><div class="nm">Aveline</div><div class="sb">Human Paladin &middot; Level 1</div></div></div><div class="twod12-linebar twod12-pickbar hud-ask"><i class="lb-ic" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i><span class="lb-text"><b>Shield of Faith</b>: who gains the <b>Guard 5</b>? Click a button, or the creature on the map.</span><span class="lb-side lb-opts"><button type="button" class="lb-opt you" data-id="a">Aveline</button><button type="button" class="lb-opt" data-id="d">Durgan</button><button type="button" class="lb-opt hover" data-id="s">Sylwen</button></span><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div><div class="hud-hot"><div class="hot-grid"><i class="f" data-k="1"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M224.4-8.2c19.6-11.1 43.6-11.1 63.1 0l192 108.8c20 11.4 32.4 32.6 32.4 55.7l0 215.6c0 23-12.4 44.3-32.4 55.7l-192 108.8c-19.6 11.1-43.6 11.1-63.1 0L32.4 427.5C12.4 416.1 0 394.8 0 371.8L0 156.2c0-23 12.4-44.3 32.4-55.7L224.4-8.2zm52 73.2C267 49.8 245 49.8 235.6 65l-76.6 123.7-85.4-46.3-3.8-1.6c-8.9-2.7-18.8 1.1-23.4 9.6s-2.4 18.9 4.7 24.8l3.3 2.3 83.4 45.2-74.6 120.6C55.3 356.2 61 373 75 378.4l161 61.9 0 39.7c0 11 9 20 20 20s20-9 20-20l0-39.7 161-61.9c14-5.4 19.7-22.2 11.8-35l-74.7-120.6 83.4-45.2c9.7-5.3 13.3-17.4 8.1-27.1s-17.4-13.3-27.1-8.1L353 188.7 276.4 65zm-47 329.9l-122-46.9 54.5-88.1 67.5 135zM404.6 348l-122 46.9 67.5-135 54.5 88.1zM319.3 232L256 358.6 192.7 232 319.3 232zM308 192l-104.1 0 52-84 52 84z"/></svg></i><i class="f" data-k="2"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M344.8 52.3c11.2-13.7 9.2-33.8-4.5-45s-33.8-9.2-45 4.5l-39.2 48-39.2-48C205.6-1.9 185.4-4 171.7 7.2s-15.7 31.4-4.5 45l47.4 58-202 246.9C4.5 367.1 0 379.6 0 392.6L0 432c0 26.5 21.5 48 48 48l416 0c26.5 0 48-21.5 48-48l0-39.4c0-12.9-4.5-25.5-12.7-35.5l-202-246.9 47.4-58zM256 288l112 128-224 0 112-128z"/></svg></i><i class="f" data-k="3"><svg class="ic" viewBox="0 0 384 512" aria-hidden="true"><path d="M292.9 384c7.3-22.3 21.9-42.5 38.4-59.9 32.7-34.4 52.7-80.9 52.7-132.1 0-106-86-192-192-192S0 86 0 192c0 51.2 20 97.7 52.7 132.1 16.5 17.4 31.2 37.6 38.4 59.9l201.7 0zM288 432l-192 0 0 16c0 44.2 35.8 80 80 80l32 0c44.2 0 80-35.8 80-80l0-16zM184 112c-39.8 0-72 32.2-72 72 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3 53.7-120 120-120 13.3 0 24 10.7 24 24s-10.7 24-24 24z"/></svg></i><i class="" data-k="4"></i><i class="f" data-k="5"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M468 7c7.6 6.1 12 15.3 12 25l0 304c0 44.2-43 80-96 80s-96-35.8-96-80 43-80 96-80c11.2 0 22 1.6 32 4.6l0-116.7-224 49.8 0 206.3c0 44.2-43 80-96 80s-96-35.8-96-80 43-80 96-80c11.2 0 22 1.6 32 4.6L128 96c0-15 10.4-28 25.1-31.2l288-64c9.5-2.1 19.4 .2 27 6.3z"/></svg></i><i class="" data-k="6"></i><i class="" data-k="7"></i><i class="" data-k="8"></i><i class="" data-k="9"></i><i class="" data-k="0"></i></div></div></div><div style="height:12px"></div><div class="hud asking"><div class="hud-id"><img src="data:image/webp;base64,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" alt=""><div><div class="nm">Aveline</div><div class="sb">Human Paladin &middot; Level 1</div></div></div><div class="twod12-linebar twod12-pickbar hud-ask"><i class="lb-ic" data-ic="up-down-left-right"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9S179.1 128 192 128l32 0 0 96-96 0 0-32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c9.2 9.2 22.9 11.9 34.9 6.9S128 332.9 128 320l0-32 96 0 0 96-32 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9S332.9 384 320 384l-32 0 0-96 96 0 0 32c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-9.2-9.2-22.9-11.9-34.9-6.9S384 179.1 384 192l0 32-96 0 0-96 32 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64z"/></svg></i><span class="lb-text"><b>Pushed 2</b>: pick the square the Orc Warrior ends in.</span><span class="lb-side lb-opts"></span><button type="button" class="lb-go" data-id="__done"><i class="" data-ic="check"><svg class="ic" viewBox="0 0 448 512" aria-hidden="true"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></svg></i> Done</button><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div><div class="hud-hot"><div class="hot-grid"><i class="f" data-k="1"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M224.4-8.2c19.6-11.1 43.6-11.1 63.1 0l192 108.8c20 11.4 32.4 32.6 32.4 55.7l0 215.6c0 23-12.4 44.3-32.4 55.7l-192 108.8c-19.6 11.1-43.6 11.1-63.1 0L32.4 427.5C12.4 416.1 0 394.8 0 371.8L0 156.2c0-23 12.4-44.3 32.4-55.7L224.4-8.2zm52 73.2C267 49.8 245 49.8 235.6 65l-76.6 123.7-85.4-46.3-3.8-1.6c-8.9-2.7-18.8 1.1-23.4 9.6s-2.4 18.9 4.7 24.8l3.3 2.3 83.4 45.2-74.6 120.6C55.3 356.2 61 373 75 378.4l161 61.9 0 39.7c0 11 9 20 20 20s20-9 20-20l0-39.7 161-61.9c14-5.4 19.7-22.2 11.8-35l-74.7-120.6 83.4-45.2c9.7-5.3 13.3-17.4 8.1-27.1s-17.4-13.3-27.1-8.1L353 188.7 276.4 65zm-47 329.9l-122-46.9 54.5-88.1 67.5 135zM404.6 348l-122 46.9 67.5-135 54.5 88.1zM319.3 232L256 358.6 192.7 232 319.3 232zM308 192l-104.1 0 52-84 52 84z"/></svg></i><i class="f" data-k="2"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M344.8 52.3c11.2-13.7 9.2-33.8-4.5-45s-33.8-9.2-45 4.5l-39.2 48-39.2-48C205.6-1.9 185.4-4 171.7 7.2s-15.7 31.4-4.5 45l47.4 58-202 246.9C4.5 367.1 0 379.6 0 392.6L0 432c0 26.5 21.5 48 48 48l416 0c26.5 0 48-21.5 48-48l0-39.4c0-12.9-4.5-25.5-12.7-35.5l-202-246.9 47.4-58zM256 288l112 128-224 0 112-128z"/></svg></i><i class="f" data-k="3"><svg class="ic" viewBox="0 0 384 512" aria-hidden="true"><path d="M292.9 384c7.3-22.3 21.9-42.5 38.4-59.9 32.7-34.4 52.7-80.9 52.7-132.1 0-106-86-192-192-192S0 86 0 192c0 51.2 20 97.7 52.7 132.1 16.5 17.4 31.2 37.6 38.4 59.9l201.7 0zM288 432l-192 0 0 16c0 44.2 35.8 80 80 80l32 0c44.2 0 80-35.8 80-80l0-16zM184 112c-39.8 0-72 32.2-72 72 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3 53.7-120 120-120 13.3 0 24 10.7 24 24s-10.7 24-24 24z"/></svg></i><i class="" data-k="4"></i><i class="f" data-k="5"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M468 7c7.6 6.1 12 15.3 12 25l0 304c0 44.2-43 80-96 80s-96-35.8-96-80 43-80 96-80c11.2 0 22 1.6 32 4.6l0-116.7-224 49.8 0 206.3c0 44.2-43 80-96 80s-96-35.8-96-80 43-80 96-80c11.2 0 22 1.6 32 4.6L128 96c0-15 10.4-28 25.1-31.2l288-64c9.5-2.1 19.4 .2 27 6.3z"/></svg></i><i class="" data-k="6"></i><i class="" data-k="7"></i><i class="" data-k="8"></i><i class="" data-k="9"></i><i class="" data-k="0"></i></div></div></div></div></div><div class="col" style="--w:720px"><h3>Today: floating <span class="tag">Today</span></h3><div class="stage map"><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i><span class="lb-text"><b>Shield of Faith</b>: who gains the <b>Guard 5</b>? Click a button, or the creature on the map.</span><span class="lb-side lb-opts"><button type="button" class="lb-opt you" data-id="a">Aveline</button><button type="button" class="lb-opt" data-id="d">Durgan</button><button type="button" class="lb-opt hover" data-id="s">Sylwen</button></span><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div><div style="height:12px"></div><div class="twod12-linebar twod12-pickbar"><i class="lb-ic" data-ic="up-down-left-right"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9S179.1 128 192 128l32 0 0 96-96 0 0-32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c9.2 9.2 22.9 11.9 34.9 6.9S128 332.9 128 320l0-32 96 0 0 96-32 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9S332.9 384 320 384l-32 0 0-96 96 0 0 32c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-9.2-9.2-22.9-11.9-34.9-6.9S384 179.1 384 192l0 32-96 0 0-96 32 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64z"/></svg></i><span class="lb-text"><b>Pushed 2</b>: pick the square the Orc Warrior ends in.</span><span class="lb-side lb-opts"></span><button type="button" class="lb-go" data-id="__done"><i class="" data-ic="check"><svg class="ic" viewBox="0 0 448 512" aria-hidden="true"><path d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z"/></svg></i> Done</button><button type="button" class="lb-give" data-id="__cancel">Cancel</button></div></div></div></div>
 <h2>The Turn dock: open and closed</h2>
-<div class="cols"><div class="col" style="--w:330px"><h3>Dark <span class="tag pick">Proposed</span></h3><div class="stage side dk twod12-dark twod12-type"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r"><span class="td-ic ap">◆</span><span class="td-nm">Turn start</span><span class="td-c ap">+4 +R</span></div><div class="td-r"><span class="td-ic ap">✦</span><span class="td-nm">Cleaver</span><span class="tk-pips sm" data-tooltip="3 AP left"><i class="on"></i><i class="on"></i><i class="on"></i><i class="spent"></i></span></div><div class="td-r"><span class="td-ic mv">➤</span><span class="td-nm">Advance</span><span class="tk-pips sm" data-tooltip="2 AP left"><i class="on"></i><i class="on"></i><i class="spent"></i><i></i></span></div><div class="td-sep">On Orc Warrior</div><div class="td-r"><span class="td-ic">●</span><span class="td-nm">Hindered</span><span class="td-badge rd">EoT</span></div><div class="td-r"><span class="td-ic guard"><i class="" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i></span><span class="td-nm"><b class="td-g">Guard 4</b></span></div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div><div class="col" style="--w:330px"><h3>Today <span class="tag">Today</span></h3><div class="stage side"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r"><span class="td-ic ap">◆</span><span class="td-nm">Turn start</span><span class="td-c ap">+4 +R</span></div><div class="td-r"><span class="td-ic ap">✦</span><span class="td-nm">Cleaver</span><span class="tk-pips sm" data-tooltip="3 AP left"><i class="on"></i><i class="on"></i><i class="on"></i><i class="spent"></i></span></div><div class="td-r"><span class="td-ic mv">➤</span><span class="td-nm">Advance</span><span class="tk-pips sm" data-tooltip="2 AP left"><i class="on"></i><i class="on"></i><i class="spent"></i><i></i></span></div><div class="td-sep">On Orc Warrior</div><div class="td-r"><span class="td-ic">●</span><span class="td-nm">Hindered</span><span class="td-badge rd">EoT</span></div><div class="td-r"><span class="td-ic guard"><i class="" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i></span><span class="td-nm"><b class="td-g">Guard 4</b></span></div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div></div>
+<p class="why">Redone to be the same piece as the Reactions card and the End of Turn line: the same header band and type, the same frame, on both themes.</p>
+<div class="cols"><div class="col" style="--w:330px"><h3>Dark <span class="tag pick">Proposed</span></h3><div class="stage side dk twod12-dark twod12-type"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r"><span class="td-ic ap">◆</span><span class="td-nm">Turn start</span><span class="td-c ap">+4 +R</span></div><div class="td-r"><span class="td-ic ap">✦</span><span class="td-nm">Cleaver</span><span class="tk-pips sm" data-tooltip="3 AP left"><i class="on"></i><i class="on"></i><i class="on"></i><i class="spent"></i></span></div><div class="td-r"><span class="td-ic mv">➤</span><span class="td-nm">Advance</span><span class="tk-pips sm" data-tooltip="2 AP left"><i class="on"></i><i class="on"></i><i class="spent"></i><i></i></span></div><div class="td-sep">On Orc Warrior</div><div class="td-r"><span class="td-ic">●</span><span class="td-nm">Hindered</span><span class="td-badge rd">EoT</span></div><div class="td-r"><span class="td-ic guard"><i class="" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i></span><span class="td-nm"><b class="td-g">Guard 4</b></span></div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div><div class="col" style="--w:330px"><h3>Light <span class="tag pick">Proposed</span></h3><div class="stage side twod12-type"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r"><span class="td-ic ap">◆</span><span class="td-nm">Turn start</span><span class="td-c ap">+4 +R</span></div><div class="td-r"><span class="td-ic ap">✦</span><span class="td-nm">Cleaver</span><span class="tk-pips sm" data-tooltip="3 AP left"><i class="on"></i><i class="on"></i><i class="on"></i><i class="spent"></i></span></div><div class="td-r"><span class="td-ic mv">➤</span><span class="td-nm">Advance</span><span class="tk-pips sm" data-tooltip="2 AP left"><i class="on"></i><i class="on"></i><i class="spent"></i><i></i></span></div><div class="td-sep">On Orc Warrior</div><div class="td-r"><span class="td-ic">●</span><span class="td-nm">Hindered</span><span class="td-badge rd">EoT</span></div><div class="td-r"><span class="td-ic guard"><i class="" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i></span><span class="td-nm"><b class="td-g">Guard 4</b></span></div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div><div class="col" style="--w:330px"><h3>Today <span class="tag">Today</span></h3><div class="stage side"><div class="twod12-dockwrap"><div class="twod12 twod12-dock open"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Fold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Orc Warrior</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="2 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r"><span class="td-ic ap">◆</span><span class="td-nm">Turn start</span><span class="td-c ap">+4 +R</span></div><div class="td-r"><span class="td-ic ap">✦</span><span class="td-nm">Cleaver</span><span class="tk-pips sm" data-tooltip="3 AP left"><i class="on"></i><i class="on"></i><i class="on"></i><i class="spent"></i></span></div><div class="td-r"><span class="td-ic mv">➤</span><span class="td-nm">Advance</span><span class="tk-pips sm" data-tooltip="2 AP left"><i class="on"></i><i class="on"></i><i class="spent"></i><i></i></span></div><div class="td-sep">On Orc Warrior</div><div class="td-r"><span class="td-ic">●</span><span class="td-nm">Hindered</span><span class="td-badge rd">EoT</span></div><div class="td-r"><span class="td-ic guard"><i class="" data-ic="shield-halved"><svg class="ic" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 0c4.6 0 9.2 1 13.4 2.9L457.8 82.8c22 9.3 38.4 31 38.3 57.2-.5 99.2-41.3 280.7-213.6 363.2-16.7 8-36.1 8-52.8 0-172.4-82.5-213.1-264-213.6-363.2-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.9 1 251.4 0 256 0zm0 66.8l0 378.1c138-66.8 175.1-214.8 176-303.4l-176-74.6 0 0z"/></svg></i></span><span class="td-nm"><b class="td-g">Guard 4</b></span></div></div></div></div></div><div class="twod12-dockwrap"><div class="twod12 twod12-dock"><div class="td-hd" data-twod12-dock="fold" data-tooltip="Unfold the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">Aveline</span><span class="td-rd">Round 2</span><span class="td-sp"><span class="td-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="td-chev">▲</span></span></div><div class="td-body"><div class="td-tl"><div class="td-r td-none">Nothing yet.</div><div class="td-sep">On Aveline</div><div class="td-r td-none">No Effects.</div></div></div></div></div></div></div></div>
 <h2>Notes</h2>
 <ul class="notes">
 <li>The Line bar, the Charge bar and the Setup bar share the pick bar's rules, so they take the same look; they are not drawn here.</li>

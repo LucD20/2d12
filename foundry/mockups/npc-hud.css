@@ -566,4 +566,5 @@ body.light { --pg: #f4ecd9; --pg2: #eae0c8; --rule: #8a6d3b; --hair: #d2c29c; --
 .ops .sbl.two .gauge:first-child { flex: 0 0 calc(300% / 6.9); } .ops .sbl.two .gauge { flex: 1 1 0; }   /* Resolve stays over Reach on the new columns */
 
 /* Lucas, 2026-11-12: Tier 2 more yellow (still a green, toward yellow), as in style-tokens.css */
-:root { --tk2: #cbd86e; } body.light { --tk2: #5d6e10; }
+:root { --tk2: #e0d65a; } body.light { --tk2: #6f6800; }
+.hud .hud-ask .lb-go { background: var(--t-btn); color: var(--t-btn-ink); border: 1px solid var(--t-btn); border-radius: 4px; font-weight: 700; }   /* Done: the filled button, as a Version */
