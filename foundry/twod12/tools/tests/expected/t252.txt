@@ -2,8 +2,8 @@
 v0.0.381: beside the name (Escalation over the Saves): Checks and Saves Bo +2 Ap −1 Checks | in the middle: Basic Cleaver 1 AP Special Brutal Swing 2 AP Reactions Hold the Line 1R
 the rank's ring: true | a stamp opens its Version: true | the name right-clicks to the card: true | v0.0.381: nothing hidden, the lines wrap (no +N more): true
 --- a PC
-Aveline Human Paladin · Level 1 Actions Basic Actions Reactions Escalation Hands and Gear Checks and Saves Skills later Conditions and Effects Utility Quick Smite 1 AP 2 AP Rebuke 1R
-the open category: true | Skills later: true | a spent Version struck: true | nothing pinned: true | v0.0.381: the categories first, Quick after: true
+Aveline Human Paladin · Level 1 Actions Basic Actions Reactions Escalation Hands and Gear Checks and Saves Skills later Conditions and Effects Utility Smite 1 AP 2 AP Rebuke 1R
+the open category: true | Skills later: true | a spent Version struck: true | v0.0.383: slots, 2 filled and 6 empty: 2 6 | nothing pinned, 8 empty slots: 8 | v0.0.381: the categories first, Quick after: true
 --- several, none, a panel
 2 tokens selected. Click one for its HUD. Orc Warrior 1 Standard Goblin Sneak Minion | a click selects it: true
 No token selected.

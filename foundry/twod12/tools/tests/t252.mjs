@@ -17,7 +17,7 @@ console.log("--- a PC");
 const pc = { name: "Aveline", sub: "Human Paladin · Level 1", open: "react", quick: [A("s", "Smite", "#185FA5", [1, 2], { pc: true }), { id: "r", name: "Rebuke", fq: "#0F6E6E", pc: true, versions: [{ ap: 1, label: "1R", off: true, used: true, why: "Reaction AP spent" }] }] };
 const ph = H.pcHudHtml(pc);
 console.log(strip(ph));
-console.log("the open category:", ph.includes('class="cat on" data-hud="cat" data-cat="react" aria-pressed="true"'), "| Skills later:", ph.includes('class="cat later"'), "| a spent Version struck:", ph.includes('class="hv no used" disabled'), "| nothing pinned:", strip(H.pcHudHtml({ ...pc, quick: [] })).includes("Right-click a Version's stamp"), "| v0.0.381: the categories first, Quick after:", ph.indexOf("hud-cats") < ph.indexOf("hud-quick"));
+console.log("the open category:", ph.includes('class="cat on" data-hud="cat" data-cat="react" aria-pressed="true"'), "| Skills later:", ph.includes('class="cat later"'), "| a spent Version struck:", ph.includes('class="hv no used" disabled'), "| v0.0.383: slots, 2 filled and 6 empty:", (ph.match(/class="qslot full"/g) ?? []).length, (ph.match(/class="qslot" data-tooltip/g) ?? []).length, "| nothing pinned, 8 empty slots:", (H.pcHudHtml({ ...pc, quick: [] }).match(/class="qslot"/g) ?? []).length, "| v0.0.381: the categories first, Quick after:", ph.indexOf("hud-cats") < ph.indexOf("hud-quick"));
 console.log("--- several, none, a panel");
 console.log(strip(H.listHudHtml([{ id: "t1", name: "Orc Warrior 1", sub: "Standard", rankKey: "standard" }, { id: "t2", name: "Goblin Sneak", sub: "Minion" }])), "| a click selects it:", H.listHudHtml([{ id: "t1", name: "x" }]).includes('data-hud="pick" data-token="t1"'));
 console.log(strip(H.emptyHudHtml()));

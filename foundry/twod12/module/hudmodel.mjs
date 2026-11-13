@@ -39,11 +39,15 @@ export function npcHudHtml(m) {
 }
 
 /** PC: m = { name, img, sub, quick: [action with only its pinned Versions], open: the open category's key } */
+export const HUD_QUICK_SLOTS = 8;
 export function pcHudHtml(m) {
-  // v0.0.381 (Lucas: "buttons on the left, favorites on the right"): the categories beside the name (two lines), the Quick row in the middle
-  const quick = (m.quick ?? []).length ? m.quick.map(hudActionHtml).join("") : '<span class="hud-none">Right-click a Version\'s stamp to pin it here.</span>';
+  // v0.0.381 (Lucas: "buttons on the left, favorites on the right"): the categories beside the name (two lines), the pinned Actions in the middle.
+  // v0.0.383 (Lucas): no "Quick" label; slots instead, two rows of empty dashed boxes (the look of "Skills later"), each pinned Action filling
+  // one; a slot is sized for one stamp and grows with an Action that has more pinned Versions; more pins than slots add columns.
+  const pinned = (m.quick ?? []).map(a => `<div class="qslot full">${hudActionHtml(a)}</div>`);
+  const empty = Array.from({ length: Math.max(0, HUD_QUICK_SLOTS - pinned.length) }, () => '<div class="qslot" data-tooltip="Right-click a Version\'s stamp to pin it here"></div>');
   const cats = HUD_CATS.map(([k, l, later]) => (later ? `<span class="cat later" data-tooltip="Skills come later">${esc(l)} <i>later</i></span>` : `<button type="button" class="cat${m.open === k ? " on" : ""}" data-hud="cat" data-cat="${k}" aria-pressed="${m.open === k}">${esc(l)}</button>`)).join("");
-  return `${hudIdHtml(m)}<div class="hud-mid pc"><div class="hud-blk hud-cats">${cats}</div><div class="hud-blk hud-quick"><span class="hud-gl"><i class="fa-solid fa-star"></i> Quick</span>${quick}</div></div>`;
+  return `${hudIdHtml(m)}<div class="hud-mid pc"><div class="hud-blk hud-cats">${cats}</div><div class="hud-blk hud-quick">${[...pinned, ...empty].join("")}</div></div>`;
 }
 
 /** Several tokens selected: one button each (a click selects that token alone and opens its HUD). */

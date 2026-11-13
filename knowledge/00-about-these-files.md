@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 7e636e5 2026-11-13 v0.0.381: the HUD rearranged (less mouse travel), taller instead of cut, right-click card / pin a stamp, the players pill, dividers
+Built by tools/knowledge.py on 2026-11-13 from the repository at: fa52ea0 2026-11-13 v0.0.382: the HUD's name click opens the card, no stuck category, aligned categories, the hotbar up on a short HUD
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (152 KB)
+- HANDOFF.md (153 KB)
 - MASTER-PLAN.md (38 KB)
 - open-design-items.md (128 KB)
 - rules-01-roll.md (23 KB)
