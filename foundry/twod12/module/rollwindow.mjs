@@ -112,4 +112,9 @@ const keyOf = el => {
 };
 
 /** Open the roll dialog and wait for its answer. The tests answer it without a window: globalThis.__twod12RollDialog(inp, RD, o). */
-export const askAction = o => (typeof globalThis.__twod12RollDialog === "function" ? Promise.resolve(globalThis.__twod12RollDialog(o.inp, RD, o)) : new Promise(resolve => new RollWindow({ ...o, resolve }).render({ force: true })));
+export const askAction = o => {
+  if (typeof globalThis.__twod12RollDialog === "function") return Promise.resolve(globalThis.__twod12RollDialog(o.inp, RD, o));
+  // v0.0.376 (PACK STYLE-2, the HUD's "Skip roll dialog"): roll at once with the dialog's defaults, unless something stops the roll (then the dialog shows why)
+  if (o.skip) { try { const st = RD.newState(o.inp, o.state); if (!RD.blockedReason(o.inp, st)) return Promise.resolve(RD.result(o.inp, st)); } catch (e) { console.warn("twod12 | Skip roll dialog", e); } }
+  return new Promise(resolve => new RollWindow({ ...o, resolve }).render({ force: true }));
+};

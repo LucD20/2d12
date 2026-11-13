@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 163b6c5 2026-11-13 Merge pack-action-builder into main (Lucas: "see for conflicts, then merge"): the Action Builder; HANDOFF keeps both entries
+Built by tools/knowledge.py on 2026-11-13 from the repository at: f54fbb1 2026-11-13 STYLE-2 part 3 (v0.0.375): the one-page NPC sheet (stat block)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (149 KB)
+- HANDOFF.md (150 KB)
 - MASTER-PLAN.md (38 KB)
 - open-design-items.md (128 KB)
 - rules-01-roll.md (23 KB)
@@ -30,8 +30,8 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
-- design-style-audit.md (30 KB)
-- design-npc-hud-brief.md (24 KB)
+- design-style-audit.md (31 KB)
+- design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
 - design-pc-budget.md (12 KB)
 - design-stage0.md (18 KB)

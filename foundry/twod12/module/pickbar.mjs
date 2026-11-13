@@ -25,7 +25,11 @@ export async function pickBar(o) {
     const bar = document.createElement("div");
     bar.className = `twod12-linebar twod12-pickbar${o.cls ? ` ${o.cls}` : ""}`;
     bar.innerHTML = pickBarHtml(o);
-    document.body.append(bar);
+    // v0.0.376 (PACK STYLE-2, the brief's 5c): with the HUD on screen the question is asked in its middle (it keeps its frame), else at the bottom
+    let hud = null;
+    try { hud = globalThis.__twod12Hud ?? null; } catch (e) { hud = null; }
+    const slot = hud?.hudAskSlot?.() ?? null;
+    if (slot) { bar.classList.add("in-hud"); slot.append(bar); hud.hudAsking(true); } else document.body.append(bar);
     let gfx = null, down = null, move = null, prevInteractive = null, hovered = null;
     const cellsOf = x => x.cells ?? T.tokenCells(x.token);
     // v0.0.249 (Lucas): feedback before the click: the candidate under the pointer (or whose button is hovered) lights up on the map and in the bar
@@ -51,6 +55,7 @@ export async function pickBar(o) {
     bar.addEventListener("mouseleave", () => hover(null));
     const finish = v => {
       bar.remove(); window.removeEventListener("keydown", key, true);
+      if (slot) hud.hudAsking(false);
       if (gfx) canvas.app.view.style.cursor = "";
       if (move) canvas.stage.off("pointermove", move);
       if (down) canvas.stage.off("pointerdown", down);

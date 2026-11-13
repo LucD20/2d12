@@ -773,7 +773,7 @@ export async function useAction(actor, item, opts = {}) {
     };
     const inp = await rollDialogInput({ actor, item, versions, src, useTraits, dlgTraits, previewWeapon, multi, perT, aimed, targetToken, rollsAtOthers, isSelf, areaSet, areaOutcome, extraMods, steps, bonusSeen, usesReload,
       saveAct, notices: [...extraNotices], opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
-    rdData = await askAction({ inp, state: opts.rdState ?? null, live: !areaSet, card: () => item.sheet?.render(true) });
+    rdData = await askAction({ inp, state: opts.rdState ?? null, live: !areaSet, card: () => item.sheet?.render(true), skip: !!opts.skipDialog && !opts.restart });   // v0.0.376: the HUD's Skip roll dialog
     if (!rdData) return;
     // the targets changed on the map, or the area is placed again: the Action runs again with the same choices (no Setup, hands or turn question again)
     if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId });

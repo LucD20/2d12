@@ -66,9 +66,11 @@ import { GROUPS } from "./config.mjs";
 import { registerDragCopy } from "./drag.mjs";
 import { registerTheme } from "./theme.mjs";
 import { frameMessage } from "./chatframe.mjs";
+import * as HUD from "./hud.mjs";
 
 Hooks.once("init", () => {
-  try { registerTheme(); } catch (e) { console.warn("twod12 | theme", e); }   // v0.0.369 (STYLE-1): dark (the default) or light, on <html>
+  try { registerTheme(); } catch (e) { console.warn("twod12 | theme", e); }
+  try { HUD.registerHudSettings(); HUD.registerHud(); globalThis.__twod12Hud = HUD; } catch (e) { console.warn("twod12 | HUD", e); }   // v0.0.376 (STYLE-2): the HUD   // v0.0.369 (STYLE-1): dark (the default) or light, on <html>
   registerReactionSettings();   // v0.0.272 (pack RX): the Reactions message's auto-skip timer
   // v0.0.202 (Lucas): tooltips wait a little longer before they show (Foundry's own wait is 0.5 s); a client setting.
   const tipDelay = v => { const TM = foundry.helpers?.interaction?.TooltipManager ?? globalThis.TooltipManager; if (TM) TM.TOOLTIP_ACTIVATION_MS = Math.max(0, Number(v) || 0); };

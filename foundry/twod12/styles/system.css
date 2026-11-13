@@ -4541,3 +4541,61 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .application.twod12-sbsheet.sb-rk-minion > .window-header { --rk: var(--s-rk-minion, #4d545c); } .application.twod12-sbsheet.sb-rk-grunt > .window-header { --rk: var(--s-rk-grunt, #4b5a26); }
 .application.twod12-sbsheet.sb-rk-standard > .window-header { --rk: var(--s-rk-standard, #6e2318); } .application.twod12-sbsheet.sb-rk-elite > .window-header { --rk: var(--s-rk-elite, #4f2c69); }
 .application.twod12-sbsheet[class*="sb-rk-"] > .window-header { background: color-mix(in srgb, var(--rk) 78%, #000) !important; color: #f8eed8; }
+/* ==== v0.0.376 (PACK STYLE-2): the HUD across the bottom of the screen (module/hud.mjs, hudmodel.mjs; foundry/mockups/npc-hud-hud.html and
+   npc-hud-screen.html): the dark table look, 70 px and two lines for every creature, the hotbar at its right end, the pick bar in its middle. ==== */
+.twod12-hud { --hud-bg: var(--s-pg, #1f1c18); --hud-line: var(--s-rule, #7a683f); --hud-hair: var(--s-hair, #4a4132); --hud-ink: var(--s-ink, #ece3cf); --hud-mute: var(--s-mute, #b3a68e);
+  display: flex; align-items: stretch; gap: 0; box-sizing: border-box; height: 70px; width: 100%; margin: 0 0 4px; border: 1px solid var(--hud-line); border-radius: 3px; background: var(--hud-bg); color: var(--hud-ink);
+  font: 400 13px/1.25 "Signika", sans-serif; pointer-events: auto; position: relative; box-shadow: 0 3px 12px rgba(0, 0, 0, .45); }
+.twod12-hud[hidden] { display: none; }
+.twod12-hud.floating { position: fixed; left: 120px; right: 320px; bottom: 6px; width: auto; z-index: 60; }
+.twod12-hud .hud-main { display: flex; flex: 1; min-width: 0; align-items: stretch; }
+.twod12-hud .hud-id { flex: none; display: flex; align-items: center; gap: 9px; padding: 0 12px 0 10px; border-right: 1px solid var(--hud-hair); max-width: 230px; }
+.twod12-hud .hud-id img { width: 46px; height: 46px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid #8c7d63; background: rgba(0, 0, 0, .25); }
+.twod12-hud .hud-id.rk-minion img { border-color: #8a929c; } .twod12-hud .hud-id.rk-grunt img { border-color: #8aa04a; } .twod12-hud .hud-id.rk-standard img { border-color: #b8432f; } .twod12-hud .hud-id.rk-elite img { border-color: #9a64c4; }
+.twod12-hud .hud-who { display: flex; flex-direction: column; min-width: 0; } .twod12-hud .hud-who b { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .twod12-hud .hud-who small { font-size: 12px; color: var(--hud-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12-hud .hud-mid { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 0 10px; }
+.twod12-hud .hud-l { display: flex; align-items: center; gap: 8px; min-width: 0; overflow: hidden; white-space: nowrap; }
+.twod12-hud .hud-g { display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.twod12-hud .hud-gl { flex: none; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--hud-mute); }
+.twod12-hud .hud-gl .fa-star { color: var(--s-gold, #d4a548); }
+.twod12-hud .ha { display: inline-flex; align-items: center; gap: 5px; flex: none; padding: 1px 3px 1px 7px; border: 1px solid var(--hud-hair); border-left: 3px solid var(--fq, #5F5E5A); border-radius: 2px; background: rgba(255, 255, 255, .02); }
+.twod12-hud .ha > b { font-weight: 600; cursor: context-menu; } .twod12-hud .ha.dim > b { opacity: .5; } .twod12-hud .ha[hidden] { display: none; }
+.twod12-hud button { width: auto; min-height: 0; margin: 0; line-height: 1.2; box-shadow: none; font-family: "Signika", sans-serif; }
+.twod12-hud .hv { height: 20px; padding: 0 6px; border: 0; border-radius: 2px; background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); font-weight: 700; font-size: 11.5px; cursor: pointer; }
+.twod12-hud .hv:hover { background: var(--s-stamp-hover, #fff8e8); } .twod12-hud .hv.fav { box-shadow: inset 0 -2px 0 var(--s-gold, #d4a548); }
+.twod12-hud .hv.no { background: transparent; border: 1px dashed var(--s-faint, #8a7f6b); color: var(--s-faint, #8a7f6b); cursor: default; } .twod12-hud .hv.used { text-decoration: line-through; }
+.twod12-hud .hsv { height: 22px; padding: 0 7px; border: 1px solid var(--ac, #8c7d63); border-radius: 2px; background: transparent; color: var(--hud-ink); font-weight: 600; font-size: 12px; cursor: pointer; }
+.twod12-hud .hsv.at-body { --ac: #ef8a96; } .twod12-hud .hsv.at-mind { --ac: #8db3ff; } .twod12-hud .hsv.at-appeal { --ac: #e6bd5a; } .twod12-hud .hsv.at-instinct { --ac: #7fd49a; }
+.twod12-hud .hsv.fold { display: none; } .twod12-hud .hud-l.fold-saves .hsv:not(.fold) { display: none; } .twod12-hud .hud-l.fold-saves .hsv.fold { display: inline-block; }
+.twod12-hud .hud-more { flex: none; height: 22px; padding: 0 8px; border: 1px solid #8c7d63; border-radius: 2px; background: transparent; color: var(--hud-ink); font-weight: 600; cursor: pointer; } .twod12-hud .hud-more[hidden] { display: none; }
+.twod12-hud .hud-none { color: var(--hud-mute); font-style: italic; }
+.twod12-hud .cat { height: 24px; padding: 0 10px; border: 1px solid #8c7d63; border-radius: 2px; background: transparent; color: var(--hud-ink); font-weight: 600; font-size: 12.5px; cursor: pointer; flex: none; }
+.twod12-hud .cat.on { background: var(--s-stamp, #eadfc8); border-color: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); }
+.twod12-hud .cat.later { display: inline-flex; align-items: center; height: 24px; border-style: dashed; color: var(--hud-mute); cursor: default; } .twod12-hud .cat.later i { margin-left: 4px; font-size: 11px; }
+.twod12-hud .hud-mid.list { flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; overflow: hidden; }
+.twod12-hud .hud-ll { flex: none; font-size: 12px; color: var(--hud-mute); }
+.twod12-hud .tk { display: inline-flex; align-items: center; gap: 7px; flex: none; height: 46px; padding: 0 10px 0 4px; border: 1px solid var(--hud-hair); border-radius: 3px; background: transparent; color: var(--hud-ink); cursor: pointer; text-align: left; }
+.twod12-hud .tk img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #8c7d63; } .twod12-hud .tk.rk-standard img { border-color: #b8432f; } .twod12-hud .tk.rk-elite img { border-color: #9a64c4; } .twod12-hud .tk.rk-minion img { border-color: #8a929c; } .twod12-hud .tk.rk-grunt img { border-color: #8aa04a; }
+.twod12-hud .tk span { display: flex; flex-direction: column; } .twod12-hud .tk small { font-size: 11px; color: var(--hud-mute); }
+.twod12-hud .tk:hover { background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); } .twod12-hud .tk:hover small { color: inherit; }
+.twod12-hud .hud-mid.empty { align-items: flex-start; }
+/* the hotbar at the right end: two rows of five */
+.twod12-hud .hud-hot { flex: none; display: none; align-items: center; padding: 0 6px; border-left: 1px solid var(--hud-hair); }
+.twod12-hud.with-hot .hud-hot { display: flex; }
+.twod12-hud .hud-hot #hotbar { position: static; inset: auto; margin: 0; width: auto; height: auto; transform: none; }
+.twod12-hud .hud-hot #hotbar #action-bar, .twod12-hud .hud-hot #hotbar .action-bar, .twod12-hud .hud-hot #hotbar ol { display: grid; grid-template-columns: repeat(5, 28px); grid-auto-rows: 28px; gap: 2px; margin: 0; padding: 0; width: auto; height: auto; }
+.twod12-hud .hud-hot #hotbar .slot { width: 28px; height: 28px; min-width: 0; flex: none; }
+/* a choice on the map: the HUD keeps its frame, its middle asks */
+.twod12-hud .hud-ask { display: none; flex: 1; min-width: 0; align-items: center; padding: 0 8px; }
+.twod12-hud.asking .hud-main { display: none; } .twod12-hud.asking .hud-ask { display: flex; } .twod12-hud.asking { box-shadow: 0 0 0 1px var(--s-gold, #d4a548), 0 0 14px rgba(212, 165, 72, .45); }
+.twod12-hud .hud-ask .twod12-linebar.in-hud { position: static; inset: auto; transform: none; width: 100%; max-width: none; margin: 0; box-shadow: none; border: 0; background: transparent; }
+/* a category's panel, the "+N more" panel and the right-click menu: above the HUD */
+.twod12-hud .hud-pop, .twod12-hud .hud-menu { position: absolute; bottom: calc(100% + 6px); left: 0; z-index: 2; min-width: 240px; max-width: 420px; max-height: 50vh; overflow: auto; border: 1px solid var(--hud-line); border-radius: 3px; background: var(--hud-bg); color: var(--hud-ink); box-shadow: 0 4px 16px rgba(0, 0, 0, .55); }
+.twod12-hud .hud-poph { display: flex; align-items: center; padding: 4px 8px; border-bottom: 1px solid var(--hud-line); background: var(--s-band, #332c22); font: 700 14px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-hud .hud-poph .x { margin-left: auto; border: 0; background: none; color: var(--hud-mute); font-size: 16px; cursor: pointer; }
+.twod12-hud .hud-popb { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px 8px; }
+.twod12-hud .pr { display: flex; align-items: center; gap: 8px; } .twod12-hud .pr small { color: var(--hud-mute); font-size: 11.5px; } .twod12-hud .pr.txt { flex-direction: column; align-items: flex-start; gap: 0; padding: 2px 0; border-bottom: 1px solid var(--hud-hair); }
+.twod12-hud .hp-btn { height: 24px; padding: 0 10px; border: 1px solid #8c7d63; border-radius: 2px; background: transparent; color: var(--hud-ink); font-weight: 600; cursor: pointer; } .twod12-hud .hp-btn:hover { background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); } .twod12-hud .hp-btn.out { border-style: dashed; }
+.twod12-hud .hud-menu { display: flex; flex-direction: column; min-width: 180px; padding: 4px; } .twod12-hud .hud-menu button { height: 26px; padding: 0 10px; border: 0; background: none; color: var(--hud-ink); text-align: left; cursor: pointer; } .twod12-hud .hud-menu button:hover { background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); }
+.twod12-hudcard { position: fixed; z-index: 100; width: 360px; max-height: 70vh; overflow: auto; box-shadow: 0 6px 20px rgba(0, 0, 0, .6); }
+.twod12-light .twod12-hud .hsv.at-body { --ac: #7a1626; } .twod12-light .twod12-hud .hsv.at-mind { --ac: #17327a; } .twod12-light .twod12-hud .hsv.at-appeal { --ac: #6b4e00; } .twod12-light .twod12-hud .hsv.at-instinct { --ac: #14532d; }

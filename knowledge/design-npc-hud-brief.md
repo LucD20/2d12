@@ -1,4 +1,4 @@
-# Brief: the one-page NPC sheet and the HUD (planning done with Lucas, 2026-11-12; the mockups are made, section 5; nothing built)
+# Brief: the one-page NPC sheet and the HUD (planning done with Lucas, 2026-11-12; the mockups are made, section 5; BUILT in pack STYLE-2: v0.0.375 the sheet, v0.0.376 the HUD)
 
 **Why:** for playtesting, to make play faster. Running an NPC today means opening the sheet and moving between tabs. Lucas's references: the 4e alternate NPC sheet (a compact stat block), pf2e-hud (a persistent bar at the bottom) and Token Action HUD (categories, one click to use). **They are examples of what to do, not designs to copy.** pf2e-hud does a lot Lucas doesn't use.
 
@@ -206,3 +206,7 @@ That way an Action line looks the same everywhere.
 - Whether 5c's redraw is what "bugged" meant (Lucas didn't say what looked wrong; the first version replaced the whole HUD with a stretched bar).
 - Whether the book look is close to the 4e sheet he had in mind (send the screenshot again to compare).
 - ~~The Tiers' drawing~~: **B, three lines (Lucas, 2026-11-12). Decided; the sheets use it.**
+
+### Built (pack STYLE-2, 2026-11-13)
+- **The one-page sheet (v0.0.375):** `module/statblock.mjs` (pure HTML from a model; the model from the full sheet's own, so the numbers agree), `NpcStatBlockSheet` (the NPC sheet with its Main tab as the stat block and its Build, Effects and Notes tabs), the world setting "New NPCs open with". Health is shown as what is left (HP before Down, Vigor and Resolve before Bloodied / Strained), as mocked; the full sheet still shows the damage taken (pack HP is not done). The Elite's ladder is today's 1 to 3 (Stage 0's 1 to 6 comes with Stage 0 in Foundry). The Basic Actions every creature has are not listed.
+- **The HUD (v0.0.376):** `module/hud.mjs`, `module/hudmodel.mjs`, the three client settings (The HUD, Skip roll dialog, the hotbar inside it). Not done from the brief: **the players list stays where Foundry V14 keeps it** (the left column, it doesn't cover the HUD); Hands and Gear lists the weapons and gear (a click opens one) and the sheet's Hands, not the hand menu; Utility has Breather, Sleep and Rest, and the sheet for Guard and Rally.

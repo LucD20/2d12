@@ -1,0 +1,14 @@
+--- an NPC
+line 1: Basic Cleaver 1 AP Special Brutal Swing 2 AP | line 2: Reactions Hold the Line 1R Checks and Saves Bo +2 Ap −1 Checks
+the rank's ring: true | a stamp opens its Version: true | the name right-clicks to the card: true | Saves fold: true | +N more (hidden until needed): 2
+--- a PC
+Aveline Human Paladin · Level 1 Quick Smite 1 AP 2 AP Rebuke 1R Actions Basic Actions Reactions Escalation Hands and Gear Checks and Saves Skills later Conditions and Effects Utility
+the open category: true | Skills later: true | a spent Version struck: true | nothing pinned: true
+--- several, none, a panel
+2 tokens selected. Click one for its HUD. Orc Warrior 1 Standard Goblin Sneak Minion | a click selects it: true
+No token selected.
+Escalation &times; Radiant Zeal Passive, Escalation 1 Final Verdict 2 AP Body Save
+--- the wiring
+three client settings: true | Skip roll dialog, Shift the other way: true
+the dialog skipped unless something blocks the roll: true | the pick bar asks in the HUD: true | registered: true
+follows the selection only: true | the hotbar moved in: true | Quick pins on the actor: true
