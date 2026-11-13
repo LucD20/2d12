@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: d4c58e5 2026-11-13 Action Builder: the Modifier is picked freely (+0 to +4), not tied to Weapon or Power
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 3b37d33 2026-11-13 HANDOFF: the Action Builder's rework merged into main
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

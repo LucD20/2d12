@@ -74,6 +74,7 @@
     if (!none) rows.push(row(save ? "Save" : "Vs.", seg("vs", (save ? ATTR : ["AD", "WD", ...ATTR]).map(x => [x, x, `vs-${x.toLowerCase()}`]), save && !ATTR.includes(d.vs) ? "Body" : d.vs, save ? "The Save it asks for" : "The Defense it targets")));
     if (npc) rows.push(row("Modifier", `${sin("modRating", NPC.ratings.map(r => [r, `${cap(r)} (+${NPC.rank[d.rank].modBy[Math.min(NPC.ratings.indexOf(r), NPC.rank[d.rank].modBy.length - 1)]})`]), "Modifier rating")}<span class="say">damage</span>${sin("rating", NPC.ratings.map(r => [r, cap(r)]), "Damage rating")}${cin("Ranged (more than 2 squares)", "ranged")}${cin("Four or more carry its riders", "four")}`));
     else if (!none) rows.push(row("Modifier", seg("rollMod", [0, 1, 2, 3, 4].map(x => [x, `+${x}`]), E.pcCtx(d).rollMod, "The Modifier it rolls with", "n") + `<span class="say">the roll's, and the [Mod] of its damage</span>`));
+    if (!npc) { const w = DATA.weapons.find(x => x.name === d.weapon); rows.push(row("Weapon", `${sin("weapon", DATA.weapons.map(x => [x.name, x.name]), "The weapon 1w stands for", true)}<span class="say">1w =</span><span class="wt"><b class="t2">${esc(w?.tiers[1] ?? "?")}</b> on Tier 2, <b class="t3">${esc(w?.tiers[2] ?? "?")}</b> on Tier 3</span><span class="say">${esc(w ? `${w.type}, ${w.props}` : "")}</span>`)); }
     const tg = [seg("target", [["one", "One creature"], ["several", "Several"], ["area", "An Area"]], d.target, "Targets")];
     if (d.target === "several") tg.push(nin("targetsN", "How many creatures", 2, 6));
     if (d.target === "area") tg.push(nin("areaSize", "The Area's size", 1, 6), sin("areaShape", ["Emanation", "Burst", "Aura"], "The Area's shape", true), d.areaShape === "Aura" ? "" : sin("areaFrom", [["self", "around you"], ["range", "at range"]], "Where the Area is placed"));
@@ -117,8 +118,7 @@
   /* what the numbers assume and the card doesn't say: out of the way of the card (Lucas, 2026-11-13) */
   function renderTest() {
     const d = D(), npc = d.tab === "npc", none = E.noRoll(d), f = [];
-    if (!npc) f.push(sel("Build", "cls", [...DATA.builds.map(b => b.name), "Other"], "w4", true), sel("Weapon", "weapon", DATA.weapons.map(w => [w.name, `${w.name} (${w.tiers.slice(1).join(" / ")})`]), "w4", true),
-      sel("Weapon Modifier", "wmod", [0, 1, 2, 3, 4].map(x => [x, `+${x}`]), "w2", true, "n"), sel("Power Modifier", "pmod", [0, 1, 2, 3, 4].map(x => [x, `+${x}`]), "w2", true, "n"));
+    if (!npc) f.push(sel("Build", "cls", [...DATA.builds.map(b => b.name), "Other"], "w4", true), sel("Weapon Modifier", "wmod", [0, 1, 2, 3, 4].map(x => [x, `+${x}`]), "w2", true, "n"), sel("Power Modifier", "pmod", [0, 1, 2, 3, 4].map(x => [x, `+${x}`]), "w2", true, "n"));
     if (!none) f.push(numb("Boons", "boons"), numb("Banes", "banes"), sel("The roll is", "state", [["", "normal"], ["favored", "Favored"], ["doomed", "Doomed"]], ""));
     if (!npc) f.push(sel("Priced for", "fight", PC.fights.map(x => [x.key, x.label])), chk("Against an Elite", "elite"));
     $("o-test").innerHTML = f.length ? `<h2>Tested with <small>not on the card: what the numbers assume</small></h2><div class="grid">${f.join("")}</div>` : "";
