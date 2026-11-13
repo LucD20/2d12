@@ -139,6 +139,14 @@
 .twod12-type .twod12.sheet.pcs .ps-colh { padding: 0 2px 2px; }
 .twod12-type .twod12.sheet.pcs .ps-dot { border-radius: 0; transform: rotate(45deg); width: 7px; height: 7px; }
 .twod12-type .twod12.sheet.pcs .ps-pill { border-radius: 3px; }
+/* "+ Add" on the side panel: an outlined button, as the others there (it was a white bar) */
+.twod12-type .twod12.sheet.pcs .ps-dladd { background: transparent; color: #ecd9a4; border: 1px solid #8c7d63; }
+/* the Species and Class chips wrap to a second line (the last one was cut off at the card's edge) */
+.twod12-type .twod12.sheet.pcs .ps-chips { flex-wrap: wrap; overflow: visible; row-gap: 4px; }
+/* the grey group diamonds (Level 1, Next levels) take the gold */
+.twod12-type .twod12.sheet.pcs .ps-dot[style*="#6b665a"] { background: #96670f !important; }
+.twod12-dark .twod12.sheet.pcs .ps-dot[style*="#6b665a"] { background: #d4a548 !important; }
+.twod12-dark .twod12.sheet.pcs .ps-dladd { color: #ece3cf; }
 .twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b, .twod12-type .twod12.sheet.pcs .ps-bch small { font-family: "Signika", sans-serif; }
 .twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b { font-weight: 700; font-variant: small-caps; letter-spacing: .02em; }
 .twod12-type .twod12.sheet.pcs .ps-use { background: #3b3128; color: #f4ede0; border: 0; border-radius: 2px; box-shadow: none; font: 700 12.5px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; text-transform: none; }
