@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 818d1c8 2026-11-13 Style mockups 7: the carousel and an Action's sheet (the editor) from their real HTML, dark, light and today
+Built by tools/knowledge.py on 2026-11-13 from the repository at: edec34e 2026-11-13 Style mockups 7: an Effect's sheet from its real HTML; dark trait chips outlined in their group's color
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (138 KB)
+- HANDOFF.md (139 KB)
 - MASTER-PLAN.md (36 KB)
 - open-design-items.md (131 KB)
 - rules-01-roll.md (23 KB)
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-style-audit.md (22 KB)
+- design-style-audit.md (24 KB)
 - design-npc-hud-brief.md (24 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)

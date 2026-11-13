@@ -213,6 +213,43 @@ const TYPE = `
 .twod12-type .application .fr-tab { --fr-navy: ${LIGHT.stamp}; --fr-gold: #c9962b; --fr-maroon: ${LIGHT.ink}; --fr-goldsoft: transparent; --fr-line: ${LIGHT.hair}; --fr-par2: ${LIGHT.pg2}; --fr-field: #fbf7ee; --fr-ink: ${LIGHT.ink}; --fr-mut: ${LIGHT.mute}; font-family: "Signika", sans-serif; }
 .twod12-type .application.twod12-styled .sk .head .name { font: 700 20px "Signika", sans-serif; }
 .twod12-type .application.twod12-styled .sk .head img { border-radius: 2px; }
+/* the encounter log and the Generate window */
+.twod12-type .enclog .el-round { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; border-bottom: 1px solid ${LIGHT.rule}; color: ${LIGHT.ink}; }
+.twod12-type .enclog .el-turn { border-left: 2px solid ${LIGHT.rule}; border-radius: 0; background: none; padding: 2px 8px; } .twod12-type .enclog .el-own { color: ${LIGHT.ink}; }
+.twod12-type .enclog .el-bar button { border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: inherit; font: 600 12px "Signika", sans-serif; }
+.twod12-dark .enclog-app .window-content { background: ${T.pg}; color: ${T.ink}; } .twod12-dark .enclog .el-bar { background: ${T.pg2}; border-color: ${T.hair}; } .twod12-dark .enclog .el-abbr { border-color: ${T.hair}; }
+.twod12-dark .enclog .el-bar label, .twod12-dark .enclog .el-abbr label, .twod12-dark .enclog .el-line, .twod12-dark .enclog .el-own, .twod12-dark .enclog .el-round { color: ${T.ink}; } .twod12-dark .enclog .el-round, .twod12-dark .enclog .el-turn { border-color: ${T.rule}; }
+.twod12-dark .enclog .el-line > a { color: ${T.mute}; } .twod12-dark .enclog .el-line.k-dmg, .twod12-dark .enclog .el-line.k-down { color: #f0958a; } .twod12-dark .enclog .el-line.k-heal { color: #6fd0c4; }
+.twod12-type .application.twod12-gencard h4.gc-h { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: ${LIGHT.ink}; }
+.twod12-type .application.twod12-builder .bb-cap { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
+.twod12-type .application.twod12-gencard ul.gc-lines, .twod12-type .application.twod12-gencard .fr-tab .fr-ta.gc-text { border-radius: 0; }
+.twod12-type .application.twod12-builder .bb-foot .fr-q { border-radius: 0; }
+.twod12-type.twod12-type .application.twod12-styled .sk .bb-foot button { border-radius: 0; border: 1px solid #8c7d63; background: transparent; color: ${LIGHT.ink}; font: 600 13px "Signika", sans-serif; }
+.twod12-type.twod12-type .application.twod12-styled .sk .bb-foot button.bb-go { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; border-color: ${LIGHT.stamp}; }
+.twod12-dark.twod12-dark .application.twod12-styled .sk .bb-foot button { color: ${T.ink}; } .twod12-dark.twod12-dark .application.twod12-styled .sk .bb-foot button.bb-go { background: ${T.stamp}; color: ${T.stampInk}; border-color: ${T.stamp}; }
+.twod12-dark .application.twod12-gencard h4.gc-h { color: ${T.ink}; } .twod12-dark .application.twod12-gencard ul.gc-lines { background: ${T.pg2}; border-color: ${T.hair}; } .twod12-dark .application.twod12-gencard ul.gc-lines li.no { background: none; } .twod12-dark .application.twod12-gencard ul.gc-lines li.no > span { color: ${T.gold}; }
+/* the Class sheet's Details tab as a ruled form (Lucas, 2026-11-13: "a big change") */
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) { --cf-ink: ${LIGHT.ink}; --cf-mute: ${LIGHT.mute}; --cf-hair: ${LIGHT.hair}; --cf-rule: ${LIGHT.rule}; --cf-field: rgba(255,255,255,.55); --cf-mix: 0%; }
+.twod12-dark .application.twod12-styled .sk .tab:has(.cls-h) { --cf-ink: ${T.ink}; --cf-mute: ${T.mute}; --cf-hair: ${T.hair}; --cf-rule: ${T.rule}; --cf-field: rgba(255,255,255,.04); --cf-mix: 55%; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) label, .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .ro { display: flex; flex-direction: column; gap: 2px; margin: 0; font: 600 11.5px "Signika", sans-serif; color: var(--cf-mute); min-width: 0; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .ro span { font: inherit; color: inherit; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) label input:not([type="checkbox"]), .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) label select { width: 100%; height: 27px; box-sizing: border-box; margin: 0; padding: 0 6px; border: 0; border-bottom: 1px solid var(--cf-rule); border-radius: 0; background: var(--cf-field); color: var(--cf-ink); font: 600 14px "Signika", sans-serif; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .ro b { min-height: 27px; padding: 0 2px; border-bottom: 1px dotted var(--cf-hair); color: var(--cf-ink); font: 600 13.5px/27px "Signika", sans-serif; } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid3:has(.ro:first-child) { grid-template-columns: 2.5fr 1fr 1.2fr; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid3, .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid4 { display: grid; gap: 8px 14px; margin: 0 0 9px; align-items: end; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) > label { margin: 0 0 9px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) label.sheet-helptoggle { flex-direction: row; justify-content: flex-end; align-items: center; gap: 5px; margin: 0 0 2px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .hint { margin: 2px 0 8px; font: 400 12px/1.45 "Signika", sans-serif; color: var(--cf-mute); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) h3 { display: flex; align-items: baseline; justify-content: space-between; margin: 16px 0 6px; padding: 0 0 3px; border: 0; border-bottom: 1px solid var(--cf-rule); background: none; color: var(--cf-ink); font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) h3 button { width: auto; height: 22px; line-height: 20px; padding: 0 9px; border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: var(--cf-ink); font: 600 12px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-levels { gap: 0; margin: 0 0 4px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-levels > div { padding: 4px 2px; border: 0; border-bottom: 1px solid var(--cf-hair); border-radius: 0; background: none; font-size: 13px; color: var(--cf-ink); } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-levels > div b { width: 58px; } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-levels span { color: var(--cf-mute); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-grp { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 0 10px; align-items: baseline; margin: 0; padding: 5px 2px; border-bottom: 1px solid var(--cf-hair); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-gl { font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; color: color-mix(in srgb, var(--fq, #5F5E5A), #fff var(--cf-mix)); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chips { gap: 2px 14px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chip { padding: 0; border: 0; border-radius: 0; background: none; gap: 2px; font-size: 13.5px; } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chip a { color: var(--cf-ink); font-weight: 600; } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chip i { color: var(--cf-mute); font-size: 11.5px; margin-left: 3px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chip button { width: 16px; height: 16px; min-height: 0; padding: 0; border: 0; background: none; color: var(--cf-mute); font-size: 13px; line-height: 1; opacity: .7; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .drop-zone { margin: 7px 0 0; padding: 5px; border: 1px dashed var(--cf-hair); border-radius: 0; background: none; color: var(--cf-mute); font-size: 12px; opacity: 1; }
 .twod12-type .application .fr-tab .fr-sec > h3 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; background: none; border-left: 0; border-bottom: 1px solid #8a6d3b; padding: 2px 0; color: ${LIGHT.ink}; }
 .twod12-type .application .fr-tab .as-h4 { font-family: "Signika", sans-serif; font-variant: small-caps; color: ${LIGHT.gold}; }
 .twod12-type .application .fr-tab .as-tl, .twod12-type .application .fr-tab .as-railh, .twod12-type .application .fr-tab .fr-dropped b { font-family: "Signika", sans-serif; }
@@ -296,6 +333,7 @@ const R = {
   bars: pick(/twod12-(linebar|pickbar)\b/),
   pcs: pick(/\.sheet\.pcs\b|twod12-actor|\.twod12\.sheet(?![.\w-])|^\s*\.twod12 \.|\.hpnum|\.autodia|\.np-guardbtn|\.np-track/),
   car: pick(/#twod12-carousel/),
+  tools: pick(/enclog|\.el-|twod12-builder|twod12-gencard|\.gc-|\.bb-/),
   item: pick(/twod12-styled|\.twod12\.sheet\.item|\.sheet\.sk\b|\.fr-|\.as-|\.twod12\.sheet(?![.\w-])|^\s*\.twod12 \./),
   wins: pick(/\.classwin\b|\.pickwin\b|\.twod12\.rolldlg\b|\.trhl\b|\.trgrp\b|\.twod12 \.kw-/)
 };
@@ -459,6 +497,9 @@ const BY_HAND = `
 .twod12-dark #twod12-carousel .tp { background: linear-gradient(${T.pg2}, ${T.pg}); border-color: ${T.rule}; color: ${T.ink}; }
 .twod12-dark #twod12-carousel .tp-name { color: ${T.ink}; }
 .twod12-dark #twod12-carousel .tp-pips i { border-color: ${T.mute}; }
+.twod12-dark #twod12-carousel .tp-swap { background: transparent; color: ${T.ink}; border-color: #6a5d48; } .twod12-dark #twod12-carousel .tp-move.none { color: ${T.mute}; }
+.twod12-type #twod12-carousel .tc-round { white-space: nowrap; }
+.twod12-type #twod12-carousel .tp-move, .twod12-type #twod12-carousel .tp-swap { font-family: "Signika", sans-serif; font-size: 11.5px; font-weight: 600; }
 .twod12-dark .application.twod12-styled .sk .head, .twod12-dark .application.twod12-styled .sk .tabs { border-color: ${T.rule} !important; box-shadow: none; }
 .twod12-type .application .fr-tab .fr-tip b { font-family: "Signika", sans-serif; font-weight: 700; }
 .twod12-type.twod12-type .twod12.sheet .fr-headline { color: #b3a68e; } .twod12-type.twod12-type .twod12.sheet .fr-headline b { color: #eadfc8; }
@@ -513,7 +554,7 @@ ${Object.entries(SETS).map(([k, css]) => `/* ==== ${k} ==== */\n${css}`).join("\
 ${BY_HAND}`);
 
 /* ------------------------------------------------------------------ the page shell */
-const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["rest-dark.html", "7. Carousel and Action sheet"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
+const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["carousel-dark.html", "7a. Carousel"], ["rest-dark.html", "7b. Action, Effect and Class sheets"], ["tools-dark.html", "7c. Generate Action and the log"], ["combat-pc-dark.html", "7d. PC sheet in combat"], ["combat-npc-dark.html", "7e. NPC sheet in combat"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
 const SHELL = `
 * { box-sizing: border-box; }
 body { margin: 0; background: #2a2723; color: #eee6d6; font: 14px/1.45 "Signika", "Segoe UI", system-ui, sans-serif; padding: 22px 22px 60px; --font-primary: "Signika", sans-serif; }
@@ -942,37 +983,129 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 .stage.rw-scope { padding: 0; } .stage.rw-scope .pcs { display: block; height: auto; overflow: visible; }${RW_CSS}</style>
 <script>document.addEventListener("click", ev => { const b = ev.target.closest(".tabbtn"); if (!b) return; const sh = b.closest(".pcs"); sh.querySelectorAll(".tabbtn").forEach(x => x.classList.toggle("active", x === b)); sh.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === b.dataset.tabTarget)); });</script>`, R.pcs);
 
-/* ------------------------------------------------------------------ 7. the rest, from their real HTML: the carousel, an Action's sheet */
-const carRaw = FA(readFileSync(here("./samples/carousel-preparing.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace('src="systems/twod12/art/pcs/aveline.png"', `src="${artData("pcs/aveline.png")}"`).replace('src="systems/twod12/art/npcs/ogre-chieftain.png"', `src="${artData("npcs/ogre-chieftain.png")}"`)).replace('id="twod12-carousel"', 'id="twod12-carousel" style="position:static;transform:none;margin:0 auto"');
+/* ------------------------------------------------------------------ 7. the rest, from their real HTML */
+const carArt = h => FA(h.replace(/<!--[\s\S]*?-->/, "").replace('src="systems/twod12/art/pcs/aveline.png"', `src="${artData("pcs/aveline.png")}"`).replace('src="systems/twod12/art/npcs/ogre-chieftain.png"', `src="${artData("npcs/ogre-chieftain.png")}"`)).replace(/id="twod12-carousel"( style="[^"]*")?/, 'id="twod12-carousel" style="position:static;transform:none;margin:0 auto"');
+const carRaw = carArt(readFileSync(here("./samples/carousel-preparing.html"), "utf8"));
+const carRound = carArt(readFileSync(here("./samples/carousel-round.html"), "utf8"));
+// Two proposals for the carousel (Lucas, 2026-11-13: "it can use a better style"). The same elements; only CSS.
+const CAR_A = `
+.car-a.car-a #twod12-carousel { gap: 0; font-family: "Signika", sans-serif; }
+.car-a.car-a #twod12-carousel .tc-head.tc-bar { background: ${T.pg}; border: 1px solid ${T.hair}; border-bottom: 1px solid ${T.rule}; border-radius: 0; box-shadow: none; padding: 4px 8px; }
+.car-a.car-a #twod12-carousel .tc-round { color: ${T.mute}; font: 600 13px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; } .car-a.car-a #twod12-carousel .tc-round b { color: ${T.gold}; font-size: 15px; }
+.car-a.car-a #twod12-carousel .tc-bar .tc-btn { border-radius: 0; border-color: #6a5d48; color: ${T.ink}; font-weight: 600; height: 22px; }
+.car-a.car-a #twod12-carousel .tc-bar .tc-btn[data-tc="next"], .car-a.car-a #twod12-carousel .tc-bar .tc-btn[data-tc="begin"] { background: ${T.stamp}; color: ${T.stampInk}; border-color: ${T.stamp}; }
+.car-a.car-a #twod12-carousel .tp-list { gap: 0; padding: 0; background: ${T.pg}; border: 1px solid ${T.hair}; border-top: 0; border-radius: 0; box-shadow: 0 3px 10px rgba(0,0,0,.45); align-items: stretch; }
+.car-a.car-a #twod12-carousel .tp { display: grid; grid-template-columns: 46px 1fr; grid-template-areas: "por band" "por name" "por pips" "por strk" "move move" "swap swap"; column-gap: 8px; align-content: start; width: 172px; padding: 7px 8px 8px; text-align: left; background: none; border: 0; border-left: 1px solid ${T.hair}; border-radius: 0; box-shadow: none; }
+.car-a.car-a #twod12-carousel .tp:first-child { border-left: 0; }
+.car-a.car-a #twod12-carousel .tp.act { width: 184px; background: ${T.band}; box-shadow: inset 0 2px 0 ${T.gold}; }
+.car-a.car-a #twod12-carousel .tp-band { grid-area: band; height: auto; line-height: 13px; background: none; font: 700 11px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .05em; color: ${T.mute}; }
+.car-a.car-a #twod12-carousel .tp.d1 .tp-band { color: #9fcf7a; } .car-a.car-a #twod12-carousel .tp.dm1 .tp-band { color: #ea8f84; } .car-a.car-a #twod12-carousel .tp.act .tp-band { color: ${T.gold}; background: none; }
+.car-a.car-a #twod12-carousel .tp-por, .car-a.car-a #twod12-carousel .tp.act .tp-por { grid-area: por; width: 46px; height: 46px; margin: 0; }
+.car-a.car-a #twod12-carousel .tp-por img { border-radius: 50%; border: 2px solid #8c7d63; outline: none; }
+.car-a.car-a #twod12-carousel .tp.d1 .tp-por img { border-color: #5c9a34; } .car-a.car-a #twod12-carousel .tp.dm1 .tp-por img { border-color: #c0453b; } .car-a.car-a #twod12-carousel .tp.act .tp-por img { border-color: ${T.gold}; }
+.car-a.car-a #twod12-carousel .tp-seal { right: -5px; bottom: -4px; border-radius: 0; border: 0; background: ${T.stamp}; color: ${T.stampInk}; font: 700 11px/17px "Signika", sans-serif; height: 17px; }
+.car-a.car-a #twod12-carousel .tp-name, .car-a.car-a #twod12-carousel .tp.act .tp-name { grid-area: name; margin: 0; font: 700 13.5px/17px "Signika", sans-serif; color: ${T.ink}; }
+.car-a.car-a #twod12-carousel .tp-pips { grid-area: pips; justify-content: flex-start; margin: 3px 0 0; } .car-a.car-a #twod12-carousel .tp-strikes { grid-area: strk; justify-content: flex-start; margin: 4px 0 0 1px; }
+.car-a.car-a #twod12-carousel .tp-move { grid-area: move; margin: 7px 0 0; padding: 0; border: 0; border-top: 1px solid ${T.hair}; border-radius: 0; background: none; padding-top: 5px; font: 600 11.5px "Signika", sans-serif; text-align: left; }
+.car-a.car-a #twod12-carousel .tp-swap { grid-area: swap; width: 100%; margin: 5px 0 0; border-radius: 0; background: transparent; border: 1px solid #6a5d48; color: ${T.ink}; font: 600 11.5px/18px "Signika", sans-serif; }`;
+const CAR_B = `
+.car-b.car-b #twod12-carousel { gap: 6px; font-family: "Signika", sans-serif; }
+.car-b.car-b #twod12-carousel .tc-head.tc-bar { align-self: center; width: auto; gap: 14px; background: rgba(26,23,19,.92); border: 0; border-bottom: 2px solid ${T.rule}; border-radius: 0; box-shadow: 0 2px 8px rgba(0,0,0,.4); padding: 4px 8px; }
+.car-b.car-b #twod12-carousel .tc-round { color: ${T.ink}; font: 700 14px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; white-space: nowrap; } .car-b.car-b #twod12-carousel .tc-round b { color: ${T.gold}; font-size: 16px; }
+.car-b.car-b #twod12-carousel .tc-bar .tc-btn { border-radius: 0; border-color: #6a5d48; color: ${T.ink}; font-weight: 600; height: 22px; }
+.car-b.car-b #twod12-carousel .tc-bar .tc-btn[data-tc="next"], .car-b.car-b #twod12-carousel .tc-bar .tc-btn[data-tc="begin"] { background: ${T.stamp}; color: ${T.stampInk}; border-color: ${T.stamp}; }
+.car-b.car-b #twod12-carousel .tp-list { gap: 10px; padding: 0 4px 6px; justify-content: center; align-items: flex-start; }
+.car-b.car-b #twod12-carousel .tp, .car-b.car-b #twod12-carousel .tp.act { width: 104px; padding: 0; background: none; border: 0; border-radius: 0; box-shadow: none; overflow: visible; display: flex; flex-direction: column; align-items: stretch; filter: drop-shadow(0 3px 5px rgba(0,0,0,.55)); }
+.car-b.car-b #twod12-carousel .tp.act { width: 136px; }
+.car-b.car-b #twod12-carousel .tp-band { order: 2; height: auto; padding: 16px 4px 0; margin-top: -14px; background: rgba(26,23,19,.94); font: 700 10.5px/13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .06em; color: ${T.mute}; border-top: 2px solid #8c7d63; }
+.car-b.car-b #twod12-carousel .tp.d1 .tp-band { color: #9fcf7a; border-top-color: #5c9a34; } .car-b.car-b #twod12-carousel .tp.dm1 .tp-band { color: #ea8f84; border-top-color: #c0453b; } .car-b.car-b #twod12-carousel .tp.act .tp-band { color: ${T.gold}; border-top-color: ${T.gold}; background: rgba(26,23,19,.94); }
+.car-b.car-b #twod12-carousel .tp-por { order: 1; position: relative; z-index: 2; width: 58px; height: 58px; margin: 0 auto; } .car-b.car-b #twod12-carousel .tp.act .tp-por { width: 76px; height: 76px; }
+.car-b.car-b #twod12-carousel .tp-por img { border: 2px solid #1a1612; outline: none; } .car-b.car-b #twod12-carousel .tp.act .tp-por img { border-color: ${T.gold}; box-shadow: 0 0 0 1px #1a1612, 0 0 12px rgba(212,165,72,.55); }
+.car-b.car-b #twod12-carousel .tp-seal { right: -6px; bottom: 0; border-radius: 0; border: 0; background: ${T.stamp}; color: ${T.stampInk}; font: 700 11px/17px "Signika", sans-serif; height: 17px; }
+.car-b.car-b #twod12-carousel .tp-name, .car-b.car-b #twod12-carousel .tp.act .tp-name { order: 3; margin: 0; padding: 0 5px 1px; background: rgba(26,23,19,.94); font: 700 13.5px/17px "Signika", sans-serif; color: ${T.ink}; }
+.car-b.car-b #twod12-carousel .tp-pips { order: 4; margin: 0; padding: 3px 4px 5px; background: rgba(26,23,19,.94); } .car-b.car-b #twod12-carousel .tp-strikes { order: 5; margin: 0; padding: 0 4px 6px; background: rgba(26,23,19,.94); }
+.car-b.car-b #twod12-carousel .tp-move { order: 6; margin: 0; padding: 4px 4px; border: 0; border-top: 1px solid ${T.hair}; border-radius: 0; background: rgba(26,23,19,.94); font: 600 11.5px "Signika", sans-serif; }
+.car-b.car-b #twod12-carousel .tp-swap { order: 7; width: 100%; margin: 0; border-radius: 0; background: rgba(26,23,19,.94); border: 0; border-top: 1px solid ${T.hair}; color: ${T.ink}; font: 600 11.5px/22px "Signika", sans-serif; height: 24px; }`;
+const carRow = h => `<div class="cols">${col("A: one table", PICK, "", h, "map dk twod12-dark twod12-type car-a", "620px")}${col("B: medallions", PICK, "", h, "map dk twod12-dark twod12-type car-b", "620px")}${col("C: as shown before", "", "", h, "map dk twod12-dark twod12-type", "620px")}${col("Today", TODAY, "", h, "map", "620px")}</div>`;
+const MWIN_CSS = `.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }`;
+page("carousel-dark.html", "Style 7a: the carousel", `The carousel (the combat tracker at the top of the screen), <b>from its real HTML</b>, during a round and while an encounter is prepared. Lucas, 2026-11-13: "it can use a better style". <b>Two new looks, A and B, beside the one shown before (C) and today's.</b> The same elements in all four; only the style differs. It sits on the map with the HUD, so one dark look serves both themes.`, `
+<h2>During a round</h2>
+${carRow(carRound)}
+<h2>Preparing the encounter</h2>
+${carRow(carRaw)}
+<h2>Notes</h2>
+<ul class="notes">
+<li><b>A, one table</b>: the HUD's table look. The bar and the creatures are one flat dark strip, a hairline between creatures; a square portrait at the left with its side's color under it, the text beside it; the acting creature is the lit column under a gold line. "Next turn" (and "Begin") is the stamp, the other buttons outlined.</li>
+<li><b>B, medallions</b>: no card. Each creature is its portrait standing on the map, over a small dark plate with its side (under a line of the side's color), its name and its pips. The acting creature is the larger portrait in a gold ring, its plate carrying the movement and Swap.</li>
+<li>In both, the AP pips, the Reaction AP, the Strikes, the movement line and Swap keep their shapes and colors.</li>
+</ul>
+<style>.stage.map { display: flex; justify-content: center; }${CAR_A}${CAR_B}</style>`, R.car);
+
 const SUN = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" fill="#3a3229"/><circle cx="24" cy="24" r="9" fill="#d4a548"/><g stroke="#d4a548" stroke-width="3"><path d="M24 4v8M24 36v8M4 24h8M36 24h8M10 10l6 6M32 32l6 6M38 10l-6 6M16 32l-6 6"/></g></svg>');
-const itemRaw = FA(readFileSync(here("./samples/action-sheet-smite.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace('src="icons/svg/sun.svg"', `src="${SUN}"`));
 const TERROR = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" fill="#3a3229"/><circle cx="24" cy="22" r="13" fill="none" stroke="#d4a548" stroke-width="3"/><circle cx="19" cy="19" r="2.5" fill="#d4a548"/><circle cx="29" cy="19" r="2.5" fill="#d4a548"/><ellipse cx="24" cy="29" rx="4" ry="5" fill="#d4a548"/></svg>');
-const fxRaw = FA(readFileSync(here("./samples/effect-sheet-frightened.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace('src="icons/svg/terror.svg"', `src="${TERROR}"`));
-const fxWin = () => `<div class="mwin" style="width:680px"><div class="mwin-head">Frightened (Sylwen) (on Aveline)<span>&times;</span></div><div class="application sheet twod12 item twod12-applied twod12-styled" style="position:static;width:auto"><section class="window-content" style="display:block;overflow:visible">${fxRaw}</section></div></div>`;
-const itemWin = () => `<div class="mwin" style="width:900px"><div class="mwin-head">Action: Smite<span>&times;</span></div><div class="application sheet twod12 item twod12-styled" style="position:static;width:auto"><section class="window-content" style="display:block;overflow:visible">${itemRaw}</section></div></div>`;
-page("rest-dark.html", "Style 7: the carousel, an Action's sheet and an Effect's", `Two more surfaces, <b>from their real HTML, copied from Lucas's Foundry</b>: the carousel (the combat tracker at the top of the screen, here while an encounter is prepared) and an Action's sheet on its Details tab (Smite: the Action editor). <b>A style change only.</b> The dark sets are generated from ${R.car.length} and ${R.item.length} rules.`, `
-<h2>The carousel</h2>
-<div class="cols">${col("Dark", PICK, "", carRaw, "map dk twod12-dark twod12-type", "440px")}${col("Light", PICK, "", carRaw, "map twod12-type", "440px")}${col("Today", TODAY, "", carRaw, "map", "440px")}</div>
+const ANGEL = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" fill="#3a3229"/><ellipse cx="24" cy="9" rx="8" ry="3" fill="none" stroke="#d4a548" stroke-width="2.5"/><circle cx="24" cy="20" r="5" fill="#d4a548"/><path d="M24 26c-5 0-8 6-8 16h16c0-10-3-16-8-16z" fill="#d4a548"/><path d="M15 28C8 24 5 30 4 38c5-1 9-3 11-6zM33 28c7-4 10 2 11 10-5-1-9-3-11-6z" fill="#d4a548"/></svg>');
+const rd = (f, a, b) => FA(readFileSync(here(`./samples/${f}`), "utf8").replace(/<!--[\s\S]*?-->/, "").replace(a, b));
+const itemRaw = rd("action-sheet-smite.html", 'src="icons/svg/sun.svg"', `src="${SUN}"`);
+const fxRaw = rd("effect-sheet-frightened.html", 'src="icons/svg/terror.svg"', `src="${TERROR}"`);
+const clsRaw = rd("class-sheet-paladin.html", 'src="icons/svg/angel.svg"', `src="${ANGEL}"`).replace(/<div class="cls-grp"><span class="cls-gl">(Passive|Turn|Round|Encounter|Daily|Passives|Actives)/g, (m, f) => `<div class="cls-grp" style="--fq:${({ Turn: "#0F6E6E", Round: "#185FA5", Encounter: "#A32D2D", Daily: "#5B3FA6", Actives: "#c9821f", Passives: "#c9821f" })[f] ?? "#5F5E5A"}"><span class="cls-gl">${f}`);
+const iwin = (title, w, cls, inner) => `<div class="mwin" style="width:${w}px"><div class="mwin-head">${title}<span>&times;</span></div><div class="application ${cls}" style="position:static;width:auto"><section class="window-content" style="display:block;overflow:visible">${inner}</section></div></div>`;
+const itemWin = () => iwin("Action: Smite", 900, "sheet twod12 item twod12-styled", itemRaw);
+const fxWin = () => iwin("Frightened (Sylwen) (on Aveline)", 680, "sheet twod12 item twod12-applied twod12-styled", fxRaw);
+const clsWin = () => iwin("Class: Paladin", 560, "sheet twod12 item twod12-styled", clsRaw);
+const threeW = (w, f) => `<div class="cols">${col("Dark", PICK, "", f(), "dk twod12-dark twod12-type", w)}${col("Light", PICK, "", f(), "twod12-type", w)}${col("Today", TODAY, "", f(), "", w)}</div>`;
+page("rest-dark.html", "Style 7b: the sheets of an Action, an Effect and a Class", `Three item sheets, <b>from their real HTML, copied from Lucas's Foundry</b>, each on its Details tab: an Action (Smite: the Action editor), an applied Effect (Frightened) and a Class (Paladin). <b>A style change only.</b> The dark set is generated from ${R.item.length} rules.`, `
+<h2>A Class's sheet, the Details tab</h2>
+<p class="why">Lucas, 2026-11-13: "the Class details will need a big change". The same fields and lists, restyled as a ruled form: each label is small and muted over its value, the fields sit in one aligned grid, the sections ("Levels", "Repertoire", "Escalation") are headings on a rule, a level is a ruled line, and a list is its Frequency's name in that Frequency's color with its Actions as plain links after it.</p>
+${threeW("590px", clsWin)}
 <h2>An Action's sheet, the Details tab: dark ${PICK}</h2>
 <div class="stage dk twod12-dark twod12-type" style="width:930px">${itemWin()}</div>
 <h2>Light ${PICK}</h2>
 <div class="stage twod12-type" style="width:930px">${itemWin()}</div>
-<h2>An applied Effect's sheet (Frightened), the Details tab: dark ${PICK}</h2>
-<div class="stage dk twod12-dark twod12-type" style="width:710px">${fxWin()}</div>
-<h2>Light ${PICK}</h2>
-<div class="stage twod12-type" style="width:710px">${fxWin()}</div>
-<h2>Today ${TODAY}</h2>
-<div class="stage" style="width:710px">${fxWin()}</div>
 <h2>Today ${TODAY}</h2>
 <div class="stage" style="width:930px">${itemWin()}</div>
+<h2>An applied Effect's sheet (Frightened), the Details tab</h2>
+${threeW("710px", fxWin)}
 <h2>Notes</h2>
 <ul class="notes">
-<li>The carousel is shown as an encounter is prepared (nobody has rolled). The running state (the round, the active creature, the AP pips lit) needs a copy taken during a round.</li>
 <li>The Action's Description tab is the Action card of step 2, so it is not repeated. The same editor pieces draw a Feature's sheet. In dark, a trait chip is outlined in its group's color.</li>
 <li>Foundry's own window frame, inputs, selects and text boxes are stand-ins.</li>
 </ul>
-<style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }
-.sk .tab { display: none; } .sk .tab.active { display: block; } .sk input, .sk select, .sk textarea { font: inherit; } .stage.map { display: flex; justify-content: center; }</style>`, [...R.car, ...R.item, ...R.card]);
+<style>${MWIN_CSS}
+.sk .tab { display: none; } .sk .tab.active { display: block; } .sk input, .sk select, .sk textarea { font: inherit; }</style>`, [...R.item, ...R.card]);
+
+const genRaw = rd("generate-action.html", "", ""), logRaw = rd("encounter-log.html", "", "");
+const genWin = () => `<div class="mwin" style="width:980px"><div class="mwin-head">Generate Action: Ogre Chieftain<span>&times;</span></div><div class="application twod12 twod12-styled twod12-builder twod12-gencard" style="position:static;width:auto;display:flex;flex-direction:column"><section class="window-content">${genRaw}</section></div></div>`;
+const logWin = () => `<div class="mwin" style="width:560px"><div class="mwin-head">Encounter Log<span>&times;</span></div><div class="application twod12 enclog-app" style="position:static;width:auto;height:330px;display:flex;flex-direction:column"><section class="window-content" style="flex:1">${logRaw}</section></div></div>`;
+page("tools-dark.html", "Style 7c: the Generate Action window and the encounter log", `Two windows, <b>from their real HTML, copied from Lucas's Foundry</b>. <b>A style change only.</b> The dark set is generated from ${R.tools.length} rules.`, `
+<h2>The encounter log</h2>
+${threeW("590px", logWin)}
+<h2>The Generate Action window: dark ${PICK}</h2>
+<div class="stage dk twod12-dark twod12-type" style="width:1010px">${genWin()}</div>
+<h2>Light ${PICK}</h2>
+<div class="stage twod12-type" style="width:1010px">${genWin()}</div>
+<h2>Today ${TODAY}</h2>
+<div class="stage" style="width:1010px">${genWin()}</div>
+<h2>Notes</h2>
+<ul class="notes">
+<li>The Generate window is empty, as copied: its right side shows the Action card of step 2 once a card is written.</li>
+<li>Foundry's own window frame, check boxes and text boxes are stand-ins.</li>
+</ul>
+<style>${MWIN_CSS} .sk input, .sk select, .sk textarea { font: inherit; }</style>`, [...R.item, ...R.tools]);
+
+const pcCombat = rd("pc-sheet-aveline-combat.html", 'src="systems/twod12/art/pcs/aveline.png"', `src="${artData("pcs/aveline.png")}"`).replace(/fa-regular fa-star/g, "fa-solid fa-star").replace(/src="icons\/svg\/sun.svg"/g, `src="${SUN}"`);
+const npcCombat = rd("npc-sheet-ogre-combat.html", 'src="systems/twod12/art/npcs/ogre-chieftain.png"', `src="${artData("npcs/ogre-chieftain.png")}"`).replace(/fa-regular fa-star/g, "fa-solid fa-star");
+const actorWin = (title, inner) => `<div class="mwin" style="width:900px"><div class="mwin-head">${title}<span>&times;</span></div><div class="application sheet twod12 twod12-actor" style="position:relative;height:931px;width:auto"><section class="window-content" style="position:absolute;inset:0;padding:0;overflow:hidden">${inner}</section></div></div>`;
+const stages3 = f => `<h3>Dark ${PICK}</h3><div class="stage dk twod12-dark twod12-type" style="width:930px">${f()}</div><h3>Light ${PICK}</h3><div class="stage twod12-type" style="width:930px">${f()}</div><h3>Today ${TODAY}</h3><div class="stage" style="width:930px">${f()}</div>`;
+page("combat-pc-dark.html", "Style 7d: the PC sheet in combat", `The PC sheet <b>during a round, from its real HTML</b> (Aveline on her turn, Smite's card open). It is the sheet of step 6 with the combat strip lit: "On you", the Escalation rungs, the Hands, the AP pips and the Strikes. <b>A style change only. The tabs are live: click them.</b>`, `
+${stages3(() => actorWin("Character: Aveline (Human Paladin, Smite, level 1)", pcCombat))}
+<style>${MWIN_CSS}
+.pcs .autodia { display: none !important; } .pcs .tab { display: none; } .pcs .tab.active { display: block; } .pcs input { font: inherit; } .pcs a { cursor: pointer; }</style>
+<script>document.addEventListener("click", ev => { const b = ev.target.closest(".tabbtn"); if (!b) return; const sh = b.closest(".pcs"); sh.querySelectorAll(".tabbtn").forEach(x => x.classList.toggle("active", x === b)); sh.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === b.dataset.tabTarget)); });</script>`, [...R.pcs, ...R.card]);
+page("combat-npc-dark.html", "Style 7e: the NPC sheet in combat", `The NPC sheet <b>during a round, from its real HTML</b> (the Ogre Chieftain, an Elite, out of AP, so its Actions are dimmed). It is the sheet of step 6b with the combat strip lit. <b>A style change only. The tabs are live: click them.</b>`, `
+${stages3(() => actorWin("NPC: Ogre Chieftain", npcCombat))}
+<style>${MWIN_CSS}
+.pcs .autodia { display: none !important; } .pcs .tab { display: none; } .pcs .tab.active { display: block; } .pcs input { font: inherit; } .pcs a { cursor: pointer; }</style>
+<script>document.addEventListener("click", ev => { const b = ev.target.closest(".tabbtn"); if (!b) return; const sh = b.closest(".pcs"); sh.querySelectorAll(".tabbtn").forEach(x => x.classList.toggle("active", x === b)); sh.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === b.dataset.tabTarget)); });</script>`, [...R.pcs, ...R.card]);
 
 console.log(`built: style-tokens.css/.html, style-dark.css, action-card-dark.html, chat-cards-dark.html, bars-dark.html`);
 for (const [k, s] of Object.entries(autoUsed)) console.log(`  ${k}: ${R[k].length} rules, ${s.size} colors by AUTO${s.size ? `: ${[...s].join(" ")}` : ""}`);

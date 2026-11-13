@@ -1,0 +1,601 @@
+<!-- Copied by Lucas from his Foundry, 2026-11-13 (tooltips and data left out). style-build.mjs reads this file. -->
+<div class="twod12 sheet pcs" data-application-part="main">
+  <header class="ps-head">
+    <img class="ps-portrait" src="systems/twod12/art/pcs/aveline.png" data-edit="img" data-action="editImage" alt="Portrait of Aveline (Human Paladin, Smite, level 1)">
+    <div class="ps-id">
+      <div class="ps-nameline"><input class="ps-nameinput" type="text" name="name" value="Aveline (Human Paladin, Smite, level 1)" placeholder="Name"></div>
+      <div class="ps-line1">
+        <span>Level 1</span>
+        <span>·</span><b class="ps-stage">Stage 1</b>
+        <span>·</span><a data-action="openItem" data-item-id="DjQ5l91syWoGPCFt">Human</a>
+        <a data-action="openItem" data-item-id="Y1Wl5aqSZtEvxBYc" style="">Paladin</a>
+        <span>·</span><span>Medium</span>
+        <span class="ps-senses"><span class="ps-sense">Sight</span><span class="ps-sense">Hearing 10</span></span>      </div>
+    </div>
+    <div class="ps-htools">
+      
+      <button type="button" class="ps-icon" data-action="editSenses"><i class="fa-solid fa-eye"></i></button>
+      <span class="ps-incombat">In combat · Round 1</span>
+          </div>
+  </header>
+
+  <div class="ps-strip v349">
+    <div class="ps-cell ps-onyou edrop-zone in-strip">
+      <span class="ps-k">On you</span>
+      <span class="ps-chips"><button type="button" class="ps-chip good" data-effect-id="8jKi4XKTVEf8vGw3" data-action="openEffect">Radiant Zeal</button><button type="button" class="ps-chip good" data-effect-id="vO7zmzMHCXBb8obP" data-action="openEffect">Radiant Zeal</button></span>
+    </div>
+    <div class="ps-cell">
+      <span class="ps-k">Escalation 1</span>
+      <span class="ps-rungs"><a class="rung lit" data-action="setEscalation" data-n="1" role="button">1 · Radiant Zeal</a><a class="rung" data-action="setEscalation" data-n="2" role="button">2 · Searing Blows</a><a class="rung" data-action="setEscalation" data-n="3" role="button">3 · Reckoning + Apex</a></span>
+      <span class="ps-s">Hooks still available: Critical · Kindled Wrath</span>
+    </div>
+    <div class="ps-cell">
+      <span class="ps-k">Hands</span>
+      <span class="ps-tiles"><button type="button" class="ps-tile wide" data-hand-tile="both"><span>Greatsword</span><b>2H</b></button></span>
+    </div>
+    <div class="ps-cell ps-apcell">
+      <span class="ps-k">Action Points</span>
+      <span class="ps-pips"><a class="pip on" data-action="setApPip" data-n="1" role="button"></a><a class="pip on" data-action="setApPip" data-n="2" role="button"></a><a class="pip on" data-action="setApPip" data-n="3" role="button"></a><a class="pip on" data-action="setApPip" data-n="4" role="button"></a><span class="pip-sep"></span><a class="pip rap on" data-action="toggleRap" role="button"></a></span>
+      <span class="ps-strk sm"><i class="on"></i><i class="on"></i><i class="on"></i></span>
+      
+    </div>
+  </div>
+
+  
+
+  <div class="ps-body">
+    <aside class="ps-side np">
+      <section class="ps-sec">
+        <div class="ps-hh"><span class="ps-k">Health 35</span><a class="ps-shield np-guardbtn zero" role="button"><b>0</b></a><span class="ps-todown"><b>35</b> to Down</span></div>
+        <div class="ps-bar">
+          <div class="ps-barh"><span class="ps-bl"><b style="color:#ef8a80">Vigor</b></span><a class="hpnum" data-action="hpEdit" data-pool="body" role="button">0 / 23</a></div>
+          <div class="ps-track np-track" data-pool="body"><span class="sl" style="width:0%;background:#c4453c"></span><span class="sn" style="width:0%;--a:#c4453c;--b:#7f2a24"></span></div>
+        </div>
+        <div class="ps-bar">
+          <div class="ps-barh"><span class="ps-bl"><b style="color:#8fb3ee">Resolve</b></span><a class="hpnum" data-action="hpEdit" data-pool="mind" role="button">0 / 12</a></div>
+          <div class="ps-track np-track" data-pool="mind"><span class="sl" style="width:0%;background:#5b8ad6"></span><span class="sn" style="width:0%;--a:#5b8ad6;--b:#3a5f99"></span></div>
+        </div>
+        <div class="ps-foot">Dominant Damage: <b style="color:#c9cfda">Tie</b></div>
+      </section>
+
+      <section class="ps-sec line">
+        <div class="ps-hh"><span class="ps-k">Rally</span><span class="ps-rally">7 / 7 · Each heals 9</span></div>
+        <span class="ps-rpips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
+      </section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Defenses</span>
+        <div class="ps-g2"><div class="ps-box big"><b class="">14</b><span>AD</span></div><div class="ps-box big"><b class="">12</b><span>WD</span></div></div>
+        <div class="ps-g4 small"><div class="ps-box"><b>14</b><span>vs Body</span></div><div class="ps-box"><b>12</b><span>vs Mind</span></div><div class="ps-box"><b>13</b><span>vs Appeal</span></div><div class="ps-box"><b>13</b><span>vs Inst.</span></div></div>
+      </section>
+      <section class="ps-sec line ps-rwi"><span class="ps-k">Damage Immune/Resist/Weak</span><button type="button" class="ps-dladd" data-action="dmgLineAdd">+ Add</button></section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Attributes</span>
+        <div class="ps-g4"><button type="button" class="ps-box btn" data-action="rollAttr" data-key="body"><b>+2</b><span>Body</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="mind"><b>+0</b><span>Mind</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="appeal"><b>+1</b><span>Appeal</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="instinct"><b>+1</b><span>Instinct</span></button></div>
+      </section>
+
+      <section class="ps-sec">
+        <span class="ps-k">Movement</span>
+        <div class="ps-g4"><div class="ps-box btn"><b class="">5</b><span>Speed</span></div><div class="ps-box btn"><b class="">1</b><span>Reach</span></div><div class="ps-box btn"><b class="">3</b><span>Size</span></div><div class="ps-box btn"><b class="">0</b><span>Steady</span></div></div>
+      </section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Modifiers · Save DC</span>
+        <div class="ps-mods"><span>Weapon <span class="ps-mut">Class</span></span><b>+2</b><span class="ps-dc">DC 13</span><span>Power <span class="ps-mut">Class</span></span><b>+1</b><span class="ps-dc">DC 12</span><span>Signature <span class="ps-mut">Weapon</span></span><b>+2</b><span class="ps-dc">DC 13</span></div>
+        
+      </section>
+
+      <section class="ps-wounds">
+        <div class="ps-wb body">
+          <div class="ps-wh"><span>Body Wounds</span><input type="number" min="0" name="system.bodyWounds" value="0"></div>
+          <span class="ps-mut small">none named</span>
+          <button type="button" class="ps-wroll" data-action="rollTable" data-kind="dying">Roll Dying</button>
+        </div>
+        <div class="ps-wb mind">
+          <div class="ps-wh"><span>Mind Wounds</span><input type="number" min="0" name="system.mindWounds" value="0"></div>
+          <span class="ps-mut small">none named</span>
+          <button type="button" class="ps-wroll" data-action="rollTable" data-kind="shattered">Roll Shattered</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="ps-main mn">
+      <nav class="ps-tabs">
+        <a class="tabbtn" data-action="switchTab" data-tab-target="favorites" role="tab" tabindex="0"><i class="fa-regular fa-star"></i></a>
+        <a class="tabbtn active" data-action="switchTab" data-tab-target="actions" role="tab" tabindex="0">Actions</a><a class="tabbtn" data-action="switchTab" data-tab-target="effects" role="tab" tabindex="0">Effects <span class="tabcount">2</span></a><a class="tabbtn" data-action="switchTab" data-tab-target="items" role="tab" tabindex="0">Items</a><a class="tabbtn" data-action="switchTab" data-tab-target="build" role="tab" tabindex="0">Build</a><a class="tabbtn" data-action="switchTab" data-tab-target="mastery" role="tab" tabindex="0">Mastery</a><a class="tabbtn" data-action="switchTab" data-tab-target="upkeep" role="tab" tabindex="0">Upkeep</a><a class="tabbtn" data-action="switchTab" data-tab-target="notes" role="tab" tabindex="0">Notes</a>
+      </nav>
+      <div class="ps-scroll">
+
+      <div class="tab" data-tab="favorites">
+<div class="ps-empty"><i class="fa-regular fa-star"></i> Right-click an Action on the Actions tab and choose Favorite to keep it here. Drag the rows to put them in your order.</div>
+      </div>
+
+      <div class="tab active" data-tab="actions">
+        
+        <div class="ps-colh"><span>Action</span><span>Cost</span><span>Distance</span><span>Vs.</span><span></span></div>
+        <div class="ps-stack">
+          <div class="ps-block escal">
+  <div class="ps-bh"><span class="ps-dot" style="background:#c9821f"></span><b>Escalation 3</b><span class="ps-bsub">in combat only</span></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row off strike" data-item-id="r96zJInuUIPwGCWw" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Final Verdict<i class="fa-solid fa-diamond autodia auto-silver"></i></a><span class="ps-sub">Area: 1 Emanation</span></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#a8322d">2 AP</span></span>
+    <span class="ps-c ps-dist">—</span>
+    <span class="ps-c"><span class="ps-vs vsk-ad">AD</span></span>
+    <span class="ps-c"><button type="button" class="ps-use dis" data-action="useAction" data-off="Needs Escalation 3 (now 1)"><i class="fa-solid fa-khanda" aria-hidden="true"></i><small>2H</small></button>
+</span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+</div>
+</div>
+<div class="ps-block ">
+  <div class="ps-bh"><span class="ps-dot" style="background:#2c5d9e"></span><b>Once per round</b></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row open strike" data-item-id="F1eB2Enn3bTXQTtR" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="true">Smite<i class="fa-solid fa-diamond autodia auto-diamond"></i></a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#2c5d9e">1/2/3 AP</span></span>
+    <span class="ps-c ps-dist">1 sq.</span>
+    <span class="ps-c"><span class="ps-vs vsk-ad">AD</span></span>
+    <span class="ps-c"><span class="ps-hands"><button type="button" class="ps-use wpn" data-action="useWith" data-weapon-id="BWMJyZJXAAUEl92d"><i class="fa-solid fa-khanda" aria-hidden="true"></i><small>2H</small></button></span>
+</span>
+  </div>
+  <div class="ar-card" data-loaded="1"><div class="twod12 acard d2" data-card-item="F1eB2Enn3bTXQTtR">
+    <div class="ap-trow"><span class="ap-tg"><span class="ap-cs"><span class="ap-chip g-roll">Signature</span><span class="ap-chip g-roll">Weapon</span></span><i>Roll</i></span><span class="ap-gdiv" aria-hidden="true"></span><span class="ap-tg"><span class="ap-cs"><span class="ap-chip g-kind">Strike</span></span><i>Kind</i></span><span class="ap-gdiv" aria-hidden="true"></span><span class="ap-tg"><span class="ap-cs"><span class="ap-chip g-keywords">Divine</span></span><i>Keywords</i></span><span class="ap-cat"><i class="fa-solid fa-diamond autodia auto-diamond"></i> Divine Power 1 <span class="ap-freq" style="background:#2c5d9e">Round</span></span></div>
+    <div class="ap-meta"><div class="trow"><span><span class="tgt"><b>Targets:</b> One creature</span></span></div><div class="trow"><span><span class="dist"><b>Distance:</b> <span class="trhl" style="--tc:var(--g-roll)">Weapon</span></span><span class="ap-st" aria-hidden="true">✦</span><span class="vs"><b>Vs.</b> <span class="vsv" style="color:#9a4a00;font-weight:700">AD</span></span></span></div></div>
+    
+    
+    <div class="ap-ttw"><table class="ap-tt"><thead><tr><th></th><th><button type="button" class="ap-vbtn" data-action="useVersion" data-ap="1">Use · 1 AP</button></th><th><button type="button" class="ap-vbtn" data-action="useVersion" data-ap="2">Use · 2 AP</button></th><th><button type="button" class="ap-vbtn" data-action="useVersion" data-ap="3">Use · 3 AP</button></th></tr></thead><tbody><tr class="t1"><td class="tl">Tier 1</td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W]</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d8</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td></tr><tr class="t2"><td class="tl">Tier 2</td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">2d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">2d8</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td></tr><tr class="t3"><td class="tl">Tier 3</td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d8</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">2d10</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">3d8</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td></tr></tbody></table></div><div class="ap-fxh">Effects (Tier 2+)</div><div class="ap-fxl"><span class="ap-ap">1 AP</span><span class="ap-fxt">The target sheds <a class="twod12-inline book" data-twod12-inline="Book"><i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span></a> in a <a class="twod12-inline" data-twod12-inline="Template"><i class="areaic emanation"></i> <span class="ti-name">1 Emanation</span></a> and takes <span class="kw-bane">1 Bane</span> when they try to <a class="content-link" draggable="true" data-link="" data-uuid="Compendium.twod12.actions.Item.vq0nKfKlyhogs75E" data-id="vq0nKfKlyhogs75E" data-type="Item" data-pack="twod12.actions"><i class="fa-solid fa-suitcase" inert=""></i>Hide</a>, for 1 round.</span><span class="ap-ap">2 AP</span><span class="ap-fxt">The target sheds <a class="twod12-inline book" data-twod12-inline="Book"><i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span></a> in a <a class="twod12-inline" data-twod12-inline="Template"><i class="areaic emanation"></i> <span class="ti-name">2 Emanation</span></a> and takes <span class="kw-bane">1 Bane</span> when they try to <a class="content-link" draggable="true" data-link="" data-uuid="Compendium.twod12.actions.Item.vq0nKfKlyhogs75E" data-id="vq0nKfKlyhogs75E" data-type="Item" data-pack="twod12.actions"><i class="fa-solid fa-suitcase" inert=""></i>Hide</a>, for 1 round.</span><span class="ap-ap">3 AP</span><span class="ap-fxt">The target sheds <a class="twod12-inline book" data-twod12-inline="Book"><i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span></a> in a <a class="twod12-inline" data-twod12-inline="Template"><i class="areaic emanation"></i> <span class="ti-name">2 Emanation</span></a> and takes <span class="kw-bane">1 Bane</span> when they try to <a class="content-link" draggable="true" data-link="" data-uuid="Compendium.twod12.actions.Item.vq0nKfKlyhogs75E" data-id="vq0nKfKlyhogs75E" data-type="Item" data-pack="twod12.actions"><i class="fa-solid fa-suitcase" inert=""></i>Hide</a>, for 1 round. You or one ally in the Bright light gain <a class="twod12-inline calc" data-twod12-inline="Guard"><i class="fa-solid fa-shield-heart"></i> <span class="ti-name">Guard 1d8+2</span></a>. The other creatures in the light, you excepted, are <a class="twod12-inline" data-twod12-inline="Move"><i class="fa-solid fa-hand"></i> <span class="ti-name">Pushed 1</span></a>, away from the target.</span></div><div class="ap-strip"><span class="lab">Your roll</span><b class="ap-rmod">Signature +2</b><span class="ap-ac"><span class="pg" aria-hidden="true">+</span>Radiant Zeal</span><span class="ap-ac na"><span class="pg" aria-hidden="true">+</span>Heavy Blows</span></div><div class="ap-flav"><div class="dv" aria-hidden="true">◆ ◆ ◆</div>Your weapon blazes with holy light.</div>
+    
+  </div></div>
+</div>
+</div>
+</div>
+<div class="ps-block ">
+  <div class="ps-bh"><span class="ps-dot" style="background:#a8322d"></span><b>Once per encounter</b></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row strike" data-item-id="QS78ajFeVDEIB6To" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Holy Wrath<i class="fa-solid fa-diamond autodia auto-mithril"></i></a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#a8322d">2/3 AP</span></span>
+    <span class="ps-c ps-dist">1 sq.</span>
+    <span class="ps-c"><span class="ps-vs vsk-ad">AD</span></span>
+    <span class="ps-c"><span class="ps-hands"><button type="button" class="ps-use wpn" data-action="useWith" data-weapon-id="BWMJyZJXAAUEl92d"><i class="fa-solid fa-khanda" aria-hidden="true"></i><small>2H</small></button></span>
+</span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+</div>
+</div>
+<div class="ps-block ">
+  <div class="ps-bh"><span class="ps-dot" style="background:#1f7a72"></span><b>Reactions</b></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row strike lnfreq" data-item-id="WgsCi7WjtUFGMygN" style="--lnf:#4c7a2e" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Opportunity Attack</a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#1f7a72">1R</span></span>
+    <span class="ps-c ps-dist">1 sq.</span>
+    <span class="ps-c"></span>
+    <span class="ps-c"><button type="button" class="ps-use rx" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+<div class="ar ps-row lnfreq" data-item-id="5V2C6z7dJB0XcRzG" style="--lnf:#1f7a72" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Rebuke<i class="fa-solid fa-diamond autodia auto-diamond"></i></a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#1f7a72">1R</span></span>
+    <span class="ps-c ps-dist">5 sq.</span>
+    <span class="ps-c"><span class="ps-vs vsk-appeal">App Save</span></span>
+    <span class="ps-c"><button type="button" class="ps-use rx" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+</div>
+</div>
+
+        </div>
+        <div class="ps-basic">
+          <div class="ps-basich"><span class="ps-h2">Basic Actions</span><span class="ps-legend"><i class="sw" style="--lnf:#4c7a2e"></i> At-will <i class="sw" style="--lnf:#2c5d9e"></i> Once per round <i class="sw" style="--lnf:#d14b3f"></i> Strike</span>
+            <a class="ps-upd" data-action="addBasic">Update Basic Actions</a></div>
+          <div class="ps-bgrid">
+            <div class="ps-bcol"><span class="ps-bgh">Attack</span>
+              <div class="ar ps-bx" data-item-id="jnpNtA0dmauBnM8O" draggable="true">
+                <button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#4c7a2e" data-action="useWith" data-weapon-id="BWMJyZJXAAUEl92d">
+                  <span class="ps-bxl"><span class="ps-bxn">Weapon Attack</span></span>
+                  <b>1 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="NuFdon2QhDH6265R" draggable="true">
+                <button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Charge</span></span>
+                  <b>2 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx off" data-item-id="w27BVCQPIPoZetnp" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="No free hand">
+                  <span class="ps-bxl"><span class="ps-bxn">Fists</span><span class="ps-bxwhy">No free hand</span></span>
+                  <span class="ps-bxno" aria-hidden="true">⊘</span>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx off" data-item-id="vT7B80qtkKajCKcH" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="No Reload weapon">
+                  <span class="ps-bxl"><span class="ps-bxn">Reload</span><span class="ps-bxwhy">No Reload weapon</span></span>
+                  <span class="ps-bxno" aria-hidden="true">⊘</span>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Movement</span>
+              <div class="ar ps-bx" data-item-id="hhMybWTwjIqxRFP0" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Advance</span></span>
+                  <b>1 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="0M3XBJvGHKBKHIbf" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Evade</span></span>
+                  <b>1/2 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="bJw3QEgWMaX1IveE" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Crawl</span></span>
+                  <b>1/2 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx off" data-item-id="pqOLAODuISvqg1sV" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Not Prone">
+                  <span class="ps-bxl"><span class="ps-bxn">Stand</span><span class="ps-bxwhy">Not Prone</span></span>
+                  <span class="ps-bxno" aria-hidden="true">⊘</span>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx off" data-item-id="jFFs2yEDxGPxsunD" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Not Immobilized">
+                  <span class="ps-bxl"><span class="ps-bxn">Break Free</span><span class="ps-bxwhy">Not Immobilized</span></span>
+                  <span class="ps-bxno" aria-hidden="true">⊘</span>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Control</span>
+              <div class="ar ps-bx" data-item-id="fd2rh7CKuw1UrEzm" draggable="true">
+                <button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Shove</span></span>
+                  <b>1/2/3 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="rvmjo0G36jIvHrE2" draggable="true">
+                <button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Trip</span></span>
+                  <b>1/2 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx off" data-item-id="51OWBMXqFRHIYKDh" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Reach under 2">
+                  <span class="ps-bxl"><span class="ps-bxn">Haul</span><span class="ps-bxwhy">Reach under 2</span></span>
+                  <span class="ps-bxno" aria-hidden="true">⊘</span>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="N4OIjIEKQ4CWBZhx" draggable="true">
+                <button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#4c7a2e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Relocate</span></span>
+                  <b>1/2/3 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Utility</span>
+              <div class="ar ps-bx" data-item-id="PitLzvCMCM9smTbf" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#2c5d9e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Steel Yourself</span></span>
+                  <b>2/3 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="YAenELqYRloKRTnb" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Interact</span></span>
+                  <b>1 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="jddpYVyOxobJ4jIU" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Regrip</span></span>
+                  <b>1 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="bBsMRzWdv0VLCLrS" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Release</span></span>
+                  <b>0 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+              <div class="ar ps-bx" data-item-id="J5xMyQhlaR62YyIx" draggable="true">
+                <button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction">
+                  <span class="ps-bxl"><span class="ps-bxn">Leaning</span></span>
+                  <b>1 AP</b>
+                </button>
+                <div class="ar-card"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="effects">
+        <div class="ps-stack">
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#a8322d"></span><b>Conditions</b></div>
+<div class="ps-erow none">No conditions.</div>
+          </div>
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#1b2433"></span><b>Effects</b></div>
+            <div class="ps-erow" data-effect-id="8jKi4XKTVEf8vGw3" draggable="true">
+              <span class="ps-eic good"><img src="icons/svg/sun.svg" alt=""></span>
+              <b><a data-action="openEffect">Radiant Zeal</a></b>
+              <span class="ps-etext"><p>Your next [Strike] Action that deals damage deals an extra [R] 1d6 Ho (Radiant Zeal, while your Escalation is 1 or more). Given again at the start of each of your turns.</p> <span class="ps-mut">From yourself.</span></span>
+              <span class="ps-epill">until removed</span>
+              <span class="ps-ectl"><a data-action="deleteEffect"><i class="fa-solid fa-xmark"></i></a></span>
+            </div>
+                        <div class="ps-erow" data-effect-id="vO7zmzMHCXBb8obP" draggable="true">
+              <span class="ps-eic good"><img src="icons/svg/sun.svg" alt=""></span>
+              <b><a data-action="openEffect">Radiant Zeal</a></b>
+              <span class="ps-etext"><p>Your next [Strike] Action that deals damage deals an extra [R] 1d6 Ho (Radiant Zeal, while your Escalation is 1 or more). Given again at the start of each of your turns.</p> <span class="ps-mut">From yourself.</span></span>
+              <span class="ps-epill">until removed</span>
+              <span class="ps-ectl"><a data-action="deleteEffect"><i class="fa-solid fa-xmark"></i></a></span>
+            </div>
+            
+          </div>
+          <div class="ps-drop edrop">Drop an effect or a condition here to apply it</div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="items">
+        <div class="ps-stack">
+          <div class="ps-ih"><span class="ps-h2">Weapons</span><span class="ps-ibtns"><button type="button" class="ps-btn2" data-action="generateWeapon"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Weapon</button><button type="button" class="ps-btn2" data-action="newGear"><i class="fa-solid fa-plus"></i> New Item</button></span></div>
+          <div class="olist ps-ilist" data-order-flag="itemOrder">
+          <div class="lrow ps-irow w" data-item-id="BWMJyZJXAAUEl92d" draggable="true">
+            <div class="ps-imain"><span><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><a class="ps-iname" data-action="openItem">Greatsword</a></span><span class="ps-isub">Melee, Two-handed · Slash · Range 1</span></div>
+            <div class="ps-tiers"><span><small>T1</small><b>0</b></span><span><small>T2</small><b>1d8</b></span><span><small>T3</small><b>2d6</b></span></div>
+            <div class="ps-imast">Mastery <b>0 / 3</b><br><span class="ps-mut">Technique locked</span></div>
+            <div class="ps-seg" role="group"><button type="button" class="" data-action="setWhere" data-where="dropped" aria-pressed="false">Dropped</button><button type="button" class="" data-action="setWhere" data-where="worn" aria-pressed="false">On you</button><button type="button" class="on" data-action="setWhere" data-where="2h" aria-pressed="true">In hand 2H</button></div>
+          </div>
+          
+          </div>
+          <span class="ps-h2">Armor</span>
+          <div class="olist ps-ilist" data-order-flag="itemOrder">
+          <div class="lrow ps-irow a" data-item-id="M6wHRIA6X4qKxUAI" draggable="true">
+            <div class="ps-imain"><span><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><a class="ps-iname" data-action="openItem">Heavy Armor</a></span><span class="ps-isub ok">Trained (Heavy)</span></div>
+            <div class="ps-aval">Armor value <b>3</b> → AD <b>14</b> · Ward <b>+0</b></div>
+            <div class="ps-seg" role="group"><button type="button" class="" data-action="setWhere" data-where="dropped" aria-pressed="false">Dropped</button><button type="button" class="" data-action="setWhere" data-where="carried" aria-pressed="false">Carried</button><button type="button" class="on" data-action="setWhere" data-where="worn" aria-pressed="true">Worn</button></div>
+          </div>
+          
+          </div>
+          
+          <div class="ps-ih"><span class="ps-h2">Gear and loot</span><span class="ps-mut"><label>Coins <input type="number" min="0" name="system.coins" value="0"></label> · Weight 0</span></div>
+          <div class="olist ps-glist" data-order-flag="itemOrder">
+<div class="ps-empty">Nothing yet. Drag gear here, or use New Item.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="build">
+        <div class="ps-stack">
+          
+          <div class="ps-lvlbar"><label class="ps-lvl">Level <input type="number" min="0" name="system.level" value="1"></label><span class="ps-mut">Stage 1</span></div>
+          <div class="ps-g2 wide">
+            <div class="ps-bcard">
+              <div class="ps-bch"><span><small>SPECIES</small> <b>Human</b></span><button type="button" data-action="openSpecies">Choices</button></div>
+              <div class="ps-bcb">
+                <div class="ps-chips"><span class="ps-mchip ">Body +1</span><span class="ps-mchip ">Appeal +1</span><span class="ps-mchip v">Vigor +3</span><span class="ps-mchip r">Resolve +2</span></div>
+                <div class="ps-g4"><div class="ps-lbox"><b>5</b><span>Speed</span></div><div class="ps-lbox"><b>1</b><span>Reach</span></div><div class="ps-lbox"><b>Medium</b><span>Size</span></div><div class="ps-lbox"><b>0</b><span>Steady</span></div></div>
+              </div>
+            </div>
+                        <div class="ps-bcard">
+              <div class="ps-bch"><span><small>CLASS</small> <b>Paladin 1</b></span><button type="button" data-action="openClass">Choices</button></div>
+              <div class="ps-bcb">
+                <div class="ps-chips"><span class="ps-mchip ">Body +1</span><span class="ps-mchip ">Instinct +1</span><span class="ps-mchip v">Vigor 20</span><span class="ps-mchip r">Resolve 10</span></div>
+                <div class="ps-g4"><div class="ps-lbox"><b>+2</b><span>Weapon</span></div><div class="ps-lbox"><b>+1</b><span>Power</span></div><div class="ps-lbox"><b>6</b><span>Rally</span></div><div class="ps-lbox"><b>Heavy</b><span>Armor</span></div></div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#6b665a"></span><b>Level 1</b></div>
+            <div class="flist olist ps-blist" data-order-flag="featureOrder"><div class="ar ps-brw" data-item-id="xyUeUX5qInCpN30X" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Feature</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Divine Power</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" data-item-id="uXFnFATUrU3aH2Af" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Feature</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Kindled Wrath</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw open" data-item-id="F1eB2Enn3bTXQTtR" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Hallmark Action</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Smite</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span><span class="ps-pill" style="--fc:#2c5d9e">1/2/3 AP</span></span>
+  <span class="ps-bfreq">Round</span>
+</div>
+<div class="ar-card" data-loaded="1"><div class="twod12 acard d2" data-card-item="F1eB2Enn3bTXQTtR">
+    <div class="ap-trow"><span class="ap-tg"><span class="ap-cs"><span class="ap-chip g-roll">Signature</span><span class="ap-chip g-roll">Weapon</span></span><i>Roll</i></span><span class="ap-gdiv" aria-hidden="true"></span><span class="ap-tg"><span class="ap-cs"><span class="ap-chip g-kind">Strike</span></span><i>Kind</i></span><span class="ap-gdiv" aria-hidden="true"></span><span class="ap-tg"><span class="ap-cs"><span class="ap-chip g-keywords">Divine</span></span><i>Keywords</i></span><span class="ap-cat"><i class="fa-solid fa-diamond autodia auto-diamond"></i> Divine Power 1 <span class="ap-freq" style="background:#2c5d9e">Round</span></span></div>
+    <div class="ap-meta"><div class="trow"><span><span class="tgt"><b>Targets:</b> One creature</span></span></div><div class="trow"><span><span class="dist"><b>Distance:</b> <span class="trhl" style="--tc:var(--g-roll)">Weapon</span></span><span class="ap-st" aria-hidden="true">✦</span><span class="vs"><b>Vs.</b> <span class="vsv" style="color:#9a4a00;font-weight:700">AD</span></span></span></div></div>
+    
+    
+    <div class="ap-ttw"><table class="ap-tt"><thead><tr><th></th><th><span class="ap-vcost">1 AP</span></th><th><span class="ap-vcost">2 AP</span></th><th><span class="ap-vcost">3 AP</span></th></tr></thead><tbody><tr class="t1"><td class="tl">Tier 1</td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W]</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d8</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td></tr><tr class="t2"><td class="tl">Tier 2</td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">2d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">2d8</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td></tr><tr class="t3"><td class="tl">Tier 3</td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d8</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">2d10</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td><td><i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">3d8</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span> <span class="chg up">+ <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d6</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span></span></td></tr></tbody></table></div><div class="ap-fxh">Effects (Tier 2+)</div><div class="ap-fxl"><span class="ap-ap">1 AP</span><span class="ap-fxt">The target sheds <a class="twod12-inline book" data-twod12-inline="Book"><i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span></a> in a <a class="twod12-inline" data-twod12-inline="Template"><i class="areaic emanation"></i> <span class="ti-name">1 Emanation</span></a> and takes <span class="kw-bane">1 Bane</span> when they try to <a class="content-link" draggable="true" data-link="" data-uuid="Compendium.twod12.actions.Item.vq0nKfKlyhogs75E" data-id="vq0nKfKlyhogs75E" data-type="Item" data-pack="twod12.actions"><i class="fa-solid fa-suitcase" inert=""></i>Hide</a>, for 1 round.</span><span class="ap-ap">2 AP</span><span class="ap-fxt">The target sheds <a class="twod12-inline book" data-twod12-inline="Book"><i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span></a> in a <a class="twod12-inline" data-twod12-inline="Template"><i class="areaic emanation"></i> <span class="ti-name">2 Emanation</span></a> and takes <span class="kw-bane">1 Bane</span> when they try to <a class="content-link" draggable="true" data-link="" data-uuid="Compendium.twod12.actions.Item.vq0nKfKlyhogs75E" data-id="vq0nKfKlyhogs75E" data-type="Item" data-pack="twod12.actions"><i class="fa-solid fa-suitcase" inert=""></i>Hide</a>, for 1 round.</span><span class="ap-ap">3 AP</span><span class="ap-fxt">The target sheds <a class="twod12-inline book" data-twod12-inline="Book"><i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span></a> in a <a class="twod12-inline" data-twod12-inline="Template"><i class="areaic emanation"></i> <span class="ti-name">2 Emanation</span></a> and takes <span class="kw-bane">1 Bane</span> when they try to <a class="content-link" draggable="true" data-link="" data-uuid="Compendium.twod12.actions.Item.vq0nKfKlyhogs75E" data-id="vq0nKfKlyhogs75E" data-type="Item" data-pack="twod12.actions"><i class="fa-solid fa-suitcase" inert=""></i>Hide</a>, for 1 round. You or one ally in the Bright light gain <a class="twod12-inline calc" data-twod12-inline="Guard"><i class="fa-solid fa-shield-heart"></i> <span class="ti-name">Guard 1d8+2</span></a>. The other creatures in the light, you excepted, are <a class="twod12-inline" data-twod12-inline="Move"><i class="fa-solid fa-hand"></i> <span class="ti-name">Pushed 1</span></a>, away from the target.</span></div><div class="ap-strip"><span class="lab">Your roll</span><b class="ap-rmod">Signature +2</b><span class="ap-ac"><span class="pg" aria-hidden="true">+</span>Radiant Zeal</span><span class="ap-ac na"><span class="pg" aria-hidden="true">+</span>Heavy Blows</span></div><div class="ap-flav"><div class="dv" aria-hidden="true">◆ ◆ ◆</div>Your weapon blazes with holy light.</div>
+    
+  </div></div>
+</div>
+<div class="ar ps-brw" data-item-id="5V2C6z7dJB0XcRzG" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Hallmark Reaction</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Rebuke</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span><span class="ps-pill" style="--fc:#1f7a72">1R</span></span>
+  <span class="ps-bfreq">Turn</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" data-item-id="QS78ajFeVDEIB6To" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Encounter Pick</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Holy Wrath</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span><span class="ps-pill" style="--fc:#a8322d">2/3 AP</span></span>
+  <span class="ps-bfreq">Encounter</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" data-item-id="yjG17rFstd07oeo8" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Talent</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Heavy Blows</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+</div>
+          </div>
+          <div class="ps-block esc"><div class="ps-bh"><span class="ps-dot" style="background:#c9821f"></span><b>Escalation</b></div>
+            <div class="ar ps-brw" data-item-id="m5rZAVp0DKsnqTWc" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Escalation 1</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Radiant Zeal</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" data-item-id="wDpVqcLld9rYAgEm" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Escalation 2</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Searing Blows</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" data-item-id="G6FROvKDKVNoPFjF" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Escalation 3</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Reckoning</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" data-item-id="r96zJInuUIPwGCWw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Apex</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Final Verdict</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span><span class="ps-pill" style="--fc:#a8322d">2 AP</span></span>
+  <span class="ps-bfreq">Encounter</span>
+</div>
+<div class="ar-card"></div>
+</div>
+
+          </div>
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#6b665a"></span><b>Next levels</b></div>
+            <div class="ps-next"><span>Level 2</span><span>1 Talent</span><span>Level 3</span><span>1 Daily Pick · 1 Talent</span><span>Level 4</span><span>1 Talent</span><span>Level 5</span><span>Stage 2: Stage Talent · +1 Attribute · Health +12 / +6 · Guard 3 per AP · Rally +1</span></div>
+          </div>
+          <div class="flist" data-list="talents">
+            
+            <div class="tfslot talentslot extra" data-slot=""><i class="fa-solid fa-plus"></i> Drop an extra Talent here (the GM's)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="mastery">
+        <div class="ps-stack">
+          <div class="ps-ih"><span class="ps-h2">Weapon Mastery</span><span class="ps-mut">A Tier 3 with a weapon in an encounter: +1 Mastery with its kind</span></div>
+          
+          <div class="ps-block"><div class="ps-bh"><b>Fists</b><span class="ps-bsub">floor: a third of your best Mastery in its Weapon Group (book; by hand for now)</span><span class="ps-gmstep"><a data-action="masteryStep" data-key="fists" data-d="-1"><i class="fa-solid fa-minus"></i></a><a data-action="masteryStep" data-key="fists" data-d="1"><i class="fa-solid fa-plus"></i></a></span></div>
+            <div class="ps-mrow muted"><b>Fists</b>
+              <div class="ps-mbar"><div class="ps-mtrack"><span style="width:0%"></span><i style="left:20%"></i><i style="left:53.3%"></i><i style="left:100%"></i></div><div class="ps-mlab"><span style="left:20%">3 Technique</span><span style="left:53.3%">8 Expert</span><span style="left:100%">15 Master</span></div></div>
+              <span class="ps-mnum">0 / 3</span>
+            </div>
+          </div>
+                    <div class="ps-block"><div class="ps-bh"><b>Greatsword</b><span class="ps-bsub">floor: a third of your best Mastery in its Weapon Group (book; by hand for now)</span><span class="ps-gmstep"><a data-action="masteryStep" data-key="greatsword" data-d="-1"><i class="fa-solid fa-minus"></i></a><a data-action="masteryStep" data-key="greatsword" data-d="1"><i class="fa-solid fa-plus"></i></a></span></div>
+            <div class="ps-mrow"><b>Greatsword</b>
+              <div class="ps-mbar"><div class="ps-mtrack"><span style="width:0%"></span><i style="left:20%"></i><i style="left:53.3%"></i><i style="left:100%"></i></div><div class="ps-mlab"><span style="left:20%">3 Technique</span><span style="left:53.3%">8 Expert</span><span style="left:100%">15 Master</span></div></div>
+              <span class="ps-mnum">0 / 3</span>
+            </div>
+          </div>
+          
+          <div class="ps-mut">Technique (3): the weapon's Weapon Technique, used only with that weapon while you wield it. Expert (8): once each turn, draw, stow or change the grip of the weapon without Interact. Master (15): from level 8, one more [W] with the weapon.</div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="upkeep">
+        <div class="ps-stack">
+          <div class="ps-ih"><span class="ps-h2">Recovery</span><span class="ps-mut">each button asks to confirm and posts a chat line</span><span class="ps-right">Exhausted <b>0</b> · last Sleep <b>0 hours ago</b></span></div>
+          <div class="ps-g3">
+            <div class="ps-rcard" style="--rc:#2c5d9e">
+              <div class="ps-rch"><b>Breather</b><span>10 minutes</span></div>
+              <span>Removes all your Nonlethal damage. Not a Rest.</span>
+              <span class="ps-mut ">Now: removes 0</span>
+              <button type="button" data-action="recover" data-k="breather">Take a Breather</button>
+            </div>
+            <div class="ps-rcard" style="--rc:#5B3FA6">
+              <div class="ps-rch"><b>Sleep</b><span>8 hours</span></div>
+              <span>Daily Actions return. Exhausted −2. Once every 16 hours.</span>
+              <span class="ps-mut bad">Available in 16 h</span>
+              <button type="button" data-action="recover" data-k="sleep">Sleep</button>
+            </div>
+            <div class="ps-rcard" style="--rc:#4c7a2e">
+              <div class="ps-rch"><b>Rest</b><span>24 h, safe place</span></div>
+              <span>Removes all damage, restores all Rally Points, includes a Sleep, then a Body Check and a Mind Check for Wounds.</span>
+              
+              <button type="button" data-action="recover" data-k="rest">Rest</button>
+            </div>
+          </div>
+          <span class="ps-h2">Upkeep</span>
+          <div class="ps-placeholder"><b>[Upkeep mechanics: placeholder]</b><span>Space reserved for the coming Upkeep rules.</span></div>
+          <span class="ps-h2">Wounds</span>
+          <div class="ps-g2 wide">
+            <div class="ps-uw body"><div class="ps-uwh"><b>Body Wounds 0</b><span class="ps-mut">Rest: Body Check</span></div>
+              <span class="ps-mut">none named</span>
+            </div>
+            <div class="ps-uw mind"><div class="ps-uwh"><b>Mind Wounds 0</b><span class="ps-mut">Rest: Mind Check</span></div>
+              <span class="ps-mut">none named</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="tab" data-tab="notes">
+        <div class="ps-stack notes">
+          <span class="ps-h2">Appearance</span>
+          <div class="nbox"><prose-mirror name="system.appearance" placeholder="" toggled="" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">Background</span>
+          <div class="nbox"><prose-mirror name="system.background" placeholder="" toggled="" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">Notes</span>
+          <div class="nbox"><prose-mirror name="system.notes" placeholder="" toggled="" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">GM notes <small class="ps-mut"><i class="fa-solid fa-eye-slash"></i> only the GM sees them</small></span>
+          <div class="nbox gm"><prose-mirror name="system.gmNotes" placeholder="" toggled="" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+</div>

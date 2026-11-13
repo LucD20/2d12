@@ -520,6 +520,43 @@
 .twod12-type .application .fr-tab { --fr-navy: #3b3128; --fr-gold: #c9962b; --fr-maroon: #2a241d; --fr-goldsoft: transparent; --fr-line: #cdb88a; --fr-par2: #eae0c8; --fr-field: #fbf7ee; --fr-ink: #2a241d; --fr-mut: #5d5446; font-family: "Signika", sans-serif; }
 .twod12-type .application.twod12-styled .sk .head .name { font: 700 20px "Signika", sans-serif; }
 .twod12-type .application.twod12-styled .sk .head img { border-radius: 2px; }
+/* the encounter log and the Generate window */
+.twod12-type .enclog .el-round { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; border-bottom: 1px solid #8a6d3b; color: #2a241d; }
+.twod12-type .enclog .el-turn { border-left: 2px solid #8a6d3b; border-radius: 0; background: none; padding: 2px 8px; } .twod12-type .enclog .el-own { color: #2a241d; }
+.twod12-type .enclog .el-bar button { border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: inherit; font: 600 12px "Signika", sans-serif; }
+.twod12-dark .enclog-app .window-content { background: #1f1c18; color: #ece3cf; } .twod12-dark .enclog .el-bar { background: #28241d; border-color: #4a4132; } .twod12-dark .enclog .el-abbr { border-color: #4a4132; }
+.twod12-dark .enclog .el-bar label, .twod12-dark .enclog .el-abbr label, .twod12-dark .enclog .el-line, .twod12-dark .enclog .el-own, .twod12-dark .enclog .el-round { color: #ece3cf; } .twod12-dark .enclog .el-round, .twod12-dark .enclog .el-turn { border-color: #7a683f; }
+.twod12-dark .enclog .el-line > a { color: #b3a68e; } .twod12-dark .enclog .el-line.k-dmg, .twod12-dark .enclog .el-line.k-down { color: #f0958a; } .twod12-dark .enclog .el-line.k-heal { color: #6fd0c4; }
+.twod12-type .application.twod12-gencard h4.gc-h { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: #2a241d; }
+.twod12-type .application.twod12-builder .bb-cap { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
+.twod12-type .application.twod12-gencard ul.gc-lines, .twod12-type .application.twod12-gencard .fr-tab .fr-ta.gc-text { border-radius: 0; }
+.twod12-type .application.twod12-builder .bb-foot .fr-q { border-radius: 0; }
+.twod12-type.twod12-type .application.twod12-styled .sk .bb-foot button { border-radius: 0; border: 1px solid #8c7d63; background: transparent; color: #2a241d; font: 600 13px "Signika", sans-serif; }
+.twod12-type.twod12-type .application.twod12-styled .sk .bb-foot button.bb-go { background: #3b3128; color: #f4ede0; border-color: #3b3128; }
+.twod12-dark.twod12-dark .application.twod12-styled .sk .bb-foot button { color: #ece3cf; } .twod12-dark.twod12-dark .application.twod12-styled .sk .bb-foot button.bb-go { background: #eadfc8; color: #221d16; border-color: #eadfc8; }
+.twod12-dark .application.twod12-gencard h4.gc-h { color: #ece3cf; } .twod12-dark .application.twod12-gencard ul.gc-lines { background: #28241d; border-color: #4a4132; } .twod12-dark .application.twod12-gencard ul.gc-lines li.no { background: none; } .twod12-dark .application.twod12-gencard ul.gc-lines li.no > span { color: #d4a548; }
+/* the Class sheet's Details tab as a ruled form (Lucas, 2026-11-13: "a big change") */
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) { --cf-ink: #2a241d; --cf-mute: #5d5446; --cf-hair: #cdb88a; --cf-rule: #8a6d3b; --cf-field: rgba(255,255,255,.55); --cf-mix: 0%; }
+.twod12-dark .application.twod12-styled .sk .tab:has(.cls-h) { --cf-ink: #ece3cf; --cf-mute: #b3a68e; --cf-hair: #4a4132; --cf-rule: #7a683f; --cf-field: rgba(255,255,255,.04); --cf-mix: 55%; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) label, .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .ro { display: flex; flex-direction: column; gap: 2px; margin: 0; font: 600 11.5px "Signika", sans-serif; color: var(--cf-mute); min-width: 0; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .ro span { font: inherit; color: inherit; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) label input:not([type="checkbox"]), .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) label select { width: 100%; height: 27px; box-sizing: border-box; margin: 0; padding: 0 6px; border: 0; border-bottom: 1px solid var(--cf-rule); border-radius: 0; background: var(--cf-field); color: var(--cf-ink); font: 600 14px "Signika", sans-serif; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .ro b { min-height: 27px; padding: 0 2px; border-bottom: 1px dotted var(--cf-hair); color: var(--cf-ink); font: 600 13.5px/27px "Signika", sans-serif; } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid3:has(.ro:first-child) { grid-template-columns: 2.5fr 1fr 1.2fr; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid3, .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid4 { display: grid; gap: 8px 14px; margin: 0 0 9px; align-items: end; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) > label { margin: 0 0 9px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) label.sheet-helptoggle { flex-direction: row; justify-content: flex-end; align-items: center; gap: 5px; margin: 0 0 2px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .hint { margin: 2px 0 8px; font: 400 12px/1.45 "Signika", sans-serif; color: var(--cf-mute); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) h3 { display: flex; align-items: baseline; justify-content: space-between; margin: 16px 0 6px; padding: 0 0 3px; border: 0; border-bottom: 1px solid var(--cf-rule); background: none; color: var(--cf-ink); font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) h3 button { width: auto; height: 22px; line-height: 20px; padding: 0 9px; border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: var(--cf-ink); font: 600 12px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-levels { gap: 0; margin: 0 0 4px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-levels > div { padding: 4px 2px; border: 0; border-bottom: 1px solid var(--cf-hair); border-radius: 0; background: none; font-size: 13px; color: var(--cf-ink); } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-levels > div b { width: 58px; } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-levels span { color: var(--cf-mute); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-grp { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 0 10px; align-items: baseline; margin: 0; padding: 5px 2px; border-bottom: 1px solid var(--cf-hair); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-gl { font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; color: color-mix(in srgb, var(--fq, #5F5E5A), #fff var(--cf-mix)); }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chips { gap: 2px 14px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chip { padding: 0; border: 0; border-radius: 0; background: none; gap: 2px; font-size: 13.5px; } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chip a { color: var(--cf-ink); font-weight: 600; } .twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chip i { color: var(--cf-mute); font-size: 11.5px; margin-left: 3px; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .cls-chip button { width: 16px; height: 16px; min-height: 0; padding: 0; border: 0; background: none; color: var(--cf-mute); font-size: 13px; line-height: 1; opacity: .7; }
+.twod12-type .application.twod12-styled .sk .tab:has(.cls-h) .drop-zone { margin: 7px 0 0; padding: 5px; border: 1px dashed var(--cf-hair); border-radius: 0; background: none; color: var(--cf-mute); font-size: 12px; opacity: 1; }
 .twod12-type .application .fr-tab .fr-sec > h3 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; background: none; border-left: 0; border-bottom: 1px solid #8a6d3b; padding: 2px 0; color: #2a241d; }
 .twod12-type .application .fr-tab .as-h4 { font-family: "Signika", sans-serif; font-variant: small-caps; color: #96670f; }
 .twod12-type .application .fr-tab .as-tl, .twod12-type .application .fr-tab .as-railh, .twod12-type .application .fr-tab .fr-dropped b { font-family: "Signika", sans-serif; }
@@ -1432,6 +1469,36 @@
 :where(.twod12-dark) #twod12-carousel .tp-strikes i.on { background: #b3261e; }
 :where(.twod12-dark) #twod12-carousel .tp-initskip { border: 1px solid var(--tp-gold, #c9a24a); color: #f2e6c4; }
 :where(.twod12-dark) #twod12-carousel .tp-initskip.off { border-color: #777; color: #aaa; }
+:where(.twod12-dark) .enclog-app .window-content { background: #1f1c18; color: #ece3cf; }
+:where(.twod12-dark) .enclog .el-bar { border-bottom: 1px solid #7a683f; background: #3a301c; }
+:where(.twod12-dark) .enclog .el-bar label { color: #ece3cf; }
+:where(.twod12-dark) .enclog .el-abbr { border-bottom: 1px solid #7a683f; }
+:where(.twod12-dark) .enclog .el-abbr label { color: #ece3cf; }
+:where(.twod12-dark) .enclog .el-abbr input { color: #ece3cf; background: #28241d; }
+:where(.twod12-dark) .enclog .el-round { border-bottom: 2px solid #8c7d63; color: #c4d0e1; }
+:where(.twod12-dark) .enclog .el-turn { border-left: 3px solid #5f7ba0; }
+:where(.twod12-dark) .enclog .el-own { color: #c4d0e1; }
+:where(.twod12-dark) .enclog .el-line { color: #ece3cf; }
+:where(.twod12-dark) .enclog .el-line > a { color: #d8cab2; }
+:where(.twod12-dark) .enclog .el-line.k-dmg { color: #e6978f; }
+:where(.twod12-dark) .enclog .el-line.k-heal { color: #a3f2eb; }
+:where(.twod12-dark) .enclog .el-line.k-down { color: #e6978f; }
+:where(.twod12-dark) .application.twod12-builder .bb-words.on, :where(.twod12-dark) .application.twod12-builder .bb-fields.on { background: #28241d; }
+:where(.twod12-dark) .application.twod12-styled .sk table.bb-read { background: #28241d; }
+:where(.twod12-dark) .application.twod12-styled .sk table.bb-read tr.no td { background: #302910; }
+:where(.twod12-dark) .application.twod12-builder .bb-tick { color: #8fd69b; }
+:where(.twod12-dark) .application.twod12-builder tr.no .bb-tick { color: #efd58f; }
+:where(.twod12-dark) .application.twod12-styled .sk button.bb-kind.on { color: #fff; }
+:where(.twod12-dark) .application.twod12-builder .as-dc.bb-warn { background: #3b300f; border-color: #706137; }
+:where(.twod12-dark) .application.twod12-builder .bb-out { background: #28241d; }
+:where(.twod12-dark) .application.twod12-styled .sk .bb-foot button.bb-go { color: #fff; }
+:where(.twod12-dark) .application.twod12-builder .bb-foot .fr-q.on { color: #fff; }
+:where(.twod12-dark) .application.twod12-gencard h4.gc-h { color: #8fd69b; }
+:where(.twod12-dark) .application.twod12-gencard ul.gc-lines, :where(.twod12-dark) .application.twod12-gencard ul.gc-notes { background: #28241d; }
+:where(.twod12-dark) .application.twod12-gencard ul.gc-lines li > span { color: #8fd69b; }
+:where(.twod12-dark) .application.twod12-gencard ul.gc-lines li.no > span { color: #efd58f; }
+:where(.twod12-dark) .application.twod12-gencard ul.gc-lines li.no { background: #302910; }
+:where(.twod12-dark) .application.twod12-gencard ul.gc-notes { background: #302910; }
 :where(.twod12-dark) .twod12 .drop-zone { border: 2px dashed var(--color-border-light-tertiary, #575757); }
 :where(.twod12-dark) .twod12 .version { border: 1px solid var(--color-border-light-tertiary, #575757); }
 :where(.twod12-dark) .twod12 .setbox { border: 1px solid var(--color-border-light-tertiary, #575757); }
@@ -1882,6 +1949,9 @@
 .twod12-dark #twod12-carousel .tp { background: linear-gradient(#28241d, #1f1c18); border-color: #7a683f; color: #ece3cf; }
 .twod12-dark #twod12-carousel .tp-name { color: #ece3cf; }
 .twod12-dark #twod12-carousel .tp-pips i { border-color: #b3a68e; }
+.twod12-dark #twod12-carousel .tp-swap { background: transparent; color: #ece3cf; border-color: #6a5d48; } .twod12-dark #twod12-carousel .tp-move.none { color: #b3a68e; }
+.twod12-type #twod12-carousel .tc-round { white-space: nowrap; }
+.twod12-type #twod12-carousel .tp-move, .twod12-type #twod12-carousel .tp-swap { font-family: "Signika", sans-serif; font-size: 11.5px; font-weight: 600; }
 .twod12-dark .application.twod12-styled .sk .head, .twod12-dark .application.twod12-styled .sk .tabs { border-color: #7a683f !important; box-shadow: none; }
 .twod12-type .application .fr-tab .fr-tip b { font-family: "Signika", sans-serif; font-weight: 700; }
 .twod12-type.twod12-type .twod12.sheet .fr-headline { color: #b3a68e; } .twod12-type.twod12-type .twod12.sheet .fr-headline b { color: #eadfc8; }
@@ -1950,7 +2020,7 @@ ul.notes { color: #c9c0ad; max-width: 1000px; margin: 6px 0 0; padding-left: 20p
 </head>
 <body>
 <h1>Style 5: the pick window and the roll dialog</h1>
-<div class="nav"><a href="style-tokens.html">1. Colors and type</a><a href="action-card-dark.html">2. Action card</a><a href="chat-cards-dark.html">3. Chat cards</a><a href="chat-older-dark.html">3b. The other chat messages</a><a href="bars-dark.html">4. Pick bar and Turn dock</a><a href="windows-dark.html" class="here">5. Pick window and roll dialog</a><a href="pc-sheet-dark.html">6. The PC sheet</a><a href="npc-sheet-dark.html">6b. The NPC sheet</a><a href="rest-dark.html">7. Carousel and Action sheet</a><a href="npc-hud-sheet.html">The NPC sheet</a><a href="npc-hud-hud.html">The HUD</a></div>
+<div class="nav"><a href="style-tokens.html">1. Colors and type</a><a href="action-card-dark.html">2. Action card</a><a href="chat-cards-dark.html">3. Chat cards</a><a href="chat-older-dark.html">3b. The other chat messages</a><a href="bars-dark.html">4. Pick bar and Turn dock</a><a href="windows-dark.html" class="here">5. Pick window and roll dialog</a><a href="pc-sheet-dark.html">6. The PC sheet</a><a href="npc-sheet-dark.html">6b. The NPC sheet</a><a href="carousel-dark.html">7a. Carousel</a><a href="rest-dark.html">7b. Action, Effect and Class sheets</a><a href="tools-dark.html">7c. Generate Action and the log</a><a href="combat-pc-dark.html">7d. PC sheet in combat</a><a href="combat-npc-dark.html">7e. NPC sheet in combat</a><a href="npc-hud-sheet.html">The NPC sheet</a><a href="npc-hud-hud.html">The HUD</a></div>
 <p class="lead">The two windows every roll and every choice goes through, <b>drawn by the system's own functions</b> (<code>pickwindow.mjs</code>, <code>rolldlg.mjs</code>). The pick window is also the class window's format, so the class window follows it. Today the pick window has a navy header and an orange accent, and the roll dialog is the chat card's parchment. Here: the page's band for the header, gold for the accent, Signika for the titles, the confirming button as the stamp, on both themes. <b>A style change only.</b> The dark sets are generated from 336 rules.</p>
 
 <h2>The pick window: a choice, a confirmation, a review</h2>

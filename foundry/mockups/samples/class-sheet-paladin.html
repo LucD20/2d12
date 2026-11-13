@@ -1,0 +1,78 @@
+<!-- Copied by Lucas from his Foundry, 2026-11-13 (tooltips and data left out). style-build.mjs reads this file. -->
+<div class="twod12 sheet item sk" data-application-part="main">
+  <header class="head">
+    <img src="icons/svg/angel.svg" data-edit="img" data-action="editImage" width="48" height="48" alt="">
+    <input class="name" type="text" name="name" value="Paladin" placeholder="Name">
+  </header>
+  <nav class="tabs">
+    <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="description">Description</a>
+    <a class="tabbtn active" role="tab" data-action="switchTab" data-tab-target="details" style="">Details</a>
+    
+  </nav>
+
+  <section class="tab" data-tab="description">
+    
+    <prose-mirror name="system.description" placeholder="" toggled="" class="editor prosemirror inactive"><div class="editor-content"><p>A holy warrior.</p></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror>
+  </section>
+
+  <section class="tab active" data-tab="details">
+    <label class="sheet-helptoggle"><input type="checkbox" data-sheethelp="" checked=""> Show help</label>
+
+    <div class="grid3">
+      <label>Category <input type="text" name="system.category" value="Class" placeholder="Class"></label>
+      <label>Armor Training <select name="system.armorTraining"><option value="light">Light</option><option value="medium">Medium</option><option value="heavy" selected="">Heavy</option></select></label>
+      <div class="ro"><span>Shown as</span><b>Paladin</b></div>
+    </div>
+    <label>Flavor <input type="text" name="system.flavor" value="Your god's strength flows through your weapon and your hands." placeholder="Your god's strength flows through your weapon and your hands."></label>
+    <div class="grid4">
+      <label>High Health value <input type="number" min="0" name="system.healthHigh" value="20"></label>
+      <label>Low Health value <input type="number" min="0" name="system.healthLow" value="10"></label>
+      <label>Rally <input type="number" name="system.rallyMod" value="6"></label>
+      <label>Speed Modifier <input type="number" name="system.speedMod" value="0"></label>
+    </div>
+    <div class="grid4">
+      <label>Stage 2 step, high <input type="number" min="0" name="system.stepHigh2" value="12"></label>
+      <label>Stage 2 step, low <input type="number" min="0" name="system.stepLow2" value="6"></label>
+      <label>Stage 3 step, high <input type="number" min="0" name="system.stepHigh3" value="14"></label>
+      <label>Stage 3 step, low <input type="number" min="0" name="system.stepLow3" value="7"></label>
+    </div>
+    
+    <div class="grid3">
+      <label>Modifier, high <input type="number" min="0" max="4" name="system.modHigh" value="2"></label>
+      <label>Modifier, low <input type="number" min="0" max="4" name="system.modLow" value="1"></label>
+      <label>Order <select name="system.modOrder"><option value="either" selected="">Either way (the player chooses)</option><option value="weapon">Weapon Modifier is the high one</option><option value="power">Power Modifier is the high one</option></select></label>
+    </div>
+    <div class="grid3">
+      <div class="ro"><span>Attribute increases</span><b>Body or Appeal +1, Mind or Instinct +1</b></div>
+      <label>Leads with <select name="system.modPriority"><option value="weapon" selected="">Weapon Modifier</option><option value="power">Power Modifier</option></select></label>
+      <label>Stage 2 +1 to <select name="system.modStage2"><option value="" selected="">the higher one (default)</option><option value="weapon">Weapon Modifier</option><option value="power">Power Modifier</option></select></label>
+    </div>
+    
+    <p class="hint">The class gives two Modifier values (+2 and +1 at level 1). "Either way": the player chooses which is the Weapon Modifier in the class window; otherwise the class fixes it. Stage 2 adds +1 to the one the player chooses, Stage 3 +1 to both, never above +4. The Attribute increases are set on level 1, in the Levels window.</p>
+    <h3 class="cls-h">Levels <button type="button" data-action="editLevels"><i class="fa-solid fa-layer-group"></i> Edit levels…</button></h3>
+    <p class="hint">What the player gets at each level (Features, the Hallmark Action, Picks, Talents, Attribute choices) is set up in the Levels window. It opens wider than this sheet.</p>
+    <div class="cls-levels">
+      <div><b>Level 1</b><span>10 sections · 10 choices to make</span></div><div><b>Level 2</b><span>1 section · 1 choice to make</span></div><div><b>Level 3</b><span>2 sections · 2 choices to make</span></div><div><b>Level 4</b><span>1 section · 1 choice to make</span></div>
+    </div>
+    <h3>Repertoire</h3>
+    <p class="hint">Everything else the class offers, by Frequency. A "From the Repertoire" section in the Levels window chooses from here.</p>
+    <div class="cls-grp"><span class="cls-gl">Passive · 0</span><span class="cls-chips"></span></div><div class="cls-grp"><span class="cls-gl">Turn · 0</span><span class="cls-chips"></span></div><div class="cls-grp"><span class="cls-gl">Round · 0</span><span class="cls-chips"></span></div><div class="cls-grp"><span class="cls-gl">Encounter · 4</span><span class="cls-chips"><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.9dXvQYkENEjUEs0C">Holy Wrath</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="0">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.O3WbgXIlGGaSzEEc">Word of Radiance</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="1">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.MMkLZXEvCcE57E65">Bulwark of Faith</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="2">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.2jR2PyZ795bBWvMk">Beacon</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="3">×</button></span></span></div><div class="cls-grp"><span class="cls-gl">Daily · 3</span><span class="cls-chips"><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.abNzxXeUXLSJfeOU">Consecrated Ground</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="4">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.0jvq2FxqEv1jRRsg">Miraculous Recovery</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="5">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.twQP3Vxc5DIEcGGW">Divine Intervention</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="6">×</button></span></span></div>
+    <div class="drop-zone" data-list="repertoire" data-accept="action,feature">Drop Actions and Features here</div>
+    <h3>Escalation</h3>
+    <p class="hint">The class's Escalation abilities: the Passive and Active Escalation Picks choose from these. A Feature goes to the Passives, an Action to the Actives.</p>
+    <div class="cls-grp"><span class="cls-gl">Passives · 7</span><span class="cls-chips"><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.features.Item.ebNVxsxP8xgGxfkr">Radiant Zeal</a><button type="button" data-action="removeLink" data-list="escPassives" data-index="0">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.features.Item.H3MIIixoVYLhl8eu">Divine Surge</a><button type="button" data-action="removeLink" data-list="escPassives" data-index="1">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.features.Item.NaElR8hvBytAy5jp">Font of Mercy</a><button type="button" data-action="removeLink" data-list="escPassives" data-index="2">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.features.Item.FZdNg8cioxcQ6G5C">Searing Blows</a><button type="button" data-action="removeLink" data-list="escPassives" data-index="3">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.features.Item.DZJdlVON61HYWtu9">Mending Light</a><button type="button" data-action="removeLink" data-list="escPassives" data-index="4">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.features.Item.YupB4rXGghRamgjS">Reckoning</a><button type="button" data-action="removeLink" data-list="escPassives" data-index="5">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.features.Item.QaDd5OmozP6CFoYn">Hallowed Stance</a><button type="button" data-action="removeLink" data-list="escPassives" data-index="6">×</button></span></span></div><div class="cls-grp"><span class="cls-gl">Actives · 2</span><span class="cls-chips"><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.BXqnBzVCOhSnyzEA">Final Verdict</a> <i>Esc 3</i><button type="button" data-action="removeLink" data-list="escActives" data-index="0">×</button></span><span class="cls-chip"><a data-action="openLinked" data-uuid="Compendium.twod12.actions.Item.daxRnvMOGtU3Ukeo">Hallowed Dawn</a> <i>Esc 3</i><button type="button" data-action="removeLink" data-list="escActives" data-index="1">×</button></span></span></div>
+    <div class="drop-zone" data-list="escalation" data-accept="action,feature">Drop Escalation abilities here</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  </section>
+</div>
