@@ -179,6 +179,12 @@ const TYPE = `
 .twod12-type .twod12.sheet.pcs .ps-roleseg, .twod12-type .twod12.sheet.pcs .nb-stat, .twod12-type .twod12.sheet.pcs .nb-sum { border-radius: 2px; }
 .twod12-type .twod12.sheet.pcs .ps-roleseg { border-color: #2b2520; } .twod12-type .twod12.sheet.pcs .ps-roleseg button { color: #2b2520; background: #fbf7ee; }
 .twod12-type .twod12.sheet.pcs .ps-roleseg button.on { background: #2b2520; color: #f4ede0; }
+/* a block's head with a note and a button (the Builder's "Damage: Immune, Resist and Weak"): the title, the note after it, the button at the right */
+.twod12-type .twod12.sheet.pcs .ps-bh { flex-wrap: wrap; }
+.twod12-type .twod12.sheet.pcs .ps-bh > .ps-dladd { order: 3; margin-left: auto; width: auto; padding: 1px 10px; }
+.twod12-type .twod12.sheet.pcs .ps-bh > .ps-bsub { order: 2; font-style: italic; }
+.twod12-type .twod12.sheet.pcs .ps-main .ps-dladd { color: ${LIGHT.ink}; }
+.twod12-dark .twod12.sheet.pcs .ps-main .ps-dladd { color: ${T.ink}; }
 /* "+ Add" on the side panel: an outlined button, as the others there (it was a white bar) */
 .twod12-type .twod12.sheet.pcs .ps-dladd { background: transparent; color: #ecd9a4; border: 1px solid #8c7d63; }
 /* the Species and Class chips wrap to a second line (the last one was cut off at the card's edge) */
@@ -796,6 +802,46 @@ page("pc-sheet-dark.html", "Style 6: the PC sheet", `The PC sheet, <b>from its r
 /* ------------------------------------------------------------------ 6b. the full NPC sheet (its real HTML; it is the PC sheet's markup with an NPC's parts) */
 const MYSTERY = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#3a3229"/><circle cx="32" cy="24" r="12" fill="#8c7d63"/><path d="M10 62c2-16 12-22 22-22s20 6 22 22z" fill="#8c7d63"/></svg>');
 const npcRaw = FA(readFileSync(here("./samples/npc-sheet-standard.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace(/fa-regular fa-star/g, "fa-solid fa-star").replace('src="icons/svg/mystery-man.svg"', `src="${MYSTERY}"`));
+// A PROPOSAL (Lucas, 2026-11-13: "something more stylized; the subtypes with their colors and icons"): the Builder's Immune / Resist / Weak block
+// redrawn. This one changes elements, so it is shown apart from the sheet, which keeps the real markup.
+const SUBT = { Sl: ["Slash", "slash", "#8a8a8a", "#4a443b"], Bl: ["Blunt", "hammer", "#8a8a8a", "#4a443b"], Pi: ["Pierce", "arrow-right", "#8a8a8a", "#4a443b"], Fi: ["Fire", "fire", "#e8622a", "#a0521a"], Co: ["Cold", "snowflake", "#4fc3e8", "#2c6f8f"], El: ["Electricity", "bolt", "#3d8bfd", "#7a5c00"],
+  Ac: ["Acid", "droplet", "#7cb342", "#3B6D11"], Th: ["Thunder", "volume-high", "#5c7fa3", "#0C447C"], Fo: ["Force", "atom", "#b06ad8", "#7a24bf"], Ps: ["Psychic", "hurricane", "#8c68d6", "#993556"], Ho: ["Holy", "sun", "#d9b52e", "#7d5400"], Un: ["Unholy", "skull", "#b0607f", "#4A1D63"] };
+const subChip = (k, n = "", x = true) => `<span class="rw-chip" style="--sc:${SUBT[k][2]};--si:${SUBT[k][3]}">${ic(SUBT[k][1])}<b>${SUBT[k][0]}</b>${n ? `<i>${n}</i>` : ""}${x ? '<a title="Remove">&times;</a>' : ""}</span>`;
+const rwBlock = `<div class="twod12 sheet pcs npcs" style="position:static"><div class="ps-main" style="padding:10px 14px 12px"><div class="ps-block nb-rw rw2"><div class="ps-bh"><b>Damage: Immune, Resist and Weak</b><span class="ps-bsub">Resist lowers that type's damage by its number, Weak raises it; Immune ignores it</span></div>
+  <div class="rw-lines">
+    <div class="rw-line"><span class="rw-k imm">Immune</span><span class="rw-v">${subChip("Co")}</span></div>
+    <div class="rw-line"><span class="rw-k res">Resist</span><span class="rw-v">${subChip("Fi", "5")}${subChip("Sl", "2")}</span></div>
+    <div class="rw-line"><span class="rw-k wk">Weak</span><span class="rw-v">${subChip("Ho", "3")}</span></div>
+  </div>
+  <div class="rw-add">
+    <span class="rw-k">Add</span>
+    <div class="rw-pal">${Object.keys(SUBT).map(k => `<button type="button" class="rw-sub${k === "Fi" ? " on" : ""}" style="--sc:${SUBT[k][2]};--si:${SUBT[k][3]}" title="${SUBT[k][0]}">${ic(SUBT[k][1])}<span>${SUBT[k][0]}</span></button>`).join("")}</div>
+    <div class="rw-go"><span class="rw-num"><button type="button">&minus;</button><b>5</b><button type="button">+</button></span><button type="button" class="rw-btn res">Resist</button><button type="button" class="rw-btn wk">Weak</button><button type="button" class="rw-btn imm">Immune</button></div>
+  </div>
+</div></div></div>`;
+const RW_CSS = `
+.rw2 .rw-lines { padding: 4px 2px 2px; }
+.rw-line { display: flex; align-items: center; gap: 10px; min-height: 30px; border-bottom: 1px solid var(--rw-hair); }
+.rw-k { flex: none; width: 64px; font-weight: 700; font-variant: small-caps; font-size: 15px; }
+.rw-k.imm { color: var(--rw-ink); } .rw-k.res { color: var(--rw-res); } .rw-k.wk { color: var(--rw-wk); }
+.rw-v { display: flex; flex-wrap: wrap; gap: 6px; }
+.rw-chip { display: inline-flex; align-items: center; gap: 5px; padding: 2px 4px 2px 7px; border: 1px solid var(--rw-sc); border-radius: 2px; color: var(--rw-sc); font-size: 13px; }
+.rw-chip b { font-weight: 700; } .rw-chip i { font-style: normal; font-weight: 700; color: var(--rw-ink); } .rw-chip a { color: var(--rw-mute); padding: 0 3px; cursor: pointer; }
+.rw-add { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 10px; align-items: start; padding: 8px 2px 2px; }
+.rw-add .rw-k { color: var(--rw-mute); padding-top: 4px; }
+.rw-pal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.rw-sub { display: flex; align-items: center; gap: 5px; height: 26px; padding: 0 7px; background: transparent; border: 1px solid var(--rw-hair); border-radius: 2px; color: var(--rw-sc) !important; font: 600 12.5px "Signika", sans-serif; cursor: pointer; white-space: nowrap; overflow: hidden; }
+.rw-sub span { color: var(--rw-ink); overflow: hidden; text-overflow: ellipsis; }
+.rw-sub.on { border-color: var(--rw-sc); box-shadow: inset 0 -3px 0 var(--rw-sc); background: var(--rw-on); }
+.rw-go { grid-column: 2; display: flex; align-items: center; gap: 6px; }
+.rw-num { display: inline-flex; align-items: center; border: 1px solid var(--rw-out); border-radius: 2px; margin-right: 6px; }
+.rw-num button { width: 24px; height: 24px; border: 0; background: transparent; color: var(--rw-ink); font-size: 14px; cursor: pointer; } .rw-num b { min-width: 26px; text-align: center; font-size: 14px; color: var(--rw-ink); }
+.rw-btn { height: 26px; padding: 0 12px; background: transparent; border: 1px solid var(--rw-out); border-radius: 2px; font: 700 12.5px "Signika", sans-serif; cursor: pointer; }
+.rw-btn.res { color: var(--rw-res) !important; border-color: var(--rw-res); } .rw-btn.wk { color: var(--rw-wk) !important; border-color: var(--rw-wk); } .rw-btn.imm { color: var(--rw-ink) !important; }
+.rw-scope { --rw-sc: var(--si); --rw-ink: ${LIGHT.ink}; --rw-mute: ${LIGHT.mute}; --rw-hair: ${LIGHT.hair}; --rw-out: #8c7d63; --rw-res: #2c5b3f; --rw-wk: #a8322d; --rw-on: ${LIGHT.pg2}; }
+.rw-scope.dk { --rw-ink: ${T.ink}; --rw-mute: ${T.mute}; --rw-hair: ${T.hair}; --rw-res: #8fd69b; --rw-wk: #f3a79e; --rw-on: ${T.band}; }
+.rw-scope .rw-chip, .rw-scope .rw-sub { --rw-sc: var(--si); } .rw-scope.dk .rw-chip, .rw-scope.dk .rw-sub { --rw-sc: var(--sc); }
+`;
 const npcWin = inner => sheetWin(inner).replace("Character: Durgan (Dwarf Paladin, Lay On Hands, level 1)", "NPC: NPC");
 page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet (the current one, which stays beside the one-page sheet), <b>from its real HTML, copied from Lucas's Foundry</b> (a Standard NPC, out of combat). <b>It is built from the PC sheet's own pieces</b>, so the PC sheet's dark and light sets apply to it as they are; only the Builder tab and the Loot tab are its own. <b>A style change only.</b> <b>The tabs are live in each copy</b> (Actions, Effects, Builder, Loot, GM notes).`, `
 <h2>Dark ${PICK}</h2>
@@ -804,6 +850,9 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 <div class="stage twod12-type" style="width:930px">${npcWin(npcRaw)}</div>
 <h2>Today ${TODAY}</h2>
 <div class="stage" style="width:930px">${npcWin(npcRaw)}</div>
+<h2>A proposal: the Builder's "Damage: Immune, Resist and Weak" block, redrawn</h2>
+<p class="why">Lucas, 2026-11-13: the line was broken and the add buttons didn't look good; the subtypes should have their colors and icons. Two things here. <b>In the sheets above</b> (the real markup) the block's head is put in order: the title, its note, then "+ Add" at the right. <b>Below is a redraw of the block</b>, which changes its elements, so it is a proposal and not part of "style only": three lines (Immune, Resist, Weak) with each entry as a chip in its subtype's color and icon; and to add one, a palette of the twelve subtypes in the place of the drop-down, a stepper for the amount, and three buttons. The entries shown are examples (this NPC has none).</p>
+<div class="cols">${col("Dark", PICK, "", rwBlock, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", PICK, "", rwBlock, "twod12-type rw-scope", "640px")}</div>
 <h2>Notes</h2>
 <ul class="notes">
 <li><b>The rank's color is not on this sheet yet.</b> The one-page sheet colors its name plate by rank (Minion slate, Grunt olive, Standard maroon, Elite purple). Here the rank is the small tag beside the name; giving this sheet's head the rank's color would be the same idea, but it is a new decision, so it is not drawn.</li>
@@ -811,7 +860,8 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 <li>Foundry's own window frame, inputs, selects and text editors are stand-ins.</li>
 </ul>
 <style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }
-.pcs .autodia { display: none !important; } .pcs .tab { display: none; } .pcs .tab.active { display: block; } .pcs input, .pcs select { font: inherit; } .pcs a { cursor: pointer; }</style>
+.pcs .autodia { display: none !important; } .pcs .tab { display: none; } .pcs .tab.active { display: block; } .pcs input, .pcs select { font: inherit; } .pcs a { cursor: pointer; }
+.stage.rw-scope { padding: 0; } .stage.rw-scope .pcs { display: block; height: auto; overflow: visible; }${RW_CSS}</style>
 <script>document.addEventListener("click", ev => { const b = ev.target.closest(".tabbtn"); if (!b) return; const sh = b.closest(".pcs"); sh.querySelectorAll(".tabbtn").forEach(x => x.classList.toggle("active", x === b)); sh.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === b.dataset.tabTarget)); });</script>`, R.pcs);
 
 console.log(`built: style-tokens.css/.html, style-dark.css, action-card-dark.html, chat-cards-dark.html, bars-dark.html`);

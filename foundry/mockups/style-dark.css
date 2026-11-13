@@ -126,6 +126,12 @@
 .twod12-type .twod12.sheet.pcs .ps-roleseg, .twod12-type .twod12.sheet.pcs .nb-stat, .twod12-type .twod12.sheet.pcs .nb-sum { border-radius: 2px; }
 .twod12-type .twod12.sheet.pcs .ps-roleseg { border-color: #2b2520; } .twod12-type .twod12.sheet.pcs .ps-roleseg button { color: #2b2520; background: #fbf7ee; }
 .twod12-type .twod12.sheet.pcs .ps-roleseg button.on { background: #2b2520; color: #f4ede0; }
+/* a block's head with a note and a button (the Builder's "Damage: Immune, Resist and Weak"): the title, the note after it, the button at the right */
+.twod12-type .twod12.sheet.pcs .ps-bh { flex-wrap: wrap; }
+.twod12-type .twod12.sheet.pcs .ps-bh > .ps-dladd { order: 3; margin-left: auto; width: auto; padding: 1px 10px; }
+.twod12-type .twod12.sheet.pcs .ps-bh > .ps-bsub { order: 2; font-style: italic; }
+.twod12-type .twod12.sheet.pcs .ps-main .ps-dladd { color: #2a241d; }
+.twod12-dark .twod12.sheet.pcs .ps-main .ps-dladd { color: #ece3cf; }
 /* "+ Add" on the side panel: an outlined button, as the others there (it was a white bar) */
 .twod12-type .twod12.sheet.pcs .ps-dladd { background: transparent; color: #ecd9a4; border: 1px solid #8c7d63; }
 /* the Species and Class chips wrap to a second line (the last one was cut off at the card's edge) */
