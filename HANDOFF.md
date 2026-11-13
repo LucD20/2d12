@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.384, 250 tests; READ THIS FIRST)
+## Where we are now (v0.0.385, 250 tests; READ THIS FIRST)
+- **2026-11-13 (v0.0.385, branch `pack-style-2`; NOT tested by Lucas):** a second click on an Action's name in the HUD closes its card.
 - **2026-11-13 (v0.0.384, branch `pack-style-2`; NOT tested by Lucas):** no tooltip on the HUD's stamps; the HUD reaches the sidebar in full screen. Checklist: foundry-backlog.md "v0.0.384".
 - **2026-11-13 (v0.0.383, branch `pack-style-2`; NOT tested by Lucas):** the HUD's Quick row became slots (eight dashed, each pin fills one), the NPC's side block fits the smaller resolution. Checklist: foundry-backlog.md "v0.0.383".
 - **2026-11-13 (v0.0.382, branch `pack-style-2`; NOT tested by Lucas):** the HUD: a click on a name opens the card, a category no longer stays lit, the categories an aligned two-row table, the hotbar above the HUD when it is short. Checklist: foundry-backlog.md "v0.0.382".

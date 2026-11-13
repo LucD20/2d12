@@ -6,7 +6,7 @@
 import { npcHudHtml, pcHudHtml, listHudHtml, emptyHudHtml, hudPanelHtml, HUD_SAVES } from "./hudmodel.mjs";
 
 const F = "twod12";
-const st = { open: "", actorUuid: "", pop: null, card: null };
+const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "" };
 let root = null, timer = null;
 const setting = (k, d) => { try { return game.settings.get(F, k); } catch (e) { return d; } };
 
@@ -216,12 +216,14 @@ async function showCardNow(actor, item, at) {
   const r = at.getBoundingClientRect();
   div.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - div.offsetWidth - 8))}px`;
   div.style.bottom = `${Math.max(8, window.innerHeight - r.top + 8)}px`;
-  st.card = div;
+  st.card = div; st.cardId = item.id;
   div.addEventListener("click", ev => {
     const b = ev.target.closest("[data-action='useVersion'][data-ap]");
     if (b && !b.disabled) { ev.preventDefault(); closePop(); use(actor, item, Number(b.dataset.ap), ev.shiftKey); }
   });
-  setTimeout(() => document.addEventListener("pointerdown", function away(ev) { if (!div.contains(ev.target)) { div.remove(); if (st.card === div) st.card = null; document.removeEventListener("pointerdown", away, true); } }, true), 0);
+  // v0.0.385 (Lucas: "clicking the action again should close the card, not blink it"): a press on this Action's name is left to the click, which closes it
+  const sameName = ev => !!ev.target.closest?.(`.ha[data-item-id="${item.id}"] [data-hud="card"]`);
+  setTimeout(() => document.addEventListener("pointerdown", function away(ev) { if (sameName(ev)) return; if (!div.contains(ev.target)) { div.remove(); if (st.card === div) st.card = null; document.removeEventListener("pointerdown", away, true); } }, true), 0);
 }
 /** v0.0.381 (Lucas): right-click on a PC's Version stamp pins it to (or unpins it from) the Quick row, at once. */
 async function toggleQuick(actor, item, ap) {
@@ -245,7 +247,7 @@ async function onClick(ev) {
   if (!actor) return;
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
-  if (kind === "card" && item) return showCard(actor, item, b);
+  if (kind === "card" && item) { if (st.card?.isConnected && st.cardId === item.id) return closePop({ keepOpen: true }); return showCard(actor, item, b); }
   if (kind === "cat") { const c = b.dataset.cat; if (actor.type !== "npc") { st.open = st.open === c ? "" : c; root.querySelectorAll(".cat").forEach(x => { x.classList.toggle("on", x.dataset.cat === st.open); x.setAttribute("aria-pressed", String(x.dataset.cat === st.open)); }); } return st.open || actor.type === "npc" ? openPanel(c) : closePop(); }
   if (kind === "attr") { const { CharacterSheet } = await import("./actor-sheets.mjs"); return CharacterSheet.rollAttr.call({ actor }, { shiftKey: ev.shiftKey || b.dataset.save === "1" }, { dataset: { key: b.dataset.key } }); }
   if (kind === "open" && item) return item.sheet.render(true);
@@ -267,6 +269,7 @@ function onContext(ev) {
   if (!item) return;
   const v = ev.target.closest(".hv[data-ap]");
   if (v && actor.type !== "npc") return toggleQuick(actor, item, Number(v.dataset.ap));
+  if (st.card?.isConnected && st.cardId === item.id) return closePop({ keepOpen: true });   // v0.0.385: again closes it
   return showCard(actor, item, ha);
 }
 
