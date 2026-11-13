@@ -1083,34 +1083,34 @@ const cls2Raw = `<div class="twod12 sheet item sk">
   <header class="head"><img src="${ANGEL}" width="48" height="48" alt=""><input class="name" type="text" value="Paladin"></header>
   <nav class="tabs"><a class="tabbtn">Description</a><a class="tabbtn active">Details</a><a class="fr-q" role="button">?</a></nav>
   <section class="tab active" data-tab="details"><div class="fr-tab cls2">
-    <section class="fr-sec"><h3>The class <small>what its first lines in the book say</small></h3><div class="fr-pgrid">
+    <section class="fr-sec"><h3>The class</h3><div class="fr-pgrid">
       <span class="fr-pl">Flavor</span><div class="fr-pc"><input type="text" class="fr-in wide" value="Your god's strength flows through your weapon and your hands."></div>
       <span class="fr-pl">Category</span><div class="fr-pc"><input type="text" class="fr-in" value="Class"> <span class="fr-m">shown as <b>Paladin</b></span></div>
       <span class="fr-pl">Armor</span><div class="fr-pc">${seg(["Light", "Medium", "Heavy"], "Heavy")}</div>
-      <span class="fr-pl">Rally</span><div class="fr-pc">${stp(6)} <span class="fr-m">Rally Points: this + the Stage</span></div>
-      <span class="fr-pl">Speed</span><div class="fr-pc">${stp("+0")} <span class="fr-m">added to the species' Speed</span></div>
+      <span class="fr-pl">Rally</span><div class="fr-pc">${stp(6)}</div>
+      <span class="fr-pl">Speed</span><div class="fr-pc">${stp("+0")}</div>
     </div></section>
-    <section class="fr-sec"><h3>Health <small>the player puts the high one on <span class="hp-v">Vigor</span> or <span class="hp-r">Resolve</span></small></h3>
+    <section class="fr-sec"><h3>Health</h3>
       <table class="cls-st"><thead><tr><th></th><th>Stage 1 <small>levels 1-4</small></th><th>Stage 2 <small>levels 5-7</small></th><th>Stage 3 <small>levels 8-10</small></th></tr></thead><tbody>
         <tr><th>High</th><td><input class="fr-in n" value="20"></td><td><span class="pl">+</span><input class="fr-in n" value="12"><span class="eq">= 32</span></td><td><span class="pl">+</span><input class="fr-in n" value="14"><span class="eq">= 46</span></td></tr>
         <tr><th>Low</th><td><input class="fr-in n" value="10"></td><td><span class="pl">+</span><input class="fr-in n" value="6"><span class="eq">= 16</span></td><td><span class="pl">+</span><input class="fr-in n" value="7"><span class="eq">= 23</span></td></tr>
       </tbody></table></section>
-    <section class="fr-sec"><h3>Modifiers <small>${hl("Weapon Modifier and Power Modifier")}; never above +4</small></h3>
+    <section class="fr-sec"><h3>Modifiers</h3>
       <table class="cls-st"><thead><tr><th></th><th>Stage 1</th><th>Stage 2</th><th>Stage 3</th></tr></thead><tbody>
         <tr><th>High</th><td>${stp("+2")}</td><td rowspan="2" class="mid"><span class="eq">+1 to</span> ${seg(["the higher", "Weapon", "Power"], "the higher")}</td><td rowspan="2" class="mid"><span class="eq">+1 to both</span></td></tr>
         <tr><th>Low</th><td>${stp("+1")}</td></tr>
       </tbody></table>
       <div class="fr-pgrid">
         <span class="fr-pl">High one is</span><div class="fr-pc">${seg(["the player's choice", "Weapon", "Power"], "the player's choice")}</div>
-        <span class="fr-pl">Leads with</span><div class="fr-pc">${seg(["Weapon", "Power"], "Weapon")} <span class="fr-m">breaks a tie of the Signature Modifier</span></div>
-        <span class="fr-pl">Attributes</span><div class="fr-pc"><b>${hl("Body or Appeal +1, Mind or Instinct +1")}</b> <span class="fr-m">set on level 1, in the Levels window</span></div>
+        <span class="fr-pl">Leads with</span><div class="fr-pc">${seg(["Weapon", "Power"], "Weapon")}</div>
+        <span class="fr-pl">Attributes</span><div class="fr-pc"><b>${hl("Body or Appeal +1, Mind or Instinct +1")}</b></div>
       </div></section>
-    <section class="fr-sec"><h3 class="cls-h">Levels <small>what the player gets at each level</small><button type="button">${ic("layer-group")} Edit levels…</button></h3>
+    <section class="fr-sec"><h3 class="cls-h">Levels<button type="button">${ic("layer-group")} Edit levels…</button></h3>
       <div class="cls-levels"><div><b>Level 1</b><span>10 sections · 10 choices to make</span></div><div><b>Level 2</b><span>1 section · 1 choice to make</span></div><div><b>Level 3</b><span>2 sections · 2 choices to make</span></div><div><b>Level 4</b><span>1 section · 1 choice to make</span></div></div></section>
-    <section class="fr-sec"><h3>Repertoire <small>everything else the class offers; a "From the Repertoire" section chooses from here</small></h3>
+    <section class="fr-sec"><h3>Repertoire</h3>
       ${grp("Passive", "#5F5E5A", [])}${grp("Turn", "#0F6E6E", [])}${grp("Round", "#185FA5", [])}${grp("Encounter", "#A32D2D", ["Holy Wrath", "Word of Radiance", "Bulwark of Faith", "Beacon"])}${grp("Daily", "#5B3FA6", ["Consecrated Ground", "Miraculous Recovery", "Divine Intervention"])}
       <div class="drop-zone">Drop Actions and Features here</div></section>
-    <section class="fr-sec"><h3>Escalation <small>a Feature goes to the Passives, an Action to the Actives</small></h3>
+    <section class="fr-sec"><h3>Escalation</h3>
       ${grp("Passives", "#c9821f", ["Radiant Zeal", "Divine Surge", "Font of Mercy", "Searing Blows", "Mending Light", "Reckoning", "Hallowed Stance"])}${grp("Actives", "#c9821f", ["Final Verdict (Esc 3)", "Hallowed Dawn (Esc 3)"])}
       <div class="drop-zone">Drop Escalation abilities here</div></section>
   </div></section></div>`;
@@ -1127,18 +1127,19 @@ const CLS2_CSS = `
 .cls2 table.cls-st .fr-in.n { width: 46px; text-align: center; } .cls2 table.cls-st .pl { color: var(--cf-mute); margin-right: 3px; } .cls2 table.cls-st .eq { color: var(--cf-mute); margin: 0 6px; font-weight: 400; } .cls2 table.cls-st td .eq:last-child { color: var(--cf-ink); font-weight: 700; }
 .cls2 .cls-levels { display: grid; gap: 0; margin: 0 0 4px; } .cls2 .cls-levels > div { display: flex; gap: 12px; padding: 4px 2px; border: 0; border-bottom: 1px solid var(--cf-hair); border-radius: 0; background: none; font-size: 13px; color: var(--cf-ink); } .cls2 .cls-levels > div b { width: 58px; } .cls2 .cls-levels span { color: var(--cf-mute); }
 .cls2 .cls-grp { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 0 10px; align-items: baseline; margin: 0; padding: 5px 2px; border-bottom: 1px solid var(--cf-hair); }
-.cls2 .cls-grp { align-items: stretch; padding: 0; gap: 0 10px; } .cls2 .cls-chips { padding: 5px 0; align-items: baseline; }
 .cls2 .hp-v { color: #a3271f; font-weight: 600; } .cls2 .hp-r { color: #1f4f9e; font-weight: 600; } .twod12-dark .cls2 .hp-v { color: #ef8a80; } .twod12-dark .cls2 .hp-r { color: #8fb3ee; }
-.twod12-dark .cls2 .at-body, .twod12-dark.twod12-dark .classwin .at-body { color: #f08a8a; } .twod12-dark .cls2 .at-mind, .twod12-dark.twod12-dark .classwin .at-mind { color: #8fb3ee; } .twod12-dark .cls2 .at-appeal, .twod12-dark.twod12-dark .classwin .at-appeal { color: #e3c15a; } .twod12-dark .cls2 .at-instinct, .twod12-dark.twod12-dark .classwin .at-instinct { color: #7fcf95; } .twod12-dark .cls2 .mod-weapon { color: #f0a35e; } .twod12-dark .cls2 .mod-power { color: #b79cf0; }
-.twod12-type.twod12-type .application.twod12-styled .sk .cls2 .cls-gl { color: #fff; }
-.cls2 .cls-gl { display: flex; align-items: center; padding: 4px 8px; background: color-mix(in srgb, var(--fq, #5F5E5A), #000 22%); color: #fff; font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; }
+.twod12-dark .cls2 .at-body { color: #f08a8a; } .twod12-dark .cls2 .at-mind { color: #8fb3ee; } .twod12-dark .cls2 .at-appeal { color: #e3c15a; } .twod12-dark .cls2 .at-instinct { color: #7fcf95; } .twod12-dark .cls2 .mod-weapon { color: #f0a35e; } .twod12-dark .cls2 .mod-power { color: #b79cf0; }
+.twod12-type.twod12-type .application.twod12-styled .sk .cls2 .cls-grp { margin: 0 0 3px; padding: 0; border-bottom: 0; }
+.cls2 .cls-grp { align-items: stretch; padding: 0; gap: 0 10px; margin: 0 0 3px; border: 0; border-left: 4px solid var(--fq, #5F5E5A); background: color-mix(in srgb, var(--fq, #5F5E5A) 11%, ${LIGHT.pg}); } .cls2 .cls-chips { padding: 5px 0; align-items: baseline; }
+.cls2 .cls-gl { display: flex; align-items: center; padding: 4px 8px; background: color-mix(in srgb, var(--fq, #5F5E5A) 26%, ${LIGHT.pg}); color: color-mix(in srgb, var(--fq, #5F5E5A), #000 25%); font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; }
+.twod12-dark .cls2 .cls-grp { background: color-mix(in srgb, var(--fq, #5F5E5A) 16%, ${T.pg}); } .twod12-dark.twod12-dark .application.twod12-styled .sk .cls2 .cls-gl { background: color-mix(in srgb, var(--fq, #5F5E5A) 38%, #14110d); color: color-mix(in srgb, var(--fq, #5F5E5A), #fff 62%); }
 .cls2 .cls-chips { display: flex; flex-wrap: wrap; gap: 2px 14px; } .cls2 .cls-chip { display: inline-flex; align-items: center; padding: 0; border: 0; border-radius: 0; background: none; gap: 2px; font-size: 13.5px; } .cls2 .cls-chip a { color: var(--cf-ink); font-weight: 600; } .cls2 .cls-chip i { color: var(--cf-mute); font-size: 11.5px; margin-left: 3px; }
 .cls2 .cls-chip button { width: 16px; height: 16px; min-height: 0; padding: 0; border: 0; background: none; color: var(--cf-mute); font-size: 13px; line-height: 1; opacity: .7; }
 .cls2 .drop-zone { margin: 7px 0 0; padding: 5px; border: 1px dashed var(--cf-hair); border-radius: 0; background: none; color: var(--cf-mute); font-size: 12px; opacity: 1; text-align: center; }`;
 const threeW = (w, f) => `<div class="cols">${col("Dark", PICK, "", f(), "dk twod12-dark twod12-type", w)}${col("Light", PICK, "", f(), "twod12-type", w)}${col("Today", TODAY, "", f(), "", w)}</div>`;
 page("rest-dark.html", "Style 7b: the sheets of an Action, an Effect and a Class", `Three item sheets, <b>from their real HTML, copied from Lucas's Foundry</b>, each on its Details tab: an Action (Smite: the Action editor), an applied Effect (Frightened) and a Class (Paladin). <b>A style change only.</b> The dark set is generated from ${R.item.length} rules.`, `
 <h2>A Class's sheet, the Details tab: redone</h2>
-<p class="why">Lucas, 2026-11-13: "a complete redo, it looks just like a lot of fields, not intuitive at all". <b>This one changes the elements</b>, so it is a proposal beside today's sheet. It is written the way the Action editor is: a section per subject, a label and its control on a line, a choice of few as buttons side by side (no drop-down lists), a small number as a stepper. The eight Health numbers and the Modifiers are <b>a table by Stage that shows the totals</b> (20, then +12 = 32, then +14 = 46). The help texts sit beside their heading or their field; "?" in the tab bar shows the longer ones, as on an Action.</p>
+<p class="why">Lucas, 2026-11-13: "a complete redo, it looks just like a lot of fields, not intuitive at all". <b>This one changes the elements</b>, so it is a proposal beside today's sheet. It is written the way the Action editor is: a section per subject, a label and its control on a line, a choice of few as buttons side by side (no drop-down lists), a small number as a stepper. The eight Health numbers and the Modifiers are <b>a table by Stage that shows the totals</b> (20, then +12 = 32, then +14 = 46). No small tips beside the headings or fields (Lucas): "?" in the tab bar shows the help, as on an Action. A list in Repertoire and Escalation is a row like a Tier: a line in its Frequency's color, its name on a darker cell, the rest of the row a dim tint.</p>
 <div class="cols">${col("Dark", PICK, "", cls2Win(), "dk twod12-dark twod12-type", "650px")}${col("Light", PICK, "", cls2Win(), "twod12-type", "650px")}${col("Today", TODAY, "", clsWin(), "", "590px")}</div>
 <h2>An Action's sheet, the Details tab: dark ${PICK}</h2>
 <div class="stage dk twod12-dark twod12-type" style="width:930px">${itemWin()}</div>
