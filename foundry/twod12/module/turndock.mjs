@@ -77,7 +77,7 @@ export function bodyHtml(m, { done = false } = {}) {
 
 /** Pure: the dock. open: unfolded on this client. */
 export function dockHtml(m, open = false) {
-  return `<div class="twod12 twod12-dock${open ? " open" : ""}"><div class="td-hd" data-twod12-dock="fold" data-tooltip="${open ? "Fold" : "Unfold"} the Turn Breakdown"><span class="td-ttl">Turn</span><span class="td-who">${esc(m.who)}</span><span class="td-rd">Round ${esc(String(m.round))}</span><span class="td-sp">${headPips(m.ap, m.rap, m.max)}<span class="td-chev">▲</span></span></div><div class="td-body">${bodyHtml(m)}</div></div>`;
+  return `<div class="twod12 twod12-dock${open ? " open" : ""}"><div class="td-hd" data-twod12-dock="fold"><span class="td-ttl">Turn</span><span class="td-who">${esc(m.who)}</span><span class="td-rd">Round ${esc(String(m.round))}</span><span class="td-sp">${headPips(m.ap, m.rap, m.max)}<span class="td-chev">▲</span></span></div><div class="td-body">${bodyHtml(m)}</div></div>`;
 }
 
 /** Pure: the chat line posted when a turn ends: one line that unfolds into the turn's breakdown. */

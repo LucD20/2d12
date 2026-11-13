@@ -410,23 +410,25 @@ function traitsHtml(inp, v) {
   return `<div class="rd-traits"><span class="rd-tlist">${blocks.join('<span class="rd-tsep" aria-hidden="true"></span>')}</span>${freq}</div>`;
 }
 
+// v0.0.370 (Lucas): the target's token image before its name (none for "No target" and "Your roll")
+const cImg = c => (c.img ? `<img class="rd-cimg" src="${esc(c.img)}" alt="">` : "");
 function creaturesHtml(inp, st, v) {
   const live = liveCreatures(inp, st), crit = !!v?.crit, hide = !!inp.hideDef;
   // v0.0.293: a Save Action: each creature with your Save DC (they roll; nothing of theirs to switch here)
-  if (inp.save) return live.filter(c => c.uuid !== "none" && c.uuid !== "self").map(c => `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-def">${esc(inp.save.label)} ${inp.save.dc}</span></div></div>`).join("") || `<div class="rd-none">No target. Target a creature on the map.</div>`;
+  if (inp.save) return live.filter(c => c.uuid !== "none" && c.uuid !== "self").map(c => `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-def">${esc(inp.save.label)} ${inp.save.dc}</span></div></div>`).join("") || `<div class="rd-none">No target. Target a creature on the map.</div>`;
   if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : "No target. Target a creature on the map."}</div>`;
   // v0.0.343: several creatures for an Action that rolls nothing (Double Shot): each one named, nothing to roll against
-  if (!inp.multi && live.length > 1) return live.map(c => `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</div></div>`).join("");
+  if (!inp.multi && live.length > 1) return live.map(c => `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</div></div>`).join("");
   if (!inp.multi) {
     const c = live[0], own = chipsOf(inp, st, c.uuid);
     // v0.0.340: "No target" (an area with no creature, an Action rolled without one): its DC typed here (13 by default)
     const dcIn = c.uuid === "none" ? `<label class="rd-dcin">DC <input type="number" min="1" max="40" data-field="noTargetDc" value="${Number(c.dc) || 13}" aria-label="The DC to roll against"></label>` : "";
-    return `<div class="rd-cbox"><div class="rd-cname"><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}${dcIn || defBadge(c, hide)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
+    return `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}${dcIn || defBadge(c, hide)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
   }
   const three = anyThree(inp, st);
   return live.map(c => {
     const k = creatureCalc(inp, st, c.uuid), open = !!st.open?.[c.uuid], own = chipsOf(inp, st, c.uuid);
-    const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span><b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}${bbNotes(k).length ? `<span class="rd-dnote rd-bbcap">${esc(bbNotes(k).join(" · "))}</span>` : ""}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" data-tooltip="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
+    const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span>${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}${bbNotes(k).length ? `<span class="rd-dnote rd-bbcap">${esc(bbNotes(k).join(" · "))}</span>` : ""}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" data-tooltip="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
     if (!open) return `<div class="rd-cbox multi" data-uuid="${esc(c.uuid)}">${head}</div>`;
     const add = `<div class="rd-row"><span class="rd-rlabel">Add here:</span><span class="rd-chips">${["boon", "bane", "fav", "doom"].map(kd => `<button type="button" class="rd-addhere" data-act="quick" data-scope="${esc(c.uuid)}" data-k="${kd}">${pip({ kind: kd })}${QUICK_LABEL[kd]}</button>`).join("")}</span></div>`;
     return `<div class="rd-cbox multi open" data-uuid="${esc(c.uuid)}">${head}${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${add}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
@@ -435,7 +437,7 @@ function creaturesHtml(inp, st, v) {
 
 /** The whole dialog's inner HTML: header (fixed), body (scrolls), Designer footer, bottom bar (fixed). */
 export function dialogHtml(inp, st) {
-  const v = versionOf(inp, st), dl = diceLine(inp, st), why = blockedReason(inp, st), warn = warnings(inp, st), noRoll = !!v?.noTiers;
+  const v = versionOf(inp, st), dl = diceLine(inp, st), why = blockedReason(inp, st), noRoll = !!v?.noTiers;
   // v0.0.293 (Lucas: allow it with a warning): a Version you can't afford is struck through but can be chosen
   const vers = (inp.versions ?? []).length > 1 ? `<div class="rd-vers" role="group" aria-label="Version">${inp.versions.map(x => `<button type="button" data-act="ver" data-ap="${x.ap}" aria-pressed="${Number(x.ap) === Number(v?.ap)}"${x.disabled ? ` data-tooltip="${esc(x.why ?? "")}" class="cant"` : ""}>${esc(x.cost)}</button>`).join("")}</div>` : "";
   // v0.0.349 (Lucas, playtest 4: "Enfeebled on the same line, tighter, no +1 / −1 on the icons"): +1 / −1 without a sign icon (the label says it)
@@ -450,10 +452,11 @@ export function dialogHtml(inp, st) {
     <div class="rd-mhead"><span>${inp.multi && !inp.save ? "Modifiers · every target" : "Modifiers"}</span></div>${quick}${notices}${rowsHtml(chipsOf(inp, st, "shared"), st, "shared", inp.save ? ROWS.filter(r => ["passives", "damage"].includes(r[0])) : ROWS)}
     <div class="rd-creatures">${creaturesHtml(inp, st, v)}</div></section>`;
   const flavor = inp.flavor ? `<div class="rd-div" aria-hidden="true"><span></span><i>◆ ◆ ◆</i><span></span></div><p class="rd-flavor">${esc(inp.flavor)}</p>` : "";
-  const designer = inp.designer && v && !v.noTiers && !inp.save ? `<div class="rd-designer"><div>${inp.showOdds && !inp.hideDef ? "" : liveCreatures(inp, st).map(c => `<div><b>${esc(c.name)}</b>: ${oddsLine(oddsOf(creatureCalc(inp, st, c.uuid), !!v.crit))}</div>`).join("")}</div><div class="rd-force" role="group" aria-label="Force a Tier">Force a Tier: ${[1, 2, 3].map(n => `<button type="button" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">T${n}</button>`).join("")}</div></div>` : "";
+  const designer = inp.designer && v && !v.noTiers && !inp.save ? `<div class="rd-designer"><div>${inp.showOdds && !inp.hideDef ? "" : liveCreatures(inp, st).map(c => `<div>${cImg(c)}<b>${esc(c.name)}</b>: ${oddsLine(oddsOf(creatureCalc(inp, st, c.uuid), !!v.crit))}</div>`).join("")}</div><div class="rd-force" role="group" aria-label="Force a Tier">Force a Tier: ${[1, 2, 3].map(n => `<button type="button" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">T${n}</button>`).join("")}</div></div>` : "";
   const modes = (inp.rollModes ?? []).length ? `<select class="rd-mode" data-field="rollMode" aria-label="Roll mode">${inp.rollModes.map(([k, l]) => `<option value="${esc(k)}"${k === st.rollMode ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>` : "";
   const bar = `<footer class="rd-bar">${modes}${vers}<button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button></footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
-  const warnHtml = warn.length ? `<div class="rd-warn" role="status"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> ${esc(warn.join(" · "))}. You can still use it.</div>` : "";
+  // v0.0.370 (Lucas): no yellow warning at the bottom (the struck Version and the reason on it say it); warnings() stays for the tests and callers
+  const warnHtml = "";
   // v0.0.349 (Lucas, playtest 4: "the AP Version buttons at the bottom next to Roll")
   return `<header class="rd-head"><div class="rd-nameline"><h1 class="rd-name">${esc(inp.name)}</h1></div>${traitsHtml(inp, v)}</header>
     <div class="rd-body">${metaHtml(inp, v)}${tierTableHtml(inp, st, v)}${panel}${flavor}</div>${designer}${warnHtml}${bar}`;

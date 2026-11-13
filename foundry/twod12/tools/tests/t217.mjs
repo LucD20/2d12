@@ -135,7 +135,7 @@ console.log("its label:", pic.flanked.map(r => FO.flankedText(r)).join(" | "));
 const loeSrc = src("module/loe.mjs");
 console.log("the token controls: Line of Effect, Cover height, Show flanking:", ["twod12-loe", "twod12-height", "twod12-flank"].every(n => loeSrc.includes(`name: "${n}"`)), "| no HUD buttons any more:", !loeSrc.includes("renderTokenHUD"));
 const pcs = src("module/pcsheet.mjs");
-console.log("the sheet's rows have their color again (v0.0.298 had it in a comment):", /\n\s+fc: \(SHEET_FREQ\[reaction \? "reaction" : sec\]/.test(pcs), "| Use's tooltip and the open card:", /\n\s+useTip: r\.useTip \|\| `Use \$\{i\.name\}`, open: r\.open,/.test(pcs), "| a Reaction's Frequency line:", pcs.includes("freqLine: reaction ? rowLines("));
+console.log("the sheet's rows have their color again (v0.0.298 had it in a comment):", /\n\s+fc: \(SHEET_FREQ\[reaction \? "reaction" : sec\]/.test(pcs), "| Use's tooltip and the open card:", /\n\s+useTip: r\.useTip \|\| `Use \$\{i\.name\}`, open: r\.open,/.test(pcs), "| every row's Frequency line (v0.0.370; v0.0.302 only a Reaction's):", pcs.includes("freqLine: rowLines("));
 
 console.log("--- v0.0.303 (Lucas tested v0.0.302)");
 const CV = await import(ROOTURL + "module/cardview.mjs");

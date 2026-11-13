@@ -48,12 +48,14 @@ export async function rollDialogInput(c) {
   }
   // the creatures (several: each its own Defense; one: the target, or the DC of an Action with no target)
   let creatures;
+  // v0.0.370 (Lucas): the target's token image beside its name
+  const img = (tk, a) => tk?.document?.texture?.src ?? tk?.texture?.src ?? a?.img ?? "";
   const size = a => { const n = Number(a?.system?.size); return n > 3 ? (["", "Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"][n] ?? "") : ""; };
-  if (c.multi) creatures = c.perT.map(p => ({ uuid: p.actorUuid, name: p.label ?? p.name, size: size(p.actor), def: dcWord(p.dcInfo), dc: p.dcInfo.dc, owned: !!p.actor?.isOwner }));
+  if (c.multi) creatures = c.perT.map(p => ({ uuid: p.actorUuid, name: p.label ?? p.name, img: img(p.token, p.actor), size: size(p.actor), def: dcWord(p.dcInfo), dc: p.dcInfo.dc, owned: !!p.actor?.isOwner }));
   // v0.0.343 (Lucas, playtest 4: Double Shot's window showed one of its two targets): an Action that rolls nothing (no Modifier) aimed at several
   // creatures lists them all (it rolls nothing, so no Defense of theirs is used)
-  else if (c.rollsAtOthers && (c.aimed?.length ?? 0) > 1) creatures = c.aimed.filter(tk => tk.actor).map(tk => ({ uuid: tk.actor.uuid, name: tk.name, size: size(tk.actor), def: dcWord(c.dcInfo), dc: c.dcInfo.dc, owned: !!tk.actor.isOwner, plain: true }));
-  else if (c.rollsAtOthers && c.targetToken?.actor) creatures = [{ uuid: c.targetToken.actor.uuid, name: c.targetToken.name, size: size(c.targetToken.actor), def: dcWord(c.dcInfo), dc: c.dcInfo.dc, owned: !!c.targetToken.actor.isOwner, blocked: c.outOfRange || "" }];
+  else if (c.rollsAtOthers && (c.aimed?.length ?? 0) > 1) creatures = c.aimed.filter(tk => tk.actor).map(tk => ({ uuid: tk.actor.uuid, name: tk.name, img: img(tk, tk.actor), size: size(tk.actor), def: dcWord(c.dcInfo), dc: c.dcInfo.dc, owned: !!tk.actor.isOwner, plain: true }));
+  else if (c.rollsAtOthers && c.targetToken?.actor) creatures = [{ uuid: c.targetToken.actor.uuid, name: c.targetToken.name, img: img(c.targetToken, c.targetToken.actor), size: size(c.targetToken.actor), def: dcWord(c.dcInfo), dc: c.dcInfo.dc, owned: !!c.targetToken.actor.isOwner, blocked: c.outOfRange || "" }];
   // v0.0.340 (Lucas: "allow to roll even without target for area effects, choosing a DC (default 13)"): an area with no creature in it (or not placed) rolls against a DC
   else if (c.rollsAtOthers && c.areaSet) creatures = [{ uuid: "none", name: c.areaOutcome?.ok ? "No creature in the area" : "No target", def: "DC", dc: c.opts.noTargetDc ?? 13, owned: true, area: true }];
   else creatures = [{ uuid: c.rollsAtOthers ? "none" : "self", name: c.rollsAtOthers ? "No target" : (c.isSelf ? "Your roll" : "No target"), def: "DC", dc: c.opts.noTargetDc ?? c.dcInfo.dc, owned: true }];

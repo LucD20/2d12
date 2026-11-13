@@ -77,9 +77,15 @@ function darkSet(name, rules, scope = ".twod12-dark") {
   autoUsed[name] = new Set();
   return rules.map(block => {
     const sel = selOf(block).trim(), body = block.slice(block.indexOf("{") + 1, -1);
-    const decls = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--cc-|^--rd-|^--cw-|^--ps-|^--sk-|^--fr-|^--tp-/.test(d));
+    // v0.0.370: the automation diamonds keep their colors on the dark page (a gem's gradient turned dark read as a dark square)
+    if (/\.autodia\b/.test(sel)) return "";
+    // v0.0.370: a near-white background (rgba white, .35 and more) is a faint light tint on the dark page (a die, a rider's chip on a Tier row)
+    const WHITE = /rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*0?\.(?:3[5-9]|[4-9])\d*\s*\)/g;
+    const decls = body.split(";").map(d => d.trim()).filter(d => (/#[0-9a-fA-F]{3,8}\b/.test(d) || (/^background(-color)?\s*:/.test(d) && new RegExp(WHITE.source).test(d))) && !/^--cc-|^--rd-|^--cw-|^--ps-|^--sk-|^--fr-|^--tp-/.test(d));
     if (!decls.length) return "";
-    const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc, name === "pcs"); })}`; });
+    // a "background" shorthand resets background-clip: keep the rule's own clip after it (gradient text)
+    if (decls.some(d => /^background\s*:/.test(d))) decls.push(...body.split(";").map(d => d.trim()).filter(d => /^(-webkit-)?background-clip\s*:/.test(d)));
+    const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(WHITE, "rgba(255, 255, 255, .07)").replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc, name === "pcs"); })}`; });
     // :where() keeps each rule's own weight, so the system's cascade holds (a rule that colors with a variable, as "the lit pip is the row's color",
     // still beats the plain rule before it); the set only has to come after the system's rules.
     return `${sel.split(",").map(s => `:where(${scope}) ${s.trim()}`).join(", ")} { ${out.join("; ")}; }`;
@@ -112,7 +118,7 @@ const TYPE = `
 .twod12-type .twod12.chat.cc .cc-stamp b { font-family: "Signika", sans-serif; font-weight: 700; }
 .twod12-type .twod12.chat.cc .cc-stamp small { font: 700 12px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
 .twod12-type .twod12.chat.cc .cc-stamp .cc-stl { font-variant: normal; font-size: 11px; }
-.twod12-type .twod12.chat.cc .cc-seg, .twod12-type .twod12.chat.cc .cc-arrow b, .twod12-type .twod12.chat.cc .cc-total, .twod12-type .twod12.chat.cc .cc-stotal, .twod12-type .twod12.chat.cc .cc-savehead b, .twod12-type .twod12.chat.cc .cc-srow b, .twod12-type .twod12.chat.cc .cc-ptot, .twod12-type .twod12.chat.cc [class*="cc-"] { font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.cc .cc-seg, .twod12-type .twod12.chat.cc .cc-arrow b, .twod12-type .twod12.chat.cc .cc-total, .twod12-type .twod12.chat.cc .cc-stotal, .twod12-type .twod12.chat.cc .cc-savehead b, .twod12-type .twod12.chat.cc .cc-srow b, .twod12-type .twod12.chat.cc .cc-ptot, .twod12-type .twod12.chat.cc [class*="cc-"]:not(i):not([class*="fa-"]) { font-family: "Signika", sans-serif; }
 .twod12-type .twod12.chat .ahead > b, .twod12-type .twod12.chat.sysmsg > .ahead > b { font: 700 14.5px "Signika", sans-serif; letter-spacing: 0; }
 .twod12-type .twod12-dock .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
 /* the cost stamp in the light theme too (Lucas: "if it is helpful"): the chat card's dark brown button, square, no shadow */
@@ -225,7 +231,7 @@ const TYPE = `
 .twod12-type .enclog .el-round { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; border-bottom: 1px solid ${LIGHT.rule}; color: ${LIGHT.ink}; }
 .twod12-type .enclog .el-turn { border-left: 2px solid ${LIGHT.rule}; border-radius: 0; background: none; padding: 2px 8px; } .twod12-type .enclog .el-own { color: ${LIGHT.ink}; }
 .twod12-type .enclog .el-bar button { border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: inherit; font: 600 12px "Signika", sans-serif; }
-.twod12-dark .enclog-app .window-content { background: ${T.pg}; color: ${T.ink}; } .twod12-dark .enclog .el-bar { background: ${T.pg2}; border-color: ${T.hair}; } .twod12-dark .enclog .el-abbr { border-color: ${T.hair}; }
+.twod12-dark .enclog .el-turn { background: none; } .twod12-dark .enclog-app .window-content { background: ${T.pg}; color: ${T.ink}; } .twod12-dark .enclog .el-bar { background: ${T.pg2}; border-color: ${T.hair}; } .twod12-dark .enclog .el-abbr { border-color: ${T.hair}; }
 .twod12-dark .enclog .el-bar label, .twod12-dark .enclog .el-abbr label, .twod12-dark .enclog .el-line, .twod12-dark .enclog .el-own, .twod12-dark .enclog .el-round { color: ${T.ink}; } .twod12-dark .enclog .el-round, .twod12-dark .enclog .el-turn { border-color: ${T.rule}; }
 .twod12-dark .enclog .el-line > a { color: ${T.mute}; } .enclog .el-line > i svg, .enclog a svg, .enclog button svg { width: 1em; height: 1em; fill: currentColor; vertical-align: -.125em; } .twod12-dark .enclog .el-line > i { color: ${T.gold}; opacity: 1; } .twod12-dark .enclog .el-line > a, .twod12-dark .enclog .el-own a { color: ${T.mute}; opacity: 1; } .twod12-dark .enclog .el-line.k-dmg, .twod12-dark .enclog .el-line.k-down { color: #f0958a; } .twod12-dark .enclog .el-line.k-heal { color: #6fd0c4; }
 .twod12-type .application.twod12-gencard h4.gc-h { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: ${LIGHT.ink}; }
@@ -440,6 +446,8 @@ const BY_HAND = `
 .twod12-dark .twod12.rolldlg .rd-sub, .twod12-dark .twod12.rolldlg [class*="rd-"] .cc-sub { color: #e3ba62 !important; }
 .twod12-dark .twod12.rolldlg .rd-cx:hover, .twod12-dark .twod12.rolldlg .rd-ci:hover { background: ${T.band}; }
 .twod12-dark .twod12.rolldlg .rd-freq { color: #fff; }
+/* v0.0.370 (Lucas: "the header of the roll dialog has old colors"): its window bar stays dark on the dark page (the swap had made it light) */
+.twod12-dark .twod12.rolldlg .window-header { background: #15130f; color: ${T.ink}; border-bottom: 1px solid ${T.rule}; } .twod12-dark .twod12.rolldlg .window-header button { color: ${T.ink}; }
 /* ---- by hand: the PC sheet (its variables: one dark page, the side panel a shade apart; the stamp; inputs) */
 .twod12-dark .twod12.sheet.pcs { --ps-navy: ${T.pg}; --ps-cell: ${T.pg2}; --ps-edge: ${T.hair}; --ps-tile: ${T.pg2}; --ps-parch: #24201b; --ps-card: ${T.pg2}; --ps-cline: ${T.hair};
   --ps-strip: ${T.band}; --ps-amber: ${T.gold}; --ps-amberl: ${T.gold}; --ps-teal: #2fa59a; --ps-tealr: #2fa59a; --ps-ink: ${T.ink}; --ps-mut: ${T.mute}; --ps-lt: ${T.mute}; --ps-k: ${T.mute}; color: ${T.ink}; }

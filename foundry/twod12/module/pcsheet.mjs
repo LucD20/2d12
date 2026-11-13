@@ -254,7 +254,8 @@ export async function pcModel(sheet, ctx) {
       // v0.0.302 (Lucas): a Reaction's row carries its Frequency line (Round, Encounter...), as the Basic Actions' buttons do
       basicAtk: !!(npc && it.basicAttack),
       auto: autoChip(it.automation, it.automationNote),   // v0.0.303 (Lucas): the automation diamond beside the name
-      freqLine: reaction ? rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }) : null
+      // v0.0.370 (Lucas): every row carries its Frequency line (and a dim tint of it), also inside "Once per round"
+      freqLine: rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" })
     };
   };
   const actions = a.itemTypes.action.filter(i => techniqueState(a, i) !== "locked");
