@@ -14,11 +14,12 @@ const sign = n => (Number(n) > 0 ? `+${Number(n)}` : Number(n) < 0 ? `−${-Numb
 /** The id block: the portrait (its ring in the rank's color for an NPC), the name and a line under it. */
 export const hudIdHtml = m => `<div class="hud-id${m.rankKey ? ` rk-${esc(m.rankKey)}` : ""}">${m.img ? `<img src="${esc(m.img)}" alt="">` : ""}<div class="hud-who"><b>${esc(m.name)}</b><small>${esc(m.sub ?? "")}</small></div></div>`;
 
-/** One Action: a small diamond in its frequency's color, its name (right-click: the Action card), a cost stamp per Version (click: the roll dialog on it). */
+/** One Action: a small diamond in its frequency's color, its name (click or right-click: the Action card), a cost stamp per Version (click: the roll dialog on it;
+ *  v0.0.384, Lucas: no tooltip on a stamp that can be used; a struck one still says why). */
 export function hudActionHtml(a) {
   const v = x => (x.off
     ? `<button type="button" class="hv no${x.used ? " used" : ""}" disabled data-tooltip="${esc(x.why || "")}" aria-label="${esc(`${a.name}, ${x.label}: ${x.why || ""}`)}">${esc(x.label)}</button>`
-    : `<button type="button" class="hv${x.fav ? " fav" : ""}" data-hud="use" data-ap="${Number(x.ap) || 0}" data-tooltip="${esc(`${a.name}, ${x.label}: the roll dialog (Shift: the other way round from Skip roll dialog).${a.pc ? ` Right-click: ${x.fav ? "unpin it from" : "pin it to"} Quick.` : " Right-click: the Action card."}`)}" aria-label="Use ${esc(a.name)}, ${esc(x.label)}">${esc(x.label)}</button>`);
+    : `<button type="button" class="hv${x.fav ? " fav" : ""}" data-hud="use" data-ap="${Number(x.ap) || 0}" aria-label="Use ${esc(a.name)}, ${esc(x.label)}">${esc(x.label)}</button>`);
   return `<span class="ha${a.dim ? " dim" : ""}" data-item-id="${esc(a.id)}" style="--fq:${esc(a.fq ?? "#5F5E5A")}"><b data-hud="card">${esc(a.name)}</b>${(a.versions ?? []).map(v).join("")}</span>`;
 }
 

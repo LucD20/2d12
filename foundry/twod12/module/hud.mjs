@@ -135,7 +135,9 @@ function placeRoot() {
   const vis = el => { const r = el?.getBoundingClientRect?.(); return r && r.width > 0 && r.height > 0 ? r : null; };
   const ctlBottom = Math.max(0, ...[...document.querySelectorAll("#scene-controls button, #scene-controls li")].map(vis).filter(Boolean).map(r => r.bottom));
   const ctl = vis(document.getElementById("scene-controls"));
-  const rightEls = ["sidebar", "sidebar-tabs", "sidebar-content", "chat-notifications", "chat-controls", "chat-message", "chat-form"].map(id => document.getElementById(id)).concat([...document.querySelectorAll(".chat-form")]);
+  // v0.0.384 (Lucas: "the width still doesn't go all the way in fullscreen"): #chat-notifications is a wide, empty area beside the sidebar; only
+  // what is drawn there counts (the sidebar and its tabs, the chat's input when it floats over the map)
+  const rightEls = ["sidebar", "sidebar-tabs", "sidebar-content", "chat-message", "chat-form"].map(id => document.getElementById(id)).concat([...document.querySelectorAll(".chat-form")]);
   const lefts = rightEls.map(vis).filter(r => r && r.bottom > band && r.top < H && r.left > W * 0.35).map(r => r.left);
   const hb = document.getElementById("hotbar"), hbOut = hb && !root.contains(hb) && hb.offsetParent ? hb.getBoundingClientRect() : null;
   const b = hudBox({ controlsRight: ctl && ctlBottom > band - 20 ? ctl.right : 0, sidebarLeft: lefts.length ? Math.min(...lefts) : W, width: W, hotbarTop: hbOut ? hbOut.top : null, height: H });
