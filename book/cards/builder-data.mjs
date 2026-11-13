@@ -2,7 +2,7 @@
 // pcbudget.mjs or the Bestiary is measured again.   node book/cards/builder/build.mjs   (it calls collect() below and writes builder/data.json and the page)
 // Read: book/ruler/pc-budget.md (the PC budget's tables), book/ruler/areas.md (Areas on the grid), book/cards/README.md (the rider sizes' prices),
 // book/rules-src/15-gear.md (the weapon tables), book/ruler/rework/*.txt (the builds' weapon and Modifiers), the system's config.mjs through the ruler
-// (npcBudget, npcStage0, npcDefense, npcRoles), book/ruler/sim/budget.mjs (the price functions, as source), and the cards themselves (load.mjs).
+// (npcBudget, npcStage0, npcDefense, npcRoles), book/build_rules.py (the trait groups and the damage types), book/ruler/sim/budget.mjs (the price functions, as source), and the cards themselves (load.mjs).
 // A tool for Lucas and Claude, not a rule of the book: nothing here writes to a rule, a card or a report.
 import fs from "node:fs";
 import path from "node:path";
@@ -133,9 +133,20 @@ function cards() {
     versions: c.versions.map(v => ({ ap: v.ap, ...(v.tiers ? { tiers: v.tiers } : {}), ...(v.effects ? { effects: v.effects } : {}), ...(v.critical ? { critical: v.critical } : {}), ...(typeof v.ruler === "string" ? { ruler: v.ruler } : {}) })) }));
 }
 
+/* ---------------------------------------------------------------- the book's traits and damage types (build_rules.py: GROUPS, DCODE, DTYPE) */
+function bookWords() {
+  const py = rd(BOOK, "build_rules.py"), gm = py.match(/^GROUPS = \[([\s\S]*?)\]\)\]/m), dc = py.match(/^DCODE = \{([^}]*)\}/m), dt = py.match(/^DTYPE = \{([^}]*)\}/m);
+  if (!gm || !dc || !dt) throw new Error("build_rules.py: GROUPS, DCODE or DTYPE not found");
+  const groups = [...gm[0].matchAll(/\("(\w+)", "(\w+)", \[([^\]]*)\]/g)].map(m => ({ key: m[1], title: m[2], traits: [...m[3].matchAll(/"([^"]+)"/g)].map(x => x[1]) }));
+  const pairs = t => Object.fromEntries([...t.matchAll(/"([^"]+)": "([^"]+)"/g)].map(m => [m[1], m[2]])), color = pairs(dt[1]);
+  const dtypes = Object.entries(pairs(dc[1])).map(([code, name]) => ({ code, name, color: color[name] }));
+  if (groups.length < 5 || dtypes.length < 12) throw new Error("build_rules.py: the trait groups or the damage types read short");
+  return { groups, dtypes };
+}
+
 /** The whole data block. */
 export async function collect() {
-  return { generated: new Date().toISOString().slice(0, 10), stage: "Stage 0 (levels 1 to 3)", pc: pcBudget(), areasGrid: areasGrid(), weapons: weapons(), builds: builds(), npc: await npc(), cards: cards() };
+  return { generated: new Date().toISOString().slice(0, 10), stage: "Stage 0 (levels 1 to 3)", pc: pcBudget(), areasGrid: areasGrid(), weapons: weapons(), builds: builds(), ...bookWords(), npc: await npc(), cards: cards() };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

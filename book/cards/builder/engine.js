@@ -5,7 +5,7 @@ function makeEngine(DATA, CALC) {
   const PC = DATA.pc, NPC = DATA.npc, P = NPC.budget, PRICES = () => P, SEV = ["forced", "mild", "moderate", "severe", "extreme"];
   /*@@NPC_FN@@*/
   const sum = a => a.reduce((s, x) => s + x, 0), r1 = x => Math.round(x * 10) / 10, clone = o => JSON.parse(JSON.stringify(o));
-  const TYPES = ["Ac", "Bl", "Co", "El", "Fi", "Fo", "Ho", "Pi", "Ps", "Sl", "Th", "Un"], TYPE_RE = new RegExp(`\\s+(${TYPES.join("|")})$`);
+  const DT = DATA.dtypes, TYPES = DT.map(t => t.code), TYPE_RE = new RegExp(`\\s+(${TYPES.join("|")})$`);
   const stripLinks = s => String(s ?? "").replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2").replace(/\[\[([^\]]+)\]\]/g, "$1").replace(/\*\*(.+?)\*\*/g, "$1");
 
   /* ------------------------------------------------------------ damage as the book writes it */
@@ -16,7 +16,8 @@ function makeEngine(DATA, CALC) {
     const ty = s.match(TYPE_RE); if (ty) { out.type = ty[1]; s = s.replace(TYPE_RE, ""); }
     for (const raw of s.split("+")) {
       const pm = raw.match(/\[(B|M|V|R)\]/); if (pm) out.pool = pm[1] === "B" ? "V" : pm[1] === "M" ? "R" : pm[1];
-      const t = raw.replace(/\[(B|M|V|R)\]/g, "").trim(); let m;
+      let t = raw.replace(/\[(B|M|V|R)\]/g, "").trim(), m; const tt = ` ${t}`.match(TYPE_RE);
+      if (tt) { out.type ||= tt[1]; t = ` ${t}`.replace(TYPE_RE, "").trim(); }   // a type after any term ("[V] 1d6 Fi + [R] 1d6 Ho")
       if ((m = t.match(/^(\d*)\[W\]$/))) out.w += Number(m[1] || 1);
       else if (/^\[Mod\]$/i.test(t)) out.mod += 1;
       else if (/^\[PMod\]$/i.test(t)) out.pmod += 1;
@@ -25,6 +26,26 @@ function makeEngine(DATA, CALC) {
       else return null;
     }
     return out;
+  }
+  /** Lucas's shorthand into the book's damage: "1w + mod + r 1d8 ho" -> "[V] 1[W] + [Mod] + [R] 1d8 Ho". w = [W], mod = [Mod], v / r before a term = its pool
+   *  (a term with none keeps the pool before it; the first is Vigor), a type by its code or its name ("ho", "holy"). The book's own text reads too.
+   *  "" and "0" give "0"; null: it isn't damage. */
+  function shortDmg(text) {
+    const s = stripLinks(text).trim().toLowerCase(); if (!s || s === "-" || s === "0") return "0";
+    const out = []; let pool = "";
+    for (const raw of s.split("+")) {
+      let t = raw.trim(), p = "", ty = "", core, m;
+      if ((m = t.match(/^\[(b|m|v|r)\]\s*/)) || (m = t.match(/^(v|r)\s+/)) || (m = t.match(/^(v|r)(?=\d|\[|w$|w\s|d\d|p?mod)/))) { p = { b: "V", m: "R", v: "V", r: "R" }[m[1]]; t = t.slice(m[0].length).trim(); }
+      if ((m = t.match(/^(.*\S)\s+([a-z]+)$/))) { const hit = DT.find(x => x.code.toLowerCase() === m[2]) ?? (m[2].length > 2 ? DT.find(x => x.name.toLowerCase().startsWith(m[2])) : null); if (hit) { ty = hit.code; t = m[1]; } }
+      if ((m = t.match(/^(\d*)\s*\[?w\]?$/))) core = `${m[1] || 1}[W]`;
+      else if (/^\[?mod\]?$/.test(t)) core = "[Mod]";
+      else if (/^\[?pmod\]?$/.test(t)) core = "[PMod]";
+      else if ((m = t.match(/^(\d*)d(\d+)(!?)$/))) core = `${m[1] || 1}d${m[2]}${m[3]}`;
+      else if (/^\d+$/.test(t)) core = t;
+      else return null;
+      const pl = p || pool || "V"; out.push((pl !== pool ? `[${pl}] ` : "") + core + (ty ? ` ${ty}` : "")); pool = pl;
+    }
+    return out.join(" + ");
   }
   /** A tier cell "damage; text" -> { dmg (parsed; zero when the cell is all text), text }. */
   function parseCell(cell) {
@@ -46,24 +67,34 @@ function makeEngine(DATA, CALC) {
   const zeroOf = (avgs, p) => sum(avgs.map((a, i) => (a <= 0 ? p[i] : 0)));
 
   /* ------------------------------------------------------------ drafts */
-  const blankTier = () => ({ w: 0, mod: false, flat: 0, dn: 0, ds: 6, ex: false, pool: "V", type: "", text: "" });
+  // A Tier of the form: its damage as typed (shortDmg reads it), the riders chosen on that Tier ("then"), and free text after them.
+  const blankTier = () => ({ dmg: "", riders: [], text: "" });
   const blankVersion = (ap, on) => ({ ap, on: !!on, tiers: [blankTier(), blankTier(), blankTier()], linked: 0, linkedExtra: "", riders: [], helps: [], effects: "", critical: "" });
   function blankDraft(tab) {
     const b = DATA.builds.find(x => /Smite/.test(x.name)) ?? DATA.builds[0];
     return { id: "", tab, name: "", category: tab === "npc" ? "Special Action" : "", level: "", flavor: "", traits: tab === "npc" ? "melee, strike, weapon" : "strike, weapon", kind: "weapon", vs: "AD", frequency: tab === "npc" ? "Round" : "Round",
       reaction: "", reactionCost: 1, reactionText: "", fires: 0.5, rxKind: "other",
       target: "one", targetsN: 2, areaShape: "Emanation", areaSize: 2, areaFrom: "self", distance: tab === "npc" ? "Weapon" : "Weapon", targetText: "", setup: "",
-      cls: b.name, weapon: b.weapon, wmod: b.wmod, pmod: b.pmod, saveMod: 1, boons: 0, banes: 0, state: "", elite: false, fight: "normal", enemies: 0,
+      cls: b.name, weapon: b.weapon, wmod: b.wmod, pmod: b.pmod, rollWith: "", saveMod: 1, boons: 0, banes: 0, state: "", elite: false, fight: "normal", enemies: 0,
       rank: "standard", rating: "medium", modRating: "medium", ranged: false, basic: false, four: false, npc: "",
       versions: [blankVersion(1, true), blankVersion(2, false), blankVersion(3, false)], compare: "" };
   }
   /** A draft read again (an older save, a paste): every field it lacks filled from a blank one. */
   function normalize(d) {
-    const b = blankDraft(d?.tab === "npc" ? "npc" : "pc"), out = { ...b, ...d, versions: [1, 2, 3].map(ap => { const v = (d?.versions ?? []).find(x => x.ap === ap); return v ? { ...blankVersion(ap, v.on), ...v, tiers: [0, 1, 2].map(i => ({ ...blankTier(), ...(v.tiers?.[i] ?? {}) })), riders: (v.riders ?? []).map(r => ({ at: "hit", ...r })), helps: (v.helps ?? []).map(h => ({ kind: "heal", amount: "", who: "ally", n: 1, at: "always", ...h })) } : blankVersion(ap, false); }) };
+    const b = blankDraft(d?.tab === "npc" ? "npc" : "pc"), out = { ...b, ...d, versions: [1, 2, 3].map(ap => { const v = (d?.versions ?? []).find(x => x.ap === ap); return v ? { ...blankVersion(ap, v.on), ...v, tiers: [0, 1, 2].map(i => fixTier(v.tiers?.[i])), riders: (v.riders ?? []).map(r => ({ at: "hit", ...r })), helps: (v.helps ?? []).map(h => ({ kind: "heal", amount: "", who: "ally", n: 1, at: "always", ...h })) } : blankVersion(ap, false); }) };
+    // the old form's riders "on Tier 3 only" and "on Tier 1 only" now sit on their Tier
+    for (const v of out.versions) { const best = isSave(out) ? 0 : 2; v.riders = v.riders.filter(r => { const i = r.at === "t3" ? best : r.at === "miss" ? 2 - best : -1; if (i < 0) return true; if (r.name && !v.tiers[i].riders.includes(r.name)) v.tiers[i].riders.push(r.name); return false; }); }
     return out;
   }
-  /** A tier of the form as the book's text: "[V] 1[W] + [Mod] + [R] 1d6 Ho". */
-  function tierDamage(t) {
+  /** A tier saved by the first form (weapon, [Mod], flat, one die, pool, type as separate fields) read as the typed damage. */
+  const fixTier = t => { const old = t && typeof t.dmg !== "string" && ("w" in t || "dn" in t || "flat" in t), s = old ? legacyDamage(t) : ""; return { dmg: old ? (s === "0" ? "" : s) : String(t?.dmg ?? ""), riders: [...(t?.riders ?? [])].filter(Boolean), text: String(t?.text ?? "") }; };
+  /** A tier of the form as the book's text: "[V] 1[W] + [Mod] + [R] 1d6 Ho" ("0" when it has none or it can't be read: tierBad says which). */
+  const tierDamage = t => shortDmg(t.dmg) ?? "0", tierBad = t => shortDmg(t.dmg) === null;
+  /** The riders chosen on the Tiers, by name: [{ name, tiers: [0-2] }]. */
+  const tierRiders = v => { const by = new Map(); v.tiers.forEach((t, i) => { for (const n of t.riders ?? []) if (n) by.set(n, [...(by.get(n) ?? []), i]); }); return [...by].map(([name, tiers]) => ({ name, tiers })); };
+  const tiersWord = (tiers, save) => (tiers.length === 3 ? "every Tier" : tiers.join() === (save ? "0,1" : "1,2") ? "on a hit" : `Tier ${tiers.map(i => i + 1).join(" and ")} only`);
+  const diceOf = v => v.tiers.flatMap(t => parseDmg(tierDamage(t))?.dice ?? []), riderFamilies = v => new Set([...v.riders.map(r => r.name), ...tierRiders(v).map(r => r.name)].filter(Boolean).map(n => n.replace(/ \d+$/, ""))).size;
+  function legacyDamage(t) {
     const terms = []; let pool = "";
     const put = (pl, s) => { terms.push(pl !== pool ? `[${pl}] ${s}` : s); pool = pl; };
     if (t.w > 0) put("V", `${t.w}[W]`);
@@ -96,10 +127,9 @@ function makeEngine(DATA, CALC) {
   }
   /** The three tier cells of a Version (the damage, then the riders that sit on that Tier only). */
   function tierCells(v, d) {
-    const best = isSave(d) ? 0 : 2, miss = isSave(d) ? 2 : 0;
-    return v.tiers.map((t, i) => { const dm = tierDamage(t), extra = [...(i === best ? ridersAt(v, "t3") : []), ...(i === miss ? ridersAt(v, "miss") : [])].map(n => `${n}.`).join(" "), txt = [extra, t.text].filter(Boolean).join(" "); return txt ? (dm === "0" ? txt : `${dm}; ${txt}`) : dm; });
+    return v.tiers.map(t => { const dm = tierDamage(t), txt = [...t.riders.map(n => `${n}.`), t.text].filter(Boolean).join(" "); return txt ? (dm === "0" ? txt : `${dm}; ${txt}`) : dm; });
   }
-  const hasTiers = (v, d) => !noRoll(d) && (v.tiers.some(t => tierDamage(t) !== "0" || t.text) || v.riders.some(r => r.name) || !v.linked);
+  const hasTiers = (v, d) => !noRoll(d) && (v.tiers.some(t => tierDamage(t) !== "0" || t.text || t.riders.length) || v.riders.some(r => r.name) || !v.linked);
   const areaText = d => (d.target !== "area" ? "" : d.areaShape === "Aura" ? `Aura ${d.areaSize}` : `${d.areaSize} ${d.areaShape}`);
   const targetLine = d => d.targetText || (d.target === "one" ? "One creature" : d.target === "several" ? `${cap(["", "one", "two", "three", "four", "five", "six"][d.targetsN] ?? String(d.targetsN))} creatures` : d.areaFrom === "self" && d.areaShape !== "Aura" ? "Each enemy in the area" : "Each creature in the area");
   const vsLine = d => (noRoll(d) ? "" : isSave(d) ? `${d.vs === "AD" || d.vs === "WD" ? "Body" : d.vs} Save` : d.vs);
@@ -110,6 +140,7 @@ function makeEngine(DATA, CALC) {
     const fx = [], bars = [], hit = isSave(d) ? "on 1: X; on 2: X" : "on 2+: X", best = isSave(d) ? "on 1: X" : "on 3: X", miss = isSave(d) ? "on 3: X" : "on 1: X";
     const tok = (name) => (d.tab === "npc" ? (/^(Pushed|Pulled|Slid) (\d)/.test(name) ? `${{ Pushed: "push", Pulled: "pull", Slid: "slide" }[name.split(" ")[0]]} ${name.match(/\d/)[0]}` : /^Vulnerable (\d)/.test(name) ? `vulnerable ${name.match(/\d/)[0]}` : `debuff ${name}`) : (PC.riders.find(r => r.name === name)?.ruler ?? `debuff ${name}`));
     for (const r of v.riders.filter(x => x.name)) { const t = tok(r.name), w = noRoll(d) || r.at === "always" ? "always: X" : r.at === "t3" ? best : r.at === "miss" ? miss : hit; fx.push(w.replace(/X/g, t)); }
+    if (!noRoll(d)) for (const r of tierRiders(v)) { const t = tok(r.name); fx.push(...(!isSave(d) && r.tiers.join() === "1,2" ? [`on 2+: ${t}`] : r.tiers.map(i => `on ${i + 1}: ${t}`))); }
     for (const h of v.helps) {
       const amt = String(h.amount || "0").replace(/\s+/g, ""), who = h.who === "self" ? "self" : h.who === "allies" ? "any" : "ally", w = noRoll(d) || h.at === "always" ? (d.reaction || noRoll(d) ? "" : "always: ") : h.at === "t3" ? best.replace("X", "") : hit.split(";")[0].replace("X", "");
       const t = h.kind === "heal" ? `mend ${amt} ${who}` : h.kind === "rally" ? `heal 1${h.amount ? `; mend ${amt} ${who}` : ""}` : h.kind === "guard" ? `guard ${amt} ${who}` : h.kind === "defense" ? `defense 1 ${h.who === "allies" ? "allies" : "ally"}` : h.kind === "block" ? `block ${amt}` : h.kind === "boon" ? `boon 1 ${who}` : "";
@@ -121,10 +152,12 @@ function makeEngine(DATA, CALC) {
   }
   /** The draft as a card of book/cards (the keys in the README's order). */
   function toCard(d) {
-    const card = { name: d.name || "Unnamed Action", category: d.category || (d.tab === "npc" ? "Special Action" : "Class Action") };
+    // The form has no Category, Level or Flavor (Lucas, 2026-11-13): a card it was filled from keeps its own; a new one gets them when it is placed in a class.
+    const card = { name: d.name || "Unnamed Action" };
+    if (d.category) card.category = d.category;
     if (d.level !== "" && d.level != null) card.level = Number(d.level);
     if (d.tab === "npc") { card.book = false; card.npc = d.npc || `${NPC.rank[d.rank].label} (${d.rating})`; }
-    card.flavor = d.flavor || "";
+    if (d.flavor) card.flavor = d.flavor;
     card.traits = String(d.traits).split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
     card.frequency = d.frequency;
     if (d.reaction) card[d.reaction] = d.reactionText || "";
@@ -145,7 +178,7 @@ function makeEngine(DATA, CALC) {
   }
   /** An existing card into the form (its damage, its texts; what the form can't hold stays in the Effects text). */
   function fromCard(card, tab) {
-    const d = blankDraft(tab), tr = card.traits ?? [];
+    const d = blankDraft(tab), tr = card.traits ?? [], names = new Set((tab === "npc" ? NPC.riders : PC.riders).map(r => r.name));
     Object.assign(d, { name: card.name, category: card.category ?? "", level: card.level ?? "", flavor: card.flavor ?? "", traits: tr.join(", "), frequency: card.frequency ?? "Round", distance: card.distance ?? "", setup: card.setup ?? "", npc: card.npc ?? "" });
     d.kind = tr.includes("save") ? "save" : tr.includes("power") && !tr.includes("weapon") ? "power" : "weapon";
     const vs = String(card.vs ?? "AD"); d.vs = /WD/.test(vs) ? "WD" : /AD/.test(vs) ? "AD" : (vs.match(/Body|Mind|Appeal|Instinct/)?.[0] ?? "AD");
@@ -159,7 +192,9 @@ function makeEngine(DATA, CALC) {
     card.versions.forEach((cv, k) => {
       const v = d.reaction ? d.versions[k] : d.versions.find(x => x.ap === cv.ap); if (!v) return;
       v.on = true; v.effects = cv.effects ?? ""; v.critical = cv.critical ?? "";
-      (cv.tiers ?? []).forEach((cell, i) => { const c = parseCell(cell), x = c.dmg, t = v.tiers[i]; t.w = x.w; t.mod = x.mod > 0; t.flat = x.flat; t.dn = x.dice[0]?.[0] ?? 0; t.ds = x.dice[0]?.[1] ?? 6; t.ex = !!x.dice[0]?.[2]; t.type = x.type; t.pool = x.w ? (x.dice.length || x.flat ? (/\[R\]|\[M\]/.test(cell) ? "R" : "V") : "V") : (x.pool || "V"); t.text = c.text; });
+      (cv.tiers ?? []).forEach((cell, i) => { const c = parseCell(cell), t = v.tiers[i], rest = []; t.dmg = c.raw === "0" ? "" : stripLinks(c.raw);
+        for (const part of c.text.split(/(?<=\.)\s+/)) { const nm = part.replace(/\.$/, ""); if (names.has(nm)) t.riders.push(nm); else if (part) rest.push(part); }   // "Pushed 1." is that Tier's rider; the rest stays text
+        t.text = rest.join(" "); });
       const lm = String(cv.ruler ?? "").match(/does Weapon Attack(?: x(\d))?/); if (lm && !cv.tiers) { v.linked = Number(lm[1] ?? 1); v.linkedExtra = String(cv.ruler).match(/each extra (\S+)/)?.[1] ?? ""; }
     });
     if (!d.versions.some(v => v.on)) d.versions[0].on = true;
@@ -187,9 +222,11 @@ function makeEngine(DATA, CALC) {
   const pcRiderBase = (name, elite) => { const r = PC.riders.find(x => x.name === name); if (!r) return null; const size = elite && r.eliteUp ? NEXT[r.size] : r.size; return { ...r, sizeUsed: size, price: size === "beyond" ? PC.riderPrice.extreme + P.riders.step : PC.riderPrice[size] }; };
   /** The roll a PC draft makes: its Modifier and what the [Mod] of its damage is. */
   function pcCtx(d) {
-    const weapon = weaponOf(d.weapon), rollMod = d.kind === "power" ? Number(d.pmod) : d.kind === "save" ? (/power/.test(d.traits) ? Number(d.pmod) : Number(d.wmod)) : Number(d.wmod);
+    const weapon = weaponOf(d.weapon), rollMod = d.rollWith === "power" ? Number(d.pmod) : d.rollWith === "weapon" ? Number(d.wmod) : d.kind === "power" ? Number(d.pmod) : d.kind === "save" ? (/power/.test(d.traits) ? Number(d.pmod) : Number(d.wmod)) : Number(d.wmod);
     return { weapon, mod: rollMod, pmod: Number(d.pmod), wmod: Number(d.wmod), rollMod, seat: weapon?.ranged ? "ranged" : "melee" };
   }
+  /** Which Modifier a PC draft rolls with: the one chosen, or its Kind's (a Save: Power when it has the power trait). */
+  const rollsWith = d => d.rollWith || (d.kind === "power" || (d.kind === "save" && /power/.test(d.traits)) ? "power" : "weapon");
   const rollOf = (d, ctx, dc) => (isSave(d) ? { mod: dc, dc: 11 + ctx.rollMod, boons: d.boons, banes: d.banes, state: d.state } : { mod: ctx.rollMod, dc, boons: d.boons, banes: d.banes, state: d.state });
   /** A Weapon Attack's averages by Tier for this PC (0 / 1[W] + [Mod] / 1[W] + [Mod]) and its expected damage against the budget's Defense (13). */
   function weaponAttack(ctx) {
@@ -216,6 +253,11 @@ function makeEngine(DATA, CALC) {
       const at = none ? "always" : r.at, f = at === "hit" ? 1 : at === "t3" ? refPlain[best] / pHit : at === "miss" ? refPlain[missI] / pHit : 1 / wa.hit;
       lines.push({ what: `${r.name} (${b.sizeUsed}${at === "hit" ? "" : at === "t3" ? ", best Tier only" : at === "miss" ? ", on a miss" : ", always"})`, pts: b.price * f * T.mult, note: b.measured ? `measured ${b.measured.melee} melee · ${b.measured.ranged} ranged · ${b.measured.elite} against an Elite` : "not measured: priced as Mild (the guide)", rider: true });
     }
+    // a rider chosen on a Tier counts for that Tier's share of the hits (on Tier 2 and Tier 3: whole; every Tier: as "always")
+    if (!none) for (const r of tierRiders(v)) {
+      const b = pcRiderBase(r.name, d.elite); if (!b) continue;
+      lines.push({ what: `${r.name} (${b.sizeUsed}, ${tiersWord(r.tiers, save)})`, pts: b.price * sum(r.tiers.map(i => refPlain[i])) / pHit * T.mult, note: b.measured ? `measured ${b.measured.melee} melee · ${b.measured.ranged} ranged · ${b.measured.elite} against an Elite` : "not measured: priced as Mild (the guide)", rider: true });
+    }
     for (const h of v.helps) {
       const amt = avgExpr(h.amount, ctx) ?? 0, n = h.who === "allies" ? Math.max(1, Number(h.n) || 1) : 1, ch = none || h.at === "always" ? 1 : h.at === "t3" ? refPlain[best] : pHit;
       const per = h.kind === "heal" || h.kind === "rally" ? PC.health * fight.healFactor : h.kind === "guard" ? PC.guard * fight.healFactor : h.kind === "block" ? (d.reaction ? PC.blockPoint : PC.health * fight.healFactor) : 0;
@@ -235,8 +277,9 @@ function makeEngine(DATA, CALC) {
     const flags = [];
     const missAvg = avgs[missI];
     if (!none && !d.reaction && missAvg <= 0 && !(v.linked > 0)) flags.push({ level: d.frequency === "At-will" || d.frequency === "Round" ? "bad" : "note", text: `${save ? "The target's Tier 3" : "Tier 1"} deals nothing${d.frequency === "At-will" || d.frequency === "Round" ? ": every build needs an attack it uses most turns that deals something on Tier 1 (your rule of thumb, 2026-11-13)" : " (fine on a big Action; the rule of thumb is for the attack used most turns)"}` });
-    if (v.tiers.some(t => t.dn > 1 || (t.dn > 0 && t.ds > 8))) flags.push({ level: "note", text: "The book writes damage as a flat number plus at most one small die (d4, d6, d8)" });
-    if (v.riders.filter(r => r.name).length > 2) flags.push({ level: "note", text: "More than 2 riders on one Action" });
+    v.tiers.forEach((t, i) => { if (!none && tierBad(t)) flags.push({ level: "bad", text: `Tier ${i + 1}'s damage can't be read ("${t.dmg}"): it counts as 0. Write it like 1w + mod + r 1d8 ho` }); });
+    if (diceOf(v).some(([n, s]) => n > 1 || s > 8)) flags.push({ level: "note", text: "The book writes damage as a flat number plus at most one small die (d4, d6, d8)" });
+    if (riderFamilies(v) > 2) flags.push({ level: "note", text: "More than 2 riders on one Action" });
     if (big && d.frequency === "Daily") flags.push({ level: "note", text: "A Daily Action is priced as an Encounter one (double): the PC budget doesn't measure Dailies" });
     if (d.reaction && Number(d.reactionCost) === 2) flags.push({ level: "note", text: "A 2R Reaction is priced at twice the 1R band: not measured" });
     if (d.target === "area" && !T.area.measured) flags.push({ level: "note", text: `A ${areaText(d)} ${T.area.from === "self" ? "around you" : "from range"} was not measured: the count is the nearest measured Area's` });
@@ -269,9 +312,11 @@ function makeEngine(DATA, CALC) {
     const raw = none ? [0, 0, 0] : v.tiers.map((t, i) => avgDmg(parseDmg(tierDamage(t)), ctx, i + 1)), asAttack = save ? [raw[2], raw[1], raw[0]] : raw;
     const multi = d.target === "one" ? 1 : fk === "enc" && !d.reaction ? P.multiEnc : P.multi, dmgPts = npcPoints(asAttack, ctx), lines = [];
     if (dmgPts > 0.05) lines.push({ what: multi !== 1 ? `Damage, ${r1(dmgPts)} to each (${fk === "enc" ? "half" : "two thirds"} of its points)` : "Damage", pts: dmgPts / multi });
-    const explodes = v.tiers.some(t => t.dn > 0 && t.ex);
+    const explodes = diceOf(v).some(x => x[2]);
     if (explodes && !d.basic) lines.push({ what: "An exploding die (!)", pts: P.explode });
     for (const r of v.riders.filter(x => x.name)) { const at = none ? "hit" : r.at === "always" ? "setup" : r.at === "miss" ? "setup" : r.at, b = npcRiderPrice(r.name, at, d.four); if (b) lines.push({ what: `${r.name} (${b.sev.replace(/beyond\d/, "beyond")}${at === "setup" ? ", Setup: one size more" : at === "t3" ? ", Tier 3 only: one size less" : ""}${d.four ? ", four or more carry it: one size less" : ""})`, pts: b.used, rider: true }); }
+    // a rider chosen on the Tiers: on both hit Tiers it is "on a hit", on every Tier it is the Setup's size, on one Tier only one size less (the book's "Tier 3 only")
+    if (!none) for (const r of tierRiders(v)) { const at = r.tiers.length === 3 ? "setup" : (save ? [0, 1] : [1, 2]).every(i => r.tiers.includes(i)) ? "hit" : "t3", b = npcRiderPrice(r.name, at, d.four); if (b) lines.push({ what: `${r.name} (${b.sev.replace(/beyond\d/, "beyond")}${at === "setup" ? ", every Tier: one size more" : at === "t3" ? `, ${tiersWord(r.tiers, save)}: one size less` : ""}${d.four ? ", four or more carry it: one size less" : ""})`, pts: b.used, rider: true }); }
     for (const h of v.helps) {
       const n = h.who === "allies" ? Math.max(1, Number(h.n) || 1) : 1, amt = avgExpr(h.amount, ctx) ?? 0;
       const pts = h.kind === "boon" ? P.help.boon * n : h.kind === "basic" ? P.perAp[d.rank] * P.rating[d.rating] * n : amt * P.help.health * n;
@@ -290,9 +335,10 @@ function makeEngine(DATA, CALC) {
     if (d.frequency === "Daily") flags.push({ level: "note", text: "The Bestiary has no Daily: priced as an Encounter Action" });
     if (d.reaction) { const share = ap === 2 ? P.reaction.twoR : d.rxKind === "self" ? P.reaction.self : P.reaction.other; flags.push({ level: "note", text: ap === 2 ? "A 2R Reaction takes nothing more off the turn (the AP it keeps is its price) and is weak on an NPC: prefer 1R" : `Off its turn budget: ${d.rxKind === "self" ? "a third" : "a quarter"} of its points, ${r1(share * price)}` }); if (!NPC.rank[d.rank].reactionAp) flags.push({ level: "bad", text: "Minions have no Reaction AP" }); }
     if (d.ranged && attack) flags.push({ level: "note", text: `A ranged attack pays one rating for its range: priced at ${rating}` });
-    if (v.riders.filter(r => r.name).length > 2) flags.push({ level: "note", text: "At most 2 riders on an Action, as guidance" });
+    v.tiers.forEach((t, i) => { if (!none && tierBad(t)) flags.push({ level: "bad", text: `Tier ${i + 1}'s damage can't be read ("${t.dmg}"): it counts as 0. Write it like 4 + 1d6 bl` }); });
+    if (riderFamilies(v) > 2) flags.push({ level: "note", text: "At most 2 riders on an Action, as guidance" });
     if (d.rank === "minion" && d.rating === "extreme") flags.push({ level: "bad", text: "A Minion has no Extreme rating" });
-    if (v.tiers.some(t => t.dn > 1 || (t.dn > 0 && t.ds > 8))) flags.push({ level: "note", text: "The Bestiary writes damage as a flat number plus at most one small die" });
+    if (diceOf(v).some(([n, s]) => n > 1 || s > 8)) flags.push({ level: "note", text: "The Bestiary writes damage as a flat number plus at most one small die" });
     const s0 = NPC.stage0[d.rank], key = d.basic ? "basic" : `s${ap}`, table = s0[key]?.[Math.min(ri, (s0[key]?.length ?? 1) - 1)] ?? null;
     return { ap, ctx, avgs: raw, lines, total, budget: price, band, perDef, flags, verdict: verdict(total, band), buys, left, turnBudget: budget, perAp, share: price / budget, table, tableKey: key, exp13: perDef.find(x => x.dc === 13)?.exp ?? perDef[1].exp, zero13: perDef[1].zero, dmgPts, multi,
       sheet: { mod: ctx.rollMod, defense: NPC.defense[d.rank][Math.min(ri, NPC.defense[d.rank].length - 1)], health: s0.health[Math.min(ri, s0.health.length - 1)], ap: NPC.rank[d.rank].ap, cv: NPC.rank[d.rank].cv } };
@@ -331,8 +377,8 @@ function makeEngine(DATA, CALC) {
       versions: res.map(r => ({ ap: r.ap, points: r1(r.total), should_cost: r1(r.budget), within: r.band.map(r1), verdict: r.verdict === "on" ? "within limits" : r.verdict, breakdown: r.lines.map(l => `${l.what}: ${r1(l.pts)}`), ...(r.rx ? { reaction: `fires in ${pct(r.rx.fires)} of rounds; ${r1(r.rx.raw)} points each time it fires` } : {}), average_damage_by_tier: r.avgs.map(r1),
         chances: r.perDef.map(x => ({ [isSave(d) ? "save_modifier" : "defense"]: x.dc, tier1: pct(x.p[0]), tier2: pct(x.p[1]), tier3: pct(x.p[2]), ...(isSave(d) ? {} : { critical: pct(x.crit) }), average_damage: r1(x.exp), deals_0: pct(x.zero) })),
         ...(r.buys ? { the_points_left_buy: r.buys.join(" / ") } : {}), flags: r.flags.map(f => f.text) })) };
-    return [`Action Builder draft: ${card.name} (${d.tab === "npc" ? "an NPC Action" : "a PC Action"}). Please measure it in the SIM.`, "", "Card (book/cards format):", "```json", JSON.stringify(card, null, 2), "```", "", "Computed by the page (a guide, not a measure):", "```json", JSON.stringify(computed, null, 2), "```", "", "Draft (the page's own form, to load it again):", "```json", JSON.stringify(d), "```"].join("\n");
+    return [`Action Builder draft: ${card.name} (${d.tab === "npc" ? "an NPC Action" : "a PC Action"}). Please measure it in the SIM${card.flavor ? "" : ", and write its Flavor"}.`, "", "Card (book/cards format):", "```json", JSON.stringify(card, null, 2), "```", "", "Computed by the page (a guide, not a measure):", "```json", JSON.stringify(computed, null, 2), "```", "", "Draft (the page's own form, to load it again):", "```json", JSON.stringify(d), "```"].join("\n");
   }
 
-  return { DATA, parseDmg, parseCell, avgDmg, avgExpr, weaponOf, probs, expOf, zeroOf, blankDraft, blankVersion, normalize, tierDamage, tierCells, effectsText, rulerLine, toCard, fromCard, areaInfo, areaText, targetLine, vsLine, costLine, pcCtx, npcCtx, weaponAttack, pricePc, priceNpc, price, cardStats, plainRow, exportText, isSave, noRoll, freqKey, stripLinks, clone, r1, hasTiers, npcRiderPrice, pcRiderBase, pointsExpr: pts => pointsAvg(pts, P).map(expr), actionPoints: (rank, ap, f, rating) => actionPoints(rank, ap, f, rating, P), turnBudget: (rank, rating) => turnBudget(rank, rating, P) };
+  return { DATA, shortDmg, tierBad, tierRiders, rollsWith, parseDmg, parseCell, avgDmg, avgExpr, weaponOf, probs, expOf, zeroOf, blankDraft, blankVersion, normalize, tierDamage, tierCells, effectsText, rulerLine, toCard, fromCard, areaInfo, areaText, targetLine, vsLine, costLine, pcCtx, npcCtx, weaponAttack, pricePc, priceNpc, price, cardStats, plainRow, exportText, isSave, noRoll, freqKey, stripLinks, clone, r1, hasTiers, npcRiderPrice, pcRiderBase, pointsExpr: pts => pointsAvg(pts, P).map(expr), actionPoints: (rank, ap, f, rating) => actionPoints(rank, ap, f, rating, P), turnBudget: (rank, rating) => turnBudget(rank, rating, P) };
 }

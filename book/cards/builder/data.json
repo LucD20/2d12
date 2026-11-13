@@ -1138,6 +1138,122 @@
    "seat": "melee"
   }
  ],
+ "groups": [
+  {
+   "key": "roll",
+   "title": "Roll",
+   "traits": [
+    "appeal",
+    "body",
+    "instinct",
+    "mind",
+    "power",
+    "save",
+    "signature",
+    "split",
+    "weapon"
+   ]
+  },
+  {
+   "key": "requires",
+   "title": "Requires",
+   "traits": [
+    "gun",
+    "handle",
+    "melee",
+    "ranged",
+    "shot"
+   ]
+  },
+  {
+   "key": "kind",
+   "title": "Kind",
+   "traits": [
+    "area",
+    "move",
+    "self",
+    "strike"
+   ]
+  },
+  {
+   "key": "damage",
+   "title": "Damage",
+   "traits": [
+    "nonlethal"
+   ]
+  },
+  {
+   "key": "keywords",
+   "title": "Keywords",
+   "traits": [
+    "divine",
+    "focus",
+    "fear"
+   ]
+  }
+ ],
+ "dtypes": [
+  {
+   "code": "Ac",
+   "name": "Acid",
+   "color": "#5d9b2b"
+  },
+  {
+   "code": "Bl",
+   "name": "Blunt",
+   "color": "#8a8a8a"
+  },
+  {
+   "code": "Co",
+   "name": "Cold",
+   "color": "#2f9bc4"
+  },
+  {
+   "code": "El",
+   "name": "Electricity",
+   "color": "#c99a00"
+  },
+  {
+   "code": "Fi",
+   "name": "Fire",
+   "color": "#d0583a"
+  },
+  {
+   "code": "Fo",
+   "name": "Force",
+   "color": "#a45ae0"
+  },
+  {
+   "code": "Ho",
+   "name": "Holy",
+   "color": "#b8921c"
+  },
+  {
+   "code": "Pi",
+   "name": "Pierce",
+   "color": "#8a8a8a"
+  },
+  {
+   "code": "Ps",
+   "name": "Psychic",
+   "color": "#c9577f"
+  },
+  {
+   "code": "Sl",
+   "name": "Slash",
+   "color": "#8a8a8a"
+  },
+  {
+   "code": "Th",
+   "name": "Thunder",
+   "color": "#3b78c0"
+  },
+  {
+   "code": "Un",
+   "name": "Unholy",
+   "color": "#8f59b3"
+  }
+ ],
  "npc": {
   "budget": {
    "perAp": {

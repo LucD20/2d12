@@ -2,7 +2,8 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Signika:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: a working table. Inputs on the left, the live numbers on the right; flat surfaces, thin ruled lines, the card as a printed stat block.
+/* Layout: a working table. On the left the card is written in its own order (Name, Traits, Frequency, Kind, Vs., Modifier, Targets, Versions), one line
+   each, the label on the left; on the right the card as it prints, then the budget, then what the numbers assume. Flat surfaces, thin ruled lines.
    The colors are the system's own (foundry/mockups/style-tokens.css): dark by default, the parchment set when the viewer picks light. */
 :root {
   color-scheme: dark;
@@ -12,6 +13,7 @@
   --vig: #d0564f; --res: #6f90e6; --good: #8fd69b; --bad: #ff9c92;
   --fq-atwill: #6aa82e; --fq-round: #4a90de; --fq-encounter: #d65a5a; --fq-turn: #25a3a3; --fq-daily: #9279e0; --fq-ink: #fff;
   --rk-minion: #4d545c; --rk-grunt: #4b5a26; --rk-standard: #6e2318; --rk-elite: #4f2c69; --rk-ink: #f4ede0;
+  --g-roll: #5fd3c8; --g-requires: #7db1f5; --g-kind: #f29272; --g-damage: #e8c25a; --g-keywords: #aeb0b5; --c-wmod: #f4a259; --c-pmod: #b794f6;
   --text: "Signika", "Segoe UI", system-ui, sans-serif; --title: "Cinzel", "Signika", Georgia, serif;
 }
 :root[data-theme="light"] {
@@ -21,6 +23,7 @@
   --t-1: #a8261c; --t-1bg: #fbefed; --t-2: #6f6800; --t-2bg: #f7f3cf; --t-3: #2b5a2f; --t-3bg: #e8f1e3; --crit: #1d5a9e; --critbg: #e6eef8;
   --vig: #9b2c2c; --res: #2c4a9b; --good: #234d27; --bad: #8a1c13;
   --fq-atwill: #3B6D11; --fq-round: #185FA5; --fq-encounter: #A32D2D; --fq-turn: #0F6E6E; --fq-daily: #5B3FA6;
+  --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55; --c-wmod: #9a4a00; --c-pmod: #5b3a9e;
 }
 * { box-sizing: border-box; }
 body { background: var(--pg); color: var(--ink); font: 400 14px/1.4 var(--text); }
@@ -35,7 +38,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .tabs { display: flex; gap: 2px; margin-left: auto; }
 .tabs button { background: none; border: 0; border-bottom: 3px solid transparent; padding: 5px 12px; color: var(--mute); font-weight: 600; font-size: 15px; cursor: pointer; }
 .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--gold); }
-.acts { display: flex; gap: 8px; }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.acts select { width: auto; max-width: 190px; }
 .btn { background: none; border: 1px solid var(--rule); color: var(--ink); padding: 5px 12px; border-radius: 2px; cursor: pointer; font-weight: 500; }
 .btn:hover { border-color: var(--gold); }
 .btn.main { background: var(--stamp); color: var(--stamp-ink); border-color: var(--stamp); font-weight: 600; }
@@ -43,9 +47,74 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .btn.plain { border-color: transparent; color: var(--mute); padding-inline: 4px; }
 .btn.plain:hover { color: var(--ink); }
 
-.cols { display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); gap: 26px; margin-top: 14px; align-items: start; }
+.cols { display: grid; grid-template-columns: minmax(0, 52fr) minmax(0, 48fr); gap: 26px; margin-top: 14px; align-items: start; }
 @media (max-width: 980px) { .cols { grid-template-columns: minmax(0, 1fr); } .tabs { margin-left: 0; } }
 .form, .out { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.out > div:empty { display: none; }
+
+/* the maker: the card being written. A name plate under its Frequency's color, then one ruled line per thing, the label on the left. */
+.mk { background: var(--pg-2); border: 1px solid var(--hair); border-top: 4px solid var(--fq); }
+.mk-plate { display: flex; align-items: baseline; gap: 12px; padding: 6px 12px; background: var(--band); border-bottom: 2px solid var(--rule); }
+input.mk-name { flex: 1; font: 700 21px/1.15 var(--title); background: none; border: 0; border-bottom: 1px dashed var(--rule); padding: 2px 0; border-radius: 0; }
+input.mk-name:hover, input.mk-name:focus { border-bottom-color: var(--gold); }
+.mk-cost { font-weight: 600; white-space: nowrap; color: var(--mute); }
+.mk-row { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 10px; align-items: start; padding: 6px 12px; border-top: 1px solid var(--hair); }
+.mk-plate + .mk-row { border-top: 0; }
+.mk-row.cont { border-top: 0; padding-top: 0; }
+.mk-l { font-weight: 600; color: var(--gold); padding-top: 4px; }
+.mk-c { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; min-width: 0; }
+.mk-c input[type="text"], .mk-c select, .more input[type="text"], .more select { width: auto; min-width: 0; }
+.mk-c input.grow { flex: 1 1 170px; } .mk-c input.n { width: 52px; }
+.say { color: var(--faint); font-size: 12.5px; }
+.ck { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.ck input, .vtab input { accent-color: var(--gold); width: 15px; height: 15px; margin: 0; }
+/* one choice out of a few, all on show */
+.seg { display: inline-flex; flex-wrap: wrap; }
+.seg button { background: none; border: 1px solid var(--hair); margin-left: -1px; padding: 3px 11px; cursor: pointer; color: var(--mute); font-weight: 500; }
+.seg button:first-child { margin-left: 0; border-radius: 2px 0 0 2px; } .seg button:last-child { border-radius: 0 2px 2px 0; }
+.seg button:hover { color: var(--ink); border-color: var(--rule); position: relative; }
+.seg button[aria-pressed="true"] { background: var(--stamp); color: var(--stamp-ink); border-color: var(--stamp); font-weight: 600; position: relative; }
+.seg button[class*="fq-"] { color: var(--fq); border-bottom: 3px solid var(--fq); }
+.seg button[class*="fq-"][aria-pressed="true"] { background: var(--fq); border-color: var(--fq); color: var(--fq-ink); }
+.seg .m-w { color: var(--c-wmod); } .seg .m-p { color: var(--c-pmod); }
+.seg .m-w[aria-pressed="true"] { background: var(--c-wmod); border-color: var(--c-wmod); color: var(--pg); } .seg .m-p[aria-pressed="true"] { background: var(--c-pmod); border-color: var(--c-pmod); color: var(--pg); }
+/* traits: the book's groups, each in its color */
+.mk-row.traits .mk-c { gap: 5px 16px; }
+.tgrp { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px; }
+.tgrp i { font-style: normal; font-size: 12.5px; color: var(--tg); margin-right: 3px; }
+.tc { background: none; border: 1px solid transparent; border-bottom-color: color-mix(in srgb, var(--tg) 45%, transparent); padding: 1px 6px; cursor: pointer; color: var(--mute); border-radius: 2px; }
+.tc:hover { color: var(--ink); border-color: var(--tg); }
+.tc[aria-pressed="true"] { background: var(--tg); border-color: var(--tg); color: var(--pg); font-weight: 600; }
+.mk-c input.tc-new { width: 84px; padding: 1px 6px; }
+
+/* a Version: its bar in the Frequency's color, a line per Tier in the Tier's color */
+.vr-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; border-bottom: 1px solid var(--hair); margin-bottom: 8px; }
+.vr-head h2 { border: 0; margin: 0; padding: 0; } .vr-head .vtabs { margin: 0 0 6px auto; }
+.vr-bar { display: flex; justify-content: space-between; padding: 2px 10px; font-weight: 600; color: var(--fq-ink); background: var(--fq); }
+.vr-body { background: var(--pg-2); border: 1px solid var(--hair); border-top: 0; }
+.tr { display: grid; grid-template-columns: 58px minmax(0, 5fr) minmax(0, 6fr); gap: 4px 10px; padding: 7px 10px 7px 7px; border-top: 1px solid var(--hair); border-left: 3px solid var(--tk, var(--hair)); align-items: start; }
+.tr:first-child { border-top: 0; }
+.tr.t1 { --tk: var(--t-1); background: color-mix(in srgb, var(--t-1bg) 55%, transparent); } .tr.t2 { --tk: var(--t-2); background: color-mix(in srgb, var(--t-2bg) 55%, transparent); } .tr.t3 { --tk: var(--t-3); background: color-mix(in srgb, var(--t-3bg) 55%, transparent); }
+.tr.cr { --tk: var(--crit); } .tr.fx { --tk: var(--gold); }
+.tr .tn { color: var(--tk); padding-top: 4px; }
+.tr-w { grid-column: 2 / -1; min-width: 0; } .tr-d, .tr-t { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+@media (max-width: 620px) { .tr { grid-template-columns: 58px minmax(0, 1fr); } .tr-t { grid-column: 2; } .mk-row { grid-template-columns: 1fr; gap: 2px; } }
+input.dmg { font: 500 14px/1.3 ui-monospace, Consolas, "Cascadia Mono", monospace; }
+.pv { font-size: 13.5px; min-height: 19px; font-weight: 500; }
+.pv .pv-avg { color: var(--faint); font-weight: 400; margin-left: 10px; white-space: nowrap; }
+.pv-bad { color: var(--bad); font-weight: 400; } .pv-none { color: var(--faint); font-weight: 400; }
+.pool-v { color: var(--vig); font-weight: 600; } .pool-r { color: var(--res); font-weight: 600; }
+.plus { color: var(--faint); } .dty { color: var(--dc); font-weight: 600; }
+.then { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; min-height: 28px; }
+.rc { background: var(--pg); border: 1px solid var(--gold); color: var(--ink); padding: 1px 4px 1px 7px; border-radius: 2px; cursor: pointer; font-weight: 500; display: inline-flex; gap: 5px; align-items: baseline; }
+.rc b { color: var(--mute); font-weight: 400; } .rc:hover { border-color: var(--bad); } .rc:hover b { color: var(--bad); }
+select.radd { width: auto; max-width: 104px; padding: 1px 4px; color: var(--mute); border-style: dashed; }
+.vr textarea { min-height: 44px; }
+.more { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin-top: 8px; }
+.hint code { font: 500 12.5px ui-monospace, Consolas, monospace; color: var(--ink); background: var(--pg-2); padding: 0 3px; }
+.hint b { color: var(--mute); font-weight: 600; }
+.sub .btn { margin-left: auto; }
+.sb-traits { display: flex; flex-wrap: wrap; gap: 2px 14px; } .sb-traits span { color: var(--tg); font-weight: 600; }
 
 h2 { font: 600 15px/1.2 var(--text); margin: 0 0 8px; padding-bottom: 3px; border-bottom: 1px solid var(--hair); color: var(--gold); display: flex; gap: 10px; align-items: baseline; }
 h2 small { font-weight: 400; color: var(--faint); font-size: 12.5px; }
@@ -63,6 +132,7 @@ input:hover, select:hover, textarea:hover { border-color: var(--rule); }
 .hint { color: var(--faint); font-size: 12.5px; margin: 4px 0 0; }
 
 .vtabs { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 8px; }
+.vtab button[aria-pressed="true"] { background: var(--fq, var(--stamp)); color: var(--fq-ink); border-color: var(--fq, var(--stamp)); }
 .vtab { display: flex; align-items: center; gap: 5px; }
 .vtab button { background: none; border: 1px solid var(--hair); border-radius: 2px; padding: 3px 12px; cursor: pointer; color: var(--mute); font-weight: 600; }
 .vtab button[aria-pressed="true"] { background: var(--stamp); color: var(--stamp-ink); border-color: var(--stamp); }
@@ -149,13 +219,15 @@ td { padding: 3px 6px 3px 0; vertical-align: middle; }
     </nav>
     <div class="acts">
       <span class="status" id="status" role="status"></span>
+      <select id="import" aria-label="Fill the form from a card"></select>
+      <button type="button" class="btn" id="blank">Blank Action</button>
       <button type="button" class="btn" id="save-draft">Save draft</button>
       <button type="button" class="btn main" id="copy">Copy for Claude</button>
     </div>
   </header>
-  <div class="cols">
+  <div class="cols" id="cols">
     <section class="form" id="form" aria-label="The Action"></section>
-    <section class="out" id="out" aria-label="Live numbers"></section>
+    <section class="out" id="out" aria-label="Live numbers"><div id="o-card"></div><div id="o-budget"></div><div id="o-test"></div><div id="o-roll"></div><div id="o-compare"></div><div id="o-copy"></div></section>
   </div>
 </div>
 
