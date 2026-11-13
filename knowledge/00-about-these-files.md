@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 3b37d33 2026-11-13 HANDOFF: the Action Builder's rework merged into main
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 0bad3dd 2026-11-13 Action Builder: a Weapon row on the card form (what 1w stands for)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -8,13 +8,14 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 - rules-*.md: the current rulebook (Core Rules 01-08, Species 11, Paladin 12, Archer 13, Bestiary 14, Gear 15, Talents 16),
   turned into plain text. This is what is in the book today. The glossary is left out (it repeats these chapters).
 - open-design-items.md: decisions and proposals not applied yet (newest first).
+- research-*.md: research notes (other games, design essays, forums): opinions, not 2d12's rules; read before searching again.
 - design-*.md: design documents in progress (playtests, prep documents, designs not in the book yet).
 - HANDOFF.md and MASTER-PLAN.md: where the project is and the order of the work.
 - Not here (they live in the repository, for Claude Code): the Foundry system and its backlog, the ruler (the numbers model and its
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (154 KB)
+- HANDOFF.md (155 KB)
 - MASTER-PLAN.md (38 KB)
 - open-design-items.md (128 KB)
 - rules-01-roll.md (23 KB)
@@ -30,6 +31,8 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
+- research-index.md (1 KB)
+- research-tactical-combat.md (5 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)

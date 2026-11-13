@@ -123,6 +123,8 @@ files["open-design-items.md"] = open_backlog()
 for chapter in sorted((ROOT / "book/rules-src").glob("[0-9]*.md")):
     if chapter.name not in SKIP_CHAPTERS:
         files["rules-" + chapter.name] = plain(chapter.read_text(encoding="utf-8"))
+for note in sorted((ROOT / "book/research").glob("*.md")):   # research notes (2026-11-13): other games' ideas, read before searching again
+    files["research-" + ("index.md" if note.name == "README.md" else note.name)] = note.read_text(encoding="utf-8")
 for doc in DESIGN_DOCS:
     p = ROOT / doc
     if p.exists():
@@ -141,6 +143,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 - rules-*.md: the current rulebook (Core Rules 01-08, Species 11, Paladin 12, Archer 13, Bestiary 14, Gear 15, Talents 16),
   turned into plain text. This is what is in the book today. The glossary is left out (it repeats these chapters).
 - open-design-items.md: decisions and proposals not applied yet (newest first).
+- research-*.md: research notes (other games, design essays, forums): opinions, not 2d12's rules; read before searching again.
 - design-*.md: design documents in progress (playtests, prep documents, designs not in the book yet).
 - HANDOFF.md and MASTER-PLAN.md: where the project is and the order of the work.
 - Not here (they live in the repository, for Claude Code): the Foundry system and its backlog, the ruler (the numbers model and its
