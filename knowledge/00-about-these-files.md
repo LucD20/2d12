@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 8a0f6eb 2026-11-13 Style mockups 7: the Levels window's preview line painted in dark too
+Built by tools/knowledge.py on 2026-11-13 from the repository at: c08883e 2026-11-13 Style mockups 7: the Class sheet's lists as Tier-like rows in their Frequency's color; the small tips removed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-style-audit.md (27 KB)
+- design-style-audit.md (28 KB)
 - design-npc-hud-brief.md (24 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)

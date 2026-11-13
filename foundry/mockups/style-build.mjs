@@ -234,6 +234,16 @@ const TYPE = `
 .twod12-dark .application.classwin .ce-lvb { color: ${T.ink}; } .twod12-dark .application.classwin .ce-lvb[aria-pressed="true"] { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
 .twod12-dark .application.classwin .ce-sec { border-top-color: ${T.rule}; } .twod12-dark .application.classwin .ce-sh, .twod12-dark .application.classwin .ce-row, .twod12-dark .application.classwin .ce-li { border-color: ${T.hair}; } .twod12-dark .application.classwin .ce-drop { border-color: ${T.hair}; }
 .twod12-dark .application.classwin .ce-sh input.ce-title, .twod12-dark .application.classwin .ce-lib h2 { color: ${T.ink}; } .twod12-dark .application.classwin .ce-lib h2 { border-color: ${T.rule}; } .twod12-dark .application.classwin .ce-x { color: ${T.mute}; } .twod12-dark .application.classwin .ce-btn { color: ${T.ink}; }
+/* the Levels window, with color (Lucas, 2026-11-13: "everything looks too equal, difficult to see when a section starts and ends") */
+.twod12-type .application.classwin .ce { --lv-pg: ${LIGHT.pg}; --lv-mix: 0%; } .twod12-dark .application.classwin .ce { --lv-pg: ${T.pg}; --lv-mix: 55%; }
+.twod12-type.twod12-type .application.classwin .ce-left { gap: 16px; }
+.twod12-type.twod12-type .application.classwin .ce-sec { border: 0; border-left: 4px solid var(--sc, #8c7d63); background: color-mix(in srgb, var(--sc, #8c7d63) 7%, var(--lv-pg)); }
+.twod12-type.twod12-type .application.classwin .ce-sh { padding: 6px 10px; border-bottom: 0; background: color-mix(in srgb, var(--sc, #8c7d63) 24%, var(--lv-pg)); }
+.twod12-type.twod12-type .application.classwin .ce-sb { padding: 6px 10px 8px; } .twod12-type.twod12-type .application.classwin .ce-prev { padding: 5px 10px; border-top: 1px solid color-mix(in srgb, var(--sc, #8c7d63) 30%, var(--lv-pg)); background: color-mix(in srgb, var(--sc, #8c7d63) 13%, var(--lv-pg)); }
+.twod12-type.twod12-type .application.classwin .ce-row { border-bottom-color: color-mix(in srgb, var(--sc, #8c7d63) 28%, var(--lv-pg)); }
+.twod12-type.twod12-type .application.classwin .ce-row .ty[style] { color: color-mix(in srgb, var(--fq), #fff var(--lv-mix)); font-weight: 600; }
+.twod12-type.twod12-type .application.classwin .ce-lib h4 { margin: 12px 0 2px; padding: 3px 8px; border-left: 4px solid var(--fq, #8c7d63); background: color-mix(in srgb, var(--fq, #8c7d63) 24%, var(--lv-pg)); color: color-mix(in srgb, var(--fq, #8c7d63), #fff var(--lv-mix)); }
+.twod12-type.twod12-type .application.classwin .ce-li { padding: 4px 2px 4px 12px; }
 /* the encounter log and the Generate window */
 .twod12-type .enclog .el-round { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; border-bottom: 1px solid ${LIGHT.rule}; color: ${LIGHT.ink}; }
 .twod12-type .enclog .el-turn { border-left: 2px solid ${LIGHT.rule}; border-radius: 0; background: none; padding: 2px 8px; } .twod12-type .enclog .el-own { color: ${LIGHT.ink}; }
@@ -1157,7 +1167,12 @@ ${threeW("710px", fxWin)}
 <style>${MWIN_CSS}
 .sk .tab { display: none; } .sk .tab.active { display: block; } .sk input, .sk select, .sk textarea { font: inherit; }${CLS2_CSS}</style>`, [...R.item, ...R.card]);
 
-const lvRaw = rd("levels-window-paladin.html", 'src="icons/svg/angel.svg"', `src="${ANGEL}"`).replace(/(<div class="ce-prev"><b>Player sees:<\/b> )(Body[^<]*)/, (m, a, b) => a + hl(b));
+const lvRaw = rd("levels-window-paladin.html", 'src="icons/svg/angel.svg"', `src="${ANGEL}"`).replace(/(<div class="ce-prev"><b>Player sees:<\/b> )(Body[^<]*)/, (m, a, b) => a + hl(b))
+  .split('<section class="ce-sec"').map((sec, i) => { if (!i) return sec; const FQ = { Turn: "#0F6E6E", Round: "#185FA5", Encounter: "#A32D2D", Daily: "#5B3FA6" };
+    const kind = (sec.match(/<option value="(\w+)" selected="">/) ?? [])[1], title = (sec.match(/class="ce-title" value="([^"]*)"/) ?? [])[1] ?? "";
+    const c = kind === "attr" ? "#b8860b" : kind === "talent" ? "#3B6D11" : kind === "repertoire" ? FQ[(sec.match(/<option value="(?:turn|round|encounter|daily)" selected="">(\w+)/) ?? [])[1]] ?? "#5F5E5A" : /^(Escalation|Apex)/.test(title) ? "#c9821f" : "#8c7d63";
+    return ` style="--sc:${c}"` + sec.replace(/<span class="ty">([^<]*)<\/span>/g, (m, t) => { const f = Object.keys(FQ).find(k => t.includes(k)); return `<span class="ty"${/Esc \d/.test(t) ? ' style="--fq:#c9821f"' : f ? ` style="--fq:${FQ[f]}"` : ""}>${t}</span>`; }); }).join('<section class="ce-sec"')
+  .replace(/<h4>(Repertoire · (\w+)|Escalation \w+)<\/h4>/g, (m, t, f) => `<h4 style="--fq:${({ Turn: "#0F6E6E", Round: "#185FA5", Encounter: "#A32D2D", Daily: "#5B3FA6" })[f] ?? "#c9821f"}">${t}</h4>`);
 const lvWin = () => `<div class="mwin" style="width:1040px"><div class="mwin-head">Class: Paladin<span>&times;</span></div><div class="application twod12 classwin classed" style="position:static;width:auto;height:760px;display:flex;flex-direction:column"><section class="window-content" style="flex:1;min-height:0;overflow:hidden">${lvRaw}</section></div></div>`;
 page("levels-dark.html", "Style 7f: the class's Levels window", `The window "Edit levels…" opens (Paladin, level 1), <b>from its real HTML, copied from Lucas's Foundry</b>. <b>A style change only.</b> The left column scrolls in each copy.`, `
 <h2>Dark ${PICK}</h2>
