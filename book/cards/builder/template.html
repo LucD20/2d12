@@ -26,6 +26,7 @@
   --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55; --c-wmod: #9a4a00; --c-pmod: #5b3a9e;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { background: var(--pg); color: var(--ink); font: 400 14px/1.4 var(--text); }
 .page { max-width: 1500px; margin: 0 auto; padding-block: 14px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -208,6 +209,30 @@ td { padding: 3px 6px 3px 0; vertical-align: middle; }
 .drafts { list-style: none; margin: 0; padding: 0; }
 .drafts li { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; padding: 4px 0; border-bottom: 1px solid var(--hair); }
 .drafts li b { font-weight: 600; } .drafts li span { color: var(--faint); font-size: 12.5px; } .drafts li .sp { margin-left: auto; display: flex; gap: 6px; }
+
+/* the class audit (2026-11-13): a ranked list of printed blocks; the open entry's notes sit above the card on the right */
+.audit { display: grid; gap: 18px; max-width: 980px; padding-top: 14px; }
+.audit .lede { color: var(--mute); margin: 0; max-width: 75ch; }
+.au-sum { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.au-sum td { padding: 3px 14px 3px 0; border-bottom: 1px solid var(--hair); } .au-sum td + td { text-align: right; }
+.au-f { display: grid; }
+.au-plate { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 6px 10px; background: var(--band); border-left: 5px solid var(--faint); }
+.au-plate .rk { color: var(--faint); font-weight: 700; min-width: 1.4em; font-variant-numeric: tabular-nums; }
+.au-plate h2, .au-panel h2 { margin: 0; font: 700 16px/1.3 var(--text); flex: 1 1 auto; min-width: 0; }
+.au-plate .kd { color: var(--mute); font-size: 13px; }
+.au-v { font-weight: 700; font-size: 12.5px; padding: 1px 7px; border-radius: 3px; }
+.au-broken { color: var(--t-1); background: var(--t-1bg); } .au-over { color: var(--t-2); background: var(--t-2bg); } .au-under { color: var(--crit); background: var(--critbg); }
+.au-on { color: var(--t-3); background: var(--t-3bg); } .au-dead { color: var(--mute); background: var(--pg-2); }
+.au-rows { display: grid; }
+.au-row { display: grid; grid-template-columns: 10em minmax(0, 1fr); gap: 10px; padding: 6px 10px; border-bottom: 1px solid var(--hair); }
+.au-row > b { color: var(--mute); font-weight: 600; } .au-row > div { min-width: 0; }
+.au-row ul { margin: 0; padding-left: 1.1em; display: grid; gap: 3px; }
+.au-row .none { color: var(--faint); }
+.au-open { justify-self: start; margin: 6px 10px 0; }
+.au-panel { border: 1px solid var(--rule); background: var(--pg-2); margin-bottom: 14px; }
+.au-panel .au-plate { background: var(--band); }
+.au-panel .hd { display: flex; gap: 6px; margin-left: auto; }
+@media (max-width: 640px) { .au-row { grid-template-columns: 1fr; gap: 2px; } }
 </style>
 
 <div class="page">
@@ -217,8 +242,9 @@ td { padding: 3px 6px 3px 0; vertical-align: middle; }
     <nav class="tabs" role="tablist" aria-label="What you are designing">
       <button type="button" role="tab" id="tab-pc" data-tab="pc">PC Action</button>
       <button type="button" role="tab" id="tab-npc" data-tab="npc">NPC Action</button>
+      <button type="button" role="tab" id="tab-audit" data-tab="audit">Paladin audit</button>
     </nav>
-    <div class="acts">
+    <div class="acts" id="acts">
       <span class="status" id="status" role="status"></span>
       <select id="import" aria-label="Fill the form from a card"></select>
       <button type="button" class="btn" id="blank">Blank Action</button>
@@ -228,8 +254,9 @@ td { padding: 3px 6px 3px 0; vertical-align: middle; }
   </header>
   <div class="cols" id="cols">
     <section class="form" id="form" aria-label="The Action"></section>
-    <section class="out" id="out" aria-label="Live numbers"><div id="o-card"></div><div id="o-budget"></div><div id="o-test"></div><div id="o-roll"></div><div id="o-compare"></div><div id="o-copy"></div></section>
+    <section class="out" id="out" aria-label="Live numbers"><div id="o-audit"></div><div id="o-card"></div><div id="o-budget"></div><div id="o-test"></div><div id="o-roll"></div><div id="o-compare"></div><div id="o-copy"></div></section>
   </div>
+  <section class="audit" id="audit" aria-label="The class audit" hidden></section>
 </div>
 
 <script>

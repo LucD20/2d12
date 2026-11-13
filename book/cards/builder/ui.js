@@ -9,7 +9,7 @@
 
   /* ------------------------------------------------------------ state */
   const example = (name, tab) => { const d = E.fromCard(DATA.cards.find(c => c.name === name), tab); d.source = `an example: ${name}, as book/cards writes it today`; d.compare = tab === "pc" ? "Holy Wrath" : "Cleaver"; return d; };
-  const S = { tab: "pc", ver: { pc: 1, npc: 1 }, drafts: { pc: example("Smite", "pc"), npc: example("Brutal Swing", "npc") }, saved: [], store: "wait", copyText: "", confirm: "" };
+  const S = { view: "build", tab: "pc", ver: { pc: 1, npc: 1 }, drafts: { pc: example("Smite", "pc"), npc: example("Brutal Swing", "npc") }, saved: [], store: "wait", copyText: "", confirm: "" };
   { const w = lsGet(LS); if (w?.drafts?.pc && w?.drafts?.npc) { S.tab = w.tab === "npc" ? "npc" : "pc"; S.ver = w.ver ?? S.ver; S.drafts = { pc: E.normalize(w.drafts.pc), npc: E.normalize(w.drafts.npc) }; } }
   const D = () => S.drafts[S.tab], V = () => D().versions[S.ver[S.tab]] ?? D().versions[0];
   const fixVer = () => { const d = D(); if (!d.versions[S.ver[S.tab]]?.on) S.ver[S.tab] = Math.max(0, d.versions.findIndex(v => v.on)); };
@@ -169,6 +169,7 @@
   }
   function renderOut() {
     const d = D(), v = V(), on = d.versions.filter(x => x.on), res = on.map(x => E.price(d, x)), cur = res[on.indexOf(v)] ?? res[0];
+    $("o-audit").innerHTML = auPanel(d);
     $("o-card").innerHTML = `<h2>The card <small>as the book would print it${d.source ? ` · ${esc(d.source)}` : ""}</small></h2>${cardHtml(d)}`;
     $("o-budget").innerHTML = `<h2>${d.tab === "npc" ? "The Bestiary's turn budget" : "The PC budget"} <small>${esc(DATA.stage)}; a guide, not perfect balance</small></h2>${sheetHtml(d, cur)}<div style="margin-top:8px">${on.map((x, i) => budgetHtml(d, x, res[i])).join("")}</div>`;
     $("o-roll").innerHTML = `<h2>The roll <small>the ${d.reaction ? "Reaction" : `${v.ap} AP Version`}; the system's own dice (calc.mjs)</small></h2>${rollHtml(d, v, cur)}`;
@@ -177,12 +178,43 @@
     const mc = $("mk-cost"); if (mc) mc.textContent = `${E.costLine(d)} · ${d.frequency}`;
     lsSet(LS, { tab: S.tab, ver: S.ver, drafts: S.drafts });
   }
+  /* ------------------------------------------------------------ the class audit (audit.json): a ranked list; "Open in the builder" loads the card with its notes */
+  const AU = DATA.audit, auOf = name => AU?.entries.find(x => x.name === name);
+  const auList = xs => (xs?.length ? `<ul>${xs.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : `<span class="none">Nothing needed: it already works as a moment.</span>`);
+  const auRows = (e, full) => `<div class="au-rows">
+      <div class="au-row"><b>Today vs budget</b><div>Today: <b>${esc(e.today)}</b> · Budget: <b>${esc(e.budget)}</b>${full ? "" : ""}</div></div>
+      ${e.text ? `<div class="au-row"><b>The card today</b><div>${esc(e.text)}</div></div>` : ""}
+      <div class="au-row"><b>Lame?</b><div>${esc(e.lame)}</div></div>
+      <div class="au-row"><b>Underused?</b><div>${esc(e.underused)}</div></div>
+      <div class="au-row"><b>The research suggests</b><div>${auList(e.research)}</div></div>
+      <div class="au-row"><b>Claude suggests</b><div>${auList(e.claude)}</div></div></div>`;
+  const auPlate = (e, i, extra = "") => `<div class="au-plate">${i != null ? `<span class="rk">${i + 1}</span>` : ""}<h2>${esc(e.name)}</h2><span class="kd">${esc(e.kind)}</span><span class="au-v au-${e.v}">${esc(e.vt)}</span>${extra}</div>`;
+  function renderAudit() {
+    if (!AU) return;
+    $("audit").innerHTML = `<p class="lede">${esc(AU.about)}</p>
+      <table class="au-sum"><tbody><tr><td>The whole class (plain PC = 100)</td><td>Level 1</td><td>Level 2</td><td>Level 3</td></tr>${AU.classes.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>
+      ${AU.entries.map((e, i) => `<article class="au-f">${auPlate(e, i)}${auRows(e)}<button type="button" class="btn small au-open" data-act="au-open" data-i="${i}">${e.card ? "Open in the builder" : "Draft a new Action with these notes"}</button></article>`).join("")}`;
+  }
+  function auPanel(d) {
+    const e = auOf(d.audit); if (!e) return "";
+    return `<div class="au-panel">${auPlate(e, null, `<span class="hd"><button type="button" class="btn small" data-act="au-back">Back to the audit</button><button type="button" class="btn small plain" data-act="au-hide">Hide the notes</button></span>`)}${auRows(e)}<p class="note" style="margin:6px 10px 8px">The numbers above were measured on the card as it is today${e.card ? "" : " (the builder can't price a Passive or a Feature: build the Action you'd replace it with)"}; the budget below follows your edits.</p></div>`;
+  }
+  function openAudit(i) {
+    const e = AU.entries[i], old = S.drafts.pc, card = e.card && DATA.cards.find(c => c.name === e.card);
+    const d = card ? E.fromCard(card, "pc") : Object.assign(E.blankDraft("pc"), { name: `${e.name} (new)` });
+    for (const k of ["cls", "weapon", "wmod", "pmod", "fight", "elite", "compare"]) d[k] = old[k];
+    const b = DATA.builds.find(x => x.name === e.build); if (b) Object.assign(d, { cls: b.name, weapon: b.weapon, wmod: b.wmod, pmod: b.pmod });
+    d.audit = e.name; d.source = card ? `the audit: ${card.name} as it is today` : `the audit: a new Action for ${e.name}`;
+    S.drafts.pc = d; S.tab = "pc"; S.view = "build"; S.ver.pc = Math.max(0, d.versions.findIndex(v => v.on)); S.copyText = ""; all(); window.scrollTo(0, 0);
+  }
   function renderTop() {
     $("stage").innerHTML = `<b>${esc(DATA.stage)}</b> only · the budgets as measured on ${esc(DATA.generated)}`;
-    for (const t of ["pc", "npc"]) $(`tab-${t}`).setAttribute("aria-selected", String(S.tab === t));
+    for (const t of ["pc", "npc"]) $(`tab-${t}`).setAttribute("aria-selected", String(S.view === "build" && S.tab === t));
+    $("tab-audit").setAttribute("aria-selected", String(S.view === "audit")); $("tab-audit").hidden = !AU;
+    $("cols").hidden = $("acts").hidden = S.view === "audit"; $("audit").hidden = S.view !== "audit";
     $("import").innerHTML = cardOptions(""); $("blank").textContent = `Blank ${S.tab === "npc" ? "NPC" : "PC"} Action`;
   }
-  const all = () => { fixVer(); renderTop(); renderForm(); renderTest(); renderOut(); };
+  const all = () => { fixVer(); renderTop(); if (S.view === "audit") { renderAudit(); return; } renderForm(); renderTest(); renderOut(); };
 
   /* ------------------------------------------------------------ drafts: the artifact's own store, the browser's when there is none */
   let db = null;
@@ -266,7 +298,10 @@
     else if (a === "load") { const x = S.saved.find(s => s.id === b.dataset.id); if (x?.draft) { const n = E.normalize(E.clone(x.draft)); n.id = x.id; n.source = `draft: ${x.name}`; S.tab = n.tab; S.drafts[S.tab] = n; S.ver[S.tab] = Math.max(0, n.versions.findIndex(q => q.on)); S.copyText = ""; all(); say("Draft opened"); } }
     else if (a === "drop") dropDraft(b.dataset.id);
   });
-  for (const t of ["pc", "npc"]) $(`tab-${t}`).addEventListener("click", () => { S.tab = t; S.copyText = ""; all(); });
+  for (const t of ["pc", "npc"]) $(`tab-${t}`).addEventListener("click", () => { S.tab = t; S.view = "build"; S.copyText = ""; all(); });
+  $("tab-audit").addEventListener("click", () => { S.view = "audit"; all(); window.scrollTo(0, 0); });
+  $("audit").addEventListener("click", e => { const b = e.target.closest("[data-act=au-open]"); if (b) openAudit(Number(b.dataset.i)); });
+  $("out").addEventListener("click", e => { const b = e.target.closest("[data-act]"); if (!b) return; if (b.dataset.act === "au-back") { S.view = "audit"; all(); window.scrollTo(0, 0); } else if (b.dataset.act === "au-hide") { delete D().audit; renderOut(); } });
   $("save-draft").addEventListener("click", saveDraft);
   $("copy").addEventListener("click", () => {
     const text = E.exportText(D()); S.copyText = text; renderOut();

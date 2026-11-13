@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 0bad3dd 2026-11-13 Action Builder: a Weapon row on the card form (what 1w stands for)
+Built by tools/knowledge.py on 2026-11-13 from the repository at: c5a5366 2026-11-13 Research notes folder (book/research) with the tactical-combat findings; in the knowledge files
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

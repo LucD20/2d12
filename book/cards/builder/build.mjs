@@ -12,6 +12,7 @@ const rd = f => fs.readFileSync(path.join(HERE, f), "utf8");
 /** The pieces of the page: the data block, the system's calc.mjs as a plain script (CALC), and the engine with the ruler's price functions pasted in. */
 export async function assemble() {
   const data = await collect();
+  data.audit = JSON.parse(rd("audit.json"));   // the class audit shown in its own tab (2026-11-13: the Paladin)
   const calc = fs.readFileSync(path.join(ROOT, "foundry", "twod12", "module", "calc.mjs"), "utf8");
   if (/^\s*import /m.test(calc)) throw new Error("calc.mjs now imports something: the page can't paste it as it is");
   const calcSrc = `const CALC = (function () {\n${calc.replace(/^export /gm, "")}\nreturn { tierProbs, critProb, tierOf, bbFive, keepThree };\n})();`;
