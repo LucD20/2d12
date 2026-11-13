@@ -6,6 +6,7 @@
 import fs from "node:fs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { sections } from "./stage0fx.mjs";
 import { S, FILES, build, party, allCrossbows, enc, ENC, fights, cell, CELL, bisect, npcAt, mean, f1, f2, pc } from "./stage0lib.mjs";
 const RULER = fileURLToPath(new URL("../", import.meta.url)), QUICK = process.argv.includes("--quick"), N = QUICK ? 200 : 600, NM = QUICK ? 120 : 300;
 const t0 = Date.now(), log = s => process.stderr.write(`${s} (${Math.round((Date.now() - t0) / 1000)} s)\n`), TW = S.TW;
@@ -76,5 +77,7 @@ for (const lv of [1, 2, 3]) for (const [name, ladder] of [["The ladder", true], 
       mom = S.RR.momentumAfter(mom, { overcome: 1, downs: pcs.reduce((s, p) => s + p.st.downs, 0) - d0 }); S.between(pcs); }
     if (ok) cleared++; }
   L.push(`| ${lv} | ${name} | ${per.map((a, i) => (a.length ? `Momentum ${f1(mean(moms[i]))}: ${f1(mean(a.map(x => x.rounds)))} r · ${pc(mean(a.map(x => x.lost)))} · Down ${pc(mean(a.map(x => (x.firstDown ? 1 : 0))))} · won ${pc(mean(a.map(x => (x.won ? 1 : 0))))}` : "-")).join(" | ")} | ${pc(cleared / days)} |`); log(`8. day, level ${lv}, ${name}`); }
+L.push("");
+sections(L, log, N);   // the Bestiary's turn budget: enemies that do more than damage (stage0fx.mjs)
 L.push("", `(${f1((Date.now() - t0) / 60000)} minutes.)`, "");
 fs.writeFileSync(RULER + "stage0.md", L.join("\n"));

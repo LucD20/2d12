@@ -171,11 +171,11 @@ A **Buff** is an effect that modifies another Action, such as Rimebrand's extra 
 
 #### Stacking
 
-The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Empowered, Enfeebled, Vulnerable, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Enfeebled 1 do not make it Enfeebled 2.
+The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2.
 
 Five things do add up:
 
-- An effect that says it **increases** a value: "increase your Enfeebled value by 1" (an Action that says "increase your Empowered value by 1" adds to the Empowered you have).
+- An effect that says it **increases** a value: "increase your Slowed value by 1" adds to the Slowed you have.
 - **Boons and Banes**, up to the limit of their name (see [[Named Boons and Banes]]).
 - **Named bonuses.** A bonus to a value such as a Defense or a Speed can have a name, as Boons and Banes do: Field, Pressure or Support. Bonuses with different names add up; with the same name, only the highest counts. An unnamed bonus never adds to another bonus: it counts only when it is higher than the named ones together.
 - An effect that **increases** your [[Slowed]] value (being Desperate, Dying or Shattered).

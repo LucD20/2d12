@@ -1,4 +1,4 @@
-setting fields used by the compendium: 70 | missing from the data model: none
+setting fields used by the compendium: 69 | missing from the data model: none
 moveHow's choices: true | dmgSub takes W: true
 Frightened: {"type":"move","text":"closer","moveHow":"difficult"} difficult true | again: nothing to do: true
 Marked Quarry: [Mod]:W 1d6:- | another item untouched: true

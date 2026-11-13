@@ -42,3 +42,6 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
   ("only when the damage puts the target Down": `@Effect[Deathmark (Weapon Attack)|who:targets|down:yes]`) instead of the Effect's mode "when the
   target is Down"; the damage card no longer has an Effects button for it. "Marked Quarry" in its text is a book link now (it opened the Feature).
 - Open Season (v0.0.360): "Marked Quarry" in its text is a book link now (it opened the Feature). Nothing else.
+- Hallowed Dawn (2026-11-13, pack "The Bestiary's turn budget"; Lucas: "1 Bane on its Strikes is good"): Enfeebled left the game. Its text reads
+  "Each enemy in the Area is Pushed 2 away from you, takes 1 Bane on its [Strike] Actions and sheds Bright light in a 1 Emanation for 1 round."; the
+  chain applies the Effect "Hallowed Dawn (1 Bane)" (1 round) in the place of the Enfeebled condition. Nothing else changed.

@@ -1,5 +1,5 @@
-documents: 224
-references: 147 | broken: none
+documents: 225
+references: 148 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Divine Power, Kindled Wrath | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Encounter Pick (repertoire, encounter, pick 1) | Escalation 1 Passive (items, choice, pick 1): Radiant Zeal, Divine Surge, Font of Mercy | Escalation 2 Passive (items, choice, pick 1): Searing Blows, Mending Light | Escalation 3 Passive (items, choice, pick 1): Reckoning, Hallowed Stance | Apex (items, choice, pick 1): Final Verdict, Hallowed Dawn | Talent (talent, pick 1)
 Level 2: Talent (talent, pick 1)
@@ -19,7 +19,7 @@ Final Verdict: Escalation 3 encounter 2 AP All enemies in the Area | 1 emanation
 Hallowed Dawn: Escalation 3 encounter 3 AP All creatures in the Area | 2 emanation (all) | You and each ally in the Area heal @Heal[3d6+pow|s2:4d6+pow|s3:6d6+pow]{Heal 3d6 + Pow} (4
 Consecrated Ground: For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal @Heal[1d4]{Heal 1d4} at the start of each of their turns.
 --- the passives and effects
-Divine Power: ondamage Ho Profane -> Divine Power (Enfeebled) | that effect: damagestep Enfeebled 1 eot | Profane Judgment gone: true
+Divine Power: ondamage Ho Profane -> Divine Power (1 Bane) | that effect: boonbane Banes on [Strike] 1 eot | Profane Judgment gone: true
 Font of Mercy: Paladin Escalation | While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.
 Radiant Zeal: Paladin Escalation | While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [R] 1d6 Ho.
 Hallowed Stance: Paladin Escalation | While your Escalation is 3 or more, you and your adjacent allies take less damage from each instance, reduced by twice your Power Modifier. (Not automated.)

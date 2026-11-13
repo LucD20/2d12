@@ -494,7 +494,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(proces
     // 3. A turn: one Weapon Attack of each build (no passives) against every Defense, both rule sets' builds.
     const all = [...builds, ...fs.readdirSync(`${HERE}${PRE ? "rework" : "classes"}/`).filter(f => f.endsWith(".txt")).sort().map(f => parseSpec(fs.readFileSync(`${HERE}${PRE ? "rework" : "classes"}/${f}`, "utf8"), `${PRE ? "rework" : "classes"}/${f}`))];
     for (const b of all) for (const d of fights.defenses) {
-      const p = C.tierProbs(b.weaponMod, d), w = [0, 1, 2].map(t => weaponTier(b.weapon, t + 1)), avg = x => x.flat + x.dice.reduce((s, [c, n]) => s + c * (n + 1) / 2, 0);
+      const p = C.tierProbs(b.weaponMod, d), w = [0, 1, 2].map(t => weaponTier(b.weapon, t + 1)), avg = x => x.flat + x.dice.reduce((s, [c, n]) => s + c * ((n + 1) / 2 + (RULES.explode && n > 1 ? 0.5 : 0)), 0);   // a weapon's die explodes -1 (the book since 2026-11-12): +0.5 a die
       const exact = p[1] * (avg(w[1]) + b.weaponMod) + p[2] * (avg(w[2]) + b.weaponMod);
       const sim = turnDamage({ ...b, passives: [], turns: { one: { name: "one", steps: ["Weapon Attack"] } } }, "one", d, { n: 200000 }).avg;
       const ok = Math.abs(sim - exact) < 0.1; if (!ok) { bad++; console.log(`FAIL ${b.file} Weapon Attack vs ${d}: exact ${exact.toFixed(2)}, simulated ${sim.toFixed(2)}`); }

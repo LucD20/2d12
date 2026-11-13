@@ -62,7 +62,7 @@ export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation
  */
 /** The weapon table before Stage 0 (Chapter 15 until 2026-11-12), for the builds' weapons: read when RULES.weapons is "r". */
 export const WEAPONS_R = { Greatsword: "0 / 1d8 / 2d6", Crossbow: "0 / 1d4+2 / 1d10+2" };
-export const RULES_BOOK = { ...RULES_R, weapons: "book", oaAll: RR.BASIC_OPPORTUNITY_ATTACK, npcOa: RR.BASIC_OPPORTUNITY_ATTACK, engagedRanged: RR.ENGAGED_RANGED_DOOMED ? "doomed" : "banes" };
+export const RULES_BOOK = { ...RULES_R, explode: "all", empDie: RR.EMPOWERED_DIE, weapons: "book", oaAll: RR.BASIC_OPPORTUNITY_ATTACK, npcOa: RR.BASIC_OPPORTUNITY_ATTACK, engagedRanged: RR.ENGAGED_RANGED_DOOMED ? "doomed" : "banes" };
 export const RULES_S0 = { ...RULES_BOOK, escMax: RR.ESC_LADDER_MAX, momentum: "ladder", eliteMax: RR.ESC_LADDER_MAX, eliteRungs: RR.ELITE_RUNGS_LADDER, minionSquad: RR.MINION_SQUAD };   // eliteMax / eliteRungs (Lucas, 2026-11-12): an Elite's Escalation follows the 1-to-6 ladder; its three abilities at 2, 4 and 6 until it gets its own
 export const RULES = { ...RULES_BOOK };
 /** Guard per unused AP for a PC of this level (apGuard "stage": the book's 2 / 3 / 4 by Stage; a number: that much). */
@@ -148,12 +148,15 @@ export function mindShare(dmg, weapon = null, tier = 2, mod = 0) {
 /** The weapon's damage of a tier ("1d8", "1d10+2"), as parsed parts. */
 export const weaponTier = (weapon, tier) => parseDamage(weapon?.tiers?.[tier - 1] ?? "0");
 /** Roll a damage expression: { total, dice: how many dice were rolled } (Empowered adds per die; a die never goes below 1 with Enfeebled). */
-export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered = 0, keepBest = 0 } = {}) {
+export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered = 0, keepBest = 0, explode = false } = {}) {
   let total = dmg.flat + dmg.mod * mod, n = 0;
   const rolled = [];   // [sides, value] of every die (keep the best)
-  const roll = (count, sides) => { for (let k = 0; k < count; k++) { const v = Math.max(1, die(R, sides) + empowered); total += v; n++; rolled.push([sides, v]); } };
-  for (const [c, s] of dmg.dice) roll(c, s);
-  for (let k = 0; k < dmg.w; k++) { const wt = weaponTier(weapon, tier); total += wt.flat; for (const [c, s] of wt.dice) roll(c, s); }
+  // RULES.explode (a measurement, off by default; Lucas's idea, 2026-11-12): a die "explodes -1" as the 2d12 do: its top face counts one less and it is rolled
+  // again. For a PC only the weapon's die ([W]); for an NPC the Action's die when the caller says so (`explode`: its Basic attack, or an Action with the trait).
+  const face = (sides, ex) => (ex ? RR.explodingDie(s2 => die(R, s2), sides) : die(R, sides));   // the system's rule (roundrules.mjs)
+  const roll = (count, sides, ex = false) => { for (let k = 0; k < count; k++) { const v = Math.max(1, face(sides, ex) + empowered); total += v; n++; rolled.push([sides, v]); } };
+  for (const [c, s] of dmg.dice) roll(c, s, explode);
+  for (let k = 0; k < dmg.w; k++) { const wt = weaponTier(weapon, tier); total += wt.flat; for (const [c, s] of wt.dice) roll(c, s, !!RULES.explode && RULES.explode !== "npc"); }
   // Keep the best (pack LV, proposed): roll keepBest extra dice of the largest size rolled, then drop as many of the lowest dice of that size.
   if (keepBest && rolled.length) {
     const big = Math.max(...rolled.map(x => x[0])), pool = rolled.filter(x => x[0] === big).map(x => x[1]);
@@ -169,7 +172,8 @@ export function avgDamage(dmg, weapon, tier, mod, emp = 0, extra = []) {
   const wt = weaponTier(weapon, tier), dice = d => d.reduce((s, [c, n]) => s + c * ((n + 1) / 2 + emp), 0);
   const deals = dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && (wt.dice.length || wt.flat));
   if (!deals) return 0;
-  return dmg.flat + dmg.mod * mod + dice(dmg.dice) + dmg.w * (wt.flat + dice(wt.dice)) + extra.reduce((s, x) => s + x.flat + x.mod * mod + dice(x.dice), 0);
+  const ex = RULES.explode && RULES.explode !== "npc" ? wt.dice.reduce((s2, [c, n]) => s2 + (n > 1 ? c * 0.5 : 0), 0) : 0;   // a weapon's die explodes -1: +0.5 a die on average
+  return dmg.flat + dmg.mod * mod + dice(dmg.dice) + dmg.w * (wt.flat + dice(wt.dice) + ex) + extra.reduce((s, x) => s + x.flat + x.mod * mod + dice(x.dice), 0);
 }
 
 /* ------------------------------------------------------------------ NPCs from the Bestiary */
@@ -218,7 +222,9 @@ export const DICE = [[0, 0, 0], [1, 1, 1], [1, 2, 2], [1, 4, 2.5], [1, 6, 3.5], 
 export const diceFor = avg => DICE.reduce((b, d) => (Math.abs(d[2] - avg) < Math.abs(b[2] - avg) ? d : b));
 export function npcDamage(R, npc, tier) {
   if (tier < 2) return 0;
-  if (npc.dmg) { const e = npc.dmg[specialKey(npc.curMult ?? 1)] ?? npc.dmg.basic; return rollDamage(R, e[tier - 2]).total; }   // Stage 0: the table's own damage (a flat part plus one small die), Specials included
+  const major = RR.npcDieExplodes(npc.role, { basic: true }), ex = !!RULES.explode && RULES.explode !== "pc" && major;   // minor enemies' dice never explode
+  if (npc.curDmg) return rollDamage(R, npc.curDmg[tier - 2], { explode: ex && !!npc.curExplode }).total;   // the Bestiary's turn budget: the Action's own damage
+  if (npc.dmg) { const key = specialKey(npc.curMult ?? 1), e = npc.dmg[key] ?? npc.dmg.basic; return rollDamage(R, e[tier - 2], { explode: ex && (key === "basic" || !npc.dmg[key]) }).total; }   // Stage 0: the table's own damage (a flat part plus one small die), Specials included
   const avg = tier === 2 ? npc.t2 : npc.t3, d = diceFor(avg - npc.mod);
   let t = npc.mod;
   if (d[1] <= 2 && d[0] === 1) t += d[1]; else for (let k = 0; k < d[0]; k++) t += die(R, d[1]);

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 1fb6963 2026-11-13 Style mockups 7: the Levels window's sections as colored blocks (a color per kind of section)
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 8497b6f 2026-11-13 Style mockups: the Levels window approved (its tip removed); every mockup is done and approved, the build is next
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,11 +14,11 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (139 KB)
-- MASTER-PLAN.md (36 KB)
-- open-design-items.md (131 KB)
+- HANDOFF.md (144 KB)
+- MASTER-PLAN.md (37 KB)
+- open-design-items.md (128 KB)
 - rules-01-roll.md (23 KB)
-- rules-02-turns.md (29 KB)
+- rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
 - rules-04-health.md (14 KB)
 - rules-05-characters.md (8 KB)
@@ -28,12 +28,13 @@ Files:
 - rules-11-species.md (0 KB)
 - rules-12-paladin.md (3 KB)
 - rules-13-archer.md (3 KB)
-- rules-14-bestiary.md (25 KB)
+- rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
 - design-style-audit.md (28 KB)
 - design-npc-hud-brief.md (24 KB)
 - design-sim-brief.md (22 KB)
-- design-stage0.md (12 KB)
+- design-pc-budget.md (12 KB)
+- design-stage0.md (18 KB)
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
 - design-playtest-3.md (4 KB)

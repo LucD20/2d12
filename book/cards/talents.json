@@ -113,7 +113,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "For 1 round, your [Melee, Weapon] Actions are [[Empowered]] 1 and gain 2 Boons, and you take 1 Bane on Saves.",
+     "effects": "For 1 round, your [Melee, Weapon] Actions are [[Empowered]] and gain 2 Boons, and you take 1 Bane on Saves.",
      "foundry": {
       "fx": {
        "all": [
@@ -373,7 +373,7 @@
    "category": "Mobility Talent",
    "level": 1,
    "flavor": "Nothing slows you down once you start running.",
-   "text": "When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is [[Empowered]] 1.",
+   "text": "When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is [[Empowered]].",
    "foundry": {
     "img": "icons/svg/thrust.svg",
     "automation": "gold"
@@ -496,7 +496,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "You touch a creature (yourself or an ally). If they are not Empowered, they become Empowered 1 for 1 round. If they are Empowered 1 (from any source), they become Empowered 2 for 1 round. If they are Empowered 2 or higher, no effect.",
+     "effects": "You touch a creature (yourself or an ally). They become Empowered for 1 round.",
      "ruler": "always: empowered 1 turn"
     },
     {

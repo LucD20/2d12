@@ -5,13 +5,13 @@
 Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
-> A Paladin with a Weapon Modifier of +2 deals 5 + 1d6 + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack: 8 to 13.
+> A Paladin with a Weapon Modifier of +2 deals 5 + 1d6! + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack: 8 to 13.
 
 ### Weapon Damage [W]
 
-**[W]** is the damage of your weapon: on each Tier, **a flat number plus at most one small die**. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
+**[W]** is the damage of your weapon: on each Tier, **a flat number plus at most one small die**. **A weapon's die explodes**, so it is written with **!** (see [[Exploding Dice]]): on its highest face, count it as one less and roll it again. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
 
-*Example:* an Action that deals 2[W] deals 0 / 10 + 2d6 / 16 + 2d8 with a Greatsword, and 0 / 4 + 2d4 / 8 + 2d4 with a Crossbow.
+*Example:* an Action that deals 2[W] deals 0 / 10 + 2d6! / 16 + 2d8! with a Greatsword, and 0 / 4 + 2d4! / 8 + 2d4! with a Crossbow.
 
 ### Reading the Weapon Tables
 
@@ -26,16 +26,16 @@ A melee weapon deals more than a ranged one, which strikes from safety. Among me
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Dagger | Blades | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4 / 4 + 1d4 | 3 |
-| Longsword | Blades | Melee | Slash | 1 | [V] 0 / 2 + 1d6 / 4 + 1d6 | 3 |
-| Greatsword | Blades | Melee, Two-handed | Slash | 1 | [V] 0 / 5 + 1d6 / 8 + 1d8 | 3 |
-| Handaxe | Axes | Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4 / 2 + 1d8 | 3 |
-| Greataxe | Axes | Melee, Two-handed | Slash | 1 | [V] 0 / 4 + 1d6 / 10 + 1d8 | 4 |
-| Mace | Hammers | Melee | Blunt | 1 | [V] 0 / 3 + 1d4 / 5 + 1d4 | 3 |
-| Maul | Hammers | Melee, Two-handed | Blunt | 1 | [V] 0 / 6 + 1d4 / 9 + 1d6 | 4 |
-| Spear | Polearms | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4 / 4 + 1d4 | 3 |
-| Pike | Polearms | Long, Melee, Two-handed | Pierce | 3 | [V] 0 / 4 + 1d6 / 6 + 1d8 | 4 |
-| Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [V] 0 / 2 + 1d4 / 3 + 1d4 | 5 |
+| Dagger | Blades | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 4 + 1d4! | 3 |
+| Longsword | Blades | Melee | Slash | 1 | [V] 0 / 2 + 1d6! / 4 + 1d6! | 3 |
+| Greatsword | Blades | Melee, Two-handed | Slash | 1 | [V] 0 / 5 + 1d6! / 8 + 1d8! | 3 |
+| Handaxe | Axes | Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 2 + 1d8! | 3 |
+| Greataxe | Axes | Melee, Two-handed | Slash | 1 | [V] 0 / 4 + 1d6! / 10 + 1d8! | 4 |
+| Mace | Hammers | Melee | Blunt | 1 | [V] 0 / 3 + 1d4! / 5 + 1d4! | 3 |
+| Maul | Hammers | Melee, Two-handed | Blunt | 1 | [V] 0 / 6 + 1d4! / 9 + 1d6! | 4 |
+| Spear | Polearms | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 4 + 1d4! | 3 |
+| Pike | Polearms | Long, Melee, Two-handed | Pierce | 3 | [V] 0 / 4 + 1d6! / 6 + 1d8! | 4 |
+| Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [V] 0 / 2 + 1d4! / 3 + 1d4! | 5 |
 
 > [!tbd]
 > The Weapon Techniques below and in the Ranged list still write the dice of the earlier weapon table (a Greatsword's 1d10 / 2d6): they are rewritten in the weapon pass (Bows and Swords first), with Point Blank's Bane while Engaged.
@@ -65,12 +65,12 @@ A melee weapon deals more than a ranged one, which strikes from safety. Among me
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Shortbow | Bows | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 32 | [V] 0 / 1d6 / 1 + 1d6 | 3 |
-| Longbow | Bows | Projectile, Ranged, Two-handed | Pierce | 15 / 30 / 60 | [V] 0 / 1 + 1d4 / 2 + 1d4 | 4 |
-| Hand Crossbow | Crossbows | Projectile, Ranged, Reload | Pierce | 6 / 12 / 24 | [V] 0 / 1d4 / 1 + 1d4 | 4 |
-| Crossbow | Crossbows | Projectile, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 2 + 1d4 / 4 + 1d4 | 3 |
-| Pistol | Firearms | Firearm, Ranged, Reload | Pierce | 5 / 10 / 20 | [V] 0 / 1d4 / 2 + 1d8 | 4 |
-| Musket | Firearms | Firearm, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 1d4 / 4 + 1d8 | 5 |
+| Shortbow | Bows | Projectile, Ranged, Two-handed | Pierce | 8 / 16 / 32 | [V] 0 / 1d6! / 1 + 1d6! | 3 |
+| Longbow | Bows | Projectile, Ranged, Two-handed | Pierce | 15 / 30 / 60 | [V] 0 / 1 + 1d4! / 2 + 1d4! | 4 |
+| Hand Crossbow | Crossbows | Projectile, Ranged, Reload | Pierce | 6 / 12 / 24 | [V] 0 / 1d4! / 1 + 1d4! | 4 |
+| Crossbow | Crossbows | Projectile, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 2 + 1d4! / 4 + 1d4! | 3 |
+| Pistol | Firearms | Firearm, Ranged, Reload | Pierce | 5 / 10 / 20 | [V] 0 / 1d4! / 2 + 1d8! | 4 |
+| Musket | Firearms | Firearm, Ranged, Reload, Two-handed | Pierce | 10 / 20 / 40 | [V] 0 / 1d4! / 4 + 1d8! | 5 |
 
 #### Ranged Weapon Techniques
 
@@ -125,7 +125,7 @@ A weapon with the **Non-threatening** property doesn't threaten: you can't flank
 
 A weapon with the Reload property doesn't need to be reloaded every time you use it: you can reload quickly between shots. But you can make a more powerful shot that does require a reload.
 
-Before you roll a Weapon Strike with the weapon, you can choose to make a **Reload Shot**: the Strike is **[[Favored and Doomed Rolls|Favored]]** and **[[Empowered]] 2**. After the shot, you must Reload before you can use that weapon again. See the Reload Action in [[Chapter 6: Basic Actions]].
+Before you roll a Weapon Strike with the weapon, you can choose to make a **Reload Shot**: the Strike is **[[Favored and Doomed Rolls|Favored]]** and **[[Empowered]]**. After the shot, you must Reload before you can use that weapon again. See the Reload Action in [[Chapter 6: Basic Actions]].
 
 ### Weapon Groups
 
@@ -157,7 +157,7 @@ Every creature counts as having **Fists**. They are a weapon like any other, wit
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [V] 0 / 2 / 1 + 1d4 | - |
+| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [V] 0 / 2 / 1 + 1d4! | - |
 
 Fists are used with the [[Chapter 6: Basic Actions|Fists Basic Action]], or with any Weapon Action.
 

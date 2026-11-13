@@ -227,10 +227,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <main><div class="docnav"><a href="core-rules.html">Core Rules</a><a href="species.html">Species</a><a href="gear.html" class=cur>Gear</a><a href="paladin.html">Paladin</a><a href="archer.html">Archer</a><a href="bestiary.html">Bestiary</a></div><section class="chapter"><details open><summary><h1 id="gear">Gear</h1></summary><div class="cbody">
 <h2 id="weapons">Weapons</h2>
 <p>Your class determines your <span class="mod-weapon">Weapon Modifier</span>. Each weapon belongs to a <a class="xref" href="#weapon-groups">Weapon Group</a> and has its own <strong>Weapon Technique</strong>, which you unlock with <a class="xref" href="#mastery">Mastery</a>. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Actions use that weapon, never another one.</p>
-<div class="callout example"><div class="ctitle">Example</div><p>A Paladin with a <span class="mod-weapon">Weapon Modifier</span> of +2 deals 5 + 1d6 + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack: 8 to 13.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>A Paladin with a <span class="mod-weapon">Weapon Modifier</span> of +2 deals 5 + 1d6! + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack: 8 to 13.</p></div>
 <h3 id="weapon-damage-w">Weapon Damage [W]</h3>
-<p><strong>[W]</strong> is the damage of your weapon: on each Tier, <strong>a flat number plus at most one small die</strong>. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.</p>
-<p><em>Example:</em> an Action that deals 2[W] deals 0 / 10 + 2d6 / 16 + 2d8 with a Greatsword, and 0 / 4 + 2d4 / 8 + 2d4 with a Crossbow.</p>
+<p><strong>[W]</strong> is the damage of your weapon: on each Tier, <strong>a flat number plus at most one small die</strong>. <strong>A weapon's die explodes</strong>, so it is written with <strong>!</strong> (see <a class="xref" href="core-rules.html#exploding-dice">Exploding Dice</a>): on its highest face, count it as one less and roll it again. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.</p>
+<p><em>Example:</em> an Action that deals 2[W] deals 0 / 10 + 2d6! / 16 + 2d8! with a Greatsword, and 0 / 4 + 2d4! / 8 + 2d4! with a Crossbow.</p>
 <h3 id="reading-the-weapon-tables">Reading the Weapon Tables</h3>
 <ul>
 <li><strong>Group:</strong> its <a class="xref" href="#weapon-groups">Weapon Group</a>.</li>
@@ -259,7 +259,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Melee, Thrown</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>1, Thrown 4 / 8 / 12</td>
-<td><span class="pool-b">[V] 0 / 2 + 1d4 / 4 + 1d4</span></td>
+<td><span class="pool-b">[V] 0 / 2 + 1d4! / 4 + 1d4!</span></td>
 <td>3</td>
 </tr>
 <tr>
@@ -268,7 +268,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Melee</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Slash</span></td>
 <td>1</td>
-<td><span class="pool-b">[V] 0 / 2 + 1d6 / 4 + 1d6</span></td>
+<td><span class="pool-b">[V] 0 / 2 + 1d6! / 4 + 1d6!</span></td>
 <td>3</td>
 </tr>
 <tr>
@@ -277,7 +277,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Melee, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Slash</span></td>
 <td>1</td>
-<td><span class="pool-b">[V] 0 / 5 + 1d6 / 8 + 1d8</span></td>
+<td><span class="pool-b">[V] 0 / 5 + 1d6! / 8 + 1d8!</span></td>
 <td>3</td>
 </tr>
 <tr>
@@ -286,7 +286,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Melee, Thrown</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Slash</span></td>
 <td>1, Thrown 4 / 8 / 12</td>
-<td><span class="pool-b">[V] 0 / 2 + 1d4 / 2 + 1d8</span></td>
+<td><span class="pool-b">[V] 0 / 2 + 1d4! / 2 + 1d8!</span></td>
 <td>3</td>
 </tr>
 <tr>
@@ -295,7 +295,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Melee, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Slash</span></td>
 <td>1</td>
-<td><span class="pool-b">[V] 0 / 4 + 1d6 / 10 + 1d8</span></td>
+<td><span class="pool-b">[V] 0 / 4 + 1d6! / 10 + 1d8!</span></td>
 <td>4</td>
 </tr>
 <tr>
@@ -304,7 +304,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Melee</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Blunt</span></td>
 <td>1</td>
-<td><span class="pool-b">[V] 0 / 3 + 1d4 / 5 + 1d4</span></td>
+<td><span class="pool-b">[V] 0 / 3 + 1d4! / 5 + 1d4!</span></td>
 <td>3</td>
 </tr>
 <tr>
@@ -313,7 +313,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Melee, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Blunt</span></td>
 <td>1</td>
-<td><span class="pool-b">[V] 0 / 6 + 1d4 / 9 + 1d6</span></td>
+<td><span class="pool-b">[V] 0 / 6 + 1d4! / 9 + 1d6!</span></td>
 <td>4</td>
 </tr>
 <tr>
@@ -322,7 +322,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Melee, Thrown</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>1, Thrown 4 / 8 / 12</td>
-<td><span class="pool-b">[V] 0 / 2 + 1d4 / 4 + 1d4</span></td>
+<td><span class="pool-b">[V] 0 / 2 + 1d4! / 4 + 1d4!</span></td>
 <td>3</td>
 </tr>
 <tr>
@@ -331,7 +331,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Long, Melee, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>3</td>
-<td><span class="pool-b">[V] 0 / 4 + 1d6 / 6 + 1d8</span></td>
+<td><span class="pool-b">[V] 0 / 4 + 1d6! / 6 + 1d8!</span></td>
 <td>4</td>
 </tr>
 <tr>
@@ -340,7 +340,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Barehanded, Melee</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>1</td>
-<td><span class="pool-b">[V] 0 / 2 + 1d4 / 3 + 1d4</span></td>
+<td><span class="pool-b">[V] 0 / 2 + 1d4! / 3 + 1d4!</span></td>
 <td>5</td>
 </tr>
 </tbody>
@@ -377,7 +377,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Projectile, Ranged, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>8 / 16 / 32</td>
-<td><span class="pool-b">[V] 0 / 1d6 / 1 + 1d6</span></td>
+<td><span class="pool-b">[V] 0 / 1d6! / 1 + 1d6!</span></td>
 <td>3</td>
 </tr>
 <tr>
@@ -386,7 +386,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Projectile, Ranged, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>15 / 30 / 60</td>
-<td><span class="pool-b">[V] 0 / 1 + 1d4 / 2 + 1d4</span></td>
+<td><span class="pool-b">[V] 0 / 1 + 1d4! / 2 + 1d4!</span></td>
 <td>4</td>
 </tr>
 <tr>
@@ -395,7 +395,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Projectile, Ranged, Reload</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>6 / 12 / 24</td>
-<td><span class="pool-b">[V] 0 / 1d4 / 1 + 1d4</span></td>
+<td><span class="pool-b">[V] 0 / 1d4! / 1 + 1d4!</span></td>
 <td>4</td>
 </tr>
 <tr>
@@ -404,7 +404,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Projectile, Ranged, Reload, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>10 / 20 / 40</td>
-<td><span class="pool-b">[V] 0 / 2 + 1d4 / 4 + 1d4</span></td>
+<td><span class="pool-b">[V] 0 / 2 + 1d4! / 4 + 1d4!</span></td>
 <td>3</td>
 </tr>
 <tr>
@@ -413,7 +413,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Firearm, Ranged, Reload</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>5 / 10 / 20</td>
-<td><span class="pool-b">[V] 0 / 1d4 / 2 + 1d8</span></td>
+<td><span class="pool-b">[V] 0 / 1d4! / 2 + 1d8!</span></td>
 <td>4</td>
 </tr>
 <tr>
@@ -422,7 +422,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Firearm, Ranged, Reload, Two-handed</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Pierce</span></td>
 <td>10 / 20 / 40</td>
-<td><span class="pool-b">[V] 0 / 1d4 / 4 + 1d8</span></td>
+<td><span class="pool-b">[V] 0 / 1d4! / 4 + 1d8!</span></td>
 <td>5</td>
 </tr>
 </tbody>
@@ -454,7 +454,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>A weapon with the <strong>Non-threatening</strong> property doesn't threaten: you can't flank with it (see <a class="xref" href="core-rules.html#flanking">Flanking</a>), unless a feature says otherwise. Fists have it.</p>
 <h4 id="reload">Reload</h4>
 <p>A weapon with the Reload property doesn't need to be reloaded every time you use it: you can reload quickly between shots. But you can make a more powerful shot that does require a reload.</p>
-<p>Before you roll a Weapon Strike with the weapon, you can choose to make a <strong>Reload Shot</strong>: the Strike is <strong><a class="xref" href="core-rules.html#favored-and-doomed-rolls"><span class="kw-pos">Favored</span></a></strong> and <strong><a class="xref" href="core-rules.html#empowered"><span class="kw-pos">Empowered</span></a> 2</strong>. After the shot, you must Reload before you can use that weapon again. See the Reload Action in <a class="xref" href="core-rules.html#chapter-6-basic-actions">Chapter 6: Basic Actions</a>.</p>
+<p>Before you roll a Weapon Strike with the weapon, you can choose to make a <strong>Reload Shot</strong>: the Strike is <strong><a class="xref" href="core-rules.html#favored-and-doomed-rolls"><span class="kw-pos">Favored</span></a></strong> and <strong><a class="xref" href="core-rules.html#empowered"><span class="kw-pos">Empowered</span></a></strong>. After the shot, you must Reload before you can use that weapon again. See the Reload Action in <a class="xref" href="core-rules.html#chapter-6-basic-actions">Chapter 6: Basic Actions</a>.</p>
 <h3 id="weapon-groups">Weapon Groups</h3>
 <p>Every weapon belongs to one of eight <strong>Weapon Groups</strong>: <strong>Blades</strong>, <strong>Axes</strong>, <strong>Hammers</strong>, <strong>Polearms</strong>, <strong>Bows</strong>, <strong>Crossbows</strong>, <strong>Firearms</strong> and <strong>Unarmed</strong> (Fists and the Knuckle Dagger). Weapons of a group are used the same way, so what you learn with one helps with the others: see <a class="xref" href="#mastery">Mastery</a>.</p>
 <h3 id="mastery">Mastery</h3>
@@ -506,7 +506,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>Barehanded, Melee, Non-threatening</td>
 <td><span class="dmgword" style="--dc:#8a8a8a">Blunt</span></td>
 <td>1</td>
-<td><span class="pool-b">[V] 0 / 2 / 1 + 1d4</span></td>
+<td><span class="pool-b">[V] 0 / 2 / 1 + 1d4!</span></td>
 <td>-</td>
 </tr>
 </tbody>

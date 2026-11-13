@@ -233,7 +233,19 @@ export const TWOD12 = {
   // An NPC's CV moves by about this much for each step its Health and damage ratings sit above or below Medium in total (the Bestiary, Ratings; Defense steps are free).
   npcCvStep: { minion: 5, grunt: 10, standard: 15, elite: 30 },
   // An NPC's Armor or Ward Defense by rating (the Bestiary since 2026-11-12: two points a step going up, so a Defense rating is worth half a CV step; every Stage). Not read by the system yet (npcRoles.defense and the ratings' off: one point a step).
-  npcDefense: { minion: [10, 11, 12, 14], grunt: [10, 11, 13, 15, 17], standard: [10, 11, 13, 15, 17], elite: [11, 12, 14, 16, 18] },
+  npcDefense: { minion: [10, 11, 12, 13], grunt: [10, 11, 13, 15, 17], standard: [10, 11, 13, 15, 17], elite: [11, 12, 14, 16, 18] },
+  // The Bestiary's turn budget (pack "The Bestiary's turn budget", 2026-11-12; the book's Bestiary, "The turn budget"; calibrated by
+  // book/ruler/sim/calib.mjs, reported in book/ruler/budget.md). Points are damage: toDamage turns them into Tier 2 / Tier 3 averages (a Medium
+  // Standard's Basic attack is 25 points: 3.5 / 5.5). perAp: a rank's points an AP at Medium (its Basic attack), times rating; turnAp: how many AP its
+  // turn budget counts; size: the premium of a 2 AP and a 3 AP Action; round: the Round premium; encounter: an Encounter Action is this times the Round
+  // one; over: how far a best turn may go over the budget; riders: the flat price of a rider (Setup one size up, Tier 3 only one size down); explode: the price of an exploding die (written 1d6!) on an
+  // Action that is not the Basic attack; multi: an Action that hits several creatures deals this share to each (multiEnc: an Encounter one); reaction.give: the share of a Reaction's points (a cost-AP Round Action's) that
+  // comes off the creature's turn (self: a Reaction to being hit; other: to an ally or a movement; twoR: a 2R one, which keeps an AP instead);
+  // payBack: by an Encounter Action's AP, the share of their points every other Action of the creature loses; help: a Boon on an ally's next attack, and a point
+  // of Health healed, in points. **The system doesn't read this yet** (the pack "Stage 0 in Foundry": the Builder's points).
+  npcBudget: { perAp: { minion: 18, grunt: 25, standard: 25, elite: 33 }, turnAp: { minion: 3, grunt: 3, standard: 4, elite: 4 },
+    rating: { terrible: 0.65, low: 0.8, medium: 1, high: 1.2, extreme: 1.5 }, size: [0, 0, 0, 0.05], round: 0.1, encounter: 2, payBack: [0, 0.2, 0.25, 0.5], over: 0.15,
+    riders: { forced: 2, mild: 3, moderate: 8, severe: 12, extreme: 18, step: 6 }, explode: 6, multi: 2 / 3, multiEnc: 0.5, toDamage: [0.14, 0.22], help: { boon: 3, health: 1 }, reaction: { self: 1 / 3, other: 0.25, twoR: 0 } },
   npcStage0: {
     minion: { reactionAp: 0, squad: 3, health: [3, 5, 6, 7],
       basic: [["1", "2"], ["1", "1d4"], ["2", "1 + 1d4"], ["1d4", "2 + 1d4"]],
