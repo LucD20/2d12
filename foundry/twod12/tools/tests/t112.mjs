@@ -40,7 +40,7 @@ console.log("Consecrated Ground:", txt(act("Consecrated Ground").versions[0].eff
 console.log("--- the passives and effects");
 const feat = n => byName("features", n).system, fx = n => byName("effects", n).system;
 const pj = feat("Divine Power").settings[0];
-console.log("Divine Power:", pj.type, pj.trigSub, pj.trigTag, "->", nameOf(pj.fxUuid), "| that effect:", fx("Divine Power (Enfeebled)").settings[0].type, "Enfeebled", fx("Divine Power (Enfeebled)").settings[0].enfeebled, fx("Divine Power (Enfeebled)").duration.type, "| Profane Judgment gone:", !byName("features", "Profane Judgment"));
+console.log("Divine Power:", pj.type, pj.trigSub, pj.trigTag, "->", nameOf(pj.fxUuid), "| that effect:", fx("Divine Power (1 Bane)").settings[0].type, "Banes on [Strike]", fx("Divine Power (1 Bane)").settings[0].banes, fx("Divine Power (1 Bane)").duration.type, "| Profane Judgment gone:", !byName("features", "Profane Judgment"));
 for (const n of ["Font of Mercy", "Radiant Zeal", "Hallowed Stance"]) console.log(`${n}: ${feat(n).category} | ${txt(feat(n).description)}`);
 const ap = fx("Beacon").settings[0];
 console.log("the Aura:", ap.type, `Aura ${ap.auraSize}`, ap.auraWho, "->", nameOf(ap.fxUuid), "| lasts:", fx("Beacon").duration.type || "until the encounter ends (an Escalation effect)");

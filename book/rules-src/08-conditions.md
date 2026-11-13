@@ -25,13 +25,6 @@ The first time you deal damage on each of your turns, add **1d6!** to it (see [[
 > [!tbd]
 > The die grows at later Stages (with those Stages' numbers).
 
-### Enfeebled
-
-**Enfeebled N** subtracts N from every die of the damage, but each die still deals at least 1.
-
-> [!tbd]
-> Enfeebled is being removed (Lucas, 2026-11-13). Divine Power and Hallowed Dawn still use it until their cards are rewritten.
-
 ### Exhausted
 
 Exhausted always has a value, such as **Exhausted 2**. While you are Exhausted:

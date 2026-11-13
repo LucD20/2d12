@@ -1853,9 +1853,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="empowered">Empowered</h3>
 <p>The first time you deal damage on each of your turns, add <strong>1d6!</strong> to it (see <a class="xref" href="#exploding-dice">Exploding Dice</a>). The die deals the same kind of damage as the Action (its pool and its type). If the Action damages several creatures, you choose which one takes it. <span class="kw-pos">Empowered</span> has no value: you are <span class="kw-pos">Empowered</span> or you aren't, and being <span class="kw-pos">Empowered</span> twice changes nothing.</p>
 <div class="callout tbd"><div class="ctitle">To be decided</div><p>The die grows at later Stages (with those Stages' numbers).</p></div>
-<h3 id="enfeebled">Enfeebled</h3>
-<p><strong><span class="kw-neg">Enfeebled</span> N</strong> subtracts N from every die of the damage, but each die still deals at least 1.</p>
-<div class="callout tbd"><div class="ctitle">To be decided</div><p><span class="kw-neg">Enfeebled</span> is being removed (Lucas, 2026-11-13). Divine Power and Hallowed Dawn still use it until their cards are rewritten.</p></div>
 <h3 id="exhausted">Exhausted</h3>
 <p>Exhausted always has a value, such as <strong>Exhausted 2</strong>. While you are Exhausted:</p>
 <ul>
@@ -2172,10 +2169,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#frequency"><strong>Encounter</strong></a></td>
 <td>A fight or similar scene, from Initiative until the GM ends it.</td>
-</tr>
-<tr>
-<td><a class="xref" href="#enfeebled"><strong><span class="kw-neg">Enfeebled</span></strong></a></td>
-<td>Subtracts its value from every damage die; each die still deals at least 1. Being removed.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#engaged"><strong>Engaged</strong></a></td>
@@ -2712,7 +2705,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tbody>
 </table></div></div></details></section>
 <div class="part">Appendix</div>
-<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#line-of-effect">Line of Effect</a>: Targeting walls and objects (and the Breach trait, to hit a creature behind a wall you break) is not written yet.</li><li><a href="#other-areas">Other areas</a>: Cones are not written yet (and Lines wider than 1 square).</li><li><a href="#senses">Senses</a>: Hiding and sneaking are not written yet.</li><li><a href="#wounds-and-the-tables">Wounds and the Tables</a>: The entries of the Dying and Shattered Tables are placeholders.</li><li><a href="#talents">Talents</a>: The Talents are set aside for now: none is in the book while the first three levels of the classes are finished. <strong>Every Talent slot stays empty</strong> until they are written again (the Skill Talents come with the Skills rules).</li><li><a href="#stages">Stages</a>: Only Stage 0 is written so far: the classes' levels 4 and above, their Health steps for Stages 1, 2 and 3, and the Bestiary's later tables come after it.</li><li><a href="#tags">Tags</a>: The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.</li><li><a href="#empowered">Empowered</a>: The die grows at later Stages (with those Stages' numbers).</li><li><a href="#enfeebled">Enfeebled</a>: Enfeebled is being removed (Lucas, 2026-11-13). Divine Power and Hallowed Dawn still use it until their cards are rewritten.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
+<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#line-of-effect">Line of Effect</a>: Targeting walls and objects (and the Breach trait, to hit a creature behind a wall you break) is not written yet.</li><li><a href="#other-areas">Other areas</a>: Cones are not written yet (and Lines wider than 1 square).</li><li><a href="#senses">Senses</a>: Hiding and sneaking are not written yet.</li><li><a href="#wounds-and-the-tables">Wounds and the Tables</a>: The entries of the Dying and Shattered Tables are placeholders.</li><li><a href="#talents">Talents</a>: The Talents are set aside for now: none is in the book while the first three levels of the classes are finished. <strong>Every Talent slot stays empty</strong> until they are written again (the Skill Talents come with the Skills rules).</li><li><a href="#stages">Stages</a>: Only Stage 0 is written so far: the classes' levels 4 and above, their Health steps for Stages 1, 2 and 3, and the Bestiary's later tables come after it.</li><li><a href="#tags">Tags</a>: The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.</li><li><a href="#empowered">Empowered</a>: The die grows at later Stages (with those Stages' numbers).</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.getAttribute('href').slice(1));openUp(t);}));
 window.addEventListener('hashchange',()=>openUp(document.getElementById(location.hash.slice(1))));
