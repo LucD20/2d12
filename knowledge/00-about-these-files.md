@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 5c34d59 2026-11-13 Style mockups 5, review: the pick window's options as separate buttons with no check mark, its text highlighted, no stray heading bar
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 76d3363 2026-11-13 Style mockups 5: the pick window's choice as a list of full-width options
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

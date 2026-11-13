@@ -9,6 +9,7 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 The audit and a proposed order: `foundry/mockups/style-audit.md`. The direction: CLAUDE.md, "The design's direction".
 - [x] Decided (Lucas, 2026-11-12): the audit's order; **mockups for every step first, nothing applied until all are done**; dark / light is **a setting of the system**; the dark Action card approved; the sheet's type on the cards; Tier 2 more yellow.
 - [ ] In the build: retire the old area damage card (`dmgcard.mjs multiDamageHtml` / `postMultiDamageCard`, no caller; `damage.mjs` still updates old messages through it) and its rules, after checking no world holds such messages.
+- [ ] In the build, `pickwindow.mjs pickOne`: a click on an option resolves and closes; no Confirm button, only Cancel (Lucas, 2026-11-13). Check each caller for a `preset` that relied on Confirm.
 - [ ] In the build, `pickwindow.mjs`: the text through `highlightText`; no `<h2>` for a section with no title and no pill; no check mark on the chosen option (Lucas, 2026-11-13).
 - [ ] In the build: the word **Guard** colored by the text highlighter (`config.mjs highlightText`), the Guard blue; ask Lucas whether the book takes it too.
 - [ ] Mockups still to make (`foundry/mockups/style-build.mjs`): the pick window, the roll dialog, the PC sheet, the full NPC sheet, the rest (the table: style-audit.md).
