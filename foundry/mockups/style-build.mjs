@@ -97,7 +97,7 @@ function darkSet(name, rules) {
   autoUsed[name] = new Set();
   return rules.map(block => {
     const sel = selOf(block).trim(), body = block.slice(block.indexOf("{") + 1, -1);
-    const decls = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--cc-|^--rd-|^--cw-|^--ps-/.test(d));
+    const decls = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--cc-|^--rd-|^--cw-|^--ps-|^--sk-|^--fr-|^--tp-/.test(d));
     if (!decls.length) return "";
     const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc, name === "pcs"); })}`; });
     // :where() keeps each rule's own weight, so the system's cascade holds (a rule that colors with a variable, as "the lit pip is the row's color",
@@ -199,6 +199,27 @@ const TYPE = `
 .twod12-type .twod12.sheet.pcs .ps-use.rx { background: #1f7a72; color: #fff; }
 .twod12-type .twod12.sheet.pcs .ps-init:not(.dis) { background: #ecd9a4; color: #2b2520; box-shadow: none; }
 .twod12-type .twod12.sheet.pcs .ps-line[data-action="toggleCard"]:hover, .twod12-type .twod12.sheet.pcs .ps-brow[data-action="toggleCard"]:hover { background: ${LIGHT.pg2}; }
+/* THE CAROUSEL, both themes: Signika in the place of Cinzel, square corners; light keeps its parchment cards, its bar the warm dark brown. */
+.twod12-type #twod12-carousel { --tp-navy: #2b2520; --tp-navy2: #3a3229; --tp-parch: #f4ede0; --tp-parch2: #eae0c8; --tp-border: #bfae8c; --tp-ink: ${LIGHT.ink}; --tp-mut: ${LIGHT.mute}; --tp-gold: ${LIGHT.gold}; }
+.twod12-type #twod12-carousel .tc-head.tc-bar { font: 600 13px "Signika", sans-serif; letter-spacing: 0; border-color: #1a1612; border-radius: 3px; }
+.twod12-type #twod12-carousel .tc-round { font: 700 14px "Signika", sans-serif; font-variant: small-caps; font-style: normal; letter-spacing: .02em; }
+.twod12-type #twod12-carousel .tc-bar .tc-btn { font: 700 12px "Signika", sans-serif; letter-spacing: 0; text-transform: none; font-variant: normal; background: transparent; border: 1px solid #8c7d63; border-radius: 2px; color: #f4ede0; }
+.twod12-type #twod12-carousel .tp { border-radius: 3px; }
+.twod12-type #twod12-carousel .tp-band { font: 700 11px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .06em; text-transform: none; }
+.twod12-type #twod12-carousel .tp-name { font: 700 12.5px "Signika", sans-serif; letter-spacing: 0; text-transform: none; font-variant: normal; }
+/* THE ITEM SHEETS (an Action's, an Effect's, a Feature's: the editor), both themes: the warm dark brown for the head, gold for amber and maroon,
+   Signika headings on a rule in the place of the Cinzel gradient bars, square corners, the chosen option filled as the stamp. */
+.twod12-type .application.twod12-styled { --sk-navy: #2b2520; --sk-amber: #c9962b; --sk-acc: ${LIGHT.gold}; --sk-par: ${LIGHT.pg}; --sk-panel: #fbf7ee; --sk-line: ${LIGHT.hair}; --sk-ink: ${LIGHT.ink}; --sk-mut: ${LIGHT.mute}; }
+.twod12-type .application .fr-tab { --fr-navy: ${LIGHT.stamp}; --fr-gold: #c9962b; --fr-maroon: ${LIGHT.ink}; --fr-goldsoft: transparent; --fr-line: ${LIGHT.hair}; --fr-par2: ${LIGHT.pg2}; --fr-field: #fbf7ee; --fr-ink: ${LIGHT.ink}; --fr-mut: ${LIGHT.mute}; font-family: "Signika", sans-serif; }
+.twod12-type .application.twod12-styled .sk .head .name { font: 700 20px "Signika", sans-serif; }
+.twod12-type .application.twod12-styled .sk .head img { border-radius: 2px; }
+.twod12-type .application .fr-tab .fr-sec > h3 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; background: none; border-left: 0; border-bottom: 1px solid #8a6d3b; padding: 2px 0; color: ${LIGHT.ink}; }
+.twod12-type .application .fr-tab .as-h4 { font-family: "Signika", sans-serif; font-variant: small-caps; color: ${LIGHT.gold}; }
+.twod12-type .application .fr-tab .as-tl, .twod12-type .application .fr-tab .as-railh, .twod12-type .application .fr-tab .fr-dropped b { font-family: "Signika", sans-serif; }
+.twod12-type .application .fr-tab .as-tl { font-weight: 700; font-variant: small-caps; font-size: 14px; }
+.twod12-type .application .fr-tab .as-tier.t2 { --tc: ${LIGHT.t2}; }
+.twod12-type .application .fr-tab button, .twod12-type .application .fr-tab input, .twod12-type .application .fr-tab select, .twod12-type .application .fr-tab textarea, .twod12-type .application .fr-tab .fr-seg, .twod12-type .application .fr-tab .fr-chip, .twod12-type .application .fr-tab .as-tier, .twod12-type .application .fr-tab .as-flow, .twod12-type .application .fr-tab .fr-part, .twod12-type .application .fr-tab .fr-dropped, .twod12-type .application .fr-tab .fr-drop, .twod12-type .application .fr-tab .as-prev, .twod12-type .application .fr-tab .fr-tog { border-radius: 2px; }
+.twod12-type .application.twod12-styled .sk .as-tab button.as-vtab.on { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
 /* THE WINDOWS (the pick window, the class window, the roll dialog): Signika for the title (no Cinzel), a band for the header in the place of navy,
    gold in the place of the class window's orange, the confirm button as the stamp. Style only. */
 .twod12-type .application.classwin { --cw-navy: ${LIGHT.band}; --cw-navy2: ${LIGHT.pg2}; --cw-paper: ${LIGHT.pg}; --cw-paper2: ${LIGHT.pg2}; --cw-card: #fbf7ee; --cw-ink: ${LIGHT.ink}; --cw-mut: ${LIGHT.mute};
@@ -274,6 +295,8 @@ const R = {
   dock: pick(/twod12-dock\b|\.twod12 \.td-/),
   bars: pick(/twod12-(linebar|pickbar)\b/),
   pcs: pick(/\.sheet\.pcs\b|twod12-actor|\.twod12\.sheet(?![.\w-])|^\s*\.twod12 \.|\.hpnum|\.autodia|\.np-guardbtn|\.np-track/),
+  car: pick(/#twod12-carousel/),
+  item: pick(/twod12-styled|\.twod12\.sheet\.item|\.sheet\.sk\b|\.fr-|\.as-|\.twod12\.sheet(?![.\w-])|^\s*\.twod12 \./),
   wins: pick(/\.classwin\b|\.pickwin\b|\.twod12\.rolldlg\b|\.trhl\b|\.trgrp\b|\.twod12 \.kw-/)
 };
 const BY_HAND = `
@@ -428,6 +451,31 @@ const BY_HAND = `
 .twod12-dark .twod12.sheet.pcs .nb-sum { background: ${T.band}; }
 .twod12-dark .twod12.sheet.pcs .nb-dc b, .twod12-dark .twod12.sheet.pcs .nb-dhc { color: color-mix(in srgb, var(--rc) 40%, #f4ecd9); }
 .twod12-dark .twod12.sheet.pcs select { background: ${T.pg2}; color: ${T.ink}; border-color: #8c7d63; }
+/* ---- by hand: the carousel (the bar and the cards on the dark page) */
+.twod12-dark #twod12-carousel { --tp-navy: ${T.pg}; --tp-navy2: ${T.pg2}; --tp-parch: ${T.pg2}; --tp-parch2: ${T.pg}; --tp-border: ${T.rule}; --tp-ink: ${T.ink}; --tp-mut: ${T.mute}; --tp-gold: ${T.gold}; --tp-foe: #8f2626; --tp-ally: #3b6d11; }
+.twod12-dark #twod12-carousel .tc-head.tc-bar { background: ${T.pg}; border-color: ${T.rule}; color: ${T.ink}; }
+.twod12-dark #twod12-carousel .tc-round { color: ${T.ink}; opacity: 1; }
+.twod12-dark #twod12-carousel .tc-bar .tc-btn { background: transparent; color: ${T.ink}; border-color: #8c7d63; opacity: 1; }
+.twod12-dark #twod12-carousel .tp { background: linear-gradient(${T.pg2}, ${T.pg}); border-color: ${T.rule}; color: ${T.ink}; }
+.twod12-dark #twod12-carousel .tp-name { color: ${T.ink}; }
+.twod12-dark #twod12-carousel .tp-pips i { border-color: ${T.mute}; }
+.twod12-dark .application.twod12-styled .sk .head, .twod12-dark .application.twod12-styled .sk .tabs { border-color: ${T.rule} !important; box-shadow: none; }
+.twod12-dark .application .fr-tab .fr-chip { filter: saturate(.7) brightness(.85); }
+/* ---- by hand: the item sheets (their variables; fields, the chosen option as the stamp) */
+.twod12-dark .application.twod12-styled { --sk-ink: ${T.ink}; --sk-mut: ${T.mute}; --sk-line: ${T.hair}; --sk-acc: ${T.gold}; --sk-navy: ${T.band}; --sk-par: ${T.pg}; --sk-panel: ${T.pg2}; --sk-amber: ${T.gold};
+  --input-background-color: ${T.pg2}; --button-background-color: transparent; }
+.twod12-dark .application.twod12-styled .window-content { color-scheme: dark; background: ${T.pg}; color: ${T.ink}; }
+.twod12-dark .application .fr-tab { --fr-line: ${T.hair}; --fr-par2: ${T.pg2}; --fr-field: #2f2a22; --fr-fline: #6b5d45; --fr-ink: ${T.ink}; --fr-mut: ${T.mute}; --fr-navy: ${T.stamp}; --fr-gold: ${T.gold}; --fr-goldsoft: transparent; --fr-maroon: ${T.ink}; --fr-boon: ${T.boon}; --fr-bane: ${T.bane}; }
+.twod12-dark .application.twod12-styled .sk .head { border-bottom: 1px solid ${T.rule}; }
+.twod12-dark .application.twod12-styled .sk .head .name { color: ${T.ink}; }
+.twod12-dark .application .fr-tab .fr-sec > h3 { border-bottom-color: ${T.rule}; color: ${T.ink}; }
+.twod12-dark .application .fr-tab .as-h4 { color: ${T.gold}; }
+.twod12-dark .application .fr-tab input, .twod12-dark .application .fr-tab select, .twod12-dark .application .fr-tab textarea { background: #2f2a22; color: ${T.ink}; border-color: #6b5d45; }
+.twod12-dark .application .fr-tab button { color: ${T.ink}; background: transparent; border-color: #8c7d63; }
+.twod12-dark .application .fr-tab .fr-seg button.on, .twod12-dark .application.twod12-styled .sk .as-tab button.as-vtab.on { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
+.twod12-dark .application.twod12-styled .sk .as-tab button.as-vtab.on small { color: ${T.stampInk}; }
+.twod12-dark .application .fr-tab .as-tier.t1 { --tc: #c8483d; } .twod12-dark .application .fr-tab .as-tier.t2 { --tc: ${T.t2n}; } .twod12-dark .application .fr-tab .as-tier.t3 { --tc: #3f8f4c; } .twod12-dark .application .fr-tab .as-tier.crit { --tc: ${T.gold}; }
+.twod12-dark .application .fr-tab code { background: ${T.band}; color: ${T.ink}; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: ${T.pg}; color: ${T.ink}; border-color: ${T.rule}; border-radius: 5px; }
 .twod12-dark .twod12-dock .td-hd { border-bottom-color: ${T.rule}; }
@@ -459,7 +507,7 @@ ${Object.entries(SETS).map(([k, css]) => `/* ==== ${k} ==== */\n${css}`).join("\
 ${BY_HAND}`);
 
 /* ------------------------------------------------------------------ the page shell */
-const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
+const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["rest-dark.html", "7. Carousel and Action sheet"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
 const SHELL = `
 * { box-sizing: border-box; }
 body { margin: 0; background: #2a2723; color: #eee6d6; font: 14px/1.45 "Signika", "Segoe UI", system-ui, sans-serif; padding: 22px 22px 60px; --font-primary: "Signika", sans-serif; }
@@ -887,6 +935,29 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 .pcs .autodia { display: none !important; } .pcs .tab { display: none; } .pcs .tab.active { display: block; } .pcs input, .pcs select { font: inherit; } .pcs a { cursor: pointer; }
 .stage.rw-scope { padding: 0; } .stage.rw-scope .pcs { display: block; height: auto; overflow: visible; }${RW_CSS}</style>
 <script>document.addEventListener("click", ev => { const b = ev.target.closest(".tabbtn"); if (!b) return; const sh = b.closest(".pcs"); sh.querySelectorAll(".tabbtn").forEach(x => x.classList.toggle("active", x === b)); sh.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === b.dataset.tabTarget)); });</script>`, R.pcs);
+
+/* ------------------------------------------------------------------ 7. the rest, from their real HTML: the carousel, an Action's sheet */
+const carRaw = FA(readFileSync(here("./samples/carousel-preparing.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace('src="systems/twod12/art/pcs/aveline.png"', `src="${artData("pcs/aveline.png")}"`).replace('src="systems/twod12/art/npcs/ogre-chieftain.png"', `src="${artData("npcs/ogre-chieftain.png")}"`)).replace('id="twod12-carousel"', 'id="twod12-carousel" style="position:static;transform:none;margin:0 auto"');
+const SUN = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" fill="#3a3229"/><circle cx="24" cy="24" r="9" fill="#d4a548"/><g stroke="#d4a548" stroke-width="3"><path d="M24 4v8M24 36v8M4 24h8M36 24h8M10 10l6 6M32 32l6 6M38 10l-6 6M16 32l-6 6"/></g></svg>');
+const itemRaw = FA(readFileSync(here("./samples/action-sheet-smite.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace('src="icons/svg/sun.svg"', `src="${SUN}"`));
+const itemWin = () => `<div class="mwin" style="width:900px"><div class="mwin-head">Action: Smite<span>&times;</span></div><div class="application sheet twod12 item twod12-styled" style="position:static;width:auto"><section class="window-content" style="display:block;overflow:visible">${itemRaw}</section></div></div>`;
+page("rest-dark.html", "Style 7: the carousel and an Action's sheet", `Two more surfaces, <b>from their real HTML, copied from Lucas's Foundry</b>: the carousel (the combat tracker at the top of the screen, here while an encounter is prepared) and an Action's sheet on its Details tab (Smite: the Action editor). <b>A style change only.</b> The dark sets are generated from ${R.car.length} and ${R.item.length} rules.`, `
+<h2>The carousel</h2>
+<div class="cols">${col("Dark", PICK, "", carRaw, "map dk twod12-dark twod12-type", "440px")}${col("Light", PICK, "", carRaw, "map twod12-type", "440px")}${col("Today", TODAY, "", carRaw, "map", "440px")}</div>
+<h2>An Action's sheet, the Details tab: dark ${PICK}</h2>
+<div class="stage dk twod12-dark twod12-type" style="width:930px">${itemWin()}</div>
+<h2>Light ${PICK}</h2>
+<div class="stage twod12-type" style="width:930px">${itemWin()}</div>
+<h2>Today ${TODAY}</h2>
+<div class="stage" style="width:930px">${itemWin()}</div>
+<h2>Notes</h2>
+<ul class="notes">
+<li>The carousel is shown as an encounter is prepared (nobody has rolled). The running state (the round, the active creature, the AP pips lit) needs a copy taken during a round.</li>
+<li>The Action's Description tab is the Action card of step 2, so it is not repeated. The same editor pieces draw an Effect's sheet and a Feature's.</li>
+<li>Foundry's own window frame, inputs, selects and text boxes are stand-ins.</li>
+</ul>
+<style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }
+.sk .tab { display: none; } .sk .tab.active { display: block; } .sk input, .sk select, .sk textarea { font: inherit; } .stage.map { display: flex; justify-content: center; }</style>`, [...R.car, ...R.item, ...R.card]);
 
 console.log(`built: style-tokens.css/.html, style-dark.css, action-card-dark.html, chat-cards-dark.html, bars-dark.html`);
 for (const [k, s] of Object.entries(autoUsed)) console.log(`  ${k}: ${R[k].length} rules, ${s.size} colors by AUTO${s.size ? `: ${[...s].join(" ")}` : ""}`);
