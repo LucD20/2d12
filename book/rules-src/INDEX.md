@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.3 | 126 |
 | 13-archer.md | Archer | archer |  | 4.5 | 134 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 31.8 | 455 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 32.1 | 456 |
 | 15-gear.md | Gear | gear |  | 11.0 | 185 |
 
 ## 01-roll.md: Chapter 1: The Roll
@@ -299,23 +299,23 @@ Open (to be decided) boxes: 18: "This class is still written for the earlier lev
 - 143:   ### Points into damage
 - 162:   ### Ranged attacks
 - 166:   ### Riders and their price
-- 184:   ### Where the effect is
-- 194:   ### Actions that hit several creatures
-- 200:   ### Actions with no damage
-- 213:   ### Reactions
-- 227:   ### How common each kind of Action is
-- 238:   ### Check its best turn
-- 245:   ### Elite Escalation
-- 266: ## Roles
-- 281: ## The ranks
-- 285:   ### Minions
-- 316:   ### Grunts
-- 347:   ### Standards
-- 376:   ### Elites
-- 405: ## Building an encounter
-- 433: ## Example NPCs (Stage 0)
+- 185:   ### Where the effect is
+- 195:   ### Actions that hit several creatures
+- 201:   ### Actions with no damage
+- 214:   ### Reactions
+- 228:   ### How common each kind of Action is
+- 239:   ### Check its best turn
+- 246:   ### Elite Escalation
+- 267: ## Roles
+- 282: ## The ranks
+- 286:   ### Minions
+- 317:   ### Grunts
+- 348:   ### Standards
+- 377:   ### Elites
+- 406: ## Building an encounter
+- 434: ## Example NPCs (Stage 0)
 
-Open (to be decided) boxes: 47: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 263: "An Elite's own steps of Escalation (what each Elite gains, and at whic"
+Open (to be decided) boxes: 47: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 264: "An Elite's own steps of Escalation (what each Elite gains, and at whic"
 
 ## 15-gear.md: Gear
 

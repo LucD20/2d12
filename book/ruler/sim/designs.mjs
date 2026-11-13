@@ -6,9 +6,9 @@ export const FM1 = R("Push 1", "forced"), FM2 = R("Push 2", "moderate");
 
 /** Four Standards with effects: the encounter "4 Standards" of the fights, one of each (5 and 6: the list again from the top). */
 export const STANDARDS = [
-  { label: "Raider", acts: [{ name: "Shove", ap: 1, riders: [FM1] }, { name: "Hamstring", ap: 2, freq: "round", riders: [R("Prone", "moderate")] }] },
+  { label: "Raider", acts: [{ name: "Shove", ap: 1, riders: [FM1] }, { name: "Hamstring", ap: 2, freq: "round", riders: [R("Prone", "severe")] }] },
   { label: "Hexer", npc: { power: true }, acts: [{ name: "Chill", ap: 1, power: true }, { name: "Dread", ap: 2, freq: "round", power: true, riders: [R("Slowed 1", "moderate")] }] },
-  { label: "Cutter", acts: [{ name: "Slash", ap: 1 }, { name: "Open Vein", ap: 2, freq: "round", riders: [R("Bleed 1d4", "severe")] }] },
+  { label: "Cutter", acts: [{ name: "Slash", ap: 1 }, { name: "Open Vein", ap: 2, freq: "round", riders: [R("Bleed 1d4", "extreme")] }] },
   { label: "Guard", acts: [{ name: "Bash", ap: 1, riders: [R("Pressure Bane (next roll)", "mild")] }, { name: "Shield Slam", ap: 2, freq: "round", riders: [FM2] }], reaction: { name: "Riposte", cost: 1, trigger: "struck", act: { name: "Riposte" } } },
 ];
 /** The six Roles on the Bestiary's ratings, with what makes each one (the Soldier's Reaction, the Controller's conditions, the Leader's help). */
@@ -23,8 +23,8 @@ export const ROLES = {
 /** The other ranks with effects. */
 export const RANKS = {
   minion: { acts: [{ name: "Stab", ap: 1, riders: [FM1] }, { name: "Trip", ap: 1, freq: "round", riders: [R("Hindered (EoT)", "mild")] }] },
-  grunt: { acts: [{ name: "Hack", ap: 1, riders: [FM1] }, { name: "Gouge", ap: 1, freq: "round", riders: [R("Vulnerable 1", "mild")] }] },
-  elite: { acts: [{ name: "Maul", ap: 1, riders: [FM1] }, { name: "Rend", ap: 2, freq: "round", riders: [R("Prone", "moderate")] }, { name: "Quake", ap: 2, freq: "enc", area: { n: 3, r: 2 }, riders: [R("Slowed 1", "moderate")] }], reaction: { name: "Backhand", cost: 1, trigger: "struck", act: { name: "Backhand" } } },
+  grunt: { acts: [{ name: "Hack", ap: 1, riders: [FM1] }, { name: "Gouge", ap: 1, freq: "round", riders: [R("Vulnerable 1", "mild")   /* a rider four or more creatures of the encounter share is priced one size less (the Bestiary): Grunts come in groups */] }] },
+  elite: { acts: [{ name: "Maul", ap: 1, riders: [FM1] }, { name: "Rend", ap: 2, freq: "round", riders: [R("Prone", "severe")] }, { name: "Quake", ap: 2, freq: "enc", area: { n: 3, r: 2 }, riders: [R("Slowed 1", "moderate")] }], reaction: { name: "Backhand", cost: 1, trigger: "struck", act: { name: "Backhand" } } },
 };
 /** The damage-only versions (the same shapes, no riders, no Reaction): what the Bestiary's table measured. */
 export const plain = d => ({ ...d, label: d.label, acts: d.acts.filter(a => a.kind !== "help").map(a => ({ ...a, riders: [], pts: undefined })), reaction: undefined });

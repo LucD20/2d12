@@ -28,27 +28,35 @@ Four of today's Standards: worth ${f1(w0.worth)} (should be 100: the noise of th
 log("yardstick");
 
 /* ---------------------------------------------------------------- 2. conditions */
+// 2026-11-13 (Lucas: "these seem critical"): a rider is priced as ONE enemy of the four carrying it (on both its Actions; its place in the list rotates, so the
+// party doesn't always kill it first). With all four carrying it (the first calibration) 40% of the landings were wasted on a PC that had it, and the price read low.
 const CONDS = [
-  ["mild", "Hindered (EoT)"], ["mild", "Pressure Bane (next roll)"], ["mild", "Taunted"], ["mild", "Bleed 2"],
-  ["moderate", "Staggered (EoT)"], ["moderate", "Vulnerable 1"], ["moderate", "Immobilized (EoT)"], ["moderate", "Immobilized"], ["moderate", "Dazed 1"], ["moderate", "Bleed 1d4"], ["moderate", "Frightened (EoT)"],
-  ["severe", "Prone"], ["severe", "Slowed 1"], ["severe", "Vulnerable 2"], ["severe", "Doomed (next roll)"], ["severe", "Blinded (EoT)"],
-  ["beyond", "Slowed 2"], ["beyond", "Dazed 2"], ["beyond", "Bleed 2d6"],
+  ["mild", "Hindered (EoT)"], ["mild", "Taunted"], ["mild", "Staggered (EoT)"], ["mild", "Frightened (EoT)"], ["mild", "Pressure Bane (next roll)"], ["mild", "Doomed (next roll)"],
+  ["moderate", "Immobilized"], ["moderate", "Immobilized (EoT)"], ["moderate", "Vulnerable 1"], ["moderate", "Slowed 1"], ["moderate", "Dazed 1"], ["moderate", "Blinded (EoT)"], ["moderate", "Vulnerable 2"],
+  ["severe", "Bleed 1"], ["severe", "Prone"],
+  ["extreme", "Bleed 2"], ["extreme", "Slowed 2"], ["extreme", "Dazed 2"], ["extreme", "Bleed 1d4"],
+  ["beyond", "Bleed 1d6"], ["beyond", "Bleed 2d6"],
 ];
 const both = rs => ({ acts: [{ name: "Basic", ap: 1, pts: 25, riders: free(rs) }, { name: "Special", ap: 2, freq: "round", pts: 55, riders: free(rs) }] });
-const CW = {};
+const carrier = rs => ({ acts: [{ name: "RBasic", ap: 1, pts: 25, riders: free(rs) }, { name: "RSpecial", ap: 2, freq: "round", pts: 55, riders: free(rs) }] });
+let turnK = 0; const lone = d => () => { const l = [1, 2, 3].map(() => B.npcBuilt("standard", B0())); l.splice(turnK++ % 4, 0, B.npcBuilt("standard", d)); return l; };
+const NL = QUICK ? 600 : 2500, WL = d => worth(lone(d), { n: NL });
+const base1 = WL(carrier([])), CW = {};
+const PR = B.PRICES().riders, priceOf = g => (g === "beyond" ? "its own" : String(PR[g]));
 out.push(`## 2. Conditions as riders (on a hit: Tier 2 or 3)
 
-| Group in the Bestiary today | Condition | Lands a fight | Wasted (it had it) | Worth a turn | Worth when it lands | On an Action (the price) |
-|---|---|---:|---:|---:|---:|---:|`);
+**One enemy of the four carries the rider** (on both its Actions; ${NL} fights a level): the price is for a rider that one creature in the encounter has, which is how the Bestiary's ladder builds encounters. (With all four carrying the same rider, 40% of its landings were wasted on a PC that already had it, and the prices read about a third lower.) The encounter without the rider: worth ${f1(base1.worth)}.
+
+| Group (its price) | Condition | Lands a fight | Wasted (it had it) | Worth when it lands | On an Action (measured) |
+|---|---|---:|---:|---:|---:|`);
 for (const [sev, eff] of CONDS) {
-  const w = W(both([{ eff, sev }])), land = w.fx.cond ?? 0, tried = (w.fx.cond ?? 0) + (w.fx.wasted ?? 0), uses = w.fx.uses ?? 1;
-  const per = perUse(w, "cond"), onAct = per * land / uses;
-  CW[eff] = { sev, per, onAct, land: land / uses };
-  out.push(`| ${sev} | ${eff} | ${f1(land)} | ${f1(w.fx.wasted ?? 0)} | ${f1(w.worth - 100)} | ${f1(per)} | ${f1(onAct)} |`);
+  const w = WL(carrier([{ eff, sev: "mild" }])), uses = (w.fx["use:RBasic"] ?? 0) + (w.fx["use:RSpecial"] ?? 0), land = w.fx.cond ?? 0, total = (w.worth - base1.worth) * (w.fx.turns ?? 1);
+  CW[eff] = { sev, onAct: total / uses, land: land / uses };
+  out.push(`| ${sev} (${priceOf(sev)}) | ${eff} | ${f1(land)} | ${f1(w.fx.wasted ?? 0)} | ${f1(total / Math.max(1e-9, land))} | ${f1(total / uses)} |`);
   log(eff);
 }
 const groupMean = g => mean(CONDS.filter(c => c[0] === g).map(c => CW[c[1]].onAct));
-out.push(`\nMean price on an Action by today's group: Mild ${f1(groupMean("mild"))}, Moderate ${f1(groupMean("moderate"))}, Severe ${f1(groupMean("severe"))}, beyond ${f1(groupMean("beyond"))}. An Action lands about ${pc(mean(Object.values(CW).map(c => c.land)))} of the time (a hit on a PC that hasn't it yet).
+out.push(`\nMean measured price on an Action by group: Mild ${f1(groupMean("mild"))} (priced ${PR.mild}), Moderate ${f1(groupMean("moderate"))} (${PR.moderate}), Severe ${f1(groupMean("severe"))} (${PR.severe}), Extreme ${f1(groupMean("extreme"))} (${PR.extreme}); Bleed 1d6 ${f1(CW["Bleed 1d6"].onAct)}, Bleed 2d6 ${f1(CW["Bleed 2d6"].onAct)}. One measured price is good to about ±1.5 points.
 `);
 
 /* ---------------------------------------------------------------- 3. placement */

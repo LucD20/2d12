@@ -594,26 +594,31 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><strong>Mild</strong></td>
 <td style="text-align: right;">3</td>
-<td>Hindered (EoT); 1 Pressure <span class="kw-bane">Bane</span> on its next roll; <span class="kw-neg">Doomed</span> on its next roll; Taunted (1 round); Frightened (EoT); Staggered (EoT); <span class="kw-neg">Vulnerable 1</span> (EoT); Immobilized (EoT); Sickened 1; Bright light on it (it can't hide)</td>
+<td>Hindered (EoT); Taunted (1 round); Staggered (EoT); Frightened (EoT); 1 Pressure <span class="kw-bane">Bane</span> on its next roll; <span class="kw-neg">Doomed</span> on its next roll; Sickened 1; Bright light on it (it can't hide)</td>
 </tr>
 <tr>
 <td><strong>Moderate</strong></td>
-<td style="text-align: right;">6</td>
-<td>Prone; Slowed 1; Dazed 1; Blinded (EoT); <span class="kw-neg">Vulnerable 2</span> (EoT); Immobilized until it escapes; Grabbed; Bleed 1; <strong>Forced Movement 2</strong></td>
+<td style="text-align: right;">8</td>
+<td>Slowed 1; Dazed 1; Blinded (EoT); <span class="kw-neg">Vulnerable 1</span> or 2 (EoT); Immobilized (EoT) or until it escapes; Grabbed; <strong>Forced Movement 2</strong></td>
 </tr>
 <tr>
 <td><strong>Severe</strong></td>
 <td style="text-align: right;">12</td>
-<td>Slowed 2; Dazed 2; Bleed 2, Bleed 1d4 or 1d6; <strong>Forced Movement 3 or more</strong></td>
+<td>Prone; Bleed 1; <strong>Forced Movement 3 or more</strong></td>
 </tr>
 <tr>
-<td><strong>Beyond Severe</strong></td>
-<td style="text-align: right;">18 a step</td>
-<td>Bleed 2d6 (30)</td>
+<td><strong>Extreme</strong></td>
+<td style="text-align: right;">18</td>
+<td>Slowed 2; Dazed 2; Bleed 2; Bleed 1d4</td>
+</tr>
+<tr>
+<td><strong>Beyond</strong></td>
+<td style="text-align: right;">+6 a size</td>
+<td>Bleed 1d6 (24); Bleed 2d6 (40)</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>AP are the strongest thing to take</strong> (Prone, Dazed, Slowed), <strong>a Bleed is damage that keeps coming</strong> (it lasts until the PC spends <span class="kw-ap">1 AP</span> to staunch it), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.</p>
+<p>The prices are for a rider that <strong>one creature in the encounter has</strong>. <strong>When four or more creatures in the encounter carry the same rider</strong> (a pack of Grunts, a swarm of Minions), <strong>price it one size less:</strong> most of its landings are wasted on a PC that already has it. <strong>AP are the strongest thing to take</strong> (Prone, Dazed, Slowed), <strong>a Bleed is damage that keeps coming</strong> (it lasts until the PC spends <span class="kw-ap">1 AP</span> to staunch it), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.</p>
 <ul>
 <li><strong>Forced Movement is the most common rider:</strong> in the open it changes little, and against a wall or another PC it deals Collision damage (see <a class="xref" href="#steadiness-2">Steadiness</a> and Collision in Chapter 3). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price; in the open, nothing.</li>
 <li><strong>No limit on repeating a rider.</strong> A rider on a creature that already has it is wasted: spread the attacks.</li>
@@ -634,11 +639,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td>in the <strong>Setup</strong> (it always happens, hit or miss)</td>
-<td><strong>one size more</strong> (a Mild condition costs a Moderate's 6); <strong>Staggered in the Setup costs 12</strong>: it reaches the creature that would have reacted</td>
+<td><strong>one size more</strong> (a Mild condition costs a Moderate's 8); <strong>Staggered in the Setup costs 12</strong>: it reaches the creature that would have reacted</td>
 </tr>
 <tr>
 <td>on <strong>Tier 3 only</strong></td>
-<td><strong>one size less</strong> (a Moderate condition costs a Mild's 3; a Mild one 2)</td>
+<td><strong>one size less</strong> (a Severe condition costs a Moderate's 8, a Moderate one a Mild's 3, a Mild one 2)</td>
 </tr>
 </tbody>
 </table></div>
@@ -718,7 +723,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </ol>
 <h3 id="check-its-best-turn">Check its best turn</h3>
 <p>Add the points of the most it can do in one turn: its AP (4, or 3), at most 3 Strikes, each Round Action once, <strong>without its Encounter Action</strong> (the pay-back covers that turn). It should be within its turn budget, or up to <strong>15% over</strong>. A turn of Basic attacks only, or with only a <span class="kw-ap">1 AP</span> Special, is well under the budget (the repeated Basic attacks take At-will <span class="kw-bane">Banes</span>): give it a <span class="kw-ap">2 AP</span> Special.</p>
-<div class="callout example"><div class="ctitle">Example</div><p><strong>Building the Orc Warrior</strong> (a Medium Standard: 25 points an AP, turn budget 100). <em>Cleaver</em> is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). <em>Hold the Line</em> is a <span class="kw-ap">1R</span> Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. <em>Brutal Swing</em> is a <span class="kw-ap">2 AP</span> Round Special: 55 points, Prone on a hit (Moderate, 6) and the Reaction's 7 leave 42: 2 + 1d6 / 6 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p><strong>Building the Orc Warrior</strong> (a Medium Standard: 25 points an AP, turn budget 100). <em>Cleaver</em> is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). <em>Hold the Line</em> is a <span class="kw-ap">1R</span> Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. <em>Brutal Swing</em> is a <span class="kw-ap">2 AP</span> Round Special: 55 points, Prone on a hit (Severe, 12) and the Reaction's 7 leave 36: 3 + 1d4 / 4 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.</p></div>
 <h3 id="elite-escalation">Elite Escalation</h3>
 <p>An <strong>Elite</strong> has Escalation (the NPC sheet's switch); no other NPC does. It follows the same ladder as a PC's, from <strong>1 to 6</strong> (see <a class="xref" href="core-rules.html#escalation">Escalation</a>), with the Elite's own rules:</p>
 <ul>
@@ -1296,15 +1301,15 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 - <em>Dirty Trick</em> (<span class="kw-ap">1 AP</span>, Round; 20, a Mild rider 3): 1d4 / 1 + 1d4 <span class="dcode" style="--dc:#8a8a8a">Pi</span>, and 1 Pressure <span class="kw-bane">Bane</span> on its next roll.</p>
 <p><strong>Orc Warrior</strong> (Standard, CV 100; 25 points an AP, turn budget 100): <span class="at-body">Body</span> High (+2), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-mind">Mind</span> Medium (+1), <span class="at-appeal">Appeal</span> Low (0). <span class="mod-weapon">Weapon Modifier</span> Medium (+2), <span class="mod-power">Power Modifier</span> Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
 - <em>Cleaver</em> (Basic attack, <span class="kw-ap">1 AP</span>, At-will; 25, Push 1 2): 1 + 1d4! / 3 + 1d4! Sl, and it can Push the target 1.
-- <em>Brutal Swing</em> (<span class="kw-ap">2 AP</span>, Round; 55, Prone 6, Hold the Line's share 7): 2 + 1d6 / 6 + 1d6 <span class="dcode" style="--dc:#8a8a8a">Sl</span>, and Prone.
+- <em>Brutal Swing</em> (<span class="kw-ap">2 AP</span>, Round; 55, Prone 12, Hold the Line's share 7): 3 + 1d4 / 4 + 1d6 <span class="dcode" style="--dc:#8a8a8a">Sl</span>, and Prone.
 - <em>Hold the Line</em> (Reaction, <span class="kw-ap">1R</span>, Trigger: an ally within 2 squares is hit by a Strike; 28): it makes an attack against the attacker if it can reach it: 1 + 1d4 / 3 + 1d6 <span class="dcode" style="--dc:#8a8a8a">Sl</span>.</p>
 <p><strong>Grave Wisp</strong> (Standard, CV 100; 25 points an AP): <span class="at-mind">Mind</span> High (+2), <span class="at-appeal">Appeal</span> Medium (+1), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-body">Body</span> Low (0). <span class="mod-power">Power Modifier</span> Medium (+2), <span class="mod-weapon">Weapon Modifier</span> Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - <em>Chilling Touch</em> (Basic attack, <span class="kw-ap">1 AP</span>, At-will, Vs. WD, [Fear]; 25, Frightened 3): <span class="pool-m">[R] 1 + 1d4! / 2 + 1d4!</span> Co, and Frightened of it (EoT).
-- <em>Dread Whisper</em> (<span class="kw-ap">2 AP</span>, Round, Vs. WD, [Fear]; 55, Dazed 1 6): <span class="pool-m">[R] 3 + 1d6 / 7 + 1d6</span> <span class="dcode" style="--dc:#c9577f">Ps</span>, and Dazed 1.</p>
+- <em>Dread Whisper</em> (<span class="kw-ap">2 AP</span>, Round, Vs. WD, [Fear]; 55, Dazed 1 8): <span class="pool-m">[R] 3 + 1d6 / 7 + 1d6</span> <span class="dcode" style="--dc:#c9577f">Ps</span>, and Dazed 1.</p>
 <p><strong>Ogre Chieftain</strong> (Elite, CV 200; 33 points an AP, turn budget 132): <span class="at-body">Body</span> High (+3), <span class="at-instinct">Instinct</span> Medium (+2), <span class="at-mind">Mind</span> Medium (+2), <span class="at-appeal">Appeal</span> Low (+1). <span class="mod-weapon">Weapon Modifier</span> Medium (+3), <span class="mod-power">Power Modifier</span> Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation (the ladder above).
 - <em>Club</em> (Basic attack, <span class="kw-ap">1 AP</span>, At-will, High; 40, Push 1 2, then Ground Slam's pay-back, a quarter): 1 + 1d4! / 3 + 1d6! Bl, and it can Push the target 1.
-- <em>Overhead Smash</em> (<span class="kw-ap">2 AP</span>, Round; 73, Push 2 6, the pay-back): 3 + 1d6 / 7 + 1d6 <span class="dcode" style="--dc:#8a8a8a">Bl</span>, and it can Push the target 2.
-- <em>Ground Slam</em> (<span class="kw-ap">2 AP</span>, Encounter, Area 2 Emanation, a <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action: <span class="at-body">Body</span> Save, DC 14; 145, Prone 6, half to each): 11 + 1d8 / 6 + 1d6 / 0 <span class="dcode" style="--dc:#8a8a8a">Bl</span> (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
+- <em>Overhead Smash</em> (<span class="kw-ap">2 AP</span>, Round; 73, Push 2 8, the pay-back): 3 + 1d6 / 7 + 1d6 <span class="dcode" style="--dc:#8a8a8a">Bl</span>, and it can Push the target 2.
+- <em>Ground Slam</em> (<span class="kw-ap">2 AP</span>, Encounter, Area 2 Emanation, a <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action: <span class="at-body">Body</span> Save, DC 14; 145, Prone 12, half to each): 10 + 1d8 / 6 + 1d6 / 0 <span class="dcode" style="--dc:#8a8a8a">Bl</span> (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
 - <em>Rally the Tribe</em> (Escalation 4, <span class="kw-ap">1 AP</span>, Round): allies within 5 squares gain <span class="kw-boon">1 Boon</span> on their next [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action.</p></div></details></section>
 <section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#ratings">Ratings</a>: Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.</li><li><a href="#elite-escalation">Elite Escalation</a>: An Elite's own steps of Escalation (what each Elite gains, and at which numbers) come later; until then every Elite uses the table above.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}

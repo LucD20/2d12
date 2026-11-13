@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: d8c3d8a 2026-11-13 The Tag of "Gives an Effect ... deals damage" is a drop-down of the world's Tags
+Built by tools/knowledge.py on 2026-11-13 from the repository at: d35172f 2026-11-13 HANDOFF: pack-bestiary-budget merged into main; next is the class card sessions
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (136 KB)
+- HANDOFF.md (137 KB)
 - MASTER-PLAN.md (36 KB)
 - open-design-items.md (123 KB)
 - rules-01-roll.md (23 KB)

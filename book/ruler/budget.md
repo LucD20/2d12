@@ -10,29 +10,33 @@ Four of today's Standards: worth 97.2 (should be 100: the noise of the method), 
 
 ## 2. Conditions as riders (on a hit: Tier 2 or 3)
 
-| Group in the Bestiary today | Condition | Lands a fight | Wasted (it had it) | Worth a turn | Worth when it lands | On an Action (the price) |
-|---|---|---:|---:|---:|---:|---:|
-| mild | Hindered (EoT) | 5.1 | 2.8 | -2.4 | -3.8 | -1.6 |
-| mild | Pressure Bane (next roll) | 5.2 | 2.9 | -1.9 | -2.8 | -1.2 |
-| mild | Taunted | 5.2 | 2.9 | 0.2 | 0.3 | 0.1 |
-| mild | Bleed 2 | 5.4 | 4.1 | 20.1 | 33.6 | 13.1 |
-| moderate | Staggered (EoT) | 5.2 | 3.0 | 0.9 | 1.3 | 0.6 |
-| moderate | Vulnerable 1 | 5.2 | 3.0 | 0.7 | 1.1 | 0.5 |
-| moderate | Immobilized (EoT) | 5.6 | 3.2 | 3.3 | 4.9 | 2.1 |
-| moderate | Immobilized | 3.6 | 5.4 | 5.1 | 11.8 | 3.2 |
-| moderate | Dazed 1 | 5.9 | 3.4 | 6.7 | 10.0 | 4.3 |
-| moderate | Bleed 1d4 | 5.4 | 4.1 | 21.7 | 36.5 | 14.0 |
-| moderate | Frightened (EoT) | 5.3 | 3.0 | 0.4 | 0.6 | 0.3 |
-| severe | Prone | 6.0 | 3.7 | 11.8 | 17.7 | 7.7 |
-| severe | Slowed 1 | 5.9 | 3.5 | 7.6 | 11.4 | 4.9 |
-| severe | Vulnerable 2 | 5.2 | 3.3 | 5.9 | 9.0 | 3.9 |
-| severe | Doomed (next roll) | 5.6 | 3.1 | 3.1 | 4.7 | 2.0 |
-| severe | Blinded (EoT) | 5.9 | 3.4 | 6.9 | 10.5 | 4.5 |
-| beyond | Slowed 2 | 7.1 | 4.2 | 23.9 | 34.6 | 14.7 |
-| beyond | Dazed 2 | 7.1 | 4.3 | 24.7 | 35.8 | 15.2 |
-| beyond | Bleed 2d6 | 5.4 | 4.1 | 47.5 | 80.5 | 30.8 |
+**One enemy of the four carries the rider** (on both its Actions; 2500 fights a level): the price is for a rider that one creature in the encounter has, which is how the Bestiary's ladder builds encounters. (With all four carrying the same rider, 40% of its landings were wasted on a PC that already had it, and the prices read about a third lower.) The encounter without the rider: worth 98.2.
 
-Mean price on an Action by today's group: Mild 2.6, Moderate 3.6, Severe 4.6, beyond 20.3. An Action lands about 42% of the time (a hit on a PC that hasn't it yet).
+| Group (its price) | Condition | Lands a fight | Wasted (it had it) | Worth when it lands | On an Action (measured) |
+|---|---|---:|---:|---:|---:|
+| mild (3) | Hindered (EoT) | 1.6 | 0.4 | 0.1 | 0.0 |
+| mild (3) | Taunted | 1.6 | 0.4 | 0.2 | 0.1 |
+| mild (3) | Staggered (EoT) | 1.6 | 0.4 | 3.4 | 1.8 |
+| mild (3) | Frightened (EoT) | 1.6 | 0.4 | 4.0 | 2.2 |
+| mild (3) | Pressure Bane (next roll) | 1.6 | 0.4 | 6.3 | 3.5 |
+| mild (3) | Doomed (next roll) | 1.6 | 0.4 | 8.7 | 4.7 |
+| moderate (8) | Immobilized | 1.4 | 0.8 | 14.1 | 6.2 |
+| moderate (8) | Immobilized (EoT) | 1.7 | 0.4 | 12.4 | 6.7 |
+| moderate (8) | Vulnerable 1 | 1.6 | 0.5 | 12.1 | 6.6 |
+| moderate (8) | Slowed 1 | 1.7 | 0.5 | 14.5 | 7.8 |
+| moderate (8) | Dazed 1 | 1.7 | 0.4 | 15.0 | 8.2 |
+| moderate (8) | Blinded (EoT) | 1.7 | 0.4 | 15.0 | 8.2 |
+| moderate (8) | Vulnerable 2 | 1.6 | 0.5 | 16.0 | 8.7 |
+| severe (12) | Bleed 1 | 1.6 | 0.5 | 23.0 | 11.8 |
+| severe (12) | Prone | 1.8 | 0.5 | 23.9 | 13.0 |
+| extreme (18) | Bleed 2 | 1.7 | 0.5 | 33.0 | 17.0 |
+| extreme (18) | Slowed 2 | 1.9 | 0.5 | 32.1 | 17.4 |
+| extreme (18) | Dazed 2 | 1.9 | 0.5 | 32.0 | 17.3 |
+| extreme (18) | Bleed 1d4 | 1.6 | 0.6 | 38.5 | 19.8 |
+| beyond (its own) | Bleed 1d6 | 1.6 | 0.5 | 45.8 | 23.1 |
+| beyond (its own) | Bleed 2d6 | 1.6 | 0.5 | 77.5 | 39.6 |
+
+Mean measured price on an Action by group: Mild 2.1 (priced 3), Moderate 7.5 (8), Severe 12.4 (12), Extreme 17.9 (18); Bleed 1d6 23.1, Bleed 2d6 39.6. One measured price is good to about ±1.5 points.
 
 ## 3. Where the effect is: Setup, a hit, Tier 3 only
 
@@ -137,4 +141,4 @@ The yardstick with a Reaction. Its attack has a Round Action's points of its cos
 Eight of today's Grunts (3 AP: Basic attack 17 points, 1 AP Round Special 24), measured against the yardstick's four Standards (a worth of 100 is what four Standards cost): today, no Reaction: 84.7; with a 1R Trigger (hit: an attack back), free: 100.2 (it fires 0.4 times a fight a Grunt); paid as a Standard's (a third of its points off the turn): 89.9.
 
 
-(12 minutes.)
+(14 minutes.)

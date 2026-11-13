@@ -18,13 +18,13 @@ export const pointsAvg = (pts, P = PRICES()) => [pts * P.toDamage[0], pts * P.to
 /** Points into written damage (Tier 2, Tier 3), as the Bestiary's table writes it. */
 export const pointsExpr = (pts, P = PRICES()) => pointsAvg(pts, P).map(expr);
 
-const SEV = ["forced", "mild", "moderate", "severe", "beyond"];
+const SEV = ["forced", "mild", "moderate", "severe", "extreme"];   // 2026-11-13: priced for a rider one enemy in the encounter has (calib.mjs, section 2)
 /** A rider's price by its severity and where it is (Setup one size bigger, Tier 3 only one size smaller; on a hit, the normal price). */
 export function riderPrice(sev, at = "hit", P = PRICES()) {
   const i = SEV.indexOf(sev); if (i < 0) throw new Error(`a rider's severity: ${sev}`);
   const j = at === "setup" ? i + 1 : at === "t3" ? i - 1 : i;
   if (j < 0) return 0;
-  if (j >= SEV.length - 1) { const s = P.riders.severe, m = P.riders.moderate; return s + (s - m) * (j - (SEV.length - 2)); }   // past Severe: each size adds the step from Moderate to Severe
+  if (j >= SEV.length) return P.riders.extreme + P.riders.step * (j - (SEV.length - 1));   // past Extreme: each size adds a step
   return P.riders[SEV[j]];
 }
 /** An Action's points: the rank's points an AP (its rating), its premiums (Round, 2 AP, 3 AP), an Encounter Action double the Round one. */

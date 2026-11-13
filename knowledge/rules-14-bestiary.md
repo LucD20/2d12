@@ -169,12 +169,13 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | Rider | Price | Examples |
 |---|---:|---|
 | **Forced Movement 1** | 2 | Pushed, Pulled or Slid 1 |
-| **Mild** | 3 | Hindered (EoT); 1 Pressure Bane on its next roll; Doomed on its next roll; Taunted (1 round); Frightened (EoT); Staggered (EoT); Vulnerable 1 (EoT); Immobilized (EoT); Sickened 1; Bright light on it (it can't hide) |
-| **Moderate** | 6 | Prone; Slowed 1; Dazed 1; Blinded (EoT); Vulnerable 2 (EoT); Immobilized until it escapes; Grabbed; Bleed 1; **Forced Movement 2** |
-| **Severe** | 12 | Slowed 2; Dazed 2; Bleed 2, Bleed 1d4 or 1d6; **Forced Movement 3 or more** |
-| **Beyond Severe** | 18 a step | Bleed 2d6 (30) |
+| **Mild** | 3 | Hindered (EoT); Taunted (1 round); Staggered (EoT); Frightened (EoT); 1 Pressure Bane on its next roll; Doomed on its next roll; Sickened 1; Bright light on it (it can't hide) |
+| **Moderate** | 8 | Slowed 1; Dazed 1; Blinded (EoT); Vulnerable 1 or 2 (EoT); Immobilized (EoT) or until it escapes; Grabbed; **Forced Movement 2** |
+| **Severe** | 12 | Prone; Bleed 1; **Forced Movement 3 or more** |
+| **Extreme** | 18 | Slowed 2; Dazed 2; Bleed 2; Bleed 1d4 |
+| **Beyond** | +6 a size | Bleed 1d6 (24); Bleed 2d6 (40) |
 
-**AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Bleed is damage that keeps coming** (it lasts until the PC spends 1 AP to staunch it), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
+The prices are for a rider that **one creature in the encounter has**. **When four or more creatures in the encounter carry the same rider** (a pack of Grunts, a swarm of Minions), **price it one size less:** most of its landings are wasted on a PC that already has it. **AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Bleed is damage that keeps coming** (it lasts until the PC spends 1 AP to staunch it), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
 
 - **Forced Movement is the most common rider:** in the open it changes little, and against a wall or another PC it deals Collision damage (see [[Steadiness]] and Collision in Chapter 3). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price; in the open, nothing.
 - **No limit on repeating a rider.** A rider on a creature that already has it is wasted: spread the attacks.
@@ -185,8 +186,8 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | The effect is... | Its price |
 |---|---|
 | a rider (on a hit: Tier 2 and Tier 3), or on the Action's Effects row | the price above |
-| in the **Setup** (it always happens, hit or miss) | **one size more** (a Mild condition costs a Moderate's 6); **Staggered in the Setup costs 12**: it reaches the creature that would have reacted |
-| on **Tier 3 only** | **one size less** (a Moderate condition costs a Mild's 3; a Mild one 2) |
+| in the **Setup** (it always happens, hit or miss) | **one size more** (a Mild condition costs a Moderate's 8); **Staggered in the Setup costs 12**: it reaches the creature that would have reacted |
+| on **Tier 3 only** | **one size less** (a Severe condition costs a Moderate's 8, a Moderate one a Mild's 3, a Mild one 2) |
 
 A **unique effect** ("the Dragon grabs you, flies up and drops you to the ground") is priced as the nearest conditions (Grabbed and Prone, with the fall's damage as damage), and belongs on an Encounter Action.
 
@@ -239,7 +240,7 @@ Most NPC Actions should do more than damage. As guidance, from most to least com
 Add the points of the most it can do in one turn: its AP (4, or 3), at most 3 Strikes, each Round Action once, **without its Encounter Action** (the pay-back covers that turn). It should be within its turn budget, or up to **15% over**. A turn of Basic attacks only, or with only a 1 AP Special, is well under the budget (the repeated Basic attacks take At-will Banes): give it a 2 AP Special.
 
 > [!example]
-> **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). *Hold the Line* is a 1R Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Moderate, 6) and the Reaction's 7 leave 42: 2 + 1d6 / 6 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
+> **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). *Hold the Line* is a 1R Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Severe, 12) and the Reaction's 7 leave 36: 3 + 1d4 / 4 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
 
 ### Elite Escalation
 
@@ -439,15 +440,15 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 
 **Orc Warrior** (Standard, CV 100; 25 points an AP, turn budget 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier Medium (+2), Power Modifier Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
 - *Cleaver* (Basic attack, 1 AP, At-will; 25, Push 1 2): 1 + 1d4! / 3 + 1d4! Sl, and it can Push the target 1.
-- *Brutal Swing* (2 AP, Round; 55, Prone 6, Hold the Line's share 7): 2 + 1d6 / 6 + 1d6 Sl, and Prone.
+- *Brutal Swing* (2 AP, Round; 55, Prone 12, Hold the Line's share 7): 3 + 1d4 / 4 + 1d6 Sl, and Prone.
 - *Hold the Line* (Reaction, 1R, Trigger: an ally within 2 squares is hit by a Strike; 28): it makes an attack against the attacker if it can reach it: 1 + 1d4 / 3 + 1d6 Sl.
 
 **Grave Wisp** (Standard, CV 100; 25 points an AP): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - *Chilling Touch* (Basic attack, 1 AP, At-will, Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4! / 2 + 1d4! Co, and Frightened of it (EoT).
-- *Dread Whisper* (2 AP, Round, Vs. WD, [Fear]; 55, Dazed 1 6): [R] 3 + 1d6 / 7 + 1d6 Ps, and Dazed 1.
+- *Dread Whisper* (2 AP, Round, Vs. WD, [Fear]; 55, Dazed 1 8): [R] 3 + 1d6 / 7 + 1d6 Ps, and Dazed 1.
 
 **Ogre Chieftain** (Elite, CV 200; 33 points an AP, turn budget 132): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation (the ladder above).
 - *Club* (Basic attack, 1 AP, At-will, High; 40, Push 1 2, then Ground Slam's pay-back, a quarter): 1 + 1d4! / 3 + 1d6! Bl, and it can Push the target 1.
-- *Overhead Smash* (2 AP, Round; 73, Push 2 6, the pay-back): 3 + 1d6 / 7 + 1d6 Bl, and it can Push the target 2.
-- *Ground Slam* (2 AP, Encounter, Area 2 Emanation, a Save Action: Body Save, DC 14; 145, Prone 6, half to each): 11 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
+- *Overhead Smash* (2 AP, Round; 73, Push 2 8, the pay-back): 3 + 1d6 / 7 + 1d6 Bl, and it can Push the target 2.
+- *Ground Slam* (2 AP, Encounter, Area 2 Emanation, a Save Action: Body Save, DC 14; 145, Prone 12, half to each): 10 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
 - *Rally the Tribe* (Escalation 4, 1 AP, Round): allies within 5 squares gain 1 Boon on their next [Weapon] Action.
