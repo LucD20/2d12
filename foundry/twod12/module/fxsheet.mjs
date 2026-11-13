@@ -3,7 +3,7 @@
 //   fxTabHtml(model): the HTML, pure (the tests render it).
 //   wireFxTab(sheet, root): the events. Every change edits a copy of the rules and Ends, then saves them with what they compile to (fxrules.mjs compile)
 //   and the built hover text, in one update (the item sheet, or the applied effect's editor, which writes it into the effect).
-import { TWOD12 } from "./config.mjs";
+import { TWOD12, tagChoices } from "./config.mjs";
 import * as R from "./fxrules.mjs";
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -136,7 +136,12 @@ function grantPane(r, m) {
   } else if (r.when === "damage") {
     rows.push(["Damage", seg("pool", r.pool, [["any", "any"], ["B", "[V]"], ["M", "[R]"]], "w")]);
     rows.push(["Type", sel("sub", r.sub, SUBS().map(([k, v]) => [k, k ? v : "any type"]), "Damage type")]);
-    rows.push(["Tag", text("tag", r.tag, "any creature (or a Tag: Profane)", "wide")]);
+    // v0.0.368 (Lucas: "the Tag is simple text instead of a drop down"): the world's Tags as a list (the trigger matches a Tag by its name or its key: triggers.mjs);
+    // a Tag written by hand before that is no longer in the list stays as its own option.
+    { let tags = {}; try { tags = tagChoices() ?? {}; } catch (e) { tags = Object.fromEntries(TWOD12.defaultTags.map(t => [t.toLowerCase(), t])); }
+      const names = Object.values(tags), cur = String(r.tag ?? "").trim(), known = !cur || names.some(n => n.toLowerCase() === cur.toLowerCase()) || Object.keys(tags).includes(cur.toLowerCase());
+      const val = names.find(n => n.toLowerCase() === cur.toLowerCase()) ?? tags[cur.toLowerCase()] ?? cur;
+      rows.push(["Tag", sel("tag", val, [["", "any creature"], ...names.map(n => [n, n]), ...(known ? [] : [[cur, `${cur} (not in the world's Tags)`]])], "The target's Tag")]); }
   }
   let riders = "";
   if (isA && r.amode === "uses" && r.when === "lasts") {

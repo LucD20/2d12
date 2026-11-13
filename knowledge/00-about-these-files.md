@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: e421367 2026-11-13 budget.md written again without Enfeebled; knowledge
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 2559a9c 2026-11-13 Enfeebled is gone: Divine Power and Hallowed Dawn give 1 Bane on Strikes
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
