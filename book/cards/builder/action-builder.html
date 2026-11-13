@@ -1,0 +1,950 @@
+<title>Action Builder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Signika:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a working table. Inputs on the left, the live numbers on the right; flat surfaces, thin ruled lines, the card as a printed stat block.
+   The colors are the system's own (foundry/mockups/style-tokens.css): dark by default, the parchment set when the viewer picks light. */
+:root {
+  color-scheme: dark;
+  --pg: #1f1c18; --pg-2: #28241d; --band: #332c22; --rule: #7a683f; --hair: #4a4132; --ink: #ece3cf; --mute: #b3a68e; --faint: #8a7f6b; --gold: #d4a548;
+  --stamp: #eadfc8; --stamp-ink: #221d16;
+  --t-1: #f3a79e; --t-1bg: #3a201d; --t-2: #e0d65a; --t-2bg: #35321a; --t-3: #8fd69b; --t-3bg: #1d3a25; --crit: #8db8f0; --critbg: #17263a;
+  --vig: #d0564f; --res: #6f90e6; --good: #8fd69b; --bad: #ff9c92;
+  --fq-atwill: #6aa82e; --fq-round: #4a90de; --fq-encounter: #d65a5a; --fq-turn: #25a3a3; --fq-daily: #9279e0; --fq-ink: #fff;
+  --rk-minion: #4d545c; --rk-grunt: #4b5a26; --rk-standard: #6e2318; --rk-elite: #4f2c69; --rk-ink: #f4ede0;
+  --text: "Signika", "Segoe UI", system-ui, sans-serif; --title: "Cinzel", "Signika", Georgia, serif;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --pg: #f4ede0; --pg-2: #eae0c8; --band: #dfd2b6; --rule: #8a6d3b; --hair: #cdb88a; --ink: #2a241d; --mute: #5d5446; --faint: #8f8774; --gold: #96670f;
+  --stamp: #3b3128; --stamp-ink: #f4ede0;
+  --t-1: #a8261c; --t-1bg: #fbefed; --t-2: #6f6800; --t-2bg: #f7f3cf; --t-3: #2b5a2f; --t-3bg: #e8f1e3; --crit: #1d5a9e; --critbg: #e6eef8;
+  --vig: #9b2c2c; --res: #2c4a9b; --good: #234d27; --bad: #8a1c13;
+  --fq-atwill: #3B6D11; --fq-round: #185FA5; --fq-encounter: #A32D2D; --fq-turn: #0F6E6E; --fq-daily: #5B3FA6;
+}
+* { box-sizing: border-box; }
+body { background: var(--pg); color: var(--ink); font: 400 14px/1.4 var(--text); }
+.page { max-width: 1500px; margin: 0 auto; padding-block: 14px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+.top { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 6px 22px; border-bottom: 2px solid var(--rule); padding-bottom: 8px; }
+.top h1 { font: 700 26px/1 var(--title); margin: 0; letter-spacing: .01em; }
+.top .stage { margin: 0; color: var(--mute); }
+.top .stage b { color: var(--gold); font-weight: 600; }
+.tabs { display: flex; gap: 2px; margin-left: auto; }
+.tabs button { background: none; border: 0; border-bottom: 3px solid transparent; padding: 5px 12px; color: var(--mute); font-weight: 600; font-size: 15px; cursor: pointer; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--gold); }
+.acts { display: flex; gap: 8px; }
+.btn { background: none; border: 1px solid var(--rule); color: var(--ink); padding: 5px 12px; border-radius: 2px; cursor: pointer; font-weight: 500; }
+.btn:hover { border-color: var(--gold); }
+.btn.main { background: var(--stamp); color: var(--stamp-ink); border-color: var(--stamp); font-weight: 600; }
+.btn.small { padding: 2px 8px; font-size: 13px; }
+.btn.plain { border-color: transparent; color: var(--mute); padding-inline: 4px; }
+.btn.plain:hover { color: var(--ink); }
+
+.cols { display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); gap: 26px; margin-top: 14px; align-items: start; }
+@media (max-width: 980px) { .cols { grid-template-columns: minmax(0, 1fr); } .tabs { margin-left: 0; } }
+.form, .out { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+
+h2 { font: 600 15px/1.2 var(--text); margin: 0 0 8px; padding-bottom: 3px; border-bottom: 1px solid var(--hair); color: var(--gold); display: flex; gap: 10px; align-items: baseline; }
+h2 small { font-weight: 400; color: var(--faint); font-size: 12.5px; }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 8px 10px; }
+.f { display: flex; flex-direction: column; gap: 2px; grid-column: span 3; min-width: 0; }
+.f > span { color: var(--mute); font-size: 12.5px; }
+.f.w2 { grid-column: span 2; } .f.w4 { grid-column: span 4; } .f.w6 { grid-column: span 6; } .f.w8 { grid-column: span 8; } .f.w12 { grid-column: span 12; }
+@media (max-width: 560px) { .f, .f.w2, .f.w4 { grid-column: span 6; } .f.w6, .f.w8 { grid-column: span 12; } }
+input[type="text"], input[type="number"], select, textarea { background: var(--pg-2); border: 1px solid var(--hair); border-radius: 2px; padding: 4px 6px; width: 100%; min-width: 0; }
+textarea { resize: vertical; min-height: 54px; }
+input:hover, select:hover, textarea:hover { border-color: var(--rule); }
+.chk { flex-direction: row; align-items: center; gap: 6px; align-self: end; padding-bottom: 5px; }
+.chk input { accent-color: var(--gold); width: 15px; height: 15px; margin: 0; }
+.chk > span { color: var(--ink); font-size: 14px; }
+.hint { color: var(--faint); font-size: 12.5px; margin: 4px 0 0; }
+
+.vtabs { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 8px; }
+.vtab { display: flex; align-items: center; gap: 5px; }
+.vtab button { background: none; border: 1px solid var(--hair); border-radius: 2px; padding: 3px 12px; cursor: pointer; color: var(--mute); font-weight: 600; }
+.vtab button[aria-pressed="true"] { background: var(--stamp); color: var(--stamp-ink); border-color: var(--stamp); }
+.vtab button:disabled { opacity: .45; cursor: default; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th { font-weight: 500; color: var(--mute); font-size: 12.5px; text-align: left; padding: 2px 6px 3px 0; white-space: nowrap; }
+td { padding: 3px 6px 3px 0; vertical-align: middle; }
+.tiers td { min-width: 52px; } .tiers td.wide { min-width: 150px; width: 40%; } .tiers td.c { min-width: 0; text-align: center; }
+.tiers input[type="checkbox"] { accent-color: var(--gold); width: 15px; height: 15px; }
+.tn { font-weight: 600; white-space: nowrap; }
+.t1 { color: var(--t-1); } .t2 { color: var(--t-2); } .t3 { color: var(--t-3); } .cr { color: var(--crit); }
+.rows { display: flex; flex-direction: column; gap: 6px; }
+.row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) auto; gap: 8px; align-items: center; }
+.row.help { grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 3fr) 56px minmax(0, 3fr) auto; }
+@media (max-width: 560px) { .row.help { grid-template-columns: 1fr 1fr; } }
+.sub { margin: 10px 0 5px; font-weight: 600; display: flex; gap: 10px; align-items: baseline; }
+.sub small { font-weight: 400; color: var(--faint); font-size: 12.5px; }
+
+/* the card: a printed stat block (a name plate, ruled lines, an Action under a bar in its Frequency's color, the Tiers as three lines, Effects under a line) */
+.sb { background: var(--pg-2); border: 1px solid var(--hair); }
+.sb-plate { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 6px 12px; background: var(--band); border-bottom: 2px solid var(--rule); }
+.sb-plate.rk-minion { background: var(--rk-minion); color: var(--rk-ink); } .sb-plate.rk-grunt { background: var(--rk-grunt); color: var(--rk-ink); } .sb-plate.rk-standard { background: var(--rk-standard); color: var(--rk-ink); } .sb-plate.rk-elite { background: var(--rk-elite); color: var(--rk-ink); }
+.sb-name { font: 700 20px/1.15 var(--title); }
+.sb-cat { font-weight: 500; white-space: nowrap; }
+.sb-body { padding: 8px 12px 10px; }
+.sb-flavor { font-style: italic; color: var(--mute); margin: 0 0 4px; }
+.sb-line { margin: 0; padding: 3px 0; border-bottom: 1px solid var(--hair); }
+.sb-line b { font-weight: 600; }
+.sb-ver { margin-top: 9px; }
+.sb-bar { display: flex; justify-content: space-between; padding: 2px 8px; font-weight: 600; color: var(--fq-ink); background: var(--fq); }
+.sb-tint { background: color-mix(in srgb, var(--fq) 9%, transparent); padding: 2px 8px 5px; }
+.sb-tier { margin: 0; padding: 3px 0; border-top: 1px solid currentColor; display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 8px; }
+.sb-tier:first-child { border-top: 0; }
+.sb-tier span { color: var(--ink); }
+.sb-fx { margin: 3px 0 0; padding-top: 4px; border-top: 1px solid var(--gold); }
+.sb-fx b { color: var(--gold); font-weight: 600; }
+.fq-atwill { --fq: var(--fq-atwill); } .fq-round { --fq: var(--fq-round); } .fq-encounter { --fq: var(--fq-encounter); } .fq-turn { --fq: var(--fq-turn); } .fq-daily { --fq: var(--fq-daily); }
+
+/* the budget */
+.bud { padding: 8px 0 10px; border-bottom: 1px solid var(--hair); }
+.bud:first-of-type { padding-top: 0; }
+.bud-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.bud-ap { font-weight: 600; }
+.bud-num { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bud-num small { font-size: 14px; font-weight: 400; color: var(--mute); }
+.verdict { font-weight: 600; margin-left: auto; }
+.v-on { color: var(--good); } .v-over { color: var(--bad); } .v-under { color: var(--crit); }
+.bar { position: relative; height: 14px; background: var(--pg-2); border: 1px solid var(--hair); margin: 6px 0 2px; }
+.bar i { position: absolute; top: 0; bottom: 0; display: block; }
+.bar .band { background: color-mix(in srgb, var(--good) 22%, transparent); border-inline: 1px solid var(--good); }
+.bar .fill { left: 0; top: 3px; bottom: 3px; }
+.bar .fill.v-on { background: var(--good); } .bar .fill.v-over { background: var(--bad); } .bar .fill.v-under { background: var(--crit); }
+.bar .tick { width: 2px; background: var(--ink); top: -3px; bottom: -3px; }
+.cap { color: var(--mute); font-size: 12.5px; margin: 0; }
+.lines { margin: 6px 0 0; padding: 0; list-style: none; }
+.lines li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 2px 0; }
+.lines li span:nth-child(2) { font-variant-numeric: tabular-nums; font-weight: 500; }
+.lines li em { grid-column: 1 / -1; font-style: normal; color: var(--faint); font-size: 12.5px; }
+.flag { margin: 5px 0 0; padding-left: 14px; position: relative; color: var(--mute); }
+.flag::before { content: ""; position: absolute; left: 0; top: .45em; width: 7px; height: 7px; background: var(--faint); }
+.flag.bad { color: var(--bad); font-weight: 500; } .flag.bad::before { background: var(--bad); }
+.nums td, .nums th { padding-right: 14px; text-align: right; } .nums td:first-child, .nums th:first-child { text-align: left; }
+.nums tbody tr { border-top: 1px solid var(--hair); }
+.nums .sep td { border-top: 1px solid var(--rule); }
+.nums .dim td { color: var(--mute); }
+.facts { display: flex; flex-wrap: wrap; gap: 4px 22px; margin: 0; }
+.facts div { display: flex; gap: 6px; } .facts dt { color: var(--mute); } .facts dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.note { color: var(--mute); margin: 6px 0 0; font-size: 13px; }
+.status { color: var(--good); font-size: 13px; align-self: center; }
+.copybox { width: 100%; height: 140px; font: 12px/1.3 ui-monospace, Consolas, monospace; margin-top: 8px; }
+.drafts { list-style: none; margin: 0; padding: 0; }
+.drafts li { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; padding: 4px 0; border-bottom: 1px solid var(--hair); }
+.drafts li b { font-weight: 600; } .drafts li span { color: var(--faint); font-size: 12.5px; } .drafts li .sp { margin-left: auto; display: flex; gap: 6px; }
+</style>
+
+<div class="page">
+  <header class="top">
+    <h1>Action Builder</h1>
+    <p class="stage" id="stage"></p>
+    <nav class="tabs" role="tablist" aria-label="What you are designing">
+      <button type="button" role="tab" id="tab-pc" data-tab="pc">PC Action</button>
+      <button type="button" role="tab" id="tab-npc" data-tab="npc">NPC Action</button>
+    </nav>
+    <div class="acts">
+      <span class="status" id="status" role="status"></span>
+      <button type="button" class="btn" id="save-draft">Save draft</button>
+      <button type="button" class="btn main" id="copy">Copy for Claude</button>
+    </div>
+  </header>
+  <div class="cols">
+    <section class="form" id="form" aria-label="The Action"></section>
+    <section class="out" id="out" aria-label="Live numbers"></section>
+  </div>
+</div>
+
+<script>
+const DATA = {"generated":"2026-11-13","stage":"Stage 0 (levels 1 to 3)","pc":{"wa":25,"turn":100,"refDefense":13,"ap":{"1":25,"2":50,"3":75},"encounter":2,"felt":10,"classTarget":[130,140,150],"reactionBand":[10,15],"health":12,"guard":6,"defense1":12.3,"rallyHeal":-10.9,"unusedAp":12.4,"fights":[{"key":"normal","label":"4 Standards (normal)","dmgPerHealth":5.4,"healFactor":1},{"key":"hard","label":"5 Standards (hard)","dmgPerHealth":3.4,"healFactor":0.8405797101449275},{"key":"deadly","label":"6 Standards (deadly)","dmgPerHealth":3.1,"healFactor":0.7681159420289855}],"reactionDamage":0.4752941176470588,"blockPoint":8.902439024390244,"areaShare":{"range":0.5,"self":0.6666666666666666},"riderPrice":{"mild":3,"moderate":8,"severe":12,"extreme":18},"riders":[{"name":"Hindered (EoT)","size":"mild","ruler":"debuff Hindered (EoT)","eliteUp":false,"measured":{"melee":-2.3,"ranged":1.7,"elite":-1.1,"lands":5.6}},{"name":"Immobilized (EoT)","size":"mild","ruler":"debuff Immobilized (EoT)","eliteUp":false,"measured":{"melee":-3.6,"ranged":3.4,"elite":-3.5,"lands":5.5}},{"name":"Immobilized (until it escapes)","size":"mild","ruler":"debuff Immobilized","eliteUp":false,"measured":{"melee":-0.1,"ranged":1.8,"elite":1.5,"lands":5.6}},{"name":"Taunted (by you)","size":"mild","ruler":"taunt 1","eliteUp":false,"measured":{"melee":0.9,"ranged":2.8,"elite":3.2,"lands":0}},{"name":"Frightened (EoT)","size":"mild","ruler":"debuff Frightened (EoT)","eliteUp":false,"measured":{"melee":2.1,"ranged":4,"elite":6.2,"lands":5.7}},{"name":"Vulnerable 1","size":"mild","ruler":"vulnerable 1","eliteUp":false,"measured":{"melee":2.5,"ranged":0.7,"elite":3.6,"lands":0}},{"name":"Bleed 1d4","size":"mild","ruler":"debuff Bleed 1d4","eliteUp":false,"measured":{"melee":0.1,"ranged":1.2,"elite":0.5,"lands":5.6}},{"name":"Bleed 1d6","size":"mild","ruler":"debuff Bleed 1d6","eliteUp":false,"measured":{"melee":0.3,"ranged":2.2,"elite":1.8,"lands":5.6}},{"name":"Vulnerable 2","size":"moderate","ruler":"vulnerable 2","eliteUp":false,"measured":{"melee":5,"ranged":5.5,"elite":5.3,"lands":0}},{"name":"Slowed 1","size":"moderate","ruler":"debuff Slowed 1","eliteUp":true,"measured":{"melee":7,"ranged":9.8,"elite":11.7,"lands":5.6}},{"name":"Prone","size":"moderate","ruler":"debuff Prone","eliteUp":true,"measured":{"melee":7,"ranged":8.7,"elite":11.4,"lands":5.8}},{"name":"Dazed 1","size":"severe","ruler":"debuff Dazed 1","eliteUp":true,"measured":{"melee":11.3,"ranged":15.4,"elite":19.9,"lands":5.6}},{"name":"Blinded (EoT)","size":"severe","ruler":"debuff Blinded (EoT)","eliteUp":true,"measured":{"melee":11.6,"ranged":14.6,"elite":26,"lands":5.8}},{"name":"Slowed 2","size":"extreme","ruler":"debuff Slowed 2","eliteUp":true,"measured":{"melee":12.9,"ranged":19.8,"elite":25.6,"lands":5.6}},{"name":"Pushed 1","size":"mild","ruler":"push 1","eliteUp":false,"measured":null},{"name":"Pushed 2","size":"mild","ruler":"push 2","eliteUp":false,"measured":null},{"name":"Pushed 3","size":"mild","ruler":"push 3","eliteUp":false,"measured":null},{"name":"Pulled 1","size":"mild","ruler":"pull 1","eliteUp":false,"measured":null},{"name":"Pulled 2","size":"mild","ruler":"pull 2","eliteUp":false,"measured":null},{"name":"Slid 1","size":"mild","ruler":"slide 1","eliteUp":false,"measured":null},{"name":"Slid 2","size":"mild","ruler":"slide 2","eliteUp":false,"measured":null}],"seats":{"melee":{"label":"melee (a Paladin's Greatsword)","wa":[11,15],"health100":13.1,"dealt":71},"ranged":{"label":"ranged (an Archer's Crossbow)","wa":[7,9],"health100":8,"dealt":39}},"exchange":[{"fight":"4 Standards (normal)","key":"normal","healthSaved":13.1,"dmgPerHealth":5.4,"healTurn":144,"shieldTurn":166},{"fight":"5 Standards (hard)","key":"hard","healthSaved":24.7,"dmgPerHealth":3.4,"healTurn":133,"shieldTurn":164},{"fight":"6 Standards (deadly)","key":"deadly","healthSaved":28.8,"dmgPerHealth":3.1,"healTurn":128,"shieldTurn":174}],"classes":[{"build":"Paladin (Smite)","seat":"melee","levels":[115,126,118]},{"build":"Paladin (Lay On Hands)","seat":"melee","levels":[126,161,163]},{"build":"Archer (Double Shot)","seat":"ranged","levels":[174,163,168]},{"build":"Archer (Rolling Shot)","seat":"ranged","levels":[194,182,200]}],"shapes":[{"turn":"three Weapon Attacks (the yardstick)","used":75,"melee":100,"ranged":100},{"turn":"a 2 AP Action of 50 and a Weapon Attack","used":75,"melee":107.3,"ranged":106},{"turn":"a 3 AP Action of 75","used":75,"melee":100.9,"ranged":100},{"turn":"a 2 AP Action of 50 and two Weapon Attacks (4 AP)","used":100,"melee":109.2,"ranged":117.8},{"turn":"a 2 AP Action of 60 and a Weapon Attack","used":85,"melee":117,"ranged":114.9},{"turn":"once an encounter, a 2 AP Action of 100 (double) and a Weapon Attack; else the yardstick","used":125,"melee":133.4,"ranged":130.2},{"turn":"once an encounter, a 3 AP Action of 150 (double); else the yardstick","used":150,"melee":121.7,"ranged":139.9}],"reactions":[{"name":"Shield of Faith","what":"Shield of Faith (a hit on you or an ally within 5: block 2d6 + [Mod])","seat":"melee","fires":0.82,"adds":65.7},{"name":"Rebuke","what":"Rebuke (an enemy within 5 Strikes an ally: an Appeal Save, damage, Pushed, Frightened)","seat":"melee","fires":0.66,"adds":13.7},{"name":"Overwatch","what":"Overwatch (an enemy moves closer within 10: a Weapon Attack)","seat":"ranged","fires":0.85,"adds":10.1},{"name":"Covering Shot","what":"Covering Shot (a Strike would damage an ally within 10: a Weapon Attack with 1 Boon; a Tier 3 halves the damage)","seat":"ranged","fires":1.11,"adds":16.2}],"helps":[{"what":"the most hurt ally (or you) heals 1d8 + [Mod] (new Health, not a Rally Point)","worth":69.1},{"what":"the most hurt ally (or you) heals 2d6 + [Mod]","worth":84.5},{"what":"an ally uses 1 of its Rally Points (Lay On Hands' heal)","worth":-10.9},{"what":"you gain Guard 1d8 + [Mod]","worth":34.7},{"what":"an ally gains +1 Defense until your next turn","worth":12.3},{"what":"nothing (the AP is not used: its Guard at the next turn)","worth":12.4}],"ledger":[{"build":"Paladin (Smite)","action":"Smite 2","ap":2,"freq":"round","points":45,"and":""},{"build":"Paladin (Smite)","action":"Smite 3","ap":3,"freq":"round","points":50,"and":"guard"},{"build":"Paladin (Smite)","action":"Holy Wrath 2","ap":2,"freq":"encounter","points":50,"and":""},{"build":"Paladin (Smite)","action":"Holy Wrath 3","ap":3,"freq":"encounter","points":63,"and":""},{"build":"Paladin (Smite)","action":"Final Verdict","ap":2,"freq":"encounter","points":50,"and":"area, area 1.5"},{"build":"Paladin (Lay On Hands)","action":"Lay On Hands 1","ap":1,"freq":"round","points":0,"and":"heal"},{"build":"Paladin (Lay On Hands)","action":"Lay On Hands 2","ap":2,"freq":"round","points":0,"and":"heal, mend"},{"build":"Paladin (Lay On Hands)","action":"Holy Wrath 2","ap":2,"freq":"encounter","points":54,"and":""},{"build":"Paladin (Lay On Hands)","action":"Hallowed Dawn","ap":3,"freq":"encounter","points":0,"and":"mend, push, remove-effect"},{"build":"Archer (Double Shot)","action":"Double Shot 2","ap":2,"freq":"round","points":50,"and":"2 linked"},{"build":"Archer (Double Shot)","action":"Double Shot 3","ap":3,"freq":"round","points":50,"and":"evade, 2 linked"},{"build":"Archer (Double Shot)","action":"Pinning Shot","ap":1,"freq":"encounter","points":25,"and":"Immobilized (EoT)"},{"build":"Archer (Double Shot)","action":"Deathmark","ap":2,"freq":"encounter","points":65,"and":""},{"build":"Archer (Double Shot)","action":"Lock & Loose","ap":1,"freq":"round","points":25,"and":"Hindered (until it moves), Immobilized"},{"build":"Archer (Rolling Shot)","action":"Rolling Shot 2","ap":2,"freq":"round","points":36,"and":"evade, 1 linked"},{"build":"Archer (Rolling Shot)","action":"Rolling Shot 3","ap":3,"freq":"round","points":48,"and":"evade, 1 linked"},{"build":"Archer (Rolling Shot)","action":"Pinning Shot","ap":1,"freq":"encounter","points":25,"and":"Immobilized (EoT)"},{"build":"Archer (Rolling Shot)","action":"Open Season","ap":2,"freq":"encounter","points":25,"and":"vulnerable, 1 linked"},{"build":"Archer (Rolling Shot)","action":"Lock & Loose","ap":1,"freq":"round","points":25,"and":"Hindered (until it moves), Immobilized"}],"areas":[{"label":"2 Burst within 10 squares","size":2,"shape":"Burst","from":"range","hit":[1.6,2.1],"source":"pc-budget.md section 8"},{"label":"1 Emanation around you","size":1,"shape":"Emanation","from":"self","hit":[1.3,1.6],"source":"pc-budget.md section 8"},{"label":"2 Emanation around you","size":2,"shape":"Emanation","from":"self","hit":[1.7,2.1],"source":"pc-budget.md section 8"}],"maps":[{"what":"The plain PC's three Weapon Attacks (its 100 points)","seat":"melee","open":13.1,"pillars":16,"corridor":18.1},{"what":"The plain PC's three Weapon Attacks (its 100 points)","seat":"ranged","open":8,"pillars":9.8,"corridor":6.8},{"what":"Paladin (Smite), level 2","seat":"melee","open":14.7,"pillars":18.1,"corridor":19.4},{"what":"Paladin (Lay On Hands), level 2","seat":"melee","open":18.8,"pillars":22.1,"corridor":24.1},{"what":"Archer (Double Shot), level 2","seat":"ranged","open":12.7,"pillars":16.6,"corridor":11.8},{"what":"Archer (Rolling Shot), level 2","seat":"ranged","open":14.2,"pillars":17,"corridor":13.7},{"what":"+ Push 1 on its Weapon Attacks","seat":"melee","open":-2.4,"pillars":-0.8,"corridor":-2},{"what":"+ Push 1 on its Weapon Attacks","seat":"ranged","open":0.1,"pillars":0.3,"corridor":1},{"what":"+ Push 2 on its Weapon Attacks","seat":"melee","open":-2.3,"pillars":-0.5,"corridor":-1.2},{"what":"+ Push 2 on its Weapon Attacks","seat":"ranged","open":0.5,"pillars":0.8,"corridor":0.2},{"what":"+ Hindered (EoT) on its Weapon Attacks","seat":"melee","open":-0.8,"pillars":-0.9,"corridor":-0.2},{"what":"+ Hindered (EoT) on its Weapon Attacks","seat":"ranged","open":0.4,"pillars":0.2,"corridor":1.3},{"what":"+ Immobilized (EoT) on its Weapon Attacks","seat":"melee","open":-1.2,"pillars":-1,"corridor":-2.1},{"what":"+ Immobilized (EoT) on its Weapon Attacks","seat":"ranged","open":0.8,"pillars":0.7,"corridor":1.2},{"what":"+ Prone on its Weapon Attacks","seat":"melee","open":2.3,"pillars":3.4,"corridor":3.5},{"what":"+ Prone on its Weapon Attacks","seat":"ranged","open":2.1,"pillars":2.2,"corridor":3.8},{"what":"+ Slowed 1 on its Weapon Attacks","seat":"melee","open":2.3,"pillars":3,"corridor":2.6},{"what":"+ Slowed 1 on its Weapon Attacks","seat":"ranged","open":2.3,"pillars":2,"corridor":4},{"what":"+ Shield of Faith","seat":"melee","open":8.6,"pillars":11.1,"corridor":10.4},{"what":"+ Rebuke","seat":"melee","open":1.8,"pillars":1.7,"corridor":2.4},{"what":"+ Overwatch","seat":"ranged","open":0.8,"pillars":1.4,"corridor":1.2},{"what":"+ Covering Shot","seat":"ranged","open":1.3,"pillars":2.9,"corridor":0.9},{"what":"A 1 AP heal of 1d8 + [Mod] in the place of the third attack","seat":"melee","open":5.8,"pillars":7.8,"corridor":7}]},"areasGrid":[{"card":"Consecrated Ground 2","size":2,"shape":"Emanation","from":"range","where":"2 Emanation, within 10 squares; all creatures; 3 rounds","rulerLine":"2 enemies, 2 allies","hit":[2.2,2.6],"source":"areas.md section 2 (open field)"},{"card":"Covering Fire","size":2,"shape":"Emanation","from":"range","where":"2 Emanation, within your weapon's normal range; all creatures; 3 rounds","rulerLine":"2 enemies, 2 allies","hit":[2.1,2.6],"source":"areas.md section 2 (open field)"},{"card":"Word of Radiance 3","size":3,"shape":"Burst","from":"range","where":"3 Burst, within 10 squares; enemies","rulerLine":"2.3 enemies","hit":[2.6,3.8],"source":"areas.md section 2 (open field)"},{"card":"Volley","size":2,"shape":"Emanation","from":"range","where":"2 Emanation, within your weapon's normal range; all creatures","rulerLine":"2 enemies","hit":[1.7,2.8],"source":"areas.md section 2 (open field)"},{"card":"Rain of Arrows","size":3,"shape":"Emanation","from":"range","where":"3 Emanation, within its maximum range; enemies","rulerLine":"2.5 enemies","hit":[1.5,3],"source":"areas.md section 2 (open field)"},{"card":"Final Verdict","size":1,"shape":"Emanation","from":"self","where":"1 Emanation, around you; enemies","rulerLine":"1.5 enemies","hit":[1.2,1.8],"source":"areas.md section 2 (open field)"}],"weapons":[{"name":"Dagger","group":"Blades","props":"Melee, Thrown","type":"Pierce","range":"1, Thrown 4 / 8 / 12","tiers":["0","2 + 1d4!","4 + 1d4!"],"ranged":false},{"name":"Longsword","group":"Blades","props":"Melee","type":"Slash","range":"1","tiers":["0","2 + 1d6!","4 + 1d6!"],"ranged":false},{"name":"Greatsword","group":"Blades","props":"Melee, Two-handed","type":"Slash","range":"1","tiers":["0","5 + 1d6!","8 + 1d8!"],"ranged":false},{"name":"Handaxe","group":"Axes","props":"Melee, Thrown","type":"Slash","range":"1, Thrown 4 / 8 / 12","tiers":["0","2 + 1d4!","2 + 1d8!"],"ranged":false},{"name":"Greataxe","group":"Axes","props":"Melee, Two-handed","type":"Slash","range":"1","tiers":["0","4 + 1d6!","10 + 1d8!"],"ranged":false},{"name":"Mace","group":"Hammers","props":"Melee","type":"Blunt","range":"1","tiers":["0","3 + 1d4!","5 + 1d4!"],"ranged":false},{"name":"Maul","group":"Hammers","props":"Melee, Two-handed","type":"Blunt","range":"1","tiers":["0","6 + 1d4!","9 + 1d6!"],"ranged":false},{"name":"Spear","group":"Polearms","props":"Melee, Thrown","type":"Pierce","range":"1, Thrown 4 / 8 / 12","tiers":["0","2 + 1d4!","4 + 1d4!"],"ranged":false},{"name":"Pike","group":"Polearms","props":"Long, Melee, Two-handed","type":"Pierce","range":"3","tiers":["0","4 + 1d6!","6 + 1d8!"],"ranged":false},{"name":"Knuckle Dagger","group":"Unarmed","props":"Barehanded, Melee","type":"Pierce","range":"1","tiers":["0","2 + 1d4!","3 + 1d4!"],"ranged":false},{"name":"Shortbow","group":"Bows","props":"Projectile, Ranged, Two-handed","type":"Pierce","range":"8 / 16 / 32","tiers":["0","1d6!","1 + 1d6!"],"ranged":true},{"name":"Longbow","group":"Bows","props":"Projectile, Ranged, Two-handed","type":"Pierce","range":"15 / 30 / 60","tiers":["0","1 + 1d4!","2 + 1d4!"],"ranged":true},{"name":"Hand Crossbow","group":"Crossbows","props":"Projectile, Ranged, Reload","type":"Pierce","range":"6 / 12 / 24","tiers":["0","1d4!","1 + 1d4!"],"ranged":true},{"name":"Crossbow","group":"Crossbows","props":"Projectile, Ranged, Reload, Two-handed","type":"Pierce","range":"10 / 20 / 40","tiers":["0","2 + 1d4!","4 + 1d4!"],"ranged":true},{"name":"Pistol","group":"Firearms","props":"Firearm, Ranged, Reload","type":"Pierce","range":"5 / 10 / 20","tiers":["0","1d4!","2 + 1d8!"],"ranged":true},{"name":"Musket","group":"Firearms","props":"Firearm, Ranged, Reload, Two-handed","type":"Pierce","range":"10 / 20 / 40","tiers":["0","1d4!","4 + 1d8!"],"ranged":true}],"builds":[{"file":"archer-double-r1","name":"Archer (Double Shot)","weapon":"Crossbow","wmod":2,"pmod":1,"seat":"ranged"},{"file":"archer-rolling-r1","name":"Archer (Rolling Shot)","weapon":"Crossbow","wmod":2,"pmod":1,"seat":"ranged"},{"file":"paladin-hands-r1","name":"Paladin (Lay On Hands)","weapon":"Greatsword","wmod":1,"pmod":2,"seat":"melee"},{"file":"paladin-smite-r1","name":"Paladin (Smite)","weapon":"Greatsword","wmod":2,"pmod":1,"seat":"melee"}],"npc":{"budget":{"perAp":{"minion":18,"grunt":25,"standard":25,"elite":33},"turnAp":{"minion":3,"grunt":3,"standard":4,"elite":4},"rating":{"terrible":0.65,"low":0.8,"medium":1,"high":1.2,"extreme":1.5},"size":[0,0,0,0.05],"round":0.1,"encounter":2,"payBack":[0,0.2,0.25,0.5],"over":0.15,"riders":{"forced":2,"mild":3,"moderate":8,"severe":12,"extreme":18,"step":6},"explode":6,"multi":0.6666666666666666,"multiEnc":0.5,"toDamage":[0.14,0.22],"help":{"boon":3,"health":1},"reaction":{"self":0.3333333333333333,"other":0.25,"twoR":0}},"stage0":{"minion":{"reactionAp":0,"squad":3,"health":[3,5,6,7],"basic":[["1","2"],["1","1d4"],["2","1 + 1d4"],["1d4","2 + 1d4"]],"s1":[["1","1d4"],["2","1 + 1d4"],["1d4","2 + 1d4"],["1 + 1d4","3 + 1d4"]],"s2":[["2","2 + 1d4"],["1d4","2 + 1d6"],["1 + 1d4","3 + 1d6"],["2 + 1d4","5 + 1d6"]]},"grunt":{"ap":3,"health":[7,10,13,16,19],"basic":[["1","2"],["2","1d4"],["1d4","1 + 1d4"],["1 + 1d4","2 + 1d4"],["1 + 1d4","3 + 1d4"]],"s1":[["2","1d4"],["1d4","1 + 1d4"],["1 + 1d4","2 + 1d4"],["2 + 1d4","2 + 1d6"],["2 + 1d4","3 + 1d6"]],"s2":[["1 + 1d4","2 + 1d4"],["2 + 1d4","2 + 1d6"],["2 + 1d4","3 + 1d6"],["3 + 1d6","6 + 1d6"],["4 + 1d6","7 + 1d6"]],"s3":[["3 + 1d4","4 + 1d6"],["3 + 1d6","6 + 1d6"],["4 + 1d6","7 + 1d6"],["7 + 1d6","10 + 1d8"],["7 + 1d8","13 + 1d8"]]},"standard":{"health":[17,24,30,36,42],"basic":[["1d4","1 + 1d4"],["1d4","2 + 1d4"],["1 + 1d4","2 + 1d6"],["2 + 1d4","3 + 1d6"],["3 + 1d4","5 + 1d6"]],"s1":[["1 + 1d4","2 + 1d4"],["1 + 1d4","3 + 1d6"],["2 + 1d4","4 + 1d6"],["2 + 1d6","6 + 1d6"],["3 + 1d6","7 + 1d8"]],"s2":[["2 + 1d4","3 + 1d6"],["2 + 1d6","6 + 1d6"],["4 + 1d6","8 + 1d8"],["6 + 1d6","10 + 1d8"],["7 + 1d6","14 + 1d8"]],"s3":[["4 + 1d6","7 + 1d6"],["6 + 1d6","11 + 1d8"],["7 + 1d6","15 + 1d8"],["10 + 1d8","19 + 1d8"],["13 + 1d8","24 + 1d8"]]},"elite":{"health":[35,50,65,80,95],"basic":[["1d4","1 + 1d4"],["1 + 1d4","3 + 1d4"],["3 + 1d4","3 + 1d6"],["3 + 1d6","5 + 1d6"],["4 + 1d6","6 + 1d6"]],"s1":[["1 + 1d4","3 + 1d4"],["3 + 1d4","4 + 1d6"],["3 + 1d6","5 + 1d6"],["4 + 1d6","7 + 1d6"],["5 + 1d6","8 + 1d8"]],"s2":[["3 + 1d4","4 + 1d6"],["4 + 1d6","7 + 1d8"],["6 + 1d6","10 + 1d8"],["7 + 1d8","13 + 1d8"],["10 + 1d8","16 + 1d8"]],"s3":[["5 + 1d6","7 + 1d8"],["7 + 1d8","15 + 1d8"],["11 + 1d8","17 + 1d8"],["15 + 1d8","23 + 1d8"],["17 + 1d8","27 + 1d8"]]}},"defense":{"minion":[10,11,12,13],"grunt":[10,11,13,15,17],"standard":[10,11,13,15,17],"elite":[11,12,14,16,18]},"ratings":["terrible","low","medium","high","extreme"],"ranks":["minion","grunt","standard","elite"],"rangedStep":1,"vsBase":12,"rank":{"minion":{"label":"Minion","modBy":[0,1,2,3],"attr":0,"ap":3,"reactionAp":0,"cv":25,"explodes":false},"grunt":{"label":"Grunt","modBy":[0,1,2,3,4],"attr":0,"ap":3,"reactionAp":1,"cv":50,"explodes":false},"standard":{"label":"Standard","modBy":[0,1,2,3,4],"attr":1,"ap":4,"reactionAp":1,"cv":100,"explodes":true},"elite":{"label":"Elite","modBy":[1,2,3,4,4],"attr":2,"ap":4,"reactionAp":1,"cv":200,"explodes":true}},"riders":[{"name":"Pushed 1","sev":"forced","price":2},{"name":"Pulled 1","sev":"forced","price":2},{"name":"Slid 1","sev":"forced","price":2},{"name":"Hindered (EoT)","sev":"mild","price":3},{"name":"Taunted (1 round)","sev":"mild","price":3},{"name":"Staggered (EoT)","sev":"mild","price":3},{"name":"Frightened (EoT)","sev":"mild","price":3},{"name":"1 Pressure Bane on its next roll","sev":"mild","price":3},{"name":"Doomed on its next roll","sev":"mild","price":3},{"name":"Sickened 1","sev":"mild","price":3},{"name":"Bright light on it","sev":"mild","price":3},{"name":"Slowed 1","sev":"moderate","price":8},{"name":"Dazed 1","sev":"moderate","price":8},{"name":"Blinded (EoT)","sev":"moderate","price":8},{"name":"Vulnerable 1 (EoT)","sev":"moderate","price":8},{"name":"Vulnerable 2 (EoT)","sev":"moderate","price":8},{"name":"Immobilized (EoT)","sev":"moderate","price":8},{"name":"Immobilized (until it escapes)","sev":"moderate","price":8},{"name":"Grabbed","sev":"moderate","price":8},{"name":"Pushed 2","sev":"moderate","price":8},{"name":"Pulled 2","sev":"moderate","price":8},{"name":"Slid 2","sev":"moderate","price":8},{"name":"Prone","sev":"severe","price":12},{"name":"Bleed 1","sev":"severe","price":12},{"name":"Pushed 3","sev":"severe","price":12},{"name":"Slowed 2","sev":"extreme","price":18},{"name":"Dazed 2","sev":"extreme","price":18},{"name":"Bleed 2","sev":"extreme","price":18},{"name":"Bleed 1d4","sev":"extreme","price":18},{"name":"Bleed 1d6","sev":"beyond1","price":24},{"name":"Bleed 2d6","sev":"beyond2","price":40}]},"cards":[{"name":"Double Shot","category":"Sharpshooter","level":1,"flavor":"Two shots, so close together they sound like one.","traits":["shot","strike"],"frequency":"Round","target":"Two creatures","file":"archer.json","versions":[{"ap":2,"effects":"You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature.","ruler":"does Weapon Attack x2 | different"},{"ap":3,"effects":"Evade 1, then as 2 AP.","ruler":"does Weapon Attack x2 | different | evade 1"}]},{"name":"Rolling Shot","category":"Sharpshooter","level":1,"flavor":"You keep moving, and the shot rides along with the motion.","traits":["ranged","shot","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","file":"archer.json","versions":[{"ap":1,"effects":"Evade 1, then make a [Ranged, Shot] Weapon Attack (1A).","ruler":"does Weapon Attack | evade 1"},{"ap":2,"effects":"Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi.","ruler":"does Weapon Attack | each extra 1d6 | evade 2"},{"ap":3,"effects":"Evade 3, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi.","ruler":"does Weapon Attack | each extra 2d6 | evade 3"}]},{"name":"Overwatch","category":"Sharpshooter","level":1,"flavor":"Nothing moves in your sight without an arrow following it.","traits":["ranged","shot","strike","weapon"],"frequency":"Turn","target":"The triggering creature","distance":"Weapon","trigger":"An enemy within 10 squares moves closer to you or to an ally.","file":"archer.json","versions":[{"ap":1,"effects":"Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT); on a Critical, it is also Pushed 2.","ruler":"does Weapon Attack"}]},{"name":"Covering Shot","category":"Sharpshooter","level":1,"flavor":"You see the blow coming before they do, and your bolt gets there first.","traits":["ranged","shot","strike","weapon"],"frequency":"Turn","target":"The attacker","distance":"Weapon","interrupt":"A [Strike] Action would damage an ally within 10 squares.","file":"archer.json","versions":[{"ap":1,"effects":"Make a [Ranged, Shot] Weapon Attack (1A) with 1 Boon against the attacker. On a Tier 3, the ally takes half of the triggering damage.","ruler":"does Weapon Attack | each boon 1"}]},{"name":"Marksman's Shot","category":"Archer Feature","level":1,"flavor":"One shot, carefully placed. Everything after it is easier.","traits":["ranged","shot","strike","weapon"],"frequency":"Encounter","target":"One creature","distance":"Weapon","vs":"AD","file":"archer.json","versions":[{"ap":2,"tiers":["[V] 1[W] + 1d8 Pi","[V] 1[W] + [Mod] + 2d6 Pi","[V] 1[W] + [Mod] + 3d6 Pi; Vulnerable 2 (EoT)."],"critical":"The target is Blinded (EoT).","ruler":"on 3: vulnerable 2"}]},{"name":"Volley","category":"Archer Feature","level":1,"flavor":"You empty the quiver skyward, and the arrows fall together.","traits":["area","ranged","save","shot","weapon"],"frequency":"Encounter","target":"All creatures in the Area","area":"2 Emanation","distance":"Your weapon's normal range","vs":"Instinct Save","file":"archer.json","versions":[{"ap":2,"tiers":["[V] 2d8 + [Mod] Pi; Hindered (EoT).","[V] 1d10 + [Mod] Pi","[V] 1d4 Pi"],"ruler":"area 2 | on 1: debuff Hindered (EoT)"}]},{"name":"Covering Fire","category":"Archer Feature","level":1,"flavor":"Nobody walks through that ground without paying for it.","traits":["area","ranged","shot","weapon"],"frequency":"Encounter","target":"All creatures in the Area","area":"2 Emanation","distance":"Your weapon's normal range","file":"archer.json","versions":[{"ap":2,"effects":"For 3 rounds, enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.","ruler":"rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies"}]},{"name":"Pinning Shot","category":"Archer Feature","level":1,"flavor":"You pin their foot to the ground with an arrow.","traits":["ranged","shot","strike","weapon"],"frequency":"Encounter","target":"One creature","distance":"Weapon","file":"archer.json","versions":[{"ap":1,"effects":"Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT).","ruler":"vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)"}]},{"name":"Twin Shot","category":"Archer Feature","level":1,"flavor":"Two arrows, one motion, two answers.","traits":["ranged","shot","strike","weapon"],"frequency":"Encounter","target":"Two creatures","distance":"Weapon","file":"archer.json","versions":[{"ap":1,"effects":"Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [V] 1d6 Pi to each of them.","ruler":"does Weapon Attack | each extra 1d6 | area 2"}]},{"name":"Hunter's Focus","category":"Archer Feature","level":1,"flavor":"You and the quarry, and nothing else in the world.","traits":["focus","self"],"frequency":"Daily","file":"archer.json","versions":[{"ap":1,"effects":"For the rest of the encounter, against your Marked Quarry (a new Marked Quarry when you choose one): you gain 1 Boon and are Empowered against them, and you take less damage from each of their Actions, reduced by your **Signature Modifier** (you choose which instance of its damage is reduced).","ruler":"always: boon 1 encounter shot strike quarry; empowered 1 encounter shot strike quarry"}]},{"name":"Deadeye","category":"Archer Feature","level":1,"flavor":"You put everything into one shot, and everything into the one after.","traits":["ranged","shot","strike","weapon"],"frequency":"Daily","target":"One creature","distance":"Weapon","vs":"AD","file":"archer.json","versions":[{"ap":1,"tiers":["[V] 1[W]","[V] 1[W] + [Mod] + 1d6 Pi","[V] 1[W] + [Mod] + 2d6 Pi; Prone."],"critical":"The target is Blinded for 1 round.","ruler":"favored | on 3: debuff Prone"}]},{"name":"Rain of Arrows","category":"Archer Feature","level":1,"flavor":"Arrows fall from nothing, again and again, until the ground is gone.","traits":["area","ranged","save","shot","weapon"],"frequency":"Daily","target":"All enemies in the Area","area":"3 Emanation","distance":"Your weapon's maximum range","vs":"Instinct Save","file":"archer.json","versions":[{"ap":2,"tiers":["[V] 2d8 + [Mod] Pi; Prone.","[V] 2d6 + [Mod] Pi","[V] 1d6 Pi"],"ruler":"area 2.5 | on 1: debuff Prone"}]},{"name":"Deathmark","category":"Archer Apex","flavor":"One arrow, one name, and nothing left to argue.","traits":["ranged","shot","strike","weapon"],"frequency":"Encounter","escalation":3,"target":"One creature","distance":"Weapon","vs":"AD","file":"archer.json","versions":[{"ap":2,"tiers":["[V] 1[W] + 1d8 Pi","[V] 1[W] + [Mod] + 2d8 Pi","[V] 1[W] + [Mod] + 3d8 Pi"],"effects":"Against your [[Marked Quarry]], this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them."}]},{"name":"Open Season","category":"Archer Apex","flavor":"You call it, and every arrow in the party finds the mark.","traits":["focus","ranged","shot","strike","weapon"],"frequency":"Encounter","escalation":3,"target":"Your Marked Quarry","distance":"Weapon","file":"archer.json","versions":[{"ap":2,"effects":"Make a [Ranged, Shot] Weapon Attack (1A) against your [[Marked Quarry]]. For 1 round, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi.","ruler":"does Weapon Attack | always: vulnerable 2 round"}]},{"name":"Mark Quarry","category":"Archer Feature","level":1,"flavor":"One name, one face, and the rest of the field goes quiet.","traits":["focus"],"frequency":"Turn","target":"One creature","file":"archer.json","versions":[{"ap":0,"effects":"The targeted creature becomes your Marked Quarry: at the start of an encounter, or as a 0R [Focus] when yours died or went Down."},{"ap":1,"effects":"The targeted creature becomes your Marked Quarry instead of the one you had."}]},{"name":"Advance","category":"Basic Action","flavor":"You press forward, one deliberate step at a time.","traits":["move","self"],"frequency":"At-will","file":"basic-actions.json","versions":[{"ap":1,"effects":"When you use this Action, you move up to your Speed in squares."}]},{"name":"Charge","category":"Basic Action","flavor":"You close the distance in one straight, reckless line.","traits":["move","strike"],"frequency":"Round","target":"One creature","requirements":"You have at least Speed 3.","file":"basic-actions.json","versions":[{"ap":2,"effects":"Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target. That Weapon Attack counts toward At-will Banes."}]},{"name":"Crawl","category":"Basic Action","flavor":"You drag yourself along the ground.","traits":["move","self"],"frequency":"At-will","file":"basic-actions.json","versions":[{"ap":1,"effects":"You move 1 square."},{"ap":2,"effects":"**Requirements:** Your Speed is 5 or higher. You move 3 squares."}]},{"name":"Evade","category":"Basic Action","flavor":"You slip through the fray without giving anyone an opening.","traits":["self"],"frequency":"At-will","file":"basic-actions.json","versions":[{"ap":1,"effects":"Evade 1."},{"ap":2,"effects":"Evade half your Speed (rounded down)."}]},{"name":"Fists","category":"Basic Action","flavor":"When there is nothing else in your hands, there are always your hands.","traits":["strike","weapon"],"frequency":"At-will","target":"One creature","distance":"Weapon","vs":"AD","requirements":"You have a free hand.","file":"basic-actions.json","versions":[{"ap":1,"tiers":["0","[V] 1[W] + [Mod]","[V] 1[W] + [Mod]"]}]},{"name":"Haul","category":"Basic Action","flavor":"You snag them and drag them in.","traits":["appeal","body","handle","strike"],"frequency":"Round","target":"One creature","distance":"Reach","vs":"Appeal or Body (the one used to roll)","requirements":"Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement.","file":"basic-actions.json","versions":[{"ap":1,"tiers":["No effect.","Pulled 1.","Pulled 2."]},{"ap":2,"tiers":["No effect.","Pulled 2.","Pulled 4."]},{"ap":3,"tiers":["Pulled 1.","Pulled 3.","Pulled 5."]}]},{"name":"Interact","category":"Basic Action","flavor":"You pull the lever, open the door, grab what you need.","traits":["handle"],"frequency":"At-will","distance":"Reach","file":"basic-actions.json","versions":[{"ap":1,"effects":"You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world."}]},{"name":"Leaning","category":"Basic Action","flavor":"You lean out from cover, just enough to see.","traits":["self"],"frequency":"At-will","file":"basic-actions.json","versions":[{"ap":1,"effects":"Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost."}]},{"name":"Regrip","category":"Basic Action","flavor":"You shift your hands on the grip, and the weapon sits where you want it.","traits":["self"],"frequency":"At-will","file":"basic-actions.json","versions":[{"ap":1,"effects":"You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand."}]},{"name":"Release","category":"Basic Action","flavor":"You let it go.","traits":["self"],"frequency":"At-will","file":"basic-actions.json","versions":[{"ap":0,"effects":"You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand)."}]},{"name":"Reload","category":"Basic Action","flavor":"You work the mechanism and seat a fresh bolt.","traits":["weapon","handle"],"frequency":"At-will","target":"One target","distance":"Reach","vs":"DC 13","requirements":"You or an ally within Reach is wielding an unloaded weapon.","file":"basic-actions.json","versions":[{"ap":1,"tiers":["Your next Reload attempt gains 2 Boons.","You Reload the weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can.","You Reload the weapon and its wielder can Evade 1. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can."]}]},{"name":"Relocate","category":"Basic Action","flavor":"You take them by the arm and put them where you want them.","traits":["body","handle","instinct","strike"],"frequency":"At-will","target":"One creature","distance":"Reach","vs":"Body or Instinct (the one used to roll)","requirements":"The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.","file":"basic-actions.json","versions":[{"ap":1,"tiers":["No effect.","Reposition 1.","Reposition 2."]},{"ap":2,"tiers":["No effect.","Reposition 2.","Reposition 4."]},{"ap":3,"tiers":["Reposition 1.","Reposition 3.","Reposition 5."]}]},{"name":"Shove","category":"Basic Action","flavor":"You put your weight behind it and drive them back.","traits":["body","handle","strike"],"frequency":"Round","target":"One creature","distance":"Reach","vs":"Body","requirements":"The target's SR is at most 1 higher than yours.","file":"basic-actions.json","versions":[{"ap":1,"tiers":["No effect.","Pushed 1.","Pushed 2."]},{"ap":2,"tiers":["No effect.","Pushed 2.","Pushed 4."]},{"ap":3,"tiers":["Pushed 1.","Pushed 3.","Pushed 5."]}]},{"name":"Stand","category":"Basic Action","flavor":"You get your feet back under you.","traits":["move","self"],"frequency":"At-will","file":"basic-actions.json","versions":[{"ap":1,"effects":"You stand up: you are no longer Prone."}]},{"name":"Steel Yourself","category":"Basic Action","flavor":"You grit your teeth and find a little more to give.","traits":["self"],"frequency":"Round","file":"basic-actions.json","versions":[{"ap":2,"effects":"You use 1 Rally Point.","ruler":"heal 1 self"},{"ap":3,"effects":"You use 2 Rally Points.","ruler":"heal 2 self"}]},{"name":"Trip","category":"Basic Action","flavor":"A hooked foot, a twist, and they hit the ground.","traits":["body","handle","instinct","strike"],"frequency":"Round","target":"One creature","distance":"Reach","vs":"Body or Instinct (the one used to roll)","requirements":"The target's SR is at most 1 higher than yours.","file":"basic-actions.json","versions":[{"ap":1,"tiers":["No effect.","No effect.","Prone."]},{"ap":2,"tiers":["No effect.","Prone.","[V] 1d8 Bl; Prone."]}]},{"name":"Weapon Attack","category":"Basic Action","flavor":"You strike with the weapon in your hands.","traits":["strike","weapon"],"frequency":"At-will","target":"One creature","distance":"Weapon","vs":"AD","file":"basic-actions.json","versions":[{"ap":1,"tiers":["0","[V] 1[W] + [Mod]","[V] 1[W] + [Mod]"]}]},{"name":"Break Free","category":"Basic Action","flavor":"You tear loose from whatever holds you.","traits":["move","self"],"frequency":"At-will","requirements":"You are Immobilized.","file":"basic-actions.json","versions":[{"ap":1,"effects":"You are no longer Immobilized."}]},{"name":"Rusty Knife","category":"Basic attack","flavor":"A notched blade, quick and dirty.","traits":["melee","strike","weapon"],"frequency":"At-will","target":"One creature","distance":"Weapon","vs":"AD","npc":"Goblin Sneak","file":"bestiary.json","versions":[{"ap":1,"tiers":["0","[V] [Mod] Pi","[V] 1d4 Pi"]}]},{"name":"Dirty Trick","category":"Special Action","flavor":"Sand in the eyes, a heel on the toes, and the goblin is gone.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","npc":"Goblin Sneak","file":"bestiary.json","versions":[{"ap":1,"tiers":["0","[V] [Mod] Pi","[V] 1d6 Pi"],"effects":"Hindered (EoT)."}]},{"name":"Cudgel","category":"Basic attack","flavor":"A heavy stick and no reason to hold back.","traits":["melee","strike","weapon"],"frequency":"At-will","target":"One creature","distance":"Weapon","vs":"AD","npc":"Bandit Thug","file":"bestiary.json","versions":[{"ap":1,"tiers":["0","[V] 1d2 Bl","[V] 1d4 Bl"]}]},{"name":"Low Blow","category":"Special Action","flavor":"No rules in a back alley.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","npc":"Bandit Thug","file":"bestiary.json","versions":[{"ap":2,"tiers":["0","[V] 1d8 Bl","[V] 2d6 Bl"]}]},{"name":"Cleaver","category":"Basic attack","flavor":"A butcher's blade, swung by someone who enjoys it.","traits":["melee","strike","weapon"],"frequency":"At-will","target":"One creature","distance":"Weapon","vs":"AD","npc":"Orc Warrior","file":"bestiary.json","versions":[{"ap":1,"tiers":["0","[V] 1d4 Sl","[V] 1d10 Sl"]}]},{"name":"Brutal Swing","category":"Special Action","flavor":"The orc puts its whole weight behind one wild arc.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","npc":"Orc Warrior","file":"bestiary.json","versions":[{"ap":2,"tiers":["0","[V] 1d8 Sl","[V] 2d6 Sl"],"effects":"Prone."}]},{"name":"Hold the Line","category":"Special Action","flavor":"Touch its kin, and the orc answers.","traits":["melee","strike","weapon"],"frequency":"Round","target":"The attacker","distance":"Weapon","vs":"AD","trigger":"An ally within 2 squares is hit.","npc":"Orc Warrior","file":"bestiary.json","versions":[{"ap":1,"tiers":["0","[V] 1d10 Sl","[V] 3d6 Sl"]}]},{"name":"Chilling Touch","category":"Basic attack","flavor":"Fingers of fog, and the cold goes straight to the heart.","traits":["melee","power","strike"],"frequency":"At-will","target":"One creature","distance":"Reach","vs":"WD","npc":"Grave Wisp","file":"bestiary.json","versions":[{"ap":1,"tiers":["0","[R] 1d4 + [Mod] Co","[R] 1d10 + [Mod] Co"]}]},{"name":"Dread Whisper","category":"Special Action","flavor":"It knows your name, and it says what you fear most.","traits":["melee","power","strike","fear"],"frequency":"Round","target":"One creature","distance":"Reach","vs":"WD","npc":"Grave Wisp","file":"bestiary.json","versions":[{"ap":2,"tiers":["0","[R] 1d10 + [Mod] Ps","[R] 3d6 + [Mod] Ps"],"effects":"Frightened of the Grave Wisp (EoT)."}]},{"name":"Club","category":"Basic attack","flavor":"A tree trunk with a handle.","traits":["melee","strike","weapon"],"frequency":"At-will","target":"One creature","distance":"Weapon","vs":"AD","npc":"Ogre Chieftain","file":"bestiary.json","versions":[{"ap":1,"tiers":["0","[V] 1d6 Bl","[V] 2d6 Bl"]}]},{"name":"Ground Slam","category":"Special Action","flavor":"The ogre brings both fists down, and the ground jumps.","traits":["area","body","save"],"frequency":"Encounter","target":"All creatures in the Area","area":"1 Emanation","vs":"Body Save","npc":"Ogre Chieftain","file":"bestiary.json","versions":[{"ap":3,"tiers":["[V] 3d6 + [Mod] Bl; Prone.","[V] 1d10 + [Mod] Bl","No effect."]}]},{"name":"Rally the Tribe","category":"Special Action","flavor":"One bellow, and the whole tribe fights harder.","traits":["focus"],"frequency":"Round","escalation":2,"target":"Allies within 5 squares","distance":"5 sq.","npc":"Ogre Chieftain","file":"bestiary.json","versions":[{"ap":1,"effects":"Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action."}]},{"name":"Stick and Slip","category":"Weapon Technique","flavor":"In, a quick cut, and out before they can answer.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d4 + [Mod] Pi; you can Evade 1.","[V] 1d8 + [Mod] Pi; you can Evade 1."]}]},{"name":"Guarded Cut","category":"Weapon Technique","flavor":"The blade strikes and comes straight back to guard.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Sl","[V] 1d6 + [Mod] Sl","[V] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round."]}]},{"name":"Reaping Sweep","category":"Weapon Technique","flavor":"A wide, heavy arc for anyone standing too close.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Sl","[V] 1d10 + [Mod] Sl; Cleave 1","[V] 2d6 + [Mod] Sl; Cleave 2"]}]},{"name":"Hooking Chop","category":"Weapon Technique","flavor":"The beard of the axe catches, and you pull.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Sl","[V] 1d4 + [Mod] Sl; Pulled 1.","[V] 1d8 + [Mod] Sl; Pulled 1."]}]},{"name":"Rending Chop","category":"Weapon Technique","flavor":"A blow that splits armor and leaves the flesh open.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Sl","[V] 1d6 + [Mod] Sl","[V] 2d8 + [Mod] Sl; Vulnerable 1 (EoT)."]}]},{"name":"Ringing Blow","category":"Weapon Technique","flavor":"A crack on the helm, and their next swing goes wide.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Bl","[V] 1d4 + 1 + [Mod] Bl","[V] 1d8 + 1 + [Mod] Bl; its next [Strike] Action takes 1 Pressure Bane (EoT)."]}]},{"name":"Bowl Over","category":"Weapon Technique","flavor":"All the weight of the head, low and through.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Bl","[V] 1d4 + 2 + [Mod] Bl","[V] 1d10 + 2 + [Mod] Bl; Prone."]}]},{"name":"Lunge","category":"Weapon Technique","flavor":"A full extension that reaches farther than they thought.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon + 1","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d4 + [Mod] Pi","[V] 1d8 + [Mod] Pi; Hindered (EoT)."]}]},{"name":"Keep Them Off","category":"Weapon Technique","flavor":"The point stays between you and them, and it pushes.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d6 + [Mod] Pi; Pushed 1.","[V] 1d10 + [Mod] Pi; Pushed 2."]}]},{"name":"Gut Punch","category":"Weapon Technique","flavor":"A fist with a blade in it, right under the ribs.","traits":["melee","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d4 + [Mod] Pi; Hindered (EoT).","[V] 1d6 + [Mod] Pi; Hindered (EoT)."]}]},{"name":"Skirmish Shot","category":"Weapon Technique","flavor":"Loose, and be gone before the arrow lands.","traits":["ranged","shot","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d6 + [Mod] Pi","[V] 1d10 + [Mod] Pi; you can Evade 1."]}]},{"name":"Heartseeker","category":"Weapon Technique","flavor":"A full draw, aimed where the armor gives.","traits":["ranged","shot","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d4 + 1 + [Mod] Pi","[V] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT)."]}]},{"name":"Sting","category":"Weapon Technique","flavor":"A small bolt in the leg: small, and enough.","traits":["ranged","shot","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d4 + [Mod] Pi","[V] 1d8 + [Mod] Pi; Hindered (EoT)."]}]},{"name":"Lock & Loose","category":"Weapon Technique","flavor":"A bolt to the knee, and they go nowhere.","traits":["ranged","shot","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action.","[V] 1d10 + [Mod] Pi; Immobilized"],"ruler":"on 2: debuff Hindered (until it moves); on 3: debuff Immobilized"}]},{"name":"Point Blank","category":"Weapon Technique","flavor":"Too close for a bow. Not too close for this.","traits":["gun","ranged","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d4 + [Mod] Pi","[V] 2d6 + [Mod] Pi; Pushed 1."],"effects":"While you are Engaged, this attack takes 1 Bane for it instead of 2."}]},{"name":"Thunderclap","category":"Weapon Technique","flavor":"The shot and the smoke, and they are on the ground.","traits":["gun","ranged","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"gear.json","versions":[{"ap":1,"tiers":["[V] [Mod] Pi","[V] 1d4 + [Mod] Pi","[V] 2d8 + [Mod] Pi; Prone."]}]},{"name":"Smite","category":"Divine Power","level":1,"flavor":"Your weapon blazes with holy light.","traits":["divine","signature","strike","weapon"],"frequency":"Round","target":"One creature","distance":"Weapon","vs":"AD","file":"paladin.json","versions":[{"ap":1,"tiers":["[V] 1[W]","[V] 1[W] + [Mod] + [R] 1d6 Ho","[V] 1[W] + [Mod] + [R] 1d8 Ho"],"effects":"The target sheds [[Bright|Bright light]] in a 1 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round."},{"ap":2,"tiers":["[V] 1[W] + [R] 1d6 Ho","[V] 1[W] + [Mod] + [R] 2d6 Ho","[V] 1[W] + [Mod] + [R] 2d10 Ho"],"effects":"As 1 AP, but a 2 Emanation."},{"ap":3,"tiers":["[V] 1[W] + [R] 1d8 Ho","[V] 1[W] + [Mod] + [R] 2d8 Ho","[V] 1[W] + [Mod] + [R] 3d8 Ho"],"effects":"As 2 AP, and you or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light, you excepted, are Pushed 1, away from the target.","ruler":"on 2+: guard 1d8+[Mod] self"}]},{"name":"Lay On Hands","category":"Divine Power","level":1,"flavor":"Your touch carries your god's mercy.","traits":["divine","focus"],"frequency":"Round","target":"One [[Willing and Unwilling|willing]] creature","distance":"Reach","file":"paladin.json","versions":[{"ap":1,"effects":"The target can use 1 Rally Point.","ruler":"heal 1"},{"ap":2,"effects":"The target can use 1 Rally Point, healing 1d6 + your Power Modifier more.","ruler":"heal 1; mend 1d6+[Mod] ally"},{"ap":3,"effects":"As 2 AP, but 2 Rally Points.","ruler":"heal 2; mend 1d6+[Mod] ally"}]},{"name":"Shield of Faith","category":"Divine Power","level":1,"flavor":"A shimmer of light holds steady between them and harm.","traits":["divine","focus"],"frequency":"Turn","target":"The triggering creature","interrupt":"A [Strike] Action would damage you or an ally within 5 squares.","file":"paladin.json","versions":[{"ap":1,"effects":"The damage that Strike deals to the target is reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3).","ruler":"block 2d6+[Mod]"}]},{"name":"Rebuke","category":"Divine Power","level":1,"flavor":"Strike my friends, and feel why you should not have.","traits":["divine","power","save"],"frequency":"Turn","target":"The triggering creature","distance":"5 sq.","vs":"Appeal Save","trigger":"An enemy within 5 squares makes a [Strike] Action against an ally.","file":"paladin.json","versions":[{"ap":1,"tiers":["[R] 1d8 Ho; Pushed 2, and Frightened of you for 1 round.","[R] 1d6 Ho; Pushed 1.","No effect."],"ruler":"on 1: push 2; on 1: debuff Frightened (EoT); on 2: push 1"}]},{"name":"Holy Wrath","category":"Paladin Feature","level":1,"flavor":"For one blow, your god stops holding back.","traits":["divine","strike","weapon"],"frequency":"Encounter","target":"One creature","distance":"Weapon","vs":"AD","file":"paladin.json","versions":[{"ap":2,"tiers":["[V] 1[W] + [R] 1d8 Ho","[V] 1[W] + [Mod] + [R] 2d8 Ho","[V] 1[W] + [Mod] + [R] 3d8 Ho"]},{"ap":3,"tiers":["[V] 1[W] + [R] 2d8 Ho","[V] 1[W] + [Mod] + [R] 3d8 Ho","[V] 1[W] + [Mod] + [R] 4d8 Ho"]}]},{"name":"Word of Radiance","category":"Paladin Feature","level":1,"flavor":"You speak a word, and light pours from your hands across everything that stands against you.","traits":["area","divine","power"],"frequency":"Encounter","target":"All enemies in the Area","area":"2 / 3 Burst","distance":"10 sq.","vs":"WD","file":"paladin.json","versions":[{"ap":2,"tiers":["[R] 1d10 Ho","[R] 2d8 Ho; Pushed 1.","[R] 3d6 Ho; Pushed 2."],"critical":"The target is Prone.","ruler":"area 1.8 | on 2: push 1; on 3: push 2"},{"ap":3,"tiers":["[R] 2d6 Ho","[R] 2d10 Ho; Pushed 1.","[R] 3d8 Ho; Pushed 2."],"critical":"The target is Prone.","ruler":"area 2.3 | on 2: push 1; on 3: push 2"}]},{"name":"Bulwark of Faith","category":"Paladin Feature","level":1,"flavor":"You step into the blow meant for them, and your god holds the line with you.","traits":["divine","focus"],"frequency":"Encounter","target":"The triggering creature","interrupt":"A [Strike] Action would damage an ally within 5 squares.","file":"paladin.json","versions":[{"ap":1,"effects":"The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.","ruler":"block 9; slide 1"}]},{"name":"Beacon","category":"Paladin Feature","level":1,"flavor":"You plant your feet, and light rims the shoulders of everyone near you.","traits":["area","divine","self"],"frequency":"Encounter","target":"You and allies in the Area","area":"Aura 2","file":"paladin.json","versions":[{"ap":1,"effects":"For 3 rounds, you and allies in the [[Aura]] gain +1 Defense. While the Beacon is active, you gain the following Action:","ruler":"allies 2.5 | rounds 3 | defense 1 allies"}]},{"name":"Consecrated Ground","category":"Paladin Feature","level":1,"flavor":"You drive your weapon into the earth, and the earth answers.","traits":["area","divine"],"frequency":"Daily","target":"All creatures in the Area","area":"2 / 3 Emanation","distance":"10 sq.","file":"paladin.json","versions":[{"ap":2,"effects":"For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.","ruler":"rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4"},{"ap":3,"effects":"As 2 AP, but for 5 rounds.","ruler":"rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4"}]},{"name":"Miraculous Recovery","category":"Paladin Feature","level":1,"flavor":"You lay both hands on the wound and call in a debt owed to your god.","traits":["divine","focus"],"frequency":"Daily","target":"One [[Willing and Unwilling|willing]] creature","distance":"Reach","file":"paladin.json","versions":[{"ap":2,"effects":"The target heals twice what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them.","ruler":"heal 2; remove-effect 1"},{"ap":3,"effects":"As 2 AP, but three times what 1 Rally Point would heal.","ruler":"heal 3; remove-effect 1"}]},{"name":"Divine Intervention","category":"Paladin Feature","level":1,"flavor":"You reach out, and your god answers before you finish the prayer.","traits":["divine"],"frequency":"Daily","target":"The triggering creature","interrupt":"You or an ally within 5 squares would go Down.","file":"paladin.json","versions":[{"ap":2,"effects":"Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain [[Guard]] equal to what one of their Rally Points heals.","ruler":"prevent-down; guard 9 ally"}]},{"name":"Final Verdict","category":"Paladin Apex","flavor":"You name every sin within reach, and the light answers all at once.","traits":["area","divine","melee","self","signature","strike","weapon"],"frequency":"Encounter","escalation":3,"target":"All enemies in the Area","area":"1 Emanation","vs":"AD","file":"paladin.json","versions":[{"ap":2,"tiers":["[V] 1[W] + [R] 1d8 Ho","[V] 1[W] + [Mod] + [R] 2d8 Ho","[V] 1[W] + [Mod] + [R] 3d8 Ho"],"effects":"You roll once and compare the result to each target's AD. Each target you hit is Pushed 1 and sheds Bright light in a 1 Emanation for 1 round. A Bloodied target is Prone instead; a Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap).","ruler":"area 1.5"}]},{"name":"Hallowed Dawn","category":"Paladin Apex","flavor":"Dawn breaks where you stand, and it chooses sides.","traits":["area","divine","self"],"frequency":"Encounter","escalation":3,"target":"All creatures in the Area","area":"2 Emanation","file":"paladin.json","versions":[{"ap":3,"effects":"You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Pushed 2 away from you, takes 1 Bane on its [Strike] Actions and sheds Bright light in a 1 Emanation for 1 round.","ruler":"allies 3 | mend 3d6+[Mod] any; push 2; remove-effect 1"}]}]};
+const CALC = (function () {
+// Damage math for actions: average damage per tier, tier odds and expected damage.
+
+/** Average of a dice expression such as "1d4+2", "2d6+1d4" or "3". Returns null when it cannot be read. */
+function avgFormula(f) {
+  const s = String(f ?? "").replace(/\s+/g, "");
+  if (!s) return 0;
+  const expr = s.replace(/(\d*)d(\d+)/gi, (m, n, d) => `(${(Number(n || 1) * (Number(d) + 1)) / 2})`);
+  if (!/^[0-9+\-*/().]+$/.test(expr)) return null;
+  try { const v = Function(`"use strict";return (${expr})`)(); return Number.isFinite(v) ? v : null; } catch { return null; }
+}
+
+// One d12 chain: a 12 counts as 11 and is rolled again. Distribution of [first face, total].
+const CHAINS = new Map();
+function chain(maxDepth = 6) {
+  if (CHAINS.has(maxDepth)) return CHAINS.get(maxDepth);
+  const out = new Map();
+  const rec = (first, total, p, depth) => {
+    for (let f = 1; f <= 12; f++) {
+      const q = p / 12;
+      if (f === 12 && depth < maxDepth) { rec(first || 12, total + 11, q, depth + 1); continue; }
+      const key = `${first || f}|${total + (f === 12 ? 11 : f)}`;
+      out.set(key, (out.get(key) ?? 0) + q);
+    }
+  };
+  rec(0, 0, 1, 0);
+  const list = [...out].map(([k, p]) => { const [f, t] = k.split("|").map(Number); return { f, t, p }; });
+  CHAINS.set(maxDepth, list);
+  return list;
+}
+
+/* ---- v0.0.301 (PACK BB; book Ch. 1 "Boons and Banes", "Named Boons and Banes", "Five Boons or Banes", "Favored and Doomed Rolls") ---- */
+/** Boons and Banes with the same name add up to 2 (each side, before cancelling). */
+const BB_LIMIT = 2;
+/** The names that carry a limit. A Boon or Bane with no name (or any other word) has none: it always adds up. */
+const BB_NAMES = { field: "Field", pressure: "Pressure", support: "Support" };
+const bbKey = v => { const k = String(v ?? "").trim().toLowerCase(); return Object.hasOwn(BB_NAMES, k) ? k : ""; };
+/**
+ * Boons and Banes of several sources, each { boons, banes, bb } (bb: "field" | "pressure" | "support" | ""): the limit of 2 applied to each name and
+ * each side, then the totals. { boons, banes, rawBoons, rawBanes, groups: { field: { boons, banes, keptBoons, keptBanes } } }. Pure.
+ */
+function bbCount(list = []) {
+  const groups = {};
+  let boons = 0, banes = 0, rawBoons = 0, rawBanes = 0;
+  for (const s of list ?? []) {
+    const b = Math.max(0, Number(s?.boons) || 0), n = Math.max(0, Number(s?.banes) || 0), k = bbKey(s?.bb);
+    rawBoons += b; rawBanes += n;
+    if (!k) { boons += b; banes += n; continue; }
+    const g = (groups[k] ??= { boons: 0, banes: 0, keptBoons: 0, keptBanes: 0 });
+    g.boons += b; g.banes += n;
+  }
+  for (const g of Object.values(groups)) { g.keptBoons = Math.min(BB_LIMIT, g.boons); g.keptBanes = Math.min(BB_LIMIT, g.banes); boons += g.keptBoons; banes += g.keptBanes; }
+  return { boons, banes, rawBoons, rawBanes, groups };
+}
+/** Boons and Banes cancel; 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead of adding. { net, add, five }. */
+function bbFive(boons = 0, banes = 0) {
+  const net = (Number(boons) || 0) - (Number(banes) || 0);
+  if (net >= 5) return { net, add: 0, five: "favored" };
+  if (net <= -5) return { net, add: 0, five: "doomed" };
+  return { net, add: net, five: "" };
+}
+/** The roll's state from its own Favored / Doomed and the five b/b: Favored and Doomed together are a normal roll; never Favored (or Doomed) twice. */
+function rollState(favored = false, doomed = false, five = "") {
+  const f = !!favored || five === "favored", d = !!doomed || five === "doomed";
+  return f && d ? "" : f ? "favored" : d ? "doomed" : "";
+}
+/** The same from a state string ("favored", "doomed" or ""). */
+const mergeState = (state = "", five = "") => rollState(state === "favored", state === "doomed", five);
+
+/**
+ * How Favored and Doomed keep their dice (Ch. 1): Doomed keeps the two lowest totals, no Doubles. Favored keeps the two highest totals, any two
+ * matching faces of the three are Doubles (even one not kept), three of a kind a Critical whatever the total. trio: [{ f (first face), t (total) }].
+ * Returns { keep: [i, j], doubles, triple }.
+ */
+function keepThree(trio, state, noDoubles = false) {
+  const order = trio.map((d, i) => ({ t: d.t, i })).sort((a, b) => (state === "doomed" ? a.t - b.t : b.t - a.t) || a.i - b.i);
+  const keep = [order[0].i, order[1].i].sort((a, b) => a - b);
+  if (state !== "favored" || noDoubles) return { keep, doubles: false, triple: false };
+  const [a, b, c] = trio.map(d => d.f);
+  return { keep, doubles: a === b || a === c || b === c, triple: a === b && b === c };
+}
+/** A total's Tier, with Doubles and three of a kind: { tier, crit, base }. */
+function tierOf(total, dc, doubles = false, triple = false) {
+  const base = total < dc ? 1 : (total < dc + 7 ? 2 : 3);
+  if (triple) return { base, tier: 3, crit: true };
+  return { base, tier: doubles ? Math.min(3, base + 1) : base, crit: (doubles && base === 3) || total >= dc + 20 };
+}
+
+const CACHE = new Map();
+/**
+ * Chance of Tier 1, 2 and 3 for 2d12 + mod vs a DC, with Doubles, Boons (+1 each) and Banes (-1 each) that cancel, 5 or more left making the roll
+ * Favored or Doomed instead (boons and banes are counts after the limits of their names: bbCount), and state "favored" / "doomed" / "".
+ * wantCrit: [_, _, chance of a Critical].
+ */
+function tierProbs(mod, dc = 13, boons = 0, banes = 0, state = "", wantCrit = false) {
+  const key = `${mod}|${dc}|${boons}|${banes}|${state}|${wantCrit}`;
+  if (CACHE.has(key)) return CACHE.get(key);
+  const c = chain();
+  const five = bbFive(boons, banes), st = mergeState(state, five.five), adj = five.add;
+  const res = [0, 0, 0];
+  if (!st) {
+    for (const a of c) for (const b of c) {
+      const r = tierOf(a.t + b.t + mod + adj, dc, a.f === b.f);
+      if (wantCrit) { if (r.crit) res[2] += a.p * b.p; }
+      else res[r.tier - 1] += a.p * b.p;
+    }
+  } else {
+    const c3 = chain(2);   // three dice: two explosions deep is enough (a third 12 in a row is 1 in 1,728)
+    for (const a of c3) for (const b of c3) for (const x of c3) {
+      const w = a.p * b.p * x.p, trio = [a, b, x], k = keepThree(trio, st);
+      const r = tierOf(trio[k.keep[0]].t + trio[k.keep[1]].t + mod + adj, dc, k.doubles, k.triple);
+      if (wantCrit) { if (r.crit) res[2] += w; }
+      else res[r.tier - 1] += w;
+    }
+  }
+  CACHE.set(key, res);
+  return res;
+}
+
+const dieSides = d => Number(String(d).replace(/\D/g, "")) || 0;
+/** Average of the weapon's damage for a tier, n instances. */
+function weaponAvg(weapon, tier, n = 1) {
+  const d = weapon?.system?.damage?.[`t${tier}`];
+  if (!d) return 0;
+  const dice = d.die ? d.count * n * (dieSides(d.die) + 1) / 2 : 0;
+  return dice + d.mod * n;
+}
+
+/** Average damage of one tier of a version. */
+function tierAvg(insts, tier, { weapon = null, attrVal = 0, isWeapon = false, attrMode = "" } = {}) {
+  const dmg = insts;
+  if (!dmg.length) return 0;
+  let total = 0;
+  for (const i of dmg) {
+    if (i.useW) total += weaponAvg(weapon, tier, i.wCount);
+    if (i.dice) total += avgFormula(i.dice) ?? 0;
+    if (i.useAt) total += attrVal;
+  }
+  // [Mod] added to the damage: the Weapon Modifier on Tiers 2 and 3; nothing for Power, Signature and Attribute Actions (rollsource.mjs).
+  const from = attrMode === "all" ? 1 : attrMode === "t2" ? 2 : attrMode === "none" ? Infinity : (isWeapon ? 2 : Infinity);
+  if (tier >= from && dmg.length && !dmg.some(i => i.useAt)) total += attrVal;
+  return total;
+}
+
+/** Average and expected damage for each tier of a version. mod = attack modifier (null when unknown). */
+function versionStats(version, ctx = {}) {
+  const { mod = null, dc = 13 } = ctx;
+  const avg = [1, 2, 3].map(t => tierAvg(version[`t${t}`] ?? [], t, ctx));
+  const probs = mod === null ? null : tierProbs(mod, dc);
+  const exp = probs ? avg.map((a, i) => a * probs[i]) : null;
+  return { avg, exp, probs, expTotal: exp ? exp.reduce((s, x) => s + x, 0) : null, meanAvg: avg.reduce((s, x) => s + x, 0) / 3 };
+}
+
+const fmt = n => (n === null || n === undefined ? "\u2014" : (Math.round(n * 10) / 10).toString());
+
+/** Odds of a damage roll: every die of every component, plus the flat part. Returns average, chance of exactly this total and of this total or more. */
+function damageOdds(comps) {
+  const faces = [];
+  let flat = 0, total = 0;
+  for (const c of comps) {
+    let diceSum = 0;
+    for (const d of c.dice ?? []) { for (const r of d.results) { faces.push(d.faces); diceSum += r; } }
+    flat += c.total - diceSum; total += c.total;
+  }
+  let dist = new Map([[0, 1]]);
+  for (const f of faces) {
+    const next = new Map();
+    for (const [v, p] of dist) for (let x = 1; x <= f; x++) next.set(v + x, (next.get(v + x) ?? 0) + p / f);
+    dist = next;
+  }
+  let avg = 0, exact = 0, atLeast = 0;
+  for (const [v, p] of dist) { avg += (v + flat) * p; if (v + flat === total) exact += p; if (v + flat >= total) atLeast += p; }
+  return { avg, exact, atLeast, hasDice: faces.length > 0 };
+}
+
+/**
+ * Empowered N adds N to every die of the damage; Enfeebled N subtracts N from every die, but each die still deals at least 1 (Enfeebled is a negative step).
+ * `results` are the numbers rolled on the dice; returns how much to add to the damage. Flat numbers, and damage with no dice, don't change.
+ */
+function perDieDelta(results, step) {
+  const k = Math.trunc(Number(step) || 0);
+  if (!k) return 0;
+  return k > 0 ? k * results.length : results.reduce((sum, v) => sum + Math.max(1, v + k) - v, 0);
+}
+
+/** One Empowered value and one Enfeebled value count: the highest of each (the same effect doesn't stack), and the Enfeebled value is taken from the Empowered one. Lists of { n }. */
+function netStep(empowered = [], enfeebled = []) {
+  const top = list => list.reduce((m, x) => Math.max(m, Number(x.n) || 0), 0);
+  return top(empowered) - top(enfeebled);
+}
+
+/** The highest value of a list of { n } (the same effect doesn't stack). */
+/** Empowered / Enfeebled from several sources: the highest "Set to" (Stacking) plus every "Increase by" (v0.0.323, PACK EFFECT-SHEET: Vow of Enmity). */
+const topStep = list => (list ?? []).reduce((m, x) => (x.inc ? m : Math.max(m, Number(x.n) || 0)), 0) + (list ?? []).reduce((s, x) => s + (x.inc ? Number(x.n) || 0 : 0), 0);
+
+/** "Empowered 2", "Enfeebled 1", or "" for no step. */
+const stepLabel = n => (n > 0 ? `Empowered ${n}` : n < 0 ? `Enfeebled ${-n}` : "");
+
+/** Chance of a Critical: Doubles on a Tier 3, a total 20 or more above the DC, or three of a kind on a Favored roll. */
+const critProb = (mod, dc = 13, boons = 0, banes = 0, state = "") => tierProbs(mod, dc, boons, banes, state, true)[2];
+
+return { tierProbs, critProb, tierOf, bbFive, keepThree };
+})();
+// The Action Builder's pricing (no DOM): the page and test.mjs both run this file. DATA is builder-data.mjs's block; CALC is the system's own calc.mjs
+// (build.mjs pastes its source: the dice are not written a second time); the NPC price functions below the marker are budget.mjs's own source.
+function makeEngine(DATA, CALC) {
+  "use strict";
+  const PC = DATA.pc, NPC = DATA.npc, P = NPC.budget, PRICES = () => P, SEV = ["forced", "mild", "moderate", "severe", "extreme"];
+  function expr(avg) {
+  if (avg <= 0.25) return "0";
+  if (avg < 2) return String(Math.max(1, Math.round(avg)));
+  const die = avg < 5.5 ? 4 : avg < 11.5 ? 6 : 8, flat = Math.max(0, Math.round(avg - (die + 1) / 2 + 1e-9));
+  return flat ? `${flat} + 1d${die}` : `1d${die}`;
+}
+  const pointsAvg = (pts, P = PRICES()) => [pts * P.toDamage[0], pts * P.toDamage[1]];
+  function riderPrice(sev, at = "hit", P = PRICES()) {
+  const i = SEV.indexOf(sev); if (i < 0) throw new Error(`a rider's severity: ${sev}`);
+  const j = at === "setup" ? i + 1 : at === "t3" ? i - 1 : i;
+  if (j < 0) return 0;
+  if (j >= SEV.length) return P.riders.extreme + P.riders.step * (j - (SEV.length - 1));   // past Extreme: each size adds a step
+  return P.riders[SEV[j]];
+}
+  function actionPoints(rank, ap, freq, rating = "medium", P = PRICES()) {
+  const per = P.perAp[rank] * P.rating[rating], round = per * ap * (1 + (P.size[ap] ?? 0) + P.round);
+  return freq === "enc" ? round * P.encounter : freq === "round" ? round : per * ap * (1 + (P.size[ap] ?? 0));
+}
+  const turnBudget = (rank, rating = "medium", P = PRICES()) => P.perAp[rank] * P.rating[rating] * P.turnAp[rank];
+  const sum = a => a.reduce((s, x) => s + x, 0), r1 = x => Math.round(x * 10) / 10, clone = o => JSON.parse(JSON.stringify(o));
+  const TYPES = ["Ac", "Bl", "Co", "El", "Fi", "Fo", "Ho", "Pi", "Ps", "Sl", "Th", "Un"], TYPE_RE = new RegExp(`\\s+(${TYPES.join("|")})$`);
+  const stripLinks = s => String(s ?? "").replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2").replace(/\[\[([^\]]+)\]\]/g, "$1").replace(/\*\*(.+?)\*\*/g, "$1");
+
+  /* ------------------------------------------------------------ damage as the book writes it */
+  /** "[V] 1[W] + [Mod] + [R] 1d6 Ho" -> { w, mod, pmod, flat, dice: [[n, sides, explodes]], pool, type } (null: not damage). */
+  function parseDmg(text) {
+    let s = stripLinks(text).trim(); const out = { w: 0, mod: 0, pmod: 0, flat: 0, dice: [], pool: "", type: "" };
+    if (!s || s === "-" || s === "0") return out;
+    const ty = s.match(TYPE_RE); if (ty) { out.type = ty[1]; s = s.replace(TYPE_RE, ""); }
+    for (const raw of s.split("+")) {
+      const pm = raw.match(/\[(B|M|V|R)\]/); if (pm) out.pool = pm[1] === "B" ? "V" : pm[1] === "M" ? "R" : pm[1];
+      const t = raw.replace(/\[(B|M|V|R)\]/g, "").trim(); let m;
+      if ((m = t.match(/^(\d*)\[W\]$/))) out.w += Number(m[1] || 1);
+      else if (/^\[Mod\]$/i.test(t)) out.mod += 1;
+      else if (/^\[PMod\]$/i.test(t)) out.pmod += 1;
+      else if ((m = t.match(/^(\d*)d(\d+)(!?)$/i))) out.dice.push([Number(m[1] || 1), Number(m[2]), !!m[3]]);
+      else if (/^\d+$/.test(t)) out.flat += Number(t);
+      else return null;
+    }
+    return out;
+  }
+  /** A tier cell "damage; text" -> { dmg (parsed; zero when the cell is all text), text }. */
+  function parseCell(cell) {
+    const s = String(cell ?? ""), i = s.indexOf(";"), a = (i < 0 ? s : s.slice(0, i)).trim(), b = i < 0 ? "" : s.slice(i + 1).trim(), d = parseDmg(a);
+    return d ? { dmg: d, text: b, raw: a } : { dmg: parseDmg("0"), text: s.trim(), raw: "0" };
+  }
+  // An exploding die ("explodes -1": the top face counts one less and is rolled again) is worth +0.5 on average, as the ruler counts it (core.mjs avgDamage).
+  const diceAvg = dice => sum(dice.map(([n, s, ex]) => n * ((s + 1) / 2 + (ex && s > 1 ? 0.5 : 0))));
+  const weaponOf = name => { const w = DATA.weapons.find(x => x.name === name); return w ? { ...w, parsed: w.tiers.map(parseDmg) } : null; };
+  const weaponAvg = (weapon, tier) => { const d = weapon?.parsed?.[tier - 1]; return d ? d.flat + diceAvg(d.dice) : 0; };
+  /** Average of parsed damage on a Tier. ctx: { weapon (weaponOf), mod (the [Mod] the damage adds), pmod }. */
+  const avgDmg = (d, ctx, tier) => (d ? d.w * weaponAvg(ctx.weapon, tier) + d.mod * (ctx.mod ?? 0) + d.pmod * (ctx.pmod ?? 0) + d.flat + diceAvg(d.dice) : 0);
+  const avgExpr = (text, ctx) => { const d = parseDmg(String(text ?? "").replace(/\s+/g, "").replace(/\+/g, " + ")); return d ? avgDmg(d, ctx, 2) : null; };
+
+  /* ------------------------------------------------------------ the roll (the system's calc.mjs) */
+  /** Tier chances and the Critical's. roll: { mod, dc, boons, banes, state }. */
+  const probs = roll => ({ p: CALC.tierProbs(roll.mod, roll.dc, roll.boons || 0, roll.banes || 0, roll.state || ""), crit: CALC.critProb(roll.mod, roll.dc, roll.boons || 0, roll.banes || 0, roll.state || "") });
+  const expOf = (avgs, p) => sum(avgs.map((a, i) => a * p[i]));
+  const zeroOf = (avgs, p) => sum(avgs.map((a, i) => (a <= 0 ? p[i] : 0)));
+
+  /* ------------------------------------------------------------ drafts */
+  const blankTier = () => ({ w: 0, mod: false, flat: 0, dn: 0, ds: 6, ex: false, pool: "V", type: "", text: "" });
+  const blankVersion = (ap, on) => ({ ap, on: !!on, tiers: [blankTier(), blankTier(), blankTier()], linked: 0, linkedExtra: "", riders: [], helps: [], effects: "", critical: "" });
+  function blankDraft(tab) {
+    const b = DATA.builds.find(x => /Smite/.test(x.name)) ?? DATA.builds[0];
+    return { id: "", tab, name: "", category: tab === "npc" ? "Special Action" : "", level: "", flavor: "", traits: tab === "npc" ? "melee, strike, weapon" : "strike, weapon", kind: "weapon", vs: "AD", frequency: tab === "npc" ? "Round" : "Round",
+      reaction: "", reactionCost: 1, reactionText: "", fires: 0.5, rxKind: "other",
+      target: "one", targetsN: 2, areaShape: "Emanation", areaSize: 2, areaFrom: "self", distance: tab === "npc" ? "Weapon" : "Weapon", targetText: "", setup: "",
+      cls: b.name, weapon: b.weapon, wmod: b.wmod, pmod: b.pmod, saveMod: 1, boons: 0, banes: 0, state: "", elite: false, fight: "normal", enemies: 0,
+      rank: "standard", rating: "medium", modRating: "medium", ranged: false, basic: false, four: false, npc: "",
+      versions: [blankVersion(1, true), blankVersion(2, false), blankVersion(3, false)], compare: "" };
+  }
+  /** A draft read again (an older save, a paste): every field it lacks filled from a blank one. */
+  function normalize(d) {
+    const b = blankDraft(d?.tab === "npc" ? "npc" : "pc"), out = { ...b, ...d, versions: [1, 2, 3].map(ap => { const v = (d?.versions ?? []).find(x => x.ap === ap); return v ? { ...blankVersion(ap, v.on), ...v, tiers: [0, 1, 2].map(i => ({ ...blankTier(), ...(v.tiers?.[i] ?? {}) })), riders: (v.riders ?? []).map(r => ({ at: "hit", ...r })), helps: (v.helps ?? []).map(h => ({ kind: "heal", amount: "", who: "ally", n: 1, at: "always", ...h })) } : blankVersion(ap, false); }) };
+    return out;
+  }
+  /** A tier of the form as the book's text: "[V] 1[W] + [Mod] + [R] 1d6 Ho". */
+  function tierDamage(t) {
+    const terms = []; let pool = "";
+    const put = (pl, s) => { terms.push(pl !== pool ? `[${pl}] ${s}` : s); pool = pl; };
+    if (t.w > 0) put("V", `${t.w}[W]`);
+    if (t.mod) put(t.w > 0 ? "V" : t.pool, "[Mod]");
+    if (Number(t.flat) > 0) put(t.pool, String(Number(t.flat)));
+    if (t.dn > 0) put(t.pool, `${t.dn}d${t.ds}${t.ex ? "!" : ""}`);
+    return terms.length ? terms.join(" + ") + (t.type ? ` ${t.type}` : "") : "0";
+  }
+  const isSave = d => d.kind === "save", noRoll = d => d.kind === "none";
+  const freqKey = f => (f === "Encounter" || f === "Daily" ? "enc" : f === "At-will" ? "atwill" : "round");
+  const ridersAt = (v, at) => v.riders.filter(r => r.name && r.at === at).map(r => r.name);
+  function helpText(h, d) {
+    const who = h.who === "self" ? "you gain" : h.who === "allies" ? `${h.n} allies gain` : "an ally gains", amt = h.amount || "?";
+    if (d.tab === "npc") return h.kind === "boon" ? `${h.who === "allies" ? `${h.n} allies` : "an ally"} within 5 squares gain${h.who === "allies" ? "" : "s"} 1 Boon on ${h.who === "allies" ? "their" : "its"} next attack` : h.kind === "basic" ? `${h.who === "allies" ? `${h.n} allies make their` : "an ally makes its"} Basic attack` : `${h.who === "self" ? "it heals" : h.who === "allies" ? `${h.n} allies heal` : "an ally heals"} ${amt}`;
+    if (h.kind === "heal") return `${h.who === "self" ? "you heal" : h.who === "allies" ? `${h.n} allies heal` : "an ally heals"} ${amt}`;
+    if (h.kind === "rally") return `${h.who === "self" ? "you can use" : h.who === "allies" ? `${h.n} allies can each use` : "an ally can use"} 1 Rally Point${h.amount ? `, healing ${amt} more` : ""}`;
+    if (h.kind === "guard") return `${who} [[Guard]] ${amt}`;
+    if (h.kind === "defense") return `${who} +1 Defense until your next turn`;
+    if (h.kind === "block") return `the triggering damage is reduced by ${amt}`;
+    return "";
+  }
+  const cap = s => (s ? s[0].toUpperCase() + s.slice(1) : s);
+  /** A Version's Effects cell, written from the form (riders on a hit, the helps, then the free text). */
+  function effectsText(v, d) {
+    const parts = [...ridersAt(v, "hit").map(n => `${n}.`)];
+    for (const h of v.helps) { const t = helpText(h, d); if (t) parts.push(cap(t) + (h.at === "t3" ? ` (${isSave(d) ? "Tier 1" : "Tier 3"} only)` : h.at === "always" && !noRoll(d) ? " (whatever the result)" : "") + "."); }
+    if (v.linked > 0) parts.push(`You make ${v.linked === 1 ? "a Weapon Attack" : `${["", "", "two", "three"][v.linked] ?? v.linked} Weapon Attacks`} (1A)${v.linkedExtra ? `, each dealing ${v.linkedExtra} more` : ""}.`);
+    if (v.effects) parts.push(v.effects.trim());
+    return parts.join(" ");
+  }
+  /** The three tier cells of a Version (the damage, then the riders that sit on that Tier only). */
+  function tierCells(v, d) {
+    const best = isSave(d) ? 0 : 2, miss = isSave(d) ? 2 : 0;
+    return v.tiers.map((t, i) => { const dm = tierDamage(t), extra = [...(i === best ? ridersAt(v, "t3") : []), ...(i === miss ? ridersAt(v, "miss") : [])].map(n => `${n}.`).join(" "), txt = [extra, t.text].filter(Boolean).join(" "); return txt ? (dm === "0" ? txt : `${dm}; ${txt}`) : dm; });
+  }
+  const hasTiers = (v, d) => !noRoll(d) && (v.tiers.some(t => tierDamage(t) !== "0" || t.text) || v.riders.some(r => r.name) || !v.linked);
+  const areaText = d => (d.target !== "area" ? "" : d.areaShape === "Aura" ? `Aura ${d.areaSize}` : `${d.areaSize} ${d.areaShape}`);
+  const targetLine = d => d.targetText || (d.target === "one" ? "One creature" : d.target === "several" ? `${cap(["", "one", "two", "three", "four", "five", "six"][d.targetsN] ?? String(d.targetsN))} creatures` : d.areaFrom === "self" && d.areaShape !== "Aura" ? "Each enemy in the area" : "Each creature in the area");
+  const vsLine = d => (noRoll(d) ? "" : isSave(d) ? `${d.vs === "AD" || d.vs === "WD" ? "Body" : d.vs} Save` : d.vs);
+  const costLine = d => { const on = d.versions.filter(v => v.on).map(v => v.ap); return d.reaction ? `${d.reactionCost}R` : `${on.join(" / ")} AP`; };
+
+  /** The ruler's line for a Version, where the form can say it (book/cards/README.md, "The extras": `ruler`). */
+  function rulerLine(v, d) {
+    const fx = [], bars = [], hit = isSave(d) ? "on 1: X; on 2: X" : "on 2+: X", best = isSave(d) ? "on 1: X" : "on 3: X", miss = isSave(d) ? "on 3: X" : "on 1: X";
+    const tok = (name) => (d.tab === "npc" ? (/^(Pushed|Pulled|Slid) (\d)/.test(name) ? `${{ Pushed: "push", Pulled: "pull", Slid: "slide" }[name.split(" ")[0]]} ${name.match(/\d/)[0]}` : /^Vulnerable (\d)/.test(name) ? `vulnerable ${name.match(/\d/)[0]}` : `debuff ${name}`) : (PC.riders.find(r => r.name === name)?.ruler ?? `debuff ${name}`));
+    for (const r of v.riders.filter(x => x.name)) { const t = tok(r.name), w = noRoll(d) || r.at === "always" ? "always: X" : r.at === "t3" ? best : r.at === "miss" ? miss : hit; fx.push(w.replace(/X/g, t)); }
+    for (const h of v.helps) {
+      const amt = String(h.amount || "0").replace(/\s+/g, ""), who = h.who === "self" ? "self" : h.who === "allies" ? "any" : "ally", w = noRoll(d) || h.at === "always" ? (d.reaction || noRoll(d) ? "" : "always: ") : h.at === "t3" ? best.replace("X", "") : hit.split(";")[0].replace("X", "");
+      const t = h.kind === "heal" ? `mend ${amt} ${who}` : h.kind === "rally" ? `heal 1${h.amount ? `; mend ${amt} ${who}` : ""}` : h.kind === "guard" ? `guard ${amt} ${who}` : h.kind === "defense" ? `defense 1 ${h.who === "allies" ? "allies" : "ally"}` : h.kind === "block" ? `block ${amt}` : h.kind === "boon" ? `boon 1 ${who}` : "";
+      if (t) fx.push(w + t); if (h.who === "allies" && h.n > 1) bars.push(`allies ${h.n}`);
+    }
+    if (v.linked > 0) bars.push(`does Weapon Attack${v.linked > 1 ? ` x${v.linked}` : ""}`, ...(v.linkedExtra ? [`each extra ${v.linkedExtra.replace(/\s+/g, "")}`] : []), ...(d.target === "several" ? ["different"] : []));
+    if (d.target === "area") { const a = areaInfo(d); bars.push(`area ${r1(a.hit[0])}`); }
+    return [...bars, fx.join("; ")].filter(Boolean).join(" | ");
+  }
+  /** The draft as a card of book/cards (the keys in the README's order). */
+  function toCard(d) {
+    const card = { name: d.name || "Unnamed Action", category: d.category || (d.tab === "npc" ? "Special Action" : "Class Action") };
+    if (d.level !== "" && d.level != null) card.level = Number(d.level);
+    if (d.tab === "npc") { card.book = false; card.npc = d.npc || `${NPC.rank[d.rank].label} (${d.rating})`; }
+    card.flavor = d.flavor || "";
+    card.traits = String(d.traits).split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
+    card.frequency = d.frequency;
+    if (d.reaction) card[d.reaction] = d.reactionText || "";
+    card.target = d.reaction && !d.targetText ? "The triggering creature" : targetLine(d);
+    if (d.target === "area") card.area = areaText(d);
+    if (d.distance && !(d.target === "area" && d.areaShape === "Aura")) card.distance = d.distance;
+    if (vsLine(d)) card.vs = vsLine(d);
+    const setup = [...new Set(d.versions.filter(v => v.on).flatMap(v => (noRoll(d) ? [] : ridersAt(v, "always"))))];
+    if (d.setup || setup.length) card.setup = [d.setup, ...setup.map(n => `${n}.`)].filter(Boolean).join(" ");
+    card.versions = d.versions.filter(v => v.on).map(v => {
+      const o = { ap: d.reaction ? d.reactionCost : v.ap }, fx = effectsText(v, d), rl = rulerLine(v, d);
+      if (hasTiers(v, d)) o.tiers = tierCells(v, d);
+      if (fx) o.effects = fx; if (v.critical) o.critical = v.critical; if (rl) o.ruler = rl;
+      return o;
+    });
+    if (d.tab === "npc") card.ruler = false;
+    return card;
+  }
+  /** An existing card into the form (its damage, its texts; what the form can't hold stays in the Effects text). */
+  function fromCard(card, tab) {
+    const d = blankDraft(tab), tr = card.traits ?? [];
+    Object.assign(d, { name: card.name, category: card.category ?? "", level: card.level ?? "", flavor: card.flavor ?? "", traits: tr.join(", "), frequency: card.frequency ?? "Round", distance: card.distance ?? "", setup: card.setup ?? "", npc: card.npc ?? "" });
+    d.kind = tr.includes("save") ? "save" : tr.includes("power") && !tr.includes("weapon") ? "power" : "weapon";
+    const vs = String(card.vs ?? "AD"); d.vs = /WD/.test(vs) ? "WD" : /AD/.test(vs) ? "AD" : (vs.match(/Body|Mind|Appeal|Instinct/)?.[0] ?? "AD");
+    if (/Save/.test(vs)) d.kind = "save";
+    if (card.interrupt || card.trigger) { d.reaction = card.interrupt ? "interrupt" : "trigger"; d.reactionText = card.interrupt ?? card.trigger; d.reactionCost = card.versions[0]?.ap || 1; }
+    const am = String(card.area ?? "").match(/(Aura) (\d)|(\d)(?: \/ \d)* (Emanation|Burst)/);
+    if (am) { d.target = "area"; d.areaShape = am[1] ?? am[4]; d.areaSize = Number(am[2] ?? am[3]); d.areaFrom = /sq\.|range/i.test(card.distance ?? "") ? "range" : "self"; }
+    else { const n = { two: 2, three: 3, four: 4 }[String(card.target ?? "").split(" ")[0].toLowerCase()]; if (n) { d.target = "several"; d.targetsN = n; } }
+    d.targetText = card.target && !/^(One creature|Two creatures|Three creatures)$/.test(card.target) ? card.target : "";
+    for (const v of d.versions) v.on = false;
+    card.versions.forEach((cv, k) => {
+      const v = d.reaction ? d.versions[k] : d.versions.find(x => x.ap === cv.ap); if (!v) return;
+      v.on = true; v.effects = cv.effects ?? ""; v.critical = cv.critical ?? "";
+      (cv.tiers ?? []).forEach((cell, i) => { const c = parseCell(cell), x = c.dmg, t = v.tiers[i]; t.w = x.w; t.mod = x.mod > 0; t.flat = x.flat; t.dn = x.dice[0]?.[0] ?? 0; t.ds = x.dice[0]?.[1] ?? 6; t.ex = !!x.dice[0]?.[2]; t.type = x.type; t.pool = x.w ? (x.dice.length || x.flat ? (/\[R\]|\[M\]/.test(cell) ? "R" : "V") : "V") : (x.pool || "V"); t.text = c.text; });
+      const lm = String(cv.ruler ?? "").match(/does Weapon Attack(?: x(\d))?/); if (lm && !cv.tiers) { v.linked = Number(lm[1] ?? 1); v.linkedExtra = String(cv.ruler).match(/each extra (\S+)/)?.[1] ?? ""; }
+    });
+    if (!d.versions.some(v => v.on)) d.versions[0].on = true;
+    return d;
+  }
+
+  /* ------------------------------------------------------------ Areas: how many creatures one catches */
+  /** The measured numbers for the draft's Area: { hit: [4 Standards, 6 Standards], rows (every measured Area of that shape), measured }. */
+  function areaInfo(d) {
+    const shape = d.areaShape === "Aura" ? "Emanation" : d.areaShape, from = d.areaShape === "Aura" ? "self" : d.areaFrom, size = Number(d.areaSize), all = [...PC.areas.map(a => ({ ...a, card: a.label })), ...DATA.areasGrid];
+    let rows = all.filter(a => a.shape === shape && a.size === size && a.from === from), measured = rows.length > 0;
+    if (!measured) { const pool = all.filter(a => a.from === from), best = Math.min(...pool.map(a => Math.abs(a.size - size) + (a.shape === shape ? 0 : 0.5))); rows = pool.filter(a => Math.abs(a.size - size) + (a.shape === shape ? 0 : 0.5) === best); }
+    return { hit: [0, 1].map(k => sum(rows.map(a => a.hit[k])) / rows.length), rows, measured, from, shape, size };
+  }
+  /** What one use is multiplied by for its targets, on the PC budget: N creatures N times; an Area the guide's share (half to each from range, two thirds around yourself). */
+  function pcTargets(d) {
+    if (d.target === "several") return { mult: Math.max(1, Number(d.targetsN) || 1), why: `${d.targetsN} creatures` };
+    if (d.target !== "area") return { mult: 1, why: "" };
+    const a = areaInfo(d), share = PC.areaShare[a.from];
+    return { mult: 1 / share, why: a.from === "range" ? "an Area from range should deal half to each: its points count double" : "an Area around yourself should deal two thirds to each: its points count 1.5 times", area: a };
+  }
+
+  /* ------------------------------------------------------------ the PC budget */
+  const NEXT = { mild: "moderate", moderate: "severe", severe: "extreme", extreme: "beyond" };
+  const pcRiderBase = (name, elite) => { const r = PC.riders.find(x => x.name === name); if (!r) return null; const size = elite && r.eliteUp ? NEXT[r.size] : r.size; return { ...r, sizeUsed: size, price: size === "beyond" ? PC.riderPrice.extreme + P.riders.step : PC.riderPrice[size] }; };
+  /** The roll a PC draft makes: its Modifier and what the [Mod] of its damage is. */
+  function pcCtx(d) {
+    const weapon = weaponOf(d.weapon), rollMod = d.kind === "power" ? Number(d.pmod) : d.kind === "save" ? (/power/.test(d.traits) ? Number(d.pmod) : Number(d.wmod)) : Number(d.wmod);
+    return { weapon, mod: rollMod, pmod: Number(d.pmod), wmod: Number(d.wmod), rollMod, seat: weapon?.ranged ? "ranged" : "melee" };
+  }
+  const rollOf = (d, ctx, dc) => (isSave(d) ? { mod: dc, dc: 11 + ctx.rollMod, boons: d.boons, banes: d.banes, state: d.state } : { mod: ctx.rollMod, dc, boons: d.boons, banes: d.banes, state: d.state });
+  /** A Weapon Attack's averages by Tier for this PC (0 / 1[W] + [Mod] / 1[W] + [Mod]) and its expected damage against the budget's Defense (13). */
+  function weaponAttack(ctx) {
+    const d = parseDmg("1[W] + [Mod]"), c = { ...ctx, mod: ctx.wmod }, avgs = [0, avgDmg(d, c, 2), avgDmg(d, c, 3)], p = CALC.tierProbs(ctx.wmod, PC.refDefense);
+    return { avgs, p, exp: expOf(avgs, p), hit: p[1] + p[2] };
+  }
+  /** A Version's average damage by Tier (the form's tiers, and its Weapon Attacks (1A) counted on a hit). */
+  function versionAvgs(v, d, ctx) {
+    const base = noRoll(d) ? [0, 0, 0] : v.tiers.map((t, i) => avgDmg(parseDmg(tierDamage(t)), ctx, i + 1));
+    return base;
+  }
+  function pricePc(d, v, opts = {}) {
+    const ctx = pcCtx(d), wa = weaponAttack(ctx), avgs = versionAvgs(v, d, ctx), save = isSave(d), none = noRoll(d);
+    const ref = none ? [0, 0, 1] : probs(rollOf(d, ctx, save ? 1 : PC.refDefense)).p, refPlain = none ? ref : CALC.tierProbs(save ? 1 : ctx.rollMod, save ? 11 + ctx.rollMod : PC.refDefense);
+    const hitI = save ? [0, 1] : [1, 2], best = save ? 0 : 2, missI = save ? 2 : 0, pHit = none ? 1 : refPlain[hitI[0]] + refPlain[hitI[1]];
+    const T = pcTargets(d), fight = PC.fights.find(f => f.key === d.fight) ?? PC.fights[0];
+    const linkAvg = v.linked > 0 ? v.linked * (wa.exp + wa.hit * (avgExpr(v.linkedExtra, ctx) ?? 0)) : 0;
+    const dmgPts = PC.wa * expOf(avgs, refPlain) / wa.exp, linkedPts = PC.wa * linkAvg / wa.exp;
+    const lines = [];
+    if (dmgPts > 0.05) lines.push({ what: T.mult !== 1 ? `Damage, ${r1(dmgPts)} to each × ${r1(T.mult)}` : "Damage", pts: dmgPts * T.mult, note: T.why });
+    if (linkedPts > 0) lines.push({ what: `${v.linked} Weapon Attack${v.linked > 1 ? "s" : ""} (1A)${v.linkedExtra ? ` + ${v.linkedExtra}` : ""}`, pts: linkedPts });
+    for (const r of v.riders.filter(x => x.name)) {
+      const b = pcRiderBase(r.name, d.elite); if (!b) continue;
+      const at = none ? "always" : r.at, f = at === "hit" ? 1 : at === "t3" ? refPlain[best] / pHit : at === "miss" ? refPlain[missI] / pHit : 1 / wa.hit;
+      lines.push({ what: `${r.name} (${b.sizeUsed}${at === "hit" ? "" : at === "t3" ? ", best Tier only" : at === "miss" ? ", on a miss" : ", always"})`, pts: b.price * f * T.mult, note: b.measured ? `measured ${b.measured.melee} melee · ${b.measured.ranged} ranged · ${b.measured.elite} against an Elite` : "not measured: priced as Mild (the guide)", rider: true });
+    }
+    for (const h of v.helps) {
+      const amt = avgExpr(h.amount, ctx) ?? 0, n = h.who === "allies" ? Math.max(1, Number(h.n) || 1) : 1, ch = none || h.at === "always" ? 1 : h.at === "t3" ? refPlain[best] : pHit;
+      const per = h.kind === "heal" || h.kind === "rally" ? PC.health * fight.healFactor : h.kind === "guard" ? PC.guard * fight.healFactor : h.kind === "block" ? (d.reaction ? PC.blockPoint : PC.health * fight.healFactor) : 0;
+      const pts = h.kind === "defense" ? PC.defense1 * n * ch : amt * per * n * ch;
+      lines.push({ what: cap(stripLinks(helpText(h, d))), pts, help: true, health: h.kind === "defense" ? 0 : amt * n * ch,
+        note: h.kind === "rally" ? `the Rally Point's own heal is priced 0 (it moves Health the ally already had; measured ${PC.rallyHeal} for the bare AP); only what the card adds on top counts` : h.kind === "defense" ? `measured ${PC.defense1} for 1 AP` : h.kind === "block" && d.reaction ? `${r1(PC.blockPoint)} points a point blocked each time it fires (Shield of Faith's measure)` : `${r1(amt * n * ch)} Health on average × ${r1(per)} points (about ${r1(amt * n * ch * fight.dmgPerHealth)} damage dealt in this fight)` });
+    }
+    let total = sum(lines.map(l => l.pts)), budget, band, rx = null;
+    const big = d.frequency === "Encounter" || d.frequency === "Daily";
+    if (d.reaction) {
+      const fires = Number(d.fires) || 0.5, dmg = sum(lines.filter(l => !l.help).map(l => l.pts)), help = sum(lines.filter(l => l.help).map(l => l.pts));
+      rx = { fires, raw: total, dmg, help, damageShare: PC.reactionDamage };
+      total = fires * (dmg * PC.reactionDamage + help);
+      band = PC.reactionBand.map(x => x * (Number(d.reactionCost) === 2 ? 2 : 1) * (big ? PC.encounter : 1)); budget = (band[0] + band[1]) / 2;
+    } else { budget = PC.ap[v.ap] * (big ? PC.encounter : 1); const tol = Math.max(5, budget * 0.1); band = [budget - tol, budget + tol]; }
+    const perDef = (opts.defenses ?? (save ? [0, 1, 2] : [13, 14, 16, 18])).map(dc => { const r = none ? { p: [0, 0, 1], crit: 0 } : probs(rollOf(d, ctx, dc)); return { dc, p: r.p, crit: save ? 0 : r.crit, exp: expOf(avgs, r.p) + (v.linked ? linkAvg * 0 : 0), zero: zeroOf(avgs, r.p) }; });
+    const flags = [];
+    const missAvg = avgs[missI];
+    if (!none && !d.reaction && missAvg <= 0 && !(v.linked > 0)) flags.push({ level: d.frequency === "At-will" || d.frequency === "Round" ? "bad" : "note", text: `${save ? "The target's Tier 3" : "Tier 1"} deals nothing${d.frequency === "At-will" || d.frequency === "Round" ? ": every build needs an attack it uses most turns that deals something on Tier 1 (your rule of thumb, 2026-11-13)" : " (fine on a big Action; the rule of thumb is for the attack used most turns)"}` });
+    if (v.tiers.some(t => t.dn > 1 || (t.dn > 0 && t.ds > 8))) flags.push({ level: "note", text: "The book writes damage as a flat number plus at most one small die (d4, d6, d8)" });
+    if (v.riders.filter(r => r.name).length > 2) flags.push({ level: "note", text: "More than 2 riders on one Action" });
+    if (big && d.frequency === "Daily") flags.push({ level: "note", text: "A Daily Action is priced as an Encounter one (double): the PC budget doesn't measure Dailies" });
+    if (d.reaction && Number(d.reactionCost) === 2) flags.push({ level: "note", text: "A 2R Reaction is priced at twice the 1R band: not measured" });
+    if (d.target === "area" && !T.area.measured) flags.push({ level: "note", text: `A ${areaText(d)} ${T.area.from === "self" ? "around you" : "from range"} was not measured: the count is the nearest measured Area's` });
+    return { ap: v.ap, ctx, wa, avgs, ref: refPlain, lines, total, budget, band, rx, perDef, flags, targets: T, verdict: verdict(total, band), linkAvg, exp13: expOf(avgs, refPlain) + linkAvg, zero13: v.linked > 0 ? 0 : zeroOf(avgs, refPlain), dmgPts, linkedPts };
+  }
+  const verdict = (total, band) => (total < band[0] ? "under" : total > band[1] ? "over" : "on");
+
+  /* ------------------------------------------------------------ the Bestiary's turn budget */
+  const lower = { extreme: "high", high: "medium", medium: "low", low: "terrible", terrible: "terrible" };
+  const LADDER = i => (i <= 0 ? 0 : i <= 5 ? P.riders[SEV[i - 1]] : P.riders.extreme + P.riders.step * (i - 5));
+  /** A Bestiary rider's price where it is (hit, t3, setup), one size less when four or more creatures carry it. */
+  function npcRiderPrice(name, at, four) {
+    const r = NPC.riders.find(x => x.name === name); if (!r) return null;
+    if (/^Staggered/.test(name) && at === "setup") return { ...r, used: 12 - (four ? P.riders.severe - P.riders.moderate : 0) };
+    const shift = (at === "setup" ? 1 : at === "t3" ? -1 : 0) - (four ? 1 : 0);
+    if (r.sev === "beyond2") return { ...r, used: Math.max(0, r.price + P.riders.step * shift) };
+    if (!four && SEV.includes(r.sev)) return { ...r, used: riderPrice(r.sev, at === "setup" ? "setup" : at === "t3" ? "t3" : "hit", P) };   // the ruler's own function
+    return { ...r, used: LADDER((r.sev === "beyond1" ? 6 : SEV.indexOf(r.sev) + 1) + shift) };
+  }
+  function npcCtx(d) {
+    const rk = NPC.rank[d.rank], ri = NPC.ratings.indexOf(d.modRating), mod = rk.modBy[Math.min(ri, rk.modBy.length - 1)];
+    return { weapon: null, mod, pmod: mod, rollMod: mod, rank: rk, refMod: rk.modBy[2] };
+  }
+  /** Points of written damage: what it deals on average over what one point deals, at the rank's Medium Modifier against Defense 13 (a 25-point Basic attack is 3.5 / 5.5). */
+  function npcPoints(avgs, ctx) { const p = CALC.tierProbs(ctx.refMod, 13); return expOf(avgs, p) / (p[1] * P.toDamage[0] + p[2] * P.toDamage[1]); }
+  function priceNpc(d, v, opts = {}) {
+    const ctx = npcCtx(d), save = isSave(d), none = noRoll(d), fk = freqKey(d.frequency), attack = !none;
+    const rating = d.ranged && attack ? Array.from({ length: NPC.rangedStep }).reduce(r => lower[r], d.rating) : d.rating, ap = d.reaction ? Number(d.reactionCost) : v.ap;
+    const price = d.reaction ? actionPoints(d.rank, ap, "round", rating, P) : actionPoints(d.rank, ap, fk, rating, P);
+    const raw = none ? [0, 0, 0] : v.tiers.map((t, i) => avgDmg(parseDmg(tierDamage(t)), ctx, i + 1)), asAttack = save ? [raw[2], raw[1], raw[0]] : raw;
+    const multi = d.target === "one" ? 1 : fk === "enc" && !d.reaction ? P.multiEnc : P.multi, dmgPts = npcPoints(asAttack, ctx), lines = [];
+    if (dmgPts > 0.05) lines.push({ what: multi !== 1 ? `Damage, ${r1(dmgPts)} to each (${fk === "enc" ? "half" : "two thirds"} of its points)` : "Damage", pts: dmgPts / multi });
+    const explodes = v.tiers.some(t => t.dn > 0 && t.ex);
+    if (explodes && !d.basic) lines.push({ what: "An exploding die (!)", pts: P.explode });
+    for (const r of v.riders.filter(x => x.name)) { const at = none ? "hit" : r.at === "always" ? "setup" : r.at === "miss" ? "setup" : r.at, b = npcRiderPrice(r.name, at, d.four); if (b) lines.push({ what: `${r.name} (${b.sev.replace(/beyond\d/, "beyond")}${at === "setup" ? ", Setup: one size more" : at === "t3" ? ", Tier 3 only: one size less" : ""}${d.four ? ", four or more carry it: one size less" : ""})`, pts: b.used, rider: true }); }
+    for (const h of v.helps) {
+      const n = h.who === "allies" ? Math.max(1, Number(h.n) || 1) : 1, amt = avgExpr(h.amount, ctx) ?? 0;
+      const pts = h.kind === "boon" ? P.help.boon * n : h.kind === "basic" ? P.perAp[d.rank] * P.rating[d.rating] * n : amt * P.help.health * n;
+      lines.push({ what: cap(helpText(h, d)), pts, help: true });
+    }
+    const total = sum(lines.map(l => l.pts)), tol = Math.max(3, price * 0.1), band = [price - tol, price + tol], other = sum(lines.filter((l, i) => !(i === 0 && dmgPts > 0.05)).map(l => l.pts));
+    const left = Math.max(0, price - other) * multi, buys = none ? null : pointsAvg(left, P).map(expr);
+    const budget = turnBudget(d.rank, d.rating, P), perAp = P.perAp[d.rank] * P.rating[d.rating];
+    const perDef = (opts.defenses ?? (save ? [0, 1, 2] : [12, 13, 14])).map(dc => { const r = none ? { p: [0, 0, 1], crit: 0 } : probs(save ? { mod: dc, dc: 11 + ctx.rollMod, boons: d.boons, banes: d.banes, state: d.state } : { mod: ctx.rollMod, dc, boons: d.boons, banes: d.banes, state: d.state }); return { dc, p: r.p, crit: save ? 0 : r.crit, exp: expOf(raw, r.p), zero: zeroOf(raw, r.p) }; });
+    const flags = [], ri = NPC.ratings.indexOf(d.rating);
+    if (explodes && !NPC.rank[d.rank].explodes) flags.push({ level: "bad", text: "A Minor enemy's dice never explode (Minions and Grunts)" });
+    if (d.basic && raw[save ? 2 : 0] > 0) flags.push({ level: "note", text: "A Basic attack's Tier 1 deals nothing" });
+    if (d.basic && (v.ap !== 1 || d.frequency !== "At-will")) flags.push({ level: "note", text: "The Basic attack is 1 AP, At-will" });
+    if (!d.reaction && fk === "enc" && ap >= 2 && d.target === "one") flags.push({ level: "bad", text: `A ${ap} AP Encounter Action should hit several creatures: against one PC it is a killing blow (count the encounter one step harder if a boss keeps it)` });
+    if (!d.reaction && fk === "enc") flags.push({ level: "note", text: `Its pay-back: every other Action of the creature, and its Reaction, loses ${["", "a fifth", "a quarter", "half"][ap]} of its points (${r1(P.payBack[ap] * budget)} of the turn budget)` });
+    if (d.frequency === "Daily") flags.push({ level: "note", text: "The Bestiary has no Daily: priced as an Encounter Action" });
+    if (d.reaction) { const share = ap === 2 ? P.reaction.twoR : d.rxKind === "self" ? P.reaction.self : P.reaction.other; flags.push({ level: "note", text: ap === 2 ? "A 2R Reaction takes nothing more off the turn (the AP it keeps is its price) and is weak on an NPC: prefer 1R" : `Off its turn budget: ${d.rxKind === "self" ? "a third" : "a quarter"} of its points, ${r1(share * price)}` }); if (!NPC.rank[d.rank].reactionAp) flags.push({ level: "bad", text: "Minions have no Reaction AP" }); }
+    if (d.ranged && attack) flags.push({ level: "note", text: `A ranged attack pays one rating for its range: priced at ${rating}` });
+    if (v.riders.filter(r => r.name).length > 2) flags.push({ level: "note", text: "At most 2 riders on an Action, as guidance" });
+    if (d.rank === "minion" && d.rating === "extreme") flags.push({ level: "bad", text: "A Minion has no Extreme rating" });
+    if (v.tiers.some(t => t.dn > 1 || (t.dn > 0 && t.ds > 8))) flags.push({ level: "note", text: "The Bestiary writes damage as a flat number plus at most one small die" });
+    const s0 = NPC.stage0[d.rank], key = d.basic ? "basic" : `s${ap}`, table = s0[key]?.[Math.min(ri, (s0[key]?.length ?? 1) - 1)] ?? null;
+    return { ap, ctx, avgs: raw, lines, total, budget: price, band, perDef, flags, verdict: verdict(total, band), buys, left, turnBudget: budget, perAp, share: price / budget, table, tableKey: key, exp13: perDef.find(x => x.dc === 13)?.exp ?? perDef[1].exp, zero13: perDef[1].zero, dmgPts, multi,
+      sheet: { mod: ctx.rollMod, defense: NPC.defense[d.rank][Math.min(ri, NPC.defense[d.rank].length - 1)], health: s0.health[Math.min(ri, s0.health.length - 1)], ap: NPC.rank[d.rank].ap, cv: NPC.rank[d.rank].cv } };
+  }
+  const price = (d, v, opts) => (d.tab === "npc" ? priceNpc(d, v, opts) : pricePc(d, v, opts));
+
+  /* ------------------------------------------------------------ an existing card on the same scale */
+  /** A card's Versions priced for damage only, with the draft's PC (or its NPC): [{ ap, avgs, exp, zero, points, also }]. */
+  function cardStats(card, d) {
+    const npc = d.tab === "npc", ctx = npc ? npcCtx(d) : pcCtx(d), tr = card.traits ?? [], save = tr.includes("save") || /Save/.test(card.vs ?? "");
+    const mod = npc ? ctx.rollMod : tr.includes("weapon") ? ctx.wmod : tr.includes("power") ? ctx.pmod : ctx.wmod, c = { ...ctx, mod }, wa = npc ? null : weaponAttack(ctx);
+    return card.versions.map(cv => {
+      let avgs = (cv.tiers ?? ["0", "0", "0"]).map((cell, i) => avgDmg(parseCell(cell).dmg, c, i + 1)), linkAvg = 0;
+      const lm = String(cv.ruler ?? "").match(/does Weapon Attack(?: x(\d))?/);
+      if (lm && !npc) { const n = Number(lm[1] ?? 1), ex = avgExpr(String(cv.ruler).match(/each extra (\S+)/)?.[1] ?? "", c) ?? 0; linkAvg = n * (wa.exp + wa.hit * ex); }
+      const p = npc ? CALC.tierProbs(ctx.rollMod, 13) : save ? CALC.tierProbs(1, 11 + mod) : CALC.tierProbs(mod, PC.refDefense);
+      const exp = expOf(avgs, p) + linkAvg, points = npc ? npcPoints(save ? [avgs[2], avgs[1], avgs[0]] : avgs, ctx) : PC.wa * exp / wa.exp;
+      const led = PC.ledger.filter(l => l.action === card.name || l.action === `${card.name} ${cv.ap}`).map(l => l.points);
+      return { ap: cv.ap, avgs, exp, zero: linkAvg ? 0 : zeroOf(avgs, p), points, ledger: [...new Set(led)], also: stripLinks(cv.effects ?? "") };
+    });
+  }
+  /** The plain Weapon Attack (a PC) or the rank's table Basic attack (an NPC), as a comparison row. */
+  function plainRow(d) {
+    if (d.tab === "npc") { const ctx = npcCtx(d), ri = NPC.ratings.indexOf(d.rating), b = NPC.stage0[d.rank].basic, row = b[Math.min(ri, b.length - 1)], avgs = [0, ...row.map(s => avgDmg(parseDmg(s), ctx, 2))], p = CALC.tierProbs(ctx.rollMod, 13);
+      return { name: `Basic attack (${NPC.rank[d.rank].label}, ${d.rating}: ${row.join(" / ")})`, ap: 1, avgs, exp: expOf(avgs, p), zero: p[0], points: npcPoints(avgs, ctx) }; }
+    const ctx = pcCtx(d), wa = weaponAttack(ctx);
+    return { name: `Weapon Attack (${d.weapon}, +${ctx.wmod})`, ap: 1, avgs: wa.avgs, exp: wa.exp, zero: wa.p[0], points: PC.wa };
+  }
+
+  /* ------------------------------------------------------------ Copy for Claude */
+  function exportText(d) {
+    const card = toCard(d), on = d.versions.filter(v => v.on), res = on.map(v => price(d, v)), pct = x => `${Math.round(x * 1000) / 10}%`;
+    const computed = { tool: `Action Builder, data of ${DATA.generated}, ${DATA.stage}`, budget: d.tab === "npc" ? "the Bestiary's turn budget" : "the PC budget",
+      built_for: d.tab === "npc" ? { rank: d.rank, damage_rating: d.rating, modifier: res[0]?.ctx.rollMod, ranged: !!d.ranged, basic_attack: !!d.basic, points_an_ap: res[0]?.perAp, turn_budget: res[0]?.turnBudget } : { class: d.cls, weapon: d.weapon, weapon_mod: Number(d.wmod), power_mod: Number(d.pmod), fight: d.fight, against_an_elite: !!d.elite },
+      roll: noRoll(d) ? "none" : isSave(d) ? `the target's Save against DC ${11 + (res[0]?.ctx.rollMod ?? 0)}` : `2d12 + ${res[0]?.ctx.rollMod} Vs. ${d.vs}${d.boons || d.banes || d.state ? ` (${d.boons || 0} Boons, ${d.banes || 0} Banes${d.state ? `, ${d.state}` : ""})` : ""}`,
+      versions: res.map(r => ({ ap: r.ap, points: r1(r.total), should_cost: r1(r.budget), within: r.band.map(r1), verdict: r.verdict === "on" ? "within limits" : r.verdict, breakdown: r.lines.map(l => `${l.what}: ${r1(l.pts)}`), ...(r.rx ? { reaction: `fires in ${pct(r.rx.fires)} of rounds; ${r1(r.rx.raw)} points each time it fires` } : {}), average_damage_by_tier: r.avgs.map(r1),
+        chances: r.perDef.map(x => ({ [isSave(d) ? "save_modifier" : "defense"]: x.dc, tier1: pct(x.p[0]), tier2: pct(x.p[1]), tier3: pct(x.p[2]), ...(isSave(d) ? {} : { critical: pct(x.crit) }), average_damage: r1(x.exp), deals_0: pct(x.zero) })),
+        ...(r.buys ? { the_points_left_buy: r.buys.join(" / ") } : {}), flags: r.flags.map(f => f.text) })) };
+    return [`Action Builder draft: ${card.name} (${d.tab === "npc" ? "an NPC Action" : "a PC Action"}). Please measure it in the SIM.`, "", "Card (book/cards format):", "```json", JSON.stringify(card, null, 2), "```", "", "Computed by the page (a guide, not a measure):", "```json", JSON.stringify(computed, null, 2), "```", "", "Draft (the page's own form, to load it again):", "```json", JSON.stringify(d), "```"].join("\n");
+  }
+
+  return { DATA, parseDmg, parseCell, avgDmg, avgExpr, weaponOf, probs, expOf, zeroOf, blankDraft, blankVersion, normalize, tierDamage, tierCells, effectsText, rulerLine, toCard, fromCard, areaInfo, areaText, targetLine, vsLine, costLine, pcCtx, npcCtx, weaponAttack, pricePc, priceNpc, price, cardStats, plainRow, exportText, isSave, noRoll, freqKey, stripLinks, clone, r1, hasTiers, npcRiderPrice, pcRiderBase, pointsExpr: pts => pointsAvg(pts, P).map(expr), actionPoints: (rank, ap, f, rating) => actionPoints(rank, ap, f, rating, P), turnBudget: (rank, rating) => turnBudget(rank, rating, P) };
+}
+
+// The Action Builder's page: the form on the left, the live numbers on the right. Every number comes from engine.js (makeEngine); nothing is priced here.
+(function () {
+  "use strict";
+  const E = makeEngine(DATA, CALC), PC = DATA.pc, NPC = DATA.npc, $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const n1 = x => (Math.round(x * 10) / 10).toFixed(1).replace(/\.0$/, ""), pct = x => `${(x * 100).toFixed(1)}%`, cap = s => s[0].toUpperCase() + s.slice(1);
+  const LS = "action-builder-work", LSD = "action-builder-drafts";
+  const lsGet = k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* no storage here */ } };
+
+  /* ------------------------------------------------------------ state */
+  const example = (name, tab) => { const d = E.fromCard(DATA.cards.find(c => c.name === name), tab); d.source = `An example: ${name}, as book/cards writes it today`; d.compare = tab === "pc" ? "Holy Wrath" : "Cleaver"; return d; };
+  const S = { tab: "pc", ver: { pc: 1, npc: 1 }, drafts: { pc: example("Smite", "pc"), npc: example("Brutal Swing", "npc") }, saved: [], store: "wait", copyText: "", confirm: "" };
+  { const w = lsGet(LS); if (w?.drafts?.pc && w?.drafts?.npc) { S.tab = w.tab === "npc" ? "npc" : "pc"; S.ver = w.ver ?? S.ver; S.drafts = { pc: E.normalize(w.drafts.pc), npc: E.normalize(w.drafts.npc) }; } }
+  const D = () => S.drafts[S.tab], V = () => D().versions[S.ver[S.tab]] ?? D().versions[0];
+  const fixVer = () => { const d = D(); if (!d.versions[S.ver[S.tab]]?.on) S.ver[S.tab] = Math.max(0, d.versions.findIndex(v => v.on)); };
+
+  /* ------------------------------------------------------------ form pieces */
+  const fid = k => `f-${k.replace(/\./g, "-")}`;
+  const opts = (list, cur) => list.map(o => { const [v, l] = Array.isArray(o) ? o : [o, o]; return `<option value="${esc(v)}"${String(v) === String(cur) ? " selected" : ""}>${esc(l)}</option>`; }).join("");
+  const get = k => k.split(".").reduce((o, p) => o?.[p], D());
+  const F = (label, k, html, cls = "") => `<label class="f ${cls}" for="${fid(k)}"><span>${esc(label)}</span>${html}</label>`;
+  const text = (label, k, cls = "", ph = "") => F(label, k, `<input type="text" id="${fid(k)}" data-k="${k}" value="${esc(get(k))}" placeholder="${esc(ph)}">`, cls);
+  const numb = (label, k, cls = "w2", min = 0, max = 9, re = false) => F(label, k, `<input type="number" id="${fid(k)}" data-k="${k}" data-t="n" min="${min}" max="${max}" step="1" value="${esc(get(k))}"${re ? " data-re" : ""}>`, cls);
+  const sel = (label, k, list, cls = "", re = false, t = "") => F(label, k, `<select id="${fid(k)}" data-k="${k}"${re ? " data-re" : ""}${t ? ` data-t="${t}"` : ""}>${opts(list, get(k))}</select>`, cls);
+  const chk = (label, k, cls = "", re = false) => `<label class="f chk ${cls}" for="${fid(k)}"><input type="checkbox" id="${fid(k)}" data-k="${k}" data-t="b"${get(k) ? " checked" : ""}${re ? " data-re" : ""}><span>${esc(label)}</span></label>`;
+  const FREQ = ["At-will", "Round", "Turn", "Encounter", "Daily"], ATTR = ["Body", "Mind", "Appeal", "Instinct"];
+  const cardOptions = cur => { const by = {}; for (const c of DATA.cards) (by[c.file] ??= []).push(c.name); return `<option value="">Pick a card…</option>` + Object.entries(by).map(([f, names]) => `<optgroup label="${esc(f)}">${opts(names, cur)}</optgroup>`).join(""); };
+  function riderOptions(d, cur) {
+    const groups = {};
+    if (d.tab === "npc") for (const r of NPC.riders) (groups[`${cap(r.sev.replace(/beyond\d/, "beyond"))} (${r.price})`] ??= []).push(r.name);
+    else for (const r of PC.riders) (groups[`${cap(r.size)} (${PC.riderPrice[r.size]})`] ??= []).push(r.name);
+    return `<option value="">No rider</option>` + Object.entries(groups).map(([g, names]) => `<optgroup label="${esc(g)}">${opts(names, cur)}</optgroup>`).join("");
+  }
+
+  function renderForm() {
+    const d = D(), npc = d.tab === "npc", vi = S.ver[S.tab], v = V(), save = E.isSave(d), none = E.noRoll(d), p = `versions.${vi}`;
+    const best = save ? "Tier 1 only (the worst Save)" : "Tier 3 only", where = [["hit", save ? "On Tier 1 and 2 (Effects)" : "On a hit (Effects)"], ["t3", best], ["always", npc ? "In the Setup (always)" : "Always (hit or miss)"], ...(npc ? [] : [["miss", save ? "On its Tier 3 only" : "On Tier 1 only"]])];
+    const helpKinds = npc ? [["boon", "1 Boon on the next attack"], ["heal", "Heals"], ["basic", "Makes its Basic attack"]] : [["heal", "Heals (new Health)"], ["rally", "Uses a Rally Point (+ more)"], ["guard", "Guard"], ["defense", "+1 Defense (1 round)"], ["block", "Reduces the damage"]];
+    const h = [];
+    h.push(`<div><h2>Start <small>${esc(d.source ?? "")}</small></h2><div class="grid">
+      ${F("Fill the form from a card", "import", `<select id="f-import">${cardOptions("")}</select>`, "w6")}
+      <div class="f w6 chk"><button type="button" class="btn" data-act="blank">A blank ${npc ? "NPC" : "PC"} Action</button></div></div></div>`);
+    h.push(`<div><h2>The card</h2><div class="grid">
+      ${text("Name", "name", "w4")}${text(npc ? "Category" : "Category (its list)", "category", npc ? "w4" : "", npc ? "Special Action" : "Divine Power")}${npc ? text("NPC", "npc", "w4", "Orc Warrior") : text("Level", "level", "w2")}
+      ${npc ? "" : sel("Frequency", "frequency", FREQ, "", true)}
+      ${text("Flavor", "flavor", "w12", "One line.")}
+      ${text("Traits and Keywords", "traits", "w8", "divine, strike, weapon")}${npc ? sel("Frequency", "frequency", FREQ, "w4", true) : text("Distance", "distance", "w4", "Weapon, Reach, 5 sq.")}
+      ${npc ? text("Distance", "distance", "w4", "Weapon, Reach, 5 sq.") : ""}
+    </div></div>`);
+    const roll = [sel("Kind", "kind", [["weapon", "Weapon"], ["power", "Power"], ["save", "Save (the target rolls)"], ["none", "No roll"]], "", true)];
+    if (!none) roll.push(sel(save ? "The Save it asks for" : "The Defense it targets", "vs", save ? ATTR : ["AD", "WD", ...ATTR], "", true));
+    if (npc) roll.push(sel("Rank", "rank", NPC.ranks.map(r => [r, NPC.rank[r].label]), "", true), sel("Damage rating", "rating", NPC.ratings.map(r => [r, cap(r)])), sel("Modifier rating", "modRating", NPC.ratings.map(r => [r, `${cap(r)} (+${NPC.rank[d.rank].modBy[Math.min(NPC.ratings.indexOf(r), NPC.rank[d.rank].modBy.length - 1)]})`])),
+      chk("Its Basic attack", "basic"), chk("Ranged (more than 2 squares)", "ranged", "w4"), chk("Four or more creatures carry its riders", "four", "w6"));
+    else roll.push(sel("Build", "cls", [...DATA.builds.map(b => b.name), "Other"], "w4", true), sel("Weapon", "weapon", DATA.weapons.map(w => [w.name, `${w.name} (${w.tiers.slice(1).join(" / ")})`]), "w4"),
+      sel("Weapon Modifier", "wmod", [0, 1, 2, 3, 4].map(x => [x, `+${x}`]), "w2", false, "n"), sel("Power Modifier", "pmod", [0, 1, 2, 3, 4].map(x => [x, `+${x}`]), "w2", false, "n"));
+    if (!none) roll.push(numb("Boons", "boons"), numb("Banes", "banes"), sel("The roll is", "state", [["", "normal"], ["favored", "Favored"], ["doomed", "Doomed"]], ""));
+    h.push(`<div><h2>The roll <small>${none ? "it always happens" : save ? `the target rolls against DC 11 + ${npc ? "its" : "your"} Modifier; Tier 1 is the worst for it` : `2d12 + ${npc ? "its" : "your"} Modifier against the Defense`}</small></h2><div class="grid">${roll.join("")}</div></div>`);
+    const use = [sel("Targets", "target", [["one", "One creature"], ["several", "Several creatures"], ["area", "An Area"]], "", true)];
+    if (d.target === "several") use.push(numb("How many", "targetsN", "w2", 2, 6));
+    if (d.target === "area") use.push(sel("Shape", "areaShape", ["Emanation", "Burst", "Aura"], "", true), numb("Size", "areaSize", "w2", 1, 6), d.areaShape === "Aura" ? "" : sel("Placed", "areaFrom", [["self", "around you"], ["range", "at range"]]));
+    use.push(text("Targets line, if not the usual", "targetText", "w6", E.targetLine({ ...d, targetText: "" })));
+    use.push(sel("A Reaction?", "reaction", [["", "No"], ["interrupt", "Yes, an Interrupt"], ["trigger", "Yes, a Trigger"]], "", true));
+    if (d.reaction) use.push(sel("Cost", "reactionCost", [[1, "1R"], [2, "2R"]], "w2", false, "n"), text(d.reaction === "interrupt" ? "Interrupt" : "Trigger", "reactionText", "w6", "An enemy within 5 squares makes a Strike against an ally."),
+      npc ? sel("It answers", "rxKind", [["self", "its own being hit or targeted"], ["other", "an ally or a movement"]], "w4") : sel("It fires in", "fires", [[0.5, "half the rounds (the target)"], ...PC.reactions.map(r => [r.fires, `${Math.round(r.fires * 100)}% (${r.name}, measured)`]), [0.25, "a quarter"], [1, "every round"]], "w4", false, "n"));
+    if (!npc) use.push(sel("Priced for", "fight", PC.fights.map(f => [f.key, f.label])), chk("Against an Elite", "elite"));
+    h.push(`<div><h2>Its use</h2><div class="grid">${use.join("")}</div></div>`);
+    // Versions
+    const vt = d.versions.map((x, i) => `<span class="vtab"><input type="checkbox" id="f-on-${i}" data-k="versions.${i}.on" data-t="b" data-re aria-label="${x.ap} AP Version exists"${x.on ? " checked" : ""}><button type="button" data-act="ver" data-i="${i}" aria-pressed="${i === vi}"${x.on ? "" : " disabled"}>${d.reaction ? `${d.reactionCost}R${i ? ` (${i + 1})` : ""}` : `${x.ap} AP`}</button></span>`).join("");
+    const tierRow = (t, i) => { const k = `${p}.tiers.${i}`, c = (kk, extra = "") => `id="${fid(`${k}.${kk}`)}" data-k="${k}.${kk}" ${extra}`;
+      return `<tr><td class="tn t${i + 1}">Tier ${i + 1}</td>
+        <td><select ${c("w", 'data-t="n"')} aria-label="Tier ${i + 1}: weapon damage">${opts([[0, "–"], [1, "1[W]"], [2, "2[W]"]], t.w)}</select></td>
+        <td class="c"><input type="checkbox" ${c("mod", 'data-t="b"')} aria-label="Tier ${i + 1}: add the Modifier"${t.mod ? " checked" : ""}></td>
+        <td><input type="number" min="0" max="40" ${c("flat", 'data-t="n"')} aria-label="Tier ${i + 1}: flat damage" value="${esc(t.flat)}"></td>
+        <td><select ${c("dn", 'data-t="n"')} aria-label="Tier ${i + 1}: number of dice">${opts([[0, "–"], 1, 2, 3], t.dn)}</select></td>
+        <td><select ${c("ds", 'data-t="n"')} aria-label="Tier ${i + 1}: the die">${opts([4, 6, 8, 10, 12].map(x => [x, `d${x}`]), t.ds)}</select></td>
+        <td class="c"><input type="checkbox" ${c("ex", 'data-t="b"')} aria-label="Tier ${i + 1}: the die explodes"${t.ex ? " checked" : ""}></td>
+        <td><select ${c("pool")} aria-label="Tier ${i + 1}: the pool">${opts([["V", "[V]"], ["R", "[R]"]], t.pool)}</select></td>
+        <td><select ${c("type")} aria-label="Tier ${i + 1}: damage type">${opts([["", "–"], "Ac", "Bl", "Co", "El", "Fi", "Fo", "Ho", "Pi", "Ps", "Sl", "Th", "Un"], t.type)}</select></td>
+        <td class="wide"><input type="text" ${c("text")} aria-label="Tier ${i + 1}: text after the damage" value="${esc(t.text)}" placeholder="then…"></td></tr>`; };
+    const riders = v.riders.map((r, i) => `<div class="row"><select id="${fid(`${p}.riders.${i}.name`)}" data-k="${p}.riders.${i}.name" aria-label="Rider ${i + 1}">${riderOptions(d, r.name)}</select><select id="${fid(`${p}.riders.${i}.at`)}" data-k="${p}.riders.${i}.at" aria-label="Rider ${i + 1}: where">${opts(none ? [["always", "Always"]] : where, r.at)}</select><button type="button" class="btn plain" data-act="del" data-list="riders" data-i="${i}" aria-label="Remove rider ${i + 1}">Remove</button></div>`).join("");
+    const helps = v.helps.map((x, i) => { const k = `${p}.helps.${i}`; return `<div class="row help"><select id="${fid(`${k}.kind`)}" data-k="${k}.kind" data-re aria-label="Help ${i + 1}">${opts(helpKinds, x.kind)}</select>
+      <input type="text" id="${fid(`${k}.amount`)}" data-k="${k}.amount" value="${esc(x.amount)}" placeholder="${x.kind === "defense" || x.kind === "boon" || x.kind === "basic" ? "–" : "1d8 + [Mod]"}" aria-label="Help ${i + 1}: how much"${x.kind === "defense" || x.kind === "boon" || x.kind === "basic" ? " disabled" : ""}>
+      <select id="${fid(`${k}.who`)}" data-k="${k}.who" aria-label="Help ${i + 1}: who">${opts([["self", npc ? "itself" : "you"], ["ally", "an ally"], ["allies", "several allies"]], x.who)}</select>
+      <input type="number" min="1" max="6" id="${fid(`${k}.n`)}" data-k="${k}.n" data-t="n" value="${esc(x.n)}" aria-label="Help ${i + 1}: how many allies">
+      <select id="${fid(`${k}.at`)}" data-k="${k}.at" aria-label="Help ${i + 1}: when">${opts(none ? [["always", "Always"]] : [["always", "Always"], ["hit", "On a hit"], ["t3", best]], x.at)}</select>
+      <button type="button" class="btn plain" data-act="del" data-list="helps" data-i="${i}" aria-label="Remove help ${i + 1}">Remove</button></div>`; }).join("");
+    h.push(`<div><h2>Versions <small>tick the ones the card has, click one to edit it</small></h2><div class="vtabs">${vt}</div>
+      ${none ? `<p class="hint">No roll: write what it does under Riders, Heal and Guard, and Effects.</p>` : `<div class="scroll"><table class="tiers"><thead><tr><th></th><th>Weapon</th><th>+ [Mod]</th><th>Flat</th><th>Dice</th><th>Die</th><th>!</th><th>Pool</th><th>Type</th><th>Then (text on that Tier)</th></tr></thead><tbody>${v.tiers.map(tierRow).join("")}</tbody></table></div>
+      <p class="hint">${save ? "Tier 1 is the target's worst result. " : ""}The Flat number, dice, pool and type are one piece of damage, added to the weapon's. ${npc ? "An NPC's damage is written whole: no [W], no [Mod]." : "A [Weapon] Action adds [Mod] on Tiers 2 and 3."}</p>`}
+      ${npc ? "" : `<div class="grid" style="margin-top:8px">${sel("Weapon Attacks it makes (1A)", `${p}.linked`, [[0, "None"], 1, 2, 3], "w4", false, "n")}${text("Each one deals this much more", `${p}.linkedExtra`, "w4", "1d6")}</div>`}
+      <p class="sub">Riders <small>conditions and Forced Movement${npc ? ", at the Bestiary's flat prices" : ", at the sizes measured for a PC"}</small></p><div class="rows">${riders}</div><button type="button" class="btn small" data-act="add" data-list="riders" style="margin-top:6px">Add a rider</button>
+      <p class="sub">${npc ? "Helps" : "Heal, Guard and helps"} <small>${npc ? "a Boon 3 points, a Health 1" : `a Health ${PC.health} points, a point of Guard ${PC.guard}`}</small></p><div class="rows">${helps}</div><button type="button" class="btn small" data-act="add" data-list="helps" style="margin-top:6px">Add one</button>
+      <div class="grid" style="margin-top:10px">${F("Effects text (what the rows above don't say)", `${p}.effects`, `<textarea id="${fid(`${p}.effects`)}" data-k="${p}.effects">${esc(v.effects)}</textarea>`, "w12")}${text("Critical", `${p}.critical`, "w12")}</div></div>`);
+    h.push(`<div><h2>Drafts <small id="store-note"></small></h2><ul class="drafts" id="drafts"></ul></div>`);
+    const act = document.activeElement?.id; $("form").innerHTML = h.join(""); if (act && $(act)) $(act).focus();
+    renderDrafts();
+  }
+
+  /* ------------------------------------------------------------ the right side */
+  const rich = s => esc(E.stripLinks(s));
+  function cardHtml(d) {
+    const c = E.toCard(d), fq = `fq-${d.frequency.toLowerCase().replace("-", "")}`, line = (k, val) => (val ? `<p class="sb-line"><b>${k}:</b> ${rich(val)}</p>` : "");
+    const vers = d.versions.filter(v => v.on).map((v, i) => { const cv = c.versions[i], tiers = cv.tiers ? cv.tiers.map((t, k) => `<p class="sb-tier t${k + 1}"><b>Tier ${k + 1}</b><span>${rich(t)}</span></p>`).join("") : "";
+      return `<div class="sb-ver"><div class="sb-bar"><span>${d.reaction ? `${d.reactionCost}R` : `${v.ap} AP`}</span><span>${esc(d.frequency)}</span></div><div class="sb-tint">${tiers}${cv.critical ? `<p class="sb-tier cr"><b>Critical</b><span>${rich(cv.critical)}</span></p>` : ""}${cv.effects ? `<p class="sb-fx"><b>Effects</b> ${rich(cv.effects)}</p>` : ""}</div></div>`; }).join("");
+    return `<article class="sb ${fq}"><header class="sb-plate${d.tab === "npc" ? ` rk-${d.rank}` : ""}"><span class="sb-name">${esc(c.name)}</span><span class="sb-cat">${esc([c.category, c.level].filter(x => x != null && x !== "").join(" "))} · ${esc(E.costLine(d))}</span></header>
+      <div class="sb-body">${c.flavor ? `<p class="sb-flavor">${esc(c.flavor)}</p>` : ""}${line("Traits", c.traits.join(", "))}${line(d.reaction === "interrupt" ? "Interrupt" : "Trigger", d.reaction ? c[d.reaction] || "…" : "")}${line("Targets", c.target)}${line("Area", c.area)}${line("Distance", c.distance)}${line("Vs.", c.vs)}${line("Setup", c.setup)}${vers}</div></article>`;
+  }
+  function budgetHtml(d, v, r) {
+    const max = Math.max(r.band[1] * 1.5, r.total * 1.12, 1), w = x => `${Math.max(0, Math.min(100, 100 * x / max)).toFixed(2)}%`, word = { on: "within limits", over: "over budget", under: "under budget" }[r.verdict];
+    const diff = r.total - r.budget;
+    return `<div class="bud"><div class="bud-head"><span class="bud-ap">${d.reaction ? `${d.reactionCost}R Reaction` : `${v.ap} AP`} · ${esc(d.frequency)}</span><span class="bud-num">${n1(r.total)} <small>of ${n1(r.budget)} points${r.rx ? " a turn" : ""}</small></span><span class="verdict v-${r.verdict}">${word}${r.verdict === "on" ? "" : ` by ${n1(Math.abs(r.total - (r.verdict === "over" ? r.band[1] : r.band[0])))}`}</span></div>
+      <div class="bar" role="img" aria-label="${n1(r.total)} points against ${n1(r.budget)}: ${word}"><i class="band" style="left:${w(r.band[0])};width:${w(r.band[1] - r.band[0])}"></i><i class="fill v-${r.verdict}" style="width:${w(r.total)}"></i><i class="tick" style="left:${w(r.budget)}"></i></div>
+      <p class="cap">${r.rx ? `A ${d.reactionCost}R Reaction should add ${n1(r.band[0])} to ${n1(r.band[1])} points a turn. It fires in ${Math.round(r.rx.fires * 100)}% of rounds; each time, ${n1(r.rx.raw)} points (its damage counts ${Math.round(r.rx.damageShare * 100)}% off-turn, measured on Overwatch).` : d.tab === "npc" ? `Should cost ${n1(r.budget)} (${n1(r.perAp)} an AP; the turn budget is ${n1(r.turnBudget)}); within limits from ${n1(r.band[0])} to ${n1(r.band[1])}.` : `Should cost ${n1(r.budget)}; within limits from ${n1(r.band[0])} to ${n1(r.band[1])}. ${diff > 0 ? `${n1(diff)} over: each 10 points over is felt.` : diff < -0.05 ? `${n1(-diff)} left to spend.` : ""}`}</p>
+      <ul class="lines">${r.lines.map(l => `<li><span>${esc(l.what)}</span><span>${n1(l.pts)}</span>${l.note ? `<em>${esc(l.note)}</em>` : ""}</li>`).join("") || `<li><span>Nothing priced yet</span><span>0</span></li>`}</ul>
+      ${r.buys ? `<p class="note">The points left for damage (${n1(r.left)}) buy <b>${esc(r.buys[0])} / ${esc(r.buys[1])}</b> on Tier 2 / Tier 3${r.table ? `. The rank's table for this ${r.tableKey === "basic" ? "Basic attack" : "Special"}: ${esc(r.table.join(" / "))}` : ""}.</p>` : ""}
+      ${r.targets?.area ? `<p class="note">It catches about <b>${n1(r.targets.area.hit[0])}</b> of 4 Standards and <b>${n1(r.targets.area.hit[1])}</b> of 6 (${esc(r.targets.area.rows.map(a => `${a.card}: ${a.hit.join(" · ")}`).join("; "))}): about ${n1(r.exp13 * r.targets.area.hit[0])} to ${n1(r.exp13 * r.targets.area.hit[1])} damage a use.</p>` : ""}
+      ${r.flags.map(f => `<p class="flag ${f.level}">${esc(f.text)}</p>`).join("")}</div>`;
+  }
+  function rollHtml(d, v, r) {
+    const save = E.isSave(d);
+    if (E.noRoll(d)) return `<p class="note">No roll: it always happens.</p>`;
+    return `<p class="cap">${save ? `The target's Save against DC ${11 + r.ctx.rollMod}` : `2d12 + ${r.ctx.rollMod}`}${d.boons || d.banes ? `, ${d.boons || 0} Boon${d.boons === 1 ? "" : "s"} and ${d.banes || 0} Bane${d.banes === 1 ? "" : "s"}` : ""}${d.state ? `, ${cap(d.state)}` : ""}. Average damage on Tier 1 / 2 / 3: <b>${r.avgs.map(n1).join(" / ")}</b>${r.linkAvg ? `, and its Weapon Attacks ${n1(r.linkAvg)} more at Defense 13` : ""}.</p>
+      <div class="scroll"><table class="nums"><thead><tr><th>${save ? "Its Save Modifier" : "Defense"}</th><th class="t1">Tier 1</th><th class="t2">Tier 2</th><th class="t3">Tier 3</th>${save ? "" : `<th class="cr">Critical</th>`}<th>Average damage</th><th>Deals 0</th></tr></thead><tbody>
+      ${r.perDef.map(x => `<tr><td>${save ? `+${x.dc}` : x.dc}</td><td>${pct(x.p[0])}</td><td>${pct(x.p[1])}</td><td>${pct(x.p[2])}</td>${save ? "" : `<td>${pct(x.crit)}</td>`}<td>${n1(x.exp)}</td><td>${pct(x.zero)}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+  function compareHtml(d) {
+    const rows = [], plain = E.plainRow(d), tr = (name, ap, x, extra = "", cls = "") => `<tr class="${cls}"><td>${esc(name)}</td><td>${ap}</td><td>${x.avgs.map(n1).join(" / ")}</td><td>${n1(x.exp)}</td><td>${pct(x.zero)}</td><td>${n1(x.points)}${extra}</td></tr>`;
+    for (const v of d.versions.filter(x => x.on)) { const r = E.price(d, v); rows.push(tr(d.name || "This Action", d.reaction ? `${d.reactionCost}R` : v.ap, { avgs: r.avgs, exp: r.exp13, zero: r.zero13, points: d.tab === "npc" ? r.dmgPts : r.dmgPts + r.linkedPts })); }
+    rows.push(tr(plain.name, 1, plain, "", "sep"));
+    const card = DATA.cards.find(c => c.name === d.compare);
+    if (card) E.cardStats(card, d).forEach((x, i) => rows.push(tr(`${card.name}${card.versions.length > 1 ? ` ${x.ap}` : ""}`, card.interrupt || card.trigger ? `${x.ap}R` : x.ap, x, x.ledger.length ? ` <span class="cap">(pc-budget.md: ${x.ledger.join(" or ")})</span>` : "", i ? "dim" : "sep dim")));
+    return `<div class="grid" style="margin-bottom:6px">${F("Compare with", "compare", `<select id="f-compare" data-k="compare">${cardOptions(d.compare)}</select>`, "w6")}</div>
+      <div class="scroll"><table class="nums"><thead><tr><th>Action</th><th>AP</th><th>Tier 1 / 2 / 3</th><th>Average at Defense 13</th><th>Deals 0</th><th>Damage points</th></tr></thead><tbody>${rows.join("")}</tbody></table></div>
+      <p class="cap">Damage only, on one creature, with ${d.tab === "npc" ? "this NPC's Modifier" : "this PC's weapon and Modifiers"}; a card's riders, heals and areas are not in its row.${card ? ` ${esc(card.name)}: ${esc(card.versions.map(cv => E.stripLinks(cv.effects ?? "")).filter(Boolean)[0] ?? "no Effects text")}` : ""}</p>`;
+  }
+  function sheetHtml(d, r) {
+    if (d.tab === "npc") return `<dl class="facts"><div><dt>${esc(NPC.rank[d.rank].label)}, ${esc(d.rating)}</dt><dd>${n1(r.perAp)} points an AP</dd></div><div><dt>Turn budget</dt><dd>${n1(r.turnBudget)}</dd></div><div><dt>Modifier</dt><dd>+${r.sheet.mod}</dd></div><div><dt>Defense at that rating</dt><dd>${r.sheet.defense}</dd></div><div><dt>Vigor or Resolve</dt><dd>${r.sheet.health}</dd></div><div><dt>AP a turn</dt><dd>${r.sheet.ap}</dd></div><div><dt>CV</dt><dd>${r.sheet.cv}</dd></div></dl>`;
+    const seat = PC.seats[r.ctx.seat];
+    return `<dl class="facts"><div><dt>A Weapon Attack</dt><dd>25 points = ${r.wa.avgs.slice(1).map(n1).join(" / ")} (${n1(r.wa.exp)} at Defense 13)</dd></div><div><dt>A plain turn of three</dt><dd>100</dd></div><div><dt>A class by level</dt><dd>${PC.classTarget.join(" / ")}</dd></div><div><dt>100 points in the ${r.ctx.seat} seat</dt><dd>${seat.health100} Health saved a fight</dd></div></dl>`;
+  }
+  function renderOut() {
+    const d = D(), v = V(), on = d.versions.filter(x => x.on), res = on.map(x => E.price(d, x)), cur = res[on.indexOf(v)] ?? res[0];
+    $("out").innerHTML = `<div><h2>${d.tab === "npc" ? "The Bestiary's turn budget" : "The PC budget"} <small>${esc(DATA.stage)}; a guide, not perfect balance</small></h2>${sheetHtml(d, cur)}<div style="margin-top:8px">${on.map((x, i) => budgetHtml(d, x, res[i])).join("")}</div></div>
+      <div><h2>The card <small>as the book would print it</small></h2>${cardHtml(d)}</div>
+      <div><h2>The roll <small>the ${d.reaction ? "Reaction" : `${v.ap} AP Version`}; the system's own dice (calc.mjs)</small></h2>${rollHtml(d, v, cur)}</div>
+      <div><h2>Beside other Actions</h2>${compareHtml(d)}</div>
+      ${S.copyText ? `<div><h2>Copy for Claude <small>select all and copy if the button couldn't</small></h2><textarea class="copybox" id="copybox" readonly aria-label="The text for Claude">${esc(S.copyText)}</textarea></div>` : ""}`;
+    lsSet(LS, { tab: S.tab, ver: S.ver, drafts: S.drafts });
+  }
+  function renderTop() {
+    $("stage").innerHTML = `<b>${esc(DATA.stage)}</b> only · the budgets as measured on ${esc(DATA.generated)}`;
+    for (const t of ["pc", "npc"]) $(`tab-${t}`).setAttribute("aria-selected", String(S.tab === t));
+  }
+  const all = () => { fixVer(); renderTop(); renderForm(); renderOut(); };
+
+  /* ------------------------------------------------------------ drafts: the artifact's own store, the browser's when there is none */
+  let db = null;
+  function renderDrafts() {
+    const ul = $("drafts"); if (!ul) return;
+    $("store-note").textContent = S.store === "db" ? "kept with this page, for you and Claude" : S.store === "wait" ? "looking for the page's store…" : "kept in this browser only (the page's store didn't answer)";
+    ul.innerHTML = S.saved.length ? S.saved.slice().sort((a, b) => String(b.updated).localeCompare(String(a.updated))).map(x => `<li><b>${esc(x.name || "Unnamed Action")}</b><span>${x.tab === "npc" ? "NPC" : "PC"} · ${esc(String(x.updated ?? "").slice(0, 16).replace("T", " "))}</span><span class="sp"><button type="button" class="btn small" data-act="load" data-id="${esc(x.id)}">Open</button><button type="button" class="btn small plain" data-act="drop" data-id="${esc(x.id)}">${S.confirm === x.id ? "Delete it for good?" : "Delete"}</button></span></li>`).join("") : `<li><span>No draft saved yet. "Save draft" keeps the Action on the left; the last thing you were editing is always kept in this browser.</span></li>`;
+  }
+  const localDrafts = () => { S.saved = lsGet(LSD) ?? []; renderDrafts(); };
+  async function initStore() {
+    try { db = (await window.claude?.use?.("db")) ?? null; } catch { db = null; }
+    if (!db) { S.store = "browser"; localDrafts(); return; }
+    const late = setTimeout(() => { if (S.store === "wait") { S.store = "browser"; localDrafts(); } }, 10000);
+    db.collection("drafts").onSnapshot(snap => { clearTimeout(late); S.store = "db"; S.saved = snap.docs.map(x => ({ id: x.id, ...x.data() })); renderDrafts(); }, () => { clearTimeout(late); db = null; S.store = "browser"; localDrafts(); });
+  }
+  const say = t => { $("status").textContent = t; clearTimeout(say.t); say.t = setTimeout(() => { $("status").textContent = ""; }, 4000); };
+  async function saveDraft() {
+    const d = D(); d.id ||= `d${Date.now().toString(36)}`;
+    const doc = { name: d.name || "Unnamed Action", tab: d.tab, updated: new Date().toISOString(), draft: E.clone(d), card: E.toCard(d) };
+    if (db && S.store === "db") { try { await db.collection("drafts").doc(d.id).set(doc); say("Draft saved"); } catch (e) { say(e?.code === "quota_exceeded" ? "The store is full: delete a draft" : "Not saved: the page's store refused it"); } }
+    else { const list = (lsGet(LSD) ?? []).filter(x => x.id !== d.id); list.push({ id: d.id, ...doc }); lsSet(LSD, list); localDrafts(); say("Draft saved in this browser"); }
+    renderOut();
+  }
+  async function dropDraft(id) {
+    if (S.confirm !== id) { S.confirm = id; renderDrafts(); return; }
+    S.confirm = "";
+    if (db && S.store === "db") { try { await db.collection("drafts").doc(id).delete(); say("Draft deleted"); } catch { say("Not deleted"); } }
+    else { lsSet(LSD, (lsGet(LSD) ?? []).filter(x => x.id !== id)); localDrafts(); }
+  }
+
+  /* ------------------------------------------------------------ events */
+  function setPath(k, val) { const parts = k.split("."), last = parts.pop(), o = parts.reduce((x, p) => x[p], D()); o[last] = val; }
+  function onEdit(e) {
+    const el = e.target, k = el.dataset?.k; if (!k) return;
+    if (e.type === "input" && (el.tagName === "SELECT" || el.type === "checkbox")) return;   // those report on "change"
+    if (e.type === "change" && !(el.tagName === "SELECT" || el.type === "checkbox")) return;
+    const t = el.dataset.t, val = t === "b" ? el.checked : t === "n" ? (el.value === "" ? 0 : Number(el.value)) : el.value, d = D();
+    setPath(k, val);
+    if (k === "cls") { const b = DATA.builds.find(x => x.name === val); if (b) Object.assign(d, { weapon: b.weapon, wmod: b.wmod, pmod: b.pmod }); }
+    if (k === "kind") { d.vs = val === "save" ? (ATTR.includes(d.vs) ? d.vs : "Body") : val === "power" ? (d.vs === "AD" ? "WD" : d.vs) : d.vs; if (val === "none") for (const v of d.versions) { for (const r of v.riders) r.at = "always"; for (const h of v.helps) h.at = "always"; } }
+    if (k === "rank" && d.rank === "minion") { if (d.rating === "extreme") d.rating = "high"; if (d.modRating === "extreme") d.modRating = "high"; }
+    if (/\.on$/.test(k) && !d.versions.some(v => v.on)) setPath(k, true);
+    if (k === "reaction" && val) { d.versions.forEach((v, i) => { v.on = i === 0; }); if (d.frequency !== "Turn" && d.frequency !== "Round") d.frequency = "Turn"; }
+    if (el.dataset.re != null || k === "rank") all(); else renderOut();
+  }
+  $("form").addEventListener("input", onEdit); $("form").addEventListener("change", onEdit); $("out").addEventListener("change", e => { if (e.target.dataset?.k === "compare") { D().compare = e.target.value; renderOut(); } });
+  $("form").addEventListener("change", e => {
+    if (e.target.id !== "f-import" || !e.target.value) return;
+    const card = DATA.cards.find(c => c.name === e.target.value), old = D(), d = E.fromCard(card, S.tab);
+    for (const k of ["cls", "weapon", "wmod", "pmod", "rank", "rating", "modRating", "fight", "elite", "compare"]) d[k] = old[k];
+    d.source = `Filled from ${card.name} (${card.file}); saving it makes a new draft`; S.drafts[S.tab] = d; S.ver[S.tab] = Math.max(0, d.versions.findIndex(v => v.on)); S.copyText = ""; all();
+  });
+  $("form").addEventListener("click", e => {
+    const b = e.target.closest("[data-act]"); if (!b) return; const a = b.dataset.act, d = D(), v = V();
+    if (a === "ver") { S.ver[S.tab] = Number(b.dataset.i); all(); }
+    else if (a === "add") { v[b.dataset.list].push(b.dataset.list === "riders" ? { name: "", at: E.noRoll(d) ? "always" : "hit" } : { kind: d.tab === "npc" ? "boon" : "heal", amount: "", who: "ally", n: 2, at: "always" }); all(); }
+    else if (a === "del") { v[b.dataset.list].splice(Number(b.dataset.i), 1); all(); }
+    else if (a === "blank") { const old = d, n = E.blankDraft(S.tab); for (const k of ["cls", "weapon", "wmod", "pmod", "rank", "rating", "modRating"]) n[k] = old[k]; n.source = "A blank Action"; S.drafts[S.tab] = n; S.ver[S.tab] = 0; S.copyText = ""; all(); }
+    else if (a === "load") { const x = S.saved.find(s => s.id === b.dataset.id); if (x?.draft) { const n = E.normalize(E.clone(x.draft)); n.id = x.id; n.source = `Draft: ${x.name}`; S.tab = n.tab; S.drafts[S.tab] = n; S.ver[S.tab] = Math.max(0, n.versions.findIndex(q => q.on)); S.copyText = ""; all(); say("Draft opened"); } }
+    else if (a === "drop") dropDraft(b.dataset.id);
+  });
+  for (const t of ["pc", "npc"]) $(`tab-${t}`).addEventListener("click", () => { S.tab = t; S.copyText = ""; all(); });
+  $("save-draft").addEventListener("click", saveDraft);
+  $("copy").addEventListener("click", () => {
+    const text = E.exportText(D()); S.copyText = text; renderOut();
+    const fallback = () => { const box = $("copybox"); if (box) { box.focus(); box.select(); } say("Select the text below and copy it"); };
+    try { navigator.clipboard.writeText(text).then(() => say("Copied: paste it to Claude"), fallback); } catch { fallback(); }
+  });
+
+  all(); initStore();
+})();
+
+</script>

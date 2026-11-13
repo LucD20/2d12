@@ -156,6 +156,16 @@ So **a PC's area from range deals half to each** (even against 4, good against 6
 
 **Not in it:** levels 4 and up (Stage 1 isn't written); a Push aimed by a player; Zones and areas that last. `book/ruler/prices.md` and the cards' old worth lines (`book/ruler/worth.json`) are from before pack R's 4 AP and are not to be used for new cards.
 
+## The Action Builder (2026-11-13: a tool for Lucas and Claude, not a rule)
+
+A page to design a class Action or an NPC Action and see live whether it is within budget: **https://claude.ai/artifact/7Rjq4sNYS8bPZW2jXb7R7g** (private to Lucas). Stage 0 only, as the budgets are. It shows "within limits", not perfect balance: the SIM is the measure.
+
+- **Use:** pick the tab (PC Action: the PC budget above; NPC Action: the Bestiary's turn budget), fill the form or start from an existing card, read the points against what the AP and Frequency should cost, then **Copy for Claude** and paste it into a chat: it holds the card in this folder's format (with its `ruler` lines where the form can say them), the computed numbers and the form itself. **Save draft** keeps the Action with the page (its `drafts` collection, which Claude can read with the ArtifactData tool); the Action being edited is also kept in the browser.
+- **Files:** `builder-data.mjs` (reads pc-budget.md, areas.md, this README's rider prices, 15-gear.md's weapons, the rework builds, config.mjs's npcBudget / npcStage0 / npcDefense, budget.mjs's price functions and the cards), `builder/engine.js` (all the pricing, no page), `builder/ui.js` and `builder/template.html` (the page), `builder/build.mjs`, `builder/test.mjs`. `builder/data.json` and `builder/action-builder.html` are written by the build: don't edit them.
+- **Refresh** (after pcbudget.mjs or the Bestiary is measured again, or a card changes): `node book/cards/builder/build.mjs`, then `node book/cards/builder/test.mjs` (a Weapon Attack must price at 25, Smite and Double Shot where pc-budget.md's ledger has them, the Tier chances equal to calc.mjs's), then ask Claude to publish `book/cards/builder/action-builder.html` to the same link (the Artifact tool with that `url`).
+- **The dice and the prices are not written twice:** the build pastes the system's `calc.mjs` and budget.mjs's `expr`, `actionPoints`, `riderPrice`, `turnBudget` into the page as they are.
+- **What it can't price:** Passives and Features, Zones and areas that last, a Push aimed by a player, an effect the rider lists don't have (write it in the Effects text: it is copied, not priced), levels 4 and up, and a creature's whole turn (the Bestiary's best-turn check and the Encounter pay-back are shown as notes).
+
 ## After editing a card
 1. `cd book && python3 build_rules.py` (the card check lists a marker with no card, a card no chapter places, a block still written by hand).
 2. `cd foundry/twod12 && node tools/gen-basic.mjs` when the card is a Basic Action (then the compendium: `node tools/build-packs.mjs`), and `node tools/tests/run.mjs`.

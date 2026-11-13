@@ -1,0 +1,3744 @@
+{
+ "generated": "2026-11-13",
+ "stage": "Stage 0 (levels 1 to 3)",
+ "pc": {
+  "wa": 25,
+  "turn": 100,
+  "refDefense": 13,
+  "ap": {
+   "1": 25,
+   "2": 50,
+   "3": 75
+  },
+  "encounter": 2,
+  "felt": 10,
+  "classTarget": [
+   130,
+   140,
+   150
+  ],
+  "reactionBand": [
+   10,
+   15
+  ],
+  "health": 12,
+  "guard": 6,
+  "defense1": 12.3,
+  "rallyHeal": -10.9,
+  "unusedAp": 12.4,
+  "fights": [
+   {
+    "key": "normal",
+    "label": "4 Standards (normal)",
+    "dmgPerHealth": 5.4,
+    "healFactor": 1
+   },
+   {
+    "key": "hard",
+    "label": "5 Standards (hard)",
+    "dmgPerHealth": 3.4,
+    "healFactor": 0.8405797101449275
+   },
+   {
+    "key": "deadly",
+    "label": "6 Standards (deadly)",
+    "dmgPerHealth": 3.1,
+    "healFactor": 0.7681159420289855
+   }
+  ],
+  "reactionDamage": 0.4752941176470588,
+  "blockPoint": 8.902439024390244,
+  "areaShare": {
+   "range": 0.5,
+   "self": 0.6666666666666666
+  },
+  "riderPrice": {
+   "mild": 3,
+   "moderate": 8,
+   "severe": 12,
+   "extreme": 18
+  },
+  "riders": [
+   {
+    "name": "Hindered (EoT)",
+    "size": "mild",
+    "ruler": "debuff Hindered (EoT)",
+    "eliteUp": false,
+    "measured": {
+     "melee": -2.3,
+     "ranged": 1.7,
+     "elite": -1.1,
+     "lands": 5.6
+    }
+   },
+   {
+    "name": "Immobilized (EoT)",
+    "size": "mild",
+    "ruler": "debuff Immobilized (EoT)",
+    "eliteUp": false,
+    "measured": {
+     "melee": -3.6,
+     "ranged": 3.4,
+     "elite": -3.5,
+     "lands": 5.5
+    }
+   },
+   {
+    "name": "Immobilized (until it escapes)",
+    "size": "mild",
+    "ruler": "debuff Immobilized",
+    "eliteUp": false,
+    "measured": {
+     "melee": -0.1,
+     "ranged": 1.8,
+     "elite": 1.5,
+     "lands": 5.6
+    }
+   },
+   {
+    "name": "Taunted (by you)",
+    "size": "mild",
+    "ruler": "taunt 1",
+    "eliteUp": false,
+    "measured": {
+     "melee": 0.9,
+     "ranged": 2.8,
+     "elite": 3.2,
+     "lands": 0
+    }
+   },
+   {
+    "name": "Frightened (EoT)",
+    "size": "mild",
+    "ruler": "debuff Frightened (EoT)",
+    "eliteUp": false,
+    "measured": {
+     "melee": 2.1,
+     "ranged": 4,
+     "elite": 6.2,
+     "lands": 5.7
+    }
+   },
+   {
+    "name": "Vulnerable 1",
+    "size": "mild",
+    "ruler": "vulnerable 1",
+    "eliteUp": false,
+    "measured": {
+     "melee": 2.5,
+     "ranged": 0.7,
+     "elite": 3.6,
+     "lands": 0
+    }
+   },
+   {
+    "name": "Bleed 1d4",
+    "size": "mild",
+    "ruler": "debuff Bleed 1d4",
+    "eliteUp": false,
+    "measured": {
+     "melee": 0.1,
+     "ranged": 1.2,
+     "elite": 0.5,
+     "lands": 5.6
+    }
+   },
+   {
+    "name": "Bleed 1d6",
+    "size": "mild",
+    "ruler": "debuff Bleed 1d6",
+    "eliteUp": false,
+    "measured": {
+     "melee": 0.3,
+     "ranged": 2.2,
+     "elite": 1.8,
+     "lands": 5.6
+    }
+   },
+   {
+    "name": "Vulnerable 2",
+    "size": "moderate",
+    "ruler": "vulnerable 2",
+    "eliteUp": false,
+    "measured": {
+     "melee": 5,
+     "ranged": 5.5,
+     "elite": 5.3,
+     "lands": 0
+    }
+   },
+   {
+    "name": "Slowed 1",
+    "size": "moderate",
+    "ruler": "debuff Slowed 1",
+    "eliteUp": true,
+    "measured": {
+     "melee": 7,
+     "ranged": 9.8,
+     "elite": 11.7,
+     "lands": 5.6
+    }
+   },
+   {
+    "name": "Prone",
+    "size": "moderate",
+    "ruler": "debuff Prone",
+    "eliteUp": true,
+    "measured": {
+     "melee": 7,
+     "ranged": 8.7,
+     "elite": 11.4,
+     "lands": 5.8
+    }
+   },
+   {
+    "name": "Dazed 1",
+    "size": "severe",
+    "ruler": "debuff Dazed 1",
+    "eliteUp": true,
+    "measured": {
+     "melee": 11.3,
+     "ranged": 15.4,
+     "elite": 19.9,
+     "lands": 5.6
+    }
+   },
+   {
+    "name": "Blinded (EoT)",
+    "size": "severe",
+    "ruler": "debuff Blinded (EoT)",
+    "eliteUp": true,
+    "measured": {
+     "melee": 11.6,
+     "ranged": 14.6,
+     "elite": 26,
+     "lands": 5.8
+    }
+   },
+   {
+    "name": "Slowed 2",
+    "size": "extreme",
+    "ruler": "debuff Slowed 2",
+    "eliteUp": true,
+    "measured": {
+     "melee": 12.9,
+     "ranged": 19.8,
+     "elite": 25.6,
+     "lands": 5.6
+    }
+   },
+   {
+    "name": "Pushed 1",
+    "size": "mild",
+    "ruler": "push 1",
+    "eliteUp": false,
+    "measured": null
+   },
+   {
+    "name": "Pushed 2",
+    "size": "mild",
+    "ruler": "push 2",
+    "eliteUp": false,
+    "measured": null
+   },
+   {
+    "name": "Pushed 3",
+    "size": "mild",
+    "ruler": "push 3",
+    "eliteUp": false,
+    "measured": null
+   },
+   {
+    "name": "Pulled 1",
+    "size": "mild",
+    "ruler": "pull 1",
+    "eliteUp": false,
+    "measured": null
+   },
+   {
+    "name": "Pulled 2",
+    "size": "mild",
+    "ruler": "pull 2",
+    "eliteUp": false,
+    "measured": null
+   },
+   {
+    "name": "Slid 1",
+    "size": "mild",
+    "ruler": "slide 1",
+    "eliteUp": false,
+    "measured": null
+   },
+   {
+    "name": "Slid 2",
+    "size": "mild",
+    "ruler": "slide 2",
+    "eliteUp": false,
+    "measured": null
+   }
+  ],
+  "seats": {
+   "melee": {
+    "label": "melee (a Paladin's Greatsword)",
+    "wa": [
+     11,
+     15
+    ],
+    "health100": 13.1,
+    "dealt": 71
+   },
+   "ranged": {
+    "label": "ranged (an Archer's Crossbow)",
+    "wa": [
+     7,
+     9
+    ],
+    "health100": 8,
+    "dealt": 39
+   }
+  },
+  "exchange": [
+   {
+    "fight": "4 Standards (normal)",
+    "key": "normal",
+    "healthSaved": 13.1,
+    "dmgPerHealth": 5.4,
+    "healTurn": 144,
+    "shieldTurn": 166
+   },
+   {
+    "fight": "5 Standards (hard)",
+    "key": "hard",
+    "healthSaved": 24.7,
+    "dmgPerHealth": 3.4,
+    "healTurn": 133,
+    "shieldTurn": 164
+   },
+   {
+    "fight": "6 Standards (deadly)",
+    "key": "deadly",
+    "healthSaved": 28.8,
+    "dmgPerHealth": 3.1,
+    "healTurn": 128,
+    "shieldTurn": 174
+   }
+  ],
+  "classes": [
+   {
+    "build": "Paladin (Smite)",
+    "seat": "melee",
+    "levels": [
+     115,
+     126,
+     118
+    ]
+   },
+   {
+    "build": "Paladin (Lay On Hands)",
+    "seat": "melee",
+    "levels": [
+     126,
+     161,
+     163
+    ]
+   },
+   {
+    "build": "Archer (Double Shot)",
+    "seat": "ranged",
+    "levels": [
+     174,
+     163,
+     168
+    ]
+   },
+   {
+    "build": "Archer (Rolling Shot)",
+    "seat": "ranged",
+    "levels": [
+     194,
+     182,
+     200
+    ]
+   }
+  ],
+  "shapes": [
+   {
+    "turn": "three Weapon Attacks (the yardstick)",
+    "used": 75,
+    "melee": 100,
+    "ranged": 100
+   },
+   {
+    "turn": "a 2 AP Action of 50 and a Weapon Attack",
+    "used": 75,
+    "melee": 107.3,
+    "ranged": 106
+   },
+   {
+    "turn": "a 3 AP Action of 75",
+    "used": 75,
+    "melee": 100.9,
+    "ranged": 100
+   },
+   {
+    "turn": "a 2 AP Action of 50 and two Weapon Attacks (4 AP)",
+    "used": 100,
+    "melee": 109.2,
+    "ranged": 117.8
+   },
+   {
+    "turn": "a 2 AP Action of 60 and a Weapon Attack",
+    "used": 85,
+    "melee": 117,
+    "ranged": 114.9
+   },
+   {
+    "turn": "once an encounter, a 2 AP Action of 100 (double) and a Weapon Attack; else the yardstick",
+    "used": 125,
+    "melee": 133.4,
+    "ranged": 130.2
+   },
+   {
+    "turn": "once an encounter, a 3 AP Action of 150 (double); else the yardstick",
+    "used": 150,
+    "melee": 121.7,
+    "ranged": 139.9
+   }
+  ],
+  "reactions": [
+   {
+    "name": "Shield of Faith",
+    "what": "Shield of Faith (a hit on you or an ally within 5: block 2d6 + [Mod])",
+    "seat": "melee",
+    "fires": 0.82,
+    "adds": 65.7
+   },
+   {
+    "name": "Rebuke",
+    "what": "Rebuke (an enemy within 5 Strikes an ally: an Appeal Save, damage, Pushed, Frightened)",
+    "seat": "melee",
+    "fires": 0.66,
+    "adds": 13.7
+   },
+   {
+    "name": "Overwatch",
+    "what": "Overwatch (an enemy moves closer within 10: a Weapon Attack)",
+    "seat": "ranged",
+    "fires": 0.85,
+    "adds": 10.1
+   },
+   {
+    "name": "Covering Shot",
+    "what": "Covering Shot (a Strike would damage an ally within 10: a Weapon Attack with 1 Boon; a Tier 3 halves the damage)",
+    "seat": "ranged",
+    "fires": 1.11,
+    "adds": 16.2
+   }
+  ],
+  "helps": [
+   {
+    "what": "the most hurt ally (or you) heals 1d8 + [Mod] (new Health, not a Rally Point)",
+    "worth": 69.1
+   },
+   {
+    "what": "the most hurt ally (or you) heals 2d6 + [Mod]",
+    "worth": 84.5
+   },
+   {
+    "what": "an ally uses 1 of its Rally Points (Lay On Hands' heal)",
+    "worth": -10.9
+   },
+   {
+    "what": "you gain Guard 1d8 + [Mod]",
+    "worth": 34.7
+   },
+   {
+    "what": "an ally gains +1 Defense until your next turn",
+    "worth": 12.3
+   },
+   {
+    "what": "nothing (the AP is not used: its Guard at the next turn)",
+    "worth": 12.4
+   }
+  ],
+  "ledger": [
+   {
+    "build": "Paladin (Smite)",
+    "action": "Smite 2",
+    "ap": 2,
+    "freq": "round",
+    "points": 45,
+    "and": ""
+   },
+   {
+    "build": "Paladin (Smite)",
+    "action": "Smite 3",
+    "ap": 3,
+    "freq": "round",
+    "points": 50,
+    "and": "guard"
+   },
+   {
+    "build": "Paladin (Smite)",
+    "action": "Holy Wrath 2",
+    "ap": 2,
+    "freq": "encounter",
+    "points": 50,
+    "and": ""
+   },
+   {
+    "build": "Paladin (Smite)",
+    "action": "Holy Wrath 3",
+    "ap": 3,
+    "freq": "encounter",
+    "points": 63,
+    "and": ""
+   },
+   {
+    "build": "Paladin (Smite)",
+    "action": "Final Verdict",
+    "ap": 2,
+    "freq": "encounter",
+    "points": 50,
+    "and": "area, area 1.5"
+   },
+   {
+    "build": "Paladin (Lay On Hands)",
+    "action": "Lay On Hands 1",
+    "ap": 1,
+    "freq": "round",
+    "points": 0,
+    "and": "heal"
+   },
+   {
+    "build": "Paladin (Lay On Hands)",
+    "action": "Lay On Hands 2",
+    "ap": 2,
+    "freq": "round",
+    "points": 0,
+    "and": "heal, mend"
+   },
+   {
+    "build": "Paladin (Lay On Hands)",
+    "action": "Holy Wrath 2",
+    "ap": 2,
+    "freq": "encounter",
+    "points": 54,
+    "and": ""
+   },
+   {
+    "build": "Paladin (Lay On Hands)",
+    "action": "Hallowed Dawn",
+    "ap": 3,
+    "freq": "encounter",
+    "points": 0,
+    "and": "mend, push, remove-effect"
+   },
+   {
+    "build": "Archer (Double Shot)",
+    "action": "Double Shot 2",
+    "ap": 2,
+    "freq": "round",
+    "points": 50,
+    "and": "2 linked"
+   },
+   {
+    "build": "Archer (Double Shot)",
+    "action": "Double Shot 3",
+    "ap": 3,
+    "freq": "round",
+    "points": 50,
+    "and": "evade, 2 linked"
+   },
+   {
+    "build": "Archer (Double Shot)",
+    "action": "Pinning Shot",
+    "ap": 1,
+    "freq": "encounter",
+    "points": 25,
+    "and": "Immobilized (EoT)"
+   },
+   {
+    "build": "Archer (Double Shot)",
+    "action": "Deathmark",
+    "ap": 2,
+    "freq": "encounter",
+    "points": 65,
+    "and": ""
+   },
+   {
+    "build": "Archer (Double Shot)",
+    "action": "Lock & Loose",
+    "ap": 1,
+    "freq": "round",
+    "points": 25,
+    "and": "Hindered (until it moves), Immobilized"
+   },
+   {
+    "build": "Archer (Rolling Shot)",
+    "action": "Rolling Shot 2",
+    "ap": 2,
+    "freq": "round",
+    "points": 36,
+    "and": "evade, 1 linked"
+   },
+   {
+    "build": "Archer (Rolling Shot)",
+    "action": "Rolling Shot 3",
+    "ap": 3,
+    "freq": "round",
+    "points": 48,
+    "and": "evade, 1 linked"
+   },
+   {
+    "build": "Archer (Rolling Shot)",
+    "action": "Pinning Shot",
+    "ap": 1,
+    "freq": "encounter",
+    "points": 25,
+    "and": "Immobilized (EoT)"
+   },
+   {
+    "build": "Archer (Rolling Shot)",
+    "action": "Open Season",
+    "ap": 2,
+    "freq": "encounter",
+    "points": 25,
+    "and": "vulnerable, 1 linked"
+   },
+   {
+    "build": "Archer (Rolling Shot)",
+    "action": "Lock & Loose",
+    "ap": 1,
+    "freq": "round",
+    "points": 25,
+    "and": "Hindered (until it moves), Immobilized"
+   }
+  ],
+  "areas": [
+   {
+    "label": "2 Burst within 10 squares",
+    "size": 2,
+    "shape": "Burst",
+    "from": "range",
+    "hit": [
+     1.6,
+     2.1
+    ],
+    "source": "pc-budget.md section 8"
+   },
+   {
+    "label": "1 Emanation around you",
+    "size": 1,
+    "shape": "Emanation",
+    "from": "self",
+    "hit": [
+     1.3,
+     1.6
+    ],
+    "source": "pc-budget.md section 8"
+   },
+   {
+    "label": "2 Emanation around you",
+    "size": 2,
+    "shape": "Emanation",
+    "from": "self",
+    "hit": [
+     1.7,
+     2.1
+    ],
+    "source": "pc-budget.md section 8"
+   }
+  ],
+  "maps": [
+   {
+    "what": "The plain PC's three Weapon Attacks (its 100 points)",
+    "seat": "melee",
+    "open": 13.1,
+    "pillars": 16,
+    "corridor": 18.1
+   },
+   {
+    "what": "The plain PC's three Weapon Attacks (its 100 points)",
+    "seat": "ranged",
+    "open": 8,
+    "pillars": 9.8,
+    "corridor": 6.8
+   },
+   {
+    "what": "Paladin (Smite), level 2",
+    "seat": "melee",
+    "open": 14.7,
+    "pillars": 18.1,
+    "corridor": 19.4
+   },
+   {
+    "what": "Paladin (Lay On Hands), level 2",
+    "seat": "melee",
+    "open": 18.8,
+    "pillars": 22.1,
+    "corridor": 24.1
+   },
+   {
+    "what": "Archer (Double Shot), level 2",
+    "seat": "ranged",
+    "open": 12.7,
+    "pillars": 16.6,
+    "corridor": 11.8
+   },
+   {
+    "what": "Archer (Rolling Shot), level 2",
+    "seat": "ranged",
+    "open": 14.2,
+    "pillars": 17,
+    "corridor": 13.7
+   },
+   {
+    "what": "+ Push 1 on its Weapon Attacks",
+    "seat": "melee",
+    "open": -2.4,
+    "pillars": -0.8,
+    "corridor": -2
+   },
+   {
+    "what": "+ Push 1 on its Weapon Attacks",
+    "seat": "ranged",
+    "open": 0.1,
+    "pillars": 0.3,
+    "corridor": 1
+   },
+   {
+    "what": "+ Push 2 on its Weapon Attacks",
+    "seat": "melee",
+    "open": -2.3,
+    "pillars": -0.5,
+    "corridor": -1.2
+   },
+   {
+    "what": "+ Push 2 on its Weapon Attacks",
+    "seat": "ranged",
+    "open": 0.5,
+    "pillars": 0.8,
+    "corridor": 0.2
+   },
+   {
+    "what": "+ Hindered (EoT) on its Weapon Attacks",
+    "seat": "melee",
+    "open": -0.8,
+    "pillars": -0.9,
+    "corridor": -0.2
+   },
+   {
+    "what": "+ Hindered (EoT) on its Weapon Attacks",
+    "seat": "ranged",
+    "open": 0.4,
+    "pillars": 0.2,
+    "corridor": 1.3
+   },
+   {
+    "what": "+ Immobilized (EoT) on its Weapon Attacks",
+    "seat": "melee",
+    "open": -1.2,
+    "pillars": -1,
+    "corridor": -2.1
+   },
+   {
+    "what": "+ Immobilized (EoT) on its Weapon Attacks",
+    "seat": "ranged",
+    "open": 0.8,
+    "pillars": 0.7,
+    "corridor": 1.2
+   },
+   {
+    "what": "+ Prone on its Weapon Attacks",
+    "seat": "melee",
+    "open": 2.3,
+    "pillars": 3.4,
+    "corridor": 3.5
+   },
+   {
+    "what": "+ Prone on its Weapon Attacks",
+    "seat": "ranged",
+    "open": 2.1,
+    "pillars": 2.2,
+    "corridor": 3.8
+   },
+   {
+    "what": "+ Slowed 1 on its Weapon Attacks",
+    "seat": "melee",
+    "open": 2.3,
+    "pillars": 3,
+    "corridor": 2.6
+   },
+   {
+    "what": "+ Slowed 1 on its Weapon Attacks",
+    "seat": "ranged",
+    "open": 2.3,
+    "pillars": 2,
+    "corridor": 4
+   },
+   {
+    "what": "+ Shield of Faith",
+    "seat": "melee",
+    "open": 8.6,
+    "pillars": 11.1,
+    "corridor": 10.4
+   },
+   {
+    "what": "+ Rebuke",
+    "seat": "melee",
+    "open": 1.8,
+    "pillars": 1.7,
+    "corridor": 2.4
+   },
+   {
+    "what": "+ Overwatch",
+    "seat": "ranged",
+    "open": 0.8,
+    "pillars": 1.4,
+    "corridor": 1.2
+   },
+   {
+    "what": "+ Covering Shot",
+    "seat": "ranged",
+    "open": 1.3,
+    "pillars": 2.9,
+    "corridor": 0.9
+   },
+   {
+    "what": "A 1 AP heal of 1d8 + [Mod] in the place of the third attack",
+    "seat": "melee",
+    "open": 5.8,
+    "pillars": 7.8,
+    "corridor": 7
+   }
+  ]
+ },
+ "areasGrid": [
+  {
+   "card": "Consecrated Ground 2",
+   "size": 2,
+   "shape": "Emanation",
+   "from": "range",
+   "where": "2 Emanation, within 10 squares; all creatures; 3 rounds",
+   "rulerLine": "2 enemies, 2 allies",
+   "hit": [
+    2.2,
+    2.6
+   ],
+   "source": "areas.md section 2 (open field)"
+  },
+  {
+   "card": "Covering Fire",
+   "size": 2,
+   "shape": "Emanation",
+   "from": "range",
+   "where": "2 Emanation, within your weapon's normal range; all creatures; 3 rounds",
+   "rulerLine": "2 enemies, 2 allies",
+   "hit": [
+    2.1,
+    2.6
+   ],
+   "source": "areas.md section 2 (open field)"
+  },
+  {
+   "card": "Word of Radiance 3",
+   "size": 3,
+   "shape": "Burst",
+   "from": "range",
+   "where": "3 Burst, within 10 squares; enemies",
+   "rulerLine": "2.3 enemies",
+   "hit": [
+    2.6,
+    3.8
+   ],
+   "source": "areas.md section 2 (open field)"
+  },
+  {
+   "card": "Volley",
+   "size": 2,
+   "shape": "Emanation",
+   "from": "range",
+   "where": "2 Emanation, within your weapon's normal range; all creatures",
+   "rulerLine": "2 enemies",
+   "hit": [
+    1.7,
+    2.8
+   ],
+   "source": "areas.md section 2 (open field)"
+  },
+  {
+   "card": "Rain of Arrows",
+   "size": 3,
+   "shape": "Emanation",
+   "from": "range",
+   "where": "3 Emanation, within its maximum range; enemies",
+   "rulerLine": "2.5 enemies",
+   "hit": [
+    1.5,
+    3
+   ],
+   "source": "areas.md section 2 (open field)"
+  },
+  {
+   "card": "Final Verdict",
+   "size": 1,
+   "shape": "Emanation",
+   "from": "self",
+   "where": "1 Emanation, around you; enemies",
+   "rulerLine": "1.5 enemies",
+   "hit": [
+    1.2,
+    1.8
+   ],
+   "source": "areas.md section 2 (open field)"
+  }
+ ],
+ "weapons": [
+  {
+   "name": "Dagger",
+   "group": "Blades",
+   "props": "Melee, Thrown",
+   "type": "Pierce",
+   "range": "1, Thrown 4 / 8 / 12",
+   "tiers": [
+    "0",
+    "2 + 1d4!",
+    "4 + 1d4!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Longsword",
+   "group": "Blades",
+   "props": "Melee",
+   "type": "Slash",
+   "range": "1",
+   "tiers": [
+    "0",
+    "2 + 1d6!",
+    "4 + 1d6!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Greatsword",
+   "group": "Blades",
+   "props": "Melee, Two-handed",
+   "type": "Slash",
+   "range": "1",
+   "tiers": [
+    "0",
+    "5 + 1d6!",
+    "8 + 1d8!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Handaxe",
+   "group": "Axes",
+   "props": "Melee, Thrown",
+   "type": "Slash",
+   "range": "1, Thrown 4 / 8 / 12",
+   "tiers": [
+    "0",
+    "2 + 1d4!",
+    "2 + 1d8!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Greataxe",
+   "group": "Axes",
+   "props": "Melee, Two-handed",
+   "type": "Slash",
+   "range": "1",
+   "tiers": [
+    "0",
+    "4 + 1d6!",
+    "10 + 1d8!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Mace",
+   "group": "Hammers",
+   "props": "Melee",
+   "type": "Blunt",
+   "range": "1",
+   "tiers": [
+    "0",
+    "3 + 1d4!",
+    "5 + 1d4!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Maul",
+   "group": "Hammers",
+   "props": "Melee, Two-handed",
+   "type": "Blunt",
+   "range": "1",
+   "tiers": [
+    "0",
+    "6 + 1d4!",
+    "9 + 1d6!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Spear",
+   "group": "Polearms",
+   "props": "Melee, Thrown",
+   "type": "Pierce",
+   "range": "1, Thrown 4 / 8 / 12",
+   "tiers": [
+    "0",
+    "2 + 1d4!",
+    "4 + 1d4!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Pike",
+   "group": "Polearms",
+   "props": "Long, Melee, Two-handed",
+   "type": "Pierce",
+   "range": "3",
+   "tiers": [
+    "0",
+    "4 + 1d6!",
+    "6 + 1d8!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Knuckle Dagger",
+   "group": "Unarmed",
+   "props": "Barehanded, Melee",
+   "type": "Pierce",
+   "range": "1",
+   "tiers": [
+    "0",
+    "2 + 1d4!",
+    "3 + 1d4!"
+   ],
+   "ranged": false
+  },
+  {
+   "name": "Shortbow",
+   "group": "Bows",
+   "props": "Projectile, Ranged, Two-handed",
+   "type": "Pierce",
+   "range": "8 / 16 / 32",
+   "tiers": [
+    "0",
+    "1d6!",
+    "1 + 1d6!"
+   ],
+   "ranged": true
+  },
+  {
+   "name": "Longbow",
+   "group": "Bows",
+   "props": "Projectile, Ranged, Two-handed",
+   "type": "Pierce",
+   "range": "15 / 30 / 60",
+   "tiers": [
+    "0",
+    "1 + 1d4!",
+    "2 + 1d4!"
+   ],
+   "ranged": true
+  },
+  {
+   "name": "Hand Crossbow",
+   "group": "Crossbows",
+   "props": "Projectile, Ranged, Reload",
+   "type": "Pierce",
+   "range": "6 / 12 / 24",
+   "tiers": [
+    "0",
+    "1d4!",
+    "1 + 1d4!"
+   ],
+   "ranged": true
+  },
+  {
+   "name": "Crossbow",
+   "group": "Crossbows",
+   "props": "Projectile, Ranged, Reload, Two-handed",
+   "type": "Pierce",
+   "range": "10 / 20 / 40",
+   "tiers": [
+    "0",
+    "2 + 1d4!",
+    "4 + 1d4!"
+   ],
+   "ranged": true
+  },
+  {
+   "name": "Pistol",
+   "group": "Firearms",
+   "props": "Firearm, Ranged, Reload",
+   "type": "Pierce",
+   "range": "5 / 10 / 20",
+   "tiers": [
+    "0",
+    "1d4!",
+    "2 + 1d8!"
+   ],
+   "ranged": true
+  },
+  {
+   "name": "Musket",
+   "group": "Firearms",
+   "props": "Firearm, Ranged, Reload, Two-handed",
+   "type": "Pierce",
+   "range": "10 / 20 / 40",
+   "tiers": [
+    "0",
+    "1d4!",
+    "4 + 1d8!"
+   ],
+   "ranged": true
+  }
+ ],
+ "builds": [
+  {
+   "file": "archer-double-r1",
+   "name": "Archer (Double Shot)",
+   "weapon": "Crossbow",
+   "wmod": 2,
+   "pmod": 1,
+   "seat": "ranged"
+  },
+  {
+   "file": "archer-rolling-r1",
+   "name": "Archer (Rolling Shot)",
+   "weapon": "Crossbow",
+   "wmod": 2,
+   "pmod": 1,
+   "seat": "ranged"
+  },
+  {
+   "file": "paladin-hands-r1",
+   "name": "Paladin (Lay On Hands)",
+   "weapon": "Greatsword",
+   "wmod": 1,
+   "pmod": 2,
+   "seat": "melee"
+  },
+  {
+   "file": "paladin-smite-r1",
+   "name": "Paladin (Smite)",
+   "weapon": "Greatsword",
+   "wmod": 2,
+   "pmod": 1,
+   "seat": "melee"
+  }
+ ],
+ "npc": {
+  "budget": {
+   "perAp": {
+    "minion": 18,
+    "grunt": 25,
+    "standard": 25,
+    "elite": 33
+   },
+   "turnAp": {
+    "minion": 3,
+    "grunt": 3,
+    "standard": 4,
+    "elite": 4
+   },
+   "rating": {
+    "terrible": 0.65,
+    "low": 0.8,
+    "medium": 1,
+    "high": 1.2,
+    "extreme": 1.5
+   },
+   "size": [
+    0,
+    0,
+    0,
+    0.05
+   ],
+   "round": 0.1,
+   "encounter": 2,
+   "payBack": [
+    0,
+    0.2,
+    0.25,
+    0.5
+   ],
+   "over": 0.15,
+   "riders": {
+    "forced": 2,
+    "mild": 3,
+    "moderate": 8,
+    "severe": 12,
+    "extreme": 18,
+    "step": 6
+   },
+   "explode": 6,
+   "multi": 0.6666666666666666,
+   "multiEnc": 0.5,
+   "toDamage": [
+    0.14,
+    0.22
+   ],
+   "help": {
+    "boon": 3,
+    "health": 1
+   },
+   "reaction": {
+    "self": 0.3333333333333333,
+    "other": 0.25,
+    "twoR": 0
+   }
+  },
+  "stage0": {
+   "minion": {
+    "reactionAp": 0,
+    "squad": 3,
+    "health": [
+     3,
+     5,
+     6,
+     7
+    ],
+    "basic": [
+     [
+      "1",
+      "2"
+     ],
+     [
+      "1",
+      "1d4"
+     ],
+     [
+      "2",
+      "1 + 1d4"
+     ],
+     [
+      "1d4",
+      "2 + 1d4"
+     ]
+    ],
+    "s1": [
+     [
+      "1",
+      "1d4"
+     ],
+     [
+      "2",
+      "1 + 1d4"
+     ],
+     [
+      "1d4",
+      "2 + 1d4"
+     ],
+     [
+      "1 + 1d4",
+      "3 + 1d4"
+     ]
+    ],
+    "s2": [
+     [
+      "2",
+      "2 + 1d4"
+     ],
+     [
+      "1d4",
+      "2 + 1d6"
+     ],
+     [
+      "1 + 1d4",
+      "3 + 1d6"
+     ],
+     [
+      "2 + 1d4",
+      "5 + 1d6"
+     ]
+    ]
+   },
+   "grunt": {
+    "ap": 3,
+    "health": [
+     7,
+     10,
+     13,
+     16,
+     19
+    ],
+    "basic": [
+     [
+      "1",
+      "2"
+     ],
+     [
+      "2",
+      "1d4"
+     ],
+     [
+      "1d4",
+      "1 + 1d4"
+     ],
+     [
+      "1 + 1d4",
+      "2 + 1d4"
+     ],
+     [
+      "1 + 1d4",
+      "3 + 1d4"
+     ]
+    ],
+    "s1": [
+     [
+      "2",
+      "1d4"
+     ],
+     [
+      "1d4",
+      "1 + 1d4"
+     ],
+     [
+      "1 + 1d4",
+      "2 + 1d4"
+     ],
+     [
+      "2 + 1d4",
+      "2 + 1d6"
+     ],
+     [
+      "2 + 1d4",
+      "3 + 1d6"
+     ]
+    ],
+    "s2": [
+     [
+      "1 + 1d4",
+      "2 + 1d4"
+     ],
+     [
+      "2 + 1d4",
+      "2 + 1d6"
+     ],
+     [
+      "2 + 1d4",
+      "3 + 1d6"
+     ],
+     [
+      "3 + 1d6",
+      "6 + 1d6"
+     ],
+     [
+      "4 + 1d6",
+      "7 + 1d6"
+     ]
+    ],
+    "s3": [
+     [
+      "3 + 1d4",
+      "4 + 1d6"
+     ],
+     [
+      "3 + 1d6",
+      "6 + 1d6"
+     ],
+     [
+      "4 + 1d6",
+      "7 + 1d6"
+     ],
+     [
+      "7 + 1d6",
+      "10 + 1d8"
+     ],
+     [
+      "7 + 1d8",
+      "13 + 1d8"
+     ]
+    ]
+   },
+   "standard": {
+    "health": [
+     17,
+     24,
+     30,
+     36,
+     42
+    ],
+    "basic": [
+     [
+      "1d4",
+      "1 + 1d4"
+     ],
+     [
+      "1d4",
+      "2 + 1d4"
+     ],
+     [
+      "1 + 1d4",
+      "2 + 1d6"
+     ],
+     [
+      "2 + 1d4",
+      "3 + 1d6"
+     ],
+     [
+      "3 + 1d4",
+      "5 + 1d6"
+     ]
+    ],
+    "s1": [
+     [
+      "1 + 1d4",
+      "2 + 1d4"
+     ],
+     [
+      "1 + 1d4",
+      "3 + 1d6"
+     ],
+     [
+      "2 + 1d4",
+      "4 + 1d6"
+     ],
+     [
+      "2 + 1d6",
+      "6 + 1d6"
+     ],
+     [
+      "3 + 1d6",
+      "7 + 1d8"
+     ]
+    ],
+    "s2": [
+     [
+      "2 + 1d4",
+      "3 + 1d6"
+     ],
+     [
+      "2 + 1d6",
+      "6 + 1d6"
+     ],
+     [
+      "4 + 1d6",
+      "8 + 1d8"
+     ],
+     [
+      "6 + 1d6",
+      "10 + 1d8"
+     ],
+     [
+      "7 + 1d6",
+      "14 + 1d8"
+     ]
+    ],
+    "s3": [
+     [
+      "4 + 1d6",
+      "7 + 1d6"
+     ],
+     [
+      "6 + 1d6",
+      "11 + 1d8"
+     ],
+     [
+      "7 + 1d6",
+      "15 + 1d8"
+     ],
+     [
+      "10 + 1d8",
+      "19 + 1d8"
+     ],
+     [
+      "13 + 1d8",
+      "24 + 1d8"
+     ]
+    ]
+   },
+   "elite": {
+    "health": [
+     35,
+     50,
+     65,
+     80,
+     95
+    ],
+    "basic": [
+     [
+      "1d4",
+      "1 + 1d4"
+     ],
+     [
+      "1 + 1d4",
+      "3 + 1d4"
+     ],
+     [
+      "3 + 1d4",
+      "3 + 1d6"
+     ],
+     [
+      "3 + 1d6",
+      "5 + 1d6"
+     ],
+     [
+      "4 + 1d6",
+      "6 + 1d6"
+     ]
+    ],
+    "s1": [
+     [
+      "1 + 1d4",
+      "3 + 1d4"
+     ],
+     [
+      "3 + 1d4",
+      "4 + 1d6"
+     ],
+     [
+      "3 + 1d6",
+      "5 + 1d6"
+     ],
+     [
+      "4 + 1d6",
+      "7 + 1d6"
+     ],
+     [
+      "5 + 1d6",
+      "8 + 1d8"
+     ]
+    ],
+    "s2": [
+     [
+      "3 + 1d4",
+      "4 + 1d6"
+     ],
+     [
+      "4 + 1d6",
+      "7 + 1d8"
+     ],
+     [
+      "6 + 1d6",
+      "10 + 1d8"
+     ],
+     [
+      "7 + 1d8",
+      "13 + 1d8"
+     ],
+     [
+      "10 + 1d8",
+      "16 + 1d8"
+     ]
+    ],
+    "s3": [
+     [
+      "5 + 1d6",
+      "7 + 1d8"
+     ],
+     [
+      "7 + 1d8",
+      "15 + 1d8"
+     ],
+     [
+      "11 + 1d8",
+      "17 + 1d8"
+     ],
+     [
+      "15 + 1d8",
+      "23 + 1d8"
+     ],
+     [
+      "17 + 1d8",
+      "27 + 1d8"
+     ]
+    ]
+   }
+  },
+  "defense": {
+   "minion": [
+    10,
+    11,
+    12,
+    13
+   ],
+   "grunt": [
+    10,
+    11,
+    13,
+    15,
+    17
+   ],
+   "standard": [
+    10,
+    11,
+    13,
+    15,
+    17
+   ],
+   "elite": [
+    11,
+    12,
+    14,
+    16,
+    18
+   ]
+  },
+  "ratings": [
+   "terrible",
+   "low",
+   "medium",
+   "high",
+   "extreme"
+  ],
+  "ranks": [
+   "minion",
+   "grunt",
+   "standard",
+   "elite"
+  ],
+  "rangedStep": 1,
+  "vsBase": 12,
+  "rank": {
+   "minion": {
+    "label": "Minion",
+    "modBy": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "attr": 0,
+    "ap": 3,
+    "reactionAp": 0,
+    "cv": 25,
+    "explodes": false
+   },
+   "grunt": {
+    "label": "Grunt",
+    "modBy": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "attr": 0,
+    "ap": 3,
+    "reactionAp": 1,
+    "cv": 50,
+    "explodes": false
+   },
+   "standard": {
+    "label": "Standard",
+    "modBy": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "attr": 1,
+    "ap": 4,
+    "reactionAp": 1,
+    "cv": 100,
+    "explodes": true
+   },
+   "elite": {
+    "label": "Elite",
+    "modBy": [
+     1,
+     2,
+     3,
+     4,
+     4
+    ],
+    "attr": 2,
+    "ap": 4,
+    "reactionAp": 1,
+    "cv": 200,
+    "explodes": true
+   }
+  },
+  "riders": [
+   {
+    "name": "Pushed 1",
+    "sev": "forced",
+    "price": 2
+   },
+   {
+    "name": "Pulled 1",
+    "sev": "forced",
+    "price": 2
+   },
+   {
+    "name": "Slid 1",
+    "sev": "forced",
+    "price": 2
+   },
+   {
+    "name": "Hindered (EoT)",
+    "sev": "mild",
+    "price": 3
+   },
+   {
+    "name": "Taunted (1 round)",
+    "sev": "mild",
+    "price": 3
+   },
+   {
+    "name": "Staggered (EoT)",
+    "sev": "mild",
+    "price": 3
+   },
+   {
+    "name": "Frightened (EoT)",
+    "sev": "mild",
+    "price": 3
+   },
+   {
+    "name": "1 Pressure Bane on its next roll",
+    "sev": "mild",
+    "price": 3
+   },
+   {
+    "name": "Doomed on its next roll",
+    "sev": "mild",
+    "price": 3
+   },
+   {
+    "name": "Sickened 1",
+    "sev": "mild",
+    "price": 3
+   },
+   {
+    "name": "Bright light on it",
+    "sev": "mild",
+    "price": 3
+   },
+   {
+    "name": "Slowed 1",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Dazed 1",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Blinded (EoT)",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Vulnerable 1 (EoT)",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Vulnerable 2 (EoT)",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Immobilized (EoT)",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Immobilized (until it escapes)",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Grabbed",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Pushed 2",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Pulled 2",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Slid 2",
+    "sev": "moderate",
+    "price": 8
+   },
+   {
+    "name": "Prone",
+    "sev": "severe",
+    "price": 12
+   },
+   {
+    "name": "Bleed 1",
+    "sev": "severe",
+    "price": 12
+   },
+   {
+    "name": "Pushed 3",
+    "sev": "severe",
+    "price": 12
+   },
+   {
+    "name": "Slowed 2",
+    "sev": "extreme",
+    "price": 18
+   },
+   {
+    "name": "Dazed 2",
+    "sev": "extreme",
+    "price": 18
+   },
+   {
+    "name": "Bleed 2",
+    "sev": "extreme",
+    "price": 18
+   },
+   {
+    "name": "Bleed 1d4",
+    "sev": "extreme",
+    "price": 18
+   },
+   {
+    "name": "Bleed 1d6",
+    "sev": "beyond1",
+    "price": 24
+   },
+   {
+    "name": "Bleed 2d6",
+    "sev": "beyond2",
+    "price": 40
+   }
+  ],
+  "fn": {
+   "expr": "function expr(avg) {\n  if (avg <= 0.25) return \"0\";\n  if (avg < 2) return String(Math.max(1, Math.round(avg)));\n  const die = avg < 5.5 ? 4 : avg < 11.5 ? 6 : 8, flat = Math.max(0, Math.round(avg - (die + 1) / 2 + 1e-9));\n  return flat ? `${flat} + 1d${die}` : `1d${die}`;\n}",
+   "pointsAvg": "(pts, P = PRICES()) => [pts * P.toDamage[0], pts * P.toDamage[1]]",
+   "riderPrice": "function riderPrice(sev, at = \"hit\", P = PRICES()) {\n  const i = SEV.indexOf(sev); if (i < 0) throw new Error(`a rider's severity: ${sev}`);\n  const j = at === \"setup\" ? i + 1 : at === \"t3\" ? i - 1 : i;\n  if (j < 0) return 0;\n  if (j >= SEV.length) return P.riders.extreme + P.riders.step * (j - (SEV.length - 1));   // past Extreme: each size adds a step\n  return P.riders[SEV[j]];\n}",
+   "actionPoints": "function actionPoints(rank, ap, freq, rating = \"medium\", P = PRICES()) {\n  const per = P.perAp[rank] * P.rating[rating], round = per * ap * (1 + (P.size[ap] ?? 0) + P.round);\n  return freq === \"enc\" ? round * P.encounter : freq === \"round\" ? round : per * ap * (1 + (P.size[ap] ?? 0));\n}",
+   "turnBudget": "(rank, rating = \"medium\", P = PRICES()) => P.perAp[rank] * P.rating[rating] * P.turnAp[rank]"
+  }
+ },
+ "cards": [
+  {
+   "name": "Double Shot",
+   "category": "Sharpshooter",
+   "level": 1,
+   "flavor": "Two shots, so close together they sound like one.",
+   "traits": [
+    "shot",
+    "strike"
+   ],
+   "frequency": "Round",
+   "target": "Two creatures",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "You make two [Ranged, Shot] Weapon Attacks (1A), each against a different creature.",
+     "ruler": "does Weapon Attack x2 | different"
+    },
+    {
+     "ap": 3,
+     "effects": "Evade 1, then as 2 AP.",
+     "ruler": "does Weapon Attack x2 | different | evade 1"
+    }
+   ]
+  },
+  {
+   "name": "Rolling Shot",
+   "category": "Sharpshooter",
+   "level": 1,
+   "flavor": "You keep moving, and the shot rides along with the motion.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Evade 1, then make a [Ranged, Shot] Weapon Attack (1A).",
+     "ruler": "does Weapon Attack | evade 1"
+    },
+    {
+     "ap": 2,
+     "effects": "Evade 2, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 1d6 Pi.",
+     "ruler": "does Weapon Attack | each extra 1d6 | evade 2"
+    },
+    {
+     "ap": 3,
+     "effects": "Evade 3, then make a [Ranged, Shot] Weapon Attack (1A) that deals an extra [V] 2d6 Pi.",
+     "ruler": "does Weapon Attack | each extra 2d6 | evade 3"
+    }
+   ]
+  },
+  {
+   "name": "Overwatch",
+   "category": "Sharpshooter",
+   "level": 1,
+   "flavor": "Nothing moves in your sight without an arrow following it.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Turn",
+   "target": "The triggering creature",
+   "distance": "Weapon",
+   "trigger": "An enemy within 10 squares moves closer to you or to an ally.",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT); on a Critical, it is also Pushed 2.",
+     "ruler": "does Weapon Attack"
+    }
+   ]
+  },
+  {
+   "name": "Covering Shot",
+   "category": "Sharpshooter",
+   "level": 1,
+   "flavor": "You see the blow coming before they do, and your bolt gets there first.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Turn",
+   "target": "The attacker",
+   "distance": "Weapon",
+   "interrupt": "A [Strike] Action would damage an ally within 10 squares.",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) with 1 Boon against the attacker. On a Tier 3, the ally takes half of the triggering damage.",
+     "ruler": "does Weapon Attack | each boon 1"
+    }
+   ]
+  },
+  {
+   "name": "Marksman's Shot",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "One shot, carefully placed. Everything after it is easier.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[V] 1[W] + 1d8 Pi",
+      "[V] 1[W] + [Mod] + 2d6 Pi",
+      "[V] 1[W] + [Mod] + 3d6 Pi; Vulnerable 2 (EoT)."
+     ],
+     "critical": "The target is Blinded (EoT).",
+     "ruler": "on 3: vulnerable 2"
+    }
+   ]
+  },
+  {
+   "name": "Volley",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You empty the quiver skyward, and the arrows fall together.",
+   "traits": [
+    "area",
+    "ranged",
+    "save",
+    "shot",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "All creatures in the Area",
+   "area": "2 Emanation",
+   "distance": "Your weapon's normal range",
+   "vs": "Instinct Save",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[V] 2d8 + [Mod] Pi; Hindered (EoT).",
+      "[V] 1d10 + [Mod] Pi",
+      "[V] 1d4 Pi"
+     ],
+     "ruler": "area 2 | on 1: debuff Hindered (EoT)"
+    }
+   ]
+  },
+  {
+   "name": "Covering Fire",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "Nobody walks through that ground without paying for it.",
+   "traits": [
+    "area",
+    "ranged",
+    "shot",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "All creatures in the Area",
+   "area": "2 Emanation",
+   "distance": "Your weapon's normal range",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "For 3 rounds, enemies in the area take 1 Bane on [Strike] Actions, and allies in it gain +1 Defense.",
+     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike; defense 1 allies"
+    }
+   ]
+  },
+  {
+   "name": "Pinning Shot",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You pin their foot to the ground with an arrow.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "One creature",
+   "distance": "Weapon",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT).",
+     "ruler": "vs ad | tiers 0 / 1[W] + [Mod] / 1[W] + [Mod] | on 2+: debuff Immobilized (EoT)"
+    }
+   ]
+  },
+  {
+   "name": "Twin Shot",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "Two arrows, one motion, two answers.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "Two creatures",
+   "distance": "Weapon",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Make one [Ranged, Shot] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [V] 1d6 Pi to each of them.",
+     "ruler": "does Weapon Attack | each extra 1d6 | area 2"
+    }
+   ]
+  },
+  {
+   "name": "Hunter's Focus",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You and the quarry, and nothing else in the world.",
+   "traits": [
+    "focus",
+    "self"
+   ],
+   "frequency": "Daily",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "For the rest of the encounter, against your Marked Quarry (a new Marked Quarry when you choose one): you gain 1 Boon and are Empowered against them, and you take less damage from each of their Actions, reduced by your **Signature Modifier** (you choose which instance of its damage is reduced).",
+     "ruler": "always: boon 1 encounter shot strike quarry; empowered 1 encounter shot strike quarry"
+    }
+   ]
+  },
+  {
+   "name": "Deadeye",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You put everything into one shot, and everything into the one after.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Daily",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] 1[W]",
+      "[V] 1[W] + [Mod] + 1d6 Pi",
+      "[V] 1[W] + [Mod] + 2d6 Pi; Prone."
+     ],
+     "critical": "The target is Blinded for 1 round.",
+     "ruler": "favored | on 3: debuff Prone"
+    }
+   ]
+  },
+  {
+   "name": "Rain of Arrows",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "Arrows fall from nothing, again and again, until the ground is gone.",
+   "traits": [
+    "area",
+    "ranged",
+    "save",
+    "shot",
+    "weapon"
+   ],
+   "frequency": "Daily",
+   "target": "All enemies in the Area",
+   "area": "3 Emanation",
+   "distance": "Your weapon's maximum range",
+   "vs": "Instinct Save",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[V] 2d8 + [Mod] Pi; Prone.",
+      "[V] 2d6 + [Mod] Pi",
+      "[V] 1d6 Pi"
+     ],
+     "ruler": "area 2.5 | on 1: debuff Prone"
+    }
+   ]
+  },
+  {
+   "name": "Deathmark",
+   "category": "Archer Apex",
+   "flavor": "One arrow, one name, and nothing left to argue.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "escalation": 3,
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[V] 1[W] + 1d8 Pi",
+      "[V] 1[W] + [Mod] + 2d8 Pi",
+      "[V] 1[W] + [Mod] + 3d8 Pi"
+     ],
+     "effects": "Against your [[Marked Quarry]], this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Shot] Weapon Attack (1A) against them."
+    }
+   ]
+  },
+  {
+   "name": "Open Season",
+   "category": "Archer Apex",
+   "flavor": "You call it, and every arrow in the party finds the mark.",
+   "traits": [
+    "focus",
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "escalation": 3,
+   "target": "Your Marked Quarry",
+   "distance": "Weapon",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "Make a [Ranged, Shot] Weapon Attack (1A) against your [[Marked Quarry]]. For 1 round, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi.",
+     "ruler": "does Weapon Attack | always: vulnerable 2 round"
+    }
+   ]
+  },
+  {
+   "name": "Mark Quarry",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "One name, one face, and the rest of the field goes quiet.",
+   "traits": [
+    "focus"
+   ],
+   "frequency": "Turn",
+   "target": "One creature",
+   "file": "archer.json",
+   "versions": [
+    {
+     "ap": 0,
+     "effects": "The targeted creature becomes your Marked Quarry: at the start of an encounter, or as a 0R [Focus] when yours died or went Down."
+    },
+    {
+     "ap": 1,
+     "effects": "The targeted creature becomes your Marked Quarry instead of the one you had."
+    }
+   ]
+  },
+  {
+   "name": "Advance",
+   "category": "Basic Action",
+   "flavor": "You press forward, one deliberate step at a time.",
+   "traits": [
+    "move",
+    "self"
+   ],
+   "frequency": "At-will",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "When you use this Action, you move up to your Speed in squares."
+    }
+   ]
+  },
+  {
+   "name": "Charge",
+   "category": "Basic Action",
+   "flavor": "You close the distance in one straight, reckless line.",
+   "traits": [
+    "move",
+    "strike"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "requirements": "You have at least Speed 3.",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target. That Weapon Attack counts toward At-will Banes."
+    }
+   ]
+  },
+  {
+   "name": "Crawl",
+   "category": "Basic Action",
+   "flavor": "You drag yourself along the ground.",
+   "traits": [
+    "move",
+    "self"
+   ],
+   "frequency": "At-will",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "You move 1 square."
+    },
+    {
+     "ap": 2,
+     "effects": "**Requirements:** Your Speed is 5 or higher. You move 3 squares."
+    }
+   ]
+  },
+  {
+   "name": "Evade",
+   "category": "Basic Action",
+   "flavor": "You slip through the fray without giving anyone an opening.",
+   "traits": [
+    "self"
+   ],
+   "frequency": "At-will",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Evade 1."
+    },
+    {
+     "ap": 2,
+     "effects": "Evade half your Speed (rounded down)."
+    }
+   ]
+  },
+  {
+   "name": "Fists",
+   "category": "Basic Action",
+   "flavor": "When there is nothing else in your hands, there are always your hands.",
+   "traits": [
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "requirements": "You have a free hand.",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[V] 1[W] + [Mod]",
+      "[V] 1[W] + [Mod]"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Haul",
+   "category": "Basic Action",
+   "flavor": "You snag them and drag them in.",
+   "traits": [
+    "appeal",
+    "body",
+    "handle",
+    "strike"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Reach",
+   "vs": "Appeal or Body (the one used to roll)",
+   "requirements": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement.",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "No effect.",
+      "Pulled 1.",
+      "Pulled 2."
+     ]
+    },
+    {
+     "ap": 2,
+     "tiers": [
+      "No effect.",
+      "Pulled 2.",
+      "Pulled 4."
+     ]
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "Pulled 1.",
+      "Pulled 3.",
+      "Pulled 5."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Interact",
+   "category": "Basic Action",
+   "flavor": "You pull the lever, open the door, grab what you need.",
+   "traits": [
+    "handle"
+   ],
+   "frequency": "At-will",
+   "distance": "Reach",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world."
+    }
+   ]
+  },
+  {
+   "name": "Leaning",
+   "category": "Basic Action",
+   "flavor": "You lean out from cover, just enough to see.",
+   "traits": [
+    "self"
+   ],
+   "frequency": "At-will",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost."
+    }
+   ]
+  },
+  {
+   "name": "Regrip",
+   "category": "Basic Action",
+   "flavor": "You shift your hands on the grip, and the weapon sits where you want it.",
+   "traits": [
+    "self"
+   ],
+   "frequency": "At-will",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand."
+    }
+   ]
+  },
+  {
+   "name": "Release",
+   "category": "Basic Action",
+   "flavor": "You let it go.",
+   "traits": [
+    "self"
+   ],
+   "frequency": "At-will",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 0,
+     "effects": "You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand)."
+    }
+   ]
+  },
+  {
+   "name": "Reload",
+   "category": "Basic Action",
+   "flavor": "You work the mechanism and seat a fresh bolt.",
+   "traits": [
+    "weapon",
+    "handle"
+   ],
+   "frequency": "At-will",
+   "target": "One target",
+   "distance": "Reach",
+   "vs": "DC 13",
+   "requirements": "You or an ally within Reach is wielding an unloaded weapon.",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "Your next Reload attempt gains 2 Boons.",
+      "You Reload the weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can.",
+      "You Reload the weapon and its wielder can Evade 1. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Relocate",
+   "category": "Basic Action",
+   "flavor": "You take them by the arm and put them where you want them.",
+   "traits": [
+    "body",
+    "handle",
+    "instinct",
+    "strike"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Reach",
+   "vs": "Body or Instinct (the one used to roll)",
+   "requirements": "The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "No effect.",
+      "Reposition 1.",
+      "Reposition 2."
+     ]
+    },
+    {
+     "ap": 2,
+     "tiers": [
+      "No effect.",
+      "Reposition 2.",
+      "Reposition 4."
+     ]
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "Reposition 1.",
+      "Reposition 3.",
+      "Reposition 5."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Shove",
+   "category": "Basic Action",
+   "flavor": "You put your weight behind it and drive them back.",
+   "traits": [
+    "body",
+    "handle",
+    "strike"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Reach",
+   "vs": "Body",
+   "requirements": "The target's SR is at most 1 higher than yours.",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "No effect.",
+      "Pushed 1.",
+      "Pushed 2."
+     ]
+    },
+    {
+     "ap": 2,
+     "tiers": [
+      "No effect.",
+      "Pushed 2.",
+      "Pushed 4."
+     ]
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "Pushed 1.",
+      "Pushed 3.",
+      "Pushed 5."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Stand",
+   "category": "Basic Action",
+   "flavor": "You get your feet back under you.",
+   "traits": [
+    "move",
+    "self"
+   ],
+   "frequency": "At-will",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "You stand up: you are no longer Prone."
+    }
+   ]
+  },
+  {
+   "name": "Steel Yourself",
+   "category": "Basic Action",
+   "flavor": "You grit your teeth and find a little more to give.",
+   "traits": [
+    "self"
+   ],
+   "frequency": "Round",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "You use 1 Rally Point.",
+     "ruler": "heal 1 self"
+    },
+    {
+     "ap": 3,
+     "effects": "You use 2 Rally Points.",
+     "ruler": "heal 2 self"
+    }
+   ]
+  },
+  {
+   "name": "Trip",
+   "category": "Basic Action",
+   "flavor": "A hooked foot, a twist, and they hit the ground.",
+   "traits": [
+    "body",
+    "handle",
+    "instinct",
+    "strike"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Reach",
+   "vs": "Body or Instinct (the one used to roll)",
+   "requirements": "The target's SR is at most 1 higher than yours.",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "No effect.",
+      "No effect.",
+      "Prone."
+     ]
+    },
+    {
+     "ap": 2,
+     "tiers": [
+      "No effect.",
+      "Prone.",
+      "[V] 1d8 Bl; Prone."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Weapon Attack",
+   "category": "Basic Action",
+   "flavor": "You strike with the weapon in your hands.",
+   "traits": [
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[V] 1[W] + [Mod]",
+      "[V] 1[W] + [Mod]"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Break Free",
+   "category": "Basic Action",
+   "flavor": "You tear loose from whatever holds you.",
+   "traits": [
+    "move",
+    "self"
+   ],
+   "frequency": "At-will",
+   "requirements": "You are Immobilized.",
+   "file": "basic-actions.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "You are no longer Immobilized."
+    }
+   ]
+  },
+  {
+   "name": "Rusty Knife",
+   "category": "Basic attack",
+   "flavor": "A notched blade, quick and dirty.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "npc": "Goblin Sneak",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[V] [Mod] Pi",
+      "[V] 1d4 Pi"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Dirty Trick",
+   "category": "Special Action",
+   "flavor": "Sand in the eyes, a heel on the toes, and the goblin is gone.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "npc": "Goblin Sneak",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[V] [Mod] Pi",
+      "[V] 1d6 Pi"
+     ],
+     "effects": "Hindered (EoT)."
+    }
+   ]
+  },
+  {
+   "name": "Cudgel",
+   "category": "Basic attack",
+   "flavor": "A heavy stick and no reason to hold back.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "npc": "Bandit Thug",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[V] 1d2 Bl",
+      "[V] 1d4 Bl"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Low Blow",
+   "category": "Special Action",
+   "flavor": "No rules in a back alley.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "npc": "Bandit Thug",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "0",
+      "[V] 1d8 Bl",
+      "[V] 2d6 Bl"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Cleaver",
+   "category": "Basic attack",
+   "flavor": "A butcher's blade, swung by someone who enjoys it.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "npc": "Orc Warrior",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[V] 1d4 Sl",
+      "[V] 1d10 Sl"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Brutal Swing",
+   "category": "Special Action",
+   "flavor": "The orc puts its whole weight behind one wild arc.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "npc": "Orc Warrior",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "0",
+      "[V] 1d8 Sl",
+      "[V] 2d6 Sl"
+     ],
+     "effects": "Prone."
+    }
+   ]
+  },
+  {
+   "name": "Hold the Line",
+   "category": "Special Action",
+   "flavor": "Touch its kin, and the orc answers.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "The attacker",
+   "distance": "Weapon",
+   "vs": "AD",
+   "trigger": "An ally within 2 squares is hit.",
+   "npc": "Orc Warrior",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[V] 1d10 Sl",
+      "[V] 3d6 Sl"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Chilling Touch",
+   "category": "Basic attack",
+   "flavor": "Fingers of fog, and the cold goes straight to the heart.",
+   "traits": [
+    "melee",
+    "power",
+    "strike"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Reach",
+   "vs": "WD",
+   "npc": "Grave Wisp",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[R] 1d4 + [Mod] Co",
+      "[R] 1d10 + [Mod] Co"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Dread Whisper",
+   "category": "Special Action",
+   "flavor": "It knows your name, and it says what you fear most.",
+   "traits": [
+    "melee",
+    "power",
+    "strike",
+    "fear"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Reach",
+   "vs": "WD",
+   "npc": "Grave Wisp",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "0",
+      "[R] 1d10 + [Mod] Ps",
+      "[R] 3d6 + [Mod] Ps"
+     ],
+     "effects": "Frightened of the Grave Wisp (EoT)."
+    }
+   ]
+  },
+  {
+   "name": "Club",
+   "category": "Basic attack",
+   "flavor": "A tree trunk with a handle.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "At-will",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "npc": "Ogre Chieftain",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "0",
+      "[V] 1d6 Bl",
+      "[V] 2d6 Bl"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Ground Slam",
+   "category": "Special Action",
+   "flavor": "The ogre brings both fists down, and the ground jumps.",
+   "traits": [
+    "area",
+    "body",
+    "save"
+   ],
+   "frequency": "Encounter",
+   "target": "All creatures in the Area",
+   "area": "1 Emanation",
+   "vs": "Body Save",
+   "npc": "Ogre Chieftain",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 3,
+     "tiers": [
+      "[V] 3d6 + [Mod] Bl; Prone.",
+      "[V] 1d10 + [Mod] Bl",
+      "No effect."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Rally the Tribe",
+   "category": "Special Action",
+   "flavor": "One bellow, and the whole tribe fights harder.",
+   "traits": [
+    "focus"
+   ],
+   "frequency": "Round",
+   "escalation": 2,
+   "target": "Allies within 5 squares",
+   "distance": "5 sq.",
+   "npc": "Ogre Chieftain",
+   "file": "bestiary.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action."
+    }
+   ]
+  },
+  {
+   "name": "Stick and Slip",
+   "category": "Weapon Technique",
+   "flavor": "In, a quick cut, and out before they can answer.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi; you can Evade 1.",
+      "[V] 1d8 + [Mod] Pi; you can Evade 1."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Guarded Cut",
+   "category": "Weapon Technique",
+   "flavor": "The blade strikes and comes straight back to guard.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Sl",
+      "[V] 1d6 + [Mod] Sl",
+      "[V] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Reaping Sweep",
+   "category": "Weapon Technique",
+   "flavor": "A wide, heavy arc for anyone standing too close.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Sl",
+      "[V] 1d10 + [Mod] Sl; Cleave 1",
+      "[V] 2d6 + [Mod] Sl; Cleave 2"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Hooking Chop",
+   "category": "Weapon Technique",
+   "flavor": "The beard of the axe catches, and you pull.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Sl",
+      "[V] 1d4 + [Mod] Sl; Pulled 1.",
+      "[V] 1d8 + [Mod] Sl; Pulled 1."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Rending Chop",
+   "category": "Weapon Technique",
+   "flavor": "A blow that splits armor and leaves the flesh open.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Sl",
+      "[V] 1d6 + [Mod] Sl",
+      "[V] 2d8 + [Mod] Sl; Vulnerable 1 (EoT)."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Ringing Blow",
+   "category": "Weapon Technique",
+   "flavor": "A crack on the helm, and their next swing goes wide.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Bl",
+      "[V] 1d4 + 1 + [Mod] Bl",
+      "[V] 1d8 + 1 + [Mod] Bl; its next [Strike] Action takes 1 Pressure Bane (EoT)."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Bowl Over",
+   "category": "Weapon Technique",
+   "flavor": "All the weight of the head, low and through.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Bl",
+      "[V] 1d4 + 2 + [Mod] Bl",
+      "[V] 1d10 + 2 + [Mod] Bl; Prone."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Lunge",
+   "category": "Weapon Technique",
+   "flavor": "A full extension that reaches farther than they thought.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon + 1",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi",
+      "[V] 1d8 + [Mod] Pi; Hindered (EoT)."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Keep Them Off",
+   "category": "Weapon Technique",
+   "flavor": "The point stays between you and them, and it pushes.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d6 + [Mod] Pi; Pushed 1.",
+      "[V] 1d10 + [Mod] Pi; Pushed 2."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Gut Punch",
+   "category": "Weapon Technique",
+   "flavor": "A fist with a blade in it, right under the ribs.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi; Hindered (EoT).",
+      "[V] 1d6 + [Mod] Pi; Hindered (EoT)."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Skirmish Shot",
+   "category": "Weapon Technique",
+   "flavor": "Loose, and be gone before the arrow lands.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d6 + [Mod] Pi",
+      "[V] 1d10 + [Mod] Pi; you can Evade 1."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Heartseeker",
+   "category": "Weapon Technique",
+   "flavor": "A full draw, aimed where the armor gives.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d4 + 1 + [Mod] Pi",
+      "[V] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT)."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Sting",
+   "category": "Weapon Technique",
+   "flavor": "A small bolt in the leg: small, and enough.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi",
+      "[V] 1d8 + [Mod] Pi; Hindered (EoT)."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Lock & Loose",
+   "category": "Weapon Technique",
+   "flavor": "A bolt to the knee, and they go nowhere.",
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action.",
+      "[V] 1d10 + [Mod] Pi; Immobilized"
+     ],
+     "ruler": "on 2: debuff Hindered (until it moves); on 3: debuff Immobilized"
+    }
+   ]
+  },
+  {
+   "name": "Point Blank",
+   "category": "Weapon Technique",
+   "flavor": "Too close for a bow. Not too close for this.",
+   "traits": [
+    "gun",
+    "ranged",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi",
+      "[V] 2d6 + [Mod] Pi; Pushed 1."
+     ],
+     "effects": "While you are Engaged, this attack takes 1 Bane for it instead of 2."
+    }
+   ]
+  },
+  {
+   "name": "Thunderclap",
+   "category": "Weapon Technique",
+   "flavor": "The shot and the smoke, and they are on the ground.",
+   "traits": [
+    "gun",
+    "ranged",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "gear.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] [Mod] Pi",
+      "[V] 1d4 + [Mod] Pi",
+      "[V] 2d8 + [Mod] Pi; Prone."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Smite",
+   "category": "Divine Power",
+   "level": 1,
+   "flavor": "Your weapon blazes with holy light.",
+   "traits": [
+    "divine",
+    "signature",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[V] 1[W]",
+      "[V] 1[W] + [Mod] + [R] 1d6 Ho",
+      "[V] 1[W] + [Mod] + [R] 1d8 Ho"
+     ],
+     "effects": "The target sheds [[Bright|Bright light]] in a 1 Emanation and takes 1 Bane when they try to [[Hide]], for 1 round."
+    },
+    {
+     "ap": 2,
+     "tiers": [
+      "[V] 1[W] + [R] 1d6 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d6 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d10 Ho"
+     ],
+     "effects": "As 1 AP, but a 2 Emanation."
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "[V] 1[W] + [R] 1d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho"
+     ],
+     "effects": "As 2 AP, and you or one ally in the Bright light gain [[Guard]] 1d8 + [Mod] (2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3). The other creatures in the light, you excepted, are Pushed 1, away from the target.",
+     "ruler": "on 2+: guard 1d8+[Mod] self"
+    }
+   ]
+  },
+  {
+   "name": "Lay On Hands",
+   "category": "Divine Power",
+   "level": 1,
+   "flavor": "Your touch carries your god's mercy.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Round",
+   "target": "One [[Willing and Unwilling|willing]] creature",
+   "distance": "Reach",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "The target can use 1 Rally Point.",
+     "ruler": "heal 1"
+    },
+    {
+     "ap": 2,
+     "effects": "The target can use 1 Rally Point, healing 1d6 + your Power Modifier more.",
+     "ruler": "heal 1; mend 1d6+[Mod] ally"
+    },
+    {
+     "ap": 3,
+     "effects": "As 2 AP, but 2 Rally Points.",
+     "ruler": "heal 2; mend 1d6+[Mod] ally"
+    }
+   ]
+  },
+  {
+   "name": "Shield of Faith",
+   "category": "Divine Power",
+   "level": 1,
+   "flavor": "A shimmer of light holds steady between them and harm.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Turn",
+   "target": "The triggering creature",
+   "interrupt": "A [Strike] Action would damage you or an ally within 5 squares.",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "The damage that Strike deals to the target is reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3).",
+     "ruler": "block 2d6+[Mod]"
+    }
+   ]
+  },
+  {
+   "name": "Rebuke",
+   "category": "Divine Power",
+   "level": 1,
+   "flavor": "Strike my friends, and feel why you should not have.",
+   "traits": [
+    "divine",
+    "power",
+    "save"
+   ],
+   "frequency": "Turn",
+   "target": "The triggering creature",
+   "distance": "5 sq.",
+   "vs": "Appeal Save",
+   "trigger": "An enemy within 5 squares makes a [Strike] Action against an ally.",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 1,
+     "tiers": [
+      "[R] 1d8 Ho; Pushed 2, and Frightened of you for 1 round.",
+      "[R] 1d6 Ho; Pushed 1.",
+      "No effect."
+     ],
+     "ruler": "on 1: push 2; on 1: debuff Frightened (EoT); on 2: push 1"
+    }
+   ]
+  },
+  {
+   "name": "Holy Wrath",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "For one blow, your god stops holding back.",
+   "traits": [
+    "divine",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[V] 1[W] + [R] 1d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho"
+     ]
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "[V] 1[W] + [R] 2d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 4d8 Ho"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Word of Radiance",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You speak a word, and light pours from your hands across everything that stands against you.",
+   "traits": [
+    "area",
+    "divine",
+    "power"
+   ],
+   "frequency": "Encounter",
+   "target": "All enemies in the Area",
+   "area": "2 / 3 Burst",
+   "distance": "10 sq.",
+   "vs": "WD",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[R] 1d10 Ho",
+      "[R] 2d8 Ho; Pushed 1.",
+      "[R] 3d6 Ho; Pushed 2."
+     ],
+     "critical": "The target is Prone.",
+     "ruler": "area 1.8 | on 2: push 1; on 3: push 2"
+    },
+    {
+     "ap": 3,
+     "tiers": [
+      "[R] 2d6 Ho",
+      "[R] 2d10 Ho; Pushed 1.",
+      "[R] 3d8 Ho; Pushed 2."
+     ],
+     "critical": "The target is Prone.",
+     "ruler": "area 2.3 | on 2: push 1; on 3: push 2"
+    }
+   ]
+  },
+  {
+   "name": "Bulwark of Faith",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You step into the blow meant for them, and your god holds the line with you.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Encounter",
+   "target": "The triggering creature",
+   "interrupt": "A [Strike] Action would damage an ally within 5 squares.",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "The target gains [[Guard]] equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.",
+     "ruler": "block 9; slide 1"
+    }
+   ]
+  },
+  {
+   "name": "Beacon",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You plant your feet, and light rims the shoulders of everyone near you.",
+   "traits": [
+    "area",
+    "divine",
+    "self"
+   ],
+   "frequency": "Encounter",
+   "target": "You and allies in the Area",
+   "area": "Aura 2",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 1,
+     "effects": "For 3 rounds, you and allies in the [[Aura]] gain +1 Defense. While the Beacon is active, you gain the following Action:",
+     "ruler": "allies 2.5 | rounds 3 | defense 1 allies"
+    }
+   ]
+  },
+  {
+   "name": "Consecrated Ground",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You drive your weapon into the earth, and the earth answers.",
+   "traits": [
+    "area",
+    "divine"
+   ],
+   "frequency": "Daily",
+   "target": "All creatures in the Area",
+   "area": "2 / 3 Emanation",
+   "distance": "10 sq.",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns.",
+     "ruler": "rounds 3 | area 2 | allies 2 | banes 1 strike power; heal-dice 1d4"
+    },
+    {
+     "ap": 3,
+     "effects": "As 2 AP, but for 5 rounds.",
+     "ruler": "rounds 5 | area 2.5 | allies 2.5 | banes 1 strike power; heal-dice 1d4"
+    }
+   ]
+  },
+  {
+   "name": "Miraculous Recovery",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You lay both hands on the wound and call in a debt owed to your god.",
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "frequency": "Daily",
+   "target": "One [[Willing and Unwilling|willing]] creature",
+   "distance": "Reach",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "The target heals twice what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them.",
+     "ruler": "heal 2; remove-effect 1"
+    },
+    {
+     "ap": 3,
+     "effects": "As 2 AP, but three times what 1 Rally Point would heal.",
+     "ruler": "heal 3; remove-effect 1"
+    }
+   ]
+  },
+  {
+   "name": "Divine Intervention",
+   "category": "Paladin Feature",
+   "level": 1,
+   "flavor": "You reach out, and your god answers before you finish the prayer.",
+   "traits": [
+    "divine"
+   ],
+   "frequency": "Daily",
+   "target": "The triggering creature",
+   "interrupt": "You or an ally within 5 squares would go Down.",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 2,
+     "effects": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain [[Guard]] equal to what one of their Rally Points heals.",
+     "ruler": "prevent-down; guard 9 ally"
+    }
+   ]
+  },
+  {
+   "name": "Final Verdict",
+   "category": "Paladin Apex",
+   "flavor": "You name every sin within reach, and the light answers all at once.",
+   "traits": [
+    "area",
+    "divine",
+    "melee",
+    "self",
+    "signature",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Encounter",
+   "escalation": 3,
+   "target": "All enemies in the Area",
+   "area": "1 Emanation",
+   "vs": "AD",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "[V] 1[W] + [R] 1d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 2d8 Ho",
+      "[V] 1[W] + [Mod] + [R] 3d8 Ho"
+     ],
+     "effects": "You roll once and compare the result to each target's AD. Each target you hit is Pushed 1 and sheds Bright light in a 1 Emanation for 1 round. A Bloodied target is Prone instead; a Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap).",
+     "ruler": "area 1.5"
+    }
+   ]
+  },
+  {
+   "name": "Hallowed Dawn",
+   "category": "Paladin Apex",
+   "flavor": "Dawn breaks where you stand, and it chooses sides.",
+   "traits": [
+    "area",
+    "divine",
+    "self"
+   ],
+   "frequency": "Encounter",
+   "escalation": 3,
+   "target": "All creatures in the Area",
+   "area": "2 Emanation",
+   "file": "paladin.json",
+   "versions": [
+    {
+     "ap": 3,
+     "effects": "You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Pushed 2 away from you, takes 1 Bane on its [Strike] Actions and sheds Bright light in a 1 Emanation for 1 round.",
+     "ruler": "allies 3 | mend 3d6+[Mod] any; push 2; remove-effect 1"
+    }
+   ]
+  }
+ ]
+}
