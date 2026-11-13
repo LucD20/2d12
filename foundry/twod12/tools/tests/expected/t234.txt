@@ -11,5 +11,5 @@ compiled: closer difficult | the old one stays a refusal: cant
 the Frightened condition: {"type":"move","text":"closer","moveHow":"difficult"} | true
 the cost counts it: true | no refusal for it: true
 the line's label: Frightened of Ogre Chieftain: moving closer is Difficult Terrain | Frightened of Ogre Chieftain: not seen (no effect now)
-pool line: Vigor · 7 + 2 Pi 9 | two subtypes: Vigor · 6 Sl + 4 Fi 10
+pool line: Vigor · 9 Pi 9 | two subtypes: Vigor · 6 Sl + 4 Fi 10
 Marked Quarry's damage: [Mod] W | the roll resolves W to the weapon: true | the sheet offers it: true

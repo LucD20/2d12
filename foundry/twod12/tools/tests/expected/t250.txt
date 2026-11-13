@@ -1,0 +1,13 @@
+--- a line
+[R] 2d6 Ho + 1d6 Ho + 1d6 Ho  ->  [R] 4d6 Ho
+[R] 1d8 Ho + 2d6 Ho  ->  [R] 1d8 Ho + 2d6 Ho
+[V] 1[W] + [Mod] + [R] 2d6 Ho + [R] 1d6 Ho  ->  [V] 1[W] + [Mod] + [R] 3d6 Ho
+[V] 1d6! Sl + 1d6 Sl + 1d6! Sl  ->  [V] 2d6! Sl + 1d6 Sl
+[R] 1d6 Ho + 1d6 Fi  ->  [R] 1d6 Ho + 1d6 Fi
+[V] 3 + 1d4  ->  [V] 3 + 1d4
+2d6 Sl + 1d6 Ho + 1d6 Ho  ->  2d6 Sl + 2d6 Ho
+--- the breakdown
+M Ho (Smite, Radiant Zeal ×2): dice 3 4 5 2; mods -; total 14
+B Sl (Greatsword): dice 6 1; mods 2 Weapon; total 9
+--- one at a time
+A1 start, B, A1 end, A2 | an error doesn't stop the next: caught ran

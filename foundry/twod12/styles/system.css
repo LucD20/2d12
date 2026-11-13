@@ -4429,3 +4429,36 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12 .tw-top .message-metadata { display: inline-flex; flex: none; align-items: center; gap: 8px; margin-left: auto; font-size: 11.5px; white-space: nowrap; color: inherit; }
 .twod12 .tw-top .message-metadata a, .twod12 .tw-top .message-metadata i { color: inherit; }
 .twod12 .tw-top + .flavor-text { display: block; margin: -2px 0 6px; font-size: 12px; font-style: italic; color: var(--cc-mute, #5d5446); }
+/* ==== v0.0.373 (STYLE-2): "On you" / "On it" left both sheets (the Effects tab lists them and keeps the drop target); the strip's columns close up ==== */
+.twod12.sheet.pcs .ps-strip.v349 { grid-template-columns: minmax(0, 1fr) 150px 150px; }
+.twod12.sheet.pcs.npcs .ps-strip.v349 { grid-template-columns: minmax(0, 1fr); }
+.twod12.sheet.pcs.npcs.elite .ps-strip.v349 { grid-template-columns: minmax(0, 1fr) 160px; }
+/* ==== v0.0.373 (STYLE-2, Lucas: version A of the Immune / Resist / Weak block; foundry/mockups/npc-sheet-dark.html): three lines of chips in their
+   subtype's icon and color, the twelve subtypes as a compact list (the picked one underlined), a stepper, Resist / Weak / Immune. The side panel's
+   chips take the same icon and color. --sc-l / --sc-d come from config.mjs subtypeInk / subtypeColors; the dark values are in the theme. ==== */
+.twod12.sheet.pcs .nb-rw.rwA { --rw-ink: #2a241d; --rw-mute: #5d5446; --rw-hair: #cdb88a; --rw-out: #8c7d63; --rw-res: #2c5b3f; --rw-wk: #a8322d; --rw-ona: #eae0c8; }
+.twod12 .rw-chip, .twod12 .rw-sub { --sc: var(--sc-l); }
+.twod12.sheet.pcs .nb-rw.rwA .rw-lines { padding: 4px 2px 2px; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-line { display: flex; align-items: center; gap: 10px; min-height: 30px; border-bottom: 1px solid var(--rw-hair); }
+.twod12.sheet.pcs .nb-rw.rwA .rw-k { flex: none; width: 64px; font-weight: 700; font-variant: small-caps; font-size: 15px; color: var(--rw-ink); }
+.twod12.sheet.pcs .nb-rw.rwA .rw-k.resist { color: var(--rw-res); } .twod12.sheet.pcs .nb-rw.rwA .rw-k.weak { color: var(--rw-wk); }
+.twod12.sheet.pcs .nb-rw.rwA .rw-v { display: flex; flex-wrap: wrap; gap: 6px; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-chip { display: inline-flex; align-items: center; gap: 5px; padding: 2px 4px 2px 7px; border: 1px solid var(--sc); border-radius: 2px; background: none; color: var(--sc); font-size: 13px; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-chip b { font-weight: 700; } .twod12.sheet.pcs .nb-rw.rwA .rw-chip .rw-n { font-style: normal; font-weight: 700; color: var(--rw-ink); }
+.twod12.sheet.pcs .nb-rw.rwA .rw-chip a { padding: 0 3px; color: var(--rw-mute); cursor: pointer; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-add { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 10px; align-items: start; padding: 8px 2px 2px; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-add .rw-k { padding-top: 4px; color: var(--rw-mute); }
+.twod12.sheet.pcs .nb-rw.rwA .rw-pal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-sub { display: flex; align-items: center; justify-content: flex-start; gap: 5px; width: auto; height: 26px; min-height: 0; margin: 0; padding: 0 7px; border: 1px solid var(--rw-hair); border-radius: 2px; background: transparent; box-shadow: none; color: var(--sc); font: 600 12.5px/1 "Signika", sans-serif; white-space: nowrap; overflow: hidden; cursor: pointer; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-sub span { overflow: hidden; text-overflow: ellipsis; color: var(--rw-ink); }
+.twod12.sheet.pcs .nb-rw.rwA .rw-sub.on { background: var(--rw-ona); border-color: var(--sc); box-shadow: inset 0 -3px 0 var(--sc); }
+.twod12.sheet.pcs .nb-rw.rwA .rw-go { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-num { display: inline-flex; align-items: center; margin-right: 6px; border: 1px solid var(--rw-out); border-radius: 2px; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-num button { width: 24px; height: 24px; min-height: 0; margin: 0; padding: 0; border: 0; background: transparent; box-shadow: none; color: var(--rw-ink); font-size: 14px; line-height: 1; cursor: pointer; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-num input.nb-rwn { width: 34px; height: 24px; margin: 0; padding: 0; border: 0; background: transparent; color: var(--rw-ink); font-weight: 700; text-align: center; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-btn { width: auto; height: 26px; min-height: 0; margin: 0; padding: 0 12px; border: 1px solid var(--rw-out); border-radius: 2px; background: transparent; box-shadow: none; color: var(--rw-ink); font: 700 12.5px/1 "Signika", sans-serif; cursor: pointer; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-btn.resist { border-color: var(--rw-res); color: var(--rw-res); } .twod12.sheet.pcs .nb-rw.rwA .rw-btn.weak { border-color: var(--rw-wk); color: var(--rw-wk); }
+/* the side panel (dark in both themes): the chip outlined in its subtype's color, its icon in that color, its words in the panel's ink */
+.twod12 button.ps-dl.rw-chip { display: inline-flex; align-items: center; gap: 4px; background: none; border-color: color-mix(in srgb, var(--sc) 60%, transparent); color: inherit; }
+.twod12 button.ps-dl.rw-chip > i { color: var(--sc); font-size: 11px; }
+.twod12.sheet.pcs .ps-side .rw-chip { --sc: var(--sc-d); }

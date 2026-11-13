@@ -9,7 +9,7 @@ import { allEffects } from "./passives.mjs";
 import { effectOff } from "./escalation.mjs";
 import { matches } from "./effects.mjs";
 import { turnCycleBlocked } from "./usage.mjs";
-import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
+import { unset, oneAtATime } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 const F = "twod12";
 
 /* ------------------------------------------------------------------ once per round */
@@ -133,7 +133,11 @@ export async function rallyBonusFor(actor) {
  * (its Escalation minimum met) gives it that Effect again, replacing the old copy (Killer's Focus: a Bonus Damage used up by the next
  * [Shot, Strike, Weapon] Action). It ends with the encounter. The player can remove or switch it off like any applied effect.
  */
-export async function applyTurnStartEffects(actor) {
+// v0.0.373 (STYLE-2, Lucas saw Aveline with two Radiant Zeal effects): the turn's start and the Escalation reaching a rung can give the same
+// Effect at the same moment; each read "none yet" and both created one. They now run one after the other for a creature, so the second sees
+// (and replaces, or skips) the first's.
+export async function applyTurnStartEffects(actor) { return oneAtATime(actor, () => turnStartEffects(actor)); }
+async function turnStartEffects(actor) {
   if (!actor) return 0;
   const { createEffect, originInfo } = await import("./effects.mjs");
   let n = 0;
@@ -161,7 +165,8 @@ export async function applyTurnStartEffects(actor) {
  * v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung, not only at the start of the creature's turn:
  * the "Effect each turn" settings whose minimum is met now and whose Effect the creature doesn't carry yet are given (in an encounter only).
  */
-export async function applyReachedEffects(actor) {
+export async function applyReachedEffects(actor) { return oneAtATime(actor, () => reachedEffects(actor)); }
+async function reachedEffects(actor) {
   if (!actor || !globalThis.game?.combat?.started) return 0;
   const { createEffect, originInfo } = await import("./effects.mjs");
   const has = u => actor.effects.some(x => x.getFlag(F, "effectUuid") === u);

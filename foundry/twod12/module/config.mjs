@@ -69,7 +69,7 @@ export const TWOD12 = {
     Ps: "#8c68d6",
     Sl: "#c3c9d1",
     Th: "#5c7fa3",
-    Un: "#7a3b52"
+    Un: "#b0607f"
   },
   frequencies: { "": "Default", none: "None", atwill: "At-will", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" },
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute

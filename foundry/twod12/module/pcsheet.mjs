@@ -18,7 +18,7 @@ import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
   healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers,
-  rowLines, senseChips, strikePips, ELITE_RUNGS, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips
+  rowLines, senseChips, strikePips, ELITE_RUNGS, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { creatureDamageLines } from "./ccdamage.mjs";
@@ -514,7 +514,9 @@ export function npcBuilderModel(a) {
     frameRow("size", "Size", [1, 2, 3, 4, 5, 6, 7].map(v => [v, String(v), `${SIZE_NAMES[v]} (${v})`]), sizeNow, SIZE_NAMES[sizeNow] ?? "", sizeNow)
   ];
   // v0.0.308 (Lucas): Resist and Weak as chips; added by damage type and number
-  const rw = { chips: dmgModChips(parseDmgMods(s.dmgMods ?? ""), SUBS), types: Object.entries(SUBS).map(([key, v]) => ({ key, label: v[0] })) };
+  // v0.0.373 (STYLE-2): version A, three lines of chips in their subtype's icon and color, a list of the twelve subtypes, a stepper
+  const rwLook = { colors: TWOD12.subtypeColors, inks: TWOD12.subtypeInk, icons: TWOD12.subtypeIcons }, rwParsed = parseDmgMods(s.dmgMods ?? "");
+  const rw = { chips: dmgModChips(rwParsed, SUBS), lines: dmgModLines(rwParsed, SUBS, rwLook), pal: dmgModPalette(SUBS, rwLook), types: Object.entries(SUBS).map(([key, v]) => ({ key, label: v[0] })) };
   // the summary: "Down in about" uses the PC damage a turn against a Medium Defense (13) at this Stage (the ruler's numbers, config pcDamageVsDefense)
   const sh = TWOD12.npcRoles.standard.hm, pcDmg = TWOD12.pcDamageVsDefense[13] * (sh[stage - 1][2] / sh[0][2]);
   const pool = (Number(s.bdt) || 0) + (Number(s.mdt) || 0);

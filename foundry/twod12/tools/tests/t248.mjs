@@ -14,7 +14,7 @@ console.log("--- the theme file");
 console.log("styles/theme.css is current (run node tools/build-theme.mjs):", css === src("styles/theme.css"), "| loaded after system.css:", JSON.stringify(JSON.parse(src("system.json")).styles));
 const count = re => (css.match(re) ?? []).length;
 console.log("dark rules:", count(/\.twod12-dark\b/g) > 1500, "| both-theme rules:", count(/\.twod12-type\b/g) > 400, "| the shared colors:", css.includes(":root { --s-pg: #1f1c18;") && css.includes(".twod12-light { --s-pg: #f4ede0;"));
-console.log("not in this pack (STYLE-2): 'On you' hidden:", css.includes(".ps-onyou { display: none"), "| the Class sheet's ruled form:", css.includes("cls-h"), "| the Immune / Resist / Weak redraw:", css.includes("rw-chip"));
+console.log("not in this pack (STYLE-2): 'On you' hidden:", css.includes(".ps-onyou { display: none"), "| the Class sheet's ruled form:", css.includes("cls-h"), "| the Immune / Resist / Weak block (built in v0.0.373, STYLE-2):", css.includes("rw-chip"));
 console.log("the carousel's look B in both themes:", css.includes(".twod12-type.twod12-type #twod12-carousel .tp.act { width: 136px; }") && !css.includes(".twod12-dark #twod12-carousel"));
 console.log("the yellower Tier 2 (dark / light):", css.includes("--s-t-2: #e0d65a;"), css.includes("--s-t-2: #6f6800;"), "| Guard on dark / light:", css.includes(".twod12-dark .twod12 .kw-guard"), css.includes(".twod12-type .twod12 .kw-guard"));
 console.log("--- the setting");

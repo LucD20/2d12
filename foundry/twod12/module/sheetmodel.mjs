@@ -334,6 +334,21 @@ export function dmgModChips(parsed, subs) {
     ...Object.entries(parsed?.weak ?? {}).map(([c, n]) => ({ kind: "weak", sub: c, label: `Weak ${n} ${nm(c)}` })),
     ...(parsed?.immune ?? []).map(c => ({ kind: "immune", sub: c, label: `Immune ${nm(c)}` }))];
 }
+/**
+ * v0.0.373 (STYLE-2, Lucas: version A of style-audit's Immune / Resist / Weak block): the Builder's three lines, each entry a chip with its
+ * subtype's icon and color (--sc-l on parchment, --sc-d on the dark page). look: { colors, inks, icons } (config.mjs subtypeColors / subtypeInk /
+ * subtypeIcons). Every line is shown, an empty one with a dash.
+ */
+export function dmgModLines(parsed, subs, look = {}) {
+  const chip = (kind, c, n) => ({ kind, sub: c, name: subs?.[c]?.[0] ?? c, n: n ?? "", icon: look.icons?.[c] ?? "", style: `--sc-l:${look.inks?.[c] ?? "#5d5446"};--sc-d:${look.colors?.[c] ?? "#b3a68e"}` });
+  return [
+    { kind: "immune", label: "Immune", chips: (parsed?.immune ?? []).map(c => chip("immune", c)) },
+    { kind: "resist", label: "Resist", chips: Object.entries(parsed?.resist ?? {}).map(([c, n]) => chip("resist", c, n)) },
+    { kind: "weak", label: "Weak", chips: Object.entries(parsed?.weak ?? {}).map(([c, n]) => chip("weak", c, n)) }
+  ];
+}
+/** The Builder's list of the twelve subtypes to pick from (the first one picked). */
+export const dmgModPalette = (subs, look = {}, picked = "") => Object.keys(subs ?? {}).map((c, i) => ({ sub: c, name: subs[c][0], icon: look.icons?.[c] ?? "", style: `--sc-l:${look.inks?.[c] ?? "#5d5446"};--sc-d:${look.colors?.[c] ?? "#b3a68e"}`, on: picked ? picked === c : i === 0 }));
 /** Adds (n > 0) or removes (n = null) one entry; a new Resist or Weak of a type replaces the old one. Returns a new parsed object. */
 export function dmgModsEdit(parsed, kind, sub, n = null) {
   const out = { resist: { ...(parsed?.resist ?? {}) }, weak: { ...(parsed?.weak ?? {}) }, immune: [...(parsed?.immune ?? [])] };

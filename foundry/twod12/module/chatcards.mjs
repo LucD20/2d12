@@ -4,6 +4,7 @@
 // the enemy Defenses or the target details hidden by the GM; Designer mode (a client setting) adds the odds, the Ruler line and the Mithril mark.
 // The message's stored content is the GM's view without Designer mode (the fallback when the hook can't run).
 import { esc, vsKind } from "./util.mjs";
+import { mergeDiceLine, mergeInstances } from "./dicemerge.mjs";
 /** v0.0.314 (pack AU): an AD / WD (or an Attribute's) badge in its color: the Vs. line's colors (util.mjs VS_COLORS). */
 const vsk = label => { const k = vsKind(label); return k ? ` vsk-${k}` : ""; };
 import { bbKey, BB_LIMIT, BB_NAMES } from "./calc.mjs";
@@ -449,7 +450,8 @@ export function poolBlock(comps) {
   return ["B", "M", "C"].filter(p => Object.keys(by[p]).length).map(p => {
     const subs = Object.entries(by[p]), tot = subs.reduce((a, [, ns]) => a + ns.reduce((x, y) => x + y, 0), 0);
     // v0.0.346 (Lucas: "0 + 7 Pi + 2"): a part that is 0 (a Tier 1's weapon dice) is left out when the subtype has another
-    return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, ns]) => `${(ns.some(n => n) ? ns.filter(n => n) : [0]).join(" + ")}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b class="cc-ptot">${tot}</b></span>`;
+    // v0.0.373 (STYLE-2, Lucas): one number per damage type ("Resolve · 16 Ho", not "7 + 3 + 6 Ho"); the breakdown shows the parts
+    return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, ns]) => `${ns.reduce((x, y) => x + y, 0)}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b class="cc-ptot">${tot}</b></span>`;
   }).join("");
 }
 const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b style="color:${subInk(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`
@@ -504,7 +506,7 @@ export function damageCardHtml(m, view = FULL_VIEW) {
   };
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {
-    const insts = instancesOf(g.comps), id = `g${gi}`;
+    const insts = mergeInstances(instancesOf(g.comps)), id = `g${gi}`;   // v0.0.373 (Lucas): one block per pool and damage type
     const pools = `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button><div class="cc-break dmg" data-cc-panel="${id}">${insts.map(instBlock).join("")}</div>`;
     const head = many ? `<div class="cc-ghead">${tierPill(g.tier, g.crit, true)}<span>${poolLinesSummary(g.comps)}</span><b>${sum(g.comps)}</b></div>` : "";
     const riders = (g.riders ?? []).filter(Boolean).map(riderHtml).join("");
@@ -522,8 +524,9 @@ export function damageCardHtml(m, view = FULL_VIEW) {
 }
 const poolLinesSummary = comps => {
   const by = new Map();
-  for (const c of comps ?? []) { const p = c.pool || "B"; if (!by.has(p)) by.set(p, []); const f = String(c.formula ?? "").replace(/\s.*$/, ""); if (f && !/^\d+$/.test(f)) by.get(p).push(`${esc(f)}${c.sub ? ` ${subCode(c.sub)}` : ""}`); }
-  return [...by].filter(([, l]) => l.length).map(([p, l]) => `${poolIc(p)} ${l.join(" + ")}`).join(" · ");
+  for (const c of comps ?? []) { const p = c.pool || "B"; if (!by.has(p)) by.set(p, []); const f = String(c.formula ?? "").replace(/\s.*$/, ""); if (f && !/^\d+$/.test(f)) by.get(p).push(`${f}${c.sub ? ` ${c.sub}` : ""}`); }
+  // v0.0.373 (Lucas): 2d6 Ho + 1d6 Ho reads 3d6 Ho (merged as plain text, then each type's code drawn in its color)
+  return [...by].filter(([, l]) => l.length).map(([p, l]) => `${poolIc(p)} ${mergeDiceLine(l.join(" + ")).split(" + ").map(t => { const m = t.match(/^(.*?)(?: ([A-Z][a-z]))?$/); return `${esc(m[1])}${m[2] ? ` ${subCode(m[2])}` : ""}`; }).join(" + ")}`).join(" · ");
 };
 
 /** Draw any card model for a view. */

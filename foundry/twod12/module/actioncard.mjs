@@ -10,6 +10,7 @@
 //   the Flavor at the bottom under ◆ ◆ ◆; the ruler line in Designer mode only.
 // With actor: what effects add inside the cells in green or red (as before), the strip, the Version buttons. The pure pieces: cardview.mjs.
 // The chat cards are unchanged (chatcards.mjs, preview.mjs).
+import { mergeDiceLine, namesWithCount } from "./dicemerge.mjs";
 import { autoChip, TWOD12, traitGroupOf, highlightText, metaRowHtml, effectiveFrequency, distanceText, distanceNote, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
 import { rawTierLine, modifierBlocks, actionOnlyTalent } from "./preview.mjs";
 import { prereqLine } from "./talents.mjs";
@@ -42,14 +43,19 @@ async function cell(item, v, n, ch) {
   const insts = v[`t${n}`] ?? [];
   const { dmg, effects } = rawTierLine(insts, v[`x${n}`], n >= 2 && !item.system.traits.has("save") && (item.system.traits.has("weapon") || v.mode === "weapon"));
   const riders = await Promise.all(effects.map(x => enrich(x, item)));
-  let html = dmg ? prettyDamage(esc(dmg)) : "";
+  // v0.0.373 (STYLE-2, Lucas): bonus damage of the same pool, die and type is merged into the line ("[R] 2d6 Ho + 1d6 Ho + 1d6 Ho" reads
+  // "[R] 4d6 Ho"); what was added is named once after it, in green ("+ Radiant Zeal ×2"). A bonus with words in it keeps its own chip.
+  const plain = ch && (insts.length || n > 1) ? (ch.bonuses[n] ?? []).filter(b => /^\+ \[[A-Z]\] [^;]+$/.test(String(b.text))) : [];
+  const line = plain.length ? mergeDiceLine([dmg, ...plain.map(b => String(b.text).slice(2))].filter(Boolean).join(" + ")) : mergeDiceLine(dmg);
+  let html = line ? prettyDamage(esc(line)) : "";
   if (riders.length) html += dmg ? riders.map(r => `<span class="ap-rid"><span class="arr">↳</span> <span class="ap-mv">${r}</span></span>`).join("") : riders.join("; ");
   const extra = [];
   if (ch && insts.some(i => i.useW || i.dice)) {
     if (ch.net > 0) extra.push(`<span class="chg up" data-tooltip="Empowered ${ch.net}">+${ch.net} per die</span>`);
     if (ch.net < 0) extra.push(`<span class="chg down" data-tooltip="Enfeebled ${-ch.net}">−${-ch.net} per die</span>`);
   }
-  if (ch && (insts.length || n > 1)) for (const b of ch.bonuses[n] ?? []) extra.push(`<span class="chg up" data-tooltip="${esc(b.source)}">${prettyDamage(esc(b.text))}</span>`);
+  if (plain.length) extra.push(`<span class="chg up" data-tooltip="${esc(plain.map(b => `${b.source}: ${b.text}`).join("; "))}">+ ${esc(namesWithCount(plain.map(b => b.source)))}</span>`);
+  if (ch && (insts.length || n > 1)) for (const b of (ch.bonuses[n] ?? []).filter(b => !plain.includes(b))) extra.push(`<span class="chg up" data-tooltip="${esc(b.source)}">${prettyDamage(esc(b.text))}</span>`);
   return (html || "&mdash;") + (extra.length ? ` ${extra.join(" ")}` : "");
 }
 

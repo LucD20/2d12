@@ -1,7 +1,7 @@
 --- the theme file
 styles/theme.css is current (run node tools/build-theme.mjs): true | loaded after system.css: ["styles/system.css","styles/theme.css"]
 dark rules: true | both-theme rules: true | the shared colors: true
-not in this pack (STYLE-2): 'On you' hidden: false | the Class sheet's ruled form: false | the Immune / Resist / Weak redraw: false
+not in this pack (STYLE-2): 'On you' hidden: false | the Class sheet's ruled form: false | the Immune / Resist / Weak block (built in v0.0.373, STYLE-2): true
 the carousel's look B in both themes: true
 the yellower Tier 2 (dark / light): true true | Guard on dark / light: true true
 --- the setting

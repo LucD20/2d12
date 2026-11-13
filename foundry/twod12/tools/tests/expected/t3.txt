@@ -1,4 +1,4 @@
- DAMAGE 8 Tier 2 ↗ Paladin's Attack Vigor · 4 + 2 S + 2 H 8 Vigor · S (Greatsword) Dice 4 Modifiers +2 Modifier Total 6 Vigor · H Dice 2 Total 2 Lethal Target the selected tokens 
+ DAMAGE 8 Tier 2 ↗ Paladin's Attack Vigor · 6 S + 2 H 8 Vigor · S (Greatsword) Dice 4 Modifiers +2 Modifier Total 6 Vigor · H Dice 2 Total 2 Lethal Target the selected tokens 
 [{"pool":"B","subtype":"S","total":4,"formula":"1d8"},{"pool":"B","subtype":"H","total":2,"formula":"1d4"},{"pool":"B","subtype":"S","total":2,"formula":""}]
 {
   ap: 1,

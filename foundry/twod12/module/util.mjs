@@ -106,3 +106,13 @@ export function perFrame(fn) {
   const raf = globalThis.requestAnimationFrame ?? (f => setTimeout(f, 16));
   return () => { if (asked) return; asked = true; raf(() => { asked = false; fn(); }); };
 }
+
+/** v0.0.373: run fn after the earlier calls for the same key have finished (a per-creature queue; automation.mjs's turn-start Effects). */
+const fxQueue = new Map();
+export function oneAtATime(actor, fn) {
+  const key = actor?.uuid ?? String(actor ?? "");
+  const run = (fxQueue.get(key) ?? Promise.resolve()).catch(() => {}).then(fn);
+  fxQueue.set(key, run);
+  run.finally(() => { if (fxQueue.get(key) === run) fxQueue.delete(key); }).catch(() => {});
+  return run;
+}
