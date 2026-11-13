@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: f1a0f11 2026-11-13 HANDOFF: pack-rider-prices merged into main; next is the class card sessions
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 8766f3e 2026-11-13 The PC budget: a guide for the card sessions (no rule changed)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

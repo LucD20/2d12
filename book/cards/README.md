@@ -115,6 +115,12 @@ All four fire well over the half of the rounds they are meant to; Shield of Fait
 
 So **1 Health of new healing is about 12 points and 1 point of Guard about 6**; a heal paid with the ally's Rally Point only moves Health it already had (its worth is the Down it prevents and what the card adds on top).
 
+**The targets (Lucas, 2026-11-13):**
+- **A class is worth about 150** in Stage 0 (the plain PC: 100). Read as level 3's number, with about 130 at level 1 and 140 at level 2, since each level adds something (an assumption: say if every level should be 150).
+- **The middle ground:** the Smite Paladin comes up (today 115 to 126) and the Archers come down (163 to 200).
+- **Shield of Faith adds about 15** (today 66): as any 1R Reaction, 10 to 15.
+- **Healing in a fight (Claude's choice, Lucas can change it):** its AP cost stays, and it is **paid with Rally Points**: a heal that spends the target's Rally Point is priced at what the card adds on top (and the Down it prevents). **New Health** (no Rally Point) costs **12 points a Health**: a 1 AP Round card gives about 2 new Health, and a bigger one is an Encounter Action.
+
 **How to use it in a session:** (1) the card's damage in points against its AP's price; (2) add its riders, its heal or Guard and its Reaction at the prices above; (3) compare with the class's budget for its level. The ledger at the end of `pc-budget.md` has every class Action's damage in points today (Smite 2: 45 for 2 AP; Double Shot 2: 50; Holy Wrath 2: 50 to 54; Rolling Shot 2: 36).
 
 **Not in it:** how much a class should be worth at each level (Lucas's call: today 115 to 200), areas, Passives one by one, anything on a map with walls, levels 4 and up. `book/ruler/prices.md` and the cards' old worth lines (`book/ruler/worth.json`) are from before pack R's 4 AP and are not to be used for new cards.
