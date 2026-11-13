@@ -573,6 +573,11 @@ const EXTRA = `
 /* ---- v0.0.373: the Immune / Resist / Weak block and chips on the dark page */
 .twod12-dark .twod12 .rw-chip, .twod12-dark .twod12 .rw-sub { --sc: var(--sc-d); }
 .twod12-dark .twod12.sheet.pcs .nb-rw.rwA { --rw-ink: ${T.ink}; --rw-mute: ${T.mute}; --rw-hair: ${T.hair}; --rw-out: #8c7d63; --rw-res: #8fd69b; --rw-wk: #f3a79e; --rw-ona: ${T.band}; }
+/* ---- v0.0.374: the Class sheet's Details tab on the dark page (the mockup's dark values) */
+.twod12-dark .application.twod12-styled .sk .fr-tab.cls2 { --cf-ink: ${T.ink}; --cf-mute: ${T.mute}; --cf-hair: ${T.hair}; --cf-rule: ${T.rule}; --cf-band: ${T.pg2}; --cf-pg: ${T.pg}; }
+.twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .cls-grp { background: color-mix(in srgb, var(--fq, #5F5E5A) 16%, ${T.pg}); }
+.twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .cls-gl { background: color-mix(in srgb, var(--fq, #5F5E5A) 38%, #14110d); color: color-mix(in srgb, var(--fq, #5F5E5A), #fff 62%); }
+.twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .at-body { color: #f08a8a; } .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .at-mind { color: #8fb3ee; } .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .at-appeal { color: #e3c15a; } .twod12-dark .application.twod12-styled .sk .fr-tab.cls2 .at-instinct { color: #7fcf95; }
 /* ---- v0.0.371 (Lucas: "the rainbow is missing the glow that the diamond has"): Mithril glows like Diamond, in two of its own colors */
 .twod12-type .twod12 .autodia.auto-mithril, .twod12-type .twod12.sheet.pcs .autodia.auto-mithril, .twod12-type .twod12.acard.d2 .autodia.auto-mithril, .twod12-type .twod12.chat.cc .autodia.auto-mithril { filter: saturate(1.5) drop-shadow(-1px 0 2px #5ad7ff) drop-shadow(1px 0 2px #ff6fb5); }
 /* ---- the pick window's text goes through the highlighter now: its colors on the dark window */

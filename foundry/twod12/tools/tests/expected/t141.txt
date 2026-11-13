@@ -12,7 +12,7 @@ the window has the button: true | the chat message: <div class="twod12 chat twod
 --- the Talent's Traits
 a drop-down like the Action's: true | the checkboxes are gone: true
 --- Show help on the Action and Talent sheets
-the box: true | for Actions, Talents and Classes (v0.0.185): true | a user setting, on by default: true | hides the hints: true
+the box: true | for Talents (v0.0.185; v0.0.374: the Class's help is the ? in the tab bar): true | a user setting, on by default: true | hides the hints: true
 --- v0.0.173: fixes from Lucas's test, and his rule answers
 the tiers table ignores Foundry's colors (v0.0.174: table.tiers, the table and its cells): true
 the Snapshot is a picture: true | with the window's colors: true

@@ -1,6 +1,6 @@
 // The item sheet (every item type; the Details tab of an Effect is written as sentences: fxdetails.mjs).
 import { rollSource } from "./rollsource.mjs";
-import { tagChoices, TWOD12, categoryText, traitPicker, npcDamage } from "./config.mjs";
+import { tagChoices, TWOD12, categoryText, traitPicker, npcDamage, FREQ_COLORS, highlightText } from "./config.mjs";
 import { versionRow } from "./actions.mjs";
 import { versionStats, fmt } from "./calc.mjs";
 import { buildWeaponCard } from "./preview.mjs";
@@ -47,7 +47,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       removeTalentMod: TwoD12ItemSheet.removeTalentMod,
       togglePrereqMode: TwoD12ItemSheet.togglePrereqMode,
       removePrereq: TwoD12ItemSheet.removePrereq,
-      editLevels: TwoD12ItemSheet.editLevels
+      editLevels: TwoD12ItemSheet.editLevels,
+      setClassField: TwoD12ItemSheet.setClassField,
+      stepClassField: TwoD12ItemSheet.stepClassField
     }
   };
   static PARTS = { main: { template: "systems/twod12/templates/item-sheet.hbs" } };
@@ -68,7 +70,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       basicRatings: Object.fromEntries(Object.entries(TWOD12.npcRatings).filter(([k]) => it.parent?.system?.role !== "minion" || k !== "extreme").map(([k, v]) => [k, v.label])),
       basicSuggest: t === "action" && it.parent?.type === "npc" ? npcDamage(it.parent.system.role, s.basicRating || "medium", it.parent.system.level).join(" / ") : "",
       // v0.0.172: the help tips (the grey hints) of the Action and Talent sheets can be hidden, like the Effect's (one choice per user, for both sheets).
-      helpable: t === "talent" || t === "class",   // v0.0.355: the Action's help is the ? on the tab bar (the rules tabs' way)
+      helpable: t === "talent",   // v0.0.374: the Class's help is the ? on the tab bar (frQ)   // v0.0.355: the Action's help is the ? on the tab bar (the rules tabs' way)
       sheetHelp: (() => { try { return game.settings.get("twod12", "sheetHelp") !== false; } catch (e) { return true; } })(),
       rawCard: t === "action" ? (this._soloCard = await (await import("./actioncard.mjs")).buildSoloCard(it)) : t === "weapon" ? await buildWeaponCard(it) : "",   // v0.0.322: the new card
       categoryShown: categoryText(s),
@@ -79,6 +81,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       ...(t === "effect" ? this._effectContext(s) : ["feature", "talent"].includes(t) ? this._passiveContext() : {}),
       // v0.0.323 (PACK EFFECT-SHEET): the new Details tab (fxsheet.mjs), and the ? on the tab bar
       fxHost: ["effect", "feature", "talent", "action"].includes(t),
+      frQ: ["effect", "feature", "talent", "action", "class"].includes(t),   // v0.0.374: the ? on the tab bar (the Class too)
       fxTab: ["effect", "feature", "talent"].includes(t) ? await this._fxTab() : "",
       // v0.0.355 (PACK ACTION-SHEET): the Action's Details tab (actionsheet.mjs; Lucas's mockup A2)
       actionTab: t === "action" ? await this._actionTab() : "",
@@ -192,15 +195,25 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const chip = (u, index) => ({ uuid: u, index, name: info(u)?.name ?? "(missing item)", esc: info(u)?.escalation || 0 });
     const freqs = ["passive", "turn", "round", "encounter", "daily"];
     const rep = (s.repertoire ?? []).map(chip);
-    const repGroups = [...freqs.map(f => ({ label: SECTION_FREQS[f], list: rep.filter(c => freqOf(info(c.uuid)) === f) })), { label: "Other", list: rep.filter(c => !freqs.includes(freqOf(info(c.uuid)))) }].filter((g, i) => g.list.length || i < freqs.length);
+    const repGroups = [...freqs.map(f => ({ label: SECTION_FREQS[f], fq: FREQ_COLORS[f] ?? FREQ_COLORS.none, list: rep.filter(c => freqOf(info(c.uuid)) === f) })), { label: "Other", fq: FREQ_COLORS.none, list: rep.filter(c => !freqs.includes(freqOf(info(c.uuid)))) }].filter((g, i) => g.list.length || i < freqs.length);
+    // v0.0.374 (STYLE-2): the redone Details tab's choices as buttons side by side, the steppers' texts, Health by Stage with its totals
+    const n = v => Number(v) || 0, sg = v => (n(v) > 0 ? `+${n(v)}` : String(n(v)));
+    const opts = (cur, list) => list.map(([k, l]) => ({ k, l, on: String(cur ?? "") === k }));
+    const seg = {
+      armor: opts(s.armorTraining, Object.entries(TWOD12.armorTrainings)), armorField: "system.armorTraining",
+      order: opts(s.modOrder, [["either", "the player's choice"], ["weapon", "Weapon"], ["power", "Power"]]), orderField: "system.modOrder",
+      lead: opts(s.modPriority, [["weapon", "Weapon"], ["power", "Power"]]), leadField: "system.modPriority",
+      stage2: opts(s.modStage2, [["", "the higher"], ["weapon", "Weapon"], ["power", "Power"]]), stage2Field: "system.modStage2"
+    };
+    const hp = { high2: n(s.healthHigh) + n(s.stepHigh2), high3: n(s.healthHigh) + n(s.stepHigh2) + n(s.stepHigh3), low2: n(s.healthLow) + n(s.stepLow2), low3: n(s.healthLow) + n(s.stepLow2) + n(s.stepLow3) };
     const w = [...(s.weaponAttrs ?? [])], p = [...(s.magicAttrs ?? [])];
     const shared = w.filter(k => p.includes(k)).map(k => TWOD12.attributes[k]);
     return {
       weapon: [w[0] ?? "body", w[1] ?? w[0] ?? "body"], power: [p[0] ?? "mind", p[1] ?? p[0] ?? "mind"], attrLine: attrLine(s, 1), shared: shared.join(" or "),
       oldMods: !(Number(s.modHigh) > 0 || Number(s.modLow) > 0) && (w.length || p.length) ? `${w.map(k => TWOD12.attributes[k]).join(" or ") || "-"} (Weapon) and ${p.map(k => TWOD12.attributes[k]).join(" or ") || "-"} (Power)` : "",
       levels: (s.levels ?? []).map((l, i) => { const c = choicesToMake(s, i + 1, info); return { n: i + 1, sections: l.sections.length, one: l.sections.length === 1, choices: c, oneChoice: c === 1 }; }),
-      rep: repGroups,
-      esc: [{ key: "escPassives", label: "Passives", list: (s.escPassives ?? []).map(chip) }, { key: "escActives", label: "Actives", list: (s.escActives ?? []).map(chip) }]
+      rep: repGroups, seg, hp, speedTxt: sg(s.speedMod), modHighTxt: sg(s.modHigh), modLowTxt: sg(s.modLow), attrLineHtml: highlightText(String(attrLine(s, 1) ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;")),
+      esc: [{ key: "escPassives", label: "Passives", fq: "#c9821f", list: (s.escPassives ?? []).map(chip) }, { key: "escActives", label: "Actives", fq: "#c9821f", list: (s.escActives ?? []).map(chip) }]
     };
   }
 
@@ -357,7 +370,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     // v0.0.355 (PACK ACTION-SHEET): an Action's tab wires itself; its rules list is the nested one (.as-rules)
     const asTab = this.element.querySelector(".as-tab");
     if (asTab) { import("./actionsheet.mjs").then(m => m.wireActionTab(this, this.element)); const inner = this.element.querySelector(".as-rules"); if (inner?.querySelector(".fr-tab")) import("./fxsheet.mjs").then(m => m.wireFxTab(this, inner)); }
-    else if (frTab) import("./fxsheet.mjs").then(m => m.wireFxTab(this, this.element));
+    else if (frTab && !frTab.classList.contains("cls2")) import("./fxsheet.mjs").then(m => m.wireFxTab(this, this.element));   // v0.0.374: the Class's tab borrows the look only
     this.element.querySelector("[data-fr-q]")?.addEventListener("click", async ev => {
       ev.preventDefault();
       const on = !this.element.querySelector(".fr-tab")?.classList.contains("fr-helpon");
@@ -665,6 +678,18 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     await this.item.update({ [`system.${list}`]: arr });
   }
   /** v0.0.185: the Class's Levels window. */
+  /** v0.0.374: the Class sheet's buttons side by side (a choice of few): set the field to the button's value. */
+  static async setClassField(event, target) {
+    const f = target.dataset.field;
+    if (f?.startsWith("system.")) await this.item.update({ [f]: target.dataset.value ?? "" });
+  }
+  /** v0.0.374: the Class sheet's steppers (Rally, Speed, the two Modifiers). */
+  static async stepClassField(event, target) {
+    const f = target.dataset.field;
+    if (!f?.startsWith("system.")) return;
+    const cur = Number(foundry.utils.getProperty(this.item, f)) || 0, v = Math.min(Number(target.dataset.max ?? 99), Math.max(Number(target.dataset.min ?? -99), cur + Number(target.dataset.d)));
+    if (v !== cur) await this.item.update({ [f]: v });
+  }
   static editLevels() { openLevelsEditor(this.item); }
   static async openLinked(event, target) {
     (await fromUuid(target.dataset.uuid))?.sheet.render(true);

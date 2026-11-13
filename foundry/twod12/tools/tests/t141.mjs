@@ -40,7 +40,7 @@ const tpl = (src("templates/item-sheet.hbs") + src("module/actionsheet.mjs"));
 console.log("a drop-down like the Action's:", (tpl.match(/<label>Traits \{\{formInput fields\.traits value=system\.traits name="system\.traits"[^}]*\}\}<\/label>/g) ?? []).length === 1 && tpl.includes("data-as-trait"), "| the checkboxes are gone:", !tpl.includes('data-set="traits"'));
 
 console.log("--- Show help on the Action and Talent sheets");
-console.log("the box:", tpl.includes("{{#if helpable}}<label class=\"sheet-helptoggle\""), "| for Actions, Talents and Classes (v0.0.185):", src("module/item-sheet.mjs").includes('helpable: t === "talent" || t === "class",'), "| a user setting, on by default:", /"sheetHelp", \{[^}]*default: true \}/.test(src("module/twod12.mjs")), "| hides the hints:", src("styles/system.css").includes(".twod12 section.tab.help-off .hint"));
+console.log("the box:", tpl.includes("{{#if helpable}}<label class=\"sheet-helptoggle\""), "| for Talents (v0.0.185; v0.0.374: the Class's help is the ? in the tab bar):", src("module/item-sheet.mjs").includes('helpable: t === "talent",') && src("module/item-sheet.mjs").includes('"action", "class"].includes(t),'), "| a user setting, on by default:", /"sheetHelp", \{[^}]*default: true \}/.test(src("module/twod12.mjs")), "| hides the hints:", src("styles/system.css").includes(".twod12 section.tab.help-off .hint"));
 
 console.log("--- v0.0.173: fixes from Lucas's test, and his rule answers");
 const css = src("styles/system.css");

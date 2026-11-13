@@ -8,7 +8,7 @@
     {{!-- v0.0.191: links, not buttons: a read-only sheet (a locked compendium) disables every button, and the Details tab could not be opened --}}
     <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="description">Description</a>
     <a class="tabbtn" role="tab" data-action="switchTab" data-tab-target="details">Details</a>
-    {{#if fxHost}}<a class="fr-q" role="button" tabindex="0" data-fr-q aria-pressed="false" data-tooltip="Show the help texts">?</a>{{/if}}
+    {{#if frQ}}<a class="fr-q" role="button" tabindex="0" data-fr-q aria-pressed="false" data-tooltip="Show the help texts">?</a>{{/if}}
   </nav>
 
   <section class="tab" data-tab="description">
@@ -39,52 +39,56 @@
     {{/if}}
 
     {{#if isClass}}
-    {{!-- v0.0.185 (pack C2): the Class's Details tab in the look of the Talent and Feature sheets; the levels are set in the Levels window. --}}
-    <div class="grid3">
-      <label>Category <input type="text" name="system.category" value="{{system.category}}" placeholder="Class"></label>
-      <label>Armor Training <select name="system.armorTraining">{{selectOptions armorTrainingChoices selected=system.armorTraining}}</select></label>
-      <div class="ro"><span>Shown as</span><b>{{item.name}}</b></div>
+    {{!-- v0.0.374 (PACK STYLE-2, Lucas: "a complete redo", approved in foundry/mockups/rest-dark.html): the Action editor's grammar. A section per
+          subject, a label and its control on a line, a choice of few as buttons side by side, a small number as a stepper; Health and the Modifiers
+          as a table by Stage with the totals; no tips beside headings or fields (the ? in the tab bar shows the help); each list of the Repertoire
+          and the Escalation a row like a Tier, in its Frequency's color. --}}
+    <div class="fr-tab cls2">
+    <section class="fr-sec"><h3>The class</h3><div class="fr-pgrid">
+      <span class="fr-pl">Flavor</span><div class="fr-pc"><input type="text" class="fr-in wide" name="system.flavor" value="{{system.flavor}}" placeholder="Your god's strength flows through your weapon and your hands."></div>
+      <span class="fr-pl">Category</span><div class="fr-pc"><input type="text" class="fr-in" name="system.category" value="{{system.category}}" placeholder="Class"> <span class="fr-m">shown as <b>{{item.name}}</b></span></div>
+      <span class="fr-pl">Armor</span><div class="fr-pc"><span class="fr-seg w">{{#each cls.seg.armor}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setClassField" data-field="{{../cls.seg.armorField}}" data-value="{{k}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{l}}</button>{{/each}}</span></div>
+      <span class="fr-pl">Rally</span><div class="fr-pc"><span class="fr-step"><button type="button" data-action="stepClassField" data-field="system.rallyMod" data-d="-1" data-min="-5" data-max="20" aria-label="Less">&minus;</button><span class="v">{{system.rallyMod}}</span><button type="button" data-action="stepClassField" data-field="system.rallyMod" data-d="1" data-min="-5" data-max="20" aria-label="More">+</button></span></div>
+      <span class="fr-pl">Speed</span><div class="fr-pc"><span class="fr-step"><button type="button" data-action="stepClassField" data-field="system.speedMod" data-d="-1" data-min="-5" data-max="5" aria-label="Less">&minus;</button><span class="v">{{cls.speedTxt}}</span><button type="button" data-action="stepClassField" data-field="system.speedMod" data-d="1" data-min="-5" data-max="5" aria-label="More">+</button></span></div>
+    </div></section>
+    <section class="fr-sec"><h3>Health</h3>
+      <p class="fr-help">The class gives a high and a low Health value; the player puts the high one on Vigor or Resolve. Each grows by its step at Stage 2 and again at Stage 3 (Chapter 4).</p>
+      <table class="cls-st"><thead><tr><th></th><th>Stage 1 <small>levels 1-4</small></th><th>Stage 2 <small>levels 5-7</small></th><th>Stage 3 <small>levels 8-10</small></th></tr></thead><tbody>
+        <tr><th>High</th><td><input type="number" min="0" class="fr-in n" name="system.healthHigh" value="{{system.healthHigh}}"></td><td><span class="pl">+</span><input type="number" min="0" class="fr-in n" name="system.stepHigh2" value="{{system.stepHigh2}}"><span class="eq">= {{cls.hp.high2}}</span></td><td><span class="pl">+</span><input type="number" min="0" class="fr-in n" name="system.stepHigh3" value="{{system.stepHigh3}}"><span class="eq">= {{cls.hp.high3}}</span></td></tr>
+        <tr><th>Low</th><td><input type="number" min="0" class="fr-in n" name="system.healthLow" value="{{system.healthLow}}"></td><td><span class="pl">+</span><input type="number" min="0" class="fr-in n" name="system.stepLow2" value="{{system.stepLow2}}"><span class="eq">= {{cls.hp.low2}}</span></td><td><span class="pl">+</span><input type="number" min="0" class="fr-in n" name="system.stepLow3" value="{{system.stepLow3}}"><span class="eq">= {{cls.hp.low3}}</span></td></tr>
+      </tbody></table>
+      {{#if system.bodyMult}}<p class="fr-help">Old Health multipliers (before pack R): Body &times;{{system.bodyMult}}, Mind &times;{{system.mindMult}}. They are used only while the high value above is 0.</p>{{/if}}
+    </section>
+    <section class="fr-sec"><h3>Modifiers</h3>
+      <p class="fr-help">The class gives two Modifier values (+2 and +1 at level 1). "The player's choice": the player chooses which is the Weapon Modifier in the class window; otherwise the class fixes it. Stage 2 adds +1 to the one the player chooses, Stage 3 +1 to both, never above +4. The Attribute increases are set on level 1, in the Levels window.</p>
+      <table class="cls-st"><thead><tr><th></th><th>Stage 1</th><th>Stage 2</th><th>Stage 3</th></tr></thead><tbody>
+        <tr><th>High</th><td><span class="fr-step"><button type="button" data-action="stepClassField" data-field="system.modHigh" data-d="-1" data-min="0" data-max="4" aria-label="Less">&minus;</button><span class="v">{{cls.modHighTxt}}</span><button type="button" data-action="stepClassField" data-field="system.modHigh" data-d="1" data-min="0" data-max="4" aria-label="More">+</button></span></td><td rowspan="2" class="mid"><span class="eq">+1 to</span> <span class="fr-seg w">{{#each cls.seg.stage2}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setClassField" data-field="{{../cls.seg.stage2Field}}" data-value="{{k}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{l}}</button>{{/each}}</span></td><td rowspan="2" class="mid"><span class="eq">+1 to both</span></td></tr>
+        <tr><th>Low</th><td><span class="fr-step"><button type="button" data-action="stepClassField" data-field="system.modLow" data-d="-1" data-min="0" data-max="4" aria-label="Less">&minus;</button><span class="v">{{cls.modLowTxt}}</span><button type="button" data-action="stepClassField" data-field="system.modLow" data-d="1" data-min="0" data-max="4" aria-label="More">+</button></span></td></tr>
+      </tbody></table>
+      <div class="fr-pgrid">
+        <span class="fr-pl">High one is</span><div class="fr-pc"><span class="fr-seg w">{{#each cls.seg.order}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setClassField" data-field="{{../cls.seg.orderField}}" data-value="{{k}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{l}}</button>{{/each}}</span></div>
+        <span class="fr-pl">Leads with</span><div class="fr-pc"><span class="fr-seg w">{{#each cls.seg.lead}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setClassField" data-field="{{../cls.seg.leadField}}" data-value="{{k}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{l}}</button>{{/each}}</span></div>
+        <span class="fr-pl">Attributes</span><div class="fr-pc"><b>{{#if cls.attrLine}}{{{cls.attrLineHtml}}}{{else}}none (set them on level 1){{/if}}</b></div>
+      </div>
+      {{#if cls.oldMods}}<p class="fr-help" style="display:block">This copy is from before the Modifiers were class values (both values are 0): it still uses the higher of {{cls.oldMods}}. Set the values above, or update it from the compendium.</p>{{/if}}
+    </section>
+    <section class="fr-sec"><h3 class="cls-h">Levels<button type="button" data-action="editLevels"><i class="fa-solid fa-layer-group"></i> Edit levels&hellip;</button></h3>
+      <p class="fr-help">What the player gets at each level (Features, the Hallmark Action, Picks, Talents, Attribute choices) is set up in the Levels window. It opens wider than this sheet.</p>
+      <div class="cls-levels">
+        {{#each cls.levels}}<div><b>Level {{n}}</b><span>{{sections}} section{{#unless one}}s{{/unless}} &middot; {{choices}} choice{{#unless oneChoice}}s{{/unless}} to make</span></div>{{else}}<div><span>No levels yet.</span></div>{{/each}}
+      </div>
+    </section>
+    <section class="fr-sec"><h3>Repertoire</h3>
+      <p class="fr-help">Everything else the class offers, by Frequency. A "From the Repertoire" section in the Levels window chooses from here.</p>
+      {{#each cls.rep}}<div class="cls-grp" style="--fq:{{fq}}"><span class="cls-gl">{{label}} &middot; {{list.length}}</span><span class="cls-chips">{{#each list}}<span class="cls-chip"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="{{index}}" aria-label="Remove {{name}}">&times;</button></span>{{/each}}</span></div>{{/each}}
+      <div class="drop-zone" data-list="repertoire" data-accept="action,feature">Drop Actions and Features here</div>
+    </section>
+    <section class="fr-sec"><h3>Escalation</h3>
+      <p class="fr-help">The class's Escalation abilities: the Passive and Active Escalation Picks choose from these. A Feature goes to the Passives, an Action to the Actives.</p>
+      {{#each cls.esc}}<div class="cls-grp" style="--fq:{{fq}}"><span class="cls-gl">{{label}} &middot; {{list.length}}</span><span class="cls-chips">{{#each list}}<span class="cls-chip"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a>{{#if esc}} <i>Esc {{esc}}</i>{{/if}}<button type="button" data-action="removeLink" data-list="{{../key}}" data-index="{{index}}" aria-label="Remove {{name}}">&times;</button></span>{{/each}}{{#unless list.length}}<span class="cls-none">None yet</span>{{/unless}}</span></div>{{/each}}
+      <div class="drop-zone" data-list="escalation" data-accept="action,feature">Drop Escalation abilities here</div>
+    </section>
     </div>
-    <label>Flavor <input type="text" name="system.flavor" value="{{system.flavor}}" placeholder="Your god's strength flows through your weapon and your hands."></label>
-    <div class="grid4" data-tooltip="Pack R (book, Chapter 4): the class gives a high and a low Health value; the player puts the high one on Vigor or Resolve. Each grows by its step at Stage 2 and again at Stage 3.">
-      <label>High Health value <input type="number" min="0" name="system.healthHigh" value="{{system.healthHigh}}"></label>
-      <label>Low Health value <input type="number" min="0" name="system.healthLow" value="{{system.healthLow}}"></label>
-      <label>Rally <input type="number" name="system.rallyMod" value="{{system.rallyMod}}"></label>
-      <label>Speed Modifier <input type="number" name="system.speedMod" value="{{system.speedMod}}"></label>
-    </div>
-    <div class="grid4">
-      <label>Stage 2 step, high <input type="number" min="0" name="system.stepHigh2" value="{{system.stepHigh2}}"></label>
-      <label>Stage 2 step, low <input type="number" min="0" name="system.stepLow2" value="{{system.stepLow2}}"></label>
-      <label>Stage 3 step, high <input type="number" min="0" name="system.stepHigh3" value="{{system.stepHigh3}}"></label>
-      <label>Stage 3 step, low <input type="number" min="0" name="system.stepLow3" value="{{system.stepLow3}}"></label>
-    </div>
-    {{#if system.bodyMult}}<p class="hint">Old Health multipliers (before pack R): Body ×{{system.bodyMult}}, Mind ×{{system.mindMult}}. They are used only while the high value above is 0.</p>{{/if}}
-    {{!-- v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values and their order; on a character, its own choices. --}}
-    <div class="grid3">
-      <label>Modifier, high <input type="number" min="0" max="4" name="system.modHigh" value="{{system.modHigh}}"></label>
-      <label>Modifier, low <input type="number" min="0" max="4" name="system.modLow" value="{{system.modLow}}"></label>
-      <label>Order <select name="system.modOrder">{{selectOptions modOrderChoices selected=system.modOrder}}</select></label>
-    </div>
-    <div class="grid3">
-      <div class="ro"><span>Attribute increases</span><b>{{#if cls.attrLine}}{{cls.attrLine}}{{else}}none (set them on level 1){{/if}}</b></div>
-      {{#if onActor}}<label data-tooltip="Which value is the Weapon Modifier (a class that lets the player choose), and where a tie of the Signature Modifier goes">Leads with <select name="system.modPriority">{{selectOptions modLeadChoices selected=system.modPriority}}</select></label>
-      <label data-tooltip="Stage 2 (level 5): +1 to one Modifier">Stage 2 +1 to <select name="system.modStage2">{{selectOptions modStage2Choices selected=system.modStage2}}</select></label>{{/if}}
-    </div>
-    {{#if cls.oldMods}}<p class="hint">This copy is from before the Modifiers were class values (both values are 0): it still uses the higher of {{cls.oldMods}}. Set the values above, or update it from the compendium.</p>{{/if}}
-    <p class="hint">The class gives two Modifier values (+2 and +1 at level 1). "Either way": the player chooses which is the Weapon Modifier in the class window; otherwise the class fixes it. Stage 2 adds +1 to the one the player chooses, Stage 3 +1 to both, never above +4. The Attribute increases are set on level 1, in the Levels window.</p>
-    <h3 class="cls-h">Levels <button type="button" data-action="editLevels"><i class="fa-solid fa-layer-group"></i> Edit levels&hellip;</button></h3>
-    <p class="hint">What the player gets at each level (Features, the Hallmark Action, Picks, Talents, Attribute choices) is set up in the Levels window. It opens wider than this sheet.</p>
-    <div class="cls-levels">
-      {{#each cls.levels}}<div><b>Level {{n}}</b><span>{{sections}} section{{#unless one}}s{{/unless}} &middot; {{choices}} choice{{#unless oneChoice}}s{{/unless}} to make</span></div>{{else}}<div><span>No levels yet.</span></div>{{/each}}
-    </div>
-    <h3>Repertoire</h3>
-    <p class="hint">Everything else the class offers, by Frequency. A "From the Repertoire" section in the Levels window chooses from here.</p>
-    {{#each cls.rep}}<div class="cls-grp"><span class="cls-gl">{{label}} &middot; {{list.length}}</span><span class="cls-chips">{{#each list}}<span class="cls-chip"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a><button type="button" data-action="removeLink" data-list="repertoire" data-index="{{index}}" aria-label="Remove {{name}}">&times;</button></span>{{/each}}</span></div>{{/each}}
-    <div class="drop-zone" data-list="repertoire" data-accept="action,feature">Drop Actions and Features here</div>
-    <h3>Escalation</h3>
-    <p class="hint">The class's Escalation abilities: the Passive and Active Escalation Picks choose from these. A Feature goes to the Passives, an Action to the Actives.</p>
-    {{#each cls.esc}}<div class="cls-grp"><span class="cls-gl">{{label}} &middot; {{list.length}}</span><span class="cls-chips">{{#each list}}<span class="cls-chip"><a data-action="openLinked" data-uuid="{{uuid}}">{{name}}</a>{{#if esc}} <i>Esc {{esc}}</i>{{/if}}<button type="button" data-action="removeLink" data-list="{{../key}}" data-index="{{index}}" aria-label="Remove {{name}}">&times;</button></span>{{/each}}{{#unless list.length}}<span class="cls-none">None yet</span>{{/unless}}</span></div>{{/each}}
-    <div class="drop-zone" data-list="escalation" data-accept="action,feature">Drop Escalation abilities here</div>
     {{#unless cls.levels.length}}
     <div class="setbox oneline"><b>Attribute Increase Choices (a class without levels)</b>
       <span class="grp"><i>first</i>{{#each attrChecks.choiceA}}<label class="inline"><input type="checkbox" data-set="choiceA" data-key="{{key}}" {{#if checked}}checked{{/if}}> {{label}}</label>{{/each}}</span>

@@ -4462,3 +4462,28 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12 button.ps-dl.rw-chip { display: inline-flex; align-items: center; gap: 4px; background: none; border-color: color-mix(in srgb, var(--sc) 60%, transparent); color: inherit; }
 .twod12 button.ps-dl.rw-chip > i { color: var(--sc); font-size: 11px; }
 .twod12.sheet.pcs .ps-side .rw-chip { --sc: var(--sc-d); }
+/* ==== v0.0.374 (STYLE-2, Lucas: the Class sheet's Details tab redone; foundry/mockups/rest-dark.html): the Action editor's pieces (fr-sec,
+   fr-pgrid, fr-seg, fr-step), Health and the Modifiers as tables by Stage, each list a Tier-like row in its Frequency's color. The dark values are in the theme. ==== */
+.application.twod12-styled .sk .fr-tab.cls2 { --cf-ink: #2a241d; --cf-mute: #5d5446; --cf-hair: #cdb88a; --cf-rule: #8a6d3b; --cf-band: #eae0c8; --cf-pg: #f4ede0; }
+.application.twod12-styled .sk .fr-tab.cls2 .fr-sec h3 { display: flex; align-items: baseline; gap: 8px; }
+.application.twod12-styled .sk .fr-tab.cls2 .fr-sec h3 button { margin-left: auto; width: auto; height: 22px; min-height: 0; line-height: 20px; padding: 0 9px; border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: var(--cf-ink); font: 600 12px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; }
+.application.twod12-styled .sk .fr-tab.cls2 .fr-pgrid { grid-template-columns: 92px minmax(0, 1fr); margin: 0 0 6px; }
+.application.twod12-styled .sk .fr-tab.cls2 .fr-pgrid .fr-seg.w { display: inline-flex; width: auto; vertical-align: middle; } .application.twod12-styled .sk .fr-tab.cls2 .fr-seg.w button { flex: none; padding: 3px 14px; }
+.application.twod12-styled .sk .fr-tab.cls2 .fr-pc b { color: var(--cf-ink); } .application.twod12-styled .sk .fr-tab.cls2 .fr-in.wide { width: 100%; }
+.application.twod12-styled .sk .fr-tab.cls2 table.cls-st { width: 100%; margin: 2px 0 10px; border: 0; border-collapse: collapse; background: none; }
+.application.twod12-styled .sk .fr-tab.cls2 table.cls-st th, .application.twod12-styled .sk .fr-tab.cls2 table.cls-st td { padding: 5px 8px; border: 0; border-bottom: 1px solid var(--cf-hair); background: none; color: var(--cf-ink); text-align: left; font: 600 13px "Signika", sans-serif; }
+.application.twod12-styled .sk .fr-tab.cls2 table.cls-st thead th { background: var(--cf-band); border-bottom: 1px solid var(--cf-rule); font-weight: 700; } .application.twod12-styled .sk .fr-tab.cls2 table.cls-st thead small { margin-left: 4px; font-weight: 400; color: var(--cf-mute); }
+.application.twod12-styled .sk .fr-tab.cls2 table.cls-st tbody th { width: 70px; color: var(--cf-mute); } .application.twod12-styled .sk .fr-tab.cls2 table.cls-st td.mid { vertical-align: middle; border-left: 1px solid var(--cf-hair); }
+.application.twod12-styled .sk .fr-tab.cls2 table.cls-st .fr-in.n { width: 46px; text-align: center; } .application.twod12-styled .sk .fr-tab.cls2 table.cls-st .pl { margin-right: 3px; color: var(--cf-mute); }
+.application.twod12-styled .sk .fr-tab.cls2 table.cls-st .eq { margin: 0 6px; font-weight: 400; color: var(--cf-mute); } .application.twod12-styled .sk .fr-tab.cls2 table.cls-st td .eq:last-child { font-weight: 700; color: var(--cf-ink); }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-levels { display: grid; gap: 0; margin: 0 0 4px; }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-levels > div { display: flex; gap: 12px; padding: 4px 2px; border: 0; border-bottom: 1px solid var(--cf-hair); border-radius: 0; background: none; font-size: 13px; color: var(--cf-ink); }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-levels > div b { width: 58px; } .application.twod12-styled .sk .fr-tab.cls2 .cls-levels span { color: var(--cf-mute); }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-grp { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 0 10px; align-items: stretch; margin: 0 0 3px; padding: 0; border: 0; border-left: 4px solid var(--fq, #5F5E5A); border-radius: 0; background: color-mix(in srgb, var(--fq, #5F5E5A) 11%, var(--cf-pg)); }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-gl { display: flex; align-items: center; padding: 4px 8px; background: color-mix(in srgb, var(--fq, #5F5E5A) 26%, var(--cf-pg)); color: color-mix(in srgb, var(--fq, #5F5E5A), #000 25%); font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-chips { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding: 5px 0; }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-chip { display: inline-flex; align-items: center; gap: 2px; padding: 0; border: 0; border-radius: 0; background: none; font-size: 13.5px; }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-chip a { font-weight: 600; color: var(--cf-ink); } .application.twod12-styled .sk .fr-tab.cls2 .cls-chip i { margin-left: 3px; font-size: 11.5px; color: var(--cf-mute); }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-chip button { width: 16px; height: 16px; min-height: 0; padding: 0; border: 0; background: none; color: var(--cf-mute); font-size: 13px; line-height: 1; opacity: .7; }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-none { color: var(--cf-mute); font-style: italic; font-size: 12.5px; }
+.application.twod12-styled .sk .fr-tab.cls2 .drop-zone { margin: 7px 0 0; padding: 5px; border: 1px dashed var(--cf-hair); border-radius: 0; background: none; color: var(--cf-mute); font-size: 12px; text-align: center; opacity: 1; }
