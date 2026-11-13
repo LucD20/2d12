@@ -3,6 +3,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
 ## Where we are now (v0.0.385, 250 tests; READ THIS FIRST)
+- **2026-11-13: `pack-chat-frame` and `pack-style-2` merged into main (Lucas: "All good, merge."; a fast-forward, no conflict).** Main is v0.0.385: the whole style pass (STYLE-1 v0.0.369 to v0.0.372 with the chat frame, STYLE-2 v0.0.373 to v0.0.385 with the one-page NPC sheet and the HUD), tested by Lucas. **NEXT: MASTER-PLAN item 5, the class card sessions** (read first: `book/cards/README.md`, "The PC budget"), in a new session.
 - **2026-11-13 (v0.0.385, branch `pack-style-2`; NOT tested by Lucas):** a second click on an Action's name in the HUD closes its card.
 - **2026-11-13 (v0.0.384, branch `pack-style-2`; NOT tested by Lucas):** no tooltip on the HUD's stamps; the HUD reaches the sidebar in full screen. Checklist: foundry-backlog.md "v0.0.384".
 - **2026-11-13 (v0.0.383, branch `pack-style-2`; NOT tested by Lucas):** the HUD's Quick row became slots (eight dashed, each pin fills one), the NPC's side block fits the smaller resolution. Checklist: foundry-backlog.md "v0.0.383".
