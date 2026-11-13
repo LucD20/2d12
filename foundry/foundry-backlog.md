@@ -12,6 +12,7 @@ The audit and a proposed order: `foundry/mockups/style-audit.md`. The direction:
 - [ ] In the build: retire the old area damage card (`dmgcard.mjs multiDamageHtml` / `postMultiDamageCard`, no caller; `damage.mjs` still updates old messages through it) and its rules, after checking no world holds such messages.
 - [ ] In the build, `pickwindow.mjs pickOne`: a click on an option resolves and closes; no Confirm button, only Cancel (Lucas, 2026-11-13). Check each caller for a `preset` that relied on Confirm.
 - [ ] In the build, `pickwindow.mjs`: the text through `highlightText`; no `<h2>` for a section with no title and no pill; no check mark on the chosen option (Lucas, 2026-11-13).
+- [ ] In the build: the NPC Builder's "Damage: Immune, Resist and Weak" block as mocked (`npc-sheet-dark.html`, version A): three lines of chips with the subtype's icon and color; a list of the twelve subtypes in the place of the select, a stepper, Resist / Weak / Immune buttons.
 - [ ] In the build: the word **Guard** colored by the text highlighter (`config.mjs highlightText`), the Guard blue; ask Lucas whether the book takes it too.
 - [ ] Mockups still to make (`foundry/mockups/style-build.mjs`): the pick window, the roll dialog, the PC sheet, the full NPC sheet, the rest (the table: style-audit.md).
 - [ ] Then the build, in the same order: the shared colors (`style-tokens.css`) at the top of system.css and the setting; then each surface's dark set (`style-dark.css` is generated from the system's rules and is the starting point).

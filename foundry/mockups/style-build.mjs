@@ -502,7 +502,7 @@ ${body}
 </body>
 </html>
 `);
-const PICK = '<span class="tag pick">Proposed</span>', TODAY = '<span class="tag">Today</span>';
+const PICK = '<span class="tag pick">Proposed</span>', TODAY = '<span class="tag">Today</span>', PICKED = '<span class="tag pick">Picked by Lucas</span>';
 const col = (title, tag, why, html, cls = "", w = "") => `<div class="col"${w ? ` style="--w:${w}"` : ""}><h3>${title} ${tag}</h3>${why ? `<p class="why">${why}</p>` : ""}<div class="stage ${cls}">${html}</div></div>`;
 const three = (html, why = ["", "", ""], stage = "") => `<div class="cols">${col("Dark", PICK, why[0], html, `${stage} dk twod12-dark twod12-type`)}${col("Light", PICK, why[1], html, `${stage} twod12-type`)}${col("Today", TODAY, why[2], html, stage)}</div>`;
 
@@ -862,12 +862,9 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 <div class="stage twod12-type" style="width:930px">${npcWin(npcRaw)}</div>
 <h2>Today ${TODAY}</h2>
 <div class="stage" style="width:930px">${npcWin(npcRaw)}</div>
-<h2>A proposal: the Builder's "Damage: Immune, Resist and Weak" block, redrawn</h2>
-<p class="why">Lucas, 2026-11-13: the line was broken and the add buttons didn't look good; the subtypes should have their colors and icons. Two things here. <b>In the sheets above</b> (the real markup) the block's head is put in order: the title, its note, then "+ Add" at the right. <b>Below is a redraw of the block</b>, which changes its elements, so it is a proposal and not part of "style only": three lines (Immune, Resist, Weak) with each entry as a chip in its subtype's color and icon; and to add one, a selector of twelve tiles in the place of the drop-down, each in its subtype's color with its icon (Holy golden with its sun, Fire orange with its flame, Slash steel with its blade), the picked one filled; then a stepper for the amount and three buttons. The entries shown are examples (this NPC has none).</p>
-<h3 style="margin-top:14px">Version A: the first one (a compact list)</h3>
-<div class="cols">${col("Dark", '<span class="tag alt">A</span>', "", rwBlockA, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", '<span class="tag alt">A</span>', "", rwBlockA, "twod12-type rw-scope", "640px")}</div>
-<h3 style="margin-top:22px">Version B: colored tiles</h3>
-<div class="cols">${col("Dark", '<span class="tag alt">B</span>', "", rwBlock, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", '<span class="tag alt">B</span>', "", rwBlock, "twod12-type rw-scope", "640px")}</div>
+<h2>The Builder's "Damage: Immune, Resist and Weak" block, redrawn (picked)</h2>
+<p class="why">Lucas, 2026-11-13: the line was broken and the add buttons didn't look good; the subtypes should have their colors and icons. Two things here. <b>In the sheets above</b> (the real markup) the block's head is put in order: the title, its note, then "+ Add" at the right. <b>Below is a redraw of the block</b>, which changes its elements, so it is a proposal and not part of "style only": three lines (Immune, Resist, Weak) with each entry as a chip in its subtype's color and icon; and to add one, a compact list of the twelve subtypes in the place of the drop-down, each with its icon in its color, the picked one underlined; then a stepper for the amount and three buttons. <b>Lucas picked this version (A) over colored tiles (B), 2026-11-13.</b> The entries shown are examples (this NPC has none).</p>
+<div class="cols">${col("Dark", PICKED, "", rwBlockA, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", PICKED, "", rwBlockA, "twod12-type rw-scope", "640px")}</div>
 <h2>Notes</h2>
 <ul class="notes">
 <li><b>The rank's color is not on this sheet yet.</b> The one-page sheet colors its name plate by rank (Minion slate, Grunt olive, Standard maroon, Elite purple). Here the rank is the small tag beside the name; giving this sheet's head the rank's color would be the same idea, but it is a new decision, so it is not drawn.</li>
