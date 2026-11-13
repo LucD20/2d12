@@ -4675,3 +4675,18 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hud-players #players #performance-stats .average { font-weight: 600; }
 .twod12-hud .hud-blk .hud-g { flex: 0 1 auto; min-width: 0; } .twod12-hud .hud-mid.npc .hud-side { flex: 0 1 auto; max-width: 45%; }
 .twod12-hud .hud-mid.pc .hud-cats { justify-content: flex-start; }
+/* ==== v0.0.382 (Lucas on v0.0.381) ==== */
+/* the Action card opened from the HUD sits over Foundry's interface */
+.twod12-hudcard { z-index: 1000; }
+.twod12-hud .ha > b { cursor: pointer; }
+/* a clicked button doesn't stay colored (Foundry's focus look) */
+.twod12-hud .cat:focus:not(.on), .twod12-hud .hp-btn:focus, .twod12-hud .hsv:focus { background: transparent; box-shadow: none; outline: none; }
+.twod12-hud .cat:focus-visible, .twod12-hud .hv:focus-visible { outline: 1px solid var(--s-gold, #d4a548); outline-offset: 1px; }
+/* the categories as an aligned table of two rows (a column as wide as its widest button), at any width */
+.twod12-hud .hud-mid.pc .hud-cats { display: grid; grid-auto-flow: column; grid-template-rows: repeat(2, auto); grid-auto-columns: max-content; gap: 4px 5px; align-content: center; justify-content: start; flex: 0 0 auto; }
+.twod12-hud .hud-mid.pc .hud-cats > .cat { width: 100%; justify-content: center; text-align: center; }
+/* a short HUD: the hotbar goes up, above the HUD's right end (no frame of its own), and Quick takes the room */
+@container (max-width: 1000px) {
+  .twod12-hud .hud-hot { position: absolute; right: 0; bottom: calc(100% + 6px); padding: 0; border-left: 0; background: transparent; }
+}
+.twod12-hud .hud-mid.pc .hud-cats > .cat { box-sizing: border-box; justify-content: center; }

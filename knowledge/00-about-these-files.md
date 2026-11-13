@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 5269052 2026-11-13 v0.0.380: the HUD placed from the bottom band (left edge to the sidebar or the chat input), the players list in its look
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 7e636e5 2026-11-13 v0.0.381: the HUD rearranged (less mouse travel), taller instead of cut, right-click card / pin a stamp, the players pill, dividers
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

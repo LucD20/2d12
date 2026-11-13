@@ -112,6 +112,8 @@ function ensureRoot() {
   root.classList.add("floating");
   (document.getElementById("interface") ?? document.body).append(root);
   root.addEventListener("click", onClick);
+  // v0.0.382: a click anywhere outside the HUD (and its card) closes its panel and unlights its category
+  document.addEventListener("pointerdown", ev => { if (root?.isConnected && !root.contains(ev.target) && !st.card?.contains(ev.target)) closePop(); }, true);
   root.addEventListener("contextmenu", onContext);
   window.addEventListener("resize", placeRoot);
   try { const ro = new ResizeObserver(() => placeRoot()); for (const id of ["ui-right", "sidebar", "sidebar-content", "chat-notifications", "scene-controls", "ui-left"]) { const el = document.getElementById(id); if (el) ro.observe(el); } } catch (e) { /* no observer */ }
@@ -163,7 +165,7 @@ async function drawHud() {
   if (!show) { if (root) root.hidden = true; return; }
   ensureRoot(); root.hidden = false; placeHotbar(); placePlayers(); placeRoot();
   const main = root.querySelector(".hud-main"), cur = current();
-  closePop();
+  closePop({ keepOpen: true });
   if (cur.list) {
     st.actorUuid = "";
     main.innerHTML = listHudHtml(cur.list.map(t => ({ id: t.id, name: t.name, img: t.document?.texture?.src ?? t.actor?.img, rankKey: t.actor?.type === "npc" ? t.actor.system?.role : "", sub: t.actor?.type === "npc" ? rankLabel(t.actor) : (t.actor?.itemTypes?.class?.[0]?.name ?? "") })));
@@ -181,10 +183,14 @@ async function drawHud() {
 }
 
 /* ------------------------------------------------------------------ panels, the card, the menu */
-function closePop() { root?.querySelectorAll(".hud-pop, .hud-menu").forEach(x => x.remove()); st.card?.remove(); st.card = null; }
+function closePop({ keepOpen = false } = {}) {
+  root?.querySelectorAll(".hud-pop, .hud-menu").forEach(x => x.remove()); st.card?.remove(); st.card = null;
+  // v0.0.382 (Lucas: "the button is still colored, so I have to click twice"): a closed panel's category is not lit any more
+  if (!keepOpen && st.open) { st.open = ""; root?.querySelectorAll(".cat.on").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); }); }
+}
 async function openPanel(cat, ids = null) {
   const cur = current(); if (!cur.actor) return;
-  closePop();
+  closePop({ keepOpen: true });
   let rows;
   if (ids) { const { list } = await actionsOf(cur.actor); rows = list.filter(a => ids.includes(a.id)).map(a => ({ action: a })); }
   else rows = await panelRows(cur.actor, cat);
@@ -196,6 +202,9 @@ async function openPanel(cat, ids = null) {
   if (anchor) { const r = anchor.getBoundingClientRect(), h = root.getBoundingClientRect(); pop.style.left = `${Math.max(0, Math.min(r.left - h.left, h.width - 320))}px`; }
 }
 async function showCard(actor, item, at) {
+  try { return await showCardNow(actor, item, at); } catch (e) { console.warn("twod12 | HUD: the Action card", e); ui.notifications?.warn(`${item.name}: the card could not be drawn (see the console).`); }
+}
+async function showCardNow(actor, item, at) {
   closePop();
   const { buildActionCard } = await import("./actioncard.mjs");
   const div = document.createElement("div");
