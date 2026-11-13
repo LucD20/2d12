@@ -1,5 +1,9 @@
 # The ruler (for the class and Bestiary numbers)
 
+## The PC budget (2026-11-13)
+
+`sim/pcbudget.mjs` writes `pc-budget.md`: what a PC's Actions, the riders it puts on enemies, its Reactions and its helps are worth, in points of a plain PC's turn (three Weapon Attacks = 100; 0 = a PC that deals no damage; the scale is the party's cost). The guide for the card sessions is `book/cards/README.md`, "The PC budget". `prices.md`, `rclasses.md` and `worth.json` are older (before pack R's 4 AP or pinned to `RULES_R`): not for new cards.
+
 ## The Bestiary's turn budget (2026-11-12): enemies that do more than damage
 
 Until this pack the ruler's enemies only dealt damage. Now an NPC can carry its own Actions and a Reaction, built on the Bestiary's price list (the system's `config.mjs npcBudget`; `sim/budget.mjs`: `npcBuilt`, `actionPoints`, `riderPrice`, `pointsExpr`, `bestTurn`), and the engine (`sim/engine.mjs`, the block "the Bestiary's turn budget") runs them: riders on a hit, in the Setup or on Tier 3 only; Forced Movement with Collision (pushed only when it hurts; `RULES.forcedUse "always"` to push every hit); the conditions on PCs (the PCs' own rolls through `roundrules.mjs rollerConditionMods` and `vulnerableBoons`, an enemy's Bleed staunched for 1 AP); Reactions (`struck`, `allyHit`, `allyStruck`, `approach`; 1R and 2R); helps (Boons on the allies' next attack, a heal); Save Actions and Actions that hit several creatures. **An NPC without `acts` turns exactly as before:** `spec.mjs --check` prints "ok" and report.md is unchanged.

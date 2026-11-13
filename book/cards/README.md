@@ -58,6 +58,67 @@ An extra never repeats a core field (a tier, a cost, a trait, the Frequency): te
 ## Cards with Lucas (started 2026-11-05: cards session 1, Smite)
 Lucas writes a few cards at a time, in prose or in this format, saying on each what Foundry should automate; the session completes them (the `foundry` block above) and prices them, and the first ones are kept below as worked examples. Smite (session 1) is the card to copy for a Strike with an effect on the target and a chain after the damage; Divine Surge (an Effect the ally's button uses) and Overwatch (a Reaction with a Trigger) for those shapes. MASTER-PLAN section 1, item 6.
 
+## The PC budget (2026-11-13: read before a card session)
+
+A guide for sizing a class card before it is written, measured the way the Bestiary's turn budget was. **It is for Lucas and Claude, not a rule of the book.** The numbers and how they were measured: `book/ruler/pc-budget.md` (`node book/ruler/sim/pcbudget.mjs`). They are for Stage 0 (levels 1 to 3) and today's rules (4 AP, exploding weapon dice, enemies that use effects).
+
+**The scale.** A **plain PC** has its class's Health, armor, weapon and Modifiers and nothing else; its turn is three Weapon Attacks. **That turn is 100 points; a Weapon Attack is 25.** 0 points is a PC that deals no damage. Everything is placed on that line by what the party's fights cost with it (its Health lost with the Rally Points spent), so damage, protection and healing share one unit.
+
+**What the fights say first:**
+- **Health is worth much more than damage.** Saving the party 1 Health takes about 5 damage dealt in a normal fight, and about 3 in a hard or a deadly one (the old price list had 1.1). A card that gives new Health or stops damage is far stronger than its dice look.
+- **The third Weapon Attack of a turn is weak** (2 At-will Banes): almost anything is better than it.
+
+**Prices for an Action's damage** (its average damage over its own Weapon Attack's, × 25):
+
+| The Action | Points | Measured |
+|---|---|---|
+| 1 AP | 25 | a Weapon Attack |
+| 2 AP | 50 | with a Weapon Attack: worth 106 to 107 (three Weapon Attacks: 100): already a little better, no premium needed |
+| 3 AP | 75 | worth 100: exactly three Weapon Attacks |
+| 2 AP at 60 | | worth 115 to 117: each 10 points over is felt |
+| Encounter, double its AP (2 AP: 100) | | adds about 30 points to **every** turn of a normal fight: a third of a plain PC |
+
+**What a class adds today** (the Stage 0 builds in the plain PC's seat; levels 1 / 2 / 3): Smite Paladin 115 / 126 / 118; Lay On Hands Paladin 126 / 161 / 163; Double Shot Archer 174 / 163 / 168; Rolling Shot Archer 194 / 182 / 200. The Archers get far more from their class than the Smite Paladin does (the ranged seat's scale is small, so its numbers are good to about ±6).
+
+**Riders a PC puts on an enemy** (on a hit; the price on one Action that carries it; against Standards, and against an Elite, which lives longer):
+
+| Size | Price | Riders (Standards · an Elite) |
+|---|---:|---|
+| **Mild** | 3 | Hindered and Immobilized (0 from melee, 2 to 3 from range), Taunted 1 to 3, Frightened 2 to 4 · 6, Vulnerable 1 1 to 3 · 4, **Bleed 1d4 or 1d6 (0 to 2: the party kills its target before it bleeds)** |
+| **Moderate** | 8 | Vulnerable 2 5, Slowed 1 7 to 10 · 12, Prone 7 to 9 · 11 |
+| **Severe** | 12 | Dazed 1 11 to 15 · 20, Blinded (EoT) 12 to 15 · 26 |
+| **Extreme** | 18 | Slowed 2 13 to 20 · 26 |
+
+Against an Elite a rider that takes AP or its aim is worth one size more. This is not the Bestiary's table: a Bleed is strong on a PC and nearly nothing on an enemy; Blinded and Dazed are stronger on an enemy than on a PC.
+
+**Reactions** (the classes' own, on the plain PC, for free):
+
+| Reaction | Fires in | Adds a turn |
+|---|---:|---:|
+| Shield of Faith (block 2d6 + [Mod]) | 82% of its rounds | **66** |
+| Covering Shot | 111% | 16 |
+| Rebuke | 66% | 14 |
+| Overwatch | 85% | 10 |
+
+All four fire well over the half of the rounds they are meant to; Shield of Faith alone is worth two thirds of a plain PC. **A 1R Reaction should add about 10 to 15 points** (half an AP: the Reaction AP is free, but it fires only sometimes); one that blocks damage needs small numbers.
+
+**1 AP that isn't an attack** (in the place of the third Weapon Attack):
+
+| The AP | Worth |
+|---|---:|
+| the most hurt ally heals 1d8 + [Mod] of new Health | 69 |
+| ... 2d6 + [Mod] | 85 |
+| you gain Guard 1d8 + [Mod] | 35 |
+| an ally gains +1 Defense until your next turn | 12 |
+| nothing (the unused AP's Guard) | 12 |
+| an ally spends one of its own Rally Points (Lay On Hands' heal alone) | -11 |
+
+So **1 Health of new healing is about 12 points and 1 point of Guard about 6**; a heal paid with the ally's Rally Point only moves Health it already had (its worth is the Down it prevents and what the card adds on top).
+
+**How to use it in a session:** (1) the card's damage in points against its AP's price; (2) add its riders, its heal or Guard and its Reaction at the prices above; (3) compare with the class's budget for its level. The ledger at the end of `pc-budget.md` has every class Action's damage in points today (Smite 2: 45 for 2 AP; Double Shot 2: 50; Holy Wrath 2: 50 to 54; Rolling Shot 2: 36).
+
+**Not in it:** how much a class should be worth at each level (Lucas's call: today 115 to 200), areas, Passives one by one, anything on a map with walls, levels 4 and up. `book/ruler/prices.md` and the cards' old worth lines (`book/ruler/worth.json`) are from before pack R's 4 AP and are not to be used for new cards.
+
 ## After editing a card
 1. `cd book && python3 build_rules.py` (the card check lists a marker with no card, a card no chapter places, a block still written by hand).
 2. `cd foundry/twod12 && node tools/gen-basic.mjs` when the card is a Basic Action (then the compendium: `node tools/build-packs.mjs`), and `node tools/tests/run.mjs`.

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 6013ff1 2026-11-13 Rider prices refitted for a rider one enemy has; Bleed 1 and 1d6 measured
+Built by tools/knowledge.py on 2026-11-13 from the repository at: f1a0f11 2026-11-13 HANDOFF: pack-rider-prices merged into main; next is the class card sessions
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -16,7 +16,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (137 KB)
 - MASTER-PLAN.md (36 KB)
-- open-design-items.md (123 KB)
+- open-design-items.md (126 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -31,6 +31,7 @@ Files:
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
 - design-sim-brief.md (22 KB)
+- design-pc-budget.md (8 KB)
 - design-stage0.md (18 KB)
 - design-expedition-loop.md (12 KB)
 - design-playtest-2.md (7 KB)
