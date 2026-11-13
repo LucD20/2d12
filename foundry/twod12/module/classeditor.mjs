@@ -1,14 +1,13 @@
 // v0.0.185 (pack C2): the Levels window of a Class (the designer's side), opened by "Edit levels..." on the Class's Details tab.
 // Left: the sections of the chosen level; right: the class's items (Repertoire and Escalation), to drag into a section.
-import { TWOD12 } from "./config.mjs";
+import { TWOD12, FREQ_COLORS, highlightText } from "./config.mjs";
 import { esc } from "./util.mjs";
-import { SECTION_KINDS, SECTION_FREQS, ATTR_KEYS, newSection, alsoIn, playerSees, freqOf } from "./classlevels.mjs";
+import { SECTION_KINDS, SECTION_FREQS, ATTR_KEYS, newSection, alsoIn, playerSees, freqOf, sectionColor, ESC_COLOR } from "./classlevels.mjs";
 import { itemInfo } from "./classwindow.mjs";
 import { dragData } from "./sheet-common.mjs";
 const { ApplicationV2 } = foundry.applications.api;
 const TALENT_CATS = { "": "Any category", Combat: "Combat", Mobility: "Mobility", Magic: "Magic", Skill: "Skill" };
 const FREQ_ORDER = ["passive", "turn", "round", "encounter", "daily"];
-
 const editors = new Map();
 export function openLevelsEditor(item) {
   let app = editors.get(item.uuid);
@@ -43,13 +42,14 @@ export class ClassLevelsEditor extends (ApplicationV2 ?? class {}) {
     const info = u => this.infos.get(u) ?? null;
     const name = u => esc(info(u)?.name ?? "(missing item)");
     const typeLine = u => { const i = info(u); if (!i) return ""; const t = i.type === "action" ? "Action" : i.type === "talent" ? "Talent" : "Feature"; const f = i.type === "action" && i.frequency ? TWOD12.frequencies[i.frequency] : ""; return [t, f, i.escalation ? `Esc ${i.escalation}` : ""].filter(Boolean).join(" · "); };
+    const tyColor = u => { const i = info(u); const c = i?.escalation ? ESC_COLOR : i?.type === "action" && i.frequency && FREQ_COLORS[i.frequency] && !["none", ""].includes(i.frequency) ? FREQ_COLORS[i.frequency] : ""; return c ? ` style="--fq:${c}"` : ""; };
     const sel = (opts, val, attrs) => `<select ${attrs}>${Object.entries(opts).map(([k, l]) => `<option value="${k}"${k === val ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
     const attrOpts = Object.fromEntries(ATTR_KEYS.map(k => [k, TWOD12.attributes[k]]));
     const listOpts = [...all].filter(u => info(u)).sort((a, b) => info(a).name.localeCompare(info(b).name));
     const secs = (levels[this.cur - 1]?.sections ?? []).map(x => {
       let body = "";
       if (x.kind === "items") {
-        body = (x.items ?? []).map((u, i) => { const al = alsoIn(s, this.cur, x, u); return `<div class="ce-row"><a class="nm" data-open="${u}">${name(u)}</a>${al.length ? `<span class="ce-also">also in: ${esc(al.join(", "))}</span>` : ""}<span class="ty">${esc(typeLine(u))}</span><button type="button" class="ce-x" data-rmitem="${x.id}" data-i="${i}" aria-label="Remove">&times;</button></div>`; }).join("")
+        body = (x.items ?? []).map((u, i) => { const al = alsoIn(s, this.cur, x, u); return `<div class="ce-row"><a class="nm" data-open="${u}">${name(u)}</a>${al.length ? `<span class="ce-also">also in: ${esc(al.join(", "))}</span>` : ""}<span class="ty"${tyColor(u)}>${esc(typeLine(u))}</span><button type="button" class="ce-x" data-rmitem="${x.id}" data-i="${i}" aria-label="Remove">&times;</button></div>`; }).join("")
           + `<div class="ce-drop" data-drop="${x.id}">Drop an Action, Feature or Talent here ${sel({ "": "or add from a list…", ...Object.fromEntries(listOpts.filter(u => !(x.items ?? []).includes(u)).map(u => [u, info(u).name])) }, "", `data-addsel="${x.id}" aria-label="Or add from a list"`)}</div>`;
       } else if (x.kind === "attr") {
         body = (x.pairs ?? []).map((p, pi) => `<div class="ce-pair"><span>Pair ${pi + 1}:</span>${sel(attrOpts, p.a, `data-pair="${x.id}" data-pi="${pi}" data-side="a"`)}<span>or</span>${sel(attrOpts, p.b, `data-pair="${x.id}" data-pi="${pi}" data-side="b"`)}<span>+1</span><button type="button" class="ce-x" data-rmpair="${x.id}" data-pi="${pi}" aria-label="Remove pair">&times;</button></div>`).join("")
@@ -62,16 +62,17 @@ export class ClassLevelsEditor extends (ApplicationV2 ?? class {}) {
       const seen = playerSees(s, this.cur, x, info);
       const pick = x.kind !== "attr" && !(x.kind === "items" && x.mode === "granted") ? `<label class="ce-num">Pick <input type="number" min="1" max="9" value="${x.pick}" data-pick="${x.id}"></label>` : "";
       const mode = x.kind === "items" ? `<span class="cw-seg">${["granted", "choice"].map(k => `<button type="button" data-mode="${x.id}" data-v="${k}" aria-pressed="${x.mode === k}">${k === "granted" ? "Granted" : "Choice"}</button>`).join("")}</span>` : "";
-      return `<section class="ce-sec" data-secid="${x.id}"><div class="ce-sh"><span class="ce-grip" draggable="true" data-grip="${x.id}" data-tooltip="Drag to reorder">⋮⋮</span><input type="text" class="ce-title" value="${esc(x.title)}" data-title="${x.id}" aria-label="Section title">${sel(SECTION_KINDS, x.kind, `data-kind="${x.id}" aria-label="Section type"`)}${mode}${pick}<button type="button" class="ce-x" data-rmsec="${x.id}" aria-label="Remove section">&times;</button></div>
-        <div class="ce-sb">${body}</div><div class="ce-prev${seen.warn ? " warn" : ""}">${seen.warn ? "" : "<b>Player sees:</b> "}${esc(seen.text)}</div></section>`;
+      return `<section class="ce-sec" data-secid="${x.id}" style="--sc:${sectionColor(x, u => !!info(u)?.escalation)}"><div class="ce-sh"><span class="ce-grip" draggable="true" data-grip="${x.id}" data-tooltip="Drag to reorder">⋮⋮</span><input type="text" class="ce-title" value="${esc(x.title)}" data-title="${x.id}" aria-label="Section title">${sel(SECTION_KINDS, x.kind, `data-kind="${x.id}" aria-label="Section type"`)}${mode}${pick}<button type="button" class="ce-x" data-rmsec="${x.id}" aria-label="Remove section">&times;</button></div>
+        <div class="ce-sb">${body}</div><div class="ce-prev${seen.warn ? " warn" : ""}">${seen.warn ? "" : "<b>Player sees:</b> "}${seen.warn ? esc(seen.text) : highlightText(esc(seen.text))}</div></section>`;
     }).join("");
     const lv = `<span class="lbl">Level</span>${levels.map((l, i) => `<button type="button" class="ce-lvb" data-lvl="${i + 1}" aria-pressed="${i + 1 === this.cur}">${i + 1}</button>`).join("")}<button type="button" class="ce-lvb" data-newlvl aria-label="Add level" data-tooltip="Add a level">+</button>${levels.length ? `<button type="button" class="ce-lvb" data-dellvl aria-label="Remove the last level" data-tooltip="Remove the last level (${levels.length})">&minus;</button>` : ""}`;
     const libItem = u => `<div class="ce-li" draggable="true" data-drag="${u}"><span>${name(u)}</span>${info(u)?.escalation ? `<i>Esc ${info(u).escalation}</i>` : ""}</div>`;
     const rep = s.repertoire ?? [];
-    const lib = `<h2>Class items</h2><p class="ce-hint">From the Details tab: the Repertoire and the Escalation abilities. Drag them into a section. An item can be in more than one section: once a player has it, it leaves the other sections' choices. Features and Actions only one section uses (the Core Features, the Hallmark Actions) are dragged from the sidebar or a compendium.</p>`
-      + FREQ_ORDER.map(f => { const ks = rep.filter(u => freqOf(info(u)) === f); return ks.length ? `<h4>Repertoire · ${SECTION_FREQS[f]}</h4>${ks.map(libItem).join("")}` : ""; }).join("")
+    // v0.0.369 (Lucas, 2026-11-13): the paragraph under "Class items" is gone (a tip)
+    const lib = `<h2>Class items</h2>`
+      + FREQ_ORDER.map(f => { const ks = rep.filter(u => freqOf(info(u)) === f); return ks.length ? `<h4${FREQ_COLORS[f] ? ` style="--fq:${FREQ_COLORS[f]}"` : ""}>Repertoire · ${SECTION_FREQS[f]}</h4>${ks.map(libItem).join("")}` : ""; }).join("")
       + (() => { const ks = rep.filter(u => !FREQ_ORDER.includes(freqOf(info(u)))); return ks.length ? `<h4>Repertoire · Other</h4>${ks.map(libItem).join("")}` : ""; })()
-      + `<h4>Escalation Passives</h4>${(s.escPassives ?? []).map(libItem).join("") || '<p class="ce-hint">None yet.</p>'}<h4>Escalation Actives</h4>${(s.escActives ?? []).map(libItem).join("") || '<p class="ce-hint">None yet.</p>'}`;
+      + `<h4 style="--fq:${ESC_COLOR}">Escalation Passives</h4>${(s.escPassives ?? []).map(libItem).join("") || '<p class="ce-hint">None yet.</p>'}<h4 style="--fq:${ESC_COLOR}">Escalation Actives</h4>${(s.escActives ?? []).map(libItem).join("") || '<p class="ce-hint">None yet.</p>'}`;
     const div = document.createElement("div");
     div.className = "cw ce";
     div.innerHTML = `<header class="cw-head"><div class="cw-ttl"><img src="${esc(this.item.img)}" alt=""><h1>${esc(this.item.name)} <small>Levels</small></h1></div></header>

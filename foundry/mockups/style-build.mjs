@@ -1,3 +1,5 @@
+// BUILT (v0.0.369, pack STYLE-1): the system's theme is now made by foundry/twod12/tools/build-theme.mjs (this file's tokens, MAP, TYPE,
+// BY_HAND and CAR_B moved there). This file stays as the record of the approved mockups; it doesn't feed the system.
 // Builds the STYLE mockups (Lucas, 2026-11-12: "keep collecting mockups; we won't apply anything until all is done"), in the audit's order
 // (style-audit.md). Nothing in the system changes.   node foundry/mockups/style-build.mjs
 //   style-tokens.css / style-tokens.html   1. the shared colors, dark (the default) and light, and the type

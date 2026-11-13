@@ -6,6 +6,7 @@
 //     complete, message, confirm }
 // The owner handles pick(rowKey, optKey) and input(field, value), and gives result().
 import { esc } from "./util.mjs";
+import { highlightText } from "./config.mjs";
 const { ApplicationV2 } = foundry.applications?.api ?? {};
 const CHECK = '<i class="fa-solid fa-check"></i>';
 
@@ -18,12 +19,14 @@ export function segRowHtml(row) {
 
 /** Pure: the whole window's HTML from a model. */
 export function pickWindowHtml(m) {
-  const secs = (m.sections ?? []).map(x => `<section class="cw-sec"><h2>${esc(x.title)} ${x.pill !== undefined ? `<span class="cw-pill${x.done ? " done" : ""}">${esc(x.pill)}</span>` : ""}</h2>${x.sub ? `<p class="cw-sub">${esc(x.sub)}</p>` : ""}${(x.rows ?? []).map(segRowHtml).join("")}${x.html ?? ""}</section>`).join("");
+  // v0.0.369 (STYLE-1, Lucas): a section with no title and no pill draws no heading (the empty one left a bar and a line); the text is highlighted
+  const head = x => (x.title || x.pill !== undefined ? `<h2>${esc(x.title)} ${x.pill !== undefined ? `<span class="cw-pill${x.done ? " done" : ""}">${esc(x.pill)}</span>` : ""}</h2>` : "");
+  const secs = (m.sections ?? []).map(x => `<section class="cw-sec">${head(x)}${x.sub ? `<p class="cw-sub">${highlightText(esc(x.sub))}</p>` : ""}${(x.rows ?? []).map(segRowHtml).join("")}${x.html ?? ""}</section>`).join("");
   const stats = (m.stats ?? []).map(([k, v]) => `<span>${esc(k)}<b>${esc(v)}</b></span>`).join("");
   const pic = m.img ? `<img src="${esc(m.img)}" alt="">` : (m.icon ? `<span class="cw-icon"><i class="fa-solid ${esc(m.icon)}"></i></span>` : "");
   return `<header class="cw-head"><div class="cw-top"><div class="cw-ttl">${pic}<h1>${esc(m.name)}${m.sub ? ` <small>${esc(m.sub)}</small>` : ""}</h1></div></div>${stats ? `<div class="cw-stats">${stats}</div>` : ""}</header>
     <div class="cw-body"><div class="cw-col cw-slots">${secs}</div></div>
-    <footer class="cw-foot"><span class="cw-msg">${esc(m.message ?? "")}</span><span class="cw-btns"><button type="button" class="cw-btn" data-key="cancel" data-cancel>Cancel</button><button type="button" class="cw-btn primary" data-key="confirm" data-confirm${m.complete === false ? " disabled" : ""}>${esc(m.confirm ?? "Confirm")}</button></span></footer>`;
+    <footer class="cw-foot"><span class="cw-msg">${esc(m.message ?? "")}</span><span class="cw-btns"><button type="button" class="cw-btn" data-key="cancel" data-cancel>Cancel</button>${m.confirm === false ? "" : `<button type="button" class="cw-btn primary" data-key="confirm" data-confirm${m.complete === false ? " disabled" : ""}>${esc(m.confirm ?? "Confirm")}</button>`}</span></footer>`;
 }
 
 export class PickWindow extends (ApplicationV2 ?? class {}) {
@@ -58,7 +61,11 @@ export class PickWindow extends (ApplicationV2 ?? class {}) {
   _click(ev) {
     const b = ev.target.closest("button");
     if (!b || b.disabled) return;
-    if (b.dataset.row) this.o.pick?.(b.dataset.row, b.dataset.k);
+    if (b.dataset.row) {
+      this.o.pick?.(b.dataset.row, b.dataset.k);
+      // v0.0.369 (Lucas, 2026-11-13): a single choice is click and done
+      if (this.o.instant) { this.done = true; this.o.resolve(this.o.result()); return this.close(); }
+    }
     else if (b.hasAttribute("data-cancel")) return this.close();
     else if (b.hasAttribute("data-confirm")) {
       if (this.o.model().complete === false) return;
@@ -84,19 +91,19 @@ export const pickWith = o => new Promise(resolve => new PickWindow({ ...o, resol
  */
 export const pickConfirm = o => pickWith({
   title: o.title ?? o.name,
-  model: () => ({ name: o.name, sub: o.sub ?? "", icon: o.icon, img: o.img, stats: o.stats ?? [], sections: [{ title: o.heading ?? "", html: `<div class="cw-sub pw-text">${o.text ?? ""}</div>` }], message: o.message ?? "", confirm: o.confirm ?? "Confirm" }),
+  model: () => ({ name: o.name, sub: o.sub ?? "", icon: o.icon, img: o.img, stats: o.stats ?? [], sections: [{ title: o.heading ?? "", html: `<div class="cw-sub pw-text">${highlightText(o.text ?? "")}</div>` }], message: o.message ?? "", confirm: o.confirm ?? "Confirm" }),
   result: () => true
 }).then(r => !!r);
 
 /**
- * A choice in the pick window's style: one option per row's button, then Confirm. o: { title, name, sub, icon, text, options: [{ k, l, tip }],
- * confirm, preset }. Resolves the chosen key, or null.
+ * A choice in the pick window's style: one option per button. o: { title, name, sub, icon, text, options: [{ k, l, tip }] }.
+ * v0.0.369 (Lucas, 2026-11-13): a click picks and closes; no Confirm, only Cancel (no caller passed a preset). Resolves the chosen key, or null.
  */
 export function pickOne(o) {
-  let chosen = o.preset ?? null;
+  let chosen = null;
   return pickWith({
-    title: o.title ?? o.name,
-    model: () => ({ name: o.name, sub: o.sub ?? "", icon: o.icon, sections: [{ title: o.heading ?? "", sub: o.text ?? "", rows: [{ key: "one", label: "", opts: o.options.map(x => ({ k: x.k, l: x.l, tip: x.tip, on: x.k === chosen, off: !!x.off })) }] }], complete: chosen !== null, message: chosen === null ? "Choose one." : "", confirm: o.confirm ?? "Confirm" }),
+    title: o.title ?? o.name, instant: true,
+    model: () => ({ name: o.name, sub: o.sub ?? "", icon: o.icon, sections: [{ title: o.heading ?? "", sub: o.text ?? "", rows: [{ key: "one", label: "", opts: o.options.map(x => ({ k: x.k, l: x.l, tip: x.tip, on: false, off: !!x.off })) }] }], message: "", confirm: false }),
     pick: (row, k) => { chosen = k; },
     result: () => chosen
   });

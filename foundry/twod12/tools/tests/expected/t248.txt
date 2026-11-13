@@ -1,0 +1,19 @@
+--- the theme file
+styles/theme.css is current (run node tools/build-theme.mjs): true | loaded after system.css: ["styles/system.css","styles/theme.css"]
+dark rules: true | both-theme rules: true | the shared colors: true
+not in this pack (STYLE-2): 'On you' hidden: false | the Class sheet's ruled form: false | the Immune / Resist / Weak redraw: false
+the carousel's look B in both themes: true
+the yellower Tier 2 (dark / light): true true | Guard on dark / light: true true
+--- the setting
+classes: dark twod12-type twod12-dark | light twod12-type twod12-light | unknown twod12-type twod12-dark
+apply dark over light: other twod12-dark twod12-type | registered in init: true | a client setting, dark by default: true
+--- the pick window
+no empty heading: true | the text highlighted: true | no Confirm: true | Cancel: true
+a titled section keeps its heading and Confirm: true
+pickOne: click and done: true
+--- the highlighter and the subtypes
+You gain <span class="kw-guard">Guard 2</span> until your next turn; <span class="kw-guard">Guard</span> is lost first.
+Slash, Blunt, Pierce on dark: #c3c9d1 #b9a58c #a9b8a4 | on light: #4a5058 #5a4a36 #44513f
+--- the Levels window
+attr #b8860b | talent #3B6D11 | Repertoire Round #185FA5 | Repertoire Any #5F5E5A | 'Apex' items #c9821f | Escalation items #c9821f | a plain list #8c7d63
+hooks: --sc on a section true | --fq on a type line true | the 'Player sees' line highlighted true | the paragraph under Class items gone true

@@ -24,6 +24,16 @@ export const isGranted = s => s.kind === "items" && s.mode === "granted";
 
 /** A Repertoire item's Frequency: a Feature (or Talent) is Passive; an Action has its own. */
 export const freqOf = i => (!i ? "" : i.type === "action" ? (i.frequency || "") : "passive");
+// the Frequencies' colors (config.mjs FREQ_COLORS; written here so this file stays free of imports)
+const LV_FREQ = { atwill: "#3B6D11", turn: "#0F6E6E", round: "#185FA5", encounter: "#A32D2D", daily: "#5B3FA6", "": "#5F5E5A", none: "#5F5E5A" };
+// v0.0.369 (STYLE-1, Lucas: "everything looks too equal"): a section's color says what it gives (--sc), an item's type line and a library
+// heading take their Frequency's color (--fq): gold an Attribute increase, the Frequency's color a Repertoire pick, the Escalation orange an
+// Escalation or Apex section, green a Talent, stone the plain lists.
+export const ESC_COLOR = "#c9821f"; const STONE = "#8c7d63";
+export const sectionColor = (x, isEsc = () => false) => (x.kind === "attr" ? "#b8860b" : x.kind === "talent" ? LV_FREQ.atwill
+  : x.kind === "repertoire" ? (LV_FREQ[x.freq] && x.freq ? LV_FREQ[x.freq] : LV_FREQ.none)
+  : /^(Escalation|Apex)\b/.test(x.title ?? "") || ((x.items ?? []).length && (x.items ?? []).every(isEsc)) ? ESC_COLOR : STONE);
+
 
 /** Everything a section offers before anything is taken away. talents: the Talents the character could take at this level (uuids). */
 export function candidates(sec, cls, info, talents = []) {

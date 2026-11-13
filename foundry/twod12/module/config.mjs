@@ -56,17 +56,18 @@ export const TWOD12 = {
       Un: "Unholy"
     })
   },
+  // v0.0.369 (STYLE-1, Lucas, 2026-11-13): Slash steel, Blunt bronze, Pierce grey-green, in the place of one grey
   subtypeColors: {
     Ac: "#7cb342",
-    Bl: "#8a8a8a",
+    Bl: "#b9a58c",
     Co: "#4fc3e8",
     El: "#3d8bfd",
     Fi: "#e8622a",
     Fo: "#b06ad8",
     Ho: "#d9b52e",
-    Pi: "#8a8a8a",
+    Pi: "#a9b8a4",
     Ps: "#8c68d6",
-    Sl: "#8a8a8a",
+    Sl: "#c3c9d1",
     Th: "#5c7fa3",
     Un: "#7a3b52"
   },
@@ -93,15 +94,15 @@ export const TWOD12 = {
   },
   subtypeInk: {
     Ac: "#3B6D11",
-    Bl: "#5F5E5A",
+    Bl: "#5a4a36",
     Co: "#185FA5",
     El: "#9A7400",
     Fi: "#993C1D",
     Fo: "#8A2BD4",
     Ho: "#854F0B",
-    Pi: "#5F5E5A",
+    Pi: "#44513f",
     Ps: "#993556",
-    Sl: "#5F5E5A",
+    Sl: "#4a5058",
     Th: "#0C447C",
     Un: "#4A1D63"
   },
@@ -448,6 +449,7 @@ const TOKEN_RE = new RegExp([
   String.raw`(?<neg>\b(?:Doomed|Enfeebled|Vulnerable|Down)\b(?:\s\d+\b)?)|(?<pos>\b(?:Favored|Empowered)\b(?:\s\d+\b)?)`,
   String.raw`(?<bane>\b(?:\d+\s+)?Banes?\b)|(?<boon>\b(?:\d+\s+)?Boons?\b)|(?<rally>\b(?:(?:up to )?\d+\s+)?Rally Points?\b)`,
   String.raw`(?<attr>\b(?:Body|Mind|Instinct|Appeal)\b)`,
+  String.raw`(?<guard>\bGuard\b(?:\s\d+\b)?)`,   // v0.0.369 (STYLE-1, Lucas: "I like the proposed"): the word Guard in the Guard blue
   `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b(?!\\s+(?:Attack|Technique)))`
 ].join("|"), "g");
 const traitTip = k => (TWOD12.traitHelp[k] ? ` data-tooltip="${escAttr(TWOD12.traitHelp[k])}"` : "");
@@ -468,6 +470,7 @@ function colorToken(m, g) {
   if (g.boon) return `<span class="kw-boon">${m}</span>`;
   if (g.rally) return `<span class="kw-rally">${m}</span>`;
   if (g.attr) return `<span class="at-${m.toLowerCase()}">${m}</span>`;
+  if (g.guard) return `<span class="kw-guard">${m}</span>`;
   return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}"${traitTip(TRAIT_WORDS[m])}>${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
 }
 // Never inside: links, buttons, headings, scripts, SVG, and chips or marks that already have their own look.

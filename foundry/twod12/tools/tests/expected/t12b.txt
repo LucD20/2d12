@@ -5,7 +5,7 @@
 {"t1":"1d6[mind,holy]","t2":"1d4[body,slash], \"Prone\"","t3":"0"} [ 'divine' ]
  Appeal Save DC 30 Divine &#10022; &#10022; &#10022; ≤ 29 5 Holy 30–36 3 Slash Prone ≥ 37 &mdash; &#10022; Name Save Damage Orc Appeal 
 update {"system.damage.bodyLethal":3}
-ROW: <div class="dice sdice"><span class="rtag rolled">Tier 2</span><span class="dgroup"><span class="die d12 dbl">7</span></span><span class="plus">+</span><span class="dgroup"><span class="die d12 dbl">7</span></span><span class="grow"></span><span class="dsym"><i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i><span class="dtic" data-tooltip="Slash" style="color:#5F5E5A"><img class="dt-img" src="icons/svg/sword.svg" alt=""></span></span><span class="dgroup dmgdice" data-tooltip="1d4"><span class="die d4">3</span></span></div>
+ROW: <div class="dice sdice"><span class="rtag rolled">Tier 2</span><span class="dgroup"><span class="die d12 dbl">7</span></span><span class="plus">+</span><span class="dgroup"><span class="die d12 dbl">7</span></span><span class="grow"></span><span class="dsym"><i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i><span class="dtic" data-tooltip="Slash" style="color:#4a5058"><img class="dt-img" src="icons/svg/sword.svg" alt=""></span></span><span class="dgroup dmgdice" data-tooltip="1d4"><span class="die d4">3</span></span></div>
 msg updated; has result: true
 []
 FINAL CARD: {
@@ -25,6 +25,6 @@ FINAL CARD: {
   }
 }
 messages posted after card: 1
-ROW: <div class="dice sdice"><span class="rtag rolled">Tier 2</span><span class="dgroup"><span class="die d12 dbl">7</span></span><span class="plus">+</span><span class="dgroup"><span class="die d12 dbl">7</span></span><span class="grow"></span><span class="dsym"><i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i><span class="dtic" data-tooltip="Slash" style="color:#5F5E5A"><img class="dt-img" src="icons/svg/sword.svg" alt=""></span></span><span class="dgroup dmgdice" data-tooltip="1d4"><span class="die d4">3</span></span></div>
+ROW: <div class="dice sdice"><span class="rtag rolled">Tier 2</span><span class="dgroup"><span class="die d12 dbl">7</span></span><span class="plus">+</span><span class="dgroup"><span class="die d12 dbl">7</span></span><span class="grow"></span><span class="dsym"><i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i><span class="dtic" data-tooltip="Slash" style="color:#4a5058"><img class="dt-img" src="icons/svg/sword.svg" alt=""></span></span><span class="dgroup dmgdice" data-tooltip="1d4"><span class="die d4">3</span></span></div>
 msg updated; has result: true
 Orc:done, Goblin:open
