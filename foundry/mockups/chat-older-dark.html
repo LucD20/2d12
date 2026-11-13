@@ -1118,6 +1118,9 @@
 .twod12-type .application.classwin .cw-seg { display: flex; flex-wrap: wrap; gap: 6px; border: 0; border-radius: 0; background: none; overflow: visible; }
 .twod12-type .application.classwin .cw-seg button, .twod12-type .application.classwin .cw-seg button + button { border: 1px solid #8c7d63; border-radius: 2px; background: transparent; padding: 0 12px; min-height: 28px; min-width: 76px; line-height: 1.2; white-space: nowrap; box-shadow: none; color: #2a241d; }
 .twod12-type .application.classwin .cw-seg button > i { display: none; }
+/* a choice with no label (one option per line): a list of full-width buttons, the text on the left */
+.twod12-type .application.classwin .cw-attr > .cw-seg:only-child { flex: 1 1 100%; flex-direction: column; flex-wrap: nowrap; gap: 5px; }
+.twod12-type .application.classwin .cw-attr > .cw-seg:only-child button { width: 100%; min-height: 32px; text-align: left; justify-content: flex-start; padding: 0 12px; }
 .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { box-shadow: none; }
 .twod12-type .application.classwin .cw-attr > span { color: #2a241d; font-weight: 600; }
 .twod12-type .application.classwin .cw-btn { min-height: 28px; min-width: 84px; padding: 0 14px; }

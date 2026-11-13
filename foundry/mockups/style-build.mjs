@@ -153,6 +153,9 @@ const TYPE = `
 .twod12-type .application.classwin .cw-seg { display: flex; flex-wrap: wrap; gap: 6px; border: 0; border-radius: 0; background: none; overflow: visible; }
 .twod12-type .application.classwin .cw-seg button, .twod12-type .application.classwin .cw-seg button + button { border: 1px solid #8c7d63; border-radius: 2px; background: transparent; padding: 0 12px; min-height: 28px; min-width: 76px; line-height: 1.2; white-space: nowrap; box-shadow: none; color: ${LIGHT.ink}; }
 .twod12-type .application.classwin .cw-seg button > i { display: none; }
+/* a choice with no label (one option per line): a list of full-width buttons, the text on the left */
+.twod12-type .application.classwin .cw-attr > .cw-seg:only-child { flex: 1 1 100%; flex-direction: column; flex-wrap: nowrap; gap: 5px; }
+.twod12-type .application.classwin .cw-attr > .cw-seg:only-child button { width: 100%; min-height: 32px; text-align: left; justify-content: flex-start; padding: 0 12px; }
 .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { box-shadow: none; }
 .twod12-type .application.classwin .cw-attr > span { color: ${LIGHT.ink}; font-weight: 600; }
 .twod12-type .application.classwin .cw-btn { min-height: 28px; min-width: 84px; padding: 0 14px; }
@@ -648,6 +651,7 @@ ${wins3(win("twod12 rolldlg", "Smite", rdHtml, 580), "610px")}
 <li>The window's own title bar is Foundry's (a stand-in here); with the HUD's rank colors it could take the actor's color, as the one-page NPC sheet does. Not proposed for these windows.</li>
 <li><b>The class window itself (the level-up picker) is not drawn:</b> it needs an actor and its class. It shares these rules, so it takes this look; it gets its own mockup with the sheets.</li>
 <li><b>Two small code changes come with this page, both in the pick window:</b> its text goes through the system's highlighter (Banes, Boons, AP and the traits take their colors; today the text is plain), and a section with no title draws no heading (today the empty heading leaves a bar and a line at the top of the window: the "weird bar").</li>
+<li><b>A choice of several options is a list:</b> one full-width button per line, in the order given (three buttons of different widths on a wrapped line looked untidy). Keep / Remove beside a name stay side by side.</li>
 <li><b>The chosen option has no check mark:</b> the fill says it, and the button keeps its width when it is picked.</li>
 <li>Drawn outside Foundry, a window's spacing can differ a little from the real one (Foundry's own window rules are not here).</li>
 </ul>
