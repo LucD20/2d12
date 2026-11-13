@@ -3,7 +3,6 @@
 // it). A Version's stamp opens the roll dialog on that Version ("Skip roll dialog", a per-player setting, rolls at once; Shift does the other);
 // right-click opens the Action card (a PC's menu also pins the Version to the Quick row). The hotbar becomes a row inside it (a setting), and the
 // pick bar (pickbar.mjs) asks its question in the HUD's middle while a choice waits. Client settings: Show the HUD, Skip roll dialog, Hotbar in the HUD.
-import { esc } from "./util.mjs";
 import { npcHudHtml, pcHudHtml, listHudHtml, emptyHudHtml, hudPanelHtml, HUD_SAVES } from "./hudmodel.mjs";
 
 const F = "twod12";
@@ -178,20 +177,7 @@ async function drawHud() {
   if (cur.token?.name) m.name = cur.token.name;   // v0.0.377: the token's name (an actor's name can be long)
   main.innerHTML = npc ? npcHudHtml(m) : pcHudHtml(m);
   root.classList.toggle("is-npc", npc);
-  if (npc) fitLines(main);
   if (!npc && st.open) openPanel(st.open);
-}
-/** An NPC's two lines never grow: a line too full folds its four Check / Save buttons into one, then its last Actions into "+N more". */
-function fitLines(main) {
-  for (const line of main.querySelectorAll(".hud-l")) {
-    const over = () => line.scrollWidth > line.clientWidth + 1;
-    if (!over()) continue;
-    line.classList.add("fold-saves");
-    if (!over()) continue;
-    const acts = [...line.querySelectorAll(".ha")], more = line.querySelector(".hud-more"), hidden = [];
-    while (over() && acts.length) { const a = acts.pop(); a.hidden = true; hidden.unshift(a.dataset.itemId); more.hidden = false; more.textContent = `+${hidden.length} more`; }
-    more.dataset.items = hidden.join(",");
-  }
 }
 
 /* ------------------------------------------------------------------ panels, the card, the menu */
@@ -226,25 +212,11 @@ async function showCard(actor, item, at) {
   });
   setTimeout(() => document.addEventListener("pointerdown", function away(ev) { if (!div.contains(ev.target)) { div.remove(); if (st.card === div) st.card = null; document.removeEventListener("pointerdown", away, true); } }, true), 0);
 }
-function showMenu(actor, item, ap, at) {
-  closePop();
-  const quick = quickKeys(actor);
-  const aps = ap === null ? (item.system.versions ?? []).map(v => v.ap) : [ap];
-  const pinned = aps.every(a => quick.has(`${item.id}:${a}`));
-  const m = document.createElement("div");
-  m.className = "hud-menu";
-  m.innerHTML = `<button type="button" data-m="card">The Action card</button><button type="button" data-m="quick">${pinned ? "Remove from Quick" : "Add to Quick"}${ap === null ? "" : ` (${esc(item.system.reaction ? `${ap}R` : `${ap} AP`)})`}</button>`;
-  root.append(m);
-  const r = at.getBoundingClientRect(), h = root.getBoundingClientRect();
-  m.style.left = `${Math.max(0, r.left - h.left)}px`;
-  m.addEventListener("click", async ev => {
-    const b = ev.target.closest("[data-m]"); if (!b) return;
-    if (b.dataset.m === "card") return showCard(actor, item, at);
-    const next = new Set(quick);
-    for (const a of aps) { const k = `${item.id}:${a}`; if (pinned) next.delete(k); else next.add(k); }
-    m.remove();
-    await actor.setFlag(F, "hudQuick", [...next]);
-  });
+/** v0.0.381 (Lucas): right-click on a PC's Version stamp pins it to (or unpins it from) the Quick row, at once. */
+async function toggleQuick(actor, item, ap) {
+  const k = `${item.id}:${ap}`, next = quickKeys(actor);
+  if (next.has(k)) next.delete(k); else next.add(k);
+  await actor.setFlag(F, "hudQuick", [...next]);
 }
 
 /* ------------------------------------------------------------------ clicks */
@@ -264,7 +236,6 @@ async function onClick(ev) {
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
   if (kind === "card" && item) return showCard(actor, item, b);
   if (kind === "cat") { const c = b.dataset.cat; if (actor.type !== "npc") { st.open = st.open === c ? "" : c; root.querySelectorAll(".cat").forEach(x => { x.classList.toggle("on", x.dataset.cat === st.open); x.setAttribute("aria-pressed", String(x.dataset.cat === st.open)); }); } return st.open || actor.type === "npc" ? openPanel(c) : closePop(); }
-  if (kind === "more") return openPanel("more", (b.dataset.items ?? "").split(",").filter(Boolean));
   if (kind === "attr") { const { CharacterSheet } = await import("./actor-sheets.mjs"); return CharacterSheet.rollAttr.call({ actor }, { shiftKey: ev.shiftKey || b.dataset.save === "1" }, { dataset: { key: b.dataset.key } }); }
   if (kind === "open" && item) return item.sheet.render(true);
   if (kind === "effect") return actor.effects.get(b.dataset.effect)?.sheet?.render(true);
@@ -277,14 +248,15 @@ async function onClick(ev) {
   }
 }
 function onContext(ev) {
+  // v0.0.381 (Lucas): right-click on an Action opens its card at once; on a PC's Version stamp it pins or unpins that Version (Quick)
   const ha = ev.target.closest(".ha[data-item-id]");
   if (!ha) return;
   ev.preventDefault();
   const actor = current().actor, item = actor?.items.get(ha.dataset.itemId);
   if (!item) return;
-  const v = ev.target.closest(".hv");
-  if (actor.type === "npc") return showCard(actor, item, ha);
-  return showMenu(actor, item, v ? Number(v.dataset.ap ?? item.system.versions?.[0]?.ap) : null, v ?? ha);
+  const v = ev.target.closest(".hv[data-ap]");
+  if (v && actor.type !== "npc") return toggleQuick(actor, item, Number(v.dataset.ap));
+  return showCard(actor, item, ha);
 }
 
 /** The pick bar asks in the HUD's middle while a choice waits (pickbar.mjs calls it): the slot, or null when there is no HUD on screen. */

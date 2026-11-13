@@ -18,7 +18,7 @@ export const hudIdHtml = m => `<div class="hud-id${m.rankKey ? ` rk-${esc(m.rank
 export function hudActionHtml(a) {
   const v = x => (x.off
     ? `<button type="button" class="hv no${x.used ? " used" : ""}" disabled data-tooltip="${esc(x.why || "")}" aria-label="${esc(`${a.name}, ${x.label}: ${x.why || ""}`)}">${esc(x.label)}</button>`
-    : `<button type="button" class="hv${x.fav ? " fav" : ""}" data-hud="use" data-ap="${Number(x.ap) || 0}" data-tooltip="${esc(`${a.name}, ${x.label}: the roll dialog (Shift: the other way round from Skip roll dialog). Right-click: the Action card${a.pc ? ", Quick" : ""}.`)}" aria-label="Use ${esc(a.name)}, ${esc(x.label)}">${esc(x.label)}</button>`);
+    : `<button type="button" class="hv${x.fav ? " fav" : ""}" data-hud="use" data-ap="${Number(x.ap) || 0}" data-tooltip="${esc(`${a.name}, ${x.label}: the roll dialog (Shift: the other way round from Skip roll dialog).${a.pc ? ` Right-click: ${x.fav ? "unpin it from" : "pin it to"} Quick.` : " Right-click: the Action card."}`)}" aria-label="Use ${esc(a.name)}, ${esc(x.label)}">${esc(x.label)}</button>`);
   return `<span class="ha${a.dim ? " dim" : ""}" data-item-id="${esc(a.id)}" style="--fq:${esc(a.fq ?? "#5F5E5A")}"><b data-hud="card">${esc(a.name)}</b>${(a.versions ?? []).map(v).join("")}</span>`;
 }
 
@@ -29,17 +29,21 @@ export const hudSavesHtml = saves => `<span class="hud-g g-saves"><span class="h
 
 /** NPC: m = { name, img, sub, rankKey, groups: { basic, special, react, esc: [action] }, saves: [{ key, label, short, value }], escPips } */
 export function npcHudHtml(m) {
+  // v0.0.381 (Lucas: "too much mouse travel"): beside the name, Escalation over the Checks and Saves; the attacks (Basic, Special) and the
+  // Reactions in the middle. A line wraps (the HUD grows taller) rather than hiding anything.
   const g = m.groups ?? {};
-  const l1 = groupHtml("Basic", g.basic ?? []) + groupHtml("Special", g.special ?? []);
-  const l2 = groupHtml("Reactions", g.react ?? []) + groupHtml(m.escPips ? `Escalation ${m.escPips}` : "Escalation", g.esc ?? []) + hudSavesHtml(m.saves ?? []);
-  return `${hudIdHtml(m)}<div class="hud-mid npc"><div class="hud-l">${l1 || '<span class="hud-none">No Actions.</span>'}<button type="button" class="hud-more" data-hud="more" hidden></button></div><div class="hud-l">${l2}<button type="button" class="hud-more" data-hud="more" hidden></button></div></div>`;
+  const esc = groupHtml(m.escPips ? `Escalation ${m.escPips}` : "Escalation", g.esc ?? []);
+  const side = `<div class="hud-blk hud-side">${esc ? `<div class="hud-l">${esc}</div>` : ""}<div class="hud-l">${hudSavesHtml(m.saves ?? [])}</div></div>`;
+  const l1 = groupHtml("Basic", g.basic ?? []) + groupHtml("Special", g.special ?? []), l2 = groupHtml("Reactions", g.react ?? []);
+  return `${hudIdHtml(m)}<div class="hud-mid npc">${side}<div class="hud-blk hud-center"><div class="hud-l">${l1 || '<span class="hud-none">No Actions.</span>'}</div>${l2 ? `<div class="hud-l">${l2}</div>` : ""}</div></div>`;
 }
 
 /** PC: m = { name, img, sub, quick: [action with only its pinned Versions], open: the open category's key } */
 export function pcHudHtml(m) {
-  const quick = (m.quick ?? []).length ? m.quick.map(hudActionHtml).join("") : '<span class="hud-none">Right-click an Action, then Quick, to pin a Version here.</span>';
+  // v0.0.381 (Lucas: "buttons on the left, favorites on the right"): the categories beside the name (two lines), the Quick row in the middle
+  const quick = (m.quick ?? []).length ? m.quick.map(hudActionHtml).join("") : '<span class="hud-none">Right-click a Version\'s stamp to pin it here.</span>';
   const cats = HUD_CATS.map(([k, l, later]) => (later ? `<span class="cat later" data-tooltip="Skills come later">${esc(l)} <i>later</i></span>` : `<button type="button" class="cat${m.open === k ? " on" : ""}" data-hud="cat" data-cat="${k}" aria-pressed="${m.open === k}">${esc(l)}</button>`)).join("");
-  return `${hudIdHtml(m)}<div class="hud-mid pc"><div class="hud-l hud-quick"><span class="hud-gl"><i class="fa-solid fa-star"></i> Quick</span>${quick}</div><div class="hud-l hud-cats">${cats}</div></div>`;
+  return `${hudIdHtml(m)}<div class="hud-mid pc"><div class="hud-blk hud-cats">${cats}</div><div class="hud-blk hud-quick"><span class="hud-gl"><i class="fa-solid fa-star"></i> Quick</span>${quick}</div></div>`;
 }
 
 /** Several tokens selected: one button each (a click selects that token alone and opens its HUD). */

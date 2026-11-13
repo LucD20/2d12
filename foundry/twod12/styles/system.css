@@ -4652,3 +4652,26 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hud-players #players #performance-stats { gap: 8px; align-items: center; margin-top: 2px; font-size: 11px; color: var(--hud-mute); }
 .twod12-hud .hud-players #players #performance-stats label { color: var(--hud-mute); font-size: 11px; }
 .twod12-hud .hud-players #players #players-expand { width: 18px; height: 18px; min-height: 0; margin-left: auto; padding: 0; border: 0; background: none; color: var(--hud-mute); }
+/* ==== v0.0.381 (Lucas on v0.0.380: "too much mouse travel"; a smaller window should make it taller, not cut buttons) ==== */
+.twod12-hud { height: auto; min-height: 70px; }
+.twod12-hud .hud-main { overflow: visible; }
+.twod12-hud .hud-mid { flex-direction: row; align-items: stretch; gap: 0; padding: 4px 0; }
+.twod12-hud .hud-blk { display: flex; flex-direction: column; justify-content: center; gap: 5px; min-width: 0; padding: 0 10px; }
+.twod12-hud .hud-blk + .hud-blk { border-left: 1px solid var(--hud-hair); }
+.twod12-hud .hud-l { flex-wrap: wrap; overflow: visible; white-space: normal; row-gap: 4px; min-height: 26px; }
+.twod12-hud .hud-g { flex-wrap: wrap; row-gap: 4px; }
+.twod12-hud .hud-g + .hud-g { padding-left: 8px; border-left: 1px solid var(--hud-hair); }
+.twod12-hud .ha { min-height: 24px; box-sizing: border-box; }
+/* NPC: Escalation over the Checks and Saves beside the name; the attacks and Reactions in the middle */
+.twod12-hud .hud-mid.npc .hud-side { flex: 0 1 auto; } .twod12-hud .hud-mid.npc .hud-center { flex: 1 1 auto; align-items: center; }
+.twod12-hud .hud-mid.npc .hud-center .hud-l { justify-content: center; }
+.twod12-hud .hsv.fold, .twod12-hud .hud-more { display: none !important; }
+/* PC: the categories beside the name (they wrap to two lines), the Quick row in the middle */
+.twod12-hud .hud-mid.pc .hud-cats { flex: 0 1 540px; flex-direction: row; flex-wrap: wrap; align-content: center; gap: 4px 5px; }
+.twod12-hud .hud-mid.pc .hud-quick { flex: 1 1 auto; flex-direction: row; flex-wrap: wrap; align-items: center; align-content: center; justify-content: center; gap: 6px; min-height: 0; }
+/* the players pill: Foundry's inner box and monospace font go */
+.twod12-hud .hud-players #players #players-active, .twod12-hud .hud-players #players #performance-stats, .twod12-hud .hud-players #players .players-list { margin: 0; padding: 0; border: 0 !important; border-radius: 0; background: none !important; box-shadow: none !important; }
+.twod12-hud .hud-players #players :is(span, label, li, div) { font-family: "Signika", sans-serif; }
+.twod12-hud .hud-players #players #performance-stats .average { font-weight: 600; }
+.twod12-hud .hud-blk .hud-g { flex: 0 1 auto; min-width: 0; } .twod12-hud .hud-mid.npc .hud-side { flex: 0 1 auto; max-width: 45%; }
+.twod12-hud .hud-mid.pc .hud-cats { justify-content: flex-start; }

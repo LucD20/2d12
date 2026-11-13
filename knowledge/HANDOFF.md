@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.380, 250 tests; READ THIS FIRST)
+## Where we are now (v0.0.381, 250 tests; READ THIS FIRST)
+- **2026-11-13 (v0.0.381, branch `pack-style-2`; NOT tested by Lucas):** the HUD rearranged for less mouse travel (NPC: Escalation and Saves by the name, attacks in the middle; PC: categories by the name, Quick in the middle), it grows taller rather than cutting buttons, right-click = card / pin a stamp, the players pill without Foundry's inner box, dividers. Checklist: foundry-backlog.md "v0.0.381".
 - **2026-11-13 (v0.0.380, branch `pack-style-2`; NOT tested by Lucas):** the HUD measured from what is drawn in the screen's bottom band (left edge; the sidebar, its tabs or the floating chat input on the right); the players list in the HUD's look. Checklist: foundry-backlog.md "v0.0.380".
 - **2026-11-13 (v0.0.379, branch `pack-style-2`; NOT tested by Lucas):** the HUD placed on the screen between the scene controls and the sidebar (Foundry's middle column kept it narrow). Checklist: foundry-backlog.md "v0.0.379".
 - **2026-11-13 (v0.0.378, branch `pack-style-2`; NOT tested by Lucas):** the players list above the HUD's left end (the HUD gets the left column's width), the HUD's narrow-window steps, the stat block's Steady and Size at full size, no "+ Add" on the side panel's Damage block. **The style work is complete** (STYLE-1 and STYLE-2 and Lucas's notes); left: the weapon's and item's sheets (Lucas goes through them first), and the brief's HUD extras listed in npc-hud-brief.md "Built". NEXT: Lucas's test, then merge `pack-chat-frame` and `pack-style-2`.

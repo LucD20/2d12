@@ -10,14 +10,14 @@ const A = (id, name, fq, aps, x = {}) => ({ id, name, fq, versions: aps.map(ap =
 console.log("--- an NPC");
 const npc = { name: "Orc Warrior", sub: "Standard · CV 100", rankKey: "standard", groups: { basic: [A("a", "Cleaver", "#3B6D11", [1])], special: [A("b", "Brutal Swing", "#185FA5", [2])], react: [{ id: "c", name: "Hold the Line", fq: "#185FA5", versions: [{ ap: 1, label: "1R" }] }], esc: [] },
   saves: [{ key: "body", label: "Body", short: "Bo", value: 2 }, { key: "appeal", label: "Appeal", short: "Ap", value: -1 }] };
-const nh = H.npcHudHtml(npc), lines = nh.split('<div class="hud-l">').slice(1).map(strip);
-console.log("line 1:", lines[0], "| line 2:", lines[1]);
-console.log("the rank's ring:", nh.includes('class="hud-id rk-standard"'), "| a stamp opens its Version:", nh.includes('data-hud="use" data-ap="2"'), "| the name right-clicks to the card:", nh.includes('<b data-hud="card">Cleaver</b>'), "| Saves fold:", nh.includes('class="hsv fold"'), "| +N more (hidden until needed):", (nh.match(/data-hud="more" hidden/g) ?? []).length);
+const nh = H.npcHudHtml(npc), blocks = nh.split('<div class="hud-blk ').slice(1).map(b => strip(`<x class="${b}`));
+console.log("v0.0.381: beside the name (Escalation over the Saves):", blocks[0], "| in the middle:", blocks[1]);
+console.log("the rank's ring:", nh.includes('class="hud-id rk-standard"'), "| a stamp opens its Version:", nh.includes('data-hud="use" data-ap="2"'), "| the name right-clicks to the card:", nh.includes('<b data-hud="card">Cleaver</b>'), "| v0.0.381: nothing hidden, the lines wrap (no +N more):", !nh.includes('data-hud="more"'));
 console.log("--- a PC");
 const pc = { name: "Aveline", sub: "Human Paladin · Level 1", open: "react", quick: [A("s", "Smite", "#185FA5", [1, 2], { pc: true }), { id: "r", name: "Rebuke", fq: "#0F6E6E", pc: true, versions: [{ ap: 1, label: "1R", off: true, used: true, why: "Reaction AP spent" }] }] };
 const ph = H.pcHudHtml(pc);
 console.log(strip(ph));
-console.log("the open category:", ph.includes('class="cat on" data-hud="cat" data-cat="react" aria-pressed="true"'), "| Skills later:", ph.includes('class="cat later"'), "| a spent Version struck:", ph.includes('class="hv no used" disabled'), "| nothing pinned:", strip(H.pcHudHtml({ ...pc, quick: [] })).includes("Right-click an Action, then Quick"));
+console.log("the open category:", ph.includes('class="cat on" data-hud="cat" data-cat="react" aria-pressed="true"'), "| Skills later:", ph.includes('class="cat later"'), "| a spent Version struck:", ph.includes('class="hv no used" disabled'), "| nothing pinned:", strip(H.pcHudHtml({ ...pc, quick: [] })).includes("Right-click a Version's stamp"), "| v0.0.381: the categories first, Quick after:", ph.indexOf("hud-cats") < ph.indexOf("hud-quick"));
 console.log("--- several, none, a panel");
 console.log(strip(H.listHudHtml([{ id: "t1", name: "Orc Warrior 1", sub: "Standard", rankKey: "standard" }, { id: "t2", name: "Goblin Sneak", sub: "Minion" }])), "| a click selects it:", H.listHudHtml([{ id: "t1", name: "x" }]).includes('data-hud="pick" data-token="t1"'));
 console.log(strip(H.emptyHudHtml()));

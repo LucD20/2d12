@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 53cc8c1 2026-11-13 v0.0.379: the HUD placed between the scene controls and the sidebar
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 5269052 2026-11-13 v0.0.380: the HUD placed from the bottom band (left edge to the sidebar or the chat input), the players list in its look
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
