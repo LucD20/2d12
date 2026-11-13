@@ -73,7 +73,7 @@
     rows.push(row("Kind", seg("kind", [["weapon", "Weapon"], ["power", "Power"], ["save", "Save"], ["none", "No roll"]], d.kind, "Kind") + `<span class="say">${none ? "it always happens" : save ? `the target rolls against DC 11 + ${npc ? "its" : "your"} Modifier` : `2d12 + ${npc ? "its" : "your"} Modifier`}</span>`));
     if (!none) rows.push(row(save ? "Save" : "Vs.", seg("vs", (save ? ATTR : ["AD", "WD", ...ATTR]).map(x => [x, x, `vs-${x.toLowerCase()}`]), save && !ATTR.includes(d.vs) ? "Body" : d.vs, save ? "The Save it asks for" : "The Defense it targets")));
     if (npc) rows.push(row("Modifier", `${sin("modRating", NPC.ratings.map(r => [r, `${cap(r)} (+${NPC.rank[d.rank].modBy[Math.min(NPC.ratings.indexOf(r), NPC.rank[d.rank].modBy.length - 1)]})`]), "Modifier rating")}<span class="say">damage</span>${sin("rating", NPC.ratings.map(r => [r, cap(r)]), "Damage rating")}${cin("Ranged (more than 2 squares)", "ranged")}${cin("Four or more carry its riders", "four")}`));
-    else if (!none) rows.push(row("Modifier", seg("rollWith", [["weapon", `Weapon +${d.wmod}`, "m-w"], ["power", `Power +${d.pmod}`, "m-p"]], E.rollsWith(d), "The Modifier it rolls with") + `<span class="say">${esc(d.cls)}, ${esc(d.weapon)}</span>`));
+    else if (!none) rows.push(row("Modifier", seg("rollMod", [0, 1, 2, 3, 4].map(x => [x, `+${x}`]), E.pcCtx(d).rollMod, "The Modifier it rolls with", "n") + `<span class="say">the roll's, and the [Mod] of its damage</span>`));
     const tg = [seg("target", [["one", "One creature"], ["several", "Several"], ["area", "An Area"]], d.target, "Targets")];
     if (d.target === "several") tg.push(nin("targetsN", "How many creatures", 2, 6));
     if (d.target === "area") tg.push(nin("areaSize", "The Area's size", 1, 6), sin("areaShape", ["Emanation", "Burst", "Aura"], "The Area's shape", true), d.areaShape === "Aura" ? "" : sin("areaFrom", [["self", "around you"], ["range", "at range"]], "Where the Area is placed"));
@@ -220,7 +220,7 @@
     const d = D(); setPath(k, val);
     if (k === "cls") { const b = DATA.builds.find(x => x.name === val); if (b) Object.assign(d, { weapon: b.weapon, wmod: b.wmod, pmod: b.pmod }); }
     if (k === "kind") {
-      d.vs = val === "save" ? (ATTR.includes(d.vs) ? d.vs : "Body") : val === "power" ? (d.vs === "AD" ? "WD" : d.vs) : d.vs; d.rollWith = "";
+      d.vs = val === "save" ? (ATTR.includes(d.vs) ? d.vs : "Body") : val === "power" ? (d.vs === "AD" ? "WD" : d.vs) : d.vs;
       const keep = traitList(d).filter(t => !(val === "weapon" && (t === "power" || t === "save")) && !(val === "power" && (t === "weapon" || t === "save")) && !(val === "none" && t === "save"));
       for (const t of ROLL_TRAIT[val] ?? []) if (!keep.includes(t)) keep.push(t); d.traits = keep.join(", ");
       if (val === "none") for (const v of d.versions) { for (const r of v.riders) r.at = "always"; for (const h of v.helps) h.at = "always"; }

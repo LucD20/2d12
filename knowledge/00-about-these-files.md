@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 3acaba9 2026-11-13 SIM: rebuild fights.html with the walked trails
+Built by tools/knowledge.py on 2026-11-13 from the repository at: e3d28cd 2026-11-13 Action Builder: the form in Lucas's order, typed damage, riders per Tier, traits as a selection
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

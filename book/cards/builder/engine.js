@@ -75,7 +75,7 @@ function makeEngine(DATA, CALC) {
     return { id: "", tab, name: "", category: tab === "npc" ? "Special Action" : "", level: "", flavor: "", traits: tab === "npc" ? "melee, strike, weapon" : "strike, weapon", kind: "weapon", vs: "AD", frequency: tab === "npc" ? "Round" : "Round",
       reaction: "", reactionCost: 1, reactionText: "", fires: 0.5, rxKind: "other",
       target: "one", targetsN: 2, areaShape: "Emanation", areaSize: 2, areaFrom: "self", distance: tab === "npc" ? "Weapon" : "Weapon", targetText: "", setup: "",
-      cls: b.name, weapon: b.weapon, wmod: b.wmod, pmod: b.pmod, rollWith: "", saveMod: 1, boons: 0, banes: 0, state: "", elite: false, fight: "normal", enemies: 0,
+      cls: b.name, weapon: b.weapon, wmod: b.wmod, pmod: b.pmod, rollWith: "", rollMod: null, saveMod: 1, boons: 0, banes: 0, state: "", elite: false, fight: "normal", enemies: 0,
       rank: "standard", rating: "medium", modRating: "medium", ranged: false, basic: false, four: false, npc: "",
       versions: [blankVersion(1, true), blankVersion(2, false), blankVersion(3, false)], compare: "" };
   }
@@ -222,7 +222,7 @@ function makeEngine(DATA, CALC) {
   const pcRiderBase = (name, elite) => { const r = PC.riders.find(x => x.name === name); if (!r) return null; const size = elite && r.eliteUp ? NEXT[r.size] : r.size; return { ...r, sizeUsed: size, price: size === "beyond" ? PC.riderPrice.extreme + P.riders.step : PC.riderPrice[size] }; };
   /** The roll a PC draft makes: its Modifier and what the [Mod] of its damage is. */
   function pcCtx(d) {
-    const weapon = weaponOf(d.weapon), rollMod = d.rollWith === "power" ? Number(d.pmod) : d.rollWith === "weapon" ? Number(d.wmod) : d.kind === "power" ? Number(d.pmod) : d.kind === "save" ? (/power/.test(d.traits) ? Number(d.pmod) : Number(d.wmod)) : Number(d.wmod);
+    const weapon = weaponOf(d.weapon), rollMod = d.rollMod != null && d.rollMod !== "" ? Number(d.rollMod) : d.rollWith === "power" ? Number(d.pmod) : d.rollWith === "weapon" ? Number(d.wmod) : d.kind === "power" ? Number(d.pmod) : d.kind === "save" ? (/power/.test(d.traits) ? Number(d.pmod) : Number(d.wmod)) : Number(d.wmod);
     return { weapon, mod: rollMod, pmod: Number(d.pmod), wmod: Number(d.wmod), rollMod, seat: weapon?.ranged ? "ranged" : "melee" };
   }
   /** Which Modifier a PC draft rolls with: the one chosen, or its Kind's (a Save: Power when it has the power trait). */
