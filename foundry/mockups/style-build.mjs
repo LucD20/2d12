@@ -578,6 +578,11 @@ const tStart = TK.makeLine("start", "Turn start", 0, 4, 4, { b: 0, a: 1 }), tAct
 const tOn = TD.onRows([{ name: "Hindered", flags: { duration: { type: "eot" } } }], { apGuard: 0, guard: 4 });
 const dockFull = safe(() => TD.dockHtml(TD.dockModel({ who: "Orc Warrior", round: 2, lines: [tStart, tAct, tMove], on: tOn, ap: 2, rap: 1, max: 4 }), true));
 const cEnd = safe(() => TD.endCardHtml(TD.dockModel({ who: "Orc Warrior", round: 2, lines: [tStart, tAct, tMove], on: tOn, ap: 0, rap: 1, max: 4 })).replace("<details", "<details open"));
+// A plain Check or Save in the chat (roll.mjs checkHtml) and the Start of the Encounter card (startstack.mjs)
+const SS = await import("../twod12/module/startstack.mjs");
+const cCheck = safe(() => RL.checkHtml("Body Save", { d1: [6], d2: [7], total: 15, dc: 13, mod: 2, adj: 0, boonFaces: [1], baneFaces: [], bo: 1, ba: 0, five: "", sources: [], state: "", tier: 2, base: 2 }, [], { showTier: true }));
+const cCheck2 = safe(() => RL.checkHtml("Instinct Check", { d1: [3], d2: [4], total: 8, dc: 13, mod: 1, adj: 0, boonFaces: [], baneFaces: [1], bo: 0, ba: 1, five: "", sources: [], state: "", tier: 1, base: 1 }, [], { showTier: true }));
+const cStack = safe(() => SS.stackHtml(SS.newStack([{ actorUuid: "A", name: "Aveline", source: "Aegis", html: "Choose one ally: while within 3 squares, you and they gain 1 Boon on Saves." }, { actorUuid: "B", name: "Sylwen", source: "Marked Quarry", html: "Choose your Quarry." }])));
 page("chat-older-dark.html", "Style 3b: the other chat messages", `The rest of the chat, <b>drawn by the system's own functions</b>: the Reactions card, the initiative card, the follow-up lines under a card, the area damage card, the End of Turn line. Today they come from several generations of the system (a navy bar here, an amber line there, Cinzel titles). Here they take the chat card's look on both themes. <b>A style change only: no element is added, moved or removed.</b> The dark sets are generated from ${R.older.length} rules.`, `
 <h2>The Reactions card: waiting, resolved, and the "used" bar</h2>
 ${side(cRx + cRxDone + cRxUsed)}
@@ -590,9 +595,12 @@ ${side(cFollow)}
 ${side(cMulti)}
 <h2>The End of Turn line (open)</h2>
 ${side(cEnd)}
+<h2>The Start of the Encounter card</h2>
+${side(cStack)}
 <h2>Notes</h2>
 <ul class="notes">
 <li><b>Not drawn here, because only Foundry can draw them:</b> an Action or an item sent to the chat, the single-target damage card of the old kind, the Save prompt. Their rules are in the dark set; they share the header of the system messages (redone on the chat cards page).</li>
+<li>A plain Check or Save in the chat is not here either: it has no card of its own and sits in Foundry's own message frame, so it can only be judged in Foundry.</li>
 <li>The ticker messages are not here: the system stopped posting them (v0.0.362, the Turn dock took their place).</li>
 </ul>`, [...R.chat, ...R.older, ...R.dock]);
 
