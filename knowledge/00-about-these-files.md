@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: d35172f 2026-11-13 HANDOFF: pack-bestiary-budget merged into main; next is the class card sessions
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 6013ff1 2026-11-13 Rider prices refitted for a rider one enemy has; Bleed 1 and 1d6 measured
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
