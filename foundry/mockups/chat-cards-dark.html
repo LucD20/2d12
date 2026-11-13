@@ -491,6 +491,8 @@
 .twod12-type .twod12.rolldlg { font-family: "Signika", sans-serif; --cc-title: "Signika", sans-serif; --cc-t2: #e4dd80; --cc-t2i: #423d00; }
 .twod12-type .twod12.rolldlg .rd-name { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
 .twod12-type .twod12.rolldlg .rd-go { border-radius: 2px; }
+/* the roll dialog's Tier rows: the yellower Tier 2 (its own rules set these colors with !important) */
+.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: #f7f3cf !important; color: #6f6800; box-shadow: inset 4px 0 0 #bdb230, inset -1px 0 0 #dcd6a4; }
 /* THE OTHER CHAT MESSAGES in the chat card's look (style only): no navy bars, no orange line, no Cinzel; a heading is a band or a bold line. */
 .twod12-type .twod12.chat.rx2 { border-radius: 5px; border-color: #bfae8c; background: #f4ede0; color: #2a241d; }
 .twod12-type .twod12.chat.rx2 .rx-hd { background: #dfd2b6; color: #2a241d; border-bottom: 1px solid #cdb88a; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
@@ -1205,7 +1207,13 @@
 .twod12-dark .twod12.rolldlg .rd-def { border-color: #ece3cf; color: #ece3cf; }
 .twod12-dark .twod12.rolldlg .rd-vers button.cant { color: #8a7f6b; }
 .twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { background: #332c22; color: #ece3cf; }
-.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th, .twod12-dark .twod12.rolldlg .rd-lseg.t3, .twod12-dark .twod12.rolldlg .rd-tiers tr.t1 th, .twod12-dark .twod12.rolldlg .rd-lseg.t1, .twod12-dark .twod12.rolldlg .rd-tiers tr.t2 th, .twod12-dark .twod12.rolldlg .rd-lseg.t2 { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-lseg.t1, .twod12-dark .twod12.rolldlg .rd-lseg.t2, .twod12-dark .twod12.rolldlg .rd-lseg.t3 { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t1 th { background: #3a201d !important; color: #f3a79e; box-shadow: inset 4px 0 0 #b23a30, inset -1px 0 0 #4a4132; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t2 th { background: #35321a !important; color: #e0d65a; box-shadow: inset 4px 0 0 #bdb230, inset -1px 0 0 #4a4132; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th { background: #1d3a25 !important; color: #8fd69b; box-shadow: inset 4px 0 0 #3f8f4c, inset -1px 0 0 #4a4132; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.crit th { background: #17263a !important; color: #8db8f0; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { background: #332c22 !important; color: #ece3cf; box-shadow: inset 4px 0 0 #8c7d63, inset -1px 0 0 #4a4132; }
+.twod12-dark .twod12.rolldlg .rd-tiers th, .twod12-dark .twod12.rolldlg .rd-tiers td { border-top-color: #4a4132 !important; }
 .twod12-dark .twod12.rolldlg { --cc-t1p: #8f2a22; --cc-t2: #7d7414; }
 .twod12-dark .twod12.rolldlg .rd-ptag { background: #26331f; color: #aed79e; }
 .twod12-dark .twod12.rolldlg .rd-step { color: #d4a548; }

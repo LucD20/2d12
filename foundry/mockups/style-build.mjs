@@ -163,6 +163,8 @@ const TYPE = `
 .twod12-type .twod12.rolldlg { font-family: "Signika", sans-serif; --cc-title: "Signika", sans-serif; --cc-t2: #e4dd80; --cc-t2i: #423d00; }
 .twod12-type .twod12.rolldlg .rd-name { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
 .twod12-type .twod12.rolldlg .rd-go { border-radius: 2px; }
+/* the roll dialog's Tier rows: the yellower Tier 2 (its own rules set these colors with !important) */
+.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: ${LIGHT.t2bg} !important; color: ${LIGHT.t2}; box-shadow: inset 4px 0 0 ${LIGHT.t2n}, inset -1px 0 0 #dcd6a4; }
 /* THE OTHER CHAT MESSAGES in the chat card's look (style only): no navy bars, no orange line, no Cinzel; a heading is a band or a bold line. */
 .twod12-type .twod12.chat.rx2 { border-radius: 5px; border-color: #bfae8c; background: ${LIGHT.pg}; color: ${LIGHT.ink}; }
 .twod12-type .twod12.chat.rx2 .rx-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
@@ -315,7 +317,13 @@ const BY_HAND = `
 .twod12-dark .twod12.rolldlg .rd-def { border-color: ${T.ink}; color: ${T.ink}; }
 .twod12-dark .twod12.rolldlg .rd-vers button.cant { color: ${T.faint}; }
 .twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { background: ${T.band}; color: ${T.ink}; }
-.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th, .twod12-dark .twod12.rolldlg .rd-lseg.t3, .twod12-dark .twod12.rolldlg .rd-tiers tr.t1 th, .twod12-dark .twod12.rolldlg .rd-lseg.t1, .twod12-dark .twod12.rolldlg .rd-tiers tr.t2 th, .twod12-dark .twod12.rolldlg .rd-lseg.t2 { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-lseg.t1, .twod12-dark .twod12.rolldlg .rd-lseg.t2, .twod12-dark .twod12.rolldlg .rd-lseg.t3 { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t1 th { background: ${T.t1bg} !important; color: ${T.t1}; box-shadow: inset 4px 0 0 #b23a30, inset -1px 0 0 ${T.hair}; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t2 th { background: ${T.t2bg} !important; color: ${T.t2}; box-shadow: inset 4px 0 0 ${T.t2n}, inset -1px 0 0 ${T.hair}; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th { background: ${T.t3bg} !important; color: ${T.t3}; box-shadow: inset 4px 0 0 #3f8f4c, inset -1px 0 0 ${T.hair}; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.crit th { background: ${T.critbg} !important; color: ${T.crit}; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { background: ${T.band} !important; color: ${T.ink}; box-shadow: inset 4px 0 0 #8c7d63, inset -1px 0 0 ${T.hair}; }
+.twod12-dark .twod12.rolldlg .rd-tiers th, .twod12-dark .twod12.rolldlg .rd-tiers td { border-top-color: ${T.hair} !important; }
 .twod12-dark .twod12.rolldlg { --cc-t1p: #8f2a22; --cc-t2: #7d7414; }
 .twod12-dark .twod12.rolldlg .rd-ptag { background: #26331f; color: #aed79e; }
 .twod12-dark .twod12.rolldlg .rd-step { color: ${T.gold}; }
