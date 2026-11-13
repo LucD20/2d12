@@ -20,7 +20,6 @@ Four of today's Standards: worth 97.2 (should be 100: the noise of the method), 
 | moderate | Vulnerable 1 | 5.2 | 3.0 | 0.7 | 1.1 | 0.5 |
 | moderate | Immobilized (EoT) | 5.6 | 3.2 | 3.3 | 4.9 | 2.1 |
 | moderate | Immobilized | 3.6 | 5.4 | 5.1 | 11.8 | 3.2 |
-| moderate | Enfeebled 1 | 5.4 | 3.0 | 0.1 | 0.1 | 0.1 |
 | moderate | Dazed 1 | 5.9 | 3.4 | 6.7 | 10.0 | 4.3 |
 | moderate | Bleed 1d4 | 5.4 | 4.1 | 21.7 | 36.5 | 14.0 |
 | moderate | Frightened (EoT) | 5.3 | 3.0 | 0.4 | 0.6 | 0.3 |
@@ -33,7 +32,7 @@ Four of today's Standards: worth 97.2 (should be 100: the noise of the method), 
 | beyond | Dazed 2 | 7.1 | 4.3 | 24.7 | 35.8 | 15.2 |
 | beyond | Bleed 2d6 | 5.4 | 4.1 | 47.5 | 80.5 | 30.8 |
 
-Mean price on an Action by today's group: Mild 2.6, Moderate 3.1, Severe 4.6, beyond 20.3. An Action lands about 42% of the time (a hit on a PC that hasn't it yet).
+Mean price on an Action by today's group: Mild 2.6, Moderate 3.6, Severe 4.6, beyond 20.3. An Action lands about 42% of the time (a hit on a PC that hasn't it yet).
 
 ## 3. Where the effect is: Setup, a hit, Tier 3 only
 
@@ -138,4 +137,4 @@ The yardstick with a Reaction. Its attack has a Round Action's points of its cos
 Eight of today's Grunts (3 AP: Basic attack 17 points, 1 AP Round Special 24), measured against the yardstick's four Standards (a worth of 100 is what four Standards cost): today, no Reaction: 84.7; with a 1R Trigger (hit: an attack back), free: 100.2 (it fires 0.4 times a fight a Grunt); paid as a Standard's (a third of its points off the turn): 89.9.
 
 
-(16 minutes.)
+(12 minutes.)

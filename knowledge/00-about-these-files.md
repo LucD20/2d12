@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: ec56b48 2026-11-13 RULES.empFlat: a measurement switch for Empowered and Enfeebled as a flat amount (off by default; report.md unchanged)
+Built by tools/knowledge.py on 2026-11-13 from the repository at: f115325 2026-11-13 Empowered is a bonus exploding die; exploding dice are written 1d6!
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
