@@ -1,0 +1,304 @@
+<!-- The full NPC sheet's real HTML, copied by Lucas from his Foundry (2026-11-13; v0.0.367; a Standard NPC named "NPC", out of combat).
+     Left out: the tooltips' texts, the aria labels and the item ids (they draw nothing), and the four tabs that are in the page but have no
+     tab button on an NPC (Items, Build, Mastery, Upkeep). The Builder's rating rows are written by the script that made this file from his
+     copy, element for element. The style mockups restyle THIS markup (style-build.mjs reads the file); replace it with a fresh copy when the sheet changes.
+     NOTE: the NPC sheet is the PC sheet's markup (class "twod12 sheet pcs npcs"), not the older ".ns" sheet. -->
+<div class="twod12 sheet pcs npcs" data-application-part="main">
+  <header class="ps-head">
+    <img class="ps-portrait" src="icons/svg/mystery-man.svg" alt="">
+    <div class="ps-id">
+      <div class="ps-nameline"><input class="ps-nameinput" type="text" name="name" value="NPC" placeholder="Name"><span class="ps-role r-standard">Standard</span></div>
+      <div class="ps-line1"><span>Level 1</span><span>·</span><b class="ps-stage">Stage 1</b><span>·</span><span>Medium</span><span>·</span><span>CV <b class="ps-stage">100</b></span><span class="ps-senses"><span class="ps-sense">Sight</span><span class="ps-sense">Hearing 10</span></span></div>
+    </div>
+    <div class="ps-htools">
+      <button type="button" class="ps-btn3" data-action="postStatBlock">Post stat block</button>
+      <button type="button" class="ps-icon" data-action="editSenses"><i class="fa-solid fa-eye"></i></button>
+      <button type="button" class="ps-init dis" aria-disabled="true">Roll Initiative</button>    </div>
+  </header>
+
+  <div class="ps-strip out npc">
+    <div class="ps-cell row"><span class="ps-k">Out of combat</span><span>AP, Guard and Escalation appear when it joins a combat</span></div>
+  </div>
+
+  <div class="ps-onyou edrop-zone">
+    <span class="ps-k">On it</span>
+    <span class="ps-none">drop a condition or effect here</span>
+  </div>
+
+  <div class="ps-body">
+    <aside class="ps-side np">
+      <section class="ps-sec">
+        <div class="ps-hh"><span class="ps-k">Health 63</span><a class="ps-shield np-guardbtn zero" role="button"><b>0</b></a><span class="ps-todown"><b>63</b> to Down</span></div>
+        <div class="ps-bar">
+          <div class="ps-barh"><span class="ps-bl"><b style="color:#ef8a80">Vigor</b></span><a class="hpnum" data-action="hpEdit" data-pool="body" role="button">0 / 35</a></div>
+          <div class="ps-track np-track" data-pool="body"><span class="sl" style="width:0%;background:#c4453c"></span><span class="sn" style="width:0%;--a:#c4453c;--b:#7f2a24"></span></div>
+        </div>
+        <div class="ps-bar">
+          <div class="ps-barh"><span class="ps-bl"><b style="color:#8fb3ee">Resolve</b></span><a class="hpnum" data-action="hpEdit" data-pool="mind" role="button">0 / 28</a></div>
+          <div class="ps-track np-track" data-pool="mind"><span class="sl" style="width:0%;background:#5b8ad6"></span><span class="sn" style="width:0%;--a:#5b8ad6;--b:#3a5f99"></span></div>
+        </div>
+        
+      </section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Defenses</span>
+        <div class="ps-g2"><div class="ps-box big"><b class="">13</b><span>AD</span></div><div class="ps-box big"><b class="">13</b><span>WD</span></div></div>
+        <div class="ps-g4 small"><div class="ps-box"><b>14</b><span>vs Body</span></div><div class="ps-box"><b>13</b><span>vs Mind</span></div><div class="ps-box"><b>12</b><span>vs Appeal</span></div><div class="ps-box"><b>13</b><span>vs Inst.</span></div></div>
+      </section>
+      <section class="ps-sec line ps-rwi"><span class="ps-k">Damage Immune/Resist/Weak</span><button type="button" class="ps-dladd" data-action="dmgLineAdd">+ Add</button></section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Attributes</span>
+        <div class="ps-g4"><button type="button" class="ps-box btn" data-action="rollAttr" data-key="body"><b>+2</b><span>Body</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="mind"><b>+1</b><span>Mind</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="appeal"><b>+0</b><span>Appeal</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="instinct"><b>+1</b><span>Instinct</span></button></div>
+      </section>
+
+      <section class="ps-sec">
+        <span class="ps-k">Movement</span>
+        <div class="ps-g4"><div class="ps-box btn"><b class="">5</b><span>Speed</span></div><div class="ps-box btn"><b class="">1</b><span>Reach</span></div><div class="ps-box btn"><b class="">3</b><span>Size</span></div><div class="ps-box btn"><b class="">0</b><span>Steady</span></div></div>
+      </section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Modifier · Save DC</span>
+        <div class="ps-mods"><span>Weapon <span class="ps-mut">Role</span></span><b>+2</b><span class="ps-dc">DC 13</span><span>Power <span class="ps-mut">Role</span></span><b>+2</b><span class="ps-dc">DC 13</span></div>
+      </section>
+    </aside>
+
+    </aside>
+
+    <section class="ps-main mn">
+      <nav class="ps-tabs" aria-label="Sheet tabs">
+        <a class="tabbtn" data-action="switchTab" data-tab-target="favorites" role="tab" tabindex="0"><i class="fa-regular fa-star"></i></a>
+        <a class="tabbtn active" data-action="switchTab" data-tab-target="actions" role="tab" tabindex="0">Actions</a><a class="tabbtn" data-action="switchTab" data-tab-target="effects" role="tab" tabindex="0">Effects</a><a class="tabbtn" data-action="switchTab" data-tab-target="builder" role="tab" tabindex="0">Builder</a><a class="tabbtn" data-action="switchTab" data-tab-target="loot" role="tab" tabindex="0">Loot</a><a class="tabbtn" data-action="switchTab" data-tab-target="notes" role="tab" tabindex="0">GM notes</a>
+      </nav>
+      <div class="ps-scroll">
+
+      <div class="tab" data-tab="favorites">
+<div class="ps-empty"><i class="fa-regular fa-star"></i> Right-click an Action on the Actions tab and choose Favorite to keep it here. Drag the rows to put them in your order.</div>
+      </div>
+
+      <div class="tab active" data-tab="actions">
+        <div class="ps-ih tools"><span class="ps-ibtns"><button type="button" class="ps-btn2" data-action="generateAction"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Action</button><button type="button" class="ps-btn2" data-action="browseCompendium"><i class="fa-solid fa-book-open"></i> Browse compendium</button><button type="button" class="ps-btn2" data-action="newAction"><i class="fa-solid fa-plus"></i> New Action</button></span></div>
+        <div class="ps-colh"><span>Action</span><span>Cost</span><span>Distance</span><span>Vs.</span><span></span></div>
+        <div class="ps-stack">
+          <div class="ps-block ">
+  <div class="ps-bh"><span class="ps-dot" style="background:#2c5d9e"></span><b>Once per round</b></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Grave Chill</a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#2c5d9e">1/2 AP</span></span>
+    <span class="ps-c ps-dist">5 sq.</span>
+    <span class="ps-c"><span class="ps-vs vsk-body">Body Save</span></span>
+    <span class="ps-c"><button type="button" class="ps-use" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+<div class="ar ps-row" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Grave Chill</a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#2c5d9e">1/2 AP</span></span>
+    <span class="ps-c ps-dist">5 sq.</span>
+    <span class="ps-c"><span class="ps-vs vsk-body">Body Save</span></span>
+    <span class="ps-c"><button type="button" class="ps-use" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+</div>
+</div>
+<div class="ps-block ">
+  <div class="ps-bh"><span class="ps-dot" style="background:#1f7a72"></span><b>Reactions</b></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row strike lnfreq" style="--lnf:#4c7a2e" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Opportunity Attack</a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#1f7a72">1R</span></span>
+    <span class="ps-c ps-dist">1 sq.</span>
+    <span class="ps-c"></span>
+    <span class="ps-c"><button type="button" class="ps-use rx" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+</div>
+</div>
+        </div>
+        <div class="ps-basic">
+          <div class="ps-basich"><span class="ps-h2">Basic Actions</span>
+            <a class="ps-upd" data-action="addBasic">Update Basic Actions</a></div>
+          <div class="ps-bgrid">
+            <div class="ps-bcol"><span class="ps-bgh">Attack</span>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Charge</span></span><b>2 AP</b></button><div class="ar-card"></div></div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Movement</span>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Advance</span></span><b>1 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Evade</span></span><b>1/2 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Crawl</span></span><b>1/2 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx off" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Not Prone"><span class="ps-bxl"><span class="ps-bxn">Stand</span><span class="ps-bxwhy">Not Prone</span></span><span class="ps-bxno" aria-hidden="true">⊘</span></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx off" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Not Immobilized"><span class="ps-bxl"><span class="ps-bxn">Break Free</span><span class="ps-bxwhy">Not Immobilized</span></span><span class="ps-bxno" aria-hidden="true">⊘</span></button><div class="ar-card"></div></div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Control</span>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Shove</span></span><b>1/2/3 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Trip</span></span><b>1/2 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx off" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Reach under 2"><span class="ps-bxl"><span class="ps-bxn">Haul</span><span class="ps-bxwhy">Reach under 2</span></span><span class="ps-bxno" aria-hidden="true">⊘</span></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Relocate</span></span><b>1/2/3 AP</b></button><div class="ar-card"></div></div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Utility</span>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Interact</span></span><b>1 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Leaning</span></span><b>1 AP</b></button><div class="ar-card"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="effects">
+        <div class="ps-stack">
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#a8322d"></span><b>Conditions</b></div>
+<div class="ps-erow none">No conditions.</div>
+          </div>
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#1b2433"></span><b>Effects</b></div>
+<div class="ps-erow none">No effects on you.</div>
+          </div>
+          <div class="ps-drop edrop">Drop an effect or a condition here to apply it</div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="builder">
+        <div class="ps-stack nbld">
+          <div class="nb-top">
+            <div class="ps-roleseg" role="group" aria-label="Role"><button type="button" class="" data-action="setRole" aria-pressed="false">Minion</button><button type="button" class="" data-action="setRole" aria-pressed="false">Grunt</button><button type="button" class="on" data-action="setRole" aria-pressed="true">Standard</button><button type="button" class="" data-action="setRole" aria-pressed="false">Elite</button></div>
+            <label class="ps-esctog"><input type="checkbox" name="system.useEscalation"> Escalation</label>
+            <span class="ps-right"></span>
+            <label class="nb-stat"><span>Level</span><input type="number" min="0" name="system.level" value="1"></label>
+            <div class="nb-stat dark"><span>Stage</span><b>1</b></div>
+            <div class="nb-stat dark"><span>CV</span><b>100</b></div>
+            <div class="nb-stat"><span>AP</span><b>4</b></div>
+          </div>
+          <div class="nb-sum"><div><span>Health</span><b>63</b></div><div><span>Down in about</span><b>2.7 PC turns</b></div><div><span>Should deal</span><b>about 12</b></div><div><span>Ratings average</span><b>Medium</b></div></div>
+          <div class="ps-block nb-tagbar"><div class="ps-bh"><b>Tags</b><span class="ps-bsub">what the creature is (Profane, Undead...): Actions and rules can ask for them</span></div>
+            <div class="nb-chips"><span class="ps-mut">No Tags.</span>
+              <select class="tagadd nb-add"><option value="">+ Tag</option><option>Aberration</option><option>Beast</option><option>Undead</option></select></div>
+          </div>
+          <div class="nb-cols">
+            <div class="nb-col">
+              <div class="ps-block nb-blk" style="flex: 4 0 auto"><div class="ps-bh"><b>Attributes</b></div>
+                <div class="nb-row" style="--fc:#7a1626">
+                  <div class="nb-rh"><b class="nb-nm">Body</b><span class="nb-rt">High</span><b class="nb-val">+2</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>−1</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+0</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+1</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>+2</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+3</span></button></div>
+                </div>
+                <div class="nb-row" style="--fc:#17327a">
+                  <div class="nb-rh"><b class="nb-nm">Mind</b><span class="nb-rt">Medium</span><b class="nb-val">+1</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>−1</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+0</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>+1</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+2</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+3</span></button></div>
+                </div>
+                <div class="nb-row" style="--fc:#6b4e00">
+                  <div class="nb-rh"><b class="nb-nm">Appeal</b><span class="nb-rt">Low</span><b class="nb-val">+0</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>−1</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>+0</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+1</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+2</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+3</span></button></div>
+                </div>
+                <div class="nb-row" style="--fc:#14532d">
+                  <div class="nb-rh"><b class="nb-nm">Instinct</b><span class="nb-rt">Medium</span><b class="nb-val">+1</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>−1</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+0</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>+1</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+2</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+3</span></button></div>
+                </div>
+              </div>
+              <div class="ps-block nb-blk" style="flex: 2 0 auto"><div class="ps-bh"><b>Movement</b></div>
+                <div class="nb-row" style="--fc:#1b2433">
+                  <div class="nb-rh"><b class="nb-nm">Speed</b><span class="nb-rt">Default</span><b class="nb-val">5</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>3</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>4</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>5</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>6</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>7</span></button></div>
+                </div>
+                <div class="nb-row" style="--fc:#1b2433">
+                  <div class="nb-rh"><b class="nb-nm">Steadiness</b><span class="nb-rt">Default</span><b class="nb-val">0</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>0</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>1</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>2</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>3</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>4</span></button></div>
+                </div>
+              </div>
+              <div class="ps-block nb-blk" style="flex: 1 0 auto"><div class="ps-bh"><b>Weapon Mod</b></div>
+                <div class="nb-row" style="--fc:#9a4a00">
+                  <div class="nb-rh"><b class="nb-nm">Weapon Modifier</b><span class="nb-rt">Medium</span><b class="nb-val">+2</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+0</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+1</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>+2</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+3</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+4</span></button></div>
+                </div>
+              </div>
+            </div>
+            <div class="nb-col">
+              <div class="ps-block nb-blk" style="flex: 3 0 auto"><div class="ps-bh"><b>Health</b></div>
+                <div class="nb-row" style="--fc:#7a1626">
+                  <div class="nb-rh"><b class="nb-nm">Vigor</b><span class="nb-rt">Medium</span><b class="nb-val">35</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>×3.75</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>×5.75</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>×7.75</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>×9.75</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>×11.5</span></button></div>
+                </div>
+                <div class="nb-row" style="--fc:#17327a">
+                  <div class="nb-rh"><b class="nb-nm">Resolve</b><span class="nb-rt">Medium</span><b class="nb-val">28</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>×3.75</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>×5.75</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>×7.75</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>×9.75</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>×11.5</span></button></div>
+                </div>
+              </div>
+              <div class="ps-block nb-blk" style="flex: 3 0 auto"><div class="ps-bh"><b>Defenses</b></div>
+                <div class="nb-row" style="--fc:#9a4a00">
+                  <div class="nb-rh"><b class="nb-nm">Armor Defense</b><span class="nb-rt">Medium</span><b class="nb-val">13</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>11</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>12</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>13</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>14</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>15</span></button></div>
+                </div>
+                <div class="nb-row" style="--fc:#5b3a9e">
+                  <div class="nb-rh"><b class="nb-nm">Ward Defense</b><span class="nb-rt">Medium</span><b class="nb-val">13</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>11</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>12</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>13</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>14</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>15</span></button></div>
+                </div>
+              </div>
+              <div class="ps-block nb-blk" style="flex: 1 0 auto"><div class="ps-bh"><b>Power Mod</b></div>
+                <div class="nb-row" style="--fc:#5b3a9e">
+                  <div class="nb-rh"><b class="nb-nm">Power Modifier</b><span class="nb-rt">Medium</span><b class="nb-val">+2</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+0</span></button><button type="button" class="nb-step on" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+1</span></button><button type="button" class="nb-step on sel" data-action="setRating" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>+2</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+3</span></button><button type="button" class="nb-step" data-action="setRating" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>+4</span></button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ps-block nb-frame"><div class="ps-bh"><b>Frame</b><span class="ps-bsub">for rules and Talents that ask; never its Defenses (those come from the ratings)</span></div>
+            <div class="nb-frows">
+              <div class="nb-row" style="--fc:#1b2433">
+                  <div class="nb-rh"><b class="nb-nm">Armor type</b><span class="nb-rt"></span><b class="nb-val">Medium</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on small" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>Unarmored</span></button><button type="button" class="nb-step on" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>Light</span></button><button type="button" class="nb-step on sel" data-action="setFrame" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>Medium</span></button><button type="button" class="nb-step" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>Heavy</span></button></div>
+                </div>
+              <div class="nb-row" style="--fc:#1b2433">
+                  <div class="nb-rh"><b class="nb-nm">Reach</b><span class="nb-rt">Default</span><b class="nb-val">1</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on sel" data-action="setFrame" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>1</span></button><button type="button" class="nb-step" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>2</span></button><button type="button" class="nb-step" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>3</span></button><button type="button" class="nb-step" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>4</span></button></div>
+                </div>
+              <div class="nb-row" style="--fc:#1b2433">
+                  <div class="nb-rh"><b class="nb-nm">Size</b><span class="nb-rt">Medium</span><b class="nb-val">3</b></div>
+                  <div class="nb-steps2"><button type="button" class="nb-step on" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>1</span></button><button type="button" class="nb-step on" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>2</span></button><button type="button" class="nb-step on sel" data-action="setFrame" data-key="x" aria-pressed="true"><i class="nb-pip"></i><span>3</span></button><button type="button" class="nb-step" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>4</span></button><button type="button" class="nb-step" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>5</span></button><button type="button" class="nb-step" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>6</span></button><button type="button" class="nb-step" data-action="setFrame" data-key="x" aria-pressed="false"><i class="nb-pip"></i><span>7</span></button></div>
+                </div>
+            </div>
+          </div>
+          <div class="ps-block nb-rw"><div class="ps-bh"><b>Damage: Immune, Resist and Weak</b><button type="button" class="ps-dladd" data-action="dmgLineAdd">+ Add</button><span class="ps-bsub">Resist lowers that type's damage by its number, Weak raises it; Immune ignores it</span></div>
+            <div class="nb-chips"><span class="ps-mut">None.</span></div>
+            <div class="nb-rwadd"><select class="nb-rwtype"><option>Slash</option><option>Blunt</option><option>Pierce</option><option>Fire</option></select>
+              <input type="number" class="nb-rwn" min="1" max="20" value="5">
+              <button type="button" data-action="addDmgMod">+ Resist</button><button type="button" data-action="addDmgMod">+ Weak</button><button type="button" data-action="addDmgMod">+ Immune</button></div>
+          </div>
+          <div class="ps-block nb-atkblk"><div class="ps-bh"><b>Attack damage</b><span class="ps-bsub">Tier 2 / Tier 3 average, and the dice to write</span><span class="nb-vsw"><button type="button" class="nb-vsb vsk-ad on" data-action="setNbVs">Vs. AD</button><button type="button" class="nb-vsb vsk-wd" data-action="setNbVs">Vs. WD</button></span></div>
+            <p class="nb-how">Find the row of the Action's <b>AP</b>, then the column of <b>how hard it hits</b> (<b>Medium</b> is normal for a Standard). Each cell is the average damage on <b>Tier 2 / Tier 3</b>, and below it dice that give it with this creature's Weapon Modifier (+2): write those on the Action.</p>
+            <div class="nb-dmg" style="--cols:5">
+              <div class="nb-dh"><span class="nb-dl">AP</span><span class="nb-dhc" style="--rc:#6b665a">Terrible</span><span class="nb-dhc" style="--rc:#8a7a5a">Low</span><span class="nb-dhc med" style="--rc:#1b2433">Medium</span><span class="nb-dhc" style="--rc:#8a5a12">High</span><span class="nb-dhc" style="--rc:#a8322d">Extreme</span></div>
+              <div class="nb-dr"><div class="nb-dl"><b>Basic attack</b><small>1 AP · At-will</small></div><div class="nb-dc" style="--rc:#6b665a"><b>3 / 4</b><small>3 / 4</small></div><div class="nb-dc" style="--rc:#8a7a5a"><b>3.5 / 6</b><small>3 / 1d6+2</small></div><div class="nb-dc med" style="--rc:#1b2433"><b>4 / 7.5</b><small>4 / 1d10+2</small></div><div class="nb-dc" style="--rc:#8a5a12"><b>5.5 / 9</b><small>1d6+2 / 2d6+2</small></div><div class="nb-dc" style="--rc:#a8322d"><b>6.5 / 11</b><small>1d8+2 / 2d8+2</small></div></div><div class="nb-dr"><div class="nb-dl"><b>Special, 1 AP</b><small>Round · ×1.4</small></div><div class="nb-dc" style="--rc:#6b665a"><b>4 / 5.5</b><small>4 / 1d6+2</small></div><div class="nb-dc" style="--rc:#8a7a5a"><b>5 / 8.5</b><small>1d4+2 / 1d12+2</small></div><div class="nb-dc med" style="--rc:#1b2433"><b>5.5 / 10.5</b><small>1d6+2 / 2d8+2</small></div><div class="nb-dc" style="--rc:#8a5a12"><b>7.5 / 12.5</b><small>1d10+2 / 2d10+2</small></div><div class="nb-dc" style="--rc:#a8322d"><b>9 / 15.5</b><small>2d6+2 / 3d8+2</small></div></div><div class="nb-dr"><div class="nb-dl"><b>Special, 2 AP</b><small>Round · ×2.2</small></div><div class="nb-dc" style="--rc:#6b665a"><b>6.5 / 9</b><small>1d8+2 / 2d6+2</small></div><div class="nb-dc" style="--rc:#8a7a5a"><b>7.5 / 13</b><small>1d10+2 / 2d10+2</small></div><div class="nb-dc med" style="--rc:#1b2433"><b>9 / 16.5</b><small>2d6+2 / 3d8+2</small></div><div class="nb-dc" style="--rc:#8a5a12"><b>12 / 20</b><small>2d8+2 / 3d10+2</small></div><div class="nb-dc" style="--rc:#a8322d"><b>14.5 / 24</b><small>2d12+2 / 4d10+2</small></div></div><div class="nb-dr"><div class="nb-dl"><b>Special, 3 AP</b><small>Encounter · ×3.5</small></div><div class="nb-dc" style="--rc:#6b665a"><b>10.5 / 14</b><small>2d8+2 / 2d10+2</small></div><div class="nb-dc" style="--rc:#8a7a5a"><b>12.5 / 21</b><small>2d10+2 / 3d12+2</small></div><div class="nb-dc med" style="--rc:#1b2433"><b>14 / 26.5</b><small>2d10+2 / 4d12+2</small></div><div class="nb-dc" style="--rc:#8a5a12"><b>19.5 / 31.5</b><small>3d10+2 / 5d10+2</small></div><div class="nb-dc" style="--rc:#a8322d"><b>23 / 38.5</b><small>4d10+2 / 6d12+2</small></div></div>
+            </div>
+            <ul class="nb-rules"><li><b>Vs. WD:</b> the same table; the dice use the Power Modifier (+2) instead, to [R] Resolve unless the Action writes [V] (the switch above shows them).</li><li><b>Conditions</b> cost damage: a Mild one takes the column 1 step to the left, Moderate 2, Severe 3.</li><li><b>Area Save Actions:</b> about half the damage, to each creature in the area (DC 11 + the Modifier).</li><li><b>Reactions:</b> a Trigger deals one column more than an Action of the same AP; an Interrupt the same.</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="loot">
+        <div class="ps-stack">
+          <span class="ps-mut">An NPC's items are flavor and loot: they never change its Health, Defenses or damage.</span>
+          <div class="ps-block"><div class="nb-lh"><span>Item</span><span>Qty</span><span></span></div>
+            <div class="olist" data-order-flag="itemOrder">
+            <div class="nb-loot none">No items.</div>
+            </div>
+          </div>
+          <div class="ps-drop">Drag items here</div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="notes">
+        <div class="ps-stack notes">
+          <span class="ps-h2">Appearance</span>
+          <div class="nbox"><prose-mirror name="system.appearance" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">Background</span>
+          <div class="nbox"><prose-mirror name="system.background" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">Notes</span>
+          <div class="nbox"><prose-mirror name="system.notes" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">GM notes <small class="ps-mut"><i class="fa-solid fa-eye-slash"></i> only the GM sees them</small></span>
+          <div class="nbox gm"><prose-mirror name="system.gmNotes" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+</div>

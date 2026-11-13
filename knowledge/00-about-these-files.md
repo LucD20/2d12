@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: ec51fa5 2026-11-13 Style mockups 6: the light PC sheet's leftover navy turned warm (the meaningful blues kept)
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 1a83bf6 2026-11-13 Style mockups 6: the PC sheet's Add button outlined, the Build chips wrap, the grey diamonds gold
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (25 KB)
 - rules-15-gear.md (11 KB)
-- design-style-audit.md (17 KB)
+- design-style-audit.md (18 KB)
 - design-npc-hud-brief.md (24 KB)
 - design-sim-brief.md (22 KB)
 - design-stage0.md (12 KB)

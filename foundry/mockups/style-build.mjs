@@ -100,7 +100,9 @@ function darkSet(name, rules) {
     const decls = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--cc-|^--rd-|^--cw-|^--ps-/.test(d));
     if (!decls.length) return "";
     const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc, name === "pcs"); })}`; });
-    return `${sel.split(",").map(s => `.twod12-dark ${s.trim()}`).join(", ")} { ${out.join("; ")}; }`;
+    // :where() keeps each rule's own weight, so the system's cascade holds (a rule that colors with a variable, as "the lit pip is the row's color",
+    // still beats the plain rule before it); the set only has to come after the system's rules.
+    return `${sel.split(",").map(s => `:where(.twod12-dark) ${s.trim()}`).join(", ")} { ${out.join("; ")}; }`;
   }).filter(Boolean).join("\n");
 }
 
@@ -111,7 +113,7 @@ function warmSet(rules) {
     const sel = selOf(block).trim(), body = block.slice(block.indexOf("{") + 1, -1);
     if (/\.mind\b|\.body\b|\.ps-wb\b|\.ps-uw\b/.test(sel)) return "";
     const out = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--ps-/.test(d)).map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); let hit = false; const v = d.slice(i + 1).replace(HEX, c => { const w = auto(k, c.toLowerCase(), true), plain = auto(k, c.toLowerCase(), false); if (w !== plain) { hit = true; return k === "text" ? w : fromHsl([36, 0.14, toHsl(hex2(c))[2]]); } return c; }); return hit ? `${prop}:${v}` : ""; }).filter(Boolean);
-    return out.length ? `${sel.split(",").map(x => `.twod12-type ${x.trim()}`).join(", ")} { ${out.join("; ")}; }` : "";
+    return out.length ? `${sel.split(",").map(x => `:where(.twod12-type) ${x.trim()}`).join(", ")} { ${out.join("; ")}; }` : "";
   }).filter(Boolean).join("\n");
 }
 
@@ -174,6 +176,9 @@ const TYPE = `
 .twod12-type .twod12.sheet.pcs .ps-colh { padding: 0 2px 2px; }
 .twod12-type .twod12.sheet.pcs .ps-dot { border-radius: 0; transform: rotate(45deg); width: 7px; height: 7px; }
 .twod12-type .twod12.sheet.pcs .ps-pill { border-radius: 3px; }
+.twod12-type .twod12.sheet.pcs .ps-roleseg, .twod12-type .twod12.sheet.pcs .nb-stat, .twod12-type .twod12.sheet.pcs .nb-sum { border-radius: 2px; }
+.twod12-type .twod12.sheet.pcs .ps-roleseg { border-color: #2b2520; } .twod12-type .twod12.sheet.pcs .ps-roleseg button { color: #2b2520; background: #fbf7ee; }
+.twod12-type .twod12.sheet.pcs .ps-roleseg button.on { background: #2b2520; color: #f4ede0; }
 /* "+ Add" on the side panel: an outlined button, as the others there (it was a white bar) */
 .twod12-type .twod12.sheet.pcs .ps-dladd { background: transparent; color: #ecd9a4; border: 1px solid #8c7d63; }
 /* the Species and Class chips wrap to a second line (the last one was cut off at the card's edge) */
@@ -407,6 +412,16 @@ const BY_HAND = `
 .twod12-dark .twod12.sheet.pcs button { color: ${T.ink}; }
 .twod12-dark .twod12.sheet.pcs .ps-dladd, .twod12-dark .twod12.sheet.pcs .ps-btn2, .twod12-dark .twod12.sheet.pcs .ps-wroll, .twod12-dark .twod12.sheet.pcs .ps-bch button, .twod12-dark .twod12.sheet.pcs .ps-rcard button { background: transparent; border: 1px solid #8c7d63; color: ${T.ink}; }
 .twod12-dark .twod12.sheet.pcs .ps-seg button { background: transparent; color: ${T.ink}; } .twod12-dark .twod12.sheet.pcs .ps-seg button.on { background: ${T.stamp}; color: ${T.stampInk}; }
+/* ---- by hand: the NPC Builder tab (a row's color is written dark for parchment: lightened on the dark page) */
+.twod12-dark .twod12.sheet.pcs .nb-nm, .twod12-dark .twod12.sheet.pcs .nb-val, .twod12-dark .twod12.sheet.pcs .nb-step.sel span { color: color-mix(in srgb, var(--fc) 45%, #f4ecd9); }
+.twod12-dark .twod12.sheet.pcs .nb-step.on .nb-pip { background: color-mix(in srgb, var(--fc) 62%, #cdbb92); }
+.twod12-dark .twod12.sheet.pcs .nb-step:hover { background: ${T.band}; }
+.twod12-dark .twod12.sheet.pcs .nb-rt { color: ${T.mute}; }
+.twod12-dark .twod12.sheet.pcs .ps-roleseg button { background: transparent; color: ${T.ink}; } .twod12-dark .twod12.sheet.pcs .ps-roleseg button.on { background: ${T.stamp}; color: ${T.stampInk}; }
+.twod12-dark .twod12.sheet.pcs .nb-stat { background: ${T.pg2}; border-color: ${T.hair}; } .twod12-dark .twod12.sheet.pcs .nb-stat.dark { background: ${T.band}; border-color: ${T.rule}; color: ${T.gold}; }
+.twod12-dark .twod12.sheet.pcs .nb-sum { background: ${T.band}; }
+.twod12-dark .twod12.sheet.pcs .nb-dc b, .twod12-dark .twod12.sheet.pcs .nb-dhc { color: color-mix(in srgb, var(--rc) 40%, #f4ecd9); }
+.twod12-dark .twod12.sheet.pcs select { background: ${T.pg2}; color: ${T.ink}; border-color: #8c7d63; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: ${T.pg}; color: ${T.ink}; border-color: ${T.rule}; border-radius: 5px; }
 .twod12-dark .twod12-dock .td-hd { border-bottom-color: ${T.rule}; }
@@ -438,7 +453,7 @@ ${Object.entries(SETS).map(([k, css]) => `/* ==== ${k} ==== */\n${css}`).join("\
 ${BY_HAND}`);
 
 /* ------------------------------------------------------------------ the page shell */
-const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
+const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-sheet-dark.html", "6b. The NPC sheet"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
 const SHELL = `
 * { box-sizing: border-box; }
 body { margin: 0; background: #2a2723; color: #eee6d6; font: 14px/1.45 "Signika", "Segoe UI", system-ui, sans-serif; padding: 22px 22px 60px; --font-primary: "Signika", sans-serif; }
@@ -776,6 +791,27 @@ page("pc-sheet-dark.html", "Style 6: the PC sheet", `The PC sheet, <b>from its r
 </ul>
 <style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }
 .pcs .autodia { display: none !important; } .pcs .tab { display: none; } .pcs .tab.active { display: block; } .pcs input { font: inherit; } .pcs a { cursor: pointer; }</style>
+<script>document.addEventListener("click", ev => { const b = ev.target.closest(".tabbtn"); if (!b) return; const sh = b.closest(".pcs"); sh.querySelectorAll(".tabbtn").forEach(x => x.classList.toggle("active", x === b)); sh.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === b.dataset.tabTarget)); });</script>`, R.pcs);
+
+/* ------------------------------------------------------------------ 6b. the full NPC sheet (its real HTML; it is the PC sheet's markup with an NPC's parts) */
+const MYSTERY = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#3a3229"/><circle cx="32" cy="24" r="12" fill="#8c7d63"/><path d="M10 62c2-16 12-22 22-22s20 6 22 22z" fill="#8c7d63"/></svg>');
+const npcRaw = FA(readFileSync(here("./samples/npc-sheet-standard.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace(/fa-regular fa-star/g, "fa-solid fa-star").replace('src="icons/svg/mystery-man.svg"', `src="${MYSTERY}"`));
+const npcWin = inner => sheetWin(inner).replace("Character: Durgan (Dwarf Paladin, Lay On Hands, level 1)", "NPC: NPC");
+page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet (the current one, which stays beside the one-page sheet), <b>from its real HTML, copied from Lucas's Foundry</b> (a Standard NPC, out of combat). <b>It is built from the PC sheet's own pieces</b>, so the PC sheet's dark and light sets apply to it as they are; only the Builder tab and the Loot tab are its own. <b>A style change only.</b> <b>The tabs are live in each copy</b> (Actions, Effects, Builder, Loot, GM notes).`, `
+<h2>Dark ${PICK}</h2>
+<div class="stage dk twod12-dark twod12-type" style="width:930px">${npcWin(npcRaw)}</div>
+<h2>Light ${PICK}</h2>
+<div class="stage twod12-type" style="width:930px">${npcWin(npcRaw)}</div>
+<h2>Today ${TODAY}</h2>
+<div class="stage" style="width:930px">${npcWin(npcRaw)}</div>
+<h2>Notes</h2>
+<ul class="notes">
+<li><b>The rank's color is not on this sheet yet.</b> The one-page sheet colors its name plate by rank (Minion slate, Grunt olive, Standard maroon, Elite purple). Here the rank is the small tag beside the name; giving this sheet's head the rank's color would be the same idea, but it is a new decision, so it is not drawn.</li>
+<li>Four tabs are in the page with no button on an NPC (Items, Build, Mastery, Upkeep); they are left out of the sample.</li>
+<li>Foundry's own window frame, inputs, selects and text editors are stand-ins.</li>
+</ul>
+<style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }
+.pcs .autodia { display: none !important; } .pcs .tab { display: none; } .pcs .tab.active { display: block; } .pcs input, .pcs select { font: inherit; } .pcs a { cursor: pointer; }</style>
 <script>document.addEventListener("click", ev => { const b = ev.target.closest(".tabbtn"); if (!b) return; const sh = b.closest(".pcs"); sh.querySelectorAll(".tabbtn").forEach(x => x.classList.toggle("active", x === b)); sh.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === b.dataset.tabTarget)); });</script>`, R.pcs);
 
 console.log(`built: style-tokens.css/.html, style-dark.css, action-card-dark.html, chat-cards-dark.html, bars-dark.html`);

@@ -8,6 +8,7 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 ## STYLE: bringing the system to the settled look (audit 2026-11-12; nothing built)
 The audit and a proposed order: `foundry/mockups/style-audit.md`. The direction: CLAUDE.md, "The design's direction".
 - [x] Decided (Lucas, 2026-11-12): the audit's order; **mockups for every step first, nothing applied until all are done**; dark / light is **a setting of the system**; the dark Action card approved; the sheet's type on the cards; Tier 2 more yellow.
+- [ ] In the build: retire `templates/actor-sheet.hbs` and the `.twod12.sheet.ns` / `.v44` rules (about 460): both sheets use `actor-sheet-pc.hbs` since v0.0.291 (found with the NPC sheet's real HTML, 2026-11-13). Check first that nothing else uses those classes.
 - [ ] In the build: retire the old area damage card (`dmgcard.mjs multiDamageHtml` / `postMultiDamageCard`, no caller; `damage.mjs` still updates old messages through it) and its rules, after checking no world holds such messages.
 - [ ] In the build, `pickwindow.mjs pickOne`: a click on an option resolves and closes; no Confirm button, only Cancel (Lucas, 2026-11-13). Check each caller for a `preset` that relied on Confirm.
 - [ ] In the build, `pickwindow.mjs`: the text through `highlightText`; no `<h2>` for a section with no title and no pill; no check mark on the chosen option (Lucas, 2026-11-13).
