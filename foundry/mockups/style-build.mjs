@@ -92,7 +92,7 @@ function darkSet(name, rules) {
   autoUsed[name] = new Set();
   return rules.map(block => {
     const sel = selOf(block).trim(), body = block.slice(block.indexOf("{") + 1, -1);
-    const decls = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--cc-|^--rd-/.test(d));
+    const decls = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--cc-|^--rd-|^--cw-/.test(d));
     if (!decls.length) return "";
     const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc); })}`; });
     return `${sel.split(",").map(s => `.twod12-dark ${s.trim()}`).join(", ")} { ${out.join("; ")}; }`;
@@ -137,6 +137,21 @@ const TYPE = `
 .twod12-type .twod12.chat.sysline > i:has(svg), .twod12-type .twod12.chat.sysline > i { color: #6b5a3a; }
 .twod12-type .twod12.chat.sysline > i[data-ic^="shield"] { color: #2f6fb3; }
 .twod12-type .twod12.chat .kw-guard { color: #2f6fb3; font-weight: 700; }
+/* THE WINDOWS (the pick window, the class window, the roll dialog): Signika for the title (no Cinzel), a band for the header in the place of navy,
+   gold in the place of the class window's orange, the confirm button as the stamp. Style only. */
+.twod12-type .application.classwin { --cw-navy: ${LIGHT.band}; --cw-navy2: ${LIGHT.pg2}; --cw-paper: ${LIGHT.pg}; --cw-paper2: ${LIGHT.pg2}; --cw-card: #fbf7ee; --cw-ink: ${LIGHT.ink}; --cw-mut: ${LIGHT.mute};
+  --cw-line: ${LIGHT.hair}; --cw-acc: ${LIGHT.gold}; --cw-orange: ${LIGHT.gold}; --cw-chosen: ${LIGHT.band}; --cw-band: ${LIGHT.band}; --cw-head: ${LIGHT.gold}; font-family: "Signika", sans-serif; }
+.twod12-type .application.classwin .cw-head { border-bottom: 1px solid #8a6d3b; }
+.twod12-type .application.classwin .cw-head, .twod12-type .application.classwin .cw-head h1, .twod12-type .application.classwin .cw-head small, .twod12-type .application.classwin .cw-stats, .twod12-type .application.classwin .cw-stats b { color: ${LIGHT.ink}; }
+.twod12-type .application.classwin .cw-head h1 { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
+.twod12-type .application.classwin .cw-icon { color: ${LIGHT.gold}; }
+.twod12-type .application.classwin .cw-sec h2 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; }
+.twod12-type .application.classwin .cw-btn, .twod12-type .application.classwin .cw-seg button { border-radius: 2px; font-family: "Signika", sans-serif; }
+.twod12-type .application.classwin .cw-btn.primary, .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
+.twod12-type .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
+.twod12-type .twod12.rolldlg { font-family: "Signika", sans-serif; --cc-title: "Signika", sans-serif; --cc-t2: #e4dd80; --cc-t2i: #423d00; }
+.twod12-type .twod12.rolldlg .rd-name { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
+.twod12-type .twod12.rolldlg .rd-go { border-radius: 2px; }
 /* THE OTHER CHAT MESSAGES in the chat card's look (style only): no navy bars, no orange line, no Cinzel; a heading is a band or a bold line. */
 .twod12-type .twod12.chat.rx2 { border-radius: 5px; border-color: #bfae8c; background: ${LIGHT.pg}; color: ${LIGHT.ink}; }
 .twod12-type .twod12.chat.rx2 .rx-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
@@ -182,7 +197,8 @@ const R = {
   chat: pick(/\.twod12\.chat\.(cc|sysmsg|sysline|action|turnend)\b|\.twod12\.chat \.(ahead|apmark)|\.twod12\.chat > \.ahead/),
   older: pick(/\.twod12\.chat\b/).filter(b => !/\.twod12\.chat\.(cc|sysmsg|sysline|action|turnend)\b|\.twod12\.chat \.(ahead|apmark)|\.twod12\.chat > \.ahead/.test(selOf(b))),
   dock: pick(/twod12-dock\b|\.twod12 \.td-/),
-  bars: pick(/twod12-(linebar|pickbar)\b/)
+  bars: pick(/twod12-(linebar|pickbar)\b/),
+  wins: pick(/\.classwin\b|\.pickwin\b|\.twod12\.rolldlg\b/)
 };
 const BY_HAND = `
 /* ---- by hand: the Action card (the frame, the cost stamps, the Tier table's head, the book links) */
@@ -256,6 +272,39 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.dmg .mdsum, .twod12-dark .twod12.chat.dmg .mdsum * { color: ${T.ink}; }
 .twod12-dark .twod12.chat.follow i[data-ic^="shield"] { color: #7fb4ee; }
 .twod12-dark .twod12.chat.turnend .td-ttl, .twod12-dark .twod12.chat.turnend > summary { color: ${T.ink}; }
+/* ---- by hand: the pick window / class window and the roll dialog (their variables; the confirm button as the stamp) */
+.twod12-dark .application.classwin { --cw-navy: ${T.band}; --cw-navy2: ${T.pg2}; --cw-paper: ${T.pg}; --cw-paper2: ${T.pg2}; --cw-card: ${T.pg2}; --cw-ink: ${T.ink}; --cw-mut: ${T.mute};
+  --cw-line: ${T.hair}; --cw-acc: ${T.gold}; --cw-orange: ${T.gold}; --cw-chosen: ${T.band}; --cw-band: ${T.band}; --cw-head: ${T.gold}; color-scheme: dark; background: ${T.pg}; color: ${T.ink}; }
+.twod12-dark .application.classwin .cw-head { border-bottom: 1px solid ${T.rule}; color: ${T.ink}; }
+.twod12-dark .application.classwin .cw-head h1, .twod12-dark .application.classwin .cw-head small, .twod12-dark .application.classwin .cw-stats, .twod12-dark .application.classwin .cw-stats b { color: ${T.ink}; }
+.twod12-dark .application.classwin .cw-icon { color: ${T.gold}; }
+.twod12-dark .application.classwin .cw-foot { background: ${T.pg2}; border-top: 1px solid ${T.rule}; color: ${T.mute}; }
+.twod12-dark .application.classwin .cw-btn { background: transparent; color: ${T.ink}; border: 1px solid #8c7d63; border-radius: 2px; }
+.twod12-dark .application.classwin .cw-btn.primary { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
+.twod12-dark .application.classwin .cw-seg button { background: transparent; color: ${T.ink}; border-color: #8c7d63; }
+.twod12-dark .application.classwin .cw-seg button[aria-pressed="true"] { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
+.twod12-dark .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
+.twod12-dark .application.classwin .cw-sec h2 { color: ${T.gold}; }
+.twod12-dark .application.classwin .cw-seg .neg { color: ${T.bad}; }
+.twod12-dark .twod12.rolldlg { --cc-bg: ${T.pg}; --cc-line: ${T.rule}; --cc-ink: ${T.ink}; --cc-mute: ${T.mute}; --cc-panel: ${T.band}; --cc-gold: ${T.gold}; --cc-gline: ${T.hair};
+  --cc-t1: #8f2a22; --cc-t1p: ${T.t1bg}; --cc-t1i: ${T.t1}; --cc-t2: #453f18; --cc-t2i: ${T.t2}; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-vig: ${T.vig}; --cc-res: ${T.res}; --cc-btn: ${T.stamp}; --cc-btn2: #8c7d63;
+  --rd-box: ${T.pg2}; --rd-boxline: ${T.hair}; --rd-buff: #4d7a45; --rd-debuff: #8a4a42; --rd-label: ${T.mute}; --rd-boon: ${T.boon}; --rd-bane: ${T.bane}; background: ${T.pg}; color: ${T.ink}; }
+.twod12-dark .twod12.rolldlg button, .twod12-dark .twod12.rolldlg select, .twod12-dark .twod12.rolldlg input { color: ${T.ink}; }
+.twod12-dark .twod12.rolldlg select, .twod12-dark .twod12.rolldlg input { background: ${T.pg2}; border-color: #8c7d63; }
+.twod12-dark .twod12.rolldlg .rd-go, .twod12-dark .twod12.rolldlg .rd-vers button[aria-pressed="true"] { background: ${T.stamp}; color: ${T.stampInk}; }
+.twod12-dark .twod12.rolldlg .rd-go { border-radius: 2px; }
+.twod12-dark .twod12.rolldlg .rd-roll { background: ${T.pg2}; }
+.twod12-dark .twod12.rolldlg .rd-cbox { background: ${T.pg}; border-color: ${T.hair}; }
+.twod12-dark .twod12.rolldlg .rd-def { border-color: ${T.ink}; color: ${T.ink}; }
+.twod12-dark .twod12.rolldlg .rd-vers button.cant { color: ${T.faint}; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { background: ${T.band}; color: ${T.ink}; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th, .twod12-dark .twod12.rolldlg .rd-lseg.t3, .twod12-dark .twod12.rolldlg .rd-tiers tr.t1 th, .twod12-dark .twod12.rolldlg .rd-lseg.t1, .twod12-dark .twod12.rolldlg .rd-tiers tr.t2 th, .twod12-dark .twod12.rolldlg .rd-lseg.t2 { color: #fff; }
+.twod12-dark .twod12.rolldlg { --cc-t1p: #8f2a22; --cc-t2: #7d7414; }
+.twod12-dark .twod12.rolldlg .rd-ptag { background: #26331f; color: #aed79e; }
+.twod12-dark .twod12.rolldlg .rd-step { color: ${T.gold}; }
+.twod12-dark .twod12.rolldlg .rd-sub, .twod12-dark .twod12.rolldlg [class*="rd-"] .cc-sub { color: #e3ba62 !important; }
+.twod12-dark .twod12.rolldlg .rd-cx:hover, .twod12-dark .twod12.rolldlg .rd-ci:hover { background: ${T.band}; }
+.twod12-dark .twod12.rolldlg .rd-freq { color: #fff; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: ${T.pg}; color: ${T.ink}; border-color: ${T.rule}; border-radius: 5px; }
 .twod12-dark .twod12-dock .td-hd { border-bottom-color: ${T.rule}; }
@@ -284,7 +333,7 @@ ${Object.entries(SETS).map(([k, css]) => `/* ==== ${k} ==== */\n${css}`).join("\
 ${BY_HAND}`);
 
 /* ------------------------------------------------------------------ the page shell */
-const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
+const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
 const SHELL = `
 * { box-sizing: border-box; }
 body { margin: 0; background: #2a2723; color: #eee6d6; font: 14px/1.45 "Signika", "Segoe UI", system-ui, sans-serif; padding: 22px 22px 60px; --font-primary: "Signika", sans-serif; }
@@ -543,6 +592,42 @@ ${side(`<div class="twod12-dockwrap">${dockOpen}</div><div class="twod12-dockwra
 <li>The Line bar, the Charge bar and the Setup bar share the pick bar's rules, so they take the same look; they are not drawn here.</li>
 <li>The open dock shows a real turn: its start, an Action, a movement, and what is on the creature.</li>
 </ul>`, [readFileSync(here("./npc-hud.css"), "utf8").replace(/body\.mock[^{]*\{[^}]*\}/g, ""), ...R.bars, ...R.dock]);
+
+/* ------------------------------------------------------------------ 5. the pick window and the roll dialog (the system's own functions draw them) */
+const PW = await import("../twod12/module/pickwindow.mjs"), RD = await import("../twod12/module/rolldlg.mjs");
+const win = (cls, title, inner, w) => `<div class="mwin" style="width:${w}px"><div class="mwin-head">${title}<span>&times;</span></div><div class="application ${cls}" style="position:static;width:auto"><section class="window-content" style="padding:0;display:flex;flex-direction:column">${inner}</section></div></div>`;
+const pwOne = safe(() => PW.pickWindowHtml({ name: "Greatsword", sub: "one hand", icon: "fa-hand", sections: [{ title: "", sub: "Greatsword is Two-handed and held in one hand: 3 Banes on [Strike, Weapon] Actions.", rows: [{ key: "one", label: "", opts: [{ k: "two", l: "Regrip to two hands (1 AP)", on: true }, { k: "one", l: "Attack with one hand" }, { k: "fists", l: "Use Fists" }] }] }], complete: true, message: "", confirm: "Confirm" }));
+const pwConfirm = safe(() => PW.pickWindowHtml({ name: "Remove Heavy Blows", sub: "", icon: "fa-trash", sections: [{ title: "", html: '<div class="cw-sub pw-text">Remove <b>Heavy Blows</b> from Aveline?</div>' }], message: "", confirm: "Remove" }));
+const pwKeep = safe(() => PW.pickWindowHtml({ name: "Review", sub: "Aveline &middot; level 2", icon: "fa-list-check", sections: [{ title: "Granted by an earlier pick", sub: "These came from a pick you changed.", rows: [["Radiant Zeal", "keep"], ["Searing Blows", "remove"], ["Holy Wrath", "keep"]].map(([l, v]) => ({ key: l, label: l, opts: [{ k: "keep", l: "Keep", on: v === "keep" }, { k: "remove", l: "Remove", on: v === "remove", cls: "neg" }] })) }], message: "1 to remove", confirm: "Apply" }).replace("&amp;middot;", "&middot;"));
+const trt = (key, group, label) => ({ key, group, label, tip: "" });
+const smiteV = (ap, t) => ({ ap, cost: `${ap} AP`, disabled: ap === 3, why: ap === 3 ? "You have 2 AP left" : "", noTiers: false, traits: [trt("signature", "roll", "Signature"), trt("weapon", "roll", "Weapon"), trt("melee", "requires", "Melee"), trt("strike", "kind", "Strike"), trt("divine", "keywords", "Divine")],
+  meta: { targets: "One creature", dist: "Weapon", vs: "AD" }, tiers: t, crit: "", effects: ap >= 2 ? "The target sheds Bright light in a 2 Emanation and takes 1 Bane when they try to Hide, for 1 round." : "" });
+const rdInp = { name: "Smite", flavor: "Your weapon blazes with holy light.", freqLabel: "Round", freqColor: "#185FA5", ap: 2,
+  versions: [smiteV(1, { 1: { parts: [{ pool: "M", t: "1d4", sub: "Ho" }] }, 2: { parts: [{ pool: "M", t: "1d6", sub: "Ho" }] }, 3: { parts: [{ pool: "M", t: "2d6", sub: "Ho" }] } }),
+    smiteV(2, { 1: { parts: [{ pool: "M", t: "1d6", sub: "Ho" }, { pool: "B", t: "0", sub: "Sl" }] }, 2: { parts: [{ pool: "B", t: "1d8", sub: "Sl" }, { pool: "M", t: "2d6", sub: "Ho" }] }, 3: { parts: [{ pool: "B", t: "2d6", sub: "Sl" }, { pool: "M", t: "2d10", sub: "Ho" }] } }),
+    smiteV(3, { 1: { parts: [{ pool: "M", t: "2d6", sub: "Ho" }] }, 2: { parts: [{ pool: "M", t: "3d6", sub: "Ho" }] }, 3: { parts: [{ pool: "M", t: "3d10", sub: "Ho" }] } })],
+  roll: { mod: 2, name: "Signature" }, multi: false,
+  chips: [{ id: "pass:rz", bonusKey: "rz", scope: "shared", row: "passives", kind: "pass", label: "Radiant Zeal", tag: "+1d6 Ho", tiers: [1, 2, 3], pool: "M", start: "on", tip: "" },
+    { id: "fr:0", fx: "fr:0", scope: "shared", row: "banes", kind: "bane", n: 1, label: "Frightened", start: "on", tip: "" },
+    { id: "syn:nl", scope: "shared", row: "banes", kind: "bane", n: 1, special: "nl", label: "Nonlethal", start: "off" },
+    { id: "syn:emp:0", scope: "shared", row: "damage", kind: "emp", n: 1, label: "Empowered 1", srcName: "Bloodlust", start: "on" },
+    { id: "syn:flanking", fx: "syn:flanking", scope: "orc", row: "boons", kind: "boon", n: 1, label: "Flanking", start: "on", tip: "" }],
+  creatures: [{ uuid: "orc", name: "Orc Warrior", def: "AD", dc: 13 }],
+  rollModes: [["publicroll", "Public roll"], ["gmroll", "Private GM roll"], ["blindroll", "Blind GM roll"], ["selfroll", "Self roll"]], rollMode: "publicroll" };
+const rdHtml = safe(() => RD.dialogHtml(rdInp, RD.newState(rdInp)));
+const wins3 = (html, w) => `<div class="cols">${col("Dark", PICK, "", html, "dk twod12-dark twod12-type", w)}${col("Light", PICK, "", html, "twod12-type", w)}${col("Today", TODAY, "", html, "", w)}</div>`;
+page("windows-dark.html", "Style 5: the pick window and the roll dialog", `The two windows every roll and every choice goes through, <b>drawn by the system's own functions</b> (<code>pickwindow.mjs</code>, <code>rolldlg.mjs</code>). The pick window is also the class window's format, so the class window follows it. Today the pick window has a navy header and an orange accent, and the roll dialog is the chat card's parchment. Here: the page's band for the header, gold for the accent, Signika for the titles, the confirming button as the stamp, on both themes. <b>A style change only.</b> The dark sets are generated from ${R.wins.length} rules.`, `
+<h2>The pick window: a choice, a confirmation, a review</h2>
+${wins3(win("twod12 classwin pickwin", "Greatsword: one hand", pwOne, 440) + '<div style="height:14px"></div>' + win("twod12 classwin pickwin", "Remove Heavy Blows", pwConfirm, 440) + '<div style="height:14px"></div>' + win("twod12 classwin pickwin", "Review", pwKeep, 440), "470px")}
+<h2>The roll dialog: Smite, 2 AP, one target</h2>
+${wins3(win("twod12 rolldlg", "Smite", rdHtml, 580), "610px")}
+<h2>Notes</h2>
+<ul class="notes">
+<li>The window's own title bar is Foundry's (a stand-in here); with the HUD's rank colors it could take the actor's color, as the one-page NPC sheet does. Not proposed for these windows.</li>
+<li><b>The class window itself (the level-up picker) is not drawn:</b> it needs an actor and its class. It shares these rules, so it takes this look; it gets its own mockup with the sheets.</li>
+<li>Drawn outside Foundry, a window's spacing can differ a little from the real one (Foundry's own window rules are not here).</li>
+</ul>
+<style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; } .stage:not(.dk) .mwin { box-shadow: 0 4px 14px rgba(0,0,0,.3); }</style>`, R.wins);
 
 console.log(`built: style-tokens.css/.html, style-dark.css, action-card-dark.html, chat-cards-dark.html, bars-dark.html`);
 for (const [k, s] of Object.entries(autoUsed)) console.log(`  ${k}: ${R[k].length} rules, ${s.size} colors by AUTO${s.size ? `: ${[...s].join(" ")}` : ""}`);

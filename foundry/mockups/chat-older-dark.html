@@ -1102,6 +1102,21 @@
 .twod12-type .twod12.chat.sysline > i:has(svg), .twod12-type .twod12.chat.sysline > i { color: #6b5a3a; }
 .twod12-type .twod12.chat.sysline > i[data-ic^="shield"] { color: #2f6fb3; }
 .twod12-type .twod12.chat .kw-guard { color: #2f6fb3; font-weight: 700; }
+/* THE WINDOWS (the pick window, the class window, the roll dialog): Signika for the title (no Cinzel), a band for the header in the place of navy,
+   gold in the place of the class window's orange, the confirm button as the stamp. Style only. */
+.twod12-type .application.classwin { --cw-navy: #dfd2b6; --cw-navy2: #eae0c8; --cw-paper: #f4ede0; --cw-paper2: #eae0c8; --cw-card: #fbf7ee; --cw-ink: #2a241d; --cw-mut: #5d5446;
+  --cw-line: #cdb88a; --cw-acc: #96670f; --cw-orange: #96670f; --cw-chosen: #dfd2b6; --cw-band: #dfd2b6; --cw-head: #96670f; font-family: "Signika", sans-serif; }
+.twod12-type .application.classwin .cw-head { border-bottom: 1px solid #8a6d3b; }
+.twod12-type .application.classwin .cw-head, .twod12-type .application.classwin .cw-head h1, .twod12-type .application.classwin .cw-head small, .twod12-type .application.classwin .cw-stats, .twod12-type .application.classwin .cw-stats b { color: #2a241d; }
+.twod12-type .application.classwin .cw-head h1 { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
+.twod12-type .application.classwin .cw-icon { color: #96670f; }
+.twod12-type .application.classwin .cw-sec h2 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; }
+.twod12-type .application.classwin .cw-btn, .twod12-type .application.classwin .cw-seg button { border-radius: 2px; font-family: "Signika", sans-serif; }
+.twod12-type .application.classwin .cw-btn.primary, .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { background: #3b3128; border-color: #3b3128; color: #f4ede0; }
+.twod12-type .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
+.twod12-type .twod12.rolldlg { font-family: "Signika", sans-serif; --cc-title: "Signika", sans-serif; --cc-t2: #e4dd80; --cc-t2i: #423d00; }
+.twod12-type .twod12.rolldlg .rd-name { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
+.twod12-type .twod12.rolldlg .rd-go { border-radius: 2px; }
 /* THE OTHER CHAT MESSAGES in the chat card's look (style only): no navy bars, no orange line, no Cinzel; a heading is a band or a bold line. */
 .twod12-type .twod12.chat.rx2 { border-radius: 5px; border-color: #bfae8c; background: #f4ede0; color: #2a241d; }
 .twod12-type .twod12.chat.rx2 .rx-hd { background: #dfd2b6; color: #2a241d; border-bottom: 1px solid #cdb88a; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
@@ -1614,6 +1629,102 @@
 .twod12-dark .twod12-pickbar .lb-go { background: #c9a24a; color: #d1d5e0; }
 .twod12-dark .twod12-pickbar .lb-give { background: #5c2d28; }
 .twod12-dark .twod12-pickbar .lb-give:hover { background: #6f322a; }
+.twod12-dark .classwin .cw-ttl img { border: 1px solid #3a4c6b; }
+.twod12-dark .classwin .cw-head h1 { color: #fff; }
+.twod12-dark .classwin .cw-head h1 small { color: #c4cbd8; }
+.twod12-dark .classwin .cw-progress { color: #c4cbd8; }
+.twod12-dark .classwin .cw-dots i { background: #3a4c6b; }
+.twod12-dark .classwin .cw-stats { color: #c4cbd8; }
+.twod12-dark .classwin .cw-stats b { color: #fff; }
+.twod12-dark .classwin .cw-stage { color: #ffd9a8; }
+.twod12-dark .classwin .cw-sec h2 { border-left: 4px solid #808080; }
+.twod12-dark .classwin .cw-pill.done { color: #fff; }
+.twod12-dark .classwin .cw-choose { background: #28241d; }
+.twod12-dark .classwin .cw-choose:hover { background: #2d2718; }
+.twod12-dark .classwin .cw-choose[aria-pressed="true"] { color: #fff; }
+.twod12-dark .classwin .cw-seg { background: #28241d; }
+.twod12-dark .classwin .cw-a-body { color: #ef8a96; }
+.twod12-dark .classwin .cw-a-mind { color: #8db3ff; }
+.twod12-dark .classwin .cw-a-instinct { color: #7fd49a; }
+.twod12-dark .classwin .cw-a-appeal { color: #e6bd5a; }
+.twod12-dark .classwin .cw-btn { background: #28241d; }
+.twod12-dark .classwin .cw-btn.primary { color: #fff; }
+.twod12-dark .classwin .ce-lvb { background: #28241d; }
+.twod12-dark .classwin .ce-lvb[aria-pressed="true"] { color: #fff; }
+.twod12-dark .classwin .ce-sh input.ce-title { background: #28241d; }
+.twod12-dark .classwin .ce-sh select, .twod12-dark .classwin .ce-pair select, .twod12-dark .classwin .ce-drop select { background: #28241d; }
+.twod12-dark .classwin .ce-num input { background: #28241d; }
+.twod12-dark .classwin .ce-x { background: #28241d; }
+.twod12-dark .classwin .ce-row { background: #28241d; }
+.twod12-dark .classwin .ce-also { color: #e9807a; }
+.twod12-dark .classwin .ce-drop.over { background: #332109; }
+.twod12-dark .classwin .ce-prev.warn { color: #e9807a; }
+.twod12-dark .classwin .ce-btn { background: #28241d; }
+.twod12-dark .classwin .ce-li { background: #28241d; }
+.twod12-dark .classwin .cw-filter .cw-fq { background: #28241d; }
+.twod12-dark .classwin .cw-filter .cw-fcat { background: #28241d; }
+.twod12-dark .classwin .cw-filter .cw-fview { background: #28241d; }
+.twod12-dark .classwin .cw-choice { background: #28241d; color: #ccd1de; }
+.twod12-dark .classwin .cw-ttl .cw-icon { border: 1px solid #3a4c6b; color: #fff; }
+.twod12-dark .classwin .cw-num input { background: #28241d; }
+.twod12-dark .classwin .cw-ally { color: #8fd69b; }
+.twod12-dark .classwin .cw-foe { color: #dc8583; }
+.twod12-dark .classwin .cw-neutral { color: #b7b6af; }
+.twod12-dark .classwin .hw-row .hw-v { color: #dc8583; }
+.twod12-dark .classwin .hw-row .hw-r { color: #9279e0; }
+.twod12-dark .classwin .hw-row .hw-after.changed { color: #8fd69b; }
+.twod12-dark .classwin .hw-left.over { color: #dc8583; }
+.twod12-dark .classwin .hw-row .hw-ctl button { background: var(--cw-chosen, #2e271a); color: var(--cw-navy, #c4d0e1); border: 1px solid var(--cw-navy, #5f7ba0); }
+.twod12-dark .classwin .hw-row .hw-ctl button:hover:not(:disabled) { box-shadow: inset 0 -3px 0 var(--cw-orange, #d97b2a); }
+.twod12-dark .classwin .cw-roll { color: #8fd69b; }
+.twod12-dark .classwin .cw-skip { color: #8c7d63; }
+.twod12-dark .twod12.rolldlg .window-header { background: #ece3cf; color: #221d16; }
+.twod12-dark .twod12.rolldlg .window-header button { color: #221d16; }
+.twod12-dark .twod12.rolldlg .rd-vers button[aria-pressed="true"] { color: #221d16; }
+.twod12-dark .twod12.rolldlg .rd-vers button.cant { color: #8a7f6d; }
+.twod12-dark .twod12.rolldlg .rd-tsep { background: #4a4132; }
+.twod12-dark .twod12.rolldlg .rd-trait.tg-roll { background: #17332f; color: #7fd3c8; border-color: #2c5a54; }
+.twod12-dark .twod12.rolldlg .rd-trait.tg-requires { background: #1a2a44; color: #9dbcf5; border-color: #2f4a78; }
+.twod12-dark .twod12.rolldlg .rd-trait.tg-kind { background: #3a211b; color: #f29f84; border-color: #6a3a2e; }
+.twod12-dark .twod12.rolldlg .rd-trait.tg-keywords, .twod12-dark .twod12.rolldlg .rd-trait.tg-damage { background: #2c2924; color: #c2bbae; border-color: #4a463e; }
+.twod12-dark .twod12.rolldlg .rd-freq { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.crit th { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { background: #2c2924; color: #c2bbae; }
+.twod12-dark .twod12.rolldlg .rd-ptag { background: #242f1c; color: #e0d65a; }
+.twod12-dark .twod12.rolldlg .rd-step { color: #f2d8a1; }
+.twod12-dark .twod12.rolldlg .rd-chip.na { border: 1px dashed #5d543f; color: #c2bcb2; }
+.twod12-dark .twod12.rolldlg .rd-cx:hover, .twod12-dark .twod12.rolldlg .rd-ci:hover { background: #332b1a; }
+.twod12-dark .twod12.rolldlg .rd-pip.sq { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-pip.sq.plus { background: #2f6b3a; }
+.twod12-dark .twod12.rolldlg .rd-pip.sq.minus { background: #f3a79e; }
+.twod12-dark .twod12.rolldlg .rd-def { background: #28241d; }
+.twod12-dark .twod12.rolldlg .rd-lseg.t3 { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-lseg.crit { color: #fff; }
+.twod12-dark .twod12.rolldlg .rd-force button[aria-pressed="true"] { color: #221d16; }
+.twod12-dark .twod12.rolldlg .rd-go { color: #221d16; }
+.twod12-dark .twod12.rolldlg .rd-why { color: #f3a79e; }
+.twod12-dark .twod12.rolldlg button:focus-visible { outline: 2px solid #8db8f0; }
+.twod12-dark .twod12.rolldlg .rd-pip.d12.fav polygon { fill: #8db8f0; }
+.twod12-dark .twod12.rolldlg .rd-pip.d12.doom polygon { fill: #f3a79e; }
+.twod12-dark .twod12.rolldlg .rd-pip.d12 text { fill: #fff; }
+.twod12-dark .twod12.rolldlg .rd-warn { border: 1px solid #8a4a42; background: #321913; color: #f3a79e; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t1 th { background: #2d1210 !important; color: #f3a79e; box-shadow: inset 4px 0 0 #f3a79e; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t2 th { background: #1f281a !important; color: #e0d65a; box-shadow: inset 4px 0 0 #4d7a45; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th { background: #212a1f !important; color: #8fd69b; box-shadow: inset 4px 0 0 #2f6b3a; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.crit th { background: #17212d !important; color: #8db8f0; box-shadow: inset 4px 0 0 #8db8f0; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { background: #2c261b !important; color: #c2bbae; box-shadow: inset 4px 0 0 #8c7d63; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t1 th { box-shadow: inset 4px 0 0 #f3a79e, inset -1px 0 0 #5c423b; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t2 th { box-shadow: inset 4px 0 0 #4d7a45, inset -1px 0 0 #485a3f; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th { box-shadow: inset 4px 0 0 #2f6b3a, inset -1px 0 0 #495846; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.crit th { box-shadow: inset 4px 0 0 #8db8f0, inset -1px 0 0 #394a5f; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { box-shadow: inset 4px 0 0 #8c7d63, inset -1px 0 0 #60563e; }
+.twod12-dark .twod12.rolldlg .rd-tiers td { border-left: 1px solid #4a4132 !important; }
+.twod12-dark .twod12.rolldlg .rd-tiers { border: 1px solid #60563e !important; }
+.twod12-dark .twod12.rolldlg .rd-tiers th, .twod12-dark .twod12.rolldlg .rd-tiers td { border-top: 1px solid #332c22 !important; }
+.twod12-dark .twod12.rolldlg .rd-tiers td { border-left: 1px solid #4a4132 !important; }
+.twod12-dark .twod12.rolldlg .rd-trait:is(.tg-roll, .twod12-dark .tg-requires, .twod12-dark .tg-kind, .twod12-dark .tg-damage, .twod12-dark .tg-keywords) { background: color-mix(in srgb, var(--tg) 16%, #28241d); }
+.twod12-dark .twod12 .cc-trigger .trhl, .twod12-dark .twod12 .cc-meta .trhl, .twod12-dark .twod12.rolldlg .rd-meta .trhl { background: #16303a; border: 1px solid #2c5560; color: #8fd0e0; }
 
 /* ---- by hand: the Action card (the frame, the cost stamps, the Tier table's head, the book links) */
 .twod12-dark .twod12.acard.d2 { border-color: #7a683f; outline-color: #4a4132; }
@@ -1686,6 +1797,39 @@
 .twod12-dark .twod12.chat.dmg .mdsum, .twod12-dark .twod12.chat.dmg .mdsum * { color: #ece3cf; }
 .twod12-dark .twod12.chat.follow i[data-ic^="shield"] { color: #7fb4ee; }
 .twod12-dark .twod12.chat.turnend .td-ttl, .twod12-dark .twod12.chat.turnend > summary { color: #ece3cf; }
+/* ---- by hand: the pick window / class window and the roll dialog (their variables; the confirm button as the stamp) */
+.twod12-dark .application.classwin { --cw-navy: #332c22; --cw-navy2: #28241d; --cw-paper: #1f1c18; --cw-paper2: #28241d; --cw-card: #28241d; --cw-ink: #ece3cf; --cw-mut: #b3a68e;
+  --cw-line: #4a4132; --cw-acc: #d4a548; --cw-orange: #d4a548; --cw-chosen: #332c22; --cw-band: #332c22; --cw-head: #d4a548; color-scheme: dark; background: #1f1c18; color: #ece3cf; }
+.twod12-dark .application.classwin .cw-head { border-bottom: 1px solid #7a683f; color: #ece3cf; }
+.twod12-dark .application.classwin .cw-head h1, .twod12-dark .application.classwin .cw-head small, .twod12-dark .application.classwin .cw-stats, .twod12-dark .application.classwin .cw-stats b { color: #ece3cf; }
+.twod12-dark .application.classwin .cw-icon { color: #d4a548; }
+.twod12-dark .application.classwin .cw-foot { background: #28241d; border-top: 1px solid #7a683f; color: #b3a68e; }
+.twod12-dark .application.classwin .cw-btn { background: transparent; color: #ece3cf; border: 1px solid #8c7d63; border-radius: 2px; }
+.twod12-dark .application.classwin .cw-btn.primary { background: #eadfc8; border-color: #eadfc8; color: #221d16; }
+.twod12-dark .application.classwin .cw-seg button { background: transparent; color: #ece3cf; border-color: #8c7d63; }
+.twod12-dark .application.classwin .cw-seg button[aria-pressed="true"] { background: #eadfc8; border-color: #eadfc8; color: #221d16; }
+.twod12-dark .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
+.twod12-dark .application.classwin .cw-sec h2 { color: #d4a548; }
+.twod12-dark .application.classwin .cw-seg .neg { color: #ff9c92; }
+.twod12-dark .twod12.rolldlg { --cc-bg: #1f1c18; --cc-line: #7a683f; --cc-ink: #ece3cf; --cc-mute: #b3a68e; --cc-panel: #332c22; --cc-gold: #d4a548; --cc-gline: #4a4132;
+  --cc-t1: #8f2a22; --cc-t1p: #3a201d; --cc-t1i: #f3a79e; --cc-t2: #453f18; --cc-t2i: #e0d65a; --cc-t3: #2f6b3a; --cc-crit: #2f6fb8; --cc-vig: #d0564f; --cc-res: #6f90e6; --cc-btn: #eadfc8; --cc-btn2: #8c7d63;
+  --rd-box: #28241d; --rd-boxline: #4a4132; --rd-buff: #4d7a45; --rd-debuff: #8a4a42; --rd-label: #b3a68e; --rd-boon: #8db8f0; --rd-bane: #f3a79e; background: #1f1c18; color: #ece3cf; }
+.twod12-dark .twod12.rolldlg button, .twod12-dark .twod12.rolldlg select, .twod12-dark .twod12.rolldlg input { color: #ece3cf; }
+.twod12-dark .twod12.rolldlg select, .twod12-dark .twod12.rolldlg input { background: #28241d; border-color: #8c7d63; }
+.twod12-dark .twod12.rolldlg .rd-go, .twod12-dark .twod12.rolldlg .rd-vers button[aria-pressed="true"] { background: #eadfc8; color: #221d16; }
+.twod12-dark .twod12.rolldlg .rd-go { border-radius: 2px; }
+.twod12-dark .twod12.rolldlg .rd-roll { background: #28241d; }
+.twod12-dark .twod12.rolldlg .rd-cbox { background: #1f1c18; border-color: #4a4132; }
+.twod12-dark .twod12.rolldlg .rd-def { border-color: #ece3cf; color: #ece3cf; }
+.twod12-dark .twod12.rolldlg .rd-vers button.cant { color: #8a7f6b; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.rd-eff th { background: #332c22; color: #ece3cf; }
+.twod12-dark .twod12.rolldlg .rd-tiers tr.t3 th, .twod12-dark .twod12.rolldlg .rd-lseg.t3, .twod12-dark .twod12.rolldlg .rd-tiers tr.t1 th, .twod12-dark .twod12.rolldlg .rd-lseg.t1, .twod12-dark .twod12.rolldlg .rd-tiers tr.t2 th, .twod12-dark .twod12.rolldlg .rd-lseg.t2 { color: #fff; }
+.twod12-dark .twod12.rolldlg { --cc-t1p: #8f2a22; --cc-t2: #7d7414; }
+.twod12-dark .twod12.rolldlg .rd-ptag { background: #26331f; color: #aed79e; }
+.twod12-dark .twod12.rolldlg .rd-step { color: #d4a548; }
+.twod12-dark .twod12.rolldlg .rd-sub, .twod12-dark .twod12.rolldlg [class*="rd-"] .cc-sub { color: #e3ba62 !important; }
+.twod12-dark .twod12.rolldlg .rd-cx:hover, .twod12-dark .twod12.rolldlg .rd-ci:hover { background: #332c22; }
+.twod12-dark .twod12.rolldlg .rd-freq { color: #fff; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: #1f1c18; color: #ece3cf; border-color: #7a683f; border-radius: 5px; }
 .twod12-dark .twod12-dock .td-hd { border-bottom-color: #7a683f; }
@@ -1731,7 +1875,7 @@ ul.notes { color: #c9c0ad; max-width: 1000px; margin: 6px 0 0; padding-left: 20p
 </head>
 <body>
 <h1>Style 3b: the other chat messages</h1>
-<div class="nav"><a href="style-tokens.html">1. Colors and type</a><a href="action-card-dark.html">2. Action card</a><a href="chat-cards-dark.html">3. Chat cards</a><a href="chat-older-dark.html" class="here">3b. The other chat messages</a><a href="bars-dark.html">4. Pick bar and Turn dock</a><a href="npc-hud-sheet.html">The NPC sheet</a><a href="npc-hud-hud.html">The HUD</a></div>
+<div class="nav"><a href="style-tokens.html">1. Colors and type</a><a href="action-card-dark.html">2. Action card</a><a href="chat-cards-dark.html">3. Chat cards</a><a href="chat-older-dark.html" class="here">3b. The other chat messages</a><a href="bars-dark.html">4. Pick bar and Turn dock</a><a href="windows-dark.html">5. Pick window and roll dialog</a><a href="npc-hud-sheet.html">The NPC sheet</a><a href="npc-hud-hud.html">The HUD</a></div>
 <p class="lead">The rest of the chat, <b>drawn by the system's own functions</b>: the Reactions card, the initiative card, the follow-up lines under a card, the area damage card, the End of Turn line. Today they come from several generations of the system (a navy bar here, an amber line there, Cinzel titles). Here they take the chat card's look on both themes. <b>A style change only: no element is added, moved or removed.</b> The dark sets are generated from 586 rules.</p>
 
 <h2>The Reactions card: waiting, resolved, and the "used" bar</h2>
