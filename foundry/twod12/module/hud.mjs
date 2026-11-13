@@ -107,7 +107,7 @@ function ensureRoot() {
   root = document.createElement("div");
   root.id = "twod12-hud";
   root.className = "twod12-hud";
-  root.innerHTML = '<div class="hud-main"></div><div class="hud-ask"></div><div class="hud-hot"></div>';
+  root.innerHTML = '<div class="hud-players"></div><div class="hud-main"></div><div class="hud-ask"></div><div class="hud-hot"></div>';
   const host = document.getElementById("ui-bottom");
   if (host) host.prepend(root); else { root.classList.add("floating"); document.body.append(root); }
   root.addEventListener("click", onClick);
@@ -121,6 +121,13 @@ function placeHotbar() {
   if (setting("hudHotbar", true)) { if (hb.parentElement !== slot) slot.append(hb); root.classList.add("with-hot"); }
   else root.classList.remove("with-hot");
 }
+/** v0.0.378 (Lucas: "the collapsed pill over the HUD"): Foundry's players list sits above the HUD's left end (collapsed as Foundry keeps it, its own
+ *  arrow opens it), which also frees the left column, so the HUD gets that width. Off with the HUD. */
+function placePlayers() {
+  const pl = document.getElementById("players"), slot = root?.querySelector(".hud-players");
+  if (!pl || !slot) return;
+  if (pl.parentElement !== slot) slot.append(pl);
+}
 export function renderHud() {
   if (typeof document === "undefined") return;
   clearTimeout(timer);
@@ -129,7 +136,7 @@ export function renderHud() {
 async function drawHud() {
   const show = setting("hudShow", true);
   if (!show) { if (root) root.hidden = true; return; }
-  ensureRoot(); root.hidden = false; placeHotbar();
+  ensureRoot(); root.hidden = false; placeHotbar(); placePlayers();
   const main = root.querySelector(".hud-main"), cur = current();
   closePop();
   if (cur.list) {
@@ -268,5 +275,6 @@ export function registerHud() {
   Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });
   for (const h of ["createItem", "updateItem", "deleteItem"]) Hooks.on(h, i => { if (mine(i.parent)) renderHud(); });
   Hooks.on("renderHotbar", () => { if (root) placeHotbar(); });
+  for (const h of ["renderPlayers", "renderPlayerList"]) Hooks.on(h, () => { if (root && !root.hidden) placePlayers(); });
   Hooks.on("updateUser", (u, ch) => { if (u.isSelf && "character" in (ch ?? {})) renderHud(); });
 }

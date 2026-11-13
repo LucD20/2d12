@@ -20,7 +20,8 @@ export function damageBlockModel(lines, { gm = false } = {}) {
       return { text: damageLineChip(l), tip, aria: tip.split(": ")[0], kind: l.kind, code: l.code, dashed: l.temporary, uuid: l.source.uuid, src: l.source.type, own: l.source.type === "actor" };
     })
   }));
-  return { show: rows.length > 0 || gm, rows, add: gm, empty: !rows.length };
+  // v0.0.378 (Lucas: "remove the + Add from the sidebar"): the side panel only shows the lines (the Builder's + Add adds them); hidden with none
+  return { show: rows.length > 0, rows, add: false, empty: !rows.length };
 }
 
 /** Pure: the block's HTML (the sidebar section under Defenses). */

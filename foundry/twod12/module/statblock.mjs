@@ -121,7 +121,7 @@ export async function statBlockModel(actor, pc) {
     name: actor.name, rank, rankKey, role: "", level: s.level ?? 1, stage: s.stage ?? 1, cv: pc?.head?.cv ?? "",
     hp: { now: pool - (Number(s.totalDamage) || 0), max: pool }, vigor: [vig, Number(s.bdt) || 0], resolve: [res, Number(s.mdt) || 0], states: tags,
     stats: [["AD", pc?.defs?.main?.[0]?.value ?? "", "Armor Defense", 1], ["WD", pc?.defs?.main?.[1]?.value ?? "", "Ward Defense", 1], ["Speed", mv.Speed?.value ?? "", "", 1], ["Reach", mv.Reach?.value ?? 1, "", 1],
-      ["Steady", mv.Steady?.value ?? 0, "Steadiness: reduces Forced Movement and Reposition against it", 0], ["Size", `${SIZE_SHORT[pc?.head?.size] ?? pc?.head?.size ?? ""} (${mv.Size?.value ?? 3})`, `${pc?.head?.size ?? ""}: its Size Rank (Chapter 3)`, 0]],
+      ["Steady", mv.Steady?.value ?? 0, "Steadiness: reduces Forced Movement and Reposition against it", 1], ["Size", `${SIZE_SHORT[pc?.head?.size] ?? pc?.head?.size ?? ""} (${mv.Size?.value ?? 3})`, `${pc?.head?.size ?? ""}: its Size Rank (Chapter 3)`, 1]],   // v0.0.378 (Lucas): Steady and Size at the size of the others
     rw, groups,
     attrs: (pc?.attrs ?? []).map(x => ({ key: x.key, label: x.label, value: x.value, vs: vs[x.key] ?? "" })),
     mods: (pc?.mods ?? []).map(x => ({ key: x.label === "Power" ? "power" : "weapon", label: x.label, value: x.value, dc: x.dc }))

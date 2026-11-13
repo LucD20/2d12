@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 2e21d19 2026-11-13 STYLE-2 part 4 (v0.0.376): the HUD; docs, backlogs, HANDOFF, MASTER-PLAN
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 7203df3 2026-11-13 v0.0.377: Lucas's notes on the style pack (Guard shield, HUD width and hotbar icons, the stat block at 480 px, the damage line window)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
