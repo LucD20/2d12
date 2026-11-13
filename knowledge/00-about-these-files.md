@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 1a72cde 2026-11-13 The PC budget: each Passive alone, areas, and maps with walls
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 2dfff2e 2026-11-13 The PC budget: the Paladins come up, the Archers stay (Lucas)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
