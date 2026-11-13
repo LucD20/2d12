@@ -460,7 +460,13 @@ const BY_HAND = `
 .twod12-dark #twod12-carousel .tp-name { color: ${T.ink}; }
 .twod12-dark #twod12-carousel .tp-pips i { border-color: ${T.mute}; }
 .twod12-dark .application.twod12-styled .sk .head, .twod12-dark .application.twod12-styled .sk .tabs { border-color: ${T.rule} !important; box-shadow: none; }
-.twod12-dark .application .fr-tab .fr-chip { filter: saturate(.7) brightness(.85); }
+.twod12-type .application .fr-tab .fr-tip b { font-family: "Signika", sans-serif; font-weight: 700; }
+.twod12-type.twod12-type .twod12.sheet .fr-headline { color: #b3a68e; } .twod12-type.twod12-type .twod12.sheet .fr-headline b { color: #eadfc8; }
+.twod12-dark .application .fr-tab .fr-tip { background: ${T.band}; color: ${T.ink}; border-radius: 0; }
+.twod12-dark .application .fr-tab .fr-chip { background: transparent; border: 1px solid currentColor; line-height: 16px; font-weight: 600; }
+.twod12-dark .application .fr-tab .fr-chip.g-roll { color: var(--g-roll); } .twod12-dark .application .fr-tab .fr-chip.g-requires { color: var(--g-requires); } .twod12-dark .application .fr-tab .fr-chip.g-kind { color: var(--g-kind); }
+.twod12-dark .application .fr-tab .fr-chip.g-damage { color: var(--g-damage); } .twod12-dark .application .fr-tab .fr-chip.g-keywords { color: var(--g-keywords); }
+.twod12-dark .application .fr-tab .fr-chip button { background: transparent; color: inherit; opacity: .8; }
 /* ---- by hand: the item sheets (their variables; fields, the chosen option as the stamp) */
 .twod12-dark .application.twod12-styled { --sk-ink: ${T.ink}; --sk-mut: ${T.mute}; --sk-line: ${T.hair}; --sk-acc: ${T.gold}; --sk-navy: ${T.band}; --sk-par: ${T.pg}; --sk-panel: ${T.pg2}; --sk-amber: ${T.gold};
   --input-background-color: ${T.pg2}; --button-background-color: transparent; }
@@ -940,20 +946,29 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 const carRaw = FA(readFileSync(here("./samples/carousel-preparing.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace('src="systems/twod12/art/pcs/aveline.png"', `src="${artData("pcs/aveline.png")}"`).replace('src="systems/twod12/art/npcs/ogre-chieftain.png"', `src="${artData("npcs/ogre-chieftain.png")}"`)).replace('id="twod12-carousel"', 'id="twod12-carousel" style="position:static;transform:none;margin:0 auto"');
 const SUN = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" fill="#3a3229"/><circle cx="24" cy="24" r="9" fill="#d4a548"/><g stroke="#d4a548" stroke-width="3"><path d="M24 4v8M24 36v8M4 24h8M36 24h8M10 10l6 6M32 32l6 6M38 10l-6 6M16 32l-6 6"/></g></svg>');
 const itemRaw = FA(readFileSync(here("./samples/action-sheet-smite.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace('src="icons/svg/sun.svg"', `src="${SUN}"`));
+const TERROR = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" fill="#3a3229"/><circle cx="24" cy="22" r="13" fill="none" stroke="#d4a548" stroke-width="3"/><circle cx="19" cy="19" r="2.5" fill="#d4a548"/><circle cx="29" cy="19" r="2.5" fill="#d4a548"/><ellipse cx="24" cy="29" rx="4" ry="5" fill="#d4a548"/></svg>');
+const fxRaw = FA(readFileSync(here("./samples/effect-sheet-frightened.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace('src="icons/svg/terror.svg"', `src="${TERROR}"`));
+const fxWin = () => `<div class="mwin" style="width:680px"><div class="mwin-head">Frightened (Sylwen) (on Aveline)<span>&times;</span></div><div class="application sheet twod12 item twod12-applied twod12-styled" style="position:static;width:auto"><section class="window-content" style="display:block;overflow:visible">${fxRaw}</section></div></div>`;
 const itemWin = () => `<div class="mwin" style="width:900px"><div class="mwin-head">Action: Smite<span>&times;</span></div><div class="application sheet twod12 item twod12-styled" style="position:static;width:auto"><section class="window-content" style="display:block;overflow:visible">${itemRaw}</section></div></div>`;
-page("rest-dark.html", "Style 7: the carousel and an Action's sheet", `Two more surfaces, <b>from their real HTML, copied from Lucas's Foundry</b>: the carousel (the combat tracker at the top of the screen, here while an encounter is prepared) and an Action's sheet on its Details tab (Smite: the Action editor). <b>A style change only.</b> The dark sets are generated from ${R.car.length} and ${R.item.length} rules.`, `
+page("rest-dark.html", "Style 7: the carousel, an Action's sheet and an Effect's", `Two more surfaces, <b>from their real HTML, copied from Lucas's Foundry</b>: the carousel (the combat tracker at the top of the screen, here while an encounter is prepared) and an Action's sheet on its Details tab (Smite: the Action editor). <b>A style change only.</b> The dark sets are generated from ${R.car.length} and ${R.item.length} rules.`, `
 <h2>The carousel</h2>
 <div class="cols">${col("Dark", PICK, "", carRaw, "map dk twod12-dark twod12-type", "440px")}${col("Light", PICK, "", carRaw, "map twod12-type", "440px")}${col("Today", TODAY, "", carRaw, "map", "440px")}</div>
 <h2>An Action's sheet, the Details tab: dark ${PICK}</h2>
 <div class="stage dk twod12-dark twod12-type" style="width:930px">${itemWin()}</div>
 <h2>Light ${PICK}</h2>
 <div class="stage twod12-type" style="width:930px">${itemWin()}</div>
+<h2>An applied Effect's sheet (Frightened), the Details tab: dark ${PICK}</h2>
+<div class="stage dk twod12-dark twod12-type" style="width:710px">${fxWin()}</div>
+<h2>Light ${PICK}</h2>
+<div class="stage twod12-type" style="width:710px">${fxWin()}</div>
+<h2>Today ${TODAY}</h2>
+<div class="stage" style="width:710px">${fxWin()}</div>
 <h2>Today ${TODAY}</h2>
 <div class="stage" style="width:930px">${itemWin()}</div>
 <h2>Notes</h2>
 <ul class="notes">
 <li>The carousel is shown as an encounter is prepared (nobody has rolled). The running state (the round, the active creature, the AP pips lit) needs a copy taken during a round.</li>
-<li>The Action's Description tab is the Action card of step 2, so it is not repeated. The same editor pieces draw an Effect's sheet and a Feature's.</li>
+<li>The Action's Description tab is the Action card of step 2, so it is not repeated. The same editor pieces draw a Feature's sheet. In dark, a trait chip is outlined in its group's color.</li>
 <li>Foundry's own window frame, inputs, selects and text boxes are stand-ins.</li>
 </ul>
 <style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }
