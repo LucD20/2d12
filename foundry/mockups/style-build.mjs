@@ -819,7 +819,15 @@ const rwBlock = `<div class="twod12 sheet pcs npcs" style="position:static"><div
     <div class="rw-go"><span class="rw-num"><button type="button">&minus;</button><b>5</b><button type="button">+</button></span><button type="button" class="rw-btn res">Resist</button><button type="button" class="rw-btn wk">Weak</button><button type="button" class="rw-btn imm">Immune</button></div>
   </div>
 </div></div></div>`;
+const rwBlockA = rwBlock.replace('class="ps-block nb-rw rw2"', 'class="ps-block nb-rw rw2 rwA"');
 const RW_CSS = `
+/* version A (the first one): a compact list, the icon in the subtype's color, the name in ink, the picked one underlined */
+.rwA .rw-chip { background: none; }
+.rwA .rw-pal { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.rwA .rw-sub { flex-direction: row; justify-content: flex-start; gap: 5px; height: 26px; padding: 0 7px; background: transparent; border: 1px solid var(--rw-hair); font-weight: 600; font-size: 12.5px; }
+.rwA .rw-sub .ic { font-size: inherit; } .rwA .rw-sub span { color: var(--rw-ink); }
+.rwA .rw-sub.on { background: var(--rw-ona); border-color: var(--rw-sc); box-shadow: inset 0 -3px 0 var(--rw-sc); color: var(--rw-sc) !important; } .rwA .rw-sub.on span { color: var(--rw-ink); }
+.rw-scope { --rw-ona: ${LIGHT.pg2}; } .rw-scope.dk { --rw-ona: ${T.band}; }
 .rw2 .rw-lines { padding: 4px 2px 2px; }
 .rw-line { display: flex; align-items: center; gap: 10px; min-height: 30px; border-bottom: 1px solid var(--rw-hair); }
 .rw-k { flex: none; width: 64px; font-weight: 700; font-variant: small-caps; font-size: 15px; }
@@ -856,7 +864,10 @@ page("npc-sheet-dark.html", "Style 6b: the full NPC sheet", `The full NPC sheet 
 <div class="stage" style="width:930px">${npcWin(npcRaw)}</div>
 <h2>A proposal: the Builder's "Damage: Immune, Resist and Weak" block, redrawn</h2>
 <p class="why">Lucas, 2026-11-13: the line was broken and the add buttons didn't look good; the subtypes should have their colors and icons. Two things here. <b>In the sheets above</b> (the real markup) the block's head is put in order: the title, its note, then "+ Add" at the right. <b>Below is a redraw of the block</b>, which changes its elements, so it is a proposal and not part of "style only": three lines (Immune, Resist, Weak) with each entry as a chip in its subtype's color and icon; and to add one, a selector of twelve tiles in the place of the drop-down, each in its subtype's color with its icon (Holy golden with its sun, Fire orange with its flame, Slash steel with its blade), the picked one filled; then a stepper for the amount and three buttons. The entries shown are examples (this NPC has none).</p>
-<div class="cols">${col("Dark", PICK, "", rwBlock, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", PICK, "", rwBlock, "twod12-type rw-scope", "640px")}</div>
+<h3 style="margin-top:14px">Version A: the first one (a compact list)</h3>
+<div class="cols">${col("Dark", '<span class="tag alt">A</span>', "", rwBlockA, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", '<span class="tag alt">A</span>', "", rwBlockA, "twod12-type rw-scope", "640px")}</div>
+<h3 style="margin-top:22px">Version B: colored tiles</h3>
+<div class="cols">${col("Dark", '<span class="tag alt">B</span>', "", rwBlock, "dk twod12-dark twod12-type rw-scope", "640px")}${col("Light", '<span class="tag alt">B</span>', "", rwBlock, "twod12-type rw-scope", "640px")}</div>
 <h2>Notes</h2>
 <ul class="notes">
 <li><b>The rank's color is not on this sheet yet.</b> The one-page sheet colors its name plate by rank (Minion slate, Grunt olive, Standard maroon, Elite purple). Here the rank is the small tag beside the name; giving this sheet's head the rank's color would be the same idea, but it is a new decision, so it is not drawn.</li>
