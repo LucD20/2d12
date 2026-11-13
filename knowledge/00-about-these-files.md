@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 67da598 2026-11-13 Foundry backlog: the damage card's breakdown merges same-type dice into one block (Lucas)
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 071a784 2026-11-13 Style mockups 7: the Class sheet approved (rule words painted, list labels filled); the class's Levels window from its real HTML
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
