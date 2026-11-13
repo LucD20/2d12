@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: f54fbb1 2026-11-13 STYLE-2 part 3 (v0.0.375): the one-page NPC sheet (stat block)
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 2e21d19 2026-11-13 STYLE-2 part 4 (v0.0.376): the HUD; docs, backlogs, HANDOFF, MASTER-PLAN
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (150 KB)
+- HANDOFF.md (151 KB)
 - MASTER-PLAN.md (38 KB)
 - open-design-items.md (128 KB)
 - rules-01-roll.md (23 KB)

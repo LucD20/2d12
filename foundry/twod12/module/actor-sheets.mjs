@@ -1383,7 +1383,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
 
 export class NpcSheet extends CharacterSheet {
-  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, pickRwSub: NpcSheet.pickRwSub, rwStep: NpcSheet.rwStep, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, setNbVs: NpcSheet.setNbVs, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
+  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, setNbVs: NpcSheet.setNbVs, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
   static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.291 (PACK NPC-SHEET): one template for both sheets
   _groupLabels = ["Actions", "Features", "Items", "Basic"];
   _groupOf(i) {
@@ -1426,16 +1426,6 @@ export class NpcSheet extends CharacterSheet {
     if (kind !== "immune" && n < 1) return ui.notifications.warn("Type a number of 1 or more.");
     const next = dmgModsEdit(parseDmgMods(this.actor.system.dmgMods ?? ""), kind, sub, kind === "immune" ? 1 : n);
     await this.actor.update({ "system.dmgMods": dmgModsText(next, SUBS) });
-  }
-
-  /** v0.0.373: the Builder's subtype list: the one clicked is picked (no redraw). */
-  static pickRwSub(event, target) {
-    target.closest(".rw-pal")?.querySelectorAll(".rw-sub").forEach(b => { const on = b === target; b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); });
-  }
-  /** v0.0.373: the Builder's stepper (1 to 20). */
-  static rwStep(event, target) {
-    const inp = target.closest(".rw-num")?.querySelector(".nb-rwn");
-    if (inp) inp.value = String(Math.min(20, Math.max(1, (Number(inp.value) || 0) + Number(target.dataset.d))));
   }
 
   /** A Resist / Weak / Immune chip's ×. */
@@ -1535,7 +1525,7 @@ export function registerSheetHooks() {
  * sheet still works. Chosen per NPC in Foundry's sheet settings; the world setting "New NPCs open with" picks it for new NPCs.
  */
 export class NpcStatBlockSheet extends NpcSheet {
-  static DEFAULT_OPTIONS = { position: { width: 580, height: 900 } };
+  static DEFAULT_OPTIONS = { position: { width: 480, height: 820 } };   // v0.0.377 (Lucas: "around this size")
   _activeTab = "main";
   async _prepareContext(options) {
     const ctx = await super._prepareContext(options);

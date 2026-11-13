@@ -4560,7 +4560,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hud-gl .fa-star { color: var(--s-gold, #d4a548); }
 .twod12-hud .ha { display: inline-flex; align-items: center; gap: 5px; flex: none; padding: 1px 3px 1px 7px; border: 1px solid var(--hud-hair); border-left: 3px solid var(--fq, #5F5E5A); border-radius: 2px; background: rgba(255, 255, 255, .02); }
 .twod12-hud .ha > b { font-weight: 600; cursor: context-menu; } .twod12-hud .ha.dim > b { opacity: .5; } .twod12-hud .ha[hidden] { display: none; }
-.twod12-hud button { width: auto; min-height: 0; margin: 0; line-height: 1.2; box-shadow: none; font-family: "Signika", sans-serif; }
+.twod12-hud :is(.hud-main, .hud-pop, .hud-menu) button { width: auto; min-height: 0; margin: 0; line-height: 1.2; box-shadow: none; font-family: "Signika", sans-serif; }
 .twod12-hud .hv { height: 20px; padding: 0 6px; border: 0; border-radius: 2px; background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); font-weight: 700; font-size: 11.5px; cursor: pointer; }
 .twod12-hud .hv:hover { background: var(--s-stamp-hover, #fff8e8); } .twod12-hud .hv.fav { box-shadow: inset 0 -2px 0 var(--s-gold, #d4a548); }
 .twod12-hud .hv.no { background: transparent; border: 1px dashed var(--s-faint, #8a7f6b); color: var(--s-faint, #8a7f6b); cursor: default; } .twod12-hud .hv.used { text-decoration: line-through; }
@@ -4599,3 +4599,36 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hud-menu { display: flex; flex-direction: column; min-width: 180px; padding: 4px; } .twod12-hud .hud-menu button { height: 26px; padding: 0 10px; border: 0; background: none; color: var(--hud-ink); text-align: left; cursor: pointer; } .twod12-hud .hud-menu button:hover { background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); }
 .twod12-hudcard { position: fixed; z-index: 100; width: 360px; max-height: 70vh; overflow: auto; box-shadow: 0 6px 20px rgba(0, 0, 0, .6); }
 .twod12-light .twod12-hud .hsv.at-body { --ac: #7a1626; } .twod12-light .twod12-hud .hsv.at-mind { --ac: #17327a; } .twod12-light .twod12-hud .hsv.at-appeal { --ac: #6b4e00; } .twod12-light .twod12-hud .hsv.at-instinct { --ac: #14532d; }
+/* ==== v0.0.377 (Lucas on v0.0.376) ==== */
+/* the HUD never sets the width of Foundry's bottom area (a long row made it push over the sidebar on a smaller window, whose buttons then took no clicks):
+   it takes the area's full width, its own content is clipped inside it */
+#ui-bottom:has(> #twod12-hud) { width: 100%; min-width: 0; max-width: 100%; }
+.twod12-hud { contain: inline-size; min-width: 0; max-width: 100%; overflow: visible; }
+.twod12-hud .hud-main { overflow: hidden; }
+/* closer to the mockup: a narrower name block, tighter categories */
+.twod12-hud .hud-id { max-width: 200px; padding: 0 10px 0 8px; } .twod12-hud .hud-who b { font-size: 14.5px; }
+.twod12-hud .hud-mid { gap: 6px; padding: 0 8px; } .twod12-hud .hud-l { gap: 6px; }
+.twod12-hud .cat { height: 23px; padding: 0 8px; font-size: 12px; }
+/* the hotbar in the HUD: its own icons keep Font Awesome; small square slots */
+.twod12-hud .hud-hot #hotbar { display: flex; align-items: center; gap: 4px; }
+.twod12-hud .hud-hot #hotbar .slot { font-size: 11px; }
+/* the one-page NPC sheet at about 480 px (Lucas): smaller side margins, a hairline between the stats (AD | WD | Speed...) */
+.twod12.sheet.pcs.sbs .ps-tabs { padding: 6px 8px 0; }
+.twod12-sb .sbl { padding: 3px 8px; } .twod12-sb .sb-body { padding: 6px 6px 10px; } .twod12-sb .sb-plate { padding: 6px 8px 5px; }
+.twod12-sb .sbl.grid { grid-template-columns: repeat(6, auto); justify-content: space-between; }
+.twod12-sb .sbl.grid > span { padding: 0 6px; border-left: 1px solid var(--s-hair, #cdb88a); } .twod12-sb .sbl.grid > span:first-child { padding-left: 0; border-left: 0; }
+.twod12-sb .sbl.grid > .s2 { grid-column: span 2; } .twod12-sb .sbl.grid > .s2:nth-child(2), .twod12-sb .sbl.grid > .s2:nth-child(3) { border-left: 1px solid var(--s-hair, #cdb88a); }
+.twod12-sb .sb-meta, .twod12-sb .sb-tiers, .twod12-sb .sb-fx { margin-left: 6px; margin-right: 6px; } .twod12-sb .sb-meta { padding: 4px 6px; }
+.twod12-sb .sb-attrs { gap: 4px; grid-template-columns: repeat(4, minmax(0, 1fr)) 6px repeat(2, minmax(0, 1fr)); }
+/* the Immune / Resist / Weak window (dmglines.mjs pickDamageLine; Lucas: "the buttons like the Add section"): the damage types four to a row,
+   each with its icon in its color; the kinds in their colors; the value a − / + stepper */
+.application.classwin .cw-seg:has(> .pw-sub) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.application.classwin .cw-seg > button.pw-sub { --sc: var(--sc-l); min-width: 0; justify-content: flex-start; gap: 5px; padding: 0 8px; white-space: nowrap; overflow: hidden; }
+.application.classwin .cw-seg > button.pw-sub > i { color: var(--sc); }
+.application.classwin .cw-seg > button.pw-sub[aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--sc); }
+.application.classwin .cw-seg > button.pw-kind.resist span { color: #2c5b3f; } .application.classwin .cw-seg > button.pw-kind.weak span { color: #a8322d; }
+.application.classwin .cw-seg > button.pw-kind[aria-pressed="true"] span { color: inherit; }
+.application.classwin .pw-step { display: inline-flex; align-items: center; gap: 0; margin: 4px 0; border: 1px solid #8c7d63; border-radius: 2px; }
+.application.classwin .pw-step .pw-stepl { padding: 0 8px; font-weight: 600; }
+.application.classwin .pw-step button { width: 28px; height: 26px; min-height: 0; margin: 0; padding: 0; border: 0; background: transparent; color: inherit; font-size: 15px; cursor: pointer; }
+.application.classwin .pw-step b { min-width: 30px; text-align: center; font-size: 14px; }

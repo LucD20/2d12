@@ -8,6 +8,8 @@ import { esc } from "./util.mjs";
 export const SB_GROUPS = [["basic", "Basic"], ["special", "Special"], ["react", "Reactions"], ["esc", "Escalation"]];
 export const SB_FREQ = { atwill: "At-will", round: "Round", encounter: "Encounter", turn: "Turn", daily: "Daily" };
 const TIER_NAMES = ["Tier 1", "Tier 2", "Tier 3"];
+// v0.0.377 (Lucas: "around this size", 480 px): Steadiness written Steady, a long Size shortened (the full word is the tooltip)
+const SIZE_SHORT = { Medium: "Med.", Gargantuan: "Garg." };
 const sign = n => (Number(n) > 0 ? `+${Number(n)}` : Number(n) < 0 ? `−${-Number(n)}` : "0");
 
 /** Pure: which group an Action goes in (its fields: basicAttack, reaction, escalation). */
@@ -119,7 +121,7 @@ export async function statBlockModel(actor, pc) {
     name: actor.name, rank, rankKey, role: "", level: s.level ?? 1, stage: s.stage ?? 1, cv: pc?.head?.cv ?? "",
     hp: { now: pool - (Number(s.totalDamage) || 0), max: pool }, vigor: [vig, Number(s.bdt) || 0], resolve: [res, Number(s.mdt) || 0], states: tags,
     stats: [["AD", pc?.defs?.main?.[0]?.value ?? "", "Armor Defense", 1], ["WD", pc?.defs?.main?.[1]?.value ?? "", "Ward Defense", 1], ["Speed", mv.Speed?.value ?? "", "", 1], ["Reach", mv.Reach?.value ?? 1, "", 1],
-      ["Steadiness", mv.Steady?.value ?? 0, "", 0], ["Size", `${pc?.head?.size ?? ""} (${mv.Size?.value ?? 3})`, "Its Size Rank (Chapter 3)", 0]],
+      ["Steady", mv.Steady?.value ?? 0, "Steadiness: reduces Forced Movement and Reposition against it", 0], ["Size", `${SIZE_SHORT[pc?.head?.size] ?? pc?.head?.size ?? ""} (${mv.Size?.value ?? 3})`, `${pc?.head?.size ?? ""}: its Size Rank (Chapter 3)`, 0]],
     rw, groups,
     attrs: (pc?.attrs ?? []).map(x => ({ key: x.key, label: x.label, value: x.value, vs: vs[x.key] ?? "" })),
     mods: (pc?.mods ?? []).map(x => ({ key: x.label === "Power" ? "power" : "weapon", label: x.label, value: x.value, dc: x.dc }))

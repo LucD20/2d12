@@ -93,6 +93,8 @@ async function panelRows(actor, cat) {
 const CAT_TITLE = { actions: "Actions", basic: "Basic Actions", react: "Reactions", esc: "Escalation", hands: "Hands and Gear", checks: "Checks and Saves", fx: "Conditions and Effects", utility: "Utility" };
 
 /* ------------------------------------------------------------------ drawing */
+/** An NPC's rank as the book writes it ("Elite", not the key "elite"). */
+const rankLabel = a => { const k = String(a?.system?.role ?? ""); try { return globalThis.CONFIG?.TWOD12?.npcRoles?.[k]?.label ?? (k.charAt(0).toUpperCase() + k.slice(1)); } catch (e) { return k; } };
 function current() {
   const ctrl = globalThis.canvas?.tokens?.controlled ?? [];
   if (ctrl.length > 1) return { list: ctrl };
@@ -132,7 +134,7 @@ async function drawHud() {
   closePop();
   if (cur.list) {
     st.actorUuid = "";
-    main.innerHTML = listHudHtml(cur.list.map(t => ({ id: t.id, name: t.name, img: t.document?.texture?.src ?? t.actor?.img, rankKey: t.actor?.type === "npc" ? t.actor.system?.role : "", sub: t.actor?.type === "npc" ? (t.actor.system?.role ?? "") : (t.actor?.itemTypes?.class?.[0]?.name ?? "") })));
+    main.innerHTML = listHudHtml(cur.list.map(t => ({ id: t.id, name: t.name, img: t.document?.texture?.src ?? t.actor?.img, rankKey: t.actor?.type === "npc" ? t.actor.system?.role : "", sub: t.actor?.type === "npc" ? rankLabel(t.actor) : (t.actor?.itemTypes?.class?.[0]?.name ?? "") })));
     return;
   }
   if (!cur.actor) { st.actorUuid = ""; main.innerHTML = emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token."); return; }
@@ -140,6 +142,7 @@ async function drawHud() {
   const npc = cur.actor.type === "npc";
   const m = npc ? await npcModel(cur.actor) : await pcHudModel(cur.actor);
   if (cur.token?.document?.texture?.src) m.img = cur.token.document.texture.src;
+  if (cur.token?.name) m.name = cur.token.name;   // v0.0.377: the token's name (an actor's name can be long)
   main.innerHTML = npc ? npcHudHtml(m) : pcHudHtml(m);
   root.classList.toggle("is-npc", npc);
   if (npc) fitLines(main);

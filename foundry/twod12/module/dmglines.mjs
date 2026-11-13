@@ -39,18 +39,20 @@ export function damageBlockHtml(m) {
  * line: { kind, code, value } or null. Resolves { kind, sub, n, remove } or null.
  */
 export async function pickDamageLine({ name, line = null }) {
-  const { pickWith } = await import("./pickwindow.mjs");
-  const names = subNames(), codes = Object.keys(names);
+  const { pickWith, pwStepHtml } = await import("./pickwindow.mjs");
+  const names = subNames(), codes = Object.keys(names), T = TWOD12;
   const st = { kind: line?.kind ?? "resist", sub: line?.code ?? "", n: line?.value ?? 2, act: "save" };
-  const subRow = (key, list) => ({ key, label: "", opts: list.map(c => ({ k: c, l: `${names[c]} (${c})`, on: st.sub === c })) });
+  // v0.0.377 (Lucas: "the buttons like the Add section"): the twelve damage types as buttons with their icon in their color, the kinds side by side,
+  // the value as a − / + stepper
+  const subOpts = codes.map(c => ({ k: c, l: names[c], on: st.sub === c, icon: T.subtypeIcons?.[c] ?? "", bcls: "pw-sub", style: `--sc-l:${T.subtypeInk?.[c] ?? "#5d5446"};--sc-d:${T.subtypeColors?.[c] ?? "#b3a68e"}` }));
   return pickWith({
     title: line ? "Edit a damage line" : "Add a damage line",
     model: () => ({
       name, sub: "Immune, Resist or Weak (Chapter 1)", icon: "fa-shield-halved",
       sections: [
-        { title: "Kind", rows: [{ key: "kind", label: "", opts: DMG_KINDS.map(k => ({ k, l: KIND[k], on: st.kind === k })) }] },
-        { title: "Damage type", rows: [subRow("sub", codes.slice(0, 6)), subRow("sub", codes.slice(6))] },
-        ...(st.kind === "immune" ? [] : [{ title: "Value", html: `<label class="pw-num">${KIND[st.kind]} <input type="number" min="1" max="30" value="${Number(st.n) || 1}" data-field="n" aria-label="Value"></label>` }]),
+        { title: "Kind", rows: [{ key: "kind", label: "", opts: DMG_KINDS.map(k => ({ k, l: KIND[k], on: st.kind === k, bcls: `pw-kind ${k}` })) }] },
+        { title: "Damage type", rows: [{ key: "sub", label: "", opts: subOpts.map(o => ({ ...o, on: st.sub === o.k })) }] },
+        ...(st.kind === "immune" ? [] : [{ title: "Value", html: pwStepHtml("n", Number(st.n) || 1, KIND[st.kind]) }]),
         ...(line ? [{ title: "This line", rows: [{ key: "act", label: "", opts: [{ k: "save", l: "Keep (with the changes)", on: st.act === "save" }, { k: "remove", l: "Remove", on: st.act === "remove" }] }] }] : [])
       ],
       complete: st.act === "remove" || (!!st.sub && (st.kind === "immune" || Number(st.n) > 0)),
@@ -58,6 +60,7 @@ export async function pickDamageLine({ name, line = null }) {
       confirm: st.act === "remove" ? "Remove" : line ? "Save" : "Add"
     }),
     pick: (row, k) => { st[row] = k; },
+    step: (f, d) => { if (f === "n") st.n = Math.min(30, Math.max(1, (Number(st.n) || 1) + d)); },
     input: (f, v) => { if (f === "n") st.n = Math.max(1, Math.trunc(Number(v)) || 1); },
     result: () => ({ kind: st.kind, sub: st.sub, n: st.kind === "immune" ? null : Number(st.n) || 1, remove: st.act === "remove" })
   });

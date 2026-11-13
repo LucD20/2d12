@@ -264,7 +264,7 @@ const TYPE = `
 /* the options: each its own outlined button, never wrapping its words; the chosen one is filled (no check mark, so nothing moves when it is picked) */
 .twod12-type .application.classwin .cw-seg { display: flex; flex-wrap: wrap; gap: 6px; border: 0; border-radius: 0; background: none; overflow: visible; }
 .twod12-type .application.classwin .cw-seg button, .twod12-type .application.classwin .cw-seg button + button { border: 1px solid #8c7d63; border-radius: 2px; background: transparent; padding: 0 12px; min-height: 28px; min-width: 76px; line-height: 1.2; white-space: nowrap; box-shadow: none; color: ${LIGHT.ink}; }
-.twod12-type .application.classwin .cw-seg button > i { display: none; }
+.twod12-type .application.classwin .cw-seg button > i.fa-check { display: none; }
 /* a choice with no label (one option per line): a list of full-width buttons, the text on the left */
 .twod12-type .application.classwin .cw-attr > .cw-seg:only-child { flex: 1 1 100%; flex-direction: column; flex-wrap: nowrap; gap: 5px; }
 .twod12-type .application.classwin .cw-attr > .cw-seg:only-child button { width: 100%; min-height: 32px; text-align: left; justify-content: flex-start; padding: 0 12px; }
@@ -583,6 +583,21 @@ const EXTRA = `
 .twod12-dark .twod12-sb .sb-attr.mod-weapon { --ac: #f4a259; } .twod12-dark .twod12-sb .sb-attr.mod-power { --ac: #b794f6; } .twod12-dark .twod12-sb .sb-track { background: #40382c; } .twod12-dark .twod12-sb .sb-track.hp i { background: #62a653; }
 .twod12-dark .twod12-sb .sb-oa { background: color-mix(in srgb, var(--fq) 16%, ${T.pg}); } .twod12-dark .twod12-sb .sb-oa-h { background: color-mix(in srgb, var(--fq) 42%, ${T.pg}); }
 .twod12-dark .twod12-sb .sb-state, .twod12-dark .twod12-sb .neg { color: #ff8f86; } .twod12-dark .twod12-sb .sb-gauge.v .k { color: #ef8a80; } .twod12-dark .twod12-sb .sb-gauge.r .k { color: #8fb3ee; }
+/* ---- v0.0.377 (Lucas: "the number on the Guard is almost unreadable"; "Health X could look more important"): dark ink on the gold shield, light on the grey one; Health as a heading */
+.twod12-type .twod12.sheet.pcs .ps-shield { color: #1f1a12; } .twod12-type .twod12.sheet.pcs .ps-shield b { font-size: 13px; font-weight: 800; }
+.twod12-type .twod12.sheet.pcs .ps-shield.zero { background: #6b6152; color: #fbf6ea; }
+.twod12-type .twod12.sheet.pcs .ps-hh:has(.ps-shield) > .ps-k { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; color: #f3ebd8; }
+.twod12-light .twod12.sheet.pcs .ps-hh:has(.ps-shield) > .ps-k { color: #f3ebd8; }
+/* ---- v0.0.377: the damage line window on the dark page */
+.twod12-dark .application.classwin .cw-seg > button.pw-sub { --sc: var(--sc-d); } .twod12-dark .application.classwin .cw-seg > button.pw-kind.resist span { color: #8fd69b; } .twod12-dark .application.classwin .cw-seg > button.pw-kind.weak span { color: #f3a79e; }
+.twod12-dark .application.classwin .cw-seg > button.pw-kind[aria-pressed="true"] span { color: inherit; }
+/* ---- v0.0.377: the damage line window's layout wins over the single-choice list (one option per line): the types four to a row, the kinds side by side */
+.twod12-type.twod12-type .application.classwin .cw-attr > .cw-seg:has(> button.pw-sub) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); flex-direction: row; gap: 4px; }
+.twod12-type.twod12-type .application.classwin .cw-attr > .cw-seg:has(> button.pw-kind) { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+.twod12-type.twod12-type .application.classwin .cw-attr > .cw-seg > button.pw-sub, .twod12-type.twod12-type .application.classwin .cw-attr > .cw-seg > button.pw-kind { width: auto; min-width: 0; min-height: 28px; padding: 0 9px; justify-content: flex-start; text-align: left; }
+.twod12-type.twod12-type .application.classwin .cw-seg > button.pw-sub > i { display: inline-block; color: var(--sc); margin-right: 2px; }
+.twod12-type.twod12-type .application.classwin .cw-seg > button.pw-sub[aria-pressed="true"] { background: transparent; color: inherit; border-color: var(--sc); box-shadow: inset 0 -3px 0 var(--sc); }
+.twod12-light .application.classwin .cw-seg > button.pw-sub[aria-pressed="true"] { color: #2a241d; } .twod12-dark .application.classwin .cw-seg > button.pw-sub[aria-pressed="true"] { color: ${T.ink}; }
 /* ---- v0.0.371 (Lucas: "the rainbow is missing the glow that the diamond has"): Mithril glows like Diamond, in two of its own colors */
 .twod12-type .twod12 .autodia.auto-mithril, .twod12-type .twod12.sheet.pcs .autodia.auto-mithril, .twod12-type .twod12.acard.d2 .autodia.auto-mithril, .twod12-type .twod12.chat.cc .autodia.auto-mithril { filter: saturate(1.5) drop-shadow(-1px 0 2px #5ad7ff) drop-shadow(1px 0 2px #ff6fb5); }
 /* ---- the pick window's text goes through the highlighter now: its colors on the dark window */
