@@ -151,6 +151,17 @@ const TYPE = `
 .twod12-type .twod12.sheet.pcs .ps-bcard, .twod12-type .twod12.sheet.pcs .ps-rcard, .twod12-type .twod12.sheet.pcs .ps-irow, .twod12-type .twod12.sheet.pcs .ps-wb, .twod12-type .twod12.sheet.pcs .ps-lbox, .twod12-type .twod12.sheet.pcs .ps-mchip, .twod12-type .twod12.sheet.pcs .ps-seg, .twod12-type .twod12.sheet.pcs button { border-radius: 2px; }
 .twod12-type .twod12.sheet.pcs .ps-block, .twod12-type .twod12.sheet.pcs .ps-bxbtn { box-shadow: none; }
 .twod12-type .twod12.sheet.pcs .ps-bxbtn.ln { box-shadow: inset 4px 0 0 var(--lnf); } .twod12-type .twod12.sheet.pcs .ps-bxbtn.ln.ln-strike { box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 #d14b3f; }
+/* the groups ("Once per round", "Reactions", "Level 1"...) are not boxed tables (Lucas, 2026-11-13): a heading on a rule, the rows under it
+   on hairlines, the next group close below. The same elements; no frame, no filled header, no shadow, less space between groups. */
+.twod12-type .twod12.sheet.pcs .ps-stack { gap: 4px; }
+.twod12-type .twod12.sheet.pcs .ps-block { background: none; border: 0; border-radius: 0; box-shadow: none; overflow: visible; }
+.twod12-type .twod12.sheet.pcs .ps-bh { background: none; padding: 5px 2px 2px; border-bottom: 1px solid #8a6d3b; }
+.twod12-type .twod12.sheet.pcs .ps-block.esc .ps-bh, .twod12-type .twod12.sheet.pcs .ps-block.granted .ps-bh, .twod12-dark .twod12.sheet.pcs .ps-block.esc .ps-bh { background: none !important; }
+.twod12-type .twod12.sheet.pcs .ps-block .ps-row:first-child, .twod12-type .twod12.sheet.pcs .ps-block .ps-brw:first-child .ps-brow { border-top: 0; }
+.twod12-type .twod12.sheet.pcs .ps-row, .twod12-type .twod12.sheet.pcs .ps-brow { border-top-color: ${LIGHT.hair}; }
+.twod12-type .twod12.sheet.pcs .ps-line { padding: 5px 2px; } .twod12-type .twod12.sheet.pcs .ps-brow { padding: 5px 2px; }
+.twod12-type .twod12.sheet.pcs .ps-colh { padding: 0 2px 2px; }
+.twod12-type .twod12.sheet.pcs .ps-dot { border-radius: 0; transform: rotate(45deg); width: 7px; height: 7px; }
 .twod12-type .twod12.sheet.pcs .ps-pill { border-radius: 3px; }
 .twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b, .twod12-type .twod12.sheet.pcs .ps-bch small { font-family: "Signika", sans-serif; }
 .twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b { font-weight: 700; font-variant: small-caps; letter-spacing: .02em; }
@@ -356,6 +367,9 @@ const BY_HAND = `
 .twod12-dark .twod12.sheet.pcs { --ps-navy: ${T.pg}; --ps-cell: ${T.pg2}; --ps-edge: ${T.hair}; --ps-tile: ${T.pg2}; --ps-parch: #24201b; --ps-card: ${T.pg2}; --ps-cline: ${T.hair};
   --ps-strip: ${T.band}; --ps-amber: ${T.gold}; --ps-amberl: ${T.gold}; --ps-teal: #2fa59a; --ps-tealr: #2fa59a; --ps-ink: ${T.ink}; --ps-mut: ${T.mute}; --ps-lt: ${T.mute}; --ps-k: ${T.mute}; color: ${T.ink}; }
 .twod12-dark .twod12.sheet.pcs .ps-side { border-right: 1px solid ${T.rule}; }
+.twod12-dark .twod12.sheet.pcs .ps-block { background: none; border: 0; }
+.twod12-dark .twod12.sheet.pcs .ps-bh { background: none; border-bottom-color: ${T.rule}; }
+.twod12-dark .twod12.sheet.pcs .ps-row, .twod12-dark .twod12.sheet.pcs .ps-brow { border-top-color: ${T.hair}; }
 .twod12-dark .twod12.sheet.pcs .ps-head { border-bottom: 1px solid ${T.rule}; }
 .twod12-dark .twod12.sheet.pcs .ps-h2, .twod12-dark .twod12.sheet.pcs .ps-bh b { color: ${T.ink}; }
 .twod12-dark .twod12.sheet.pcs .ps-tabs { border-bottom-color: ${T.rule}; }
@@ -733,6 +747,7 @@ page("pc-sheet-dark.html", "Style 6: the PC sheet", `The PC sheet, <b>from its r
 <div class="stage" style="width:930px">${sheetWin(pcRaw)}</div>
 <h2>Notes</h2>
 <ul class="notes">
+<li><b>The groups are no longer boxed tables</b> (Lucas, 2026-11-13): "Once per round", "Reactions", "Level 1" and the others are a heading on a rule with their rows under it, close to the next group. The same elements; the frame, the filled header and the gaps are gone. It saves about a line of height per group.</li>
 <li>The sheet is out of combat here, so the AP, Guard and Escalation strip is its "Out of combat" line. An Action card opened under a row is the Action card of step 2.</li>
 <li>Lucas's window was 629 px wide when he copied it; at that width the Action rows are too narrow for their columns (the Use button is cut off), today as well. The sheet's own size is 900 px, used here.</li>
 <li>Foundry's own window frame, inputs and text editors are stand-ins. The small Mithril diamond beside a card's name is left out (it needs Foundry's icon font to draw).</li>

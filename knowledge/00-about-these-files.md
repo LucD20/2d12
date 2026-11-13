@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: ad23672 2026-11-13 Style mockups: step 5 approved; the Start of the Encounter card; step 6 waits for the sheets' HTML from Foundry
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 318ee69 2026-11-13 Style mockups 6: the PC sheet from its real HTML (copied from Lucas's Foundry), dark, light and today, with live tabs
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
