@@ -48,6 +48,14 @@
 .twod12-type .application.classwin .cw-btn, .twod12-type .application.classwin .cw-seg button { border-radius: 2px; font-family: "Signika", sans-serif; }
 .twod12-type .application.classwin .cw-btn.primary, .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { background: #3b3128; border-color: #3b3128; color: #f4ede0; }
 .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
+/* the options: each its own outlined button, never wrapping its words; the chosen one is filled (no check mark, so nothing moves when it is picked) */
+.twod12-type .application.classwin .cw-seg { display: flex; flex-wrap: wrap; gap: 6px; border: 0; border-radius: 0; background: none; overflow: visible; }
+.twod12-type .application.classwin .cw-seg button, .twod12-type .application.classwin .cw-seg button + button { border: 1px solid #8c7d63; border-radius: 2px; background: transparent; padding: 0 12px; min-height: 28px; min-width: 76px; line-height: 1.2; white-space: nowrap; box-shadow: none; color: #2a241d; }
+.twod12-type .application.classwin .cw-seg button > i { display: none; }
+.twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { box-shadow: none; }
+.twod12-type .application.classwin .cw-attr > span { color: #2a241d; font-weight: 600; }
+.twod12-type .application.classwin .cw-btn { min-height: 28px; min-width: 84px; padding: 0 14px; }
+.twod12-type .application.classwin .cw-sec h2 { border-left: 0; background: none; padding: 0 0 2px; border-bottom: 1px solid #8a6d3b; color: #96670f; }
 .twod12-type .twod12.rolldlg { font-family: "Signika", sans-serif; --cc-title: "Signika", sans-serif; --cc-t2: #e4dd80; --cc-t2i: #423d00; }
 .twod12-type .twod12.rolldlg .rd-name { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
 .twod12-type .twod12.rolldlg .rd-go { border-radius: 2px; }
@@ -569,6 +577,7 @@
 .twod12-dark .twod12-pickbar .lb-give { background: #5c2d28; }
 .twod12-dark .twod12-pickbar .lb-give:hover { background: #6f322a; }
 /* ==== wins ==== */
+.twod12-dark .twod12 .trhl { background: color-mix(in srgb, var(--tc, #777) 16%, transparent); }
 .twod12-dark .classwin .cw-ttl img { border: 1px solid #3a4c6b; }
 .twod12-dark .classwin .cw-head h1 { color: #fff; }
 .twod12-dark .classwin .cw-head h1 small { color: #c4cbd8; }
@@ -663,6 +672,7 @@
 .twod12-dark .twod12.rolldlg .rd-tiers { border: 1px solid #60563e !important; }
 .twod12-dark .twod12.rolldlg .rd-tiers th, .twod12-dark .twod12.rolldlg .rd-tiers td { border-top: 1px solid #332c22 !important; }
 .twod12-dark .twod12.rolldlg .rd-tiers td { border-left: 1px solid #4a4132 !important; }
+.twod12-dark .twod12.acard.d2 .ap-meta .trhl { background: #16303a; border: 1px solid #2c5560; color: #8fd0e0; }
 .twod12-dark .twod12.rolldlg .rd-trait:is(.tg-roll, .twod12-dark .tg-requires, .twod12-dark .tg-kind, .twod12-dark .tg-damage, .twod12-dark .tg-keywords) { background: color-mix(in srgb, var(--tg) 16%, #28241d); }
 .twod12-dark .twod12 .cc-trigger .trhl, .twod12-dark .twod12 .cc-meta .trhl, .twod12-dark .twod12.rolldlg .rd-meta .trhl { background: #16303a; border: 1px solid #2c5560; color: #8fd0e0; }
 
@@ -746,7 +756,13 @@
 .twod12-dark .application.classwin .cw-foot { background: #28241d; border-top: 1px solid #7a683f; color: #b3a68e; }
 .twod12-dark .application.classwin .cw-btn { background: transparent; color: #ece3cf; border: 1px solid #8c7d63; border-radius: 2px; }
 .twod12-dark .application.classwin .cw-btn.primary { background: #eadfc8; border-color: #eadfc8; color: #221d16; }
-.twod12-dark .application.classwin .cw-seg button { background: transparent; color: #ece3cf; border-color: #8c7d63; }
+.twod12-dark .application.classwin .cw-seg button, .twod12-dark .application.classwin .cw-seg button + button { background: transparent; color: #ece3cf; border-color: #8c7d63; }
+.twod12-dark .application.classwin .cw-attr > span { color: #ece3cf; }
+.twod12-dark .application.classwin .cw-sec h2 { border-bottom-color: #7a683f; }
+.twod12-dark .trhl { color: var(--tc); background: color-mix(in srgb, var(--tc) 16%, transparent); }
+.twod12-dark .application.classwin .cw-sub { color: #ece3cf; }
+/* the highlighter's colors on the dark page (the system's own light-on-dark values) */
+.twod12-dark { --g-roll: #5fd3c8; --g-requires: #7db1f5; --g-kind: #f29272; --g-damage: #e8c25a; --g-keywords: #aeb0b5; --c-bane: #ff8f7a; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a; }
 .twod12-dark .application.classwin .cw-seg button[aria-pressed="true"] { background: #eadfc8; border-color: #eadfc8; color: #221d16; }
 .twod12-dark .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
 .twod12-dark .application.classwin .cw-sec h2 { color: #d4a548; }

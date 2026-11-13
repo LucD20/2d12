@@ -149,6 +149,14 @@ const TYPE = `
 .twod12-type .application.classwin .cw-btn, .twod12-type .application.classwin .cw-seg button { border-radius: 2px; font-family: "Signika", sans-serif; }
 .twod12-type .application.classwin .cw-btn.primary, .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
 .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
+/* the options: each its own outlined button, never wrapping its words; the chosen one is filled (no check mark, so nothing moves when it is picked) */
+.twod12-type .application.classwin .cw-seg { display: flex; flex-wrap: wrap; gap: 6px; border: 0; border-radius: 0; background: none; overflow: visible; }
+.twod12-type .application.classwin .cw-seg button, .twod12-type .application.classwin .cw-seg button + button { border: 1px solid #8c7d63; border-radius: 2px; background: transparent; padding: 0 12px; min-height: 28px; min-width: 76px; line-height: 1.2; white-space: nowrap; box-shadow: none; color: ${LIGHT.ink}; }
+.twod12-type .application.classwin .cw-seg button > i { display: none; }
+.twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { box-shadow: none; }
+.twod12-type .application.classwin .cw-attr > span { color: ${LIGHT.ink}; font-weight: 600; }
+.twod12-type .application.classwin .cw-btn { min-height: 28px; min-width: 84px; padding: 0 14px; }
+.twod12-type .application.classwin .cw-sec h2 { border-left: 0; background: none; padding: 0 0 2px; border-bottom: 1px solid #8a6d3b; color: ${LIGHT.gold}; }
 .twod12-type .twod12.rolldlg { font-family: "Signika", sans-serif; --cc-title: "Signika", sans-serif; --cc-t2: #e4dd80; --cc-t2i: #423d00; }
 .twod12-type .twod12.rolldlg .rd-name { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
 .twod12-type .twod12.rolldlg .rd-go { border-radius: 2px; }
@@ -198,7 +206,7 @@ const R = {
   older: pick(/\.twod12\.chat\b/).filter(b => !/\.twod12\.chat\.(cc|sysmsg|sysline|action|turnend)\b|\.twod12\.chat \.(ahead|apmark)|\.twod12\.chat > \.ahead/.test(selOf(b))),
   dock: pick(/twod12-dock\b|\.twod12 \.td-/),
   bars: pick(/twod12-(linebar|pickbar)\b/),
-  wins: pick(/\.classwin\b|\.pickwin\b|\.twod12\.rolldlg\b/)
+  wins: pick(/\.classwin\b|\.pickwin\b|\.twod12\.rolldlg\b|\.trhl\b|\.trgrp\b|\.twod12 \.kw-/)
 };
 const BY_HAND = `
 /* ---- by hand: the Action card (the frame, the cost stamps, the Tier table's head, the book links) */
@@ -281,7 +289,13 @@ const BY_HAND = `
 .twod12-dark .application.classwin .cw-foot { background: ${T.pg2}; border-top: 1px solid ${T.rule}; color: ${T.mute}; }
 .twod12-dark .application.classwin .cw-btn { background: transparent; color: ${T.ink}; border: 1px solid #8c7d63; border-radius: 2px; }
 .twod12-dark .application.classwin .cw-btn.primary { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
-.twod12-dark .application.classwin .cw-seg button { background: transparent; color: ${T.ink}; border-color: #8c7d63; }
+.twod12-dark .application.classwin .cw-seg button, .twod12-dark .application.classwin .cw-seg button + button { background: transparent; color: ${T.ink}; border-color: #8c7d63; }
+.twod12-dark .application.classwin .cw-attr > span { color: ${T.ink}; }
+.twod12-dark .application.classwin .cw-sec h2 { border-bottom-color: ${T.rule}; }
+.twod12-dark .trhl { color: var(--tc); background: color-mix(in srgb, var(--tc) 16%, transparent); }
+.twod12-dark .application.classwin .cw-sub { color: ${T.ink}; }
+/* the highlighter's colors on the dark page (the system's own light-on-dark values) */
+.twod12-dark { --g-roll: #5fd3c8; --g-requires: #7db1f5; --g-kind: #f29272; --g-damage: #e8c25a; --g-keywords: #aeb0b5; --c-bane: #ff8f7a; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a; }
 .twod12-dark .application.classwin .cw-seg button[aria-pressed="true"] { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
 .twod12-dark .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
 .twod12-dark .application.classwin .cw-sec h2 { color: ${T.gold}; }
@@ -595,13 +609,21 @@ ${side(`<div class="twod12-dockwrap">${dockOpen}</div><div class="twod12-dockwra
 
 /* ------------------------------------------------------------------ 5. the pick window and the roll dialog (the system's own functions draw them) */
 const PW = await import("../twod12/module/pickwindow.mjs"), RD = await import("../twod12/module/rolldlg.mjs");
+// The system's text highlighter (config.mjs highlightText: Boons, Banes, AP, the traits in their group's color), as it runs with its setting on.
+const CFG = await import("../twod12/module/config.mjs");
+const hl = t => { const g = globalThis.game; globalThis.game = { settings: { get: () => true } }; try { return CFG.highlightText(t).replace(/ data-tooltip="[^"]*"/g, ""); } finally { globalThis.game = g; } };
+// In the build: the pick window's text goes through the highlighter (today it is escaped plain text), and a section with no title draws no heading
+// (today an empty heading leaves a bar and a line at the top of the window). Both are done here on the system's HTML.
+const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const pwFix = (html, text) => html.replace(/<h2>\s*<\/h2>/g, "").replace(text ? esc(text) : "\u0000", text ? hl(text) : "");
 const win = (cls, title, inner, w) => `<div class="mwin" style="width:${w}px"><div class="mwin-head">${title}<span>&times;</span></div><div class="application ${cls}" style="position:static;width:auto"><section class="window-content" style="padding:0;display:flex;flex-direction:column">${inner}</section></div></div>`;
-const pwOne = safe(() => PW.pickWindowHtml({ name: "Greatsword", sub: "one hand", icon: "fa-hand", sections: [{ title: "", sub: "Greatsword is Two-handed and held in one hand: 3 Banes on [Strike, Weapon] Actions.", rows: [{ key: "one", label: "", opts: [{ k: "two", l: "Regrip to two hands (1 AP)", on: true }, { k: "one", l: "Attack with one hand" }, { k: "fists", l: "Use Fists" }] }] }], complete: true, message: "", confirm: "Confirm" }));
-const pwConfirm = safe(() => PW.pickWindowHtml({ name: "Remove Heavy Blows", sub: "", icon: "fa-trash", sections: [{ title: "", html: '<div class="cw-sub pw-text">Remove <b>Heavy Blows</b> from Aveline?</div>' }], message: "", confirm: "Remove" }));
+const T1 = "Greatsword is Two-handed and held in one hand: 3 Banes on [Strike, Weapon] Actions.", T3 = "These came from a pick you changed.";
+const pwOne = safe(() => pwFix(PW.pickWindowHtml({ name: "Greatsword", sub: "one hand", icon: "fa-hand", sections: [{ title: "", sub: T1, rows: [{ key: "one", label: "", opts: [{ k: "two", l: "Regrip to two hands (1 AP)", on: true }, { k: "one", l: "Attack with one hand" }, { k: "fists", l: "Use Fists" }] }] }], complete: true, message: "", confirm: "Confirm" }), T1));
+const pwConfirm = safe(() => pwFix(PW.pickWindowHtml({ name: "Remove Heavy Blows", sub: "", icon: "fa-trash", sections: [{ title: "", html: '<div class="cw-sub pw-text">Remove <b>Heavy Blows</b> from Aveline?</div>' }], message: "", confirm: "Remove" }), ""));
 const pwKeep = safe(() => PW.pickWindowHtml({ name: "Review", sub: "Aveline &middot; level 2", icon: "fa-list-check", sections: [{ title: "Granted by an earlier pick", sub: "These came from a pick you changed.", rows: [["Radiant Zeal", "keep"], ["Searing Blows", "remove"], ["Holy Wrath", "keep"]].map(([l, v]) => ({ key: l, label: l, opts: [{ k: "keep", l: "Keep", on: v === "keep" }, { k: "remove", l: "Remove", on: v === "remove", cls: "neg" }] })) }], message: "1 to remove", confirm: "Apply" }).replace("&amp;middot;", "&middot;"));
 const trt = (key, group, label) => ({ key, group, label, tip: "" });
 const smiteV = (ap, t) => ({ ap, cost: `${ap} AP`, disabled: ap === 3, why: ap === 3 ? "You have 2 AP left" : "", noTiers: false, traits: [trt("signature", "roll", "Signature"), trt("weapon", "roll", "Weapon"), trt("melee", "requires", "Melee"), trt("strike", "kind", "Strike"), trt("divine", "keywords", "Divine")],
-  meta: { targets: "One creature", dist: "Weapon", vs: "AD" }, tiers: t, crit: "", effects: ap >= 2 ? "The target sheds Bright light in a 2 Emanation and takes 1 Bane when they try to Hide, for 1 round." : "" });
+  meta: { targets: "One creature", dist: "Weapon", vs: "AD" }, tiers: t, crit: "", effects: ap >= 2 ? hl("The target sheds Bright light in a 2 Emanation and takes 1 Bane when they try to Hide, for 1 round.") : "" });
 const rdInp = { name: "Smite", flavor: "Your weapon blazes with holy light.", freqLabel: "Round", freqColor: "#185FA5", ap: 2,
   versions: [smiteV(1, { 1: { parts: [{ pool: "M", t: "1d4", sub: "Ho" }] }, 2: { parts: [{ pool: "M", t: "1d6", sub: "Ho" }] }, 3: { parts: [{ pool: "M", t: "2d6", sub: "Ho" }] } }),
     smiteV(2, { 1: { parts: [{ pool: "M", t: "1d6", sub: "Ho" }, { pool: "B", t: "0", sub: "Sl" }] }, 2: { parts: [{ pool: "B", t: "1d8", sub: "Sl" }, { pool: "M", t: "2d6", sub: "Ho" }] }, 3: { parts: [{ pool: "B", t: "2d6", sub: "Sl" }, { pool: "M", t: "2d10", sub: "Ho" }] } }),
@@ -625,6 +647,8 @@ ${wins3(win("twod12 rolldlg", "Smite", rdHtml, 580), "610px")}
 <ul class="notes">
 <li>The window's own title bar is Foundry's (a stand-in here); with the HUD's rank colors it could take the actor's color, as the one-page NPC sheet does. Not proposed for these windows.</li>
 <li><b>The class window itself (the level-up picker) is not drawn:</b> it needs an actor and its class. It shares these rules, so it takes this look; it gets its own mockup with the sheets.</li>
+<li><b>Two small code changes come with this page, both in the pick window:</b> its text goes through the system's highlighter (Banes, Boons, AP and the traits take their colors; today the text is plain), and a section with no title draws no heading (today the empty heading leaves a bar and a line at the top of the window: the "weird bar").</li>
+<li><b>The chosen option has no check mark:</b> the fill says it, and the button keeps its width when it is picked.</li>
 <li>Drawn outside Foundry, a window's spacing can differ a little from the real one (Foundry's own window rules are not here).</li>
 </ul>
 <style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; } .stage:not(.dk) .mwin { box-shadow: 0 4px 14px rgba(0,0,0,.3); }</style>`, R.wins);
