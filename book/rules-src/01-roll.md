@@ -28,7 +28,7 @@ When a d12 shows a **12**, it **explodes**: count that die as **11**, then roll 
 > [!example]
 > You roll a 12 and a 5. The 12 explodes: you count it as 11 and reroll it, getting an 8. The total is 11 + 8 + 5 = **24**, plus your Modifier.
 
-**Some damage dice explode the same way.** A damage die explodes only when a rule says so: a weapon's die (see [[Weapon Damage [W]]]), an NPC's Basic attack, an Action with the [[Exploding]] trait. When it shows its highest face, count that face as **one less**, then roll it again and add the result; it can explode again. A d6 that shows a 6 and then a 4 deals 5 + 4 = 9. Other damage dice (an Action's own dice, a Feature's extra dice) don't explode.
+**Some damage dice explode the same way.** A damage die written with **!** (1d6!) explodes: when it shows its highest face, count that face as **one less**, then roll it again and add the result; it can explode again. A d6! that shows a 6 and then a 4 deals 5 + 4 = 9. Every weapon's die is written with ! (see [[Weapon Damage [W]]]); a die with no ! never explodes.
 
 ## Doubles
 

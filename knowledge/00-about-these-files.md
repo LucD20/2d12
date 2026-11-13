@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 1e7d4ad 2026-11-12 budget.md written again (the area rows fixed); knowledge
+Built by tools/knowledge.py on 2026-11-13 from the repository at: ec56b48 2026-11-13 RULES.empFlat: a measurement switch for Empowered and Enfeebled as a flat amount (off by default; report.md unchanged)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,11 +14,11 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (135 KB)
+- HANDOFF.md (136 KB)
 - MASTER-PLAN.md (36 KB)
 - open-design-items.md (123 KB)
 - rules-01-roll.md (23 KB)
-- rules-02-turns.md (29 KB)
+- rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
 - rules-04-health.md (14 KB)
 - rules-05-characters.md (8 KB)

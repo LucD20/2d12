@@ -23,7 +23,7 @@ RATIO = {1: 0.898, 2: 1.078, 3: 1.203, 4: 1.469, 5: 1.594}
 GROUPS = [("roll", "Roll", ["appeal", "body", "instinct", "mind", "power", "save", "signature", "split", "weapon"]),
           ("requires", "Requires", ["gun", "handle", "melee", "ranged", "shot"]),
           ("kind", "Kind", ["area", "move", "self", "strike"]),
-          ("damage", "Damage", ["exploding", "nonlethal"]),
+          ("damage", "Damage", ["nonlethal"]),
           ("keywords", "Keywords", ["divine", "focus", "fear"])]
 def group_of(k):
     if k.startswith('ht:'): return 'kind'
@@ -114,9 +114,9 @@ KNOWN = ('Frequency', 'Target', 'Distance', 'Area', 'Vs', 'Requirements', 'Prere
 # (the [B] or [M] tag with its dice and numbers; [W] and [Mod] expressions for Body) in the color of its pool, Bane, Boon and Rally Point (with their
 # number), and the words Body, Mind, Instinct and Appeal. Only the expression itself is colored, never what follows it ("Pushed 1", "Prone"). Used by the class documents.
 CLASSY = {'on': False}
-_ATOM = r'(?:\d+d\d+|\d+\[W\]|\[Mod\]|\d+)'
+_ATOM = r'(?:\d+d\d+!?|\d+\[W\]|\[Mod\]|\d+)'
 _EXPR = rf'{_ATOM}(?:\s*[+\-\u2212/]\s*{_ATOM})*'
-_IMPL = r'(?:\d+\[W\]|\[Mod\])(?:\s*\+\s*(?:\d+\[W\]|\[Mod\]|\d+d\d+|\d+))*'
+_IMPL = r'(?:\d+\[W\]|\[Mod\])(?:\s*\+\s*(?:\d+\[W\]|\[Mod\]|\d+d\d+!?|\d+))*'
 CLASS_TOKEN = re.compile(
     rf'(?P<slash>{_ATOM}(?:\s*/\s*{_ATOM})+\s*\[(?P<sp>[BMVR])\])'    # "1d6 / 1d4 / 0 [R]": tier values with the pool after them
     rf'|(?P<tag>\[(?P<tp>[BMVR])\]\s*{_EXPR})'                           # "[V] 1[W] + [Mod]", "[R] 1d6+1" (pack R-core; [B] / [M] still read)

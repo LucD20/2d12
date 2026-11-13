@@ -262,7 +262,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h2 id="exploding-dice">Exploding Dice</h2>
 <p>When a d12 shows a <strong>12</strong>, it <strong>explodes</strong>: count that die as <strong>11</strong>, then roll it again and add the result. If the new roll is a 12, it explodes again.</p>
 <div class="callout example"><div class="ctitle">Example</div><p>You roll a 12 and a 5. The 12 explodes: you count it as 11 and reroll it, getting an 8. The total is 11 + 8 + 5 = <strong>24</strong>, plus your Modifier.</p></div>
-<p><strong>Some damage dice explode the same way.</strong> A damage die explodes only when a rule says so: a weapon's die (see <a class="xref" href="gear.html#weapon-damage-w">Weapon Damage [W</a>]), an NPC's Basic attack, an Action with the <a class="xref" href="#exploding">Exploding</a> trait. When it shows its highest face, count that face as <strong>one less</strong>, then roll it again and add the result; it can explode again. A d6 that shows a 6 and then a 4 deals 5 + 4 = 9. Other damage dice (an Action's own dice, a Feature's extra dice) don't explode.</p>
+<p><strong>Some damage dice explode the same way.</strong> A damage die written with <strong>!</strong> (1d6!) explodes: when it shows its highest face, count that face as <strong>one less</strong>, then roll it again and add the result; it can explode again. A d6! that shows a 6 and then a 4 deals 5 + 4 = 9. Every weapon's die is written with ! (see <a class="xref" href="gear.html#weapon-damage-w">Weapon Damage [W</a>]); a die with no ! never explodes.</p>
 <h2 id="doubles">Doubles</h2>
 <p>If both d12s show the <strong>same number</strong> (before explosions), the result moves <strong>up one tier</strong>: Failure becomes Marginal Success, and Marginal Success becomes Full Success. Full Success can't go higher: it becomes a <strong>Critical</strong> instead (see below).</p>
 <p>A <strong><span class="kw-neg">Doomed</span></strong> roll can't produce Doubles. On a <strong><span class="kw-pos">Favored</span></strong> roll, any two of the three dice that match are Doubles (see <a class="xref" href="#favored-and-doomed-rolls"><span class="kw-pos">Favored</span> and <span class="kw-neg">Doomed</span> Rolls</a>).</p>
@@ -766,10 +766,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </ul>
 <p><strong>Raising Defenses.</strong> "+1 Defense" raises <strong>every</strong> Defense of the creature: Armor Defense, Ward Defense and every Vs. Attribute. "+1 AD", "+1 WD" or "+1 Defense vs <span class="at-body">Body</span>" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see <a class="xref" href="#stacking">Stacking</a>).</p>
 <h4 id="stacking">Stacking</h4>
-<p>The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (<span class="kw-pos">Empowered</span>, <span class="kw-neg">Enfeebled</span>, <span class="kw-neg">Vulnerable</span>, a Defense, <a class="xref" href="#guard">Guard</a>...), a creature uses only the <strong>highest bonus</strong> and the <strong>highest penalty</strong> that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it <span class="kw-neg">Enfeebled 1</span> do not make it <span class="kw-neg">Enfeebled 2</span>.</p>
+<p>The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (<span class="kw-neg">Vulnerable</span>, Slowed, a Defense, <a class="xref" href="#guard">Guard</a>...), a creature uses only the <strong>highest bonus</strong> and the <strong>highest penalty</strong> that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it <span class="kw-neg">Vulnerable 1</span> do not make it <span class="kw-neg">Vulnerable 2</span>.</p>
 <p>Five things do add up:</p>
 <ul>
-<li>An effect that says it <strong>increases</strong> a value: "increase your <span class="kw-neg">Enfeebled</span> value by 1" (an Action that says "increase your <span class="kw-pos">Empowered</span> value by 1" adds to the <span class="kw-pos">Empowered</span> you have).</li>
+<li>An effect that says it <strong>increases</strong> a value: "increase your Slowed value by 1" adds to the Slowed you have.</li>
 <li><strong><span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span></strong>, up to the limit of their name (see <a class="xref" href="#named-boons-and-banes">Named <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span></a>).</li>
 <li><strong>Named bonuses.</strong> A bonus to a value such as a Defense or a Speed can have a name, as <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span> do: Field, Pressure or Support. Bonuses with different names add up; with the same name, only the highest counts. An unnamed bonus never adds to another bonus: it counts only when it is higher than the named ones together.</li>
 <li>An effect that <strong>increases</strong> your <a class="xref" href="#slowed">Slowed</a> value (being Desperate, Dying or Shattered).</li>
@@ -1353,7 +1353,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>An Action's damage can come in several <strong>instances</strong>: each part with its own pool and damage type is one instance. "<span class="pool-b">[V] 1[W] + [Mod]</span> + <span class="pool-m">[R] 2d8</span> <span class="dcode" style="--dc:#b8921c">Ho</span>" deals two: the weapon's damage with your Modifier (Vigor, the weapon's type), and 2d8 <span class="dmgword" style="--dc:#b8921c">Holy</span> (Resolve). Each [W] is its own instance (2[W] is two, see the <a class="xref" href="gear.html#gear">Gear</a> document), and extra damage from another effect, such as Divine Surge's 1d8, is its own instance. Each target takes its own instances. Rules that count instances, such as Hallowed Stance ("one instance of damage per Action"), count them this way.</p>
 <h3 id="lethal-and-nonlethal">Lethal and Nonlethal</h3>
 <p>Actions deal <strong>Lethal</strong> damage by default. Actions with the <strong>Nonlethal</strong> trait deal <strong>Nonlethal</strong> damage by default. A <span class="trhl" style="--tc:var(--g-damage)">Nonlethal</span> Action can deal Lethal damage by taking a <span class="kw-bane">Bane</span>, and a Lethal Action can deal Nonlethal damage by taking a <span class="kw-bane">Bane</span> as well.</p>
-<p>How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in <a class="xref" href="#roll-effects">Roll Effects</a>. <span class="kw-pos">Empowered</span> and <span class="kw-neg">Enfeebled</span>, which change the dice of damage, are in <a class="xref" href="#chapter-8-conditions">Conditions</a>.</p>
+<p>How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in <a class="xref" href="#roll-effects">Roll Effects</a>. <span class="kw-pos">Empowered</span>, which adds a die to your damage, is in <a class="xref" href="#chapter-8-conditions">Conditions</a>.</p>
 <h2 id="going-down">Going Down</h2>
 <p>When your total damage equals or goes above your Health Pool, you are <strong><span class="kw-neg">Down</span></strong>. Follow these steps in order:</p>
 <ol>
@@ -1802,8 +1802,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="body-mind-appeal-and-instinct">Body, Mind, Appeal and Instinct</h3>
 <p>An Action with one of these traits rolls that Attribute Modifier. A <span class="at-body">Body</span> Action rolls <span class="at-body">Body</span>, and so on. Some effects care about them, for example "your <span class="at-body">Body</span> Actions gain <span class="kw-boon">1 Boon</span>".</p>
 <p>When an Action has <strong>more than one</strong> of these traits, you roll the one with the <strong>highest</strong> value. The Action still has all of them: Trip is a <span class="at-body">Body</span> Action and an <span class="at-instinct">Instinct</span> Action, whichever it rolls. If the Action has a Vs. entry that says "the one used to roll," that Attribute is also the Defense: if you roll <span class="at-body">Body</span>, you roll against <span class="at-body">Body</span>.</p>
-<h3 id="exploding">Exploding</h3>
-<p>The Action's damage dice explode (see <a class="xref" href="#exploding-dice">Exploding Dice</a>): a die that shows its highest face counts as one less and is rolled again. A weapon's die and an NPC's Basic attack explode without this trait.</p>
 <h3 id="fear">Fear</h3>
 <p>The Fear trait has no rules of its own. Other rules, Talents and Tags refer to it.</p>
 <h3 id="focus">Focus</h3>
@@ -1853,10 +1851,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="dazed">Dazed</h3>
 <p>Dazed always has a value, such as <strong>Dazed 1</strong>. When you become Dazed, you lose that many AP right away (never your Reaction AP). If you have fewer AP than the value, you lose the AP you have, and the rest is taken from the AP you regain at the start of your next turn; then Dazed ends. Dazed is the condition that takes AP now; <a class="xref" href="#slowed">Slowed</a> takes them on your next turn.</p>
 <h3 id="empowered">Empowered</h3>
-<p><strong><span class="kw-pos">Empowered</span> N</strong> adds N to every die of the damage: with <span class="kw-pos">Empowered 1</span>, a d6 deals 1 more, and 2d6 deals 2 more. Flat numbers, and damage with no dice, don't change. A die that explodes gains N once, not again for each time it is rolled.</p>
+<p>The first time you deal damage on each of your turns, add <strong>1d6!</strong> to it (see <a class="xref" href="#exploding-dice">Exploding Dice</a>). The die deals the same kind of damage as the Action (its pool and its type). If the Action damages several creatures, you choose which one takes it. <span class="kw-pos">Empowered</span> has no value: you are <span class="kw-pos">Empowered</span> or you aren't, and being <span class="kw-pos">Empowered</span> twice changes nothing.</p>
+<div class="callout tbd"><div class="ctitle">To be decided</div><p>The die grows at later Stages (with those Stages' numbers).</p></div>
 <h3 id="enfeebled">Enfeebled</h3>
-<p><strong><span class="kw-neg">Enfeebled</span> N</strong> is the opposite: it subtracts N from every die of the damage, but each die still deals at least 1. <span class="kw-neg">Enfeebled</span> always has a value.</p>
-<p>A creature uses one <span class="kw-pos">Empowered</span> value and one <span class="kw-neg">Enfeebled</span> value, the highest of each (see <a class="xref" href="#stacking">Stacking</a>). Subtract the <span class="kw-neg">Enfeebled</span> value from the <span class="kw-pos">Empowered</span> value, and the result applies to every die of every instance of damage the Action deals. For example, a Reload Shot makes a Strike <span class="kw-pos">Empowered 2</span>, and a Fear effect makes the same creature <span class="kw-neg">Enfeebled 1</span>: the Strike is <span class="kw-pos">Empowered 1</span>.</p>
+<p><strong><span class="kw-neg">Enfeebled</span> N</strong> subtracts N from every die of the damage, but each die still deals at least 1.</p>
+<div class="callout tbd"><div class="ctitle">To be decided</div><p><span class="kw-neg">Enfeebled</span> is being removed (Lucas, 2026-11-13). Divine Power and Hallowed Dawn still use it until their cards are rewritten.</p></div>
 <h3 id="exhausted">Exhausted</h3>
 <p>Exhausted always has a value, such as <strong>Exhausted 2</strong>. While you are Exhausted:</p>
 <ul>
@@ -2056,7 +2055,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#exploding-dice"><strong>Exploding</strong></a></td>
-<td>A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die counts its highest face as one less, and explodes only for a weapon's die, an NPC's Basic attack and an Action with the Exploding trait.</td>
+<td>A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die written with ! (1d6!) counts its highest face as one less; every weapon's die is one.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#the-basic-attack"><strong>Basic attack</strong></a></td>
@@ -2168,7 +2167,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#empowered"><strong><span class="kw-pos">Empowered</span></strong></a></td>
-<td>Adds its value to every damage die (<span class="kw-pos">Empowered 1</span>: 1 more per die).</td>
+<td>The first time you deal damage on each of your turns, add 1d6! to it. No value.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#frequency"><strong>Encounter</strong></a></td>
@@ -2176,7 +2175,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#enfeebled"><strong><span class="kw-neg">Enfeebled</span></strong></a></td>
-<td>Subtracts its value from every damage die; each die still deals at least 1.</td>
+<td>Subtracts its value from every damage die; each die still deals at least 1. Being removed.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#engaged"><strong>Engaged</strong></a></td>
@@ -2476,7 +2475,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#card-reload"><strong>Reload Shot</strong></a></td>
-<td>A <span class="kw-pos">Favored</span> and <span class="kw-pos">Empowered 2</span> shot with a Reload weapon.</td>
+<td>A <span class="kw-pos">Favored</span> and <span class="kw-pos">Empowered</span> shot with a Reload weapon.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#reposition"><strong>Reposition</strong></a></td>
@@ -2713,7 +2712,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tbody>
 </table></div></div></details></section>
 <div class="part">Appendix</div>
-<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#line-of-effect">Line of Effect</a>: Targeting walls and objects (and the Breach trait, to hit a creature behind a wall you break) is not written yet.</li><li><a href="#other-areas">Other areas</a>: Cones are not written yet (and Lines wider than 1 square).</li><li><a href="#senses">Senses</a>: Hiding and sneaking are not written yet.</li><li><a href="#wounds-and-the-tables">Wounds and the Tables</a>: The entries of the Dying and Shattered Tables are placeholders.</li><li><a href="#talents">Talents</a>: The Talents are set aside for now: none is in the book while the first three levels of the classes are finished. <strong>Every Talent slot stays empty</strong> until they are written again (the Skill Talents come with the Skills rules).</li><li><a href="#stages">Stages</a>: Only Stage 0 is written so far: the classes' levels 4 and above, their Health steps for Stages 1, 2 and 3, and the Bestiary's later tables come after it.</li><li><a href="#tags">Tags</a>: The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
+<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#line-of-effect">Line of Effect</a>: Targeting walls and objects (and the Breach trait, to hit a creature behind a wall you break) is not written yet.</li><li><a href="#other-areas">Other areas</a>: Cones are not written yet (and Lines wider than 1 square).</li><li><a href="#senses">Senses</a>: Hiding and sneaking are not written yet.</li><li><a href="#wounds-and-the-tables">Wounds and the Tables</a>: The entries of the Dying and Shattered Tables are placeholders.</li><li><a href="#talents">Talents</a>: The Talents are set aside for now: none is in the book while the first three levels of the classes are finished. <strong>Every Talent slot stays empty</strong> until they are written again (the Skill Talents come with the Skills rules).</li><li><a href="#stages">Stages</a>: Only Stage 0 is written so far: the classes' levels 4 and above, their Health steps for Stages 1, 2 and 3, and the Bestiary's later tables come after it.</li><li><a href="#tags">Tags</a>: The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.</li><li><a href="#empowered">Empowered</a>: The die grows at later Stages (with those Stages' numbers).</li><li><a href="#enfeebled">Enfeebled</a>: Enfeebled is being removed (Lucas, 2026-11-13). Divine Power and Hallowed Dawn still use it until their cards are rewritten.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.getAttribute('href').slice(1));openUp(t);}));
 window.addEventListener('hashchange',()=>openUp(document.getElementById(location.hash.slice(1))));

@@ -4,19 +4,19 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
-| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 23.1 | 307 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 28.4 | 304 |
+| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 23.0 | 307 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 28.3 | 304 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 38.9 | 450 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.0 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.4 | 101 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 41 |
-| 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.8 | 99 |
-| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.7 | 113 |
+| 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.6 | 95 |
+| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.6 | 117 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 26.3 | 200 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.3 | 126 |
 | 13-archer.md | Archer | archer |  | 4.5 | 134 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 31.7 | 455 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 31.8 | 455 |
 | 15-gear.md | Gear | gear |  | 11.0 | 185 |
 
 ## 01-roll.md: Chapter 1: The Roll
@@ -186,26 +186,25 @@ Action cards: Advance (6, Basic Action, At-will); Charge (8, Basic Action, Round
 
 - 6:   ### Area
 - 10:   ### Body, Mind, Appeal and Instinct
-- 16:   ### Exploding
-- 20:   ### Fear
-- 24:   ### Focus
-- 28:   ### Gun
-- 32:   ### Handle
-- 36:   ### Melee
-- 40:   ### Move
-- 48:   ### Nonlethal
-- 52:   ### Power
-- 56:   ### Ranged
-- 60:   ### Save
-- 64:   ### Self
-- 68:   ### Shot
-- 72:   ### Signature
-- 76:   ### Split
-- 80:   ### Strike
-- 84:   ### Weapon
-- 92:   ### Tags
+- 16:   ### Fear
+- 20:   ### Focus
+- 24:   ### Gun
+- 28:   ### Handle
+- 32:   ### Melee
+- 36:   ### Move
+- 44:   ### Nonlethal
+- 48:   ### Power
+- 52:   ### Ranged
+- 56:   ### Save
+- 60:   ### Self
+- 64:   ### Shot
+- 68:   ### Signature
+- 72:   ### Split
+- 76:   ### Strike
+- 80:   ### Weapon
+- 88:   ### Tags
 
-Open (to be decided) boxes: 96: "The list of Tags (Profane, Beast, Undead...) and what each one covers "
+Open (to be decided) boxes: 92: "The list of Tags (Profane, Beast, Undead...) and what each one covers "
 
 ## 08-conditions.md: Chapter 8: Conditions
 
@@ -213,20 +212,22 @@ Open (to be decided) boxes: 96: "The list of Tags (Profane, Beast, Undead...) an
 - 12:   ### Blinded
 - 16:   ### Dazed
 - 21:   ### Empowered
-- 25:   ### Enfeebled
-- 31:   ### Exhausted
-- 49:   ### Frightened
-- 53:   ### Grabbed
-- 57:   ### Hindered
-- 61:   ### Immobilized
-- 73:   ### Imperiled
-- 82:   ### Prone
-- 88:   ### Quickened
-- 92:   ### Sickened
-- 96:   ### Slowed
-- 102:   ### Staggered
-- 106:   ### Taunted
-- 110:   ### Vulnerable
+- 28:   ### Enfeebled
+- 35:   ### Exhausted
+- 53:   ### Frightened
+- 57:   ### Grabbed
+- 61:   ### Hindered
+- 65:   ### Immobilized
+- 77:   ### Imperiled
+- 86:   ### Prone
+- 92:   ### Quickened
+- 96:   ### Sickened
+- 100:   ### Slowed
+- 106:   ### Staggered
+- 110:   ### Taunted
+- 114:   ### Vulnerable
+
+Open (to be decided) boxes: 25: "The die grows at later Stages (with those Stages' numbers)."; 32: "Enfeebled is being removed (Lucas, 2026-11-13). Divine Power and Hallo"
 
 ## 09-glossary.md: Chapter 9: Glossary
 

@@ -74,9 +74,11 @@ export function rollerConditionMods({ frightened = false, taunted = false, again
 /**
  * A damage die that explodes (Ch. 1, Exploding Dice; Lucas, 2026-11-12): its top face counts as one less and it is rolled again, as a 12 does on the
  * 2d12 (every die gains 0.5 on average). rollFace(sides) rolls one die. A PC's weapon die ([W]) explodes; a Standard's or an Elite's Basic attack and an
- * Action with the Exploding trait do; a Minor enemy's dice never (explodes()).
+ * Action that writes its die with ! (1d6!) do; a Minor enemy's dice never (explodes()).
  */
 export function explodingDie(rollFace, sides) { let f = rollFace(sides), t = 0; while (sides > 1 && f === sides) { t += sides - 1; f = rollFace(sides); } return t + f; }
+/** Empowered (Ch. 8; Lucas, 2026-11-13): the first time a creature deals damage on each of its turns it adds this die, exploding (1d6!). No value. */
+export const EMPOWERED_DIE = 6;
 export const npcDieExplodes = (rank, { basic = false, trait = false } = {}) => rank !== "minion" && rank !== "grunt" && (!!basic || !!trait);
 /** Vulnerable N (Ch. 8): Actions against the creature gain N Boons (only the highest value counts). */
 export const vulnerableBoons = n => Math.max(0, Math.trunc(Number(n)) || 0);

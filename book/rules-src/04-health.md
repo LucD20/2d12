@@ -38,7 +38,7 @@ An Action's damage can come in several **instances**: each part with its own poo
 
 Actions deal **Lethal** damage by default. Actions with the **Nonlethal** trait deal **Nonlethal** damage by default. A Nonlethal Action can deal Lethal damage by taking a Bane, and a Lethal Action can deal Nonlethal damage by taking a Bane as well.
 
-How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in [[Roll Effects]]. Empowered and Enfeebled, which change the dice of damage, are in [[Chapter 8: Conditions|Conditions]].
+How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in [[Roll Effects]]. Empowered, which adds a die to your damage, is in [[Chapter 8: Conditions|Conditions]].
 
 ## Going Down
 

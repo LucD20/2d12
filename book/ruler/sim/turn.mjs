@@ -26,7 +26,7 @@ export const hasDamage = d => d.dice.length + d.w + d.flat + d.mod > 0;
  * others(n): other enemies (an area, a different target), heal(pc, n), defend(pc, n, who) }. Returns { damage, ap, strikes, problems }.
  */
 export function runTurn(pc, turn, ctx) {
-  const b = pc.build, R = ctx.R, st = { next: [...(ctx.startNext ?? [])], turnFx: [], atWill: {}, used: new Set() }, res = { damage: 0, counted: 0, mind: 0, ap: 0, strikes: 0, problems: [], missed: [], lostAP: 0, lastTier: 0 };
+  const b = pc.build, R = ctx.R, st = { next: [...(ctx.startNext ?? [])], turnFx: [], atWill: {}, used: new Set(), empUsed: !!ctx.noEmp }, res = { damage: 0, counted: 0, mind: 0, ap: 0, strikes: 0, problems: [], missed: [], lostAP: 0, lastTier: 0 };
   // Escalation is a resource (the book, Escalation): an Active spends what it costs; a passive works while you have at least its number.
   pc.esc ??= ctx.escalation ?? 3;
   const passives = () => b.passives.filter(p => pc.esc >= p.escalation);
@@ -128,10 +128,12 @@ export function runTurn(pc, turn, ctx) {
       if (dmg && (dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && hasDamage(weaponTier(b.weapon, tier))))) {   // 1[W] of a weapon that deals 0 on this tier is no damage (and no extra)
         const kb = b.keepBest && b.keepBest.traits.every(x => traits.includes(x)) ? b.keepBest.n : 0;
         // RULES.empFlat (a measurement, off; Lucas, 2026-11-13): Empowered and Enfeebled with no value: a damaging Action deals that much more or less, once (at least 1), nothing per die.
-        const ef = RULES.empFlat ? Math.sign(emp - (sm?.enf ?? 0)) * RULES.empFlat : 0, perDie = RULES.empFlat ? 0 : emp;
+        const ef = RULES.empFlat ? Math.sign(emp - (sm?.enf ?? 0)) * RULES.empFlat : 0, perDie = RULES.empFlat || RULES.empDie ? 0 : emp;
         let total = rollDamage(R, dmg, { weapon: b.weapon, tier, mod, empowered: perDie - (RULES.empFlat ? 0 : (sm?.enf ?? 0)), keepBest: kb }).total, mindT = total * mindShare(dmg, b.weapon, tier, mod);
         for (const x of extra) { const v = rollDamage(R, x, { mod, empowered: perDie }).total; total += v; mindT += v * mindShare(x, b.weapon, tier, mod); }
         if (ef && total > 0) total = Math.max(1, total + ef);
+        // RULES.empDie (the book since 2026-11-13): Empowered has no value: the first damage of the turn adds one exploding die (roundrules.mjs EMPOWERED_DIE). Not on a Reaction (ctx.noEmp).
+        if (RULES.empDie && emp > 0 && !st.empUsed && total > 0) { st.empUsed = true; total += RR.explodingDie(n => 1 + Math.floor(R() * n), RULES.empDie) * b.dmgScale; }
         total = (total + bonus) * b.dmgScale; mindT *= b.dmgScale;
         land(total, mindT); res.damage += total;
         if (total > 0) ctx.onDamage?.(pc, t, total);   // pack R-classes: Reactions to an ally's damage (Call the Shot)

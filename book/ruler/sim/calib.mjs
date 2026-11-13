@@ -30,7 +30,7 @@ log("yardstick");
 /* ---------------------------------------------------------------- 2. conditions */
 const CONDS = [
   ["mild", "Hindered (EoT)"], ["mild", "Pressure Bane (next roll)"], ["mild", "Taunted"], ["mild", "Bleed 2"],
-  ["moderate", "Staggered (EoT)"], ["moderate", "Vulnerable 1"], ["moderate", "Immobilized (EoT)"], ["moderate", "Immobilized"], ["moderate", "Enfeebled 1"], ["moderate", "Dazed 1"], ["moderate", "Bleed 1d4"], ["moderate", "Frightened (EoT)"],
+  ["moderate", "Staggered (EoT)"], ["moderate", "Vulnerable 1"], ["moderate", "Immobilized (EoT)"], ["moderate", "Immobilized"], ["moderate", "Dazed 1"], ["moderate", "Bleed 1d4"], ["moderate", "Frightened (EoT)"],
   ["severe", "Prone"], ["severe", "Slowed 1"], ["severe", "Vulnerable 2"], ["severe", "Doomed (next roll)"], ["severe", "Blinded (EoT)"],
   ["beyond", "Slowed 2"], ["beyond", "Dazed 2"], ["beyond", "Bleed 2d6"],
 ];

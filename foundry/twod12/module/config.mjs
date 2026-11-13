@@ -200,7 +200,7 @@ export const TWOD12 = {
     { key: "roll", label: "Roll", traits: ["appeal", "body", "instinct", "magic", "mind", "save", "signature", "split", "weapon"] },
     { key: "requires", label: "Requires", traits: ["gun", "handle", "melee", "ranged", "shot"] },
     { key: "kind", label: "Kind", traits: ["area", "move", "self", "strike"] },
-    { key: "damage", label: "Damage", traits: ["exploding", "nonlethal"] },
+    { key: "damage", label: "Damage", traits: ["nonlethal"] },
     { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear"] }
   ],
   // The Bestiary (book: bestiary.html; v0.0.163, refit by E3 in v0.0.181, re-fitted to pack R by R-bestiary in v0.0.240: book/ruler/bestiary-r.json): an NPC is a role plus a rating for each number.
@@ -238,7 +238,7 @@ export const TWOD12 = {
   // book/ruler/sim/calib.mjs, reported in book/ruler/budget.md). Points are damage: toDamage turns them into Tier 2 / Tier 3 averages (a Medium
   // Standard's Basic attack is 25 points: 3.5 / 5.5). perAp: a rank's points an AP at Medium (its Basic attack), times rating; turnAp: how many AP its
   // turn budget counts; size: the premium of a 2 AP and a 3 AP Action; round: the Round premium; encounter: an Encounter Action is this times the Round
-  // one; over: how far a best turn may go over the budget; riders: the flat price of a rider (Setup one size up, Tier 3 only one size down); explode: the price of the Exploding trait on an
+  // one; over: how far a best turn may go over the budget; riders: the flat price of a rider (Setup one size up, Tier 3 only one size down); explode: the price of an exploding die (written 1d6!) on an
   // Action that is not the Basic attack; multi: an Action that hits several creatures deals this share to each (multiEnc: an Encounter one); reaction.give: the share of a Reaction's points (a cost-AP Round Action's) that
   // comes off the creature's turn (self: a Reaction to being hit; other: to an ally or a movement; twoR: a 2R one, which keeps an AP instead);
   // payBack: by an Encounter Action's AP, the share of their points every other Action of the creature loses; help: a Boon on an ally's next attack, and a point

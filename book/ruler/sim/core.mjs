@@ -62,7 +62,7 @@ export const RULES_R = { ap: TW.apPerTurn, reactionAp: TW.reactionAp, escalation
  */
 /** The weapon table before Stage 0 (Chapter 15 until 2026-11-12), for the builds' weapons: read when RULES.weapons is "r". */
 export const WEAPONS_R = { Greatsword: "0 / 1d8 / 2d6", Crossbow: "0 / 1d4+2 / 1d10+2" };
-export const RULES_BOOK = { ...RULES_R, explode: "all", weapons: "book", oaAll: RR.BASIC_OPPORTUNITY_ATTACK, npcOa: RR.BASIC_OPPORTUNITY_ATTACK, engagedRanged: RR.ENGAGED_RANGED_DOOMED ? "doomed" : "banes" };
+export const RULES_BOOK = { ...RULES_R, explode: "all", empDie: RR.EMPOWERED_DIE, weapons: "book", oaAll: RR.BASIC_OPPORTUNITY_ATTACK, npcOa: RR.BASIC_OPPORTUNITY_ATTACK, engagedRanged: RR.ENGAGED_RANGED_DOOMED ? "doomed" : "banes" };
 export const RULES_S0 = { ...RULES_BOOK, escMax: RR.ESC_LADDER_MAX, momentum: "ladder", eliteMax: RR.ESC_LADDER_MAX, eliteRungs: RR.ELITE_RUNGS_LADDER, minionSquad: RR.MINION_SQUAD };   // eliteMax / eliteRungs (Lucas, 2026-11-12): an Elite's Escalation follows the 1-to-6 ladder; its three abilities at 2, 4 and 6 until it gets its own
 export const RULES = { ...RULES_BOOK };
 /** Guard per unused AP for a PC of this level (apGuard "stage": the book's 2 / 3 / 4 by Stage; a number: that much). */

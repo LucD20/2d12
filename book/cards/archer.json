@@ -444,7 +444,7 @@
    "versions": [
     {
      "ap": 1,
-     "effects": "For the rest of the encounter, against your Marked Quarry (a new Marked Quarry when you choose one): you gain 1 Boon and Empowered 1 against them, and you take less damage from each of their Actions, reduced by your **Signature Modifier** (you choose which instance of its damage is reduced).",
+     "effects": "For the rest of the encounter, against your Marked Quarry (a new Marked Quarry when you choose one): you gain 1 Boon and are Empowered against them, and you take less damage from each of their Actions, reduced by your **Signature Modifier** (you choose which instance of its damage is reduced).",
      "foundry": {
       "fx": {
        "all": [

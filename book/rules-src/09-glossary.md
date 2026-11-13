@@ -33,7 +33,7 @@
 | [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
 | [[Class Actions, Picks and the Repertoire\|**Pick**]] | One choice from a class's Repertoire; the level list says how many you take and from which list. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
-| [[Exploding Dice\|**Exploding**]] | A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die counts its highest face as one less, and explodes only for a weapon's die, an NPC's Basic attack and an Action with the Exploding trait. |
+| [[Exploding Dice\|**Exploding**]] | A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die written with ! (1d6!) counts its highest face as one less; every weapon's die is one. |
 | [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with its rank's points an AP (see Points into damage: a flat number plus at most one small die, nothing added). |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
@@ -61,9 +61,9 @@
 | [[Going Down\|**Down**]] | Your total damage equals or goes above your Health Pool. |
 | [[Playing on the Grid\|**Elevation**]] | Squares up or down count like a diagonal: the larger count plus half the smaller one. A creature is as tall as it is wide. |
 | [[Elites\|**Elite**]] | An NPC rank with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase). |
-| [[Empowered\|**Empowered**]] | Adds its value to every damage die (Empowered 1: 1 more per die). |
+| [[Empowered\|**Empowered**]] | The first time you deal damage on each of your turns, add 1d6! to it. No value. |
 | [[Frequency\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
-| [[Enfeebled\|**Enfeebled**]] | Subtracts its value from every damage die; each die still deals at least 1. |
+| [[Enfeebled\|**Enfeebled**]] | Subtracts its value from every damage die; each die still deals at least 1. Being removed. |
 | [[Engaged\|**Engaged**]] | You are adjacent to an enemy and both of you can be Engaged, whatever you perceive. Other rules use it. |
 | [[End of Turn\|**EoT**]] | Until the end of the turn of the affected creature. |
 | [[Escalation\|**Escalation**]] | A PC's adrenaline, a level from 1 to 6, never spent: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough. |
@@ -138,7 +138,7 @@
 | [[Chapter 6: Basic Actions\|**Regrip**]] | The Basic Action (1 AP, no Handle) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands. |
 | [[Chapter 6: Basic Actions\|**Release**]] | 0 AP: drop an object, or let go of it with one hand. |
 | [[Reload\|**Reload**]] | A weapon property: a Reload Shot needs a reload afterwards. |
-| [[Reload\|**Reload Shot**]] | A Favored and Empowered 2 shot with a Reload weapon. |
+| [[Reload\|**Reload Shot**]] | A Favored and Empowered shot with a Reload weapon. |
 | [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value. Not Forced Movement: it never passes through creatures, never enters hazards, and needs Line of Effect. |
 | [[Requirements\|**Requirements**]] | What you need to use an Action. |
 | [[Rest\|**Rest**]] | A day in a safe place. It includes a Sleep. |

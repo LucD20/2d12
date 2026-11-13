@@ -18,13 +18,17 @@ Dazed always has a value, such as **Dazed 1**. When you become Dazed, you lose t
 
 ### Empowered
 
-**Empowered N** adds N to every die of the damage: with Empowered 1, a d6 deals 1 more, and 2d6 deals 2 more. Flat numbers, and damage with no dice, don't change. A die that explodes gains N once, not again for each time it is rolled.
+The first time you deal damage on each of your turns, add **1d6!** to it (see [[Exploding Dice]]). The die deals the same kind of damage as the Action (its pool and its type). If the Action damages several creatures, you choose which one takes it. Empowered has no value: you are Empowered or you aren't, and being Empowered twice changes nothing.
+
+> [!tbd]
+> The die grows at later Stages (with those Stages' numbers).
 
 ### Enfeebled
 
-**Enfeebled N** is the opposite: it subtracts N from every die of the damage, but each die still deals at least 1. Enfeebled always has a value.
+**Enfeebled N** subtracts N from every die of the damage, but each die still deals at least 1.
 
-A creature uses one Empowered value and one Enfeebled value, the highest of each (see [[Stacking]]). Subtract the Enfeebled value from the Empowered value, and the result applies to every die of every instance of damage the Action deals. For example, a Reload Shot makes a Strike Empowered 2, and a Fear effect makes the same creature Enfeebled 1: the Strike is Empowered 1.
+> [!tbd]
+> Enfeebled is being removed (Lucas, 2026-11-13). Divine Power and Hallowed Dawn still use it until their cards are rewritten.
 
 ### Exhausted
 

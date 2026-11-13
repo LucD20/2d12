@@ -103,7 +103,7 @@ You spend the points on what the creature does: damage, conditions, Forced Movem
 
 ### The Basic attack
 
-Every NPC has one **Basic attack**: 1 AP, At-will, its rank's points an AP. It is usually a Weapon Action Vs. AD that deals [V], or a Power Action Vs. WD that deals [R] (see [[What an Action attacks, rolls and damages]]). Tier 1 deals nothing. **Its damage die explodes** (see [[Exploding Dice]]), except a Minion's or a Grunt's: **a Minor enemy's dice never explode.** The weapon in its hands is only what the attack looks like. **A Basic attack is not always damage only:** it can carry a cheap rider (a Push 1, a Mild condition) and keep most of its damage.
+Every NPC has one **Basic attack**: 1 AP, At-will, its rank's points an AP. It is usually a Weapon Action Vs. AD that deals [V], or a Power Action Vs. WD that deals [R] (see [[What an Action attacks, rolls and damages]]). Tier 1 deals nothing. **Its damage die explodes: write it with !** (1 + 1d4!; see [[Exploding Dice]]), except a Minion's or a Grunt's: **a Minor enemy's dice never explode.** The weapon in its hands is only what the attack looks like. **A Basic attack is not always damage only:** it can carry a cheap rider (a Push 1, a Mild condition) and keep most of its damage.
 
 **NPCs have no Weapon Attack.** Their Basic attack takes its place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (1A) at the end of a Charge, for example), an NPC uses its Basic attack.
 
@@ -126,7 +126,7 @@ A Medium Standard's prices:
 | **2 AP** | 50 | 55 | 110 |
 | **3 AP** | 79 | 86 | 173 |
 
-**The Exploding trait** on any other Action of a Standard or an Elite costs **6 points** (its damage dice explode).
+**An exploding die (!) on any other Action** of a Standard or an Elite costs **6 points**.
 
 **Frequency is apart from AP:** any AP cost can be At-will, Round or Encounter. A 2 AP Action needs no premium of its own: it is already better than two Basic attacks, the second of which takes the At-will Bane. Two different 1 AP At-will Actions don't take the At-will Bane from each other, so the GM can alternate them.
 
@@ -142,7 +142,7 @@ A Medium Standard's prices:
 
 ### Points into damage
 
-The damage of an Action is the points left after its riders (below). The table writes them as a flat number plus at most one small die; between two rows, take the nearer one.
+The damage of an Action is the points left after its riders (below). The table writes them as a flat number plus at most one small die; between two rows, take the nearer one. Add the **!** to the die where it explodes (a Standard's or an Elite's Basic attack; another Action that paid for it).
 
 | Points | Tier 2 / Tier 3 | | Points | Tier 2 / Tier 3 |
 |---:|---|---|---:|---|
@@ -170,7 +170,7 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | Rider | Price | Examples |
 |---|---:|---|
 | **Forced Movement 1** | 2 | Pushed, Pulled or Slid 1 |
-| **Mild** | 3 | Hindered (EoT); 1 Pressure Bane on its next roll; Doomed on its next roll; Taunted (1 round); Frightened (EoT); Staggered (EoT); Vulnerable 1 (EoT); Immobilized (EoT); Enfeebled 1; Sickened 1; Bright light on it (it can't hide) |
+| **Mild** | 3 | Hindered (EoT); 1 Pressure Bane on its next roll; Doomed on its next roll; Taunted (1 round); Frightened (EoT); Staggered (EoT); Vulnerable 1 (EoT); Immobilized (EoT); Sickened 1; Bright light on it (it can't hide) |
 | **Moderate** | 6 | Prone; Slowed 1; Dazed 1; Blinded (EoT); Vulnerable 2 (EoT); Immobilized until it escapes; Grabbed; Bleed 1; **Forced Movement 2** |
 | **Severe** | 12 | Slowed 2; Dazed 2; Bleed 2, Bleed 1d4 or 1d6; **Forced Movement 3 or more** |
 | **Beyond Severe** | 18 a step | Bleed 2d6 (30) |
@@ -240,7 +240,7 @@ Most NPC Actions should do more than damage. As guidance, from most to least com
 Add the points of the most it can do in one turn: its AP (4, or 3), at most 3 Strikes, each Round Action once, **without its Encounter Action** (the pay-back covers that turn). It should be within its turn budget, or up to **15% over**. A turn of Basic attacks only, or with only a 1 AP Special, is well under the budget (the repeated Basic attacks take At-will Banes): give it a 2 AP Special.
 
 > [!example]
-> **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4 / 3 + 1d4. *Hold the Line* is a 1R Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Moderate, 6) and the Reaction's 7 leave 42: 2 + 1d6 / 6 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
+> **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). *Hold the Line* is a 1R Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Moderate, 6) and the Reaction's 7 leave 42: 2 + 1d6 / 6 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
 
 ### Elite Escalation
 
@@ -439,16 +439,16 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 - *Dirty Trick* (1 AP, Round; 20, a Mild rider 3): 1d4 / 1 + 1d4 Pi, and 1 Pressure Bane on its next roll.
 
 **Orc Warrior** (Standard, CV 100; 25 points an AP, turn budget 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier Medium (+2), Power Modifier Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
-- *Cleaver* (Basic attack, 1 AP, At-will; 25, Push 1 2): 1 + 1d4 / 3 + 1d4 Sl, and it can Push the target 1.
+- *Cleaver* (Basic attack, 1 AP, At-will; 25, Push 1 2): 1 + 1d4! / 3 + 1d4! Sl, and it can Push the target 1.
 - *Brutal Swing* (2 AP, Round; 55, Prone 6, Hold the Line's share 7): 2 + 1d6 / 6 + 1d6 Sl, and Prone.
 - *Hold the Line* (Reaction, 1R, Trigger: an ally within 2 squares is hit by a Strike; 28): it makes an attack against the attacker if it can reach it: 1 + 1d4 / 3 + 1d6 Sl.
 
 **Grave Wisp** (Standard, CV 100; 25 points an AP): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
-- *Chilling Touch* (Basic attack, 1 AP, At-will, Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4 / 2 + 1d4 Co, and Frightened of it (EoT).
+- *Chilling Touch* (Basic attack, 1 AP, At-will, Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4! / 2 + 1d4! Co, and Frightened of it (EoT).
 - *Dread Whisper* (2 AP, Round, Vs. WD, [Fear]; 55, Dazed 1 6): [R] 3 + 1d6 / 7 + 1d6 Ps, and Dazed 1.
 
 **Ogre Chieftain** (Elite, CV 200; 33 points an AP, turn budget 132): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation (the ladder above).
-- *Club* (Basic attack, 1 AP, At-will, High; 40, Push 1 2, then Ground Slam's pay-back, a quarter): 1 + 1d4 / 3 + 1d6 Bl, and it can Push the target 1.
+- *Club* (Basic attack, 1 AP, At-will, High; 40, Push 1 2, then Ground Slam's pay-back, a quarter): 1 + 1d4! / 3 + 1d6! Bl, and it can Push the target 1.
 - *Overhead Smash* (2 AP, Round; 73, Push 2 6, the pay-back): 3 + 1d6 / 7 + 1d6 Bl, and it can Push the target 2.
 - *Ground Slam* (2 AP, Encounter, Area 2 Emanation, a Save Action: Body Save, DC 14; 145, Prone 6, half to each): 11 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
 - *Rally the Tribe* (Escalation 4, 1 AP, Round): allies within 5 squares gain 1 Boon on their next [Weapon] Action.

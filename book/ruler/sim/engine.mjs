@@ -346,7 +346,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   });
   /** A PC's Reaction: a Weapon Attack against f (Opportunity Attack, Quick Draw). Returns { crit }. */
   const pcReact = (p, f, action = "Weapon Attack", boons = 0, oa = false) => {
-    const r = runTurn(p, { name: "Reaction", steps: [action] }, ctxFor(p, { target: () => f, startNext: boons ? [{ kind: "boon", n: boons, scope: "next", traits: [] }] : [], log: null }));   // its roll is written with the Reaction's own line
+    const r = runTurn(p, { name: "Reaction", steps: [action] }, ctxFor(p, { target: () => f, startNext: boons ? [{ kind: "boon", n: boons, scope: "next", traits: [] }] : [], log: null, noEmp: true }));   // its roll is written with the Reaction's own line
     p.st.dealt += r.damage; p.st.counted += r.counted; p.st.reactionDealt += r.damage; p.st.reactions++; ev("reaction", { who: nameOf(p), reaction: p.rxNow ?? (oa ? "Opportunity Attack" : action), on: nameOf(f), damage: r.damage, tier: r.lastTier || undefined }); p.rxNow = null; if (oa) { p.st.oaReal++; p.st.oaDealt += r.damage; } killCheck();
     if (r.crit) hook(p, "crit");
     return { crit: r.crit || (r.lastTier === 3 && (p.R ?? R)() < (r.critShare ?? 1 / 12)), tier: r.lastTier };   // a Critical (the share of its Tier 3s: calc.mjs)
