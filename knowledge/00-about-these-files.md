@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: c08883e 2026-11-13 Style mockups 7: the Class sheet's lists as Tier-like rows in their Frequency's color; the small tips removed
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 1fb6963 2026-11-13 Style mockups 7: the Levels window's sections as colored blocks (a color per kind of section)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
