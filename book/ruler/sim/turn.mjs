@@ -127,8 +127,11 @@ export function runTurn(pc, turn, ctx) {
       if (t === target) for (const x of anyTier) { const v = rollDamage(R, x, { mod, empowered: emp }).total * b.dmgScale; land(v, v * mindShare(x, b.weapon, tier, mod)); res.damage += v; }   // on every Tier, whatever the Action deals
       if (dmg && (dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && hasDamage(weaponTier(b.weapon, tier))))) {   // 1[W] of a weapon that deals 0 on this tier is no damage (and no extra)
         const kb = b.keepBest && b.keepBest.traits.every(x => traits.includes(x)) ? b.keepBest.n : 0;
-        let total = rollDamage(R, dmg, { weapon: b.weapon, tier, mod, empowered: emp - (sm?.enf ?? 0), keepBest: kb }).total, mindT = total * mindShare(dmg, b.weapon, tier, mod);
-        for (const x of extra) { const v = rollDamage(R, x, { mod, empowered: emp }).total; total += v; mindT += v * mindShare(x, b.weapon, tier, mod); }
+        // RULES.empFlat (a measurement, off; Lucas, 2026-11-13): Empowered and Enfeebled with no value: a damaging Action deals that much more or less, once (at least 1), nothing per die.
+        const ef = RULES.empFlat ? Math.sign(emp - (sm?.enf ?? 0)) * RULES.empFlat : 0, perDie = RULES.empFlat ? 0 : emp;
+        let total = rollDamage(R, dmg, { weapon: b.weapon, tier, mod, empowered: perDie - (RULES.empFlat ? 0 : (sm?.enf ?? 0)), keepBest: kb }).total, mindT = total * mindShare(dmg, b.weapon, tier, mod);
+        for (const x of extra) { const v = rollDamage(R, x, { mod, empowered: perDie }).total; total += v; mindT += v * mindShare(x, b.weapon, tier, mod); }
+        if (ef && total > 0) total = Math.max(1, total + ef);
         total = (total + bonus) * b.dmgScale; mindT *= b.dmgScale;
         land(total, mindT); res.damage += total;
         if (total > 0) ctx.onDamage?.(pc, t, total);   // pack R-classes: Reactions to an ally's damage (Call the Shot)
