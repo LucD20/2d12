@@ -78,9 +78,14 @@ const MAP = {
 const hex2 = h => { let s = h.slice(1); if (s.length === 3 || s.length === 4) s = [...s].map(c => c + c).join(""); return [0, 2, 4].map(i => parseInt(s.slice(i, i + 2), 16) / 255).concat(s.length === 8 ? [parseInt(s.slice(6, 8), 16) / 255] : []); };
 const toHsl = ([r, g, b]) => { const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn; if (!d) return [0, 0, l]; const s = d / (1 - Math.abs(2 * l - 1)); const h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; return [(h * 60 + 360) % 360, s, l]; };
 const fromHsl = ([h, s, l]) => { const c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = l - c / 2; const [r, g, b] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x]; return `#${[r, g, b].map(v => Math.round((v + m) * 255).toString(16).padStart(2, "0")).join("")}`; };
-function auto(kind, hexc) {
+function auto(kind, hexc, warm = false) {
   const rgb = hex2(hexc); if (rgb.length === 4) return hexc;
   const [h, s, l] = toHsl(rgb);
+  // a sheet's navy family (the PC sheet's head, side panel, tiles and their blue-grey inks) goes to the warm page: the same lightness, a brown hue
+  if (warm && h >= 195 && h <= 250) {
+    if (kind === "text") { if (s < 0.45) return fromHsl([38, 0.2, Math.max(l, 0.62)]); }
+    else if (l < 0.5 && s > 0.1) return fromHsl([36, kind === "line" ? 0.22 : 0.14, kind === "line" ? Math.max(l, 0.24) : l * 0.72]);
+  }
   if (kind === "bg") return l >= 0.55 ? fromHsl([h, s * 0.7, 0.1 + (1 - l) * 0.45]) : l <= 0.3 ? fromHsl([h, s, Math.min(l + 0.05, 0.3)]) : hexc;
   if (kind === "line") return l >= 0.6 ? fromHsl([h, s * 0.6, 0.26 + (1 - l) * 0.2]) : l <= 0.3 ? fromHsl([h, s * 0.8, 0.5]) : hexc;
   return l <= 0.45 ? fromHsl([h, Math.min(s, 0.75), 0.92 - l * 0.55]) : hexc;
@@ -92,9 +97,9 @@ function darkSet(name, rules) {
   autoUsed[name] = new Set();
   return rules.map(block => {
     const sel = selOf(block).trim(), body = block.slice(block.indexOf("{") + 1, -1);
-    const decls = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--cc-|^--rd-|^--cw-/.test(d));
+    const decls = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--cc-|^--rd-|^--cw-|^--ps-/.test(d));
     if (!decls.length) return "";
-    const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc); })}`; });
+    const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc, name === "pcs"); })}`; });
     return `${sel.split(",").map(s => `.twod12-dark ${s.trim()}`).join(", ")} { ${out.join("; ")}; }`;
   }).filter(Boolean).join("\n");
 }
@@ -137,6 +142,22 @@ const TYPE = `
 .twod12-type .twod12.chat.sysline > i:has(svg), .twod12-type .twod12.chat.sysline > i { color: #6b5a3a; }
 .twod12-type .twod12.chat.sysline > i[data-ic^="shield"] { color: #2f6fb3; }
 .twod12-type .twod12.chat .kw-guard { color: #2f6fb3; font-weight: 700; }
+/* THE PC SHEET, both themes (style only): square corners, "Use" as the stamp, Signika for the headings (Cinzel stays on the character's name),
+   gold in the place of amber. Light: the warm dark brown of the stamp in the place of navy for the head and the side panel. */
+.twod12-type .twod12.sheet.pcs { --ps-navy: #2b2520; --ps-cell: #332c25; --ps-edge: #54493a; --ps-tile: #3a3229; --ps-parch: ${LIGHT.pg}; --ps-card: #fbf7ee; --ps-cline: ${LIGHT.hair};
+  --ps-strip: ${LIGHT.band}; --ps-amber: #c9962b; --ps-amberl: #ecd9a4; --ps-ink: ${LIGHT.ink}; --ps-mut: ${LIGHT.mute}; --ps-lt: #d9cfba; --ps-k: #b3a68e; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.sheet.pcs .ps-h2, .twod12-type .twod12.sheet.pcs .ps-bh b { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; color: ${LIGHT.ink}; }
+.twod12-type .twod12.sheet.pcs .ps-block, .twod12-type .twod12.sheet.pcs .ps-box, .twod12-type .twod12.sheet.pcs .ps-box.big, .twod12-type .twod12.sheet.pcs .ps-tile, .twod12-type .twod12.sheet.pcs .ps-bxbtn, .twod12-type .twod12.sheet.pcs .ps-init,
+.twod12-type .twod12.sheet.pcs .ps-bcard, .twod12-type .twod12.sheet.pcs .ps-rcard, .twod12-type .twod12.sheet.pcs .ps-irow, .twod12-type .twod12.sheet.pcs .ps-wb, .twod12-type .twod12.sheet.pcs .ps-lbox, .twod12-type .twod12.sheet.pcs .ps-mchip, .twod12-type .twod12.sheet.pcs .ps-seg, .twod12-type .twod12.sheet.pcs button { border-radius: 2px; }
+.twod12-type .twod12.sheet.pcs .ps-block, .twod12-type .twod12.sheet.pcs .ps-bxbtn { box-shadow: none; }
+.twod12-type .twod12.sheet.pcs .ps-bxbtn.ln { box-shadow: inset 4px 0 0 var(--lnf); } .twod12-type .twod12.sheet.pcs .ps-bxbtn.ln.ln-strike { box-shadow: inset 4px 0 0 var(--lnf), inset 8px 0 0 #d14b3f; }
+.twod12-type .twod12.sheet.pcs .ps-pill { border-radius: 3px; }
+.twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b, .twod12-type .twod12.sheet.pcs .ps-bch small { font-family: "Signika", sans-serif; }
+.twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b { font-weight: 700; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.sheet.pcs .ps-use { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; border: 0; border-radius: 2px; box-shadow: none; font: 700 12.5px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; text-transform: none; }
+.twod12-type .twod12.sheet.pcs .ps-use.rx { background: #1f7a72; color: #fff; }
+.twod12-type .twod12.sheet.pcs .ps-init:not(.dis) { background: #ecd9a4; color: #2b2520; box-shadow: none; }
+.twod12-type .twod12.sheet.pcs .ps-line[data-action="toggleCard"]:hover, .twod12-type .twod12.sheet.pcs .ps-brow[data-action="toggleCard"]:hover { background: ${LIGHT.pg2}; }
 /* THE WINDOWS (the pick window, the class window, the roll dialog): Signika for the title (no Cinzel), a band for the header in the place of navy,
    gold in the place of the class window's orange, the confirm button as the stamp. Style only. */
 .twod12-type .application.classwin { --cw-navy: ${LIGHT.band}; --cw-navy2: ${LIGHT.pg2}; --cw-paper: ${LIGHT.pg}; --cw-paper2: ${LIGHT.pg2}; --cw-card: #fbf7ee; --cw-ink: ${LIGHT.ink}; --cw-mut: ${LIGHT.mute};
@@ -211,6 +232,7 @@ const R = {
   older: pick(/\.twod12\.chat\b/).filter(b => !/\.twod12\.chat\.(cc|sysmsg|sysline|action|turnend)\b|\.twod12\.chat \.(ahead|apmark)|\.twod12\.chat > \.ahead/.test(selOf(b))),
   dock: pick(/twod12-dock\b|\.twod12 \.td-/),
   bars: pick(/twod12-(linebar|pickbar)\b/),
+  pcs: pick(/\.sheet\.pcs\b|twod12-actor|\.twod12\.sheet(?![.\w-])|^\s*\.twod12 \.|\.hpnum|\.autodia|\.np-guardbtn|\.np-track/),
   wins: pick(/\.classwin\b|\.pickwin\b|\.twod12\.rolldlg\b|\.trhl\b|\.trgrp\b|\.twod12 \.kw-/)
 };
 const BY_HAND = `
@@ -330,6 +352,28 @@ const BY_HAND = `
 .twod12-dark .twod12.rolldlg .rd-sub, .twod12-dark .twod12.rolldlg [class*="rd-"] .cc-sub { color: #e3ba62 !important; }
 .twod12-dark .twod12.rolldlg .rd-cx:hover, .twod12-dark .twod12.rolldlg .rd-ci:hover { background: ${T.band}; }
 .twod12-dark .twod12.rolldlg .rd-freq { color: #fff; }
+/* ---- by hand: the PC sheet (its variables: one dark page, the side panel a shade apart; the stamp; inputs) */
+.twod12-dark .twod12.sheet.pcs { --ps-navy: ${T.pg}; --ps-cell: ${T.pg2}; --ps-edge: ${T.hair}; --ps-tile: ${T.pg2}; --ps-parch: #24201b; --ps-card: ${T.pg2}; --ps-cline: ${T.hair};
+  --ps-strip: ${T.band}; --ps-amber: ${T.gold}; --ps-amberl: ${T.gold}; --ps-teal: #2fa59a; --ps-tealr: #2fa59a; --ps-ink: ${T.ink}; --ps-mut: ${T.mute}; --ps-lt: ${T.mute}; --ps-k: ${T.mute}; color: ${T.ink}; }
+.twod12-dark .twod12.sheet.pcs .ps-side { border-right: 1px solid ${T.rule}; }
+.twod12-dark .twod12.sheet.pcs .ps-head { border-bottom: 1px solid ${T.rule}; }
+.twod12-dark .twod12.sheet.pcs .ps-h2, .twod12-dark .twod12.sheet.pcs .ps-bh b { color: ${T.ink}; }
+.twod12-dark .twod12.sheet.pcs .ps-tabs { border-bottom-color: ${T.rule}; }
+.twod12-dark .twod12.sheet.pcs .ps-tabs .tabbtn { color: ${T.mute}; } .twod12-dark .twod12.sheet.pcs .ps-tabs .tabbtn.active { color: ${T.ink}; }
+.twod12-dark .twod12.sheet.pcs .ps-use { background: ${T.stamp}; color: ${T.stampInk}; box-shadow: none; }
+.twod12-dark .twod12.sheet.pcs .ps-use.rx { background: #1f7a72; color: #fff; }
+.twod12-dark .twod12.sheet.pcs .ps-wb { background: ${T.pg2}; }
+.twod12-dark .twod12.sheet.pcs .ps-sec.line, .twod12-dark .twod12.sheet.pcs .ps-wounds { border-color: ${T.hair}; }
+.twod12-dark .twod12.sheet.pcs .ps-init:not(.dis) { background: ${T.stamp}; color: ${T.stampInk}; }
+.twod12-dark .twod12.sheet.pcs .ps-bxbtn { background: ${T.pg2}; border-color: ${T.hair}; color: ${T.ink}; }
+.twod12-dark .twod12.sheet.pcs .ps-tile { background: ${T.pg2}; color: ${T.ink}; }
+.twod12-dark .twod12.sheet.pcs .ps-pill { color: #fff; }
+.twod12-dark .twod12.sheet.pcs .ps-line[data-action="toggleCard"]:hover, .twod12-dark .twod12.sheet.pcs .ps-brow[data-action="toggleCard"]:hover { background: ${T.band}; }
+.twod12-dark .twod12.sheet.pcs input, .twod12-dark .twod12.sheet.pcs .nbox { background: ${T.pg2}; color: ${T.ink}; border-color: ${T.hair}; }
+.twod12-dark .twod12.sheet.pcs .ps-nameinput { background: transparent; border-color: transparent; }
+.twod12-dark .twod12.sheet.pcs button { color: ${T.ink}; }
+.twod12-dark .twod12.sheet.pcs .ps-dladd, .twod12-dark .twod12.sheet.pcs .ps-btn2, .twod12-dark .twod12.sheet.pcs .ps-wroll, .twod12-dark .twod12.sheet.pcs .ps-bch button, .twod12-dark .twod12.sheet.pcs .ps-rcard button { background: transparent; border: 1px solid #8c7d63; color: ${T.ink}; }
+.twod12-dark .twod12.sheet.pcs .ps-seg button { background: transparent; color: ${T.ink}; } .twod12-dark .twod12.sheet.pcs .ps-seg button.on { background: ${T.stamp}; color: ${T.stampInk}; }
 /* ---- by hand: the Turn dock (a band for its head, the page for its body) */
 .twod12-dark .twod12-dock, .twod12-dark .twod12.chat.turnend { background: ${T.pg}; color: ${T.ink}; border-color: ${T.rule}; border-radius: 5px; }
 .twod12-dark .twod12-dock .td-hd { border-bottom-color: ${T.rule}; }
@@ -358,7 +402,7 @@ ${Object.entries(SETS).map(([k, css]) => `/* ==== ${k} ==== */\n${css}`).join("\
 ${BY_HAND}`);
 
 /* ------------------------------------------------------------------ the page shell */
-const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
+const NAV = [["style-tokens.html", "1. Colors and type"], ["action-card-dark.html", "2. Action card"], ["chat-cards-dark.html", "3. Chat cards"], ["chat-older-dark.html", "3b. The other chat messages"], ["bars-dark.html", "4. Pick bar and Turn dock"], ["windows-dark.html", "5. Pick window and roll dialog"], ["pc-sheet-dark.html", "6. The PC sheet"], ["npc-hud-sheet.html", "The NPC sheet"], ["npc-hud-hud.html", "The HUD"]];
 const SHELL = `
 * { box-sizing: border-box; }
 body { margin: 0; background: #2a2723; color: #eee6d6; font: 14px/1.45 "Signika", "Segoe UI", system-ui, sans-serif; padding: 22px 22px 60px; --font-primary: "Signika", sans-serif; }
@@ -672,6 +716,30 @@ ${wins3(win("twod12 rolldlg", "Smite", rdHtml, 580), "610px")}
 <li>Drawn outside Foundry, a window's spacing can differ a little from the real one (Foundry's own window rules are not here).</li>
 </ul>
 <style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; } .stage:not(.dk) .mwin { box-shadow: 0 4px 14px rgba(0,0,0,.3); }</style>`, R.wins);
+
+/* ------------------------------------------------------------------ 6. the PC sheet (its real HTML, copied from Lucas's Foundry) */
+const artData = f => `data:image/webp;base64,${execFileSync("python3", ["-c", "import sys,io,base64;from PIL import Image;im=Image.open(sys.argv[1]).convert('RGB');im.thumbnail((160,160));b=io.BytesIO();im.save(b,'WEBP',quality=80);sys.stdout.write(base64.b64encode(b.getvalue()).decode())", here(`../twod12/art/${f}`)]).toString()}`;
+const pcRaw = FA(readFileSync(here("./samples/pc-sheet-durgan.html"), "utf8").replace(/<!--[\s\S]*?-->/, "").replace(/fa-regular fa-star/g, "fa-solid fa-star").replace('src="systems/twod12/art/pcs/durgan.png"', `src="${artData("pcs/durgan.png")}"`));
+const pcTab = t => pcRaw.replace(/class="tabbtn active"/, 'class="tabbtn"').replace(new RegExp(`class="tabbtn" data-action="switchTab" data-tab-target="${t}"`), `class="tabbtn active" data-action="switchTab" data-tab-target="${t}"`).replace('class="tab active"', 'class="tab"').replace(`class="tab" data-tab="${t}"`, `class="tab active" data-tab="${t}"`);
+const sheetWin = inner => `<div class="mwin" style="width:900px"><div class="mwin-head">Character: Durgan (Dwarf Paladin, Lay On Hands, level 1)<span>&times;</span></div><div class="application sheet twod12 twod12-actor" style="position:relative;height:1000px;width:auto"><section class="window-content" style="position:absolute;inset:0;padding:0;overflow:hidden">${inner}</section></div></div>`;
+page("pc-sheet-dark.html", "Style 6: the PC sheet", `The PC sheet, <b>from its real HTML, copied from Lucas's Foundry</b> (Durgan, level 1, out of combat), drawn with the system's own rules at the sheet's own size (900 px wide). So "Today" is the sheet as Foundry draws it, and the other two are the same elements restyled. <b>A style change only: nothing is added, moved or removed.</b> <b>The tabs are live in each copy: click them</b> (Actions, Effects, Items, Build, Mastery, Upkeep, Notes). The dark set is generated from ${R.pcs.length} rules.`, `
+<h2>Dark ${PICK}</h2>
+<p class="why">One dark page: the head, the side panel and the tabs are the same surface, a rule between them. "Use" is the stamp. The frequency colors stay on the cost pills and the Basic Actions' edges.</p>
+<div class="stage dk twod12-dark twod12-type" style="width:930px">${sheetWin(pcRaw)}</div>
+<h2>Light ${PICK}</h2>
+<p class="why">Today's layout of a dark head and side panel over a parchment page, with the warm dark brown of the stamp in the place of navy, gold in the place of amber, square corners, and Signika for the headings (Cinzel stays on the character's name).</p>
+<div class="stage twod12-type" style="width:930px">${sheetWin(pcRaw)}</div>
+<h2>Today ${TODAY}</h2>
+<div class="stage" style="width:930px">${sheetWin(pcRaw)}</div>
+<h2>Notes</h2>
+<ul class="notes">
+<li>The sheet is out of combat here, so the AP, Guard and Escalation strip is its "Out of combat" line. An Action card opened under a row is the Action card of step 2.</li>
+<li>Lucas's window was 629 px wide when he copied it; at that width the Action rows are too narrow for their columns (the Use button is cut off), today as well. The sheet's own size is 900 px, used here.</li>
+<li>Foundry's own window frame, inputs and text editors are stand-ins. The small Mithril diamond beside a card's name is left out (it needs Foundry's icon font to draw).</li>
+</ul>
+<style>.mwin { border: 1px solid #000; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.5); } .mwin-head { display: flex; justify-content: space-between; height: 28px; align-items: center; padding: 0 10px; background: #14161e; color: #d6d2c8; font-size: 12.5px; }
+.pcs .autodia { display: none !important; } .pcs .tab { display: none; } .pcs .tab.active { display: block; } .pcs input { font: inherit; } .pcs a { cursor: pointer; }</style>
+<script>document.addEventListener("click", ev => { const b = ev.target.closest(".tabbtn"); if (!b) return; const sh = b.closest(".pcs"); sh.querySelectorAll(".tabbtn").forEach(x => x.classList.toggle("active", x === b)); sh.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === b.dataset.tabTarget)); });</script>`, R.pcs);
 
 console.log(`built: style-tokens.css/.html, style-dark.css, action-card-dark.html, chat-cards-dark.html, bars-dark.html`);
 for (const [k, s] of Object.entries(autoUsed)) console.log(`  ${k}: ${R[k].length} rules, ${s.size} colors by AUTO${s.size ? `: ${[...s].join(" ")}` : ""}`);

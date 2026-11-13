@@ -1,0 +1,424 @@
+<!-- The PC sheet's real HTML, copied by Lucas from his Foundry (2026-11-13; v0.0.367; Durgan, Dwarf Paladin, level 1, out of combat, every tab).
+     Only the tooltips' texts, the aria labels and the item ids are left out (they draw nothing). The style mockups restyle THIS markup:
+     style-build.mjs reads the file. Don't edit it; replace it with a fresh copy from Foundry when the sheet changes. -->
+<div class="twod12 sheet pcs" data-application-part="main">
+  <header class="ps-head">
+    <img class="ps-portrait" src="systems/twod12/art/pcs/durgan.png" alt="">
+    <div class="ps-id">
+      <div class="ps-nameline"><input class="ps-nameinput" type="text" name="name" value="Durgan (Dwarf Paladin, Lay On Hands, level 1)" placeholder="Name"></div>
+      <div class="ps-line1">
+        <span>Level 1</span>
+        <span>·</span><b class="ps-stage">Stage 1</b>
+        <span>·</span><a data-action="openItem">Dwarf</a>
+        <a data-action="openItem">Paladin</a>
+        <span>·</span><span>Medium</span>
+        <span class="ps-senses"><span class="ps-sense">Sight</span><span class="ps-sense">Hearing 10</span></span>      </div>
+    </div>
+    <div class="ps-htools">
+      <button type="button" class="ps-icon" data-action="editSenses"><i class="fa-solid fa-eye"></i></button>
+      <button type="button" class="ps-init dis" aria-disabled="true">Roll Initiative</button>    </div>
+  </header>
+
+  <div class="ps-strip out">
+    <div class="ps-cell row"><span class="ps-k">Out of combat</span><span>AP, Guard and Escalation appear when Initiative is rolled</span></div>
+    <div class="ps-cell">
+      <span class="ps-k">Hands</span>
+      <span class="ps-tiles"><button type="button" class="ps-tile wide" data-hand-tile="both"><span>Pike</span><b>2H</b></button></span>
+    </div>
+  </div>
+
+  <div class="ps-onyou edrop-zone">
+    <span class="ps-k">On you</span>
+    <span class="ps-none">drop a condition or effect here</span>
+  </div>
+
+  <div class="ps-body">
+    <aside class="ps-side np">
+      <section class="ps-sec">
+        <div class="ps-hh"><span class="ps-k">Health 35</span><a class="ps-shield np-guardbtn zero" role="button"><b>0</b></a><span class="ps-todown"><b>35</b> to Down</span></div>
+        <div class="ps-bar">
+          <div class="ps-barh"><span class="ps-bl"><b style="color:#ef8a80">Vigor</b></span><a class="hpnum" data-action="hpEdit" data-pool="body" role="button">0 / 23</a></div>
+          <div class="ps-track np-track" data-pool="body"><span class="sl" style="width:0%;background:#c4453c"></span><span class="sn" style="width:0%;--a:#c4453c;--b:#7f2a24"></span></div>
+        </div>
+        <div class="ps-bar">
+          <div class="ps-barh"><span class="ps-bl"><b style="color:#8fb3ee">Resolve</b></span><a class="hpnum" data-action="hpEdit" data-pool="mind" role="button">0 / 12</a></div>
+          <div class="ps-track np-track" data-pool="mind"><span class="sl" style="width:0%;background:#5b8ad6"></span><span class="sn" style="width:0%;--a:#5b8ad6;--b:#3a5f99"></span></div>
+        </div>
+        <div class="ps-foot">Dominant Damage: <b style="color:#c9cfda">Tie</b></div>
+      </section>
+
+      <section class="ps-sec line">
+        <div class="ps-hh"><span class="ps-k">Rally</span><span class="ps-rally">7 / 7 · Each heals 9</span></div>
+        <span class="ps-rpips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
+      </section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Defenses</span>
+        <div class="ps-g2"><div class="ps-box big"><b class="">14</b><span>AD</span></div><div class="ps-box big"><b class="">13</b><span>WD</span></div></div>
+        <div class="ps-g4 small"><div class="ps-box"><b>14</b><span>vs Body</span></div><div class="ps-box"><b>13</b><span>vs Mind</span></div><div class="ps-box"><b>11</b><span>vs Appeal</span></div><div class="ps-box"><b>14</b><span>vs Inst.</span></div></div>
+      </section>
+      <section class="ps-sec line ps-rwi"><span class="ps-k">Damage Immune/Resist/Weak</span><button type="button" class="ps-dladd" data-action="dmgLineAdd">+ Add</button></section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Attributes</span>
+        <div class="ps-g4"><button type="button" class="ps-box btn" data-action="rollAttr" data-key="body"><b>+2</b><span>Body</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="mind"><b>+1</b><span>Mind</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="appeal"><b>−1</b><span>Appeal</span></button><button type="button" class="ps-box btn" data-action="rollAttr" data-key="instinct"><b>+2</b><span>Instinct</span></button></div>
+      </section>
+
+      <section class="ps-sec">
+        <span class="ps-k">Movement</span>
+        <div class="ps-g4"><div class="ps-box btn"><b class="">4</b><span>Speed</span></div><div class="ps-box btn"><b class="">1</b><span>Reach</span></div><div class="ps-box btn"><b class="">3</b><span>Size</span></div><div class="ps-box btn"><b class="">1</b><span>Steady</span></div></div>
+      </section>
+
+      <section class="ps-sec line">
+        <span class="ps-k">Modifiers · Save DC</span>
+        <div class="ps-mods"><span>Weapon <span class="ps-mut">Class</span></span><b>+1</b><span class="ps-dc">DC 12</span><span>Power <span class="ps-mut">Class</span></span><b>+2</b><span class="ps-dc">DC 13</span><span>Signature <span class="ps-mut">Power</span></span><b>+2</b><span class="ps-dc">DC 13</span></div>
+      </section>
+
+      <section class="ps-wounds">
+        <div class="ps-wb body">
+          <div class="ps-wh"><span>Body Wounds</span><input type="number" min="0" name="system.bodyWounds" value="0"></div>
+          <span class="ps-mut small">none named</span>
+          <button type="button" class="ps-wroll" data-action="rollTable" data-kind="dying">Roll Dying</button>
+        </div>
+        <div class="ps-wb mind">
+          <div class="ps-wh"><span>Mind Wounds</span><input type="number" min="0" name="system.mindWounds" value="0"></div>
+          <span class="ps-mut small">none named</span>
+          <button type="button" class="ps-wroll" data-action="rollTable" data-kind="shattered">Roll Shattered</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="ps-main mn">
+      <nav class="ps-tabs" aria-label="Sheet tabs">
+        <a class="tabbtn" data-action="switchTab" data-tab-target="favorites" role="tab" tabindex="0"><i class="fa-regular fa-star"></i></a>
+        <a class="tabbtn active" data-action="switchTab" data-tab-target="actions" role="tab" tabindex="0">Actions</a><a class="tabbtn" data-action="switchTab" data-tab-target="effects" role="tab" tabindex="0">Effects</a><a class="tabbtn" data-action="switchTab" data-tab-target="items" role="tab" tabindex="0">Items</a><a class="tabbtn" data-action="switchTab" data-tab-target="build" role="tab" tabindex="0">Build</a><a class="tabbtn" data-action="switchTab" data-tab-target="mastery" role="tab" tabindex="0">Mastery</a><a class="tabbtn" data-action="switchTab" data-tab-target="upkeep" role="tab" tabindex="0">Upkeep</a><a class="tabbtn" data-action="switchTab" data-tab-target="notes" role="tab" tabindex="0">Notes</a>
+      </nav>
+      <div class="ps-scroll">
+
+      <div class="tab" data-tab="favorites">
+<div class="ps-empty"><i class="fa-regular fa-star"></i> Right-click an Action on the Actions tab and choose Favorite to keep it here. Drag the rows to put them in your order.</div>
+      </div>
+
+      <div class="tab active" data-tab="actions">
+        <div class="ps-colh"><span>Action</span><span>Cost</span><span>Distance</span><span>Vs.</span><span></span></div>
+        <div class="ps-stack">
+          <div class="ps-block ">
+  <div class="ps-bh"><span class="ps-dot" style="background:#2c5d9e"></span><b>Once per round</b></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Lay On Hands<i class="fa-solid fa-diamond autodia auto-mithril"></i></a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#2c5d9e">1/2/3 AP</span></span>
+    <span class="ps-c ps-dist">Reach</span>
+    <span class="ps-c"></span>
+    <span class="ps-c"><button type="button" class="ps-use" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+</div>
+</div>
+<div class="ps-block ">
+  <div class="ps-bh"><span class="ps-dot" style="background:#a8322d"></span><b>Once per encounter</b></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Beacon<i class="fa-solid fa-diamond autodia auto-mithril"></i></a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#a8322d">1 AP</span></span>
+    <span class="ps-c ps-dist">—</span>
+    <span class="ps-c"></span>
+    <span class="ps-c"><button type="button" class="ps-use" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+</div>
+</div>
+<div class="ps-block ">
+  <div class="ps-bh"><span class="ps-dot" style="background:#1f7a72"></span><b>Reactions</b></div>
+  <div class="atable" data-list="actions"><div class="ar ps-row strike lnfreq" style="--lnf:#4c7a2e" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Opportunity Attack</a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#1f7a72">1R</span></span>
+    <span class="ps-c ps-dist">1 sq.</span>
+    <span class="ps-c"></span>
+    <span class="ps-c"><button type="button" class="ps-use rx" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+<div class="ar ps-row lnfreq" style="--lnf:#1f7a72" draggable="true">
+  <div class="ps-line" data-action="toggleCard">
+    <span class="ps-name"><a class="ps-nm" role="button" tabindex="0" aria-expanded="false">Shield of Faith<i class="fa-solid fa-diamond autodia auto-mithril"></i></a></span>
+    <span class="ps-c"><span class="ps-pill" style="--fc:#1f7a72">1R</span></span>
+    <span class="ps-c ps-dist">5 sq.</span>
+    <span class="ps-c"></span>
+    <span class="ps-c"><button type="button" class="ps-use rx" data-action="useAction">Use</button></span>
+  </div>
+  <div class="ar-card"></div>
+</div>
+</div>
+</div>
+
+        </div>
+        <div class="ps-basic">
+          <div class="ps-basich"><span class="ps-h2">Basic Actions</span><span class="ps-legend"><i class="sw" style="--lnf:#4c7a2e"></i> At-will <i class="sw" style="--lnf:#2c5d9e"></i> Once per round <i class="sw" style="--lnf:#d14b3f"></i> Strike</span>
+            <a class="ps-upd" data-action="addBasic">Update Basic Actions</a></div>
+          <div class="ps-bgrid">
+            <div class="ps-bcol"><span class="ps-bgh">Attack</span>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#4c7a2e" data-action="useWith"><span class="ps-bxl"><span class="ps-bxn">Weapon Attack</span></span><b>1 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Charge</span></span><b>2 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx off" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="No free hand"><span class="ps-bxl"><span class="ps-bxn">Fists</span><span class="ps-bxwhy">No free hand</span></span><span class="ps-bxno" aria-hidden="true">⊘</span></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx off" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="No Reload weapon"><span class="ps-bxl"><span class="ps-bxn">Reload</span><span class="ps-bxwhy">No Reload weapon</span></span><span class="ps-bxno" aria-hidden="true">⊘</span></button><div class="ar-card"></div></div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Movement</span>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Advance</span></span><b>1 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Evade</span></span><b>1/2 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Crawl</span></span><b>1/2 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx off" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Not Prone"><span class="ps-bxl"><span class="ps-bxn">Stand</span><span class="ps-bxwhy">Not Prone</span></span><span class="ps-bxno" aria-hidden="true">⊘</span></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx off" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Not Immobilized"><span class="ps-bxl"><span class="ps-bxn">Break Free</span><span class="ps-bxwhy">Not Immobilized</span></span><span class="ps-bxno" aria-hidden="true">⊘</span></button><div class="ar-card"></div></div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Control</span>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Shove</span></span><b>1/2/3 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#2c5d9e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Trip</span></span><b>1/2 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx off" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#b5ad9c" data-action="useAction" data-off="Reach under 2"><span class="ps-bxl"><span class="ps-bxn">Haul</span><span class="ps-bxwhy">Reach under 2</span></span><span class="ps-bxno" aria-hidden="true">⊘</span></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln ln-strike" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Relocate</span></span><b>1/2/3 AP</b></button><div class="ar-card"></div></div>
+            </div>
+            <div class="ps-bcol"><span class="ps-bgh">Utility</span>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#2c5d9e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Steel Yourself</span></span><b>2/3 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Interact</span></span><b>1 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Regrip</span></span><b>1 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Release</span></span><b>0 AP</b></button><div class="ar-card"></div></div>
+              <div class="ar ps-bx" draggable="true"><button type="button" class="ps-bxbtn ln" style="--lnf:#4c7a2e" data-action="useAction"><span class="ps-bxl"><span class="ps-bxn">Leaning</span></span><b>1 AP</b></button><div class="ar-card"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="effects">
+        <div class="ps-stack">
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#a8322d"></span><b>Conditions</b></div>
+<div class="ps-erow none">No conditions.</div>
+          </div>
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#1b2433"></span><b>Effects</b></div>
+<div class="ps-erow none">No effects on you.</div>
+          </div>
+          <div class="ps-drop edrop">Drop an effect or a condition here to apply it</div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="items">
+        <div class="ps-stack">
+          <div class="ps-ih"><span class="ps-h2">Weapons</span><span class="ps-ibtns"><button type="button" class="ps-btn2" data-action="generateWeapon"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Weapon</button><button type="button" class="ps-btn2" data-action="newGear"><i class="fa-solid fa-plus"></i> New Item</button></span></div>
+          <div class="olist ps-ilist" data-order-flag="itemOrder">
+          <div class="lrow ps-irow w" draggable="true">
+            <div class="ps-imain"><span><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><a class="ps-iname" data-action="openItem">Pike</a></span><span class="ps-isub">Melee, Long, Two-handed · Pierce · Range 3</span></div>
+            <div class="ps-tiers"><span><small>T1</small><b>0</b></span><span><small>T2</small><b>1d6</b></span><span><small>T3</small><b>1d10</b></span></div>
+            <div class="ps-imast">Mastery <b>0 / 3</b><br><span class="ps-mut">Technique locked</span></div>
+            <div class="ps-seg" role="group"><button type="button" class="" data-action="setWhere" data-where="dropped" aria-pressed="false">Dropped</button><button type="button" class="" data-action="setWhere" data-where="worn" aria-pressed="false">On you</button><button type="button" class="on" data-action="setWhere" data-where="2h" aria-pressed="true">In hand 2H</button></div>
+          </div>
+          </div>
+          <span class="ps-h2">Armor</span>
+          <div class="olist ps-ilist" data-order-flag="itemOrder">
+          <div class="lrow ps-irow a" draggable="true">
+            <div class="ps-imain"><span><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><a class="ps-iname" data-action="openItem">Heavy Armor</a></span><span class="ps-isub ok">Trained (Heavy)</span></div>
+            <div class="ps-aval">Armor value <b>3</b> → AD <b>14</b> · Ward <b>+0</b></div>
+            <div class="ps-seg" role="group"><button type="button" class="" data-action="setWhere" data-where="dropped" aria-pressed="false">Dropped</button><button type="button" class="" data-action="setWhere" data-where="carried" aria-pressed="false">Carried</button><button type="button" class="on" data-action="setWhere" data-where="worn" aria-pressed="true">Worn</button></div>
+          </div>
+          </div>
+          <div class="ps-ih"><span class="ps-h2">Gear and loot</span><span class="ps-mut"><label>Coins <input type="number" min="0" name="system.coins" value="0"></label> · Weight 0</span></div>
+          <div class="olist ps-glist" data-order-flag="itemOrder">
+<div class="ps-empty">Nothing yet. Drag gear here, or use New Item.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="build">
+        <div class="ps-stack">
+          <div class="ps-lvlbar"><label class="ps-lvl">Level <input type="number" min="0" name="system.level" value="1"></label><span class="ps-mut">Stage 1</span></div>
+          <div class="ps-g2 wide">
+            <div class="ps-bcard">
+              <div class="ps-bch"><span><small>SPECIES</small> <b>Dwarf</b></span><button type="button" data-action="openSpecies">Choices</button></div>
+              <div class="ps-bcb">
+                <div class="ps-chips"><span class="ps-mchip ">Body +1</span><span class="ps-mchip ">Mind +1</span><span class="ps-mchip ">Appeal −1</span><span class="ps-mchip ">Instinct +1</span><span class="ps-mchip v">Vigor +4</span><span class="ps-mchip r">Resolve +1</span></div>
+                <div class="ps-g4"><div class="ps-lbox"><b>4</b><span>Speed</span></div><div class="ps-lbox"><b>1</b><span>Reach</span></div><div class="ps-lbox"><b>Medium</b><span>Size</span></div><div class="ps-lbox"><b>1</b><span>Steady</span></div></div>
+              </div>
+            </div>
+            <div class="ps-bcard">
+              <div class="ps-bch"><span><small>CLASS</small> <b>Paladin 1</b></span><button type="button" data-action="openClass">Choices</button></div>
+              <div class="ps-bcb">
+                <div class="ps-chips"><span class="ps-mchip ">Body +1</span><span class="ps-mchip ">Instinct +1</span><span class="ps-mchip v">Vigor 20</span><span class="ps-mchip r">Resolve 10</span></div>
+                <div class="ps-g4"><div class="ps-lbox"><b>+1</b><span>Weapon</span></div><div class="ps-lbox"><b>+2</b><span>Power</span></div><div class="ps-lbox"><b>6</b><span>Rally</span></div><div class="ps-lbox"><b>Heavy</b><span>Armor</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#6b665a"></span><b>Level 1</b></div>
+            <div class="flist olist ps-blist" data-order-flag="featureOrder"><div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Feature</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Divine Power</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Feature</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Kindled Wrath</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Hallmark Action</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Lay On Hands</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span><span class="ps-pill" style="--fc:#2c5d9e">1/2/3 AP</span></span>
+  <span class="ps-bfreq">Round</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Hallmark Reaction</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Shield of Faith</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span><span class="ps-pill" style="--fc:#1f7a72">1R</span></span>
+  <span class="ps-bfreq">Turn</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Encounter Pick</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Beacon</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span><span class="ps-pill" style="--fc:#a8322d">1 AP</span></span>
+  <span class="ps-bfreq">Encounter</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Talent</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Challenge</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+</div>
+          </div>
+          <div class="ps-block esc"><div class="ps-bh"><span class="ps-dot" style="background:#c9821f"></span><b>Escalation</b></div>
+            <div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Escalation 1</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Font of Mercy</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Escalation 2</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Mending Light</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Escalation 3</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Hallowed Stance</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span></span>
+  <span class="ps-bfreq">—</span>
+</div>
+<div class="ar-card"></div>
+</div>
+<div class="ar ps-brw" draggable="true">
+<div class="ps-brow" data-action="toggleCard">
+  <span class="ps-slot">Apex</span>
+  <span class="ps-bname"><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><b class="ps-nm" role="button" tabindex="0">Hallowed Dawn</b><span class="ps-bctl"><a data-action="openItem"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete"><i class="fa-solid fa-xmark"></i></a></span></span>
+  <span><span class="ps-pill" style="--fc:#a8322d">3 AP</span></span>
+  <span class="ps-bfreq">Encounter</span>
+</div>
+<div class="ar-card"></div>
+</div>
+          </div>
+          <div class="ps-block"><div class="ps-bh"><span class="ps-dot" style="background:#6b665a"></span><b>Next levels</b></div>
+            <div class="ps-next"><span>Level 2</span><span>1 Talent</span><span>Level 3</span><span>1 Daily Pick · 1 Talent</span><span>Level 4</span><span>1 Talent</span><span>Level 5</span><span>Stage 2: Stage Talent · +1 Attribute · Health +12 / +6 · Guard 3 per AP · Rally +1</span></div>
+          </div>
+          <div class="flist" data-list="talents">
+            <div class="tfslot talentslot extra" data-slot=""><i class="fa-solid fa-plus"></i> Drop an extra Talent here (the GM's)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="mastery">
+        <div class="ps-stack">
+          <div class="ps-ih"><span class="ps-h2">Weapon Mastery</span><span class="ps-mut">A Tier 3 with a weapon in an encounter: +1 Mastery with its kind</span></div>
+          <div class="ps-block"><div class="ps-bh"><b>Fists</b><span class="ps-bsub">floor: a third of your best Mastery in its Weapon Group (book; by hand for now)</span><span class="ps-gmstep"><a data-action="masteryStep"><i class="fa-solid fa-minus"></i></a><a data-action="masteryStep"><i class="fa-solid fa-plus"></i></a></span></div>
+            <div class="ps-mrow muted"><b>Fists</b>
+              <div class="ps-mbar"><div class="ps-mtrack"><span style="width:0%"></span><i style="left:20%"></i><i style="left:53.3%"></i><i style="left:100%"></i></div><div class="ps-mlab"><span style="left:20%">3 Technique</span><span style="left:53.3%">8 Expert</span><span style="left:100%">15 Master</span></div></div>
+              <span class="ps-mnum">0 / 3</span>
+            </div>
+          </div>
+          <div class="ps-block"><div class="ps-bh"><b>Pike</b><span class="ps-bsub">floor: a third of your best Mastery in its Weapon Group (book; by hand for now)</span><span class="ps-gmstep"><a data-action="masteryStep"><i class="fa-solid fa-minus"></i></a><a data-action="masteryStep"><i class="fa-solid fa-plus"></i></a></span></div>
+            <div class="ps-mrow"><b>Pike</b>
+              <div class="ps-mbar"><div class="ps-mtrack"><span style="width:0%"></span><i style="left:20%"></i><i style="left:53.3%"></i><i style="left:100%"></i></div><div class="ps-mlab"><span style="left:20%">3 Technique</span><span style="left:53.3%">8 Expert</span><span style="left:100%">15 Master</span></div></div>
+              <span class="ps-mnum">0 / 3</span>
+            </div>
+          </div>
+          <div class="ps-mut">Technique (3): the weapon's Weapon Technique, used only with that weapon while you wield it. Expert (8): once each turn, draw, stow or change the grip of the weapon without Interact. Master (15): from level 8, one more [W] with the weapon.</div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="upkeep">
+        <div class="ps-stack">
+          <div class="ps-ih"><span class="ps-h2">Recovery</span><span class="ps-mut">each button asks to confirm and posts a chat line</span><span class="ps-right">Exhausted <b>0</b> · last Sleep <b>0 hours ago</b></span></div>
+          <div class="ps-g3">
+            <div class="ps-rcard" style="--rc:#2c5d9e">
+              <div class="ps-rch"><b>Breather</b><span>10 minutes</span></div>
+              <span>Removes all your Nonlethal damage. Not a Rest.</span>
+              <span class="ps-mut ">Now: removes 0</span>
+              <button type="button" data-action="recover" data-k="breather">Take a Breather</button>
+            </div>
+            <div class="ps-rcard" style="--rc:#5B3FA6">
+              <div class="ps-rch"><b>Sleep</b><span>8 hours</span></div>
+              <span>Daily Actions return. Exhausted −2. Once every 16 hours.</span>
+              <span class="ps-mut bad">Available in 16 h</span>
+              <button type="button" data-action="recover" data-k="sleep">Sleep</button>
+            </div>
+            <div class="ps-rcard" style="--rc:#4c7a2e">
+              <div class="ps-rch"><b>Rest</b><span>24 h, safe place</span></div>
+              <span>Removes all damage, restores all Rally Points, includes a Sleep, then a Body Check and a Mind Check for Wounds.</span>
+              <button type="button" data-action="recover" data-k="rest">Rest</button>
+            </div>
+          </div>
+          <span class="ps-h2">Upkeep</span>
+          <div class="ps-placeholder"><b>[Upkeep mechanics: placeholder]</b><span>Space reserved for the coming Upkeep rules.</span></div>
+          <span class="ps-h2">Wounds</span>
+          <div class="ps-g2 wide">
+            <div class="ps-uw body"><div class="ps-uwh"><b>Body Wounds 0</b><span class="ps-mut">Rest: Body Check</span></div>
+              <span class="ps-mut">none named</span>
+            </div>
+            <div class="ps-uw mind"><div class="ps-uwh"><b>Mind Wounds 0</b><span class="ps-mut">Rest: Mind Check</span></div>
+              <span class="ps-mut">none named</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab" data-tab="notes">
+        <div class="ps-stack notes">
+          <span class="ps-h2">Appearance</span>
+          <div class="nbox"><prose-mirror name="system.appearance" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">Background</span>
+          <div class="nbox"><prose-mirror name="system.background" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">Notes</span>
+          <div class="nbox"><prose-mirror name="system.notes" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+          <span class="ps-h2">GM notes <small class="ps-mut"><i class="fa-solid fa-eye-slash"></i> only the GM sees them</small></span>
+          <div class="nbox gm"><prose-mirror name="system.gmNotes" class="editor prosemirror inactive"><div class="editor-content"></div><button type="button" class="icon toggle"><i class="fa-solid fa-edit"></i></button></prose-mirror></div>
+        </div>
+      </div>
+      </div>
+    </section>
+  </div>
+</div>
