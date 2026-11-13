@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: 6788222 2026-11-13 v0.0.378: the players list over the HUD, the HUD on a narrow window, the stat block's Steady and Size, no + Add on the side panel
+Built by tools/knowledge.py on 2026-11-13 from the repository at: 53cc8c1 2026-11-13 v0.0.379: the HUD placed between the scene controls and the sidebar
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -14,7 +14,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (151 KB)
+- HANDOFF.md (152 KB)
 - MASTER-PLAN.md (38 KB)
 - open-design-items.md (128 KB)
 - rules-01-roll.md (23 KB)

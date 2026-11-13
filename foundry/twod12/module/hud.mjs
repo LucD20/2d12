@@ -115,7 +115,7 @@ function ensureRoot() {
   root.addEventListener("click", onClick);
   root.addEventListener("contextmenu", onContext);
   window.addEventListener("resize", placeRoot);
-  try { const ro = new ResizeObserver(() => placeRoot()); for (const id of ["ui-right", "sidebar", "scene-controls", "ui-left"]) { const el = document.getElementById(id); if (el) ro.observe(el); } } catch (e) { /* no observer */ }
+  try { const ro = new ResizeObserver(() => placeRoot()); for (const id of ["ui-right", "sidebar", "sidebar-content", "chat-notifications", "scene-controls", "ui-left"]) { const el = document.getElementById(id); if (el) ro.observe(el); } } catch (e) { /* no observer */ }
   return root;
 }
 /** Pure: the HUD's left, right and bottom offsets (px) from the edges it sits between. */
@@ -126,10 +126,18 @@ export function hudBox({ controlsRight = 0, sidebarLeft = 0, width = 0, hotbarTo
 }
 function placeRoot() {
   if (!root?.isConnected) return;
-  const rect = id => document.getElementById(id)?.getBoundingClientRect?.() ?? null;
-  const ctl = rect("scene-controls") ?? rect("controls"), side = rect("ui-right") ?? rect("sidebar");
+  // v0.0.380 (Lucas: "the left corner still not full, when opening the chat the right moves"): only what really sits in the bottom band of the
+  // screen counts. Left: the scene controls only when their buttons reach down to the HUD (they stop high up, so the HUD starts at the left edge).
+  // Right: the leftmost of the sidebar, its tabs and the chat's floating input when they reach the bottom band (Foundry's #ui-right box is not
+  // where they are drawn).
+  const W = window.innerWidth, H = window.innerHeight, band = H - 90;
+  const vis = el => { const r = el?.getBoundingClientRect?.(); return r && r.width > 0 && r.height > 0 ? r : null; };
+  const ctlBottom = Math.max(0, ...[...document.querySelectorAll("#scene-controls button, #scene-controls li")].map(vis).filter(Boolean).map(r => r.bottom));
+  const ctl = vis(document.getElementById("scene-controls"));
+  const rightEls = ["sidebar", "sidebar-tabs", "sidebar-content", "chat-notifications", "chat-controls", "chat-message", "chat-form"].map(id => document.getElementById(id)).concat([...document.querySelectorAll(".chat-form")]);
+  const lefts = rightEls.map(vis).filter(r => r && r.bottom > band && r.top < H && r.left > W * 0.35).map(r => r.left);
   const hb = document.getElementById("hotbar"), hbOut = hb && !root.contains(hb) && hb.offsetParent ? hb.getBoundingClientRect() : null;
-  const b = hudBox({ controlsRight: ctl?.right ?? 0, sidebarLeft: side && side.width ? side.left : window.innerWidth, width: window.innerWidth, hotbarTop: hbOut ? hbOut.top : null, height: window.innerHeight });
+  const b = hudBox({ controlsRight: ctl && ctlBottom > band - 20 ? ctl.right : 0, sidebarLeft: lefts.length ? Math.min(...lefts) : W, width: W, hotbarTop: hbOut ? hbOut.top : null, height: H });
   Object.assign(root.style, { left: `${b.left}px`, right: `${b.right}px`, bottom: `${b.bottom}px` });
 }
 /** The hotbar into the HUD's right end (a setting), and back out when the setting is off (a reload puts it back exactly). */
@@ -293,7 +301,7 @@ export function registerHud() {
   Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });
   for (const h of ["createItem", "updateItem", "deleteItem"]) Hooks.on(h, i => { if (mine(i.parent)) renderHud(); });
   Hooks.on("renderHotbar", () => { if (root) placeHotbar(); });
-  for (const h of ["collapseSidebar", "changeSidebarTab", "renderSceneControls"]) Hooks.on(h, () => { placeRoot(); setTimeout(placeRoot, 450); });
+  for (const h of ["collapseSidebar", "changeSidebarTab", "renderSceneControls", "renderChatLog", "renderSidebar"]) Hooks.on(h, () => { placeRoot(); setTimeout(placeRoot, 450); });
   for (const h of ["renderPlayers", "renderPlayerList"]) Hooks.on(h, () => { if (root && !root.hidden) placePlayers(); });
   Hooks.on("updateUser", (u, ch) => { if (u.isSelf && "character" in (ch ?? {})) renderHud(); });
 }

@@ -4641,3 +4641,14 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 @container (max-width: 700px) { .twod12-hud .hud-who { display: none; } .twod12-hud .hud-hot { padding: 0 3px; } }
 /* v0.0.379: the HUD placed on the screen (hud.mjs placeRoot sets left, right and bottom) */
 .twod12-hud.floating { position: fixed; width: auto; margin: 0; z-index: 60; }
+/* v0.0.380 (Lucas: "the player list is still Foundry style"): the players list above the HUD in its look: a flat dark pill, a dot in each player's color */
+.twod12-hud .hud-players #players { min-width: 0; padding: 4px 8px; border: 1px solid var(--hud-line); border-radius: 2px; background: var(--hud-bg); color: var(--hud-ink); box-shadow: 0 2px 8px rgba(0, 0, 0, .4); font: 400 12px/1.3 "Signika", sans-serif; opacity: 1; }
+.twod12-hud .hud-players #players .players-list { gap: 2px; margin: 0; padding: 0; }
+.twod12-hud .hud-players #players .player { display: flex; align-items: center; gap: 6px; padding: 1px 0; border: 0; background: none; color: var(--hud-ink); font-weight: 600; }
+.twod12-hud .hud-players #players .player::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--player-color, #888); border: 0; }
+.twod12-hud .hud-players #players .player:not(.active) { color: var(--hud-mute); font-weight: 400; } .twod12-hud .hud-players #players .player:not(.active)::before { opacity: .45; }
+.twod12-hud .hud-players #players #players-inactive { margin-bottom: 3px; padding-bottom: 3px; border-bottom: 1px solid var(--hud-hair); }
+.twod12-hud .hud-players #players #players-inactive:empty { display: none; }
+.twod12-hud .hud-players #players #performance-stats { gap: 8px; align-items: center; margin-top: 2px; font-size: 11px; color: var(--hud-mute); }
+.twod12-hud .hud-players #players #performance-stats label { color: var(--hud-mute); font-size: 11px; }
+.twod12-hud .hud-players #players #players-expand { width: 18px; height: 18px; min-height: 0; margin-left: auto; padding: 0; border: 0; background: none; color: var(--hud-mute); }
