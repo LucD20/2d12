@@ -160,13 +160,16 @@
 .twod12-type .application .fr-tab { --fr-navy: #3b3128; --fr-gold: #c9962b; --fr-maroon: #2a241d; --fr-goldsoft: transparent; --fr-line: #cdb88a; --fr-par2: #eae0c8; --fr-field: #fbf7ee; --fr-ink: #2a241d; --fr-mut: #5d5446; font-family: "Signika", sans-serif; }
 .twod12-type .application.twod12-styled .sk .head .name { font: 700 20px "Signika", sans-serif; }
 .twod12-type .application.twod12-styled .sk .head img { border-radius: 2px; }
+/* Lucas, 2026-11-13: the "On you" cell leaves the strip (the Effects tab lists them, and the cell grew too much) */
+.twod12-type .twod12.sheet.pcs .ps-onyou { display: none !important; }
+.twod12-type .twod12.sheet.pcs .ps-strip.v349 { grid-template-columns: minmax(0, 1fr) 150px 150px; } .twod12-type .twod12.sheet.pcs.npcs .ps-strip.v349 { grid-template-columns: minmax(0, 1fr); } .twod12-type .twod12.sheet.pcs.npcs.elite .ps-strip.v349 { grid-template-columns: minmax(0, 1fr) 160px; }
 /* the encounter log and the Generate window */
 .twod12-type .enclog .el-round { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; border-bottom: 1px solid #8a6d3b; color: #2a241d; }
 .twod12-type .enclog .el-turn { border-left: 2px solid #8a6d3b; border-radius: 0; background: none; padding: 2px 8px; } .twod12-type .enclog .el-own { color: #2a241d; }
 .twod12-type .enclog .el-bar button { border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: inherit; font: 600 12px "Signika", sans-serif; }
 .twod12-dark .enclog-app .window-content { background: #1f1c18; color: #ece3cf; } .twod12-dark .enclog .el-bar { background: #28241d; border-color: #4a4132; } .twod12-dark .enclog .el-abbr { border-color: #4a4132; }
 .twod12-dark .enclog .el-bar label, .twod12-dark .enclog .el-abbr label, .twod12-dark .enclog .el-line, .twod12-dark .enclog .el-own, .twod12-dark .enclog .el-round { color: #ece3cf; } .twod12-dark .enclog .el-round, .twod12-dark .enclog .el-turn { border-color: #7a683f; }
-.twod12-dark .enclog .el-line > a { color: #b3a68e; } .twod12-dark .enclog .el-line.k-dmg, .twod12-dark .enclog .el-line.k-down { color: #f0958a; } .twod12-dark .enclog .el-line.k-heal { color: #6fd0c4; }
+.twod12-dark .enclog .el-line > a { color: #b3a68e; } .enclog .el-line > i svg, .enclog a svg, .enclog button svg { width: 1em; height: 1em; fill: currentColor; vertical-align: -.125em; } .twod12-dark .enclog .el-line > i { color: #d4a548; opacity: 1; } .twod12-dark .enclog .el-line > a, .twod12-dark .enclog .el-own a { color: #b3a68e; opacity: 1; } .twod12-dark .enclog .el-line.k-dmg, .twod12-dark .enclog .el-line.k-down { color: #f0958a; } .twod12-dark .enclog .el-line.k-heal { color: #6fd0c4; }
 .twod12-type .application.twod12-gencard h4.gc-h { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: #2a241d; }
 .twod12-type .application.twod12-builder .bb-cap { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
 .twod12-type .application.twod12-gencard ul.gc-lines, .twod12-type .application.twod12-gencard .fr-tab .fr-ta.gc-text { border-radius: 0; }
