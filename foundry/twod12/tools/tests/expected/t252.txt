@@ -12,3 +12,5 @@ Escalation &times; Radiant Zeal Passive, Escalation 1 Final Verdict 2 AP Body Sa
 three client settings: true | Skip roll dialog, Shift the other way: true
 the dialog skipped unless something blocks the roll: true | the pick bar asks in the HUD: true | registered: true
 follows the selection only: true | the hotbar moved in: true | Quick pins on the actor: true
+--- v0.0.379: placed on the screen, between the scene controls and the sidebar
+a 1180 px window, the sidebar at 830: {"left":102,"right":360,"bottom":6} | the sidebar collapsed: {"left":102,"right":50,"bottom":6} | the hotbar left outside (top at 940): {"left":102,"right":360,"bottom":66}

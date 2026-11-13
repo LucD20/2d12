@@ -108,11 +108,29 @@ function ensureRoot() {
   root.id = "twod12-hud";
   root.className = "twod12-hud";
   root.innerHTML = '<div class="hud-players"></div><div class="hud-main"></div><div class="hud-ask"></div><div class="hud-hot"></div>';
-  const host = document.getElementById("ui-bottom");
-  if (host) host.prepend(root); else { root.classList.add("floating"); document.body.append(root); }
+  // v0.0.379 (Lucas: "still not right placed"): the HUD is placed on the screen itself, from the scene controls' right edge to the sidebar's left
+  // edge, not inside Foundry's middle column (whose width Foundry sets); measured again when the window, the sidebar or the controls change
+  root.classList.add("floating");
+  (document.getElementById("interface") ?? document.body).append(root);
   root.addEventListener("click", onClick);
   root.addEventListener("contextmenu", onContext);
+  window.addEventListener("resize", placeRoot);
+  try { const ro = new ResizeObserver(() => placeRoot()); for (const id of ["ui-right", "sidebar", "scene-controls", "ui-left"]) { const el = document.getElementById(id); if (el) ro.observe(el); } } catch (e) { /* no observer */ }
   return root;
+}
+/** Pure: the HUD's left, right and bottom offsets (px) from the edges it sits between. */
+export function hudBox({ controlsRight = 0, sidebarLeft = 0, width = 0, hotbarTop = null, height = 0 } = {}) {
+  const left = Math.round(Math.max(8, controlsRight + 10)), right = Math.round(Math.max(8, width - (sidebarLeft || width) + 10));
+  const bottom = hotbarTop === null ? 6 : Math.round(Math.max(6, height - hotbarTop + 6));
+  return { left, right, bottom };
+}
+function placeRoot() {
+  if (!root?.isConnected) return;
+  const rect = id => document.getElementById(id)?.getBoundingClientRect?.() ?? null;
+  const ctl = rect("scene-controls") ?? rect("controls"), side = rect("ui-right") ?? rect("sidebar");
+  const hb = document.getElementById("hotbar"), hbOut = hb && !root.contains(hb) && hb.offsetParent ? hb.getBoundingClientRect() : null;
+  const b = hudBox({ controlsRight: ctl?.right ?? 0, sidebarLeft: side && side.width ? side.left : window.innerWidth, width: window.innerWidth, hotbarTop: hbOut ? hbOut.top : null, height: window.innerHeight });
+  Object.assign(root.style, { left: `${b.left}px`, right: `${b.right}px`, bottom: `${b.bottom}px` });
 }
 /** The hotbar into the HUD's right end (a setting), and back out when the setting is off (a reload puts it back exactly). */
 function placeHotbar() {
@@ -136,7 +154,7 @@ export function renderHud() {
 async function drawHud() {
   const show = setting("hudShow", true);
   if (!show) { if (root) root.hidden = true; return; }
-  ensureRoot(); root.hidden = false; placeHotbar(); placePlayers();
+  ensureRoot(); root.hidden = false; placeHotbar(); placePlayers(); placeRoot();
   const main = root.querySelector(".hud-main"), cur = current();
   closePop();
   if (cur.list) {
@@ -275,6 +293,7 @@ export function registerHud() {
   Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });
   for (const h of ["createItem", "updateItem", "deleteItem"]) Hooks.on(h, i => { if (mine(i.parent)) renderHud(); });
   Hooks.on("renderHotbar", () => { if (root) placeHotbar(); });
+  for (const h of ["collapseSidebar", "changeSidebarTab", "renderSceneControls"]) Hooks.on(h, () => { placeRoot(); setTimeout(placeRoot, 450); });
   for (const h of ["renderPlayers", "renderPlayerList"]) Hooks.on(h, () => { if (root && !root.hidden) placePlayers(); });
   Hooks.on("updateUser", (u, ch) => { if (u.isSelf && "character" in (ch ?? {})) renderHud(); });
 }
