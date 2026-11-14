@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: f8cd6ad 2026-11-14 Card Workbench: write a card by hand beside the Paladin audit (no calculations)
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 5a6fd1a 2026-11-14 Card Workbench: Lucas's rates beside the SIM's (RATES in budget.js); the spent Rally Point and Evade use them once set
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

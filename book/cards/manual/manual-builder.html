@@ -168,11 +168,12 @@ function makeBudget() {
   /** Lucas's rates (2026-11-14: "I will rate those myself; keep your rate × my rate"). Where he has set one, the budget uses it; the SIM's stays beside it,
    *  shown on the page and kept here, so a big gap can be looked at later. null = not set yet (the SIM's is used). One entry per thing. */
   const RATES = {
-    rallySpent: { lucas: null, sim: 0, simNote: "the target spends its own Rally Point: it moves Health it already had (the bare 1 AP measured −10 to −11, below an unused AP's +12 to +15)" },
-    evadeMelee: { lucas: null, sim: [0, 0, 0], simNote: "a melee build: the SIM only steps away, and a melee PC never wants to (a step toward someone or out of a bad spot isn't measured)" },
+    rallySpent: { lucas: 5, sim: 0, simNote: "the target spends its own Rally Point: it moves Health it already had (the bare 1 AP measured −10 to −11, below an unused AP's +12 to +15)" },
+    evadeMelee: { lucas: [3, 9, 14], sim: [0, 0, 0], simNote: "a melee build: the SIM only steps away, and a melee PC never wants to (a step toward someone or out of a bad spot isn't measured)" },
+    slid: { lucas: [5, 11, 18], sim: null, simNote: "not measured for a PC (the SIM pushes without aiming: a PC's Push measured −2 to +1); the PC budget's guide prices an aimed one as Mild, 3; the Bestiary's table 2 / 8 / 12" },
     evadeRanged: { lucas: null, sim: [30, 30, 34], simNote: "a free Evade 1 / 2 / 3 once a round, 700 fights a level (book/ruler/sim/pcextra.mjs): the first square matters most (out of Engaged, no Doomed shot)" },
   };
-  const rate = k => (RATES[k].lucas ?? RATES[k].sim), rateNote = (k, i) => { const r = RATES[k], pick = v => (Array.isArray(v) ? v[i] : v); return r.lucas == null ? `SIM: ${r.simNote} (your rate: not set)` : `your rate ${pick(r.lucas)} · the SIM's ${pick(r.sim)}`; };
+  const rate = k => (RATES[k].lucas ?? RATES[k].sim), rateNote = (k, i) => { const r = RATES[k], pick = v => (Array.isArray(v) ? v[i] : v); return r.lucas == null ? `SIM: ${r.simNote} (your rate: not set)` : `your rate ${pick(r.lucas)} · the SIM's ${r.sim == null ? "none (" + r.simNote + ")" : pick(r.sim)}`; };
   /** The prices, with where each number comes from. */
   const PRICES = {
     ap: 25,                 // an AP of a Round or At-will Action (a Weapon Attack)
@@ -216,6 +217,8 @@ function makeBudget() {
       read: (m) => { const n = num(m[1]); if (!Number.isFinite(n)) return null; return { what: `${n} Rally Point${n > 1 ? "s" : ""} the target spends`, pts: n * rate("rallySpent"), note: `${rateNote("rallySpent")}. For new Health write "heals what 1 Rally Point heals" or "1 free Rally Point".` }; } },
     { key: "evade", re: /Evade (\d+)/gi,
       read: (m, b) => { const n = Math.max(1, Number(m[1])), i = Math.min(3, n) - 1, k = b.seat === "melee" ? "evadeMelee" : "evadeRanged"; return { what: `Evade ${n} (${b.seat})`, pts: rate(k)[i], note: rateNote(k, i) }; } },
+    { key: "slid", re: /Slid (\d+)/gi,
+      read: (m) => { const n = Math.max(1, Number(m[1])), i = Math.min(3, n) - 1; return { what: `Slid ${n}`, pts: rate("slid")[i], note: rateNote("slid", i) }; } },
     { key: "heal", re: /heal(?:s|ing)?\s+(?:more\s+)?(\d*d\d+!?(?:\s*\+\s*(?:\d*d\d+!?|\d+|pow|wea|mod|body|mind|appeal|instinct)\b)*|\d+(?:\s*\+\s*(?:pow|wea|mod|body|mind|appeal|instinct)\b)*)/gi,
       read: (m, b) => { const a = amount(m[1], b); if (!a) return null; return { what: `healing ${m[1].trim()} = ${+a.avg.toFixed(1)} Health`, pts: a.avg * PRICES.health, note: `${a.how}; × ${PRICES.health} points a Health (new Health)` }; } },
   ];
@@ -347,7 +350,7 @@ function makeBudget() {
         ${barHtml(r)}<p class="reads">${esc(r.label)}; within ${n1(r.band[0])} to ${n1(r.band[1])}${r.fires ? `; what it reads × ${r.fires} (a Reaction fires about half the rounds)` : ""}</p><ul class="items">${items}</ul></div>`;
     }).join("");
     $("budget").innerHTML = `<div class="bud-top"><h2 class="ch">Budget <small>only what the text says that the page can read</small></h2><select id="build" aria-label="Built for">${BG.BUILDS.map(b => `<option${b.name === S.build ? " selected" : ""}>${esc(b.name)}</option>`).join("")}</select></div>${rows}
-      <p class="reads">Read from the text so far: <b>X Rally Points</b> (the target spends them: 0) or <b>heals what X Rally Points heal</b> / <b>X free Rally Points</b> (new Health); <b>Evade X</b>; <b>heal / heals / healing XdY + pow / wea / body / mind / appeal / instinct</b>. Damage, riders and Guard aren't read yet.</p>`;
+      <p class="reads">Read from the text so far: <b>X Rally Points</b> (the target spends them) or <b>heals what X Rally Points heal</b> / <b>X free Rally Points</b> (new Health); <b>Evade X</b>; <b>Slid X</b>; <b>heal / heals / healing XdY + pow / wea / body / mind / appeal / instinct</b>. Damage, riders and Guard aren't read yet.</p>`;
   }
 
   /* ---------------------------------------------------------------- Copy for Claude: the card in book/cards' shape, the audit entry, the notes */

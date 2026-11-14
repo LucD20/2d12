@@ -260,7 +260,7 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
         ${barHtml(r)}<p class="reads">${esc(r.label)}; within ${n1(r.band[0])} to ${n1(r.band[1])}${r.fires ? `; what it reads × ${r.fires} (a Reaction fires about half the rounds)` : ""}</p><ul class="items">${items}</ul></div>`;
     }).join("");
     $("budget").innerHTML = `<div class="bud-top"><h2 class="ch">Budget <small>only what the text says that the page can read</small></h2><select id="build" aria-label="Built for">${BG.BUILDS.map(b => `<option${b.name === S.build ? " selected" : ""}>${esc(b.name)}</option>`).join("")}</select></div>${rows}
-      <p class="reads">Read from the text so far: <b>X Rally Points</b> (the target spends them: 0) or <b>heals what X Rally Points heal</b> / <b>X free Rally Points</b> (new Health); <b>Evade X</b>; <b>heal / heals / healing XdY + pow / wea / body / mind / appeal / instinct</b>. Damage, riders and Guard aren't read yet.</p>`;
+      <p class="reads">Read from the text so far: <b>X Rally Points</b> (the target spends them) or <b>heals what X Rally Points heal</b> / <b>X free Rally Points</b> (new Health); <b>Evade X</b>; <b>Slid X</b>; <b>heal / heals / healing XdY + pow / wea / body / mind / appeal / instinct</b>. Damage, riders and Guard aren't read yet.</p>`;
   }
 
   /* ---------------------------------------------------------------- Copy for Claude: the card in book/cards' shape, the audit entry, the notes */
