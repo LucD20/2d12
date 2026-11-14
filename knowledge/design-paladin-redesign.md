@@ -116,7 +116,7 @@ The enemy hits the Paladin instead (AD 14, not 13) ....... about 1 to 2 a turn  
 > **1 AP:** The target is Judged by you instead of the one you had.
 > A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.
 
-## Decision 3: the burst, Smite (PROPOSED, waiting for Lucas)
+## Decision 3: the burst, Smite (DECIDED, Lucas, 2026-11-14: A, with exploding dice and at most 4; the final card is at the end of this section)
 
 Lucas (2026-11-14): "Propose. And it should be Smite." So Smite stops being the every-round Hallmark and becomes the explosion. Drafted two ways, as the charter's question 9 asks: **A**, a Feature every Paladin has at level 1 (recommended); **B**, the Encounter Pick moved to level 1.
 
@@ -167,4 +167,28 @@ The same card with bigger dice (1d8 for each Escalation, 1d10s against a Profane
 - **Against it:** a Paladin can then pick something else and have no burst at all, which is your brief's third word gone, and question 7 said the defining pieces are for every Paladin. It also moves the level 2 pick to level 1 (level 2 becomes the hook and a Passive only), and at about +20 to 25 a turn it overshoots level 1's 130 unless the Hallmark Action shrinks.
 - **My recommendation: A.** Every Paladin smites; the Encounter Pick at level 2 stays a real choice among three other moments.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-14):** A (a Feature every Paladin has). The Reaction AP for 2 more dice: yes. Tier 1 as the dice alone: yes. **And two changes he proposed: the Smite dice explode, and at most 4 of them.** Claude agreed with both: exploding dice are already the weapon dice's rule (1d6!), they are what "explode" should look like on the table, and each die is worth about a sixth more; the cap takes that back at the top and brings the full Smite to round 4 (round 2 with Momentum 2), so there is less reason to hoard it. **One point Claude set and Lucas can revert:** the Reaction AP's 2 dice are on top of the 4 (6 at most).
+
+**The final card:**
+
+> **Smite** · Paladin Feature · Encounter · 2 AP · [Divine, Signature, Strike, Weapon] · Distance: Weapon · Target: one creature
+> *Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.*
+> **Smite dice:** [R] 1d6! Ho for each Escalation you have, up to 4 dice (1d8!s against a Profane creature).
+> **Tier 1:** your Smite dice. **Tier 2:** [V] 1[W] + [Mod] + your Smite dice. **Tier 3:** [V] 1[W] + [Mod] + your Smite dice.
+> When you use Smite, you can spend your Reaction AP: roll 2 more Smite dice.
+
+```
+Greatsword, Signature +2 against Defense 13; on the creature he Judged (1d8!s, 5.1 a die)   [judgment, computed from the dice]
+Escalation 1 ....... Tier 1 / 2 / 3:  5 / 16 / 20    average 14    48 points
+Escalation 3 ....... 15 / 27 / 31                    average 24    83 points
+Escalation 4 or more (4 dice) ... 21 / 32 / 36       average 30   100 points
+... with the Reaction AP (6 dice) ... 31 / 42 / 46   average 40   135 points
+Against a creature that isn't Profane (1d6!s): 73 at Escalation 3, 88 at 4 or more
+--- At full size it is exactly an Encounter Action's price (2 AP: 100), and 1.35 times that when he spends everything.
+```
+
+**For the book when applied:** Chapter 2 gets the exception in the card's own words (the Reaction AP spent on Smite); the old Smite (Round, 1 / 2 / 3 AP) and Holy Wrath leave; the Paladin's Hallmark Action choice no longer holds Smite.
+
+## Decision 4: next (the first Hallmark Action)
+
+With Judge and Smite as the two Features, the Hallmark Action is a style, used every round: a Strike with one rider, or a Help. Claude proposes unless Lucas drafts.

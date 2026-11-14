@@ -58,7 +58,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14: Smite proposed. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14: Smite decided. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
@@ -74,61 +74,40 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
-<p><strong>One decision: Smite, the burst.</strong> Say "Proposed", or change it. The things most worth your eye:</p>
 <ol>
-  <li>A (a Feature every Paladin has) or B (the Encounter Pick at level 1).</li>
-  <li>The Smite dice: one for each Escalation, so it grows every round.</li>
-  <li>Spending the Reaction AP for 2 more dice.</li>
-  <li>The Tier 1: the dice alone, no weapon damage.</li>
+  <li><strong>Confirm one detail on Smite:</strong> the Reaction AP's 2 dice are on top of the 4 (6 at most). Or should 4 be the ceiling for everything?</li>
+  <li><strong>The next card is the first Hallmark Action.</strong> With Judge and Smite as Features, the Hallmark Action is his every-round style. My idea for the pair: one is a <strong>Strike that also shields</strong> (he hits, and an ally near the target gets Guard), the other a <strong>Help</strong> (Guard on an ally before the hit, no attack). Should I propose on that line, or do you see the two styles differently?</li>
 </ol>
 </div>
 </section>
 
 <section id="smite">
-<h2>Decision 3: Smite, the burst (proposed)</h2>
-<p>Smite stops being the every-round Hallmark and becomes the explosion, once an encounter.</p>
-<h3>A. As a Feature every Paladin has (recommended)</h3>
+<h2>Decision 3: Smite, the burst (decided)</h2>
 <div class="card">
   <div class="bar"><span>Smite</span><span>Paladin Feature · Encounter · 2 AP · Divine, Signature, Strike, Weapon · one creature</span></div>
   <div class="v"><b></b><div class="small"><em>Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.</em></div></div>
-  <div class="v"><b>Dice</b><div><strong>Smite dice:</strong> [R] 1d6 Ho for each Escalation you have (1d8s against a Profane creature).</div></div>
+  <div class="v"><b>Dice</b><div><strong>Smite dice:</strong> [R] 1d6! Ho for each Escalation you have, up to 4 dice (1d8!s against a Profane creature).</div></div>
   <div class="v"><b>Tier 1</b><div>your Smite dice</div></div>
   <div class="v"><b>Tier 2</b><div>[V] 1[W] + [Mod] + your Smite dice</div></div>
   <div class="v"><b>Tier 3</b><div>[V] 1[W] + [Mod] + your Smite dice</div></div>
   <div class="v"><b></b><div>When you use Smite, you can spend your Reaction AP: roll 2 more Smite dice.</div></div>
 </div>
-
-<h3>What it is worth</h3>
-<p class="small">A Greatsword against Defense 13, on the creature he Judged (d8s). A Weapon Attack is 25 points. Computed from the dice, not a SIM run.</p>
+<p><strong>Your changes, applied:</strong> the dice explode, and at most 4 of them.</p>
 <div class="scroll"><table>
-<tr><th>When</th><th>Tier 1 / 2 / 3</th><th>Average</th><th>Points</th></tr>
-<tr><td>Escalation 1 (round 1, no Momentum)</td><td>4.5 / 16 / 20</td><td>13</td><td>46</td></tr>
-<tr><td>Escalation 3 (round 3, or round 1 with Momentum 2)</td><td>13.5 / 25 / 29</td><td>22</td><td>76</td></tr>
-<tr><td>Escalation 4</td><td>18 / 29 / 33</td><td>27</td><td>92</td></tr>
-<tr><td>Escalation 6</td><td>27 / 38 / 42</td><td>36</td><td>122</td></tr>
-<tr><td>With the Reaction AP (2 more dice)</td><td>+ 9</td><td>+ 9</td><td>+ 31</td></tr>
+<tr><th>On the creature he Judged</th><th>Tier 1 / 2 / 3</th><th>Average</th><th>Points</th></tr>
+<tr><td>Escalation 1</td><td>5 / 16 / 20</td><td>14</td><td>48</td></tr>
+<tr><td>Escalation 3</td><td>15 / 27 / 31</td><td>24</td><td>83</td></tr>
+<tr><td>Escalation 4 or more (4 dice)</td><td>21 / 32 / 36</td><td>30</td><td>100</td></tr>
+<tr><td>With the Reaction AP (6 dice)</td><td>31 / 42 / 46</td><td>40</td><td>135</td></tr>
 </table></div>
-<p>The 2 AP would otherwise be two Weapon Attacks, about 47 points. So in round 3 it is 1.5 to 1.9 times a normal 2 AP, and over a fight it adds about 9 to 13 points a turn: the size of a Feature.</p>
-
-<h3>Why this shape</h3>
+<p class="small">A Greatsword against Defense 13; a Weapon Attack is 25 points; computed from the dice, not a SIM run. Against a creature that isn't Profane the dice are d6s: 88 points at 4 dice.</p>
 <ul>
-<li><strong>The decision is when.</strong> In round 1 it is two Weapon Attacks' worth. Every round it grows by a die, and the table sees it grow: the Escalation counter is the Smite. Wait too long and the target is dead.</li>
-<li><strong>"When they use all they have":</strong> the Reaction AP. He adds 2 dice, and until his next turn he can't protect anyone. No counter to track.</li>
-<li><strong>Not a consistent damage dealer:</strong> once an encounter. Every other turn his Strike is a Weapon Attack at +1.</li>
-<li><strong>It lands.</strong> On a Tier 1 the blade misses and the light doesn't: the dice alone, about half of a Tier 3.</li>
-<li><strong>Against the Profane, in every campaign:</strong> bigger dice against a Profane creature, and the creature he Judged counts as one.</li>
-<li><strong>The hook feeds it.</strong> At level 2, an ally becoming Bloodied or going Down raises his Escalation: when his protection fails, his blow gets bigger.</li>
-<li><strong>The top end:</strong> at Escalation 6 with the Reaction AP it is 8 dice, about 45 damage, a third of an Elite. Rare. If it proves too much: "at most 6 Smite dice".</li>
-<li><strong>The risks:</strong> a player who always waits for one more die and never uses it (it resets every fight). And it spends the Reaction AP on his own Action, an exception the card states.</li>
+<li><strong>At full size it is exactly an Encounter Action's price</strong> (2 AP: 100 points), reached in round 4, or round 2 with Momentum 2.</li>
+<li><strong>The decision is when.</strong> It grows by a die each round until 4, and the table sees it grow.</li>
+<li><strong>"When they use all they have":</strong> the Reaction AP for 2 more dice; until his next turn he can't protect anyone.</li>
+<li><strong>It lands:</strong> on a Tier 1 the blade misses and the light doesn't.</li>
+<li><strong>What left the class:</strong> the every-round Smite (1 / 2 / 3 AP) and Holy Wrath. The Bright light moves to an Art.</li>
 </ul>
-
-<h3>B. As the Encounter Pick, taken at level 1</h3>
-<p>The same card with bigger dice (d8s, d10s against a Profane creature), offered beside two other Encounter Actions.</p>
-<ul>
-<li><strong>For it:</strong> it follows the level list as written, and the explosion is bigger.</li>
-<li><strong>Against it:</strong> a Paladin could pick something else and have no burst at all. Level 2 would give only the hook and a Passive. And it overshoots level 1's budget unless the Hallmark Action shrinks.</li>
-</ul>
-<p>What leaves the class if A is taken: today's Smite (every round, 1 / 2 / 3 AP) and Holy Wrath. The Bright light moves to an Art.</p>
 </section>
 
 <section id="mark">
