@@ -223,6 +223,40 @@ The Strike has about 15 of its 50 points for one rider, and the rider must still
 
 **Claude's reading:** Guard to an ally first. The two real alternatives are the weaker next hit (the same direction, protects without choosing whom, cheap enough to sit beside something else) and Slid 1 (the only one that changes the board). The AP-takers belong on an Encounter Action. One of the others can be the Strike's Tier 3 line.
 
-## Decision 4: next (the first Hallmark Action)
+**Immobilized as the rider (asked by Lucas, 2026-11-14; from the rules and our numbers, no new search).** The rule (Chapter 8): the creature can't use Move Actions or Evade; it ends by spending 1 AP [Move] (Break Free) unless the card says otherwise; and it is hard to move (a Forced Movement that doesn't roll is disrupted). Two forms on cards: "(EoT)" and plain ("until it escapes"). **Prices [SIM, `pc-budget.md` sections 3 and 9]:** on a melee PC's attacks, Immobilized (EoT) -3.6 against Standards and -3.5 against an Elite; until it escapes -0.1 and +1.5; on maps -1.0 to -2.1; from the ranged seat +3.4 and +1.8. Negative because the white room's enemy, pinned next to him, spends every AP hitting him and nothing counts the back line it didn't reach: this is one of the SIM's blind spots, not a verdict. On a PC it is Moderate (8) in the Bestiary's table. **History:** the Archer's Pinned Down (Immobilized (EoT) on a shot every round) was cut as too strong (2026-11-04); Pinning Shot has it once an encounter. **Research:** "leaving costs the action economy" is the second strongest way to make a front line real (Lancer's Full-action Disengage, 13th Age's disengage check); Draw Steel's Judgment buys "its speed becomes 0" for 1 wrath. **Claude's reading:** it is the best answer we have to "they stay in front so the squishies can stay back", in the plain form (the enemy pays 1 AP to leave him: a Standard's AP is 25 points, on the turns it wanted to leave), on a Tier 2 or 3 only, with a lesser Tier 1 (Hindered (EoT)). Its limits: nothing against an enemy already next to the ally it wants, or one with Reach or a ranged attack; it blocks the party's own pushes on that enemy. **And an argument for it over Guard on the Strike:** the other Hallmark Action, Lay On Hands, already gives Guard; a Strike that pins makes the two Hallmark Actions two styles (the one who shields, the one who holds the line) and not one style twice.
 
-With Judge and Smite as the two Features, the Hallmark Action is a style, used every round: a Strike with one rider, or a Help. Claude proposes unless Lucas drafts.
+## Decision 4: the Hallmark Strike (PROPOSED, waiting for Lucas)
+
+Lucas (2026-11-14): yes to the Strike with Immobilized. **Why Claude hadn't listed Immobilized among the riders (his question):** the list was filtered three ways without saying so. It was built from the PC budget's rider table, where Immobilized is negative for a melee PC, and that number was treated as a verdict (it is a blind spot: the white room doesn't count the back line). It was filtered by his last direction (a smaller hit, Guard), not by all five lines of the brief. And holding the line had already been parked on "a Reaction or an Art", so it wasn't looked for on the Strike. The fix proposed to him: when he asks for choices, the whole list from the rules is shown, the rejected ones with their reason.
+
+**Research first.** A two-AP attack is a trap when it is one roll priced under two (Pathfinder 2e's Power Attack). A front line is made real by making leaving cost the action economy (Lancer, 13th Age), and Draw Steel's Censor has exactly this on his at-will strikes ("Halt Miscreant!": slowed). Automatic control every round was cut from the Archer (Pinned Down).
+
+> **Halting Strike** · Paladin Hallmark Action · Round · 2 AP · [Divine, Strike, Weapon] · Distance: Weapon · Target: one creature
+> *Your blow lands wreathed in light that roots your foe where it stands.*
+> **Tier 1:** [R] 1d6 Ho. **Tier 2:** [V] 1[W] + [Mod] + [R] 1d6 Ho. **Tier 3:** [V] 1[W] + [Mod] + [R] 1d6 Ho.
+> Tier 2 or 3: the target is Immobilized for 1 round.
+
+```
+Greatsword, Weapon +1 against Defense 13 (Tier 1 35%, Tier 2 48%, Tier 3 17%); a Weapon Attack averages 7.3 = 25 points.
+Damage: 3.5 / 13.7 / 17.6, average 10.8 ............................. 37   [judgment, computed from the dice]
+Immobilized for 1 round, on 65% of uses:
+  the enemy pays 1 AP to leave him (a Standard's AP), on the turns it wanted to (about a third)  about 5   [judgment: Dazed 1, an AP taken for certain, is 11 to 15 a landing (SIM)]
+  the back line it didn't reach that turn ............................ not priced (the SIM's blind spot: it measured -3.6 to 0 in a white room; suggested 5 to 10 on a map with a back line)
+--- Total: about 42, and 47 to 52 where there is a back line to protect, of 50: on
+```
+
+**Analysis.**
+- **The decision it gives:** whom to pin. The enemy heading for the Archer, or the one he Judged (pinned next to him, it can only hit him or an ally in its Reach, and Judge makes that hit smaller).
+- **The enemy's choice:** stay and hit the Paladin (AD 14), or pay 1 AP to Break Free and then move. With the Advance in one piece it pays before it can go anywhere, and it can't Evade or Charge either.
+- **Not a striker:** one roll at Weapon +1 for 37 points of damage where two Weapon Attacks would be 47. He gives up a quarter of his damage to hold something in place.
+- **Its Tier 1 isn't empty:** the light lands (1d6), as on Smite. No condition on a Tier 1: an automatic pin every round is what was cut from the Archer.
+- **Two styles now:** Halting Strike holds the line; Lay On Hands shields.
+- **The rules it touches:** nothing new. "Immobilized for 1 round" can still be ended with Break Free (1 AP), as Chapter 8 says. The Immobilized DC is 11 + his Weapon Modifier (12). An Immobilized creature resists Forced Movement: the party's own pushes on it can fail.
+- **Its siblings:** the Archer's Pinning Shot (Encounter, 1 AP, Immobilized (EoT) at range) and Lock & Loose. The Paladin's is every round, but in melee, for 2 AP, on two thirds of his rolls.
+- **Its limits:** nothing against an enemy already next to the ally it wants, or one with Reach or a ranged attack.
+- **Complexity:** one Version, 9 words of effect, one condition, no conditional.
+- **Table feel:** "it's rooted" is a thing everyone at the table sees on the map. The risk: a GM whose monsters never wanted to move makes it read as a plain, weak attack.
+
+**For Lucas to choose:** the name (Halting Strike is a placeholder); "for 1 round" or "(EoT)"; whether it should roll [Signature] (+2) instead of Weapon (+1): Claude kept +1 so that only Smite hits like a striker.
+
+**Lucas's answer:**
