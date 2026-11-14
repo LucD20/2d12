@@ -112,7 +112,7 @@ function makeEngine(DATA, CALC) {
     if (h.kind === "heal") return `${h.who === "self" ? "you heal" : h.who === "allies" ? `${h.n} allies heal` : "an ally heals"} ${amt}`;
     if (h.kind === "rally") return `${h.who === "self" ? "you can use" : h.who === "allies" ? `${h.n} allies can each use` : "an ally can use"} 1 Rally Point${h.amount ? `, healing ${amt} more` : ""}`;
     if (h.kind === "guard") return `${who} [[Guard]] ${amt}`;
-    if (h.kind === "defense") return `${who} +1 Defense until your next turn`;
+    if (h.kind === "defense") { const r = defRounds(h); return `${who} +1 Defense ${r > 1 ? `for ${r} rounds` : "until your next turn"}`; }
     if (h.kind === "block") return `the triggering damage is reduced by ${amt}`;
     return "";
   }
@@ -143,7 +143,7 @@ function makeEngine(DATA, CALC) {
     if (!noRoll(d)) for (const r of tierRiders(v)) { const t = tok(r.name); fx.push(...(!isSave(d) && r.tiers.join() === "1,2" ? [`on 2+: ${t}`] : r.tiers.map(i => `on ${i + 1}: ${t}`))); }
     for (const h of v.helps) {
       const amt = String(h.amount || "0").replace(/\s+/g, ""), who = h.who === "self" ? "self" : h.who === "allies" ? "any" : "ally", w = noRoll(d) || h.at === "always" ? (d.reaction || noRoll(d) ? "" : "always: ") : h.at === "t3" ? best.replace("X", "") : hit.split(";")[0].replace("X", "");
-      const t = h.kind === "heal" ? `mend ${amt} ${who}` : h.kind === "rally" ? `heal 1${h.amount ? `; mend ${amt} ${who}` : ""}` : h.kind === "guard" ? `guard ${amt} ${who}` : h.kind === "defense" ? `defense 1 ${h.who === "allies" ? "allies" : "ally"}` : h.kind === "block" ? `block ${amt}` : h.kind === "boon" ? `boon 1 ${who}` : "";
+      const t = h.kind === "heal" ? `mend ${amt} ${who}` : h.kind === "rally" ? `heal 1${h.amount ? `; mend ${amt} ${who}` : ""}` : h.kind === "guard" ? `guard ${amt} ${who}` : h.kind === "defense" ? `defense 1 ${h.who === "allies" ? "allies" : "ally"}${defRounds(h) > 1 ? ` | rounds ${defRounds(h)}` : ""}` : h.kind === "block" ? `block ${amt}` : h.kind === "boon" ? `boon 1 ${who}` : "";
       if (t) fx.push(w + t); if (h.who === "allies" && h.n > 1) bars.push(`allies ${h.n}`);
     }
     if (v.linked > 0) bars.push(`does Weapon Attack${v.linked > 1 ? ` x${v.linked}` : ""}`, ...(v.linkedExtra ? [`each extra ${v.linkedExtra.replace(/\s+/g, "")}`] : []), ...(d.target === "several" ? ["different"] : []));
@@ -196,9 +196,28 @@ function makeEngine(DATA, CALC) {
         for (const part of c.text.split(/(?<=\.)\s+/)) { const nm = part.replace(/\.$/, ""); if (names.has(nm)) t.riders.push(nm); else if (part) rest.push(part); }   // "Pushed 1." is that Tier's rider; the rest stays text
         t.text = rest.join(" "); });
       const lm = String(cv.ruler ?? "").match(/does Weapon Attack(?: x(\d))?/); if (lm && !cv.tiers) { v.linked = Number(lm[1] ?? 1); v.linkedExtra = String(cv.ruler).match(/each extra (\S+)/)?.[1] ?? ""; }
+      v.helps = helpsFromRuler(cv.ruler);
     });
+    const rx = PC.reactions.find(r => r.name === card.name); if (rx && d.reaction) d.fires = rx.fires;   // a class Reaction fires as measured
     if (!d.versions.some(v => v.on)) d.versions[0].on = true;
     return d;
+  }
+  /** The card's ruler line read back as the form's Heal, Guard and helps rows (2026-11-14: an imported card keeps its heal, Guard, block and +1 Defense). */
+  function defRounds(h) { return Math.max(1, Math.round(Number(String(h.amount ?? "").match(/\d+/)?.[0]) || 1)); }   // a +1 Defense row: its amount is how many rounds
+  function helpsFromRuler(ruler) {
+    const out = [], parts = String(ruler ?? "").split(/[|;]/).map(x => x.trim()).filter(Boolean), allies = Number(parts.map(x => x.match(/^allies ([\d.]+)$/)?.[1]).find(Boolean)) || 0;
+    const whoOf = w => (w === "self" ? "self" : (w === "any" || w === "allies") && allies > 1 ? "allies" : "ally"), nOf = w => ((w === "any" || w === "allies") && allies > 1 ? Math.round(allies) : 1);
+    let rally = null;
+    for (const raw of parts) {
+      const m = raw.match(/^(?:on (2\+|3|1)|always)?:?\s*(.*)$/), at = m[1] === "3" ? "t3" : m[1] === "2+" ? "hit" : "always", t = m[2];
+      let x;
+      if ((x = t.match(/^guard (\S+)(?: (self|ally|any|allies))?$/))) out.push({ kind: "guard", amount: x[1], who: whoOf(x[2] ?? "ally"), n: nOf(x[2]), at });
+      else if ((x = t.match(/^block (\S+)$/))) out.push({ kind: "block", amount: x[1], who: "ally", n: 1, at });
+      else if ((x = t.match(/^heal (\d+)(?: (self))?$/))) { rally = { kind: "rally", amount: "", who: x[2] ? "self" : "ally", n: 1, at }; out.push(rally); }
+      else if ((x = t.match(/^mend (\S+)(?: (self|ally|any|allies))?$/))) { if (rally && !rally.amount) rally.amount = x[1]; else out.push({ kind: "heal", amount: x[1], who: whoOf(x[2] ?? "ally"), n: nOf(x[2]), at }); }
+      else if ((x = t.match(/^defense 1 (ally|allies)$/))) out.push({ kind: "defense", amount: String(Number(parts.map(y => y.match(/^rounds (\d+)$/)?.[1]).find(Boolean)) || ""), who: whoOf(x[1]), n: nOf(x[1]), at });
+    }
+    return out;
   }
 
   /* ------------------------------------------------------------ Areas: how many creatures one catches */
@@ -261,9 +280,9 @@ function makeEngine(DATA, CALC) {
     for (const h of v.helps) {
       const amt = avgExpr(h.amount, ctx) ?? 0, n = h.who === "allies" ? Math.max(1, Number(h.n) || 1) : 1, ch = none || h.at === "always" ? 1 : h.at === "t3" ? refPlain[best] : pHit;
       const per = h.kind === "heal" || h.kind === "rally" ? PC.health * fight.healFactor : h.kind === "guard" ? PC.guard * fight.healFactor : h.kind === "block" ? (d.reaction ? PC.blockPoint : PC.health * fight.healFactor) : 0;
-      const pts = h.kind === "defense" ? PC.defense1 * n * ch : amt * per * n * ch;
+      const pts = h.kind === "defense" ? PC.defense1 * n * ch * defRounds(h) : amt * per * n * ch;
       lines.push({ what: cap(stripLinks(helpText(h, d))), pts, help: true, health: h.kind === "defense" ? 0 : amt * n * ch,
-        note: h.kind === "rally" ? `the Rally Point's own heal is priced 0 (it moves Health the ally already had; measured ${PC.rallyHeal} for the bare AP); only what the card adds on top counts` : h.kind === "defense" ? `measured ${PC.defense1} for 1 AP` : h.kind === "block" && d.reaction ? `${r1(PC.blockPoint)} points a point blocked each time it fires (Shield of Faith's measure)` : `${r1(amt * n * ch)} Health on average × ${r1(per)} points (about ${r1(amt * n * ch * fight.dmgPerHealth)} damage dealt in this fight)` });
+        note: h.kind === "rally" ? `the Rally Point's own heal is priced 0 (it moves Health the ally already had; measured ${PC.rallyHeal} for the bare AP); only what the card adds on top counts` : h.kind === "defense" ? `measured ${PC.defense1} a creature a round${defRounds(h) > 1 ? ` (× ${defRounds(h)} rounds, assuming they stay in it)` : ""}` : h.kind === "block" && d.reaction ? `${r1(PC.blockPoint)} points a point blocked each time it fires (Shield of Faith's measure)` : `${r1(amt * n * ch)} Health on average × ${r1(per)} points (about ${r1(amt * n * ch * fight.dmgPerHealth)} damage dealt in this fight)` });
     }
     let total = sum(lines.map(l => l.pts)), budget, band, rx = null;
     const big = d.frequency === "Encounter" || d.frequency === "Daily";
