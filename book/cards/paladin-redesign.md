@@ -169,25 +169,39 @@ The same card with bigger dice (1d8 for each Escalation, 1d10s against a Profane
 
 **Lucas's answer (2026-11-14):** A (a Feature every Paladin has). The Reaction AP for 2 more dice: yes. Tier 1 as the dice alone: yes. **And two changes he proposed: the Smite dice explode, and at most 4 of them.** Claude agreed with both: exploding dice are already the weapon dice's rule (1d6!), they are what "explode" should look like on the table, and each die is worth about a sixth more; the cap takes that back at the top and brings the full Smite to round 4 (round 2 with Momentum 2), so there is less reason to hoard it. **One point Claude set and Lucas can revert:** the Reaction AP's 2 dice are on top of the 4 (6 at most).
 
+**Then (Lucas, the same day): the Reaction AP gives 1 more die, not 2, and it can go over the 4; "this needs to be written clearly"; "if only 1 would not be worth it, keep at 2".** Claude's answer: 1 is worth it, and it is the better card. One d8! is about 5 damage (17 points); the Reaction AP he gives up is worth 10 to 15 a turn; and 5 damage dealt is about what 1 Health saved is worth. So 1 die is an even trade: right when it finishes the target or when no ally is in danger, wrong otherwise. With 2 dice it was nearly always right, which is a tax, not a choice.
+
 **The final card:**
 
 > **Smite** · Paladin Feature · Encounter · 2 AP · [Divine, Signature, Strike, Weapon] · Distance: Weapon · Target: one creature
 > *Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.*
-> **Smite dice:** [R] 1d6! Ho for each Escalation you have, up to 4 dice (1d8!s against a Profane creature).
+> **Smite dice:** [R] 1d6! Ho for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s.
 > **Tier 1:** your Smite dice. **Tier 2:** [V] 1[W] + [Mod] + your Smite dice. **Tier 3:** [V] 1[W] + [Mod] + your Smite dice.
-> When you use Smite, you can spend your Reaction AP: roll 2 more Smite dice.
+> When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. This die is on top of the 4: 5 dice at most.
 
 ```
 Greatsword, Signature +2 against Defense 13; on the creature he Judged (1d8!s, 5.1 a die)   [judgment, computed from the dice]
 Escalation 1 ....... Tier 1 / 2 / 3:  5 / 16 / 20    average 14    48 points
 Escalation 3 ....... 15 / 27 / 31                    average 24    83 points
 Escalation 4 or more (4 dice) ... 21 / 32 / 36       average 30   100 points
-... with the Reaction AP (6 dice) ... 31 / 42 / 46   average 40   135 points
+... with the Reaction AP (5 dice) ... 26 / 37 / 41   average 35   118 points
 Against a creature that isn't Profane (1d6!s): 73 at Escalation 3, 88 at 4 or more
---- At full size it is exactly an Encounter Action's price (2 AP: 100), and 1.35 times that when he spends everything.
+--- At full size it is exactly an Encounter Action's price (2 AP: 100).
 ```
 
 **For the book when applied:** Chapter 2 gets the exception in the card's own words (the Reaction AP spent on Smite); the old Smite (Round, 1 / 2 / 3 AP) and Holy Wrath leave; the Paladin's Hallmark Action choice no longer holds Smite.
+
+## A rule for the Paladin's Strikes (DECIDED with Lucas, 2026-11-14): his Hallmark Strike costs 2 AP
+
+Lucas: "I think the paladins Hallmark 'strike' actions should be 2 AP by default, so it doesnt become a Striker." Claude agreed, with two conditions.
+- **What 2 AP does:** his turn becomes one main Strike, one small thing and a move (2 + 1 + 1), the shape of Draw Steel's turn (a main action, a maneuver, a move) and 4e's. He rolls fewer attacks than the Archer, and Smite (2 AP) takes the same slot on the turn he explodes.
+- **What 2 AP doesn't do by itself:** lower his damage. In our measurements a 2 AP Action priced at 50 with a Weapon Attack is worth 107 against three Weapon Attacks' 100 (no At-will Bane on it). So **condition 1: the Strike's damage is about 35 of its 50 points, and the rest is its rider** (the shield).
+- **Condition 2: its Tier 1 still does its rider.** With Weapon +1 one roll carries half his turn; Pathfinder 2e's two-action Power Attack is called "a trap" on Paizo's forums because it is one roll priced under two Strikes. A Paladin whose Strike misses still shielded someone.
+- He keeps the Weapon Attack (1 AP) like everyone, and the At-will Bane already discourages chaining it.
+
+## The Hallmarks' names (Lucas, 2026-11-14)
+
+The two Hallmark Actions are a Strike and a Help. Lucas: "Help can be Lay on Hands, or shield of faith?" Claude's answer: **Lay On Hands** for the Help (the touch, on his own turn: Guard before the hit; its second use can be the class's one card that lets an ally use a Rally Point). **Shield of Faith** stays a Hallmark Reaction's name (the smaller hit, on the enemy's turn).
 
 ## Decision 4: next (the first Hallmark Action)
 

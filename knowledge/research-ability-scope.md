@@ -39,6 +39,16 @@
 - [Steel Compendium: the Tactician's doctrine triggered action](https://steelcompendium.io/v2/Browse/feature/tactician/level-1/doctrine-triggered-action/)
 - [GiantITP: builder and spender abilities, rider bookkeeping](https://forums.giantitp.com/archive/index.php/t-658150.html)
 
+## 2026-11-14 (a quick check): should a non-striker's main Strike cost 2 AP?
+
+**The question (Lucas):** the Paladin's Hallmark Strike at 2 AP by default, "so it doesnt become a Striker".
+
+- **One bigger attack for two actions is called a trap when it is priced under two attacks.** Pathfinder 2e's Power Attack (2 actions, one Strike with an extra die, counted as two attacks for the penalty): Paizo forum threads titled "Power attack is a trap"; a poster's level 20 math puts two Strikes at about 37 damage against about 33 for it. [search summaries of Paizo threads; pages not opened]
+- **Games where everyone makes one main attack a turn tell strikers apart by what the attack carries, not by how many they make.** Draw Steel: "a main action, a maneuver, and a move action" each turn [the rules, as relayed]; 4e the same (a standard, a move, a minor).
+   - *For 2d12:* a 2 AP Hallmark Strike gives the Paladin that turn shape (2 + 1 + 1) and fewer rolls than the Archer. It doesn't lower his damage by itself (`pc-budget.md` section 2: a 2 AP Action of 50 with a Weapon Attack is worth 107 against 100), so the card's damage must sit under its price with the rest in a rider, and its Tier 1 must still do something (one roll now carries half his turn, at Weapon +1).
+
+**Sources:** [Paizo: Power attack is a trap](https://paizo.com/threads/rzs42d0k) · [Paizo: Power attack considerations](https://paizo.com/threads/rzs42sj8) · [Steel Compendium: the turn](https://steelcompendium.io/v2/Browse/rule/combat/turn/)
+
 ### Not covered yet
 - Rosewater's six rules of lenticular design (the article wasn't readable in full).
 - Draw Steel's design writing on its maneuvers.

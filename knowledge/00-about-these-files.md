@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: 9104de5 2026-11-14 Paladin, decision 3 proposed: Smite as the burst (a Feature; or the Encounter Pick at level 1)
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 5308ae0 2026-11-14 Paladin: Smite decided (the burst, a Feature; exploding dice, at most 4)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (158 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (142 KB)
+- open-design-items.md (143 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -32,7 +32,7 @@ Files:
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
 - research-index.md (4 KB)
-- research-ability-scope.md (5 KB)
+- research-ability-scope.md (7 KB)
 - research-divine-profane.md (9 KB)
 - research-escalation-and-guard.md (3 KB)
 - research-frontline-protection.md (13 KB)
@@ -55,7 +55,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (11 KB)
-- design-paladin-redesign.md (27 KB)
+- design-paladin-redesign.md (29 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
