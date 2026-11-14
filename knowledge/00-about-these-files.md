@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: c100b51 2026-11-14 knowledge: refresh
+Built by tools/knowledge.py on 2026-11-14 from the repository at: e3413a6 2026-11-14 Bleed becomes Lingering, removed by its own Basic Action Shake Off (Lucas); the Paladin's brief for the redesign, in his words
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,9 +15,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (157 KB)
-- MASTER-PLAN.md (39 KB)
-- open-design-items.md (135 KB)
+- HANDOFF.md (158 KB)
+- MASTER-PLAN.md (40 KB)
+- open-design-items.md (137 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -31,11 +31,16 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
-- research-index.md (2 KB)
+- research-index.md (3 KB)
 - research-ability-scope.md (5 KB)
+- research-divine-profane.md (7 KB)
 - research-escalation-and-guard.md (3 KB)
+- research-frontline-protection.md (10 KB)
 - research-gear-and-hands.md (2 KB)
 - research-movement-positioning.md (5 KB)
+- research-nova-burst.md (10 KB)
+- research-paladin-roles.md (9 KB)
+- research-paladins-other-games.md (16 KB)
 - research-tactical-combat.md (5 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
@@ -49,7 +54,8 @@ Files:
 - design-playtest-4.md (3 KB)
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
-- design-class-charter.md (10 KB)
+- design-class-charter.md (8 KB)
+- design-paladin-redesign.md (7 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

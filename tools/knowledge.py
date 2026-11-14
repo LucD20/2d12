@@ -41,7 +41,8 @@ DESIGN_DOCS = [
     "book/playtest-4.md",       # playtest 4 (Foundry, v0.0.342, not finished): the log; its fixes in foundry-backlog "PLAYTEST 4 FIXES"
     "book/rework-r.md",         # pack R: the numbers and the decided sheet (section 14); R-core, R-classes and R-bestiary applied, R-Foundry to go
     "book/progression-lv.md",   # progression, Overcast and Momentum (pack R changes Overcast)
-    "book/class-charter.md",    # what every class must have
+    "book/class-charter.md",    # the class charter for the redesign (2026-11-14, proposed): kinds of Action, the complexity budget, the level lists
+    "book/cards/paladin-redesign.md",  # the Paladin redesign, one decision at a time (2026-11-14): the brief, each decision proposed and Lucas's answer
     "book/decisions-s1.md",  # decision sheet S1: the core is in the book (2026-11-12); the classes' Stage 0 level lists (item 5) wait for the card sessions
     "book/base-building.md",    # base building: proposals for much later (2026-11-07)
     "book/roleplay-skills.md",  # roleplay and skills: proposals (2026-11-07), Lucas reviews later
