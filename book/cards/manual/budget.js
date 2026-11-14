@@ -20,6 +20,7 @@ function makeBudget() {
     fires: 0.5,             // a Reaction fires in about half the rounds (the target, MASTER-PLAN item 5)     // a 1R Reaction adds 10 to 15 points a turn (README, "Reactions"); twice that for 2R
     passive: [5, 15],       // a Passive: the audit's guess (+10 a level), not measured
     band: 0.1,              // within limits: 10% either side (each 10 points over is felt)
+    guard: 6,               // 1 point of Guard (README "The PC budget": about 6; the SIM's 1 AP of Guard 1d8 + [Mod] measured 34.7, about 5.3 a point)
     health: 12,             // 1 Health of new healing (pc-budget.md section 5; measured again 2026-11-14: 11, 700 fights)
     rallyHeal: 9,           // a Rally Point heals ⌈Health Pool ÷ 4⌉: 9 for the Paladin (35), 8 for the Archer (29); an NPC's is 9 at Stage 0
   };
@@ -49,6 +50,7 @@ function makeBudget() {
   // "your Power Modifier" and the like become one word, so "1d6 + your Power Modifier" reads as "1d6 + pow"
   const tidy = t => String(t ?? "").replace(/'/g, " ").replace(/your (Power|Weapon|Signature) Modifier/gi, (_, k) => (k.toLowerCase() === "weapon" ? "wea" : "pow")).replace(/\[Mod\]/g, "mod").replace(/your Stage\b/gi, "stage").replace(/your (Body|Mind|Appeal|Instinct)\b(?: Modifier)?/gi, (_, k) => k.toLowerCase());
 
+  const T = "(?:twice\\s+)?(?:\\d*d\\d+!?|\\d+|pow|wea|mod|body|mind|appeal|instinct|stage)\\b", AMT = `${T}(?:\\s*\\+\\s*${T})*`;
   /** The things read from the text. Each: a regex over the text, and a price for one match. */
   const READERS = [
     { key: "rally-free", re: /heals? (?:twice |three times )?what (\w+) Rally Points? (?:would )?heals?|(\w+) free Rally Points?/gi,
@@ -59,6 +61,10 @@ function makeBudget() {
       read: (m, b) => { const n = Math.max(1, Number(m[1])), i = Math.min(3, n) - 1, k = b.seat === "melee" ? "evadeMelee" : "evadeRanged"; return { what: `Evade ${n} (${b.seat})`, pts: rate(k)[i], note: rateNote(k, i) }; } },
     { key: "slid", re: /Slid (\d+)/gi,
       read: (m) => { const n = Math.max(1, Number(m[1])), i = Math.min(3, n) - 1; return { what: `Slid ${n}`, pts: rate("slid")[i], note: rateNote("slid", i) }; } },
+    { key: "guard", re: new RegExp(`gain(?:s|ing)?\\s+(?:Guard\\s+(${AMT})|(${AMT})\\s+Guard\\b)`, "gi"),
+      read: (m, b) => { const e = m[1] ?? m[2], a = amount(e, b); if (!a) return null; return { what: `Guard ${e.trim()} = ${+a.avg.toFixed(1)}`, pts: a.avg * PRICES.guard, note: `${a.how}; × ${PRICES.guard} points a point of Guard` }; } },
+    { key: "guard-rally", re: /Guard equal to what (\w+)(?: of their)? Rally Points? (?:would )?heals?/gi,
+      read: (m) => { const n = num(m[1]); if (!Number.isFinite(n)) return null; return { what: `Guard = ${n} Rally Point${n > 1 ? "s" : ""}' heal (${n * PRICES.rallyHeal})`, pts: n * PRICES.rallyHeal * PRICES.guard, note: `${PRICES.rallyHeal} a Rally Point × ${PRICES.guard} points a point of Guard` }; } },
     { key: "heal", re: /heal(?:s|ing)?\s+(?:more\s+)?((?:twice\s+)?(?:\d*d\d+!?|\d+|pow|wea|mod|body|mind|appeal|instinct|stage)\b(?:\s*\+\s*(?:twice\s+)?(?:\d*d\d+!?|\d+|pow|wea|mod|body|mind|appeal|instinct|stage)\b)*)/gi,
       read: (m, b) => { const a = amount(m[1], b); if (!a) return null; return { what: `healing ${m[1].trim()} = ${+a.avg.toFixed(1)} Health`, pts: a.avg * PRICES.health, note: `${a.how}; × ${PRICES.health} points a Health (new Health)` }; } },
   ];
