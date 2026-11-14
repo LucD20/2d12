@@ -58,6 +58,10 @@ An extra never repeats a core field (a tier, a cost, a trait, the Frequency): te
 ## Cards with Lucas (started 2026-11-05: cards session 1, Smite)
 Lucas writes a few cards at a time, in prose or in this format, saying on each what Foundry should automate; the session completes them (the `foundry` block above) and prices them, and the first ones are kept below as worked examples. Smite (session 1) is the card to copy for a Strike with an effect on the target and a chain after the damage; Divine Surge (an Effect the ally's button uses) and Overwatch (a Reaction with a Trigger) for those shapes. MASTER-PLAN section 1, item 6.
 
+## Flavor lines (Lucas, 2026-11-14)
+
+A Flavor line **describes the Action**: one sentence, "You..." or "Your...", present tense: what the character does, what is seen, and a hint of the effect. Not an epigram or a mood line (his words on the first redesign drafts: "reading too much like AI text"). Models, read from their rules: Draw Steel, "You utter a prayer that outlines your foe in holy energy."; "You channel power through your weapon to repel foes."; D&D 4e, "You boldly confront a nearby enemy, searing it with divine light if it ignores your challenge."; "Your weapon fills with divine radiant energy, which bursts forth as you strike your enemy." It applies to new cards; the old cards' Flavor changes when a card is redone.
+
 ## The PC budget (2026-11-13: read before a card session)
 
 A guide for sizing a class card before it is written, measured the way the Bestiary's turn budget was. **It is for Lucas and Claude, not a rule of the book.** The numbers and how they were measured: `book/ruler/pc-budget.md` (`node book/ruler/sim/pcbudget.mjs`). They are for Stage 0 (levels 1 to 3) and today's rules (4 AP, exploding weapon dice, enemies that use effects).

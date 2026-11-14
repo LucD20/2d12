@@ -40,6 +40,9 @@ Rules that go with it:
 4. **A Passive changes a decision or fires on a moment the table sees.** Never a silent bonus ("+2 damage", "+1 Defense"). The Escalation 6 Passive is a "when your Escalation becomes 6" moment (it is seldom reached: `escalation-and-guard.md`).
 5. **Every level 1 Action works in round 1.** Only the Passives and the Apex read Escalation.
 6. **A number on a card is a die or a Modifier already on the sheet**, never a new counter, unless Lucas decides a class gets one.
+7. **A class grants an Action directly** (Lucas, 2026-11-14): no Feature that only says "you gain the X Action". The Action's title bar says "Paladin Feature".
+8. **A later Feature or Passive can expand an Action you already have** (Lucas, 2026-11-14): the added clause is written into the Action's own text, at most one a Stage, and it is a standing effect or uses the trigger the card already watches, never a new trigger to track.
+9. **Flavor describes the Action** (Lucas, 2026-11-14: the first drafts "read too much like AI text"): one sentence, "You..." or "Your...", present tense: what the character does, what is seen, a hint of the effect. Models: Draw Steel ("You utter a prayer that outlines your foe in holy energy."), 4e ("Your weapon fills with divine radiant energy, which bursts forth as you strike your enemy.").
 
 ## 3. The budget
 

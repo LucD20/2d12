@@ -59,7 +59,7 @@ The running record of the Paladin's redesign (MASTER-PLAN item 5; branch `pack-p
 - **No number of his own:** the burst is built from what is on the sheet (AP, the Reaction AP, Escalation read but never spent).
 - **An Art has up to 3 uses**, to try; one is cut if it feels too much.
 
-## Decision 2: the first Feature, the mark (PROPOSED, waiting for Lucas)
+## Decision 2: the first Feature, the mark (DECIDED, Lucas, 2026-11-14; the final card is at the end of this section)
 
 **Research first.** Every modern paladin hangs on one enemy he marks (4e's Divine Challenge, 13th Age's Paladin's Challenge, Pathfinder 2e's Smite, Draw Steel's Judgment). The marks that worked are certain (no roll), cheap to place, and ask no upkeep the enemy controls: 4e's failed while it asked the slowest class to stay adjacent. A protector with little damage is obeyed only when his protection has a number the table hears (the 4e Swordmage: "preventing 8 damage from my marked target is enough to draw them to me"; the Pathfinder 2e Guardian's soft taunt on "piddly damage" was ignored). A type gate fails (Divine Power today): the judged enemy can count as Profane.
 
@@ -101,4 +101,21 @@ The enemy hits the Paladin instead (AD 14, not 13) ....... about 1 to 2 a turn  
 
 **Not in this card, on purpose:** the burst (a later decision: a Strike that is better against the creature he Judged), and anything that stops it walking past him (a Reaction or an Art).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-14): "the Action looks good", with three changes.**
+1. **No "You gain the X Action" wrapper Feature: the class grants the Action itself.** (Claude agreed: 4e prints Divine Challenge as a power labelled "Paladin Feature"; our Archer's level list already reads "the Mark Quarry Action"; Draw Steel does use a wrapper sentence, and it adds nothing a title bar doesn't.) The card's title bar says "Paladin Feature".
+2. **Added: "A creature stops being Judged when it goes Down"** (the 0 AP / 0R Version would otherwise leave several creatures Judged).
+3. **The Flavor read "like AI text": it should describe the Action**, as Draw Steel and 4e do. Their lines, read from the rules: Draw Steel's Judgment: "You utter a prayer that outlines your foe in holy energy."; My Life for Yours: "You channel some of your vitality into more resilience for you or an ally."; 4e's Divine Challenge: "You boldly confront a nearby enemy, searing it with divine light if it ignores your challenge."; Holy Smite: "Your weapon fills with divine radiant energy, which bursts forth as you strike your enemy." **The rule from now on:** one sentence, "You..." or "Your...", present tense: what the character does, what is seen, and a hint of the effect. No epigram, no metaphor standing alone.
+
+**Also asked (Lucas): can later Features expand an Action** ("at Stage 1, Judged creatures take a penalty to Speed")? **Yes, as a pattern** (the Pathfinder 2e Champion's reaction grows this way instead of multiplying: research). The bookkeeping stays light under three limits: the added clause is written into the Action's own text (one card to read, not a card and a note); at most one added clause a Stage; and it prefers a standing effect on the one Judged creature or the trigger the card already watches, never a new trigger. A Speed penalty on the Judged creature is the light kind (one creature, always on, Foundry can hold it as an effect).
+
+**The final card:**
+
+> **Judge** · Paladin Feature · Turn · [Divine] · Distance 10 sq. · Target: one enemy you can see
+> *You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.*
+> **0 AP:** At the start of an encounter, or as a 0R when the creature you Judged goes Down: the target is **Judged** by you until the encounter ends.
+> **1 AP:** The target is Judged by you instead of the one you had.
+> A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.
+
+## Decision 3: next (the second Feature)
+
+By the charter's question 9 ("test both"), the next card is **the burst**, drafted two ways: as a Feature every Paladin has at level 1, and as the Encounter Pick moved to level 1. Lucas's draft, or Claude's proposal.
