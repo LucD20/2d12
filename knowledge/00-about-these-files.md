@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: 7a71f6f 2026-11-14 Card Workbench: saved cards (the page's store), export and import; healing read when it starts with a Modifier
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 219c03d 2026-11-14 Card Workbench: Guard read from the text (gain / gaining Guard X, X Guard, Guard equal to a Rally Point's heal), 6 points a point
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

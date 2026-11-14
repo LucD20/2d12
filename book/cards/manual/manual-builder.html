@@ -139,6 +139,22 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
 .drafts li.cur b { color: var(--gold); }
 .drafts .none { color: var(--faint); }
 .saved { display: grid; gap: 6px; }
+
+/* the left column's two lists (2026-11-14): the audit and the saved cards */
+.ltabs { display: flex; gap: 2px; border-bottom: 1px solid var(--rule); }
+.ltabs button { background: none; border: 0; border-bottom: 3px solid transparent; padding: 4px 12px; color: var(--mute); font-weight: 600; font-size: 15px; cursor: pointer; margin-bottom: -1px; }
+.ltabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--gold); }
+.ltabs .cnt { font-weight: 400; color: var(--faint); }
+.slist { display: grid; gap: 12px; }
+.sc { display: grid; }
+.sc .au-plate { border-left-color: var(--fq); }
+.sc.cur .au-plate { box-shadow: inset 0 0 0 1px var(--gold); }
+.sc .au-plate .kd { padding-left: 0; }
+.sc .vline { display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: baseline; padding: 4px 10px; border-bottom: 1px solid var(--hair); font-size: 13.5px; }
+.sc .vline b { min-width: 3.5em; }
+.sc .vline .fx2 { color: var(--mute); flex: 1 1 14em; min-width: 0; }
+.sc .vline .num { font-variant-numeric: tabular-nums; font-weight: 600; }
+.saved-mark { color: var(--t-3); font-size: 13px; }
 </style>
 
 <div class="page">
@@ -153,7 +169,19 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
     </div>
   </header>
   <div class="cols">
-    <section class="col" id="audit" aria-label="The class audit"></section>
+    <section class="col" aria-label="The audit and your saved cards">
+      <nav class="ltabs" role="tablist" aria-label="Left column">
+        <button type="button" role="tab" id="lt-audit" data-left="audit">Paladin audit</button>
+        <button type="button" role="tab" id="lt-saved" data-left="saved">Saved cards</button>
+      </nav>
+      <div id="audit"></div>
+      <div id="savedview" hidden>
+        <p class="lede" id="store-note"></p>
+        <div class="slist" id="drafts"></div>
+        <div class="addrow"><button type="button" class="btn small" id="save-copy">Save the open card as a new card</button><button type="button" class="btn small" id="export">Export the open card</button><button type="button" class="btn small" id="import-open">Import</button></div>
+        <div id="importbox" hidden><label class="reads" for="import-text">Paste an exported card, a card in the book/cards format, or a "Copy for Claude" text:</label><textarea class="copybox" id="import-text"></textarea><div class="addrow"><button type="button" class="btn small" id="import-go">Load it</button><button type="button" class="btn small plain" id="import-cancel">Cancel</button></div></div>
+      </div>
+    </section>
     <section class="col" aria-label="Your card">
       <div id="budget"></div>
       <h2 class="ch">Your card <small>written by hand</small></h2>
@@ -163,12 +191,6 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
         <textarea id="notes" placeholder="e.g. The attacker chooses; Foundry asks it in the chat."></textarea>
       </div>
       <div id="copyout"></div>
-      <div class="saved">
-        <h2 class="ch">Saved cards <small id="store-note"></small></h2>
-        <ul class="drafts" id="drafts"></ul>
-        <div class="addrow"><button type="button" class="btn small" id="save-copy">Save as a new card</button><button type="button" class="btn small" id="export">Export this card</button><button type="button" class="btn small" id="import-open">Import</button></div>
-        <div id="importbox" hidden><label class="reads" for="import-text">Paste an exported card, a card in the book/cards format, or a "Copy for Claude" text:</label><textarea class="copybox" id="import-text"></textarea><div class="addrow"><button type="button" class="btn small" id="import-go">Load it</button><button type="button" class="btn small plain" id="import-cancel">Cancel</button></div></div>
-      </div>
     </section>
   </div>
 </div>
@@ -295,7 +317,7 @@ function makeBudget() {
   /* ---------------------------------------------------------------- state */
   const saved = lsGet();
   const S = { card: saved?.card ?? blank(), notes: saved?.notes ?? "", placed: saved?.placed ?? "", undo: null, copy: "" };
-  const save = () => lsSet({ card: S.card, notes: S.notes, placed: S.placed, build: S.build });
+  const save = () => lsSet({ card: S.card, notes: S.notes, placed: S.placed, build: S.build, left: S.left });
   const say = t => { $("status").textContent = t; clearTimeout(say.t); say.t = setTimeout(() => { $("status").textContent = ""; }, 5000); };
 
   /* ---------------------------------------------------------------- the audit */
@@ -313,12 +335,13 @@ function makeBudget() {
         <div class="au-row"><b>Claude suggests</b><div>${list(e.claude)}</div></div>
         <div class="au-foot"><button type="button" class="btn small" data-place="${i}">Place in builder</button>${S.placed === e.name ? `<span class="here">In the builder</span>` : ""}</div>
       </article>`).join("")}`;
+    markAudit?.();
   }
   function place(i) {
     const e = AU.entries[i], c = e.card && DATA.cards.find(x => x.name === e.card);
-    S.undo = { card: S.card, placed: S.placed };
+    S.undo = { card: S.card, placed: S.placed, notes: S.notes };
     S.card = c ? fromCard(c) : { ...blank(), name: e.name, category: e.kind, frequency: "", versions: [], text: e.text ?? "", from: `${e.name} (a Passive or Feature), as the book writes it` };
-    S.placed = e.name; S.copy = ""; if (e.build) S.build = e.build; save(); renderAudit(); renderCard();
+    S.placed = e.name; S.notes = ""; S.copy = ""; if (e.build) S.build = e.build; save(); renderAudit(); renderCard();
     $("status").innerHTML = `Placed ${esc(e.name)}. <button type="button" class="btn small plain" id="undo">Undo</button>`;
   }
 
@@ -403,12 +426,30 @@ function makeBudget() {
 
   /* ---------------------------------------------------------------- saved cards: the page's own store (db), the browser's when it has none; export / import as text */
   const LSD = LS + "-drafts", lsList = () => { try { return JSON.parse(localStorage.getItem(LSD)) ?? []; } catch { return []; } }, lsPut = v => { try { localStorage.setItem(LSD, JSON.stringify(v)); } catch { /* none */ } };
-  let db = null; S.store = "wait"; S.saved = []; S.confirm = "";
+  let db = null; S.store = "wait"; S.saved = []; S.confirm = ""; S.left = saved?.left ?? "audit";
   const snapshot = () => ({ card: JSON.parse(JSON.stringify(S.card)), notes: S.notes, placed: S.placed, build: S.build });
+  function renderLeft() {
+    $("lt-audit").setAttribute("aria-selected", String(S.left !== "saved")); $("lt-saved").setAttribute("aria-selected", String(S.left === "saved"));
+    $("audit").hidden = S.left === "saved"; $("savedview").hidden = S.left !== "saved";
+    $("lt-saved").innerHTML = `Saved cards <span class="cnt">(${S.saved.length})</span>`;
+  }
   function renderDrafts() {
-    $("store-note").textContent = S.store === "db" ? "kept with this page, on every device" : S.store === "wait" ? "looking for the page's store…" : "kept in this browser only";
+    $("store-note").textContent = S.store === "db" ? "Kept with this page, on every device. Newest first." : S.store === "wait" ? "Looking for the page's store…" : "Kept in this browser only (the page's store didn't answer). Newest first.";
     const list = S.saved.slice().sort((a, b) => String(b.updated).localeCompare(String(a.updated)));
-    $("drafts").innerHTML = list.length ? list.map(x => `<li class="${x.id === S.card.id ? "cur" : ""}"><b>${esc(x.name || "Unnamed card")}</b><span class="when">${esc(String(x.updated ?? "").slice(0, 16).replace("T", " "))}${x.id === S.card.id ? " · open now" : ""}</span><span class="sp"><button type="button" class="btn small" data-open="${esc(x.id)}">Open</button><button type="button" class="btn small plain" data-drop="${esc(x.id)}">${S.confirm === x.id ? "Delete it for good?" : "Delete"}</button></span></li>`).join("") : `<li class="none">Nothing saved yet. "Save" keeps the card on the right (and your notes); open another, and come back to it here.</li>`;
+    $("drafts").innerHTML = list.length ? list.map(x => {
+      const c = { ...blank(), ...(x.card ?? {}) }, vs = c.versions?.length ? c.versions : [null], cur = x.id === S.card.id;
+      const lines = vs.map(v => { const r = BG.price(c, v, x.build ?? S.build), fx = v ? (v.effects || v.tiers.filter(Boolean).join(" · ")) : c.text;
+        return `<div class="vline"><b>${v ? `${esc(v.ap || "?")} ${c.rx ? "R" : "AP"}` : "Passive"}</b><span class="num v2-${r.verdict}">${n1(r.total)} of ${n1(r.budget)}</span><span class="fx2">${esc(String(fx ?? "").slice(0, 140))}${String(fx ?? "").length > 140 ? "…" : ""}</span></div>`; }).join("");
+      return `<article class="sc ${fq(c.frequency)}${cur ? " cur" : ""}"><div class="au-plate"><h3>${esc(x.name || "Unnamed card")}</h3><span class="kd">${esc(String(x.updated ?? "").slice(0, 16).replace("T", " "))}${x.placed ? ` · from the audit: ${esc(x.placed)}` : ""}${x.build ? ` · ${esc(x.build)}` : ""}${cur ? " · open now" : ""}</span></div>${lines}
+        ${x.notes ? `<div class="vline"><b>Notes</b><span class="fx2">${esc(x.notes.slice(0, 200))}${x.notes.length > 200 ? "…" : ""}</span></div>` : ""}
+        <div class="au-foot"><button type="button" class="btn small" data-open="${esc(x.id)}">Open</button><button type="button" class="btn small plain" data-drop="${esc(x.id)}">${S.confirm === x.id ? "Delete it for good?" : "Delete"}</button></div></article>`;
+    }).join("") : `<p class="lede">Nothing saved yet. "Save" (top bar) keeps the card on the right with its notes; it shows here, and you can open it again any time.</p>`;
+    renderLeft(); markAudit();
+  }
+  /** The audit entries that have a saved card get a mark beside their button. */
+  function markAudit() {
+    for (const a of document.querySelectorAll("#audit [data-place]")) { const e = AU.entries[Number(a.dataset.place)], n = S.saved.filter(x => x.placed === e.name).length, foot = a.parentElement; foot.querySelector(".saved-mark")?.remove();
+      if (n) foot.insertAdjacentHTML("beforeend", `<span class="saved-mark">${n} saved</span>`); }
   }
   async function initStore() {
     try { db = (await window.claude?.use?.("db")) ?? null; } catch { db = null; }
@@ -425,7 +466,7 @@ function makeBudget() {
   }
   function openSaved(id) {
     const x = S.saved.find(d => d.id === id); if (!x?.card) return;
-    S.undo = { card: S.card, placed: S.placed }; S.card = { ...blank(), ...JSON.parse(JSON.stringify(x.card)), id: x.id }; S.notes = x.notes ?? ""; S.placed = x.placed ?? ""; if (x.build) S.build = x.build; S.copy = "";
+    S.undo = { card: S.card, placed: S.placed, notes: S.notes }; S.card = { ...blank(), ...JSON.parse(JSON.stringify(x.card)), id: x.id }; S.notes = x.notes ?? ""; S.placed = x.placed ?? ""; if (x.build) S.build = x.build; S.copy = "";
     save(); renderAudit(); renderCard(); renderDrafts(); $("status").innerHTML = `Opened ${esc(x.name)}. <button type="button" class="btn small plain" id="undo">Undo</button>`;
   }
   async function dropSaved(id) {
@@ -437,7 +478,7 @@ function makeBudget() {
   function importText(t) {
     const block = String(t).match(/```json\s*([\s\S]*?)```/), raw = block ? block[1] : String(t).slice(String(t).indexOf("{"));
     let o; try { o = JSON.parse(raw); } catch { say("That isn't a card I can read: paste the whole export or the card's JSON"); return; }
-    S.undo = { card: S.card, placed: S.placed };
+    S.undo = { card: S.card, placed: S.placed, notes: S.notes };
     if (o.workbench) { S.card = { ...blank(), ...o.card }; delete S.card.id; S.notes = o.notes ?? ""; S.placed = o.placed ?? ""; if (o.build) S.build = o.build; }
     else if (o.name) { S.card = fromCard(o); S.placed = AU.entries.find(x => x.card === o.name)?.name ?? ""; const nm = String(t).match(/My notes:\n([\s\S]*?)\n\n/); if (nm) S.notes = nm[1]; }
     else { say("No card found in it"); return; }
@@ -461,9 +502,10 @@ function makeBudget() {
   $("audit").addEventListener("click", e => { const b = e.target.closest("[data-place]"); if (b) place(Number(b.dataset.place)); });
   $("status").addEventListener("click", e => { if (e.target.id !== "undo" || !S.undo) return; Object.assign(S, S.undo); S.undo = null; save(); renderAudit(); renderCard(); renderDrafts(); say("Undone"); });
   { const by = {}; for (const c of DATA.cards) (by[c.file] ??= []).push(c.name); $("load").innerHTML = `<option value="">Load a card…</option>` + Object.entries(by).map(([f, ns]) => `<optgroup label="${esc(f)}">${ns.map(n => `<option>${esc(n)}</option>`).join("")}</optgroup>`).join(""); }
-  $("load").addEventListener("change", e => { const c = DATA.cards.find(x => x.name === e.target.value); e.target.value = ""; if (!c) return; S.undo = { card: S.card, placed: S.placed }; S.card = fromCard(c); S.placed = AU.entries.some(x => x.card === c.name) ? AU.entries.find(x => x.card === c.name).name : ""; save(); renderAudit(); renderCard(); $("status").innerHTML = `Loaded ${esc(c.name)}. <button type="button" class="btn small plain" id="undo">Undo</button>`; });
-  $("blank").addEventListener("click", () => { S.undo = { card: S.card, placed: S.placed }; S.card = blank(); S.placed = ""; save(); renderAudit(); renderCard(); $("status").innerHTML = `A blank card. <button type="button" class="btn small plain" id="undo">Undo</button>`; });
+  $("load").addEventListener("change", e => { const c = DATA.cards.find(x => x.name === e.target.value); e.target.value = ""; if (!c) return; S.undo = { card: S.card, placed: S.placed, notes: S.notes }; S.card = fromCard(c); S.notes = ""; S.placed = AU.entries.some(x => x.card === c.name) ? AU.entries.find(x => x.card === c.name).name : ""; save(); renderAudit(); renderCard(); $("status").innerHTML = `Loaded ${esc(c.name)}. <button type="button" class="btn small plain" id="undo">Undo</button>`; });
+  $("blank").addEventListener("click", () => { S.undo = { card: S.card, placed: S.placed, notes: S.notes }; S.card = blank(); S.notes = ""; S.placed = ""; save(); renderAudit(); renderCard(); $("status").innerHTML = `A blank card. <button type="button" class="btn small plain" id="undo">Undo</button>`; });
   $("save").addEventListener("click", () => saveCard(false));
+  for (const b of document.querySelectorAll("[data-left]")) b.addEventListener("click", () => { S.left = b.dataset.left; save(); renderLeft(); });
   $("save-copy").addEventListener("click", () => saveCard(true));
   $("drafts").addEventListener("click", e => { const o = e.target.closest("[data-open]"), d = e.target.closest("[data-drop]"); if (o) openSaved(o.dataset.open); else if (d) dropSaved(d.dataset.drop); });
   $("export").addEventListener("click", () => {
