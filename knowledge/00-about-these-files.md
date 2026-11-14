@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: 07760b0 2026-11-14 Decide the class redesign (MASTER-PLAN item 5, top priority) and retire the Action Builder and the Card Workbench
+Built by tools/knowledge.py on 2026-11-14 from the repository at: c86e147 2026-11-14 The Advance rule: no Interact inside a linked or Setup Advance (proposed); Bleed gets its own removal action, Staunch (Lucas), and the places to change
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (157 KB)
 - MASTER-PLAN.md (39 KB)
-- open-design-items.md (132 KB)
+- open-design-items.md (134 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
