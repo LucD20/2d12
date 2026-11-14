@@ -225,7 +225,7 @@ The Strike has about 15 of its 50 points for one rider, and the rider must still
 
 **Immobilized as the rider (asked by Lucas, 2026-11-14; from the rules and our numbers, no new search).** The rule (Chapter 8): the creature can't use Move Actions or Evade; it ends by spending 1 AP [Move] (Break Free) unless the card says otherwise; and it is hard to move (a Forced Movement that doesn't roll is disrupted). Two forms on cards: "(EoT)" and plain ("until it escapes"). **Prices [SIM, `pc-budget.md` sections 3 and 9]:** on a melee PC's attacks, Immobilized (EoT) -3.6 against Standards and -3.5 against an Elite; until it escapes -0.1 and +1.5; on maps -1.0 to -2.1; from the ranged seat +3.4 and +1.8. Negative because the white room's enemy, pinned next to him, spends every AP hitting him and nothing counts the back line it didn't reach: this is one of the SIM's blind spots, not a verdict. On a PC it is Moderate (8) in the Bestiary's table. **History:** the Archer's Pinned Down (Immobilized (EoT) on a shot every round) was cut as too strong (2026-11-04); Pinning Shot has it once an encounter. **Research:** "leaving costs the action economy" is the second strongest way to make a front line real (Lancer's Full-action Disengage, 13th Age's disengage check); Draw Steel's Judgment buys "its speed becomes 0" for 1 wrath. **Claude's reading:** it is the best answer we have to "they stay in front so the squishies can stay back", in the plain form (the enemy pays 1 AP to leave him: a Standard's AP is 25 points, on the turns it wanted to leave), on a Tier 2 or 3 only, with a lesser Tier 1 (Hindered (EoT)). Its limits: nothing against an enemy already next to the ally it wants, or one with Reach or a ranged attack; it blocks the party's own pushes on that enemy. **And an argument for it over Guard on the Strike:** the other Hallmark Action, Lay On Hands, already gives Guard; a Strike that pins makes the two Hallmark Actions two styles (the one who shields, the one who holds the line) and not one style twice.
 
-## Decision 4: the Hallmark Strike (PROPOSED; revised after Lucas's notes, the card at the end of this section)
+## Decision 4: the Hallmark Strike, Binding Light (DECIDED, Lucas, 2026-11-14; the final card is at the end of this section)
 
 Lucas (2026-11-14): yes to the Strike with Immobilized. **Why Claude hadn't listed Immobilized among the riders (his question):** the list was filtered three ways without saying so. It was built from the PC budget's rider table, where Immobilized is negative for a melee PC, and that number was treated as a verdict (it is a blind spot: the white room doesn't count the back line). It was filtered by his last direction (a smaller hit, Guard), not by all five lines of the brief. And holding the line had already been parked on "a Reaction or an Art", so it wasn't looked for on the Strike. The fix proposed to him: when he asks for choices, the whole list from the rules is shown, the rejected ones with their reason.
 
@@ -270,5 +270,58 @@ Immobilized for 1 round, on 65% of uses:
 Damage 3.5 / 13.7 / 18.6: 38 points [judgment, computed]; with the pin, 43 to 53 of 50.
 
 **Open from the same rule, for Lucas:** Smite's Tier 2 and Tier 3 also read the same ("[V] 1[W] + [Mod] + your Smite dice"). A fix in one clause: "Tier 3: ... + your Smite dice, and 1 more" (about +4 points: 104 at 4 dice).
+
+**Lucas's answer (2026-11-14):** the card is good; the Weapon Modifier (+1) is good; the name "is ok, though if you have something more 'divine' it would fit best". **Claude's pick: Binding Light** (others offered: Fetters of Faith, Stand Condemned). On Smite's Tier 3: "Either do a 2*[MOD] or 1 more smite dice, which ever the research points for the best": **1 more Smite die.** The research: in Draw Steel a tier 2 is about 70% of a tier 3 on damage; Smite's was 89% (32 against 36 at 4 dice); one more die makes it 78%, twice the Modifier only 84%. And what players name when they praise a smite is the pile of dice, not a flat number. Cost: about +4 points (104 at 4 dice).
+
+**The final cards:**
+
+> **Binding Light** · Paladin Hallmark Action · Round · 2 AP · [Divine, Strike, Weapon] · Distance: Weapon · Target: one creature
+> *Your blow lands wreathed in light that roots your foe where it stands.*
+> **Tier 1:** [R] 1d6 Ho
+> **Tier 2:** [V] 1[W] + [Mod] + [R] 1d6 Ho; Immobilized (1 round)
+> **Tier 3:** [V] 1[W] + [Mod] + [R] 1d8 Ho; Immobilized (1 round)
+
+> **Smite** (Tier 3 revised) · Paladin Feature · Encounter · 2 AP · [Divine, Signature, Strike, Weapon] · Distance: Weapon · Target: one creature
+> *Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.*
+> **Smite dice:** [R] 1d6! Ho for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s.
+> **Tier 1:** your Smite dice
+> **Tier 2:** [V] 1[W] + [Mod] + your Smite dice
+> **Tier 3:** [V] 1[W] + [Mod] + your Smite dice + 1 more Smite die
+> When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. Neither extra die counts toward the 4.
+
+Smite at 4 dice on the creature he Judged: 21 / 32 / 41, average 31: 104 points; with the Reaction AP 122 [judgment, computed].
+
+## Decision 5: the Help Hallmark, Lay On Hands (PROPOSED, waiting for Lucas)
+
+**Research and rules first.** Guard doesn't stack (the higher value), it ends with the encounter, and reduced damage comes before it (Chapter 4): so Guard is given before the hit and can't snowball. Temporary hit points are rated at about two thirds of healing, more on the ally about to be hit. A secondary healer is for the emergency and must not cost his whole turn. In Draw Steel a dying hero can't recover alone: someone else's action is the way back up; in our rules a Down creature can't use Steel Yourself, but another's Action can let it use a Rally Point. Lucas: Rally Points for allies are "more of a cleric thing", some but not much.
+
+> **Lay On Hands** · Paladin Hallmark Action · Round · [Divine, Focus] · Distance: Reach · Target: another willing creature
+> *You lay a hand on an ally, and a skin of pale light settles over them.*
+> **1 AP:** The target gains Guard equal to 2 + your Power Modifier.
+> **2 AP:** The target gains that Guard and can use 1 Rally Point.
+
+```
+1 AP: Guard 4 ............................ 24   [SIM: 6 a point of Guard]   up to 32 on the ally about to be hit [the forums' two thirds of healing]
+      less the Guard nobody hits .......... about a third unused [judgment] → 17 to 22 a use
+--- 1 AP: 17 to 24 of 25: on, a little under
+
+2 AP: Guard 4 ............................ 24   [SIM]
+      1 Rally Point, the ally's own ...... 5 [Lucas's rate]; -11 as an every-round habit [SIM: the ally would have spent it anyway]
+      on a Down ally: back up, with Guard . not priced (the emergency: a Down ally can't use Steel Yourself; this is the party's only other way)
+--- 2 AP: about 29 on paper of 50: under, except on the turn someone is Down, when nothing else does it
+```
+
+**Analysis.**
+- **The decision it gives:** who is about to be hit. Guard 4 is a Standard's whole Basic attack (3.5 on a Tier 2). It doesn't stack and it stays until something hits it, so shielding the same ally every round is wasted: he moves it around.
+- **It is your support direction:** Guard before the hit. With Judge (the Judged creature's first hit a round is 2 smaller) an ally can shrug off that hit entirely.
+- **The 2 AP use is the class's one Rally Point card.** It costs him what Steel Yourself costs the ally (2 AP), spends the ally's own Rally Point, and once a round. What it adds is reach: it works on a Down ally. That is "make sure you don't go down" as an emergency, not a healing engine.
+- **Touch, and "another" creature:** he must stand next to whom he protects (the brief), and he can't shield himself with it (his own Guard comes from unused AP).
+- **Two styles:** the Binding Light Paladin spends 2 AP holding an enemy; the Lay On Hands Paladin spends 1 AP shielding an ally and still has 3 AP to fight.
+- **Rules it touches:** none new. [Focus] is today's trait on it.
+- **Siblings:** today's Lay On Hands (a Rally Point at 1, 2 and 3 AP) and Lucas's first draft (a Rally Point, Guard and an Evade in each of three sizes) are both replaced.
+- **Complexity:** two Versions that are two uses, 21 words, no condition, no conditional.
+- **Table feel:** quick; a number goes on the ally's token. The risk: Guard that is never hit feels like a wasted AP.
+
+**For Lucas to choose:** Guard 2 + Power Modifier (4), or a die (1d6 + Power Modifier); whether the 2 AP use stays, given "not too much" Rally; Reach, or 5 squares.
 
 **Lucas's answer:**

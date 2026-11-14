@@ -58,11 +58,12 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14: the Hallmark Strike proposed. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14: Binding Light decided; Lay On Hands proposed. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
-  <a href="#strike">Hallmark Strike</a>
+  <a href="#loh">Lay On Hands</a>
+  <a href="#strike">Binding Light</a>
   <a href="#rules">Rules</a>
   <a href="#smite">Smite</a>
   <a href="#mark">The mark</a>
@@ -76,39 +77,50 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
-<p><strong>One decision: the Hallmark Strike.</strong> Say "Proposed", or change it. Worth your eye:</p>
+<p><strong>One decision: Lay On Hands, the Help Hallmark.</strong> Say "Proposed", or change it. Worth your eye:</p>
 <ol>
-  <li>The name (Halting Strike is a placeholder).</li>
-  <li>It rolls the Weapon Modifier (+1), not Signature (+2).</li>
-  <li>Smite's Tier 3 reads the same as its Tier 2. Should a Tier 3 roll 1 more Smite die?</li>
+  <li>Guard 2 + Power Modifier (4), flat. Or a die.</li>
+  <li>The 2 AP use: the class's one Rally Point card. Keep it, or drop it?</li>
+  <li>Touch (Reach), and only on another creature.</li>
 </ol>
 </div>
 </section>
 
-<section id="strike">
-<h2>Decision 4: the Hallmark Strike (proposed)</h2>
+<section id="loh">
+<h2>Decision 5: Lay On Hands (proposed)</h2>
 <div class="card">
-  <div class="bar"><span>Halting Strike</span><span>Paladin Hallmark Action · Round · 2 AP · Divine, Strike, Weapon · one creature</span></div>
+  <div class="bar"><span>Lay On Hands</span><span>Paladin Hallmark Action · Round · Divine, Focus · Reach · another willing creature</span></div>
+  <div class="v"><b></b><div class="small"><em>You lay a hand on an ally, and a skin of pale light settles over them.</em></div></div>
+  <div class="v"><b>1 AP</b><div>The target gains Guard equal to 2 + your Power Modifier.</div></div>
+  <div class="v"><b>2 AP</b><div>The target gains that Guard and can use 1 Rally Point.</div></div>
+</div>
+<div class="scroll"><table>
+<tr><th>Line</th><th>Points</th><th>From</th></tr>
+<tr><td>1 AP: Guard 4</td><td>17 to 24 of 25</td><td>6 a point of Guard [SIM]; about a third is never hit [judgment]</td></tr>
+<tr><td>2 AP: Guard 4</td><td>24</td><td>[SIM]</td></tr>
+<tr><td>2 AP: 1 Rally Point, the ally's own</td><td>5</td><td>your rate; the SIM says -11 as an every-round habit</td></tr>
+<tr><td>2 AP: on a Down ally</td><td>not priced</td><td>the emergency: a Down ally can't use Steel Yourself</td></tr>
+</table></div>
+<ul>
+<li><strong>The decision it gives:</strong> who is about to be hit. Guard 4 is a Standard's whole Basic attack. It doesn't stack and it stays until something hits it, so he moves it around.</li>
+<li><strong>Your support direction:</strong> Guard before the hit. With Judge, an ally can shrug off the Judged creature's hit entirely.</li>
+<li><strong>The 2 AP use is the class's one Rally Point card.</strong> It costs him what Steel Yourself costs the ally, spends the ally's own point, once a round. What it adds: it works on a Down ally. An emergency, not a healing engine.</li>
+<li><strong>Touch, on another creature:</strong> he stands next to whom he protects, and can't shield himself with it.</li>
+<li><strong>Two styles:</strong> Binding Light spends 2 AP holding an enemy; Lay On Hands spends 1 AP shielding an ally and leaves 3 AP to fight.</li>
+<li><strong>The risk:</strong> Guard that is never hit feels like a wasted AP.</li>
+</ul>
+</section>
+
+<section id="strike">
+<h2>Decision 4: Binding Light, the Hallmark Strike (decided)</h2>
+<div class="card">
+  <div class="bar"><span>Binding Light</span><span>Paladin Hallmark Action · Round · 2 AP · Divine, Strike, Weapon · one creature</span></div>
   <div class="v"><b></b><div class="small"><em>Your blow lands wreathed in light that roots your foe where it stands.</em></div></div>
   <div class="v"><b>Tier 1</b><div>[R] 1d6 Ho</div></div>
   <div class="v"><b>Tier 2</b><div>[V] 1[W] + [Mod] + [R] 1d6 Ho; Immobilized (1 round)</div></div>
   <div class="v"><b>Tier 3</b><div>[V] 1[W] + [Mod] + [R] 1d8 Ho; Immobilized (1 round)</div></div>
 </div>
-<div class="scroll"><table>
-<tr><th>Line</th><th>Points</th><th>From</th></tr>
-<tr><td>Damage: 3.5 / 13.7 / 18.6</td><td>38</td><td>computed from the dice; a Weapon Attack is 25</td></tr>
-<tr><td>The enemy pays 1 AP to leave him</td><td>about 5</td><td>judgment: it lands on 65% of uses and matters on about a third of turns</td></tr>
-<tr><td>The back line it didn't reach</td><td>not priced</td><td>the SIM can't see it; my guess is 5 to 10 on a map with a back line</td></tr>
-<tr><td><strong>Total</strong></td><td><strong>43 to 53 of 50</strong></td><td>on</td></tr>
-</table></div>
-<ul>
-<li><strong>The decision it gives:</strong> whom to pin: the enemy heading for the Archer, or the one he Judged.</li>
-<li><strong>The enemy's choice:</strong> stay and hit the Paladin, or pay 1 AP to Break Free and then move. It can't Evade or Charge either.</li>
-<li><strong>Not a striker:</strong> 38 points of damage where two Weapon Attacks would be 47.</li>
-<li><strong>Its Tier 1 isn't empty:</strong> the light lands. No pin on a Tier 1: an automatic pin every round is what you cut from the Archer.</li>
-<li><strong>Two styles:</strong> Halting Strike holds the line; Lay On Hands shields.</li>
-<li><strong>Its limits:</strong> nothing against an enemy already next to the ally it wants, or one with Reach or a ranged attack. A pinned enemy also resists your party's pushes.</li>
-</ul>
+<p>It rolls the Weapon Modifier (+1). 38 points of damage, 43 to 53 with the pin, of 50. The name is my pick for "more divine" than Halting Strike; others: Fetters of Faith, Stand Condemned.</p>
 </section>
 
 <section id="rules">
@@ -129,16 +141,16 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
   <div class="v"><b>Dice</b><div><strong>Smite dice:</strong> [R] 1d6! Ho for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s.</div></div>
   <div class="v"><b>Tier 1</b><div>your Smite dice</div></div>
   <div class="v"><b>Tier 2</b><div>[V] 1[W] + [Mod] + your Smite dice</div></div>
-  <div class="v"><b>Tier 3</b><div>[V] 1[W] + [Mod] + your Smite dice</div></div>
-  <div class="v"><b></b><div>When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. This die is on top of the 4: 5 dice at most.</div></div>
+  <div class="v"><b>Tier 3</b><div>[V] 1[W] + [Mod] + your Smite dice + 1 more Smite die</div></div>
+  <div class="v"><b></b><div>When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. Neither extra die counts toward the 4.</div></div>
 </div>
 <p><strong>Your changes, applied:</strong> the dice explode, at most 4 of them, and the Reaction AP gives 1 more die over the cap.</p>
 <div class="scroll"><table>
 <tr><th>On the creature he Judged</th><th>Tier 1 / 2 / 3</th><th>Average</th><th>Points</th></tr>
 <tr><td>Escalation 1</td><td>5 / 16 / 20</td><td>14</td><td>48</td></tr>
 <tr><td>Escalation 3</td><td>15 / 27 / 31</td><td>24</td><td>83</td></tr>
-<tr><td>Escalation 4 or more (4 dice)</td><td>21 / 32 / 36</td><td>30</td><td>100</td></tr>
-<tr><td>With the Reaction AP (5 dice)</td><td>26 / 37 / 41</td><td>35</td><td>118</td></tr>
+<tr><td>Escalation 4 or more (4 dice)</td><td>21 / 32 / 41</td><td>31</td><td>104</td></tr>
+<tr><td>With the Reaction AP (1 more die)</td><td>26 / 37 / 46</td><td>36</td><td>122</td></tr>
 </table></div>
 <p class="small">A Greatsword against Defense 13; a Weapon Attack is 25 points; computed from the dice, not a SIM run. Against a creature that isn't Profane the dice are d6s: 88 points at 4 dice.</p>
 <ul>
