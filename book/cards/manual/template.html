@@ -1,0 +1,272 @@
+<title>Card Workbench</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Signika:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: two columns that scroll on their own. Left, the class audit (ranked, printed blocks); right, a blank card written by hand as the book prints it:
+   a name plate, ruled lines, each Version under a bar in its Frequency's color, the three Tiers, Effects under a line. No numbers are computed here.
+   The colors are the system's (foundry/mockups/style-tokens.css): dark by default, the parchment when the viewer picks light. */
+:root {
+  color-scheme: dark;
+  --pg: #1f1c18; --pg-2: #28241d; --band: #332c22; --rule: #7a683f; --hair: #4a4132; --ink: #ece3cf; --mute: #b3a68e; --faint: #8a7f6b; --gold: #d4a548;
+  --stamp: #eadfc8; --stamp-ink: #221d16;
+  --t-1: #f3a79e; --t-1bg: #3a201d; --t-2: #e0d65a; --t-2bg: #35321a; --t-3: #8fd69b; --t-3bg: #1d3a25; --crit: #8db8f0; --critbg: #17263a;
+  --fq-none: #7a683f; --fq-atwill: #6aa82e; --fq-round: #4a90de; --fq-encounter: #d65a5a; --fq-turn: #25a3a3; --fq-daily: #9279e0; --fq-ink: #fff;
+  --text: "Signika", "Segoe UI", system-ui, sans-serif; --title: "Cinzel", "Signika", Georgia, serif;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  color-scheme: light;
+  --pg: #f4ede0; --pg-2: #eae0c8; --band: #dfd2b6; --rule: #8a6d3b; --hair: #cdb88a; --ink: #2a241d; --mute: #5d5446; --faint: #8f8774; --gold: #96670f;
+  --stamp: #3b3128; --stamp-ink: #f4ede0;
+  --t-1: #a8261c; --t-1bg: #fbefed; --t-2: #6f6800; --t-2bg: #f7f3cf; --t-3: #2b5a2f; --t-3bg: #e8f1e3; --crit: #1d5a9e; --critbg: #e6eef8;
+  --fq-none: #8a6d3b; --fq-atwill: #3B6D11; --fq-round: #185FA5; --fq-encounter: #A32D2D; --fq-turn: #0F6E6E; --fq-daily: #5B3FA6; } }
+:root[data-theme="light"] {
+  color-scheme: light;
+  --pg: #f4ede0; --pg-2: #eae0c8; --band: #dfd2b6; --rule: #8a6d3b; --hair: #cdb88a; --ink: #2a241d; --mute: #5d5446; --faint: #8f8774; --gold: #96670f;
+  --stamp: #3b3128; --stamp-ink: #f4ede0;
+  --t-1: #a8261c; --t-1bg: #fbefed; --t-2: #6f6800; --t-2bg: #f7f3cf; --t-3: #2b5a2f; --t-3bg: #e8f1e3; --crit: #1d5a9e; --critbg: #e6eef8;
+  --fq-none: #8a6d3b; --fq-atwill: #3B6D11; --fq-round: #185FA5; --fq-encounter: #A32D2D; --fq-turn: #0F6E6E; --fq-daily: #5B3FA6; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--pg); color: var(--ink); font: 400 14px/1.45 var(--text); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.page { height: 100%; display: flex; flex-direction: column; padding-block: 12px 0; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; border-bottom: 2px solid var(--rule); padding-bottom: 8px; }
+.top h1 { font: 700 24px/1 var(--title); margin: 0; }
+.top .acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-left: auto; }
+.status { color: var(--t-3); font-size: 13px; }
+.btn { background: none; border: 1px solid var(--rule); color: var(--ink); padding: 4px 12px; border-radius: 2px; cursor: pointer; font-weight: 500; }
+.btn:hover { border-color: var(--gold); }
+.btn.main { background: var(--stamp); color: var(--stamp-ink); border-color: var(--stamp); font-weight: 600; }
+.btn.small { padding: 1px 8px; font-size: 13px; }
+.btn.plain { border-color: transparent; color: var(--mute); padding-inline: 4px; }
+.btn.plain:hover { color: var(--ink); }
+select { background: var(--pg-2); border: 1px solid var(--hair); border-radius: 2px; padding: 4px 6px; }
+
+.cols { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); gap: 22px; }
+.col { min-width: 0; min-height: 0; overflow-y: auto; padding: 14px 4px 40px 0; display: flex; flex-direction: column; gap: 16px; }
+@media (max-width: 900px) { .page { height: auto; } .cols { grid-template-columns: minmax(0, 1fr); } .col { overflow: visible; } }
+h2.ch { font: 600 15px/1.2 var(--text); margin: 0; padding-bottom: 3px; border-bottom: 1px solid var(--hair); color: var(--gold); display: flex; gap: 10px; align-items: baseline; }
+h2.ch small { font-weight: 400; color: var(--faint); font-size: 12.5px; }
+
+/* the audit */
+.lede { color: var(--mute); margin: 0; }
+.sum { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.sum td { padding: 3px 14px 3px 0; border-bottom: 1px solid var(--hair); } .sum td + td { text-align: right; }
+.au { display: grid; }
+.au-plate { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 5px 10px; background: var(--band); border-left: 4px solid var(--faint); }
+.au.placed .au-plate { border-left-color: var(--gold); }
+.au-plate .rk { color: var(--faint); font-weight: 700; min-width: 1.3em; font-variant-numeric: tabular-nums; }
+.au-plate h3 { margin: 0; font: 700 15px/1.3 var(--text); flex: 1 1 auto; min-width: 0; }
+.au-plate .kd { color: var(--mute); font-size: 12.5px; flex-basis: 100%; padding-left: 1.9em; }
+.au-v { font-weight: 700; font-size: 12px; padding: 0 6px; border-radius: 2px; }
+.v-broken { color: var(--t-1); background: var(--t-1bg); } .v-over { color: var(--t-2); background: var(--t-2bg); } .v-under { color: var(--crit); background: var(--critbg); }
+.v-on { color: var(--t-3); background: var(--t-3bg); } .v-dead { color: var(--mute); background: var(--pg-2); }
+.au-row { display: grid; grid-template-columns: 8.5em minmax(0, 1fr); gap: 8px; padding: 5px 10px; border-bottom: 1px solid var(--hair); font-size: 13.5px; }
+.au-row > b { color: var(--mute); font-weight: 600; } .au-row > div { min-width: 0; }
+.au-row ul { margin: 0; padding-left: 1.1em; display: grid; gap: 3px; }
+.au-row .none { color: var(--faint); }
+.au-foot { display: flex; gap: 8px; align-items: center; padding: 6px 10px 0; }
+.au-foot .here { color: var(--gold); font-size: 13px; }
+@media (max-width: 560px) { .au-row { grid-template-columns: 1fr; gap: 1px; } }
+
+/* the card, written by hand: inputs set into a printed stat block */
+.sb { background: var(--pg-2); border: 1px solid var(--hair); border-top: 4px solid var(--fq); }
+.fq-none { --fq: var(--fq-none); } .fq-atwill { --fq: var(--fq-atwill); } .fq-round { --fq: var(--fq-round); } .fq-encounter { --fq: var(--fq-encounter); } .fq-turn { --fq: var(--fq-turn); } .fq-daily { --fq: var(--fq-daily); }
+.sb-plate { display: flex; align-items: baseline; gap: 10px; padding: 6px 12px; background: var(--band); border-bottom: 2px solid var(--rule); }
+.w { background: transparent; border: 0; border-bottom: 1px dashed transparent; border-radius: 0; padding: 2px 0; width: 100%; min-width: 0; }
+.w:hover { border-bottom-color: var(--hair); } .w:focus { border-bottom-color: var(--gold); outline: none; background: color-mix(in srgb, var(--gold) 6%, transparent); }
+.w::placeholder { color: var(--faint); font-style: italic; }
+textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; }
+.sb-plate .name { font: 700 21px/1.15 var(--title); flex: 1; }
+.sb-plate .cat { width: 13em; text-align: right; font-weight: 500; color: var(--mute); }
+.sb-body { padding: 6px 12px 12px; display: grid; }
+.flavor { font-style: italic; color: var(--mute); }
+.ln { display: grid; grid-template-columns: 7.2em minmax(0, 1fr); gap: 8px; align-items: baseline; padding: 3px 0; border-bottom: 1px solid var(--hair); }
+.ln > b, .ln > select { font-weight: 600; }
+.ln > select { background: transparent; border: 0; padding: 0; color: var(--ink); font-weight: 600; cursor: pointer; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 18px; }
+@media (max-width: 560px) { .two { grid-template-columns: 1fr; } .ln { grid-template-columns: 6.2em minmax(0, 1fr); } }
+.ver { margin-top: 10px; }
+.ver-bar { display: flex; align-items: center; gap: 8px; padding: 2px 8px; font-weight: 600; color: var(--fq-ink); background: var(--fq); }
+.ver-bar input { width: 3em; background: color-mix(in srgb, #000 18%, transparent); border: 0; color: inherit; font-weight: 700; text-align: center; padding: 0 2px; border-radius: 2px; }
+.ver-bar .sp { margin-left: auto; display: flex; gap: 4px; }
+.ver-bar button { background: none; border: 0; color: inherit; opacity: .8; cursor: pointer; font-size: 13px; padding: 0 4px; }
+.ver-bar button:hover { opacity: 1; text-decoration: underline; }
+.ver-body { background: color-mix(in srgb, var(--fq) 8%, transparent); padding: 2px 8px 6px; }
+.tier { display: grid; grid-template-columns: 4.6em minmax(0, 1fr); gap: 8px; align-items: baseline; padding: 2px 0; border-top: 1px solid currentColor; }
+.tier:first-child { border-top: 0; }
+.tier > b { font-weight: 600; } .tier .w { color: var(--ink); }
+.tier.t1 { color: var(--t-1); } .tier.t2 { color: var(--t-2); } .tier.t3 { color: var(--t-3); } .tier.cr { color: var(--crit); }
+.fx { display: grid; grid-template-columns: 4.6em minmax(0, 1fr); gap: 8px; align-items: baseline; padding-top: 4px; margin-top: 3px; border-top: 1px solid var(--gold); }
+.fx > b { color: var(--gold); font-weight: 600; }
+.addrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.side { display: grid; gap: 4px; }
+.side label { color: var(--mute); font-size: 13px; }
+.side textarea { background: var(--pg-2); border: 1px solid var(--hair); border-radius: 2px; padding: 6px 8px; width: 100%; min-height: 70px; resize: vertical; }
+.copybox { width: 100%; height: 160px; font: 12px/1.3 ui-monospace, Consolas, monospace; background: var(--pg-2); border: 1px solid var(--hair); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="page">
+  <header class="top">
+    <h1>Card Workbench</h1>
+    <div class="acts">
+      <span class="status" id="status" role="status"></span>
+      <select id="load" aria-label="Load a card as the book writes it"></select>
+      <button type="button" class="btn" id="blank">Blank card</button>
+      <button type="button" class="btn main" id="copy">Copy for Claude</button>
+    </div>
+  </header>
+  <div class="cols">
+    <section class="col" id="audit" aria-label="The class audit"></section>
+    <section class="col" aria-label="Your card">
+      <h2 class="ch">Your card <small>written by hand; nothing is computed</small></h2>
+      <div id="card"></div>
+      <div class="side">
+        <label for="notes">Your notes for Claude (what you want it to do, what Foundry should automate)</label>
+        <textarea id="notes" placeholder="e.g. The attacker chooses; Foundry asks it in the chat."></textarea>
+      </div>
+      <div id="copyout"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+/*@@DATA@@*/
+(function () {
+  "use strict";
+  const $ = id => document.getElementById(id), AU = DATA.audit, LS = "card-workbench";
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const unlink = s => String(s ?? "").replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2").replace(/\[\[([^\]]+)\]\]/g, "$1").replace(/\*\*([^*]+)\*\*/g, "$1");
+  const FREQ = ["", "At-will", "Turn", "Round", "Encounter", "Daily"], fq = f => `fq-${(f || "none").toLowerCase().replace("-", "")}`;
+  const lsGet = () => { try { return JSON.parse(localStorage.getItem(LS)); } catch { return null; } }, lsSet = v => { try { localStorage.setItem(LS, JSON.stringify(v)); } catch { /* no storage */ } };
+  const blankVer = ap => ({ ap: String(ap), tiers: ["", "", ""], critical: "", effects: "" });
+  const blank = () => ({ name: "", category: "", level: "", flavor: "", traits: "", frequency: "Round", escalation: "", requirements: "", rx: "", rxText: "", target: "", distance: "", area: "", vs: "", text: "", versions: [blankVer(1)], inline: "", from: "" });
+
+  /** A card as book/cards writes it → the hand-written form (the book's links become plain words). */
+  function fromCard(c) {
+    const inlineLine = x => [x.name + " — " + (x.cost ?? ""), x.frequency, x.traits ? `[${[].concat(x.traits).join(", ")}]` : "", x.interrupt ? `Interrupt: ${x.interrupt}` : "", x.trigger ? `Trigger: ${x.trigger}` : "", x.target ? `Target: ${x.target}` : "", x.requirements ? `Requirements: ${x.requirements}` : "", x.effects ? `Effects: ${x.effects}` : ""].filter(Boolean).map(unlink).join(" | ");
+    return { ...blank(), name: c.name, category: c.category ?? "", level: c.level ?? "", flavor: c.flavor ?? "", traits: (c.traits ?? []).map(t => t[0].toUpperCase() + t.slice(1)).join(", "), frequency: c.frequency ?? "",
+      escalation: c.escalation ?? "", requirements: unlink(c.requirements), rx: c.interrupt ? "Interrupt" : c.trigger ? "Trigger" : "", rxText: unlink(c.interrupt ?? c.trigger), target: unlink(c.target), distance: unlink(c.distance), area: unlink(c.area), vs: unlink(c.vs), text: unlink(c.text),
+      versions: (c.versions ?? []).map(v => ({ ap: String(v.ap ?? ""), tiers: [0, 1, 2].map(i => unlink(v.tiers?.[i] ?? "")), critical: unlink(v.critical), effects: unlink(v.effects) })), inline: (c.inline ?? []).map(inlineLine).join("\n"), from: `${c.name} (${c.file}), as the book writes it` };
+  }
+
+  /* ---------------------------------------------------------------- state */
+  const saved = lsGet();
+  const S = { card: saved?.card ?? blank(), notes: saved?.notes ?? "", placed: saved?.placed ?? "", undo: null, copy: "" };
+  const save = () => lsSet({ card: S.card, notes: S.notes, placed: S.placed });
+  const say = t => { $("status").textContent = t; clearTimeout(say.t); say.t = setTimeout(() => { $("status").textContent = ""; }, 5000); };
+
+  /* ---------------------------------------------------------------- the audit */
+  const list = xs => (xs?.length ? `<ul>${xs.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : `<span class="none">Nothing needed: it already works as a moment.</span>`);
+  function renderAudit() {
+    $("audit").innerHTML = `<h2 class="ch">${esc(AU.title)} <small>${esc(AU.date)}; ranked from the most broken or weakest</small></h2>
+      <p class="lede">${esc(AU.about.replace(/ Measured before any edit[^.]*\./, ""))}</p>
+      <table class="sum"><tbody><tr><td>The whole class (plain PC = 100)</td><td>Lv 1</td><td>Lv 2</td><td>Lv 3</td></tr>${AU.classes.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>
+      ${AU.entries.map((e, i) => `<article class="au${S.placed === e.name ? " placed" : ""}">
+        <div class="au-plate"><span class="rk">${i + 1}</span><h3>${esc(e.name)}</h3><span class="au-v v-${e.v}">${esc(e.vt)}</span><span class="kd">${esc(e.kind)}</span></div>
+        <div class="au-row"><b>Today vs budget</b><div>Today: <b>${esc(e.today)}</b><br>Budget: <b>${esc(e.budget)}</b></div></div>
+        <div class="au-row"><b>Lame?</b><div>${esc(e.lame)}</div></div>
+        <div class="au-row"><b>Underused?</b><div>${esc(e.underused)}</div></div>
+        <div class="au-row"><b>The research suggests</b><div>${list(e.research)}</div></div>
+        <div class="au-row"><b>Claude suggests</b><div>${list(e.claude)}</div></div>
+        <div class="au-foot"><button type="button" class="btn small" data-place="${i}">Place in builder</button>${S.placed === e.name ? `<span class="here">In the builder</span>` : ""}</div>
+      </article>`).join("")}`;
+  }
+  function place(i) {
+    const e = AU.entries[i], c = e.card && DATA.cards.find(x => x.name === e.card);
+    S.undo = { card: S.card, placed: S.placed };
+    S.card = c ? fromCard(c) : { ...blank(), name: e.name, category: e.kind, frequency: "", versions: [], text: e.text ?? "", from: `${e.name} (a Passive or Feature), as the book writes it` };
+    S.placed = e.name; S.copy = ""; save(); renderAudit(); renderCard();
+    $("status").innerHTML = `Placed ${esc(e.name)}. <button type="button" class="btn small plain" id="undo">Undo</button>`;
+  }
+
+  /* ---------------------------------------------------------------- the card */
+  const w = (k, ph, cls = "", rows = 1) => `<textarea class="w ${cls}" data-k="${k}" rows="${rows}" placeholder="${esc(ph)}" aria-label="${esc(ph)}">${esc(k.split(".").reduce((o, p) => o?.[p], S.card))}</textarea>`;
+  const ln = (label, k, ph) => `<div class="ln"><b>${esc(label)}</b>${w(k, ph)}</div>`;
+  function renderCard() {
+    const c = S.card;
+    $("card").innerHTML = `<div class="sb ${fq(c.frequency)}">
+      <div class="sb-plate">${w("name", "Name", "name")}<input class="w cat" data-k="category" value="${esc(c.category)}" placeholder="Category · level" aria-label="Category"></div>
+      <div class="sb-body">
+        ${w("flavor", "Flavor (Claude writes it if you leave it empty)", "flavor")}
+        ${ln("Traits", "traits", "Divine, Strike, Weapon")}
+        <div class="two"><div class="ln"><b>Frequency</b><select data-k="frequency" aria-label="Frequency">${FREQ.map(f => `<option value="${f}"${f === c.frequency ? " selected" : ""}>${f || "none (Passive)"}</option>`).join("")}</select></div>${ln("Escalation", "escalation", "e.g. 6")}</div>
+        <div class="ln"><select data-k="rx" aria-label="Interrupt or Trigger">${["", "Interrupt", "Trigger"].map(x => `<option value="${x}"${x === c.rx ? " selected" : ""}>${x || "Reaction?"}</option>`).join("")}</select>${c.rx ? w("rxText", "A [Strike] Action would damage an ally within 5 squares.") : `<span class="w" style="color:var(--faint);font-style:italic">not a Reaction</span>`}</div>
+        ${ln("Requirements", "requirements", "none")}
+        ${ln("Targets", "target", "One creature")}
+        <div class="two">${ln("Distance", "distance", "Weapon / 5 sq.")}${ln("Area", "area", "2 Burst")}</div>
+        ${ln("Vs.", "vs", "AD / WD / Appeal Save")}
+        ${c.text || !c.versions.length ? `<div class="fx"><b>Text</b>${w("text", "What the Passive or Feature does")}</div>` : ""}
+        ${c.versions.map((v, i) => `<div class="ver">
+          <div class="ver-bar"><input data-k="versions.${i}.ap" value="${esc(v.ap)}" aria-label="Version ${i + 1}: AP">${c.rx ? "R" : "AP"}<span class="sp"><button type="button" data-act="vdel" data-i="${i}">Remove this Version</button></span></div>
+          <div class="ver-body">
+            ${["Tier 1", "Tier 2", "Tier 3"].map((t, j) => `<div class="tier t${j + 1}"><b>${t}</b>${w(`versions.${i}.tiers.${j}`, j === 0 ? "[V] 1[W] (or leave empty: no roll)" : j === 1 ? "[V] 1[W] + [Mod] + [R] 1d6 Ho" : "[V] 1[W] + [Mod] + [R] 1d8 Ho; Prone.")}</div>`).join("")}
+            <div class="tier cr"><b>Critical</b>${w(`versions.${i}.critical`, "only if it has one")}</div>
+            <div class="fx"><b>Effects</b>${w(`versions.${i}.effects`, "What happens (as 1 AP, but…)")}</div>
+          </div></div>`).join("")}
+        ${c.inline ? `<div class="fx"><b>Inline</b>${w("inline", "Name — 0R | Round | Interrupt: … | Effects: …")}</div>` : ""}
+        <div class="addrow"><button type="button" class="btn small" data-act="vadd">+ Version</button>${c.text || !c.versions.length ? "" : `<button type="button" class="btn small" data-act="text">+ Passive text</button>`}${c.inline ? "" : `<button type="button" class="btn small" data-act="inline">+ Inline Action</button>`}</div>
+      </div></div>
+      ${c.from ? `<p class="lede" style="margin-top:6px;font-size:12.5px">Started from ${esc(c.from)}.</p>` : ""}`;
+    $("notes").value = S.notes;
+    for (const t of document.querySelectorAll("#card textarea.w")) fit(t);
+    renderCopy();
+  }
+  const fit = t => { t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; };
+  function setPath(k, val) { const parts = k.split("."), last = parts.pop(), o = parts.reduce((x, p) => x[p], S.card); o[last] = val; }
+
+  /* ---------------------------------------------------------------- Copy for Claude: the card in book/cards' shape, the audit entry, the notes */
+  function toCard() {
+    const c = S.card, out = { name: c.name.trim() };
+    const put = (k, v) => { if (String(v ?? "").trim()) out[k] = String(v).trim(); };
+    put("category", c.category); if (c.level !== "") out.level = c.level; put("flavor", c.flavor);
+    const tr = c.traits.split(/[,;]/).map(t => t.trim().toLowerCase()).filter(Boolean); if (tr.length) out.traits = tr;
+    put("frequency", c.frequency); if (String(c.escalation).trim()) out.escalation = Number(c.escalation) || String(c.escalation).trim();
+    put("requirements", c.requirements); if (c.rx) put(c.rx.toLowerCase(), c.rxText);
+    put("target", c.target); put("distance", c.distance); put("area", c.area); put("vs", c.vs); put("text", c.text);
+    const vs = c.versions.map(v => { const o = { ap: Number(v.ap) || v.ap }; if (v.tiers.some(t => t.trim())) o.tiers = v.tiers.map(t => t.trim() || "0"); if (v.critical.trim()) o.critical = v.critical.trim(); if (v.effects.trim()) o.effects = v.effects.trim(); return o; });
+    if (vs.length) out.versions = vs;
+    if (c.inline.trim()) out.inline_lines = c.inline.split("\n").map(x => x.trim()).filter(Boolean);
+    return out;
+  }
+  function exportText() {
+    const e = AU.entries.find(x => x.name === S.placed), lines = [`Card Workbench draft: ${S.card.name || "an unnamed card"} (written by hand; nothing computed). Please measure it in the SIM / write it as a card.`];
+    if (S.card.from) lines.push(`Started from: ${S.card.from}.`);
+    if (e) lines.push(`Audit entry: ${e.name} (${e.vt}; today ${e.today}; budget ${e.budget}).`);
+    if (S.notes.trim()) lines.push("", "My notes:", S.notes.trim());
+    lines.push("", "Card (book/cards format; inline_lines are in my one-line format):", "```json", JSON.stringify(toCard(), null, 2), "```");
+    return lines.join("\n");
+  }
+  function renderCopy() { $("copyout").innerHTML = S.copy ? `<h2 class="ch">Copy for Claude <small>select all and copy if the button couldn't</small></h2><textarea class="copybox" id="copybox" readonly aria-label="The text for Claude">${esc(S.copy)}</textarea>` : ""; }
+
+  /* ---------------------------------------------------------------- events */
+  $("card").addEventListener("input", e => { const k = e.target.dataset?.k; if (!k) return; setPath(k, e.target.value); if (e.target.tagName === "TEXTAREA") fit(e.target); save(); });
+  $("card").addEventListener("change", e => { const k = e.target.dataset?.k; if (!k || e.target.tagName !== "SELECT") return; setPath(k, e.target.value); save(); renderCard(); });
+  $("card").addEventListener("click", e => {
+    const b = e.target.closest("[data-act]"); if (!b) return; const c = S.card, a = b.dataset.act;
+    if (a === "vadd") c.versions.push(blankVer(c.versions.length ? Math.min(3, (Number(c.versions.at(-1).ap) || 1) + 1) : 1));
+    else if (a === "vdel") c.versions.splice(Number(b.dataset.i), 1);
+    else if (a === "text") c.text = " ";
+    else if (a === "inline") c.inline = " ";
+    save(); renderCard();
+  });
+  $("notes").addEventListener("input", e => { S.notes = e.target.value; save(); });
+  $("audit").addEventListener("click", e => { const b = e.target.closest("[data-place]"); if (b) place(Number(b.dataset.place)); });
+  $("status").addEventListener("click", e => { if (e.target.id !== "undo" || !S.undo) return; Object.assign(S, S.undo); S.undo = null; save(); renderAudit(); renderCard(); say("Undone"); });
+  { const by = {}; for (const c of DATA.cards) (by[c.file] ??= []).push(c.name); $("load").innerHTML = `<option value="">Load a card…</option>` + Object.entries(by).map(([f, ns]) => `<optgroup label="${esc(f)}">${ns.map(n => `<option>${esc(n)}</option>`).join("")}</optgroup>`).join(""); }
+  $("load").addEventListener("change", e => { const c = DATA.cards.find(x => x.name === e.target.value); e.target.value = ""; if (!c) return; S.undo = { card: S.card, placed: S.placed }; S.card = fromCard(c); S.placed = AU.entries.some(x => x.card === c.name) ? AU.entries.find(x => x.card === c.name).name : ""; save(); renderAudit(); renderCard(); $("status").innerHTML = `Loaded ${esc(c.name)}. <button type="button" class="btn small plain" id="undo">Undo</button>`; });
+  $("blank").addEventListener("click", () => { S.undo = { card: S.card, placed: S.placed }; S.card = blank(); S.placed = ""; save(); renderAudit(); renderCard(); $("status").innerHTML = `A blank card. <button type="button" class="btn small plain" id="undo">Undo</button>`; });
+  $("copy").addEventListener("click", () => {
+    S.copy = exportText(); renderCopy();
+    const fallback = () => { const box = $("copybox"); if (box) { box.focus(); box.select(); } say("Select the text below and copy it"); };
+    try { navigator.clipboard.writeText(S.copy).then(() => say("Copied: paste it to Claude"), fallback); } catch { fallback(); }
+  });
+  window.addEventListener("resize", () => { for (const t of document.querySelectorAll("#card textarea.w")) fit(t); });
+
+  renderAudit(); renderCard();
+})();
+</script>

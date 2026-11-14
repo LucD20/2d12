@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-13 from the repository at: c5a5366 2026-11-13 Research notes folder (book/research) with the tactical-combat findings; in the knowledge files
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 89d8540 2026-11-14 Action Builder: an imported card keeps its heal, Guard, block and +1 Defense (read from its ruler line); +1 Defense counts its rounds
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
