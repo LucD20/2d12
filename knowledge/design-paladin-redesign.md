@@ -409,7 +409,7 @@ x it fires in about half the rounds ........... [judgment: Rebuke's same trigger
 
 **Lucas's answer (2026-11-14):** the size (1 + Power Modifier) "is good as is"; a Strike only: good; Taunted is a good rider. **His question: in other media Shield of Faith grants Defense; will the Paladin have a flat Defense Action, so this one should take another name?** Claude's answer, from our notes: probably not as a core card. A flat Defense bonus is the kind of protection nobody sees (the 5e aura: "Forgetting to use the paladin's aura when it comes up"; our own rule now: no silent bonuses), and the SIM prices +1 Defense on an ally for a round at 12 points for an AP, half an AP's worth. If one comes, it will be an Encounter Action or an Art (today's Beacon is that card) and takes its own name. A pane of light that turns part of a blow aside is a shield: **the name stays.**
 
-## Decision 7: the second Hallmark Reaction, Rebuke (PROPOSED, waiting for Lucas)
+## Decision 7: the second Hallmark Reaction, Rebuke (PROPOSED; revised after Lucas's notes, the card at the end of this section)
 
 **Research and rules first.** The strongest way to make a front line real is that movement ends near the front-liner (Lancer: a character that becomes Engaged stops and loses its unused movement; 13th Age: an unengaged defender can intercept one enemy moving past). The opportunity attack is the weakest, and worthless on a low-damage character (RPGBot: "the absolute floor of stickiness"). Our rules have the pieces: "an enemy moves closer to you or to an ally" is a defined moment (Chapter 2; the Archer's Overwatch uses it); a Trigger on a Move Action fires once for the whole Move Action and the reactor chooses the square; a disrupted movement "ends in the square the creature was in" and its AP is wasted; Evade and Forced Movement never trigger it. With the Advance in one piece the movement left is lost. Today's Rebuke (an Appeal Save when an enemy Strikes an ally: damage, Pushed, Frightened) fires in 66% of rounds and is worth 14.
 
@@ -439,5 +439,29 @@ The ally it didn't reach that turn ............................................ 
 - **Table feel:** the GM moves the token, the Paladin's player says "Rebuke, stop there", and the token goes back to that square. Everyone sees it. The risk: a GM may feel it as losing the monster's turn; it is one AP, and the monster still acts.
 
 **For Lucas to choose:** a certain disrupt, or a Save (Tier 1 for the enemy: disrupted and Hindered; Tier 2: Hindered; Tier 3: nothing); Hindered as the rider, or Frightened of you (EoT), or none; 5 squares.
+
+**Lucas's notes (2026-11-14), applied, with what the rules say:**
+- **The trigger.** He finds "moves closer to an ally" good, "uses a Move Action" too good and disruptive, and offered "moves away from you" for simplicity. **Claude's answer: "moves away from you" is the best of the three.** With allies spread out, almost any forward step is closer to some ally, so "closer to an ally" plays like "uses a Move Action" and makes the table check every ally. "Away from you" is checked against one creature, him; it never punishes an enemy coming at him; and it is the front line in one phrase: to get past him an enemy must at some point move away from him. It is 13th Age's intercept and Lancer's engagement in our words. **It isn't a defined moment yet:** Chapter 2's "Moving Closer" gets its mirror ("a creature moves away from you when the distance is larger after its movement than before").
+- **A Save for the disrupt, Hindered automatic.** [Power, Save], so the DC is 11 + his Power Modifier (13). Appeal over Mind: today's Rebuke is an Appeal Save, and it is a command, not a puzzle.
+- **"Disrupted / Disrupted / No effect" clutters: is there a better way to write a binary Save?** From the rules: a Save's three values are its Tier 1 / 2 / 3 results, and on a Save Action the Effects row "happens on Tier 1 and 2". So the book already knows the pair "Tier 1 and 2"; it has no short way to write it on one line. **Proposed, as a writing rule:** a Tier line can name two Tiers, and a Tier that isn't written does nothing. "**Tier 1 or 2:** its Move Action is disrupted." Other options looked at and set aside: "Appeal Save negates" (4e and 5e's phrase; a new term to define); "unless it resists" (Resist is already the damage word).
+- **Is there a rule for Hindered during a movement?** Yes, Chapter 8: "If you become Hindered while you are moving, the movement you have left is halved too, rounded down." (Added for the Archer's Overwatch.) So even on a Tier 3 the enemy loses half of what it had left.
+- **Hindered is the rider. 3 squares.**
+
+> **Rebuke** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Power, Save] · Vs.: Appeal Save
+> *You call out in your god's name, and your foe's stride falters and stops.*
+> **Trigger:** An enemy within 3 squares of you moves away from you.
+> The enemy is Hindered (EoT) and makes an Appeal Save. **Tier 1 or 2:** its Move Action is disrupted.
+
+```
+Hindered (EoT), always: the movement it has left is halved, and its Speed for the rest of its turn ... 0 to 3 each time   [SIM; a blind spot of the white room]
+The Move Action disrupted on a Tier 1 or 2 (about 80% against DC 13 for a creature with Appeal +2) ... 11 to 15 x 0.8 = 9 to 12 each time   [SIM, by likeness to Dazed 1; the odds computed]
+x it fires in about 40% of rounds ..................................... [judgment: narrower than "closer to an ally", and 3 squares]
+The ally it didn't reach ................................................ not priced (suggested 5 to 10 on a map with a back line)
+--- Total: about 4 to 6 a turn on paper, 10 to 15 where enemies try to get past him, of 10 to 15: on where it matters, under in a white room
+```
+
+**What changed in play:** it is no longer certain (one time in five the enemy keeps going, at half pace), it reaches less far, and it only answers an enemy leaving him. That is a softer, clearer card, and the GM keeps a roll. Its weak case is a fight where nobody tries to pass him: then Shield of Faith is the better pick, which is a fair reason to have two.
+
+**For the book, with this card (logged; not applied):** "moving away from you" defined beside "Moving Closer" (Chapter 2); a Tier line can name two Tiers, and an unwritten Tier does nothing (rules-src/README.md and Chapter 1's card anatomy).
 
 **Lucas's answer:**
