@@ -3,6 +3,14 @@
 // To add a thing: one entry in READERS (what to look for, how it is priced, the note shown), its price in PRICES with where it was measured.
 function makeBudget() {
   "use strict";
+  /** Lucas's rates (2026-11-14: "I will rate those myself; keep your rate × my rate"). Where he has set one, the budget uses it; the SIM's stays beside it,
+   *  shown on the page and kept here, so a big gap can be looked at later. null = not set yet (the SIM's is used). One entry per thing. */
+  const RATES = {
+    rallySpent: { lucas: null, sim: 0, simNote: "the target spends its own Rally Point: it moves Health it already had (the bare 1 AP measured −10 to −11, below an unused AP's +12 to +15)" },
+    evadeMelee: { lucas: null, sim: [0, 0, 0], simNote: "a melee build: the SIM only steps away, and a melee PC never wants to (a step toward someone or out of a bad spot isn't measured)" },
+    evadeRanged: { lucas: null, sim: [30, 30, 34], simNote: "a free Evade 1 / 2 / 3 once a round, 700 fights a level (book/ruler/sim/pcextra.mjs): the first square matters most (out of Engaged, no Doomed shot)" },
+  };
+  const rate = k => (RATES[k].lucas ?? RATES[k].sim), rateNote = (k, i) => { const r = RATES[k], pick = v => (Array.isArray(v) ? v[i] : v); return r.lucas == null ? `SIM: ${r.simNote} (your rate: not set)` : `your rate ${pick(r.lucas)} · the SIM's ${pick(r.sim)}`; };
   /** The prices, with where each number comes from. */
   const PRICES = {
     ap: 25,                 // an AP of a Round or At-will Action (a Weapon Attack)
@@ -13,8 +21,6 @@ function makeBudget() {
     band: 0.1,              // within limits: 10% either side (each 10 points over is felt)
     health: 12,             // 1 Health of new healing (pc-budget.md section 5; measured again 2026-11-14: 11, 700 fights)
     rallyHeal: 9,           // a Rally Point heals ⌈Health Pool ÷ 4⌉: 9 for the Paladin (35), 8 for the Archer (29); an NPC's is 9 at Stage 0
-    rallySpent: 0,          // the target spends its own Rally Point: 0 (it moves Health it already had; the bare 1 AP measured −10 to −11, below an unused AP's +12 to +15)
-    evade: { ranged: [30, 30, 34], melee: [0, 0, 0] },   // a free Evade 1 / 2 / 3 once a round, measured 2026-11-14 (700 fights a level): the first square is what counts (out of Engaged, no Doomed shot); a melee PC never steps away in the SIM
   };
   const BUILDS = [
     { name: "Paladin (Smite)", seat: "melee", wea: 2, pow: 1, body: 2, mind: 1, instinct: 0, appeal: 0 },
@@ -45,9 +51,9 @@ function makeBudget() {
     { key: "rally-free", re: /heals? (?:twice |three times )?what (\w+) Rally Points? (?:would )?heals?|(\w+) free Rally Points?/gi,
       read: (m, b, t) => { const mult = /twice/i.test(m[0]) ? 2 : /three times/i.test(m[0]) ? 3 : 1, n = num(m[1] ?? m[2]) * mult; return { what: `${n} Rally Point${n > 1 ? "s" : ""}' heal, not spent (${n * PRICES.rallyHeal} new Health)`, pts: n * PRICES.rallyHeal * PRICES.health, note: `${PRICES.rallyHeal} Health a Rally Point × ${PRICES.health} points a Health` }; } },
     { key: "rally", re: /(\w+) Rally Points?/gi, skipIf: /heals? (?:twice |three times )?what \w+ Rally Points?|\w+ free Rally Points?/i,
-      read: (m) => { const n = num(m[1]); if (!Number.isFinite(n)) return null; return { what: `${n} Rally Point${n > 1 ? "s" : ""} the target spends`, pts: n * PRICES.rallySpent, note: "0: it moves Health the target already had (the bare 1 AP measured −10). Write \"heals what 1 Rally Point heals\" or \"1 free Rally Point\" for new Health." }; } },
+      read: (m) => { const n = num(m[1]); if (!Number.isFinite(n)) return null; return { what: `${n} Rally Point${n > 1 ? "s" : ""} the target spends`, pts: n * rate("rallySpent"), note: `${rateNote("rallySpent")}. For new Health write "heals what 1 Rally Point heals" or "1 free Rally Point".` }; } },
     { key: "evade", re: /Evade (\d+)/gi,
-      read: (m, b) => { const n = Math.max(1, Number(m[1])), p = PRICES.evade[b.seat][Math.min(3, n) - 1]; return { what: `Evade ${n}`, pts: p, note: b.seat === "melee" ? "0 for a melee build: the SIM only steps away, and a melee PC never wants to (a step toward someone isn't measured)" : `a free Evade ${Math.min(3, n)} once a round, measured: the first square matters most (out of Engaged, no Doomed shot)` }; } },
+      read: (m, b) => { const n = Math.max(1, Number(m[1])), i = Math.min(3, n) - 1, k = b.seat === "melee" ? "evadeMelee" : "evadeRanged"; return { what: `Evade ${n} (${b.seat})`, pts: rate(k)[i], note: rateNote(k, i) }; } },
     { key: "heal", re: /heal(?:s|ing)?\s+(?:more\s+)?(\d*d\d+!?(?:\s*\+\s*(?:\d*d\d+!?|\d+|pow|wea|mod|body|mind|appeal|instinct)\b)*|\d+(?:\s*\+\s*(?:pow|wea|mod|body|mind|appeal|instinct)\b)*)/gi,
       read: (m, b) => { const a = amount(m[1], b); if (!a) return null; return { what: `healing ${m[1].trim()} = ${+a.avg.toFixed(1)} Health`, pts: a.avg * PRICES.health, note: `${a.how}; × ${PRICES.health} points a Health (new Health)` }; } },
   ];
@@ -76,6 +82,6 @@ function makeBudget() {
     const verdict = total > band[1] + 1e-9 ? "over" : total < band[0] - 1e-9 ? "under" : "on";
     return { items, total, budget, band, label, verdict, build: b, fires };
   }
-  return { PRICES, BUILDS, READERS, amount, price, tidy };
+  return { PRICES, RATES, BUILDS, READERS, amount, price, tidy };
 }
 if (typeof module !== "undefined") module.exports = { makeBudget };
