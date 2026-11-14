@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: 5bc20c6 2026-11-14 Analyses of Lucas's four Workbench drafts (Lay On Hands, Shield of Faith, Reckoning, Hallowed Stance); research: movement and positioning, Escalation gates and Guard
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 3c5e73d 2026-11-14 Research: ability scope (complexity per card, action compression, rule-benders, ribbons, rote turns); the audit "are our Actions doing too much?" in paladin-analyses.md
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,9 +15,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (156 KB)
-- MASTER-PLAN.md (38 KB)
-- open-design-items.md (130 KB)
+- HANDOFF.md (157 KB)
+- MASTER-PLAN.md (39 KB)
+- open-design-items.md (131 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
