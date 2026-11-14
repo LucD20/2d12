@@ -352,4 +352,23 @@ Smite at 4 dice on the creature he Judged: 21 / 32 / 41, average 31: 104 points;
 - **It needs the [Move] trait** (as Charge has): Immobilized or Prone, he can't use it. For Lucas: allow it without the Setup on an ally already within Reach? (Claude's default: yes, a Setup that moves 0 squares is still legal, as when he is already adjacent.)
 - **A straight line** means a wall or a creature in the way stops it (Charge's rule: an unwilling creature's space is Difficult Terrain, and the movement ends in the last legal square). If he ends without the ally in Reach, the Action has no effect: the same as a Charge that falls short.
 
-**Lucas's answer:**
+**Lucas's two questions on the Setup (2026-11-14), answered from the rules:**
+1. **"Isn't 'and stop on the first square from which it is within your Reach' already in the straight line rules?"** No: Chapter 3's Straight Line rule gives the path (the squares the line crosses) and the stop when a square isn't legal ("the movement stops in the last legal square before it"). Where the movement ends is the Action's to say; that clause is Charge's own. But the rule draws the line "to the center of the destination square", so naming the destination is enough, and shorter: "to a square from which the target is within your Reach". It is also better: he picks the square, so he can end between the ally and the enemy.
+2. **"Setup is optional unless it says 'Must'."** The Setup rule itself is one sentence and doesn't say so. What the rules have: "Up to" (Chapter 1: a number you can move is a maximum, "you can use fewer, or none, unless the rule says you **must**") and Linked Actions (Chapter 2: optional when the Action says you **can**, required when it says you **do** it; a required one you can't make disrupts the whole Action). So "You Advance..." would read as required, and an Immobilized Paladin's Lay On Hands would be disrupted. **The card now says "You can Advance"**, which is optional under today's rules. **Proposed for Chapter 2's Setup, when the classes are applied:** "A Setup is optional unless it says you must."
+3. **Distance:** Reach. The Talent Cut Through is the precedent (Distance: Weapon, after a Setup that moves him): the Distance is measured after the Setup.
+
+**The final card:**
+
+> **Lay On Hands** · Paladin Hallmark Action · Round · [Divine, Focus] · Distance: Reach · Target: One willing ally
+> *You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.*
+> **Setup:** You can Advance up to 5 squares in a straight line to a square from which the target is within your Reach.
+> **1 AP:** The target gains Guard equal to 2 + your Power Modifier.
+> **2 AP:** The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point.
+
+(The [Move] trait is dropped: the Advance is optional, so an Immobilized Paladin still touches an ally already within his Reach; he just can't take the Setup.)
+
+**Status: taken as decided unless Lucas objects to the wording above.**
+
+## Decision 6: next (the first Hallmark Reaction, Shield of Faith)
+
+A smaller hit on the enemy's turn. Claude proposes.
