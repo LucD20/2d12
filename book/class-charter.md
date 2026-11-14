@@ -43,7 +43,7 @@ Rules that go with it:
 
 ## 3. The budget
 
-Unchanged from the PC budget (`book/cards/README.md`): a plain PC's three Weapon Attacks are 100 points, a class is about **130 / 140 / 150** at levels 1 / 2 / 3. Anchors: a Weapon Attack 25, 1 Health 12, 1 Guard 6, an unused AP 12, an Encounter Action double its AP, a 1R Reaction 10 to 15 a turn, a Passive about +10 a level. **Rough anchors only** (the SIM is a white room); table feel and the research decide.
+Unchanged from the PC budget (`book/cards/README.md`): a plain PC's three Weapon Attacks are 100 points, a class is about **130 / 140 / 150** at levels 1 / 2 / 3. Anchors: a Weapon Attack 25, 1 Health 12, 1 Guard 6, an unused AP 12, an Encounter Action double its AP (the top of the one designer's range found: 13th Age's targets are 1.5 times for a per-battle attack, 2 times for a daily; `nova-burst.md`, takeaway 4), a 1R Reaction 10 to 15 a turn, a Passive about +10 a level. **Rough anchors only** (the SIM is a white room); table feel and the research decide.
 
 - **An Art, a Rule-bender and a Ribbon cost nothing of the budget** unless they heal, give Guard or deal damage. They are where a class gets wider without getting stronger.
 - A Compression is priced as the AP it saves on the turns it would be used (about 12 for an AP).
