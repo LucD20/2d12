@@ -58,10 +58,11 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14: Lay On Hands decided; Shield of Faith is next. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14: Lay On Hands final; Shield of Faith proposed. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
+  <a href="#sof">Shield of Faith</a>
   <a href="#loh">Lay On Hands</a>
   <a href="#strike">Binding Light</a>
   <a href="#rules">Rules</a>
@@ -77,8 +78,38 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
-<p><strong>Nothing is blocked.</strong> Lay On Hands is taken as decided with the wording below unless you object. The next card is the first Hallmark Reaction, Shield of Faith (a smaller hit on the enemy's turn); I'll propose it.</p>
+<p><strong>One decision: Shield of Faith, the first Hallmark Reaction.</strong> Say "Proposed", or change it. Worth your eye:</p>
+<ol>
+  <li>The size: 1 + Power Modifier (3, a little over budget) or the Power Modifier (2, on budget).</li>
+  <li>Only an enemy's Strike triggers it (not areas or Saves).</li>
+  <li>Taunted as the rider, or no rider.</li>
+</ol>
 </div>
+</section>
+
+<section id="sof">
+<h2>Decision 6: Shield of Faith (proposed)</h2>
+<div class="card">
+  <div class="bar"><span>Shield of Faith</span><span>Paladin Hallmark Reaction · 1R · Turn · Divine, Focus</span></div>
+  <div class="v"><b></b><div class="small"><em>You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.</em></div></div>
+  <div class="v"><b>When</b><div><strong>Interrupt:</strong> An enemy's [Strike] Action would damage an ally within 5 squares of you.</div></div>
+  <div class="v"><b></b><div>That damage is reduced by 1 + your Power Modifier, and the enemy is Taunted by you (1 round).</div></div>
+</div>
+<div class="scroll"><table>
+<tr><th>Line</th><th>Points</th><th>From</th></tr>
+<tr><td>Damage reduced by 3</td><td>36 each time</td><td>1 Health = 12 [SIM]</td></tr>
+<tr><td>Taunted by you (1 round)</td><td>1 to 3 each time</td><td>[SIM]</td></tr>
+<tr><td>It fires in about half the rounds</td><td></td><td>judgment: the same trigger fired in 66% of rounds on Rebuke</td></tr>
+<tr><td><strong>Total a turn</strong></td><td><strong>about 20 of 10 to 15</strong></td><td>a little over; with "reduced by your Power Modifier" (2): about 14</td></tr>
+</table></div>
+<ul>
+<li><strong>The decision it gives:</strong> which hit. One Reaction AP a round; a second Shield needs an AP he kept from his turn. So "do I hold an AP back" is his choice every turn.</li>
+<li><strong>The enemy's choice after it:</strong> Taunted, it takes a Bane against anyone but him. Hit the Paladin, or hit his ally worse.</li>
+<li><strong>With Judge:</strong> the Judged creature's hit loses 2, and the Shield takes 3 more. A Standard's Basic attack is gone; its Special is cut by two thirds.</li>
+<li><strong>With Smite:</strong> if the Reaction AP went into Smite, there is no Shield that round.</li>
+<li><strong>Allies only:</strong> a Reaction "you or an ally" gets spent on himself.</li>
+<li><strong>Against your first draft</strong> (the enemy chooses half damage, or Taunted): this makes both halves certain, so the GM never picks the cheap one.</li>
+</ul>
 </section>
 
 <section id="loh">
@@ -86,7 +117,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <div class="card">
   <div class="bar"><span>Lay On Hands</span><span>Paladin Hallmark Action · Round · Divine, Focus · Reach · one willing ally</span></div>
   <div class="v"><b></b><div class="small"><em>You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</em></div></div>
-  <div class="v"><b>Setup</b><div>You can Advance up to 5 squares in a straight line to a square from which the target is within your Reach.</div></div>
+  <div class="v"><b>Setup</b><div>You Advance up to 5 squares in a straight line toward the target.</div></div>
   <div class="v"><b>1 AP</b><div>The target gains Guard equal to 2 + your Power Modifier.</div></div>
   <div class="v"><b>2 AP</b><div>The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point.</div></div>
 </div>
@@ -102,8 +133,8 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <li><strong>He goes where the hit is coming.</strong> After it he stands next to the ally he shielded, and his Speed +0 stops mattering for this.</li>
 <li><strong>It can pull him off a line he was holding,</strong> and it is a real Advance: an enemy's movement Reaction can answer it.</li>
 <li><strong>A second movement in his turn.</strong> With the Advance in one piece, that is worth more than it was.</li>
-<li><strong>A straight line:</strong> a wall or a creature in the way stops it (the Straight Line rule). He picks the square he ends in, so he can end between the ally and the enemy.</li>
-<li><strong>The Setup is optional</strong> ("You can"): Immobilized or Prone, he still touches an ally already within his Reach. For the book later: "A Setup is optional unless it says you must."</li>
+<li><strong>A clear move with a clear end:</strong> the line goes to the ally's square. He can stop anywhere on it, and never goes around.</li>
+<li><strong>The Setup is optional by default:</strong> Immobilized or Prone, he still touches an ally already within his Reach.</li>
 <li><strong>Flat Guard:</strong> noted that it may need to grow by Stage, for when the Stages are done.</li>
 <li><strong>The 2 AP use</strong> is the class's one Rally Point card; it works on a Down ally.</li>
 </ul>
@@ -126,6 +157,9 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <ul>
 <li><strong>Each Tier's line holds its whole result:</strong> the damage, a semicolon, then what else that Tier does. You roll, find your Tier, read one line.</li>
 <li><strong>A Tier 3 visibly beats a Tier 2:</strong> a bigger die or one more thing on its line.</li>
+<li><strong>A Setup is optional unless it says you must.</strong> For Chapter 2.</li>
+<li><strong>Targets are named before the Setup; the Distance is measured after it.</strong> For Chapter 2.</li>
+<li><strong>A straight line toward a creature</strong> goes to the center of its space; you can stop in any square on it and can't enter its space. Closer, never around. For Chapter 3.</li>
 <li><strong>His Hallmark Strike costs 2 AP</strong>, so he doesn't become a striker. His turn is one main Strike, one small thing and a move (2 + 1 + 1). Two conditions: the Strike's damage is about 35 of its 50 points with the rest in its rider, and its Tier 1 still does the rider, because at Weapon +1 one roll now carries half his turn.</li>
 <li><strong>The two Hallmark Actions are a Strike and a Help. The Help is Lay On Hands:</strong> Guard before the hit, on his own turn. Shield of Faith stays the name of a Hallmark Reaction (the smaller hit, on the enemy's turn).</li>
 </ul>

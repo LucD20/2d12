@@ -357,18 +357,54 @@ Smite at 4 dice on the creature he Judged: 21 / 32 / 41, average 31: 104 points;
 2. **"Setup is optional unless it says 'Must'."** The Setup rule itself is one sentence and doesn't say so. What the rules have: "Up to" (Chapter 1: a number you can move is a maximum, "you can use fewer, or none, unless the rule says you **must**") and Linked Actions (Chapter 2: optional when the Action says you **can**, required when it says you **do** it; a required one you can't make disrupts the whole Action). So "You Advance..." would read as required, and an Immobilized Paladin's Lay On Hands would be disrupted. **The card now says "You can Advance"**, which is optional under today's rules. **Proposed for Chapter 2's Setup, when the classes are applied:** "A Setup is optional unless it says you must."
 3. **Distance:** Reach. The Talent Cut Through is the precedent (Distance: Weapon, after a Setup that moves him): the Distance is measured after the Setup.
 
+**Then (Lucas, the same day), three more points, all taken:**
+- **A clear move with a clear end point: closer, never around.** He doesn't want Pathfinder 2e's Sudden Charge habit (running around a creature to flank on the way). Claude's "to a square from which the target is within your Reach" let the Paladin pick the square, which is moving around: withdrawn. **The Straight Line rule doesn't say what "toward a creature" means** (it draws the line "to the center of the destination square" and leaves the destination to the Action), so it gets a sentence: the line goes to the center of the target's space, you move along it and can stop in any square on it, and you can't enter the target's space. With Reach 1 you end in the one square before it; with more Reach you may stop earlier or go on. The card then needs no stop clause.
+- **"Can" is the default for a Setup, "must" the addition:** since the rule is logged, the card doesn't write "can".
+- **The Distance measured after the Setup** goes into the Targets and Setup entries.
+
 **The final card:**
 
 > **Lay On Hands** · Paladin Hallmark Action · Round · [Divine, Focus] · Distance: Reach · Target: One willing ally
 > *You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.*
-> **Setup:** You can Advance up to 5 squares in a straight line to a square from which the target is within your Reach.
+> **Setup:** You Advance up to 5 squares in a straight line toward the target.
 > **1 AP:** The target gains Guard equal to 2 + your Power Modifier.
 > **2 AP:** The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point.
 
-(The [Move] trait is dropped: the Advance is optional, so an Immobilized Paladin still touches an ally already within his Reach; he just can't take the Setup.)
+**Three rules for the book, with this card (logged in the rules backlog; not applied):**
+1. **Chapter 2, Setup:** "A Setup is optional unless it says you must."
+2. **Chapter 2, Setup and Targets:** "You name the Action's targets before its Setup. Its Distance is measured after the Setup: a target that isn't within the Distance then is not affected (the cost is still paid)."
+3. **Chapter 3, Straight Line:** "**Toward a creature.** When you move in a straight line toward a creature, the line goes to the center of its space. You can stop in any square on the line, and you can't enter the creature's space: you end, at the latest, in the last square before it."
 
-**Status: taken as decided unless Lucas objects to the wording above.**
+**Status: DECIDED (Lucas, 2026-11-14).**
 
-## Decision 6: next (the first Hallmark Reaction, Shield of Faith)
+## Decision 6: the first Hallmark Reaction, Shield of Faith (PROPOSED, waiting for Lucas)
 
-A smaller hit on the enemy's turn. Claude proposes.
+**Research and rules first.** The best-liked protector's reaction is one trigger, one payload, one rider (the Pathfinder 2e Champion's four protecting causes), and it shaves the hit, never erases it (Draw Steel's final design reduces damage, "never eliminated"). The 4e Swordmage, with little damage of his own, was obeyed because the number was heard ("preventing 8 damage from my marked target is enough to draw them to me"). A soft taunt alone was ignored on the Guardian; behind a real reduction it is the second half of the trap. Ours today: Shield of Faith reduces by 2d6 + [Mod], on him too, fires in 82% of rounds and is worth 66 points a turn; Lucas's target is about 15, and a Reaction should fire in about half the rounds. A Reaction "you or an ally" gets spent on himself: allies only (the Glossary's "ally" already excludes him).
+
+> **Shield of Faith** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus]
+> *You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.*
+> **Interrupt:** An enemy's [Strike] Action would damage an ally within 5 squares of you.
+> That damage is reduced by 1 + your Power Modifier, and the enemy is Taunted by you (1 round).
+
+```
+Damage reduced by 3 ........................... 36 each time   [SIM: 1 Health = 12]
+Taunted by you (1 round) ...................... 1 to 3 each time   [SIM: the rider table]
+x it fires in about half the rounds ........... [judgment: Rebuke's same trigger fired in 66% of rounds; allies only and one Reaction AP: about 50%]
+--- Total: about 19 to 20 a turn, of 10 to 15: a little over
+    With "reduced by your Power Modifier" (2): about 13 to 14: on
+```
+
+**Analysis.**
+- **The decision it gives:** which hit. He has one Reaction AP a round; a second Shield needs an AP he kept from his turn (and an AP he keeps and doesn't use becomes Guard 2 for himself). So "do I hold an AP back" is his real choice every turn.
+- **The enemy's choice after it:** Taunted, its Actions against anyone but him take a Bane for a round. Hit the Paladin (AD 14), or hit his ally worse.
+- **With Judge:** on the creature he Judged, its first hit a round on an ally is 2 smaller, and the Shield takes 3 more: a Standard's Basic attack (3.5) is gone, its Special (4 + 1d6) is cut by two thirds.
+- **With Smite:** if he spent his Reaction AP on Smite, there is no Shield that round. That is Smite's cost.
+- **It shaves, it doesn't erase**, except for small hits; it has a number the table hears; it needs no roll.
+- **Rules it touches:** none new. "Would damage ... before the damage" is a defined moment; Taunted is Chapter 8's.
+- **Siblings:** today's Shield of Faith (2d6 + [Mod]); Lucas's draft of 2026-11-14 (the enemy chooses: half damage, or Taunted and the Paladin Empowered): this is that draft's two halves made into one certain effect, so the GM never picks the cheap one.
+- **Complexity:** one Version, 19 words, one condition, no conditional.
+- **Table feel:** "minus 3, and it's Taunted" on the GM's turn: quick, and it changes what the monster does next.
+
+**For Lucas to choose:** 1 + Power Modifier (3, about 20 a turn) or the Power Modifier (2, about 14); "an enemy's [Strike] Action" (not areas or Saves) or any damage; Taunted as the rider, or none.
+
+**Lucas's answer:**
