@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: dd657ff 2026-11-14 Class cards: each Tier's line holds its whole result; a Tier 3 visibly beats a Tier 2; Halting Strike revised; the choices rule in CLAUDE.md
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 985e9dc 2026-11-14 Paladin: Binding Light decided (the Hallmark Strike); Smite's Tier 3 rolls one more die; Lay On Hands proposed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (158 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (144 KB)
+- open-design-items.md (146 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -55,7 +55,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (12 KB)
-- design-paladin-redesign.md (44 KB)
+- design-paladin-redesign.md (47 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

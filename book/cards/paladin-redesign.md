@@ -291,7 +291,7 @@ Damage 3.5 / 13.7 / 18.6: 38 points [judgment, computed]; with the pin, 43 to 53
 
 Smite at 4 dice on the creature he Judged: 21 / 32 / 41, average 31: 104 points; with the Reaction AP 122 [judgment, computed].
 
-## Decision 5: the Help Hallmark, Lay On Hands (PROPOSED, waiting for Lucas)
+## Decision 5: the Help Hallmark, Lay On Hands (PROPOSED; revised after Lucas's notes, the card at the end of this section)
 
 **Research and rules first.** Guard doesn't stack (the higher value), it ends with the encounter, and reduced damage comes before it (Chapter 4): so Guard is given before the hit and can't snowball. Temporary hit points are rated at about two thirds of healing, more on the ally about to be hit. A secondary healer is for the emergency and must not cost his whole turn. In Draw Steel a dying hero can't recover alone: someone else's action is the way back up; in our rules a Down creature can't use Steel Yourself, but another's Action can let it use a Rally Point. Lucas: Rally Points for allies are "more of a cleric thing", some but not much.
 
@@ -323,5 +323,33 @@ Smite at 4 dice on the creature he Judged: 21 / 32 / 41, average 31: 104 points;
 - **Table feel:** quick; a number goes on the ally's token. The risk: Guard that is never hit feels like a wasted AP.
 
 **For Lucas to choose:** Guard 2 + Power Modifier (4), or a die (1d6 + Power Modifier); whether the 2 AP use stays, given "not too much" Rally; Reach, or 5 squares.
+
+**Lucas's notes (2026-11-14), applied:**
+1. **Flat Guard.** "It might need to increase by Stages. Lets not do that yet but keep in the notes" (noted in the rules backlog for the Stages work).
+2. **The 2 AP use stays**, written in full: "The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point."
+3. **Not touch only:** 5 squares, with a **Setup** that brings him to the ally ("Setup is underused so I feel it could fit here"). Claude agreed and wrote it on Charge's wording (a straight line, stop where the target is within Reach), so the book has one way to say it.
+4. **"A willing creature other than yourself" is long: is a general rule needed?** It exists already (found in the Glossary): **"Ally: A creature on your side. You are never your own ally."** So the Target line is "One willing ally".
+
+**From the rules and the research (no new search):** a move bundled into an Action is strong because it saves the move's AP (Pathfinder 2e's Sudden Charge; our note on "Setup: Advance 3": about 10, on the turns he had to move). With the Advance in one piece it is also a second movement in a turn. It is an Advance, so Reactions that answer movement can fire on it (an Evade wouldn't), and by the Advance rule no Interact fits inside a Setup's Advance. The Setup makes it a Compression as well as a Help ("the touch as you pass" was the charter's own example).
+
+> **Lay On Hands** · Paladin Hallmark Action · Round · [Divine, Focus, Move] · Distance: 5 sq. · Target: One willing ally
+> *You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.*
+> **Setup:** You Advance in a straight line toward the target and stop on the first square from which it is within your Reach.
+> **1 AP:** The target gains Guard equal to 2 + your Power Modifier.
+> **2 AP:** The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point.
+
+```
+1 AP: Guard 4 ................................ 17 to 24   [SIM: 6 a point; about a third never hit: judgment]
+      Setup: an Advance of up to 5 toward the ally  about 6   [not priced: an AP saved is 12 to 25, on about half his turns; suggested 5 to 10]
+--- 1 AP: 23 to 30 of 25: on
+2 AP: the same, and 1 Rally Point (the ally's) . 5 [Lucas's rate]; on a Down ally: not priced (the emergency)
+--- 2 AP: about 35 of 50 on paper: under, except when someone is Down
+```
+
+**What the Setup changes.**
+- **He goes where the hit is coming.** After it he stands next to the ally he shielded: the Paladin's body ends up between, which is the brief, and his Speed +0 stops mattering for this.
+- **It can also pull him off a line he was holding**, and it is a real Advance: an enemy's movement Reaction can answer it. That is a decision, not a flaw.
+- **It needs the [Move] trait** (as Charge has): Immobilized or Prone, he can't use it. For Lucas: allow it without the Setup on an ally already within Reach? (Claude's default: yes, a Setup that moves 0 squares is still legal, as when he is already adjacent.)
+- **A straight line** means a wall or a creature in the way stops it (Charge's rule: an unwilling creature's space is Difficult Terrain, and the movement ends in the last legal square). If he ends without the ally in Reach, the Action has no effect: the same as a Charge that falls short.
 
 **Lucas's answer:**
