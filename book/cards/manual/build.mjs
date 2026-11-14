@@ -17,6 +17,6 @@ for (const f of ["paladin.json", "archer.json", "basic-actions.json"]) {
 }
 const audit = JSON.parse(rd(path.join(CARDS, "builder", "audit.json")));
 const data = { generated: new Date().toISOString().slice(0, 10), audit, cards };
-const page = rd(path.join(HERE, "template.html")).replace("/*@@DATA@@*/", () => `const DATA = ${JSON.stringify(data).replace(/<\//g, "<\\/")};`);
+const page = rd(path.join(HERE, "template.html")).replace("/*@@DATA@@*/", () => `const DATA = ${JSON.stringify(data).replace(/<\//g, "<\\/")};`).replace("/*@@BUDGET@@*/", () => rd(path.join(HERE, "budget.js")).replace(/^if \(typeof module.*$/m, ""));
 fs.writeFileSync(path.join(HERE, "manual-builder.html"), page);
 console.log(`manual-builder.html: ${Math.round(page.length / 1024)} KB (${cards.length} cards, ${audit.entries.length} audit entries)`);

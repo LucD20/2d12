@@ -1,0 +1,18 @@
+// Checks the Card Workbench's reading: node book/cards/manual/test.mjs (prints "ok" lines; exits 1 on a failure)
+import { createRequire } from "node:module";
+const { makeBudget } = createRequire(import.meta.url)("./budget.js"), B = makeBudget();
+let bad = 0; const ok = (c, t) => { console.log(`${c ? "ok  " : "FAIL"} ${t}`); if (!c) bad++; };
+const card = (fx, o = {}) => ({ frequency: "Round", rx: "", text: "", ...o }), ver = (fx, ap = 1) => ({ ap: String(ap), tiers: ["", "", ""], critical: "", effects: fx });
+const P = (fx, o, ap, b = "Paladin (Lay On Hands)") => B.price(card(fx, o), ver(fx, ap), b);
+let r = P("The target can use 1 Rally Point, healing 1d6 + your Power Modifier more.", {}, 2);
+ok(r.items.length === 2 && r.items[0].pts === 0 && Math.abs(r.items[1].pts - 5.5 * 12) < 1e-9, `Lay On Hands 2: a spent Rally Point 0, healing 1d6 + pow (2) = 5.5 Health = 66 points; total ${r.total} of ${r.budget}`);
+r = P("The target heals twice what 1 Rally Point would heal.", {}, 2); ok(r.items.length === 1 && r.items[0].pts === 2 * 9 * 12, `"heals twice what 1 Rally Point would heal": 2 Rally Points' heal, not spent = ${r.items[0]?.pts}`);
+r = P("You gain 2 free Rally Points.", {}, 1); ok(r.items.length === 1 && r.items[0].pts === 216, `"2 free Rally Points": ${r.items[0]?.pts}`);
+r = P("Evade 2, then make a Weapon Attack.", {}, 2, "Archer (Rolling Shot)"); ok(r.items[0]?.pts === 30, `Evade 2 on an Archer: ${r.items[0]?.pts}`);
+r = P("Evade 1.", {}, 1); ok(r.items[0]?.pts === 0, "Evade 1 on a Paladin: 0 (with its note)");
+r = P("'healing 2d6 + body' to one ally", {}, 2); ok(Math.abs(r.items[0]?.pts - 9 * 12) < 1e-9, `between quotes too: 'healing 2d6 + body' = 9 Health = ${r.items[0]?.pts}`);
+r = P("allies in it heal 1d4 at the start of each of their turns.", {}, 2); ok(Math.abs(r.items[0]?.pts - 2.5 * 12) < 1e-9, `"heal 1d4 at the start…" reads 1d4 only (${r.items[0]?.what})`);
+r = P("heals 3d6 + [Mod]", {}, 3); ok(Math.abs(r.items[0]?.pts - 12.5 * 12) < 1e-9, `[Mod] reads as the Power Modifier: ${r.items[0]?.what}`);
+r = B.price(card("", { rx: "Interrupt", frequency: "Turn" }), ver("The ally heals 1d8.", 1), "Paladin (Lay On Hands)"); ok(Math.abs(r.total - 4.5 * 12 * 0.5) < 1e-9 && r.budget === 12.5, `a Reaction: its items × 0.5 (fires half the rounds) = ${r.total} against 12.5`);
+r = P("", { frequency: "Encounter" }, 2); ok(r.budget === 100, "an Encounter 2 AP Action should cost 100");
+console.log(bad ? `\n${bad} failed` : "\nall ok"); process.exit(bad ? 1 : 0);
