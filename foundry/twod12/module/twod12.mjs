@@ -2,6 +2,7 @@ import { registerAuraHooks } from "./aura.mjs";
 import { registerHazardHooks, registerHazardBehavior } from "./hazard.mjs";
 import { registerDownHooks } from "./down.mjs";
 import { registerConditionRules } from "./conditions.mjs";   // v0.0.314 (pack AU): Frightened, Dazed, Bleed, Grabbed
+import { statusName } from "./condrules.mjs";   // v0.0.386 (pack Advance): the bleed status is shown as Lingering
 import { registerZoneHooks } from "./zone.mjs";   // v0.0.261 (Consecrated Ground)
 import { markHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot)
 import { rxRender, rxClick, registerReactionSettings, registerMomentHooks, closeStale } from "./moment.mjs";   // v0.0.272 (pack RX): the Reactions message
@@ -292,7 +293,7 @@ Hooks.once("init", () => {
     ["staggered", "icons/svg/paralysis.svg"],
     ["taunted", "icons/svg/target.svg"],
     ["dead", "icons/svg/skull.svg"]
-  ].map(([id, img]) => ({ id, name: id[0].toUpperCase() + id.slice(1), img }));
+  ].map(([id, img]) => ({ id, name: statusName(id), img }));   // v0.0.386: "bleed" shows as Lingering
   // v0.0.314: Blinded took Foundry's blind status; v0.0.316 (Lucas: the Hearing ripple went with it): it is the system's own status, and the sight
   // gate (sightgate.mjs) and the Senses (senses.mjs perceive) read it, so only Sight is gone
 });

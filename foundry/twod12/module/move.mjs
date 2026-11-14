@@ -18,6 +18,7 @@ import { coverFromPoint } from "./cover.mjs";
 import { hazardIn } from "./hazard.mjs";
 import { steadinessOf } from "./defense.mjs";
 import { newMoveAction } from "./moveseq.mjs";   // v0.0.274
+import { duringAdvance } from "./roundrules.mjs";   // v0.0.386 (pack Advance): an Advance is one piece
 import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 import { effectOff, seesOrigin } from "./escalation.mjs";
 import { allEffects } from "./passives.mjs";
@@ -240,7 +241,8 @@ export function immobilizedDc(actor) {
 /* ------------------------------------------------------------------ */
 /* Movement tracking                                                   */
 /* ------------------------------------------------------------------ */
-/** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each, they can be split). */
+/** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each). v0.0.386 (book, Ch. 3, Advance): an Advance is one
+ *  piece: several drags in a row are the same Advance, but another Action ends it and its squares left are lost (otherActionDuringMove). */
 export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = "" } = {}) {
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
   let evade = num(c.getFlag(F, "evadeMove")), free = num(c.getFlag(F, "freeMove")), left = num(c.getFlag(F, "moveLeft"));
@@ -256,7 +258,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
     else { while (need > left + 1e-9) { left += walk; spent++; } left -= need; }
   }
   if (spent && !useEvade) newMoveAction(c.id);   // v0.0.274: a drag that spends AP is a new Advance (a new Move Action for the Reactions); before any await
-  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(useEvade > 0 && evade <= 0 ? { ...unset(`flags.${F}.ignoreTerrain`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
+  await c.update({ ...(spent && !useEvade ? { [`flags.${F}.advance`]: { own: true, interacts: 0 } } : {}), [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(useEvade > 0 && evade <= 0 ? { ...unset(`flags.${F}.ignoreTerrain`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});
@@ -500,6 +502,9 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (!inCombat) { await looseMove(token, n, kind, cfg); return true; }
   const key = kind === "evade" ? "evadeMove" : "freeMove";
   if (kind !== "evade") newMoveAction(c.id);   // v0.0.274: a Move Action's movement (Advance, Charge, Crawl): a new one for the Reactions
+  // v0.0.386 (pack Advance): which movement this is, for the one Interact an Advance allows: own = the Advance Action used on its own (not a
+  // Linked or Setup Advance, a Crawl or a Charge: roundrules.mjs advanceAllowsInteract)
+  if (kind !== "evade") await c.setFlag(F, "advance", { own: !!cfg.ownAdvance, interacts: 0 });
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
@@ -635,6 +640,31 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
   on("combatTurnChange", () => finish(false));
   on("deleteCombat", () => finish(false));
 }
+
+/**
+ * v0.0.386 (pack Advance; book, Ch. 3, Advance: "An Advance is one piece"): a creature is about to use another Action while squares of an Advance
+ * are left (a card's free Advance or the Speed left of a drag's Advance). The rule is roundrules.mjs duringAdvance: the one Interact of an Advance
+ * Action keeps the movement going (it is counted); anything else ends it and the squares left are lost. A Reaction, an Evade (spendAP ends it)
+ * and a Charge under way (its own flow) are not touched. Returns "none" | "keeps" | "ends".
+ */
+export async function otherActionDuringMove(c, { interact = false, reaction = false } = {}) {
+  if (!c || reaction || c.getFlag(F, "charge")) return "none";
+  const left = num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "moveLeft"));
+  if (left <= 0) return "none";
+  const st = c.getFlag(F, "advance") ?? {};
+  if (duringAdvance({ interact, reaction }, { how: "advance", own: !!st.own, interacts: st.interacts }) === "keeps") {
+    if (interact) await c.setFlag(F, "advance", { own: !!st.own, interacts: (Math.trunc(Number(st.interacts)) || 0) + 1 });
+    return "keeps";
+  }
+  if (moveBar?.c?.id === c.id) await moveBar.finish(true);   // its line is completed with the squares it moved
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.moveLeft`]: 0, ...unset(`flags.${F}.advance`), ...unset(`flags.${F}.ignoreTerrain`) });
+  clearRange();
+  const sq = Math.round(left * 100) / 100;
+  ui.notifications.info(`${c.name}: the Advance ended, ${sq} square${sq === 1 ? "" : "s"} not used (an Advance is one piece: another Action ends it).`);
+  return "ends";
+}
+/** v0.0.386: the same, for an Action that pays no AP (a Linked Action, a 0 AP Action): by actor. */
+export const otherActionDuringMoveOf = (actor, opts = {}) => (game.combat?.started ? otherActionDuringMove(combatantOf(actor), opts) : "none");
 
 /** v0.0.200: another Action is about to be used: a movement under way writes its Turn Log line first (it goes on tracking its squares). */
 export async function closeMoveLine(c) {

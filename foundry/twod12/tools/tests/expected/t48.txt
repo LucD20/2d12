@@ -6,4 +6,4 @@ tokens: B:1d4:Ho | M:1d4:Ho | B:At:Sl | B:At:Sl | B:1d6:Co | C:1d6: | B:2d6:Fi
 @Damage[1d6[mind,holy]] and @Damage[2d4[body,fire]] and @Save[appeal|t1:1d6[mind,psychic]|t2:1d4[mind,psychic]|t3:0]
 weapon: Fi ranged 0
 report: Paladin: turn 0, round 7, total 17, per turn 8.5, per round 8.5 | Skeleton: turn 3, round 3, total 7, per turn 3.5, per round 3.5
-basic: Weapon Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Regrip, Release, Stand, Break Free, Charge, Leaning, Fists, Relocate, Trip, Shove, Haul, Opportunity Attack | Charge req: You have at least Speed 3. | Weapon Attack effects: ""
+basic: Weapon Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Regrip, Release, Stand, Break Free, Charge, Leaning, Fists, Relocate, Trip, Shove, Haul, Opportunity Attack, Shake Off | Charge req: You have at least Speed 3. | Weapon Attack effects: ""

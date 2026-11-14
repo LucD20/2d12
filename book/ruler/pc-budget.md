@@ -61,8 +61,8 @@ The plain PC's Weapon Attacks carry the rider for free. **On an Action** is what
 | Slowed 1 | 7.0 | 9.8 | 11.7 | 5.6 |
 | Dazed 1 | 11.3 | 15.4 | 19.9 | 5.6 |
 | Prone | 7.0 | 8.7 | 11.4 | 5.8 |
-| Bleed 1d4 | 0.1 | 1.2 | 0.5 | 5.6 |
-| Bleed 1d6 | 0.3 | 2.2 | 1.8 | 5.6 |
+| Lingering 1d4 | 0.1 | 1.2 | 0.5 | 5.6 |
+| Lingering 1d6 | 0.3 | 2.2 | 1.8 | 5.6 |
 | Slowed 2 | 12.9 | 19.8 | 25.6 | 5.6 |
 
 The plain PC makes 2.5 attacks a turn in the melee seat and 2.9 in the ranged one (it moves, and the fight ends).

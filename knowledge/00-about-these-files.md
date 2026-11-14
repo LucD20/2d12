@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: c100b51 2026-11-14 knowledge: refresh
+Built by tools/knowledge.py on 2026-11-14 from the repository at: e3413a6 2026-11-14 Bleed becomes Lingering, removed by its own Basic Action Shake Off (Lucas); the Paladin's brief for the redesign, in his words
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,12 +15,12 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (157 KB)
+- HANDOFF.md (158 KB)
 - MASTER-PLAN.md (39 KB)
-- open-design-items.md (135 KB)
+- open-design-items.md (130 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
-- rules-03-movement.md (39 KB)
+- rules-03-movement.md (40 KB)
 - rules-04-health.md (14 KB)
 - rules-05-characters.md (8 KB)
 - rules-06-basic-actions.md (0 KB)

@@ -33,9 +33,9 @@ log("yardstick");
 const CONDS = [
   ["mild", "Hindered (EoT)"], ["mild", "Taunted"], ["mild", "Staggered (EoT)"], ["mild", "Frightened (EoT)"], ["mild", "Pressure Bane (next roll)"], ["mild", "Doomed (next roll)"],
   ["moderate", "Immobilized"], ["moderate", "Immobilized (EoT)"], ["moderate", "Vulnerable 1"], ["moderate", "Slowed 1"], ["moderate", "Dazed 1"], ["moderate", "Blinded (EoT)"], ["moderate", "Vulnerable 2"],
-  ["severe", "Bleed 1"], ["severe", "Prone"],
-  ["extreme", "Bleed 2"], ["extreme", "Slowed 2"], ["extreme", "Dazed 2"], ["extreme", "Bleed 1d4"],
-  ["beyond", "Bleed 1d6"], ["beyond", "Bleed 2d6"],
+  ["severe", "Lingering 1"], ["severe", "Prone"],
+  ["extreme", "Lingering 2"], ["extreme", "Slowed 2"], ["extreme", "Dazed 2"], ["extreme", "Lingering 1d4"],
+  ["beyond", "Lingering 1d6"], ["beyond", "Lingering 2d6"],
 ];
 const both = rs => ({ acts: [{ name: "Basic", ap: 1, pts: 25, riders: free(rs) }, { name: "Special", ap: 2, freq: "round", pts: 55, riders: free(rs) }] });
 const carrier = rs => ({ acts: [{ name: "RBasic", ap: 1, pts: 25, riders: free(rs) }, { name: "RSpecial", ap: 2, freq: "round", pts: 55, riders: free(rs) }] });
@@ -56,7 +56,7 @@ for (const [sev, eff] of CONDS) {
   log(eff);
 }
 const groupMean = g => mean(CONDS.filter(c => c[0] === g).map(c => CW[c[1]].onAct));
-out.push(`\nMean measured price on an Action by group: Mild ${f1(groupMean("mild"))} (priced ${PR.mild}), Moderate ${f1(groupMean("moderate"))} (${PR.moderate}), Severe ${f1(groupMean("severe"))} (${PR.severe}), Extreme ${f1(groupMean("extreme"))} (${PR.extreme}); Bleed 1d6 ${f1(CW["Bleed 1d6"].onAct)}, Bleed 2d6 ${f1(CW["Bleed 2d6"].onAct)}. One measured price is good to about ±1.5 points.
+out.push(`\nMean measured price on an Action by group: Mild ${f1(groupMean("mild"))} (priced ${PR.mild}), Moderate ${f1(groupMean("moderate"))} (${PR.moderate}), Severe ${f1(groupMean("severe"))} (${PR.severe}), Extreme ${f1(groupMean("extreme"))} (${PR.extreme}); Lingering 1d6 ${f1(CW["Lingering 1d6"].onAct)}, Lingering 2d6 ${f1(CW["Lingering 2d6"].onAct)}. One measured price is good to about ±1.5 points.
 `);
 
 /* ---------------------------------------------------------------- 3. placement */

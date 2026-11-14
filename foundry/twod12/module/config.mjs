@@ -158,7 +158,7 @@ export const TWOD12 = {
   coverLevels: { low: "Low", medium: "Medium", high: "High" },   // v0.0.266 (Lucas, Aim): the "Ignores cover" setting's levels
   // v0.0.301 (PACK BB; book Ch. 1, Named Boons and Banes): the names that carry a limit of 2 (none: they always add up)
   bbNames: { "": "no name", field: "Field", pressure: "Pressure", support: "Support" },
-  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Bleed (damage each turn)", resist: "Resist, Weak or Immune", freqmore: "More uses of a Frequency", move: "Movement limit", encstart: "Effect each encounter" },
+  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Lingering (damage each turn)", resist: "Resist, Weak or Immune", freqmore: "More uses of a Frequency", move: "Movement limit", encstart: "Effect each encounter" },
   // v0.0.314 (pack AU): a Boons and Banes setting can count only against creatures other than the effect's origin (Taunted), or only against it
   vsOriginChoices: { "": "against any creature", not: "only against creatures other than its origin", only: "only against its origin" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
@@ -175,7 +175,7 @@ export const TWOD12 = {
     { key: "attack", label: "Attack", names: ["Weapon Attack", "Charge", "Fists", "Reload"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
     { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate"] },
-    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Regrip", "Release", "Leaning"] }
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Shake Off", "Regrip", "Release", "Leaning"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"

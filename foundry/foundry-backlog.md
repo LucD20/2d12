@@ -1,9 +1,23 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.385**. Tests: `node tools/tests/run.mjs` (250 tests, see the README; the next new test is t253). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.386**. Tests: `node tools/tests/run.mjs` (250 tests, see the README; the next new test is t253). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
+
+## PACK ADVANCE (v0.0.386, 2026-11-14, branch `pack-advance`; the book first: rules-backlog.md "PACK ADVANCE: APPLIED"; NOT tested by Lucas)
+What changed: the changelog (docs/reference.md, v0.0.386). **I can't run Foundry: nothing here was tried in it.** The rule is tested as a pure function (t246) and the wiring by reading the code. The checklist:
+- [ ] **An Advance ends when you use another Action.** In combat, use Advance, drag 2 squares, then make a Weapon Attack: a notice says the Advance ended and how many squares were not used; the strip's "N sq" is gone; the Turn Breakdown's Advance line closes with 2 squares; dragging again pays a new Advance.
+- [ ] **The same without the Advance Action:** drag the token (the drag pays 1 AP), then use any Action: the Speed left of that Advance is lost. Two drags in a row with nothing between are still one Advance.
+- [ ] **The one Interact.** Advance, drag 2, use Interact (the Basic Action), drag the rest: the movement goes on and the Interact costs 1 AP. The same with a draw, stow or pick up from the sheet's hand tiles. A **second** Interact in the same Advance ends it.
+- [ ] **Not in other movement:** an Interact during a card's free Advance (a Linked or Setup Advance, such as Cut Through's) or a Crawl ends that movement. An Evade ends at another Action as before. A Charge is as before.
+- [ ] **A Reaction of yours mid-Advance** (if one comes up) leaves your squares.
+- [ ] **A Setup with movement** used while squares of an Advance are left: the Advance ends first, the Setup gives only its own squares.
+- [ ] **Lingering.** The Conditions compendium has Lingering and no Bleed; the token HUD's drop of blood says Lingering and opens the "Lingering" window; the effect is named "Lingering [V] 1 (Bo/In)"; its damage card at the end of the turn says "Ends with Shake Off (1 AP)..."; Final Verdict's text reads "gains Lingering [R] 1d6 Ho (Mi/Ap)" with Lingering as the button, and the button applies it.
+- [ ] **Shake Off** is in every creature's Basic Actions (Utility, after Interact) after the world loads; using it costs 1 AP and posts its card (text: the Save and the removal are by hand).
+- [ ] **Advance and Interact** read as the book; Advance still starts its movement with the banner (no card with a button).
+- **Not tried in Foundry (read from the code):** whether the notice is too loud when two Advances are used back to back with squares left (it also fires then); the Turn Breakdown's line when the Advance ends by another Action (`moveBar.finish`), and its live line staying open across the Interact; a world's own Effect still named "Bleed" (it should still answer `@Condition[bleed]` and take the bleed status); a GM moving an NPC whose movement another client tracks (the movement's line is kept by the client that moved the token).
+- **Left:** Shake Off's Save by itself (a button on the Lingering effect: roll the Save, half at Tier 2, remove at Tier 3); two Advances dragged in a row still pool their squares (as before: the first one's Speed left is used before the second is paid); the old plain messages and DialogV2 confirms in `spendAP` and `down.mjs offerWake` were not touched (CL).
 
 ## STYLE: bringing the system to the settled look (audit 2026-11-12; STYLE-1 built in v0.0.369 to v0.0.372; STYLE-2 built in v0.0.373 to v0.0.376)
 The audit and a proposed order: `foundry/mockups/style-audit.md`. The direction: CLAUDE.md, "The design's direction".

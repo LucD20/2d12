@@ -81,7 +81,7 @@ function settingSentenceOnly(x) {
     case "bleed": {   // v0.0.314 (pack AU)
       const attrs = [...(x.attrs ?? [])].map(a => TWOD12.attributes[a] ?? a).join(" or ") || "Body or Instinct";
       const pool = x.dmgPool === "M" ? "Resolve" : (x.dmgPool === "B" ? "Vigor" : "Vigor or Resolve by the Attributes");
-      return `At the end of each of its turns, the creature takes <b>${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage (${pool}); Interact and a Save with the better of ${attrs} against DC ${Math.max(0, Number(x.bleedDc) || 13)} end it.`;
+      return `At the end of each of its turns, the creature takes <b>${esc(x.dmg || "?")}${x.dmgSub ? " " + esc(TWOD12.subtypes[x.dmgSub]) : ""}</b> damage (${pool}); Shake Off (1 AP) and a Save with the better of ${attrs} against DC ${Math.max(0, Number(x.bleedDc) || 13)} end it.`;
     }
     case "resist": {   // v0.0.320 (pack AU part 2)
       const sub = TWOD12.subtypes[x.dmgSub] || "?";

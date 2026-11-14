@@ -106,7 +106,7 @@ export function convertEffects(text) {
   s = s.replace(/(?<!\b(?:no longer|not|a|an|the|any|every|while|being)\s)\b(Enfeebled|Empowered|Vulnerable)\s+(\d+)\b(?:\s*\((EoT|\d+\s*rounds?)\))?(?=\s*(?:[.;,()]|and\b|$))/g, (m, c, v, d) => `@Condition[${c.toLowerCase()}|value:${v}${d ? (/eot/i.test(d) ? "|eot" : `|rounds:${parseInt(d, 10)}`) : ""}]`);
   // v0.0.314 (pack AU, the conditions as items): the conditions pass's conditions are buttons too. "Frightened of you for 1 round",
   // "Frightened of the Grave Wisp (EoT)", "Taunted by you (EoT)": the source is the card's user (the effect's origin). v0.0.315 (Lucas): only the
-  // condition's name is the button ("Frightened" of you for 1 round; "Dazed 1"; "Bleed" [R] 1d6 Ho (Mi/Ap)): the rest stays text.
+  // condition's name is the button ("Frightened" of you for 1 round; "Dazed 1"; "Lingering" [R] 1d6 Ho (Mi/Ap)): the rest stays text.
   {
     const DUR = "(?:\\s+for\\s+(\\d+)\\s+rounds?|\\s*\\((EoT|\\d+\\s*rounds?)\\))?";
     const durOf = (n, p) => (n ? `|rounds:${n}` : (p ? (/eot/i.test(p) ? "|eot" : `|rounds:${parseInt(p, 10)}`) : ""));
@@ -117,9 +117,10 @@ export function convertEffects(text) {
     // v0.0.336 (Lucas, Marksman's Shot: "Blinded (EoT) fully as a button, as Vulnerable does"): a duration in parentheses is part of the button
     s = s.replace(new RegExp(`${NOT}\\b(Blinded|Staggered|Grabbed)${DUR}${END}`, "g"), (m, c, n, p) => { const lab = p ? m.match(/^\w+\s*\([^)]*\)/)[0] : c; return `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${lab}}${m.slice(lab.length)}`; });
     s = s.replace(new RegExp(`${NOT}\\b(Dazed|Sickened)\\s+(\\d+)${DUR}${END}`, "g"), (m, c, v, n, p) => { const nm = m.match(/^\w+\s+\d+/)[0]; return `@Condition[${c.toLowerCase()}|value:${v}${durOf(n, p)}]{${nm}}${m.slice(nm.length)}`; });
-    // "Bleed [R] 1d6 Ho (Mi/Ap)", "Bleed 2 (Bo/In; DC 15)": the card's own dice, pool, type, Attributes and DC
-    s = s.replace(/\bBleed\s+(?:\[([VRBM])\]\s*)?(\d+d\d+(?:[+-]\d+)?|\d+)(?:\s+([A-Z][a-z]))?\s*\(((?:Bo|Mi|Ap|In)(?:\/(?:Bo|Mi|Ap|In))*)(?:;\s*DC\s*(\d+))?\)/g,
-      (m, pool, dmg, sub, attrs, dc) => `@Condition[bleed|dmg:${dmg}${pool ? `|pool:${pool}` : ""}${sub ? `|sub:${sub}` : ""}|attrs:${attrs.toLowerCase()}${dc ? `|dc:${dc}` : ""}]{Bleed}${m.slice(5)}`);
+    // "Lingering [R] 1d6 Ho (Mi/Ap)", "Lingering 2 (Bo/In; DC 15)": the card's own dice, pool, type, Attributes and DC (v0.0.386: the condition's
+    // name since pack Advance; a card that still writes "Bleed" is read the same way and keeps its word; the key stays "bleed")
+    s = s.replace(/\b(Lingering|Bleed)\s+(?:\[([VRBM])\]\s*)?(\d+d\d+(?:[+-]\d+)?|\d+)(?:\s+([A-Z][a-z]))?\s*\(((?:Bo|Mi|Ap|In)(?:\/(?:Bo|Mi|Ap|In))*)(?:;\s*DC\s*(\d+))?\)/g,
+      (m, word, pool, dmg, sub, attrs, dc) => `@Condition[bleed|dmg:${dmg}${pool ? `|pool:${pool}` : ""}${sub ? `|sub:${sub}` : ""}|attrs:${attrs.toLowerCase()}${dc ? `|dc:${dc}` : ""}]{${word}}${m.slice(word.length)}`);
   }
   // v0.0.246 (cards 1, Lucas): "Guard 1d8 + [Mod]" is a Guard button (the chip shows the Modifier as a number on a creature's card); a [[Guard]] link
   // written before the dice becomes the chip (the chip is the Guard). "Guard equal to..." and a bare "Guard" stay words.

@@ -34,18 +34,28 @@ export function reactionsOff(actor) {
   return list.some(e => !e?.disabled && (flagOf(e, "noReactions") || e?.statuses?.has?.("staggered")));
 }
 
-/** Bleed's pool: the one it writes, else Vigor for Body / Instinct and Resolve for Mind / Appeal (both kinds: Vigor). */
+/**
+ * v0.0.386 (pack Advance; Lucas, 2026-11-14): the condition Bleed is called **Lingering** (it works for any damage: fire, holy, poison). Only the
+ * words changed: the key stays "bleed" (the status id, the setting's type, the flags, @Condition[bleed|...]), so nothing is migrated. A condition's
+ * key from its name or key ("Lingering" and "Bleed" are both "bleed"), for the lookups that go by name.
+ */
+export const COND_KEYS = { lingering: "bleed" };
+export const condKey = name => { const n = String(name ?? "").trim().toLowerCase(); return COND_KEYS[n] ?? n; };
+/** A status's name as it is shown: "bleed" is Lingering; every other one is its id with a capital. */
+export const statusName = id => (id === "bleed" ? "Lingering" : String(id ?? "").replace(/^./, c => c.toUpperCase()));
+
+/** Lingering's pool (the key is still "bleed"): the one it writes, else Vigor for Body / Instinct and Resolve for Mind / Appeal (both kinds: Vigor). */
 export function bleedPool(pool, attrs = []) {
   if (pool === "B" || pool === "M") return pool;
   const a = new Set(attrs ?? []);
   return (a.has("mind") || a.has("appeal")) && !a.has("body") && !a.has("instinct") ? "M" : "B";
 }
 const AB = { body: "Bo", mind: "Mi", appeal: "Ap", instinct: "In" };
-/** "Bleed [R] 1d6 Ho (Mi/Ap)", "Bleed [V] 2 (Bo/In; DC 15)": the book's notation of a Bleed. */
+/** "Lingering [R] 1d6 Ho (Mi/Ap)", "Lingering [V] 2 (Bo/In; DC 15)": the book's notation (it was "Bleed" before v0.0.386). */
 export function bleedText(b) {
   const pool = bleedPool(b?.pool, b?.attrs), attrs = (b?.attrs ?? []).map(a => AB[a] ?? a).join("/") || "Bo/In";
   const dc = Number(b?.dc) && Number(b.dc) !== 13 ? `; DC ${b.dc}` : "";
-  return `Bleed [${pool === "M" ? "R" : "V"}] ${b?.dmg ?? ""}${b?.sub ? ` ${b.sub}` : ""} (${attrs}${dc})`;
+  return `Lingering [${pool === "M" ? "R" : "V"}] ${b?.dmg ?? ""}${b?.sub ? ` ${b.sub}` : ""} (${attrs}${dc})`;
 }
 /** The Bleed of an applied effect: the card's own values (the flag "bleed", from @Condition[bleed|dmg:...]) over the condition's setting. */
 export function bleedOf(e) {

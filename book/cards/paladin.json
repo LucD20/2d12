@@ -664,7 +664,7 @@
   {
    "name": "Final Verdict",
    "category": "Paladin Apex",
-   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the wrath Apex with the vocabulary: Pushed 1 on every hit (a Push's value is a maximum: 0 or 1, the Paladin's choice; the ruler found a forced Push on every hit costs a melee Paladin its next turn), Prone for a Bloodied target, Bleed [R] 1d6 Ho for a Strained one (Chapter 8); Self: you decide whether the Emanation affects you (Areas).",
+   "_note": "Pack R-classes, part 3 (Lucas, 2026-11-04): the wrath Apex with the vocabulary: Pushed 1 on every hit (a Push's value is a maximum: 0 or 1, the Paladin's choice; the ruler found a forced Push on every hit costs a melee Paladin its next turn), Prone for a Bloodied target, Lingering [R] 1d6 Ho for a Strained one (Chapter 8; it was called Bleed until 2026-11-14); Self: you decide whether the Emanation affects you (Areas).",
    "flavor": "You name every sin within reach, and the light answers all at once.",
    "traits": [
     "area",
@@ -688,7 +688,7 @@
       "[V] 1[W] + [Mod] + [R] 2d8 Ho",
       "[V] 1[W] + [Mod] + [R] 3d8 Ho"
      ],
-     "effects": "You roll once and compare the result to each target's AD. Each target you hit is Pushed 1 and sheds Bright light in a 1 Emanation for 1 round. A Bloodied target is Prone instead; a Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap).",
+     "effects": "You roll once and compare the result to each target's AD. Each target you hit is Pushed 1 and sheds Bright light in a 1 Emanation for 1 round. A Bloodied target is Prone instead; a Strained target also gains Lingering [R] 1d6 Ho (Mi/Ap).",
      "ruler": "area 1.5"
     }
    ],
@@ -697,7 +697,7 @@
     "folder": "Paladin",
     "level": 1,
     "automation": "silver",
-    "automationNote": "the Push, Prone and Bleed by hand (the light is the template).",
+    "automationNote": "the Push, Prone and Lingering by hand (the light is the template).",
     "areaCfg": {
      "targets": "enemies"
     }

@@ -133,7 +133,7 @@
     "avg": 0.8661666666666665
    },
    {
-    "name": "Bleed 1d4 (Bo/In)",
+    "name": "Lingering 1d4 (Bo/In)",
     "rounds": [
      4.8925,
      4.7935,
@@ -143,7 +143,7 @@
     "avg": 4.8085555555555555
    },
    {
-    "name": "Bleed 2d6 (Bo/In)",
+    "name": "Lingering 2d6 (Bo/In)",
     "rounds": [
      13.593,
      13.768333333333333,

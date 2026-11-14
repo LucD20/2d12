@@ -45,15 +45,19 @@ An Action that lets you move gives a distance, written "Advance 5" or "Evade 2".
 
 Advance is the normal movement, and the Action every creature uses to move. **You only move with an Action that moves you**: Advance, Evade, or another Action that says so (someone else moving you, with Forced Movement or Reposition, is not you moving). An Advance can trigger reactions.
 
-You can split an Advance: move part of it, use other Actions, then move the rest later in the same turn. Movement you don't use is lost at the end of your turn. You can only split the movement of the Advance Action itself. If another Action moves you as part of a sequence (such as Charge), you can't split that movement. For instance, when you Charge, you can't Advance 3, make your Weapon Attack (1A) and then Advance the rest of your movement.
+**An Advance is one piece.** You move once, up to the distance, and the movement you don't use is lost: you can't move part of an Advance, use another Action and move the rest later. Using any other Action ends your Advance. This is true of every movement an Action gives you: an Evade, or the movement of a Charge.
 
-When you split an Advance, it is still one Action. A Reaction that triggers on your movement can fire only once for that Advance, no matter how many segments you move in.
+**The exception is Interact.** During the Advance Action, you can use the [[Chapter 6: Basic Actions|Interact]] Action **once**, at any point of the movement, and then keep moving: you draw a weapon as you run, or open the door in your way. The Interact costs its 1 AP as always, paid when you use it. Only the Advance Action used on its own allows this. You can't Interact during an Advance that is a [[Linked Actions|Linked Action]] ("Advance 5, make a Weapon Attack (1A) and Advance 5 again") or a Setup ("Setup: Advance 3"), during movement that is part of another Action (such as Charge), or during an Evade, unless the card says so.
+
+For instance, Zack has Speed 5 and stands 2 squares from a closed door. He Advances to the door, uses Interact to open it and moves his last 3 squares into the room: one Advance and one Interact, 2 AP. He couldn't make a Weapon Attack at the door and walk on afterward: the attack ends his Advance, and its last 3 squares are lost.
+
+However far you go, an Advance is one Action: a Reaction that triggers on your movement can fire only once for that Advance, and the creature reacting chooses the square (see [[What a Reaction Responds To]]). An Interact in the middle doesn't change this.
 
 ### Evade
 
 Evade is a type of movement that doesn't trigger reactions. You can't Evade into or pass through Difficult Terrain. What an Evade costs is decided by the Action that lets you Evade, such as the [[Chapter 6: Basic Actions|Evade Action]]. The Evade Action doesn't have the Move trait.
 
-You can't split an Evade the way you can split the Advance Action. If an Action lets you Evade 3 and you Evade 1 square, you can't Evade the other 2 squares later for free.
+An Evade is one piece, as an Advance is: if an Action lets you Evade 3 and you Evade 1 square, you can't Evade the other 2 squares later. You can't use Interact during an Evade.
 
 When an Action allows you to Evade, you can use the movement as an Advance instead. By itself this brings no benefit, but it lets a creature move willingly through reactions, or move at all if they are unable to Evade.
 

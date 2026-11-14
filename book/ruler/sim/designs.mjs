@@ -8,7 +8,7 @@ export const FM1 = R("Push 1", "forced"), FM2 = R("Push 2", "moderate");
 export const STANDARDS = [
   { label: "Raider", acts: [{ name: "Shove", ap: 1, riders: [FM1] }, { name: "Hamstring", ap: 2, freq: "round", riders: [R("Prone", "severe")] }] },
   { label: "Hexer", npc: { power: true }, acts: [{ name: "Chill", ap: 1, power: true }, { name: "Dread", ap: 2, freq: "round", power: true, riders: [R("Slowed 1", "moderate")] }] },
-  { label: "Cutter", acts: [{ name: "Slash", ap: 1 }, { name: "Open Vein", ap: 2, freq: "round", riders: [R("Bleed 1d4", "extreme")] }] },
+  { label: "Cutter", acts: [{ name: "Slash", ap: 1 }, { name: "Open Vein", ap: 2, freq: "round", riders: [R("Lingering 1d4", "extreme")] }] },
   { label: "Guard", acts: [{ name: "Bash", ap: 1, riders: [R("Pressure Bane (next roll)", "mild")] }, { name: "Shield Slam", ap: 2, freq: "round", riders: [FM2] }], reaction: { name: "Riposte", cost: 1, trigger: "struck", act: { name: "Riposte" } } },
 ];
 /** The six Roles on the Bestiary's ratings, with what makes each one (the Soldier's Reaction, the Controller's conditions, the Leader's help). */

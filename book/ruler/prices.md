@@ -344,8 +344,8 @@ Measured with the map model (`map.mjs`; README "The map model"): the party of a 
 | Blinded (EoT) | 5.58 | 8.12 | 7.85 | **7.18** | 0.22 | 154% |
 | Frightened (EoT) | 1.08 | 1.78 | 1.66 | **1.51** | 0.11 | 32% |
 | Taunted by the nearest Paladin (1 round) | 0.71 | 1.02 | 0.86 | **0.87** | 0.08 | 19% |
-| Bleed 1d4 (Bo/In) | 4.89 | 4.79 | 4.74 | **4.81** | 0.17 | 103% |
-| Bleed 2d6 (Bo/In) | 13.59 | 13.77 | 13.62 | **13.66** | 0.19 | 293% |
+| Lingering 1d4 (Bo/In) | 4.89 | 4.79 | 4.74 | **4.81** | 0.17 | 103% |
+| Lingering 2d6 (Bo/In) | 13.59 | 13.77 | 13.62 | **13.66** | 0.19 | 293% |
 | Pushed 1 (from the nearest PC) | 0.38 | 1.40 | 1.38 | **1.05** | 0.23 | 23% |
 | Pushed 2 (from the nearest PC) | 0.71 | 1.35 | 0.87 | **0.98** | 0.26 | 21% |
 | Pushed 4 (from the nearest PC) | 2.01 | 1.55 | 1.08 | **1.55** | 0.29 | 33% |

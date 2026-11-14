@@ -10,7 +10,7 @@
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP and can be used only on your turn. |
 | [[Reactions\|**0R**]] | A Reaction that costs no AP. |
 | [[Action Points\|**Action Points (AP)**]] | You regain 4 at the start of your turn, and 1 Reaction AP. The AP you don't spend stay for Reactions and give you Guard. |
-| [[Advance\|**Advance**]] | Normal movement, up to the given distance. It can be split. |
+| [[Advance\|**Advance**]] | Normal movement, up to the given distance, in one piece: what you don't use is lost. During the Advance Action you can Interact once and keep moving. |
 | [[Rules Language\|**Ally**]] | A creature on your side. You are never your own ally. |
 | [[Escalation\|**Apex**]] | A class's big Encounter Action that needs Escalation 6; you choose one at level 4. |
 | [[Areas\|**Area**]] | Where an Action's effect goes, written instead of its Distance. Those Actions have the Area trait: they target everyone they affect, ignoring Senses. |
@@ -20,7 +20,6 @@
 | [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
-| [[Bleed\|**Bleed**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Interact (1 AP) and a Save against DC 13 to end it; healing doesn't. |
 | [[Blinded\|**Blinded**]] | You can't see: heard creatures are Hidden to you (Doomed against them), sight Rolls are Doomed. |
 | [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). No effect by itself: Actions and features use them. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
@@ -66,7 +65,7 @@
 | [[Engaged\|**Engaged**]] | You are adjacent to an enemy and both of you can be Engaged, whatever you perceive. Other rules use it. |
 | [[End of Turn\|**EoT**]] | Until the end of the turn of the affected creature. |
 | [[Escalation\|**Escalation**]] | A PC's adrenaline, a level from 1 to 6, never spent: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough. |
-| [[Evade\|**Evade**]] | Movement that doesn't trigger reactions and can't be split. |
+| [[Evade\|**Evade**]] | Movement that doesn't trigger reactions. One piece, as an Advance, with no Interact during it. |
 | [[Exhausted\|**Exhausted**]] | A condition with a value: less Speed, a penalty on all Rolls, a lower Resolve. |
 | [[Mastery\|**Expert**]] | 8 Mastery with a weapon: once each turn, you draw, stow or regrip it without Interact. |
 | [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical. |
@@ -91,13 +90,14 @@
 | [[Imperiled\|**Imperiled**]] | Barely avoided a Deadly Hazard: all your Rolls are Doomed, Vulnerable 3, safe again at the start of your turn. |
 | [[End of Turn\|**Initiative slot**]] | A position in the turn order. |
 | [[Instances of Damage\|**Instance of damage**]] | One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance. |
-| [[Chapter 6: Basic Actions\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. |
+| [[Chapter 6: Basic Actions\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. It can be used once during an [[Advance]]. |
 | [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. |
 | [[Leaning\|**Leaning**]] | Until the end of your turn: cover is calculated from one of your corners, and your own cover is reduced by 1 level. |
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
 | [[Lethal and Nonlethal\|**Lethal, Nonlethal**]] | The two kinds of damage. Damage is Lethal unless stated. |
 | [[Line\|**Line**]] | An area that starts from your square, aimed at any square, written like Line 10: one square per step, the nearest to the segment; ties take one side, chosen before rolling. |
 | [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the target's space that nothing blocks. |
+| [[Lingering\|**Lingering**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap), of any kind: a wound, fire, poison, holy light. The Shake Off Action (1 AP) and a Save against DC 13 end it; healing doesn't. |
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Weapon Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. Which one holds a weapon changes nothing, unless a feature says so. |
@@ -151,6 +151,7 @@
 | [[Senses\|**Sense**]] | A way to perceive creatures: Sight, Hearing, Heatsight... Your best sense decides if a creature is Clear, Obscured, Hidden or Unsensed to you. |
 | [[Actions\|**Setup**]] | What an Action does before its dice are rolled. |
 | [[Several Targets\|**Several Targets**]] | One roll for every target of an Action, each calculated separately. |
+| [[Chapter 6: Basic Actions\|**Shake Off**]] | The Basic Action (1 AP, Handle) that ends [[Lingering]], on yourself or a creature within Reach: the creature makes the Lingering's Save. It can't be used during an Advance. |
 | [[Shot\|**Shot**]] | A trait: the Action needs a Projectile weapon (a bow, a crossbow). |
 | [[Sickened\|**Sickened**]] | A condition with a value: that many Banes on your Body and Instinct Saves, and you can't swallow anything. |
 | [[Weapon, Power and Signature Modifiers\|**Signature Modifier**]] | The higher of your Weapon Modifier and Power Modifier. Signature Actions roll it. |

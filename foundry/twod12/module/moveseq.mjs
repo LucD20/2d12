@@ -1,5 +1,5 @@
 // v0.0.274 (Lucas: Opportunity Attack fired once a turn): which Move Action a creature's movement belongs to. The book (Chapter 2, Reactions):
-// "You can react only once to the same Action"; an Advance can be split into several drags, but a new Advance is a new Action. move.mjs counts
+// "You can react only once to the same Action"; an Advance can take several drags (it is still one piece: v0.0.386), but a new Advance is a new Action. move.mjs counts
 // a new one when a Move Action grants movement (Advance, Charge, Crawl: not an Evade) and when a drag spends AP (a drag with no Advance first);
 // the Reactions (moment.mjs) offer a movement moment once per Reaction for each Move Action. Kept on the client that moves the token.
 const seq = new Map();

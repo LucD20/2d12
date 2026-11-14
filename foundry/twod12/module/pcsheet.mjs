@@ -461,7 +461,7 @@ export async function applyHandPick(actor, weapons, key, { spendAP, applyRegrip,
     return !!text;
   }
   if ((kind === "stow" || kind === "draw") && w) {
-    if (!(await spendAP(actor, 1, "Interact"))) return false;
+    if (!(await spendAP(actor, 1, "Interact", { basic: "interact" }))) return false;   // v0.0.386: the one Action an Advance allows inside it
     if (kind === "stow") { await w.update(weaponMove("worn")); await say("fa-hand", `<b>Interact</b> (1 AP): ${esc(actor.name)} stows <b>${esc(w.name)}</b>.`); return true; }
     const two = w.system?.traits?.has?.("twohanded") && handSlots(weapons).every(x => x.free), was = weaponWhere(w);
     await w.update(weaponMove(two ? "2h" : "1h", two ? "" : (hand === "off" ? "off" : "main")));

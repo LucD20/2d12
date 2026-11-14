@@ -137,7 +137,7 @@ Deathmark's Boon against the Quarry and its chain shot on a kill are not modeled
 
 ## 7. The ledger: every class card's worth under pack R
 
-Each Action priced as econ.mjs prices the price list (the damage and the effects it can price, against the level 1 Standard, Defense 13), at pack R's exchange rate: 1 AP = 5.8 DE (the baseline turn / 4). **Efficiency** = DE per AP ÷ 5.8; the bands (prices.md): At-will 0.9-1.1, Round and Turn 1-1.3, Encounter 1.4-2, Daily 2-3; a Reaction's worth is per use against 1 AP; a Passive's is the fight measure above against its rung budget (rung 1 0.4-0.6 AP a turn, 2 0.6-0.8, 3 0.8-1). What the ruler can't price is named (Pushes, conditions and Bleed carry the positions prices; "not modeled" otherwise). The same numbers go to `book/ruler/worth.json`, which Foundry prints as a tiny line on each card (tools/cardgen.mjs), for the playtests.
+Each Action priced as econ.mjs prices the price list (the damage and the effects it can price, against the level 1 Standard, Defense 13), at pack R's exchange rate: 1 AP = 5.8 DE (the baseline turn / 4). **Efficiency** = DE per AP ÷ 5.8; the bands (prices.md): At-will 0.9-1.1, Round and Turn 1-1.3, Encounter 1.4-2, Daily 2-3; a Reaction's worth is per use against 1 AP; a Passive's is the fight measure above against its rung budget (rung 1 0.4-0.6 AP a turn, 2 0.6-0.8, 3 0.8-1). What the ruler can't price is named (Pushes, conditions and Lingering carry the positions prices; "not modeled" otherwise). The same numbers go to `book/ruler/worth.json`, which Foundry prints as a tiny line on each card (tools/cardgen.mjs), for the playtests.
 
 | Card | Version | Frequency | DE a use | DE per AP | Efficiency | Verdict | Notes |
 |---|---|---|---:|---:|---:|---|---|

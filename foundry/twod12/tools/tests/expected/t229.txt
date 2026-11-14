@@ -11,6 +11,6 @@ the Save card carries the Version's Effects and chain: true | its damage message
 Rebuke (diamond): ["@Move[pushed|distance:2], and @Condition[frightened|rounds:1]{Frightened} of you for 1 round.","@Move[pushed|distance:1]","No effect."] | after: @Move[pushed|distance:1|t1:2] @Condition[frightened|rounds:1|tier:1]
 Skirmish Shot (diamond): ["","","you can @Move[evade|distance:1]."] | after: @Move[evade|distance:1|tier:3]
 --- the compendium
-Basic Actions: 20 true | Opportunity Attack (v0.0.335, Lucas: adjacent, not the squares you threaten): range 1, threat check false
+Basic Actions: 21 true | Opportunity Attack (v0.0.335, Lucas: adjacent, not the squares you threaten): range 1, threat check false
 Marked Quarry: At the start of each encounter, choose one enemy as your Marked Quarry with this Action. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time.
 Mark Quarry: The targeted creature becomes your Marked Quarry: at the start of an encounter, or as a 0R [Focus] when yours died or went Down. / The targeted creature becomes your Marked Quarry instead of the one you had.

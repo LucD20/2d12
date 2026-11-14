@@ -107,7 +107,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
   const nameOf = c => c.label ?? (c.label = c.build ? `${c.build.name} ${pcs.indexOf(c) + 1}` : `${c.name} ${foes.indexOf(c) + 1}`), at = c => (c?.pos ? [c.pos.x, c.pos.y] : null), trail = c => c.walked?.map(q => [q.x, q.y]);
   // Each event also carries `ch`: the creatures whose state changed since the last event ({ i: its place in the start list, dmg, pos, out, guard, esc,
   // cond }), so a viewer follows Health, Guard, places (Forced Movement too) and conditions without knowing any rule.
-  const seen = new Map(), condOf = c => { const k = c.cond ?? {}; return [k.prone && "Prone", k.hindered && "Hindered", k.immob && "Immobilized", k.slowed && `Slowed ${k.slowed}`, k.dazed && `Dazed ${k.dazed}`, k.staggered && "Staggered", k.blinded && "Blinded", k.frightened && "Frightened", k.bleed && "Bleed", c.vulnerable && `Vulnerable ${c.vulnerable}`, c.taunt && "Taunted"].filter(Boolean).join(", "); };
+  const seen = new Map(), condOf = c => { const k = c.cond ?? {}; return [k.prone && "Prone", k.hindered && "Hindered", k.immob && "Immobilized", k.slowed && `Slowed ${k.slowed}`, k.dazed && `Dazed ${k.dazed}`, k.staggered && "Staggered", k.blinded && "Blinded", k.frightened && "Frightened", k.bleed && "Lingering", c.vulnerable && `Vulnerable ${c.vulnerable}`, c.taunt && "Taunted"].filter(Boolean).join(", "); };
   const snap = c => `${Math.round((c.damage ?? 0) * 10) / 10}|${c.pos ? `${c.pos.x},${c.pos.y}` : ""}|${c.down || c.dead ? 1 : 0}|${Math.round(((c.guard ?? 0) + (c.apGuard ?? 0)) * 10) / 10}|${c.esc ?? 0}|${condOf(c)}`;
   const changes = () => { const out = []; [...pcs, ...foes].forEach((c, i) => { const k = snap(c); if (seen.get(c) !== k) { seen.set(c, k); out.push({ i, dmg: Math.round((c.damage ?? 0) * 10) / 10, pos: at(c), out: !!(c.down || c.dead), guard: Math.round(((c.guard ?? 0) + (c.apGuard ?? 0)) * 10) / 10, esc: c.esc ?? 0, cond: condOf(c) }); } }); return out; };
   const ev = (type, o = {}) => { if (!events) return null; const ch = changes(), e = { round, type, ...o, ...(ch.length ? { ch } : {}) }; events.push(e); return e; };
@@ -202,7 +202,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     for (const p of up()) for (const rx of p.build.reactions ?? []) if (rx.kind === "ready" && p.keptAP >= 1 && !p.cond?.staggered && p.readyRound !== round && (!M || MP.dist(p.pos, f.pos) <= 10)) { p.readyRound = round; spendReact(p); p.st.reactions++; p.readyAP = 1; }   // pack R-classes: Ready Shot (1R, Round): +1 AP on its next turn
     pcHurt(t);
   };
-  /** A PC took damage (a Strike, a Collision, a Bleed from an enemy): Bloodied, Strained, Down, and the Paladin's hook. */
+  /** A PC took damage (a Strike, a Collision, a Lingering from an enemy): Bloodied, Strained, Down, and the Paladin's hook. */
   const pcHurt = t => {
     const wasB = !!t.bloodiedRound, wasD = t.down;
     if (t.damage - (t.mindDamage ?? 0) >= t.build.bodyHealth && !t.bloodiedRound) t.bloodiedRound = round;   // Bloodied: Vigor damage at the Vigor threshold
@@ -217,7 +217,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
     if (/^(push|pull|slide)/.test(n)) return false;
     if (/prone/.test(n)) return c.prone; if (/slowed/.test(n)) return c.slowed > 0; if (/dazed/.test(n)) return c.dazed > 0; if (/staggered/.test(n)) return !!c.staggered;
     if (/blinded/.test(n)) return !!c.blinded; if (/frightened/.test(n)) return !!c.frightened; if (/hindered/.test(n)) return !!c.hindered; if (/immobilized|grabbed/.test(n)) return !!c.immob;
-    if (/vulnerable/.test(n)) return (c.vuln ?? 0) > 0; if (/enfeebled/.test(n)) return (c.enf ?? 0) > 0; if (/taunted/.test(n)) return !!t.taunt; if (/bleed/.test(n)) return !!c.bleed;
+    if (/vulnerable/.test(n)) return (c.vuln ?? 0) > 0; if (/enfeebled/.test(n)) return (c.enf ?? 0) > 0; if (/taunted/.test(n)) return !!t.taunt; if (/lingering|bleed/.test(n)) return !!c.bleed;
     if (/pressure bane/.test(n)) return !!c.nextBane; if (/doomed \(next/.test(n)) return !!c.nextDoomed; return false; };
   /** One rider on a PC: a Forced Movement (with its Collision) or a condition. A condition it already has is wasted (no limit on repeating a rider: Lucas). */
   const riderOn = (f, t, r) => {
@@ -530,7 +530,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         let extra = {};
         if (M) {
           let limit = RULES.ap - (pc.cond.slowed || 0) - (pc.cond.dazed || 0) + (pc.readyAP ?? 0); pc.cond.dazed = 0; pc.cond.slowed = 0;   // Slowed (an enemy's, EoT): it takes its AP, then ends
-          if (pc.cond.bleed?.by && !pc.cond.bleed.by.build && limit > 1) { limit--; const tier = pick(pc.R ?? R, C.tierProbs(Math.max(...Object.values(pc.build.attributes ?? { x: 1 })), 13, 0, 0, "")); if (tier === 3) pc.cond.bleed = null; else if (tier === 2) pc.cond.bleed.half = true; }   // an enemy's Bleed: Interact (1 AP) to end it, a Save against DC 13   // pack R-classes: Ready Shot's AP (turnFor reads it, then it is spent)   // pack R: Slowed lowers the turn's AP, not the Reaction AP (the default to confirm)
+          if (pc.cond.bleed?.by && !pc.cond.bleed.by.build && limit > RR.SHAKE_OFF_AP) { limit -= RR.SHAKE_OFF_AP; const tier = pick(pc.R ?? R, C.tierProbs(Math.max(...Object.values(pc.build.attributes ?? { x: 1 })), 13, 0, 0, "")); if (tier === 3) pc.cond.bleed = null; else if (tier === 2) pc.cond.bleed.half = true; }   // an enemy's Lingering (it was Bleed): the Shake Off Action (1 AP; pack Advance: its own Action, no longer an Interact) to end it, a Save against DC 13   // pack R-classes: Ready Shot's AP (turnFor reads it, then it is spent)   // pack R: Slowed lowers the turn's AP, not the Reaction AP (the default to confirm)
           if (pc.cond.prone) { limit--; pc.cond.prone = false; }   // Stand (1 AP)
           // The Stage 0 prototype, candidate E: a PC with a second weapon (pc.alt: { build, cost }) puts the ranged one away for the melee one when an enemy is on it (once a fight; cost AP).
           if (pc.alt && !pc.switched && alive().some(f => MP.dist(pc.pos, f.pos) <= 2)) { pc.build = pc.alt.build; pc.melee = true; pc.range = [1]; pc.switched = true; limit -= pc.alt.cost; pc.st.switches = (pc.st.switches ?? 0) + 1; }
@@ -554,7 +554,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
         if (RULES.meleeGuard && M && pc.melee && !pc.down && MP.engaged(pc, W) && RULES.meleeGuard >= (pc.guard ?? 0)) { pc.guard = RULES.meleeGuard; pc.guardBy = pc; pc.guardMelee = true; }   // candidate B2: a melee PC that ends its turn Engaged has Guard until its next turn
         if (M) { pc.st.lostAP += r.lostAP; pc.reacted = null; if (pc.cond.hindered) pc.cond.hindered = null; if (pc.cond.immob === "eot") pc.cond.immob = null; pc.cond.staggered = null; pc.cond.blinded = null; pc.cond.frightened = null;
           if (pc.cond.bleed) { let v = rollDamage(pc.R ?? R, parseDamage(pc.cond.bleed.dmg)).total; if (pc.cond.bleed.half) { v = Math.floor(v / 2); pc.cond.bleed = null; } pc.damage += v; pc.st.taken += v; if (v) pcHurt(pc); }
-          pc.cond.vuln = 0; pc.cond.enf = 0; pc.taunt = null; }   // a PC's Bleed at the end of its turn (pack R-classes)
+          pc.cond.vuln = 0; pc.cond.enf = 0; pc.taunt = null; }   // a PC's Lingering at the end of its turn (pack R-classes)
         pc.st.dealt += r.damage; pc.st.counted += r.counted; pc.st.mindDealt += r.mind;
         if (r.nova) { pc.st.novaDealt += r.damage; pc.st.novaTurns++; }
         killCheck();
@@ -569,7 +569,7 @@ export function fight(party, npcs, R, { maxRounds = 12, map = MP.MAP, immortal =
           f.curMult = a.mult; npcHit(f, t, a.k, a.boons); f.curMult = 1;
         }
         f.taunt = null; if (!f.vulnKeep) f.vulnerable = 0;   // EoT effects end with its turn (a kept Vulnerable ends at its giver's next turn: pack R-classes)
-        if (f.cond?.bleed) { const v = rollDamage(f.R ?? R, parseDamage(f.cond.bleed.dmg)).total; f.damage += v; if (f.cond.bleed.mind) f.mindDamage = (f.mindDamage ?? 0) + v; if (f.cond.bleed.by?.st) { f.cond.bleed.by.st.bleedDealt += v; f.cond.bleed.by.st.dealt += v; } killCheck(); }   // Bleed at the end of its turn (pack R-classes)
+        if (f.cond?.bleed) { const v = rollDamage(f.R ?? R, parseDamage(f.cond.bleed.dmg)).total; f.damage += v; if (f.cond.bleed.mind) f.mindDamage = (f.mindDamage ?? 0) + v; if (f.cond.bleed.by?.st) { f.cond.bleed.by.st.bleedDealt += v; f.cond.bleed.by.st.dealt += v; } killCheck(); }   // Lingering at the end of its turn (pack R-classes)
         if (f.cond) { f.cond.staggered = null; f.cond.blinded = null; f.cond.frightened = null; }
         if (f.zone && f.zone.left <= 0) f.zone = null;
       }

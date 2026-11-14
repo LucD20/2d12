@@ -81,6 +81,10 @@ It is one file with no build step and nothing loaded from the network. It knows 
 
 SIM-1 moved the fight out of `spec.mjs` and split its decisions from its rules without changing a roll: `report.md`, `report-pre-r.md`, `rclasses.md` and `rbestiary.md` came out byte for byte the same as the ruler catch-up left them, which is stricter than the brief's 3%. **The gate is the committed `report.md`.** It has changed on purpose once since: 2026-11-12, an enemy at 0 Health is out at once (`RULES.outAtOnce`; "Checked against the table" below). Any later change to the engine is checked the same way: run them and `git status` must be clean, or the change is a rule or a decision that moved and the README says which.
 
+### Advance is one piece (pack Advance, 2026-11-14)
+
+The book's Advance can't be split since this pack (Chapter 3), and the rule is the system's `roundrules.mjs` (`ADVANCE_SPLITS`, `duringAdvance`, `advanceAllowsInteract`). **The engine already played this way:** every Advance is one walk with its own Action id (`pcMove`, `approach`, `npcTurnMap`), paid 1 AP, and the squares it doesn't walk are lost; a movement Reaction fires once for it. So the gate held with no number moved. Interact during an Advance is not modeled (no creature draws a weapon or opens a door in a fight here). Bleed is called Lingering: the engine's key stays `cond.bleed`, a rider is written "Lingering 1d4" (the old word is still read), and a PC ends an enemy's Lingering with the Shake Off Action's AP (`RR.SHAKE_OFF_AP`: 1, what Interact cost).
+
 ## One rules engine, not three
 
 The engine imports the rules from the Foundry system; it has no copy of them.
@@ -102,7 +106,7 @@ These are written only here. Each is a rule the system also has, in code that ne
 - **The Reaction moments** (`engine.mjs`): Opportunity Attack (an adjacent enemy leaves a square or stands), Overwatch and Quick Draw (moves closer), Rebuke, Shield of Faith and Bulwark (a hit on an ally), Covering Shot, once per triggering Action. Foundry: `moment.mjs`.
 - **An NPC's turn** (`engine.mjs kitSeq`): the Encounter Special once, the Round Special, Basic attacks; with its own Actions (`actsTurn`, the turn budget): the Encounter Action first, then by points an AP, helps when they help, riders spread over PCs that haven't them. Which Specials a role has (`core.mjs npcKit`) is the ruler's reading of the Bestiary: Foundry's NPCs carry their own Actions.
 - **Elite phases and the Escalation hooks** (when they fire): Foundry: `escalation.mjs raiseEscalation`.
-- **Conditions and their ends** (`map.mjs applyCondition`): Hindered, Immobilized, Prone, Slowed, Dazed, Staggered, Blinded, Frightened (its Bane), Taunted, Bleed. Foundry: the Effect items and `effects.mjs durationStep` (pure: SIM-2 should use it).
+- **Conditions and their ends** (`map.mjs applyCondition`): Hindered, Immobilized, Prone, Slowed, Dazed, Staggered, Blinded, Frightened (its Bane), Taunted, Lingering. Foundry: the Effect items and `effects.mjs durationStep` (pure: SIM-2 should use it).
 - **Health:** one pool with Vigor and Resolve followed for Bloodied and Strained; Guard before Health; Rally Points. Foundry: `data.mjs deriveHealth`, `guard.mjs absorbGuard` (pure: to use).
 - **In the system but not rewired to `roundrules.mjs` yet:** Cover's Banes and Doomed in `actions.mjs` and `inline.mjs` (the same rule written three times there), the Strikes counter, the At-will Bane.
 

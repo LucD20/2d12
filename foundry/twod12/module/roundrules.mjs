@@ -23,6 +23,34 @@ export const STRIKES_PER_TURN = 3;
 /** The At-will Bane (Ch. 2, At-will): an At-will Action used again in the same turn takes 1 Bane for each earlier use (no name: it adds up). */
 export const atWillBanes = usesBefore => Math.max(0, Math.trunc(Number(usesBefore)) || 0);
 
+/* ---- Advance is one piece (Ch. 3, Advance; pack Advance, v0.0.386, Lucas 2026-11-14) ---- */
+/** An Advance can't be split: you move once, up to the distance, and the movement you don't use is lost. Every other movement an Action gives is one piece too. */
+export const ADVANCE_SPLITS = false;
+/** The Interact Actions that fit inside one Advance Action without ending it (each still costs its 1 AP, paid when it is used). */
+export const ADVANCE_INTERACTS = 1;
+/** A Reaction that triggers on movement fires once for a whole Advance (the reactor chooses the square), an Interact in the middle or not. */
+export const MOVE_REACTIONS_PER_ADVANCE = 1;
+/**
+ * Does this movement let an Interact inside it? Only the Advance Action used on its own: not an Evade, not an Advance that is a Linked Action or a
+ * Setup, not movement that is part of another Action (Charge), unless the card says so (cardAllows).
+ */
+export const advanceAllowsInteract = ({ how = "advance", own = true, linked = false, setup = false, cardAllows = false } = {}) =>
+  !!cardAllows || (how === "advance" && !!own && !linked && !setup);
+/**
+ * A creature with movement under way uses another Action: what happens to the movement. "keeps": the one Interact of an Advance Action (count
+ * it: interacts + 1); "ends": anything else, and the squares left are lost. A Reaction isn't the mover's turn spending on something else: it
+ * resolves and the movement goes on (reaction: true). move: { how, own, linked, setup, cardAllows, interacts } (interacts: the Interacts already used in it).
+ */
+export function duringAdvance(action = {}, move = {}) {
+  if (action.reaction) return "keeps";
+  if (action.interact && advanceAllowsInteract(move) && (Math.trunc(Number(move.interacts)) || 0) < ADVANCE_INTERACTS) return "keeps";
+  return "ends";
+}
+/** The squares of a movement still usable: what is left while it goes on, 0 once it ended (ADVANCE_SPLITS false: nothing is kept for later in the turn). */
+export const advanceLeft = (granted, moved, ended = false) => (ended && !ADVANCE_SPLITS ? 0 : Math.max(0, (Number(granted) || 0) - (Number(moved) || 0)));
+/** Lingering (Ch. 8; it was Bleed) ends with the Shake Off Action, never with Interact: it can't be done inside an Advance. */
+export const LINGERING_ENDS_WITH = "shakeOff", SHAKE_OFF_AP = 1;
+
 /* ---- Escalation (Ch. 2, Escalation and Momentum) ---- */
 export const ESC_MIN = TWOD12.escalation.min, ESC_MAX = TWOD12.escalation.max, ESC_MOMENTUM = TWOD12.escalation.momentum;
 /** The level an encounter starts at: 1, or 2 with Momentum. */

@@ -27,16 +27,16 @@ Four of today's Standards: worth 97.2 (should be 100: the noise of the method), 
 | moderate (8) | Dazed 1 | 1.7 | 0.4 | 15.0 | 8.2 |
 | moderate (8) | Blinded (EoT) | 1.7 | 0.4 | 15.0 | 8.2 |
 | moderate (8) | Vulnerable 2 | 1.6 | 0.5 | 16.0 | 8.7 |
-| severe (12) | Bleed 1 | 1.6 | 0.5 | 23.0 | 11.8 |
+| severe (12) | Lingering 1 | 1.6 | 0.5 | 23.0 | 11.8 |
 | severe (12) | Prone | 1.8 | 0.5 | 23.9 | 13.0 |
-| extreme (18) | Bleed 2 | 1.7 | 0.5 | 33.0 | 17.0 |
+| extreme (18) | Lingering 2 | 1.7 | 0.5 | 33.0 | 17.0 |
 | extreme (18) | Slowed 2 | 1.9 | 0.5 | 32.1 | 17.4 |
 | extreme (18) | Dazed 2 | 1.9 | 0.5 | 32.0 | 17.3 |
-| extreme (18) | Bleed 1d4 | 1.6 | 0.6 | 38.5 | 19.8 |
-| beyond (its own) | Bleed 1d6 | 1.6 | 0.5 | 45.8 | 23.1 |
-| beyond (its own) | Bleed 2d6 | 1.6 | 0.5 | 77.5 | 39.6 |
+| extreme (18) | Lingering 1d4 | 1.6 | 0.6 | 38.5 | 19.8 |
+| beyond (its own) | Lingering 1d6 | 1.6 | 0.5 | 45.8 | 23.1 |
+| beyond (its own) | Lingering 2d6 | 1.6 | 0.5 | 77.5 | 39.6 |
 
-Mean measured price on an Action by group: Mild 2.1 (priced 3), Moderate 7.5 (8), Severe 12.4 (12), Extreme 17.9 (18); Bleed 1d6 23.1, Bleed 2d6 39.6. One measured price is good to about ±1.5 points.
+Mean measured price on an Action by group: Mild 2.1 (priced 3), Moderate 7.5 (8), Severe 12.4 (12), Extreme 17.9 (18); Lingering 1d6 23.1, Lingering 2d6 39.6. One measured price is good to about ±1.5 points.
 
 ## 3. Where the effect is: Setup, a hit, Tier 3 only
 

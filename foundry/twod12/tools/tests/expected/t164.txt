@@ -9,4 +9,4 @@ Sharpshooter   ignore, mastery
 Bow Mastery    mastery
 Brawler        weaponprop
 Weapon used: Pummel fists | Leg Sweep kick | the Fists Basic Action fists
-compendium items with hidden flags: none | Basic Actions with only their key: 20
+compendium items with hidden flags: none | Basic Actions with only their key: 21

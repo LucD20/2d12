@@ -145,7 +145,7 @@ const oddsRow = chk => `<div class="oddsrow" data-tooltip="Chance of each tier f
 export function pureMove(it, version, basicKey = "") {
   if (!version?.noTiers || (version.fx?.all ?? []).length) return null;
   const txt = String(version.effects ?? ""), moves = [...txt.matchAll(/@Move\[([^\]]+)\]/g)];
-  if (moves.length !== 1 || /@(?!Move\[)\w+\[/.test(txt)) return null;
+  if (moves.length !== 1 || /@(?!Move\[|Book\[)\w+\[/.test(txt)) return null;   // v0.0.386: a link to the book (@Book: Advance's "see Interact") is not a button
   if (!["advance", "walk", "move", "evade"].includes(moves[0][1].split("|")[0].trim().toLowerCase())) return null;
   const traits = it?.traits;
   if (!(traits?.has?.("move") || (Array.isArray(traits) && traits.includes("move")) || basicKey === "safeMovement")) return null;
@@ -528,6 +528,8 @@ export async function useAction(actor, item, opts = {}) {
   // Setup: what happens before the dice are rolled. Its movement is made first, so the range, cover and Engaged of the roll come from where the creature ends.
   let setupDone = false;
   if (!opts.noSetup && String(it.setup ?? "").includes("@Move")) {
+    // v0.0.386 (pack Advance): the Setup moves before the AP are paid: an Advance still under way ends here, so its squares don't add to the Setup's
+    if (!it.reaction) { try { await (await import("./move.mjs")).otherActionDuringMoveOf(actor, {}); } catch (e) { /* no movement */ } }
     const { runSetup } = await import("./setup.mjs");
     const st = await runSetup(actor, item, actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null);
     if (!st.ok) return;
@@ -844,7 +846,9 @@ export async function useAction(actor, item, opts = {}) {
       if (!ok) return;
     }
   }
-  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction, force: !!rdData }))) return;   // v0.0.293: the roll dialog already warned about the AP
+  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction, force: !!rdData, basic: basicKey || "" }))) return;   // v0.0.293: the roll dialog already warned about the AP
+  // v0.0.386 (pack Advance): an Action that pays no AP (a Linked Action, a 0 AP Action) ends an Advance under way too (spendAP does it for the others)
+  if (apCost <= 0 && !it.reaction) { try { await (await import("./move.mjs")).otherActionDuringMoveOf(actor, { interact: basicKey === "interact" }); } catch (e) { /* no movement */ } }
   const isWeapon = it.traits.has("weapon");
 
   let attrKey = null, mod = null, weapon = null, title = "", chip = "";
@@ -1094,7 +1098,7 @@ export async function useAction(actor, item, opts = {}) {
   if (mvInner && game.combat?.started && canvas?.ready) {
     const { parseInline } = await import("./inline.mjs"), { handleMove } = await import("./move.mjs");
     const cfg = parseInline("Move", mvInner);
-    bannerMove = (await handleMove({ ...cfg, traits: [...new Set([...(cfg.traits ?? []), "self"])], banner: item.name, bannerAp: apCost }, { actor, token: selfToken })) === true;
+    bannerMove = (await handleMove({ ...cfg, traits: [...new Set([...(cfg.traits ?? []), "self"])], banner: item.name, bannerAp: apCost, ownAdvance: basicKey === "advance" && !opts.free }, { actor, token: selfToken })) === true;
   }
   // v0.0.292: the roll dialog's roll mode, for this roll only (the chat's own mode stays as it is)
   const rdMode = (() => { const d = {}, m = data.rollMode, CM = ChatMessage.implementation ?? ChatMessage; if (m) try { if (typeof CM.applyRollMode === "function") CM.applyRollMode(d, m); else d.rollMode = m; } catch (e) { console.warn("twod12 | roll mode", e); } return d; })();

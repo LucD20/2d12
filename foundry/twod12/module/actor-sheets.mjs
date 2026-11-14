@@ -370,7 +370,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       }
     }
     // Basic Actions, in a fixed order (Reload only with a Reload weapon in hand): their own section at the bottom, collapsed by default.
-    const BASIC = ["basicWeaponAttack", "fists", "rally", "charge", "shove", "haul", "relocate", "trip", "advance", "safeMovement", "stand", "leaning", "interact", "reload"];
+    const BASIC = ["basicWeaponAttack", "fists", "rally", "charge", "shove", "haul", "relocate", "trip", "advance", "safeMovement", "stand", "leaning", "interact", "shakeOff", "reload"];
     const basics = (await Promise.all(actions.filter(i => i.getFlag("twod12", "basic")).map(async i => ({ ...(await rowOf(i)), key: i.getFlag("twod12", "basic") }))))
       .sort((x, y) => { const p = k => { const n = BASIC.indexOf(k); return n < 0 ? 99 : n; }; return p(x.key) - p(y.key) || x.name.localeCompare(y.name); });
     // Health (v0.0.130): the Donut or the Classic bars, a choice of each user. The tooltip has the Lethal and Nonlethal numbers.

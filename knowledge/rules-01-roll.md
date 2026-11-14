@@ -178,7 +178,7 @@ Some creatures take less, or more, damage of a subtype. It is written on the cre
 - Each time you take damage from one Action or effect, add up **all its damage of that subtype**, Vigor and Resolve together, and apply your line **once**: **Resist N** reduces the total by N (minimum 0), **Weak N** adds N. "[V] 1d8 Fi + [R] 5 Fi" against Resist 5 Fire is (1d8 + 5) − 5: one reduction, never one per part.
 - When the damage is split between Vigor and Resolve, the resisting creature chooses which part it reduces first; for Weak, the origin chooses where the extra goes.
 - **Immune** makes that damage 0.
-- Damage that comes back each turn, such as [[Bleed]], counts each time it lands: Resist 5 Fire stops a Bleed 3 Fi entirely.
+- Damage that comes back each turn, such as [[Lingering]], counts each time it lands: Resist 5 Fire stops a Lingering 3 Fi entirely.
 - Two Resists or two Weaks of the same subtype don't add up: the highest applies (see [[Stacking]]).
 
 ### Riders

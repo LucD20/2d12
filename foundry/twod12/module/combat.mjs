@@ -124,7 +124,7 @@ export async function setUnusedApGuard(c, hadTurn, apLeft) {
 }
 
 /** Pay the AP of an action. Returns false when the player decides not to go ahead. Does nothing outside combat. */
-export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false, force = false } = {}) {   // force (v0.0.293): no "Not enough AP" question (the roll dialog warned)
+export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false, force = false, basic = "" } = {}) {   // basic (v0.0.386): the Basic Action's key ("interact": the one Action that doesn't end an Advance)   // force (v0.0.293): no "Not enough AP" question (the roll dialog warned)
   const c = combatantOf(actor);
   if (!c || !game.combat?.started) return true;
   // v0.0.243 (book, Reactions): a Reaction is paid with the Reaction AP first, then with AP (kept from the turn, or the turn's own on its own turn).
@@ -140,7 +140,9 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
   await c.setFlag(F, "acted", true);
   if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });   // v0.0.182: an Evade left unused ends when another Action is used
   // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first).
-  try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ }
+  // v0.0.386 (pack Advance; book, Ch. 3): an Advance is one piece: this Action ends it and the squares left are lost, unless it is the Advance
+  // Action's one Interact (then the movement goes on, and its line stays open until it ends).
+  try { const M = await import("./move.mjs"); if ((await M.otherActionDuringMove(c, { interact: basic === "interact", reaction })) !== "keeps") await M.closeMoveLine(c); } catch (e) { /* none */ }
   if (pay.fromRap) await setRAP(c, rap - pay.fromRap);
   // v0.0.274: a kept AP that pays a Reaction is simply one AP less at the start of the next turn (its Guard comes then: setUnusedApGuard)
   await setAP(c, Math.max(0, have - pay.fromAp), label, { quiet, reaction, rap: reaction ? { b: rap, a: rap - pay.fromRap } : null });
@@ -225,7 +227,7 @@ async function startTurn(combat) {
   // v0.0.204: a creature that swapped had its turn start this round already; its new slot is a new start (it thaws), so frozen skips this check.
   if (c.getFlag(F, "apTurn") === key && !c.getFlag(F, "frozen")) return;
   const hadTurn = !!c.getFlag(F, "apTurn"), apLeft = getAP(c);   // v0.0.274: the AP its last turn left unused (none on its first turn)
-  const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) };
+  const fresh = { [`flags.${F}.apTurn`]: key, [`flags.${F}.acted`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.advance`) };
   if (c.getFlag(F, "frozen")) {
     // It swapped initiative earlier: it carries on with the AP it had left.
     await c.update({ ...fresh, [`flags.${F}.frozen`]: false, [`flags.${F}.thawed`]: key });   // v0.0.205: a thawed turn can't swap again

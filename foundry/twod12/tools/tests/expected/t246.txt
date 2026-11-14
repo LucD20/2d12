@@ -32,3 +32,12 @@ flanking.mjs takes the count from it: true
 pure (it imports only config, calc and guard): ./config.mjs ./calc.mjs ./guard.mjs | no Foundry global: true
 the old names still work: sheetmodel.payReaction: {"fromRap":1,"fromAp":1}
 the environment imports it: core.mjs true | the engine uses it: true | the map uses it: true
+--- Advance is one piece (v0.0.386)
+an Advance can't be split: true | Interacts inside one Advance: 1 | movement Reactions per Advance: 1
+Zack's door (Advance 2, Interact, Advance 3): keeps | a second Interact: ends | a Weapon Attack at the door: ends | squares left after it: 0 | while it goes on: 3
+an Interact inside: a Linked Advance ends | a Setup's ends | another Action's movement (Charge) ends | an Evade ends | a card that says so keeps
+a Reaction during your Advance: keeps | Lingering ends with: shakeOff 1 AP
+move.mjs asks the rule: true | spendAP ends the movement or keeps it: true | an Action with no AP too: true | the sheet's draw and stow are an Interact: true
+only the Advance Action is its own: true | a drag's Advance too: true | a new turn clears it: true
+the Advance card stays a movement-only Action (a book link is not a button; t158): true | Shake Off: 1 AP handle | Interact's text says it: true
+the SIM ends Lingering with Shake Off's AP: true | its engine makes each Advance one walk with its own id: 6

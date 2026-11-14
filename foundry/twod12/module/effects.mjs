@@ -10,7 +10,7 @@ import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
 import { bbCount, bbKey } from "./calc.mjs";
-import { originOk, attrsOk, bleedOf, bleedText, needsOrigin, hasBleed } from "./condrules.mjs";   // v0.0.314 (pack AU)
+import { originOk, attrsOk, bleedOf, bleedText, needsOrigin, hasBleed, condKey } from "./condrules.mjs";   // v0.0.314 (pack AU)
 const SOCKET = "system.twod12";
 const F = "twod12";
 
@@ -267,7 +267,7 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   let value = s.valued ? Math.max(1, Math.trunc(Number(over?.value)) || 1) : undefined;
   if (s.valued) for (const e of olds) value = Math.max(value, Number(e.getFlag(F, "value")) || 0);
   if (old.length) await actor.deleteEmbeddedDocuments("ActiveEffect", old);
-  const sid = shortName(item.name).trim().toLowerCase();
+  const sid = condKey(shortName(item.name));   // v0.0.386: "Lingering" is the bleed status
   const baseId = sid.replace(/\s*\(.*\)\s*$/, "");   // "Hindered (until Move)" is the Hindered status
   const statuses = (CONFIG.statusEffects ?? []).some(e => e.id === sid) ? [sid] : ((CONFIG.statusEffects ?? []).some(e => e.id === baseId) ? [baseId] : []);
   const light = s.settings.find(x => x.type === "light");
@@ -612,12 +612,12 @@ export function setupPanel() {
  */
 /** The Effect item (the world's, or the system's compendium) with a condition's name, or null. */
 export async function conditionItem(cond) {
-  const id = String(cond).trim().toLowerCase();
-  let item = game.items.find(i => i.type === "effect" && shortName(i.name).trim().toLowerCase() === id);
+  const id = condKey(cond);   // v0.0.386: "bleed" finds the Lingering condition (and a world's old "Bleed" Effect)
+  let item = game.items.find(i => i.type === "effect" && condKey(shortName(i.name)) === id);
   if (!item) {   // the system's Conditions compendium, then its Effects
     for (const key of ["twod12.conditions", "twod12.effects"]) {
       const pack = game.packs?.get(key);
-      const entry = pack ? (await pack.getIndex()).find(x => shortName(x.name).trim().toLowerCase() === id) : null;
+      const entry = pack ? (await pack.getIndex()).find(x => condKey(shortName(x.name)) === id) : null;
       item = entry ? await pack.getDocument(entry._id) : null;
       if (item) break;
     }

@@ -35,7 +35,7 @@ export const RULE_KINDS = {
   light: { title: "Light", tile: "L", cls: "lt", group: "Areas" },
   zone: { title: "Zone (old layout)", tile: "Z", cls: "au", legacy: true },   // v0.0.327: an Effect's Zone is "Where it is: On the map"; an old rule left on a Feature still reads
   move: { title: "Movement limit", tile: "M", cls: "rule", group: "Limits" },
-  bleed: { title: "Bleed (condition)", tile: "B", cls: "tk", legacy: true },
+  bleed: { title: "Lingering (condition)", tile: "L", cls: "tk", legacy: true },
   builtin: { title: "Condition rule", tile: "C", cls: "cond", legacy: true },
   raw: { title: "Old setting", tile: "?", cls: "rule", legacy: true }
 };
@@ -498,7 +498,7 @@ export function sentence(rIn, ctx = {}) {
     }
     case "light": return `Sheds Bright light in a ${r.bright} Emanation and Dim light ${r.dim} squares further${esc0}.`;
     case "zone": return `A Zone (the placed area) for ${r.setting?.zoneWho === "enemies" ? "enemies" : r.setting?.zoneWho === "all" ? "everyone" : "allies"} inside it${r.setting?.fxUuid ? `: they carry ⟦a:${nm(r.setting.fxUuid) || "an Effect"}⟧` : ""}${String(r.setting?.zoneHeal ?? "").trim() ? `; they heal ${r.setting.zoneHeal} at the start of their turns` : ""}.`;
-    case "bleed": { const b = r.setting ?? {}; return `At the end of each of its turns, it takes ⟦d:${b.dmgPool === "M" ? "R" : "V"}:${b.dmg || "1"}⟧${b.dmgSub ? ` ⟦s:${b.dmgSub}⟧` : ""} damage; Interact and a Save (DC ${b.bleedDc || 13}) end it.`; }
+    case "bleed": { const b = r.setting ?? {}; return `At the end of each of its turns, it takes ⟦d:${b.dmgPool === "M" ? "R" : "V"}:${b.dmg || "1"}⟧${b.dmgSub ? ` ⟦s:${b.dmgSub}⟧` : ""} damage; Shake Off (1 AP) and a Save (DC ${b.bleedDc || 13}) end it.`; }
     case "builtin": return r.which === "noReactions" ? "Can't use Reactions." : "Loses its value in AP, now (the rest from its next turn's AP); then it ends.";
     case "raw": return `An older setting (${r.setting?.type ?? "?"}), kept as it was.`;
   }
@@ -542,7 +542,7 @@ export function ruleLabel(rIn, ctx = {}) {
     case "light": t = `Light ${r.bright} / ${r.dim}`; break;
     case "move": t = r.how === "difficult" ? (r.dirm === "closer" ? "Closer: Difficult Terrain" : "Away: Difficult Terrain") : r.dirm === "closer" ? "Can't move closer" : "Can't move away"; break;
     case "zone": t = "Zone (old layout)"; break;
-    case "bleed": t = `Bleed ${r.setting?.dmg ?? ""}`.trim(); break;
+    case "bleed": t = `Lingering ${r.setting?.dmg ?? ""}`.trim(); break;
     case "builtin": t = r.which === "noReactions" ? "No Reactions" : "Loses its value in AP"; break;
     default: t = `Old setting: ${r.setting?.type ?? "?"}`;
   }

@@ -84,12 +84,12 @@ A guide for sizing a class card before it is written, measured the way the Besti
 
 | Size | Price | Riders (Standards · an Elite) |
 |---|---:|---|
-| **Mild** | 3 | Hindered and Immobilized (0 from melee, 2 to 3 from range), Taunted 1 to 3, Frightened 2 to 4 · 6, Vulnerable 1 1 to 3 · 4, **Bleed 1d4 or 1d6 (0 to 2: the party kills its target before it bleeds)** |
+| **Mild** | 3 | Hindered and Immobilized (0 from melee, 2 to 3 from range), Taunted 1 to 3, Frightened 2 to 4 · 6, Vulnerable 1 1 to 3 · 4, **Lingering 1d4 or 1d6 (0 to 2: the party kills its target before it bleeds)** |
 | **Moderate** | 8 | Vulnerable 2 5, Slowed 1 7 to 10 · 12, Prone 7 to 9 · 11 |
 | **Severe** | 12 | Dazed 1 11 to 15 · 20, Blinded (EoT) 12 to 15 · 26 |
 | **Extreme** | 18 | Slowed 2 13 to 20 · 26 |
 
-Against an Elite a rider that takes AP or its aim is worth one size more. This is not the Bestiary's table: a Bleed is strong on a PC and nearly nothing on an enemy; Blinded and Dazed are stronger on an enemy than on a PC.
+Against an Elite a rider that takes AP or its aim is worth one size more. This is not the Bestiary's table: a Lingering is strong on a PC and nearly nothing on an enemy; Blinded and Dazed are stronger on an enemy than on a PC.
 
 **Reactions** (the classes' own, on the plain PC, for free):
 
@@ -228,7 +228,7 @@ Lucas makes cards a few at a time, with Claude, and writes each in his own way s
 31. **"You or an ally within 5 squares would go Down" is a moment** (session 5, Divine Intervention): `foundry.moment: "wouldDown"`, `foundry.momentRange: 5`; the Reaction is offered by itself before the damage lands, and its chain (`foundry.after`, the Guard RP) runs by itself on the creature it answered for: no button on the card. No Distance (the Interrupt says it), Targets the triggering creature (rule 22).
 32. **Every Reaction's Interrupt or Trigger line is a moment** (pack RX, v0.0.272, Lucas's design): `foundry.moment` (one of `wouldDown` "a creature would go Down", `strikeDamage` "a Strike would damage an ally within N", `strikeAgainst` "a Strike is made against an ally within N", `enemyCloser` "an enemy within N moves closer", `allyDamage` "an ally within N takes damage", `enemyMoves` "an enemy within N moves or stands up"), `foundry.momentRange` (the N, to the ally or the enemy who moves; 0: anywhere; Opportunity Attack 1 since v0.0.273), `foundry.momentSelf: true` for "you or an ally", `foundry.momentTarget: "source"` when the Reaction is made against the attacker (Covering Shot, Rebuke; the default is the creature of the moment); an inline Action writes the same keys on its line's object (Beacon's Step). A Distance in squares (Rebuke's 5 sq.) also limits how far its target can be. When the moment comes, one chat message lists every Reaction it triggered (a row per creature and Reaction, Use / Pass for its owner); nothing lands until every row is answered or skipped; the rows used resolve last in, first out. An Interrupt holds the damage until answered (what it sets, a reduction or a Guard, counts on that damage; a granted Weapon Attack is made at once, so its Tier 3's half halves it); a Trigger is offered after and holds nothing. A chain's steps after a `@Pause` stay buttons on the card (Bulwark of Faith's Slid). The book's text is unchanged: the moment is Foundry's.
 33. **Diamond (Lucas, 2026-11-09):** a Mithril card that any later change touches (even only its text or its buttons) becomes **Diamond** (`automation: "diamond"`) and is listed at the end of `book/cards/with-lucas.txt` with what changed; the pack's final report names it. Lucas revises it, then it is Mithril again.
-34. **Only the condition's name is a button (Lucas, 2026-11-09, Rebuke):** "Frightened of you for 1 round" makes "Frightened" the chip; "of you for 1 round" stays text (the chip still carries the duration). The same for every condition: "Dazed 1", "Bleed" [R] 1d6 Ho (Mi/Ap).
+34. **Only the condition's name is a button (Lucas, 2026-11-09, Rebuke):** "Frightened of you for 1 round" makes "Frightened" the chip; "of you for 1 round" stays text (the chip still carries the duration). The same for every condition: "Dazed 1", "Lingering" [R] 1d6 Ho (Mi/Ap).
 
 **Inline Actions (Lucas, 2026-11-05; built in v0.0.249, Beacon's Step the first):** a card can give a small Action of its own while its effect lasts (Beacon's step toward a hit ally). Lucas writes it on one line, after the sentence that grants it ("While the Beacon is active, you gain the following Action:"):
 

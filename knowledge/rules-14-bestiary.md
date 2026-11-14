@@ -171,11 +171,11 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | **Forced Movement 1** | 2 | Pushed, Pulled or Slid 1 |
 | **Mild** | 3 | Hindered (EoT); Taunted (1 round); Staggered (EoT); Frightened (EoT); 1 Pressure Bane on its next roll; Doomed on its next roll; Sickened 1; Bright light on it (it can't hide) |
 | **Moderate** | 8 | Slowed 1; Dazed 1; Blinded (EoT); Vulnerable 1 or 2 (EoT); Immobilized (EoT) or until it escapes; Grabbed; **Forced Movement 2** |
-| **Severe** | 12 | Prone; Bleed 1; **Forced Movement 3 or more** |
-| **Extreme** | 18 | Slowed 2; Dazed 2; Bleed 2; Bleed 1d4 |
-| **Beyond** | +6 a size | Bleed 1d6 (24); Bleed 2d6 (40) |
+| **Severe** | 12 | Prone; Lingering 1; **Forced Movement 3 or more** |
+| **Extreme** | 18 | Slowed 2; Dazed 2; Lingering 2; Lingering 1d4 |
+| **Beyond** | +6 a size | Lingering 1d6 (24); Lingering 2d6 (40) |
 
-The prices are for a rider that **one creature in the encounter has**. **When four or more creatures in the encounter carry the same rider** (a pack of Grunts, a swarm of Minions), **price it one size less:** most of its landings are wasted on a PC that already has it. **AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Bleed is damage that keeps coming** (it lasts until the PC spends 1 AP to staunch it), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
+The prices are for a rider that **one creature in the encounter has**. **When four or more creatures in the encounter carry the same rider** (a pack of Grunts, a swarm of Minions), **price it one size less:** most of its landings are wasted on a PC that already has it. **AP are the strongest thing to take** (Prone, Dazed, Slowed), **Lingering is damage that keeps coming** (it lasts until the PC spends 1 AP to Shake Off), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
 
 - **Forced Movement is the most common rider:** in the open it changes little, and against a wall or another PC it deals Collision damage (see [[Steadiness]] and Collision in Chapter 3). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price; in the open, nothing.
 - **No limit on repeating a rider.** A rider on a creature that already has it is wasted: spread the attacks.

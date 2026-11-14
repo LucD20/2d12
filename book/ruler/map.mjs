@@ -145,7 +145,7 @@ export function place(pcs, foes, M) {
 }
 
 /** A fresh set of conditions. EoT ones end at the end of the creature's own next turn; `move` ones at its first Move Action. */
-export const noCond = () => ({ hindered: null, immob: null, prone: false, slowed: 0, dazed: 0, staggered: null, blinded: null, frightened: null, bleed: null });   // pack R-classes (the conditions pass): Dazed, Staggered, Blinded, Frightened (its Bane only), Bleed
+export const noCond = () => ({ hindered: null, immob: null, prone: false, slowed: 0, dazed: 0, staggered: null, blinded: null, frightened: null, bleed: null });   // pack R-classes (the conditions pass): Dazed, Staggered, Blinded, Frightened (its Bane only), Lingering (the key stays `bleed`)
 
 /** A condition from an effect text ("Hindered (EoT)", "Hindered (until it moves)", "Immobilized", "Prone", "Slowed 1"...) on a creature. */
 const bleedAvg = d => { const m = String(d).match(/^(\d+)d(\d+)([+-]\d+)?$/); return m ? Number(m[1]) * (Number(m[2]) + 1) / 2 + Number(m[3] ?? 0) : Number(d) || 0; };
@@ -153,7 +153,7 @@ export function applyCondition(t, name, by = null) {
   const n = name.toLowerCase();
   t.cond ??= noCond();
   // Pack R-classes (the conditions pass, 2026-11-04): Dazed N (AP lost now; an NPC has none outside its turn, so from its next turn), Staggered (no Reactions, EoT),
-  // Blinded (its Strikes are Doomed, EoT), Frightened (1 Bane on its rolls, EoT; the "can't move closer" is not modeled), Taunted (Banes against anyone but `by`, until its turn ends), Bleed X (the higher average kept).
+  // Blinded (its Strikes are Doomed, EoT), Frightened (1 Bane on its rolls, EoT; the "can't move closer" is not modeled), Taunted (Banes against anyone but `by`, until its turn ends), Lingering X (it was Bleed; the higher average kept).
   const dz = n.match(/dazed\s*(\d)/); if (dz) { t.cond.dazed += Number(dz[1]); return true; }
   if (/staggered/.test(n)) { t.cond.staggered = "eot"; return true; }
   if (/blinded/.test(n)) { t.cond.blinded = "eot"; return true; }
@@ -165,7 +165,7 @@ export function applyCondition(t, name, by = null) {
   if (/pressure bane/.test(n)) { t.cond.nextBane = 1; return true; }
   if (/doomed \(next/.test(n)) { t.cond.nextDoomed = true; return true; }
   if (/grabbed/.test(n)) { if (t.cond.immob !== "escape") t.cond.immob = "escape"; return true; }
-  const bl = n.match(/bleed\s+([\dd+-]+)(?:\s*\(([^)]*)\))?/); if (bl) { const nb = { dmg: bl[1], mind: /\[r\]|mi|ap/.test(bl[2] ?? ""), by }; if (!t.cond.bleed || bleedAvg(nb.dmg) > bleedAvg(t.cond.bleed.dmg)) t.cond.bleed = nb; return true; }
+  const bl = n.match(/(?:lingering|bleed)\s+([\dd+-]+)(?:\s*\(([^)]*)\))?/); if (bl) { const nb = { dmg: bl[1], mind: /\[r\]|mi|ap/.test(bl[2] ?? ""), by }; if (!t.cond.bleed || bleedAvg(nb.dmg) > bleedAvg(t.cond.bleed.dmg)) t.cond.bleed = nb; return true; }
   if (/hindered/.test(n)) { const kind = /until|move/.test(n) ? "move" : "eot"; if (t.cond.hindered !== "eot") t.cond.hindered = kind; return true; }
   if (/immobilized/.test(n)) { const kind = /eot/.test(n) ? "eot" : "escape"; if (t.cond.immob !== "escape") t.cond.immob = kind; return true; }
   if (/prone/.test(n)) { t.cond.prone = true; return true; }

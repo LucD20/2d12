@@ -8,7 +8,7 @@
       "traits": ["move", "self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "When you use this Action, you move up to your Speed in squares.",
+        { "ap": 1, "effects": "You move up to your Speed in squares, in one movement: the squares you don't use are lost, and using another Action ends this one. **Once** during this Action, you can use [[Interact]] (paying its 1 AP) and keep moving (see [[Advance]]).",
           "foundry": { "append": "@Move[advance|distance:speed]" } }
       ],
       "foundry": { "basic": "advance", "img": "icons/svg/wing.svg" }
@@ -92,7 +92,7 @@
       "frequency": "At-will",
       "distance": "Reach",
       "versions": [
-        { "ap": 1, "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world." }
+        { "ap": 1, "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an [[Advance]] without ending that movement." }
       ],
       "foundry": { "basic": "interact", "img": "icons/svg/book.svg" }
     },
@@ -179,6 +179,21 @@
         { "ap": 3, "tiers": ["Reposition 1.", "Reposition 3.", "Reposition 5."] }
       ],
       "foundry": { "basic": "relocate", "img": "icons/svg/up.svg" }
+    },
+    {
+      "name": "Shake Off",
+      "category": "Basic Action",
+      "_note": "Pack Advance (Lucas, 2026-11-14): ending Lingering (it was Bleed) left Interact and became its own Basic Action, so it can't be done during an Advance. The same Save and Tiers as Chapter 8 wrote for Interact.",
+      "flavor": "You smother the flames, bind the wound, spit out the poison.",
+      "traits": ["handle"],
+      "frequency": "At-will",
+      "target": "You or one creature with [[Lingering]]",
+      "distance": "Reach",
+      "versions": [
+        { "ap": 1, "effects": "The target makes a Save with the better of its Lingering's Attributes against **DC 13**, or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of this turn, then the Lingering ends. **Tier 3:** the Lingering ends." }
+      ],
+      "notes": "Shake Off is not an Interact: you can't use it during an [[Advance]].",
+      "foundry": { "basic": "shakeOff", "img": "icons/svg/heal.svg" }
     },
     {
       "name": "Shove",
