@@ -58,10 +58,11 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14, after your first answers. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14, after your second answers. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
+  <a href="#mark">The mark</a>
   <a href="#decided">Decided</a>
   <a href="#art">Question 3</a>
   <a href="#counter">Question 6</a>
@@ -72,21 +73,53 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
+<p><strong>One decision: the first Feature, the mark.</strong> Say "Proposed", or change it. The three things most worth your eye:</p>
 <ol>
-  <li><strong>Question 3, the shape of an Art:</strong> A, B or C (<a href="#art">the examples</a>).</li>
-  <li><strong>Question 6, a number of his own:</strong> A, B or C (<a href="#counter">explained here</a>).</li>
-  <li><strong>What his support is made of.</strong> You said Rally Points for allies are more a Cleric's thing. So when the Paladin "aids you and makes sure you don't go down", what does he mostly do? Pick one or two:
-    <ul>
-      <li><strong>Guard</strong> on the ally, before the hit.</li>
-      <li><strong>A smaller hit:</strong> the damage reduced when it lands.</li>
-      <li><strong>A step:</strong> the ally moves out of reach.</li>
-      <li><strong>A condition ended</strong> (Frightened, Prone, Lingering...).</li>
-      <li><strong>The drop stopped:</strong> an ally who would go Down stays up at 1.</li>
-    </ul>
-  </li>
-  <li><strong>The first Feature.</strong> Do you want to draft it, or should I propose one? My proposal would be the mark: one enemy he judges, for 0 AP.</li>
+  <li>What the mark does: a smaller hit (my proposal), or B or C below it.</li>
+  <li>The size: your Power Modifier (2), once a round.</li>
+  <li>Moving the mark costs 1 AP, as the Archer's does.</li>
 </ol>
 </div>
+</section>
+
+<section id="mark">
+<h2>Decision 2: the mark (proposed)</h2>
+<div class="card">
+  <div class="bar"><span>Judgment</span><span>Paladin Feature</span></div>
+  <div class="v"><b></b><div>You gain the Judge Action.</div></div>
+</div>
+<div class="card">
+  <div class="bar"><span>Judge</span><span>Turn · Divine · 10 sq. · one enemy you can see</span></div>
+  <div class="v"><b>0 AP</b><div>At the start of an encounter, or as a 0R when the creature you Judged goes Down: the target is <strong>Judged</strong> by you until the encounter ends.</div></div>
+  <div class="v"><b>1 AP</b><div>The target is Judged by you instead of the one you had.</div></div>
+  <div class="v"><b></b><div>A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.</div></div>
+  <div class="v"><b></b><div class="small"><em>You name it before your god. From that moment, it is watched.</em></div></div>
+</div>
+
+<h3>What it is worth</h3>
+<div class="scroll"><table>
+<tr><th>Line</th><th>Points a turn</th><th>From</th></tr>
+<tr><td>Judged; counts as Profane for you</td><td>not priced</td><td>0 by itself: it is the key later cards turn</td></tr>
+<tr><td>The first hit a round on an ally: reduced by 2</td><td>about 10 against Standards<br>about 19 against an Elite</td><td>1 Health = 12 [SIM]; it happens in about 40% of rounds against one of four Standards, about 80% against an Elite [judgment]</td></tr>
+<tr><td>The enemy hits him instead (AD 14)</td><td>1 to 2</td><td>a Standard deals him 11.9 a turn, an Archer 13.3 [SIM]</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>about 10 to 19</strong></td><td>a Feature is about 10 to 15 (a guess): on</td></tr>
+</table></div>
+
+<h3>Why this shape</h3>
+<ul>
+<li><strong>The decision it gives:</strong> whom to judge. The biggest hitter, or the enemy next to the Archer. Moving it costs 1 AP, so the first choice matters; when the Judged creature goes Down it moves for free.</li>
+<li><strong>Certain, with a number.</strong> No roll, no Reaction AP. A Standard's Basic attack is 3.5 on a Tier 2: minus 2 is more than half of it. Against its Special it is a quarter.</li>
+<li><strong>It asks nothing the enemy controls.</strong> No "stay adjacent to it" (the 4e Paladin's flaw). The only distance is the ally's from him: he stands where his allies are.</li>
+<li><strong>It is your support direction, small.</strong> The Hallmark Reaction will be the big version, once, on any enemy; this is the trickle on one.</li>
+<li><strong>Profane in every campaign.</strong> Later "against a Profane creature" lines work on the enemy he chose, and on real Profane creatures too. Divine Power is retired.</li>
+<li><strong>Its sibling:</strong> the Archer's Mark Quarry has the same frame (0 AP at the start, 0R when it goes Down, 1 AP to change). The Archer marks to hurt; the Paladin marks to shield.</li>
+<li><strong>The risk:</strong> the GM must remember "once a round" for that creature. Foundry has the pieces for it (the mark and the damage reduction); not tried.</li>
+</ul>
+
+<h3>If you'd rather the mark did something else</h3>
+<div class="opt"><b>B</b><div><strong>It pays for ignoring him.</strong> "The first time each round it damages an ally within 5 squares of you, it takes [R] 2 Ho." About 3 points a turn. This is 4e's Divine Challenge, which was called "barely a deterrent" at this size.</div></div>
+<div class="opt"><b>C</b><div><strong>A soft taunt.</strong> "It is Taunted by you" (1 Bane against anyone else). About 2 to 5 points. The kind that was ignored on the Pathfinder 2e Guardian.</div></div>
+<p class="small">Not in this card, on purpose: the burst (a later Strike that is better against the creature he Judged), and anything that stops an enemy walking past him (a Reaction or an Art).</p>
 </section>
 
 <section id="decided">
@@ -102,6 +135,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><td>Attributes</td><td>Body or Appeal +1, Mind or Instinct +1</td><td>the same</td></tr>
 </table></div>
 <p>What the Modifiers do: his plain Weapon Attack rolls +1, a step under the Archer's. His divine Actions roll +2, and a divine Strike with the [Signature] trait rolls +2 as well. So the everyday swing is modest and the burst hits like a striker's.</p>
+<p><strong>His support:</strong> a smaller hit, or Guard before the hit. A step out of reach is a skirmisher's thing; ending conditions and stopping the drop at 0 are a healer's.</p>
 <p><strong>Your direction on Rally Points:</strong> letting allies use them is more a Cleric's thing; the Paladin can have some, not much. Lay On Hands as it is today (a Rally Point every round) doesn't fit him. At most one of his cards will touch an ally's Rally Points.</p>
 
 <h3>The charter</h3>
@@ -109,10 +143,10 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><th>#</th><th>Question</th><th>Your answer</th></tr>
 <tr><td>1</td><td>The utility category's name</td><td><span class="tag ok">Decided</span> <strong>Art</strong></td></tr>
 <tr><td>2</td><td>When a character gets Arts</td><td><span class="tag ok">Decided</span> one at level 1, another at level 3</td></tr>
-<tr><td>3</td><td>The shape of an Art</td><td><span class="tag open">Open</span> you asked for examples: <a href="#art">below</a></td></tr>
+<tr><td>3</td><td>The shape of an Art</td><td><span class="tag ok">Decided</span> a menu of up to 3 uses, to try; one is cut if it feels too much</td></tr>
 <tr><td>4</td><td>Two Versions are two uses, never two sizes</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>5</td><td>A Passive is never a silent bonus</td><td><span class="tag ok">Decided</span></td></tr>
-<tr><td>6</td><td>Does a class track a number of its own?</td><td><span class="tag open">Open</span> <a href="#counter">explained below</a></td></tr>
+<tr><td>6</td><td>Does a class track a number of its own?</td><td><span class="tag ok">Decided</span> no: the burst uses AP, the Reaction AP and Escalation (read, never spent)</td></tr>
 <tr><td>7</td><td>The class's defining pieces are Features every Paladin has; the Hallmark choice is a style</td><td><span class="tag ok">Decided</span> as a try; careful not to lose the identity</td></tr>
 <tr><td>8</td><td>3 Encounter Actions and 2 Passives per rung offered</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>9</td><td>Where a level 1 Paladin's burst lives</td><td><span class="tag ok">Decided</span> test both: inside a Feature, and the Encounter Pick at level 1</td></tr>
@@ -133,14 +167,14 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><td>A Feature</td><td>none</td><td>one sentence</td></tr>
 <tr><td>A Hallmark Action (Round)</td><td>1 or 2</td><td>one main thing, at most one rider</td></tr>
 <tr><td>A Hallmark Reaction</td><td>1</td><td>one main thing, at most one rider</td></tr>
-<tr><td>An Art</td><td>question 3</td><td>each use one thing, no damage</td></tr>
+<tr><td>An Art</td><td>up to 3</td><td>each use one thing, no damage</td></tr>
 <tr><td>An Escalation Passive</td><td>none</td><td>one sentence; it changes a decision or fires on a moment the table sees</td></tr>
 <tr><td>An Encounter Action</td><td>1 or 2</td><td>one main thing, up to two riders</td></tr>
 </table></div>
 </section>
 
 <section id="art">
-<h2>Question 3: what an Art looks like</h2>
+<h2>Question 3: what an Art looks like (decided: A)</h2>
 <p>An Art is the card you look at when attacking isn't the answer. It never deals damage. My default was "up to 3 Versions". What I meant: <strong>a small menu of different uses on one card</strong>, and you get all of them when you pick the Art. Two sketches to show the shape. <strong>These are not proposals</strong>; the real Arts come later, one at a time.</p>
 
 <div class="card">
@@ -163,7 +197,8 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 </section>
 
 <section id="counter">
-<h2>Question 6: does the Paladin track a number of his own?</h2>
+<h2>Question 6: does the Paladin track a number of his own? (decided: A)</h2>
+<p><strong>You asked: could Escalation be the pool, spent on abilities as it once was?</strong> I think it would hurt, as you suspected. Spending it switches off the Passives that need "Escalation 2 or more", which is exactly why it stopped being spent. Every class and the Elites share that ladder, and Momentum would turn into a starting purse. What works without spending: an ability can <em>read</em> Escalation ("1d8 more for each Escalation above 1"), so it grows through the fight and nothing is tracked.</p>
 <p>The brief says he "uses all he has" and explodes. The question is what "all he has" is made of. Three ways, each with an example line (examples, not proposals).</p>
 
 <div class="opt"><b>A</b><div><strong>Nothing new to track (my default).</strong> The burst spends what is already on the sheet: AP, the Reaction AP, Escalation.

@@ -53,6 +53,52 @@ The running record of the Paladin's redesign (MASTER-PLAN item 5; branch `pack-p
 
 **And a direction with it (Lucas):** "Using rally points for allies I think its more of a cleric thing. So lets try to make Paladin not have this too much; can gave some but not too much." So: the Paladin's "aid you, make sure you don't go down" is **not** built on letting allies use Rally Points (a future Cleric's job). At most one of his cards touches an ally's Rally Points; the rest of his support is something else (to settle with Lucas: Guard, a hit made smaller, a step, a condition ended, a drop at 0 stopped). It also closes the "whose reserve pays" question for now: Rally stays 6. Lay On Hands as written (a Rally Point every round) doesn't fit this Paladin.
 
-## Decision 2: next (the first Feature)
+## Directions from Lucas (2026-11-14, with his charter answers)
 
-Waiting for: Lucas's answers on the charter's questions 3 and 6, and what the Paladin's support is mostly made of. Then the first Feature: Lucas's draft, or Claude's proposal (the mark).
+- **His support is a smaller hit, or Guard before the hit.** "Step out of reach is more a skirmishing thing, condition ended and drop at 0 stopped a healer thing."
+- **No number of his own:** the burst is built from what is on the sheet (AP, the Reaction AP, Escalation read but never spent).
+- **An Art has up to 3 uses**, to try; one is cut if it feels too much.
+
+## Decision 2: the first Feature, the mark (PROPOSED, waiting for Lucas)
+
+**Research first.** Every modern paladin hangs on one enemy he marks (4e's Divine Challenge, 13th Age's Paladin's Challenge, Pathfinder 2e's Smite, Draw Steel's Judgment). The marks that worked are certain (no roll), cheap to place, and ask no upkeep the enemy controls: 4e's failed while it asked the slowest class to stay adjacent. A protector with little damage is obeyed only when his protection has a number the table hears (the 4e Swordmage: "preventing 8 damage from my marked target is enough to draw them to me"; the Pathfinder 2e Guardian's soft taunt on "piddly damage" was ignored). A type gate fails (Divine Power today): the judged enemy can count as Profane.
+
+> **Judgment** (Paladin Feature)
+> You gain the Judge Action.
+>
+> **Judge** · 0 AP / 1 AP · Turn · [Divine] · Distance 10 sq. · Target: one enemy you can see
+> **0 AP:** At the start of an encounter, or as a 0R when the creature you Judged goes Down: the target is **Judged** by you until the encounter ends.
+> **1 AP:** The target is Judged by you instead of the one you had.
+> A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.
+>
+> *Flavor: You name it before your god. From that moment, it is watched.*
+
+```
+Judged; counts as Profane for you ........................ not priced (0 by itself: it is the key other cards turn)
+The first hit a round on an ally within 5: reduced by 2 .. 24 each time   [SIM: 1 Health = 12]
+  x it happens in about 40% of rounds against Standards ... about 10 a turn   [judgment: Rebuke's "an enemy within 5 Strikes an ally" fires in 66% of rounds for ANY enemy; one chosen enemy of four, picked well, about 40%]
+  x against an Elite (it is most of the enemy's attacks) .. about 80%: about 19 a turn   [judgment]
+The enemy hits the Paladin instead (AD 14, not 13) ....... about 1 to 2 a turn   [SIM: a Standard deals 11.9 a turn to him, 13.3 to an Archer]
+0 AP to place; 1 AP to move it ........................... no cost on most turns
+--- Total: about 10 a turn against Standards, about 19 against an Elite, of a Feature's 10 to 15 [a guess]: on
+```
+
+**Analysis.**
+- **The decision it gives:** whom to judge. The biggest hitter (the reduction is flat, so it is worth most on many small hits and least on one big Special), or the enemy standing next to the Archer. Moving it costs 1 AP, so the first choice matters; when the Judged creature goes Down it moves for free, at once.
+- **It is certain and it has a number.** No roll, no Reaction AP, nothing to remember on the Paladin's side but "minus 2, once a round". At Stage 0 a Standard's Basic attack is 1 + 1d4 (3.5) on a Tier 2: minus 2 is more than half of it. Against its Special (4 + 1d6) it is a quarter. It scales with the Power Modifier (3 at Stage 1 if he raises it).
+- **It asks nothing the enemy controls.** No "stay adjacent to it". The one distance is the ally's from him (5 squares), which is the brief: he stands where his allies are. The Judged creature can be anywhere.
+- **It is your support direction, small:** a smaller hit. The Hallmark Reaction is then the big version (a smaller hit or Guard, once, with a rider), on any enemy; this is the always-on trickle on one.
+- **Both of the enemy's choices cost it:** hit his ally for less, or hit him (AD 14, the most Health). Small at Stage 0, and that is the point of "soft".
+- **Profane, for every campaign:** "counts as Profane for you" makes every later "against a Profane creature" line work on the enemy he chose, and still work on a real Profane creature he hasn't judged. Divine Power (a Bane on a Profane creature's Strikes) is retired.
+- **Its sibling:** the Archer's Mark Quarry has the same frame (0 AP at the start, 0R when it goes Down, 1 AP to change), so the two classes teach one pattern, and Foundry already runs it. The Archer marks to hurt; the Paladin marks to shield.
+- **The rules it touches:** "Judged" as a named mark (like Marked Quarry, not a Chapter 8 condition); one sentence in Chapter 7's Tags ("an effect can make a creature count as having a Tag for someone"); reduced damage comes before Guard (Chapter 4 already says so).
+- **Table feel:** the Paladin's first turn has a job that isn't an attack ("I judge the ogre"), and the GM hears "minus 2" every round the ogre goes for someone else. The risk: the GM must remember "once a round" for that creature (Foundry can do it: the damage-reduction setting and the mark both exist; not tried).
+- **The complexity budget:** the effect text is 31 words, the Action's two Versions are the Archer's. A Feature is "one sentence each": this is two short ones.
+
+**If you'd rather the mark did something else** (one of these in the place of the smaller hit):
+- **(B) It pays for ignoring him:** "The first time each round it damages an ally within 5 squares of you, it takes [R] 2 Ho" (your Power Modifier). 4e's Divine Challenge. About 3 a turn: certain damage is cheap, and the launch 4e Paladin's was called "barely a deterrent".
+- **(C) A soft taunt:** "It is Taunted by you" (1 Bane against anyone else). About 2 to 5 a turn [SIM: Taunted 1 to 3 a hit]; the kind that was ignored on the Guardian.
+
+**Not in this card, on purpose:** the burst (a later decision: a Strike that is better against the creature he Judged), and anything that stops it walking past him (a Reaction or an Art).
+
+**Lucas's answer:**

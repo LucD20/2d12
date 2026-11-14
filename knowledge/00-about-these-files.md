@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: eea83ce 2026-11-14 Research, second pass: every lead checked against its page; the five notes corrected
+Built by tools/knowledge.py on 2026-11-14 from the repository at: fea5ab5 2026-11-14 Paladin redesign: the numbers decided (Weapon +1 / Power +2 fixed), seven charter questions answered, the reading page
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (158 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (139 KB)
+- open-design-items.md (140 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -55,7 +55,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (10 KB)
-- design-paladin-redesign.md (10 KB)
+- design-paladin-redesign.md (15 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
