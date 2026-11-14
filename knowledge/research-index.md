@@ -9,3 +9,5 @@ What Claude found when Lucas asked for research outside the project (other games
 | File | Topic | Last researched | Used for |
 |---|---|---|---|
 | [tactical-combat.md](tactical-combat.md) | Tactical combat: forced movement, riders, defenders, Reactions, passives, cinematic moments | 2026-11-13 | The Paladin's Stage 0 audit (card sessions, MASTER-PLAN item 5) |
+| [movement-positioning.md](movement-positioning.md) | Movement: a safe step, movement given to an ally, a move bundled into an Action, split or unsplit movement | 2026-11-14 | The Card Workbench analyses (granted Evade, "Setup: Advance 3"); the Advance rule change |
+| [escalation-and-guard.md](escalation-and-guard.md) | Abilities gated on a rising combat value (13th Age), Guard (temporary hit points) against healing | 2026-11-14 | The Card Workbench analyses (Escalation 6 Passives, Guard) |
