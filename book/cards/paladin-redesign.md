@@ -203,6 +203,26 @@ Lucas: "I think the paladins Hallmark 'strike' actions should be 2 AP by default
 
 The two Hallmark Actions are a Strike and a Help. Lucas: "Help can be Lay on Hands, or shield of faith?" Claude's answer: **Lay On Hands** for the Help (the touch, on his own turn: Guard before the hit; its second use can be the class's one card that lets an ally use a Rally Point). **Shield of Faith** stays a Hallmark Reaction's name (the smaller hit, on the enemy's turn).
 
+## The Hallmark Strike's rider: the choices (asked by Lucas, 2026-11-14; from the rules and the research, no new search)
+
+The Strike has about 15 of its 50 points for one rider, and the rider must still happen on a Tier 1. Prices: Guard 6 a point, 8 on an ally about to be hit [SIM, the guide]; conditions from the PC budget's rider table (melee seat, against Standards; an Elite in brackets) [SIM]; forced movement at Lucas's rates.
+
+| Rider | Price | What it does for the brief | Watch |
+|---|---|---|---|
+| **Guard to an ally** near the target (Power Modifier + 1 = 3) | 18 to 24 | "Guard before the hit", his chosen support; two things in one Action | the default |
+| **A weaker next hit:** the target takes 1 Bane on its [Strike] Actions (EoT) | about 5 to 8 | a smaller hit for everyone, himself included; 4e's Enfeebling Strike; old Divine Power's effect | small; a Bane is about 9% of a roll |
+| **Guard to himself** (4e's Bolstering Strike) | 12 to 18 | he stays up in front | aids nobody else |
+| **Slid 1 or Pushed 1** | 3 to 5 | peels the enemy off an ally; Collision next to a wall | needs somewhere to send it (research: forced movement needs a payoff) |
+| **Hindered (EoT)** (Speed halved) | 0 to 3 | the line: it can't reach the back this turn | worth nothing if it is already where it wants to be |
+| **Frightened of you (EoT)** | 2 to 4 (6) | a Bane on all its rolls, and squares toward him cost double: the profane flinch | every round with no Save was judged too strong on the Archer's Harrying Shots (Lucas, 2026-11-04) |
+| **Taunted by you (1 round)** | 1 to 3 | a soft "fight me" | the kind that was ignored on the Guardian; weak alone |
+| **Vulnerable 1 (EoT)** | 2 to 4 | allies hit it more easily: support through the party's attack | pulls him toward a leader, away from a protector |
+| **Prone / Slowed 1 / Dazed 1** | 7 to 9 / 7 to 10 / 11 to 15 (20) | takes the enemy's AP: the strongest protection of all | a controller's tools; over budget every round; Tier 3 only, or an Encounter Action |
+| **Bright light on the target** (it can't Hide) | 0 to 5 | divine identity | kept for an Art |
+| **More against the creature he Judged** (4e's Holy Strike) | by the bonus | ties the Strike to the mark | a conditional on an every-round card (the budget allows none) |
+
+**Claude's reading:** Guard to an ally first. The two real alternatives are the weaker next hit (the same direction, protects without choosing whom, cheap enough to sit beside something else) and Slid 1 (the only one that changes the board). The AP-takers belong on an Encounter Action. One of the others can be the Strike's Tier 3 line.
+
 ## Decision 4: next (the first Hallmark Action)
 
 With Judge and Smite as the two Features, the Hallmark Action is a style, used every round: a Strike with one rider, or a Help. Claude proposes unless Lucas drafts.

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: 5308ae0 2026-11-14 Paladin: Smite decided (the burst, a Feature; exploding dice, at most 4)
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 5d620d7 2026-11-14 Paladin: Smite final (Reaction AP = 1 die over the cap); the Hallmark Strike costs 2 AP; the Help is Lay On Hands
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -55,7 +55,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (11 KB)
-- design-paladin-redesign.md (29 KB)
+- design-paladin-redesign.md (32 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
