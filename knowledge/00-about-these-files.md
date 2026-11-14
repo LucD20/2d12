@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: 3c5e73d 2026-11-14 Research: ability scope (complexity per card, action compression, rule-benders, ribbons, rote turns); the audit "are our Actions doing too much?" in paladin-analyses.md
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 07760b0 2026-11-14 Decide the class redesign (MASTER-PLAN item 5, top priority) and retire the Action Builder and the Card Workbench
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (157 KB)
 - MASTER-PLAN.md (39 KB)
-- open-design-items.md (131 KB)
+- open-design-items.md (132 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -31,9 +31,10 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
-- research-index.md (1 KB)
+- research-index.md (2 KB)
 - research-ability-scope.md (5 KB)
 - research-escalation-and-guard.md (3 KB)
+- research-gear-and-hands.md (2 KB)
 - research-movement-positioning.md (5 KB)
 - research-tactical-combat.md (5 KB)
 - design-style-audit.md (31 KB)
