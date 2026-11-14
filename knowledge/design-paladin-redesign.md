@@ -225,7 +225,7 @@ The Strike has about 15 of its 50 points for one rider, and the rider must still
 
 **Immobilized as the rider (asked by Lucas, 2026-11-14; from the rules and our numbers, no new search).** The rule (Chapter 8): the creature can't use Move Actions or Evade; it ends by spending 1 AP [Move] (Break Free) unless the card says otherwise; and it is hard to move (a Forced Movement that doesn't roll is disrupted). Two forms on cards: "(EoT)" and plain ("until it escapes"). **Prices [SIM, `pc-budget.md` sections 3 and 9]:** on a melee PC's attacks, Immobilized (EoT) -3.6 against Standards and -3.5 against an Elite; until it escapes -0.1 and +1.5; on maps -1.0 to -2.1; from the ranged seat +3.4 and +1.8. Negative because the white room's enemy, pinned next to him, spends every AP hitting him and nothing counts the back line it didn't reach: this is one of the SIM's blind spots, not a verdict. On a PC it is Moderate (8) in the Bestiary's table. **History:** the Archer's Pinned Down (Immobilized (EoT) on a shot every round) was cut as too strong (2026-11-04); Pinning Shot has it once an encounter. **Research:** "leaving costs the action economy" is the second strongest way to make a front line real (Lancer's Full-action Disengage, 13th Age's disengage check); Draw Steel's Judgment buys "its speed becomes 0" for 1 wrath. **Claude's reading:** it is the best answer we have to "they stay in front so the squishies can stay back", in the plain form (the enemy pays 1 AP to leave him: a Standard's AP is 25 points, on the turns it wanted to leave), on a Tier 2 or 3 only, with a lesser Tier 1 (Hindered (EoT)). Its limits: nothing against an enemy already next to the ally it wants, or one with Reach or a ranged attack; it blocks the party's own pushes on that enemy. **And an argument for it over Guard on the Strike:** the other Hallmark Action, Lay On Hands, already gives Guard; a Strike that pins makes the two Hallmark Actions two styles (the one who shields, the one who holds the line) and not one style twice.
 
-## Decision 4: the Hallmark Strike (PROPOSED, waiting for Lucas)
+## Decision 4: the Hallmark Strike (PROPOSED; revised after Lucas's notes, the card at the end of this section)
 
 Lucas (2026-11-14): yes to the Strike with Immobilized. **Why Claude hadn't listed Immobilized among the riders (his question):** the list was filtered three ways without saying so. It was built from the PC budget's rider table, where Immobilized is negative for a melee PC, and that number was treated as a verdict (it is a blind spot: the white room doesn't count the back line). It was filtered by his last direction (a smaller hit, Guard), not by all five lines of the brief. And holding the line had already been parked on "a Reaction or an Art", so it wasn't looked for on the Strike. The fix proposed to him: when he asks for choices, the whole list from the rules is shown, the rejected ones with their reason.
 
@@ -258,5 +258,17 @@ Immobilized for 1 round, on 65% of uses:
 - **Table feel:** "it's rooted" is a thing everyone at the table sees on the map. The risk: a GM whose monsters never wanted to move makes it read as a plain, weak attack.
 
 **For Lucas to choose:** the name (Halting Strike is a placeholder); "for 1 round" or "(EoT)"; whether it should roll [Signature] (+2) instead of Weapon (+1): Claude kept +1 so that only Smite hits like a striker.
+
+**Lucas's notes (2026-11-14), applied:** (1) **each Tier's line holds its whole result**, the condition after a semicolon, as Draw Steel writes it (Claude agreed: one line to read after the roll; the Effects row stays for what happens whatever the Tier; a rule of the charter now). (2) **A Tier 3 should deal a bit more** ("1d6!, or 1d8"): the Holy die is 1d8 on a Tier 3. Claude's note: a Greatsword's own Tier 3 is already bigger (8 + 1d8! against 5 + 1d6!), but both lines read "1[W]", so the card must show it.
+
+> **Halting Strike** · Paladin Hallmark Action · Round · 2 AP · [Divine, Strike, Weapon] · Distance: Weapon · Target: one creature
+> *Your blow lands wreathed in light that roots your foe where it stands.*
+> **Tier 1:** [R] 1d6 Ho
+> **Tier 2:** [V] 1[W] + [Mod] + [R] 1d6 Ho; Immobilized (1 round)
+> **Tier 3:** [V] 1[W] + [Mod] + [R] 1d8 Ho; Immobilized (1 round)
+
+Damage 3.5 / 13.7 / 18.6: 38 points [judgment, computed]; with the pin, 43 to 53 of 50.
+
+**Open from the same rule, for Lucas:** Smite's Tier 2 and Tier 3 also read the same ("[V] 1[W] + [Mod] + your Smite dice"). A fix in one clause: "Tier 3: ... + your Smite dice, and 1 more" (about +4 points: 104 at 4 dice).
 
 **Lucas's answer:**

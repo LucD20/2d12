@@ -35,7 +35,8 @@ The cards met most are the simplest (research: `ability-scope.md`, takeaway 1). 
 
 Rules that go with it:
 1. **Two Versions are two uses, not two sizes.** The second Version adds a different thing (a move, a second target, a rider), never only bigger dice. A card that only scales has one Version.
-2. **A rider is written once.** "Tier 2 or better: ..." under the Tiers, not on each Tier.
+2. **Each Tier's line holds its whole result** (Lucas, 2026-11-14; Draw Steel and 4e write it so): the damage, then a semicolon, then what else that Tier does ("[V] 1[W] + [Mod] + [R] 1d6 Ho; Immobilized (1 round)"). At the table you roll, find your Tier and read one line. The Effects row is only for what happens whatever the Tier. This replaces the book's convention (Effects = what happens on Tier 2 or 3: rules-src/README.md) for the redesigned class cards; the other cards follow when they are redone.
+2b. **A Tier 3 visibly beats a Tier 2** (Lucas, 2026-11-14: "Rolling a tier 3 and seeing it does the same as tier 2 isnt great"). The weapon's own Tier 3 is already bigger, but "1[W]" reads the same on both lines: the Tier 3 line shows a bigger die or one more thing.
 3. **A card names at most one condition** (Frightened, Prone...), the Apex excepted.
 4. **A Passive changes a decision or fires on a moment the table sees.** Never a silent bonus ("+2 damage", "+1 Defense"). The Escalation 6 Passive is a "when your Escalation becomes 6" moment (it is seldom reached: `escalation-and-guard.md`).
 5. **Every level 1 Action works in round 1.** Only the Passives and the Apex read Escalation.
