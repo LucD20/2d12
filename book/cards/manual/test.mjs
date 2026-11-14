@@ -15,5 +15,8 @@ r = P("'healing 2d6 + body' to one ally", {}, 2); ok(Math.abs(r.items[0]?.pts - 
 r = P("allies in it heal 1d4 at the start of each of their turns.", {}, 2); ok(Math.abs(r.items[0]?.pts - 2.5 * 12) < 1e-9, `"heal 1d4 at the start…" reads 1d4 only (${r.items[0]?.what})`);
 r = P("heals 3d6 + [Mod]", {}, 3); ok(Math.abs(r.items[0]?.pts - 12.5 * 12) < 1e-9, `[Mod] reads as the Power Modifier: ${r.items[0]?.what}`);
 r = B.price(card("", { rx: "Interrupt", frequency: "Turn" }), ver("The ally heals 1d8.", 1), "Paladin (Lay On Hands)"); ok(Math.abs(r.total - 4.5 * 12 * 0.5) < 1e-9 && r.budget === 12.5, `a Reaction: its items × 0.5 (fires half the rounds) = ${r.total} against 12.5`);
+r = P("The target can use 1 Rally Point, healing your Power Modifier more.", {}, 1); ok(r.items[1]?.pts === 24, `"healing your Power Modifier more" = pow (2) = ${r.items[1]?.pts}`);
+r = P("You or one ally within 5 squares heals twice your Power Modifier + your Stage.", {}, 1); ok(r.items[0]?.pts === 48, `"heals twice your Power Modifier + your Stage" = 4 Health = ${r.items[0]?.pts} (${r.items[0]?.note})`);
+r = P("The target heals what 1 Rally Point would heal.", {}, 1); ok(r.items.length === 1, "\"heals what 1 Rally Point…\" isn't read as a heal of a number");
 r = P("", { frequency: "Encounter" }, 2); ok(r.budget === 100, "an Encounter 2 AP Action should cost 100");
 console.log(bad ? `\n${bad} failed` : "\nall ok"); process.exit(bad ? 1 : 0);

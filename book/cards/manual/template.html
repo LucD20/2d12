@@ -131,6 +131,14 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
 .items li em { grid-column: 1 / -1; font-style: normal; color: var(--faint); font-size: 12px; }
 .items .none { color: var(--faint); }
 .reads { color: var(--faint); font-size: 12px; margin: 4px 0 0; }
+
+/* saved cards (2026-11-14) */
+.drafts { list-style: none; margin: 0; padding: 0; }
+.drafts li { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; padding: 4px 0; border-bottom: 1px solid var(--hair); }
+.drafts li b { font-weight: 600; } .drafts li .when { color: var(--faint); font-size: 12.5px; } .drafts li .sp { margin-left: auto; display: flex; gap: 6px; }
+.drafts li.cur b { color: var(--gold); }
+.drafts .none { color: var(--faint); }
+.saved { display: grid; gap: 6px; }
 </style>
 
 <div class="page">
@@ -140,6 +148,7 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
       <span class="status" id="status" role="status"></span>
       <select id="load" aria-label="Load a card as the book writes it"></select>
       <button type="button" class="btn" id="blank">Blank card</button>
+      <button type="button" class="btn" id="save">Save</button>
       <button type="button" class="btn main" id="copy">Copy for Claude</button>
     </div>
   </header>
@@ -154,6 +163,12 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
         <textarea id="notes" placeholder="e.g. The attacker chooses; Foundry asks it in the chat."></textarea>
       </div>
       <div id="copyout"></div>
+      <div class="saved">
+        <h2 class="ch">Saved cards <small id="store-note"></small></h2>
+        <ul class="drafts" id="drafts"></ul>
+        <div class="addrow"><button type="button" class="btn small" id="save-copy">Save as a new card</button><button type="button" class="btn small" id="export">Export this card</button><button type="button" class="btn small" id="import-open">Import</button></div>
+        <div id="importbox" hidden><label class="reads" for="import-text">Paste an exported card, a card in the book/cards format, or a "Copy for Claude" text:</label><textarea class="copybox" id="import-text"></textarea><div class="addrow"><button type="button" class="btn small" id="import-go">Load it</button><button type="button" class="btn small plain" id="import-cancel">Cancel</button></div></div>
+      </div>
     </section>
   </div>
 </div>
@@ -176,7 +191,7 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
     const inlineLine = x => [x.name + " — " + (x.cost ?? ""), x.frequency, x.traits ? `[${[].concat(x.traits).join(", ")}]` : "", x.interrupt ? `Interrupt: ${x.interrupt}` : "", x.trigger ? `Trigger: ${x.trigger}` : "", x.target ? `Target: ${x.target}` : "", x.requirements ? `Requirements: ${x.requirements}` : "", x.effects ? `Effects: ${x.effects}` : ""].filter(Boolean).map(unlink).join(" | ");
     return { ...blank(), name: c.name, category: c.category ?? "", level: c.level ?? "", flavor: c.flavor ?? "", traits: (c.traits ?? []).map(t => t[0].toUpperCase() + t.slice(1)).join(", "), frequency: c.frequency ?? "",
       escalation: c.escalation ?? "", requirements: unlink(c.requirements), rx: c.interrupt ? "Interrupt" : c.trigger ? "Trigger" : "", rxText: unlink(c.interrupt ?? c.trigger), target: unlink(c.target), distance: unlink(c.distance), area: unlink(c.area), vs: unlink(c.vs), text: unlink(c.text),
-      versions: (c.versions ?? []).map(v => ({ ap: String(v.ap ?? ""), tiers: [0, 1, 2].map(i => unlink(v.tiers?.[i] ?? "")), critical: unlink(v.critical), effects: unlink(v.effects) })), inline: (c.inline ?? []).map(inlineLine).join("\n"), from: `${c.name} (${c.file}), as the book writes it` };
+      versions: (c.versions ?? []).map(v => ({ ap: String(v.ap ?? ""), tiers: [0, 1, 2].map(i => unlink(v.tiers?.[i] ?? "")), critical: unlink(v.critical), effects: unlink(v.effects) })), inline: c.inline_lines ? c.inline_lines.join("\n") : (c.inline ?? []).map(inlineLine).join("\n"), from: c.file ? `${c.name} (${c.file}), as the book writes it` : `${c.name}, pasted` };
   }
 
   /* ---------------------------------------------------------------- state */
@@ -286,7 +301,51 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
     lines.push("", "Card (book/cards format; inline_lines are in my one-line format):", "```json", JSON.stringify(toCard(), null, 2), "```");
     return lines.join("\n");
   }
-  function renderCopy() { $("copyout").innerHTML = S.copy ? `<h2 class="ch">Copy for Claude <small>select all and copy if the button couldn't</small></h2><textarea class="copybox" id="copybox" readonly aria-label="The text for Claude">${esc(S.copy)}</textarea>` : ""; }
+  function renderCopy() { $("copyout").innerHTML = S.copy ? `<h2 class="ch">The text to copy <small>select all and copy if the button couldn't</small></h2><textarea class="copybox" id="copybox" readonly aria-label="The text for Claude">${esc(S.copy)}</textarea>` : ""; }
+
+  /* ---------------------------------------------------------------- saved cards: the page's own store (db), the browser's when it has none; export / import as text */
+  const LSD = LS + "-drafts", lsList = () => { try { return JSON.parse(localStorage.getItem(LSD)) ?? []; } catch { return []; } }, lsPut = v => { try { localStorage.setItem(LSD, JSON.stringify(v)); } catch { /* none */ } };
+  let db = null; S.store = "wait"; S.saved = []; S.confirm = "";
+  const snapshot = () => ({ card: JSON.parse(JSON.stringify(S.card)), notes: S.notes, placed: S.placed, build: S.build });
+  function renderDrafts() {
+    $("store-note").textContent = S.store === "db" ? "kept with this page, on every device" : S.store === "wait" ? "looking for the page's store…" : "kept in this browser only";
+    const list = S.saved.slice().sort((a, b) => String(b.updated).localeCompare(String(a.updated)));
+    $("drafts").innerHTML = list.length ? list.map(x => `<li class="${x.id === S.card.id ? "cur" : ""}"><b>${esc(x.name || "Unnamed card")}</b><span class="when">${esc(String(x.updated ?? "").slice(0, 16).replace("T", " "))}${x.id === S.card.id ? " · open now" : ""}</span><span class="sp"><button type="button" class="btn small" data-open="${esc(x.id)}">Open</button><button type="button" class="btn small plain" data-drop="${esc(x.id)}">${S.confirm === x.id ? "Delete it for good?" : "Delete"}</button></span></li>`).join("") : `<li class="none">Nothing saved yet. "Save" keeps the card on the right (and your notes); open another, and come back to it here.</li>`;
+  }
+  async function initStore() {
+    try { db = (await window.claude?.use?.("db")) ?? null; } catch { db = null; }
+    if (!db) { S.store = "browser"; S.saved = lsList(); renderDrafts(); return; }
+    const late = setTimeout(() => { if (S.store === "wait") { db = null; S.store = "browser"; S.saved = lsList(); renderDrafts(); } }, 10000);
+    db.collection("cards").onSnapshot(snap => { clearTimeout(late); S.store = "db"; S.saved = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderDrafts(); }, () => { clearTimeout(late); db = null; S.store = "browser"; S.saved = lsList(); renderDrafts(); });
+  }
+  async function saveCard(asNew) {
+    if (asNew || !S.card.id) S.card.id = `c${Date.now().toString(36)}`;
+    const doc = { name: S.card.name || "Unnamed card", updated: new Date().toISOString(), ...snapshot() };
+    if (db && S.store === "db") { try { await db.collection("cards").doc(S.card.id).set(doc); say(asNew ? "Saved as a new card" : "Saved"); } catch (e) { say(e?.code === "quota_exceeded" ? "The store is full: delete a saved card" : "Not saved: the page's store refused it"); } }
+    else { const l = lsList().filter(x => x.id !== S.card.id); l.push({ id: S.card.id, ...doc }); lsPut(l); S.saved = l; renderDrafts(); say("Saved in this browser"); }
+    save(); renderDrafts();
+  }
+  function openSaved(id) {
+    const x = S.saved.find(d => d.id === id); if (!x?.card) return;
+    S.undo = { card: S.card, placed: S.placed }; S.card = { ...blank(), ...JSON.parse(JSON.stringify(x.card)), id: x.id }; S.notes = x.notes ?? ""; S.placed = x.placed ?? ""; if (x.build) S.build = x.build; S.copy = "";
+    save(); renderAudit(); renderCard(); renderDrafts(); $("status").innerHTML = `Opened ${esc(x.name)}. <button type="button" class="btn small plain" id="undo">Undo</button>`;
+  }
+  async function dropSaved(id) {
+    if (S.confirm !== id) { S.confirm = id; renderDrafts(); return; }
+    S.confirm = ""; if (S.card.id === id) delete S.card.id;
+    if (db && S.store === "db") { try { await db.collection("cards").doc(id).delete(); say("Deleted"); } catch { say("Not deleted"); } }
+    else { const l = lsList().filter(x => x.id !== id); lsPut(l); S.saved = l; renderDrafts(); say("Deleted"); }
+  }
+  function importText(t) {
+    const block = String(t).match(/```json\s*([\s\S]*?)```/), raw = block ? block[1] : String(t).slice(String(t).indexOf("{"));
+    let o; try { o = JSON.parse(raw); } catch { say("That isn't a card I can read: paste the whole export or the card's JSON"); return; }
+    S.undo = { card: S.card, placed: S.placed };
+    if (o.workbench) { S.card = { ...blank(), ...o.card }; delete S.card.id; S.notes = o.notes ?? ""; S.placed = o.placed ?? ""; if (o.build) S.build = o.build; }
+    else if (o.name) { S.card = fromCard(o); S.placed = AU.entries.find(x => x.card === o.name)?.name ?? ""; const nm = String(t).match(/My notes:\n([\s\S]*?)\n\n/); if (nm) S.notes = nm[1]; }
+    else { say("No card found in it"); return; }
+    $("importbox").hidden = true; $("import-text").value = ""; S.copy = "";
+    save(); renderAudit(); renderCard(); renderDrafts(); $("status").innerHTML = `Imported ${esc(S.card.name || "a card")} (not saved yet). <button type="button" class="btn small plain" id="undo">Undo</button>`;
+  }
 
   /* ---------------------------------------------------------------- events */
   $("card").addEventListener("input", e => { const k = e.target.dataset?.k; if (!k) return; setPath(k, e.target.value); if (e.target.tagName === "TEXTAREA") fit(e.target); save(); renderBudget(); });
@@ -302,10 +361,21 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
   });
   $("notes").addEventListener("input", e => { S.notes = e.target.value; save(); });
   $("audit").addEventListener("click", e => { const b = e.target.closest("[data-place]"); if (b) place(Number(b.dataset.place)); });
-  $("status").addEventListener("click", e => { if (e.target.id !== "undo" || !S.undo) return; Object.assign(S, S.undo); S.undo = null; save(); renderAudit(); renderCard(); say("Undone"); });
+  $("status").addEventListener("click", e => { if (e.target.id !== "undo" || !S.undo) return; Object.assign(S, S.undo); S.undo = null; save(); renderAudit(); renderCard(); renderDrafts(); say("Undone"); });
   { const by = {}; for (const c of DATA.cards) (by[c.file] ??= []).push(c.name); $("load").innerHTML = `<option value="">Load a card…</option>` + Object.entries(by).map(([f, ns]) => `<optgroup label="${esc(f)}">${ns.map(n => `<option>${esc(n)}</option>`).join("")}</optgroup>`).join(""); }
   $("load").addEventListener("change", e => { const c = DATA.cards.find(x => x.name === e.target.value); e.target.value = ""; if (!c) return; S.undo = { card: S.card, placed: S.placed }; S.card = fromCard(c); S.placed = AU.entries.some(x => x.card === c.name) ? AU.entries.find(x => x.card === c.name).name : ""; save(); renderAudit(); renderCard(); $("status").innerHTML = `Loaded ${esc(c.name)}. <button type="button" class="btn small plain" id="undo">Undo</button>`; });
   $("blank").addEventListener("click", () => { S.undo = { card: S.card, placed: S.placed }; S.card = blank(); S.placed = ""; save(); renderAudit(); renderCard(); $("status").innerHTML = `A blank card. <button type="button" class="btn small plain" id="undo">Undo</button>`; });
+  $("save").addEventListener("click", () => saveCard(false));
+  $("save-copy").addEventListener("click", () => saveCard(true));
+  $("drafts").addEventListener("click", e => { const o = e.target.closest("[data-open]"), d = e.target.closest("[data-drop]"); if (o) openSaved(o.dataset.open); else if (d) dropSaved(d.dataset.drop); });
+  $("export").addEventListener("click", () => {
+    S.copy = JSON.stringify({ workbench: 1, ...snapshot() }, null, 1); renderCopy();
+    const fallback = () => { const box = $("copybox"); if (box) { box.focus(); box.select(); } say("Select the text below and copy it"); };
+    try { navigator.clipboard.writeText(S.copy).then(() => say("Exported to the clipboard: paste it into Import to bring it back"), fallback); } catch { fallback(); }
+  });
+  $("import-open").addEventListener("click", () => { $("importbox").hidden = false; $("import-text").focus(); });
+  $("import-cancel").addEventListener("click", () => { $("importbox").hidden = true; });
+  $("import-go").addEventListener("click", () => importText($("import-text").value));
   $("copy").addEventListener("click", () => {
     S.copy = exportText(); renderCopy();
     const fallback = () => { const box = $("copybox"); if (box) { box.focus(); box.select(); } say("Select the text below and copy it"); };
@@ -313,6 +383,6 @@ textarea.w { resize: none; overflow: hidden; display: block; line-height: 1.45; 
   });
   window.addEventListener("resize", () => { for (const t of document.querySelectorAll("#card textarea.w")) fit(t); });
 
-  renderAudit(); renderCard();
+  renderAudit(); renderCard(); renderDrafts(); initStore();
 })();
 </script>

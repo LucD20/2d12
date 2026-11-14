@@ -24,19 +24,21 @@ function makeBudget() {
     rallyHeal: 9,           // a Rally Point heals ⌈Health Pool ÷ 4⌉: 9 for the Paladin (35), 8 for the Archer (29); an NPC's is 9 at Stage 0
   };
   const BUILDS = [
-    { name: "Paladin (Smite)", seat: "melee", wea: 2, pow: 1, body: 2, mind: 1, instinct: 0, appeal: 0 },
-    { name: "Paladin (Lay On Hands)", seat: "melee", wea: 1, pow: 2, body: 2, mind: 1, instinct: 0, appeal: 0 },
-    { name: "Archer (Double Shot)", seat: "ranged", wea: 2, pow: 1, body: 1, mind: 1, instinct: 2, appeal: 0 },
-    { name: "Archer (Rolling Shot)", seat: "ranged", wea: 2, pow: 1, body: 1, mind: 1, instinct: 2, appeal: 0 },
+    { name: "Paladin (Smite)", stage: 0, seat: "melee", wea: 2, pow: 1, body: 2, mind: 1, instinct: 0, appeal: 0 },
+    { name: "Paladin (Lay On Hands)", stage: 0, seat: "melee", wea: 1, pow: 2, body: 2, mind: 1, instinct: 0, appeal: 0 },
+    { name: "Archer (Double Shot)", stage: 0, seat: "ranged", wea: 2, pow: 1, body: 1, mind: 1, instinct: 2, appeal: 0 },
+    { name: "Archer (Rolling Shot)", stage: 0, seat: "ranged", wea: 2, pow: 1, body: 1, mind: 1, instinct: 2, appeal: 0 },
   ];
   const NUM = { a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, twice: 2 }, num = s => NUM[String(s).toLowerCase()] ?? Number(s);
-  const MODS = { pow: "pow", power: "pow", wea: "wea", weapon: "wea", body: "body", mind: "mind", appeal: "appeal", instinct: "instinct", mod: "pow" };
+  const MODS = { stage: "stage", pow: "pow", power: "pow", wea: "wea", weapon: "wea", body: "body", mind: "mind", appeal: "appeal", instinct: "instinct", mod: "pow" };
 
   /** "1d6 + pow", "2d8+3", "1d4", "9": its average with the build's Modifiers, and how it was read. null when it isn't one. */
   function amount(expr, b) {
     let total = 0, parts = [], ok = false;
     for (const raw of String(expr).split("+").map(x => x.trim()).filter(Boolean)) {
       let m;
+      const tw = raw.match(/^twice\s+(.*)$/i); if (tw) { const a = amount(tw[1], b); if (!a) return ok ? { avg: total, how: parts.join(" + ") } : null; total += 2 * a.avg; parts.push(`twice ${a.how}`); ok = true; continue; }
+      if (/^stage$/i.test(raw)) { total += b.stage ?? 0; parts.push(`stage (${b.stage ?? 0})`); ok = true; continue; }
       if ((m = raw.match(/^(\d*)d(\d+)!?$/i))) { const n = Number(m[1] || 1), y = Number(m[2]); total += n * (y + 1) / 2; parts.push(`${n}d${y} (${n * (y + 1) / 2})`); ok = true; }
       else if ((m = raw.match(/^\d+$/))) { total += Number(raw); parts.push(raw); ok = true; }
       else if ((m = raw.toLowerCase().replace(/^your\s+/, "").replace(/\s*modifier$/, "").replace(/^\[|\]$/g, "")) in MODS) { const k = MODS[m]; total += b[k]; parts.push(`${k} (${b[k] >= 0 ? "+" : ""}${b[k]})`); ok = true; }
@@ -45,7 +47,7 @@ function makeBudget() {
     return ok ? { avg: total, how: parts.join(" + ") } : null;
   }
   // "your Power Modifier" and the like become one word, so "1d6 + your Power Modifier" reads as "1d6 + pow"
-  const tidy = t => String(t ?? "").replace(/'/g, " ").replace(/your (Power|Weapon|Signature) Modifier/gi, (_, k) => (k.toLowerCase() === "weapon" ? "wea" : "pow")).replace(/\[Mod\]/g, "mod");
+  const tidy = t => String(t ?? "").replace(/'/g, " ").replace(/your (Power|Weapon|Signature) Modifier/gi, (_, k) => (k.toLowerCase() === "weapon" ? "wea" : "pow")).replace(/\[Mod\]/g, "mod").replace(/your Stage\b/gi, "stage").replace(/your (Body|Mind|Appeal|Instinct)\b(?: Modifier)?/gi, (_, k) => k.toLowerCase());
 
   /** The things read from the text. Each: a regex over the text, and a price for one match. */
   const READERS = [
@@ -57,7 +59,7 @@ function makeBudget() {
       read: (m, b) => { const n = Math.max(1, Number(m[1])), i = Math.min(3, n) - 1, k = b.seat === "melee" ? "evadeMelee" : "evadeRanged"; return { what: `Evade ${n} (${b.seat})`, pts: rate(k)[i], note: rateNote(k, i) }; } },
     { key: "slid", re: /Slid (\d+)/gi,
       read: (m) => { const n = Math.max(1, Number(m[1])), i = Math.min(3, n) - 1; return { what: `Slid ${n}`, pts: rate("slid")[i], note: rateNote("slid", i) }; } },
-    { key: "heal", re: /heal(?:s|ing)?\s+(?:more\s+)?(\d*d\d+!?(?:\s*\+\s*(?:\d*d\d+!?|\d+|pow|wea|mod|body|mind|appeal|instinct)\b)*|\d+(?:\s*\+\s*(?:pow|wea|mod|body|mind|appeal|instinct)\b)*)/gi,
+    { key: "heal", re: /heal(?:s|ing)?\s+(?:more\s+)?((?:twice\s+)?(?:\d*d\d+!?|\d+|pow|wea|mod|body|mind|appeal|instinct|stage)\b(?:\s*\+\s*(?:twice\s+)?(?:\d*d\d+!?|\d+|pow|wea|mod|body|mind|appeal|instinct|stage)\b)*)/gi,
       read: (m, b) => { const a = amount(m[1], b); if (!a) return null; return { what: `healing ${m[1].trim()} = ${+a.avg.toFixed(1)} Health`, pts: a.avg * PRICES.health, note: `${a.how}; × ${PRICES.health} points a Health (new Health)` }; } },
   ];
 
