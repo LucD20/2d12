@@ -377,7 +377,7 @@ Smite at 4 dice on the creature he Judged: 21 / 32 / 41, average 31: 104 points;
 
 **Status: DECIDED (Lucas, 2026-11-14).**
 
-## Decision 6: the first Hallmark Reaction, Shield of Faith (PROPOSED, waiting for Lucas)
+## Decision 6: the first Hallmark Reaction, Shield of Faith (DECIDED as proposed, Lucas, 2026-11-14)
 
 **Research and rules first.** The best-liked protector's reaction is one trigger, one payload, one rider (the Pathfinder 2e Champion's four protecting causes), and it shaves the hit, never erases it (Draw Steel's final design reduces damage, "never eliminated"). The 4e Swordmage, with little damage of his own, was obeyed because the number was heard ("preventing 8 damage from my marked target is enough to draw them to me"). A soft taunt alone was ignored on the Guardian; behind a real reduction it is the second half of the trap. Ours today: Shield of Faith reduces by 2d6 + [Mod], on him too, fires in 82% of rounds and is worth 66 points a turn; Lucas's target is about 15, and a Reaction should fire in about half the rounds. A Reaction "you or an ally" gets spent on himself: allies only (the Glossary's "ally" already excludes him).
 
@@ -406,5 +406,38 @@ x it fires in about half the rounds ........... [judgment: Rebuke's same trigger
 - **Table feel:** "minus 3, and it's Taunted" on the GM's turn: quick, and it changes what the monster does next.
 
 **For Lucas to choose:** 1 + Power Modifier (3, about 20 a turn) or the Power Modifier (2, about 14); "an enemy's [Strike] Action" (not areas or Saves) or any damage; Taunted as the rider, or none.
+
+**Lucas's answer (2026-11-14):** the size (1 + Power Modifier) "is good as is"; a Strike only: good; Taunted is a good rider. **His question: in other media Shield of Faith grants Defense; will the Paladin have a flat Defense Action, so this one should take another name?** Claude's answer, from our notes: probably not as a core card. A flat Defense bonus is the kind of protection nobody sees (the 5e aura: "Forgetting to use the paladin's aura when it comes up"; our own rule now: no silent bonuses), and the SIM prices +1 Defense on an ally for a round at 12 points for an AP, half an AP's worth. If one comes, it will be an Encounter Action or an Art (today's Beacon is that card) and takes its own name. A pane of light that turns part of a blow aside is a shield: **the name stays.**
+
+## Decision 7: the second Hallmark Reaction, Rebuke (PROPOSED, waiting for Lucas)
+
+**Research and rules first.** The strongest way to make a front line real is that movement ends near the front-liner (Lancer: a character that becomes Engaged stops and loses its unused movement; 13th Age: an unengaged defender can intercept one enemy moving past). The opportunity attack is the weakest, and worthless on a low-damage character (RPGBot: "the absolute floor of stickiness"). Our rules have the pieces: "an enemy moves closer to you or to an ally" is a defined moment (Chapter 2; the Archer's Overwatch uses it); a Trigger on a Move Action fires once for the whole Move Action and the reactor chooses the square; a disrupted movement "ends in the square the creature was in" and its AP is wasted; Evade and Forced Movement never trigger it. With the Advance in one piece the movement left is lost. Today's Rebuke (an Appeal Save when an enemy Strikes an ally: damage, Pushed, Frightened) fires in 66% of rounds and is worth 14.
+
+> **Rebuke** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus]
+> *You call out in your god's name, and your foe's stride falters and stops.*
+> **Trigger:** An enemy within 5 squares of you moves closer to an ally.
+> The triggering Move Action is disrupted, and the enemy is Hindered (EoT).
+
+```
+The Move Action disrupted: the enemy loses the AP it spent and the movement it had left
+   about an AP taken from it (Dazed 1 is 11 to 15 a landing; 20 on an Elite) ... 11 to 15 each time   [SIM, by likeness]
+Hindered (EoT): its next Advance this turn covers half ........................ 0 to 3 each time   [SIM: -2 to +2 from melee; a blind spot of the white room]
+x it fires in about 60% of rounds ............................................. [judgment: Overwatch's same moment fired in 85% at 10 squares; within 5, less]
+The ally it didn't reach that turn ............................................ not priced (the SIM can't see a back line: suggested 5 to 10)
+--- Total: about 8 to 11 a turn on paper, more where there is a back line, of 10 to 15: on
+```
+
+**Analysis.**
+- **It is the answer to "they stay in front so the squishies can stay back".** No roll: the enemy that runs at the Archer stops where the Paladin says. It can spend another AP to move again, at half Speed: so it costs the enemy about a third of its turn, not the whole of it.
+- **The decision it gives:** which enemy, and where. He chooses the square on its path (the rule already lets a reactor wait): in the open, or next to himself, where Judge and his Weapon Attacks are.
+- **It stops a Charge:** a Charge disrupted before its 3 squares makes no attack (Chapter 2's own example).
+- **Two Reactions, two jobs:** Shield of Faith answers the hit; Rebuke answers the approach. With the Hallmark Actions (Lay On Hands shields, Binding Light pins) a Paladin can take one of each and cover both, or double one.
+- **What it can't do:** an Evade, a Forced Movement or a teleport doesn't trigger it; an enemy already next to the ally isn't moving; a ranged enemy doesn't need to. One a round, unless he kept AP.
+- **The rules it touches:** none new. "Disrupted" without a Critical is rare in the book (it "usually" comes with one): this is a certain disrupt, once a round, within 5 squares. Worth Lucas's eye.
+- **Siblings:** the Archer's Overwatch (the same moment, at 10 squares: a Weapon Attack, Hindered on a hit). The Archer shoots the runner; the Paladin stops him. Today's Rebuke is replaced (its Frightened and Push are free for other cards).
+- **Complexity:** one Version, 13 words, one condition, no conditional.
+- **Table feel:** the GM moves the token, the Paladin's player says "Rebuke, stop there", and the token goes back to that square. Everyone sees it. The risk: a GM may feel it as losing the monster's turn; it is one AP, and the monster still acts.
+
+**For Lucas to choose:** a certain disrupt, or a Save (Tier 1 for the enemy: disrupted and Hindered; Tier 2: Hindered; Tier 3: nothing); Hindered as the rider, or Frightened of you (EoT), or none; 5 squares.
 
 **Lucas's answer:**
