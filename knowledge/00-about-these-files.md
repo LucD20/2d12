@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: f1fdbbf 2026-11-14 Paladin redesign: the charter fully answered; decision 2 proposed (the mark: Judgment)
+Built by tools/knowledge.py on 2026-11-14 from the repository at: e9308e7 2026-11-14 Paladin: Judge decided (the mark); class cards grant Actions directly; Flavor describes the Action
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -55,7 +55,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (11 KB)
-- design-paladin-redesign.md (18 KB)
+- design-paladin-redesign.md (24 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

@@ -116,6 +116,55 @@ The enemy hits the Paladin instead (AD 14, not 13) ....... about 1 to 2 a turn  
 > **1 AP:** The target is Judged by you instead of the one you had.
 > A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.
 
-## Decision 3: next (the second Feature)
+## Decision 3: the burst, Smite (PROPOSED, waiting for Lucas)
 
-By the charter's question 9 ("test both"), the next card is **the burst**, drafted two ways: as a Feature every Paladin has at level 1, and as the Encounter Pick moved to level 1. Lucas's draft, or Claude's proposal.
+Lucas (2026-11-14): "Propose. And it should be Smite." So Smite stops being the every-round Hallmark and becomes the explosion. Drafted two ways, as the charter's question 9 asks: **A**, a Feature every Paladin has at level 1 (recommended); **B**, the Encounter Pick moved to level 1.
+
+**Research first.** A burst players accept is one Action, built in the open, capped: 13th Age's designer sets a once-a-battle attack at 1.5 times a normal one and a daily at 2 times. Its worst result still does about half its best (Draw Steel's tiers; 13th Age's smite deals half on a miss). A slow build has a price in short fights (the Censor's round 1: "Not enough to do anything powerful"), so the build should be a choice, not a gate. The cost that suits a front-liner is being exposed for a round, not being empty afterwards. And it should not be the right answer every round (Crawford on why 5e's smite changed: "not be in the position of the right choice is always just to Divine Smite").
+
+### A. Smite as a Feature (recommended)
+
+> **Smite** · Paladin Feature · Encounter · 2 AP · [Divine, Signature, Strike, Weapon] · Distance: Weapon · Target: one creature
+> *Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.*
+> **Smite dice:** [R] 1d6 Ho for each Escalation you have (1d8s against a Profane creature).
+> **Tier 1:** your Smite dice. **Tier 2:** [V] 1[W] + [Mod] + your Smite dice. **Tier 3:** [V] 1[W] + [Mod] + your Smite dice.
+> When you use Smite, you can spend your Reaction AP: roll 2 more Smite dice.
+
+```
+With a Greatsword, Signature +2 against Defense 13 (Tier 1 28%, Tier 2 51%, Tier 3 21%); a Weapon Attack at +1 averages 7.3 = 25 points.
+
+Against the creature he Judged (d8s)        Tier 1 / 2 / 3     average   points   [all: judgment, computed from the dice; not a SIM run]
+Escalation 1 (round 1, no Momentum) ....... 4.5 / 16 / 20        13        46
+Escalation 3 (round 3, or round 1 with Momentum 2)  13.5 / 25 / 29   22     76
+Escalation 4 .............................. 18 / 29 / 33        27        92
+Escalation 6 .............................. 27 / 38 / 42        36       122
+... with the Reaction AP (2 more dice) .... + 9                          + 31
+Against a creature that isn't Profane (d6s): 1 less a die (Escalation 3: 66 points; 4: 78)
+
+What the 2 AP would have been: two Weapon Attacks ....... 47   [judgment: 25, and 22 with the At-will Bane]
+The Reaction AP he gave up ............................... 10 to 15   [the anchor for a 1R Reaction a turn]
+--- Used in round 3 on the Judged creature: 76 to 92 for 2 AP (1.5 to 1.9 times), 107 to 123 with the Reaction AP.
+    Over a fight of 3.5 rounds it adds about 9 to 13 a turn (about 15 with the Reaction AP), of a Feature's 10 to 15: on.
+```
+
+**Analysis.**
+- **The decision it gives: when.** In round 1 it is two Weapon Attacks' worth: nothing forbids it, nothing rewards it. Every round it grows by a die, and the table sees it grow (the Escalation counter is the Smite). Wait too long and the target is dead or the fight is over. With Momentum 2 it is already a real Smite in round 1: "explode before they see it coming" belongs to the party that kept going.
+- **"When they use all they have":** the Reaction AP. He can add 2 dice and then, until his next turn, he can't protect anyone. That is the brief's sentence as a cost, and it needs no counter (your answer to question 6).
+- **Not a consistent damage dealer:** once an encounter. Every other turn his Strike is a Weapon Attack at +1.
+- **It lands.** On a Tier 1 the blade misses and the light doesn't: the Smite dice alone, about half of a Tier 3. The roll decides how big, not whether.
+- **Divine against the Profane, in every campaign:** d8s against a Profane creature, and the creature he Judged is one. So the natural target is the one he named in round 1, and a real undead he hasn't judged gets it too.
+- **The rules it touches:** it reads Escalation and spends nothing of it. It spends the Reaction AP on his own Action: an exception to Chapter 2 ("the Reaction AP pays only for Reactions") that the card states. The level 2 hook (an ally within 5 becomes Bloodied or goes Down: +1 Escalation) now feeds the Smite: when his protection fails, his blow gets bigger.
+- **Its siblings:** today's Smite (Round, 1 / 2 / 3 AP, 133 words) and Holy Wrath (Encounter, 50 points: no nova) are both replaced by this. The Bright light and the Bane on Hide leave Smite; light is for an Art.
+- **The size:** in the band the research gives (1.5 to 2 times) when used at Escalation 3 or 4. At Escalation 6 with the Reaction AP it is 8 dice (about 45 damage on average, a third of an Elite): rare (round 6, or round 4 with Momentum 2), and that is the "explode". If it proves too much: "at most 6 Smite dice".
+- **Complexity:** one Version, 44 words, two riders (the Profane die, the Reaction AP), one conditional. Inside an Encounter Action's budget.
+- **Table feel:** a handful of dice that everyone watched grow, on the enemy he named in round 1. The risk: a player who always waits for one more die and ends the fight with the Smite unused (the hoarding the research describes); it resets every encounter, so the lesson is cheap.
+- **Foundry:** a damage formula that counts Escalation is not a setting I have seen on a card; not checked.
+
+### B. Smite as the Encounter Pick, taken at level 1
+
+The same card with bigger dice (1d8 for each Escalation, 1d10s against a Profane creature: about 90 to 105 points at Escalation 3 or 4), offered beside two other Encounter Actions.
+- **For it:** it follows the level list as written (an Encounter Pick is the place for an Encounter Action); the explosion is a bigger one.
+- **Against it:** a Paladin can then pick something else and have no burst at all, which is your brief's third word gone, and question 7 said the defining pieces are for every Paladin. It also moves the level 2 pick to level 1 (level 2 becomes the hook and a Passive only), and at about +20 to 25 a turn it overshoots level 1's 130 unless the Hallmark Action shrinks.
+- **My recommendation: A.** Every Paladin smites; the Encounter Pick at level 2 stays a real choice among three other moments.
+
+**Lucas's answer:**
