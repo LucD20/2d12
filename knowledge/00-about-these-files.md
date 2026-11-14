@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: 1f455cb 2026-11-14 Log as decided (not applied): Advance can't be split; Interact can be used during an Advance
+Built by tools/knowledge.py on 2026-11-14 from the repository at: 5bc20c6 2026-11-14 Analyses of Lucas's four Workbench drafts (Lay On Hands, Shield of Faith, Reckoning, Hallowed Stance); research: movement and positioning, Escalation gates and Guard
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -32,13 +32,14 @@ Files:
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
 - research-index.md (1 KB)
+- research-ability-scope.md (5 KB)
 - research-escalation-and-guard.md (3 KB)
 - research-movement-positioning.md (5 KB)
 - research-tactical-combat.md (5 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-paladin-analyses.md (11 KB)
+- design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
 - design-stage0.md (18 KB)
 - design-expedition-loop.md (12 KB)

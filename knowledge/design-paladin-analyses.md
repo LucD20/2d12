@@ -113,3 +113,38 @@ Setup: Advance 3 on each Divine Action (once a round, Lay On Hands) .. about 10 
 | Advance X as a Setup or a rider | 3: 10 (8 to 15) | an AP spent to move is worth at least an unused AP (12); a bundled move only on the turns you'd have moved |
 | Bright light (on a creature or around you) | 0 to 5 | matters only where it is dim or dark |
 | Guard given to an ally about to be hit | 6 to 8 a point | the SIM's 6, the forums' two thirds of healing (8) |
+
+---
+
+## 2026-11-14: are our Actions doing too much? (Lucas's question)
+
+**Research:** `book/research/ability-scope.md` (new). **Counted:** every Paladin and Archer card, its words and the distinct things it does (conditions, movements, heals, Guard, light, Boons and Banes, conditionals).
+
+**What the count says.**
+- **Most cards are not long.** The Archer's are lean (15 to 50 words, one to three things); most Paladin cards are 20 to 45 words.
+- **The few that do too much are where it hurts most:**
+
+| Card | Used | Words | What it does |
+|---|---|---:|---|
+| **Smite** (Hallmark) | every round | **133** | three Versions × three Tiers of damage (9 damage cells), Bright light of two sizes, a Bane on Hide, Guard with Stage dice to you or an ally in the light, a Push of every other creature in the light |
+| Final Verdict (Apex) | once | 67 | damage to an area, Push, light, Prone if Bloodied, Bleed if Strained (three conditionals) |
+| Hallowed Dawn (Apex) | once | 64 | a heal with Stage dice, an effect ended, a Push, a Bane, light, on two sides |
+| Lucas's Reckoning draft | once | 40 | light, a Push, a Save, Frightened in two durations |
+| Lucas's Lay On Hands draft | every round | 3 × 3 things | a Rally Point, Guard and an Evade in each of three Versions |
+
+- **The every-round card is the most complex one.** That is backward (research, takeaway 1: the cards met most should be the simplest; complexity goes to the rare ones).
+- **The bigger problem isn't length, it's sameness.** Of the Paladin's Actions, every one is damage, healing or a defense number; of its seven Passives, four add damage. Nothing compresses a turn, bends a rule, or works outside a fight. The Archer is the same shape (almost every card is "a Weapon Attack + X").
+- **The 1 / 2 / 3 AP Versions are the turn's real script.** A turn becomes "the biggest Smite I can afford, then attacks" (Advance, Smite, attack): a budget problem, not a board problem (research, takeaway 5). Three sizes of one card read as one option.
+
+**Proposal (for Lucas to decide; nothing applied).**
+1. **A complexity budget by Frequency.** A Round or At-will Action and a Reaction: **one main effect and at most one rider**, one Version or two. An Encounter Pick: up to two riders. The Apex: as much as it wants (it is the rare card).
+2. **Five kinds of Action, and every class gets some of each:**
+   - **Strike:** damage and at most one rider (Smite reduced to its core).
+   - **Compression:** two Basic Actions for less, no new numbers ("Advance, then Shove", "Stand and Advance", "Advance and Lay On Hands as you pass").
+   - **Help:** one thing for an ally (a heal, a step, Guard).
+   - **Rule-bender:** changes a rule, not a number (your Bright light: creatures in it can't Hide; you carry a Down ally at full Speed; your Lay On Hands reaches 3 squares).
+   - **Ribbon:** out of combat, flavor, small (sense the Profane nearby; your holy symbol is a light source; an oath).
+3. **Fewer Versions, more cards.** Instead of Smite at 1 / 2 / 3 AP, two or three small Round options with different effects, so the board picks the turn.
+4. **A 0 AP everyday trick** per class (as Mark Quarry is for the Archer), instead of a bigger Hallmark.
+
+**Smite as an example of "one main effect, one rider"** (a sketch, not priced): *1 AP, Round: a Weapon Attack that deals an extra [R] 1d6 Ho on a hit, and the target sheds Bright light (1 round): it can't Hide.* The 2 and 3 AP sizes become other cards: a Compression ("Advance 3, then Smite") and a Help ("Smite, and an ally adjacent to the target gains Guard [Mod]").
