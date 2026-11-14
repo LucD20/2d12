@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: c86e147 2026-11-14 The Advance rule: no Interact inside a linked or Setup Advance (proposed); Bleed gets its own removal action, Staunch (Lucas), and the places to change
+Built by tools/knowledge.py on 2026-11-14 from the repository at: c100b51 2026-11-14 knowledge: refresh
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (157 KB)
 - MASTER-PLAN.md (39 KB)
-- open-design-items.md (134 KB)
+- open-design-items.md (135 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
