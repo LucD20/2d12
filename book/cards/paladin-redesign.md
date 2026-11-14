@@ -2,6 +2,8 @@
 
 The running record of the Paladin's redesign (MASTER-PLAN item 5; branch `pack-paladin-redesign`). One decision at a time: Claude proposes or analyses Lucas's draft, **Lucas decides**, the decision is written here. **Nothing here is in the book or in Foundry until Lucas says so.** The card analyses use the format of `paladin-analyses.md` (priced lines tagged [SIM] / [Lucas] / [judgment] / [not priced], a total, then the analysis); the research is in `book/research/`; the charter is `book/class-charter.md`.
 
+**For Lucas, the readable version of all this:** the reading page "Paladin Redesign Desk", https://claude.ai/artifact/NUn8zUNb2mRQZZ7N8HfBaA (its source: `book/cards/desk/index.html`; Claude updates it after every decision). It holds what is decided, the open questions with examples, and the research in ten points.
+
 ## The brief (Lucas, 2026-11-14)
 
 > The paladin is a soft tank, soft support, soft nova class, focusing in divine action against profane forces. The paladin isn't a consistent damage dealer nor can take hits for you, but they can aid you, make sure you don't go down and when they use all they have against an enemy, they can explode before seeing it coming. They stay in front so the squishes can stay back.
@@ -24,7 +26,7 @@ The running record of the Paladin's redesign (MASTER-PLAN item 5; branch `pack-p
 3. The Escalation Passives, one by one (2, 4, 6), and the hook.
 4. The Encounter Picks.
 
-## Decision 1: the class's numbers (PROPOSED, waiting for Lucas)
+## Decision 1: the class's numbers (DECIDED, Lucas, 2026-11-14)
 
 **Research first.** The 4e Paladin's split attack stats are remembered as its worst fault (`paladins-other-games.md`, takeaway 10). The closest published match to the brief, Draw Steel's Censor, has a front-liner's Stamina and the most Recoveries: tough across the day, not in the round (`frontline-protection.md`, takeaway 4). High defenses are half of the protector's trap: "attack my allies and take the reaction, or attack durable me" (`paladins-other-games.md`, the Champion). The 4e Paladin's other launch flaw was a duty to chase on the slowest class: the cure was to drop the duty, not to raise the Speed.
 
@@ -47,4 +49,10 @@ The running record of the Paladin's redesign (MASTER-PLAN item 5; branch `pack-p
 - **What the checked research adds (second pass):** a protector with no threat gets ignored. A Pathfinder 2e Guardian playtester: the taunt "seemed to work as intended... if the intent was the enemy ignored the taunt", "piddly damage, which means there was not really a reason for the monsters to attack me". One guide's cure is the opposite of your brief ("put down your shield and grab a two-handed weapon"). The 4e Swordmage shows the other cure: he does little damage and is still obeyed, because "preventing 8 damage from my marked target is enough to draw them to me". **So Weapon +1 is safe only if the next decisions give him a punishment or a protection that is certain (no roll) and has a number the table hears.** If you want his threat to come from his sword instead, pick (C).
 - **If you'd rather not:** (B) keep "+2 and +1, you choose": two builds stay possible, and every Paladin card must be checked for both. (C) Weapon +2, Power +1, fixed, as the Archer: the plain attack is as good as the Archer's and "isn't a consistent damage dealer" must then come from the cards alone (no bonus damage outside the burst).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-14): all as proposed.** Modifiers: Weapon +1, Power +2, fixed. Health 20 / 10. Rally 6. Speed +0. Heavy. Attributes unchanged.
+
+**And a direction with it (Lucas):** "Using rally points for allies I think its more of a cleric thing. So lets try to make Paladin not have this too much; can gave some but not too much." So: the Paladin's "aid you, make sure you don't go down" is **not** built on letting allies use Rally Points (a future Cleric's job). At most one of his cards touches an ally's Rally Points; the rest of his support is something else (to settle with Lucas: Guard, a hit made smaller, a step, a condition ended, a drop at 0 stopped). It also closes the "whose reserve pays" question for now: Rally stays 6. Lay On Hands as written (a Rally Point every round) doesn't fit this Paladin.
+
+## Decision 2: next (the first Feature)
+
+Waiting for: Lucas's answers on the charter's questions 3 and 6, and what the Paladin's support is mostly made of. Then the first Feature: Lucas's draft, or Claude's proposal (the mark).

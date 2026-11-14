@@ -1,0 +1,228 @@
+<title>Paladin Redesign Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Signika:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column, a sticky row of section links, ruled sections like a printed rulebook page.
+   Dark first (the system's table look); the light set is the chat card's parchment. */
+:root{
+  --bg:#15171b; --panel:#1c1f25; --line:#343a44; --fg:#e4e1d8; --dim:#a09d94;
+  --gold:#d2a94e; --holy:#e7c873; --ok:#7fb486; --open:#e08a55; --quote:#b9c4d6;
+  --display:"Cinzel",Georgia,serif; --text:"Signika","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light }
+body{background:var(--bg);color:var(--fg);font-family:var(--text);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:46rem;margin:0 auto;padding-block:1.5rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-size:1.9rem;line-height:1.15;margin:0 0 .3rem;color:var(--holy);text-wrap:balance}
+.sub{color:var(--dim);margin:0 0 1rem}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-block:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.2rem 1rem;padding:.55rem 0;margin-bottom:1.5rem}
+nav a{color:var(--fg);text-decoration:none;font-weight:500}
+nav a:hover,nav a:focus-visible{color:var(--gold);outline:none;text-decoration:underline}
+section{margin-top:2.4rem;scroll-margin-top:4rem}
+h2{font-size:1.3rem;font-weight:600;margin:0 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--gold);text-wrap:balance}
+h3{font-size:1.05rem;font-weight:600;margin:1.4rem 0 .4rem;color:var(--holy)}
+p{margin:.5rem 0}
+ul,ol{margin:.4rem 0;padding-left:1.3rem}
+li{margin:.3rem 0}
+strong{font-weight:600}
+.tag{font-weight:600;white-space:nowrap}
+.tag.ok{color:var(--ok)} .tag.open{color:var(--open)}
+table{border-collapse:collapse;width:100%}
+.scroll{overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem .45rem 0;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:500}
+blockquote{margin:.5rem 0;padding:.1rem 0 .1rem .9rem;border-left:2px solid var(--line);color:var(--quote)}
+blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
+.need{background:var(--panel);border:1px solid var(--line);padding:.9rem 1.1rem;margin:.6rem 0}
+.need ol{margin:0}
+/* a card: the book's stat block, plain */
+.card{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.card .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.card .bar span:last-child{color:var(--dim);font-weight:400}
+.card .v{display:grid;grid-template-columns:3.4rem 1fr;gap:.6rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.card .v:last-child{border-bottom:0}
+.card .v b{color:var(--gold);font-weight:600}
+.card .v div{min-width:0}
+.opt{display:grid;grid-template-columns:1.6rem 1fr;gap:.5rem;margin:.7rem 0}
+.opt>b{color:var(--gold);font-size:1.1rem}
+.opt div{min-width:0}
+.small{color:var(--dim);font-size:.93em}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:anywhere}
+</style>
+
+<div class="wrap">
+<h1>Paladin Redesign Desk</h1>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-14, after your first answers. Nothing here is in the book or in Foundry.</p>
+
+<nav aria-label="Sections">
+  <a href="#need">What I need</a>
+  <a href="#decided">Decided</a>
+  <a href="#art">Question 3</a>
+  <a href="#counter">Question 6</a>
+  <a href="#research">Research</a>
+  <a href="#files">Files</a>
+</nav>
+
+<section id="need">
+<h2>What I need from you now</h2>
+<div class="need">
+<ol>
+  <li><strong>Question 3, the shape of an Art:</strong> A, B or C (<a href="#art">the examples</a>).</li>
+  <li><strong>Question 6, a number of his own:</strong> A, B or C (<a href="#counter">explained here</a>).</li>
+  <li><strong>What his support is made of.</strong> You said Rally Points for allies are more a Cleric's thing. So when the Paladin "aids you and makes sure you don't go down", what does he mostly do? Pick one or two:
+    <ul>
+      <li><strong>Guard</strong> on the ally, before the hit.</li>
+      <li><strong>A smaller hit:</strong> the damage reduced when it lands.</li>
+      <li><strong>A step:</strong> the ally moves out of reach.</li>
+      <li><strong>A condition ended</strong> (Frightened, Prone, Lingering...).</li>
+      <li><strong>The drop stopped:</strong> an ally who would go Down stays up at 1.</li>
+    </ul>
+  </li>
+  <li><strong>The first Feature.</strong> Do you want to draft it, or should I propose one? My proposal would be the mark: one enemy he judges, for 0 AP.</li>
+</ol>
+</div>
+</section>
+
+<section id="decided">
+<h2>Decided so far</h2>
+<h3>The Paladin's numbers</h3>
+<div class="scroll"><table>
+<tr><th>Number</th><th>Decided</th><th>Was</th></tr>
+<tr><td>Modifiers</td><td><strong>Weapon +1, Power +2</strong>, fixed</td><td>+2 and +1, you choose</td></tr>
+<tr><td>Health</td><td>high 20, low 10</td><td>the same</td></tr>
+<tr><td>Rally</td><td>6</td><td>the same</td></tr>
+<tr><td>Speed Modifier</td><td>+0</td><td>the same</td></tr>
+<tr><td>Armor Training</td><td>Heavy</td><td>the same</td></tr>
+<tr><td>Attributes</td><td>Body or Appeal +1, Mind or Instinct +1</td><td>the same</td></tr>
+</table></div>
+<p>What the Modifiers do: his plain Weapon Attack rolls +1, a step under the Archer's. His divine Actions roll +2, and a divine Strike with the [Signature] trait rolls +2 as well. So the everyday swing is modest and the burst hits like a striker's.</p>
+<p><strong>Your direction on Rally Points:</strong> letting allies use them is more a Cleric's thing; the Paladin can have some, not much. Lay On Hands as it is today (a Rally Point every round) doesn't fit him. At most one of his cards will touch an ally's Rally Points.</p>
+
+<h3>The charter</h3>
+<div class="scroll"><table>
+<tr><th>#</th><th>Question</th><th>Your answer</th></tr>
+<tr><td>1</td><td>The utility category's name</td><td><span class="tag ok">Decided</span> <strong>Art</strong></td></tr>
+<tr><td>2</td><td>When a character gets Arts</td><td><span class="tag ok">Decided</span> one at level 1, another at level 3</td></tr>
+<tr><td>3</td><td>The shape of an Art</td><td><span class="tag open">Open</span> you asked for examples: <a href="#art">below</a></td></tr>
+<tr><td>4</td><td>Two Versions are two uses, never two sizes</td><td><span class="tag ok">Decided</span></td></tr>
+<tr><td>5</td><td>A Passive is never a silent bonus</td><td><span class="tag ok">Decided</span></td></tr>
+<tr><td>6</td><td>Does a class track a number of its own?</td><td><span class="tag open">Open</span> <a href="#counter">explained below</a></td></tr>
+<tr><td>7</td><td>The class's defining pieces are Features every Paladin has; the Hallmark choice is a style</td><td><span class="tag ok">Decided</span> as a try; careful not to lose the identity</td></tr>
+<tr><td>8</td><td>3 Encounter Actions and 2 Passives per rung offered</td><td><span class="tag ok">Decided</span></td></tr>
+<tr><td>9</td><td>Where a level 1 Paladin's burst lives</td><td><span class="tag ok">Decided</span> test both: inside a Feature, and the Encounter Pick at level 1</td></tr>
+</table></div>
+
+<h3>What a class gets, levels 1 to 3</h3>
+<div class="scroll"><table>
+<tr><th>Level</th><th>You gain</th><th>The class offers</th></tr>
+<tr><td>1</td><td>2 Features, a Hallmark Action, a Hallmark Reaction, an Art, the Escalation 2 Passive</td><td>2 Features (fixed), 2 Hallmark Actions, 2 Hallmark Reactions, 3 Arts, 2 Passives</td></tr>
+<tr><td>2</td><td>the Escalation hook, an Encounter Pick, the Escalation 4 Passive</td><td>3 Encounter Actions, 2 Passives</td></tr>
+<tr><td>3</td><td>a second Art, the Escalation 6 Passive</td><td>the same 3 Arts, 2 Passives</td></tr>
+</table></div>
+<p class="small">18 cards for the Paladin in all. Talent slots stay empty for now.</p>
+
+<h3>How much a card may do</h3>
+<div class="scroll"><table>
+<tr><th>Card</th><th>Versions</th><th>It does</th></tr>
+<tr><td>A Feature</td><td>none</td><td>one sentence</td></tr>
+<tr><td>A Hallmark Action (Round)</td><td>1 or 2</td><td>one main thing, at most one rider</td></tr>
+<tr><td>A Hallmark Reaction</td><td>1</td><td>one main thing, at most one rider</td></tr>
+<tr><td>An Art</td><td>question 3</td><td>each use one thing, no damage</td></tr>
+<tr><td>An Escalation Passive</td><td>none</td><td>one sentence; it changes a decision or fires on a moment the table sees</td></tr>
+<tr><td>An Encounter Action</td><td>1 or 2</td><td>one main thing, up to two riders</td></tr>
+</table></div>
+</section>
+
+<section id="art">
+<h2>Question 3: what an Art looks like</h2>
+<p>An Art is the card you look at when attacking isn't the answer. It never deals damage. My default was "up to 3 Versions". What I meant: <strong>a small menu of different uses on one card</strong>, and you get all of them when you pick the Art. Two sketches to show the shape. <strong>These are not proposals</strong>; the real Arts come later, one at a time.</p>
+
+<div class="card">
+  <div class="bar"><span>Lantern of Faith</span><span>Paladin Art · Round</span></div>
+  <div class="v"><b>1 AP</b><div>You shed Bright light in a 3 Emanation until the encounter ends.</div></div>
+  <div class="v"><b>1 AP</b><div>One creature within 5 squares that you can see stops being Hidden and can't Hide for 1 round.</div></div>
+  <div class="v"><b>2 AP</b><div>A 2 Burst within 10 squares is Bright light for 3 rounds.</div></div>
+</div>
+<div class="card">
+  <div class="bar"><span>Hold the Line</span><span>Paladin Art · Round</span></div>
+  <div class="v"><b>1 AP</b><div>Until your next turn starts, the squares adjacent to you are Difficult Terrain for enemies.</div></div>
+  <div class="v"><b>1 AP</b><div>You swap places with a willing adjacent ally. Neither movement triggers Reactions.</div></div>
+  <div class="v"><b>2 AP</b><div>You Advance. A Prone or Down ally you pass moves with you and ends adjacent to you.</div></div>
+</div>
+
+<p>The three ways to shape it:</p>
+<div class="opt"><b>A</b><div><strong>A menu of up to 3 uses (my default).</strong> One pick gives a whole small toolbox on one theme. A level 1 Paladin has more to do, and the card is still short because each line is one thing. The risk: three lines to read.</div></div>
+<div class="opt"><b>B</b><div><strong>At most 2 uses,</strong> like every other Action. Simpler; each Art is narrower.</div></div>
+<div class="opt"><b>C</b><div><strong>Each use is its own Art.</strong> "Lantern of Faith" would be only the first line. The simplest cards; with one Art at level 1, he gets exactly one small trick.</div></div>
+</section>
+
+<section id="counter">
+<h2>Question 6: does the Paladin track a number of his own?</h2>
+<p>The brief says he "uses all he has" and explodes. The question is what "all he has" is made of. Three ways, each with an example line (examples, not proposals).</p>
+
+<div class="opt"><b>A</b><div><strong>Nothing new to track (my default).</strong> The burst spends what is already on the sheet: AP, the Reaction AP, Escalation.
+  <blockquote>"3 AP. You can also spend your Reaction AP: 2d8 more."<br>or: "1d8 more for each Escalation above 1."</blockquote>
+  Nothing to remember. The cost is real: no Reaction that round, so for a round he can't protect anyone.</div></div>
+<div class="opt"><b>B</b><div><strong>One charge, on or off.</strong> A single token.
+  <blockquote>"When you use a Reaction to protect an ally, you are Charged. Your next divine Strike spends it: 2d8 more."</blockquote>
+  Protecting visibly loads the burst, so a round spent shielding is never a wasted round. Never more than one, so nothing to hoard. Nimble's paladin works this way; its designer moved to one charge from a stack of dice.</div></div>
+<div class="opt"><b>C</b><div><strong>A pool of points.</strong>
+  <blockquote>"Wrath: 2 at the start of each turn, 1 more when the enemy you judged damages you. 1 Wrath protects an ally; 5 pays the big Strike."</blockquote>
+  This is Draw Steel's Censor. The deepest choice each round (protect now, or save for the blow), and a number to track every round. Its known weakness is a slow first round; a guide says of turn 1: "Not enough to do anything powerful." Our fights last about 3.5 rounds.</div></div>
+<p>My default: <strong>A</strong>, with <strong>B</strong> allowed if a card needs it. <strong>C</strong> only if you want the Paladin to be the class with a resource.</p>
+</section>
+
+<section id="research">
+<h2>The research in ten points</h2>
+<p class="small">Other games' rules and other players' opinions, not ours. Every quote below was found on its page.</p>
+<ol>
+<li><strong>Your three "softs" are not words players use.</strong> They would say off-tank, emergency healer, capped nova. A 2008 poster describes the 4e Paladin almost as you did:
+  <blockquote>"single target tank, he grabs a guy and duels that guy, however he has some party benefit abilities so he helps via heals/temp HP for his party while he holds one guy on himself."<cite>brislove, EN World</cite></blockquote></li>
+<li><strong>A tank that only survives is not a tank.</strong>
+  <blockquote>"A Tank doesn't actually have to take aggro, a tank has to reduce the incoming damage."<cite>The-Magic-Sword, Paizo forums</cite></blockquote>
+  That fits "can't take hits for you". He needs a real way to protect, with a small count.</li>
+<li><strong>Nothing in our rules makes "they stay in front" real.</strong> No Opportunity Attack at Stage 0 and no zone of control: an enemy walks past him. Other games' strongest answer is a move that ends next to the front-liner (Lancer, 13th Age). The opportunity attack is the weakest:
+  <blockquote>"the absolute floor of stickiness... unless the enemy is worried about your damage output, that cost may be minor compared to the benefits of eating that tasty wizard over there."<cite>RPGBot, The Tank Fallacy</cite></blockquote></li>
+<li><strong>One line of your brief pulls against another.</strong> A protector by Reaction works on an ally close enough to be hit:
+  <blockquote>"Champions work best if someone else is in melee range or at least in that 15 foot range."<cite>Deriven Firelion, Paizo forums</cite></blockquote>
+  "The squishies stay back" puts them far. He needs two tools: a Reaction for the ally beside him, and a stop for the enemy heading to the one who stayed back.</li>
+<li><strong>A protector with no threat gets ignored, unless his protection is certain.</strong> A Pathfinder 2e Guardian playtester:
+  <blockquote>"piddly damage, which means there was not really a reason for the monsters to attack me."<cite>VampByDay, Paizo forums</cite></blockquote>
+  The 4e Swordmage also did little damage and was obeyed:
+  <blockquote>"preventing 8 damage from my marked target is enough to draw them to me."<cite>renau1g, EN World</cite></blockquote>
+  No roll, and a number the table hears. This matters more now that his Weapon Modifier is +1.</li>
+<li><strong>Every modern paladin hangs on one enemy he marks.</strong> 4e's Divine Challenge, 13th Age's Paladin's Challenge, Pathfinder 2e's Smite, Draw Steel's Judgment. The marked enemy is the one he punishes, protects against and explodes on: three roles, one job. The 4e mark failed while it asked the slowest class to stay adjacent, and worked once it didn't.</li>
+<li><strong>One Reaction a round is the protector's whole budget.</strong>
+  <blockquote>"one enemy can blow your reaction and then another can target a squishy without consequence."<cite>Witch of Miracles, Paizo forums</cite></blockquote>
+  In our rules, AP he keeps from his turn pays for more Reactions. So "hold an AP back to protect twice" already exists.</li>
+<li><strong>He has no burst today.</strong> Holy Wrath at 2 AP is worth the same as Smite at 2 AP, and a level 1 Paladin has none. The one designer's table found (13th Age) sets a per-battle attack at 1.5 times a normal one and a daily at 2 times. Ours should sit at 1.5 to 2.5 times, deal damage even on its worst Tier, and work best as a finisher.</li>
+<li><strong>A burst that builds slowly has a price in short fights.</strong> The drama essays want the explosion late:
+  <blockquote>"the suspense curve is inverted... all the big cool stuff happens at the beginning."<cite>M_Natas, EN World</cite></blockquote>
+  A Draw Steel guide answers: "doing the same action early in a fight is better than doing it later." A burst with no gate that grows with Escalation leaves the choice to the player.</li>
+<li><strong>"Against the profane" fails when it is a creature type.</strong> It is worth nothing or too much, depending on the campaign. In Pathfinder 2e only 7% of monsters are weak to holy. The pattern that works: it always works, and a little more against the Profane. One GM's fix was by behaviour: those who "committed crimes against their kingdom" count as unholy. For us: the enemy he judged could simply count as Profane for him.</li>
+</ol>
+<p class="small">Not checked: Giant in the Playground, RPG.net and Reddit refuse automated readers; nothing above rests on them.</p>
+</section>
+
+<section id="files">
+<h2>Where things are, if you want the long version</h2>
+<p>You don't need to open any of these to answer. From now on I put the argument in the message or on this page.</p>
+<div class="scroll"><table>
+<tr><th>File</th><th>What it is</th></tr>
+<tr><td><code>book/cards/paladin-redesign.md</code></td><td>The Paladin's record: your brief, each decision with its analysis and your answer.</td></tr>
+<tr><td><code>book/class-charter.md</code></td><td>The charter: the kinds of Action, how much a card may do, the level lists, the nine questions.</td></tr>
+<tr><td><code>book/research/paladin-roles.md</code></td><td>Your brief in players' words; the hybrid class.</td></tr>
+<tr><td><code>book/research/paladins-other-games.md</code></td><td>The paladin in 4e, 13th Age, Pathfinder 2e, Draw Steel, Nimble, Lancer, ICON.</td></tr>
+<tr><td><code>book/research/frontline-protection.md</code></td><td>Holding a line, protecting, keeping allies up.</td></tr>
+<tr><td><code>book/research/nova-burst.md</code></td><td>The burst: size, build-up, making it land.</td></tr>
+<tr><td><code>book/research/divine-profane.md</code></td><td>Holy against unholy as a mechanic.</td></tr>
+<tr><td><code>book/research/raw/</code></td><td>The full reports and the check of every quote. Long; only if you doubt a line.</td></tr>
+</table></div>
+</section>
+</div>
