@@ -835,4 +835,20 @@ Frightened of you (1 round) on about 78% of them ........ about 6   [SIM: Fright
 
 **For Lucas to choose:** keep his two durations (Tier 1: 2 rounds; Tier 2: EoT) or the single one; the light back in or not; 2 squares.
 
+**Lucas (2026-11-15), before answering:** (1) should DCs be named (Power DC, Weapon DC, Body DC), so a card says "Appeal Save vs your Power DC", and Talents can later raise a DC and not a Modifier? "Unless that would be bad for the system, or disruptive... Search about it." (2) Even without it, the card needn't write "DC 11 + your Power Modifier": give it the Power trait.
+
+**(2) Done:** Reckoning carries [Power, Save]; Chapter 1's Save Action rule then sets the DC.
+
+**(1) Claude's answer (research saved in `book/research/save-dcs.md`): yes, with one guardrail.**
+- **It is common practice** (5e's spell save DC, Pathfinder 2e's class DC and spell DC are numbers on the sheet that cards point to).
+- **What goes wrong elsewhere is two DCs that overlap:** Pathfinder 2e's forums ask which of class DC and spell DC an ability uses. So: a named DC only where it is one Modifier the character already has. **Power DC = 11 + the Power Modifier; Weapon DC = 11 + the Weapon Modifier; Signature DC = the higher; an Attribute's DC = 11 + ⌈Attribute ÷ 2⌉ + 1.** Never a "class DC" beside them.
+- **Why it helps:** today the DC is read from the card's traits and computed at the table ("11 + ..."), and the same sum is computed again for the Immobilized DC and inside Ward Defense. A name removes the sum, makes the card say what it means, and gives Talents something to point at.
+- **The caution:** +1 on a Modifier is "a full step of difficulty" (Lucas, 2026-11-12); a Talent with +1 to a DC is that strong on every Save he forces. 5e hands DC bonuses out very sparingly. Possible, and rare.
+- **Disruptive? No:** four cards are Save Actions today. The places: Chapter 1 (Saves, Save Actions), Chapter 5 (beside the Modifiers), Chapter 8 (the Immobilized DC becomes "the DC of the Action that caused it"), the Glossary, the sheet in Foundry.
+- **On cards:** the traits stay the default (a [Power, Save] Action is against his Power DC, with nothing more written); a card with no such trait writes "vs your Power DC".
+
+> **Reckoning** · Paladin Escalation Passive · Escalation 6 · [Power, Save]
+> *Your god's light breaks from you all at once, and your foes are thrown back from it.*
+> The first time in an encounter that your turn starts while your Escalation is 6, each enemy within 2 squares of you is Pushed 2 and makes an Appeal Save. **Tier 1 or 2:** Frightened of you (1 round).
+
 **Lucas's answer:**

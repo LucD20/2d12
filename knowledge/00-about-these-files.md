@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 1fef524 2026-11-15 Paladin: Roving Judgment decided (level 1 complete); Tireless Vigil proposed (Escalation 4)
+Built by tools/knowledge.py on 2026-11-15 from the repository at: bf11a17 2026-11-15 Paladin: Tireless Vigil decided (with the Smite note); Reckoning, Lucas's Escalation 6 draft, brought to today's rules
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (165 KB)
+- open-design-items.md (166 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -43,6 +43,7 @@ Files:
 - research-nova-burst.md (14 KB)
 - research-paladin-roles.md (13 KB)
 - research-paladins-other-games.md (21 KB)
+- research-save-dcs.md (3 KB)
 - research-tactical-combat.md (5 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
@@ -57,7 +58,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (13 KB)
-- design-paladin-redesign.md (109 KB)
+- design-paladin-redesign.md (112 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
