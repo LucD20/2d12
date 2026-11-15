@@ -1025,6 +1025,43 @@ Slid 1, after the damage ..................... 5   [Lucas's rate]
 
 **Bulwark of Faith:** no objection raised; taken as decided (kept as it is) unless he says otherwise.
 
-## Decision 20: next (the second Encounter Pick, holy ground)
+**Lucas (2026-11-15): "All good, next", and: put examples on "Then the card does something", Kindled Wrath as one and a Reaction as another.**
 
-A Zone he plants for a few rounds, where the line holds. Claude proposes.
+**The rule with its examples (for Chapter 2):**
+
+> **Answering a moment.** A Reaction's Interrupt or Trigger, and a feature that says "when...", wait for a **moment**. To answer a moment you must **perceive** every creature it names (Hidden is enough; Unsensed is not), unless the card says otherwise.
+> **Then the card does something.** Whatever it does to a creature **targets** that creature, and targeting needs Line of Effect as always. A Reaction never reaches through a wall you have no Line of Effect past.
+>
+> *Example 1 (a moment and nothing else).* Kindled Wrath: "when an ally becomes Bloodied or goes Down, your Escalation increases by 1." Sam, a Paladin, hears his ally Nari fighting behind a wall, 6 squares away, when Nari becomes Bloodied. Sam perceives him (Hidden is enough), and Kindled Wrath does nothing to any creature but Sam: his Escalation increases. Had Nari been 12 squares away behind that wall, out of sight and out of hearing, it wouldn't.
+> *Example 2 (a moment, then a target).* Rebuke: "an enemy within 3 squares of you moves away from you"; its Target is the triggering creature. A goblin 2 squares from Sam, on the other side of a wall, runs off. Sam hears it, so the moment is his to answer; but Rebuke targets the goblin, and Sam has no Line of Effect to it: he can't use Rebuke.
+> *Example 3 (two creatures in the moment).* Shield of Faith: "an enemy's [Strike] Action would damage an ally within 5 squares of you"; its Target is the triggering creature. An orc Sam can see strikes Nari, who stands behind a pillar 4 squares from Sam. Sam perceives both, and has Line of Effect to the orc: he uses Shield of Faith, and Nari's damage is reduced. He needs no Line of Effect to Nari.
+
+(Names from the book's list; to check against the names already used when it is applied.)
+
+## Decision 20: the second Encounter Pick, holy ground (PROPOSED, waiting for Lucas)
+
+**Rules and research first.** A lasting area is written "for N rounds" (rounds count at the end of his turn); a 2 Emanation is 21 squares, placed up to its Distance away, and it doesn't move (an Aura would follow him). Difficult Terrain doubles a square's cost; Hazardous Terrain ([HT]) is only for areas that harm. Guard doesn't stack (the higher value). Today's two cards on this theme: Consecrated Ground (a Daily: for 3 rounds enemies in a 2 Emanation take 1 Bane, allies heal 1d4 at the start of their turns) and Beacon (Aura 2: +1 Defense). The SIM on areas: "a Zone works only for who stays in it" (the Paladins walked out of their own); holding the line with the Area cards was the best result measured (the deadly fight in the long hall won 88% against 70%). Research: the burst can be an area that stays (the Censor's Edicts); a front line is real where passing costs movement; flat Defense auras are forgotten; healing each turn is the healer's engine Lucas doesn't want here. An Encounter Action is worth double its AP (2 AP: 100) and may have two riders.
+
+> **Consecrated Ground** · Paladin Encounter Action · Encounter · 2 AP · [Area, Divine] · Distance: 5 sq. · Area: 2 Emanation
+> *You drive your weapon into the earth and the ground around it shines: your foes wade through it, and your allies stand firmer on it.*
+> For 3 rounds, the Area is Difficult Terrain for enemies, and when you or an ally start your turn in it, you gain Guard equal to your Power Modifier.
+
+```
+Difficult Terrain for enemies over 21 squares, 3 rounds ... not priced (the SIM has never measured it; suggested 5 to 10 a round where enemies must cross it: 15 to 30)
+Guard 2 at the start of each turn in it: about 3 creatures x 3 rounds, less the turns spent outside (about 70% in) ... 12 x 6.3 = about 76   [SIM: 6 a point of Guard]
+--- Total: about 90 to 105, of 100: on
+```
+
+**Analysis.**
+- **The decision it gives:** where the fight will be. He picks the 21 squares (a doorway, the ground in front of the Archers) and the party decides to hold them. The SIM's warning is the card's whole skill: it is worth nothing to who walks out.
+- **Both halves are the class:** the ground slows who tries to pass (the line), and the Guard is "before the hit" (his support), renewed each turn so a spent Guard comes back. Guard 2 doesn't stack with Lay On Hands' 4: the higher stays.
+- **No healing and no Bane:** the old heal each turn was an engine; the Bane on everything was the silent kind. Guard at the start of a turn is said aloud once a turn.
+- **With the rest:** Binding Light and Rebuke keep an enemy inside or outside it; Hold the Line's Brace adds nothing in it (already Difficult Terrain); Trade Places and Rescue move allies onto it.
+- **Rules it touches:** nothing new: a lasting Area, Difficult Terrain "for enemies" (as Brace), Guard. It is not Hazardous Terrain (it harms nobody). Foundry already places Zones with "what it does inside" rows (the old Consecrated Ground used one); a Zone that is Difficult Terrain for one side only: not tried.
+- **Siblings:** today's Consecrated Ground (the same name, a Daily) and Beacon are replaced by it.
+- **Complexity:** one Version, 31 words, two riders' worth (terrain, Guard), no conditional.
+- **Table feel:** a shining patch on the map that everybody plays around for three rounds. The risk: bookkeeping at each start of turn (who is inside); Foundry's Zone can do it.
+
+**For Lucas to choose:** a fixed Area (this) or an Aura that follows him; Guard equal to his Power Modifier (2) or 1 + it (3: about 135 points, over); 3 rounds; Distance 5.
+
+**Lucas's answer:**
