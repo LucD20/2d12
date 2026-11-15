@@ -589,6 +589,36 @@ Haul .............. about 15   [judgment: the earlier price for an ally's Evade 
 
 **The Senses diagram (Lucas, 2026-11-15):** "Much better", and he specified the arrows: a curved green arrow on top from Y to G with how Y perceives G, a curved orange one at the bottom from G to Y, a straight green arrow Y to G with Y's result, a straight orange one G to Y with G's. Drawn so on the reading page (four scenes). **His question on "you only hear a creature that can't sense you":** would it stop you perceiving creatures through walls? No: hearing is unchanged (every creature in combat within 10 squares is Hidden to you, through walls). That case is the reverse (the target can't sense you), which in a fight needs Hide; **it is taken out of this change and left for the Hide session** (his plan for Hide, noted: 1 AP, usable while you are Hidden, an attempt that makes you Unsensed; "soooo many holes" to work through in its own session). So the Senses change is one case only: each Obscured to the other = 1 Field Bane each.
 
-## Decision 10: next (the third Art, the word)
+**Lucas (2026-11-15):** Hold the Line is good, "note down about swapping places rule" (noted in the rules backlog). **The diagram's colors were meant as good and bad, not who:** green for a good perception or result (Clear, a Boon, Favored), orange for a bad one (Obscured, Hidden, a Bane, Doomed). Redrawn so.
 
-A challenge, a command, courage against fear. Claude proposes.
+## Decision 10: the third Art, the word (PROPOSED, waiting for Lucas)
+
+**Rules and research first.** Taunted (Chapter 8): your Actions against any creature other than its source take 1 Bane; the SIM prices it at 1 to 3 on a hit. Frightened: of a source; 1 Bane on all your rolls while you see it, and every square toward it is Difficult Terrain. Prone: melee Actions against you gain 1 Field Boon, ranged ones take 1 Field Bane, and standing is the Stand Action (1 AP); 7 to 9 on a hit, 11 against an Elite. Research: a soft taunt alone was ignored on the Pathfinder 2e Guardian ("there was not really a reason for the monsters to attack me") and works as the second half of a trap; Pathfinder 2e's Obedience cause is the command "kneel"; 5e's and Pathfinder 2e's Aura of Courage steady allies near the paladin, and the always-on aura is the forgotten kind. Lucas: ending a condition is "a healer thing".
+
+> **Commanding Word** · Paladin Art · Round · 1 AP · [Divine]
+> *You speak with your god's authority: you call a foe to face you, steady the hearts around you, or order a foe to its knees.*
+> **Challenge:** One enemy within 5 squares is Taunted by you (1 round).
+> **Courage:** Until your next turn starts, you and allies within 3 squares of you ignore the Frightened condition.
+> **Kneel** [Power, Save]: One enemy within 5 squares makes an Appeal Save. **Tier 1 or 2:** Prone.
+
+```
+Challenge ...... 1 to 3   [SIM: Taunted]; more with Judge and Shield of Faith behind it [not priced]
+Courage ........ 0 in a fight with no fear; not priced where there is (a Bane on every roll and Difficult Terrain lifted from each ally near him)
+Kneel .......... 7 to 9 a landing [SIM: Prone] x 78% [computed: an enemy with +2 against DC 13] = about 6 to 7
+--- Each well under a Weapon Attack (25).
+```
+
+**Analysis.**
+- **The decision it gives:** which word. Challenge when an enemy he can't reach is choosing its target; Kneel on the enemy an ally is about to hit in melee; Courage when something frightening is on the field.
+- **Challenge is the soft taunt at range for 1 AP:** weak alone, by the research; it earns its place because the Judged creature's hits are smaller and Shield of Faith waits.
+- **Courage prevents, it doesn't cure:** one condition suppressed near him for a round, declared and paid for (not an always-on aura). Whether that is still "a healer thing" is Lucas's call.
+- **Kneel takes an AP** on four uses in five, with no damage: about a quarter of a Weapon Attack in points. As an every-round rider on a Strike it was a controller's tool; as a 1 AP Art with a Save it is small.
+- **Rules it touches:** "ignore the Frightened condition" needs a sentence (the condition stays and does nothing while they are within 3 squares of him). The three conditions are Chapter 8's.
+- **The charter:** "a card names at most one condition"; an Art would read it as one a use. To confirm.
+- **Siblings:** Shield of Faith's Taunted (on the hit); today's Rebuke had Frightened on enemies (free now: not used here); Trip (a Basic Action: Prone on a Tier 3 for 1 AP, on a Tier 2 for 2 AP, by a roll against the target).
+- **Complexity:** three uses of 10, 17 and 13 words.
+- **Table feel:** each is one spoken line at the table ("Face me." / "Stand fast." / "Kneel."). The risk: Kneel may be the only one used.
+
+**For Lucas to choose:** Courage, or another third word (a candidate that isn't a condition: "Oath: name one ally; until your next turn starts, Shield of Faith reaches it at 10 squares"); Kneel's Save (Appeal); the name.
+
+**Lucas's answer:**

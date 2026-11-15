@@ -80,10 +80,11 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the Senses scenes with arrows; Hold the Line settled. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the arrows recolored; the third Art proposed. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
+  <a href="#word">Commanding Word</a>
   <a href="#line">Hold the Line</a>
   <a href="#senses">Senses</a>
   <a href="#stunned">Dazed / Stunned</a>
@@ -109,15 +110,39 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-  <li><strong>The scenes with your arrows</strong> (below): is this what you meant?</li>
-  <li><strong>Hold the Line:</strong> I've taken it as decided, with Haul renamed Rescue (the Basic Actions already have a Haul). Say if not.</li>
-  <li>The third Art (the word) is next; I'll propose it.</li>
+  <li><strong>The arrows' colors</strong> now mean good (green) and bad (orange). Right this time?</li>
+  <li><strong>The third Art, Commanding Word:</strong> "Proposed", or your changes. Worth your eye: Kneel (Prone on a Save), and Courage, which you may see as a healer's thing.</li>
 </ol>
 </div>
 </section>
 
+<section id="word">
+<h2>Decision 10: the third Art, Commanding Word (proposed)</h2>
+<div class="card">
+  <div class="bar"><span>Commanding Word</span><span>Paladin Art · Round · 1 AP · Divine</span></div>
+  <div class="v"><b></b><div class="small"><em>You speak with your god's authority: you call a foe to face you, steady the hearts around you, or order a foe to its knees.</em></div></div>
+  <div class="v"><b>Challenge</b><div>One enemy within 5 squares is Taunted by you (1 round).</div></div>
+  <div class="v"><b>Courage</b><div>Until your next turn starts, you and allies within 3 squares of you ignore the Frightened condition.</div></div>
+  <div class="v"><b>Kneel</b><div>One enemy within 5 squares makes an Appeal Save. <strong>Tier 1 or 2:</strong> Prone. <span class="small">([Power, Save] on this use)</span></div></div>
+</div>
+<div class="scroll"><table>
+<tr><th>Use</th><th>Points</th><th>From</th></tr>
+<tr><td>Challenge</td><td>1 to 3</td><td>Taunted [SIM]; more when Judge and Shield of Faith stand behind it</td></tr>
+<tr><td>Courage</td><td>0 without fear; not priced with it</td><td>Frightened is a Bane on every roll and Difficult Terrain toward its source</td></tr>
+<tr><td>Kneel</td><td>about 6 to 7</td><td>Prone is 7 to 9 a landing [SIM]; it lands on about 78% of uses [computed]</td></tr>
+</table></div>
+<ul>
+<li><strong>The decision it gives:</strong> which word. Challenge when the enemy he can't reach is choosing targets; Kneel on the enemy an ally is about to hit in melee (a Prone creature gives melee Actions a Field Boon and must spend an AP to Stand); Courage when something frightening is on the field.</li>
+<li><strong>Challenge is the soft taunt, from range, for 1 AP.</strong> Alone it is weak; that is the lesson from the Guardian. It earns its place with Judge and Shield of Faith behind it.</li>
+<li><strong>Courage prevents; it doesn't cure.</strong> You called ending a condition a healer's thing. This suppresses one condition near him for a round, declared and paid for, not an always-on aura. Say if it still reads as a healer's tool.</li>
+<li><strong>Kneel takes an AP from the enemy</strong> on four uses in five, with no damage. I called AP-takers a controller's tools on an every-round Strike; as a 1 AP Art with a Save and no damage it is worth about a quarter of a Weapon Attack.</li>
+<li><strong>Rules:</strong> all three conditions are Chapter 8's. "Ignore the Frightened condition" needs one sentence when applied (the condition stays, with no effect, while they are within 3 squares).</li>
+<li><strong>Against the charter:</strong> the card names three conditions, one a use. The rule is "at most one condition a card"; for an Art I'd read it as one a use.</li>
+</ul>
+</section>
+
 <section id="line">
-<h2>Decision 9: the second Art, Hold the Line (decided unless you object)</h2>
+<h2>Decision 9: the second Art, Hold the Line (decided)</h2>
 <div class="card">
   <div class="bar"><span>Hold the Line</span><span>Paladin Art · Round · 1 AP</span></div>
   <div class="v"><b></b><div class="small"><em>You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or carry one clear.</em></div></div>
@@ -155,16 +180,16 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <p><strong>2. Its eyes: do you perceive it better than it perceives you?</strong> Only then you get a bonus: <strong>1 Field Boon</strong> if you are Obscured to it, <strong>Favored</strong> if you are Hidden or Unsensed to it. If you don't perceive it better, there is no bonus.</p>
 <div class="key"><span><i style="background:var(--lit)"></i>Bright light</span><span><i style="background:var(--dimsq)"></i>Dim light</span><span><i style="background:var(--darksq)"></i>Darkness</span><span>Y is you, G is a goblin</span></div>
 <div class="scenes"><figure class="scene"><figcaption>A torch in the dark</figcaption>
-<svg viewBox="0 0 340 196" role="img" aria-label="A torch in the dark: Y sees G Clear, G sees Y Hidden; Y attacks: Favored; G attacks: Doomed"><defs><marker id="ah-y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ok)"/></marker><marker id="ah-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--open)"/></marker></defs>
+<svg viewBox="0 0 340 196" role="img" aria-label="A torch in the dark: Y sees G Clear, G sees Y Hidden; Y attacks: Favored; G attacks: Doomed"><defs><marker id="ah-good" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ok)"/></marker><marker id="ah-bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--open)"/></marker></defs>
 <rect x="20" y="78" width="44" height="44" fill="var(--darksq)" stroke="var(--line)"/>
 <rect x="276" y="78" width="44" height="44" fill="var(--lit)" stroke="var(--line)"/>
-<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-y)"/>
+<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-good)"/>
 <text x="170" y="26" text-anchor="middle" fill="var(--ok)" font-size="13">Y sees G: <tspan font-weight="600">Clear</tspan></text>
-<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-y)"/>
+<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-good)"/>
 <text x="170" y="84" text-anchor="middle" fill="var(--ok)" font-size="13">Y attacks: <tspan font-weight="600">Favored</tspan></text>
-<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-g)"/>
+<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-bad)"/>
 <text x="170" y="128" text-anchor="middle" fill="var(--open)" font-size="13">G attacks: <tspan font-weight="600">Doomed</tspan></text>
-<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-g)"/>
+<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-bad)"/>
 <text x="170" y="184" text-anchor="middle" fill="var(--open)" font-size="13">G sees Y: <tspan font-weight="600">Hidden</tspan></text>
 <circle cx="42" cy="100" r="15" fill="var(--tokY)"/><text x="42" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Y</text>
 <circle cx="298" cy="100" r="15" fill="var(--tokG)"/><text x="298" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">G</text>
@@ -172,13 +197,13 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <svg viewBox="0 0 340 196" role="img" aria-label="Both at the edge of the light: Y sees G Obscured, G sees Y Obscured; Y attacks: 1 Field Bane; G attacks: 1 Field Bane">
 <rect x="20" y="78" width="44" height="44" fill="var(--dimsq)" stroke="var(--line)"/>
 <rect x="276" y="78" width="44" height="44" fill="var(--dimsq)" stroke="var(--line)"/>
-<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-y)"/>
-<text x="170" y="26" text-anchor="middle" fill="var(--ok)" font-size="13">Y sees G: <tspan font-weight="600">Obscured</tspan></text>
-<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-y)"/>
-<text x="170" y="84" text-anchor="middle" fill="var(--ok)" font-size="13">Y attacks: <tspan font-weight="600">1 Field Bane</tspan></text>
-<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-g)"/>
+<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-bad)"/>
+<text x="170" y="26" text-anchor="middle" fill="var(--open)" font-size="13">Y sees G: <tspan font-weight="600">Obscured</tspan></text>
+<path d="M72 92 L268 92" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-bad)"/>
+<text x="170" y="84" text-anchor="middle" fill="var(--open)" font-size="13">Y attacks: <tspan font-weight="600">1 Field Bane</tspan></text>
+<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-bad)"/>
 <text x="170" y="128" text-anchor="middle" fill="var(--open)" font-size="13">G attacks: <tspan font-weight="600">1 Field Bane</tspan></text>
-<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-g)"/>
+<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-bad)"/>
 <text x="170" y="184" text-anchor="middle" fill="var(--open)" font-size="13">G sees Y: <tspan font-weight="600">Obscured</tspan></text>
 <circle cx="42" cy="100" r="15" fill="var(--tokY)"/><text x="42" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Y</text>
 <circle cx="298" cy="100" r="15" fill="var(--tokG)"/><text x="298" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">G</text>
@@ -186,13 +211,13 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <svg viewBox="0 0 340 196" role="img" aria-label="Glare: G is Half-Blinded: Y sees G Clear, G sees Y Obscured; Y attacks: 1 Field Boon; G attacks: 1 Field Bane">
 <rect x="20" y="78" width="44" height="44" fill="var(--lit)" stroke="var(--line)"/>
 <rect x="276" y="78" width="44" height="44" fill="var(--lit)" stroke="var(--line)"/>
-<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-y)"/>
+<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-good)"/>
 <text x="170" y="26" text-anchor="middle" fill="var(--ok)" font-size="13">Y sees G: <tspan font-weight="600">Clear</tspan></text>
-<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-y)"/>
+<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-good)"/>
 <text x="170" y="84" text-anchor="middle" fill="var(--ok)" font-size="13">Y attacks: <tspan font-weight="600">1 Field Boon</tspan></text>
-<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-g)"/>
+<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-bad)"/>
 <text x="170" y="128" text-anchor="middle" fill="var(--open)" font-size="13">G attacks: <tspan font-weight="600">1 Field Bane</tspan></text>
-<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-g)"/>
+<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-bad)"/>
 <text x="170" y="184" text-anchor="middle" fill="var(--open)" font-size="13">G sees Y: <tspan font-weight="600">Obscured</tspan></text>
 <circle cx="42" cy="100" r="15" fill="var(--tokY)"/><text x="42" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Y</text>
 <circle cx="298" cy="100" r="15" fill="var(--tokG)"/><text x="298" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">G</text>
@@ -200,18 +225,18 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <svg viewBox="0 0 340 196" role="img" aria-label="Both in the dark: Y sees G Hidden, G sees Y Hidden; Y attacks: Doomed; G attacks: Doomed">
 <rect x="20" y="78" width="44" height="44" fill="var(--darksq)" stroke="var(--line)"/>
 <rect x="276" y="78" width="44" height="44" fill="var(--darksq)" stroke="var(--line)"/>
-<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-y)"/>
-<text x="170" y="26" text-anchor="middle" fill="var(--ok)" font-size="13">Y sees G: <tspan font-weight="600">Hidden</tspan></text>
-<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-y)"/>
-<text x="170" y="84" text-anchor="middle" fill="var(--ok)" font-size="13">Y attacks: <tspan font-weight="600">Doomed</tspan></text>
-<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-g)"/>
+<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-bad)"/>
+<text x="170" y="26" text-anchor="middle" fill="var(--open)" font-size="13">Y sees G: <tspan font-weight="600">Hidden</tspan></text>
+<path d="M72 92 L268 92" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-bad)"/>
+<text x="170" y="84" text-anchor="middle" fill="var(--open)" font-size="13">Y attacks: <tspan font-weight="600">Doomed</tspan></text>
+<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-bad)"/>
 <text x="170" y="128" text-anchor="middle" fill="var(--open)" font-size="13">G attacks: <tspan font-weight="600">Doomed</tspan></text>
-<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-g)"/>
+<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-bad)"/>
 <text x="170" y="184" text-anchor="middle" fill="var(--open)" font-size="13">G sees Y: <tspan font-weight="600">Hidden</tspan></text>
 <circle cx="42" cy="100" r="15" fill="var(--tokY)"/><text x="42" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Y</text>
 <circle cx="298" cy="100" r="15" fill="var(--tokG)"/><text x="298" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">G</text>
 </svg></figure></div>
-<p class="small">Dashed, curved arrows: how each one perceives the other. Solid, straight arrows: what that does to its attack. Green is Y, orange is G. The square under each token is the light it stands in.</p>
+<p class="small">Green is good for the one the arrow starts from, orange is bad. Dashed, curved arrows: how each one perceives the other. Solid, straight arrows: what that does to its attack. The square under each token is the light it stands in.</p>
 <p><strong>What changes from today's rule:</strong> one case. Two creatures each Obscured to the other take 1 Field Bane each (today they cancel to a normal roll).</p>
 <p><strong>Your question about hearing through walls:</strong> nothing changes there. In combat you still hear every creature within 10 squares, through walls, and it is Hidden to you. The odd case I listed is the reverse one: a creature that can't sense <em>you</em> at all. In a fight that only happens after a Hide, which isn't written. So I've taken it out of this change and left it for the Hide session: today's rule stands (you are Doomed against a creature you only hear, with no bonus).</p>
 <p class="small">For the book, the four scenes would be drawn as one diagram in the book's own style (Y is you).</p>
@@ -287,7 +312,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><td>Feature</td><td><strong>Smite</strong>: the burst, once an encounter</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Action</td><td><strong>Binding Light</strong> (a Strike that pins) or <strong>Lay On Hands</strong> (Guard)</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Reaction</td><td><strong>Shield of Faith</strong> (a smaller hit) or <strong>Rebuke</strong> (stops an enemy leaving him)</td><td><span class="tag ok">Decided</span></td></tr>
-<tr><td>Art, 1 of 3</td><td><strong>Lantern of Faith</strong> (light): decided. <strong>Hold the Line</strong>: proposed. The word: to design</td><td><span class="tag open">Now</span></td></tr>
+<tr><td>Art, 1 of 3</td><td><strong>Lantern of Faith</strong> (light): decided. <strong>Hold the Line</strong>: decided. <strong>Commanding Word</strong>: proposed</td><td><span class="tag open">Now</span></td></tr>
 <tr><td>Escalation 2 Passive, 1 of 2</td><td>two to design</td><td>after the Arts</td></tr>
 </table></div>
 </section>
