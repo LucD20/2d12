@@ -774,7 +774,7 @@ x Escalation 2 or more (about 70% of a fight's turns; all with Momentum)
 
 **Lucas's answer (2026-11-15): "Good, proposed."** Roving Judgment is decided; Judge without a Frequency: good.
 
-## Decision 14: the second Escalation 4 Passive (PROPOSED, waiting for Lucas)
+## Decision 14: the second Escalation 4 Passive, Tireless Vigil (DECIDED as proposed, Lucas, 2026-11-15)
 
 **Rules and research first.** Chapter 2: at the start of your turn you gain 4 AP and 1 Reaction AP; the Reaction AP pays only for Reactions; "losing or gaining AP never changes your Reaction AP" unless a feature says so. His Reactions are Turn (once on each creature's turn). Research: one reaction a round is the protector's whole budget, and enemies learn it ("one enemy can blow your reaction and then another can target a squishy without consequence"); the Pathfinder 2e Champion gets a second reaction, for his champion's reaction only, from a feat (Divine Reflexes), and it is among the class's most wanted; his reaction "grows instead of multiplying". Escalation 4 is round 4 of a first fight and round 2 with Momentum 2: the Passive of the long and the later fights (13th Age gates its bigger abilities at about this point). Our rule: a card that counts Reactions names a trait.
 
@@ -801,5 +801,38 @@ x Escalation 4 or more (about 30% of a first fight's turns; about 70% with Momen
 - **Table feel:** "I still have one" on the second attack of the round. The GM feels the wall thicken as the fight goes on, which is what Escalation is for.
 
 **For Lucas to choose:** this, or a smaller version ("your [Divine] Reactions reach 2 squares farther"); whether Smite's turn should lose it; the name.
+
+**Lucas's answer (2026-11-15): "Interesting mechanic, proposed. No need to make smite lose it, but add a note about it just in case."**
+
+**The note, to watch in playtest:** with Tireless Vigil, a Paladin at Escalation 4 or more who spends his Reaction AP on Smite still has the Vigil's Reaction AP for a [Divine] Reaction that round. Smite's cost ("until his next turn he can't protect anyone") is then half paid. If Smite turns out too safe late in a fight, the fix is one clause on Tireless Vigil: "you don't gain it on a turn you used Smite".
+
+## Decision 15: the first Escalation 6 Passive, Reckoning (LUCAS'S DRAFT of 2026-11-14, brought to today's rules; waiting for him)
+
+**His draft (2026-11-14):** "You emit Bright light in a 2 Emanation. The first time your turn begins when you have Escalation 6, enemies in the area are Pushed 2 and must make an Appeal Save: Frightened of you (2 rounds) / Frightened of you (EoT) / No effect."
+
+**What the first analysis said (paladin-analyses.md):** exactly the kind of Escalation 6 card the research recommends, one flashy visible moment instead of a bonus nobody sees (13th Age ties its flashiest abilities to the escalation die); the Push and Frightened work together (Frightened makes every square toward him Difficult Terrain, so the push sticks); about 17 points once a fight, in the fights that reach Escalation 6 (round 6 without Momentum, round 4 with Momentum 2).
+
+**Brought to the rules decided since:** the light left for the Arts (Lantern of Faith's Kindle); a yes-or-no Save is written "Tier 1 or 2:"; durations are EoT or rounds; a Passive has no trait, so the Save's DC is written.
+
+> **Reckoning** · Paladin Escalation Passive · Escalation 6
+> *Your god's light breaks from you all at once, and your foes are thrown back from it.*
+> The first time in an encounter that your turn starts while your Escalation is 6, each enemy within 2 squares of you is Pushed 2 and makes an Appeal Save (DC 11 + your Power Modifier). **Tier 1 or 2:** Frightened of you (1 round).
+
+```
+Pushed 2, about 2 enemies within 2 squares .............. 12   [judgment: 6 each, below Lucas's Slid 2 (11): a Push can't curve]
+Frightened of you (1 round) on about 78% of them ........ about 6   [SIM: Frightened (EoT) 2 to 4 a landing, a round a little more; the odds computed]
+--- About 18, once, in the fights that reach Escalation 6: over the 1 to 3 turns left, about 6 to 9 a turn in those fights; near 0 across all fights
+```
+
+**Analysis.**
+- **It is a moment, not a bonus:** the charter's rule for this rung. The table sees it coming on the Escalation counter and knows the round.
+- **The decision it gives:** where to stand when it goes off. He chooses each destination (a Push's origin does), so walls mean Collision, and a pushed, Frightened enemy pays double to come back at him. It is the surrounded front-liner's breath.
+- **The risk it had and still has:** pushing enemies away from him can push them toward the back line. Frightened of him covers that only for squares that bring them closer to him.
+- **With the class as it is now:** an enemy thrown 2 squares and then moving off is "moving away from him" within 3 squares: Rebuke. And his turn has just started: Binding Light, or a full Smite at 4 dice, on whichever is left standing near.
+- **The rung:** rare. A first fight seldom reaches round 6; with Momentum 2 it is round 4. That is what Lucas chose for the level 3 Passive (2026-11-12).
+- **Complexity:** 39 words, one condition, a Save: over a Passive's 30, on the rarest card of Stage 0, where the charter puts the complexity.
+- **Changed from his draft:** one duration for Frightened (1 round on a Tier 1 or 2) in the place of two (2 rounds / EoT); no light.
+
+**For Lucas to choose:** keep his two durations (Tier 1: 2 rounds; Tier 2: EoT) or the single one; the light back in or not; 2 squares.
 
 **Lucas's answer:**

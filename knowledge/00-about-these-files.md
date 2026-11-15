@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 5d9d226 2026-11-15 Paladin: Judge has no Frequency (a second kill in a turn could not be re-judged); the AP and Reactions question answered
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 1fef524 2026-11-15 Paladin: Roving Judgment decided (level 1 complete); Tireless Vigil proposed (Escalation 4)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -57,7 +57,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (13 KB)
-- design-paladin-redesign.md (105 KB)
+- design-paladin-redesign.md (109 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
