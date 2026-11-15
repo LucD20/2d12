@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: e61ae97 2026-11-15 Research: save ends (not for 2d12: the creature pays to end it); a notation clash and a dangling reference found
+Built by tools/knowledge.py on 2026-11-15 from the repository at: c0c1eef 2026-11-15 Paladin: the three Arts decided; no save ends; durations and the Tier notation settled; the first Escalation 2 Passive proposed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -57,7 +57,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (13 KB)
-- design-paladin-redesign.md (92 KB)
+- design-paladin-redesign.md (96 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

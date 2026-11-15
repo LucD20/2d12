@@ -655,7 +655,7 @@ Kneel .......... 7 to 9 a landing [SIM: Prone] x 78% [computed: an enemy with +2
 | Arts (1 of 3; a second at level 3) | **Lantern of Faith**, **Hold the Line**, **Commandment** | decided |
 | Escalation 2 Passive (1 of 2) | Armor of Faith proposed; one more to design | now |
 
-## Decision 11: the first Escalation 2 Passive (PROPOSED, waiting for Lucas)
+## Decision 11: the first Escalation 2 Passive, Armor of Faith (DECIDED with Lucas's change, 2026-11-15; the card at the end of this section)
 
 **Rules and research first.** A Passive works while his Escalation is at least its number: Escalation 2 is round 2, or the first turn with Momentum. The charter: one sentence; it changes a decision or fires on a moment the table sees; never a silent bonus; about +5 to 10 a turn. Guard doesn't stack (the higher value), except the unused AP's, which adds. Research: the soft front-liner that works "is paid when it protects" (Draw Steel gives temporary Stamina or resource on the trigger; Nimble's Oathsworn gains temp HP when he Interposes); always-on bonuses are forgotten. His Reactions fire in about half the rounds. Today's Escalation 1 Passives (Radiant Zeal, Divine Surge, Font of Mercy) are silent pluses and are retired.
 
@@ -681,5 +681,40 @@ x Escalation 2 or more: rounds 2 to the end (about 70% of a fight's turns; all o
 - **Table feel:** "Shield of Faith: minus 3, it's Taunted, I gain Guard 3." One breath. The risk: it is a number, if a triggered one; Lucas's rule is no *silent* bonus, and this one is said aloud each time.
 
 **The second Escalation 2 Passive (not drafted yet; Claude's candidates, for Lucas to steer):** *the mark moves freely* ("moving your Judgment costs 0 AP"); *the mark glows* ("the creature you Judged sheds Bright light 1"); *Lucas's own idea* of a penalty on the Judged creature (he placed it at Stage 1).
+
+**Lucas's answer (2026-11-15):** "'When you use a reaction' is too broad for a system that you get talents frequently, and your build is more talents than class": either class Actions and Talents get a class trait ("Paladin Reactions"), or the card says [Divine], and later Talents can carry [Divine] to work with it. "I think I would go with divine trait to allow expanding later on." **Done: "a [Divine] Reaction".** (Shield of Faith and Rebuke both have the trait. Chapter 7 already says a trait with no rule of its own, "such as Divine", is there for other rules and features to use.) **A rule for every class card from here: a card that counts "your Reactions" or "your Actions" names a trait, never all of them** (in the charter).
+
+> **Armor of Faith** · Paladin Escalation Passive · Escalation 2
+> *Each time you answer for an ally, your god's light settles on you like mail.*
+> While your Escalation is 2 or more, when you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier.
+
+## Decision 12: the second Escalation 2 Passive (PROPOSED, waiting for Lucas)
+
+Lucas (2026-11-15): "Penalty to speed isn't a bad idea."
+
+**Rules and research first.** Every NPC has Speed 5 unless it says otherwise, and the Bestiary calls Speed "strong": a creature of Speed 4 or less "is easy to avoid and to keep away". Exhausted is the book's model for a Speed penalty ("your Speed is reduced by the value (to a minimum of 1)"). Hindered halves Speed. The SIM: -1 Speed on a Standard is worth 0.7 on the open field and 1.1 to 3.4 on maps (in the old unit, over 3 rounds: about 1 to 6 points a turn). The charter: a later Passive can expand an Action he already has, as a standing effect on the one Judged creature, written into Judge's own text. Research: the Pathfinder 2e Champion's reaction grows this way; Draw Steel's Censor buys "its speed becomes 0" on his judged enemy; 4e's Divine Challenge failed while the enemy could walk it off.
+
+> **Weight of Judgment** · Paladin Escalation Passive · Escalation 2
+> *Your judgment hangs on your foe like a chain, and its steps drag.*
+> While your Escalation is 2 or more, a creature Judged by you has its Speed reduced by 2 (to a minimum of 1).
+
+```
+-2 Speed on the Judged creature (a Standard: 5 to 3) ... 2 to 12 a turn   [SIM: -1 Speed measured about 1 to 6 a turn, the low end on an open field; doubled: judgment]
+x Escalation 2 or more (about 70% of a fight's turns; all with Momentum)
+--- Total: about 2 to 8 a turn (more on maps with a back line), of 5 to 10: on where movement matters, under on an open field
+```
+
+**Analysis.**
+- **The decision it changes:** whom to Judge. With it, the mark is also a leash: the enemy that wants the back line gets there a turn later, or not at all (Speed 3 can still Charge; Rebuke's Hindered halves it to 1).
+- **It is the line-holder's Passive** as Armor of Faith is the shield's: one for each style, though either Paladin can take either.
+- **It is written into Judge** (the charter's rule): Judge's text gains "(Escalation 2: its Speed is reduced by 2, to a minimum of 1)" for the Paladin who took it. One card to read.
+- **No trigger to remember:** a standing number on one creature; Foundry can hold it as an effect on the Judged token (not tried).
+- **The mark has no range limit once placed**, so a slowed enemy can't shake it by distance: 4e's flaw doesn't apply.
+- **What it does nothing against:** a ranged enemy that doesn't need to move; a creature that Evades or teleports the same squares.
+- **Lucas placed this idea at Stage 1**; at Escalation 2 it is on from round 2 at level 1. If that is too early, it is the natural Escalation 4 Passive (level 2) instead.
+- **Complexity:** one sentence, 23 words.
+- **Table feel:** the GM counts 3 squares where he expected 5: it is felt on the map every turn the creature moves.
+
+**For Lucas to choose:** 2 or 1; Escalation 2 (level 1) or Escalation 4 (level 2); the name.
 
 **Lucas's answer:**
