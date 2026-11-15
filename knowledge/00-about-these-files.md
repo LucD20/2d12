@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 974107e 2026-11-15 Senses diagram: colors mean good and bad; the swapping rule noted; the third Art proposed (Commanding Word)
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 626b248 2026-11-15 Research: durations (start of turn, end of turn, rounds); the Arts written with (1 round); Commandment
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (160 KB)
+- open-design-items.md (162 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -35,7 +35,7 @@ Files:
 - research-ability-scope.md (7 KB)
 - research-conditions-and-senses.md (3 KB)
 - research-divine-profane.md (9 KB)
-- research-durations.md (5 KB)
+- research-durations.md (8 KB)
 - research-escalation-and-guard.md (3 KB)
 - research-frontline-protection.md (13 KB)
 - research-gear-and-hands.md (2 KB)

@@ -24,6 +24,20 @@
 - **So: write "(1 round)" on the things he holds up.** Two durations, no rule change.
 - **One place in the book already means start-to-start:** the unused AP's Guard ("for 1 round ... ends 1 round later, when you regain AP again"). It is defined there in full, so it isn't ambiguous, but it is the one "round" that isn't the rule's round.
 
+## 2026-11-15 (the same day): would 2d12 benefit from "save ends"?
+
+**The question (Lucas):** a duration that lasts until the affected creature makes a Save.
+
+**Our rules first.** Chapter 8's opening line lists "until a Save: see Effect Timing" among the durations, but Effect Timing has no such rule: a dangling reference. What we do have is three ways for a condition to end by the creature's own effort: **Break Free** (Immobilized: 1 AP), **Stand** (Prone: 1 AP), and **Shake Off** (Lingering: 1 AP and a Save). No condition ends by a roll at the end of the turn.
+
+1. **What "save ends" is in the games that have it.** A roll at the end of the affected creature's turn; on a success the condition ends. 4e: a flat roll, 10 or more on a d20 (55%) [memory, unverified]. Draw Steel keeps it: "(save ends)" 28 times in its classes [read, counted], a flat d10 roll [memory, unverified]. It ends at the same moment as an EoT effect (the target's turn ends), so it adds no new end point.
+2. **What it is praised for** [lead, a Giant in the Playground thread "Why the hate for Save Ends?"; lead, EN World]: a single ability can't shut down a whole fight; strong conditions can exist without a fixed long lock; the afflicted player gets a roll.
+3. **What it is blamed for:** you "can't plan around it" [lead, the same thread]. It is weaker than it looks: "(save ends) have a 50/50 chance of ending sooner than that anyway and very little chance of lasting more than 2 or 3 rounds" [read, EN World]. In players' hands it produced the "Stun-Lock Wizard" and the "perma-Dom Bard" when saves kept failing [lead, Dungeon's Master, which proposes removing it]. And it is a roll every turn for every condition.
+   - *For 2d12:* **the odds don't suit our roll.** A creature with +2 against DC 13 gets a Tier 2 or better 72% of the time [computed]: a save-ends condition would last 1.4 turns on average, barely more than EoT, for an extra 2d12 roll each turn. Make it "Tier 3 ends" and it is 22%: 4.5 turns, longer than our fights (3.5 rounds). A flat die that isn't 2d12 would be a second resolution mechanic.
+   - **We already have the better version: the creature pays to end it.** Break Free, Stand and Shake Off give the afflicted creature a choice, not a roll, and the price is AP, the game's own currency. "Immobilized: it pays 1 AP to leave" is a decision every time; "save ends" is a die.
+   - **Our fights are short.** Save ends earns its place in fights of 6 to 8 rounds (4e); in 3.5 rounds, EoT and "(2 rounds)" cover the range.
+   - *So:* no general save ends. Where a condition should outlast a turn without a fixed count, write "until it pays" (an AP, or an Action as Shake Off). And fix Chapter 8's dangling "until a Save".
+
 ### Sources
 - [Draw Steel: Classes chapter (Steel Compendium rules text)](https://github.com/SteelCompendium/data-rules-md)
 - [EN World: Powers that last until the end of your next turn](https://www.enworld.org/threads/powers-that-last-until-the-end-of-your-next-turn.253448/)
@@ -34,6 +48,9 @@
 - [EN World: "Fixed duration" to "save ends"](https://www.enworld.org/threads/fixed-duration-to-save-ends.297068/)
 - [Dungeon's Master: remove save ends](https://dungeonsmaster.com/2011/09/remove-save-ends/amp)
 - [The Angry GM: Popcorn Initiative](https://theangrygm.com/popcorn-initiative-a-great-way-to-adjust-dd-and-pathfinder-initiative-with-a-stupid-name/)
+- [Giant in the Playground: Why the hate for Save Ends?](https://giantitp.com/forums/archive/index.php/t-396305.html) (not opened)
+- [EN World: Stun, the Fun-Killer](https://www.enworld.org/threads/stun-the-fun-killer.703292/)
+- [EN World: Status effects / conditions](https://www.enworld.org/threads/status-effects-conditions.469868/)
 
 ### Not covered yet
 - Pathfinder 2e's own Durations text (the rules site is drawn by script); Lancer's and 13th Age's durations; a designer's statement on why Draw Steel dropped rounds.
