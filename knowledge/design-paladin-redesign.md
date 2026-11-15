@@ -1009,4 +1009,22 @@ Slid 1, after the damage ..................... 5   [Lucas's rate]
 
 **For Lucas to choose:** keep it; or widen the trigger to any damage (areas, Saves), which makes it the answer to a dragon's breath on one ally.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-15), on the rule for effects that just happen:** good, "but I think perceiving should be the default, to make Hide a bit more worth it or risky (for allies)". And the line "an effect that only reads something that happens" is confusing: "people can think: 'Well, a Reaction is an effect that only reads something that happens.' Then think that Rebuke can work through walls and such. This was a big deal about Champion's reactions in 2e."
+
+**The rule, rewritten (perceiving is the default; the Reaction case is said outright):**
+
+> **Answering a moment.** A Reaction's Interrupt or Trigger, and a feature that says "when...", wait for a **moment**. To answer a moment you must **perceive** every creature it names (Hidden is enough; Unsensed is not), unless the card says otherwise.
+> **Then the card does something.** Whatever it does to a creature **targets** that creature, and targeting needs Line of Effect as always. A Reaction never reaches through a wall you have no Line of Effect past.
+
+- **Rebuke through a wall: no.** It targets the triggering creature, so he needs Line of Effect to the enemy. The same for Shield of Faith and Bulwark of Faith (the Target line names the attacker).
+- **The ally in the moment** must be perceived: seen, or heard (a creature in a fight within 10 squares, through walls). An ally who has Hidden from everyone, his own side included, can't be answered for: Lucas's "risky for allies".
+- **Kindled Wrath** (no target, only a moment): he must perceive the ally who becomes Bloodied or goes Down. In sight at any distance, or within hearing.
+- "Moment" is already the book's word (Chapter 2: "An Interrupt or a Trigger names a moment the rules define"); the rule only adds what answering one needs.
+
+**His question: should it be "Interrupt: A [Strike] Action damages an ally", since Interrupt already means "before"? Claude's answer: keep "would".** Chapter 2 writes every Interrupt that way ("A creature would Advance", "would leave a square", "would damage someone") and every Trigger in the present ("makes a [Strike] Action", "goes Down"). The word says the thing hasn't happened yet even to a reader who skips the label; "Interrupt: ... damages an ally" reads as if the damage were done. For damage it also places the moment exactly: the Strike has rolled, the damage is known and not yet applied.
+
+**Bulwark of Faith:** no objection raised; taken as decided (kept as it is) unless he says otherwise.
+
+## Decision 20: next (the second Encounter Pick, holy ground)
+
+A Zone he plants for a few rounds, where the line holds. Claude proposes.
