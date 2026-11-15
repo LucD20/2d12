@@ -733,7 +733,7 @@ x Escalation 2 or more (about 70% of a fight's turns; all with Momentum)
 | Escalation 4 (level 2) | **Weight of Judgment** (decided) | to design |
 | Escalation 6 (level 3) | to design: a "when your Escalation becomes 6" moment | to design |
 
-## Decision 13: the second Escalation 2 Passive (PROPOSED, waiting for Lucas)
+## Decision 13: the second Escalation 2 Passive, Roving Judgment (DECIDED as proposed, Lucas, 2026-11-15)
 
 **Rules and research first.** Judge's 1 AP use moves the mark ("the target is Judged by you instead of the one you had"); Judge is a Turn Action (once a turn). The marks players accept are cheap to move (Draw Steel's Judgment is a maneuver, every turn; the 2024 ranger's mark was disliked because it cost a bonus action and fought his other buttons; 4e's Divine Challenge was a minor action). The Archer pays 1 AP too (Mark Quarry). The charter: a Passive can expand an Action he has, written into its text.
 
@@ -771,5 +771,35 @@ x Escalation 2 or more (about 70% of a fight's turns; all with Momentum)
 > A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.
 
 **2. "Does action points on your turn turn into reactions? If you have a 1R triggering twice during your turn, can you do it? Or your AP only becomes R when your turn ends?"** Chapter 2, Reactions: a Reaction is paid "with your Reaction AP, with AP you kept from your turn, or with both"; and **"On your own turn, your turn's AP can pay for it too."** So yes, during his own turn his AP can pay for Reactions; he doesn't have to wait for the turn to end. What stops the same Reaction twice is its Frequency, not the AP: Shield of Faith and Rebuke are Turn, so each can be used once on his turn and once on each other creature's turn, as long as he can pay. Two different Reactions on the same turn are fine.
+
+**Lucas's answer (2026-11-15): "Good, proposed."** Roving Judgment is decided; Judge without a Frequency: good.
+
+## Decision 14: the second Escalation 4 Passive (PROPOSED, waiting for Lucas)
+
+**Rules and research first.** Chapter 2: at the start of your turn you gain 4 AP and 1 Reaction AP; the Reaction AP pays only for Reactions; "losing or gaining AP never changes your Reaction AP" unless a feature says so. His Reactions are Turn (once on each creature's turn). Research: one reaction a round is the protector's whole budget, and enemies learn it ("one enemy can blow your reaction and then another can target a squishy without consequence"); the Pathfinder 2e Champion gets a second reaction, for his champion's reaction only, from a feat (Divine Reflexes), and it is among the class's most wanted; his reaction "grows instead of multiplying". Escalation 4 is round 4 of a first fight and round 2 with Momentum 2: the Passive of the long and the later fights (13th Age gates its bigger abilities at about this point). Our rule: a card that counts Reactions names a trait.
+
+> **Tireless Vigil** · Paladin Escalation Passive · Escalation 4
+> *The longer the fight lasts, the less escapes you: your guard is on two allies at once.*
+> While your Escalation is 4 or more, you gain 1 more Reaction AP when you regain AP. It pays only for [Divine] Reactions.
+
+```
+A second [Divine] Reaction a round: it fires in about a third of rounds (the first one takes the best trigger) ... [judgment]
+   each time: Shield of Faith about 38, Rebuke about 12 to 18 ........ about 5 to 12 a round   [the cards' own prices]
+   with Armor of Faith: Guard 3 again (refreshed, not added) .......... + about 3
+x Escalation 4 or more (about 30% of a first fight's turns; about 70% with Momentum 2)
+--- Total: about 2 to 5 a turn in a first fight, 5 to 10 in a later one, of 5 to 10: on in the fights this rung is for
+```
+
+**Analysis.**
+- **The decision it changes:** the enemy's trick against him stops working. Today a GM can draw out his one Reaction and then send the second attacker at the Archer; with this he answers both, once each (his Reactions are once on each creature's turn).
+- **It is the shield's Passive at this rung,** as Weight of Judgment is the line-holder's; either Paladin can take either.
+- **It softens Smite's cost, late:** the Reaction AP spent on Smite still leaves this one, which pays only for [Divine] Reactions. At Escalation 4 the exposed turn is half exposed. Worth Lucas's eye: it can be closed with "you can't use it in a turn you used Smite" (a conditional; the budget for a Passive allows none).
+- **It keeps an unused AP's worth:** he no longer needs to hold an AP back for a second Reaction, so that AP is free for an Art or becomes Guard.
+- **Rules it touches:** a second Reaction AP is new (Chapter 2 gives one). The card says what it pays for. Staggered still stops all his Reactions; Slowed and Dazed never touch Reaction AP.
+- **Siblings:** none in our game yet; a Talent idea logged on 2026-11-12 was "a Reaction AP from the first moment".
+- **Complexity:** two short sentences, 22 words.
+- **Table feel:** "I still have one" on the second attack of the round. The GM feels the wall thicken as the fight goes on, which is what Escalation is for.
+
+**For Lucas to choose:** this, or a smaller version ("your [Divine] Reactions reach 2 squares farther"); whether Smite's turn should lose it; the name.
 
 **Lucas's answer:**
