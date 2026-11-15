@@ -478,6 +478,40 @@ The ally it didn't reach ................................................ not pr
 | Art (1 of 3) | three to design | next |
 | Escalation 2 Passive (1 of 2) | two to design | after the Arts |
 
-## Decision 8: next (the Arts)
+## Decision 8: the first Art, light (PROPOSED, waiting for Lucas)
 
-Three Arts, each up to three uses, each use one thing, no damage. Claude proposed three themes for Lucas to steer before any card: **light** (his Bright light, the Hidden, Darkness: what left Smite), **the line** (the ground around him, changing places with an ally, bringing a fallen ally out), **the word** (a challenge, a command, courage against fear).
+Lucas (2026-11-15): the three themes are good (light, the line, the word); start with light.
+
+**Rules and research first.** Light is fully written (Chapter 3): a source sheds Bright light N in an N Emanation and Dim light as far again; what matters is the light **where the target is**; a creature in Bright light is Clear to Sight, in Dim light Obscured, in Darkness unseen (Hidden if it is heard). Perceiving a creature as Obscured gives your Actions against it 1 Field Bane **and its Actions against you 1 Field Boon**; as Hidden, Doomed and Favored. A torch is Bright light 4 and takes a hand. **Hide is not written** ("Hiding and sneaking are not written yet"), so nothing here leans on it. Research: holy light as a tool is rare and liked on paper (Pathfinder 2e's Flash of Grandeur lights the attacker so it can't be concealed; a guide: it "punishes hidden tricks"; Draw Steel's Exorcist: judged creatures can't Hide); 5e's Sacred Weapon only sheds light. An Art is "the card you look at when attacking isn't the answer": no damage, up to three uses, each one thing.
+
+> **Lantern of Faith** · Paladin Art · Round · 1 AP · [Divine]
+> *You call your god's light: around you, onto a foe, or into a foe's eyes.*
+> **Kindle:** You shed Bright light 3 until the encounter ends.
+> **Reveal:** One creature you perceive within 5 squares sheds Bright light 1 (1 round).
+> **Glare:** One enemy you can see within 5 squares perceives creatures more than 3 squares from it as Obscured (EoT).
+
+```
+Kindle (a torch that needs no hand, around the front-liner)
+   in daylight ................................ 0
+   in Dim light or Darkness ................... not priced (it turns Obscured or Hidden enemies within 3 squares of him into Clear ones for the whole party: a Bane or a Doomed roll removed from every attack on them; large where it applies)
+Reveal: one creature lit for a round
+   in daylight ................................ 0 to 5   [the earlier analysis: Bright light on a creature]
+   on a creature in Dim light or Darkness ..... about a Boon to Favored on every attack against it that round: 10 to 30   [judgment: a Boon is about 9% of a roll, Doomed about -44%]
+Glare: an enemy sees everything beyond 3 squares as Obscured, for its turn
+   1 Field Bane on its ranged Actions ......... 3 to 5   [judgment: a Bane on an enemy's Strikes for a turn]
+   1 Field Boon for allies more than 3 squares away who attack it (the Archer's 2 to 3 shots) ... 5 to 7   [judgment]
+--- Kindle and Reveal: 0 in a lit room, strong in the dark. Glare: about 8 to 12 for 1 AP (of 25) anywhere: the use that works in daylight.
+```
+
+**Analysis.**
+- **The decision it gives:** is this a fight where light matters? In a cave it is the best AP he has: one Kindle and the enemies around him stop being Hidden for the whole party. In daylight two of the three uses do nothing, and Glare is his answer to an enemy that shoots: the one enemy Rebuke and Binding Light can't touch.
+- **Glare helps the Archer twice:** the enemy shoots worse, and the Archer (more than 3 squares away) shoots it with a Boon. That is soft support through light, with no number written on the card: the Obscured rule does it.
+- **Wide, not strong:** three small tools. In points it is under a Weapon Attack almost always; that is what an Art is for.
+- **Rules it touches:** none new for Kindle and Reveal ("sheds Bright light N" is the Light section's own notation; today's Smite already does it to a target). Glare makes creatures Obscured to one creature by an effect, not by light: the Senses rules allow it (Blinded works the same way, harder), and Hearing can't make them clearer than Obscured. **For when Hide is written:** a creature that sheds light can't Hide (proposed; logged).
+- **Siblings:** today's Smite (the target sheds Bright light 1 or 2 and takes a Bane to Hide) and Final Verdict's light: this takes their place. Beacon's Aura is a different card.
+- **Complexity:** three uses, 10, 11 and 16 words, no condition, no conditional, no number but distances.
+- **Table feel:** Kindle is said once and forgotten (good); Reveal and Glare are "that one" moments. The risk: a table that never plays in the dark and never meets a ranged enemy will find it empty; it is one of three Arts, and a Rest swaps it.
+
+**For Lucas to choose:** the name; whether all three uses cost 1 AP (Kindle could be 0 AP: it happens once a fight); Glare's 3 squares and its "(EoT)"; whether Reveal should also do something in daylight.
+
+**Lucas's answer:**
