@@ -17,6 +17,8 @@ A kind is a design label, not a trait: it is not printed on the card. Every card
 | **Art** (the utility category; name: question 1) | A small tool for the board: position, light, senses, objects, a condition named by the situation. **No damage.** One card, several small uses. | It is the card you look at when attacking isn't the answer. | A light you place; a challenge that moves an enemy's attention; a ward on a doorway. |
 | **Ribbon** | Flavor with a small or no effect in a fight. | Remove it and no fight changes. | Your holy symbol is a light source; you sense the Profane nearby. |
 
+**What an Art is for (Lucas, 2026-11-15, on the first one):** "roleplay focused abilities that aren't strong by themselves, but in the right situation, it is thematic, cinematic and cool." An Art that is empty in half the fights and the best AP of the turn in the right one is doing its job.
+
 Ribbons and Arts **outside combat** (exploration, social) wait for the Skills design (D3): until then a class has at most one Ribbon, inside a Feature.
 
 ## 2. The complexity budget

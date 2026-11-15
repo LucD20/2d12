@@ -514,4 +514,21 @@ Glare: an enemy sees everything beyond 3 squares as Obscured, for its turn
 
 **For Lucas to choose:** the name; whether all three uses cost 1 AP (Kindle could be 0 AP: it happens once a fight); Glare's 3 squares and its "(EoT)"; whether Reveal should also do something in daylight.
 
+**Lucas's answer (2026-11-15):** "Really really cool... This is the type of thing that was missing, roleplay focused abilities that aren't strong by themselves, but in the right situation, it is thematic, cinematic and cool." (Written into the charter as what an Art is for.) **His idea for Glare: a new condition between normal sight and Blinded, as Pathfinder 2e's Dazzled ("all targets are Obscured to you"), on a Save:** Tier 1: the condition (EoT) / Tier 2: creatures more than 3 squares from it are Obscured (EoT) / Tier 3: no effect. "Just an idea of course. What will answer if Null turns are ok or not will be playtesting only."
+
+**Claude's thoughts (from the rules and our prices; no new search).**
+- **Yes to the condition.** Glare's sentence was an effect invented for one card; a named condition is defined once and reused (another light card, a monster's flash, a creature of the dark dragged into Bright light), which is the "least ambiguity" purpose. Chapter 8 has Blinded ("for your Sight, everything is Darkness") and nothing between it and normal sight; the Senses table already has the middle state, Obscured. So the definition is one line. **Draft for Chapter 8: "Dazzled. Your Sight perceives no creature better than Obscured: a creature that would be Clear to you is Obscured. Your other senses aren't affected."** (By the Senses table: 1 Field Bane on its Actions against them, 1 Field Boon on their Actions against it.)
+- **Its price** [judgment]: about 12 to 16 a landing, between Frightened's Bane on all rolls (2 to 4, 6 on an Elite) plus a Boon for everyone attacking it, and Blinded (EoT) (12 to 15; 26 on an Elite). A Moderate condition.
+- **The odds** against DC 13 for a creature with +2 on the Save [computed]: Tier 1 28%, Tier 2 51%, Tier 3 22%. So his three-result line gives the full condition about a quarter of the time, the far-only version half the time, nothing a fifth of the time: about 9 points a use. A binary line ("Tier 1 or 2: Dazzled (EoT)") has the same one-in-five null, is one thing to read, and is worth about 11 to 13.
+- **The Art's budget:** an Art's use is "one thing, about 20 words". His line is three results and 26 words; the binary one is one result and 14. Claude's lean: the binary line, with his three-result line as the fallback if Dazzled four times in five proves too strong for 1 AP.
+- **Which Save:** Instinct (looking away in time) over Body.
+
+**The card with it (Glare in the binary form; [Power, Save] on that use: DC 11 + his Power Modifier):**
+
+> **Lantern of Faith** · Paladin Art · Round · 1 AP · [Divine]
+> *You call your god's light: around you, onto a foe, or into a foe's eyes.*
+> **Kindle:** You shed Bright light 3 until the encounter ends.
+> **Reveal:** One creature you perceive within 5 squares sheds Bright light 1 (1 round).
+> **Glare** [Power, Save]: One enemy you can see within 5 squares makes an Instinct Save. **Tier 1 or 2:** Dazzled (EoT).
+
 **Lucas's answer:**
