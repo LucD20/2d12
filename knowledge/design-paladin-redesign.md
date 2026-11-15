@@ -531,4 +531,18 @@ Glare: an enemy sees everything beyond 3 squares as Obscured, for its turn
 > **Reveal:** One creature you perceive within 5 squares sheds Bright light 1 (1 round).
 > **Glare** [Power, Save]: One enemy you can see within 5 squares makes an Instinct Save. **Tier 1 or 2:** Dazzled (EoT).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-15): B** ("Tier 1 or 2: Dazzled (EoT)"). **Lantern of Faith is DECIDED** with the card above; the condition's name is still open (he asked for other ideas).
+
+**Names for the condition (Claude):** *Dazzled* is the plain word and the one Pathfinder 2e players know with the same meaning; its one flaw here is that it sits one letter from our **Dazed** (which takes AP), and the purpose is the least ambiguity. Alternatives: *Half-Blinded* (explains itself, pairs with Blinded), *Glare-Struck*, *Bleary*, *Sunstruck*, *Blurred*. Claude's order: Dazzled if the likeness to Dazed doesn't bother him, otherwise Half-Blinded.
+
+**"Should Obscured be 2 Banes?" (Lucas: "I thought 1 Bane was a lot but I have come to the conclusion that it isn't so bad"). Claude's answer from the rules: keep 1.**
+- **A Bane is -1 on 2d12:** against Defense 13 it takes about 7 points off the chance of a Tier 2 or better (65% to 58% at +1) and about 9% off a roll's worth. He is right that one is modest.
+- **But Obscured is two-sided** (the Senses table): 1 Field Bane on your Actions against it **and** 1 Field Boon on its Actions against you. Between two creatures fighting each other that is already a swing of 2. At 2 and 2 it would be a swing of 4, close to Doomed.
+- **The Field limit is 2** (Chapter 1: named Boons and Banes count up to 2 of each name). Obscured at 2 would fill it alone: Low cover, a creature in the line, or shooting into a melee would then add nothing in Dim light.
+- **The ladders match today:** Low cover 1, Medium cover 2, High cover Doomed; Obscured 1, Hidden Doomed. At 2, Dim light would equal Medium cover.
+- **And Dazzled would double in price** (to about 24 to 32 a landing): too much for a 1 AP use of an Art.
+- A note found on the way: two creatures that are each Obscured to the other cancel out (each has the Bane and the Boon), so Dim light only matters when it is one-sided. That is the rules working as written; worth knowing when a fight is set at dusk.
+
+## Decision 9: next (the second Art, the line)
+
+The ground around him, changing places with an ally, bringing a fallen ally out. Claude proposes.
