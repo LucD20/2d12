@@ -577,4 +577,18 @@ Haul .............. about 15   [judgment: the earlier price for an ally's Evade 
 
 **For Lucas to choose:** keep Haul and Trade Places, or replace one (a candidate: "Stand: you can't be moved by Forced Movement until your next turn starts"); Brace's "adjacent" or a 1 Emanation is the same thing: the wording.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-15):** "Interesting, I was planning on saving most of those for a more Guardian build, but I think this doesnt remove the possibility of a full-tank class to have similar." His question: Trade Places and Haul aren't [Handle], "so no reactions triggered and no free hands necessary?" **Yes** (Chapter 7: Handle means you must be able to use your hands and have one free; nothing in our rules triggers a Reaction on a Handle Action, and a Reposition never triggers one). Kept without Handle on purpose: they work with a Greatsword or a shield in hand. **His correction:** the "skirmishing thing" was the Paladin himself stepping out of reach; moving an ally is fine, "though it fits more of a commander-type class". **Renamed by Claude: Haul is Rescue** (the Basic Actions already have a Haul). **Taken as DECIDED unless he objects:**
+
+> **Hold the Line** · Paladin Art · Round · 1 AP
+> *You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or carry one clear.*
+> **Brace:** Until your next turn starts, squares adjacent to you are Difficult Terrain for enemies.
+> **Trade Places:** You and a willing ally within Reach swap squares. Each of you is moved by a Reposition.
+> **Rescue:** Reposition 2 a willing ally within Reach.
+
+**For a future Guardian (noted):** the stronger versions stay free for it (a Reaction that swaps, a bigger Reposition, terrain that lasts).
+
+**The Senses diagram (Lucas, 2026-11-15):** "Much better", and he specified the arrows: a curved green arrow on top from Y to G with how Y perceives G, a curved orange one at the bottom from G to Y, a straight green arrow Y to G with Y's result, a straight orange one G to Y with G's. Drawn so on the reading page (four scenes). **His question on "you only hear a creature that can't sense you":** would it stop you perceiving creatures through walls? No: hearing is unchanged (every creature in combat within 10 squares is Hidden to you, through walls). That case is the reverse (the target can't sense you), which in a fight needs Hide; **it is taken out of this change and left for the Hide session** (his plan for Hide, noted: 1 AP, usable while you are Hidden, an attempt that makes you Unsensed; "soooo many holes" to work through in its own session). So the Senses change is one case only: each Obscured to the other = 1 Field Bane each.
+
+## Decision 10: next (the third Art, the word)
+
+A challenge, a command, courage against fear. Claude proposes.

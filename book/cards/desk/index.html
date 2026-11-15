@@ -61,9 +61,11 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 .ladder div{padding:.5rem .6rem;border-right:1px solid var(--line);min-width:0}
 .ladder div:last-child{border-right:0}
 .ladder b{display:block}
-.scenes{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem;margin:.8rem 0}
+.scenes{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1rem;margin:.8rem 0}
 .scene{border:1px solid var(--line);background:var(--panel);padding:.7rem .8rem;min-width:0}
-.scene h4{margin:0 0 .5rem;font-size:1rem;font-weight:600}
+.scene{margin:0}
+.scene figcaption{font-weight:600;margin-bottom:.3rem}
+.scene svg{display:block;width:100%;height:auto;font-family:var(--text)}
 .strip{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;margin-bottom:.6rem}
 .sq{aspect-ratio:1;display:grid;place-items:center;border:1px solid var(--line)}
 .sq.b{background:var(--lit)} .sq.d{background:var(--dimsq)} .sq.k{background:var(--darksq)}
@@ -78,7 +80,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the Senses rule with scenes; the second Art proposed. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the Senses scenes with arrows; Hold the Line settled. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
@@ -107,33 +109,35 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-  <li><strong>The Senses rule as two steps and four scenes</strong> (below): clearer? If yes, that is how it goes into the book, with the scenes as a diagram.</li>
-  <li><strong>The second Art, Hold the Line:</strong> "Proposed", or your changes. Worth your eye: the swap, and moving an ally (you called an ally's step "a skirmishing thing").</li>
+  <li><strong>The scenes with your arrows</strong> (below): is this what you meant?</li>
+  <li><strong>Hold the Line:</strong> I've taken it as decided, with Haul renamed Rescue (the Basic Actions already have a Haul). Say if not.</li>
+  <li>The third Art (the word) is next; I'll propose it.</li>
 </ol>
 </div>
 </section>
 
 <section id="line">
-<h2>Decision 9: the second Art, Hold the Line (proposed)</h2>
+<h2>Decision 9: the second Art, Hold the Line (decided unless you object)</h2>
 <div class="card">
   <div class="bar"><span>Hold the Line</span><span>Paladin Art · Round · 1 AP</span></div>
-  <div class="v"><b></b><div class="small"><em>You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or haul one clear.</em></div></div>
+  <div class="v"><b></b><div class="small"><em>You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or carry one clear.</em></div></div>
   <div class="v"><b>Brace</b><div>Until your next turn starts, squares adjacent to you are Difficult Terrain for enemies.</div></div>
   <div class="v"><b>Trade Places</b><div>You and a willing ally within Reach swap squares. Each of you is moved by a Reposition.</div></div>
-  <div class="v"><b>Haul</b><div>Reposition 2 a willing ally within Reach.</div></div>
+  <div class="v"><b>Rescue</b><div>Reposition 2 a willing ally within Reach.</div></div>
 </div>
 <div class="scroll"><table>
 <tr><th>Use</th><th>Points</th><th>From</th></tr>
 <tr><td>Brace</td><td>not priced</td><td>the SIM has never measured Difficult Terrain around a creature; my guess is 0 to 8: an enemy walking past him pays double for those squares</td></tr>
 <tr><td>Trade Places</td><td>about 10 to 15</td><td>judgment: two moves for 1 AP that trigger no Reactions; like an Evade given to an ally (10 to 15)</td></tr>
-<tr><td>Haul</td><td>about 15</td><td>judgment: the earlier price for an ally's Evade 2</td></tr>
+<tr><td>Rescue</td><td>about 15</td><td>judgment: the earlier price for an ally's Evade 2</td></tr>
 </table></div>
 <ul>
-<li><strong>The decision it gives:</strong> where the line is this round. Brace when they will try to run past; Trade Places when a hurt ally is in the front and he should be; Haul when someone is Down in a bad square.</li>
-<li><strong>It uses rules that exist.</strong> Difficult Terrain doubles a square's cost. Reposition is defined in Chapter 3: it isn't Forced Movement, triggers no Reactions, ignores Difficult Terrain and is reduced by Steadiness. A Down or Unconscious ally counts as willing, so Haul works on a fallen one.</li>
+<li><strong>The decision it gives:</strong> where the line is this round. Brace when they will try to run past; Trade Places when a hurt ally is in the front and he should be; Rescue when someone is Down in a bad square.</li>
+<li><strong>It uses rules that exist.</strong> Difficult Terrain doubles a square's cost. Reposition is defined in Chapter 3: it isn't Forced Movement, triggers no Reactions, ignores Difficult Terrain and is reduced by Steadiness. A Down or Unconscious ally counts as willing, so Rescue works on a fallen one.</li>
 <li><strong>Brace stacks with his Reactions:</strong> an enemy that pays double to pass him is easier to catch with Rebuke.</li>
 <li><strong>One thing to write:</strong> "swap squares" isn't in the rules. The card says each is moved by a Reposition, which gives it every answer (no Reactions, no Move Action). Two creatures of different Sizes can't swap; that needs a line.</li>
-<li><strong>Your earlier note:</strong> you called an ally's step out of reach "a skirmishing thing". Haul and Trade Places move an ally. I kept them because he moves the ally himself, by hand, which reads as a bodyguard. Say if they should go.</li>
+<li><strong>No Handle trait, on purpose.</strong> Handle means a free hand is needed. Without it, Trade Places and Rescue work with a Greatsword or a shield in hand. Nothing triggers a Reaction either: a Reposition never does, and in our rules Handle doesn't.</li>
+<li><strong>Room for a Guardian:</strong> these are three small uses for 1 AP each. A full tank class can have the stronger versions (a Reaction that swaps, a bigger Reposition, terrain that lasts).</li>
 <li><strong>No number on the card</strong> but distances. Wide, not strong.</li>
 </ul>
 </section>
@@ -150,12 +154,66 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <p><strong>1. Your eyes: how do you perceive your target?</strong> That sets your penalty, from the line above.</p>
 <p><strong>2. Its eyes: do you perceive it better than it perceives you?</strong> Only then you get a bonus: <strong>1 Field Boon</strong> if you are Obscured to it, <strong>Favored</strong> if you are Hidden or Unsensed to it. If you don't perceive it better, there is no bonus.</p>
 <div class="key"><span><i style="background:var(--lit)"></i>Bright light</span><span><i style="background:var(--dimsq)"></i>Dim light</span><span><i style="background:var(--darksq)"></i>Darkness</span><span>Y is you, G is a goblin</span></div>
-<div class="scenes"><div class="scene"><h4>A torch in the dark</h4><div class="strip"><div class="sq k"><div class="tok y">Y</div></div><div class="sq k"></div><div class="sq d"></div><div class="sq b"></div><div class="sq b"><div class="tok g">G</div></div><div class="sq b"></div></div><p>Y sees G <strong>Clear</strong>. G hears Y: <strong>Hidden</strong>.</p><p>Y attacks: no penalty, and sees better: <strong>Favored</strong>.</p><p>G attacks: <strong>Doomed</strong>.</p></div><div class="scene"><h4>Both at the edge of the light</h4><div class="strip"><div class="sq d"></div><div class="sq d"><div class="tok y">Y</div></div><div class="sq d"></div><div class="sq d"><div class="tok g">G</div></div><div class="sq d"></div><div class="sq d"></div></div><p>Each sees the other <strong>Obscured</strong>.</p><p>Y attacks: <strong>1 Field Bane</strong>. Nobody sees better: no bonus.</p><p>G attacks: <strong>1 Field Bane</strong>. <span class="small">(Today: both normal.)</span></p></div><div class="scene"><h4>Glare: G is Half-Blinded</h4><div class="strip"><div class="sq b"></div><div class="sq b"><div class="tok y">Y</div></div><div class="sq b"></div><div class="sq b"><div class="tok g">G</div></div><div class="sq b"></div><div class="sq b"></div></div><p>Y sees G <strong>Clear</strong>. G sees Y <strong>Obscured</strong>.</p><p>Y attacks: sees better: <strong>1 Field Boon</strong>.</p><p>G attacks: <strong>1 Field Bane</strong>.</p></div><div class="scene"><h4>Both in the dark</h4><div class="strip"><div class="sq k"></div><div class="sq k"><div class="tok y">Y</div></div><div class="sq k"></div><div class="sq k"><div class="tok g">G</div></div><div class="sq k"></div><div class="sq k"></div></div><p>Each only hears the other: <strong>Hidden</strong>.</p><p>Y attacks: <strong>Doomed</strong>. Nobody sees better: no bonus.</p><p>G attacks: <strong>Doomed</strong>.</p></div></div>
-<p><strong>What changes from today's rule:</strong> two cases, both because "no bonus unless you perceive it better" has no exceptions.</p>
-<ul>
-<li>Two creatures each Obscured to the other: 1 Field Bane each (today they cancel to a normal roll).</li>
-<li>You only hear a creature that can't sense you at all: Doomed and Favored cancel to a normal roll (today: Doomed). Rare.</li>
-</ul>
+<div class="scenes"><figure class="scene"><figcaption>A torch in the dark</figcaption>
+<svg viewBox="0 0 340 196" role="img" aria-label="A torch in the dark: Y sees G Clear, G sees Y Hidden; Y attacks: Favored; G attacks: Doomed"><defs><marker id="ah-y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ok)"/></marker><marker id="ah-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--open)"/></marker></defs>
+<rect x="20" y="78" width="44" height="44" fill="var(--darksq)" stroke="var(--line)"/>
+<rect x="276" y="78" width="44" height="44" fill="var(--lit)" stroke="var(--line)"/>
+<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-y)"/>
+<text x="170" y="26" text-anchor="middle" fill="var(--ok)" font-size="13">Y sees G: <tspan font-weight="600">Clear</tspan></text>
+<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-y)"/>
+<text x="170" y="84" text-anchor="middle" fill="var(--ok)" font-size="13">Y attacks: <tspan font-weight="600">Favored</tspan></text>
+<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-g)"/>
+<text x="170" y="128" text-anchor="middle" fill="var(--open)" font-size="13">G attacks: <tspan font-weight="600">Doomed</tspan></text>
+<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-g)"/>
+<text x="170" y="184" text-anchor="middle" fill="var(--open)" font-size="13">G sees Y: <tspan font-weight="600">Hidden</tspan></text>
+<circle cx="42" cy="100" r="15" fill="var(--tokY)"/><text x="42" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Y</text>
+<circle cx="298" cy="100" r="15" fill="var(--tokG)"/><text x="298" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">G</text>
+</svg></figure><figure class="scene"><figcaption>Both at the edge of the light</figcaption>
+<svg viewBox="0 0 340 196" role="img" aria-label="Both at the edge of the light: Y sees G Obscured, G sees Y Obscured; Y attacks: 1 Field Bane; G attacks: 1 Field Bane">
+<rect x="20" y="78" width="44" height="44" fill="var(--dimsq)" stroke="var(--line)"/>
+<rect x="276" y="78" width="44" height="44" fill="var(--dimsq)" stroke="var(--line)"/>
+<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-y)"/>
+<text x="170" y="26" text-anchor="middle" fill="var(--ok)" font-size="13">Y sees G: <tspan font-weight="600">Obscured</tspan></text>
+<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-y)"/>
+<text x="170" y="84" text-anchor="middle" fill="var(--ok)" font-size="13">Y attacks: <tspan font-weight="600">1 Field Bane</tspan></text>
+<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-g)"/>
+<text x="170" y="128" text-anchor="middle" fill="var(--open)" font-size="13">G attacks: <tspan font-weight="600">1 Field Bane</tspan></text>
+<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-g)"/>
+<text x="170" y="184" text-anchor="middle" fill="var(--open)" font-size="13">G sees Y: <tspan font-weight="600">Obscured</tspan></text>
+<circle cx="42" cy="100" r="15" fill="var(--tokY)"/><text x="42" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Y</text>
+<circle cx="298" cy="100" r="15" fill="var(--tokG)"/><text x="298" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">G</text>
+</svg></figure><figure class="scene"><figcaption>Glare: G is Half-Blinded</figcaption>
+<svg viewBox="0 0 340 196" role="img" aria-label="Glare: G is Half-Blinded: Y sees G Clear, G sees Y Obscured; Y attacks: 1 Field Boon; G attacks: 1 Field Bane">
+<rect x="20" y="78" width="44" height="44" fill="var(--lit)" stroke="var(--line)"/>
+<rect x="276" y="78" width="44" height="44" fill="var(--lit)" stroke="var(--line)"/>
+<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-y)"/>
+<text x="170" y="26" text-anchor="middle" fill="var(--ok)" font-size="13">Y sees G: <tspan font-weight="600">Clear</tspan></text>
+<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-y)"/>
+<text x="170" y="84" text-anchor="middle" fill="var(--ok)" font-size="13">Y attacks: <tspan font-weight="600">1 Field Boon</tspan></text>
+<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-g)"/>
+<text x="170" y="128" text-anchor="middle" fill="var(--open)" font-size="13">G attacks: <tspan font-weight="600">1 Field Bane</tspan></text>
+<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-g)"/>
+<text x="170" y="184" text-anchor="middle" fill="var(--open)" font-size="13">G sees Y: <tspan font-weight="600">Obscured</tspan></text>
+<circle cx="42" cy="100" r="15" fill="var(--tokY)"/><text x="42" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Y</text>
+<circle cx="298" cy="100" r="15" fill="var(--tokG)"/><text x="298" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">G</text>
+</svg></figure><figure class="scene"><figcaption>Both in the dark</figcaption>
+<svg viewBox="0 0 340 196" role="img" aria-label="Both in the dark: Y sees G Hidden, G sees Y Hidden; Y attacks: Doomed; G attacks: Doomed">
+<rect x="20" y="78" width="44" height="44" fill="var(--darksq)" stroke="var(--line)"/>
+<rect x="276" y="78" width="44" height="44" fill="var(--darksq)" stroke="var(--line)"/>
+<path d="M44 74 Q170 6 296 74" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-y)"/>
+<text x="170" y="26" text-anchor="middle" fill="var(--ok)" font-size="13">Y sees G: <tspan font-weight="600">Hidden</tspan></text>
+<path d="M72 92 L268 92" fill="none" stroke="var(--ok)" stroke-width="3" marker-end="url(#ah-y)"/>
+<text x="170" y="84" text-anchor="middle" fill="var(--ok)" font-size="13">Y attacks: <tspan font-weight="600">Doomed</tspan></text>
+<path d="M268 110 L72 110" fill="none" stroke="var(--open)" stroke-width="3" marker-end="url(#ah-g)"/>
+<text x="170" y="128" text-anchor="middle" fill="var(--open)" font-size="13">G attacks: <tspan font-weight="600">Doomed</tspan></text>
+<path d="M296 126 Q170 194 44 126" fill="none" stroke="var(--open)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ah-g)"/>
+<text x="170" y="184" text-anchor="middle" fill="var(--open)" font-size="13">G sees Y: <tspan font-weight="600">Hidden</tspan></text>
+<circle cx="42" cy="100" r="15" fill="var(--tokY)"/><text x="42" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Y</text>
+<circle cx="298" cy="100" r="15" fill="var(--tokG)"/><text x="298" y="105" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">G</text>
+</svg></figure></div>
+<p class="small">Dashed, curved arrows: how each one perceives the other. Solid, straight arrows: what that does to its attack. Green is Y, orange is G. The square under each token is the light it stands in.</p>
+<p><strong>What changes from today's rule:</strong> one case. Two creatures each Obscured to the other take 1 Field Bane each (today they cancel to a normal roll).</p>
+<p><strong>Your question about hearing through walls:</strong> nothing changes there. In combat you still hear every creature within 10 squares, through walls, and it is Hidden to you. The odd case I listed is the reverse one: a creature that can't sense <em>you</em> at all. In a fight that only happens after a Hide, which isn't written. So I've taken it out of this change and left it for the Hide session: today's rule stands (you are Doomed against a creature you only hear, with no bonus).</p>
 <p class="small">For the book, the four scenes would be drawn as one diagram in the book's own style (Y is you).</p>
 </section>
 
