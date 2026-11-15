@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: dfdc643 2026-11-15 Word of Radiance decided; the Paladin's levels 1 to 3 are complete
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 075b2b3 2026-11-15 The whole Paladin on one page (the clean read before applying), with the drift fixed and four small questions
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -48,6 +48,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
+- design-card-structure.md (7 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
 - design-stage0.md (18 KB)
@@ -58,7 +59,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (14 KB)
-- design-paladin-redesign.md (155 KB)
+- design-paladin-redesign.md (156 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

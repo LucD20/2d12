@@ -32,6 +32,7 @@ DESIGN_DOCS = [
     "foundry/mockups/style-audit.md",   # what in the system is not on par with the settled look; a proposed order (2026-11-12)
     "foundry/mockups/npc-hud-brief.md",  # the one-page NPC sheet and the HUD: decisions, mockups to make (2026-11-12)
     "book/sim-brief.md",        # the automated playtest environment (SIM): the brief, the order, what the ruler lacks (2026-11-11)
+    "book/cards/card-structure.md",  # the Action card's elements, inventoried to build its new structure (2026-11-15)
     "book/cards/paladin-analyses.md",  # the Card Workbench drafts analysed card by card (Lucas's format, 2026-11-14): priced lines with their source, then the analysis
     "book/ruler/pc-budget.md",  # the PC budget: what a PC's Actions, riders, Reactions and helps are worth, for the card sessions (2026-11-13)
     "book/ruler/stage0.md",     # Stage 0 (levels 1 to 3) in the ruler: the fights by level, the Bestiary's Stage 0 table and its fit (2026-11-12)

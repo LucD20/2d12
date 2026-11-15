@@ -1173,7 +1173,7 @@ Every card in its final text, in the order a character gains them. **Numbers:** 
 > **Glare:** [Power, Save] One enemy you can see within 5 squares makes an Instinct Save. Tier 1 or 2: Half-Blinded (EoT).
 
 > **Hold the Line** · Paladin Art · Round · 1 AP
-> *You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or carry one clear.*
+> *You plant yourself where the fight is worst: you crowd the ground at your feet, trade places with an ally, or carry one clear.*
 > **Brace:** Squares adjacent to you are Difficult Terrain for enemies (1 round).
 > **Trade Places:** You and a willing ally within Reach swap squares. Each of you is moved by a Reposition.
 > **Rescue:** Reposition 2 a willing ally within Reach.
@@ -1204,7 +1204,7 @@ Every card in its final text, in the order a character gains them. **Numbers:** 
 
 > **Bulwark of Faith** · Paladin Encounter Action · 1R · Encounter · [Divine, Focus] · Target: The triggering creature
 > *You step into the blow meant for them, and your god holds the line with you.*
-> **Interrupt:** A [Strike] Action would damage an ally within 5 squares.
+> **Interrupt:** An enemy's [Strike] Action would damage an ally within 5 squares of you.
 > The ally gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.
 
 > **Consecrated Ground** · Paladin Encounter Action · Encounter · 2 AP · [Area, Divine] · Distance: 8 sq. · Area: 2 Emanation
@@ -1261,4 +1261,4 @@ Every card in its final text, in the order a character gains them. **Numbers:** 
 - **What reads Profane:** Smite's dice and Word of Radiance's dice. Judge makes one creature Profane for him.
 - **18 cards:** 2 Features, 2 Hallmark Actions, 2 Hallmark Reactions, 3 Arts, 6 Escalation abilities, 3 Encounter Actions, and the hook. A character holds 9 of them at level 3.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-15):** 1. Bulwark's Interrupt is the same sentence as Shield of Faith's (applied above; the card will be Diamond). 2. Bulwark's Target could be "The triggering creature and the ally"; but first **check the whole targeting rule, research it, make it less confusing** ("a can of worm in almost all systems"): in progress, `book/research/` gets the note. 3. The two Profane sentences are fine. 4. "you crowd the ground at your feet" (applied above). **And: inventory every Action card element** (the redesign's, then the Core book's that are left), to build the Structure from: `book/cards/card-structure.md`.
