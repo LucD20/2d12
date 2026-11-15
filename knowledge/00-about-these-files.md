@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 3bdc0b3 2026-11-15 Reading page: the moment rule's three examples
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 2e649ce 2026-11-15 Consecrated Ground decided (8 sq., the sentence names who gains the Guard); Word of Radiance proposed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (174 KB)
+- open-design-items.md (175 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -58,7 +58,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (14 KB)
-- design-paladin-redesign.md (143 KB)
+- design-paladin-redesign.md (144 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

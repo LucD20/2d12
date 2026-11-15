@@ -1104,4 +1104,15 @@ d8s against a Profane creature: about +2 on the one he Judged ... 7   [judgment]
 
 **For Lucas to choose:** the shape (from him, or today's Burst at a distance); the dice (3 / 2 / 1, or 4 / 3 / 1); the Profane line (d8s, or one of the others).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-15): the card was "written weirdly".** The Profane line is one plain sentence ("The damage die size is increased to d8s against Profane creatures"), the Tiers are written normally (the dice in full, no "Radiance dice"), the Targets line is on the card, and the Push is 1 more on every Tier, Tier 3 included. DECIDED:
+
+> **Word of Radiance** · Paladin Encounter Action · Encounter · 2 AP · [Area, Divine, Power, Save, Self] · Area: 2 Emanation · Target: All enemies in the Area · Appeal Save
+> *You speak a single word of your god, and light bursts from you: your foes burn in it and stagger back.*
+> Against a Profane creature, the damage dice are d8s.
+> Tier 1: [R] 3d6 Ho; Pushed 3.
+> Tier 2: [R] 2d6 Ho; Pushed 2.
+> Tier 3: [R] 1d6 Ho; Pushed 1.
+
+Price: the damage 57 and the Profane dice 7 as before; the Push, now on every creature and 1 longer, still not priced (my guess about 18): about 80 to 85, of 100. **Lesson for the next cards (mine):** a named die ("Smite dice") is for a card whose count changes (Smite: one for each Escalation); a card with fixed dice writes them on its Tiers. The header's order: traits, Distance, Area, Target, the Save.
+
+**The Paladin's levels 1 to 3 are all decided.** Nothing is in the book, the card JSON or Foundry.
