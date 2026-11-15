@@ -2,6 +2,8 @@
 
 Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order of all open work), then the pack you were asked to run.
 
+**The system's purpose (Lucas, 2026-11-15):** fun, engaging, tactical, and **with the least ambiguity possible** (ambiguity is what caused the most problems in the games he has played). When a card needs a word the rules don't define, the rule gets written, not left to the table.
+
 ## What is here
 - `book/rules-src/*.md` = **the rulebook source (the only thing to edit)**. `python3 build_rules.py` (in `book/`) builds 6 HTML documents (the Talents document is set aside: `rules-src/set-aside/`); never edit the HTML. Conventions: `book/rules-src/README.md`. Numbers: `book/ruler/` (README + scripts). Diagrams: `book/diagrams/diagrams.py`.
 - `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 250 tests; build the packs first in a fresh clone).

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-14 from the repository at: 8ac7691 2026-11-14 Paladin: Shield of Faith decided; Rebuke proposed (stops an enemy moving closer to an ally)
+Built by tools/knowledge.py on 2026-11-15 from the repository at: abbd413 2026-11-14 Paladin: Rebuke revised (moves away from you, 3 squares, Hindered and an Appeal Save); the Advance and Evade rules onto their cards (logged)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,9 +15,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (158 KB)
+- HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (149 KB)
+- open-design-items.md (152 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -55,7 +55,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (12 KB)
-- design-paladin-redesign.md (63 KB)
+- design-paladin-redesign.md (65 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

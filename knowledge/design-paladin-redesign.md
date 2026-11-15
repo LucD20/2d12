@@ -409,7 +409,7 @@ x it fires in about half the rounds ........... [judgment: Rebuke's same trigger
 
 **Lucas's answer (2026-11-14):** the size (1 + Power Modifier) "is good as is"; a Strike only: good; Taunted is a good rider. **His question: in other media Shield of Faith grants Defense; will the Paladin have a flat Defense Action, so this one should take another name?** Claude's answer, from our notes: probably not as a core card. A flat Defense bonus is the kind of protection nobody sees (the 5e aura: "Forgetting to use the paladin's aura when it comes up"; our own rule now: no silent bonuses), and the SIM prices +1 Defense on an ally for a round at 12 points for an AP, half an AP's worth. If one comes, it will be an Encounter Action or an Art (today's Beacon is that card) and takes its own name. A pane of light that turns part of a blow aside is a shield: **the name stays.**
 
-## Decision 7: the second Hallmark Reaction, Rebuke (PROPOSED; revised after Lucas's notes, the card at the end of this section)
+## Decision 7: the second Hallmark Reaction, Rebuke (DECIDED, Lucas, 2026-11-15: "Its good how it currently is"; the card at the end of this section)
 
 **Research and rules first.** The strongest way to make a front line real is that movement ends near the front-liner (Lancer: a character that becomes Engaged stops and loses its unused movement; 13th Age: an unengaged defender can intercept one enemy moving past). The opportunity attack is the weakest, and worthless on a low-damage character (RPGBot: "the absolute floor of stickiness"). Our rules have the pieces: "an enemy moves closer to you or to an ally" is a defined moment (Chapter 2; the Archer's Overwatch uses it); a Trigger on a Move Action fires once for the whole Move Action and the reactor chooses the square; a disrupted movement "ends in the square the creature was in" and its AP is wasted; Evade and Forced Movement never trigger it. With the Advance in one piece the movement left is lost. Today's Rebuke (an Appeal Save when an enemy Strikes an ally: damage, Pushed, Frightened) fires in 66% of rounds and is worth 14.
 
@@ -464,4 +464,20 @@ The ally it didn't reach ................................................ not pr
 
 **For the book, with this card (logged; not applied):** "moving away from you" defined beside "Moving Closer" (Chapter 2); a Tier line can name two Tiers, and an unwritten Tier does nothing (rules-src/README.md and Chapter 1's card anatomy).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-15):** decided as revised. "Log that we need a rulings for 'Moving away', since we want to make the game having the least amount of ambiguity." Logged in the rules backlog with the questions the ruling must answer. With it he stated the system's purpose: **fun, engaging, tactical, and with the least ambiguity** (in CLAUDE.md now).
+
+## Where the Paladin stands (level 1, after decision 7)
+
+| Slot | Card | Status |
+|---|---|---|
+| Numbers | Weapon +1, Power +2; Health 20 / 10; Rally 6; Speed +0; Heavy | decided |
+| Feature | **Judge** (the mark; 0 AP / 1 AP) | decided |
+| Feature | **Smite** (the burst; Encounter, 2 AP) | decided |
+| Hallmark Action | **Binding Light** (2 AP Strike; Immobilized) or **Lay On Hands** (Guard; 2 AP: a Rally Point) | decided |
+| Hallmark Reaction | **Shield of Faith** (a smaller hit, Taunted) or **Rebuke** (stops an enemy moving away) | decided |
+| Art (1 of 3) | three to design | next |
+| Escalation 2 Passive (1 of 2) | two to design | after the Arts |
+
+## Decision 8: next (the Arts)
+
+Three Arts, each up to three uses, each use one thing, no damage. Claude proposed three themes for Lucas to steer before any card: **light** (his Bright light, the Hidden, Darkness: what left Smite), **the line** (the ground around him, changing places with an ally, bringing a fallen ally out), **the word** (a challenge, a command, courage against fear).
