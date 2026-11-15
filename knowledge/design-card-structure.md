@@ -77,3 +77,15 @@ Sources: the 19 cards of the Paladin redesign (`paladin-redesign.md`, "The whole
 7. **Passives and Features:** a card like an Action's (title, flavor, one sentence), or lighter.
 8. **Level and Escalation** on the title bar or not.
 9. **Critical:** kept as an optional row.
+
+## Part 1: the header (PROPOSED 2026-11-15, three structures; the reading page: `book/cards/structure/index.html`, the artifact "Card Structure Desk")
+
+Lucas: "Start with 1, the header. It can be a new file so we dont crowd the Paladin. For each structure, offer three different ones, we will build one by one."
+
+- **A, stacked lines** (Pathfinder 2e's block): the name and the cost on the bar; the category; the traits; the Flavor; then Frequency, Distance, Area, Target and Versus, one labeled line each. Clearest cold, tallest (8 lines on Word of Radiance).
+- **B, the grid** (Draw Steel's block): the name and the category on the bar; the Flavor; four fixed slots (traits | frequency and cost; Distance and Area | Target); **what is rolled leaves the header and becomes the body's first line** ("Weapon roll vs. Armor Defense", "Each target makes an Appeal Save"). A fixed place for each fact; the most to build.
+- **C, one line** (today's book, tightened): category, frequency and cost on the bar; the Flavor; the traits; one line with Distance, Area, Target, Vs in that order. Shortest and cheapest; the bar and the line wrap on a full card.
+
+Claude's pick: B. Also asked: where the Flavor goes; whether a Strike always writes its Defense.
+
+**Lucas's answer:**

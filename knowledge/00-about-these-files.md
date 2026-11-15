@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 075b2b3 2026-11-15 The whole Paladin on one page (the clean read before applying), with the drift fixed and four small questions
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 1e6ac06 2026-11-15 The Action card's elements inventoried (card-structure.md); the clean read's answers applied to the record
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -48,7 +48,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-card-structure.md (7 KB)
+- design-card-structure.md (8 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
 - design-stage0.md (18 KB)

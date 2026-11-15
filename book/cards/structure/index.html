@@ -1,0 +1,143 @@
+<title>Card Structure Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Signika:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column, a sticky row of section links, ruled sections like a printed rulebook page.
+   Dark first (the system's table look); the light set is the chat card's parchment. */
+:root{
+  --bg:#15171b; --panel:#1c1f25; --line:#343a44; --fg:#e4e1d8; --dim:#a09d94;
+  --gold:#d2a94e; --holy:#e7c873; --ok:#7fb486; --open:#e08a55; --quote:#b9c4d6;
+  --display:"Cinzel",Georgia,serif; --text:"Signika","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light }
+body{background:var(--bg);color:var(--fg);font-family:var(--text);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:46rem;margin:0 auto;padding-block:1.5rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-size:1.9rem;line-height:1.15;margin:0 0 .3rem;color:var(--holy);text-wrap:balance}
+.sub{color:var(--dim);margin:0 0 1rem}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-block:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.2rem 1rem;padding:.55rem 0;margin-bottom:1.5rem}
+nav a{color:var(--fg);text-decoration:none;font-weight:500}
+nav a:hover,nav a:focus-visible{color:var(--gold);outline:none;text-decoration:underline}
+section{margin-top:2.4rem;scroll-margin-top:4rem}
+h2{font-size:1.3rem;font-weight:600;margin:0 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--gold);text-wrap:balance}
+h3{font-size:1.05rem;font-weight:600;margin:1.4rem 0 .4rem;color:var(--holy)}
+p{margin:.5rem 0}
+ul,ol{margin:.4rem 0;padding-left:1.3rem}
+li{margin:.3rem 0}
+strong{font-weight:600}
+.tag{font-weight:600;white-space:nowrap}
+.tag.ok{color:var(--ok)} .tag.open{color:var(--open)}
+table{border-collapse:collapse;width:100%}
+.scroll{overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem .45rem 0;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:500}
+blockquote{margin:.5rem 0;padding:.1rem 0 .1rem .9rem;border-left:2px solid var(--line);color:var(--quote)}
+blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
+.need{background:var(--panel);border:1px solid var(--line);padding:.9rem 1.1rem;margin:.6rem 0}
+.need ol{margin:0}
+/* a card: the book's stat block, plain */
+.card{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.card .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.card .bar span:last-child{color:var(--dim);font-weight:400}
+.card .v{display:grid;grid-template-columns:3.4rem 1fr;gap:.6rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.card .v:last-child{border-bottom:0}
+.card .v b{color:var(--gold);font-weight:600}
+.card .v div{min-width:0}
+.opt{display:grid;grid-template-columns:1.6rem 1fr;gap:.5rem;margin:.7rem 0}
+.opt>b{color:var(--gold);font-size:1.1rem}
+.opt div{min-width:0}
+.small{color:var(--dim);font-size:.93em}
+
+.hc{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.hc .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.hc .bar span:last-child{color:var(--dim);font-weight:400}
+.hc .bar span.cost{color:var(--gold);font-weight:600}
+.hc .row{padding:.3rem .8rem;border-bottom:1px solid var(--line)}
+.hc .row:last-child{border-bottom:0}
+.hc .tr{color:var(--holy)}
+.hc .lab{display:grid;grid-template-columns:6rem 1fr;gap:.6rem}
+.hc .lab b{color:var(--dim);font-weight:500}
+.hc .grid{display:grid;grid-template-columns:1fr auto;gap:.3rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.hc .grid div{min-width:0}
+.hc .grid .r{text-align:right}
+.hc .stub{color:var(--dim);font-size:.9em;font-style:italic}
+</style>
+
+<div class="wrap">
+<h1>Card Structure Desk</h1>
+<p class="sub">The Action card's new structure, built one part at a time. Structure only: what a card holds and where. The look comes later. Nothing here is in the book or in Foundry. Updated 2026-11-15.</p>
+<nav>
+  <a href="#need">What I need</a>
+  <a href="#a">A: stacked lines</a>
+  <a href="#b">B: the grid</a>
+  <a href="#c">C: one line</a>
+  <a href="#mine">My pick</a>
+  <a href="#order">The order</a>
+</nav>
+
+<section id="need">
+<h2>What I need from you now</h2>
+<div class="need">
+<p><strong>Part 1 of 9: the header.</strong> Three structures, each shown on the same five cards. Pick one, or mix parts of them.</p>
+<ol>
+<li>Which structure: A, B or C.</li>
+<li>Where the Flavor goes: right under the name (B and C), or under the traits (A).</li>
+<li>Whether a Strike always writes its Defense, or only when it isn't Armor Defense.</li>
+</ol>
+</div>
+<p class="small">The five cards were chosen to stress the header: a Strike, an Area with a Save (the fullest header we have), a Reaction, an Action with two costs, and a Passive (the emptiest).</p>
+</section>
+
+<section id="a"><h2>Option A: stacked lines</h2><p>One fact a line, each with its label. The cost sits alone at the right of the name. The model is Pathfinder 2e's stat block.</p>
+<div class="hc"><div class="bar"><span>Binding Light</span><span class="cost">2 AP</span></div><div class="row small">Paladin Hallmark Action</div><div class="row tr">Weapon · Strike · Divine</div><div class="row"><em>Your blow lands wreathed in light that roots your foe where it stands.</em></div><div class="row lab"><b>Frequency</b><span>Round</span></div><div class="row lab"><b>Distance</b><span>Weapon</span></div><div class="row lab"><b>Target</b><span>One creature</span></div><div class="row lab"><b>Versus</b><span>Armor Defense</span></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Word of Radiance</span><span class="cost">2 AP</span></div><div class="row small">Paladin Encounter Action</div><div class="row tr">Power · Save · Area · Self · Divine</div><div class="row"><em>You speak a single word of your god, and light bursts from you: your foes burn in it and stagger back.</em></div><div class="row lab"><b>Frequency</b><span>Encounter</span></div><div class="row lab"><b>Area</b><span>2 Emanation</span></div><div class="row lab"><b>Target</b><span>All enemies in the Area</span></div><div class="row lab"><b>Versus</b><span>Appeal Save</span></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Shield of Faith</span><span class="cost">1R</span></div><div class="row small">Paladin Hallmark Reaction</div><div class="row tr">Divine · Focus</div><div class="row"><em>You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.</em></div><div class="row lab"><b>Frequency</b><span>Turn</span></div><div class="row lab"><b>Target</b><span>The triggering creature</span></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Lay On Hands</span><span class="cost">1 or 2 AP</span></div><div class="row small">Paladin Hallmark Action</div><div class="row tr">Divine · Focus</div><div class="row"><em>You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</em></div><div class="row lab"><b>Frequency</b><span>Round</span></div><div class="row lab"><b>Distance</b><span>Reach</span></div><div class="row lab"><b>Target</b><span>One willing ally</span></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Armor of Faith</span><span class="cost">Escalation 2</span></div><div class="row small">Paladin Escalation Passive</div><div class="row"><em>Each time you answer for an ally, your god's light settles on you like mail.</em></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<ul><li>Nothing to learn: every line says what it is.</li><li>A missing line is simply absent; no empty slot.</li><li>The tallest: Word of Radiance's header is 8 lines before any rule.</li><li>Frequency is separated from the cost, though the two are read together ("Round, 2 AP").</li></ul></section>
+<section id="b"><h2>Option B: the grid</h2><p>Four fixed slots under the Flavor: traits at the left, frequency and cost at the right; where it reaches at the left, whom it hits at the right. What is rolled moves out of the header and becomes the first line of the body. The model is Draw Steel's ability block.</p>
+<div class="hc"><div class="bar"><span>Binding Light</span><span>Paladin Hallmark Action</span></div><div class="row"><em>Your blow lands wreathed in light that roots your foe where it stands.</em></div><div class="grid"><div class="tr">Weapon · Strike · Divine</div><div class="r"><b>Round · 2 AP</b></div><div>Distance: Weapon</div><div class="r">Target: One creature</div></div><div class="row"><b>Weapon roll vs. Armor Defense</b></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Word of Radiance</span><span>Paladin Encounter Action</span></div><div class="row"><em>You speak a single word of your god, and light bursts from you: your foes burn in it and stagger back.</em></div><div class="grid"><div class="tr">Power · Save · Area · Self · Divine</div><div class="r"><b>Encounter · 2 AP</b></div><div>Area: 2 Emanation</div><div class="r">Target: All enemies in the Area</div></div><div class="row"><b>Each target makes an Appeal Save</b></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Shield of Faith</span><span>Paladin Hallmark Reaction</span></div><div class="row"><em>You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.</em></div><div class="grid"><div class="tr">Divine · Focus</div><div class="r"><b>Turn · 1R</b></div><div></div><div class="r">Target: The triggering creature</div></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Lay On Hands</span><span>Paladin Hallmark Action</span></div><div class="row"><em>You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</em></div><div class="grid"><div class="tr">Divine · Focus</div><div class="r"><b>Round · 1 or 2 AP</b></div><div>Distance: Reach</div><div class="r">Target: One willing ally</div></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Armor of Faith</span><span>Paladin Escalation Passive</span></div><div class="row"><em>Each time you answer for an ally, your god's light settles on you like mail.</em></div><div class="grid"><div class="tr">&nbsp;</div><div class="r"><b>Escalation 2</b></div></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<ul><li>Each fact has one fixed place, so the eye learns where to look.</li><li>The roll line says who rolls and against what ("Weapon roll vs. Armor Defense", "Each target makes an Appeal Save"): today that is split between a trait and the Vs entry.</li><li>A Strike always shows its Defense, so the mistake I made on Smite can't happen.</li><li>A card with no Distance and no Target (a Passive) shows one row only.</li><li>On a narrow screen the two columns can wrap; the builder must handle it.</li></ul></section>
+<section id="c"><h2>Option C: one line</h2><p>Today's book, tightened: category, frequency and cost on the title bar; one line under the traits with Distance, Area, Target and Vs always in that order.</p>
+<div class="hc"><div class="bar"><span>Binding Light</span><span>Paladin Hallmark Action · Round · 2 AP</span></div><div class="row"><em>Your blow lands wreathed in light that roots your foe where it stands.</em></div><div class="row tr">Weapon · Strike · Divine</div><div class="row"><b>Distance: Weapon ✦ Target: One creature ✦ Vs. Armor Defense</b></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Word of Radiance</span><span>Paladin Encounter Action · Encounter · 2 AP</span></div><div class="row"><em>You speak a single word of your god, and light bursts from you: your foes burn in it and stagger back.</em></div><div class="row tr">Power · Save · Area · Self · Divine</div><div class="row"><b>Area: 2 Emanation ✦ Target: All enemies in the Area ✦ Appeal Save</b></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Shield of Faith</span><span>Paladin Hallmark Reaction · Turn · 1R</span></div><div class="row"><em>You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.</em></div><div class="row tr">Divine · Focus</div><div class="row"><b>Target: The triggering creature</b></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Lay On Hands</span><span>Paladin Hallmark Action · Round · 1 or 2 AP</span></div><div class="row"><em>You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</em></div><div class="row tr">Divine · Focus</div><div class="row"><b>Distance: Reach ✦ Target: One willing ally</b></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<div class="hc"><div class="bar"><span>Armor of Faith</span><span>Paladin Escalation Passive · Escalation 2</span></div><div class="row"><em>Each time you answer for an ally, your god's light settles on you like mail.</em></div><div class="row stub">The body (Setup, Interrupt, Tiers, text): decided in the next steps.</div></div>
+<ul><li>The shortest, and the closest to today: the least to rebuild in the book and in Foundry.</li><li>The title bar gets long ("Paladin Encounter Action · Encounter · 2 AP") and wraps on a phone.</li><li>On a full card the one line holds four facts and wraps too; the order is fixed but the position is not.</li><li>"Encounter" appears twice on an Encounter Action's bar.</li></ul></section>
+<section id="mine">
+<h2>My pick: B, the grid</h2>
+<ul>
+<li><strong>It serves the system's purpose.</strong> A fixed place for each fact is the least ambiguous, and the roll line states who rolls against what in words.</li>
+<li><strong>It fits the fullest and the emptiest card.</strong> Word of Radiance's header is three lines; Armor of Faith's is two.</li>
+<li><strong>Its cost:</strong> the most work to build, in the book's builder and later in Foundry's card. A is the easiest to read cold; C is the cheapest.</li>
+</ul>
+<p class="small">The two models (Pathfinder 2e's block and Draw Steel's block) are named from the rules texts read earlier in this redesign; I did not search for players' opinions of the layouts.</p>
+</section>
+
+<section id="order">
+<h2>The order of the nine parts</h2>
+<ol>
+<li><strong>The header</strong> (this page).</li>
+<li>The body's order: Requirements, Setup, Interrupt or Trigger, lines before the roll, the Tiers, Critical, lines after.</li>
+<li>Versions: columns with "As X AP", or one full line a cost.</li>
+<li>Modes (an Art's named choices).</li>
+<li>Text with no label: one element instead of four.</li>
+<li>The Target line when a card touches two creatures (waits for the targeting research).</li>
+<li>Passives and Features: a card like an Action's, or lighter.</li>
+<li>Level and Escalation on the header or not.</li>
+<li>Critical: an optional row, or dropped.</li>
+</ol>
+<p class="small">The full inventory of elements is in <code>book/cards/card-structure.md</code> and on the Paladin Redesign Desk.</p>
+</section>
+</div>
