@@ -917,4 +917,21 @@ On an enemy's turn: an Advance 3 before Shield of Faith or Rebuke ... about 10 e
 
 **For Lucas to choose:** once on each turn, or only on his own turn, or only on Reactions; 3 squares; whether an Action with its own Setup gets both.
 
+**Lucas's version (2026-11-15):** "While your Escalation is 6, once on your turn, any [Divine] Action you use gains 'Setup: You Advance 3.' If the [Divine] Action already has Advance as a Setup, you increase it by 3, up to your Speed." With two rules: (a) does the Advance rule say that a move given by an Action can't pass your Speed? If not, add it. (b) **Setups can't stack:** when something gives a Setup to an Action that already has one, the creature chooses to replace the original Setup or keep it; they don't combine unless a card says so, as Hallowed Stance does.
+
+**From the rules:**
+- **(a) is already written** (Chapter 3, Movement): "each time you move with an Action, you can't move more than your current Speed, unless an ability says otherwise: with Speed 2, an Action that lets you Evade 3 lets you Evade only 2." Nothing to add; the card needn't repeat "up to your Speed".
+- **(b) is logged** as the fifth line of the Setup section.
+- **"Once on your turn"** (his turn only): the bodyguard move on an enemy's turn is out, by his choice.
+
+**A problem Claude found with the "increase it by 3" clause: with that same Speed rule it does almost nothing.** A Paladin's Speed is his species' (the class gives +0): Human 5, Dwarf 4, Elf 6. Lay On Hands' Setup is "Advance up to 5 squares": 5 + 3 = 8, cut back to 5 for a Human (no gain), to 4 for a Dwarf (Lay On Hands itself is already cut to 4), to 6 for an Elf (1 square gained). Reckoning's Setup is "You Advance", already his whole Speed: no gain for anyone. Two ways out, for Lucas:
+- **A (Claude's lean): drop the exception.** Setups never combine. Hallowed Stance gives its Advance 3 to the [Divine] Actions that have no Setup (Smite, Binding Light, Judge, Lantern of Faith, Commandment); on Lay On Hands and Reckoning he keeps the card's own Setup, which is the better one. One sentence, no special case.
+- **B: let the increase pass his Speed** ("this movement can exceed your Speed"): Lay On Hands reaches 8 squares, Reckoning his Speed + 3. A real gain, and a second place in the book where a move passes Speed.
+
+**The card under A:**
+
+> **Hallowed Stance** · Paladin Escalation Passive · Escalation 6
+> *Your god's light carries you: wherever you are needed, you are already there.*
+> While your Escalation is 6, once on your turn, a [Divine] Action you use gains "Setup: You Advance 3."
+
 **Lucas's answer:**
