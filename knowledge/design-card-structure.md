@@ -88,4 +88,4 @@ Lucas: "Start with 1, the header. It can be a new file so we dont crowd the Pala
 
 Claude's pick: B. Also asked: where the Flavor goes; whether a Strike always writes its Defense.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-15): B is good.** In doubt about the roll line as a sentence ("Each target makes an Appeal Save"): maybe it is only his habit from games that print "X Save"; "maybe its worth a shot". He asked for a search about card layouts first: running (`book/research/` gets the note). Still open: where the Flavor goes; whether a Strike always writes its Defense.

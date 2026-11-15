@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 38c5b92 2026-11-15 Card structure, part 1: three header structures on a new reading page
+Built by tools/knowledge.py on 2026-11-15 from the repository at: ed8588e 2026-11-15 Targeting researched (research/targeting.md) and the rule rewritten as a proposal: a Target line on every Reaction, affected is not targeted
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -60,7 +60,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (14 KB)
-- design-paladin-redesign.md (160 KB)
+- design-paladin-redesign.md (161 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

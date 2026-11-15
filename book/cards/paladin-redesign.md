@@ -1300,5 +1300,13 @@ Every card in its final text, in the order a character gains them. **Numbers:** 
 - **"Target: The triggering creature and the ally" (Lucas's idea):** honest, but it asks Line of Effect to both, so a Paladin can't shield an ally from an archer behind an arrow slit; and every protective card would carry two targets on its line. No game read does it.
 - **Keep the draft (every effect targets whoever it touches):** the hidden targets above.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-15):** the first two sentences are clear. "an ally the moment names is the triggering ally" is confusing ("the moment names"); "Affected is not targeted ... by one of those words" he "didnt understand much at all". And he asked: "by the rules, you dont need LoS to the triggering creature unless it is the same as the target?" **Yes: Line of Effect is owed to the target only; the triggering creature must only be perceived (seen or heard).**
 
+**The rule, second wording (PROPOSED).** "The triggering ally" is gone (no card of ours needs it; it comes back the day one does), and the third paragraph says the thing with the card that does it:
+
+> **A Reaction's target.** Every Reaction has a Target line, and its Interrupt or Trigger is written about **the target**. The creature whose Action sets the Reaction off is **the triggering creature**.
+> **To use a Reaction** you need Line of Effect to its target, as for every Action. You must also perceive the target and the triggering creature (Hidden is enough; Unsensed is not).
+> **Only the Target line targets.** A Reaction can also do something to the triggering creature when it isn't the target: Shield of Faith's target is the ally, and it Taunts the attacker. You need no Line of Effect to the triggering creature for that; perceiving it is enough.
+> A feature that says "when..." has no target: you must perceive the creatures it names.
+
+**Lucas's answer:**
