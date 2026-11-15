@@ -806,7 +806,7 @@ x Escalation 4 or more (about 30% of a first fight's turns; about 70% with Momen
 
 **The note, to watch in playtest:** with Tireless Vigil, a Paladin at Escalation 4 or more who spends his Reaction AP on Smite still has the Vigil's Reaction AP for a [Divine] Reaction that round. Smite's cost ("until his next turn he can't protect anyone") is then half paid. If Smite turns out too safe late in a fight, the fix is one clause on Tireless Vigil: "you don't gain it on a turn you used Smite".
 
-## Decision 15: the first Escalation 6 Passive, Reckoning (LUCAS'S DRAFT of 2026-11-14, brought to today's rules; waiting for him)
+## Decision 15: Reckoning, at Escalation 6 (Lucas's draft of 2026-11-14; revised twice; the card at the end of this section, waiting for his word)
 
 **His draft (2026-11-14):** "You emit Bright light in a 2 Emanation. The first time your turn begins when you have Escalation 6, enemies in the area are Pushed 2 and must make an Appeal Save: Frightened of you (2 rounds) / Frightened of you (EoT) / No effect."
 
@@ -850,5 +850,28 @@ Frightened of you (1 round) on about 78% of them ........ about 6   [SIM: Fright
 > **Reckoning** · Paladin Escalation Passive · Escalation 6 · [Power, Save]
 > *Your god's light breaks from you all at once, and your foes are thrown back from it.*
 > The first time in an encounter that your turn starts while your Escalation is 6, each enemy within 2 squares of you is Pushed 2 and makes an Appeal Save. **Tier 1 or 2:** Frightened of you (1 round).
+
+**Lucas's answer (2026-11-15):** named DCs: yes (decided; in the rules backlog). **Reckoning: add "Setup: You Advance"**, "because if something happened between your turns and you dont have enemies adjacent anymore, it is wasted". **A rule for Setup: if an Action in your Setup is disrupted, the rest of the Action still happens.** **And: Escalation abilities are Passives, while most rules speak of Actions:** either a rule that Passives use the Actions' rules, "or we change the passives so this rule note isn't necessary".
+
+**Claude's answer on the last point: change the card, no rule note.** The book already has the tool: Chapter 2, "An Action with an **Escalation** line on its card needs that much Escalation" (it is how the Apex is written). A "moment" ability that has a Setup, traits, an Area and a Save **is** an Action; so Reckoning is written as one: 0 AP, Encounter, Escalation 6. Every rule it needs (Setup, Targets, Save Actions, Areas, 0 AP Actions) then applies as written. A Passive stays what the word says: a standing sentence that needs no Action rule (Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil are all that kind). **For the level list:** the rung gives "an Escalation ability", which is a Passive or a 0 AP Action with an Escalation line.
+
+**What changes for the player:** he uses it on his turn when he chooses (it is no longer automatic at the start of the turn), which also answers the "wasted" worry by itself; the Setup's Advance, kept as Lucas asked, is a free move to get among them first.
+
+> **Reckoning** · Paladin Escalation Action · Escalation 6 · Encounter · 0 AP · [Area, Divine, Power, Save, Self] · Area: 2 Emanation · Appeal Save
+> *You stride among your foes, and your god's light breaks from you and throws them back.*
+> **Setup:** You Advance.
+> Each enemy in the Area is Pushed 2.
+> **Tier 1 or 2:** Frightened of you (1 round).
+
+```
+A free Advance, up to his Speed ........................... 12 to 25   [an AP: 12 unused (SIM) to 25 spent]
+Pushed 2, about 2 or 3 enemies (he now picks the place) ... 12 to 18   [judgment: 6 each]
+Frightened of you (1 round) on about 78% of them .......... about 6 to 9   [SIM: Frightened 2 to 4 a landing; the odds computed]
+--- About 30 to 50, once, for 0 AP, in the fights that reach Escalation 6: an Encounter Action's worth, given by the clock
+```
+
+- **By the new Effects rule:** the Push is the Action's Effect (it happens whatever the Save), and the Tier line holds what depends on the Save.
+- **[Area] and [Self]:** a 2 Emanation centered on him; Chapter 1's Save Action rules apply (each enemy rolls; Cover gives it Field Boons on the Save).
+- **Bigger than the Passive was:** he chooses the moment and gets a free move. It is still the rarest card of Stage 0.
 
 **Lucas's answer:**
