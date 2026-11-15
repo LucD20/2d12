@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 2e649ce 2026-11-15 Consecrated Ground decided (8 sq., the sentence names who gains the Guard); Word of Radiance proposed
+Built by tools/knowledge.py on 2026-11-15 from the repository at: dfdc643 2026-11-15 Word of Radiance decided; the Paladin's levels 1 to 3 are complete
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -58,7 +58,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (14 KB)
-- design-paladin-redesign.md (144 KB)
+- design-paladin-redesign.md (155 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
