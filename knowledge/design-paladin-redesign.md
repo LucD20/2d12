@@ -760,4 +760,16 @@ x Escalation 2 or more (about 70% of a fight's turns; all with Momentum)
 
 **For Lucas to choose:** this, or the glow ("the creature you Judged sheds Bright light 1"), or another idea of his; the name.
 
+**Two questions from Lucas before his answer (2026-11-15), answered from the rules:**
+
+**1. "Judge is once a turn, so if you take 2 creatures down, you can't judge, maybe change this?"** He is right. Judge was written "Turn" (copied from the Archer's Mark Quarry), and Chapter 2 says a Turn Action is used "once on your turn, and once on each other creature's turn": the 0R use after the first Judged creature goes Down spends it, so a second one going Down the same turn leaves him with no mark until the next turn. **Fix: Judge has no Frequency (At-will).** He has only one mark, so using it twice in a turn stacks nothing, and Chapter 2 says At-will "has no mechanical effect" on an Action with no roll. If a later card rewards "when you Judge a creature", that card limits itself (as Draw Steel does: "the first time on a turn that you use your Judgment"), not Judge. **The Archer's Mark Quarry has the same hole** (noted for its redesign).
+
+> **Judge** · Paladin Feature · At-will · [Divine] · Distance 10 sq. · Target: one enemy you can see
+> *You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.*
+> **0 AP:** At the start of an encounter, or as a 0R when the creature you Judged goes Down: the target is **Judged** by you until the encounter ends.
+> **1 AP:** The target is Judged by you instead of the one you had.
+> A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.
+
+**2. "Does action points on your turn turn into reactions? If you have a 1R triggering twice during your turn, can you do it? Or your AP only becomes R when your turn ends?"** Chapter 2, Reactions: a Reaction is paid "with your Reaction AP, with AP you kept from your turn, or with both"; and **"On your own turn, your turn's AP can pay for it too."** So yes, during his own turn his AP can pay for Reactions; he doesn't have to wait for the turn to end. What stops the same Reaction twice is its Frequency, not the AP: Shield of Faith and Rebuke are Turn, so each can be used once on his turn and once on each other creature's turn, as long as he can pay. Two different Reactions on the same turn are fine.
+
 **Lucas's answer:**
