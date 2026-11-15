@@ -80,10 +80,12 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: Armor of Faith decided; the second Passive proposed. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: Weight of Judgment decided at Escalation 4; Roving Judgment proposed. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
+  <a href="#roving">Roving Judgment</a>
+  <a href="#passives">Passives</a>
   <a href="#weight">Weight of Judgment</a>
   <a href="#armor">Armor of Faith</a>
   <a href="#saveends">Save ends</a>
@@ -113,21 +115,49 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
-<p><strong>One decision: the second Escalation 2 Passive, Weight of Judgment.</strong> Say "Proposed", or change it. Worth your eye:</p>
-<ol>
-  <li>The size: 2 or 1.</li>
-  <li>Escalation 2 (level 1), or Escalation 4 (level 2); you had this idea at Stage 1.</li>
-  <li>The name.</li>
-</ol>
+<p><strong>One decision: the second Escalation 2 Passive, Roving Judgment.</strong> Say "Proposed", or change it, or pick another idea (the glow: "the creature you Judged sheds Bright light 1").</p>
 </div>
 </section>
 
-<section id="weight">
-<h2>Decision 12: the second Escalation 2 Passive, Weight of Judgment (proposed)</h2>
+<section id="passives">
+<h2>The Passives so far</h2>
+<div class="scroll"><table>
+<tr><th>Rung (level)</th><th>Passive 1</th><th>Passive 2</th></tr>
+<tr><td>Escalation 2 (level 1)</td><td><strong>Armor of Faith</strong> <span class="tag ok">Decided</span></td><td>Roving Judgment <span class="tag open">Proposed</span></td></tr>
+<tr><td>Escalation 4 (level 2)</td><td><strong>Weight of Judgment</strong> <span class="tag ok">Decided</span></td><td>to design</td></tr>
+<tr><td>Escalation 6 (level 3)</td><td>to design: a "when your Escalation becomes 6" moment</td><td>to design</td></tr>
+</table></div>
+</section>
+
+<section id="roving">
+<h2>Decision 13: the second Escalation 2 Passive, Roving Judgment (proposed)</h2>
 <div class="card">
-  <div class="bar"><span>Weight of Judgment</span><span>Paladin Escalation Passive · Escalation 2</span></div>
+  <div class="bar"><span>Roving Judgment</span><span>Paladin Escalation Passive · Escalation 2</span></div>
+  <div class="v"><b></b><div class="small"><em>Your eye passes from one guilty foe to the next, and your god's attention follows it.</em></div></div>
+  <div class="v"><b></b><div>While your Escalation is 2 or more, the 1 AP use of Judge costs you 0 AP.</div></div>
+</div>
+<div class="scroll"><table>
+<tr><th>Line</th><th>Points a turn</th><th>From</th></tr>
+<tr><td>1 AP saved on the turns he moves the mark (about a third)</td><td>4 to 8</td><td>judgment: an unused AP is 12 [SIM], a spent one up to 25</td></tr>
+<tr><td>The mark sits on the right enemy more often</td><td>3 to 5</td><td>judgment: Judge's reduction lands in more rounds; Smite finds a Profane target</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>about 5 to 9, of 5 to 10</strong></td><td>on from round 2</td></tr>
+</table></div>
+<ul>
+<li><strong>The decision it changes:</strong> the first Judge stops being a commitment. Each round he asks again who the danger is, which is a question about the board.</li>
+<li><strong>The opposite style to Armor of Faith:</strong> that one rewards holding a Reaction; this one frees an AP on his own turn.</li>
+<li><strong>With Smite:</strong> he can Judge the wounded enemy and Smite it in the same turn with the bigger dice, for no AP.</li>
+<li><strong>With Weight of Judgment later:</strong> the leash follows his eye.</li>
+<li><strong>What it costs:</strong> whom to Judge in round 1 matters less. It is still once a turn.</li>
+<li><strong>From the research:</strong> the marks players accept are cheap to move (Draw Steel's every turn; 4e's a minor action). The 2024 ranger's was disliked for its cost.</li>
+</ul>
+</section>
+
+<section id="weight">
+<h2>Decision 12: Weight of Judgment (decided: Escalation 4)</h2>
+<div class="card">
+  <div class="bar"><span>Weight of Judgment</span><span>Paladin Escalation Passive · Escalation 4</span></div>
   <div class="v"><b></b><div class="small"><em>Your judgment hangs on your foe like a chain, and its steps drag.</em></div></div>
-  <div class="v"><b></b><div>While your Escalation is 2 or more, a creature Judged by you has its Speed reduced by 2 (to a minimum of 1).</div></div>
+  <div class="v"><b></b><div>While your Escalation is 4 or more, a creature Judged by you has its Speed reduced by 2 (to a minimum of 1).</div></div>
 </div>
 <div class="scroll"><table>
 <tr><th>Line</th><th>Points a turn</th><th>From</th></tr>
@@ -413,7 +443,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><td>Hallmark Action</td><td><strong>Binding Light</strong> (a Strike that pins) or <strong>Lay On Hands</strong> (Guard)</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Reaction</td><td><strong>Shield of Faith</strong> (a smaller hit) or <strong>Rebuke</strong> (stops an enemy leaving him)</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Art, 1 of 3 (a second at level 3)</td><td><strong>Lantern of Faith</strong>, <strong>Hold the Line</strong>, <strong>Commandment</strong></td><td><span class="tag ok">Decided</span></td></tr>
-<tr><td>Escalation 2 Passive, 1 of 2</td><td><strong>Armor of Faith</strong>: decided. <strong>Weight of Judgment</strong>: proposed</td><td><span class="tag open">Now</span></td></tr>
+<tr><td>Escalation 2 Passive, 1 of 2</td><td><strong>Armor of Faith</strong>: decided. Roving Judgment: proposed</td><td><span class="tag open">Now</span></td></tr>
 </table></div>
 </section>
 

@@ -688,7 +688,7 @@ x Escalation 2 or more: rounds 2 to the end (about 70% of a fight's turns; all o
 > *Each time you answer for an ally, your god's light settles on you like mail.*
 > While your Escalation is 2 or more, when you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier.
 
-## Decision 12: the second Escalation 2 Passive (PROPOSED, waiting for Lucas)
+## Decision 12: Weight of Judgment (DECIDED, Lucas, 2026-11-15: Speed reduced by 2, at **Escalation 4**, the name kept)
 
 Lucas (2026-11-15): "Penalty to speed isn't a bad idea."
 
@@ -716,5 +716,48 @@ x Escalation 2 or more (about 70% of a fight's turns; all with Momentum)
 - **Table feel:** the GM counts 3 squares where he expected 5: it is felt on the map every turn the creature moves.
 
 **For Lucas to choose:** 2 or 1; Escalation 2 (level 1) or Escalation 4 (level 2); the name.
+
+**Lucas's answer (2026-11-15):** 2; Escalation 4; "Good name". **So Weight of Judgment is an Escalation 4 Passive (level 2):**
+
+> **Weight of Judgment** · Paladin Escalation Passive · Escalation 4
+> *Your judgment hangs on your foe like a chain, and its steps drag.*
+> While your Escalation is 4 or more, a creature Judged by you has its Speed reduced by 2 (to a minimum of 1).
+
+(At Escalation 4 it is on from round 4 with no Momentum, round 2 with Momentum 2: about a third of a first fight's turns, most of a later one's. Its worth a turn drops to about 1 to 4 in a first fight; a Passive at this rung is meant for the long and the later fights.)
+
+## The Passives' table
+
+| Rung (level) | Passive 1 | Passive 2 |
+|---|---|---|
+| Escalation 2 (level 1) | **Armor of Faith** (decided) | Roving Judgment (proposed below) |
+| Escalation 4 (level 2) | **Weight of Judgment** (decided) | to design |
+| Escalation 6 (level 3) | to design: a "when your Escalation becomes 6" moment | to design |
+
+## Decision 13: the second Escalation 2 Passive (PROPOSED, waiting for Lucas)
+
+**Rules and research first.** Judge's 1 AP use moves the mark ("the target is Judged by you instead of the one you had"); Judge is a Turn Action (once a turn). The marks players accept are cheap to move (Draw Steel's Judgment is a maneuver, every turn; the 2024 ranger's mark was disliked because it cost a bonus action and fought his other buttons; 4e's Divine Challenge was a minor action). The Archer pays 1 AP too (Mark Quarry). The charter: a Passive can expand an Action he has, written into its text.
+
+> **Roving Judgment** · Paladin Escalation Passive · Escalation 2
+> *Your eye passes from one guilty foe to the next, and your god's attention follows it.*
+> While your Escalation is 2 or more, the 1 AP use of Judge costs you 0 AP.
+
+```
+1 AP saved on the turns he moves the mark (about a third of them) ... 4 to 8 a turn   [judgment: an unused AP is 12 (SIM), a spent one up to 25]
+The mark sits on the right enemy more often: Judge's reduction lands in more rounds, Smite finds a Profane target ... about 3 to 5   [judgment]
+x Escalation 2 or more (about 70% of a fight's turns; all with Momentum)
+--- Total: about 5 to 9 a turn, of 5 to 10: on
+```
+
+**Analysis.**
+- **The decision it changes:** the first Judge stops being a commitment. Each round from the second he asks again "who is the danger now", which is a board question, the kind the redesign wants.
+- **It is the opposite style to Armor of Faith:** that one rewards holding a Reaction; this one frees an AP on his own turn, for a Commandment, a touch, a step.
+- **With Weight of Judgment (Escalation 4):** the leash follows his eye, to whichever enemy is about to run.
+- **With Smite:** he can Judge the wounded enemy and Smite it the same turn with the bigger dice, for no AP: the finisher the research recommends.
+- **What it costs the design:** "whom to Judge" matters less in round 1, because the answer can change for free from round 2. Still once a turn (Judge is a Turn Action).
+- **Written into Judge's text** for who takes it: "1 AP (0 AP at Escalation 2 or more)".
+- **Complexity:** one sentence, 17 words.
+- **Table feel:** "I Judge that one instead" each turn, at no cost: quick. The risk: a player who forgets the mark moved; Foundry already tracks the Archer's.
+
+**For Lucas to choose:** this, or the glow ("the creature you Judged sheds Bright light 1"), or another idea of his; the name.
 
 **Lucas's answer:**
