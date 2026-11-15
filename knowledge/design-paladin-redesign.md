@@ -1262,3 +1262,43 @@ Every card in its final text, in the order a character gains them. **Numbers:** 
 - **18 cards:** 2 Features, 2 Hallmark Actions, 2 Hallmark Reactions, 3 Arts, 6 Escalation abilities, 3 Encounter Actions, and the hook. A character holds 9 of them at level 3.
 
 **Lucas's answer (2026-11-15):** 1. Bulwark's Interrupt is the same sentence as Shield of Faith's (applied above; the card will be Diamond). 2. Bulwark's Target could be "The triggering creature and the ally"; but first **check the whole targeting rule, research it, make it less confusing** ("a can of worm in almost all systems"): in progress, `book/research/` gets the note. 3. The two Profane sentences are fine. 4. "you crowd the ground at your feet" (applied above). **And: inventory every Action card element** (the redesign's, then the Core book's that are left), to build the Structure from: `book/cards/card-structure.md`.
+
+## The targeting rule, after the research (PROPOSED 2026-11-15, waiting for Lucas)
+
+**Rules and research first.** The book: "the effects of an Action ... affect the target of the Action" (Chapter 2, Targets of Effects) and "To target a creature with an Action, you need Line of Effect" (Chapter 3). The research folder had nothing on it; searched and saved: `book/research/targeting.md`. What it found: **the games with a Target line on every reaction (Draw Steel, 4e) have no recorded argument about it; the one with none (Pathfinder 2e's Champion) has had the same argument in 2020, 2021 and 2025.** The working pattern: one Target line, chosen by where the card's main effect lands; the Trigger is written about "the target" (Draw Steel's Parry: "Self or one ally. Trigger: A creature deals damage to the target."); the other creature gets a fixed word and is affected without being a target. No game read has our perception rule; their forums ask for it.
+
+**What was confusing in my draft:** "whatever the card does to a creature targets that creature" made a card have hidden targets beyond its Target line (Bulwark: the attacker on the line, the ally in the text). The fix is the opposite sentence.
+
+**The rule, rewritten:**
+
+> **A Reaction's target.** Every Reaction has a Target line, and its Interrupt or Trigger is written about **the target**. The creature whose Action sets the Reaction off is **the triggering creature**; when the target is that creature, an ally the moment names is **the triggering ally**.
+> **To use a Reaction** you need Line of Effect to its target, as for every Action, and you must perceive the target and the triggering creature (Hidden is enough; Unsensed is not).
+> **Affected is not targeted.** A creature a card names by one of those words, and not on its Target line, is affected without being targeted: the card needs no Line of Effect to it.
+> A feature that says "when..." has no target: you must perceive the creatures it names.
+
+**The three Reactions under it** (the "within N squares of you" leaves the sentence and becomes the Distance line):
+
+> **Shield of Faith** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Focus] · Distance: 5 sq. · Target: One ally
+> **Interrupt:** An enemy's [Strike] Action would damage the target.
+> That damage is reduced by 1 + your Power Modifier, and the triggering creature is Taunted by you (1 round).
+
+> **Bulwark of Faith** · Paladin Encounter Action · 1R · Encounter · [Divine, Focus] · Distance: 5 sq. · Target: One ally
+> **Interrupt:** An enemy's [Strike] Action would damage the target.
+> The target gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.
+
+> **Rebuke** · Paladin Hallmark Reaction · 1R · Turn · [Divine, Power, Save] · Distance: 3 sq. · Target: One enemy · Appeal Save
+> **Trigger:** The target moves away from you.
+> The target is Hindered (EoT) and makes an Appeal Save. **Tier 1 or 2:** its Move Action is disrupted.
+
+**What changes in play.**
+- Shield of Faith and Bulwark of Faith now need Line of Effect to the **ally**, not to the attacker. He must still perceive the attacker (hearing is enough). Example 3 of the moment rule turns around: with Nari behind a wall he can't shield him; with the orc behind a wall and Nari in view, he can.
+- Rebuke is unchanged in play: the enemy is the target and the triggering creature.
+- Kindled Wrath is unchanged: no target, he perceives the ally.
+- Shield of Faith Taunts an attacker he may have no Line of Effect to. Taunted has no sight clause, so it works; to watch.
+
+**The other two ways, and why not:**
+- **"Target: The triggering creature and the ally" (Lucas's idea):** honest, but it asks Line of Effect to both, so a Paladin can't shield an ally from an archer behind an arrow slit; and every protective card would carry two targets on its line. No game read does it.
+- **Keep the draft (every effect targets whoever it touches):** the hidden targets above.
+
+**Lucas's answer:**
+

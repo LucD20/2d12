@@ -85,6 +85,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
   <a href="#hook">The hook</a>
+  <a href="#target">Targeting</a>
   <a href="#structure">Card elements</a>
   <a href="#whole">The whole class</a>
   <a href="#word">Word of Radiance</a>
@@ -127,12 +128,41 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
-<p><strong>Nothing yet.</strong> Two things are here or on the way:</p>
+<p><strong>Two things, in the order you like.</strong></p>
 <ol>
-<li><strong>The card's elements</strong> are listed in the next section: 28 the redesign uses, 19 the book has that it hasn't used, and the 9 things the Structure must settle.</li>
-<li><strong>The targeting rule</strong> is being researched (how other games word a reaction's target, and where it confused players). Bulwark of Faith's Target waits for it.</li>
+<li><strong>The targeting rule, rewritten after the research</strong> (next section): say "Proposed", or change it. It changes the Target line of Shield of Faith, Bulwark of Faith and Rebuke.</li>
+<li><strong>The card's header:</strong> three structures on their own page, the Card Structure Desk.</li>
 </ol>
 </div>
+</section>
+
+<section id="target">
+<h2>The targeting rule, after the research (proposed)</h2>
+<p><strong>What the research found.</strong> The games that put a Target line on every reaction (Draw Steel, D&amp;D 4e) have no recorded argument about it. The one that doesn't (Pathfinder 2e's Champion) has had the same argument in 2020, 2021 and 2025: one thread holds four readings (it needs sight, awareness only, line of effect only, nothing).</p>
+<p><strong>The pattern that works:</strong> one Target line, chosen by where the card's main effect lands. The Trigger is written about "the target". The other creature gets a fixed word and is affected without being a target.</p>
+<blockquote>Draw Steel's Parry: "Melee 2 | Self or one ally. Trigger: A creature deals damage to the target. Effect: ... the target takes half the damage."</blockquote>
+<p><strong>What was confusing in my draft:</strong> "whatever the card does to a creature targets that creature" gave a card hidden targets beyond its Target line. The fix is the opposite sentence.</p>
+<h3>The rule, rewritten</h3>
+<blockquote><strong>A Reaction's target.</strong> Every Reaction has a Target line, and its Interrupt or Trigger is written about <strong>the target</strong>. The creature whose Action sets the Reaction off is <strong>the triggering creature</strong>; when the target is that creature, an ally the moment names is <strong>the triggering ally</strong>.<br><strong>To use a Reaction</strong> you need Line of Effect to its target, as for every Action, and you must perceive the target and the triggering creature (Hidden is enough; Unsensed is not).<br><strong>Affected is not targeted.</strong> A creature a card names by one of those words, and not on its Target line, is affected without being targeted: the card needs no Line of Effect to it.<br>A feature that says "when..." has no target: you must perceive the creatures it names.</blockquote>
+<p class="small">No game read has our perception rule; their forums ask for it. It stays, said once.</p>
+<h3>The three Reactions under it</h3>
+<div class="card">
+  <div class="bar"><span>Shield of Faith</span><span>Paladin Hallmark Reaction · 1R · Turn · Divine, Focus · Distance: 5 sq. · Target: One ally</span></div><div class="v"><b>Interrupt</b><div>An enemy's [Strike] Action would damage the target.</div></div><div class="v"><b></b><div>That damage is reduced by 1 + your Power Modifier, and the triggering creature is Taunted by you (1 round).</div></div></div><div class="card">
+  <div class="bar"><span>Bulwark of Faith</span><span>Paladin Encounter Action · 1R · Encounter · Divine, Focus · Distance: 5 sq. · Target: One ally</span></div><div class="v"><b>Interrupt</b><div>An enemy's [Strike] Action would damage the target.</div></div><div class="v"><b></b><div>The target gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.</div></div></div><div class="card">
+  <div class="bar"><span>Rebuke</span><span>Paladin Hallmark Reaction · 1R · Turn · Divine, Power, Save · Distance: 3 sq. · Target: One enemy · Appeal Save</span></div><div class="v"><b>Trigger</b><div>The target moves away from you.</div></div><div class="v"><b></b><div>The target is Hindered (EoT) and makes an Appeal Save.</div></div><div class="v"><b>Tier 1 or 2</b><div>Its Move Action is disrupted.</div></div></div>
+<h3>What changes in play</h3>
+<ul>
+<li><strong>Shield of Faith and Bulwark of Faith need Line of Effect to the ally,</strong> not to the attacker. He must still perceive the attacker; hearing is enough.</li>
+<li><strong>The third example of the moment rule turns around:</strong> with Nari behind a wall he can't shield him; with the orc behind a wall and Nari in view, he can.</li>
+<li><strong>Rebuke and Kindled Wrath play the same.</strong></li>
+<li><strong>To watch:</strong> Shield of Faith Taunts an attacker he may have no Line of Effect to. Taunted has no sight clause, so it works.</li>
+</ul>
+<h3>The other two ways, and why not</h3>
+<ul>
+<li><strong>"Target: The triggering creature and the ally" (your idea):</strong> honest, but it asks Line of Effect to both, so he can't shield an ally from an archer behind an arrow slit, and every protective card carries two targets. No game read does it.</li>
+<li><strong>Keep my draft:</strong> the hidden targets above.</li>
+</ul>
+<p class="small">One research pass, not re-checked by a second. Reddit, Giant in the Playground and RPG.net refuse readers and were left alone. The note: <code>book/research/targeting.md</code>.</p>
 </section>
 
 <section id="structure">

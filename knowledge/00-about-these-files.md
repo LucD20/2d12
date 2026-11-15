@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 1e6ac06 2026-11-15 The Action card's elements inventoried (card-structure.md); the clean read's answers applied to the record
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 38c5b92 2026-11-15 Card structure, part 1: three header structures on a new reading page
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (175 KB)
+- open-design-items.md (176 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -31,7 +31,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
-- research-index.md (4 KB)
+- research-index.md (5 KB)
 - research-ability-scope.md (7 KB)
 - research-conditions-and-senses.md (3 KB)
 - research-divine-profane.md (9 KB)
@@ -45,6 +45,7 @@ Files:
 - research-paladins-other-games.md (21 KB)
 - research-save-dcs.md (3 KB)
 - research-tactical-combat.md (5 KB)
+- research-targeting.md (6 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
@@ -59,7 +60,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (14 KB)
-- design-paladin-redesign.md (156 KB)
+- design-paladin-redesign.md (160 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
