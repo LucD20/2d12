@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 775245d 2026-11-15 Reckoning decided; the Setup section as decided (targets after the Setup; a named target can change only when the Setup is disrupted); Hallowed Stance updated
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 66a2d6b 2026-11-15 Setups don't stack (logged); Hallowed Stance in Lucas's wording, with the Speed finding on its extra clause
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -58,7 +58,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (14 KB)
-- design-paladin-redesign.md (122 KB)
+- design-paladin-redesign.md (125 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

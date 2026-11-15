@@ -884,7 +884,7 @@ Frightened of you (1 round) on about 78% of them .......... about 6 to 9   [SIM:
 
 *Example for the book:* a Paladin uses Lay On Hands on an ally 5 squares away and Advances toward him; an enemy's Reaction stops him after 2 squares. Lay On Hands still happens: he can touch another ally within his Reach from where he stands. Had nothing stopped him, he couldn't have walked toward one ally and then touched a different one.
 
-## Decision 16: the second Escalation 6 ability, Hallowed Stance (LUCAS'S DRAFT of 2026-11-14, brought to today's rules; waiting for him)
+## Decision 16: the second Escalation 6 ability, Hallowed Stance (DECIDED, Lucas, 2026-11-15: his wording, option A; the card at the end of this section)
 
 **His draft:** "You add your Power Modifier to damage on your Divine Actions, and all your Divine Actions gain: 'Setup: You Advance 3.'"
 
@@ -933,5 +933,35 @@ On an enemy's turn: an Advance 3 before Shield of Faith or Rebuke ... about 10 e
 > **Hallowed Stance** · Paladin Escalation Passive · Escalation 6
 > *Your god's light carries you: wherever you are needed, you are already there.*
 > While your Escalation is 6, once on your turn, a [Divine] Action you use gains "Setup: You Advance 3."
+
+**Lucas's answer (2026-11-15): "Lets do A."** No special clause: Setups never combine.
+
+> **Hallowed Stance** · Paladin Escalation Passive · Escalation 6
+> *Your god's light carries you: wherever you are needed, you are already there.*
+> While your Escalation is 6, once on your turn, a [Divine] Action you use gains "Setup: You Advance 3."
+
+## The Escalation abilities: all six decided
+
+| Rung (level) | Ability 1 | Ability 2 |
+|---|---|---|
+| Escalation 2 (level 1) | **Armor of Faith**: when you use a [Divine] Reaction, Guard 1 + Power Modifier | **Roving Judgment**: Judge's 1 AP use costs 0 AP |
+| Escalation 4 (level 2) | **Weight of Judgment**: the Judged creature's Speed is reduced by 2 | **Tireless Vigil**: 1 more Reaction AP, for [Divine] Reactions |
+| Escalation 6 (level 3) | **Reckoning** (0 AP Action, Encounter): Advance; enemies within 2 Pushed 2, Frightened on a Save | **Hallowed Stance**: once on your turn, a [Divine] Action gains "Setup: You Advance 3" |
+
+## Decision 17: the Escalation hook (PROPOSED: keep it as it is; waiting for Lucas)
+
+Level 2 gives the class's hook (Chapter 2: one more event that, once an encounter, raises his Escalation by 1). Today's:
+
+> **Kindled Wrath** · Paladin Feature
+> Once an encounter, when an ally within 5 squares of you becomes Bloodied or goes Down, your Escalation increases by 1.
+
+**Claude's proposal: keep it, word for word.** It was written before the redesign and fits it better than it fit the old class: Smite's dice are his Escalation, so when his protection fails, his blow gets bigger at once (Nimble's Vengeance paladin does the same: an ally being wounded maxes his dice); it brings Armor of Faith, Tireless Vigil and Reckoning a round closer in exactly the fights that are going badly; and it is a moment the table already watches (the GM says when a creature becomes Bloodied). Worth about one more Smite die or one earlier Passive a fight: a few points [judgment]. No Flavor line today: "*An ally's blood on the ground, and your god's anger is yours.*"
+
+## Decision 18: the Encounter Picks (a steer on the themes first)
+
+Level 2 gives one Encounter Pick from three. An Encounter Action is worth double its AP; it can have two riders and one conditional. Smite already is the class's burst, so these are three other moments. **Claude's three themes, from the cards the brief said work as moments and from the research:**
+1. **The great shield** (Bulwark of Faith today: an Interrupt; an ally would take damage: before it, Guard equal to what one of its Rally Points heals; after it, Slid 1). The big version of "Guard before the hit", once a fight.
+2. **Holy ground** (Consecrated Ground and Beacon today): a Zone he plants for a few rounds, where the line holds. The burst as an area that stays, as Draw Steel's Censor has at his top end.
+3. **The word against the Profane** (Word of Radiance today; 4e's Turn Undead): an area that throws enemies back, and does more to the Profane.
 
 **Lucas's answer:**
