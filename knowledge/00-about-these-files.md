@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: e433493 2026-11-15 Senses scenes drawn with arrows; the Senses change limited to one case; Hold the Line settled (Rescue, no Handle)
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 974107e 2026-11-15 Senses diagram: colors mean good and bad; the swapping rule noted; the third Art proposed (Commanding Word)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -35,6 +35,7 @@ Files:
 - research-ability-scope.md (7 KB)
 - research-conditions-and-senses.md (3 KB)
 - research-divine-profane.md (9 KB)
+- research-durations.md (5 KB)
 - research-escalation-and-guard.md (3 KB)
 - research-frontline-protection.md (13 KB)
 - research-gear-and-hands.md (2 KB)
@@ -56,7 +57,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (12 KB)
-- design-paladin-redesign.md (85 KB)
+- design-paladin-redesign.md (88 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

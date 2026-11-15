@@ -80,11 +80,12 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the arrows recolored; the third Art proposed. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the durations question researched. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
-  <a href="#word">Commanding Word</a>
+  <a href="#durations">Durations</a>
+  <a href="#word">Commandment</a>
   <a href="#line">Hold the Line</a>
   <a href="#senses">Senses</a>
   <a href="#stunned">Dazed / Stunned</a>
@@ -110,19 +111,40 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-  <li><strong>The arrows' colors</strong> now mean good (green) and bad (orange). Right this time?</li>
-  <li><strong>The third Art, Commanding Word:</strong> "Proposed", or your changes. Worth your eye: Kneel (Prone on a Save), and Courage, which you may see as a healer's thing.</li>
+  <li><strong>Durations:</strong> my answer is to keep only EoT and rounds, counted as today, and write "(1 round)" on Brace and Courage. Yes?</li>
+  <li><strong>The third Art's name:</strong> Commandment (my pick), Decree, Litany or Edict.</li>
+  <li><strong>Courage:</strong> keep it, or swap it for another word.</li>
 </ol>
 </div>
 </section>
 
+<section id="durations">
+<h2>Your question: "until the start of your turn", and when rounds count down</h2>
+<p><strong>My answer: keep only EoT and rounds, don't move the count, and write "(1 round)".</strong></p>
+<h3>What other games do</h3>
+<div class="scroll"><table>
+<tr><th>Game</th><th>What it does</th><th>What it shows</th></tr>
+<tr><td>Draw Steel</td><td>No rounds at all. In its classes: "until the start of your next turn" 47 times, "save ends" 28, EoT 11 (the end of the affected creature's next turn). <span class="small">Read and counted in the rules text.</span></td><td>A condition on a target ends on the target's turn. Something the hero holds up ends when the hero's next turn starts.</td></tr>
+<tr><td>Pathfinder 2e</td><td>Rounds count at the start of the creator's turn; harmful effects end on the target's turn. <span class="small">A search summary.</span></td><td>Its Foundry system has an open request to say on whose turn an expiry falls: four cases.</td></tr>
+<tr><td>4e</td><td>"Until the end of your next turn."</td><td>The origin gets a second bite: "one of his actions and then your next turn". Tables house-ruled it to the target's turn.</td></tr>
+<tr><td>5e</td><td>Shield ends at the start of your next turn, Guiding Bolt at the end.</td><td>No stated rule; the book calls both "1 round". <span class="small">A search summary.</span></td></tr>
+</table></div>
+<h3>What it means for us</h3>
+<ul>
+<li><strong>The trouble everywhere is the number of end points.</strong> There are four possible ones (start or end, the origin's turn or the target's). We have two: EoT ends with the target's turn, rounds end with the origin's. A third is the thing to avoid, so your instinct is right.</li>
+<li><strong>Don't count at the start.</strong> Counting at the end guarantees that every creature takes one full turn under the effect, including the one whose turn it was made in. Shield of Faith's Taunt is made on the enemy's turn: counted at the end, it covers that enemy's next turn. Counted at a start, it would cover only the rest of this one, or a length set by Initiative order alone.</li>
+<li><strong>What "(1 round)" costs on something he holds up:</strong> it also covers his own next turn. For Brace and Courage that is harmless.</li>
+<li><strong>One spot in the book already runs start to start:</strong> the unused AP's Guard. Chapter 2 defines it in full, so it isn't ambiguous; I noted it.</li>
+</ul>
+</section>
+
 <section id="word">
-<h2>Decision 10: the third Art, Commanding Word (proposed)</h2>
+<h2>Decision 10: the third Art, Commandment (proposed)</h2>
 <div class="card">
-  <div class="bar"><span>Commanding Word</span><span>Paladin Art · Round · 1 AP · Divine</span></div>
+  <div class="bar"><span>Commandment</span><span>Paladin Art · Round · 1 AP · Divine</span></div>
   <div class="v"><b></b><div class="small"><em>You speak with your god's authority: you call a foe to face you, steady the hearts around you, or order a foe to its knees.</em></div></div>
   <div class="v"><b>Challenge</b><div>One enemy within 5 squares is Taunted by you (1 round).</div></div>
-  <div class="v"><b>Courage</b><div>Until your next turn starts, you and allies within 3 squares of you ignore the Frightened condition.</div></div>
+  <div class="v"><b>Courage</b><div>You and allies within 3 squares of you ignore the Frightened condition (1 round).</div></div>
   <div class="v"><b>Kneel</b><div>One enemy within 5 squares makes an Appeal Save. <strong>Tier 1 or 2:</strong> Prone. <span class="small">([Power, Save] on this use)</span></div></div>
 </div>
 <div class="scroll"><table>
@@ -146,7 +168,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <div class="card">
   <div class="bar"><span>Hold the Line</span><span>Paladin Art · Round · 1 AP</span></div>
   <div class="v"><b></b><div class="small"><em>You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or carry one clear.</em></div></div>
-  <div class="v"><b>Brace</b><div>Until your next turn starts, squares adjacent to you are Difficult Terrain for enemies.</div></div>
+  <div class="v"><b>Brace</b><div>Squares adjacent to you are Difficult Terrain for enemies (1 round).</div></div>
   <div class="v"><b>Trade Places</b><div>You and a willing ally within Reach swap squares. Each of you is moved by a Reposition.</div></div>
   <div class="v"><b>Rescue</b><div>Reposition 2 a willing ally within Reach.</div></div>
 </div>
@@ -312,7 +334,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><td>Feature</td><td><strong>Smite</strong>: the burst, once an encounter</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Action</td><td><strong>Binding Light</strong> (a Strike that pins) or <strong>Lay On Hands</strong> (Guard)</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Reaction</td><td><strong>Shield of Faith</strong> (a smaller hit) or <strong>Rebuke</strong> (stops an enemy leaving him)</td><td><span class="tag ok">Decided</span></td></tr>
-<tr><td>Art, 1 of 3</td><td><strong>Lantern of Faith</strong> (light): decided. <strong>Hold the Line</strong>: decided. <strong>Commanding Word</strong>: proposed</td><td><span class="tag open">Now</span></td></tr>
+<tr><td>Art, 1 of 3</td><td><strong>Lantern of Faith</strong> (light): decided. <strong>Hold the Line</strong>: decided. <strong>Commandment</strong>: proposed</td><td><span class="tag open">Now</span></td></tr>
 <tr><td>Escalation 2 Passive, 1 of 2</td><td>two to design</td><td>after the Arts</td></tr>
 </table></div>
 </section>

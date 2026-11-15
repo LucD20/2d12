@@ -581,7 +581,7 @@ Haul .............. about 15   [judgment: the earlier price for an ally's Evade 
 
 > **Hold the Line** · Paladin Art · Round · 1 AP
 > *You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or carry one clear.*
-> **Brace:** Until your next turn starts, squares adjacent to you are Difficult Terrain for enemies.
+> **Brace:** Squares adjacent to you are Difficult Terrain for enemies (1 round).
 > **Trade Places:** You and a willing ally within Reach swap squares. Each of you is moved by a Reposition.
 > **Rescue:** Reposition 2 a willing ally within Reach.
 
@@ -620,5 +620,24 @@ Kneel .......... 7 to 9 a landing [SIM: Prone] x 78% [computed: an enemy with +2
 - **Table feel:** each is one spoken line at the table ("Face me." / "Stand fast." / "Kneel."). The risk: Kneel may be the only one used.
 
 **For Lucas to choose:** Courage, or another third word (a candidate that isn't a condition: "Oath: name one ally; until your next turn starts, Shield of Faith reaches it at 10 squares"); Kneel's Save (Appeal); the name.
+
+**Lucas's answer (2026-11-15):** the arrows are good. The name: "a better, more divine name is welcomed". **Courage's duration: he is "trying to stray away from 'until the start of turn', keep only EoT or Rounds". Should he give in? And if so, should rounds count down at the start of the turn? "Search this a bit intensively."**
+
+**Claude's answer (research saved in `book/research/durations.md`): keep only EoT and rounds, don't move the count, and write "(1 round)".**
+- **Other games:** Draw Steel has no rounds and writes "until the start of your next turn" 47 times in its classes, always for something the hero holds up, with EoT (the end of the affected creature's next turn) for conditions on targets. Pathfinder 2e counts rounds at the start of the creator's turn but ends harmful effects on the target's turn; its Foundry system has an open request to say on whose turn an expiry falls (four cases). 4e's "until the end of your next turn" gave the origin a second bite ("one of his actions and then your next turn"), and tables house-ruled it to the target's turn. 5e uses both with no stated rule.
+- **The lesson:** the trouble is the number of end points. We have two (EoT: the target's turn ends; rounds: the origin's slot ends). A third is the thing to avoid.
+- **Why not count at the start:** counting at the end guarantees that every creature, the one whose turn the effect was made in included, takes one full turn under it. Shield of Faith's Taunt is made on the enemy's turn: counted at the end it covers that enemy's next turn; counted at a start it would cover only what is left of this one, or a length set by Initiative order alone.
+- **What "(1 round)" costs on a thing he holds up:** it also covers his own next turn. For Brace and Courage that is harmless.
+- **One spot in the book that already means start-to-start:** the unused AP's Guard (Chapter 2 defines it in full, so it isn't ambiguous). Noted.
+
+**The cards with it (the name is Claude's pick: Commandment; others: Decree, Litany, Edict):**
+
+> **Commandment** · Paladin Art · Round · 1 AP · [Divine]
+> *You speak with your god's authority: you call a foe to face you, steady the hearts around you, or order a foe to its knees.*
+> **Challenge:** One enemy within 5 squares is Taunted by you (1 round).
+> **Courage:** You and allies within 3 squares of you ignore the Frightened condition (1 round).
+> **Kneel** [Power, Save]: One enemy within 5 squares makes an Appeal Save. **Tier 1 or 2:** Prone.
+
+**And Hold the Line's Brace, the same way:** "Squares adjacent to you are Difficult Terrain for enemies (1 round)."
 
 **Lucas's answer:**
