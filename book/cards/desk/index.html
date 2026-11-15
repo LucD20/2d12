@@ -80,11 +80,12 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: all six Escalation abilities decided; the hook and the Encounter Picks are next. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: a rule for effects that just happen; Bulwark of Faith proposed. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
   <a href="#hook">The hook</a>
+  <a href="#bulwark">Bulwark of Faith</a>
   <a href="#encounter">Encounter Picks</a>
   <a href="#stance">Hallowed Stance</a>
   <a href="#setup">Setup rules</a>
@@ -123,29 +124,56 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-  <li><strong>The Escalation hook:</strong> I propose keeping Kindled Wrath word for word. Yes?</li>
-  <li><strong>The Encounter Picks:</strong> are my three themes right, and which first? The great shield, holy ground, the word against the Profane.</li>
+  <li><strong>The rule for effects that "just happen"</strong> (below): yes or no. With it, Kindled Wrath has no range.</li>
+  <li><strong>The first Encounter Pick:</strong> I propose keeping Bulwark of Faith as it is. "Proposed", or your changes.</li>
 </ol>
 </div>
 </section>
 
 <section id="hook">
-<h2>Decision 17: the Escalation hook (proposed: keep it)</h2>
+<h2>Decision 17: the hook, and the gap you found</h2>
+<p><strong>You found a real gap.</strong> Line of Effect, in Chapter 3, is written for two things only: targeting a creature with an Action, and an area reaching a creature. Nothing covers an effect that just reads what happens.</p>
+<p><strong>My proposal: one general rule, and the card needs no range.</strong></p>
+<blockquote><strong>What an effect needs.</strong> Targeting a creature needs Line of Effect. An effect that only reads something that happens ("when an ally becomes Bloodied", "when your Marked Quarry goes Down") needs only what it says: if it gives no distance and doesn't say you must see or perceive the creature, it happens wherever that creature is in the encounter.</blockquote>
+<ul>
+<li><strong>Why not "you must perceive it":</strong> that also answers the wall case (you hear a creature in a fight within 10 squares, through walls), but then every trigger carries a hidden check: how far, is it making noise, did it Hide. "It says what it needs" never asks the table to measure something the card didn't mention.</li>
+<li><strong>A card that should need sight says "that you can see";</strong> one that should need range gives a distance.</li>
+<li><strong>The Archer's hook</strong> ("your Marked Quarry goes Down") already has no range; the same rule covers it.</li>
+<li><strong>Our two Reactions get a Target line</strong> by your own convention from earlier card sessions: Shield of Faith and Rebuke target "the triggering creature", the enemy. He needs Line of Effect to the enemy; the ally can be behind a pillar.</li>
+</ul>
 <div class="card">
   <div class="bar"><span>Kindled Wrath</span><span>Paladin Feature · level 2</span></div>
   <div class="v"><b></b><div class="small"><em>An ally's blood on the ground, and your god's anger is yours.</em></div></div>
-  <div class="v"><b></b><div>Once an encounter, when an ally within 5 squares of you becomes Bloodied or goes Down, your Escalation increases by 1.</div></div>
+  <div class="v"><b></b><div>Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1.</div></div>
 </div>
+</section>
+
+<section id="bulwark">
+<h2>Decision 19: the first Encounter Pick, the great shield (proposed: keep Bulwark of Faith)</h2>
+<div class="card">
+  <div class="bar"><span>Bulwark of Faith</span><span>Paladin Encounter Action · 1R · Encounter · Divine, Focus · the triggering creature</span></div>
+  <div class="v"><b></b><div class="small"><em>You step into the blow meant for them, and your god holds the line with you.</em></div></div>
+  <div class="v"><b>When</b><div><strong>Interrupt:</strong> A [Strike] Action would damage an ally within 5 squares.</div></div>
+  <div class="v"><b></b><div>The ally gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.</div></div>
+</div>
+<div class="scroll"><table>
+<tr><th>Line</th><th>Points</th><th>From</th></tr>
+<tr><td>Guard 8 or 9, on the ally being hit</td><td>54 to 72</td><td>6 a point [SIM] to 8 a point (the forums' rate for an ally about to be hit)</td></tr>
+<tr><td>Slid 1, after the damage</td><td>5</td><td>your rate</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>59 to 77, of 50</strong></td><td>a little over, once an encounter</td></tr>
+</table></div>
 <ul>
-<li><strong>It fits the redesign better than it fit the old class.</strong> Smite's dice are his Escalation, so when his protection fails, his blow gets bigger at once.</li>
-<li><strong>It brings his Escalation abilities a round closer</strong> in exactly the fights that are going badly.</li>
-<li><strong>The table already watches the moment:</strong> the GM says when a creature becomes Bloodied.</li>
-<li>Nimble's vengeance paladin does the same: an ally being wounded maxes his dice.</li>
+<li><strong>Keep it word for word.</strong> You wrote it with me on 2026-11-06. It is already the big version of "Guard before the hit", it reads a number the ally has on its sheet, and the Slide moves a token on the GM's turn.</li>
+<li><strong>The decision it gives:</strong> which hit of the fight. A Standard's Special or an Elite's is the one. Spent on a small hit, most of the Guard stays on the ally.</li>
+<li><strong>With the new class:</strong> it is a [Divine] Reaction, so Armor of Faith gives him Guard when he uses it, and Tireless Vigil can pay for it.</li>
+<li><strong>It spends none of the ally's Rally Points,</strong> so it stays inside "not too much".</li>
+<li><strong>Over its price by 10 to 25.</strong> If it must come down, the Slide is the part to drop.</li>
+<li><strong>One option:</strong> widen the trigger from a Strike to any damage, which makes it the answer to a dragon's breath on one ally.</li>
 </ul>
 </section>
 
 <section id="encounter">
-<h2>Decision 18: the Encounter Picks (themes first)</h2>
+<h2>Decision 18: the Encounter Picks' themes (decided, in this order)</h2>
 <p>Level 2 gives one Encounter Pick from three. An Encounter Action is worth double its AP and can carry two riders. Smite is already the class's burst, so these are three other moments.</p>
 <ol>
 <li><strong>The great shield.</strong> Today's Bulwark of Faith: an ally would take damage; before it, they gain Guard equal to what one of their Rally Points heals; after it, they are Slid 1. The big version of "Guard before the hit", once a fight.</li>

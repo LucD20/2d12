@@ -964,4 +964,49 @@ Level 2 gives one Encounter Pick from three. An Encounter Action is worth double
 2. **Holy ground** (Consecrated Ground and Beacon today): a Zone he plants for a few rounds, where the line holds. The burst as an area that stays, as Draw Steel's Censor has at his top end.
 3. **The word against the Profane** (Word of Radiance today; 4e's Turn Undead): an area that throws enemies back, and does more to the Profane.
 
+**Lucas's answer (2026-11-15):** the three themes are good, in that order. **The hook: he is thinking of removing the range**, so it counts even if the ally is far. "Which we can get into an ambiguity problem: if the ally is behind a wall, you can still hear them, do you get Kindled Wrath? Because you don't have LoS. LoS says about targeting, but what about effects that just happen?"
+
+**From the rules:** Line of Effect (Chapter 3) is written for two things only: targeting a creature with an Action, and an area reaching a creature. Nothing covers an effect that just reads what happens. The nearest text is Chapter 4: "Every creature knows whether a creature it perceives is Bloodied or Strained". So he has found a real gap.
+
+**Claude's proposal: one general rule, and the card needs no range.**
+> **What an effect needs.** Targeting a creature needs Line of Effect. An effect that only reads something that happens ("when an ally becomes Bloodied", "when your Marked Quarry goes Down") needs only what it says: if it gives no distance and doesn't say you must see or perceive the creature, it happens wherever that creature is in the encounter.
+
+- **Why "needs only what it says" over "you must perceive it":** perception would give the wall case an answer too (you hear a creature in a fight within 10 squares, through walls: Hidden is perceiving), but then every trigger carries a hidden check (how far, is it making noise, did it Hide). "It says what it needs" is one sentence and never asks the table to measure anything the card didn't mention. A card that should need sight says "that you can see"; one that should need range gives a distance.
+- **Kindled Wrath with it:** "Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1." Behind a wall, across the map: yes. Divine, and simple.
+- **The Archer's hook** ("your Marked Quarry goes Down") is already written with no range: the same rule covers it.
+- **Our two Reactions get a Target line, for the same reason** (Lucas's own convention from the earlier card sessions: "Targets the triggering creature, no Distance: the Interrupt says it"): Shield of Faith and Rebuke target **the triggering creature** (the enemy), so he needs Line of Effect to the enemy; the ally can be behind a pillar.
+
+> **Kindled Wrath** · Paladin Feature · level 2
+> *An ally's blood on the ground, and your god's anger is yours.*
+> Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1.
+
+## Decision 19: the first Encounter Pick, the great shield (PROPOSED: Bulwark of Faith kept; waiting for Lucas)
+
+**Rules and research first.** Today's card was written with Lucas (2026-11-06) and is Mithril. Guard: taken before Health, doesn't stack, ends with the encounter; a Rally Point heals a quarter of the Health Pool (8 for an Archer, 9 for a Paladin), and this card reads that number without spending the point. Research: the three tested shapes of protection are shave it, halve it, take all of it, each once a round or once a fight; the martyr-style power is the one players praise by name (the Cavalier's Righteous Shield); protection that states a number and moves a token is the kind that is seen (Draw Steel's Parry). Lucas's direction: Guard before the hit. An Encounter Action is priced at double its AP (a 1R one: 50).
+
+> **Bulwark of Faith** · Paladin Encounter Action · 1R · Encounter · [Divine, Focus] · Target: the triggering creature
+> *You step into the blow meant for them, and your god holds the line with you.*
+> **Interrupt:** A [Strike] Action would damage an ally within 5 squares.
+> The ally gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.
+
+(Today's text, with "the target" made "the ally" for clarity: the Target line names the attacker, as on his other Reactions.)
+
+```
+Guard 8 or 9, on the ally being hit .......... 54 at 6 a point [SIM] to 72 at 8 a point [the forums' rate for an ally about to be hit]
+   what a Standard's hit leaves of it stays as Guard for the next one
+Slid 1, after the damage ..................... 5   [Lucas's rate]
+--- Total: about 59 to 77, of 50: a little over, once an encounter (about +3 to +8 a turn over its price across a fight)
+```
+
+**Analysis.**
+- **Keep it word for word.** It is already the big version of the class's support direction, it reads a number the ally has on its sheet, and the Slide moves a token on the GM's turn.
+- **The decision it gives:** which hit of the fight. A Standard's Special (8 + 1d8 on a Tier 3) or an Elite's is the one; spent on a small hit, most of the Guard still stays on the ally.
+- **With the new class:** it is a [Divine] Reaction, so Armor of Faith gives him Guard 3 when he uses it, and Tireless Vigil can pay for it. With Shield of Faith on the same Strike? No: one Reaction to the same Action (Chapter 2).
+- **Guard, not healing, and none of the ally's Rally Points spent:** inside "Rally Points for allies, not too much".
+- **The Slide** is a Forced Movement he aims: the ally ends out of the attacker's Reach, or behind him. (Lucas, 2026-11-15: moving an ally is fine for the Paladin, if more a commander's tool.)
+- **Over its price by 10 to 25:** an Encounter Pick is where the class's level 2 growth is; if it must come down, the Slide is the part to drop.
+- **Mithril:** unchanged text keeps it Mithril; the clarity word ("the ally") would make it Diamond when applied.
+
+**For Lucas to choose:** keep it; or widen the trigger to any damage (areas, Saves), which makes it the answer to a dragon's breath on one ally.
+
 **Lucas's answer:**
