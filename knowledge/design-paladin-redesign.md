@@ -640,4 +640,46 @@ Kneel .......... 7 to 9 a landing [SIM: Prone] x 78% [computed: an enemy with +2
 
 **And Hold the Line's Brace, the same way:** "Squares adjacent to you are Difficult Terrain for enemies (1 round)."
 
+**Lucas's answers (2026-11-15):** no save ends: agreed. Durations: yes (only EoT and rounds, counted as today; "(1 round)" on what he holds up). The name: **Commandment**. Courage stays. **Commandment is DECIDED** with the card above; **the three Arts are done** (Lantern of Faith, Hold the Line, Commandment).
+
+**"(T1/T2)" or "Tier 1 or 2:": how much space is saved, is it worth it? (Lucas)** Almost none: on Rebuke, "makes an Appeal Save. **Tier 1 or 2:** its Move Action is disrupted" against "makes an Appeal Save: its Move Action is disrupted (T1/T2)" is two words and about eight characters. Not worth it, and the parentheses cost clarity twice: they are an abbreviation to learn, and they pile onto the duration's parentheses ("Prone (EoT) (T1/T2)"). **Decided by Claude as the default (his to revert): "Tier 1 or 2:" stays, and the book's "(T3)" / "(T2/T3)" notation is retired in the same pass that changes the Effects row**, since Tier lines now do its job. One way to write a Tier.
+
+## Where the Paladin stands (level 1 complete but the Passive)
+
+| Slot | Card | Status |
+|---|---|---|
+| Numbers | Weapon +1, Power +2; Health 20 / 10; Rally 6; Speed +0; Heavy | decided |
+| Features | **Judge**, **Smite** | decided |
+| Hallmark Action | **Binding Light** or **Lay On Hands** | decided |
+| Hallmark Reaction | **Shield of Faith** or **Rebuke** | decided |
+| Arts (1 of 3; a second at level 3) | **Lantern of Faith**, **Hold the Line**, **Commandment** | decided |
+| Escalation 2 Passive (1 of 2) | Armor of Faith proposed; one more to design | now |
+
+## Decision 11: the first Escalation 2 Passive (PROPOSED, waiting for Lucas)
+
+**Rules and research first.** A Passive works while his Escalation is at least its number: Escalation 2 is round 2, or the first turn with Momentum. The charter: one sentence; it changes a decision or fires on a moment the table sees; never a silent bonus; about +5 to 10 a turn. Guard doesn't stack (the higher value), except the unused AP's, which adds. Research: the soft front-liner that works "is paid when it protects" (Draw Steel gives temporary Stamina or resource on the trigger; Nimble's Oathsworn gains temp HP when he Interposes); always-on bonuses are forgotten. His Reactions fire in about half the rounds. Today's Escalation 1 Passives (Radiant Zeal, Divine Surge, Font of Mercy) are silent pluses and are retired.
+
+> **Armor of Faith** · Paladin Escalation Passive · Escalation 2
+> *Each time you answer for an ally, your god's light settles on you like mail.*
+> While your Escalation is 2 or more, when you use a Reaction, you gain Guard equal to 1 + your Power Modifier.
+
+```
+Guard 3 on himself, each time he reacts ............ 18   [SIM: 6 a point of Guard]
+x his Reactions fire in about half the rounds ........ 9 a round
+x Escalation 2 or more: rounds 2 to the end (about 70% of a fight's turns; all of them with Momentum)
+--- Total: about 6 a turn (9 with Momentum), of 5 to 10: on
+```
+
+**Analysis.**
+- **The decision it changes:** whether to react at all. Shield of Faith Taunts the enemy onto him; this is what lets him take that hit. Rebuke stops an enemy next to him; the same. It also raises the value of an AP kept for a second Reaction (a second Guard doesn't stack, but it refreshes one that was spent).
+- **It fires on a moment everyone already watches** (his Reaction), with the number Shield of Faith already uses (1 + Power Modifier): nothing new to remember.
+- **"Paid when he protects"** is the research's best answer to how a soft tank stays up: his toughness comes from doing his job, not from a bigger Health Pool.
+- **Smite:** the Reaction AP spent on Smite is not a Reaction, so no Guard. Smite stays the exposed turn.
+- **Rules it touches:** none. Guard's own rules settle the stacking (it adds to the unused AP's Guard; it doesn't add to itself).
+- **Siblings:** Bulwark of Faith and Divine Intervention gave allies Guard; the old Divine Surge had a Guard that was cut as too strong (2d6). This is 3, on him only.
+- **Complexity:** one sentence, 20 words.
+- **Table feel:** "Shield of Faith: minus 3, it's Taunted, I gain Guard 3." One breath. The risk: it is a number, if a triggered one; Lucas's rule is no *silent* bonus, and this one is said aloud each time.
+
+**The second Escalation 2 Passive (not drafted yet; Claude's candidates, for Lucas to steer):** *the mark moves freely* ("moving your Judgment costs 0 AP"); *the mark glows* ("the creature you Judged sheds Bright light 1"); *Lucas's own idea* of a penalty on the Judged creature (he placed it at Stage 1).
+
 **Lucas's answer:**

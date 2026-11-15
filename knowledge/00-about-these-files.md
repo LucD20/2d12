@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 626b248 2026-11-15 Research: durations (start of turn, end of turn, rounds); the Arts written with (1 round); Commandment
+Built by tools/knowledge.py on 2026-11-15 from the repository at: e61ae97 2026-11-15 Research: save ends (not for 2d12: the creature pays to end it); a notation clash and a dangling reference found
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (162 KB)
+- open-design-items.md (163 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -56,8 +56,8 @@ Files:
 - design-playtest-4.md (3 KB)
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
-- design-class-charter.md (12 KB)
-- design-paladin-redesign.md (88 KB)
+- design-class-charter.md (13 KB)
+- design-paladin-redesign.md (92 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

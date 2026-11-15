@@ -80,10 +80,11 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: "save ends" researched. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the Arts are done; the first Passive proposed. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
+  <a href="#armor">Armor of Faith</a>
   <a href="#saveends">Save ends</a>
   <a href="#durations">Durations</a>
   <a href="#word">Commandment</a>
@@ -112,15 +113,42 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-  <li><strong>Save ends:</strong> my answer is no; we already have "the creature pays to end it". Agree?</li>
-  <li><strong>A notation clash I found:</strong> the book already writes "only on some Tiers" as "Immobilized (T3)" or "(T2/T3)". My "Tier 1 or 2:" line duplicates it. Which one stays?</li>
-  <li>Still open from before: the durations answer, the third Art's name, and Courage.</li>
+  <li><strong>The first Escalation 2 Passive, Armor of Faith:</strong> "Proposed", or your changes.</li>
+  <li><strong>A steer for the second one.</strong> My candidates: the mark moves for 0 AP; the Judged creature sheds Bright light; or your idea of a penalty on the Judged creature.</li>
 </ol>
 </div>
 </section>
 
+<section id="armor">
+<h2>Decision 11: the first Escalation 2 Passive, Armor of Faith (proposed)</h2>
+<div class="card">
+  <div class="bar"><span>Armor of Faith</span><span>Paladin Escalation Passive · Escalation 2</span></div>
+  <div class="v"><b></b><div class="small"><em>Each time you answer for an ally, your god's light settles on you like mail.</em></div></div>
+  <div class="v"><b></b><div>While your Escalation is 2 or more, when you use a Reaction, you gain Guard equal to 1 + your Power Modifier.</div></div>
+</div>
+<div class="scroll"><table>
+<tr><th>Line</th><th>Points</th><th>From</th></tr>
+<tr><td>Guard 3 on himself, each time he reacts</td><td>18</td><td>6 a point of Guard [SIM]</td></tr>
+<tr><td>His Reactions fire in about half the rounds</td><td>9 a round</td><td>judgment</td></tr>
+<tr><td><strong>Total a turn</strong></td><td><strong>about 6; 9 with Momentum, of 5 to 10</strong></td><td>on from round 2, or from the start with Momentum</td></tr>
+</table></div>
+<ul>
+<li><strong>The decision it changes:</strong> whether to react at all. Shield of Faith Taunts the enemy onto him; this is what lets him take that hit.</li>
+<li><strong>"Paid when he protects"</strong> is the research's best answer to how a soft tank stays up: his toughness comes from doing his job, not from more Health.</li>
+<li><strong>It fires on a moment everyone already watches,</strong> with the number Shield of Faith already uses. It is a bonus, but one said aloud each time, not a silent one.</li>
+<li><strong>Smite stays the exposed turn:</strong> the Reaction AP spent on Smite isn't a Reaction, so no Guard.</li>
+<li><strong>Rules:</strong> none new. This Guard adds to the unused AP's Guard and doesn't add to itself.</li>
+</ul>
+</section>
+
+<section id="notation">
+<h2>Your question: "(T1/T2)" or "Tier 1 or 2:", is the space worth it?</h2>
+<p><strong>No.</strong> On Rebuke the parentheses save two words, about eight characters. And they cost clarity twice: they are an abbreviation to learn, and they pile onto the duration's parentheses ("Prone (EoT) (T1/T2)").</p>
+<p>So I've kept "Tier 1 or 2:" and marked the book's "(T3)" notation to be retired in the same pass that changes the Effects row. One way to write a Tier. Say if you'd rather the reverse.</p>
+</section>
+
 <section id="saveends">
-<h2>Your question: could 2d12 benefit from "save ends"?</h2>
+<h2>"Save ends": decided, no</h2>
 <p><strong>My answer: no, because we already have a better version of it.</strong></p>
 <h3>What it is</h3>
 <p>A roll at the end of the affected creature's turn; on a success the condition ends. 4e had it; Draw Steel keeps it (28 times in its classes, read and counted). It ends at the same moment as EoT, so it adds no new end point.</p>
@@ -144,7 +172,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 </section>
 
 <section id="durations">
-<h2>Your question: "until the start of your turn", and when rounds count down</h2>
+<h2>Durations: decided, only EoT and rounds, counted as today</h2>
 <p><strong>My answer: keep only EoT and rounds, don't move the count, and write "(1 round)".</strong></p>
 <h3>What other games do</h3>
 <div class="scroll"><table>
@@ -164,7 +192,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 </section>
 
 <section id="word">
-<h2>Decision 10: the third Art, Commandment (proposed)</h2>
+<h2>Decision 10: the third Art, Commandment (decided)</h2>
 <div class="card">
   <div class="bar"><span>Commandment</span><span>Paladin Art · Round · 1 AP · Divine</span></div>
   <div class="v"><b></b><div class="small"><em>You speak with your god's authority: you call a foe to face you, steady the hearts around you, or order a foe to its knees.</em></div></div>
@@ -359,8 +387,8 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><td>Feature</td><td><strong>Smite</strong>: the burst, once an encounter</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Action</td><td><strong>Binding Light</strong> (a Strike that pins) or <strong>Lay On Hands</strong> (Guard)</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Reaction</td><td><strong>Shield of Faith</strong> (a smaller hit) or <strong>Rebuke</strong> (stops an enemy leaving him)</td><td><span class="tag ok">Decided</span></td></tr>
-<tr><td>Art, 1 of 3</td><td><strong>Lantern of Faith</strong> (light): decided. <strong>Hold the Line</strong>: decided. <strong>Commandment</strong>: proposed</td><td><span class="tag open">Now</span></td></tr>
-<tr><td>Escalation 2 Passive, 1 of 2</td><td>two to design</td><td>after the Arts</td></tr>
+<tr><td>Art, 1 of 3 (a second at level 3)</td><td><strong>Lantern of Faith</strong>, <strong>Hold the Line</strong>, <strong>Commandment</strong></td><td><span class="tag ok">Decided</span></td></tr>
+<tr><td>Escalation 2 Passive, 1 of 2</td><td><strong>Armor of Faith</strong> proposed; one more to design</td><td><span class="tag open">Now</span></td></tr>
 </table></div>
 </section>
 
