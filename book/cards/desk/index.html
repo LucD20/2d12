@@ -53,16 +53,37 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 .opt>b{color:var(--gold);font-size:1.1rem}
 .opt div{min-width:0}
 .small{color:var(--dim);font-size:.93em}
+/* light scenes: a strip of squares in three light levels, two tokens, the result of each attack */
+:root{--lit:#6d5a22;--dimsq:#3a3524;--darksq:#0c0d10;--tokY:#5b9bd5;--tokG:#c9584c}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){--lit:#f6dc8a;--dimsq:#bfb08a;--darksq:#4a4538;--tokY:#2f6fb0;--tokG:#a83a30} }
+:root[data-theme="light"]{--lit:#f6dc8a;--dimsq:#bfb08a;--darksq:#4a4538;--tokY:#2f6fb0;--tokG:#a83a30}
+.ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);margin:.8rem 0}
+.ladder div{padding:.5rem .6rem;border-right:1px solid var(--line);min-width:0}
+.ladder div:last-child{border-right:0}
+.ladder b{display:block}
+.scenes{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem;margin:.8rem 0}
+.scene{border:1px solid var(--line);background:var(--panel);padding:.7rem .8rem;min-width:0}
+.scene h4{margin:0 0 .5rem;font-size:1rem;font-weight:600}
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;margin-bottom:.6rem}
+.sq{aspect-ratio:1;display:grid;place-items:center;border:1px solid var(--line)}
+.sq.b{background:var(--lit)} .sq.d{background:var(--dimsq)} .sq.k{background:var(--darksq)}
+.tok{width:72%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;font-size:.9rem}
+.tok.y{background:var(--tokY)} .tok.g{background:var(--tokG)}
+.scene p{margin:.2rem 0}
+.key{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;margin:.4rem 0 .8rem;color:var(--dim);font-size:.93em}
+.key span{display:inline-flex;align-items:center;gap:.4rem}
+.key i{width:1rem;height:1rem;border:1px solid var(--line);display:inline-block}
 code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:anywhere}
 </style>
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the Senses table and the naming question. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: the Senses rule with scenes; the second Art proposed. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
-  <a href="#senses">Senses table</a>
+  <a href="#line">Hold the Line</a>
+  <a href="#senses">Senses</a>
   <a href="#stunned">Dazed / Stunned</a>
   <a href="#obscured">Obscured</a>
   <a href="#dazzled">Dazzled</a>
@@ -86,30 +107,60 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-  <li><strong>The condition's name.</strong> My advice: keep Dazed, and call the new one Half-Blinded. Or rename Dazed to Stunned and take Dazzled.</li>
-  <li><strong>The Senses table</strong> below: yes or no, with the one case it changes (two creatures Obscured to each other).</li>
+  <li><strong>The Senses rule as two steps and four scenes</strong> (below): clearer? If yes, that is how it goes into the book, with the scenes as a diagram.</li>
+  <li><strong>The second Art, Hold the Line:</strong> "Proposed", or your changes. Worth your eye: the swap, and moving an ally (you called an ally's step "a skirmishing thing").</li>
 </ol>
-<p>The second Art (the line) is next either way.</p>
 </div>
 </section>
 
-<section id="senses">
-<h2>The Senses rule as one table (proposed)</h2>
-<p>Find how you perceive your target (the row) and how it perceives you (the column).</p>
+<section id="line">
+<h2>Decision 9: the second Art, Hold the Line (proposed)</h2>
+<div class="card">
+  <div class="bar"><span>Hold the Line</span><span>Paladin Art · Round · 1 AP</span></div>
+  <div class="v"><b></b><div class="small"><em>You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or haul one clear.</em></div></div>
+  <div class="v"><b>Brace</b><div>Until your next turn starts, squares adjacent to you are Difficult Terrain for enemies.</div></div>
+  <div class="v"><b>Trade Places</b><div>You and a willing ally within Reach swap squares. Each of you is moved by a Reposition.</div></div>
+  <div class="v"><b>Haul</b><div>Reposition 2 a willing ally within Reach.</div></div>
+</div>
 <div class="scroll"><table>
-<tr><th>You perceive it as</th><th>It perceives you as Clear</th><th>as Obscured</th><th>as Hidden or Unsensed</th></tr>
-<tr><td><strong>Clear</strong></td><td>Normal</td><td>1 Field Boon</td><td>Favored</td></tr>
-<tr><td><strong>Obscured</strong></td><td>1 Field Bane</td><td>1 Field Bane</td><td>Favored, with 1 Field Bane</td></tr>
-<tr><td><strong>Hidden</strong></td><td>Doomed</td><td>Doomed</td><td>Doomed</td></tr>
-<tr><td><strong>Unsensed</strong></td><td colspan="3">You can't target it.</td></tr>
+<tr><th>Use</th><th>Points</th><th>From</th></tr>
+<tr><td>Brace</td><td>not priced</td><td>the SIM has never measured Difficult Terrain around a creature; my guess is 0 to 8: an enemy walking past him pays double for those squares</td></tr>
+<tr><td>Trade Places</td><td>about 10 to 15</td><td>judgment: two moves for 1 AP that trigger no Reactions; like an Evade given to an ally (10 to 15)</td></tr>
+<tr><td>Haul</td><td>about 15</td><td>judgment: the earlier price for an ally's Evade 2</td></tr>
 </table></div>
-<p><strong>The one line under it:</strong> "How you perceive your target comes first: being hard to see helps you only against a target you perceive better than it perceives you."</p>
-<p><strong>What changes:</strong> one cell. Two creatures each Obscured to the other take 1 Field Bane each; today the Bane and the Boon cancel and they fight normally. Everything else is today's rule, without the sentence you find confusing.</p>
-<p class="small">5e has the same problem in darkness (the two cancel and blind creatures attack normally); players call it counterintuitive, and the common house rule is "both at a penalty", which is what this table does.</p>
+<ul>
+<li><strong>The decision it gives:</strong> where the line is this round. Brace when they will try to run past; Trade Places when a hurt ally is in the front and he should be; Haul when someone is Down in a bad square.</li>
+<li><strong>It uses rules that exist.</strong> Difficult Terrain doubles a square's cost. Reposition is defined in Chapter 3: it isn't Forced Movement, triggers no Reactions, ignores Difficult Terrain and is reduced by Steadiness. A Down or Unconscious ally counts as willing, so Haul works on a fallen one.</li>
+<li><strong>Brace stacks with his Reactions:</strong> an enemy that pays double to pass him is easier to catch with Rebuke.</li>
+<li><strong>One thing to write:</strong> "swap squares" isn't in the rules. The card says each is moved by a Reposition, which gives it every answer (no Reactions, no Move Action). Two creatures of different Sizes can't swap; that needs a line.</li>
+<li><strong>Your earlier note:</strong> you called an ally's step out of reach "a skirmishing thing". Haul and Trade Places move an ally. I kept them because he moves the ally himself, by hand, which reads as a bodyguard. Say if they should go.</li>
+<li><strong>No number on the card</strong> but distances. Wide, not strong.</li>
+</ul>
+</section>
+
+<section id="senses">
+<h2>The Senses rule in two steps, with pictures (proposed)</h2>
+<p>The table was still two things to cross. Here it is as two questions, asked in order, and four scenes.</p>
+<div class="ladder">
+  <div><b>Clear</b>no penalty</div>
+  <div><b>Obscured</b>1 Field Bane</div>
+  <div><b>Hidden</b>Doomed</div>
+  <div><b>Unsensed</b>can't target</div>
+</div>
+<p><strong>1. Your eyes: how do you perceive your target?</strong> That sets your penalty, from the line above.</p>
+<p><strong>2. Its eyes: do you perceive it better than it perceives you?</strong> Only then you get a bonus: <strong>1 Field Boon</strong> if you are Obscured to it, <strong>Favored</strong> if you are Hidden or Unsensed to it. If you don't perceive it better, there is no bonus.</p>
+<div class="key"><span><i style="background:var(--lit)"></i>Bright light</span><span><i style="background:var(--dimsq)"></i>Dim light</span><span><i style="background:var(--darksq)"></i>Darkness</span><span>Y is you, G is a goblin</span></div>
+<div class="scenes"><div class="scene"><h4>A torch in the dark</h4><div class="strip"><div class="sq k"><div class="tok y">Y</div></div><div class="sq k"></div><div class="sq d"></div><div class="sq b"></div><div class="sq b"><div class="tok g">G</div></div><div class="sq b"></div></div><p>Y sees G <strong>Clear</strong>. G hears Y: <strong>Hidden</strong>.</p><p>Y attacks: no penalty, and sees better: <strong>Favored</strong>.</p><p>G attacks: <strong>Doomed</strong>.</p></div><div class="scene"><h4>Both at the edge of the light</h4><div class="strip"><div class="sq d"></div><div class="sq d"><div class="tok y">Y</div></div><div class="sq d"></div><div class="sq d"><div class="tok g">G</div></div><div class="sq d"></div><div class="sq d"></div></div><p>Each sees the other <strong>Obscured</strong>.</p><p>Y attacks: <strong>1 Field Bane</strong>. Nobody sees better: no bonus.</p><p>G attacks: <strong>1 Field Bane</strong>. <span class="small">(Today: both normal.)</span></p></div><div class="scene"><h4>Glare: G is Half-Blinded</h4><div class="strip"><div class="sq b"></div><div class="sq b"><div class="tok y">Y</div></div><div class="sq b"></div><div class="sq b"><div class="tok g">G</div></div><div class="sq b"></div><div class="sq b"></div></div><p>Y sees G <strong>Clear</strong>. G sees Y <strong>Obscured</strong>.</p><p>Y attacks: sees better: <strong>1 Field Boon</strong>.</p><p>G attacks: <strong>1 Field Bane</strong>.</p></div><div class="scene"><h4>Both in the dark</h4><div class="strip"><div class="sq k"></div><div class="sq k"><div class="tok y">Y</div></div><div class="sq k"></div><div class="sq k"><div class="tok g">G</div></div><div class="sq k"></div><div class="sq k"></div></div><p>Each only hears the other: <strong>Hidden</strong>.</p><p>Y attacks: <strong>Doomed</strong>. Nobody sees better: no bonus.</p><p>G attacks: <strong>Doomed</strong>.</p></div></div>
+<p><strong>What changes from today's rule:</strong> two cases, both because "no bonus unless you perceive it better" has no exceptions.</p>
+<ul>
+<li>Two creatures each Obscured to the other: 1 Field Bane each (today they cancel to a normal roll).</li>
+<li>You only hear a creature that can't sense you at all: Doomed and Favored cancel to a normal roll (today: Doomed). Rare.</li>
+</ul>
+<p class="small">For the book, the four scenes would be drawn as one diagram in the book's own style (Y is you).</p>
 </section>
 
 <section id="stunned">
-<h2>Dazed, Stunned and the new condition's name</h2>
+<h2>The new condition is named Half-Blinded (decided); Dazed stays</h2>
 <ul>
 <li><strong>"Stunned" is hated for losing a whole turn.</strong> EN World has a thread titled "Stun: The Fun-Killer". The usual line: if you still have options, you're still playing.</li>
 <li><strong>Pathfinder 2e's Stunned 1 means "lose 1 of your 3 actions".</strong> That is our Dazed 1 exactly. So the rename would be accurate, and it would bring the word's bad name with it.</li>
@@ -135,7 +186,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <section id="dazzled">
 <h2>The new condition (decided; its name is open)</h2>
 <p><strong>Yes to the condition.</strong> Glare's sentence was an effect invented for one card. A named condition is defined once and reused: another light card, a monster's flash, a creature of the dark dragged into Bright light. Chapter 8 has Blinded and nothing between it and normal sight, and the Senses table already has the middle state (Obscured), so the definition is one line.</p>
-<blockquote><strong>Dazzled.</strong> Your Sight perceives no creature better than Obscured: a creature that would be Clear to you is Obscured. Your other senses aren't affected.</blockquote>
+<blockquote><strong>Half-Blinded.</strong> Your Sight perceives no creature better than Obscured: a creature that would be Clear to you is Obscured. Your other senses aren't affected.</blockquote>
 <p>By the Senses table that means 1 Field Bane on its Actions and 1 Field Boon on Actions against it. I'd price it as a Moderate condition, about 12 to 16 points a landing (judgment).</p>
 <div class="scroll"><table>
 <tr><th>Glare as</th><th>What happens (enemy with +2, DC 13)</th><th>Worth a use</th><th>To read</th></tr>
@@ -152,7 +203,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
   <div class="v"><b></b><div class="small"><em>You call your god's light: around you, onto a foe, or into a foe's eyes.</em></div></div>
   <div class="v"><b>Kindle</b><div>You shed Bright light 3 until the encounter ends.</div></div>
   <div class="v"><b>Reveal</b><div>One creature you perceive within 5 squares sheds Bright light 1 (1 round).</div></div>
-  <div class="v"><b>Glare</b><div>One enemy you can see within 5 squares makes an Instinct Save. <strong>Tier 1 or 2:</strong> Dazzled (EoT). <span class="small">([Power, Save] on this use)</span></div></div>
+  <div class="v"><b>Glare</b><div>One enemy you can see within 5 squares makes an Instinct Save. <strong>Tier 1 or 2:</strong> Half-Blinded (EoT). <span class="small">([Power, Save] on this use)</span></div></div>
 </div>
 <div class="scroll"><table>
 <tr><th>Use</th><th>In daylight</th><th>In Dim light or Darkness</th></tr>
@@ -178,7 +229,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><td>Feature</td><td><strong>Smite</strong>: the burst, once an encounter</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Action</td><td><strong>Binding Light</strong> (a Strike that pins) or <strong>Lay On Hands</strong> (Guard)</td><td><span class="tag ok">Decided</span></td></tr>
 <tr><td>Hallmark Reaction</td><td><strong>Shield of Faith</strong> (a smaller hit) or <strong>Rebuke</strong> (stops an enemy leaving him)</td><td><span class="tag ok">Decided</span></td></tr>
-<tr><td>Art, 1 of 3</td><td><strong>Lantern of Faith</strong> (light): decided. The line and the word: to design</td><td><span class="tag open">Now</span></td></tr>
+<tr><td>Art, 1 of 3</td><td><strong>Lantern of Faith</strong> (light): decided. <strong>Hold the Line</strong>: proposed. The word: to design</td><td><span class="tag open">Now</span></td></tr>
 <tr><td>Escalation 2 Passive, 1 of 2</td><td>two to design</td><td>after the Arts</td></tr>
 </table></div>
 </section>

@@ -543,6 +543,38 @@ Glare: an enemy sees everything beyond 3 squares as Obscured, for its turn
 - **And Dazzled would double in price** (to about 24 to 32 a landing): too much for a 1 AP use of an Art.
 - A note found on the way: two creatures that are each Obscured to the other cancel out (each has the Bane and the Boon), so Dim light only matters when it is one-sided. That is the rules working as written; worth knowing when a fight is set at dusk.
 
-## Decision 9: next (the second Art, the line)
+**The condition's name: Half-Blinded (Lucas, 2026-11-15: "It is a long name, but makes sense"). Dazed stays Dazed.** Lantern of Faith's Glare: "Tier 1 or 2: Half-Blinded (EoT)."
 
-The ground around him, changing places with an ally, bringing a fallen ally out. Claude proposes.
+**The Senses rule (Lucas: the table "is still confusing... maybe a diagram can help").** Rewritten as two questions asked in order, with four scenes on the reading page (for the book: one diagram in the book's style, Y is you). **1. Your eyes:** how you perceive your target sets your penalty (Clear: none; Obscured: 1 Field Bane; Hidden: Doomed; Unsensed: you can't target it). **2. Its eyes:** only if you perceive it better than it perceives you, you get a bonus: 1 Field Boon if you are Obscured to it, Favored if you are Hidden or Unsensed to it. The scenes: a torch in the dark (Y in Darkness, G in the light: Y Favored, G Doomed); both at the edge of the light (both Obscured: 1 Field Bane each); Glare (G Half-Blinded: Y 1 Field Boon, G 1 Field Bane); both in the dark (both Doomed). **Two cases change from today's rule:** each Obscured to the other (1 Field Bane each; today normal), and "you only hear a creature that can't sense you" (Doomed and Favored cancel to a normal roll; today Doomed).
+
+## Decision 9: the second Art, the line (PROPOSED, waiting for Lucas)
+
+**Rules and research first.** Difficult Terrain (Chapter 3): each square counts double; an unwilling creature's space already is Difficult Terrain. Reposition (Chapter 3): moves a creature of your choice along a path, isn't Forced Movement, triggers no Reactions, ignores Difficult Terrain, is reduced by Steadiness. A creature is willing when it accepts; an Unconscious one counts as willing. Interact (1 AP) already helps a Prone creature stand and an Imperiled one to safety. The Basic Action Relocate rolls for a Reposition 1 or 2. Research: a front line is real when passing the front-liner costs movement or actions (Lancer, 13th Age); visible protection moves a token (Draw Steel's Parry and No Dying on My Watch move to the ally); granted movement is a "quarterback" tool, worth most on the ally who needs it. Lucas (2026-11-14): an ally's step out of reach is "more a skirmishing thing".
+
+> **Hold the Line** · Paladin Art · Round · 1 AP
+> *You plant yourself where the fight is worst: you foul the ground at your feet, trade places with an ally, or haul one clear.*
+> **Brace:** Until your next turn starts, squares adjacent to you are Difficult Terrain for enemies.
+> **Trade Places:** You and a willing ally within Reach swap squares. Each of you is moved by a Reposition.
+> **Haul:** Reposition 2 a willing ally within Reach.
+
+```
+Brace ............. not priced (the SIM has never measured Difficult Terrain around a creature; suggested 0 to 8: an enemy passing him pays double for up to 8 squares)
+Trade Places ...... about 10 to 15   [judgment: two moves for 1 AP with no Reactions; an Evade given to an ally was priced 10 to 15]
+Haul .............. about 15   [judgment: the earlier price for an ally's Evade 2]
+--- Each under a Weapon Attack (25) in points; no number on the card but distances.
+```
+
+**Analysis.**
+- **The decision it gives:** where the line is this round. Brace when they will try to run past; Trade Places when a hurt ally stands in the front and he should; Haul when someone is Down in a bad square.
+- **Brace with his Reactions:** an enemy that pays double to get past him is still near him when Rebuke's "moves away from you" comes.
+- **Trade Places is "they stay in front" as a verb:** the Archer who got caught is behind him at the end of his turn, and no Reaction answered it.
+- **Haul works on a fallen ally** (Unconscious counts as willing), out of a Zone or away from the enemy standing over it. With Lay On Hands' 2 AP use next turn, that is his rescue.
+- **Rules it touches:** "swap squares" isn't defined: the card says each is moved by a Reposition, so every question has its answer (no Reactions, not a Move Action, Steadiness applies). To add: creatures of different Sizes can't swap. Brace makes terrain "for enemies": Difficult Terrain for some creatures only already exists (Darkness, for those who can't see in it).
+- **Lucas's note on steps:** Haul and Trade Places move an ally. Claude kept them because he moves the ally with his own hands and stays beside it: a bodyguard's act, not a skirmisher's grant. His call.
+- **Siblings:** the Basic Actions Relocate (rolls; works on enemies) and Interact (helps a Prone creature stand). Bulwark of Faith's Slid 1. Beacon's Step.
+- **Complexity:** three uses of 14, 16 and 7 words; no condition, no conditional, no dice.
+- **Table feel:** three verbs anyone understands. The risk: Brace is invisible unless the GM counts squares; Foundry would need to mark those squares (a Zone that follows him exists: not tried).
+
+**For Lucas to choose:** keep Haul and Trade Places, or replace one (a candidate: "Stand: you can't be moved by Forced Movement until your next turn starts"); Brace's "adjacent" or a 1 Emanation is the same thing: the wording.
+
+**Lucas's answer:**

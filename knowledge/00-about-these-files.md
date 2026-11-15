@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 6fa3361 2026-11-15 Paladin: Lantern of Faith decided (Glare: a binary Save for the new condition); Obscured stays 1 Bane; names offered
+Built by tools/knowledge.py on 2026-11-15 from the repository at: ecbfaee 2026-11-15 Research: stunned and mutual concealment; the Senses rule proposed as a table; the condition's name discussed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (156 KB)
+- open-design-items.md (157 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -56,7 +56,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (12 KB)
-- design-paladin-redesign.md (74 KB)
+- design-paladin-redesign.md (79 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)
