@@ -806,7 +806,7 @@ x Escalation 4 or more (about 30% of a first fight's turns; about 70% with Momen
 
 **The note, to watch in playtest:** with Tireless Vigil, a Paladin at Escalation 4 or more who spends his Reaction AP on Smite still has the Vigil's Reaction AP for a [Divine] Reaction that round. Smite's cost ("until his next turn he can't protect anyone") is then half paid. If Smite turns out too safe late in a fight, the fix is one clause on Tireless Vigil: "you don't gain it on a turn you used Smite".
 
-## Decision 15: Reckoning, at Escalation 6 (Lucas's draft of 2026-11-14; revised twice; the card at the end of this section, waiting for his word)
+## Decision 15: Reckoning, at Escalation 6 (DECIDED, Lucas, 2026-11-15: "Reckoning is good"; the final card is the 0 AP Action at the end of this section)
 
 **His draft (2026-11-14):** "You emit Bright light in a 2 Emanation. The first time your turn begins when you have Escalation 6, enemies in the area are Pushed 2 and must make an Appeal Save: Frightened of you (2 rounds) / Frightened of you (EoT) / No effect."
 
@@ -873,5 +873,48 @@ Frightened of you (1 round) on about 78% of them .......... about 6 to 9   [SIM:
 - **By the new Effects rule:** the Push is the Action's Effect (it happens whatever the Save), and the Tier line holds what depends on the Save.
 - **[Area] and [Self]:** a 2 Emanation centered on him; Chapter 1's Save Action rules apply (each enemy rolls; Cover gives it Field Boons on the Save).
 - **Bigger than the Passive was:** he chooses the moment and gets a free move. It is still the rarest card of Stage 0.
+
+**Lucas's answer (2026-11-15):** Reckoning is good. **The Setup rules change:** remove "you must select the targets before the Setup" as a general rule: Lay On Hands says "toward the target" and so names it; Reckoning doesn't, and keeps its targets for after the move. And the disrupted-Setup rule grows: "If an Action in your Setup is disrupted, the rest of the Action still happens. You can change the target if Setup required a target before hand, but only if the Action was Disrupted; For example, if you use Lay on Hands, you can't move towards a target then decide on your own to change it after you reach a certain spot."
+
+**The Setup section for Chapter 2, as it now stands (decided, not applied):**
+1. A Setup happens before the rest of the Action. It is optional unless it says you must.
+2. The Action's Distance and its targets are checked after the Setup.
+3. If the Setup names the Action's target ("toward the target"), you choose that target before the Setup, and it stays the Action's target.
+4. If an Action in your Setup is disrupted, the rest of the Action still happens. Only then, if the Setup had named a target, you can choose another target for the rest of the Action.
+
+*Example for the book:* a Paladin uses Lay On Hands on an ally 5 squares away and Advances toward him; an enemy's Reaction stops him after 2 squares. Lay On Hands still happens: he can touch another ally within his Reach from where he stands. Had nothing stopped him, he couldn't have walked toward one ally and then touched a different one.
+
+## Decision 16: the second Escalation 6 ability, Hallowed Stance (LUCAS'S DRAFT of 2026-11-14, brought to today's rules; waiting for him)
+
+**His draft:** "You add your Power Modifier to damage on your Divine Actions, and all your Divine Actions gain: 'Setup: You Advance 3.'"
+
+**What the first analysis said:** the free Advance 3 is the whole card (a move bundled into an Action is strong because it saves the move's AP: Pathfinder 2e's Sudden Charge, 4e's Nimble Strike; and with the Advance in one piece it is a second movement); the damage half is clutter; "all your Divine Actions" includes the Reactions, which moves him on an enemy's turn toward the ally being hit: "a very strong bodyguard move".
+
+**Brought to the rules decided since:**
+- **The damage bonus goes:** a silent plus (the charter's rule on Passives), worth about 1 a turn.
+- **"All your Divine Actions" can't stay:** Judge is [Divine], has no Frequency, and with Roving Judgment costs 0 AP: every use would be a free Advance 3. So: once on each turn.
+- **It stays a Passive:** a standing sentence that gives a Setup to Actions he already has; the Setup's own rules do the rest.
+
+> **Hallowed Stance** · Paladin Escalation Passive · Escalation 6
+> *Your god's light carries you: wherever you are needed, you are already there.*
+> While your Escalation is 6, once on each turn, a [Divine] Action you use gains "Setup: You Advance 3."
+
+```
+On his own turn: an Advance 3 before one [Divine] Action ............ about 10   [the earlier analysis: 8 to 15; an AP saved on the turns he had to move]
+On an enemy's turn: an Advance 3 before Shield of Faith or Rebuke ... about 10 each time, in about half the rounds (two Reactions a round with Tireless Vigil)   [judgment]
+--- About 15 to 20 a round while his Escalation is 6: the last one to three turns of the long fights
+```
+
+**Analysis.**
+- **The decision it gives:** where to be, every turn, his and theirs. On his turn it is a move, Smite or Binding Light, and still 2 AP. On an enemy's turn, Shield of Faith comes with 3 squares toward the ally: his body ends up between.
+- **"Once on each turn"** is the Turn Frequency's own wording (once on his turn, once on each other creature's turn), so the bodyguard move stays and the Judge loop is closed.
+- **With cards that have their own Setup** (Lay On Hands, Reckoning): they gain a second one; he can use both, in the order he likes. Worth Lucas's eye.
+- **A Reaction's Setup is a real Advance** on someone else's turn: an enemy's movement Reaction can answer it; Rebuke's "within 3 squares" is checked after he has moved (the Distance is measured after the Setup).
+- **Against Reckoning:** Reckoning is one big moment; this is three squares on every turn until the fight ends. Two different level 3 characters.
+- **The rung:** the same as Reckoning's: rare.
+- **Complexity:** one sentence, 20 words.
+- **Table feel:** the Paladin's token moves on the GM's turn. Players love that; a GM may find "he was 5 squares away" hard to plan around, at the one rung where the fight is almost over.
+
+**For Lucas to choose:** once on each turn, or only on his own turn, or only on Reactions; 3 squares; whether an Action with its own Setup gets both.
 
 **Lucas's answer:**

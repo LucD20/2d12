@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: 0177c74 2026-11-15 Research: named Save DCs (yes, one per Modifier, never a second overlapping DC); Reckoning carries [Power, Save]
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 41ae890 2026-11-15 Named DCs decided; Reckoning rewritten as a 0 AP Escalation Action with a Setup; the Setup-disrupted rule logged
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (168 KB)
+- open-design-items.md (169 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -58,7 +58,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (14 KB)
-- design-paladin-redesign.md (114 KB)
+- design-paladin-redesign.md (119 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

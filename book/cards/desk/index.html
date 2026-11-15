@@ -80,10 +80,12 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 
 <div class="wrap">
 <h1>Paladin Redesign Desk</h1>
-<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: named DCs decided; Reckoning rewritten as an Action. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Paladin's redesign stands, in plain words. Updated 2026-11-15: Reckoning decided; the Setup rules settled; Hallowed Stance is next. Nothing here is in the book or in Foundry.</p>
 
 <nav aria-label="Sections">
   <a href="#need">What I need</a>
+  <a href="#stance">Hallowed Stance</a>
+  <a href="#setup">Setup rules</a>
   <a href="#dcs">Named DCs</a>
   <a href="#reckoning">Reckoning</a>
   <a href="#vigil">Tireless Vigil</a>
@@ -118,16 +120,52 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
-<p><strong>Reckoning, rewritten as an Action</strong> (below): "Proposed", or your changes. Worth your eye:</p>
+<p><strong>One decision: Hallowed Stance, the second Escalation 6 ability.</strong> It is your other draft from 2026-11-14, updated. Say "Proposed", or change it. Worth your eye:</p>
 <ol>
-  <li>It is now a 0 AP Action he uses when he chooses, not something that happens by itself when his turn starts.</li>
-  <li>The level list would say "Escalation ability" (a Passive or such an Action) where it says "Passive".</li>
+  <li>"Once on each turn": his turn and each enemy's. Or only his own turn, or only Reactions.</li>
+  <li>I dropped the damage bonus.</li>
+  <li>An Action with its own Setup (Lay On Hands, Reckoning) gets both.</li>
 </ol>
 </div>
 </section>
 
+<section id="stance">
+<h2>Decision 16: Hallowed Stance, at Escalation 6 (your draft, updated)</h2>
+<div class="card">
+  <div class="bar"><span>Hallowed Stance</span><span>Paladin Escalation Passive · Escalation 6</span></div>
+  <div class="v"><b></b><div class="small"><em>Your god's light carries you: wherever you are needed, you are already there.</em></div></div>
+  <div class="v"><b></b><div>While your Escalation is 6, once on each turn, a [Divine] Action you use gains "Setup: You Advance 3."</div></div>
+</div>
+<p><strong>Your draft was:</strong> "You add your Power Modifier to damage on your Divine Actions, and all your Divine Actions gain: 'Setup: You Advance 3.'"</p>
+<div class="scroll"><table>
+<tr><th>Line</th><th>Points</th><th>From</th></tr>
+<tr><td>On his own turn: an Advance 3 before one [Divine] Action</td><td>about 10</td><td>the earlier analysis: 8 to 15</td></tr>
+<tr><td>On an enemy's turn: an Advance 3 before Shield of Faith or Rebuke</td><td>about 10 each time</td><td>judgment; in about half the rounds</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>about 15 to 20 a round</strong></td><td>while his Escalation is 6: the last turns of the long fights</td></tr>
+</table></div>
+<ul>
+<li><strong>Why "all your Divine Actions" can't stay:</strong> Judge is [Divine], has no Frequency, and with Roving Judgment costs 0 AP. Every use would be a free Advance 3. "Once on each turn" closes that.</li>
+<li><strong>The bodyguard move stays.</strong> "Once on each turn" means his turn and each other creature's. Shield of Faith comes with 3 squares toward the ally, so his body ends up between.</li>
+<li><strong>The damage bonus is gone:</strong> a silent plus worth about 1 point a turn.</li>
+<li><strong>It stays a Passive:</strong> a standing sentence that gives a Setup to Actions he already has.</li>
+<li><strong>Against Reckoning:</strong> Reckoning is one big moment; this is three squares on every turn until the fight ends.</li>
+<li><strong>The risk:</strong> his token moves on the GM's turn. Players love that; a GM may find it hard to plan around.</li>
+</ul>
+</section>
+
+<section id="setup">
+<h2>The Setup rules, as decided</h2>
+<ol>
+<li>A Setup happens before the rest of the Action. It is optional unless it says you must.</li>
+<li>The Action's Distance and its targets are checked after the Setup.</li>
+<li>If the Setup names the Action's target ("toward the target"), you choose that target before the Setup, and it stays the Action's target.</li>
+<li>If an Action in your Setup is disrupted, the rest of the Action still happens. Only then, if the Setup had named a target, you can choose another target for the rest of the Action.</li>
+</ol>
+<p><strong>An example for the book:</strong> a Paladin uses Lay On Hands on an ally 5 squares away and Advances toward him. An enemy's Reaction stops him after 2 squares. Lay On Hands still happens, and he can touch another ally within his Reach from where he stands. Had nothing stopped him, he couldn't have walked toward one ally and then touched a different one.</p>
+</section>
+
 <section id="reckoning">
-<h2>Decision 15: Reckoning, at Escalation 6 (revised)</h2>
+<h2>Decision 15: Reckoning, at Escalation 6 (decided)</h2>
 <p><strong>Your point about Passives and Actions:</strong> I'd change the card, not add a rule note. The book already has the tool. Chapter 2 says "An Action with an Escalation line on its card needs that much Escalation"; that is how the Apex is written. An ability with a Setup, traits, an Area and a Save <em>is</em> an Action. A Passive stays a standing sentence, which is what our other four are.</p>
 <div class="card">
   <div class="bar"><span>Reckoning</span><span>Paladin Escalation Action · Escalation 6 · Encounter · 0 AP · Area, Divine, Power, Save, Self · 2 Emanation · Appeal Save</span></div>
@@ -204,7 +242,7 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:a
 <tr><th>Rung (level)</th><th>Passive 1</th><th>Passive 2</th></tr>
 <tr><td>Escalation 2 (level 1)</td><td><strong>Armor of Faith</strong> <span class="tag ok">Decided</span></td><td><strong>Roving Judgment</strong> <span class="tag ok">Decided</span></td></tr>
 <tr><td>Escalation 4 (level 2)</td><td><strong>Weight of Judgment</strong> <span class="tag ok">Decided</span></td><td><strong>Tireless Vigil</strong> <span class="tag ok">Decided</span></td></tr>
-<tr><td>Escalation 6 (level 3)</td><td>Reckoning, as a 0 AP Action <span class="tag open">Revised</span></td><td>to design</td></tr>
+<tr><td>Escalation 6 (level 3)</td><td><strong>Reckoning</strong>, a 0 AP Action <span class="tag ok">Decided</span></td><td>Hallowed Stance <span class="tag open">Your draft, updated</span></td></tr>
 </table></div>
 </section>
 
