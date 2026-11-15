@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: dea2973 2026-11-15 The moment rule decided with three examples; the second Encounter Pick proposed (Consecrated Ground)
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 3bdc0b3 2026-11-15 Reading page: the moment rule's three examples
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -58,7 +58,7 @@ Files:
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
 - design-class-charter.md (14 KB)
-- design-paladin-redesign.md (138 KB)
+- design-paladin-redesign.md (143 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)
 - design-roleplay-skills.md (6 KB)

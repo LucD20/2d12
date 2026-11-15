@@ -1064,4 +1064,44 @@ Guard 2 at the start of each turn in it: about 3 creatures x 3 rounds, less the 
 
 **For Lucas to choose:** a fixed Area (this) or an Aura that follows him; Guard equal to his Power Modifier (2) or 1 + it (3: about 135 points, over); 3 rounds; Distance 5.
 
+**Lucas's answer (2026-11-15): a fixed Area; Guard equal to his Power Modifier; 3 rounds; Distance 8 sq.; and the sentence was confusing ("you gain": the Paladin, or whoever is in it?).** Rewritten so the creature that gains the Guard is named. DECIDED:
+
+> **Consecrated Ground** · Paladin Encounter Action · Encounter · 2 AP · [Area, Divine] · Distance: 8 sq. · Area: 2 Emanation
+> *You drive your weapon into the earth and the ground around it shines: your foes wade through it, and your allies stand firmer on it.*
+> For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to your Power Modifier.
+
+**He asked: what is 1 point of damage worth in an area?** One expected point of damage on one creature is about 3.4 points (a Weapon Attack: 7.34 damage on average = 25). In an Area it is multiplied by the creatures in it (the ruler assumes 1.8 for a 2 Emanation or Burst used once). In a lasting Area, "1 damage at the start of an enemy's turn in it" for 3 rounds: about 2 enemies x 3 rounds x half the turns still inside = 3 damage = about 10 points; 20 if nobody leaves. Cheap, because enemies walk out (and it would make the ground Hazardous Terrain, [HT: Turn]). The Guard line is worth more (76) because allies choose to stay.
+
+## Decision 21: the third Encounter Pick, the word against the Profane (PROPOSED, waiting for Lucas)
+
+**Rules and research first.** Today's Word of Radiance: Encounter, 2 or 3 AP, a 2 / 3 Burst within 10 squares, a [Power] Strike against Will Defense, [R] 1d10 / 2d8 / 3d6 Ho, Pushed 1 / 2, Prone on a Critical. 4e's Turn Undead (read): a burst from the cleric that damages, pushes and immobilizes undead only; the research's lesson is "it always works, and a little more against the Profane". Smite already says how: its dice are d8s against a Profane creature, and the creature he Judged is one. Reckoning (Escalation 6) is already a 2 Emanation from him that Pushes 2 and Frightens: this card must not be a second one. A Save's odds for a Standard enemy: Tier 1 / 2 / 3 = 28 / 51 / 22%.
+
+> **Word of Radiance** · Paladin Encounter Action · Encounter · 2 AP · [Area, Divine, Power, Save, Self] · Area: 2 Emanation · Each enemy in the Area · Appeal Save
+> *You speak a single word of your god, and light bursts from you: your foes burn in it and stagger back.*
+> Radiance dice are [R] d6 Ho; against a Profane creature they are d8s.
+> Tier 1: 3 Radiance dice; Pushed 2.
+> Tier 2: 2 Radiance dice; Pushed 1.
+> Tier 3: 1 Radiance die.
+
+```
+Damage: 3 / 2 / 1 d6 at 28 / 51 / 22% = 7.3 a creature; 2.3 creatures (he stands in front) = 16.8 ... 57   [SIM: 3.4 a point of damage; the count is judgment, the ruler assumes 1.8]
+Pushed 2 or 1 on 79% of them ... not priced (positions are the ruler's blind spot; suggested 5 a creature: about 12)
+d8s against a Profane creature: about +2 on the one he Judged ... 7   [judgment]
+--- Total: about 75 to 80, of 100: a little under
+```
+
+**Analysis.**
+- **The decision it gives:** when he is surrounded. It is the only damage he deals to more than one creature, and it clears the squares around him: the turn after, the enemies must cross them again (through Brace or Consecrated Ground if he has them).
+- **Not a second Reckoning:** Reckoning has no damage and Frightens; this one burns and has no condition. Both push from him; at Escalation 6 he can do both in a turn, on purpose (his "explode").
+- **Not a second Smite:** the damage is spread (7 a creature), never 30 on one. "Not a consistent damage dealer" holds: once an encounter.
+- **Against the Profane, the Smite way:** the same sentence as Smite (d8s), so the class has one pattern, and Judge makes it work in every campaign.
+- **Always something:** Tier 3 still deals 1 die, as today's card does on its Tier 1.
+- **A little under its price on purpose:** it hits every enemy around him with no roll of his to fail, and the Push isn't priced. If it plays weak: 4 / 3 / 1 dice (about 100).
+- **Rules it touches:** none new. Pushed is from the Area's origin (him). [Self] as on Reckoning.
+- **What changed from today's card:** an Emanation from him instead of a Burst 10 squares away (he stays in front; a far Burst is a caster's), a Save instead of his roll (many targets, one result each), one Version instead of two, no Prone on a Critical.
+- **Other riders the Profane could get instead of d8s:** Dazed 1 (loses 1 AP: strong, about 10 a creature), Immobilized (Binding Light has it), Frightened (Reckoning has it), 1 more square of Push.
+- **Complexity:** one Version, about 30 words, one rider (the Push), one conditional (Profane).
+
+**For Lucas to choose:** the shape (from him, or today's Burst at a distance); the dice (3 / 2 / 1, or 4 / 3 / 1); the Profane line (d8s, or one of the others).
+
 **Lucas's answer:**
