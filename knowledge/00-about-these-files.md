@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: a3eaceb 2026-11-15 Paladin: Lantern of Faith liked; the Dazzled condition proposed for Glare (Lucas's idea)
+Built by tools/knowledge.py on 2026-11-15 from the repository at: 6fa3361 2026-11-15 Paladin: Lantern of Faith decided (Glare: a binary Save for the new condition); Obscured stays 1 Bane; names offered
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (154 KB)
+- open-design-items.md (156 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -33,6 +33,7 @@ Files:
 - rules-15-gear.md (11 KB)
 - research-index.md (4 KB)
 - research-ability-scope.md (7 KB)
+- research-conditions-and-senses.md (3 KB)
 - research-divine-profane.md (9 KB)
 - research-escalation-and-guard.md (3 KB)
 - research-frontline-protection.md (13 KB)
