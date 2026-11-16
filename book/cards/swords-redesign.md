@@ -42,7 +42,7 @@
 - **The names are traps.** The historical longsword has a two-handed grip; what games call a longsword is an arming sword. "Bastard sword" is the period word for the sword of one or two hands. "Claymore" is two weapons. "Flamberge" is wrong for the wave-bladed two-hander (Flammenschwert). "Broadsword" belongs to basket hilts.
 - **What each was good at** (for the Techniques, later): the longsword's bind and winding, half-sword and the pommel strike; the montante's rules against many and for guarding a person; the Zweihänder's lugs that catch a weapon; the messer's free hand that seizes; the sabre's cut drilled as a pattern and the curved blade's draw cut; the estoc's point for the gaps of armour.
 
-## Decision 1: the six swords (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+## Decision 1: the six swords (DECIDED 2026-11-16: way 1, by hands)
 
 **The group.** Swords become their own group, without the Dagger (his answer of 2026-10-31: "Daggers (light) and Swords become their own groups"): the half-Mastery rule then joins swords with swords only. A shortsword goes with the daggers, as he thought.
 
@@ -75,5 +75,39 @@
 **What is built now:** only the two Basic swords (row, Technique). The four others are names.
 
 **For Lucas:** way 1, 2 or 3; the six names (or others from the table).
+
+**Lucas's answer (2026-11-16): "Lets do 1. Yes, Longsword is known to use 1 hand, but thats fine for now. I really like the more exotic names and diverging from 99% of the systems." THE SIX SWORDS ARE DECIDED:**
+
+| | The one-handed line | The two-handed line |
+|---|---|---|
+| **Basic** | **Arming Sword** | **Longsword** (two hands) |
+| **Advanced** | **Sabre** | **Zweihänder** |
+| **Exotic** | **Rapier** | **Montante** |
+
+Swords are a group of their own, without the Dagger. Only the two Basic swords get mechanics now. **A note on his liking for the rarer names:** Sabre and Rapier are the two plain ones of the six; they are only names until they are built, and the table of candidates has rarer ones for the same slots (Schiavona or Kilij for the Sabre; Shamshir or Jian for the Rapier). Left as decided unless he swaps them.
+
+## Decision 2: the Arming Sword's table row (PROPOSED 2026-11-16, waiting for Lucas)
+
+| Name | Group | Properties | Type | Range | Damage | Rung |
+|---|---|---|---|---|---|---|
+| **Arming Sword** | Swords | Melee | Slash | 1 | [V] 0 / 3 + 1d4! / 5 + 1d4! | Basic |
+
+**The level it has to sit on.** A full-size one-handed melee weapon averages 6 on a Tier 2 and 8 on a Tier 3 (decided 2026-11-12: melee in one hand is 2 over ranged; today's placeholder Longsword and Mace are both there; the small ones, Dagger and Handaxe, are at 5 / 7). A d4! averages 3, a d6! 4, a d8! 5.
+
+| | Row | Tier 2 / Tier 3 | Shape | For / against |
+|---|---|---|---|---|
+| **1 (Claude's pick)** | 0 / 3 + 1d4! / 5 + 1d4! | 6 / 8 (4 to 6+, 6 to 8+) | the flattest | his direction for damage ("we agreed on trying to make damage flat"); the knight's dependable sword; it leaves the swing to the two-handed Longsword. Against: a d4 again, the die both bows use |
+| 2 | 0 / 2 + 1d6! / 4 + 1d6! | 6 / 8 (3 to 7+, 5 to 9+) | the middle | today's placeholder row. Against: less flat |
+| 3 | 0 / 3 + 1d4! / 4 + 1d6! | 6 / 8 (4 to 6+, 5 to 9+) | flat, and the die grows on a Tier 3 | a Tier 3 seen in the hand, as on the Recurve Bow. Against: a third die size on one weapon's line for a point of spread |
+
+**What a Weapon Attack deals with row 1** (against Defense 13): a Paladin (Weapon +1; Tiers 35% / 42% / 23%) 0 / 3 + 1d4! + 1 / 5 + 1d4! + 1, about 5.0 a Weapon Attack; a class with Weapon +2 (28% / 45% / 27%) about 6.3. Next to it: the Hunting Bow 4.6 at +2, and a two-handed sword at today's level (9 / 13) about 7.5 at +1 and 9.0 at +2.
+
+**The rest of the row:**
+- **Melee, and nothing else.** One hand is what a weapon is when it is not Two-handed; the free hand is its property (a Handle Action, a second weapon in it, a shield later). Not Light (a full-size sword; Darting Blade can't use it). Not Thrown.
+- **Slash.** A weapon has one damage type in this book. The arming sword cut and thrust; Slash keeps Pierce for the Rapier and the daggers. (Candidate, rejected for now: "Slash or Pierce, your choice each Strike": a rule the book doesn't have, and it matters only with Resist and Weak.)
+- **Range 1. Basic.**
+- **The name** Arming Sword; today's placeholder Longsword row (one hand) goes when it comes in, and the name Longsword moves to the two-handed Basic sword.
+
+**For Lucas:** the row; 1, 2 or 3 for the damage.
 
 **Lucas's answer:**
