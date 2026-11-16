@@ -381,4 +381,37 @@ An Art is a Round card of 1 AP with three Modes, for what is neither damage nor 
 
 **Claude's pick: Footwork, Trick shots, The hunter's eye.** Quick hands overlaps Darting Blade (the swap is already free there) and is mostly about a crossbow.
 
+**Lucas's answer (2026-11-16): "I like all four honestly, we can merge some reload on the move and such to the footwork. Then can be the first three." THE THEMES ARE DECIDED: Footwork (with Quick hands' reload and swap on the move merged in), Trick shots, The hunter's eye.**
+
+## Decision 8: the first Art, Footwork (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules and research first.** The Evade Action: 1 AP for Evade 1, 2 AP for Evade half your Speed (3 for a Human Archer, Speed 6). An Advance is 1 AP for his whole Speed and triggers Reactions; passing through an unwilling creature's squares is Difficult Terrain; an Evade can't enter Difficult Terrain at all (Chapter 3). Interact (1 AP) draws, stows, swaps or grabs; the Reload Action reloads a Reload weapon after its stronger shot (Chapter 15). A Linked Action is written "(1A)" and keeps its own requirements. Shifting Aim pays a Field Boon for having left his square. Research: a reload is "a tax" alone and liked when bundled with a move (Pathfinder 2e's Running Reload); the move-and-shoot at-wills were the liked ones. An AP is worth about 12 points; an Art's Mode should be a little better than the Basic Action it replaces, never a new best button.
+
+> **Footwork** · Round · 1 AP
+> *You are never where you were a breath ago: a long sidestep, a run through the press, or a step with your hands already busy.*
+> — **Sidestep** —
+> **Effect:** You Evade 3.
+> — **Weave** · Move —
+> **Effect:** You Advance. During this Advance, Difficult Terrain doesn't slow you, and you can move through the squares of unwilling creatures (you can't end in one).
+> — **Hands Busy** —
+> **Effect:** You Evade 1, and before or after it you use the Interact or Reload Action (1A).
+
+```
+Sidestep: Evade 3 for 1 AP (the Evade Action asks 2 AP) ... saves 1 AP: 12   [SIM: an AP is 12]
+Weave: an Advance (1 AP anyway) that ignores Difficult Terrain and bodies ... 4 to 8   [judgment: only where the map has them]
+Hands Busy: an Evade 1 and an Interact or a Reload for 1 AP (2 AP apart) ... saves 1 AP: 12
+--- Each Mode: 1 AP that does the work of about 2. One use a round.
+```
+
+**Analysis.**
+- **The decision it gives:** which kind of ground he has to cover this round: clean distance from a threat (Sidestep), a way through a blocked or rough place (Weave), or a step while he reloads a crossbow, picks something up or changes weapons (Hands Busy).
+- **With Shifting Aim:** every Mode leaves his square, so each sets up the Boon on his next shot. That is the class's loop: move with purpose, then shoot.
+- **Against the one-button risk:** it deals no damage, and as a Round card it is one use a turn; the three Modes answer three different maps.
+- **Merged from Quick hands, as he asked:** the reload and the weapon swap on the move are Hands Busy. Darting Blade keeps its own free swap.
+- **Rules it touches:** nothing new. "(1A)" makes the Interact or Reload a Linked Action, so it keeps its requirements (Interact needs a free hand). Weave has the Move trait because it is an Advance; the other two don't (the Evade Action has none).
+- **Left out:** standing up from Prone and away (a fourth Mode; an Art has three).
+- **Complexity:** three one-sentence Modes; no roll, no target.
+
+**For Lucas to choose:** the three Modes; Sidestep's 3 (or half his Speed, which is 3 for a Human and 2 or 3 for others); the names.
+
 **Lucas's answer:**
