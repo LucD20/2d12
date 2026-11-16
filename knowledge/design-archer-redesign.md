@@ -2,11 +2,27 @@
 
 **Started 2026-11-16 (Lucas: "Start the Archer"), on branch `pack-paladin-redesign`, after the Paladin was applied to the book.** The same way as the Paladin (`paladin-redesign.md`): his brief, research, then one decision at a time (the class's numbers, the two Features, the Hallmark Actions and Reactions, the three Arts, the six Escalation abilities, the hook, the three Encounter Picks), each card in the analysis format, in the card Structure (`card-structure.md`). **Nothing goes into the book, the card files or Foundry until he says so.** The cards, when applied, go to `book/cards/stage0/archer.json`.
 
-## The brief
+## The brief (Lucas, 2026-11-16)
 
-**Waiting for Lucas's words** (the Paladin's was his: "a soft tank, soft support, soft nova class..."). A draft for him to correct, taken from today's Archer and nothing else (Claude, 2026-11-16):
+> I want to remove the quarry part of the archer. Later a ranger class will get it.
+>
+> Archer are a damage dealers that deals damage by hitting a lot of times, not one big hit. They are very mobile, running away or moving side to side to distract enemies. They are about shooting fast and precise, then moving away. They are fast to change to melee for a quick strike then moving back to shooting arrows. Because they are ranged, they keep on the back lines since they are fragile, and a single action of damage doesn't do lots.
 
-> The archer is a striker with a soft control side: the one who singles out one enemy and takes it apart from a distance. They are the party's most consistent damage on a single target, they punish an enemy that moves or reaches for an ally, and they are fragile: when something gets to them they move, they don't stand.
+(Claude's draft before it had the quarry at its center and "soft control"; both are out.)
+
+**The brief, line by line:**
+
+| His words | What it asks of the cards | Where today's Archer stands |
+|---|---|---|
+| "remove the quarry... a ranger class will get it" | no mark at all; a new identity Feature and a new Escalation hook | Marked Quarry, Mark Quarry, Thrill of the Kill, Hunter's Focus, five of the seven Passives and both Apexes are quarry cards |
+| "hitting a lot of times, not one big hit" | several small hits a turn; no burst card; the class's Encounter Picks are not big shots | Marksman's Shot, Deadeye and Deathmark are big hits; Double Shot and Twin Shot fit |
+| "very mobile, running away or moving side to side to distract enemies" | movement inside the Actions, and movement that does something to enemies | Rolling Shot (Evade, then shoot), Sure Step, Vanish; nothing "distracts" |
+| "shooting fast and precise, then moving away" | shoot first, move after | Rolling Shot moves first |
+| "fast to change to melee for a quick strike then moving back" | a weapon swap that costs nothing, a melee Strike in the kit | nothing; a bow takes two hands |
+| "keep on the back lines since they are fragile" | low Health, no protection of its own but distance and movement | Health 16 / 8, Medium armor, Speed +1 |
+| "a single action of damage doesn't do lots" | each hit small; the turn's total comes from the count | a Weapon Attack with a longbow is a full 1[W] + [Mod] |
+
+**Two rules this runs into (to settle with the cards):** the At-will Banes on a turn's second and third Weapon Attack (a class of many hits lives under them), and the table's speed (rules-backlog.md "TABLE SPEED": every hit is a roll).
 
 ## Today's Archer (what is being replaced)
 

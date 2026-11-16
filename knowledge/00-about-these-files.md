@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 45698fe 2026-11-16 The Senses scenes and the Moving Away diagram drawn in the book (computed from the rules)
+Built by tools/knowledge.py on 2026-11-16 from the repository at: d3a2aa1 2026-11-16 The Archer's redesign started: the record with today's Archer and a draft brief
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -50,7 +50,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-archer-redesign.md (3 KB)
+- design-archer-redesign.md (4 KB)
 - design-card-structure.md (25 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
