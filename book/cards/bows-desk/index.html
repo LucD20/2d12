@@ -75,9 +75,12 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 
 <div class="wrap">
 <h1>Bow Remake Desk</h1>
-<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the three lists, the rungs, the Hunting Bow's row and the Recurve Bow's damage and Wounding Shot are decided; how Mastery is gained is decided (a won encounter, normal or harder); your ladder numbers are checked against the levels (next section). Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the three lists, the rungs, the Hunting Bow's row and the Recurve Bow's damage and Wounding Shot are decided; how Mastery is gained is decided (a won encounter, normal or harder); the ladders' numbers are decided and the Hunting Bow is done for Stage 0; the Recurve Bow's row is proposed. Nothing here is in the book or in Foundry.</p>
 <nav>
   <a href="#need">What I need</a>
+  <a href="#row2">Recurve: the row</a>
+  <a href="#master">Master</a>
+  <a href="#numbers">The numbers</a>
   <a href="#math">Your numbers</a>
   <a href="#ladders">Every ladder</a>
   <a href="#gain">Gaining Mastery</a>
@@ -99,15 +102,55 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-<li><strong>The first number, 3:</strong> is a Basic bow's Technique at Mastery 3 (level 1, as decided), or at level 3? My default is Mastery 3.</li>
-<li><strong>Group Mastery counts every bow</strong> you have gained Mastery with, not only your best one. Yes?</li>
-<li><strong>The pace the numbers are set for:</strong> 5 fights a level, or 4.</li>
+<li><strong>The Recurve Bow's table row</strong> (below).</li>
+<li><strong>Master:</strong> A or B. My pick is A: keep the level, drop the Mastery.</li>
+<li><strong>The Archer's head start:</strong> I read "Starting Mastery 10" as counting for his own bow's unlocks and not for Group Mastery. Say if not.</li>
 </ol>
 </div>
 </section>
 
+<section id="row2">
+<h2>The Recurve Bow: its table row <span class="tag open">proposed</span></h2>
+<div class="scroll"><table>
+<tr><th>Name</th><th>Group</th><th>Properties</th><th>Type</th><th>Range</th><th>Damage</th><th>Mastery</th></tr>
+<tr><td><strong>Recurve Bow</strong></td><td>Bows</td><td>Projectile, Ranged, Strung</td><td>Pierce</td><td>6 / 12 / 18</td><td>[V] 0 / 1 + 1d4! / 1 + 1d6!</td><td>10</td></tr>
+<tr><td>Hunting Bow, decided</td><td>Bows</td><td>Projectile, Ranged, Strung</td><td>Pierce</td><td>8 / 16 / 24</td><td>[V] 0 / 1 + 1d4! / 2 + 1d4!</td><td>10</td></tr>
+</table></div>
+<ul>
+<li><strong>The damage</strong> is decided. <strong>The range</strong> was kept in the first decision: 2 squares less than the Hunting Bow on every band.</li>
+<li><strong>What the shorter range has to buy:</strong> its Technique, the next decision. The Hunting Bow's stands still; this one's has to move. The research's warning is that less range at the same damage reads as the worse bow.</li>
+</ul>
+<p class="small">Other ranges, and why not: 8 / 16 / 24, the same as the Hunting Bow (then only the Tier 3 die and the Technique differ); 5 / 10 / 15 (too close to melee for a bow that is Doomed while Engaged).</p>
+</section>
+
+<section id="master">
+<h2>Master and the level 8 problem <span class="tag open">proposed</span></h2>
+<p>You: "We can remove the Stage gating, what you say, so we dont have level 8 problem." Today the book says: "15: Master. From level 8, your Actions that deal [W] with the weapon deal one more [W]." That is two gates, and at a point a fight the Mastery one is passed in level 3. Yes to one gate. There are two ways to drop one.</p>
+<div class="opt"><b>A</b><div><strong>Keep the level, drop the Mastery.</strong> Master leaves the weapon ladder and becomes a Stage 2 number: "From Stage 2, your Actions that deal [W] deal one more [W]", with any weapon. One more [W] is the biggest damage step in the game, and the Bestiary's Stage 2 tables will be fitted to characters who have it. If it hangs on Mastery, a character who changed weapon group, or a table with fewer fights, reaches Stage 2 without it; and an Archer, 10 ahead, gets it two levels before anyone. <span class="tag ok">my pick</span></div></div>
+<div class="opt"><b>B</b><div><strong>Keep the Mastery, drop the level.</strong> Master is an unlock at a number (35 would be level 8). It rewards staying with one weapon. Against: the above.</div></div>
+<p class="small">Not a Stage 0 matter either way. Nothing is applied now; it is read again with Stage 2.</p>
+</section>
+
+<section id="numbers">
+<h2>The ladders' numbers <span class="tag ok">decided</span></h2>
+<div class="scroll"><table>
+<tr><th></th><th>Opens</th><th>Unlocks, by its own Mastery</th><th>About level</th></tr>
+<tr><td><strong>A Basic bow</strong></td><td>Group Mastery 0</td><td><strong>10</strong> (its Technique) · <strong>20</strong> · <strong>30</strong> · <strong>45</strong> · <strong>60</strong></td><td>3 · 5 · 7 · 10 · 13</td></tr>
+<tr><td><strong>An Advanced bow</strong></td><td>Group Mastery 7; starts at 7 with its Technique</td><td><strong>17</strong> · <strong>32</strong> · <strong>47</strong></td><td>5 (opens) · 7 · 10 · 13</td></tr>
+<tr><td><strong>An Exotic bow</strong></td><td>Group Mastery 15; starts at 15 with its Technique</td><td><strong>30</strong></td><td>10 (opens) · 13</td></tr>
+</table></div>
+<ul>
+<li><strong>Mastery:</strong> 1 with one weapon when your side wins an encounter that was normal or harder.</li>
+<li><strong>Group Mastery:</strong> all the Mastery you have gained with weapons of the group, divided by 3.</li>
+<li><strong>The pace:</strong> set for 5 such fights a level. A Rest mechanic later can help a slower table.</li>
+<li><strong>The Archer starts with 10 Mastery</strong> with one Projectile weapon (it was 3): he has his bow's Technique at level 1. As I read it, his own bow's later unlocks then come two levels early (20 at level 3), and the head start doesn't count toward Group Mastery.</li>
+<li><strong>Assumed:</strong> the book's Expert (Mastery 8) is out for the bows; it is not among your five. The Hunting Bow's unlocks at 20, 30, 45 and 60 are written with Stage 1.</li>
+</ul>
+<p><strong>The Hunting Bow is done for Stage 0:</strong> its row, Wounding Shot, its numbers.</p>
+</section>
+
 <section id="math">
-<h2>Your numbers, as Mastery <span class="tag open">proposed</span></h2>
+<h2>Your numbers, as Mastery <span class="tag ok">answered</span></h2>
 <blockquote>We have 15 levels. Mastery should like follow. Advanced at 5, Exotic at 10. Weapon unlucks as well: Basic 3 - 5 - 7 - 10 - 13. Advanced (starts with technique) 7 - 10 - 13. Exotic (starts with technique) 10 - 13. Does that make sense? Does it fit?<cite>Lucas, 2026-11-16</cite></blockquote>
 <p>Read as levels. At 1 Mastery a fight and 5 fights a level, a level starts after 5 × (level - 1) fights.</p>
 <div class="scroll"><table>
@@ -203,7 +246,7 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 </section>
 
 <section id="ladder1">
-<h2>The Hunting Bow's ladder <span class="tag open">waits for how Mastery is gained</span></h2>
+<h2>The Hunting Bow's ladder, as first proposed <span class="tag ok">replaced by the numbers above</span></h2>
 <div class="scroll"><table>
 <tr><th>Mastery</th><th>When</th><th>Unlock</th></tr>
 <tr><td><strong>3</strong></td><td>an Archer from the start; anyone else about the fourth fight</td><td><strong>Wounding Shot</strong> (decided)</td></tr>
@@ -353,7 +396,7 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <blockquote>We agreed on trying to make damage flat, but on lower damage weapons it is harder, but I think we still should try it. 3 might be best but we neeed to make it different from Recurve bow somehow.<cite>Lucas, 2026-11-16</cite></blockquote>
 <div class="scroll"><table>
 <tr><th>Name</th><th>Group</th><th>Properties</th><th>Type</th><th>Range</th><th>Damage</th><th>Mastery</th></tr>
-<tr><td><strong>Hunting Bow</strong></td><td>Bows</td><td>Projectile, Ranged, Strung</td><td>Pierce</td><td>8 / 16 / 24</td><td>[V] 0 / 1 + 1d4! / 2 + 1d4!</td><td>3</td></tr>
+<tr><td><strong>Hunting Bow</strong></td><td>Bows</td><td>Projectile, Ranged, Strung</td><td>Pierce</td><td>8 / 16 / 24</td><td>[V] 0 / 1 + 1d4! / 2 + 1d4!</td><td>10</td></tr>
 </table></div>
 <p><strong>Strung:</strong> "You hold a Strung weapon in one hand and draw it with the other: [Strike, Weapon] Actions with it take 3 Banes while your other hand holds something." The off-hand question waits for the Light step.</p>
 <div class="scroll"><table>

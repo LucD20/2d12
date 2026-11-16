@@ -352,7 +352,7 @@ When each number comes: 3 fight 3 (level 1) · 8 fight 8 (level 2) · 14 fight 1
 
 **Lucas (2026-11-16), after asking why there were "only three rungs"** (answered: the three are the tree's tiers, never reduced; a bow's own unlocks were only not written past Stage 0): "All good. So lets try to do some math: We have 15 levels. Mastery should like follow. Advanced at 5, Exotic at 10. Weapon unlucks as well: Basic 3 - 5 - 7 - 10 - 13. Advanced (starts with technique) 7 - 10 - 13. Exotic (starts with technique) 10 - 13. Does that make sense? Does it fit?"
 
-## Decision 8: the ladders' numbers, from his levels (PROPOSED 2026-11-16, waiting for Lucas)
+## Decision 8: the ladders' numbers, from his levels (DECIDED 2026-11-16)
 
 Read as levels. At 1 Mastery a fight and 5 fights a level, a level starts after 5 × (level - 1) fights, so **Mastery = 5 × (level - 1)**:
 
@@ -380,6 +380,42 @@ Read as levels. At 1 Mastery a fight and 5 fights a level, a level starts after 
 **The numbers move with the table's pace:** they are right at 5 normal-or-harder fights a level. At 4 a level everything comes a level or two later (level 13's unlock at level 16: never); at 6, sooner. If that worries him, the alternative is smaller numbers set for 4 fights a level (Basic 8 / 16 / 24 / 36 / 48; Group Mastery 5 and 12).
 
 **For Lucas:** the table; 1 (the Technique at Mastery 3, or at level 3); 2 (Group Mastery counts every bow); the pace the numbers are set for (5 fights a level, or 4).
+
+**Lucas's answer (2026-11-16):** "1. Lets just grant archer a higher mastery headstart, keep as 10. 2. Good. 3. We can make a Rest mechanic later to help with that, I like the round numbers. Consequences: We can remove the Stage gating, what you say, so we dont have level 8 problem." **THE LADDERS' NUMBERS ARE DECIDED:**
+
+| | Opens | Unlocks, by its own Mastery | About level |
+|---|---|---|---|
+| **A Basic bow** | Group Mastery 0 | **10** (its Technique) · **20** · **30** · **45** · **60** | 3 · 5 · 7 · 10 · 13 |
+| **An Advanced bow** | **Group Mastery 7**; it starts at 7 with its Technique | **17** · **32** · **47** | 5 (opens) · 7 · 10 · 13 |
+| **An Exotic bow** | **Group Mastery 15**; it starts at 15 with its Technique | **30** | 10 (opens) · 13 |
+
+- **Group Mastery = all the Mastery you have gained with weapons of the group, divided by 3** (rounded down). It replaces Chapter 15's "a third of your highest" when the bows go in.
+- **The numbers are set for 5 normal-or-harder fights a level;** a Rest mechanic later can help a slower table (his note; not designed).
+- **The Archer's Starting Mastery is 10 with one Projectile weapon** (it was 3), so he has his bow's Technique at level 1. **Claude's reading, his to revert (assumptions):** the head start is not Mastery gained, so it doesn't count toward Group Mastery (an Archer reaches the Advanced rung at level 5 like anyone); it does count for his own bow's unlocks, so his come two levels early (20 at level 3, 30 at level 5, 45 at level 8, 60 at level 11). If he should not have a second unlock in Stage 0, the head start is written as "you have the Weapon Technique of one Projectile weapon" in its place.
+- **Assumed with it (not answered, his to revert):** Chapter 15's Expert (Mastery 8) is out for the bows: it is not among his five unlocks. The Hunting Bow's unlocks at 20, 30, 45 and 60 are written with Stage 1 (Blood Trail is the candidate for 20).
+
+**THE HUNTING BOW IS DONE FOR STAGE 0:** its row (Mastery 10 in the last column), Wounding Shot, its ladder's numbers.
+
+### Master and "the level 8 problem" (his question: remove the gating?) PROPOSED, waiting for Lucas
+
+Today (Chapter 15): "15: Master. From level 8, your Actions that deal [W] with the weapon deal one more [W]." Two gates; at a point a fight the Mastery one (15) is passed in level 3, so it does nothing. Claude's answer: yes, one gate, and there are two ways to drop one:
+
+- **A, keep the level, drop the Mastery (Claude's pick):** Master leaves the weapon ladder and becomes a Stage 2 number in Chapter 5 ("From Stage 2, your Actions that deal [W] deal one more [W]", with any weapon). Why: one more [W] is the biggest damage step in the game, and the Bestiary's Stage 2 tables will be fitted to PCs who have it. If it hangs on Mastery, a character who changed weapon group, or a table with fewer fights, reaches Stage 2 without it and faces enemies built for it; and an Archer, 10 ahead, gets it two levels before anyone.
+- **B, keep the Mastery, drop the level:** Master is an unlock at a number (35 would be level 8). It rewards staying with one weapon, and it is his sentence as written. Against: the above.
+
+Not a Stage 0 matter either way: nothing is applied now, and it is read again with Stage 2 (One More Arrow, the N[W] cards).
+
+## Decision 9: the Recurve Bow's table row (PROPOSED 2026-11-16, waiting for Lucas)
+
+| Name | Group | Properties | Type | Range | Damage | Mastery |
+|---|---|---|---|---|---|---|
+| **Recurve Bow** | Bows | Projectile, Ranged, Strung | Pierce | 6 / 12 / 18 | [V] 0 / 1 + 1d4! / 1 + 1d6! | 10 |
+
+- **The damage** was decided (decision 4). **The range** 6 / 12 / 18 was kept in decision 1: 2 squares less than the Hunting Bow on every band.
+- **What the shorter range has to buy** (the research: less range at the same damage reads as the worse bow): its Technique, which is the next decision. The Hunting Bow's stands still; this one's has to move.
+- **Range candidates, for completeness:** 6 / 12 / 18 (Claude's pick: a difference a player feels on a 25-square map; at 6 the Archer is one Advance from an enemy's reach, which is where a moving bow lives); 8 / 16 / 24, the same as the Hunting Bow (then only the Tier 3 die and the Technique differ); 5 / 10 / 15 (the Pistol's normal range: too close to melee for a bow that can't shoot Engaged without being Doomed).
+
+**For Lucas:** the row; A or B for Master.
 
 **Lucas's answer:**
 
