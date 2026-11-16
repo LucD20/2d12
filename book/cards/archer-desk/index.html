@@ -1,0 +1,161 @@
+<title>Archer Redesign Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Signika:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column, a sticky row of section links, ruled sections like a printed rulebook page.
+   Dark first (the system's table look); the light set is the chat card's parchment. */
+:root{
+  --bg:#15171b; --panel:#1c1f25; --line:#343a44; --fg:#e4e1d8; --dim:#a09d94;
+  --gold:#d2a94e; --holy:#e7c873; --ok:#7fb486; --open:#e08a55; --quote:#b9c4d6;
+  --display:"Cinzel",Georgia,serif; --text:"Signika","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light }
+body{background:var(--bg);color:var(--fg);font-family:var(--text);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:46rem;margin:0 auto;padding-block:1.5rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-size:1.9rem;line-height:1.15;margin:0 0 .3rem;color:var(--holy);text-wrap:balance}
+.sub{color:var(--dim);margin:0 0 1rem}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-block:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.2rem 1rem;padding:.55rem 0;margin-bottom:1.5rem}
+nav a{color:var(--fg);text-decoration:none;font-weight:500}
+nav a:hover,nav a:focus-visible{color:var(--gold);outline:none;text-decoration:underline}
+section{margin-top:2.4rem;scroll-margin-top:4rem}
+h2{font-size:1.3rem;font-weight:600;margin:0 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--gold);text-wrap:balance}
+h3{font-size:1.05rem;font-weight:600;margin:1.4rem 0 .4rem;color:var(--holy)}
+p{margin:.5rem 0}
+ul,ol{margin:.4rem 0;padding-left:1.3rem}
+li{margin:.3rem 0}
+strong{font-weight:600}
+.tag{font-weight:600;white-space:nowrap}
+.tag.ok{color:var(--ok)} .tag.open{color:var(--open)}
+table{border-collapse:collapse;width:100%}
+.scroll{overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem .45rem 0;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:500}
+blockquote{margin:.5rem 0;padding:.1rem 0 .1rem .9rem;border-left:2px solid var(--line);color:var(--quote)}
+blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
+.need{background:var(--panel);border:1px solid var(--line);padding:.9rem 1.1rem;margin:.6rem 0}
+.need ol{margin:0}
+/* a card: the book's stat block, plain */
+.card{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.card .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.card .bar span:last-child{color:var(--dim);font-weight:400}
+.card .v{display:grid;grid-template-columns:3.4rem 1fr;gap:.6rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.card .v:last-child{border-bottom:0}
+.card .v b{color:var(--gold);font-weight:600}
+.card .v div{min-width:0}
+.opt{display:grid;grid-template-columns:1.6rem 1fr;gap:.5rem;margin:.7rem 0}
+.opt>b{color:var(--gold);font-size:1.1rem}
+.opt div{min-width:0}
+.small{color:var(--dim);font-size:.93em}
+.hc{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.hc .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.hc .bar span:last-child{color:var(--dim);font-weight:400}
+.hc .bar span.cost{color:var(--gold);font-weight:600}
+.hc .row{padding:.3rem .8rem;border-bottom:1px solid var(--line)}
+.hc .row:last-child{border-bottom:0}
+.hc .tr{color:var(--holy)}
+.hc .lab{display:grid;grid-template-columns:6.2rem 1fr;gap:.6rem}
+.hc .lab b{color:var(--dim);font-weight:500}
+.hc .grid{display:grid;grid-template-columns:1fr auto;gap:.3rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.hc .grid div{min-width:0}
+.hc .grid .r{text-align:right}
+.hc .zone{border-top:2px solid var(--line)}
+.hc .fine{font-size:.9em;color:var(--dim)}
+.hc .ver{font-weight:600;color:var(--gold);border-top:2px solid var(--line)}
+.hc .stub{color:var(--dim);font-size:.9em;font-style:italic}
+</style>
+
+<div class="wrap">
+<h1>Archer Redesign Desk</h1>
+<p class="sub">Where the Archer's redesign stands, in plain words. Updated 2026-11-16: the numbers, the mechanic and the two Features are decided; the Hallmark Actions are proposed. Nothing here is in the book or in Foundry.</p>
+<nav>
+  <a href="#need">What I need</a>
+  <a href="#hallmarks">Hallmark Actions</a>
+  <a href="#brief">The brief</a>
+  <a href="#decided">Decided</a>
+  <a href="#research">Research</a>
+  <a href="#next">What is left</a>
+</nav>
+
+<section id="need">
+<h2>What I need from you now</h2>
+<div class="need">
+<p><strong>One decision: the two Hallmark Actions</strong> (next section). Say "Proposed", or change them.</p>
+<ol>
+<li>The pair: Quick Shots and Strafe, or another style for the second card.</li>
+<li>Strafe's count: two creatures as written, or three with a smaller Tier 3.</li>
+<li>The names.</li>
+</ol>
+</div>
+</section>
+
+<section id="hallmarks">
+<h2>Decision 5: the two Hallmark Actions (proposed)</h2>
+<p>The pair is a choice of style: stand a breath and pour hits into one enemy, or keep running and spread them. He takes one.</p>
+<div class="hc"><div class="bar"><span>Quick Shots</span><span class="cost">Round · 2 AP</span></div><div class="row"><em>You loose arrow after arrow into one foe before the first has landed, and step away while it reels.</em></div><div class="row tr">Weapon · Ranged · Shot · Strike</div><div class="grid"><div>Distance: Weapon</div><div class="r">Target: One creature</div></div><div class="row lab"><b>Attack</b><span>Weapon vs. Armor Defense</span></div><div class="row lab"><b>Tier 1</b><span>[V] [Mod] Pi.</span></div><div class="row lab"><b>Tier 2</b><span>[V] 2[W] + [Mod].</span></div><div class="row lab"><b>Tier 3</b><span>[V] 3[W] + [Mod].</span></div><div class="row lab"><b>Effect</b><span>You Evade 2.</span></div></div><div class="scroll"><table><tr><th>Line</th><th>Points</th><th>From</th></tr><tr><td>Damage: 9.6 on average</td><td>33</td><td>3.4 a point of damage [SIM]</td></tr><tr><td>Evade 2 after the shot</td><td>8</td><td>most of an Evade Action [judgment]</td></tr><tr><td><strong>Total</strong></td><td><strong>about 41, of 50</strong></td><td>a little under; it never whiffs</td></tr></table></div><div class="hc"><div class="bar"><span>Strafe</span><span class="cost">Round · 2 AP</span></div><div class="row"><em>You run across the line of fight and put an arrow into each foe you pass.</em></div><div class="row tr">Weapon · Ranged · Shot · Strike</div><div class="grid"><div>Distance: Weapon</div><div class="r">Target: Up to two creatures</div></div><div class="row lab"><b>Setup</b><span>You Advance.</span></div><div class="row lab"><b>Attack</b><span>Weapon vs. Armor Defense</span></div><div class="row lab"><b>Tier 1</b><span>[V] [Mod] Pi.</span></div><div class="row lab"><b>Tier 2</b><span>[V] 1[W] + [Mod].</span></div><div class="row lab"><b>Tier 3</b><span>[V] 2[W] + [Mod].</span></div></div><div class="scroll"><table><tr><th>Line</th><th>Points</th><th>From</th></tr><tr><td>Damage: 6.3 a creature, about 1.8 creatures</td><td>38</td><td>[SIM]; the count is my judgment</td></tr><tr><td>A full Advance inside the card</td><td>12</td><td>an AP is 12 [SIM]</td></tr><tr><td><strong>Total</strong></td><td><strong>about 50, of 50</strong></td><td>on</td></tr></table></div>
+<ul>
+<li><strong>Neither is Double Shot.</strong> Each is one roll: Quick Shots' hits come from the Tier; Strafe's from the Several Targets rule, where each creature gets its own Tier.</li>
+<li><strong>No one best button.</strong> Both are Round cards, used once a turn. The rest of his 4 AP goes to Darting Blade, a Weapon Attack with Shifting Aim's Boon, an Art, or moving.</li>
+<li><strong>With Shifting Aim:</strong> Strafe's Setup has moved him, so it always has the Boon. Quick Shots has it if he moved first, and its Evade sets up the next shot's Boon.</li>
+<li><strong>Rules:</strong> nothing new. Strafe's Advance is a Setup: optional, and the Distance and targets are checked after it.</li>
+<li><strong>The numbers behind the prices:</strong> a Shortbow's 1[W] is 1d6! on a Tier 2 and 1 + 1d6! on a Tier 3; at Weapon +2 against Armor Defense 13 his Tiers come up 28 / 51 / 21%.</li>
+</ul>
+</section>
+
+<section id="brief">
+<h2>The brief (your words, 2026-11-16)</h2>
+<blockquote>I want to remove the quarry part of the archer. Later a ranger class will get it.<br><br>Archer are a damage dealers that deals damage by hitting a lot of times, not one big hit. They are very mobile, running away or moving side to side to distract enemies. They are about shooting fast and precise, then moving away. They are fast to change to melee for a quick strike then moving back to shooting arrows. Because they are ranged, they keep on the back lines since they are fragile, and a single action of damage doesn't do lots.</blockquote>
+<div class="scroll"><table><tr><th>Your words</th><th>What it asks of the cards</th><th>Today's Archer</th></tr><tr><td>no quarry</td><td>no mark; a new identity Feature and a new Escalation hook</td><td>the mark, the hook, five of seven Passives and both Apexes are quarry cards</td></tr><tr><td>hitting a lot of times, not one big hit</td><td>several small hits a turn; no burst card</td><td>Marksman's Shot, Deadeye and Deathmark are big hits</td></tr><tr><td>very mobile... side to side to distract</td><td>movement inside the Actions; distracting is fiction, maybe Vulnerable</td><td>nothing distracts</td></tr><tr><td>shooting fast and precise, then moving away</td><td>shoot first, move after</td><td>Rolling Shot moves first</td></tr><tr><td>fast to change to melee for a quick strike</td><td>a free swap to a Light weapon, a melee Strike in the kit</td><td>nothing; a bow takes two hands</td></tr><tr><td>fragile, in the back lines</td><td>low Health, Light armor</td><td>Medium armor</td></tr></table></div>
+<p class="small">Today's Archer is worth 163 to 200 points a turn against a target of 130 to 150, and almost every one of its 26 cards is a Weapon Attack with something added.</p>
+</section>
+
+<section id="decided">
+<h2>Decided so far</h2>
+<h3>Decision 1: the numbers</h3>
+<div class="scroll"><table><tr><th></th><th>Decided</th></tr><tr><td>Modifiers</td><td>Weapon +2, Power +1, fixed</td></tr><tr><td>Health</td><td>high 16, low 8</td></tr><tr><td>Rally</td><td>5</td></tr><tr><td>Speed Modifier</td><td>+1</td></tr><tr><td>Armor Training</td><td><strong>Light</strong> (Armor Defense 12; was Medium)</td></tr><tr><td>Attributes</td><td>Body or Instinct +1, Mind or Appeal +1</td></tr></table></div>
+<h3>Decision 2: the mechanic, many hits from one roll</h3>
+<p>The number of hits grows with the Tier, written in the book's own notation (your catch: my word "arrow" was just [W]):</p>
+<blockquote><strong>Tier 1:</strong> [V] [Mod] Pi.<br><strong>Tier 2:</strong> [V] 2[W] + [Mod].<br><strong>Tier 3:</strong> [V] 3[W] + [Mod].</blockquote>
+<ul>
+<li><strong>One roll, up to three hits,</strong> and a Tier 1 that still lands something: he never whiffs and never lands one big number.</li>
+<li><strong>Resist is taken once from an Action,</strong> so three hits inside one Action lose it once; three separate Weapon Attacks lose it three times.</li>
+<li><strong>Left out, with reasons:</strong> an "Arrows" pool of dice (tracking; pools moved per hit are what players call fiddly); no Bane on repeated shots (the Twin Strike trap); a meter cashed in one blow (the nova, the opposite of the brief); Weapon +3 (yours: "wouldn't be good").</li>
+<li><strong>To watch:</strong> at 15 Mastery 1[W] becomes 2[W]; a class whose cards say 3[W] meets that step differently. For the Stages work.</li>
+</ul>
+<h3>Decision 4: the two Features</h3>
+<div class="hc"><div class="bar"><span>Shifting Aim</span><span class="cost">Passive</span></div><div class="row"><em>You never loose twice from the same spot: a step to the side, and the line is clean again.</em></div><div class="row lab"><b>Passive</b><span>Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began).</span></div></div><p class="small">Your Field Boon idea. About 5 points a turn. It cancels the second shot's Bane, so shoot, move, shoot is as good as standing still for three, and it is the one Feature that makes the map matter. Field Boons stop at 2, shared with Flanking and high ground.</p><div class="hc"><div class="bar"><span>Darting Blade</span><span class="cost">Round · 1 AP</span></div><div class="row"><em>You let the bow drop on its strap, open a foe with the knife, and are gone before it turns.</em></div><div class="row tr">Weapon · Melee · Strike</div><div class="grid"><div>Distance: Reach</div><div class="r">Target: One creature</div></div><div class="row lab"><b>Setup</b><span>You stow your bow and draw a Light weapon.</span></div><div class="row lab"><b>Attack</b><span>Weapon vs. Armor Defense</span></div><div class="row lab"><b>Tier 1</b><span>[V] [Mod].</span></div><div class="row lab"><b>Tier 2</b><span>[V] 1[W] + [Mod].</span></div><div class="row lab"><b>Tier 3</b><span>[V] 1[W] + [Mod].</span></div><div class="row lab"><b>Effect</b><span>You Evade 2, then can stow that weapon and draw your bow.</span></div></div><p class="small">The quick strike, after Draw Steel's Fade. About 35 points for 1 AP, held by its Round frequency. Engaged, his bow is Doomed; this is what he does instead. <strong>Light</strong> is a weapon property to write in the weapons pass (one-handed, melee; the Dagger).</p>
+<h3>Kept for later</h3>
+<div class="hc"><div class="bar"><span>Harry</span><span class="cost">Passive</span></div><div class="row"><em>Your arrows come from a new side each time, and your foe can't watch them and the swords at once.</em></div><div class="row lab"><b>Passive</b><span>Once a round, when you damage a creature with a [Ranged, Strike] Action from a square you entered this turn, it is Vulnerable 1 (EoT).</span></div></div><p class="small">Your "maybe causing vulnerable". You judged the old Harrying Shots (a Bane every round, no Save) too strong as a standing ability, so this waits for the Escalation abilities. Also kept: Slip Away (an Evade when an enemy would reach him) for the Hallmark Reactions; the never-whiff floor is written on each card's Tier 1.</p>
+</section>
+
+<section id="research">
+<h2>What the research says about this brief</h2>
+<ul>
+<li><strong>What bores is one best button, repeated.</strong> On 4e's ranger: "Every. Single. Ranger. Uses. Twin-Strike. Almost. Every. Round. [...] They're so boring." Your own playtest said the same of Double Shot. The hits must come from several different cards.</li>
+<li><strong>The shots that move are the ones the same players liked.</strong> "I like Hit And Run/Nimble Strike. They are basic attacks, yes, but they also let you move."</li>
+<li><strong>Range is paid for by less damage, danger up close, or things in the line of fire.</strong> Ours are in place; no Archer card erases them for free.</li>
+<li><strong>Small hits are liked when they cost one roll and never whiff.</strong> Jonathan Tweet (13th Age): "A disadvantage of a single large attack compared to two small attacks is that the single attacks are more likely to produce an unlikely result."</li>
+<li><strong>A token for each hit is what players call fiddly:</strong> keep it to "no more than 1-3".</li>
+</ul>
+<p class="small">Two notes, one research pass each, not re-checked by a second: <code>book/research/archer.md</code> and <code>book/research/many-hits.md</code>. Reddit, Giant in the Playground and RPG.net refuse readers and were left alone. Almost nothing was found on switching between a bow and a melee weapon in other games.</p>
+</section>
+
+<section id="next">
+<h2>What is left, in order</h2>
+<ol>
+<li><strong>The two Hallmark Actions</strong> (this page's decision).</li>
+<li>The two Hallmark Reactions (Slip Away is a candidate).</li>
+<li>The three Arts (one at level 1, a second at level 3).</li>
+<li>The six Escalation abilities (Harry is a candidate) and the new Escalation hook, now that the quarry is gone.</li>
+<li>The three Encounter Picks: none of them a big single hit.</li>
+<li>The whole class on one page, then into the book (its cards go beside the Paladin's).</li>
+</ol>
+<p class="small">The full record of every decision: <code>book/cards/archer-redesign.md</code>.</p>
+</section>
+</div>

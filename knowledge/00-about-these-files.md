@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 8f39974 2026-11-16 The Archer: six Feature candidates proposed
+Built by tools/knowledge.py on 2026-11-16 from the repository at: aa4bd30 2026-11-16 The Archer: Features decided (Shifting Aim, Darting Blade; Light as a property); the Hallmark Actions proposed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
