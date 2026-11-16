@@ -284,4 +284,46 @@ A Weapon Attack with the Longsword is 25 points; a Round card's band is 25 to 33
 
 **For Lucas:** way 1, 2 or 3; in way 1: Bound ending when you stop threatening, the Tier 1, and the name (Thwart Cut or Zwerchhau).
 
+**Lucas (2026-11-16), before answering:** "No conditional rule applies Banes to Strikes yet? If not, Bound can become a new condition, with another name."
+
+**Checked (Chapter 8, the Bestiary):** no condition is "Banes on your Strikes". What exists near it:
+
+| In the rules | What it does | Why it isn't this |
+|---|---|---|
+| **Frightened** (of a source) | 1 Bane on all your Rolls while you see the source; squares toward it are Difficult Terrain | every Roll, Saves included; it needs a source you see; fear |
+| **Taunted** (by a creature) | 1 Bane on your Actions against any creature but that one | it spares one target: it steers, it doesn't weaken |
+| **Exhausted N** | a penalty on all your Rolls, less Speed, a lower Resolve | the PCs' attrition, not a fight's rider |
+| **Blinded; a Hidden target** | Doomed | a state of the senses |
+| **Prone** | Field Boons and Banes on Actions against you | about attacks on you, not yours |
+| The Bestiary's Mild rider | "1 Pressure Bane on its next roll" | one roll, with no name: the same idea, unnamed |
+| Enfeebled | removed on 2026-11-13 | it was about damage |
+
+So the gap is real, and the Pressure Bane (Chapter 1: at most 2 count) has no condition that carries it.
+
+## Decision 5b: a new condition for "Banes on your Strikes" (PROPOSED 2026-11-16, waiting for Lucas)
+
+> ### Pressed
+> Pressed always has a value, such as **Pressed 1**. Your [Strike] Actions take that many **Pressure Banes** (see [[Named Boons and Banes]]: at most 2 count). If you would be Pressed twice, only the highest value applies.
+
+- **The name, candidates:** **Pressed** (Claude's pick: it says which Bane it is, so "Pressed 2" explains itself and the cap of 2 comes with it) · Reeling (the rule's own example: "a blow that leaves you reeling") · Hampered · Off-balance · Rattled (reads as fear) · Checked · Fettered (reads as Immobilized) · Harried (close to "Harry", an Archer idea he kept for later) · Weakened (reads as the removed Enfeebled).
+- **Why Strikes only:** it is a thing done to a weapon arm or an aim; Saves, Power Actions that force a Save and skill rolls are untouched, which keeps it clear of Frightened.
+- **Why a value:** like Vulnerable (the same sentence shape and the same stacking rule), with the Pressure name capping it at 2.
+- **Who else can use it:** the Bestiary's "1 Pressure Bane on its next roll" could become "Pressed 1 (EoT)" when its tables are next touched; a later class or weapon (a net, a whip, a hail of arrows).
+
+**Thwart Cut written with it** (shorter: the defined word leaves the card):
+
+> **Thwart Cut** · Round · 1 AP
+> *You cut across your foe's blade and stay on it, and every blow it tries has to come through your steel.*
+> Weapon · Melee · Strike
+> Distance: Weapon | Target: One creature
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** Pressed 1 (EoT).
+> **Tier 2:** [V] 1[W]; Pressed 1 (EoT).
+> **Tier 3:** [V] 1[W] + [Mod]; Pressed 2 (EoT).
+> **Special:** This Pressed ends if you stop threatening the target.
+
+Two changes from the first draft, both to keep the condition plain: **the Tier 1 is a full Pressed 1** (a condition "against you only" would need a "by" like Taunted's; the card then mirrors Seizing Cut: the same effect on a Tier 1 and a Tier 2, the damage added on the second); and **the early end is a Special line of the card**, not part of the condition (other sources of Pressed won't have a blade to keep on it). Price: about 30.
+
+**For Lucas:** the condition and its name; then the three open points of decision 5 (way 1; the Special line; Thwart Cut or Zwerchhau).
+
 **Lucas's answer:**
