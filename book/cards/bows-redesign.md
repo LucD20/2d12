@@ -155,7 +155,7 @@ The Hunting Bow is 0 / 1 + 1d4! / 2 + 1d4! (average 4 / 5). The Tier chances at 
 
 **Lucas's answer (2026-11-16): "1 it is then." THE RECURVE BOW'S DAMAGE IS DECIDED: [V] 0 / 1 + 1d4! / 1 + 1d6!** (the rest of its row with its own decision). The Mastery numbers (14; Group Mastery 5) were not answered: kept as proposed, asked again with the Hunting Bow's ladder.
 
-## Decision 5: the Hunting Bow's Weapon Technique, Wounding Shot (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+## Decision 5: the Hunting Bow's Weapon Technique, Wounding Shot (DECIDED 2026-11-16: way 1)
 
 **The question under it** (decision 1, point 7): the old Wounding Shot was a Weapon Attack with more on it, so it was simply the first shot of every round. What a Technique should be, from him: "a Technique must feel good, almost unique" (2026-10-31, on Skirmish Shot: "a Weapon Attack with other dice" is lame). From the research (`weapons-bows-light.md`): a rider that happens by itself on every hit is one more thing to track; players wanted a choice made on the attack; a second roll is what slows the table. So: one roll, the bow's own thing visible on most uses, and a choice attached to using it.
 
@@ -233,6 +233,38 @@ Bleed was kept for this bow in decision 1; the list is here so nothing is left o
 | Light (the target sheds light, an arrow that marks) | Lantern of Faith (Paladin) | no for now: a good "quiet / tracking" unlock later, with the old Blood Trail's "never Unsensed by you" |
 
 **For Lucas:** way 1, 2 or 3; in way 1, the Requirement, and Bleed 1 / Bleed 2.
+
+**Lucas's answer (2026-11-16): "1 is good. RAW, it means you usually use it as the first action on your turn right?" WOUNDING SHOT IS DECIDED, way 1** (the card above: Round, 1 AP; Requirement: You haven't left your square this turn; [V] [Mod] / [V] 1[W] + [Mod]; Bleed 1 (Bo/In) / [V] 1[W] + [Mod]; Bleed 2 (Bo/In)).
+
+**The answer to his question, by the rules as written:** usually, yes, but the card says "before your first step", not "first". Read exactly:
+- **Anything that doesn't move you can come before it:** a Weapon Attack, Trick Shots, Spotter, Leaning (you lean from your square: with Lean and Loose it is "lean out, Wounding Shot, back" for 1 AP), Interact, Reload, Stand (getting up from Prone is not leaving your square), Judge or Lay On Hands' 1 AP without its Advance.
+- **Quick Shots can come first only if you give up its Evade** (a number is a maximum, so Evade 0 is allowed; Chapter 1). Strafe's Setup is optional too.
+- **Any square left counts,** by an Advance, an Evade, or being moved (Pushed, Slid, a Reposition) during your turn; coming back to the same square doesn't undo it. Shifting Aim reads the same way, so the two never disagree: the moment Shifting Aim switches on is the moment Wounding Shot switches off.
+- **Only this turn counts:** moving on other creatures' turns (Slip Away) changes nothing.
+One gap to close when it goes into the book: "left your square" for a creature bigger than one square (any of its squares, or all). Proposed with Shifting Aim, one sentence in Chapter 3: you leave your square when you stop occupying any square you occupied.
+
+## Decision 6: the Hunting Bow's ladder (PROPOSED 2026-11-16, waiting for Lucas)
+
+| Mastery | When | Unlock |
+|---:|---|---|
+| **3** | an Archer from the start; anyone else about the fourth fight | **Wounding Shot** (decided) |
+| **14** | an Archer during level 3; anyone else first thing in Stage 1 | **the bow's second unlock** (below) |
+| later | Stage 1 and after | written with Stage 1: about two a Stage, the last one in Stage 3 |
+
+**What happens to the book's own ladder** (Chapter 15: the Technique at 3, 4 or 5; Expert at 8; Master at 15 from level 8):
+- **The Technique at 3:** kept (both Basic bows; "4 for specialist, 5 for exotic" goes for the bows: a later rung's bow has its Technique from the day you can use it).
+- **Expert at 8** (once a turn, draw, stow or regrip without Interact): **removed for the bows.** It is the Quick Nock dropped in decision 1; it falls in the middle of Stage 0, which he wants simple; and the research's "golf bag" comes from exactly this (a trick a weapon plus a free draw). Other groups keep it until their own pass.
+- **Master** (from level 8, one more [W]): untouched now; read again with Stage 2 (it meets One More Arrow and the N[W] cards).
+
+**The second unlock, at 14: three ways**
+
+- **A, the bow's own (Claude's pick): Blood Trail.** "A creature that is bleeding from your Wounding Shot is never Unsensed by you: you perceive it as Hidden at least." The hunter follows the wounded prey: a rule-bender, no dice, nothing in most fights and exactly right when the thing runs into the dark or Hides. It makes the Technique's Bleed matter once more without making it bigger.
+- **B, one unlock for every Basic bow:** Expert moved from 8 to 14. Nothing to design; but it is the free draw, and both bows get the same thing.
+- **C, nothing written yet:** the ladder says "3: Wounding Shot; more from 14, with Stage 1". The simplest Stage 0; an Archer who reaches 14 in level 3 finds nothing there until Stage 1 is written.
+
+**Other candidates for A, each with its reason:** a harder Save to staunch (DC 15: a silent number, and it only makes the Bleed bigger); Wounding Shot's own Critical ("only a Tier 3 on the Save ends this Bleed": 3% of rolls, better as a Critical line than as an unlock); Wounding Shot ignores the far range Bane (Find the Gap's job, paid with 1 AP); a shot that doesn't give you away after Hide (a good one, but it needs Hide's rules read against shooting: later); Steady Hands, "once a round ignore 1 Bane" (a silent bonus); a looser Requirement (it would erase the decision just made).
+
+**For Lucas:** the ladder (3 and 14); Expert out for the bows; A, B or C at 14; Group Mastery 5 for the Advanced rung.
 
 **Lucas's answer:**
 
