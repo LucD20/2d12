@@ -77,7 +77,7 @@
 | [[Mastery\|**Expert**]] | 8 Mastery with a weapon: once each turn, you draw, stow or regrip it without Interact. |
 | [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical. |
 | [[Named Boons and Banes\|**Field**]] | A named Boon or Bane from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
-| [[Firearm\|**Firearm**]] | A weapon property: the weapon shoots with powder (a pistol, a musket). It is not Projectile; Gun Actions need one. |
+| [[Firearm\|**Firearm**]] | A trait and a weapon property with one name: the weapon shoots with powder (a pistol, a musket), and a Firearm Action needs one. It is not Projectile. |
 | [[Fists\|**Fists**]] | The Barehanded weapon every creature has (Melee, Non-threatening). While you have a free hand, it counts as a weapon you wield. |
 | [[Flanking\|**Flanking**]] | Creatures that threaten the same enemy: each gets 1 Field Boon on [Melee] Actions against it for each other flanker, minus 1 for each ally of the enemy that threatens it. |
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1. |
@@ -86,7 +86,6 @@
 | [[Reading an Action\|**Special**]] | A card's line that is a rule about the card itself. |
 | [[Grunts\|**Grunt**]] | An NPC rank with CV 50 and 3 AP a turn: about 26 Health at Stage 0, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
-| [[Gun\|**Gun**]] | A trait: the Action needs a Firearm (a pistol, a musket). |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Reaction**]] | A choice of two class Reactions at level 1; you take one. |
 | [[Hands\|**Hands**]] | How many hands hold a weapon: your main hand and your off hand. |
@@ -104,11 +103,10 @@
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
 | [[Lethal and Nonlethal\|**Lethal, Nonlethal**]] | The two kinds of damage. Damage is Lethal unless stated. |
 | [[Line\|**Line**]] | An area that starts from your square, aimed at any square, written like Line 10: one square per step, the nearest to the segment; ties take one side, chosen before rolling. |
-| [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the target's space that nothing blocks. |
+| [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the creature's space that nothing blocks. Needed to target a creature, and for anything a card or a feature does to a creature. |
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Weapon Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. Which one holds a weapon changes nothing, unless a feature says so. |
-| [[Mark Quarry\|**Marked Quarry**]] | The enemy an Archer chose with the Mark Quarry Action: 1 Boon on their [Shot, Strike] Actions against it, and [V] [Mod] extra damage on a Tier 1. One at a time. |
 | [[Mastery\|**Master**]] | 15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W]. |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
 | [[Minions\|**Minion**]] | An NPC rank with CV 25: about 12 Health at Stage 0, 3 AP a turn, no Reaction AP and no Dying. Up to 3 Minions act in the same turn slot. |
@@ -126,7 +124,8 @@
 | [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Power Actions roll it; Ward Defense adds it. |
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
 | [[Named Boons and Banes\|**Pressure**]] | A named Bane an effect of another creature puts on you. Up to 2. |
-| [[Projectile\|**Projectile**]] | A weapon property: the weapon shoots (a bow, a crossbow). Shot Actions need one. |
+| [[Projectile\|**Projectile**]] | A trait and a weapon property with one name: the weapon shoots (a bow, a crossbow), and a Projectile Action needs one. |
+| [[Light\|**Light**]] | A weapon property: a small one-handed melee weapon, quick to draw and stow (a Dagger). |
 | [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
 | [[Pulled\|**Pulled**]] | Forced Movement toward the origin, up to its value, inside a 45° cone. |
 | [[Pushed\|**Pushed**]] | Forced Movement away from the origin, up to its value, inside a 45° cone. |
@@ -158,7 +157,6 @@
 | [[Senses\|**Sense**]] | A way to perceive creatures: Sight, Hearing, Heatsight... Your best sense decides if a creature is Clear, Obscured, Hidden or Unsensed to you. |
 | [[Setup\|**Setup**]] | What an Action does before the rest of it; optional unless it says you must. |
 | [[Several Targets\|**Several Targets**]] | One roll for every target of an Action, each calculated separately. |
-| [[Shot\|**Shot**]] | A trait: the Action needs a Projectile weapon (a bow, a crossbow). |
 | [[Sickened\|**Sickened**]] | A condition with a value: that many Banes on your Body and Instinct Saves, and you can't swallow anything. |
 | [[Weapon, Power and Signature Modifiers\|**Signature Modifier**]] | The higher of your Weapon Modifier and Power Modifier. Signature Actions roll it. |
 | [[Rolls\|**Signature roll**]] | An Action with the Signature trait. |

@@ -36,3 +36,25 @@ Searing Blows
 Mending Light
 Final Verdict
 Hallowed Dawn
+# 2026-11-16: the old Archer cards the redesigned Archer document no longer shows (Foundry and the ruler still read them).
+Sharpshooter
+Double Shot
+Rolling Shot
+Overwatch
+Covering Shot
+Marksman's Shot
+Pinning Shot
+Twin Shot
+Hunter's Focus
+Deadeye
+Rain of Arrows
+Killer's Focus
+Harrying Shots
+Vanish
+Hunter's Edge
+Sure Step
+Finisher
+Staggering Shot
+Deathmark
+Open Season
+Mark Quarry

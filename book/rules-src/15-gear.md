@@ -27,7 +27,7 @@ A melee weapon deals more than a ranged one, which strikes from safety. Among me
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
-| Dagger | Blades | Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 4 + 1d4! | 3 |
+| Dagger | Blades | Light, Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 4 + 1d4! | 3 |
 | Longsword | Blades | Melee | Slash | 1 | [V] 0 / 2 + 1d6! / 4 + 1d6! | 3 |
 | Greatsword | Blades | Melee, Two-handed | Slash | 1 | [V] 0 / 5 + 1d6! / 8 + 1d8! | 3 |
 | Handaxe | Axes | Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 2 + 1d8! | 3 |
@@ -94,7 +94,7 @@ You need a hand free to use Handle Actions. A creature with both hands full has 
 
 ### Properties
 
-Weapons have properties instead of traits: Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded and Non-threatening. Every weapon has the property of its kind: a melee weapon has Melee, a ranged weapon has Ranged.
+Weapons have properties instead of traits: Melee, Ranged, Light, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded and Non-threatening. Every weapon has the property of its kind: a melee weapon has Melee, a ranged weapon has Ranged.
 
 An Action with the Weapon trait and the Melee or Ranged trait needs a weapon with that property. A Weapon Action without them takes [[Weapon Actions and Your Weapon|the property of the weapon you use]].
 
@@ -104,7 +104,14 @@ A **Barehanded** weapon can't be disarmed and doesn't occupy a hand (or a simila
 
 #### Firearm
 
-A **Firearm** shoots with powder, such as a pistol or a musket. It is not a Projectile weapon: [[Shot]] Actions can't use it. [[Gun]] Actions need a Firearm, and a Weapon Action with a Firearm is a [Gun] Action.
+A **Firearm** shoots with powder, such as a pistol or a musket. It is not a Projectile weapon: Projectile Actions can't use it. Firearm Actions need a Firearm, and a Weapon Action with a Firearm is a [Gun] Action.
+
+#### Light
+
+A **Light** weapon is a small melee weapon held in one hand, quick to draw and to put away, such as a Dagger. Some Actions need one (the Archer's Darting Blade).
+
+> [!tbd]
+> Light is new (2026-11-16): the other Light weapons, and what else the property does, come with the weapons pass (Bows and Swords first).
 
 #### Long
 
@@ -112,7 +119,7 @@ A weapon with the **Long** property is made to keep enemies at a distance: you t
 
 #### Projectile
 
-A **Projectile** weapon shoots something, such as a bow or a crossbow, instead of being swung or thrown. [[Shot]] Actions need a Projectile weapon.
+A **Projectile** weapon shoots something, such as a bow or a crossbow, instead of being swung or thrown. Projectile Actions need a Projectile weapon.
 
 #### Thrown
 
@@ -150,7 +157,7 @@ Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (
 | **15: Master** | From **level 8**, your Actions that deal [W] with the weapon deal one more [W] (1[W] becomes 2[W]). |
 
 > [!tbd]
-> How classes or Talents grant Mastery beyond the Archer's Sharpshooter (3 with one Projectile weapon), and Spell Mastery for casters (D4).
+> How classes or Talents grant Mastery beyond the Archer's starting Mastery (3 with one Projectile weapon), and Spell Mastery for casters (D4).
 
 ### Fists
 

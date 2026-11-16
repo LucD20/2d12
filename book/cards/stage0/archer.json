@@ -1,0 +1,536 @@
+{
+ "_about": "The Archer's Stage 0 cards in the card Structure (book/cards/card-structure.md), decided with Lucas on 2026-11-16 (book/cards/archer-redesign.md). THE BOOK reads these in the place of the cards of the same name in ../archer.json; Foundry and the ruler still read ../archer.json until the Foundry pass. The trait key 'projectile' is the renamed 'shot'. Format: see ../stage0/paladin.json.",
+ "structure": 2,
+ "cards": [
+  {
+   "name": "Shifting Aim",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You never loose twice from the same spot: a step to the side, and the line is clean again.",
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began)."
+    }
+   ]
+  },
+  {
+   "name": "Darting Blade",
+   "category": "Archer Feature",
+   "level": 1,
+   "flavor": "You let the bow drop on its strap, open a foe with the knife, and are gone before it turns.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "body": [
+    {
+     "label": "Setup",
+     "text": "You stow your bow and draw a [[Light]] weapon."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[V] [Mod]."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1[W] + [Mod]."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1[W] + [Mod]; Staggered (EoT)."
+    },
+    {
+     "label": "Effect",
+     "text": "You Evade 2, then can stow that weapon and draw your bow."
+    }
+   ],
+   "traits": [
+    "weapon",
+    "melee",
+    "strike"
+   ],
+   "distance": "Reach",
+   "target": "One creature"
+  },
+  {
+   "name": "Quick Shots",
+   "category": "Archer Hallmark Action",
+   "level": 1,
+   "flavor": "You loose arrow after arrow into one foe before the first has landed, and step away while it reels.",
+   "frequency": "Round",
+   "cost": "2 AP",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[V] [Mod]."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 2[W] + [Mod]."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 3[W] + [Mod]."
+    },
+    {
+     "label": "Critical",
+     "text": "You regain 1 AP."
+    },
+    {
+     "label": "Effect",
+     "text": "You Evade 2."
+    }
+   ],
+   "traits": [
+    "weapon",
+    "ranged",
+    "projectile",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "target": "One creature"
+  },
+  {
+   "name": "Strafe",
+   "category": "Archer Hallmark Action",
+   "level": 1,
+   "flavor": "You run across the line of fight and put an arrow into each foe you pass.",
+   "frequency": "Round",
+   "cost": "2 AP",
+   "body": [
+    {
+     "label": "Setup",
+     "text": "You Advance."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[V] [Mod]."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1[W] + [Mod]."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1[W] + [Mod]; Pushed 1."
+    }
+   ],
+   "traits": [
+    "weapon",
+    "ranged",
+    "projectile",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "target": "Up to three creatures"
+  },
+  {
+   "name": "Slip Away",
+   "category": "Archer Hallmark Reaction",
+   "level": 1,
+   "flavor": "The moment a foe commits to reaching you, you are already somewhere else.",
+   "frequency": "Turn",
+   "cost": "1R",
+   "body": [
+    {
+     "label": "Interrupt",
+     "text": "The target would enter a square adjacent to you."
+    },
+    {
+     "label": "Effect",
+     "text": "You Evade 1, then Advance 2."
+    }
+   ],
+   "distance": "5 sq.",
+   "target": "One enemy"
+  },
+  {
+   "name": "Snap Shot",
+   "category": "Archer Hallmark Reaction",
+   "level": 1,
+   "flavor": "A foe lunges for you, and you put an arrow in it before it has finished the step.",
+   "frequency": "Turn",
+   "cost": "1R",
+   "body": [
+    {
+     "label": "Interrupt",
+     "text": "The target would enter a square adjacent to you."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[V] [Mod]."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1[W] + [Mod]; Hindered (EoT)."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1[W] + [Mod]; Immobilized (EoT)."
+    }
+   ],
+   "traits": [
+    "weapon",
+    "ranged",
+    "projectile",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "target": "One enemy"
+  },
+  {
+   "name": "Footwork",
+   "category": "Archer Art",
+   "level": 1,
+   "flavor": "You are never where you were a breath ago: a long sidestep, a run through the press, or a step with your hands already busy.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "blocks": [
+    {
+     "heading": "Sidestep",
+     "body": [
+      {
+       "label": "Effect",
+       "text": "You Evade 3."
+      }
+     ]
+    },
+    {
+     "heading": "Weave",
+     "traits": [
+      "move"
+     ],
+     "body": [
+      {
+       "label": "Effect",
+       "text": "You Advance. During this Advance, Difficult Terrain doesn't slow you, and you can move through the squares of unwilling creatures (you can't end in one)."
+      }
+     ]
+    },
+    {
+     "heading": "Hands Busy",
+     "body": [
+      {
+       "label": "Effect",
+       "text": "You Evade 1, and before or after it you use the Interact or Reload Action (1A)."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Trick Shots",
+   "category": "Archer Art",
+   "level": 1,
+   "flavor": "You put the arrow where it will do something other than wound: through a cloak, past an ear, square on a shield.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    }
+   ],
+   "traits": [
+    "weapon",
+    "ranged",
+    "projectile",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "target": "One creature",
+   "blocks": [
+    {
+     "heading": "Pin",
+     "body": [
+      {
+       "label": "Tier 2 or 3",
+       "text": "[V] [Mod]; Hindered (1 round)."
+      }
+     ]
+    },
+    {
+     "heading": "Startle",
+     "body": [
+      {
+       "label": "Tier 2 or 3",
+       "text": "[V] [Mod]; Vulnerable 1 (EoT)."
+      }
+     ]
+    },
+    {
+     "heading": "Knock Back",
+     "body": [
+      {
+       "label": "Tier 2",
+       "text": "[V] [Mod]; Pushed 1."
+      },
+      {
+       "label": "Tier 3",
+       "text": "[V] [Mod]; Pushed 2."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Spotter",
+   "category": "Archer Art",
+   "level": 1,
+   "flavor": "You read the field the way others read a page: where a foe hides, where the gap in its cover is, where you yourself are hardest to hit.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "blocks": [
+    {
+     "heading": "Call Out",
+     "body": [
+      {
+       "label": "Effect",
+       "text": "Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear (1 round)."
+      }
+     ],
+     "distance": "10 sq.",
+     "target": "One creature you perceive"
+    },
+    {
+     "heading": "Find the Gap",
+     "body": [
+      {
+       "label": "Effect",
+       "text": "Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower."
+      }
+     ]
+    },
+    {
+     "heading": "Keep Low",
+     "body": [
+      {
+       "label": "Effect",
+       "text": "Against each creature you have Cover from, your Cover is one level higher, up to High (1 round)."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Lean and Loose",
+   "category": "Archer Escalation Passive",
+   "level": 1,
+   "flavor": "A wall is a quiver's best friend: you are out, the arrow is gone, and you are back.",
+   "escalation": 2,
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "The [[Leaning]] Action costs you 0 AP."
+    }
+   ]
+  },
+  {
+   "name": "Blade and Bow",
+   "category": "Archer Escalation Passive",
+   "level": 1,
+   "flavor": "Arrow, knife, arrow: each sets up the next.",
+   "escalation": 2,
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action, or a [Ranged, Strike] Action after a [Melee, Strike] Action, it gains 1 Boon."
+    }
+   ]
+  },
+  {
+   "name": "Thrill of the Kill",
+   "category": "Archer Feature",
+   "level": 2,
+   "flavor": "One of yours drops, and your blood is up.",
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Once an encounter, when an enemy you have damaged goes Down, your Escalation increases by 1."
+    }
+   ]
+  },
+  {
+   "name": "Volley",
+   "category": "Archer Encounter Action",
+   "level": 2,
+   "flavor": "You send a flight of arrows high, and they come down on everything standing in one patch of ground.",
+   "frequency": "Encounter",
+   "cost": "2 AP",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[V] [Mod]."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 2[W] + [Mod]; Hindered (EoT)."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 3[W] + [Mod]; Hindered (EoT)."
+    },
+    {
+     "label": "Critical",
+     "text": "The target is Prone."
+    },
+    {
+     "label": "Effect",
+     "text": "You Evade 2."
+    }
+   ],
+   "traits": [
+    "weapon",
+    "ranged",
+    "projectile",
+    "area",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "area": "3 Burst",
+   "target": "All creatures in the Area"
+  },
+  {
+   "name": "Hit and Run",
+   "category": "Archer Encounter Action",
+   "level": 2,
+   "flavor": "You run the length of the fight with the knife out, opening every foe you pass, and somewhere along the way an arrow leaves your bow.",
+   "frequency": "Encounter",
+   "cost": "2 AP",
+   "body": [
+    {
+     "label": "Effect",
+     "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll."
+    },
+    {
+     "label": "Tier 1",
+     "text": "[V] [Mod]."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1[W] + [Mod]."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1[W] + [Mod]; Vulnerable 1 (EoT)."
+    },
+    {
+     "label": "Special",
+     "text": "[W] is the weapon that hit. The bow's hit is Doomed if you are Engaged when you make it."
+    }
+   ],
+   "traits": [
+    "weapon",
+    "projectile",
+    "move",
+    "strike"
+   ],
+   "target": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range"
+  },
+  {
+   "name": "Covering Fire",
+   "category": "Archer Encounter Action",
+   "level": 2,
+   "flavor": "You keep the arrows coming down on one stretch of ground, and nobody crosses it without paying.",
+   "frequency": "Encounter",
+   "cost": "2 AP",
+   "body": [
+    {
+     "label": "Effect",
+     "text": "For 2 rounds, the Area is Difficult Terrain and [[Hazardous Terrain]] for enemies [HT: Entering, Turn, Movement]: [V] damage equal to 2 + your Weapon Modifier, of your weapon's subtype."
+    }
+   ],
+   "traits": [
+    "weapon",
+    "ranged",
+    "projectile",
+    "area"
+   ],
+   "distance": "Weapon",
+   "area": "3 Burst"
+  },
+  {
+   "name": "Clear Lines",
+   "category": "Archer Escalation Passive",
+   "level": 2,
+   "flavor": "Your friends have learned where not to stand, and you have learned to shoot past their ears.",
+   "escalation": 4,
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Your allies give your targets no Cover, and your [Ranged] Actions take no Field Bane for a target Engaged with one of your allies."
+    }
+   ]
+  },
+  {
+   "name": "Opening Shot",
+   "category": "Archer Escalation Passive",
+   "level": 2,
+   "flavor": "Your arrow staggers the foe, and your ally's blade is already coming.",
+   "escalation": 4,
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Weapon Attack (1A) against it."
+    }
+   ]
+  },
+  {
+   "name": "One More Arrow",
+   "category": "Archer Escalation Passive",
+   "level": 3,
+   "flavor": "By now your hands move faster than you can think: there is always one more arrow in the air.",
+   "escalation": 6,
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Once on each of your turns, a [Strike] Action of yours that deals [W] deals 1[W] more."
+    }
+   ]
+  },
+  {
+   "name": "Fleet",
+   "category": "Archer Escalation Passive",
+   "level": 3,
+   "flavor": "Nothing on this field is as fast as you are now.",
+   "escalation": 6,
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Each Evade of yours moves you 1 more square, and your Evades can enter Difficult Terrain."
+    }
+   ]
+  }
+ ]
+}

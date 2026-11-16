@@ -271,7 +271,7 @@ Blue tokens are allies and red-brown tokens are enemies. A badge is the Boons th
 
 ## Line of Effect
 
-To target a creature with an Action, you need **Line of Effect** to them: a straight line from the center of your square to **any corner of the target's space** that nothing blocks. Walls and similar solid obstacles block a line. If all four corners are blocked, you have no Line of Effect and can't target the creature, even if you perceive it.
+To target a creature with an Action, or to do anything to a creature with a card or a feature (see [[Targets of Effects]]), you need **Line of Effect** to them: a straight line from the center of your square to **any corner of the target's space** that nothing blocks. Walls and similar solid obstacles block a line. If all four corners are blocked, you have no Line of Effect and can't target the creature, even if you perceive it.
 
 An area effect checks Line of Effect from its **[[Areas|Point of Origin]]** to each creature in the area (from the center of the space, when the Point of Origin is a creature's space).
 

@@ -464,8 +464,8 @@ The theme was "the hunter's eye"; named Keen Eye here, since the hunter goes to 
 > **Keen Eye** · Round · 1 AP
 > *You read the field the way others read a page: where a foe hides, where the gap in its cover is, where you yourself are hardest to hit.*
 > — **Call Out** —
-> Distance: 10 sq. | Target: One creature you perceive
-> **Effect:** Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear (1 round).
+> Distance: 10 sq. | Target: One enemy that isn't Hidden to you
+> **Effect:** The target is one step easier for your allies to perceive: an ally to whom it is Hidden perceives it as Obscured, and one to whom it is Obscured perceives it as Clear (1 round).
 > — **Find the Gap** —
 > **Effect:** Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower.
 > — **Keep Low** —
@@ -1110,5 +1110,8 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 
 **In the book when he says yes:** Chapter 2, "A Reaction's Target" (the "Only the Target line targets" paragraph and its first example: the attacker out of Line of Effect is not Taunted) and "Targets of Effects" (its last paragraph); Chapter 3, "Line of Effect" (its first sentence speaks only of targets: "To target a creature with an Action, you need Line of Effect"; it becomes "to affect"); the Glossary.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16):** 1. "Yes" (the rule's wording). 2. "By the rules, the effect is on the target no? So you don't need LoE to allies right? Make sure of this ruling before applying. If you need by our rules, write it down. Also you can write 'Target: one enemy that isn't Hidden to you', so you can't call someone out from behind a wall that even you can't see." 3. "Yes" (apply the Archer).
 
+**The ruling on Call Out, made sure of.** He is right, and the rule needed a sentence to say so. Chapter 2, Targets of Effects: "the effects of an Action... affect the target of the Action". Call Out's effect is on the target (it becomes easier to perceive), exactly as Vulnerable is on the creature that has it while everyone else's Actions gain the Boon: nobody needs a line to the allies who benefit. My draft's sentence ("Your allies perceive the target...") read as an effect on the allies; it is rewritten with the target as its subject, and **no exception is needed**. Written into the rule: "An effect on one creature that others gain or lose from (Vulnerable, Taunted, a creature made easier to perceive) is done to that creature alone: you need no Line of Effect to the others." Call Out's Target is now "One enemy that isn't Hidden to you" (his wording).
+
+**APPLIED TO THE BOOK (2026-11-16): the Archer, the Line of Effect rule, the trait rename.** See rules-backlog.md, the top "APPLIED" entry.

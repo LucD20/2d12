@@ -2,7 +2,7 @@
 <!-- style: class -->
 # Archer
 
-<p class="intro">You were made for the shot no one else would take. The Archer is a marksman who singles out one target, narrows the world to it and lets the arrow fly: you choose how, a little more at every level.</p>
+<p class="intro">You win by never being where the enemy looks. The Archer is a fast, fragile marksman who brings a foe down with many small hits and not one great one: you shoot, you move, you slip a knife in when something gets close, and you are gone again.</p>
 
 <div class="statblock">
 <div class="sbt">The Archer at a glance</div>
@@ -10,124 +10,120 @@
 <div class="sbr"><span class="lbl">Health</span><span>high 16, low 8 (Stage 2: +9 / +5; Stage 3: +11 / +6)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>5</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+1</span></div>
-<div class="sbr"><span class="lbl">Modifiers</span><span>Weapon +2, Power +1</span></div>
-<div class="sbr"><span class="lbl">Armor Training</span><span>Medium</span></div>
-<div class="sbr"><span class="lbl">Escalation hook</span><span>Your Marked Quarry goes Down (Thrill of the Kill)</span></div>
+<div class="sbr"><span class="lbl">Modifiers</span><span>Weapon Modifier +2, Power Modifier +1</span></div>
+<div class="sbr"><span class="lbl">Armor Training</span><span>Light</span></div>
+<div class="sbr"><span class="lbl">Starting Mastery</span><span>3 with one Projectile weapon of your choice (see [[Mastery]])</span></div>
+<div class="sbr"><span class="lbl">Escalation hook</span><span>An enemy you have damaged goes Down (Thrill of the Kill, level 2)</span></div>
 </div>
 
 > [!tbd]
-> **This class is still written for the earlier levels and Escalation ladder; its Stage 0 cards (levels 1 to 3) are next.** Until then, where this document and Chapters 2 and 5 of the Core Rules differ, the Core Rules win: read the Passives of Escalation 1, 2 and 3 as Escalation **2, 4 and 6** (levels 1, 2 and 3) and the Apex's Escalation 3 as **6** (level 4); the Escalation hook and the Encounter Pick come at level 2; there is no Daily Pick in Stage 0, and every Talent slot is empty for now.
+> **Levels 1 to 3 are written.** Level 4 (the Apex and the numbers of Stage 1) and the Talents are not written yet: every Talent slot is empty for now. The Archer's cards need a bow or a crossbow and, for some, a [[Light]] weapon such as a Dagger: the weapons themselves are rebuilt in the weapons pass.
 
 ## The Archer by Level
 
 <div class="levels">
 <div class="lvl"><div class="lvn"><b>1</b><span>Level</span></div><div class="lvb">
-<div><span class="lbl">Features</span> Sharpshooter, Thrill of the Kill; the Mark Quarry Action</div>
-<div><span class="lbl">Hallmark Action</span> Double Shot or Rolling Shot</div>
-<div><span class="lbl">Hallmark Reaction</span> Overwatch or Covering Shot</div>
-<div><span class="lbl">Picks</span> 1 Encounter Pick</div>
-<div><span class="lbl">Escalation</span> 1 Passive for each Escalation level (1, 2 and 3), 1 Apex</div>
-<div><span class="lbl">Talents</span> 1 Talent</div>
+<div><span class="lbl">Features</span> Shifting Aim, Darting Blade</div>
+<div><span class="lbl">Hallmark Action</span> Quick Shots or Strafe</div>
+<div><span class="lbl">Hallmark Reaction</span> Slip Away or Snap Shot</div>
+<div><span class="lbl">Art</span> 1 of Footwork, Trick Shots, Spotter</div>
+<div><span class="lbl">Escalation</span> 1 Escalation 2 ability: Lean and Loose or Blade and Bow</div>
+<div><span class="lbl">Talents</span> 1 Skill Talent</div>
 </div></div>
 <div class="lvl"><div class="lvn"><b>2</b><span>Level</span></div><div class="lvb">
+<div><span class="lbl">Features</span> Thrill of the Kill (your Escalation hook)</div>
+<div><span class="lbl">Picks</span> 1 Encounter Pick</div>
+<div><span class="lbl">Escalation</span> 1 Escalation 4 ability: Clear Lines or Opening Shot</div>
 <div><span class="lbl">Talents</span> 1 Talent</div>
 </div></div>
 <div class="lvl"><div class="lvn"><b>3</b><span>Level</span></div><div class="lvb">
-<div><span class="lbl">Picks</span> 1 Daily Pick</div>
-<div><span class="lbl">Talents</span> 1 Talent</div>
+<div><span class="lbl">Art</span> a second Art</div>
+<div><span class="lbl">Escalation</span> 1 Escalation 6 ability: One More Arrow or Fleet</div>
+<div><span class="lbl">Talents</span> 1 Skill Talent</div>
 </div></div>
-<div class="lvl"><div class="lvn"><b>4</b><span>Level</span></div><div class="lvb">
-<div><span class="lbl">Talents</span> 1 Talent</div>
-</div></div>
-<p class="lvmore">Level 5 begins Stage 2 (a Stage Talent and the Stage numbers: see [[Stages]]). Further levels will be added here.</p>
+<p class="lvmore">Level 4 brings the Apex and Stage 1 (see [[Stages]]). Further levels will be added here.</p>
 </div>
 
 ## Level 1
 
 ### Features
 
-As a marksman, you gain two Features and the Mark Quarry Action at level 1. Thrill of the Kill is your class's [[Escalation]] hook.
+Every Archer has these two. **Shifting Aim** pays you for never shooting twice from the same square. **Darting Blade** is the knife for when a foe is next to you, where a bow is [[Ranged Combat While Engaged|Doomed]]: a quick stab, and you are out of reach again.
 
-@@CARD:Sharpshooter@@
+Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's damage twice, and "3[W]" three times (see [[Weapon Damage]]). Even on a Tier 1 they deal your Weapon Modifier: an arrow of yours always finds something.
 
-@@CARD:Thrill of the Kill@@
+@@CARD:Shifting Aim@@
 
-#### Marked Quarry
-
-Your **Marked Quarry** is the enemy you chose with the Mark Quarry Action. You have one at a time.
-
-@@CARD:Mark Quarry@@
+@@CARD:Darting Blade@@
 
 ### Hallmark Action Selection
 
 Choose one of the following Hallmark Actions:
 
-@@CARD:Double Shot@@
+@@CARD:Quick Shots@@
 
-@@CARD:Rolling Shot@@
+@@CARD:Strafe@@
 
 ### Hallmark Reaction Selection
 
-Choose one of the following Hallmark Reactions. Both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
+Choose one of the following Hallmark Reactions. Both answer a foe that is about to reach you, and both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
 
-@@CARD:Overwatch@@
+@@CARD:Slip Away@@
 
-@@CARD:Covering Shot@@
+@@CARD:Snap Shot@@
 
-### Picks
+## Archer Arts
 
-- You pick one Talent (the [[Talents]] document).
-- You pick one Encounter Action from the [[Archer Repertoire]].
-- You pick one Escalation Passive for each Escalation level, and one Apex, from the [[Archer Escalation]].
+Choose one Art at level 1 and a second at level 3. Each time you use an Art, you choose one of its three Modes.
+
+@@CARD:Footwork@@
+
+@@CARD:Trick Shots@@
+
+@@CARD:Spotter@@
 
 ## Archer Repertoire
 
 ### Encounter
 
-@@CARD:Marksman's Shot@@
+At level 2, choose one of the following Encounter Actions:
 
 @@CARD:Volley@@
 
+@@CARD:Hit and Run@@
+
 @@CARD:Covering Fire@@
-
-@@CARD:Pinning Shot@@
-
-@@CARD:Twin Shot@@
-
-### Daily
-
-@@CARD:Hunter's Focus@@
-
-@@CARD:Deadeye@@
-
-@@CARD:Rain of Arrows@@
 
 ## Archer Escalation
 
-Your Escalation is a level from 1 to 3 that rises as the fight goes on and is never spent (see [[Escalation]]). You choose one Passive for each level: it works while your Escalation is at least that number. The Apex is your big Encounter Action: you can use it only while your Escalation is 3.
+Your Escalation is a level from 1 to 6 that rises as the fight goes on and is never spent (see [[Escalation]]). You choose one ability for each of Escalation 2, 4 and 6: it works while your Escalation is at least the number on its card.
 
-### Escalation 1 Passives
+### The Escalation Hook
 
-@@CARD:Killer's Focus@@
+You gain Thrill of the Kill at level 2.
 
-@@CARD:Vanish@@
+@@CARD:Thrill of the Kill@@
 
-@@CARD:Harrying Shots@@
+### Escalation 2
 
-### Escalation 2 Passives
+Choose one at level 1:
 
-@@CARD:Hunter's Edge@@
+@@CARD:Lean and Loose@@
 
-@@CARD:Sure Step@@
+@@CARD:Blade and Bow@@
 
-### Escalation 3 Passives
+### Escalation 4
 
-@@CARD:Finisher@@
+Choose one at level 2:
 
-@@CARD:Staggering Shot@@
+@@CARD:Clear Lines@@
 
-### Apex
+@@CARD:Opening Shot@@
 
-@@CARD:Deathmark@@
+### Escalation 6
 
-@@CARD:Open Season@@
+Choose one at level 3:
+
+@@CARD:One More Arrow@@
+
+@@CARD:Fleet@@

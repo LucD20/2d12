@@ -44,6 +44,18 @@ reaction = lambda c: bool(c.get('interrupt') or c.get('trigger'))
 cap = lambda s: s[0].upper() + s[1:]
 ROLLS = ('weapon', 'power', 'signature', 'body', 'instinct', 'mind', 'appeal')   # the Roll traits that name what is rolled
 DEFENSE = {'AD': 'Armor Defense', 'WD': 'Ward Defense'}
+# The traits Shot and Gun were renamed Projectile and Firearm (Lucas, 2026-11-16): one name for the trait and the weapon property, as Melee and Ranged.
+# The old card files keep their keys until the Foundry pass; the book prints the new names, on the traits' line and inside [brackets] in a card's text.
+RENAMED = {'shot': 'projectile', 'gun': 'firearm'}
+import re as _re
+def _rename_text(t):
+    return _re.sub(r'\[([^\[\]]*)\]', lambda m: '[' + _re.sub(r'\bShot\b', 'Projectile', _re.sub(r'\bGun\b', 'Firearm', m.group(1))) + ']' if not m.group(0).startswith('[[') else m.group(0), t) if isinstance(t, str) else t
+def _rename(s):
+    s['traits'] = [RENAMED.get(t, t) for t in s['traits']]
+    for part in [s] + s['blocks']:
+        for l in part.get('body', []): l['text'] = _rename_text(l['text'])
+    for l in s['after']: l['text'] = _rename_text(l['text'])
+    return s
 
 def or_list(xs):
     xs = [str(x) for x in xs]
@@ -108,7 +120,7 @@ def structure(c):
     after += [_line('Special', m) for m in c.get('modifies', [])]
     if s['blocks']: s['after'] = after   # lines that follow the blocks and belong to the whole card (drawn under a rule)
     else: B += after
-    return s
+    return _rename(s)
 
 def lines(c):
     """The card as plain lines ("Label: text"), for the search of a term (rules_tools.where)."""

@@ -692,8 +692,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>In a three-way fight, Mark rolls 13 and Nick 9, the enemies Goblin Warrior 12 and Goblin Scoundrel 8, and a third group Kobold Mage 13 and Kobold Shaman 5. The order is Mark, Kobold Mage, Goblin Warrior, Nick, Kobold Shaman, Goblin Scoundrel.</p></div>
 <p><strong>Ties</strong> are broken by the higher Attribute Modifier used for the Initiative roll. If they are still tied, the Friendly creature (a PC or an ally of the PCs) goes first.</p>
 <h3 id="the-start-of-the-encounter">The Start of the Encounter</h3>
-<p>Some abilities happen <strong>at the start of an encounter</strong>, such as the Archer's <a class="xref" href="archer.html#card-mark-quarry">Mark Quarry</a>. After Initiative is rolled and before the first turn, each of them waits in a <strong>stack</strong>, in the turn order. The GM can change that order: an ally can go later, for example to act after another ally's ability. Then they resolve one at a time, in the stack's order, and the first turn begins.</p>
-<div class="callout example"><div class="ctitle">Example</div><p>Chris and Krysta are Archers. Chris rolls 15 and Krysta 13, so the stack is Chris's Mark Quarry, then Krysta's. Chris wants to know which enemy Krysta marks before choosing his own, so the GM puts Krysta's first.</p></div>
+<p>Some abilities happen <strong>at the start of an encounter</strong>, such as the Paladin's <a class="xref" href="paladin.html#card-judge">Judge</a>. After Initiative is rolled and before the first turn, each of them waits in a <strong>stack</strong>, in the turn order. The GM can change that order: an ally can go later, for example to act after another ally's ability. Then they resolve one at a time, in the stack's order, and the first turn begins.</p>
+<div class="callout example"><div class="ctitle">Example</div><p>Chris and Krysta are Paladins. Chris rolls 15 and Krysta 13, so the stack is Chris's Judge, then Krysta's. Chris wants to know which enemy Krysta Judges before choosing his own, so the GM puts Krysta's first.</p></div>
 <h3 id="swapping-initiative">Swapping Initiative</h3>
 <p>On your turn, if you haven't taken any Actions yet and aren't <span class="kw-neg">Down</span>, you can spend <strong><span class="kw-ap">1 AP</span></strong> to swap places in the turn order with an ally who hasn't had a turn this round. The ally takes the turn now, at your place in the order, and gains its AP as normal.</p>
 <p>You act at the ally's old place. Until then, your remaining Actions are <strong>frozen</strong>: you can't use them. When your new turn arrives, you carry on with the AP you had left instead of gaining new AP. You can't swap again that round.</p>
@@ -736,11 +736,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <h3 id="a-reactions-target">A Reaction's Target</h3>
 <p>Every Reaction has a Target line, and its Interrupt or Trigger is written about <strong>the target</strong>. The creature whose Action sets the Reaction off is the <strong>triggering creature</strong>.</p>
 <p><strong>To use a Reaction</strong> you need <a class="xref" href="#line-of-effect">Line of Effect</a> to its target, as for every Action. You must also <strong>perceive</strong> the target and the triggering creature (see <a class="xref" href="#senses">Senses</a>): Hidden is enough; Unsensed is not.</p>
-<p><strong>Only the Target line targets.</strong> A Reaction can also do something to the triggering creature when it isn't the target: Shield of Faith's target is the ally, and it Taunts the attacker. You need no Line of Effect to the triggering creature for that; perceiving it is enough.</p>
-<p>A feature that says "when..." has no target: you must perceive the creatures it names.</p>
-<div class="callout example"><div class="ctitle">Example</div><p>Zack, a Paladin, has Shield of Faith: "Target: One ally. Interrupt: An enemy's [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action would damage the target." An orc behind an arrow slit shoots Nari, who stands 3 squares from Zack in the open. Zack has Line of Effect to Nari and hears the orc: he uses Shield of Faith, Nari's damage is reduced, and the orc is Taunted by him. Had Nari been behind a wall, with no Line of Effect from Zack, he couldn't.</p></div>
+<p>A Reaction can also do something to the triggering creature when it isn't the target: Shield of Faith's target is the ally, and it Taunts the attacker. That needs Line of Effect to the triggering creature too, like anything a card does to a creature (see <a class="xref" href="#targets-of-effects">Targets of Effects</a>); without it, that part doesn't happen and the rest does.</p>
+<p>A feature that says "when..." waits for a moment: you must perceive the creatures it names. What it then does to a creature needs Line of Effect like anything else.</p>
+<div class="callout example"><div class="ctitle">Example</div><p>Zack, a Paladin, has Shield of Faith: "Target: One ally. Interrupt: An enemy's [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action would damage the target." An orc around a corner from Zack shoots Nari, who stands 3 squares from Zack in the open. Zack has Line of Effect to Nari and hears the orc: he uses Shield of Faith, and Nari's damage is reduced. He has no Line of Effect to the orc, so the orc isn't Taunted. Had Nari been the one behind the wall, Zack couldn't have used it at all.</p></div>
 <div class="callout example"><div class="ctitle">Example</div><p>Zack has Rebuke: "Target: One enemy. Trigger: The target moves away from you." A goblin 2 squares from him, on the other side of a wall, runs off. Zack hears it, but Rebuke targets the goblin and he has no Line of Effect to it: he can't use Rebuke.</p></div>
-<div class="callout example"><div class="ctitle">Example</div><p>Zack has Kindled Wrath: "when an ally becomes Bloodied or goes <span class="kw-neg">Down</span>, your Escalation increases by 1". Nari becomes Bloodied behind a wall, 6 squares from Zack. Zack hears him (within 10 squares), and Kindled Wrath has no target: his Escalation increases. At 12 squares behind that wall, out of sight and hearing, it wouldn't.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>Zack has Kindled Wrath: "when an ally becomes Bloodied or goes <span class="kw-neg">Down</span>, your Escalation increases by 1". Nari becomes Bloodied behind a wall, 6 squares from Zack. Zack hears him (within 10 squares), and Kindled Wrath does nothing to Nari, so it needs no Line of Effect: his Escalation increases. At 12 squares behind that wall, out of sight and hearing, it wouldn't.</p></div>
 <h3 id="disrupting-actions">Disrupting Actions</h3>
 <p>When an Action is <strong>disrupted</strong>, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.</p>
 <p>An Interrupt disrupts the Action before it happens. For example, a Reaction with "Interrupt: A creature uses a Move Action" triggers when a creature uses an Action that Stands and then Advances (<span class="kw-ap">1 AP</span>): the creature doesn't Stand, and the whole Action is disrupted (because you can't Advance while Prone).</p>
@@ -791,10 +791,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li>If it isn't optional and you can't make it, the whole Action is <strong><a class="xref" href="#disrupting-actions">disrupted</a></strong>. A Linked Action is optional when the Action says you <strong>can</strong> make it ("you can <span class="kw-mv">Evade 2</span>"), and required when it says you <strong>do</strong> it ("you <span class="kw-mv">Advance 5</span>, make a Weapon Attack (<span class="kw-ap">1A</span>) and <span class="kw-mv">Advance 5</span> again").</li>
 </ul>
 <p>If a Linked Action has no valid target, the rest of the Action is disrupted (that Linked Action and anything after it don't happen); what already happened stays. By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".</p>
-<div class="callout example"><div class="ctitle">Example</div><p>Double Shot lets you make two Weapon Attacks (<span class="kw-ap">1A</span>). Afterwards you can still use Weapon Attack as its own Action, and that first use has no At-will <span class="kw-bane">Bane</span>.</p></div>
+<div class="callout example"><div class="ctitle">Example</div><p>The Archer's Opening Shot lets an ally make a Weapon Attack (<span class="kw-ap">1A</span>). On that ally's own turn they can still use Weapon Attack as its own Action, and that first use has no At-will <span class="kw-bane">Bane</span>.</p></div>
 <h3 id="targets-of-effects">Targets of Effects</h3>
 <p>Unless something says otherwise, the effects of an Action, and the Actions it lets you use (Linked Actions), affect the <strong>target of the Action</strong>. Remember, if the Action doesn't have a target, you choose who to target on each individual Linked Action. If you use Shove on an enemy, the enemy is the one who is Pushed.</p>
-<p>Only the Target line makes a creature a target. A card can name another creature in its text (an Area card's "allies in the Area", a Reaction's "triggering creature"): what the card does to that creature follows the card's words, and the rules about targets don't apply to it.</p>
+<p><strong>Line of Effect, always.</strong> Whatever a card or a feature does to a creature (damages it, moves it, heals it, gives it a condition, <span class="kw-guard">Guard</span>, a <span class="kw-boon">Boon</span> or a <span class="kw-bane">Bane</span>, or lets it act), you need <a class="xref" href="#line-of-effect">Line of Effect</a> to that creature at that moment, whether the creature is on the Target line or named in the text. In an Area, the line is from the Point of Origin. A creature you have no Line of Effect to isn't affected; the rest of the card still happens. A card that works without it says so: "(no Line of Effect needed)".</p>
+<p>An effect on one creature that others gain or lose from (<span class="kw-neg">Vulnerable</span>, Taunted, a creature made easier to perceive) is done to that creature alone: you need no Line of Effect to the others.</p>
 <h3 id="effect-timing">Effect Timing</h3>
 <p>Every line of a card says when it happens (see <a class="xref" href="#reading-an-action">Reading an Action</a>):</p>
 <ul>
@@ -894,7 +895,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li><strong>Start:</strong> you start every encounter at <strong>Escalation 1 + your party's <a class="xref" href="#momentum">Momentum</a></strong>.</li>
 <li><strong>Rounds:</strong> at the start of every round after the first, if you aren't Unconscious, your Escalation increases by 1. While Unconscious, you keep the Escalation you have.</li>
 <li><strong>Critical:</strong> once an encounter, when you score a <a class="xref" href="#critical">Critical</a> on one of your Actions, your Escalation increases by 1.</li>
-<li><strong>Your class's hook:</strong> each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally within 5 squares of you becomes Bloodied or goes <span class="kw-neg">Down</span>; the Archer: your Marked Quarry goes <span class="kw-neg">Down</span>). You gain your class's hook at level 2.</li>
+<li><strong>Your class's hook:</strong> each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally becomes Bloodied or goes <span class="kw-neg">Down</span>; the Archer: an enemy you have damaged goes <span class="kw-neg">Down</span>). You gain your class's hook at level 2.</li>
 <li><strong>At most 6:</strong> you can't have more than 6 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 6 does nothing, and it isn't used up for the encounter.</li>
 <li><strong>The end:</strong> when the encounter ends, your Escalation goes back to 1, and the abilities that need it stop working.</li>
 </ul>
@@ -1228,7 +1229,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p><strong>Example 6: Two lines of fighters.</strong> Two lines of fighters face each other, all of them against D, the second fighter on the left. Each fighter has allies beside it that threaten the enemies in front of them, so almost every <span class="kw-boon">Boon</span> is cancelled: D's neighbors cancel the <span class="kw-boon">Boons</span>, and only a fighter at the very end of a line can still gain 1, against the second fighter of the other line.</p>
 <div class="pushfig" style="--hh:192px"><figure style="--w:280px" data-h="192"><div class="figsvg"><svg viewBox="0 0 280 192" style="width:280px;max-width:none" class="pushsvg" role="img" aria-label="Two lines of fighters, all against the second fighter on the left (D): its neighbors cancel the Boons, only the enemy at the end of the line gets 1"><text x="38.0" y="11" class="gcoord">A</text><text x="82.0" y="11" class="gcoord">B</text><text x="126.0" y="11" class="gcoord">C</text><text x="170.0" y="11" class="gcoord">D</text><text x="214.0" y="11" class="gcoord">E</text><text x="258.0" y="11" class="gcoord">F</text><text x="12" y="41.5" class="gcoord gcoordr">1</text><text x="12" y="85.5" class="gcoord gcoordr">2</text><text x="12" y="129.5" class="gcoord gcoordr">3</text><text x="12" y="173.5" class="gcoord gcoordr">4</text><g transform="translate(16,16)"><rect x="0" y="0" width="44" height="44" class="gcell"/><rect x="44" y="0" width="44" height="44" class="gcell"/><rect x="88" y="0" width="44" height="44" class="gcell"/><rect x="132" y="0" width="44" height="44" class="gcell"/><rect x="176" y="0" width="44" height="44" class="gcell"/><rect x="220" y="0" width="44" height="44" class="gcell"/><rect x="0" y="44" width="44" height="44" class="gcell"/><rect x="44" y="44" width="44" height="44" class="gcell"/><rect x="88" y="44" width="44" height="44" class="gcell"/><rect x="132" y="44" width="44" height="44" class="gcell"/><rect x="176" y="44" width="44" height="44" class="gcell"/><rect x="220" y="44" width="44" height="44" class="gcell"/><rect x="0" y="88" width="44" height="44" class="gcell"/><rect x="44" y="88" width="44" height="44" class="gcell"/><rect x="88" y="88" width="44" height="44" class="gcell"/><rect x="132" y="88" width="44" height="44" class="gcell"/><rect x="176" y="88" width="44" height="44" class="gcell"/><rect x="220" y="88" width="44" height="44" class="gcell"/><rect x="0" y="132" width="44" height="44" class="gcell"/><rect x="44" y="132" width="44" height="44" class="gcell"/><rect x="88" y="132" width="44" height="44" class="gcell"/><rect x="132" y="132" width="44" height="44" class="gcell"/><rect x="176" y="132" width="44" height="44" class="gcell"/><rect x="220" y="132" width="44" height="44" class="gcell"/><circle cx="66.0" cy="66.0" r="12.32" fill="#4b7aa6" class="gtokc"/><text x="66.0" y="70.0" class="gtok" font-size="12">A</text><circle cx="66.0" cy="110.0" r="12.32" fill="#a2574a" class="gtokc"/><text x="66.0" y="114.0" class="gtok" font-size="12">B</text><circle cx="110.0" cy="66.0" r="12.32" fill="#4b7aa6" class="gtokc"/><text x="110.0" y="70.0" class="gtok" font-size="12">D</text><circle cx="110.0" cy="110.0" r="12.32" fill="#a2574a" class="gtokc"/><text x="110.0" y="114.0" class="gtok" font-size="12">B</text><circle cx="154.0" cy="66.0" r="12.32" fill="#4b7aa6" class="gtokc"/><text x="154.0" y="70.0" class="gtok" font-size="12">A</text><circle cx="154.0" cy="110.0" r="12.32" fill="#a2574a" class="gtokc"/><text x="154.0" y="114.0" class="gtok" font-size="12">B</text><circle cx="198.0" cy="66.0" r="12.32" fill="#4b7aa6" class="gtokc"/><text x="198.0" y="70.0" class="gtok" font-size="12">A</text><circle cx="198.0" cy="110.0" r="12.32" fill="#a2574a" class="gtokc"/><text x="198.0" y="114.0" class="gtok" font-size="12">B</text><rect x="71" y="88.5" width="18" height="13" rx="6.5" class="gbadge"/><text x="80" y="98.5" class="gbt">+1</text></g></svg></div><figcaption>Two lines of fighters, all against the second fighter on the left (D): its neighbors cancel the <span class="kw-boon">Boons</span>, only the enemy at the end of the line gets 1</figcaption></figure></div>
 <h2 id="line-of-effect">Line of Effect</h2>
-<p>To target a creature with an Action, you need <strong>Line of Effect</strong> to them: a straight line from the center of your square to <strong>any corner of the target's space</strong> that nothing blocks. Walls and similar solid obstacles block a line. If all four corners are blocked, you have no Line of Effect and can't target the creature, even if you perceive it.</p>
+<p>To target a creature with an Action, or to do anything to a creature with a card or a feature (see <a class="xref" href="#targets-of-effects">Targets of Effects</a>), you need <strong>Line of Effect</strong> to them: a straight line from the center of your square to <strong>any corner of the target's space</strong> that nothing blocks. Walls and similar solid obstacles block a line. If all four corners are blocked, you have no Line of Effect and can't target the creature, even if you perceive it.</p>
 <p>An area effect checks Line of Effect from its <strong><a class="xref" href="#areas">Point of Origin</a></strong> to each creature in the area (from the center of the space, when the Point of Origin is a creature's space).</p>
 <p>A Large creature (2x2 squares or bigger) uses the four corners of its whole space. A Large creature that is the one targeting picks any square it occupies as its starting square.</p>
 <p>A line that only touches the end of a wall isn't blocked.</p>
@@ -1717,7 +1718,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li><strong>Choices.</strong> When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see <a class="xref" href="#distinct-choices">Distinct Choices</a>). If your class lets you, choose which of its two Modifier values is your <span class="mod-weapon">Weapon Modifier</span> and which your <span class="mod-power">Power Modifier</span> (see <a class="xref" href="#weapon-power-and-signature-modifiers">Weapon, Power and <span class="mod-signature">Signature Modifiers</span></a>).</li>
 <li><strong><a class="xref" href="#health-pool">Health Pool</a>.</strong> Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.</li>
 <li><strong><a class="xref" href="#rally-points"><span class="kw-rally">Rally Points</span></a></strong> = your class' Rally value + 1 (it grows with your <a class="xref" href="#stages">Stage</a>).</li>
-<li><strong>Level 1.</strong> Take what your class's level list gives at level 1: its Features, its <strong>Hallmark Action</strong> and <strong>Hallmark Reaction</strong> (a choice of two each), an <strong>Art</strong> if the class has them, and your <strong>Escalation 2</strong> ability (see <a class="xref" href="#leveling-up">Leveling Up</a>). Weapons and armor are in the <a class="xref" href="gear.html#gear">Gear</a> document.</li>
+<li><strong>Level 1.</strong> Take what your class's level list gives at level 1: its Features, its <strong>Hallmark Action</strong> and <strong>Hallmark Reaction</strong> (a choice of two each), an <strong>Art</strong>, and your <strong>Escalation 2</strong> ability (see <a class="xref" href="#leveling-up">Leveling Up</a>). Weapons and armor are in the <a class="xref" href="gear.html#gear">Gear</a> document.</li>
 </ol>
 <h2 id="classes">Classes</h2>
 <p>Your class gives you Attribute increases, a <strong>high</strong> and a <strong>low Health value</strong> with their Stage steps (used for your Health Pool), a <strong>Rally</strong> value (used for <span class="kw-rally">Rally Points</span>), a <strong>Speed Modifier</strong>, a <strong><span class="mod-weapon">Weapon Modifier</span></strong> and a <strong><span class="mod-power">Power Modifier</span></strong>, an <strong><a class="xref" href="gear.html#armor-training">Armor Training</a></strong>, and a list of <strong>Escalation</strong> abilities.</p>
@@ -1863,10 +1864,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>When an Action has <strong>more than one</strong> of these traits, you roll the one with the <strong>highest</strong> value. The Action still has all of them: Trip is a <span class="at-body">Body</span> Action and an <span class="at-instinct">Instinct</span> Action, whichever it rolls. If the Action has a Vs. entry that says "the one used to roll," that Attribute is also the Defense: if you roll <span class="at-body">Body</span>, you roll against <span class="at-body">Body</span>.</p>
 <h3 id="fear">Fear</h3>
 <p>The Fear trait has no rules of its own. Other rules, Talents and Tags refer to it.</p>
+<h3 id="firearm">Firearm</h3>
+<p>Firearm Actions need a weapon with the Firearm property (see <a class="xref" href="gear.html#properties">Properties</a>), such as a pistol or a musket, and use its Range as their Distance. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action without this trait gets it when you use such a weapon (so a Weapon Attack with a musket is a Firearm Action). The trait and the property have one name, as Melee and Ranged do. A Firearm is not a Projectile weapon: Projectile Actions can't use it.</p>
 <h3 id="focus">Focus</h3>
 <p>These Actions require concentration. This is not a mechanic by itself, but some features affect your ability to concentrate.</p>
-<h3 id="gun">Gun</h3>
-<p><span class="trhl" style="--tc:var(--g-requires)">Gun</span> Actions need a weapon with the <a class="xref" href="gear.html#firearm">Firearm</a> property, such as a pistol or a musket, and use its Range as their Distance. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action without this trait gets it when you use such a weapon (so a Weapon Attack with a musket is a <span class="trhl" style="--tc:var(--g-requires)">Gun</span> Action). A Firearm is not a Projectile weapon: <span class="trhl" style="--tc:var(--g-requires)">Shot</span> Actions can't use it.</p>
 <h3 id="handle">Handle</h3>
 <p>To use an Action with the <span class="trhl" style="--tc:var(--g-requires)">Handle</span> trait, you must be able to use your hands (or similar appendages). You also need a <strong>hand free</strong> to make any Action with this trait. Releasing an object costs no AP (Release).</p>
 <h3 id="melee">Melee</h3>
@@ -1879,14 +1880,14 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <p>These Actions deal Nonlethal damage by default. A <span class="trhl" style="--tc:var(--g-damage)">Nonlethal</span> Action can deal <a class="xref" href="#lethal-and-nonlethal">Lethal damage</a> by taking a <span class="kw-bane">Bane</span>.</p>
 <h3 id="power">Power</h3>
 <p>These Actions roll your <strong><span class="mod-power">Power Modifier</span></strong>.</p>
+<h3 id="projectile">Projectile</h3>
+<p>Projectile Actions need a weapon with the Projectile property (see <a class="xref" href="gear.html#properties">Properties</a>), such as a bow or a crossbow, and use its Range as their Distance. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action without this trait gets it when you use such a weapon (so a Weapon Attack with a crossbow is a Projectile Action). The trait and the property have one name, as Melee and Ranged do.</p>
 <h3 id="ranged">Ranged</h3>
 <p>These Actions target creatures from a distance. The Action's Distance can be written like a ranged weapon's Range: normal / far / maximum, with <span class="kw-bane">1 Bane</span> at far range and 2 at maximum. A single number is a normal range only. A [<span class="trhl" style="--tc:var(--g-requires)">Ranged</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action needs a ranged weapon, or a weapon with the Thrown property used thrown, and uses that weapon's Range as its Distance. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action without this trait gets it when you use a ranged weapon or throw a Thrown weapon.</p>
 <h3 id="save">Save</h3>
 <p>A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action: its targets roll a Save instead of you rolling against their Defense. See <a class="xref" href="#save-actions">Save Actions</a>.</p>
 <h3 id="self">Self</h3>
 <p>An Action with the <span class="trhl" style="--tc:var(--g-kind)">Self</span> trait always targets you, the origin of the Action. An [Area] Action with Self is centered on you: you are the target of its Emanation.</p>
-<h3 id="shot">Shot</h3>
-<p><span class="trhl" style="--tc:var(--g-requires)">Shot</span> Actions need a weapon with the <a class="xref" href="gear.html#projectile">Projectile</a> property, such as a bow or a crossbow, and use its Range as their Distance. A <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action without this trait gets it when you use such a weapon (so a Weapon Attack with a crossbow is a Shot).</p>
 <h3 id="signature">Signature</h3>
 <p>These Actions roll your <strong><span class="mod-signature">Signature Modifier</span></strong>: the higher of your <span class="mod-weapon">Weapon Modifier</span> and your <span class="mod-power">Power Modifier</span>, even when they also have the <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> or <span class="trhl" style="--tc:var(--g-roll)">Power</span> trait. They keep their other traits: a [<span class="trhl" style="--tc:var(--g-roll)">Signature</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action still needs a weapon and gets every effect on [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions (see <a class="xref" href="#rolls">Rolls</a>). Signature is used for a class's own Actions, such as its Daily Actions and some Hallmark Actions (Smite).</p>
 <h3 id="split">Split</h3>
@@ -2288,8 +2289,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>A named <span class="kw-boon">Boon</span> or <span class="kw-bane">Bane</span> from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2.</td>
 </tr>
 <tr>
-<td><a class="xref" href="gear.html#firearm"><strong>Firearm</strong></a></td>
-<td>A weapon property: the weapon shoots with powder (a pistol, a musket). It is not Projectile; <span class="trhl" style="--tc:var(--g-requires)">Gun</span> Actions need one.</td>
+<td><a class="xref" href="#firearm"><strong>Firearm</strong></a></td>
+<td>A trait and a weapon property with one name: the weapon shoots with powder (a pistol, a musket), and a Firearm Action needs one. It is not Projectile.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#card-fists"><strong>Fists</strong></a></td>
@@ -2322,10 +2323,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#guard"><strong><span class="kw-guard">Guard</span></strong></a></td>
 <td>A buffer written <span class="kw-guard">Guard</span> N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The <span class="kw-guard">Guard</span> of unspent AP adds to it and lasts 1 round.</td>
-</tr>
-<tr>
-<td><a class="xref" href="#gun"><strong>Gun</strong></a></td>
-<td>A trait: the Action needs a Firearm (a pistol, a musket).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#class-actions-picks-and-the-repertoire"><strong>Hallmark Action</strong></a></td>
@@ -2397,7 +2394,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#line-of-effect"><strong>Line of Effect</strong></a></td>
-<td>A straight line from the center of your square to any corner of the target's space that nothing blocks.</td>
+<td>A straight line from the center of your square to any corner of the creature's space that nothing blocks. Needed to target a creature, and for anything a card or a feature does to a creature.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#linked-actions"><strong>Linked Action</strong></a></td>
@@ -2410,10 +2407,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="gear.html#hands"><strong>Main hand, off hand</strong></a></td>
 <td>Your two hands. Which one holds a weapon changes nothing, unless a feature says so.</td>
-</tr>
-<tr>
-<td><a class="xref" href="archer.html#card-mark-quarry"><strong>Marked Quarry</strong></a></td>
-<td>The enemy an Archer chose with the Mark Quarry Action: <span class="kw-boon">1 Boon</span> on their [<span class="trhl" style="--tc:var(--g-requires)">Shot</span>, <span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Actions against it, and <span class="pool-b">[V] [Mod]</span> extra damage on a Tier 1. One at a time.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#mastery"><strong>Master</strong></a></td>
@@ -2484,8 +2477,12 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>A named <span class="kw-bane">Bane</span> an effect of another creature puts on you. Up to 2.</td>
 </tr>
 <tr>
-<td><a class="xref" href="gear.html#projectile"><strong>Projectile</strong></a></td>
-<td>A weapon property: the weapon shoots (a bow, a crossbow). <span class="trhl" style="--tc:var(--g-requires)">Shot</span> Actions need one.</td>
+<td><a class="xref" href="#projectile"><strong>Projectile</strong></a></td>
+<td>A trait and a weapon property with one name: the weapon shoots (a bow, a crossbow), and a Projectile Action needs one.</td>
+</tr>
+<tr>
+<td><a class="xref" href="#light"><strong>Light</strong></a></td>
+<td>A weapon property: a small one-handed melee weapon, quick to draw and stow (a Dagger).</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#properties"><strong>Properties</strong></a></td>
@@ -2610,10 +2607,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <tr>
 <td><a class="xref" href="#several-targets"><strong>Several Targets</strong></a></td>
 <td>One roll for every target of an Action, each calculated separately.</td>
-</tr>
-<tr>
-<td><a class="xref" href="#shot"><strong>Shot</strong></a></td>
-<td>A trait: the Action needs a Projectile weapon (a bow, a crossbow).</td>
 </tr>
 <tr>
 <td><a class="xref" href="#sickened"><strong>Sickened</strong></a></td>

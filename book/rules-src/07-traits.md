@@ -17,13 +17,13 @@ When an Action has **more than one** of these traits, you roll the one with the 
 
 The Fear trait has no rules of its own. Other rules, Talents and Tags refer to it.
 
+### Firearm
+
+Firearm Actions need a weapon with the Firearm property (see [[Properties]]), such as a pistol or a musket, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Weapon Attack with a musket is a Firearm Action). The trait and the property have one name, as Melee and Ranged do. A Firearm is not a Projectile weapon: Projectile Actions can't use it.
+
 ### Focus
 
 These Actions require concentration. This is not a mechanic by itself, but some features affect your ability to concentrate.
-
-### Gun
-
-Gun Actions need a weapon with the [[Firearm]] property, such as a pistol or a musket, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Weapon Attack with a musket is a Gun Action). A Firearm is not a Projectile weapon: Shot Actions can't use it.
 
 ### Handle
 
@@ -49,6 +49,10 @@ These Actions deal Nonlethal damage by default. A Nonlethal Action can deal [[Le
 
 These Actions roll your **Power Modifier**.
 
+### Projectile
+
+Projectile Actions need a weapon with the Projectile property (see [[Properties]]), such as a bow or a crossbow, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Weapon Attack with a crossbow is a Projectile Action). The trait and the property have one name, as Melee and Ranged do.
+
 ### Ranged
 
 These Actions target creatures from a distance. The Action's Distance can be written like a ranged weapon's Range: normal / far / maximum, with 1 Bane at far range and 2 at maximum. A single number is a normal range only. A [Ranged, Weapon] Action needs a ranged weapon, or a weapon with the Thrown property used thrown, and uses that weapon's Range as its Distance. A Weapon Action without this trait gets it when you use a ranged weapon or throw a Thrown weapon.
@@ -60,10 +64,6 @@ A Save Action: its targets roll a Save instead of you rolling against their Defe
 ### Self
 
 An Action with the Self trait always targets you, the origin of the Action. An [Area] Action with Self is centered on you: you are the target of its Emanation.
-
-### Shot
-
-Shot Actions need a weapon with the [[Projectile]] property, such as a bow or a crossbow, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Weapon Attack with a crossbow is a Shot).
 
 ### Signature
 

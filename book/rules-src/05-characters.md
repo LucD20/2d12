@@ -9,7 +9,7 @@
 4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). If your class lets you, choose which of its two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]).
 5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.
 6. **[[Rally Points]]** = your class' Rally value + 1 (it grows with your [[Stages|Stage]]).
-7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each), an **Art** if the class has them, and your **Escalation 2** ability (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
+7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each), an **Art**, and your **Escalation 2** ability (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
 
 ## Classes
 

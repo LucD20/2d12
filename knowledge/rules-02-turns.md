@@ -22,10 +22,10 @@ Initiative is a **zipper**. The creatures are split into however many different 
 
 ### The Start of the Encounter
 
-Some abilities happen **at the start of an encounter**, such as the Archer's [[Mark Quarry]]. After Initiative is rolled and before the first turn, each of them waits in a **stack**, in the turn order. The GM can change that order: an ally can go later, for example to act after another ally's ability. Then they resolve one at a time, in the stack's order, and the first turn begins.
+Some abilities happen **at the start of an encounter**, such as the Paladin's [[Judge]]. After Initiative is rolled and before the first turn, each of them waits in a **stack**, in the turn order. The GM can change that order: an ally can go later, for example to act after another ally's ability. Then they resolve one at a time, in the stack's order, and the first turn begins.
 
 > [!example]
-> Chris and Krysta are Archers. Chris rolls 15 and Krysta 13, so the stack is Chris's Mark Quarry, then Krysta's. Chris wants to know which enemy Krysta marks before choosing his own, so the GM puts Krysta's first.
+> Chris and Krysta are Paladins. Chris rolls 15 and Krysta 13, so the stack is Chris's Judge, then Krysta's. Chris wants to know which enemy Krysta Judges before choosing his own, so the GM puts Krysta's first.
 
 ### Swapping Initiative
 
@@ -92,18 +92,18 @@ Every Reaction has a Target line, and its Interrupt or Trigger is written about 
 
 **To use a Reaction** you need [[Line of Effect]] to its target, as for every Action. You must also **perceive** the target and the triggering creature (see [[Senses]]): Hidden is enough; Unsensed is not.
 
-**Only the Target line targets.** A Reaction can also do something to the triggering creature when it isn't the target: Shield of Faith's target is the ally, and it Taunts the attacker. You need no Line of Effect to the triggering creature for that; perceiving it is enough.
+A Reaction can also do something to the triggering creature when it isn't the target: Shield of Faith's target is the ally, and it Taunts the attacker. That needs Line of Effect to the triggering creature too, like anything a card does to a creature (see [[Targets of Effects]]); without it, that part doesn't happen and the rest does.
 
-A feature that says "when..." has no target: you must perceive the creatures it names.
+A feature that says "when..." waits for a moment: you must perceive the creatures it names. What it then does to a creature needs Line of Effect like anything else.
 
 > [!example]
-> Zack, a Paladin, has Shield of Faith: "Target: One ally. Interrupt: An enemy's [Strike] Action would damage the target." An orc behind an arrow slit shoots Nari, who stands 3 squares from Zack in the open. Zack has Line of Effect to Nari and hears the orc: he uses Shield of Faith, Nari's damage is reduced, and the orc is Taunted by him. Had Nari been behind a wall, with no Line of Effect from Zack, he couldn't.
+> Zack, a Paladin, has Shield of Faith: "Target: One ally. Interrupt: An enemy's [Strike] Action would damage the target." An orc around a corner from Zack shoots Nari, who stands 3 squares from Zack in the open. Zack has Line of Effect to Nari and hears the orc: he uses Shield of Faith, and Nari's damage is reduced. He has no Line of Effect to the orc, so the orc isn't Taunted. Had Nari been the one behind the wall, Zack couldn't have used it at all.
 
 > [!example]
 > Zack has Rebuke: "Target: One enemy. Trigger: The target moves away from you." A goblin 2 squares from him, on the other side of a wall, runs off. Zack hears it, but Rebuke targets the goblin and he has no Line of Effect to it: he can't use Rebuke.
 
 > [!example]
-> Zack has Kindled Wrath: "when an ally becomes Bloodied or goes Down, your Escalation increases by 1". Nari becomes Bloodied behind a wall, 6 squares from Zack. Zack hears him (within 10 squares), and Kindled Wrath has no target: his Escalation increases. At 12 squares behind that wall, out of sight and hearing, it wouldn't.
+> Zack has Kindled Wrath: "when an ally becomes Bloodied or goes Down, your Escalation increases by 1". Nari becomes Bloodied behind a wall, 6 squares from Zack. Zack hears him (within 10 squares), and Kindled Wrath does nothing to Nari, so it needs no Line of Effect: his Escalation increases. At 12 squares behind that wall, out of sight and hearing, it wouldn't.
 
 ### Disrupting Actions
 
@@ -178,13 +178,15 @@ An Action that another Action lets you use as part of it is a **Linked Action**.
 If a Linked Action has no valid target, the rest of the Action is disrupted (that Linked Action and anything after it don't happen); what already happened stays. By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".
 
 > [!example]
-> Double Shot lets you make two Weapon Attacks (1A). Afterwards you can still use Weapon Attack as its own Action, and that first use has no At-will Bane.
+> The Archer's Opening Shot lets an ally make a Weapon Attack (1A). On that ally's own turn they can still use Weapon Attack as its own Action, and that first use has no At-will Bane.
 
 ### Targets of Effects
 
 Unless something says otherwise, the effects of an Action, and the Actions it lets you use (Linked Actions), affect the **target of the Action**. Remember, if the Action doesn't have a target, you choose who to target on each individual Linked Action. If you use Shove on an enemy, the enemy is the one who is Pushed.
 
-Only the Target line makes a creature a target. A card can name another creature in its text (an Area card's "allies in the Area", a Reaction's "triggering creature"): what the card does to that creature follows the card's words, and the rules about targets don't apply to it.
+**Line of Effect, always.** Whatever a card or a feature does to a creature (damages it, moves it, heals it, gives it a condition, Guard, a Boon or a Bane, or lets it act), you need [[Line of Effect]] to that creature at that moment, whether the creature is on the Target line or named in the text. In an Area, the line is from the Point of Origin. A creature you have no Line of Effect to isn't affected; the rest of the card still happens. A card that works without it says so: "(no Line of Effect needed)".
+
+An effect on one creature that others gain or lose from (Vulnerable, Taunted, a creature made easier to perceive) is done to that creature alone: you need no Line of Effect to the others.
 
 ### Effect Timing
 
@@ -310,7 +312,7 @@ Each position in the turn order is an **initiative slot**. Effects end at the en
 - **Start:** you start every encounter at **Escalation 1 + your party's [[Momentum]]**.
 - **Rounds:** at the start of every round after the first, if you aren't Unconscious, your Escalation increases by 1. While Unconscious, you keep the Escalation you have.
 - **Critical:** once an encounter, when you score a [[Critical]] on one of your Actions, your Escalation increases by 1.
-- **Your class's hook:** each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally within 5 squares of you becomes Bloodied or goes Down; the Archer: your Marked Quarry goes Down). You gain your class's hook at level 2.
+- **Your class's hook:** each class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally becomes Bloodied or goes Down; the Archer: an enemy you have damaged goes Down). You gain your class's hook at level 2.
 - **At most 6:** you can't have more than 6 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 6 does nothing, and it isn't used up for the encounter.
 - **The end:** when the encounter ends, your Escalation goes back to 1, and the abilities that need it stop working.
 
