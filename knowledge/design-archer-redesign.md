@@ -597,4 +597,44 @@ A Tier 3 is 21% of his shots; with two or three shots a turn it fires in about h
 | Escalation 4 (level 2) | **Clear Lines** (checked: stays) | **Opening Shot** (his version, gated on a Tier 3: for his word) |
 | Escalation 6 (level 3) | **One More Arrow** (his idea, written) | a 0 AP Encounter Action: one arrow into every enemy near him, on the run (to design) |
 
+**Lucas's answer (2026-11-16): "All good, proceed." DECIDED: Clear Lines (Escalation 4), Opening Shot gated on a Tier 3 (Escalation 4), One More Arrow (Escalation 6), as written above.** Five of the six Escalation abilities are done.
+
+## Decision 12: the sixth Escalation ability and the Escalation hook (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules first.** An ability with traits, an Area or a roll is written as a 0 AP Action with an Escalation on its bar, as the Paladin's Reckoning (Chapter 5). Several Targets: one roll, each creature its own Tier. A 2 Emanation around him is 21 squares. An [Area] Action ignores Senses; his bow is still Doomed while he is Engaged. The hook is a level 2 Feature: once an encounter, a moment raises his Escalation by 1 (the Paladin's: an ally becomes Bloodied or goes Down; the old Archer's, "your Marked Quarry goes Down", left with the quarry).
+
+> **Arrow Storm** · Escalation 6 · Encounter · 0 AP
+> *You run through the thick of it loosing as you go, and every foe near your path wears an arrow.*
+> Weapon · Ranged · Projectile · Area · Self · Strike
+> Area: 2 Emanation | Target: All enemies in the Area
+> **Setup:** You Advance.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod].
+
+```
+Damage 5.2 a creature; about 2.3 creatures in a 2 Emanation ... 41   [SIM: 3.4 a point; the count is judgment]
+A full Advance inside it, for 0 AP ... 12
+--- Total: about 53, once an encounter, at Escalation 6 (One More Arrow: 12 a turn for the one or two turns a fight has at 6)
+```
+
+**Analysis.**
+- **It is Strafe grown up:** the same small hit, on everyone around him instead of three, for no AP. Width, never one big hit. Reckoning's shape (a Setup Advance, an Emanation from him, 0 AP).
+- **The danger is the point:** to catch several enemies in 2 squares he runs in among them, where his bow is Doomed if he ends adjacent to one. He has to end the Advance near but not next to them, or accept it. The fragile class's one brave moment.
+- **Against One More Arrow:** a burst of width once, or depth every turn at 6.
+- **Rules it touches:** nothing new. One roll for all of them.
+
+> **Thrill of the Kill** · Passive (the hook, level 2)
+> *One of yours drops, and your blood is up.*
+> **Passive:** Once an encounter, when an enemy you have damaged goes Down, your Escalation increases by 1.
+
+**Analysis.**
+- **Why this moment:** he spreads small hits across the field, so the first enemy to fall is usually one he has tagged. The hook pays the class for hitting many, and it works with the party's kills, not only his own: teamwork again.
+- **When it fires:** usually round 2 or 3, like the Paladin's.
+- **The name is the old hook's** (the old one needed the quarry).
+- **Other moments the rules offer, and why not:** *he gets a Tier 3* (round 1, almost always: too easy); *an enemy would enter a square adjacent to him* (it rewards being caught); *he damages three creatures in one turn* (only Strafe does it); *he hits with a blade and a bow in one turn* (only the switch-hitter); *he becomes Bloodied* (a fragile class shouldn't want that).
+
+**For Lucas to choose:** Arrow Storm's size (a 2 Emanation; 3 is 37 squares and about one more creature); the hook's moment.
+
 **Lucas's answer:**
