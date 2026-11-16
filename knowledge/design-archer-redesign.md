@@ -1082,3 +1082,33 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 - **Every Reaction has its Target line and its Interrupt written about "the target".** Every Strike says its Defense.
 
 **The whole Archer is decided. Nothing is in the book, the card files or Foundry; waiting for his word to apply.**
+
+## A rule changed back: Line of Effect is the default (Lucas, 2026-11-16; wording PROPOSED, waiting for his word; then the book's Chapter 2 is corrected)
+
+**Lucas:** "I am worried about the rule of 'targets on the effects dont need LoS' when we start making spells. I think Hit and Run for example suffers a lot from it. I think we should make LoS default and no-LoS exception."
+
+**What the book says today (written with the Paladin, Chapter 2):** "Only the Target line targets... You need no Line of Effect to the triggering creature for that; perceiving it is enough", and in Targets of Effects: a creature named in the text and not on the Target line is affected by the card's words, "and the rules about targets don't apply to it". He is right about where that leads: any card that names its creatures in its text instead of on its Target line would work through walls (Hit and Run's stabs did, before its Target line was added), and a spell's "each ally within 5 squares" would too. (The book has Line of Effect, not Line of Sight: Sight itself needs Line of Effect.)
+
+**The rule, turned around:**
+
+> **Line of Effect, always.** Whatever a card or a feature does to a creature (damages it, moves it, heals it, gives it a condition, Guard, a Boon or a Bane, or lets it act), you need Line of Effect to that creature at that moment, whether the creature is on the Target line or named in the text. In an Area, the line is from the Point of Origin. A creature you have no Line of Effect to isn't affected; the rest of the card still happens. A card that works without it says so: "(no Line of Effect needed)".
+> **A Reaction's target.** Every Reaction has a Target line, and its Interrupt or Trigger is written about **the target**. The creature whose Action sets the Reaction off is the **triggering creature**. To use a Reaction you need Line of Effect to its target, and you must perceive the target and the triggering creature (Hidden is enough; Unsensed is not).
+> A feature that says "when..." waits for a moment: you must perceive the creatures it names. What it then does to a creature needs Line of Effect like anything else.
+
+**What changes on the decided cards:**
+
+| Card | Today | With the default |
+|---|---|---|
+| Shield of Faith (Paladin) | the attacker is Taunted with no Line of Effect to it | the damage is reduced (the ally is the target); the attacker is Taunted only if he has Line of Effect to it |
+| Judge's reduction (Paladin) | an ally within 5 squares | he needs Line of Effect to that ally when the damage comes |
+| Commandment's Courage (Paladin) | allies within 3 squares | those he has Line of Effect to |
+| Opening Shot (Archer) | an ally who threatens the creature | he needs Line of Effect to that ally |
+| Spotter's Call Out (Archer) | "your allies perceive the target..." | **an exception worth writing:** it is a shout: "(no Line of Effect to your allies needed)" |
+| Hit and Run (Archer) | fixed already by its Target line | each hit needs Line of Effect at that square: no stab through a wall |
+| Kindled Wrath, Thrill of the Kill | they do nothing to another creature | unchanged: he only has to perceive |
+| Bulwark of Faith, Rebuke, Slip Away, Snap Shot, Lay On Hands | their one creature is the target | unchanged |
+
+**In the book when he says yes:** Chapter 2, "A Reaction's Target" (the "Only the Target line targets" paragraph and its first example: the attacker out of Line of Effect is not Taunted) and "Targets of Effects" (its last paragraph); Chapter 3, "Line of Effect" (its first sentence speaks only of targets: "To target a creature with an Action, you need Line of Effect"; it becomes "to affect"); the Glossary.
+
+**Lucas's answer:**
+
