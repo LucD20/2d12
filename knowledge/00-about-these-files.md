@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 5714bd5 2026-11-16 The Archer: Encounter themes decided; Volley proposed
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 88127a1 2026-11-16 The Archer: Volley as a 3 Burst on all creatures with Hindered on Tier 3; the Versions and Criticals question recorded
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -31,7 +31,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (11 KB)
-- research-index.md (5 KB)
+- research-index.md (6 KB)
 - research-ability-scope.md (7 KB)
 - research-archer.md (7 KB)
 - research-card-layout.md (5 KB)
@@ -49,10 +49,11 @@ Files:
 - research-save-dcs.md (3 KB)
 - research-tactical-combat.md (5 KB)
 - research-targeting.md (6 KB)
+- research-versions-criticals.md (5 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-archer-redesign.md (75 KB)
+- design-archer-redesign.md (77 KB)
 - design-card-structure.md (25 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
