@@ -891,4 +891,184 @@ Difficult Terrain for enemies over 32 squares, 2 rounds ... not priced (suggeste
 
 **For Lucas to choose:** the damage (4 flat; or his weapon's die); the rounds (2; 3 would be about 30% more); the Area (3 Burst, as Volley); the name (today's Covering Fire, kept).
 
+**Lucas's answer (2026-11-16):** "Shouldnt the target be 'All enemies in the area', and just remove the 'for enemies' twice? Or would that not be intuitive? quick search. otherwise, all is good from it". **COVERING FIRE IS DECIDED; its wording keeps "for enemies", said once.** Why: a Target line says whom the Action affects when it is used; this card makes ground that lasts 2 rounds and works on creatures that walk in later, which were never its targets (Chapter 2: only the Target line targets). With "Target: All enemies in the Area" and "the Area is Difficult Terrain", the terrain itself would read as rough for everyone. The book's own lasting areas put the side in the sentence (today's Covering Fire and Consecrated Ground: "enemies in the area...", "allies in it..."; the Paladin's new Consecrated Ground: "Difficult Terrain for enemies"), and so does the one 4e zone in our research (the Seeker's Thorn Cloud Shot: "The attack creates a zone... Any creature that ends its turn within the zone takes poison damage": the Target line is for the attack, the zone names whom it hurts). No new search was needed.
+
+## The whole Archer, levels 1 to 3: the clean read (2026-11-16, before applying)
+
+Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Health 16 / 8 · Rally 5 · Speed +1 · Light armor · Attributes: Body or Instinct +1, Mind or Appeal +1. **A line ending in * is new here and waits for his word** (the Tier 3 lines he asked for, and the Critical entries).
+
+### Level 1: the two Features
+
+> **Shifting Aim** · Passive
+> *You never loose twice from the same spot: a step to the side, and the line is clean again.*
+> **Passive:** Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began).
+
+> **Darting Blade** · Round · 1 AP
+> *You let the bow drop on its strap, open a foe with the knife, and are gone before it turns.*
+> Weapon · Melee · Strike
+> Distance: Reach | Target: One creature
+> **Setup:** You stow your bow and draw a Light weapon.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod]; Staggered (EoT). *
+> **Effect:** You Evade 2, then can stow that weapon and draw your bow.
+
+### Level 1: a Hallmark Action (1 of 2)
+
+> **Quick Shots** · Round · 2 AP
+> *You loose arrow after arrow into one foe before the first has landed, and step away while it reels.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: One creature
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 2[W] + [Mod].
+> **Tier 3:** [V] 3[W] + [Mod].
+> **Critical:** You regain 1 AP. *
+> **Effect:** You Evade 2.
+
+> **Strafe** · Round · 2 AP
+> *You run across the line of fight and put an arrow into each foe you pass.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: Up to three creatures
+> **Setup:** You Advance.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod]; Pushed 1. *
+
+### Level 1: a Hallmark Reaction (1 of 2)
+
+> **Slip Away** · Turn · 1R
+> *The moment a foe commits to reaching you, you are already somewhere else.*
+> Distance: 5 sq. | Target: One enemy
+> **Interrupt:** The target would enter a square adjacent to you.
+> **Effect:** You Evade 1, then Advance 2.
+
+> **Snap Shot** · Turn · 1R
+> *A foe lunges for you, and you put an arrow in it before it has finished the step.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: One enemy
+> **Interrupt:** The target would enter a square adjacent to you.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 1[W] + [Mod]; Hindered (EoT).
+> **Tier 3:** [V] 1[W] + [Mod]; Immobilized (EoT). *
+
+### Level 1: an Art (1 of 3; a second at level 3)
+
+> **Footwork** · Round · 1 AP
+> *You are never where you were a breath ago: a long sidestep, a run through the press, or a step with your hands already busy.*
+> — **Sidestep** —
+> **Effect:** You Evade 3.
+> — **Weave · Move** —
+> **Effect:** You Advance. During this Advance, Difficult Terrain doesn't slow you, and you can move through the squares of unwilling creatures (you can't end in one).
+> — **Hands Busy** —
+> **Effect:** You Evade 1, and before or after it you use the Interact or Reload Action (1A).
+
+> **Trick Shots** · Round · 1 AP
+> *You put the arrow where it will do something other than wound: through a cloak, past an ear, square on a shield.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: One creature
+> **Attack:** Weapon vs. Armor Defense
+> — **Pin** —
+> **Tier 2 or 3:** [V] [Mod] Pi; Hindered (1 round).
+> — **Startle** —
+> **Tier 2 or 3:** [V] [Mod] Pi; Vulnerable 1 (EoT).
+> — **Knock Back** —
+> **Tier 2:** [V] [Mod] Pi; Pushed 1.
+> **Tier 3:** [V] [Mod] Pi; Pushed 2.
+
+> **Spotter** · Round · 1 AP
+> *You read the field the way others read a page: where a foe hides, where the gap in its cover is, where you yourself are hardest to hit.*
+> — **Call Out** —
+> Distance: 10 sq. | Target: One creature you perceive
+> **Effect:** Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear (1 round).
+> — **Find the Gap** —
+> **Effect:** Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower.
+> — **Keep Low** —
+> **Effect:** Against each creature you have Cover from, your Cover is one level higher, up to High (1 round).
+
+### Level 1: the Escalation 2 ability (1 of 2)
+
+> **Lean and Loose** · Escalation 2 · Passive
+> *A wall is a quiver's best friend: you are out, the arrow is gone, and you are back.*
+> **Passive:** The Leaning Action costs you 0 AP.
+
+> **Blade and Bow** · Escalation 2 · Passive
+> *Arrow, knife, arrow: each sets up the next.*
+> **Passive:** Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action, or a [Ranged, Strike] Action after a [Melee, Strike] Action, it gains 1 Boon.
+
+### Level 2: the hook
+
+> **Thrill of the Kill** · Passive
+> *One of yours drops, and your blood is up.*
+> **Passive:** Once an encounter, when an enemy you have damaged goes Down, your Escalation increases by 1.
+
+### Level 2: an Encounter Pick (1 of 3)
+
+> **Volley** · Encounter · 2 AP
+> *You send a flight of arrows high, and they come down on everything standing in one patch of ground.*
+> Weapon · Ranged · Projectile · Area · Strike
+> Distance: Weapon · Area: 3 Burst | Target: All creatures in the Area
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 2[W] + [Mod]; Hindered (EoT).
+> **Tier 3:** [V] 3[W] + [Mod]; Hindered (EoT).
+> **Critical:** The target is Prone. *
+> **Effect:** You Evade 2.
+
+> **Hit and Run** · Encounter · 2 AP
+> *You run the length of the fight with the knife out, opening every foe you pass, and somewhere along the way an arrow leaves your bow.*
+> Weapon · Projectile · Move · Strike
+> **Effect:** You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a Light weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action.
+> **Attack:** Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll.
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod]; Vulnerable 1 (EoT).
+> **Special:** [W] is the weapon that hit. The bow's hit is Doomed if you are Engaged when you make it.
+
+> **Covering Fire** · Encounter · 2 AP
+> *You keep the arrows coming down on one stretch of ground, and nobody crosses it without paying.*
+> Weapon · Ranged · Projectile · Area
+> Distance: Weapon · Area: 3 Burst
+> **Effect:** For 2 rounds, the Area is Difficult Terrain and Hazardous Terrain for enemies [HT: Entering, Turn, Movement]: [V] damage equal to 2 + your Weapon Modifier, of your weapon's subtype.
+
+### Level 2: the Escalation 4 ability (1 of 2)
+
+> **Clear Lines** · Escalation 4 · Passive
+> *Your friends have learned where not to stand, and you have learned to shoot past their ears.*
+> **Passive:** Your allies give your targets no Cover, and your [Ranged] Actions take no Field Bane for a target Engaged with one of your allies.
+
+> **Opening Shot** · Escalation 4 · Passive
+> *Your arrow staggers the foe, and your ally's blade is already coming.*
+> **Passive:** Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Weapon Attack (1A) against it.
+
+### Level 3: the Escalation 6 ability (1 of 2), and a second Art
+
+> **One More Arrow** · Escalation 6 · Passive
+> *By now your hands move faster than you can think: there is always one more arrow in the air.*
+> **Passive:** Once on each of your turns, a [Strike] Action of yours that deals [W] deals 1[W] more.
+
+> **Fleet** · Escalation 6 · Passive
+> *Nothing on this field is as fast as you are now.*
+> **Passive:** Each Evade of yours moves you 1 more square, and your Evades can enter Difficult Terrain.
+
+**New on this page, for Lucas (the lines marked *):**
+
+1. **Darting Blade, Tier 3:** Staggered (EoT): the creature can't use Reactions until its turn ends. "Gone before it turns", made a rule; no other card of his uses it.
+2. **Strafe, Tier 3:** Pushed 1: the arrow knocks each of them a square back from him.
+3. **Snap Shot, Tier 3:** Immobilized (EoT) where Tier 2 is Hindered: the lunge stops dead, and it doesn't reach him.
+4. **Quick Shots, Critical:** "You regain 1 AP." The class's own critical: the hands were faster than the turn.
+5. **Volley, Critical:** "The target is Prone." Each creature its own, as Several Targets reads a Critical.
+
+**Seen together:**
+
+- **One wording changed without changing the card:** Covering Fire says "for enemies" once ("the Area is Difficult Terrain and Hazardous Terrain for enemies").
+- **His turn has 4 AP and 3 Strikes.** A full turn: a Hallmark (2 AP), then two of Darting Blade, an Art, a Weapon Attack or a move.
+- **Who moves him:** Quick Shots (Evade 2 after), Strafe (an Advance before), Darting Blade (Evade 2 after), Footwork, Slip Away, Hit and Run, Volley (Evade 2 after). Fleet adds 1 to every Evade.
+- **His riders, so none repeats too often:** Hindered on Snap Shot, Volley and Pin; Vulnerable 1 on Startle and Hit and Run; Pushed on Knock Back and (new) Strafe; Staggered (new) on Darting Blade; Immobilized (new) on Snap Shot's Tier 3; Prone only on Volley's Critical.
+- **Teamwork:** Clear Lines, Opening Shot, Call Out, Startle, Covering Fire, Thrill of the Kill (the party's kills count).
+- **19 cards:** 2 Features, 2 Hallmark Actions, 2 Hallmark Reactions, 3 Arts, 6 Escalation abilities, the hook, 3 Encounter Actions. A character holds 9 at level 3.
+
 **Lucas's answer:**
