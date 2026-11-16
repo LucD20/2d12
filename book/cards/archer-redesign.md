@@ -56,4 +56,10 @@ The charter (`book/class-charter.md`: 18 cards, the kinds, the complexity budget
 1. **"moving side to side to distract enemies":** what does distracting do at the table? (a) the enemy he just shot is worse at hitting others (a Bane, or Taunted); (b) his allies are better at hitting it (a Boon: he draws its eye); (c) only the fiction: he is hard to pin down, and the mechanics are his own movement.
 2. **"fast to change to melee for a quick strike":** with a second weapon he carries (a dagger, a short sword: the weapons pass does bows and swords) and swaps to for free, or with the bow in hand?
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16): the numbers are DECIDED as proposed** (Weapon +2 / Power +1 fixed; Health 16 / 8; Rally 5; Speed +1; **Light armor**; Attributes kept). **Distracting is fiction, "maybe causing vulnerable"** (Vulnerable: Actions against the creature gain Boons; a candidate rider). **The melee strike: "Quick swap and stab with a light weapon yes."**
+
+**His words on the research (2026-11-16):** "when I was playtesting, Double Shot was quite boring. We need to be careful with this class. We could even create a specific class mechanic like 'Arrows' that are a pool of dice to have the fiction of multiple shots. Or Actions that are multiple APs, roll one attack against multiple enemies etc. Research about how to make 'death by a thousand cuts' is worth it. I even thought about giving Archer +3 Weapon but wouldnt be good. Maybe Field boon to ranged being common is an idea etc."
+
+**Ideas on the table for the class's identity mechanic (his, to weigh after the research):** (1) "Arrows", a pool of dice that stands for many shots; (2) Actions of several AP that roll once against several enemies; (3) a Field Boon that ranged attacks get often; (not) Weapon +3.
+
+## Decision 2: the identity mechanic, "death by a thousand cuts" (research running; `book/research/` gets the note)
