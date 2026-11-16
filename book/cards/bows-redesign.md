@@ -25,7 +25,7 @@
 | "its table row, its Weapon Technique, its ladder" | three things a bow, in that order |
 | "Write the Light property in full" | which weapons have it; what it does beyond Darting Blade |
 
-## Decision 1: what no longer fits, and what stays (PROPOSED 2026-11-16, waiting for Lucas)
+## Decision 1: what no longer fits, and what stays (DECIDED 2026-11-16)
 
 ### What no longer fits
 
@@ -75,7 +75,36 @@ Flurry of Arrows and its steps; Parthian Shot and its steps; Patient Shot; Loose
 
 **For Lucas:** yes or changes to the three lists. Then step 2 starts with the Hunting Bow: its table row first.
 
+**Lucas's answer (2026-11-16): "Yes to all." THE THREE LISTS ARE DECIDED** (what no longer fits, what is kept, what is dropped). **And he asked: "Should we make one more ladder since stage 0 now exists?"** (decision 2).
+
+## Decision 2: one more rung, now that Stage 0 exists? (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+
+Read as: the tree has three rungs (Basic, Advanced, Exotic) and the game now has four Stages; should the tree get a fourth? (If he meant a bow's own ladder of unlocks, the table answers that too.)
+
+**Where the old tree lands on today's levels** (0.9 Mastery a combat, about 5 combats a level: 4.5 Mastery a level; Group Mastery is a third of your highest Mastery in the group):
+
+| | Stage 0 (levels 1-3) | Stage 1 (4-7) | Stage 2 (8-11) | Stage 3 (12-15) |
+|---|---|---|---|---|
+| Your Mastery with the bow you always use | 0 to 13 | 13 to 31 | 31 to 49 | 49 to 67 |
+| Your Group Mastery | 0 to 4 | 4 to 10 | 10 to 16 | 16 to 22 |
+| The old gates | Basic (0) | Advanced (6: level 5) | Exotic (11: level 8) | nothing |
+| A Basic bow's old unlocks | 3, 8 | 14, 20, 28 | nothing | nothing |
+| What the Stage already gives | | +1 to one Modifier | Master (one more [W]) | +1 to both Modifiers |
+
+So the tree built for ten levels is not short at the bottom: Stage 0 has its rung (Basic) and two unlocks. It is short **at the top**: Stage 3 gets no new bow, and a Basic bow's unlocks stop at level 7 of 15.
+
+- **A, three rungs, one moved (Claude's pick):** Basic opens in Stage 0, Advanced with Stage 1 (Group Mastery 4, level 4, in place of 6), Exotic with Stage 2 (Group Mastery 10, level 8). Stage 3 brings no new bow: it has both Modifiers, and each bow's last unlock is placed there. Six bows, as decided. Each bow's own unlocks are spread over the Stages it lives in (a Basic bow: two in Stage 0, then about two a Stage) when that bow is built.
+- **B, four rungs, one a Stage:** a fourth rung above Exotic for Stage 3 (Group Mastery 16, level 12). Every Stage has a bow to want. Eight bows a group in two lines, or one top bow a group; with eight groups, 8 to 16 more weapons, each with a Technique and unlocks, for levels nothing else is written for yet.
+- **C, four rungs, a new one at the bottom:** a plain bow for Stage 0 with no unlocks of its own, and the Hunting and Recurve Bows open with Stage 1. Simplest level 1; but Stage 0 then has one bow and no choice, and the first playtests are Stage 0.
+
+**Why A:** the rule that makes the tree work is "deeper is not stronger": a rung is a different way to play, paid by fewer unlocks. A fourth rung is paid by nothing unless it is designed, and it is 8 to 16 weapons for a Stage with no class levels yet. A keeps B open: a fourth rung can be added on top later without touching a bow below it. C takes away the one choice Stage 0 has.
+
+**Nothing in Stage 0 depends on this:** the two Basic bows open at Group Mastery 0 in all three, and their first unlock is at 3. The gates' numbers are settled with the Advanced bows.
+
+**For Lucas:** A, B or C (or: he meant a bow's own unlocks).
+
 **Lucas's answer:**
+
 
 ## Research
 
