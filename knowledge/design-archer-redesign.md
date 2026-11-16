@@ -260,4 +260,59 @@ Setup: a full Advance inside the card ... 12   [SIM: an AP is 12]
 
 **For Lucas to choose:** the pair, or another style for the second (Strafe's count: two creatures, or three with a smaller Tier 3); the names.
 
+**Lucas's answer (2026-11-16):** "They both need the projectile trait" (they have Shot, the trait that needs a Projectile weapon: Chapter 7); "both are too similar, but at the same time, it might be good to keep them like this. What you think, variance or similarity?" Claude: variance in shape, not in role: depth against width. **"Change strafe to that." THE HALLMARK ACTIONS ARE DECIDED:** Quick Shots as proposed, and:
+
+> **Strafe** · Round · 2 AP
+> *You run across the line of fight and put an arrow into each foe you pass.*
+> Weapon · Ranged · Shot · Strike
+> Distance: Weapon | Target: Up to three creatures
+> **Setup:** You Advance.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod].
+
+About 5.2 damage a creature, about 2.3 creatures: 41, + 12 for the Advance: about 53, of 50. Quick Shots is the only one of the two whose hits multiply with the Tier (depth: one enemy taken apart); Strafe is one hit each on many (width: the whole line harassed).
+
+**He asked: rename the trait Shot to Projectile, so "I have a Projectile weapon, so I can use this Projectile Action", though one is a trait and one a property with the same name?** Claude's answer: yes, and Gun to Firearm with it. The book already does exactly this with **Melee** and **Ranged**, each both a trait and a weapon property, and its language rule tells them apart by the next word ("a [Melee] Action", "a Melee weapon"). Shot / Projectile and Gun / Firearm are the two pairs that don't match, so they are two extra words to learn for nothing. The cost is real but mechanical: Chapter 7, Chapter 15, the Glossary, every Archer card, and in Foundry the trait keys `shot` and `gun` (a migration), the tests and the ruler. **When: with the weapons pass (bows first) for the book and with the Foundry pass for the system; until then the Archer's cards write Shot.** Waiting for his word.
+
+## Decision 6: the two Hallmark Reactions (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules and research first.** A Reaction's Target (Chapter 2): a Target line, the Interrupt or Trigger written about "the target", Line of Effect to it. Moving Closer is defined (an Interrupt checks before the creature enters the nearer square; a Trigger fires once, at the point of the movement he chooses). Using a [Ranged] Action while Engaged is Doomed. A 1R Reaction is worth about 10 to 15 points a turn, and the charter wants it used in about half the rounds. Research: a close enemy should be danger, with something good to do (archer.md, 5); the 4e posters liked "get the hell out of dodge" (2). Today's two: Overwatch (a shot at an enemy that moves closer; Hindered) and Covering Shot (a shot at an attacker; halves the ally's damage on a Tier 3: support, which this brief doesn't have).
+
+> **Slip Away** · Turn · 1R (flee)
+> *The moment a foe commits to reaching you, you are already somewhere else.*
+> Distance: 5 sq. | Target: One enemy
+> **Interrupt:** The target would enter a square adjacent to you.
+> **Effect:** You Evade 2.
+
+```
+A melee hit avoided when the enemy has no movement left to follow: about 40% of uses, about 3.3 Health each ... 16 a use   [judgment; Health 12 a point]
+Used in about half the rounds ... about 8 a turn, of 10 to 15: a little under
+```
+
+> **Overwatch** · Turn · 1R (shoot)
+> *You hold an arrow on the string, and loose it at the first foe that comes for you.*
+> Weapon · Ranged · Shot · Strike
+> Distance: Weapon | Target: One enemy
+> **Trigger:** The target moves closer to you.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod].
+
+```
+A Weapon Attack with the floor ... 27 a use   [SIM: a Weapon Attack is 25]
+Used in about half the rounds ... about 14 a turn, of 10 to 15: on
+```
+
+**Analysis.**
+- **The choice is a style, again:** when something comes for him, one Archer is gone and the other puts one more arrow in it. Neither protects an ally: the brief has no support.
+- **Slip Away is the fragile back-liner's answer** to being reached; an enemy with movement left can still follow, so it is a delay and a Reposition of the fight, not immunity. It is the 1R version of today's free Vanish (which denied a melee enemy every round).
+- **Overwatch is one more small hit a round,** the brief's damage by count. It loses today's Hindered (control) and gains the floor. As a Trigger he chooses the moment during the movement, so he shoots before the enemy is adjacent and his bow Doomed.
+- **Rules they touch:** nothing new; both are written about "the target".
+- **With the rest:** Slip Away's Evade is outside his turn, so it gives no Shifting Aim Boon. Both compete for his one Reaction AP.
+
+**For Lucas to choose:** the pair; Slip Away's distance moved (2, or 3).
+
 **Lucas's answer:**
