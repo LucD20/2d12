@@ -141,3 +141,60 @@ What the "arrow" had that N[W] doesn't, and how each is kept without a new word:
 **To watch (rules-backlog, "HOW A PC'S DAMAGE GROWS"):** at 15 Mastery 1[W] becomes 2[W]; a class whose cards already say 3[W] meets that step differently. For the Stages work.
 
 **This frees the first Feature slot.** The class's two Features are now both open: its identity (what every Archer has that says "many hits, on the move") and its Rule-bender (the quick swap to a light weapon is the candidate).
+
+## Decision 4: the two Features (PROPOSED 2026-11-16: six candidates, waiting for Lucas)
+
+Lucas: "Propose a few features, can be more than two, according to the research."
+
+**Rules first.** Using a [Ranged] Action while Engaged is Doomed; against a creature Engaged with someone else, 1 Field Bane (Chapter 3). Drawing, stowing or swapping a weapon is the Interact Action (1 AP); at 8 Mastery a weapon is drawn or stowed once a turn for free (Chapter 15). A Dagger deals [V] 0 / 2 + 1d4! / 4 + 1d4! (more than a Shortbow's 0 / 1d6! / 1 + 1d6!). An Evade triggers no Reactions and can't enter Difficult Terrain. Each repeat of an At-will Action in a turn takes 1 more Bane; a Boon cancels a Bane; Field Boons stop at 2.
+
+> **1. Shifting Aim** · Passive (his Field Boon idea)
+> *You never loose twice from the same spot: a step to the side, and the line is clean again.*
+> **Passive:** Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began).
+
+About 5 points a turn [judgment: a Boon on one or two shots]. It pays for "moving side to side" and cancels the second shot's Bane, so a turn of shoot, move, shoot is as good as standing still for three. Research: the map moves a shooter better than a rule; this is a rule that points at the map. Tracking: this turn only. Field Boons stop at 2, so it shares the limit with Flanking and high ground.
+
+> **2. Darting Blade** · Round · 1 AP (the quick strike; Draw Steel's Fade)
+> *You let the bow drop on its strap, open a foe with the knife, and are gone before it turns.*
+> Weapon · Melee · Strike
+> Distance: Reach | Target: One creature
+> **Setup:** You stow your bow and draw a one-handed melee weapon.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod].
+> **Effect:** You Evade 2, then can stow that weapon and draw your bow.
+
+A Weapon Attack with a Dagger (25) + the floor (2) + Evade 2 (about 8) + two free swaps (2 AP of Interact he never has to pay: not priced): about 35 for 1 AP, held by its Round Frequency. It answers the research's "danger up close, with something good to do there": Engaged, his bow is Doomed, and this is what he does instead. It is the brief's line as one card.
+
+> **3. Loose and Move** · Passive (the shot that moves; 4e's Nimble Strike)
+> *You are already moving when the arrow leaves the string.*
+> **Passive:** Once on each of your turns, after you use a [Ranged, Strike] Action, you can Evade 2.
+
+About 8 points a turn [judgment: most of an Evade Action]. "Shooting fast and precise, then moving away", every turn, on any card. The players who hated Twin Strike liked exactly this. Its risk: it is free and always the same, so no decision but where to step.
+
+> **4. Sure Hand** · Passive (the floor: never a whiff)
+> *An arrow of yours always finds something.*
+> **Passive:** When your [Ranged, Strike] Action gets a Tier 1, it deals [V] damage equal to your Weapon Modifier, of your weapon's subtype, if that Tier would deal less.
+
+About 2 points a Strike, 6 a turn [SIM: 28% of shots, 2 damage]. The research's plainest finding on small hits is that they don't miss (Tweet; ICON's "On miss: fray"). On a Feature, every shot has it, the Weapon Attack included, and no card needs a Tier 1 line of its own.
+
+> **5. Harry** · Passive (his "maybe causing vulnerable")
+> *Your arrows come from a new side each time, and your foe can't watch them and the swords at once.*
+> **Passive:** Once a round, when you damage a creature with a [Ranged, Strike] Action from a square you entered this turn, it is Vulnerable 1 (EoT).
+
+Vulnerable 1 is a Moderate rider (8 points), every round, with no Save. **A caution from his own ruling (2026-11-04):** the old Archer's Harrying Shots, a Bane every round with no Save, was judged too strong. Better as an Escalation ability or an Art's Mode than as a Feature.
+
+> **6. Slip Away** · Round · 0R (today's Vanish)
+> Distance: Self | Target: You
+> **Interrupt:** An enemy would enter a square adjacent to you.
+> **Effect:** You Evade 2.
+
+The fragile back-liner's escape. Strong as a Feature (it denies a melee enemy its turn every round): a Hallmark Reaction's place, with a cost of 1R.
+
+**Not proposed, and why:** *no Doomed on his bow while Engaged* (it erases a cost of range for free: what 5e's feats did); *no At-will Bane on his shots* (Twin Strike's trap).
+
+**Claude's pick for the two Features: 1 (Shifting Aim) and 2 (Darting Blade).** Shifting Aim is the identity: many shots, earned by moving; it is his own idea and the only candidate that makes the map matter. Darting Blade is the Rule-bender (a swap that costs nothing, inside one card). 3 becomes the Effect line of his Hallmark Strikes (movement written on the card, shoot then move); 4's floor is written on each card's Tier 1; 5 and 6 go to the Escalation abilities and the Reactions.
+
+**Lucas's answer:**
+
