@@ -145,4 +145,198 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 
 **Part 8, the level:** off the card, kept as data (Claude: yes). **Part 9, Critical:** an optional labeled line under Tier 3 (Claude: keep).
 
+**Lucas's answer (2026-11-16): PARTS 7, 8 AND 9 ARE DECIDED.** Passives: 1 (a card, the sentence whole under the label Passive), "but without the 'While your Escalation is X or more,'" (the bar says it). The level stays off the card. Critical stays, an optional line under Tier 3.
+
+## THE STRUCTURE, WHOLE (decided with Lucas, 2026-11-16; to be built into `build_rules.py` and "Reading an Action" when the Paladin is applied)
+
+1. **The bar:** the name at the left; at the right, the Escalation it needs, its frequency, and its cost ("1 or 2 AP" with two Versions; "Passive" when it has none).
+2. **The Flavor:** one sentence that describes what is done and seen.
+3. **The traits:** on their own line, by group.
+4. **The grid:** "Distance: ..." and "Area: ..." at the left, "Target: ..." at the right. A fact the card doesn't have is not printed.
+5. **The body, in play order, every line labeled:** Requirement · Interrupt or Trigger · Setup · a defined word ("Smite dice", "Judged") · Effect · Attack or Save · Tier 1 / 2 / 3 (or "Tier 1 or 2") · Critical · Effect · Special.
+6. **Effect, Special, Passive:** Effect: what happens when the card is used, with no roll. Special: a rule about the card itself. Passive: what a card with no cost does.
+7. **The roll line:** "Attack: Weapon vs. Armor Defense" or "Save: Appeal", right above the Tiers. A Strike always writes its Defense.
+8. **Versions and Modes:** one block each, under a heading (the cost, or the Mode's name with the traits only it has), written in full; a Mode has its own Distance and Target. What every block shares is written once, above them.
+9. **Not on the card:** the category ("Paladin Hallmark Action") and the level: they stay as data and as the chapter's headings.
+
+**The data behind it** (the card files): `category` and `level` stay as fields; a Version or a Mode is an entry with its own lines; the labels are fields, never text typed into a sentence.
+
+**Where the new shape moved words on the Paladin's cards (for Lucas to check):**
+
+- **Judge:** I split it into the Structure: the "Judged" rules first, then a 0 AP block and a 1 AP block. The 0 AP block's limit ("only at the start of an encounter, or as a 0R when the creature you Judged goes Down") became a Special line. Same rules, new shape.
+- **The Arts:** each Mode that affects a creature got its own Distance and Target, and its sentence now says "the target" (Trade Places: "You and the target swap squares.").
+- **The Passives:** "While your Escalation is N or more" is gone from all six; the bar says it. Kindled Wrath keeps "Once an encounter" in its sentence, as you chose.
+- **Word of Radiance and Smite:** the Profane rule and the extra die are Special lines, at the end. Word of Radiance's used to sit above its Tiers.
+- **Smite's Attack line:** "Signature vs. Armor Defense": it has both the Signature and the Weapon traits, and I took Signature as the roll. Tell me if it should be Weapon.
+
+## The 19 Paladin cards in the Structure
+
+### Level 1: the two Features
+
+> **Judge** · At-will · 0 or 1 AP
+> *You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.*
+> Divine
+> Distance: 10 sq. | Target: One enemy you can see
+> **Judged:** A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.
+> — **0 AP** —
+> **Special:** You can use this only at the start of an encounter, or as a 0R when the creature you Judged goes Down.
+> **Effect:** The target is Judged by you until the encounter ends.
+> — **1 AP** —
+> **Effect:** The target is Judged by you instead of the one you had.
+
+> **Smite** · Encounter · 2 AP
+> *Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.*
+> Signature · Weapon · Strike · Divine
+> Distance: Weapon | Target: One creature
+> **Smite dice:** [R] 1d6! Ho for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s.
+> **Attack:** Signature vs. Armor Defense
+> **Tier 1:** Your Smite dice.
+> **Tier 2:** [V] 1[W] + [Mod] + your Smite dice.
+> **Tier 3:** [V] 1[W] + [Mod] + your Smite dice + 1 more Smite die.
+> **Special:** When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. Neither extra die counts toward the 4.
+
+### Level 1: a Hallmark Action (1 of 2)
+
+> **Binding Light** · Round · 2 AP
+> *Your blow lands wreathed in light that roots your foe where it stands.*
+> Weapon · Strike · Divine
+> Distance: Weapon | Target: One creature
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [R] 1d6 Ho.
+> **Tier 2:** [V] 1[W] + [Mod] + [R] 1d6 Ho; Immobilized (1 round).
+> **Tier 3:** [V] 1[W] + [Mod] + [R] 1d8 Ho; Immobilized (1 round).
+
+> **Lay On Hands** · Round · 1 or 2 AP
+> *You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.*
+> Divine · Focus
+> Distance: Reach | Target: One willing ally
+> **Setup:** You Advance up to 5 squares in a straight line toward the target.
+> — **1 AP** —
+> **Effect:** The target gains Guard equal to 2 + your Power Modifier.
+> — **2 AP** —
+> **Effect:** The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point.
+
+### Level 1: a Hallmark Reaction (1 of 2)
+
+> **Shield of Faith** · Turn · 1R
+> *You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.*
+> Divine · Focus
+> Distance: 5 sq. | Target: One ally
+> **Interrupt:** An enemy's [Strike] Action would damage the target.
+> **Effect:** That damage is reduced by 1 + your Power Modifier, and the triggering creature is Taunted by you (1 round).
+
+> **Rebuke** · Turn · 1R
+> *You call out in your god's name, and your foe's stride falters and stops.*
+> Power · Save · Divine
+> Distance: 3 sq. | Target: One enemy
+> **Trigger:** The target moves away from you.
+> **Effect:** The target is Hindered (EoT).
+> **Save:** Appeal
+> **Tier 1 or 2:** Its Move Action is disrupted.
+
+### Level 1: an Art (1 of 3; a second at level 3)
+
+> **Lantern of Faith** · Round · 1 AP
+> *You call your god's light: around you, onto a foe, or into a foe's eyes.*
+> Divine
+> — **Kindle** —
+> **Effect:** You shed Bright light 3 until the encounter ends.
+> — **Reveal** —
+> Distance: 5 sq. | Target: One creature you perceive
+> **Effect:** The target sheds Bright light 1 (1 round).
+> — **Glare · Power · Save** —
+> Distance: 5 sq. | Target: One enemy you can see
+> **Save:** Instinct
+> **Tier 1 or 2:** Half-Blinded (EoT).
+
+> **Hold the Line** · Round · 1 AP
+> *You plant yourself where the fight is worst: you crowd the ground at your feet, trade places with an ally, or carry one clear.*
+> — **Brace** —
+> **Effect:** Squares adjacent to you are Difficult Terrain for enemies (1 round).
+> — **Trade Places** —
+> Distance: Reach | Target: One willing ally
+> **Effect:** You and the target swap squares. Each of you is moved by a Reposition.
+> — **Rescue** —
+> Distance: Reach | Target: One willing ally
+> **Effect:** Reposition 2 the target.
+
+> **Commandment** · Round · 1 AP
+> *You speak with your god's authority: you call a foe to face you, steady the hearts around you, or order a foe to its knees.*
+> Divine
+> — **Challenge** —
+> Distance: 5 sq. | Target: One enemy
+> **Effect:** The target is Taunted by you (1 round).
+> — **Courage** —
+> **Effect:** You and allies within 3 squares of you ignore the Frightened condition (1 round).
+> — **Kneel · Power · Save** —
+> Distance: 5 sq. | Target: One enemy
+> **Save:** Appeal
+> **Tier 1 or 2:** Prone.
+
+### Level 1: the Escalation 2 Passive (1 of 2)
+
+> **Armor of Faith** · Escalation 2 · Passive
+> *Each time you answer for an ally, your god's light settles on you like mail.*
+> **Passive:** When you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier.
+
+> **Roving Judgment** · Escalation 2 · Passive
+> *Your eye passes from one guilty foe to the next, and your god's attention follows it.*
+> **Passive:** The 1 AP use of Judge costs you 0 AP.
+
+### Level 2: the hook
+
+> **Kindled Wrath** · Passive
+> *An ally's blood on the ground, and your god's anger is yours.*
+> **Passive:** Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1.
+
+### Level 2: an Encounter Pick (1 of 3)
+
+> **Bulwark of Faith** · Encounter · 1R
+> *You step into the blow meant for them, and your god holds the line with you.*
+> Divine · Focus
+> Distance: 5 sq. | Target: One ally
+> **Interrupt:** An enemy's [Strike] Action would damage the target.
+> **Effect:** The target gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1.
+
+> **Consecrated Ground** · Encounter · 2 AP
+> *You drive your weapon into the earth and the ground around it shines: your foes wade through it, and your allies stand firmer on it.*
+> Area · Divine
+> Distance: 8 sq. · Area: 2 Emanation
+> **Effect:** For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to your Power Modifier.
+
+> **Word of Radiance** · Encounter · 2 AP
+> *You speak a single word of your god, and light bursts from you: your foes burn in it and stagger back.*
+> Power · Save · Area · Self · Divine
+> Area: 2 Emanation | Target: All enemies in the Area
+> **Save:** Appeal
+> **Tier 1:** [R] 3d6 Ho; Pushed 3.
+> **Tier 2:** [R] 2d6 Ho; Pushed 2.
+> **Tier 3:** [R] 1d6 Ho; Pushed 1.
+> **Special:** Against a Profane creature, the damage dice are d8s.
+
+### Level 2: the Escalation 4 Passive (1 of 2)
+
+> **Weight of Judgment** · Escalation 4 · Passive
+> *Your judgment hangs on your foe like a chain, and its steps drag.*
+> **Passive:** A creature Judged by you has its Speed reduced by 2 (to a minimum of 1).
+
+> **Tireless Vigil** · Escalation 4 · Passive
+> *The longer the fight lasts, the less escapes you: your guard is on two allies at once.*
+> **Passive:** You gain 1 more Reaction AP when you regain AP. It pays only for [Divine] Reactions.
+
+### Level 3: the Escalation 6 ability (1 of 2), and a second Art
+
+> **Reckoning** · Escalation 6 · Encounter · 0 AP
+> *You stride among your foes, and your god's light breaks from you and throws them back.*
+> Power · Save · Area · Self · Divine
+> Area: 2 Emanation | Target: All enemies in the Area
+> **Setup:** You Advance.
+> **Effect:** Each target is Pushed 2.
+> **Save:** Appeal
+> **Tier 1 or 2:** Frightened of you (1 round).
+
+> **Hallowed Stance** · Escalation 6 · Passive
+> *Your god's light carries you: wherever you are needed, you are already there.*
+> **Passive:** Once on your turn, a [Divine] Action you use gains "Setup: You Advance 3."
+
 **Lucas's answer:**
