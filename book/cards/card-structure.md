@@ -100,5 +100,6 @@ No published game found opens an ability with "Each target makes an X Save": Luc
 
 Also from the research: a grid with no labels is hard on a first reading (said of Draw Steel's), so **the grid keeps "Distance:", "Area:" and "Target:"**.
 
-**Lucas's answer:**
+**Lucas (2026-11-16): "I think traits need a line of itself, imagine something with 6 traits?"** Agreed: Reckoning has five beside "Escalation 6 · Encounter · 0 AP". The traits take the full width under the Flavor. Proposed for the frequency and the cost, three places: **1** on the title bar at the right of the name, the category on a small line under it (Claude's pick: the cost is what is looked for first); **2** in the grid at the left of the Distance; **3** a line of their own under the traits. The roll line (1 / 2 / 3 above) is still open.
 
+**Lucas's answer:**
