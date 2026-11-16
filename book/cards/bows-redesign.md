@@ -266,6 +266,21 @@ One gap to close when it goes into the book: "left your square" for a creature b
 
 **For Lucas:** the ladder (3 and 14); Expert out for the bows; A, B or C at 14; Group Mastery 5 for the Advanced rung.
 
+**Lucas (2026-11-16), before answering:** "'Your Mastery with the bow you always use' is the average mastery gained? Because if it is, then I will increase the Mastery numbers. I want it to grow slower i think. Before I answer, show me in a table how it is looking like, intuitively."
+
+**Answered: yes, the average.** The rule (Chapter 15): the first Tier 3 on a Weapon Action with a weapon of a group in an encounter gives 1 Mastery, at most 1 a group an encounter. A Tier 3 is 27% of rolls at Stage 0, so the point comes in 47% of fights with 2 weapon rolls, 72% with 4, 85% with 6, 92% with 8, 96% with 10. A character who fights with the bow makes about 8: **0.9 a fight, so Mastery is close to "the number of fights you have used it in"**. At his pace (about 5 fights a level): 4 or 5 after level 1, 9 after level 2, 13 or 14 after level 3 (Stage 0 ends), 18 after level 4, 31 or 32 after level 7 (Stage 1 ends), 49 or 50 after level 11, 67 or 68 after level 15. An Archer is 3 ahead.
+
+| Mastery needed | Anyone: fight, level | An Archer (starts at 3): fight, level |
+|---:|---|---|
+| 3 | fight 4, level 1 | from the start |
+| 8 | fight 9, level 2 | fight 6, level 2 |
+| 14 | fight 16, the first of level 4 | fight 13, level 3 |
+| 15 (Group Mastery 5) | fight 17, level 4 | fight 14, level 3 |
+| 20 | fight 23, level 5 | fight 19, level 4 |
+| 28 | fight 32, level 7 | fight 28, level 6 |
+
+**Two ways to make it slower, his to choose:** bigger numbers on the ladders (the rule stays "a point a fight"; the numbers grow large over 15 levels: about 68 by the end), or a slower point (for instance at most 1 a group between two Rests in place of each encounter: about half the pace at his 1 to 2 fights a session, and every number above is reached twice as late). Waiting for his answer on the ladder.
+
 **Lucas's answer:**
 
 ## Research
