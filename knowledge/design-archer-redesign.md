@@ -717,4 +717,27 @@ Effect: Evade 2 ... 8   [judgment]
 
 **For Lucas to choose:** all creatures or all enemies; the Area (a 2 Emanation; a 3 Emanation is 37 squares and would need smaller Tiers).
 
+**Lucas's answer (2026-11-16):** "It should be a burst, instead of emanation"; then: "Do with 3 burst, all creatures, and see how it would look with hindered eot on Tier 3." (A 2 Burst is 12 squares, a 3 Burst 32, a 2 Emanation 21; the ruler assumes 1.8 creatures in a 2 Burst and 2.3 in a 3 Burst.)
+
+> **Volley** · Encounter · 2 AP
+> *You send a flight of arrows high, and they come down on everything standing in one patch of ground.*
+> Weapon · Ranged · Projectile · Area · Strike
+> Distance: Weapon · Area: 3 Burst | Target: All creatures in the Area
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 2[W] + [Mod].
+> **Tier 3:** [V] 3[W] + [Mod]; Hindered (EoT).
+> **Effect:** You Evade 2.
+
+```
+Damage 9.6 a creature; 2.3 creatures in a 3 Burst ... 75   [SIM: 3.4 a point; the ruler's count for a 3 Burst]
+Hindered (EoT) on a Tier 3: 21% of the creatures, a Mild rider ... about 1.5   [Lucas's rider table: Mild 3]
+Effect: Evade 2 ... 8   [judgment]
+--- Total: about 85, of 100: a little under
+```
+
+**How Hindered on Tier 3 looks:** it is light. One creature in five gets it, and only until its own turn ends, so it slows that creature's next move (half Speed). It costs almost nothing in points and gives the top Tier something to say beyond more damage; it won't hold a group. If it should matter, "Tier 2 or 3" would catch 72% of them (about 5 points, and then the patch of ground really slows the pack).
+
+**He also asked (2026-11-16): "Are we underutilizing the multiple actions here? Make a quick search about it, see if we need to give more versions to Actions. Same with critical, we are likely underutilizing it."** What the project already holds: `book/research/ability-scope.md` argued *against* Versions ("the 1 / 2 / 3 AP Versions make each turn a budget problem ('biggest Smite I can afford, then attacks'), not a board problem. Two or three small, different Round options beat one card in three sizes"), which is why the redesign has so few (2 of the Paladin's 19 cards, none of the Archer's; the old book: 16 of 62). A Critical (Doubles on a result already Tier 3) comes up on 2.8% of rolls at Weapon +2 against DC 13 (2.1% at +1): about once in 36 rolls, perhaps once every third fight for an Archer; 3 of the old 62 cards had a Critical line, none of the redesign's. A web search on both is running; the note goes to `book/research/`.
+
 **Lucas's answer:**
