@@ -283,7 +283,7 @@ One gap to close when it goes into the book: "left your square" for a creature b
 
 **Lucas (2026-11-16):** "Should we change to: You gain one mastery when you win an encounter of X difficulty. Instead of 'when you first get a tier 3'? I dont know if any other systems does something like this, but still attempt a search on the topic."
 
-## Decision 7: how Mastery is gained (PROPOSED 2026-11-16, three ways, waiting for Lucas; the ladder's numbers wait for it)
+## Decision 7: how Mastery is gained (DECIDED 2026-11-16: a won encounter, normal or harder)
 
 **The search** (`book/research/mastery-progression.md`; six searches, summaries only, no page opened): no game found gives a weapon's own progress for winning a fight of a set difficulty. The two halves exist apart. "Only the hard ones count" exists for single rolls (Burning Wheel's routine, difficult and challenging tests; Blades in the Dark's xp for a desperate roll), and what goes wrong there is players chasing the roll that counts. Progress by use is known for grinding, and the fixes named are a cap and a challenge: today's rule has the cap, his proposal adds the challenge. Kingdom Death: Monster's weapon proficiency, the nearest match to today's rule, was not found.
 
@@ -306,6 +306,49 @@ One gap to close when it goes into the book: "left your square" for a creature b
 **The ladder's numbers under B** (to decide after this): the Technique at 3 is then the second level for anyone but an Archer (fight 8), which may be too late for a weapon's first trick: 2, or 1, would be the number. Proposed once he chooses.
 
 **For Lucas:** A, B or C; in B, X (hard, or normal).
+
+**Lucas's answer (2026-11-16): "Lets do B, with moderate+ encounters, so a higher ladder. Before I decide the numbers, show me the exact ladder for the bows currently, even the outdates ones." HOW MASTERY IS GAINED IS DECIDED:**
+
+> **When your side wins an encounter that was normal or harder, you gain 1 Mastery with one weapon you made a [Strike] Action with in it.**
+
+("Moderate" is the Bestiary's **normal**: total CV 100 for each PC; easy, 75, gives nothing.) With it, as proposed: "wins" = the encounter ends with every enemy Down, fled or surrendered; the difficulty is the one the GM built, said when the fight ends; one point an encounter, one weapon. It replaces "the first Tier 3 with a weapon of a group, at most 1 a group an encounter" (Chapter 15) when the bows are applied. **The pace: about 1 a fight** (5 a level if every fight is normal or harder: 15 after level 3, 35 after level 7, 55 after level 11, 75 after level 15), so the ladder's numbers go up.
+
+## The ladders as they stand, all of them (shown to Lucas 2026-11-16, before the numbers)
+
+"Reached" is at 1 Mastery a fight and 5 fights a level, for a character who starts at 0; an Archer is 3 fights ahead.
+
+**1. The book today (Chapter 15), the same for every weapon:**
+
+| Mastery | Reached | Unlock |
+|---:|---|---|
+| 3 (Shortbow) / 4 (Longbow) | fight 3 or 4, level 1 | the Weapon Technique: Skirmish Shot / Heartseeker |
+| 8 | fight 8, level 2 | Expert: once a turn, draw, stow or regrip without Interact |
+| 15, and level 8 | level 8 | Master: Actions that deal [W] deal one more [W] |
+
+Another weapon of the group is at least at a third of your highest Mastery in the group.
+
+**2. weapon-trees.md (2026-10-31, after its revisions R1 to R4): outdated.** An Advanced bow started at 6 Mastery and an Exotic one at 11 (your Group Mastery when the rung opened).
+
+| Bow | Rung opens | Its unlocks | Today |
+|---|---|---|---|
+| Hunting Bow | Basic, 0 | 3 Close Quarters · 8 Wounding Shot · 14 Quick Nock · 20 Blood Trail · 28 Patient Shot | Wounding Shot redone and decided; Blood Trail a candidate; the rest dropped |
+| Recurve Bow | Basic, 0 | 3 Light Feet · 8 Parthian Shot · 14 Turn and Loose · 20 Second Wind · 28 Gone Before They Land | all dropped |
+| Longbow | Advanced, Group Mastery 6 (18 with one bow: level 4) | 6 Plunging Shot · 14 Loose Together · 20 Steady Draw · 28 Arrowfall | Loose Together dropped; the rest clash with Spotter; the arc kept as an idea |
+| Composite Bow | Advanced, Group Mastery 6 | 6 Flurry of Arrows · 14 Rider's Stride · 20 Unbroken Rhythm · 28 Storm of the Steppe | all dropped |
+| Warbow | Exotic, Group Mastery 11 (33 with one bow: level 7) | 11 Heavy Shaft · 16 Bodkin Point · 22 Clothyard Shaft | the Line kept as an idea |
+| Flight Bow | Exotic, Group Mastery 11 | 11 Pinpoint Shot · 16 Snap Release · 22 Needle's Eye | Pinpoint Shot dropped as written; the range kept as an idea |
+
+When each number comes: 3 fight 3 (level 1) · 8 fight 8 (level 2) · 14 fight 14 (level 3) · 20 fight 20 (level 4) · 28 fight 28 (level 6).
+
+**3. This remake so far:**
+
+| Bow | Decided | Proposed, not answered |
+|---|---|---|
+| Hunting Bow | 3: Wounding Shot | 14: Blood Trail (or Expert moved there, or nothing yet); Expert at 8 out for the bows |
+| Recurve Bow | its damage | everything else |
+| The rungs | three; the next one harder to reach in Stage 0 but possible | Advanced at Group Mastery 5 (15 with one bow: the last fight of level 3) |
+
+**For Lucas:** the numbers (the Technique; the second unlock; the Advanced rung).
 
 **Lucas's answer:**
 

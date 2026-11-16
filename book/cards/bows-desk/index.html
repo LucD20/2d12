@@ -75,9 +75,10 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 
 <div class="wrap">
 <h1>Bow Remake Desk</h1>
-<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the three lists, the rungs, the Hunting Bow's row and the Recurve Bow's damage and Wounding Shot are decided; how Mastery is gained is proposed, and the ladder waits for it. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the three lists, the rungs, the Hunting Bow's row and the Recurve Bow's damage and Wounding Shot are decided; how Mastery is gained is decided (a won encounter, normal or harder); the ladder's numbers are yours to set. Nothing here is in the book or in Foundry.</p>
 <nav>
   <a href="#need">What I need</a>
+  <a href="#ladders">Every ladder</a>
   <a href="#gain">Gaining Mastery</a>
   <a href="#ladder1">Hunting Bow: the ladder</a>
   <a href="#tech1">Wounding Shot</a>
@@ -97,14 +98,47 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-<li><strong>How Mastery is gained</strong> (next section): A, B or C. My pick is B, your idea with "hard or deadly". In B: hard, or normal.</li>
+<li><strong>The ladder's numbers</strong> (the tables in the next section show every ladder as it stands): the Technique, the second unlock, the Advanced rung.</li>
+<li>Still open from before: Expert out for the bows; A, B or C for the second unlock (Blood Trail is my pick).</li>
 </ol>
 </div>
-<p class="small">The ladder's four questions wait for this one: its numbers change with the pace.</p>
+</section>
+
+<section id="ladders">
+<h2>Every ladder as it stands</h2>
+<p><strong>Decided:</strong> "When your side wins an encounter that was normal or harder, you gain 1 Mastery with one weapon you made a [Strike] Action with in it." Your "moderate" is the Bestiary's normal: total CV 100 for each character. That is about 1 Mastery a fight: 15 after level 3, 35 after level 7, 55 after level 11, 75 after level 15.</p>
+<p class="small">"Reached" below is at 1 a fight and 5 fights a level, from 0. An Archer is 3 fights ahead.</p>
+<h3>1. The book today, the same for every weapon</h3>
+<div class="scroll"><table>
+<tr><th>Mastery</th><th>Reached</th><th>Unlock</th></tr>
+<tr><td>3 (Shortbow), 4 (Longbow)</td><td>fight 3 or 4, level 1</td><td>the Weapon Technique: Skirmish Shot, Heartseeker</td></tr>
+<tr><td>8</td><td>fight 8, level 2</td><td>Expert: once a turn, draw, stow or regrip without Interact</td></tr>
+<tr><td>15, and level 8</td><td>level 8</td><td>Master: Actions that deal [W] deal one more [W]</td></tr>
+</table></div>
+<p class="small">Another weapon of the group is at least at a third of your highest Mastery in the group.</p>
+<h3>2. weapon-trees.md, outdated</h3>
+<div class="scroll"><table>
+<tr><th>Bow</th><th>Rung opens</th><th>Its unlocks</th><th>Today</th></tr>
+<tr><td>Hunting Bow</td><td>Basic, 0</td><td>3 Close Quarters · 8 Wounding Shot · 14 Quick Nock · 20 Blood Trail · 28 Patient Shot</td><td>Wounding Shot redone and decided; Blood Trail a candidate; the rest dropped</td></tr>
+<tr><td>Recurve Bow</td><td>Basic, 0</td><td>3 Light Feet · 8 Parthian Shot · 14 Turn and Loose · 20 Second Wind · 28 Gone Before They Land</td><td>all dropped</td></tr>
+<tr><td>Longbow</td><td>Advanced, Group Mastery 6 (18 with one bow: level 4)</td><td>6 Plunging Shot · 14 Loose Together · 20 Steady Draw · 28 Arrowfall</td><td>Loose Together dropped; the rest clash with Spotter; the arc kept as an idea</td></tr>
+<tr><td>Composite Bow</td><td>Advanced, Group Mastery 6</td><td>6 Flurry of Arrows · 14 Rider's Stride · 20 Unbroken Rhythm · 28 Storm of the Steppe</td><td>all dropped</td></tr>
+<tr><td>Warbow</td><td>Exotic, Group Mastery 11 (33 with one bow: level 7)</td><td>11 Heavy Shaft · 16 Bodkin Point · 22 Clothyard Shaft</td><td>the Line kept as an idea</td></tr>
+<tr><td>Flight Bow</td><td>Exotic, Group Mastery 11</td><td>11 Pinpoint Shot · 16 Snap Release · 22 Needle's Eye</td><td>Pinpoint Shot dropped as written; the range kept as an idea</td></tr>
+</table></div>
+<p class="small">An Advanced bow started at 6 Mastery and an Exotic one at 11. When each number comes: 3 at fight 3 (level 1), 8 at fight 8 (level 2), 14 at fight 14 (level 3), 20 at fight 20 (level 4), 28 at fight 28 (level 6).</p>
+<h3>3. This remake so far</h3>
+<div class="scroll"><table>
+<tr><th>Bow</th><th>Decided</th><th>Proposed, not answered</th></tr>
+<tr><td>Hunting Bow</td><td>3: Wounding Shot</td><td>14: Blood Trail (or Expert moved there, or nothing yet); Expert at 8 out for the bows</td></tr>
+<tr><td>Recurve Bow</td><td>its damage</td><td>everything else</td></tr>
+<tr><td>The rungs</td><td>three; the next one harder to reach in Stage 0, but possible</td><td>Advanced at Group Mastery 5 (15 with one bow: the last fight of level 3)</td></tr>
+</table></div>
 </section>
 
 <section id="gain">
-<h2>How Mastery is gained <span class="tag open">proposed</span></h2>
+<h2>How Mastery is gained <span class="tag ok">decided: B, normal or harder</span></h2>
+<p><strong>Decided ("Lets do B, with moderate+ encounters, so a higher ladder").</strong> What was asked:</p>
 <blockquote>Should we change to: You gain one mastery when you win an encounter of X difficulty. Instead of "when you first get a tier 3"?<cite>Lucas, 2026-11-16</cite></blockquote>
 <h3>What the search found</h3>
 <ul>
