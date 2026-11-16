@@ -77,6 +77,7 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <p class="sub">The Action card's new structure, built one part at a time. Structure only: what a card holds and where. The look comes later. Nothing here is in the book or in Foundry. Updated 2026-11-16.</p>
 <nav>
   <a href="#need">What I need</a>
+  <a href="#passives">Part 7: Passives</a>
   <a href="#modes">Part 4: Modes</a>
   <a href="#versions">Part 3: Versions</a>
   <a href="#body">Part 2: the body</a>
@@ -92,13 +93,40 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
-<p><strong>Decided so far:</strong> the header (part 1); the category off the card's face; the body in play order with every line labeled (part 2, "for now"); Versions as one block a cost, written in full (part 3).</p>
-<p><strong>Part 4, Modes:</strong> 1 (one line a Mode), 2 (one block a Mode) or 3 (three small cards). Next section.</p>
+<p><strong>Decided so far:</strong> the header; the category off the card's face; the body in play order with every line labeled; Versions and Modes as one block each, written in full.</p>
+<ol>
+<li><strong>Part 7, Passives:</strong> 1 (the sentence whole), 2 (text, no card) or 3 (split into Trigger and Effect). Next section.</li>
+<li><strong>Part 8, the level:</strong> off the card, kept as data. Yes or no.</li>
+<li><strong>Part 9, Critical:</strong> kept as an optional line under Tier 3. Yes or no.</li>
+</ol>
+<p class="small">These are the last three. After them I write the whole Structure in one place, redraw the 19 Paladin cards in it, and the Paladin can be applied.</p>
 </div>
 </section>
 
+<section id="passives">
+<h2>Part 7: Passives and Features that are not Actions, three structures</h2>
+<p>These cost nothing and are not "used": an Escalation Passive, the hook. Some are a standing rule (Roving Judgment), some wait for a moment (Armor of Faith, Kindled Wrath). Parts 5 and 6 are already settled (no text without a label; the targeting rule), so this is the last structure.</p>
+<h3>1. A card, the sentence kept whole</h3>
+<p>The same card as an Action. The bar says "Passive" where the cost would be. The sentence is one line under the label Passive, with its condition inside it.</p>
+<div class="hc"><div class="bar"><span>Armor of Faith</span><span class="cost">Escalation 2 · Passive</span></div><div class="row"><em>Each time you answer for an ally, your god's light settles on you like mail.</em></div><div class="row lab"><b>Passive</b><span>While your Escalation is 2 or more, when you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier.</span></div></div><div class="hc"><div class="bar"><span>Roving Judgment</span><span class="cost">Escalation 2 · Passive</span></div><div class="row"><em>Your eye passes from one guilty foe to the next, and your god's attention follows it.</em></div><div class="row lab"><b>Passive</b><span>While your Escalation is 2 or more, the 1 AP use of Judge costs you 0 AP.</span></div></div><div class="hc"><div class="bar"><span>Kindled Wrath</span><span class="cost">Passive</span></div><div class="row"><em>An ally's blood on the ground, and your god's anger is yours.</em></div><div class="row lab"><b>Passive</b><span>Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1.</span></div></div>
+<ul><li>The sentence can be quoted anywhere and still be complete.</li><li>"Escalation 2" is said twice (the bar and the sentence), and "Once an encounter" is a frequency written as prose.</li></ul>
+<h3>2. Text in the chapter, no card</h3>
+<p>The name in bold, the Flavor, the sentence: a paragraph of the class chapter, as most games print class features.</p>
+<p><strong>Armor of Faith.</strong> <em>Each time you answer for an ally, your god's light settles on you like mail.</em> While your Escalation is 2 or more, when you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier.</p><p><strong>Roving Judgment.</strong> <em>Your eye passes from one guilty foe to the next, and your god's attention follows it.</em> While your Escalation is 2 or more, the 1 AP use of Judge costs you 0 AP.</p><p><strong>Kindled Wrath.</strong> <em>An ally's blood on the ground, and your god's anger is yours.</em> Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1.</p>
+<ul><li>The lightest on the page: a Passive doesn't look like something to press.</li><li>Foundry still needs it as an item with a card in the chat, so there would be two shapes for one thing.</li><li>The Escalation it needs is only in the sentence.</li></ul>
+<h3>3. A card, split into the card's own parts (my pick)</h3>
+<p>The bar carries what a bar carries: the Escalation it needs, a frequency if it has one, and "Passive". A Passive that waits for a moment is written as Trigger and Effect; a standing rule is one line under the label Passive.</p>
+<div class="hc"><div class="bar"><span>Armor of Faith</span><span class="cost">Escalation 2 · Passive</span></div><div class="row"><em>Each time you answer for an ally, your god's light settles on you like mail.</em></div><div class="row lab"><b>Trigger</b><span>You use a [Divine] Reaction.</span></div><div class="row lab"><b>Effect</b><span>You gain Guard equal to 1 + your Power Modifier.</span></div></div><div class="hc"><div class="bar"><span>Roving Judgment</span><span class="cost">Escalation 2 · Passive</span></div><div class="row"><em>Your eye passes from one guilty foe to the next, and your god's attention follows it.</em></div><div class="row lab"><b>Passive</b><span>The 1 AP use of Judge costs you 0 AP.</span></div></div><div class="hc"><div class="bar"><span>Kindled Wrath</span><span class="cost">Encounter · Passive</span></div><div class="row"><em>An ally's blood on the ground, and your god's anger is yours.</em></div><div class="row lab"><b>Trigger</b><span>An ally becomes Bloodied or goes Down.</span></div><div class="row lab"><b>Effect</b><span>Your Escalation increases by 1.</span></div></div>
+<ul><li>Nothing is said twice, and "Encounter" is on the bar like every other frequency.</li><li>The moment rule we wrote already treats "when..." on a feature like a Trigger; this writes it as one.</li><li>The risk: Trigger and Effect look like a Reaction. "Passive" on the bar, where a cost would be, is what tells them apart; if that proves too quiet, the label could be "When" instead of "Trigger".</li></ul>
+<h3>Two small ones, to close the list</h3>
+<ul>
+<li><strong>Part 8, the level:</strong> I would keep it off the card. The class's level list says when a card is gained, and the card keeps it as data. The Escalation needed is already on the bar.</li>
+<li><strong>Part 9, Critical:</strong> I would keep it, as an optional labeled line right under Tier 3 ("Critical: The target is Prone."). Five cards in the book use it today; none of the redesign's does.</li>
+</ul>
+</section>
+
 <section id="modes">
-<h2>Part 4: Modes (an Art's three choices), three structures</h2>
+<h2>Part 4: Modes (decided: 2, one block a Mode)</h2>
 <p>An Art is one card with three named choices; each time it is used, one is chosen. The Modes differ in more than text: Reveal and Glare have a Distance and a Target, Kindle has none; Glare alone has the Power and Save traits and a roll. Shown on Lantern of Faith.</p>
 <h3>1. One labeled line a Mode (as drafted)</h3>
 <div class="hc"><div class="bar"><span>Lantern of Faith</span><span class="cost">Round · 1 AP</span></div><div class="row"><em>You call your god's light: around you, onto a foe, or into a foe's eyes.</em></div><div class="row tr">Divine</div><div class="row lab"><b>Kindle</b><span>You shed Bright light 3 until the encounter ends.</span></div><div class="row lab"><b>Reveal</b><span>One creature you perceive within 5 squares sheds Bright light 1 (1 round).</span></div><div class="row lab"><b>Glare</b><span>[Power, Save] One enemy you can see within 5 squares makes an Instinct Save. Tier 1 or 2: Half-Blinded (EoT).</span></div></div>

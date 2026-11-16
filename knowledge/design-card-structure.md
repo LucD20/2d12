@@ -134,4 +134,15 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 - **2, one block a Mode,** the shape of a Version: the Mode's name as a heading with the traits only it has; its own Distance and Target; its labeled lines. Claude's pick.
 - **3, three small cards under the Art's name:** each complete; "Round" on each reads as once a round each.
 
+**Lucas's answer (2026-11-16): PART 4 IS DECIDED: 2,** one block a Mode: the Mode's name as a heading with the traits only it has, its own Distance and Target, its labeled lines. Parts 5 (text with no label) and 6 (the Target line with two creatures) were settled by part 2 and by the targeting rule.
+
+## Parts 7, 8 and 9 (PROPOSED 2026-11-16)
+
+**Part 7, Passives and Features that are not Actions, three structures:**
+- **1, a card, the sentence whole:** "Passive" on the bar where the cost would be; one line under the label Passive, its condition inside it.
+- **2, text in the chapter, no card:** name, Flavor, sentence.
+- **3, a card split into the card's parts:** the bar carries the Escalation needed, a frequency if any ("Encounter") and "Passive"; a Passive that waits for a moment is Trigger + Effect; a standing rule is one line under Passive. Claude's pick (risk: it looks like a Reaction; "When" instead of "Trigger" if so).
+
+**Part 8, the level:** off the card, kept as data (Claude: yes). **Part 9, Critical:** an optional labeled line under Tier 3 (Claude: keep).
+
 **Lucas's answer:**
