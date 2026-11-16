@@ -849,4 +849,46 @@ About 6 points a creature on the 21% of runs that reach Tier 3: + 4. **Hit and R
 
 **His point reaches three decided cards too:** Darting Blade, Strafe and Snap Shot write the same line for Tier 2 and Tier 3, and beat it only by the weapon's own Tier 3 damage (a Shortbow: 1 more; a Dagger: 2 more), as the Weapon Attack does. To look at when the class is read whole, with the Critical entries.
 
+**Lucas's answer (2026-11-16): "Yes, it is good." HIT AND RUN IS DECIDED** (his design; one roll made when the first creature is hit; Tier 1 [Mod]; Tier 3 adds Vulnerable 1 (EoT)):
+
+> **Hit and Run** · Encounter · 2 AP
+> *You run the length of the fight with the knife out, opening every foe you pass, and somewhere along the way an arrow leaves your bow.*
+> Weapon · Projectile · Move · Strike
+> **Effect:** You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a Light weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action.
+> **Attack:** Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll.
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod]; Vulnerable 1 (EoT).
+> **Special:** [W] is the weapon that hit. The bow's hit is Doomed if you are Engaged when you make it.
+
+## Decision 16: the third Encounter Pick, Covering Fire (PROPOSED 2026-11-16, waiting for Lucas)
+
+The theme: the pinning rain, ground held for the party.
+
+**Rules and research first.** Hazardous Terrain (Chapter 3): written **[HT: ...]** in the effect that makes the area, with its patterns: **Entering** (a creature in the area when it appears counts as entering), **Turn** (it ends its turn there), **Movement** (it moves within it: once a Movement). Entering and Turn together hit a creature at most once a turn-cycle; Movement is apart from that limit. Difficult Terrain doubles a square's cost. A lasting area is written "for N rounds" (rounds count at the end of his turn). A 3 Burst is 32 squares. The Paladin's Consecrated Ground is the model for a zone (Difficult Terrain for enemies, 3 rounds, no roll). Today's Covering Fire: for 3 rounds enemies in the area take 1 Bane on Strikes and allies gain +1 Defense (silent bonuses: out). The SIM on zones: "a Zone works only for who stays in it"; this one works on whoever crosses it.
+
+> **Covering Fire** · Encounter · 2 AP
+> *You keep the arrows coming down on one stretch of ground, and nobody crosses it without paying.*
+> Weapon · Ranged · Projectile · Area
+> Distance: Weapon · Area: 3 Burst
+> **Effect:** For 2 rounds, the Area is Difficult Terrain for enemies, and Hazardous Terrain for enemies [HT: Entering, Turn, Movement]: [V] damage equal to 2 + your Weapon Modifier, of your weapon's subtype.
+
+```
+4 damage to each enemy in the Area when it is placed: 2.3 enemies ... 31   [SIM: 3.4 a point; the ruler's count for a 3 Burst]
+4 more each time one of them moves in it or ends its turn in it, for 2 rounds: about 2.3 enemies, about 60% still there, about 1.3 hits a round ... about 48   [judgment]
+Difficult Terrain for enemies over 32 squares, 2 rounds ... not priced (suggested 10 to 20, as Consecrated Ground)
+--- Total: about 80 to 100, of 100: on, if the enemies have a reason to be there
+```
+
+**Analysis.**
+- **Many small hits made by the enemies' own choices:** 4 when it lands, 4 for each Movement inside it, 4 for ending a turn in it. No roll at all: the steadiest damage in the class, and none of it big.
+- **The decision it gives:** which ground matters. A doorway, the lane to the back line, the square around an ally in trouble. The enemies then choose: pay to cross, go around, or stand still and pay at the end of the turn.
+- **It is his protection of the party, the Archer's way:** not a shield but ground the enemy doesn't want. With the Paladin's Consecrated Ground on the same squares, crossing costs double movement twice over and 4 damage a Movement.
+- **Enemies only:** his allies fight in it freely (teamwork: the front line can stand in the rain).
+- **Not a Strike:** it makes no attack roll, so it doesn't count toward his 3 Strikes, and takes no Boon from Shifting Aim.
+- **Rules it touches:** [HT] with its three patterns, as the book writes it. "For 2 rounds" on an Encounter card.
+- **Fiction:** he keeps loosing into that ground between his other shots; it costs him nothing after the 2 AP.
+
+**For Lucas to choose:** the damage (4 flat; or his weapon's die); the rounds (2; 3 would be about 30% more); the Area (3 Burst, as Volley); the name (today's Covering Fire, kept).
+
 **Lucas's answer:**

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 1e91f1e 2026-11-16 The Archer: Hit and Run rewritten from Lucas's draft (the run is the weapon), with one roll and a floor
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 99471cf 2026-11-16 The Archer: Hit and Run's Tier 3 gets Vulnerable 1 (proposed), with every candidate
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -53,7 +53,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-archer-redesign.md (86 KB)
+- design-archer-redesign.md (91 KB)
 - design-card-structure.md (25 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
