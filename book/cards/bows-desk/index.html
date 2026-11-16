@@ -75,10 +75,10 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 
 <div class="wrap">
 <h1>Bow Remake Desk</h1>
-<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the three lists, the rungs, the Hunting Bow's row and the Recurve Bow's damage and Wounding Shot are decided; how Mastery is gained is decided (a won encounter, normal or harder); one ladder for every bow is proposed (your idea); the Recurve Bow's row and Master still wait. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the three lists, the rungs, the Hunting Bow's row and the Recurve Bow's damage and Wounding Shot are decided; how Mastery is gained is decided (a won encounter, normal or harder); the Mastery mechanic is proposed (a Mastery for each weapon, the group following at half); the Recurve Bow's row and Master still wait. Nothing here is in the book or in Foundry.</p>
 <nav>
   <a href="#need">What I need</a>
-  <a href="#one">One ladder</a>
+  <a href="#mech">The Mastery mechanic</a>
   <a href="#row2">Recurve: the row</a>
   <a href="#master">Master</a>
   <a href="#numbers">The numbers</a>
@@ -103,15 +103,53 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-<li><strong>One ladder for every bow</strong> (next section): A or B. My pick is A, one Mastery number for the group.</li>
-<li><strong>The Archer's head start:</strong> (i) the Technique, or (ii) 10 Mastery. My pick is (i).</li>
-<li>Still open: <strong>the Recurve Bow's row</strong>, and <strong>Master</strong> (A or B there).</li>
+<li><strong>The Mastery mechanic</strong> (next section): way 1, 2 or 3. My pick is 1: the group follows at half.</li>
+<li><strong>The Archer's head start:</strong> with Starting Mastery 10 he has the Advanced bows at level 3. Keep it, or give him the Technique and no Mastery.</li>
+<li>Still open: <strong>the Recurve Bow's row</strong>, and <strong>Master</strong>.</li>
 </ol>
 </div>
 </section>
 
+<section id="mech">
+<h2>The Mastery mechanic <span class="tag open">proposed</span></h2>
+<blockquote>I need a mechanic that you get better at a single weapon and you get better at using that type of weapon. For example, at the start, you can use well two basic weapons. The one you use most you unlock features, but using one group helps another, so it should all of that group slowly. After using a basic enough, you should then be allowed to use an Advanced without suffering Doomed. Advanced needs to on level with Basic at that point, so even though the Basic would have its technique plus an unlock etc.<cite>Lucas, 2026-11-16</cite></blockquote>
+<h3>Way 1: the group follows at half <span class="tag ok">my pick</span></h3>
+<blockquote><strong>Mastery.</strong> You have a Mastery with each weapon. When your side wins an encounter that was normal or harder, you gain 1 Mastery with one weapon you made a [Strike] Action with in it.<br>
+<strong>The group follows.</strong> Your Mastery with a weapon is never lower than half your highest Mastery with a weapon of its group (rounded down).<br>
+<strong>The ladder.</strong> Every weapon's unlocks are at the same Mastery: 10 (its Weapon Technique), 20, 30, 45, 60. A deeper weapon has fewer of them.<br>
+<strong>Advanced and Exotic weapons.</strong> [Strike] Actions with an Advanced weapon are Doomed while your Mastery with it is below 10; with an Exotic weapon, below 20.</blockquote>
+<p>No Group Mastery, no division by 3, no "starts at". The gate is the weapon's own number, and the half rule is what fills it.</p>
+<h3>How it plays: one bow, all the way</h3>
+<div class="scroll"><table>
+<tr><th>Level (fights)</th><th>The bow you use</th><th>Every other bow of the group</th><th>What that opens</th></tr>
+<tr><td>1 (0)</td><td>0</td><td>0</td><td>both Basic bows usable, no Technique yet</td></tr>
+<tr><td>3 (10)</td><td><strong>10: its Technique</strong></td><td>5</td><td></td></tr>
+<tr><td>5 (20)</td><td><strong>20: unlock 2</strong></td><td><strong>10</strong></td><td>the other Basic bow's Technique; <strong>the Advanced bows: no longer Doomed, with their Technique</strong></td></tr>
+<tr><td>7 (30)</td><td><strong>30: unlock 3</strong></td><td>15</td><td></td></tr>
+<tr><td>9 (40)</td><td>40</td><td><strong>20</strong></td><td>every other bow's unlock 2; <strong>the Exotic bows: no longer Doomed, with their Technique</strong></td></tr>
+<tr><td>10 (45)</td><td><strong>45: unlock 4</strong></td><td>22</td><td></td></tr>
+<tr><td>13 (60)</td><td><strong>60: unlock 5</strong></td><td><strong>30</strong></td><td>every other bow's unlock 3</td></tr>
+</table></div>
+<h3>How it plays: changing to an Advanced bow at level 5</h3>
+<div class="scroll"><table>
+<tr><th>Level (fights)</th><th>The Basic bow he left</th><th>The Advanced bow</th><th>Next to the one who stayed</th></tr>
+<tr><td>5 (20)</td><td>20: Technique, unlock 2</td><td><strong>10: its Technique</strong></td><td>one unlock behind; a better row and Technique pay for it</td></tr>
+<tr><td>7 (30)</td><td>20</td><td><strong>20: unlock 2</strong></td><td>stayed: unlock 3</td></tr>
+<tr><td>9 (40)</td><td>20</td><td><strong>30: unlock 3</strong></td><td>stayed: the Exotic bows open for him now</td></tr>
+<tr><td>11 (50)</td><td>20</td><td>40: the Exotic bows open</td><td>two levels after the one who stayed</td></tr>
+<tr><td>12 (55)</td><td>20</td><td><strong>45: unlock 4</strong>, its last</td><td>stayed: unlock 4 at level 10</td></tr>
+</table></div>
+<p>An Advanced bow has its Technique and three unlocks; an Exotic one its Technique and two. Five, four, three, as in the old tree. Changing bow costs about two levels of unlocks and never resets.</p>
+<h3>The other two ways</h3>
+<div class="opt"><b>2</b><div><strong>The group follows at a third</strong> (the book's fraction today). The second Basic bow's Technique and the Advanced bows come when your bow has 30 (level 7), the Exotic ones at 60 (level 13). Too slow for your levels 5 and 10.</div></div>
+<div class="opt"><b>3</b><div><strong>The group follows 10 behind.</strong> The Advanced bows at level 5 as in way 1. Easier than halving, but not "slowly": at 60 every other bow is at 50, and changing costs nothing.</div></div>
+<h3>What it asks of the bows</h3>
+<p>Your "on level": an Advanced bow at Mastery 10 is worth a Basic bow at 20. So an Advanced row and Technique carry about one unlock's worth more than a Basic one's. That is small, because unlocks are utility. It is designed with the Advanced bows.</p>
+<p class="small">The Exotic bows open at level 9 for the one who stayed; you said 10. A gate of 22 would land on 10; 20 is the round number. Mastery can be gained with a weapon while it is Doomed (you made a Strike with it and won): slow and costly, and forbidding it is one more sentence.</p>
+</section>
+
 <section id="one">
-<h2>One ladder for every bow <span class="tag open">proposed</span></h2>
+<h2>One ladder for every bow, the first try <span class="tag ok">withdrawn: it broke the progression</span></h2>
 <blockquote>Cant we make the bows have all the same Mastery numbers? So when you unlock Advanced at 20 Mastery, the advanced weapons starts at 20 then we can keep the ladder equal?<cite>Lucas, 2026-11-16</cite></blockquote>
 <p><strong>Yes.</strong> Your levels were already the same for every bow. Only the Mastery numbers differed, because a new bow started at a third. If a new bow starts where its rung opens, every bow reads the same five numbers.</p>
 <div class="scroll"><table>
