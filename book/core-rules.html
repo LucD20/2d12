@@ -2277,10 +2277,6 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>A condition with a value: less Speed, a penalty on all Rolls, a lower Resolve.</td>
 </tr>
 <tr>
-<td><a class="xref" href="gear.html#mastery"><strong>Expert</strong></a></td>
-<td>8 Mastery with a weapon: once each turn, you draw, stow or regrip it without Interact.</td>
-</tr>
-<tr>
 <td><a class="xref" href="#favored-and-doomed-rolls"><strong><span class="kw-pos">Favored</span></strong></a></td>
 <td>A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical.</td>
 </tr>
@@ -2334,7 +2330,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#hands"><strong>Hands</strong></a></td>
-<td>How many hands hold a weapon: your main hand and your off hand.</td>
+<td>Your main hand and your off hand, chosen when you make your character, and how many of them hold a weapon.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#hazardous-terrain"><strong>Hazardous Terrain <span class="kw-ht">[HT]</span></strong></a></td>
@@ -2406,15 +2402,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#hands"><strong>Main hand, off hand</strong></a></td>
-<td>Your two hands. Which one holds a weapon changes nothing, unless a feature says so.</td>
-</tr>
-<tr>
-<td><a class="xref" href="gear.html#mastery"><strong>Master</strong></a></td>
-<td>15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W].</td>
+<td>Your two hands. [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>, <span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Actions with a weapon in your off hand take <span class="kw-bane">2 Banes</span> (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none).</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#mastery"><strong>Mastery</strong></a></td>
-<td>How well you know a kind of weapon: +1 for a Tier 3 on a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master.</td>
+<td>How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks.</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#minions"><strong>Minion</strong></a></td>
@@ -2482,11 +2474,11 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="#light"><strong>Light</strong></a></td>
-<td>A weapon property: a small one-handed melee weapon, quick to draw and stow (a Dagger).</td>
+<td>A weapon property: a small one-handed melee weapon (a Dagger, a Handaxe); <span class="kw-bane">1 Bane</span> in your off hand instead of 2.</td>
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#properties"><strong>Properties</strong></a></td>
-<td>The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded, Non-threatening.</td>
+<td>The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Light, Long, Projectile, Firearm, Strung, Thrown, Reload, Two-handed, Barehanded, Non-threatening.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#pulled"><strong>Pulled</strong></a></td>
@@ -2697,6 +2689,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>An Action that tries to hit a creature. At most 3 per turn.</td>
 </tr>
 <tr>
+<td><a class="xref" href="gear.html#strung"><strong>Strung</strong></a></td>
+<td>A weapon property of bows: held in one hand and drawn with the other; <span class="kw-bane">3 Banes</span> on its Strikes while your other hand holds something.</td>
+</tr>
+<tr>
 <td><a class="xref" href="#outcome-tiers"><strong>Success</strong></a></td>
 <td>A Tier 2 or 3 result.</td>
 </tr>
@@ -2762,7 +2758,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#weapon-groups"><strong>Weapon Group</strong></a></td>
-<td>Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group.</td>
+<td>Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is never lower than half your best in its group.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#weapon-power-and-signature-modifiers"><strong><span class="mod-weapon">Weapon Modifier</span></strong></a></td>

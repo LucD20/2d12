@@ -1,0 +1,80 @@
+{
+ "_about": "The Weapon Techniques written in the card Structure (book/cards/card-structure.md): the two Basic bows of the Bow remake, decided with Lucas on 2026-11-16 (book/cards/bows-redesign.md). THE BOOK reads these; Foundry and the ruler still read ../gear.json (its Skirmish Shot and Heartseeker are set aside in the book) until the Foundry pass. 'weapon' names the Technique's weapon; 'mastery' the Mastery that unlocks it.",
+ "structure": 2,
+ "cards": [
+  {
+   "name": "Wounding Shot",
+   "category": "Weapon Technique",
+   "weapon": "Hunting Bow",
+   "mastery": 10,
+   "flavor": "You hold your ground until your foe shows its flank, and put a broad-headed arrow where the wound will not close.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "traits": [
+    "weapon",
+    "ranged",
+    "projectile",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Requirement",
+     "text": "You haven't left your square this turn."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[V] [Mod]."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1[W] + [Mod]; [[Bleed]] 1 (Bo/In)."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1[W] + [Mod]; [[Bleed]] 2 (Bo/In)."
+    }
+   ]
+  },
+  {
+   "name": "Circling Shot",
+   "category": "Weapon Technique",
+   "weapon": "Recurve Bow",
+   "mastery": 10,
+   "flavor": "You circle your foe as you draw, and loose from the side it has left open.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "traits": [
+    "weapon",
+    "ranged",
+    "projectile",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Setup",
+     "text": "You Evade 1."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1[W]."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1[W] + [Mod]; you Evade 1 to a square that is no farther from the target."
+    }
+   ]
+  }
+ ]
+}

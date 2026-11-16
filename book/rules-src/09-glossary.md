@@ -74,7 +74,6 @@
 | [[Escalation\|**Escalation**]] | A PC's adrenaline, a level from 1 to 6, never spent: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough. |
 | [[Evade\|**Evade**]] | Movement that doesn't trigger reactions and can't be split. |
 | [[Exhausted\|**Exhausted**]] | A condition with a value: less Speed, a penalty on all Rolls, a lower Resolve. |
-| [[Mastery\|**Expert**]] | 8 Mastery with a weapon: once each turn, you draw, stow or regrip it without Interact. |
 | [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical. |
 | [[Named Boons and Banes\|**Field**]] | A named Boon or Bane from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
 | [[Firearm\|**Firearm**]] | A trait and a weapon property with one name: the weapon shoots with powder (a pistol, a musket), and a Firearm Action needs one. It is not Projectile. |
@@ -88,7 +87,7 @@
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Reaction**]] | A choice of two class Reactions at level 1; you take one. |
-| [[Hands\|**Hands**]] | How many hands hold a weapon: your main hand and your off hand. |
+| [[Hands\|**Hands**]] | Your main hand and your off hand, chosen when you make your character, and how many of them hold a weapon. |
 | [[Hazardous Terrain\|**Hazardous Terrain [HT]**]] | Terrain that harms the creatures in it. Written [HT: Entering, Turn] in the text of the effect that creates it (notation, not a trait). |
 | [[Hazardous Terrain\|**Hazardous Terrain**]] | Terrain that deals damage or inflicts a condition, once per Movement. |
 | [[Rally Points\|**Heal**]] | To remove damage. The creature chooses which damage. |
@@ -106,9 +105,8 @@
 | [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the creature's space that nothing blocks. Needed to target a creature, and for anything a card or a feature does to a creature. |
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Weapon Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
-| [[Hands\|**Main hand, off hand**]] | Your two hands. Which one holds a weapon changes nothing, unless a feature says so. |
-| [[Mastery\|**Master**]] | 15 Mastery with a weapon: from level 8, your Actions that deal [W] with it deal one more [W]. |
-| [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 for a Tier 3 on a Weapon Action with it (at most 1 per Weapon Group an encounter). The weapon's Mastery (3, 4 or 5) unlocks its Weapon Technique; 8 Expert, 15 Master. |
+| [[Hands\|**Main hand, off hand**]] | Your two hands. [Strike, Weapon] Actions with a weapon in your off hand take 2 Banes (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none). |
+| [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks. |
 | [[Minions\|**Minion**]] | An NPC rank with CV 25: about 12 Health at Stage 0, 3 AP a turn, no Reaction AP and no Dying. Up to 3 Minions act in the same turn slot. |
 | [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100; 3 AP a turn). |
 | [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
@@ -125,8 +123,8 @@
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
 | [[Named Boons and Banes\|**Pressure**]] | A named Bane an effect of another creature puts on you. Up to 2. |
 | [[Projectile\|**Projectile**]] | A trait and a weapon property with one name: the weapon shoots (a bow, a crossbow), and a Projectile Action needs one. |
-| [[Light\|**Light**]] | A weapon property: a small one-handed melee weapon, quick to draw and stow (a Dagger). |
-| [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Long, Projectile, Firearm, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
+| [[Light\|**Light**]] | A weapon property: a small one-handed melee weapon (a Dagger, a Handaxe); 1 Bane in your off hand instead of 2. |
+| [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Light, Long, Projectile, Firearm, Strung, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
 | [[Pulled\|**Pulled**]] | Forced Movement toward the origin, up to its value, inside a 45° cone. |
 | [[Pushed\|**Pushed**]] | Forced Movement away from the origin, up to its value, inside a 45° cone. |
 | [[Quickened\|**Quickened**]] | A condition with a value: you regain (and can hold) that many more AP at the start of your turn; never more Reaction AP. |
@@ -179,6 +177,7 @@
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Chapter 6: Basic Actions\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
 | [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn. |
+| [[Strung\|**Strung**]] | A weapon property of bows: held in one hand and drawn with the other; 3 Banes on its Strikes while your other hand holds something. |
 | [[Outcome Tiers\|**Success**]] | A Tier 2 or 3 result. |
 | [[Named Boons and Banes\|**Support**]] | A named Boon an effect gives several allies at once. Up to 2. |
 | [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. |
@@ -195,7 +194,7 @@
 | [[Vulnerable\|**Vulnerable**]] | A condition with a value: Actions against you gain that many Boons. |
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense against Power Actions. |
 | [[Resist, Weak and Immune\|**Weak**]] | Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once. |
-| [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is at least a third of your best in its group. |
+| [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is never lower than half your best in its group. |
 | [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Weapon Actions roll it. |
 | [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |
 | [[Weapons\|**Weapon Technique**]] | A weapon's own Action, unlocked with Mastery; used only with that weapon, while you wield it. |

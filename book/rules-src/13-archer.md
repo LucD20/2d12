@@ -12,12 +12,12 @@
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+1</span></div>
 <div class="sbr"><span class="lbl">Modifiers</span><span>Weapon Modifier +2, Power Modifier +1</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Light</span></div>
-<div class="sbr"><span class="lbl">Starting Mastery</span><span>3 with one Projectile weapon of your choice (see [[Mastery]])</span></div>
+<div class="sbr"><span class="lbl">Starting Mastery</span><span>5 with one Projectile weapon of your choice (see [[Mastery]])</span></div>
 <div class="sbr"><span class="lbl">Escalation hook</span><span>An enemy you have damaged goes Down (Thrill of the Kill, level 2)</span></div>
 </div>
 
 > [!tbd]
-> **Levels 1 to 3 are written.** Level 4 (the Apex and the numbers of Stage 1) and the Talents are not written yet: every Talent slot is empty for now. The Archer's cards need a bow or a crossbow and, for some, a [[Light]] weapon such as a Dagger: the weapons themselves are rebuilt in the weapons pass.
+> **Levels 1 to 3 are written.** Level 4 (the Apex and the numbers of Stage 1) and the Talents are not written yet: every Talent slot is empty for now. The Archer's cards need a bow or a crossbow and, for some, a [[Light]] weapon such as a Dagger: the Hunting Bow and the Recurve Bow are written (see [[Weapons]]); the other weapons are placeholders.
 
 ## The Archer by Level
 

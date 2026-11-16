@@ -1,6 +1,6 @@
 # The Bow remake: the record
 
-**Started 2026-11-16 (Lucas: "Run the Bow remake"), on branch `pack-bows` from main.** The same way as the two classes (`book/class-charter.md`, "Rules learned in the two redesigns"): his brief, the rules and `book/research/` first, then one decision at a time, each waiting for him. **Nothing goes into the book, the card files or Foundry until he says so.** **The reading page:** `book/cards/bows-desk/index.html`, the artifact "Bow Remake Desk" (updated with every decision). What is being remade: the six bows of `book/weapon-trees.md` (2026-10-31, "to confirm"), which stays as it is, as the old design.
+**APPLIED TO THE BOOK ON 2026-11-16 (the two Basic bows, Mastery, Hands, Light, Strung); the later unlocks and the later bows are still to design. Started 2026-11-16 (Lucas: "Run the Bow remake"), on branch `pack-bows` from main.** The same way as the two classes (`book/class-charter.md`, "Rules learned in the two redesigns"): his brief, the rules and `book/research/` first, then one decision at a time, each waiting for him. **Nothing goes into the book, the card files or Foundry until he says so.** **The reading page:** `book/cards/bows-desk/index.html`, the artifact "Bow Remake Desk" (updated with every decision). What is being remade: the six bows of `book/weapon-trees.md` (2026-10-31, "to confirm"), which stays as it is, as the old design.
 
 `notes.txt` was empty at the start (only its legend): nothing to merge.
 
@@ -756,7 +756,12 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 
 **Why c:** it takes both hands to shoot a bow, so which hand holds it shouldn't matter: one short sentence, no sum of 5, and Darting Blade is not taxed. It differs from a in one case only (the bow shot with a Dagger in the main hand: 3 Banes in place of 5), a shot nobody takes on purpose.
 
-**Waiting for Lucas:** a, b or c; and his word to apply (his "4. See above" is read as: once this is settled).
+**Lucas's answer (2026-11-16): "C. Feel free to apply it all now." DECIDED: "A Strung weapon never takes the off-hand Banes."**
+
+## APPLIED TO THE BOOK (2026-11-16)
+
+Everything in "The whole pack so far" below is in the book: `rules-src/15-gear.md` (the two rows, the two Techniques, Hands, Light, Strung, Mastery, the placeholder box), `book/cards/stage0/gear.json` (Wounding Shot, Circling Shot), `book/cards/stage0/archer.json` (Darting Blade), `rules-src/13-archer.md` (Starting Mastery 5), the Glossary; Skirmish Shot and Heartseeker set aside; t177's expected output updated (two more cards set aside, two more Structure cards); the build has no unresolved reference and the 250 tests pass. "You haven't left your square" was already ruled in Chapter 3 (Rules Language: any change of position; a creature of several squares leaves its square when any square it occupies changes), so nothing was added there. The list of Claude's choices made while applying, and what was left out: `rules-backlog.md`, the top entry. Foundry: `foundry/foundry-backlog.md`, "THE BOWS IN FOUNDRY".
+
 
 ## The whole pack so far: what is decided (2026-11-16, before applying)
 
@@ -771,9 +776,9 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 
 **Circling Shot** (Recurve Bow, Mastery 10) · Round · 1 AP · Weapon, Ranged, Projectile, Strike · Distance: Weapon | Target: One creature · Setup: You Evade 1. · Attack: Weapon vs. Armor Defense · Tier 2: [V] 1[W]. · Tier 3: [V] 1[W] + [Mod]; you Evade 1 to a square that is no farther from the target. · *You circle your foe as you draw, and loose from the side it has left open.*
 
-**Hands, Light, Strung, Darting Blade:** the texts above. **Light weapons:** Dagger, Handaxe (placeholders, like every weapon but the two bows).
+**Hands, Light, Strung, Darting Blade:** the texts above, with Light without "never Two-handed or Long" and Strung's second sentence as "A Strung weapon never takes the off-hand Banes." **Light weapons:** Dagger, Handaxe (placeholders, like every weapon but the two bows).
 
-**Not written, on purpose:** the bows' unlocks at 20, 30, 45 and 60 (candidates: Blood Trail; the shot inside an Evade 2); the four later bows; the Stage Modifiers (rules-backlog). **To close when applied:** "left your square" for a creature bigger than one square (Chapter 3).
+**Not written, on purpose:** the bows' unlocks at 20, 30, 45 and 60 (candidates: Blood Trail; the shot inside an Evade 2); the four later bows; the Stage Modifiers (rules-backlog). ("Left your square" for a creature bigger than one square was already ruled in Chapter 3.)
 
 ## Research
 

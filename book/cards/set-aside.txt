@@ -58,3 +58,8 @@ Staggering Shot
 Deathmark
 Open Season
 Mark Quarry
+#
+# 2026-11-16, pack "the Bow remake": the Shortbow's and the Longbow's Techniques (the two bows are replaced in the book by the Hunting Bow
+# and the Recurve Bow, whose Techniques are in stage0/gear.json).
+Skirmish Shot
+Heartseeker

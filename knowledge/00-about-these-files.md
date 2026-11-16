@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 70341d6 2026-11-16 README: both classes have the redesigned document shape
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 1779bf7 2026-11-16 Bow remake: Light's text trimmed, Fists logged for review, Strung's second sentence asked three ways
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,9 +15,9 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (164 KB)
+- HANDOFF.md (166 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (183 KB)
+- open-design-items.md (184 KB)
 - rules-01-roll.md (26 KB)
 - rules-02-turns.md (33 KB)
 - rules-03-movement.md (40 KB)
@@ -30,7 +30,7 @@ Files:
 - rules-12-paladin.md (3 KB)
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
-- rules-15-gear.md (11 KB)
+- rules-15-gear.md (13 KB)
 - research-index.md (6 KB)
 - research-ability-scope.md (7 KB)
 - research-archer.md (7 KB)
@@ -42,6 +42,7 @@ Files:
 - research-frontline-protection.md (13 KB)
 - research-gear-and-hands.md (2 KB)
 - research-many-hits.md (6 KB)
+- research-mastery-progression.md (4 KB)
 - research-movement-positioning.md (5 KB)
 - research-nova-burst.md (14 KB)
 - research-paladin-roles.md (13 KB)
@@ -50,9 +51,11 @@ Files:
 - research-tactical-combat.md (5 KB)
 - research-targeting.md (6 KB)
 - research-versions-criticals.md (5 KB)
+- research-weapons-bows-light.md (32 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
+- design-bows-redesign.md (89 KB)
 - design-archer-redesign.md (109 KB)
 - design-card-structure.md (25 KB)
 - design-paladin-analyses.md (14 KB)

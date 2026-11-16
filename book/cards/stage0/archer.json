@@ -19,13 +19,13 @@
    "name": "Darting Blade",
    "category": "Archer Feature",
    "level": 1,
-   "flavor": "You let the bow drop on its strap, open a foe with the knife, and are gone before it turns.",
+   "flavor": "You shift the bow to one hand, open a foe with the knife, and are gone before it turns.",
    "frequency": "Round",
    "cost": "1 AP",
    "body": [
     {
      "label": "Setup",
-     "text": "You stow your bow and draw a [[Light]] weapon."
+     "text": "You draw a [[Light]] weapon."
     },
     {
      "label": "Attack",
@@ -45,7 +45,11 @@
     },
     {
      "label": "Effect",
-     "text": "You Evade 2, then can stow that weapon and draw your bow."
+     "text": "You Evade 2, then can stow the Light weapon you've drawn."
+    },
+    {
+     "label": "Special",
+     "text": "You make this Strike with a Light weapon you hold."
     }
    ],
    "traits": [

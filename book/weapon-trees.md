@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-11-16) by the Bow remake: `book/cards/bows-redesign.md`.** The two Basic bows, Mastery, Strung and Light are in the book (`rules-src/15-gear.md`). This file is kept as the old design: the six bows' history and ideas (the Arcs rule, the Warbow's Line, the Flight Bow's range) are still candidates for the Advanced and Exotic bows; its numbers, ladders, gates and most unlocks are not.
+
 # Weapon Trees (design, from 2026-10-31; nothing in rules-src yet)
 
 Lucas's decisions so far (gear-d2.md section 10): **Group Mastery = the Mastery gained with all weapons of the group / 3** (rounded down); a
