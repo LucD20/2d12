@@ -417,6 +417,34 @@ Not a Stage 0 matter either way: nothing is applied now, and it is read again wi
 
 **For Lucas:** the row; A or B for Master.
 
+**Lucas (2026-11-16), before answering the row and Master:** "Cant we make the bows have all the same Mastery numbers? So when you unlock Advanced at 20 Mastery, the advanced weapons starts at 20 then we can keep the ladder equal?"
+
+## Decision 10: one ladder for every bow (PROPOSED 2026-11-16, two ways, waiting for Lucas; it replaces decision 8's Advanced and Exotic numbers)
+
+**Yes.** His levels (5, 7, 10, 13) were already the same for every bow; only the Mastery numbers differed (17 / 32 / 47 against 30 / 45 / 60), because a new bow started at a third. If a new bow starts where its rung opens, every bow reads the same five numbers:
+
+| Mastery | About level | A Basic bow | An Advanced bow | An Exotic bow |
+|---:|---|---|---|---|
+| **10** | 3 | its Technique | | |
+| **20** | 5 | unlock 2 | **opens:** its Technique | |
+| **30** | 7 | unlock 3 | unlock 2 | |
+| **45** | 10 | unlock 4 | unlock 3 | **opens:** its Technique |
+| **60** | 13 | unlock 5 | unlock 4 | unlock 2 |
+
+**Two ways to write it:**
+
+- **A, one Mastery number for the group (Claude's pick).** "You have a Mastery with each Weapon Group. When your side wins an encounter that was normal or harder, you gain 1 Mastery with one group whose weapon you made a [Strike] Action with in it." Your Bows Mastery is read by every bow. Group Mastery (the division by 3) is gone, the sheet has one number a group, and "the Advanced bow starts at 20" needs no sentence: it simply reads your 20.
+  - **What it changes:** changing bow inside the group costs nothing. At 10 you know the Technique of both Basic bows; at 20 an Advanced bow is as far along as your old one. The choice is which bow is in your hand in this fight, not which one you invested in. (The cost that stays: a bow has fewer unlocks the deeper it is; a swap in a fight is an Interact; two bows are two things carried.)
+- **B, a Mastery for each bow, and a new bow starts at the number that opens its rung** (Basic 0, Advanced 20, Exotic 45; a rung opens when one of your bows reaches the number). The ladders are equal and investment stays: a second Basic bow picked up late starts at 0, a second Advanced one at 20. Against: one number a weapon to track, a rule for where each starts, and the late Basic bow that starts from nothing is the case the old "a third" was written to soften.
+
+**Why A:** it is his sentence with the fewest rules (the system's purpose: least ambiguity), and what it gives up, the price of changing bow, is the part of the old tree that needed the most arithmetic. It also answers the research's golf-bag worry no worse than B: in both, a second bow's Technique is one Interact away.
+
+**The Archer's head start under A** ("Starting Mastery 10" would be with the Bows or the Crossbows group): he would be 10 ahead on everything: an Advanced bow at level 3, inside Stage 0, and an Exotic one at level 8. Two ways: **(i) Claude's pick: the head start is the Technique, not Mastery** ("You have the Weapon Technique of one Basic Projectile weapon"): he shoots Wounding Shot at level 1 and is on everyone's levels after; **(ii)** Starting Mastery 10 stays and the Archer is the weapon master, two levels ahead for good.
+
+**Still open from before:** the Recurve Bow's row (its last column would say Basic in place of a number), and Master (A: a Stage 2 number; B: a Mastery unlock).
+
+**For Lucas:** A or B; (i) or (ii) for the Archer; the Recurve Bow's row; Master.
+
 **Lucas's answer:**
 
 ## Research
