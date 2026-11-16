@@ -745,4 +745,56 @@ Effect: Evade 2 ... 8   [judgment]
 - **Versions: not underused.** Where Versions differ only in size, players use one and ignore the rest ("our wizard never casts anything but three-action magic missiles"; 4e's augments the same). The ones that read as a choice differ in kind (Pathfinder 2e's Heal: touch, range, area). Ours are of that kind where we have them (Judge, Lay On Hands), and **the Arts' Modes are the same idea at one cost**. A shared second cost kills the cheap Version, and Frequency is ours: an Encounter card with a cheap Version would almost never be used cheap. **Rule to keep: a second Version only when it does a different thing, never a bigger one.** A candidate on the Archer, if he wants one: Darting Blade at 2 AP reaching a creature within a short Advance (a different use: the dash in), but the class already has a lot of movement.
 - **Criticals: a line a card is the wrong place at 2.8%.** Games with criticals that rare (Draw Steel: 3%) write the critical **once, for everything, and big** ("lets you immediately take an additional main action"), and put each ability's excitement on a result that comes often (its tier 3). Mearls on why a rare critical can carry a lot: "it only happens 1 in 20... let's throw a lot of effects there." We already do the first half (a Critical raises Escalation by 1, once an encounter) and the redesign does the second (a Tier 3 must visibly beat a Tier 2). **What is worth adding: one Critical line a class, on a Feature, not one a card.** For the Archer, something like "When you get a Critical with a [Strike] Action, you can make a Weapon Attack (1A) against any creature in range" (one more arrow, the class in a line); for the Paladin, its own. Rare, loud, and nothing to read on every card.
 
+**Lucas's answer (2026-11-16): "Some actions can just have its own critical entry, to be unique." "Tier 2 and 3 is good then."** So: **no Critical line a class; a few cards get their own Critical entry** (the Structure keeps the line, optional, under Tier 3), chosen when the class is read whole. **VOLLEY IS DECIDED:**
+
+> **Volley** · Encounter · 2 AP
+> *You send a flight of arrows high, and they come down on everything standing in one patch of ground.*
+> Weapon · Ranged · Projectile · Area · Strike
+> Distance: Weapon · Area: 3 Burst | Target: All creatures in the Area
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 2[W] + [Mod]; Hindered (EoT).
+> **Tier 3:** [V] 3[W] + [Mod]; Hindered (EoT).
+> **Effect:** You Evade 2.
+
+About 88, of 100 (damage 75, Hindered on 72% of the creatures about 5, the Evade 8).
+
+**Versions: kept as they are** (a second Version only when it does a different thing).
+
+## Decision 15: the second Encounter Pick, Hit and Run (PROPOSED 2026-11-16, waiting for Lucas)
+
+Lucas: the running fight has "to mix bow with light weapon somehow".
+
+**Rules first.** Several Targets: one roll, read against each creature, each its own Tier. A Setup happens first and the targets are chosen after it. Using a [Ranged] Action while Engaged is Doomed (each target has its own Boons, Banes, Favored and Doomed). A Dagger's [W] is 0 / 2 + 1d4! / 4 + 1d4!; a Shortbow's 0 / 1d6! / 1 + 1d6!. Swapping weapons is an Interact (1 AP) unless a card says otherwise (Darting Blade does). An Encounter Action of 2 AP is worth 100 points.
+
+> **Hit and Run** · Encounter · 2 AP
+> *You sprint into the thick of them: the knife opens whoever is in reach, an arrow finds one more, and you are out the far side before they turn.*
+> Weapon · Melee · Ranged · Projectile · Strike
+> Target: Each enemy within your Reach, and one other creature within your bow's Range
+> **Setup:** You Advance.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 2[W] + [Mod].
+> **Effect:** You Evade 3.
+> **Special:** [W] is your Light weapon's against the enemies within your Reach and your bow's against the other creature. You draw and stow both as part of this Action, and the arrow isn't Doomed for your being Engaged.
+
+```
+The knife: 2 / 6.5 / 15.8 = 7.2 a creature; about 2 enemies within Reach (he chooses where the Advance ends) ... 49   [SIM: 3.4 a point; the count is judgment]
+The arrow: 2 / 6.2 / 12.4 = 6.3 on one more creature ... 21
+Setup: a full Advance ... 12;  Effect: Evade 3 ... 12   [SIM: an AP is 12]
+The free swaps and "not Doomed" ... not priced (they are what lets the card exist)
+--- Total: about 94, of 100: on
+```
+
+**Analysis.**
+- **Bow and blade in one breath:** one roll, read against everyone the knife can reach and one creature the arrow can. Not two attacks one after the other (Double Shot's shape), and neither weapon is decoration: the knife pays for the risk of running in, the arrow reaches the one who stayed back.
+- **The decision it gives:** where the Advance ends. More enemies within Reach is more knife; each of them is also next to him if a Tier 1 comes up. Then Evade 3 takes him out, through the gap he planned.
+- **The fragile class's brave card,** as Arrow Storm was meant to be, but by his own two weapons instead of a spray.
+- **Rules it touches:** a card with two weapons needs to say which [W] is whose (the Special line); "not Doomed" is a stated exception (specific beats general). The targets are chosen after the Setup, as the Setup rule says.
+- **With the rest:** Blade and Bow's Boon doesn't apply (it is one Action); Fleet makes its Evade 4; Shifting Aim's Boon applies (he left his square in the Setup).
+- **Complexity:** the longest card of the class (a Setup, an Effect and a Special): an Encounter Pick's place.
+
+**For Lucas to choose:** the shape (one roll for knife and arrow); the Evade (3); the name.
+
 **Lucas's answer:**
