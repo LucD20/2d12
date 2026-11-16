@@ -637,4 +637,28 @@ A full Advance inside it, for 0 AP ... 12
 
 **For Lucas to choose:** Arrow Storm's size (a 2 Emanation; 3 is 37 squares and about one more creature); the hook's moment.
 
+**Lucas's answer (2026-11-16): "Arrow Storm: I think this isnt on the same level as one more arrow. Either a passive or something more thematic would fit, this is Arts after all".** ARROW STORM IS OUT. (Read as: the sixth ability should be a Passive like its partner, or something with more of the class in it than another damage Action. The hook was not answered yet.)
+
+**Three Passives for the place, each at One More Arrow's size (about 12 a turn at Escalation 6):**
+
+> **Spare Arrow** · Escalation 6 · Passive (width, where One More Arrow is depth)
+> *You always have a second arrow between your fingers, and it always finds someone.*
+> **Passive:** Once on each of your turns, when you damage a creature with a [Ranged, Strike] Action, another enemy within 3 squares of it that you have Line of Effect to takes [V] damage equal to 2 + your Weapon Modifier, of your weapon's subtype.
+
+4 damage with no roll, on nearly every turn an enemy has a neighbor: about 12 to 13 points [SIM: 3.4 a point]. **It is One More Arrow's mirror:** the pair repeats the Hallmark choice (Quick Shots' depth, Strafe's width), so a rung's two abilities are the same size by construction. No roll, no dice.
+
+> **Fleet** · Escalation 6 · Passive (the mobility)
+> *Nothing on this field is as fast as you are now.*
+> **Passive:** Each Evade of yours moves you 1 more square, and your Evades can enter Difficult Terrain.
+
+"Very mobile", as its last word: Quick Shots' Evade 2 becomes 3, Sidestep's 3 becomes 4, Slip Away's first step becomes 2. About 8 to 12 a turn [judgment]. It gives no damage at all, so it is the choice for the Archer who wants never to be caught.
+
+> **Blood Up** · Escalation 6 · Passive (the kill)
+> *Each foe that falls only makes your hands quicker.*
+> **Passive:** Once a round, when an enemy you have damaged goes Down, you gain 1 AP. You can keep it for your next turn if it isn't yours.
+
+A whole extra Action in the rounds something he tagged dies (about half the rounds late in a fight): about 6 to 12 a turn [judgment: an AP is 12]. Teamwork again (the party's kills count). It needs a line for an AP gained outside his turn.
+
+**Claude's pick: Spare Arrow.** It answers "the same level" exactly (the same sentence shape and size as One More Arrow, the other axis), and it is the brief's first line: many hits, never one big one.
+
 **Lucas's answer:**
