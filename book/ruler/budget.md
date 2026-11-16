@@ -111,8 +111,8 @@ The yardstick with a Reaction. Its attack has a Round Action's points of its cos
 |---|---|---:|---:|---:|---:|
 | Trigger: a PC's Strike hits it: an attack back | 1R | 0.8 | 39% | 14.4 | 1.2 |
 | Trigger: a PC's Strike hits it: an attack back | 2R | 0.8 | 41% | -6.4 | -6.4 |
-| Trigger: a PC's Strike hits an ally within 2: it attacks that PC (Hold the Line) | 1R | 0.2 | 12% | 4.1 | 2.3 |
-| Trigger: a PC's Strike hits an ally within 2: it attacks that PC (Hold the Line) | 2R | 0.3 | 13% | -25.7 | -25.7 |
+| Trigger: a PC's Strike hits an ally within 2: it attacks that PC (Avenge Kin) | 1R | 0.2 | 12% | 4.1 | 2.3 |
+| Trigger: a PC's Strike hits an ally within 2: it attacks that PC (Avenge Kin) | 2R | 0.3 | 13% | -25.7 | -25.7 |
 | Interrupt: a PC makes a Strike against an ally next to it: +2 Defense against it (a shield) | 1R | 0.6 | 28% | 0.1 | -3.8 |
 | Interrupt: a PC would enter a square next to it: it attacks first | 1R | 0.5 | 24% | 6.8 | 2.7 |
 | Interrupt: a PC would enter a square next to it: it attacks first | 2R | 0.5 | 24% | -21.2 | -21.2 |

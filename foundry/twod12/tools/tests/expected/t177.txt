@@ -8,7 +8,7 @@ the generator gives the data of the file: true
 set aside: 20 | each is a card: true | none is placed: true
 shown in the book: 80 | placed once: true | markers with no card: none
 cards of the files still written by hand in a chapter: none
-a card the book does not show (book: false): Marked Quarry, Break Free, Rusty Knife, Dirty Trick, Cudgel, Low Blow, Cleaver, Brutal Swing, Hold the Line, Chilling Touch, Dread Whisper, Club, Ground Slam, Rally the Tribe
+a card the book does not show (book: false): Marked Quarry, Break Free, Rusty Knife, Dirty Trick, Cudgel, Low Blow, Cleaver, Brutal Swing, Avenge Kin, Chilling Touch, Dread Whisper, Club, Ground Slam, Rally the Tribe
 --- the compendium items are the cards (content.mjs reads book/cards)
 compendium cards: 94 | one item each, equal to the card: all | CARDS exported: true
 Techniques whose weapon is not in the compendium yet (information, for pack X): 0 

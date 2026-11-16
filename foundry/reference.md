@@ -179,6 +179,7 @@ Ricochet's Line of Effect and Cover from the surface; Cover for area effects and
 
 ## Changelog
 
+- **v0.0.386 (Lucas: "Rename the Orc Warrior's action"):** the Orc Warrior's Reaction **Hold the Line is now Avenge Kin** (the name goes to the Paladin's Art in the class redesign; nothing else on the card changed). The compendium NPC gets the new name when the packs are rebuilt; an Orc Warrior already in a world keeps the old name on its sheet. 250 tests.
 - **v0.0.385 (Lucas: "clicking on the action again should close the card, not blink it"):** a second click (or right-click) on an Action's name in the HUD closes its card; before, the press closed it and the click opened it again. 250 tests.
 - **v0.0.384 (Lucas on v0.0.383: "good"):** **no tooltip on the HUD's stamps** (a struck stamp still says why it can't be used); **full screen: the HUD reaches the sidebar** (Foundry's empty notifications area beside the sidebar no longer counts as where the HUD must stop). 250 tests.
 - **v0.0.383 (Lucas on v0.0.382):** **a PC's pinned Actions are slots:** no "Quick" label; two rows of empty dashed slots (the look of "Skills later"), each pinned Action filling one (right-click a Version's stamp to pin it); a slot is sized for one stamp and grows with an Action that has more pinned Versions; more pins than slots add columns, and slots that don't fit a narrow HUD are clipped at its end. **An NPC on the smaller resolution:** its four Checks and Saves stay on one line beside the name, tighter type, the name on up to two lines instead of cut. 250 tests.

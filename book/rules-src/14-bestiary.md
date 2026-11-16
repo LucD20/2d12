@@ -241,7 +241,7 @@ Most NPC Actions should do more than damage. As guidance, from most to least com
 Add the points of the most it can do in one turn: its AP (4, or 3), at most 3 Strikes, each Round Action once, **without its Encounter Action** (the pay-back covers that turn). It should be within its turn budget, or up to **15% over**. A turn of Basic attacks only, or with only a 1 AP Special, is well under the budget (the repeated Basic attacks take At-will Banes): give it a 2 AP Special.
 
 > [!example]
-> **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). *Hold the Line* is a 1R Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Severe, 12) and the Reaction's 7 leave 36: 3 + 1d4 / 4 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
+> **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). *Avenge Kin* is a 1R Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Severe, 12) and the Reaction's 7 leave 36: 3 + 1d4 / 4 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
 
 ### Elite Escalation
 
@@ -441,8 +441,8 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 
 **Orc Warrior** (Standard, CV 100; 25 points an AP, turn budget 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier Medium (+2), Power Modifier Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
 - *Cleaver* (Basic attack, 1 AP, At-will; 25, Push 1 2): 1 + 1d4! / 3 + 1d4! Sl, and it can Push the target 1.
-- *Brutal Swing* (2 AP, Round; 55, Prone 12, Hold the Line's share 7): 3 + 1d4 / 4 + 1d6 Sl, and Prone.
-- *Hold the Line* (Reaction, 1R, Trigger: an ally within 2 squares is hit by a Strike; 28): it makes an attack against the attacker if it can reach it: 1 + 1d4 / 3 + 1d6 Sl.
+- *Brutal Swing* (2 AP, Round; 55, Prone 12, Avenge Kin's share 7): 3 + 1d4 / 4 + 1d6 Sl, and Prone.
+- *Avenge Kin* (Reaction, 1R, Trigger: an ally within 2 squares is hit by a Strike; 28): it makes an attack against the attacker if it can reach it: 1 + 1d4 / 3 + 1d6 Sl.
 
 **Grave Wisp** (Standard, CV 100; 25 points an AP): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - *Chilling Touch* (Basic attack, 1 AP, At-will, Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4! / 2 + 1d4! Co, and Frightened of it (EoT).

@@ -152,7 +152,7 @@ out.push("");
 /* ---------------------------------------------------------------- 6. Reactions */
 const RX = [
   ["struck", "Trigger: a PC's Strike hits it: an attack back", { trigger: "struck" }],
-  ["allyHit", "Trigger: a PC's Strike hits an ally within 2: it attacks that PC (Hold the Line)", { trigger: "allyHit", range: 2 }],
+  ["allyHit", "Trigger: a PC's Strike hits an ally within 2: it attacks that PC (Avenge Kin)", { trigger: "allyHit", range: 2 }],
   ["allyStruck", "Interrupt: a PC makes a Strike against an ally next to it: +2 Defense against it (a shield)", { trigger: "allyStruck", range: 1, def: 2 }],
   ["approach", "Interrupt: a PC would enter a square next to it: it attacks first", { trigger: "approach" }],
 ];

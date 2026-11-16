@@ -34,6 +34,6 @@ Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Grave Wisp (standard, speed 5): Chilling Touch atwill, Dread Whisper round
 Ogre Chieftain (elite, speed 4): Club atwill, Ground Slam encounter, Rally the Tribe round
-Orc Warrior (standard, speed 5): Cleaver atwill, Brutal Swing round, Hold the Line round reaction
+Orc Warrior (standard, speed 5): Cleaver atwill, Brutal Swing round, Avenge Kin round reaction
 keys unique in each pack (embedded Items too): yes
 NPC Speed as a rating: Bandit Thug 5, Goblin Sneak 7, Grave Wisp 5, Ogre Chieftain 4, Orc Warrior 5

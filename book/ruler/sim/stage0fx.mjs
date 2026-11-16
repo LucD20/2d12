@@ -34,7 +34,7 @@ export function sections(L, log, N) {
   }
   L.push("");
   /* 11 */
-  L.push("## 11. The six Roles with what makes them (level 2)", "", "Four of a Role (the Leader: one Leader with three Standards with effects, against four Standards with effects), and six for the deadly fight. Each Role has its ratings (the Bestiary's Roles table) and is built on the budget: the **Soldier** with Hold the Line (1R, Trigger: a PC's Strike hits an ally within 2: it attacks that PC) and Immobilized on its Special; the **Controller** with Frightened and Dazed 1 (Vs. WD); the **Leader** with Rally (1 AP, Round: its allies within 5 gain 1 Boon on their next attack, 9 points taken from its Special). Plain Standards with effects: the first row. Cells: cost · a PC Down · won.", "",
+  L.push("## 11. The six Roles with what makes them (level 2)", "", "Four of a Role (the Leader: one Leader with three Standards with effects, against four Standards with effects), and six for the deadly fight. Each Role has its ratings (the Bestiary's Roles table) and is built on the budget: the **Soldier** with Avenge Kin (1R, Trigger: a PC's Strike hits an ally within 2: it attacks that PC) and Immobilized on its Special; the **Controller** with Frightened and Dazed 1 (Vs. WD); the **Leader** with Rally (1 AP, Round: its allies within 5 gain 1 Boon on their next attack, 9 points taken from its Special). Plain Standards with effects: the first row. Cells: cost · a PC Down · won.", "",
     "| Role | Normal (4) | Deadly (6) |", "|---|---|---|");
   const plainSet = [run(2, () => cycle(4)), run(2, () => cycle(6))];
   L.push(`| Standards with effects | ${plainSet.map(c3).join(" | ")} |`);
