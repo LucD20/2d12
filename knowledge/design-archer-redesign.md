@@ -685,4 +685,36 @@ A whole extra Action in the rounds something he tagged dies (about half the roun
 
 **Claude's note:** all three are many small hits and none is a nova; 1 is a shot, 2 is a move, 3 is ground held, so the pick says how he likes to fight. Left out: a duelist's single-target Encounter (it would be the big hit), a healing or shielding card (the brief has no support).
 
+**Lucas's answer (2026-11-16): "Yes, its good, though running fight we have to mix bow with light weapon somehow." THE THREE THEMES ARE DECIDED** (the volley, the running fight, the pinning rain); the running fight must use both the bow and the Light weapon.
+
+## Decision 14: the first Encounter Pick, Volley (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules and research first.** Today's Volley: Encounter, 2 AP, a [Save, Weapon] Area (each creature rolls an Instinct Save), a 2 Emanation placed within the weapon's normal range, all creatures in it: 2d8 + [Mod] and Hindered / 1d10 + [Mod] / 1d4. Several Targets: his one roll is read against each creature's Defense, and each gets its own Tier (a Save would be one roll a creature, by the GM). A 2 Emanation is 21 squares; the ruler assumes 1.8 creatures in one, more when it is placed with care. An Encounter Action of 2 AP is worth 100 points. Research: the liked burst for a shooter is width and never-whiff.
+
+> **Volley** · Encounter · 2 AP
+> *You send a flight of arrows high, and they come down on everything standing in one patch of ground.*
+> Weapon · Ranged · Projectile · Area · Strike
+> Distance: Weapon · Area: 2 Emanation | Target: All creatures in the Area
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 2[W] + [Mod].
+> **Tier 3:** [V] 3[W] + [Mod].
+> **Effect:** You Evade 2.
+
+```
+Damage 2 / 10.4 / 17.6 = 9.6 a creature; about 2.5 creatures (placed with care) ... 81   [SIM: 3.4 a point; the count is judgment]
+Effect: Evade 2 ... 8   [judgment]
+--- Total: about 89, of 100: a little under (it never whiffs; against four packed enemies it is 130)
+```
+
+**Analysis.**
+- **It is Quick Shots on everyone in a patch of ground:** the class's own hits-by-Tier, once an encounter, wide. No creature takes more than Quick Shots would give it, so there is no big hit; the size is in the count.
+- **The decision it gives:** when the enemies are bunched, and whether an ally is in the patch: it hits **all creatures**, as today's Volley does, so the front line and the Archer have to talk (teamwork by not standing there). With "all enemies" it would be simpler and about 10% stronger: his call.
+- **His roll, not their Saves:** one roll at the table instead of one a creature. Today's version was a Save.
+- **Shoot, then move:** the Evade is the class's signature, and sets up Shifting Aim for the next shot.
+- **Rules it touches:** nothing new.
+- **Against the other two Picks (to come):** this is the one taken by the Archer who stays back.
+
+**For Lucas to choose:** all creatures or all enemies; the Area (a 2 Emanation; a 3 Emanation is 37 squares and would need smaller Tiers).
+
 **Lucas's answer:**
