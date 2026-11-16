@@ -489,4 +489,46 @@ Keep Low: one more Field Bane (or Doomed) on each enemy that shoots at him behin
 
 **For Lucas to choose:** the three Modes; Call Out's distance (10); the name (Keen Eye; others: Marksman's Eye, Spotter).
 
+**Lucas's answer (2026-11-16): "Spotter is best, all others are good. Proposed." THE THIRD ART IS DECIDED, named SPOTTER** (Call Out, 10 squares; Find the Gap; Keep Low; as written above). **The three Arts are done: Footwork, Trick Shots, Spotter.**
+
+## Decision 11: the Escalation abilities, the ladder and the Escalation 2 pair (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules and research first.** Escalation starts at 1 (plus the party's Momentum) and rises by 1 a round; an ability of Escalation 2 works from round 2, of 4 from round 4, of 6 from round 6 (earlier with Momentum or the hook). A Passive is worth about 5 to 10 points a turn; it changes a decision or fires on a moment the table sees, never a silent bonus (the charter). Each rung offers two; he takes one at levels 1, 2 and 3. The card says "Escalation N" on its bar and the sentence carries no "While..." clause (the Structure). From the Paladin: a rung's two abilities are two styles, not a strong one and a weak one.
+
+**The ladder I would build (a steer before the cards; only the Escalation 2 pair is proposed now):**
+
+| Rung | One style: the skirmisher | The other: the switch-hitter and the harrier |
+|---|---|---|
+| Escalation 2 (level 1) | **Light Feet:** a free step after a shot | **Blade and Bow:** a Boon for changing between bow and blade |
+| Escalation 4 (level 2) | a floor that grows: his shots' Tier 1 lands a real hit | **Harry** (kept from Decision 4): Vulnerable 1 from a new square |
+| Escalation 6 (level 3) | a fourth Strike a turn (the cap of 3 lifted by one) | a 0 AP Encounter Action: one arrow into every enemy near him, on the run |
+
+> **Light Feet** · Escalation 2 · Passive
+> *The fight has found its rhythm, and your feet keep it: loose, step, loose.*
+> **Passive:** Once on each of your turns, after you use a [Ranged, Strike] Action, you can Evade 1.
+
+```
+An Evade 1 a turn (the Evade Action: 1 AP), only after a shot ... about 8   [judgment: most of an AP's 12]
+From round 2, or from the start with Momentum: about three quarters of his turns ... about 6 a turn, of 5 to 10: on
+```
+
+> **Blade and Bow** · Escalation 2 · Passive
+> *Arrow, knife, arrow: each sets up the next.*
+> **Passive:** Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action, or a [Ranged, Strike] Action after a [Melee, Strike] Action, it gains 1 Boon.
+
+```
+1 Boon on one Strike a turn, when he has woven the two ... about 4   [judgment: a Boon on a Strike is about 3 to 4]
+It asks him to be within Reach of an enemy, where his bow is Doomed: the Boon pays for a risk ... about 4 a turn, of 5 to 10: a little under
+```
+
+**Analysis.**
+- **The decision each gives:** Light Feet: where the free step goes after every shot (and it sets up Shifting Aim's Boon for the next one with no AP spent). Blade and Bow: whether to go in with the knife this turn at all.
+- **Two styles:** the Archer who is never where he was, and the Archer who darts in and out. The brief has both lines ("shooting fast... then moving away"; "fast to change to melee for a quick strike then moving back").
+- **Light Feet is candidate 3 of the Features (Loose and Move), at half its size and behind Escalation 2:** as a Feature it was free from round 1 and always the same.
+- **Blade and Bow with Darting Blade:** shoot, stab with a Boon (or stab, then shoot with a Boon after Darting Blade's Evade has taken him out of Reach, where the bow is no longer Doomed). The order he picks is the play.
+- **Both fire on a moment the table sees** (a shot, a change of weapon), and both are once a turn: nothing to track across turns.
+- **Rules they touch:** nothing new. The Boon is unnamed; Shifting Aim's is a Field Boon, so the two add up.
+
+**For Lucas to choose:** the ladder's two styles; the Escalation 2 pair; Light Feet's Evade (1, or 2).
+
 **Lucas's answer:**
