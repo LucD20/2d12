@@ -1,6 +1,6 @@
 # The Swords: the record
 
-**Started 2026-11-16 (Lucas: "Lets decide Swords, starting with two just like Bows"), on branch `pack-bows`, after the Bow remake was applied.** The bows' way (`bows-redesign.md`, `book/class-charter.md` "Rules learned in the two redesigns"): his brief, the rules and `book/research/` first, then one decision at a time, each waiting for him. **Nothing goes into the book, the card files or Foundry until he says so.** **The reading page:** `book/cards/swords-desk/index.html`, the artifact "Sword Desk".
+**THE TWO BASIC SWORDS AND PRESSED ARE IN THE BOOK (2026-11-16); the four later swords are names only. Started 2026-11-16 (Lucas: "Lets decide Swords, starting with two just like Bows"), on branch `pack-bows`, after the Bow remake was applied.** The bows' way (`bows-redesign.md`, `book/class-charter.md` "Rules learned in the two redesigns"): his brief, the rules and `book/research/` first, then one decision at a time, each waiting for him. **Nothing goes into the book, the card files or Foundry until he says so.** **The reading page:** `book/cards/swords-desk/index.html`, the artifact "Sword Desk".
 
 ## The brief (Lucas, 2026-11-16)
 
@@ -330,7 +330,7 @@ Two changes from the first draft, both to keep the condition plain: **the Tier 1
 
 **Answered:** the design is where the bows' was before it went into the book. What the bows had beyond this: (1) **the applying** (Chapter 15, the cards, the Glossary, the tests), which waits for his word here; (2) rules for the whole game decided on the way (Mastery, Hands, Light, Strung), which the swords inherit, with one of their own (Pressed). Still parked, as before the swords: what pays for fighting with two weapons, and the Fists (`rules-backlog.md`).
 
-## The Swords so far: what is decided (2026-11-16, NOT in the book; waiting for his word to apply)
+## The Swords so far: what is decided (APPLIED TO THE BOOK 2026-11-16: Lucas, "Yeah, again, other weapons are just placeholders, nothing else. Add to the book, then merge.")
 
 **The group:** Swords, their own group, without the Dagger. Six swords in two lines: one hand: **Arming Sword** (Basic), Sabre (Advanced), Rapier (Exotic); two hands: **Longsword** (Basic), Zweihänder (Advanced), Montante (Exotic). Only the two Basic ones have mechanics.
 
@@ -351,3 +351,5 @@ Two changes from the first draft, both to keep the condition plain: **the Tier 1
 3. Chapter 8 and the Glossary: Pressed.
 4. The cards: `stage0/gear.json` gains the two Techniques.
 5. Not touched: the Sabre, Rapier, Zweihänder and Montante (names in the record only; the book says Advanced and Exotic swords are to come); the Bestiary's "1 Pressure Bane on its next roll" (it could become Pressed 1 later); Foundry (a list goes into its backlog).
+
+**Applied as listed** (`rules-src/15-gear.md`, `08-conditions.md`, `09-glossary.md`, `book/cards/stage0/gear.json`, `set-aside.txt`; t177's expected output updated on purpose; no unresolved reference; 250 tests pass). The log: `rules-backlog.md`, the top entry.

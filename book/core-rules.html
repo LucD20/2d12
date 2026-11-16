@@ -1964,6 +1964,8 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <li>You are <span class="kw-neg">Vulnerable 3</span>.</li>
 </ul>
 <p>At the start of your turn you get back to safety, to a legal square next to the hazard, and stop being Imperiled. This takes no Action, but you are <a class="xref" href="#slowed">Slowed</a> 1 that turn (or increase your Slowed value by 1), so no condition can keep you there. A creature can help you get to safety with the Interact Action (<span class="kw-ap">1 AP</span>, Handle).</p>
+<h3 id="pressed">Pressed</h3>
+<p>Pressed always has a value, such as <strong>Pressed 1</strong>. Your [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Actions take that many <strong>Pressure <span class="kw-bane">Banes</span></strong> (see <a class="xref" href="#named-boons-and-banes">Named <span class="kw-boon">Boons</span> and <span class="kw-bane">Banes</span></a>: at most 2 count). If you would be Pressed twice, only the highest value applies.</p>
 <h3 id="prone">Prone</h3>
 <ul>
 <li><span class="trhl" style="--tc:var(--g-requires)">Melee</span> Actions against you gain 1 Field <span class="kw-boon">Boon</span>, and <span class="trhl" style="--tc:var(--g-requires)">Ranged</span> Actions against you suffer 1 Field <span class="kw-bane">Bane</span>.</li>
@@ -2465,6 +2467,10 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 <td>An Action with the <span class="trhl" style="--tc:var(--g-roll)">Power</span> trait (or a <span class="trhl" style="--tc:var(--g-roll)">Split</span> Action in Power mode).</td>
 </tr>
 <tr>
+<td><a class="xref" href="#pressed"><strong>Pressed</strong></a></td>
+<td>A condition with a value: your [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Actions take that many Pressure <span class="kw-bane">Banes</span> (at most 2 count).</td>
+</tr>
+<tr>
 <td><a class="xref" href="#named-boons-and-banes"><strong>Pressure</strong></a></td>
 <td>A named <span class="kw-bane">Bane</span> an effect of another creature puts on you. Up to 2.</td>
 </tr>
@@ -2758,7 +2764,7 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 </tr>
 <tr>
 <td><a class="xref" href="gear.html#weapon-groups"><strong>Weapon Group</strong></a></td>
-<td>Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is never lower than half your best in its group.</td>
+<td>Swords, Daggers, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is never lower than half your best in its group.</td>
 </tr>
 <tr>
 <td><a class="xref" href="#weapon-power-and-signature-modifiers"><strong><span class="mod-weapon">Weapon Modifier</span></strong></a></td>

@@ -38,7 +38,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 - Lucas writes **b/b** for "Boons and Banes" and **r/w** for "Resist and Weak" (chat and notes only; the book writes the words).
 - Names in examples: only the list in the README, each used once before any repeats; he/him except Krysta and Lana; **in diagrams "you" is Y** (never O or K). Bane and Boon capitalized. Damage always writes its pool: `[V] 1[W] + [Mod]` ([V] Vigor, [R] Resolve since pack R-core; the old [B] / [M] are still read, don't write them). Write `[Strike] Action` when you mean the trait.
 - Trait groups: Roll, Requires, Kind, Damage, Keywords (`GROUPS` in build_rules.py). Weapon properties have no color. Text colors come from `CLASS_TOKEN` and the CSS variables.
-- **Weapons (Lucas, 2026-11-16):** only the Hunting Bow and the Recurve Bow are designed (the Bow remake: `book/cards/bows-redesign.md`); every other weapon in Chapter 15 is a placeholder made to playtest and fill space: never argue from one. A weapon group is redone the bows' way (a record, a reading page, one decision at a time).
+- **Weapons (Lucas, 2026-11-16):** only the Hunting Bow and the Recurve Bow (`book/cards/bows-redesign.md`) and the Arming Sword and the Longsword (`book/cards/swords-redesign.md`) are designed; every other weapon in Chapter 15 is a placeholder made to playtest and fill space: never argue from one. A weapon group is redone the bows' way (a record, a reading page, one decision at a time).
 - Dist for areas: an Emanation is the 1-2-1 shape (a 2 Emanation = 21 squares); a Burst is on a corner. Light uses the same shapes and only matters where the TARGET is.
 
 ## Gotchas

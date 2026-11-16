@@ -121,6 +121,7 @@
 | [[Areas\|**Point of Origin**]] | The place an area spreads from: an Emanation's target, your square for a Line, the tip of a cone. Line of Effect and Cover for the area are checked from it. |
 | [[Weapon, Power and Signature Modifiers\|**Power Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Power Actions roll it; Ward Defense adds it. |
 | [[Rolls\|**Power roll**]] | An Action with the Power trait (or a Split Action in Power mode). |
+| [[Pressed\|**Pressed**]] | A condition with a value: your [Strike] Actions take that many Pressure Banes (at most 2 count). |
 | [[Named Boons and Banes\|**Pressure**]] | A named Bane an effect of another creature puts on you. Up to 2. |
 | [[Projectile\|**Projectile**]] | A trait and a weapon property with one name: the weapon shoots (a bow, a crossbow), and a Projectile Action needs one. |
 | [[Light\|**Light**]] | A weapon property: a small one-handed melee weapon (a Dagger, a Handaxe); 1 Bane in your off hand instead of 2. |
@@ -194,7 +195,7 @@
 | [[Vulnerable\|**Vulnerable**]] | A condition with a value: Actions against you gain that many Boons. |
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense against Power Actions. |
 | [[Resist, Weak and Immune\|**Weak**]] | Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once. |
-| [[Weapon Groups\|**Weapon Group**]] | Blades, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is never lower than half your best in its group. |
+| [[Weapon Groups\|**Weapon Group**]] | Swords, Daggers, Axes, Hammers, Polearms, Bows, Crossbows, Firearms, Unarmed. Your Mastery with a weapon is never lower than half your best in its group. |
 | [[Weapon, Power and Signature Modifiers\|**Weapon Modifier**]] | One of your class's two Modifier values (+2 or +1 at level 1; it grows at Stages 1 and 3). Weapon Actions roll it. |
 | [[Rolls\|**Weapon roll**]] | An Action with the Weapon trait (or a Split Action in Weapon mode). |
 | [[Weapons\|**Weapon Technique**]] | A weapon's own Action, unlocked with Mastery; used only with that weapon, while you wield it. |

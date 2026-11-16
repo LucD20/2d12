@@ -77,6 +77,10 @@ You barely avoided a [[Deadly Hazards|Deadly Hazard]]: you are hanging from a le
 
 At the start of your turn you get back to safety, to a legal square next to the hazard, and stop being Imperiled. This takes no Action, but you are [[Slowed]] 1 that turn (or increase your Slowed value by 1), so no condition can keep you there. A creature can help you get to safety with the Interact Action (1 AP, Handle).
 
+### Pressed
+
+Pressed always has a value, such as **Pressed 1**. Your [Strike] Actions take that many **Pressure Banes** (see [[Named Boons and Banes]]: at most 2 count). If you would be Pressed twice, only the highest value applies.
+
 ### Prone
 
 - Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane.

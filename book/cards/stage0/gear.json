@@ -1,5 +1,5 @@
 {
- "_about": "The Weapon Techniques written in the card Structure (book/cards/card-structure.md): the two Basic bows of the Bow remake, decided with Lucas on 2026-11-16 (book/cards/bows-redesign.md). THE BOOK reads these; Foundry and the ruler still read ../gear.json (its Skirmish Shot and Heartseeker are set aside in the book) until the Foundry pass. 'weapon' names the Technique's weapon; 'mastery' the Mastery that unlocks it.",
+ "_about": "The Weapon Techniques written in the card Structure (book/cards/card-structure.md): the two Basic bows (book/cards/bows-redesign.md) and the two Basic swords (book/cards/swords-redesign.md), decided with Lucas on 2026-11-16. THE BOOK reads these; Foundry and the ruler still read ../gear.json (its Skirmish Shot, Heartseeker, Guarded Cut and Reaping Sweep are set aside in the book) until the Foundry pass. 'weapon' names the Technique's weapon; 'mastery' the Mastery that unlocks it.",
  "structure": 2,
  "cards": [
   {
@@ -73,6 +73,82 @@
     {
      "label": "Tier 3",
      "text": "[V] 1[W] + [Mod]; you Evade 1 to a square that is no farther from the target."
+    }
+   ]
+  },
+  {
+   "name": "Seizing Cut",
+   "category": "Weapon Technique",
+   "weapon": "Arming Sword",
+   "mastery": 10,
+   "flavor": "You catch your foe's arm with your empty hand, cut, and turn it to where you want it standing.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "traits": [
+    "weapon",
+    "melee",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Requirement",
+     "text": "You have at least one hand free."
+    },
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[[Reposition]] 1 the target."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1[W]; [[Reposition]] 1 the target."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1[W] + [Mod]; [[Slid]] 1, then [[Grabbed]]."
+    }
+   ]
+  },
+  {
+   "name": "Thwart Cut",
+   "category": "Weapon Technique",
+   "weapon": "Longsword",
+   "mastery": 10,
+   "flavor": "You cut across your foe's blade and stay on it, and every blow it tries has to come through your steel.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "traits": [
+    "weapon",
+    "melee",
+    "strike"
+   ],
+   "distance": "Weapon",
+   "target": "One creature",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Weapon vs. Armor Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[[Pressed]] 1 (EoT)."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[V] 1[W]; [[Pressed]] 1 (EoT)."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[V] 1[W] + [Mod]; [[Pressed]] 2 (EoT)."
+    },
+    {
+     "label": "Special",
+     "text": "This Pressed ends if you stop threatening the target."
     }
    ]
   }

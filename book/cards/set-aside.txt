@@ -63,3 +63,8 @@ Mark Quarry
 # and the Recurve Bow, whose Techniques are in stage0/gear.json).
 Skirmish Shot
 Heartseeker
+#
+# 2026-11-16, the Swords: the placeholder Longsword's and Greatsword's Techniques (replaced in the book by the Arming Sword and the Longsword,
+# whose Techniques are in stage0/gear.json).
+Guarded Cut
+Reaping Sweep

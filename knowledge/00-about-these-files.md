@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: dde7665 2026-11-16 Swords: the condition Pressed proposed (Lucas's idea); Thwart Cut rewritten with it
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 790f5e5 2026-11-16 Swords: both Basic swords decided (Seizing Cut, Thwart Cut, the condition Pressed); not applied yet
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -30,7 +30,7 @@ Files:
 - rules-12-paladin.md (3 KB)
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
-- rules-15-gear.md (13 KB)
+- rules-15-gear.md (14 KB)
 - research-index.md (7 KB)
 - research-ability-scope.md (7 KB)
 - research-archer.md (7 KB)
@@ -56,7 +56,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-swords-redesign.md (37 KB)
+- design-swords-redesign.md (38 KB)
 - design-bows-redesign.md (89 KB)
 - design-archer-redesign.md (109 KB)
 - design-card-structure.md (25 KB)

@@ -5,13 +5,13 @@
 Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
-> A Paladin with a Weapon Modifier of +2 deals 5 + 1d6! + 2 Slashing damage on Tier 2 with a Greatsword Weapon Attack: 8 to 13.
+> A Paladin with a Weapon Modifier of +1 deals 6 + 1d4! + 1 Slashing damage on a Tier 2 with a Longsword Weapon Attack: 8 to 10, and more when the die explodes.
 
 ### Weapon Damage [W]
 
 **[W]** is the damage of your weapon: on each Tier, **a flat number plus at most one small die**. **A weapon's die explodes**, so it is written with **!** (see [[Exploding Dice]]): on its highest face, count it as one less and roll it again. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
 
-*Example:* an Action that deals 2[W] deals 0 / 10 + 2d6! / 16 + 2d8! with a Greatsword, and 0 / 4 + 2d4! / 8 + 2d4! with a Crossbow.
+*Example:* an Action that deals 2[W] deals 0 / 12 + 2d4! / 18 + 2d6! with a Longsword, and 0 / 4 + 2d4! / 8 + 2d4! with a Crossbow.
 
 ### Reading the Weapon Tables
 
@@ -23,15 +23,15 @@ Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Gr
 A melee weapon deals more than a ranged one, which strikes from safety. Among melee weapons, one that takes both hands deals the most and one that leaves a hand free less: what the weapon can do pays for the difference. The die tells weapons apart: a d4 on a big flat number is steady (Hammers, Crossbows), a d8 swings (Axes, Firearms), a d6 is in the middle.
 
 > [!tbd]
-> **Every weapon in these tables except the Hunting Bow and the Recurve Bow is a placeholder**, made to playtest and to fill the tables: its numbers, its properties and its Weapon Technique are rewritten when its Weapon Group is. The two bows are the model.
+> **Every weapon in these tables except the Arming Sword, the Longsword, the Hunting Bow and the Recurve Bow is a placeholder**, made to playtest and to fill the tables: its numbers, its properties and its Weapon Technique are rewritten when its Weapon Group is. Those four are the model.
 
 ### Melee
 
 | Name | Group | Properties | Type | Range | Damage | Rung |
 |---|---|---|---|---|---|---|
-| Dagger | Blades | Light, Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 4 + 1d4! | Basic |
-| Longsword | Blades | Melee | Slash | 1 | [V] 0 / 2 + 1d6! / 4 + 1d6! | Basic |
-| Greatsword | Blades | Melee, Two-handed | Slash | 1 | [V] 0 / 5 + 1d6! / 8 + 1d8! | Basic |
+| Arming Sword | Swords | Melee | Slash | 1 | [V] 0 / 3 + 1d4! / 4 + 1d6! | Basic |
+| Longsword | Swords | Melee, Two-handed | Slash | 1 | [V] 0 / 6 + 1d4! / 9 + 1d6! | Basic |
+| Dagger | Daggers | Light, Melee, Thrown | Pierce | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 4 + 1d4! | Basic |
 | Handaxe | Axes | Light, Melee, Thrown | Slash | 1, Thrown 4 / 8 / 12 | [V] 0 / 2 + 1d4! / 2 + 1d8! | Basic |
 | Greataxe | Axes | Melee, Two-handed | Slash | 1 | [V] 0 / 4 + 1d6! / 10 + 1d8! | Basic |
 | Mace | Hammers | Melee | Blunt | 1 | [V] 0 / 3 + 1d4! / 5 + 1d4! | Basic |
@@ -41,15 +41,23 @@ A melee weapon deals more than a ranged one, which strikes from safety. Among me
 | Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [V] 0 / 2 + 1d4! / 3 + 1d4! | Basic |
 
 > [!tbd]
-> The placeholder weapons' Techniques, below and in the Ranged list, still write the dice of the earlier weapon table (a Greatsword's 1d10 / 2d6), and Point Blank still writes a Bane while Engaged: each is rewritten with its Weapon Group.
+> The placeholder weapons' Techniques, below and in the Ranged list, still write the dice of the earlier weapon table (a Greataxe's 1d6 / 2d8), and Point Blank still writes a Bane while Engaged: each is rewritten with its Weapon Group.
 
 #### Melee Weapon Techniques
 
+The two swords are the two ways to hold one. The **Arming Sword** leaves a hand free, and its Technique uses that hand on the foe. The **Longsword** takes both hands, hits half again as hard, and its Technique holds the foe's blade.
+
+**Arming Sword:**
+
+@@CARD:Seizing Cut@@
+
+**Longsword:**
+
+@@CARD:Thwart Cut@@
+
+**The placeholder weapons:**
+
 @@CARD:Stick and Slip@@
-
-@@CARD:Guarded Cut@@
-
-@@CARD:Reaping Sweep@@
 
 @@CARD:Hooking Chop@@
 
@@ -103,7 +111,7 @@ You have two hands: your **main hand** and your **off hand**. You choose which i
 **[Strike, Weapon] Actions with a weapon you hold in your off hand take 2 Banes.** A weapon you hold with both hands doesn't take them, and a [[Light]] weapon takes only 1. Your [[Fists]] use a free hand: with only your off hand free, they take 1 Bane.
 
 > [!example]
-> Steven holds a Longsword in his main hand and a Dagger in his off hand. A Weapon Attack with the Longsword has no Bane for his hands; one with the Dagger takes 1 Bane, as a Light weapon in the off hand. With the two weapons the other way around, the Longsword in his off hand would take 2 Banes.
+> Steven holds an Arming Sword in his main hand and a Dagger in his off hand. A Weapon Attack with the Arming Sword has no Bane for his hands; one with the Dagger takes 1 Bane, as a Light weapon in the off hand. With the two weapons the other way around, the Arming Sword in his off hand would take 2 Banes.
 
  A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on [Strike, Weapon] Actions with that weapon**. A weapon or your Fists in the other hand don't take them.
 
@@ -155,7 +163,7 @@ Before you roll a Weapon Strike with the weapon, you can choose to make a **Relo
 
 ### Weapon Groups
 
-Every weapon belongs to one of eight **Weapon Groups**: **Blades**, **Axes**, **Hammers**, **Polearms**, **Bows**, **Crossbows**, **Firearms** and **Unarmed** (Fists and the Knuckle Dagger). Weapons of a group are used the same way, so what you learn with one helps with the others: see [[Mastery]].
+Every weapon belongs to one of nine **Weapon Groups**: **Swords**, **Daggers**, **Axes**, **Hammers**, **Polearms**, **Bows**, **Crossbows**, **Firearms** and **Unarmed** (Fists and the Knuckle Dagger). Weapons of a group are used the same way, so what you learn with one helps with the others: see [[Mastery]].
 
 ### Mastery
 
@@ -163,7 +171,7 @@ Anyone can use any weapon; you get better with the ones you use. You have a **Ma
 
 **When your side wins an encounter that was normal or harder, you gain 1 Mastery with one weapon you made a [Strike] Action with in it.** Your side wins when the encounter ends with every enemy Down, fled or surrendered. The difficulty is the one the encounter was built with (see [[Building an encounter]]): the GM says it when the fight ends. You gain 1 Mastery an encounter, with one weapon: if you made Strikes with several, you choose.
 
-Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (a Hunting Bow, a Greatsword), so a better or different Hunting Bow uses the same Mastery, and you keep it when you lose the weapon.
+Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (a Hunting Bow, a Longsword), so a better or different Hunting Bow uses the same Mastery, and you keep it when you lose the weapon.
 
 **The group follows.** Your Mastery with a weapon is never lower than **half your highest Mastery with a weapon of its [[Weapon Groups|group]]** (rounded down). When you gain Mastery with a weapon, it rises by 1 from what it is.
 
@@ -180,7 +188,7 @@ Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (
 **Basic, Advanced and Exotic weapons.** Every weapon is on one of three rungs. Anyone can use a **Basic** weapon. [Strike] Actions with an **Advanced** weapon are [[Favored and Doomed Rolls|Doomed]] while your Mastery with it is below 10, and with an **Exotic** weapon while it is below 20: you reach them by using the simpler weapons of the group. An Advanced weapon's Technique is unlocked at 10 like any other, an Exotic weapon's at 20.
 
 > [!tbd]
-> Only the two Basic bows are written this way so far, each with its Weapon Technique. Not written yet: each weapon's unlocks at 20, 30, 45 and 60, the Advanced and Exotic weapons, a rule to help a table that fights less than about five times a level, how classes or Talents grant Mastery beyond the Archer's starting Mastery (5 with one Projectile weapon), and Spell Mastery for casters (D4).
+> Only the two Basic swords and the two Basic bows are written this way so far, each with its Weapon Technique. Not written yet: each weapon's unlocks at 20, 30, 45 and 60, the Advanced and Exotic weapons, a rule to help a table that fights less than about five times a level, how classes or Talents grant Mastery beyond the Archer's starting Mastery (5 with one Projectile weapon), and Spell Mastery for casters (D4).
 
 ### Fists
 
