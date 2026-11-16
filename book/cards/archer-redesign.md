@@ -130,4 +130,14 @@ About 2.7 arrows a use (28 / 51 / 21%), 4.5 damage each: 12 damage, about 41 poi
 
 **For Lucas to choose:** (1) the arrow's damage: the weapon's die (this), or a flat number with no roll (2 + nothing: the fastest, and the steadiest); (2) the name (Quick Nock; others: Fletcher's Hand, Loose, Arrows).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16): "isnt that just 1[W], 2[W] etc?"** Yes. **The Feature and the word "arrow" are WITHDRAWN.** The book already has the notation: "2[W] is two instances: the flat number twice and two dice" (Chapter 1, Weapon Damage). The mechanic stays as decided (the number of hits grows with the Tier), written as the book writes it:
+
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 2[W] + [Mod].
+> **Tier 3:** [V] 3[W] + [Mod].
+
+What the "arrow" had that N[W] doesn't, and how each is kept without a new word: **(1) a Tier 1 that lands something** (every weapon's [W] is 0 on a Tier 1): the card writes a small Tier 1, as Binding Light does ("[V] [Mod] Pi" is already the book's notation); **(2) no Modifier counted on every hit:** [Mod] is written once on the line, as always; **(3) one reduction an Action:** Resist is already taken once from an Action's damage. "Arrows" stay in the Flavor lines. With a Shortbow at Weapon +2 the three lines above average 2 / 10.4 / 17.6: 9.6 damage a use, about 33 points of a 2 AP card's 50, so there is room for the movement.
+
+**To watch (rules-backlog, "HOW A PC'S DAMAGE GROWS"):** at 15 Mastery 1[W] becomes 2[W]; a class whose cards already say 3[W] meets that step differently. For the Stages work.
+
+**This frees the first Feature slot.** The class's two Features are now both open: its identity (what every Archer has that says "many hits, on the move") and its Rule-bender (the quick swap to a light weapon is the candidate).
