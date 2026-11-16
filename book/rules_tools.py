@@ -14,7 +14,7 @@ plain = lambda s: re.sub(r'\[\[(?:[^\]|]*\|)?([^\]]*)\]\]', r'\1', re.sub(r'\\\|
 
 _CARDS = {}
 def _cards():
-    if not _CARDS: _CARDS.update(CARDS.by_name(CARDS.load()))
+    if not _CARDS: _CARDS.update(CARDS.by_name(CARDS.load_book()))   # the cards the book shows (a Structure card in the place of the old one)
     return _CARDS
 
 def chapter_files(src):
@@ -94,7 +94,7 @@ def where(src, terms):
                 km = re.match(r'^@@CARD:(.+?)@@\s*$', l)
                 if km:   # a placed card: its block's lines count as this line
                     c = _cards().get(km.group(1).strip())
-                    for bl in (CARDS.block(c).split('\n') if c else []):
+                    for bl in (CARDS.lines(c) if c else []):
                         if rx.search(bl): hits.append((fn, n, 'card', section, bl.strip()))
                     continue
                 if not rx.search(l): continue
@@ -149,7 +149,7 @@ def report(parsed, doc_html):
     names = {}
     for fn, c in cards: names.setdefault(c['name'].lower(), []).append(f'{fn}:{c["line"]}')
     check('Action cards with the same name', [f'{k}: ' + ', '.join(v) for k, v in names.items() if len(v) > 1])
-    check('Action cards without a Frequency (Talents and Features may have none)', [f'{fn}:{c["line"]} {c["name"]}' for fn, c in cards if not c['freq'] and not re.search(r'Talent|Feature|Blessing|Escalation', c['cat'])])
+    check('Action cards without a Frequency (Talents and Features may have none)', [f'{fn}:{c["line"]} {c["name"]}' for fn, c in cards if not c['freq'] and c['cost'] != 'Passive' and not re.search(r'Talent|Feature|Blessing|Escalation', c['cat'])])
     # the names of the examples (README: "Names in the examples"): only these, he/him or she/her as listed; a name is not repeated before all are used
     NAMES = {n: 'he' for n in 'Dave Jared Zack Nari Drak Wes John Steven Mark Jacob Chris Lonny Nick Will Philip Peter Paul Victor'.split()}; NAMES.update({'Krysta': 'she', 'Lana': 'she'})
     OLD = ('Kai', 'Mara', 'Rin', 'Tor')   # names that were in the book before the list
@@ -188,7 +188,9 @@ def report_cards(cards, placed, problems, parsed):
         if name not in placed: out.append(f'{c["_file"]}: the card "{name}" is placed in no chapter (write @@CARD:{name}@@ where it goes)')
     for fn, d in parsed.items():
         for c in d['cards']:
-            if not c.get('source') and c['name'] in cards: out.append(f'{fn}:{c["line"]} "{c["name"]}" is written by hand but is in {cards[c["name"]]["_file"]}: replace the block with @@CARD:{c["name"]}@@')
+            if c.get('source'): continue
+            if c['name'] in cards: out.append(f'{fn}:{c["line"]} "{c["name"]}" is written by hand but is in {cards[c["name"]]["_file"]}: replace the block with @@CARD:{c["name"]}@@')
+            else: out.append(f'{fn}:{c["line"]} "{c["name"]}" is a card written by hand: the builder no longer draws these blocks; put the card in book/cards/ and write @@CARD:{c["name"]}@@')
     counts = {}
     for n in placed: counts[n] = counts.get(n, 0) + 1
     kind = 'ok  ' if not out else 'WARN'

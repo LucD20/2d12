@@ -1,7 +1,7 @@
 # The cards: one source for every card (pack CS, 2026-11-03)
 
 Every card (a Basic Action, a class Action, a Technique, a Talent, an NPC Action) is written **once**, here, in a JSON file per chapter. From it:
-- **the book** renders the card where its chapter writes `@@CARD:Name@@` (`build_rules.py`, through `cards.py`: the same Markdown block the chapter used to hold, so the HTML is the same);
+- **the book** draws the card where its chapter writes `@@CARD:Name@@` (`build_rules.py card()`, from `cards.py structure()`), in the card Structure (see "The Structure" below); a card of `stage0/*.json` takes the place of the old card of the same name, **in the book only**;
 - **Foundry** builds the item: the Basic Actions as `module/basic-data.mjs` (`node tools/gen-basic.mjs`, a generated file; test t177 fails when it is stale), the compendium items from `tools/content.mjs` (from CS-2 on);
 - **the ruler** reads one `action` line per Version (`spec.mjs cardLines`): a build gets the card Actions its turns, reactions and Linked Actions name (with their other Versions); a class file's own `action` line for the same name overrides it (the catalogue's old cards, the pre-A1 Archer builds). A Passive is a build's choice: the class file names it (`passive Hallowed Stance`) and the card's `ruler.passive` string fills the line; a full line (`passive Hallowed Stance: escalation 2: reduce 2`) overrides the card's.
 
@@ -11,6 +11,19 @@ A rule change is **one edit in one file**. The design and its decisions: `book/c
 `basic-actions.json` (Chapter 6), `paladin.json` (the Paladin document), `archer.json` (the Archer document; Mark Quarry is Foundry-only), `gear.json` (the Weapon Techniques; `weapon` names each one's weapon, from gear-d2.md), `talents.json` (the Talents; a card with `talent` is a Talent item), `bestiary.json` (the example NPCs' Actions, Foundry-only; `npc` names the actor), `placeholders.json` (cards 1: Actions the book hasn't written yet, `placeholder: true`, so that links to them resolve: Hide; a card leaves it when the Action is written). Each is `{ "_about": "...", "cards": [ ... ] }`; one object per card, one field per line, the keys in the order below. JSON: double quotes inside a text are written `\"`, no trailing commas, no comments (`"_note"` fields are ignored). A name must be unique across all files.
 
 **`set-aside.txt` (2026-11-12, Stage 0):** the names of the cards the book shows in no chapter for now, one a line: every Talent and Opportunity Attack. The cards stay in their files unchanged (Foundry and the ruler still read them, a Mithril card stays Mithril); `build_rules.py` doesn't ask for a marker for them and warns if one is placed or if a name is no card. To bring a card back, delete its line and place `@@CARD:Name@@`.
+
+## The Structure (2026-11-16): the files of `stage0/` and how the book draws every card
+The card's parts were decided with Lucas in `card-structure.md` ("THE STRUCTURE, WHOLE"). **`stage0/*.json`** holds the cards already written in it (`"structure": 2`; today `stage0/paladin.json`, the Paladin's 19). **Only the book reads them** (`cards.py load_book()`): a card there takes the place of the old card of the same name, and a name only it has (Judge, Binding Light...) is a card of the book like any other (anchor, `[[link]]`, INDEX). Foundry and the ruler read only the top-level files (`load.mjs`), untouched, until the Foundry pass. A name is unique inside the old files and inside `stage0/`.
+
+A Structure card: `name`; `category`, `level` (data, never printed); `flavor`; `traits`; `escalation`; `frequency`; `cost` (the bar's text, ready: `2 AP`, `1 or 2 AP`, `1R`, `Passive`); `distance`, `area`, `target`; `body` (the labeled lines in play order: `[{ "label": "Effect", "text": "..." }]`; a label is a field, never typed into the sentence); `blocks` (one per Version or Mode: `heading` ("1 AP", or the Mode's name), `traits` (only the ones that block has), `distance`, `target`, `body`).
+
+**An old card is adapted** (`cards.py structure()`), its words unchanged:
+- cost, Frequency, Escalation, Flavor, traits, Distance, Area, Target: the bar ("1, 2 or 3 AP", "1 or 2R"), the Flavor, the traits line, the grid (a slash value, "2 / 3 Burst", stays as written).
+- `requirements` → Requirement, `prerequisites` → Prerequisite, `interrupt` / `trigger` / `setup` → their labels, `rules` → Special (after the Setup), `notes` → Special (last).
+- `vs` → the roll line, before the Tiers: a Defense becomes "Attack: {the card's Roll traits that name what is rolled, joined with or} vs. {Armor Defense for AD, Ward Defense for WD, else as written}"; "X Save" becomes "Save: X".
+- one Version: Tier 1 / 2 / 3, Critical, and the old Effects cell labeled **"Tier 2 or 3"** (**"Tier 1 or 2"** on a card with the `save` trait, whose Tiers are the target's result), or **"Effect"** when the Version has no tiers. Several Versions: a block each ("1 AP", "2R"; a Split Action's modes "Weapon" / "Power"), the roll line once above them.
+- a card with only `text`: "Passive" on the bar and the text under the label Passive; with a `cost` too (Opportunity Attack): the label Effect; a `placeholder`: its text with no label. `inline` and `modifies`: a Special line each (an inline Action in Lucas's one-line format).
+- "As 2 AP" and "(T2/T3)" inside an old cell stay as written until the card is rewritten in the Structure.
 
 ## A card (the core, shared by the three targets)
 | Field | Meaning (write it as the book writes it) |

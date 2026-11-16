@@ -26,7 +26,7 @@ A chapter file says which document it belongs to on its **first line**: `<!-- do
 - **Names in the examples (Lucas):** use only these names, he/him: Dave, Jared, Zack, Nari, Drak, Wes, John, Steven, Mark, Jacob, Chris, Lonny, Nick, Will, Philip, Peter, Paul, Victor; she/her: Krysta, Lana. Don't repeat a name until all have been used, and vary the combinations; the exception: examples (and figures) that explain the same or a very similar thing keep the same name. In diagrams, **"you" is Y** (never O or K); a token for a named creature carries the initial of its name (two names in one figure must not share an initial); extra allies are numbered tokens (3, 4, 5). The builder's check lists the names in use and the ones never used. **Used so far (2026-10-24):** Peter and Will (Several Targets); Victor, Paul and Wes (Initiative, Turns and Rounds); Mark and Nick (the three-way initiative); Dave (Reposition); Philip and John (Flanking); Krysta (the Senses examples, one name for all four); Lana and Jared (Immobilized). **Not used yet:** Zack, Nari, Drak, Steven, Jacob, Chris, Lonny.
 - **Colors (every document):** the builder (`build_rules.py`, `class_colors` and `CLASS_TOKEN`) colors, in the text of every chapter (not in headings, links, trait chips or card titles): a damage expression (a [V] or [R] tag with its dice and numbers, or a [W] / [Mod] expression for Vigor; the damage code keeps its own color; what follows, like "Pushed 1", is never colored), the four attribute words, the Weapon, Power and Signature Modifiers (not Weapon as gear or as a trait), Bane, Boon and Rally Point with their number, the states that tilt a roll or damage (**red**: Doomed, Vulnerable, Down; **blue**: Favored, Empowered), costs (`1 AP`, `(1A)`, `1R`: the color of the cost chips), a movement with its value (`Evade 2`, `Pushed 1`), and `[HT: ...]` (the Bane red). The colors are CSS variables in `rules.css` (`--c-body`, `--c-mind`, `--c-instinct`, `--c-appeal`, `--c-wmod`, `--c-pmod`, `--c-smod`, `--c-bane`, `--c-boon`, `--c-rally`, `--c-ap`, `--c-mv`): very dark on the light page, lighter on the dark one. **Write the Body tag on Body damage ([B] 1[W] + [Mod]); there is no default pool. Write [Strike] Action, [Melee] Actions (a trait in brackets) when you mean the trait. Bane and Boon are capitalized.**
 - **Figures side by side** (`diagrams.py` `wrap`): the diagrams of a row share one height, so their captions start on the same line. Colors in the Straight Line figures: blue = squares passed, green = where the movement ends, red = not legal.
-- **Trait groups:** a card lists its traits by group, in this order: **Roll** (Appeal, Body, Instinct, Mind, Power, Save, Signature, Split, Weapon), **Requires** (Handle, Melee, Ranged, Shot), **Kind** (Area, Move, Self, Strike), **Damage** (Nonlethal), **Keywords** (Divine, Focus, Fear and any trait with no rule of its own), alphabetical inside a group; each group has a small label and a color (`--g-roll`, `--g-requires`, `--g-kind`, `--g-damage`, `--g-keywords`), the chips are tinted. A new trait goes in `GROUPS` in `build_rules.py`. **Weapon properties (Barehanded, Long, Reload, Two-handed...) are not traits and have no color.**
+- **Trait groups:** a card lists its traits by group, in this order: **Roll** (Appeal, Body, Instinct, Mind, Power, Save, Signature, Split, Weapon), **Requires** (Handle, Melee, Ranged, Shot), **Kind** (Area, Move, Self, Strike), **Damage** (Nonlethal), **Keywords** (Divine, Focus, Fear and any trait with no rule of its own), alphabetical inside a group; each trait is a plain word in its group's color (`--g-roll`, `--g-requires`, `--g-kind`, `--g-damage`, `--g-keywords`), separated by a middle dot (no chips, no group labels since 2026-11-16). A new trait goes in `GROUPS` in `build_rules.py`. **Weapon properties (Barehanded, Long, Reload, Two-handed...) are not traits and have no color.**
 - **The class style:** a chapter file whose first lines have `<!-- style: class -->` has the book page look (small-caps headings with an ornament, a drop cap, the stat box, the level list) and its Action cards **open and close** (closed at first; the Contents has "Open all cards" and "Close all cards"). Used by `12-paladin.md` and `13-archer.md`. The HTML pieces of the page (`.intro`, `.statblock`, `.levels`) are written in the Markdown: copy them from `12-paladin.md`.
 - Each document has its own Contents, a bar to jump between the documents, and an Open Items appendix when it has open (to be decided) boxes.
 
@@ -66,43 +66,22 @@ The first line says which Part it belongs to. Headings (`##`, `###`) are the tar
 - `{{dt:Holy}}` is a damage type with its icon and color: Acid, Blunt, Cold, Electricity, Fire, Force, Holy, Pierce, Psychic, Slash, Thunder, Unholy.
 - `{{dc:Ho}}` is a two-letter code in the type's color (Ac, Bl, Co, El, Fi, Fo, Ho, Pi, Ps, Sl, Th, Un). A code written after a number or a `]` ("1d6 Ho", "[Mod] Bl") is colored by itself.
 - `{{pool:V}}` and `{{pool:R}}` are the heart (Vigor) and the brain (Resolve); `{{pool:B}}` / `{{pool:M}}` still work.
-- `@@CARD:Name@@` places a card of `book/cards/*.json` (see above). `@@SAMPLE_CARD@@` is drawn by the builder. `@@DIAGRAM:name@@` puts a diagram in the text: cover, leaning, flanking, engaged, reach, emanation, light, burst, straight (charge), line1 to line3 (the Line area), difficult, push and the rest. They are drawn by `diagrams/diagrams.py` (the names are listed in `book_diagram` there); a new one needs a drawing function and a name. Every number in them is computed from the rule. `python3 diagrams/build_diagrams_draft.py` builds a page with all of them to look at. The builder needs the `diagrams/` folder beside it.
+- `@@CARD:Name@@` places a card of `book/cards/` (see "An Action card" below). `@@SAMPLE_CARD@@` is drawn by the builder. `@@DIAGRAM:name@@` puts a diagram in the text: cover, leaning, flanking, engaged, reach, emanation, light, burst, straight (charge), line1 to line3 (the Line area), difficult, push and the rest. They are drawn by `diagrams/diagrams.py` (the names are listed in `book_diagram` there); a new one needs a drawing function and a name. Every number in them is computed from the rule. `python3 diagrams/build_diagrams_draft.py` builds a page with all of them to look at. The builder needs the `diagrams/` folder beside it.
 - Trait words (Strike, Weapon, Melee, Ranged, Move...) and damage type names are colored by the builder wherever they appear: write them as plain words.
 - Notation in the text: `[V]` and `[R]` (Vigor and Resolve damage; pack R-core, 2026-11-04: they were `[B]` and `[M]`, which the builder, Foundry and the ruler still read until R-Foundry's second version: write the new ones), `[Mod]` (Modifier), `[W]` and `1[W]` (weapon damage). Vigor and Resolve are the Health thresholds, never the Body and Mind Attributes.
 
 ## An Action card
-**Since pack CS (2026-11-03) the cards are not written in the chapters:** **every chapter writes `@@CARD:Weapon Attack@@` where a card goes and the card lives in `book/cards/*.json`** (since CS-3, 2026-11-03, all 85 cards) (one source for the book, Foundry and the ruler; the format: `book/cards/README.md`). The builder renders the block below from the card, so everything here still describes what the reader sees; no chapter writes a card by hand any more (the build warns when one does). The build's card check lists a marker with no card, a card no chapter places, and a block written by hand for a card the files have.
+**The cards are not written in the chapters:** a chapter writes `@@CARD:Weapon Attack@@` where a card goes and the card lives in `book/cards/` (the format: `book/cards/README.md`). **Since 2026-11-16 the builder draws every card in the Structure** (`book/cards/card-structure.md`, "THE STRUCTURE, WHOLE"), straight from the card's data (`cards.py structure()`, `build_rules.py card()`); the old Markdown block (`<div class="action">`) is no longer read, and the build warns when a chapter writes one. A card of `book/cards/stage0/*.json` (written in the Structure) takes the place of the old card of the same name; every other card is adapted (same words, new places: `book/cards/README.md`, "The Structure"). The build's card check lists a marker with no card and a card no chapter places.
 
-```
-<div class="action" markdown="1">
-<div class="action-head"><span>Charge</span><span>2 AP</span><span class="cat">Basic Action</span></div>
+A card, top to bottom (a part the card doesn't have is not printed):
+1. **The bar:** the name; at the right "Escalation N" (when it needs one) · the Frequency · the cost ("2 AP", "1 or 2 AP", "1, 2 or 3 AP", "1R", or "Passive" for a card with no cost). Its color is the Frequency's: At-will green, Turn teal, Round blue, Encounter red, Daily purple, none grey. **The category and the level are not printed** (they stay in the data and in `INDEX.md`).
+2. **The Flavor** (italic).
+3. **The traits,** one line of plain words in the color of their group.
+4. **The grid,** one row: "Distance: ..." and "Area: ..." at the left, "Target: ..." at the right (two lines on a phone).
+5. **The labeled lines, in play order:** Requirement · Interrupt / Trigger · Setup · a defined word · Effect · Attack / Save · Tier 1 / Tier 2 / Tier 3 (or "Tier 1 or 2") · Critical · Effect · Special · Passive. The roll line is "Attack: Weapon vs. Armor Defense" or "Save: Appeal".
+6. **Blocks,** one per Version or Mode: a heading (the cost, or the Mode's name with the traits only it has), its own Distance / Target row when it has one, its labeled lines. What the blocks share comes before them.
 
-**Flavor:** You close the distance in one straight, reckless line.
-
-*Move • Self*
-
-**Frequency:** Round
-
-**Requirements:** You have at least Speed 3.
-
-| 2 AP |
-|---|
-| Advance at least 3 squares and up to your Speed in a straight line. ... |
-
-</div>
-```
-- The title bar takes its color from the Frequency: At-will green, Round blue, Encounter red, Daily purple, none grey.
-- The head has the name, the cost (`2 AP`, `1 / 2 AP`, `1R` for a Reaction) and the category (`Basic Action`, `Talent 1`, `Sharpshooter 1`...).
-- The traits are one italic line, separated by `•`.
-- Fields (each on its own line, in bold): Flavor, Target, Frequency, Distance, Area, Vs, Requirements, Prerequisites, Trigger, Interrupt, Escalation, Split and `Setup...`. A Save Action writes its Save on the Vs line ("Instinct Save"). The card prints three meta-lines: Escalation; Targets ✦ Area; Distance ✦ Vs.
-- The table has one column per cost. With tiers, the first header cell is empty and the rows are `**Tier 1**`, `**Tier 2**`, `**Tier 3**`, `**Critical**` and `**Effects**` (what happens on Tier 2 or 3):
-```
-| | 2 AP | 3 AP |
-|---|---|---|
-| **Tier 1** | [B] [Mod] | [B] [Mod] |
-| **Tier 2** | [B] 1[W] | [B] 1[W] + 2 |
-```
-- Any other line is a note shown under the card.
+In a class-style chapter the card opens and closes (the bar is the `summary`). Every card is an anchor (`card-weapon-attack`), so `[[Weapon Attack]]` links to it. `@@SAMPLE_CARD@@` (Chapter 1, "Reading an Action") draws two of the book's cards with numbered markers and no legend (the chapter's text explains the numbers): Smite with 1 the name, 2 Escalation · Frequency · cost, 3 the Flavor, 4 the traits, 5 Distance and Area, 6 the Target, 7 the roll line, 8 the Tiers, 9 another labeled line (its Special); Lay On Hands with 10 on a block's heading (`SAMPLE` and `sample_card` in build_rules.py).
 
 ## The glossary
 Each row is `| [[Heading\|**Term**]] | Meaning in one sentence. |` and its link goes to where the rule is written. **Every new term gets a glossary entry**, and a rule that changes updates its entry too (`--where Term` shows the entry).
