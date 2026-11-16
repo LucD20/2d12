@@ -62,4 +62,47 @@ The charter (`book/class-charter.md`: 18 cards, the kinds, the complexity budget
 
 **Ideas on the table for the class's identity mechanic (his, to weigh after the research):** (1) "Arrows", a pool of dice that stands for many shots; (2) Actions of several AP that roll once against several enemies; (3) a Field Boon that ranged attacks get often; (not) Weapon +3.
 
-## Decision 2: the identity mechanic, "death by a thousand cuts" (research running; `book/research/` gets the note)
+## Decision 2: the identity mechanic, "death by a thousand cuts" (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules and research first.** Ours: a Weapon Attack with a Shortbow at Weapon +2 against AD 13 lands Tier 1 / 2 / 3 at 28 / 51 / 21% (0 / 1d6! + 2 / 1 + 1d6! + 2: about 4.7 damage a shot); each repeat of an At-will Action in a turn takes 1 more Bane; a Boon cancels a Bane; Field Boons stop at 2; Resist N is taken once from each Action. The research (`book/research/many-hits.md`): ten ways games deliver many small hits. The ones that were liked cost one roll (the margin sets the number of hits; one roll for all targets; a hit read from the die) and never whiff (a floor); the ones that were disliked are a token for each hit, and one best button repeated.
+
+**Every candidate, with its reason:**
+
+| # | The mechanic | One roll? | Tracks | For | Against |
+|---|---|---|---|---|---|
+| A | **Arrows by Tier:** a Strike's Tiers say how many arrows land ("Tier 1: 1 arrow. Tier 2: 2 arrows. Tier 3: 3 arrows"); each arrow is a small fixed damage and can go to a different creature | yes | nothing | many hits on one target or several; never a whiff; Resist is taken once; the Tiers cap what the 40k games' margin left open | a new defined word ("arrow"); each arrow's damage is another die |
+| B | **One roll for several targets** (his idea; today's Twin Shot; Draw Steel's Two Shot) | yes | nothing | fast; known | many hits only against many enemies |
+| C | **"Arrows", a pool of dice** (his idea): a few dice he holds and adds to Strikes as extra hits | yes | a pool | the fiction of a quiver; a choice of when | "I don't think the game needs more tracking" (his words, on the Paladin); per-hit pools are what players call fiddly |
+| D | **A hit read from the dice:** when either d12 of his Strike shows 9 or more (56%), another arrow lands | yes | nothing | a moment at every roll; no decision to slow the turn | no decision either; swingy |
+| E | **A Field Boon for having moved** (his idea): his [Ranged] Strike gains 1 Field Boon if he left his square since his last Strike | n/a | this turn only | it pays for movement, cancels the second shot's Bane, and gives the map a reason | alone it makes Weapon Attack the best button again (move, shoot, move, shoot) |
+| F | **No At-will Bane on his shots** | n/a | nothing | "shooting fast" in one line | it is the one-button trap exactly (Twin Strike) |
+| G | **A different card each time:** each Strike after the first in his turn that is a different Action deals a little more | n/a | this turn only | pays for variety, the research's cure | a bonus to remember; it steers him by a rule, not by the map |
+| H | **A flat rider on every hit** (+1 a hit after the first) | n/a | a count | simple | small numbers to remember; flat reductions eat it |
+| I | **The hits are description** (one number, told as three arrows) | yes | nothing | free | he wants the hits to exist |
+| J | **Small hits build a meter, one blow cashes it** (Exalted) | | a meter | | the nova: the opposite of the brief |
+| K | **Weapon +3** | | | | his own: "wouldnt be good" |
+
+**Claude's pick: A as the way the Archer's Strikes are written, with E inside the cards, not as a standing Feature.**
+- **A is the class.** "Arrows" becomes a word on the card, not a pool on the sheet: his idea's fiction with no tracking. One roll, up to three hits, split as he likes. A Tier 1 still lands an arrow, which is what "many small hits" feels like at the table: he never whiffs, and never lands one big number.
+- **B comes free inside A** (the arrows can go to different creatures), so there is one mechanic instead of two.
+- **E goes on cards** ("Setup: Evade 2" or "then you Evade 2": shoot, then move away), because as a standing Boon it brings back the one best button.
+- **Weapon Attack stays for everyone;** his cards are simply better than repeating it.
+
+**What a card would look like** (a sketch to judge the mechanic, not a proposal; the numbers are rough):
+
+> **Quick Shots** · Round · 2 AP
+> *You loose arrow after arrow before the first has landed.*
+> Weapon · Ranged · Shot · Strike
+> Distance: Weapon | Target: One creature
+> **Arrow:** [V] 1d4 + [Mod] Pi. Each arrow after the first can hit another creature within 3 squares of the target.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** 1 arrow.
+> **Tier 2:** 3 arrows.
+> **Tier 3:** 4 arrows.
+> **Effect:** You Evade 2.
+
+About 2.7 arrows a use (28 / 51 / 21%), 4.5 damage each: 12 damage, about 41 points of a 2 AP card's 50, before the Evade.
+
+**For Lucas:** which mechanic (A, or another, or a mix); whether an arrow's damage is written on each card (the sketch) or once on a Feature ("your arrow deals...").
+
+**Lucas's answer:**

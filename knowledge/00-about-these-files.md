@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 3f1276f 2026-11-16 The archer research saved; the Archer's numbers proposed with two questions on the brief
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 6ffa9c1 2026-11-16 The Archer's numbers decided (Light armor); his ideas for the many-hits mechanic recorded
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -41,6 +41,7 @@ Files:
 - research-escalation-and-guard.md (3 KB)
 - research-frontline-protection.md (13 KB)
 - research-gear-and-hands.md (2 KB)
+- research-many-hits.md (6 KB)
 - research-movement-positioning.md (5 KB)
 - research-nova-burst.md (14 KB)
 - research-paladin-roles.md (13 KB)
@@ -51,7 +52,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-archer-redesign.md (8 KB)
+- design-archer-redesign.md (13 KB)
 - design-card-structure.md (25 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
