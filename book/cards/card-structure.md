@@ -89,3 +89,16 @@ Lucas: "Start with 1, the header. It can be a new file so we dont crowd the Pala
 Claude's pick: B. Also asked: where the Flavor goes; whether a Strike always writes its Defense.
 
 **Lucas's answer (2026-11-15): B is good.** In doubt about the roll line as a sentence ("Each target makes an Appeal Save"): maybe it is only his habit from games that print "X Save"; "maybe its worth a shot". He asked for a search about card layouts first: running (`book/research/` gets the note). Still open: where the Flavor goes; whether a Strike always writes its Defense.
+
+### The roll line, after the layout research (PROPOSED 2026-11-16; `book/research/card-layout.md`)
+
+No published game found opens an ability with "Each target makes an X Save": Lucas's doubt holds. The roll is written five ways elsewhere; three fit header B:
+
+- **1, a labeled line that opens the body** (4e's "Attack: Strength vs. Will"; D&D 2024's monsters): **"Attack: Weapon vs. Armor Defense"** on a Strike, **"Save: Appeal"** on a Save. Right above the Tiers it decides. Claude's pick.
+- **2, the sentence** ("Each target makes an Appeal Save."): reads well once, slower to re-check; nobody prints it.
+- **3, a fifth fact in the grid** ("Vs. Armor Defense" / "Appeal Save" beside the Target): today's book; the header grows, and it sits away from the Tiers.
+
+Also from the research: a grid with no labels is hard on a first reading (said of Draw Steel's), so **the grid keeps "Distance:", "Area:" and "Target:"**.
+
+**Lucas's answer:**
+

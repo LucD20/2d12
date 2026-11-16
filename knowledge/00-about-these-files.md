@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-15 from the repository at: ed8588e 2026-11-15 Targeting researched (research/targeting.md) and the rule rewritten as a proposal: a Target line on every Reaction, affected is not targeted
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 967437b 2026-11-15 Targeting rule, second wording; header B chosen, the roll line waits for the layout research
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -33,6 +33,7 @@ Files:
 - rules-15-gear.md (11 KB)
 - research-index.md (5 KB)
 - research-ability-scope.md (7 KB)
+- research-card-layout.md (5 KB)
 - research-conditions-and-senses.md (3 KB)
 - research-divine-profane.md (9 KB)
 - research-durations.md (8 KB)
@@ -49,7 +50,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-card-structure.md (8 KB)
+- design-card-structure.md (9 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
 - design-stage0.md (18 KB)
