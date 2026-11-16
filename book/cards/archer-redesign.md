@@ -531,4 +531,42 @@ It asks him to be within Reach of an enemy, where his bow is Doomed: the Boon pa
 
 **For Lucas to choose:** the ladder's two styles; the Escalation 2 pair; Light Feet's Evade (1, or 2).
 
+**Lucas's answer (2026-11-16): "Light Feet I think it will cause some problems, lets make it different. Dont need to be in Escalation 2 but we havent used anything that allows/compresses leaning, ignore cover from allies, use more teamwork (even though i know this class is more standalone than support, we still want team work)".** LIGHT FEET IS OUT. Blade and Bow was not objected to.
+
+## Decision 11b: the ladder again, with leaning, allies' cover and teamwork (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules first.** Leaning (a Basic Action, 1 AP, At-will): "Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level." A creature on the line between the centers gives the target Low cover (1 Field Bane), an ally included (Chapter 3, Cover). A [Ranged] Action against a creature Engaged with a creature other than yourself takes 1 Field Bane (Ranged Combat While Engaged). A creature threatens the enemies within its melee weapon's range (Flanking). Research: cover from allies is what makes Pathfinder 2e's archer move, and players accept it ("one turn of setup pays dividends"); 5e's feats that erased range's costs for free are the warning; a granted step is worth most on the ally who needs it (`movement-positioning.md`).
+
+**Three new candidates:**
+
+> **Lean and Loose** · Escalation 2 · Passive (leaning, compressed)
+> *A wall is a quiver's best friend: you are out, the arrow is gone, and you are back.*
+> **Passive:** The Leaning Action costs you 0 AP.
+
+About 5 a turn [judgment: an AP's 12 on the turns a corner is there to lean from, less than half of them]. It makes walls his ground: he shoots from Total cover every turn without paying for it, and still pays Leaning's own price (his cover is one level lower while he leans).
+
+> **Clear Lines** · Escalation 4 · Passive (allies in the way)
+> *Your friends have learned where not to stand, and you have learned to shoot past their ears.*
+> **Passive:** Your allies give your targets no Cover, and your [Ranged] Actions take no Field Bane for a target Engaged with one of your allies.
+
+About 6 a turn [judgment: a Field Bane lifted from one or two shots most turns]. It lifts the two costs of range that his own party causes, and only those: walls, enemies in the line and distance still count. Teamwork by permission: the front line can close without spoiling his shots.
+
+> **Opening Shot** · Escalation 4 · Passive (teamwork; Harry rebuilt)
+> *Your arrow lands, the foe flinches toward it, and your ally's blade is already coming.*
+> **Passive:** Once a round, when you damage a creature with a [Ranged, Strike] Action, one ally who threatens it gains 1 Boon on their next [Strike] Action against it (1 round).
+
+About 4 to 6 a turn [judgment: a Boon on one ally's Strike]. It is Harry made into teamwork: one ally's next blow, not Vulnerable for everyone, so it no longer copies Trick Shots' Startle and is well under the old Harrying Shots he judged too strong. He chooses the ally; it rewards shooting what the front line is fighting.
+
+**The ladder with them:**
+
+| Rung | One | The other |
+|---|---|---|
+| Escalation 2 (level 1) | **Lean and Loose:** Leaning for 0 AP | **Blade and Bow:** a Boon for changing between bow and blade |
+| Escalation 4 (level 2) | **Clear Lines:** allies give no Cover and no into-melee Bane | **Opening Shot:** his hit gives an ally a Boon |
+| Escalation 6 (level 3) | a fourth Strike a turn | a 0 AP Encounter Action: one arrow into every enemy near him, on the run |
+
+**Other teamwork shapes, if he prefers one:** *the ally steps* (once a round, when he damages an enemy Engaged with an ally, that ally can Evade 1: the arrow buys the ally a way out); *crossfire* (he counts as flanking an enemy an ally threatens, with [Ranged] Actions from within 5 squares: it needs a line in the Flanking rule).
+
+**For Lucas to choose:** the three new cards; where each sits (he said it needn't be Escalation 2); whether Blade and Bow stays; the two Escalation 6 ideas.
+
 **Lucas's answer:**
