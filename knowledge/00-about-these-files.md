@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 56b09cb 2026-11-16 The Archer: Reactions decided (Slip Away, Snap Shot); Shot renamed Projectile, Gun Firearm (decided); the Arts' themes proposed
+Built by tools/knowledge.py on 2026-11-16 from the repository at: b9e139d 2026-11-16 The Archer: Art themes decided; the first Art, Footwork, proposed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -52,7 +52,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-archer-redesign.md (42 KB)
+- design-archer-redesign.md (45 KB)
 - design-card-structure.md (25 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)

@@ -414,4 +414,43 @@ Hands Busy: an Evade 1 and an Interact or a Reload for 1 AP (2 AP apart) ... sav
 
 **For Lucas to choose:** the three Modes; Sidestep's 3 (or half his Speed, which is 3 for a Human and 2 or 3 for others); the names.
 
+**Lucas's answer (2026-11-16): "All good. Proceed." FOOTWORK IS DECIDED as proposed.**
+
+## Decision 9: the second Art, Trick Shots (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules and research first.** A Strike is "any Action that tries to hit a creature", and **a creature makes at most 3 Strikes a turn** (Chapter 7): the Archer's whole turn lives under that cap, so a trick shot spends one of his three. Hindered halves Speed; Vulnerable 1 gives 1 Boon to every Action against the creature; Pushed is Forced Movement away from the origin (Chapter 8, Chapter 3). There is no rule for disarming (the word appears once, on Barehanded), so no Mode does it. Lucas: distracting is fiction, "maybe causing vulnerable". Research: the praised non-damage tool is a rider with a choice (4e's Clever Shot: slide, prone or slowed; "the star of the show"); an archer that is only control was the Seeker's failure. A rider on an enemy is priced Mild 3, Moderate 8; an AP is worth about 12; the third Weapon Attack of a turn (2 Banes) is worth little.
+
+> **Trick Shots** · Round · 1 AP
+> *You put the arrow where it will do something other than wound: through a cloak, past an ear, square on a shield.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: One creature
+> **Attack:** Weapon vs. Armor Defense
+> — **Pin** —
+> **Tier 2 or 3:** [V] [Mod] Pi; Hindered (1 round).
+> — **Startle** —
+> **Tier 2 or 3:** [V] [Mod] Pi; Vulnerable 1 (EoT).
+> — **Knock Back** —
+> **Tier 2:** [V] [Mod] Pi; Pushed 1.
+> **Tier 3:** [V] [Mod] Pi; Pushed 2.
+
+```
+Each Mode lands on a Tier 2 or 3: 72% of uses
+  [Mod] damage (2) ... 5   [SIM: 3.4 a point of damage]
+  Pin: Hindered for a round ... about 4   [judgment: a Mild rider, a round instead of EoT]
+  Startle: Vulnerable 1 until its turn ends ... about 6   [Lucas's rider table: Moderate 8]
+  Knock Back: Pushed 1 or 2 ... not priced (positions; suggested about 5)
+--- Each Mode: about 9 to 11, of an AP's 12: a little under a plain third action, and better than a third Weapon Attack with 2 Banes
+```
+
+**Analysis.**
+- **The decision it gives:** what the party needs from this arrow: an enemy that can't cross the room (Pin), an enemy everyone hits more easily until its turn ends (Startle), or an enemy moved off an ally or toward an edge (Knock Back).
+- **Startle is his "distract",** and the one Mode that helps his own turn: used first, his other shots at that creature this turn have a Boon. That is the class's small combo, and it costs 1 AP and one of his 3 Strikes.
+- **Why a little damage after all:** an Art is "neither damage nor healing", but an arrow that hits and does nothing reads wrong, and a rider alone is worth less than half an AP. [Mod] (2) is the class's floor, not a damage card.
+- **Not the Seeker:** one card, once a round; the class's damage is elsewhere.
+- **One roll,** shared by the three Modes (the Attack line sits above them, as the Structure writes shared lines).
+- **Rules it touches:** "Tier 2 or 3" as a line (the Structure allows a line for two Tiers). Nothing else new.
+- **To weigh later:** Harry (kept for the Escalation abilities) is Startle without a roll; one of the two will change.
+
+**For Lucas to choose:** the three Modes; whether they keep the [Mod] damage; Pin's duration (1 round, or EoT like Snap Shot).
+
 **Lucas's answer:**
