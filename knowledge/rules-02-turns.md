@@ -68,7 +68,7 @@ When something gives or takes Action Points, it says whether it happens **now** 
 
 A **Reaction** is an Action you use in response to something another creature does. Its card has an **Interrupt** or a **Trigger** line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as **1R**: it uses that many Action Points, but only as a response. A **0R** Reaction uses no AP; its Frequency still limits it.
 
-- **Paying:** A Reaction is paid with your **Reaction AP**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn.
+- **Paying:** A Reaction is paid with your **Reaction AP**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn. A feature can give you a second Reaction AP: it follows the same rules, and the feature says what it can pay for.
 - **No Reaction by default:** No creature has a Reaction of its own: every Reaction comes from a class, an item or a creature's entry. Moving away from an enemy doesn't let it attack you, unless it has a Reaction that says so.
 - **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
@@ -86,6 +86,25 @@ While the name "triggering" is similar to "Trigger", it isn't only for Trigger R
 > [!tip]
 > The clarification above might make you think you need to move one square at a time during a game, but this slows the game down a lot. You can just make the full movement and let the creature reacting decide when it happens during the movement. You might need to move the token back to where the Reaction happened if the movement is disrupted (see below), but that doesn't happen often. Doing it this way removes the suspense of "When will this creature start moving? Should I use my Reaction now, or wait and see if it moves into a more favorable position, with the chance that it stops moving before I react?" The table should decide how to run it.
 
+### A Reaction's Target
+
+Every Reaction has a Target line, and its Interrupt or Trigger is written about **the target**. The creature whose Action sets the Reaction off is the **triggering creature**.
+
+**To use a Reaction** you need [[Line of Effect]] to its target, as for every Action. You must also **perceive** the target and the triggering creature (see [[Senses]]): Hidden is enough; Unsensed is not.
+
+**Only the Target line targets.** A Reaction can also do something to the triggering creature when it isn't the target: Shield of Faith's target is the ally, and it Taunts the attacker. You need no Line of Effect to the triggering creature for that; perceiving it is enough.
+
+A feature that says "when..." has no target: you must perceive the creatures it names.
+
+> [!example]
+> Zack, a Paladin, has Shield of Faith: "Target: One ally. Interrupt: An enemy's [Strike] Action would damage the target." An orc behind an arrow slit shoots Nari, who stands 3 squares from Zack in the open. Zack has Line of Effect to Nari and hears the orc: he uses Shield of Faith, Nari's damage is reduced, and the orc is Taunted by him. Had Nari been behind a wall, with no Line of Effect from Zack, he couldn't.
+
+> [!example]
+> Zack has Rebuke: "Target: One enemy. Trigger: The target moves away from you." A goblin 2 squares from him, on the other side of a wall, runs off. Zack hears it, but Rebuke targets the goblin and he has no Line of Effect to it: he can't use Rebuke.
+
+> [!example]
+> Zack has Kindled Wrath: "when an ally becomes Bloodied or goes Down, your Escalation increases by 1". Nari becomes Bloodied behind a wall, 6 squares from Zack. Zack hears him (within 10 squares), and Kindled Wrath has no target: his Escalation increases. At 12 squares behind that wall, out of sight and hearing, it wouldn't.
+
 ### Disrupting Actions
 
 When an Action is **disrupted**, it doesn't happen, and the resources and AP spent on it are wasted. Some Actions can disrupt another Action, usually with a Critical.
@@ -100,6 +119,18 @@ When the disrupted Action is only a Linked Action, the Action stops only if that
 
 A creature **moves closer to you** when the distance between you, counted in squares (every second diagonal counts as 2, as always), is smaller after their movement than before. An Interrupt checks this before the creature enters the square; a Trigger checks it if the creature entered any square nearer to you during the movement. The creature moves closer when it would enter a square that is nearer to you than the square it came from. A step to the side that leaves the distance the same is not closer. Evade, Forced Movement and Reposition don't trigger Reactions, so a Reaction to a creature moving closer can't react to any of them.
 
+### Moving Away
+
+A creature **moves away from you** when the distance between you, counted the same way, is larger after their movement than before. Everything else mirrors [[Moving Closer]]:
+
+- An Interrupt checks before the creature enters the farther square; a Trigger checks whether it entered any square farther from you during the movement.
+- A step that leaves the distance the same is neither closer nor away.
+- A movement that comes closer and then goes away (a creature running past you) moves away from its first farther square.
+- For a creature larger than one square, count from its nearest square to your nearest square.
+- "Within 3 squares of you" on such a Reaction is checked in the square the creature is in when you take the Reaction.
+- If the movement is disrupted, it ends in the square the creature was in when the Reaction was taken.
+- Evade, Forced Movement and Reposition don't trigger Reactions, so they are never "moving away".
+
 ## Actions
 
 An Action is something you spend AP on. Every Action is written as a card; see [[Reading an Action]].
@@ -110,7 +141,13 @@ Whenever an Action is mentioned in the rules, its **traits** appear next to it. 
 
 ### Setup
 
-Some Actions have a **Setup** entry before the Action. It describes what happens before the dice are rolled.
+Some Actions have a **Setup** line. It says what happens before the rest of the Action.
+
+- **A Setup is optional**, unless it says you **must**. You can do part of it: "You Advance up to 5 squares" lets you move fewer, or not at all.
+- **The Action's Distance and its targets are checked after the Setup.** You can start out of reach, and the Setup brings you there. If no valid target is within the Distance after the Setup, the rest of the Action doesn't happen, and its cost is still paid.
+- **A Setup that names the Action's target fixes it.** If the Setup says "toward the target", you choose that target before the Setup, and it stays the Action's target.
+- **If an Action in your Setup is disrupted, the rest of the Action still happens.** Only then, if the Setup had named a target, you can choose another target for the rest of the Action.
+- **Setups don't stack.** When something gives a Setup to an Action that already has one, you choose which of the two Setups to use.
 
 ### Targets
 
@@ -147,15 +184,19 @@ If a Linked Action has no valid target, the rest of the Action is disrupted (tha
 
 Unless something says otherwise, the effects of an Action, and the Actions it lets you use (Linked Actions), affect the **target of the Action**. Remember, if the Action doesn't have a target, you choose who to target on each individual Linked Action. If you use Shove on an enemy, the enemy is the one who is Pushed.
 
+Only the Target line makes a creature a target. A card can name another creature in its text (an Area card's "allies in the Area", a Reaction's "triggering creature"): what the card does to that creature follows the card's words, and the rules about targets don't apply to it.
+
 ### Effect Timing
 
-Effects written in a tier happen only on that tier. **General Effects**, written on the **Effects** row at the bottom of the Action, happen on a **Tier 2 or 3** result, never on a Tier 1. An effect written directly in the Tier 1 row ("Tier 1: [V] 1d4 Ho; Prone") does happen on a Tier 1.
+Every line of a card says when it happens (see [[Reading an Action]]):
 
-Actions with no roll have no tiers: their effects simply happen.
+- A **Tier** line happens only on that Tier. A line for two Tiers says so: "Tier 1 or 2". A Tier that isn't written does nothing.
+- An **Effect** line happens whenever the card is used, whatever the roll. Before the roll's line, it happens before the roll; after the Tiers, after them.
+- Actions with no roll have no Tiers: their Effect simply happens.
 
-The effects of an Action happen **after** its damage is applied to the target.
+Inside a Tier's line, the damage is written first and applied first; what follows the semicolon happens after the damage is applied ("[V] 1[W] + [Mod]; Prone").
 
-When an effect applies only to some tiers, it says so with the tiers in parentheses: "Immobilized (T3)" is only Immobilized on a Tier 3 result, and "(T2/T3)" is Tier 2 or Tier 3.
+Some cards mark an effect for some Tiers only, with the Tiers in parentheses: "Immobilized (T3)" is only Immobilized on a Tier 3 result, and "(T2/T3)" is Tier 2 or Tier 3.
 
 ### Buffs
 
@@ -185,7 +226,7 @@ For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus 
 **Equipment is not a bonus.** Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.
 
 > [!example]
-> Divine Surge makes the next ally who deals damage to its target deal an extra [R] 1d8 Holy. If two Paladins use Divine Surge on the same creature, the next ally still deals only one extra 1d8: it is the same effect.
+> Weight of Judgment reduces the Speed of a creature a Paladin Judged by 2. If two Paladins with it Judge the same creature, its Speed is still reduced by 2, not 4: it is the same effect.
 
 ### Frequency
 
@@ -219,7 +260,7 @@ A **Daily** Action can be used once, and again only after you complete a [[Sleep
 
 ## Versus
 
-An Action that rolls uses a **Modifier** and, if it targets a creature, rolls against a **Defense** or DC. The Modifier is your Weapon, Power, Signature or Attribute Modifier (see [[Weapon, Power and Signature Modifiers|Chapter 5]]). Every Action that rolls has a **Vs.** entry naming its Defense: Armor Defense (AD), Ward Defense (WD), a Vs. Attribute such as "Vs. Body", or a specific DC.
+An Action that rolls uses a **Modifier** and, if it targets a creature, rolls against a **Defense** or DC. The Modifier is your Weapon, Power, Signature or Attribute Modifier (see [[Weapon, Power and Signature Modifiers|Chapter 5]]). Every Action that rolls says so on its **Attack** line, which names the Modifier and the Defense: "Attack: Weapon vs. Armor Defense". The Defense is Armor Defense (AD), Ward Defense (WD), an Attribute ("vs. Body") or a specific DC.
 
 ### Defenses
 
@@ -249,7 +290,7 @@ When an Action says an effect happens on your **next Action** and gives no durat
 
 A **round** is one full cycle of turns. It starts with the first creature's turn and ends when the last creature ends their turn.
 
-An effect that lasts a number of rounds counts down by 1 at the end of its origin's turn (the creature that created the effect), starting with the origin's next turn, meaning the first "end of turn" is ignored if the effect is created during the origin's turn. An effect that lasts 2 rounds is written "for 2 rounds".
+An effect that lasts a number of rounds counts down by 1 at the end of its origin's turn (the creature that created the effect), starting with the origin's next turn, meaning the first "end of turn" is ignored if the effect is created during the origin's turn. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". Durations are written only as rounds or as [[End of Turn|EoT]]: nothing lasts "until the start of your next turn".
 
 > [!example]
 > On the first round of combat, Victor (the first creature in the turn order) causes an effect on Wes that lasts 2 rounds. The effect ends at the end of Victor's turn on the third round.

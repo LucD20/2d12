@@ -127,9 +127,9 @@ The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1
 
 ### Save Actions
 
-An Action with the **Save** trait doesn't roll: each target rolls the Save the card names (its Vs. line says, for example, **Instinct Save**). The DC comes from the Action's other traits: **11 + your Weapon Modifier** for a [Save, Weapon] Action, **11 + your Power Modifier** for a [Power, Save] Action, **11 + your Signature Modifier** for a [Save, Signature] Action, and for a Save Action that rolls an Attribute (such as [Body, Save]), **11 + ⌈Attribute ÷ 2⌉ + 1**.
+An Action with the **Save** trait doesn't roll: each target rolls the Save the card names (its roll line says, for example, **Save: Instinct**). The DC comes from the Action's other traits: **11 + your Weapon Modifier** for a [Save, Weapon] Action, **11 + your Power Modifier** for a [Power, Save] Action, **11 + your Signature Modifier** for a [Save, Signature] Action, and for a Save Action that rolls an Attribute (such as [Body, Save]), **11 + ⌈Attribute ÷ 2⌉ + 1**. These are your **Power DC**, your **Weapon DC**, your **Signature DC** and the DC of an Attribute (your **Body DC**): a rule or a card can name one ("an Appeal Save against your Power DC").
 
-The tiers are the target's result: **Tier 1 is the worst for them**. So everything that follows your result on an attack follows theirs here, reversed: a [Save, Weapon] Action deals its [Mod] on **Tier 1 and 2**, and its **Effects** row happens on **Tier 1 and 2**.
+The tiers are the target's result: **Tier 1 is the worst for them**. So everything that follows your result on an attack follows theirs here, reversed: a [Save, Weapon] Action deals its [Mod] on **Tier 1 and 2**, and a line for two Tiers is written **Tier 1 or 2**.
 
 A Save Action has no Critical. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target.
 
@@ -217,20 +217,32 @@ Round up by default. When a rule divides or multiplies a number and the result i
 
 ## Reading an Action
 
-Actions are written as cards. Every card has the same structure, in this order:
+Actions are written as cards. Every card has the same structure, from top to bottom:
 
-**Title bar** — Name · Category and level · Frequency · Cost  
-*Flavor*  
-**Traits**  
-**Meta-line 1** — Escalation  
-**Meta-line 2** — Targets: X ✦ Area  
-**Meta-line 3** — Distance: X ✦ Vs. X (a Save: "Instinct Save")  
-**Requirements**  
-**Setup**  
-**Trigger / Interrupt**  
-**Tier 1 / Tier 2 / Tier 3**  
-**Critical**  
-**Effects**
+1. **The name.**
+2. **Escalation, Frequency and cost**, at the right of the name: the [[Escalation]] the card needs (if any), its [[Frequency]] and its cost in Action Points. A card with no cost says **Passive**.
+3. **The Flavor:** one sentence that describes what is done and seen. It is not a rule.
+4. **The traits**, on a line of their own.
+5. **Distance and Area:** how far the Action reaches, and the area it affects.
+6. **Target:** whom it affects.
+7. **The roll**, as the first line of what the Action does: **Attack: Weapon vs. Armor Defense** (you roll that Modifier against that [[Defenses|Defense]]) or **Save: Appeal** (each target rolls that [[Saves|Save]]).
+8. **The Tiers:** what happens on each result of the roll. A line can stand for two Tiers ("Tier 1 or 2"); a Tier that isn't written does nothing.
+9. **The other lines.** Every line of a card has a label that says what it is:
+
+| Label | What the line is |
+|---|---|
+| **Requirement** | What must be true to use the card (see [[Requirements]]). |
+| **Interrupt**, **Trigger** | The moment a [[Reactions|Reaction]] answers. |
+| **Setup** | What happens before the rest of the Action (see [[Setup]]). |
+| A word in bold (**Smite dice**, **Judged**) | A word the card defines for its own text. |
+| **Effect** | What happens when the card is used, whatever the roll. Before the roll's line, it happens before the roll; after the Tiers, after them. |
+| **Critical** | An extra result on a [[Critical]], under Tier 3. |
+| **Special** | A rule about the card itself: a limit, an exception, an extra cost. |
+| **Passive** | What a card with no cost does. It works on its own. |
+
+The lines are written in the order they happen.
+
+**Versions and Modes.** Some cards have parts under a heading of their own. A **Version** is the same Action at another cost: its heading is the cost ("1 AP", "2 AP"), and you pay the cost of the Version you use. A **Mode** is one of several things the card can do at the same cost: its heading is the Mode's name, followed by the traits only that Mode has, and each time you use the card you choose one Mode. A part has its own lines, and its own Distance and Target when they differ. Lines written above the parts belong to all of them. The card's Frequency counts every use of the card, whichever Version or Mode.
 
 @@SAMPLE_CARD@@
 
@@ -241,15 +253,16 @@ Actions are written as cards. Every card has the same structure, in this order:
 - **"As Tier N"** means the result in the same column on Tier N. So a Tier 2 effect that says "As Tier 1" uses the same effect as the Tier 1 effect of this exact Version.
 
 > [!example]
-> **Weapon Attack** | At-will | 1AP  
+> **Weapon Attack** | At-will · 1 AP  
 > *You strike with the weapon in your hands.*  
-> *Strike · Weapon*  
-> **Targets: One creature ✦ Weapon ✦ Vs. AD**  
+> *Weapon · Strike*  
+> **Distance: Weapon ✦ Target: One creature**  
+> **Attack:** Weapon vs. Armor Defense  
 > **Tier 1:** 0  
 > **Tier 2:** [V] 1[W] + [Mod]  
 > **Tier 3:** [V] 1[W] + [Mod]
 
-**Values that change between Versions.** When an entry under the traits changes from one Version to another, it has one value per Version, in the order of the costs, separated by slashes: **One / one / two creatures**, **5 / 10 sq.**, **Aura 2 / 3 / 3**. Target counts are spelled out in words; distances, areas and other mechanical values use numerals. A distance in squares is written with "sq." (**Distance: 5 sq.**).
+**Values written with slashes.** Some cards write an entry under the traits once for all their Versions, with one value per Version, in the order of the costs, separated by slashes: **One / one / two creatures**, **5 / 10 sq.**, **Aura 2 / 3 / 3**. Target counts are spelled out in words; distances, areas and other mechanical values use numerals. A distance in squares is written with "sq." (**Distance: 5 sq.**).
 
 ### Notation
 
@@ -268,7 +281,9 @@ Actions are written as cards. Every card has the same structure, in this order:
 | [[Critical\|**Critical**]] | An extra effect on Doubles with a result that is already Tier 3, or a total 20 or more above the DC. |
 | [[Evade\|**Evade 2**]], [[Advance\|**Advance 2**]], [[Pushed\|**Pushed 2**]], [[Pulled\|**Pulled 2**]], [[Slid\|**Slid 2**]], [[Reposition\|**Reposition 2**]] | Movement of up to that many squares. |
 | [[Rounds\|**for 2 rounds**]] | How long an effect lasts. |
-| [[Versus\|**Vs. Body**]] | The Defense of the target. |
+| [[Versus\|**Attack: Body vs. Body**]] | The Modifier you roll, and the Defense of the target. |
+| [[Save Actions\|**Save: Instinct**]] | The Save each target rolls. |
+| [[Rounds\|**(1 round)**]] | After a condition or an effect: it lasts 1 round. |
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP. You can use it only on your turn. |
 | [[Linked Actions\|**Weapon Attack (1A)**, **(1A/2A)**]] | A Linked Action and the Version you use (or a choice of two). |
 | [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP, or none (which AP can pay: see [[Reactions]]). |

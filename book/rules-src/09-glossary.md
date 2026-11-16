@@ -21,6 +21,13 @@
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
 | [[Bleed\|**Bleed**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Interact (1 AP) and a Save against DC 13 to end it; healing doesn't. |
+| [[Half-Blinded\|**Half-Blinded**]] | Your Sight perceives no creature better than Obscured. |
+| [[Class Actions, Picks and the Repertoire\|**Art**]] | A small class Action with three Modes; you take one at level 1 and a second at level 3. |
+| [[Reading an Action\|**Mode**]] | One of several things a card can do at the same cost; you choose one each time you use the card. |
+| [[Reading an Action\|**Version**]] | The same Action at another cost. |
+| [[A Reaction's Target\|**Triggering creature**]] | The creature whose Action sets a Reaction off. |
+| [[Moving Away\|**Moving away**]] | The distance between you is larger after the movement than before. |
+| [[Swapping Places\|**Swap squares**]] | Two creatures each enter the square the other left; a Reposition for each. |
 | [[Blinded\|**Blinded**]] | You can't see: heard creatures are Hidden to you (Doomed against them), sight Rolls are Doomed. |
 | [[Bloodied\|**Bloodied, Strained**]] | You have Vigor damage at least equal to your Vigor (Bloodied), or Resolve damage at least equal to your Resolve (Strained). No effect by itself: Actions and features use them. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
@@ -37,7 +44,6 @@
 | [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with its rank's points an AP (see Points into damage: a flat number plus at most one small die, nothing added). |
 | [[Rules Language\|**Body Action, Mind Action**]] | An Action with the Body or the Mind trait, even when it rolls another Attribute Modifier. |
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
-| [[Reading an Action\|**Category**]] | The text at the right of an Action's title: the kind of Action, or the feature that gave it to you. |
 | [[Checks\|**Check**]] | A roll of one Attribute Modifier against a DC (13 unless stated). |
 | [[Senses\|**Clear**]] | You perceive the creature well: no penalty either way. |
 | [[Cleave\|**Cleave**]] | Deal the Modifier used as damage to creatures next to the target. |
@@ -76,7 +82,8 @@
 | [[Flanking\|**Flanking**]] | Creatures that threaten the same enemy: each gets 1 Field Boon on [Melee] Actions against it for each other flanker, minus 1 for each ally of the enemy that threatens it. |
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
-| [[Effect Timing\|**General Effects**]] | The Effects row of an Action. They happen on a Tier 2 or 3 result. |
+| [[Effect Timing\|**Effect**]] | A card's line that happens whenever the card is used, whatever the roll. |
+| [[Reading an Action\|**Special**]] | A card's line that is a rule about the card itself. |
 | [[Grunts\|**Grunt**]] | An NPC rank with CV 50 and 3 AP a turn: about 26 Health at Stage 0, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
 | [[Gun\|**Gun**]] | A trait: the Action needs a Firearm (a pistol, a musket). |
@@ -149,7 +156,7 @@
 | [[Saves\|**Save**]] | A roll a creature makes against an effect; its three values are for Tier 1 / 2 / 3. |
 | [[Save Actions\|**Save Action**]] | An Action with the Save trait: its targets roll the named Save against 11 + your Modifier; Tier 1 is the worst for them. |
 | [[Senses\|**Sense**]] | A way to perceive creatures: Sight, Hearing, Heatsight... Your best sense decides if a creature is Clear, Obscured, Hidden or Unsensed to you. |
-| [[Actions\|**Setup**]] | What an Action does before its dice are rolled. |
+| [[Setup\|**Setup**]] | What an Action does before the rest of it; optional unless it says you must. |
 | [[Several Targets\|**Several Targets**]] | One roll for every target of an Action, each calculated separately. |
 | [[Shot\|**Shot**]] | A trait: the Action needs a Projectile weapon (a bow, a crossbow). |
 | [[Sickened\|**Sickened**]] | A condition with a value: that many Banes on your Body and Instinct Saves, and you can't swallow anything. |

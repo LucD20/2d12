@@ -1,6 +1,6 @@
 # Paladin
 
-Your god's strength flows through your weapon and your hands. The Paladin is a holy warrior who smites foes, mends allies and makes the profane flinch: you choose how, a little more at every level.
+You stand in front so the others can stand back. The Paladin is a holy warrior who judges a foe before their god, shields the allies near them, and, when the fight has built long enough, brings all of it down in one blow.
 
 **The Paladin at a glance**
 
@@ -12,62 +12,66 @@ Rally: 6
 
 Speed Modifier: +0
 
-Modifiers: +2 and +1: you choose which is your Weapon Modifier
+Modifiers: Weapon Modifier +1, Power Modifier +2
 
 Armor Training: Heavy
 
-Escalation hook: An ally within 5 squares becomes Bloodied or goes Down (Kindled Wrath)
+Escalation hook: An ally becomes Bloodied or goes Down (Kindled Wrath, level 2)
 
 > [!tbd]
-> **This class is still written for the earlier levels and Escalation ladder; its Stage 0 cards (levels 1 to 3) are next.** Until then, where this document and Chapters 2 and 5 of the Core Rules differ, the Core Rules win: read the Passives of Escalation 1, 2 and 3 as Escalation **2, 4 and 6** (levels 1, 2 and 3) and the Apex's Escalation 3 as **6** (level 4); the Escalation hook and the Encounter Pick come at level 2; there is no Daily Pick in Stage 0, and every Talent slot is empty for now.
+> **Levels 1 to 3 are written.** Level 4 (the Apex and the numbers of Stage 1) and the Talents are not written yet: every Talent slot is empty for now.
 
 ## The Paladin by Level
 
 Level 1:
 
-Features: Divine Power, Kindled Wrath
+Features: Judge, Smite
 
-Hallmark Action: Smite or Lay On Hands
+Hallmark Action: Binding Light or Lay On Hands
 
 Hallmark Reaction: Shield of Faith or Rebuke
 
-Picks: 1 Encounter Pick
+Art: 1 of Lantern of Faith, Hold the Line, Commandment
 
-Escalation: 1 Passive for each Escalation level (1, 2 and 3), 1 Apex
+Escalation: 1 Escalation 2 ability: Armor of Faith or Roving Judgment
 
-Talents: 1 Talent
+Talents: 1 Skill Talent
 
 Level 2:
+
+Features: Kindled Wrath (your Escalation hook)
+
+Picks: 1 Encounter Pick
+
+Escalation: 1 Escalation 4 ability: Weight of Judgment or Tireless Vigil
 
 Talents: 1 Talent
 
 Level 3:
 
-Picks: 1 Daily Pick
+Art: a second Art
 
-Talents: 1 Talent
+Escalation: 1 Escalation 6 ability: Reckoning or Hallowed Stance
 
-Level 4:
+Talents: 1 Skill Talent
 
-Talents: 1 Talent
-
-Level 5 begins Stage 2 (a Stage Talent and the Stage numbers: see [[Stages]]). Further levels will be added here.
+Level 4 brings the Apex and Stage 1 (see [[Stages]]). Further levels will be added here.
 
 ## Level 1
 
 ### Features
 
-As a holy warrior, you gain two Features at level 1. Kindled Wrath is your class's [[Escalation]] hook.
+Every Paladin has these two. **Judge** names the foe your god's attention is on: the creature you Judged counts as **Profane** for you, which your other cards read. **Smite** is your one great blow of the fight; it grows with your [[Escalation]].
 
-@@CARD:Divine Power@@
+@@CARD:Judge@@
 
-@@CARD:Kindled Wrath@@
+@@CARD:Smite@@
 
 ### Hallmark Action Selection
 
 Choose one of the following Hallmark Actions:
 
-@@CARD:Smite@@
+@@CARD:Binding Light@@
 
 @@CARD:Lay On Hands@@
 
@@ -79,58 +83,58 @@ Choose one of the following Hallmark Reactions. Both are paid with your Reaction
 
 @@CARD:Rebuke@@
 
-### Picks
+## Paladin Arts
 
-- You pick one Talent (the [[Talents]] document).
-- You pick one Encounter Action from the [[Paladin Repertoire]].
-- You pick one Escalation Passive for each Escalation level, and one Apex, from the [[Paladin Escalation]].
+Choose one Art at level 1 and a second at level 3. Each time you use an Art, you choose one of its three Modes.
+
+@@CARD:Lantern of Faith@@
+
+@@CARD:Hold the Line@@
+
+@@CARD:Commandment@@
 
 ## Paladin Repertoire
 
 ### Encounter
 
-@@CARD:Holy Wrath@@
-
-@@CARD:Word of Radiance@@
+At level 2, choose one of the following Encounter Actions:
 
 @@CARD:Bulwark of Faith@@
 
-@@CARD:Beacon@@
-
-### Daily
-
 @@CARD:Consecrated Ground@@
 
-@@CARD:Miraculous Recovery@@
-
-@@CARD:Divine Intervention@@
+@@CARD:Word of Radiance@@
 
 ## Paladin Escalation
 
-Your Escalation is a level from 1 to 3 that rises as the fight goes on and is never spent (see [[Escalation]]). You choose one Passive for each level: it works while your Escalation is at least that number. The Apex is your big Encounter Action: you can use it only while your Escalation is 3.
+Your Escalation is a level from 1 to 6 that rises as the fight goes on and is never spent (see [[Escalation]]). You choose one ability for each of Escalation 2, 4 and 6: it works, or can be used, while your Escalation is at least the number on its card.
 
-### Escalation 1 Passives
+### The Escalation Hook
 
-@@CARD:Radiant Zeal@@
+You gain Kindled Wrath at level 2.
 
-@@CARD:Divine Surge@@
+@@CARD:Kindled Wrath@@
 
-@@CARD:Font of Mercy@@
+### Escalation 2
 
-### Escalation 2 Passives
+Choose one at level 1:
 
-@@CARD:Searing Blows@@
+@@CARD:Armor of Faith@@
 
-@@CARD:Mending Light@@
+@@CARD:Roving Judgment@@
 
-### Escalation 3 Passives
+### Escalation 4
+
+Choose one at level 2:
+
+@@CARD:Weight of Judgment@@
+
+@@CARD:Tireless Vigil@@
+
+### Escalation 6
+
+Choose one at level 3:
 
 @@CARD:Reckoning@@
 
 @@CARD:Hallowed Stance@@
-
-### Apex
-
-@@CARD:Final Verdict@@
-
-@@CARD:Hallowed Dawn@@

@@ -12,6 +12,10 @@ You can end it with **Interact (1 AP)**, on yourself or on a bleeding creature w
 
 You can't see: for your Sight, everything is Darkness (see [[Senses]]). Creatures you only hear are Hidden to you, so your Actions against them are Doomed, and you can't target a creature you don't perceive. Any other Roll that needs sight is Doomed. Actions with the Area trait still affect the creatures in their area.
 
+### Half-Blinded
+
+Your Sight perceives no creature better than Obscured: a creature that would be Clear to you is Obscured (see [[Senses]]). Your other senses aren't affected.
+
 ### Dazed
 
 Dazed always has a value, such as **Dazed 1**. When you become Dazed, you lose that many AP right away (never your Reaction AP). If you have fewer AP than the value, you lose the AP you have, and the rest is taken from the AP you regain at the start of your next turn; then Dazed ends. Dazed is the condition that takes AP now; [[Slowed]] takes them on your next turn.

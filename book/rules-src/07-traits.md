@@ -87,7 +87,7 @@ A Weapon Action with the Melee or Ranged trait needs a weapon with that property
 
 ### Tags
 
-Creatures have **Tags** instead of traits: words that other rules refer to, such as **Profane** (the Paladin's Divine Power). A creature's Tags are listed in its stat block. Like traits with no rule of their own, a Tag does nothing by itself.
+Creatures have **Tags** instead of traits: words that other rules refer to, such as **Profane** (the Paladin's Smite). A creature's Tags are listed in its stat block. Like traits with no rule of their own, a Tag does nothing by itself.
 
 > [!tbd]
 > The list of Tags (Profane, Beast, Undead...) and what each one covers is not written yet.

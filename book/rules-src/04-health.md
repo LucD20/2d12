@@ -110,7 +110,7 @@ Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
 
 Some effects give you **Guard**, written with a value: **Guard 6**. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A [[Riders|rider]] on that damage still happens: Guard takes damage that was dealt.
 
-- Damage reduction (such as Hallowed Stance) applies first; Guard takes what is left.
+- Damage reduction (such as Shield of Faith) applies first; Guard takes what is left.
 - Guard isn't Health: it can't be healed, and Rally Points don't restore it.
 - It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it lasts 1 round (from the start of your turn until you regain AP again).
 - It ends at the end of the encounter.

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: ea93617 2026-11-16 Card structure: Modes decided; parts 7 to 9 proposed (Passives, level, Critical)
+Built by tools/knowledge.py on 2026-11-16 from the repository at: b553a85 2026-11-16 The card Structure complete; the 19 Paladin cards redrawn in it
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -18,9 +18,9 @@ Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
 - open-design-items.md (178 KB)
-- rules-01-roll.md (23 KB)
-- rules-02-turns.md (28 KB)
-- rules-03-movement.md (39 KB)
+- rules-01-roll.md (25 KB)
+- rules-02-turns.md (33 KB)
+- rules-03-movement.md (40 KB)
 - rules-04-health.md (14 KB)
 - rules-05-characters.md (8 KB)
 - rules-06-basic-actions.md (0 KB)

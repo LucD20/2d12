@@ -89,6 +89,8 @@ Creatures aren't solid corners: you can move diagonally between two creatures. I
 
 When an Action, effect or rule moves a creature (yourself included) in a straight line, like the Charge Action, draw a line from the center of the creature's square to the center of the destination square. The creature moves along the same squares as a [[Line]]: one square per step along the line's longer direction, at each step the square whose center is nearest to the line, ending in the destination. Where the line passes exactly between two squares, choose a side once, left or right (looking toward the destination), for the whole movement: every tie takes that side. The creature that moves chooses for its own movement; the origin chooses for a Forced Movement. If a square on the line isn't a legal move (for Charge: Difficult Terrain, a creature in the way, or a solid corner), the movement stops in the last legal square before it.
 
+**Toward a creature.** When a rule moves you in a straight line **toward a creature**, the line goes to the center of that creature's space. You can stop in any square on the line, and you can't enter the creature's space: the movement brings you closer to it, never around it.
+
 In the figures, Y is you. Blue squares are the squares the token passes, the green square is where it ends, and red squares are not legal. The line is what counts: the path of the token on the grid does not have to be exactly straight, because a token moves from square to square.
 
 @@DIAGRAM:straight@@
@@ -184,6 +186,13 @@ The four movements side by side:
 | Creatures in the way | Collision | Collision | Collision | Stops, no damage |
 | Objects in the way | Collision damage | Collision damage | Collision damage | Stops, no damage |
 | Each diagonal square counts | 1 | 1 | 1 | 1 |
+
+### Swapping Places
+
+When a rule makes two creatures **swap squares**, each enters the square the other left, at the same moment. Each of them is moved by a [[Reposition]]: it is not a Move Action, it triggers no Reactions, and both have left their square (see [[Moving and Leaving Your Square]]).
+
+> [!tbd]
+> Still to decide: whether two creatures of different Sizes can swap, and whether Steadiness stops a swap.
 
 ## Steadiness
 
@@ -328,7 +337,7 @@ Every area spreads from a **Point of Origin**: for an Emanation, its target (a c
 
 ### Emanation
 
-An Emanation, written with a value like **1 Emanation**, extends a number of squares around its **target**: a creature or a square. It affects every creature in its area unless the Action says otherwise. If its target is a creature, the origin decides whether that creature is affected too. For example, the Paladin decides whether the target of a 3 AP Smite also makes the Appeal Save, and a creature using Whirlwind (an Emanation around itself) decides whether it is affected.
+An Emanation, written with a value like **1 Emanation**, extends a number of squares around its **target**: a creature or a square. It affects every creature in its area unless the Action says otherwise. If its target is a creature, the origin decides whether that creature is affected too. For example, a creature using Whirlwind (an Emanation around itself) decides whether it is affected.
 
 An Emanation around a creature extends that many squares from every square the creature occupies, so it follows the creature's Size. A 1 Emanation around a Medium (3) creature covers 3 × 3 squares (its square and the 8 around it); around a Huge (5) creature, which occupies 3 × 3, it covers 5 × 5. A **Distance** of 10 sq. means the Emanation is placed up to 10 squares from the creature using the Action; with no Distance, it is around that creature.
 
@@ -377,7 +386,7 @@ Other areas (cones) also affect every creature in them unless the Action says ot
 
 Light affects **Sight** (see [[Senses]]): the light **where a creature is** decides how well you see it.
 
-A light source sheds **Bright light** in an Emanation of its size, and **Dim light** for the same number of squares beyond that. A torch with Bright light 4 gives Bright light in a 4 Emanation and Dim light from 5 to 8 squares away (an 8 Emanation). Smite's Bright light 2 gives Bright light in a 2 Emanation and Dim light from 3 to 4. Beyond that, the light of the scene applies (daylight, night, a dark cave...).
+A light source sheds **Bright light** in an Emanation of its size, and **Dim light** for the same number of squares beyond that. A torch with Bright light 4 gives Bright light in a 4 Emanation and Dim light from 5 to 8 squares away (an 8 Emanation). Lantern of Faith's Bright light 3 gives Bright light in a 3 Emanation and Dim light from 4 to 6. Beyond that, the light of the scene applies (daylight, night, a dark cave...).
 
 A light has the same shape as an area: around a creature or an object it is an [[Areas|Emanation]], counted from every square it occupies, and a light placed on a corner is a [[Areas|Burst]]. So a Bright light 2 reaches the same squares as a 2 Emanation, and its Dim light works the same way with its own size.
 
@@ -404,13 +413,18 @@ You perceive creatures through your **senses**. Each sense lets you perceive som
 | Perception | Your Actions against it | Its Actions against you |
 |---|---|---|
 | **Clear** | Normal. | Normal. |
-| **Obscured** | 1 Field Bane. | 1 Field Boon. |
+| **Obscured** | 1 Field Bane. | 1 Field Boon, if it is Clear to you. |
 | **Hidden** | **Doomed**. | **[[Favored and Doomed Rolls\|Favored]]**. |
 | **Unsensed** | You can't target it. | **[[Favored and Doomed Rolls\|Favored]]**. |
 
 Actions with the [[Area]] trait ignore Senses: they target the creatures in their area however well you perceive them.
 
-A roll that is both Favored and Doomed is a normal roll (see [[Favored and Doomed Rolls]]). But **you gain no Favored or Boon from a creature's poor perception of you if you perceive that creature as Hidden**: two creatures that are each Hidden to the other are both Doomed against each other, and neither is Favored.
+When you use an Action against a creature, ask two questions, in this order:
+
+1. **How do you perceive it?** That is the "Your Actions against it" column: nothing if it is Clear, 1 Field Bane if it is Obscured, Doomed if it is Hidden. If it is Unsensed, you can't target it.
+2. **Does it perceive you worse than you perceive it?** Only then do you gain the "Its Actions against you" column, read for how it perceives **you**: 1 Field Boon if you are Obscured to it, Favored if you are Hidden or Unsensed to it. **You never gain this against a creature that is Hidden to you.**
+
+So two creatures that are each Obscured to the other each take 1 Field Bane and gain nothing, and two creatures that are each Hidden to the other are both Doomed against each other. A roll that is both Favored and Doomed is a normal roll (see [[Favored and Doomed Rolls]]).
 
 Every creature has **Sight** and **Hearing**:
 
