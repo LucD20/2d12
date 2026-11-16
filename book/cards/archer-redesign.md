@@ -315,4 +315,33 @@ Used in about half the rounds ... about 14 a turn, of 10 to 15: on
 
 **For Lucas to choose:** the pair; Slip Away's distance moved (2, or 3).
 
+**Lucas (2026-11-16): "I think overwatch will be an every round thing, as usually moving closer to the archer is the same as walking closer to allies, so it would be quite disruptive."** He is right, and the SIM had already measured it: today's Overwatch (an enemy within 10 squares moves closer to you or an ally) fires 0.46 to 0.81 times a round (`book/ruler/reactions.md`: 56% of rounds in a normal fight, 73% in a deadly one), against the charter's "about half the rounds". My price assumed half; at its real rate it is about 20 points a turn, and an extra 2d12 roll almost every round.
+
+**Every moment the rules offer for a Reaction shot (Chapter 2, "What a Reaction Responds To"), with how often it comes up:**
+
+| The trigger | How often | For | Against |
+|---|---|---|---|
+| The target moves closer to you (the draft) | most rounds [SIM: 0.5 to 0.8] | | his point: every round, disruptive |
+| The target moves closer to you, within 5 squares | many rounds [judgment] | tighter | still most enemies that come his way |
+| **The target would enter a square adjacent to you** | when he is reached: about a third of the rounds [judgment: a back-liner] | the same moment as Slip Away, so the pair is one question with two answers; an Interrupt, so he shoots before it is adjacent and his bow Doomed | it only fires when the line has failed |
+| The target damages you | when he is hit | a revenge shot | adjacent by then: Doomed |
+| The target makes a [Ranged] Strike against you or an ally | only against shooters | a duel | dead against melee enemies |
+| The target becomes Bloodied / an ally scores a Tier 3 against it | about once a round in a fight of four [judgment] | hits with the party | every round again |
+| The target Stands, or falls Prone | rare | | too rare to choose |
+| The target moves away from you | rare for a shooter | | Rebuke's trigger; not his fantasy |
+
+**Proposed, replacing Overwatch:**
+
+> **Snap Shot** · Turn · 1R (stand and shoot)
+> *A foe lunges for you, and you put an arrow in it before it has finished the step.*
+> Weapon · Ranged · Shot · Strike
+> Distance: Weapon | Target: One enemy
+> **Interrupt:** The target would enter a square adjacent to you.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod].
+
+27 a use, in about a third of the rounds: about 9 a turn, of 10 to 15 (Slip Away: about 8). **The pair is now one moment with two answers:** an enemy is about to reach him; he is gone (Slip Away, and he takes no hit), or he shoots it in the face and stays (Snap Shot, and he is then Engaged). Both fire only when he is reached, which is rare for a back-liner who plays well: a Reaction that rewards the enemy's success, not every enemy's turn.
+
 **Lucas's answer:**
