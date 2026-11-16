@@ -5,8 +5,8 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 25.5 | 324 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 32.6 | 345 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 40.1 | 464 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 32.6 | 347 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 40.1 | 466 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.0 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 41 |
@@ -64,32 +64,32 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 109:   ### Disrupting Actions
 - 119:   ### Moving Closer
 - 123:   ### Moving Away
-- 135: ## Actions
-- 143:   ### Setup
-- 153:   ### Targets
-- 157:   ### Willing and Unwilling
-- 161:   ### Requirements
-- 165:   ### 0 AP Actions
-- 169:   ### Linked Actions
-- 184:   ### Targets of Effects
-- 190:   ### Effect Timing
-- 202:   ### Buffs
-- 213:     #### Stacking
-- 232:   ### Frequency
-- 238:     #### At-will
-- 246:     #### Turn
-- 250:     #### Round
-- 254:     #### Encounter
-- 258:     #### Daily
-- 262: ## Versus
-- 266:   ### Defenses
-- 281: ## Rounds and Durations
-- 283:   ### Until
-- 287:   ### Your Next Action
-- 291:   ### Rounds
-- 300:   ### End of Turn
-- 308: ## Escalation
-- 331:   ### Momentum
+- 137: ## Actions
+- 145:   ### Setup
+- 155:   ### Targets
+- 159:   ### Willing and Unwilling
+- 163:   ### Requirements
+- 167:   ### 0 AP Actions
+- 171:   ### Linked Actions
+- 186:   ### Targets of Effects
+- 192:   ### Effect Timing
+- 204:   ### Buffs
+- 215:     #### Stacking
+- 234:   ### Frequency
+- 240:     #### At-will
+- 248:     #### Turn
+- 252:     #### Round
+- 256:     #### Encounter
+- 260:     #### Daily
+- 264: ## Versus
+- 268:   ### Defenses
+- 283: ## Rounds and Durations
+- 285:   ### Until
+- 289:   ### Your Next Action
+- 293:   ### Rounds
+- 302:   ### End of Turn
+- 310: ## Escalation
+- 333:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 
@@ -133,10 +133,10 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 401:   ### Dim
 - 405:   ### Darkness
 - 409: ## Senses
-- 439:   ### Sight Senses
-- 446:   ### Other Senses
+- 441:   ### Sight Senses
+- 448:   ### Other Senses
 
-Open (to be decided) boxes: 194: "Still to decide: whether two creatures of different Sizes can swap, an"; 308: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 382: "Cones are not written yet (and Lines wider than 1 square)."; 436: "Hiding and sneaking are not written yet."
+Open (to be decided) boxes: 194: "Still to decide: whether two creatures of different Sizes can swap, an"; 308: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 382: "Cones are not written yet (and Lines wider than 1 square)."; 438: "Hiding and sneaking are not written yet."
 
 ## 04-health.md: Chapter 4: Health
 

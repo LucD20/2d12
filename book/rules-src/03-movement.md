@@ -424,6 +424,8 @@ When you use an Action against a creature, ask two questions, in this order:
 1. **How do you perceive it?** That is the "Your Actions against it" column: nothing if it is Clear, 1 Field Bane if it is Obscured, Doomed if it is Hidden. If it is Unsensed, you can't target it.
 2. **Does it perceive you worse than you perceive it?** Only then do you gain the "Its Actions against you" column, read for how it perceives **you**: 1 Field Boon if you are Obscured to it, Favored if you are Hidden or Unsensed to it. **You never gain this against a creature that is Hidden to you.**
 
+@@DIAGRAM:senses@@
+
 So two creatures that are each Obscured to the other each take 1 Field Bane and gain nothing, and two creatures that are each Hidden to the other are both Doomed against each other. A roll that is both Favored and Doomed is a normal roll (see [[Favored and Doomed Rolls]]).
 
 Every creature has **Sight** and **Hearing**:

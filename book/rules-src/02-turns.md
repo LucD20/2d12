@@ -132,6 +132,8 @@ A creature **moves away from you** when the distance between you, counted the sa
 - If the movement is disrupted, it ends in the square the creature was in when the Reaction was taken.
 - Evade, Forced Movement and Reposition don't trigger Reactions, so they are never "moving away".
 
+@@DIAGRAM:movingaway@@
+
 ## Actions
 
 An Action is something you spend AP on. Every Action is written as a card; see [[Reading an Action]].

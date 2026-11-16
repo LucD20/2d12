@@ -160,6 +160,9 @@ details.acard:focus-within{outline:2px solid var(--acc);outline-offset:2px}
 @media (max-width:480px){.acard .cl{grid-template-columns:5.2rem minmax(0,1fr);gap:.5rem}}
 .sample .acard{margin:.8rem 0}
 
+.pushsvg .gdark{fill:#3a3732;stroke:#d9d3c7}.pushsvg .sgood{--sc:#2f7d4d}.pushsvg .sbad{--sc:#b85a14}.pushsvg .sarc{fill:none;stroke:var(--sc);stroke-width:2;stroke-dasharray:5 4}.pushsvg .sline{fill:none;stroke:var(--sc);stroke-width:3}.pushsvg .shead{fill:var(--sc)}.pushsvg .stext{fill:var(--sc);font:500 13px system-ui,sans-serif;text-anchor:middle}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pushsvg .gdark{fill:#0e0d0c;stroke:#3a3732}:root:not([data-theme="light"]) .pushsvg .sgood{--sc:#7fc79a}:root:not([data-theme="light"]) .pushsvg .sbad{--sc:#e89a5a}}
+:root[data-theme="dark"] .pushsvg .gdark{fill:#0e0d0c;stroke:#3a3732}:root[data-theme="dark"] .pushsvg .sgood{--sc:#7fc79a}:root[data-theme="dark"] .pushsvg .sbad{--sc:#e89a5a}
 .pushsvg .gcell{fill:#fff;stroke:#d9d3c7}.pushsvg .greach{fill:#ecd98b;stroke:#d9d3c7}.pushsvg .gdt{fill:#d9c3a0;stroke:#b79e74}
 .pushsvg .gbright{fill:#f1d760;stroke:#d9d3c7}.pushsvg .gdim{fill:#f7ecbd;stroke:#d9d3c7}
 .pushsvg .gcoord{font:600 10px system-ui,sans-serif;fill:#8a7f6a;text-anchor:middle}.pushsvg .gcoordr{text-anchor:end}

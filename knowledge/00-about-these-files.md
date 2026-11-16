@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 5fc5fa0 2026-11-16 Work in progress: the book's card renderer being rebuilt for the new Structure (not finished; four Foundry tests that read the built book are changed until it lands)
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 12de6ba 2026-11-16 The Paladin's redesign in the book: 19 cards in the new card Structure, the renderer rebuilt for every card, the rules written; four tests that read the book adapted
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.

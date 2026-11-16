@@ -479,6 +479,63 @@ def squeeze_diagram():
     return g.figure(), {}
 
 # ------------------------------------------------------------------ the diagrams the book uses (a placeholder @@DIAGRAM:name@@ in a chapter file)
+# ------------------------------------------------------------------ Senses (Chapter 3: the two questions) and Moving Away (Chapter 2)
+ORDER = {'Clear': 3, 'Obscured': 2, 'Hidden': 1, 'Unsensed': 0}
+def perceives(light, half_blinded=False, hears=True):
+    """How a creature with Sight and Hearing perceives a creature standing in that light."""
+    p = {'bright': 'Clear', 'dim': 'Obscured', 'dark': None}[light]
+    if p == 'Clear' and half_blinded: p = 'Obscured'
+    return p or ('Hidden' if hears else 'Unsensed')
+def attack_result(mine, theirs):
+    """The two questions of Senses. mine: how you perceive it; theirs: how it perceives you. Returns (text, good)."""
+    if mine == 'Unsensed': return 'no target', False
+    pen = {'Clear': '', 'Obscured': '1 Field Bane', 'Hidden': 'Doomed'}[mine]
+    bonus = ''
+    if mine != 'Hidden' and ORDER[theirs] < ORDER[mine]: bonus = '1 Field Boon' if theirs == 'Obscured' else 'Favored'
+    if pen and bonus: return f'{pen}, {bonus}', False
+    return (pen, False) if pen else (bonus, True) if bonus else ('normal', True)
+def senses_diagrams():
+    scenes = [('A torch in the dark', 'dark', 'bright', False), ('Both at the edge of the light', 'dim', 'dim', False),
+              ('Both in Bright light; G is Half-Blinded', 'bright', 'bright', True), ('Both in Darkness', 'dark', 'dark', False)]
+    figs, data = [], []
+    for cap, ly, lg, hb in scenes:
+        y_sees, g_sees = perceives(lg), perceives(ly, half_blinded=hb)
+        ya, yok = attack_result(y_sees, g_sees); ga, gok = attack_result(g_sees, y_sees)
+        data.append((cap, y_sees, g_sees, ya, ga))
+        c = lambda ok: 'sgood' if ok else 'sbad'
+        ys, gs = c(y_sees == 'Clear'), c(g_sees == 'Clear')
+        sq = {'bright': 'gbright', 'dim': 'gdim', 'dark': 'gdark'}
+        svg = (f'<svg viewBox="0 0 340 196" style="width:340px;max-width:100%" class="pushsvg" role="img" aria-label="{e(cap)}: Y perceives G {y_sees}, G perceives Y {g_sees}; Y attacks: {ya}; G attacks: {ga}">'
+            f'<rect x="20" y="78" width="44" height="44" class="{sq[ly]}"/><rect x="276" y="78" width="44" height="44" class="{sq[lg]}"/>'
+            f'<path d="M44 74 Q170 6 296 74" class="sarc {ys}"/><polygon points="296,74 285,73 290,64" class="shead {ys}"/>'
+            f'<text x="170" y="26" class="stext {ys}">Y perceives G: <tspan font-weight="700">{y_sees}</tspan></text>'
+            f'<path d="M72 92 L262 92" class="sline {c(yok)}"/><polygon points="270,92 260,87 260,97" class="shead {c(yok)}"/>'
+            f'<text x="170" y="84" class="stext {c(yok)}">Y attacks: <tspan font-weight="700">{e(ya)}</tspan></text>'
+            f'<path d="M268 110 L78 110" class="sline {c(gok)}"/><polygon points="70,110 80,105 80,115" class="shead {c(gok)}"/>'
+            f'<text x="170" y="128" class="stext {c(gok)}">G attacks: <tspan font-weight="700">{e(ga)}</tspan></text>'
+            f'<path d="M296 126 Q170 194 44 126" class="sarc {gs}"/><polygon points="44,126 55,127 50,136" class="shead {gs}"/>'
+            f'<text x="170" y="184" class="stext {gs}">G perceives Y: <tspan font-weight="700">{g_sees}</tspan></text>'
+            f'<circle cx="42" cy="100" r="15" fill="{ALLY}" class="gtokc"/><text x="42" y="105" class="gtok" font-size="14">Y</text>'
+            f'<circle cx="298" cy="100" r="15" fill="{ENEMY}" class="gtokc"/><text x="298" y="105" class="gtok" font-size="14">G</text></svg>')
+        figs.append(f'<figure style="--w:340px" data-h="196"><div class="figsvg">{svg}</div><figcaption>{e(cap)}</figcaption></figure>')
+    return figs, data
+
+def away_panel(rows, cols, you, path, caption, S=30):
+    """A creature (G) moves along `path` (cells, the first is where it starts); each square shows its distance from you; the first square farther than the start is outlined."""
+    g = Svg(rows, cols, S, caption); d0 = dist(you, path[0]); best = d0; first = None
+    for c in path[1:]:
+        d = dist(you, c)
+        if first is None and d > best: first = c
+        best = min(best, d) if first is None else best
+        g.cell(c[0], c[1], 'gtie' if c == first else 'gpass'); g.text(c[0], c[1], d)
+    g.token(you[0], you[1], 'Y', 'ally'); g.token(path[0][0], path[0][1], 'G', 'enemy')
+    return g.figure(), dict(start=d0, first=first, dists=[dist(you, c) for c in path[1:]])
+def away_diagrams():
+    a = away_panel(3, 7, (1, 0), [(1, 2), (1, 3), (1, 4), (1, 5)], 'G starts 2 squares from you and runs: its first square (orange) is farther, so it moves away from there')
+    b = away_panel(3, 7, (1, 0), [(1, 2), (0, 2), (0, 1)], 'G starts 2 squares from you and circles you: no square is farther from you than the one before it. It does not move away')
+    c = away_panel(3, 7, (1, 3), [(1, 0), (1, 1), (1, 2), (0, 3), (1, 4), (1, 5), (1, 6)], 'G starts 3 squares from you and runs past: it comes closer (to 1), then the orange square is the first one farther than the square before it. It moves away from there')
+    return [a[0], b[0], c[0]], [a[1], b[1], c[1]]
+
 def wrap(figs, desc=''):
     """Figures side by side: their diagrams share one height (the tallest), so the captions under them start on the same line."""
     hh = max([int(h) for f in figs for h in re.findall(r'data-h="(\d+)"', f)] or [0])
@@ -521,11 +578,18 @@ def book_diagram(name):
         return wrap({1: figs[0:4], 2: figs[4:6], 3: figs[6:9]}[k], {1: 'Y is you. The number in each square is its distance from you, counted as for any distance. The dashed line is the segment from the center of your square through the square you aim at (outlined).',
                     2: 'Orange squares are ties (the segment passes exactly between two squares): every tie takes the side you chose. Dashed squares are the other side, not taken.',
                     3: 'Y is you. The dashed line is the segment; the outlined square is the one aimed at.'}[k])
+    if name == 'senses':
+        figs, _ = senses_diagrams(); return wrap(figs, 'Y is you; G is a goblin. Both have only Sight and Hearing. Yellow square: Bright light; pale: Dim light; dark: Darkness. A curved dashed arrow is how one perceives the other; a straight arrow is what that gives its Actions. Green is good for the one acting, orange is bad.')
+    if name == 'movingaway':
+        figs, _ = away_diagrams(); return wrap(figs, 'Y is you. Blue and orange squares are the squares G enters, in order from G; the number in each is its distance from you.')
     if name == 'difficult':
         fig, _ = difficult_diagram(); return wrap([fig])
     raise KeyError(f'no diagram called {name}')
 
 CSS = '''
+.pushsvg .gdark{fill:#3a3732;stroke:#d9d3c7}.pushsvg .sgood{--sc:#2f7d4d}.pushsvg .sbad{--sc:#b85a14}.pushsvg .sarc{fill:none;stroke:var(--sc);stroke-width:2;stroke-dasharray:5 4}.pushsvg .sline{fill:none;stroke:var(--sc);stroke-width:3}.pushsvg .shead{fill:var(--sc)}.pushsvg .stext{fill:var(--sc);font:500 13px system-ui,sans-serif;text-anchor:middle}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pushsvg .gdark{fill:#0e0d0c;stroke:#3a3732}:root:not([data-theme="light"]) .pushsvg .sgood{--sc:#7fc79a}:root:not([data-theme="light"]) .pushsvg .sbad{--sc:#e89a5a}}
+:root[data-theme="dark"] .pushsvg .gdark{fill:#0e0d0c;stroke:#3a3732}:root[data-theme="dark"] .pushsvg .sgood{--sc:#7fc79a}:root[data-theme="dark"] .pushsvg .sbad{--sc:#e89a5a}
 .pushsvg .gcell{fill:#fff;stroke:#d9d3c7}.pushsvg .greach{fill:#ecd98b;stroke:#d9d3c7}.pushsvg .gdt{fill:#d9c3a0;stroke:#b79e74}
 .pushsvg .gbright{fill:#f1d760;stroke:#d9d3c7}.pushsvg .gdim{fill:#f7ecbd;stroke:#d9d3c7}
 .pushsvg .gcoord{font:600 10px system-ui,sans-serif;fill:#8a7f6a;text-anchor:middle}.pushsvg .gcoordr{text-anchor:end}
