@@ -102,4 +102,20 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 
 **Lucas (2026-11-16): "I think traits need a line of itself, imagine something with 6 traits?"** Agreed: Reckoning has five beside "Escalation 6 · Encounter · 0 AP". The traits take the full width under the Flavor. Proposed for the frequency and the cost, three places: **1** on the title bar at the right of the name, the category on a small line under it (Claude's pick: the cost is what is looked for first); **2** in the grid at the left of the Distance; **3** a line of their own under the traits. The roll line (1 / 2 / 3 above) is still open.
 
+**Lucas's answer (2026-11-16): PART 1, THE HEADER, IS DECIDED.** 1 "for sure" (frequency and cost on the title bar); the roll as a labeled line; the Flavor right under the name; a Strike's Defense always written. The header, top to bottom:
+
+1. **The bar:** the name at the left; Escalation needed · Frequency · Cost at the right.
+2. **The Flavor.**
+3. **The traits,** on their own line (by group, as today).
+4. **The grid:** "Distance: ..." and "Area: ..." at the left, "Target: ..." at the right. Absent facts are not printed; a Passive has no grid.
+5. **The roll line opens the body:** "Attack: Weapon vs. Armor Defense" / "Save: Appeal".
+
+**He asked: "Should we remove 'Paladin Escalation Action'? Does it actually add anything?"** Claude's answer: remove it from the card's face. Everything in it is already on the card (the Escalation, the frequency, the cost) or in the chapter heading above it; no rule in the book reads a category (checked: Chapter 5 speaks of "your Hallmark Action" as a choice, never of the label). Keep it as data (the JSON's `category`) so the book and Foundry still group by it. Waiting for his yes.
+
+## Part 2: the body (PROPOSED 2026-11-16, three structures; it also settles part 5, text with no label)
+
+- **1, play order, plain sentences:** every line where it happens; labels only on the fixed parts (Requirement, Trigger / Interrupt, Setup, Attack / Save, Tiers, Critical).
+- **2, play order, every line labeled:** the same, plus **Effect** (what happens with no roll) and **Special** (a rule about the card); a defined word is its own label ("Smite dice:", "Judged:"). 4e's two labels. Claude's pick.
+- **3, two zones:** what happens on top; rules and definitions under a line, smaller.
+
 **Lucas's answer:**

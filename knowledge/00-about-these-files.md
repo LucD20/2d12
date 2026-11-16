@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 111198a 2026-11-16 Card layout researched (research/card-layout.md); the roll line proposed three ways on the structure page
+Built by tools/knowledge.py on 2026-11-16 from the repository at: dddea6d 2026-11-16 Card header: traits on their own line; three places for frequency and cost
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (160 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (176 KB)
+- open-design-items.md (177 KB)
 - rules-01-roll.md (23 KB)
 - rules-02-turns.md (28 KB)
 - rules-03-movement.md (39 KB)
@@ -50,7 +50,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-card-structure.md (10 KB)
+- design-card-structure.md (12 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
 - design-stage0.md (18 KB)

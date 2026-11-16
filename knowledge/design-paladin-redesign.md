@@ -1309,4 +1309,4 @@ Every card in its final text, in the order a character gains them. **Numbers:** 
 > **Only the Target line targets.** A Reaction can also do something to the triggering creature when it isn't the target: Shield of Faith's target is the ally, and it Taunts the attacker. You need no Line of Effect to the triggering creature for that; perceiving it is enough.
 > A feature that says "when..." has no target: you must perceive the creatures it names.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16): "Proposed." THE TARGETING RULE IS DECIDED in its second wording,** and with it Shield of Faith, Bulwark of Faith and Rebuke as written above (Distance and "Target: One ally" / "One enemy"; the Interrupt or Trigger written about "the target").
