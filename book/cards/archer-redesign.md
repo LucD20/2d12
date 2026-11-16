@@ -105,4 +105,29 @@ About 2.7 arrows a use (28 / 51 / 21%), 4.5 damage each: 12 damage, about 41 poi
 
 **For Lucas:** which mechanic (A, or another, or a mix); whether an arrow's damage is written on each card (the sketch) or once on a Feature ("your arrow deals...").
 
+**Lucas's answer (2026-11-16): "A looks good." The arrow's damage is written once, on a Feature. "And needs to write: Is the damage rolled before choosing who the arrows hit, or after?"** DECIDED: arrows by Tier is the class's mechanic.
+
+## Decision 3: the first Feature, what an arrow is (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules first.** Chapter 1, Several Targets: "you roll once, after the targets are chosen... The Tier, Doubles and Critical are decided separately for each creature... Damage is rolled per Tier: ... roll that Tier's damage once and apply it to every creature on that Tier." Weapon Damage: [W] is "a flat number plus at most one small die" that changes with the Tier (a Shortbow: 0 / 1d6! / 1 + 1d6!; a Longbow: 0 / 1 + 1d4! / 2 + 1d4!); the bows are rebuilt in the weapons pass. Resist, Guard and a reduction are taken once from each Action.
+
+**His question, answered by the design: there is nothing to choose after the roll.** An Action's arrows land on the Action's target. A card that shoots several creatures names them as its targets, and Several Targets already says what happens: the targets are chosen before the roll, and each creature gets its own Tier, so its own number of arrows. No arrow is ever handed out after the dice are seen. (The sketch's "each arrow after the first can hit another creature" is dropped: it let him roll against an easy target and send the arrows to a hard one.)
+
+> **Quick Nock** · Passive
+> *Your hand is on the next arrow before the last one lands.*
+> **Arrow:** Some of your Actions land arrows. An arrow deals the die of your Projectile weapon, exploding, as [V] damage of the weapon's subtype (a Shortbow: [V] 1d6! Pi). Nothing is added to an arrow, your Modifier included.
+> **Passive:** When several arrows land on a creature, roll all their dice together: it is one instance of damage. An Action's arrows land on its target; an Action with several targets gives each its own Tier and its own arrows.
+
+**Priced:** not priced by itself (it defines a word; the cards that land arrows carry the price). A Shortbow's arrow averages 4.2 damage: about 14 points [SIM: 3.4 a point of damage].
+
+**Analysis.**
+- **The decision it gives:** none alone; it is the word every Strike of his is written in.
+- **Why the weapon's die and nothing added:** the weapon still matters (a d6 bow against a d4 one), and with no Modifier on each arrow a card's Tiers can land three or four arrows without the Modifier being counted four times. His Weapon +2 does its work on the roll: it is what gets him to Tier 2 and Tier 3, where the arrows are.
+- **One instance:** Resist, Guard and Shield-of-Faith-like reductions are taken once from the arrows of an Action, not once an arrow. Without this line "many small hits" would be the worst damage in the game against any flat reduction.
+- **Speed:** one attack roll, then a handful of small dice thrown together. No second 2d12.
+- **Rules it touches:** a defined word on a Feature that other cards use (new: the Paladin's "Smite dice" lived on its own card). The Longbow's flat number (1 or 2) is lost on an arrow: for the weapons pass, which rebuilds the bows anyway.
+- **What it doesn't do:** it gives no arrows. A Weapon Attack stays a Weapon Attack.
+
+**For Lucas to choose:** (1) the arrow's damage: the weapon's die (this), or a flat number with no roll (2 + nothing: the fastest, and the steadiest); (2) the name (Quick Nock; others: Fletcher's Hand, Loose, Arrows).
+
 **Lucas's answer:**
