@@ -661,4 +661,28 @@ A whole extra Action in the rounds something he tagged dies (about half the roun
 
 **Claude's pick: Spare Arrow.** It answers "the same level" exactly (the same sentence shape and size as One More Arrow, the other axis), and it is the brief's first line: many hits, never one big one.
 
+**Lucas's answer (2026-11-16): "Fleet is good. Thrill of the kill is good as well." DECIDED: Fleet (Escalation 6) and the hook Thrill of the Kill.**
+
+## The Escalation abilities and the hook: all decided
+
+| Rung (level) | One | The other |
+|---|---|---|
+| Escalation 2 (level 1) | **Lean and Loose:** The Leaning Action costs you 0 AP. | **Blade and Bow:** Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action, or a [Ranged, Strike] Action after a [Melee, Strike] Action, it gains 1 Boon. |
+| Escalation 4 (level 2) | **Clear Lines:** Your allies give your targets no Cover, and your [Ranged] Actions take no Field Bane for a target Engaged with one of your allies. | **Opening Shot:** Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Weapon Attack (1A) against it. |
+| Escalation 6 (level 3) | **One More Arrow:** Once on each of your turns, a [Strike] Action of yours that deals [W] deals 1[W] more. | **Fleet:** Each Evade of yours moves you 1 more square, and your Evades can enter Difficult Terrain. |
+
+**The hook (level 2), Thrill of the Kill:** Once an encounter, when an enemy you have damaged goes Down, your Escalation increases by 1.
+
+## Decision 13: the Encounter Picks, their themes first (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules and research first.** Level 2 gives one Encounter Pick of three. An Encounter Action is worth double its AP (2 AP: 100 points) and can carry two riders (the charter). The brief: no big single hit. Hazardous Terrain is written [HT: Entering, Turn, Movement] in the effect that makes an area, and a creature takes it once a Movement (Chapter 3). Today's five: Marksman's Shot (a big hit: out), Volley (an Area with odd Tiers), Covering Fire (a zone of a Bane and +1 Defense: silent bonuses), Pinning Shot (Immobilized: Trick Shots' Pin does the small version), Twin Shot. Research: the shooter's burst that was liked is width and never-whiff, not a multiplier; reload and standing still can be a price.
+
+| Theme | The card in one line | Its kind |
+|---|---|---|
+| **1. The volley** | arrows fall on an area: every creature in it takes a small hit, by its own Tier; the wide version of Strafe, placed at a distance | width, at range: the Archer's "big moment" without a big number |
+| **2. The running fight** | he runs the length of the field, and each enemy he passes within Reach takes the knife: one roll, a small hit each, then he is out the other side | the switch-hitter's turn: mobility and the blade together |
+| **3. The pinning rain** | for a round his arrows keep falling on a patch of ground: it is Hazardous Terrain for enemies ([HT: Entering, Movement]), a small hit each time one crosses it | area denial for the party: many small hits made by the enemies' own choices |
+
+**Claude's note:** all three are many small hits and none is a nova; 1 is a shot, 2 is a move, 3 is ground held, so the pick says how he likes to fight. Left out: a duelist's single-target Encounter (it would be the big hit), a healing or shielding card (the brief has no support).
+
 **Lucas's answer:**
