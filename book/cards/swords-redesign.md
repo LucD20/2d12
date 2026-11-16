@@ -86,7 +86,7 @@
 
 Swords are a group of their own, without the Dagger. Only the two Basic swords get mechanics now. **A note on his liking for the rarer names:** Sabre and Rapier are the two plain ones of the six; they are only names until they are built, and the table of candidates has rarer ones for the same slots (Schiavona or Kilij for the Sabre; Shamshir or Jian for the Rapier). Left as decided unless he swaps them.
 
-## Decision 2: the Arming Sword's table row (PROPOSED 2026-11-16, waiting for Lucas)
+## Decision 2: the Arming Sword's table row (DECIDED 2026-11-16: damage 3)
 
 | Name | Group | Properties | Type | Range | Damage | Rung |
 |---|---|---|---|---|---|---|
@@ -109,5 +109,57 @@ Swords are a group of their own, without the Dagger. Only the two Basic swords g
 - **The name** Arming Sword; today's placeholder Longsword row (one hand) goes when it comes in, and the name Longsword moves to the two-handed Basic sword.
 
 **For Lucas:** the row; 1, 2 or 3 for the damage.
+
+**Lucas's answer (2026-11-16): "3 is best." THE ARMING SWORD'S ROW IS DECIDED:**
+
+| Name | Group | Properties | Type | Range | Damage | Rung |
+|---|---|---|---|---|---|---|
+| **Arming Sword** | Swords | Melee | Slash | 1 | [V] 0 / 3 + 1d4! / 4 + 1d6! | Basic |
+
+## Decision 3: the Arming Sword's Weapon Technique (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+
+**What it has to do.** One roll; the sword's own thing seen on most uses; a choice attached to using it; no copy of a class card. The line's identity (decision 1): a free hand, speed. What the classes already use on their cards: Immobilized, Hindered, Taunted, Pushed, Prone, Frightened, Half-Blinded, Guard for allies (Paladin); Hindered, Immobilized, Vulnerable, Pushed, Staggered, Prone, Evades (Archer); Bleed and a step before the shot (the bows). **Not on any card: Slid (on an enemy), Grabbed.** And the rules already have a free-hand move that nobody compresses: Shove (Round, 1 AP, a Body roll, Pushed 1 / 2, needs a free hand).
+
+**1, the free hand (Claude's pick): the sword in one hand, the foe in the other.**
+
+> **Seizing Cut** · Round · 1 AP
+> *You catch your foe's arm with your empty hand, cut, and turn it to where you want it standing.*
+> Weapon · Melee · Strike
+> Distance: Weapon | Target: One creature
+> **Requirement:** Your other hand is free.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 2:** [V] 1[W]; Slid 1.
+> **Tier 3:** [V] 1[W] + [Mod]; Slid 1, then Grabbed.
+
+**2, cut and thrust: two blocks, one chosen each time.** Cut: Slash, Tier 1 [V] [Mod], Tier 2 and 3 [V] 1[W] + [Mod], a Tier 3 Staggered (EoT). Thrust: Pierce, Distance 2 squares (the point at the full length of the arm), Tier 2 and 3 [V] 1[W] + [Mod]. The decision is made on the attack; the damage type starts to matter. Against: the Cut is a Weapon Attack with a little more (the pattern he called lame), Staggered is Darting Blade's Tier 3, and reaching 2 squares is the natural thing of the Polearms.
+
+**3, the guarded cut** (the placeholder's idea, without its silent +1 Armor Defense): Tier 1 [V] 1[W] (a floor: this sword never whiffs), Tier 2 [V] 1[W] + [Mod], Tier 3 the same and you gain Guard 2. Against: nothing to decide (it is the first cut of every round), and Guard is the Paladin's own currency (Lay On Hands, Armor of Faith).
+
+### Priced (way 1)
+
+A Weapon Attack is 25 points; an AP about 12; a Round card's band is 25 to 33.
+
+| Line | Points | Source |
+|---|---:|---|
+| Tier 2: 1[W], no [Mod]; Tier 3: 1[W] + [Mod] | 21 to 23 | [SIM] a Weapon Attack less the Modifier on a Tier 2 (45% of 2 at Weapon +2: 21; 42% of 1 for a Paladin: 23) |
+| Slid 1 on a Tier 2 or 3 | +9 | [judgment] it is the Shove Action's result (1 AP; Pushed 1 on about 70% of rolls) folded in, and a Slid goes any way where a Push goes one |
+| Tier 3: Grabbed | +3 | [SIM] Immobilized "until it escapes" measured at about 2 points; [judgment] the target pays 1 AP to Break Free, on a quarter of the uses |
+| No Tier 1 | 0 | |
+| Requirement: your other hand is free | | [not priced] nothing today; a shield or a second weapon later |
+| **Total** | **about 33 to 35** | the top of the band, where Circling Shot sits (34) |
+
+### Analysis
+
+- **The decision it gives.** Where the foe goes. One square, any direction: off an ally it was Engaged with (a friend's bow is no longer Doomed), into the reach of a second ally for a flank, out of a doorway, out of its cover, or into Hazardous Terrain (Forced Movement can: Chapter 3). And whether to use it at all: its Tier 2 hits with the die alone, so a Weapon Attack hits harder when the foe is already where you want it. The same honest trade as Circling Shot.
+- **The Tier 3.** Grabbed: the foe is Immobilized and only you can move it, until it pays 1 AP to Break Free, you let go (no Action), or you leave its reach. Your hand is then busy (the rule: "the holder can't use the hand or limb that holds you for anything else"), so **you can't use Seizing Cut again while you hold**: letting go is the next decision. A simpler Tier 3, his to choose: "Slid 2".
+- **Its pair, ahead of time.** The one-handed sword moves the foe's body. The Longsword, in two hands, is left the other blade (the bind: the research's "control of the other blade").
+- **The Paladin with it.** He has no everyday way to move one enemy (Word of Radiance and Reckoning push a crowd, once a fight). With Hold the Line's Brace (the squares beside him are Difficult Terrain) and Judge (it protects allies within 5 squares), placing one foe each round is what a protector wants. His Weapon Modifier is +1: he sees the Slid on 65% of uses.
+- **Against the classes' cards.** Binding Light (2 AP) Immobilizes for a round on a Tier 2 or 3 with more damage: Seizing Cut's Grabbed is a quarter as likely, ends for 1 AP, and costs you your hand. Trick Shots' Knock Back pushes 1 or 2 for [Mod] damage at range; this slides 1 with the sword's die, in reach, with an empty hand.
+- **The rules it touches.** Slid (Chapter 3: the origin chooses the path; no Reactions; Collision if the path is blocked; Steadiness resists it, so no size limit is written on the card). Grabbed (Chapter 8). "A free hand" is the book's phrase (Handle Actions need one). Line of Effect: on the Target line.
+- **Table feel.** One roll; a token moves on two uses in three; a Tier 3 is a picture (you have him by the arm).
+- **The research.** Fiore's sword in one hand is taught after grappling and dagger, and his plays with it seize the arm or the hilt with the left hand (from memory: not in the pass that was read; Lecküchner's messer has the same and was read: "you should fence with one hand with the Messer and you should have the other one on the back. If you want to fight with the empty hand..."). Other games: a rider that needs a second roll is what slows the table; this has none.
+- **Not on the card, on purpose:** a Tier 1; a size limit; a second Version.
+
+**For Lucas:** way 1, 2 or 3; in way 1: the Tier 2 without [Mod], the Tier 3 (Grabbed, or Slid 2), and the name.
 
 **Lucas's answer:**
