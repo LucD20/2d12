@@ -38,4 +38,22 @@ The charter (`book/class-charter.md`: 18 cards, the kinds, the complexity budget
 
 ## Research
 
-Running (2026-11-16): ranged martial classes in other games and what players say (`book/research/`, a note to come).
+`book/research/archer.md` (2026-11-16; one pass). What matters most for this brief: **(1) what bores is one best button repeated** (4e's Twin Strike: "Every. Single. Ranger. Uses. Twin-Strike. Almost. Every. Round."; Pathfinder 2e's flurry ranger: "stand in one spot and shoot arrows"), and "hitting a lot of times" is that shape, so the hits must come from several different cards; **(2) the shots that move are the ones the same players liked** (4e's Nimble Strike, "Shift 1 square before or after you attack"; Draw Steel's Fade, one card for bow or blade); **(3) range is paid for by less damage, danger up close, or things in the line of fire**, and no card should erase those for free; **(4) the map moves a shooter better than a rule does.**
+
+## Decision 1: the class's numbers (PROPOSED 2026-11-16, waiting for Lucas)
+
+| | Today | Proposed | Why |
+|---|---|---|---|
+| Modifiers | Weapon +2, Power +1 | **keep, fixed** | "precise": the best Weapon Modifier a level 1 character has |
+| Health | high 16, low 8 | **keep** | "fragile": 24 against the Paladin's 30 |
+| Rally | 5 | **keep** | one less than the Paladin |
+| Speed Modifier | +1 | **keep** | "very mobile": the cards carry the rest (movement inside Actions), so the base stays readable |
+| Armor Training | Medium (AD 13) | **Light (AD 12)** | "fragile... keep on the back lines": today it is 1 under the Paladin's 14; a class that is hard to reach and hard to hit is the "safest and highest damage at once" the research warns of |
+| Attributes | Body or Instinct +1, Mind or Appeal +1 | **keep** | |
+| The Sharpshooter Feature's 3 Mastery with one Projectile weapon | | **to decide with the Features** | the brief's melee strike needs a second weapon's place |
+
+**Two questions on the brief, before the Features:**
+1. **"moving side to side to distract enemies":** what does distracting do at the table? (a) the enemy he just shot is worse at hitting others (a Bane, or Taunted); (b) his allies are better at hitting it (a Boon: he draws its eye); (c) only the fiction: he is hard to pin down, and the mechanics are his own movement.
+2. **"fast to change to melee for a quick strike":** with a second weapon he carries (a dagger, a short sword: the weapons pass does bows and swords) and swaps to for free, or with the bow in hand?
+
+**Lucas's answer:**
