@@ -196,5 +196,68 @@ The fragile back-liner's escape. Strong as a Feature (it denies a melee enemy it
 
 **Claude's pick for the two Features: 1 (Shifting Aim) and 2 (Darting Blade).** Shifting Aim is the identity: many shots, earned by moving; it is his own idea and the only candidate that makes the map matter. Darting Blade is the Rule-bender (a swap that costs nothing, inside one card). 3 becomes the Effect line of his Hallmark Strikes (movement written on the card, shoot then move); 4's floor is written on each card's Tier 1; 5 and 6 go to the Escalation abilities and the Reactions.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16): THE TWO FEATURES ARE DECIDED: 1 (Shifting Aim) and 2 (Darting Blade)**, with "a one-handed light melee weapon" in Darting Blade's Setup; **Light will be a weapon property**. He asked how a property is written in a line. **The book's rule (Chapter 1, Rules Language, "Weapons by property"):** "When a rule names a weapon property before the word 'weapon,' it means a weapon with that property": **"a Light weapon"**, capitalized, no brackets (brackets are for traits), no color. So the Setup reads "You stow your bow and draw a Light weapon." (When the weapons pass writes the property, Light says it is one-handed and melee, so the card doesn't have to.) **5 (Harry) is "good for later"**: an Escalation ability.
 
+> **Shifting Aim** · Passive
+> *You never loose twice from the same spot: a step to the side, and the line is clean again.*
+> **Passive:** Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began).
+
+> **Darting Blade** · Round · 1 AP
+> *You let the bow drop on its strap, open a foe with the knife, and are gone before it turns.*
+> Weapon · Melee · Strike
+> Distance: Reach | Target: One creature
+> **Setup:** You stow your bow and draw a Light weapon.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod].
+> **Effect:** You Evade 2, then can stow that weapon and draw your bow.
+
+## Decision 5: the two Hallmark Actions (PROPOSED 2026-11-16, waiting for Lucas)
+
+**Rules and research first.** The charter: the two Hallmark Actions are a choice of style, not of role; the Paladin's rule of a 2 AP Hallmark Strike gave him a turn of 2 + 1 + 1 and fewer rolls. Several Targets (Chapter 1): one roll after the targets are chosen, each creature its own Tier. A Setup happens first and the Distance is checked after it (Chapter 2). Research: what bores is one best button (Twin Strike; Lucas: "Double Shot was quite boring"); the shots that move were liked; one roll for several targets is fast (Draw Steel's Two Shot) but gives many hits only against many enemies. A 2 AP Round card is worth about 50 points; a Shortbow's 1[W] is 1d6! on a Tier 2 and 1 + 1d6! on a Tier 3; his Tiers are 28 / 51 / 21%.
+
+> **Quick Shots** · Round · 2 AP (one foe, many arrows, then gone)
+> *You loose arrow after arrow into one foe before the first has landed, and step away while it reels.*
+> Weapon · Ranged · Shot · Strike
+> Distance: Weapon | Target: One creature
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 2[W] + [Mod].
+> **Tier 3:** [V] 3[W] + [Mod].
+> **Effect:** You Evade 2.
+
+```
+Damage 2 / 10.4 / 17.6 at 28 / 51 / 21% = 9.6 ... 33   [SIM: 3.4 a point of damage]
+Effect: Evade 2 after the shot ... 8   [judgment: most of an Evade Action]
+--- Total: about 41, of 50: a little under (it never whiffs, and Shifting Aim's Boon often rides on it)
+```
+
+> **Strafe** · Round · 2 AP (on the run, an arrow each)
+> *You run across the line of fight and put an arrow into each foe you pass.*
+> Weapon · Ranged · Shot · Strike
+> Distance: Weapon | Target: Up to two creatures
+> **Setup:** You Advance.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 2[W] + [Mod].
+
+```
+Damage 2 / 6.2 / 12.4 = 6.3 a creature; about 1.8 creatures ... 38   [SIM; the count is judgment]
+Setup: a full Advance inside the card ... 12   [SIM: an AP is 12]
+--- Total: about 50, of 50: on
+```
+
+**Analysis.**
+- **The choice is a style:** Quick Shots plants him for a breath, pours three hits into one enemy and steps away; Strafe keeps him running and spreads small hits. Neither is support or control: the brief has neither.
+- **Not Double Shot:** each is one roll. Quick Shots' hits come from the Tier; Strafe's from Several Targets (each creature its own Tier).
+- **No one best button:** both are Round cards, so each is used once a turn; the rest of his 4 AP goes to Darting Blade, a Weapon Attack with Shifting Aim's Boon, an Art, or moving.
+- **With Shifting Aim:** Strafe's Setup has moved him, so it always has the Boon; Quick Shots has it if he moved first, and its Evade sets up the next shot's Boon.
+- **Rules they touch:** nothing new. Strafe's Advance is a Setup: optional, and the Distance and targets are checked after it. "[V] [Mod] Pi" on a Tier 1 is the book's notation.
+- **Table feel:** Quick Shots is one roll and up to three weapon dice thrown together; Strafe is one roll read against two Defenses.
+- **Complexity:** one Version each, one rider each (the Evade; the Advance).
+
+**For Lucas to choose:** the pair, or another style for the second (Strafe's count: two creatures, or three with a smaller Tier 3); the names.
+
+**Lucas's answer:**
