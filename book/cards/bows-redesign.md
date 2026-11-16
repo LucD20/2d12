@@ -514,7 +514,7 @@ So an Advanced bow has its Technique and three unlocks (10, 20, 30, 45), an Exot
 - **The Recurve Bow's row:** Bows · Projectile, Ranged, Strung · Pierce · 6 / 12 / 18 · [V] 0 / 1 + 1d4! / 1 + 1d6!. (The table's Mastery column becomes the rung: Basic.)
 - **Master: not understood; explained again in plain words** (the message of 2026-11-16 and the reading page), still open.
 
-## Decision 12: the Recurve Bow's Weapon Technique, Circling Shot (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+## Decision 12: the Recurve Bow's Weapon Technique, Circling Shot (DECIDED 2026-11-16: way 1, with his Tier 3)
 
 **What it has to do.** Pay for 2 squares less range; be the Hunting Bow's opposite (that one asks you to stand, this one moves); be seen on every use; one roll; and copy no Archer card. The Archer's cards that already move: Quick Shots (Evade 2 after), Strafe (an Advance before, up to three creatures), Darting Blade (Evade 2 after the stab), Slip Away (a Reaction), Footwork (movement with no shot), Fleet. **None steps before a shot at one creature** (the old Rolling Shot did, and it is gone), and none moves in the middle of one.
 
@@ -580,6 +580,44 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 | Cover: your Cover one level higher after the shot | no: Spotter's Keep Low |
 
 **For Lucas:** way 1, 2 or 3; in way 1, the Tier 2 without [Mod], and the name.
+
+**Lucas's answer (2026-11-16):** "1, but: Tier 3: [V] 1[W] + [Mod]; Evade 1 but you can't Evade away from the target. This fits the circling part. Setup you can, but the attack you cant." **CIRCLING SHOT IS DECIDED:**
+
+> **Circling Shot** · Round · 1 AP
+> *You circle your foe as you draw, and loose from the side it has left open.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: One creature
+> **Setup:** You Evade 1.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 2:** [V] 1[W].
+> **Tier 3:** [V] 1[W] + [Mod]; you Evade 1 to a square that is no farther from the target.
+
+**The wording of his limit (Claude's, for his check):** "to a square that is no farther from the target" and not "not away from the target", because the book's Moving Away (Chapter 2) is written for Reactions and says an Evade is never "moving away". "No farther" uses the same count (distance in squares, larger after than before), so a sideways or a closer square is allowed and a farther one is not. The Setup's Evade is free in any direction, as he said. A side effect worth knowing: the Tier 3's step takes you out of your square, so an Archer's next shot has Shifting Aim's Boon. Price: about 34 (the Tier 3 step is worth a little less than a free one).
+
+**THE RECURVE BOW IS DONE FOR STAGE 0** (row, Circling Shot; its unlocks at 20, 30, 45 and 60 are written with Stage 1; the shot inside an Evade 2 is the candidate for 20).
+
+## Decision 13: Master is dropped; what Stage 2 gives weapons in its place (PROPOSED 2026-11-16, three ways, waiting for Lucas; no number decided before Stage 2 is written)
+
+**Lucas (2026-11-16):** "Master: Hmm... What if we drop it, and instead either make the flat number of weapons raise, or double the exploding die only at Stage 2? At least players will feel some progression and fighting a lower Stage enemy will feel good, seeing the 'progression'."
+
+**Agreed: Master goes** (one more [W] doubled a weapon's damage in one step, on a gate that no longer works). What each replacement does, average damage of 1[W] on a Tier 2 / Tier 3 (a d4! averages 3, a d6! 4, a d8! 5):
+
+| Weapon | Today | Master (2[W]) | **A:** flat +2 | **B:** the die twice | **C:** the die one size bigger |
+|---|---|---|---|---|---|
+| Hunting Bow (1 + 1d4! / 2 + 1d4!) | 4 / 5 | 8 / 10 | 6 / 7 | 7 / 8 | 5 / 6 |
+| Dagger (2 + 1d4! / 4 + 1d4!) | 5 / 7 | 10 / 14 | 7 / 9 | 8 / 10 | 6 / 8 |
+| Longsword (2 + 1d6! / 4 + 1d6!) | 6 / 8 | 12 / 16 | 8 / 10 | 10 / 12 | 7 / 9 |
+| Greatsword (5 + 1d6! / 8 + 1d8!) | 9 / 13 | 18 / 26 | 11 / 15 | 13 / 18 | 10 / 14 |
+| Greataxe (4 + 1d6! / 10 + 1d8!) | 8 / 15 | 16 / 30 | 10 / 17 | 12 / 20 | 9 / 16 |
+
+- **A, the flat number rises (Claude's pick).** No new die, nothing slower; it is his "try flat" direction; N[W] counts it N times, cleanly (Quick Shots' 3[W]: +6). The same amount on every weapon helps the small ones most (the bow +50%, the Greatsword +22%), so the amount is fitted by kind when Stage 2 is written (as the melee +4 / +2 was). Least ambiguity: **the weapon table prints a second damage column for Stage 2**, so nobody adds anything at the table.
+- **B, the exploding die is rolled twice.** The most felt: twice the dice, twice the explosions. Against: it undoes "one die a hit" (the reason for the flat table), Quick Shots' Tier 3 becomes six exploding d4s, and die-heavy weapons (Axes, Firearms) pull ahead of flat-heavy ones (Hammers, Crossbows).
+- **C, the die grows one size** (d4! to d6!, d6! to d8!, d8! to d10!). Seen in the hand, no extra die; only +1 a [W], so it would need a flat point with it.
+- **A variant of A, his to weigh:** a smaller rise at every Stage (+1 at Stage 1, 2 and 3) in place of one step at Stage 2: progression felt three times, and a lower-Stage enemy always a little softer.
+
+**Why A:** both his goals (progress the player sees on the sheet; a lower-Stage enemy that falls faster) with no extra rolling, and it keeps weapons as the decided table made them. **Nothing is applied or numbered now:** the size is fitted with Stage 2's Bestiary; the book's Master line stays until then, marked to go.
+
+**For Lucas:** A, B or C (and one step at Stage 2, or a little each Stage).
 
 **Lucas's answer:**
 
