@@ -619,6 +619,31 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 
 **For Lucas:** A, B or C (and one step at Stage 2, or a little each Stage).
 
+**Lucas (2026-11-16):** "If its just a +2, is it actually worth it? Isnt it better to just focus in the modifiers then? Or maybe forget about it? I do want Stage 2 to feel strong against Stage 0, if the system currently already does it, then we drop it, otherwise it would be good to do so."
+
+**Checked (Chapter 5's Stage table; `calc.mjs`, a Weapon Attack against Defense 13, which doesn't change with the Stage):**
+
+| What a Stage 2 character has over a Stage 0 one | Today, without Master |
+|---|---|
+| Hitting | **only Stage 1's +1 Modifier**, if it went to the Weapon Modifier. Stage 2's own Modifier cell is empty |
+| Health | the class's Stage 1 and Stage 2 steps (the Paladin's Stage 2 step alone is +12 / +6 on 20 / 10): about double |
+| Guard for an unspent AP | 3 (2 before) |
+| Rally Points | Rally + 3 (Rally + 1 at Stage 0) |
+
+| A Weapon Attack, against Stage 0's | Hunting Bow | Greatsword | Tier 1 / 2 / 3 |
+|---|---|---|---|
+| Stage 0 (Modifier +2) | 4.6 | 9.0 | 28% / 45% / 27% |
+| Stage 2 today, without Master (+3) | 5.8 (×1.25) | 10.6 (×1.18) | 22% / 46% / 32% |
+| with flat +2 on the weapon | 7.3 (×1.59) | 12.2 (×1.35) | the same |
+| with one more Modifier point (+4) | 7.0 (×1.53) | 12.3 (×1.37) | 17% / 47% / 37% |
+| with Master (2[W]), as the book has it | 9.2 (×2.00) | 18.9 (×2.10) | 22% / 46% / 32% |
+
+**The answer:** the system already makes a Stage 2 character much harder to kill than a Stage 0 one (about twice the Health), and **barely harder-hitting** (×1.2, all of it from Stage 1). So "strong against Stage 0" is half there: something for hitting is worth having at Stage 2. **And his instinct is the better tool: a Modifier point does what the flat +2 does** (×1.5 on a bow, ×1.4 on a Greatsword), and more: it also lifts Power Actions (a flat number on weapons leaves a class that fights with Power cards behind), it is seen on every roll (a Tier 1 falls from 28% to 17%: "I rarely miss these"), it needs no weapon rule, and the Stage table has the empty cell for it.
+
+**PROPOSED:** **Master is dropped and weapons get nothing in its place.** Stage 2's hitting is a question for Chapter 5's Stage table, with Stage 1 and 2: logged in `rules-backlog.md` with this table. The one thing to solve there: "a Modifier is never above +4" and Stage 3's "+1 to both" (a Weapon Modifier of +2, +3 at Stage 1, +4 at Stage 2 would have nothing left at Stage 3); a candidate: +1 to one Modifier at each of Stages 1, 2 and 3, never above +4.
+
+**For Lucas:** yes to that (Master out, nothing on the weapons, the Modifier question logged for the Stages)?
+
 **Lucas's answer:**
 
 ## Research
