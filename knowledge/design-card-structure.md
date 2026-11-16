@@ -126,4 +126,12 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 - **2, one block a cost, written in full:** each cost a heading with its complete lines; a value that changes sits on that heading; what is shared (Setup, the Attack line) is written once above. Claude's pick (Lucas asked for the 2 AP line in full on Lay On Hands).
 - **3, the base and what the higher cost changes:** written for the cheaper cost, one labeled line for the other ("2 AP: The target can also use 1 Rally Point.").
 
+**Lucas's answer (2026-11-16): PART 3 IS DECIDED: 2,** one block a cost, written in full; what is shared sits once above the blocks; a value that changes with the cost sits on the block's heading; the bar says "1 or 2 AP". "As X AP" and the slashes are retired.
+
+## Part 4: Modes (PROPOSED 2026-11-16, three structures)
+
+- **1, one labeled line a Mode** (as drafted): shortest; Glare's Target, Distance, Save and Tier line all inside one sentence.
+- **2, one block a Mode,** the shape of a Version: the Mode's name as a heading with the traits only it has; its own Distance and Target; its labeled lines. Claude's pick.
+- **3, three small cards under the Art's name:** each complete; "Round" on each reads as once a round each.
+
 **Lucas's answer:**
