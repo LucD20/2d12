@@ -221,7 +221,7 @@ A Weapon Attack is 25 points; an AP about 12; a Round card's band is 25 to 33.
 |---|---|---|---|---|---|---|
 | **Longsword** | Swords | Melee, Two-handed | Slash | 1 | [V] 0 / 6 + 1d4! / 9 + 1d6! | Basic |
 
-## Decision 5: the Longsword's Weapon Technique (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+## Decision 5: the Longsword's Weapon Technique (DECIDED 2026-11-16: way 1, written with Pressed in decision 5b)
 
 **What it has to do.** The same four things (one roll; its own thing seen on most uses; a choice attached; no copy of a class card), and be the Arming Sword's pair: that one moves the foe's body; this line was given "control of the other blade" in decision 1. The research: the Liechtenauer school's longsword is fought **from the bind**, blade on blade; its Zwerchhau, the "thwart-hew", "breaks all hews which are hewn from above down" [read, Ringeck]. The rules have a word for what a bound blade suffers that no class card uses: the **Pressure Bane** (Chapter 1: "Banes an effect of another creature puts on you... a blow that leaves you reeling"; at most 2 count).
 
@@ -300,7 +300,7 @@ A Weapon Attack with the Longsword is 25 points; a Round card's band is 25 to 33
 
 So the gap is real, and the Pressure Bane (Chapter 1: at most 2 count) has no condition that carries it.
 
-## Decision 5b: a new condition for "Banes on your Strikes" (PROPOSED 2026-11-16, waiting for Lucas)
+## Decision 5b: a new condition for "Banes on your Strikes" (DECIDED 2026-11-16: Pressed)
 
 > ### Pressed
 > Pressed always has a value, such as **Pressed 1**. Your [Strike] Actions take that many **Pressure Banes** (see [[Named Boons and Banes]]: at most 2 count). If you would be Pressed twice, only the highest value applies.
@@ -326,4 +326,28 @@ Two changes from the first draft, both to keep the condition plain: **the Tier 1
 
 **For Lucas:** the condition and its name; then the three open points of decision 5 (way 1; the Special line; Thwart Cut or Zwerchhau).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16): "All good, keep all. I think we can call it here right? That's all we did for bows too? Or did we do more?" DECIDED: the condition Pressed; Thwart Cut as written above (way 1, the Special line kept, the name Thwart Cut).** BOTH BASIC SWORDS ARE DONE.
+
+**Answered:** the design is where the bows' was before it went into the book. What the bows had beyond this: (1) **the applying** (Chapter 15, the cards, the Glossary, the tests), which waits for his word here; (2) rules for the whole game decided on the way (Mastery, Hands, Light, Strung), which the swords inherit, with one of their own (Pressed). Still parked, as before the swords: what pays for fighting with two weapons, and the Fists (`rules-backlog.md`).
+
+## The Swords so far: what is decided (2026-11-16, NOT in the book; waiting for his word to apply)
+
+**The group:** Swords, their own group, without the Dagger. Six swords in two lines: one hand: **Arming Sword** (Basic), Sabre (Advanced), Rapier (Exotic); two hands: **Longsword** (Basic), Zweihänder (Advanced), Montante (Exotic). Only the two Basic ones have mechanics.
+
+| Name | Group | Properties | Type | Range | Damage | Rung |
+|---|---|---|---|---|---|---|
+| **Arming Sword** | Swords | Melee | Slash | 1 | [V] 0 / 3 + 1d4! / 4 + 1d6! | Basic |
+| **Longsword** | Swords | Melee, Two-handed | Slash | 1 | [V] 0 / 6 + 1d4! / 9 + 1d6! | Basic |
+
+**Seizing Cut** (Arming Sword, Mastery 10) · Round · 1 AP · Weapon, Melee, Strike · Distance: Weapon | Target: One creature · Requirement: You have at least one hand free. · Attack: Weapon vs. Armor Defense · Tier 1: Reposition 1 the target. · Tier 2: [V] 1[W]; Reposition 1 the target. · Tier 3: [V] 1[W] + [Mod]; Slid 1, then Grabbed. · *You catch your foe's arm with your empty hand, cut, and turn it to where you want it standing.*
+
+**Thwart Cut** (Longsword, Mastery 10) · Round · 1 AP · Weapon, Melee, Strike · Distance: Weapon | Target: One creature · Attack: Weapon vs. Armor Defense · Tier 1: Pressed 1 (EoT). · Tier 2: [V] 1[W]; Pressed 1 (EoT). · Tier 3: [V] 1[W] + [Mod]; Pressed 2 (EoT). · Special: This Pressed ends if you stop threatening the target. · *You cut across your foe's blade and stay on it, and every blow it tries has to come through your steel.*
+
+**Pressed** (a new condition, Chapter 8): Pressed always has a value, such as Pressed 1. Your [Strike] Actions take that many Pressure Banes (at most 2 count). If you would be Pressed twice, only the highest value applies.
+
+**What applying will do, with Claude's defaults for what was not asked (his to change before or after):**
+1. Chapter 15: the Arming Sword and the Longsword replace the placeholder Longsword (one hand) and Greatsword; their Techniques replace Guarded Cut and Reaping Sweep (set aside). **No sword is called Greatsword any more;** the examples that use one (Weapon Damage, 2[W], Mastery) are rewritten with the new swords.
+2. **The Dagger's group:** Blades becomes two groups, **Swords** and **Daggers** (the Dagger alone for now, still a placeholder): nine Weapon Groups.
+3. Chapter 8 and the Glossary: Pressed.
+4. The cards: `stage0/gear.json` gains the two Techniques.
+5. Not touched: the Sabre, Rapier, Zweihänder and Montante (names in the record only; the book says Advanced and Exotic swords are to come); the Bestiary's "1 Pressure Bane on its next roll" (it could become Pressed 1 later); Foundry (a list goes into its backlog).

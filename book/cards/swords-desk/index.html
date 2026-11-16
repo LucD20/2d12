@@ -75,9 +75,10 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 
 <div class="wrap">
 <h1>Sword Desk</h1>
-<p class="sub">Where the Swords stand, in plain words. Updated 2026-11-16: the Arming Sword is done and the Longsword's row is decided; its Technique is proposed. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the Swords stand, in plain words. Updated 2026-11-16: <strong>both Basic swords are decided</strong> (rows, Techniques) with a new condition, Pressed. Nothing here is in the book or in Foundry yet.</p>
 <nav>
   <a href="#need">What I need</a>
+  <a href="#whole">The two swords, whole</a>
   <a href="#pressed">Pressed</a>
   <a href="#tech2">Thwart Cut: three ways</a>
   <a href="#row2">Longsword: the row</a>
@@ -95,14 +96,53 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-<li><strong>The new condition</strong> (next section) and its name. My pick is Pressed.</li>
-<li>Then the Longsword's Technique: way 1; the Special line that ends it when you stop threatening; Thwart Cut or Zwerchhau.</li>
+<li><strong>Your word to put the two swords and Pressed into the book.</strong> That is the one thing the bows had that the swords don't yet.</li>
+<li><strong>Two defaults I would apply with it,</strong> yours to change: the Dagger gets its own group, Daggers (nine Weapon Groups); and no sword is called Greatsword any more.</li>
 </ol>
 </div>
 </section>
 
+<section id="whole">
+<h2>The two swords, whole <span class="tag ok">decided</span></h2>
+<div class="scroll"><table>
+<tr><th>Name</th><th>Group</th><th>Properties</th><th>Type</th><th>Range</th><th>Damage</th><th>Rung</th></tr>
+<tr><td><strong>Arming Sword</strong></td><td>Swords</td><td>Melee</td><td>Slash</td><td>1</td><td>[V] 0 / 3 + 1d4! / 4 + 1d6!</td><td>Basic</td></tr>
+<tr><td><strong>Longsword</strong></td><td>Swords</td><td>Melee, Two-handed</td><td>Slash</td><td>1</td><td>[V] 0 / 6 + 1d4! / 9 + 1d6!</td><td>Basic</td></tr>
+</table></div>
+<div class="hc"><div class="bar"><span>Seizing Cut <span class="small">· Arming Sword, Mastery 10</span></span><span class="cost">Round · 1 AP</span></div>
+<div class="row"><em>You catch your foe's arm with your empty hand, cut, and turn it to where you want it standing.</em></div>
+<div class="row tr">Weapon · Melee · Strike</div>
+<div class="grid"><div>Distance: Weapon</div><div class="r">Target: One creature</div></div>
+<div class="row lab"><b>Requirement</b><div>You have at least one hand free.</div></div>
+<div class="row lab"><b>Attack</b><div>Weapon vs. Armor Defense</div></div>
+<div class="row lab"><b>Tier 1</b><div>Reposition 1 the target.</div></div>
+<div class="row lab"><b>Tier 2</b><div>[V] 1[W]; Reposition 1 the target.</div></div>
+<div class="row lab"><b>Tier 3</b><div>[V] 1[W] + [Mod]; Slid 1, then Grabbed.</div></div></div>
+<div class="hc"><div class="bar"><span>Thwart Cut <span class="small">· Longsword, Mastery 10</span></span><span class="cost">Round · 1 AP</span></div>
+<div class="row"><em>You cut across your foe's blade and stay on it, and every blow it tries has to come through your steel.</em></div>
+<div class="row tr">Weapon · Melee · Strike</div>
+<div class="grid"><div>Distance: Weapon</div><div class="r">Target: One creature</div></div>
+<div class="row lab"><b>Attack</b><div>Weapon vs. Armor Defense</div></div>
+<div class="row lab"><b>Tier 1</b><div>Pressed 1 (EoT).</div></div>
+<div class="row lab"><b>Tier 2</b><div>[V] 1[W]; Pressed 1 (EoT).</div></div>
+<div class="row lab"><b>Tier 3</b><div>[V] 1[W] + [Mod]; Pressed 2 (EoT).</div></div>
+<div class="row lab"><b>Special</b><div>This Pressed ends if you stop threatening the target.</div></div></div>
+<blockquote><strong>Pressed</strong> (a new condition). Pressed always has a value, such as Pressed 1. Your [Strike] Actions take that many Pressure Banes (at most 2 count). If you would be Pressed twice, only the highest value applies.</blockquote>
+<p><strong>The six:</strong> Arming Sword, Sabre, Rapier in one hand; Longsword, Zweihänder, Montante in two. The four later ones are names only.</p>
+<h3>Next to what the bows got</h3>
+<div class="scroll"><table>
+<tr><th></th><th>Bows</th><th>Swords</th></tr>
+<tr><td>The six weapons named, two lines</td><td>done</td><td>done</td></tr>
+<tr><td>Two Basic weapons: row and Technique</td><td>done</td><td>done</td></tr>
+<tr><td>Rules for the whole game decided on the way</td><td>Mastery, Hands, Light, Strung</td><td>Pressed (they inherit the rest)</td></tr>
+<tr><td>In the book</td><td>yes</td><td><strong>not yet: your word</strong></td></tr>
+<tr><td>Later unlocks (20 to 60), Advanced and Exotic weapons</td><td>not written</td><td>not written</td></tr>
+</table></div>
+<p class="small">Still parked, as before the swords: what pays for fighting with two weapons, and the Fists.</p>
+</section>
+
 <section id="pressed">
-<h2>A condition for "Banes on your Strikes" <span class="tag open">proposed</span></h2>
+<h2>A condition for "Banes on your Strikes" <span class="tag ok">decided: Pressed</span></h2>
 <blockquote>No conditional rule applies Banes to Strikes yet? If not, Bound can become a new condition, with another name.<cite>Lucas, 2026-11-16</cite></blockquote>
 <p><strong>None does.</strong> What exists near it:</p>
 <div class="scroll"><table>
@@ -361,7 +401,7 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <ol>
 <li>The six swords: decided.</li>
 <li>The Arming Sword: done.</li>
-<li>The Longsword's row: decided. <strong>Its Technique.</strong></li>
+<li>The Longsword: done.</li>
 <li>Fighting with two weapons, if a sword's Technique needs it.</li>
 <li>On your word: Chapter 15 and the card files; Foundry after.</li>
 </ol>

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 1779bf7 2026-11-16 Bow remake: Light's text trimmed, Fists logged for review, Strung's second sentence asked three ways
+Built by tools/knowledge.py on 2026-11-16 from the repository at: dde7665 2026-11-16 Swords: the condition Pressed proposed (Lucas's idea); Thwart Cut rewritten with it
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,7 +15,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (166 KB)
+- HANDOFF.md (167 KB)
 - MASTER-PLAN.md (40 KB)
 - open-design-items.md (184 KB)
 - rules-01-roll.md (26 KB)
@@ -31,7 +31,7 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (13 KB)
-- research-index.md (6 KB)
+- research-index.md (7 KB)
 - research-ability-scope.md (7 KB)
 - research-archer.md (7 KB)
 - research-card-layout.md (5 KB)
@@ -48,6 +48,7 @@ Files:
 - research-paladin-roles.md (13 KB)
 - research-paladins-other-games.md (21 KB)
 - research-save-dcs.md (3 KB)
+- research-swords.md (35 KB)
 - research-tactical-combat.md (5 KB)
 - research-targeting.md (6 KB)
 - research-versions-criticals.md (5 KB)
@@ -55,6 +56,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
+- design-swords-redesign.md (37 KB)
 - design-bows-redesign.md (89 KB)
 - design-archer-redesign.md (109 KB)
 - design-card-structure.md (25 KB)
