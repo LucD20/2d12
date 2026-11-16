@@ -797,4 +797,35 @@ The free swaps and "not Doomed" ... not priced (they are what lets the card exis
 
 **For Lucas to choose:** the shape (one roll for knife and arrow); the Evade (3); the name.
 
+**Lucas's answer (2026-11-16): "I think it could be better."** His draft: "Hit and Run; Weapon · Projectile · Strike; You Advance, and after each square moved during this Advance, you can make [Melee] Weapon Attack (1AP) with a Light weapon against each creature you moved adjacent to that you haven't attacked yet. You can also make one [Ranged] Weapon Attack at any point during it. You can swap to a Light weapon or a Projectile weapon before each Weapon Attack." And: "I think it can still be better and the way I wrote it might be too strong."
+
+**His draft, checked.**
+- **It is better than mine in two ways.** The knife goes to every enemy along the run, not only those around where he stops, so the path is the play. And the arrow "at any point" lets him shoot before he is next to anyone, so the Doomed-while-Engaged rule needs no exception.
+- **Not too strong.** A Weapon Attack with a Dagger at Weapon +2 averages 5.5; with 3 enemies passed and the arrow (4.7) it is about 21 damage: 72 points, + 12 for the Advance: **about 84, of 100.** With 2 enemies about 65; with 4, about 103; with 5 (rare in 6 squares), about 120. The Advance can trigger Reactions, and each square next to an enemy is a place to be stopped.
+- **Its problem is the dice, not the power:** each Weapon Attack (1A) is its own 2d12 roll, so a good run is four or five rolls in a row: Double Shot's boredom, longer. And a Weapon Attack does nothing on a Tier 1, so some of the stabs simply miss, which is not the class.
+- **Small things:** "each creature" would stab allies he runs past; the Advance makes it a Move Action; a Linked Action keeps its own traits, so the card needn't carry Melee or Ranged.
+
+**The same card with one roll and the class's floor:**
+
+> **Hit and Run** · Encounter · 2 AP
+> *You run the length of the fight with the knife out, opening every foe you pass, and somewhere along the way an arrow leaves your bow.*
+> Weapon · Projectile · Move · Strike
+> **Effect:** You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a Light weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action.
+> **Attack:** Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll.
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod].
+> **Special:** [W] is the weapon that hit. The bow's hit is Doomed if you are Engaged when you make it.
+
+```
+The knife: 2 / 7 / 9 = 6 a creature; about 3 enemies passed in a 6-square Advance ... 61   [SIM: 3.4 a point; the count is judgment]
+The arrow: 2 / 6.2 / 7.2 = 5.2 ... 18
+The Advance itself ... 12
+--- Total: about 91, of 100: on (2 enemies: about 71; 4: about 112)
+```
+
+**What changed from his draft, and why:** (1) **one roll** for the whole run, read against each creature's Defense as he reaches it (Several Targets' way), made when the first is hit, so the table rolls once and he still commits to the path before he knows; (2) **Tier 1 deals [Mod]**, so no stab is a whiff; (3) "each enemy"; (4) the Move trait; (5) the last Special sentence only restates the Engaged rule, so nobody has to remember it mid-run.
+**What it keeps:** his whole idea: the run is the weapon, the knife along the path, one arrow whenever he likes, free swaps.
+**To watch:** with one roll the whole card rises or falls together (a Tier 3 run is 9 on each of four creatures; a Tier 1 run is 2 on each). The floor is what makes that acceptable; if it feels too swingy, the alternative is his separate rolls with the floor.
+
 **Lucas's answer:**
