@@ -405,7 +405,7 @@ Today (Chapter 15): "15: Master. From level 8, your Actions that deal [W] with t
 
 Not a Stage 0 matter either way: nothing is applied now, and it is read again with Stage 2 (One More Arrow, the N[W] cards).
 
-## Decision 9: the Recurve Bow's table row (PROPOSED 2026-11-16, waiting for Lucas)
+## Decision 9: the Recurve Bow's table row (DECIDED 2026-11-16)
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
@@ -447,7 +447,7 @@ Not a Stage 0 matter either way: nothing is applied now, and it is read again wi
 
 **Lucas's answer (2026-11-16):** "Oh you are right, this breaks the progression idea. Hmmm... I need a mechanic that you get better at a single weapon and you get better at using that type of weapon. For example, at the start, you can use well two basic weapons. The one you use most you unlock features (the 'unlock' part), but using one group helps another, so it should all of that group slowly. After using a basic enough, you should then be allowed to use an Advanced without suffering Doomed. Advanced needs to on level with Basic at that point, so even though the Basic would have its technique plus an unlock etc."
 
-## Decision 11: the Mastery mechanic (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+## Decision 11: the Mastery mechanic (DECIDED 2026-11-16: way 1, the group follows at half)
 
 **What he asked for, line by line:**
 
@@ -505,6 +505,81 @@ So an Advanced bow has its Technique and three unlocks (10, 20, 30, 45), an Exot
 - Still open: the Recurve Bow's row; Master (A: a Stage 2 number; B: a Mastery unlock).
 
 **For Lucas:** way 1, 2 or 3; the Archer's head start; then the Recurve Bow's row and Master.
+
+**Lucas's answer (2026-11-16):** "1. Way 1. 2. Give 5 mastery to start. Wont give anything first but they will get it earlier. 3. Yes. 4. Didnt understand this one."
+
+**DECIDED:**
+- **The Mastery mechanic, way 1** (the four sentences above): a Mastery for each weapon, 1 for a won encounter that was normal or harder; never lower than half your highest in the group; every weapon's unlocks at 10 / 20 / 30 / 45 / 60; an Advanced weapon Doomed below 10 with it, an Exotic one below 20. It replaces decision 8's Advanced and Exotic numbers and Group Mastery. (Exotic at level 9 for the one who stayed, and Mastery gained while Doomed, were shown and not objected to: they stand.)
+- **The Archer's Starting Mastery is 5 with one Projectile weapon** (it was 3 in the book, 10 in decision 8): nothing at level 1; his bow's Technique after 5 fights (level 2), its second unlock and the Advanced bows after 15 (the first thing of level 4), each later unlock a level before anyone.
+- **The Recurve Bow's row:** Bows · Projectile, Ranged, Strung · Pierce · 6 / 12 / 18 · [V] 0 / 1 + 1d4! / 1 + 1d6!. (The table's Mastery column becomes the rung: Basic.)
+- **Master: not understood; explained again in plain words** (the message of 2026-11-16 and the reading page), still open.
+
+## Decision 12: the Recurve Bow's Weapon Technique, Circling Shot (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+
+**What it has to do.** Pay for 2 squares less range; be the Hunting Bow's opposite (that one asks you to stand, this one moves); be seen on every use; one roll; and copy no Archer card. The Archer's cards that already move: Quick Shots (Evade 2 after), Strafe (an Advance before, up to three creatures), Darting Blade (Evade 2 after the stab), Slip Away (a Reaction), Footwork (movement with no shot), Fleet. **None steps before a shot at one creature** (the old Rolling Shot did, and it is gone), and none moves in the middle of one.
+
+**1, the step before (Claude's pick):**
+
+> **Circling Shot** · Round · 1 AP
+> *You circle your foe as you draw, and loose from the side it has left open.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: One creature
+> **Setup:** You Evade 1.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 2:** [V] 1[W].
+> **Tier 3:** [V] 1[W] + [Mod]; you Evade 1.
+
+**2, the shot inside the step:** the same bar and Tiers, no Setup, and "**Effect:** You Evade 2. At one point of this Evade, you make this Strike." Step out of cover, loose, step back. The most its own (nothing in the game acts in the middle of an Evade), and the most expensive; it needs its exception written (an Evade is not split).
+
+**3, the close shot:** "**Requirement:** The target is within 3 squares. **Special:** This Action isn't Doomed for your being Engaged." Tier 3 adds Pushed 1. The short bow in a brawl.
+
+### Priced (way 1)
+
+A Weapon Attack is 25 points; an AP is about 12; a Round card's band is 25 to 33.
+
+| Line | Points | Source |
+|---|---:|---|
+| Setup: Evade 1 | +12 | [Lucas's rate] a compression is the AP it saves; the Evade Basic Action is 1 AP for Evade 1 |
+| Tier 2: 1[W], no [Mod] | 20 | [SIM] a Weapon Attack less 45% of 2 damage |
+| Tier 3: 1[W] + [Mod] | (in the 20) | |
+| Tier 3: you Evade 1 | +3 | [judgment] 27% of an AP |
+| No Tier 1 | 0 | a Tier that isn't written does nothing |
+| For an Archer: the Setup turns Shifting Aim on for this shot | +3 | [judgment] a Field Boon is about half a point of damage |
+| **Total** | **about 35 (38 for an Archer)** | a little over the band, and over Wounding Shot (26 to 33): what the 2 squares of range buy. To bring it down: no Evade on the Tier 3 (32), with a bigger die there instead |
+
+Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [not priced] the Doomed it lifts.
+
+### Analysis
+
+- **The decision it gives.** Where the one square goes: out of a foe's reach (an Evade triggers no Reactions, and a shot from a square where you aren't Engaged isn't Doomed), around a corner into a line, sideways for a foe's cover, or back behind cover on a Tier 3. And the price is on the card: the Tier 2 is the weapon's die alone. A round in which you don't need the step, a Weapon Attack hits harder (1[W] + [Mod]): it is not the button for every round.
+- **Its pair.** Wounding Shot: stand, then wound over time. Circling Shot: step, then a light hit now. The same cost and frequency; a different shape. With the half rule a character ends up knowing both, and the bow in hand says how this fight is played.
+- **Against the Archer's cards.** Quick Shots moves after and deals 2[W] or 3[W] for 2 AP; this moves before and deals one small hit for 1 AP. For him it also turns Shifting Aim on by itself: an Archer with a Recurve Bow has his Boon on this shot every round (counted above). Slip Away and this are the same idea on two turns (theirs and yours), which is why the Reaction version was dropped.
+- **Why not 2.** It is the better picture, but it prices over the band at 1 AP and would be Quick Shots' rival at 2 AP; and it needs an exception to a movement rule on a level 1 weapon. Good material for the Recurve Bow's unlock at 20 ("Circling Shot's Setup becomes: you Evade 2, and you can make the Strike at any point of it").
+- **Why not 3.** "Not Doomed while Engaged" is what the Pistol's Technique is set aside for (Chapter 15's note on Point Blank), it makes Darting Blade's job smaller, and it has no movement in it.
+- **The rules it touches.** A Setup is optional and the Distance is measured after it (Chapter 2). Evade: no Reactions, 1 square. "A Tier that isn't written does nothing." A Tier 3 adds something (the Modifier and a step).
+- **Table feel.** One roll; the bow's thing happens every time, before the dice; a Tier 3 is "step out, loose, step back".
+- **The research.** The trick liked most on a weapon is the one that changes how it is played, not its number; a short bow with less range and nothing else is "a dumbed down longbow". This gives the short bow the turn's first move.
+
+### Every candidate, with its reason
+
+| Candidate | Verdict |
+|---|---|
+| **A step before the shot (Evade 1)** | **the pick** |
+| A shot inside an Evade 2 | way 2: later, as an unlock |
+| Not Doomed while Engaged, or a close-range Requirement | way 3: the Pistol's; Darting Blade's job |
+| A step after the shot | no: Quick Shots' and Darting Blade's Effect |
+| An Advance before the shot | no: Strafe's Setup |
+| A Reaction that steps or shoots | no: dropped in decision 1; Slip Away and Snap Shot |
+| Taunted ("moving side to side to distract") | no: with damage on it, it is the Paladin's Challenge and more, at range |
+| Vulnerable ("distract") | no: Trick Shots' Startle, Hit and Run |
+| Hindered, Immobilized, Prone, Staggered, Pushed, Slid | no: each is on an Archer card (decision 5's table) |
+| Bleed | no: the Hunting Bow's |
+| Dazed, Slowed, Sickened, Frightened, Blinded | no: too big for an everyday card, or not a weapon's |
+| +1 Speed, a longer Evade, a Boon for moving | no: silent bonuses; Fleet; Shifting Aim |
+| Ignoring Difficult Terrain or creatures while moving | no: Footwork's Weave |
+| Cover: your Cover one level higher after the shot | no: Spotter's Keep Low |
+
+**For Lucas:** way 1, 2 or 3; in way 1, the Tier 2 without [Mod], and the name.
 
 **Lucas's answer:**
 
