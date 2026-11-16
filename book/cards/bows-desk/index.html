@@ -75,9 +75,10 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 
 <div class="wrap">
 <h1>Bow Remake Desk</h1>
-<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the three lists, the rungs and the Hunting Bow's row are decided; how the Recurve Bow's damage differs is proposed. Nothing here is in the book or in Foundry.</p>
+<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the three lists, the rungs, the Hunting Bow's row and the Recurve Bow's damage are decided; the Hunting Bow's Technique is proposed. Nothing here is in the book or in Foundry.</p>
 <nav>
   <a href="#need">What I need</a>
+  <a href="#tech1">Wounding Shot</a>
   <a href="#recdmg">Recurve: the damage</a>
   <a href="#row1">Hunting Bow: the row</a>
   <a href="#rung">The rungs</a>
@@ -94,14 +95,86 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <h2>What I need from you now</h2>
 <div class="need">
 <ol>
-<li><strong>How the Recurve Bow's damage differs</strong> (next section): 1 to 5. My pick is 1.</li>
-<li><strong>The Mastery numbers:</strong> 14 for a Basic bow's second unlock, Group Mastery 5 for the Advanced rung. Yes, or other numbers.</li>
+<li><strong>The Hunting Bow's Technique, Wounding Shot</strong> (next section): way 1, 2 or 3. My pick is 1. In way 1: the Requirement, and Bleed 1 / Bleed 2.</li>
 </ol>
 </div>
+<p class="small">The Mastery numbers (14 for the second unlock, Group Mastery 5 for the Advanced rung) stay as proposed; I ask again with this bow's ladder.</p>
+</section>
+
+<section id="tech1">
+<h2>The Hunting Bow's Technique: Wounding Shot <span class="tag open">proposed</span></h2>
+<p>The old Wounding Shot was a Weapon Attack with more on it, so it was the first shot of every round with nothing to decide. You, on Skirmish Shot: "a Technique must feel good, almost unique". The research adds: a rider that happens by itself on every hit is one more thing to track, players want a choice made on the attack, and a second roll is what slows the table. So: one roll, the bow's own thing seen on most uses, and a choice attached to using it.</p>
+<h3>1. The patient shot: it asks you to stand still <span class="tag ok">my pick</span></h3>
+<div class="hc"><div class="bar"><span>Wounding Shot</span><span class="cost">Round · 1 AP</span></div><div class="row"><em>You hold your ground until your foe shows its flank, and put a broad-headed arrow where the wound will not close.</em></div>
+<div class="row tr">Weapon · Ranged · Projectile · Strike</div>
+<div class="grid"><div>Distance: Weapon</div><div class="r">Target: One creature</div></div>
+<div class="row lab"><b>Requirement</b><div>You haven't left your square this turn.</div></div>
+<div class="row lab"><b>Attack</b><div>Weapon vs. Armor Defense</div></div>
+<div class="row lab"><b>Tier 1</b><div>[V] [Mod].</div></div>
+<div class="row lab"><b>Tier 2</b><div>[V] 1[W] + [Mod]; Bleed 1 (Bo/In).</div></div>
+<div class="row lab"><b>Tier 3</b><div>[V] 1[W] + [Mod]; Bleed 2 (Bo/In).</div></div></div>
+<h3>2. The upgrade: no Requirement, the Bleed only on a Tier 3</h3>
+<div class="hc"><div class="bar"><span>Wounding Shot</span><span class="cost">Round · 1 AP</span></div><div class="row lab"><b>Tier 1</b><div>[V] [Mod].</div></div>
+<div class="row lab"><b>Tier 2</b><div>[V] 1[W] + [Mod].</div></div>
+<div class="row lab"><b>Tier 3</b><div>[V] 1[W] + [Mod]; Bleed 2 (Bo/In).</div></div></div>
+<p class="small">The old card in today's words. The rest of the card as in 1.</p>
+<h3>3. The trade: little damage now, a bigger Bleed</h3>
+<div class="hc"><div class="bar"><span>Wounding Shot</span><span class="cost">Round · 1 AP</span></div><div class="row lab"><b>Tier 2</b><div>[V] [Mod]; Bleed 2 (Bo/In).</div></div>
+<div class="row lab"><b>Tier 3</b><div>[V] [Mod]; Bleed 3 (Bo/In).</div></div></div>
+<p class="small">A Tier 1 does nothing. The rest of the card as in 1, without the Requirement.</p>
+
+<h3>Priced (way 1)</h3>
+<p class="small">A Weapon Attack is 25 points. A Round card's band is 25 to 33.</p>
+<div class="scroll"><table>
+<tr><th>Line</th><th>Points</th><th>Source</th></tr>
+<tr><td>Tier 2 and 3: 1[W] + [Mod]</td><td>25</td><td>[SIM] a Weapon Attack, the yardstick</td></tr>
+<tr><td>Tier 1: [Mod]</td><td>+3</td><td>[judgment] 28% of 2 damage</td></tr>
+<tr><td>Bleed 1 on a Tier 2, Bleed 2 on a Tier 3</td><td>+1 to +8</td><td>[SIM] a Bleed 1d4 rider measured at about 1 point (its creatures staunch or die soon); [judgment] left alone for a turn and a half it is 8</td></tr>
+<tr><td>The AP an enemy spends to staunch</td><td></td><td>[not priced]</td></tr>
+<tr><td>Requirement: you haven't left your square</td><td>-3 for an Archer</td><td>[judgment] that shot goes without Shifting Aim's Boon. For other classes: [not priced]</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>about 26 to 33</strong></td><td>on the band; the top of it if nobody staunches</td></tr>
+</table></div>
+<p class="small">Way 2: about 29 to 32, with no Requirement. Way 3: 14 to 25, under a Weapon Attack unless the Bleed runs two turns or more.</p>
+
+<h3>Analysis</h3>
+<ul>
+<li><strong>The decision it gives.</strong> Shoot from where your turn started, or move first and lose it this round. For the Archer it is a question of order against his own Feature: Shifting Aim pays for moving before each shot, and Wounding Shot is only there before the first step. So a turn is "Wounding Shot from here, step, Quick Shots with the Boon", or "step first for cover and the Boon, and no Wounding Shot". Starting the turn Engaged (the shot is Doomed), with no line, or at far range makes it a real choice.</li>
+<li><strong>A second decision every round:</strong> Bleed doesn't add up (the higher stays), so the shot goes to a foe that isn't bleeding yet.</li>
+<li><strong>Why not 2.</strong> It is the best first shot of every round, and on 73% of its uses it is a Weapon Attack: the bow's own thing is seldom seen.</li>
+<li><strong>Why not 3.</strong> A shot for [Mod] and a rider is Trick Shots' shape. An Archer with that Art would hold a fourth Trick Shot.</li>
+<li><strong>The rules it touches.</strong> Bleed (Chapter 8): damage at the end of each of the creature's turns; it ends with an Interact (1 AP) and a Body or Instinct Save against DC 13. Nothing to count down. "Bleed 1 (Bo/In)" is the book's notation, flat on purpose: your direction for damage, and nothing to roll at the end of each turn. "Left your square this turn" is Shifting Aim's own phrase, so the two read as a pair.</li>
+<li><strong>Its siblings.</strong> No Archer card bleeds or asks you to stand still. Pin and Snap Shot stop a foe; this one costs it Health or an AP. A Paladin with a Hunting Bow gets a reason to shoot first and walk after.</li>
+<li><strong>Table feel.</strong> One roll. The bow's thing happens on 72% of uses. One number on a bleeding creature, said at the end of its turn. The GM gets a choice too: staunch for an AP, or bleed.</li>
+<li><strong>The research.</strong> D&amp;D 2024's weapon riders are liked for making same-die weapons differ, and disliked where they are automatic or need a second roll. This is neither. Pathfinder 2e puts its weapon tricks on a critical only: the "seldom seen" problem of way 2.</li>
+<li><strong>Left off on purpose:</strong> a second Version (the old 2 AP one was only bigger) and a Critical line. The old "only a Tier 3 on the Save ends this Bleed" can come back as this card's own Critical if you want it to be one of the few.</li>
+</ul>
+
+<h3>The rider: every candidate the rules offer</h3>
+<p class="small">Bleed was kept for this bow in the first decision. The list is here so nothing is left out.</p>
+<div class="scroll"><table>
+<tr><th>Candidate</th><th>On a class card already</th><th>Verdict</th></tr>
+<tr><td><strong>Bleed</strong></td><td>none</td><td><strong>kept:</strong> the hunter's wound; damage over time is new to both classes</td></tr>
+<tr><td>Hindered</td><td>Trick Shots (Pin), Snap Shot, Volley</td><td>no: three cards have it</td></tr>
+<tr><td>Immobilized</td><td>Snap Shot's Tier 3, Binding Light</td><td>no: the strongest stop, already a Tier 3 prize</td></tr>
+<tr><td>Prone</td><td>Volley's Critical; Kneel</td><td>no: an arrow that knocks down is the Warbow's idea</td></tr>
+<tr><td>Vulnerable</td><td>Trick Shots (Startle), Hit and Run</td><td>no: it feeds the next attack, the kind players rank too good on a weapon</td></tr>
+<tr><td>Staggered</td><td>Darting Blade</td><td>no: the knife's</td></tr>
+<tr><td>Dazed, Sickened, Slowed, Exhausted</td><td>none</td><td>no: too big for an everyday card</td></tr>
+<tr><td>Frightened, Taunted</td><td>the Paladin's</td><td>no: not a weapon's</td></tr>
+<tr><td>Blinded, Half-Blinded</td><td>Glare</td><td>no: you cut "the eyes" from Pinpoint Shot for strength</td></tr>
+<tr><td>Grabbed</td><td>none</td><td>no: a pinning arrow is Immobilized by another name</td></tr>
+<tr><td>Empowered, Quickened, Guard on you</td><td>none</td><td>no: a bonus for shooting is a silent bonus</td></tr>
+<tr><td>Pushed, Pulled, Slid</td><td>Strafe, Trick Shots (Knock Back)</td><td>no: twice already; the Warbow's</td></tr>
+<tr><td>A Boon, or a Bane on the target's Strikes</td><td>Shifting Aim, Blade and Bow</td><td>no: the class's own currency</td></tr>
+<tr><td>The target loses 1 AP</td><td>none</td><td>no: Dazed, stronger</td></tr>
+<tr><td>Ignoring Cover or range Banes</td><td>Spotter (Find the Gap)</td><td>no: paid for with 1 AP there</td></tr>
+<tr><td>Light: an arrow that marks</td><td>Lantern of Faith</td><td>not now: a good tracking unlock later</td></tr>
+</table></div>
 </section>
 
 <section id="recdmg">
-<h2>How the Recurve Bow's damage differs <span class="tag open">proposed</span></h2>
+<h2>How the Recurve Bow's damage differs <span class="tag ok">decided: 1</span></h2>
+<p><strong>Decided ("1 it is then"): the Recurve Bow deals [V] 0 / 1 + 1d4! / 1 + 1d6!.</strong> What was asked:</p>
 <p>The Hunting Bow is 0 / 1 + 1d4! / 2 + 1d4!: 4 on a Tier 2 and 5 on a Tier 3. At Stage 0 a roll lands on Tier 1, 2 or 3 in 28%, 45% and 27% of rolls, so a Weapon Attack with it averages 4.60. There are four or five points to arrange and no die smaller than a d4, so the ways are few.</p>
 <div class="opt"><b>1</b><div><strong>0 / 1 + 1d4! / 1 + 1d6!</strong> The same Tier 2. On a Tier 3 the Hunting Bow adds a point and the Recurve Bow takes a bigger die. Same averages on every Tier (a Weapon Attack 4.60). Against: a small difference, and one more die size at the table. <span class="tag ok">my pick</span></div></div>
 <div class="opt"><b>2</b><div><strong>0 / 4 / 5, no die.</strong> Fully flat: the quick bow rolls no damage at all. A Weapon Attack 4.60. Against: no die in the hand and nothing to explode. It is the furthest flat can go, on the bow whose player rolls the most hits.</div></div>
@@ -254,8 +327,8 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <li>This list: decided.</li>
 <li>The rungs: decided.</li>
 <li>The Hunting Bow's table row: decided.</li>
-<li><strong>How the Recurve Bow's damage differs,</strong> and the Mastery numbers.</li>
-<li>The Hunting Bow's Technique, then its ladder.</li>
+<li>The Recurve Bow's damage: decided.</li>
+<li><strong>The Hunting Bow's Technique,</strong> then its ladder (with the Mastery numbers).</li>
 <li>The Recurve Bow, the same three.</li>
 <li>The Light property in full.</li>
 <li>The four later bows, when you ask for them.</li>

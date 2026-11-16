@@ -137,7 +137,7 @@ So the tree built for ten levels is not short at the bottom: Stage 0 has its run
 |---|---|---|---|---|---|---|
 | **Hunting Bow** | Bows | Projectile, Ranged, Strung | Pierce | 8 / 16 / 24 | [V] 0 / 1 + 1d4! / 2 + 1d4! | 3 |
 
-## Decision 4: how the Recurve Bow's damage differs (PROPOSED 2026-11-16, five ways, waiting for Lucas)
+## Decision 4: how the Recurve Bow's damage differs (DECIDED 2026-11-16: way 1)
 
 The Hunting Bow is 0 / 1 + 1d4! / 2 + 1d4! (average 4 / 5). The Tier chances at Stage 0 (Weapon Modifier +2 against Defense 13; `calc.mjs`): 28% / 45% / 27%. "A Weapon Attack" below is its average damage with those chances; the Hunting Bow's is 4.60, and Quick Shots with it 9.65. There are only four or five points to arrange, and nothing smaller than a d4, so the ways are few:
 
@@ -152,6 +152,87 @@ The Hunting Bow is 0 / 1 + 1d4! / 2 + 1d4! (average 4 / 5). The Tier chances at 
 **Why 1:** both bows are a flat number and one die, as he asked; the averages are the same on every Tier, so neither is the better bow and no ruler number moves; and the difference is in the one place a player looks, the Tier 3 line (the Hunting Bow's "2 +" against the Recurve Bow's d6). The real difference between the two stays where the research says it is liked: the range and the Technique.
 
 **For Lucas:** 1 to 5 for the Recurve Bow's damage; and yes or other numbers for the Mastery (14 for the second unlock, Group Mastery 5 for the Advanced rung).
+
+**Lucas's answer (2026-11-16): "1 it is then." THE RECURVE BOW'S DAMAGE IS DECIDED: [V] 0 / 1 + 1d4! / 1 + 1d6!** (the rest of its row with its own decision). The Mastery numbers (14; Group Mastery 5) were not answered: kept as proposed, asked again with the Hunting Bow's ladder.
+
+## Decision 5: the Hunting Bow's Weapon Technique, Wounding Shot (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+
+**The question under it** (decision 1, point 7): the old Wounding Shot was a Weapon Attack with more on it, so it was simply the first shot of every round. What a Technique should be, from him: "a Technique must feel good, almost unique" (2026-10-31, on Skirmish Shot: "a Weapon Attack with other dice" is lame). From the research (`weapons-bows-light.md`): a rider that happens by itself on every hit is one more thing to track; players wanted a choice made on the attack; a second roll is what slows the table. So: one roll, the bow's own thing visible on most uses, and a choice attached to using it.
+
+### The three ways
+
+**1, the patient shot (Claude's pick): it asks you to stand still.**
+
+> **Wounding Shot** · Round · 1 AP
+> *You hold your ground until your foe shows its flank, and put a broad-headed arrow where the wound will not close.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: One creature
+> **Requirement:** You haven't left your square this turn.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod]; Bleed 1 (Bo/In).
+> **Tier 3:** [V] 1[W] + [Mod]; Bleed 2 (Bo/In).
+
+**2, the upgrade: no Requirement, the Bleed only on a Tier 3** (the old card in today's words).
+
+> **Wounding Shot** · Round · 1 AP
+> **Tier 1:** [V] [Mod]. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod]; Bleed 2 (Bo/In).
+
+**3, the trade: little damage now, a bigger Bleed.**
+
+> **Wounding Shot** · Round · 1 AP
+> **Tier 1:** nothing. **Tier 2:** [V] [Mod]; Bleed 2 (Bo/In). **Tier 3:** [V] [Mod]; Bleed 3 (Bo/In).
+
+### Priced (way 1)
+
+The unit: a Weapon Attack is 25 points (4.60 damage with the Hunting Bow at Stage 0; the Tiers 28% / 45% / 27%). A Round card's band is 25 to 33.
+
+| Line | Points | Source |
+|---|---:|---|
+| Tier 2 and 3: 1[W] + [Mod] (a Weapon Attack) | 25 | [SIM] the yardstick |
+| Tier 1: [Mod] | +3 | [judgment] 28% of 2 damage |
+| Bleed 1 on a Tier 2, Bleed 2 on a Tier 3 | +1 to +8 | [SIM] `pc-budget.md` puts a Bleed 1d4 rider at about 1 point (its NPCs staunch or die soon); [judgment] left alone for 1.5 of its turns it is 1.5 damage a use: 8 |
+| The AP an enemy spends to staunch (Interact, a Save) | | [not priced] |
+| Requirement: you haven't left your square | -3 for an Archer | [judgment] that shot goes without Shifting Aim's Field Boon; for other classes it is a limit on where it can be used, [not priced] |
+| **Total** | **about 26 to 33** | on the band; the top of it if nobody staunches |
+
+Way 2: 25 + 3 + (27% of a Bleed 2: 1 to 4) = about 29 to 32, no Requirement. Way 3: 12 (the [Mod] on 72%) + (Bleed 2 / 3: 2 to 13) = 14 to 25: under a Weapon Attack unless the Bleed runs two turns or more.
+
+### Analysis
+
+- **The decision it gives (way 1).** For anyone: shoot from where the turn started, or move first and lose it this round. For the Archer it is a question of order, against his own Feature: Shifting Aim pays for moving before each shot, Wounding Shot is only there before the first step. A turn becomes "Wounding Shot from here, step, Quick Shots with the Boon" or "step first for cover and the Boon, and no Wounding Shot". Engaged at the start of the turn (the shot is Doomed), no line from the starting square, or a target at far range: all make it a real choice. And a second one every round: **Bleed doesn't add up** (the higher stays), so the shot goes to a foe that isn't bleeding yet.
+- **Why not way 2.** It is the best first shot of every round with nothing to decide, and on 73% of its uses it is a Weapon Attack: the bow's own thing is seldom seen (his word for that was "lame").
+- **Why not way 3.** A shot for [Mod] and a rider is Trick Shots' shape (Pin, Startle, Knock Back): the Archer who has that Art would hold a fourth Trick Shot.
+- **The rules it touches.** Bleed (Chapter 8): at the end of each of its turns; ended by Interact (1 AP) and a Body or Instinct Save against DC 13 (Tier 2: half this turn, then it ends; Tier 3: it ends); healing doesn't end it. No duration to track, as the durations rule wants ("the creature pays to end it"). "Bleed 1 (Bo/In)" is the book's notation: [V] damage, flat. Flat on purpose (his direction for damage, and nothing to roll at the end of each turn). "Left your square this turn" is Shifting Aim's own phrase, so the two read as a pair. Line of Effect: on the Target line, as on every Strike. A Tier 3 adds something (Bleed 2 over Bleed 1).
+- **Its siblings.** No Archer card bleeds or asks you to stand still. Trick Shots' Pin (Hindered) and Snap Shot (Hindered, Immobilized) stop a foe; this one costs it Health or an AP. The Paladin has no ranged Strike: with a Hunting Bow this is his one reason to shoot first and walk after.
+- **Table feel.** One roll. The bow's thing happens on 72% of uses. One number to remember on a bleeding creature, said once at the end of its turn. The GM gets a decision too (staunch for an AP, or bleed).
+- **The research.** D&D 2024's riders are liked for making same-die weapons differ and disliked where they are automatic or need a second roll: this one is neither (a card you choose to use; no Save unless the target pays to end it). Pathfinder 2e's own knife and bow tricks sit on a critical only, the "seldom seen" problem of way 2.
+- **Not on the card, on purpose.** A second Version (the old 2 AP one was only bigger); a Critical line (the old "only a Tier 3 ends this Bleed" can come back as this card's own Critical if he wants one of the few).
+
+### The rider: every candidate the rules offer
+
+Bleed was kept for this bow in decision 1; the list is here so nothing is left out.
+
+| Candidate | On an Archer card already | Verdict |
+|---|---|---|
+| **Bleed** | none | **kept:** the hunter's wound; damage over time is new to both classes |
+| Hindered | Trick Shots (Pin), Snap Shot, Volley | no: three cards have it |
+| Immobilized | Snap Shot's Tier 3 (and Binding Light) | no: the strongest stop, already a Tier 3 prize |
+| Prone | Volley's Critical (Kneel, Paladin) | no: an arrow that knocks down is the Warbow's idea |
+| Vulnerable | Trick Shots (Startle), Hit and Run | no: it feeds the next attack, the kind the research ranks too good on a weapon |
+| Staggered | Darting Blade | no: the knife's |
+| Dazed, Sickened, Slowed, Exhausted | none | no: an arrow wound that takes AP or Tiers away is a big effect for an everyday card |
+| Frightened, Taunted | the Paladin's | no: not a weapon's |
+| Blinded, Half-Blinded | Glare (Paladin) | no: Lucas cut "the eyes" from Pinpoint Shot for strength |
+| Grabbed | none | no: a pinning arrow is Immobilized by another name |
+| Empowered, Quickened, Guard (on you) | none | no: a bonus for shooting is a silent bonus |
+| Pushed, Pulled, Slid | Strafe, Trick Shots (Knock Back) | no: twice already; the Warbow's |
+| A Boon, or a Bane on the target's Strikes | Shifting Aim, Blade and Bow | no: the class's own currency |
+| The target loses 1 AP | none | no: the same as Dazed, stronger |
+| Ignoring Cover or range Banes | Spotter (Find the Gap) | no: paid for with 1 AP there |
+| Light (the target sheds light, an arrow that marks) | Lantern of Faith (Paladin) | no for now: a good "quiet / tracking" unlock later, with the old Blood Trail's "never Unsensed by you" |
+
+**For Lucas:** way 1, 2 or 3; in way 1, the Requirement, and Bleed 1 / Bleed 2.
 
 **Lucas's answer:**
 
