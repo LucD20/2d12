@@ -103,8 +103,33 @@ So the tree built for ten levels is not short at the bottom: Stage 0 has its run
 
 **For Lucas:** A, B or C (or: he meant a bow's own unlocks).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16): "I think would be best to make Stage 0 as simple as possible, so postponing it to trigger the 'rung' first thing in Stage 1 and keeping it at three."** DECIDED, as Claude reads it (to confirm): **three rungs; in Stage 0 a bow is its table row and its Technique (Mastery 3) and nothing else; the tree starts first thing in Stage 1** (level 4: the Advanced bows open, and the Basic bows' further unlocks begin there, none at Mastery 8); Exotic with Stage 2. The other reading, his to choose: the three rungs sit one a Stage from Stage 1 (Basic's ladder in Stage 1, Advanced in Stage 2, Exotic in Stage 3), which also gives Stage 3 its bow. Stage 0 is the same in both. Consequence for the book when applied: Chapter 15's Expert (Mastery 8) is not a Stage 0 unlock.
 
+## Decision 3: the Hunting Bow's table row (PROPOSED 2026-11-16, waiting for Lucas)
+
+| Name | Group | Properties | Type | Range | Damage | Mastery |
+|---|---|---|---|---|---|---|
+| **Hunting Bow** | Bows | Projectile, Ranged, Strung | Pierce | 8 / 16 / 24 | [V] 0 / 1d6! / 1d8! | 3 |
+
+**The damage: three candidates, all at the book's level** (Chapter 15's Shortbow averages 4 on a Tier 2 and 5 on a Tier 3 with the exploding die: a d4! averages 3, a d6! 4, a d8! 5; no number of the ruler or the Bestiary moves).
+
+| | Row | Tier 2 / Tier 3 | Shape | For / against |
+|---|---|---|---|---|
+| **1 (Claude's pick)** | 0 / 1d6! / 1d8! | 4 / 5 (1 to 5+, 1 to 7+) | all die, and the die grows | the old Hunting Bow's shape (1d6 / 1d10: the arrow that wounds more than it kills, sometimes badly); a Tier 3 is seen in the hand (a bigger die); it leaves "a flat number and a d4" to the Recurve Bow, so the two Basic bows differ at the same average. Against: the widest spread of the three |
+| 2 | 0 / 1d6! / 1 + 1d6! | 4 / 5 (1 to 5+, 2 to 6+) | the middle | today's Shortbow row, unchanged: nothing new to learn. Against: a Tier 3 is the same die plus 1 |
+| 3 | 0 / 1 + 1d4! / 2 + 1d4! | 4 / 5 (2 to 4+, 3 to 5+) | steady | today's Longbow row. Against: it is the shape I would give the Recurve Bow (light, quick, even arrows); a d4 explodes one roll in four, and Quick Shots rolls three of them |
+
+**What the Archer's cards deal with row 1** (Weapon Modifier +2): a Weapon Attack 0 / 1d6! + 2 / 1d8! + 2 (average 6 / 7); Quick Shots 2 / 2d6! + 2 / 3d8! + 2 (10 / 17); the same averages as with today's Shortbow.
+
+**The rest of the row:**
+- **Range 8 / 16 / 24** (kept in decision 1: far twice the normal, maximum three times; the book's Shortbow is 8 / 16 / 32).
+- **Strung in place of Two-handed** (kept in decision 1). Its text, in today's words, for the book when the bows go in: "You hold a **Strung** weapon in one hand and draw it with the other: [Strike, Weapon] Actions with it take 3 Banes while your other hand holds something." The off-hand question (decided 2026-10-31, never applied; the book says today that which hand holds a weapon changes nothing) waits for the Light step.
+- **Mastery 3** for its Technique: the Archer starts with it.
+- **The name** Hunting Bow; the Shortbow's row goes when it comes in.
+
+**For Lucas:** the row; 1, 2 or 3 for the damage.
+
+**Lucas's answer:**
 
 ## Research
 
