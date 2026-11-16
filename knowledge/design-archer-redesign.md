@@ -453,4 +453,40 @@ Each Mode lands on a Tier 2 or 3: 72% of uses
 
 **For Lucas to choose:** the three Modes; whether they keep the [Mod] damage; Pin's duration (1 round, or EoT like Snap Shot).
 
+**Lucas (2026-11-16): "Should it be a Strike? Because then it takes the penalty from multiple strikes".** Answered: the Bane for repeating comes from the At-will Frequency (each use of the same At-will Action after the first), not from the Strike trait, which only caps a turn at 3 Strikes; Trick Shots is a Round card, so it rolls clean where a third Weapon Attack has 2 Banes (the 72% assumed that). It stays a Strike: the rule defines it so ("any Action that tries to hit a creature"), and Shifting Aim's Boon is for [Ranged, Strike] Actions. **"All seems good. Proceed." TRICK SHOTS IS DECIDED as proposed** (the [Mod] damage kept; Pin: Hindered (1 round)).
+
+## Decision 10: the third Art, Keen Eye (PROPOSED 2026-11-16, waiting for Lucas)
+
+The theme was "the hunter's eye"; named Keen Eye here, since the hunter goes to the later ranger class.
+
+**Rules and research first.** Senses (Chapter 3): a creature is Clear, Obscured, Hidden or Unsensed to you; Obscured is 1 Field Bane on your Actions against it, Hidden is Doomed. Cover: Low 1 Field Bane, Medium 2, High Doomed, Total no Line of Effect. Range: 1 Bane at far range, 2 at maximum. "Your next Action" with no duration must be made before the end of your turn (Chapter 2). Leaning (a Basic Action, 1 AP) already lets a creature count cover from a corner. Research: the map moves a shooter better than a rule (cover from creatures in the line, high ground); range is paid for by things in the line of fire, and a card may lift that for a price, never for free; a party-wide mark makes the shooter a spotter (Draw Steel's Mark, Lancer's Lock On).
+
+> **Keen Eye** · Round · 1 AP
+> *You read the field the way others read a page: where a foe hides, where the gap in its cover is, where you yourself are hardest to hit.*
+> — **Call Out** —
+> Distance: 10 sq. | Target: One creature you perceive
+> **Effect:** Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear (1 round).
+> — **Find the Gap** —
+> **Effect:** Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower.
+> — **Keep Low** —
+> **Effect:** Against each creature you have Cover from, your Cover is one level higher, up to High (1 round).
+
+```
+Call Out: allies stop being Doomed (Hidden) or lose a Field Bane (Obscured) against one creature for a round ... 0 in the open; about 10 to 20 in the dark or against a hider   [judgment]
+Find the Gap: one shot loses 1 or 2 Banes, or a High Cover's Doomed becomes 2 Banes ... about 3 to 8   [judgment: a Boon on a Strike is about 3]
+Keep Low: one more Field Bane (or Doomed) on each enemy that shoots at him behind cover ... about 4 to 10   [judgment; Health 12 a point]
+--- Each Mode: nothing on a bare field, an AP's worth or more on a real map
+```
+
+**Analysis.**
+- **The decision it gives:** what the map is doing to the fight this round: an enemy the others can't see, a shot the wall or the distance is spoiling, or arrows coming at him.
+- **It is worth nothing on an empty field, on purpose.** It is the class's reward for a map with walls, darkness and distance: the research's "the map makes the shooter".
+- **Call Out is the one thing he does for the party:** not support by healing or shielding (the brief has none), but by eyes. It only helps when he perceives better than they do: he has the line, the light or the sense they lack.
+- **Find the Gap lifts range's price for a price:** 1 AP and his Round use, for one shot. Cover goes down a level, never away: Total stays no Line of Effect.
+- **Keep Low needs cover to exist:** it raises a level, it doesn't make one, so it rewards where he stands.
+- **Rules it touches:** "one step better" and "one level higher / lower" read the Senses and Cover tables as ladders (they are written as ladders; the sentence is new). "Your next ... Action this turn" is Chapter 2's rule. No roll, no trait.
+- **Against the other two Arts:** Footwork moves him, Trick Shots does something to an enemy, Keen Eye changes what the map costs. Three different second cards at level 3.
+
+**For Lucas to choose:** the three Modes; Call Out's distance (10); the name (Keen Eye; others: Marksman's Eye, Spotter).
+
 **Lucas's answer:**
