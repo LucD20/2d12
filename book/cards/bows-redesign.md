@@ -77,7 +77,7 @@ Flurry of Arrows and its steps; Parthian Shot and its steps; Patient Shot; Loose
 
 **Lucas's answer (2026-11-16): "Yes to all." THE THREE LISTS ARE DECIDED** (what no longer fits, what is kept, what is dropped). **And he asked: "Should we make one more ladder since stage 0 now exists?"** (decision 2).
 
-## Decision 2: one more rung, now that Stage 0 exists? (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+## Decision 2: one more rung, now that Stage 0 exists? (DECIDED 2026-11-16: three rungs, more Mastery to reach the next thing)
 
 Read as: the tree has three rungs (Basic, Advanced, Exotic) and the game now has four Stages; should the tree get a fourth? (If he meant a bow's own ladder of unlocks, the table answers that too.)
 
@@ -105,7 +105,7 @@ So the tree built for ten levels is not short at the bottom: Stage 0 has its run
 
 **Lucas's answer (2026-11-16): "I think would be best to make Stage 0 as simple as possible, so postponing it to trigger the 'rung' first thing in Stage 1 and keeping it at three."** DECIDED, as Claude reads it (to confirm): **three rungs; in Stage 0 a bow is its table row and its Technique (Mastery 3) and nothing else; the tree starts first thing in Stage 1** (level 4: the Advanced bows open, and the Basic bows' further unlocks begin there, none at Mastery 8); Exotic with Stage 2. The other reading, his to choose: the three rungs sit one a Stage from Stage 1 (Basic's ladder in Stage 1, Advanced in Stage 2, Exotic in Stage 3), which also gives Stage 3 its bow. Stage 0 is the same in both. Consequence for the book when applied: Chapter 15's Expert (Mastery 8) is not a Stage 0 unlock.
 
-## Decision 3: the Hunting Bow's table row (PROPOSED 2026-11-16, waiting for Lucas)
+## Decision 3: the Hunting Bow's table row (2026-11-16)
 
 | Name | Group | Properties | Type | Range | Damage | Mastery |
 |---|---|---|---|---|---|---|
@@ -128,6 +128,30 @@ So the tree built for ten levels is not short at the bottom: Stage 0 has its run
 - **The name** Hunting Bow; the Shortbow's row goes when it comes in.
 
 **For Lucas:** the row; 1, 2 or 3 for the damage.
+
+**Lucas's answer (2026-11-16), on the rungs:** "I was thinking more of just taking more Mastery Points so reaching it on Stage 0 is harder, but still possible." So Claude's reading above was wrong: **nothing is closed in Stage 0; the next unlock and the next rung cost more Mastery, so that most characters reach them first thing in Stage 1 and a dedicated one late in Stage 0.** Three rungs. **Numbers proposed (confirmed with the Hunting Bow's ladder):** what can be had in Stage 0: at most 1 Mastery an encounter, about 15 encounters, so 15 at the very most and about 13 on average; an Archer starts at 3 (18 at most, about 16). **The Technique stays at 3. A Basic bow's second unlock at 14** (it was 8): an Archer has it during level 3, anyone else in the first fights of level 4, or at the very end of level 3 with a Tier 3 every fight. **The Advanced rung at Group Mastery 5** (15 Mastery with one bow; it was 6 on the old pace): an Archer in the last fights of level 3, anyone else at level 4.
+
+**Lucas's answer (2026-11-16), on the damage:** "We agreed on trying to make damage flat, but on lower damage weapons it is harder, but I think we still should try it. 3 might be best but we neeed to make it different from Recurve bow somehow." **THE HUNTING BOW'S ROW IS DECIDED with damage 3:**
+
+| Name | Group | Properties | Type | Range | Damage | Mastery |
+|---|---|---|---|---|---|---|
+| **Hunting Bow** | Bows | Projectile, Ranged, Strung | Pierce | 8 / 16 / 24 | [V] 0 / 1 + 1d4! / 2 + 1d4! | 3 |
+
+## Decision 4: how the Recurve Bow's damage differs (PROPOSED 2026-11-16, five ways, waiting for Lucas)
+
+The Hunting Bow is 0 / 1 + 1d4! / 2 + 1d4! (average 4 / 5). The Tier chances at Stage 0 (Weapon Modifier +2 against Defense 13; `calc.mjs`): 28% / 45% / 27%. "A Weapon Attack" below is its average damage with those chances; the Hunting Bow's is 4.60, and Quick Shots with it 9.65. There are only four or five points to arrange, and nothing smaller than a d4, so the ways are few:
+
+| | The Recurve Bow's row | Average | A Weapon Attack | What differs | Against |
+|---|---|---|---|---|---|
+| **1 (Claude's pick)** | 0 / 1 + 1d4! / 1 + 1d6! | 4 / 5 | 4.60 | the same Tier 2; on a Tier 3 the Hunting Bow adds a point (steady), the Recurve Bow takes a bigger die (it explodes less often and higher) | a small difference; one more die size at the table |
+| 2 | 0 / 4 / 5, no die | 4 / 5 | 4.60 | fully flat: the quick bow rolls no damage at all | no die in the hand and nothing to explode; Empowered's 1d6! would be its only die. The furthest "flat" can go: worth one try, but on the bow whose player rolls most hits |
+| 3 | the same row as the Hunting Bow | 4 / 5 | 4.60 | nothing in the row: range (6 against 8) and the Technique tell them apart | the research's warning: the bow with less range and the same damage reads as the worse bow unless its Technique carries it |
+| 4 | 0 / 1d6! / 1 + 1d6! (today's Shortbow) | 4 / 5 | 4.60 | less flat, a d6 on both Tiers | it goes away from flat |
+| 5 | 0 / 1d4! / 3 + 1d4! | 3 / 6 | 4.41 (4% less) | the swing is between the Tiers: a weak Tier 2, a strong Tier 3 | less damage on the bow with less range; a Tier 2 of 1d4! feels bad; with Quick Shots' 3[W] it turns the other way |
+
+**Why 1:** both bows are a flat number and one die, as he asked; the averages are the same on every Tier, so neither is the better bow and no ruler number moves; and the difference is in the one place a player looks, the Tier 3 line (the Hunting Bow's "2 +" against the Recurve Bow's d6). The real difference between the two stays where the research says it is liked: the range and the Technique.
+
+**For Lucas:** 1 to 5 for the Recurve Bow's damage; and yes or other numbers for the Mastery (14 for the second unlock, Group Mastery 5 for the Advanced rung).
 
 **Lucas's answer:**
 
