@@ -41,9 +41,50 @@
 | 10 | The contents column in a system sans-serif with buttons ("Expand all", "Open all cards") | an application's sidebar |
 | 11 | Pill badges for AP and Reaction costs in a few places | pills |
 
-## Research
+## Research (2026-11-16: three passes, one each, not re-checked by a second)
 
-Three passes were asked for on what `book/research/` lacks (`card-layout.md` covers where a block's facts sit, not how it is drawn):
-- `book/research/card-look-published-books.md`: how published RPG books draw their ability and stat blocks, and what is said of them (serious, bookish, gamey).
-- `book/research/book-typography-serious-tone.md`: book typography and reference design: what makes a page read as a serious book, how repeated labeled entries are set without boxes, typefaces.
-- `book/research/rpg-layout-craft.md`: RPG layout designers on beauty against speed at the table, emphasis, color, icons, accessibility.
+- `book/research/card-look-published-books.md`: how published RPG books draw their blocks.
+- `book/research/book-typography-serious-tone.md`: book typography and reference design; fonts checked in their files.
+- `book/research/rpg-layout-craft.md`: RPG layout designers, emphasis, color, icons, accessibility.
+
+**What the three agree on, for this decision:**
+1. **"Gamey" comes from the look more than the rules.** A 4e designer (Schwalb, 2011, quoted) said the format told readers the game "must not match the play experience". The look called "like cards" is 4e's: a full-width colored bar over every power, its color the frequency ("light-on-dark headers", "color carded"). That is the book's card today.
+2. **The bookish blocks share four habits** (5e, 13th Age, Old-School Essentials): no rounded box (no box at all, or one flat tinted panel); thin rules or a pale band instead of filled bars; the name and the labels in the body's own bold or italic, run into the line; small caps for tags and heads.
+3. **The app look is named part by part in two 2026 design pieces, and the parts are the book's:** "cards for every block of info", "a thin vertical bar on the left edge... each one gets a different color", "capsule-shaped badge", uppercase section labels.
+4. **One ink and one accent, the accent given one job.** Missals print in red what to do and in black what to say (the "rubric"); the praised RPG books use one accent for structure; Butterick: "Black is best", "When everything is emphasized, nothing is emphasized". No praised book colors each keyword. Paizo's publisher (2018): "skeptical that color is a useful way to delineate information"; WCAG: color never the only cue; red against green fails for about 1 man in 12.
+5. **Space first, then a rule, then a box** (Butterick: "Thicker borders... upstage the information inside"). Tables "should not be set to look like nets" (Tschichold); no vertical rules, no fills (booktabs, Rutter).
+6. **A repeated entry is made scannable by a fixed anatomy, not by a frame:** a bold head at the margin, the rest run in, in a fixed order, labels told apart by weight, slope and case (Merriam-Webster's own notes; field guides).
+7. **Speed at the table comes from structure and space:** the same anatomy every time ("repetition, predictable rhythms... create stability, trust, and confidence", Notestine), one entry never split by a page turn (Norman, McCoy), labels at the start of a line.
+8. **Mood comes from the text type, not from costume:** a classic serif with real small caps; "no fake parchment or genre fonts". "In fantasy the most common UI theme is illuminated manuscripts and tomes" (McCoy).
+9. **Real small caps need the full font file.** Georgia has none (the book's small caps today are shrunk capitals). Of the free faces, EB Garamond, Cormorant, Source Serif 4, Alegreya, Spectral, Literata and Vollkorn have real small caps and old-style figures in their full files; Google Fonts' served files strip them, so the book would carry the files (`book/rules-assets/`).
+10. **Measured facts:** serif or sans makes no difference to reading speed at reading sizes; italics slowed readers with dyslexia (so flavor in italic is fine, rules text is not); dark text on light reads faster, though many prefer dark (so dark stays a choice).
+
+## Decision 1: the direction for the book (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+
+**What is shared by all three** (what the research rules out): no rounded corners; no solid colored title bar; no chevron on the card in print (it stays a screen control, drawn small and grey); the card set in the book's own text face; no color for each kind of game word, in the card or in running text; no pill badges; no colored left bars; frequency and cost written as words; real small caps.
+
+### A, the rubricated book (Claude's pick): black and one red, no frame
+
+The card is a passage of the page, set the way a dictionary sets an entry. A thin rule above it; the **name** in bold small caps at the left, **frequency and cost** in small caps at the right of the same line; the Flavor in italic; the traits in small caps; then the lines of the body with their labels as a hanging column (**Tier 1**, **Setup**) in the text's bold, values beside them; a Version or a Mode as a small-caps subhead with a hairline; a thin rule below. **One accent, a dark red (the rubric), with one job: the parts you act on** (the name and the labels), the way a missal prints the instructions in red. Black for everything you read. In running text, game terms are not colored; a defined term is bold where it is defined, as a dictionary does. The example becomes an indented passage headed "*Example.*" in italic, with no panel. The contents column is set in the text face, with no buttons in print.
+- **For:** the most serious of the three, and the closest to the research's agreement (four habits, one ink and one accent with a function, space before rules). Nothing on the page says "software". It prints in black and one color, or in black alone with no loss (the red carries no meaning that the label's position and bold don't already).
+- **Against:** a card is found by its rule and its name, not by a block of color: on a dense page it stands out less. And the frequency loses its color (it is still a word in the same place on every card).
+
+### B, the stat block: one flat panel, square, pale
+
+5e's and Old-School Essentials' way. Each card is one flat pale panel (a light tint of the page, no border or a hairline, square corners), a thin accent rule under the name line; inside, the same anatomy as A. The frequency can be a short colored rule at the panel's top (one of three dark hues, never the only cue: the word is beside it).
+- **For:** the card is found at a glance on a dense page; the research's bookish blocks include this one (a flat tinted box for a whole creature). The closest to his settled Foundry look ("a sheet is a printed stat block").
+- **Against:** a box, so "boxes inside boxes" returns when a Mode or a Version sits inside it; a tint is the first thing a printer turns off; less of a book, more of a manual.
+
+### C, the tome: the old book, worn openly
+
+The illuminated-manuscript idiom McCoy calls fantasy's default: a display face for names (Cinzel, which the book already uses for some titles), ornamental rules with a centered mark between cards, a parchment-toned ground, drop caps, red rubrics, a framed card with a double hairline.
+- **For:** the strongest mood; players read it instantly as fantasy.
+- **Against:** the research's warning: it is costume ("no fake parchment or genre fonts"), and it is the opposite of "serious" as the typography sources define it. Ornament competes with the card for the eye. It dates fast.
+
+**Why A:** his two words were "book" and "serious", and A is what both bodies of research describe under those words: one text face with real small caps, black and one red with a job, entries made findable by their anatomy and the space around them. It also separates the book from Foundry most clearly, which is what he asked: the screen keeps its dark table look with bars and buttons; the book becomes a book. B is the safe middle and can be reached from A later by adding a tint, if a playtest shows cards are hard to find.
+
+**Decided later, one at a time, after the direction:** the text face (the candidates with real small caps, tried side by side on the screen), the accent's exact color and its dark-mode twin, the card's anatomy in detail (the label column's width, rules, spacing), Versions and Modes, the frequency mark, the page around it (examples, open boxes, tables, the contents column, colored terms), and dark mode. Then mockups.
+
+**For Lucas:** A, B or C.
+
+**Lucas's answer:**

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 790f5e5 2026-11-16 Swords: both Basic swords decided (Seizing Cut, Thwart Cut, the condition Pressed); not applied yet
+Built by tools/knowledge.py on 2026-11-16 from the repository at: de6d59a 2026-11-16 Card look: research on book typography and a serious page (one pass still running)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,7 +15,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (167 KB)
+- HANDOFF.md (168 KB)
 - MASTER-PLAN.md (40 KB)
 - open-design-items.md (184 KB)
 - rules-01-roll.md (26 KB)
@@ -31,10 +31,12 @@ Files:
 - rules-13-archer.md (3 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (14 KB)
-- research-index.md (7 KB)
+- research-index.md (8 KB)
 - research-ability-scope.md (7 KB)
 - research-archer.md (7 KB)
+- research-book-typography-serious-tone.md (39 KB)
 - research-card-layout.md (5 KB)
+- research-card-look-published-books.md (30 KB)
 - research-conditions-and-senses.md (3 KB)
 - research-divine-profane.md (9 KB)
 - research-durations.md (8 KB)
@@ -47,6 +49,7 @@ Files:
 - research-nova-burst.md (14 KB)
 - research-paladin-roles.md (13 KB)
 - research-paladins-other-games.md (21 KB)
+- research-rpg-layout-craft.md (44 KB)
 - research-save-dcs.md (3 KB)
 - research-swords.md (35 KB)
 - research-tactical-combat.md (5 KB)
@@ -56,6 +59,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
+- design-card-look.md (11 KB)
 - design-swords-redesign.md (38 KB)
 - design-bows-redesign.md (89 KB)
 - design-archer-redesign.md (109 KB)

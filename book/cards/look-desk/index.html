@@ -1,0 +1,157 @@
+<title>Book Look Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Signika:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column, a sticky row of section links, ruled sections like a printed rulebook page.
+   Dark first (the system's table look); the light set is the chat card's parchment. */
+:root{
+  --bg:#15171b; --panel:#1c1f25; --line:#343a44; --fg:#e4e1d8; --dim:#a09d94;
+  --gold:#d2a94e; --holy:#e7c873; --ok:#7fb486; --open:#e08a55; --quote:#b9c4d6;
+  --display:"Cinzel",Georgia,serif; --text:"Signika","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light }
+body{background:var(--bg);color:var(--fg);font-family:var(--text);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:46rem;margin:0 auto;padding-block:1.5rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-size:1.9rem;line-height:1.15;margin:0 0 .3rem;color:var(--holy);text-wrap:balance}
+.sub{color:var(--dim);margin:0 0 1rem}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-block:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.2rem 1rem;padding:.55rem 0;margin-bottom:1.5rem}
+nav a{color:var(--fg);text-decoration:none;font-weight:500}
+nav a:hover,nav a:focus-visible{color:var(--gold);outline:none;text-decoration:underline}
+section{margin-top:2.4rem;scroll-margin-top:4rem}
+h2{font-size:1.3rem;font-weight:600;margin:0 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--gold);text-wrap:balance}
+h3{font-size:1.05rem;font-weight:600;margin:1.4rem 0 .4rem;color:var(--holy)}
+p{margin:.5rem 0}
+ul,ol{margin:.4rem 0;padding-left:1.3rem}
+li{margin:.3rem 0}
+strong{font-weight:600}
+.tag{font-weight:600;white-space:nowrap}
+.tag.ok{color:var(--ok)} .tag.open{color:var(--open)}
+table{border-collapse:collapse;width:100%}
+.scroll{overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem .45rem 0;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:500}
+blockquote{margin:.5rem 0;padding:.1rem 0 .1rem .9rem;border-left:2px solid var(--line);color:var(--quote)}
+blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
+.need{background:var(--panel);border:1px solid var(--line);padding:.9rem 1.1rem;margin:.6rem 0}
+.need ol{margin:0}
+/* a card: the book's stat block, plain */
+.card{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.card .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.card .bar span:last-child{color:var(--dim);font-weight:400}
+.card .v{display:grid;grid-template-columns:3.4rem 1fr;gap:.6rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.card .v:last-child{border-bottom:0}
+.card .v b{color:var(--gold);font-weight:600}
+.card .v div{min-width:0}
+.opt{display:grid;grid-template-columns:1.6rem 1fr;gap:.5rem;margin:.7rem 0}
+.opt>b{color:var(--gold);font-size:1.1rem}
+.opt div{min-width:0}
+.small{color:var(--dim);font-size:.93em}
+.hc{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.hc .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.hc .bar span:last-child{color:var(--dim);font-weight:400}
+.hc .bar span.cost{color:var(--gold);font-weight:600}
+.hc .row{padding:.3rem .8rem;border-bottom:1px solid var(--line)}
+.hc .row:last-child{border-bottom:0}
+.hc .tr{color:var(--holy)}
+.hc .lab{display:grid;grid-template-columns:6.2rem 1fr;gap:.6rem}
+.hc .lab b{color:var(--dim);font-weight:500}
+.hc .grid{display:grid;grid-template-columns:1fr auto;gap:.3rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.hc .grid div{min-width:0}
+.hc .grid .r{text-align:right}
+.hc .zone{border-top:2px solid var(--line)}
+.hc .fine{font-size:.9em;color:var(--dim)}
+.hc .ver{font-weight:600;color:var(--gold);border-top:2px solid var(--line)}
+.hc .new{background:color-mix(in srgb,var(--gold) 12%,transparent)}
+.hc .new i{color:var(--gold);font-style:normal;font-size:.9em}
+.hc .stub{color:var(--dim);font-size:.9em;font-style:italic}
+</style>
+
+<div class="wrap">
+<h1>Book Look Desk</h1>
+<p class="sub">The look of the book and of its cards, in words before mockups. Updated 2026-11-16: the research is done; the direction is proposed. Nothing in the book changes until you say so.</p>
+<nav>
+  <a href="#need">What I need</a>
+  <a href="#dir">The direction</a>
+  <a href="#research">What the research agrees on</a>
+  <a href="#today">Today's book</a>
+  <a href="#next">What comes after</a>
+</nav>
+
+<section id="need">
+<h2>What I need from you now</h2>
+<div class="need"><ol><li><strong>The direction for the book:</strong> A, B or C. My pick is A, the rubricated book.</li></ol></div>
+<p class="small">The text face, the accent color, the card's anatomy in detail and the page around it come after, one at a time. Then mockups.</p>
+</section>
+
+<section id="dir">
+<h2>The direction <span class="tag open">proposed</span></h2>
+<p><strong>Shared by all three</strong>, because the research rules it out: no rounded corners; no solid colored title bar; the card set in the book's own text face; no color for each kind of game word, in the card or in running text; no pill badges; no colored left bars; frequency and cost written as words; real small caps.</p>
+<h3>A. The rubricated book: black and one red, no frame <span class="tag ok">my pick</span></h3>
+<p>The card is a passage of the page, set the way a dictionary sets an entry:</p>
+<ul>
+<li>A thin rule above it. The <strong>name</strong> in bold small caps at the left; <strong>frequency and cost</strong> in small caps at the right of the same line.</li>
+<li>The Flavor in italic; the traits in small caps.</li>
+<li>The body's labels (Tier 1, Setup) as a hanging column in the text's bold, the values beside them.</li>
+<li>A Version or a Mode as a small-caps subhead with a hairline. A thin rule below the card.</li>
+<li><strong>One accent, a dark red, with one job: the parts you act on</strong> (the name and the labels), the way a missal prints its instructions in red. Black for everything you read.</li>
+<li>In running text, game terms are not colored. A defined term is bold where it is defined.</li>
+<li>An example becomes an indented passage headed "<em>Example.</em>", with no panel.</li>
+</ul>
+<p><strong>For:</strong> the most serious of the three, and the closest to what the research agrees on. Nothing on the page says "software". It prints in black and one color, or in black alone with nothing lost.</p>
+<p><strong>Against:</strong> a card is found by its rule and its name, not by a block of color, so on a dense page it stands out less. The frequency loses its color; it is still a word in the same place on every card.</p>
+<h3>B. The stat block: one flat panel, square, pale</h3>
+<p>The way of 5e and Old-School Essentials. Each card is one flat pale panel with square corners and a thin accent rule under the name line; inside, the same anatomy as A. The frequency can be a short colored rule at the panel's top, with the word beside it.</p>
+<p><strong>For:</strong> the card is found at a glance; it is among the bookish blocks the research found; the closest to your Foundry decision that "a sheet is a printed stat block".</p>
+<p><strong>Against:</strong> a box, so boxes inside boxes return when a Mode or a Version sits in it; a tint is the first thing a printer turns off; more a manual than a book.</p>
+<h3>C. The tome: the old book, worn openly</h3>
+<p>The illuminated-manuscript look: a display face for names (Cinzel), ornamental rules with a mark between cards, a parchment ground, drop caps, red rubrics, a framed card with a double hairline.</p>
+<p><strong>For:</strong> the strongest mood; players read it instantly as fantasy.</p>
+<p><strong>Against:</strong> the research calls it costume ("no fake parchment or genre fonts"), and it is the opposite of "serious" as the typography sources define it. Ornament competes with the card for the eye. It dates fast.</p>
+<h3>Why A</h3>
+<p>Your two words were "book" and "serious", and A is what both bodies of research describe under those words: one text face with real small caps, black and one red with a job, entries found by their anatomy and the space around them. It also separates the book from Foundry most clearly: the screen keeps its dark table look with bars and buttons; the book becomes a book. B can be reached from A later by adding a tint, if a playtest shows cards are hard to find.</p>
+</section>
+
+<section id="research">
+<h2>What the research agrees on</h2>
+<ol>
+<li><strong>"Gamey" comes from the look more than the rules.</strong> A 4e designer said its format told readers the game "must not match the play experience". The look called "like cards" is a full-width colored bar over every power, its color the frequency: the book's card today.</li>
+<li><strong>Bookish blocks share four habits:</strong> no rounded box; thin rules instead of filled bars; the name and labels in the body's own bold or italic; small caps for tags and heads.</li>
+<li><strong>The app look is named part by part in two 2026 design pieces:</strong> "cards for every block of info", a colored bar on the left edge in a different color each time, capsule badges, uppercase section labels.</li>
+<li><strong>One ink and one accent, the accent given one job.</strong> Missals print in red what to do and in black what to say. Butterick: "When everything is emphasized, nothing is emphasized." Color is never the only cue; red against green fails for about 1 man in 12.</li>
+<li><strong>Space first, then a rule, then a box.</strong> "Thicker borders upstage the information inside." Tables "should not be set to look like nets".</li>
+<li><strong>A repeated entry is found by a fixed anatomy, not a frame:</strong> a bold head at the margin, the rest in a fixed order, labels told apart by weight, slope and case.</li>
+<li><strong>Speed at the table comes from structure and space:</strong> the same anatomy every time; one entry never split by a page turn.</li>
+<li><strong>Mood comes from the text type, not costume:</strong> a classic serif with real small caps; "no fake parchment or genre fonts".</li>
+<li><strong>The book's small caps are fake today:</strong> Georgia has none. EB Garamond, Cormorant, Source Serif 4, Alegreya, Spectral, Literata and Vollkorn have real ones in their full files; the book would carry the files.</li>
+<li><strong>Measured:</strong> serif or sans makes no difference to reading speed; italics slow readers with dyslexia, so rules text stays upright; dark text on light reads faster, so dark stays a choice.</li>
+</ol>
+<p class="small">Three passes, one each, not re-checked by a second: <code>book/research/card-look-published-books.md</code>, <code>book-typography-serious-tone.md</code>, <code>rpg-layout-craft.md</code>. Only two real book pages were looked at as images (Old-School Essentials, 13th Age); 4e's and Pathfinder 2e's blocks are described from what readers wrote.</p>
+</section>
+
+<section id="today">
+<h2>Today's book, looked at</h2>
+<p><strong>Already a book:</strong> the cream page, the serif body, the rust headings, the small-cap section heads with an ornament in the class documents.</p>
+<p><strong>Reads as an app, on the card:</strong> a rounded box where every line is a ruled row; a solid saturated title bar in the frequency's color; a chevron control; the card in a sans-serif while the page is serif; a color for every kind of game word; a grey band for each Version or Mode.</p>
+<p><strong>On the page around it:</strong> game terms colored in running text; the example box with a thick colored bar and a spaced-out capital label; a contents column like an application's sidebar.</p>
+</section>
+
+<section id="next">
+<h2>What comes after, in order</h2>
+<ol>
+<li><strong>The direction.</strong></li>
+<li>The text face: the candidates with real small caps, side by side on screen.</li>
+<li>The accent color and its dark-mode twin.</li>
+<li>The card's anatomy in detail; Versions and Modes; the frequency mark.</li>
+<li>The page around it: examples, open boxes, tables, the contents column, game terms.</li>
+<li>Dark mode. Then mockups; then the book.</li>
+</ol>
+<p class="small">The record: <code>book/cards/card-look.md</code>.</p>
+</section>
+</div>
