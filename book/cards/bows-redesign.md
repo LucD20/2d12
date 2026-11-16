@@ -350,6 +350,37 @@ When each number comes: 3 fight 3 (level 1) · 8 fight 8 (level 2) · 14 fight 1
 
 **For Lucas:** the numbers (the Technique; the second unlock; the Advanced rung).
 
+**Lucas (2026-11-16), after asking why there were "only three rungs"** (answered: the three are the tree's tiers, never reduced; a bow's own unlocks were only not written past Stage 0): "All good. So lets try to do some math: We have 15 levels. Mastery should like follow. Advanced at 5, Exotic at 10. Weapon unlucks as well: Basic 3 - 5 - 7 - 10 - 13. Advanced (starts with technique) 7 - 10 - 13. Exotic (starts with technique) 10 - 13. Does that make sense? Does it fit?"
+
+## Decision 8: the ladders' numbers, from his levels (PROPOSED 2026-11-16, waiting for Lucas)
+
+Read as levels. At 1 Mastery a fight and 5 fights a level, a level starts after 5 × (level - 1) fights, so **Mastery = 5 × (level - 1)**:
+
+| | Level 3 | Level 5 | Level 7 | Level 10 | Level 13 |
+|---|---|---|---|---|---|
+| Fights fought with bows | 10 | 20 | 30 | 45 | 60 |
+| **A Basic bow** (from 0): its Mastery | **10:** unlock 1 | **20:** unlock 2 | **30:** unlock 3 | **45:** unlock 4 | **60:** unlock 5 |
+| **An Advanced bow** (opens at level 5: Group Mastery 7; it starts at 7 with its Technique) | | 7: the Technique | **17:** unlock | **32:** unlock | **47:** unlock |
+| **An Exotic bow** (opens at level 10: Group Mastery 15; it starts at 15 with its Technique) | | | | 15: the Technique | **30:** unlock |
+
+(The Advanced and Exotic rows are for a character who changes bow the day the rung opens and stays on it.)
+
+**It makes sense, and it fits the levels well:**
+- The weapon's levels (5, 7, 10, 13) are the quiet ones. Level 4 has the Apex and Stage 1's numbers, level 8 Master, level 12 both Modifiers: no level gets two big things.
+- Stage 3 gets something from every bow (level 13), which the old tree lacked.
+- Deeper keeps meaning fewer unlocks: five, then the Technique and three, then the Technique and one.
+- Every bow has its unlocks on the same levels (7, 10, 13), whichever rung it is.
+
+**Four things that need his word for it to fit:**
+1. **The first number, 3.** As a level it puts a Basic bow's Technique (Wounding Shot, decided at Mastery 3) at level 3, Mastery 10: an Archer (Starting Mastery 3) would shoot without it until level 2, anyone else until level 3, and the two Basic bows would differ by one die for most of Stage 0. Claude's default: **the Technique stays at Mastery 3 (level 1), and the other four are at levels 5, 7, 10, 13 (20, 30, 45, 60)**: Stage 0 is then exactly "a bow is its row and its Technique". If he meant level 3: the Technique at 10, and the Archer's Starting Mastery read again.
+2. **Group Mastery has to count every bow.** The book says "a third of your highest Mastery with a weapon of its group". With that, a character who moves to an Advanced bow at level 5 (it starts at 7) has 31 with it at level 10, a third is 10, and the Exotic rung (15) doesn't open until level 12. The tree's own definition (2026-10-31) fixes it: **Group Mastery = all the Mastery you have gained with weapons of the group, divided by 3.** Then it is "fights fought with bows / 3" whichever bows: 7 at level 5, 15 at level 10. Chapter 15's sentence changes when the bows go in.
+3. **Nothing past the Technique can be reached in Stage 0** (the Advanced rung needs 21 fights; Stage 0 has 15, an Archer 18 with his 3). It replaces "harder but still possible in Stage 0": his newer numbers win unless he says otherwise.
+4. **Master** (Mastery 15 and level 8) is now simply "level 8" (15 is reached in level 3): read with Stage 2.
+
+**The numbers move with the table's pace:** they are right at 5 normal-or-harder fights a level. At 4 a level everything comes a level or two later (level 13's unlock at level 16: never); at 6, sooner. If that worries him, the alternative is smaller numbers set for 4 fights a level (Basic 8 / 16 / 24 / 36 / 48; Group Mastery 5 and 12).
+
+**For Lucas:** the table; 1 (the Technique at Mastery 3, or at level 3); 2 (Group Mastery counts every bow); the pace the numbers are set for (5 fights a level, or 4).
+
 **Lucas's answer:**
 
 ## Research
