@@ -646,7 +646,7 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 
 **Lucas's answer (2026-11-16):** "I think we should do: +1 to one at Stage 1; +1 to both at Stage 2. For Stage 3, we can plan something else. Log this because this is for the future, but lets drop Master for weapons. Lets do Light property." **DECIDED: Master is dropped for weapons; nothing on the weapons in its place.** For the future, logged in `rules-backlog.md` (the top entry): Stage 1 +1 to one Modifier, Stage 2 +1 to both, Stage 3 something else.
 
-## Decision 14: the Light property in full (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+## Decision 14: the Light property in full (DECIDED 2026-11-16: way 2, the second weapon; the wording below waits for his check)
 
 **What exists.** Chapter 15 (minimal, since the Archer): "A Light weapon is a small melee weapon held in one hand, quick to draw and to put away, such as a Dagger. Some Actions need one (the Archer's Darting Blade)." The Dagger has it. Cards that name it: Darting Blade, Hit and Run. Decided on 2026-10-31 and never applied: an off-hand Bane of 2 on Weapon Actions, 1 for light weapons; "Daggers (light)" as a group of their own. The book today: "Which hand holds a weapon changes nothing in the rules, unless a feature says so."
 
@@ -689,7 +689,79 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 
 **For Lucas:** way 1, 2 or 3; the Handaxe as Light; Darting Blade's shorter text, or as it is.
 
+**Lucas's answer (2026-11-16):** "1. Lets do 2. 2. Add but all weapons except the bows we just made are 'place holders', not even that technically. Those were made just to playtest and fill space. 3. Yes, but: 'You Evade 2, then can stow the Light weapon you've drawn.' Prevent as much ambiguity as possible."
+
+**DECIDED:**
+- **Light is the second weapon (way 2):** the off-hand Banes come into the book, and a Light weapon takes fewer. No free draw.
+- **The Handaxe is Light,** with the Dagger. **Every weapon in Chapter 15 except the two bows made here is a placeholder** (his word: made to playtest and fill space): their rows, properties and Techniques are not design, and are not to be argued from. The book says so when the bows go in.
+- **Darting Blade** loses "stow your bow", with his Effect line.
+
+### The texts, written out (Claude's wording of his decisions, for his check)
+
+> **Hands** (Chapter 15; it replaces "Which hand holds a weapon changes nothing in the rules, unless a feature says so.")
+> You have two hands: your **main hand** and your **off hand**. You choose which is which when you make your character. [Strike, Weapon] Actions with a weapon you hold in your off hand take **2 Banes**. A weapon you hold with both hands doesn't take them.
+
+> **Light**
+> A **Light** weapon is a small melee weapon you hold in one hand, such as a Dagger or a Handaxe. A Light weapon is never Two-handed or Long. In your off hand, a Light weapon takes **1 Bane** instead of 2. Some Actions need a Light weapon, such as the Archer's Darting Blade.
+
+> **Strung**
+> You hold a **Strung** weapon in one hand and draw it with the other: [Strike, Weapon] Actions with it take **3 Banes** while your other hand holds something. A Strung weapon in your off hand takes the off-hand Banes only while your main hand holds something.
+
+> **Darting Blade** · Round · 1 AP
+> *You shift the bow to one hand, open a foe with the knife, and are gone before it turns.*
+> Weapon · Melee · Strike
+> Distance: Reach | Target: One creature
+> **Setup:** You draw a Light weapon.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod].
+> **Tier 2:** [V] 1[W] + [Mod].
+> **Tier 3:** [V] 1[W] + [Mod]; Staggered (EoT).
+> **Effect:** You Evade 2, then can stow the Light weapon you've drawn.
+> **Special:** You make this Strike with a Light weapon you hold. *(Claude's addition, for his yes: the card never said which weapon strikes; without it the Fists or a Longsword in hand could.)*
+
+**The cases, so none is left to the table:**
+
+| You hold | The Strike | Banes |
+|---|---|---|
+| a bow in your off hand, main hand free | with the bow | 0 (how an archer stands) |
+| a bow in your off hand, a Dagger in your main hand | with the Dagger | 0 |
+| | with the bow | 3 (Strung) + 2 (off hand) = 5 |
+| a bow in your main hand, a Dagger in your off hand | with the Dagger | 1 (Light, off hand) |
+| | with the bow | 3 (Strung) |
+| a Longsword in your main hand, a Dagger in your off hand | with the Dagger | 1 |
+| a Dagger in your main hand, a Longsword in your off hand | with the Longsword | 2 |
+| a Greatsword in both hands | with it | 0 |
+| a Longsword in your main hand, your off hand free | with your Fists | 1 (below) |
+
+**Small rulings that come with it (Claude's defaults; his to revert, listed as assumptions):**
+1. **Fists:** they use a free hand; with only your off hand free they take 1 Bane, as a Light weapon does (his word of 2026-10-31: "the Fists are light: 1"). They don't get the Light property (nothing to draw; Darting Blade can't use them).
+2. **Which hand is the main one** is chosen at character creation and doesn't change.
+3. **Drawing** puts the object in a free hand you choose; **Regrip** (1 AP) already moves a weapon to the other hand or swaps the two.
+4. **A thrown weapon** thrown from the off hand takes the off-hand Banes like any Strike with it.
+5. **Hit and Run** needs no change: it draws and stows both weapons freely, so each hit can be made from the main hand, the bow's with the other hand empty.
+6. **NPCs** have no hands rule (they have no Weapon Attack).
+7. The Talent that removes the off-hand Banes (the set-aside Ambidextrous) and anything that pays for fighting with two weapons: the Blades pass.
+
+**For Lucas:** the texts; Darting Blade's Special line; rulings 1 and 2. Then his word to put the bows and Light into the book.
+
 **Lucas's answer:**
+
+## The whole pack so far: what is decided (2026-11-16, before applying)
+
+**Mastery** (replaces Chapter 15's): a Mastery for each weapon; when your side wins an encounter that was normal or harder, 1 Mastery with one weapon you made a [Strike] Action with in it; never lower than half your highest Mastery with a weapon of its group; every weapon's unlocks at 10 (its Technique), 20, 30, 45, 60, fewer on a deeper weapon; an Advanced weapon's Strikes Doomed below 10 with it, an Exotic one's below 20. Expert and Master are gone for the bows (Master for all weapons). The Archer's Starting Mastery: 5 with one Projectile weapon.
+
+| Name | Group | Properties | Type | Range | Damage | Rung |
+|---|---|---|---|---|---|---|
+| **Hunting Bow** | Bows | Projectile, Ranged, Strung | Pierce | 8 / 16 / 24 | [V] 0 / 1 + 1d4! / 2 + 1d4! | Basic |
+| **Recurve Bow** | Bows | Projectile, Ranged, Strung | Pierce | 6 / 12 / 18 | [V] 0 / 1 + 1d4! / 1 + 1d6! | Basic |
+
+**Wounding Shot** (Hunting Bow, Mastery 10) · Round · 1 AP · Weapon, Ranged, Projectile, Strike · Distance: Weapon | Target: One creature · Requirement: You haven't left your square this turn. · Attack: Weapon vs. Armor Defense · Tier 1: [V] [Mod]. · Tier 2: [V] 1[W] + [Mod]; Bleed 1 (Bo/In). · Tier 3: [V] 1[W] + [Mod]; Bleed 2 (Bo/In). · *You hold your ground until your foe shows its flank, and put a broad-headed arrow where the wound will not close.*
+
+**Circling Shot** (Recurve Bow, Mastery 10) · Round · 1 AP · Weapon, Ranged, Projectile, Strike · Distance: Weapon | Target: One creature · Setup: You Evade 1. · Attack: Weapon vs. Armor Defense · Tier 2: [V] 1[W]. · Tier 3: [V] 1[W] + [Mod]; you Evade 1 to a square that is no farther from the target. · *You circle your foe as you draw, and loose from the side it has left open.*
+
+**Hands, Light, Strung, Darting Blade:** the texts above. **Light weapons:** Dagger, Handaxe (placeholders, like every weapon but the two bows).
+
+**Not written, on purpose:** the bows' unlocks at 20, 30, 45 and 60 (candidates: Blood Trail; the shot inside an Evade 2); the four later bows; the Stage Modifiers (rules-backlog). **To close when applied:** "left your square" for a creature bigger than one square (Chapter 3).
 
 ## Research
 
