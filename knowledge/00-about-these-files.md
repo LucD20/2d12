@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: a04bcb2 2026-11-16 The Archer's redesign in the book: 19 cards, the Archer document rewritten; Line of Effect needed for every effect; Shot and Gun renamed Projectile and Firearm; Light as a weapon property
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 70341d6 2026-11-16 README: both classes have the redesigned document shape
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,7 +15,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (163 KB)
+- HANDOFF.md (164 KB)
 - MASTER-PLAN.md (40 KB)
 - open-design-items.md (183 KB)
 - rules-01-roll.md (26 KB)
@@ -64,7 +64,7 @@ Files:
 - design-playtest-4.md (3 KB)
 - design-rework-r.md (57 KB)
 - design-progression-lv.md (13 KB)
-- design-class-charter.md (14 KB)
+- design-class-charter.md (18 KB)
 - design-paladin-redesign.md (161 KB)
 - design-decisions-s1.md (10 KB)
 - design-base-building.md (7 KB)

@@ -87,3 +87,34 @@ The book's shape for levels 1 to 3 stays (Chapter 5); the redesign adds the Arts
 7. **DECIDED, as a try ("we can try that. Need to be careful to not lose the identity").** The pieces that make the class are Features every character has; the Hallmark choice is a style. For the Paladin it means the mark, the Rally Point touch and the burst are not behind an either / or (`paladins-other-games.md`, takeaway 8). Or: keep today's "Smite or Lay On Hands" split.
 8. **DECIDED ("makes sense").** 3 Encounter Actions offered (4 today), 2 Passives a rung (2 or 3 today).
 9. **DECIDED: test both.** Where a level 1 character's burst lives. The Encounter Pick comes at level 2 and the Apex at level 4, so a level 1 Paladin has no "explode". Default: **a class whose brief has a burst gets it small at level 1, inside a Feature**, and the Encounter Pick is the bigger one. Or: that class takes its Encounter Pick at level 1 (the old charter's answer).
+
+## Rules learned in the two redesigns (the Paladin and the Archer, 2026-11-14 to 16; Lucas's, for every later class and for the weapons)
+
+**How to work a class.**
+1. **His brief first, in his words;** a table of each of its lines against the cards it asks for. Research on the brief before any card (`book/research/`), then one decision at a time: the numbers, the mechanic, the two Features, the Hallmark Actions, the Hallmark Reactions, the Arts (themes first), the Escalation abilities (the ladder first) and the hook, the Encounter Picks (themes first), then the whole class on one page.
+2. **A record and a reading page a class:** `book/cards/<class>-redesign.md` (every decision with his words) and `book/cards/<class>-desk/index.html` (an artifact: "What I need from you now" on top, the cards drawn in the Structure, the price tables). Both updated with every decision.
+3. **When he asks about a mechanic: the rules and `book/research/` first, a search only for what they lack.** Before pricing how often something happens, look at what the ruler has measured (`book/ruler/reactions.md`: a Reaction on "moves closer" fires in 56 to 73% of rounds).
+4. **A structural choice is offered three ways;** a card's choices list every candidate the rules offer, the rejected ones with their reason.
+5. **He answers "Proposed" for yes.** A change of his is applied and the card is then decided; nothing goes into the book until he says so.
+
+**How a card is written** (the Structure: `book/cards/card-structure.md`).
+6. **Don't invent a word the book already has** ("arrows" were [W]: "2[W]" is the weapon twice).
+7. **Every Tier's line holds its whole result; a Tier 3 adds something beyond the weapon's own Tier 3 damage** (a rider, one more [W]); a Tier 1 can deal [Mod] ("[V] [Mod]", no subtype: the Modifier takes the weapon's).
+8. **Fixed dice are written on the Tiers; a named value ("Smite dice") only when the count changes.**
+9. **A few cards get their own Critical entry, to be unique; no Critical line a class.** A Critical is about 3% of rolls.
+10. **A second Version only when it does a different thing, never a bigger one** (`book/research/versions-criticals.md`). The Arts' Modes are that idea at one cost.
+11. **A Passive's sentence has no "While your Escalation is N or more":** the bar says it.
+12. **Durations are EoT or rounds only;** no "until your next turn", no "save ends".
+13. **A weapon property is written before the word "weapon":** "a Light weapon", capitalized, no brackets.
+14. **A lasting area names the side it affects in its sentence** ("Difficult Terrain for enemies") and has no Target line; the Target line is for whom the Action affects when it is used.
+15. **Line of Effect is needed for everything a card does to a creature,** on the Target line or in the text; "(no Line of Effect needed)" is the exception. An effect on one creature that others gain from (Vulnerable, Call Out) needs no line to the others.
+16. **A Reaction has a Target line and its Interrupt or Trigger is written about "the target".** A trigger that fires most rounds is disruptive (an extra roll outside anyone's turn every round): choose a rarer moment.
+17. **Flavor describes what is done and seen** ("You..."), never a mood line.
+
+**What a class should be.**
+18. **No one best button:** the turn is built from several Round cards; one roll, several hits beats several rolls (his playtest: Double Shot was "quite boring").
+19. **A pair to choose from differs in shape, not in role** (depth against width; flee or shoot), and the two are the same size.
+20. **Teamwork even in a class that stands alone** (the Archer's Clear Lines, Opening Shot, Call Out).
+21. **No silent bonuses, no tracking across turns** if a "this turn" or "once a round" will do.
+22. **A cost of the class's range or role is never erased for free** (Cover, Doomed while Engaged): a card lifts it for a price.
+
