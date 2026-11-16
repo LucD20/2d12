@@ -596,7 +596,7 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 
 **THE RECURVE BOW IS DONE FOR STAGE 0** (row, Circling Shot; its unlocks at 20, 30, 45 and 60 are written with Stage 1; the shot inside an Evade 2 is the candidate for 20).
 
-## Decision 13: Master is dropped; what Stage 2 gives weapons in its place (PROPOSED 2026-11-16, three ways, waiting for Lucas; no number decided before Stage 2 is written)
+## Decision 13: Master is dropped; Stage 2's hitting goes to the Modifiers (DECIDED 2026-11-16)
 
 **Lucas (2026-11-16):** "Master: Hmm... What if we drop it, and instead either make the flat number of weapons raise, or double the exploding die only at Stage 2? At least players will feel some progression and fighting a lower Stage enemy will feel good, seeing the 'progression'."
 
@@ -643,6 +643,51 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 **PROPOSED:** **Master is dropped and weapons get nothing in its place.** Stage 2's hitting is a question for Chapter 5's Stage table, with Stage 1 and 2: logged in `rules-backlog.md` with this table. The one thing to solve there: "a Modifier is never above +4" and Stage 3's "+1 to both" (a Weapon Modifier of +2, +3 at Stage 1, +4 at Stage 2 would have nothing left at Stage 3); a candidate: +1 to one Modifier at each of Stages 1, 2 and 3, never above +4.
 
 **For Lucas:** yes to that (Master out, nothing on the weapons, the Modifier question logged for the Stages)?
+
+**Lucas's answer (2026-11-16):** "I think we should do: +1 to one at Stage 1; +1 to both at Stage 2. For Stage 3, we can plan something else. Log this because this is for the future, but lets drop Master for weapons. Lets do Light property." **DECIDED: Master is dropped for weapons; nothing on the weapons in its place.** For the future, logged in `rules-backlog.md` (the top entry): Stage 1 +1 to one Modifier, Stage 2 +1 to both, Stage 3 something else.
+
+## Decision 14: the Light property in full (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+
+**What exists.** Chapter 15 (minimal, since the Archer): "A Light weapon is a small melee weapon held in one hand, quick to draw and to put away, such as a Dagger. Some Actions need one (the Archer's Darting Blade)." The Dagger has it. Cards that name it: Darting Blade, Hit and Run. Decided on 2026-10-31 and never applied: an off-hand Bane of 2 on Weapon Actions, 1 for light weapons; "Daggers (light)" as a group of their own. The book today: "Which hand holds a weapon changes nothing in the rules, unless a feature says so."
+
+**The research** (`weapons-bows-light.md`, Q2): in five of the seven games read, "light" is a pairing rule: it says what a second weapon in the other hand does (an extra attack, a smaller penalty on later attacks, permission for powers). Free draw is nobody's Light property: where drawing is cheap it is cheap for every weapon. The rapier and the club are the edge cases of where light stops.
+
+### Three ways
+
+**1, the sidearm (Claude's pick): Light is the weapon that comes to hand.**
+
+> #### Light
+> A **Light** weapon is a small melee weapon you hold in one hand, such as a Dagger or a Handaxe. A Light weapon is never Two-handed or Long.
+> **Quick to hand.** Once on each of your turns, you can draw or stow a Light weapon without using the Interact Action. You still need a free hand to draw it.
+> Some Actions need a Light weapon, such as the Archer's Darting Blade.
+
+**2, the second weapon: Light is the weapon for the other hand.** The 2026-10-31 decision brought in: Weapon Actions with the weapon in your off hand take 2 Banes, 1 with a Light weapon (a Strung weapon only when your main hand holds something). It is what "light" means in most games. Against: it adds a penalty the book doesn't have (today two weapons cost nothing), and with it main hand and off hand to every sheet, for a way of fighting no card pays for yet.
+
+**3, a tag only:** today's text, with the list of weapons. Nothing to learn; Light then does nothing outside the Archer's two cards, which is what he asked to go beyond.
+
+### Which weapons
+
+| Weapon | Light? | Why |
+|---|---|---|
+| **Dagger** | yes (it has it) | the model |
+| **Handaxe** | **yes** | one hand, small, thrown; light in every game read. It gives a second Light weapon with another shape (2 + 1d4! / 2 + 1d8!, a swingy Tier 3, against the Dagger's 2 + 1d4! / 4 + 1d4!), so Darting Blade has a choice |
+| Mace, Longsword, Spear | no | one-handed, not small: the full-size weapons |
+| Knuckle Dagger | no | Barehanded: it is never drawn or stowed, so "quick to hand" means nothing for it, and Darting Blade's "draw a Light weapon" couldn't use it |
+| Fists | no | not drawn; Non-threatening |
+| Hand Crossbow, Pistol | no | Light is a melee property (the Setup of Darting Blade relies on it) |
+| Later (the Blades and other groups' passes) | | a short sword, a sickle, a club, a light hammer: yes; a rapier: no (the research's test case: quick, not small) |
+
+### Analysis (way 1)
+
+- **What it does beyond Darting Blade.** For every class, a Light weapon is the sidearm: the Paladin who drops to a knife in a doorway, the bow-user who isn't an Archer (turn one: draw free, stab; turn two: stow free, shoot; the Archer's card does both in one). It is the book's old Expert unlock (Mastery 8, removed from the bows) given to the weapons it suits, with no Mastery.
+- **Priced.** An AP (about 12 points) on a turn you change weapon; nothing on the others. [judgment]; Lucas's rate for a compression.
+- **The golf bag** (the research's warning: a trick a weapon plus free draws). Limited three ways: once a turn; only Light weapons; and a second weapon's Technique needs its own Mastery (half your best in the group, and nothing from another group). A character who throws a Dagger and draws the next for free each turn is making a thrown attack at 1 less damage and range 4: allowed, and not better than a bow.
+- **With Strung.** A Light weapon in your other hand is "something held": the bow's Strikes take 3 Banes while it is out. No exception for Light: that cost is why Darting Blade puts the knife away again.
+- **Darting Blade, read again with Strung** (a decided Archer card; his call). Its Setup says "You stow your bow and draw a Light weapon", written when a bow took two hands. A Strung bow stays in its hand. The card works as written (stowing the bow is allowed, only not needed); the shorter text would be "**Setup:** You draw a Light weapon." and "**Effect:** You Evade 2, then can stow that weapon." Flavor to match: "You shift the bow to one hand, open a foe with the knife, and are gone before it turns."
+- **Why not 2 now.** The pairing rule is the right home for two-weapon fighting, and it belongs with the Blades pass and the cards that will pay for it (the set-aside Ambidextrous Talent). One note for then: "a Strike with the other weapon is cheaper after a Strike with the first" is already the Archer's Blade and Bow. The 2026-10-31 off-hand decision stays parked, not withdrawn.
+- **Every other thing Light could do, with its reason:** a smaller At-will Bane (a silent bonus, and it makes the Dagger the weapon to spam); an extra Weapon Attack with the second weapon (a multi-roll flurry); hidden on your person (a good one, waits for the Skills design); usable while Grabbed (the rules don't stop any weapon there, so nothing to lift); no Banes on a Strung bow while you hold it (erases Strung's cost); a damage rule ("a Light weapon's die is a d4": true of both today, but the Handaxe's Tier 3 is a d8, and a table can say it better than a rule).
+
+**For Lucas:** way 1, 2 or 3; the Handaxe as Light; Darting Blade's shorter text, or as it is.
 
 **Lucas's answer:**
 
