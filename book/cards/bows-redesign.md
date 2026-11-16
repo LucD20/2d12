@@ -702,7 +702,7 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 > You have two hands: your **main hand** and your **off hand**. You choose which is which when you make your character. [Strike, Weapon] Actions with a weapon you hold in your off hand take **2 Banes**. A weapon you hold with both hands doesn't take them.
 
 > **Light**
-> A **Light** weapon is a small melee weapon you hold in one hand, such as a Dagger or a Handaxe. A Light weapon is never Two-handed or Long. In your off hand, a Light weapon takes **1 Bane** instead of 2. Some Actions need a Light weapon, such as the Archer's Darting Blade.
+> A **Light** weapon is a small melee weapon you hold in one hand, such as a Dagger or a Handaxe. In your off hand, a Light weapon takes **1 Bane** instead of 2. Some Actions need a Light weapon, such as the Archer's Darting Blade.
 
 > **Strung**
 > You hold a **Strung** weapon in one hand and draw it with the other: [Strike, Weapon] Actions with it take **3 Banes** while your other hand holds something. A Strung weapon in your off hand takes the off-hand Banes only while your main hand holds something.
@@ -744,7 +744,19 @@ Way 2: 20 + an Evade 2 (about 18) = 38 or more. Way 3: 25 + 3 for the push + [no
 
 **For Lucas:** the texts; Darting Blade's Special line; rulings 1 and 2. Then his word to put the bows and Light into the book.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16):** "Remove 'A Light weapon is never Two-handed or Long'. Rules-wise, is this 'A Strung weapon in your off hand takes the off-hand Banes only while your main hand holds something.' rule necessary? 1. See above. otherwise, good. 2. Good. 3. Sure for now, Fists I think are in a weird place, log to review it later. 4. See above." **DECIDED:** the Hands and Light texts (Light without that sentence: done above), Darting Blade with its Special line, Fists at 1 Bane and the main hand fixed at creation "for now" (Fists logged for review: `rules-backlog.md`).
+
+**His question on Strung's second sentence: answered, one choice left (PROPOSED).** As written, no: the game works without it. But something has to stand there, because of what its absence does:
+
+| | Bow in your off hand, main hand free | Bow in off hand, Dagger in main | Bow in main hand, Dagger in off | What players do |
+|---|---|---|---|---|
+| **a, the sentence as written** | bow 0 | bow 3 + 2 = 5 · Dagger 0 | bow 3 · Dagger 1 | bow in the off hand |
+| **b, no sentence** | bow **2** | bow 3 + 2 = 5 · Dagger 0 | bow 3 · Dagger 1 | bow in the main hand, always; so the Dagger is always in the off hand: **Darting Blade takes 1 Bane every time** |
+| **c, a shorter one (Claude's pick): "A Strung weapon never takes the off-hand Banes."** | bow 0 | bow 3 · Dagger 0 | bow 3 · Dagger 1 | bow in the off hand |
+
+**Why c:** it takes both hands to shoot a bow, so which hand holds it shouldn't matter: one short sentence, no sum of 5, and Darting Blade is not taxed. It differs from a in one case only (the bow shot with a Dagger in the main hand: 3 Banes in place of 5), a shot nobody takes on purpose.
+
+**Waiting for Lucas:** a, b or c; and his word to apply (his "4. See above" is read as: once this is settled).
 
 ## The whole pack so far: what is decided (2026-11-16, before applying)
 
