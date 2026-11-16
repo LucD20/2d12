@@ -116,7 +116,7 @@ Swords are a group of their own, without the Dagger. Only the two Basic swords g
 |---|---|---|---|---|---|---|
 | **Arming Sword** | Swords | Melee | Slash | 1 | [V] 0 / 3 + 1d4! / 4 + 1d6! | Basic |
 
-## Decision 3: the Arming Sword's Weapon Technique (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+## Decision 3: the Arming Sword's Weapon Technique (DECIDED 2026-11-16: way 1 with his two changes)
 
 **What it has to do.** One roll; the sword's own thing seen on most uses; a choice attached to using it; no copy of a class card. The line's identity (decision 1): a free hand, speed. What the classes already use on their cards: Immobilized, Hindered, Taunted, Pushed, Prone, Frightened, Half-Blinded, Guard for allies (Paladin); Hindered, Immobilized, Vulnerable, Pushed, Staggered, Prone, Evades (Archer); Bleed and a step before the shot (the bows). **Not on any card: Slid (on an enemy), Grabbed.** And the rules already have a free-hand move that nobody compresses: Shove (Round, 1 AP, a Body roll, Pushed 1 / 2, needs a free hand).
 
@@ -161,5 +161,44 @@ A Weapon Attack is 25 points; an AP about 12; a Round card's band is 25 to 33.
 - **Not on the card, on purpose:** a Tier 1; a size limit; a second Version.
 
 **For Lucas:** way 1, 2 or 3; in way 1: the Tier 2 without [Mod], the Tier 3 (Grabbed, or Slid 2), and the name.
+
+**Lucas's answer (2026-11-16): "1, but what if we put reposition in Tier 1? So at least you can move the creature around you. And change to 'Requirement: You have at least one hand free.'" SEIZING CUT IS DECIDED:**
+
+> **Seizing Cut** · Round · 1 AP
+> *You catch your foe's arm with your empty hand, cut, and turn it to where you want it standing.*
+> Weapon · Melee · Strike
+> Distance: Weapon | Target: One creature
+> **Requirement:** You have at least one hand free.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** Reposition 1 the target.
+> **Tier 2:** [V] 1[W]; Slid 1.
+> **Tier 3:** [V] 1[W] + [Mod]; Slid 1, then Grabbed.
+
+**What his two changes do.**
+- **A Tier 1 that moves.** Reposition is the gentle move (Chapter 3): any direction, no Reactions, but never into Hazardous Terrain or a Deadly Hazard and no Collision damage; a Slid can do both. So the card reads as a ladder: you turn him (Tier 1), you throw him where it hurts (Tier 2), you throw him and keep hold (Tier 3). The card now does something on every roll. "Reposition 1 the target" is Hold the Line's wording. (His "around you" is read as the reason, not a limit: the square can be any adjacent to the target's, not only one beside you. One word to add if he wants the limit.)
+- **"You have at least one hand free"** is the book's own phrase for Handle Actions, and it stays true for a creature with more than two hands. While you hold a Grabbed foe that hand is not free, so with a one-handed sword you can't use Seizing Cut again until you let go.
+- **The price moves up:** the Tier 1 is worth about 3 to 4 points [judgment: a third of the uses, a move a little under a Shove's]. Total about 37, over the Round band's 33 and over the two bows' Techniques (26 to 34). Left as he decided; if a playtest or the SIM shows it too strong, the first thing to trim is the Tier 2's Slid to a Reposition (hazards and Collision stay a Tier 3 prize).
+
+**The Tier 3 (Grabbed, not Slid 2), the Tier 2 without [Mod] and the name were not objected to: decided as proposed.** THE ARMING SWORD IS DONE (row, Technique).
+
+## Decision 4: the Longsword's table row (PROPOSED 2026-11-16, waiting for Lucas)
+
+| Name | Group | Properties | Type | Range | Damage | Rung |
+|---|---|---|---|---|---|---|
+| **Longsword** | Swords | Melee, Two-handed | Slash | 1 | [V] 0 / 6 + 1d4! / 9 + 1d6! | Basic |
+
+**The level it has to sit on.** A two-handed melee weapon averages 9 on a Tier 2 and 13 on a Tier 3 (decided 2026-11-12: two hands are 4 over ranged's level, 3 and 5 over one hand; the placeholder Greatsword and Maul are there). A d4! averages 3, a d6! 4, a d8! 5.
+
+| | Row | Tier 2 / Tier 3 | Shape | For / against |
+|---|---|---|---|---|
+| **1 (Claude's pick)** | 0 / 6 + 1d4! / 9 + 1d6! | 9 / 13 | the Arming Sword's dice (a d4, then a d6) on bigger flat numbers | one thing to learn for the pair: "the same dice, 3 and 5 more"; flat, as he asked; a Tier 3 still shows a bigger die. Against: the two-hander swings no more than the one-hander |
+| 2 | 0 / 5 + 1d6! / 8 + 1d8! | 9 / 13 | each die one size above the Arming Sword's | the bigger sword rolls bigger dice; the placeholder Greatsword's row. Against: less flat |
+| 3 | 0 / 6 + 1d4! / 10 + 1d4! | 9 / 13 | the flattest | Against: a Tier 3 is the same die with 4 more: nothing in the hand changes |
+
+**What a Weapon Attack deals with row 1** (against Defense 13): a Paladin (Weapon +1) about 7.5, against 5.0 with the Arming Sword; a class with Weapon +2 about 9.0, against 6.3. So two hands are about half again the damage of one, for the free hand: no Seizing Cut, no Handle Action without letting go (Release, 0 AP; Regrip, 1 AP, to take the sword in both hands again), nothing in the other hand later.
+
+**The rest of the row:** Melee and **Two-handed** (in one hand its Strikes take 3 Banes: the book's rule, unchanged); Slash; Range 1 (reach is the Zweihänder's and the Polearms'); Basic. The name Longsword now means this sword; the placeholder Greatsword's row goes when it comes in.
+
+**For Lucas:** the row; 1, 2 or 3 for the damage.
 
 **Lucas's answer:**
