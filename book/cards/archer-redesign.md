@@ -911,7 +911,7 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 > **Attack:** Weapon vs. Armor Defense
 > **Tier 1:** [V] [Mod].
 > **Tier 2:** [V] 1[W] + [Mod].
-> **Tier 3:** [V] 1[W] + [Mod]; Staggered (EoT). *
+> **Tier 3:** [V] 1[W] + [Mod]; Staggered (EoT).
 > **Effect:** You Evade 2, then can stow that weapon and draw your bow.
 
 ### Level 1: a Hallmark Action (1 of 2)
@@ -921,10 +921,10 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 > Weapon · Ranged · Projectile · Strike
 > Distance: Weapon | Target: One creature
 > **Attack:** Weapon vs. Armor Defense
-> **Tier 1:** [V] [Mod] Pi.
+> **Tier 1:** [V] [Mod].
 > **Tier 2:** [V] 2[W] + [Mod].
 > **Tier 3:** [V] 3[W] + [Mod].
-> **Critical:** You regain 1 AP. *
+> **Critical:** You regain 1 AP.
 > **Effect:** You Evade 2.
 
 > **Strafe** · Round · 2 AP
@@ -933,9 +933,9 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 > Distance: Weapon | Target: Up to three creatures
 > **Setup:** You Advance.
 > **Attack:** Weapon vs. Armor Defense
-> **Tier 1:** [V] [Mod] Pi.
+> **Tier 1:** [V] [Mod].
 > **Tier 2:** [V] 1[W] + [Mod].
-> **Tier 3:** [V] 1[W] + [Mod]; Pushed 1. *
+> **Tier 3:** [V] 1[W] + [Mod]; Pushed 1.
 
 ### Level 1: a Hallmark Reaction (1 of 2)
 
@@ -951,9 +951,9 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 > Distance: Weapon | Target: One enemy
 > **Interrupt:** The target would enter a square adjacent to you.
 > **Attack:** Weapon vs. Armor Defense
-> **Tier 1:** [V] [Mod] Pi.
+> **Tier 1:** [V] [Mod].
 > **Tier 2:** [V] 1[W] + [Mod]; Hindered (EoT).
-> **Tier 3:** [V] 1[W] + [Mod]; Immobilized (EoT). *
+> **Tier 3:** [V] 1[W] + [Mod]; Immobilized (EoT).
 
 ### Level 1: an Art (1 of 3; a second at level 3)
 
@@ -972,12 +972,12 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 > Distance: Weapon | Target: One creature
 > **Attack:** Weapon vs. Armor Defense
 > — **Pin** —
-> **Tier 2 or 3:** [V] [Mod] Pi; Hindered (1 round).
+> **Tier 2 or 3:** [V] [Mod]; Hindered (1 round).
 > — **Startle** —
-> **Tier 2 or 3:** [V] [Mod] Pi; Vulnerable 1 (EoT).
+> **Tier 2 or 3:** [V] [Mod]; Vulnerable 1 (EoT).
 > — **Knock Back** —
-> **Tier 2:** [V] [Mod] Pi; Pushed 1.
-> **Tier 3:** [V] [Mod] Pi; Pushed 2.
+> **Tier 2:** [V] [Mod]; Pushed 1.
+> **Tier 3:** [V] [Mod]; Pushed 2.
 
 > **Spotter** · Round · 1 AP
 > *You read the field the way others read a page: where a foe hides, where the gap in its cover is, where you yourself are hardest to hit.*
@@ -1012,15 +1012,16 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 > Weapon · Ranged · Projectile · Area · Strike
 > Distance: Weapon · Area: 3 Burst | Target: All creatures in the Area
 > **Attack:** Weapon vs. Armor Defense
-> **Tier 1:** [V] [Mod] Pi.
+> **Tier 1:** [V] [Mod].
 > **Tier 2:** [V] 2[W] + [Mod]; Hindered (EoT).
 > **Tier 3:** [V] 3[W] + [Mod]; Hindered (EoT).
-> **Critical:** The target is Prone. *
+> **Critical:** The target is Prone.
 > **Effect:** You Evade 2.
 
 > **Hit and Run** · Encounter · 2 AP
 > *You run the length of the fight with the knife out, opening every foe you pass, and somewhere along the way an arrow leaves your bow.*
 > Weapon · Projectile · Move · Strike
+> Target: Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range
 > **Effect:** You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a Light weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action.
 > **Attack:** Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll.
 > **Tier 1:** [V] [Mod].
@@ -1071,4 +1072,13 @@ Every card in its final text. **Numbers:** Weapon +2 · Power +1 (fixed) · Heal
 - **Teamwork:** Clear Lines, Opening Shot, Call Out, Startle, Covering Fire, Thrill of the Kill (the party's kills count).
 - **19 cards:** 2 Features, 2 Hallmark Actions, 2 Hallmark Reactions, 3 Arts, 6 Escalation abilities, the hook, 3 Encounter Actions. A character holds 9 at level 3.
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-16): "All looks good; see if any is missing Attack entry, or any other entry." THE FIVE NEW LINES ARE DECIDED** (Darting Blade's Staggered, Strafe's Pushed 1, Snap Shot's Immobilized, the Criticals of Quick Shots and Volley).
+
+**The check of every card against the Structure (2026-11-16):**
+- **The Attack line:** all seven cards with Tiers have one (Darting Blade, Quick Shots, Strafe, Snap Shot, Trick Shots, Volley, Hit and Run). No card rolls a Save. The cards with no roll have no Attack line and need none (the Passives, Slip Away, Footwork, Spotter, Covering Fire).
+- **FIXED: Hit and Run had no Target line.** Its targets were only in the Effect's sentence, and Chapter 2 says only the Target line makes a creature a target. Added: "Target: Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range" (the Effect and the roll are unchanged).
+- **FIXED: the Tier 1 lines were written two ways** ("[V] [Mod] Pi" on the bow cards, "[V] [Mod]" on the blade cards). All are now "[V] [Mod]" (8 lines): Chapter 1 already says the Modifier on a Weapon Action "joins the weapon's damage and keeps its damage type and subtype", so the subtype needn't be written, and a bow that isn't Pierce stays right.
+- **Checked and left:** *the Move trait* is on Hit and Run and on Footwork's Weave, where the whole card or Mode is an Advance, and not on Strafe or Slip Away, where the Advance is one part: a Linked Action keeps its own traits (Chapter 2), so the Advance inside them is a Move by itself; the Paladin's Lay On Hands and Reckoning are written the same way. *Covering Fire has no Target line* on purpose (his question, answered above). *Slip Away has no traits*: nothing in it needs one. *Distance and Target* are absent only where the card or Mode affects him alone.
+- **Every Reaction has its Target line and its Interrupt written about "the target".** Every Strike says its Defense.
+
+**The whole Archer is decided. Nothing is in the book, the card files or Foundry; waiting for his word to apply.**
