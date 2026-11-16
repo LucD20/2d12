@@ -569,4 +569,32 @@ About 4 to 6 a turn [judgment: a Boon on one ally's Strike]. It is Harry made in
 
 **For Lucas to choose:** the three new cards; where each sits (he said it needn't be Escalation 2); whether Blade and Bow stays; the two Escalation 6 ideas.
 
+**Lucas's answer (2026-11-16):** Opening Shot, his wording: "Once a round, when you damage a creature with a [Ranged, Strike] Action, one ally who threatens it can make a Weapon Attack (1AP) against it as a 1R." "Make a quick check if Clear Lines would be too strong." "Others are fine" (**Lean and Loose and Blade and Bow are DECIDED for Escalation 2**). Escalation 6: "Instead of a fourth strike, maybe we just do increase weapon dice by one on one attack per turn?"
+
+**The check on Clear Lines: not too strong; a little under.** One Field Bane moves his Tiers from 28 / 51 / 21% to 35 / 48 / 17%: Quick Shots drops from 9.6 to 8.7 damage (9%). If about two thirds of his shots are at a target Engaged with an ally, and a few more have an ally on the line, lifting those Banes is worth about 1 to 1.4 damage a turn: **about 4 to 5 points, of a Passive's 5 to 10** [computed from the Tier odds; the share of shots is judgment]. Its real effect isn't the number: it removes one reason to move (the clean line past an ally). Shifting Aim gives him another, and walls and enemies in the line still count. **Clear Lines stays as written.**
+
+**Opening Shot, his version, checked:** an ally's Weapon Attack is worth 25 points; it costs that ally their Reaction AP, which is worth 10 to 15 when they have a Reaction to spend it on and nothing when they don't. So about 10 to 25 points a round, from Escalation 4: **over a Passive's 5 to 10, by two to three times.** And it fires nearly every round (he damages something an ally threatens almost every turn), which is an extra attack roll outside anyone's turn every round: the thing he found disruptive in Overwatch. It is the best teamwork on the list (4e's Commander's Strike is the model players loved), so it is worth keeping and gating:
+
+> **Opening Shot** · Escalation 4 · Passive
+> *Your arrow staggers the foe, and your ally's blade is already coming.*
+> **Passive:** Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Weapon Attack (1A) against it.
+
+A Tier 3 is 21% of his shots; with two or three shots a turn it fires in about half the rounds: about 6 to 12 a turn, and half the extra rolls. (Other gates: once an encounter; or at Escalation 6.)
+
+**Escalation 6, his idea:**
+
+> **One More Arrow** · Escalation 6 · Passive
+> *By now your hands move faster than you can think: there is always one more arrow in the air.*
+> **Passive:** Once on each of your turns, a [Strike] Action of yours that deals [W] deals 1[W] more.
+
+1[W] with a Shortbow is 4.2 to 5.2, on the 72% of Strikes that reach Tier 2: about 3.4 damage, about 12 points a turn, at Escalation 6 only (round 6, or earlier with Momentum and the hook). It is the class's line in one sentence, simpler than a fourth Strike, and it adds no roll.
+
+**The ladder now:**
+
+| Rung | One | The other |
+|---|---|---|
+| Escalation 2 (level 1) | **Lean and Loose** (decided) | **Blade and Bow** (decided) |
+| Escalation 4 (level 2) | **Clear Lines** (checked: stays) | **Opening Shot** (his version, gated on a Tier 3: for his word) |
+| Escalation 6 (level 3) | **One More Arrow** (his idea, written) | a 0 AP Encounter Action: one arrow into every enemy near him, on the run (to design) |
+
 **Lucas's answer:**
