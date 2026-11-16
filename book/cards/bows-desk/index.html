@@ -1,0 +1,195 @@
+<title>Bow Remake Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Signika:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column, a sticky row of section links, ruled sections like a printed rulebook page.
+   Dark first (the system's table look); the light set is the chat card's parchment. */
+:root{
+  --bg:#15171b; --panel:#1c1f25; --line:#343a44; --fg:#e4e1d8; --dim:#a09d94;
+  --gold:#d2a94e; --holy:#e7c873; --ok:#7fb486; --open:#e08a55; --quote:#b9c4d6;
+  --display:"Cinzel",Georgia,serif; --text:"Signika","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light }
+body{background:var(--bg);color:var(--fg);font-family:var(--text);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:46rem;margin:0 auto;padding-block:1.5rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-size:1.9rem;line-height:1.15;margin:0 0 .3rem;color:var(--holy);text-wrap:balance}
+.sub{color:var(--dim);margin:0 0 1rem}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-block:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.2rem 1rem;padding:.55rem 0;margin-bottom:1.5rem}
+nav a{color:var(--fg);text-decoration:none;font-weight:500}
+nav a:hover,nav a:focus-visible{color:var(--gold);outline:none;text-decoration:underline}
+section{margin-top:2.4rem;scroll-margin-top:4rem}
+h2{font-size:1.3rem;font-weight:600;margin:0 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--gold);text-wrap:balance}
+h3{font-size:1.05rem;font-weight:600;margin:1.4rem 0 .4rem;color:var(--holy)}
+p{margin:.5rem 0}
+ul,ol{margin:.4rem 0;padding-left:1.3rem}
+li{margin:.3rem 0}
+strong{font-weight:600}
+.tag{font-weight:600;white-space:nowrap}
+.tag.ok{color:var(--ok)} .tag.open{color:var(--open)}
+table{border-collapse:collapse;width:100%}
+.scroll{overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem .45rem 0;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:500}
+blockquote{margin:.5rem 0;padding:.1rem 0 .1rem .9rem;border-left:2px solid var(--line);color:var(--quote)}
+blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
+.need{background:var(--panel);border:1px solid var(--line);padding:.9rem 1.1rem;margin:.6rem 0}
+.need ol{margin:0}
+/* a card: the book's stat block, plain */
+.card{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.card .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.card .bar span:last-child{color:var(--dim);font-weight:400}
+.card .v{display:grid;grid-template-columns:3.4rem 1fr;gap:.6rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.card .v:last-child{border-bottom:0}
+.card .v b{color:var(--gold);font-weight:600}
+.card .v div{min-width:0}
+.opt{display:grid;grid-template-columns:1.6rem 1fr;gap:.5rem;margin:.7rem 0}
+.opt>b{color:var(--gold);font-size:1.1rem}
+.opt div{min-width:0}
+.small{color:var(--dim);font-size:.93em}
+.hc{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.hc .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.hc .bar span:last-child{color:var(--dim);font-weight:400}
+.hc .bar span.cost{color:var(--gold);font-weight:600}
+.hc .row{padding:.3rem .8rem;border-bottom:1px solid var(--line)}
+.hc .row:last-child{border-bottom:0}
+.hc .tr{color:var(--holy)}
+.hc .lab{display:grid;grid-template-columns:6.2rem 1fr;gap:.6rem}
+.hc .lab b{color:var(--dim);font-weight:500}
+.hc .grid{display:grid;grid-template-columns:1fr auto;gap:.3rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.hc .grid div{min-width:0}
+.hc .grid .r{text-align:right}
+.hc .zone{border-top:2px solid var(--line)}
+.hc .fine{font-size:.9em;color:var(--dim)}
+.hc .ver{font-weight:600;color:var(--gold);border-top:2px solid var(--line)}
+.hc .new{background:color-mix(in srgb,var(--gold) 12%,transparent)}
+.hc .new i{color:var(--gold);font-style:normal;font-size:.9em}
+.hc .stub{color:var(--dim);font-size:.9em;font-style:italic}
+</style>
+
+<div class="wrap">
+<h1>Bow Remake Desk</h1>
+<p class="sub">Where the bows stand, in plain words. Updated 2026-11-16: the first list is proposed. Nothing here is in the book or in Foundry.</p>
+<nav>
+  <a href="#need">What I need</a>
+  <a href="#nofit">What no longer fits</a>
+  <a href="#archer">Against the Archer</a>
+  <a href="#keep">What I would keep</a>
+  <a href="#drop">What I would drop</a>
+  <a href="#brief">The brief</a>
+  <a href="#research">Research</a>
+  <a href="#next">What is left</a>
+</nav>
+
+<section id="need">
+<h2>What I need from you now</h2>
+<div class="need">
+<ol>
+<li><strong>The three lists below:</strong> what no longer fits, what I would keep, what I would drop. Yes, or your changes.</li>
+</ol>
+</div>
+<p class="small">Then the Hunting Bow, one decision at a time: its table row, its Weapon Technique, its ladder.</p>
+</section>
+
+<section id="nofit">
+<h2>What no longer fits <span class="tag open">proposed</span></h2>
+<div class="scroll"><table>
+<tr><th>What</th><th>In weapon-trees.md</th><th>Today</th></tr>
+<tr><td><strong>The prices</strong></td><td>a 5 AP turn; a Weapon Modifier of +3 at level 5 and +4 at level 8; 4.51 DE a Weapon Attack</td><td>4 AP and 1 Reaction AP; +2 for all of Stage 0, +3 from level 4 if you choose it, +4 at level 12. No old number is carried over</td></tr>
+<tr><td><strong>The gates' dates</strong></td><td>Basic in Stage 1, Advanced about level 5, Exotic about level 8, ten levels</td><td>Stage 0 is levels 1 to 3. A Basic bow has about 13 Mastery when it ends: Stage 0 sees the unlocks at 3 and 8 and no others</td></tr>
+<tr><td><strong>The table rows</strong></td><td>[B] 0 / 1d6 / 1d10; the trait Shot</td><td>a flat number plus one exploding die, [V], Projectile. The level to match: Chapter 15's Shortbow, 0 / 1d6! / 1 + 1d6!</td></tr>
+<tr><td><strong>The cards' shape</strong></td><td>columns with "As 1 AP", "Vs: AD", an Effects row, their own dice, Flavor that is a mood</td><td>the Structure; 1[W]; Flavor that says what is done and seen</td></tr>
+<tr><td><strong>Second Versions</strong></td><td>Wounding Shot's bigger Bleed, Plunging Shot's + 1d8, Flurry's third arrow</td><td>a Version does a different thing, never a bigger one</td></tr>
+<tr><td><strong>The Reactions</strong></td><td>five unlocks are "a Weapon Attack for AP you kept"; one costs 2R</td><td>one Reaction AP, and the Archer's Hallmark Reaction wants it; a kept AP is Guard given up. Patient Shot and Loose Together would fire about every round: the extra roll outside the turn you ruled out with Overwatch</td></tr>
+<tr><td><strong>One best button</strong></td><td>Wounding Shot at 1 AP: a Weapon Attack that also deals [Mod] on a Tier 1 and bleeds on a Tier 3</td><td>no round in which a Weapon Attack is the better first shot. And the Archer's turn is already 4 AP of Round cards (a Hallmark Action 2, Darting Blade 1, an Art 1)</td></tr>
+<tr><td><strong>Two ladders</strong></td><td>3, 8, 14, 20, 28, different for each bow</td><td>the book has its own: the Technique at 3, Expert at 8, Master at 15. One has to go</td></tr>
+<tr><td><strong>Rules never put in the book</strong></td><td>Strung, the off-hand Bane, Group Mastery as the gate, Volley N, Arcs, "stops moving in a square"</td><td>each is checked again where a bow needs it</td></tr>
+</table></div>
+<p>The last two rows of the first column are where step 2 starts: <strong>what job does a bow's Technique have in a turn that is already full?</strong></p>
+</section>
+
+<section id="archer">
+<h2>Against the new Archer <span class="tag open">proposed</span></h2>
+<p>Your three tests: no multi-roll flurries, no unlock that copies a class card or its name, nothing that becomes the one best button.</p>
+<div class="scroll"><table>
+<tr><th>In weapon-trees.md</th><th>The Archer card it runs into</th><th>Why</th></tr>
+<tr><td>Flurry of Arrows (Composite) and its three steps</td><td>Quick Shots</td><td>a chain of two or three rolls. The class does many hits on one roll (2[W], 3[W])</td></tr>
+<tr><td>Parthian Shot, Turn and Loose (Recurve)</td><td>Slip Away, Snap Shot</td><td>"an enemy reaches you: step away and shoot" is both Hallmark Reactions in one card, for the same Reaction AP</td></tr>
+<tr><td>Light Feet (Recurve 3): + 1 Speed</td><td>the Archer's Speed + 1</td><td>the name you threw out with the Escalation abilities, and a silent bonus</td></tr>
+<tr><td>Gone Before They Land (Recurve 28)</td><td>Fleet</td><td>the same sentence: each Evade 1 longer</td></tr>
+<tr><td>Close Quarters (Hunting 3): 1 Bane while Engaged</td><td>the Doomed shot while Engaged</td><td>the rule changed (Doomed, not 2 Banes), and a cost of range is never erased for free: Hit and Run itself stays Doomed</td></tr>
+<tr><td>Pinpoint Shot (Flight): legs, arm or eyes</td><td>Trick Shots</td><td>the same card: one shot, a rider you choose</td></tr>
+<tr><td>Steady Draw (Longbow 20); the Flight Bow's "no range Bane"</td><td>Spotter's Find the Gap</td><td>the Archer pays 1 AP for what the unlock gives always</td></tr>
+<tr><td>Plunging Shot, Arrowfall (Longbow)</td><td>Spotter, Volley</td><td>cover lowered and a spotter's call are on the class. The arc itself is still new</td></tr>
+<tr><td>Heavy Shaft's Pushed 1 (Warbow)</td><td>Strafe's Tier 3, Trick Shots' Knock Back</td><td>the same rider a third time</td></tr>
+<tr><td>Quick Nock (Hunting 14)</td><td>Darting Blade, Footwork's Hands Busy, Hit and Run</td><td>the Archer already swaps for free where it matters; and it is the book's Expert unlock under another name</td></tr>
+<tr><td>Snap Release · the old name Hit and Run · the property Volley N</td><td>Snap Shot · Hit and Run · Volley</td><td>names</td></tr>
+</table></div>
+</section>
+
+<section id="keep">
+<h2>What I would keep <span class="tag open">proposed</span></h2>
+<ol>
+<li><strong>The six bows in two lines.</strong> Hunting Bow and Recurve Bow (Basic), Longbow and Composite Bow (Advanced), Warbow and Flight Bow (Exotic). History as flavor, the game decides the numbers. Only the two Basic bows are built now.</li>
+<li><strong>Two Basic bows, the same damage, two ways to play.</strong> The Hunting Bow stands and wounds; the Recurve Bow moves. They replace Chapter 15's Shortbow and Longbow.</li>
+<li><strong>Strung.</strong> A bow held in one hand, the other free to draw. It fits the Archer better than Two-handed did: the hand that draws the string draws the knife. Darting Blade's "stow your bow" is read again with Light.</li>
+<li><strong>Bleed as the Hunting Bow's own thing.</strong> It is in the book (Chapter 8), it has no duration to track (the creature pays an Interact to end it), and no Archer card bleeds.</li>
+<li><strong>The ranges:</strong> normal 8 and 6, far twice that, maximum three times, for maps of about 25 squares.</li>
+<li><strong>What an unlock is:</strong> the Technique, a utility, or a step of the Technique; never extra dice. A Technique writes 1[W]. An Advanced or Exotic bow has its Technique from the day you can use it.</li>
+<li><strong>For the later bows, as ideas only:</strong> the Arcs rule ("can I shoot over it?" should have a rule), the Warbow's Line (one roll, several creatures: the new Archer's own shape), the Flight Bow's range that covers the map.</li>
+</ol>
+</section>
+
+<section id="drop">
+<h2>What I would drop <span class="tag open">proposed</span></h2>
+<ul>
+<li>Flurry of Arrows and its steps (Rider's Stride, Unbroken Rhythm, Storm of the Steppe).</li>
+<li>Parthian Shot and its steps (Turn and Loose, Second Wind, Gone Before They Land).</li>
+<li>Patient Shot and Loose Together.</li>
+<li>Light Feet, Close Quarters, Quick Nock.</li>
+<li>Pinpoint Shot as written.</li>
+<li>Volley N: it measured at 2% of a bow's damage, and it takes the name of an Archer card.</li>
+<li>Every second Version that is only bigger.</li>
+</ul>
+<p class="small">What is left of the old Basic bows after this: the Hunting Bow keeps its row, its range and Wounding Shot's core (a shot that bleeds). The Recurve Bow keeps its row, its range and its idea; its Technique starts again.</p>
+</section>
+
+<section id="brief">
+<h2>The brief</h2>
+<blockquote>The bows in weapon-trees.md were designed before the 4 + 1 AP round, Stage 0, the exploding weapon dice, the card Structure, the new Archer and the trait rename (Shot is now Projectile). Bring them up to today.<cite>Lucas, 2026-11-16</cite></blockquote>
+<div class="scroll"><table>
+<tr><th>Your words</th><th>What it asks</th></tr>
+<tr><td>"before the 4 + 1 AP round"</td><td>every cost and every Reaction checked against 4 AP and 1 Reaction AP</td></tr>
+<tr><td>"Stage 0"</td><td>levels 1 to 3 first: two Basic bows, each with its first unlock</td></tr>
+<tr><td>"the exploding weapon dice"</td><td>a flat number plus one small die, written with "!"; a Technique writes 1[W]</td></tr>
+<tr><td>"the card Structure"</td><td>the bar, the Flavor, the traits, the grid, labeled lines in play order</td></tr>
+<tr><td>"the new Archer"</td><td>no multi-roll flurries; no copy of a class card or its name; no one best button</td></tr>
+<tr><td>"its table row, its Weapon Technique, its ladder"</td><td>three decisions a bow, in that order</td></tr>
+<tr><td>"Write the Light property in full"</td><td>which weapons have it; what it does beyond Darting Blade</td></tr>
+</table></div>
+</section>
+
+<section id="research">
+<h2>Research</h2>
+<p>The project's research folder had nothing on weapons' own abilities or on a Light property. One pass is running on what it lacks: how other games give each weapon, and bows above all, its own trick; what "light" does elsewhere; how two starting bows are told apart. Its takeaways come here before the Hunting Bow's first decision.</p>
+</section>
+
+<section id="next">
+<h2>What is left, in order</h2>
+<ol>
+<li><strong>This list.</strong></li>
+<li>The Hunting Bow: its table row, its Technique, its ladder.</li>
+<li>The Recurve Bow, the same three.</li>
+<li>The Light property in full.</li>
+<li>The four later bows, when you ask for them.</li>
+<li>On your word: Chapter 15 and the card files; Foundry after.</li>
+</ol>
+<p class="small">The full record: <code>book/cards/bows-redesign.md</code>. The old design, untouched: <code>book/weapon-trees.md</code>.</p>
+</section>
+</div>
