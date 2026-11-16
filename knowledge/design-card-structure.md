@@ -118,4 +118,12 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 - **2, play order, every line labeled:** the same, plus **Effect** (what happens with no roll) and **Special** (a rule about the card); a defined word is its own label ("Smite dice:", "Judged:"). 4e's two labels. Claude's pick.
 - **3, two zones:** what happens on top; rules and definitions under a line, smaller.
 
+**Lucas's answer (2026-11-16): the category is off the card's face (yes; it stays as data). PART 2 IS DECIDED "for now": 2,** play order with every line labeled. The body's order: Requirement · Interrupt / Trigger · Setup · a defined word ("Smite dice:") · Effect (before the roll) · Attack / Save · Tier 1 / 2 / 3 (or "Tier 1 or 2") · Critical · Effect (after) · Special. **Effect** = what happens when the card is used, with no roll. **Special** = a rule about the card itself. This also settles part 5 (text with no label: there is none left).
+
+## Part 3: Versions (PROPOSED 2026-11-16, three structures)
+
+- **1, columns** (today's book): one column a cost, slashes in the header ("2 / 3 Burst"), "As 1 AP".
+- **2, one block a cost, written in full:** each cost a heading with its complete lines; a value that changes sits on that heading; what is shared (Setup, the Attack line) is written once above. Claude's pick (Lucas asked for the 2 AP line in full on Lay On Hands).
+- **3, the base and what the higher cost changes:** written for the cheaper cost, one labeled line for the other ("2 AP: The target can also use 1 Rally Point.").
+
 **Lucas's answer:**

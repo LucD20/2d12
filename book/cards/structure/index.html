@@ -68,6 +68,7 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 .hc .grid .r{text-align:right}
 .hc .zone{border-top:2px solid var(--line)}
 .hc .fine{font-size:.9em;color:var(--dim)}
+.hc .ver{font-weight:600;color:var(--gold);border-top:2px solid var(--line)}
 .hc .stub{color:var(--dim);font-size:.9em;font-style:italic}
 </style>
 
@@ -76,6 +77,7 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <p class="sub">The Action card's new structure, built one part at a time. Structure only: what a card holds and where. The look comes later. Nothing here is in the book or in Foundry. Updated 2026-11-16.</p>
 <nav>
   <a href="#need">What I need</a>
+  <a href="#versions">Part 3: Versions</a>
   <a href="#body">Part 2: the body</a>
   <a href="#traits">Traits, frequency, cost</a>
   <a href="#roll">The roll line</a>
@@ -89,16 +91,30 @@ blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
 <section id="need">
 <h2>What I need from you now</h2>
 <div class="need">
-<p><strong>Part 1, the header, is decided:</strong> the name with the frequency and cost on the bar; the Flavor; the traits on their own line; Distance and Area at the left, the Target at the right; the roll as a labeled line above the Tiers; a Strike always writes its Defense.</p>
-<ol>
-<li><strong>Your question, the category ("Paladin Escalation Action"):</strong> I would take it off the card. Everything in it is already on the card (Escalation 6, Encounter, the cost) or in the chapter heading above it, and no rule in the book reads it. It stays as data, so the book and Foundry can still group cards by it. Say yes, or keep it.</li>
-<li><strong>Part 2, the body:</strong> 1 (plain sentences), 2 (every line labeled) or 3 (two zones). Next section.</li>
-</ol>
+<p><strong>Decided so far:</strong> the header (part 1); the category is off the card's face and stays as data; the body is in play order with every line labeled, Effect and Special included (part 2, "for now").</p>
+<p><strong>Part 3, Versions:</strong> 1 (columns), 2 (one block a cost, in full) or 3 (the base and what the higher cost changes). Next section.</p>
 </div>
 </section>
 
+<section id="versions">
+<h2>Part 3: Versions (a card with two costs), three structures</h2>
+<p>A Version is the same Action at another cost. The redesign's rule: at most two. Shown on Lay On Hands (no roll) and on today's Word of Radiance from the book (a roll, and an Area that changes with the cost), because the redesign has no rolled card with two costs yet. The bar always says "1 or 2 AP".</p>
+<h3>1. Columns (today's book)</h3>
+<p>One column a cost. A header value that changes is written with slashes ("2 / 3 Burst"). A cell can point to another ("As 1 AP").</p>
+<div class="hc"><div class="bar"><span>Lay On Hands</span><span class="cost">Round · 1 or 2 AP</span></div><div class="row"><em>You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</em></div><div class="row tr">Divine · Focus</div><div class="grid"><div>Distance: Reach</div><div class="r">Target: One willing ally</div></div><div class="row lab"><b>Setup</b><span>You Advance up to 5 squares in a straight line toward the target.</span></div><div class="row"><div class="scroll"><table><tr><th></th><th>1 AP</th><th>2 AP</th></tr><tr><td><b>Effect</b></td><td>The target gains Guard equal to 2 + your Power Modifier.</td><td>As 1 AP, and the target can use 1 Rally Point.</td></tr></table></div></div></div><div class="hc"><div class="bar"><span>Word of Radiance (today's book)</span><span class="cost">Encounter · 2 or 3 AP</span></div><div class="row"><em>You speak a word, and light pours from your hands across everything that stands against you.</em></div><div class="row tr">Power · Area · Divine</div><div class="grid"><div>Distance: 10 sq. · Area: 2 / 3 Burst</div><div class="r">Target: All enemies in the Area</div></div><div class="row lab"><b>Attack</b><span>Power vs. Will Defense</span></div><div class="row"><div class="scroll"><table><tr><th></th><th>2 AP</th><th>3 AP</th></tr><tr><td><b>Tier 1</b></td><td>[R] 1d10 Ho.</td><td>[R] 2d6 Ho.</td></tr><tr><td><b>Tier 2</b></td><td>[R] 2d8 Ho; Pushed 1.</td><td>[R] 2d10 Ho; Pushed 1.</td></tr><tr><td><b>Tier 3</b></td><td>[R] 3d6 Ho; Pushed 2.</td><td>[R] 3d8 Ho; Pushed 2.</td></tr></table></div></div></div>
+<ul><li>The two costs sit side by side, so comparing them is immediate.</li><li>A table inside the card: narrow columns on a phone, long sentences squeezed, and "As 1 AP" sends the eye elsewhere.</li><li>"2 / 3 Burst" must be matched to the right column by counting.</li></ul>
+<h3>2. One block a cost, written in full (my pick)</h3>
+<p>Each cost is a heading, and under it the lines it has, complete. A value that changes with the cost is on that heading.</p>
+<div class="hc"><div class="bar"><span>Lay On Hands</span><span class="cost">Round · 1 or 2 AP</span></div><div class="row"><em>You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</em></div><div class="row tr">Divine · Focus</div><div class="grid"><div>Distance: Reach</div><div class="r">Target: One willing ally</div></div><div class="row lab"><b>Setup</b><span>You Advance up to 5 squares in a straight line toward the target.</span></div><div class="row ver">1 AP</div><div class="row lab"><b>Effect</b><span>The target gains Guard equal to 2 + your Power Modifier.</span></div><div class="row ver">2 AP</div><div class="row lab"><b>Effect</b><span>The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point.</span></div></div><div class="hc"><div class="bar"><span>Word of Radiance (today's book)</span><span class="cost">Encounter · 2 or 3 AP</span></div><div class="row"><em>You speak a word, and light pours from your hands across everything that stands against you.</em></div><div class="row tr">Power · Area · Divine</div><div class="grid"><div>Distance: 10 sq.</div><div class="r">Target: All enemies in the Area</div></div><div class="row lab"><b>Attack</b><span>Power vs. Will Defense</span></div><div class="row ver">2 AP · Area: 2 Burst</div><div class="row lab"><b>Tier 1</b><span>[R] 1d10 Ho.</span></div><div class="row lab"><b>Tier 2</b><span>[R] 2d8 Ho; Pushed 1.</span></div><div class="row lab"><b>Tier 3</b><span>[R] 3d6 Ho; Pushed 2.</span></div><div class="row ver">3 AP · Area: 3 Burst</div><div class="row lab"><b>Tier 1</b><span>[R] 2d6 Ho.</span></div><div class="row lab"><b>Tier 2</b><span>[R] 2d10 Ho; Pushed 1.</span></div><div class="row lab"><b>Tier 3</b><span>[R] 3d8 Ho; Pushed 2.</span></div></div>
+<ul><li>Whichever cost is used, the reader reads one block and nothing else. It is what you asked for on Lay On Hands ("write the 2 AP line in full").</li><li>The longest. With at most two Versions, the length has a ceiling.</li><li>What is shared (Setup, the Attack line) is written once, above the blocks.</li></ul>
+<h3>3. The base, and what the higher cost changes</h3>
+<p>The card is written for the cheaper cost. One labeled line says what the higher cost adds or replaces.</p>
+<div class="hc"><div class="bar"><span>Lay On Hands</span><span class="cost">Round · 1 or 2 AP</span></div><div class="row"><em>You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.</em></div><div class="row tr">Divine · Focus</div><div class="grid"><div>Distance: Reach</div><div class="r">Target: One willing ally</div></div><div class="row lab"><b>Setup</b><span>You Advance up to 5 squares in a straight line toward the target.</span></div><div class="row lab"><b>Effect</b><span>The target gains Guard equal to 2 + your Power Modifier.</span></div><div class="row lab"><b>2 AP</b><span>The target can also use 1 Rally Point.</span></div></div><div class="hc"><div class="bar"><span>Word of Radiance (today's book)</span><span class="cost">Encounter · 2 or 3 AP</span></div><div class="row"><em>You speak a word, and light pours from your hands across everything that stands against you.</em></div><div class="row tr">Power · Area · Divine</div><div class="grid"><div>Distance: 10 sq. · Area: 2 Burst</div><div class="r">Target: All enemies in the Area</div></div><div class="row lab"><b>Attack</b><span>Power vs. Will Defense</span></div><div class="row lab"><b>Tier 1</b><span>[R] 1d10 Ho.</span></div><div class="row lab"><b>Tier 2</b><span>[R] 2d8 Ho; Pushed 1.</span></div><div class="row lab"><b>Tier 3</b><span>[R] 3d6 Ho; Pushed 2.</span></div><div class="row lab"><b>3 AP</b><span>The Area is a 3 Burst, and the damage is [R] 2d6 / 2d10 / 3d8 Ho.</span></div></div>
+<ul><li>The shortest, and it shows at a glance what the extra AP buys.</li><li>The reader assembles the 3 AP result in their head ("2d6 / 2d10 / 3d8" against three Tiers above). That is the kind of step where tables go wrong.</li><li>Good when the higher cost only adds something (Lay On Hands); poor when it replaces numbers (Word of Radiance).</li></ul>
+</section>
+
 <section id="body">
-<h2>Part 2: the body, three structures</h2>
+<h2>Part 2: the body (decided: 2, every line labeled)</h2>
 <p>What the body can hold: Requirements, an Interrupt or Trigger, a Setup, a named value (Smite dice), the roll line, the Tiers, a Critical, something that happens with no roll, and standing rules about the card. This part also settles part 5 (text with no label), because the two can't be separated. Shown on Smite (a named value and a rule after the Tiers), Rebuke (something that happens before the Save) and Judge (standing rules).</p>
 <p class="small">The headers are the one you chose, drawn without the category line (see the question at the top). Judge's two costs are drawn as lines; Versions are part 3.</p>
 <h3>1. Play order, plain sentences</h3>
