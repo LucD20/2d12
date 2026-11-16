@@ -181,7 +181,7 @@ A Weapon Attack is 25 points; an AP about 12; a Round card's band is 25 to 33.
 
 **The Tier 3 (Grabbed, not Slid 2), the Tier 2 without [Mod] and the name were not objected to: decided as proposed.** THE ARMING SWORD IS DONE (row, Technique).
 
-## Decision 4: the Longsword's table row (PROPOSED 2026-11-16, waiting for Lucas)
+## Decision 4: the Longsword's table row (DECIDED 2026-11-16: damage 1)
 
 | Name | Group | Properties | Type | Range | Damage | Rung |
 |---|---|---|---|---|---|---|
@@ -200,5 +200,88 @@ A Weapon Attack is 25 points; an AP about 12; a Round card's band is 25 to 33.
 **The rest of the row:** Melee and **Two-handed** (in one hand its Strikes take 3 Banes: the book's rule, unchanged); Slash; Range 1 (reach is the Zweihänder's and the Polearms'); Basic. The name Longsword now means this sword; the placeholder Greatsword's row goes when it comes in.
 
 **For Lucas:** the row; 1, 2 or 3 for the damage.
+
+**Lucas's answer (2026-11-16): "Yeah, do Tier 2 as Reposition. Longsword: 1."**
+
+**SEIZING CUT, FINAL** (the Tier 2's Slid is a Reposition; about 34 points, back on the bows' level; hazards and Collision are now a Tier 3 prize):
+
+> **Seizing Cut** · Round · 1 AP
+> *You catch your foe's arm with your empty hand, cut, and turn it to where you want it standing.*
+> Weapon · Melee · Strike
+> Distance: Weapon | Target: One creature
+> **Requirement:** You have at least one hand free.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** Reposition 1 the target.
+> **Tier 2:** [V] 1[W]; Reposition 1 the target.
+> **Tier 3:** [V] 1[W] + [Mod]; Slid 1, then Grabbed.
+
+**THE LONGSWORD'S ROW IS DECIDED:**
+
+| Name | Group | Properties | Type | Range | Damage | Rung |
+|---|---|---|---|---|---|---|
+| **Longsword** | Swords | Melee, Two-handed | Slash | 1 | [V] 0 / 6 + 1d4! / 9 + 1d6! | Basic |
+
+## Decision 5: the Longsword's Weapon Technique (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+
+**What it has to do.** The same four things (one roll; its own thing seen on most uses; a choice attached; no copy of a class card), and be the Arming Sword's pair: that one moves the foe's body; this line was given "control of the other blade" in decision 1. The research: the Liechtenauer school's longsword is fought **from the bind**, blade on blade; its Zwerchhau, the "thwart-hew", "breaks all hews which are hewn from above down" [read, Ringeck]. The rules have a word for what a bound blade suffers that no class card uses: the **Pressure Bane** (Chapter 1: "Banes an effect of another creature puts on you... a blow that leaves you reeling"; at most 2 count).
+
+**1, the bind (Claude's pick): your blade stays on theirs.**
+
+> **Thwart Cut** · Round · 1 AP
+> *You cut across your foe's blade and stay on it, and every blow it tries has to come through your steel.*
+> Weapon · Melee · Strike
+> Distance: Weapon | Target: One creature
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** Bound, on its Strikes against you only.
+> **Tier 2:** [V] 1[W]; Bound.
+> **Tier 3:** [V] 1[W] + [Mod]; Bound, with 2 Pressure Banes.
+> **Bound:** The target's [Strike] Actions take 1 Pressure Bane (EoT). It ends early if you stop threatening the target.
+
+**2, the half-sword:** one hand on the blade, the point driven into the gaps (the same school, against armour [read]). Pierce; "this Strike counts the target's Armor Defense as 2 lower"; a Tier 3 adds Prone. A reason to pick the armoured foe. Against: a number on the roll (the kind of bonus nobody sees at the table), and it is the natural thing of an Estoc if one ever comes.
+
+**3, the murder-stroke:** the sword turned round and the hilt brought down like a hammer ("strike him with the pommel to the other side of his head" [read]). Blunt; Tier 1 [V] [Mod], Tier 2 [V] 1[W] + [Mod], Tier 3 the same and Dazed 1 (the target loses 1 AP now). The big moment. Against: its own thing is seen on a quarter of the uses, and losing an AP is the largest everyday rider in the game.
+
+### Priced (way 1)
+
+A Weapon Attack with the Longsword is 25 points; a Round card's band is 25 to 33.
+
+| Line | Points | Source |
+|---|---:|---|
+| Tier 2: 1[W], no [Mod]; Tier 3: 1[W] + [Mod] | 23 | [SIM] a Weapon Attack less the Modifier on a Tier 2 (small beside a two-hander's die) |
+| Tier 2: 1 Pressure Bane on the target's Strikes for its turn | +3 | [SIM] the old price list has "1 Bane on an enemy's Strikes for its turn" at about 1.2 damage (6 points), on 42 to 45% of uses |
+| Tier 3: 2 Pressure Banes | +3 | the same, doubled, on 23 to 27% |
+| Tier 1: 1 Pressure Bane on its Strikes against you | +1 | [judgment] half of that, on a third of uses |
+| It ends if you stop threatening the target | -1 | [judgment] |
+| **Total** | **about 29** | on the band; under Seizing Cut (34), on a weapon that hits half again as hard |
+
+### Analysis
+
+- **The decision it gives.** Whom to bind: the foe that hits hardest, not the one nearest to dying. And then to stay: the bind lasts only while you threaten the target (Chapter 3: it is within your weapon's Range and you could attack it), so walking away to another fight lets its blade go. The foe has a way out too: step out of your Range, and pay the movement.
+- **Its pair.** Seizing Cut: one hand free, move the body, a light hit. Thwart Cut: both hands on the sword, hold the blade, a light hit from a heavy sword. Position against protection.
+- **The Paladin with it.** Judge takes his Power Modifier off the first damage a Judged foe deals to an ally each round; Shield of Faith takes damage off one hit as a Reaction. Thwart Cut works one step earlier and on another number: the foe's roll, against anyone. The three add up without repeating each other, and it gives a two-handed Paladin a protector's play that costs no Reaction.
+- **Against the classes' cards.** Taunted (Shield of Faith, Commandment) is 1 Bane on its Actions against anyone but you; Bound is 1 Bane on its Strikes against everyone, you included, and needs your sword in reach. No card uses a Pressure Bane; the Bestiary does (NPC zones), and the cap of 2 keeps them from piling up.
+- **The rules it touches.** Named Boons and Banes (Chapter 1). EoT (the end of the affected creature's turn). Threatening (Chapter 3, Flanking). "Bound" is a defined word on the card, as "Judged" is on Judge: it is written once, under the Tiers that use it. Line of Effect: on the Target line.
+- **Table feel.** One roll; something on every Tier (as he asked of Seizing Cut); a marker on the bound foe that the GM feels on its next attacks.
+- **The name.** Thwart Cut is the Zwerchhau in English (the translations read say "thwart-hew"). His liking for the rarer names: the card could carry the German, **Zwerchhau**, with the Flavor explaining it.
+
+### Every candidate, with its reason
+
+| Candidate | Verdict |
+|---|---|
+| **Pressure Banes on the target's Strikes (the bind)** | **the pick** |
+| The target's Armor Defense counted lower (half-sword) | way 2 |
+| Dazed (the murder-stroke) | way 3 |
+| Guard for you (the parry) | no: the Paladin's currency (Lay On Hands, Armor of Faith) |
+| A Reaction that parries or answers a blow | no: one Reaction AP, and the Hallmark Reactions want it |
+| Disarming the target | no: an NPC has no weapon in the rules; nothing to take |
+| Staggered | no: Darting Blade's Tier 3 |
+| Taunted | no: the Paladin's |
+| Cleave, a second target | no: the great swords' (Zweihänder, Montante: "one man against many") |
+| Reach 2 | no: the Zweihänder's and the Polearms' |
+| Pushed, Slid, Reposition, Grabbed | no: the Arming Sword's, and three class cards push |
+| Prone | no: Commandment's Kneel, Volley's Critical |
+| Hindered, Immobilized, Vulnerable, Frightened, Bleed | no: each is on a card (the bows' tables) |
+
+**For Lucas:** way 1, 2 or 3; in way 1: Bound ending when you stop threatening, the Tier 1, and the name (Thwart Cut or Zwerchhau).
 
 **Lucas's answer:**
