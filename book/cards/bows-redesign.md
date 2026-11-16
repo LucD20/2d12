@@ -281,6 +281,32 @@ One gap to close when it goes into the book: "left your square" for a creature b
 
 **Two ways to make it slower, his to choose:** bigger numbers on the ladders (the rule stays "a point a fight"; the numbers grow large over 15 levels: about 68 by the end), or a slower point (for instance at most 1 a group between two Rests in place of each encounter: about half the pace at his 1 to 2 fights a session, and every number above is reached twice as late). Waiting for his answer on the ladder.
 
+**Lucas (2026-11-16):** "Should we change to: You gain one mastery when you win an encounter of X difficulty. Instead of 'when you first get a tier 3'? I dont know if any other systems does something like this, but still attempt a search on the topic."
+
+## Decision 7: how Mastery is gained (PROPOSED 2026-11-16, three ways, waiting for Lucas; the ladder's numbers wait for it)
+
+**The search** (`book/research/mastery-progression.md`; six searches, summaries only, no page opened): no game found gives a weapon's own progress for winning a fight of a set difficulty. The two halves exist apart. "Only the hard ones count" exists for single rolls (Burning Wheel's routine, difficult and challenging tests; Blades in the Dark's xp for a desperate roll), and what goes wrong there is players chasing the roll that counts. Progress by use is known for grinding, and the fixes named are a cap and a challenge: today's rule has the cap, his proposal adds the challenge. Kingdom Death: Monster's weapon proficiency, the nearest match to today's rule, was not found.
+
+**What today's rule costs:** a thing to remember in every fight (have I had a Tier 3 with this group yet?), luck (one PC in ten gets nothing from a fight), less for a PC who rolls few Weapon Actions (a Paladin on his Power cards), and a point a group, so two weapons can be trained in one fight.
+
+**The book already has the word he needs** (Bestiary, Building an encounter): total CV for each PC: 75 easy, 100 normal, 125 hard, 150 deadly.
+
+| | The rule | Pace | For / against |
+|---|---|---|---|
+| **A** | today's: the first Tier 3 a group an encounter; bigger numbers on the ladders | 0.9 a fight: 13 after level 3, 68 after level 15 | nothing changes; the costs above stay, and the numbers get large |
+| **B (Claude's pick)** | **"When your side wins a hard or deadly encounter, you gain 1 Mastery with one weapon you made a [Strike] Action with in it."** | with 2 hard or deadly fights in 5 [judgment]: 2 a level; 6 after level 3, 14 after level 7, 30 after level 15 | his idea with X = hard; slower, small numbers, nothing to track in the fight, the same for every PC, and it says something ("you learn your weapon in the fights that test you"). Against: the pace is the GM's (a GM who builds only normal fights gives none: the rule must say so, or count CV 100 too); "wins" needs its sentence |
+| C | the same with X = normal or harder | about 1 a fight: 15 after level 3, 75 after level 15 | no tracking and no luck, but not slower: the numbers still have to grow |
+
+**What B needs written, so nothing is left to the table:**
+- **"Wins":** the encounter ends with every enemy Down, fled or surrendered. A fight the party flees gives nothing.
+- **The difficulty is the one the GM built** (CV for each PC, as the Bestiary counts it); the GM says it when the fight ends.
+- **One point an encounter, one weapon:** you choose among the weapons you made a [Strike] Action with. (Today's "1 a group" let two groups grow in one fight.)
+- **The Archer's Starting Mastery 3** is worth more than before (about a level and a half of hard fights): to read again with the ladder.
+
+**The ladder's numbers under B** (to decide after this): the Technique at 3 is then the second level for anyone but an Archer (fight 8), which may be too late for a weapon's first trick: 2, or 1, would be the number. Proposed once he chooses.
+
+**For Lucas:** A, B or C; in B, X (hard, or normal).
+
 **Lucas's answer:**
 
 ## Research
