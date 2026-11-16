@@ -828,4 +828,25 @@ The Advance itself ... 12
 **What it keeps:** his whole idea: the run is the weapon, the knife along the path, one arrow whenever he likes, free swaps.
 **To watch:** with one roll the whole card rises or falls together (a Tier 3 run is 9 on each of four creatures; a Tier 1 run is 2 on each). The floor is what makes that acceptable; if it feels too swingy, the alternative is his separate rolls with the floor.
 
+**Lucas's answer (2026-11-16): "Tier 3 should get something, otherwise we have the problem of T3 feeling underwhelming."** One roll and the floor were not objected to.
+
+**Every candidate for Hit and Run's Tier 3** (the Tier applies to every creature the run hit, so whatever it adds lands on all of them):
+
+| Tier 3 adds | What it does | For | Against |
+|---|---|---|---|
+| **Vulnerable 1 (EoT)** | every Action against each creature he hit has 1 Boon until that creature's turn ends | his "distract... maybe causing vulnerable"; the party cashes it: teamwork; a run that opens three enemies at once is a moment | Startle (Trick Shots) is the same rider on one creature |
+| Hindered (EoT) | they are slowed for their next move | he gets away clean | already Volley's and Snap Shot's rider |
+| 2[W] + [Mod] | about 7 more damage on each | simple | 16 on each of three or four creatures is the big hit the brief rules out |
+| "then you Evade 3" | he gets out the far side | the fragile class escaping | it rewards him, not the hit; Tier 3 should be about the enemies |
+| Pushed 1 | each is knocked a square from him | opens his way | fiddly: one Forced Movement a creature, in mid-run |
+| Prone | they are down | strong | Severe on every creature at once: too much |
+
+**Proposed: Vulnerable 1 (EoT).**
+
+> **Tier 3:** [V] 1[W] + [Mod]; Vulnerable 1 (EoT).
+
+About 6 points a creature on the 21% of runs that reach Tier 3: + 4. **Hit and Run: about 95, of 100.**
+
+**His point reaches three decided cards too:** Darting Blade, Strafe and Snap Shot write the same line for Tier 2 and Tier 3, and beat it only by the weapon's own Tier 3 damage (a Shortbow: 1 more; a Dagger: 2 more), as the Weapon Attack does. To look at when the class is read whole, with the Critical entries.
+
 **Lucas's answer:**
