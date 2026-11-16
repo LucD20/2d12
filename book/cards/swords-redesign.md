@@ -32,4 +32,48 @@
 
 ## Research
 
-`book/research/` had nothing on swords. One pass is running (`book/research/swords.md`): which swords the fencing treatises and HEMA practitioners call the easiest and the hardest, the historical families a line could follow, the names and their traps, and what each sword was known to be good at.
+`book/research/` had nothing on swords. One pass was made: **`book/research/swords.md`** (2026-11-16; 30 takeaways, a table of 27 swords; one pass by an agent, not re-checked; [read] there means read on Wiktenauer). What it found, for the first decision:
+
+- **Meyer (1570) names two foundations** [read]: the long sword, "as a foundation of all fencing", and the dusack, "a beginning and foundation for all weapons that are used in one hand". The dusack is a wooden trainer; its steel relatives are the messer and the sabre.
+- **Fiore (about 1400) teaches the sword in one hand before the sword in two** [read], "to make my system easier to learn" (another copy gives the reverse order). A modern instructor (Clements, ARMA) [checked]: the single sword first, and skills carry upward by family.
+- **The big two-hander is the specialist's weapon in every source read.** Di Grassi (1594) [read]: "as a galleon among many galleys", for men "mighty and big to behold". Figueyredo (1651) [read]: the montante has "sixteen simple rules, and sixteen composed", each a drill for a situation (hold a street, a narrow street, "Guarding a Lady", against shieldsmen). ARMA [quoted]: "its use was considered as special skill, often meriting extra pay".
+- **The rapier is "a newly discovered practice for the Germans" for Meyer, taught last** [read]. Silver (1599) [read] calls it "the worst weapon", for its length, not its difficulty. **Not verified:** that the sabre was quick to teach and the rapier a long schooling.
+- **The Chinese saying** [checked, one school's blog]: "a hundred days for the dao, a thousand for the spear, ten thousand for the jian".
+- **The names are traps.** The historical longsword has a two-handed grip; what games call a longsword is an arming sword. "Bastard sword" is the period word for the sword of one or two hands. "Claymore" is two weapons. "Flamberge" is wrong for the wave-bladed two-hander (Flammenschwert). "Broadsword" belongs to basket hilts.
+- **What each was good at** (for the Techniques, later): the longsword's bind and winding, half-sword and the pommel strike; the montante's rules against many and for guarding a person; the Zweihänder's lugs that catch a weapon; the messer's free hand that seizes; the sabre's cut drilled as a pattern and the curved blade's draw cut; the estoc's point for the gaps of armour.
+
+## Decision 1: the six swords (PROPOSED 2026-11-16, three ways, waiting for Lucas)
+
+**The group.** Swords become their own group, without the Dagger (his answer of 2026-10-31: "Daggers (light) and Swords become their own groups"): the half-Mastery rule then joins swords with swords only. A shortsword goes with the daggers, as he thought.
+
+**1, by hands (Claude's pick): Meyer's two foundations.** The bows' two lines were two materials; the swords' are one hand and two.
+
+| | **The one-handed line** (a free hand, speed) | **The two-handed line** (power, reach, control of the other blade) |
+|---|---|---|
+| **Basic** | **Arming Sword:** the knight's straight sword, cut and thrust; the sword Fiore teaches first | **Longsword:** the two-handed grip of the German school; Meyer's "foundation of all fencing" |
+| **Advanced** | **Sabre:** the curved blade, the cut drilled as a pattern, the draw cut | **Zweihänder:** the Landsknecht's great sword, with lugs to catch a weapon |
+| **Exotic** | **Rapier:** the long thrusting sword, "newly discovered", taught last | **Montante:** the Iberian great sword with its thirty-two rules, one man against many |
+
+- **For:** it follows the sources at both ends (the two foundations first, the specialist's weapons last); a level 1 character has a one-handed and a two-handed sword to choose from, which is the choice the rules already price (a free hand against +3 damage); and each rung up is a real step in what the sword asks of its user.
+- **Against:** the two Basic swords don't deal the same, as the bows did (they can't: hands are priced); and "Longsword" will mean two hands, against what most games taught players.
+
+**2, by blade (the bows' shape): a straight line and a curved line.** Straight: Arming Sword → Longsword → Montante (it grows from one hand to two). Curved or single-edged: Messer → Sabre → Shamshir (all in one hand). The two Basic swords are both one-handed and deal the same, played two ways (cut and thrust against the chop), exactly like the bows. Against: no two-handed sword at level 1 in this group (true to the sources; a surprise to players); and the curved line's order of difficulty rests on nothing read.
+
+**3, the familiar names (his issue 2).** Longsword (one hand, as games use the word), Bastard Sword, Greatsword as one line that grows; a second line from the curved swords. The names players know. Against: it contradicts the sources he asked for (the longsword), and the three are one sword at three sizes.
+
+**Other names for each slot of way 1, with their reason** (his: "exotic names to make it sound cooler"):
+
+| Slot | Candidates |
+|---|---|
+| Basic, one hand | Arming Sword (pick: period name; a knight's, fits the Paladin) · Messer (the "long knife" of the common man; a single edge and a free hand that seizes: closer to Meyer's dusack) · Broadsword (understood by all, wrong for the Middle Ages) |
+| Basic, two hands | Longsword (pick: the HEMA name) · Greatsword (no trap, but it is the next rung's word) · Bastard Sword (the period word; it is the sword of one **or** two hands, which needs a property of its own) |
+| Advanced, one hand | Sabre (pick) · Schiavona (the Doge's guard's basket-hilted sword) · Backsword · Falchion (weight forward; few survive) · Bastard Sword (a one-hander that can take the second hand) |
+| Advanced, two hands | Zweihänder (pick; the known name) · Kriegsmesser (the two-handed "war knife") · Claymore (the Highland two-hander; shorter) · Estoc (the edgeless thrusting sword against armour: a different idea, worth a slot if he wants a thrust in the group) |
+| Exotic, one hand | Rapier (pick; the one source-backed "taught last") · Shamshir ("lion's fang"; the pure draw cut) · Kilij · Talwar · Jian ("ten thousand days") |
+| Exotic, two hands | Montante (pick: the one with a written syllabus) · Spadone (its Italian twin) · Flammenschwert (the wave-bladed Zweihänder) |
+
+**What is built now:** only the two Basic swords (row, Technique). The four others are names.
+
+**For Lucas:** way 1, 2 or 3; the six names (or others from the table).
+
+**Lucas's answer:**

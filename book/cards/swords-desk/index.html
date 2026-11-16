@@ -1,0 +1,175 @@
+<title>Sword Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Signika:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column, a sticky row of section links, ruled sections like a printed rulebook page.
+   Dark first (the system's table look); the light set is the chat card's parchment. */
+:root{
+  --bg:#15171b; --panel:#1c1f25; --line:#343a44; --fg:#e4e1d8; --dim:#a09d94;
+  --gold:#d2a94e; --holy:#e7c873; --ok:#7fb486; --open:#e08a55; --quote:#b9c4d6;
+  --display:"Cinzel",Georgia,serif; --text:"Signika","Segoe UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light } }
+:root[data-theme="light"]{
+  --bg:#f3ecdc; --panel:#ebe2cd; --line:#c9bb9c; --fg:#2a2620; --dim:#6b6455;
+  --gold:#8a6414; --holy:#7a5a10; --ok:#2f6b3a; --open:#a8481a; --quote:#3c4a63; color-scheme:light }
+body{background:var(--bg);color:var(--fg);font-family:var(--text);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:46rem;margin:0 auto;padding-block:1.5rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-size:1.9rem;line-height:1.15;margin:0 0 .3rem;color:var(--holy);text-wrap:balance}
+.sub{color:var(--dim);margin:0 0 1rem}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-block:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.2rem 1rem;padding:.55rem 0;margin-bottom:1.5rem}
+nav a{color:var(--fg);text-decoration:none;font-weight:500}
+nav a:hover,nav a:focus-visible{color:var(--gold);outline:none;text-decoration:underline}
+section{margin-top:2.4rem;scroll-margin-top:4rem}
+h2{font-size:1.3rem;font-weight:600;margin:0 0 .8rem;padding-bottom:.35rem;border-bottom:2px solid var(--gold);text-wrap:balance}
+h3{font-size:1.05rem;font-weight:600;margin:1.4rem 0 .4rem;color:var(--holy)}
+p{margin:.5rem 0}
+ul,ol{margin:.4rem 0;padding-left:1.3rem}
+li{margin:.3rem 0}
+strong{font-weight:600}
+.tag{font-weight:600;white-space:nowrap}
+.tag.ok{color:var(--ok)} .tag.open{color:var(--open)}
+table{border-collapse:collapse;width:100%}
+.scroll{overflow-x:auto}
+th,td{text-align:left;vertical-align:top;padding:.45rem .6rem .45rem 0;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:500}
+blockquote{margin:.5rem 0;padding:.1rem 0 .1rem .9rem;border-left:2px solid var(--line);color:var(--quote)}
+blockquote cite{display:block;color:var(--dim);font-style:normal;font-size:.9em}
+.need{background:var(--panel);border:1px solid var(--line);padding:.9rem 1.1rem;margin:.6rem 0}
+.need ol{margin:0}
+/* a card: the book's stat block, plain */
+.card{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.card .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.card .bar span:last-child{color:var(--dim);font-weight:400}
+.card .v{display:grid;grid-template-columns:3.4rem 1fr;gap:.6rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.card .v:last-child{border-bottom:0}
+.card .v b{color:var(--gold);font-weight:600}
+.card .v div{min-width:0}
+.opt{display:grid;grid-template-columns:1.6rem 1fr;gap:.5rem;margin:.7rem 0}
+.opt>b{color:var(--gold);font-size:1.1rem}
+.opt div{min-width:0}
+.small{color:var(--dim);font-size:.93em}
+.hc{border:1px solid var(--line);margin:.8rem 0;background:var(--panel)}
+.hc .bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line);font-weight:600}
+.hc .bar span:last-child{color:var(--dim);font-weight:400}
+.hc .bar span.cost{color:var(--gold);font-weight:600}
+.hc .row{padding:.3rem .8rem;border-bottom:1px solid var(--line)}
+.hc .row:last-child{border-bottom:0}
+.hc .tr{color:var(--holy)}
+.hc .lab{display:grid;grid-template-columns:6.2rem 1fr;gap:.6rem}
+.hc .lab b{color:var(--dim);font-weight:500}
+.hc .grid{display:grid;grid-template-columns:1fr auto;gap:.3rem 1rem;padding:.4rem .8rem;border-bottom:1px solid var(--line)}
+.hc .grid div{min-width:0}
+.hc .grid .r{text-align:right}
+.hc .zone{border-top:2px solid var(--line)}
+.hc .fine{font-size:.9em;color:var(--dim)}
+.hc .ver{font-weight:600;color:var(--gold);border-top:2px solid var(--line)}
+.hc .new{background:color-mix(in srgb,var(--gold) 12%,transparent)}
+.hc .new i{color:var(--gold);font-style:normal;font-size:.9em}
+.hc .stub{color:var(--dim);font-size:.9em;font-style:italic}
+</style>
+
+<div class="wrap">
+<h1>Sword Desk</h1>
+<p class="sub">Where the Swords stand, in plain words. Updated 2026-11-16: the six swords are proposed. Nothing here is in the book or in Foundry.</p>
+<nav>
+  <a href="#need">What I need</a>
+  <a href="#six">The six swords</a>
+  <a href="#names">Other names</a>
+  <a href="#research">Research</a>
+  <a href="#inherit">What they inherit</a>
+  <a href="#brief">The brief</a>
+  <a href="#next">What is left</a>
+</nav>
+
+<section id="need">
+<h2>What I need from you now</h2>
+<div class="need">
+<ol>
+<li><strong>The six swords:</strong> way 1, 2 or 3. My pick is 1, by hands.</li>
+<li><strong>The names:</strong> the six of the way you choose, or others from the table of names.</li>
+</ol>
+</div>
+<p class="small">Then the first Basic sword, one decision at a time: its table row, then its Technique.</p>
+</section>
+
+<section id="six">
+<h2>The six swords <span class="tag open">proposed</span></h2>
+<p><strong>The group.</strong> Swords become their own group, without the Dagger (your answer of 2026-10-31). The half-Mastery rule then joins swords with swords only. A shortsword goes with the daggers, as you thought.</p>
+<h3>1. By hands: Meyer's two foundations <span class="tag ok">my pick</span></h3>
+<p>The bows' two lines were two materials. The swords' are one hand and two.</p>
+<div class="scroll"><table>
+<tr><th></th><th>The one-handed line<br><span class="small">a free hand, speed</span></th><th>The two-handed line<br><span class="small">power, reach, control of the other blade</span></th></tr>
+<tr><td><strong>Basic</strong></td><td><strong>Arming Sword.</strong> The knight's straight sword, cut and thrust; the sword Fiore teaches first</td><td><strong>Longsword.</strong> The two-handed grip of the German school; Meyer's "foundation of all fencing"</td></tr>
+<tr><td><strong>Advanced</strong></td><td><strong>Sabre.</strong> The curved blade, the cut drilled as a pattern, the draw cut</td><td><strong>Zweihänder.</strong> The Landsknecht's great sword, with lugs to catch a weapon</td></tr>
+<tr><td><strong>Exotic</strong></td><td><strong>Rapier.</strong> The long thrusting sword, "newly discovered", taught last</td><td><strong>Montante.</strong> The Iberian great sword with its thirty-two rules: one man against many</td></tr>
+</table></div>
+<ul>
+<li><strong>For.</strong> It follows the sources at both ends: the two foundations first, the specialist's weapons last. A level 1 character chooses between a one-handed and a two-handed sword, the choice the rules already price (a free hand against +3 damage). Each rung up is a real step in what the sword asks of its user.</li>
+<li><strong>Against.</strong> The two Basic swords don't deal the same, as the bows did; they can't, because hands are priced. And "Longsword" will mean two hands, against what most games taught players.</li>
+</ul>
+<h3>2. By blade, the bows' shape: a straight line and a curved line</h3>
+<p>Straight: Arming Sword, Longsword, Montante; it grows from one hand to two. Curved or single-edged: Messer, Sabre, Shamshir; all in one hand. The two Basic swords are both one-handed and deal the same, played two ways, exactly like the bows.</p>
+<p><strong>Against:</strong> no two-handed sword at level 1 in this group. That is true to the sources and a surprise to players. And the curved line's order of difficulty rests on nothing I could read.</p>
+<h3>3. The familiar names</h3>
+<p>Longsword (one hand, as games use the word), Bastard Sword and Greatsword as one line that grows; a second line from the curved swords.</p>
+<p><strong>Against:</strong> it contradicts the sources you asked for, and the three are one sword at three sizes.</p>
+</section>
+
+<section id="names">
+<h2>Other names for each slot of way 1</h2>
+<div class="scroll"><table>
+<tr><th>Slot</th><th>Candidates, with their reason</th></tr>
+<tr><td>Basic, one hand</td><td><strong>Arming Sword</strong> (my pick: the period name; a knight's sword, fits the Paladin) · Messer (the common man's "long knife": a single edge and a free hand that seizes; closest to Meyer's dusack) · Broadsword (understood by all, wrong for the Middle Ages)</td></tr>
+<tr><td>Basic, two hands</td><td><strong>Longsword</strong> (my pick: the HEMA name) · Greatsword (no trap, but it is the next rung's word) · Bastard Sword (the period word; the sword of one <em>or</em> two hands, which needs a property of its own)</td></tr>
+<tr><td>Advanced, one hand</td><td><strong>Sabre</strong> (my pick) · Schiavona (the basket-hilted sword of the Doge's guard) · Backsword · Falchion (weight forward) · Bastard Sword (a one-hander that can take the second hand)</td></tr>
+<tr><td>Advanced, two hands</td><td><strong>Zweihänder</strong> (my pick: the known name) · Kriegsmesser (the two-handed "war knife") · Claymore (the Highland two-hander) · Estoc (the edgeless thrusting sword against armour: a different idea, worth a slot if you want a thrust in the group)</td></tr>
+<tr><td>Exotic, one hand</td><td><strong>Rapier</strong> (my pick: the one "taught last" a source backs) · Shamshir ("lion's fang": the pure draw cut) · Kilij · Talwar · Jian ("ten thousand days")</td></tr>
+<tr><td>Exotic, two hands</td><td><strong>Montante</strong> (my pick: the one with a written syllabus) · Spadone (its Italian twin) · Flammenschwert (the wave-bladed Zweihänder)</td></tr>
+</table></div>
+</section>
+
+<section id="research">
+<h2>Research: what the fencing texts say</h2>
+<ul>
+<li><strong>Meyer (1570) names two foundations.</strong> The long sword, "as a foundation of all fencing". The dusack, "a beginning and foundation for all weapons that are used in one hand". The dusack is a wooden trainer; its steel relatives are the messer and the sabre.</li>
+<li><strong>Fiore (about 1400) teaches the sword in one hand before the sword in two,</strong> "to make my system easier to learn". Another copy of his book gives the reverse order.</li>
+<li><strong>The big two-hander is the specialist's weapon in every source read.</strong> Di Grassi (1594): "as a galleon among many galleys". Figueyredo (1651): the montante has "sixteen simple rules, and sixteen composed", each a drill for a situation: hold a street, a narrow street, "Guarding a Lady", against shieldsmen.</li>
+<li><strong>The rapier is "a newly discovered practice for the Germans" for Meyer,</strong> and he teaches it last. Silver (1599) calls it "the worst weapon", for its length.</li>
+<li><strong>A Chinese saying:</strong> "a hundred days for the dao, a thousand for the spear, ten thousand for the jian".</li>
+<li><strong>The names are traps.</strong> The historical longsword has a two-handed grip; what games call a longsword is an arming sword. "Bastard sword" is the period word for the sword of one or two hands. "Claymore" is two weapons. "Flamberge" is wrong for the wave-bladed two-hander.</li>
+</ul>
+<p class="small">The note: <code>book/research/swords.md</code>. One pass, not re-checked by a second; the quotations were read on Wiktenauer. Not verified: that the sabre was quick to teach and the rapier a long schooling. Sizes come from Wikipedia and myArmoury, not from a museum catalogue.</p>
+</section>
+
+<section id="inherit">
+<h2>What the swords inherit from the bows</h2>
+<ul>
+<li><strong>Mastery:</strong> a point with one weapon for a won encounter that was normal or harder; never lower than half your best in the group; unlocks at 10 (the Technique), 20, 30, 45, 60; an Advanced weapon Doomed below 10 with it, an Exotic one below 20.</li>
+<li><strong>A row</strong> is a flat number and one exploding die. Today's placeholders: Longsword (one hand) 0 / 2 + 1d6! / 4 + 1d6!; Greatsword (two hands) 0 / 5 + 1d6! / 8 + 1d8!.</li>
+<li><strong>Hands:</strong> 2 Banes from the off hand, 1 for a Light weapon. What pays for fighting with two weapons was parked for this group.</li>
+<li><strong>A Technique:</strong> a Round card, one roll, the weapon's own thing seen on most uses, a choice attached to using it; no copy of a Paladin or an Archer card.</li>
+</ul>
+</section>
+
+<section id="brief">
+<h2>The brief</h2>
+<blockquote>Lets decide Swords, starting with two just like Bows. We can decide the names now but we will only build the Mechanics of the first two. Issue 1: Which swords? We need to start with the two easiest to learn, then going up, just like bows. We can look into HEMA or actual historical texts for this. Issue 2: Shortsword likely doesnt fit here, but longsword, greatsword, bastard sword.. these would fit. Not sure. Names for Advanced and Exotic can be "exotic" names to make it sound cooler too.<cite>Lucas, 2026-11-16</cite></blockquote>
+</section>
+
+<section id="next">
+<h2>What is left, in order</h2>
+<ol>
+<li><strong>The six swords and their names.</strong></li>
+<li>The first Basic sword: its table row, its Technique.</li>
+<li>The second Basic sword, the same two.</li>
+<li>Fighting with two weapons, if a sword's Technique needs it.</li>
+<li>On your word: Chapter 15 and the card files; Foundry after.</li>
+</ol>
+<p class="small">The full record: <code>book/cards/swords-redesign.md</code>.</p>
+</section>
+</div>
