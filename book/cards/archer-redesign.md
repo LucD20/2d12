@@ -344,4 +344,41 @@ Used in about half the rounds ... about 14 a turn, of 10 to 15: on
 
 27 a use, in about a third of the rounds: about 9 a turn, of 10 to 15 (Slip Away: about 8). **The pair is now one moment with two answers:** an enemy is about to reach him; he is gone (Slip Away, and he takes no hit), or he shoots it in the face and stays (Snap Shot, and he is then Engaged). Both fire only when he is reached, which is rare for a back-liner who plays well: a Reaction that rewards the enemy's success, not every enemy's turn.
 
+**Lucas's answer (2026-11-16): THE HALLMARK REACTIONS ARE DECIDED, with two changes of his.** Slip Away: "You Evade 1, then Advance 2. This way, you can move more and still attempting to dodge. But maybe it would be overpriced?" Snap Shot: add Hindered (EoT) "to put it up to speed, just in some tiers if it would be too strong... Quite niche." **And "Yes": the trait Shot is renamed PROJECTILE and Gun is renamed FIREARM.** From here the Archer's cards write Projectile.
+
+> **Slip Away** · Turn · 1R
+> *The moment a foe commits to reaching you, you are already somewhere else.*
+> Distance: 5 sq. | Target: One enemy
+> **Interrupt:** The target would enter a square adjacent to you.
+> **Effect:** You Evade 1, then Advance 2.
+
+**Not overpriced.** Three squares shake off an enemy with a little movement left more often than two (about half the uses against 40% [judgment]): about 20 a use, about 7 a turn at a third of the rounds, still under a Reaction's 10 to 15. The first square is safe; the two of the Advance can cross Difficult Terrain (an Evade can't) and can trigger an enemy's Reaction (few NPCs have one).
+
+> **Snap Shot** · Turn · 1R
+> *A foe lunges for you, and you put an arrow in it before it has finished the step.*
+> Weapon · Ranged · Projectile · Strike
+> Distance: Weapon | Target: One enemy
+> **Interrupt:** The target would enter a square adjacent to you.
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** [V] [Mod] Pi.
+> **Tier 2:** [V] 1[W] + [Mod]; Hindered (EoT).
+> **Tier 3:** [V] 1[W] + [Mod]; Hindered (EoT).
+
+**Hindered here is more than niche:** Chapter 8 says "If you become Hindered while you are moving, the movement you have left is halved too", and an Interrupt happens before the step. So on a Tier 2 or 3 (72%) the enemy's remaining movement is halved in mid-stride, and it may not reach him at all. EoT ends with the enemy's own turn, so it is that one move only. Hindered (EoT) is a Mild rider (3): about 30 a use, about 10 a turn: on.
+
+**The trait rename, where it lands:** in the book, the builder can print the old key `shot` as "Projectile" (and `gun` as "Firearm") at once, with Chapter 7's two headings, Chapter 15 and the Glossary rewritten, when the Archer is applied; the card files' keys and Foundry's change with the Foundry pass.
+
+## Decision 7: the three Arts, their themes first (PROPOSED 2026-11-16, waiting for Lucas)
+
+An Art is a Round card of 1 AP with three Modes, for what is neither damage nor healing (the charter); he takes one at level 1 and a second at level 3. With the Paladin the themes were chosen first (light, the line, the word), then each Art. **Four themes for three places:**
+
+| Theme | What its three Modes would do | From |
+|---|---|---|
+| **Footwork** | moving where others can't: a longer Evade; crossing Difficult Terrain or a creature's space; getting up from Prone and away | the brief: "very mobile, running away or moving side to side" |
+| **Trick shots** | an arrow that does something instead of damage: pins a cloak (Hindered), knocks a thing from a hand or off a ledge, startles (his "distract": Vulnerable 1) | research: the praised non-damage tools are riders with a choice (4e's Clever Shot, "the star of the show") |
+| **The hunter's eye** | reading the field: calling out a Hidden creature so allies perceive it; ignoring far range or Cover for one shot; naming the Bloodied | our Senses, Cover and range rules: a shooter's use of the map |
+| **Quick hands** | the hands' tricks: swapping weapons, catching or picking up, reloading a crossbow on the move, handing an item to an ally | the brief: "fast to change to melee"; research: Reload is liked when bundled with a move |
+
+**Claude's pick: Footwork, Trick shots, The hunter's eye.** Quick hands overlaps Darting Blade (the swap is already free there) and is mostly about a crossbow.
+
 **Lucas's answer:**

@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: 02a97e7 2026-11-16 The Archer: Hallmark Actions decided (Strafe as width); the Reactions proposed; the Shot / Projectile question logged
+Built by tools/knowledge.py on 2026-11-16 from the repository at: a4ffd39 2026-11-16 The Archer: Overwatch replaced by Snap Shot (Lucas: it would fire every round; the SIM agrees)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -17,7 +17,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
 Files:
 - HANDOFF.md (162 KB)
 - MASTER-PLAN.md (40 KB)
-- open-design-items.md (180 KB)
+- open-design-items.md (181 KB)
 - rules-01-roll.md (26 KB)
 - rules-02-turns.md (33 KB)
 - rules-03-movement.md (40 KB)
@@ -52,7 +52,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-archer-redesign.md (35 KB)
+- design-archer-redesign.md (39 KB)
 - design-card-structure.md (25 KB)
 - design-paladin-analyses.md (14 KB)
 - design-pc-budget.md (12 KB)
