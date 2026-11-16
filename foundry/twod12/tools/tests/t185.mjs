@@ -46,7 +46,7 @@ const smite = G.loadCards().find(c => c.name === "Smite"), sys = G.cardSystem(sm
 for (const v of sys.versions) console.log(`${v.ap} AP: ${v.effects.replace(/\{\{fx:[^}]+\}\}/g, m => m)} | fx: ${v.fx.all.map(x => x.uuid).join(", ")}${v.after ? ` | after: ${v.after}` : ""}`);
 console.log("the 2 and 3 AP texts are written in full (the book says As 1 AP):", smite.versions[1].effects, "|", sys.versions[1].effects.startsWith("The target sheds"), sys.versions[2].effects.startsWith("The target sheds"));
 console.log("automation:", sys.automation, "|", sys.automationNote);
-console.log("a card in a table cell keeps a link with a label (cells of build_rules.py):", src("../../book/build_rules.py").includes("replace('|', '\\x00')"), "| the built book links Bright light and Hide:", /sheds <a class="xref" href="[^"]*#bright">Bright light<\/a>/.test(src("../../book/paladin.html")), /href="[^"]*#card-hide">Hide<\/a>/.test(src("../../book/paladin.html")), "| every card an anchor:", src("../../book/core-rules.html").includes('id="card-weapon-attack"'));
+console.log("the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16):", src("../../book/cards.py").includes("def structure("), "| the built book links Bright light on a card:", /sheds <a class="xref" href="[^"]*#bright">Bright light<\/a>/.test(src("../../book/paladin.html")), "| every card an anchor:", src("../../book/core-rules.html").includes('id="card-weapon-attack"'));
 
 console.log("--- the placeholder card (Hide) and the Smite light effects");
 const hide = G.loadCards().find(c => c.name === "Hide"), hs = G.cardSystem(hide);

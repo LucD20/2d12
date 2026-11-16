@@ -4,7 +4,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
-| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 25.3 | 322 |
+| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 25.5 | 324 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 32.6 | 345 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 40.1 | 464 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.0 | 256 |
@@ -44,9 +44,9 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 193: ## Several Targets
 - 214: ## Rounding
 - 218: ## Reading an Action
-- 267:   ### Notation
-- 292:   ### Rules Language
-- 314: ## Summary
+- 269:   ### Notation
+- 294:   ### Rules Language
+- 316: ## Summary
 
 ## 02-turns.md: Chapter 2: Turns and Actions
 

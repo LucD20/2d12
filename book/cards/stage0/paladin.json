@@ -233,7 +233,7 @@
      "body": [
       {
        "label": "Effect",
-       "text": "You shed Bright light 3 until the encounter ends."
+       "text": "You shed [[Bright|Bright light]] 3 until the encounter ends."
       }
      ]
     },
@@ -242,7 +242,7 @@
      "body": [
       {
        "label": "Effect",
-       "text": "The target sheds Bright light 1 (1 round)."
+       "text": "The target sheds [[Bright|Bright light]] 1 (1 round)."
       }
      ],
      "distance": "5 sq.",
@@ -261,7 +261,7 @@
       },
       {
        "label": "Tier 1 or 2",
-       "text": "Half-Blinded (EoT)."
+       "text": "[[Half-Blinded]] (EoT)."
       }
      ],
      "distance": "5 sq.",

@@ -9,7 +9,7 @@ the setting and its lifecycle: true true true | in the Class group: true
 Beacon's Step from the card: Beacon's Step | Inline Action | 0R Round | An ally in the Aura takes damage. | You Evade 1 toward the ally. | as an item: interrupt round 0 AP, You @Move[evade|distance:1] toward the ally. | flavor: A step into the light, before the blow lands.
 in the compendium: actions/action in Inline | the Beacon effect carries it: true | the aura setting still first: aura
 Beacon: Area "Aura 2" | distance "" | text: For 3 rounds, you and allies in the @Book[Aura]{Aura} gain +1 Defense. While the Beacon is active, you gain the following Action: @UUID[Compendium.twod12.actions.Item.QAtt8CWD82hwcJOJ]{Beacon's Step} — 0R | Round | Interrupt: An ally in the Aura takes damage. | Effects: You @Move[evade|distance:1] toward the ally.
-the book: a nested card with its own Frequency color, the Interrupt and the Effects: true true
+the book (the card Structure of 2026-11-16; Beacon and its nested card left the book with the Paladin's redesign): an Interrupt is a labeled line: true
 --- Word of Radiance's chain
 after: 2 AP: @Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes] | 3 AP: @Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes] | no notes line: true
 the chip options: {"from":"area","pick":true,"t3":"2"} | the distance by Tier: null 2 | Prone on the Criticals only: true

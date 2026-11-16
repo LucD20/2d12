@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: b553a85 2026-11-16 The card Structure complete; the 19 Paladin cards redrawn in it
+Built by tools/knowledge.py on 2026-11-16 from the repository at: 5fc5fa0 2026-11-16 Work in progress: the book's card renderer being rebuilt for the new Structure (not finished; four Foundry tests that read the built book are changed until it lands)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,10 +15,10 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (160 KB)
+- HANDOFF.md (161 KB)
 - MASTER-PLAN.md (40 KB)
 - open-design-items.md (178 KB)
-- rules-01-roll.md (25 KB)
+- rules-01-roll.md (26 KB)
 - rules-02-turns.md (33 KB)
 - rules-03-movement.md (40 KB)
 - rules-04-health.md (14 KB)

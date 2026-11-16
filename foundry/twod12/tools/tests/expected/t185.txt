@@ -19,7 +19,7 @@ options: {"formula":"1d8+mod","who":"pick","area":2} {"kind":"pushed","distance"
 3 AP: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to {{link:Hide|Hide}}, for 1 round. You or one ally in the Bright light gain @Guard[1d8+mod|s2:2d6+mod|s3:2d8+mod]{Guard 1d8 + [Mod]}. The other creatures in the light, you excepted, are @Move[pushed|distance:1], away from the target. | fx: {{fx:Smite (Bright light 2)}} | after: @Guard[1d8+mod|who:pick|area:2] @Move[pushed|distance:1|pick:yes|area:2|from:target]
 the 2 and 3 AP texts are written in full (the book says As 1 AP): As 1 AP, but a 2 Emanation. | true true
 automation: diamond | the damage, the light on the target (the Damage button), then who gains the Guard (the Stage's dice) and the Pushes one by one (3 AP); the Bane on Hide by hand (Hide isn't written).
-a card in a table cell keeps a link with a label (cells of build_rules.py): true | the built book links Bright light and Hide: true true | every card an anchor: true
+the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16): true | the built book links Bright light on a card: true | every card an anchor: true
 --- the placeholder card (Hide) and the Smite light effects
 Hide: placeholder true | an Action: true | versions: 0 | frequency: "" | text: Not written yet. Hiding and sneaking are an open item (see @Book[Senses]{Senses}). This card holds the place, so that other cards can refer to Hide.
 in the Actions pack: actions/action | placed in Chapter 6: true

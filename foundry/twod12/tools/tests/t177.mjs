@@ -34,9 +34,13 @@ for (const [f, t] of chapters) for (const m of t.matchAll(/^@@CARD:(.+?)@@[ \t]*
 // Stage 0 into the book (2026-11-12): the cards set aside (book/cards/set-aside.txt: the Talents and Opportunity Attack) stay in the card files and in the
 // system, and no chapter places them for now.
 const aside = new Set(fs.readFileSync(ROOT + "../../book/cards/set-aside.txt", "utf8").split("\n").map(l => l.trim()).filter(l => l && !l.startsWith("#")));
+// The card Structure (2026-11-16): the book also reads book/cards/stage0/*.json (the redesigned classes), a card there taking the place of the old card of its name;
+// Foundry and the ruler read only the old files until the Foundry pass.
+const s0dir = ROOT + "../../book/cards/stage0/";
+const stage0 = fs.existsSync(s0dir) ? fs.readdirSync(s0dir).filter(f => f.endsWith(".json")).flatMap(f => JSON.parse(fs.readFileSync(s0dir + f, "utf8")).cards.map(c => c.name)) : [];
 const shown = cards.filter(c => c.book !== false && !aside.has(c.name));
 console.log("set aside:", aside.size, "| each is a card:", [...aside].every(n => cards.some(c => c.name === n)), "| none is placed:", [...aside].every(n => !placed.has(n)));
-console.log("shown in the book:", shown.length, "| placed once:", shown.every(c => placed.get(c.name)?.length === 1), "| markers with no card:", [...placed.keys()].filter(n => !cards.some(c => c.name === n)).join(", ") || "none");
+console.log("shown in the book:", shown.length, "| placed once:", shown.every(c => placed.get(c.name)?.length === 1), "| markers with no card:", [...placed.keys()].filter(n => !cards.some(c => c.name === n) && !stage0.includes(n)).join(", ") || "none", "| stage0 cards, each placed once:", stage0.length, stage0.every(n => placed.get(n)?.length === 1));
 const byHand = [];
 for (const [f, t] of chapters) for (const m of t.matchAll(/<div class="action-head"><span>(.*?)<\/span>/g)) if (cards.some(c => c.name === m[1])) byHand.push(`${f}: ${m[1]}`);
 console.log("cards of the files still written by hand in a chapter:", byHand.join(", ") || "none");

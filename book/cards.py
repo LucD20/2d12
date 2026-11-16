@@ -86,7 +86,9 @@ def structure(c):
     if vs and vs.endswith(' Save'): B.append(_line('Save', vs[:-5]))
     elif vs:
         roll = ' or '.join(cap(t) for t in c.get('traits', []) if t in ROLLS)
-        B.append(_line('Attack', (roll + ' ' if roll else '') + 'vs. ' + DEFENSE.get(vs, vs)))
+        # 'A or B (the one used to roll)': the roll and the Defense are the same Attribute, so say it once
+        dfn = "the target's same Attribute" if vs.endswith('(the one used to roll)') else DEFENSE.get(vs, vs)
+        B.append(_line('Attack', (roll + ' ' if roll else '') + 'vs. ' + dfn))
     versions = c.get('versions', [])
     if len(versions) == 1: B += _version_lines(c, versions[0])
     else:

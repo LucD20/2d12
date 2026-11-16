@@ -244,6 +244,8 @@ The lines are written in the order they happen.
 
 **Versions and Modes.** Some cards have parts under a heading of their own. A **Version** is the same Action at another cost: its heading is the cost ("1 AP", "2 AP"), and you pay the cost of the Version you use. A **Mode** is one of several things the card can do at the same cost: its heading is the Mode's name, followed by the traits only that Mode has, and each time you use the card you choose one Mode. A part has its own lines, and its own Distance and Target when they differ. Lines written above the parts belong to all of them. The card's Frequency counts every use of the card, whichever Version or Mode.
 
+The numbers on the two cards below are the numbers of the list. The first card needs no Escalation and has no Area, so neither is printed; the second has two Versions, and **10** marks the heading of one.
+
 @@SAMPLE_CARD@@
 
 **"As X AP".** Some results refer to another cell of the tier table:

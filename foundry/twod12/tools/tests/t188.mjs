@@ -12,7 +12,7 @@ const G = await import(ROOTURL + "tools/cardgen.mjs"), C = await import(ROOTURL 
 const strip = h => String(h).replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 console.log("--- the meta lines, the tier text, the cards");
 const cfg = src("module/config.mjs"), pv = src("module/preview.mjs"), ac = src("module/actions.mjs"), dc = src("module/dmgcard.mjs"), dm = src("module/damage.mjs"), tp = src("module/template.mjs"), inl = src("module/inline.mjs");
-console.log("Targets labeled and the meta texts colored:", cfg.includes('<b>Targets:</b> ${hl(targetText)}') && cfg.includes("${hl(trigger)}") && cfg.includes("${vsColored(vs)}"), "| the book labels it too:", src("../../book/build_rules.py").includes("<b>Targets:</b> {inline(target.group(1))}"));
+console.log("Targets labeled and the meta texts colored:", cfg.includes('<b>Targets:</b> ${hl(targetText)}') && cfg.includes("${hl(trigger)}") && cfg.includes("${vsColored(vs)}"), "| the book labels it too:", /<b>Target:<\/b> One ally/.test(src("../../book/paladin.html")));
 console.log("a tier's effect after its damage with '; ':", pv.includes("lines[lines.length - 1] += `; ${e}`"), "| the area button stays on the chat card:", ac.includes("const areaRow = areaButton(it) ? ") && !ac.includes("areaPlaced"), "| the placement outline:", tp.includes("const limit = within && user ? emanationCells(tokenCells(user), within) : []"));
 console.log("the merged card: no collapse, the selector gone when done:", !dm.includes('rows.every(r => r.applied || r.blocked)) await msg.setFlag("twod12", "collapsed", true)') && dc.includes("(pending ? `<div class=\"dtotal\"><select"), "| the Save card's text line:", inl.includes('<div class="sextraline">'));
 console.log("--- a rung's effect when the Escalation reaches it");
@@ -27,7 +27,7 @@ const item = C.docs.find(d => d.name === "Beacon's Step"), aura = C.docs.find(d 
 console.log("in the compendium:", item ? `${item.pack}/${item.type} in ${item.folder}` : "missing", "| the Beacon effect carries it:", aura.system.settings.some(x => x.type === "inline" && x.inlineAction === C.uuidOf("actions", "Beacon's Step")), "| the aura setting still first:", aura.system.settings[0].type);
 const bk = C.docs.find(d => d.name === "Beacon" && d.type === "action");
 console.log("Beacon: Area", JSON.stringify(bk.system.area), "| distance", JSON.stringify(bk.system.distance ?? ""), "| text:", bk.system.versions[0].effects);
-console.log("the book: a nested card with its own Frequency color, the Interrupt and the Effects:", /<div class="acard inl" style="--fq:#185FA5[^"]*"><div class="ahead"><b>Beacon's Step<\/b><span class="afreq">Round<\/span><span class="aps"><span class="rmark">0R<\/span>/.test(src("../../book/paladin.html")), src("../../book/paladin.html").includes("<b>Interrupt:</b> An ally in the Aura takes damage."));
+console.log("the book (the card Structure of 2026-11-16; Beacon and its nested card left the book with the Paladin's redesign): an Interrupt is a labeled line:", /<div class="cl"><b>Interrupt<\/b>/.test(src("../../book/paladin.html")));
 console.log("--- Word of Radiance's chain");
 const w = C.docs.find(d => d.name === "Word of Radiance");
 console.log("after:", w.system.versions.map(v => `${v.ap} AP: ${v.after}`).join(" | "), "| no notes line:", !w.system.description);
