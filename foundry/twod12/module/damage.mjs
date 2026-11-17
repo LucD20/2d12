@@ -65,6 +65,8 @@ export async function applyToActor(actor, a, opts = {}) {
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
   if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.takenAp ? ` (${g.takenAp} from the kept AP)` : ""}${a.guardLeft ? ` (Guard ${a.guardLeft} left)` : " and ends"}.`) });
   if (Object.keys(upd).length) await writeDamage(actor, upd);
+  // v0.0.411 (pack F3, Thrill of the Kill: "an enemy you have damaged goes Down"): who damaged this creature in this combat (mark.mjs reads it)
+  if (Object.keys(upd).length && from?.uuid && game.combat?.started) { try { const s = await fromUuid(from.uuid), by = (s?.documentName === "Actor" ? s : s?.actor)?.uuid; if (by && by !== actor.uuid) await noteHurtBy(actor, by); } catch (e) { /* not kept */ } }
   // v0.0.275: the result into the Reactions message(s): the final damage, and what the Reactions' protection took off (a reduction, a Guard)
   if (rxIds.some(Boolean)) { try { const final = a.B.l + a.B.n + a.M.l + a.M.n; await M.noteLanded(rxIds[0], { final, blocked: Math.min(rxGained, (Number(a.reduced) || 0) + (Number(g.taken) || 0)) }); if (rxIds[1]) await M.noteLanded(rxIds[1], { final, cut: a.momentCut || 0 }); } catch (e) { console.warn("twod12 | moment", e); } }
   // v0.0.272: the damage landed: the Triggers of these moments are offered now (they hold nothing)
@@ -86,6 +88,13 @@ export function reachesHealth(actor, a) {
   return left.B.l + left.B.n + left.M.l + left.M.n > 0;
 }
 
+/** v0.0.411: add a creature to the list of who damaged this one in the current combat (actor flag hurtBy { combat, by: [uuid] }); through the GM when needed. */
+export async function noteHurtBy(actor, by) {
+  const combat = game.combat?.id ?? "";
+  if (!actor.isOwner) { game.socket.emit(SOCKET, { type: "hurtBy", actorUuid: actor.uuid, by, combat }); return; }
+  const h = actor.getFlag("twod12", "hurtBy"), list = h?.combat === combat ? [...(h.by ?? [])] : [];
+  if (!list.includes(by)) await actor.setFlag("twod12", "hurtBy", { combat, by: [...list, by] });
+}
 export function registerSocket() {
   game.socket.on(SOCKET, async data => {
     // v0.0.250 (cards 3): prompts addressed to one user (the creature's answerer): the Heal window and the "end one effect" window
@@ -107,6 +116,7 @@ export function registerSocket() {
     if (data?.type === "markOnce") { const a = await fromUuid(data.actorUuid); if (a) await (await import("./automation.mjs")).markOnce(a, data.keys); return; }   // v0.0.186
     if (data?.type === "applyGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.guard": Math.max(0, Number(data.value) || 0) }); return; }
     if (data?.type === "halfHint") { const a = await fromUuid(data.actorUuid); const actor = a?.documentName === "Actor" ? a : a?.actor; if (actor) await (data.info ? actor.setFlag("twod12", "halfHint", data.info) : actor.unsetFlag("twod12", "halfHint")); return; }   // v0.0.261 (Covering Shot)
+    if (data?.type === "hurtBy") { const a = await fromUuid(data.actorUuid); const act = a?.documentName === "Actor" ? a : a?.actor; if (act) await noteHurtBy(act, data.by); return; }   // v0.0.411
     if (data?.type === "setFlag" && data.key === "judgeRound") { const a = await fromUuid(data.actorUuid); const act = a?.documentName === "Actor" ? a : a?.actor; if (act) await act.setFlag("twod12", "judgeRound", String(data.value ?? "")); return; }   // v0.0.409 (Judge)
     if (data?.type === "applyApGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.apGuard": Math.max(0, Number(data.value) || 0) }); return; }   // v0.0.243: a kept AP paid a Reaction
     if (data?.type !== "applyDamage") return;

@@ -1,4 +1,4 @@
-the rules tab renders: effect 61, feature 22, talent 16 | failures: none
+the rules tab renders: effect 64, feature 21, talent 16 | failures: none
 an Effect on the map (Set here): true | Consecrated Ground on the map: true
 From the Action, no Action: the shape set here and Place on the map: true
 From the Action, with one: its card and Place on the map: true

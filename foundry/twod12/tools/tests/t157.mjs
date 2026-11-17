@@ -6,7 +6,8 @@ import fs from "node:fs";
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {}, TextEditor: { enrichers: [] }, statusEffects: [] };
 globalThis.Hooks = { on() {}, once() {} }; globalThis.ui = { notifications: { info() {}, warn() {} } };
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
-const { docs, uuidOf } = await import(ROOTURL + "tools/content.mjs");
+const { docs: docs0, uuidOf , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 globalThis.game = { settings: { get: () => true }, user: { id: "u" }, combat: null, socket: { emit() {} } };
 const X = await import(ROOTURL + "module/escblock.mjs");
 const F = "twod12";

@@ -1,5 +1,5 @@
 Paladin: Repertoire Bulwark of Faith, Consecrated Ground, Word of Radiance | Passives Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil, Hallowed Stance | Actives Reckoning
-Archer: Repertoire Marksman's Shot, Volley, Covering Fire, Pinning Shot, Twin Shot, Hunter's Focus, Deadeye, Rain of Arrows | Passives Killer's Focus, Vanish, Harrying Shots, Hunter's Edge, Sure Step, Finisher, Staggering Shot | Actives Deathmark, Open Season
+Archer: Repertoire Volley, Hit and Run, Covering Fire | Passives Lean and Loose, Blade and Bow, Clear Lines, Opening Shot, One More Arrow, Fleet | Actives 
 the book's Talents: 16
   Challenge          ok combat 1
   Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage
@@ -20,6 +20,6 @@ the book's Talents: 16
 no Talent Action offered twice (an Action's category is not "Talent..."): true
 Leg Sweep: a kick true | no free hand needed true | Kickboxer grants it Leg Sweep
 old cards: Paladin Hallowed Dawn (1 Bane), Hallowed Dawn (Bright light 1), Smite (Bright light 1), Smite (Bright light 2), Lay On Hands (Holy Strike), Consecrated Ground (1 Bane), Divine Power (1 Bane), Beacon (+1 Defense), Divine Vigil (Boon against Fear), Divine Surge, Radiant Zeal, Aegis, Mercy's Reward, Divine Vigil, Avenger's Oath, Vow of Enmity, Rebuke (old), Champion's Challenge, Divine Retribution, Call to Arms, Judgment, Sanctified Ground
-old cards: Archer Precise Aim (1 Boon), Precise Aim (2 Boons), Precise Aim, Quick Draw, Wing Clip, True Shot, Suppressing Fire, Steady Aim, Perfect Shot, Bow Mastery, Patient Hunter
+old cards: Archer Precise Aim (1 Boon), Precise Aim (2 Boons), Double Shot (2 Attacks), Rolling Shot (Weapon Attack), Rolling Shot (+1d6 Pi), Rolling Shot (+2d6 Pi), Covering Shot (Weapon Attack, 1 Boon), Overwatch (Weapon Attack), Deathmark (Weapon Attack), Open Season (the Quarry), Open Season (Weapon Attack), Covering Fire (1 Bane), Covering Fire (+1 Defense), Precise Aim, Hunter's Focus, Quick Draw, Wing Clip, True Shot, Suppressing Fire, Steady Aim, Vanish (+1 Defense), Pinning Shot, Twin Shot, Perfect Shot, Bow Mastery, Patient Hunter, Harried, Killer's Focus
 lowercase Bane / Boon in the texts: none
 Rally Points written in words: none

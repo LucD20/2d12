@@ -1,5 +1,5 @@
-Projectile is a weapon property: Projectile | Shot and Save are Action traits: Shot Save | Crossbow: projectile, ranged, reload, twohanded
-Archer: Health high 16 / low 8 (Stage 1 +0 / +0; Stage 2 +0 / +0; Stage 3 +0 / +0), Rally 5 + Stage, Speed +1, medium armor | features: 
+Projectile is a weapon property: Projectile | Shot and Save are Action traits: Projectile Save | Crossbow: projectile, ranged, reload, twohanded
+Archer: Health high 16 / low 8 (Stage 1 +0 / +0; Stage 2 +0 / +0; Stage 3 +0 / +0), Rally 5 + Stage, Speed +1, light armor | features: 
 cards: all 18 | features: true | Talents: true | Field Training gone: true
 old cards' folder: true | current cards in it: none
   Double Shot: round | shot,strike | -
@@ -14,10 +14,10 @@ Rolling Shot 3 AP's extra: bonusdamage 2d6 B Pi t2,t3 | ends after: strike
 Sharpshooter: Choose your Hallmark Action: Double Shot or Rolling Shot. Choose one @Book[Projectile]{Projectile} weapon, such as a bow or a crossbow: you start with 3 Mastery with it. Your [Shot] Actions don't take the Bane for targeting a creature Engaged with a creature other than you. | no Actions: true
 Marked Quarry (the Mark Quarry Action's rules since v0.0.360): At the start of each encounter, choose one enemy as your Marked Quarry with this Action. You gain 1 Boon on [Shot, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time.
 Harrying Shots: Archer Escalation | While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Shot] Action, they take 1 Bane on [Strike] Actions (EoT). (Apply the Harried effect from the compendium.)
-Level 1: Attribute increases (attr) | Features (items granted): Sharpshooter, Mark Quarry, Thrill of the Kill | Hallmark Action (items): Double Shot, Rolling Shot | Hallmark Reaction (items): Overwatch, Covering Shot | Encounter Pick (repertoire encounter) | Escalation 1 Passive (items): Killer's Focus, Vanish, Harrying Shots | Escalation 2 Passive (items): Hunter's Edge, Sure Step | Escalation 3 Passive (items): Finisher, Staggering Shot | Apex (items): Deathmark, Open Season | Talent (talent)
-Level 2: Talent (talent)
-Level 3: Talent (talent)
-Level 4: Talent (talent)
-Repertoire: Marksman's Shot, Volley, Covering Fire, Pinning Shot, Twin Shot, Hunter's Focus, Deadeye, Rain of Arrows | Escalation: Killer's Focus, Vanish, Harrying Shots, Hunter's Edge, Sure Step, Finisher, Staggering Shot / Deathmark, Open Season
+Level 1: Attribute increases (attr) | Features (items granted): Shifting Aim, Darting Blade | Hallmark Action (items): Quick Shots, Strafe | Hallmark Reaction (items): Slip Away, Snap Shot | Art (items): Footwork, Trick Shots, Spotter | Escalation 2 Ability (items): Lean and Loose, Blade and Bow | Skill Talent (talent)
+Level 2: Escalation Hook (items granted): Thrill of the Kill | Encounter Pick (items): Volley, Hit and Run, Covering Fire | Escalation 4 Ability (items): Clear Lines, Opening Shot | Talent (talent)
+Level 3: Second Art (items): Footwork, Trick Shots, Spotter | Escalation 6 Ability (items): One More Arrow, Fleet | Skill Talent (talent)
+Level 4: Stage Talent (talent)
+Repertoire: Volley, Hit and Run, Covering Fire | Escalation: Lean and Loose, Blade and Bow, Clear Lines, Opening Shot, One More Arrow, Fleet / 
 Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true | old ranged weapons get Projectile once: true
 Mastery tab: no Techniques option (v0.0.213) true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character true

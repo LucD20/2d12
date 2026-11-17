@@ -1,5 +1,5 @@
-documents: 223
-references: 131 | broken: none
+documents: 221
+references: 113 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Judge, Smite | Hallmark Action (items, choice, pick 1): Binding Light, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Art (items, choice, pick 1): Lantern of Faith, Hold the Line, Commandment | Escalation 2 Ability (items, choice, pick 1): Armor of Faith, Roving Judgment | Skill Talent (talent, pick 1)
 Level 2: Escalation Hook (items, granted): Kindled Wrath | Encounter Pick (items, choice, pick 1): Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation 4 Ability (items, choice, pick 1): Weight of Judgment, Tireless Vigil | Talent (talent, pick 1)
@@ -35,8 +35,8 @@ Courage: rounds | note | For 1 round, you and allies within 3 squares of you ign
 the old cards out of Foundry: all gone | old cards kept in their folder: Vow of Enmity | in no level: true
 Aveline (Human Paladin, Smite): Judge, Smite, Binding Light, Rebuke, Commandment, Roving Judgment, Kindled Wrath, Word of Radiance, Weight of Judgment, Lantern of Faith, Reckoning | ids unique: true
 Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Kindled Wrath, Bulwark of Faith, Tireless Vigil, Commandment, Hallowed Stance, Keep Them Off | ids unique: true
-Sylwen (Elf Archer, Double Shot): Sharpshooter, Mark Quarry, Thrill of the Kill, Double Shot, Overwatch, Marksman's Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark, Heartseeker | ids unique: true
-Kaela (Human Archer, Rolling Shot): Sharpshooter, Mark Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Covering Fire, Vanish, Sure Step, Staggering Shot, Open Season, Skirmish Shot | ids unique: true
+Sylwen (Elf Archer, Double Shot): Shifting Aim, Darting Blade, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow, Heartseeker | ids unique: true
+Kaela (Human Archer, Rolling Shot): Shifting Aim, Darting Blade, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet, Skirmish Shot | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Grave Wisp (standard, speed 5): Chilling Touch atwill, Dread Whisper round

@@ -206,3 +206,40 @@ export function registerMigrationF2() {
     await migrateF2();
   });
 }
+
+// v0.0.411 (pack F3, "the Archer in Foundry"; book, the Archer redesigned on 2026-11-16): an existing world's Archers, once, by the GM, after the
+// Paladin's migration, with a question in the system's window. The class and the cards of the same name and type are updated from the compendium
+// (Volley, Covering Fire, Thrill of the Kill); nothing is deleted: pack R's cards that left the Archer stay on the sheets, listed for the GM.
+const DONE_F3 = "F3";
+/** Pure: what a character keeps of pack R's Archer: [names]. items: [{ name, type }]. */
+export function archerLeftovers(items = []) {
+  const OLD = ["Sharpshooter", "Marked Quarry", "Mark Quarry", "Double Shot", "Rolling Shot", "Overwatch", "Covering Shot", "Marksman's Shot", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows",
+    "Killer's Focus", "Vanish", "Harrying Shots", "Hunter's Edge", "Sure Step", "Finisher", "Staggering Shot", "Deathmark", "Open Season", "Vanish's Step"];
+  return items.filter(i => OLD.includes(i.name) && ["action", "feature"].includes(i.type)).map(i => i.name);
+}
+const archers = () => characters().filter(a => a.items.some(i => i.type === "class" && i.name === "Archer"));
+export async function migrateF3({ ask = true } = {}) {
+  if (!game.user.isGM) { ui.notifications.warn("Only the GM can run the Archer migration."); return null; }
+  if (ask) {
+    const { pickConfirm } = await import("./pickwindow.mjs");
+    const ok = await pickConfirm({ title: "The Archer", name: "The redesigned Archer", sub: "the book's Archer of 2026-11-16", icon: "fa-bullseye", confirm: "Migrate",
+      text: "<b>Back up your world first</b> (Foundry: Game Worlds, Backup). Nothing is deleted.<br>The Archer was redesigned: Shifting Aim and Darting Blade for every Archer, a Hallmark Action (Quick Shots or Strafe), a Hallmark Reaction (Slip Away or Snap Shot), the Arts, the Escalation 2, 4 and 6 abilities, Light Armor Training; no quarry.<br>Migrate updates the class and the cards of the same name from the compendium. The old cards stay on the sheets; a card for you lists them, and each Archer chooses the new picks in the class window. Later asks again at the next load." });
+    if (!ok) return null;
+  }
+  const { refreshFromCompendium } = await import("./refresh.mjs");
+  const res = await refreshFromCompendium({ byName: true, basics: false });
+  const lines = archers().map(a => { const left = archerLeftovers(a.items.map(i => ({ name: i.name, type: i.type }))); return `${esc(a.name)}: level ${a.system.level}${left.length ? `; kept from the old Archer: ${left.map(esc).join(", ")}` : ""}`; });
+  await game.settings.set(F, "migratedF3", DONE_F3);
+  await ChatMessage.create({ whisper: game.users.filter(u => u.isGM).map(u => u.id), content: sysCard({ title: "The Archer: the world migrated", lead: `${lines.length} Archer${lines.length === 1 ? "" : "s"}`,
+    text: `${lines.join("<br>")}<br>${res ? `${res.items} item${res.items === 1 ? "" : "s"} updated from the compendium.` : ""} Each Archer opens the class window (the Build tab) to choose what the new levels give (Shifting Aim and Darting Blade are granted). Light Armor Training now: Medium Armor is beyond it. The old cards (the quarry's among them) can be removed by hand.` }) });
+  return { archers: lines.length, refreshed: res };
+}
+export function registerMigrationF3() {
+  game.settings.register(F, "migratedF3", { scope: "world", config: false, type: String, default: "" });
+  Hooks.once("ready", async () => {
+    if (!game.user.isActiveGM || game.settings.get(F, "migratedF3") === DONE_F3) return;
+    try { if (game.settings.get(F, "migratedS0") !== DONE_S0) return; } catch (e) { return; }
+    if (!(game.settings.get(F, "migratedF3") !== DONE_F3 && archers().length > 0)) { await game.settings.set(F, "migratedF3", DONE_F3); return; }
+    await migrateF3();
+  });
+}

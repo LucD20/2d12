@@ -1,7 +1,7 @@
 --- the automation chip
 gold: <i class="fa-solid fa-diamond autodia auto-gold" aria-label="Gold"></i> | silver: <i class="fa-solid fa-diamond autodia auto-silver" aria-label="Silver"></i> | bronze: <i class="fa-solid fa-diamond autodia auto-bronze" aria-label="Bronze"></i> | none: <i class="fa-solid fa-diamond autodia auto-none" aria-label="Not implemented"></i> | (none): -
 on the card head: true | the Features tab: true | the item sheets' select: 4
-compendium ranks: {"gold":25,"diamond":19,"silver":8,"bronze":5,"mithril":15,"none":10} | old cards have none: true
+compendium ranks: {"gold":16,"diamond":17,"none":5,"bronze":3,"mithril":28,"silver":2} | old cards have none: true
 --- bonus damage named by its source
 the card's bonus row links its source: true | no None type: true | the damage card names it (not Untyped): true | passives carry the item's uuid: true
 --- targeting mode
@@ -16,7 +16,7 @@ Aveline (Human Paladin, Smite) (level 4): Judge, Smite, Binding Light, Rebuke, C
 Aveline (Human Paladin, Smite, level 1) (level 1): Judge, Smite, Binding Light, Rebuke, Commandment, Roving Judgment
 Durgan (Dwarf Paladin, Lay On Hands) (level 4): Judge, Smite, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Kindled Wrath, Bulwark of Faith, Tireless Vigil, Commandment, Hallowed Stance
 Durgan (Dwarf Paladin, Lay On Hands, level 1) (level 1): Judge, Smite, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith
-Sylwen (Elf Archer, Double Shot) (level 4): Sharpshooter, Mark Quarry, Thrill of the Kill, Double Shot, Overwatch, Marksman's Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark
-Sylwen (Elf Archer, Double Shot, level 1) (level 1): Sharpshooter, Mark Quarry, Thrill of the Kill, Double Shot, Overwatch, Marksman's Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark
-Kaela (Human Archer, Rolling Shot) (level 4): Sharpshooter, Mark Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Covering Fire, Vanish, Sure Step, Staggering Shot, Open Season
-Kaela (Human Archer, Rolling Shot, level 1) (level 1): Sharpshooter, Mark Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Covering Fire, Vanish, Sure Step, Staggering Shot, Open Season
+Sylwen (Elf Archer, Double Shot) (level 4): Shifting Aim, Darting Blade, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow
+Sylwen (Elf Archer, Double Shot, level 1) (level 1): Shifting Aim, Darting Blade, Quick Shots, Snap Shot, Spotter, Lean and Loose
+Kaela (Human Archer, Rolling Shot) (level 4): Shifting Aim, Darting Blade, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet
+Kaela (Human Archer, Rolling Shot, level 1) (level 1): Shifting Aim, Darting Blade, Strafe, Slip Away, Footwork, Blade and Bow

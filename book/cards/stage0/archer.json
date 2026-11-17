@@ -1,5 +1,5 @@
 {
- "_about": "The Archer's Stage 0 cards in the card Structure (book/cards/card-structure.md), decided with Lucas on 2026-11-16 (book/cards/archer-redesign.md). THE BOOK reads these in the place of the cards of the same name in ../archer.json; Foundry and the ruler still read ../archer.json until the Foundry pass. The trait key 'projectile' is the renamed 'shot'. Format: see ../stage0/paladin.json.",
+ "_about": "The Archer's Stage 0 cards in the card Structure (book/cards/card-structure.md), decided with Lucas on 2026-11-16 (book/cards/archer-redesign.md). THE BOOK reads these in the place of the cards of the same name in ../archer.json; Foundry reads these since pack F3 (v0.0.411; load.mjs loadFoundryCards, each card's `foundry` block); the ruler still reads ../archer.json until its own pass. The trait key 'projectile' is the renamed 'shot'. Format: see ../stage0/paladin.json.",
  "structure": 2,
  "cards": [
   {
@@ -13,7 +13,23 @@
      "label": "Passive",
      "text": "Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began)."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "hooks": [
+     {
+      "kind": "movedBoon",
+      "traits": [
+       "ranged",
+       "strike"
+      ],
+      "boons": 1,
+      "bb": "field"
+     }
+    ],
+    "automationNote": "the Field Boon in the roll dialog when you have left your square this turn since your last [Strike] Action (or since your turn began): tracked from your token's moves.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Darting Blade",
@@ -58,7 +74,13 @@
     "strike"
    ],
    "distance": "Reach",
-   "target": "One creature"
+   "target": "One creature",
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Archer",
+    "automationNote": "the Strike, Staggered (EoT) on a Tier 3, then the Evade 2 (the button); drawing and stowing the Light weapon by hand (the hands buttons).",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Quick Shots",
@@ -100,7 +122,13 @@
     "strike"
    ],
    "distance": "Weapon",
-   "target": "One creature"
+   "target": "One creature",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (the button); a Critical's 1 AP back by hand.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Strafe",
@@ -138,7 +166,13 @@
     "strike"
    ],
    "distance": "Weapon",
-   "target": "Up to three creatures"
+   "target": "Up to three creatures",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automationNote": "the Setup's Advance (the button), then up to three creatures, a roll each, Pushed 1 on a Tier 3.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Slip Away",
@@ -158,7 +192,15 @@
     }
    ],
    "distance": "5 sq.",
-   "target": "One enemy"
+   "target": "One enemy",
+   "foundry": {
+    "img": "icons/svg/wing.svg",
+    "folder": "Archer",
+    "moment": "enemyAdjacent",
+    "momentRange": 5,
+    "automationNote": "offered by itself in the Reactions message when an enemy within 5 squares would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 and the Advance 2 (the buttons).",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Snap Shot",
@@ -196,7 +238,16 @@
     "strike"
    ],
    "distance": "Weapon",
-   "target": "One enemy"
+   "target": "One enemy",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "moment": "enemyAdjacent",
+    "momentRange": 0,
+    "momentTarget": "subject",
+    "automationNote": "offered by itself in the Reactions message when an enemy would enter a square adjacent to you (Move back: it stops before that square); Use: the shot, Hindered (EoT) on a Tier 2, Immobilized (EoT) on a Tier 3.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Footwork",
@@ -225,7 +276,15 @@
        "label": "Effect",
        "text": "You Advance. During this Advance, Difficult Terrain doesn't slow you, and you can move through the squares of unwilling creatures (you can't end in one)."
       }
-     ]
+     ],
+     "foundry": {
+      "sub": [
+       [
+        "@Move[advance|distance:speed]",
+        "@Move[advance|distance:speed|terrain:ignore]"
+       ]
+      ]
+     }
     },
     {
      "heading": "Hands Busy",
@@ -236,7 +295,13 @@
       }
      ]
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/wing.svg",
+    "folder": "Archer",
+    "automation": "mithril",
+    "automationNote": "the Mode's pick; Sidestep's Evade 3 and Hands Busy's Evade 1 (the buttons; the Interact or Reload by hand); Weave's Advance ignores Difficult Terrain (the button; through unwilling creatures by hand)."
+   }
   },
   {
    "name": "Trick Shots",
@@ -291,7 +356,13 @@
       }
      ]
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "mithril",
+    "automationNote": "the Mode's pick, the shot and each Mode's Tier 2 or 3 (Hindered, Vulnerable 1, the Pushes)."
+   }
   },
   {
    "name": "Spotter",
@@ -310,7 +381,14 @@
       }
      ],
      "distance": "10 sq.",
-     "target": "One creature you perceive"
+     "target": "One creature you perceive",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Called-Out}}"
+       ]
+      }
+     }
     },
     {
      "heading": "Find the Gap",
@@ -319,7 +397,14 @@
        "label": "Effect",
        "text": "Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower."
       }
-     ]
+     ],
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Find the Gap}}"
+       ]
+      }
+     }
     },
     {
      "heading": "Keep Low",
@@ -328,9 +413,22 @@
        "label": "Effect",
        "text": "Against each creature you have Cover from, your Cover is one level higher, up to High (1 round)."
       }
-     ]
+     ],
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Keep Low}}"
+       ]
+      }
+     }
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/eye.svg",
+    "folder": "Archer",
+    "automation": "mithril",
+    "automationNote": "the Mode's pick; Call Out: the target is Called Out (1 round: its enemies perceive it one step better); Find the Gap: an effect on you (no far or maximum range Bane on your next [Ranged, Strike] this turn; its Cover one level lower by hand); Keep Low: an effect as a reminder (by hand)."
+   }
   },
   {
    "name": "Lean and Loose",
@@ -344,7 +442,20 @@
      "label": "Passive",
      "text": "The [[Leaning]] Action costs you 0 AP."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/eye.svg",
+    "hooks": [
+     {
+      "kind": "apCost",
+      "basic": "leaning",
+      "ap": 1,
+      "cost": 0
+     }
+    ],
+    "automationNote": "Leaning costs 0 AP while your Escalation is 2 or more.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Blade and Bow",
@@ -358,7 +469,18 @@
      "label": "Passive",
      "text": "Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action, or a [Ranged, Strike] Action after a [Melee, Strike] Action, it gains 1 Boon."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "hooks": [
+     {
+      "kind": "alternateBoon",
+      "boons": 1
+     }
+    ],
+    "automationNote": "the Boon in the roll dialog, once on each of your turns, on a [Melee, Strike] after a [Ranged, Strike] (or the reverse) this turn, while your Escalation is 2 or more.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Thrill of the Kill",
@@ -371,7 +493,19 @@
      "label": "Passive",
      "text": "Once an encounter, when an enemy you have damaged goes Down, your Escalation increases by 1."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/blood.svg",
+    "settings": [
+     {
+      "type": "eschook",
+      "hookWhen": "damagedDown",
+      "hookRange": 0
+     }
+    ],
+    "automationNote": "",
+    "automation": "diamond"
+   }
   },
   {
    "name": "Volley",
@@ -415,7 +549,19 @@
    ],
    "distance": "Weapon",
    "area": "3 Burst",
-   "target": "All creatures in the Area"
+   "target": "All creatures in the Area",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "areaCfg": {
+     "targets": "all"
+    },
+    "automationNote": "the Burst within your weapon's range, a roll per creature, 2[W] / 3[W] and Hindered by Tier, Prone on a Critical, then the Evade 2 (the button).",
+    "version": {
+     "after": "@Condition[prone|crit:yes]"
+    },
+    "automation": "diamond"
+   }
   },
   {
    "name": "Hit and Run",
@@ -456,7 +602,13 @@
     "move",
     "strike"
    ],
-   "target": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range"
+   "target": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range",
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Archer",
+    "automation": "mithril",
+    "automationNote": "the Advance (the button) and one roll for the whole Action (Use it against the first creature; apply the same Tier to the others by hand); the free draws and the bow shot by hand."
+   }
   },
   {
    "name": "Covering Fire",
@@ -478,7 +630,25 @@
     "area"
    ],
    "distance": "Weapon",
-   "area": "3 Burst"
+   "area": "3 Burst",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "areaCfg": {
+     "targets": "all",
+     "keep": true,
+     "rounds": 2
+    },
+    "automationNote": "the Zone (2 rounds): Difficult Terrain and Hazardous Terrain for enemies (Entering, Turn, Movement): [V] 2 + your Weapon Modifier, Pierce (another subtype by hand).",
+    "version": {
+     "fx": {
+      "all": [
+       "{{fx:Covering Fire}}"
+      ]
+     }
+    },
+    "automation": "diamond"
+   }
   },
   {
    "name": "Clear Lines",
@@ -492,7 +662,17 @@
      "label": "Passive",
      "text": "Your allies give your targets no Cover, and your [Ranged] Actions take no Field Bane for a target Engaged with one of your allies."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "hooks": [
+     {
+      "kind": "clearLines"
+     }
+    ],
+    "automationNote": "your allies give your targets no Cover, and no Field Bane for a target Engaged with an ally, while your Escalation is 4 or more.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Opening Shot",
@@ -506,7 +686,17 @@
      "label": "Passive",
      "text": "Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Weapon Attack (1A) against it."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "hooks": [
+     {
+      "kind": "openingShot"
+     }
+    ],
+    "automationNote": "on a Tier 3 of a [Ranged, Strike] Action, a line on the card names the allies who threaten the target; the ally's Weapon Attack (1R) by hand, once a round.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "One More Arrow",
@@ -520,7 +710,18 @@
      "label": "Passive",
      "text": "Once on each of your turns, a [Strike] Action of yours that deals [W] deals 1[W] more."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "hooks": [
+     {
+      "kind": "moreW",
+      "n": 1
+     }
+    ],
+    "automationNote": "the first [Strike] that deals [W] on each of your turns deals 1[W] more (the damage roll), while your Escalation is 6.",
+    "automation": "mithril"
+   }
   },
   {
    "name": "Fleet",
@@ -534,7 +735,18 @@
      "label": "Passive",
      "text": "Each Evade of yours moves you 1 more square, and your Evades can enter Difficult Terrain."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/wing.svg",
+    "hooks": [
+     {
+      "kind": "evadeMore",
+      "n": 1
+     }
+    ],
+    "automationNote": "each Evade button moves you 1 more square while your Escalation is 6; entering Difficult Terrain with an Evade by hand.",
+    "automation": "mithril"
+   }
   }
  ]
 }

@@ -12,7 +12,8 @@ const users = [{ id: "gm", isGM: true }, { id: "p1" }, { id: "p2" }];
 globalThis.game = { settings: { get: () => true }, user: { id: "gm", isGM: true, isActiveGM: true }, users, combat: null, items: [], packs: new Map(), actors: { contents: [] } };
 globalThis.ChatMessage = { create: async d => { posted.push(d); return d; }, getSpeaker: ({ actor }) => ({ alias: actor?.name }) };
 globalThis.canvas = { ready: false, scene: { tokens: [] }, tokens: { placeables: [] } };
-const { docs } = await import(ROOTURL + "tools/content.mjs");
+const { docs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 globalThis.game = { settings: { get: () => true }, user: { id: "gm", isGM: true, isActiveGM: true }, users, combat: null, items: [], packs: new Map(), actors: { contents: [] } };   // (content.mjs puts its own stand-ins)
 globalThis.Hooks = { on(n, fn) { (hooks[n] ??= []).push(fn); }, once() {} };
 globalThis.foundry.applications.ux.TextEditor.implementation.enrichHTML = async t => t.replace(/@Use\[([^\]]+)\]/g, (m, x) => `<a data-twod12-inline="Use">${x}</a>`);   // stands for Foundry's enricher
@@ -51,7 +52,7 @@ console.log("--- the marked creature goes Down");
 posted.length = 0;
 const gob = { documentName: "Actor", isToken: false, getActiveTokens: () => [{ document: { uuid: "Scene.s.Token.Goblin" } }] };
 await lana.setFlag(F, "quarry", { uuid: "Scene.s.Token.Goblin", name: "Goblin" });
-const down = hooks.createActiveEffect.at(-1);
+const down = async (...a) => { for (const fn of hooks.createActiveEffect) await fn(...a); };   // v0.0.411: mark.mjs has two (the mark, and Thrill of the Kill's hook)
 await down({ statuses: new Set(["prone"]), parent: gob });
 console.log("Prone is not Down: nothing:", posted.length, "| still marked:", !!lana.getFlag(F, "quarry"));
 await down({ statuses: new Set(["unconscious"]), parent: gob });

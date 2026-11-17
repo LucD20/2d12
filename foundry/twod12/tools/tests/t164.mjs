@@ -6,7 +6,8 @@
 // It also checks that the cards whose rules were hidden carry them as settings or fields, and that no compendium item has hidden flags.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
-const { docs } = await import(ROOTURL + "tools/content.mjs");
+const { docs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 
 const core = new Set([...Object.values(BASIC_ACTIONS).map(b => b.name), "Fists"]);
@@ -17,7 +18,7 @@ console.log("cards checked:", cards.length, "| e.g.", ["Mark Quarry", "Brawler",
 function scrub(src) {
   let out = src.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, " "));
   out = out.split("\n").map(l => l.replace(/(^|[^:"'`\\])\/\/.*$/, "$1")).join("\n");
-  for (const re of [/export async function giveSettingsV\d+\s*\(/g, /static migrateData\s*\(/g, /export function paladinLeftovers\s*\(/g]) {   // v0.0.409: the Paladin migration's list of old cards
+  for (const re of [/export async function giveSettingsV\d+\s*\(/g, /static migrateData\s*\(/g, /export function paladinLeftovers\s*\(/g, /export function archerLeftovers\s*\(/g]) {   // v0.0.409: the Paladin migration's list of old cards
     let m;
     while ((m = re.exec(out))) {
       let i = out.indexOf("{", m.index), depth = 0, j = i;

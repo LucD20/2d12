@@ -1,0 +1,25 @@
+--- the class and the cards
+Level 1: Features: Shifting Aim, Darting Blade | Hallmark Action: Quick Shots, Strafe | Hallmark Reaction: Slip Away, Snap Shot | Art: Footwork, Trick Shots, Spotter | Escalation 2 Ability: Lean and Loose, Blade and Bow | Skill Talent
+Level 2: Escalation Hook: Thrill of the Kill | Encounter Pick: Volley, Hit and Run, Covering Fire | Escalation 4 Ability: Clear Lines, Opening Shot | Talent
+Level 3: Second Art: Footwork, Trick Shots, Spotter | Escalation 6 Ability: One More Arrow, Fleet | Skill Talent
+Level 4: Stage Talent
+Light armor, Weapon +2 / Power +1, Speed +1: light 2 1 weapon 1
+Quick Shots' Tiers: Mod / 2[W] / 3[W] | traits: ranged,shot,strike,weapon | Critical: You regain 1 AP.
+Snap Shot and Slip Away: Snap Shot interrupt enemyAdjacent | Slip Away interrupt enemyAdjacent | Volley: burst 3 @Condition[prone|crit:yes]
+the Arts' Modes: Footwork: Sidestep/Weave/Hands Busy | Trick Shots: Pin/Startle/Knock Back | Spotter: Call Out/Find the Gap/Keep Low | Weave ignores terrain: true
+the hooks: Shifting Aim movedBoon | Lean and Loose apCost | Blade and Bow alternateBoon | Clear Lines clearLines | Opening Shot openingShot | One More Arrow moreW | Fleet evadeMore | Thrill of the Kill: [["eschook","damagedDown"]]
+Covering Fire's Zone: [{"dice":"2 + @origin.wpn","pool":"B","sub":"Pi"}] 2 rounds | Spotter's effects: true
+no quarry in the compendium (but the old cards' folder): true | the pregens: Sylwen: Shifting Aim, Darting Blade, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow, Heartseeker || Kaela: Shifting Aim, Darting Blade, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet, Skirmish Shot
+Projectile and Firearm (the keys stay shot and gun): Projectile Firearm
+--- the turn's Strike state (hooks.mjs)
+a fresh turn: {"key":"k","moved":false,"last":"","altUsed":false,"moreW":false} | another turn's state is fresh: true
+moved, a ranged Strike: [{"name":"Shifting Aim","boons":1,"field":true,"why":"you have left your square since your last Strike this turn"}] | not moved: 0
+a melee Strike after a ranged one: [{"name":"Blade and Bow","boons":1,"field":false,"why":"a [Melee, Strike] after a [Ranged, Strike] this turn (once a turn)"}] | spent: 0 | the same kind: 0
+strikeKind: melee ranged ""
+--- Slip Away and Snap Shot (moment.mjs), Spotter (senses.mjs), the migration
+the moment: {"who":"enemy","move":true,"adjacent":true} | it comes back to the square before the first adjacent one: [3]
+Called Out: hidden→obscured obscured→clear clear→clear unsensed→unsensed
+the Archer migration's list: Mark Quarry, Killer's Focus, Overwatch
+--- the wiring
+the roll dialog's chips, the Strike noted: true | One More Arrow: true | Fleet: true
+Clear Lines (Cover, the Engaged Bane): true | Opening Shot: true | Thrill of the Kill (who damaged it): true | Lean and Loose: true

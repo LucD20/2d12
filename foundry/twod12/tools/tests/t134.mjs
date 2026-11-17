@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t134.mjs)
 // v0.0.161 (Archer pass 3): Marked Quarry, Hunter's Focus, Long Draw, Steady Nerves, Killer's Focus; no odds for Save Actions; Empowered on Save damage.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
-const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.230 (pack CS): the cards are data (book/cards), read from the built content
+const CM = await import(ROOTURL + "tools/content.mjs"), CDOCS = [...CM.docs, ...CM.OLD_CLASS_DOCS], cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.230 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
 // v0.0.186: the Archer cards are settings now (automation.mjs, tested in t151); this test keeps the wiring checks.
 const src = n => fs.readFileSync(ROOT + n, "utf8");

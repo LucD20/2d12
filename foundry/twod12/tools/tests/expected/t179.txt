@@ -1,1 +1,1 @@
-system.worth written on compendium types: action, feature | in each type's schema: action true, feature true
+system.worth written on compendium types:  | in each type's schema: 

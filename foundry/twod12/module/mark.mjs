@@ -94,6 +94,24 @@ export function registerMarkHooks() {
       } catch (e) { console.warn("twod12 | Escalation hook (mark)", e); }
     }
   });
+  // v0.0.411 (pack F3, Thrill of the Kill): a creature goes Down: each creature that damaged it in this combat and has the hook "an enemy it
+  // has damaged goes Down" raises its Escalation (once an encounter: raiseEscalation's hook)
+  Hooks.on("createActiveEffect", async effect => {
+    if (!game.user.isActiveGM || !game.combat?.started) return;
+    if (!["dead", "unconscious", "desperate", "dying", "shattered"].some(s => effect.statuses?.has?.(s))) return;
+    const a = effect.parent;
+    if (a?.documentName !== "Actor") return;
+    const h = a.getFlag?.(F, "hurtBy");
+    if (!h || h.combat !== game.combat.id) return;
+    try {
+      const { escHooksOf } = await import("./states.mjs"), { raiseEscalation } = await import("./escalation.mjs");
+      for (const u of h.by ?? []) {
+        let who = null; try { who = await fromUuid(u); } catch (e) { who = null; }
+        if (!who) continue;
+        for (const x of escHooksOf(who)) if (x.when === "damagedDown") await raiseEscalation(who, "hook", { label: `${x.source} (${a.name} goes Down)` });
+      }
+    } catch (e) { console.warn("twod12 | Escalation hook (damaged)", e); }
+  });
   // v0.0.224 (Lucas: the mark stayed after the combat): the combat ends (deleted): every mark of its creatures ends.
   Hooks.on("deleteCombat", async combat => {
     if (!game.user.isActiveGM) return;

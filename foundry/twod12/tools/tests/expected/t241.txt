@@ -22,7 +22,7 @@ Bulwark of Faith: Interrupt > Pay 1 AP (R) > One ally > Guard rally* > Pause: Af
 Rebuke: Trigger > Pay 1 AP (R) > One enemy > The target's Save > The damage > Hindered (EoT)*
 Covering Fire: On your turn > Pay 2 AP > Place the area > Covering Fire
 --- the tab
-renders for every Action: true 87 | failures: none
+renders for every Action: true 112 | failures: none
 Word of Radiance: 1 Version tab: 1 | its Tier fields: 3 | "On a Tier 1 or 2": false | 2 steps: 1 | Fill: true | the chain isn't a text field: true
 Covering Fire: "On use": true | the area's size and rounds on the Version: true | Who set by the Zone: true
 every Tier's damage reads back from its text: true
@@ -45,8 +45,8 @@ the step's buttons in its pane, not on its row: true | four Tier switches: 4 | t
 a Reaction's Within takes a formula: the field: true | stored beside the number: true | worked out for the creature when read: true | pow+2 with Power 3: 5 | the order of events shows it: true
 the area tooltip asks what is under the mouse: true
 --- v0.0.360 (Lucas: "fix those 3 from this pack before merging")
-Mark Quarry holds the mark's rules: action boonbane,bonusdamage,message,message | as rules: 4 true | the Feature is gone from the compendium: true | the Archer's level 1 grants the Action: true
-Sylwen has the Action with its rules and no Feature: Mark Quarry (action, 4 rules) | the card stays for the ruler only: true
+Mark Quarry (the old card) holds the mark's rules: action boonbane,bonusdamage,message,message | not in the compendium: true | the Archer no longer grants it: true
+Sylwen has no quarry: true | the old card stays for the ruler only: true
 an old character with the Feature and the updated Action counts the mark once: Mark Quarry | before its Action is updated, the Feature still works: Marked Quarry
 Deathmark's Weapon Attack is a step: After the damage, if the target goes Down: the targets gain the Effect. | no Effect mode left: {"all":[],"t1":[],"t2":[],"t3":[]} | the chain only runs it for a target that is Down: true
 Lock & Loose's Hindered is a step on a Tier 2: t2 | no per-Tier slot left in the compendium: true

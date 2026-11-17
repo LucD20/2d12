@@ -122,6 +122,8 @@ const RANK = { unsensed: 0, hidden: 1, obscured: 2, clear: 3 };
  * Only when it perceives you worse than you perceive it, and never against a creature that is Hidden (or Unsensed) to you. seen: how you perceive
  * it, mine: how it perceives you ("" or "clear", "obscured", "hidden", "unsensed"). Two creatures each Obscured to the other gain nothing.
  */
+/** Pure: one step better (Spotter's Call Out): Hidden as Obscured, Obscured as Clear; Unsensed and Clear stay. */
+export const calledOut = best => (best[0] === "hidden" ? ["obscured", `${best[1]} (Called Out)`] : best[0] === "obscured" ? ["clear", `${best[1]} (Called Out)`] : best);
 export function youGain(seen, mine) {
   const r = v => RANK[v || "clear"] ?? 3, sv = seen || "clear", mv = mine || "clear";
   if (sv === "hidden" || sv === "unsensed" || r(mv) >= r(sv)) return "";
@@ -161,6 +163,8 @@ export function perceive(observer, target, { loe = true } = {}) {
     }
   }
   let best = options.reduce((a, c) => (!a || RANK[c[0]] > RANK[a[0]] ? c : a), null) ?? ["unsensed", "no sense reaches it"];
+  // v0.0.411 (pack F3, Spotter's Call Out): a Called Out creature is perceived one step better by its enemies (Hidden as Obscured, Obscured as Clear)
+  if (t?.statuses?.has?.("called-out") && observer?.document && target?.document && Number(observer.document.disposition) !== Number(target.document.disposition)) best = calledOut(best);
   const st = perceptionOf(t);
   if (st && RANK[st] < RANK[best[0]]) best = [st, `${CAP[st]} (status)`];
   return { level: best[0], why: best[1], name: CAP[best[0]] };

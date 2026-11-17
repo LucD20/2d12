@@ -11,6 +11,9 @@ Session 7 (2026-11-10, v0.0.336 to v0.0.338, Lucas: "Brawler: Mithril"; "all sho
 The Paladin's redesign (2026-11-14 to 16, card by card with Lucas: book/cards/paladin-redesign.md; in Foundry since v0.0.409, pack F2): Judge, Binding Light,
   Lantern of Faith, Hold the Line, Commandment, Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil (new cards; what Foundry leaves by
   hand: each card's automationNote). The redesign's changed cards are Diamond (below).
+The Archer's redesign (2026-11-16, card by card with Lucas: book/cards/archer-redesign.md; in Foundry since v0.0.411, pack F3): Shifting Aim,
+  Darting Blade, Quick Shots, Strafe, Slip Away, Snap Shot, Footwork, Trick Shots, Spotter, Lean and Loose, Blade and Bow, Hit and Run, Clear Lines, Opening Shot,
+  One More Arrow, Fleet (new cards; what Foundry leaves by hand: each card's automationNote). Volley, Covering Fire and Thrill of the Kill changed: Diamond (below).
 Session 6 (2026-11-10, v0.0.334 / v0.0.335, from Lucas's notes and tested by him: "Make Skirmish Shot, Rebuke and Mark Quarry mithril"): Rebuke (the Push and Frightened after the damage lands; Diamond before, Mithril again), Skirmish Shot (the Evade after a Tier 3's damage), Mark Quarry (the Archer's Action with Marked Quarry's rules; the Feature is Foundry-only)
 
 Diamond (Lucas, 2026-11-09): a Mithril card that a later pack changed, even only its text or its buttons, becomes Diamond (automation: "diamond")
@@ -54,3 +57,6 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
   Reaction AP); Lay On Hands: a Setup Advance and Guard 2 + Pow; Shield of Faith: 1 + Pow off and the attacker Taunted; Rebuke: "moves away",
   Hindered and a disrupted Move; Bulwark of Faith: within 5 of you; Word of Radiance: one Version, Appeal Save; Consecrated Ground: Difficult Terrain
   for enemies and Guard at the start of a turn; Kindled Wrath: any ally; Reckoning: the Escalation 6 Action; Hallowed Stance: a Setup Advance 3.
+- The Archer's redesign (2026-11-16 in the book, v0.0.411 in Foundry, pack F3): Volley (2 AP, a 3 Burst, 2[W] / 3[W] and Hindered, Prone on a
+  Critical, then Evade 2), Covering Fire (2 rounds of Difficult Terrain and Hazardous Terrain for enemies, no more Banes or Defense) and Thrill of the
+  Kill ("an enemy you have damaged goes Down", not the marked one) were rewritten with Lucas: Diamond until he revises them in Foundry.

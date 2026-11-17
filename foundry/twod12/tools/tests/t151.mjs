@@ -9,7 +9,8 @@ globalThis.Hooks = { on() {}, once() {} }; globalThis.ui = { notifications: { in
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 const emitted = [];
 globalThis.game = { settings: { get: () => true }, time: { worldTime: 0 }, user: { id: "u" }, combat: null, items: [], packs: new Map(), actors: [], socket: { emit: (n, d) => emitted.push(d) } };
-const { docs, uuidOf } = await import(ROOTURL + "tools/content.mjs");
+const { docs: docs0, uuidOf , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 globalThis.game = { settings: { get: () => true }, time: { worldTime: 0 }, user: { id: "u" }, combat: null, items: [], packs: new Map(), actors: [], socket: { emit: (n, d) => emitted.push(d) } };   // (content.mjs puts its own stand-in)
 const E = await import(ROOTURL + "module/effects.mjs"), B = await import(ROOTURL + "module/bonus.mjs"), AU = await import(ROOTURL + "module/automation.mjs");
 const FD = await import(ROOTURL + "module/fxdetails.mjs");

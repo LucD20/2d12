@@ -48,6 +48,10 @@ export function segmentHitsRect(a, b, r) {
  * Cover of `target` against `attacker` (tokens). Returns { blocked, level, banes, noLoE, inWay, label } or null on a grid that isn't square.
  * `blockedFn(a, b)` can replace the wall test (used by the tests).
  */
+/** v0.0.411: does the attacker have Clear Lines working (its allies give its targets no Cover)? (hooks.mjs, read lazily: no import cycle) */
+let hooksMod = null;
+import("./hooks.mjs").then(m => { hooksMod = m; }).catch(() => {});
+const clearLinesOf = tok => { try { return !!hooksMod && hooksMod.activeHooks(tok?.actor, "clearLines").length > 0; } catch (e) { return false; } };
 export function coverBetween(attacker, target, { blockedFn = wallBlocks, others = null } = {}) {
   if (!attacker || !target || !canvas?.grid?.isSquare) return null;
   const ar = rectOf(attacker), tr = rectOf(target);
@@ -64,7 +68,9 @@ export function coverBetween(attacker, target, { blockedFn = wallBlocks, others 
     if (!best || blocked < best.blocked) best = { blocked, origin };
   }
   const tc = centerOf(tr);
-  const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== attacker.id && t.id !== target.id && !t.document.hidden);
+  // v0.0.411 (pack F3, Clear Lines: hooks.mjs clearLines): the attacker's allies give its targets no Cover
+  const clear = clearLinesOf(attacker), mine = Number(attacker.document?.disposition ?? 0);
+  const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== attacker.id && t.id !== target.id && !t.document.hidden && !(clear && mine && Number(t.document.disposition) === mine));
   // v0.0.350 (Lucas, playtest 4: "show center-to-center cover too; I think it isn't calculating it correctly"): a creature whose square the center
   // line crosses is in the way (book: "on the line"); only a sliver is left out so a line along an edge or through a corner point doesn't count
   const blockers = best.blocked < 4 ? crowd.filter(t => segmentHitsRect(best.origin, tc, inset(rectOf(t), WAY_INSET))) : [];

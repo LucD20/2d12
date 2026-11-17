@@ -25,11 +25,12 @@ console.log("--- Save Actions: Effects by Tier and the chain after the damage");
 const il = src("module/inline.mjs"), cd = src("module/ccdamage.mjs");
 console.log("the Save card carries the Version's Effects and chain:", il.includes("fx: Object.fromEntries([1, 2, 3].map(n => [`t${n}`,") && il.includes("after: String(version.after ?? \"\").trim() };"), "| its damage message runs them:", il.includes("after: cfg.after ?? \"\", save: true });") && cd.includes("(s.save || (r.tier ?? 0) >= 2)"));
 const C = await import(ROOTURL + "tools/content.mjs");
-for (const n of ["Rebuke", "Skirmish Shot"]) { const d = C.docs.find(x => x.type === "action" && x.name === n), v = d.system.versions[0]; console.log(`${n} (${d.system.automation || "no rank"}):`, JSON.stringify([v.x1, v.x2, v.x3]), "| after:", v.after); }
+const ALLDOCS = [...C.docs, ...C.OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
+for (const n of ["Rebuke", "Skirmish Shot"]) { const d = ALLDOCS.find(x => x.type === "action" && x.name === n), v = d.system.versions[0]; console.log(`${n} (${d.system.automation || "no rank"}):`, JSON.stringify([v.x1, v.x2, v.x3]), "| after:", v.after); }
 
 console.log("--- the compendium");
-const basics = C.docs.filter(d => d.folder === "Basic Actions");
+const basics = ALLDOCS.filter(d => d.folder === "Basic Actions");
 console.log("Basic Actions:", basics.length, basics.every(d => d.type === "action" && d.pack === "actions" && d.flags?.twod12?.basic || d.name === "Hide"), "| Opportunity Attack (v0.0.335, Lucas: adjacent, not the squares you threaten):", (o => `range ${o.momentRange}, threat check ${!!o.momentThreat}`)((await import("./oa-card.mjs")).OA), "| set aside (v0.0.407), not in the compendium's Basic Actions:", !basics.some(d => d.name === "Opportunity Attack"));
-const mk = C.docs.find(d => d.name === "Mark Quarry"), mq = mk;   // v0.0.360: the Feature is gone, the Action holds the rules
+const mk = ALLDOCS.find(d => d.name === "Mark Quarry"), mq = mk;   // v0.0.360: the Feature is gone, the Action holds the rules
 console.log("Marked Quarry:", mq.system.description.replace(/<[^>]+>/g, ""));
 console.log("Mark Quarry:", mk.system.versions.map(v => v.effects.replace(/@UUID\[[^\]]+\]\{([^}]+)\}/g, "[$1 link]")).join(" / "));

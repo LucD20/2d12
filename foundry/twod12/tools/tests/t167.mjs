@@ -6,7 +6,8 @@ globalThis.Combat = class {}; globalThis.CONFIG = {};
 const stub = () => { globalThis.foundry = { applications: { api: { DialogV2: { prompt: async o => { shown.push(o.content); return pick; } }, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } }; globalThis.Hooks = { on() {} }; };
 const shown = []; let pick = "";
 stub(); globalThis.game = { settings: { get: () => true } };
-const { docs } = await import(ROOTURL + "tools/content.mjs");
+const { docs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 stub();
 const W = (name, traits) => ({ name, type: "weapon", system: { traits: new Set(traits), masteryGroup: "" } });
 globalThis.game = { settings: { get: () => true }, packs: new Map([["twod12.weapons", { getDocuments: async () => [W("Longbow", ["ranged", "projectile", "twohanded"]), W("Crossbow", ["ranged", "projectile", "reload"]), W("Javelin", ["thrown", "melee"])] }]]) };

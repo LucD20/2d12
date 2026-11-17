@@ -26,3 +26,61 @@ export function activeHooks(actor, kind) {
 }
 /** Pure: does an Action's trait set have every trait of a hook? */
 export const hasTraits = (traits, need = []) => (need ?? []).every(t => traits?.has?.(t) ?? (traits ?? []).includes?.(t));
+
+/* ---- v0.0.411 (pack F3, the Archer's passives): what a creature did this turn (actor flag strikeState), read by the roll dialog's chips ---- */
+//   movedBoon (Shifting Aim): a Field Boon when it has left its square this turn since its last [Strike] Action (or since its turn began)
+//   alternateBoon (Blade and Bow): once on each of its turns, 1 Boon on a [Melee, Strike] after a [Ranged, Strike] this turn (or the reverse)
+//   moreW (One More Arrow): once on each of its turns, a [Strike] that deals [W] deals 1[W] more (actions.mjs rollDamage)
+const F = "twod12";
+/** Pure: the state of this turn (a state of another turn is a fresh one). */
+export const stateNow = (st, key) => (st && st.key === key ? st : { key, moved: false, last: "", altUsed: false, moreW: false });
+/** Pure: the kind of a Strike for Blade and Bow ("melee", "ranged" or ""). */
+export const strikeKind = traits => { const has = k => traits?.has?.(k) ?? (traits ?? []).includes?.(k); return has("strike") ? (has("melee") ? "melee" : has("ranged") ? "ranged" : "") : ""; };
+/** Pure: the chips these hooks give a roll: [{ name, boons, field }]. hooks: [{ hook, item }] of movedBoon and alternateBoon; st: the turn's state. */
+export function strikeChips(moved, alternate, traits, st) {
+  const out = [], kind = strikeKind(traits);
+  for (const h of moved) if (st.moved && hasTraits(traits, h.hook.traits ?? ["ranged", "strike"])) out.push({ name: h.item.name, boons: Math.max(1, Number(h.hook.boons) || 1), field: (h.hook.bb ?? "field") === "field", why: "you have left your square since your last Strike this turn" });
+  for (const h of alternate) if (kind && st.last && st.last !== kind && !st.altUsed) out.push({ name: h.item.name, boons: Math.max(1, Number(h.hook.boons) || 1), field: false, why: `a ${kind === "melee" ? "[Melee, Strike]" : "[Ranged, Strike]"} after a ${st.last === "melee" ? "[Melee, Strike]" : "[Ranged, Strike]"} this turn (once a turn)` });
+  return out;
+}
+async function turnOf(actor) { try { const { turnKey } = await import("./explode.mjs"); return turnKey(game.combat, actor); } catch (e) { return null; } }
+/** The roll dialog's chips of these hooks for this creature and these traits (rollinput.mjs). */
+export async function strikeHookChipsFor(actor, traits) {
+  const moved = activeHooks(actor, "movedBoon"), alt = activeHooks(actor, "alternateBoon");
+  if (!moved.length && !alt.length) return [];
+  const key = await turnOf(actor);
+  if (!key) return [];   // outside its turn in a started combat (or no combat): nothing to read
+  return strikeChips(moved, alt, traits, stateNow(actor.getFlag?.(F, "strikeState"), key));
+}
+/** A Strike was used (actions.mjs): the turn's state goes on (not moved since, the kind of the last Strike, Blade and Bow spent if it applied). */
+export async function noteStrike(actor, traits) {
+  try {
+    const kind = strikeKind(traits); if (!kind && !(traits?.has?.("strike"))) return;
+    const key = await turnOf(actor); if (!key || !actor?.isOwner) return;
+    const st = stateNow(actor.getFlag(F, "strikeState"), key), alt = activeHooks(actor, "alternateBoon").length && kind && st.last && st.last !== kind;
+    await actor.setFlag(F, "strikeState", { ...st, moved: false, last: kind || st.last, altUsed: st.altUsed || !!alt });
+  } catch (e) { console.warn("twod12 | strike state", e); }
+}
+/** One More Arrow: true once on each of the creature's turns (and outside a combat every time); spends it. */
+export async function takeMoreW(actor) {
+  const key = await turnOf(actor);
+  if (key === null) return true;
+  if (!key) return false;
+  const st = stateNow(actor.getFlag?.(F, "strikeState"), key);
+  if (st.moreW) return false;
+  try { if (actor.isOwner) await actor.setFlag(F, "strikeState", { ...st, moreW: true }); } catch (e) { /* not kept */ }
+  return true;
+}
+/** The token moved (the active GM): its creature has left its square this turn (Shifting Aim). */
+export function registerStrikeState() {
+  Hooks.on("moveToken", async doc => {
+    try {
+      if (!game.user.isActiveGM) return;
+      const actor = doc?.actor;
+      if (!actor || !activeHooks(actor, "movedBoon").length) return;
+      const key = await turnOf(actor); if (!key) return;
+      const st = stateNow(actor.getFlag(F, "strikeState"), key);
+      if (!st.moved) await actor.setFlag(F, "strikeState", { ...st, moved: true });
+    } catch (e) { console.warn("twod12 | Shifting Aim", e); }
+  });
+}

@@ -494,7 +494,10 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (!inCombat && !token) return refuse("Select a token to show where it can move.");
   if (actor?.statuses?.has?.("immobilized")) return refuse(`${actor.name} is Immobilized and can't move.`);
   if (kind === "evade" && actor?.statuses?.has?.("prone")) return refuse(`${actor.name} is Prone and can't Evade.`);
-  const n = moveDistance(cfg, actor);
+  // v0.0.411 (pack F3, Fleet: hooks.mjs evadeMore): each Evade of the creature moves it 1 more square (beyond its Speed: the ability says so)
+  let fleet = 0;
+  if (kind === "evade") { try { const { activeHooks } = await import("./hooks.mjs"); fleet = activeHooks(actor, "evadeMore").reduce((t, h) => t + Math.max(0, Number(h.hook.n) || 1), 0); } catch (e) { fleet = 0; } }
+  const n = moveDistance(cfg, actor) + (fleet && moveDistance(cfg, actor) > 0 ? fleet : 0);
   if (!n && moveDistance({ ...cfg, uncapped: true }, actor) > 0) return refuse(`${actor.name} has Speed 0 and can't move.`);   // the distance is fine, but the cap (your Speed) leaves nothing
   if (!n) return refuse(`Could not work out the distance "${cfg.distanceExpr}".`);
   if (!inCombat) { await looseMove(token, n, kind, cfg); return true; }

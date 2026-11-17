@@ -21,7 +21,7 @@ import { chatChips } from "./chatchips.mjs";
 import { registerEscalationHooks, registerMomentumSetting, escalationAll } from "./escalation.mjs";
 import { registerExplodingDice } from "./explode.mjs";   // v0.0.407 (Stage 0 in Foundry): the book's exploding dice
 import { registerStateHooks } from "./states.mjs";
-import { registerMigrationR, registerMigrationMod, registerMigrationS0, registerMigrationF2 } from "./migrater.mjs";
+import { registerMigrationR, registerMigrationMod, registerMigrationS0, registerMigrationF2, registerMigrationF3 } from "./migrater.mjs";
 import { registerMigrationFx } from "./fxmigrate.mjs";   // v0.0.323
 import { registerInitiativeSettings, registerInitiativeSocket } from "./initwindow.mjs";
 import { registerArmorHooks } from "./armor.mjs";
@@ -89,7 +89,7 @@ Hooks.once("init", () => {
   registerMomentumSetting();   // v0.0.243 (pack R)
   registerStateHooks();   // v0.0.243: Bloodied / Strained announced, the Escalation hooks
   registerInitiativeSettings();   // v0.0.310: Initiative opens for the players; NPCs in the players' window
-  registerMigrationMod(); registerMigrationFx(); registerMigrationS0(); registerMigrationF2();   // v0.0.407: Stage 0 (after pack R); v0.0.409: the Paladin (after Stage 0)   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
+  registerMigrationMod(); registerMigrationFx(); registerMigrationS0(); registerMigrationF2(); registerMigrationF3(); import("./hooks.mjs").then(m => m.registerStrikeState()).catch(e => console.warn("twod12 | strike state", e));   // v0.0.411: Shifting Aim   // v0.0.407: Stage 0 (after pack R); v0.0.409: the Paladin (after Stage 0)   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
   registerMigrationR();   // v0.0.243: existing characters brought to pack R, once, by the GM
   registerAuraHooks();
   registerHazardHooks();
@@ -160,6 +160,7 @@ Hooks.once("init", () => {
     migrateEffects: (o = {}) => import("./fxmigrate.mjs").then(m => m.migrateEffects(o)),   // v0.0.323 (PACK EFFECT-SHEET): store the effects' rules (write: false only reports)   // v0.0.305: the pack MOD migration again
     migrateS0: () => import("./migrater.mjs").then(m => m.migrateS0()),   // v0.0.407: the Stage 0 migration again
     migrateF2: () => import("./migrater.mjs").then(m => m.migrateF2()),   // v0.0.409: the Paladin migration again
+    migrateF3: () => import("./migrater.mjs").then(m => m.migrateF3()),   // v0.0.411: the Archer migration again
     migrateR: () => import("./migrater.mjs").then(m => m.migrateR()),   // v0.0.243: the pack R migration again (Health line, Escalation 1, the cards refreshed)   // v0.0.243: the GM's valve: every PC in the combat +1 Escalation (or the given creatures)
     shadowedEffects,
     rulerInfo,
@@ -288,7 +289,8 @@ Hooks.once("init", () => {
     // v0.0.314 (pack AU, the conditions as items): the conditions pass's eight (book, Chapter 8); the HUD applies their Effect items (wrapConditions)
     ["bleed", "icons/svg/blood.svg"],
     ["blinded", "icons/svg/blind.svg"],
-    ["half-blinded", "icons/svg/blind.svg"],   // v0.0.409 (pack F2, Glare; book, Chapter 8): its Sight perceives no creature better than Obscured
+    ["half-blinded", "icons/svg/blind.svg"],
+    ["called-out", "icons/svg/eye.svg"],   // v0.0.411 (pack F3, Spotter): its enemies perceive it one step better   // v0.0.409 (pack F2, Glare; book, Chapter 8): its Sight perceives no creature better than Obscured
     ["dazed", "icons/svg/daze.svg"],
     ["frightened", "icons/svg/terror.svg"],
     ["grabbed", "icons/svg/padlock.svg"],

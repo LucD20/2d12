@@ -25,7 +25,7 @@ export function foundryLinks(text) {
 }
 
 const FREQ = { "at-will": "atwill", turn: "turn", round: "round", encounter: "encounter", daily: "daily" };
-const TRAIT_KEY = { power: "magic" };   // the book's word -> Foundry's key (config.mjs: the key stays "magic", the label is Power)
+const TRAIT_KEY = { power: "magic", projectile: "shot", firearm: "gun" };   // v0.0.411 (pack F3): the book's Projectile and Firearm are Foundry's shot and gun keys (their labels say Projectile, Firearm)   // the book's word -> Foundry's key (config.mjs: the key stays "magic", the label is Power)
 const SUB = { Ac: "Ac", Bl: "Bl", Co: "Co", El: "El", Fi: "Fi", Fo: "Fo", Ho: "H", Pi: "Pi", Ps: "Ps", Sl: "S", Th: "Th", Un: "Un" };
 const ATTRS = ["body", "mind", "appeal", "instinct"];
 

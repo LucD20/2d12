@@ -35,7 +35,8 @@ const mig = R.migrate({ settings: [{ type: "move", text: "closer", moveHow: "dif
 console.log("the rule:", mig.kind, mig.dirm, mig.how, "|", R.plainText(R.sentence(mig, { originName: "the Ogre" })), "| label:", R.ruleLabel(mig));
 const back = R.compile([mig], {}, "effect").settings.find(x => x.type === "move");
 console.log("compiled:", back.text, back.moveHow, "| the old one stays a refusal:", R.migrate({ settings: [{ type: "move", text: "closer" }] }).rules[0].how);
-const { docs } = await import(ROOTURL + "tools/content.mjs");
+const { docs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 const fr = docs.find(d => d.name === "Frightened");
 console.log("the Frightened condition:", JSON.stringify(fr.system.settings.find(x => x.type === "move")), "|", /closer to it is Difficult Terrain/.test(fr.system.description));
 const mv = src("module/move.mjs");

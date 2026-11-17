@@ -26,7 +26,8 @@ export const MOMENTS = {
   strikeAgainst: { who: "ally" },
   enemyCloser: { who: "enemy", move: true, closer: true },
   enemyMoves: { who: "enemy", move: true },
-  enemyAway: { who: "enemy", move: true, away: true },   // v0.0.409 (pack F2, Rebuke): the mover ends a step farther from the Reaction's owner
+  enemyAway: { who: "enemy", move: true, away: true },
+  enemyAdjacent: { who: "enemy", move: true, adjacent: true },   // v0.0.411 (pack F3, Slip Away, Snap Shot): it would enter a square adjacent to the owner   // v0.0.409 (pack F2, Rebuke): the mover ends a step farther from the Reaction's owner
   allyDamage: { who: "ally", damage: true }
 };
 
@@ -333,7 +334,8 @@ export async function collectReactions(ev) {
       if (ev.only && kind !== ev.only) continue;
       if (ev.filter && !ev.filter.has(`${actor.uuid}|${item.id}`)) continue;
       if (def.closer && ev.closer && !ev.closer(tk)) continue;
-      if (def.away && ev.away && !ev.away(tk)) continue;   // v0.0.409: moved away from this creature
+      if (def.away && ev.away && !ev.away(tk)) continue;
+      if (def.adjacent && ev.adjacent && !ev.adjacent(tk)) continue;   // v0.0.411: entered a square adjacent to this creature   // v0.0.409: moved away from this creature
       // v0.0.339 (the review of the Mithril cards, section 2): a Reaction an effect with an Aura brings (Beacon's Step) reaches as far as that Aura
       const auraOf = (() => { const e = item.getFlag?.("twod12", "inlineOf") ? actor.effects?.get?.(item.getFlag("twod12", "inlineOf")) : null; return Number((e?.getFlag?.("twod12", "auras") ?? [])[0]?.size) || 0; })();
       const range = auraOf || Number(item.system.momentRange) || 0;
@@ -999,6 +1001,8 @@ export function backSquareIndices(path, rows, dist, nearer = () => true) {
     if (r.moment === "enemyMoves") for (let i = 0; i < path.length - 1; i++) { const d = dist(r, path[i]); if (d <= range && d >= min) out.add(i); }
     if (r.moment === "enemyCloser") for (let i = 1; i < path.length; i++) { if (dist(r, path[i]) <= range && nearer(r, path[i])) out.add(i); }
     // v0.0.409 (Rebuke): "moves away from you": the step that took it farther, from a square within reach (it comes back to that square)
+    // v0.0.411 (Slip Away, Snap Shot): "would enter a square adjacent to you": it comes back to the square before the first adjacent one
+    if (r.moment === "enemyAdjacent") { const i = path.findIndex((p, k) => k > 0 && dist(r, p) <= 1); if (i > 0) out.add(i - 1); }
     if (r.moment === "enemyAway") for (let i = 1; i < path.length; i++) { const d0 = dist(r, path[i - 1]); if (d0 <= range && dist(r, path[i]) > d0) out.add(i - 1); }
   }
   return [...out].sort((a, b) => b - a);
@@ -1037,7 +1041,8 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const sqs = movePlaces(waypoints?.length ? waypoints : [fromAt, toAt], gsz, size);
     const left = stand ? [fromAt] : (sqs.length > 1 ? sqs.slice(0, -1) : [fromAt]), entered = sqs.length > 1 ? sqs.slice(1) : [toAt];
     const ev = {
-      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves", "enemyAway"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered, enemyAway: left },
+      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves", "enemyAway", "enemyAdjacent"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered, enemyAway: left, enemyAdjacent: entered },
+      adjacent: tk => entered.some(e => tokenDistance(e, tk) <= 1),
       closer: tk => cameCloser(sideToks(tk.document.disposition).map(s => ({ from: tokenDistance(fromAt, s), to: Math.min(...entered.map(e => tokenDistance(e, s))) }))),
       // v0.0.409 (Rebuke): a step of its path that ends farther from this creature than the square it left
       away: tk => sqs.length > 1 ? sqs.some((q, i) => i > 0 && tokenDistance(q, tk) > tokenDistance(sqs[i - 1], tk)) : tokenDistance(toAt, tk) > tokenDistance(fromAt, tk)

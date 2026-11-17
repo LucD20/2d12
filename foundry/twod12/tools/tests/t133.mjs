@@ -10,7 +10,8 @@ const I = await import(ROOTURL + "module/inline.mjs");
 const G = await import(ROOTURL + "module/config.mjs");
 const S = await import(ROOTURL + "module/rollsource.mjs");
 const C = await import(ROOTURL + "tools/content.mjs");
-const get = n => C.docs.find(d => d.name === n);
+const ALLDOCS = [...C.docs, ...C.OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
+const get = n => ALLDOCS.find(d => d.name === n);
 const sys = { attributes: { body: 1, mind: 0, appeal: 0, instinct: 3 }, weaponAttribute: "instinct", weaponMod: 3, powerAttribute: "mind", powerMod: 1 };
 for (const n of ["Volley", "Rain of Arrows"]) {
   const d = get(n), it = { ...d.system, traits: new Set(d.system.traits) };

@@ -9,6 +9,7 @@ globalThis.game = { settings: { get: () => true }, user: { getFlag: () => undefi
 const A = await import(ROOTURL + "module/actions.mjs");
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 const C = await import(ROOTURL + "tools/content.mjs");
+const ALLDOCS = [...C.docs, ...C.OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 console.log("--- movement-only Actions (the banner) and the others (their card)");
 const traits = t => new Set(t);
 const basic = k => ({ it: { traits: traits(BASIC_ACTIONS[k].traits) }, vs: BASIC_ACTIONS[k].versions });
@@ -16,7 +17,7 @@ for (const k of ["advance", "safeMovement", "crawl", "stand", "charge", "relocat
   const { it, vs } = basic(k);
   console.log(`${BASIC_ACTIONS[k].name}:`, vs.map(v => JSON.stringify(A.pureMove(it, v, k))).join(" | "));
 }
-const card = n => C.docs.find(d => d.type === "action" && d.name === n);
+const card = n => ALLDOCS.find(d => d.type === "action" && d.name === n);
 for (const n of ["Rolling Shot", "Double Shot"]) { const d = card(n); console.log(`${n}:`, d.system.versions.map(v => JSON.stringify(A.pureMove({ traits: traits(d.system.traits) }, v))).join(" | ")); }
 const src = f => fs.readFileSync(ROOT + f, "utf8"), act = src("module/actions.mjs"), mv = src("module/move.mjs");
 console.log("wired: no card when the banner takes it", act.includes("const cmsg = bannerMove ? null : await ChatMessage.create({"), "| the movement tag (v0.0.197)", mv.includes("if (cfg.banner && kind !== \"charge\") { showRange(c, n); moveBanner(c, kind, n, cfg.banner, { ap: cfg.bannerAp ?? 0 }); return true; }"),

@@ -1,5 +1,5 @@
 --- choices to make (a new character)
-Paladin: level 1 7, level 2 3, level 3 3 | Archer: level 1 10, level 2 1, level 3 1
+Paladin: level 1 7, level 2 3, level 3 3 | Archer: level 1 7, level 2 3, level 3 3
 Attribute increases (Details tab): Body or Appeal +1, Mind or Instinct +1 | Body or Instinct +1, Mind or Appeal +1
 --- the Paladin's level 1
 nothing chosen: 0 of 7 made, complete false | Attribute increases [Choose 2] | Features [Granted] | Hallmark Action [0 / 1] Binding Light/Lay On Hands | Hallmark Reaction [0 / 1] Shield of Faith/Rebuke | Art [0 / 1] Lantern of Faith/Hold the Line/Commandment | Escalation 2 Ability [0 / 1] Armor of Faith/Roving Judgment | Skill Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
@@ -23,7 +23,7 @@ both owned from before: 0 of 0 made, complete true | First [Complete] - | Second
 Paladin level 2: 0 of 3 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground | Escalation 4 Ability [0 / 1] Weight of Judgment/Tireless Vigil | Talent [0 / 1] Challenge/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
 the level 2 Talent doesn't offer Heavy Blows (owned): true | 15 Talents offered
 Paladin level 3: 0 of 2 made, complete false | Second Art [0 / 1] Lantern of Faith/Commandment | Escalation 6 Ability [0 / 1] Reckoning/Hallowed Stance | Skill Talent [Complete] -
-Archer level 2: 0 of 1 made, complete false | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
+Archer level 2: 0 of 3 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Volley/Hit and Run/Covering Fire | Escalation 4 Ability [0 / 1] Clear Lines/Opening Shot | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
 Repertoire filter: Any Bulwark of Faith, Consecrated Ground, Word of Radiance | Turn  | Passive 0
 a Feature in the Repertoire is Passive: Tireless Vigil | and in Any: true
 a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground

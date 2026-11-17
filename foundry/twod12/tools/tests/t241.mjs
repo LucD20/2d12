@@ -11,7 +11,8 @@ const deep = () => new Proxy(class {}, { get: (t, k) => (k in t ? t[k] : k === "
 const stub = () => { globalThis.foundry = deep(); globalThis.foundry.utils = { deepClone: o => JSON.parse(JSON.stringify(o ?? null)) }; };
 stub(); globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = { Canvas: {}, statusEffects: [] }; globalThis.game = { settings: { get: () => false }, user: {} }; globalThis.ui = {}; globalThis.canvas = {};
 for (const n of ["Combat", "Roll", "ChatMessage", "Actor", "Item", "TextEditor", "Application", "Token", "TokenDocument", "Region", "RegionDocument"]) globalThis[n] ??= class {};
-const C = await import(ROOTURL + "tools/content.mjs"); stub();
+const C = await import(ROOTURL + "tools/content.mjs");
+const ALLDOCS = [...C.docs, ...C.OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's stub();
 const A = await import(ROOTURL + "module/aftersteps.mjs");
 const { actionTabHtml } = await import(ROOTURL + "module/actionsheet.mjs");
 const { instanceText } = await import(ROOTURL + "module/actions.mjs");
@@ -20,7 +21,7 @@ const { stagedFormula, parseInline } = await import(ROOTURL + "module/inline.mjs
 const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
 const FR = await import(ROOTURL + "module/fxrules.mjs"), V = await import(ROOTURL + "module/fxsheet.mjs");
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-const acts = C.docs.filter(d => d.type === "action");
+const acts = ALLDOCS.filter(d => d.type === "action");
 
 console.log("--- the chain as steps");
 let chains = 0, same = 0;
@@ -56,7 +57,7 @@ const f4 = A.fillSteps({ x1: "@Move[pushed|distance:1]", x2: "@Move[pushed|dista
 console.log("the same Push on every Tier is one distance:", A.writeAfter(f4.steps));
 
 console.log("--- the order of events");
-const names = Object.fromEntries(C.docs.map(d => [C.uuidOf(d.pack, d.name), d.name]));
+const names = Object.fromEntries(ALLDOCS.map(d => [C.uuidOf(d.pack, d.name), d.name]));
 const dmgText = l => (l ?? []).map(instanceText).filter(Boolean).join(" + ");
 const ev = (n, ap) => { const d = acts.find(x => x.name === n); return A.versionEvents(d.system, d.system.versions.find(x => x.ap === ap), { names, moments: TWOD12.moments, frequencies: TWOD12.frequencies, dmgText }).map(e => `${e.title}${e.after ? "*" : ""}`).join(" > "); };
 console.log("Bulwark of Faith:", ev("Bulwark of Faith", 1));   // v0.0.409 (pack F2): the old Smite 3 AP left with pack R's Paladin
@@ -86,7 +87,7 @@ console.log("--- an Action holds rules (D17)");
 const data = src("module/data.mjs"), a0 = data.indexOf("export class ActionData"), a1 = data.indexOf("const tierDamage");
 console.log("the model:", data.slice(a0, a1).includes("settings: settingsField(), ...rulesFields()"), "| read as passives:", src("module/passives.mjs").includes("(actor.itemTypes.action ?? []).filter(a => a.system?.settings?.length)"));
 const { passiveSources } = await import(ROOTURL + "module/passives.mjs");
-const mq = C.docs.find(d => d.name === "Marked Quarry" || (d.name === "Mark Quarry" && d.system.settings?.length));
+const mq = ALLDOCS.find(d => d.name === "Marked Quarry" || (d.name === "Mark Quarry" && d.system.settings?.length));
 const fake = { itemTypes: { feature: [], talent: [], action: [{ id: "a1", name: "Mark Quarry", uuid: "Item.a1", system: { settings: (mq?.system.settings ?? []).map(s => ({ ...s, all: new Set(s.all ?? []), any: new Set(s.any ?? []), none: new Set(s.none ?? []), from: new Set(s.from ?? []), attrs: new Set(s.attrs ?? []), tiers: new Set(s.tiers ?? []) })) }, getFlag: () => "" }, { id: "a2", name: "Smite", system: { settings: [] }, getFlag: () => "" }] } };
 const ps = passiveSources(fake);
 console.log("an Action with settings is a source, one without isn't:", ps.length, ps[0]?.name, "| its Boon:", JSON.stringify(ps[0]?.getFlag("twod12", "bonuses")?.[0] ?? ps[0]?.flags?.twod12?.modifiers?.[0] ?? null).slice(0, 120));
@@ -120,16 +121,17 @@ const { evalExpr } = await import(ROOTURL + "module/refs.mjs");
 console.log("a Reaction's Within takes a formula: the field:", /data-as-in="@within" value="pow\+2"/.test(rb2), "| stored beside the number:", dsrc.includes("momentRangeExpr: str()"), "| worked out for the creature when read:", dsrc.includes('Object.defineProperty(this, "momentRange"') && dsrc.includes("evalExpr(expr, actor)"), "| pow+2 with Power 3:", evalExpr("pow+2", who), "| the order of events shows it:", rb2.includes("within pow+2"));
 console.log("the area tooltip asks what is under the mouse:", src("module/zonetip.mjs").includes("document.elementFromPoint(ev.clientX, ev.clientY)") && src("module/zonetip.mjs").includes("if (!overMap(ev)) return hide();"));
 console.log("--- v0.0.360 (Lucas: \"fix those 3 from this pack before merging\")");
-const mkq = C.docs.find(d => d.name === "Mark Quarry"), arc = C.docs.find(d => d.name === "Archer" && d.type === "class");
-console.log("Mark Quarry holds the mark's rules:", mkq.type, (mkq.system.settings ?? []).map(x => x.type).join(","), "| as rules:", (mkq.system.rules ?? []).length, mkq.system.rulesOn, "| the Feature is gone from the compendium:", !C.docs.some(d => d.name === "Marked Quarry"), "| the Archer's level 1 grants the Action:", arc.system.levels[0].sections.find(x => x.id === "arc1core").items.includes(C.uuidOf("actions", "Mark Quarry")));
+const mkq = ALLDOCS.find(d => d.name === "Mark Quarry"), arc = ALLDOCS.find(d => d.name === "Archer" && d.type === "class");
+// v0.0.411 (pack F3): Mark Quarry left with pack R's Archer (its old card, OLD_CLASS_DOCS, still holds its rules for old worlds; Judge uses the mark now)
+console.log("Mark Quarry (the old card) holds the mark's rules:", mkq.type, (mkq.system.settings ?? []).map(x => x.type).join(","), "| not in the compendium:", !C.docs.some(d => d.name === "Mark Quarry" || d.name === "Marked Quarry"), "| the Archer no longer grants it:", !JSON.stringify(arc.system.levels).includes(C.uuidOf("actions", "Mark Quarry")));
 const sylwen = C.pcs.find(x => /^Sylwen/.test(x.name));
-console.log("Sylwen has the Action with its rules and no Feature:", sylwen.items.filter(i => /Quarry/.test(i.name)).map(i => `${i.name} (${i.type}, ${i.system.settings?.length ?? 0} rules)`).join(", "), "| the card stays for the ruler only:", C.CARDS.find(c => c.name === "Marked Quarry")?.foundry === false);
+console.log("Sylwen has no quarry:", !sylwen.items.some(i => /Quarry/.test(i.name)), "| the old card stays for the ruler only:", C.CARDS.every(c => c.name !== "Marked Quarry"));
 const setOf = l => (l ?? []).map(x => ({ ...x, all: new Set(x.all ?? []), any: new Set(x.any ?? []), none: new Set(x.none ?? []), from: new Set(x.from ?? []), attrs: new Set(x.attrs ?? []), tiers: new Set(x.tiers ?? []) }));
 const oldPc = { itemTypes: { talent: [], feature: [{ id: "f1", type: "feature", name: "Marked Quarry", uuid: "Actor.a.Item.f1", system: { settings: setOf(mkq.system.settings), actions: [C.uuidOf("actions", "Mark Quarry")] }, getFlag: () => "" }],
   action: [{ id: "a1", type: "action", name: "Mark Quarry", uuid: "Actor.a.Item.a1", system: { settings: setOf(mkq.system.settings) }, getFlag: (s, k) => ({ featureId: "f1", sourceUuid: C.uuidOf("actions", "Mark Quarry") }[k]) }] } };
 const notYet = { itemTypes: { talent: [], feature: oldPc.itemTypes.feature, action: [{ ...oldPc.itemTypes.action[0], system: { settings: [] } }] } };
 console.log("an old character with the Feature and the updated Action counts the mark once:", passiveSources(oldPc).map(x => x.name).join(","), "| before its Action is updated, the Feature still works:", passiveSources(notYet).map(x => x.name).join(","));
-const dmk = C.docs.find(d => d.name === "Deathmark"), lnl = C.docs.find(d => d.name === "Lock & Loose");
+const dmk = ALLDOCS.find(d => d.name === "Deathmark"), lnl = ALLDOCS.find(d => d.name === "Lock & Loose");
 console.log("Deathmark's Weapon Attack is a step:", A.stepSentence(A.parseAfter(dmk.system.versions[0].after)[0], false).replace(/Compendium\.[\w.]+/, "…"), "| no Effect mode left:", JSON.stringify(dmk.system.versions[0].fx), "| the chain only runs it for a target that is Down:", src("module/inline.mjs").includes("if (cfg.down) {") && parseInline("Effect", "x|who:targets|down:yes").down === true);
-console.log("Lock & Loose's Hindered is a step on a Tier 2:", A.stepTiers(A.parseAfter(lnl.system.versions[0].after)[0], false).join(""), "| no per-Tier slot left in the compendium:", C.docs.filter(d => d.type === "action").every(d => (d.system.versions ?? []).every(v => !["t1", "t2", "t3"].some(k => v.fx?.[k]?.length) && !(v.fx?.all ?? []).some(x => x.mode && x.mode !== "auto"))));
+console.log("Lock & Loose's Hindered is a step on a Tier 2:", A.stepTiers(A.parseAfter(lnl.system.versions[0].after)[0], false).join(""), "| no per-Tier slot left in the compendium:", ALLDOCS.filter(d => d.type === "action").every(d => (d.system.versions ?? []).every(v => !["t1", "t2", "t3"].some(k => v.fx?.[k]?.length) && !(v.fx?.all ?? []).some(x => x.mode && x.mode !== "auto"))));
 console.log("the by-Stage row reads TWOD12.stages:", src("module/actionsheet.mjs").includes("(TWOD12.stages ?? []).map((x, j)"));

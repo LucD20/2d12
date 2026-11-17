@@ -7,6 +7,6 @@ cells: current vs base colored: true | what each edit saves: true | bonuses from
 compendium: light-armor light, medium-armor medium, heavy-armor heavy
 Aveline (Human Paladin, Smite) wears: Heavy Armor (worn true)
 Durgan (Dwarf Paladin, Lay On Hands) wears: Heavy Armor (worn true)
-Sylwen (Elf Archer, Double Shot) wears: Medium Armor (worn true)
-Kaela (Human Archer, Rolling Shot) wears: Medium Armor (worn true)
+Sylwen (Elf Archer, Double Shot) wears: Light Armor (worn true)
+Kaela (Human Archer, Rolling Shot) wears: Light Armor (worn true)
 v0.0.121: titled groups: true | Enter with the same number closes the box: true

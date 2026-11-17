@@ -6,7 +6,7 @@ nothing: []
 title bar: |Smite|Round|1AP|Divine Power 1| | no Frequency: true
 no Check field: true | checkAttr reads only the traits: body
 Action data has no check: true | the editor has no 'Other roll': true
-OT: no [HT] on Rain of Arrows and Covering Fire: true | Covering Fire kept 3 rounds: true
+OT: no [HT] on Rain of Arrows and Covering Fire: true | Covering Fire kept 3 rounds: false
 Opportunity Attack is no longer a Basic Action: true
 Opportunity Attack makes a Weapon Attack: true | Vow of Enmity 3 AP Tier 3: true
 weapon checked before anything: true | windows minimized while placing, then back: true | Volley: true

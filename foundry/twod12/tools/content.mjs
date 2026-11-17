@@ -129,11 +129,18 @@ add("effects", "effect", "Deathmark (Weapon Attack)", "icons/svg/target.svg", { 
 add("effects", "effect", "Open Season (the Quarry)", "icons/svg/target.svg", { duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, [Strike] Actions the Archer's allies make against this creature deal an extra [V] 1d6 Pi (Open Season).</p>", settings: [{ type: "bonusdamage", dmg: "1d6", dmgPool: "B", dmgSub: "Pi", all: ["strike"], against: true, vsOrigin: "not", tiers: ["t1", "t2", "t3"] }] }, "Archer");
 add("effects", "effect", "Open Season (Weapon Attack)", "icons/svg/target.svg", { selfApplied: true, duration: { type: "eot", rounds: 1 }, description: "<p>One [Ranged, Shot] Weapon Attack (1A) against your Marked Quarry, free (Open Season): the button on the card, or the sheet's ticket.</p>", settings: [grantOne()] }, "Archer");
 add("effects", "effect", "Aim (Weapon Attack, 1 Boon)", "icons/svg/target.svg", { selfApplied: true, duration: { type: "eot", rounds: 1 }, description: "<p>One [Ranged] Weapon Attack (1A) with 1 Boon, free (Aim); it ignores Low cover.</p>", settings: [grantOne(1), { type: "cover", coverLevels: ["low"], all: ["ranged"], any: [], none: [] }] }, "Talents");   // v0.0.266: Low cover ignored by [Ranged] Actions
-// v0.0.265: Covering Fire is a Zone (rule 30): enemies inside take 1 Bane on [Strike] Actions, allies inside +1 Defense, the area kept 3 rounds.
-add("effects", "effect", "Covering Fire (1 Bane)", "icons/svg/target.svg", { description: "<p>1 Bane on [Strike] Actions while in the Covering Fire.</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] }, "Archer");
-add("effects", "effect", "Covering Fire (+1 Defense)", "icons/svg/shield.svg", { description: "<p>+1 Defense while in the Covering Fire.</p>", settings: [{ type: "defense", defKind: "all", defValue: 1 }] }, "Archer");
-add("effects", "effect", "Covering Fire", "icons/svg/target.svg", { description: "<p>The covered ground (3 rounds): enemies in it take 1 Bane on [Strike] Actions, allies in it gain +1 Defense.</p>",
-  settings: [{ type: "zone", zoneWho: "enemies", fxUuid: uuidOf("effects", "Covering Fire (1 Bane)") }, { type: "zone", zoneWho: "allies", fxUuid: uuidOf("effects", "Covering Fire (+1 Defense)") }] }, "Archer");
+// v0.0.265: Covering Fire was a Zone of Banes (rule 30); v0.0.411 (pack F3; book, Covering Fire, 2026-11-16): for 2 rounds the Area is Difficult Terrain and
+// Hazardous Terrain for enemies (Entering, Turn, Movement): [V] 2 + the origin's Weapon Modifier, Pierce (the bows'; another subtype by hand)
+add("effects", "effect", "Covering Fire (1 Bane)", "icons/svg/target.svg", { description: "<p>1 Bane on [Strike] Actions while in the Covering Fire (the old card).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] }, "Archer");
+add("effects", "effect", "Covering Fire (+1 Defense)", "icons/svg/shield.svg", { description: "<p>+1 Defense while in the Covering Fire (the old card).</p>", settings: [{ type: "defense", defKind: "all", defValue: 1 }] }, "Archer");
+add("effects", "effect", "Covering Fire", "icons/svg/target.svg", { description: "<p>The covered ground (2 rounds): Difficult Terrain and Hazardous Terrain for enemies (Entering, Turn, Movement): [V] 2 + the origin's Weapon Modifier.</p>",
+  where: "map", zone: { src: "action", inside: { carry: { on: false }, diff: { on: true, who: "enemies" }, ht: { on: true, who: "enemies", entering: true, turn: true, movement: true, list: [{ dice: "2 + @origin.wpn", pool: "B", sub: "Pi" }] } }, show: true, outline: "#c0603a", fill: "#c0603a" },
+  ends: { time: { on: true, mode: "rounds", rounds: 2 } } }, "Archer");
+// v0.0.411 (pack F3): the effects of Spotter's Modes
+add("effects", "effect", "Called-Out", "icons/svg/eye.svg", { duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, this creature's enemies perceive it one step better: Hidden as Obscured, Obscured as Clear (Spotter, Call Out).</p>", settings: [] }, "Archer");
+add("effects", "effect", "Find the Gap", "icons/svg/target.svg", { selfApplied: true, duration: { type: "eot", rounds: 1 }, expireOn: ["ranged", "strike"], expireAll: true, description: "<p>Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower (Spotter, Find the Gap; the Cover by hand).</p>",
+  settings: [{ type: "ignore", ignoreRule: "rangeBane", rangeAll: true, all: ["ranged", "strike"], any: [], none: [] }, { type: "note", title: "Find the Gap", text: "Each target's Cover counts one level lower (by hand)." }] }, "Archer");
+add("effects", "effect", "Keep Low", "icons/svg/shield.svg", { selfApplied: true, duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, against each creature you have Cover from, your Cover is one level higher, up to High (Spotter, Keep Low; by hand).</p>", settings: [{ type: "note", title: "Keep Low", text: "Your Cover one level higher, up to High (1 round): by hand." }] }, "Archer");
 const wa = "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]";
 add("actions", "action", "Precise Aim", "icons/svg/eye.svg", {
   category: "Sharpshooter", level: 1, traits: ["focus", "self"], frequency: "round", distance: "self",
@@ -192,7 +199,8 @@ sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 4, 1, 4, 1);
 sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 4, 6);
 // v0.0.185 (pack C2): the classes' levels as sections (module/classlevels.mjs), from the book's "by Level" tables; the class window reads them.
 // v0.0.409 (pack F2): the Paladin's Stage 0 Features (book/cards/stage0/paladin.json); Reckoning is an Action now (its Escalation 6 Action)
-const U = names => names.map(n => uuidOf(/^(Kindled Wrath|Armor of Faith|Roving Judgment|Weight of Judgment|Tireless Vigil|Hallowed Stance|Sharpshooter|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Staggering Shot)$/.test(n) ? "features" : "actions", n));
+// v0.0.411 (pack F3): the Archer's Stage 0 Features (book/cards/stage0/archer.json)
+const U = names => names.map(n => uuidOf(/^(Kindled Wrath|Armor of Faith|Roving Judgment|Weight of Judgment|Tireless Vigil|Hallowed Stance|Shifting Aim|Thrill of the Kill|Lean and Loose|Blade and Bow|Clear Lines|Opening Shot|One More Arrow|Fleet)$/.test(n) ? "features" : "actions", n));
 const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "choice", pick: o.pick ?? 1, items: o.items ?? [], pairs: (o.pairs ?? []).map(([a, b]) => ({ a, b })), freq: o.freq ?? "any", category: o.category ?? "" });
 // OT (book 2026-10-30): the Repertoire and Escalation lists with their options.
 // Pack R-classes (book 2026-11-04): the Paladin rebuilt for pack R: a Hallmark Reaction (Shield of Faith or Bulwark of Faith), an Encounter Pick, one Escalation Passive per
@@ -222,26 +230,26 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
     { sections: [sec("pal4tal", "Stage Talent", "talent")] }   // level 4 (the Apex, Stage 1) is not written yet
   ]
 });
-// Pack R-classes (book 2026-11-04): the Archer rebuilt for pack R, as the Paladin above: a Hallmark Reaction (Overwatch or Covering Shot), an Encounter Pick at level 1,
-// one Escalation Passive per level and an Apex; Killer's Focus is an Escalation 1 Passive, Vanish the Passive that grants the 0R Reaction, Pinning Shot and Twin Shot Encounter Picks, Elusive is gone.
-const ARC_PASS1 = ["Killer's Focus", "Vanish", "Harrying Shots"], ARC_PASS2 = ["Hunter's Edge", "Sure Step"], ARC_PASS3 = ["Finisher", "Staggering Shot"], ARC_APEX = ["Deathmark", "Open Season"];
-const ARC_PASSIVES = [...ARC_PASS1, ...ARC_PASS2, ...ARC_PASS3];
+// v0.0.411 (pack F3; book, the Archer by Level, 2026-11-16): the redesigned Archer of Stage 0, the Paladin's shape: level 1 Shifting Aim and Darting
+// Blade, a Hallmark Action (Quick Shots or Strafe), a Hallmark Reaction (Slip Away or Snap Shot), an Art (Footwork, Trick Shots, Spotter), the
+// Escalation 2 ability, a Skill Talent; level 2 Thrill of the Kill, an Encounter Pick (Volley, Hit and Run, Covering Fire), the Escalation 4 ability,
+// a Talent; level 3 a second Art, the Escalation 6 ability, a Skill Talent. Light Armor Training (was Medium); no quarry.
+const ARC_ARTS = ["Footwork", "Trick Shots", "Spotter"], ARC_ENC = ["Volley", "Hit and Run", "Covering Fire"];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
-  description: "<p>An Archer fights from a distance.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
-  // Pack R (v0.0.243): high 16 / low 8, then +9 / +5 and +11 / +6 (at Stages 1 and 2 since v0.0.407); Rally 5 (+ 1 / 2 / 3 / 4 by Stage).
+  description: "<p>An Archer fights from a distance and never stands still: many small hits, a knife for the foe who gets close, and gone again.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
+  // Pack R (v0.0.243): high 16 / low 8; v0.0.408: the Stage steps 0 until the book writes them; Rally 5 (+ 1 / 2 / 3 / 4 by Stage).
   choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 5,
-  // v0.0.305 (pack MOD; book, the Archer's stat box): Weapon +2, Power +1, fixed.
-  modHigh: 2, modLow: 1, modOrder: "weapon", armorTraining: "medium", speedMod: 1, features: [],
-  repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_APEX),
+  // v0.0.305 (pack MOD; book, the Archer's stat box): Weapon +2, Power +1, fixed. v0.0.411: Light Armor Training.
+  modHigh: 2, modLow: 1, modOrder: "weapon", armorTraining: "light", speedMod: 1, features: [],
+  repertoire: U(ARC_ENC), escPassives: U(["Lean and Loose", "Blade and Bow", "Clear Lines", "Opening Shot", "One More Arrow", "Fleet"]), escActives: [],
   levels: [
-    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Sharpshooter", "Mark Quarry", "Thrill of the Kill"]) }),
-      sec("arc1hall", "Hallmark Action", "items", { items: U(["Double Shot", "Rolling Shot"]) }), sec("arc1react", "Hallmark Reaction", "items", { items: U(["Overwatch", "Covering Shot"]) }),
-      sec("arc1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
-      sec("arc1pass1", "Escalation 1 Passive", "items", { items: U(ARC_PASS1) }), sec("arc1pass2", "Escalation 2 Passive", "items", { items: U(ARC_PASS2) }), sec("arc1pass3", "Escalation 3 Passive", "items", { items: U(ARC_PASS3) }),
-      sec("arc1apex", "Apex", "items", { items: U(ARC_APEX) }), sec("arc1tal", "Talent", "talent")] },
-    { sections: [sec("arc2tal", "Talent", "talent")] },
-    { sections: [sec("arc3tal", "Talent", "talent")] },   // v0.0.407 (book, Chapter 5): no Daily Pick in Stage 0 (levels 1-3)
-    { sections: [sec("arc4tal", "Talent", "talent")] }
+    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Shifting Aim", "Darting Blade"]) }),
+      sec("arc1hall", "Hallmark Action", "items", { items: U(["Quick Shots", "Strafe"]) }), sec("arc1react", "Hallmark Reaction", "items", { items: U(["Slip Away", "Snap Shot"]) }),
+      sec("arc1art", "Art", "items", { items: U(ARC_ARTS) }), sec("arc1esc2", "Escalation 2 Ability", "items", { items: U(["Lean and Loose", "Blade and Bow"]) }), sec("arc1skill", "Skill Talent", "talent")] },
+    { sections: [sec("arc2hook", "Escalation Hook", "items", { mode: "granted", items: U(["Thrill of the Kill"]) }), sec("arc2enc", "Encounter Pick", "items", { items: U(ARC_ENC) }),
+      sec("arc2esc4", "Escalation 4 Ability", "items", { items: U(["Clear Lines", "Opening Shot"]) }), sec("arc2tal", "Talent", "talent")] },
+    { sections: [sec("arc3art", "Second Art", "items", { items: U(ARC_ARTS) }), sec("arc3esc6", "Escalation 6 Ability", "items", { items: U(["One More Arrow", "Fleet"]) }), sec("arc3skill", "Skill Talent", "talent")] },
+    { sections: [sec("arc4tal", "Stage Talent", "talent")] }   // level 4 (the Apex, Stage 1) is not written yet
   ]
 });
 
@@ -414,12 +422,25 @@ for (const c of CARDS) {
   for (const a of inlineCards(c)) add("actions", "action", a.name, a.foundry.img ?? "icons/svg/sword.svg", cardSystem(a, resolveRefs), "Inline");   // v0.0.249: the card's inline Actions (Beacon's Step)
 }
 
+// v0.0.411 (pack F3): pack R's Paladin and Archer cards (book/cards/paladin.json, archer.json, which the ruler keeps), built as before but kept out
+// of the packs: the tests of the machinery they exercised read them (OLD_CLASS_DOCS; the same shape as docs).
+const { loadCards: loadOldFiles } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);
+export const OLD_CLASS_DOCS = loadOldFiles().filter(c => ["paladin.json", "archer.json"].includes(c._file) && c.foundry !== false).flatMap(c => {
+  const img = c.foundry?.img ?? "icons/svg/sword.svg", out = [];
+  if (isAction(c)) out.push({ pack: "actions", type: "action", name: c.name, img, folder: "old", system: cardSystem(c, resolveRefs), old: true });
+  else out.push({ pack: "features", type: "feature", name: c.name, img, folder: "old", system: featureSystem(c, resolveRefs), old: true });
+  for (const a of inlineCards(c)) out.push({ pack: "actions", type: "action", name: a.name, img, folder: "old", system: cardSystem(a, resolveRefs), old: true });
+  return out;
+});
 // v0.0.185: the pick Features of v0.0.181 (Hallmark Action, Encounter Pick, Talent (Level 1)...) are gone: the classes have levels now.
 // The cards the P1 and A1 builds left out (book/paladin-old-cards.md, book/archer-old-cards.md): kept in the compendium, in folders of their own, for the Options step.
 const OLD = { "Paladin (old cards)": ["Aegis", "Mercy's Reward", "Divine Vigil", "Avenger's Oath", "Vow of Enmity", "Rebuke (old)", "Champion's Challenge", "Divine Retribution", "Call to Arms", "Judgment", "Sanctified Ground", "Divine Vigil (Boon against Fear)",
     // v0.0.409 (pack F2): the effects of the Paladin's pack R cards, out of Foundry's Paladin with them (kept for old worlds' sheets)
     "Divine Power (1 Bane)", "Beacon (+1 Defense)", "Divine Surge", "Radiant Zeal", "Lay On Hands (Holy Strike)", "Smite (Bright light 1)", "Smite (Bright light 2)", "Hallowed Dawn (1 Bane)", "Hallowed Dawn (Bright light 1)", "Consecrated Ground (1 Bane)"],
-  "Archer (old cards)": ["Precise Aim", "Precise Aim (1 Boon)", "Precise Aim (2 Boons)", "Quick Draw", "Wing Clip", "True Shot", "Suppressing Fire", "Steady Aim", "Perfect Shot", "Bow Mastery", "Patient Hunter"] };
+  "Archer (old cards)": ["Precise Aim", "Precise Aim (1 Boon)", "Precise Aim (2 Boons)", "Quick Draw", "Wing Clip", "True Shot", "Suppressing Fire", "Steady Aim", "Perfect Shot", "Bow Mastery", "Patient Hunter",
+    // v0.0.411 (pack F3): the effects of pack R's Archer cards, out of Foundry's Archer with them (kept for old worlds' sheets)
+    "Double Shot (2 Attacks)", "Rolling Shot (Weapon Attack)", "Rolling Shot (+1d6 Pi)", "Rolling Shot (+2d6 Pi)", "Covering Shot (Weapon Attack, 1 Boon)", "Overwatch (Weapon Attack)", "Deathmark (Weapon Attack)",
+    "Open Season (the Quarry)", "Open Season (Weapon Attack)", "Covering Fire (1 Bane)", "Covering Fire (+1 Defense)", "Hunter's Focus", "Vanish (+1 Defense)", "Pinning Shot", "Twin Shot", "Harried", "Killer's Focus"] };
 for (const [folder, names] of Object.entries(OLD)) for (const n of names) { const d = docs.filter(x => x.name === n); if (!d.length) throw new Error(`No item called ${n}`); d.forEach(x => { x.folder = folder; }); }
 
 /* ------------------------------------------------------------------ Player characters: ready to play, with their weapon in hand */
@@ -490,16 +511,15 @@ pcBoth({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("ave
 pcBoth({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
   picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1art: "Hold the Line", pal1esc2: "Armor of Faith" },
     2: { pal2enc: "Bulwark of Faith", pal2esc4: "Tireless Vigil" }, 3: { pal3art: "Commandment", pal3esc6: "Hallowed Stance" } }, weapon: "Pike", armor: "Heavy Armor" });
-// The far Archer: Double Shot and the Longbow (range 15, 30 with Long Draw and no Bane), the Quarry damage ladder (Killer's Focus, Hunter's Edge,
-// Finisher, Deathmark), Overwatch, Marksman's Shot, Hunter's Focus; Aim, Ricochet, Long Draw, Lesser Blessing (Rimebrand on a Double Shot turn).
-pcBoth({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Sharpshooter",
-  picks: { 1: { arc1hall: "Double Shot", arc1react: "Overwatch", arc1tal: "Aim", arc1enc: "Marksman's Shot", arc1pass1: "Killer's Focus", arc1pass2: "Hunter's Edge", arc1pass3: "Finisher", arc1apex: "Deathmark" },
-    2: { arc2tal: "Ricochet" }, 3: { arc3daily: "Hunter's Focus", arc3tal: "Long Draw" }, 4: { arc4tal: "Lesser Blessing" } }, choices: { "Lesser Blessing": "Rimebrand (Cold)" }, weapon: "Longbow", armor: "Medium Armor" });
-// The close Archer: Rolling Shot and the Shortbow (its Technique, Skirmish Shot, unlocked at 3: an Evade on a Tier 3), the mobile ladder (Vanish,
-// Sure Step, Staggering Shot, Open Season), Covering Shot, Covering Fire (a Zone), Rain of Arrows; Brawler, Kickboxer, Steady Nerves, Aim.
-pcBoth({ name: "Kaela (Human Archer, Rolling Shot)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Sharpshooter",
-  picks: { 1: { arc1hall: "Rolling Shot", arc1react: "Covering Shot", arc1tal: "Brawler", arc1enc: "Covering Fire", arc1pass1: "Vanish", arc1pass2: "Sure Step", arc1pass3: "Staggering Shot", arc1apex: "Open Season" },
-    2: { arc2tal: "Kickboxer" }, 3: { arc3daily: "Rain of Arrows", arc3tal: "Steady Nerves" }, 4: { arc4tal: "Aim" } }, weapon: "Shortbow", armor: "Medium Armor" });
+// v0.0.411 (pack F3, the redesigned Archer; no Starting Mastery Feature: the book's Starting Mastery comes with the weapons pass):
+// the far Archer: Quick Shots, Snap Shot, Spotter, Lean and Loose, Volley, Clear Lines, Trick Shots, One More Arrow; the Longbow and a Dagger.
+pcBoth({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor",
+  picks: { 1: { arc1hall: "Quick Shots", arc1react: "Snap Shot", arc1art: "Spotter", arc1esc2: "Lean and Loose" },
+    2: { arc2enc: "Volley", arc2esc4: "Clear Lines" }, 3: { arc3art: "Trick Shots", arc3esc6: "One More Arrow" } }, extras: [["weapon", "Dagger"]], weapon: "Longbow", armor: "Light Armor" });
+// the close Archer: Strafe, Slip Away, Footwork, Blade and Bow, Hit and Run, Opening Shot, Spotter, Fleet; the Shortbow and a Dagger.
+pcBoth({ name: "Kaela (Human Archer, Rolling Shot)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor",
+  picks: { 1: { arc1hall: "Strafe", arc1react: "Slip Away", arc1art: "Footwork", arc1esc2: "Blade and Bow" },
+    2: { arc2enc: "Hit and Run", arc2esc4: "Opening Shot" }, 3: { arc3art: "Spotter", arc3esc6: "Fleet" } }, extras: [["weapon", "Dagger"]], weapon: "Shortbow", armor: "Light Armor" });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;

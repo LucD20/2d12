@@ -41,7 +41,7 @@ export const stripBold = s => String(s ?? "").replace(/\*\*(.+?)\*\*/g, "$1");
 // before. The class's old file stays for the ruler (spec.mjs reads loadCards: the ruler's builds are written on the old cards until its own pass).
 export const STRUCTURE_DIR = "stage0";
 /** The Structure files Foundry reads in the place of the old file's cards (the whole old file leaves Foundry). */
-export const FOUNDRY_STRUCTURE = { "paladin.json": "paladin.json" };
+export const FOUNDRY_STRUCTURE = { "paladin.json": "paladin.json", "archer.json": "archer.json" };   // v0.0.411 (pack F3): the Archer too
 const costAp = cost => { const m = String(cost ?? "").match(/(\d+)/); return m ? Number(m[1]) : 0; };
 /** The lines of a body ([{ label, text }]) sorted into the old card's fields (pure). */
 export function readBody(lines = []) {
@@ -53,6 +53,7 @@ export function readBody(lines = []) {
     else if (l === "Save") o.vs = `${t} Save`;
     else if ((m = l.match(/^Tier ([123])$/))) o.tiers[Number(m[1]) - 1] = t;
     else if ((m = l.match(/^Tier ([123]) or ([123])$/))) o.or = { tiers: [Number(m[1]), Number(m[2])], text: t };
+    else if (l === "Critical") o.critical = t;   // v0.0.411 (Quick Shots, Volley): the Version's Critical
     else if (l === "Effect") { o.effects.push(t); o.seq.push(t); }
     else if (l === "Interrupt") o.interrupt = t;
     else if (l === "Trigger") o.trigger = t;
@@ -95,6 +96,7 @@ export function fromStructure(c) {
     const eff = b.seq ? b.seq.filter(t => !t.startsWith("Special: ")) : b.effects, sp = b.seq ? b.seq.filter(t => t.startsWith("Special: ")).map(t => t.slice(9)) : [];
     if (eff.length) v.effects = eff.join(" ");
     if (sp.length) v.special = sp.join(" ");
+    if (b.critical) v.critical = b.critical;
     if (b.foundry) { v.foundry = { ...b.foundry }; delete v.foundry.tiers; if (!Object.keys(v.foundry).length) delete v.foundry; }   // its tiers are the Version's tiers now
     return v;
   };
@@ -108,7 +110,7 @@ export function fromStructure(c) {
   out.versions = blocks.map(bl => {
     const b = readBody(bl.body), h = String(bl.heading ?? "").trim(), m = h.match(/^(\d+)\s*(AP|R)$/i);
     const shared = top.tiers.some(x => x != null) || top.or ? { tiers: top.tiers, or: top.or } : {};   // a roll written above the blocks is every block's
-    const merged = { ...b, ...(b.tiers.some(x => x != null) || b.or ? {} : shared), seq: [...top.effects, ...b.seq], foundry: bl.foundry };
+    const merged = { ...b, ...(b.tiers.some(x => x != null) || b.or ? {} : shared), seq: [...top.effects, ...b.seq], foundry: bl.foundry, critical: b.critical ?? top.critical };
     const extra = {};
     if (!m) {
       extra.mode = h;

@@ -4,5 +4,5 @@ Open Season: no Use button true | fx [{"uuid":"{{fx:Open Season (Weapon Attack)}
 Aim: no Use button true | fx [{"uuid":"{{fx:Aim (Weapon Attack, 1 Boon)}}","mode":"auto"}] | rank mithril
 Covering Fire: no Use button true | fx [{"uuid":"{{fx:Covering Fire}}","mode":"auto"}] | rank diamond | area kept true 3 rounds
 Overwatch's grant says its line on a Tier 2 or more: [["grant","t2","text","The target is @Condition[hindered|rounds:eot]{Hindered (EoT)"]]
-Covering Fire's zone rules: [["zone","enemies",true],["zone","allies",true]] | Deathmark's grant: [["grant","Weapon Attack",1]]
+Covering Fire's Zone (v0.0.411: Difficult Terrain and Hazardous Terrain for enemies): ["map","enemies","enemies","2 + @origin.wpn"] | Deathmark's grant: [["grant","Weapon Attack",1]]
 the two that keep a Use chip (Charge: the At-will count and Battering Charge; Cut Through: on a Critical): true

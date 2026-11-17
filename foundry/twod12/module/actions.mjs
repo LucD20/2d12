@@ -635,7 +635,8 @@ export async function useAction(actor, item, opts = {}) {
   let extraMods = [];
   const coverNotices = [];   // v0.0.267 (Lucas): a cover level the Action ignores is a notice (the small chip), not a chip to untick
   // v0.0.186, the "Ignore a Bane" settings of the creature's effects and passives (Long Draw, Steady Nerves, Sharpshooter): the names of what ignores each rule.
-  const lessRange = ignoredBy(actor, "rangeBane", useTraits), noEngagedTarget = ignoredBy(actor, "engagedTarget", useTraits);
+  // v0.0.411 (pack F3, Clear Lines): no Field Bane for a target Engaged with one of your allies (its name in the list that waives it)
+  const lessRange = ignoredBy(actor, "rangeBane", useTraits), noEngagedTarget = [...ignoredBy(actor, "engagedTarget", useTraits), ...(useTraits.has("ranged") ? activeHooks(actor, "clearLines").map(h => h.item.name) : [])];
   const rw = previewWeapon?.system;
   const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload") && basicKey !== "reload";   // Reload itself is what loads it (v0.0.221)
   if (usesReload && rw.unloaded) return ui.notifications.warn(`${previewWeapon.name} is unloaded: Reload it before using it again.`);
@@ -858,7 +859,8 @@ export async function useAction(actor, item, opts = {}) {
   if (opts.grant?.grant) version = withGrantLine(version, opts.grant.grant);
   if (basicKey === "crawl" && version.ap >= 2 && Number(s.moveSpeed ?? s.speed ?? 0) < 5) return ui.notifications.warn(`${actor.name}'s Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version).`);
   // v0.0.409 (pack F2, Roving Judgment: hooks.mjs apCost): an Action of a mark kind at this AP costs less while the passive works
-  const costHook = opts.free ? null : activeHooks(actor, "apCost").find(h => (!h.hook.markKind || h.hook.markKind === it.markKind) && Number(h.hook.ap) === Number(version.ap));
+  // v0.0.411 (Lean and Loose): or a Basic Action by its key (Leaning)
+  const costHook = opts.free ? null : activeHooks(actor, "apCost").find(h => (h.hook.markKind || h.hook.basic) && (!h.hook.markKind || h.hook.markKind === it.markKind) && (!h.hook.basic || h.hook.basic === item.getFlag?.("twod12", "basic")) && Number(h.hook.ap) === Number(version.ap));
   const apCost = opts.free ? (opts.ap ?? 0) : costHook ? Math.max(0, Number(costHook.hook.cost) || 0) : version.ap;
   // An Escalation Action (the Apex): its Escalation is a requirement, checked before the AP is spent; nothing is spent (pack R, v0.0.243).
   const escCost = opts.free ? 0 : Math.max(0, Number(it.escalation) || 0);
@@ -1219,6 +1221,8 @@ export async function useAction(actor, item, opts = {}) {
     } catch (e) { console.warn("twod12 | Save Action", e); }
   }
   // An Action that marks (Mark Quarry; v0.0.186 the Action's "Marks the target" box): the targeted creature becomes the marked one (mark.mjs).
+  // v0.0.411 (pack F3): the turn's Strike state (Shifting Aim, Blade and Bow: hooks.mjs)
+  if (useTraits.has("strike")) { try { await (await import("./hooks.mjs")).noteStrike(actor, useTraits); } catch (e) { console.warn("twod12 | strike state", e); } }
   // v0.0.409 (pack F2, Armor of Faith: hooks.mjs reactionGuard): a Reaction with the hook's traits gives its user Guard (N + Pow; the higher kept)
   if (it.reaction) {
     for (const h of activeHooks(actor, "reactionGuard").filter(x => hasTraits(useTraits, x.hook.traits))) {
@@ -1228,6 +1232,28 @@ export async function useAction(actor, item, opts = {}) {
         await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-heart", `<b>${esc(h.item.name)}</b>: <b>${esc(actor.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${r.total})`}.`, "fxm") });
       } catch (e) { console.warn("twod12 | Armor of Faith", e); }
     }
+  }
+  // v0.0.411 (pack F3, Opening Shot: hooks.mjs openingShot): once a round, a Tier 3 with a [Ranged, Strike] Action: a line names the allies who
+  // threaten the creature (each can spend 1R to make a Weapon Attack (1A) against it: by hand)
+  const openHook = useTraits.has("ranged") && useTraits.has("strike") ? activeHooks(actor, "openingShot")[0] : null;
+  if (openHook) {
+    try {
+      const hits = (mres ? mres.filter(r => r.chk?.tier === 3).map(r => r.uuid) : (tier === 3 && targets[0] ? [targets[0].uuid] : []));
+      const { roundKey } = await import("./judge.mjs"), key = roundKey(game.combat);
+      if (hits.length && (!key || actor.getFlag("twod12", "openingRound") !== key)) {
+        const { threatProfile } = await import("./flanking.mjs"), { tokenDistance } = await import("./light.mjs");
+        const me = selfToken, lines = [];
+        for (const u of hits) {
+          const d = await fromUuid(u), tt = d?.object ?? d?.getActiveTokens?.()[0]; if (!tt || !me) continue;
+          const allies = (canvas.tokens?.placeables ?? []).filter(t => t.actor && t.id !== me.id && Number(t.document.disposition) === Number(me.document.disposition) && (() => { const p = threatProfile(t.actor); return p.max > 0 && tokenDistance(t, tt) <= p.max && tokenDistance(t, tt) >= p.min; })());
+          if (allies.length) lines.push(`<b>${esc(tt.name)}</b>: ${allies.map(t => esc(t.name)).join(", ")}`);
+        }
+        if (lines.length) {
+          if (key && actor.isOwner) await actor.setFlag("twod12", "openingRound", key);
+          await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-crosshairs", `<b>${esc(openHook.item.name)}</b>: one ally who threatens the creature can spend 1R to make a Weapon Attack (1A) against it. ${lines.join("; ")}.`, "fxm") });
+        }
+      }
+    } catch (e) { console.warn("twod12 | Opening Shot", e); }
   }
   if (it.marksTarget && game.user.targets.size) { try { await setQuarry(actor, [...game.user.targets][0], it.markKind ?? ""); } catch (e) { console.warn("twod12 | marking", e); } }
   // Mastery: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery with that kind of weapon (once per Action; characters only).
@@ -1344,6 +1370,8 @@ export async function applyAfter(msg, side = "", step = 0) {
   if (cc?.kind === "noroll") { const { markStepDone } = await import("./noroll.mjs"); await markStepDone(msg, step, side); }
 }
 
+/** v0.0.411: a Tier's instances with n more [W] on its first [W] (One More Arrow). */
+const withMoreW = (insts, n) => { let done = false; return (insts ?? []).map(i => { if (done || !i.useW) return i; done = true; return { ...i, wCount: (Number(i.wCount) || 1) + n }; }); };
 /** Roll the damage for the tier rolled on an action card; v0.0.388 (pack ONE): written into that card (again: the GM's "Roll the damage again"). */
 export async function rollDamage(message, { again = false } = {}) {
   const f = message.getFlag("twod12", "action");
@@ -1355,10 +1383,16 @@ export async function rollDamage(message, { again = false } = {}) {
   if (!version) return ui.notifications.warn("The action or version no longer exists.");
   const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
   const empOn = stepOf(f.empowered) > 0 && empoweredNow(actor);   // v0.0.407: Empowered's 1d6!, once a turn (explode.mjs)
+  // v0.0.411 (pack F3, One More Arrow: hooks.mjs moreW): once on each of its turns, a [Strike] that deals [W] deals 1[W] more
+  let moreW = 0;
+  if (!again && (item.system.traits?.has?.("strike")) && [1, 2, 3].some(t => (version[`t${t}`] ?? []).some(i => i.useW))) {
+    const mw = activeHooks(actor, "moreW");
+    if (mw.length && await (await import("./hooks.mjs")).takeMoreW(actor)) moreW = Math.max(1, Number(mw[0].hook.n) || 1);
+  }
   let empUsed = false;
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
-    const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
+    const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW) : version[`t${tier}`]), ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
     const fx = [...[...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => !f.fxOnUse || x.mode !== "auto"), ...riders];   // cards from v0.0.144 on applied their automatic effects when the Action was used (v0.0.283: riders wait for the damage)

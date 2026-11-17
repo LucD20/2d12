@@ -1,5 +1,5 @@
 --- the moments are settings
-the moments: wouldDown, strikeDamage, strikeAgainst, enemyCloser, allyDamage, enemyMoves, enemyAway | each has its rules: true
+the moments: wouldDown, strikeDamage, strikeAgainst, enemyCloser, allyDamage, enemyMoves, enemyAway, enemyAdjacent | each has its rules: true
 used on: subject, source | the data model: true
 the item sheet: Moment, Within, You too, Used on: true
 --- pure pieces

@@ -8,7 +8,7 @@ const actionTraits = sortObj({
   divine: "Divine",
   fear: "Fear",
   focus: "Focus",
-  gun: "Gun",   // v0.0.208 (D2): needs a Firearm, as Shot needs a Projectile weapon
+  gun: "Firearm",   // v0.0.411 (pack F3; the book, 2026-11-16): the trait is called Firearm (the key stays gun)   // v0.0.208 (D2): needs a Firearm, as Shot needs a Projectile weapon
   handle: "Handle",
   instinct: "Instinct",
   magic: "Power",   // the key stays "magic" (saved worlds and content use it); the trait is called Power since v0.0.117
@@ -19,7 +19,7 @@ const actionTraits = sortObj({
   ranged: "Ranged",
   save: "Save",
   self: "Self",
-  shot: "Shot",
+  shot: "Projectile",   // v0.0.411 (pack F3; the book, 2026-11-16): the trait is called Projectile (the key stays shot)
   signature: "Signature",
   split: "Split",
   strike: "Strike",
@@ -149,7 +149,7 @@ export const TWOD12 = {
   },
   // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)
   // v0.0.272 (pack RX, Lucas): the first set of moments. "Within N" is measured to the creature the moment is about (the ally, the enemy who moves).
-  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up", enemyAway: "An enemy within N moves away from you" },
+  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up", enemyAway: "An enemy within N moves away from you", enemyAdjacent: "An enemy within N would enter a square adjacent to you" },
   // v0.0.272: whom the Reaction is used on when its moment comes ("the triggering creature" of the card)
   momentTargets: { subject: "The creature of the moment (the ally, the enemy who moves)", source: "The creature that caused it (the attacker)" },
   // v0.0.264 (Lucas): a Grant's "On [a result], [what happens]": the result, and what happens (the target's next damage halved, or a line on the card)
@@ -169,7 +169,7 @@ export const TWOD12 = {
   // Stage 0 heals 9 (the book); the later Stages keep pack R's rows until they are written.
   npcRallyHeal: [9, 9, 13, 17],
   freqMore: { round: "its Round Special Actions can be used twice a round", encounter: "its Encounter Special Actions can be used a second time" },
-  escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
+  escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down", damagedDown: "An enemy it has damaged goes Down" },   // v0.0.411 (Thrill of the Kill): damagedDown
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
   basicGroups: [

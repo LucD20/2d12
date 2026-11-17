@@ -22,6 +22,7 @@ export function momentOf(text) {
   if (/takes? damage/.test(t)) return "allyDamage";
   if (/moves? closer/.test(t)) return "enemyCloser";
   if (/moves? away/.test(t)) return "enemyAway";   // v0.0.409 (Rebuke)
+  if (/enter a square adjacent/.test(t)) return "enemyAdjacent";   // v0.0.411 (Slip Away, Snap Shot)
   if (/moves?|stands? up|leaves? a square/.test(t)) return "enemyMoves";
   return "";
 }
