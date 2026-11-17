@@ -89,6 +89,22 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
 - **C12 yes:** a click anywhere on an action button uses it; a right-click opens its rule or item (a button that names an item keeps opening it
   on its name). Fixes the Rally Points (the playtest's stop) and G5.
 
+## 1g. Group D decided (Lucas, 2026-11-17)
+- **One HUD mockup first** (D1 the Basic tab, D3 the layout, D4 conditions as icons under AP / Esc, D7): the macro bar at the bottom, the Hands
+  above it, the **Situational section** holding every "act now" control: Linked Actions, Forced Movements, Stand and Crawl while Prone, a
+  Setup's movement (no more floating bar), End movement, Judge's "reduce this damage?" **and the triggers** (Lucas's idea: a Reaction you can
+  use shows there the moment it triggers, so the player sees it at once).
+- **D2 yes:** both Modifiers ("Weapon +2 · Power +1"), no Vigor / Resolve words, a readable weight; "this small area needs some rebuild for
+  formatting; it is mostly good so it's small" (in the mockup).
+- **Bugs:** D5 the HUD keeps its height while it redraws; D6 the HUD hides Techniques not unlocked (as the sheet does); D8 icons centered.
+
+## 1h. Group E reviewed (Claude, 2026-11-17; two questions asked)
+- **E1, E3** to the sheet mockups (the sizes decided). **E2** the sheet card has no head bar: the short card gets "Frequency · cost"; until
+  then the row's pill writes the Frequency word ("Turn · 1R") (asked). **E4** the item sheet's trait chips become the card's plain words.
+  **E5** a sheet's own light theme loses to Foundry's dark scheme: a bug to trace with a render. **E6** with B3. **E7** Rally Points a number
+  on the sheet (who edits it: asked). **E8** the NPC sheet's Level input (actor-sheet-pc.hbs line 382) reads `{{level}}`, empty in its context:
+  the image picker submits the form and the empty Level fails ("must be a number"); read the real level, an empty Level is "unchanged".
+
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 
 ### A. Cards (what a card says)
