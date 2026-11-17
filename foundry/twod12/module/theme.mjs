@@ -16,4 +16,34 @@ export function applyTheme(_theme, root = globalThis.document?.documentElement) 
 
 export function registerTheme() {
   applyTheme();
+  try { Hooks.on("renderChatMessageHTML", (_msg, html) => themeChatCards(html instanceof HTMLElement ? html : html?.[0])); Hooks.once("ready", watchInterfaceTheme); } catch (e) { console.warn("twod12 | chat theme", e); }
+}
+
+/**
+ * v0.0.389 (Lucas: "my foundry interface is dark but the system is light and i cant change"): Foundry draws a chat message as a light, themed
+ * element of its own, so the dark set (scoped to the nearest theme) never reached the system's chat cards. Each system card in the chat log now
+ * carries the Interface's theme itself (read from the class Foundry puts on <body>, or the browser's when there is none). A popped-out message
+ * stays as Foundry draws it (light).
+ */
+export function interfaceTheme(body = globalThis.document?.body, prefersLight = () => !!globalThis.matchMedia?.("(prefers-color-scheme: light)")?.matches) {
+  const c = body?.classList;
+  if (c?.contains("theme-light")) return "light";
+  if (c?.contains("theme-dark")) return "dark";
+  return prefersLight() ? "light" : "dark";
+}
+export function themeChatCards(root, theme = interfaceTheme()) {
+  const cards = root?.matches?.(".twod12.chat") ? [root] : [...(root?.querySelectorAll?.(".twod12.chat") ?? [])];
+  for (const el of cards) {
+    if (!el.closest?.(".chat-message") || el.closest?.('.chat-popout, [id^="chat-popout"]')) continue;
+    el.classList.add("themed");
+    el.classList.toggle("theme-dark", theme === "dark");
+    el.classList.toggle("theme-light", theme === "light");
+  }
+}
+/** The Interface setting changed (Foundry swaps <body>'s class): the cards already drawn follow. */
+export function watchInterfaceTheme() {
+  const body = globalThis.document?.body;
+  if (!body || typeof MutationObserver === "undefined") return;
+  let last = interfaceTheme(body);
+  new MutationObserver(() => { const t = interfaceTheme(body); if (t !== last) { last = t; themeChatCards(globalThis.document, t); } }).observe(body, { attributes: true, attributeFilter: ["class"] });
 }

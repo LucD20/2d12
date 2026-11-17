@@ -65,3 +65,18 @@ console.log("--- the wiring");
 const act = src("module/actions.mjs"), inl = src("module/inline.mjs"), tw = src("module/twod12.mjs"), cd = src("module/ccdamage.mjs"), css = src("styles/system.css");
 console.log("rollDamage writes into its card:", (act.match(/srcId: message\.id, into: message, replace: again/g) ?? []).length === 2, "| the Save card too:", inl.includes("srcId: msg.id, into: msg,"), "| Apply and Undo save into the card:", cd.includes("if (holdsDamage(msg)) {"),
   "| the GM's menu item:", tw.includes('name: "Roll the damage again"') && tw.includes('Hooks.on("getChatMessageContextOptions"'), "| the styles:", css.includes(".twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow {"));
+console.log("--- v0.0.389 (Lucas: \"without a target looks weird\"; \"my foundry interface is dark but the system is light\")");
+const nt = CC.attackCardHtml({ ...atk, dmg: dmg([]) }, V), ntFoot = nt.slice(nt.indexOf('<hr class="cc-hr">'));
+console.log("no target: '→ No target' and the crosshair in the footer:", ntFoot.includes('<div class="cc-foot cc-dfoot"><button type="button" class="cc-icon" data-twod12="ccDmgTarget"') && ntFoot.includes('<span class="cc-muted">No target</span>'),
+  "| no Lethal tag or wide button under it:", !nt.includes('class="cc-nl') && !nt.includes("Target the selected tokens</button>"));
+const withOut = CC.attackCardHtml({ ...atk, outcomes: { 2: { parts: [{ pool: "B", t: "1d8", sub: "Sl" }], riders: ["The target sheds Bright light."] } }, dmg: dmg([{ uuid: "t1", name: "Orc Warrior", mods: [], choice: "", applied: null }]) }, V);
+console.log("the Tier's dice line not repeated under the rolled damage:", !withOut.includes("cc-dmgline") && withOut.includes("The target sheds Bright light."), "| before the damage it is there:", CC.attackCardHtml({ ...atk, outcomes: { 2: { parts: [{ pool: "B", t: "1d8", sub: "Sl" }], riders: [] } } }, V).includes("cc-dmgline"),
+  "| the stamp keeps its height:", src("styles/system.css").includes(".twod12.chat.cc .cc-attack.withdmg .cc-body { align-items: start; }"));
+const TH = await import(ROOTURL + "module/theme.mjs");
+const cls = (...c) => ({ set: new Set(c), contains(x) { return this.set.has(x); }, add(...a) { a.forEach(x => this.set.add(x)); }, toggle(x, on) { if (on) this.set.add(x); else this.set.delete(x); } });
+console.log("the Interface's theme: body dark", TH.interfaceTheme({ classList: cls("theme-dark") }), "| body light", TH.interfaceTheme({ classList: cls("theme-light") }), "| none: the browser's", TH.interfaceTheme({ classList: cls() }, () => true), TH.interfaceTheme({ classList: cls() }, () => false));
+const card = { classList: cls("twod12", "chat", "cc"), matches: s => s === ".twod12.chat", closest: s => (s === ".chat-message" ? {} : null) };
+TH.themeChatCards(card, "dark");
+const pop = { classList: cls("twod12", "chat", "cc"), matches: s => s === ".twod12.chat", closest: s => ({}) };
+TH.themeChatCards(pop, "dark");
+console.log("a chat card takes it:", [...card.classList.set].sort().join(" "), "| a popped-out one stays as Foundry draws it:", [...pop.classList.set].sort().join(" "), "| hooked:", src("module/theme.mjs").includes('Hooks.on("renderChatMessageHTML", (_msg, html) => themeChatCards('));

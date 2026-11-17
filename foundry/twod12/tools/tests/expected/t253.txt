@@ -15,3 +15,8 @@ rows: Aveline:g0 Durgan:g0 Sylwen:g1 | groups: [[2,[0,1]],[1,[2]]] | nothing bef
 one update, no new message: true | the state on the card: true | the card's model keeps it: true | the content redrawn: true | the old flag for modules: true
 --- the wiring
 rollDamage writes into its card: true | the Save card too: true | Apply and Undo save into the card: true | the GM's menu item: true | the styles: true
+--- v0.0.389 (Lucas: "without a target looks weird"; "my foundry interface is dark but the system is light")
+no target: '→ No target' and the crosshair in the footer: true | no Lethal tag or wide button under it: true
+the Tier's dice line not repeated under the rolled damage: true | before the damage it is there: true | the stamp keeps its height: true
+the Interface's theme: body dark dark | body light light | none: the browser's light dark
+a chat card takes it: cc chat theme-dark themed twod12 | a popped-out one stays as Foundry draws it: cc chat twod12 | hooked: true

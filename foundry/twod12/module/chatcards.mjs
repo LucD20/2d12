@@ -209,7 +209,10 @@ export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage
 }
 /** v0.0.388 (pack ONE): the bottom row of a one-target card holding its damage: the target's damage row (its name, Apply or Took and Undo, Full /
  *  Half / Double behind the sliders) in the place of "→ target" and Damage; Card at the right. No retarget once the damage is rolled. */
-export const dmgFootHtml = (din, view = FULL_VIEW) => `<hr class="cc-hr"><div class="cc-foot cc-dfoot">${din.row || '<span class="cc-ftgt"></span>'}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>${din.extra ?? ""}`;
+// v0.0.389 (Lucas: "without a target looks weird"): no target yet: the bottom row reads as before the damage ("→ No target"), the crosshair targets the
+// selected tokens for the damage (the damage card's "Target the selected tokens"); no Lethal tag or wide button under the card.
+const noTargetFoot = view => `${view.author ? '<button type="button" class="cc-icon" data-twod12="ccDmgTarget" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>' : ""}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> <span class="cc-muted">No target</span></span>`;
+export const dmgFootHtml = (din, view = FULL_VIEW) => `<hr class="cc-hr"><div class="cc-foot cc-dfoot">${din.row || noTargetFoot(view)}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>${din.extra ?? ""}`;
 const designerFoot = (lines, view) => (view.designer && lines.filter(Boolean).length ? `<div class="cc-designer">${lines.filter(Boolean).join("<br>")}</div>` : "");
 const playerFoot = txt => `<div class="cc-pfoot">${esc(txt)}</div>`;
 
@@ -242,7 +245,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const head = `${headHtml(m)}${metaLineHtml(m)}${m.setupHtml ?? ""}`;
   if (one) {
     const r = rows[0];
-    const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
+    const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(inMain ? { ...(m.outcomes?.[r.tier] ?? {}), parts: [] } : m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
     return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}">${head}${body}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
@@ -551,7 +554,8 @@ export function damageInHtml(d, view = FULL_VIEW) {
   const compact = p.groups.length === 1 && p.rows.length <= 1;
   const total = p.groups.reduce((a, g) => a + p.sum(g.comps), 0);
   const lab = `<div class="cc-dlab"><span>Damage</span><b>${total}</b></div>`;
-  if (compact) return { compact, main: `${lab}${p.poolsOf(0)}`, row: p.rows.length ? p.rowHtml(0) : "", extra: `${p.note}${p.all}${p.noTgt}` };
+  // (the Tier's damage line is not repeated under it: the rolled damage stands in its place; v0.0.389)
+  if (compact) return { compact, main: `${lab}${p.poolsOf(0)}`, row: p.rows.length ? p.rowHtml(0) : "", extra: p.note };
   return { compact, part: `<div class="cc-dpart">${lab}${p.body}${p.note}${p.all}${p.noTgt}</div>` };
 }
 const poolLinesSummary = comps => {

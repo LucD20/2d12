@@ -64,6 +64,12 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **The light damage card in a dark browser:** the Vigor and Resolve line is dark text, not white.
 - [ ] Nothing else moved: no element added or removed on any surface.
 
+## v0.0.389 (2026-11-17, branch `pack-one-message`): TO TEST. Lucas's two notes on v0.0.388
+- [ ] **Interface Dark:** the system's chat cards are dark (attack, Save, damage, the system's other messages); Interface Light: light. Change the setting: the cards already in the log follow. Sheets and windows still follow Applications.
+- [ ] **A card's damage with no target:** the bottom row reads "→ No target" with the crosshair and Card; select or target tokens, press the crosshair: their rows appear with Apply. No "Lethal" tag or wide button under the card.
+- [ ] The Tier stamp keeps its size beside the damage; the "1d8 Sl · 1d6 Ho" line no longer repeats under "Damage N" (the Tier's text, Bright light and so on, stays).
+- [ ] A popped-out chat message: tell me whether it follows the Interface too (Foundry forces it light; the card may now follow your setting inside it).
+
 ## v0.0.388 (pack ONE, 2026-11-17, branch `pack-one-message`): TO TEST. One message per Action (decided 2026-11-17, Lucas: "C"; drawn: `foundry/mockups/chatone/index.html`)
 - [ ] **One target:** use an attack Action, then Damage: no new message; the same card shows "Damage N" and the Vigor / Resolve lines beside the Tier stamp (click them: the dice), and the footer shows the target with Apply (the sliders: Full / Half / Double). Apply: "Took ..." under the name, Undo; Undo puts it back. The Damage and retarget buttons are gone.
 - [ ] **Several targets** (Whirlwind, a Line): a "Damage" part under the card, a group a Tier, a row a creature with Apply, Apply all.

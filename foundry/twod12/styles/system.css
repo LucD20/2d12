@@ -4727,3 +4727,5 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow { flex: 1 1 auto; min-width: 0; border-top: 0; padding: 0; }
 .twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow .cc-adjrow { flex-basis: 100%; }
 .twod12.chat.cc .cc-pools { color: var(--cc-ink); }
+/* v0.0.389 (Lucas: "without a target looks weird"): the stamp keeps its own height beside the damage (it stretched down the whole card) */
+.twod12.chat.cc .cc-attack.withdmg .cc-body { align-items: start; }
