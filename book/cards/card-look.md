@@ -194,4 +194,23 @@ Why (the research): the same anatomy every time is the findability rule cited mo
 
 **For Lucas:** yes, or the lines to change.
 
+**Lucas's answer (2026-11-17): "Modes: It has an horizontal extra line I think, on top of the 'Kindle'. Other than that, all look good." DECIDED: the anatomy as proposed, with one fix:** a Version's or Mode's heading has no grey rule when it comes right after the traits' line (Lantern of Faith showed the traits' bronze rule and Kindle's grey rule stacked).
+
+## Decision 4: the page around the card (PROPOSED 2026-11-17, waiting for Lucas)
+
+A sample of Chapter 2 in the decided look: `book/cards/look-desk/page.html`, the artifact "Book Page Sample". Proposed, each from the research:
+
+1. **Text:** Source Serif 4, 17 px, line height 1.55, a measure of about 40 rem (65 to 75 characters), left-aligned (browser justification is "rudimentary": Butterick), hyphenated (needs `lang="en"` on the page), old-style figures in running text.
+2. **Headings: three levels, all in the ink color** (the bronze keeps its one job, the cards): a chapter title; a section in semibold; a subsection in real small caps. The Part line above a chapter in small caps over a thin rule (today a tinted rounded band). No rust-red headings.
+3. **Game terms in running text are not colored** (AP, Guard, Rally Point, Down, Boon, Bane, Attributes, Modifiers). A term is bold where it is defined; elsewhere a link to its definition is a thin underline in the text's color.
+4. **An example** is an indented passage opened by "*Example.*" in italic: no panel, no colored bar, no capital label.
+5. **An open box** ("to be decided") is the same, opened by "*To be decided.*", in the lighter ink. (The book's Open Items appendix keeps listing them.)
+6. **Tables:** no vertical rules, no fills, no frame; a rule above and below the header row, hairlines between rows; the header in small caps; lining tabular figures.
+7. **Lists:** plain bullets, the text's spacing.
+8. **The contents column:** in the text face, chapters in ink and sections indented in the lighter ink, the Part names in small caps; on a narrow screen it is hidden behind the page's menu as today. Its buttons ("Expand all", "Open all cards") become plain underlined words; they are not printed.
+9. **Opening and closing cards** (the class documents): stays on screen, as a small grey mark at the left of the name line; every card is open in print.
+10. **Not decided here:** the class documents' ornament and drop cap (the research gives no reason to keep or drop them: neutral; Claude's default: drop the ornament, keep no drop cap, so the class documents look like the rest), the stat box and the level list of a class (the same rules: no panel colors, small-caps labels), the diagrams (unchanged), dark mode (the next decision).
+
+**For Lucas:** yes, or the numbers to change; and the ornament and drop cap (drop, or keep).
+
 **Lucas's answer:**
