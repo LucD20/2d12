@@ -120,4 +120,8 @@ So the proposal for B with the research only: **black, one accent for structure,
 
 **For Lucas:** the traits without colors (yes or no); the pool colors (keep or drop); then B with the research only is the direction.
 
+**Lucas's answer (2026-11-17): "Yes to all, but try one thing: A colored, thin, underline on the traits, by group. Do on B just so I see how it would look like." DECIDED: the direction is B with the research only; traits without colors; the pool colors on damage kept.** The trial is on the examples page ("B, with the research only: traits underlined by group": a 2 px underline in the group's color, the trait in black; the decided pool colors on [V] and [R]; Rebuke and Darting Blade added to show two Roll traits and a Requires trait).
+
+**Against the research, for his decision** (it is a group color again, but carried by a line and not by the word): it keeps the word black and legible and the color secondary (the order still says the group), so it passes "never the only cue"; it brings back five colors on every card, the "competing accents" the research warns about, and an underline is the web's sign for a link (the book's own links are underlined). Claude's view: try it on the mockups if he likes it here; drop it if it reads as links.
+
 **Lucas's answer:**
