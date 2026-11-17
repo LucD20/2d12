@@ -35,10 +35,6 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     el.addEventListener("contextmenu", ev => {
       // v0.0.293 (Lucas): a right-click on a chip added by hand is one step less (Situational ×2 → Situational); its × removes it
       // v0.0.294 (Lucas): a right-click on the quick button (or an "Add here:" button) that adds a chip takes one step off it too
-      // v0.0.392: "Target": Foundry's target tool on the token layer (the window is live: the creatures targeted on the map fill it)
-      const tb = ev.target.closest('button[data-act="targetmode"]');
-      // v0.0.398 (Lucas): Target reads the creatures targeted on the map now (none: no target); the dialog runs again with the same choices
-      if (tb) { ev.preventDefault(); return this._finish({ restart: true, state: this.st }); }
       const qb = ev.target.closest('button[data-act="quick"]');
       if (qb) { ev.preventDefault(); ev.stopPropagation(); RD.stepManual(this.st, qb.dataset.scope, qb.dataset.k); this.render(); return; }
       const man = ev.target.closest("[data-manual]");
@@ -76,7 +72,7 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
 
   _click(ev) {
     // v0.0.335 (Lucas: "clicking on the tier should be anywhere in the tier"): a Tier row of the table forces that result (GM), as its name's button does
-    const row = ev.target.closest("tr[data-force]");
+    const row = ev.target.closest("tr[data-force], .rdc-l[data-force]");   // v0.0.400: the card's Tier lines too
     if (row && !ev.target.closest("button, a, [data-tooltip] button")) { ev.preventDefault(); const t = Number(row.dataset.force); this.st.forceTier = Number(this.st.forceTier) === t ? 0 : t; return this.render(); }
     const b = ev.target.closest("button[data-act]");
     if (!b || b.disabled) return;
@@ -93,6 +89,8 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     else if (a === "rule") { fromUuid(b.dataset.uuid).then(d => d?.sheet?.render(true)).catch(() => null); return; }
     else if (a === "card") { this.o.card?.(); return; }
     else if (a === "place") return this._finish({ restart: true, place: true, state: this.st });
+    // v0.0.400 (Lucas: "Target button doesn't work to retarget"; its handler sat in the right-click listener): the creatures targeted now (none: no target)
+    else if (a === "targetmode") return this._finish({ restart: true, state: this.st });
     else if (a === "roll") return this._roll();
     else return;
     this.render();

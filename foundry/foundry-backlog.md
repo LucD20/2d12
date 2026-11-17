@@ -81,6 +81,12 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.400 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.399
+- [ ] **GM, roll dialog:** click anywhere on "Tier 2" (it lights up); Roll: the chat card shows Tier 2. Click it again: back to rolling.
+- [ ] **Target:** target another creature on the map, press Target: the dialog takes it; untarget all, press Target: "No target".
+- [ ] **Word of Radiance, Pushed 1 on two creatures:** pick the first by clicking its token on the map: it moves, your token stays selected, the second question still in the HUD's side panel.
+- [ ] **Two Ogre Chieftains in the same Tier:** "2× Ogre Chieftain" with one Apply (both take their damage, each with its own Guard); click the name: each one's row.
+
 ## v0.0.399 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.398
 - [ ] **A Push with your token selected:** the question in the HUD's side panel under Hands (token squares, Done, Stop), not a bar over the HUD.
 - [ ] **Word of Radiance with creatures already targeted:** Roll works: it asks to place the burst, then rolls.

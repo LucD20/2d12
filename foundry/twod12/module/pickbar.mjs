@@ -24,6 +24,10 @@ export async function pickBar(o) {
   const toks = (o.options ?? []).filter(x => x.token || x.cells?.length);
   let T = null;
   if (toks.length && globalThis.canvas?.ready) { try { T = await import("./template.mjs"); } catch (e) { T = null; } }
+  // v0.0.400 (Lucas: after the first push, the second question floated bare): a click on the map releases the controlled tokens, so the HUD
+  // fell back to the party strip; they are controlled again when the bar closes
+  let held = [];
+  try { held = [...(globalThis.canvas?.tokens?.controlled ?? [])]; } catch (e) { held = []; }
   const res = await new Promise(resolve => {
     const bar = document.createElement("div");
     bar.className = `twod12-linebar twod12-pickbar${o.cls ? ` ${o.cls}` : ""}`;
@@ -51,7 +55,7 @@ export async function pickBar(o) {
       prevInteractive = canvas.tokens.interactiveChildren; canvas.tokens.interactiveChildren = false;
       const at = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage), c = T.cellAt(p); return toks.find(x => cellsOf(x).some(k => k.i === c.i && k.j === c.j)) ?? null; };
       move = ev => hover(at(ev));
-      down = ev => { if (ev.button !== 0) return; const hit = at(ev); if (hit) finish(hit.id); };
+      down = ev => { if (ev.button !== 0) return; const hit = at(ev); if (hit) { finish(hit.id); setTimeout(() => { try { for (const t of held) if (t?.scene && !t.controlled) t.control?.({ releaseOthers: false }); } catch (e) { /* gone */ } }, 0); } };
       canvas.stage.on("pointermove", move);
       canvas.stage.on("pointerdown", down);
       draw();
@@ -66,6 +70,7 @@ export async function pickBar(o) {
       if (down) canvas.stage.off("pointerdown", down);
       if (prevInteractive !== null) canvas.tokens.interactiveChildren = prevInteractive;
       try { gfx?.destroy(); } catch (e) { /* gone */ }
+      try { for (const t of held) if (t?.scene && !t.controlled) t.control?.({ releaseOthers: false }); } catch (e) { /* gone */ }
       resolve(v);
     };
     const key = ev => {

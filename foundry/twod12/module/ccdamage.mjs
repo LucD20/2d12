@@ -260,7 +260,8 @@ export async function ccDamageClick(kind, button, msg) {
     else if (kind === "ccApplyAll") {
       const done = [];
       // v0.0.398: the multi-target card's Apply all is a Tier's (data-group): only that group's rows
-      const gsel = button?.dataset?.group, inGroup = k => gsel === undefined || gsel === "" || (Number.isInteger(s.rows[k]?.g) ? s.rows[k].g === Number(gsel) : (s.groups?.[Number(gsel)]?.rows ?? []).includes(k));
+      const only = button?.dataset?.rows ? button.dataset.rows.split(",").map(Number) : null;   // v0.0.400: an "N×" line's rows
+      const gsel = button?.dataset?.group, inGroup = k => (only ? only.includes(k) : true) && (gsel === undefined || gsel === "" || (Number.isInteger(s.rows[k]?.g) ? s.rows[k].g === Number(gsel) : (s.groups?.[Number(gsel)]?.rows ?? []).includes(k)));
       for (const k of CC.applyAllRows(s.rows).filter(inGroup)) if (await applyRow(s, k, 1, { ask: false })) done.push(k);
       if (!done.length) ui.notifications.info("Every row left has a choice to make: apply them one by one.");
       await save(msg, s); if (done.length) await lockSource(s); await runChain(s, done); await save(msg, s);

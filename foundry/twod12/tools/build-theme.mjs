@@ -887,6 +887,16 @@ const STYLE3 = `
 .twod12-type.twod12-type .twod12.rolldlg .rd-ladder.short .rd-lseg { font-size: 10px !important; padding: 2px 2px !important; letter-spacing: -.01em; }
 .twod12-type.twod12-type .twod12.rolldlg .rd-ladder.short { display: flex !important; } .twod12-type.twod12-type .twod12.rolldlg .rd-ladder.short .rd-lseg { flex: 1 1 auto; justify-content: center; }
 .twod12-type.twod12-type .twod12.rolldlg .rd-ladder.short .rd-lseg > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* ==== v0.0.400 (Lucas, testing v0.0.399) ==== */
+/* a forced Tier: the whole line lit (GM) */
+.twod12-type .twod12.rolldlg .rdc-l.rd-forcable { cursor: pointer; }
+.twod12-type .twod12.rolldlg .rdc-l.rd-forcable:hover { background: color-mix(in srgb, var(--s-gold) 8%, transparent); }
+.twod12-type .twod12.rolldlg .rdc-l.forced { background: color-mix(in srgb, var(--s-gold) 18%, transparent); box-shadow: inset 3px 0 0 var(--s-gold); }
+/* "2× Ogre Chieftain": its creatures, each with its row, in the panel a click opens */
+.twod12-type.twod12-type .twod12.chat .cc-clp.open { display: block !important; background: none !important; padding: 0 0 0 10px !important; border: 0 !important; border-left: 1px solid var(--s-hair) !important; margin: 0 0 4px 10px !important; border-radius: 0 !important; }
+.twod12-type.twod12-type .twod12.chat .cc-clp .cc-trow { padding-left: 0; }
+/* a question in the HUD's middle with the party strip (no HUD surface behind it): the HUD's own surface */
+.twod12-hud.is-strip.asking .hud-ask { background: color-mix(in srgb, var(--hud-bg) 92%, transparent); border: 1px solid var(--s-gold, #d2a75a); padding: 6px 10px; backdrop-filter: blur(3px); }
 `;
 
 /** The theme's CSS from system.css's text (pure: the test calls it). */

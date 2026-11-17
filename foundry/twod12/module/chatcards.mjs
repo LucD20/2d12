@@ -279,12 +279,27 @@ export function attackCardHtml(m, view = FULL_VIEW) {
       const gi = d.groups.findIndex(g => g.tier === t), g = gi >= 0 ? d.groups[gi] : null;
       const dline = g ? d.poolsOf(gi) : outcomeHtml(m.outcomes?.[t]).replace(/<div class="cc-dmgline">([\s\S]*?)<\/div>.*/, "$1");
       const pend = g ? (g.rows ?? []).filter(i => d.rows[i] && !d.rows[i].applied) : [];
-      const all = view.author && !view.hideTgt && pend.length > 1 ? `<button type="button" class="cc-btn small primary cc-gall" data-twod12="ccApplyAll" data-group="${gi}">Apply all</button>` : "";
+      // (a Tier that is one "N×" line already has its Apply: no Apply all beside it)
+      const oneLine = new Set(who.map(({ r }) => String(r.name ?? "").replace(/\s+\d+$/, ""))).size === 1 && who.length > 1;
+      const all = view.author && !view.hideTgt && pend.length > 1 && !oneLine ? `<button type="button" class="cc-btn small primary cc-gall" data-twod12="ccApplyAll" data-group="${gi}">Apply all</button>` : "";
       const riders = (m.outcomes?.[t]?.riders ?? []).filter(Boolean).map(riderHtml).join("");
-      const lines = who.map(({ r, k }) => {
+      const one = ({ r, k }) => {
         const di = d.rows.findIndex(x => (x.uuid && x.uuid === r.uuid) || (!x.uuid && x.name === r.name));
         const row = di >= 0 ? d.rowHtml(di, nameBtn(r, k)) : `<div class="cc-trow">${nameBtn(r, k)}</div>`;
         return row + ladderPanel(r, k);
+      };
+      // v0.0.400 (Lucas: "When there are multiple targets, instead of 'Ogre Chieftain 2', '2x Ogre Chieftain'"): the same creature twice or more in a
+      // Tier is one line, "2× Ogre Chieftain", with one Apply for them all (each its own Guard); a click on the name shows each one's row
+      const stem = n => String(n ?? "").replace(/\s+\d+$/, "");
+      const clusters = [];
+      for (const x of who) { const c = clusters.find(y => stem(y[0].r.name) === stem(x.r.name)); if (c) c.push(x); else clusters.push([x]); }
+      const lines = clusters.map((cl, ci) => {
+        if (cl.length === 1) return one(cl[0]);
+        const idx = cl.map(({ r }) => d.rows.findIndex(x => (x.uuid && x.uuid === r.uuid) || (!x.uuid && x.name === r.name))).filter(i => i >= 0);
+        const pend = idx.filter(i => !d.rows[i].applied), id = `c${t}_${ci}`;
+        const act = !view.author || view.hideTgt ? "" : pend.length ? `<button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApplyAll" data-rows="${pend.join(",")}">Apply${pend.length < idx.length ? ` (${pend.length})` : ""}</button>` : (idx.length ? '<span class="cc-muted">✓ Applied</span>' : "");
+        const name = `<button type="button" class="cc-cnbtn" data-cc-toggle="${id}" aria-expanded="false" title="Each one"><span class="cc-cname">${cl.length}× ${esc(stem(cl[0].r.name))}</span></button>`;
+        return `<div class="cc-trow cc-clus">${name}${act}</div><div class="cc-break cc-clp" data-cc-panel="${id}">${cl.map(one).join("")}</div>`;
       }).join("");
       // a creature hit by this Tier's damage with no roll row (an area's extra target): its damage row alone
       const extra = g ? (g.rows ?? []).filter(i => !rows.some(r => (d.rows[i]?.uuid && d.rows[i].uuid === r.uuid) || d.rows[i]?.name === r.name)).map(i => d.rowHtml(i)).join("") : "";

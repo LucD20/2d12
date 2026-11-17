@@ -487,8 +487,10 @@ function cardHtml(inp, st, v) {
       const avg = stats[n]?.avg ? `<span class="rdc-avg">avg ${stats[n].avg}</span>` : "";
       return (dmg || bon || riders ? `${dmg}${bon}${riders}` : "&mdash;") + avg;
     };
-    for (const n of [1, 2, 3]) out.push(`<div class="rdc-l t${n}${Number(st.forceTier) === n ? " forced" : ""}"><b>${name(n, `Tier ${n}`)}</b><span>${tierText(n)}</span></div>`);
-    if (v.crit) out.push(`<div class="rdc-l crit${Number(st.forceTier) === 4 ? " forced" : ""}"><b>${name(4, "Critical")}</b><span>${v.crit}</span></div>`);
+    // v0.0.400 (Lucas: "Selecting a Tier in the roll dialog isn't causing that Tier"): the whole line is clickable (GM), as the table's rows were
+    const fa = n => (can ? ` data-force="${n}"` : "");
+    for (const n of [1, 2, 3]) out.push(`<div class="rdc-l t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(n)}><b>${name(n, `Tier ${n}`)}</b><span>${tierText(n)}</span></div>`);
+    if (v.crit) out.push(`<div class="rdc-l crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(4)}><b>${name(4, "Critical")}</b><span>${v.crit}</span></div>`);
     if (v.effects) out.push(line(`Effects <small>(T${v.effectsFrom ?? 2}+)</small>`, v.effects));
     const net = stepNet(inp, st);
     if (net.line) out.push(`<div class="rd-step">${esc(net.line)}</div>`);

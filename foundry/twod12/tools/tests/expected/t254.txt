@@ -38,3 +38,5 @@ a group a Tier, each creature once: true | the Guard in the on-demand row: true 
 the creature on one line with Target: true | the dialog not live: true | the hotbar at the bottom with the party strip: true
 --- v0.0.399 (Lucas, testing v0.0.398)
 the HUD found while fixed on screen: true | an area's Roll not blocked by targets: true | the last target removed: No target: true | the token selected again after an area: true
+--- v0.0.400 (Lucas, testing v0.0.399)
+Target on a left click: true | a Tier line forces anywhere on it: true | "2× Ogre Chieftain": true | the selection given back after a pick: true
