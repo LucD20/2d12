@@ -51,7 +51,7 @@ export async function rollDialogInput(c) {
   // v0.0.370 (Lucas): the target's token image beside its name
   const img = (tk, a) => tk?.document?.texture?.src ?? tk?.texture?.src ?? a?.img ?? "";
   const size = a => { const n = Number(a?.system?.size); return n > 3 ? (["", "Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"][n] ?? "") : ""; };
-  if (c.multi) creatures = c.perT.map(p => ({ uuid: p.actorUuid, name: p.label ?? p.name, img: img(p.token, p.actor), size: size(p.actor), def: dcWord(p.dcInfo), dc: p.dcInfo.dc, owned: !!p.actor?.isOwner }));
+  if (c.multi && (c.perT?.length ?? 0) > 0) creatures = c.perT.map(p => ({ uuid: p.actorUuid, name: p.label ?? p.name, img: img(p.token, p.actor), size: size(p.actor), def: dcWord(p.dcInfo), dc: p.dcInfo.dc, owned: !!p.actor?.isOwner }));
   // v0.0.343 (Lucas, playtest 4: Double Shot's window showed one of its two targets): an Action that rolls nothing (no Modifier) aimed at several
   // creatures lists them all (it rolls nothing, so no Defense of theirs is used)
   else if (c.rollsAtOthers && (c.aimed?.length ?? 0) > 1) creatures = c.aimed.filter(tk => tk.actor).map(tk => ({ uuid: tk.actor.uuid, name: tk.name, img: img(tk, tk.actor), size: size(tk.actor), def: dcWord(c.dcInfo), dc: c.dcInfo.dc, owned: !!tk.actor.isOwner, plain: true }));

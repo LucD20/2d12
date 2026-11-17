@@ -406,7 +406,7 @@ function traitsHtml(inp, v) {
   const groups = [];
   for (const t of v?.traits ?? []) { let g = groups.find(x => x.key === t.group); if (!g) groups.push(g = { key: t.group, label: t.groupLabel ?? t.group, list: [] }); g.list.push(t); }
   const blocks = groups.map(g => `<span class="rd-tgroup"><span class="rd-tchips">${g.list.map(t => `<span class="rd-trait tg-${esc(g.key)}"${t.tip ? ` data-tooltip="${esc(t.tip)}"` : ""}>${esc(t.label)}</span>`).join("")}</span><span class="rd-glabel">${esc(g.label)}</span></span>`);
-  const freq = `<span class="rd-freq" style="background:${esc(inp.freqColor ?? "#5F5E5A")}">${esc([inp.freqLabel, v?.cost].filter(Boolean).join(" · "))}</span>`;
+  const freq = `<span class="rd-freq" style="--fq:${esc(inp.freqColor ?? "#5F5E5A")};background:var(--fq)">${esc([inp.freqLabel, v?.cost].filter(Boolean).join(" · "))}</span>`;
   return `<div class="rd-traits"><span class="rd-tlist">${blocks.join('<span class="rd-tsep" aria-hidden="true"></span>')}</span>${freq}</div>`;
 }
 

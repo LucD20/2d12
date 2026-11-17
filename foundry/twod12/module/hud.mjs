@@ -135,7 +135,8 @@ function colsOf(lines, { per = 3, maxCols = 6 } = {}) {
 }
 const lineOf = a => ({
   id: a.id, name: a.name, freq: a.freq, fqColor: a.fq, sub: a.versions.every(v => v.off) && a.versions.some(v => v.used) ? (a.versions.find(v => v.why)?.why ?? "used") : a.roll,
-  used: a.versions.length > 0 && a.versions.every(v => v.off), stamps: a.versions.map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why }))
+  used: a.versions.length > 0 && a.versions.every(v => v.used),   // v0.0.393: "used" only when spent (not when short of AP)
+  stamps: a.versions.map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why }))
 });
 /** The bar's model for one creature. */
 async function barModel(actor, token = null) {

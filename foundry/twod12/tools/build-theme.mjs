@@ -695,10 +695,10 @@ const STYLE3 = `
 .twod12-type .twod12.chat.cc .cc-seg.s3:not(.lit) { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; }
 .twod12-type .twod12.chat.cc .cc-czone:not(.solid) { background: var(--s-ta-cp) !important; color: var(--s-ink) !important; }
 .twod12-type .twod12.chat.cc .cc-dbl, .twod12-type .twod12.chat.cc .cc-dbl.crit { border-color: var(--s-ta-c) !important; box-shadow: none !important; }
-.twod12-type .twod12.rolldlg .rd-tiers tr.t1 th { background: var(--s-ta-1p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-1) !important; }
-.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: var(--s-ta-2p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-2) !important; }
-.twod12-type .twod12.rolldlg .rd-tiers tr.t3 th { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-3) !important; }
-.twod12-type .twod12.rolldlg .rd-tiers tr.crit th { background: var(--s-ta-cp) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-c) !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t1 th { background: var(--s-ta-1p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-1) !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: var(--s-ta-2p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-2) !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t3 th { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-3) !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.crit th { background: var(--s-ta-cp) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-c) !important; }
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t1 { --c: var(--s-ta-1t) !important; --n: var(--s-ta-1) !important; --bg: var(--s-ta-1p) !important; }
 .twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: var(--s-ta-2t) !important; --n: var(--s-ta-2) !important; --bg: var(--s-ta-2p) !important; }
 .twod12-type .twod12.acard.d2 table.ap-tt :is(tr.t3, tr.tall) { --c: var(--s-ta-3t) !important; --n: var(--s-ta-3) !important; --bg: var(--s-ta-3p) !important; }
@@ -706,6 +706,30 @@ const STYLE3 = `
 .twod12-type .twod12.acard.d2 table.ap-tt tr.crit td:not(.tl) { background: var(--s-ta-cp) !important; }
 /* ==== STYLE-3: a light window inside the dark interface keeps the light values of the variables the dark theme changes (system.css :root) ==== */
 .theme-light { --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55; --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; --tw-strike: #c25a28; }
+/* ==== v0.0.393 (Lucas: "Did we do the run for this screen yet?"): the roll dialog in the STYLE-3 look: the traits as words (no fills, no group
+   labels), the Frequency a small mark beside its word, the Tier rows in palette A, the quick buttons square and outlined ==== */
+.twod12-type .twod12.rolldlg .rd-trait { background: transparent !important; border-color: transparent !important; color: var(--s-ink) !important; padding-left: 0 !important; padding-right: 0 !important; border-radius: 0 !important; font-weight: 600; }
+.twod12-type .twod12.rolldlg .rd-tchips { gap: 0 !important; } .twod12-type .twod12.rolldlg .rd-trait + .rd-trait::before { content: "\\00b7"; margin: 0 .4em; color: var(--s-mute); }
+.twod12-type .twod12.rolldlg .rd-glabel { display: none !important; }
+.twod12-type .twod12.rolldlg .rd-tsep { width: 0 !important; margin: 0 .5em !important; } .twod12-type .twod12.rolldlg .rd-tsep::before { content: "\\00b7"; color: var(--s-mute); }
+.twod12-type .twod12.rolldlg .rd-traits { border-bottom: 1px solid var(--s-gold); padding-bottom: 3px; }
+.twod12-type .twod12.rolldlg .rd-freq { background: transparent !important; color: var(--s-ink) !important; border: 1px solid var(--s-hair) !important; border-radius: 0 !important; }
+.twod12-type .twod12.rolldlg .rd-freq::before { content: ""; display: inline-block; width: .55em; height: .55em; margin-right: .35em; vertical-align: .05em; background: var(--fq, #888); }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t1 th { background: var(--s-ta-1p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-1) !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: var(--s-ta-2p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-2) !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t3 th { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-3) !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.crit th { background: var(--s-ta-cp) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-c) !important; }
+.twod12-type .twod12.rolldlg .rd-qb, .twod12-type .twod12.rolldlg .rd-chips > * { border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+/* ==== v0.0.393 (Lucas: "granted actions card is still old format"): the granted uses on the chat card, outlined, no icons, a used one as plain text ==== */
+.twod12-type .twod12.chat .tline.grantrow, .twod12-type .twod12.chat.cc .tline.grantrow { background: none !important; border: 0 !important; border-top: 1px solid var(--s-hair) !important; border-radius: 0 !important; padding: 5px 0 0 !important; margin: 6px 0 0 !important; }
+.twod12-type .twod12.chat .tline.grantrow .cc-gbtn { flex: 1 1 100% !important; min-width: 0 !important; min-height: 0 !important; height: auto !important; padding: 1px 8px !important; border-radius: 0 !important; background: transparent !important; border: 1px solid var(--s-gold) !important; color: var(--s-ink) !important; justify-content: flex-start !important; font: 600 .78rem "Source Sans 3", sans-serif !important; box-shadow: none !important; }
+.twod12-type .twod12.chat .tline.grantrow .cc-gbtn:hover { background: var(--s-gold) !important; color: var(--s-pg) !important; }
+.twod12-type .twod12.chat .tline.grantrow .cc-gbtn i, .twod12-type .twod12.chat .tline.grantrow .cc-gbtn img { display: none !important; }
+.twod12-type .twod12.chat .tline.grantrow .cc-gbtn.gl-cancel { flex: 0 0 auto !important; border-color: var(--s-hair) !important; color: var(--s-mute) !important; justify-content: center !important; }
+.twod12-type .twod12.chat .tline.grantrow .gl-used { background: none !important; border: 0 !important; color: var(--s-mute) !important; font-size: .78rem !important; padding: 1px 0 !important; }
+/* ==== v0.0.393: a used Action in the HUD: struck, faded, "used" in the place of its stamps ==== */
+.twod12-hud .hb-ln.used { opacity: .45; } .twod12-hud .hb-ln.used > b { text-decoration: line-through; color: var(--hud-mute); }
+.twod12-hud .hb-pv.used { font-style: italic; }
 /* ==== STYLE-3: a button's text takes the browser's color scheme unless it is set: the damage card's pools line was white on the light card in a dark browser ==== */
 .twod12-type .twod12.chat.cc .cc-pools { color: var(--s-ink); }
 `;

@@ -7,7 +7,7 @@ import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
 import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
 import { perceptionOf, perceive } from "./senses.mjs";
-import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, targetsNeeded, areaConfigOf, autoChip } from "./config.mjs";
+import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, areaConfigOf, autoChip } from "./config.mjs";
 import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
 import { handOf, HAND_LABEL } from "./loadout.mjs";
 import { isEngaged, engagedWithOther } from "./engaged.mjs";
@@ -472,7 +472,7 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.392 (Lucas: "Remove the target | no target: DC prompt. If you dont have a target, simply open the roll dialog"): the dialog shows
   // "No target" with its DC and a Target button; it is live, so targeting creatures on the map fills it (the chat card keeps its retarget button)
   // An Action that marks the target needs it (targeted).
-  if (it.marksTarget && !game.user.targets.size) return ui.notifications.warn(`Target the creature ${item.name} marks first.`);
+  // v0.0.393 (Lucas: "can't use them without targets"): no refusal; with nothing targeted the Action marks nobody (the dialog's Target button marks one)
   // A Save Action (the Save trait): you don't roll; each target rolls the Save named on its Vs. line against 11 + your Modifier (Save Actions in the rules).
   const saveAct = !!it.traits?.has?.("save");
   // A Weapon Action needs its weapon before anything else happens (no area to place first, then refused). The same checks run again below.
@@ -506,8 +506,8 @@ export async function useAction(actor, item, opts = {}) {
   const reqProblem = requirementProblem(it, actor, reqTarget?.actor ?? null, reqOpts);
   if ((reqProblem) && refuse(`${actor.name} can't use ${item.name}: it ${reqProblem}.`)) return;
   // An Action that needs several different creatures (Double Shot: "Two creatures") can't be made against fewer: its Linked Actions would be disrupted.
-  const needed = targetsNeeded(it.targets);
-  if (needed > 1 && new Set([...game.user.targets].map(t => t.document?.uuid ?? t.id)).size < needed) return ui.notifications.warn(`${item.name} needs ${needed} different creatures as targets. Target them first.`);
+  // v0.0.393 (Lucas: "Actions are still asking for Targets, and can't use them without targets"): no refusal; the roll dialog shows the creatures
+  // targeted (or "No target" with its DC and a Target button)
   // v0.0.224: Break Free is the one Move Action an Immobilized creature can use (and only then).
   if ((basicKey === "breakFree" && !actor.statuses?.has?.("immobilized")) && refuse(`${actor.name} is not Immobilized.`)) return;
   if (((it.traits.has("move") || basicKey === "safeMovement") && basicKey !== "breakFree" && actor.statuses?.has?.("immobilized")) && refuse(`${actor.name} is Immobilized and can't move: Break Free (1 AP) first.`)) return;
@@ -1169,7 +1169,7 @@ export async function useAction(actor, item, opts = {}) {
     } catch (e) { console.warn("twod12 | Save Action", e); }
   }
   // An Action that marks (Mark Quarry; v0.0.186 the Action's "Marks the target" box): the targeted creature becomes the marked one (mark.mjs).
-  if (it.marksTarget) { try { await setQuarry(actor, [...game.user.targets][0] ?? null); } catch (e) { console.warn("twod12 | marking", e); } }
+  if (it.marksTarget && game.user.targets.size) { try { await setQuarry(actor, [...game.user.targets][0]); } catch (e) { console.warn("twod12 | marking", e); } }
   // Mastery: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery with that kind of weapon (once per Action; characters only).
   if (!version.noTiers) {
     // v0.0.189: a forced Tier (testing) gives no Mastery.

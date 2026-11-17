@@ -57,3 +57,9 @@ console.log("the granted uses top right, in the accent:", g2.includes('<div clas
 const mo = src("module/moment.mjs");
 console.log("no Reaction taken: the message removed:", mo.includes('if (!st.rows.some(r => r.state === "use")) {') && mo.includes("await L.msg?.delete();"), "| a bronze bell, not a beep:", hud.includes("[0.5, 0.35, 2.4], [1, 0.6, 1.8]") && !hud.includes("[[880, 0], [1320, 0.12]]"),
   "| the card's x, a second right-click closes it:", hud.includes('class="hc-x"') && hud.includes('.hb-ln[data-item-id="${item.id}"]'), "| the HUD see-through:", css.includes(".twod12-hud.is-bar { background: color-mix(in srgb, var(--hud-bg) 80%, transparent);"));
+console.log("--- v0.0.393 (Lucas, testing v0.0.392)");
+const act = src("module/actions.mjs"), ri = src("module/rollinput.mjs"), th = src("styles/theme.css");
+console.log("no refusal for too few targets:", !act.includes("different creatures as targets"), "| a marking Action rolls with none:", !act.includes("marks first."), "| the multi roll with no creature falls to the DC row:", ri.includes("if (c.multi && (c.perT?.length ?? 0) > 0) creatures = c.perT.map("));
+console.log("a used Action says so:", V.lineHtml({ id: "i1", name: "Judge", used: true, stamps: [{ ap: 1, label: "1 AP" }] }).includes('<span class="hb-pv used">used</span>'),
+  "| the roll dialog's Tiers in palette A (above the dark set):", th.includes(".twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: var(--s-ta-2p) !important;"),
+  "| the granted uses on the chat card outlined:", th.includes(".twod12-type .twod12.chat .tline.grantrow .cc-gbtn { flex: 1 1 100% !important;"));

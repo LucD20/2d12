@@ -81,6 +81,12 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.393 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.392
+- [ ] **No targets:** use Double Shot (or any Action for two creatures) with one or none targeted: the roll dialog opens (no warning); roll: it goes against the creature targeted or the DC typed. A marking Action (Marked Quarry) with nothing targeted: it rolls, marks nobody.
+- [ ] **The roll dialog:** the traits as words ("Weapon · Ranged · Shot · Strike"), the Frequency a small square beside "Encounter · 2 AP", the Tier rows tinted vermilion / green / blue / gold with a bar at the left, in the dark and the light theme.
+- [ ] **A used Action in the HUD:** after using an Encounter Action, its line is faded, struck through, and says "used".
+- [ ] **Double Shot's card in the chat:** the granted uses are outlined buttons in the accent, no icons; a used one is plain text.
+
 ## v0.0.392 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.391
 - [ ] **No target:** use a targeting Action with nothing targeted: the roll dialog opens (no bottom-bar prompt), "No target" with a DC box and a **Target** button; press Target, click a creature: the dialog shows it. Roll with no target: against the DC typed. The chat card's retarget button works as before.
 - [ ] **A Reaction nobody takes** (everyone passes, or the clock runs out): its chat message disappears.

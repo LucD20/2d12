@@ -4871,13 +4871,6 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 }
 .twod12-hud .hb-bar-wrap.folded .hb-side { display: none; }
 #twod12-carousel .tp-marks { order: 4; display: flex; justify-content: center; margin: 0; padding: 2px 4px 4px; background: rgba(26, 23, 19, .94); }
-.twod12.chat .grantrow, .twod12.chat.cc .tline.grantrow { background: none; border: 0; border-top: 1px solid var(--s-hair, #cdb88a); border-radius: 0; padding: 5px 0 0; margin: 6px 0 0; }
-.twod12.chat .grantrow .gbtns { gap: 4px; }
-.twod12.chat .grantrow .gbtns button { flex: 1 1 100%; min-width: 0; height: auto; line-height: 1.5; padding: 1px 8px; border-radius: 0; background: none; border: 1px solid var(--s-gold, #7a5418); color: var(--s-ink, #2a241d); text-align: left; font: 600 .78rem "Source Sans 3", sans-serif; box-shadow: none; }
-.twod12.chat .grantrow .gbtns button:hover { background: var(--s-gold, #7a5418); color: var(--s-pg, #f4ede0); }
-.twod12.chat .grantrow .gbtns button i, .twod12.chat .grantrow .gbtns button img { display: none; }
-.twod12.chat .grantrow .gbtns button.gl-cancel { flex: 0 0 auto; border-color: var(--s-hair, #cdb88a); color: var(--s-mute, #5d5446); }
-.twod12.chat .grantrow .gl-used { flex: 1 1 100%; color: var(--s-mute, #5d5446); font-size: .78rem; background: none; border: 0; padding: 1px 0; }
 /* ==== v0.0.392 (Lucas, testing v0.0.391) ==== */
 /* more room around the hairlines between the marks */
 .twod12-hud .hm-sep { margin: 0 6px; }

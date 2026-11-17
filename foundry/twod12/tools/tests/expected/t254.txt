@@ -21,3 +21,6 @@ the carousel: the HUD's marks, the health tag, Momentum, plain words: true | the
 --- v0.0.392 (Lucas, testing v0.0.391)
 the granted uses top right, in the accent: true | the side panel kept in a small window while they wait: true
 no Reaction taken: the message removed: true | a bronze bell, not a beep: true | the card's x, a second right-click closes it: true | the HUD see-through: true
+--- v0.0.393 (Lucas, testing v0.0.392)
+no refusal for too few targets: true | a marking Action rolls with none: true | the multi roll with no creature falls to the DC row: true
+a used Action says so: true | the roll dialog's Tiers in palette A (above the dark set): true | the granted uses on the chat card outlined: true
