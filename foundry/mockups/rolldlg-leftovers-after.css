@@ -1,0 +1,15 @@
+html.twod12-type .after .twod12.rolldlg .rd-pip.up { border-bottom-color: #ece3cf !important; }
+html.twod12-type .after .twod12.rolldlg .rd-pip.down { border-top-color: #ece3cf !important; }
+html.twod12-type .after .twod12.rolldlg svg.rd-pip polygon { fill: none !important; stroke: #ece3cf !important; stroke-width: 1.5 !important; }
+html.twod12-type .after .twod12.rolldlg svg.rd-pip text { fill: #ece3cf !important; }
+html.twod12-type .after .twod12.rolldlg .rd-pip.sq { background: none !important; border: 1px solid #ece3cf !important; color: #ece3cf !important; border-radius: 0 !important; line-height: 11px !important; }
+html.twod12-type .after .twod12.rolldlg .rd-cnt .up, html.twod12-type .after .twod12.rolldlg .rd-cnt .down { color: #b3a68e !important; }
+html.twod12-type .after .twod12.rolldlg .rd-chip { border-radius: 0 !important; background: none !important; border: 1px solid #4a4132 !important; box-shadow: none !important; }
+html.twod12-type .after .twod12.rolldlg .rd-chip.on { border-color: #d2a75a !important; }
+html.twod12-type .after .twod12.rolldlg .rd-chip .rd-cbody, html.twod12-type .after .twod12.rolldlg .rd-chip .rd-ci { background: none !important; color: #ece3cf !important; border-color: #4a4132 !important; }
+html.twod12-type .after .twod12.rolldlg .rd-ptag { background: none !important; border: 0 !important; color: #b3a68e !important; padding: 0 2px !important; font-weight: 600; }
+html.twod12-type .after .twod12.rolldlg .rd-div i { display: none; }
+html.twod12-type .after .twod12.rolldlg .rd-div span { background: #4a4132 !important; }
+html.twod12-type .after .twod12.rolldlg .vsv { color: #ece3cf !important; }
+html.twod12-type .after .twod12.rolldlg .rd-sub { color: #d2a75a !important; }
+html.twod12-type .after .twod12.rolldlg .rd-dnames { color: #b3a68e !important; }

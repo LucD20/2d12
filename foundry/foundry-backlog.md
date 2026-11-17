@@ -82,6 +82,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
 ## v0.0.395 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.394
+- **The roll dialog (Lucas: "didn't change"; his console check proved the v0.0.393 look live):** the leftovers (the modifier marks' colors, green chips and tags, "Vs." orange, the diamonds) are **PROPOSED** in `foundry/mockups/rolldlg-leftovers.html` (the artifact "Roll Dialog Leftovers"; its CSS `rolldlg-leftovers-after.css`). Waiting for Lucas.
 - [ ] **The HUD:** no cost buttons at rest; long names whole (smaller text, no "…"); hover a line: it fades, its cost buttons appear; click one: that Version; click the line itself: its first Version. A used Action: "used" on hover.
 - [ ] **A chat card's top line:** "Distance: … ✦ Target: …" (an Area Action: "Area: …").
 - [ ] **The marks:** bigger on the carousel and the HUD; the red slashes only on the acting plate; a 5-AP creature's plate fits.
