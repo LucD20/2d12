@@ -228,4 +228,14 @@ The sample page follows the reader's setting: switch the device to dark to see i
 
 **For Lucas:** yes, or changes.
 
+**Lucas's answer (2026-11-17): "I dont see the light mode, but that sounds correct from my knowledge as well, proceed." DECIDED: dark mode as proposed (1 to 4).** Every decision of the look is made; next, mockups of the real documents.
+
+## The mockups (2026-11-17)
+
+Made without touching `rules.css`, `build_rules.py` or the built documents: `book/look/book-look.css` holds the decided look as an override stylesheet, and `book/look/mockup.py` copies the built documents into a mockup folder with that stylesheet, the fonts and the "Light · Dark" switch injected. Applying the look for real (later, on his word) means moving these rules into `rules.css` and the builder (the card HTML, the colored terms, the callouts), and carrying the font files in `rules-assets/`.
+
+**Made (2026-11-17):** the six documents built with the look (`python3 look/mockup.py OUTDIR FONTDIR` from `book/`; the mockups themselves are not committed). Published for Lucas: the Paladin, the Core Rules and Gear. What they show that the samples didn't: the class document's stat box and level list without the double frame or the ornament; every Core Rules example and open box as an indented passage; the contents column with the "Theme: System · Light · Dark" switch; the document bar as plain words; the cards with the chevron as a small grey mark. Known gaps of a mockup (fixed when the look is applied in the builder): the diagrams keep their own colors; a few inline-colored words the builder writes with a style attribute may still show color; the contents column's two button rows sit around the theme switch.
+
+**For Lucas:** yes to apply the look to the book (`rules.css`, `build_rules.py`, the fonts in `rules-assets/`), or the things to change first.
+
 **Lucas's answer:**

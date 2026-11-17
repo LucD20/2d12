@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-16 from the repository at: de6d59a 2026-11-16 Card look: research on book typography and a serious page (one pass still running)
+Built by tools/knowledge.py on 2026-11-17 from the repository at: 96ab491 2026-11-17 Card look: the page around the card decided; decision 5, dark mode, proposed
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -59,7 +59,7 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-card-look.md (11 KB)
+- design-card-look.md (34 KB)
 - design-swords-redesign.md (38 KB)
 - design-bows-redesign.md (89 KB)
 - design-archer-redesign.md (109 KB)

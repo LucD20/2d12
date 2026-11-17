@@ -87,4 +87,155 @@ The illuminated-manuscript idiom McCoy calls fantasy's default: a display face f
 
 **For Lucas:** A, B or C.
 
+**Lucas (2026-11-17):** "Give me an example of each." Done: `book/cards/look-desk/examples.html`, the artifact "Book Look Examples" (the same Paladin slice: today, A, B, C). Then: "If we remove my words, book and serious, what would they look like, taking into consideration only the research."
+
+**Answered: the research alone points between A and B, nearer B, and not to C** (added to the examples as D).
+- **What the research supports with no word of his:** a fixed anatomy for every block; the block made findable by a light structure, and the praised books do it with a pale band or flat tint (Old-School Essentials' bands, 5e's panel), not with no frame at all; bold labels at the start of a line; one accent with a structural job; color never the only cue; the frequency as a word; no rounded corners, pills, colored left bars or a color per keyword (the "app look" parts); real small caps or none; tables without nets; light ground by default.
+- **What only his words add (A over D):** dropping the tint and the band, the serif inside the block, red reserved for what you act on. The research has no finding that a frameless block is faster; it has the opposite hint (a tint helps finding).
+- **Where the research is neutral, so D takes the plainer way:** serif or sans inside the block (no reading-speed difference; 5e sets its blocks in a sans, Scala Sans, and that is not what reads as an app); so D sets the card in a plain sans against the serif page, which also helps finding.
+- **What the research weighs against:** C (costume; "no fake parchment or genre fonts"), and today's look on four counts (a saturated bar coding the frequency by color, a color per keyword, rounded boxes in boxes, the system interface font). It does **not** condemn a header bar as such: Justin Alexander praised 4e's format for clarity; the complaint was tone ("gamey"), which is a word of his.
+
+**D, the research alone:** a pale band behind the name line with a dark rule on top; the name in the block's bold; frequency and cost in the accent; the card's text in a plain sans (Source Sans 3 as a stand-in); bold labels in a column; a rule under the block; Versions as accent subheads with a hairline.
+
+**Lucas (2026-11-17):** "Let me see B without my book and serious instructions, only research." Added to the examples as "B, with the research only": the flat pale panel kept (the findable block); the card's text in a plain sans against the serif page (5e's way); the name in the accent and bold, not small caps; an accent rule above and below the panel and one under the traits (5e carries structure in one color); frequency and cost as plain bold words; Distance and Target with bold labels; Versions as accent subheads with a rule.
+
+**Lucas's answer (2026-11-17): "B with research only is looking best so far. But Trait's 'labels', was that removed on purpose? And removal of color is preferred?"** Read as: the direction is B with the research only, unless the two answers change it.
+
+**1. The traits' colors: removed on purpose.** Today each trait is colored by its group (five colors: Roll teal, Requires blue, Kind rust, Damage gold, Keywords grey), and a [Strike] in running text sits in a tinted chip. The research's reasons to drop them: a color for each category is the most criticised use of color (a legend the reader never learned; Paizo's publisher "skeptical that color is a useful way to delineate information"; four competing accents "cancel each other out"); the group is already shown by **order** (Roll, Requires, Kind, Damage, Keywords: fixed by `GROUPS`), which costs nothing. The example sets them in bold, in that order, separated by a middle dot. (There was never a "Traits:" label; if that was the question: a label could be added, but the traits sit on their own line under the Flavor on every card, which the research counts as the cue.)
+
+**2. Color: the research does not ask for none. It asks for few, each with one job, never the only cue.** What each color of today's book is, against that:
+
+| Today's color | Its job | Never alone? | Research verdict |
+|---|---|---|---|
+| The accent (rules, the name, Version heads) | structure: where a card starts and its parts | yes (rules and bold carry it too) | **keep: one accent** |
+| [V] Vigor red, [R] Resolve blue on damage | which Health pool a damage hits: the distinction tracked on every hit | yes (the letter says it) | **keep, Claude's pick:** a second job the reader needs at a glance; two colors that also differ in lightness |
+| The frequency's color (title bar) | Round / Turn / Encounter | no (in 4e's way, the bar *was* the cue) | drop: the word does it |
+| Trait groups (five colors) | the group | the order does it | drop |
+| Game terms in running text (AP, Guard, Rally Point, Down, Boon, Bane) | "this is a game word" | yes | drop: a color per keyword is the "app" sign; a defined term is bold where it is defined |
+| Attributes (Body, Mind, Instinct, Appeal), the Modifiers | which one | yes | drop |
+| Damage subtypes (Ho, Pi...) | the subtype | the two letters do it | drop |
+| Links | "you can click this" | an underline does it | keep, in the text's color with an underline (Tufte CSS, Butterick) |
+
+So the proposal for B with the research only: **black, one accent for structure, and the two pool colors on damage**; everything else black.
+
+**For Lucas:** the traits without colors (yes or no); the pool colors (keep or drop); then B with the research only is the direction.
+
+**Lucas's answer (2026-11-17): "Yes to all, but try one thing: A colored, thin, underline on the traits, by group. Do on B just so I see how it would look like." DECIDED: the direction is B with the research only; traits without colors; the pool colors on damage kept.** The trial is on the examples page ("B, with the research only: traits underlined by group": a 2 px underline in the group's color, the trait in black; the decided pool colors on [V] and [R]; Rebuke and Darting Blade added to show two Roll traits and a Requires trait).
+
+**Against the research, for his decision** (it is a group color again, but carried by a line and not by the word): it keeps the word black and legible and the color secondary (the order still says the group), so it passes "never the only cue"; it brings back five colors on every card, the "competing accents" the research warns about, and an underline is the web's sign for a link (the book's own links are underlined). Claude's view: try it on the mockups if he likes it here; drop it if it reads as links.
+
+**Lucas (2026-11-17): "I meant as a full line, so it would go from power to save all the way."** Redone: one continuous 2 px line under each group's run of traits (the traits are already printed by group, so a group is always together), with a gap at the dot between two groups.
+
+**Lucas's answer (2026-11-17): "Keep the lines, next is the text face. Just give to me again: What the research said about frequency colors?"** DECIDED: the trait lines (one continuous line in the group's color under each group's run of traits) are kept. The frequency colors, again (in the message): 4e's green / red / black bars are the precedent; readers named the color coding and the light-on-dark bars as what made it look like cards; color as a code alone is the most criticised use (Paizo's publisher; the Pathfinder playtest's rarity colors replaced; red against green fails for 1 man in 12; WCAG 1.4.1); it passes only with the word printed beside it and colors that differ in lightness; no praised book does it; the praised books print the frequency as a word.
+
+## Decision 2: the text face (PROPOSED 2026-11-17, five candidates, waiting for Lucas)
+
+The page: `book/cards/look-desk/faces.html`, the artifact "Book Text Faces": the same Paladin slice (a small-caps heading, rules text, an example, a card, a subheading, a table) in each face, the faces embedded as subsets of their full files so their small caps and old-style figures are real (the files Google Fonts serves strip them; the book would carry the files in `rules-assets/`). The cards stay in Source Sans 3; their Flavor is in the text face's italic.
+
+| Face | What it is | For | Against |
+|---|---|---|---|
+| EB Garamond | Duffner's revival of Garamont's 16th-century romans | the most classical: an old book | small x-height (set a size larger), thin strokes on screen, weaker in dark mode |
+| Alegreya | del Peral, 2011, calligraphic, for literature | the most character without costume; a matching sans (Alegreya Sans) and real small caps | its liveliness is a taste |
+| **Source Serif 4 (Claude's pick)** | Grießhammer for Adobe, after Fournier's 18th-century types | large x-height and optical sizes, made for screens; the same family as the cards' sans (Source Sans 3), so page and card agree | the plainest; less "old" |
+| Literata | TypeTogether, for Google Play Books | made for long reading on screens | reads as a modern novel more than an old book |
+| Vollkorn | Althausen, "bread and butter" type | dark and sturdy, holds up in dark mode | heavy; italic without small caps |
+
+**Why Source Serif 4:** the direction he chose is the research-only one, which weighs reading at the table first; Source Serif 4 is the clearest on screen at 16 to 18 px, in both themes, and pairs by design with the card's sans. The book feel comes from the small caps, old-style figures, rules and restraint, which all five give. Second choice: Alegreya with Alegreya Sans for the cards, if he wants more character.
+
+**For Lucas:** one face (by eye, on the page).
+
+**Lucas (2026-11-17), before choosing the face:** "Drop my book and serious instructions for good, lets go only by the research from now on. Then check if the current still fit the research." **DECIDED: from now on the look is decided by the research only; "book" and "serious" are no longer criteria.**
+
+## The decisions so far, checked against the research only (2026-11-17)
+
+| Decided | Fits? | Why |
+|---|---|---|
+| B with the research only: a flat pale square panel, accent rules, the card in a plain sans against the serif page, bold labels | yes | it was built from the research alone |
+| Frequency and cost as words, no frequency color | yes | color alone as a code is the most criticised use; the praised books print a word |
+| No colored game terms, Attributes, Modifiers or subtypes; a defined term bold where it is defined | yes | "no praised book colors each keyword"; one of bold or italic |
+| Traits without group colors, in group order | yes | the order is the cue |
+| [V] and [R] in their pool colors | yes, with a note | the letter is the cue, so color is not alone (WCAG 1.4.1); red and blue are not the red-green trap; but the two have the same lightness (contrast 1.07), so the color helps only readers who see hue |
+| **The trait lines by group (kept 2026-11-17)** | **no** | the research's weight is against five accent colors on a card ("four competing accent colors... cancel each other out"; "one accent, given one job"); measured, they collide with the other colors: Requires blue against Resolve blue (contrast 1.5), Kind rust against Vigor red and the accent (1.7); the grey Keywords line barely shows on the tint (3.0) |
+| **The accent's red** | **no** | it is the same color as Vigor damage (contrast 1.01): one color with two jobs, which the research rejects ("one accent, given one job holds its meaning") |
+| The example as an indented passage, no panel; examples and boxes without colored left bars | yes | space first, then a rule, then a box; the colored left bar is an "app" sign |
+| Light ground by default, dark as a choice | yes | dark text on light reads faster; dark mode is chosen anyway |
+| Real small caps, old-style figures in text and lining tabular figures in tables | yes | fake small caps are "a parody"; figures that match their place |
+| Text face candidates (Source Serif 4 the pick) | yes | the pick already rested on reading on screen (x-height, optical sizes, a matching sans); "classic serif for mood" no longer counts, which helps Source Serif 4 and Literata over EB Garamond |
+
+**Two fixes proposed:**
+1. **The accent changes hue**, so red is Vigor's alone: a dark bronze (Claude's pick: no pool, trait or rule uses it, it is not on the red-green axis, and it keeps 7:1 on the tint), or a dark ink (structure by weight and rules only, no hue at all).
+2. **The trait lines go** (back to traits in black, by group order), as the research weighs; or, if he keeps them, they are redrawn in hues and lightnesses no other color uses, which five groups make hard.
+
+**For Lucas:** 1 (bronze or ink); 2 (drop the lines, or keep and redraw); then the face.
+
+**Lucas's answer (2026-11-17): "1. Bronze. 2. Yeah, lets drop it for now. Source Serif 4 yea, I like Alegreya but it is a bit hard to read. If there is a mid-way point, I'd like to see, otherwise, proceed."** **DECIDED: the accent is a dark bronze** (light #7a5418, 5.7:1 on the card's tint; dark #d2a75a, 7.1:1; red is Vigor's alone); **the trait lines are dropped "for now"** (traits in black, by group order). The face: Source Serif 4 unless a mid-way between it and Alegreya is better.
+
+**The mid-way faces, checked in their files** (real small caps and old-style figures needed; x-height as a share of the em, larger reads bigger): Piazzolla (Huerta Tipográfica, 2020; 0.478, optical sizes; full set), Brygada 1918 (0.46; full set), Spectral (0.45; full set); and a mix (the text in Source Serif 4, the small-caps headings in Alegreya). Rejected for lacking small caps: Lora, Gelasio, Besley, Fraunces (and Gentium Book Plus has small caps but no figure styles). The faces page now shows Source Serif 4, the four mid-way options and Alegreya for reference, in the decided look (bronze, traits in black). **Claude's pick for a mid-way: Piazzolla** (the same calligraphic school as Alegreya, with Source Serif 4's x-height).
+
+**Lucas (2026-11-17): "Piazzolla is good but the '2' looks bad, Tier 2 for example doesnt read well right? It is the only bad thing, the numbers readability. Spectral is good with numbers for example."** Checked in the font file: Piazzolla's default "2" is already a lining figure (its old-style "2" is a separate glyph), and it is short by design; switching the text to lining figures changes nothing visible (tried on the page, then removed). So the figures can't be fixed without mixing faces. **Piazzolla is out.** Left: Source Serif 4 (Claude's pick: the clearest figures and text, a matching sans) or Spectral (his note: good figures; the lightest of the faces, thin strokes, x-height 0.45, so it would be set at 18 px and in a slightly heavier weight on screen).
+
+**Lucas's answer (2026-11-17): "Source Serif 4." DECIDED: the text face is Source Serif 4** (the book carries its full files for real small caps and figures); the cards' text is Source Sans 3 (its family).
+
+## Decision 3: the card's anatomy (PROPOSED 2026-11-17, waiting for Lucas)
+
+Every kind of card drawn in the decided look: `book/cards/look-desk/anatomy.html`, the artifact "Card Anatomy" (a Strike with Tiers, Versions, Modes, two Reactions, a Passive, two Weapon Techniques), from the card files as they stand.
+
+1. **The panel:** a flat tint of the page, square corners, a 2 px bronze rule above and below; never split across a printed page.
+2. **The name line:** the name in bold bronze at the left; at the right, in bold black, the Escalation it needs, the frequency and the cost.
+3. **The Flavor:** one line in Source Serif 4's italic, a shade lighter.
+4. **The traits:** bold, black, in group order, joined by a middle dot; a thin bronze rule under them (kept on a card with no traits).
+5. **The grid:** Distance and Area at the left, Target at the right, bold labels.
+6. **The body:** one line each, the label bold in a fixed column (the same width on every card, wide enough for "Tier 1 or 2" and "Requirement").
+7. **A Version or a Mode:** its heading in bold bronze over a thin grey rule; a Mode's own traits after its name in black; its own Distance and Target under it.
+8. **Inside the text:** game terms in the text's color; links underlined thinly; [V] and [R] damage in their pool colors; brackets plain.
+9. **The card's text** in Source Sans 3; the page in Source Serif 4.
+
+Why (the research): the same anatomy every time is the findability rule cited most; labels at the start of the line in bold; space and rules, no boxes inside the box (a Version is a heading and a rule, not a band); one accent with one job (bronze marks where a card and its parts begin); never split by a page turn.
+
+**For Lucas:** yes, or the lines to change.
+
+**Lucas's answer (2026-11-17): "Modes: It has an horizontal extra line I think, on top of the 'Kindle'. Other than that, all look good." DECIDED: the anatomy as proposed, with one fix:** a Version's or Mode's heading has no grey rule when it comes right after the traits' line (Lantern of Faith showed the traits' bronze rule and Kindle's grey rule stacked).
+
+## Decision 4: the page around the card (PROPOSED 2026-11-17, waiting for Lucas)
+
+A sample of Chapter 2 in the decided look: `book/cards/look-desk/page.html`, the artifact "Book Page Sample". Proposed, each from the research:
+
+1. **Text:** Source Serif 4, 17 px, line height 1.55, a measure of about 40 rem (65 to 75 characters), left-aligned (browser justification is "rudimentary": Butterick), hyphenated (needs `lang="en"` on the page), old-style figures in running text.
+2. **Headings: three levels, all in the ink color** (the bronze keeps its one job, the cards): a chapter title; a section in semibold; a subsection in real small caps. The Part line above a chapter in small caps over a thin rule (today a tinted rounded band). No rust-red headings.
+3. **Game terms in running text are not colored** (AP, Guard, Rally Point, Down, Boon, Bane, Attributes, Modifiers). A term is bold where it is defined; elsewhere a link to its definition is a thin underline in the text's color.
+4. **An example** is an indented passage opened by "*Example.*" in italic: no panel, no colored bar, no capital label.
+5. **An open box** ("to be decided") is the same, opened by "*To be decided.*", in the lighter ink. (The book's Open Items appendix keeps listing them.)
+6. **Tables:** no vertical rules, no fills, no frame; a rule above and below the header row, hairlines between rows; the header in small caps; lining tabular figures.
+7. **Lists:** plain bullets, the text's spacing.
+8. **The contents column:** in the text face, chapters in ink and sections indented in the lighter ink, the Part names in small caps; on a narrow screen it is hidden behind the page's menu as today. Its buttons ("Expand all", "Open all cards") become plain underlined words; they are not printed.
+9. **Opening and closing cards** (the class documents): stays on screen, as a small grey mark at the left of the name line; every card is open in print.
+10. **Not decided here:** the class documents' ornament and drop cap (the research gives no reason to keep or drop them: neutral; Claude's default: drop the ornament, keep no drop cap, so the class documents look like the rest), the stat box and the level list of a class (the same rules: no panel colors, small-caps labels), the diagrams (unchanged), dark mode (the next decision).
+
+**For Lucas:** yes, or the numbers to change; and the ornament and drop cap (drop, or keep).
+
+**Lucas's answer (2026-11-17): "Looks good." DECIDED: the page as proposed (1 to 9), and Claude's default for the open point: the class documents' ornament and drop cap are dropped.**
+
+## Decision 5: dark mode (PROPOSED 2026-11-17, waiting for Lucas)
+
+Today the book follows the reader's system setting (light or dark) and has no switch of its own. The research: dark text on light reads faster for normal vision, more so at small sizes, but many readers choose dark anyway (a Google study, 2023: light "read reliably faster", not preferred); designers advise light by default and a switch; light text on dark looks heavier, so dark wants a slightly lighter weight; pure white on pure black glares.
+
+1. **Light by default; dark when the reader's system asks for it,** and a plain switch ("Light · Dark") in the contents column that overrides it, remembered in the browser.
+2. **Dark colors:** a warm near-black page (#1c1a17), not pure black; text off-white (#e9e3d6), not pure white; the card's panel a step lighter (#25221d); rules and hairlines dimmer; the bronze lighter (#d2a75a, 7.1:1 on the panel); the pool colors' light twins ([V] #ef8a96, [R] #8db3ff).
+3. **Text a little lighter in dark:** Source Serif 4 is variable, so the body goes from weight 400 to about 360 in dark (the cards' sans, which is static from Google, stays).
+4. **Print is always light,** whatever the screen shows, and prints every card open.
+
+The sample page follows the reader's setting: switch the device to dark to see it.
+
+**For Lucas:** yes, or changes.
+
+**Lucas's answer (2026-11-17): "I dont see the light mode, but that sounds correct from my knowledge as well, proceed." DECIDED: dark mode as proposed (1 to 4).** Every decision of the look is made; next, mockups of the real documents.
+
+## The mockups (2026-11-17)
+
+Made without touching `rules.css`, `build_rules.py` or the built documents: `book/look/book-look.css` holds the decided look as an override stylesheet, and `book/look/mockup.py` copies the built documents into a mockup folder with that stylesheet, the fonts and the "Light · Dark" switch injected. Applying the look for real (later, on his word) means moving these rules into `rules.css` and the builder (the card HTML, the colored terms, the callouts), and carrying the font files in `rules-assets/`.
+
+**Made (2026-11-17):** the six documents built with the look (`python3 look/mockup.py OUTDIR FONTDIR` from `book/`; the mockups themselves are not committed). Published for Lucas: the Paladin, the Core Rules and Gear. What they show that the samples didn't: the class document's stat box and level list without the double frame or the ornament; every Core Rules example and open box as an indented passage; the contents column with the "Theme: System · Light · Dark" switch; the document bar as plain words; the cards with the chevron as a small grey mark. Known gaps of a mockup (fixed when the look is applied in the builder): the diagrams keep their own colors; a few inline-colored words the builder writes with a style attribute may still show color; the contents column's two button rows sit around the theme switch.
+
+**For Lucas:** yes to apply the look to the book (`rules.css`, `build_rules.py`, the fonts in `rules-assets/`), or the things to change first.
+
 **Lucas's answer:**
