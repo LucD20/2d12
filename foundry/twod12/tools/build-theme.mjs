@@ -338,6 +338,10 @@ const surfaces = pick => ({
 const BY_HAND = `
 /* ---- v0.0.418 (Lucas, playtest 5, C11): Bloodied on the dark chat card in the Vigor red (the swap made it almost pink) */
 .twod12-dark .twod12.chat.cc .cc-state.bloodied { background: ${T.vig}; }
+/* ---- v0.0.418 (Lucas, playtest 5, F1: "the AP pips: empty and full too alike"): a full pip a solid square in the AP gold (center and border the
+   same), an empty one the outline only with a dark center; the HUD's and the carousel's */
+.twod12-dark .twod12-hud .hm-ap i, .twod12-dark #twod12-carousel .tp-marks .hm-ap i { background: #1f1c18; border-color: #d2a75a; }
+.twod12-type .twod12-hud .hm-ap i.on, .twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }
 /* ---- v0.0.418 (Lucas, playtest 5, B4): a calculated chip's blue (#1a3fb0) has a dark variant: the Boon blue */
 .twod12-dark a.twod12-inline.calc .ti-name, .twod12-dark a.twod12-inline.calc,
 .twod12-dark .application.twod12.twod12-actor .acard a.twod12-inline.calc .ti-name, .twod12-dark .application.twod12.twod12-actor .acard a.twod12-inline.calc,

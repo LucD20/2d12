@@ -26,7 +26,8 @@ const sec = (id, title, small, body) => `<section class="fr-sec" data-as-sec="${
 const kindTile = (t, c) => `<span class="fr-kind k-${c}">${esc(t)}</span>`;
 
 const FREQ = () => [["", "Default"], ["none", "None"], ["atwill", "At-will"], ["turn", "Turn"], ["round", "Round"], ["encounter", "Encounter"], ["daily", "Daily"]].filter(([k]) => k in (TWOD12.frequencies ?? {}));
-const traitChip = k => `<span class="fr-chip g-${R.traitGroup(k)}">${esc(R.traitLabel(k))}<button type="button" data-as="untrait" data-v="${esc(k)}" aria-label="Remove ${esc(R.traitLabel(k))}">×</button></span>`;
+// v0.0.418 (Lucas, playtest 5, E4: "the traits are still colored in the item sheet"): the card's plain words, no group color
+const traitChip = k => `<span class="fr-chip plain" data-group="${R.traitGroup(k)}">${esc(R.traitLabel(k))}<button type="button" data-as="untrait" data-v="${esc(k)}" aria-label="Remove ${esc(R.traitLabel(k))}">×</button></span>`;
 function traitsRow(traits) {
   const have = new Set(traits), order = (TWOD12.traitGroups ?? []).flatMap(g => g.traits).filter(k => have.has(k));
   const rest = traits.filter(k => !order.includes(k));

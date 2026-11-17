@@ -134,7 +134,7 @@
 
       {{#unless pc.npc}}<section class="ps-sec line">
         <div class="ps-hh"><span class="ps-k">Rally</span><span class="ps-rally">{{pc.rally.left}} / {{pc.rally.max}} &middot; Each heals {{pc.rally.heal}}</span></div>
-        <span class="ps-rpips" data-tooltip="Rally Points: your class's Rally value + your Stage. Each removes {{pc.rally.heal}} damage (a quarter of your Health Pool, rounded up). Only a Rest restores them.">{{#each pc.rally.pips}}<i class="{{#if this}}on{{/if}}"></i>{{/each}}</span>
+        <span class="ps-rpips" data-tooltip="Rally Points: your class's Rally value + your Stage. Each removes {{pc.rally.heal}} damage (a quarter of your Health Pool, rounded up). Only a Rest restores them.">{{#each pc.rally.pips}}<i class="{{#if this}}on{{/if}}" data-action="setRally" data-n="{{@index}}" role="button" aria-label="Rally Points"></i>{{/each}}</span>
       </section>{{/unless}}
 
       <section class="ps-sec line">

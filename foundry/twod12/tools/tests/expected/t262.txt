@@ -23,3 +23,11 @@ C3-C6 removed: Bloodied / Strained / Down: true | the Reactions' used line: true
 C7 the stamp stretches to its row (with a target): true
 C8 a Critical from Doubles: the ↑ over CRIT 95 (the total's arrow faded: true) | C9 a Tier 3 with no Critical: no CRIT zone: true | a Critical's zone: solid
 C11 Bloodied in the Vigor red on the dark card: true | B4 the calculated blue's dark variant: true
+--- V1.4-5 the roll dialog, the sheets, the HUD
+B1 the roll line only where the card has one: true | A2: true
+E2 a Reaction's pill writes its Frequency ("Turn · 1R"): true | E4 the Action sheet's traits plain: true
+E8 an empty Level is left unchanged: [null,null,3,4,null,0]
+E7 a Rally pip clicked (3 left): the 2nd → 2 | the 3rd (the last lit) → 2 | the 4th → 4 | the line: true
+E5 a window with no scheme takes the Applications one: true themed theme-light | one with its own is left: false
+D2 both Modifiers, no Vigor / Resolve words on the bars: true | D5 the same creature keeps its height: true | F2 Bloodied / Strained off the strip: true
+F1 a full AP pip solid gold, an empty one dark: true | D8 the HUD's icons centered: true

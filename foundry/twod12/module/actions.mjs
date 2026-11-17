@@ -650,7 +650,7 @@ export async function useAction(actor, item, opts = {}) {
   if (usesReload && rw.unloaded) return ui.notifications.warn(`${previewWeapon.name} is unloaded: Reload it before using it again.`);
   // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
   const atWill = opts.free && !opts.countAtWill ? 0 : atWillUses(actor, item);   // v0.0.224: a Charge's Weapon Attack counts
-  if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `At-will use ${atWill + 1}`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane" });
+  if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `${atWill + 1}x At-will use`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane" });
   // Several targets: for each creature, its DC, its cover, how you perceive it and it perceives you, and the range to it.
   const perT = [];
   if (multi) {

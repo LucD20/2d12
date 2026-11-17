@@ -65,3 +65,18 @@ console.log("C7 the stamp stretches to its row (with a target):", css.includes("
 const crit = CCm.ladderModel({ total: 22, dc: 14, base: 3, tier: 3, crit: true, doubles: true }), plain3 = CCm.ladderModel({ total: 26, dc: 14, base: 3, tier: 3, crit: false });
 console.log("C8 a Critical from Doubles: the ↑ over CRIT", crit.up, "(the total's arrow faded:", crit.arrow.faded + ") | C9 a Tier 3 with no Critical: no CRIT zone:", plain3.critZone === "", "| a Critical's zone:", crit.critZone);
 console.log("C11 Bloodied in the Vigor red on the dark card:", theme.includes(":scope .twod12.chat.cc .cc-state.bloodied, :is(.twod12.chat.cc):scope .cc-state.bloodied { background: #d0564f; }"), "| B4 the calculated blue's dark variant:", theme.includes("a.twod12-inline.calc .ti-name { color: #8db8f0; }"));
+
+console.log("--- V1.4-5 the roll dialog, the sheets, the HUD");
+const rd = src("module/rolldlg.mjs"), pcs = src("module/pcsheet.mjs"), as = src("module/actor-sheets.mjs"), hv = src("module/hudview.mjs");
+console.log("B1 the roll line only where the card has one:", rd.includes("if (m.vs && C.roll) {"), "| A2:", act.includes("name: `${atWill + 1}x At-will use`"));
+console.log("E2 a Reaction's pill writes its Frequency (\"Turn · 1R\"):", pcs.includes("fqWord = FREQ_WORD[fq] && (reaction || sec !== fq) ? FREQ_WORD[fq] : \"\""), "| E4 the Action sheet's traits plain:", src("module/actionsheet.mjs").includes('class="fr-chip plain"'));
+const AS = await import(ROOTURL + "module/sheetmodel.mjs").catch(e => ({ err: e.message }));
+if (AS.cleanLevel) {
+  console.log("E8 an empty Level is left unchanged:", JSON.stringify(["", null, "3", ["", "4"], "x", -2].map(AS.cleanLevel)));
+  console.log("E7 a Rally pip clicked (3 left): the 2nd →", AS.rallyAfterClick(1, 3), "| the 3rd (the last lit) →", AS.rallyAfterClick(2, 3), "| the 4th →", AS.rallyAfterClick(3, 3), "| the line:", as.includes("sets the Rally Points to <b>${n}</b> of ${max}."));
+  const cl = new Set(), el = { classList: { contains: k => cl.has(k), add: (...k) => k.forEach(x => cl.add(x)) } };
+  console.log("E5 a window with no scheme takes the Applications one:", AS.ensureWindowTheme(el, "light"), [...cl].join(" "), "| one with its own is left:", AS.ensureWindowTheme(el, "dark"));
+} else console.log("(actor-sheets.mjs:", AS.err, ")");
+console.log("D2 both Modifiers, no Vigor / Resolve words on the bars:", hud.includes('{ label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }') && !hv.includes("<span><b>${esc(b.name)}</b>"),
+  "| D5 the same creature keeps its height:", hud.includes("main.__twod12Actor === cur.actor.uuid && !m.folded ? main.offsetHeight : 0"), "| F2 Bloodied / Strained off the strip:", hud.includes('tag: h.tag?.cls === "hurt" ? null : h.tag'));
+console.log("F1 a full AP pip solid gold, an empty one dark:", theme.includes(".twod12-type .twod12-hud .hm-ap i.on, .twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }"), "| D8 the HUD's icons centered:", css.includes(".twod12-hud .hud-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar button { display: inline-flex; align-items: center; justify-content: center;"));

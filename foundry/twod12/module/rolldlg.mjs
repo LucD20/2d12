@@ -480,7 +480,8 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
     const can = inp.canForce && !inp.save;
     if (C.heading && !/^\d+(R| AP)$/.test(C.heading)) out.push(line("Mode", esc(C.heading)));   // an Art's Mode (a Version's cost is on its button)
     for (const l of C.top) out.push(line(esc(l.label), l.html));
-    if (m.vs) {
+    // v0.0.418 (playtest 5, B1: Judge showed "Attack: ... vs. DC 13"): the roll line only where the card has one
+    if (m.vs && C.roll) {
       const save = /save$/i.test(m.vs);
       const vsTxt = save ? esc(m.vs) : `${esc(inp.roll?.name ?? "Modifier")} ${sgn(Number(inp.roll?.mod) || 0)} vs. ${esc(String(m.vs).replace(/\b(AD|WD)\b/g, d => DEF_NAME[d]))}`;
       out.push(line(C.roll?.label ?? (save ? "Save" : "Attack"), vsTxt));

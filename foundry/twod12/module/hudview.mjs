@@ -38,7 +38,7 @@ export const escHtml = (n, max) => `<span class="hm-esc" title="${esc(`Escalatio
 export function barHtml(b) {
   const max = Math.max(1, n0(b.max)), left = Math.min(max, n0(b.left)), nl = Math.min(max - left, n0(b.nl));
   const pct = x => Math.round((x / max) * 1000) / 10;
-  return `<div class="hb-bar ${esc(b.cls)}" title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} Nonlethal damage)` : ""}`)}"><i style="width:${pct(left)}%"></i>${nl ? `<u style="left:${pct(left)}%;width:${pct(nl)}%"></u>` : ""}<span><b>${esc(b.name)}</b><b>${left}/${n0(b.max)}</b></span></div>`;
+  return `<div class="hb-bar ${esc(b.cls)}" title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} Nonlethal damage)` : ""}`)}"><i style="width:${pct(left)}%"></i>${nl ? `<u style="left:${pct(left)}%;width:${pct(nl)}%"></u>` : ""}<span><b>${left}/${n0(b.max)}</b></span></div>`;
 }
 const barsHtml = bars => `<div class="hb-bars">${(bars ?? []).map(barHtml).join("")}</div>`;
 /** A state tag: Bloodied, Strained, or the Down state (one word, never only a tint). */

@@ -418,3 +418,19 @@ export function damageLinesMods(lines) {
 export const damageLineRows = lines => DMG_KINDS.map(k => ({ kind: k, label: KIND_WORD[k], lines: (lines ?? []).filter(l => l.kind === k) })).filter(r => r.lines.length);
 /** One Immune / Resist / Weak written as text ("Resist 3 Blunt"), and a whole line list as the stored text ("Resist 3 Blunt, Immune Psychic"), for dmgMods fields. */
 export const dmgModsFromLines = (list, names) => list.map(l => (l.kind === "immune" ? `Immune ${names[l.sub] ?? l.sub}` : `${KIND_WORD[l.kind]} ${l.n} ${names[l.sub] ?? l.sub}`)).join(", ");
+
+/** Pure (v0.0.418, E7): the Rally Points left after a click on pip k (0-based): that pip and the ones before it; the last lit pip clicked: one fewer. */
+export const rallyAfterClick = (k, left) => (k + 1 === left ? k : k + 1);
+/** v0.0.418 (E5): a window with no "theme-light" / "theme-dark" class takes Foundry's Applications scheme (when one is set). */
+export function ensureWindowTheme(el, scheme = (() => { try { return game.settings.get("core", "uiConfig")?.colorScheme?.applications ?? ""; } catch (e) { return ""; } })()) {
+  if (!el?.classList || el.classList.contains("theme-light") || el.classList.contains("theme-dark")) return false;
+  if (scheme !== "light" && scheme !== "dark") return false;
+  el.classList.add("themed", `theme-${scheme}`);
+  return true;
+}
+/** Pure (v0.0.418, E8): a Level field's value as a number, or null (left unchanged): "" and NaN are null; two fields of that name, the first number. */
+export function cleanLevel(v) {
+  const list = Array.isArray(v) ? v : [v];
+  for (const x of list) { if (x === "" || x === null || x === undefined) continue; const n = Number(x); if (Number.isFinite(n)) return Math.max(0, Math.trunc(n)); }
+  return null;
+}

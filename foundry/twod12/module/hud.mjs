@@ -115,7 +115,7 @@ async function partyCard(actor, token = null) {
     key: token?.id ? `t:${token.id}` : `a:${actor.id}`, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: actor.type === "npc" ? rankLabel(actor) : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     ad: nn(s.armorDC ?? 11), wd: nn(s.wardDC ?? 11), speed, speedTip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "",
-    rally: actor.type === "npc" ? "—" : `${nn(s.rallyLeft)}/${nn(s.rallyMax)}`, guard: h.guard, tag: h.tag, bars: h.bars,
+    rally: actor.type === "npc" ? "—" : `${nn(s.rallyLeft)}/${nn(s.rallyMax)}`, guard: h.guard, tag: h.tag?.cls === "hurt" ? null : h.tag, bars: h.bars,   // v0.0.418 (Lucas, playtest 5, F2): Bloodied / Strained off the strip (Down stays)
     marks: cb ? marksHtml({ ...cb, showStrikes: false }) : "", esc: e && cb ? escHtml(e.n, e.max) : "",
     cond: condsOf(actor, durationText).map(c => `${c.name}${c.dur ? ` (${c.dur})` : ""}`).join(" · ")
   };
@@ -187,7 +187,8 @@ async function barModel(actor, token = null) {
   const defs = [
     { label: "AD", value: nn(s.armorDC ?? 11), tip: "Armor Defense" }, { label: "WD", value: nn(s.wardDC ?? 11), tip: "Ward Defense" },
     { label: "Spd", value: speed, tip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "Speed", chg: speed !== base },
-    { label: npc ? "Atk" : "Wpn", value: sg(s.weaponMod ?? 0), tip: "Weapon Modifier" }, { gap: true },
+    // v0.0.418 (Lucas, playtest 5, D2): both Modifiers ("Weapon +2 · Power +1"; it showed only the Weapon one)
+    { label: npc ? "Atk" : "Wpn", value: sg(s.weaponMod ?? 0), tip: "Weapon Modifier" }, { label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }, { gap: true },
     ...HUD_SAVES.map(([key, label, short]) => ({ label: short, value: sg(s.attributes?.[key] ?? 0), tip: `${label}: click a Check, Shift-click a Save`, hud: "attr", data: { key } }))
   ];
   const hands = actor.itemTypes.weapon?.length ? await handsOf(actor) : null;
@@ -322,6 +323,7 @@ async function drawHud() {
   // v0.0.390: several tokens selected, or nothing (the party strip): small cards
   if (cur.list || !cur.actor) {
     st.actorUuid = "";
+    main.style.minHeight = ""; main.__twod12Actor = "";   // v0.0.418 (D5)
     if (!cur.list && !setting("hudParty", true)) { setMain(main, emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token.")); return; }
     const pairs = cur.list ? cur.list.filter(t => t.actor).map(t => [t.actor, t]) : partyActors().map(a => [a, (globalThis.canvas?.tokens?.placeables ?? []).find(t => t.actor?.id === a.id) ?? null]);
     const cards = await Promise.all(pairs.map(([a, t]) => partyCard(a, t)));
@@ -338,6 +340,11 @@ async function drawHud() {
   if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
   const waiting = main.querySelector(".hb-ask > .twod12-linebar");
+  // v0.0.418 (Lucas, playtest 5, D5: "accepting a Reaction makes the HUD jump"): for the same creature the HUD keeps the height it had (the
+  // Reactions tab giving way to the Actions tab no longer shrinks it); a new creature, or folding it, lets it size again
+  const keepH = main.__twod12Actor === cur.actor.uuid && !m.folded ? main.offsetHeight : 0;
+  main.style.minHeight = keepH ? `${keepH}px` : "";
+  main.__twod12Actor = cur.actor.uuid;
   setMain(main, tokenBarHtml(m));
   if (waiting) (main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask"))?.append(waiting);
   root.classList.add("is-bar"); root.classList.toggle("is-npc", m.npc); root.classList.toggle("is-folded", !!m.folded);

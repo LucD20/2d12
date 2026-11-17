@@ -26,6 +26,7 @@ import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { creatureDamageLines } from "./ccdamage.mjs";
 import { damageBlockModel, damageBlockHtml } from "./dmglines.mjs";
 import { damageLineName } from "./sheetmodel.mjs";
+const FREQ_WORD = { atwill: "At-will", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" };   // v0.0.418 (E2)
 const F = "twod12";
 const sg = v => (v >= 0 ? `+${v}` : `−${Math.abs(v)}`);
 const clean = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
@@ -245,7 +246,10 @@ export async function pcModel(sheet, ctx) {
     if (npc && i.getFlag(F, "basic") === "opportunityAttack" && basicAtk) subs.push(`with ${basicAtk.name}`);
     // v0.0.303 (Lucas): no "back once at Escalation 3" on the row (the Elite Escalation strip says it)
     if (area) subs.push(`Area: ${area}`);
-    const aps = (it.versions ?? []).map(v => v.ap), pillTxt = costPill(aps, reaction);
+    // v0.0.418 (Lucas, playtest 5, E2: a Reaction's row didn't show its Frequency): until the sheet's redesign, a row outside its Frequency's
+    // section (a Reaction, a Basic Action) writes the Frequency word in its pill ("Turn · 1R")
+    const aps = (it.versions ?? []).map(v => v.ap), fq = effectiveFrequency(it), fqWord = FREQ_WORD[fq] && (reaction || sec !== fq) ? FREQ_WORD[fq] : "";
+    const pillTxt = [fqWord, costPill(aps, reaction)].filter(Boolean).join(" · ");
     return {
       id: i.id, name: i.name, sub: subs.join(" \u00b7 "), fav: favs.includes(i.id), section: sec, lines: rowLines({ frequency: effectiveFrequency(it), reaction, strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),   // Opportunity Attack makes a Weapon Attack: a Strike
       cost: pillTxt,   // v0.0.298: costPill already writes "AP" (an NPC's read "2 AP AP")

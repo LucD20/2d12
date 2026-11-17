@@ -34,7 +34,7 @@ import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
 import { buildActionCard, buildFeatureCard, buildSoloCard } from "./actioncard.mjs";
-import { versionCant, dmgModsEdit, dmgModsText } from "./sheetmodel.mjs";
+import { versionCant, dmgModsEdit, dmgModsText, cleanLevel, rallyAfterClick, ensureWindowTheme } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
 import { isFaded, grantMatches, activeGrants } from "./usage.mjs";
@@ -60,7 +60,6 @@ const scrollKey = el => (el.matches(".tab[data-tab]") ? `tab:${el.dataset.tab}` 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
 
-
 export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   _activeTab = "actions";
   _filter = "all";
@@ -69,12 +68,26 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   _openFeat = new Set();   // Feature cards opened on the Features tab (they start folded)
   rollOpts = { dc: 13, boons: 0, banes: 0 };
 
+  /** v0.0.418 (Lucas, playtest 5, E8: changing a sheet's image failed, "system.level: must be a number"): the image picker submits the whole form,
+   *  and an empty Level field sent "" (an NPC's Builder, or a Level field drawn with no value). An empty or unreadable Level is left unchanged. */
+  _prepareSubmitData(event, form, formData, updateData) {
+    try {
+      const o = formData?.object;
+      if (o && "system.level" in o) {
+        const v = cleanLevel(o["system.level"]);
+        if (v === null) delete o["system.level"]; else o["system.level"] = v;
+      }
+    } catch (e) { /* the form as it is */ }
+    return super._prepareSubmitData(event, form, formData, updateData);
+  }
+
   static DEFAULT_OPTIONS = {
     classes: ["twod12", "twod12-actor"],
     position: { width: 900, height: 1100 },   // v0.0.289 (PACK SHEET): Lucas's design size
     window: { resizable: true },
     form: { submitOnChange: true },
     actions: {
+      setRally: CharacterSheet.setRally,   // v0.0.418 (E7)
       switchTab: CharacterSheet.switchTab, rollAttr: CharacterSheet.rollAttr, rollTable: CharacterSheet.rollTable,
       useAction: CharacterSheet.useAction, useWith: CharacterSheet.useWith, swapHands: CharacterSheet.swapHands, handBlocked: CharacterSheet.handBlocked, openItem: CharacterSheet.openItem, deleteItem: CharacterSheet.deleteItem,
       openEffect: CharacterSheet.openEffect, deleteEffect: CharacterSheet.deleteEffect, dmgLineOpen: CharacterSheet.dmgLineOpen, dmgLineAdd: CharacterSheet.dmgLineAdd, exhaustedUp: CharacterSheet.exhaustedUp, exhaustedDown: CharacterSheet.exhaustedDown,
@@ -667,6 +680,10 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     super._onRender?.(context, options);
     this._editableMods();
     this.element.classList.add("twod12-actor");   // the sheet fills the window under Foundry's title bar (no padding)
+    // v0.0.418 (Lucas, playtest 5, E5: "the PC sheet in the light mode still shows dark in Foundry's dark mode"): rendered outside Foundry, the
+    // system's light set wins inside a light-themed window under a dark interface (@scope); so a window drawn with no scheme of its own took the
+    // interface's dark. It gets the Applications scheme (Foundry's setting) when it has none.
+    try { ensureWindowTheme(this.element); } catch (e) { /* Foundry's own classes stay */ }
     this.element.style.setProperty("padding", "0", "important");   // the window itself had the 8px (v0.0.138)
     // Whatever stylesheet adds room around the content, the sheet fills the window (an inline !important wins over all of them).
     const wc = this.element.querySelector(".window-content");
@@ -1320,6 +1337,15 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     await endOfTurn(this.actor, { force: true });
   }
   /** v0.0.289: the Upkeep tab's Breather, Sleep and Rest (each asks to confirm in the system's window, then posts a chat card). */
+/** v0.0.418 (Lucas, playtest 5, E7: "Rally Points editable by hand"; the player too, with a chat line): a click on a Rally pip sets the Points
+   *  left to that pip (the last one lit, clicked: one fewer). */
+  static async setRally(event, target) {
+    const s = this.actor.system, max = Number(s.rallyMax) || 0, n = rallyAfterClick(Number(target.dataset.n) || 0, Number(s.rallyLeft) || 0);
+    if (!this.actor.isOwner || n === s.rallyLeft) return;
+    await this.actor.update({ "system.rallyUsed": Math.max(0, max - n) });
+    const { sysLine } = await import("./sysmsg.mjs");
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content: sysLine("fa-hand-holding-medical", `<b>${esc(this.actor.name)}</b> sets the Rally Points to <b>${n}</b> of ${max}.`, "healmsg") });
+  }
   static async recover(event, target) {
     if (!this.isEditable || target.getAttribute("aria-disabled") === "true") return;
     const { takeBreather, completeRest } = await import("./rest.mjs"), { completeSleep } = await import("./sleep.mjs");

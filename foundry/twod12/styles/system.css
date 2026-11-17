@@ -2800,6 +2800,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ps-rpips { display: flex; gap: 5px; flex-wrap: wrap; }
 .twod12.sheet.pcs .ps-rpips i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #4f6b5a; box-sizing: border-box; }
 .twod12.sheet.pcs .ps-rpips i.on { background: #4fb06d; border-color: #4fb06d; }
+.twod12.sheet.pcs .ps-rpips i[data-action] { cursor: pointer; }   /* v0.0.418 (E7): a pip sets the Rally Points left */
 .twod12.sheet.pcs .ps-g2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
 .twod12.sheet.pcs .ps-g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .twod12.sheet.pcs .ps-g4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; text-align: center; }
@@ -3830,6 +3831,9 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-chip { display: inline-flex; align-items: center; gap: 3px; border-radius: 3px; color: #fff; font-size: 12px; padding: 0 6px; margin: 0 1px; line-height: 18px; vertical-align: 1px; }
 .application .fr-tab .fr-chip.g-roll { background: var(--g-roll, #1f7a73); } .fr-tab .fr-chip.g-requires { background: var(--g-requires, #2c5f9e); } .fr-tab .fr-chip.g-kind { background: var(--g-kind, #b4472a); }
 .application .fr-tab .fr-chip.g-damage { background: var(--g-damage, #8a6a00); } .fr-tab .fr-chip.g-keywords { background: var(--g-keywords, #5c5a55); }
+/* v0.0.418 (E4): a trait on the Action sheet is a plain word (the card's look), outlined */
+.application .fr-tab .fr-chip.plain { background: transparent; color: var(--fr-ink, #2a241d); border: 1px solid var(--fr-line, #c8b48a); line-height: 16px; }
+.application .fr-tab .fr-chip.plain button { background: transparent; }
 .application .fr-tab .fr-chip.no { background: var(--fr-field); color: var(--fr-bane); border: 1.5px solid var(--fr-bane); line-height: 15px; }
 .application .fr-tab .fr-chip button { border: 0; background: rgba(255,255,255,.2); color: inherit; width: 16px; height: 16px; min-height: 0; padding: 0; border-radius: 2px; font-size: 11px; line-height: 1; cursor: pointer; }
 /* the form: one label column */
@@ -4610,6 +4614,12 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 /* the hotbar in the HUD: its own icons keep Font Awesome; small square slots */
 .twod12-hud .hud-hot #hotbar { display: flex; align-items: center; gap: 4px; }
 .twod12-hud .hud-hot #hotbar .slot { font-size: 11px; }
+/* v0.0.418 (Lucas, playtest 5, D8: "the buttons' icons are a little off-center"): every icon button in the HUD (the hotbar's slots and arrows, the fold
+   button) centers its icon both ways */
+.twod12-hud .hud-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar button { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+.twod12-hud .hb-fold { display: inline-flex; align-items: center; justify-content: center; }
+.twod12-hud .hud-hot #hotbar .slot > img { width: 100%; height: 100%; object-fit: cover; margin: 0; }
+.twod12-hud .hud-hot #hotbar button > i, .twod12-hud .hud-hot #hotbar .slot > i { margin: 0; line-height: 1; }
 /* the one-page NPC sheet at about 480 px (Lucas): smaller side margins, a hairline between the stats (AD | WD | Speed...) */
 .twod12.sheet.pcs.sbs .ps-tabs { padding: 6px 8px 0; }
 .twod12-sb .sbl { padding: 3px 8px; } .twod12-sb .sb-body { padding: 6px 6px 10px; } .twod12-sb .sb-plate { padding: 6px 8px 5px; }
@@ -4753,7 +4763,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hb-bar i { position: absolute; left: 0; top: 0; bottom: 0; }
 .twod12-hud .hb-bar.v i { background: var(--s-vig, #d0564f); } .twod12-hud .hb-bar.r i { background: var(--s-res, #6f90e6); }
 .twod12-hud .hb-bar u { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, rgba(255, 255, 255, .55) 0 2px, transparent 2px 5px); }
-.twod12-hud .hb-bar span { position: absolute; left: 4px; right: 4px; top: -2px; display: flex; justify-content: space-between; font-size: .66rem; font-weight: 700; color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000; }
+.twod12-hud .hb-bar span { position: absolute; left: 4px; right: 4px; top: -2px; display: flex; justify-content: center; font-size: .66rem; font-weight: 700; color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000; }
 .twod12-hud .hb-tag { font-size: .69rem; font-weight: 700; padding: 0 4px; border: 1px solid var(--hud-hair); white-space: nowrap; }
 .twod12-hud .hb-tag.hurt { border-color: var(--s-vig, #d0564f); } .twod12-hud .hb-tag.down { border-color: var(--s-vig, #d0564f); background: color-mix(in srgb, var(--s-vig, #d0564f) 30%, transparent); }
 .twod12-hud .hb-btn { font: 600 .75rem/1.5 "Source Sans 3", sans-serif; color: var(--hud-ink); background: none; border: 1px solid var(--s-gold, #d2a75a); padding: 0 8px; cursor: pointer; width: auto; height: auto; }
