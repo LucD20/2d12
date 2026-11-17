@@ -290,7 +290,6 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read
 ```
 HANDOFF.md, MASTER-PLAN.md   this file; the order of all open work
 CLAUDE.md                    the rules and commands every Claude Code session reads
-notes.txt                    Lucas's running notes (merged at the start of each pack)
 SETUP.md                     the one-time setup
 Update Foundry.cmd           Lucas's double-click update of his local Foundry (tools/sync-pack.ps1: finds the newest pack-* branch)
 tools/                       the sync scripts (Update Foundry.cmd)
@@ -329,7 +328,7 @@ Python needs `markdown`. Node 18+ for the tests.
 - **Lucas doesn't write Flavor: I write the Flavor line of every new card** (Actions, Talents, Features) and he changes it if he wants.
 
 ## Things to know
-- **Cards with Lucas:** one card session is done (Smite, v0.0.246); the format and the rules he taught are in `book/cards/README.md` ("Writing cards with Lucas"); his notes for a session come in notes.txt or in the chat, in his notation (`[book text](what I want in Foundry)`, "book too", the click lines).
+- **Cards with Lucas:** one card session is done (Smite, v0.0.246); the format and the rules he taught are in `book/cards/README.md` ("Writing cards with Lucas"); his notes for a session come in the chat, in his notation (`[book text](what I want in Foundry)`, "book too", the click lines).
 - Known gaps: Hallowed Stance, Aegis, Mercy's Reward and Avenger's Oath (old cards) are text only; Sacred Weapon's "increase Empowered" is text; the 3 AP areas of Word of Radiance and Consecrated Ground are text (an Area belongs to the Action, not the version). **Since v0.0.235 the new class cards (the rung Passives, Ready Shot, Hallowed Dawn's heal) are by hand until R-Foundry 2; since v0.0.243 the hooks and the Apexes' Escalation 3 work** (foundry-backlog.md, the R-Foundry 2 classes' entry). A world with its own Tags list must add "Profane".
 - Left on purpose: the CSS is still in the order it grew (version-tagged blocks). Moving rules changes which one wins, so regroup it only with a visual check.
 - The Builder tab and the side view (heightcover.mjs) draw on light backgrounds with fixed dark text: Foundry's theme text color is light in a dark theme.

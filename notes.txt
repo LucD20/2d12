@@ -1,2 +1,0 @@
-Lucas's running notes (merged at the start of each pack). Legend: [ADD] add  [DEL] delete  [CHG] change  [Q] question  [IDEA] idea  [NOTE] note  [FOUNDRY] Foundry-only
-

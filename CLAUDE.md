@@ -19,7 +19,6 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 
 ## How to work (Lucas's rules)
 - **One pack per session** (see MASTER-PLAN.md). Run it start to finish. **Don't stop to ask minor questions:** choose, and list them under "Assumptions I made" in the final report so Lucas can revert any. Ask only when something is truly blocked or a rule is ambiguous (one batch, at the end).
-- Merge `notes.txt` (Lucas's messy running notes; his legend: [ADD] [DEL] [CHG] [Q] [IDEA] [NOTE] [FOUNDRY]) at the start of a pack, and say what was merged.
 - "analyze", "brainstorm", "not applying yet", "don't write yet" = discuss only; note decisions in the backlogs; no edits until told to apply.
 - Lucas decides the rules. Rules go into the book first (rules-src), then Foundry. Log every rule change in `rules-backlog.md`; update README, backlogs and HANDOFF at the end of every pack.
 - Corrections apply going forward, not retroactively, unless asked.
