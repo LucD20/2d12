@@ -125,7 +125,8 @@ function colsOf(lines, { per = 3, maxCols = 6 } = {}) {
   const cols = [];
   for (const k of FREQ_ORDER) {
     const ls = lines.filter(l => l.freq === k);
-    for (let i = 0; i < ls.length; i += per) cols.push({ key: k, label: FREQ_LABEL[k], fq: ls[0].fqColor, lines: ls.slice(i, i + per) });
+    // v0.0.396 (Lucas: "Merge frequencies instead of adding a new header"): a second column of the same Frequency has an empty header (its rule runs on)
+    for (let i = 0; i < ls.length; i += per) cols.push({ key: k, label: i === 0 ? FREQ_LABEL[k] : "", cont: i > 0, fq: ls[0].fqColor, lines: ls.slice(i, i + per) });
   }
   if (cols.length <= maxCols) return cols;
   const shown = cols.slice(0, maxCols), rest = cols.slice(maxCols).flatMap(c => c.lines);
@@ -341,7 +342,9 @@ export function fitNames(el = root) {
     b.style.fontSize = "";
     let size = parseFloat(getComputedStyle(b).fontSize) || 13;
     const min = 9.5;
+    b.classList.remove("wrap");
     while (b.scrollWidth > b.clientWidth + 0.5 && size > min) { size = Math.max(min, size - 0.5); b.style.fontSize = `${size}px`; }
+    if (b.scrollWidth > b.clientWidth + 0.5) b.classList.add("wrap");   // v0.0.396: still too long at the smallest size: two lines
   }
 }
 let fitTimer;

@@ -28,3 +28,5 @@ a used Action says so: true | the roll dialog's Tiers in palette A (above the da
 the chat card's traits as words: true | the trait words in ink: true | a line under an open header: true | the HUD's marks on the turn lines: true | Swap without its cost: true
 --- v0.0.395 (Lucas, testing v0.0.394)
 the HUD's cost buttons on hover only: true | the names fitted: true | the card's facts named: true | bigger marks, the Strikes on the acting plate only: true
+--- v0.0.396 (Lucas, testing v0.0.395)
+the granted uses under the hands: true | one header for a Frequency's two columns: true | Regrip and Cancel on hover: true | the card's grid (no star): true | long names on two lines: true

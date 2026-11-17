@@ -81,6 +81,12 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.396 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.395
+- [ ] **A chat card's top line:** "Distance: …" at the left, "Target: …" at the right, no ✦.
+- [ ] **The HUD with Double Shot's granted uses:** Hands and On you on top, the granted uses under them; hover the hands line: Regrip appears; hover the granted block: Cancel appears.
+- [ ] **Four Round Actions:** one "Round" header over both columns.
+- [ ] **A narrow window (about 820 px):** nothing spills out of the HUD; long names smaller or on two lines.
+
 ## v0.0.395 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.394
 - **The roll dialog (Lucas: "didn't change"; his console check proved the v0.0.393 look live):** the leftovers (the modifier marks' colors, green chips and tags, "Vs." orange, the diamonds) are **PROPOSED** in `foundry/mockups/rolldlg-leftovers.html` (the artifact "Roll Dialog Leftovers"; its CSS `rolldlg-leftovers-after.css`). Waiting for Lucas.
 - [ ] **The HUD:** no cost buttons at rest; long names whole (smaller text, no "…"); hover a line: it fades, its cost buttons appear; click one: that Version; click the line itself: its first Version. A used Action: "used" on hover.

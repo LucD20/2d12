@@ -197,12 +197,14 @@ export function metaLineHtml(m) {
   const t = m.tline ?? {}, star = '<span class="cc-star" aria-hidden="true">\u2726</span>';
   // v0.0.395 (Lucas: "It is saying 'Two creatures' only, didnt we change to always say what each element is?"): each fact named, in the card
   // Structure's order (book/cards/card-structure.md, the grid: Distance, Area, Target)
-  const bits = [
-    t.dist ? `<b class="cc-ml">Distance:</b> ${esc(t.dist)}${t.distTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${esc(t.distTip)}" aria-label="${esc(t.distTip)}"></i>` : ""}` : "",
-    t.area ? `<b class="cc-ml">Area:</b> ${t.area}` : "",
-    !t.area && t.targets ? `<b class="cc-ml">Target:</b> ${esc(t.targets)}` : ""
-  ].filter(Boolean).join(` ${star} `);
-  return bits ? `<div class="cc-tline meta"><span>${bits}</span></div>` : "";
+  // v0.0.396 (Lucas: "Didn't we change how this is? The ✦?"): the Structure's grid has no star: Distance and Area at the left, Target at the right
+  void star;
+  const left = [
+    t.dist ? `<span><b class="cc-ml">Distance:</b> ${esc(t.dist)}${t.distTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${esc(t.distTip)}" aria-label="${esc(t.distTip)}"></i>` : ""}</span>` : "",
+    t.area ? `<span><b class="cc-ml">Area:</b> ${t.area}</span>` : ""
+  ].filter(Boolean).join("");
+  const right = !t.area && t.targets ? `<span class="cc-mlr"><b class="cc-ml">Target:</b> ${esc(t.targets)}</span>` : "";
+  return left || right ? `<div class="cc-tline meta"><span class="cc-mll">${left}</span>${right}</div>` : "";
 }
 export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage = m.hasDamage, locked = m.locked, target = true } = {}) {   // v0.0.287: the Save card's too
   // v0.0.296 (Lucas: "the target should be kept at the bottom"): the target and the retarget stay on the bottom row (v0.0.285 / v0.0.287); target: false = buttons only
