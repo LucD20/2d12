@@ -32,7 +32,6 @@ DESIGN_DOCS = [
     "foundry/mockups/style-audit.md",   # what in the system is not on par with the settled look; a proposed order (2026-11-12)
     "foundry/mockups/npc-hud-brief.md",  # the one-page NPC sheet and the HUD: decisions, mockups to make (2026-11-12)
     "book/sim-brief.md",        # the automated playtest environment (SIM): the brief, the order, what the ruler lacks (2026-11-11)
-    "book/cards/card-look.md",  # the look of the book and of its cards: the draft (started 2026-11-16)
     "book/cards/swords-redesign.md",  # the Swords, decision by decision (started 2026-11-16)
     "book/cards/bows-redesign.md",  # the Bow remake, decision by decision (started 2026-11-16)
     "book/cards/archer-redesign.md",  # the Archer's redesign, decision by decision (started 2026-11-16)

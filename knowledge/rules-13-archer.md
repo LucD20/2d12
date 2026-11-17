@@ -25,43 +25,17 @@ Escalation hook: An enemy you have damaged goes Down (Thrill of the Kill, level 
 
 ## The Archer by Level
 
-Level 1:
+| Level | You gain | You choose |
+|---|---|---|
+| 1 | Shifting Aim, Darting Blade | a Hallmark Action, a Hallmark Reaction, an Art, an Escalation 2 ability, a Skill Talent |
+| 2 | Thrill of the Kill, your Escalation hook | an Encounter Pick, an Escalation 4 ability, a Talent |
+| 3 | | a second Art, an Escalation 6 ability, a Skill Talent |
 
-Features: Shifting Aim, Darting Blade
-
-Hallmark Action: Quick Shots or Strafe
-
-Hallmark Reaction: Slip Away or Snap Shot
-
-Art: 1 of Footwork, Trick Shots, Spotter
-
-Escalation: 1 Escalation 2 ability: Lean and Loose or Blade and Bow
-
-Talents: 1 Skill Talent
-
-Level 2:
-
-Features: Thrill of the Kill (your Escalation hook)
-
-Picks: 1 Encounter Pick
-
-Escalation: 1 Escalation 4 ability: Clear Lines or Opening Shot
-
-Talents: 1 Talent
-
-Level 3:
-
-Art: a second Art
-
-Escalation: 1 Escalation 6 ability: One More Arrow or Fleet
-
-Talents: 1 Skill Talent
-
-Level 4 brings the Apex and Stage 1 (see [[Stages]]). Further levels will be added here.
+Level 4 brings the Apex and the numbers of Stage 1 (see [[Stages]]); it is not written yet.
 
 ## Level 1
 
-### Features
+### Level 1: Features
 
 Every Archer has these two. **Shifting Aim** pays you for never shooting twice from the same square. **Darting Blade** is the knife for when a foe is next to you, where a bow is [[Ranged Combat While Engaged|Doomed]]: a quick stab, and you are out of reach again.
 
@@ -71,25 +45,35 @@ Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's
 
 @@CARD:Darting Blade@@
 
-### Hallmark Action Selection
+### Level 1: Hallmark Action
 
-Choose one of the following Hallmark Actions:
+**Choose one.** *Quick build: Quick Shots.*
+
+- **Quick Shots** (Round, 2 AP): arrow after arrow into one foe, then you step away.
+- **Strafe** (Round, 2 AP): you run across the fight and put an arrow into up to three foes.
 
 @@CARD:Quick Shots@@
 
 @@CARD:Strafe@@
 
-### Hallmark Reaction Selection
+### Level 1: Hallmark Reaction
 
-Choose one of the following Hallmark Reactions. Both answer a foe that is about to reach you, and both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
+**Choose one.** *Quick build: Snap Shot.* Both answer a foe that is about to reach you, and both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
+
+- **Slip Away** (Turn, 1R): you are gone before the foe arrives.
+- **Snap Shot** (Turn, 1R): you shoot the foe as it comes, and slow or stop it.
 
 @@CARD:Slip Away@@
 
 @@CARD:Snap Shot@@
 
-## Archer Arts
+### Level 1: Art
 
-Choose one Art at level 1 and a second at level 3. Each time you use an Art, you choose one of its three Modes.
+**Choose one** (a second at level 3). *Quick build: Footwork.* Each time you use an Art, you choose one of its three Modes.
+
+- **Footwork:** a long sidestep, a run through the press, or a step with your hands busy.
+- **Trick Shots:** an arrow that pins, startles or knocks a foe back.
+- **Spotter:** a foe called out to your allies, the gap in its cover, or cover kept for yourself.
 
 @@CARD:Footwork@@
 
@@ -97,11 +81,32 @@ Choose one Art at level 1 and a second at level 3. Each time you use an Art, you
 
 @@CARD:Spotter@@
 
-## Archer Repertoire
+### Level 1: Escalation 2 Ability
 
-### Encounter
+**Choose one.** *Quick build: Blade and Bow.* Your Escalation rises from 1 to 6 as the fight goes on and is never spent (see [[Escalation]]); this ability works while it is at least 2.
 
-At level 2, choose one of the following Encounter Actions:
+- **Lean and Loose:** leaning out from cover costs you nothing.
+- **Blade and Bow:** changing between the bow and the knife gives a Boon.
+
+@@CARD:Lean and Loose@@
+
+@@CARD:Blade and Bow@@
+
+## Level 2
+
+### Level 2: Escalation Hook
+
+You gain Thrill of the Kill: it raises your Escalation when an enemy you have damaged goes Down.
+
+@@CARD:Thrill of the Kill@@
+
+### Level 2: Encounter Pick
+
+**Choose one.** *Quick build: Volley.*
+
+- **Volley** (2 AP): arrows down on every creature in a patch of ground.
+- **Hit and Run** (2 AP): a run with the knife out, and one arrow on the way.
+- **Covering Fire** (2 AP): a stretch of ground no enemy crosses without paying, for 2 rounds.
 
 @@CARD:Volley@@
 
@@ -109,35 +114,29 @@ At level 2, choose one of the following Encounter Actions:
 
 @@CARD:Covering Fire@@
 
-## Archer Escalation
+### Level 2: Escalation 4 Ability
 
-Your Escalation is a level from 1 to 6 that rises as the fight goes on and is never spent (see [[Escalation]]). You choose one ability for each of Escalation 2, 4 and 6: it works while your Escalation is at least the number on its card.
+**Choose one.** *Quick build: Clear Lines.*
 
-### The Escalation Hook
-
-You gain Thrill of the Kill at level 2.
-
-@@CARD:Thrill of the Kill@@
-
-### Escalation 2
-
-Choose one at level 1:
-
-@@CARD:Lean and Loose@@
-
-@@CARD:Blade and Bow@@
-
-### Escalation 4
-
-Choose one at level 2:
+- **Clear Lines:** your allies give your targets no cover, and their fights don't hinder your shots.
+- **Opening Shot:** your best shots give an ally a free blow.
 
 @@CARD:Clear Lines@@
 
 @@CARD:Opening Shot@@
 
-### Escalation 6
+## Level 3
 
-Choose one at level 3:
+### Level 3: Second Art
+
+Choose a second Art from the three at [[Level 1: Art]], one you don't have.
+
+### Level 3: Escalation 6 Ability
+
+**Choose one.** *Quick build: One More Arrow.*
+
+- **One More Arrow:** once a turn, one more [W] on a Strike.
+- **Fleet:** your Evades are longer and cross Difficult Terrain.
 
 @@CARD:One More Arrow@@
 

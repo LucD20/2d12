@@ -23,43 +23,17 @@ Escalation hook: An ally becomes Bloodied or goes Down (Kindled Wrath, level 2)
 
 ## The Paladin by Level
 
-Level 1:
+| Level | You gain | You choose |
+|---|---|---|
+| 1 | Judge, Smite | a Hallmark Action, a Hallmark Reaction, an Art, an Escalation 2 ability, a Skill Talent |
+| 2 | Kindled Wrath, your Escalation hook | an Encounter Pick, an Escalation 4 ability, a Talent |
+| 3 | | a second Art, an Escalation 6 ability, a Skill Talent |
 
-Features: Judge, Smite
-
-Hallmark Action: Binding Light or Lay On Hands
-
-Hallmark Reaction: Shield of Faith or Rebuke
-
-Art: 1 of Lantern of Faith, Hold the Line, Commandment
-
-Escalation: 1 Escalation 2 ability: Armor of Faith or Roving Judgment
-
-Talents: 1 Skill Talent
-
-Level 2:
-
-Features: Kindled Wrath (your Escalation hook)
-
-Picks: 1 Encounter Pick
-
-Escalation: 1 Escalation 4 ability: Weight of Judgment or Tireless Vigil
-
-Talents: 1 Talent
-
-Level 3:
-
-Art: a second Art
-
-Escalation: 1 Escalation 6 ability: Reckoning or Hallowed Stance
-
-Talents: 1 Skill Talent
-
-Level 4 brings the Apex and Stage 1 (see [[Stages]]). Further levels will be added here.
+Level 4 brings the Apex and the numbers of Stage 1 (see [[Stages]]); it is not written yet.
 
 ## Level 1
 
-### Features
+### Level 1: Features
 
 Every Paladin has these two. **Judge** names the foe your god's attention is on: the creature you Judged counts as **Profane** for you, which your other cards read. **Smite** is your one great blow of the fight; it grows with your [[Escalation]].
 
@@ -67,25 +41,35 @@ Every Paladin has these two. **Judge** names the foe your god's attention is on:
 
 @@CARD:Smite@@
 
-### Hallmark Action Selection
+### Level 1: Hallmark Action
 
-Choose one of the following Hallmark Actions:
+**Choose one.** *Quick build: Binding Light.*
+
+- **Binding Light** (Round, 2 AP): a weapon blow with holy light that roots the foe where it stands.
+- **Lay On Hands** (Round, 1 or 2 AP): you step to an ally and give them Guard; at 2 AP they also use a Rally Point.
 
 @@CARD:Binding Light@@
 
 @@CARD:Lay On Hands@@
 
-### Hallmark Reaction Selection
+### Level 1: Hallmark Reaction
 
-Choose one of the following Hallmark Reactions. Both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
+**Choose one.** *Quick build: Shield of Faith.* Both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
+
+- **Shield of Faith** (Turn, 1R): when a foe would damage an ally, you take some of it off and draw the foe to you.
+- **Rebuke** (Turn, 1R): when a foe moves away from you, it slows and may stop.
 
 @@CARD:Shield of Faith@@
 
 @@CARD:Rebuke@@
 
-## Paladin Arts
+### Level 1: Art
 
-Choose one Art at level 1 and a second at level 3. Each time you use an Art, you choose one of its three Modes.
+**Choose one** (a second at level 3). *Quick build: Hold the Line.* Each time you use an Art, you choose one of its three Modes.
+
+- **Lantern of Faith:** light around you, light on a foe, or light in a foe's eyes.
+- **Hold the Line:** the ground at your feet, a swap with an ally, or an ally carried clear.
+- **Commandment:** a challenge, courage for your allies, or a foe ordered to its knees.
 
 @@CARD:Lantern of Faith@@
 
@@ -93,11 +77,32 @@ Choose one Art at level 1 and a second at level 3. Each time you use an Art, you
 
 @@CARD:Commandment@@
 
-## Paladin Repertoire
+### Level 1: Escalation 2 Ability
 
-### Encounter
+**Choose one.** *Quick build: Armor of Faith.* Your Escalation rises from 1 to 6 as the fight goes on and is never spent (see [[Escalation]]); this ability works while it is at least 2.
 
-At level 2, choose one of the following Encounter Actions:
+- **Armor of Faith:** each [Divine] Reaction also gives you Guard.
+- **Roving Judgment:** you can move your Judgment for free.
+
+@@CARD:Armor of Faith@@
+
+@@CARD:Roving Judgment@@
+
+## Level 2
+
+### Level 2: Escalation Hook
+
+You gain Kindled Wrath: it raises your Escalation when an ally is hurt.
+
+@@CARD:Kindled Wrath@@
+
+### Level 2: Encounter Pick
+
+**Choose one.** *Quick build: Bulwark of Faith.*
+
+- **Bulwark of Faith** (1R): you step into a blow meant for an ally.
+- **Consecrated Ground** (2 AP): holy ground that slows foes and steadies allies, for 3 rounds.
+- **Word of Radiance** (2 AP): a burst of light that burns and throws back the foes around you.
 
 @@CARD:Bulwark of Faith@@
 
@@ -105,35 +110,29 @@ At level 2, choose one of the following Encounter Actions:
 
 @@CARD:Word of Radiance@@
 
-## Paladin Escalation
+### Level 2: Escalation 4 Ability
 
-Your Escalation is a level from 1 to 6 that rises as the fight goes on and is never spent (see [[Escalation]]). You choose one ability for each of Escalation 2, 4 and 6: it works, or can be used, while your Escalation is at least the number on its card.
+**Choose one.** *Quick build: Weight of Judgment.*
 
-### The Escalation Hook
-
-You gain Kindled Wrath at level 2.
-
-@@CARD:Kindled Wrath@@
-
-### Escalation 2
-
-Choose one at level 1:
-
-@@CARD:Armor of Faith@@
-
-@@CARD:Roving Judgment@@
-
-### Escalation 4
-
-Choose one at level 2:
+- **Weight of Judgment:** the foe you Judged moves slower.
+- **Tireless Vigil:** a second Reaction AP each round, for [Divine] Reactions.
 
 @@CARD:Weight of Judgment@@
 
 @@CARD:Tireless Vigil@@
 
-### Escalation 6
+## Level 3
 
-Choose one at level 3:
+### Level 3: Second Art
+
+Choose a second Art from the three at [[Level 1: Art]], one you don't have.
+
+### Level 3: Escalation 6 Ability
+
+**Choose one.** *Quick build: Reckoning.*
+
+- **Reckoning** (Encounter, 0 AP): you stride among your foes and throw them back, afraid.
+- **Hallowed Stance:** once on your turn, a [Divine] Action of yours lets you step first.
 
 @@CARD:Reckoning@@
 

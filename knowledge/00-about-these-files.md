@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-17 from the repository at: 96ab491 2026-11-17 Card look: the page around the card decided; decision 5, dark mode, proposed
+Built by tools/knowledge.py on 2026-11-17 from the repository at: b08cc80 2026-11-17 Card look: the class layout by level decided with the quick builds; the level table and the at-a-glance labels redone in the mockup
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -27,8 +27,8 @@ Files:
 - rules-07-traits.md (5 KB)
 - rules-08-conditions.md (8 KB)
 - rules-11-species.md (0 KB)
-- rules-12-paladin.md (3 KB)
-- rules-13-archer.md (3 KB)
+- rules-12-paladin.md (4 KB)
+- rules-13-archer.md (4 KB)
 - rules-14-bestiary.md (32 KB)
 - rules-15-gear.md (14 KB)
 - research-index.md (8 KB)
@@ -37,6 +37,7 @@ Files:
 - research-book-typography-serious-tone.md (39 KB)
 - research-card-layout.md (5 KB)
 - research-card-look-published-books.md (30 KB)
+- research-class-layout.md (44 KB)
 - research-conditions-and-senses.md (3 KB)
 - research-divine-profane.md (9 KB)
 - research-durations.md (8 KB)
@@ -59,7 +60,6 @@ Files:
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
-- design-card-look.md (34 KB)
 - design-swords-redesign.md (38 KB)
 - design-bows-redesign.md (89 KB)
 - design-archer-redesign.md (109 KB)

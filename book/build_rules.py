@@ -268,8 +268,11 @@ def resolve(html, doc):
         return f'<a class="xref" href="{href(i, doc)}">{label}</a>' if i else f'<span class="badref">{label}</span>'
     return re.sub(r'\[\[(.+?)\]\]', r, html)
 
-NAV_CSS = '.docnav{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;font:13px system-ui,sans-serif}.docnav a{padding:2px 11px;border:1px solid var(--line);border-radius:999px;color:var(--fg);text-decoration:none;background:var(--card)}.docnav a:hover{color:var(--acc)}.docnav a.cur{background:var(--accbg);color:var(--acc);border-color:var(--acc);font-weight:600}\n'
+NAV_CSS = '.docnav{display:flex;flex-wrap:wrap;gap:.4rem 1rem;margin:0 0 10px;font:15px var(--lk-text)}.docnav a{color:var(--lk-ink2);text-decoration:none}.docnav a:hover{color:var(--lk-ink);text-decoration:underline}.docnav a.cur{color:var(--lk-ink);font-weight:600;border-bottom:1px solid var(--lk-ink)}\n'   # the book look (2026-11-17): the document bar as plain words
 css = open('rules.css').read() + D.CSS + NAV_CSS
+def _ff(fam, f, style):
+    return '@font-face{font-family:"' + fam + '";font-weight:200 900;font-style:' + style + ';font-display:swap;src:url(data:font/woff2;base64,' + base64.b64encode(open(os.path.join(ASSETS, f), 'rb').read()).decode() + ') format("woff2")}\n'
+css += _ff('Source Serif 4', 'source-serif-4.woff2', 'normal') + _ff('Source Serif 4', 'source-serif-4-italic.woff2', 'italic') + _ff('Source Sans 3', 'source-sans-3.woff2', 'normal') + _ff('Source Sans 3', 'source-sans-3-italic.woff2', 'italic')
 css += '@font-face{font-family:"Cinzel";font-weight:700;font-style:normal;font-display:swap;src:url(data:font/woff2;base64,' + base64.b64encode(open(os.path.join(ASSETS, 'cinzel-700.woff2'), 'rb').read()).decode() + ') format("woff2")}\n'
 js = '''
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
@@ -279,6 +282,7 @@ if(location.hash)openUp(document.getElementById(location.hash.slice(1)));
 document.getElementById('expandAll').onclick=()=>document.querySelectorAll('details.chapter-d,section.chapter>details').forEach(d=>d.open=true);
 document.getElementById('collapseAll').onclick=()=>document.querySelectorAll('section.chapter>details').forEach(d=>d.open=false);
 const oc=document.getElementById('openCards'),cc=document.getElementById('closeCards');if(oc)oc.onclick=()=>document.querySelectorAll('details.acard').forEach(d=>d.open=true);if(cc)cc.onclick=()=>document.querySelectorAll('details.acard').forEach(d=>d.open=false);
+(function(){const bs=document.querySelectorAll('.lk-theme button');function set(t){if(t)document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme;try{t?localStorage.setItem('bookTheme',t):localStorage.removeItem('bookTheme')}catch(e){}bs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===(t||''))))}bs.forEach(b=>b.addEventListener('click',()=>set(b.dataset.t)));set(document.documentElement.dataset.theme||'')})();
 const tw=document.querySelector('.tocwrap');if(tw&&window.innerWidth<1000)tw.open=false;
 '''
 
@@ -303,9 +307,9 @@ def build_doc(doc, title):
     first_h1 = re.sub(r'<[^>]+>', '', (re.search(r'<h1 id="[^"]+">(.*?)</h1>', main) or [0, ''])[1]).strip()
     dup_title = first_h1 == title   # the chapter's own heading is already the title: no title block, no "Draft" (Lucas, 2026-10-25)
     nav = '<div class="docnav">' + ''.join(f'<a href="{f}"{" class=cur" if k == doc else ""}>{t}</a>' for k, f, t in DOCS) + '</div>'
-    out = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>{title}{'' if dup_title else ' (Draft)'}</title><style>{css}</style></head>
-<body id="top"{' class="classdoc"' if classy else ''}><div class="layout"><nav class="toc"><details class="tocwrap" open><summary>Contents</summary><div class="tocbtns"><button id="expandAll" type="button">Expand all</button><button id="collapseAll" type="button">Collapse all</button></div>{'<div class="tocbtns"><button id="openCards" type="button">Open all cards</button><button id="closeCards" type="button">Close all cards</button></div>' if classy else ''}{''.join(toc)}</details></nav>
-<main>{nav}{'' if dup_title else f'<div class="titleblock"><h1 class="doctitle">{title}</h1><p class="draft">Draft</p></div>'}{main}<p class="credits">Icons: Font Awesome Free (CC BY 4.0). Card title font: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>{js}</script></body></html>'''
+    out = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><script>try{{var t=localStorage.getItem("bookTheme");if(t)document.documentElement.dataset.theme=t}}catch(e){{}}</script><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>{title}{'' if dup_title else ' (Draft)'}</title><style>{css}</style></head>
+<body id="top"{' class="classdoc"' if classy else ''}><div class="layout"><nav class="toc"><details class="tocwrap" open><summary>Contents</summary><div class="tocbtns"><button id="expandAll" type="button">Expand all</button><button id="collapseAll" type="button">Collapse all</button></div>{'<div class="tocbtns"><button id="openCards" type="button">Open all cards</button><button id="closeCards" type="button">Close all cards</button></div>' if classy else ''}<div class="lk-theme">Theme: <button type="button" data-t="">System</button> · <button type="button" data-t="light">Light</button> · <button type="button" data-t="dark">Dark</button></div>{''.join(toc)}</details></nav>
+<main>{nav}{'' if dup_title else f'<div class="titleblock"><h1 class="doctitle">{title}</h1><p class="draft">Draft</p></div>'}{main}<p class="credits">Icons: Font Awesome Free (CC BY 4.0). Text fonts: Source Serif 4 and Source Sans 3 (SIL Open Font License). Card title font of the sample card: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>{js}</script></body></html>'''
     path = os.path.join(OUTDIR, DOC_FILE[doc]); open(path, 'w').write(out)
     return path, out
 

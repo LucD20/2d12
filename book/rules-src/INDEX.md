@@ -14,8 +14,8 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.7 | 118 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 27.1 | 204 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
-| 12-paladin.md | Paladin | paladin |  | 4.3 | 127 |
-| 13-archer.md | Archer | archer |  | 4.8 | 130 |
+| 12-paladin.md | Paladin | paladin |  | 4.8 | 137 |
+| 13-archer.md | Archer | archer |  | 5.3 | 140 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 32.1 | 456 |
 | 15-gear.md | Gear | gear |  | 13.9 | 224 |
 
@@ -247,40 +247,42 @@ Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [V], [R], [C]; 9: [Trait]; 1
 ## 12-paladin.md: Paladin
 
 - 21: ## The Paladin by Level
-- 46: ## Level 1
-- 48:   ### Features
-- 56:   ### Hallmark Action Selection
-- 64:   ### Hallmark Reaction Selection
-- 72: ## Paladin Arts
-- 82: ## Paladin Repertoire
-- 84:   ### Encounter
-- 94: ## Paladin Escalation
-- 98:   ### The Escalation Hook
-- 104:   ### Escalation 2
-- 112:   ### Escalation 4
-- 120:   ### Escalation 6
+- 31: ## Level 1
+- 33:   ### Level 1: Features
+- 41:   ### Level 1: Hallmark Action
+- 52:   ### Level 1: Hallmark Reaction
+- 63:   ### Level 1: Art
+- 77:   ### Level 1: Escalation 2 Ability
+- 88: ## Level 2
+- 90:   ### Level 2: Escalation Hook
+- 96:   ### Level 2: Encounter Pick
+- 110:   ### Level 2: Escalation 4 Ability
+- 121: ## Level 3
+- 123:   ### Level 3: Second Art
+- 127:   ### Level 3: Escalation 6 Ability
 
-Action cards: Judge (52, Paladin Feature 1, At-will); Smite (54, Paladin Feature 1, Encounter); Binding Light (60, Paladin Hallmark Action 1, Round); Lay On Hands (62, Paladin Hallmark Action 1, Round); Shield of Faith (68, Paladin Hallmark Reaction 1, Turn); Rebuke (70, Paladin Hallmark Reaction 1, Turn); Lantern of Faith (76, Paladin Art 1, Round); Hold the Line (78, Paladin Art 1, Round); Commandment (80, Paladin Art 1, Round); Bulwark of Faith (88, Paladin Encounter Action 2, Encounter); Consecrated Ground (90, Paladin Encounter Action 2, Encounter); Word of Radiance (92, Paladin Encounter Action 2, Encounter); Kindled Wrath (102, Paladin Feature 2); Armor of Faith (108, Paladin Escalation Passive 1); Roving Judgment (110, Paladin Escalation Passive 1); Weight of Judgment (116, Paladin Escalation Passive 2); Tireless Vigil (118, Paladin Escalation Passive 2); Reckoning (124, Paladin Escalation Action 3, Encounter); Hallowed Stance (126, Paladin Escalation Passive 3)
+Action cards: Judge (37, Paladin Feature 1, At-will); Smite (39, Paladin Feature 1, Encounter); Binding Light (48, Paladin Hallmark Action 1, Round); Lay On Hands (50, Paladin Hallmark Action 1, Round); Shield of Faith (59, Paladin Hallmark Reaction 1, Turn); Rebuke (61, Paladin Hallmark Reaction 1, Turn); Lantern of Faith (71, Paladin Art 1, Round); Hold the Line (73, Paladin Art 1, Round); Commandment (75, Paladin Art 1, Round); Armor of Faith (84, Paladin Escalation Passive 1); Roving Judgment (86, Paladin Escalation Passive 1); Kindled Wrath (94, Paladin Feature 2); Bulwark of Faith (104, Paladin Encounter Action 2, Encounter); Consecrated Ground (106, Paladin Encounter Action 2, Encounter); Word of Radiance (108, Paladin Encounter Action 2, Encounter); Weight of Judgment (117, Paladin Escalation Passive 2); Tireless Vigil (119, Paladin Escalation Passive 2); Reckoning (134, Paladin Escalation Action 3, Encounter); Hallowed Stance (136, Paladin Escalation Passive 3)
 
 Open (to be decided) boxes: 18: "Levels 1 to 3 are written. Level 4 (the Apex and the numbers of Stage "
 
 ## 13-archer.md: Archer
 
 - 22: ## The Archer by Level
-- 47: ## Level 1
-- 49:   ### Features
-- 59:   ### Hallmark Action Selection
-- 67:   ### Hallmark Reaction Selection
-- 75: ## Archer Arts
-- 85: ## Archer Repertoire
-- 87:   ### Encounter
-- 97: ## Archer Escalation
-- 101:   ### The Escalation Hook
-- 107:   ### Escalation 2
-- 115:   ### Escalation 4
-- 123:   ### Escalation 6
+- 32: ## Level 1
+- 34:   ### Level 1: Features
+- 44:   ### Level 1: Hallmark Action
+- 55:   ### Level 1: Hallmark Reaction
+- 66:   ### Level 1: Art
+- 80:   ### Level 1: Escalation 2 Ability
+- 91: ## Level 2
+- 93:   ### Level 2: Escalation Hook
+- 99:   ### Level 2: Encounter Pick
+- 113:   ### Level 2: Escalation 4 Ability
+- 124: ## Level 3
+- 126:   ### Level 3: Second Art
+- 130:   ### Level 3: Escalation 6 Ability
 
-Action cards: Shifting Aim (55, Archer Feature 1); Darting Blade (57, Archer Feature 1, Round); Quick Shots (63, Archer Hallmark Action 1, Round); Strafe (65, Archer Hallmark Action 1, Round); Slip Away (71, Archer Hallmark Reaction 1, Turn); Snap Shot (73, Archer Hallmark Reaction 1, Turn); Footwork (79, Archer Art 1, Round); Trick Shots (81, Archer Art 1, Round); Spotter (83, Archer Art 1, Round); Volley (91, Archer Encounter Action 2, Encounter); Hit and Run (93, Archer Encounter Action 2, Encounter); Covering Fire (95, Archer Encounter Action 2, Encounter); Thrill of the Kill (105, Archer Feature 2); Lean and Loose (111, Archer Escalation Passive 1); Blade and Bow (113, Archer Escalation Passive 1); Clear Lines (119, Archer Escalation Passive 2); Opening Shot (121, Archer Escalation Passive 2); One More Arrow (127, Archer Escalation Passive 3); Fleet (129, Archer Escalation Passive 3)
+Action cards: Shifting Aim (40, Archer Feature 1); Darting Blade (42, Archer Feature 1, Round); Quick Shots (51, Archer Hallmark Action 1, Round); Strafe (53, Archer Hallmark Action 1, Round); Slip Away (62, Archer Hallmark Reaction 1, Turn); Snap Shot (64, Archer Hallmark Reaction 1, Turn); Footwork (74, Archer Art 1, Round); Trick Shots (76, Archer Art 1, Round); Spotter (78, Archer Art 1, Round); Lean and Loose (87, Archer Escalation Passive 1); Blade and Bow (89, Archer Escalation Passive 1); Thrill of the Kill (97, Archer Feature 2); Volley (107, Archer Encounter Action 2, Encounter); Hit and Run (109, Archer Encounter Action 2, Encounter); Covering Fire (111, Archer Encounter Action 2, Encounter); Clear Lines (120, Archer Escalation Passive 2); Opening Shot (122, Archer Escalation Passive 2); One More Arrow (137, Archer Escalation Passive 3); Fleet (139, Archer Escalation Passive 3)
 
 Open (to be decided) boxes: 19: "Levels 1 to 3 are written. Level 4 (the Apex and the numbers of Stage "
 

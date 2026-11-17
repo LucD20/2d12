@@ -280,4 +280,4 @@ The research note will be `book/research/class-layout.md` (how published RPGs la
 
 **The table, redone in the mockup (PROPOSED):** "The Paladin by Level" becomes a real table with three columns, **Level · You gain · You choose** (the Talents go into "You choose"), no row for level 4 (a sentence under the table says it is not written yet). The at-a-glance box keeps its rows but its labels lose the spaced small caps (plain text in the lighter ink). Also fixed: the chapter's collapse mark beside the class name (it showed a stray line).
 
-**Lucas's answer:**
+**Lucas's answer (2026-11-17): "Tables are good, apply it to the book."** **APPLIED** (rules-backlog.md, the top entry): `rules.css` (last section), `build_rules.py`, `rules-assets/` (the fonts), the two class documents rewritten by level. The build has no unresolved reference; 250 tests pass. The Archer's quick builds and every option's one-line summary are Claude's wording, to check. `book/look/` (the mockup stylesheet and script) is removed: the look now lives in `rules.css`.
