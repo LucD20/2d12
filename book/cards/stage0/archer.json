@@ -27,8 +27,15 @@
       "bb": "field"
      }
     ],
-    "automationNote": "the Field Boon in the roll dialog when you have left your square this turn since your last [Strike] Action (or since your turn began): tracked from your token's moves.",
-    "automation": "mithril"
+    "automationNote": "the Field Boon in the roll dialog when you have left your square this turn since your last [Strike] Action (or since your turn began): tracked from your token's moves. With it, the Archer's Starting Mastery: 5 with one Projectile weapon (the Mastery tab's choice; book, Mastery).",
+    "automation": "mithril",
+    "settings": [
+     {
+      "type": "mastery",
+      "mstTrait": "projectile",
+      "mstValue": 5
+     }
+    ]
    }
   },
   {

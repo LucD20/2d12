@@ -5,6 +5,7 @@ import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL(".
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 const stub = () => { globalThis.foundry = { applications: { api: { DialogV2: { prompt: async o => { shown.push(o.content); return pick; } }, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } }; globalThis.Hooks = { on() {} }; };
 const shown = []; let pick = "";
+const PICK = async o => { shown.push(`${o.text} [${o.options.map(x => x.l).join(", ")}]`); return pick; };   // v0.0.412: the pick window (was a DialogV2)
 stub(); globalThis.game = { settings: { get: () => true } };
 const { docs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
 const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
@@ -33,21 +34,21 @@ console.log("an NPC with it: none (Mastery is for characters):", M.startMasteryO
 
 console.log("--- choosing the weapon");
 pick = "crossbow";
-await M.chooseStartMastery(lana, "sh");
+await M.chooseStartMastery(lana, "sh", { picker: PICK });
 console.log("the window:", shown.at(-1));
 console.log("chosen:", JSON.stringify(M.startMasteryOf(lana).map(x => x.chosen)), "| Mastery:", JSON.stringify(M.masteryOf(lana)));
 await lana.setFlag(F, "mastery", { crossbow: { name: "Crossbow", value: 5 } });
-await M.chooseStartMastery(lana, "sh");
+await M.chooseStartMastery(lana, "sh", { picker: PICK });
 console.log("chosen again with 5 Mastery: it stays 5:", M.masteryOf(lana).crossbow.value);
 
 console.log("--- made from scratch: a Talent \"Javelin Thrower\" (a Thrown weapon at 2 Mastery), next to Sharpshooter");
 const kai = character([feat("sh", "Sharpshooter", settingsOf("Sharpshooter")), feat("jt", "Javelin Thrower", [{ type: "mastery", mstTrait: "thrown", mstValue: 2 }])]);
 pick = "javelin";
-await M.chooseStartMastery(kai, "jt");
+await M.chooseStartMastery(kai, "jt", { picker: PICK });
 console.log("only Thrown weapons offered:", shown.at(-1));
 console.log(JSON.stringify(M.startMasteryOf(kai).map(x => `${x.from}: ${x.traitName} ${x.value} -> ${x.chosen || "(to choose)"}`)), "| Mastery:", JSON.stringify(M.masteryOf(kai)));
 pick = "";
-await M.chooseStartMastery(kai, "sh");
+await M.chooseStartMastery(kai, "sh", { picker: PICK });
 console.log("closing the window changes nothing:", JSON.stringify(M.startMasteryOf(kai).map(x => x.chosen)));
 const before = shown.length;
 await M.chooseStartMastery(character([feat("x", "Odd", [{ type: "mastery", mstTrait: "reload", mstValue: 3 }])]), "nope");

@@ -14,6 +14,8 @@ The Paladin's redesign (2026-11-14 to 16, card by card with Lucas: book/cards/pa
 The Archer's redesign (2026-11-16, card by card with Lucas: book/cards/archer-redesign.md; in Foundry since v0.0.411, pack F3): Shifting Aim,
   Darting Blade, Quick Shots, Strafe, Slip Away, Snap Shot, Footwork, Trick Shots, Spotter, Lean and Loose, Blade and Bow, Hit and Run, Clear Lines, Opening Shot,
   One More Arrow, Fleet (new cards; what Foundry leaves by hand: each card's automationNote). Volley, Covering Fire and Thrill of the Kill changed: Diamond (below).
+The bows and the swords (2026-11-16, decided with Lucas: book/cards/bows-redesign.md, swords-redesign.md; in Foundry since v0.0.412,
+  pack F3 part 2): Wounding Shot, Circling Shot, Seizing Cut, Thwart Cut (new Weapon Techniques; by hand: each card's automationNote).
 Session 6 (2026-11-10, v0.0.334 / v0.0.335, from Lucas's notes and tested by him: "Make Skirmish Shot, Rebuke and Mark Quarry mithril"): Rebuke (the Push and Frightened after the damage lands; Diamond before, Mithril again), Skirmish Shot (the Evade after a Tier 3's damage), Mark Quarry (the Archer's Action with Marked Quarry's rules; the Feature is Foundry-only)
 
 Diamond (Lucas, 2026-11-09): a Mithril card that a later pack changed, even only its text or its buttons, becomes Diamond (automation: "diamond")

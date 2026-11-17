@@ -26,6 +26,6 @@ Dagger      melee,thrown | range 1 | thrown 4/8/12
 Pike        twohanded,melee,long | range 3 | thrown - 
 Greatsword  twohanded,melee | range 1 | thrown - 
 Bow         twohanded,ranged | range 10/20/40 | thrown - 
---- content: Weapon Attack uses Distance: Weapon: true | Trip keeps Reach: true | compendium Greatsword Range: 1 | Smite: weapon
+--- content: Weapon Attack uses Distance: Weapon: true | Trip keeps Reach: true | compendium Longsword (v0.0.412: the two-handed sword in the Greatsword's place) Range: 1 | Smite: weapon
 --- v0.0.123
 a thrown weapon shows a notice in the roll dialog: true | NPC Reach editable: true | Tags as chips: true

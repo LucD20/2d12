@@ -25,15 +25,16 @@ const actionTraits = sortObj({
   strike: "Strike",
   weapon: "Weapon"
 });
-const weaponTraits = sortObj({ barehanded: "Barehanded", firearm: "Firearm", long: "Long", melee: "Melee", nonthreatening: "Non-threatening", projectile: "Projectile", ranged: "Ranged", reload: "Reload", thrown: "Thrown", twohanded: "Two-handed" });
+const weaponTraits = sortObj({ barehanded: "Barehanded", firearm: "Firearm", light: "Light", long: "Long", melee: "Melee", strung: "Strung", nonthreatening: "Non-threatening", projectile: "Projectile", ranged: "Ranged", reload: "Reload", thrown: "Thrown", twohanded: "Two-handed" });
 
 export const TWOD12 = {
   attributes: { body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct" },
   actionTraits,
   weaponTraits,
   // v0.0.343 (book, Chapter 15, Weapon Groups): the eight groups, and each weapon of the book's tables in its group (Mastery: 1 per group an encounter)
-  weaponGroups: { blades: "Blades", axes: "Axes", hammers: "Hammers", polearms: "Polearms", bows: "Bows", crossbows: "Crossbows", firearms: "Firearms", unarmed: "Unarmed" },
-  weaponGroupOf: { dagger: "blades", longsword: "blades", greatsword: "blades", handaxe: "axes", greataxe: "axes", mace: "hammers", maul: "hammers", spear: "polearms", pike: "polearms", "knuckle dagger": "unarmed", fists: "unarmed", fist: "unarmed", unarmed: "unarmed", shortbow: "bows", longbow: "bows", "hand crossbow": "crossbows", crossbow: "crossbows", pistol: "firearms", musket: "firearms" },
+  // v0.0.412 (pack F3 part 2; book, Weapon Groups, 2026-11-16): Swords and Daggers in the place of Blades (an old "blades" weapon reads Swords)
+  weaponGroups: { swords: "Swords", daggers: "Daggers", blades: "Swords", axes: "Axes", hammers: "Hammers", polearms: "Polearms", bows: "Bows", crossbows: "Crossbows", firearms: "Firearms", unarmed: "Unarmed" },
+  weaponGroupOf: { "arming sword": "swords", dagger: "daggers", longsword: "swords", greatsword: "swords", "hunting bow": "bows", "recurve bow": "bows", handaxe: "axes", greataxe: "axes", mace: "hammers", maul: "hammers", spear: "polearms", pike: "polearms", "knuckle dagger": "unarmed", fists: "unarmed", fist: "unarmed", unarmed: "unarmed", shortbow: "bows", longbow: "bows", "hand crossbow": "crossbows", crossbow: "crossbows", pistol: "firearms", musket: "firearms" },
   traits: { ...actionTraits, ...weaponTraits },
   dice: { "": "None", d4: "d4", d6: "d6", d8: "d8", d10: "d10", d12: "d12", d20: "d20" },
   // Damage subtypes use two letters, so they never look like the pools [B] [M] [C].
@@ -128,6 +129,8 @@ export const TWOD12 = {
   traitHelp: {
     area: "These Actions target every creature in their area that they affect, ignoring Senses (no penalty against Obscured, Hidden or Unsensed creatures, and light doesn't change the roll). You need Line of Effect to the Point of Origin to place the area; Line of Effect and Cover are checked from the Point of Origin to each creature.",
     strike: "Extra rules: you can make at most three Strikes per turn.",
+    light: "A small melee weapon held in one hand: in your off hand it takes 1 Bane instead of 2 (Hands). Some Actions need one (Darting Blade).",
+    strung: "Held in one hand and drawn with the other: [Strike, Weapon] Actions with it take 3 Banes while your other hand holds something. Never the off-hand Banes.",
     nonlethal: "Deals Nonlethal damage by default. Taking a Bane makes it deal Lethal damage instead.",
     body: "Rolls Body.",
     mind: "Rolls Mind.",

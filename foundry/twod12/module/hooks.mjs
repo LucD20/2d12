@@ -33,7 +33,7 @@ export const hasTraits = (traits, need = []) => (need ?? []).every(t => traits?.
 //   moreW (One More Arrow): once on each of its turns, a [Strike] that deals [W] deals 1[W] more (actions.mjs rollDamage)
 const F = "twod12";
 /** Pure: the state of this turn (a state of another turn is a fresh one). */
-export const stateNow = (st, key) => (st && st.key === key ? st : { key, moved: false, last: "", altUsed: false, moreW: false });
+export const stateNow = (st, key) => (st && st.key === key ? st : { key, moved: false, left: false, last: "", altUsed: false, moreW: false });   // left: it left its square this turn (v0.0.412, Wounding Shot)
 /** Pure: the kind of a Strike for Blade and Bow ("melee", "ranged" or ""). */
 export const strikeKind = traits => { const has = k => traits?.has?.(k) ?? (traits ?? []).includes?.(k); return has("strike") ? (has("melee") ? "melee" : has("ranged") ? "ranged" : "") : ""; };
 /** Pure: the chips these hooks give a roll: [{ name, boons, field }]. hooks: [{ hook, item }] of movedBoon and alternateBoon; st: the turn's state. */
@@ -77,10 +77,19 @@ export function registerStrikeState() {
     try {
       if (!game.user.isActiveGM) return;
       const actor = doc?.actor;
-      if (!actor || !activeHooks(actor, "movedBoon").length) return;
+      if (!actor || actor.type !== "character") return;   // v0.0.412: every character (Wounding Shot's Requirement reads it too)
       const key = await turnOf(actor); if (!key) return;
       const st = stateNow(actor.getFlag(F, "strikeState"), key);
-      if (!st.moved) await actor.setFlag(F, "strikeState", { ...st, moved: true });
+      if (!st.moved || !st.left) await actor.setFlag(F, "strikeState", { ...st, moved: true, left: true });
     } catch (e) { console.warn("twod12 | Shifting Aim", e); }
   });
 }
+
+/** v0.0.412 (book, Wounding Shot: "You haven't left your square this turn"): has the creature left its square on its turn? (null: not its turn in a combat) */
+export async function leftThisTurn(actor) {
+  const key = await turnOf(actor);
+  if (!key) return null;
+  return !!stateNow(actor.getFlag?.(F, "strikeState"), key).left;
+}
+/** Pure: does a Requirement say "you haven't left your square this turn"? */
+export const needsStayed = req => /haven.t left your square this turn/i.test(String(req ?? ""));

@@ -9,10 +9,10 @@ Snap Shot and Slip Away: Snap Shot interrupt enemyAdjacent | Slip Away interrupt
 the Arts' Modes: Footwork: Sidestep/Weave/Hands Busy | Trick Shots: Pin/Startle/Knock Back | Spotter: Call Out/Find the Gap/Keep Low | Weave ignores terrain: true
 the hooks: Shifting Aim movedBoon | Lean and Loose apCost | Blade and Bow alternateBoon | Clear Lines clearLines | Opening Shot openingShot | One More Arrow moreW | Fleet evadeMore | Thrill of the Kill: [["eschook","damagedDown"]]
 Covering Fire's Zone: [{"dice":"2 + @origin.wpn","pool":"B","sub":"Pi"}] 2 rounds | Spotter's effects: true
-no quarry in the compendium (but the old cards' folder): true | the pregens: Sylwen: Shifting Aim, Darting Blade, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow, Heartseeker || Kaela: Shifting Aim, Darting Blade, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet, Skirmish Shot
+no quarry in the compendium (but the old cards' folder): true | the pregens: Sylwen: Shifting Aim, Darting Blade, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow, Wounding Shot || Kaela: Shifting Aim, Darting Blade, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet, Circling Shot
 Projectile and Firearm (the keys stay shot and gun): Projectile Firearm
 --- the turn's Strike state (hooks.mjs)
-a fresh turn: {"key":"k","moved":false,"last":"","altUsed":false,"moreW":false} | another turn's state is fresh: true
+a fresh turn: {"key":"k","moved":false,"left":false,"last":"","altUsed":false,"moreW":false} | another turn's state is fresh: true
 moved, a ranged Strike: [{"name":"Shifting Aim","boons":1,"field":true,"why":"you have left your square since your last Strike this turn"}] | not moved: 0
 a melee Strike after a ranged one: [{"name":"Blade and Bow","boons":1,"field":false,"why":"a [Melee, Strike] after a [Ranged, Strike] this turn (once a turn)"}] | spent: 0 | the same kind: 0
 strikeKind: melee ranged ""

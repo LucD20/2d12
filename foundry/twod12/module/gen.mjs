@@ -70,6 +70,8 @@ const ATTRS = "Body|Mind|Appeal|Instinct";
 const tierDmg = (val, pool, sub) => (val === "0" || (!pool && !sub) ? val : `${val}[${[pool, sub].filter(Boolean).join(",")}]`);
 export function convertEffects(text) {
   let s = String(text ?? "");
+  // v0.0.412 (the Structure's links, pack F3): a book link on a word the converter makes a button is that word ("[[Bleed]] 1 (Bo/In)" is Bleed's button)
+  s = s.replace(/@Book\[(Bleed|Pressed|Reposition|Slid|Pushed|Pulled|Grabbed|Hindered|Immobilized|Prone|Frightened|Taunted|Dazed|Staggered|Blinded|Sickened|Vulnerable)\]\{\1\}/g, "$1");
   s = s.replace(/\b(uses?)\s+up\s+to\s+(\d+)\s+Rally\s+Points?\b/gi, "$1 up to @Rally[$2|upto:yes]");
   // v0.0.250 (cards 3, Lay On Hands): "use 1 Rally Point, healing 1d6 + your Power Modifier more" -> the chip rolls the extra too (Pow: the card's creature's Power Modifier)
   const POW = "(?:your\\s+)?Power\\s+Modifier";
@@ -128,7 +130,8 @@ export function convertEffects(text) {
     // v0.0.409 (pack F2, Glare): Half-Blinded (a condition of its own, Chapter 8), before Blinded
     s = s.replace(new RegExp(`(?:@Book\\[Half-Blinded\\]\\{Half-Blinded\\}|\\{\\{link:Half-Blinded\\|Half-Blinded\\}\\}|\\bHalf-Blinded)${DUR}${END}`, "g"), (m, n, p) => `@Condition[half-blinded${durOf(n, p)}]{Half-Blinded${p ? ` (${p})` : ""}}`);
     s = s.replace(new RegExp(`${NOT}(?<!Half-)\\b(Blinded|Staggered|Grabbed)${DUR}${END}`, "g"), (m, c, n, p) => { const lab = p ? m.match(/^\w+\s*\([^)]*\)/)[0] : c; return `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${lab}}${m.slice(lab.length)}`; });
-    s = s.replace(new RegExp(`${NOT}\\b(Dazed|Sickened)\\s+(\\d+)${DUR}${END}`, "g"), (m, c, v, n, p) => { const nm = m.match(/^\w+\s+\d+/)[0]; return `@Condition[${c.toLowerCase()}|value:${v}${durOf(n, p)}]{${nm}}${m.slice(nm.length)}`; });
+    // v0.0.412: Pressed N (Thwart Cut) is a valued condition button too
+    s = s.replace(new RegExp(`${NOT}\\b(Dazed|Sickened|Pressed)\\s+(\\d+)${DUR}${END}`, "g"), (m, c, v, n, p) => { const nm = m.match(/^\w+\s+\d+/)[0]; return `@Condition[${c.toLowerCase()}|value:${v}${durOf(n, p)}]{${nm}}${m.slice(nm.length)}`; });
     // "Bleed [R] 1d6 Ho (Mi/Ap)", "Bleed 2 (Bo/In; DC 15)": the card's own dice, pool, type, Attributes and DC
     s = s.replace(/\bBleed\s+(?:\[([VRBM])\]\s*)?(\d+d\d+(?:[+-]\d+)?|\d+)(?:\s+([A-Z][a-z]))?\s*\(((?:Bo|Mi|Ap|In)(?:\/(?:Bo|Mi|Ap|In))*)(?:;\s*DC\s*(\d+))?\)/g,
       (m, pool, dmg, sub, attrs, dc) => `@Condition[bleed|dmg:${dmg}${pool ? `|pool:${pool}` : ""}${sub ? `|sub:${sub}` : ""}|attrs:${attrs.toLowerCase()}${dc ? `|dc:${dc}` : ""}]{Bleed}${m.slice(5)}`);

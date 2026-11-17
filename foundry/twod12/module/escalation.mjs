@@ -208,7 +208,7 @@ export async function askEncounterEnd(combat) {
   const k = await pickOne({ title: "The encounter ends", name: "The encounter ends", sub: `Momentum ${now}`, icon: "fa-fire",
     text: "How did it end for the party? Overcoming it (winning a fight, a negotiation, a sneak, a Challenge) gives +1 Momentum; a retreat loses all of it.",
     options: [{ k: "overcome", l: `Overcome (Momentum ${momentumAfter(now, { overcome: 1 })})`, tip: "+1 Momentum, at most 4" }, { k: "retreat", l: "Retreat (Momentum 0)", tip: "The party loses all its Momentum" }, { k: "none", l: `Neither (Momentum ${now})`, tip: "No change: a test, or the encounter goes on later" }] });
-  if (k === "overcome") await momentumEvent({ overcome: 1 }, "the encounter was overcome");
+  if (k === "overcome") { await momentumEvent({ overcome: 1 }, "the encounter was overcome"); try { await (await import("./mastery.mjs")).masteryAtEncounterEnd(combat); } catch (e) { console.warn("twod12 | Mastery", e); } }   // v0.0.412: Mastery after a won encounter
   else if (k === "retreat") await momentumEvent({ retreat: true }, "the party retreated");
   return k;
 }

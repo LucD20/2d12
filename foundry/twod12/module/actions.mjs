@@ -12,7 +12,8 @@ import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
 import { perceptionOf, perceive, youGain } from "./senses.mjs";
 import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, areaConfigOf, autoChip } from "./config.mjs";
 import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
-import { handOf, HAND_LABEL } from "./loadout.mjs";
+import { handOf, HAND_LABEL, handBanes } from "./loadout.mjs";
+import { isFists } from "./fists.mjs";   // v0.0.412: the hands' Banes
 import { isEngaged, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
 import { offerWake } from "./down.mjs";
@@ -451,6 +452,8 @@ export async function useAction(actor, item, opts = {}) {
   const refuse = msg => { ui.notifications.warn(opts.override ? `${msg} Used anyway.` : msg); return !opts.override; };
   // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction AP waits until Staggered ends)
   if (item.system?.reaction && reactionsOff(actor) && refuse(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
+  // v0.0.412 (book, Wounding Shot): "You haven't left your square this turn": its Requirement, checked on its turn in a combat (hooks.mjs leftThisTurn)
+  if (/haven.t left your square this turn/i.test(String(item.system?.requirements ?? ""))) { const H = await import("./hooks.mjs"); if ((await H.leftThisTurn(actor)) === true && refuse(`${item.name}: ${actor.name} has left its square this turn (its Requirement).`)) return; }
   if (lock.locked && refuse(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`)) return;
   // v0.0.213 (Lucas): a Weapon Technique is used only with its own weapon, in hand (a Favorite or a macro can still call it).
   if (techniqueState(actor, item) === "unwielded" && refuse(`${item.name} is ${actor.items.get(item.getFlag("twod12", "weaponId"))?.name ?? "its weapon"}'s Weapon Technique: wield it first.`)) return;
@@ -618,7 +621,12 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.188: a Weapon Action with a Two-handed weapon also matches "Two-handed weapon" in settings (Heavy Blows); not shown as a trait.
   // v0.0.320 (pack AU part 2): "Attack" in settings = an Action that rolls against another creature (the Elite ladder's 1 Boon on its first attack each round)
   // v0.0.410 (pack F2; book, Setup): with a Setup (its own, or Hallowed Stance's), the Distance and the targets are checked after it: out of range now is a note
+  const handMods = [];   // v0.0.412: the hands' Banes (before extraMods is made)
   const withSetup = !!String(it.setup ?? "").trim() || (!it.reaction && activeHooks(actor, "setupAdvance").some(h => hasTraits(useTraits, h.hook.traits))), setupNotices = [];
+  // v0.0.412 (pack F3 part 2; book, Hands, Strung): the Banes of the hand the weapon is in (loadout.mjs handBanes)
+  if (useTraits.has("strike") && it.traits.has("weapon") && previewWeapon) {
+    try { const hb = handBanes(actor.itemTypes?.weapon ?? [], previewWeapon, isFists(previewWeapon)); if (hb.banes) handMods.push({ id: "syn:hand", name: hb.banes === 3 ? "Strung, the other hand full" : hb.banes === 2 ? "Off hand" : hb.why.startsWith("Fists") ? "Fists, off hand" : "Off hand (Light)", boons: 0, banes: hb.banes, match: true, predicate: hb.why }); } catch (e) { console.warn("twod12 | hands", e); }
+  }
   const rollUse = new Set([...useTraits, ...(it.traits.has("weapon") && hasProp(previewWeapon, "twohanded") ? ["__twohanded"] : []), ...(rollsAtOthers && src.kind ? ["__attack"] : [])]);
   const attrKeyForPreview = src.attrKey;
   // v0.0.193 (Lucas): the preview's Avg counts the Bonus Damage of each Tier and the Empowered / Enfeebled step the effects give.
@@ -632,7 +640,7 @@ export async function useAction(actor, item, opts = {}) {
   });
   if (saveAct) preview.noOdds = true;   // a Save Action: you don't roll, so no odds in the dialog (its targets roll)
   // A ranged weapon: the distance to the target decides the banes (far range 1, maximum range 2).
-  let extraMods = [];
+  let extraMods = [...handMods];
   const coverNotices = [];   // v0.0.267 (Lucas): a cover level the Action ignores is a notice (the small chip), not a chip to untick
   // v0.0.186, the "Ignore a Bane" settings of the creature's effects and passives (Long Draw, Steady Nerves, Sharpshooter): the names of what ignores each rule.
   // v0.0.411 (pack F3, Clear Lines): no Field Bane for a target Engaged with one of your allies (its name in the list that waives it)
@@ -1256,11 +1264,8 @@ export async function useAction(actor, item, opts = {}) {
     } catch (e) { console.warn("twod12 | Opening Shot", e); }
   }
   if (it.marksTarget && game.user.targets.size) { try { await setQuarry(actor, [...game.user.targets][0], it.markKind ?? ""); } catch (e) { console.warn("twod12 | marking", e); } }
-  // Mastery: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery with that kind of weapon (once per Action; characters only).
-  if (!version.noTiers) {
-    // v0.0.189: a forced Tier (testing) gives no Mastery.
-    try { if (!forcedTier) await masteryAfterRoll(actor, weapon, src.kind === "weapon", mres ? mres.map(r => r.chk.tier) : [tier]); } catch (e) { console.warn("twod12 | Mastery", e); }
-  }
+  // v0.0.412 (book, Mastery): the weapon a Strike was made with is noted for the encounter's end (no Mastery on a Tier 3 any more)
+  if (!version.noTiers) { try { await masteryAfterRoll(actor, weapon, useTraits.has("strike")); } catch (e) { console.warn("twod12 | Mastery", e); } }
   // A version that rolls applies its automatic effects on use too, for the Tier each creature got: the tier's effects, the Effects row
   // on Tier 2 or 3, and the effects your bonuses add (Rimebrand's Hindered). Conditional ones stay on the damage card's Effects button.
   if (!version.noTiers) {

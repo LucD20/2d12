@@ -40,6 +40,12 @@ export const stripBold = s => String(s ?? "").replace(/\*\*(.+?)\*\*/g, "$1");
 // is turned into the old card shape below (versions, tiers, effects, vs, interrupt / trigger, setup, notes), so cardgen.mjs builds the item as
 // before. The class's old file stays for the ruler (spec.mjs reads loadCards: the ruler's builds are written on the old cards until its own pass).
 export const STRUCTURE_DIR = "stage0";
+/**
+ * v0.0.412 (pack F3 part 2): a Structure file laid OVER an old file: its cards replace the old cards of the same name, its new names are added,
+ * and the old file's other cards stay, but the ones listed in `drop` (the gear: the two bows' and the two swords' Techniques; the placeholder
+ * weapons keep theirs).
+ */
+export const FOUNDRY_OVERLAY = { "gear.json": { file: "gear.json", drop: ["Skirmish Shot", "Heartseeker", "Guarded Cut", "Reaping Sweep"] } };
 /** The Structure files Foundry reads in the place of the old file's cards (the whole old file leaves Foundry). */
 export const FOUNDRY_STRUCTURE = { "paladin.json": "paladin.json", "archer.json": "archer.json" };   // v0.0.411 (pack F3): the Archer too
 const costAp = cost => { const m = String(cost ?? "").match(/(\d+)/); return m ? Number(m[1]) : 0; };
@@ -82,7 +88,7 @@ const tierCells = b => {
 export function fromStructure(c) {
   const top = readBody(c.body), passive = String(c.cost ?? "").trim() === "Passive";
   const out = { name: c.name, category: c.category, level: c.level, flavor: c.flavor, traits: c.traits ?? [], structure: 2, _file: c._file };
-  for (const k of ["frequency", "escalation", "distance", "area", "target", "foundry", "ruler", "book"]) if (c[k] !== undefined) out[k] = c[k];
+  for (const k of ["frequency", "escalation", "distance", "area", "target", "foundry", "ruler", "book", "weapon", "mastery"]) if (c[k] !== undefined) out[k] = c[k];   // v0.0.412: a Technique's weapon
   for (const k of ["vs", "interrupt", "trigger", "setup", "requirements", "prerequisites"]) if (top[k] !== undefined) out[k] = top[k];
   if (top.rules.length) out.rules = top.rules.join(" ");
   if (top.lines?.length) out.lines = top.lines;   // v0.0.411: the card's own labeled lines before the roll (Judged, Smite dice)
@@ -141,8 +147,15 @@ export function loadStructure(dir = path.join(CARDS_DIR, STRUCTURE_DIR)) {
  */
 export function loadFoundryCards(dir = CARDS_DIR) {
   const all = loadCards(dir), st = loadStructure(path.join(dir, STRUCTURE_DIR));
-  const out = [];
-  for (const c of all) if (!FOUNDRY_STRUCTURE[c._file]) out.push(c);
+  const out = [], over = new Map();
+  for (const [oldFile, o] of Object.entries(FOUNDRY_OVERLAY)) for (const c of st[o.file] ?? []) over.set(c.name, { c, oldFile });
+  const dropped = new Set(Object.values(FOUNDRY_OVERLAY).flatMap(o => o.drop ?? []));
+  for (const c of all) {
+    if (FOUNDRY_STRUCTURE[c._file] || dropped.has(c.name)) continue;
+    const o = over.get(c.name);
+    if (o && o.oldFile === c._file) { out.push(fromStructure(o.c)); over.delete(c.name); } else out.push(c);
+  }
+  for (const { c } of over.values()) out.push(fromStructure(c));   // an overlay's new names
   const names = new Set(out.map(c => c.name));
   for (const [oldFile, newFile] of Object.entries(FOUNDRY_STRUCTURE)) for (const c of st[newFile] ?? []) {
     if (names.has(c.name)) throw new Error(`${newFile}: the card "${c.name}" is also in another file`);

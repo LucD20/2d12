@@ -1,20 +1,27 @@
 groups: Greatsword | Greatsword | keys: great-sword 1-long-bow
 entry on getting the weapon: {"greatsword":{"name":"Greatsword","value":0}} | Technique: {"locked":true,"group":"Greatsword","value":0}
-v0.0.189: a Tier 3 out of combat gives nothing: 0
-Tier 2, or not a Weapon roll: nothing: 0
-several targets with two Tier 3: +1 once: 1
-v0.0.343: a second Tier 3 with a Blade in the same encounter gives nothing: 1
-the +1 Greatsword counts for the Greatsword: 2
-at 3: {"locked":false,"group":"Greatsword","value":3} | posted: Drak gains 1 Greatsword Mastery (3): Weapon Technique unlocked! No more Blades Mastery this encounter.
-rows: [{"name":"Greatsword","value":3,"owned":["Greatsword","+1 Greatsword"],"next":8,"nextText":"(to be decided)","pct":0,"steps":"*3 8 15"}]
+v0.0.412: a Strike out of combat is not noted: null | Mastery: 0
+not a Strike: not noted: null
+Strikes noted once per kind (the +1 Greatsword is a Greatsword): {"combatId":"c1","list":[{"key":"greatsword","name":"Greatsword"}]} | Mastery still: 0
+strikesIn this combat: [{"key":"greatsword","name":"Greatsword"}] | another: []
+an easier encounter: no Mastery: 0 | [asked: Was the encounter normal or harder (as it was built)? Then each character gains 1 Mastery with one weapon it made a Strike with. -> no]
+normal or harder, one kind of weapon: at once: 1 | Drak gains 1 Greatsword Mastery (1).
+two weapons: the GM picks one: 2 | Dagger: 0 | [asked: Drak made Strikes with several weapons: which one gains 1 Mastery? -> greatsword] / Drak gains 1 Greatsword Mastery (2).
+no Strike in the encounter: nobody is asked: true
+only the active GM asks: 2
+at 9: {"locked":true,"group":"Greatsword","value":9}
+at 10: {"locked":false,"group":"Greatsword","value":10} | posted: Drak gains 1 Greatsword Mastery (10): Weapon Technique unlocked!
+the group follows: a Longsword at half the best Sword: 10 | other groups don't: 0 | a kind outside the groups: 0
+old values on the new scale (Technique at 3 -> 10): 0->0 1->3 2->6 3->10 5->12 8->15 15->22
+rows: [{"name":"Greatsword","value":10,"owned":["Greatsword","+1 Greatsword"],"next":20,"nextText":"(to be decided)","pct":0,"steps":"*10 20 30 45 60"}]
 NPCs have no Mastery: {"locked":false} | other Actions are never locked: false
 locked Techniques: faded on the sheet true | refused when used true | gained after the roll true
 Mastery tab true | weapon's Mastery group field true
 old weapon shows: [["Crossbow",0]]
 after +1 by hand: {"crossbow":{"name":"Crossbow","value":1}}
-Mastery 2: locked
-Mastery 3, not in hand: unwielded
-Mastery 3, in hand: ok | an NPC: ok
-shrunk: true | what each step grants: 3: Reaping Sweep | 8: to be decided | 15: to be decided
+Mastery 9: locked
+Mastery 10, not in hand: unwielded
+Mastery 10, in hand: ok | an NPC: ok
+shrunk: true | what each step grants: 10: Reaping Sweep | 20: to be decided | 30: to be decided | 45: to be decided | 60: to be decided
 only the GM changes Mastery by hand: true | no trash: shrink instead true
 Actions tab: locked and not-in-hand Techniques hidden (v0.0.213, no toggle): true | greyed with why: true

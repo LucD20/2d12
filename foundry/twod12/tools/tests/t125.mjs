@@ -39,4 +39,5 @@ console.log("no swap while Down:", combat.includes("is Down and can't swap initi
 console.log("Reload is [Handle, Weapon]:", JSON.stringify(BD.reload.traits) === '["handle","weapon"]', "| Slowed and Quickened conditions:", content.includes('cond("Slowed"') && content.includes('cond("Quickened"') && main.includes('["slowed", ') && main.includes('["quickened", '));
 console.log("Imperiled: Slowed 1:", content.includes("you are Slowed 1 for that turn"), "| Immobilized: 1 AP [Move] (v0.0.224):", content.includes("by spending 1 AP [Move]"), "| old Weapon Actions set to Round once:", main.includes('"weaponRoundApplied"'));
 // v0.0.409 (pack F2): the redesigned Smite is an Encounter Action; Binding Light is the Paladin's Round weapon Strike
-console.log("Binding Light, Reaping Sweep and Lock & Loose say Round:", ["Binding Light", "Reaping Sweep", "Lock & Loose"].every(n => cdoc(n).system.distance === "weapon" && cdoc(n).system.frequency === "round"));
+// v0.0.412: Reaping Sweep left with the Greatsword; Seizing Cut is the Arming Sword's Technique
+console.log("Binding Light, Seizing Cut and Lock & Loose say Round:", ["Binding Light", "Seizing Cut", "Lock & Loose"].every(n => cdoc(n).system.distance === "weapon" && cdoc(n).system.frequency === "round"));

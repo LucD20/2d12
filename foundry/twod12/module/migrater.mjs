@@ -243,3 +243,74 @@ export function registerMigrationF3() {
     await migrateF3();
   });
 }
+
+// v0.0.412 (pack F3 part 2; book, Mastery): the stored Mastery on the new scale (the Technique at 10, not 3), once per world, silently, by the active
+// GM: every character's entries (mastery.mjs migrateMasteryValue: an unlocked Technique stays unlocked). A sysCard tells the GM what moved.
+const DONE_M = "M412";
+export function registerMigrationMastery() {
+  game.settings.register(F, "migratedMastery", { scope: "world", config: false, type: String, default: "" });
+  Hooks.once("ready", async () => {
+    if (!game.user.isActiveGM || game.settings.get(F, "migratedMastery") === DONE_M) return;
+    const { migrateMasteryValue } = await import("./mastery.mjs"), lines = [];
+    for (const a of characters()) {
+      const m = a.getFlag(F, "mastery") ?? {}, upd = {};
+      for (const [k, e] of Object.entries(m)) { const v = Number(e?.value) || 0, n = migrateMasteryValue(v); if (n !== v) upd[k] = { ...e, value: n }; }
+      if (Object.keys(upd).length) { await a.setFlag(F, "mastery", upd); lines.push(`${esc(a.name)}: ${Object.values(upd).map(e => `${esc(e.name)} ${e.value}`).join(", ")}`); }
+    }
+    await game.settings.set(F, "migratedMastery", DONE_M);
+    if (lines.length) await ChatMessage.create({ whisper: game.users.filter(u => u.isGM).map(u => u.id), content: sysCard({ title: "Mastery: the new scale", lead: "The Weapon Technique unlocks at 10 now (it was 3)", text: `Each Mastery moved so what was unlocked stays unlocked (3 or more: 10 plus the rest; less: three times).<br>${lines.join("<br>")}` }) });
+  });
+}
+
+// v0.0.412 (pack F3 part 2; book, Chapter 15, 2026-11-16): the old weapons on characters become the book's: the Shortbow a Recurve Bow, the Longbow
+// a Hunting Bow, the one-handed Longsword an Arming Sword, the Greatsword the (two-handed) Longsword. Asked once (pickConfirm) when a character holds one;
+// its Mastery entry moves to the new name (the higher value kept). Also game.twod12.migrateWeapons().
+const DONE_W = "W412";
+/** Pure: the new weapon's name for an old one ("" when it stays). traits: the old item's traits (an array or a Set). */
+export function oldWeaponSwap(name, traits = []) {
+  const n = String(name ?? "").trim().toLowerCase(), t = new Set(traits);
+  if (n === "shortbow") return "Recurve Bow";
+  if (n === "longbow") return "Hunting Bow";
+  if (n === "greatsword") return "Longsword";
+  if (n === "longsword" && !t.has("twohanded")) return "Arming Sword";
+  return "";
+}
+const oldWeapons = a => a.items.filter(i => i.type === "weapon" && oldWeaponSwap(i.name, [...(i.system?.traits ?? [])]));
+export async function migrateWeapons({ ask = true } = {}) {
+  if (!game.user.isGM) { ui.notifications.warn("Only the GM can run the weapons migration."); return null; }
+  const who = characters().filter(a => oldWeapons(a).length);
+  if (!who.length) { await game.settings.set(F, "migratedWeapons", DONE_W); return { characters: 0 }; }
+  if (ask) {
+    const { pickConfirm } = await import("./pickwindow.mjs");
+    const ok = await pickConfirm({ title: "The weapons", name: "The book's weapons", sub: "the bows and the swords of 2026-11-16", icon: "fa-khanda", confirm: "Replace",
+      text: `<b>Back up your world first</b> (Foundry: Game Worlds, Backup).<br>The Shortbow becomes a Recurve Bow, the Longbow a Hunting Bow, the one-handed Longsword an Arming Sword, the Greatsword the two-handed Longsword, each with its new Weapon Technique (the old Technique goes); its Mastery moves with it.<br>${who.map(a => `${esc(a.name)}: ${oldWeapons(a).map(i => esc(i.name)).join(", ")}`).join("<br>")}` });
+    if (!ok) return null;
+  }
+  const pack = game.packs.get(`${F}.weapons`), docs = (await pack?.getDocuments?.()) ?? [], { replaceWeapon } = await import("./grants.mjs");
+  const { masteryOf, masteryKey, setMastery } = await import("./mastery.mjs"), lines = [];
+  for (const a of who) {
+    const done = [];
+    for (const old of oldWeapons(a)) {
+      const to = oldWeaponSwap(old.name, [...(old.system?.traits ?? [])]), fresh = docs.find(d => d.type === "weapon" && d.name === to);
+      if (!fresh) continue;
+      const m = masteryOf(a), was = Number(m[masteryKey(old.system?.masteryGroup || old.name)]?.value) || 0;
+      await replaceWeapon(a, old, fresh);
+      const k = masteryKey(to), cur = Number(masteryOf(a)[k]?.value) || 0;
+      if (was > cur) await setMastery(a, k, was, to);
+      done.push(`${esc(old.name)} &rarr; ${esc(to)}`);
+    }
+    if (done.length) lines.push(`${esc(a.name)}: ${done.join(", ")}`);
+  }
+  await game.settings.set(F, "migratedWeapons", DONE_W);
+  if (lines.length) await ChatMessage.create({ whisper: game.users.filter(u => u.isGM).map(u => u.id), content: sysCard({ title: "The weapons: the world migrated", lead: `${lines.length} character${lines.length === 1 ? "" : "s"}`, text: lines.join("<br>") }) });
+  return { characters: lines.length };
+}
+export function registerMigrationWeapons() {
+  game.settings.register(F, "migratedWeapons", { scope: "world", config: false, type: String, default: "" });
+  Hooks.once("ready", async () => {
+    if (!game.user.isActiveGM || game.settings.get(F, "migratedWeapons") === DONE_W) return;
+    // after the Archer's window (its refresh first), so the two don't ask at once
+    try { if (game.settings.get(F, "migratedF3") !== DONE_F3) return; } catch (e) { return; }
+    await migrateWeapons();
+  });
+}

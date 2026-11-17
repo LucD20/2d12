@@ -84,6 +84,8 @@ cond("Squeezing", "icons/svg/net.svg", "<p>You stopped moving while squeezing th
 // Foundry's blind status (no sight: twod12.mjs CONFIG.specialStatusEffects).
 const bb1 = (banes, extra = {}) => ({ type: "boonbane", boons: 0, banes, all: [], any: [], none: [], ...extra });
 cond("Frightened", "icons/svg/terror.svg", "<p>Frightened is always <b>of</b> a source (the creature or object that applied it). While you see the source (Clear or Obscured to you), all your Rolls take 1 Bane, the Save that would end Frightened included, and every square that brings you closer to it is Difficult Terrain for you (Forced Movement ignores it). Out of your Sight (a wall, Darkness), the Bane and the Difficult Terrain stop until you see it again.</p>", [bb1(1), { type: "move", text: "closer", moveHow: "difficult" }], { whileSeen: true, originFromUser: true, hover: "" });   // v0.0.323 (PACK EFFECT-SHEET): the Movement limit is a rule now; the hover card is built from the rules (its old text was the same words)
+// v0.0.412 (pack F3 part 2, Thwart Cut; book, Chapter 8): Pressed N, N Pressure Banes on its [Strike] rolls (the Pressure Banes cap at 2 together)
+cond("Pressed", "icons/svg/sword.svg", "<p>Pressed always has a value, such as Pressed 1. Your [Strike] Actions take that many Pressure Banes (with your other Pressure Banes, at most 2).</p>", [bb1(1, { all: ["strike"], byValue: true, bbName: "pressure" })], { valued: true });
 // v0.0.409 (pack F2, Glare; book, Chapter 8): Half-Blinded, the system's status (senses.mjs perceive: Sight gives no better than Obscured)
 cond("Half-Blinded", "icons/svg/blind.svg", "<p>Your Sight perceives no creature better than Obscured: a creature that would be Clear to you is Obscured (see Senses). Your other senses aren't affected.</p>", []);
 cond("Taunted", "icons/svg/target.svg", "<p>Taunted is always <b>by</b> a creature (the one that applied it). Your Actions against any creature other than it take 1 Bane.</p>", [bb1(1, { vsOrigin: "not" })], { originFromUser: true, hover: "1 Bane on your Actions against anyone but the creature that taunted you." });
@@ -172,17 +174,17 @@ const weapon = (text, img, actions = []) => {
 // v0.0.407 (Stage 0 in Foundry; book, Chapter 15; book/weapons-flat.md "DECIDED"): Tier 2 and Tier 3 as a flat part plus one die, which explodes (written
 // 1d6! in the book: every weapon's die explodes, explode.mjs). The book's table where it has the weapon; the Greatsword, the one-handed Longsword, the
 // Shortbow and the Longbow keep weapons-flat.md's numbers until the Bows and Swords pass replaces them (foundry-backlog.md, F3).
-weapon("greatsword: two-handed, melee, slash, 0/1d6+5/1d8+8", "icons/svg/sword.svg");
-weapon("crossbow: projectile, reload, two-handed, pierce, ranges 10/20/40, 0/1d4+2/1d4+4", "icons/svg/target.svg");
-// v0.0.331 (Lucas: the four PCs "as different as you can"): the rest of the book's weapons (15-gear.md, Melee and Ranged); each gets its Weapon Technique (cardgen)
+// v0.0.412 (pack F3 part 2; book, Chapter 15, 2026-11-16): the weapon tables as the book writes them. The two Basic bows (Hunting Bow, Recurve Bow:
+// Strung, one hand) replace the Shortbow and the Longbow; the Arming Sword replaces the one-handed Longsword, and the Longsword is the two-handed sword
+// in the Greatsword's place; Light on the Dagger and the Handaxe. The other weapons are the book's placeholders (their numbers as written).
 for (const [text, img] of [
-  ["dagger: melee, pierce, thrown 4/8/12, 0/1d4+2/1d4+4", "icons/svg/sword.svg"], ["longsword: melee, slash, 0/1d6+2/1d6+4", "icons/svg/sword.svg"],
-  ["handaxe: melee, slash, thrown 4/8/12, 0/1d4+2/1d8+2", "icons/svg/sword.svg"], ["greataxe: melee, two-handed, slash, 0/1d6+4/1d8+10", "icons/svg/sword.svg"],
-  ["mace: melee, blunt, 0/1d4+3/1d4+5", "icons/svg/sword.svg"], ["maul: melee, two-handed, blunt, 0/1d4+6/1d6+9", "icons/svg/sword.svg"],
+  ["arming sword: melee, slash, 0/1d4+3/1d6+4", "icons/svg/sword.svg"], ["longsword: melee, two-handed, slash, 0/1d4+6/1d6+9", "icons/svg/sword.svg"],
+  ["dagger: light, melee, pierce, thrown 4/8/12, 0/1d4+2/1d4+4", "icons/svg/sword.svg"], ["handaxe: light, melee, slash, thrown 4/8/12, 0/1d4+2/1d8+2", "icons/svg/sword.svg"],
+  ["greataxe: melee, two-handed, slash, 0/1d6+4/1d8+10", "icons/svg/sword.svg"], ["mace: melee, blunt, 0/1d4+3/1d4+5", "icons/svg/sword.svg"], ["maul: melee, two-handed, blunt, 0/1d4+6/1d6+9", "icons/svg/sword.svg"],
   ["spear: melee, pierce, thrown 4/8/12, 0/1d4+2/1d4+4", "icons/svg/sword.svg"], ["pike: long, melee, two-handed, pierce, range 3, 0/1d6+4/1d8+6", "icons/svg/sword.svg"],
   ["knuckle dagger: barehanded, melee, pierce, 0/1d4+2/1d4+3", "icons/svg/combat.svg"],
-  ["shortbow: projectile, two-handed, pierce, ranges 8/16/32, 0/1d6/1d6+1", "icons/svg/target.svg"], ["longbow: projectile, two-handed, pierce, ranges 15/30/60, 0/1d4+1/1d4+2", "icons/svg/target.svg"],
-  ["hand crossbow: projectile, reload, pierce, ranges 6/12/24, 0/1d4/1d4+1", "icons/svg/target.svg"],
+  ["hunting bow: projectile, strung, pierce, ranges 8/16/24, 0/1d4+1/1d4+2", "icons/svg/target.svg"], ["recurve bow: projectile, strung, pierce, ranges 6/12/18, 0/1d4+1/1d6+1", "icons/svg/target.svg"],
+  ["hand crossbow: projectile, reload, pierce, ranges 6/12/24, 0/1d4/1d4+1", "icons/svg/target.svg"], ["crossbow: projectile, reload, two-handed, pierce, ranges 10/20/40, 0/1d4+2/1d4+4", "icons/svg/target.svg"],
   ["pistol: firearm, reload, pierce, ranges 5/10/20, 0/1d4/1d8+2", "icons/svg/target.svg"], ["musket: firearm, reload, two-handed, pierce, ranges 10/20/40, 0/1d4/1d8+4", "icons/svg/target.svg"]]) weapon(text, img);
 
 /* ------------------------------------------------------------------ Armor (generic for now: named armors and properties are still open in the book) */
@@ -425,7 +427,10 @@ for (const c of CARDS) {
 // v0.0.411 (pack F3): pack R's Paladin and Archer cards (book/cards/paladin.json, archer.json, which the ruler keeps), built as before but kept out
 // of the packs: the tests of the machinery they exercised read them (OLD_CLASS_DOCS; the same shape as docs).
 const { loadCards: loadOldFiles } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);
-export const OLD_CLASS_DOCS = loadOldFiles().filter(c => ["paladin.json", "archer.json"].includes(c._file) && c.foundry !== false).flatMap(c => {
+// v0.0.412: and the gear cards the bows and swords replaced (Skirmish Shot, Heartseeker, Guarded Cut, Reaping Sweep: load.mjs FOUNDRY_OVERLAY's drop)
+const { FOUNDRY_OVERLAY } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);
+const OLD_GEAR = new Set(Object.values(FOUNDRY_OVERLAY).flatMap(o => o.drop ?? []));
+export const OLD_CLASS_DOCS = loadOldFiles().filter(c => (["paladin.json", "archer.json"].includes(c._file) || OLD_GEAR.has(c.name)) && c.foundry !== false).flatMap(c => {
   const img = c.foundry?.img ?? "icons/svg/sword.svg", out = [];
   if (isAction(c)) out.push({ pack: "actions", type: "action", name: c.name, img, folder: "old", system: cardSystem(c, resolveRefs), old: true });
   else out.push({ pack: "features", type: "feature", name: c.name, img, folder: "old", system: featureSystem(c, resolveRefs), old: true });
@@ -487,7 +492,9 @@ const pc = ({ name, token = "", img, species, chosen, cls, attrs, picks, level =
   if (armor) items.push(copyDoc(name, "armor", armor, {}, { worn: true }));
   // v0.0.331: the Mastery tab's entry for the weapon (mastery.mjs: flags twod12.mastery by kind), and a Starting Mastery already chosen (Sharpshooter: 3)
   const mkey = String(weapon).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  const flags = { twod12: { mastery: { [mkey]: { name: weapon, value: start ? 3 : 0 } }, ...(start ? { startMastery: { [idOf("Item", `${name}:feature:${start}`)]: weapon } } : {}) } };
+  // v0.0.412: the Starting Mastery its Feature's setting gives (the Archer's Shifting Aim: 5 with one Projectile weapon)
+  const startValue = start ? (docOf("feature", start).system.settings ?? []).find(x => x.type === "mastery")?.mstValue ?? 0 : 0;
+  const flags = { twod12: { mastery: { [mkey]: { name: weapon, value: startValue } }, ...(start ? { startMastery: { [idOf("Item", `${name}:feature:${start}`)]: weapon } } : {}) } };
   // the class's high Health value on Vigor or Resolve (the character's healthHigh; a Human's +3 goes with it: speciesHigh "")
   pcs.push({ name, token, img, system: { level, ...(health ? { healthHigh: health, speciesHigh: "" } : {}) }, items, flags });
 };
@@ -505,7 +512,7 @@ const pcBoth = o => { pc(o); pc({ ...o, name: o.name.replace(/\)$/, ", level 1)"
 // Faith and Reckoning (v0.0.409, pack F2: the redesigned Paladin; Smite and Judge come with every Paladin)
 pcBoth({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("aveline.png"), species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
   picks: { 1: { pal1hall: "Binding Light", pal1react: "Rebuke", pal1art: "Commandment", pal1esc2: "Roving Judgment" },
-    2: { pal2enc: "Word of Radiance", pal2esc4: "Weight of Judgment" }, 3: { pal3art: "Lantern of Faith", pal3esc6: "Reckoning" } }, weapon: "Greatsword", armor: "Heavy Armor" });
+    2: { pal2enc: "Word of Radiance", pal2esc4: "Weight of Judgment" }, 3: { pal3art: "Lantern of Faith", pal3esc6: "Reckoning" } }, weapon: "Longsword", armor: "Heavy Armor" });
 // The shield Paladin: Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Bulwark of Faith, Tireless Vigil (two [Divine] Reactions a round),
 // Commandment and Hallowed Stance (v0.0.409, pack F2: the redesigned Paladin)
 pcBoth({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
@@ -513,13 +520,13 @@ pcBoth({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART
     2: { pal2enc: "Bulwark of Faith", pal2esc4: "Tireless Vigil" }, 3: { pal3art: "Commandment", pal3esc6: "Hallowed Stance" } }, weapon: "Pike", armor: "Heavy Armor" });
 // v0.0.411 (pack F3, the redesigned Archer; no Starting Mastery Feature: the book's Starting Mastery comes with the weapons pass):
 // the far Archer: Quick Shots, Snap Shot, Spotter, Lean and Loose, Volley, Clear Lines, Trick Shots, One More Arrow; the Longbow and a Dagger.
-pcBoth({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor",
+pcBoth({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Shifting Aim",
   picks: { 1: { arc1hall: "Quick Shots", arc1react: "Snap Shot", arc1art: "Spotter", arc1esc2: "Lean and Loose" },
-    2: { arc2enc: "Volley", arc2esc4: "Clear Lines" }, 3: { arc3art: "Trick Shots", arc3esc6: "One More Arrow" } }, extras: [["weapon", "Dagger"]], weapon: "Longbow", armor: "Light Armor" });
+    2: { arc2enc: "Volley", arc2esc4: "Clear Lines" }, 3: { arc3art: "Trick Shots", arc3esc6: "One More Arrow" } }, extras: [["weapon", "Dagger"]], weapon: "Hunting Bow", armor: "Light Armor" });
 // the close Archer: Strafe, Slip Away, Footwork, Blade and Bow, Hit and Run, Opening Shot, Spotter, Fleet; the Shortbow and a Dagger.
-pcBoth({ name: "Kaela (Human Archer, Rolling Shot)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor",
+pcBoth({ name: "Kaela (Human Archer, Rolling Shot)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Shifting Aim",
   picks: { 1: { arc1hall: "Strafe", arc1react: "Slip Away", arc1art: "Footwork", arc1esc2: "Blade and Bow" },
-    2: { arc2enc: "Hit and Run", arc2esc4: "Opening Shot" }, 3: { arc3art: "Spotter", arc3esc6: "Fleet" } }, extras: [["weapon", "Dagger"]], weapon: "Shortbow", armor: "Light Armor" });
+    2: { arc2enc: "Hit and Run", arc2esc4: "Opening Shot" }, 3: { arc3art: "Spotter", arc3esc6: "Fleet" } }, extras: [["weapon", "Dagger"]], weapon: "Recurve Bow", armor: "Light Armor" });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;

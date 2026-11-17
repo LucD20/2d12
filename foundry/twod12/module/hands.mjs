@@ -5,7 +5,7 @@ import { handSlots } from "./loadout.mjs";
 import { esc } from "./util.mjs";
 
 /** Does this Action need a free hand? */
-export const needsFreeHand = item => !!(item?.system?.traits?.has?.("handle") || /free hand/i.test(String(item?.system?.requirements ?? "")));
+export const needsFreeHand = item => !!(item?.system?.traits?.has?.("handle") || /free hand|hand free/i.test(String(item?.system?.requirements ?? "")));   // v0.0.412: "at least one hand free" (Seizing Cut)
 
 /** What Release can do with the weapons in hand: a two-handed grip becomes one hand, or the weapon is dropped. */
 export function releaseOptions(actor) {

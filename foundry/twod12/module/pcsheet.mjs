@@ -419,10 +419,11 @@ export async function pcModel(sheet, ctx) {
   // ---- Mastery tab
   const mastery = (masteryRows(a) ?? []).map(m => {
     const owned = a.itemTypes.weapon.filter(w => !w.system?.traits?.has?.("barehanded") && groupOf(w).toLowerCase() === m.name.toLowerCase());
-    const marks = [[TECHNIQUE_AT, "Technique"], [8, "Expert"], [15, "Master"]].map(([v, t]) => ({ at: Math.round((v / 15) * 1000) / 10, l: `${v} ${t}`, t: `${v}: ${t}` }));
-    const nextV = [TECHNIQUE_AT, 8, 15].find(v => v > m.value) ?? 15;
-    const one = name => ({ name, value: m.value, next: nextV, pct: Math.min(100, Math.round((m.value / 15) * 1000) / 10), marks, muted: false });
-    return { key: m.key, name: m.name, note: "floor: a third of your best Mastery in its Weapon Group (book; by hand for now)", rows: owned.length ? owned.map(w => one(w.name)) : [{ ...one(m.name), muted: true }] };
+    // v0.0.412 (book, Mastery): the unlocks at 10 (the Technique), 20, 30, 45 and 60
+    const marks = [[TECHNIQUE_AT, "Technique"], [20, ""], [30, ""], [45, ""], [60, ""]].map(([v, t]) => ({ at: Math.round((v / 60) * 1000) / 10, l: `${v}${t ? ` ${t}` : ""}`, t: `${v}: ${t || "to be decided"}` }));
+    const nextV = [TECHNIQUE_AT, 20, 30, 45, 60].find(v => v > m.value) ?? 60;
+    const one = name => ({ name, value: m.value, next: nextV, pct: Math.min(100, Math.round((m.value / 60) * 1000) / 10), marks, muted: false });
+    return { key: m.key, name: m.name, note: "never lower than half your best Mastery in its Weapon Group (counted for you)", rows: owned.length ? owned.map(w => one(w.name)) : [{ ...one(m.name), muted: true }] };
   });
 
   // ---- Upkeep tab

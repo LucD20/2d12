@@ -6,8 +6,11 @@
 // Stored as the actor flag twod12.mastery = { key: { name, value } }.
 import { TWOD12 } from "./config.mjs";
 const F = "twod12";
-export const MASTERY_STEPS = [3, 8, 15];
-export const TECHNIQUE_AT = 3;
+// v0.0.412 (pack F3 part 2; book, Chapter 15, Mastery, 2026-11-16): +1 with one weapon at the end of a won encounter that was normal or harder (the GM
+// says so: masteryAtEncounterEnd), not on a Tier 3; every weapon's unlocks at 10 (its Weapon Technique), 20, 30, 45, 60; a weapon's Mastery is never
+// lower than half the highest of its Weapon Group (computed, not stored: masteryValue).
+export const MASTERY_STEPS = [10, 20, 30, 45, 60];
+export const TECHNIQUE_AT = 10;
 
 /** The kind of weapon a weapon's Mastery counts for: its Mastery group, or its name. */
 export const groupOf = w => String(w?.system?.masteryGroup || w?.name || "").trim();
@@ -34,11 +37,22 @@ export const canGainMastery = (used, combatId, w) => !(!!used && used.combatId =
 /** A flag key for a group ("Great Sword" -> "great-sword"). */
 export const masteryKey = name => String(name ?? "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "weapon";
 export const masteryOf = actor => actor?.getFlag?.(F, "mastery") ?? {};
-export const masteryValue = (actor, group) => Number(masteryOf(actor)[masteryKey(group)]?.value) || 0;
+/** The stored Mastery of a kind (what was gained). */
+export const storedMastery = (actor, group) => Number(masteryOf(actor)[masteryKey(group)]?.value) || 0;
+/** Pure: the floor of a kind's Mastery: half the highest stored Mastery of a weapon of its Weapon Group (rounded down). entries: { key: { name, value } }. */
+export function groupFloor(entries, group) {
+  const g = weaponGroupOf({ name: group, system: {} });
+  if (!g) return 0;
+  let hi = 0;
+  for (const e of Object.values(entries ?? {})) if (weaponGroupOf({ name: e?.name, system: {} }) === g) hi = Math.max(hi, Number(e?.value) || 0);
+  return Math.floor(hi / 2);
+}
+/** A kind's Mastery: what it has, or half the best of its group if that is more (the book: "the group follows"). */
+export const masteryValue = (actor, group) => Math.max(storedMastery(actor, group), groupFloor(masteryOf(actor), group));
 /** The next step a value is working toward ("" past the last). */
 export const nextStep = v => MASTERY_STEPS.find(s => s > v) ?? null;
 /** What a step unlocks (only the first is decided). */
-export const STEP_TEXT = { 3: "Weapon Technique", 8: "(to be decided)", 15: "(to be decided)" };
+export const STEP_TEXT = { 10: "Weapon Technique", 20: "(to be decided)", 30: "(to be decided)", 45: "(to be decided)", 60: "(to be decided)" };
 
 /** Is this Action a Weapon Technique that is still locked for this character? -> { locked, group, value } */
 export function techniqueLock(actor, item) {
@@ -95,7 +109,7 @@ export function masteryRows(actor) {
   const entries = { ...masteryOf(actor) };
   for (const w of actor?.itemTypes?.weapon ?? []) { const k = masteryKey(groupOf(w)); entries[k] ??= { name: groupOf(w), value: 0 }; }
   return Object.entries(entries).map(([key, e]) => {
-    const value = Number(e.value) || 0, next = nextStep(value), prev = [...MASTERY_STEPS].reverse().find(s => s <= value) ?? 0;
+    const value = Math.max(Number(e.value) || 0, groupFloor(entries, e.name || key)), next = nextStep(value), prev = [...MASTERY_STEPS].reverse().find(s => s <= value) ?? 0;
     return {
       key, name: e.name || key, value, owned: owned.get(key) ?? [], next, nextText: next ? STEP_TEXT[next] : "", collapsed: !!e.collapsed,
       technique: value >= TECHNIQUE_AT, pct: next ? Math.round(((value - prev) / (next - prev)) * 100) : 100,
@@ -104,25 +118,45 @@ export function masteryRows(actor) {
   }).sort((a, b) => a.name.localeCompare(b.name));
 }
 
-/** After an Action: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery (posted when a step is reached). */
-export async function masteryAfterRoll(actor, weapon, isWeaponRoll, tiers) {
-  if (actor?.type !== "character" || !weapon || !isWeaponRoll || !tiers.some(t => t === 3)) return;
-  // v0.0.189 (Lucas): only in combat (an encounter that has started, with this creature in it).
+/**
+ * After an Action (v0.0.412; book, Mastery): a [Strike] Action made with a weapon in a started combat is noted (the actor flag masteryStrikes
+ * { combatId, list: [{ key, name }] }): at the end of the encounter, Mastery goes to one of those weapons. No Mastery on a Tier 3 any more.
+ */
+export async function masteryAfterRoll(actor, weapon, isStrike) {
+  if (actor?.type !== "character" || !weapon || !isStrike || !actor.isOwner) return;
   const c = game.combat;
   if (!c?.started || !c.combatants?.some?.(x => x.actor === actor || x.actor?.id === actor.id)) return;
-  // v0.0.343 (Lucas, playtest 4; book, Chapter 15): at most 1 Mastery per Weapon Group in each encounter (stored on the character: { combatId, groups })
-  const used = actor.getFlag(F, "masteryEnc"), lim = masteryLimitKey(weapon);
-  if (!canGainMastery(used, c.id, weapon)) return;
-  const r = await addMastery(actor, weapon, 1);
-  if (!r) return;
-  await actor.setFlag(F, "masteryEnc", { combatId: c.id, groups: [...(used && used.combatId === c.id ? used.groups ?? [] : []), lim] });
-  const what = r.reached.map(s => `<b>${STEP_TEXT[s]}</b> unlocked`).join(", ");
-  const grp = TWOD12.weaponGroups?.[weaponGroupOf(weapon)];
-  const { sysLine } = await import("./sysmsg.mjs");
-  const { esc } = await import("./util.mjs");
-  // v0.0.343: the system's line (was a plain line)
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-medal", `<b>${esc(actor.name)}</b> gains 1 ${esc(r.group)} Mastery (${r.after})${what ? `: ${what}!` : "."}${grp ? ` No more ${esc(grp)} Mastery this encounter.` : ""}`, "mastery") });
+  const st = actor.getFlag(F, "masteryStrikes"), list = st?.combatId === c.id ? [...(st.list ?? [])] : [], key = masteryKey(groupOf(weapon));
+  if (!list.some(x => x.key === key)) await actor.setFlag(F, "masteryStrikes", { combatId: c.id, list: [...list, { key, name: groupOf(weapon) }] });
 }
+/** Pure: the weapons a character made Strikes with in this combat ([{ key, name }]). */
+export const strikesIn = (flag, combatId) => (flag?.combatId === combatId ? flag.list ?? [] : []);
+/**
+ * v0.0.412 (book, Mastery): the encounter was won (the GM said Overcome): the GM says whether it was normal or harder; then each character gains
+ * 1 Mastery with one weapon it made a [Strike] Action with in it (one weapon: at once; several: the GM picks, in the pick window). Active GM.
+ */
+export async function masteryAtEncounterEnd(combat, { picker = null } = {}) {   // picker: a stand-in for the pick window (the tests)
+  if (!game.user?.isActiveGM || !combat) return;
+  const pcs = [...(combat.combatants ?? [])].map(x => x.actor).filter(a => a?.type === "character").filter((a, i, l) => l.indexOf(a) === i);
+  const who = pcs.map(a => ({ a, list: strikesIn(a.getFlag(F, "masteryStrikes"), combat.id) })).filter(x => x.list.length);
+  if (!who.length) return;
+  const pickOne = picker ?? (await import("./pickwindow.mjs")).pickOne;
+  const diff = await pickOne({ title: "Mastery", name: "Mastery", sub: "the encounter was won", icon: "fa-medal", text: "Was the encounter normal or harder (as it was built)? Then each character gains 1 Mastery with one weapon it made a Strike with.",
+    options: [{ k: "yes", l: "Normal or harder", tip: "1 Mastery each" }, { k: "no", l: "Easier", tip: "No Mastery" }] });
+  if (diff !== "yes") return;
+  const { sysLine } = await import("./sysmsg.mjs"), { esc } = await import("./util.mjs");
+  for (const { a, list } of who) {
+    let pick = list[0];
+    if (list.length > 1) { const k = await pickOne({ title: "Mastery", name: a.name, sub: "1 Mastery with one weapon", icon: "fa-medal", text: `${a.name} made Strikes with several weapons: which one gains 1 Mastery?`, options: list.map(x => ({ k: x.key, l: x.name })) }); pick = list.find(x => x.key === k) ?? null; }
+    if (!pick) continue;
+    const before = masteryValue(a, pick.name), after = before + 1;
+    await setMastery(a, pick.key, after, pick.name);
+    const reached = MASTERY_STEPS.filter(s => before < s && after >= s).map(s => `<b>${STEP_TEXT[s]}</b> unlocked`).join(", ");
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-medal", `<b>${esc(a.name)}</b> gains 1 ${esc(pick.name)} Mastery (${after})${reached ? `: ${reached}!` : "."}`) });
+  }
+}
+/** Pure (v0.0.412): an old stored Mastery (Technique at 3, Expert 8, Master 15) on the new scale: an unlocked Technique stays unlocked. */
+export const migrateMasteryValue = v => { const n = Math.max(0, Math.trunc(Number(v)) || 0); return n >= 3 ? 10 + (n - 3) : n * 3; };
 
 export function registerMasteryHooks() {
   // A weapon given to a character opens its Mastery entry (once, by the user who added it).
@@ -150,7 +184,7 @@ export function startMasteryOf(actor) {
   return out;
 }
 /** Choose the weapon of a Starting Mastery: a weapon with its trait the character carries or one from the system's weapons; it starts at that Mastery. */
-export async function chooseStartMastery(actor, itemId) {
+export async function chooseStartMastery(actor, itemId, { picker = null } = {}) {   // picker: a stand-in for the pick window (the tests)
   const sm = startMasteryOf(actor).find(x => x.itemId === itemId);
   if (!sm) return;
   const kinds = new Map();
@@ -160,8 +194,9 @@ export async function chooseStartMastery(actor, itemId) {
     for (const e of (await pack?.getDocuments?.()) ?? []) if (e.type === "weapon" && e.system?.traits?.has?.(sm.trait)) kinds.set(masteryKey(groupOf(e)), groupOf(e));
   } catch (e) { console.warn("twod12 | Starting Mastery: weapons", e); }
   if (!kinds.size) return ui.notifications.warn(`No ${sm.traitName} weapon found.`);
-  const opts = [...kinds].map(([k, n]) => `<option value="${k}">${n}</option>`).join("");
-  const key = await foundry.applications.api.DialogV2.prompt({ window: { title: sm.from }, content: `<p>Choose your ${sm.traitName} weapon: you start with ${sm.value} Mastery with it.</p><select name="k" style="width:100%">${opts}</select>`, ok: { label: "Choose", callback: (ev, btn) => btn.form.elements.k.value }, rejectClose: false });
+  // v0.0.412: the system's pick window (was a DialogV2)
+  const pickOne = picker ?? (await import("./pickwindow.mjs")).pickOne;
+  const key = await pickOne({ title: sm.from, name: sm.from, sub: `Starting Mastery ${sm.value}`, icon: "fa-medal", text: `Choose your ${sm.traitName} weapon: you start with ${sm.value} Mastery with it.`, options: [...kinds].map(([k, n]) => ({ k, l: n })) });
   if (!key) return;
   const name = kinds.get(key), cur = Number(masteryOf(actor)[key]?.value) || 0;
   await setMastery(actor, key, Math.max(sm.value, cur), name);

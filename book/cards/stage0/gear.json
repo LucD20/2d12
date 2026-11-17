@@ -1,5 +1,5 @@
 {
- "_about": "The Weapon Techniques written in the card Structure (book/cards/card-structure.md): the two Basic bows (book/cards/bows-redesign.md) and the two Basic swords (book/cards/swords-redesign.md), decided with Lucas on 2026-11-16. THE BOOK reads these; Foundry and the ruler still read ../gear.json (its Skirmish Shot, Heartseeker, Guarded Cut and Reaping Sweep are set aside in the book) until the Foundry pass. 'weapon' names the Technique's weapon; 'mastery' the Mastery that unlocks it.",
+ "_about": "The Weapon Techniques written in the card Structure (book/cards/card-structure.md): the two Basic bows (book/cards/bows-redesign.md) and the two Basic swords (book/cards/swords-redesign.md), decided with Lucas on 2026-11-16. THE BOOK reads these; Foundry reads these since pack F3 part 2 (v0.0.412) laid over ../gear.json (load.mjs FOUNDRY_OVERLAY: Skirmish Shot, Heartseeker, Guarded Cut and Reaping Sweep leave Foundry); the ruler still reads ../gear.json (its Skirmish Shot, Heartseeker, Guarded Cut and Reaping Sweep are set aside in the book) until the Foundry pass. 'weapon' names the Technique's weapon; 'mastery' the Mastery that unlocks it.",
  "structure": 2,
  "cards": [
   {
@@ -39,7 +39,12 @@
      "label": "Tier 3",
      "text": "[V] 1[W] + [Mod]; [[Bleed]] 2 (Bo/In)."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "automation": "mithril",
+    "automationNote": "its Requirement checked on your turn in a combat (you haven't left your square: your token's moves); the shot, Bleed 1 / Bleed 2 (Bo/In) by Tier."
+   }
   },
   {
    "name": "Circling Shot",
@@ -74,7 +79,12 @@
      "label": "Tier 3",
      "text": "[V] 1[W] + [Mod]; you Evade 1 to a square that is no farther from the target."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "automation": "mithril",
+    "automationNote": "the Setup's Evade 1 (the button), the shot; the Tier 3's Evade 1 (the button) to a square no farther from the target: by hand."
+   }
   },
   {
    "name": "Seizing Cut",
@@ -112,7 +122,12 @@
      "label": "Tier 3",
      "text": "[V] 1[W] + [Mod]; [[Slid]] 1, then [[Grabbed]]."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "automation": "mithril",
+    "automationNote": "its Requirement (a free hand: Release offered, as Handle Actions); the Reposition 1 (Tiers 1 and 2), the Slide 1 then Grabbed (Tier 3): the buttons; the holding hand marked busy by hand."
+   }
   },
   {
    "name": "Thwart Cut",
@@ -150,7 +165,12 @@
      "label": "Special",
      "text": "This Pressed ends if you stop threatening the target."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "automation": "mithril",
+    "automationNote": "Pressed 1 / 1 / 2 (EoT) by Tier (a condition: Pressure Banes on its [Strike] rolls); it ends when you stop threatening the target: by hand."
+   }
   }
  ]
 }

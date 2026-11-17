@@ -140,3 +140,19 @@ const SEG = {
 export function whereButtons(kind, where) {
   return (SEG[kind] ?? []).map(([v, l, tip]) => ({ v, l, tip, on: v === where, drop: v === "dropped" }));
 }
+
+/**
+ * v0.0.412 (pack F3 part 2; book, Hands and Strung, 2026-11-16): pure: the Banes a [Strike, Weapon] Action takes for the hand its weapon is in.
+ * In the off hand: 2 (a Light weapon 1); a weapon in both hands: none; a Strung weapon (every bow) never takes them, but takes 3 while the other
+ * hand holds something; Fists (barehanded, a free hand): 1 with only the off hand free. weapons: the creature's; w: the weapon used; fists: the
+ * Fists are used. Returns { banes, why } (banes 0: nothing). A Two-handed weapon in one hand is derivedMods' (effects.mjs).
+ */
+export function handBanes(weapons, w, fists = false) {
+  const slots = handSlots(weapons), has = p => !!traitsOf(w).has?.(p);
+  if (fists) { const free = slots.filter(s => s.free).map(s => s.hand); return free.length && !free.includes("main") ? { banes: 1, why: "Fists with only your off hand free: 1 Bane" } : { banes: 0, why: "" }; }
+  if (!w) return { banes: 0, why: "" };
+  const hand = handOf(weapons, w.id);
+  if (has("strung")) { const other = slots.some(s => !s.free && s.id !== w.id); return other ? { banes: 3, why: `${w.name} is Strung and your other hand holds something: 3 Banes` } : { banes: 0, why: "" }; }
+  if (hand === "off") return has("light") ? { banes: 1, why: `${w.name} in your off hand (Light): 1 Bane` } : { banes: 2, why: `${w.name} in your off hand: 2 Banes` };
+  return { banes: 0, why: "" };
+}

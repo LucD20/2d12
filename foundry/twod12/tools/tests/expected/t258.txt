@@ -1,0 +1,32 @@
+Arming Sword | 0/1d4+3/1d6+4 | traits melee | hands 1
+Longsword | 0/1d4+6/1d6+9 | traits melee,twohanded | hands 2
+Hunting Bow | 0/1d4+1/1d4+2 | traits projectile,ranged,strung | hands 1
+Recurve Bow | 0/1d4+1/1d6+1 | traits projectile,ranged,strung | hands 1
+Dagger | 0/1d4+2/1d4+4 | traits light,melee,thrown | hands 1
+gone (replaced): none
+traits: Light / Strung | help: true true
+groups: Arming Sword: swords | Longsword: swords | +1 Longsword: swords | Hunting Bow: bows | Recurve Bow: bows | Dagger: daggers | Odd Stick: -
+main hand: {"banes":0,"why":""}
+off hand, Light: {"banes":1,"why":"Dagger in your off hand (Light): 1 Bane"}
+off hand: {"banes":2,"why":"Handaxe in your off hand: 2 Banes"}
+both hands: {"banes":0,"why":""}
+Strung, other hand free: {"banes":0,"why":""} | other hand full: {"banes":3,"why":"Hunting Bow is Strung and your other hand holds something: 3 Banes"}
+Strung in the off hand, the other free: {"banes":0,"why":""}
+Fists, main hand free: {"banes":0,"why":""} | only the off hand free: {"banes":1,"why":"Fists with only your off hand free: 1 Bane"}
+used on every [Strike, Weapon] roll: true
+Wounding Shot | Weapon Technique | mithril | requires: You haven't left your square this turn.
+Circling Shot | Weapon Technique | mithril | requires: -
+Seizing Cut | Weapon Technique | mithril | requires: You have at least one hand free.
+Thwart Cut | Weapon Technique | mithril | requires: -
+dropped: none
+weapons point to them: Arming Sword: Seizing Cut | Longsword: Thwart Cut | Hunting Bow: Wounding Shot | Recurve Bow: Circling Shot
+Pressed: effect | valued true | [{"type":"boonbane","boons":0,"banes":1,"all":["strike"],"any":[],"none":[],"byValue":true,"bbName":"pressure"}]
+a hand free: true true false
+square not left: true false | stateNow keeps it: {"key":"k","moved":false,"left":false,"last":"","altUsed":false,"moreW":false}
+links unwrapped: true true true
+Shifting Aim's Starting Mastery: [["projectile",5]]
+Aveline carries: Longsword, Fists
+Sylwen carries: Dagger, Hunting Bow, Fists
+Kaela carries: Dagger, Recurve Bow, Fists
+old weapons: Shortbow -> Recurve Bow | Longbow -> Hunting Bow | Greatsword -> Longsword | Longsword -> Arming Sword | Longsword (2H) -> stays | Dagger -> stays
+asked in the pick window, after the Archer's: true | the new weapon in the old one's place, its Technique, the old one's gone: true | registered: true
