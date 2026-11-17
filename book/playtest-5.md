@@ -127,6 +127,7 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
 - **G7, a rule:** the book says creatures in a Line give no Cover to each other; other areas only "Cover from the Point of Origin". Proposed:
   creatures inside an area never give Cover against it (walls and objects do), for every area (asked).
 - **H1** as written: Steadiness applies without asking; asked only for a Forced Movement on an ally.
+- **Lucas: G1-G3 yes, G7 yes.**
 
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 
@@ -198,3 +199,44 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
 
 ### H. Rules and settings
 - **H1** Apply Steadiness without asking; ask only when the Forced Movement is on an ally.
+
+## 3. The plan (Claude, 2026-11-17, after the review; nothing built yet)
+
+**Lucas's standing rule, repeated for this work (2026-11-17): "all effects need to be able to be recreated in Foundry, for homebrew purposes, no
+hard coding unless it's conditions and rules."** Every item below is either a general rule of the system or a setting / data on the card that a
+GM can set on his own item; nothing looks for a card's name.
+
+**Version 1, the fixes (Foundry; no design needed; unblocks the next playtest):**
+1. **The blocker:** a click anywhere on an action button uses it, a right-click opens its rule or item (C12: Heal / Rally Points; G5: Slip
+   Away's Advance).
+2. **Automation:** a condition written in a Tier applies when its Tier lands, for every card (G1-G3; a rule of the system, read from the
+   card's text, so a homebrew card gets it too); a condition or effect chip dragged from the chat onto a token applies it (G1); Rebuke's Hindered
+   (G8) and Slip Away's movement (G6) traced with a test first, then fixed; Judge asks for a target, with none an "Apply Effect" button (G4);
+   Steadiness without asking, asked only on an ally (H1); the HUD hides Techniques not unlocked (D6).
+3. **The chat:** follow a growing card (C1); the Steadiness line in its card (C2); remove Bloodied / Strained, the Reactions' use and "next
+   damage reduced" lines, "is Down", the movement lines (C3-C6); the stamp stretched (C7); the doubles Critical's arrow over CRIT, the CRIT zone
+   only on a Critical (C8, C9); Bloodied in the Vigor red (C11); the Save card shows the card's Effect line (a stopgap until its redesign).
+4. **The roll dialog:** the roll line only where the card has one (B1); the calculated blue readable in dark (B4); "2x At-will use" (A2).
+5. **Sheets, HUD, strip:** the row's pill "Turn · 1R" (E2); the item sheet's traits as plain words (E4); a sheet's own light theme (E5, traced);
+   Rally Points editable by the player with a chat line (E7); the NPC sheet's image fix (E8); the HUD's both Modifiers and no Vigor / Resolve
+   words (D2's content), no jump (D5), centered icons (D8); the AP pips (F1); Bloodied / Strained off the strip (F2).
+6. **The Encounter Log:** damage to allies apart from damage to enemies, creatures of the same name numbered, a Setup's movement inside its
+   Action, an area skipping creatures out of the fight.
+7. **Mithril and Diamond retired:** each card's automation field carries Claude's Bronze / Silver / Gold rating (data on the card, editable);
+   CLAUDE.md's Mithril rule goes, with-lucas.txt stays as history (A5).
+
+**Version 2, the rules (the book first, then Foundry):**
+1. **Chapter 2, Stacking:** an effect tied to the creature that gave it ("Judged by you") is a different effect for each creature (two Judges
+   stack). **Judge:** "Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier"
+   (Foundry: a general "can reduce once a round" option of a damage-reduction rule, offered in the Reactions message; not code for Judge).
+2. **Areas (Chapter 3):** creatures inside an area never give Cover against it; walls and objects do (G7; Foundry's Cover follows).
+3. **The card Structure:** a Special that says how the roll is made goes above the Attack line (A1: Darting Blade, every card checked).
+4. **NPC cards (the Bestiary):** a "Tier 2 or 3" rider goes into Tiers 2 and 3 as "Pushed N" (A3); "Distance: Reach (X)" for melee attacks
+   (A4; in Foundry X is the creature's Reach, read from the sheet).
+
+**Then, design (mockups first, the standing rule):** the HUD (D1, D3, D4, D7: the Situational section with Linked Actions, Forced Movements,
+Stand / Crawl while Prone, a Setup's movement, End movement, Judge's choice and the triggers; D2's small rebuild); the Save card (C10); the
+sheets (E1, E3: the PC and NPC sheets small, the one-page long, the short card); then CARD-ONE step 4 (the one-page on the model).
+
+**Also:** the tooltip stage (an inventory of every tooltip, categorized, for Lucas's review before anything is removed); CARD-ONE step 5 (one
+card stylesheet; B3 and E6: one color per subtype with a dark variant), steps 6 and 7; the Minions' shared slot as an option (low priority).

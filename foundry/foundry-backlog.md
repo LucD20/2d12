@@ -55,7 +55,9 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] **BUILT v0.0.412.** **The weapon property Light** (the Dagger and the Handaxe).
 - [ ] **Line of Effect for every effect:** whatever an Action or a feature does to a creature needs Line of Effect to it (not only its targets); a part with no line is skipped and the rest happens.
 
-## PLAYTEST 5 (Lucas, 2026-11-17; book/playtest-5.md, the notes A1 to H1 and the log's points; under review, nothing built)
+## PLAYTEST 5 (Lucas, 2026-11-17; book/playtest-5.md: the review is done, the plan is its section 3: version 1 the fixes, version 2 the rules, then the mockups; nothing built yet)
+- **The standing rule, repeated (Lucas, 2026-11-17): every effect can be recreated in Foundry for homebrew; no hard coding but conditions and rules** (a general rule or a setting on the item; never a card's name).
+- [ ] **G1-G3 (Lucas: yes):** a condition written in a Tier applies when its Tier lands, for every card (a rule of the system, read from the card's text); a condition / effect chip dragged from the chat onto a token applies it.
 - [ ] **The Encounter Log (from the log's review):** the damage table splits damage to enemies from damage to allies (Lucas: "good idea"); creatures of the same name are numbered (GS1, GS2...); a Setup's movement is written as part of its Action ("Strafe (Setup: Advance 2)"); an area skips a creature that is out of the fight.
 - [ ] **A Reaction's condition not applied:** Rebuke's Hindered (G8) and Snap Shot's Hindered (G3): the Orc moved 4 more squares while it should have been Hindered.
 - [ ] **Minions' shared slot** (an optional rule; Foundry offers nothing today; Lucas had forgotten it): an option in the Initiative window to put up to 3 Minions in one slot, off by default. Low priority.
