@@ -1206,7 +1206,10 @@ export async function useAction(actor, item, opts = {}) {
     if (auto.length && cmsg) await attachGrantCard(cmsg, actor, auto);
   }
   // v0.0.261 (Lucas, Divine Intervention): a Reaction with a moment runs its chain by itself on the creature it answered for (no Apply button)
-  if (it.moment && version.noTiers && String(version.after ?? "").trim() && targets.length) {
+  // v0.0.418 (playtest 5, G8: Rebuke's Hindered never landed): a Save Action that deals no damage has no Damage button either, so its chain (its
+  // Effect line: "The target is Hindered (EoT)") runs now on its targets, whatever they roll; a damaging one's chain waits for its damage
+  const saveNoDamage = saveAct && !version.noTiers && !["t1", "t2", "t3"].some(t => (version[t] ?? []).length);
+  if ((it.moment && version.noTiers || saveNoDamage) && String(version.after ?? "").trim() && targets.length) {
     const { runAfter } = await import("./inline.mjs");
     // v0.0.272 (pack RX): only its first step: the steps after a @Pause ("After the damage") stay buttons on the card (applyAfterHtml from step 1)
     try { await runAfter(chainSteps(version.after)[0]?.chips.join(" ") ?? "", { actor, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })), attrVal: src.kind ? (Number(src.mod) || 0) : null, message: cmsg, source: item.name }); } catch (e) { console.warn("twod12 | moment chain", e); }
@@ -1270,6 +1273,19 @@ export async function useAction(actor, item, opts = {}) {
     } catch (e) { console.warn("twod12 | Opening Shot", e); }
   }
   if (it.marksTarget && game.user.targets.size) { try { await setQuarry(actor, [...game.user.targets][0], it.markKind ?? ""); } catch (e) { console.warn("twod12 | marking", e); } }
+  // v0.0.418 (playtest 5, G4: Judge with no target did nothing): used with no target, it asks on the map (click the creature's token); skipped,
+  // the card keeps an Apply Effect button that marks the creature targeted when it is clicked
+  else if (it.marksTarget) {
+    try {
+      const { pickBar } = await import("./pickbar.mjs"), mine = new Set(actor.getActiveTokens?.().map(t => t.id) ?? []);
+      const toks = (canvas?.tokens?.placeables ?? []).filter(t => t.actor && !mine.has(t.id) && t.visible !== false && !t.document?.hidden);
+      const id = toks.length ? await pickBar({ icon: "fa-crosshairs", text: `<b>${esc(item.name)}</b>: which creature? Click its token.`, options: toks.map(t => ({ id: t.id, label: t.name, token: t })), cancel: "Later" }) : null;
+      const tok = id && id !== "done" ? toks.find(t => t.id === id) : null;
+      const { postFollow } = await import("./followup.mjs");
+      if (tok) { await setQuarry(actor, tok, it.markKind ?? ""); if (cmsg) await postFollow(cmsg, "fa-crosshairs", `<b>${esc(tok.name)}</b> ${it.markKind === "judge" ? "is Judged by" : "is marked by"} <b>${esc(actor.name)}</b>.`); }
+      else if (cmsg) await postFollow(cmsg, "fa-crosshairs", `No target: ${await enrich(`@Mark[${it.markKind ?? ""}]{Apply Effect}`, item)} (target the creature, then click).`);
+    } catch (e) { console.warn("twod12 | marking with no target", e); }
+  }
   // v0.0.412 (book, Mastery): the weapon a Strike was made with is noted for the encounter's end (no Mastery on a Tier 3 any more)
   if (!version.noTiers) { try { await masteryAfterRoll(actor, weapon, useTraits.has("strike")); } catch (e) { console.warn("twod12 | Mastery", e); } }
   // A version that rolls applies its automatic effects on use too, for the Tier each creature got: the tier's effects, the Effects row
@@ -1441,7 +1457,10 @@ export async function rollDamage(message, { again = false } = {}) {
     for (const x of version.fx?.[`t${tier}`] ?? []) { try { const e = await fromUuid(x.uuid); if (e) riderHtml.push(`<span class="fxname">${esc(e.name)}</span>`); } catch (e) { /* gone */ } }
     // v0.0.338 (Lucas: "the Critical should show on the damage chat card too"): a Critical's line under the Tier's
     if (crit && String(version.critical ?? "").trim()) riderHtml.push(`<b class="cc-critl">Critical:</b> ${await enrich(String(version.critical).trim(), item)}`);
-    return { comps, fx, chip, rolls, riders: riderHtml };
+    // v0.0.418 (Lucas, playtest 5, G1-G3): the conditions written in the Tier's text are applied when its damage lands (a rule of the system,
+    // read from the card's text, so a homebrew card gets it too): the chips, kept for the damage card (ccdamage.mjs applyRow)
+    const conds = String(xt ?? "").match(/@Condition\[[^\]]*\]/g) ?? [];
+    return { comps, fx, chip, rolls, riders: riderHtml, conds };
   };
   if (f.results?.length) {
     // Several targets: the damage is rolled once per Tier and dealt to every creature on that Tier (Several Targets), posted in one card.
@@ -1455,13 +1474,13 @@ export async function rollDamage(message, { again = false } = {}) {
     if (rows.length) {
       const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283: one group per Tier (damage rolled once per Tier), the rider written once under it
       const tiers = [...byTier.keys()].sort((a, b) => b - a);
-      await postCcDamage({ actor, title: item.name, groups: tiers.map(t => ({ tier: t, crit: false, comps: byTier.get(t).comps, fx: byTier.get(t).fx, riders: byTier.get(t).riders })), targets: rows.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: tiers.indexOf(r.tier) })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });
+      await postCcDamage({ actor, title: item.name, groups: tiers.map(t => ({ tier: t, crit: false, comps: byTier.get(t).comps, fx: byTier.get(t).fx, riders: byTier.get(t).riders, conds: byTier.get(t).conds })), targets: rows.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: tiers.indexOf(r.tier) })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });
     }
   } else {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "", !!f.crit);
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
-    await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
+    await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
   if (empUsed) await markEmpoweredUsed(actor);
   // (the card is no longer collapsed: v0.0.388, the damage is on it)

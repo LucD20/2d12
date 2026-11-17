@@ -5,6 +5,7 @@
 // pick bar (pickbar.mjs) asks its question in the HUD's middle while a choice waits. Client settings: Show the HUD, Skip roll dialog, Hotbar in the HUD.
 import { emptyHudHtml, hudPanelHtml, HUD_SAVES } from "./hudmodel.mjs";
 import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, HUD_TABS_PC, HUD_TABS_NPC, FREQ_ORDER, FREQ_LABEL } from "./hudview.mjs";
+import { techniqueState } from "./mastery.mjs";   // v0.0.418 (D6)
 
 const F = "twod12";
 const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set() };
@@ -72,7 +73,8 @@ async function actionsOf(actor) {
     return { id: i.id, name: i.name, freq: freq || "none", fq: FREQ_COLORS[freq] ?? FREQ_COLORS.none, roll: rollLine(actor, i), dim: lock || (!!row?.off && list.every(v => v.off)), versions: list, pc: actor.type !== "npc",
       basic: !!i.getFlag(F, "basic"), basicAttack: !!it.basicAttack, reaction: !!it.reaction, escalation: Number(it.escalation) || 0, minAp: Math.min(99, ...vs.map(v => Number(v.ap) || 0)) };
   };
-  return { pc, list: actor.itemTypes.action.map(i => one(i)), one };
+  // v0.0.418 (playtest 5, D6: Seizing Cut showed though Durgan lacked the Mastery): a Technique not unlocked is left out, as on the sheet
+  return { pc, list: actor.itemTypes.action.filter(i => techniqueState(actor, i) !== "locked").map(i => one(i)), one };
 }
 /* v0.0.390 (PACK HUD2): the models of the new HUD (module/hudview.mjs draws them). */
 const nn = v => Math.max(0, Math.trunc(Number(v)) || 0);

@@ -370,13 +370,37 @@ Hooks.once("ready", registerVersionTabs);
 
 // "Roll Damage" buttons on action cards (delegated so it works regardless of chat re-rendering).
 Hooks.once("ready", () => { try { registerInitiativeSocket(); } catch (e) { console.warn("twod12 | initiative socket", e); } });   // v0.0.310: the players' Initiative windows
+/** v0.0.418: the chips whose name opens the item they name (a left click on the name); the others are used wherever they are clicked. */
+const NAMES_ITEM = new Set(["Condition", "Effect", "Use"]);
 Hooks.once("ready", async () => {
+  // v0.0.418 (playtest 5, C12): a right-click on a chip opens its rule (a movement, Heal, Guard...) or the item it names
+  document.addEventListener("contextmenu", async ev => {
+    const inl = ev.target.closest?.("[data-twod12-inline]");
+    if (!inl || ["Book", "Pause"].includes(inl.dataset.twod12Inline)) return;
+    ev.preventDefault();
+    try { const { openChip } = await import("./inline.mjs"); await openChip(inl.dataset.twod12Inline, JSON.parse(inl.dataset.cfg), { message: game.messages.get(inl.closest("[data-message-id]")?.dataset.messageId) ?? null }); } catch (err) { console.warn("twod12 | chip's rule", err); }
+  });
+  // v0.0.418 (playtest 5, G1: "it couldn't be dragged from the chat to the token"): a condition or effect chip dragged onto a token applies to it
+  document.addEventListener("dragstart", ev => {
+    const inl = ev.target.closest?.("[data-twod12-inline]");
+    if (!inl || !["Condition", "Effect"].includes(inl.dataset.twod12Inline)) return;
+    try { ev.dataTransfer.setData("text/plain", JSON.stringify({ type: "twod12Chip", kind: inl.dataset.twod12Inline, cfg: JSON.parse(inl.dataset.cfg), messageId: inl.closest("[data-message-id]")?.dataset.messageId ?? "" })); } catch (err) { /* no data */ }
+  });
+  Hooks.on("dropCanvasData", (cv, data) => {
+    if (data?.type !== "twod12Chip") return;
+    const hits = canvas.tokens.placeables.filter(t => t.visible && t.actor && t.bounds.contains(data.x, data.y)), token = hits[hits.length - 1];
+    if (!token) { ui.notifications.warn("Drop it on a token."); return false; }
+    import("./inline.mjs").then(m => m.dropChip(data.kind, data.cfg, token.document, game.messages.get(data.messageId) ?? null)).catch(err => console.warn("twod12 | a dropped chip", err));
+    return false;
+  });
   document.addEventListener("click", async ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");
     if (inl) {
       ev.preventDefault();
-      // v0.0.352 (Lucas, Step 6): the icon uses the chip, the name opens what it names (a Book or a step marker: as before)
-      if (!["Book", "Pause"].includes(inl.dataset.twod12Inline) && !ev.target.closest?.("i, img, svg, .ti-use")) {
+      // v0.0.352 (Lucas, Step 6): the icon uses the chip, the name opens what it names. v0.0.418 (Lucas, playtest 5, C12: "Clicking Heal ... is
+      // just opening the Rally Points book entry"): only a chip that names an item opens it on its name (a condition, an effect, an Action to
+      // use); every other chip (Heal, Rally, Guard, a movement, Damage...) is used wherever it is clicked; a right-click opens its rule or item
+      if (NAMES_ITEM.has(inl.dataset.twod12Inline) && !ev.target.closest?.("i, img, svg, .ti-use")) {
         try { const { openChip } = await import("./inline.mjs"); if (await openChip(inl.dataset.twod12Inline, JSON.parse(inl.dataset.cfg), { message: game.messages.get(inl.closest("[data-message-id]")?.dataset.messageId) ?? null })) return; } catch (err) { console.warn("twod12 | chip name", err); }
       }
       try { await handleInline(inl.dataset.twod12Inline, JSON.parse(inl.dataset.cfg), { message: game.messages.get(inl.closest("[data-message-id]")?.dataset.messageId) ?? null }); } catch (err) { console.error("twod12 | inline roll failed", err); }

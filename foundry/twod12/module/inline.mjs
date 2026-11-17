@@ -89,6 +89,7 @@ export function parseInline(kind, inner) {
     if (lab) cfg.label = lab.replace(/^label\s*:\s*/i, "");
     return cfg;
   }
+  if (kind === "Mark") { cfg.kind = String(segs[0] ?? "").trim().toLowerCase(); return cfg; }   // v0.0.418: @Mark[judge]
   if (kind === "Condition") {
     cfg.cond = segs[0].trim().toLowerCase();
     for (const s of segs.slice(1)) {
@@ -215,6 +216,7 @@ function mkEl(kind, cfg, label, icon) {
   a.classList.add("twod12-inline");
   a.dataset.twod12Inline = kind;
   a.dataset.cfg = JSON.stringify(cfg);
+  if (kind === "Condition" || kind === "Effect") a.draggable = true;   // v0.0.418 (playtest 5, G1): dragged onto a token, it applies there (twod12.mjs)
   // v0.0.352 (Step 6): the icon uses the chip, the name opens what it names (twod12.mjs's click; openChip)
   a.innerHTML = `${icon.startsWith("<") ? icon : `<i class="fa-solid ${icon}"></i>`} <span class="ti-name">${esc(label)}</span>`;
   return a;
@@ -281,7 +283,7 @@ export function registerInline() {
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause|Swap|ShakeOff)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause|Swap|ShakeOff|Mark)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
@@ -296,6 +298,7 @@ export function registerInline() {
       if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
       if (kind === "Swap") return inlineEl("Swap", cfg, match[3] ?? "Swap squares", "fa-right-left");   // v0.0.410 (Hold the Line, Trade Places)
       if (kind === "ShakeOff") return inlineEl("ShakeOff", cfg, match[3] ?? "Shake Off: the Save", "fa-droplet-slash");   // v0.0.414 (book, Shake Off)
+      if (kind === "Mark") return inlineEl("Mark", cfg, match[3] ?? "Apply Effect", "fa-crosshairs");   // v0.0.418 (playtest 5, G4: Judge with no target)
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
         const el = mkEl("Book", cfg, cfg.label ?? match[3] ?? cfg.ref, "fa-book-open");
@@ -446,6 +449,10 @@ async function resolveSaveTier(actor, title, subtitle, cfg, tier, pre = null) {
   if (parts.uuids.length && (!dealt || dealt.landed)) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));
     for (const u of parts.uuids) names.push((await fromUuid(u))?.name ?? "?");
+  }
+  // v0.0.418 (playtest 5): the conditions written in the Tier's text, as on an attack (when its damage landed, or a Tier with no damage)
+  if (!dealt || dealt.landed) for (const chip of String(cfg.tiers[`t${tier}`] ?? "").match(/@Condition\[[^\]]*\]/g) ?? []) {
+    try { await applyConditionChip(chip, { targets: [{ uuid: actor.uuid, name: actor.name }], actor: cfg.actorUuid ? await fromUuid(cfg.actorUuid).catch(() => null) : null }); names.push(chip.match(/^@Condition\[([^|\]]*)/)[1]); } catch (e) { console.warn("twod12 | a Tier's condition", e); }
   }
   const applied = dealt && !dealt.landed ? `${esc(actor.name)} takes <b>${esc(summary)}</b>: the rest of this Tier doesn't happen.`
     : `${esc(actor.name)}${summary ? ` takes <b>${summary}</b> damage` : ""}${names.length ? `${summary ? "; " : " gains "}${esc(names.join(", "))}` : ""}.`;
@@ -812,6 +819,7 @@ export async function handleInline(kind, cfg0, ctx = {}) {
   if (kind === "Swap") return handleSwap(cfg, ctx);
   if (kind === "EndEffect") return handleEndEffect(cfg, ctx);
   if (kind === "ShakeOff") return handleShakeOff(cfg, ctx);
+  if (kind === "Mark") return handleMark(cfg, ctx);
   if (kind === "Guard") return handleGuard(cfg, ctx);
   if (kind === "Effect") return handleEffect(cfg, ctx);
   if (kind === "Move") return handleMove(cfg, ctx);
@@ -827,6 +835,25 @@ export async function handleInline(kind, cfg0, ctx = {}) {
   if (kind === "SaveCard") return postSaveCard(cfg, ctx);
   if (kind === "Template") return startTemplate(cfg, ctx);
   if (kind === "Boon") return boonFlow(cfg, ctx);
+}
+
+/**
+ * v0.0.418 (playtest 5, G4): the @Mark[kind] chip ("@Mark[judge]{Apply Effect}"): the card's creature marks the selected or targeted token, as its
+ * Action does when used with a target (mark.mjs; the kind "judge": Judged). Judge's card shows it when the Action was used with no target.
+ */
+async function handleMark(cfg, ctx = {}) {
+  const f = ctx.message?.getFlag?.("twod12", "action");
+  let user = null; try { const d = f?.actorUuid ? await fromUuid(f.actorUuid) : null; user = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { user = null; }
+  user ??= ctx.actor ?? null;
+  if (!user) return ui.notifications.warn("This button works from the card of the Action that marks.");
+  const mine = new Set(user.getActiveTokens?.().map(t => t.id) ?? []);
+  const tok = [...(game.user?.targets ?? [])].find(t => t.actor && !mine.has(t.id)) ?? (canvas.tokens?.controlled ?? []).find(t => t.actor && !mine.has(t.id));
+  if (!tok) return ui.notifications.warn("Target the creature first, then click the button.");
+  const { setQuarry } = await import("./mark.mjs");
+  await setQuarry(user, tok, cfg.kind ?? "");
+  const { postFollow } = await import("./followup.mjs");
+  const what = cfg.kind === "judge" ? "is Judged by" : "is marked by";
+  if (ctx.message) await postFollow(ctx.message, "fa-crosshairs", `<b>${esc(tok.name)}</b> ${what} <b>${esc(user.name)}</b>.`);
 }
 
 /**
@@ -921,6 +948,21 @@ async function handleReloadWeapon(ctx = {}) {
 }
 
 /** The condition goes on the targets of the card (or the targeted / selected tokens), with the duration written on the button. */
+/** v0.0.418 (playtest 5, G1-G3): apply a condition chip ("@Condition[prone]", "@Condition[dazed|value:1]") to the context's targets, as its
+ *  button would (the origin: ctx.actor). Used when a Tier lands (ccdamage.mjs applyRow, resolveSaveTier). */
+/** v0.0.418 (playtest 5, G1): a condition or effect chip dropped on a token: it applies to that token, as its button would (the card's creature the
+ *  origin). */
+export async function dropChip(kind, cfg, tokenDoc, message = null) {
+  const targets = [{ uuid: tokenDoc.uuid, name: tokenDoc.name }];
+  if (kind === "Condition") return handleCondition({ ...cfg, crit: false, to: "" }, { targets, message });
+  if (kind === "Effect") return handleEffect({ ...cfg, who: "targets" }, { targets, message });
+}
+export async function applyConditionChip(chip, ctx = {}) {
+  const m = String(chip).match(/^@Condition\[([^\]]*)\]/);
+  if (!m) return;
+  return handleCondition(parseInline("Condition", m[1]), ctx);
+}
+
 async function handleCondition(cfg, ctx = {}) {
   const msg = ctx.message;
   const f = msg?.getFlag?.("twod12", "action") ?? msg?.getFlag?.("twod12", "dmgCard");
@@ -1112,7 +1154,7 @@ export async function saveDamage(msg) {
   const cfg = st.cfg, m = msg.getFlag("twod12", "cc");
   const tiers = [...new Set(ready.map(x => x.r.result.tier))].sort((a, b) => a - b);
   const groups = tiers.map(t => { const parts = parseParts(cfg.tiers[`t${t}`]), first = ready.find(x => x.r.result.tier === t).r.result;
-    return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: [...parts.uuids, ...(cfg.fx?.[`t${t}`] ?? [])].map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [] }; });
+    return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: [...parts.uuids, ...(cfg.fx?.[`t${t}`] ?? [])].map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [], conds: String(cfg.tiers[`t${t}`] ?? "").match(/@Condition\[[^\]]*\]/g) ?? [] }; });
   let actor = null; try { actor = cfg.actorUuid ? await fromUuid(cfg.actorUuid) : null; } catch (e) { actor = null; }
   const { postCcDamage } = await import("./ccdamage.mjs");
   await postCcDamage({ actor, title: cfg.source || m?.name || "Save", groups, targets: ready.map(({ r }) => ({ uuid: r.uuid, name: r.name, tier: r.result.tier, g: tiers.indexOf(r.result.tier) })), nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id, into: msg, after: cfg.after ?? "", save: true });
@@ -1171,6 +1213,10 @@ export async function saveRoll(msg, idx) {
     chk.dcLabel = "DC";
     const r = ccRowOf(chk, actor.name, row.uuid, TWOD12.attributes[key]);
     if (!comps.length && parts.uuids.length) await applyEffects(parts.uuids, [actor.uuid], originInfo(cfg.actorUuid ?? ""));
+    // v0.0.418 (playtest 5): a Tier with no damage gives its conditions now (with damage, they ride on the Damage button when it lands)
+    if (!comps.length) for (const chip of String(cfg.tiers[`t${chk.tier}`] ?? "").match(/@Condition\[[^\]]*\]/g) ?? []) {
+      try { await applyConditionChip(chip, { targets: [{ uuid: actor.uuid, name: actor.name }], actor: cfg.actorUuid ? await fromUuid(cfg.actorUuid).catch(() => null) : null }); } catch (e) { console.warn("twod12 | a Tier's condition", e); }
+    }
     const result = { total: chk.total, tier: chk.tier, row: r, ccComps: comps.map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), tierDmg: shared ? null : comps };
     if (game.user.isGM || msg.isAuthor) await storeSaveResult(msg.id, idx, result);
     else game.socket.emit("system.twod12", { type: "saveResult", messageId: msg.id, idx, result });
@@ -1185,6 +1231,9 @@ export async function saveRoll(msg, idx) {
   if (parts.uuids.length && (!dealt || dealt.landed)) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));
     for (const u of parts.uuids) { const b = `\u2726 ${(await fromUuid(u))?.name ?? "?"}`; bits.push(b); extras.push(b); }
+  }
+  if (!dealt || dealt.landed) for (const chip of String(cfg.tiers[`t${chk.tier}`] ?? "").match(/@Condition\[[^\]]*\]/g) ?? []) {
+    try { await applyConditionChip(chip, { targets: [{ uuid: actor.uuid, name: actor.name }], actor: cfg.actorUuid ? await fromUuid(cfg.actorUuid).catch(() => null) : null }); } catch (e) { console.warn("twod12 | a Tier's condition", e); }
   }
   const tip = `${TWOD12.attributes[key]} ${sgn(mod)}${chk.adj ? `, modifier ${sgn(chk.adj)}` : ""}: 2d12 ${chk.d1.join("+")} + ${chk.d2.join("+")}${chk.bo ? `, +${chk.bo} Boon${chk.bo === 1 ? "" : "s"}` : ""}${chk.ba ? `, \u2212${chk.ba} Bane${chk.ba === 1 ? "" : "s"}` : ""}${chk.five ? `, 5 b/b: ${chk.five === "favored" ? "Favored" : "Doomed"}` : ""}${chk.doubles ? ", doubles" : ""} = ${chk.total} vs DC ${dc} (${saveLabels(dc)[chk.tier - 1]})${comps.length ? `. Damage: ${comps.map(c => `${c.formula} [${c.dice.map(d => d.results.join("+")).join(" ")}] = ${c.total}`).join("; ")}` : ""}`;
   const result = {

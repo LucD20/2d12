@@ -1006,10 +1006,17 @@ const bodyDamage = n => ({ B: { l: n, n: 0 }, M: { l: 0, n: 0 } });
 /** The value of a Forced Movement or Reposition against a creature with this Steadiness (never below 0; a negative Steadiness counts as 0). */
 export const reducedValue = (N, steady) => Math.max(0, num(N) - Math.max(0, num(steady)));
 
-async function applySteadiness(target, N, label) {
+/** Pure (v0.0.418, playtest 5, H1): is the Steadiness question asked? Only when the creature moving it is its ally (a willing creature can choose
+ *  not to apply it); against an enemy it simply applies. */
+export const asksSteadiness = (origin, target) => {
+  const d = t => t?.document?.disposition ?? t?.disposition;
+  return !!origin && !!target && origin !== target && d(origin) !== undefined && d(origin) === d(target);
+};
+async function applySteadiness(target, N, label, origin = null) {
   const st = steadinessOf(target.actor), steady = st.total;   // v0.0.174: with the bonuses of Features, Talents and effects
   if (!steady) return { N, steady: 0, applied: false };
   const eff = reducedValue(N, steady);
+  if (!asksSteadiness(origin, target)) return { N: eff, steady, applied: true };
   const from = st.parts.length ? ` (${st.base} + ${st.parts.map(p => `${p.name} ${p.bonus >= 0 ? "+" : "\u2212"}${Math.abs(p.bonus)}`).join(", ")})` : "";
   // v0.0.415 (pack CL): the pick window (was a DialogV2); closing it applies the Steadiness (the default)
   const { pickTwo } = await import("./pickwindow.mjs");
@@ -1022,7 +1029,7 @@ async function applySteadiness(target, N, label) {
 
 async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   const label = MOVE_LABEL[mode];
-  const st = await applySteadiness(target, N0, label), N = st.N;
+  const st = await applySteadiness(target, N0, label, opts.by?.document ? opts.by : origin), N = st.N;
   const { postFollow } = await import("./followup.mjs");   // v0.0.347 (Step 3): the lines go into the card that moved it (opts.msg)
   // v0.0.404 (Lucas: "just say 'X was Pushed Y by Z', one line, done, and merge with the Action that caused it"): one line into the card (opts.msg)
   const byName = esc((opts.by ?? origin)?.name ?? "");
@@ -1157,7 +1164,17 @@ const handled = new Map();
 const keyOf = (doc, x, y) => `${doc.id}|${Math.round(x)}|${Math.round(y)}`;
 const seen = k => { const t = handled.get(k); return t && Date.now() - t < 3000; };
 const mark = k => { handled.set(k, Date.now()); if (handled.size > 50) for (const [kk, t] of handled) if (Date.now() - t > 3000) handled.delete(kk); };
-const currentCombatantFor = doc => { const c = game.combat?.started ? game.combat.combatant : null; return c && c.tokenId === doc.id ? c : null; };
+/** The combatant whose movement a drag of this token is: the one whose turn it is, or (v0.0.418, playtest 5, G6: Slip Away's Evade 1 wasn't
+ *  counted) a creature off its turn that a Reaction gave free squares (an Evade, an Advance). */
+export function currentCombatantFor(doc) {
+  if (!game.combat?.started) return null;
+  const c = game.combat.combatant;
+  if (c && c.tokenId === doc.id) return c;
+  const off = game.combat.combatants?.find?.(x => x.tokenId === doc.id);
+  return off && offTurnFree(off) > 0 ? off : null;
+}
+/** Pure: the free squares a combatant has off its turn (a Reaction's Evade or Advance); it has no Walk of its own then. */
+export const offTurnFree = c => num(c?.getFlag?.(F, "evadeMove")) + num(c?.getFlag?.(F, "freeMove"));
 const gridUnit = () => canvas.grid?.distance || canvas.scene?.grid?.distance || 1;
 
 /** The straight line of a Charge: from the center of the start square to the center of the end square. */
@@ -1426,6 +1443,8 @@ export function registerMovement() {
       }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
       if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);
+      // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)
+      if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6) { warn(`${c.name} has ${offTurnFree(c)} free square${offTurnFree(c) === 1 ? "" : "s"} left (it isn't its turn). Choose a shorter path, or use End movement.`); return false; }
       mark(keyOf(doc, to.x, to.y));
       chargeMovement(c, squares, to, { par }).catch(e => console.error("twod12 | could not charge movement", e));
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
