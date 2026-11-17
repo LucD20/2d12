@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foundry Action Card</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap">
+<style>
+/* Step 5 of the Foundry style plan: the Action card in the book's look, with the Structure (book/cards/card-structure.md).
+   The page chrome follows the viewer's theme; the two columns are fixed Dark and Light (in Foundry: the Applications setting). */
+:root{--bg:#fbf8f1;--fg:#1d1b18;--dim:#5d574d;--line:#b9b1a2;--acc:#7a5418;
+  --sans:"Source Sans 3",system-ui,sans-serif;--serif:"Source Serif 4",Georgia,serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1a17;--fg:#e9e3d6;--dim:#a9a194;--line:#5b5448;--acc:#d2a75a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1a17;--fg:#e9e3d6;--dim:#a9a194;--line:#5b5448;--acc:#d2a75a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--sans)}
+.wrap{max-width:74rem;margin:0 auto;padding:1.5rem 16px 4rem}
+h1{font:600 1.7rem/1.2 var(--serif);margin:0 0 .4rem}
+h2{font:600 1.25rem/1.3 var(--serif);margin:2.4rem 0 .4rem;padding-top:1rem;border-top:1px solid var(--line)}
+p,li{max-width:52rem}.sub{color:var(--dim)}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem;margin-top:.8rem}
+@media (max-width:820px){.cols{grid-template-columns:minmax(0,1fr)}}
+.cap{font-size:.9rem;color:var(--dim);margin:.3rem 0 0}
+.today{display:grid;grid-template-columns:minmax(0,26rem) minmax(0,1fr);gap:1.5rem;align-items:start}
+@media (max-width:820px){.today{grid-template-columns:minmax(0,1fr)}}
+.today img{width:100%;height:auto;display:block;border:1px solid var(--line)}
+ol.changes li{margin:.25rem 0}
+
+/* ---------- the two themes of the system (Foundry: .theme-dark / .theme-light) ---------- */
+.th-dark{--pg:#1f1c18;--pg2:#28241d;--hair:#3a362f;--rule:#5b5448;--ink:#e9e3d6;--ink2:#a9a194;--acc2:#d2a75a;--tint:#25221d;
+  --pv:#ef8a96;--pr:#8db3ff;--good:#8fd69b;--bad:#ff9c92;--stampink:#1c1a17;--fq-enc:#a8615c;--fq-atw:#6f8f52;color-scheme:dark}
+.th-light{--pg:#f4ede0;--pg2:#eae0c8;--hair:#d8d1c3;--rule:#b9b1a2;--ink:#1d1b18;--ink2:#5d574d;--acc2:#7a5418;--tint:#fbf8f1;
+  --pv:#8a1d2a;--pr:#1f3f8a;--good:#234d27;--bad:#8a1c13;--stampink:#fbf8f1;--fq-enc:#b98a85;--fq-atw:#8fa67a;color-scheme:light}
+.surf{background:var(--pg);color:var(--ink);padding:14px;border:1px solid var(--hair);min-width:0}
+.surf>.lab{font:600 .78rem var(--sans);color:var(--ink2);margin:0 0 .5rem;letter-spacing:.02em}
+
+/* ---------- a sheet row (the table look; Steps 2 and 3) ---------- */
+.row{display:grid;grid-template-columns:4px 14px minmax(0,1fr) auto auto;align-items:center;gap:0 10px;padding:6px 8px 6px 0;border-top:1px solid var(--hair);font-size:15px}
+.row .strip{align-self:stretch;background:var(--fq)}
+.row .chev{width:7px;height:7px;border-right:2px solid var(--ink2);border-bottom:2px solid var(--ink2);transform:rotate(45deg);justify-self:center;margin-top:-4px}
+.row.closed .chev{transform:rotate(-45deg);margin-top:0}
+.row b{font-weight:700}.row small{display:block;color:var(--ink2);font-size:12.5px;line-height:1.2}
+.row .cost{font-weight:600;font-variant-numeric:tabular-nums}
+.use{font:600 13px/1 var(--sans);color:var(--ink);background:none;border:1px solid var(--acc2);border-radius:0;padding:5px 9px;cursor:pointer;white-space:nowrap}
+.use:hover,.use:focus-visible{background:var(--acc2);color:var(--stampink);outline:0}
+.use.no{border-style:dashed;color:var(--ink2);text-decoration:line-through;cursor:not-allowed}
+.use.no:hover{background:none;color:var(--ink2)}
+
+/* ---------- the card: the book's .acard (book/rules.css, "the card"), unchanged where it can be ---------- */
+.acard{background:var(--tint);border-top:2px solid var(--acc2);border-bottom:2px solid var(--acc2);padding:.5rem .8rem .6rem;font:400 15px/1.5 var(--sans);font-variant-numeric:lining-nums tabular-nums;color:var(--ink)}
+.inrow{margin:2px 0 8px 18px}
+.ahead{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 14px;margin-bottom:.15rem}
+.ahead>b{font:700 1.1rem var(--sans);color:var(--acc2);flex:1 1 auto}
+.ahead .ameta{font-weight:600;margin-left:auto}
+.flavor{font:italic 400 15.5px/1.45 var(--serif);color:var(--ink2);margin:.05rem 0 .25rem}
+.traits{display:flex;flex-wrap:wrap;align-items:baseline;font-weight:600;padding-bottom:.2rem;margin-bottom:.25rem;border-bottom:1px solid var(--acc2)}
+.traits i.dot{font-style:normal;margin:0 .45em;opacity:.55}
+.traits .auto{margin-left:auto;font-weight:400;font-size:13px;color:var(--ink2)}
+.cgrid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 1.5rem}
+.cgrid b,.cl>b{font-weight:700}
+.cl{display:grid;grid-template-columns:6.4rem minmax(0,1fr);gap:.6rem;margin:.1rem 0}
+.pv{color:var(--pv);font-weight:600}.pr{color:var(--pr);font-weight:600}
+.cblock{margin-top:.45rem;border-top:1px solid var(--rule);padding-top:.3rem}
+.traits+.cblock,.cgrid+.cblock{border-top:0}
+.cbh{display:flex;align-items:center;gap:.6rem;color:var(--acc2);font-weight:700;margin-bottom:.1rem}
+.cbh .use{margin-left:auto}
+.cblock.off>:not(.cbh){opacity:.5}
+.cbh .why{font-weight:400;font-size:13px;color:var(--ink2);margin-left:auto}
+.cbh .why+.use{margin-left:0}
+.term{text-decoration:underline dotted var(--rule);text-underline-offset:3px;cursor:help}
+.chg{font-size:13.5px;font-weight:600;white-space:nowrap}.chg.up{color:var(--good)}.chg.down{color:var(--bad)}
+/* what Foundry adds (not book text): under one hairline, in the same labeled-line grid */
+.live{margin-top:.45rem;padding-top:.35rem;border-top:1px solid var(--hair)}
+.live .cl{align-items:center}
+.live .cl>b{font-weight:600;color:var(--ink2)}
+.roll{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .8rem}
+.roll .m{font-weight:700}
+.roll .g{color:var(--good)}.roll .g::before{content:"+ ";font-weight:700}
+.roll .b{color:var(--bad)}.roll .b::before{content:"\25BC  ";font-size:.75em}
+.roll .na{color:var(--ink2);text-decoration:line-through}
+.roll .use{margin-left:auto}
+.ruler{font-size:13px;color:var(--ink2);margin-top:.3rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Foundry Action Card</h1>
+<p class="sub">Step 5 of the Foundry style plan. The Action card takes the book's look and the book's Structure together: the same card you read in the Paladin document, with what Foundry adds (the Use buttons, Your roll, what effects change) under it. Drawn with Smite (one Version) and Judge (two Versions, each a block). Dark on the left, Light on the right: with step 4's decision, each player's Foundry setting (Applications) picks one.</p>
+
+<h2>Today</h2>
+<div class="today">
+<div><img src="data:image/png;base64,@@TODAY@@" alt="Today's Smite card in Foundry, dark: a title bar, trait chips with group labels, a Tier table with colored rows, an Effects list, Your roll chips and the Flavor at the bottom"><p class="cap">Today's card (dark), with steps 2 and 3 already drawn in: the old Smite, old structure.</p></div>
+<div>
+<p><strong>What changes, top to bottom:</strong></p>
+<ol class="changes">
+<li><strong>The frame:</strong> the book's flat tinted panel with a bronze rule above and below, in the place of the double frame.</li>
+<li><strong>The Flavor goes to the top</strong>, in the serif italic, as in the book (today it closes the card under three diamonds).</li>
+<li><strong>The traits:</strong> words in group order, separated by dots, a bronze line under them; no chips, no group labels (the book's decision). The automation mark stays, quiet, at the right.</li>
+<li><strong>The Structure's lines:</strong> Distance and Target, then one labeled line each (Attack, Tier 1, Tier 2, Tier 3, Special…), in the place of the Tier table and the Effects list. A Version is a block with its cost as the header.</li>
+<li><strong>The Tier lines carry no color.</strong> The Tier colors (palette A) stay for results: the chat's stamp and ladder.</li>
+<li><strong>The Use button</strong> (step 3's: outlined in the accent, filled on hover): in each Version's header; with one Version, at the end of the Your roll line.</li>
+<li><strong>Your roll</strong> becomes a labeled line under a hairline: the Modifier, then Boons in the success color with a "+", Banes in the failure color with a "▼" (never color alone). The chips' boxes go.</li>
+<li><strong>What effects change</strong> (Empowered, a bonus die) stays as a short note after its line, in the success or failure color.</li>
+<li><strong>Glossary terms</strong> keep their tooltip and lose their color: a dotted underline.</li>
+</ol>
+</div>
+</div>
+
+<h2>Open on a sheet (under its row)</h2>
+<p class="sub">The row is the card's head, as today: the card adds no title. Durgan, Escalation 2, Empowered 1, Radiant Zeal active, Hindered; 1 AP left, so Judge's 1 AP Version can be paid but a 2 AP Smite can't (shown on the second card).</p>
+<div class="cols">
+@@OPEN_DARK@@
+@@OPEN_LIGHT@@
+</div>
+
+<h2>Read only (the chat's Card button, the Action sheet's preview, a hover card, the class window)</h2>
+<p class="sub">No Use buttons, no Your roll: the book's card as it is, with its name and "Frequency · Cost" on top.</p>
+<div class="cols">
+@@SOLO_DARK@@
+@@SOLO_LIGHT@@
+</div>
+
+<h2>What this does not decide</h2>
+<ul class="sub">
+<li><strong>The data.</strong> This look needs the Structure's Foundry pass (foundry-backlog.md, "The Paladin's redesign in Foundry"): the cards' labeled lines and blocks become the item's data. The two go together; the card isn't restyled on the old structure first.</li>
+<li><strong>The Place Area chip</strong> becomes the same outlined button, in the Area line. The Ruler line (Designer mode only) stays as a small grey line at the bottom.</li>
+<li><strong>Not tried in Foundry.</strong> The text is the book's; the numbers on Durgan are made up for the picture.</li>
+</ul>
+</div>
+</body>
+</html>
