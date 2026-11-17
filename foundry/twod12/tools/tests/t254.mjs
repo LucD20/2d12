@@ -50,3 +50,10 @@ console.log("the settings:", ["hudParty", "hudFolded", "rxChime", "rxFloat", "rx
   "| the name on the map, only for the one who answers:", ov.includes('if (showName && r.answerer === game.user.id)'), "| resources by right-click:", hud.includes("async function adjust(actor, res, d)"));
 console.log("the carousel: the HUD's marks, the health tag, Momentum, plain words:", car.includes("marksHtml(") && car.includes('<div class="tp-tag') && car.includes("tc-mom") && css.includes("#twod12-carousel .tp-band { font-variant: normal !important;"),
   "| the styles in rem:", css.includes(".twod12-hud .hb-ln > b { font-size: .81rem;"), "| the bar 150 px, folded 40:", css.includes(".twod12-hud.is-bar { height: 150px;") && css.includes(".twod12-hud.is-bar.is-folded { height: 40px;"));
+console.log("--- v0.0.392 (Lucas, testing v0.0.391)");
+const g2 = V.tokenBarHtml({ ...m, side: { grants: [{ name: "Weapon Attack → Ogre Chieftain", freq: "granted", grant: { effect: "e1", index: 0, target: "t1" }, stamps: [{ ap: 0, label: "0 AP" }], sub: "from Double Shot" }], cancels: [{ effect: "e1", source: "Double Shot" }] } });
+console.log("the granted uses top right, in the accent:", g2.includes('<div class="hb-side"><div class="hb-gr"><div class="hb-grh">Granted by Double Shot') && g2.includes('data-hud="grant" data-ap="0" data-effect="e1" data-index="0" data-target="t1"') && g2.includes('data-hud="grantcancel"'),
+  "| the side panel kept in a small window while they wait:", g2.includes('class="hb-bar-wrap rx"'));
+const mo = src("module/moment.mjs");
+console.log("no Reaction taken: the message removed:", mo.includes('if (!st.rows.some(r => r.state === "use")) {') && mo.includes("await L.msg?.delete();"), "| a bronze bell, not a beep:", hud.includes("[0.5, 0.35, 2.4], [1, 0.6, 1.8]") && !hud.includes("[[880, 0], [1320, 0.12]]"),
+  "| the card's x, a second right-click closes it:", hud.includes('class="hc-x"') && hud.includes('.hb-ln[data-item-id="${item.id}"]'), "| the HUD see-through:", css.includes(".twod12-hud.is-bar { background: color-mix(in srgb, var(--hud-bg) 80%, transparent);"));

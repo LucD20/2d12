@@ -81,6 +81,15 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.392 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.391
+- [ ] **No target:** use a targeting Action with nothing targeted: the roll dialog opens (no bottom-bar prompt), "No target" with a DC box and a **Target** button; press Target, click a creature: the dialog shows it. Roll with no target: against the DC typed. The chat card's retarget button works as before.
+- [ ] **A Reaction nobody takes** (everyone passes, or the clock runs out): its chat message disappears.
+- [ ] **The chime:** a small bell, struck twice.
+- [ ] **Granted uses (Double Shot):** top right of the HUD, in the accent, a line per use with its target, Cancel.
+- [ ] **The Action card from the HUD:** the × closes it; right-click the same Action again: it closes.
+- [ ] **The HUD's background** a little see-through; the hairlines between the marks with more room; the carousel's Swap on one line.
+- [ ] **Not done yet (Lucas asked for it): several manual targets.** "Add target, up to the amount of targets of the action, which you can set manual DCs": the dialog has one "No target" row with its DC; several rows with their own DCs need the multi-target roll to take creatures with no token (each its own Tier on the chat card). Logged for the next pack.
+
 ## v0.0.391 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.390
 - [ ] **A small window:** shrink the browser: the HUD stays whole (narrower columns, then the fold button only, then no side panel); names end in "…", the stamps stay on one line.
 - [ ] **The hotbar:** at the HUD's right end again, two rows of five, its pages; in a small window it sits above the HUD (as before).

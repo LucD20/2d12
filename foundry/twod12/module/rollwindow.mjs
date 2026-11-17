@@ -35,6 +35,9 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     el.addEventListener("contextmenu", ev => {
       // v0.0.293 (Lucas): a right-click on a chip added by hand is one step less (Situational ×2 → Situational); its × removes it
       // v0.0.294 (Lucas): a right-click on the quick button (or an "Add here:" button) that adds a chip takes one step off it too
+      // v0.0.392: "Target": Foundry's target tool on the token layer (the window is live: the creatures targeted on the map fill it)
+      const tb = ev.target.closest('button[data-act="targetmode"]');
+      if (tb) { ev.preventDefault(); try { if (ui.controls?.activate) ui.controls.activate({ control: "tokens", tool: "target" }); else ui.controls?.initialize?.({ control: "token", tool: "target" }); } catch (e) { console.warn("twod12 | target tool", e); } ui.notifications?.info?.("Click the creatures to target them; the roll window follows."); return; }
       const qb = ev.target.closest('button[data-act="quick"]');
       if (qb) { ev.preventDefault(); ev.stopPropagation(); RD.stepManual(this.st, qb.dataset.scope, qb.dataset.k); this.render(); return; }
       const man = ev.target.closest("[data-manual]");

@@ -4878,3 +4878,26 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.chat .grantrow .gbtns button i, .twod12.chat .grantrow .gbtns button img { display: none; }
 .twod12.chat .grantrow .gbtns button.gl-cancel { flex: 0 0 auto; border-color: var(--s-hair, #cdb88a); color: var(--s-mute, #5d5446); }
 .twod12.chat .grantrow .gl-used { flex: 1 1 100%; color: var(--s-mute, #5d5446); font-size: .78rem; background: none; border: 0; padding: 1px 0; }
+/* ==== v0.0.392 (Lucas, testing v0.0.391) ==== */
+/* more room around the hairlines between the marks */
+.twod12-hud .hm-sep { margin: 0 6px; }
+#twod12-carousel .tp-marks .hm-sep { margin: 0 4px; }
+#twod12-carousel .tp:not(.act) .tp-marks .hm-ap i { width: 7px; height: 7px; }
+#twod12-carousel .tp:not(.act) .tp-marks { padding-left: 2px; padding-right: 2px; }
+#twod12-carousel .tp.act .tp-swap i { margin-right: 3px; }
+/* the HUD a little see-through, as Foundry's own panels (Lucas's examples): the map shows behind it */
+.twod12-hud.is-bar { background: color-mix(in srgb, var(--hud-bg) 80%, transparent); backdrop-filter: blur(3px); }
+.twod12-hud .hb-pc, .twod12-hud .hb-mom, .twod12-hud .hb-none { background: color-mix(in srgb, var(--hud-bg) 80%, transparent); backdrop-filter: blur(3px); }
+.twod12-hud .hb-por { background: transparent; }
+/* the HUD's Action card: an x in its corner */
+.twod12-hudcard { position: fixed; }
+.twod12-hudcard > .hc-x { position: absolute; top: 2px; right: 2px; z-index: 2; width: 20px; height: 20px; line-height: 16px; padding: 0; font-size: 16px; border: 1px solid var(--s-hair, #4a4132); border-radius: 0; background: var(--s-pg, #1f1c18); color: var(--s-ink, #ece3cf); cursor: pointer; }
+.twod12-hudcard > .hc-x:hover { border-color: var(--s-gold, #d2a75a); }
+/* the granted uses, top right, in the accent */
+.twod12-hud .hb-gr { padding: 4px 9px 5px; border-bottom: 1px solid var(--hud-hair); box-shadow: inset 2px 0 0 var(--s-gold, #d2a75a); background: color-mix(in srgb, var(--s-gold, #d2a75a) 10%, transparent); }
+.twod12-hud .hb-grh { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: .75rem; color: var(--s-gold, #d2a75a); margin-bottom: 1px; }
+.twod12-hud .hb-grh .hb-btn { margin-left: auto; }
+.twod12-hud .hb-gr .hb-ln { border-bottom-color: color-mix(in srgb, var(--s-gold, #d2a75a) 30%, transparent); }
+/* the roll dialog's Target button beside the DC of "No target" */
+.twod12.rolldlg .rd-tgtbtn { width: auto; height: auto; margin-left: 6px; padding: 0 8px; font: 600 .75rem/1.6 "Source Sans 3", sans-serif; border: 1px solid var(--s-gold, #7a5418); border-radius: 0; background: none; color: inherit; cursor: pointer; }
+.twod12.rolldlg .rd-tgtbtn:hover { background: var(--s-gold, #7a5418); color: var(--s-pg, #f4ede0); }

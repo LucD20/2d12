@@ -7,7 +7,7 @@ the card's bonus row links its source: true | no None type: true | the damage ca
 --- targeting mode
 needs targets: true true true false false false false
 Twin Shot: target 2 creatures (1 of 2). Click a token, or press T over it.
-wired: true
+wired (v0.0.392: no prompt; the roll dialog's 'No target' DC and its Target button): true
 --- combat
 swap shown with no ally left (the click warns): true | a creature added mid-combat is shown: true | Mastery only in combat: true
 --- cards

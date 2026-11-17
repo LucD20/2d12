@@ -163,7 +163,7 @@ async function barModel(actor, token = null) {
       if (!cancels.some(x => x.effect === ef.id)) cancels.push({ effect: ef.id, source });
     });
   }
-  const act = [...grants, ...list.filter(a => !a.basic && !a.reaction && !a.escalation).map(lineOf)];
+  const act = list.filter(a => !a.basic && !a.reaction && !a.escalation).map(lineOf);
   const rx = list.filter(a => a.reaction && !a.escalation).map(lineOf);
   const basic = list.filter(a => a.basic && !a.reaction).map(lineOf);
   const escLines = [...actor.itemTypes.feature.filter(f => Number(f.system?.escalation) > 0).map(f => ({ id: f.id, name: f.name, freq: "none", fqColor: FREQ_COLORS.none, pass: true, state: (e?.n ?? 0) >= Number(f.system.escalation) ? "working" : `at ${f.system.escalation}`, sub: `Escalation ${f.system.escalation}` })),
@@ -176,7 +176,7 @@ async function barModel(actor, token = null) {
   const tab = wait && setting("rxHud", true) ? "rx" : st.tab;
   if (grants.length && !st.tabChosen) st.tab = "act";
   const cols0 = tab === "rx" ? colsOf(rx) : tab === "basic" ? colsOf(basic, { maxCols: 4 }) : tab === "esc" ? colsOf(escLines.map(l => ({ ...l, freq: "none" })), { per: 3 }).map((c, i) => ({ ...c, label: i ? "" : "Escalation" })) : colsOf(act);
-  const cols = cols0.map(c => (c.key === "granted" && !cols0.slice(cols0.indexOf(c) + 1).some(x => x.key === "granted") ? { ...c, cancels } : c));
+  const cols = cols0;
   // the identity column
   const sg = v => (Number(v) > 0 ? `+${Number(v)}` : Number(v) < 0 ? `−${-Number(v)}` : "0");
   const speed = nn(s.moveSpeed ?? s.speed), base = nn(s.speed);
@@ -194,7 +194,7 @@ async function barModel(actor, token = null) {
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
     marks: cb ? marksHtml(cb) : "", escN: e?.n ?? 0, escMax: e?.max ?? 0, defs, tabs, tab, cols, rxAlert: !!wait,
-    side: { hands, conds, condLabel: npc ? "On it" : "On you", rx: wait && setting("rxHud", true) ? wait : null },
+    side: { hands, conds, condLabel: npc ? "On it" : "On you", rx: wait && setting("rxHud", true) ? wait : null, grants, cancels },
     folded: !wait && !!setting("hudFolded", false), cond: conds.map(c => `${c.name}${c.dur ? ` (${c.dur})` : ""}`).join(" · ")
   };
 }
@@ -357,18 +357,19 @@ async function showCardNow(actor, item, at) {
   const { buildActionCard } = await import("./actioncard.mjs");
   const div = document.createElement("div");
   div.className = "twod12-hudcard";
-  div.innerHTML = await buildActionCard(item, { actor });
+  div.innerHTML = `<button type="button" class="hc-x" aria-label="Close the card" title="Close">&times;</button>${await buildActionCard(item, { actor })}`;
   document.body.append(div);
   const r = at.getBoundingClientRect();
   div.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - div.offsetWidth - 8))}px`;
   div.style.bottom = `${Math.max(8, window.innerHeight - r.top + 8)}px`;
   st.card = div; st.cardId = item.id;
   div.addEventListener("click", ev => {
+    if (ev.target.closest(".hc-x")) { ev.preventDefault(); return closePop({ keepOpen: true }); }
     const b = ev.target.closest("[data-action='useVersion'][data-ap]");
     if (b && !b.disabled) { ev.preventDefault(); closePop(); use(actor, item, Number(b.dataset.ap), ev.shiftKey); }
   });
   // v0.0.385 (Lucas: "clicking the action again should close the card, not blink it"): a press on this Action's name is left to the click, which closes it
-  const sameName = ev => !!ev.target.closest?.(`.ha[data-item-id="${item.id}"] [data-hud="card"]`);
+  const sameName = ev => !!ev.target.closest?.(`.ha[data-item-id="${item.id}"] [data-hud="card"], .hb-ln[data-item-id="${item.id}"]`);
   setTimeout(() => document.addEventListener("pointerdown", function away(ev) { if (sameName(ev)) return; if (!div.contains(ev.target)) { div.remove(); if (st.card === div) st.card = null; document.removeEventListener("pointerdown", away, true); } }, true), 0);
 }
 /** v0.0.381 (Lucas): right-click on a PC's Version stamp pins it to (or unpins it from) the Quick row, at once. */
@@ -468,9 +469,17 @@ export function chime() {
   try {
     const AC = globalThis.AudioContext ?? globalThis.webkitAudioContext; if (!AC) return;
     let vol = 0.5; try { vol = Number(game.settings.get("core", "globalInterfaceVolume")) || 0.5; } catch (e) { vol = 0.5; }
-    const ctx = new AC(), t = ctx.currentTime;
-    [[880, 0], [1320, 0.12]].forEach(([f, at]) => { const o = ctx.createOscillator(), g = ctx.createGain(); o.type = "sine"; o.frequency.value = f; g.gain.setValueAtTime(0, t + at); g.gain.linearRampToValueAtTime(0.12 * vol, t + at + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + at + 0.45); o.connect(g).connect(ctx.destination); o.start(t + at); o.stop(t + at + 0.5); });
-    setTimeout(() => ctx.close?.(), 1200);
+    // v0.0.392 (Lucas: "sounds too tech, we need some more medieval like"): a small bronze hand bell struck twice: a bell's inharmonic partials
+    // (hum, prime, minor third, fifth, nominal), each fading at its own pace, a soft strike and a long ring
+    const ctx = new AC(), t = ctx.currentTime, base = 392;
+    const out = ctx.createGain(); out.gain.value = 0.16 * vol; out.connect(ctx.destination);
+    const strike = (at, k) => [[0.5, 0.35, 2.4], [1, 0.6, 1.8], [1.2, 0.3, 1.4], [1.5, 0.22, 1.1], [2, 0.4, 0.9], [2.74, 0.12, 0.5], [4.2, 0.06, 0.3]].forEach(([r, a, d]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain(); o.type = "sine"; o.frequency.value = base * k * r;
+      g.gain.setValueAtTime(0, t + at); g.gain.linearRampToValueAtTime(a, t + at + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + at + d);
+      o.connect(g).connect(out); o.start(t + at); o.stop(t + at + d + 0.05);
+    });
+    strike(0, 1); strike(0.32, 1.335);
+    setTimeout(() => ctx.close?.(), 3200);
   } catch (e) { /* no sound */ }
 }
 function onRxMessage(msg) {

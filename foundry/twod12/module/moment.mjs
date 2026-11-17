@@ -493,6 +493,14 @@ async function resolveStack(L) {
   if (st.hold && st.base?.face?.actorUuid && sourceDown(st)) st.base.never = true;
   st.resolving = false; st.done = true; st.resolvedAt = Date.now();
   freezePositions(st);
+  // v0.0.392 (Lucas: "When no reaction is taken, just remove the reaction chat message to unclutter the chat")
+  if (!st.rows.some(r => r.state === "use")) {
+    try { await L.msg?.delete(); } catch (e) { console.warn("twod12 | Reactions message", e); }
+    live.delete(st.id); finished.set(st.id, { st, msg: null });
+    if (finished.size > 20) finished.delete(finished.keys().next().value);
+    L.resolve({ id: st.id, used, never: !!st.base?.never });
+    return;
+  }
   // v0.0.278 (Lucas: "after its resolve, put the chat message at the bottom"): the resolved line is posted again under the Reactions' cards
   // and the live message is removed (still one message for the moment)
   L.msg = await toBottom(L.msg, st);

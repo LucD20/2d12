@@ -21,7 +21,7 @@ console.log("--- targeting mode");
 const T = (targets, traits = [], area = "") => ({ targets, traits: new Set(traits), area });
 console.log("needs targets:", [T("One creature"), T("Two creatures"), T("The triggering creature"), T("One creature", ["self"]), T("All creatures in the Area", [], "2 Emanation"), T("Allies within 5 squares"), T("")].map(TG.needsTargets).join(" "));
 console.log(TG.bannerText("Twin Shot", 2, 1));
-console.log("wired:", act.includes("const pk = await pickTargets(need, item.name);") && act.includes("dc: opts.noTargetDc ?? dcInfo.dc,"));
+console.log("wired (v0.0.392: no prompt; the roll dialog's 'No target' DC and its Target button):", !act.includes("await pickTargets(") && act.includes("dc: opts.noTargetDc ?? dcInfo.dc,") && fs.readFileSync(new URL("../../module/rolldlg.mjs", import.meta.url), "utf8").includes('data-act="targetmode"'));
 console.log("--- combat");
 const car = src("module/carousel.mjs");
 console.log("swap shown with no ally left (the click warns):", car.includes('<button type="button" class="tp-swap'), "| a creature added mid-combat is shown:", car.includes("for (const c of combat.combatants) if (!turns.includes(c)) turns.push(c);"), "| Mastery only in combat:", src("module/mastery.mjs").includes("if (!c?.started ||"));

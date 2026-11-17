@@ -422,7 +422,7 @@ function creaturesHtml(inp, st, v) {
   if (!inp.multi) {
     const c = live[0], own = chipsOf(inp, st, c.uuid);
     // v0.0.340: "No target" (an area with no creature, an Action rolled without one): its DC typed here (13 by default)
-    const dcIn = c.uuid === "none" ? `<label class="rd-dcin">DC <input type="number" min="1" max="40" data-field="noTargetDc" value="${Number(c.dc) || 13}" aria-label="The DC to roll against"></label>` : "";
+    const dcIn = c.uuid === "none" ? `<label class="rd-dcin">DC <input type="number" min="1" max="40" data-field="noTargetDc" value="${Number(c.dc) || 13}" aria-label="The DC to roll against"></label><button type="button" class="rd-tgtbtn" data-act="targetmode" data-tooltip="Target creatures on the map: the window follows">Target</button>` : "";
     return `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}${dcIn || defBadge(c, hide)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
   }
   const three = anyThree(inp, st);

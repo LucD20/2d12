@@ -556,8 +556,8 @@ const CAR_B = `
 .twod12-type.twod12-type #twod12-carousel .tp.act { width: 136px; }
 /* v0.0.391 (Lucas: "the whole strip is occupying too much vertical space"): Move and Swap side by side on the acting plate */
 .twod12-type.twod12-type #twod12-carousel .tp.act { flex-direction: row; flex-wrap: wrap; } .twod12-type.twod12-type #twod12-carousel .tp.act > * { flex: 0 0 100%; }
-.twod12-type.twod12-type #twod12-carousel .tp.act > .tp-por { flex: 0 0 auto; } .twod12-type.twod12-type #twod12-carousel .tp.act > .tp-move { flex: 1 1 0; min-width: 0; padding: 2px 4px; }
-.twod12-type.twod12-type #twod12-carousel .tp.act > .tp-swap { flex: 1 1 0; min-width: 0; height: auto; line-height: 18px; border-left: 1px solid ${T.hair}; }
+.twod12-type.twod12-type #twod12-carousel .tp.act > .tp-por { flex: 0 0 auto; } .twod12-type.twod12-type #twod12-carousel .tp.act > .tp-move { flex: 0 1 auto; min-width: 0; padding: 2px 6px; white-space: nowrap; }
+.twod12-type.twod12-type #twod12-carousel .tp.act > .tp-swap { flex: 1 1 0; min-width: 0; height: auto; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; padding: 0 3px; border-left: 1px solid ${T.hair}; }
 .twod12-type.twod12-type #twod12-carousel .tp-band { order: 2; height: auto; padding: 11px 4px 0; margin-top: -10px; background: rgba(26,23,19,.94); font: 700 11px/13px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; color: ${T.mute}; border-top: 2px solid #8c7d63; }
 .twod12-type.twod12-type #twod12-carousel .tp.d1 .tp-band { color: #9fcf7a; border-top-color: #5c9a34; } .twod12-type.twod12-type #twod12-carousel .tp.dm1 .tp-band { color: #ea8f84; border-top-color: #c0453b; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-band { color: ${T.gold}; border-top-color: ${T.gold}; background: rgba(26,23,19,.94); }
 .twod12-type.twod12-type #twod12-carousel .tp-por { order: 1; position: relative; z-index: 2; width: 46px; height: 46px; margin: 0 auto; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-por { width: 58px; height: 58px; }

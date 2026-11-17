@@ -76,9 +76,11 @@ export function sideHtml(s = {}) {
   const conds = (s.conds ?? []).length ? `<div class="line cond"><span class="k">${esc(s.condLabel ?? "On you")}</span>${s.conds.map(c => `<a data-hud="effect" data-effect="${esc(c.id)}" role="button" tabindex="0">${esc(c.name)}${c.dur ? ` <small>${esc(c.dur)}</small>` : ""}</a>`).join("")}</div>` : "";
   const extra = s.resist ? `<div class="line"><span class="k">Damage</span>${esc(s.resist)}</div>` : "";
   const top = hands || conds || extra ? `<div class="hb-sb">${hands}${extra}${conds}</div>` : "";
+  // v0.0.392 (Lucas: "The granted section should be more obvious, likely adding in the right corner"): the uses an Effect grants, on top, in the accent
+  const gr = (s.grants ?? []).length ? `<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}" title="${esc(`Give up the uses left from ${x.source}`)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>` : "";
   const rx = s.rx ? `<div class="hb-info alert"><b>Reaction: ${esc(s.rx.name)}</b> (${esc(s.rx.cost)})<br>${esc(s.rx.lead)}<div class="hb-rxb"><button type="button" class="hb-btn" data-hud="rx" data-msg="${esc(s.rx.msg)}" data-row="${n0(s.rx.row)}" data-k="rxUse">Use · ${esc(s.rx.cost)}</button><button type="button" class="hb-btn q" data-hud="rx" data-msg="${esc(s.rx.msg)}" data-row="${n0(s.rx.row)}" data-k="rxPass">Pass</button></div></div>` : "";
   const notes = !rx && s.notes ? `<div class="hb-info">${esc(s.notes)}</div>` : !rx ? '<div class="hb-info"></div>' : "";
-  return `<div class="hb-side">${top}${rx}${notes}</div>`;
+  return `<div class="hb-side">${gr}${top}${rx}${gr && !rx ? "" : notes}</div>`;
 }
 
 /**
@@ -99,5 +101,5 @@ export function tokenBarHtml(m) {
     + `<div class="line">${m.marks ? `<span data-hud="res" data-res="ap" title="Right-click: −1 AP; Shift: +1"><span class="k">AP</span>${m.marks}</span>` : '<span class="m">Out of combat</span>'}${escIn ? `<span data-hud="res" data-res="esc" title="Right-click: −1 Escalation; Shift: +1">${escIn}</span>` : ""}</div>`
     + `<div class="hb-defs">${defs}</div></div>`;
   const tabs = `<div class="hb-tabs" role="tablist">${(m.tabs ?? []).map(t => `<button type="button" class="hb-tab${t.k === "rx" && m.rxAlert ? " alert" : ""}" role="tab" aria-selected="${t.k === m.tab}" data-hud="tab" data-tab="${esc(t.k)}">${esc(t.label)} <small>${esc(String(t.count ?? ""))}</small></button>`).join("")}</div>`;
-  return `<div class="hb-bar-wrap${m.side?.rx ? " rx" : ""}">${por}${id}<div class="hb-mid">${tabs}${colsHtml(m.cols ?? [])}</div>${sideHtml(m.side)}</div>`;
+  return `<div class="hb-bar-wrap${m.side?.rx || (m.side?.grants ?? []).length ? " rx" : ""}">${por}${id}<div class="hb-mid">${tabs}${colsHtml(m.cols ?? [])}</div>${sideHtml(m.side)}</div>`;
 }

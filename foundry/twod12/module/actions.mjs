@@ -1,7 +1,6 @@
 import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll, techniqueState } from "./mastery.mjs";
 import { setQuarry } from "./mark.mjs";
-import { pickTargets, needsTargets } from "./targeting.mjs";
 import { ignoredBy, markOnce, markSpent, coverIgnored } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
 import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
@@ -469,15 +468,9 @@ export async function useAction(actor, item, opts = {}) {
     }
   }
   const s = actor.system, it = item.system;
-  // v0.0.189 (Lucas): an Action that targets, used with too few creatures targeted, asks for them on the map (targeting.mjs) instead of refusing.
-  if (needsTargets(it)) {
-    const need = Math.max(1, targetsNeeded(it.targets));
-    if (game.user.targets.size < need) {
-      const pk = await pickTargets(need, item.name);
-      if (pk && !pk.ok) return;
-      if (pk?.noTarget) opts = { ...opts, noTargetDc: pk.dc };   // v0.0.190: "No target" on the banner, with its DC
-    }
-  }
+  // v0.0.189 asked for the targets on the map (targeting.mjs) here; v0.0.392 (Lucas) opens the roll dialog instead (its Target button and its DC).
+  // v0.0.392 (Lucas: "Remove the target | no target: DC prompt. If you dont have a target, simply open the roll dialog"): the dialog shows
+  // "No target" with its DC and a Target button; it is live, so targeting creatures on the map fills it (the chat card keeps its retarget button)
   // An Action that marks the target needs it (targeted).
   if (it.marksTarget && !game.user.targets.size) return ui.notifications.warn(`Target the creature ${item.name} marks first.`);
   // A Save Action (the Save trait): you don't roll; each target rolls the Save named on its Vs. line against 11 + your Modifier (Save Actions in the rules).
