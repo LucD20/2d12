@@ -49,6 +49,22 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
 5. **Kaela's "Advance 2":** Strafe's Setup. Foundry: the Encounter Log writes a Setup's movement as part of its Action ("Strafe (Setup: Advance
    2)"), and numbers creatures of the same name (GS1, GS2...); an area skips a creature that is out of the fight.
 
+## 1c. Group A's review: Lucas's answers (2026-11-17)
+- **Judge's wording** approved: "Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier."
+- **A1** a general Structure rule: a Special that says how the roll is made goes above the Attack line (Darting Blade first; every card checked).
+- **A2** "2x At-will use" (the roll dialog's label).
+- **A3** every NPC card with a "Tier 2 or 3" line: the rider goes into Tiers 2 and 3, written "Pushed N" (Overhead Smash, Club, Cleaver, Dirty Trick...).
+- **A4** NPC melee attacks: **"Distance: Reach (X)"**, X the creature's Reach (Lucas: "Reach" alone sends you to the sheet); a ranged one its squares.
+- **A5** **Mithril and Diamond retired:** the cards show Claude's Bronze / Silver / Gold rating (foundry/automation-ratings.md) in their place (Lucas: "Mithril means I have done my own automation, checking step by step, and all actions changed, so none are Mithril anymore. Diamond is only after they are Mithril"); the CLAUDE.md rule goes; with-lucas.txt stays as history.
+
+## 1d. Group B's review (Claude, 2026-11-17; questions asked)
+- **B1** fixed in v0.0.417 (the dialog draws Judged, Special and Effect from the card model). New: the dialog writes "Attack: Weapon +2 vs.
+  DC 13" for a Version with no roll (Judge): the roll line only where the card has one.
+- **B2** fixed in v0.0.417 (the card's own label: Effect, Tier 2 or 3, Tier 1 or 2).
+- **B3** not intended: a dark-mode rule paints every subtype gold in the roll dialog, over v0.0.369's tones. Proposed: one color per subtype
+  everywhere with a dark variant (with E6), in CARD-ONE step 5.
+- **B4** confirmed: the calculated chips' blue (#1a3fb0, v0.0.354) has no dark variant. Proposed: the Boon light blue (#8db8f0) in dark mode.
+
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 
 ### A. Cards (what a card says)
