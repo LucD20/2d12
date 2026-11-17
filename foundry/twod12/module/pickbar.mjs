@@ -28,6 +28,11 @@ export async function pickBar(o) {
   // fell back to the party strip; they are controlled again when the bar closes
   let held = [];
   try { held = [...(globalThis.canvas?.tokens?.controlled ?? [])]; } catch (e) { held = []; }
+  // v0.0.401 (Lucas: "Don't deselect the token after push"; in target mode he can't select it again): Foundry releases the tokens on the map
+  // click's pointer-up, after the pick: while the bar is up (and a moment after) a held token that is released is controlled again at once
+  let guard = null;
+  const keep = (token, on) => { if (on || !held.includes(token)) return; setTimeout(() => { try { if (token?.scene && !token.controlled) token.control?.({ releaseOthers: false }); } catch (e) { /* gone */ } }, 0); };
+  try { if (held.length && globalThis.Hooks?.on) guard = Hooks.on("controlToken", keep); } catch (e) { guard = null; }
   const res = await new Promise(resolve => {
     const bar = document.createElement("div");
     bar.className = `twod12-linebar twod12-pickbar${o.cls ? ` ${o.cls}` : ""}`;
@@ -86,5 +91,6 @@ export async function pickBar(o) {
     window.addEventListener("keydown", key, true);
   });
   await back();
+  if (guard !== null) setTimeout(() => { try { Hooks.off("controlToken", guard); } catch (e) { /* gone */ } }, 800);
   return res;
 }

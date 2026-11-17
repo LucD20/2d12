@@ -96,3 +96,5 @@ console.log("--- v0.0.400 (Lucas, testing v0.0.399)");
 const cc0 = src("module/chatcards.mjs"), pb0 = src("module/pickbar.mjs");
 console.log("Target on a left click:", src("module/rollwindow.mjs").includes('else if (a === "targetmode") return this._finish({ restart: true, state: this.st });'), "| a Tier line forces anywhere on it:", src("module/rolldlg.mjs").includes('${can ? " rd-forcable" : ""}"${fa(n)}>'),
   "| \"2× Ogre Chieftain\":", cc0.includes('<span class="cc-cname">${cl.length}× ${esc(stem(cl[0].r.name))}</span>') && src("module/ccdamage.mjs").includes("button.dataset.rows.split"), "| the selection given back after a pick:", pb0.includes("for (const t of held) if (t?.scene && !t.controlled)"));
+console.log("--- v0.0.401 (Lucas, testing v0.0.400)");
+console.log("a held token released during a pick is selected again:", src("module/pickbar.mjs").includes('guard = Hooks.on("controlToken", keep)'), "| the side panel glows:", src("styles/theme.css").includes("@keyframes twod12-hud-glow"));
