@@ -81,6 +81,11 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.395 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.394
+- [ ] **The HUD:** no cost buttons at rest; long names whole (smaller text, no "…"); hover a line: it fades, its cost buttons appear; click one: that Version; click the line itself: its first Version. A used Action: "used" on hover.
+- [ ] **A chat card's top line:** "Distance: … ✦ Target: …" (an Area Action: "Area: …").
+- [ ] **The marks:** bigger on the carousel and the HUD; the red slashes only on the acting plate; a 5-AP creature's plate fits.
+
 ## v0.0.394 (2026-11-17, branch `pack-hud-remake`): TO TEST. The chat leftovers in the STYLE-3 look (the mockup: `foundry/mockups/chat-leftovers.html`)
 - [ ] **Press Ctrl+F5 once after updating** (Foundry can keep an old stylesheet).
 - [ ] **A chat card (Double Shot, any attack):** traits as words ("Shot · Strike") over a bronze line; "[Ranged, Shot]" in the text in plain bold ink; the dividers plain lines.

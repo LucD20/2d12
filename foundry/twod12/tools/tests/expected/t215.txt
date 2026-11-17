@@ -14,7 +14,7 @@ the row before: Weapon Attack Cancel | a button: true
 used once, then: Weapon Attack | no button: true | no sublines: true
 --- the non-roll card
 order: name, meta, Interrupt, diamond, text, Granted Action, Flavor: true
-head: Opportunity Attack At-will · 1R | meta line: The triggering creature ✦ 1 sq. | the target at the bottom (v0.0.296): → Bandit Thug Card | Interrupt: Interrupt: A creature within 1 square wo …
+head: Opportunity Attack At-will · 1R | meta line: Distance: 1 sq. ✦ Target: The triggering creature | the target at the bottom (v0.0.296): → Bandit Thug Card | Interrupt: Interrupt: A creature within 1 square wo …
 granted row: Granted Action: Weapon Attack Weapon Attack (1A) | a sword for a Weapon Attack: true | no category line, no Effects box, no stamp or ladder: true
 an NPC's: 
 out of reach: no button, the reason: true | Bandit Thug is 3 sq. away: Greatsword reaches 1 sq.

@@ -2073,3 +2073,31 @@
 .twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) :is(.td-ic.ap, .td-c.ap, .td-g) { color: var(--s-ink) !important; }
 .twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) .td-badge { background: none !important; border: 1px solid var(--s-hair) !important; border-radius: 0 !important; color: var(--s-mute) !important; }
 
+/* ==== v0.0.395 (Lucas, testing v0.0.394) ==== */
+/* the chat card's meta line: the fact names in the muted ink */
+.twod12-type.twod12-type .twod12.chat .cc-tline.meta .cc-ml { font-weight: 600; color: var(--s-mute); }
+
+/* the HUD's lines: the whole name; the cost buttons over its right end on hover (or keyboard focus), the name and its roll faded under them */
+.twod12-hud .hb-ln:not(.pass) { grid-template-columns: minmax(0, 1fr); position: relative; }
+.twod12-hud .hb-ln:not(.pass) > b { text-overflow: clip; }
+.twod12-hud .hb-ln:not(.pass) > .hb-sts { position: absolute; right: 2px; top: 50%; transform: translateY(-50%); display: none; gap: 3px; z-index: 1; }
+.twod12-hud .hb-ln:not(.pass):is(:hover, :focus-within) > .hb-sts { display: inline-flex; }
+.twod12-hud .hb-ln:not(.pass):is(:hover, :focus-within) > b, .twod12-hud .hb-ln:not(.pass):is(:hover, :focus-within) > .r { opacity: .3; }
+.twod12-hud .hb-ln:not(.pass) > .hb-sts .hb-st { background: var(--hud-bg, #1f1c18); }
+.twod12-hud .hb-ln:not(.pass) > .hb-sts .hb-st:hover { background: var(--s-gold, #d2a75a); }
+.twod12-hud .hb-ln:not(.pass) > .hb-sts .hb-pv.used { background: var(--hud-bg, #1f1c18); padding: 0 4px; }
+
+/* the marks bigger, to read from across the table (Lucas: "The AP pips are a bit difficult to see from a distance") */
+.twod12-type.twod12-type #twod12-carousel .tp-marks .hm-ap, .twod12-type.twod12-type #twod12-carousel .tp-marks .hm-r, .twod12-type.twod12-type #twod12-carousel .tp-marks .hm-sk { gap: 2px !important; }
+.twod12-type.twod12-type #twod12-carousel .tp-marks .hm-ap i { width: 10px !important; height: 10px !important; }
+.twod12-type.twod12-type #twod12-carousel .tp-marks .hm-r i { width: 9px !important; height: 9px !important; margin: 0 1px; }
+.twod12-type.twod12-type #twod12-carousel .tp-marks .hm-sk i { width: 4px !important; height: 12px !important; }
+.twod12-type.twod12-type #twod12-carousel .tp-marks .hm-sep { height: 13px !important; }
+
+/* the Strikes only on the acting creature's plate (they count this turn; a waiting plate had no room for the bigger marks) */
+.twod12-type.twod12-type #twod12-carousel .tp:not(.act) .tp-marks .hm-sk, .twod12-type.twod12-type #twod12-carousel .tp:not(.act) .tp-marks b.hm-sep:nth-of-type(2) { display: none !important; }
+.twod12-hud .hm-ap i { width: 11px; height: 11px; }
+.twod12-hud .hm-r i { width: 10px; height: 10px; margin: 0 1px; }
+.twod12-hud .hm-sk i { width: 5px; height: 13px; }
+.twod12-hud .hm-sep { height: 14px; }
+

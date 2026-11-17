@@ -26,3 +26,5 @@ no refusal for too few targets: true | a marking Action rolls with none: true | 
 a used Action says so: true | the roll dialog's Tiers in palette A (above the dark set): true | the granted uses on the chat card outlined: true
 --- v0.0.394 (Lucas, on the chat leftovers mockup)
 the chat card's traits as words: true | the trait words in ink: true | a line under an open header: true | the HUD's marks on the turn lines: true | Swap without its cost: true
+--- v0.0.395 (Lucas, testing v0.0.394)
+the HUD's cost buttons on hover only: true | the names fitted: true | the card's facts named: true | bigger marks, the Strikes on the acting plate only: true

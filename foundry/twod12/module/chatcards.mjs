@@ -195,7 +195,13 @@ export function targetLineHtml(m, view = FULL_VIEW, { locked = false } = {}) {
  */
 export function metaLineHtml(m) {
   const t = m.tline ?? {}, star = '<span class="cc-star" aria-hidden="true">\u2726</span>';
-  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? `${esc(t.dist)}${t.distTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${esc(t.distTip)}" aria-label="${esc(t.distTip)}"></i>` : ""}` : ""].filter(Boolean).join(` ${star} `);
+  // v0.0.395 (Lucas: "It is saying 'Two creatures' only, didnt we change to always say what each element is?"): each fact named, in the card
+  // Structure's order (book/cards/card-structure.md, the grid: Distance, Area, Target)
+  const bits = [
+    t.dist ? `<b class="cc-ml">Distance:</b> ${esc(t.dist)}${t.distTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${esc(t.distTip)}" aria-label="${esc(t.distTip)}"></i>` : ""}` : "",
+    t.area ? `<b class="cc-ml">Area:</b> ${t.area}` : "",
+    !t.area && t.targets ? `<b class="cc-ml">Target:</b> ${esc(t.targets)}` : ""
+  ].filter(Boolean).join(` ${star} `);
   return bits ? `<div class="cc-tline meta"><span>${bits}</span></div>` : "";
 }
 export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage = m.hasDamage, locked = m.locked, target = true } = {}) {   // v0.0.287: the Save card's too

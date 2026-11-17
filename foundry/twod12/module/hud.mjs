@@ -328,8 +328,24 @@ async function drawHud() {
   const m = await barModel(cur.actor, cur.token);
   main.innerHTML = tokenBarHtml(m);
   root.classList.add("is-bar"); root.classList.toggle("is-npc", m.npc); root.classList.toggle("is-folded", !!m.folded);
+  fitNames(main);
   // (v0.0.391, Lucas: "macro bar is broken"): the hotbar stays at the HUD's right end, where it worked before (placeHotbar)
 }
+
+/**
+ * v0.0.395 (Lucas: "Remove the AP buttons. Make it so the font resizes to fit the whole name. Hovering over the action reduces the opacity and
+ * shows the AP buttons"): each line's name shrinks (to 0.6rem at the least) until it fits its column; the ellipsis only below that.
+ */
+export function fitNames(el = root) {
+  for (const b of el?.querySelectorAll?.(".hb-ln > b") ?? []) {
+    b.style.fontSize = "";
+    let size = parseFloat(getComputedStyle(b).fontSize) || 13;
+    const min = 9.5;
+    while (b.scrollWidth > b.clientWidth + 0.5 && size > min) { size = Math.max(min, size - 0.5); b.style.fontSize = `${size}px`; }
+  }
+}
+let fitTimer;
+if (typeof window !== "undefined") window.addEventListener?.("resize", () => { clearTimeout(fitTimer); fitTimer = setTimeout(() => fitNames(), 120); });
 
 /* ------------------------------------------------------------------ panels, the card, the menu */
 function closePop({ keepOpen = false } = {}) {

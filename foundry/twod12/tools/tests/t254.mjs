@@ -68,3 +68,7 @@ const th4 = src("styles/theme.css"), dock = src("module/turndock.mjs");
 console.log("the chat card's traits as words:", th4.includes(".twod12-type.twod12-type .twod12 .tcompact .tchip.tc { background: none !important;"), "| the trait words in ink:", th4.includes(".twod12-type.twod12-type .twod12.chat .trhl { background: none !important;"),
   "| a line under an open header:", th4.includes(".twod12-type.twod12-type .twod12.chat.turnend[open] > summary, .twod12-type.twod12-type .twod12-dock.open .td-hd { border-bottom: 1px solid var(--s-hair) !important; }"),
   "| the HUD's marks on the turn lines:", dock.includes('<b class="hsep"></b><i class="r'), "| Swap without its cost:", src("module/carousel.mjs").includes('<i class="fa-solid fa-right-left"></i> Swap</button>'));
+console.log("--- v0.0.395 (Lucas, testing v0.0.394)");
+const th5 = src("styles/theme.css"), cc5 = src("module/chatcards.mjs");
+console.log("the HUD's cost buttons on hover only:", th5.includes(".twod12-hud .hb-ln:not(.pass):is(:hover, :focus-within) > .hb-sts { display: inline-flex; }"), "| the names fitted:", hud.includes("export function fitNames(") && hud.includes("fitNames(main);"),
+  "| the card's facts named:", cc5.includes('<b class="cc-ml">Distance:</b>') && cc5.includes('<b class="cc-ml">Target:</b>'), "| bigger marks, the Strikes on the acting plate only:", th5.includes("#twod12-carousel .tp-marks .hm-ap i { width: 10px !important;") && th5.includes("#twod12-carousel .tp:not(.act) .tp-marks .hm-sk"));
