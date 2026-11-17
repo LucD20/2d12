@@ -33,3 +33,6 @@ the granted uses under the hands: true | one header for a Frequency's two column
 --- v0.0.397 (Lucas: "Go, build it")
 the roll dialog's card part: true | the ladder one line: true | a square with its picture: true
 the question in the HUD's side panel: true | the area after the dialog: true | Momentum read from the encounter: true
+--- v0.0.398 (Lucas, on the multi-target mockup and v0.0.397)
+a group a Tier, each creature once: true | the Guard in the on-demand row: true | a Tier's Apply all: true
+the creature on one line with Target: true | the dialog not live: true | the hotbar at the bottom with the party strip: true

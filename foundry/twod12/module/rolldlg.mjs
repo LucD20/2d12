@@ -411,23 +411,32 @@ function traitsHtml(inp, v) {
   return `<div class="rd-traits"><span class="rd-tlist">${blocks.join('<span class="rd-tsep" aria-hidden="true"></span>')}</span>${freq}</div>`;
 }
 
+/**
+ * v0.0.398 (Lucas: "Only update the targets if we click the Target button; the button needs to be there even if there are already targets, to change
+ * or to remove them; if no token is targeted and you click it, it becomes without a target"): the dialog doesn't follow the map any more; Target reads
+ * the creatures targeted now. Not for an area (its creatures come from the area) or a roll on yourself.
+ */
+const targetBtn = inp => (inp.area || inp.self ? "" : '<button type="button" class="rd-tgtbtn" data-act="targetmode" data-tooltip="Use the creatures targeted on the map now (none targeted: no target)">Target</button>');
 // v0.0.370 (Lucas): the target's token image before its name (none for "No target" and "Your roll")
 const cImg = c => (c.img ? `<img class="rd-cimg" src="${esc(c.img)}" alt="">` : "");
 function creaturesHtml(inp, st, v) {
   const live = liveCreatures(inp, st), crit = !!v?.crit, hide = !!inp.hideDef;
   // v0.0.293: a Save Action: each creature with your Save DC (they roll; nothing of theirs to switch here)
   if (inp.save) return live.filter(c => c.uuid !== "none" && c.uuid !== "self").map(c => `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-def">${esc(inp.save.label)} ${inp.save.dc}</span></div></div>`).join("") || `<div class="rd-none">No target. Target a creature on the map.</div>`;
-  if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : "No target. Target a creature on the map."}</div>`;
+  if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : `No target. Target a creature on the map, then press Target.${targetBtn(inp)}`}</div>`;
   // v0.0.343: several creatures for an Action that rolls nothing (Double Shot): each one named, nothing to roll against
   if (!inp.multi && live.length > 1) return live.map(c => `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</div></div>`).join("");
   if (!inp.multi) {
     const c = live[0], own = chipsOf(inp, st, c.uuid);
     // v0.0.340: "No target" (an area with no creature, an Action rolled without one): its DC typed here (13 by default)
-    const dcIn = c.uuid === "none" ? `<label class="rd-dcin">DC <input type="number" min="1" max="40" data-field="noTargetDc" value="${Number(c.dc) || 13}" aria-label="The DC to roll against"></label><button type="button" class="rd-tgtbtn" data-act="targetmode" data-tooltip="Target creatures on the map: the window follows">Target</button>` : "";
-    return `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}${dcIn || defBadge(c, hide)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
+    // v0.0.398 (Lucas: "maybe even do just one line, with: Name | Tiers | DC"): the creature, its ladder, its DC (typed for "No target") and the Target
+    // button on one line; its own Boons and Banes under it
+    const dcIn = c.uuid === "none" ? `<label class="rd-dcin">DC <input type="number" min="1" max="40" data-field="noTargetDc" value="${Number(c.dc) || 13}" aria-label="The DC to roll against"></label>` : defBadge(c, hide);
+    return `<div class="rd-cbox one"><div class="rd-c1"><span class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</span>${hide ? '<span class="rd-c1sp"></span>' : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}${dcIn}${targetBtn(inp)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}</div>`;
   }
   const three = anyThree(inp, st);
-  return live.map(c => {
+  const tgtRow = targetBtn(inp) ? `<div class="rd-tgtrow"><span>${live.length} targets</span>${targetBtn(inp)}</div>` : "";
+  return tgtRow + live.map(c => {
     const k = creatureCalc(inp, st, c.uuid), open = !!st.open?.[c.uuid], own = chipsOf(inp, st, c.uuid);
     const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span>${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}${bbNotes(k).length ? `<span class="rd-dnote rd-bbcap">${esc(bbNotes(k).join(" · "))}</span>` : ""}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" data-tooltip="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
     if (!open) return `<div class="rd-cbox multi" data-uuid="${esc(c.uuid)}">${head}</div>`;

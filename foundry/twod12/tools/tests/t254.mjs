@@ -83,3 +83,9 @@ console.log("the roll dialog's card part:", rd7.includes("function cardHtml(inp,
 console.log("the question in the HUD's side panel:", hud.includes('root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask")') && th7.includes(".twod12-hud .hb-ask .twod12-linebar.in-side"),
   "| the area after the dialog:", ac7.includes("const deferArea = ") && rw7.includes("return this._finish({ restart: true, place: true, rollAfter: true, state: this.st });") && ac7.includes("rollAfterPlace: !!rdData.rollAfter"),
   "| Momentum read from the encounter:", src("module/carousel.mjs").includes('combat?.getFlag?.("twod12", "momentumStart")'));
+console.log("--- v0.0.398 (Lucas, on the multi-target mockup and v0.0.397)");
+const cc8 = src("module/chatcards.mjs"), rd8 = src("module/rolldlg.mjs"), th8 = src("styles/theme.css");
+console.log("a group a Tier, each creature once:", cc8.includes('<div class="cc-card cc-attack many v398">') && cc8.includes('data-twod12="ccApplyAll" data-group="${gi}"'), "| the Guard in the on-demand row:", cc8.includes('}${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${nlTag}</div>` : "";'),
+  "| a Tier's Apply all:", src("module/ccdamage.mjs").includes("CC.applyAllRows(s.rows).filter(inGroup)"));
+console.log("the creature on one line with Target:", rd8.includes('<div class="rd-cbox one"><div class="rd-c1">') && rd8.includes("${targetBtn(inp)}</div>"), "| the dialog not live:", src("module/actions.mjs").includes("live: false,") && src("module/rollwindow.mjs").includes("if (tb) { ev.preventDefault(); return this._finish({ restart: true, state: this.st }); }"),
+  "| the hotbar at the bottom with the party strip:", th8.includes(".twod12-hud.is-strip.with-hot .hud-hot { position: static !important;"));

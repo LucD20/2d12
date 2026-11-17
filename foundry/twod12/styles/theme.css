@@ -2183,3 +2183,42 @@
 .twod12-linebar .lb-opt.sq { width: 34px; height: 34px; padding: 0; overflow: hidden; }
 .twod12-linebar .lb-opt.sq img { width: 100%; height: 100%; object-fit: cover; border: 0; }
 
+/* ==== v0.0.398 (Lucas, on foundry/mockups/multi-damage.html: "Looks good"): a card on several creatures, a group a Tier, each creature once ==== */
+.twod12-type .twod12.chat .cc-attack.v398 .cc-shared { border-bottom: 1px solid var(--s-hair); padding-bottom: 5px; }
+.twod12-type .twod12.chat .cc-tg2 { padding: 5px 0 3px; border-bottom: 1px solid var(--s-hair); }
+.twod12-type .twod12.chat .cc-tg2h { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.twod12-type .twod12.chat .cc-tg2d { flex: 1 1 auto; min-width: 0; font-weight: 600; }
+.twod12-type .twod12.chat .cc-tg2d .cc-pools { display: inline-flex; width: auto; margin: 0; padding: 0; border: 0; background: none; box-shadow: none; min-height: 0; }
+.twod12-type.twod12-type .twod12.chat .cc-tg2 .cc-gall { margin-left: auto; padding: 0 8px; min-height: 0; height: 22px; width: auto; }
+.twod12-type.twod12-type .twod12.chat .cc-tg2d .cc-ptot { display: none !important; }
+.twod12-type.twod12-type .twod12.chat .cc-tg2d .cc-poolrow { display: inline-flex; gap: 4px; padding: 0 !important; background: none !important; border: 0 !important; font-size: 13.5px; }
+.twod12-type.twod12-type .twod12.chat .cc-tg2d .cc-poolrow + .cc-poolrow { margin-left: 8px; }
+.twod12-type .twod12.chat .cc-tg2 .cc-trows { margin-top: 2px; }
+.twod12-type .twod12.chat .cc-tg2 .cc-trow { padding-left: 10px; }
+
+/* the name takes the room the Guard left (it moved into the on-demand row): the buttons stay at the right */
+.twod12-type .twod12.chat.cc .cc-trow > .cc-cname, .twod12-type .twod12.chat.cc .cc-trow > .cc-cnbtn, .twod12-type .twod12.chat.cc .cc-trow > .cc-nblk { flex: 1 1 auto; min-width: 0; }
+.twod12-type.twod12-type .twod12.chat .cc-cnbtn { all: unset; cursor: pointer; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12-type.twod12-type .twod12.chat .cc-cnbtn:hover .cc-cname, .twod12-type.twod12-type .twod12.chat .cc-cnbtn[aria-expanded="true"] .cc-cname { text-decoration: underline dotted; }
+.twod12-type .twod12.chat .cc-lad { padding: 0 0 4px 10px; }
+.twod12-type .twod12.chat .cc-ladcap { font-size: 11.5px; color: var(--s-mute); margin-bottom: 2px; }
+.twod12-type .twod12.chat .cc-attack.v398 .cc-applyall { padding-top: 5px; }
+.twod12-type .twod12.chat .cc-adjrow .cc-rmods { margin-left: 6px; font-size: 12px; }
+
+/* ==== v0.0.398 (Lucas: "Macro bar is placed up when no token is selected, should be at bottom and only move up when opening the HUD of a token. And
+   it should be transparent just like when the HUD is open"): with the party strip, the hotbar sits at the bottom beside the cards, see-through ==== */
+.twod12-hud.is-strip.with-hot .hud-hot { position: static !important; inset: auto !important; align-self: flex-end !important; margin-left: 6px; padding: 4px 6px !important; background: color-mix(in srgb, var(--hud-bg) 80%, transparent) !important; backdrop-filter: blur(3px); border: 1px solid var(--hud-hair) !important; }
+
+/* ==== v0.0.398: the roll dialog's creature on one line: its name, its ladder, its DC, Target ==== */
+.twod12-type .twod12.rolldlg .rd-cbox.one .rd-c1 { display: grid; grid-template-columns: minmax(70px, max-content) minmax(0, 1fr) auto auto; align-items: center; gap: 8px; }
+.twod12-type .twod12.rolldlg .rd-cbox.one .rd-c1 > .rd-cname { display: flex; align-items: center; gap: 5px; min-width: 0; overflow: hidden; white-space: nowrap; }
+.twod12-type .twod12.rolldlg .rd-cbox.one .rd-c1 > .rd-cname b { overflow: hidden; text-overflow: ellipsis; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-cbox.one .rd-c1 > .rd-ladder { margin: 0 !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-cbox.one .rd-c1 .rd-lseg { font-size: 11px !important; padding: 2px 3px !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-dcin { display: inline-flex !important; align-items: center; gap: 4px; margin: 0 !important; font-weight: 600; font-size: 12px; white-space: nowrap; flex-direction: row !important; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-dcin input { width: 44px !important; height: 22px !important; padding: 0 4px !important; margin: 0 !important; text-align: center; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tgtbtn { height: 22px; line-height: 20px; padding: 0 8px; margin: 0; width: auto; border: 1px solid var(--s-gold); border-radius: 0; background: transparent; color: var(--s-ink); font: 600 12px "Source Sans 3", sans-serif; white-space: nowrap; cursor: pointer; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-tgtbtn:hover { background: var(--s-gold); color: var(--s-pg); }
+.twod12-type .twod12.rolldlg .rd-tgtrow { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--s-mute); margin: 0 0 4px; }
+.twod12-type .twod12.rolldlg .rd-none .rd-tgtbtn { margin-left: 8px; }
+

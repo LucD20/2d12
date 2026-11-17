@@ -266,6 +266,35 @@ export function attackCardHtml(m, view = FULL_VIEW) {
     const out = outcomeHtml(m.outcomes?.[t]);
     return `<div class="cc-tgroup"><div class="cc-ghd">${tierPill(t, false, true)}<span class="cc-who">${who.map(r => `<span class="cc-nchip">${esc(r.name)}</span>`).join("")}</span></div>${out}${t === 3 ? critLine(m, who, hide) : ""}</div>`;
   }).join("");
+  // v0.0.398 (Lucas, on foundry/mockups/multi-damage.html: "Looks good"): each Tier and each creature said once. A group a Tier: its pill, its damage
+  // on the same line (the rolled pools, a click shows the dice; before the roll, the Tier's dice), Apply all for that Tier, its riders; then its
+  // creatures, each once (a click on the name shows its Defense, total and ladder), with Apply / Undo when the damage is in
+  if (m.dmg) {
+    const d = dmgParts(m.dmg, view, { riders: false, idp: "d" });
+    const tiers = [...new Set([...rows.map(r => r.tier), ...d.groups.map(g => g.tier)])].filter(t => t > 0).sort((a, b) => b - a);
+    const nameBtn = (r, k) => `<button type="button" class="cc-cnbtn" data-cc-toggle="l${k}" aria-expanded="false" title="Its roll"><span class="cc-cname">${esc(r.name)}</span></button>`;
+    const ladderPanel = (r, k) => `<div class="cc-break cc-lad" data-cc-panel="l${k}"><div class="cc-ladcap">${esc(defText(r, hide))}${hide ? "" : ` · rolled ${Number(r.total) || 0}`}</div>${ladderHtml(r, { hide, id: `l${k}` })}</div>`;
+    const tgroups = tiers.map(t => {
+      const who = rows.map((r, k) => ({ r, k })).filter(x => x.r.tier === t);
+      const gi = d.groups.findIndex(g => g.tier === t), g = gi >= 0 ? d.groups[gi] : null;
+      const dline = g ? d.poolsOf(gi) : outcomeHtml(m.outcomes?.[t]).replace(/<div class="cc-dmgline">([\s\S]*?)<\/div>.*/, "$1");
+      const pend = g ? (g.rows ?? []).filter(i => d.rows[i] && !d.rows[i].applied) : [];
+      const all = view.author && !view.hideTgt && pend.length > 1 ? `<button type="button" class="cc-btn small primary cc-gall" data-twod12="ccApplyAll" data-group="${gi}">Apply all</button>` : "";
+      const riders = (m.outcomes?.[t]?.riders ?? []).filter(Boolean).map(riderHtml).join("");
+      const lines = who.map(({ r, k }) => {
+        const di = d.rows.findIndex(x => (x.uuid && x.uuid === r.uuid) || (!x.uuid && x.name === r.name));
+        const row = di >= 0 ? d.rowHtml(di, nameBtn(r, k)) : `<div class="cc-trow">${nameBtn(r, k)}</div>`;
+        return row + ladderPanel(r, k);
+      }).join("");
+      // a creature hit by this Tier's damage with no roll row (an area's extra target): its damage row alone
+      const extra = g ? (g.rows ?? []).filter(i => !rows.some(r => (d.rows[i]?.uuid && d.rows[i].uuid === r.uuid) || d.rows[i]?.name === r.name)).map(i => d.rowHtml(i)).join("") : "";
+      return `<div class="cc-tg2"><div class="cc-tg2h">${tierPill(t, g?.crit ?? false, true)}<span class="cc-tg2d">${dline}</span>${all}</div>${riders}${t === 3 ? critLine(m, who.map(x => x.r), hide) : ""}<div class="cc-trows">${lines}${extra}</div></div>`;
+    }).join("");
+    // the pending rows in several Tiers: one Apply all for the card too, under the groups
+    const pendAll = d.rows.filter(r => !r.applied), spread = d.groups.filter(g => (g.rows ?? []).some(i => d.rows[i] && !d.rows[i].applied)).length > 1;
+    const allCard = view.author && !view.hideTgt && pendAll.length > 1 && spread ? `<div class="cc-applyall"><button type="button" class="cc-btn primary" data-twod12="ccApplyAll">Apply all</button>${pendAll.some(r => r.choice) ? '<span class="cc-muted">skips rows with a choice</span>' : ""}</div>` : "";
+    return `<div class="cc-card cc-attack many v398">${head}${shared}<div class="cc-groups2">${tgroups}</div>${allCard}${d.note}${effects}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+  }
   return `<div class="cc-card cc-attack many">${head}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
 }
 
@@ -503,7 +532,7 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
   // v0.0.288: the Lethal / Nonlethal tag (none on a Bleed's card, v0.0.315); v0.0.321 (Lucas: it made the card taller): in each row's on-demand
   // row (the sliders button), and at the bottom only on a card with no target yet
   const nlTag = m.noNl ? "" : `<span class="cc-nl${m.nl ? " on" : ""}">${m.nl ? "Nonlethal" : "Lethal"}</span>`;
-  const rowHtml = i => {
+  const rowHtml = (i, nameHtml = null) => {
     const r = rows[i];
     if (!r) return "";
     if (ht) return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span><span class="cc-rmods">${r.applied ? stateChip(r.applied.state) : ""}</span><span class="cc-muted">${r.applied ? "✓ Applied" : "Waiting for the GM"}</span></div>`;
@@ -511,12 +540,14 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
       const f = r.applied.factor ?? 1, adj = ["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${String(f) === k ? " on" : ""}" data-twod12="ccAdjust" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("");
       // v0.0.285 (Lucas): the applied row as compact as a pending one: "Took …" under the name, Full / Half / Double on demand
       // v0.0.321 (Lucas): Undo in Apply's place (the far right, the same width); the Lethal tag in the on-demand row
-      return `<div class="cc-trow done"><span class="cc-nblk"><span class="cc-cname">${esc(r.name)}</span><span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double" title="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}${nlTag}</div>` : ""}</div>`;
+      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double" title="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}${nlTag}</div>` : ""}</div>`;
     }
     // v0.0.321 (Lucas): Resist / Weak / Immune show only once applied (an icon after "Took"); the Guard stays
+    // v0.0.398 (Lucas: "remove the '− Guard' from all damages, this should only show in the damage breakdown when you click to see it"): in the
+    // on-demand panel (the sliders button) beside Full / Half / Double
     const mods = (r.mods ?? []).filter(x => x.kind === "guard").map(x => modTxt(x.v, x.label)).join(" ");
-    const adj = view.author ? `<div class="cc-adjrow ondemand">${["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${k === "1" ? " on" : ""}" data-twod12="ccApply" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("")}${nlTag}</div>` : "";
-    return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span>${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Half or Double" title="Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1">Apply</button>` : ""}${adj}</div>`;
+    const adj = view.author ? `<div class="cc-adjrow ondemand">${["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${k === "1" ? " on" : ""}" data-twod12="ccApply" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("")}${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${nlTag}</div>` : "";
+    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Half or Double" title="Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1">Apply</button>` : ""}${adj}</div>`;
   };
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {
@@ -524,7 +555,7 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
     const pools = `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button><div class="cc-break dmg" data-cc-panel="${id}">${insts.map(instBlock).join("")}</div>`;
     const head = many ? `<div class="cc-ghead">${tierPill(g.tier, g.crit, true)}<span>${poolLinesSummary(g.comps)}</span><b>${sum(g.comps)}</b></div>` : "";
     const rid = riders ? (g.riders ?? []).filter(Boolean).map(riderHtml).join("") : "";
-    return `<div class="cc-dgroup">${head}${pools}${rid}<div class="cc-trows">${(g.rows ?? []).map(rowHtml).join("")}</div></div>`;
+    return `<div class="cc-dgroup">${head}${pools}${rid}<div class="cc-trows">${(g.rows ?? []).map(i => rowHtml(i)).join("")}</div></div>`;
   }).join("");
   const noTgt = !rows.length && view.author ? '<div class="cc-btns"><button type="button" class="cc-btn" data-twod12="ccDmgTarget"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> Target the selected tokens</button></div>' : "";
   const pending = rows.filter(r => !r.applied).length;
