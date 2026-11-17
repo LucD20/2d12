@@ -41,11 +41,11 @@ export function bleedPool(pool, attrs = []) {
   return (a.has("mind") || a.has("appeal")) && !a.has("body") && !a.has("instinct") ? "M" : "B";
 }
 const AB = { body: "Bo", mind: "Mi", appeal: "Ap", instinct: "In" };
-/** "Bleed [R] 1d6 Ho (Mi/Ap)", "Bleed [V] 2 (Bo/In; DC 15)": the book's notation of a Bleed. */
+/** "Lingering [R] 1d6 Ho (Mi/Ap)", "Lingering [V] 2 (Bo/In; DC 15)": the book's notation (v0.0.414: Bleed is renamed Lingering; the key stays bleed). */
 export function bleedText(b) {
   const pool = bleedPool(b?.pool, b?.attrs), attrs = (b?.attrs ?? []).map(a => AB[a] ?? a).join("/") || "Bo/In";
   const dc = Number(b?.dc) && Number(b.dc) !== 13 ? `; DC ${b.dc}` : "";
-  return `Bleed [${pool === "M" ? "R" : "V"}] ${b?.dmg ?? ""}${b?.sub ? ` ${b.sub}` : ""} (${attrs}${dc})`;
+  return `Lingering [${pool === "M" ? "R" : "V"}] ${b?.dmg ?? ""}${b?.sub ? ` ${b.sub}` : ""} (${attrs}${dc})`;
 }
 /** The Bleed of an applied effect: the card's own values (the flag "bleed", from @Condition[bleed|dmg:...]) over the condition's setting. */
 export function bleedOf(e) {

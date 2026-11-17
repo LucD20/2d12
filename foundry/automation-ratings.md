@@ -1,4 +1,4 @@
-# Automation ratings (Claude's own, v0.0.413, 2026-11-17)
+# Automation ratings (Claude's own, v0.0.413, 2026-11-17; Shake Off added in v0.0.414)
 
 Lucas asked (2026-11-17): "rate the automations yourself, from bronze to gold, of all the actions we created, including the basic actions. No
 mithril nor diamond, only from bronze to gold." This is Claude's reading of what Foundry does for each card in the compendium, from each card's
@@ -10,7 +10,7 @@ card with Claude, and the field is not changed here). Not checked in Foundry its
 - **Silver:** it runs, but one limit or a minor part is left to the player (named).
 - **Bronze:** a main part of what the card does is by hand, or the card isn't written yet.
 
-## Basic Actions (19)
+## Basic Actions (20)
 | Card | Rating | What is by hand |
 |---|---|---|
 | Weapon Attack | Gold | |
@@ -29,6 +29,7 @@ card with Claude, and the field is not changed here). Not checked in Foundry its
 | Fists | Gold | |
 | Relocate | Gold | |
 | Trip | Gold | |
+| Shake Off | Silver | "within your Reach" isn't checked (v0.0.414) |
 | Shove | Gold | |
 | Haul | Gold | |
 | Hide | Bronze | not written in the book yet (a placeholder) |
@@ -90,11 +91,11 @@ card with Claude, and the field is not changed here). Not checked in Foundry its
 ## Totals
 | | Gold | Silver | Bronze |
 |---|---|---|---|
-| Basic Actions (19) | 14 | 3 | 2 |
+| Basic Actions (20) | 14 | 4 | 2 |
 | Weapon Techniques (4) | 1 | 3 | 0 |
 | Paladin (19) | 12 | 6 | 1 |
 | Archer (19) | 12 | 5 | 2 |
-| **All (61)** | **39** | **17** | **5** |
+| **All (62)** | **39** | **18** | **5** |
 
 **The Bronze ones, the first to raise:** Hit and Run (one roll applied to every creature passed), Opening Shot (the ally's 1R Weapon Attack as a
 button on the line), Weight of Judgment (a Speed −2 effect on the Judged creature), Interact (the draw / stow / swap as its choices), Hide (waits

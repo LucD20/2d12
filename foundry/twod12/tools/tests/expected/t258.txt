@@ -14,7 +14,7 @@ Strung, other hand free: {"banes":0,"why":""} | other hand full: {"banes":3,"why
 Strung in the off hand, the other free: {"banes":0,"why":""}
 Fists, main hand free: {"banes":0,"why":""} | only the off hand free: {"banes":1,"why":"Fists with only your off hand free: 1 Bane"}
 used on every [Strike, Weapon] roll: true
-Wounding Shot | Weapon Technique | mithril | requires: You haven't left your square this turn.
+Wounding Shot | Weapon Technique | diamond | requires: You haven't left your square this turn.
 Circling Shot | Weapon Technique | mithril | requires: -
 Seizing Cut | Weapon Technique | mithril | requires: You have at least one hand free.
 Thwart Cut | Weapon Technique | mithril | requires: -

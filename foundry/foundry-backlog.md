@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.413**. Tests: `node tools/tests/run.mjs` (256 tests, see the README; the next new test is t259). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.414**. Tests: `node tools/tests/run.mjs` (257 tests, see the README; the next new test is t260). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
@@ -54,6 +54,14 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] **BUILT v0.0.411 as labels** (the keys stay shot / gun: no migration; cardgen maps the book's projectile / firearm). **The traits Shot and Gun become Projectile and Firearm:** the keys in `config.mjs`, the card files, the weapons, the tests (t146 compares the book's GROUPS, which keeps the old keys until then) and a migration for items in worlds.
 - [x] **BUILT v0.0.412.** **The weapon property Light** (the Dagger and the Handaxe).
 - [ ] **Line of Effect for every effect:** whatever an Action or a feature does to a creature needs Line of Effect to it (not only its targets); a part with no line is skipped and the rest happens.
+
+## v0.0.414 (pack "Advance is one piece", 2026-11-17, branch `pack-advance-one-piece`): TO TEST
+- [ ] **One piece:** in combat, Advance (the button), move 2 of 5 squares, use a Weapon Attack: the Speed left is gone (the banner closes; dragging again pays 1 AP, a new Advance).
+- [ ] **Interact inside it:** Advance, move 2, draw a weapon on the hands buttons (or use Interact): 1 AP paid, the Advance's squares are still there; a second Interact ends it. A Setup's Advance (Lay On Hands) ends at an Interact.
+- [ ] **Release** (0 AP) mid-Advance doesn't end it; a Reaction you take off your turn doesn't either.
+- [ ] **Lingering:** Wounding Shot's Tier 2 button applies "Lingering [V] 1 (Bo/In)"; the token HUD's status reads Lingering; at the end of the creature's turn its damage card says "Ends with Shake Off (1 AP)".
+- [ ] **Shake Off** (Actions tab, Utility; also on NPCs): target the Lingering creature (or none, for yourself), click "Shake Off: the Save": a Save card; Tier 3: it ends; Tier 2: its next end-of-turn card is halved ("Halved (Shake Off, Tier 2)"), then it ends; Tier 1: a line says it goes on.
+- [ ] **The cards:** Advance, Evade, Interact and Shake Off read the new rules (sheet and chat).
 
 ## v0.0.413 (the leftovers out of the system, 2026-11-17, branch `pack-archer-foundry`): TO TEST
 **What left:** the compendium keeps only the worked-on content; the rest is in `foundry/deprecated/` (README there). Nothing in a world is deleted.
@@ -267,7 +275,7 @@ The book: `rules-src/12-paladin.md`, the cards in `book/cards/stage0/paladin.jso
 - [x] **BUILT v0.0.410** (moment.mjs reactionSight, senses.mjs youGain, actions.mjs withSetup, inline.mjs @Swap). **The rules:** a Reaction's target (Line of Effect to the target only, perceive the target and the triggering creature); Setup's five rules; Senses' one changed case (each Obscured to the other: 1 Field Bane each, no Boon); swapping places.
 - [ ] **LEFT after v0.0.409 (known gaps):** an Art's Modes are not in the Generate Action text format (genaction.mjs: they don't round-trip, t243); the Zone's Guard row has no field on the Zone's sheet yet (it works, set from the compendium); Weight of Judgment's Speed and Tireless Vigil's "only [Divine]" by hand.
 - [x] **BUILT v0.0.410** (actioncard.mjs, the "st" look; build-theme.mjs STYLE3, both themes). **The card's look:** the Action card in the chat and on the sheets follows the book's Structure and the book's look, **as drawn and decided (2026-11-17, `foundry/mockups/card/index.html`, the artifact "Foundry Action Card"; style-book.md step 5)**: the flat tinted panel with a bronze rule above and below; the Flavor at the top in Source Serif 4 italic; the traits as words with dots and a bronze line under them (no chips, no group labels), the automation rank at the right in its colors; Distance and Target, then the labeled lines, a block a Version (its cost the header); no Tier color on the card; Use in each Version's header, or at the end of the Your roll line with one Version, struck and dashed with its reason; Your roll a labeled line (Boons "+" in the success color, Banes "▼" in the failure color); effect changes a short note after their line; glossary terms a dotted underline; the Place Area chip the same outlined button; the Ruler line small and grey.
-- [ ] **MOVED to its own pack (2026-11-17, F2 part 2): "Advance is one piece" changes the book (Chapter 3, the glossary), `roundrules.mjs`, the SIM and its measures, and comes with the Lingering / Shake Off rename (rules-backlog.md); not a Foundry pass.** **With it:** the full Advance and Evade rules onto their Basic Action cards and "Advance is one piece" (rules-backlog.md), since `basic-actions.json` feeds `gen-basic.mjs`.
+- [x] **BUILT v0.0.414 (pack "Advance is one piece": combat.mjs advanceAfterAction, the Shake Off chip, Lingering).** **MOVED to its own pack (2026-11-17, F2 part 2): "Advance is one piece" changes the book (Chapter 3, the glossary), `roundrules.mjs`, the SIM and its measures, and comes with the Lingering / Shake Off rename (rules-backlog.md); not a Foundry pass.** **With it:** the full Advance and Evade rules onto their Basic Action cards and "Advance is one piece" (rules-backlog.md), since `basic-actions.json` feeds `gen-basic.mjs`.
 - Done already: v0.0.386, the Orc Warrior's Reaction renamed Avenge Kin. Tests t177, t185, t188 and t193 read the book's built cards and were adapted to the Structure (2026-11-16).
 
 ## STAGE 0 IN FOUNDRY: what the system must follow (the book changed on 2026-11-12, pack "Stage 0 into the book"; BUILT in v0.0.407, pack F1, to test: "v0.0.407" above; what is left is marked so)

@@ -8,7 +8,7 @@
       "traits": ["move", "self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "When you use this Action, you move up to your Speed in squares.",
+        { "ap": 1, "effects": "You move up to your Speed in squares, in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later). Once during this Advance, at any point of the movement, you can use the Interact Action (paying its 1 AP then) and go on moving.",
           "foundry": { "append": "@Move[advance|distance:speed]" } }
       ],
       "foundry": { "basic": "advance", "img": "icons/svg/wing.svg" }
@@ -47,8 +47,8 @@
       "traits": ["self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "Evade 1." },
-        { "ap": 2, "effects": "Evade half your Speed (rounded down)." }
+        { "ap": 1, "effects": "Evade 1: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain." },
+        { "ap": 2, "effects": "Evade half your Speed (rounded down): a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain." }
       ],
       "foundry": { "basic": "safeMovement", "img": "icons/svg/shield.svg" }
     },
@@ -92,7 +92,7 @@
       "frequency": "At-will",
       "distance": "Reach",
       "versions": [
-        { "ap": 1, "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world." }
+        { "ap": 1, "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see [[Advance]])." }
       ],
       "foundry": { "basic": "interact", "img": "icons/svg/book.svg" }
     },
@@ -179,6 +179,20 @@
         { "ap": 3, "tiers": ["Reposition 1.", "Reposition 3.", "Reposition 5."] }
       ],
       "foundry": { "basic": "relocate", "img": "icons/svg/up.svg" }
+    },
+    {
+      "name": "Shake Off",
+      "category": "Basic Action",
+      "flavor": "You beat out the flames, press on the wound, scrape off what burns.",
+      "traits": ["handle"],
+      "frequency": "At-will",
+      "target": "You, or one Lingering creature within your Reach",
+      "distance": "Reach",
+      "versions": [
+        { "ap": 1, "effects": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of this turn, then the Lingering ends. **Tier 3:** the Lingering ends.",
+          "foundry": { "append": "@ShakeOff[save]" } }
+      ],
+      "foundry": { "basic": "shakeOff", "img": "icons/svg/regen.svg" }
     },
     {
       "name": "Shove",

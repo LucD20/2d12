@@ -21,7 +21,7 @@ const { docs } = await import(ROOTURL + "tools/content.mjs").catch(() => ({ docs
 
 console.log("--- the conditions pass's eight, as items (tools/content.mjs, the conditions pack)");
 const conds = (docs ?? []).filter(d => d.pack === "conditions" || d.system?.isCondition);
-const want = ["Bleed", "Blinded", "Dazed", "Frightened", "Grabbed", "Sickened", "Staggered", "Taunted"];
+const want = ["Lingering", "Blinded", "Dazed", "Frightened", "Grabbed", "Sickened", "Staggered", "Taunted"];
 for (const n of want) {
   const d = conds.find(x => x.name === n), s = d?.system ?? {};
   const rules = ["whileSeen", "noReactions", "loseAp", "endsWithOrigin"].filter(k => s[k]);
@@ -31,7 +31,7 @@ for (const n of want) {
 console.log("--- what the settings become on the creature (appliedFlags)");
 const item = n => { const d = conds.find(x => x.name === n); return { ...d.system, settings: d.system.settings.map(x => ({ attrs: [], all: [], any: [], none: [], from: [], tiers: [], ...x })), expireOn: [] }; };
 const flagsOf = n => appliedFlags(item(n), {});
-for (const n of ["Frightened", "Taunted", "Sickened", "Staggered", "Dazed", "Grabbed", "Bleed"]) {
+for (const n of ["Frightened", "Taunted", "Sickened", "Staggered", "Dazed", "Grabbed", "Lingering"]) {
   const f = flagsOf(n);
   console.log(`${n.padEnd(11)} whileSeen ${f.whileSeen} noReactions ${f.noReactions} loseAp ${f.loseAp} endsWithOrigin ${f.endsWithOrigin} | modifiers ${JSON.stringify(f.modifiers.map(m => ({ banes: m.banes, all: m.all, attrs: m.attrs, vsOrigin: m.vsOrigin, byValue: m.byValue })))} | bleeds ${JSON.stringify(f.bleeds)}`);
 }
@@ -61,8 +61,8 @@ console.log("Dazed 1 with 3 AP:", JSON.stringify(R.dazeSplit(3, 1)), "| Dazed 2 
 const stag = { effects: [applied("g1", "Staggered", flagsOf("Staggered"))] };
 console.log("Staggered: Reactions off:", R.reactionsOff(stag), "| nothing on:", R.reactionsOff({ effects: [] }), "| a disabled one:", R.reactionsOff({ effects: [{ ...stag.effects[0], disabled: true }] }));
 console.log("Bleed's pool: Bo/In", R.bleedPool("", ["body", "instinct"]), "| Mi/Ap", R.bleedPool("", ["mind", "appeal"]), "| [V] (Ap)", R.bleedPool("B", ["appeal"]), "| attrs 'mi/ap':", R.parseAttrs("mi/ap").join(","));
-const bl = applied("b1", "Bleed", { bleeds: flagsOf("Bleed").bleeds, bleed: { dmg: "1d6", pool: "M", sub: "Ho", attrs: ["mind", "appeal"] } });
-console.log("a card's Bleed over the condition's:", JSON.stringify(R.bleedOf(bl)), "->", R.bleedText(R.bleedOf(bl)), "| the bare condition:", R.bleedText(R.bleedOf(applied("b2", "Bleed", { bleeds: flagsOf("Bleed").bleeds }))), "| DC 15:", R.bleedText({ dmg: "2", attrs: ["body", "instinct"], dc: 15 }));
+const bl = applied("b1", "Bleed", { bleeds: flagsOf("Lingering").bleeds, bleed: { dmg: "1d6", pool: "M", sub: "Ho", attrs: ["mind", "appeal"] } });
+console.log("a card's Bleed over the condition's:", JSON.stringify(R.bleedOf(bl)), "->", R.bleedText(R.bleedOf(bl)), "| the bare condition:", R.bleedText(R.bleedOf(applied("b2", "Bleed", { bleeds: flagsOf("Lingering").bleeds }))), "| DC 15:", R.bleedText({ dmg: "2", attrs: ["body", "instinct"], dc: 15 }));
 
 console.log("--- card text that becomes the buttons (gen.mjs convertEffects)");
 for (const t of ["[R] 1d8 Ho; Pushed 2, and Frightened of you for 1 round.", "Frightened of the Grave Wisp (EoT).", "A Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap).", "Bleed 2 (Bo/In; DC 15).",
@@ -95,7 +95,7 @@ console.log("asks its damage (Bleed's window):", want.filter(n => R.hasBleed(con
 const CD = await import(ROOTURL + "module/conditions.mjs");
 const bm = CD.bleedModel({ dmg: "1d6", pool: "", sub: "Ho", attrs: ["mind", "appeal"], dc: 13 }, "Goblin");
 console.log("Bleed's window:", bm.name, "|", bm.sub, "|", JSON.stringify(bm.stats), "| rows:", bm.sections[1].rows.map(r => `${r.label}: ${r.opts.map(o => `${o.l}${o.on ? "*" : ""}`).join("/")}`).join("; "), "| confirm:", bm.confirm, bm.complete, "| empty:", CD.bleedModel({ dmg: "", pool: "", sub: "", attrs: ["body"], dc: 13 }).complete);
-const af = appliedFlags(item("Bleed"), conds.find(x => x.name === "Bleed").system);
+const af = appliedFlags(item("Lingering"), conds.find(x => x.name === "Lingering").system);
 const wb = E.withBleed(af, { dmg: "1d6", pool: "M", sub: "Ho", attrs: ["mind", "appeal"], dc: 15 });
 console.log("a card's Bleed goes into the applied effect's own setting (seen and editable):", JSON.stringify(wb.source.settings.find(x => x.type === "bleed")), "| the turn reads:", JSON.stringify(wb.bleeds[0]));
 const dm = CC.damageCardHtml({ name: "Bleed [V] 1 (Bo/In)", nl: false, noNl: true, note: "Ends with Interact (1 AP) and a Bo/In Save, DC 13.", groups: [{ tier: 0, comps: [{ pool: "B", total: 1, formula: "1" }], riders: [], rows: [0] }], rows: [{ uuid: "x", name: "Grave Wisp" }] });

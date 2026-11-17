@@ -33,17 +33,17 @@
     },
     {
      "label": "Tier 2",
-     "text": "[V] 1[W] + [Mod]; [[Bleed]] 1 (Bo/In)."
+     "text": "[V] 1[W] + [Mod]; [[Lingering]] 1 (Bo/In)."
     },
     {
      "label": "Tier 3",
-     "text": "[V] 1[W] + [Mod]; [[Bleed]] 2 (Bo/In)."
+     "text": "[V] 1[W] + [Mod]; [[Lingering]] 2 (Bo/In)."
     }
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
-    "automation": "mithril",
-    "automationNote": "its Requirement checked on your turn in a combat (you haven't left your square: your token's moves); the shot, Bleed 1 / Bleed 2 (Bo/In) by Tier."
+    "automation": "diamond",
+    "automationNote": "its Requirement checked on your turn in a combat (you haven't left your square: your token's moves); the shot, Lingering 1 / Lingering 2 (Bo/In) by Tier."
    }
   },
   {

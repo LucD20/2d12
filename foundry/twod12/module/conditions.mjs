@@ -72,7 +72,7 @@ export async function dazeAtTurnStart(c) {
   }
 }
 
-/** Bleed: at the end of each of the creature's turns, its damage is rolled on a damage card targeting it (the Damage button applies it). */
+/** Lingering (the key stays bleed; v0.0.414 the book's name): at the end of each of the creature's turns, its damage is rolled on a damage card targeting it (the Damage button applies it). */
 export async function bleedAtTurnEnd(actor) {
   const list = fxList(actor).filter(e => !e.disabled).map(e => [e, bleedOf(e)]).filter(([, b]) => b);
   if (!list.length) return;
@@ -83,11 +83,15 @@ export async function bleedAtTurnEnd(actor) {
     const parts = parseParts(`[${pool === "M" ? "R" : "V"}] ${b.dmg}${b.sub ? ` ${b.sub}` : ""}`);
     if (!parts.damage.length) continue;
     const { comps, rolls } = await rollParts(parts.damage, false);
+    // v0.0.414 (book, Shake Off): a Tier 2 halves this turn's damage (rounded down), then the Lingering ends
+    const half = !!e.getFlag?.("twod12", "shakeHalf");
+    if (half) for (const cp of comps) cp.total = Math.floor((Number(cp.total) || 0) / 2);
     // v0.0.315 (Lucas: the card was too long): the Save as one short line under the damage (no ↳ box), and no Lethal tag
     const attrs = (b.attrs?.length ? b.attrs : ["body", "instinct"]).map(a => (TWOD12.attributes[a] ?? a).slice(0, 2)).join("/");
-    const note = `<i class="fa-solid fa-hand" aria-hidden="true"></i> Ends with Interact (1 AP) and a ${esc(attrs)} Save, DC ${b.dc || 13}.`;
+    const note = half ? `<i class="fa-solid fa-droplet-slash" aria-hidden="true"></i> Halved (Shake Off, Tier 2): it ends now.` : `<i class="fa-solid fa-hand" aria-hidden="true"></i> Ends with Shake Off (1 AP) and a ${esc(attrs)} Save, DC ${b.dc || 13}.`;
     const { postCcDamage } = await import("./ccdamage.mjs");
     await postCcDamage({ actor: originActor(e), title: bleedText(b), groups: [{ tier: 0, comps, fx: [], riders: [] }], targets: tok ? [{ uuid: tok.document.uuid, name: tok.name, tier: 0, g: 0 }] : [], rolls, originUuid: e.origin ?? "", note, noNl: true });
+    if (half) await e.delete();
   }
 }
 
@@ -190,10 +194,10 @@ export function bleedModel(st, name = "") {
   const sel = (field, opts, now) => `<select data-field="${field}">${opts.map(([k, l]) => `<option value="${esc(k)}"${k === now ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
   const subs = [["", "No type"], ...Object.entries(TWOD12.subtypes).filter(([k]) => k)];
   return {
-    name: "Bleed", sub: name, icon: "fa-droplet", stats: [["At the end of each turn", bleedText(st)]],
+    name: "Lingering", sub: name, icon: "fa-droplet", stats: [["At the end of each turn", bleedText(st)]],
     sections: [
       { title: "Damage", sub: "Rolled at the end of each of its turns (a number or dice).", rows: [],
-        html: `<div class="cw-attr bw-row"><span>Bleed</span><input type="text" data-field="dmg" value="${esc(st.dmg)}" placeholder="1d6"> ${sel("sub", subs, st.sub)} <span>Save DC</span><input type="number" min="1" data-field="dc" value="${esc(st.dc)}"></div>` },
+        html: `<div class="cw-attr bw-row"><span>Lingering</span><input type="text" data-field="dmg" value="${esc(st.dmg)}" placeholder="1d6"> ${sel("sub", subs, st.sub)} <span>Save DC</span><input type="number" min="1" data-field="dc" value="${esc(st.dc)}"></div>` },
       { title: "Save and pool", rows: [
         { key: "attrs", label: "Save", opts: [{ k: "bo/in", l: "Body / Instinct", on: st.attrs.includes("body") }, { k: "mi/ap", l: "Mind / Appeal", on: st.attrs.includes("mind") }] },
         { key: "pool", label: "Pool", opts: [{ k: "", l: "By the Save", on: !st.pool, tip: "Bo/In: Vigor; Mi/Ap: Resolve" }, { k: "B", l: "[V] Vigor", on: st.pool === "B" }, { k: "M", l: "[R] Resolve", on: st.pool === "M" }] }
@@ -208,7 +212,7 @@ async function bleedWindow(item, actor) {
   if (!globalThis.foundry?.applications?.api?.ApplicationV2) return st;
   const { pickWith } = await import("./pickwindow.mjs");
   return pickWith({
-    title: `Bleed: ${actor?.name ?? ""}`,
+    title: `Lingering: ${actor?.name ?? ""}`,
     model: () => bleedModel(st, actor?.name ?? ""),
     pick: (row, k) => { if (row === "attrs") st.attrs = k === "mi/ap" ? ["mind", "appeal"] : ["body", "instinct"]; if (row === "pool") st.pool = k; },
     input: (field, value) => { if (field === "dmg") st.dmg = String(value).trim(); if (field === "sub") st.sub = value; if (field === "dc") st.dc = Math.max(1, Math.trunc(Number(value)) || 13); },

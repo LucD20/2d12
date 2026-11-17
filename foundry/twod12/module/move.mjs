@@ -1,6 +1,6 @@
 import { homePos, leanOf } from "./lean.mjs";
 import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, withHeight } from "./light.mjs";
-// Movement: AP tracking for the creature whose turn it is (split movement, free movement from @Move[walk]),
+// Movement: AP tracking for the creature whose turn it is (v0.0.414: an Advance is one piece, combat.mjs advanceAfterAction; free movement from @Move[walk]),
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
@@ -240,7 +240,7 @@ export function immobilizedDc(actor) {
 /* ------------------------------------------------------------------ */
 /* Movement tracking                                                   */
 /* ------------------------------------------------------------------ */
-/** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each, they can be split). */
+/** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each: a drag that pays AP is an Advance Action, v0.0.414). */
 export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = "" } = {}) {
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
   let evade = num(c.getFlag(F, "evadeMove")), free = num(c.getFlag(F, "freeMove")), left = num(c.getFlag(F, "moveLeft"));
@@ -256,7 +256,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
     else { while (need > left + 1e-9) { left += walk; spent++; } left -= need; }
   }
   if (spent && !useEvade) newMoveAction(c.id);   // v0.0.274: a drag that spends AP is a new Advance (a new Move Action for the Reactions); before any await
-  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(useEvade > 0 && evade <= 0 ? { ...unset(`flags.${F}.ignoreTerrain`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
+  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {}), ...(useEvade > 0 && evade <= 0 ? { ...unset(`flags.${F}.ignoreTerrain`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});

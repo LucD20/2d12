@@ -883,7 +883,7 @@ export async function useAction(actor, item, opts = {}) {
       if (!ok) return;
     }
   }
-  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction, force: !!rdData }))) return;   // v0.0.293: the roll dialog already warned about the AP
+  if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction, force: !!rdData, kind: basicKey ?? "" }))) return;   // v0.0.293: the roll dialog already warned about the AP
   // v0.0.409 (pack F2; book, Smite): the Reaction AP spent for 1 more Smite die (the roll dialog's chip); without one, no extra die
   let smiteMore = false;
   if (data.smiteMore === "on") {

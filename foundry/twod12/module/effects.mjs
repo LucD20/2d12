@@ -266,7 +266,7 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   let value = s.valued ? Math.max(1, Math.trunc(Number(over?.value)) || 1) : undefined;
   if (s.valued) for (const e of olds) value = Math.max(value, Number(e.getFlag(F, "value")) || 0);
   if (old.length) await actor.deleteEmbeddedDocuments("ActiveEffect", old);
-  const sid = shortName(item.name).trim().toLowerCase();
+  const sid0 = shortName(item.name).trim().toLowerCase(), sid = Object.keys(COND_NAME).find(k => COND_NAME[k] === sid0) ?? sid0;   // v0.0.414: Lingering is the status bleed
   const baseId = sid.replace(/\s*\(.*\)\s*$/, "");   // "Hindered (until Move)" is the Hindered status
   const statuses = (CONFIG.statusEffects ?? []).some(e => e.id === sid) ? [sid] : ((CONFIG.statusEffects ?? []).some(e => e.id === baseId) ? [baseId] : []);
   const light = s.settings.find(x => x.type === "light");
@@ -611,7 +611,7 @@ export function setupPanel() {
  */
 /** The Effect item (the world's, or the system's compendium) with a condition's name, or null. */
 export async function conditionItem(cond) {
-  const id = String(cond).trim().toLowerCase();
+  const id0 = String(cond).trim().toLowerCase(), id = COND_NAME[id0] ?? id0;   // v0.0.414: the status bleed is the condition Lingering
   let item = game.items.find(i => i.type === "effect" && shortName(i.name).trim().toLowerCase() === id);
   if (!item) {   // the system's Conditions compendium, then its Effects
     for (const key of ["twod12.conditions", "twod12.effects"]) {
@@ -623,6 +623,9 @@ export async function conditionItem(cond) {
   }
   return item;
 }
+
+/** v0.0.414: a status id whose condition item has another name (Bleed is Lingering in the book). */
+export const COND_NAME = { bleed: "lingering" };
 
 /** A condition with a value on a creature (Empowered 2): the value is kept on its effect. */
 export const isValued = fx => !!fx && fx.getFlag?.(F, "value") != null && !isExhaustedFx(fx);

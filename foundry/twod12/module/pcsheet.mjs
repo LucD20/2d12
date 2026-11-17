@@ -42,6 +42,7 @@ async function conditionTexts() {
     const pack = game.packs?.get?.("twod12.conditions");
     const idx = pack ? await pack.getIndex({ fields: ["system.description"] }) : [];
     for (const e of idx) condTexts[String(e.name).toLowerCase()] = e.system?.description ?? "";
+    if (condTexts.lingering) condTexts.bleed ??= condTexts.lingering;   // v0.0.414: the status bleed is the condition Lingering
   } catch (e) { console.warn("twod12 | the conditions' texts", e); }
   return condTexts;
 }
@@ -466,7 +467,7 @@ export async function applyHandPick(actor, weapons, key, { spendAP, applyRegrip,
     return !!text;
   }
   if ((kind === "stow" || kind === "draw") && w) {
-    if (!(await spendAP(actor, 1, "Interact"))) return false;
+    if (!(await spendAP(actor, 1, "Interact", { kind: "interact" }))) return false;
     if (kind === "stow") { await w.update(weaponMove("worn")); await say("fa-hand", `<b>Interact</b> (1 AP): ${esc(actor.name)} stows <b>${esc(w.name)}</b>.`); return true; }
     const two = w.system?.traits?.has?.("twohanded") && handSlots(weapons).every(x => x.free), was = weaponWhere(w);
     await w.update(weaponMove(two ? "2h" : "1h", two ? "" : (hand === "off" ? "off" : "main")));

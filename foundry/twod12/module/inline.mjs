@@ -281,7 +281,7 @@ export function registerInline() {
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause|Swap)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause|Swap|ShakeOff)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
@@ -295,6 +295,7 @@ export function registerInline() {
       if (kind === "Reduce") return staged(inlineEl("Reduce", cfg, (cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula ? null : cfg.label ?? match[3]) ?? `reduced by ${healText(stagedFormula(cfg, stageN))}`, "fa-shield-halved"));
       if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
       if (kind === "Swap") return inlineEl("Swap", cfg, match[3] ?? "Swap squares", "fa-right-left");   // v0.0.410 (Hold the Line, Trade Places)
+      if (kind === "ShakeOff") return inlineEl("ShakeOff", cfg, match[3] ?? "Shake Off: the Save", "fa-droplet-slash");   // v0.0.414 (book, Shake Off)
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
         const el = mkEl("Book", cfg, cfg.label ?? match[3] ?? cfg.ref, "fa-book-open");
@@ -723,6 +724,41 @@ async function handleEndEffect(cfg, ctx) {
   for (const t of targets) { try { const d = await fromUuid(t.uuid); const a = d?.documentName === "Actor" ? d : d?.actor; if (a) await promptEndEffect(a, cfg.which ?? "any", { source }); } catch (e) { /* gone */ } }
 }
 
+/**
+ * v0.0.414 (book, Chapter 6, Shake Off; Chapter 8, Lingering): the @ShakeOff chip: the targeted creature (none targeted: the Action's user) makes a
+ * Save with the better of its Lingering's two Attributes against its DC (13 unless it writes one), one Save for each Lingering it has. Tier 3: it
+ * ends. Tier 2: it ends after this turn's damage, which is halved (conditions.mjs bleedAtTurnEnd reads the flag shakeHalf). Tier 1: no effect.
+ */
+async function handleShakeOff(cfg, ctx) {
+  const origin = originActor(ctx);
+  let actors = [];
+  const targets = ctx.targets?.length ? ctx.targets : handTargetTokens(ctx).map(t => ({ uuid: t.document.uuid }));
+  for (const t of targets) { try { const d = await fromUuid(t.uuid); const a = d?.documentName === "Actor" ? d : d?.actor; if (a) actors.push(a); } catch (e) { /* gone */ } }
+  if (!actors.length && origin) actors = [origin];
+  if (!actors.length) return ui.notifications.warn("Target the Lingering creature (or none, for yourself).");
+  const { bleedOf, bleedText } = await import("./condrules.mjs");
+  for (const actor of actors) {
+    const list = [...(actor.effects ?? [])].filter(e => !e.disabled).map(e => [e, bleedOf(e)]).filter(([, b]) => b);
+    if (!list.length) { ui.notifications.info(`${actor.name} has no Lingering.`); continue; }
+    for (const [e, b] of list) {
+      const keys = (b.attrs?.length ? b.attrs : ["body", "instinct"]).filter(k => k in TWOD12.attributes);
+      const key = keys.reduce((best, k) => ((actor.system.attributes?.[k] ?? 0) > (actor.system.attributes?.[best] ?? -99) ? k : best), keys[0] ?? "body");
+      const dc = Number(b.dc) || 13, label = `Shake Off: ${TWOD12.attributes[key]} Save`;
+      const data = await askRoll(actor, { title: `${label}: ${actor.name}`, attrKey: key, traits: new Set([key, "__save"]), defaults: { dc } });
+      if (!data) continue;
+      const fxm = resolveModifiers(actor, data.fx), manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dcUsed = Number(data.dc) || dc;
+      const chk = await performCheck({ mod: actor.system.attributes?.[key] ?? 0, boons: fxm.boons + manB, banes: fxm.banes + manN, dc: dcUsed, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: chk.rolls, content: `<div class="twod12 chat">${checkHtml(label, chk, [`DC ${dcUsed}`], { showTier: true })}</div>` });
+      const what = shakeOffResult(chk.tier);
+      if (what === "ends") await e.delete();
+      else if (what === "half") await e.setFlag("twod12", "shakeHalf", true);
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-droplet-slash", `<b>${esc(actor.name)}</b>: ${esc(bleedText(b))} ${what === "ends" ? "ends." : what === "half" ? "ends after this turn's damage, which is halved." : "goes on (no effect)."}`) });
+    }
+  }
+}
+/** Pure (v0.0.414): Shake Off's Tiers: 3 ends the Lingering, 2 ends it after half this turn's damage, 1 nothing. */
+export const shakeOffResult = tier => (tier >= 3 ? "ends" : tier === 2 ? "half" : "none");
+
 /** v0.0.246: a book link. A Journal page named like the heading opens it (the Journal import comes later); until then, a note. */
 export async function openBook(cfg) {
   const ref = String(cfg.ref ?? "").trim();
@@ -775,6 +811,7 @@ export async function handleInline(kind, cfg0, ctx = {}) {
   if (kind === "Pause") return;   // a marker between the steps of a chain (actions.mjs applyAfter runs one step at a time)
   if (kind === "Swap") return handleSwap(cfg, ctx);
   if (kind === "EndEffect") return handleEndEffect(cfg, ctx);
+  if (kind === "ShakeOff") return handleShakeOff(cfg, ctx);
   if (kind === "Guard") return handleGuard(cfg, ctx);
   if (kind === "Effect") return handleEffect(cfg, ctx);
   if (kind === "Move") return handleMove(cfg, ctx);

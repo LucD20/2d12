@@ -1,0 +1,19 @@
+--- an Advance is one piece
+the Advance Action starts a new one (what was left is lost): {"freeMove":0,"moveLeft":0,"advOwn":true,"advInteract":false}
+another Action during an Advance ends it: {"freeMove":0,"moveLeft":0,"advOwn":false,"advInteract":false}
+one Interact inside the Advance Action: {"advInteract":true} | a second one ends it: {"freeMove":0,"moveLeft":0,"advOwn":false,"advInteract":false}
+an Interact inside another Action's Advance (a Setup, a Linked Action) ends it: {"freeMove":0,"moveLeft":0,"advOwn":false,"advInteract":false}
+no Advance under way: nothing: null | the marks are cleared: {"advOwn":false,"advInteract":false}
+the state read from the combatant: {"left":3.5,"own":true,"interacted":false}
+wired: spendAP (not for a Reaction): true | the Action's Basic key: true | the hands' Interact: true | a drag that pays AP is the Advance Action: true
+--- Lingering (the key stays bleed)
+the condition: Lingering | its setting: bleed | true | no Bleed item: true
+the status bleed is the condition Lingering: {"bleed":"lingering"} | the status's name: true
+its notation: Lingering [R] 1d6 Ho (Mi/Ap) | Lingering [V] 2 (Bo/In; DC 15)
+a card's text: The target gains @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]{Lingering} [R] 1d6 Ho (Mi/Ap). | the old word still reads: @Condition[bleed|dmg:2|attrs:bo/in]{Lingering} 2 (Bo/In).
+Wounding Shot's Tiers: ["@Condition[bleed|dmg:1|attrs:bo/in]{Lingering} 1 (Bo/In).","@Condition[bleed|dmg:2|attrs:bo/in]{Lingering} 2 (Bo/In)."] | diamond
+--- Shake Off
+Shake Off | handle | reach | You, or one Lingering creature within your Reach | AP 1 | its chip: true
+the Tiers: 1: none | 2: half | 3: ends
+the chip: a Save with the better Attribute against its DC, then ends or halves: true | the turn's damage halved, then it ends: true
+on the Actions tab (Utility): "[\"Steel Yourself\", \"Interact\", \"Shake Off\", \"Regrip\", \"Release\", \"Leaning\"]"

@@ -1,5 +1,5 @@
 --- the conditions pass's eight, as items (tools/content.mjs, the conditions pack)
-Bleed       item | valued: false | rules: - | linked: - | settings: bleed[body/instinct]
+Lingering   item | valued: false | rules: - | linked: - | settings: bleed[body/instinct]
 Blinded     item | valued: false | rules: - | linked: - | settings: -
 Dazed       item | valued: true | rules: loseAp | linked: - | settings: -
 Frightened  item | valued: false | rules: whileSeen | linked: - | settings: boonbane, move
@@ -14,7 +14,7 @@ Sickened    whileSeen false noReactions false loseAp false endsWithOrigin false 
 Staggered   whileSeen false noReactions true loseAp false endsWithOrigin false | modifiers [] | bleeds []
 Dazed       whileSeen false noReactions false loseAp true endsWithOrigin false | modifiers [] | bleeds []
 Grabbed     whileSeen false noReactions false loseAp false endsWithOrigin true | modifiers [] | bleeds []
-Bleed       whileSeen false noReactions false loseAp false endsWithOrigin false | modifiers [] | bleeds [{"dmg":"1","pool":"","sub":"","attrs":["body","instinct"],"dc":13}]
+Lingering   whileSeen false noReactions false loseAp false endsWithOrigin false | modifiers [] | bleeds [{"dmg":"1","pool":"","sub":"","attrs":["body","instinct"],"dc":13}]
 --- the Banes in a roll (effects.mjs modifierList)
 Frightened of the Ogre, an attack on the Goblin: Frightened 1 | a Body Save: Frightened 1
 the Ogre out of Kai's Sight (a wall): the Bane stops: none
@@ -27,12 +27,12 @@ originOk not: false true false | only: true false | none: true
 Dazed 1 with 3 AP: {"now":1,"rest":0} | Dazed 2 with 1 AP: {"now":1,"rest":1} | Dazed 1 with 0 AP: {"now":0,"rest":1}
 Staggered: Reactions off: true | nothing on: false | a disabled one: false
 Bleed's pool: Bo/In B | Mi/Ap M | [V] (Ap) B | attrs 'mi/ap': mind,appeal
-a card's Bleed over the condition's: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":13} -> Bleed [R] 1d6 Ho (Mi/Ap) | the bare condition: Bleed [V] 1 (Bo/In) | DC 15: Bleed [V] 2 (Bo/In; DC 15)
+a card's Bleed over the condition's: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":13} -> Lingering [R] 1d6 Ho (Mi/Ap) | the bare condition: Lingering [V] 1 (Bo/In) | DC 15: Lingering [V] 2 (Bo/In; DC 15)
 --- card text that becomes the buttons (gen.mjs convertEffects)
 "[R] 1d8 Ho; Pushed 2, and Frightened of you for 1 round." -> [R] 1d8 Ho; @Move[pushed|distance:2], and @Condition[frightened|rounds:1]{Frightened} of you for 1 round.
 "Frightened of the Grave Wisp (EoT)." -> @Condition[frightened|eot]{Frightened} of the Grave Wisp (EoT).
-"A Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap)." -> A Strained target also gains @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]{Bleed} [R] 1d6 Ho (Mi/Ap).
-"Bleed 2 (Bo/In; DC 15)." -> @Condition[bleed|dmg:2|attrs:bo/in|dc:15]{Bleed} 2 (Bo/In; DC 15).
+"A Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap)." -> A Strained target also gains @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]{Lingering} [R] 1d6 Ho (Mi/Ap).
+"Bleed 2 (Bo/In; DC 15)." -> @Condition[bleed|dmg:2|attrs:bo/in|dc:15]{Lingering} 2 (Bo/In; DC 15).
 "they are Dazed 1 and Hindered (EoT)." -> they are @Condition[dazed|value:1]{Dazed 1} and @Condition[hindered|eot].
 "The target is Blinded (EoT)." -> The target is @Condition[blinded|eot]{Blinded (EoT)}.
 "The target is Blinded for 1 round." -> The target is @Condition[blinded|rounds:1]{Blinded} for 1 round.
@@ -53,9 +53,9 @@ what it posted: Ogre Chieftain becomes Bloodied (Elite phase): Ogre Chieftain's 
 "AD"=ad "WD"=wd "AD 13"=ad "WD 14"=wd "AD/WD"=adwd "Body Save"=body "App Save"=appeal "Inst"=instinct "Bo"=body "Mi"=mind "DC"=- ""=-
 the roll's badge: <span class="cc-badge vsk-wd">WD 13</span>
 --- v0.0.315 (Lucas on v0.0.314)
-needs an origin (the HUD asks): Bleed false, Blinded false, Dazed false, Frightened true, Grabbed true, Sickened false, Staggered false, Taunted true
-asks its damage (Bleed's window): Bleed
-Bleed's window: Bleed | Goblin | [["At the end of each turn","Bleed [R] 1d6 Ho (Mi/Ap)"]] | rows: Save: Body / Instinct/Mind / Appeal*; Pool: By the Save*/[V] Vigor/[R] Resolve | confirm: Apply true | empty: false
+needs an origin (the HUD asks): Lingering false, Blinded false, Dazed false, Frightened true, Grabbed true, Sickened false, Staggered false, Taunted true
+asks its damage (Bleed's window): Lingering
+Bleed's window: Lingering | Goblin | [["At the end of each turn","Lingering [R] 1d6 Ho (Mi/Ap)"]] | rows: Save: Body / Instinct/Mind / Appeal*; Pool: By the Save*/[V] Vigor/[R] Resolve | confirm: Apply true | empty: false
 a card's Bleed goes into the applied effect's own setting (seen and editable): {"type":"bleed","dmg":"1d6","dmgPool":"M","dmgSub":"Ho","attrs":["mind","appeal"],"bleedDc":15} | the turn reads: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":15}
 Bleed's card: no ↳ box: true | no Lethal tag: true | the note: Ends with Interact (1 AP) and a Bo/In Save, DC 13.
 an origin on the Details tab: {"name":"Grave Wisp","token":"AjaXvWGAPxEypR0a","uuid":"Scene.s1.Token.AjaXvWGAPxEypR0a.Actor.a1"} | none: {"name":"","token":"","uuid":""}

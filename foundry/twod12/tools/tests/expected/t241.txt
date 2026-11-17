@@ -22,7 +22,7 @@ Bulwark of Faith: Interrupt > Pay 1 AP (R) > One ally > Guard rally* > Pause: Af
 Rebuke: Trigger > Pay 1 AP (R) > One enemy > The target's Save > The damage > Hindered (EoT)*
 Covering Fire: On your turn > Pay 2 AP > Place the area > Covering Fire
 --- the tab
-renders for every Action: true 116 | failures: none
+renders for every Action: true 117 | failures: none
 Word of Radiance: 1 Version tab: 1 | its Tier fields: 3 | "On a Tier 1 or 2": false | 2 steps: 1 | Fill: true | the chain isn't a text field: true
 Covering Fire: "On use": true | the area's size and rounds on the Version: true | Who set by the Zone: true
 every Tier's damage reads back from its text: true

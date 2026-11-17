@@ -15,7 +15,7 @@ texts: 3d6 + Pow | twice a Rally Point's heal | three times a Rally Point's heal
 Lay On Hands: 1 AP: The target gains @Guard[2+pow]{Guard 2 + Pow}. | 2 AP: The target gains @Guard[2+pow]{Guard 2 + Pow} and can use @Rally[1]. | rank: diamond
 Shield of Faith: That damage is reduced by @Reduce[1+pow]{1 + Pow}, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). | after: @Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger]
 Bulwark of Faith: 1R: The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. || @Guard[rally] @Pause[After the damage] @Move[slid|distance:1]
-Mithril cards: Brawler, Aim, Wounding Shot, Circling Shot, Seizing Cut, Thwart Cut, Judge, Binding Light, Lantern of Faith, Hold the Line, Commandment, Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil, Shifting Aim, Darting Blade, Quick Shots, Strafe, Slip Away, Snap Shot, Footwork, Trick Shots, Spotter, Lean and Loose, Blade and Bow, Hit and Run, Clear Lines, Opening Shot, One More Arrow, Fleet | the tracker lists them: true
+Mithril cards: Brawler, Aim, Circling Shot, Seizing Cut, Thwart Cut, Judge, Binding Light, Lantern of Faith, Hold the Line, Commandment, Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil, Shifting Aim, Darting Blade, Quick Shots, Strafe, Slip Away, Snap Shot, Footwork, Trick Shots, Spotter, Lean and Loose, Blade and Bow, Hit and Run, Clear Lines, Opening Shot, One More Arrow, Fleet | the tracker lists them: true
 no 'until the end / start of X turn' left in the cards: true
 the book: a heal to several creatures is rolled once: true | the light effect: true
 --- the code

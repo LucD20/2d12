@@ -3,12 +3,6 @@
 
 These conditions are in alphabetical order. A creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). The effect that gives a condition says how long it lasts (EoT, a number of rounds, until a Save: see [[Effect Timing]]); a condition written with no duration lasts until the end of the encounter. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
 
-### Bleed
-
-**Bleed X (Attributes)** is damage that keeps coming: at the end of each of your turns, you take X damage, a number or dice rolled each time. It is Vigor damage when the Attributes are **Bo/In** and Resolve damage when they are **Mi/Ap**, unless the Bleed writes its pool before the value: **Bleed [V] 1 (Ap)** is Vigor damage with an Appeal Save. A Bleed can have a subtype, written after the value: **Bleed [R] 1d6 Ho (Mi/Ap)**.
-
-You can end it with **Interact (1 AP)**, on yourself or on a bleeding creature within your Reach: the bleeding creature makes a Save with the better of the two Attributes against **DC 13**, or the DC the Bleed writes (**Bleed 1d6 (Bo/In; DC 15)**). **Tier 1:** no effect. **Tier 2:** you take half the Bleed at the end of this turn, then it ends. **Tier 3:** it ends. Healing doesn't end a Bleed; the end of the encounter does. If you would Bleed again, keep the Bleed with the higher average (see [[Stacking]]).
-
 ### Blinded
 
 You can't see: for your Sight, everything is Darkness (see [[Senses]]). Creatures you only hear are Hidden to you, so your Actions against them are Doomed, and you can't target a creature you don't perceive. Any other Roll that needs sight is Doomed. Actions with the Area trait still affect the creatures in their area.
@@ -79,6 +73,12 @@ You barely avoided a [[Deadly Hazards|Deadly Hazard]]: you are hanging from a le
 - You are Vulnerable 3.
 
 At the start of your turn you get back to safety, to a legal square next to the hazard, and stop being Imperiled. This takes no Action, but you are [[Slowed]] 1 that turn (or increase your Slowed value by 1), so no condition can keep you there. A creature can help you get to safety with the Interact Action (1 AP, Handle).
+
+### Lingering
+
+**Lingering X (Attributes)** is damage that keeps coming: at the end of each of your turns, you take X damage, a number or dice rolled each time. It is Vigor damage when the Attributes are **Bo/In** and Resolve damage when they are **Mi/Ap**, unless the Lingering writes its pool before the value: **Lingering [V] 1 (Ap)** is Vigor damage with an Appeal Save. A Lingering can have a subtype, written after the value: **Lingering [R] 1d6 Ho (Mi/Ap)**: a wound that bleeds, a fire that clings, holy light that keeps burning.
+
+You can end it with the [[Chapter 6: Basic Actions|Shake Off]] Action (1 AP), on yourself or on a Lingering creature within your Reach: the Lingering creature makes a Save with the better of the two Attributes against **DC 13**, or the DC the Lingering writes (**Lingering 1d6 (Bo/In; DC 15)**). **Tier 1:** no effect. **Tier 2:** you take half the Lingering at the end of this turn, then it ends. **Tier 3:** it ends. Healing doesn't end a Lingering; the end of the encounter does. If you would gain Lingering again, keep the one with the higher average (see [[Stacking]]).
 
 ### Pressed
 

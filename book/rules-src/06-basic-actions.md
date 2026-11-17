@@ -29,6 +29,8 @@ Every creature can use these Actions.
 
 @@CARD:Relocate@@
 
+@@CARD:Shake Off@@
+
 @@CARD:Shove@@
 
 @@CARD:Stand@@

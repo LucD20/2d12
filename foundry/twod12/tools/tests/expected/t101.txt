@@ -20,6 +20,6 @@ Vulnerable 2 and Prone together (Prone is another condition): Vulnerable 2 (Gobl
 two targets, each with its own value: Vulnerable 1 (Goblin): 1 ; Vulnerable 3 (Orc): 3
 the chosen modifier counts the value: {"boons":2,"banes":0,"sources":[{"name":"Vulnerable 2","boons":2,"banes":0,"bb":""}],"groups":{},"favored":false,"doomed":false,"favBy":[],"doomBy":[]}
 --- the compendium
-Conditions: bleed, blinded, dazed, empowered, frightened, grabbed, half-blinded, hindered, immobilized, imperiled, leaning, pressed, prone, quickened, sickened, slowed, squeezing, staggered, taunted, vulnerable
+Conditions: blinded, dazed, empowered, frightened, grabbed, half-blinded, hindered, immobilized, imperiled, leaning, lingering, pressed, prone, quickened, sickened, slowed, squeezing, staggered, taunted, vulnerable
 Vulnerable: valued true | condition true | modifier: [{"against":true,"boons":1,"byValue":true}]
 Imperiled: its own modifiers [] | applies: [{"name":"Vulnerable","value":3,"valued":true,"uuidOfVulnerable":true}]

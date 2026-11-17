@@ -266,6 +266,7 @@ Hooks.once("init", () => {
   // Initiative is an Attribute Check rolled by TwoD12Combat#rollInitiative; this formula is only a fallback.
   CONFIG.Combat.initiative = { formula: "1d12 + @attributes.instinct", decimals: 0 };
 
+  const STATUS_NAME = { bleed: "Lingering" };   // v0.0.414 (book, Chapter 8): a status whose name isn't its id
   CONFIG.statusEffects = [
     ["bloodied", "icons/svg/blood.svg"],
     ["strained", "icons/svg/daze.svg"],
@@ -288,7 +289,7 @@ Hooks.once("init", () => {
     ["slowed", "icons/svg/stoned.svg"],
     ["quickened", "icons/svg/lightning.svg"],
     // v0.0.314 (pack AU, the conditions as items): the conditions pass's eight (book, Chapter 8); the HUD applies their Effect items (wrapConditions)
-    ["bleed", "icons/svg/blood.svg"],
+    ["bleed", "icons/svg/blood.svg"],   // v0.0.414: named Lingering (the book's word; the id stays bleed: no migration)
     ["blinded", "icons/svg/blind.svg"],
     ["half-blinded", "icons/svg/blind.svg"],
     ["called-out", "icons/svg/eye.svg"],   // v0.0.411 (pack F3, Spotter): its enemies perceive it one step better   // v0.0.409 (pack F2, Glare; book, Chapter 8): its Sight perceives no creature better than Obscured
@@ -300,7 +301,7 @@ Hooks.once("init", () => {
     ["staggered", "icons/svg/paralysis.svg"],
     ["taunted", "icons/svg/target.svg"],
     ["dead", "icons/svg/skull.svg"]
-  ].map(([id, img]) => ({ id, name: id.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join("-"), img }));
+  ].map(([id, img]) => ({ id, name: STATUS_NAME[id] ?? id.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join("-"), img }));
   // v0.0.314: Blinded took Foundry's blind status; v0.0.316 (Lucas: the Hearing ripple went with it): it is the system's own status, and the sight
   // gate (sightgate.mjs) and the Senses (senses.mjs perceive) read it, so only Sight is gone
 });

@@ -35,7 +35,7 @@ export const RULE_KINDS = {
   light: { title: "Light", tile: "L", cls: "lt", group: "Areas" },
   zone: { title: "Zone (old layout)", tile: "Z", cls: "au", legacy: true },   // v0.0.327: an Effect's Zone is "Where it is: On the map"; an old rule left on a Feature still reads
   move: { title: "Movement limit", tile: "M", cls: "rule", group: "Limits" },
-  bleed: { title: "Bleed (condition)", tile: "B", cls: "tk", legacy: true },
+  bleed: { title: "Lingering (condition)", tile: "B", cls: "tk", legacy: true },
   builtin: { title: "Condition rule", tile: "C", cls: "cond", legacy: true },
   raw: { title: "Old setting", tile: "?", cls: "rule", legacy: true }
 };
@@ -542,7 +542,7 @@ export function ruleLabel(rIn, ctx = {}) {
     case "light": t = `Light ${r.bright} / ${r.dim}`; break;
     case "move": t = r.how === "difficult" ? (r.dirm === "closer" ? "Closer: Difficult Terrain" : "Away: Difficult Terrain") : r.dirm === "closer" ? "Can't move closer" : "Can't move away"; break;
     case "zone": t = "Zone (old layout)"; break;
-    case "bleed": t = `Bleed ${r.setting?.dmg ?? ""}`.trim(); break;
+    case "bleed": t = `Lingering ${r.setting?.dmg ?? ""}`.trim(); break;
     case "builtin": t = r.which === "noReactions" ? "No Reactions" : "Loses its value in AP"; break;
     default: t = `Old setting: ${r.setting?.type ?? "?"}`;
   }

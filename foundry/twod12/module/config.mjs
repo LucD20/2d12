@@ -180,7 +180,7 @@ export const TWOD12 = {
     { key: "attack", label: "Attack", names: ["Weapon Attack", "Charge", "Fists", "Reload"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
     { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate"] },
-    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Regrip", "Release", "Leaning"] }
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Shake Off", "Regrip", "Release", "Leaning"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"

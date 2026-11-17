@@ -49,15 +49,17 @@ An Action that lets you move gives a distance, written "Advance 5" or "Evade 2".
 
 Advance is the normal movement, and the Action every creature uses to move. **You only move with an Action that moves you**: Advance, Evade, or another Action that says so (someone else moving you, with Forced Movement or Reposition, is not you moving). An Advance can trigger reactions.
 
-You can split an Advance: move part of it, use other Actions, then move the rest later in the same turn. Movement you don't use is lost at the end of your turn. You can only split the movement of the Advance Action itself. If another Action moves you as part of a sequence (such as Charge), you can't split that movement. For instance, when you Charge, you can't Advance 3, make your Weapon Attack (1A) and then Advance the rest of your movement.
+**An Advance is one piece.** You move once, up to the distance, and stop: the movement you don't use is lost. You can't move part of an Advance, use another Action, then move the rest later. For instance, with Speed 5 you can't Advance 2, make a Weapon Attack and then Advance the other 3: that is two Advance Actions.
 
-When you split an Advance, it is still one Action. A Reaction that triggers on your movement can fire only once for that Advance, no matter how many segments you move in.
+**Interact during an Advance.** During the Advance Action, at any one point of the movement, you can use the [[Chapter 6: Basic Actions|Interact Action]] (draw a weapon, open a door on the way, help an ally stand up), paying its 1 AP then, and go on with the same Advance. Once an Advance, and only in the Advance Action used on its own: not in an Advance that is part of another Action (a Linked Action such as "Advance 5, make a Weapon Attack (1A) and Advance 5 again", a Setup such as "Setup: Advance 3", or a Charge), unless its card says so, and not during an Evade.
+
+A Reaction that triggers on your movement can fire only once for an Advance, at the square the reacting creature chooses (see [[What a Reaction Responds To]]).
 
 ### Evade
 
 Evade is a type of movement that doesn't trigger reactions. You can't Evade into or pass through Difficult Terrain. What an Evade costs is decided by the Action that lets you Evade, such as the [[Chapter 6: Basic Actions|Evade Action]]. The Evade Action doesn't have the Move trait.
 
-You can't split an Evade the way you can split the Advance Action. If an Action lets you Evade 3 and you Evade 1 square, you can't Evade the other 2 squares later for free.
+An Evade is one piece too, and nothing fits inside it: if an Action lets you Evade 3 and you Evade 1 square, the other 2 squares are lost.
 
 When an Action allows you to Evade, you can use the movement as an Advance instead. By itself this brings no benefit, but it lets a creature move willingly through reactions, or move at all if they are unable to Evade.
 

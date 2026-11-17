@@ -62,3 +62,5 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
 - The Archer's redesign (2026-11-16 in the book, v0.0.411 in Foundry, pack F3): Volley (2 AP, a 3 Burst, 2[W] / 3[W] and Hindered, Prone on a
   Critical, then Evade 2), Covering Fire (2 rounds of Difficult Terrain and Hazardous Terrain for enemies, no more Banes or Defense) and Thrill of the
   Kill ("an enemy you have damaged goes Down", not the marked one) were rewritten with Lucas: Diamond until he revises them in Foundry.
+- Wounding Shot (2026-11-17, v0.0.414, pack "Advance is one piece"): Bleed is renamed Lingering (Lucas, 2026-11-14), so its Tiers read
+  "Lingering 1 (Bo/In)" and "Lingering 2 (Bo/In)". Nothing else changed.

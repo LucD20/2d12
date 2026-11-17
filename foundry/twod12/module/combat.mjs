@@ -128,8 +128,22 @@ export async function setUnusedApGuard(c, hadTurn, apLeft) {
   return guard;
 }
 
+/** v0.0.414: the Advance under way: { left: its squares left (an Advance Action's button or a drag), own: it is the Advance Action used on its own, interacted: its one Interact is used }. */
+export const advState = c => ({ left: (Number(c?.getFlag?.(F, "freeMove")) || 0) + (Number(c?.getFlag?.(F, "moveLeft")) || 0), own: !!c?.getFlag?.(F, "advOwn"), interacted: !!c?.getFlag?.(F, "advInteract") });
+/**
+ * Pure (v0.0.414; book, Chapter 3, Advance): what an Action does to the Advance under way. kind: the Basic Action's key ("advance", "interact", or
+ * "" for any other). Returns the flags to set (null: nothing). The Advance Action starts a new one (own); one Interact fits inside the Advance Action
+ * used on its own, once; anything else ends it (its squares left are lost).
+ */
+export function advanceAfterAction(st, kind = "") {
+  if (kind === "advance") return { freeMove: 0, moveLeft: 0, advOwn: true, advInteract: false };
+  if (!(st?.left > 0)) return st?.own || st?.interacted ? { advOwn: false, advInteract: false } : null;
+  if (kind === "interact" && st.own && !st.interacted) return { advInteract: true };
+  return { freeMove: 0, moveLeft: 0, advOwn: false, advInteract: false };
+}
+
 /** Pay the AP of an action. Returns false when the player decides not to go ahead. Does nothing outside combat. */
-export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false, force = false } = {}) {   // force (v0.0.293): no "Not enough AP" question (the roll dialog warned)
+export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false, force = false, kind = "" } = {}) {   // force (v0.0.293): no "Not enough AP" question (the roll dialog warned); kind (v0.0.414): the Basic Action's key
   const c = combatantOf(actor);
   if (!c || !game.combat?.started) return true;
   // v0.0.243 (book, Reactions): a Reaction is paid with the Reaction AP first, then with AP (kept from the turn, or the turn's own on its own turn).
@@ -144,6 +158,9 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
   }
   await c.setFlag(F, "acted", true);
   if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });   // v0.0.182: an Evade left unused ends when another Action is used
+  // v0.0.414 (book, Chapter 3, "An Advance is one piece"): another Action ends an Advance under way (its movement left is lost), except one Interact
+  // during the Advance Action used on its own (advanceAfterAction); a Reaction off your turn leaves it alone.
+  if (!reaction) { const upd = advanceAfterAction(advState(c), kind); if (upd) await c.update(Object.fromEntries(Object.entries(upd).map(([k, v]) => [`flags.${F}.${k}`, v]))); }
   // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first).
   try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ }
   if (pay.fromRap) await setRAP(c, rap - pay.fromRap);
