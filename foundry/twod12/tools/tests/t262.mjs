@@ -80,3 +80,14 @@ if (AS.cleanLevel) {
 console.log("D2 both Modifiers, no Vigor / Resolve words on the bars:", hud.includes('{ label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }') && !hv.includes("<span><b>${esc(b.name)}</b>"),
   "| D5 the same creature keeps its height:", hud.includes("main.__twod12Actor === cur.actor.uuid && !m.folded ? main.offsetHeight : 0"), "| F2 Bloodied / Strained off the strip:", hud.includes('tag: h.tag?.cls === "hurt" ? null : h.tag'));
 console.log("F1 a full AP pip solid gold, an empty one dark:", theme.includes(".twod12-type .twod12-hud .hm-ap i.on, .twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }"), "| D8 the HUD's icons centered:", css.includes(".twod12-hud .hud-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar button { display: inline-flex; align-items: center; justify-content: center;"));
+
+console.log("--- V1.6 the Encounter Log");
+const DL = await import(ROOTURL + "module/damagelog.mjs");
+console.log("same side:", DL.sameSide(-1, -1), "| foes:", DL.sameSide(-1, 1), "| a neutral is nobody's ally:", DL.sameSide(0, 0), "| unknown:", DL.sameSide(undefined, 1));
+const log = [{ o: "OG", on: "Ogre Chieftain", a: 20, r: 1, t: 0, al: true }, { o: "OG", on: "Ogre Chieftain", a: 9, r: 1, t: 0 }, { o: "G1", on: "Goblin Sneak", a: 8, r: 1, t: 1 }, { o: "G2", on: "Goblin Sneak", a: 3, r: 1, t: 2 }];
+const cmb = { round: 1, turn: 2, turns: [{ id: "a", actor: { uuid: "OG" } }, { id: "b", actor: { uuid: "G1" } }, { id: "c", actor: { uuid: "G2" } }], combatants: { find: () => null }, getFlag: (s, k) => (k === "dmglog" ? log : undefined) };
+console.log("the report:", DL.reportRows(cmb).map(r => `${r.name} ${r.total} (to allies ${r.allies})`).join("; "));
+const EL = await import(ROOTURL + "module/enclog.mjs");
+const turn = { r: 1, t: 0, own: { id: "k", name: "Kaela" }, items: [{ k: "move", who: { id: "k" }, d: { mode: "Advance", n: 2, setup: "Strafe" } }, { k: "act", who: { id: "k" }, d: { name: "Strafe", tg: [{ id: "o", name: "Orc Warrior", tier: 2 }] } }, { k: "move", who: { id: "k" }, d: { mode: "Advance", n: 3 } }] };
+console.log("a Setup's movement inside its Action:", EL.turnText(turn, r => r?.name ?? "?", n => n));
+console.log("an area skips a creature out of the fight:", src("module/template.mjs").includes("let tokens = tokensIn(placed.cells).filter(t => !outOfFight(t));"), "| the Setup's name reaches the log:", src("module/setup.mjs").includes("setLog(item.name);") && mvs.includes("cost, setupLogName)"));

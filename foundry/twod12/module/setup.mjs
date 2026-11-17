@@ -56,8 +56,10 @@ export async function runSetup(actor, item, token, deps = {}) {
   for (const cfg of moves) {
     cfg.traits = [...new Set([...(cfg.traits ?? []), "self"])];   // the creature that uses the Action is the one that moves
     if (!deps.dialog) cfg.quiet = true;   // v0.0.224: the bar says it all, no chat line
+    const setLog = deps.setLog ?? (await import("./move.mjs")).setSetupLog;   // v0.0.418: the Encounter Log writes the movement inside the Action
+    setLog(item.name);
     const granted = await handleMove(cfg, { actor, token });
-    if (!granted) continue;   // it said why (not in combat, Immobilized...): the Action goes on without this movement
+    if (!granted) { setLog(""); continue; }   // it said why (not in combat, Immobilized...): the Action goes on without this movement
     const pick = await ask({
       title: item.name, text: plainSetup(text),
       window: { title: `${item.name}: Setup` },
@@ -66,6 +68,7 @@ export async function runSetup(actor, item, token, deps = {}) {
       rejectClose: false
     });
     await finish();
+    setLog("");
     if (pick !== "go") return { ok: false, done };
     done = true;
   }

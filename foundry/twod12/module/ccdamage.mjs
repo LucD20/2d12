@@ -215,7 +215,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   const E = await import("./effects.mjs");
   if (took.B + took.M > 0) {
     let src = null; try { src = s.originUuid ? await fromUuid(s.originUuid) : null; } catch (e) { src = null; }
-    try { await (await import("./damagelog.mjs")).logDamage({ originUuid: s.originUuid ?? "", originName: src?.name ?? s.name ?? "", targetName: r.name, amount: took.B + took.M }); } catch (e) { console.warn("twod12 | damage log", e); }
+    try { await (await import("./damagelog.mjs")).logDamage({ originUuid: s.originUuid ?? "", originName: src?.name ?? s.name ?? "", targetName: r.name, targetUuid: r.uuid ?? "", amount: took.B + took.M }); } catch (e) { console.warn("twod12 | damage log", e); }
     try { (await import("./halfhint.mjs")).clearHalfHint(s.originUuid); } catch (e) { /* none */ }
     try { await D.applyDownEffects({ ...s, fx: g.fx }, actor, r.uuid); } catch (e) { console.warn("twod12 | Down effects", e); }
     try { await (await import("./triggers.mjs")).runDamageTriggers(src, actor, r.uuid, comps); } catch (e) { console.warn("twod12 | triggers", e); }

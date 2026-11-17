@@ -31,3 +31,8 @@ E7 a Rally pip clicked (3 left): the 2nd → 2 | the 3rd (the last lit) → 2 | 
 E5 a window with no scheme takes the Applications one: true themed theme-light | one with its own is left: false
 D2 both Modifiers, no Vigor / Resolve words on the bars: true | D5 the same creature keeps its height: true | F2 Bloodied / Strained off the strip: true
 F1 a full AP pip solid gold, an empty one dark: true | D8 the HUD's icons centered: true
+--- V1.6 the Encounter Log
+same side: true | foes: false | a neutral is nobody's ally: false | unknown: false
+the report: Ogre Chieftain 9 (to allies 20); Goblin Sneak 1 8 (to allies 0); Goblin Sneak 2 3 (to allies 0)
+a Setup's movement inside its Action: Kaela - Strafe vs Orc Warrior T2 (Setup: Advance 2); Advance 3.
+an area skips a creature out of the fight: true | the Setup's name reaches the log: true

@@ -42,7 +42,7 @@
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
-    "automation": "diamond",
+    "automation": "gold",
     "automationNote": "its Requirement checked on your turn in a combat (you haven't left your square: your token's moves); the shot, Lingering 1 / Lingering 2 (Bo/In) by Tier."
    }
   },
@@ -82,7 +82,7 @@
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
-    "automation": "mithril",
+    "automation": "silver",
     "automationNote": "the Setup's Evade 1 (the button), the shot; the Tier 3's Evade 1 (the button) to a square no farther from the target: by hand."
    }
   },
@@ -125,7 +125,7 @@
    ],
    "foundry": {
     "img": "icons/svg/sword.svg",
-    "automation": "mithril",
+    "automation": "silver",
     "automationNote": "its Requirement (a free hand: Release offered, as Handle Actions); the Reposition 1 (Tiers 1 and 2), the Slide 1 then Grabbed (Tier 3): the buttons; the holding hand marked busy by hand."
    }
   },
@@ -168,7 +168,7 @@
    ],
    "foundry": {
     "img": "icons/svg/sword.svg",
-    "automation": "mithril",
+    "automation": "silver",
     "automationNote": "Pressed 1 / 1 / 2 (EoT) by Tier (a condition: Pressure Banes on its [Strike] rolls); it ends when you stop threatening the target: by hand."
    }
   }

@@ -232,7 +232,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "When you use this Action, you move up to your Speed in squares. @Move[advance|distance:speed]",
+       "effects": "You move up to your Speed in squares, in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later). Once during this Advance, at any point of the movement, you can use the Interact Action (paying its 1 AP then) and go on moving. @Move[advance|distance:speed]",
        "fx": {
         "all": [],
         "t1": [],
@@ -240,7 +240,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -281,7 +282,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "@Move[evade|distance:1]",
+       "effects": "@Move[evade|distance:1]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain.",
        "fx": {
         "all": [],
         "t1": [],
@@ -298,7 +299,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "@Move[evade|distance:floor(speed/2)]",
+       "effects": "@Move[evade|distance:floor(speed/2)]: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain.",
        "fx": {
         "all": [],
         "t1": [],
@@ -306,7 +307,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -356,7 +358,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "silver"
     },
     "flags": {
      "twod12": {
@@ -397,7 +400,7 @@
        "x1": "",
        "x2": "",
        "x3": "",
-       "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world.",
+       "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see @Book[Advance]{Advance}).",
        "fx": {
         "all": [],
         "t1": [],
@@ -405,7 +408,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "bronze"
     },
     "flags": {
      "twod12": {
@@ -472,7 +476,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "silver"
     },
     "flags": {
      "twod12": {
@@ -521,7 +526,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "silver"
     },
     "flags": {
      "twod12": {
@@ -570,7 +576,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -620,7 +627,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -670,7 +678,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -720,7 +729,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -769,7 +779,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -855,7 +866,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -933,7 +945,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -1018,7 +1031,8 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
@@ -1104,11 +1118,62 @@
         "t3": []
        }
       }
-     ]
+     ],
+     "automation": "gold"
     },
     "flags": {
      "twod12": {
       "basic": "haul"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "2OA7SZEnjPg6bJgr",
+    "name": "Shake Off",
+    "type": "action",
+    "img": "icons/svg/regen.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You beat out the flames, press on the wound, scrape off what burns.",
+     "frequency": "atwill",
+     "distance": "reach",
+     "requirements": "",
+     "traits": [
+      "handle"
+     ],
+     "targets": "You, or one Lingering creature within your Reach",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "The target makes a Save against its Lingering, with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. Tier 1: no effect. Tier 2: it takes half the Lingering at the end of this turn, then the Lingering ends. Tier 3: the Lingering ends. @ShakeOff[save]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ],
+     "automation": "silver"
+    },
+    "flags": {
+     "twod12": {
+      "basic": "shakeOff"
      }
     },
     "effects": [],

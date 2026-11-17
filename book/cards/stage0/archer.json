@@ -28,7 +28,7 @@
      }
     ],
     "automationNote": "the Field Boon in the roll dialog when you have left your square this turn since your last [Strike] Action (or since your turn began): tracked from your token's moves. With it, the Archer's Starting Mastery: 5 with one Projectile weapon (the Mastery tab's choice; book, Mastery).",
-    "automation": "mithril",
+    "automation": "gold",
     "settings": [
      {
       "type": "mastery",
@@ -86,7 +86,7 @@
     "img": "icons/svg/sword.svg",
     "folder": "Archer",
     "automationNote": "the Strike, Staggered (EoT) on a Tier 3, then the Evade 2 (the button); drawing and stowing the Light weapon by hand (the hands buttons).",
-    "automation": "mithril"
+    "automation": "silver"
    }
   },
   {
@@ -134,7 +134,7 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (the button); a Critical's 1 AP back by hand.",
-    "automation": "mithril"
+    "automation": "silver"
    }
   },
   {
@@ -178,7 +178,7 @@
     "img": "icons/svg/target.svg",
     "folder": "Archer",
     "automationNote": "the Setup's Advance (the button), then up to three creatures, a roll each, Pushed 1 on a Tier 3.",
-    "automation": "mithril"
+    "automation": "gold"
    }
   },
   {
@@ -206,7 +206,7 @@
     "moment": "enemyAdjacent",
     "momentRange": 5,
     "automationNote": "offered by itself in the Reactions message when an enemy within 5 squares would enter a square adjacent to you (Move back: it stops before that square); Use: the Evade 1 and the Advance 2 (the buttons).",
-    "automation": "mithril"
+    "automation": "gold"
    }
   },
   {
@@ -253,7 +253,7 @@
     "momentRange": 0,
     "momentTarget": "subject",
     "automationNote": "offered by itself in the Reactions message when an enemy would enter a square adjacent to you (Move back: it stops before that square); Use: the shot, Hindered (EoT) on a Tier 2, Immobilized (EoT) on a Tier 3.",
-    "automation": "mithril"
+    "automation": "gold"
    }
   },
   {
@@ -306,7 +306,7 @@
    "foundry": {
     "img": "icons/svg/wing.svg",
     "folder": "Archer",
-    "automation": "mithril",
+    "automation": "silver",
     "automationNote": "the Mode's pick; Sidestep's Evade 3 and Hands Busy's Evade 1 (the buttons; the Interact or Reload by hand); Weave's Advance ignores Difficult Terrain (the button; through unwilling creatures by hand)."
    }
   },
@@ -367,7 +367,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "mithril",
+    "automation": "gold",
     "automationNote": "the Mode's pick, the shot and each Mode's Tier 2 or 3 (Hindered, Vulnerable 1, the Pushes)."
    }
   },
@@ -433,7 +433,7 @@
    "foundry": {
     "img": "icons/svg/eye.svg",
     "folder": "Archer",
-    "automation": "mithril",
+    "automation": "silver",
     "automationNote": "the Mode's pick; Call Out: the target is Called Out (1 round: its enemies perceive it one step better); Find the Gap: an effect on you (no far or maximum range Bane on your next [Ranged, Strike] this turn; its Cover one level lower by hand); Keep Low: an effect as a reminder (by hand)."
    }
   },
@@ -461,7 +461,7 @@
      }
     ],
     "automationNote": "Leaning costs 0 AP while your Escalation is 2 or more.",
-    "automation": "mithril"
+    "automation": "gold"
    }
   },
   {
@@ -486,7 +486,7 @@
      }
     ],
     "automationNote": "the Boon in the roll dialog, once on each of your turns, on a [Melee, Strike] after a [Ranged, Strike] (or the reverse) this turn, while your Escalation is 2 or more.",
-    "automation": "mithril"
+    "automation": "gold"
    }
   },
   {
@@ -511,7 +511,7 @@
      }
     ],
     "automationNote": "",
-    "automation": "diamond"
+    "automation": "gold"
    }
   },
   {
@@ -567,7 +567,7 @@
     "version": {
      "after": "@Condition[prone|crit:yes]"
     },
-    "automation": "diamond"
+    "automation": "gold"
    }
   },
   {
@@ -613,7 +613,7 @@
    "foundry": {
     "img": "icons/svg/sword.svg",
     "folder": "Archer",
-    "automation": "mithril",
+    "automation": "bronze",
     "automationNote": "the Advance (the button) and one roll for the whole Action (Use it against the first creature; apply the same Tier to the others by hand); the free draws and the bow shot by hand."
    }
   },
@@ -654,7 +654,7 @@
       ]
      }
     },
-    "automation": "diamond"
+    "automation": "gold"
    }
   },
   {
@@ -678,7 +678,7 @@
      }
     ],
     "automationNote": "your allies give your targets no Cover, and no Field Bane for a target Engaged with an ally, while your Escalation is 4 or more.",
-    "automation": "mithril"
+    "automation": "gold"
    }
   },
   {
@@ -702,7 +702,7 @@
      }
     ],
     "automationNote": "on a Tier 3 of a [Ranged, Strike] Action, a line on the card names the allies who threaten the target; the ally's Weapon Attack (1R) by hand, once a round.",
-    "automation": "mithril"
+    "automation": "bronze"
    }
   },
   {
@@ -727,7 +727,7 @@
      }
     ],
     "automationNote": "the first [Strike] that deals [W] on each of your turns deals 1[W] more (the damage roll), while your Escalation is 6.",
-    "automation": "mithril"
+    "automation": "gold"
    }
   },
   {
@@ -752,7 +752,7 @@
      }
     ],
     "automationNote": "each Evade button moves you 1 more square while your Escalation is 6; entering Difficult Terrain with an Evade by hand.",
-    "automation": "mithril"
+    "automation": "silver"
    }
   }
  ]

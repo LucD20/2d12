@@ -9,7 +9,7 @@
    "foundry": {
     "img": "icons/svg/mystery-man.svg",
     "folder": "Basic Actions",
-    "automation": "none",
+    "automation": "bronze",
     "automationNote": "a placeholder: nothing to automate until Hide is written."
    }
   }

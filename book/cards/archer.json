@@ -350,7 +350,7 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automation": "diamond",
+    "automation": "gold",
     "automationNote": "the area is a Zone kept 3 rounds: enemies inside carry the Bane, allies inside the +1 Defense, both only while inside.",
     "areaCfg": {
      "targets": "all",

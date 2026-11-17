@@ -8,7 +8,7 @@ the meta line: true
 Tier and Critical names are buttons for the GM: true | 4 = a Critical (Tier 3 and its line): true
 --- Save Actions: Effects by Tier and the chain after the damage
 the Save card carries the Version's Effects and chain: true | its damage message runs them: true
-Rebuke (diamond): ["Its Move Action is disrupted.","Its Move Action is disrupted.","No effect."] | after: @Condition[hindered|eot]
+Rebuke (gold): ["Its Move Action is disrupted.","Its Move Action is disrupted.","No effect."] | after: @Condition[hindered|eot]
 Skirmish Shot (diamond): ["","","you can @Move[evade|distance:1]."] | after: @Move[evade|distance:1|tier:3]
 --- the compendium
 Basic Actions: 20 true | Opportunity Attack (v0.0.335, Lucas: adjacent, not the squares you threaten): range 1, threat check false | set aside (v0.0.407), not in the compendium's Basic Actions: true

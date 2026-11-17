@@ -47,7 +47,7 @@
    "foundry": {
     "img": "icons/svg/eye.svg",
     "folder": "Paladin",
-    "automation": "mithril",
+    "automation": "silver",
     "marksTarget": true,
     "markKind": "judge",
     "automationNote": "the mark (the ring on the token), Profane for you (Smite's and Word of Radiance's d8s, your Profane rules), the first damage each round of the Judged creature to an ally within 5 squares of you reduced by your Power Modifier, the reminders at the start of an encounter and when it goes Down; the 0 AP use only at the start of an encounter or as a 0R: by hand.",
@@ -115,7 +115,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "diamond",
+    "automation": "gold",
     "automationNote": "the Smite dice by your Escalation (up to 4, 1 more on a Tier 3), d8s against a Profane creature (Judged by you, or the Profane Tag), the Reaction AP for 1 more die (the roll dialog's chip, paid when used).",
     "version": {
      "diceRule": "smite",
@@ -162,7 +162,7 @@
    "foundry": {
     "img": "icons/svg/net.svg",
     "folder": "Paladin",
-    "automation": "mithril",
+    "automation": "gold",
     "automationNote": "the damage, then Immobilized (1 round) on a Tier 2 or 3 once it lands."
    }
   },
@@ -208,7 +208,7 @@
    "foundry": {
     "img": "icons/svg/regen.svg",
     "folder": "Paladin",
-    "automation": "diamond",
+    "automation": "silver",
     "automationNote": "the Setup's Advance (the button; the straight line toward the target by hand), the Guard (2 + Pow) and, at 2 AP, the Rally Point (the chips, on the target)."
    }
   },
@@ -238,7 +238,7 @@
    "foundry": {
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
-    "automation": "diamond",
+    "automation": "gold",
     "moment": "strikeDamage",
     "momentRange": 5,
     "automationNote": "offered by itself in the Reactions message when an enemy's Strike would damage an ally within 5 squares (the damage waits); Use reduces that damage by 1 + Pow and Taunts the attacker (1 round).",
@@ -288,7 +288,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "diamond",
+    "automation": "gold",
     "moment": "enemyAway",
     "momentRange": 3,
     "automationNote": "offered by itself in the Reactions message when an enemy within 3 squares moves away from you; Use makes the Appeal Save and the enemy is Hindered (EoT); on a Tier 1 or 2 its Move Action is disrupted: Move back in the Reactions message (to the square it left).",
@@ -365,7 +365,7 @@
    "foundry": {
     "img": "icons/svg/light.svg",
     "folder": "Paladin",
-    "automation": "mithril",
+    "automation": "gold",
     "automationNote": "the Mode's pick; Kindle and Reveal light the token (an effect); Glare's Instinct Save and Half-Blinded (EoT)."
    }
   },
@@ -419,7 +419,7 @@
    "foundry": {
     "img": "icons/svg/statue.svg",
     "folder": "Paladin",
-    "automation": "mithril",
+    "automation": "silver",
     "automationNote": "the Mode's pick; Brace (an Aura 1 around you, Difficult Terrain for enemies, 1 round); Trade Places (the Swap button: both tokens move at once, no Reactions; creatures of different Sizes by hand); Rescue's Reposition 2 (the button)."
    }
   },
@@ -487,7 +487,7 @@
    "foundry": {
     "img": "icons/svg/sound.svg",
     "folder": "Paladin",
-    "automation": "mithril",
+    "automation": "silver",
     "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save and Prone; Courage: an effect on you as a reminder (you and allies within 3 squares ignore Frightened: by hand)."
    }
   },
@@ -506,7 +506,7 @@
    ],
    "foundry": {
     "img": "icons/svg/shield.svg",
-    "automation": "mithril",
+    "automation": "gold",
     "automationNote": "the Guard (1 + Pow, the higher kept) each time you use a [Divine] Reaction, while your Escalation is 2 or more.",
     "hooks": [
      {
@@ -534,7 +534,7 @@
    ],
    "foundry": {
     "img": "icons/svg/eye.svg",
-    "automation": "mithril",
+    "automation": "gold",
     "automationNote": "Judge's 1 AP Version costs 0 AP while your Escalation is 2 or more.",
     "hooks": [
      {
@@ -560,7 +560,7 @@
    ],
    "foundry": {
     "img": "icons/svg/fire.svg",
-    "automation": "diamond",
+    "automation": "gold",
     "settings": [
      {
       "type": "eschook",
@@ -596,7 +596,7 @@
    "foundry": {
     "img": "icons/svg/shield.svg",
     "folder": "Paladin",
-    "automation": "diamond",
+    "automation": "gold",
     "moment": "strikeDamage",
     "momentRange": 5,
     "automationNote": "offered by itself in the Reactions message when an enemy's Strike would damage an ally within 5 squares (the damage waits); Use gives the Guard (one of their Rally Points) before it lands, then Slides them 1 after.",
@@ -627,7 +627,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "diamond",
+    "automation": "gold",
     "areaCfg": {
      "targets": "all",
      "keep": true,
@@ -684,7 +684,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "diamond",
+    "automation": "gold",
     "areaCfg": {
      "targets": "enemies",
      "center": true
@@ -711,7 +711,7 @@
    ],
    "foundry": {
     "img": "icons/svg/downgrade.svg",
-    "automation": "mithril",
+    "automation": "bronze",
     "automationNote": "the Speed of the creature you Judged: by hand (its Speed reduced by 2, to a minimum of 1)."
    }
   },
@@ -730,7 +730,7 @@
    ],
    "foundry": {
     "img": "icons/svg/eye.svg",
-    "automation": "mithril",
+    "automation": "silver",
     "automationNote": "the second Reaction AP while your Escalation is 4 or more; that it pays only for [Divine] Reactions: by hand.",
     "hooks": [
      {
@@ -778,7 +778,7 @@
    "foundry": {
     "img": "icons/svg/sun.svg",
     "folder": "Paladin",
-    "automation": "diamond",
+    "automation": "gold",
     "areaCfg": {
      "targets": "enemies",
      "center": true
@@ -804,7 +804,7 @@
    ],
    "foundry": {
     "img": "icons/svg/statue.svg",
-    "automation": "diamond",
+    "automation": "silver",
     "automationNote": "a [Divine] Action you use shows \"Setup: You Advance 3\" with its button while your Escalation is 6 or more; once on your turn: by hand.",
     "hooks": [
      {

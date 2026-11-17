@@ -1,8 +1,8 @@
-Kindled Wrath: automation diamond | settings [{"type":"eschook","hookWhen":"allyState","hookRange":0}] | text mentions "by hand": false
-Thrill of the Kill: automation diamond | settings [{"type":"eschook","hookWhen":"damagedDown","hookRange":0}] | text mentions "by hand": false
+Kindled Wrath: automation gold | settings [{"type":"eschook","hookWhen":"allyState","hookRange":0}] | text mentions "by hand": false
+Thrill of the Kill: automation gold | settings [{"type":"eschook","hookWhen":"damagedDown","hookRange":0}] | text mentions "by hand": false
 the species: Human V+3 R+2 (choice), Dwarf V+4 R+1, Elf V+1 R+4
 Slowed: Slowed always has a value. You regain that many fewer AP at the start of your turn (Slowed 2: you regain 2), and your mo...
 migration updates: an old character: {"system.escalation":1} | high on Resolve, mid-encounter 2: {"system.healthHigh":"resolve","system.apGuard":0} | already there: {}
 asked once, after a backup reminder, with the existing refresh: true | nothing deleted: true | the refresh question waits for it: true | registered and a console tool: true
 the schema has the new fields: true | the setting type in the editor: true
-the version: 0.0.417 | changelog entry: true | the copy matches: true
+the version: 0.0.418 | changelog entry: true | the copy matches: true

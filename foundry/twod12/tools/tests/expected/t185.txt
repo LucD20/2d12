@@ -16,7 +16,7 @@ options: {"formula":"1d8+mod","who":"pick","area":2} {"kind":"pushed","distance"
 --- the Smite card (book/cards/stage0/paladin.json since pack F2, v0.0.409) as Foundry data
 2 AP: dice rule smite | tiers  1d6! MHo / [W]+ 1d6! MHo / [W]+ 2d6! MHo
 the Structure card's tiers say 'your Smite dice'; Foundry rolls them: true | encounter divine,signature,strike,weapon
-automation: diamond | the Smite dice by your Escalation (up to 4, 1 more on a Tier 3), d8s against a Profane creature (Judged by you, or the Profane Tag), the Reaction AP for 1 more die (the roll dialog's chip, paid when used).
+automation: gold | the Smite dice by your Escalation (up to 4, 1 more on a Tier 3), d8s against a Profane creature (Judged by you, or the Profane Tag), the Reaction AP for 1 more die (the roll dialog's chip, paid when used).
 the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16): true | the built book links Bright light on a card: true | every card an anchor: true
 --- the placeholder card (Hide) and the Smite light effects
 Hide: placeholder true | an Action: true | versions: 0 | frequency: "" | text: Not written yet. Hiding and sneaking are an open item (see @Book[Senses]{Senses}). This card holds the place, so that other cards can refer to Hide.

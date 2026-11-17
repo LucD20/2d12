@@ -240,6 +240,9 @@ export function immobilizedDc(actor) {
 /* ------------------------------------------------------------------ */
 /* Movement tracking                                                   */
 /* ------------------------------------------------------------------ */
+/** v0.0.418 (playtest 5): while a Setup's movement is made, the Action it belongs to (the Encounter Log writes it inside that Action). */
+let setupLogName = "";
+export const setSetupLog = name => { setupLogName = String(name ?? ""); };
 /** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each: a drag that pays AP is an Advance Action, v0.0.414). */
 export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = "" } = {}) {
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
@@ -248,7 +251,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   // v0.0.182: an Evade goes on square by square (its area stays shown) until the creature uses another Action or ends the movement:
   // it can't be split around other Actions (spendAP in combat.mjs clears what is left), but one Evade can take several drags.
   const useEvade = Math.min(evade, need); need -= useEvade; evade -= useEvade;
-  try { logMove(c.token?.object ?? c.actor, logMode || (useEvade ? "Evade" : "Advance"), cost); } catch (e) { /* no log */ }   // v0.0.223: the Encounter Log
+  try { logMove(c.token?.object ?? c.actor, logMode || (useEvade ? "Evade" : "Advance"), cost, setupLogName); } catch (e) { /* no log */ }   // v0.0.223: the Encounter Log
   const useFree = Math.min(free, need); free -= useFree; need -= useFree;
   let spent = 0;
   if (need > 0) {

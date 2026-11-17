@@ -224,5 +224,6 @@ export function basicEntry(c) {
   for (const k of ["moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (s[k] !== undefined) e[k] = s[k];   // v0.0.272 (pack RX): its moment
   e.flavor = c.flavor ?? "";
   e.versions = s.versions;
+  if (s.automation) e.automation = s.automation;   // v0.0.418 (playtest 5, A5): the card's Bronze / Silver / Gold rating
   return e;
 }

@@ -2,8 +2,8 @@
 
 Lucas asked (2026-11-17): "rate the automations yourself, from bronze to gold, of all the actions we created, including the basic actions. No
 mithril nor diamond, only from bronze to gold." This is Claude's reading of what Foundry does for each card in the compendium, from each card's
-automationNote and the code. It is **separate from the card's `automation` field** (Mithril / Diamond there say whether Lucas wrote or revised the
-card with Claude, and the field is not changed here). Not checked in Foundry itself: Lucas's tests stay the source of truth.
+automationNote and the code. Since v0.0.418 (Lucas, playtest 5: Mithril and Diamond retired) **this rating is the card's `automation` field** (the diamond
+on the card shows it; editable on the item). Not checked in Foundry itself: Lucas's tests stay the source of truth.
 
 **The scale**
 - **Gold:** the whole card runs: its roll, damage, conditions, movement (a button counts), and every limit it states is checked.

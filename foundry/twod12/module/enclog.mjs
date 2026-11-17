@@ -92,9 +92,11 @@ export function turnText(turn, nm, an, { details = false } = {}) {
     let txt = lineText(e, nm, an);
     if (!mine) txt = `${nm(e.who)} ${txt}`;
     const last = parts[parts.length - 1];
-    if (e.k === "move" && last && last.k === "move" && last.mode === e.d.mode && last.mine === mine && !e.txt) { last.n += e.d.n; last.txt = `${mine ? "" : `${nm(e.who)} `}${e.d.mode} ${last.n}`; continue; }
+    if (e.k === "move" && last && last.k === "move" && last.mode === e.d.mode && last.mine === mine && !e.txt && (last.setup ?? "") === (e.d.setup ?? "")) { last.n += e.d.n; last.txt = `${mine ? "" : `${nm(e.who)} `}${e.d.mode} ${last.n}`; continue; }
     if (e.k === "move" && e.d.mode === "Charge" && last?.k === "act" && last.name === "Charge" && last.mine === mine) { last.txt = `${last.txt.replace(/Charge( 2A)?$/, "Charge")} ${e.d.n}`; last.k = "charge"; continue; }
-    const part = { k: e.k, mode: e.d?.mode, n: e.d?.n ?? 0, name: e.d?.name, mine, txt, free: !!e.d?.free };
+    // v0.0.418 (Lucas, playtest 5: Kaela's "Advance 2" was Strafe's Setup): a Setup's movement is written inside its Action, "Strafe (Setup: Advance 2)"
+    if (e.k === "act" && last?.k === "move" && last.setup && last.setup === e.d?.name && last.mine === mine) { parts.pop(); txt = `${txt} (Setup: ${last.mode} ${last.n})`; }
+    const part = { k: e.k, mode: e.d?.mode, n: e.d?.n ?? 0, name: e.d?.name, mine, txt, free: !!e.d?.free, setup: e.d?.setup ?? "" };
     if (part.free && last) { last.txt += `, ${txt}`; continue; }
     parts.push(part);
   }
@@ -171,7 +173,7 @@ export function logAction(actor, item, { ap = 0, targets = [], save = "", free =
   const multiAp = new Set((item?.system?.versions ?? []).map(v => v.ap)).size > 1;
   logLine("act", refOf(actor), { name: item?.name ?? "?", ap, multiAp, tg: targets.map(t => ({ id: idOf(t.uuid) || t.id || "", name: t.name, tier: t.tier ?? null })), save, free, react: !!item?.system?.reaction });
 }
-export const logMove = (actor, mode, n) => { if (n > 0) logLine("move", refOf(actor), { mode, n: Math.round(n * 100) / 100 }); };
+export const logMove = (actor, mode, n, setup = "") => { if (n > 0) logLine("move", refOf(actor), { mode, n: Math.round(n * 100) / 100, ...(setup ? { setup } : {}) }); };   // v0.0.418: setup, the Action whose Setup it is
 export const logPush = (origin, target, mode, n, note = "") => logLine("push", refOf(origin), { target: refOf(target), mode, n, note });
 export const voidTurn = (combat, r, t, why) => send({ type: "voidTurn", r, t, why }, combat);
 export const voidLastAction = (actor, name, why) => { const c = game.combat; if (c?.started) send({ type: "voidLast", r: c.round, t: c.turn, who: refOf(actor).id, name, why }, c); };
@@ -260,7 +262,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     if (what === "copy") {
       const list = [...combat.combatants].map(c => ({ id: c.tokenId ?? c.actorId, name: c.token?.name ?? c.name }));
       let text = exportText(logOf(combat), { abbr: creatureAbbrs(list, combat.getFlag(F, ABBR) ?? {}), short: this.short !== false, details: !!this.details });
-      try { const { reportRows } = await import("./damagelog.mjs"); const rows = reportRows(combat); if (rows.length) text += `\n\nDamage dealt (total / per round)\n${rows.map(r => `${r.name}: ${r.total} / ${Math.round(r.perRound * 10) / 10}`).join("\n")}`; } catch (e) { /* no report */ }
+      try { const { reportRows } = await import("./damagelog.mjs"); const rows = reportRows(combat); if (rows.length) text += `\n\nDamage dealt to enemies (total / per round; to allies)\n${rows.map(r => `${r.name}: ${r.total} / ${Math.round(r.perRound * 10) / 10}${r.allies ? `; to allies ${r.allies}` : ""}`).join("\n")}`; } catch (e) { /* no report */ }
       try { await (game.clipboard?.copyPlainText?.(text) ?? navigator.clipboard.writeText(text)); ui.notifications.info("Encounter log copied."); } catch (e) { console.log(text); ui.notifications.warn("Could not copy: the log is in the console (F12)."); }
       return;
     }

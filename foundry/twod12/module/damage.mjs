@@ -198,7 +198,7 @@ async function apply(msg, button, factor) {
         // v0.0.182: one line per creature, the Guard in it: "12 − Guard 5 = 7 Body"
         lines.push(`${esc(t.name)} takes ${guardBefore(before, taken, mine.reduced)}<b>${summaryText(mine) || "no damage"}</b>${guardAfter(taken, mine.guardLeft, mine.reduced, mine.reduceLeft)}`);
         const src = f.originUuid ? await fromUuid(f.originUuid) : null;
-        await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, amount: dealt });
+        await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, targetUuid: t.uuid ?? "", amount: dealt });
         clearHalfHint(f.originUuid);   // v0.0.261 (Covering Shot): the lit Half was for this damage
         await applyDownEffects(f, actor, t.uuid);   // v0.0.266 (Deathmark): the effects that come when the target goes Down
         if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
@@ -264,7 +264,7 @@ async function applyRow(f, row, factor, selNl) {
   const dealt = a.B.l + a.B.n + a.M.l + a.M.n;
   if (dealt > 0) {
     const src = f.originUuid ? await fromUuid(f.originUuid) : null;
-    await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: row.name, amount: dealt });
+    await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: row.name, targetUuid: row.uuid ?? "", amount: dealt });
     clearHalfHint(f.originUuid);   // v0.0.261 (Covering Shot)
     await applyDownEffects({ ...f, fx: row.fx }, actor, row.uuid);   // v0.0.266 (Deathmark)
     await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)

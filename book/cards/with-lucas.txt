@@ -1,3 +1,6 @@
+RETIRED (Lucas, 2026-11-17, playtest 5: "none are Mithril anymore"): Mithril and Diamond are no longer ranks; every card carries Claude's
+Bronze / Silver / Gold rating (foundry/automation-ratings.md). This file stays as the history of the cards written with Lucas.
+
 Cards written with Lucas (the Mithril rank in Foundry): one line per card, the session, the date. A card gets here when Lucas wrote it his way and the session
 built it (book/cards/README.md, "Writing cards with Lucas"). The automationNote on the card says what the rules leave by hand.
 

@@ -158,6 +158,8 @@ function dashedCells(g, cells, color = 0xf3c9ee) {
   }
 }
 
+/** v0.0.418: a token out of the fight: its combatant is marked Defeated, or the creature is Dead. */
+export const outOfFight = t => !!(t?.combatant?.isDefeated || t?.document?.combatant?.isDefeated || t?.actor?.statuses?.has?.("dead"));
 const tokensAt = c => canvas.tokens.placeables.filter(t => tokenCells(t).some(x => x.i === c.i && x.j === c.j));
 const tokensIn = cells => { const set = new Set(cells.map(key)); return canvas.tokens.placeables.filter(t => tokenCells(t).some(c => set.has(key(c)))); };
 /**
@@ -326,7 +328,8 @@ export async function startTemplate(cfg, ctx = {}) {
   // The origin is the creature using the Action: allies and enemies are judged from its side.
   const origin = user ?? placed.origin ?? null;
   const od = origin?.document.disposition ?? 1;
-  let tokens = tokensIn(placed.cells);
+  // v0.0.418 (Lucas, playtest 5): a creature out of the fight (its combatant marked Defeated, or Dead) isn't one of the area's creatures
+  let tokens = tokensIn(placed.cells).filter(t => !outOfFight(t));
   if (data.targets === "allies") tokens = tokens.filter(t => t.document.disposition === od);
   if (data.targets === "enemies") tokens = tokens.filter(t => t.document.disposition !== 0 && t.document.disposition !== od);
   const centerTok = center && tokens.find(t => t.id === center.id);   // v0.0.215: the creature it is around, if it could be affected (asked below)

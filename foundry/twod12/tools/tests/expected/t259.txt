@@ -11,7 +11,7 @@ the condition: Lingering | its setting: bleed | true | no Bleed item: true
 the status bleed is the condition Lingering: {"bleed":"lingering"} | the status's name: true
 its notation: Lingering [R] 1d6 Ho (Mi/Ap) | Lingering [V] 2 (Bo/In; DC 15)
 a card's text: The target gains @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap]{Lingering} [R] 1d6 Ho (Mi/Ap). | the old word still reads: @Condition[bleed|dmg:2|attrs:bo/in]{Lingering} 2 (Bo/In).
-Wounding Shot's Tiers: ["@Condition[bleed|dmg:1|attrs:bo/in]{Lingering} 1 (Bo/In).","@Condition[bleed|dmg:2|attrs:bo/in]{Lingering} 2 (Bo/In)."] | diamond
+Wounding Shot's Tiers: ["@Condition[bleed|dmg:1|attrs:bo/in]{Lingering} 1 (Bo/In).","@Condition[bleed|dmg:2|attrs:bo/in]{Lingering} 2 (Bo/In)."] | gold
 --- Shake Off
 Shake Off | handle | reach | You, or one Lingering creature within your Reach | AP 1 | its chip: true
 the Tiers: 1: none | 2: half | 3: ends

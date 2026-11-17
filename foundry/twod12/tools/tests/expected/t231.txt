@@ -7,4 +7,4 @@ Open Season effects: Make a [Ranged, Shot] Weapon Attack (1A) against your @Book
 no chain marker left: true | no state module: true
 the per-card text overrides left (only Lock & Loose's: its Hindered is an Effect by Tier, not a chain): x2: For 1 round, the creature is Hindered un
 a Reaction an Aura brings reaches as far as the Aura: true | 'only a creature you threaten' only while on: true
-ranks: Word of Radiance diamond, Bulwark of Faith diamond, Rebuke diamond, Heartseeker diamond, Open Season diamond
+ranks: Word of Radiance gold, Bulwark of Faith gold, Rebuke gold, Heartseeker diamond, Open Season diamond
