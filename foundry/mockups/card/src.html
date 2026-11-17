@@ -56,6 +56,13 @@ ol.changes li{margin:.25rem 0}
 .traits{display:flex;flex-wrap:wrap;align-items:baseline;font-weight:600;padding-bottom:.2rem;margin-bottom:.25rem;border-bottom:1px solid var(--acc2)}
 .traits i.dot{font-style:normal;margin:0 .45em;opacity:.55}
 .traits .auto{margin-left:auto;font-weight:400;font-size:13px;color:var(--ink2)}
+/* the automation rank keeps its colors (system.css v0.0.190, v0.0.251, Diamond): grey, bronze, silver, gold, the Mithril rainbow, the Diamond blue */
+.autodia{font-style:normal;font-size:14px;-webkit-text-stroke:.6px rgba(0,0,0,.55)}
+.autodia.auto-none{color:#9a9a9a}.autodia.auto-bronze{color:#c9824a}.autodia.auto-silver{color:#d9dde2}.autodia.auto-gold{color:#f2c94c}
+.autodia.auto-mithril{background:linear-gradient(135deg,#5ad7ff 0%,#9b7bff 25%,#ff6fb5 50%,#ffc43d 75%,#4ae3a3 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1.1px #c3cbd6;filter:saturate(1.4) drop-shadow(0 0 1px rgba(255,255,255,.7))}
+.autodia.auto-diamond{background:linear-gradient(135deg,#e8fbff 0%,#7fd6ff 30%,#2f7fd8 55%,#9fe8ff 78%,#ffffff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1.1px #1d5f9e;filter:saturate(1.4) drop-shadow(0 0 2px #5cc8ff)}
+.th-light .autodia.auto-mithril{-webkit-text-stroke:1.2px #1b2433;filter:saturate(1.5) drop-shadow(0 0 1px rgba(27,36,51,.5))}
+.th-light .autodia.auto-diamond{-webkit-text-stroke:1.2px #12365c;filter:saturate(1.6) drop-shadow(0 0 2px #4fb8ff)}
 .cgrid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 1.5rem}
 .cgrid b,.cl>b{font-weight:700}
 .cl{display:grid;grid-template-columns:6.4rem minmax(0,1fr);gap:.6rem;margin:.1rem 0}
@@ -95,7 +102,7 @@ ol.changes li{margin:.25rem 0}
 <ol class="changes">
 <li><strong>The frame:</strong> the book's flat tinted panel with a bronze rule above and below, in the place of the double frame.</li>
 <li><strong>The Flavor goes to the top</strong>, in the serif italic, as in the book (today it closes the card under three diamonds).</li>
-<li><strong>The traits:</strong> words in group order, separated by dots, a bronze line under them; no chips, no group labels (the book's decision). The automation mark stays, quiet, at the right.</li>
+<li><strong>The traits:</strong> words in group order, separated by dots, a bronze line under them; no chips, no group labels (the book's decision). The automation rank stays at the right with its colors (grey, bronze, silver, gold, the Mithril rainbow, the Diamond blue).</li>
 <li><strong>The Structure's lines:</strong> Distance and Target, then one labeled line each (Attack, Tier 1, Tier 2, Tier 3, Special…), in the place of the Tier table and the Effects list. A Version is a block with its cost as the header.</li>
 <li><strong>The Tier lines carry no color.</strong> The Tier colors (palette A) stay for results: the chat's stamp and ladder.</li>
 <li><strong>The Use button</strong> (step 3's: outlined in the accent, filled on hover): in each Version's header; with one Version, at the end of the Your roll line.</li>

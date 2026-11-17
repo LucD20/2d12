@@ -12,7 +12,7 @@ def smite(live):
              '<button type="button" class="use no" title="1 AP left" aria-disabled="true">Use &middot; 2 AP</button></span></div></div>') if live else ''
     return f'''<div class="acard{' inrow' if live else ''}">{head}
 <div class="flavor">Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.</div>
-<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto">&#9670; Diamond</span></div>
+<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto"><i class="autodia auto-diamond" aria-hidden="true">&#9670;</i> Diamond</span></div>
 <div class="cgrid"><span><b>Distance:</b> Weapon</span><span><b>Target:</b> One creature</span></div>
 <div class="cl"><b>Smite dice</b><span><span class="pr">[R] 1d6!</span> Ho for each Escalation you have, up to 4 dice. Against a <span class="term">Profane</span> creature they are 1d8!s.</span></div>
 <div class="cl"><b>Attack</b><span>Signature vs. Armor Defense</span></div>
@@ -29,7 +29,7 @@ def judge(live):
     b1 = '<button type="button" class="use">Use &middot; 1 AP</button>' if live else ''
     return f'''<div class="acard{' inrow' if live else ''}">{head}
 <div class="flavor">You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.</div>
-<div class="traits"><span>Divine</span><span class="auto">&#9670; Mithril</span></div>
+<div class="traits"><span>Divine</span><span class="auto"><i class="autodia auto-mithril" aria-hidden="true">&#9670;</i> Mithril</span></div>
 <div class="cgrid"><span><b>Distance:</b> 10 sq.</span><span><b>Target:</b> One enemy you can see</span></div>
 <div class="cl"><b>Judged</b><span>A creature stops being Judged when it goes <span class="term">Down</span>. A creature Judged by you counts as <span class="term">Profane</span> for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.</span></div>
 <div class="cblock{' off' if live else ''}"><div class="cbh"><span>0 AP</span>{b0}</div>

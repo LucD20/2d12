@@ -56,6 +56,13 @@ ol.changes li{margin:.25rem 0}
 .traits{display:flex;flex-wrap:wrap;align-items:baseline;font-weight:600;padding-bottom:.2rem;margin-bottom:.25rem;border-bottom:1px solid var(--acc2)}
 .traits i.dot{font-style:normal;margin:0 .45em;opacity:.55}
 .traits .auto{margin-left:auto;font-weight:400;font-size:13px;color:var(--ink2)}
+/* the automation rank keeps its colors (system.css v0.0.190, v0.0.251, Diamond): grey, bronze, silver, gold, the Mithril rainbow, the Diamond blue */
+.autodia{font-style:normal;font-size:14px;-webkit-text-stroke:.6px rgba(0,0,0,.55)}
+.autodia.auto-none{color:#9a9a9a}.autodia.auto-bronze{color:#c9824a}.autodia.auto-silver{color:#d9dde2}.autodia.auto-gold{color:#f2c94c}
+.autodia.auto-mithril{background:linear-gradient(135deg,#5ad7ff 0%,#9b7bff 25%,#ff6fb5 50%,#ffc43d 75%,#4ae3a3 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1.1px #c3cbd6;filter:saturate(1.4) drop-shadow(0 0 1px rgba(255,255,255,.7))}
+.autodia.auto-diamond{background:linear-gradient(135deg,#e8fbff 0%,#7fd6ff 30%,#2f7fd8 55%,#9fe8ff 78%,#ffffff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1.1px #1d5f9e;filter:saturate(1.4) drop-shadow(0 0 2px #5cc8ff)}
+.th-light .autodia.auto-mithril{-webkit-text-stroke:1.2px #1b2433;filter:saturate(1.5) drop-shadow(0 0 1px rgba(27,36,51,.5))}
+.th-light .autodia.auto-diamond{-webkit-text-stroke:1.2px #12365c;filter:saturate(1.6) drop-shadow(0 0 2px #4fb8ff)}
 .cgrid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 1.5rem}
 .cgrid b,.cl>b{font-weight:700}
 .cl{display:grid;grid-template-columns:6.4rem minmax(0,1fr);gap:.6rem;margin:.1rem 0}
@@ -95,7 +102,7 @@ ol.changes li{margin:.25rem 0}
 <ol class="changes">
 <li><strong>The frame:</strong> the book's flat tinted panel with a bronze rule above and below, in the place of the double frame.</li>
 <li><strong>The Flavor goes to the top</strong>, in the serif italic, as in the book (today it closes the card under three diamonds).</li>
-<li><strong>The traits:</strong> words in group order, separated by dots, a bronze line under them; no chips, no group labels (the book's decision). The automation mark stays, quiet, at the right.</li>
+<li><strong>The traits:</strong> words in group order, separated by dots, a bronze line under them; no chips, no group labels (the book's decision). The automation rank stays at the right with its colors (grey, bronze, silver, gold, the Mithril rainbow, the Diamond blue).</li>
 <li><strong>The Structure's lines:</strong> Distance and Target, then one labeled line each (Attack, Tier 1, Tier 2, Tier 3, Special…), in the place of the Tier table and the Effects list. A Version is a block with its cost as the header.</li>
 <li><strong>The Tier lines carry no color.</strong> The Tier colors (palette A) stay for results: the chat's stamp and ladder.</li>
 <li><strong>The Use button</strong> (step 3's: outlined in the accent, filled on hover): in each Version's header; with one Version, at the end of the Your roll line.</li>
@@ -113,7 +120,7 @@ ol.changes li{margin:.25rem 0}
 <div class="row" style="--fq:var(--fq-atw)"><span class="strip"></span><span class="chev"></span><span><b>Judge</b><small>Divine</small></span><span class="cost">0 / 1 AP</span><button type="button" class="use">Use</button></div>
 <div class="acard inrow">
 <div class="flavor">You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.</div>
-<div class="traits"><span>Divine</span><span class="auto">&#9670; Mithril</span></div>
+<div class="traits"><span>Divine</span><span class="auto"><i class="autodia auto-mithril" aria-hidden="true">&#9670;</i> Mithril</span></div>
 <div class="cgrid"><span><b>Distance:</b> 10 sq.</span><span><b>Target:</b> One enemy you can see</span></div>
 <div class="cl"><b>Judged</b><span>A creature stops being Judged when it goes <span class="term">Down</span>. A creature Judged by you counts as <span class="term">Profane</span> for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.</span></div>
 <div class="cblock off"><div class="cbh"><span>0 AP</span><span class="why">Start of an encounter, or a 0R</span><button type="button" class="use no" aria-disabled="true">Use &middot; 0 AP</button></div>
@@ -125,7 +132,7 @@ ol.changes li{margin:.25rem 0}
 <div class="row" style="--fq:var(--fq-enc)"><span class="strip"></span><span class="chev"></span><span><b>Smite</b><small>Weapon &middot; Strike</small></span><span class="cost">2 AP</span><button type="button" class="use no" title="1 AP left" aria-disabled="true">Use</button></div>
 <div class="acard inrow">
 <div class="flavor">Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.</div>
-<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto">&#9670; Diamond</span></div>
+<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto"><i class="autodia auto-diamond" aria-hidden="true">&#9670;</i> Diamond</span></div>
 <div class="cgrid"><span><b>Distance:</b> Weapon</span><span><b>Target:</b> One creature</span></div>
 <div class="cl"><b>Smite dice</b><span><span class="pr">[R] 1d6!</span> Ho for each Escalation you have, up to 4 dice. Against a <span class="term">Profane</span> creature they are 1d8!s.</span></div>
 <div class="cl"><b>Attack</b><span>Signature vs. Armor Defense</span></div>
@@ -140,7 +147,7 @@ ol.changes li{margin:.25rem 0}
 <div class="row" style="--fq:var(--fq-atw)"><span class="strip"></span><span class="chev"></span><span><b>Judge</b><small>Divine</small></span><span class="cost">0 / 1 AP</span><button type="button" class="use">Use</button></div>
 <div class="acard inrow">
 <div class="flavor">You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.</div>
-<div class="traits"><span>Divine</span><span class="auto">&#9670; Mithril</span></div>
+<div class="traits"><span>Divine</span><span class="auto"><i class="autodia auto-mithril" aria-hidden="true">&#9670;</i> Mithril</span></div>
 <div class="cgrid"><span><b>Distance:</b> 10 sq.</span><span><b>Target:</b> One enemy you can see</span></div>
 <div class="cl"><b>Judged</b><span>A creature stops being Judged when it goes <span class="term">Down</span>. A creature Judged by you counts as <span class="term">Profane</span> for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.</span></div>
 <div class="cblock off"><div class="cbh"><span>0 AP</span><span class="why">Start of an encounter, or a 0R</span><button type="button" class="use no" aria-disabled="true">Use &middot; 0 AP</button></div>
@@ -152,7 +159,7 @@ ol.changes li{margin:.25rem 0}
 <div class="row" style="--fq:var(--fq-enc)"><span class="strip"></span><span class="chev"></span><span><b>Smite</b><small>Weapon &middot; Strike</small></span><span class="cost">2 AP</span><button type="button" class="use no" title="1 AP left" aria-disabled="true">Use</button></div>
 <div class="acard inrow">
 <div class="flavor">Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.</div>
-<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto">&#9670; Diamond</span></div>
+<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto"><i class="autodia auto-diamond" aria-hidden="true">&#9670;</i> Diamond</span></div>
 <div class="cgrid"><span><b>Distance:</b> Weapon</span><span><b>Target:</b> One creature</span></div>
 <div class="cl"><b>Smite dice</b><span><span class="pr">[R] 1d6!</span> Ho for each Escalation you have, up to 4 dice. Against a <span class="term">Profane</span> creature they are 1d8!s.</span></div>
 <div class="cl"><b>Attack</b><span>Signature vs. Armor Defense</span></div>
@@ -170,7 +177,7 @@ ol.changes li{margin:.25rem 0}
 <div class="cols">
 <div class="surf th-dark"><p class="lab">DARK</p><div class="acard"><div class="ahead"><b>Smite</b><span class="ameta">Encounter &middot; 2 AP</span></div>
 <div class="flavor">Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.</div>
-<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto">&#9670; Diamond</span></div>
+<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto"><i class="autodia auto-diamond" aria-hidden="true">&#9670;</i> Diamond</span></div>
 <div class="cgrid"><span><b>Distance:</b> Weapon</span><span><b>Target:</b> One creature</span></div>
 <div class="cl"><b>Smite dice</b><span><span class="pr">[R] 1d6!</span> Ho for each Escalation you have, up to 4 dice. Against a <span class="term">Profane</span> creature they are 1d8!s.</span></div>
 <div class="cl"><b>Attack</b><span>Signature vs. Armor Defense</span></div>
@@ -180,7 +187,7 @@ ol.changes li{margin:.25rem 0}
 <div class="cl"><b>Special</b><span>When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. Neither extra die counts toward the 4.</span></div>
 </div><div style="height:12px"></div><div class="acard"><div class="ahead"><b>Judge</b><span class="ameta">At-will &middot; 0 or 1 AP</span></div>
 <div class="flavor">You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.</div>
-<div class="traits"><span>Divine</span><span class="auto">&#9670; Mithril</span></div>
+<div class="traits"><span>Divine</span><span class="auto"><i class="autodia auto-mithril" aria-hidden="true">&#9670;</i> Mithril</span></div>
 <div class="cgrid"><span><b>Distance:</b> 10 sq.</span><span><b>Target:</b> One enemy you can see</span></div>
 <div class="cl"><b>Judged</b><span>A creature stops being Judged when it goes <span class="term">Down</span>. A creature Judged by you counts as <span class="term">Profane</span> for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.</span></div>
 <div class="cblock"><div class="cbh"><span>0 AP</span></div>
@@ -191,7 +198,7 @@ ol.changes li{margin:.25rem 0}
 </div></div>
 <div class="surf th-light"><p class="lab">LIGHT</p><div class="acard"><div class="ahead"><b>Smite</b><span class="ameta">Encounter &middot; 2 AP</span></div>
 <div class="flavor">Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.</div>
-<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto">&#9670; Diamond</span></div>
+<div class="traits"><span>Signature</span><i class="dot">&middot;</i><span>Weapon</span><i class="dot">&middot;</i><span>Strike</span><i class="dot">&middot;</i><span>Divine</span><span class="auto"><i class="autodia auto-diamond" aria-hidden="true">&#9670;</i> Diamond</span></div>
 <div class="cgrid"><span><b>Distance:</b> Weapon</span><span><b>Target:</b> One creature</span></div>
 <div class="cl"><b>Smite dice</b><span><span class="pr">[R] 1d6!</span> Ho for each Escalation you have, up to 4 dice. Against a <span class="term">Profane</span> creature they are 1d8!s.</span></div>
 <div class="cl"><b>Attack</b><span>Signature vs. Armor Defense</span></div>
@@ -201,7 +208,7 @@ ol.changes li{margin:.25rem 0}
 <div class="cl"><b>Special</b><span>When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. Neither extra die counts toward the 4.</span></div>
 </div><div style="height:12px"></div><div class="acard"><div class="ahead"><b>Judge</b><span class="ameta">At-will &middot; 0 or 1 AP</span></div>
 <div class="flavor">You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.</div>
-<div class="traits"><span>Divine</span><span class="auto">&#9670; Mithril</span></div>
+<div class="traits"><span>Divine</span><span class="auto"><i class="autodia auto-mithril" aria-hidden="true">&#9670;</i> Mithril</span></div>
 <div class="cgrid"><span><b>Distance:</b> 10 sq.</span><span><b>Target:</b> One enemy you can see</span></div>
 <div class="cl"><b>Judged</b><span>A creature stops being Judged when it goes <span class="term">Down</span>. A creature Judged by you counts as <span class="term">Profane</span> for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.</span></div>
 <div class="cblock"><div class="cbh"><span>0 AP</span></div>
