@@ -2,8 +2,8 @@
 
 Lucas's playtest of the Stage 0 build (Foundry v0.0.407 to v0.0.417), stopped in round 2 because the Rally Points couldn't be used.
 **Nothing here is applied yet** (Lucas: "Don't apply or do anything yet, first organize it, then review it ... step by step"). The review goes
-part by part: first the log (section 1), then each group of section 2. The screenshots he named (Roll dialog.png, Chat crit.png, Chat Card.png,
-Chat save.png) were not attached to the message.
+part by part: first the log (section 1), then each group of section 2. The screenshots he named came in a later message: `playtest-5/roll-dialog.png` (B1), `chat-crit.png` (C8), `chat-card.png`
+(C7), `chat-save.png` (C10).
 
 ## 1. The log (as Lucas wrote it)
 
@@ -65,6 +65,18 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
   everywhere with a dark variant (with E6), in CARD-ONE step 5.
 - **B4** confirmed: the calculated chips' blue (#1a3fb0, v0.0.354) has no dark variant. Proposed: the Boon light blue (#8db8f0) in dark mode.
 - **Lucas (2026-11-17): B3 yes, B4 yes.** B3 goes into CARD-ONE step 5 (one color per subtype everywhere, a dark variant; E6 with it).
+
+## 1e. Group C re-read with the screenshots (Claude, 2026-11-17)
+- **B1** (roll-dialog.png, before v0.0.417): Judge showed only "Attack: Modifier + 0 vs. DC 13" and "Effects": v0.0.417 adds Judged, Special and
+  Effect; the Attack line on a no-roll Version is the bug already logged.
+- **C7** (chat-card.png, the Club): the stamp "TIER 2 vs AD 14" keeps its own height while the Damage block grows beside it: stretch it to the
+  row's full height. Also seen: "It can Push the target 1." (A3), Bl in gold (B3).
+- **C8** (chat-crit.png): 21 vs AD 14 with doubles: the stamp says CRIT, the ladder's CRIT zone is lit, but the arrow stays at 21 at the start
+  of the Tier 3 segment (no "↑" over CRIT): as diagnosed.
+- **C10** (chat-save.png, Rebuke): every Tier row in a full color band; Tiers 1 and 2 the same text twice ("Its Move Action is disrupted.").
+  **And a gap the screenshot shows:** the Save card doesn't show the card's Effect, "The target is Hindered (EoT)", the part that happens
+  whatever the Save (v0.0.417 draws it neither: the Save card skips the lines after the Tiers; test t261 skipped them for the chat too). Very
+  likely tied to G8 (Rebuke's Hindered not applied).
 
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 
