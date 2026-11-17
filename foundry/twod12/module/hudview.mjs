@@ -82,7 +82,8 @@ export function sideHtml(s = {}) {
   const rx = s.rx ? `<div class="hb-info alert"><b>Reaction: ${esc(s.rx.name)}</b> (${esc(s.rx.cost)})<br>${esc(s.rx.lead)}<div class="hb-rxb"><button type="button" class="hb-btn" data-hud="rx" data-msg="${esc(s.rx.msg)}" data-row="${n0(s.rx.row)}" data-k="rxUse">Use · ${esc(s.rx.cost)}</button><button type="button" class="hb-btn q" data-hud="rx" data-msg="${esc(s.rx.msg)}" data-row="${n0(s.rx.row)}" data-k="rxPass">Pass</button></div></div>` : "";
   const notes = !rx && s.notes ? `<div class="hb-info">${esc(s.notes)}</div>` : !rx ? '<div class="hb-info"></div>' : "";
   // v0.0.396 (Lucas: "Show granted actions below the hands / on you area, so that part is static")
-  return `<div class="hb-side">${top}${gr}${rx}${gr && !rx ? "" : notes}</div>`;
+  // v0.0.397: a question on the map (the pick bar) asks here, under the hands, in the granted uses' place
+  return `<div class="hb-side">${top}<div class="hb-ask"></div>${gr}${rx}${gr && !rx ? "" : notes}</div>`;
 }
 
 /**

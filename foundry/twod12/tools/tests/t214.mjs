@@ -139,16 +139,16 @@ console.log("the last target removed:", RD.blockedReason(smite, st));
 console.log("--- Versions: switching updates the Tier table and the meta line");
 st = RD.newState(smite);
 const h2 = RD.dialogHtml(smite, st); st.ap = 1; const h1 = RD.dialogHtml(smite, st);
-console.log("2 AP has 2d10:", h2.includes("2d10"), "| 1 AP has 2d10:", h1.includes("2d10"), "| 1 AP has 1d4:", h1.includes("1d4"), "| Effects row only at 2 AP:", h2.includes("rd-tiers") && h2.includes("Bright light"), !h1.includes("Bright light"));
+console.log("2 AP has 2d10:", h2.includes("2d10"), "| 1 AP has 2d10:", h1.includes("2d10"), "| 1 AP has 1d4:", h1.includes("1d4"), "| Effects row only at 2 AP:", h2.includes("rd-card") && h2.includes("Bright light"), !h1.includes("Bright light"));
 console.log("3 AP button struck through, can be chosen, its reason on hover:", /data-ap="3"[^>]*data-tooltip="You have 2 AP left" class="cant"/.test(h2) && !/data-ap="3"[^>]*disabled/.test(h2), "| aria-pressed on 2 AP:", /data-ap="2" aria-pressed="true"/.test(h2));
-console.log("meta lines (v0.0.294: the book's format):", [...h2.matchAll(/<div class="rd-meta">(.*?)<\/div>/g)].map(m => m[1].replace(/<[^>]+>/g, "")).join(" / "));
+console.log("meta lines (v0.0.294: the book's format):", [...h2.matchAll(/<div class="(?:rdc-grid|rdc-l)">(.*?)<\/div>/g)].map(m => m[1].replace(/<[^>]+>/g, "")).join(" / "));
 { const r = { name: "R", versions: [{ ap: 1, cost: "1R", traits: [], meta: { escalation: 2, targets: "The triggering creature", dist: "5 sq.", vs: "Appeal Save", requirements: "A free hand", trigger: "An enemy attacks", triggerKind: "trigger" }, tiers: {} }], roll: { mod: 0 }, chips: [], creatures: [] };
-  console.log("the order: Escalation, Targets, Distance ✦ Vs., Requirements, Trigger:", [...RD.dialogHtml(r, RD.newState(r)).matchAll(/<div class="rd-meta">(.*?)<\/div>/g)].map(m => m[1].replace(/<[^>]+>/g, "")).join(" / ")); }
+  console.log("the order: Escalation, Targets, Distance ✦ Vs., Requirements, Trigger:", [...RD.dialogHtml(r, RD.newState(r)).matchAll(/<div class="(?:rdc-grid|rdc-l)">(.*?)<\/div>/g)].map(m => m[1].replace(/<[^>]+>/g, "")).join(" / ")); }
 console.log("no Tier prefix in Effects, no T1 \"0\" line:", !/T2, T3/.test(h2), !/>0 <b class="rd-sub"/.test(h2));
 
 console.log("--- the player view (Hide enemy Defenses on) and Designer mode");
 const hv = RD.dialogHtml({ ...smite, hideDef: true }, RD.newState(smite));
-console.log("badge 'AD' only:", /<span class="rd-def"[^>]*>AD<\/span>/.test(hv), "| ladder:", hv.includes("rd-ladder"), "| footer:", hv.includes("Player view · enemy Defenses hidden by the GM"), "| Tier table stays:", hv.includes("rd-tiers"), "| counts stay:", hv.includes("▲1"));
+console.log("badge 'AD' only:", /<span class="rd-def"[^>]*>AD<\/span>/.test(hv), "| ladder:", hv.includes("rd-ladder"), "| footer:", hv.includes("Player view · enemy Defenses hidden by the GM"), "| Tier table stays:", hv.includes('<div class="rdc-l t1">'), "| counts stay:", hv.includes("▲1"));
 const dv = RD.dialogHtml({ ...smite, designer: true }, RD.newState(smite)), nd = RD.dialogHtml(smite, RD.newState(smite));
 console.log("Designer: odds and force a Tier:", dv.includes("T1 ") && dv.includes("Force a Tier"), "| off:", nd.includes("Force a Tier"));
 st = RD.newState(smite); st.forceTier = 3;
@@ -174,14 +174,14 @@ RD.toggleChip(st, smite.chips[0]); RD.addManual(st, "shared", "emp"); RD.addManu
 console.log("Empowered 2 by hand (net 1):", [1, 2, 3].map(n => RD.tierStats(sOn, st, sOn.versions[1])[n].avg).join(" | "));
 st = RD.newState(smite);
 const hs = RD.dialogHtml(sOn, st);
-console.log("lines under the Tiers:", (hs.match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
-console.log("setting off: no lines:", !RD.dialogHtml(smite, st).includes("rd-stat"), "| player with hidden Defenses: averages only:", (RD.dialogHtml({ ...sOn, hideDef: true }, st).match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+console.log("lines under the Tiers:", (hs.match(/<span class="rdc-avg">[^<]*<\/span>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+console.log("setting off: no lines:", !RD.dialogHtml(smite, st).includes("rdc-avg"), "| player with hidden Defenses: averages only:", (RD.dialogHtml({ ...sOn, hideDef: true }, st).match(/<span class="rdc-avg">[^<]*<\/span>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
 console.log("Smite's ladder with its chances:", (hs.match(/<div class="rd-ladder[\s\S]*?<\/div>/) ?? [""])[0].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(), "| the ≤ in its own span:", hs.includes('<span class="rd-le">≤</span>'));
 console.log("no chances in the ladder when the setting hides them:", !RD.dialogHtml(smite, st).includes("rd-lpct"));
 const w2 = RD.newState(wor); RD.addManual(w2, "wisp", "fav"); RD.addManual(w2, "ogre", "doom");
 w2.open.ogre = true; w2.open.wisp = true;
 console.log("Word of Radiance, the expanded creatures' ladders:", [...RD.dialogHtml({ ...wor, showAvg: true, showOdds: true }, w2).matchAll(/<div class="rd-ladder[\s\S]*?<\/div>/g)].map(m => m[0].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()).join(" || "));
-console.log("Word of Radiance, under each Tier:", (RD.dialogHtml({ ...wor, showAvg: true, showOdds: true }, w2).match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+console.log("Word of Radiance, under each Tier:", (RD.dialogHtml({ ...wor, showAvg: true, showOdds: true }, w2).match(/<span class="rdc-avg">[^<]*<\/span>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
 
 console.log("--- v0.0.293: Favored / Doomed as a d12, right-click a hand-added chip");
 st = RD.newState(smite); RD.addManual(st, "shared", "fav"); RD.addManual(st, "shared", "doom"); RD.addManual(st, "shared", "boon");
@@ -195,11 +195,11 @@ const rebuke = { name: "Rebuke", freqLabel: "Turn", ap: 1, reaction: true, save:
     tiers: { 1: { parts: [{ pool: "M", t: "1d8", sub: "Ho" }], riders: ["Pushed 2, and Frightened of you for 1 round"] }, 2: { parts: [{ pool: "M", t: "1d6", sub: "Ho" }], riders: ["Pushed 1"] }, 3: { parts: [] } } }],
   roll: { mod: 2, name: "Power" }, chips: [{ id: "syn:emp:0", scope: "shared", row: "damage", kind: "emp", n: 1, label: "Empowered 1", start: "on" }], creatures: [{ uuid: "thug", name: "Bandit Thug", def: "DC", dc: 13 }] };
 const hr = RD.dialogHtml(rebuke, RD.newState(rebuke));
-console.log("Rebuke: their roll line:", (hr.match(/<div class="rd-dice">([\s\S]*?)<\/div>/) ?? [])[1].replace(/<[^>]+>/g, ""), "| quick buttons:", (hr.match(/data-act="quick"[^>]*data-k="\w+"/g) ?? []).map(x => x.match(/data-k="(\w+)"/)[1]).join(","), "| creature badge:", /<span class="rd-def">Appeal Save 13<\/span>/.test(hr), "| no ladder:", !hr.includes("rd-ladder"), "| button:", (hr.match(/data-act="roll"[^>]*>(\w+)</) ?? [])[1], "| averages:", (hr.match(/<div class="rd-stat">[^<]*<\/div>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
+console.log("Rebuke: their roll line:", (hr.match(/<div class="rd-dice">([\s\S]*?)<\/div>/) ?? [])[1].replace(/<[^>]+>/g, ""), "| quick buttons:", (hr.match(/data-act="quick"[^>]*data-k="\w+"/g) ?? []).map(x => x.match(/data-k="(\w+)"/)[1]).join(","), "| creature badge:", /<span class="rd-def">Appeal Save 13<\/span>/.test(hr), "| no ladder:", !hr.includes("rd-ladder"), "| button:", (hr.match(/data-act="roll"[^>]*>(\w+)</) ?? [])[1], "| averages:", (hr.match(/<span class="rdc-avg">[^<]*<\/span>/g) ?? []).map(x => x.replace(/<[^>]+>/g, "")).join(" | "));
 const oa = { name: "Opportunity Attack", freqLabel: "At-will", ap: 1, reaction: true, versions: [{ ap: 1, cost: "1R", noTiers: true, traits: [], meta: { targets: "The triggering creature", trigger: "A creature within 1 square would leave a square during a Move Action.", triggerKind: "interrupt" }, effects: "You can make a Weapon Attack (1A) against the triggering creature." }],
   roll: { mod: 0, name: "" }, chips: [], creatures: [{ uuid: "thug", name: "Bandit Thug", def: "AD", dc: 11 }] };
 const ho = RD.dialogHtml(oa, RD.newState(oa));
-console.log("Opportunity Attack: Effects row:", /<tr class="rd-eff"><th scope="row">Effects<\/th><td>You can make/.test(ho), "| no roll panel:", !ho.includes("rd-roll"), "| target line:", (ho.match(/<div class="rd-tline">([^<]*)<\/div>/) ?? [])[1], "| button:", (ho.match(/data-act="roll"[^>]*>(\w+)</) ?? [])[1], "| can use:", JSON.stringify(RD.blockedReason(oa, RD.newState(oa))), "| no target needed:", JSON.stringify(RD.blockedReason({ ...oa, creatures: [] }, RD.newState(oa))));
+console.log("Opportunity Attack: Effects row:", /<div class="rdc-l"><b>Effects<\/b><span>You can make/.test(ho), "| no roll panel:", !ho.includes("rd-roll"), "| target line:", (ho.match(/<div class="rd-tline">([^<]*)<\/div>/) ?? [])[1], "| button:", (ho.match(/data-act="roll"[^>]*>(\w+)</) ?? [])[1], "| can use:", JSON.stringify(RD.blockedReason(oa, RD.newState(oa))), "| no target needed:", JSON.stringify(RD.blockedReason({ ...oa, creatures: [] }, RD.newState(oa))));
 
 // contrast of the muted texts on the parchment (WCAG: 4.5:1)
 const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
@@ -217,4 +217,4 @@ if (process.env.RD_OUT) try {
 console.log("--- v0.0.295: the Vs. value in its color, \"Vs.\" bold");
 const U = await import(ROOTURL + "module/util.mjs");
 for (const v of ["AD", "WD", "Appeal Save", "Body or Instinct", "AD (Weapon mode) or WD (Power mode)", "DC 13"]) console.log(JSON.stringify(v), "→", U.vsColored(v).replace(/ style="color:(#\w+);font-weight:700"/g, "[$1]"));
-console.log("the dialog's meta line:", (RD.dialogHtml(smite, RD.newState(smite)).match(/<b>Vs\.<\/b> <span class="vsv" style="color:#9a4a00/) ?? []).length === 1);
+console.log("the dialog's meta line:", (RD.dialogHtml(smite, RD.newState(smite)).match(/<b>Attack<\/b><span>[^<]* vs\. Armor Defense<\/span>/) ?? []).length === 1);

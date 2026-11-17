@@ -320,14 +320,18 @@ async function drawHud() {
     const cards = await Promise.all(pairs.map(([a, t]) => partyCard(a, t)));
     let momentum = "";
     try { const { hasMomentum } = await import("./escalation.mjs"); momentum = !cur.list && hasMomentum() ? "on" : ""; } catch (e) { momentum = ""; }
+    const waiting = main.querySelector(".hb-ask > .twod12-pickbar");
     main.innerHTML = partyStripHtml({ cards, momentum });
+    if (waiting) { root.querySelector(".hud-ask")?.append(waiting); waiting.classList.remove("in-side"); hudAsking(true, false); }
     root.classList.add("is-strip");
     st.cards = new Map(pairs.map(([a, t], k) => [cards[k].key, { actor: a, token: t }]));
     return;
   }
   if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
+  const waiting = main.querySelector(".hb-ask > .twod12-pickbar");
   main.innerHTML = tokenBarHtml(m);
+  if (waiting) (main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask"))?.append(waiting);
   root.classList.add("is-bar"); root.classList.toggle("is-npc", m.npc); root.classList.toggle("is-folded", !!m.folded);
   fitNames(main);
   // (v0.0.391, Lucas: "macro bar is broken"): the hotbar stays at the HUD's right end, where it worked before (placeHotbar)
@@ -474,9 +478,10 @@ async function adjust(actor, res, d) {
 /** The pick bar asks in the HUD's middle while a choice waits (pickbar.mjs calls it): the slot, or null when there is no HUD on screen. */
 export function hudAskSlot() {
   if (!root?.isConnected || root.hidden || !root.offsetParent) return null;
-  return root.querySelector(".hud-ask");
+  // v0.0.397 (Lucas: "in the same area as the granted action"): a creature's bar asks in its side panel; the party strip in the middle
+  return root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
 }
-export const hudAsking = on => root?.classList.toggle("asking", !!on);
+export const hudAsking = (on, side = false) => { root?.classList.toggle("asking", !!on && !side); root?.classList.toggle("asking-side", !!on && side); };
 
 /* ------------------------------------------------------------------ the Reaction alert (v0.0.390; Lucas: "it can pass unnoticed") */
 /** Pure: the waiting rows of a Reactions message this user answers: [{ row, actorUuid, itemId, name, cost, lead }]. */

@@ -534,7 +534,12 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.215: versions with their own Area size (Word of Radiance: 2 / 3 Emanation): the version is chosen before the area is placed, and the roll keeps it.
   // v0.0.251 (Lucas): the area is shown and placed for an Action with no roll too (Hallowed Dawn), and the version is picked on a bar
   // v0.0.261 (Consecrated Ground): the rounds of a kept area can be the version's too (3 rounds at 2 AP, 5 at 3 AP)
-  if (areaSet && canvas.ready && canvas.grid?.isSquare && new Set(versions.map(v => `${v.areaSize || areaSet.distance}|${v.areaRounds || areaSet.rounds}`)).size > 1) {
+  // v0.0.397 (Lucas: "When using an area action, only ask to place the area after the action has been confirmed in the roll dialog"; the roll dialog
+  // brief of 2026-11-07: the Version buttons and the Place Area button are the dialog's): the dialog opens first, its Version buttons choose the
+  // size; Roll places the area, then rolls with the dialog's choices (rollwindow.mjs). The HUD's "Skip roll dialog" and a shortcut keep the old order.
+  const deferArea = !!areaSet && !opts.rdState && !opts.skipDialog && opts.quickAp == null && typeof globalThis.__twod12RollDialog !== "function"
+    && typeof foundry.applications?.api?.ApplicationV2?.prototype?.render === "function";
+  if (!deferArea && areaSet && canvas.ready && canvas.grid?.isSquare && new Set(versions.map(v => `${v.areaSize || areaSet.distance}|${v.areaRounds || areaSet.rounds}`)).size > 1) {
     const { pickBar } = await import("./pickbar.mjs");
     const keep = versions.find(v => v.ap === Number(opts.rdState?.ap));   // v0.0.292: the roll dialog's Place Area keeps its Version
     if (keep) { versions = [keep]; areaSet.distance = keep.areaSize || areaSet.distance; areaSet.rounds = keep.areaRounds || areaSet.rounds; } else {
@@ -551,7 +556,7 @@ export async function useAction(actor, item, opts = {}) {
   if (areaSet) { const zn = await zoneOf(versions); if (zn) { areaSet.zone = { ...zn.zone, area: String(it.area ?? "").trim() }; areaSet.keep = true; zoneSkip = zn.uuids;
     // v0.0.327 (PACK ZONE): the Version's own rounds win; else the Zone's Ends: Time
     const t = zn.zone.ends?.time; if (!areaSet.rounds && t?.on && t.mode !== "encounter") areaSet.rounds = t.rounds; } }
-  if (areaSet && canvas.ready && canvas.grid?.isSquare) {   // no square grid: no placing, rolled as before
+  if (!deferArea && areaSet && canvas.ready && canvas.grid?.isSquare) {   // no square grid: no placing, rolled as before
     const { startTemplate } = await import("./template.mjs");
     const outcome = {}; areaOutcome = outcome;
     // "within your weapon's maximum range": the range of the weapon it will be used with (v0.0.159).
@@ -766,10 +771,10 @@ export async function useAction(actor, item, opts = {}) {
     };
     const inp = await rollDialogInput({ actor, item, versions, src, useTraits, dlgTraits, previewWeapon, multi, perT, aimed, targetToken, rollsAtOthers, isSelf, areaSet, areaOutcome, extraMods, steps, bonusSeen, usesReload,
       saveAct, notices: [...extraNotices], opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
-    rdData = await askAction({ inp, state: opts.rdState ?? null, live: !areaSet, card: () => item.sheet?.render(true), skip: !!opts.skipDialog && !opts.restart });   // v0.0.376: the HUD's Skip roll dialog
+    rdData = await askAction({ inp, state: opts.rdState ?? null, live: !areaSet, card: () => item.sheet?.render(true), skip: (!!opts.skipDialog && !opts.restart) || !!opts.rollAfterPlace });   // v0.0.376: the HUD's Skip roll dialog; v0.0.397: Roll placed the area: roll at once
     if (!rdData) return;
     // the targets changed on the map, or the area is placed again: the Action runs again with the same choices (no Setup, hands or turn question again)
-    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId });
+    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
   }
   const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : rdData ? rdData : await askRoll(actor, {
     title: item.name,

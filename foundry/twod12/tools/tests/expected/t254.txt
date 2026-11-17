@@ -30,3 +30,6 @@ the chat card's traits as words: true | the trait words in ink: true | a line un
 the HUD's cost buttons on hover only: true | the names fitted: true | the card's facts named: true | bigger marks, the Strikes on the acting plate only: true
 --- v0.0.396 (Lucas, testing v0.0.395)
 the granted uses under the hands: true | one header for a Frequency's two columns: true | Regrip and Cancel on hover: true | the card's grid (no star): true | long names on two lines: true
+--- v0.0.397 (Lucas: "Go, build it")
+the roll dialog's card part: true | the ladder one line: true | a square with its picture: true
+the question in the HUD's side panel: true | the area after the dialog: true | Momentum read from the encounter: true

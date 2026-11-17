@@ -52,7 +52,7 @@ console.log("the carousel: the HUD's marks, the health tag, Momentum, plain word
   "| the styles in rem:", css.includes(".twod12-hud .hb-ln > b { font-size: .81rem;"), "| the bar 150 px, folded 40:", css.includes(".twod12-hud.is-bar { height: 150px;") && css.includes(".twod12-hud.is-bar.is-folded { height: 40px;"));
 console.log("--- v0.0.392 (Lucas, testing v0.0.391)");
 const g2 = V.tokenBarHtml({ ...m, side: { grants: [{ name: "Weapon Attack → Ogre Chieftain", freq: "granted", grant: { effect: "e1", index: 0, target: "t1" }, stamps: [{ ap: 0, label: "0 AP" }], sub: "from Double Shot" }], cancels: [{ effect: "e1", source: "Double Shot" }] } });
-console.log("the granted uses top right, in the accent:", g2.includes('<div class="hb-side"><div class="hb-gr"><div class="hb-grh">Granted by Double Shot') && g2.includes('data-hud="grant" data-ap="0" data-effect="e1" data-index="0" data-target="t1"') && g2.includes('data-hud="grantcancel"'),
+console.log("the granted uses top right, in the accent:", g2.includes('<div class="hb-side"><div class="hb-ask"></div><div class="hb-gr"><div class="hb-grh">Granted by Double Shot') && g2.includes('data-hud="grant" data-ap="0" data-effect="e1" data-index="0" data-target="t1"') && g2.includes('data-hud="grantcancel"'),
   "| the side panel kept in a small window while they wait:", g2.includes('class="hb-bar-wrap rx"'));
 const mo = src("module/moment.mjs");
 console.log("no Reaction taken: the message removed:", mo.includes('if (!st.rows.some(r => r.state === "use")) {') && mo.includes("await L.msg?.delete();"), "| a bronze bell, not a beep:", hud.includes("[0.5, 0.35, 2.4], [1, 0.6, 1.8]") && !hud.includes("[[880, 0], [1320, 0.12]]"),
@@ -76,3 +76,10 @@ console.log("--- v0.0.396 (Lucas, testing v0.0.395)");
 const th6 = src("styles/theme.css"), g6 = V.tokenBarHtml({ ...m, side: { hands: { text: "Longbow", btn: "Regrip" }, grants: [{ name: "Weapon Attack", freq: "granted", grant: { effect: "e1", index: 0 }, stamps: [{ ap: 0, label: "0 AP" }] }], cancels: [{ effect: "e1", source: "Double Shot" }] } });
 console.log("the granted uses under the hands:", g6.indexOf('class="hb-sb"') < g6.indexOf('class="hb-gr"'), "| one header for a Frequency's two columns:", hud.includes('label: i === 0 ? FREQ_LABEL[k] : ""') && th6.includes(".twod12-hud .hb-col > .hb-ch:empty { margin-left: -14px; }"),
   "| Regrip and Cancel on hover:", th6.includes(".twod12-hud .hb-sb .line:is(:hover, :focus-within) > .hb-btn"), "| the card's grid (no star):", src("module/chatcards.mjs").includes('<span class="cc-mlr"><b class="cc-ml">Target:</b>'), "| long names on two lines:", hud.includes('b.classList.add("wrap")'));
+console.log("--- v0.0.397 (Lucas: \"Go, build it\")");
+const P7 = await import(ROOTURL + "module/pickbar.mjs"), rd7 = src("module/rolldlg.mjs"), ac7 = src("module/actions.mjs"), rw7 = src("module/rollwindow.mjs"), th7 = src("styles/theme.css");
+console.log("the roll dialog's card part:", rd7.includes("function cardHtml(inp, st, v)") && rd7.includes('<div class="rd-body rd-cardbody">${cardHtml(inp, st, v)}'), "| the ladder one line:", rd7.includes('<div class="rd-ladder one'),
+  "| a square with its picture:", P7.pickBarHtml({ options: [{ id: "0", label: "Ogre", img: "o.png" }] }).includes('class="lb-opt sq" data-id="0" data-tooltip="Ogre" aria-label="Ogre"><img src="o.png"'));
+console.log("the question in the HUD's side panel:", hud.includes('root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask")') && th7.includes(".twod12-hud .hb-ask .twod12-linebar.in-side"),
+  "| the area after the dialog:", ac7.includes("const deferArea = ") && rw7.includes("return this._finish({ restart: true, place: true, rollAfter: true, state: this.st });") && ac7.includes("rollAfterPlace: !!rdData.rollAfter"),
+  "| Momentum read from the encounter:", src("module/carousel.mjs").includes('combat?.getFlag?.("twod12", "momentumStart")'));

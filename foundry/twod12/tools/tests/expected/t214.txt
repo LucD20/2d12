@@ -54,8 +54,8 @@ the last target removed: No target: target a creature
 --- Versions: switching updates the Tier table and the meta line
 2 AP has 2d10: true | 1 AP has 2d10: false | 1 AP has 1d4: true | Effects row only at 2 AP: true true
 3 AP button struck through, can be chosen, its reason on hover: true | aria-pressed on 2 AP: true
-meta lines (v0.0.294: the book's format): Targets: One creature / Distance: Weapon ✦ Vs. AD
-the order: Escalation, Targets, Distance ✦ Vs., Requirements, Trigger: 2 Escalation / Targets: The triggering creature / Distance: 5 sq. ✦ Appeal Save / Requirements: A free hand / Trigger: An enemy attacks
+meta lines (v0.0.294: the book's format): Distance: WeaponTarget: One creature / AttackSignature + 2 vs. Armor Defense / Effects (T2+)The target sheds Bright light in a 2 Emanation and takes 1 Bane when they try to Hide, for 1 round.
+the order: Escalation, Targets, Distance ✦ Vs., Requirements, Trigger: Distance: 5 sq.Target: The triggering creature / Escalation2 / RequiresA free hand / TriggerAn enemy attacks / SaveAppeal Save
 no Tier prefix in Effects, no T1 "0" line: true true
 --- the player view (Hide enemy Defenses on) and Designer mode
 badge 'AD' only: true | ladder: false | footer: true | Tier table stays: true | counts stay: true
@@ -72,17 +72,17 @@ expressions: 2d6 + 2 = 9 | 1d10+2 Enfeebled 1 = 6.6
 Smite 2 AP averages (Radiant Zeal and Heavy Blows on, net 0): 7 | 15 | 23.5
 Radiant Zeal off: 3.5 | 11.5 | 20
 Empowered 2 by hand (net 1): 9 | 19 | 28.5
-lines under the Tiers: Avg 7 | Avg 15 | Avg 23.5
-setting off: no lines: true | player with hidden Defenses: averages only: Avg 7 | Avg 15 | Avg 23.5
-Smite's ladder with its chances: Tier 1 · ≤ 10 22% Tier 2 · 11–17 46% Tier 3 · 18+ 32% | the ≤ in its own span: true
+lines under the Tiers: avg 7 | avg 15 | avg 23.5
+setting off: no lines: true | player with hidden Defenses: averages only: avg 7 | avg 15 | avg 23.5
+Smite's ladder with its chances: Tier 1 · ≤ 10 · 22% Tier 2 · 11–17 · 46% Tier 3 · 18+ · 32% | the ≤ in its own span: true
 no chances in the ladder when the setting hides them: true
-Word of Radiance, the expanded creatures' ladders: Tier 1 · ≤ 12 7% Tier 2 · 13–19 41% Tier 3 · 20–32 39% Crit · 33+ 13% || Tier 1 · ≤ 13 78% Tier 2 · 14–20 20% Tier 3 · 21–33 2% Crit · 34+ 0%
-Word of Radiance, under each Tier: Avg 7 | Avg 11 | Avg 13.5
+Word of Radiance, the expanded creatures' ladders: Tier 1 · ≤ 12 · 7% Tier 2 · 13–19 · 41% Tier 3 · 20–32 · 39% Crit · 33+ · 13% || Tier 1 · ≤ 13 · 78% Tier 2 · 14–20 · 20% Tier 3 · 21–33 · 2% Crit · 34+ · 0%
+Word of Radiance, under each Tier: avg 7 | avg 11 | avg 13.5
 --- v0.0.293: Favored / Doomed as a d12, right-click a hand-added chip
 Favored chip: d12 F: true | Doomed: d12 D: true | Boon keeps the triangle: true | quick buttons too: true
 hand-added chips carry data-manual (right-click): 3 | an auto chip doesn't: true
 --- v0.0.293: a Save Action (Rebuke) and a Version with no roll (Opportunity Attack) in the new dialog
-Rebuke: their roll line: Their roll Appeal Save vs DC 13 · each target rolls; the Tiers are their result | quick buttons: emp,enf | creature badge: true | no ladder: true | button: Use | averages: Avg 5.5 | Avg 4.5
+Rebuke: their roll line: Their roll Appeal Save vs DC 13 · each target rolls; the Tiers are their result | quick buttons: emp,enf | creature badge: true | no ladder: true | button: Use | averages: avg 5.5 | avg 4.5
 Opportunity Attack: Effects row: true | no roll panel: true | target line: → Bandit Thug | button: Use | can use: "" | no target needed: ""
 contrast #7a6f5f on #f4ede0: 4.23 | #6b6152 (used): 5.22 | #5d5446 on #e8dec8: 5.57 | #625a4e n/a on #e8dec8: 5.08 | #7a5400 on #f4ede0: 5.83 | #8a1c13 on #f4ede0: 7.99
 --- v0.0.295: the Vs. value in its color, "Vs." bold

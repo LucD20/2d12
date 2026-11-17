@@ -8,7 +8,7 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 const pb = src("module/pickbar.mjs"), mv = src("module/move.mjs"), inl = src("module/inline.mjs"), css = src("styles/system.css");
 console.log("the bar picks a clicked token (the candidates outlined, the tokens not selectable meanwhile, everything put back):", pb.includes('canvas.stage.on("pointerdown", down)') && pb.includes("T.outlineCells(gfx, cells, { color: on ? 0xffffff : 0xc9a24a") && pb.includes("canvas.tokens.interactiveChildren = false") && pb.includes("canvas.tokens.interactiveChildren = prevInteractive") && pb.includes('canvas.stage.off("pointerdown", down)'));
-console.log("the Push list and the Guard list give the bar their tokens:", mv.includes("token: t }; })"), inl.includes("token: tokenOfActor(a) }"));
+console.log("the Push list and the Guard list give the bar their tokens:", mv.includes("token: t, img: t.document?.texture?.src"), inl.includes("token: tokenOfActor(a) }"));
 console.log("the Push list leaves you out unless self:yes:", mv.includes("(cfg.self || t.id !== me?.id)"));
 console.log("every chip is inline-flex (icon and words aligned everywhere):", /a\.twod12-inline \{ display: inline-flex; align-items: center; gap: 0\.3em;/.test(css));
 const G = await import(ROOTURL + "tools/cardgen.mjs");

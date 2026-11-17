@@ -99,7 +99,9 @@ export function renderCarousel() {
   const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm, gm };
   const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" data-tooltip="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
   const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for the creatures that haven't rolled (the window says who skips)")) : "";
-  let mom = false; try { mom = hasMomentum(); } catch (e) { mom = false; }
+  // v0.0.397 (Lucas: "Momentum isn't showing in the combat strip"): an encounter that started with Momentum uses it up (the switch goes off), so
+  // the strip reads the encounter's own flag (escalation.mjs startAtOne sets it)
+  let mom = false; try { mom = hasMomentum() || !!combat?.getFlag?.("twod12", "momentumStart"); } catch (e) { mom = false; }
   const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b>${mom ? ' <span class="tc-mom">· Momentum</span>' : ""}</span>` : '<span class="tc-round tc-prep">Preparing the encounter</span>';
   const moving = cur ? stripMove(cur).n > 0 : false;
   const right = [

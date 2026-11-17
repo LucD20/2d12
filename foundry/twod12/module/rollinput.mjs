@@ -126,7 +126,10 @@ export async function rollDialogInput(c) {
     name: item.name, flavor: it.flavor ?? "", reaction: !!it.reaction, freq, freqLabel: freq && !["none", ""].includes(freq) ? fl : "", freqColor: FREQ_COLORS[freq] ?? FREQ_COLORS[""],
     versions, ap: c.opts.rdState?.ap ?? versions.find(v => !v.disabled)?.ap ?? versions[0]?.ap,
     roll: { mod: Number(src.mod) || 0, name: String(src.chip ?? "").replace(/\s*Modifier$/i, "") || "Modifier" },
-    multi: !!c.multi, self: !c.rollsAtOthers, area: c.areaSet ? { label: `${c.areaSet.distance} ${c.areaSet.shape === "burst" ? "Burst" : c.areaSet.shape === "line" ? "Line" : "Emanation"}`, placed: !!c.areaOutcome?.ok } : null,
+    multi: !!c.multi, self: !c.rollsAtOthers, area: c.areaSet ? { label: `${c.areaSet.distance} ${c.areaSet.shape === "burst" ? "Burst" : c.areaSet.shape === "line" ? "Line" : "Emanation"}`, placed: !!c.areaOutcome?.ok,
+      // v0.0.397: the size of each Version (the dialog's Version buttons choose it before the area is placed); no square grid: nothing to place
+      labels: Object.fromEntries(versions.map(v => [v.ap, `${v.areaSize || c.areaSet.distance} ${c.areaSet.shape === "burst" ? "Burst" : c.areaSet.shape === "line" ? "Line" : "Emanation"}`])),
+      noPlace: !(globalThis.canvas?.ready && globalThis.canvas?.grid?.isSquare) } : null,
     nonlethalAction: it.traits.has("nonlethal"), chips, creatures, hideDef, designer, canForce: !!game.user?.isGM, blocked, rollMode: rm.cur, rollModes: rm.list, showAvg: showStats, showOdds: showStats,
     // v0.0.293: a Save Action: the targets roll the Save named on its Vs. line against your DC (11 + your Modifier)
     save: c.saveAct ? { label: vsText(it, { src, rolls: true }) || "Save", dc: saveDcOf(src, actor.system?.attributes) } : null,

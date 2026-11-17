@@ -346,7 +346,8 @@ export function rowsHtml(chips, st, scope, rows = ROWS) {
   }).join("");
 }
 /** v0.0.294 (Lucas): the ladder carries the creature's chance of each Tier (when the setting shows them); the "≤" in a font that draws it well. */
-const ladderHtml = (dc, crit, odds = null) => `<div class="rd-ladder${crit ? " crit" : ""}">${ladder(dc, crit).map((s, i) => `<span class="rd-lseg ${s.k}"><span>${esc(s.label).replace("≤", '<span class="rd-le">≤</span>')}</span>${odds ? `<b class="rd-lpct">${odds[i]}%</b>` : ""}</span>`).join("")}</div>`;
+// v0.0.397 (Lucas: "reduce the height of the tier ladder, putting the percentages next to the tier number"): one line ("Tier 1 · ≤13 · 28%")
+const ladderHtml = (dc, crit, odds = null) => `<div class="rd-ladder one${crit ? " crit" : ""}">${ladder(dc, crit).map((s, i) => `<span class="rd-lseg ${s.k}"><span>${esc(s.label).replace("≤", '<span class="rd-le">≤</span>')}${odds ? ` · <b class="rd-lpct">${odds[i]}%</b>` : ""}</span></span>`).join("")}</div>`;
 /** A creature's chances for its ladder: null when the setting hides them (or the player view hides the Defenses: no ladder then anyway). */
 const ladderOdds = (inp, st, c, crit) => (inp.showOdds && !inp.hideDef && !inp.save ? oddsOf(creatureCalc(inp, st, c.uuid), crit) : null);
 const defBadge = (c, hide) => `<span class="rd-def" ${hide ? 'data-tooltip="Hidden by the GM"' : ""}>${esc(c.def ?? "DC")}${hide ? "" : ` ${Number(c.dc) || 13}`}</span>`;
@@ -389,7 +390,7 @@ function metaHtml(inp, v) {
   const m = v?.meta ?? {}, sep = '<span class="rd-star" aria-hidden="true"> ✦ </span>';
   // v0.0.294 (Lucas): the book's format (Ch. 1, Reading an Action): Targets (✦ the Area) on one line, "Distance: X ✦ Vs. X" on the next, the
   // Trigger / Interrupt after the meta lines (the chat cards' order too, brief section 12)
-  const l1 = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.label)}</button>` : ""].filter(Boolean);
+  const l1 = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label)}</button>` : ""].filter(Boolean);
   const l2 = [m.dist && !/^self$/i.test(m.dist) ? `<b>Distance:</b> ${esc(m.dist)}` : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "<b>Vs.</b> "}${vsColored(m.vs)}` : ""].filter(Boolean);
   const out = [];
   if (Number(m.escalation) > 0) out.push(`<div class="rd-meta">${Number(m.escalation)} Escalation</div>`);
@@ -435,6 +436,54 @@ function creaturesHtml(inp, st, v) {
   }).join("");
 }
 
+/**
+ * v0.0.397 (Lucas, on the mockup foundry/mockups/rolldlg-card.html: "Go, build it"): the dialog's card part in the book's card format (the Action
+ * card of the style plan's step 5): the name and its cost, the Flavor, the traits as words, the grid (Distance and the Area at the left, Target at the
+ * right), then labeled lines: Attack (or Save), Requirements, Setup, Trigger, Tier 1 to 3, Critical, Effects. No Tier color on the lines (the ladder
+ * and the chat's stamp keep it); the bonuses keep theirs, with their source. The GM still clicks a Tier's name to force it.
+ */
+const DEF_NAME = { AD: "Armor Defense", WD: "Ward Defense" };
+function cardHtml(inp, st, v) {
+  const m = v?.meta ?? {}, cost = [inp.freqLabel, v?.cost].filter(Boolean).join(" · ");
+  const head = `<div class="rdc-head"><h1 class="rd-name">${esc(inp.name)}</h1>${cost ? `<span class="rdc-cost rd-freq" style="--fq:${esc(inp.freqColor ?? "#5F5E5A")}">${esc(cost)}</span>` : ""}</div>`;
+  const flavor = inp.flavor ? `<div class="rdc-flavor rd-flavor">${esc(inp.flavor)}</div>` : "";
+  const words = (v?.traits ?? []).map(t => `<span class="rd-trait tg-${esc(t.group)}"${t.tip ? ` data-tooltip="${esc(t.tip)}"` : ""}>${esc(t.label)}</span>`);
+  const traits = words.length ? `<div class="rdc-traits rd-traits">${words.join('<i aria-hidden="true">·</i>')}</div>` : "";
+  const area = inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label)}</button>` : "";
+  const left = [m.dist && !/^self$/i.test(m.dist) ? `<span><b>Distance:</b> ${esc(m.dist)}</span>` : "", area ? `<span><b>Area:</b> ${area}</span>` : ""].filter(Boolean).join("");
+  const grid = left || m.targets ? `<div class="rdc-grid"><span class="rdc-gl">${left}</span>${m.targets ? `<span><b>Target:</b> ${esc(m.targets)}</span>` : ""}</div>` : "";
+  const line = (label, html, cls = "") => `<div class="rdc-l${cls}"><b>${label}</b><span>${html}</span></div>`;
+  const out = [];
+  if (Number(m.escalation) > 0) out.push(line("Escalation", String(Number(m.escalation))));
+  if (m.requirements) out.push(line("Requires", esc(m.requirements)));
+  if (m.setup) out.push(line("Setup", m.setup));
+  if (m.trigger) out.push(line(m.triggerKind === "interrupt" ? "Interrupt" : "Trigger", m.triggerHtml ?? esc(m.trigger)));
+  if (m.vs) {
+    const save = /save$/i.test(m.vs);
+    const vsTxt = save ? esc(m.vs) : `${esc(inp.roll?.name ?? "Modifier")} ${sgn(Number(inp.roll?.mod) || 0)} vs. ${esc(String(m.vs).replace(/\b(AD|WD)\b/g, d => DEF_NAME[d]))}`;
+    out.push(line(save ? "Save" : "Attack", vsTxt));
+  }
+  if (v && !v.noTiers) {
+    const stats = tierStats(inp, st, v), can = inp.canForce && !inp.save;
+    const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" data-tooltip="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button>` : label);
+    const tierText = n => {
+      const tags = tierTags(inp, st, n);
+      const lines = poolLines(v.tiers?.[n], []);
+      const dmg = lines.map(l => `<span class="rdc-pv ${l.pool === "M" ? "r" : "v"}">${poolIcon(l.pool)} ${l.segs.map(s => `${esc(s.t)}${s.sub ? ` <b class="rd-sub">${esc(s.sub)}</b>` : ""}`).join(" + ")}</span>`).join(" ");
+      const bon = tags.map(c => ` <span class="rdc-chg">${esc(c.tag)} ${esc(c.label)}</span>`).join("");
+      const riders = (v.tiers?.[n]?.riders ?? []).map(r => ` <span class="rd-rider">${r}</span>`).join("");
+      const avg = stats[n]?.avg ? `<span class="rdc-avg">avg ${stats[n].avg}</span>` : "";
+      return (dmg || bon || riders ? `${dmg}${bon}${riders}` : "&mdash;") + avg;
+    };
+    for (const n of [1, 2, 3]) out.push(`<div class="rdc-l t${n}${Number(st.forceTier) === n ? " forced" : ""}"><b>${name(n, `Tier ${n}`)}</b><span>${tierText(n)}</span></div>`);
+    if (v.crit) out.push(`<div class="rdc-l crit${Number(st.forceTier) === 4 ? " forced" : ""}"><b>${name(4, "Critical")}</b><span>${v.crit}</span></div>`);
+    if (v.effects) out.push(line(`Effects <small>(T${v.effectsFrom ?? 2}+)</small>`, v.effects));
+    const net = stepNet(inp, st);
+    if (net.line) out.push(`<div class="rd-step">${esc(net.line)}</div>`);
+  } else if (v?.effects) out.push(line("Effects", v.effects));
+  return `<div class="rd-card">${head}${flavor}${traits}${grid}${out.join("")}</div>`;
+}
+
 /** The whole dialog's inner HTML: header (fixed), body (scrolls), Designer footer, bottom bar (fixed). */
 export function dialogHtml(inp, st) {
   const v = versionOf(inp, st), dl = diceLine(inp, st), why = blockedReason(inp, st), noRoll = !!v?.noTiers;
@@ -451,13 +500,14 @@ export function dialogHtml(inp, st) {
     : `<section class="rd-roll">${head}
     <div class="rd-mhead"><span>${inp.multi && !inp.save ? "Modifiers · every target" : "Modifiers"}</span></div>${quick}${notices}${rowsHtml(chipsOf(inp, st, "shared"), st, "shared", inp.save ? ROWS.filter(r => ["passives", "damage"].includes(r[0])) : ROWS)}
     <div class="rd-creatures">${creaturesHtml(inp, st, v)}</div></section>`;
-  const flavor = inp.flavor ? `<div class="rd-div" aria-hidden="true"><span></span><i>◆ ◆ ◆</i><span></span></div><p class="rd-flavor">${esc(inp.flavor)}</p>` : "";
+  // v0.0.397: the Flavor opens the card (cardHtml), as in the book
   const designer = inp.designer && v && !v.noTiers && !inp.save ? `<div class="rd-designer"><div>${inp.showOdds && !inp.hideDef ? "" : liveCreatures(inp, st).map(c => `<div>${cImg(c)}<b>${esc(c.name)}</b>: ${oddsLine(oddsOf(creatureCalc(inp, st, c.uuid), !!v.crit))}</div>`).join("")}</div><div class="rd-force" role="group" aria-label="Force a Tier">Force a Tier: ${[1, 2, 3].map(n => `<button type="button" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">T${n}</button>`).join("")}</div></div>` : "";
   const modes = (inp.rollModes ?? []).length ? `<select class="rd-mode" data-field="rollMode" aria-label="Roll mode">${inp.rollModes.map(([k, l]) => `<option value="${esc(k)}"${k === st.rollMode ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>` : "";
   const bar = `<footer class="rd-bar">${modes}${vers}<button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button></footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
   // v0.0.370 (Lucas): no yellow warning at the bottom (the struck Version and the reason on it say it); warnings() stays for the tests and callers
   const warnHtml = "";
   // v0.0.349 (Lucas, playtest 4: "the AP Version buttons at the bottom next to Roll")
-  return `<header class="rd-head"><div class="rd-nameline"><h1 class="rd-name">${esc(inp.name)}</h1></div>${traitsHtml(inp, v)}</header>
-    <div class="rd-body">${metaHtml(inp, v)}${tierTableHtml(inp, st, v)}${panel}${flavor}</div>${designer}${warnHtml}${bar}`;
+  // v0.0.397: the card part in the book's format (cardHtml); the old head, meta lines and Tier table (traitsHtml, metaHtml, tierTableHtml) stay for reference
+  void traitsHtml; void metaHtml; void tierTableHtml;
+  return `<div class="rd-body rd-cardbody">${cardHtml(inp, st, v)}${panel}</div>${designer}${warnHtml}${bar}`;
 }

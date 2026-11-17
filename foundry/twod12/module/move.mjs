@@ -1115,7 +1115,7 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
   while (list.length) {
     const pick = await pickBar({ icon: "fa-hand", done: "Done", cancel: "Stop",
       text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature (here or its token) to move it.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
-      options: list.map((t, n) => { const d = distanceFor(cfg, ctx, t, N); return { id: String(n), label: d === N ? t.name : `${t.name} (${label} ${d})`, token: t }; }) });   // v0.0.248: its token on the map can be clicked too; v0.0.249: its own distance by Tier
+      options: list.map((t, n) => { const d = distanceFor(cfg, ctx, t, N); return { id: String(n), label: d === N ? t.name : `${t.name} (${label} ${d})`, token: t, img: t.document?.texture?.src || t.actor?.img || "" }; }) });   // v0.0.397: a square with its picture   // v0.0.248: its token on the map can be clicked too; v0.0.249: its own distance by Tier
     if (pick == null || pick === "done") break;
     const t = list[Number(pick)];
     if (!t) break;
