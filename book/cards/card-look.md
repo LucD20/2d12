@@ -238,4 +238,19 @@ Made without touching `rules.css`, `build_rules.py` or the built documents: `boo
 
 **For Lucas:** yes to apply the look to the book (`rules.css`, `build_rules.py`, the fonts in `rules-assets/`), or the things to change first.
 
-**Lucas's answer:**
+**Lucas (2026-11-17): "I think the Class layout could change. Research and see about it."** Applying the look waits for this.
+
+## Decision 6: the class document's layout (research running, 2026-11-17)
+
+**Today's Paladin document, in order** (`rules-src/12-paladin.md`; the Archer's is the same):
+1. The class name and an intro paragraph.
+2. A stat box, "The Paladin at a glance": Attributes, Health, Rally, Speed Modifier, Modifiers, Armor Training, Escalation hook.
+3. "The Paladin by Level": levels 1 to 3, each a list of what you gain (Features, Hallmark Action, Hallmark Reaction, Art, Picks, Escalation, Talents).
+4. "Level 1": the two Features (cards), "Hallmark Action Selection" (two cards), "Hallmark Reaction Selection" (two cards).
+5. "Paladin Arts": three cards (one at level 1, a second at level 3).
+6. "Paladin Repertoire": "Encounter", three cards (the level 2 pick).
+7. "Paladin Escalation": the hook (a card), then Escalation 2, 4 and 6, two cards each ("Choose one at level N").
+
+**What a reader does with it:** builds a character (reads the stat box, then makes four choices at level 1: a Hallmark Action of two, a Hallmark Reaction of two, an Art of three, an Escalation 2 ability of two); levels up (finds what level 2 and 3 add, which sits in three different sections); and at the table, finds his own cards among nineteen. Already visible: the level 2 gains are split across three sections (Repertoire, Escalation, the hook inside Escalation); the options of a choice are full cards one under the other, with no line saying how they differ; the order of the sections is neither by level nor by kind throughout (Level 1 is by level, the rest by kind).
+
+The research note will be `book/research/class-layout.md` (how published RPGs lay out a class chapter; presenting choices; finding abilities at the table).
