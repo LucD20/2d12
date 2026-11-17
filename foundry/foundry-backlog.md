@@ -81,6 +81,10 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## THE HUD REMAKE AND THE REACTION ALERT (Lucas, 2026-11-17; a draft, nothing built: `foundry/mockups/hud2-brief.md`, `foundry/mockups/hud2/index.html`)
+- [ ] **The Reaction alert** (Lucas: "it can pass unnoticed"): a chime for the players who can react, a ring and floating text on the reacting token, the HUD's Reactions tab pulsing; each a setting. Waits for the draft's answers.
+- [ ] **The HUD remake:** the party strip, the bar with tabs by kind and columns by Frequency (the draft's nine decisions).
+
 ## THE PALADIN'S REDESIGN IN FOUNDRY: what the system must follow (the book changed on 2026-11-16; nothing below is built; wait for Lucas's word)
 The book: `rules-src/12-paladin.md`, the cards in `book/cards/stage0/paladin.json`, the rules in rules-backlog.md "THE PALADIN'S REDESIGN AND THE CARD STRUCTURE: APPLIED TO THE BOOK".
 - [ ] **The 19 cards replace the old Paladin's** in `book/cards/paladin.json` (the stage0 file moves up and the folder goes; `load.mjs`, `content.mjs` / `cardgen.mjs` and the ruler's `spec.mjs` learn the Structure's format: `cost`, `body` lines with labels, `blocks`). The 12 old cards leave (Divine Power, Holy Wrath, Beacon, the Dailies, the old Passives, the Apexes): a migration for characters that hold them. Every card Lucas wrote with me and that changed is **Diamond** until he reviews it (Smite, Lay On Hands, Shield of Faith, Rebuke, Bulwark of Faith, Word of Radiance, Consecrated Ground, Kindled Wrath, Reckoning, Hallowed Stance); the new ones are Mithril candidates (Judge, Binding Light, the three Arts, Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil).
