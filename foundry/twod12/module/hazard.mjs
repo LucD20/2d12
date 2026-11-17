@@ -56,7 +56,9 @@ async function trigger(region, tokenDoc, how) {
     await postSaveFor(ht.save, [{ uuid: tokenDoc.uuid, name: tokenDoc.name }], { point: ht.point ?? null, source: ht.name || region.name, note: `${tokenDoc.name} ${what} [HT: ${patternText(ht.patterns)}].` });
     return;
   }
-  await ChatMessage.create({ content: `<div class="twod12 chat ht"><b>Hazardous Terrain</b> <small>[HT: ${patternText(ht.patterns)}]</small> ${ht.name ? `(${ht.name})` : ""}: <b>${tokenDoc.name}</b> ${what}.<div class="ht-text">${text}</div></div>` });
+  // v0.0.415 (pack CL): a system card (was a plain block); the area's text keeps its buttons
+  const { sysCard } = await import("./sysmsg.mjs"), { esc } = await import("./util.mjs");
+  await ChatMessage.create({ content: sysCard({ title: `Hazardous Terrain [HT: ${patternText(ht.patterns)}]`, lead: `${esc(tokenDoc.name)} ${what}${ht.name ? ` (${esc(ht.name)})` : ""}`, text: text, cls: "ht" }) });
 }
 
 export function registerHazardHooks() {

@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t100.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // Tags (a selection from a world setting), and who moves when a movement button is clicked.
@@ -19,7 +20,7 @@ const orc = { system: { tags: new Set(["unholy", "humanoid"]) } };
 console.log("hasTag:", C.hasTag(orc, "Unholy"), C.hasTag(orc, " UNHOLY "), C.hasTag(orc, "Holy"), "| no tags:", C.hasTag({ system: {} }, "Unholy"), C.hasTag(null, "Unholy"), "| a plain list:", C.hasTag({ system: { tags: ["beast"] } }, "Beast"));
 const data = fs.readFileSync(ROOT + "module/data.mjs", "utf8");
 console.log("the data model: a set of tags:", data.includes("tags: new SetField(new StringField({ required: true, blank: false }))"), "| migrates text:", data.includes("source.tags = migrateTags(source.tags)"), "| conditions on an effect:", data.includes("conditions: new ArrayField(new SchemaField({ uuid: str(), name: str(), value: int(1, 0), valued: bool(), mode: choice("), "| a valued condition:", data.includes("valued: bool()"));
-const sheet = fs.readFileSync(ROOT + "templates/actor-sheet.hbs", "utf8");
+const sheet = fs.readFileSync(ROOT + "templates/actor-sheet-pc.hbs", "utf8");
 console.log("the NPC sheet: a multi-select of the tags:", sheet.includes('{{#each npcTags.have}}<span class="tchip">') && sheet.includes('<select class="tagadd"'));
 // ---------------------------------------------------------------- who moves
 console.log("--- who moves when a movement button on a card is clicked");

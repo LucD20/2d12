@@ -1,5 +1,5 @@
 shortText cuts at a sentence: "Enfeebled N subtracts N from every die of your damage, but each die still deals at least 1."
 a short text stays: Prone. Stand costs 1 AP. | a long word run ends with an ellipsis: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa…
 <div class="twod12 fxtip"><div class="ft-head"><b>Enfeebled 1</b><span class="ft-dur">1 round</span></div><div class="ft-text">Enfeebled N subtracts N from every die of your damage.</div><div class="ft-src">From Krysta</div><div class="ft-ctl">Click the name: open · ×: remove</div></div>
-the sheet's chips carry the card (the controls differ for the Exhausted counter): true | Bloodied and Strained too: true
+the sheet's chips carry the card (the controls differ for the Exhausted counter): false | Bloodied and Strained too: true
 the chat card's effect names carry it (auto / with the Effects button): true | the CSS: true

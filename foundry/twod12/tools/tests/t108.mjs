@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t108.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 const BD = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;   // v0.0.227 (pack CS): the Basic Actions are data generated from book/cards
 import fs from "node:fs";
@@ -35,5 +36,5 @@ for (const t of ["lance: melee, pierce, range 1/2, 0/1d8/2d6", "dagger: melee, t
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("--- content: Weapon Attack uses Distance: Weapon:", BD.basicWeaponAttack.distance === "weapon", "| Trip keeps Reach:", BD.trip.distance === "reach", "| compendium Longsword (v0.0.412: the two-handed sword in the Greatsword's place) Range:", JSON.parse(src("packs/_source/weapons/longsword.weapon.json")).system.range, "| Smite:", JSON.parse(src("packs/_source/actions/smite.action.json")).system.distance);
 console.log("--- v0.0.123");
-const acts = src("module/actions.mjs"), tpl = src("templates/actor-sheet.hbs"), sheet = src("module/actor-sheets.mjs"), data = src("module/data.mjs");
+const acts = src("module/actions.mjs"), tpl = src("templates/actor-sheet-pc.hbs"), sheet = src("module/actor-sheets.mjs"), data = src("module/data.mjs");
 console.log("a thrown weapon shows a notice in the roll dialog:", acts.includes('...(wUse?.thrown && wUse.mode === "ranged"') && acts.includes('<span class="rnotice"'), "| NPC Reach editable:", data.includes("reachBase: int(1, 1)") && data.includes("this.reach = Math.max(1, Number(this.reachBase) || 1)") && sheet.includes('reach: { "system.reachBase"'), "| Tags as chips:", tpl.includes('<span class="tchip">'));

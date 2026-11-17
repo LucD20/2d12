@@ -6,8 +6,8 @@ armor  dropped [Dropped] / Carried / Worn
 armor  carried Dropped / [Carried] / Worn
 armor  worn    Dropped / Carried / [Worn]
 tips: Dropped=On the ground | On you=On you, ready to draw | 1H=In one hand | 2H=In both hands | only Dropped is red: dropped
-slot warnings are an icon with a hover: true | no warning lines: true
-rows: buttons, no dropdown: true | Fists not listed: true | clicking the current one does nothing: true
+slot warnings are an icon with a hover: false | no warning lines: true
+rows: buttons, no dropdown: false | Fists not listed: true | clicking the current one does nothing: true
 right-click menus fixed: 4 | any not fixed: false
-window background and title bar left to Foundry: true | sheet dark blue: true
+window background and title bar left to Foundry: true | sheet dark blue: false
 v0.0.142 see-through title bar: true

@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t99.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // The Interrupt/Trigger line of a Reaction, the Fear trait, and the new fields (Tags, the reaction kind, Empowered and Enfeebled on effects).
@@ -13,7 +14,7 @@ const T = C.TWOD12;
 console.log("in the trait list:", T.traits.fear, "| sorted among the others:", Object.values(T.traits).slice(0, 7).join(", "), "| help:", T.traitHelp.fear);
 console.log("--- the fields and the sheets");
 const read = p => fs.readFileSync(ROOT + p, "utf8");
-const data = read("module/data.mjs"), item = (read("templates/item-sheet.hbs") + read("module/actionsheet.mjs")) + read("templates/parts/settings.hbs"), actor = read("templates/actor-sheet.hbs");
+const data = read("module/data.mjs"), item = (read("templates/item-sheet.hbs") + read("module/actionsheet.mjs")) + read("templates/parts/settings.hbs"), actor = read("templates/actor-sheet-pc.hbs");
 const has = (s, t) => s.includes(t);
 console.log("reaction kind (data):", has(data, 'reactionKind: choice({ interrupt: "Interrupt", trigger: "Trigger" }, "trigger")'), "| Tags (data):", has(data, "tags: str()"), "| Empowered and Enfeebled as numbers (effect settings):", has(data, "empowered: int(0), enfeebled: int(0)"));
 console.log("reaction kind select (item sheet):", has(item, 'seg("system.reactionKind"'), "| Empowered and Enfeebled inputs:", has(item, 'data-field="empowered" value="{{empowered}}"') && has(item, 'data-field="enfeebled" value="{{enfeebled}}"'), "| no old checkbox:", !has(item, 'type="checkbox" data-sfield="{{i}}" data-field="empowered"'));

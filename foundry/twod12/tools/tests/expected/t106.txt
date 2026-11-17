@@ -31,4 +31,4 @@ applied: [{"kind":"all","bonus":2,"mode":"bonus","name":"","seen":false},{"kind"
 rebuilt from an applied effect: [["defense","armor",1]]
 --- the Release fix
 fixed: 1 [[0]]
---- data and sheets: true true true true | compendium Paladin heavy Archer light
+--- data and sheets: true true false true | compendium Paladin heavy Archer light

@@ -1,9 +1,10 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t117.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.134 (new sheet, step 5): the Effects and Notes tabs, and the fixes from the v0.0.133 test.
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-const tpl = src("templates/actor-sheet.hbs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css"), data = src("module/data.mjs");
+const tpl = src("templates/actor-sheet-pc.hbs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css"), data = src("module/data.mjs");
 const tabs = [...tpl.matchAll(/data-tab-target="(\w+)"/g)].map(m => m[1]);
 console.log("tabs:", tabs.join(", "), "| Items (was Inventory):", tpl.includes('data-tab-target="items">Items</a>'), "| condition count on Effects:", tpl.includes('<span class="tabcount">{{conditions.length}}</span>'));
 console.log("Conditions left the side panel:", !tpl.includes("np-group conds"), "| chips on the Effects tab:", tpl.includes('<span class="cchip{{#if linkedTo}} linked{{/if}}"'), "| Exhausted +/- and right-click kept:", tpl.includes('data-action="exhaustedDown"') && sh.includes('.cchip[data-counter]'));

@@ -1,7 +1,7 @@
 the damage line with a reduction: 12 − reduction 7 − Guard 5 = 0 <small>(the reduction is spent; Guard 3 left)</small> | only Guard: 12 − Guard 5 = 7 <small>(the Guard ends)</small> | only a reduction: 9 − reduction 9 = no damage <small>(the reduction is spent)</small>
 the HUD card through the tooltip manager, delegated from the HUD's root: true
 a picker uses the card's targets first: true | Guard RP shows the number: true
-linked conditions chained and sorted after their effect: true
-inline Actions as Granted tickets with their own icon, out of the list: true
+linked conditions chained and sorted after their effect: false
+inline Actions as Granted tickets with their own icon, out of the list: false
 the reduction is reported on the damage card's line: true
 Bulwark's chain: the Guard, then the Slid on the card's target: @Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1] | Shield's: @Reduce[2d6+pow|s2:3d6+pow|s3:4d6+pow|who:pick|near:5]

@@ -201,9 +201,11 @@ export async function offerWake(user, tokens) {
     if (!a?.statuses?.has?.("unconscious")) continue;
     const why = wakeProblem(a);
     if (why) { ui.notifications.warn(`${t.name} ${why}.`); continue; }
-    const ok = await foundry.applications.api.DialogV2.confirm({ window: { title: "Interact" }, content: `<p>Wake <b>${t.name}</b>? It stops being Unconscious.</p>`, rejectClose: false });
+    // v0.0.415 (pack CL): the pick window (was a DialogV2) and a sysLine (was a plain line)
+    const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "Interact", name: "Wake", sub: t.name, icon: "fa-bell", confirm: "Wake", text: `Wake <b>${esc(t.name)}</b>? It stops being Unconscious.` });
     if (!ok) continue;
     if (a.isOwner) await a.toggleStatusEffect("unconscious", { active: false });
-    await ChatMessage.create({ content: `<div class="twod12 chat apmsg"><b>${user?.name ?? "Someone"}</b> wakes <b>${t.name}</b> (Interact)${a.isOwner ? "" : ": the GM removes Unconscious"}.</div>` });
+    const { sysLine } = await import("./sysmsg.mjs");
+    await ChatMessage.create({ content: sysLine("fa-bell", `<b>${esc(user?.name ?? "Someone")}</b> wakes <b>${esc(t.name)}</b> (Interact)${a.isOwner ? "" : ": the GM removes Unconscious"}.`) });
   }
 }

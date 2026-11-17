@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t107.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.119: Armor items (one worn at a time; the worn one gives the Armor and adds its Ward), the sidebar numbers in three rows.
@@ -15,7 +16,7 @@ const src = n => fs.readFileSync(ROOT + n, "utf8");
 const data = src("module/data.mjs"), sys = JSON.parse(src("system.json"));
 console.log("item type:", "armor" in sys.documentTypes.Item, "| pack label:", sys.packs.find(p => p.name === "weapons").label, "| ArmorData fields:", ["category: choice(", "bonus: sint(0), ward: int(0, 0)", "worn: bool()"].every(k => data.includes(k)));
 console.log("Defenses use the worn armor:", data.includes("find(i => i.system.worn)"), "| a character without one is Unarmored, an NPC uses its stat block:", data.includes('(npc ? m.armor : "unarmored")'), "| an NPC's Defenses are typed (v0.0.162):", data.includes("m.armorDC = Number(m.armorDef) || 0"));
-const tpl = src("templates/actor-sheet.hbs");
+const tpl = src("templates/actor-sheet-pc.hbs");
 console.log("sheet: armor cards with a Worn switch:", tpl.includes('{{#each armorRows}}') && tpl.includes('class="lr-seg"'), "| rows:", tpl.includes("{{#each panel}}"), "| no separate Armor/Ward row:", !tpl.includes("sb-def"), "| NPC Armor type choice:", tpl.includes('name="system.armor">{{selectOptions armorTypeChoices'), "| NPC Speed only in the Builder tab (a typed Speed is its Custom input), no Size field (v0.0.164):", !tpl.includes('name="system.speed"') && fs.readFileSync(ROOT + "module/npcbuilder.mjs", "utf8").includes('name: "system.speed"') && !tpl.includes('name="system.size"'), "| editable cells:", tpl.includes('data-edit="{{edit}}" data-base="{{base}}"'));
 const sh = src("module/actor-sheets.mjs");
 console.log("cells: current vs base colored:", sh.includes('cls: now < ref ? "down" : now > ref ? "up" : ""'), "| what each edit saves:", ['speed: { "system.speed"', 'size: { "system.size"', 'reach: { "system.reachBase"'].every(k => sh.includes(k)) && !sh.includes('"system.armorDef": Math.max') && ['speed: { "system.speed"'].every(k => sh.includes(k)), "| bonuses from effects shown:", sh.includes('defenseBonus(a, "armor", none)'));

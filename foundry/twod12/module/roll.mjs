@@ -212,6 +212,7 @@ export async function rollTable(actor, kind) {
   await actor.update(kind === "dying" ? { "system.bodyWounds": s.bodyWounds + 1 } : { "system.mindWounds": s.mindWounds + 1 });
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }), rolls: [r],
-    content: `<div class="twod12 chat"><h3>${kind === "dying" ? "Dying" : "Shattered"} Table</h3><div>${formula} = <b>${r.total}</b></div><div class="tier t${r.total >= 25 ? 1 : 2}">${band} (Wounds now ${w + 1})</div></div>`
+    // v0.0.415 (pack CL): a system card (was a plain block)
+    content: (await import("./sysmsg.mjs")).sysCard({ title: `${kind === "dying" ? "Dying" : "Shattered"} Table`, lead: `${esc(actor.name)}: ${band}`, text: `${formula} = <b>${r.total}</b>; Wounds now ${w + 1}.` })
   });
 }

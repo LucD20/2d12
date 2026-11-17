@@ -1,7 +1,7 @@
 Action Details order: Traits@ok Flavor@ok Category@ok Level@ok Frequency@ok Escalation@ok Targets@ok Distance@ok Vs.@ok Requirements@ok Setup@ok Kind@ok Moment@ok Card line@ok A Reaction@ok An Area@ok | in Lucas's order: true
 "Shown as" gone: true | "costs written as 1R" gone: true | Kind and the Trigger line folded until Reaction (a part row): true
-item sheets styled (not Species; Class since v0.0.185): true | Versions window styled: true
-Tiers in their own colored boxes: true
+item sheets styled (not Species; Class since v0.0.185): true | Versions window styled: retired in v0.0.415 (pack CL: the Versions editor; the Action sheet edits the Versions)
+Tiers in their own colored boxes: retired in v0.0.415 (pack CL: the Versions editor; the Action sheet edits the Versions)
 dark text on parchment whatever the theme: true
 Range expression on the row: true | 5 -> 5 sq., 10 -> 10 sq., Weapon -> Weapon, Reach -> Reach, Self -> Self, 10/20/40 -> 10/20/40, — -> —
 the row still has its Escalation text and chips: true

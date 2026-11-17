@@ -139,7 +139,7 @@ export class ClassLevelsEditor extends (ApplicationV2 ?? class {}) {
     if ("newlvl" in d) { levels.push({ sections: [] }); this.cur = levels.length; return this._save(levels); }
     if ("dellvl" in d) {
       const last = levels[levels.length - 1];
-      if (last?.sections?.length && !(await foundry.applications.api.DialogV2.confirm({ window: { title: "Remove a level" }, content: `<p>Remove level ${levels.length} and its ${last.sections.length} section(s)?</p>`, rejectClose: false }))) return;
+      if (last?.sections?.length && !(await (await import("./pickwindow.mjs")).pickConfirm({ title: "Remove a level", name: "Remove a level", icon: "fa-trash", confirm: "Remove", text: `Remove level ${levels.length} and its ${last.sections.length} section(s)?` }))) return;   // v0.0.415 (pack CL): was a DialogV2
       levels.pop(); return this._save(levels);
     }
     if ("addsec" in d) { const n = newSection("items"); levels[this.cur - 1].sections.push(n); return this._save(levels); }

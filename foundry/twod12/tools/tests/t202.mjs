@@ -8,8 +8,8 @@ const src = f => fs.readFileSync(ROOT + f, "utf8");
 const H = await import(ROOTURL + "module/halfhint.mjs");
 const t = (h, tier, crit = false) => (H.halfHits(h, tier, crit) ? "y" : "n");
 console.log("halfHits t3:", [0, 1, 2, 3].map(n => t("t3", n)).join(""), "| t2:", [0, 1, 2, 3].map(n => t("t2", n)).join(""), "| t1:", [0, 1, 2, 3].map(n => t("t1", n)).join(""), "| crit:", t("crit", 3, false), t("crit", 2, true), "| all:", t("all", 0), "| never:", t("", 3), t(null, 3));
-const af = src("module/appliedflags.mjs"), st = src("templates/parts/settings.hbs"), ve = src("module/versions.mjs"), ac = src("module/actions.mjs");
+const af = src("module/appliedflags.mjs"), st = src("templates/parts/settings.hbs"), ac = src("module/actions.mjs");
 console.log("the old fields read as before:", af.includes('on: x.grantOn || x.halfOn || (x.halfT3 ? "t3" : "")') && af.includes('text: String(x.grantText ?? "").trim()'));   // v0.0.264
 console.log("the editor: the result, what happens, the line:", st.includes('data-field="grantOn"') && st.includes('data-field="grantDo"') && st.includes('data-field="grantText"'));
 console.log("the granted use's card gets the line:", ac.includes("if (opts.grant?.grant) version = withGrantLine(version, opts.grant.grant);"));
-console.log("the Versions editor opens an effect by its name:", ve.includes('this.element.querySelectorAll(".fxline .iname").forEach(el => el.addEventListener("click"'));
+console.log("the Versions editor opens an effect by its name:", "retired in v0.0.415 (pack CL: the Versions editor; the Action sheet edits the Versions)");

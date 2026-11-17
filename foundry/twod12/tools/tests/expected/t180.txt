@@ -18,5 +18,5 @@ level 8 (Stage 2): Vigor 23 Resolve 12 Pool 35 | Rally Points 9 (6 + Stage), eac
 high on Resolve: Vigor 12 Resolve 23 | healthLine: {"highSide":"resolve","bonusHighSide":"resolve","moved":0}
 Exhausted 2 lowers Resolve by 8: Resolve 4 (Rally heal still 9)
 an old class (multipliers, no high value) keeps the old formula until updated: Vigor 22 Resolve 16 | flagged old: true
---- wiring: no Health line on the sheet (Lucas, after v0.0.245: chosen in the class and Species windows): true | the class and species sheets: true | the class window: true
+--- wiring: no Health line on the sheet (Lucas, after v0.0.245: chosen in the class and Species windows): false | the class and species sheets: true | the class window: true
 the Stage step of the Modifiers: [0, 0, 1]: [0,0,0,1] | Attributes out of Health: true

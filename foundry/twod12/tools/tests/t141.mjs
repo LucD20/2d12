@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t141.mjs)
+// v0.0.415 (pack CL): the old sheet's CSS (.twod12.sheet.ns / .v44, 552 rules) is retired with templates/actor-sheet.hbs; a CSS check that prints false here was a rule of the old sheet.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.172 (pack Q, quick UI): the Steadiness tile always shown, a custom Steadiness in the Builder, the restyled Damage Instance dialog,
@@ -27,8 +28,7 @@ show("Steadiness 6 (typed)", mk({ steadiness: 6 }));
 console.log("the button that is on switches to Custom:", sheets.includes('if (target.dataset.rating === "custom") return this.actor.setFlag("twod12", "steadyCustom", true);'), "| a number clears it:", sheets.includes('"flags.twod12.steadyCustom": false'));
 
 console.log("--- the Damage Instance dialog");
-const ver = src("module/versions.mjs");
-console.log("in the item sheets' look:", ver.includes('classes: ["twod12-styled", "twod12-tierdlg"]') && ver.includes('<div class="sk tierdlg">'), "| its buttons:", src("styles/system.css").includes(".twod12-tierdlg .form-footer button"));
+console.log("in the item sheets' look:", "retired in v0.0.415 (pack CL: the Versions editor; the Action sheet edits the Versions)");
 
 console.log("--- the Cover height Snapshot");
 const st = { nameA: "Dave", nameT: "Goblin", hA: 0, hT: 1, wA: 1, wT: 1, dist: 3, blocks: { "1,0": 2 }, origin: "center" };

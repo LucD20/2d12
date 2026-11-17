@@ -5,6 +5,6 @@ Charge: a Strike that targets true | its Weapon Attack counts toward At-will tru
 Relocate At-will true | Break Free (1 AP, Move, only while Immobilized) true
 the mark ends with the combat true | shows the marker's portrait true
 Remove on every Action's right-click true | the Setup in the bottom bar true | Strike pips (v0.0.390: the HUD's marks, Strikes as slashes) true | the log window by its id true
-row markers: too few AP true | 3 Strikes true
+row markers: too few AP false | 3 Strikes false
 v0.0.225: a card's Evade / Advance is a bottom bar (End movement, Advance instead), no chat buttons: true | the Setup bar minimizes the windows: true | a fourth Strike asks first: true
 v0.0.226: an Evade or a Charge always moves the creature that used the Action: true | Evade instead after Advance instead: true

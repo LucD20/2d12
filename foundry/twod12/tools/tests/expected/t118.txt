@@ -32,6 +32,6 @@ club, blunt, sparkly, 0/1d6
    understood: Name: Club | Blunt
    not understood: sparkly, 0/1d6 | Damage looks like 0/1d8/2d6 (Tier 1 / 2 / 3)
    card: Use — | Damage —
---- the NPC sheet: stat block true | Tags as chips with + and × true | header Level as text (one Level field) true | toolbar true | Features tab for NPCs true
+--- the NPC sheet: stat block false | Tags as chips with + and × false | header Level as text (one Level field) false | toolbar true | Features tab for NPCs false
 Generate Action from the NPC and from an Action's sheet: true | Weapon buttons true
 v0.0.135 fixes: no room around the sheet (inline !important) true | no Grants word true

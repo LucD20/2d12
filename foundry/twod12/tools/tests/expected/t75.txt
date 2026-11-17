@@ -1,5 +1,5 @@
 no calendar, start: Day 1 · 00:00 | 1 day 14:05 later: Day 2 · 14:05
 with the world's calendar: Firstday, 3 Claw of Winter 1492 · 09:07
 after everyone sleeps: Kai Exhausted 1, last Sleep at hour 18 | Nari Exhausted 0, last Sleep at hour 18 | Bandit Exhausted 0, last Sleep at hour 0
-chat: Everyone sleeps 8 hours (now Day 1 · 18:00). Daily Actions are renewed for Kai: Exhausted 3 → 1, Nari.
+chat: SleepEveryone sleeps 8 hours (now Day 1 · 18:00)Daily Actions are renewed for Kai: Exhausted 3 → 1, Nari.
 clock button in the token controls: true | a button, not a toggle: true

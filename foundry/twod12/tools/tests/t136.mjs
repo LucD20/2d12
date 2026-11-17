@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t136.mjs)
+// v0.0.415 (pack CL): the old sheet's CSS (.twod12.sheet.ns / .v44, 552 rules) is retired with templates/actor-sheet.hbs; a CSS check that prints false here was a rule of the old sheet.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.165: the Line of Effect button (the lines cover is counted with: origin, the four corners, blocked or not, and the label at the target),

@@ -7,7 +7,6 @@
 //   What belongs to the copy is kept: its flags (class picks, slots, granted-by), a class's chosen Attributes, a weapon's grip and state,
 //   worn armor, quantities. The Basic Actions are replaced too.
 const F = "twod12";
-const { DialogV2 } = foundry.applications.api;
 
 /** What a copy keeps of its own system data, by item type. */
 export const KEEP = {
@@ -98,19 +97,19 @@ export async function refreshWorth() {
 /** The question, with its options. */
 export async function askRefresh(reason = "") {
   if (!game.user.isGM) return null;
-  const res = await DialogV2.wait({
-    window: { title: "Update from the compendium" },
-    content: `${reason ? `<p>${reason}</p>` : ""}<p>Replace the Features, Talents, Actions, Effects, Classes, Species, weapons and armor on every sheet (and the world's items) with the system compendium's current versions?</p>
-      <p class="hint">What each copy chose is kept (class picks and Attributes, Talent slots, a weapon in hand, worn armor). <b>Changes made by hand to a copy are lost</b>: skip this if you homebrew the system's cards.</p>
-      <label class="checkbox"><input type="checkbox" name="byName" checked> Also match items with the same type and name as a compendium item</label>
-      <label class="checkbox"><input type="checkbox" name="basics" checked> Replace the Basic Actions too</label>`,
-    buttons: [
-      { action: "yes", label: "Update", icon: "fa-solid fa-rotate", default: true, callback: (ev, btn) => ({ byName: btn.form.elements.byName.checked, basics: btn.form.elements.basics.checked }) },
-      { action: "no", label: "Not now", icon: "fa-solid fa-xmark" }
-    ],
-    rejectClose: false
+  // v0.0.415 (pack CL): the pick window (was a DialogV2): the two choices as Yes / No rows
+  const st = { byName: "yes", basics: "yes" }, YN = k => [["yes", "Yes"], ["no", "No"]].map(([v, l]) => ({ k: v, l, on: st[k] === v }));
+  const { pickWith } = await import("./pickwindow.mjs");
+  const res = await pickWith({
+    title: "Update from the compendium",
+    model: () => ({ name: "Update from the compendium", icon: "fa-rotate",
+      sections: [{ title: "", sub: `${reason ? `${reason} ` : ""}Replace the Features, Talents, Actions, Effects, Classes, Species, weapons and armor on every sheet (and the world's items) with the system compendium's current versions? What each copy chose is kept (class picks, Talent slots, a weapon in hand, worn armor). Changes made by hand to a copy are lost: skip this if you homebrew the system's cards.`,
+        rows: [{ key: "byName", label: "Also match items with the same type and name", opts: YN("byName") }, { key: "basics", label: "Replace the Basic Actions too", opts: YN("basics") }] }],
+      message: "", confirm: "Update" }),
+    pick: (r, k) => { st[r] = k; },
+    result: () => ({ byName: st.byName === "yes", basics: st.basics === "yes" })
   });
-  if (!res || res === "no") return null;
+  if (!res) return null;
   return refreshFromCompendium(res);
 }
 

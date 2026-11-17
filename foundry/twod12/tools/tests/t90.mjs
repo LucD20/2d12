@@ -6,6 +6,7 @@ globalThis.Combat = class {}; globalThis.CONFIG = { time: {} }; globalThis.Hooks
 globalThis.ui = { notifications: { info: m => notes.push("info: " + m), warn: m => notes.push("warn: " + m), error: m => notes.push("error: " + m) } };
 let pick = null;
 globalThis.foundry = { applications: { api: { DialogV2: { wait: async o => { dialogs.push(o.buttons.map(b => b.label)); return pick; }, confirm: async () => true }, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
+globalThis.__twod12Pick = o => { const m = o.model(); dialogs.push((m.sections ?? []).flatMap(x => (x.rows ?? []).flatMap(r => r.opts.map(y => y.l)))); return pick; };   // v0.0.415: the pick window (was DialogV2.wait)
 globalThis.game = { settings: { get: (s, k) => settings[k] }, time: { worldTime: 0 }, user: { isGM: true, isActiveGM: true, id: "u1", targets: new Set() }, i18n: { localize: s => s } };
 const tokens = [];
 globalThis.canvas = { grid: { size: GS, getOffset: ({ x, y }) => ({ i: Math.floor(y / GS), j: Math.floor(x / GS) }), getCenterPoint: ({ i, j }) => ({ x: j * GS + GS / 2, y: i * GS + GS / 2 }) }, tokens: { placeables: tokens, controlled: [] }, environment: { darknessLevel: 0 }, effects: { darknessSources: [], lightSources: [] } };

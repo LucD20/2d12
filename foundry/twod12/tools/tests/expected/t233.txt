@@ -6,7 +6,7 @@ no duration / no ended turn: null null
 the countdown: one actor per uuid: true | each effect in its own try: true | skips one already gone: true
 a hand click: the targeted creatures when the selected one is the pusher: true | a right-click takes a square back: true
 groups: Greatsword=swords, +1 Greatsword=swords, Hand Crossbow=crossbows, Crossbow=crossbows, Knuckle Dagger=unarmed, Dagger=daggers, Shortbow=bows, Fists=unarmed, Warhammer=- | set on the weapon: hammers | by its Mastery kind: swords
-a Longsword after a Greatsword's Tier 3: true | a Shortbow: true | the next encounter: true | no group: its own kind: kind:warhammer
+v0.0.415 (pack CL): the per-encounter group limit of the Tier 3 Mastery (canGainMastery) is gone with that rule (v0.0.412: +1 at the end of a won encounter)
 the message is a sysLine: true | the limit is stored on the character: false | the weapon sheet has the field: true
 who:pick / area / near skip the card's targets as recipients: true
 both creatures in the window: true | the input passes every aimed token: true

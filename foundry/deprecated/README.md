@@ -26,5 +26,6 @@ Warrior, Grave Wisp, Ogre Chieftain), the eight pregenerated PCs.
   - **Divine Connection**: a Paladin Feature no class uses.
   - **The Bandit Thug**: an NPC the book's Bestiary doesn't have.
 - `module/targeting.mjs`: the targeting banner, unused since v0.0.392 (the roll dialog's Target button replaced it).
+- **v0.0.415 (pack CL, the code cleanup):** `templates-actor-sheet.hbs` (the old actor sheet, unused since v0.0.291) and `styles-old-sheet.css` (its 552 rules, `.twod12.sheet.ns` / `.v44`, out of styles/system.css); `module/versions.mjs` and `templates-versions-editor.hbs` (the Versions editor: no button opened it since the Action sheet); `module/gen-openGenerator.mjs` (the old Action generator, replaced by genaction.mjs).
 
 Characters in an existing world keep any of these they already hold (nothing is deleted from a world); "Update from the compendium" skips them.

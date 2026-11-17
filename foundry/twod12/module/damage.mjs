@@ -6,7 +6,6 @@ import { applyEffects, originInfo, applyCondition, applyBoonEffect } from "./eff
 import { absorbGuard, guardBefore, guardAfter } from "./guard.mjs";
 import { sysLine } from "./sysmsg.mjs";
 import { clearHalfHint } from "./halfhint.mjs";   // v0.0.261 (Covering Shot)
-const { DialogV2 } = foundry.applications.api;
 const SOCKET = "system.twod12";
 
 /**
@@ -128,8 +127,6 @@ export function registerSocket() {
 
 export const summaryText = a => [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [a.M.l, "Resolve"], [a.M.n, "Resolve Nonlethal"]].filter(([n]) => n).map(([n, l]) => `${n} ${l}`).join(", ");
 
-/** Apply a list of damage components (pool, nl, total) to an actor right away; returns a text summary. */
-export async function dealDamage(actor, comps) { return (await dealDamageEx(actor, comps)).text; }
 
 /**
  * v0.0.320 (pack AU part 2; book, Ch. 1): the Save cards that still deal their damage at once (an Area Save's rows) apply Resist / Weak / Immune too
@@ -159,11 +156,9 @@ export async function dealDamageEx(actor, comps) {
 }
 
 async function chooseChoicePool(amount) {
-  return DialogV2.prompt({
-    window: { title: "Choice damage" },
-    content: `<p>Apply ${amount} Choice [C] damage to:</p><label><input type="radio" name="p" value="B" checked> Vigor</label> <label><input type="radio" name="p" value="M"> Resolve</label>`,
-    ok: { label: "Apply", callback: (ev, btn) => new FormData(btn.form).get("p") }, rejectClose: false
-  });
+  // v0.0.415 (pack CL): the pick window (was a DialogV2)
+  return (await import("./pickwindow.mjs")).pickOne({ title: "Choice damage", name: "Choice damage", sub: `${amount} damage`, icon: "fa-scale-balanced", text: `Apply ${amount} Choice [C] damage to:`,
+    options: [{ k: "B", l: "Vigor" }, { k: "M", l: "Resolve" }] });
 }
 
 async function retarget(msg) {
@@ -216,7 +211,7 @@ async function apply(msg, button, factor) {
         : was.replace(/(<div class="tline">[\s\S]*?<\/div>)/, `$1${block}`);
       let onCard = false;
       if (content !== was && (msg.isOwner || game.user.isGM)) { try { await msg.update({ content }); onCard = true; } catch (e) { /* not the author */ } }
-      if (!onCard) await ChatMessage.create({ content: `<div class="twod12 chat">${lines.join("<br>")} damage${factor === 1 ? "" : (factor === 2 ? " (double)" : " (half)")} from ${esc(f.name)}.</div>` });
+      if (!onCard) { const { sysLine } = await import("./sysmsg.mjs"); await ChatMessage.create({ content: sysLine("fa-heart-crack", `${lines.join("<br>")} damage${factor === 1 ? "" : (factor === 2 ? " (double)" : " (half)")} from ${esc(f.name)}.`) }); }   // v0.0.415: a sysLine
     }
   }
   else ui.notifications.info("This card deals 0 damage.");

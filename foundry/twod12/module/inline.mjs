@@ -867,7 +867,8 @@ async function handleRelease(ctx = {}) {
   if (!actor?.isOwner) return ui.notifications.warn("Select your token first.");
   const buttons = releaseOptions(actor);   // the same choices as the free-hand prompt (hands.mjs)
   if (!buttons.length) return ui.notifications.info(`${actor.name} holds no weapon. (Dropping another object needs no roll.)`);
-  const pick = await foundry.applications.api.DialogV2.wait({ window: { title: `Release: ${actor.name}` }, content: "<p>What do you let go of?</p>", buttons, rejectClose: false });
+  const { pickButtons } = await import("./hands.mjs");   // v0.0.415 (pack CL): the pick window (was a DialogV2)
+  const pick = await pickButtons({ title: `Release: ${actor.name}`, name: "Release", sub: actor.name, icon: "fa-hand", text: "What do you let go of?", buttons });
   if (!pick) return;
   const [kind, id] = String(pick).split(":"), w = actor.items.get(id);
   if (!w) return;
@@ -908,8 +909,8 @@ async function handleReloadWeapon(ctx = {}) {
   if (!opts.length) return ui.notifications.info(`No unloaded weapon in hand: neither ${actor.name}'s nor an ally's within Reach.`);
   let pick = opts[0];
   if (opts.length > 1) {
-    const k = await foundry.applications.api.DialogV2.wait({ window: { title: "Reload" }, content: "<p>Which weapon do you reload?</p>", rejectClose: false,
-      buttons: opts.map((o, n) => ({ action: String(n), label: o.label, default: n === 0 })) });
+    const { pickOne } = await import("./pickwindow.mjs");   // v0.0.415 (pack CL): was a DialogV2
+    const k = await pickOne({ title: "Reload", name: "Reload", sub: actor.name, icon: "fa-bullseye", text: "Which weapon do you reload?", options: opts.map((o, n) => ({ k: String(n), l: o.label })) });
     if (k == null) return;
     pick = opts[Number(k)];
   }
@@ -1054,7 +1055,7 @@ export async function postSaveFor(cfg, targets, { point = null, source = "", not
     rows.push({ uuid: t.uuid, name: t.name, result: null, boon: m.boon, bane: m.bane, favored: m.favored, why: m.why.join(", ") });
   }
   const head = `<div class="twod12 chat"><b>${esc(source || cfg.source || "Save")}</b>: ${note ? `${note} ` : ""}${rows.length ? `${rows.map(r => esc(r.name)).join(", ")} roll${rows.length === 1 ? "s" : ""} a DC ${cfg.dc} ${esc(TWOD12.attributes[cfg.attr] ?? cfg.attr)} Save.` : "no creature is in the area."}</div>`;
-  if (!rows.length) return ChatMessage.create({ content: head });
+  if (!rows.length) { const { sysLine } = await import("./sysmsg.mjs"); return ChatMessage.create({ content: sysLine("fa-shield-halved", head.replace(/^<div class="twod12 chat">|<\/div>$/g, "")) }); }   // v0.0.415: a sysLine
   const st = { cfg, color: "", rows, tierDmg: await prerollTiers(cfg) };   // each Tier's damage rolled once, now
   await ChatMessage.create({ content: await saveCardHtml(st), flags: { twod12: { saveCard: st } } });
 }

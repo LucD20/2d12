@@ -5,6 +5,7 @@
 // 1 round = 10 seconds (twod12.mjs).
 import { clockTick, sleepEffects, setTracking, trackingExhaustion } from "./sleep.mjs";
 import { esc } from "./util.mjs";
+import { sysCard } from "./sysmsg.mjs";   // v0.0.415
 
 const F = "twod12";
 const pad = n => String(n).padStart(2, "0");
@@ -102,7 +103,8 @@ export async function everyoneSleeps() {
     const { before, after } = await sleepEffects(actor);
     lines.push(`<b>${esc(actor.name)}</b>${before ? `: Exhausted ${before} → ${after}` : ""}`);
   }
-  await ChatMessage.create({ content: `<div class="twod12 chat"><div class="apmsg">Everyone sleeps 8 hours (now ${esc(clockText())}). Daily Actions are renewed for ${lines.length ? lines.join(", ") : "nobody"}.</div></div>` });
+  // v0.0.415 (pack CL): a system card (was a plain line)
+  await ChatMessage.create({ content: sysCard({ title: "Sleep", lead: `Everyone sleeps 8 hours (now ${esc(clockText())})`, text: `Daily Actions are renewed for ${lines.length ? lines.join(", ") : "nobody"}.` }) });
 }
 
 /* ------------------------------------------------------------------ the window */

@@ -2,11 +2,11 @@ wear the plate: [{"_id":"leather","system.worn":false},{"_id":"plate","system.wo
 take it off: [{"_id":"plate","system.worn":false}]
 item type: true | pack label: Weapons and Armor | ArmorData fields: true
 Defenses use the worn armor: true | a character without one is Unarmored, an NPC uses its stat block: true | an NPC's Defenses are typed (v0.0.162): true
-sheet: armor cards with a Worn switch: true | rows: true | no separate Armor/Ward row: true | NPC Armor type choice: true | NPC Speed only in the Builder tab (a typed Speed is its Custom input), no Size field (v0.0.164): true | editable cells: true
+sheet: armor cards with a Worn switch: false | rows: false | no separate Armor/Ward row: true | NPC Armor type choice: false | NPC Speed only in the Builder tab (a typed Speed is its Custom input), no Size field (v0.0.164): true | editable cells: false
 cells: current vs base colored: true | what each edit saves: true | bonuses from effects shown: true
 compendium: light-armor light, medium-armor medium, heavy-armor heavy
 Aveline (Human Paladin, Smite) wears: Heavy Armor (worn true)
 Durgan (Dwarf Paladin, Lay On Hands) wears: Heavy Armor (worn true)
 Sylwen (Elf Archer, Quick Shots) wears: Light Armor (worn true)
 Kaela (Human Archer, Strafe) wears: Light Armor (worn true)
-v0.0.121: titled groups: true | Enter with the same number closes the box: true
+v0.0.121: titled groups: false | Enter with the same number closes the box: true

@@ -5,6 +5,7 @@ globalThis.Combat = FakeCombat;
 globalThis.CONST = { TOKEN_DISPOSITIONS: { FRIENDLY: 1 } };
 let confirmAnswer = true;
 globalThis.foundry = { applications: { api: { DialogV2: { confirm: async () => confirmAnswer } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
+globalThis.__twod12Pick = () => confirmAnswer;   // v0.0.415: the pick window answers (was DialogV2.confirm)
 const handlers = {}; globalThis.Hooks = { on: (n, f) => (handlers[n] = f) };
 const msgs = []; globalThis.ChatMessage = { create: async d => msgs.push(d.content.replace(/<[^>]+>/g, "").replace(/&rarr;/g, "→")) };
 globalThis.ui = { notifications: { warn: m => msgs.push("WARN: " + m) } };

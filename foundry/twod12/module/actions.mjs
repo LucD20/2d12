@@ -125,11 +125,10 @@ async function pickWeapon(actor, item, candidates = null, chosenId = "") {
   if (wielded.length === 1) return wielded[0];
   if (!wielded.length) { ui.notifications.warn("No wielded weapon: [W] damage will be 0."); return null; }
   const all = actor.itemTypes?.weapon ?? [];
-  const opts = wielded.map(w => { const h = HAND_LABEL[handOf(all, w.id)]; return `<option value="${w.id}">${h ? `${h}: ` : ""}${esc(w.name)}</option>`; }).join("");
-  const id = await DialogV2.prompt({
-    window: { title: "Which weapon?" }, content: `<div class="form-group"><label>Weapon</label><select name="w">${opts}</select></div>`,
-    ok: { label: "Use", callback: (ev, btn) => new FormData(btn.form).get("w") }, rejectClose: false
-  });
+  // v0.0.415 (pack CL): the pick window (was a DialogV2)
+  const { pickOne } = await import("./pickwindow.mjs");
+  const id = await pickOne({ title: "Which weapon?", name: "Which weapon?", sub: actor.name, icon: "fa-hand-fist", text: "Choose the weapon you use.",
+    options: wielded.map(w => { const h = HAND_LABEL[handOf(all, w.id)]; return { k: w.id, l: `${h ? `${h}: ` : ""}${w.name}` }; }) });
   return id ? actor.items.get(id) : null;
 }
 
@@ -453,7 +452,8 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction AP waits until Staggered ends)
   if (item.system?.reaction && reactionsOff(actor) && refuse(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
   // v0.0.412 (book, Wounding Shot): "You haven't left your square this turn": its Requirement, checked on its turn in a combat (hooks.mjs leftThisTurn)
-  if (/haven.t left your square this turn/i.test(String(item.system?.requirements ?? ""))) { const H = await import("./hooks.mjs"); if ((await H.leftThisTurn(actor)) === true && refuse(`${item.name}: ${actor.name} has left its square this turn (its Requirement).`)) return; }
+  const H0 = await import("./hooks.mjs");
+  if (H0.needsStayed(item.system?.requirements)) { const H = H0; if ((await H.leftThisTurn(actor)) === true && refuse(`${item.name}: ${actor.name} has left its square this turn (its Requirement).`)) return; }
   if (lock.locked && refuse(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`)) return;
   // v0.0.213 (Lucas): a Weapon Technique is used only with its own weapon, in hand (a Favorite or a macro can still call it).
   if (techniqueState(actor, item) === "unwielded" && refuse(`${item.name} is ${actor.items.get(item.getFlag("twod12", "weaponId"))?.name ?? "its weapon"}'s Weapon Technique: wield it first.`)) return;
@@ -463,11 +463,10 @@ export async function useAction(actor, item, opts = {}) {
     if (modes.length) {
       let mode = modes.includes(opts.mode) ? opts.mode : modes[0];
       if (modes.length > 1 && !modes.includes(opts.mode)) {
-        const pick = await DialogV2.confirm({
-          window: { title: `${item.name}: choose a mode` },
-          content: `<p>${esc(item.name)} is a Split Action: choose how you use it this time.</p><p><b>Weapon mode</b> needs a weapon and rolls your Weapon Modifier. <b>Power mode</b> needs no weapon and rolls your Power Modifier.</p>`,
-          yes: { label: "Weapon mode", icon: "fa-solid fa-hand-fist" }, no: { label: "Power mode", icon: "fa-solid fa-hand-sparkles" }, rejectClose: false
-        });
+        const { pickTwo } = await import("./pickwindow.mjs");   // v0.0.415 (pack CL): was a DialogV2
+        const pick = await pickTwo({ title: `${item.name}: choose a mode`, name: item.name, sub: "a Split Action", icon: "fa-code-branch",
+          text: "Choose how you use it this time. Weapon mode needs a weapon and rolls your Weapon Modifier; Power mode needs no weapon and rolls your Power Modifier.",
+          yes: "Weapon mode", no: "Power mode" });
         if (pick !== true && pick !== false) return;
         mode = pick ? "weapon" : "power";
       }
@@ -518,7 +517,8 @@ export async function useAction(actor, item, opts = {}) {
   if (!opts.noHandle && !(await ensureFreeHand(actor, item))) return;
   const basicKey = item.getFlag?.("twod12", "basic");
   if (!it.reaction && !opts.free && !opts.restart && isOutOfTurn(actor)) {
-    const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p>It is not <b>${esc(actor.name)}</b>'s turn. Only Reactions can be used outside your turn.</p><p>Use ${esc(item.name)} anyway?</p>`, rejectClose: false });
+    const { pickConfirm } = await import("./pickwindow.mjs");   // v0.0.415 (pack CL): was a DialogV2
+    const ok = await pickConfirm({ title: item.name, name: item.name, sub: "not your turn", icon: "fa-hourglass-half", confirm: "Use it anyway", text: `It is not <b>${esc(actor.name)}</b>'s turn. Only Reactions can be used outside your turn.` });
     if (!ok) return;
   }
   const reqTarget = [...game.user.targets][0] ?? null, reqUser = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
@@ -879,7 +879,8 @@ export async function useAction(actor, item, opts = {}) {
   if (it.traits.has("strike") && !opts.free && game.combat?.started) {
     const { strikesUsed } = await import("./usage.mjs");
     if (strikesUsed(actor) >= 3) {
-      const ok = await DialogV2.confirm({ window: { title: "3 Strikes made" }, content: `<p><b>${esc(actor.name)}</b> already made 3 Strikes this turn (the most a creature can make in a turn). Use ${esc(item.name)} anyway?</p>`, rejectClose: false });
+      const { pickConfirm } = await import("./pickwindow.mjs");   // v0.0.415 (pack CL): was a DialogV2
+      const ok = await pickConfirm({ title: "3 Strikes made", name: "3 Strikes made", sub: item.name, icon: "fa-hand-fist", confirm: "Use it anyway", text: `<b>${esc(actor.name)}</b> already made 3 Strikes this turn (the most a creature can make in a turn).` });
       if (!ok) return;
     }
   }
@@ -1564,7 +1565,9 @@ export async function quickBasic(key, ap = null) {
   if (ap === null && vs.length > 1) {
     const speed = Number(actor.system?.moveSpeed ?? actor.system?.speed) || 0;
     const label = v => (key === "safeMovement" ? `Evade ${v.ap >= 2 ? Math.floor(speed / 2) : 1} (${v.ap} AP)` : `${item.name} (${v.ap} AP)`);
-    ap = await DialogV2.wait({ window: { title: `${actor.name}: ${item.name}` }, content: `<p>Which ${esc(item.name)}?</p>`, buttons: vs.map((v, k) => ({ action: `v${v.ap}`, label: label(v), default: k === 0, callback: () => v.ap })), rejectClose: false });
+    const { pickOne } = await import("./pickwindow.mjs");   // v0.0.415 (pack CL): was a DialogV2
+    const k = await pickOne({ title: `${actor.name}: ${item.name}`, name: item.name, sub: actor.name, icon: "fa-person-running", text: `Which ${item.name}?`, options: vs.map(v => ({ k: String(v.ap), l: label(v) })) });
+    ap = k === null ? null : Number(k);
     if (ap === null || ap === undefined) return false;
   }
   await useAction(actor, item, { quickAp: ap ?? vs[0]?.ap ?? 1 });

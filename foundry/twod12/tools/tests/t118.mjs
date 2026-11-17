@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t118.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.136 (new sheet, step 6): the NPC stat block, the NPC toolbar and Features tab, Generate Action (written like the card) and Generate Weapon.
@@ -23,8 +24,8 @@ for (const t of ["rusty greatsword: two-handed, melee, slash, range 1, 0/1d8/2d6
   console.log(`${t}\n   understood: ${sm.chips.join(" | ")}\n   not understood: ${sm.unknown.join(", ") || "nothing"}${sm.missing.length ? ` | ${sm.missing.join("; ")}` : ""}\n   card: Use ${sm.use} | Damage ${sm.damage}`);
 }
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-const tpl = src("templates/actor-sheet.hbs"), sh = src("module/actor-sheets.mjs"), gen = src("module/gen.mjs"), isheet = src("module/item-sheet.mjs");
+const tpl = src("templates/actor-sheet-pc.hbs"), sh = src("module/actor-sheets.mjs"), gen = src("module/gen.mjs"), isheet = src("module/item-sheet.mjs");
 console.log("--- the NPC sheet: stat block", ["system.level", "system.weaponAttribute", "system.powerAttribute", "system.armor"].every(n => tpl.includes(`name="${n}"`)) && tpl.includes('data-action="setRole"'), "| Tags as chips with + and ×", tpl.includes('data-action="removeTag"') && tpl.includes('<select class="tagadd"'),
   "| header Level as text (one Level field)", tpl.includes("{{else}}<span>Level {{system.level}}</span>{{/if}}"), "| toolbar", tpl.includes('data-action="generateAction"') && tpl.includes('data-action="browseCompendium"'), "| Features tab for NPCs", tpl.includes('<div class="fsec"><span>Features</span></div>') && !tpl.includes("feat.archetypes") && !tpl.includes('{{#if isPc}}<a class="tabbtn" data-action="switchTab" data-tab-target="class">'));
-console.log("Generate Action from the NPC and from an Action's sheet:", sh.includes("openActionGenerator({ actor: this.actor })") && isheet.includes("openActionGenerator({ item: this.item })"), "| Weapon buttons", gen.includes('label: "Create in the world"') && gen.includes("label: `Give to ${actor.name}`") && gen.includes("label: `Update ${item.name}`"));
+console.log("Generate Action from the NPC and from an Action's sheet:", sh.includes("openActionGenerator({ actor: this.actor })") && isheet.includes("openActionGenerator({ item: this.item })"), "| Weapon buttons", gen.includes('["world", "Create in the world"]') && gen.includes('["give", `Give to ${actor.name}`]') && gen.includes('[["update", `Update ${item.name}`]]'));
 console.log("v0.0.135 fixes: no room around the sheet (inline !important)", sh.includes('el.style.setProperty("padding", "0", "important")'), "| no Grants word", !tpl.includes(">Grants</div>"));

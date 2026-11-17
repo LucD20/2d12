@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t114.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.131 (new sheet, step 2): the Actions table's logic and the new Action card.
@@ -62,6 +63,6 @@ const split = action("dr", "Divine Retribution", { reaction: true, frequency: "e
 console.log("Split Reaction:", strip(await buildActionCard(split)));
 console.log("Lock & Loose with the crossbow unloaded:", strip(await buildActionCard(lock, { actor: actor() })));
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-const tpl = src("templates/actor-sheet.hbs"), sh = src("module/actor-sheets.mjs");
+const tpl = src("templates/actor-sheet-pc.hbs"), sh = src("module/actor-sheets.mjs");
 console.log("--- the sheet: table header:", tpl.includes('<div class="at-head"><span></span><span></span><span>Action</span><span>Cost</span><span>Range</span><span>Frequency</span><span>Use</span></div>'), "| row opens its card:", tpl.includes('data-action="toggleCard"') && sh.includes("buildActionCard(item, { actor: this.actor, use: !row.classList.contains(\"ps-brw\") })"), "| Use and Reload:", tpl.includes('data-action="useAction" data-tooltip="{{#if useTip}}{{useTip}}{{else}}Use {{name}}{{/if}}"') && tpl.includes('data-action="reloadFor"'),
   "| per user:", sh.includes('getFlag("twod12", "sheetGroup")') && sh.includes('setFlag("twod12", "sheetSort"'), "| order on the creature:", sh.includes('a.getFlag("twod12", "order")'), "| Basic collapsed by default:", sh.includes('basicOpen: !!game.user.getFlag("twod12", "basicOpen")'), "| filter:", tpl.includes('class="at-filter"'));

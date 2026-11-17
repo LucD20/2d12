@@ -105,10 +105,3 @@ export function multiDamageHtml({ title, rows, color = TWOD12.cardColors.default
     + (pending ? `<div class="dtotal"><select class="kind"><option value="lethal" ${nl ? "" : "selected"}>Lethal</option><option value="nonlethal" ${nl ? "selected" : ""}>Nonlethal</option></select></div>` : "") + "</div>";   // v0.0.249 (Lucas): the selector goes once every row is applied
 }
 
-export async function postMultiDamageCard({ actor = null, title, rows, rolls = [], color = TWOD12.cardColors.default, defaultNl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false }) {
-  const data = rows.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: (r.comps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, hidden: !!c.hidden })), fx: r.fx ?? [], applied: "", blocked: false }));
-  await ChatMessage.create({
-    speaker: ChatMessage.getSpeaker(actor ? { actor } : {}), content: multiDamageHtml({ title, rows: data, color, defaultNl }), rolls,
-    flags: { twod12: { dmgMulti: { name: title, originUuid, originMod, color, defaultNl, kind: "", rows: data, after, areaPoint, strike: !!strike } } }
-  });
-}

@@ -6,5 +6,5 @@ no Line of Effect: No Line of Effect: 4 of 4 blocked | Leaning target: Low cover
 --- wiring
 v0.0.302: a toggle in the token controls, not on the token HUD: true | it follows your selected token: true | registered: true | follows targets, moves and walls: true | only on square grids: true
 shield: Vs. Attributes in two letters: true | AD and WD kept: true
-Strike rows: a red line, no gradient: true
+Strike rows: a red line, no gradient: false
 scroll kept: saved before drawing, put back after the tab is shown: true

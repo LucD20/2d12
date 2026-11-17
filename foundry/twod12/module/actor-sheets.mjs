@@ -1224,19 +1224,27 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const esc2 = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
     const content = `<div class="twod12-senses">
       <p class="hint">Every creature has Sight and Hearing. The best sense decides how a creature is perceived: Clear, Obscured or Hidden.</p>
-      <label>Hearing range (squares; 0 is deaf): <input type="number" name="hearing" value="${Number.isFinite(Number(s.hearing)) ? s.hearing : 10}" min="0" style="width:4em"></label><br>
-      <label><input type="checkbox" name="dimlight"${s.dimlight ? " checked" : ""}> Dim-light Sight: Dim light counts as Bright</label><br>
-      <label><input type="checkbox" name="darksight"${s.darksight ? " checked" : ""}> Dark Sight: Dim light and Darkness count as Bright</label><br>
-      <label><input type="checkbox" name="noHeat"${s.noHeat ? " checked" : ""}> Gives off no heat (Heatsight doesn't sense it)</label>
+      <label>Hearing range (squares; 0 is deaf): <input type="number" data-field="hearing" value="${Number.isFinite(Number(s.hearing)) ? s.hearing : 10}" min="0" style="width:4em"></label><br>
+      <label><input type="checkbox" data-field="dimlight"${s.dimlight ? " checked" : ""}> Dim-light Sight: Dim light counts as Bright</label><br>
+      <label><input type="checkbox" data-field="darksight"${s.darksight ? " checked" : ""}> Dark Sight: Dim light and Darkness count as Bright</label><br>
+      <label><input type="checkbox" data-field="noHeat"${s.noHeat ? " checked" : ""}> Gives off no heat (Heatsight doesn't sense it)</label>
       <table style="margin-top:8px"><tr><th>Other sense</th><th>Range</th><th>Perceives as</th><th>Only</th></tr>
-      ${rows.map((r, k) => `<tr><td><input type="text" name="n${k}" value="${esc2(r.name)}" placeholder="Tremorsense"></td><td><input type="number" name="r${k}" value="${r.range}" min="0" style="width:4em"></td><td><select name="g${k}">${opts(G, r.gives)}</select></td><td><select name="c${k}">${opts(N, r.needs)}</select></td></tr>`).join("")}
+      ${rows.map((r, k) => `<tr><td><input type="text" data-field="n${k}" value="${esc2(r.name)}" placeholder="Tremorsense"></td><td><input type="number" data-field="r${k}" value="${r.range}" min="0" style="width:4em"></td><td><select data-field="g${k}">${opts(G, r.gives)}</select></td><td><select data-field="c${k}">${opts(N, r.needs)}</select></td></tr>`).join("")}
       </table></div>`;
-    const DV2 = foundry.applications.api.DialogV2;
-    const res = await DV2.prompt({ window: { title: `Senses: ${this.actor.name}` }, content, rejectClose: false, ok: { label: "Save", callback: (ev, button) => {
-      const f = button.form.elements, val = n => f[n]?.value ?? "", on = n => !!f[n]?.checked;
-      const list = rows.map((r, k) => ({ name: val(`n${k}`).trim(), range: Math.max(0, Number(val(`r${k}`)) || 0), gives: val(`g${k}`) || "clear", needs: val(`c${k}`) || "none" })).filter(x => x.name);
-      return { dimlight: on("dimlight"), darksight: on("darksight"), noHeat: on("noHeat"), hearing: val("hearing") === "" ? 10 : Math.max(0, Math.round(Number(val("hearing")) || 0)), list };
-    } } });
+    // v0.0.415 (pack CL): the pick window (was a DialogV2); the fields keep their values in vals
+    const vals = { hearing: Number.isFinite(Number(s.hearing)) ? s.hearing : 10, dimlight: !!s.dimlight, darksight: !!s.darksight, noHeat: !!s.noHeat };
+    rows.forEach((r, k) => Object.assign(vals, { [`n${k}`]: r.name, [`r${k}`]: r.range, [`g${k}`]: r.gives, [`c${k}`]: r.needs }));
+    const { pickWith } = await import("./pickwindow.mjs");
+    const res = await pickWith({
+      title: `Senses: ${this.actor.name}`,
+      model: () => ({ name: "Senses", sub: this.actor.name, icon: "fa-eye", sections: [{ title: "", html: content }], message: "", confirm: "Save" }),
+      input: (k, v) => { vals[k] = v; },
+      result: () => {
+        const val = n => String(vals[n] ?? ""), on = n => vals[n] === true;
+        const list = rows.map((r, k) => ({ name: val(`n${k}`).trim(), range: Math.max(0, Number(val(`r${k}`)) || 0), gives: val(`g${k}`) || "clear", needs: val(`c${k}`) || "none" })).filter(x => x.name);
+        return { dimlight: on("dimlight"), darksight: on("darksight"), noHeat: on("noHeat"), hearing: val("hearing") === "" ? 10 : Math.max(0, Math.round(Number(val("hearing")) || 0)), list };
+      }
+    });
     if (res) {
       await this.actor.update({ "system.senses": res });
       if (this.actor.type === "character") { const { syncVisionOf } = await import("./vision.mjs"); const n = await syncVisionOf(this.actor); if (n) ui.notifications.info(`${this.actor.name}: token vision follows the Senses (${res.darksight ? "Dark Sight: darkvision" : "sees what is lit"}).`); }

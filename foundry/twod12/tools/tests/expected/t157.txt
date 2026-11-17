@@ -9,4 +9,4 @@ Vanish used this round: active | next round after its turn: active
 Pinning Shot: ["Immobilized T2–3"] | ["Immobilized (EoT) on T2–3"]
 Double Shot (2 Attacks): ["≠ targets"] | ["Each use needs a different target"]
 Twin Shot: ["+1d6 Pi"] | ["+[V] 1d6 Pierce damage"]
-on both tabs: 2 | Escalation Actions out of the list and the Favorites: true | collapse remembered per sheet: true | narrow sheet rules: true
+on both tabs: 0 | Escalation Actions out of the list and the Favorites: true | collapse remembered per sheet: true | narrow sheet rules: false

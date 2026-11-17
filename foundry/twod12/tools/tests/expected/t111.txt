@@ -3,7 +3,7 @@ modes: weapon, power | none for a normal Action: 0
 weapon mode: traits divine,strike,split,weapon | versions W,3R | distance weapon | rolls weapon | same item: ret1 Divine Retribution Item.ret1 function | splitMode weapon
 power mode: traits divine,strike,split,magic | versions P,3R | distance reach | rolls power | same item: ret1 Divine Retribution Item.ret1 function | splitMode power
 the original is untouched: divine,strike,split 3 weapon
-useAction asks the mode first, then uses the view: true | the damage card remembers the mode: true | the versions editor has a Mode, and a version can cost 0: true
+useAction asks the mode first, then uses the view: true | the damage card remembers the mode: true | the versions editor has a Mode, and a version can cost 0: retired in v0.0.415 (pack CL: the Versions editor; the Action sheet edits the Versions)
 --- Auras
 Aura 3, allies, and the Paladin: friend, pal | not the Paladin: friend | Aura 1: pal | enemies: mob, orc | everyone (the neutral too): friend, mob, orc, pal
 the module wires hooks and keeps the effects it made: true

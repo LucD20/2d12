@@ -8,7 +8,7 @@ import { levelModel, togglePick, setAttr, attrList, levelPlan, sectionsAt, stage
 import { grantFeature, grantTalent } from "./grants.mjs";
 import { buildInfoCard } from "./preview.mjs";
 import { classTrack } from "./modifiers.mjs";
-const { ApplicationV2, DialogV2 } = foundry.applications.api;
+const { ApplicationV2 } = foundry.applications.api;
 const F = "twod12";
 const AN = TWOD12.attributes;
 
@@ -392,7 +392,8 @@ async function levelsDown(actor, from, to) {
   const lost = Object.entries(cls.getFlag(F, "classAttrs") ?? {}).filter(([l]) => Number(l) > to).flatMap(([, v]) => v);
   if (gone.length || lost.length) {
     const names = [...gone.filter(i => (Number(i.getFlag(F, "classLevel")) || 0) > to).map(i => i.name), ...lost.map(k => `+1 ${AN[k] ?? k}`)];
-    const ok = await DialogV2.confirm({ window: { title: `${actor.name}: level ${from} to ${to}` }, content: `<p>Going down to level ${to} removes what the higher levels gave:</p><p><b>${names.map(esc).join(", ")}</b></p>`, rejectClose: false });
+    const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: `${actor.name}: level ${from} to ${to}`, name: `Level ${from} to ${to}`, sub: actor.name, icon: "fa-arrow-down", confirm: "Go down",
+      text: `Going down to level ${to} removes what the higher levels gave: <b>${names.map(esc).join(", ")}</b>` });   // v0.0.415 (pack CL): was a DialogV2
     if (!ok) return actor.update({ "system.level": from }, { twod12Class: "skip" });
   }
   if (gone.length) await actor.deleteEmbeddedDocuments("Item", gone.map(i => i.id));

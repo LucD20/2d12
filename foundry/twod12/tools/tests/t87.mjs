@@ -23,6 +23,7 @@ let dialogContent = "";
 const DialogV2 = { confirm: async () => true, prompt: async o => { if (!/name="fx"|name="ap"|name="dc"/.test(o.content ?? "")) return {}; return DialogV2.wait(o); }, wait: async o => { dialogContent = o.content; const fx = [...o.content.matchAll(/name="fx" value="([^"]+)"([^>]*)>/g)].filter(m => /checked/.test(m[2])).map(m => m[1]); return { ap: (/name="ap" value="(\d+)"/.exec(o.content) ?? [0, "2"])[1], dc: String(dcInDialog(o.content)), mod: "0", boons: "0", banes: "0", fx, ...Object.fromEntries(["empowered", "enfeebled"].map(n => [n, (new RegExp(`name="${n}" value="(\\d+)"`).exec(o.content) ?? [0, "0"])[1]])), ...dialogExtra }; } };
 let dialogExtra = {};
 const dcInDialog = html => (/name="dc"[^>]*value="(\d+)"/.exec(html) ?? /value="(\d+)"[^>]*name="dc"/.exec(html))?.[1] ?? 13;
+globalThis.__twod12Pick = () => true;   // v0.0.415: the pick windows answer as DialogV2.confirm did
 globalThis.foundry = { applications: { api: { DialogV2, ApplicationV2: class {} }, ux: { TextEditor: { implementation: { enrichHTML: async h => h } } } }, dice: { terms: { OperatorTerm: class {} } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), hasProperty: () => false } };
 globalThis.Roll.fromTerms = () => ({});
 // tokens and creatures

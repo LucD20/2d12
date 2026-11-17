@@ -12,7 +12,7 @@ Divine Power: Feature
 Heavy Blows: Feature
 Aim: Feature
 --- the wiring
-a class with levels dropped on a character opens the window: true | the old dialogs stay for a class without levels: true
+a class with levels dropped on a character opens the window: true | v0.0.415: a class without levels asks for its levels (the old dialogs are gone): true
 the Level before a change is kept: true | the window runs on a change, the old grant without levels: true
 Cancel on a level up puts the Level back: true | a lower Level asks, then removes what the higher levels gave: true | No keeps the Level: true
 nothing applied before confirm (drop): true | confirm disabled until complete: true | buttons: true

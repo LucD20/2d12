@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t172.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.230 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
@@ -30,7 +31,7 @@ console.log("Ground Slam:", JSON.stringify(U.isFaded(actor, slam)));
 
 console.log("--- the rest (source checks)");
 const mv = src("module/move.mjs"), cw = src("module/classwindow.mjs"), pv = src("module/preview.mjs"), gr = src("module/grants.mjs"), cf = src("module/config.mjs"), tw = src("module/twod12.mjs"), loe = src("module/loe.mjs");
-const rally = src("module/rally.mjs"), tpl = src("module/template.mjs"), acts = src("module/actions.mjs"), esc = src("module/escblock.mjs"), sheet = src("templates/actor-sheet.hbs"), data = src("module/data.mjs"), content = src("tools/content.mjs");
+const rally = src("module/rally.mjs"), tpl = src("module/template.mjs"), acts = src("module/actions.mjs"), esc = src("module/escblock.mjs"), sheet = src("templates/actor-sheet-pc.hbs"), data = src("module/data.mjs"), content = src("tools/content.mjs");
 console.log("Charge disrupted: measured from the end square:", mv.includes("chargeFollowUp(c, doc, reach, go.stopTl)"));
 console.log("class window keeps its scroll:", cw.includes("focus({ preventScroll: true })") && cw.includes("content.scrollTop = own"));
 console.log("an Action-only Talent shows its Action:", pv.includes("export const actionOnlyTalent") && !/tal\("Aim"[^\n]*You gain the Aim Action/.test(content), "| granted Actions in full:", pv.includes('class="igrant"'));

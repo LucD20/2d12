@@ -1,5 +1,6 @@
 import { openEffectSheet } from "./fxopen.mjs";
 import { esc, unset } from "./util.mjs";
+import { sysLine } from "./sysmsg.mjs";   // v0.0.415
 // Sleep and Exhausted (see Resting and Exhausted in the rules), driven by the world clock (game.time.worldTime, in seconds).
 //   A Sleep renews Daily Actions and reduces Exhausted by 2; at most once every 16 hours. A Rest includes a Sleep.
 //   24 hours without a Sleep: Exhausted 1, +1 for every further 24 hours.
@@ -7,7 +8,8 @@ import { esc, unset } from "./util.mjs";
 //   With the Mind Damage Threshold at 0: a Mind Save, and again every 12 hours (the GM applies the result).
 const F = "twod12";
 const HOUR = 3600, DAY = 24 * HOUR;
-const post = async (actor, html) => ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat"><div class="apmsg">${await foundry.applications.ux.TextEditor.implementation.enrichHTML(html)}</div></div>` });
+// v0.0.415 (pack CL): a sysLine (was a plain line)
+const post = async (actor, html) => ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-bed", await foundry.applications.ux.TextEditor.implementation.enrichHTML(html)) });
 const now = () => Number(game.time?.worldTime ?? 0);
 
 /** "5 hours", "1 day 3 hours" */
@@ -96,7 +98,7 @@ export const trackingExhaustion = () => { try { return !!game.settings.get(F, "t
 export async function setTracking(on) {
   await game.settings.set(F, "trackExhaustion", !!on);
   if (on) for (const actor of game.actors?.filter?.(a => a.type === "character") ?? []) await actor.update({ [`flags.${F}.lastSleep`]: now(), [`flags.${F}.awakeDays`]: 0, ...unset(`flags.${F}.exhaustSaveAt`) });
-  await ChatMessage.create({ content: `<div class="twod12 chat"><div class="apmsg">Exhaustion from time awake is now <b>${on ? "counted (everyone's time awake starts from now)" : "paused"}</b>.</div></div>` });
+  await ChatMessage.create({ content: sysLine("fa-hourglass-half", `Exhaustion from time awake is now <b>${on ? "counted (everyone's time awake starts from now)" : "paused"}</b>.`) });   // v0.0.415: a sysLine
 }
 
 /** Exhausted +1 or -1 (a click or a right-click on its condition). Only characters have the value. */

@@ -6,7 +6,7 @@ the world's list: {"unholy":"Unholy","holy":"Holy","big-dragon":"Big Dragon"}
 the setting is not registered: the starting list has 16 tags
 hasTag: true true false | no tags: false false | a plain list: true
 the data model: a set of tags: true | migrates text: true | conditions on an effect: true | a valued condition: true
-the NPC sheet: a multi-select of the tags: true
+the NPC sheet: a multi-select of the tags: false
 --- who moves when a movement button on a card is clicked
 Evade, the Action targets an enemy (the case that was refused)     -> Kai
 Advance, the Action targets an enemy, Kai is selected              -> Kai

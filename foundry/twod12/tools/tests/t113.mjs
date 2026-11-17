@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t113.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.130 (new sheet, step 1): the Donut and Classic health views, the base vs. temporary split for green and red, the header band.
@@ -51,7 +52,7 @@ console.log("Speed 5, Fleet (+1, always) and Hindered: now", applySpeedMods(runn
 
 console.log("--- the sheet");
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-const tpl = src("templates/actor-sheet.hbs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css"), main = src("module/twod12.mjs");
+const tpl = src("templates/actor-sheet-pc.hbs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css"), main = src("module/twod12.mjs");
 console.log("header band:", tpl.includes('<header class="hb">'), "| AP pips:", tpl.includes('data-action="setApPip"'), "| Escalation pips in the header:", tpl.includes('class="hpip esc'), "| NPC Health Pool:", tpl.includes("Health Pool <b>{{health.pool}}</b>"), "| Initiative, Senses, Recovery:", ["rollInitiative", "editSenses", "rest"].every(k => tpl.includes(`data-action="${k}"`)));
 console.log("panel order:", [...sh.matchAll(/key: "(\w+)", title: "([^"]+)"/g)].map(m => m[2]).join(", "), "| toggle:", tpl.includes('data-action="setHealthView"'), "per user:", sh.includes('game.user.getFlag("twod12", "healthView")'), "| donut and bars bound:", sh.includes('querySelector(".np-donut")') && sh.includes('".np-track[data-pool]"'));
 console.log("kept: wounds and tables", tpl.includes('data-kind="dying"') && tpl.includes('data-kind="shattered"'), "| conditions", tpl.includes('data-action="openEffect"'), "| NPC Builder fields (v0.0.163)", tpl.includes('data-tab="builder"') && tpl.includes('setRating'), "| untrained warning", sh.includes('"Untrained armor"'), "| editable tiles", sh.includes('querySelectorAll(".np-tile.editable")'));

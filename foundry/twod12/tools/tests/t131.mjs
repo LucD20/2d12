@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t131.mjs)
 // v0.0.156 (the Archer, pass 1; v0.0.181: the A1 Archer of the book): Projectile and Shot, the class and its cards from the book, Bow Mastery, the Techniques option in the Mastery tab.
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.foundry ??= { utils: {} };
@@ -31,6 +32,6 @@ const archer = get("Archer").system;
 archer.levels.forEach((l, i) => console.log(`Level ${i + 1}:`, l.sections.map(x => `${x.title} (${x.kind}${x.kind === "repertoire" ? ` ${x.freq}` : ""}${x.mode === "granted" && x.kind === "items" ? " granted" : ""})${x.items.length ? `: ${x.items.map(nm).join(", ")}` : ""}`).join(" | ")));
 console.log("Repertoire:", archer.repertoire.map(nm).join(", "), "| Escalation:", archer.escPassives.map(nm).join(", "), "/", archer.escActives.map(nm).join(", "));
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-const act = src("module/actions.mjs"), main = src("module/twod12.mjs"), tpl = src("templates/actor-sheet.hbs"), m = src("module/mastery.mjs");
+const act = src("module/actions.mjs"), main = src("module/twod12.mjs"), tpl = src("templates/actor-sheet-pc.hbs"), m = src("module/mastery.mjs");
 console.log("Shot needs a Projectile weapon:", act.includes('is a Shot: it needs a wielded Projectile weapon'), "| a Weapon Action with one is a Shot:", act.includes('hasProp(previewWeapon, "projectile") ? ["shot"] : []'), "| old ranged weapons get Projectile once:", main.includes('"projectileApplied"'));
 console.log("Mastery tab: no Techniques option (v0.0.213)", !tpl.includes("Only show usable Techniques in the Actions table"), "| Bow Mastery choice (Sharpshooter gives it)", tpl.includes('data-action="chooseStartMastery"') && m.includes("export async function chooseStartMastery") && m.includes('st.type !== "mastery"'), "| tab for every character", tpl.includes("{{#if showMastery}}<a class=\"tabbtn\""));

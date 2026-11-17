@@ -34,7 +34,7 @@ export function pickWindowHtml(m) {
 export class PickWindow extends (ApplicationV2 ?? class {}) {
   static DEFAULT_OPTIONS = { classes: ["twod12", "classwin", "pickwin"], window: { resizable: true }, position: { width: 640, height: "auto" } };
 
-  /** o: { title, model(), pick(row, k), input(field, value), result(), resolve } */
+  /** o: { title, model(), pick(row, k), input(field, value), live(field, value, element), result(), resolve } */
   constructor(o) {
     super({ window: { title: o.title } });
     this.o = o; this.done = false;
@@ -58,6 +58,13 @@ export class PickWindow extends (ApplicationV2 ?? class {}) {
     super._onFirstRender?.(context, options);
     this.element.addEventListener("click", ev => this._click(ev));
     this.element.addEventListener("change", ev => { const f = ev.target.closest("[data-field]"); if (f) { this.o.input?.(f.dataset.field, f.type === "checkbox" ? f.checked : f.value); } });
+    // v0.0.415 (pack CL): live typing for a window with a preview (the weapon generator): o.live(field, value, element) updates the DOM itself, no redraw
+    this.element.addEventListener("input", ev => { const f = ev.target.closest("[data-field]"); if (f && this.o.live) { this.o.input?.(f.dataset.field, f.value); this.o.live(f.dataset.field, f.value, this.element); } });
+  }
+
+  _onRender(context, options) {
+    super._onRender?.(context, options);
+    this.o.live?.("", "", this.element);   // v0.0.415: a window with a preview draws it after each render
   }
 
   _click(ev) {
@@ -86,7 +93,11 @@ export class PickWindow extends (ApplicationV2 ?? class {}) {
 }
 
 /** Open a pick window and wait for its result (null: Cancel or closed). */
-export const pickWith = o => new Promise(resolve => new PickWindow({ ...o, resolve }).render({ force: true }));
+export const pickWith = o => {
+  // v0.0.415 (pack CL): the tests answer a pick window without a window: globalThis.__twod12Pick(o) returns what result() would (as rollwindow.mjs's hook)
+  if (typeof globalThis.__twod12Pick === "function") return Promise.resolve(globalThis.__twod12Pick(o));
+  return new Promise(resolve => new PickWindow({ ...o, resolve }).render({ force: true }));
+};
 
 /**
  * PACK SHEET (v0.0.289): a confirmation in the pick window's style (the standing rule: no Foundry default windows). Resolves true on Confirm,
@@ -122,4 +133,31 @@ export function pickKeepRemove(o) {
     pick: (row, k) => { st[row] = k; },
     result: () => Object.entries(st).filter(([, v]) => v === "remove").map(([k]) => k)
   });
+}
+
+/**
+ * v0.0.415 (pack CL): a few fields in the pick window's style, in the place of DialogV2.prompt's forms. o: { title, name, sub, icon, text,
+ * fields: [{ key, label, type: "text" | "number" | "select", value, min, max, options: [{ k, l }] }], confirm }. Resolves { key: value } (numbers
+ * as numbers), or null (Cancel or closed).
+ */
+export function pickInput(o) {
+  const vals = Object.fromEntries((o.fields ?? []).map(f => [f.key, f.value ?? ""]));
+  const field = f => {
+    const v = vals[f.key];
+    const input = f.type === "select"
+      ? `<select data-field="${esc(f.key)}">${(f.options ?? []).map(x => `<option value="${esc(x.k)}"${String(x.k) === String(v) ? " selected" : ""}>${esc(x.l)}</option>`).join("")}</select>`
+      : `<input type="${f.type === "number" ? "number" : "text"}" data-field="${esc(f.key)}" value="${esc(v)}"${f.min !== undefined ? ` min="${esc(f.min)}"` : ""}${f.max !== undefined ? ` max="${esc(f.max)}"` : ""}${f.placeholder ? ` placeholder="${esc(f.placeholder)}"` : ""}>`;
+    return `<div class="cw-attr pw-field"><span>${esc(f.label ?? "")}</span>${input}</div>`;
+  };
+  return pickWith({
+    title: o.title ?? o.name,
+    model: () => ({ name: o.name, sub: o.sub ?? "", icon: o.icon, sections: [{ title: o.heading ?? "", sub: o.text ?? "", html: (o.fields ?? []).map(field).join("") }], message: o.message ?? "", confirm: o.confirm ?? "Confirm" }),
+    input: (k, v) => { vals[k] = v; },
+    result: () => Object.fromEntries((o.fields ?? []).map(f => [f.key, f.type === "number" ? Number(vals[f.key]) : vals[f.key]]))
+  });
+}
+
+/** v0.0.415 (pack CL): a yes / no question with two named answers (DialogV2.confirm's yes / no labels). Resolves true, false, or null (Cancel). */
+export function pickTwo(o) {
+  return pickOne({ ...o, options: [{ k: "yes", l: o.yes ?? "Yes", tip: o.yesTip }, { k: "no", l: o.no ?? "No", tip: o.noTip }] }).then(k => (k === "yes" ? true : k === "no" ? false : null));
 }

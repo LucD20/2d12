@@ -28,7 +28,7 @@ standard  its Stage 100 | one Stage below 80 | two below 65 | above the party 10
 elite     its Stage 200 | one Stage below 160 | two below 130 | above the party 200
 tooltip: Combat Value: what it counts for in an encounter. A normal fight is CV 100 a PC (75 easy, 125 hard, 150 deadly). Against a party of its Stage: 100; one Stage above it: 80; two Stages above it: 65
 Builder at level 6: Stage 1 (levels 4-7) | CV 50 | basic: 2 / 3 | 2.5 / 3.5 | 3 / 4 | 4 / 5.5 | 4.5 / 6.5 | check: A Stage 1 PC deals about 23 | note: "Only Stage 0's tables are written: this Stage uses pack R's numbers until the book writes its own." | level 11: "Only Stage 0's tables are written: this Stage uses pack R's numbers until the book writes its own."
-sheet: CV tooltips from the role: 3 | the Stage under the Level: true
+sheet: CV tooltips from the role: 0 | the Stage under the Level: false
 --- PCs (pack R): the Health line by Stage (the book: a Human Paladin, high on Vigor: 23 / 12 = 35; Stage 2: 35 / 18 = 53); the Modifiers +1 at Stage 3 only
 level  1: BDT 23 MDT 12 Pool 35 | Weapon 2 Power 2 Signature 2 (weapon) | Stage 0
 level  3: BDT 23 MDT 12 Pool 35 | Weapon 2 Power 2 Signature 2 (weapon) | Stage 0
@@ -43,7 +43,7 @@ Guard 10 vs {"B":{"l":4,"n":0},"M":{"l":3,"n":0}} -> takes 7, Guard 3 left, Heal
 Guard 5 vs {"B":{"l":0,"n":2},"M":{"l":6,"n":1}} -> takes 5, Guard 0 left, Health gets {"B":{"l":0,"n":0},"M":{"l":3,"n":1}}
 Guard 0 vs {"B":{"l":3,"n":0},"M":{"l":0,"n":0}} -> takes 0, Guard 0 left, Health gets {"B":{"l":3,"n":0},"M":{"l":0,"n":0}}
 keep the higher: 6 7 0
-damage goes through the Guard first: true | each target its own: true | ends with the encounter: true | @Guard and @Effect buttons: true | on the sheet: true
+damage goes through the Guard first: true | each target its own: true | ends with the encounter: true | @Guard and @Effect buttons: true | on the sheet: false
 --- the Archer (A1) and the Paladin (P1) in code
 Engaged Banes read the Ignore a Bane settings: 2
 Defense: [Signature, Weapon] (Smite) from power: armor | [Power, Signature]: ward | Signature alone: ward
@@ -53,6 +53,6 @@ a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (preview, card, damage):
 --- v0.0.182: Evade, the damage line with the Guard, the Guard display, granted uses
 an Evade keeps its unused squares until another Action: true
 one damage line: 12 − Guard 5 = 7 Body <small>(the Guard ends)</small> | 4 − Guard 4 = no damage <small>(Guard 3 left)</small> | ""
-Guard on the donut and on the token bar: true true
-granted use without asking, Shift for a normal one, blue button, the dialog's first line: true true true true
+Guard on the donut and on the token bar: false true
+granted use without asking, Shift for a normal one, blue button, the dialog's first line: true true false true
 v0.0.183: the damage card shows its result under the target line (no new message): true | the Guard button (click +1, right-click -1, Ctrl 5): true

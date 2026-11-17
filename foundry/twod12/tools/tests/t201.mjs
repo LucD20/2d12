@@ -4,9 +4,9 @@
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 const src = f => fs.readFileSync(ROOT + f, "utf8");
-const st = src("templates/parts/settings.hbs"), sheet = src("module/item-sheet.mjs"), ve = src("templates/versions-editor.hbs"), vm = src("module/versions.mjs");
+const st = src("templates/parts/settings.hbs"), sheet = src("module/item-sheet.mjs");
 console.log("the Zone block:", st.includes("{{#if isZone}}") && st.includes('data-field="zoneWho"') && st.includes('data-field="zoneHeal"') && /isZone[\s\S]*?fx-drop[\s\S]*?Drop the Effect they carry while inside/.test(st));
 console.log("the sheet gives it its fields:", fs.readFileSync(new URL("../../module/fxrules.mjs", import.meta.url), "utf8").includes('case "zone": add("zone"') && fs.readFileSync(new URL("../../module/fxdetails.mjs", import.meta.url), "utf8").includes('x.grantOn || x.halfOn || (x.halfT3 ? "t3" : "")'));
 console.log("the Grant's Tier 3 box:", st.includes('data-field="grantOn"') && st.includes('data-field="grantDo"') && st.includes('data-field="grantText"'));   // v0.0.264: "On [a result], [what happens]"
-console.log("the Version's Area rounds:", ve.includes('data-field="areaRounds"') && vm.includes("areaRounds: v.areaRounds ?? 0") && vm.includes('f === "areaSize" || f === "areaRounds"'));
+console.log("the Version's Area rounds:", src("module/actionsheet.mjs").includes("areaRounds"));
 console.log("the setting is offered:", src("module/config.mjs").includes('zone: "Zone (the placed area)"'));

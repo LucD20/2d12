@@ -51,6 +51,8 @@ export async function runDamageTriggers(source, target, targetUuid, comps) {
   if (!hits.length) return;
   await applyEffects(hits.map(h => h.fxUuid), [targetUuid], originInfo(source.uuid));
   if (typeof ChatMessage === "undefined") return;
-  const lines = hits.map(h => `<i class="fa-solid fa-bolt"></i> <b>${esc(h.source)}</b> triggers: ${esc(target.name)} gains <b>${esc(fxName(h.fxUuid))}</b>.`);
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker?.({ actor: source }), content: `<div class="twod12 chat">${lines.join("<br>")}</div>` });
+  // v0.0.415 (pack CL): a sysLine each (was a plain block)
+  const { sysLine } = await import("./sysmsg.mjs");
+  const lines = hits.map(h => sysLine("fa-bolt", `<b>${esc(h.source)}</b> triggers: ${esc(target.name)} gains <b>${esc(fxName(h.fxUuid))}</b>.`));
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker?.({ actor: source }), content: lines.join("") });
 }

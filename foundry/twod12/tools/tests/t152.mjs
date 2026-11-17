@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t152.mjs)
 // v0.0.186 (pack C-a): a Talent's Category, Level and Prerequisites as data (talents.mjs), what the class window's Talent picker will check.
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 const CDOCS = (await import(ROOTURL + "tools/content.mjs")).allDocs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.232 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
@@ -36,4 +37,4 @@ console.log("content: Kickboxer needs Brawler as data", (() => { const k = cdoc(
 console.log("--- v0.0.187");
 const { FeatureData } = await import(ROOTURL + "module/data.mjs");
 console.log("a Feature's Escalation Passive box from an old 'Archer Escalation' Category:", FeatureData.migrateData({ category: "Archer Escalation" }).escalationPassive, "| 'Paladin Feature':", FeatureData.migrateData({ category: "Paladin Feature" }).escalationPassive, "| on the sheet:", hbs.includes('name="system.escalationPassive"'));
-console.log("Prerequisites as one line of chips joined by and / or:", hbs.includes('class="pq-line"') && hbs.includes('data-action="togglePrereqMode"') && hbs.includes("data-prereqadd"), "| Escalation section always shown with a class:", fs.readFileSync(ROOT + "templates/actor-sheet.hbs", "utf8").includes("No Escalation Passives or Actives yet"));
+console.log("Prerequisites as one line of chips joined by and / or:", hbs.includes('class="pq-line"') && hbs.includes('data-action="togglePrereqMode"') && hbs.includes("data-prereqadd"), "| Escalation section always shown with a class:", fs.readFileSync(ROOT + "templates/actor-sheet-pc.hbs", "utf8").includes("No Escalation Passives or Actives yet"));

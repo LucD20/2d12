@@ -2,6 +2,7 @@
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat ??= class {}; globalThis.Hooks ??= { on() {}, once() {} }; globalThis.CONFIG ??= {}; globalThis.foundry ??= {}; globalThis.foundry.utils ??= { deepClone: o => JSON.parse(JSON.stringify(o)), debounce: f => f, setProperty() {} }; globalThis.foundry.applications ??= { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }; globalThis.game ??= { settings: { get: () => true } };
 globalThis.foundry = { applications: { api: { DialogV2: { prompt: async () => "M" } } } };
+globalThis.__twod12Pick = () => "M";   // v0.0.415: the pick window answers (was DialogV2.prompt)
 globalThis.ui = { notifications: { warn: console.log, info: console.log } };
 const out = [];
 globalThis.ChatMessage = { create: async d => out.push(d.content) };

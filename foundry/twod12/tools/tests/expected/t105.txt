@@ -28,5 +28,5 @@ the next creature's turn: {"faded":false,"why":""}
 a new round, same turn number: {"faded":false,"why":""}
 --- the data and the sheets
 a Version can cost 0: true | the class has modPriority: true | effect settings accept roll kinds: true
-class dialog: different increases: true | no Weapon/Magic pick: true | sheet shows Power and Signature: true
+class dialog (v0.0.415: gone; a class without levels asks for its levels): true | no Weapon/Magic pick: true | sheet shows Power and Signature: true
 compendium Paladin Modifiers: 2 1 power | Archer: 2 1 weapon

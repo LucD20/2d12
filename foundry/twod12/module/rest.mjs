@@ -4,7 +4,6 @@ import { clockText } from "./clock.mjs";
 import { performCheck, checkHtml, combineRolls, sgn, esc } from "./roll.mjs";
 import { sysCard } from "./sysmsg.mjs";
 import { pickConfirm } from "./pickwindow.mjs";
-const { DialogV2 } = foundry.applications.api;
 
 export async function completeRest(actor) {
   const s = actor.system;
@@ -41,21 +40,20 @@ export async function completeRest(actor) {
 /** The recovery button: pick a Breather, a Sleep or a Rest. */
 export async function chooseRecovery(actor) {
   const last = actor.getFlag("twod12", "lastSleep"), exh = Number(actor.system.exhausted ?? 0);
-  const status = `<p class="hint">Exhausted: <input type="number" name="exhausted" value="${exh}" min="0" style="width:4em"> · Last Sleep: ${last == null ? "not recorded yet" : `${hoursText(game.time.worldTime - last)} ago`} · Now: ${clockText()}</p>`;
+  const st = { k: null };
+  // v0.0.415 (pack CL): the pick window (was a DialogV2): Exhausted as a stepper, then the recovery (a click picks it)
   let setTo = exh;
-  const pick = await DialogV2.wait({
-    window: { title: `Recovery: ${actor.name}` },
-    content: `${status}<p><b>Take a Breather</b> (10 minutes): remove all Nonlethal damage.</p>
-      <p><b>Sleep</b> (8 hours, at most once every 16 hours): renews Daily Actions and reduces Exhausted by 2.</p>
-      <p><b>Rest</b> (24 hours in a safe place): remove all damage, regain all Rally Points, roll to remove Wounds. A Rest includes a Sleep.</p>`,
-    buttons: [
-      { action: "breather", label: "Breather", icon: "fa-solid fa-mug-hot" },
-      { action: "sleep", label: "Sleep", icon: "fa-solid fa-bed" },
-      { action: "rest", label: "Rest", icon: "fa-solid fa-campground", default: true },
-      { action: "none", label: "Only update Exhausted", icon: "fa-solid fa-check" }
-    ],
-    render: (event, dialog) => { dialog.element.querySelector('[name="exhausted"]')?.addEventListener("change", ev => { setTo = Number(ev.target.value) || 0; }); },
-    rejectClose: false
+  const { pickWith, pwStepHtml } = await import("./pickwindow.mjs");
+  const pick = await pickWith({
+    title: `Recovery: ${actor.name}`, instant: true,
+    model: () => ({ name: "Recovery", sub: actor.name, icon: "fa-campground", stats: [["Last Sleep", last == null ? "not recorded yet" : `${hoursText(game.time.worldTime - last)} ago`], ["Now", clockText()]],
+      sections: [{ title: "", html: `<div class="cw-attr">${pwStepHtml("exhausted", setTo, "Exhausted")}</div>` },
+        { title: "", sub: "Take a Breather (10 minutes): remove all Nonlethal damage. Sleep (8 hours, at most once every 16 hours): renews Daily Actions and reduces Exhausted by 2. Rest (24 hours in a safe place): remove all damage, regain all Rally Points, roll to remove Wounds; a Rest includes a Sleep.",
+          rows: [{ key: "how", label: "", opts: [["breather", "Breather"], ["sleep", "Sleep"], ["rest", "Rest"], ["none", "Only update Exhausted"]].map(([k, l]) => ({ k, l, on: false })) }] }],
+      message: "", confirm: false }),
+    step: (f, d) => { if (f === "exhausted") setTo = Math.max(0, setTo + d); },
+    pick: (r, k) => { st.k = k; },
+    result: () => st.k
   });
   if (pick && setTo !== exh) await setExhausted(actor, setTo);
   if (pick === "breather") return takeBreather(actor);

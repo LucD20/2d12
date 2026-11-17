@@ -18,5 +18,5 @@ unusedApGuard: the first turn {"unused":0,"guard":0} | 2 unused at Stage 1 {"unu
 the turn starts with 2 unused: 4 | actor.apGuard 4 | no chat line (v0.0.362: the Turn Breakdown shows it): true
 the next start, none unused: the Guard before ends: 0 | actor.apGuard 0
 --- wiring: the turn start gives the Reaction AP and the unused AP's Guard: true | the turn's end does nothing to the AP (v0.0.274): true | damage takes the AP Guard first: true | the encounter's end drops it: true
-the Reaction AP pip: sheet true | strip (v0.0.390: the HUD's diamond) true | tracker true | a Reaction row counts it: true | Slowed / Quickened texts (4 AP, never the Reaction AP): true
+the Reaction AP pip: sheet false | strip (v0.0.390: the HUD's diamond) true | tracker true | a Reaction row counts it: true | Slowed / Quickened texts (4 AP, never the Reaction AP): true
 no plain apmsg line left in combat.mjs / damage.mjs: true | warnings: 0

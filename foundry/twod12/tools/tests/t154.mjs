@@ -1,6 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t154.mjs)
 // v0.0.189 (Lucas's test of v0.0.188): the automation chip, bonus damage named by its source, targeting mode, the swap button, a combatant
 // added mid-combat, Pinning Shot and Twin Shot as granted uses, Vanish for 1 round, the four compendium PCs.
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
@@ -10,7 +11,7 @@ const C = await import(ROOTURL + "tools/content.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 console.log("--- the automation chip");
 console.log(["gold", "silver", "bronze", "none", ""].map(r => `${r || "(none)"}: ${cfg.autoChip(r).replace(/ data-tooltip="[^"]*"/, "") || "-"}`).join(" | "));
-console.log("on the card head:", cfg.cardHead("Smite", "Divine Power 1", "", "", "gold").includes('autodia auto-gold'), "| the Features tab:", src("templates/actor-sheet.hbs").includes("{{name}}</span>{{{auto}}}"), "| the item sheets' select:", ((src("templates/item-sheet.hbs") + src("module/actionsheet.mjs")).match(/name="system.automation"/g) ?? []).length + (src("module/fxsheet.mjs").includes('"@automation"') ? 1 : 0));   // v0.0.323: the Effect's is in the new tab
+console.log("on the card head:", cfg.cardHead("Smite", "Divine Power 1", "", "", "gold").includes('autodia auto-gold'), "| the Features tab:", src("templates/actor-sheet-pc.hbs").includes("{{name}}</span>{{{auto}}}"), "| the item sheets' select:", ((src("templates/item-sheet.hbs") + src("module/actionsheet.mjs")).match(/name="system.automation"/g) ?? []).length + (src("module/fxsheet.mjs").includes('"@automation"') ? 1 : 0));   // v0.0.323: the Effect's is in the new tab
 const count = {}; for (const d of C.allDocs) if (d.system.automation) count[d.system.automation] = (count[d.system.automation] ?? 0) + 1;
 console.log("compendium ranks:", JSON.stringify(count), "| old cards have none:", !C.allDocs.some(d => /old cards/.test(d.folder ?? "") && d.system.automation));
 console.log("--- bonus damage named by its source");

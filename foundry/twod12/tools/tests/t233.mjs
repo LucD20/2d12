@@ -36,8 +36,7 @@ console.log("a hand click: the targeted creatures when the selected one is the p
 const M = await import(ROOTURL + "module/mastery.mjs");
 const w = (name, extra = {}) => ({ name, system: { masteryGroup: "", weaponGroup: "", ...extra } });
 console.log("groups:", ["Greatsword", "+1 Greatsword", "Hand Crossbow", "Crossbow", "Knuckle Dagger", "Dagger", "Shortbow", "Fists", "Warhammer"].map(n => `${n}=${M.weaponGroupOf(w(n)) || "-"}`).join(", "), "| set on the weapon:", M.weaponGroupOf(w("Warhammer", { weaponGroup: "hammers" })), "| by its Mastery kind:", M.weaponGroupOf(w("Sunblade", { masteryGroup: "Longsword" })));
-const used = { combatId: "c1", groups: ["blades"] };
-console.log("a Longsword after a Greatsword's Tier 3:", M.canGainMastery(used, "c1", w("Longsword")), "| a Shortbow:", M.canGainMastery(used, "c1", w("Shortbow")), "| the next encounter:", M.canGainMastery(used, "c2", w("Longsword")), "| no group: its own kind:", M.masteryLimitKey(w("Warhammer")));
+console.log("v0.0.415 (pack CL): the per-encounter group limit of the Tier 3 Mastery (canGainMastery) is gone with that rule (v0.0.412: +1 at the end of a won encounter)");
 const ms = src("module/mastery.mjs");
 console.log("the message is a sysLine:", ms.includes('content: sysLine("fa-medal"'), "| the limit is stored on the character:", ms.includes('actor.setFlag(F, "masteryEnc"'), "| the weapon sheet has the field:", src("templates/item-sheet.hbs").includes('name="system.weaponGroup"'));
 

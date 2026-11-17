@@ -5,6 +5,7 @@ import fs from "node:fs";
 let setting = true, lastDialog = null, answer = "one:xb";
 const said = [];
 globalThis.foundry = { applications: { api: { DialogV2: { wait: async o => { lastDialog = o; return answer; } } } } };
+globalThis.__twod12Pick = o => { const m = o.model(); lastDialog = { content: m.sections.map(x => x.sub ?? "").join(" "), buttons: m.sections.flatMap(x => (x.rows ?? []).flatMap(r => r.opts.map(y => ({ label: y.l })))) }; return answer; };   // v0.0.415: the pick window (was DialogV2.wait)
 globalThis.game = { settings: { register() {}, get: (s, k) => (k === "enforceHands" ? setting : true) } };
 globalThis.ui = { notifications: { warn: m => said.push(`warn: ${m}`), info: m => said.push(`info: ${m}`) } };
 globalThis.ChatMessage = { create: async d => said.push(`chat: ${d.content.replace(/<[^>]+>/g, "").trim()}`), getSpeaker: () => ({}) };

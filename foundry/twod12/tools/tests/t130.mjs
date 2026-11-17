@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t130.mjs)
 // v0.0.154: Mastery (v0.0.412: +1 with one weapon at the end of a won encounter that was normal or harder; 10 unlocks its Weapon Technique; the group follows).
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.ChatMessage = { create: async d => posted.push(d.content.replace(/<[^>]+>/g, "")), getSpeaker: () => ({}) };
@@ -53,7 +54,7 @@ console.log("old values on the new scale (Technique at 3 -> 10):", [0, 1, 2, 3, 
 console.log("rows:", JSON.stringify(M.masteryRows(A).map(r => ({ name: r.name, value: r.value, owned: r.owned, next: r.next, nextText: r.nextText, pct: r.pct, steps: r.steps.map(s => (s.on ? "*" : "") + s.s).join(" ") }))));
 console.log("NPCs have no Mastery:", JSON.stringify(M.techniqueLock({ ...A, type: "npc" }, tech)), "| other Actions are never locked:", M.techniqueLock(A, { ...tech, system: { category: "Divine Power" } }).locked);
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-const act = src("module/actions.mjs"), use = src("module/usage.mjs"), tpl = src("templates/actor-sheet.hbs"), data = src("module/data.mjs"), isheet = src("templates/item-sheet.hbs");
+const act = src("module/actions.mjs"), use = src("module/usage.mjs"), tpl = src("templates/actor-sheet-pc.hbs"), data = src("module/data.mjs"), isheet = src("templates/item-sheet.hbs");
 console.log("locked Techniques: faded on the sheet", use.includes("techniqueLock(actor, item)"), "| refused when used", act.includes("is locked: ${TECHNIQUE_AT}"), "| gained after the roll", act.includes("masteryAfterRoll(actor, weapon, useTraits.has(\"strike\"))"));
 console.log("Mastery tab", tpl.includes('data-tab="mastery"'), "| weapon's Mastery group field", data.includes("masteryGroup: str()") && isheet.includes('name="system.masteryGroup"'));
 // a weapon carried from before Mastery existed shows at 0, and +1 by hand creates its entry
@@ -74,6 +75,6 @@ console.log("Mastery 10, in hand:", st(), "| an NPC:", M.techniqueState({ ...C3,
 await M.setCollapsed(C3, "greatsword", true);
 const row = M.masteryRows(C3)[0];
 console.log("shrunk:", row.collapsed, "| what each step grants:", row.steps.map(s => `${s.s}: ${s.grants}`).join(" | "));
-const sh = fs.readFileSync(ROOT + "module/actor-sheets.mjs", "utf8"), tp = fs.readFileSync(ROOT + "templates/actor-sheet.hbs", "utf8"), us = fs.readFileSync(ROOT + "module/usage.mjs", "utf8");
+const sh = fs.readFileSync(ROOT + "module/actor-sheets.mjs", "utf8"), tp = fs.readFileSync(ROOT + "templates/actor-sheet-pc.hbs", "utf8"), us = fs.readFileSync(ROOT + "module/usage.mjs", "utf8");
 console.log("only the GM changes Mastery by hand:", sh.includes('if (!game.user.isGM) return ui.notifications.warn("Only the GM can change Mastery by hand.")') && tp.includes("{{#if @root.isGMUser}}"), "| no trash: shrink instead", !tp.includes("masteryRemove") && tp.includes('data-action="masteryCollapse"'));
 console.log("Actions tab: locked and not-in-hand Techniques hidden (v0.0.213, no toggle):", sh.includes('a.itemTypes.action.filter(i => techniqueState(a, i) === "ok")') && !tp.includes('class="at-hidetech"'), "| greyed with why:", us.includes("to use it` };"));

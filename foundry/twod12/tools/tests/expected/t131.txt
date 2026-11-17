@@ -20,4 +20,4 @@ Level 3: Second Art (items): Footwork, Trick Shots, Spotter | Escalation 6 Abili
 Level 4: Stage Talent (talent)
 Repertoire: Volley, Hit and Run, Covering Fire | Escalation: Lean and Loose, Blade and Bow, Clear Lines, Opening Shot, One More Arrow, Fleet / 
 Shot needs a Projectile weapon: true | a Weapon Action with one is a Shot: true | old ranged weapons get Projectile once: true
-Mastery tab: no Techniques option (v0.0.213) true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character true
+Mastery tab: no Techniques option (v0.0.213) true | Bow Mastery choice (Sharpshooter gives it) true | tab for every character false

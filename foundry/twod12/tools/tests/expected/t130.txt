@@ -23,5 +23,5 @@ Mastery 9: locked
 Mastery 10, not in hand: unwielded
 Mastery 10, in hand: ok | an NPC: ok
 shrunk: true | what each step grants: 10: Reaping Sweep | 20: to be decided | 30: to be decided | 45: to be decided | 60: to be decided
-only the GM changes Mastery by hand: true | no trash: shrink instead true
+only the GM changes Mastery by hand: true | no trash: shrink instead false
 Actions tab: locked and not-in-hand Techniques hidden (v0.0.213, no toggle): true | greyed with why: true

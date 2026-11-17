@@ -8,7 +8,7 @@ Charge disrupted: measured from the end square: true
 class window keeps its scroll: true
 an Action-only Talent shows its Action: true | granted Actions in full: true
 a choice picked in the class window: true
-Armor Training on the Loadout: true
+Armor Training on the Loadout: false
 new tokens: bars always, no rotation: true | core rotation off once: true
 Rally card: true
 shortcuts Shift+L and Shift+H: true
@@ -16,6 +16,6 @@ the diamond says what is by hand: true | notes: true
 Rally the Tribe: true
 an Emanation with no Distance is around you: true | asks about yourself: true
 remove a target in the roll dialog: true
-Escalation Passive: description on click: true
+Escalation Passive: description on click: false
 Word of Radiance and Consecrated Ground: 2 Emanation, a Version's own size possible: true | the version asked before placing: true
 its Area text: 2 / 3 Emanation | 5 sq.

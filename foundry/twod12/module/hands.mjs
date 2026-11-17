@@ -41,16 +41,19 @@ export function registerHandSetting() {
  * Before taking a weapon in hand (the Items tab): true if it fits. With the other weapons using too many hands, offer to Release one
  * of them first (or, not enforced, only warn). need: the hands it will use.
  */
+/** v0.0.415 (pack CL): a choice among { action, label } buttons in the pick window (was DialogV2.wait). Resolves the action, or null. */
+export async function pickButtons(o) {
+  const { pickOne } = await import("./pickwindow.mjs");
+  return pickOne({ ...o, options: (o.buttons ?? []).filter(b => b.action !== "cancel").map(b => ({ k: b.action, l: b.label })) });
+}
+
 export async function ensureHandsFor(actor, weapon, need) {
   const others = (actor?.itemTypes?.weapon ?? []).filter(w => w.id !== weapon.id && w.system.wielded && !w.system.traits?.has?.("barehanded"));
   const used = others.reduce((n, w) => n + ((Number(w.system.hands) || 1) >= 2 ? 2 : 1), 0);
   if (used + need <= 2) return true;
   if (!enforce()) { ui.notifications.warn(`${actor.name} has no free hand for ${weapon.name} (the hand requirement isn't enforced: it is taken anyway).`); return true; }
-  const buttons = [...releaseOptions({ itemTypes: { weapon: others } }), { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }];
-  const pick = await foundry.applications.api.DialogV2.wait({
-    window: { title: `${weapon.name}: no free hand` }, rejectClose: false, buttons,
-    content: `<p><b>${esc(actor.name)}</b> needs ${need === 2 ? "both hands" : "a free hand"} for <b>${esc(weapon.name)}</b>.</p><p>Use the <b>Release</b> Action first (0 AP)? Pick what to let go of:</p>`
-  });
+  const pick = await pickButtons({ title: `${weapon.name}: no free hand`, name: "No free hand", sub: weapon.name, icon: "fa-hand",
+    text: `${actor.name} needs ${need === 2 ? "both hands" : "a free hand"} for ${weapon.name}. Use the Release Action first (0 AP)? Pick what to let go of:`, buttons: releaseOptions({ itemTypes: { weapon: others } }) });
   if (!pick || pick === "cancel") return false;
   await applyRelease(actor, pick);
   const after = (actor.itemTypes.weapon ?? []).filter(w => w.id !== weapon.id && w.system.wielded && !w.system.traits?.has?.("barehanded")).reduce((n, w) => n + ((Number(w.system.hands) || 1) >= 2 ? 2 : 1), 0);
@@ -62,11 +65,8 @@ export async function ensureHandsFor(actor, weapon, need) {
 export async function ensureFreeHand(actor, item) {
   if (!needsFreeHand(item) || handsUsed(actor) < 2) return true;
   if (!enforce()) { ui.notifications.warn(`${actor.name} has no free hand for ${item.name} (the hand requirement isn't enforced: it is used anyway).`); return true; }
-  const buttons = [...releaseOptions(actor), { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }];
-  const pick = await foundry.applications.api.DialogV2.wait({
-    window: { title: `${item.name}: no free hand` }, rejectClose: false, buttons,
-    content: `<p><b>${esc(actor.name)}</b> doesn't have a free hand for <b>${esc(item.name)}</b>.</p><p>Use the <b>Release</b> Action first (0 AP)? Pick what to let go of:</p>`
-  });
+  const pick = await pickButtons({ title: `${item.name}: no free hand`, name: "No free hand", sub: item.name, icon: "fa-hand",
+    text: `${actor.name} doesn't have a free hand for ${item.name}. Use the Release Action first (0 AP)? Pick what to let go of:`, buttons: releaseOptions(actor) });
   if (!pick || pick === "cancel") return false;
   await applyRelease(actor, pick);
   return handsUsed(actor) < 2;
@@ -104,13 +104,10 @@ export async function regripPrompt(actor, weapons, { ap = 0, only = null, spend 
   let buttons = regripOptions(weapons);
   if (only) buttons = buttons.filter(b => only(b.action));
   if (!buttons.length) { ui.notifications.info(`${actor.name} has nothing to Regrip.`); return false; }
-  const pick = buttons.length === 1 && only ? buttons[0].action : await foundry.applications.api.DialogV2.wait({
-    window: { title: `Regrip: ${actor.name}` }, rejectClose: false, content: "<p>Regrip (1 AP, no free hand needed): what do you do?</p>",
-    buttons: [...buttons, { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }]
-  });
+  const pick = buttons.length === 1 && only ? buttons[0].action : await pickButtons({ title: `Regrip: ${actor.name}`, name: "Regrip", sub: actor.name, icon: "fa-hands", text: "Regrip (1 AP, no free hand needed): what do you do?", buttons });
   if (!pick || pick === "cancel") return false;
   if (ap && spend && !(await spend(actor, ap, "Regrip"))) return false;
   const text = await applyRegrip(actor, weapons, pick);
-  if (text) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat note"><i class="fa-solid fa-hands"></i> <b>Regrip</b>${ap ? ` (${ap} AP)` : ""}: ${esc(actor.name)} ${text}.</div>` });
+  if (text) { const { sysLine } = await import("./sysmsg.mjs"); await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hands", `<b>Regrip</b>${ap ? ` (${ap} AP)` : ""}: ${esc(actor.name)} ${text}.`) }); }   // v0.0.415: a sysLine
   return !!text;
 }

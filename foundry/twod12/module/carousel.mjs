@@ -8,7 +8,6 @@ import { strikesUsed } from "./usage.mjs";
 import { marksHtml } from "./hudview.mjs";
 import { healthTags, downState } from "./sheetmodel.mjs";
 import { momentumNow, setMomentum } from "./escalation.mjs";
-const { DialogV2 } = foundry.applications.api;
 const F = "twod12", ID = "twod12-carousel";
 
 
@@ -70,9 +69,11 @@ let swapping = null;
 /** v0.0.201: the GM sets a creature's movement left this turn (an Evade under way stays an Evade). */
 async function setMoveLeft(c) {
   const m = stripMove(c);
-  const n = await DialogV2.prompt({ window: { title: `${c.name}: movement left` }, content: `<p>Squares ${m.evade ? "of Evade" : "of movement"} left this turn:</p><div class="form-group"><input type="number" name="n" min="0" step="1" value="${m.n}" autofocus></div>`,
-    ok: { label: "Set", callback: (ev, btn) => Math.max(0, Math.trunc(Number(new FormData(btn.form).get("n"))) || 0) }, rejectClose: false });
-  if (n === null || n === undefined) return;
+  // v0.0.415 (pack CL): the pick window (was a DialogV2)
+  const res = await (await import("./pickwindow.mjs")).pickInput({ title: `${c.name}: movement left`, name: "Movement left", sub: c.name, icon: "fa-shoe-prints", confirm: "Set",
+    fields: [{ key: "n", label: `Squares ${m.evade ? "of Evade" : "of movement"}`, type: "number", value: m.n, min: 0 }] });
+  if (!res) return;
+  const n = Math.max(0, Math.trunc(Number(res.n)) || 0);
   await c.update(m.evade ? { [`flags.${F}.evadeMove`]: n, [`flags.${F}.freeMove`]: 0, [`flags.${F}.moveLeft`]: 0 } : { [`flags.${F}.freeMove`]: n, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.evadeMove`]: 0 });
 }   // the combatant id that is choosing an ally to swap with (this client only)
 

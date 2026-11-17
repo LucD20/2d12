@@ -1,6 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t157.mjs)
 // v0.0.194 (Lucas, mockup granted-C2-ladder): the Escalation block's data (rungs, passive tags, Actives greyed or usable) and the Granted
 // tickets' badges, from the compendium's real cards.
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 globalThis.Combat = class {}; globalThis.CONFIG = { time: {}, TextEditor: { enrichers: [] }, statusEffects: [] };
@@ -42,5 +43,5 @@ game.combat = null;
 console.log("--- Granted ticket badges");
 const fx = name => { const d = doc(name, "effect"); const fl = { bonuses: (d.system.settings ?? []).filter(x => x.type === "bonusdamage").map(x => ({ dmg: x.dmg, dmgPool: x.dmgPool, dmgSub: x.dmgSub, tiers: x.tiers ?? [], text: x.text ?? "" })) }; return { getFlag: (s, k) => fl[k] }; };
 for (const [n, g] of [["Pinning Shot", { distinct: false, boons: 0 }], ["Double Shot (2 Attacks)", { distinct: true, boons: 0 }], ["Twin Shot", { distinct: false, boons: 0 }]]) { const b = X.grantBadges(g, fx(n)); console.log(`${n}: ${JSON.stringify(b.short)} | ${JSON.stringify(b.long)}`); }
-const src = f => fs.readFileSync(ROOT + f, "utf8"), tpl = src("templates/actor-sheet.hbs"), sh = src("module/actor-sheets.mjs");
+const src = f => fs.readFileSync(ROOT + f, "utf8"), tpl = src("templates/actor-sheet-pc.hbs"), sh = src("module/actor-sheets.mjs");
 console.log("on both tabs:", (tpl.match(/\{\{> escblock\}\}/g) ?? []).length, "| Escalation Actions out of the list and the Favorites:", sh.includes('!i.getFlag("twod12", "basic") && !isEscAct(i)') && sh.includes('!(Number(i.system?.escalation) > 0)).map(actRow), esc,'), "| collapse remembered per sheet:", sh.includes('game.user.setFlag("twod12", "escOpen", all)'), "| narrow sheet rules:", src("styles/system.css").includes("@container (max-width: 440px)"));

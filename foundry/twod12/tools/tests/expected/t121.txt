@@ -9,5 +9,5 @@ armor worn: worn | button: {"where":"carried","label":"Take off"} | move there: 
 armor carried: carried | button: {"where":"worn","label":"Put on","primary":true} | move there: {"system.worn":false,"system.dropped":false}
 armor dropped: dropped | button: {"where":"carried","label":"Pick up"} | move there: {"system.worn":false,"system.dropped":true}
 data: dropped on weapons and armor true | taking it in hand or putting it on picks it up true | Release drops it on the ground true
-hands checked when drawing true | free hand slot takes a dropped-in weapon true | folds per user true
-the look: no Technique on the slots true | Dropped: red button and outline, no strikethrough true | untrained armor: red outline and warning true | see-through title bar (v0.0.142) true
+hands checked when drawing true | free hand slot takes a dropped-in weapon false | folds per user true
+the look: no Technique on the slots true | Dropped: red button and outline, no strikethrough false | untrained armor: red outline and warning false | see-through title bar (v0.0.142) true

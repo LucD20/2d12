@@ -9,5 +9,5 @@ talents: 1 of 1 slot filled | Brawler [Talent | Slot from Field Training] text: 
 others: Bulwark [Feature] text: Bulwark text. (removable) (folded)
 v0.0.186: Escalation section: Radiant Zeal [Passive | works at Escalation 1+ | passive esc] | Escalation now 0 | Talents by Category: Combat: Brawler ; Other: Patient Hunter | empty slots: 0
 opened Divine Power stays open, the others start folded: Class picks folded, Profane Judgment folded, Divine Power open, Escalation Passive folded, Field Training folded
---- the sheet: tabs: true true | cards fold: true | slots kept: true | feature order saved: true | non-Action rows open their card: true
-v0.0.133: band and panel always dark blue: true | Foundry's own title bar: true | no padding: true | Species above Class: true | Expand / Collapse all: true | description before Grants: true | rows show only Unloaded: true | Escalation cost as a chip: true
+--- the sheet: tabs: false false | cards fold: false | slots kept: true | feature order saved: true | non-Action rows open their card: true
+v0.0.133: band and panel always dark blue: true | Foundry's own title bar: true | no padding: true | Species above Class: false | Expand / Collapse all: false | description before Grants: false | rows show only Unloaded: true | Escalation cost as a chip: false

@@ -33,7 +33,7 @@ always-on passive only                     Armor now 14, base 14 plain
 sources: passive always base, passive Escalation 2 temporary, applied effect temporary
 Speed 5, Fleet (+1, always) and Hindered: now 3 base 6
 --- the sheet
-header band: true | AP pips: true | Escalation pips in the header: true | NPC Health Pool: true | Initiative, Senses, Recovery: true
-panel order: Defenses, Attributes, Modifiers, Movement | toggle: true per user: true | donut and bars bound: true
-kept: wounds and tables true | conditions true | NPC Builder fields (v0.0.163) true | untrained warning true | editable tiles true
+header band: false | AP pips: true | Escalation pips in the header: false | NPC Health Pool: false | Initiative, Senses, Recovery: false
+panel order: Defenses, Attributes, Modifiers, Movement | toggle: false per user: true | donut and bars bound: true
+kept: wounds and tables false | conditions true | NPC Builder fields (v0.0.163) false | untrained warning true | editable tiles true
 AP redraw hook registered: true | no padding around the sheet: true

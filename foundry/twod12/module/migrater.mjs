@@ -6,7 +6,6 @@
 import { sysCard } from "./sysmsg.mjs";
 import { esc } from "./util.mjs";
 const F = "twod12", DONE = "R1";
-const { DialogV2 } = foundry.applications.api;
 
 const characters = () => [...(game.actors ?? [])].filter(a => a.type === "character");
 /** Does this world still need the pack R migration? (characters exist and it hasn't run) */
@@ -23,18 +22,17 @@ export function migrationUpdate(sys, highSide = "vigor") {
 
 /** The question: a backup reminder, then one row per character (which threshold is high). */
 async function askMigration() {
-  const rows = characters().map(a => `<div class="form-group"><label>${esc(a.name)}</label><select name="high-${a.id}"><option value="vigor">High value on Vigor</option><option value="resolve"${a.system.healthHigh === "resolve" ? " selected" : ""}>High value on Resolve</option></select></div>`).join("");
-  return DialogV2.wait({
-    window: { title: "Pack R: the new core rules" },
-    content: `<p><b>Back up your world first</b> (Foundry: Game Worlds, Backup). Nothing is deleted, but Health, Escalation and the class cards change.</p>
-      <p>The 2d12 system now runs the book's pack R rules: <b>4 AP + 1 Reaction AP</b>, <b>Escalation as a level</b> (1 to 3, never spent), the <b>Vigor / Resolve Health line</b> (the class's high and low values, the species' bonuses, the Stage steps; the Attributes are out), <b>Rally Points = Rally + Stage</b>, Bloodied and Strained without Banes.</p>
-      <p>For each character, say which threshold gets the class's high Health value (it can be changed later on the sheet, next to the Health):</p>${rows}
-      <p class="hint">Then: Escalation set to 1, the Guard of kept AP to 0, and the class, species and class cards are replaced from the compendium (what each copy chose is kept: picks, Attributes, Talent slots; changes made by hand to a copy are lost).</p>`,
-    buttons: [
-      { action: "yes", label: "Migrate", icon: "fa-solid fa-rotate", default: true, callback: (ev, btn) => Object.fromEntries(characters().map(a => [a.id, btn.form.elements[`high-${a.id}`]?.value === "resolve" ? "resolve" : "vigor"])) },
-      { action: "no", label: "Later", icon: "fa-solid fa-xmark" }
-    ],
-    rejectClose: false
+  // v0.0.415 (pack CL): the pick window (was a DialogV2): a row per character, which threshold is high; Migrate, or Cancel (later)
+  const high = Object.fromEntries(characters().map(a => [a.id, a.system.healthHigh === "resolve" ? "resolve" : "vigor"]));
+  const { pickWith } = await import("./pickwindow.mjs");
+  return pickWith({
+    title: "Pack R: the new core rules",
+    model: () => ({ name: "The new core rules", sub: "pack R", icon: "fa-rotate",
+      sections: [{ title: "", sub: "Back up your world first (Foundry: Game Worlds, Backup). Nothing is deleted, but Health, Escalation and the class cards change. For each character, say which threshold gets the class's high Health value (it can be changed later on the sheet). Then: Escalation set to 1, the Guard of kept AP to 0, and the class, species and class cards are replaced from the compendium (what each copy chose is kept).",
+        rows: characters().map(a => ({ key: a.id, label: a.name, opts: [["vigor", "High on Vigor"], ["resolve", "High on Resolve"]].map(([k, l]) => ({ k, l, on: high[a.id] === k })) })) }],
+      message: "", confirm: "Migrate" }),
+    pick: (r, k) => { high[r] = k; },
+    result: () => ({ ...high })
   });
 }
 

@@ -1,6 +1,6 @@
-tabs: favorites, actions, class, items, mastery, effects, notes, builder | Items (was Inventory): true | condition count on Effects: true
-Conditions left the side panel: true | chips on the Effects tab: true | Exhausted +/- and right-click kept: true
-effects rows: what it does, duration, source, edit, remove: true | passives: off now faded: true | drop zone: true
+tabs: favorites | Items (was Inventory): false | condition count on Effects: false
+Conditions left the side panel: true | chips on the Effects tab: false | Exhausted +/- and right-click kept: true
+effects rows: what it does, duration, source, edit, remove: false | passives: off now faded: false | drop zone: false
 Notes: fields true | editors true | GM notes only for the GM true
-v0.0.133 fixes: no border under the title bar true | Grants always shown, description opens true | Class picks is the first card true
-v0.0.135: picks grouped true true | notes editors sized and resizable true | v0.0.141: window left to Foundry, the sheet is dark blue true
+v0.0.133 fixes: no border under the title bar false | Grants always shown, description opens false | Class picks is the first card true
+v0.0.135: picks grouped true false | notes editors sized and resizable false | v0.0.141: window left to Foundry, the sheet is dark blue false

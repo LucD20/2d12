@@ -1011,11 +1011,12 @@ async function applySteadiness(target, N, label) {
   if (!steady) return { N, steady: 0, applied: false };
   const eff = reducedValue(N, steady);
   const from = st.parts.length ? ` (${st.base} + ${st.parts.map(p => `${p.name} ${p.bonus >= 0 ? "+" : "\u2212"}${Math.abs(p.bonus)}`).join(", ")})` : "";
-  const choice = await foundry.applications.api.DialogV2.wait({
-    window: { title: "Steadiness" }, rejectClose: false,
-    content: `<p><b>${esc(target.name)}</b> has Steadiness ${steady}${esc(from)}: ${label} ${N} becomes ${label} ${eff}.</p><p>A willing creature can choose not to apply its Steadiness.</p>`,
-    buttons: [{ action: "apply", label: `Apply Steadiness (${label} ${eff})`, default: true }, { action: "ignore", label: `Don't apply it (${label} ${N})` }]
-  });
+  // v0.0.415 (pack CL): the pick window (was a DialogV2); closing it applies the Steadiness (the default)
+  const { pickTwo } = await import("./pickwindow.mjs");
+  const keep = await pickTwo({ title: "Steadiness", name: "Steadiness", sub: target.name, icon: "fa-anchor",
+    text: `${target.name} has Steadiness ${steady}${from}: ${label} ${N} becomes ${label} ${eff}. A willing creature can choose not to apply its Steadiness.`,
+    yes: `Apply Steadiness (${label} ${eff})`, no: `Don't apply it (${label} ${N})` });
+  const choice = keep === false ? "ignore" : "apply";
   return choice === "ignore" ? { N, steady, applied: false } : { N: eff, steady, applied: true };
 }
 

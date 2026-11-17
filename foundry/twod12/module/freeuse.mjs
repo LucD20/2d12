@@ -6,7 +6,6 @@ import { evalExpr } from "./refs.mjs";
 // An Action used because of another Action or a Talent does not count toward its Frequency or toward the 3 Strikes of the turn.
 import { useAction } from "./actions.mjs";
 import { grantMatches, activeGrants } from "./usage.mjs";
-const { DialogV2 } = foundry.applications.api;
 const F = "twod12";
 
 /** The Actions of a creature that a spec names. */
@@ -16,8 +15,8 @@ export function actionsFor(actor, spec) {
 
 async function chooseAction(list, spec) {
   if (list.length <= 1) return list[0] ?? null;
-  const buttons = list.map(i => ({ action: i.id, label: i.name, callback: () => i.id }));
-  const id = await DialogV2.wait({ window: { title: "Choose an Action" }, content: `<p>Which Action? (${spec})</p>`, buttons, rejectClose: false });
+  // v0.0.415 (pack CL): the pick window (was a DialogV2)
+  const id = await (await import("./pickwindow.mjs")).pickOne({ title: "Choose an Action", name: "Choose an Action", sub: spec, icon: "fa-list", text: "Which Action?", options: list.map(i => ({ k: i.id, l: i.name })) });
   return list.find(i => i.id === id) ?? null;
 }
 

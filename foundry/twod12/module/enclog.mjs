@@ -268,13 +268,16 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     if (what === "restore" && id) return patchLine(id, { off: false, why: "" });
     if (what === "edit" && id) {
       const e = (logOf(combat)).find(x => x.id === id);
-      const val = await foundry.applications.api.DialogV2.prompt({ window: { title: "Edit the line" }, content: `<input type="text" name="t" value="${esc(e ? lineText(e) : "")}" style="width:100%" autofocus><p class="hint">Empty: back to the logged text.</p>`, ok: { label: "Save", callback: (ev, btn) => btn.form.elements.t.value }, rejectClose: false });
+      // v0.0.415 (pack CL): the pick window (was a DialogV2)
+      const res = await (await import("./pickwindow.mjs")).pickInput({ title: "Edit the line", name: "Edit the line", icon: "fa-pen", text: "Empty: back to the logged text.", confirm: "Save", fields: [{ key: "t", label: "Line", value: e ? lineText(e) : "" }] });
+      const val = res ? res.t : null;
       if (val != null) return patchLine(id, { txt: String(val).trim() });
       return;
     }
     if (what === "note") {
       const turn = b.closest(".el-turn"), r = Number(turn.dataset.r), t = Number(turn.dataset.t);
-      const val = await foundry.applications.api.DialogV2.prompt({ window: { title: "Add a note" }, content: '<input type="text" name="t" style="width:100%" placeholder="DP chose to keep fighting" autofocus>', ok: { label: "Add", callback: (ev, btn) => btn.form.elements.t.value }, rejectClose: false });
+      const res = await (await import("./pickwindow.mjs")).pickInput({ title: "Add a note", name: "Add a note", icon: "fa-note-sticky", confirm: "Add", fields: [{ key: "t", label: "Note", value: "", placeholder: "DP chose to keep fighting" }] });   // v0.0.415 (pack CL): was a DialogV2
+      const val = res?.t ?? "";
       if (!val?.trim()) return;
       const own = (logOf(combat)).find(x => x.r === r && x.t === t)?.own ?? { id: "", name: "" };
       return send({ type: "add", entry: { id: newId(), r, t, own, k: "note", who: null, d: { text: val.trim() } } }, combat);

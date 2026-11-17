@@ -1,6 +1,5 @@
 // Grid areas: Emanation (squares within N by the 1-2-1 diagonal rule, from the creature's squares),
 // Burst (squares whose centers are within N of a square center or a grid corner) and, v0.0.214, Line (linearea.mjs: from your square, aimed).
-const { DialogV2 } = foundry.applications.api;
 const COLOR = 0xb05aa0;
 const MOVES = { walk: "Walk", fly: "Fly", swim: "Swim", climb: "Climb", crawl: "Crawl", burrow: "Burrow" };
 const key = c => `${c.i},${c.j}`;
@@ -304,7 +303,6 @@ export async function startTemplate(cfg, ctx = {}) {
   // The target of an Emanation: the creature it is placed around (null for a square or a Burst).
   const center = placed.origin ?? null;
   const escT = x => String(x ?? "").replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
-  const sel = (v, cur) => `<option value="${v}" ${cur === v ? "selected" : ""}>${v[0].toUpperCase() + v.slice(1)}</option>`;
   const targetsDef = ["all", "allies", "enemies"].includes(cfg.targets) ? cfg.targets : "all";
   // Hazardous Terrain: what the area does, by default the Effects row of the Action that placed it (the GM can change it here).
   const htText = (() => { try { const f = ctx?.message?.getFlag?.("twod12", "action"), it = fromUuidSync(f?.actorUuid)?.items?.get?.(f?.itemId); return it?.system?.versions?.find(v => v.ap === f.ap)?.effects ?? ""; } catch (e) { return ""; } })();
@@ -322,42 +320,7 @@ export async function startTemplate(cfg, ctx = {}) {
         dtypes: [],
         ht: htDef, httext: htText
       }
-    : await DialogV2.prompt({
-        window: { title: areaName(shape, n) },
-        content: `<div class="form-group"><label>Targets</label><select name="targets">${["all", "allies", "enemies"].map(v => sel(v, targetsDef)).join("")}</select></div>
-      ${center ? `<div class="form-group"><label>Affect ${escT(center.name)} (the creature it is around)?</label><input type="checkbox" name="self" ${cfg.self ? "checked" : ""}></div>` : ""}
-      <div class="form-group"><label>Keep the area on the map?</label><input type="checkbox" name="keep" ${(cfg.places ?? cfg.keep) || cfg.rounds || cfg.expire === "eot" || cfg.difficult?.length ? "checked" : ""}></div>
-      <div class="form-group"><label>Rounds (0 = until removed)</label><input type="number" name="rounds" value="${cfg.rounds ?? 0}" min="0"></div>
-      <div class="form-group"><label>Expires</label><select name="expire"><option value="" ${cfg.expire === "eot" ? "" : "selected"}>After the rounds (end of the current turn)</option><option value="eot" ${cfg.expire === "eot" ? "selected" : ""}>End of the origin's turn</option></select></div>
-      <div class="form-group"><label>Difficult terrain</label><input type="checkbox" name="difficult" ${cfg.difficult?.length ? "checked" : ""}></div>
-      <div class="form-group"><label data-tooltip="Hazardous Terrain [HT]: what the area does to a creature that enters it, ends its turn in it, or moves within it. Entering and Turn: at most once per turn-cycle.">Hazardous Terrain</label><span>${Object.entries(HT_PATTERNS).map(([k, l]) => `<label class="inline"><input type="checkbox" name="ht" value="${k}" ${htDef.includes(k) ? "checked" : ""}> ${l}</label>`).join(" ")}</span></div>
-      <div class="form-group"><label>It does</label><input type="text" name="httext" value="${escT(htText)}" placeholder="@Save[instinct|t1:1d8 Fi|t2:1d4 Fi|t3:0] or a note"></div>
-      <div class="form-group"><label>Difficult for</label><select name="dfor">${["all", "allies", "enemies"].map(v => sel(v, ["all", "allies", "enemies"].includes(cfg.dfor) ? cfg.dfor : "all")).join("")}</select></div>
-      <div class="form-group"><label>Movement</label><span>${Object.entries(MOVES)
-        .map(
-          ([k, l]) =>
-            `<label class="inline"><input type="checkbox" name="dtypes" value="${k}" ${(cfg.difficult?.length ? cfg.difficult : ["walk"]).includes(k) ? "checked" : ""}> ${l}</label>`
-        )
-        .join(" ")}</span></div>`,
-        ok: {
-          label: "Place",
-          callback: (ev, btn) => {
-            const fd = new FormData(btn.form);
-            return {
-              targets: fd.get("targets"),
-              self: fd.get("self") === "on",
-              keep: fd.get("keep") === "on",
-              rounds: Math.max(0, parseInt(fd.get("rounds")) || 0),
-              expire: fd.get("expire"),
-              difficult: fd.get("difficult") === "on",
-              dfor: fd.get("dfor"),
-              dtypes: fd.getAll("dtypes"),
-              ht: fd.getAll("ht"), httext: String(fd.get("httext") ?? "")
-            };
-          }
-        },
-        rejectClose: false
-      });
+    : await areaOptions({ shape, n, center, cfg, targetsDef, htDef, htText });   // v0.0.415 (pack CL): the pick window (was a DialogV2)
   if (!data) { dropPreview(); await back0(); return; }
 
   // The origin is the creature using the Action: allies and enemies are judged from its side.
@@ -452,4 +415,32 @@ export async function startTemplate(cfg, ctx = {}) {
   // v0.0.284 (Lucas: "it's sending 'targeting x, y, z' as plain text"): no chat line any more (the Action's card lists its targets); only what the map can't show is a notification
   if (noLoE.length) ui.notifications.info(`${areaName(shape, n)}: no Line of Effect to ${noLoE.join(", ")}.`);
   if (placed.cut) ui.notifications.info(`${areaName(shape, n)}: the Line is stopped by a wall (${placed.cells.length} square${placed.cells.length === 1 ? "" : "s"}).`);
+}
+
+/**
+ * v0.0.415 (pack CL): the options of an area placed by hand, in the pick window (was a DialogV2 form): who it affects, kept on the map (rounds, when it
+ * expires), Difficult Terrain (for whom, which movements) and Hazardous Terrain (its patterns and what it does). Resolves the data, or null.
+ */
+async function areaOptions({ shape, n, center, cfg, targetsDef, htDef, htText }) {
+  const yn = v => (v ? "yes" : "no"), YN = [["yes", "Yes"], ["no", "No"]], WHO = [["all", "All"], ["allies", "Allies"], ["enemies", "Enemies"]];
+  const st = { targets: targetsDef, self: yn(cfg.self), keep: yn((cfg.places ?? cfg.keep) || cfg.rounds || cfg.expire === "eot" || cfg.difficult?.length), expire: cfg.expire === "eot" ? "eot" : "rounds",
+    difficult: yn(cfg.difficult?.length), dfor: ["all", "allies", "enemies"].includes(cfg.dfor) ? cfg.dfor : "all", dtypes: new Set(cfg.difficult?.length ? cfg.difficult : ["walk"]), ht: new Set(htDef), rounds: Number(cfg.rounds) || 0, httext: htText };
+  const row = (key, label, opts, cur) => ({ key, label, opts: opts.map(([k, l]) => ({ k, l, on: cur instanceof Set ? cur.has(k) : cur === k })) });
+  const { pickWith } = await import("./pickwindow.mjs"), { esc } = await import("./util.mjs");
+  return pickWith({
+    title: areaName(shape, n),
+    model: () => ({ name: areaName(shape, n), icon: "fa-draw-polygon",
+      sections: [
+        { title: "Who it affects", rows: [row("targets", "Targets", WHO, st.targets), ...(center ? [row("self", `Affect ${center.name}`, YN, st.self)] : [])] },
+        { title: "On the map", rows: [row("keep", "Keep the area", YN, st.keep), row("expire", "Expires", [["rounds", "After the rounds"], ["eot", "End of the origin's turn"]], st.expire)],
+          html: `<div class="cw-attr pw-field"><span>Rounds (0 = until removed)</span><input type="number" min="0" data-field="rounds" value="${esc(st.rounds)}"></div>` },
+        { title: "Difficult Terrain", rows: [row("difficult", "Difficult", YN, st.difficult), row("dfor", "For", WHO, st.dfor), row("dtypes", "Movement", Object.entries(MOVES), st.dtypes)] },
+        { title: "Hazardous Terrain", rows: [row("ht", "When", Object.entries(HT_PATTERNS), st.ht)],
+          html: `<div class="cw-attr pw-field"><span>It does</span><input type="text" data-field="httext" value="${esc(st.httext)}" placeholder="@Save[instinct|t1:1d8 Fi|t2:1d4 Fi|t3:0] or a note"></div>` }
+      ], message: "", confirm: "Place" }),
+    pick: (r, k) => { if (st[r] instanceof Set) { if (st[r].has(k)) st[r].delete(k); else st[r].add(k); } else st[r] = k; },
+    input: (k, v) => { st[k] = v; },
+    result: () => ({ targets: st.targets, self: st.self === "yes", keep: st.keep === "yes", rounds: Math.max(0, parseInt(st.rounds) || 0), expire: st.expire === "eot" ? "eot" : "",
+      difficult: st.difficult === "yes", dfor: st.dfor, dtypes: [...st.dtypes], ht: [...st.ht], httext: String(st.httext ?? "") })
+  });
 }

@@ -1,6 +1,6 @@
 // The item sheet (every item type; the Details tab of an Effect is written as sentences: fxdetails.mjs).
 import { rollSource } from "./rollsource.mjs";
-import { tagChoices, TWOD12, categoryText, traitPicker, npcDamage, FREQ_COLORS, highlightText } from "./config.mjs";
+import { TWOD12, categoryText, traitPicker, npcDamage, FREQ_COLORS, highlightText } from "./config.mjs";
 import { npcSuggest } from "./npcbudget.mjs";
 /** v0.0.407 (the Bestiary, the turn budget): the Builder's suggestion for an NPC's Action (Stage 0: its points and damage; later Stages: pack R's averages). */
 export function npcActionSuggest(npc, s) {
@@ -17,7 +17,6 @@ import { openActionGenerator } from "./genaction.mjs";
 import { enableDragging } from "./drag.mjs";
 import { effectSummary, familyColor } from "./fxdetails.mjs";
 import { applyTab, dragData } from "./sheet-common.mjs";
-import { VersionsEditor } from "./versions.mjs";
 import { attrLine, choicesToMake, freqOf, SECTION_FREQS } from "./classlevels.mjs";
 import { itemInfo } from "./classwindow.mjs";
 import { openLevelsEditor } from "./classeditor.mjs";
@@ -42,7 +41,6 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       switchTab: TwoD12ItemSheet.switchTab,
       removeLink: TwoD12ItemSheet.removeLink,
       openLinked: TwoD12ItemSheet.openLinked,
-      openVersions: TwoD12ItemSheet.openVersions,
       setSteadiness: TwoD12ItemSheet.setSteadiness,
       openGenerator: TwoD12ItemSheet.openGenerator,
       generateWeapon: TwoD12ItemSheet.generateWeapon,
@@ -758,7 +756,4 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   /** The Steadiness buttons of a species (0 to 4). */
   static async setSteadiness(event, target) { await this.item.update({ "system.steadiness": Number(target.dataset.v) || 0 }); }
 
-  static openVersions() {
-    new VersionsEditor(this.item).render(true);
-  }
 }

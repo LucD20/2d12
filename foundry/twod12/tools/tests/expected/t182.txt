@@ -14,4 +14,4 @@ escHooks: [{"when":"allyState","range":5},{"when":"markDown","range":0}] | sente
 the hooks a creature has: [{"when":"allyState","range":5,"source":"Kindled Wrath"}]
 state changes: [["Bloodied"],["Strained","Down"],[]]
 --- wiring: a Critical on the creature's roll raises it: true | the mark going Down runs the markDown hook: true | an ally's state runs the allyState hook: true | no Bloodied / Strained Banes: true
-the Escalation block: nothing spent: true | the sheet's tooltip: true | the Momentum setting: true | a Rest clears it: true | the GM's valve: true
+the Escalation block: nothing spent: true | the sheet's tooltip: false | the Momentum setting: true | a Rest clears it: true | the GM's valve: true

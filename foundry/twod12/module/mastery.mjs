@@ -29,10 +29,6 @@ export function weaponGroupOf(w) {
   }
   return "";
 }
-/** Pure: the group a Tier 3 counts against this encounter ("kind:<key>" for a weapon outside the eight groups). */
-export const masteryLimitKey = w => weaponGroupOf(w) || `kind:${masteryKey(groupOf(w))}`;
-/** Pure: can this weapon still gain Mastery in this encounter? used: the actor's flag { combatId, groups: [] }. */
-export const canGainMastery = (used, combatId, w) => !(!!used && used.combatId === combatId && (used.groups ?? []).includes(masteryLimitKey(w)));
 
 /** A flag key for a group ("Great Sword" -> "great-sword"). */
 export const masteryKey = name => String(name ?? "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "weapon";
@@ -84,13 +80,6 @@ export async function ensureEntry(actor, weapon) {
   await actor.setFlag(F, "mastery", { [k]: { name: group, value: 0 } });
 }
 
-/** +n Mastery with this weapon's kind. Returns { group, before, after, reached } (reached: the steps crossed). */
-export async function addMastery(actor, weapon, n = 1) {
-  if (actor?.type !== "character" || !weapon || typeof actor.setFlag !== "function") return null;
-  const group = groupOf(weapon), k = masteryKey(group), before = masteryValue(actor, group), after = Math.max(0, before + n);
-  await actor.setFlag(F, "mastery", { [k]: { name: masteryOf(actor)[k]?.name || group, value: after } });
-  return { group, before, after, reached: MASTERY_STEPS.filter(s => before < s && after >= s) };
-}
 export async function setMastery(actor, key, value, name = "") {
   const cur = masteryOf(actor)[key] ?? { name: name || key, value: 0 };
   await actor.setFlag(F, "mastery", { [key]: { ...cur, value: Math.max(0, Math.trunc(Number(value)) || 0) } });

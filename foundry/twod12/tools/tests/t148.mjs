@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t148.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.181 (pack C1, Foundry follows the book): E3's Stages and CV x100, the PC Health factor and Modifier steps, Guard, and the A1/P1 rules in code
@@ -31,7 +32,7 @@ console.log("tooltip:", cvTip(TWOD12.npcRoles.standard));
 const actor = lv => ({ system: { ...{ role: "grunt", level: lv, ratings: all("medium"), custom: {}, weaponMod: 1 } }, getFlag: () => undefined });
 const ctx = npcBuilderContext(actor(6));
 console.log("Builder at level 6:", ctx.stageLabel, "| CV", ctx.cv, "| basic:", ctx.attacks[0].cells.map(c => c.avg).join(" | "), "| check:", ctx.check[1].s.split(".")[0], "| note:", JSON.stringify(ctx.levelNote), "| level 11:", JSON.stringify(npcBuilderContext(actor(11)).levelNote));
-const tpl = src("templates/actor-sheet.hbs");
+const tpl = src("templates/actor-sheet-pc.hbs");
 console.log("sheet: CV tooltips from the role:", (tpl.match(/\{\{(head|builder)\.cvTip\}\}/g) ?? []).length, "| the Stage under the Level:", tpl.includes("{{builder.stageLabel}}"));
 
 console.log("--- PCs (pack R): the Health line by Stage (the book: a Human Paladin, high on Vigor: 23 / 12 = 35; Stage 2: 35 / 18 = 53); the Modifiers +1 at Stage 3 only");

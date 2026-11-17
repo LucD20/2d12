@@ -2,4 +2,4 @@ halfHits t3: nnny | t2: nnyy | t1: nyyy | crit: n y | all: y | never: n n
 the old fields read as before: true
 the editor: the result, what happens, the line: true
 the granted use's card gets the line: true
-the Versions editor opens an effect by its name: true
+the Versions editor opens an effect by its name: retired in v0.0.415 (pack CL: the Versions editor; the Action sheet edits the Versions)

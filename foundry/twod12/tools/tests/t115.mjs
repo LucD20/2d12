@@ -1,4 +1,5 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t115.mjs)
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 // v0.0.132 (new sheet, step 3): the Features tab, the Light/Dark look, Escalation cost and chips on the Actions rows.
@@ -53,7 +54,7 @@ sheet._openFeat = new Set(["dp"]);
 console.log("opened Divine Power stays open, the others start folded:", (await sheet._featModel(ctx)).classCards.map(c => `${c.name} ${c.open ? "open" : "folded"}`).join(", "));
 
 const src = n => fs.readFileSync(ROOT + n, "utf8");
-const tpl = src("templates/actor-sheet.hbs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css"), main = src("module/twod12.mjs");
+const tpl = src("templates/actor-sheet-pc.hbs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css"), main = src("module/twod12.mjs");
 console.log("--- the sheet: tabs:", tpl.includes('data-tab-target="favorites" data-tooltip="Favorites" aria-label="Favorites"><i class="fa-regular fa-star"></i></a>'), tpl.includes('data-tab-target="class">Features</a>'),
   "| cards fold:", tpl.includes('data-action="toggleFeat"'), "| slots kept:", tpl.includes('class="tfslot talentslot" data-slot="{{key}}"') && tpl.includes('class="tfslot talentslot extra" data-slot=""'), "| feature order saved:", sh.includes(`setFlag("twod12", flag, ids)`) && tpl.includes(`data-order-flag="featureOrder"`), "| non-Action rows open their card:", sh.includes('item.type === "action" ? await buildActionCard(item, { actor: this.actor, use: !row.classList.contains("ps-brw") }) : await buildFeatureCard(item, { actor: this.actor })'));
 console.log("v0.0.133: band and panel always dark blue:", css.includes(".application.twod12.twod12-actor { --np-hb: #1e2a3a; --np-bg: #1e2a3a;") && !css.includes("ns-dark") && !main.includes("sheetDark"), "| Foundry's own title bar:", css.includes("> .window-header { background: var(--twod12-hdr)"), "| no padding:", css.includes("padding: 0 !important;"),

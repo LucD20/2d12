@@ -7,6 +7,6 @@ complete: true | the Attribute row: Body* Mind* Appeal (off) Instinct (off) | th
 --- a Dwarf: everything granted
 sections: Attributes [Granted]: Body +1 Mind +1 Appeal −1 Instinct +1 | Health [Granted]: Vigor +4 Resolve +1 | What it grants [Granted]: Speed 4 Reach 1 Size Medium (3) Steadiness 1 | complete: true | confirm: Save choices
 --- the Initiative window: rebuilt in v0.0.310 (initmodel.mjs, initview.mjs; t219)
---- wiring: a dropped species opens the window: true | the sheet opens it (Species: Choices): true | Initiative is its own window since v0.0.310 (not the pick window): true
+--- wiring: a dropped species opens the window: true | the sheet opens it (Species: Choices): false | Initiative is its own window since v0.0.310 (not the pick window): true
 the class window's high side: a selection at level 1: true | no swap on the sheet (v0.0.245: chosen once), a dropped class starts on Vigor: true | a dropped species starts fresh: true
-the Reaction AP pip: teal in the turn too, a divider before it: true | strip, ticker, tracker: true | a 1px line, a span: true
+the Reaction AP pip: teal in the turn too, a divider before it: false | strip, ticker, tracker: true | a 1px line, a span: true

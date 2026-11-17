@@ -3,10 +3,8 @@
 //   BB       Body Blunt (the first letter is the pool: B Body, M Mind, C Choice; the second the subtype: B H M P S)
 //   ModB     [Mod] to Body (AtB still reads)             "Prone"  plain text (tier effect)
 import { TWOD12, subtypeCode } from "./config.mjs";
-import { instanceText } from "./actions.mjs";
 import { esc } from "./util.mjs";
 import { weaponTierText } from "./explode.mjs";
-const { DialogV2 } = foundry.applications.api;
 
 const POOL = { B: "body", M: "mind", C: "choice" };
 const SUBCODES = "Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un";
@@ -157,56 +155,7 @@ export function convertEffects(text) {
 }
 
 
-/** Dialog: AP, three tiers and Effects. Creates the Version (or replaces the one with the same AP; its dropped Effects are kept). */
-export async function openGenerator(item) {
-  const versions = foundry.utils.deepClone(item.toObject().system.versions);
-  const find = ap => versions.find(v => v.ap === ap);
-  // It opens blank, on the lowest AP that has no Version yet. Picking an AP that already has one fills the fields so it can be edited.
-  const used = new Set(versions.map(v => v.ap));
-  const start = [1, 2, 3, 4, 5].find(n => !used.has(n)) ?? 1;
-  const val = (v, k) => tierToText(v?.[k] ?? [], v?.[`x${k.slice(1)}`] ?? "");
-  const content = `<div class="twod12 gen">
-    <div class="form-group"><label>AP</label><input type="number" name="ap" min="1" max="5" value="${start}"></div>
-    ${[1, 2, 3].map(n => `<div class="form-group"><label>Tier ${n}</label><input type="text" name="t${n}" value="${esc(val(find(start), `t${n}`))}" placeholder="1WB,1d4BH,1d6MH"></div>`).join("")}
-    <div class="form-group"><label>Effects</label><input type="text" name="effects" value="${esc(find(start)?.effects ?? "")}" placeholder="Bright light 2Emanation 1/round"></div>
-    <div class="genprev"></div>
-    <p class="hint">Damage: <code>1WB</code> = 1 [W] to Vigor (B), <code>1d4BH</code> = 1d4 Vigor Holy, <code>1d6MH</code> = 1d6 Resolve Holy (M), <code>BB</code> = Vigor Blunt, <code>ModB</code> or <code>Modifier</code> = [Mod], <code>"text"</code> = tier effect. Effects: <code>2Emanation 1/round</code> (or <code>EoT</code>), <code>2Burst</code>, <code>Appeal Save</code>, <code>DC 14 Body Check</code>, <code>Appeal Save: 1d6 / 1d4 / 0 [R] Holy</code>, <code>Prone</code>, <code>Immobilized (EoT)</code>, <code>1d6MH</code>, <code>Pushed 5</code>, <code>Pulled 3</code>, <code>Slid 2</code>, <code>Advance 5</code>, <code>Evade 1</code>, <code>Evade Speed/2</code> (references: speed, body, mind, appeal, instinct, level, weapon, hp, rally; rounded up), <code>uses 1 Rally Point</code>, <code>use up to 2 Rally Points</code>.</p></div>`;
-  const preview = el => {
-    const get = n => el.querySelector(`[name=${n}]`).value;
-    const rows = [1, 2, 3].map(n => {
-      const pf = parseTierFull(get(`t${n}`));
-      const txt = [...pf.insts.map(instanceText), pf.text].filter(Boolean).join(" &amp; ") || "&mdash;";
-      return `<div><b>Tier ${n}</b> ${esc(txt).replace(/&amp;amp;/g, "&amp;")}</div>`;
-    });
-    const eff = convertEffects(get("effects"));
-    el.querySelector(".genprev").innerHTML = rows.join("") + (eff ? `<div><b>Effects</b> ${esc(eff)}</div>` : "");
-  };
-  const res = await DialogV2.prompt({
-    window: { title: `Generate Action: ${item.name}` }, position: { width: 520 }, content,
-    render: (event, dialog) => {
-      const el = dialog.element;
-      el.querySelectorAll("input").forEach(i => i.addEventListener("input", () => preview(el)));
-      let filled = !!find(start);
-      el.querySelector("[name=ap]").addEventListener("change", ev => {
-        const v = find(Number(ev.target.value));
-        if (v) { for (const n of [1, 2, 3]) el.querySelector(`[name=t${n}]`).value = val(v, `t${n}`); el.querySelector("[name=effects]").value = v.effects ?? ""; filled = true; }
-        else if (filled) { for (const n of [1, 2, 3]) el.querySelector(`[name=t${n}]`).value = ""; el.querySelector("[name=effects]").value = ""; filled = false; }
-        preview(el);
-      });
-      preview(el);
-    },
-    ok: { label: "Generate", callback: (ev, btn) => Object.fromEntries(new FormData(btn.form)) },
-    rejectClose: false
-  });
-  if (!res) return;
-  const ap = Math.min(5, Math.max(1, parseInt(res.ap) || 1));
-  const idx = versions.findIndex(v => v.ap === ap);
-  const v = idx >= 0 ? versions[idx] : { ap, noTiers: false, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: "", fx: { all: [], t1: [], t2: [], t3: [] } };
-  for (const n of [1, 2, 3]) { const pf = parseTierFull(res[`t${n}`]); v[`t${n}`] = pf.insts; v[`x${n}`] = pf.text; }
-  v.effects = convertEffects(res.effects);
-  if (idx >= 0) versions[idx] = v; else versions.push(v);
-  await item.update({ "system.versions": versions });
-}
+// v0.0.415 (pack CL): the old Action generator (openGenerator, a DialogV2) is gone: nothing opened it since genaction.mjs (v0.0.136); it is in foundry/deprecated/module/gen-openGenerator.mjs.
 
 /* ------------------------------------------------------------------ */
 /* Weapon generator: "greatsword: two-handed, slash, 0/1d8/2d6"        */
@@ -287,10 +236,10 @@ export function weaponSummary(w) {
 
 const WORDS = "melee · ranges 10/20/40 · range 1/2 · thrown 4/8/12 · long · reload · two-handed · barehanded · non-threatening · blunt, slash, pierce, cold, fire, holy, mental… · three damages for Tiers 1 / 2 / 3 (0/1d8/2d6)";
 
-/** Dialog: one line of text. Buttons: Cancel, Create in the world, and Give to <the creature> (from a sheet) or Update <the weapon> (from its sheet). */
+/** The weapon generator (a pick window since v0.0.415): one line of text, its preview, and where it goes: Create in the world, Give to <the creature> (from a sheet) or Update <the weapon> (from its sheet). */
 export async function openWeaponGenerator({ item = null, actor = null } = {}) {
-  const content = `<div class="twod12 gen genw">
-    <label class="gw-line">Describe the weapon in one line <input type="text" name="w" value="${item ? "" : ""}" placeholder="rusty greatsword: two-handed, melee, slash, range 1, 0/1d8/2d6" autofocus></label>
+  const content = (txt = "") => `<div class="twod12 gen genw">
+    <label class="gw-line">Describe the weapon in one line <input type="text" name="w" data-field="w" value="${esc(txt)}" placeholder="rusty greatsword: two-handed, melee, slash, range 1, 0/1d8/2d6" autofocus></label>
     <div class="gw-ok"></div>
     <div class="gw-no"></div>
     <div class="gw-ph">Preview</div>
@@ -306,16 +255,19 @@ export async function openWeaponGenerator({ item = null, actor = null } = {}) {
     el.querySelector(".gw-card").innerHTML = `<div class="gw-wcard"><div class="gw-head"><b>${esc(w.name) || "?"}</b><span class="gw-seg"><span>Off</span><span class="${two ? "" : "on"}">1H</span><span class="${two ? "on" : ""}">2H</span></span></div>
       <div class="gw-kv"><span>Use</span><span>${esc(sm.use)}</span><span>Damage</span><span>${esc(sm.damage)}</span><span>Technique</span><span>none (drop one on it)</span></div></div>`;
   };
-  const read = el => el.querySelector("[name=w]").value;
-  const buttons = [{ action: "cancel", label: "Cancel" }];
-  if (item) buttons.push({ action: "update", label: `Update ${item.name}`, default: true, callback: (ev, btn, dlg) => ({ how: "update", text: read(dlg.element ?? btn.form) }) });
-  else {
-    buttons.push({ action: "world", label: "Create in the world", default: !actor, callback: (ev, btn, dlg) => ({ how: "world", text: read(dlg.element ?? btn.form) }) });
-    if (actor) buttons.push({ action: "give", label: `Give to ${actor.name}`, default: true, callback: (ev, btn, dlg) => ({ how: "give", text: read(dlg.element ?? btn.form) }) });
-  }
-  const res = await foundry.applications.api.DialogV2.wait({
-    window: { title: actor ? `Generate Weapon: ${actor.name}` : item ? `Generate Weapon: ${item.name}` : "Generate Weapon" }, classes: ["twod12-gen"], position: { width: 580 }, content, rejectClose: false, buttons,
-    render: (ev, dialog) => { const el = dialog.element; el.querySelector("[name=w]").addEventListener("input", () => preview(el)); preview(el); }
+  // v0.0.415 (pack CL): the pick window (was a DialogV2): the text field, the live preview, where it goes (a choice), Confirm
+  const hows = item ? [["update", `Update ${item.name}`]] : [["world", "Create in the world"], ...(actor ? [["give", `Give to ${actor.name}`]] : [])];
+  let how = item ? "update" : actor ? "give" : "world", text = "";
+  const { pickWith } = await import("./pickwindow.mjs");
+  const res = await pickWith({
+    title: actor ? `Generate Weapon: ${actor.name}` : item ? `Generate Weapon: ${item.name}` : "Generate Weapon",
+    model: () => ({ name: "Generate Weapon", sub: actor?.name ?? item?.name ?? "", icon: "fa-hammer",
+      sections: [{ title: "", html: content(text) }, ...(hows.length > 1 ? [{ title: "", rows: [{ key: "how", label: "", opts: hows.map(([k, l]) => ({ k, l, on: how === k })) }] }] : [])],
+      message: "", confirm: hows.find(h => h[0] === how)?.[1] ?? "Confirm" }),
+    pick: (row, k) => { how = k; },
+    input: (k, v) => { if (k === "w") text = v; },
+    live: (k, v, el) => preview(el),
+    result: () => ({ how, text })
   });
   if (!res || typeof res !== "object" || !res.text) return null;
   const w = parseWeaponText(res.text);

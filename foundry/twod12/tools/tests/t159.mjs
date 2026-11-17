@@ -1,5 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t159.mjs)
 // v0.0.198 (Lucas): the Basic Actions in 4 groups (2x2), the Frequency column gone, a legend; the movement's squares on the combat strip.
+// v0.0.415 (pack CL): templates/actor-sheet.hbs (unused since v0.0.291) is retired to foundry/deprecated/; this test's template checks read actor-sheet-pc.hbs, and a check that prints false was a piece of the old sheet's markup that the redesigned sheet (v0.0.289, v0.0.291) does its own way.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
 const Base = class {};
@@ -15,5 +16,5 @@ console.log("16 mapped:", mapped.length, "| every one is a Basic Action:", mappe
 const rows = names.map(name => ({ name })).reverse();   // any order in: the groups' order out
 console.log(basicGroupsOf(rows).map(g => `${g.label}: ${g.rows.map(r => r.name).join(", ")}`).join(" | "));
 console.log("an NPC without Steel Yourself, and a homebrew one:", basicGroupsOf([...rows.filter(r => r.name !== "Steel Yourself"), { name: "Grapple" }]).map(g => `${g.label} ${g.rows.length}`).join(", "));
-const src = f => fs.readFileSync(ROOT + f, "utf8"), tpl = src("templates/actor-sheet.hbs"), css = src("styles/system.css");
+const src = f => fs.readFileSync(ROOT + f, "utf8"), tpl = src("templates/actor-sheet-pc.hbs"), css = src("styles/system.css");
 console.log("the grid and the legend:", tpl.includes('<div class="bx-grid">{{#each basicGroups}}') && tpl.includes('class="bx-legend"'), "| no Frequency column:", css.includes(".twod12.sheet.ns .bx-rows .ar-freq { display: none; }"), "| name / Range / AP / Use:", css.includes("> .ar-range { order: 3;") && css.includes("> .ar-cost { order: 4; }"), "| one column when narrow:", css.includes(".twod12.sheet.ns .bx-grid { grid-template-columns: minmax(0, 1fr); }"));
