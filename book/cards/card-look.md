@@ -124,4 +124,6 @@ So the proposal for B with the research only: **black, one accent for structure,
 
 **Against the research, for his decision** (it is a group color again, but carried by a line and not by the word): it keeps the word black and legible and the color secondary (the order still says the group), so it passes "never the only cue"; it brings back five colors on every card, the "competing accents" the research warns about, and an underline is the web's sign for a link (the book's own links are underlined). Claude's view: try it on the mockups if he likes it here; drop it if it reads as links.
 
+**Lucas (2026-11-17): "I meant as a full line, so it would go from power to save all the way."** Redone: one continuous 2 px line under each group's run of traits (the traits are already printed by group, so a group is always together), with a gap at the dot between two groups.
+
 **Lucas's answer:**
