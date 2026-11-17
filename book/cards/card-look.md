@@ -276,4 +276,8 @@ The research note will be `book/research/class-layout.md` (how published RPGs la
 
 **For Lucas:** A, B or C.
 
+**Lucas's answer (2026-11-17): "A, the quick builds are fine. But the table isnt looking great."** **DECIDED: the class document is laid out by level (way A), with "Choose one.", one-line summaries and a Quick build on every choice; the quick-build picks as in the mockup** (Paladin: Binding Light, Shield of Faith, Hold the Line, Armor of Faith, Bulwark of Faith, Weight of Judgment, Reckoning; the Archer's to propose when it is laid out).
+
+**The table, redone in the mockup (PROPOSED):** "The Paladin by Level" becomes a real table with three columns, **Level · You gain · You choose** (the Talents go into "You choose"), no row for level 4 (a sentence under the table says it is not written yet). The at-a-glance box keeps its rows but its labels lose the spaced small caps (plain text in the lighter ink). Also fixed: the chapter's collapse mark beside the class name (it showed a stray line).
+
 **Lucas's answer:**

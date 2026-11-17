@@ -83,14 +83,16 @@ details.acard:focus-within{outline:2px solid var(--lk-acc)}
 .classdoc h1{font-size:2.2rem;margin-bottom:.3rem}
 .classdoc h2{font-size:1.4rem}
 .classdoc h3{font-variant-caps:small-caps;letter-spacing:.03em;font-size:1.15rem}
-.classdoc h1::before,.classdoc h2::after{display:none}
+.classdoc h2::after{display:none}
+section.chapter>details>summary h1::before{background:none!important;height:auto!important;margin:0 .2em 0 0!important;display:inline-block!important;width:1em;font-size:.55em;vertical-align:.3em;color:var(--lk-rule)}
 .classdoc .tagline{text-align:left;color:var(--lk-ink2)}
 .classdoc p.intro{text-align:left;font-size:1.05rem}
 .classdoc p.intro::first-letter{float:none;font:inherit;color:inherit;padding:0}
 .classdoc .statblock{border:0;background:none;padding:0;border-top:1px solid var(--lk-rule);border-bottom:1px solid var(--lk-rule)}
 .classdoc .statblock .sbt{color:var(--lk-ink);font-variant-caps:small-caps;margin:.3rem 0}
 .classdoc .statblock .sbr{border-top:1px solid var(--lk-hair)}
-.classdoc .statblock .lbl,.classdoc .levels .lbl{color:var(--lk-ink2);font-variant-caps:all-small-caps;font-weight:400;font-size:1rem}
+.classdoc .statblock .lbl,.classdoc .levels .lbl{color:var(--lk-ink2);font-variant:normal;font-variant-caps:normal;letter-spacing:0;font-weight:400;font-size:1rem}
+.classdoc .statblock .sbr{padding:.2rem 0}
 .classdoc .lvl{border-top:1px solid var(--lk-hair)}
 .classdoc .lvn b{color:var(--lk-ink);font-weight:600}
 .classdoc .lvb>div:not(:last-child)::after{display:none}
