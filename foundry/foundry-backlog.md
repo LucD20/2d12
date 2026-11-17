@@ -64,12 +64,16 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **The light damage card in a dark browser:** the Vigor and Resolve line is dark text, not white.
 - [ ] Nothing else moved: no element added or removed on any surface.
 
-## ONE MESSAGE PER ACTION (decided 2026-11-17, Lucas: "C"; drawn: `foundry/mockups/chatone/index.html`, the artifact "Foundry One Message"; nothing built)
-- [ ] **Damage writes into the attack card** (or the Save card) instead of posting a damage message: the message's content, its flags (ccDmg on the attack message) and its roll (Dice So Nice) updated in place. "Damage 18" and the pools beside the stamp, under the ladder; Apply takes the Damage button's place in the footer beside the target's name (Full / Half / Double behind the sliders button); once applied, "Took ..." under the name and Undo. The damage stamp and its link back go.
-- [ ] Apply, Apply all, Undo, Full / Half / Double, Lethal, the owner's choices through the socket, the After-the-damage chain (runChain) and lockSource work on the one message. Several targets: each target row of the attack card takes its own Apply. A Save Action's card the same.
-- [ ] Damage with no attack card keeps its own damage card (Bleed, an area's hazard, an inline damage link, a Save stack's area damage). Old damage cards keep working. flags.twod12.damage written on the attack message.
-- [ ] Once rolled, the Damage button goes; the GM can roll it again from the card's menu (Claude's choice; Lucas may revert).
-- [ ] The light card's pools line has its ink (fixed in v0.0.387 for the damage card; the same rule covers the attack card).
+## v0.0.388 (pack ONE, 2026-11-17, branch `pack-one-message`): TO TEST. One message per Action (decided 2026-11-17, Lucas: "C"; drawn: `foundry/mockups/chatone/index.html`)
+- [ ] **One target:** use an attack Action, then Damage: no new message; the same card shows "Damage N" and the Vigor / Resolve lines beside the Tier stamp (click them: the dice), and the footer shows the target with Apply (the sliders: Full / Half / Double). Apply: "Took ..." under the name, Undo; Undo puts it back. The Damage and retarget buttons are gone.
+- [ ] **Several targets** (Whirlwind, a Line): a "Damage" part under the card, a group a Tier, a row a creature with Apply, Apply all.
+- [ ] **A Save Action** (Rebuke, Ground Slam): Damage after the Saves: the damage on the Save card; a creature that rolls later: Damage again adds its row.
+- [ ] **A player** rolls their attack and damage: the GM sees Apply; with "Hide target details" on, the player sees "Waiting for the GM".
+- [ ] **Choices and chains:** a target with Resist / Weak or Guard, a Nonlethal attack, an "After the damage" chip (Bulwark-like, a Push): all as before.
+- [ ] **Roll the damage again:** as the GM, right-click the message: "Roll the damage again" (shown only while nothing is applied); the damage is replaced.
+- [ ] **Dice So Nice** (if installed) shows the damage dice.
+- [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
+- [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
 ## THE PALADIN'S REDESIGN IN FOUNDRY: what the system must follow (the book changed on 2026-11-16; nothing below is built; wait for Lucas's word)
 The book: `rules-src/12-paladin.md`, the cards in `book/cards/stage0/paladin.json`, the rules in rules-backlog.md "THE PALADIN'S REDESIGN AND THE CARD STRUCTURE: APPLIED TO THE BOOK".

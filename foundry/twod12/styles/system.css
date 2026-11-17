@@ -4714,3 +4714,16 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .qslot .ha, .twod12-hud .hv, .twod12-hud .ha > b { white-space: nowrap; flex-wrap: nowrap; }
 .twod12-hud .hud-mid.pc .hud-quick { grid-auto-columns: max-content; } .twod12-hud .qslot { min-width: 112px; }
 @container (max-width: 1000px) { .twod12-hud .hud-mid.pc .hud-quick { grid-auto-columns: max-content; } .twod12-hud .qslot { min-width: 96px; } }
+
+/* ==== v0.0.388 (pack ONE, Lucas: "C"; foundry/mockups/chatone): one message per Action. The damage written into its attack or Save card:
+   "Damage N" and the pools beside the stamp, under the ladder (one target); the target's damage row in the footer, in the Damage button's place;
+   with several targets or Tiers, a "Damage" part under the card. ==== */
+.twod12.chat.cc .cc-dlab { display: flex; align-items: baseline; gap: 6px; margin: 5px 0 0; }
+.twod12.chat.cc .cc-dlab span { font-size: 9.5px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; opacity: .8; }
+.twod12.chat.cc .cc-dlab b { font-size: 15px; line-height: 1; }
+.twod12.chat.cc .cc-attack .cc-main .cc-pools { margin-top: 2px; padding: 2px 6px; }
+.twod12.chat.cc .cc-dpart { margin-top: 6px; }
+.twod12.chat.cc .cc-foot.cc-dfoot { flex-wrap: wrap; }
+.twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow { flex: 1 1 auto; min-width: 0; border-top: 0; padding: 0; }
+.twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow .cc-adjrow { flex-basis: 100%; }
+.twod12.chat.cc .cc-pools { color: var(--cc-ink); }

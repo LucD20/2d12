@@ -331,6 +331,15 @@ function ccRender(msg, html) {
   if (slot) el.querySelectorAll(".twod12.chat.cc > .tline.grantrow").forEach(r => slot.append(r));
 }
 Hooks.on("renderChatMessageHTML", ccRender);
+// v0.0.388 (pack ONE): the damage is written into its attack card and the Damage button goes; the GM rolls it again from the message's menu
+// (only while no row is applied: undo first). V13 and V14 call the hook getChatMessageContextOptions (V12: getChatLogEntryContext).
+const rollAgainItem = () => ({
+  name: "Roll the damage again", icon: '<i class="fa-solid fa-dice"></i>',
+  condition: li => { const m = game.messages.get((li?.dataset ?? li?.[0]?.dataset)?.messageId); const d = m?.getFlag("twod12", "ccDmg"); return game.user.isGM && !!m?.getFlag("twod12", "action") && !!m?.getFlag("twod12", "cc")?.dmg && !(d?.rows ?? []).some(r => r.applied); },
+  callback: li => { const m = game.messages.get((li?.dataset ?? li?.[0]?.dataset)?.messageId); if (m) rollDamage(m, { again: true }); }
+});
+Hooks.on("getChatMessageContextOptions", (_app, items) => { try { items.push(rollAgainItem()); } catch (e) { console.warn("twod12 | roll again", e); } });
+Hooks.on("getChatLogEntryContext", (_app, items) => { try { items.push(rollAgainItem()); } catch (e) { console.warn("twod12 | roll again", e); } });
 // v0.0.249 (Lucas): a rung Passive's effect comes as soon as the Escalation reaches its rung (the encounter's start, a Critical, the hook, the GM's valve)
 Hooks.on("twod12.escalationChanged", async actor => { if (!game.user.isActiveGM) return; try { const { applyReachedEffects } = await import("./automation.mjs"); await applyReachedEffects(actor); } catch (e) { console.warn("twod12 | the rung's effects", e); } });
 Hooks.on("renderChatMessageHTML", (msg, html) => { import("./startstack.mjs").then(m => m.bindStartStack(msg, html)).catch(() => {}); });   // v0.0.345: the start-of-the-encounter stack

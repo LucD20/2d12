@@ -86,5 +86,5 @@
 
 **Step 7, the build, in three packs (Claude's order):**
 1. **STYLE-3, v0.0.387 (BUILT 2026-11-17, this branch):** steps 2, 3 and 4: the book's faces, the theme following Foundry (`@scope (.theme-dark) to (.themed)`, the system's setting gone), a color only for a meaning (game words in ink, the Frequency a small square, no trait chip fills, the bronze accent), palette A, the strips muted, Use outlined, the white pools line fixed. Checklist: `foundry/foundry-backlog.md` "v0.0.387".
-2. **ONE MESSAGE PER ACTION (step 6, C): its own pack, next** (a change to how the chat works: `foundry/foundry-backlog.md` "ONE MESSAGE PER ACTION").
+2. **ONE MESSAGE PER ACTION (step 6, C): BUILT 2026-11-17, v0.0.388 (pack ONE, branch `pack-one-message`).** Checklist: `foundry/foundry-backlog.md` "v0.0.388".
 3. **THE ACTION CARD IN THE BOOK'S LOOK (step 5): with the Structure's Foundry pass** (`foundry/foundry-backlog.md` "THE PALADIN'S REDESIGN IN FOUNDRY", its card's look line).

@@ -207,6 +207,9 @@ export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage
   const dmg = hasDamage ? `<button type="button" class="cc-btn small primary" data-twod12="${damage}"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>` : "";
   return `<hr class="cc-hr"><div class="cc-foot">${re}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> ${names}</span>${dmg}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
 }
+/** v0.0.388 (pack ONE): the bottom row of a one-target card holding its damage: the target's damage row (its name, Apply or Took and Undo, Full /
+ *  Half / Double behind the sliders) in the place of "→ target" and Damage; Card at the right. No retarget once the damage is rolled. */
+export const dmgFootHtml = (din, view = FULL_VIEW) => `<hr class="cc-hr"><div class="cc-foot cc-dfoot">${din.row || '<span class="cc-ftgt"></span>'}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>${din.extra ?? ""}`;
 const designerFoot = (lines, view) => (view.designer && lines.filter(Boolean).length ? `<div class="cc-designer">${lines.filter(Boolean).join("<br>")}</div>` : "");
 const playerFoot = txt => `<div class="cc-pfoot">${esc(txt)}</div>`;
 
@@ -228,7 +231,10 @@ const critLine = (m, rows, hide) => {
 };
 export function attackCardHtml(m, view = FULL_VIEW) {
   const hide = view.hideDef, rows = m.rows ?? [], one = rows.length <= 1;
-  const btns = footHtml(m, view);
+  // v0.0.388 (pack ONE): the damage, once rolled, is drawn on this card (m.dmg); the Damage button goes
+  const din = m.dmg ? damageInHtml(m.dmg, view) : null, inMain = one && din?.compact;
+  const btns = inMain ? dmgFootHtml(din, view) : footHtml(m, view, din ? { hasDamage: false, locked: true } : {});
+  const dpart = din && !inMain ? din.part : "";
   const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 2)) ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
@@ -236,8 +242,8 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const head = `${headHtml(m)}${metaLineHtml(m)}${m.setupHtml ?? ""}`;
   if (one) {
     const r = rows[0];
-    const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}<div class="cc-outcome">${outcomeHtml(m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
-    return `<div class="cc-card cc-attack">${head}${body}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+    const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
+    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}">${head}${body}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
@@ -249,7 +255,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
     const out = outcomeHtml(m.outcomes?.[t]);
     return `<div class="cc-tgroup"><div class="cc-ghd">${tierPill(t, false, true)}<span class="cc-who">${who.map(r => `<span class="cc-nchip">${esc(r.name)}</span>`).join("")}</span></div>${out}${t === 3 ? critLine(m, who, hide) : ""}</div>`;
   }).join("");
-  return `<div class="cc-card cc-attack many">${head}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+  return `<div class="cc-card cc-attack many">${head}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Save card */
@@ -283,7 +289,7 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const trig = triggerLineHtml(m);
   const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${crows}${action}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${crows}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */
@@ -478,13 +484,10 @@ export const diceSummary = comps => [...new Set((comps ?? []).map(c => `${c.form
  * The damage message. m: { name, nl, srcId, groups: [{ tier, crit, comps, riders: [html], rows: [i] }], rows: [{ uuid, name, tier, mods, choice, applied }],
  * designer: { avg, atLeast } }. A row's applied: { took: { B, M }, state, factor }.
  */
-export function damageCardHtml(m, view = FULL_VIEW) {
+/** v0.0.388 (pack ONE): the damage's pieces, for the damage card and for an attack or Save card that holds its own damage (m.dmg). */
+function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
   const groups = m.groups ?? [], rows = m.rows ?? [], top = groups[0] ?? { tier: 0, comps: [] };
   const sum = cs => (cs ?? []).reduce((a, c) => a + (Number(c.total) || 0), 0);
-  // v0.0.287 (Lucas: several Tiers showed only the top one): the stamp holds every Tier's total, a band each in its Tier's color
-  const stamp = groups.length > 1
-    ? `<button type="button" class="cc-stamp dmg multi" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small class="cc-shd">DAMAGE</small>${groups.map(g => `<span class="cc-sband ${tierCls(g.tier || 1, g.crit)}"><b>${sum(g.comps)}</b><small class="cc-stl">Tier ${g.tier}</small></span>`).join("")}<small class="cc-stl cc-sarrow">\u2197</small></button>`
-    : `<button type="button" class="cc-stamp dmg ${tierCls(top.tier || 1, top.crit)}" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small>DAMAGE</small><b>${sum(top.comps)}</b>${top.tier ? `<small class="cc-stl">Tier ${top.tier} \u2197</small>` : ""}</button>`;
   const ht = view.hideTgt;
   // v0.0.288: the Lethal / Nonlethal tag (none on a Bleed's card, v0.0.315); v0.0.321 (Lucas: it made the card taller): in each row's on-demand
   // row (the sliders button), and at the bottom only on a card with no target yet
@@ -506,11 +509,11 @@ export function damageCardHtml(m, view = FULL_VIEW) {
   };
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {
-    const insts = mergeInstances(instancesOf(g.comps)), id = `g${gi}`;   // v0.0.373 (Lucas): one block per pool and damage type
+    const insts = mergeInstances(instancesOf(g.comps)), id = `${idp}${gi}`;   // v0.0.373 (Lucas): one block per pool and damage type
     const pools = `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button><div class="cc-break dmg" data-cc-panel="${id}">${insts.map(instBlock).join("")}</div>`;
     const head = many ? `<div class="cc-ghead">${tierPill(g.tier, g.crit, true)}<span>${poolLinesSummary(g.comps)}</span><b>${sum(g.comps)}</b></div>` : "";
-    const riders = (g.riders ?? []).filter(Boolean).map(riderHtml).join("");
-    return `<div class="cc-dgroup">${head}${pools}${riders}<div class="cc-trows">${(g.rows ?? []).map(rowHtml).join("")}</div></div>`;
+    const rid = riders ? (g.riders ?? []).filter(Boolean).map(riderHtml).join("") : "";
+    return `<div class="cc-dgroup">${head}${pools}${rid}<div class="cc-trows">${(g.rows ?? []).map(rowHtml).join("")}</div></div>`;
   }).join("");
   const noTgt = !rows.length && view.author ? '<div class="cc-btns"><button type="button" class="cc-btn" data-twod12="ccDmgTarget"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i> Target the selected tokens</button></div>' : "";
   const pending = rows.filter(r => !r.applied).length;
@@ -518,9 +521,38 @@ export function damageCardHtml(m, view = FULL_VIEW) {
   const tagHere = rows.length ? "" : nlTag;
   const all = allBtn || tagHere ? `<div class="cc-applyall">${allBtn}${tagHere}</div>` : "";
   const note = m.note ? `<div class="cc-dnote">${m.note}</div>` : "";   // v0.0.315 (Lucas, Bleed's card): a short line, no ↳ box
+  const poolsOf = gi => { const g = groups[gi] ?? { comps: [] }, id = `${idp}${gi}`; return `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button><div class="cc-break dmg" data-cc-panel="${id}">${mergeInstances(instancesOf(g.comps)).map(instBlock).join("")}</div>`; };
+  return { groups, rows, top, sum, rowHtml, body, all, noTgt, note, poolsOf, nlTag };
+}
+export function damageCardHtml(m, view = FULL_VIEW) {
+  const { groups, top, sum, body, all, noTgt, note } = dmgParts(m, view);
+  // v0.0.287 (Lucas: several Tiers showed only the top one): the stamp holds every Tier's total, a band each in its Tier's color
+  const stamp = groups.length > 1
+    ? `<button type="button" class="cc-stamp dmg multi" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small class="cc-shd">DAMAGE</small>${groups.map(g => `<span class="cc-sband ${tierCls(g.tier || 1, g.crit)}"><b>${sum(g.comps)}</b><small class="cc-stl">Tier ${g.tier}</small></span>`).join("")}<small class="cc-stl cc-sarrow">\u2197</small></button>`
+    : `<button type="button" class="cc-stamp dmg ${tierCls(top.tier || 1, top.crit)}" data-twod12="ccOpenSrc" aria-label="Open its roll card"><small>DAMAGE</small><b>${sum(top.comps)}</b>${top.tier ? `<small class="cc-stl">Tier ${top.tier} \u2197</small>` : ""}</button>`;
+  const ht = view.hideTgt;
   const des = designerFoot([m.designer ? `Avg ${m.designer.avg} · this total or more: ${m.designer.atLeast}%` : ""], view);
   const pf = ht ? playerFoot("Player view · target details hidden by the GM") : "";
   return `<div class="cc-card cc-dmg"><div class="cc-body">${stamp}<div class="cc-main"><div class="cc-dhead"><b class="cc-name">${esc(m.name)}</b></div>${body}${note}${all}${noTgt}</div></div>${des}${pf}</div>`;
+}
+/**
+ * v0.0.388 (pack ONE, Lucas: "C", foundry/mockups/chatone): one message per Action. A card that holds its own damage (m.dmg, the damage message's
+ * model) draws it in place of a second card. compact (one target, one Tier): "Damage N" and the pools beside the stamp, under the ladder; the
+ * target's damage row (Apply, or Took and Undo) in the footer, in the Damage button's place. Otherwise a "Damage" part under the card: a group a
+ * Tier with its pools and its rows, Apply all. The Tier's riders are not repeated (the card already shows the Tier's outcome).
+ */
+/** The Save card's damage: always a part under its rows (its rows already name each creature). */
+export function dmgAsPart(d, view = FULL_VIEW) {
+  const p = dmgParts(d, view, { riders: false, idp: "d" }), total = p.groups.reduce((a, g) => a + p.sum(g.comps), 0);
+  return `<div class="cc-dpart"><div class="cc-dlab"><span>Damage</span><b>${total}</b></div>${p.body}${p.note}${p.all}${p.noTgt}</div>`;
+}
+export function damageInHtml(d, view = FULL_VIEW) {
+  const p = dmgParts(d, view, { riders: false, idp: "d" });
+  const compact = p.groups.length === 1 && p.rows.length <= 1;
+  const total = p.groups.reduce((a, g) => a + p.sum(g.comps), 0);
+  const lab = `<div class="cc-dlab"><span>Damage</span><b>${total}</b></div>`;
+  if (compact) return { compact, main: `${lab}${p.poolsOf(0)}`, row: p.rows.length ? p.rowHtml(0) : "", extra: `${p.note}${p.all}${p.noTgt}` };
+  return { compact, part: `<div class="cc-dpart">${lab}${p.body}${p.note}${p.all}${p.noTgt}</div>` };
 }
 const poolLinesSummary = comps => {
   const by = new Map();

@@ -85,7 +85,7 @@ export function dmgModel(s) {
  * Post a damage message. groups: [{ tier, crit, comps, fx, riders (HTML) }]; targets: [{ uuid, name, tier, crit, g (its group) }].
  * comps: [{ pool, sub, nl, total, formula, dice, kind, src, emp, label }]. The old flags (dmgCard / damage) stay for the modules that read them.
  */
-export async function postCcDamage({ actor = null, title, groups, targets = [], nl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false, srcId = "", rolls = [], escalation = false, note = "", noNl = false, save = false }) {   // v0.0.315: note (a short line, no ↳ box: Bleed's Save), noNl (no Lethal tag)
+export async function postCcDamage({ actor = null, title, groups, targets = [], nl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false, srcId = "", rolls = [], escalation = false, note = "", noNl = false, save = false, into = null, replace = false }) {   // v0.0.315: note (a short line, no ↳ box: Bleed's Save), noNl (no Lethal tag)
   const rows = targets.map(t => {
     const g = Number.isInteger(t.g) ? t.g : Math.max(0, groups.findIndex(x => x.tier === t.tier));
     const p = rowPreview(groups[g]?.comps ?? [], actorOf(t.uuid));
@@ -94,6 +94,8 @@ export async function postCcDamage({ actor = null, title, groups, targets = [], 
   const gs = groups.map((g, i) => ({ tier: g.tier ?? 0, crit: !!g.crit, comps: g.comps.map(c => ({ pool: c.pool || "B", sub: c.sub ?? "", nl: c.nl, total: Number(c.total) || 0, formula: c.formula ?? "", dice: c.dice ?? [], kind: c.kind ?? "", src: c.src ?? "", emp: c.emp ?? 0, label: c.label ?? "" })), fx: g.fx ?? [], riders: g.riders ?? [], rows: rows.map((r, k) => (r.g === i ? k : -1)).filter(k => k >= 0) }));
   const state = { name: title, nl: !!nl, groups: gs, rows, originUuid, originMod, after, areaPoint, strike: !!strike, srcId, escalation: !!escalation, note, noNl: !!noNl, save: !!save };   // v0.0.334: save: from a Save Action (its chain runs on the Tiers the damage landed: 1 and 2)
   const first = gs[0];
+  // v0.0.388: into a card that draws its damage (an attack or Save card); an old card (no card model) still gets a damage message
+  if (into && ["attack", "save"].includes(into.getFlag?.(F, "cc")?.kind) && typeof into.update === "function") return writeInto(into, state, rolls, { replace });
   return ChatMessage.create({
     speaker: ChatMessage.getSpeaker(actor ? { actor } : {}), rolls, content: CC.cardContent(dmgModel(state)),
     flags: { [F]: { ccDmg: state, cc: dmgModel(state), damage: (first?.comps ?? []).map(c => ({ pool: c.pool, subtype: c.sub, total: c.total, formula: c.formula, nonlethal: c.nl })),
@@ -101,7 +103,43 @@ export async function postCcDamage({ actor = null, title, groups, targets = [], 
   });
 }
 
+/**
+ * v0.0.388 (pack ONE, Lucas: "C"): one message per Action. The damage is written into the attack or Save card it was rolled from: the card's model
+ * keeps it (flags.cc.dmg, drawn by chatcards.mjs damageInHtml) and the damage's state stays flags.ccDmg, so Apply, Undo, Full / Half / Double and the
+ * chain work on that message as they did on a damage message. A Save card's later damage (creatures that rolled later) is added to it; replace
+ * (the GM's "Roll the damage again") starts over. The dice show with Dice So Nice; the rolls are kept on the message.
+ */
+export function mergeDamage(old, add) {
+  if (!old) return add;
+  const s = structuredClone(old), base = s.rows.length;
+  s.rows.push(...add.rows.map(r => ({ ...r, g: r.g })));
+  add.groups.forEach((g, gi) => {
+    const idx = add.rows.map((r, k) => (r.g === gi ? base + k : -1)).filter(k => k >= 0);
+    const same = s.groups.findIndex(x => x.tier === g.tier && !!x.crit === !!g.crit);
+    if (same >= 0) { s.groups[same].rows.push(...idx); idx.forEach(k => { s.rows[k].g = same; }); }
+    else { s.groups.push({ ...g, rows: idx }); idx.forEach(k => { s.rows[k].g = s.groups.length - 1; }); }
+  });
+  return s;
+}
+async function writeInto(msg, state, rolls = [], { replace = false } = {}) {
+  const prev = replace ? null : msg.getFlag(F, "ccDmg"), old = Array.isArray(prev?.rows) && Array.isArray(prev?.groups) ? prev : null;
+  const s = mergeDamage(old, { ...state, srcId: msg.id });
+  try { if (game.dice3d && rolls.length) await Promise.all(rolls.map(r => game.dice3d.showForRoll(r, game.user, true))); } catch (e) { console.warn("twod12 | Dice So Nice", e); }
+  const cc = msg.getFlag(F, "cc"), next = { ...cc, dmg: dmgModel(s) }, first = s.groups[0];
+  const keep = (msg.rolls ?? []).map(r => JSON.stringify(r.toJSON ? r.toJSON() : r)), added = rolls.map(r => JSON.stringify(r.toJSON ? r.toJSON() : r));
+  await msg.update({ content: CC.replaceCard(msg.content, cc, next), rolls: replace ? added : [...keep, ...added], [`flags.${F}.ccDmg`]: s, [`flags.${F}.cc`]: next,
+    [`flags.${F}.damage`]: (first?.comps ?? []).map(c => ({ pool: c.pool, subtype: c.sub, total: c.total, formula: c.formula, nonlethal: c.nl })) });
+  return msg;
+}
+/** Is this message a card holding its own damage (pack ONE) rather than a damage message? */
+const holdsDamage = msg => { const k = msg.getFlag(F, "cc")?.kind; return k === "attack" || k === "save"; };
+
 async function save(msg, s) {
+  if (holdsDamage(msg)) {
+    const cc = msg.getFlag(F, "cc"), next = { ...cc, dmg: dmgModel(s) };
+    try { await msg.update({ content: CC.replaceCard(msg.content, cc, next), [`flags.${F}.ccDmg`]: s, [`flags.${F}.cc`]: next }); return true; }
+    catch (e) { ui.notifications.warn("Only the author of this card or the GM can change it."); return false; }
+  }
   try { await msg.update({ content: CC.cardContent(dmgModel(s)), [`flags.${F}.ccDmg`]: s, [`flags.${F}.cc`]: dmgModel(s) }); return true; }
   catch (e) { ui.notifications.warn("Only the author of this card or the GM can change it."); return false; }
 }

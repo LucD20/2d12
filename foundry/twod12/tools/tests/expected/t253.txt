@@ -1,0 +1,17 @@
+--- one target, one Tier: the damage beside the stamp, Apply in the footer
+before the damage: the Damage button: true | no damage part: true
+the Damage button gone: true | 'Damage 18' and the pools in the stamp's column: true | the dice behind it: true | before the Tier's outcome: true
+the footer holds the target's row: true | Apply: true | Full / Half / Double behind the sliders: true | Card: true | no retarget once rolled: true | the rider not repeated: true | one card, no damage stamp: true | the card marked: true
+applied: Took under the name, Undo: true
+no target: the damage's own target button: true
+a player with target details hidden: 'Waiting for the GM', no Apply: true
+--- several targets or Tiers: a Damage part under the card
+a Damage part with both Tiers: true | a row each, Apply all: true | no Damage button: true
+a Save card: its damage as a part, above the footer: true | Apply: true
+the damage message unchanged (still drawn for Bleed, hazards, inline damage): true
+--- a Save card's later damage is merged in
+rows: Aveline:g0 Durgan:g0 Sylwen:g1 | groups: [[2,[0,1]],[1,[2]]] | nothing before: the new one: true
+--- written into the message
+one update, no new message: true | the state on the card: true | the card's model keeps it: true | the content redrawn: true | the old flag for modules: true
+--- the wiring
+rollDamage writes into its card: true | the Save card too: true | Apply and Undo save into the card: true | the GM's menu item: true | the styles: true
