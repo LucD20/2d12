@@ -1112,6 +1112,10 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
   if (!list.length) return warn(`${label} ${N}: no creature ${cfg.area > 0 ? `within ${cfg.area} of the target` : "among the targets"} to move.`);
   const moved = [], by = cfg.from === "target" || cfg.from === "area" ? tokenOf(contextActor(ctx)) : null;
   const { pickBar } = await import("./pickbar.mjs");   // v0.0.247 (Lucas): the list is a bar at the bottom, in the Line bar's look, not a Foundry window
+  // v0.0.402 (Lucas: "Not even after the last push"): the tokens selected when the push started are selected again when it ends
+  const heldIds = (canvas.tokens?.controlled ?? []).map(t => t.id);
+  const giveBack = () => { for (const id of heldIds) { const t = canvas.tokens?.get?.(id); if (t && !t.destroyed && !t.controlled) t.control?.({ releaseOthers: false }); } };
+  try {
   while (list.length) {
     const pick = await pickBar({ icon: "fa-hand", done: "Done", cancel: "Stop",
       text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature (here or its token) to move it.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
@@ -1122,7 +1126,9 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
     await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach: !!cfg.withinReach, by, msg: ctx?.message ?? null });
     moved.push(t.name);
     list = list.filter(x => x.id !== t.id);
+    giveBack();
   }
+  } finally { try { giveBack(); setTimeout(giveBack, 300); } catch (e) { /* gone */ } }
 }
 
 /** Entry point of the @Move button. */

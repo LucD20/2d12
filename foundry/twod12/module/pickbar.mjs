@@ -26,12 +26,15 @@ export async function pickBar(o) {
   if (toks.length && globalThis.canvas?.ready) { try { T = await import("./template.mjs"); } catch (e) { T = null; } }
   // v0.0.400 (Lucas: after the first push, the second question floated bare): a click on the map releases the controlled tokens, so the HUD
   // fell back to the party strip; they are controlled again when the bar closes
+  // v0.0.402 (Lucas: "Token isn't selected after the push"): held by id, the token looked up fresh (a placeable has no .scene: the old check
+  // was always false), selected again when released, after a pick, when the bar closes, and a moment later (Foundry's own release comes last)
   let held = [];
-  try { held = [...(globalThis.canvas?.tokens?.controlled ?? [])]; } catch (e) { held = []; }
+  try { held = (globalThis.canvas?.tokens?.controlled ?? []).map(t => t.id); } catch (e) { held = []; }
+  const reselect = () => { try { for (const id of held) { const t = canvas.tokens?.get?.(id); if (t && !t.destroyed && !t.controlled) t.control?.({ releaseOthers: false }); } } catch (e) { /* gone */ } };
   // v0.0.401 (Lucas: "Don't deselect the token after push"; in target mode he can't select it again): Foundry releases the tokens on the map
   // click's pointer-up, after the pick: while the bar is up (and a moment after) a held token that is released is controlled again at once
   let guard = null;
-  const keep = (token, on) => { if (on || !held.includes(token)) return; setTimeout(() => { try { if (token?.scene && !token.controlled) token.control?.({ releaseOthers: false }); } catch (e) { /* gone */ } }, 0); };
+  const keep = (token, on) => { if (on || !held.includes(token?.id)) return; setTimeout(reselect, 0); };
   try { if (held.length && globalThis.Hooks?.on) guard = Hooks.on("controlToken", keep); } catch (e) { guard = null; }
   const res = await new Promise(resolve => {
     const bar = document.createElement("div");
@@ -60,7 +63,7 @@ export async function pickBar(o) {
       prevInteractive = canvas.tokens.interactiveChildren; canvas.tokens.interactiveChildren = false;
       const at = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage), c = T.cellAt(p); return toks.find(x => cellsOf(x).some(k => k.i === c.i && k.j === c.j)) ?? null; };
       move = ev => hover(at(ev));
-      down = ev => { if (ev.button !== 0) return; const hit = at(ev); if (hit) { finish(hit.id); setTimeout(() => { try { for (const t of held) if (t?.scene && !t.controlled) t.control?.({ releaseOthers: false }); } catch (e) { /* gone */ } }, 0); } };
+      down = ev => { if (ev.button !== 0) return; const hit = at(ev); if (hit) { finish(hit.id); setTimeout(reselect, 0); setTimeout(reselect, 250); } };
       canvas.stage.on("pointermove", move);
       canvas.stage.on("pointerdown", down);
       draw();
@@ -75,7 +78,7 @@ export async function pickBar(o) {
       if (down) canvas.stage.off("pointerdown", down);
       if (prevInteractive !== null) canvas.tokens.interactiveChildren = prevInteractive;
       try { gfx?.destroy(); } catch (e) { /* gone */ }
-      try { for (const t of held) if (t?.scene && !t.controlled) t.control?.({ releaseOthers: false }); } catch (e) { /* gone */ }
+      reselect();
       resolve(v);
     };
     const key = ev => {
@@ -92,5 +95,6 @@ export async function pickBar(o) {
   });
   await back();
   if (guard !== null) setTimeout(() => { try { Hooks.off("controlToken", guard); } catch (e) { /* gone */ } }, 800);
+  setTimeout(reselect, 300);
   return res;
 }
