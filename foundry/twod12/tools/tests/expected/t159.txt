@@ -1,4 +1,4 @@
-16 mapped: 18 | every one is a Basic Action: true | Basic Actions not in a group: ["Opportunity Attack"]
-Attack: Weapon Attack, Charge, Fists, Reload, Opportunity Attack | Movement: Advance, Evade, Crawl, Stand, Break Free | Control: Shove, Trip, Haul, Relocate | Utility: Steel Yourself, Interact, Regrip, Release, Leaning
-an NPC without Steel Yourself, and a homebrew one: Attack 5, Movement 5, Control 4, Utility 4, Other 1
+16 mapped: 18 | every one is a Basic Action: true | Basic Actions not in a group: []
+Attack: Weapon Attack, Charge, Fists, Reload | Movement: Advance, Evade, Crawl, Stand, Break Free | Control: Shove, Trip, Haul, Relocate | Utility: Steel Yourself, Interact, Regrip, Release, Leaning
+an NPC without Steel Yourself, and a homebrew one: Attack 4, Movement 5, Control 4, Utility 4, Other 1
 the grid and the legend: true | no Frequency column: true | name / Range / AP / Use: true | one column when narrow: true

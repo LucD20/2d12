@@ -10,13 +10,13 @@ globalThis.Hooks = { on() {} }; globalThis.CONFIG = {};
 const { healthLine, CharacterData } = await import(ROOTURL + "module/data.mjs");
 const C = await import(ROOTURL + "tools/content.mjs");
 const cls = n => C.docs.find(d => d.type === "class" && d.name === n).system, sp = n => C.docs.find(d => d.type === "species" && d.name === n).system;
-const line = (c, s, o = {}) => healthLine({ high: c.healthHigh, low: c.healthLow, steps: { high2: c.stepHigh2, low2: c.stepLow2, high3: c.stepHigh3, low3: c.stepLow3 }, stage: o.stage ?? 1, highSide: o.high ?? "vigor", bonus: { v: s.bodyMod, r: s.mindMod, pick: !!s.pickHealth, side: o.side ?? "" } });
+const line = (c, s, o = {}) => healthLine({ high: c.healthHigh, low: c.healthLow, steps: { high1: c.stepHigh1, low1: c.stepLow1, high2: c.stepHigh2, low2: c.stepLow2, high3: c.stepHigh3, low3: c.stepLow3 }, stage: o.stage ?? 0, highSide: o.high ?? "vigor", bonus: { v: s.bodyMod, r: s.mindMod, pick: !!s.pickHealth, side: o.side ?? "" } });
 const show = h => `Vigor ${h.vigor} / Resolve ${h.resolve} = ${h.pool}${h.moved ? ` (floor ${h.floor}: ${h.moved} moved)` : ""}`;
 console.log("--- the compendium's numbers");
-for (const n of ["Paladin", "Archer"]) { const c = cls(n); console.log(`${n}: high ${c.healthHigh} / low ${c.healthLow}, Stage 2 +${c.stepHigh2} / +${c.stepLow2}, Stage 3 +${c.stepHigh3} / +${c.stepLow3}, Rally ${c.rallyMod} | old multipliers ${c.bodyMult} / ${c.mindMult}`); }
+for (const n of ["Paladin", "Archer"]) { const c = cls(n); console.log(`${n}: high ${c.healthHigh} / low ${c.healthLow}, Stage 1 +${c.stepHigh1} / +${c.stepLow1}, Stage 2 +${c.stepHigh2} / +${c.stepLow2}, Stage 3 +${c.stepHigh3} / +${c.stepLow3}, Rally ${c.rallyMod} | old multipliers ${c.bodyMult} / ${c.mindMult}`); }
 for (const n of ["Human", "Dwarf", "Elf"]) { const s = sp(n); console.log(`${n}: Vigor +${s.bodyMod}, Resolve +${s.mindMod}${s.pickHealth ? " (the player chooses the side)" : ""}`); }
 console.log("--- the book's examples");
-console.log("a Human Paladin, high on Vigor:", show(line(cls("Paladin"), sp("Human"))), "| at Stage 2:", show(line(cls("Paladin"), sp("Human"), { stage: 2 })), "| Stage 3:", show(line(cls("Paladin"), sp("Human"), { stage: 3 })));
+console.log("a Human Paladin, high on Vigor:", show(line(cls("Paladin"), sp("Human"))), "| at Stage 1:", show(line(cls("Paladin"), sp("Human"), { stage: 1 })), "| Stage 2:", show(line(cls("Paladin"), sp("Human"), { stage: 2 })), "| Stage 3:", show(line(cls("Paladin"), sp("Human"), { stage: 3 })));
 console.log("Steven, an Elf Archer high on Resolve:", show(line(cls("Archer"), sp("Elf"), { high: "resolve" })), "(9 / 20 before the floor)");
 console.log("a Dwarf Archer high on Resolve:", show(line(cls("Archer"), sp("Dwarf"), { high: "resolve" })), "| high on Vigor:", show(line(cls("Archer"), sp("Dwarf"))));
 console.log("the Human's +3: with the high value:", show(line(cls("Archer"), sp("Human"), { high: "resolve" })), "| on Vigor by choice:", show(line(cls("Archer"), sp("Human"), { high: "resolve", side: "vigor" })));

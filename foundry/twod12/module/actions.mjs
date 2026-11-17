@@ -1323,7 +1323,8 @@ export async function rollDamage(message, { again = false } = {}) {
     let chip = "";
     const dmgRes = resolved;
     // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage), the Signature Modifier for a [Signature, Weapon] Action (v0.0.181); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
-    const attrFrom = f.attrMode === "all" ? 1 : f.attrMode === "t2" ? 2 : f.attrMode === "none" ? Infinity : (f.isWeapon ? 2 : Infinity);
+    // v0.0.407 (the Bestiary, Attributes and Modifiers): an NPC's damage is written whole: its Modifier is for its rolls only (nothing added; a [Mod] written in a Tier still counts)
+    const attrFrom = actor.type === "npc" ? Infinity : f.attrMode === "all" ? 1 : f.attrMode === "t2" ? 2 : f.attrMode === "none" ? Infinity : (f.isWeapon ? 2 : Infinity);
     if (tier >= attrFrom && !insts.some(i => i.useAt) && dmgRes.length) {
       const wInst = (f.attrMode === "all" ? null : dmgRes.find(r => r.inst.useW)) ?? dmgRes.find(r => r.comps.length) ?? dmgRes[0];
       const pool = wInst.inst.pool || "B";

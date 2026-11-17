@@ -4,6 +4,7 @@ import { migrateSettings, migrateRules, migrateZone } from "./settingsmigrate.mj
 import { classModifiers, modOf, classTrack } from "./modifiers.mjs";
 
 import { applySpeedMods } from "./speedmods.mjs";
+import { s0Health, npcDefenseOf, rankAp, rankReactionAp, cvSteps, cvWithSteps, ROLE_PRESETS } from "./npcbudget.mjs";   // v0.0.407: the Bestiary's Stage 0 numbers
 const { SchemaField, NumberField, StringField, BooleanField, ArrayField, SetField, HTMLField, ObjectField } = foundry.data.fields;
 const int = (initial = 0, min = 0) => new NumberField({ required: true, nullable: false, integer: true, initial, min });
 const sint = (initial = 0) => new NumberField({ required: true, nullable: false, integer: true, initial });
@@ -238,11 +239,16 @@ export function npcBuild(sys) {
   const attributes = {};
   for (const k of Object.keys(TWOD12.attributes)) attributes[k] = rating(k) === "custom" ? (Number(sys.custom?.[k]) || 0) : role.attr + R[rating(k)].off;
   const hmOf = r => npcHm(sys.role, r, sys.level);   // v0.0.181: the row of the level's Stage
+  // v0.0.407 (Stage 0 in Foundry; the Bestiary, Health): at Stage 0 an NPC's Vigor and Resolve are each its rating's ready number (no Attribute, no
+  // multiplier: hm null); the later Stages keep pack R's rows until the book writes them
+  const s0 = stageOf(sys.level) === 0, rank = TWOD12.npcRoles[sys.role] ? sys.role : "standard";
   const health = (key, attr) => { const r = rating(`${key}Hm`); if (r === "custom") return { hm: null, v: Number(sys.custom?.[`${key}Health`]) || 0 };
+    if (s0) return { hm: null, v: s0Health(rank, r) };
     const hm = hmOf(r); return { hm, v: Math.max(0, Math.ceil((attr + 2) * hm + role.hb - 1e-9)) }; };
   const b = health("body", attributes.body), m = health("mind", attributes.mind);
-  // A Custom number is used as typed, even outside the tables (the Builder tab warns); the tables' Defenses are never below 11.
-  const def = (k, typed) => (rating(k) === "custom" ? (Number(typed) || 0) : Math.max(TWOD12.defenseBase, role.defense + R[rating(k)].off));
+  // A Custom number is used as typed, even outside the tables (the Builder tab warns). v0.0.407 (the Bestiary, Defenses): two points a rating
+  // going up, from the rank's table (config.mjs npcDefense; a Minion's one point), at every Stage
+  const def = (k, typed) => (rating(k) === "custom" ? (Number(typed) || 0) : npcDefenseOf(rank, rating(k)));
   const sr = String(sys.ratings?.speed ?? "5"), speed = sr === "custom" ? Math.max(0, Number(sys.speed) || 0) : (Number(sr) || 5);
   return { role, rating, attributes, bodyHm: b.hm, mindHm: m.hm, bdt: b.v, mdt: m.v, armorDef: def("ad", sys.armorDef), wardDef: def("wd", sys.wardDef), speed, speedCustom: sr === "custom" };
 }
@@ -274,8 +280,11 @@ export class NpcData extends CharacterData {
       speed: int(5), weaponAttribute: choice(TWOD12.attributes, "body"), powerAttribute: choice(TWOD12.attributes, "mind"),   // before pack MOD: only read when modLead is ""
       modLead: choice({ "": "Default", weapon: "Weapon Modifier", power: "Power Modifier" }, ""),   // v0.0.307: only read for a rating left at its default   // v0.0.305 (pack MOD): which of the role's Modifiers is the higher one
       // The Bestiary (v0.0.163): its role and a rating for each number ("custom": the typed number below is used).
+      // v0.0.407 (the Bestiary, Lucas 2026-11-12): "role" is the rank (Minion, Grunt, Standard, Elite; the key kept); npcRole is the new optional role,
+      // a preset of ratings (Striker...: npcbudget.mjs ROLE_PRESETS), no rules of its own
       role: choice(Object.fromEntries(Object.entries(TWOD12.npcRoles).map(([k, v]) => [k, v.label])), "standard"),
-      ratings: new SchemaField(Object.fromEntries([["body", "high"], ["mind", "medium"], ["appeal", "low"], ["instinct", "medium"], ["bodyHm", "medium"], ["mindHm", "medium"], ["ad", "medium"], ["wd", "medium"]]
+      npcRole: choice({ "": "None", ...Object.fromEntries(Object.entries(ROLE_PRESETS).map(([k, v]) => [k, v.label])) }, ""),
+      ratings: new SchemaField(Object.fromEntries([["body", "high"], ["mind", "medium"], ["appeal", "low"], ["instinct", "medium"], ["bodyHm", "medium"], ["mindHm", "medium"], ["ad", "medium"], ["wd", "medium"], ["damage", "medium"]]
         .map(([k, d]) => [k, choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme", custom: "Custom" }, d)])
         .concat([["speed", choice({ 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", custom: "Custom" }, "5")]])
         // v0.0.307 (Lucas): the Weapon and Power Modifiers as ratings ("" = the default: npcModRatings)
@@ -295,7 +304,12 @@ export class NpcData extends CharacterData {
     const nb = npcBuild(this);
     Object.assign(this.attributes, nb.attributes);
     this.bdt = Math.max(0, nb.bdt); this.mdt = Math.max(0, nb.mdt); this.armorDef = nb.armorDef; this.wardDef = nb.wardDef; this.speed = nb.speed;
-    this.bodyHm = nb.bodyHm; this.mindHm = nb.mindHm; this.roleLabel = nb.role.label; this.cv = npcCv(this.role, this.level); this.stage = stageOf(this.level); this.apPerTurn = nb.role.ap;
+    this.bodyHm = nb.bodyHm; this.mindHm = nb.mindHm; this.roleLabel = nb.role.label; this.stage = stageOf(this.level);
+    // v0.0.407 (the Bestiary): a Minion's and a Grunt's 3 AP, a Minion's no Reaction AP; the CV moves with its ratings (npcbudget.mjs cvSteps)
+    const rank = TWOD12.npcRoles[this.role] ? this.role : "standard";
+    this.apPerTurn = rankAp(rank); this.reactionApMax = rankReactionAp(rank);
+    this.cvBase = npcCv(this.role, this.level); this.cvSteps = cvSteps(rank, this.ratings ?? {}, npcModRatings(this)); this.cv = cvWithSteps(rank, this.cvBase, this.cvSteps);
+    this.npcRoleLabel = ROLE_PRESETS[this.npcRole]?.label ?? "";
     deriveHealth(this);
     this.wounds = 0;
     this.reach = Math.max(1, Number(this.reachBase) || 1);   // the stat block's Reach (edited in the sidebar)

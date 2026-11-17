@@ -105,7 +105,8 @@ export function npcBuilderContext(actor) {
   return {
     roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, cv: fmt(v.cv[0]), on: (s.role || "standard") === k })),
     role, cv: fmt(role.cv[0]), cvTip: cvTip(role), stage, stageLabel: stageLabel(stage), groups, attacks, check, warnings, ratingHeads: keys.map(r => R[r].label),
-    levelNote: Number(s.level) > 10 ? `The Bestiary stops at level 10: level ${s.level} uses the Stage 3 numbers.` : (Number(s.level) < 1 ? `Level ${s.level} uses the Stage 1 numbers.` : ""),
+    // v0.0.407 (book, Chapter 5): Stage 3 ends at level 15; only Stage 0's tables are written (the later Stages use pack R's rows until then)
+    levelNote: Number(s.level) > 15 ? `The Bestiary stops at level 15: level ${s.level} uses the Stage 3 numbers.` : Number(s.level) < 1 ? `Level ${s.level} uses the Stage 0 numbers.` : Number(s.level) >= 4 ? "Only Stage 0's tables are written: this Stage uses pack R's numbers until the book writes its own." : "",
     minionNote: s.role === "minion" ? "Minions: 3 AP a turn, no Extreme, at most 2 AP Special Actions, no Dying (at 0 they die, or fall Unconscious if the GM prefers)." : ""
   };
 }

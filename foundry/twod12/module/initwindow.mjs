@@ -13,6 +13,7 @@ import { unconsciousDoom, doomStatus } from "./config.mjs";
 import { initCardData, initCardHtml } from "./initcard.mjs";
 import { cleanName } from "./moment.mjs";
 import { logOnlyChange } from "./util.mjs";
+import { minionSquads } from "./roundrules.mjs";   // v0.0.407: Minions share a roll
 const F = "twod12", SOCKET = "system.twod12";
 const { ApplicationV2 } = foundry.applications?.api ?? {};
 
@@ -84,17 +85,22 @@ export const creaturesOf = combat => [...(combat?.combatants ?? [])].filter(c =>
 export async function rollCreatures(combat, ids, by = "GM") {
   const call = callOf(combat), rows = [], rolls = [], updates = [];
   const curId = combat.started ? combat.combatant?.id : null;
+  // v0.0.407 (the Bestiary, Minions): up to 3 Minions of the same creature share one Initiative roll (roundrules.mjs minionSquads); each keeps its own turn
+  const todo = ids.map(id => combat.combatants.get(id)).filter(c => c?.actor && c.isOwner && !isRolled(creatureOf(c, call)) && !goesLast(creatureOf(c, call)));
+  const squads = minionSquads(todo.map(c => ({ id: c.id, kind: c.actor?.type === "npc" && c.actor.system?.role === "minion" ? `${c.actorId}|${c.actor.name}` : "" })));
+  const follows = new Set(Object.values(squads).flatMap(m => m.slice(1)));
   for (const id of ids) {
     const c = combat.combatants.get(id);
     if (!c?.actor || !c.isOwner) continue;
     const cr = creatureOf(c, call);
-    if (isRolled(cr) || goesLast(cr)) continue;
+    if (isRolled(cr) || goesLast(cr) || follows.has(c.id)) continue;
     const ro = rollOf(cr, call);
     const r = await performCheck({ mod: ro.mod, boons: ro.boons, banes: ro.banes, manualBoons: ro.manualBoons, manualBanes: ro.manualBanes, favored: ro.favored, doomed: ro.doomed,
       adj: ro.adj, adjLabel: ro.adjLabel, sources: cr.fx.sources, noDoubles: true });
     rolls.push(...r.rolls);
     updates.push({ _id: c.id, initiative: r.total, [`flags.${F}.initAttr`]: ro.mod, [`flags.${F}.init.by`]: by, [`flags.${F}.init.rolledAttr`]: ro.attr });
-    rows.push({ id: c.id, name: cr.name, side: sideDisp(sideOf(cr)), attr: ro.attr, mod: ro.mod, r });
+    rows.push({ id: c.id, name: (squads[c.id]?.length ?? 0) > 1 ? `${cr.name} ×${squads[c.id].length}` : cr.name, side: sideDisp(sideOf(cr)), attr: ro.attr, mod: ro.mod, r });
+    for (const m of (squads[c.id] ?? []).slice(1)) updates.push({ _id: m, initiative: r.total, [`flags.${F}.initAttr`]: ro.mod, [`flags.${F}.init.by`]: by, [`flags.${F}.init.rolledAttr`]: ro.attr, [`flags.${F}.init.squad`]: c.id });   // its squad takes the leader's roll
   }
   if (!updates.length) return 0;
   await combat.updateEmbeddedDocuments("Combatant", updates);

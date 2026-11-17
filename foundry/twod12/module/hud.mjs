@@ -81,7 +81,7 @@ async function combatOf(actor) {
     if (!game.combat?.started) return null;
     const C = await import("./combat.mjs"), U = await import("./usage.mjs");
     const c = C.combatantOf(actor, game.combat);
-    return c ? { ap: C.getAP(c), max: C.apMax(c), slowed: C.slowedOf(actor), rap: C.getRAP(c), rapMax: C.REACTION_AP, strikes: U.strikesUsed(actor), c } : null;
+    return c ? { ap: C.getAP(c), max: C.apMax(c), slowed: C.slowedOf(actor), rap: C.getRAP(c), rapMax: C.rapMaxOf(c), strikes: U.strikesUsed(actor), c } : null;
   } catch (e) { return null; }
 }
 async function healthOf(actor) {

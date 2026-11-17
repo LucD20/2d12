@@ -1,7 +1,7 @@
-Greatsword  where: 2h | button: {"where":"worn","label":"Stow"} | tiers: T1 0 T2 1d8 T3 2d6
-Dagger      where: worn | button: {"where":"1h","label":"Draw","primary":true} | tiers: T1 0 T2 1d8 T3 2d6
-Crossbow    where: dropped | button: {"where":"worn","label":"Pick up"} | tiers: T1 0 T2 1d8 T3 2d6
-Fists       where: none | button: null | tiers: T1 0 T2 1d8 T3 2d6
+Greatsword  where: 2h | button: {"where":"worn","label":"Stow"} | tiers: T1 0 T2 1d8! T3 2d6!
+Dagger      where: worn | button: {"where":"1h","label":"Draw","primary":true} | tiers: T1 0 T2 1d8! T3 2d6!
+Crossbow    where: dropped | button: {"where":"worn","label":"Pick up"} | tiers: T1 0 T2 1d8! T3 2d6!
+Fists       where: none | button: null | tiers: T1 0 T2 1d8! T3 2d6!
 slots, greatsword in both hands: [{"label":"Both hands","hand":"both","id":"gs","both":true}]
 slots, dagger in one hand: [{"label":"Main hand","hand":"main","id":"dg"},{"label":"Off hand","hand":"off","free":true}] | other hands than the greatsword: 1
 moves: dropped {"system.wielded":false,"system.dropped":true} | worn {"system.wielded":false,"system.dropped":false} | 1h {"system.wielded":true,"system.hands":1,"system.dropped":false} | 2h {"system.wielded":true,"system.hands":2,"system.dropped":false,"system.hand":""}

@@ -21,19 +21,20 @@ the same, the origin chose Vigor:                      {"B":5,"M":4} | mods Weak
 --- the old Save card path (an Area Save): dealDamageEx
 Immunity Fire, 7 Fire: {"text":"no damage (Immune Fire)","landed":false,"mods":["Immune Fire"]} (landed false: the Tier's effects don't happen)
 --- the Elite ladder (passives.mjs)
-Escalation 1: working passive-elite-1 | more uses []
-Escalation 2: working passive-elite-1, passive-elite-2 | more uses ["round"]
-Escalation 3: working passive-elite-1, passive-elite-2, passive-elite-3 | more uses ["round","encounter"]
+Escalation 1: working  | more uses []
+Escalation 2: working passive-elite-2 | more uses []
+Escalation 4: working passive-elite-2, passive-elite-4 | more uses ["round"]
+Escalation 6: working passive-elite-2, passive-elite-4, passive-elite-6 | more uses ["round","encounter"]
 Default ladder off: 0 sources | a Standard (no Escalation): 0
 an attack: Elite Escalation 1 Boon, match true, once true | a Check: match false
 it counts on the roll: 1
 uses allowed: Round Special with 'round' 2 | a Basic Action 1 | Encounter without 'encounter' 1 | with 2
 --- the uses in a combat (usage.mjs isFaded / markUsed)
-Escalation 1, a Round Special: free -> faded (Used: available again at the start of your next turn) -> faded (Used: available again at the start of your next turn)
-Escalation 2, a Round Special: free -> free -> faded (Used twice: available again at the start of your next turn)
-Escalation 2, Charge (a Basic Action): free -> faded (Used: available again at the start of your next turn)
-Escalation 2, an Encounter Special: free -> faded (Used this encounter)
-Escalation 3, an Encounter Special: free -> free -> faded (Used twice this encounter)
+Escalation 2, a Round Special: free -> faded (Used: available again at the start of your next turn) -> faded (Used: available again at the start of your next turn)
+Escalation 4, a Round Special: free -> free -> faded (Used twice: available again at the start of your next turn)
+Escalation 4, Charge (a Basic Action): free -> faded (Used: available again at the start of your next turn)
+Escalation 4, an Encounter Special: free -> faded (Used this encounter)
+Escalation 6, an Encounter Special: free -> free -> faded (Used twice this encounter)
 --- resolveModifiers: a Feature's passive Boon, and one only against the marked creature (both were left out before v0.0.320)
 Actor.Gob|m1:0: 1 | passive-F1-0:0: 1 | Actor.Gob|passive-F1-0:1: 2
 Boons on the roll: 4 from Vow 1, Steady Hand 1, Steady Hand 2

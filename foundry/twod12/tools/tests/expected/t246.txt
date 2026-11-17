@@ -27,7 +27,7 @@ a Minion: 6 + 6 Health, no Reaction AP, up to 3 in a turn slot (roundrules: 3): 
 the numbers are config.mjs's: true
 sheetmodel.mjs takes payReaction from it: true
 combat.mjs takes unusedApGuard and the turn's AP from it: true
-escalation.mjs takes the start and the raise from it: true
+escalation.mjs takes the start and the raise from it (v0.0.407: the 1-to-6 ladder): true
 flanking.mjs takes the count from it: true
 pure (it imports only config, calc and guard): ./config.mjs ./calc.mjs ./guard.mjs | no Foundry global: true
 the old names still work: sheetmodel.payReaction: {"fromRap":1,"fromAp":1}

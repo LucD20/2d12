@@ -73,6 +73,20 @@ export const ENGAGED_RANGED_DOOMED = true;
 export const THROWN_LESS = 1;
 /** Up to this many Minions can act in the same turn slot, one after another (the Bestiary; Lucas, 2026-11-12). */
 export const MINION_SQUAD = 3;
+/**
+ * The Minions' squads for an Initiative roll: list [{ id, kind }] in order (kind: the same creature, such as its actor; "" for one that isn't a
+ * Minion). Up to MINION_SQUAD Minions of the same kind share one roll: { leaderId: [memberIds] }, the leader first (it rolls; the others take its result).
+ */
+export function minionSquads(list, size = MINION_SQUAD) {
+  const out = {}, open = new Map();
+  for (const x of list ?? []) {
+    if (!x?.kind) continue;
+    const cur = open.get(x.kind);
+    if (cur && out[cur].length < size) { out[cur].push(x.id); continue; }
+    out[x.id] = [x.id]; open.set(x.kind, x.id);
+  }
+  return out;
+}
 /** No creature has an Opportunity Attack by default since Stage 0 (it left the Basic Actions, for PCs and NPCs; a Talent brings it back later). */
 export const BASIC_OPPORTUNITY_ATTACK = false;
 

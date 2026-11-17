@@ -12,21 +12,21 @@ const { npcBuilderContext, cvTip, stageLabel } = await import(ROOTURL + "module/
 const G = await import(ROOTURL + "module/guard.mjs"), D = await import(ROOTURL + "module/defense.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 
-console.log("--- Stages (levels 1-4, 5-7, 8-10)");
-console.log([0, 1, 4, 5, 7, 8, 10, 12].map(l => `${l}:${cf.stageOf(l)}`).join(" "), "|", [1, 2, 3].map(stageLabel).join(" | "));
+console.log("--- Stages (v0.0.407: levels 1-3, 4-7, 8-11, 12-15)");
+console.log([0, 1, 3, 4, 7, 8, 11, 12, 15, 16].map(l => `${l}:${cf.stageOf(l)}`).join(" "), "|", [0, 1, 2, 3].map(stageLabel).join(" | "));
 console.log("--- every rating Medium, by Stage (the book since pack R-bestiary: Minion 6/8/10, Grunt 24/26/38, Standard 56/62/98, Elite 118/136/216)");
 const all = r => ({ body: r, mind: r, appeal: r, instinct: r, bodyHm: r, mindHm: r, ad: r, wd: r });
-for (const role of Object.keys(TWOD12.npcRoles)) console.log(role.padEnd(9), [1, 5, 8].map(level => { const b = npcBuild({ role, level, ratings: all("medium") }); return b.bdt + b.mdt; }).join(" / "));
-console.log("the same at every level of a Stage:", [1, 2, 3, 4].every(level => npcBuild({ role: "standard", level, ratings: all("medium") }).bdt === 28), "| above level 10: Stage 3:", npcBuild({ role: "elite", level: 14, ratings: all("medium") }).bdt === 108);
+for (const role of Object.keys(TWOD12.npcRoles)) console.log(role.padEnd(9), [1, 4, 8, 12].map(level => { const b = npcBuild({ role, level, ratings: all("medium") }); return b.bdt + b.mdt; }).join(" / "));
+console.log("the same at every level of a Stage:", [1, 2, 3].every(level => npcBuild({ role: "standard", level, ratings: all("medium") }).bdt === 30), "(Stage 0: 30, a ready number) | above level 15: Stage 3:", npcBuild({ role: "elite", level: 16, ratings: all("medium") }).bdt === npcBuild({ role: "elite", level: 12, ratings: all("medium") }).bdt);
 console.log("--- every row of the book's tables (Health Multiplier; Basic attack Tier 2 / Tier 3)");
 for (const [role, r] of Object.entries(TWOD12.npcRoles)) for (const st of [1, 2, 3]) {
-  const lv = [1, 5, 8][st - 1], ks = r.extreme ? ["terrible", "low", "medium", "high", "extreme"] : ["terrible", "low", "medium", "high"];
+  const lv = [4, 8, 12][st - 1], ks = r.extreme ? ["terrible", "low", "medium", "high", "extreme"] : ["terrible", "low", "medium", "high"];
   console.log(`${role.padEnd(9)} Stage ${st}:`, ks.map(k => `x${cf.npcHm(role, k, lv)} ${cf.npcDamage(role, k, lv).join("/")}`).join(" | "));
 }
 console.log("a Special Action (x2.2, Stage 1 Standard Medium; the book: about 13 / 24):", cf.npcDamage("standard", "medium", 1, 2.2).join(" / "));
 console.log("old level factors gone:", !("npcBump" in TWOD12) && !("npcMeasured" in TWOD12) && !("npcMaxLevel" in TWOD12) && !("npcTableLevel" in cf));
 console.log("--- CV x100, lower for an NPC of an earlier Stage than the party");
-for (const role of Object.keys(TWOD12.npcRoles)) console.log(role.padEnd(9), `its Stage ${cf.npcCv(role, 1, 1)} | one Stage below ${cf.npcCv(role, 1, 5)} | two below ${cf.npcCv(role, 2, 9)} | above the party ${cf.npcCv(role, 8, 1)}`);
+for (const role of Object.keys(TWOD12.npcRoles)) console.log(role.padEnd(9), `its Stage ${cf.npcCv(role, 1, 1)} | one Stage below ${cf.npcCv(role, 1, 4)} | two below ${cf.npcCv(role, 2, 9)} | above the party ${cf.npcCv(role, 8, 1)}`);
 console.log("tooltip:", cvTip(TWOD12.npcRoles.standard));
 const actor = lv => ({ system: { ...{ role: "grunt", level: lv, ratings: all("medium"), custom: {}, weaponMod: 1 } }, getFlag: () => undefined });
 const ctx = npcBuilderContext(actor(6));
@@ -44,7 +44,7 @@ const pcAt = (lv, mods = {}) => {
   s.parent.itemTypes = { species: [s.parent.items[0]], class: [s.parent.items[1]], feature: [], weapon: [], armor: [] };
   s.prepareDerivedData(); return s;
 };
-for (const lv of [1, 4, 5, 8, 10]) { const s = pcAt(lv); console.log(`level ${String(lv).padStart(2)}: BDT ${s.bdt} MDT ${s.mdt} Pool ${s.pool} | Weapon ${s.weaponMod} Power ${s.powerMod} Signature ${s.signatureMod} (${s.signatureFrom}) | Stage ${s.stage}`); }
+for (const lv of [1, 3, 4, 8, 12]) { const s = pcAt(lv); console.log(`level ${String(lv).padStart(2)}: BDT ${s.bdt} MDT ${s.mdt} Pool ${s.pool} | Weapon ${s.weaponMod} Power ${s.powerMod} Signature ${s.signatureMod} (${s.signatureFrom}) | Stage ${s.stage}`); }
 console.log("never above +4:", [[3, 1], [3, 5], [3, 8], [4, 8], [5, 8], [1, 8]].map(([m, l]) => `${m} at ${l} -> ${cf.stageMod(m, l)}`).join(", "));
 console.log("NPCs: no step (pack MOD: the role's values, no Stage):", src("module/data.mjs").includes("this.weaponMod = npcModValue(this.role, mr.weapon);"));
 

@@ -1,6 +1,6 @@
 --- Smite, 2 AP, one target (brief 13)
 dice line: 2d12 + 1 Signature, Flat ▲1 ▼1
-Empowered 1 + Enfeebled 1: {"emp":1,"enf":1,"net":0,"line":""}
+Empowered 1 + Enfeebled 1: {"emp":1,"enf":0,"net":1,"line":"Empowered: +1d6! (the first damage on each of your turns)"}
 T3 pools: [{"pool":"B","segs":[{"sub":"Sl","t":"2d6"}],"tags":["+2"]},{"pool":"M","segs":[{"sub":"Ho","t":"2d10"}],"tags":["+1d6 Ho"]}]
 T1 pools (no 0 line): [{"pool":"M","segs":[{"sub":"Ho","t":"1d6"}],"tags":["+1d6 Ho"]}]
 Heavy Blows only on T3: Radiant Zeal | Radiant Zeal | Radiant Zeal+Heavy Blows
@@ -18,17 +18,17 @@ Nonlethal on: switchNl on | Banes 2 | flags lethal: nonlethal
 Radiant Zeal off: T1 tags 0 | bonusOn hb
 n/a toggled: false | 'x' in toggled: false
 --- quick buttons, repeat clicks and ×
-manual chips: Situational ×2 | Situational +1 | Empowered 2 | Favored
+manual chips: Situational ×2 | Situational +1 | Empowered | Favored
 Exhausted 1 + Situational +1 = flat 0 | dice line mod: 2 | Empowered 2 manual + Empowered 1 auto: net 1 (2 - 1)
 Favored: 3d12, two highest
 Favored + Doomed: 2d12 (Favored and Doomed cancel)
 right-click on Situational ×2: Situational
 result: boons 1 | favored on | doomed on | flags Situational: [{"name":"Situational","n":1,"scope":"shared","bb":""}]
 × on Situational ×3 removes it all: true
-net 0 shows no line: ""
+net 0 shows no line: "Empowered: +1d6! (the first damage on each of your turns)"
 Doomed alone: 3d12, lowest 2
 --- Word of Radiance, 3 AP, three creatures (brief 13)
-quick buttons: Boon Bane +1 −1 Empowered Enfeebled | one target: 8
+quick buttons: Boon Bane +1 −1 Empowered | one target: 7
 before Favored / Doomed: {"dice":"2d12","note":""}
 dice line: {"dice":"3d12","note":"3d12: a target is Favored or Doomed","mod":2,"names":["Power"],"boons":0,"banes":1,"bbNotes":[]}
 Bandit Thug     first 2 d12      +2 ▲0 ▼1  WD 13  odds T1 35% · T2 42% · T3 20% · Crit 3%
@@ -69,11 +69,11 @@ one tooltip only (no title attributes): true
 --- v0.0.293: averages and chances under each Tier (the setting: everyone / GM only / hidden)
 die averages: d6 3.5 | d6 Empowered 1 4.5 | d4 Enfeebled 1 (at least 1): 1.75 | d4 Enfeebled 3: 1
 expressions: 2d6 + 2 = 9 | 1d10+2 Enfeebled 1 = 6.6
-Smite 2 AP averages (Radiant Zeal and Heavy Blows on, net 0): 7 | 15 | 23.5
-Radiant Zeal off: 3.5 | 11.5 | 20
-Empowered 2 by hand (net 1): 9 | 19 | 28.5
-lines under the Tiers: avg 7 | avg 15 | avg 23.5
-setting off: no lines: true | player with hidden Defenses: averages only: avg 7 | avg 15 | avg 23.5
+Smite 2 AP averages (Radiant Zeal and Heavy Blows on, net 0): 11 | 19 | 27.5
+Radiant Zeal off: 7.5 | 15.5 | 24
+Empowered 2 by hand (net 1): 11 | 19 | 27.5
+lines under the Tiers: avg 11 | avg 19 | avg 27.5
+setting off: no lines: true | player with hidden Defenses: averages only: avg 11 | avg 19 | avg 27.5
 Smite's ladder with its chances: T1 ≤ 10 22% T2 11–17 46% T3 18+ 32% | the ≤ in its own span: true
 no chances in the ladder when the setting hides them: true
 Word of Radiance, the expanded creatures' ladders: Tier 1 · ≤ 12 · 7% Tier 2 · 13–19 · 41% Tier 3 · 20–32 · 39% Crit · 33+ · 13% || Tier 1 · ≤ 13 · 78% Tier 2 · 14–20 · 20% Tier 3 · 21–33 · 2% Crit · 34+ · 0%
@@ -82,7 +82,7 @@ Word of Radiance, under each Tier: avg 7 | avg 11 | avg 13.5
 Favored chip: d12 F: true | Doomed: d12 D: true | Boon keeps the triangle: true | quick buttons too: true
 hand-added chips carry data-manual (right-click): 3 | an auto chip doesn't: true
 --- v0.0.293: a Save Action (Rebuke) and a Version with no roll (Opportunity Attack) in the new dialog
-Rebuke: their roll line: Their roll Appeal Save vs DC 13 · each target rolls; the Tiers are their result | quick buttons: emp,enf | creature badge: true | no ladder: true | button: Use | averages: avg 5.5 | avg 4.5
+Rebuke: their roll line: Their roll Appeal Save vs DC 13 · each target rolls; the Tiers are their result | quick buttons: emp | creature badge: true | no ladder: true | button: Use | averages: avg 8.5 | avg 7.5
 Opportunity Attack: Effects row: true | no roll panel: true | target line: → Bandit Thug | button: Use | can use: "" | no target needed: ""
 contrast #7a6f5f on #f4ede0: 4.23 | #6b6152 (used): 5.22 | #5d5446 on #e8dec8: 5.57 | #625a4e n/a on #e8dec8: 5.08 | #7a5400 on #f4ede0: 5.83 | #8a1c13 on #f4ede0: 7.99
 --- v0.0.295: the Vs. value in its color, "Vs." bold

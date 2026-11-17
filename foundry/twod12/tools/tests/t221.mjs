@@ -64,12 +64,12 @@ console.log("Immunity Fire, 7 Fire:", JSON.stringify(r1), "(landed false: the Ti
 
 console.log("--- the Elite ladder (passives.mjs)");
 const elite = (esc, ladder = true) => ({ name: "Ogre Chieftain", uuid: "Actor.Ogre", type: "npc", system: { useEscalation: true, eliteLadder: ladder, escalation: esc, role: "elite" }, statuses: new Set(), effects: coll([]), itemTypes: { feature: [], talent: [], weapon: [] }, items: [] });
-for (const n of [1, 2, 3]) {
+for (const n of [1, 2, 4, 6]) {   // v0.0.407: the Elite ladder at Escalation 2, 4 and 6
   const a = elite(n), on = P.allEffects(a).filter(e => !effectOff(a, e)).map(e => e.id);
   console.log(`Escalation ${n}: working ${on.join(", ")} | more uses ${JSON.stringify([...U.freqMoreOf(a)])}`);
 }
 console.log("Default ladder off:", P.allEffects(elite(3, false)).length, "sources | a Standard (no Escalation):", P.allEffects({ ...elite(3), system: { useEscalation: false, escalation: 3 } }).length);
-const ogre = elite(1);
+const ogre = elite(2);
 const attack = E.modifierList(ogre, new Set(["strike", "__attack", "__action"]), []), check = E.modifierList(ogre, new Set(["body", "__check"]), []);
 console.log("an attack:", attack.map(m => `${m.name} ${m.boons} Boon, match ${m.match}, once ${!!m.once}`).join("; "), "| a Check:", check.map(m => `match ${m.match}`).join("; "));
 console.log("it counts on the roll:", JSON.stringify(E.resolveModifiers(ogre, attack.filter(m => m.match).map(m => m.id)).boons));
@@ -85,11 +85,11 @@ const runUses = async (esc, it, n) => {
   for (let i = 0; i < n; i++) { const f = U.isFaded(a, it); out.push(f.faded ? `faded (${f.why})` : "free"); if (!f.faded) await U.markUsed(a, it); }
   return out.join(" -> ");
 };
-console.log("Escalation 1, a Round Special:", await runUses(1, item("Slam", "round"), 3));
 console.log("Escalation 2, a Round Special:", await runUses(2, item("Slam", "round"), 3));
-console.log("Escalation 2, Charge (a Basic Action):", await runUses(2, item("Charge", "round", true), 2));
-console.log("Escalation 2, an Encounter Special:", await runUses(2, item("Roar", "encounter"), 2));
-console.log("Escalation 3, an Encounter Special:", await runUses(3, item("Roar", "encounter"), 3));
+console.log("Escalation 4, a Round Special:", await runUses(4, item("Slam", "round"), 3));
+console.log("Escalation 4, Charge (a Basic Action):", await runUses(4, item("Charge", "round", true), 2));
+console.log("Escalation 4, an Encounter Special:", await runUses(4, item("Roar", "encounter"), 2));
+console.log("Escalation 6, an Encounter Special:", await runUses(6, item("Roar", "encounter"), 3));
 game.combat = null;
 
 console.log("--- resolveModifiers: a Feature's passive Boon, and one only against the marked creature (both were left out before v0.0.320)");

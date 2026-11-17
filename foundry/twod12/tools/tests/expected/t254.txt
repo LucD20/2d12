@@ -6,7 +6,7 @@ Escalation ticks (the system's maximum): 3 2
 --- the bars and the party strip
 what is left: true | Nonlethal hatched beside it: true | its words: true
 a card: true
-Momentum at the strip's left: true | none without it: true
+Momentum at the strip's left (v0.0.407: the number, 0 too): true | none without it: true
 --- the bar
 a line: a stamp a Version, the off one struck with its reason: true | its roll under it: true
 a granted use (Lucas: things can grant you actions): true
@@ -32,7 +32,7 @@ the HUD's cost buttons on hover only: true | the names fitted: true | the card's
 the granted uses under the hands: true | one header for a Frequency's two columns: true | Regrip and Cancel on hover: true | the card's grid (no star): true | long names on two lines: true
 --- v0.0.397 (Lucas: "Go, build it")
 the roll dialog's card part: true | the ladder one line: true | a square with its picture: true
-the question in the HUD's side panel: true | the area after the dialog: true | Momentum read from the encounter: true
+the question in the HUD's side panel: true | the area after the dialog: true | Momentum: the party's number (v0.0.407, it isn't used up): true
 --- v0.0.398 (Lucas, on the multi-target mockup and v0.0.397)
 a group a Tier, each creature once: true | the Guard in the on-demand row: true | a Tier's Apply all: true
 the creature on one line with Target: true | the dialog not live: true | the hotbar at the bottom with the party strip: true

@@ -1,6 +1,14 @@
 // The item sheet (every item type; the Details tab of an Effect is written as sentences: fxdetails.mjs).
 import { rollSource } from "./rollsource.mjs";
 import { tagChoices, TWOD12, categoryText, traitPicker, npcDamage, FREQ_COLORS, highlightText } from "./config.mjs";
+import { npcSuggest } from "./npcbudget.mjs";
+/** v0.0.407 (the Bestiary, the turn budget): the Builder's suggestion for an NPC's Action (Stage 0: its points and damage; later Stages: pack R's averages). */
+export function npcActionSuggest(npc, s) {
+  const rank = TWOD12.npcRoles[npc?.role] ? npc.role : "standard";
+  if ((Number(npc?.stage) || 0) > 0) return npcDamage(rank, s.basicRating || "medium", npc.level).join(" / ");
+  const ap = Math.max(1, ...(s.versions ?? []).map(v => Number(v.ap) || 0)), d = Number(String(s.distance ?? "").match(/\d+/)?.[0] ?? 0);
+  return npcSuggest({ rank, rating: s.basicAttack ? (s.basicRating || "medium") : (npc?.ratings?.damage || "medium"), ap, freq: s.basicAttack ? "atwill" : s.frequency, basic: !!s.basicAttack, ranged: d > 2 || [...(s.traits ?? [])].includes("ranged") }).text;
+}
 import { versionRow } from "./actions.mjs";
 import { versionStats, fmt } from "./calc.mjs";
 import { buildWeaponCard } from "./preview.mjs";
@@ -68,7 +76,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       traitPicker: traitPicker(),   // v0.0.179: the Traits drop-down grouped Roll, Requires, Kind, Damage, Keywords
       // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating and the average it suggests (the NPC's role and Stage)
       basicRatings: Object.fromEntries(Object.entries(TWOD12.npcRatings).filter(([k]) => it.parent?.system?.role !== "minion" || k !== "extreme").map(([k, v]) => [k, v.label])),
-      basicSuggest: t === "action" && it.parent?.type === "npc" ? npcDamage(it.parent.system.role, s.basicRating || "medium", it.parent.system.level).join(" / ") : "",
+      basicSuggest: t === "action" && it.parent?.type === "npc" ? npcActionSuggest(it.parent.system, s) : "",   // v0.0.407: the turn budget at Stage 0
       // v0.0.172: the help tips (the grey hints) of the Action and Talent sheets can be hidden, like the Effect's (one choice per user, for both sheets).
       helpable: t === "talent",   // v0.0.374: the Class's help is the ? on the tab bar (frQ)   // v0.0.355: the Action's help is the ? on the tab bar (the rules tabs' way)
       sheetHelp: (() => { try { return game.settings.get("twod12", "sheetHelp") !== false; } catch (e) { return true; } })(),
@@ -298,7 +306,7 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       ruleLabels: rules.map(r => ({ tile: RULE_KINDS[r.kind]?.tile ?? "?", cls: RULE_KINDS[r.kind]?.cls ?? "rule", label: ruleLabel(r, { names: {}, host: "action" }) })),
       dmgText: list => (list ?? []).map(instanceText).filter(Boolean).join(" + "), calc: this._versionRows(), onActor: !!it.parent,
       basicRatings: Object.entries(TWOD12.npcRatings ?? {}).filter(([k]) => it.parent?.system?.role !== "minion" || k !== "extreme").map(([k, v]) => [k, v.label]),
-      basicSuggest: it.parent?.type === "npc" ? npcDamage(it.parent.system.role, s.basicRating || "medium", it.parent.system.level).join(" / ") : ""
+      basicSuggest: it.parent?.type === "npc" ? npcActionSuggest(it.parent.system, s) : ""
     });
   }
 

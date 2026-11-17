@@ -21,9 +21,10 @@ const t = o => { const r = classTrack(o); return `${sg(r.weapon)} / ${sg(r.power
 
 console.log("--- the track (Weapon / Power)");
 for (const [name, o] of [["Paladin, sword first", { order: "either", lead: "weapon" }], ["Paladin, faith first", { order: "either", lead: "power" }], ["Archer (fixed Weapon first)", { order: "weapon", lead: "power" }]]) {
-  console.log(`${name}: level 1 ${t({ ...o, stage: 1 })} | Stage 2 default ${t({ ...o, stage: 2 })} | Stage 2 +1 to the other ${t({ ...o, stage: 2, stage2: o.lead === "power" && o.order === "either" ? "weapon" : "power" })} | Stage 3 ${t({ ...o, stage: 3 })} | Stage 3 after the other ${t({ ...o, stage: 3, stage2: o.lead === "power" && o.order === "either" ? "weapon" : "power" })}`);
+  // v0.0.407: Stage 0 the class values, Stage 1 +1 to one (stage1), Stage 3 +1 to both
+  console.log(`${name}: level 1 ${t({ ...o, stage: 0 })} | Stage 1 default ${t({ ...o, stage: 1 })} | Stage 1 +1 to the other ${t({ ...o, stage: 1, stage1: o.lead === "power" && o.order === "either" ? "weapon" : "power" })} | Stage 3 ${t({ ...o, stage: 3 })} | Stage 3 after the other ${t({ ...o, stage: 3, stage1: o.lead === "power" && o.order === "either" ? "weapon" : "power" })}`);
 }
-console.log("never above +4:", t({ high: 4, low: 3, order: "weapon", stage: 3 }), "| a tie goes to the lead:", t({ order: "either", lead: "power", stage: 2, stage2: "weapon" }));
+console.log("never above +4:", t({ high: 4, low: 3, order: "weapon", stage: 3 }), "| a tie goes to the lead:", t({ order: "either", lead: "power", stage: 1, stage1: "weapon" }));
 console.log("--- the compendium's classes");
 for (const n of ["Paladin", "Archer"]) { const c = cls(n); console.log(`${n}: high ${c.modHigh}, low ${c.modLow}, order ${c.modOrder} | no Attribute lists: ${!(c.weaponAttrs?.length || c.magicAttrs?.length)}`); }
 
@@ -39,7 +40,7 @@ const pc = (lv, clsSys) => {
 };
 const show = s => `Weapon ${sg(s.weaponMod)}, Power ${sg(s.powerMod)}, Signature ${sg(s.signatureMod)} (${s.signatureFrom}) | WD ${s.wardDC} | Save DCs ${s.saveDC.weapon} / ${s.saveDC.power} | source ${s.modSource}`;
 for (const [label, extra] of [["sword-first Paladin", { modPriority: "weapon" }], ["faith-first Paladin", { modPriority: "power" }], ["sword-first, Stage 2 to Power", { modPriority: "weapon", modStage2: "power" }]]) {
-  for (const lv of [1, 5, 8]) console.log(`${label}, level ${lv}: ${show(pc(lv, { ...cls("Paladin"), ...extra }))}`);
+  for (const lv of [1, 4, 12]) console.log(`${label}, level ${lv}: ${show(pc(lv, { ...cls("Paladin"), ...extra }))}`);
 }
 console.log("an Archer, level 1:", show(pc(1, { ...cls("Archer"), modPriority: "power" })));
 const old = pc(1, { ...cls("Paladin"), modHigh: 0, modLow: 0, weaponAttrs: new Set(["body", "appeal"]), magicAttrs: new Set(["mind", "appeal"]) });

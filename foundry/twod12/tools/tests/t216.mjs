@@ -40,7 +40,9 @@ const load = n => JSON.parse(src("packs/_source/" + n));
 const asItem = d => ({ id: d._id, name: d.name, type: d.type, getFlag: (s, k) => d.flags?.twod12?.[k],
   system: { ...d.system, traits: new Set(d.system.traits ?? []), versions: d.system.versions ?? [], areaDistance: d.system.areaCfg?.within ? String(d.system.areaCfg.within) : "", area: d.system.areaCfg ? `${d.system.areaCfg.size} / 3 Burst` : "" } });
 const smite = asItem(load("actions/smite.action.json")), wor = asItem(load("actions/word-of-radiance.action.json"));
-const oa = asItem(load("pcs/aveline-human-paladin-smite.pc.json").items.find(i => i.name === "Opportunity Attack"));
+// v0.0.407: Opportunity Attack is no longer a Basic Action (set aside): its card, built as a Basic Action would be
+const OAD = (await import("./oa-card.mjs")).OA;
+const oa = asItem({ _id: "oa", name: OAD.name, type: "action", flags: { twod12: { basic: "opportunityAttack" } }, system: { ...OAD, category: "Basic Action", level: 0 } });
 const blank = { attrs: [], all: [], any: [], none: [], from: [], tiers: [] };
 const fx = (name, flags) => ({ id: name, name, disabled: false, statuses: new Set(), flags: { twod12: flags }, getFlag: (s, k) => flags[k] });
 const actor = { id: "pal", uuid: "Actor.pal", name: "Paladin", type: "character", items: { get: () => null }, itemTypes: { weapon: [], feature: [], talent: [], action: [] }, statuses: new Set(), getFlag: () => undefined,

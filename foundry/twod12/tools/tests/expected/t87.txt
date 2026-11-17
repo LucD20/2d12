@@ -15,55 +15,55 @@ the Ogre moved to rows 1-2, next to Kai: Goblin, Ogre
 friendly and friendly never engage: false | hostile and hostile: false | friendly and hostile: true | neutral: false
 
 --- Ranged Combat
-Shoot Nari: Kai and Nari both Engaged            card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
-Shoot Nari: her Ally is Unsensed (to everyone)   card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
-Shoot Nari: the Goblin next to us is Unsensed    card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
+Shoot Nari: Kai and Nari both Engaged            card | chips: syn:engaged*(0b/0n) syn:engaged-target*(0b/1n) | bane dice - | total 8
+Shoot Nari: her Ally is Unsensed (to everyone)   card | chips: syn:engaged*(0b/0n) syn:engaged-target*(0b/1n) | bane dice - | total 8
+Shoot Nari: the Goblin next to us is Unsensed    card | chips: syn:engaged*(0b/0n) syn:engaged-target*(0b/1n) | bane dice - | total 8
 Shoot Nari: the Goblin is Unconscious            card | chips: syn:engaged-target*(0b/1n) | bane dice - | total 14
 Shoot Nari: nobody is Engaged                    card | chips: (none) | bane dice - | total 15
 Strike (melee) while Engaged: no banes           card | chips: syn:flanking(1b/0n) | bane dice - | total 15
-Shoot the Goblin: Engaged only with you          card | chips: syn:engaged*(0b/2n) | bane dice - | total 13
-Shoot the Goblin: an Ally is next to it too      card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
-Shoot Lonny (alone) while Kai is Engaged         card | chips: syn:engaged*(0b/2n) | bane dice - | total 13
+Shoot the Goblin: Engaged only with you          card | chips: syn:engaged*(0b/0n) | bane dice - | total 9
+Shoot the Goblin: an Ally is next to it too      card | chips: syn:engaged*(0b/0n) syn:engaged-target*(0b/1n) | bane dice - | total 8
+Shoot Lonny (alone) while Kai is Engaged         card | chips: syn:engaged*(0b/0n) | bane dice - | total 9
 
 --- Ranged Combat against several creatures
-Shoot Nari (Engaged) and Lonny (not)             card | chips: syn:engaged*(0b/2n) syn:engaged-target|Actor.Nari*(0b/1n) | bane dice - | rows Nari 12; Lonny 13
+Shoot Nari (Engaged) and Lonny (not)             card | chips: syn:engaged*(0b/0n) syn:engaged-target|Actor.Nari*(0b/1n) | bane dice - | rows Nari 8; Lonny 9
 
 --- Flanking: a Melee Action gains a boon for each other ally that flanks its target
 Strike the Goblin: the Ally and Kai both threaten it card | chips: syn:flanking*(1b/0n) | bane dice - | total 16
 ... the Ally is Unconscious: nobody flanks       card | chips: syn:flanking(1b/0n) | bane dice - | total 15
 ... the Ally holds a bow: it does not threaten   card | chips: syn:flanking(1b/0n) | bane dice - | total 15
-Shoot the Goblin: a Ranged Action gets no Flanking card | chips: syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 12
+Shoot the Goblin: a Ranged Action gets no Flanking card | chips: syn:engaged*(0b/0n) syn:engaged-target*(0b/1n) | bane dice - | total 8
 Strike the Goblin: the Ally is far away          card | chips: syn:flanking(1b/0n) | bane dice - | total 15
 Strike the Goblin and Nari (several targets): the chip is the Goblin's card | chips: syn:flanking|Actor.Goblin*(1b/0n) | bane dice - | total 16 | warn: Not affected: Nari: out of range (5 squares, maximum 1).
 
 --- Empowered and Enfeebled: the two chips in the dialog (the player can change them) and the step the damage will use
-no effects, the chips left alone                             chips: Empowered 0, Enfeebled 0 | the damage uses step 0
-no effects, the player raises Empowered to 1                 chips: Empowered 0, Enfeebled 0 | the damage uses step 1
-no effects, the player raises Enfeebled to 2                 chips: Empowered 0, Enfeebled 0 | the damage uses step -2
-Bloodlust (Empowered 1)                                      chips: Empowered 1, Enfeebled 0 | the damage uses step 1
-Bloodlust and Rage (Empowered 2): the highest, no stacking   chips: Empowered 2, Enfeebled 0 | the damage uses step 2
-Bloodlust and another Empowered 1: still 1                   chips: Empowered 1, Enfeebled 0 | the damage uses step 1
-Empowered 1 and Enfeebled 1 cancel                           chips: Empowered 1, Enfeebled 1 | the damage uses step 0
-Empowered 3 and Enfeebled 1: net 2                           chips: Empowered 3, Enfeebled 1 | the damage uses step 2
-Enfeebled 2 alone                                            chips: Empowered 0, Enfeebled 2 | the damage uses step -2
-two Enfeebled 1 from different effects: 1, not 2             chips: Empowered 0, Enfeebled 1 | the damage uses step -1
-Enfeebled 2, the player lowers it to 0                       chips: Empowered 0, Enfeebled 2 | the damage uses step 0
-Enfeebled 2, the player raises it to 3                       chips: Empowered 0, Enfeebled 2 | the damage uses step -3
-Bloodlust, the player lowers Empowered to 0                  chips: Empowered 1, Enfeebled 0 | the damage uses step 0
-an effect that only matches [Ranged] Actions                 chips: Empowered 0, Enfeebled 0 | the damage uses step 0
-a Reload shot by itself (Empowered 2)                        chips: Empowered 0, Enfeebled 0 | the damage uses step 2
-a Reload shot with Bloodlust: the highest, 2                 chips: Empowered 1, Enfeebled 0 | the damage uses step 2
-a Reload shot with Enfeebled 1: 2 - 1                        chips: Empowered 0, Enfeebled 1 | the damage uses step 1
-a Reload shot, the player lowers Enfeebled to 0              chips: Empowered 0, Enfeebled 1 | the damage uses step 2
-granted by an Action (@Use ...|empowered:1)                  chips: Empowered 1, Enfeebled 0 | the damage uses step 1
-granted Empowered 1 and Enfeebled 2                          chips: Empowered 1, Enfeebled 2 | the damage uses step -1
-an older effect that stored true                             chips: Empowered 1, Enfeebled 0 | the damage uses step 1
+no effects, the chips left alone                             chips: Empowered 0, Enfeebled - | the damage uses step 0
+no effects, the player raises Empowered to 1                 chips: Empowered 0, Enfeebled - | the damage uses step 1
+no effects, the player raises Enfeebled to 2                 chips: Empowered 0, Enfeebled - | the damage uses step 0
+Bloodlust (Empowered 1)                                      chips: Empowered 1, Enfeebled - | the damage uses step 1
+Bloodlust and Rage (Empowered 2): the highest, no stacking   chips: Empowered 1, Enfeebled - | the damage uses step 1
+Bloodlust and another Empowered 1: still 1                   chips: Empowered 1, Enfeebled - | the damage uses step 1
+Empowered 1 and Enfeebled 1 cancel                           chips: Empowered 1, Enfeebled - | the damage uses step 1
+Empowered 3 and Enfeebled 1: net 2                           chips: Empowered 1, Enfeebled - | the damage uses step 1
+Enfeebled 2 alone                                            chips: Empowered 0, Enfeebled - | the damage uses step 0
+two Enfeebled 1 from different effects: 1, not 2             chips: Empowered 0, Enfeebled - | the damage uses step 0
+Enfeebled 2, the player lowers it to 0                       chips: Empowered 0, Enfeebled - | the damage uses step 0
+Enfeebled 2, the player raises it to 3                       chips: Empowered 0, Enfeebled - | the damage uses step 0
+Bloodlust, the player lowers Empowered to 0                  chips: Empowered 1, Enfeebled - | the damage uses step 0
+an effect that only matches [Ranged] Actions                 chips: Empowered 0, Enfeebled - | the damage uses step 0
+a Reload shot by itself (Empowered 2)                        chips: Empowered 0, Enfeebled - | the damage uses step 1
+a Reload shot with Bloodlust: the highest, 2                 chips: Empowered 1, Enfeebled - | the damage uses step 1
+a Reload shot with Enfeebled 1: 2 - 1                        chips: Empowered 0, Enfeebled - | the damage uses step 1
+a Reload shot, the player lowers Enfeebled to 0              chips: Empowered 0, Enfeebled - | the damage uses step 1
+granted by an Action (@Use ...|empowered:1)                  chips: Empowered 1, Enfeebled - | the damage uses step 1
+granted Empowered 1 and Enfeebled 2                          chips: Empowered 1, Enfeebled - | the damage uses step 1
+an older effect that stored true                             chips: Empowered 1, Enfeebled - | the damage uses step 1
 --- the conditions Empowered N and Enfeebled N on the token
-the condition Empowered 2                                    chips: Empowered 2, Enfeebled 0 | the damage uses step 2
-the condition Enfeebled 3                                    chips: Empowered 0, Enfeebled 3 | the damage uses step -3
-Empowered 2 (condition) and Enfeebled 1 (an effect)          chips: Empowered 2, Enfeebled 1 | the damage uses step 1
-Empowered 1 (condition) and Rage (Empowered 2): the highest  chips: Empowered 2, Enfeebled 0 | the damage uses step 2
-a condition without a value counts as 1                      chips: Empowered 1, Enfeebled 0 | the damage uses step 1
+the condition Empowered 2                                    chips: Empowered 1, Enfeebled - | the damage uses step 1
+the condition Enfeebled 3                                    chips: Empowered 0, Enfeebled - | the damage uses step 0
+Empowered 2 (condition) and Enfeebled 1 (an effect)          chips: Empowered 1, Enfeebled - | the damage uses step 1
+Empowered 1 (condition) and Rage (Empowered 2): the highest  chips: Empowered 1, Enfeebled - | the damage uses step 1
+a condition without a value counts as 1                      chips: Empowered 1, Enfeebled - | the damage uses step 1
 
 --- Fighting in the dark: you gain nothing from a creature's poor perception of you if you perceive it as Hidden
 Kai and the Goblin both see each other                       Doomed off, Favored off | flanking(1b/0n)
@@ -109,9 +109,9 @@ Evade in the Basic Actions: @Move[evade|distance:1] || @Move[evade|distance:floo
 the Prone effect: Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane. You can't Evade. The only [Move] Actions you can use are Crawl and Stand. | Hindered linked: "" | settings: boonbane 1b 0n, boonbane 0b 1n
 
 --- the new roll dialog (v0.0.292): the same rolls through it, and its named sources on the card
-OLD Shoot Nari (the same world, the old dialog)  card | chips: syn:cover*(0b/1n) syn:engaged*(0b/2n) syn:engaged-target*(0b/1n) | bane dice - | total 11
-NEW Shoot Nari (the new dialog)                  card | chips: (none) | bane dice - | total 11
-   chips: Low cover[Nari] You are Engaged ×2[you] Target is Engaged[Nari] Nonlethal[you, off] | creatures: Nari AD 11 | dice line: {"versions":"1 AP","roll":{"mod":2,"name":"Weapon"},"multi":false}
+OLD Shoot Nari (the same world, the old dialog)  card | chips: syn:cover*(0b/1n) syn:engaged*(0b/0n) syn:engaged-target*(0b/1n) | bane dice - | total 7
+NEW Shoot Nari (the new dialog)                  card | chips: (none) | bane dice - | total 7
+   chips: Low cover[Nari] You are Engaged (Doomed)[you] Target is Engaged[Nari] Nonlethal[you, off] | creatures: Nari AD 11 | dice line: {"versions":"1 AP","roll":{"mod":2,"name":"Weapon"},"multi":false}
 NEW Shoot Nari: +1 Bane, +1, Engaged off         card | chips: (none) | bane dice - | total 13
    breakdown: 2d12 6 7 Boon · Bane −1 Low cover Field −1 Target is Engaged Field −1 Situational Modifiers +2 Weapon +1 Situational 13 vs AD 11 Tier 2 Vigor 2 Pi | flags rd banes: [{"name":"Situational","n":1,"scope":"shared","bb":""}] | flat: [{"name":"Situational","v":1}]
 NEW Crawl: the dialog: true | no roll: 1 AP no roll, 2 AP no roll | card posted: true | no warning

@@ -1,6 +1,6 @@
-NPC: null | PC 2: 2 | capped: 3
+NPC: null | PC 2: 2 | capped: 6
 round 1: Kai 0 Nari 3 Lonny 1
-round 2: Kai 1 | Nari stays at 3: 3 | Lonny (Unconscious) keeps 1: 1
+round 2: Kai 1 | Nari stays at 3: 4 | Lonny (Unconscious) keeps 1: 1
 the same round again gives nothing: Kai 1
 round 3: Kai 2
 --- the requirement (nothing is spent)

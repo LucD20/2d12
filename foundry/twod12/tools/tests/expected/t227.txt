@@ -1,19 +1,19 @@
-Aveline: Human Paladin L4 stage 1 | attrs {"body":2,"mind":0,"appeal":1,"instinct":1} | Vigor 23 Resolve 12 Health 35 | Rally 7 (heal 9) | Speed 5 move 5 | Weapon +2 Power +1 Sig +2 | AD 14 (Heavy Armor) WD 12 | armor heavy | steadiness 0 reach 1
-Aveline: Human Paladin L1 stage 1 | attrs {"body":2,"mind":0,"appeal":1,"instinct":1} | Vigor 23 Resolve 12 Health 35 | Rally 7 (heal 9) | Speed 5 move 5 | Weapon +2 Power +1 Sig +2 | AD 14 (Heavy Armor) WD 12 | armor heavy | steadiness 0 reach 1
-Durgan: Dwarf Paladin L4 stage 1 | attrs {"body":2,"mind":1,"appeal":-1,"instinct":2} | Vigor 23 Resolve 12 Health 35 | Rally 7 (heal 9) | Speed 4 move 4 | Weapon +1 Power +2 Sig +2 | AD 14 (Heavy Armor) WD 13 | armor heavy | steadiness 1 reach 1
-Durgan: Dwarf Paladin L1 stage 1 | attrs {"body":2,"mind":1,"appeal":-1,"instinct":2} | Vigor 23 Resolve 12 Health 35 | Rally 7 (heal 9) | Speed 4 move 4 | Weapon +1 Power +2 Sig +2 | AD 14 (Heavy Armor) WD 13 | armor heavy | steadiness 1 reach 1
-Sylwen: Elf Archer L4 stage 1 | attrs {"body":-1,"mind":2,"appeal":1,"instinct":2} | Vigor 17 Resolve 12 Health 29 | Rally 6 (heal 8) | Speed 7 move 7 | Weapon +2 Power +1 Sig +2 | AD 13 (Medium Armor) WD 12 | armor medium | steadiness 0 reach 1
-Sylwen: Elf Archer L1 stage 1 | attrs {"body":-1,"mind":2,"appeal":1,"instinct":2} | Vigor 17 Resolve 12 Health 29 | Rally 6 (heal 8) | Speed 7 move 7 | Weapon +2 Power +1 Sig +2 | AD 13 (Medium Armor) WD 12 | armor medium | steadiness 0 reach 1
-Kaela: Human Archer L4 stage 1 | attrs {"body":1,"mind":0,"appeal":1,"instinct":2} | Vigor 19 Resolve 10 Health 29 | Rally 6 (heal 8) | Speed 6 move 6 | Weapon +2 Power +1 Sig +2 | AD 13 (Medium Armor) WD 12 | armor medium | steadiness 0 reach 1
-Kaela: Human Archer L1 stage 1 | attrs {"body":1,"mind":0,"appeal":1,"instinct":2} | Vigor 19 Resolve 10 Health 29 | Rally 6 (heal 8) | Speed 6 move 6 | Weapon +2 Power +1 Sig +2 | AD 13 (Medium Armor) WD 12 | armor medium | steadiness 0 reach 1
-Aveline: systems/twod12/art/pcs/aveline.png | Greatsword (Mastery 0: Technique locked) | Talents: Heavy Blows, Whirlwind, Bloodlust, Cut Through
-Aveline: systems/twod12/art/pcs/aveline.png | Greatsword (Mastery 0: Technique locked) | Talents: Heavy Blows
-Durgan: systems/twod12/art/pcs/durgan.png | Pike (Mastery 0: Technique locked) | Talents: Challenge, Sacred Weapon, Hand of Mercy, Battering Charge
-Durgan: systems/twod12/art/pcs/durgan.png | Pike (Mastery 0: Technique locked) | Talents: Challenge
-Sylwen: systems/twod12/art/pcs/sylwen.webp | Longbow (Mastery 3: Technique open) | Talents: Aim, Ricochet, Long Draw, Lesser Blessing | Lesser Blessing chose Rimebrand (Cold)
-Sylwen: systems/twod12/art/pcs/sylwen.webp | Longbow (Mastery 3: Technique open) | Talents: Aim
-Kaela: systems/twod12/art/pcs/kaela.webp | Shortbow (Mastery 3: Technique open) | Talents: Brawler, Kickboxer, Steady Nerves, Aim
-Kaela: systems/twod12/art/pcs/kaela.webp | Shortbow (Mastery 3: Technique open) | Talents: Brawler
-level 1 versions: Aveline (Human Paladin, Smite, level 1): Heavy Blows; Daily: none; Greatsword | Durgan (Dwarf Paladin, Lay On Hands, level 1): Challenge; Daily: none; Pike | Sylwen (Elf Archer, Double Shot, level 1): Aim; Daily: none; Longbow | Kaela (Human Archer, Rolling Shot, level 1): Brawler; Daily: none; Shortbow
+Aveline: Human Paladin L4 stage 1 | attrs {"body":2,"mind":0,"appeal":1,"instinct":1} | Vigor 35 Resolve 18 Health 53 | Rally 8 (heal 14) | Speed 5 move 5 | Weapon +3 Power +1 Sig +3 | AD 14 (Heavy Armor) WD 12 | armor heavy | steadiness 0 reach 1
+Aveline: Human Paladin L1 stage 0 | attrs {"body":2,"mind":0,"appeal":1,"instinct":1} | Vigor 23 Resolve 12 Health 35 | Rally 7 (heal 9) | Speed 5 move 5 | Weapon +2 Power +1 Sig +2 | AD 14 (Heavy Armor) WD 12 | armor heavy | steadiness 0 reach 1
+Durgan: Dwarf Paladin L4 stage 1 | attrs {"body":2,"mind":1,"appeal":-1,"instinct":2} | Vigor 35 Resolve 18 Health 53 | Rally 8 (heal 14) | Speed 4 move 4 | Weapon +1 Power +3 Sig +3 | AD 14 (Heavy Armor) WD 14 | armor heavy | steadiness 1 reach 1
+Durgan: Dwarf Paladin L1 stage 0 | attrs {"body":2,"mind":1,"appeal":-1,"instinct":2} | Vigor 23 Resolve 12 Health 35 | Rally 7 (heal 9) | Speed 4 move 4 | Weapon +1 Power +2 Sig +2 | AD 14 (Heavy Armor) WD 13 | armor heavy | steadiness 1 reach 1
+Sylwen: Elf Archer L4 stage 1 | attrs {"body":-1,"mind":2,"appeal":1,"instinct":2} | Vigor 26 Resolve 17 Health 43 | Rally 7 (heal 11) | Speed 7 move 7 | Weapon +3 Power +1 Sig +3 | AD 13 (Medium Armor) WD 12 | armor medium | steadiness 0 reach 1
+Sylwen: Elf Archer L1 stage 0 | attrs {"body":-1,"mind":2,"appeal":1,"instinct":2} | Vigor 17 Resolve 12 Health 29 | Rally 6 (heal 8) | Speed 7 move 7 | Weapon +2 Power +1 Sig +2 | AD 13 (Medium Armor) WD 12 | armor medium | steadiness 0 reach 1
+Kaela: Human Archer L4 stage 1 | attrs {"body":1,"mind":0,"appeal":1,"instinct":2} | Vigor 28 Resolve 15 Health 43 | Rally 7 (heal 11) | Speed 6 move 6 | Weapon +3 Power +1 Sig +3 | AD 13 (Medium Armor) WD 12 | armor medium | steadiness 0 reach 1
+Kaela: Human Archer L1 stage 0 | attrs {"body":1,"mind":0,"appeal":1,"instinct":2} | Vigor 19 Resolve 10 Health 29 | Rally 6 (heal 8) | Speed 6 move 6 | Weapon +2 Power +1 Sig +2 | AD 13 (Medium Armor) WD 12 | armor medium | steadiness 0 reach 1
+Aveline: systems/twod12/art/pcs/aveline.png | Greatsword (Mastery 0: Technique locked) | Talents: 
+Aveline: systems/twod12/art/pcs/aveline.png | Greatsword (Mastery 0: Technique locked) | Talents: 
+Durgan: systems/twod12/art/pcs/durgan.png | Pike (Mastery 0: Technique locked) | Talents: 
+Durgan: systems/twod12/art/pcs/durgan.png | Pike (Mastery 0: Technique locked) | Talents: 
+Sylwen: systems/twod12/art/pcs/sylwen.webp | Longbow (Mastery 3: Technique open) | Talents: 
+Sylwen: systems/twod12/art/pcs/sylwen.webp | Longbow (Mastery 3: Technique open) | Talents: 
+Kaela: systems/twod12/art/pcs/kaela.webp | Shortbow (Mastery 3: Technique open) | Talents: 
+Kaela: systems/twod12/art/pcs/kaela.webp | Shortbow (Mastery 3: Technique open) | Talents: 
+level 1 versions: Aveline (Human Paladin, Smite, level 1): ; Daily: none; Greatsword | Durgan (Dwarf Paladin, Lay On Hands, level 1): ; Daily: none; Pike | Sylwen (Elf Archer, Double Shot, level 1): ; Daily: none; Longbow | Kaela (Human Archer, Rolling Shot, level 1): ; Daily: none; Shortbow
 Aveline and Durgan share: nothing
-Sylwen and Kaela share: Aim
+Sylwen and Kaela share: nothing

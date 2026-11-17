@@ -41,7 +41,7 @@ five Banes on the card: true
 retarget: no Boon dice any more, a third d12 for a target that reaches 5: {"d12":1,"boon":0,"bane":0}
 --- the sources in the code
 High cover: Doomed, no Field Banes: true | several targets: true
-Low / Medium cover, Obscured, Long, the Engaged target are Field: true | range and Engaged (you) unnamed: true
+Low / Medium cover, Obscured, Long, the Engaged target are Field: true | range unnamed, Engaged (you) Doomed since v0.0.407: true
 Saves: Cover gives Field Boons up to 2, High cover Favored: true
 Flanking: the cancels first, then 2: true
 Prone's are Field in the compendium: true

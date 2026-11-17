@@ -13,6 +13,7 @@
 // }
 // state: { ap, toggled: { id: bool }, manual: { scope: { boon, bane, plus, minus, emp, enf, fav, doom } }, fold: { "scope|row|off": bool }, open: { uuid: bool },
 //   removed: [uuid], rollMode, forceTier }
+import { EMPOWERED_DIE } from "./roundrules.mjs";   // v0.0.407
 import { esc, vsColored } from "./util.mjs";
 import { tierProbs, bbCount, bbFive, rollState, BB_NAMES, BB_LIMIT } from "./calc.mjs";
 
@@ -28,13 +29,14 @@ const MANUAL = {
   bane: { row: "banes", label: n => (n > 1 ? `Situational ×${n}` : "Situational") },
   plus: { row: "flat", label: n => `Situational +${n}` },
   minus: { row: "flat", label: n => `Situational −${n}` },
-  emp: { row: "damage", label: n => `Empowered ${n}` },
-  enf: { row: "damage", label: n => `Enfeebled ${n}` },
+  emp: { row: "damage", label: () => "Empowered" },   // v0.0.407: no value
+  enf: { row: "damage", label: n => `Enfeebled ${n}` },   // (gone since v0.0.407: no button makes one)
   fav: { row: "boons", label: () => "Favored" },
   doom: { row: "banes", label: () => "Doomed" }
 };
 /** The quick buttons: one target has them all; several targets have no Favored / Doomed in the shared panel (they are added per creature). */
-export const quickKinds = multi => (multi ? ["boon", "bane", "plus", "minus", "emp", "enf"] : ["boon", "bane", "fav", "doom", "plus", "minus", "emp", "enf"]);
+// v0.0.407 (book, Chapter 8): no Enfeebled button (it is gone); Empowered is on / off
+export const quickKinds = multi => (multi ? ["boon", "bane", "plus", "minus", "emp"] : ["boon", "bane", "fav", "doom", "plus", "minus", "emp"]);
 export const QUICK_LABEL = { boon: "Boon", bane: "Bane", fav: "Favored", doom: "Doomed", plus: "+1", minus: "−1", emp: "Empowered", enf: "Enfeebled" };
 
 /** A new, empty state. */
@@ -234,17 +236,19 @@ export const dieAvg = (faces, s = 0) => { const m = Number(faces) || 0; if (!m) 
 export function exprAvg(expr, s = 0) {
   let total = 0;
   for (const term of String(expr ?? "").replace(/\s+/g, "").replace(/−/g, "-").match(/[+-]?[^+-]+/g) ?? []) {
-    const sign = term.startsWith("-") ? -1 : 1, body = term.replace(/^[+-]/, ""), d = /^(\d*)d(\d+)$/i.exec(body);
-    if (d) total += sign * (Number(d[1] || 1) * dieAvg(d[2], s));
+    // v0.0.407: a die written with ! explodes (the book's way: every die gains 0.5 on average)
+    const sign = term.startsWith("-") ? -1 : 1, body = term.replace(/^[+-]/, ""), d = /^(\d*)d(\d+)(!?)$/i.exec(body);
+    if (d) total += sign * (Number(d[1] || 1) * (dieAvg(d[2], s) + (d[3] ? 0.5 : 0)));
     else if (/^\d+(\.\d+)?$/.test(body)) total += sign * Number(body);
   }
   return total;
 }
-/** One Tier's average damage: its parts, the Passives' tags that are on ("+1d6 Ho", "+2") and the Empowered / Enfeebled net on every die. */
+/** One Tier's average damage: its parts, the Passives' tags that are on ("+1d6 Ho", "+2"), and Empowered (v0.0.407: its 1d6!, once, on a Tier that deals damage). */
 export function tierAvg(tier, tags = [], net = 0) {
   let a = 0;
-  for (const p of tier?.parts ?? []) a += exprAvg(p.t, net);
-  for (const g of tags) a += exprAvg(String(g.tag ?? g).replace(/^\+/, "").split(" ")[0], net);
+  for (const p of tier?.parts ?? []) a += exprAvg(p.t);
+  for (const g of tags) a += exprAvg(String(g.tag ?? g).replace(/^\+/, "").split(" ")[0]);
+  if (net > 0 && a > 0) a += exprAvg(`1d${EMPOWERED_DIE}!`);
   return Math.round(a * 10) / 10;
 }
 
@@ -505,7 +509,7 @@ export function dialogHtml(inp, st) {
   // v0.0.293 (Lucas: allow it with a warning): a Version you can't afford is struck through but can be chosen
   const vers = (inp.versions ?? []).length > 1 ? `<div class="rd-vers" role="group" aria-label="Version">${inp.versions.map(x => `<button type="button" data-act="ver" data-ap="${x.ap}" aria-pressed="${Number(x.ap) === Number(v?.ap)}"${x.disabled ? ` data-tooltip="${esc(x.why ?? "")}" class="cant"` : ""}>${esc(x.cost)}</button>`).join("")}</div>` : "";
   // v0.0.349 (Lucas, playtest 4: "Enfeebled on the same line, tighter, no +1 / −1 on the icons"): +1 / −1 without a sign icon (the label says it)
-  const quick = `<div class="rd-quick tight">${(inp.save ? ["emp", "enf"] : quickKinds(inp.multi)).map(k => `<button type="button" class="rd-qb" data-act="quick" data-scope="shared" data-k="${k}">${["plus", "minus"].includes(k) ? "" : pip({ kind: k })}${QUICK_LABEL[k]}</button>`).join("")}</div>`;
+  const quick = `<div class="rd-quick tight">${(inp.save ? ["emp"] : quickKinds(inp.multi)).map(k => `<button type="button" class="rd-qb" data-act="quick" data-scope="shared" data-k="${k}">${["plus", "minus"].includes(k) ? "" : pip({ kind: k })}${QUICK_LABEL[k]}</button>`).join("")}</div>`;
   const notices = (inp.notices ?? []).length ? `<div class="rd-notes">${inp.notices.map(n => `<span class="rd-note"${n.why ? ` data-tooltip="${esc(n.why)}"` : ""}>${esc(n.text)}</span>`).join("")}</div>` : "";
   const head = inp.save ? `<div class="rd-dice"><b class="rd-dtxt">Their roll</b> <i class="rd-dnames">${esc(inp.save.label)} vs DC ${inp.save.dc}</i> <span class="rd-dnote">· each target rolls; the Tiers are their result</span></div>`
     : `<div class="rd-dice"><b class="rd-dtxt">${esc(dl.dice)}</b> <b>${sgn(dl.mod)}</b> <i class="rd-dnames">${esc(dl.names.join(", "))}</i> ${counts(dl.boons, dl.banes)}${dl.note ? ` <span class="rd-dnote">· ${esc(dl.note)}</span>` : ""}${(dl.bbNotes ?? []).map(x => ` <span class="rd-dnote rd-bbcap">· ${esc(x)}</span>`).join("")}</div>`;

@@ -21,7 +21,10 @@ console.log("cards:", cards.length, "| files:", [...new Set(cards.map(c => c._fi
 console.log("--- the generated Basic Actions");
 const check = spawnSync(process.execPath, [ROOT + "tools/gen-basic.mjs", "--check"], { encoding: "utf8" });
 console.log("module/basic-data.mjs up to date:", check.status === 0, (check.stdout + check.stderr).trim());
-const basics = cards.filter(c => c.foundry?.basic);
+// v0.0.407: a Basic Action card listed in book/cards/set-aside.txt (Opportunity Attack) is no longer generated
+const setAside = new Set(fs.readFileSync(ROOT + "../../book/cards/set-aside.txt", "utf8").split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith("#")));
+const basics = cards.filter(c => c.foundry?.basic && !setAside.has(c.name));
+console.log("set aside, not a Basic Action:", cards.filter(c => c.foundry?.basic && setAside.has(c.name)).map(c => c.name).join(", "));
 console.log("Basic Action cards:", basics.length, "| keys in basic-data.mjs:", Object.keys(BASIC_ACTIONS).length, "| the same set:", JSON.stringify(basics.map(c => c.foundry.basic).sort()) === JSON.stringify(Object.keys(BASIC_ACTIONS).sort()));
 console.log("every Basic Action card is a Basic Action:", basics.every(c => c.category === "Basic Action"), "| every card in basic-actions.json has a key:", cards.filter(c => c._file === "basic-actions.json").every(c => c.foundry?.basic));
 console.log("the generator gives the data of the file:", basics.every(c => JSON.stringify(basicEntry(c)) === JSON.stringify(BASIC_ACTIONS[c.foundry.basic])));

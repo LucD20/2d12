@@ -28,7 +28,8 @@ export const hasVersions = c => Array.isArray(c.versions) && c.versions.length >
 /** "damage; effect text" -> [damage, text] (the first ";" splits; a cell with no damage is all text). */
 export const splitTier = t => { const i = t.indexOf(";"); return i < 0 ? [t.trim(), ""] : [t.slice(0, i).trim(), t.slice(i + 1).trim()]; };
 /** Does this text read as damage the book writes ("0", "[B] 1[W] + [Mod] + [M] 1d6 Ho", "[B] [Mod] Pi")? */
-export const isDamage = t => /^(0|-|(\[(B|M|V|R)\]\s*)?(\d*\[W\]|\[Mod\]|\d+d\d+|\d+)(\s*\+\s*((\[(B|M|V|R)\]\s*)?(\d*\[W\]|\[Mod\]|\d+d\d+|\d+)))*(\s+(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un))?)$/.test(t.trim());
+// v0.0.407 (pack "Stage 0 in Foundry"): a die can be written with ! (1d4!: it explodes)
+export const isDamage = t => /^(0|-|(\[(B|M|V|R)\]\s*)?(\d*\[W\]|\[Mod\]|\d+d\d+!?|\d+)(\s*\+\s*((\[(B|M|V|R)\]\s*)?(\d*\[W\]|\[Mod\]|\d+d\d+!?|\d+)))*(\s+(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un))?)$/.test(t.trim());
 /** The book's [[links]] to their label (Foundry and the ruler have no links). */
 export const stripLinks = s => String(s ?? "").replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2").replace(/\[\[([^\]]+)\]\]/g, "$1");
 /** The book's **bold** to plain text. */

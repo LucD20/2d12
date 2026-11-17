@@ -1,5 +1,5 @@
 {
- "_about": "The example NPCs' Actions (the Bestiary document writes them as bullets with their average damage: no card in the book). `npc` names the actor; Foundry embeds the Action on it, `foundry.npcWeapon` is the weapon in its hands. One source per card: book/cards/README.md. Pack R-bestiary (2026-11-05): the dice follow the re-fitted tables (book/ruler/rbestiary.md); the Grave Wisp attacks Ward Defense only ([R]).",
+ "_about": "The example NPCs' Actions (the Bestiary document writes them as bullets with their damage: no card in the book). `npc` names the actor; Foundry embeds the Action on it, `foundry.npcWeapon` is the weapon in its hands (flavor). One source per card: book/cards/README.md. Since v0.0.407 (pack \"Stage 0 in Foundry\") they are the Bestiary's Stage 0 examples, built on the turn budget: the damage is written whole (no [Mod]), a Standard's or an Elite's Basic attack has an exploding die (!); the Bandit Thug is a Medium Grunt built the same way (25 points an AP, turn budget 75).",
  "cards": [
   {
    "name": "Rusty Knife",
@@ -21,8 +21,8 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] [Mod] Pi",
-      "[V] 1d4 Pi"
+      "[V] 1d4 Pi",
+      "[V] 1 + 1d4 Pi"
      ]
     }
    ],
@@ -30,7 +30,8 @@
     "img": "icons/svg/dagger.svg",
     "npcWeapon": "Rusty Knife"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "18 points (a Medium Minion's AP); a Minion's dice never explode."
   },
   {
    "name": "Dirty Trick",
@@ -52,17 +53,18 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] [Mod] Pi",
-      "[V] 1d6 Pi"
+      "[V] 1d4 Pi",
+      "[V] 1 + 1d4 Pi"
      ],
-     "effects": "Hindered (EoT)."
+     "effects": "The target takes 1 Pressure Bane on its next roll."
     }
    ],
    "foundry": {
     "img": "icons/svg/combat.svg",
     "npcWeapon": "Rusty Knife"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "20 points (1 AP Round), a Mild rider 3."
   },
   {
    "name": "Cudgel",
@@ -84,8 +86,8 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d2 Bl",
-      "[V] 1d4 Bl"
+      "[V] 1 + 1d4 Bl",
+      "[V] 2 + 1d6 Bl"
      ]
     }
    ],
@@ -93,7 +95,8 @@
     "img": "icons/svg/hammer.svg",
     "npcWeapon": "Cudgel"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "25 points (a Medium Grunt's AP); a Grunt's dice never explode."
   },
   {
    "name": "Low Blow",
@@ -115,8 +118,8 @@
      "ap": 2,
      "tiers": [
       "0",
-      "[V] 1d8 Bl",
-      "[V] 2d6 Bl"
+      "[V] 4 + 1d6 Bl; Staggered (EoT).",
+      "[V] 8 + 1d6 Bl; Staggered (EoT)."
      ]
     }
    ],
@@ -124,7 +127,8 @@
     "img": "icons/svg/combat.svg",
     "npcWeapon": "Cudgel"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "55 points (2 AP Round), Staggered (EoT) a Mild rider 3: 52. Its best turn, Low Blow and a Cudgel: 80 of 75 (within 15%)."
   },
   {
    "name": "Cleaver",
@@ -146,16 +150,21 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d4 Sl",
-      "[V] 1d10 Sl"
-     ]
+      "[V] 1 + 1d4! Sl",
+      "[V] 3 + 1d4! Sl"
+     ],
+     "effects": "It can Push the target 1.",
+     "foundry": {
+      "after": "@Move[pushed|distance:1|pick:yes]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/sword.svg",
     "npcWeapon": "Cleaver"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "25 points, Push 1 (2)."
   },
   {
    "name": "Brutal Swing",
@@ -177,21 +186,21 @@
      "ap": 2,
      "tiers": [
       "0",
-      "[V] 1d8 Sl",
-      "[V] 2d6 Sl"
-     ],
-     "effects": "Prone."
+      "[V] 3 + 1d4 Sl; Prone.",
+      "[V] 4 + 1d6 Sl; Prone."
+     ]
     }
    ],
    "foundry": {
     "img": "icons/svg/combat.svg",
     "npcWeapon": "Cleaver"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "55 points, Prone (12), Avenge Kin's share (7)."
   },
   {
    "name": "Avenge Kin",
-   "category": "Special Action",
+   "category": "Reaction",
    "book": false,
    "npc": "Orc Warrior",
    "flavor": "Touch its kin, and the orc answers.",
@@ -204,22 +213,24 @@
    "target": "The attacker",
    "distance": "Weapon",
    "vs": "AD",
-   "trigger": "An ally within 2 squares is hit.",
+   "trigger": "An ally within 2 squares is hit by a [Strike] Action.",
    "versions": [
     {
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d10 Sl",
-      "[V] 3d6 Sl"
-     ]
+      "[V] 1 + 1d4 Sl",
+      "[V] 3 + 1d6 Sl"
+     ],
+     "effects": "It attacks the attacker, if it can reach it."
     }
    ],
    "foundry": {
     "img": "icons/svg/shield.svg",
     "npcWeapon": "Cleaver"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "1R: a 1 AP Round Action's 28 points; a quarter (7) comes off the turn."
   },
   {
    "name": "Chilling Touch",
@@ -230,7 +241,8 @@
    "traits": [
     "melee",
     "power",
-    "strike"
+    "strike",
+    "fear"
    ],
    "frequency": "At-will",
    "target": "One creature",
@@ -241,15 +253,16 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[R] 1d4 + [Mod] Co",
-      "[R] 1d10 + [Mod] Co"
+      "[R] 1 + 1d4! Co; Frightened of the Grave Wisp (EoT).",
+      "[R] 2 + 1d4! Co; Frightened of the Grave Wisp (EoT)."
      ]
     }
    ],
    "foundry": {
     "img": "icons/svg/frozen.svg"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "25 points, Frightened (EoT) a Mild rider 3."
   },
   {
    "name": "Dread Whisper",
@@ -272,16 +285,16 @@
      "ap": 2,
      "tiers": [
       "0",
-      "[R] 1d10 + [Mod] Ps",
-      "[R] 3d6 + [Mod] Ps"
-     ],
-     "effects": "Frightened of the Grave Wisp (EoT)."
+      "[R] 3 + 1d6 Ps; Dazed 1.",
+      "[R] 7 + 1d6 Ps; Dazed 1."
+     ]
     }
    ],
    "foundry": {
     "img": "icons/svg/terror.svg"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "55 points, Dazed 1 a Moderate rider 8."
   },
   {
    "name": "Club",
@@ -303,9 +316,13 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d6 Bl",
-      "[V] 2d6 Bl"
-     ]
+      "[V] 1 + 1d4! Bl",
+      "[V] 3 + 1d6! Bl"
+     ],
+     "effects": "It can Push the target 1.",
+     "foundry": {
+      "after": "@Move[pushed|distance:1|pick:yes]"
+     }
     }
    ],
    "foundry": {
@@ -313,7 +330,44 @@
     "npcWeapon": "Great Club",
     "basicRating": "high"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "High (40 points an AP: a slow creature), Push 1 (2), then Ground Slam's pay-back (a quarter)."
+  },
+  {
+   "name": "Overhead Smash",
+   "category": "Special Action",
+   "book": false,
+   "npc": "Ogre Chieftain",
+   "flavor": "Both hands on the club, and the floor cracks under it.",
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "Round",
+   "target": "One creature",
+   "distance": "Weapon",
+   "vs": "AD",
+   "versions": [
+    {
+     "ap": 2,
+     "tiers": [
+      "0",
+      "[V] 3 + 1d6 Bl",
+      "[V] 7 + 1d6 Bl"
+     ],
+     "effects": "It can Push the target 2.",
+     "foundry": {
+      "after": "@Move[pushed|distance:2|pick:yes]"
+     }
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/combat.svg",
+    "npcWeapon": "Great Club"
+   },
+   "ruler": false,
+   "_note": "73 points (2 AP Round, an Elite's), Push 2 (8), Ground Slam's pay-back."
   },
   {
    "name": "Ground Slam",
@@ -328,14 +382,14 @@
    ],
    "frequency": "Encounter",
    "target": "All creatures in the Area",
-   "area": "1 Emanation",
+   "area": "2 Emanation",
    "vs": "Body Save",
    "versions": [
     {
-     "ap": 3,
+     "ap": 2,
      "tiers": [
-      "[V] 3d6 + [Mod] Bl; Prone.",
-      "[V] 1d10 + [Mod] Bl",
+      "[V] 10 + 1d8 Bl; Prone.",
+      "[V] 6 + 1d6 Bl; Prone.",
       "No effect."
      ]
     }
@@ -346,7 +400,8 @@
      "center": true
     }
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "145 points (2 AP Encounter), Prone (12), half to each creature. At Escalation 6 it comes back once (the Elite ladder)."
   },
   {
    "name": "Rally the Tribe",
@@ -357,7 +412,7 @@
    "traits": [
     "focus"
    ],
-   "escalation": 2,
+   "escalation": 4,
    "frequency": "Round",
    "target": "Allies within 5 squares",
    "distance": "5 sq.",
@@ -370,7 +425,8 @@
    "foundry": {
     "img": "icons/svg/aura.svg"
    },
-   "ruler": false
+   "ruler": false,
+   "_note": "Escalation 4 since Stage 0 (Lucas, 2026-11-12)."
   }
  ]
 }

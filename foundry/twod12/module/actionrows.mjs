@@ -41,8 +41,9 @@ export function actionChanges(actor, item) {
       if (m.boons) add(name, plural(m.boons * k(m), "Boon"), true);
       if (m.banes) add(name, plural(m.banes * k(m), "Bane"), false);
       const up = m.empowered === true ? 1 : Math.trunc(Number(m.empowered)) || 0, down = Math.trunc(Number(m.enfeebled)) || 0;
-      if (up > 0) { emp = Math.max(emp, up); add(name, `Empowered ${up}: +${up} per damage die`, true); }
-      if (down > 0) { enf = Math.max(enf, down); add(name, `Enfeebled ${down}: \u2212${down} per damage die`, false); }
+      // v0.0.407 (book, Chapter 8): Empowered has no value; Enfeebled is gone (an old effect's counts for nothing)
+      if (up > 0) { emp = 1; add(name, `Empowered: +1d6! on the first damage of each of your turns`, true); }
+      void down;
     }
     for (const b of flagOf(e, "bonuses") ?? []) {
       if (b.against || !matches(b, traits)) continue;   // v0.0.343: against = Rolls made against this creature
@@ -52,12 +53,7 @@ export function actionChanges(actor, item) {
       for (const t of tiers) bonuses[Number(String(t).replace("t", ""))]?.push({ text: `+ ${dmg}`, source: name });
       add(name, `+ ${dmg}${tiersText(tiers)}`, true);
     }
-    for (const id of ["empowered", "enfeebled"]) {   // the conditions Empowered N and Enfeebled N
-      if (!e.statuses?.has?.(id)) continue;
-      const n = valueOf(e);
-      if (id === "empowered") { emp = Math.max(emp, n); add(name, `+${n} per damage die`, true); }
-      else { enf = Math.max(enf, n); add(name, `\u2212${n} per damage die`, false); }
-    }
+    if (e.statuses?.has?.("empowered")) { emp = 1; add(name, "+1d6! on the first damage of each of your turns", true); }   // v0.0.407: the condition Empowered, no value
   }
   const chips = [...byName.values()].map(c => ({ text: c.text, cls: c.up >= c.down ? "up" : "down", why: c.parts.join("; ") }));
   return { chips, empowered: emp, enfeebled: enf, net: emp - enf, bonuses };

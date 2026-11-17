@@ -22,7 +22,7 @@ Smite 3 AP: On your turn > Pay 3 AP > One creature > Your roll > Smite (Bright l
 Rebuke: Trigger > Pay 1 AP (R) > The triggering creature > The target's Save > The damage > Pushed 2 / 1* > Frightened (1 round)*
 Covering Fire: On your turn > Pay 2 AP > Place the area > Covering Fire
 --- the tab
-renders for every Action: true 89 | failures: none
+renders for every Action: true 88 | failures: none
 Smite 3 AP: 3 Version tabs: 3 | its Tier fields: 3 | "On a Tier 2 or 3": true | 2 steps: 2 | Fill: true | the chain isn't a text field: true
 Covering Fire: "On use": true | the area's size and rounds on the Version: true | Who set by the Zone: true
 every Tier's damage reads back from its text: true
@@ -31,7 +31,7 @@ no Foundry default window, no Versions window: true true | "Modifies other Actio
 the model: true | read as passives: true
 an Action with settings is a source, one without isn't: 1 Mark Quarry | its Boon: {"dmg":"[Mod]","dmgPool":"B","dmgSub":"W","tiers":["t1"],"text":"","fxUuid":"","all":["shot","strike"],"any":[],"none":[
 --- Stage 0 ready
-escalationMax in the config: 3 | the sheet reads it: true | a rule's Works too: true | no fixed clamp: true
+escalationMax in the config: 6 | the sheet reads it: true | a rule's Works too: true | no fixed clamp: true
 with 6, Works offers: 7 choices | a rule keeps Escalation 5: 5
 a chip's sN: (old chips as before): 0=1d8+mod 1=1d8+mod 2=2d6+mod 3=2d8+mod | with a Stage 0 base and s1: 0=1d6+mod 1=1d8+mod 2=1d8+mod 3=2d8+mod | none: 1d8+mod
 --- v0.0.358 (Lucas on v0.0.355 to v0.0.357)

@@ -53,7 +53,7 @@ function cardSec(m) {
     s.prerequisites ? ["Prerequisites", `${named("system.prerequisites", s.prerequisites, "", "wide")}<span class="fr-m">an old Talent field: move it to Requirements</span>`] : null
   ];
   const extra = `<div class="as-more">${tog("system.marksTarget", s.marksTarget, "Marks the target")}${tog("system.basicAttack", s.basicAttack, "An NPC's Basic attack")}
-    ${s.basicAttack ? `<span class="fr-m">rating</span> ${sel('name="system.basicRating"', s.basicRating ?? "medium", m.basicRatings ?? [], "Basic attack rating")}${m.basicSuggest ? ` <span class="fr-m">suggested average ${esc(m.basicSuggest)}</span>` : ""}` : ""}
+    ${s.basicAttack ? `<span class="fr-m">rating</span> ${sel('name="system.basicRating"', s.basicRating ?? "medium", m.basicRatings ?? [], "Basic attack rating")}` : ""}${m.basicSuggest ? ` <span class="fr-m" data-tooltip="The Bestiary's turn budget for this Action's AP and Frequency (Stage 0; a ranged one a rating lower): take its riders' prices off the points">suggested ${esc(m.basicSuggest)}</span>` : ""}
     ${weapon ? `<span class="fr-m">Weapon used</span> ${sel('name="system.weaponUse"', s.weaponUse ?? "", Object.entries(TWOD12.weaponUses ?? {}), "Weapon used")}` : ""}
     ${more.map(([k, l]) => `<a class="as-link" data-as="show" data-v="${k}" role="button" tabindex="0">${l}</a>`).join("")}</div>`;
   return sec("card", "The card", "its lines, in the order players read them", grid(rows) + extra

@@ -6,6 +6,8 @@ import { combatantOf, getAP, getRAP, slowedOf, apPerTurn, quickenedOf, baseAP } 
 import { guardPerAP } from "./guard.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
+import { npcSuggest, npcDefenseOf, s0Health, turnBudget, pointsPerAp, bestTurn, damagePoints, ROLE_PRESETS, rankAp } from "./npcbudget.mjs";
+import { avgFormula } from "./calc.mjs";   // v0.0.407: the Bestiary at Stage 0
 import { atWillUses, strikesUsed } from "./usage.mjs";
 import { isEscPassive, passiveThreshold } from "./escblock.mjs";
 import { escHooksOf } from "./states.mjs";
@@ -238,7 +240,7 @@ export async function pcModel(sheet, ctx) {
     const sec = extra.section ?? actionSection({ basic: !!i.getFlag(F, "basic"), basicKey: i.getFlag(F, "basic"), reaction, escalation: esc, frequency: effectiveFrequency(it) });
     const fists = it.weaponUse === "fists" || i.getFlag(F, "basic") === "fists";
     const subs = [];
-    if (npc && it.basicAttack) { const rr = it.basicRating || "medium"; subs.push(`Basic attack \u00b7 ${TWOD12.npcRatings[rr]?.label ?? rr} \u00b7 ~${npcRow(role, TWOD12.npcRatings, rr, s.stage).basic.join(" / ")}`); if (elite && atk && escNow >= 1) subs.push("+1 Boon on its first attack this round"); }
+    if (npc && it.basicAttack) { const rr = it.basicRating || "medium"; subs.push(`Basic attack \u00b7 ${TWOD12.npcRatings[rr]?.label ?? rr} \u00b7 ~${(Number(s.stage) || 0) === 0 ? npcSuggest({ rank: TWOD12.npcRoles[s.role] ? s.role : "standard", rating: rr, basic: true }).t2 + " / " + npcSuggest({ rank: TWOD12.npcRoles[s.role] ? s.role : "standard", rating: rr, basic: true }).t3 : npcRow(role, TWOD12.npcRatings, rr, s.stage).basic.join(" / ")}`); if (elite && atk && escNow >= ELITE_RUNGS[0].n) subs.push("+1 Boon on its first attack this round"); }
     if (npc && i.getFlag(F, "basic") === "opportunityAttack" && basicAtk) subs.push(`with ${basicAtk.name}`);
     // v0.0.303 (Lucas): no "back once at Escalation 3" on the row (the Elite Escalation strip says it)
     if (area) subs.push(`Area: ${area}`);
@@ -490,8 +492,13 @@ export function npcBuilderModel(a) {
   };
   const sg2 = v => (v >= 0 ? `+${v}` : `\u2212${Math.abs(v)}`);
   const attrs = [["body", "Body"], ["mind", "Mind"], ["appeal", "Appeal"], ["instinct", "Instinct"]].map(([k, n]) => row(k, n, FEATURE_COLORS[k], x => sg2(npcRow(role, R, x, stage).attr), sg2(s.attributes?.[k] ?? 0)));
-  const health = [["bodyHm", "Vigor", "body", s.bdt], ["mindHm", "Resolve", "mind", s.mdt]].map(([k, n, c, v]) => row(k, n, FEATURE_COLORS[c], x => `\u00d7${fmtN(npcRow(role, R, x, stage).hm)}`, v));
-  const defs = [["ad", "Armor Defense", s.armorDC], ["wd", "Ward Defense", s.wardDC]].map(([k, n, v]) => row(k, n, FEATURE_COLORS[k], x => npcRow(role, R, x, stage).def, v));
+  // v0.0.407 (Stage 0 in Foundry; the Bestiary): at Stage 0 Vigor and Resolve are ready numbers; the Defenses the rank's table (every Stage)
+  const rank = TWOD12.npcRoles[s.role] ? s.role : "standard", s0 = stage === 0;
+  const health = [["bodyHm", "Vigor", "body", s.bdt], ["mindHm", "Resolve", "mind", s.mdt]].map(([k, n, c, v]) => row(k, n, FEATURE_COLORS[c], x => (s0 ? s0Health(rank, x) : `\u00d7${fmtN(npcRow(role, R, x, stage).hm)}`), v));
+  const defs = [["ad", "Armor Defense", s.armorDC], ["wd", "Ward Defense", s.wardDC]].map(([k, n, v]) => row(k, n, FEATURE_COLORS[k], x => npcDefenseOf(rank, x), v));
+  // v0.0.407 (the Bestiary, the turn budget): the damage rating sets its points an AP and its turn budget
+  const dmgRating = rating("damage") === "custom" ? "medium" : rating("damage");
+  const damage = row("damage", "Damage", "#7a1626", x => `${Math.round(pointsPerAp(rank, x))}/AP`, `${Math.round(turnBudget(rank, dmgRating))} a turn`);
   // v0.0.307 (Lucas): the Weapon and Power Modifiers as rated rows (the role's table; a rating left at its default shows it).
   const mr = s.modRatings ?? { weapon: "medium", power: "low" };
   const modRow = (key, name, color, cur, value) => {
@@ -524,19 +531,35 @@ export function npcBuilderModel(a) {
   const pool = (Number(s.bdt) || 0) + (Number(s.mdt) || 0);
   const avg = ratingsAverage(["body", "mind", "appeal", "instinct", "bodyHm", "mindHm", "ad", "wd"].map(rating), R);
   const specials = [["Basic attack", "1 AP \u00b7 At-will", 1], ["Special, 1 AP", "Round \u00b7 \u00d71.4", 1.4], ["Special, 2 AP", "Round \u00b7 \u00d72.2", 2.2], ...(s.role === "minion" ? [] : [["Special, 3 AP", "Encounter \u00b7 \u00d73.5", 3.5]])];
+  // v0.0.407 (the Bestiary, Check its best turn): its Actions' points from their written damage (riders not counted), the best turn against the budget + 15%
+  const budget = turnBudget(rank, dmgRating), acts = (a.itemTypes?.action ?? []).filter(i => !i.getFlag?.("twod12", "basic") && !i.system?.reaction).map(i => {
+    const v = (i.system.versions ?? [])[0] ?? {}, avgOf = list => (list ?? []).reduce((t, x) => t + (x.dice ? avgFormula(String(x.dice).replace(/!/g, "")) + (/!/.test(x.dice) ? 0.5 * ((String(x.dice).match(/d\d+/g) ?? []).length) : 0) : 0), 0);
+    const f = String(i.system.frequency ?? ""), freq = f === "encounter" ? "enc" : f === "round" ? "round" : "atwill";
+    return { name: i.name, ap: Number(v.ap) || 1, freq, pts: damagePoints(avgOf(v.t2), avgOf(v.t3)), strike: [...(i.system.traits ?? [])].includes("strike") || !!i.system.basicAttack };
+  });
+  const best = bestTurn(acts, rankAp(rank));
+  const bestLine = !acts.length ? "no Actions yet" : `${Math.round(best.pts)} of ${Math.round(budget)}${best.pts > budget * (1 + TWOD12.npcBudget.over) ? " (over: more than 15% above the budget)" : ""}`;
   return {
     roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, on: (s.role || "standard") === k })),
-    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: role.ap, elite: s.role === "elite", escOn: !!s.useEscalation, ladderOn: s.eliteLadder !== false, escAny: true,   // v0.0.303: any role can switch Escalation on (it was the Elite's only)
-    summary: [{ k: "Health", v: pool }, { k: "Down in about", v: `${downIn(pool, pcDmg)} PC turns` }, { k: "Should deal", v: `about ${role.deals}` }, { k: "Ratings average", v: avg }],
+    // v0.0.407 (the Bestiary, Roles): a role is a preset of ratings (clicked, it sets them; its name is kept on the NPC)
+    presets: Object.entries(ROLE_PRESETS).map(([k, v]) => ({ key: k, label: v.label, tip: v.tip, on: s.npcRole === k })),
+    level: s.level, stage, cv: s.cv ?? role.cv[0], ap: rankAp(rank), elite: s.role === "elite", escOn: !!s.useEscalation, ladderOn: s.eliteLadder !== false, escAny: true,   // v0.0.303: any role can switch Escalation on (it was the Elite's only)
+    summary: s0 ? [{ k: "Health", v: pool }, { k: "Turn budget", v: `${Math.round(budget)} (${Math.round(pointsPerAp(rank, dmgRating))} an AP)` }, { k: "Best turn", v: bestLine }, { k: "CV steps", v: `${(Number(s.cvSteps) || 0) >= 0 ? "+" : ""}${Number(s.cvSteps) || 0} (${TWOD12.npcCvStep[rank]} each)` }]
+      : [{ k: "Health", v: pool }, { k: "Down in about", v: `${downIn(pool, pcDmg)} PC turns` }, { k: "Should deal", v: `about ${role.deals}` }, { k: "Ratings average", v: avg }],
     cols: [[{ title: "Attributes", rows: attrs, grow: 4 }, { title: "Movement", rows: [speed, steady], grow: 2 }, { title: "Weapon Mod", rows: [wmod], grow: 1 }],
-      [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }, { title: "Power Mod", rows: [pmod], grow: 1 }]],   // v0.0.307 (Lucas): Weapon under Movement, Power under Defenses
+      [{ title: "Health", rows: health, grow: 3 }, { title: "Defenses", rows: defs, grow: 3 }, { title: "Power Mod", rows: [pmod], grow: 1 }, ...(s0 ? [{ title: "Damage (turn budget)", rows: [damage], grow: 1 }] : [])]],   // v0.0.307 (Lucas): Weapon under Movement, Power under Defenses
     heads: keys.map(k => ({ label: R[k].label, color: RATING_COLORS[k], med: k === "medium" })),
     // v0.0.308 (Lucas: "more intuitive"): each cell gives the average and the dice to write with this creature's Weapon Modifier ([Mod] taken out),
     // the tooltip the Power Modifier's for a Vs. WD attack
     frame, rw, roleLabel: role.label, modLabel: vsWd ? `Power Modifier (${sg2(Number(s.powerMod) || 0)}), to [R] Resolve` : `Weapon Modifier (${sg2(Number(s.weaponMod) || 0)})`, powerMod: sg2(Number(s.powerMod) || 0),
     // v0.0.314 (pack AU, Vs. WD): the table for a Vs. AD attack (the Weapon Modifier, [V]) or a Vs. WD one (the Power Modifier, [R] by default: the Grave Wisp's)
     vsWd, vsToggle: [{ key: "ad", label: "Vs. AD", sub: "Weapon Mod · [V]", on: !vsWd }, { key: "wd", label: "Vs. WD", sub: "Power Mod · [R]", on: vsWd }],
-    attacks: specials.map(([label, sub, x], n) => ({ label, sub, alt: n % 2 === 1, cells: keys.map(k => {
+    s0,
+    // v0.0.407 (the Bestiary, the turn budget): at Stage 0 each cell is the Action's points and its written damage (riders not taken off yet)
+    attacks: s0 ? specials.map(([label, sub], n) => ({ label, sub: sub.replace(/ \u00b7 \u00d7[\d.]+$/, ""), alt: n % 2 === 1, cells: keys.map(k => {
+      const ap = n === 0 ? 1 : n, freq = n === 0 ? "atwill" : n === 3 ? "enc" : "round", o = npcSuggest({ rank, rating: k, ap, freq, basic: n === 0 });
+      return { v: `${o.pts} pts`, dice: `${o.t2} / ${o.t3}`, med: k === dmgRating, color: RATING_COLORS[k], tip: `${R[k].label} ${label}: ${o.pts} points, ${o.t2} / ${o.t3} (Tier 2 / Tier 3) before its riders. A ranged attack (more than 2 squares) uses the column to its left.` };
+    }) })) : specials.map(([label, sub, x], n) => ({ label, sub, alt: n % 2 === 1, cells: keys.map(k => {
       const avg = specialAvg(npcRow(role, R, k, stage).basic, x), wm = Number(s.weaponMod) || 0, pm = Number(s.powerMod) || 0;
       const dice = m => avg.map(v => { const d = diceFor(v - m); return !d ? `${m}` : /^\d+$/.test(d) ? `${Number(d) + m}` : `${d}+${m}`; }).join(" / ");
       const mine = vsWd ? `[R] ${dice(pm)}` : dice(wm);

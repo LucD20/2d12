@@ -1,4 +1,4 @@
 [V] 1[W] + 1d4 H
 [V] [Mod] S
 
-{ body: 2, mind: 1, appeal: 0, instinct: 1 } 43 5 2
+{ body: 2, mind: 1, appeal: 0, instinct: 1 } 43 6 2

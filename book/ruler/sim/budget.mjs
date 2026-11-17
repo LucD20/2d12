@@ -3,37 +3,10 @@
 // pass its own (calib.mjs tries several). Nothing here plays a fight: the engine (engine.mjs) runs an NPC's `acts` and `reaction`.
 import { TW, parseDamage, npcS0, avgDamage } from "./core.mjs";
 
-/** The price list. config.mjs npcBudget is the book's; these are its fields (see there). */
-export const PRICES = () => structuredClone(TW.npcBudget);
-
-/** An average as written damage: a flat part plus at most one small die (a d4 under 5.5, a d6 under 11.5, a d8 above), or a plain number under 2. */
-export function expr(avg) {
-  if (avg <= 0.25) return "0";
-  if (avg < 2) return String(Math.max(1, Math.round(avg)));
-  const die = avg < 5.5 ? 4 : avg < 11.5 ? 6 : 8, flat = Math.max(0, Math.round(avg - (die + 1) / 2 + 1e-9));
-  return flat ? `${flat} + 1d${die}` : `1d${die}`;
-}
-/** Points into damage: Tier 2 and Tier 3 averages (a Medium Standard's Basic attack, 25 points, is 3.5 / 5.5). */
-export const pointsAvg = (pts, P = PRICES()) => [pts * P.toDamage[0], pts * P.toDamage[1]];
-/** Points into written damage (Tier 2, Tier 3), as the Bestiary's table writes it. */
-export const pointsExpr = (pts, P = PRICES()) => pointsAvg(pts, P).map(expr);
-
-const SEV = ["forced", "mild", "moderate", "severe", "extreme"];   // 2026-11-13: priced for a rider one enemy in the encounter has (calib.mjs, section 2)
-/** A rider's price by its severity and where it is (Setup one size bigger, Tier 3 only one size smaller; on a hit, the normal price). */
-export function riderPrice(sev, at = "hit", P = PRICES()) {
-  const i = SEV.indexOf(sev); if (i < 0) throw new Error(`a rider's severity: ${sev}`);
-  const j = at === "setup" ? i + 1 : at === "t3" ? i - 1 : i;
-  if (j < 0) return 0;
-  if (j >= SEV.length) return P.riders.extreme + P.riders.step * (j - (SEV.length - 1));   // past Extreme: each size adds a step
-  return P.riders[SEV[j]];
-}
-/** An Action's points: the rank's points an AP (its rating), its premiums (Round, 2 AP, 3 AP), an Encounter Action double the Round one. */
-export function actionPoints(rank, ap, freq, rating = "medium", P = PRICES()) {
-  const per = P.perAp[rank] * P.rating[rating], round = per * ap * (1 + (P.size[ap] ?? 0) + P.round);
-  return freq === "enc" ? round * P.encounter : freq === "round" ? round : per * ap * (1 + (P.size[ap] ?? 0));
-}
-/** A rank's turn budget by rating. */
-export const turnBudget = (rank, rating = "medium", P = PRICES()) => P.perAp[rank] * P.rating[rating] * P.turnAp[rank];
+// v0.0.407 (pack "Stage 0 in Foundry"): the price list, points into damage, a rider's and an Action's price and the turn budget are the system's
+// own (foundry/twod12/module/npcbudget.mjs, the Builder's numbers), one copy; this file builds NPCs from them.
+const NB = await import(new URL("../../../foundry/twod12/module/npcbudget.mjs", import.meta.url).href);
+export const { PRICES, expr, pointsAvg, pointsExpr, riderPrice, actionPoints, turnBudget } = NB;
 
 /**
  * An Action from its design: { name, ap, freq: "atwill" | "round" | "enc", kind: "attack" | "help", riders: [{ eff: "Prone", sev: "severe",

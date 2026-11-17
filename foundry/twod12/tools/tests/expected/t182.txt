@@ -1,10 +1,10 @@
---- the constants: {"min":1,"max":3,"momentum":2} | start level: 1 / with Momentum 2 | raised: 2 3 1
+--- the constants: {"min":1,"max":6} | start level: Momentum 0 1 / 1 2 / 4 5 / 9 (kept to 4) 5 | raised: 2 6 6 1
 --- a Critical raises it once an encounter
 1 ->  2 | again: null (used up) | the hook still works: 3 | line: Kindled Wrath: Nari's Escalation rises to 3 (once an encounter).
-at 3 the GM's valve does nothing: null | a new encounter clears the once: {"esc":1,"used":null}
-a hook at 3 does nothing and isn't used up: null null
+at 6 the GM's valve does nothing: null | a new encounter clears the once: {"esc":1,"used":null}
+a hook at 6 does nothing and isn't used up: null null
 --- Momentum: the party starts at 2 and it is used up
-Nari 2 Kai 2 | Momentum now false | line: Momentum: the party starts this encounter at Escalation 2. It is used up.
+Nari 2 Kai 2 | Momentum now 1 | line: Momentum 1: the party starts this encounter at Escalation 2.
 --- the end of the encounter: back to 1, the Guards end
 Nari 1 Guard 0 AP Guard 0 | Kai 1 used cleared: null
 --- the requirement: the Apex needs 3, nothing is spent
@@ -14,4 +14,4 @@ escHooks: [{"when":"allyState","range":5},{"when":"markDown","range":0}] | sente
 the hooks a creature has: [{"when":"allyState","range":5,"source":"Kindled Wrath"}]
 state changes: [["Bloodied"],["Strained","Down"],[]]
 --- wiring: a Critical on the creature's roll raises it: true | the mark going Down runs the markDown hook: true | an ally's state runs the allyState hook: true | no Bloodied / Strained Banes: true
-the Escalation block: nothing spent: true | the sheet's tooltip: true | the Momentum setting: true | a Rest uses it up: true | the GM's valve: true
+the Escalation block: nothing spent: true | the sheet's tooltip: true | the Momentum setting: true | a Rest clears it: true | the GM's valve: true

@@ -17,17 +17,17 @@ Understood: 2AP: 3 tiers, Cold damage to Vigor, Hindered (EoT) on Tiers 2 and 3,
 back to the card's writing: "[V] 1d8 Co" "[V] 2d8 Co; Hindered (EoT)" "[V] 3d8 Co; Hindered (EoT)"
 --- Generate Weapon: what it understood
 rusty greatsword: two-handed, melee, slash, range 1, 0/1d8/2d6
-   understood: Name: Rusty Greatsword | Two-handed | Melee | Slash | Range 1 | Damage 0 / 1d8 / 2d6
+   understood: Name: Rusty Greatsword | Two-handed | Melee | Slash | Range 1 | Damage 0 / 1d8! / 2d6!
    not understood: nothing
-   card: Use Melee 1 · Two-handed | Damage Slash · [V] 0 / 1d8 / 2d6
+   card: Use Melee 1 · Two-handed | Damage Slash · [V] 0 / 1d8! / 2d6!
 crossbow, reload, two-handed pierce, ranges 10/20/40, 0/1d4+2/1d10+2
-   understood: Name: Crossbow | Reload | Two-handed | Ranged | Pierce | Range 10 / 20 / 40 | Damage 0 / 1d4+2 / 1d10+2
+   understood: Name: Crossbow | Reload | Two-handed | Ranged | Pierce | Range 10 / 20 / 40 | Damage 0 / 2 + 1d4! / 2 + 1d10!
    not understood: nothing
-   card: Use Ranged 10 / 20 / 40 · Reload · Two-handed | Damage Pierce · [V] 0 / 1d4+2 / 1d10+2
+   card: Use Ranged 10 / 20 / 40 · Reload · Two-handed | Damage Pierce · [V] 0 / 2 + 1d4! / 2 + 1d10!
 dagger: melee, thrown 4/8/12, pierce, 0/1d4/1d6
-   understood: Name: Dagger | Melee | Thrown | Pierce | Thrown 4 / 8 / 12 | Damage 0 / 1d4 / 1d6
+   understood: Name: Dagger | Melee | Thrown | Pierce | Thrown 4 / 8 / 12 | Damage 0 / 1d4! / 1d6!
    not understood: nothing
-   card: Use Melee 1 · Thrown 4 / 8 / 12 | Damage Pierce · [V] 0 / 1d4 / 1d6
+   card: Use Melee 1 · Thrown 4 / 8 / 12 | Damage Pierce · [V] 0 / 1d4! / 1d6!
 club, blunt, sparkly, 0/1d6
    understood: Name: Club | Blunt
    not understood: sparkly, 0/1d6 | Damage looks like 0/1d8/2d6 (Tier 1 / 2 / 3)

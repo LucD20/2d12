@@ -43,12 +43,12 @@ a card's Bleed over the condition's: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":
 "a Frightened creature flees; no longer Staggered." -> a Frightened creature flees; no longer Staggered.
 @Condition[bleed|...] parsed: {"dmg":"1d6","pool":"M","sub":"Ho","attrs":["mind","appeal"],"dc":15} | the cond: bleed
 --- the Elite's Escalation (escalation.mjs)
-rungs: 1: 1 Boon on its first attack each round | 2: its Round Special Action twice a round | 3: its Encounter Special Action back, once
+rungs (v0.0.407: 2 / 4 / 6): 1: nothing yet (its ladder starts at Escalation 2) | 2: 1 Boon on its first attack each round | 3: 1 Boon on its first attack each round | 4: 1 Boon on its first attack each round, its Round Special Action twice a round | 5: 1 Boon on its first attack each round, its Round Special Action twice a round | 6: 1 Boon on its first attack each round, its Round Special Action twice a round, its Encounter Special Action back, once
 phases from the state words: ["bloodied"] ["bloodied","strained"] []
 an Elite's Critical (no Critical hook): null
 it becomes Bloodied: 3 | again (once): null
-then Strained: 3 | at 3, nothing: null
-what it posted: Ogre Chieftain becomes Bloodied (Elite phase): Ogre Chieftain's Escalation rises to 3 (once an encounter). Now: its Encounter Special Action back, once. || Ogre Chieftain becomes Strained (Elite phase): Ogre Chieftain's Escalation rises to 3 (once an encounter). Now: its Encounter Special Action back, once.
+then Strained: 6 | at 6, nothing: null
+what it posted: Ogre Chieftain becomes Bloodied (Elite phase): Ogre Chieftain's Escalation rises to 3 (once an encounter). Now: 1 Boon on its first attack each round. || Ogre Chieftain becomes Strained (Elite phase): Ogre Chieftain's Escalation rises to 6 (once an encounter). Now: 1 Boon on its first attack each round, its Round Special Action twice a round, its Encounter Special Action back, once.
 --- the Vs. colors (util.mjs vsKind; the sheets' pills and the chat badges)
 "AD"=ad "WD"=wd "AD 13"=ad "WD 14"=wd "AD/WD"=adwd "Body Save"=body "App Save"=appeal "Inst"=instinct "Bo"=body "Mi"=mind "DC"=- ""=-
 the roll's badge: <span class="cc-badge vsk-wd">WD 13</span>

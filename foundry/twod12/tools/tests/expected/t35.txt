@@ -5,7 +5,7 @@ T1: <i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i> <span 
 T2: &mdash;
 T3: <i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i> <span class="pool-b">[Mod]</span> S + 1[W]
 category: true | freq+target: true | 'Target:' label gone: true
-weapon card: true false  Tier 1  0 | Tier 2  1d8 | Tier 3  2d6 | actions: true | wielded: true
+weapon card: true false  Tier 1  0 | Tier 2  1d8! | Tier 3  2d6! | actions: true | wielded: true
 info card: true true
 talent card: true true false
 sent: 2 messages

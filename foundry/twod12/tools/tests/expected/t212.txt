@@ -34,13 +34,13 @@ Dominant: Vigor Resolve Tie
 bars: {"lethal":39.1,"nonlethal":0} {"lethal":0,"nonlethal":41.7} {"lethal":87,"nonlethal":13} {"lethal":100,"nonlethal":0}
 --- the strip: AP pips, Escalation rungs, the hooks
 2 AP of 3, Slowed 1: on on spent slowed | 4 of 4: on on on on | 0 of 2, Slowed 2: spent spent slowed slowed
-1 · Radiant Zeal (lit) | 2 · Searing Blows (lit) | 3 · Reckoning + Apex
+1 · Radiant Zeal (lit) | 2 · Searing Blows (lit) | 3 · Reckoning | 4 · — | 6 · Apex
 hooks: Critical · Kindled Wrath | crit used: Kindled Wrath | both used: []
 --- the Build tab: slots, the validator, the next levels
 labels: Feature | Hallmark Reaction | ranks: 1 3 4 0
 fill no slot: Orphan · Old Section Pick · Dropped Feature · Shield of Faith · Bulwark of Faith
-Level 2 · 1 Talent | Level 3 · 1 Daily Pick · 1 Talent | Level 4 · 1 Talent | Level 5 · Stage 2: Stage Talent · +1 Attribute · Health +12 / +6 · Guard 3 per AP · Rally +1
-at level 6 (Stage 3 next, Modifiers +1): 7: — | 8: Stage 3: Stage Talent · +1 Attribute · Health +12 / +6 · Guard 4 per AP · Rally +1 · Modifiers +1
+Level 2 · 1 Talent | Level 3 · 1 Daily Pick · 1 Talent | Level 4 · 1 Talent | Level 5 · Stage 2: Stage Talent · Health +12 / +6 · Guard 3 per AP · Rally +1
+at level 6 (Stage 3 next, Modifiers +1): 7: — | 8: Stage 3: Stage Talent · Health +12 / +6 · Guard 4 per AP · Rally +1 · Modifiers +1
 enrichers on a hover line: Lasts until the Escalation ends; a Mind Save and prone.
 --- the template and the sheet use them
 the PC template: true | v0.0.291: the NPC uses it too: true | 900 x 1100: true

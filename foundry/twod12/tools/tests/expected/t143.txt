@@ -1,5 +1,5 @@
 --- Rally Points: the class's Rally value + ceil((Body + Mind + level) / 2)
-the formula (pack R: Rally + Stage): true | Paladin 6: true | Archer 5: true
+the formula (Rally + 1 / 2 / 3 / 4 by Stage, v0.0.407): true | Paladin 6: true | Archer 5: true
 Paladin, Body +2, Mind +1, level 1     8
 Archer, Body +1, Mind +1, level 1      7
 Paladin, Body +2, Mind +1, level 3     9
@@ -7,16 +7,16 @@ old class items updated once: 2 Paladin 6, Archer 5, Paladin kept 7, Fighter kep
 --- the Bestiary by Stage (v0.0.181, E3: the book's tables, levels 1-4, 5-7, 8-10)
 standard  level 1: low x5.75 3.5/6 | medium x7.75 4/7.5 | high x9.75 5.5/9 | extreme x11.5 6.5/11
 standard  level 4: low x5.75 3.5/6 | medium x7.75 4/7.5 | high x9.75 5.5/9 | extreme x11.5 6.5/11
-standard  level 5: low x6.75 5/8.5 | medium x9 6.5/11.5 | high x11.25 8/13.5 | extreme x13.5 10/16.5
-standard  level 8: low x11 7/12 | medium x15 9/16.5 | high x18.5 11/19 | extreme x22.5 14/23
+standard  level 5: low x5.75 3.5/6 | medium x7.75 4/7.5 | high x9.75 5.5/9 | extreme x11.5 6.5/11
+standard  level 8: low x6.75 5/8.5 | medium x9 6.5/11.5 | high x11.25 8/13.5 | extreme x13.5 10/16.5
 grunt     level 1: low x3 2.5/3.5 | medium x4.25 3/4 | high x5.25 4/5.5 | extreme x6.25 4.5/6.5
 grunt     level 4: low x3 2.5/3.5 | medium x4.25 3/4 | high x5.25 4/5.5 | extreme x6.25 4.5/6.5
-grunt     level 5: low x3.75 3.5/5 | medium x4.75 4/6.5 | high x6 5.5/8 | extreme x7.25 6.5/10
-grunt     level 8: low x6 5/7 | medium x8 6.5/9 | high x10 8/11 | extreme x12 9/14
+grunt     level 5: low x3 2.5/3.5 | medium x4.25 3/4 | high x5.25 4/5.5 | extreme x6.25 4.5/6.5
+grunt     level 8: low x3.75 3.5/5 | medium x4.75 4/6.5 | high x6 5.5/8 | extreme x7.25 6.5/10
 minion    level 1: low x0.75 1.5/3.5 | medium x1 2/4 | high x1.25 2.5/5
 minion    level 4: low x0.75 1.5/3.5 | medium x1 2/4 | high x1.25 2.5/5
-minion    level 5: low x1 2/5 | medium x1.25 3/5.5 | high x1.5 3.5/7
-minion    level 8: low x1.5 3/7 | medium x2 4/8 | high x2.75 5/10
+minion    level 5: low x0.75 1.5/3.5 | medium x1 2/4 | high x1.25 2.5/5
+minion    level 8: low x1 2/5 | medium x1.25 3/5.5 | high x1.5 3.5/7
 the NPC's Health uses the level: true | the Builder too: true
 --- Light: only the target's light; a light of size N is an N Emanation
 a Check no longer reads the light where you stand: true

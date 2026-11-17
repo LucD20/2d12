@@ -1397,7 +1397,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
 
 export class NpcSheet extends CharacterSheet {
-  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, setNbVs: NpcSheet.setNbVs, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
+  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setNpcPreset: NpcSheet.setNpcPreset, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, setNbVs: NpcSheet.setNbVs, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
   static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.291 (PACK NPC-SHEET): one template for both sheets
   _groupLabels = ["Actions", "Features", "Items", "Basic"];
   _groupOf(i) {
@@ -1485,6 +1485,16 @@ export class NpcSheet extends CharacterSheet {
     const { clampRatings } = await import("./sheetmodel.mjs");
     const r = clampRatings({ ...(this.actor.system.ratings ?? {}) }, role, TWOD12.npcRatings);
     await this.actor.update({ "system.role": target.dataset.role, ...Object.fromEntries(Object.entries(r).map(([k, v]) => [`system.ratings.${k}`, v])) });
+  }
+  /** v0.0.407 (the Bestiary, Roles): a role's ratings in one click (Health, Defenses, damage, the Modifiers; Speed for a Skirmisher); clicked again, no role. */
+  static async setNpcPreset(event, target) {
+    const key = target.dataset.preset, s = this.actor.system;
+    if (s.npcRole === key) return this.actor.update({ "system.npcRole": "" });
+    const { presetRatings } = await import("./npcbudget.mjs"), p = presetRatings(key, s.role);
+    if (!p) return;
+    const upd = { "system.npcRole": key, ...Object.fromEntries(Object.entries(p.ratings).map(([k, v]) => [`system.ratings.${k}`, v])), "system.ratings.wmod": p.mods.weapon, "system.ratings.pmod": p.mods.power };
+    if (p.speed) upd["system.ratings.speed"] = String(p.speed);
+    await this.actor.update(upd);
   }
   /** v0.0.291: Post stat block (GM): a system card with the NPC's numbers and its Actions in one line each. */
   static async postStatBlock() {

@@ -23,7 +23,7 @@ const b = V.barHtml({ name: "Resolve", cls: "r", left: 9, max: 12, nl: 2 });
 console.log("what is left:", b.includes('style="width:75%"') && b.includes("<b>9/12</b>"), "| Nonlethal hatched beside it:", b.includes('<u style="left:75%;width:16.7%"></u>'), "| its words:", b.includes("2 Nonlethal damage"));
 const card = V.partyCardHtml({ key: "a:1", name: "Durgan", ini: "DU", sub: "Dwarf Paladin 1", ad: 16, wd: 12, speed: 4, speedTip: "Speed 4 (base 5; Exhausted 1)", rally: "1/3", marks: mk, esc: V.escHtml(2, 3), tag: { cls: "hurt", text: "Bloodied" }, bars: [{ name: "Vigor", cls: "v", left: 0, max: 24 }], cond: "Slowed 1 · Hindered (EoT)" });
 console.log("a card:", card.includes('data-hud="party" data-key="a:1"') && card.includes("<b>16</b><small>AD</small>") && card.includes('class="chg"') && card.includes(">Bloodied<") && card.includes("Slowed 1 · Hindered (EoT)"));
-console.log("Momentum at the strip's left:", V.partyStripHtml({ cards: [], momentum: "on" }).includes('<div class="hb-mom">Momentum <b>on</b></div>'), "| none without it:", !V.partyStripHtml({ cards: [] }).includes("hb-mom"));
+console.log("Momentum at the strip's left (v0.0.407: the number, 0 too):", V.partyStripHtml({ cards: [], momentum: "2" }).includes('Momentum <b>2</b></div>') && V.partyStripHtml({ cards: [], momentum: "0" }).includes('Momentum <b>0</b></div>'), "| none without it:", !V.partyStripHtml({ cards: [] }).includes("hb-mom"));
 
 console.log("--- the bar");
 const line = { id: "i1", name: "Judge", freq: "atwill", stamps: [{ ap: 0, label: "0 AP" }, { ap: 1, label: "1 AP", off: true, why: "Not enough AP" }], sub: "10 sq. · next: +1 Bane" };
@@ -82,7 +82,7 @@ console.log("the roll dialog's card part:", rd7.includes("function cardHtml(inp,
   "| a square with its picture:", P7.pickBarHtml({ options: [{ id: "0", label: "Ogre", img: "o.png" }] }).includes('class="lb-opt sq" data-id="0" data-tooltip="Ogre" aria-label="Ogre"><img src="o.png"'));
 console.log("the question in the HUD's side panel:", hud.includes('root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask")') && th7.includes(".twod12-hud .hb-ask .twod12-linebar.in-side"),
   "| the area after the dialog:", ac7.includes("const deferArea = ") && rw7.includes("return this._finish({ restart: true, place: true, rollAfter: true, state: this.st });") && ac7.includes("rollAfterPlace: !!rdData.rollAfter"),
-  "| Momentum read from the encounter:", src("module/carousel.mjs").includes('combat?.getFlag?.("twod12", "momentumStart")'));
+  "| Momentum: the party's number (v0.0.407, it isn't used up):", src("module/carousel.mjs").includes("mom = momentumNow();"));
 console.log("--- v0.0.398 (Lucas, on the multi-target mockup and v0.0.397)");
 const cc8 = src("module/chatcards.mjs"), rd8 = src("module/rolldlg.mjs"), th8 = src("styles/theme.css");
 console.log("a group a Tier, each creature once:", cc8.includes('<div class="cc-card cc-attack many v398">') && cc8.includes('data-twod12="ccApplyAll" data-group="${gi}"'), "| the Guard in the on-demand row:", cc8.includes('}${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${nlTag}</div>` : "";'),
@@ -105,6 +105,6 @@ const mv4 = src("module/move.mjs");
 console.log("the forced movement's bar in the HUD:", mv4.includes('bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side);'), "| one line, 'X was Pushed Y by Z':", mv4.includes('was ${mode === "reposition" ? "Repositioned" : label} ${result.done} by <b>${byName}</b>.'),
   "| into the card:", src("module/ccdamage.mjs").includes("await runChain(s, [i], msg);"), "| the HUD in the same place:", src("styles/theme.css").includes(".twod12-hud.is-strip { border: 1px solid transparent !important; }"));
 console.log("--- v0.0.405 (Lucas, testing v0.0.404)");
-console.log("Momentum redraws the strip, shown before the start:", src("module/escalation.mjs").includes('m.renderCarousel?.()') && src("module/carousel.mjs").includes("Preparing the encounter${mom ?"), "| the hotbar where the bar puts it:", src("styles/theme.css").includes(".twod12-hud.twod12-hud.is-strip.with-hot .hud-hot { background: transparent !important;"));
+console.log("Momentum redraws the strip, shown before the start:", src("module/escalation.mjs").includes('m.renderCarousel?.()') && src("module/carousel.mjs").includes("Preparing the encounter${momHtml}"), "| the hotbar where the bar puts it:", src("styles/theme.css").includes(".twod12-hud.twod12-hud.is-strip.with-hot .hud-hot { background: transparent !important;"));
 console.log("--- v0.0.406 (Lucas, testing v0.0.405)");
 console.log("the party strip as tall as the bar:", src("styles/theme.css").includes(".twod12-hud.twod12-hud.is-strip { height: 150px !important; min-height: 150px !important; }"), "| redraws gathered, an unchanged one skipped:", hud.includes("function setMain(main, html)") && hud.includes("if (drawing) { again = true; return; }"));

@@ -29,7 +29,7 @@ for (const n of ["Rebuke", "Skirmish Shot"]) { const d = C.docs.find(x => x.type
 
 console.log("--- the compendium");
 const basics = C.docs.filter(d => d.folder === "Basic Actions");
-console.log("Basic Actions:", basics.length, basics.every(d => d.type === "action" && d.pack === "actions" && d.flags?.twod12?.basic || d.name === "Hide"), "| Opportunity Attack (v0.0.335, Lucas: adjacent, not the squares you threaten):", (o => `range ${o.momentRange}, threat check ${!!o.momentThreat}`)(basics.find(d => d.name === "Opportunity Attack")?.system ?? {}));
+console.log("Basic Actions:", basics.length, basics.every(d => d.type === "action" && d.pack === "actions" && d.flags?.twod12?.basic || d.name === "Hide"), "| Opportunity Attack (v0.0.335, Lucas: adjacent, not the squares you threaten):", (o => `range ${o.momentRange}, threat check ${!!o.momentThreat}`)((await import("./oa-card.mjs")).OA), "| set aside (v0.0.407), not in the compendium's Basic Actions:", !basics.some(d => d.name === "Opportunity Attack"));
 const mk = C.docs.find(d => d.name === "Mark Quarry"), mq = mk;   // v0.0.360: the Feature is gone, the Action holds the rules
 console.log("Marked Quarry:", mq.system.description.replace(/<[^>]+>/g, ""));
 console.log("Mark Quarry:", mk.system.versions.map(v => v.effects.replace(/@UUID\[[^\]]+\]\{([^}]+)\}/g, "[$1 link]")).join(" / "));

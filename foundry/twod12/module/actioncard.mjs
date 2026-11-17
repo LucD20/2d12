@@ -51,8 +51,7 @@ async function cell(item, v, n, ch) {
   if (riders.length) html += dmg ? riders.map(r => `<span class="ap-rid"><span class="arr">↳</span> <span class="ap-mv">${r}</span></span>`).join("") : riders.join("; ");
   const extra = [];
   if (ch && insts.some(i => i.useW || i.dice)) {
-    if (ch.net > 0) extra.push(`<span class="chg up" data-tooltip="Empowered ${ch.net}">+${ch.net} per die</span>`);
-    if (ch.net < 0) extra.push(`<span class="chg down" data-tooltip="Enfeebled ${-ch.net}">−${-ch.net} per die</span>`);
+    if (ch.net > 0) extra.push(`<span class="chg up" data-tooltip="Empowered: the first damage on each of your turns adds 1d6!">+1d6!</span>`);   // v0.0.407: no value; Enfeebled is gone
   }
   if (plain.length) extra.push(`<span class="chg up" data-tooltip="${esc(plain.map(b => `${b.source}: ${b.text}`).join("; "))}">+ ${esc(namesWithCount(plain.map(b => b.source)))}</span>`);
   if (ch && (insts.length || n > 1)) for (const b of (ch.bonuses[n] ?? []).filter(b => !plain.includes(b))) extra.push(`<span class="chg up" data-tooltip="${esc(b.source)}">${prettyDamage(esc(b.text))}</span>`);

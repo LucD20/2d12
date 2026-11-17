@@ -68,11 +68,11 @@ export function tierTokens(dmg, weaponAction, tier) {
     let m;
     if ((m = p.match(/^(\d*)\[W\]$/))) out.push({ k: "w", t: `${m[1] || 1}W${pl}` });
     else if (p === "[Mod]") { if (!(weaponAction && tier >= 2)) out.push({ k: "at", t: `Mod${pl}${sub}` }); }
-    else if (/^\d+d\d+$/.test(p)) out.push({ k: "dice", t: `${p}${pl}${sub}` });
+    else if (/^\d+d\d+!?$/.test(p)) out.push({ k: "dice", t: `${p}${pl}${sub}` });   // v0.0.407: a die written with ! explodes
     else if (/^\d+$/.test(p)) flat = { n: p, pool: pl };
     else throw new Error(`can't read the damage "${dmg}" (the part "${p}")`);
   }
-  if (flat !== null) { const d = out.find(x => x.k === "dice"); if (d) d.t = d.t.replace(/^(\d+d\d+)/, `$1+${flat.n}`); else out.push({ k: "dice", t: `${flat.n}${flat.pool}${sub}` }); }   // "[B] 1[W] + [Mod] + 4": a flat 4 of its own
+  if (flat !== null) { const d = out.find(x => x.k === "dice"); if (d) d.t = d.t.replace(/^(\d+d\d+!?)/, `$1+${flat.n}`); else out.push({ k: "dice", t: `${flat.n}${flat.pool}${sub}` }); }   // "[B] 1[W] + [Mod] + 4": a flat 4 of its own
   return out.map(x => x.t).join(",");
 }
 

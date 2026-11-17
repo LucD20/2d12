@@ -44,7 +44,7 @@ console.log("the numbers are config.mjs's:", R.AP_PER_TURN === C.TWOD12.apPerTur
 const sm = src("module/sheetmodel.mjs"), cb = src("module/combat.mjs"), es = src("module/escalation.mjs"), fl = src("module/flanking.mjs"), rr = src("module/roundrules.mjs");
 console.log("sheetmodel.mjs takes payReaction from it:", sm.includes('import { payReaction } from "./roundrules.mjs"') && !sm.includes("export const payReaction ="));
 console.log("combat.mjs takes unusedApGuard and the turn's AP from it:", cb.includes('import { unusedApGuard, turnAP } from "./roundrules.mjs"') && !cb.includes("export const unusedApGuard =") && cb.includes("turnAP(baseAP("));
-console.log("escalation.mjs takes the start and the raise from it:", es.includes("export const startLevel = escalationStart") && es.includes("export const raised = escalationRaised"));
+console.log("escalation.mjs takes the start and the raise from it (v0.0.407: the 1-to-6 ladder):", es.includes("export const startLevel = escalationStartAt;") && es.includes("export const raised = (now, by = 1) => escalationRaisedTo(now, by, ESC_MAX);"));
 console.log("flanking.mjs takes the count from it:", fl.includes("flankBoons(others.length, cancelledBy.length)"));
 console.log("pure (it imports only config, calc and guard):", [...rr.matchAll(/^import .* from "(.+)";/gm)].map(m => m[1]).join(" "), "| no Foundry global:", !/\b(game|canvas|ui|Hooks|foundry)\./.test(rr.replace(/\/\/.*$/gm, "").replace(/\/\*[\s\S]*?\*\//g, "")));
 const SM = await import(ROOTURL + "module/sheetmodel.mjs");

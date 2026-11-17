@@ -14,7 +14,7 @@ Kai's turn (Lana already acted this round): none
   d1    " | Ally
   d1  defeated  " | Ally
   dm1    " | Foe
-Move and Swap only on the active plate: true | End move in the bar: true | Round in gold: true
+Move and Swap only on the active plate: true | End move in the bar: true | Round in gold (with the party's Momentum since v0.0.407): true
 pips: active in the AP color, the others teal: true | top-aligned, scrolls sideways only: true
 v0.0.201: no tooltip on the acting plate: true | pip kinds: turn,react,react,react,react | a player sees no right-click hint: true
 v0.0.201 CSS: Cinzel names (Source Serif 4 since STYLE-3), frozen dashed rings, Reactions as diamonds: true

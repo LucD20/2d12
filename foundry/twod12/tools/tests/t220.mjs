@@ -71,7 +71,7 @@ const parsed = (await import(ROOTURL + "module/inline.mjs")).parseInline("Condit
 console.log("@Condition[bleed|...] parsed:", JSON.stringify(parsed.bleed), "| the cond:", parsed.cond);
 
 console.log("--- the Elite's Escalation (escalation.mjs)");
-console.log("rungs:", [1, 2, 3].map(n => `${n}: ${ESC.eliteRung(n)}`).join(" | "));
+console.log("rungs (v0.0.407: 2 / 4 / 6):", [1, 2, 3, 4, 5, 6].map(n => `${n}: ${ESC.eliteRung(n)}`).join(" | "));
 console.log("phases from the state words:", JSON.stringify(ESC.elitePhases(["Bloodied"])), JSON.stringify(ESC.elitePhases(["Bloodied", "Strained"])), JSON.stringify(ESC.elitePhases(["Down"])));
 const ups = [];
 const elite = { type: "npc", name: "Ogre Chieftain", system: { useEscalation: true, escalation: 2 }, flags: {}, getFlag(s, k) { return this.flags[k]; }, async update(u) { ups.push(JSON.stringify(u)); if (u["system.escalation"] !== undefined) this.system.escalation = u["system.escalation"]; for (const [k, v] of Object.entries(u)) if (k.startsWith("flags.twod12.escUsed.")) (this.flags.escUsed ??= {})[k.split(".").pop()] = v; } };
@@ -79,8 +79,8 @@ globalThis.ChatMessage = { create: async m => ups.push(m.content.replace(/<[^>]+
 const cmb = { id: "c1" };
 console.log("an Elite's Critical (no Critical hook):", await ESC.raiseEscalation(elite, "crit", { combat: cmb }));
 console.log("it becomes Bloodied:", await ESC.raiseEscalation(elite, "bloodied", { combat: cmb, label: "Ogre Chieftain becomes Bloodied (Elite phase)" }), "| again (once):", await ESC.raiseEscalation(elite, "bloodied", { combat: cmb }));
-elite.system.escalation = 2;
-console.log("then Strained:", await ESC.raiseEscalation(elite, "strained", { combat: cmb, label: "Ogre Chieftain becomes Strained (Elite phase)" }), "| at 3, nothing:", await ESC.raiseEscalation(elite, "gm", { combat: cmb }));
+elite.system.escalation = 5;
+console.log("then Strained:", await ESC.raiseEscalation(elite, "strained", { combat: cmb, label: "Ogre Chieftain becomes Strained (Elite phase)" }), "| at 6, nothing:", await ESC.raiseEscalation(elite, "gm", { combat: cmb }));
 console.log("what it posted:", ups.filter(x => !x.startsWith("{")).join(" || "));
 
 console.log("--- the Vs. colors (util.mjs vsKind; the sheets' pills and the chat badges)");
