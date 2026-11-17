@@ -1,0 +1,851 @@
+[
+ {
+  "name": "Divine Connection",
+  "type": "feature",
+  "img": "icons/svg/aura.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Paladin Feature",
+   "level": 1,
+   "talents": 2,
+   "description": "<p>Select 1 Talent and 1 Talent with the Divine trait. (Retired in the rules; kept here to test Talent slots.)</p>",
+   "flavor": "Your bond with your god opens new paths.",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Aegis",
+  "type": "feature",
+  "img": "icons/svg/shield.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Feature",
+   "level": 1,
+   "description": "<p>At the start of each encounter, choose one ally. While you are within 3 squares of them, you and they gain 1 Boon on Saves. (Not automated: choose the ally and add the Boon by hand.)</p>",
+   "flavor": "Your watchful presence protects one soul above all.",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Mercy's Reward",
+  "type": "feature",
+  "img": "icons/svg/regen.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Feature",
+   "level": 1,
+   "description": "<p>When you heal an ally with Lay On Hands, your next Smite is Empowered 2. It is used up by that Smite. (Not automated.)</p>",
+   "flavor": "Mercy shown is mercy returned.",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Divine Vigil",
+  "type": "feature",
+  "img": "icons/svg/aura.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Escalation",
+   "level": 1,
+   "description": "<p>While your Escalation is 2 or more, you and your allies in an Aura 3 around you gain 1 Boon on Saves against [Fear] Actions.</p>",
+   "settings": [
+    {
+     "type": "aura",
+     "auraSize": 3,
+     "auraWho": "allies",
+     "auraSelf": true,
+     "auraOutline": "#d4a62a",
+     "auraFill": "#d4a62a",
+     "fxUuid": "Compendium.twod12.effects.Item.Ibbi8Z9Uj1uuXOpX",
+     "minEscalation": 2
+    }
+   ],
+   "flavor": "Your watch does not end when the fighting starts.",
+   "escalationPassive": true,
+   "rules": [
+    {
+     "size": "3",
+     "inside": {
+      "carry": {
+       "on": true,
+       "who": "allies",
+       "self": true,
+       "fx": "Compendium.twod12.effects.Item.Ibbi8Z9Uj1uuXOpX",
+       "fxName": ""
+      },
+      "carry2": {
+       "who": "enemies",
+       "on": false,
+       "self": false,
+       "fx": "",
+       "fxName": ""
+      },
+      "heal": {
+       "on": false,
+       "who": "allies",
+       "self": true,
+       "formula": "1d4"
+      },
+      "ht": {
+       "gives": {
+        "on": false,
+        "fx": "",
+        "fxName": ""
+       },
+       "on": false,
+       "who": "all",
+       "self": false,
+       "entering": true,
+       "turn": true,
+       "movement": false,
+       "list": [
+        {
+         "dice": "1d6",
+         "pool": "B",
+         "sub": ""
+        }
+       ]
+      },
+      "diff": {
+       "on": false,
+       "who": "all",
+       "self": false
+      },
+      "guard": {
+       "on": false,
+       "self": false,
+       "who": "allies",
+       "formula": "@origin.pow"
+      }
+     },
+     "show": true,
+     "outline": "#d4a62a",
+     "fill": "#d4a62a",
+     "id": "m0",
+     "kind": "aura",
+     "minEsc": 2
+    }
+   ],
+   "rulesOn": true,
+   "autoHover": "Aura 3: Allies inside, and this creature, gain Divine Vigil (Boon against Fear). (while its Escalation is 2 or more)."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Avenger's Oath",
+  "type": "feature",
+  "img": "icons/svg/sword.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Escalation",
+   "level": 1,
+   "description": "<p>While your Escalation is 2 or more, when an ally within 5 squares becomes Bloodied, you gain 1 Boon on your next [Strike] Action. (Not automated.)</p>",
+   "flavor": "Every wound your friends take is written in the ledger.",
+   "escalationPassive": true,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Bow Mastery",
+  "type": "feature",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Archer Feature",
+   "level": 1,
+   "description": "<p>Choose one Projectile weapon, such as a bow or a crossbow. You start with **3 Mastery** with it, so its Weapon Technique is unlocked (see Mastery).</p>",
+   "settings": [
+    {
+     "type": "mastery",
+     "mstTrait": "projectile",
+     "mstValue": 3
+    }
+   ],
+   "flavor": "One weapon has been in your hands longer than any other.",
+   "rules": [
+    {
+     "mode": "mastery",
+     "weapon": "fists",
+     "wprop": "thrown",
+     "gl": "loses",
+     "prop": "nonthreatening",
+     "mprop": "projectile",
+     "mval": 3,
+     "id": "m0",
+     "kind": "weap",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "autoHover": "Choose one weapon with the property Projectile: it starts at 3 Mastery."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Patient Hunter",
+  "type": "feature",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Archer Escalation",
+   "level": 1,
+   "description": "<p>While your Escalation is 2 or more, if you have not left your square since the start of your last turn, gain 1 Boon on [Shot, Strike] Actions until you leave your square.</p>",
+   "flavor": "The shot is worth waiting for.",
+   "escalationPassive": true,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Challenge",
+  "type": "talent",
+  "img": "icons/svg/combat.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "description": "<p>Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: their [Strike] Actions against creatures other than you take 1 Bane (EoT). (Apply the Challenged effect from the compendium; its Bane counts only on Strikes against creatures other than you.)</p>",
+   "flavor": "You call them out, and they cannot look away.",
+   "automation": "bronze",
+   "automationNote": "apply the Challenged effect from the compendium.",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Heavy Blows",
+  "type": "talent",
+  "img": "icons/svg/sword.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "theme": "Great Weapon",
+   "description": "<p>When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage on a Tier 3, it deals 2 more.</p>",
+   "settings": [
+    {
+     "type": "bonusdamage",
+     "dmg": "2",
+     "dmgPool": "B",
+     "dmgSub": "",
+     "tiers": [
+      "t3"
+     ],
+     "text": "",
+     "fxUuid": "",
+     "all": [
+      "melee",
+      "strike",
+      "weapon",
+      "__twohanded"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "flavor": "Every swing carries the whole weight of the steel.",
+   "automation": "gold",
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "melee",
+       "strike",
+       "weapon",
+       "__twohanded"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "2",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "autoHover": "Their Rolls with [Melee, Strike, Weapon, Two-handed weapon] Actions: an extra 2 [V] damage on T3."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Whirlwind",
+  "type": "talent",
+  "img": "icons/svg/sword.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "theme": "Great Weapon",
+   "prereqs": [
+    {
+     "kind": "talent",
+     "name": "Heavy Blows",
+     "value": 0
+    }
+   ],
+   "actions": [
+    "Compendium.twod12.actions.Item.HnwE7Y6chXxa316k"
+   ],
+   "flavor": "You spin, and everything within reach feels the blade.",
+   "automation": "gold",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Bloodlust",
+  "type": "talent",
+  "img": "icons/svg/blood.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "actions": [
+    "Compendium.twod12.actions.Item.vXk5D9sAPGU9yiQY"
+   ],
+   "flavor": "The red haze settles, and you stop caring about pain.",
+   "automation": "gold",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Brawler",
+  "type": "talent",
+  "img": "icons/svg/combat.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "theme": "Unarmed",
+   "description": "<p>You gain the Pummel Action. Your @Book[Fists]{Fists} don't have the @Book[Non-threatening]{Non-threatening} property: you can flank with them.</p>",
+   "actions": [
+    "Compendium.twod12.actions.Item.lhig5RC8fK2Wj7LA"
+   ],
+   "settings": [
+    {
+     "type": "weaponprop",
+     "wpWhich": "fists",
+     "wpProp": "nonthreatening"
+    }
+   ],
+   "flavor": "Your hands have won more fights than any blade.",
+   "automation": "mithril",
+   "rules": [
+    {
+     "mode": "prop",
+     "weapon": "fists",
+     "wprop": "thrown",
+     "gl": "loses",
+     "prop": "nonthreatening",
+     "mprop": "projectile",
+     "mval": 3,
+     "id": "m0",
+     "kind": "weap",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "autoHover": "Its Fists don't have the property Non-threatening."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Kickboxer",
+  "type": "talent",
+  "img": "icons/svg/combat.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "theme": "Unarmed",
+   "prereqs": [
+    {
+     "kind": "talent",
+     "name": "Brawler",
+     "value": 0
+    }
+   ],
+   "description": "<p>You gain the Leg Sweep Action: a kick, so it needs no free hand. You can use it with your hands full.</p>",
+   "actions": [
+    "Compendium.twod12.actions.Item.TAJZHtX7mOMrUEH3"
+   ],
+   "flavor": "Your legs hit as hard as your fists.",
+   "automation": "gold",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Aim",
+  "type": "talent",
+  "img": "icons/svg/target.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "theme": "Marksman",
+   "actions": [
+    "Compendium.twod12.actions.Item.Sh49ZHhyjFqrxjxB"
+   ],
+   "flavor": "Patience turns a good shot into a sure one.",
+   "automation": "mithril",
+   "automationNote": "the Weapon Attack with its Boon as a granted use (the card's button); Low cover gives it no Bane (the effect's Ignores cover setting).",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Ricochet",
+  "type": "talent",
+  "img": "icons/svg/target.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "theme": "Marksman",
+   "prereqs": [
+    {
+     "kind": "talent",
+     "name": "Aim",
+     "value": 0
+    }
+   ],
+   "description": "<p>Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature to target them. A bounced shot takes 1 Bane.</p>",
+   "flavor": "Walls, shields and stones are just more angles.",
+   "automation": "none",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Long Draw",
+  "type": "talent",
+  "img": "icons/svg/target.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "theme": "Marksman",
+   "description": "<p>With a @Book[Projectile]{Projectile} weapon, your far range has no Bane and your maximum range has 1 Bane instead of 2.</p>",
+   "settings": [
+    {
+     "type": "ignore",
+     "ignoreRule": "rangeBane",
+     "all": [
+      "shot"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "flavor": "You pull a little further, and the arrow flies a little truer.",
+   "automation": "gold",
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "shot"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": true,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "one",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "autoHover": "Their Rolls with [Projectile] Actions: ignore one range Bane."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Steady Nerves",
+  "type": "talent",
+  "img": "icons/svg/target.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "combat",
+   "theme": "Marksman",
+   "description": "<p>Your [Ranged] Actions don't take the Banes for being Engaged.</p>",
+   "settings": [
+    {
+     "type": "ignore",
+     "ignoreRule": "engagedSelf",
+     "all": [
+      "ranged"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "flavor": "They are in your face. You are still calm.",
+   "automation": "gold",
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "ranged"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": true,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": true,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "autoHover": "Their Rolls with [Ranged] Actions: ignore the Engaged Bane."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Battering Charge",
+  "type": "talent",
+  "img": "icons/svg/thrust.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "mobility",
+   "description": "<p>When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is @Book[Empowered]{Empowered}.</p>",
+   "flavor": "Nothing slows you down once you start running.",
+   "automation": "gold",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Cut Through",
+  "type": "talent",
+  "img": "icons/svg/sword.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "mobility",
+   "actions": [
+    "Compendium.twod12.actions.Item.aDc1RtNvBb6vWirD"
+   ],
+   "flavor": "You drive through the line without stopping, and strike as you pass.",
+   "automation": "silver",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Lesser Blessing",
+  "type": "talent",
+  "img": "icons/svg/holy-shield.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "magic",
+   "theme": "Divine",
+   "traits": [
+    "divine",
+    "magic"
+   ],
+   "description": "<p>Pick one blessing from the list below, related to a god you follow. You gain its Action. (More blessings will be added.)</p>",
+   "choiceLabel": "Choose a blessing",
+   "choiceCount": 1,
+   "choiceOptions": [
+    "Compendium.twod12.actions.Item.ZrX6Bk3GKXTpFvhh"
+   ],
+   "flavor": "A small gift from the god you follow.",
+   "automation": "gold",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Sacred Weapon",
+  "type": "talent",
+  "img": "icons/svg/sword.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "magic",
+   "theme": "Divine",
+   "prereqs": [
+    {
+     "kind": "talent",
+     "name": "Lesser Blessing",
+     "value": 0
+    },
+    {
+     "kind": "trait",
+     "name": "divine",
+     "value": 0
+    }
+   ],
+   "prereqMode": "any",
+   "description": "<p>You gain the Sacred Weapon Action.</p>",
+   "actions": [
+    "Compendium.twod12.actions.Item.FsZfHsBbPZ5xMWZV"
+   ],
+   "flavor": "You lay a hand on the steel and bless it for what comes next.",
+   "automation": "none",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hand of Mercy",
+  "type": "talent",
+  "img": "icons/svg/regen.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 1,
+   "group": "magic",
+   "theme": "Divine",
+   "prereqs": [
+    {
+     "kind": "trait",
+     "name": "divine",
+     "value": 0
+    }
+   ],
+   "description": "<p>You gain the Hand of Mercy Action.</p>",
+   "actions": [
+    "Compendium.twod12.actions.Item.7rrowBljACtwSqTF"
+   ],
+   "flavor": "A single touch undoes what the enemy worked for.",
+   "automation": "bronze",
+   "automationNote": "ending the effect (the Rally Point button works).",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Class Expertise",
+  "type": "talent",
+  "img": "icons/svg/book.svg",
+  "folder": "Talent",
+  "system": {
+   "category": "Talent",
+   "level": 5,
+   "group": "combat",
+   "prereqs": [
+    {
+     "kind": "level",
+     "name": "",
+     "value": 5
+    }
+   ],
+   "description": "<p>Choose one Encounter or Daily Action from your class's Repertoire that you don't have. You gain it. (Drag it from the compendium onto your sheet.)</p>",
+   "flavor": "You have studied your craft longer than most.",
+   "automation": "none",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ }
+]

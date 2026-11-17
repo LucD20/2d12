@@ -22,7 +22,7 @@ console.log("granted first:", cc.includes('return `<div class="cc-slot">${grant}
 
 // 4. Reactions
 const M = await import(ROOTURL + "module/moment.mjs");
-console.log("No Reactions line:", txt(M.nobodyLine([{ actor: { name: "Sylwen (Elf Archer, Double Shot, level 1)" }, item: { name: "Overwatch" }, why: "no AP left (it costs 1R)" }])));
+console.log("No Reactions line:", txt(M.nobodyLine([{ actor: { name: "Sylwen (Elf Archer, Quick Shots, level 1)" }, item: { name: "Overwatch" }, why: "no AP left (it costs 1R)" }])));
 console.log("used line:", txt(M.usedLine({ rows: [{ state: "use", order: 1, name: "Aveline (Human Paladin)", itemName: "Rebuke", targetName: "Orc Warrior" }, { state: "pass", name: "x" }] })), "|", M.usedLine({ rows: [] }));
 const mo = src("module/moment.mjs");
 console.log("the triggering card reprinted after a Trigger's chain:", mo.includes('["against", "landed"].includes(st.base?.kind) && st.base?.msgId && !st.base?.never'), "| settings:", mo.includes('"rxNobodyLine"') && mo.includes('"rxNobodySeconds"') && mo.includes("default: 5"));

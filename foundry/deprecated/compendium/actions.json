@@ -1,0 +1,2424 @@
+[
+ {
+  "name": "Precise Aim",
+  "type": "action",
+  "img": "icons/svg/eye.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Sharpshooter",
+   "level": 1,
+   "traits": [
+    "focus",
+    "self"
+   ],
+   "frequency": "round",
+   "distance": "self",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You gain 1 Boon on your next [Ranged, Shot, Strike, Weapon] Action.",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.hrIyppAFIwjhHjZ7",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    },
+    {
+     "ap": 2,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You gain 2 Boons on your next [Ranged, Shot, Strike, Weapon] Action.",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.qX7pAJJCBo3Ebh1A",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "You slow your breath and let the world narrow to one point."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Vow of Enmity",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Feature",
+   "level": 1,
+   "traits": [
+    "divine",
+    "magic"
+   ],
+   "frequency": "round",
+   "targets": "One / one / two creatures",
+   "distance": "5",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [],
+     "t2": [],
+     "t3": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d8",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "No effect.",
+     "x2": "Your next [Strike] Action against them gains 1 Boon, and you increase your Empowered value by 1 for that Strike.",
+     "x3": "As Tier 2.",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    },
+    {
+     "ap": 2,
+     "noTiers": false,
+     "t1": [],
+     "t2": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "No effect.",
+     "x2": "As 1 AP.",
+     "x3": "As Tier 2, and the target is @Condition[vulnerable|value:1|eot].",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    },
+    {
+     "ap": 3,
+     "noTiers": false,
+     "t1": [],
+     "t2": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "No effect.",
+     "x2": "As 2 AP.",
+     "x3": "As 2 AP.",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "You name a foe, and your god listens."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Rebuke (old)",
+  "type": "action",
+  "img": "icons/svg/sun.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Feature",
+   "level": 1,
+   "traits": [
+    "divine",
+    "magic"
+   ],
+   "frequency": "turn",
+   "reaction": true,
+   "reactionKind": "trigger",
+   "targets": "The triggering creature",
+   "distance": "reach",
+   "trigger": "An enemy within Reach damages an ally.",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4+1",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6+1",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d8+1",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "critical": "The target is Vulnerable 1 (EoT)."
+    },
+    {
+     "ap": 2,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6+1",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d8+1",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d10+1",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "@Move[pushed|distance:1].",
+     "x2": "@Move[pushed|distance:2].",
+     "x3": "@Move[pushed|distance:3].",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "critical": "The target is Vulnerable 1 for 1 round."
+    }
+   ],
+   "flavor": "The hand that strikes the faithful is burned for its trouble."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Champion's Challenge",
+  "type": "action",
+  "img": "icons/svg/combat.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Feature",
+   "level": 1,
+   "traits": [
+    "divine",
+    "magic"
+   ],
+   "frequency": "round",
+   "targets": "One / two creatures",
+   "distance": "5",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "No effect.",
+     "x2": "1 Bane on [Strike] and [Power] Actions against anyone other than you (EoT).",
+     "x3": "As Tier 2, but 2 Banes instead of 1.",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    },
+    {
+     "ap": 2,
+     "noTiers": false,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "No effect.",
+     "x2": "As 1 AP.",
+     "x3": "As 1 AP.",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "You call them out, and they cannot look away."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Divine Retribution",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Feature",
+   "level": 1,
+   "traits": [
+    "divine",
+    "strike",
+    "split"
+   ],
+   "frequency": "encounter",
+   "reaction": true,
+   "reactionKind": "trigger",
+   "targets": "The triggering creature",
+   "distance": "weapon",
+   "trigger": "You take damage from an enemy within the Distance of this Action.",
+   "versions": [
+    {
+     "ap": 2,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d10",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d12",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d8",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "weapon",
+     "critical": "The target is Pushed 3."
+    },
+    {
+     "ap": 2,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d8",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d10",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d12",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "power",
+     "critical": "The target is Pushed 3."
+    },
+    {
+     "ap": 3,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d10",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d12",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d8",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "As 2R, and every enemy in an Emanation 2 centered on you, except the triggering creature, must make an @Save[appeal]: [R] 1d10 Ho; @Move[pushed|distance:2] / [R] 1d8 Ho / 0.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "weapon",
+     "critical": "The target is Pushed 3."
+    },
+    {
+     "ap": 3,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d8",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d10",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d12",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "As 2R, and every enemy in an Emanation 2 centered on you, except the triggering creature, must make an @Save[appeal]: [R] 1d10 Ho; @Move[pushed|distance:2] / [R] 1d8 Ho / 0.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "power",
+     "critical": "The target is Pushed 3."
+    }
+   ],
+   "flavor": "They struck you. Your god strikes back."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Call to Arms",
+  "type": "action",
+  "img": "icons/svg/angel.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Escalation",
+   "level": 1,
+   "traits": [
+    "divine"
+   ],
+   "frequency": "round",
+   "escalation": 1,
+   "targets": "One Down ally",
+   "distance": "3",
+   "versions": [
+    {
+     "ap": 0,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "The ally can use @Rally[1].",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "Your voice carries further than the fight."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Judgment",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Escalation",
+   "level": 1,
+   "traits": [
+    "divine",
+    "magic"
+   ],
+   "frequency": "round",
+   "escalation": 2,
+   "targets": "One enemy",
+   "distance": "reach",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [],
+     "t2": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d6",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "M",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d8",
+       "useAt": false,
+       "subtype": "Ho"
+      }
+     ],
+     "x1": "No effect.",
+     "x2": "@Condition[hindered|eot]",
+     "x3": "@Condition[hindered|eot]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "The verdict is not yours to give, only to deliver."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Fire Patch (test)",
+  "type": "action",
+  "img": "icons/svg/fire.svg",
+  "folder": "Testing",
+  "system": {
+   "category": "Testing",
+   "level": 0,
+   "traits": [
+    "area"
+   ],
+   "frequency": "atwill",
+   "targets": "The squares of the Area",
+   "flavor": "The ground catches, and it does not go out.",
+   "areaCfg": {
+    "size": 1,
+    "shape": "emanation",
+    "within": 5,
+    "targets": "all",
+    "center": false,
+    "keep": true,
+    "rounds": 3
+   },
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You set the ground on fire for 3 rounds. A creature that enters it takes [V] 1d6 Fire (once per turn-cycle).",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.YTGEVs88YMRyYd3G",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Sanctified Ground",
+  "type": "action",
+  "img": "icons/svg/aura.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "category": "Paladin Escalation",
+   "level": 1,
+   "traits": [
+    "divine",
+    "area"
+   ],
+   "frequency": "round",
+   "escalation": 2,
+   "targets": "All creatures in the Area",
+   "areaCfg": {
+    "size": 1,
+    "shape": "emanation",
+    "within": 5,
+    "targets": "all",
+    "center": false,
+    "keep": true,
+    "rounds": 2
+   },
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You fill the Emanation with Holy light for 2 rounds. Enemies in it take 1 Bane on [Strike] Actions.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "You make a small piece of the world your god's, and it holds."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Quick Draw",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Archer Feature",
+   "level": 1,
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "turn",
+   "targets": "The triggering creature",
+   "distance": "weapon",
+   "reaction": true,
+   "reactionKind": "interrupt",
+   "trigger": "An enemy within 5 squares moves closer to you.",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Make a @Use[Weapon Attack|label:Weapon Attack (1A)] against the triggering creature.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "You loose before they take the second step."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Wing Clip",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Archer Feature",
+   "level": 1,
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "frequency": "round",
+   "targets": "One creature",
+   "distance": "weapon",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "@Condition[hindered|eot]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A shot at the knee is worth two in the chest."
+  },
+  "flags": {}
+ },
+ {
+  "name": "True Shot",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Archer Feature",
+   "level": 1,
+   "traits": [
+    "focus",
+    "self"
+   ],
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Your next [Strike] Action ignores Cover.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "You see the gap in the wall, and the shot goes through it."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Suppressing Fire",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Archer Feature",
+   "level": 1,
+   "traits": [
+    "ranged",
+    "shot",
+    "weapon"
+   ],
+   "frequency": "round",
+   "targets": "One creature",
+   "distance": "weapon",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Until the end of your next turn, the target takes 1 Bane on [Ranged, Strike] and [Power, Ranged] Actions against creatures other than you.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "They keep their heads down while your friends close in."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Steady Aim",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Archer Escalation",
+   "level": 1,
+   "traits": [
+    "focus",
+    "self"
+   ],
+   "frequency": "round",
+   "distance": "self",
+   "escalation": 1,
+   "versions": [
+    {
+     "ap": 0,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Your next [Shot, Strike] gains 1 Boon, and all of the weapon's ranges increase by 5.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "Breathe in. Breathe out. Loose."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Perfect Shot",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "category": "Archer Escalation",
+   "level": 1,
+   "traits": [
+    "focus",
+    "self"
+   ],
+   "frequency": "round",
+   "distance": "self",
+   "escalation": 3,
+   "versions": [
+    {
+     "ap": 0,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Your next [Shot, Strike] is Favored and @Condition[empowered|value:2], and ignores Cover.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "The arrow has already landed. You have only to release it."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Stick and Slip",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Pi"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d8",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "you can @Move[evade|distance:1].",
+     "x3": "you can @Move[evade|distance:1].",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "In, a quick cut, and out before they can answer."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hooking Chop",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Sl"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Sl"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d8",
+       "useAt": false,
+       "subtype": "Sl"
+      }
+     ],
+     "x1": "",
+     "x2": "@Move[pulled|distance:1]",
+     "x3": "@Move[pulled|distance:1]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "The beard of the axe catches, and you pull."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Rending Chop",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Sl"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Sl"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d8",
+       "useAt": false,
+       "subtype": "Sl"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "@Condition[vulnerable|value:1|eot]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A blow that splits armor and leaves the flesh open."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Ringing Blow",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Bl"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4+1",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d8+1",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "its next [Strike] Action takes 1 Pressure Bane (EoT).",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A crack on the helm, and their next swing goes wide."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Bowl Over",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Bl"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4+2",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d10+2",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "@Condition[prone]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "All the weight of the head, low and through."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Lunge",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "Weapon + 1",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Pi"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d8",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "@Condition[hindered|eot]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A full extension that reaches farther than they thought."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Keep Them Off",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Pi"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d10",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "@Move[pushed|distance:1]",
+     "x3": "@Move[pushed|distance:2]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "The point stays between you and them, and it pushes."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Gut Punch",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Pi"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "@Condition[hindered|eot]",
+     "x3": "@Condition[hindered|eot]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A fist with a blade in it, right under the ribs."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Sting",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Pi"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d8",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "@Condition[hindered|eot]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A small bolt in the leg: small, and enough."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Lock & Loose",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Pi"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4+2",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d10",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "For 1 round, the creature is Hindered until they use a Move Action.",
+     "x3": "@Condition[immobilized]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "after": "@Effect[Compendium.twod12.effects.Item.4m2yCHp0F0YH725M|who:targets|on:2]"
+    }
+   ],
+   "flavor": "A bolt to the knee, and they go nowhere."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Point Blank",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "gun",
+    "ranged",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Pi"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d6",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "@Move[pushed|distance:1]",
+     "effects": "While you are Engaged, this attack takes 1 Bane for it instead of 2.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "Too close for a bow. Not too close for this."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Thunderclap",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Weapon Techniques",
+  "system": {
+   "category": "Weapon Technique",
+   "level": 0,
+   "traits": [
+    "gun",
+    "ranged",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Pi"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2d8",
+       "useAt": false,
+       "subtype": "Pi"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "@Condition[prone]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "The shot and the smoke, and they are on the ground."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Whirlwind",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Combat Talent",
+   "level": 1,
+   "traits": [
+    "area",
+    "melee",
+    "self",
+    "strike",
+    "weapon"
+   ],
+   "targets": "All creatures in the Area",
+   "frequency": "encounter",
+   "areaCfg": {
+    "size": 1,
+    "shape": "emanation",
+    "within": 0,
+    "targets": "all",
+    "center": false,
+    "keep": false,
+    "rounds": 0
+   },
+   "prerequisites": "Heavy Blows.",
+   "versions": [
+    {
+     "ap": 2,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": ""
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "4",
+       "useAt": false,
+       "subtype": ""
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "6",
+       "useAt": false,
+       "subtype": ""
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "You spin, and everything within reach feels the blade.",
+   "automation": "gold"
+  },
+  "flags": {}
+ },
+ {
+  "name": "Bloodlust",
+  "type": "action",
+  "img": "icons/svg/blood.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Combat Talent",
+   "level": 1,
+   "traits": [
+    "self"
+   ],
+   "targets": "",
+   "distance": "self",
+   "frequency": "encounter",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "For 1 round, your [Melee, Weapon] Actions are @Book[Empowered]{Empowered} and gain 2 Boons, and you take 1 Bane on Saves.",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.vXk5D9sAPGU9yiQY",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "The red haze settles, and you stop caring about pain.",
+   "automation": "gold"
+  },
+  "flags": {}
+ },
+ {
+  "name": "Pummel",
+  "type": "action",
+  "img": "icons/svg/combat.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Brawler",
+   "level": 1,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "atwill",
+   "requirements": "You have a free hand.",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": "Bl"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A flurry of blows until something gives.",
+   "weaponUse": "fists",
+   "automation": "gold"
+  },
+  "flags": {}
+ },
+ {
+  "name": "Leg Sweep",
+  "type": "action",
+  "img": "icons/svg/combat.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Kickboxer",
+   "level": 1,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "description": "<p>This Action uses your @Book[Fists]{Fists} even when you have no free hand.</p>",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d4",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "1d6",
+       "useAt": false,
+       "subtype": "Bl"
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "@Condition[prone]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A low kick takes their legs out from under them.",
+   "weaponUse": "kick",
+   "automation": "gold"
+  },
+  "flags": {}
+ },
+ {
+  "name": "Aim",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Combat Talent",
+   "level": 1,
+   "traits": [
+    "ranged",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Make a [Ranged] Weapon Attack (1A) with 1 Boon. It ignores @Book[Cover]{Low cover}.",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.nUqNuKlzuMrDV34T",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "Patience turns a good shot into a sure one.",
+   "automation": "mithril",
+   "automationNote": "the Weapon Attack with its Boon as a granted use (the card's button); Low cover gives it no Bane (the effect's Ignores cover setting)."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Cut Through",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Mobility Talent",
+   "level": 1,
+   "traits": [
+    "melee",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "setup": "@Move[evade|distance:2|terrain:ignore]. During this Evade you can move through the space of any creature (you can't end in one), and you ignore Difficult Terrain.",
+   "versions": [
+    {
+     "ap": 2,
+     "noTiers": false,
+     "t1": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": ""
+      }
+     ],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": true,
+       "wCount": 1,
+       "dice": "",
+       "useAt": false,
+       "subtype": ""
+      },
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "dice": "2",
+       "useAt": false,
+       "subtype": ""
+      }
+     ],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "critical": "Relocate (1A) the target, ignoring the Handle trait. @Use[Relocate|nohandle:yes|label:Relocate (1A)]"
+    }
+   ],
+   "flavor": "You drive through the line without stopping, and strike as you pass.",
+   "automation": "silver"
+  },
+  "flags": {}
+ },
+ {
+  "name": "Rimebrand (Cold)",
+  "type": "action",
+  "img": "icons/svg/frozen.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Lesser Blessing",
+   "level": 0,
+   "traits": [
+    "divine",
+    "magic",
+    "self"
+   ],
+   "targets": "",
+   "distance": "self",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Until the end of your turn, your [Weapon] Actions deal an extra [R] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target @Condition[hindered|eot].",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.9HMAFam50JLZ8oKX",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "Frost creeps along your weapon, a gift from a winter god.",
+   "automation": "gold"
+  },
+  "flags": {}
+ },
+ {
+  "name": "Sacred Weapon",
+  "type": "action",
+  "img": "icons/svg/sword.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Magic Talent",
+   "level": 1,
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "targets": "One / two creatures",
+   "distance": "reach",
+   "frequency": "round",
+   "prerequisites": "Lesser Blessing, or a [Divine] Action.",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You touch a creature (yourself or an ally). They become Empowered for 1 round.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    },
+    {
+     "ap": 2,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "As 1 AP, but you can touch up to two creatures.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "You lay a hand on the steel and bless it for what comes next.",
+   "automation": "none"
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hand of Mercy",
+  "type": "action",
+  "img": "icons/svg/regen.svg",
+  "folder": "Talents",
+  "system": {
+   "category": "Magic Talent",
+   "level": 1,
+   "traits": [
+    "divine",
+    "focus"
+   ],
+   "targets": "One ally",
+   "distance": "5",
+   "frequency": "round",
+   "prerequisites": "A [Divine] Action.",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Choose one: the ally ends one effect on them that is EoT or has 1 round left; or, if the ally is Down, they can use @Rally[1].",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     }
+    }
+   ],
+   "flavor": "A single touch undoes what the enemy worked for.",
+   "automation": "bronze",
+   "automationNote": "ending the effect (the Rally Point button works)."
+  },
+  "flags": {}
+ }
+]

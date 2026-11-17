@@ -23,14 +23,14 @@ const tab = async (type, name, system) => {
   try { return { html: await sh._fxTab() }; } catch (e) { return { err: `${e.name}: ${e.message}` }; }
 };
 const counts = {}, fails = [];
-for (const d of C.docs.filter(d => ["effect", "feature", "talent"].includes(d.type))) {
+for (const d of C.allDocs.filter(d => ["effect", "feature", "talent"].includes(d.type))) {
   const sys = d.type === "effect" ? migrateZone(JSON.parse(JSON.stringify(d.system))) : d.system;
   const r = await tab(d.type, d.name, sys);
   counts[d.type] = (counts[d.type] ?? 0) + 1;
   if (r.err || !r.html?.includes("fr-")) fails.push(`${d.type} ${d.name}: ${r.err ?? "no tab"}`);
 }
 console.log("the rules tab renders:", Object.entries(counts).map(([k, n]) => `${k} ${n}`).join(", "), "| failures:", fails.length ? fails.join("; ") : "none");
-const cg = C.docs.find(d => d.type === "effect" && /Consecrated Ground/.test(d.name) && d.system.where === "map");
+const cg = C.allDocs.find(d => d.type === "effect" && /Consecrated Ground/.test(d.name) && d.system.where === "map");
 console.log("an Effect on the map (Set here):", /<h3>The area/.test((await tab("effect", "Fire", { rules: [], ends: {}, where: "map", zone: { src: "here", shape: "emanation", size: "2" } })).html ?? ""), "| Consecrated Ground on the map:", cg ? /<h3>The area/.test((await tab("effect", cg.name, cg.system)).html ?? "") : "(not on the map in the source)");
 // v0.0.329 (Lucas: "effects can't be placed on the map"): Place on the map with no Action (From the Action reads the shape set here), and with one;
 // an Effect on a tier (t1, t2, t3) of an Action's Version is a Zone too.
@@ -50,5 +50,5 @@ const { zoneEdited } = await import(ROOTURL + "module/areafx.mjs");
 const placed = { name: "Fire Patch", rows: { ht: { on: true } }, ends: { time: { on: true, mode: "rounds", rounds: 3 } }, cells: ["1,1"], originUuid: "A", originDisposition: -1, area: "1 Emanation", outline: "#e8582a" };
 const ed = zoneEdited(placed, { name: "Fire Patch", rows: { ht: { on: true }, diff: { on: true } }, ends: { time: { on: true, mode: "encounter" }, down: { on: true } }, outline: "#3a8ee8" });
 console.log("an edit on a placed Zone:", JSON.stringify({ rows: Object.keys(ed.rows), time: ed.ends.time.rounds, down: ed.ends.down.on, cells: ed.cells, origin: ed.originUuid, od: ed.originDisposition, area: ed.area, outline: ed.outline }));
-const fp = C.docs.find(d => d.name === "Fire Patch (test)"), fz = C.docs.find(d => d.name === "Fire Patch (test Zone)");
+const fp = C.allDocs.find(d => d.name === "Fire Patch (test)"), fz = C.allDocs.find(d => d.name === "Fire Patch (test Zone)");
 console.log("the test Action:", fp.folder, fp.system.areaCfg.size, fp.system.areaCfg.shape, "keep", fp.system.areaCfg.keep, "| its Effect is a Zone:", fz.system.where, "|", fz.system.autoHover);

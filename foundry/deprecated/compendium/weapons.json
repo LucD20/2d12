@@ -1,0 +1,449 @@
+[
+ {
+  "name": "Handaxe",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "light",
+    "melee",
+    "thrown"
+   ],
+   "hands": 1,
+   "subtype": "Sl",
+   "range": "1",
+   "thrownRange": "4/8/12",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 2
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d8",
+     "mod": 2
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.wMIDHRzDD8lwLRa0"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Greataxe",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "melee",
+    "twohanded"
+   ],
+   "hands": 2,
+   "subtype": "Sl",
+   "range": "1",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d6",
+     "mod": 4
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d8",
+     "mod": 10
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.pBv7zVsbYD8EAXBi"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Mace",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "melee"
+   ],
+   "hands": 1,
+   "subtype": "Bl",
+   "range": "1",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 3
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 5
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.vqHgkFBFzcYVBlDz"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Maul",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "melee",
+    "twohanded"
+   ],
+   "hands": 2,
+   "subtype": "Bl",
+   "range": "1",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 6
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d6",
+     "mod": 9
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.K9PjfoHBN55tAwpT"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Spear",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "melee",
+    "thrown"
+   ],
+   "hands": 1,
+   "subtype": "Pi",
+   "range": "1",
+   "thrownRange": "4/8/12",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 2
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 4
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.FAvT4dVgMPe7dPlh"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Pike",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "long",
+    "melee",
+    "twohanded"
+   ],
+   "hands": 2,
+   "subtype": "Pi",
+   "range": "3",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d6",
+     "mod": 4
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d8",
+     "mod": 6
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.9yOvKqTX1W6bWx8E"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Knuckle Dagger",
+  "type": "weapon",
+  "img": "icons/svg/combat.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "barehanded",
+    "melee"
+   ],
+   "hands": 1,
+   "subtype": "Pi",
+   "range": "1",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 2
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 3
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.8uPOKd7rqXzc788w"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hand Crossbow",
+  "type": "weapon",
+  "img": "icons/svg/target.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "projectile",
+    "reload",
+    "ranged"
+   ],
+   "hands": 1,
+   "subtype": "Pi",
+   "range": "6/12/24",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 0
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 1
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.gdlSScHRqrswn1Ex"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Crossbow",
+  "type": "weapon",
+  "img": "icons/svg/target.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "projectile",
+    "reload",
+    "twohanded",
+    "ranged"
+   ],
+   "hands": 2,
+   "subtype": "Pi",
+   "range": "10/20/40",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 2
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 4
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.Uo2PUMei2bVgPRJD"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Pistol",
+  "type": "weapon",
+  "img": "icons/svg/target.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "firearm",
+    "reload",
+    "ranged"
+   ],
+   "hands": 1,
+   "subtype": "Pi",
+   "range": "5/10/20",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 0
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d8",
+     "mod": 2
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.Cmo2Pp6b02G0g7p1"
+   ]
+  },
+  "flags": {}
+ },
+ {
+  "name": "Musket",
+  "type": "weapon",
+  "img": "icons/svg/target.svg",
+  "folder": "",
+  "system": {
+   "traits": [
+    "firearm",
+    "reload",
+    "twohanded",
+    "ranged"
+   ],
+   "hands": 2,
+   "subtype": "Pi",
+   "range": "10/20/40",
+   "thrownRange": "",
+   "damage": {
+    "t1": {
+     "pool": "B",
+     "count": 0,
+     "die": "",
+     "mod": 0
+    },
+    "t2": {
+     "pool": "B",
+     "count": 1,
+     "die": "d4",
+     "mod": 0
+    },
+    "t3": {
+     "pool": "B",
+     "count": 1,
+     "die": "d8",
+     "mod": 4
+    }
+   },
+   "actions": [
+    "Compendium.twod12.actions.Item.HPUvvn4UOwFBJUWd"
+   ]
+  },
+  "flags": {}
+ }
+]

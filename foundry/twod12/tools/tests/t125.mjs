@@ -2,7 +2,7 @@
 // v0.0.146 (Pass B of the core rules update): Slowed and Quickened, the AP cap, Round = once per turn-cycle, no Round default for Weapon,
 // no swapping while Down, Reload as a Weapon Action against DC 13, Imperiled and Immobilized texts.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
-const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.230 (pack CS): the cards are data (book/cards), read from the built content
+const CDOCS = (await import(ROOTURL + "tools/content.mjs")).allDocs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.230 (pack CS): the cards are data (book/cards), read from the built content
 const BD = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;   // v0.0.227 (pack CS): the Basic Actions are data generated from book/cards
 import fs from "node:fs";
 globalThis.Combat = class {}; globalThis.CONFIG = {};

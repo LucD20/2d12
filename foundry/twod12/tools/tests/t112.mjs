@@ -44,7 +44,7 @@ for (const n of ["Kindle (Bright light 3)", "Reveal (Bright light 1)", "Brace", 
 console.log("the old cards out of Foundry:", ["Divine Power", "Holy Wrath", "Beacon", "Final Verdict", "Hallowed Dawn", "Radiant Zeal", "Font of Mercy", "Miraculous Recovery", "Divine Intervention"].filter(n => docs.some(d => d.name === n && ["actions", "features"].includes(d.pack))).join(", ") || "all gone",
   "| old cards kept in their folder:", docs.filter(d => d.name === "Vow of Enmity").map(d => d.name).join(", "), "| in no level:", !paladin.levels.some(l => l.sections.some(x => x.items.map(nameOf).some(n => ["Vow of Enmity", "Call to Arms"].includes(n)))));
 // v0.0.183: the four builds of the ruler, and one NPC per role (the Bestiary's examples)
-for (const f of ["aveline-human-paladin-smite", "durgan-dwarf-paladin-lay-on-hands", "sylwen-elf-archer-double-shot", "kaela-human-archer-rolling-shot"]) {
+for (const f of ["aveline-human-paladin-smite", "durgan-dwarf-paladin-lay-on-hands", "sylwen-elf-archer-quick-shots", "kaela-human-archer-strafe"]) {
   const pc = JSON.parse(fs.readFileSync(path.join(SRC, `pcs/${f}.pc.json`), "utf8")), ids = pc.items.map(i => i._id);
   console.log(`${pc.name}:`, pc.items.filter(i => ["feature", "action", "talent"].includes(i.type) && !i.flags?.twod12?.basic && !/^(Fists|Lock & Loose|Reaping Sweep)$/.test(i.name)).map(i => i.name).join(", "), "| ids unique:", new Set(ids).size === ids.length);
 }

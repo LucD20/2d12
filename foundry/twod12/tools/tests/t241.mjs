@@ -12,7 +12,7 @@ const stub = () => { globalThis.foundry = deep(); globalThis.foundry.utils = { d
 stub(); globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = { Canvas: {}, statusEffects: [] }; globalThis.game = { settings: { get: () => false }, user: {} }; globalThis.ui = {}; globalThis.canvas = {};
 for (const n of ["Combat", "Roll", "ChatMessage", "Actor", "Item", "TextEditor", "Application", "Token", "TokenDocument", "Region", "RegionDocument"]) globalThis[n] ??= class {};
 const C = await import(ROOTURL + "tools/content.mjs");
-const ALLDOCS = [...C.docs, ...C.OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's stub();
+const ALLDOCS = [...C.allDocs, ...C.OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's stub();
 const A = await import(ROOTURL + "module/aftersteps.mjs");
 const { actionTabHtml } = await import(ROOTURL + "module/actionsheet.mjs");
 const { instanceText } = await import(ROOTURL + "module/actions.mjs");
@@ -123,7 +123,7 @@ console.log("the area tooltip asks what is under the mouse:", src("module/zoneti
 console.log("--- v0.0.360 (Lucas: \"fix those 3 from this pack before merging\")");
 const mkq = ALLDOCS.find(d => d.name === "Mark Quarry"), arc = ALLDOCS.find(d => d.name === "Archer" && d.type === "class");
 // v0.0.411 (pack F3): Mark Quarry left with pack R's Archer (its old card, OLD_CLASS_DOCS, still holds its rules for old worlds; Judge uses the mark now)
-console.log("Mark Quarry (the old card) holds the mark's rules:", mkq.type, (mkq.system.settings ?? []).map(x => x.type).join(","), "| not in the compendium:", !C.docs.some(d => d.name === "Mark Quarry" || d.name === "Marked Quarry"), "| the Archer no longer grants it:", !JSON.stringify(arc.system.levels).includes(C.uuidOf("actions", "Mark Quarry")));
+console.log("Mark Quarry (the old card) holds the mark's rules:", mkq.type, (mkq.system.settings ?? []).map(x => x.type).join(","), "| not in the compendium:", !C.allDocs.some(d => d.name === "Mark Quarry" || d.name === "Marked Quarry"), "| the Archer no longer grants it:", !JSON.stringify(arc.system.levels).includes(C.uuidOf("actions", "Mark Quarry")));
 const sylwen = C.pcs.find(x => /^Sylwen/.test(x.name));
 console.log("Sylwen has no quarry:", !sylwen.items.some(i => /Quarry/.test(i.name)), "| the old card stays for the ruler only:", C.CARDS.every(c => c.name !== "Marked Quarry"));
 const setOf = l => (l ?? []).map(x => ({ ...x, all: new Set(x.all ?? []), any: new Set(x.any ?? []), none: new Set(x.none ?? []), from: new Set(x.from ?? []), attrs: new Set(x.attrs ?? []), tiers: new Set(x.tiers ?? []) }));

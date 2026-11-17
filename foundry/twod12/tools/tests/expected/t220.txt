@@ -21,7 +21,7 @@ the Ogre out of Kai's Sight (a wall): the Bane stops: none
 seen again: Frightened 1
 Taunted by the Ogre: vs the Goblin: Taunted 1 | vs the Ogre: none | vs both: Taunted 1 | a Check (no target): none
 Sickened 2: a Body Save: Sickened 2 2 | an Instinct Save: Sickened 2 2 | a Mind Save: none | a Body Check: none | an attack: none
-Challenged keeps its [Strike] and counts only against others: [{"all":["strike"],"vsOrigin":"not"}]
+Challenged keeps its [Strike] and counts only against others: []
 --- the pure rules (condrules.mjs)
 originOk not: false true false | only: true false | none: true
 Dazed 1 with 3 AP: {"now":1,"rest":0} | Dazed 2 with 1 AP: {"now":1,"rest":1} | Dazed 1 with 0 AP: {"now":0,"rest":1}

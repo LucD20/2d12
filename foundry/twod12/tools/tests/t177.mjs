@@ -10,8 +10,9 @@ import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL(".
 import fs from "node:fs";
 import { spawnSync } from "node:child_process";
 const { loadCards, cardSystem, featureSystem, talentSystem, basicEntry, isAction } = await import(ROOTURL + "tools/cardgen.mjs");
-const { actors } = await import(ROOTURL + "tools/content.mjs");
-const { docs, uuidOf, CARDS, resolveRefs } = await import(ROOTURL + "tools/content.mjs");
+const { actors: actors0, deprecatedActors, deprecatedDocs } = await import(ROOTURL + "tools/content.mjs");
+const actors = [...actors0, ...deprecatedActors], gone = new Set(deprecatedDocs.map(d => d.name));   // v0.0.413: the deprecated ones too (their cards still build)
+const { allDocs: docs, uuidOf, CARDS, resolveRefs } = await import(ROOTURL + "tools/content.mjs");
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic-data.mjs");
 const S = await import(ROOTURL + "../../book/ruler/spec.mjs");
 
@@ -62,7 +63,7 @@ for (const c of compendium) {
   if (c.npc) { const a = actors.find(x => x.name === c.npc), it = a?.items.filter(i => i.name === c.name && i.type === "action") ?? []; if (it.length !== 1) bad.push(`${c.name}: ${it.length} on ${c.npc}`); else same(it[0].system, cardSystem(c, resolveRefs), `${c.name}: the NPC's item differs from the card`); continue; }
   if (isAction(c)) one(c, "action", cardSystem(c, resolveRefs));
   if (c.talent) one(c, "talent", talentSystem(c, resolveRefs)); else if (!isAction(c)) one(c, "feature", featureSystem(c, resolveRefs));
-  if (c.weapon) { const w = docs.find(d => d.type === "weapon" && d.name.toLowerCase() === c.weapon.toLowerCase()); if (w && !(w.system.actions ?? []).includes(uuidOf("actions", c.name))) bad.push(`${c.name}: not on its weapon`); }
+  if (c.weapon && !gone.has(c.name)) { const w = docs.find(d => d.type === "weapon" && d.name.toLowerCase() === c.weapon.toLowerCase()); if (w && !(w.system.actions ?? []).includes(uuidOf("actions", c.name))) bad.push(`${c.name}: not on its weapon`); }
 }
 const noWeapon = cards.filter(c => c.weapon && !docs.some(d => d.type === "weapon" && d.name.toLowerCase() === c.weapon.toLowerCase())).map(c => `${c.name} (${c.weapon})`);
 console.log("compendium cards:", compendium.length, "| one item each, equal to the card:", bad.length ? bad.join("; ") : "all", "| CARDS exported:", CARDS.length === cards.length);

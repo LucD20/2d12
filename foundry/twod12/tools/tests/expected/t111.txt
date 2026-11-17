@@ -58,4 +58,4 @@ edges of the limit: one square 4 | Aura 1 around one square (a 3x3 block) 12 | A
 colors: allies by default: outline 4a90d9, squares 4a90d9 | enemies: outline d94a4a, squares d94a4a | its own: outline d4a62a, squares 3fb68b | a bad value falls back: outline 9b59b6, squares 9b59b6
 the flags carry the colors: [{"rows":null,"size":3,"who":"allies","self":true,"fxUuid":"Compendium.x.Item.vigil","outline":"#d4a62a","fill":"#d4a62a","formula":"","show":true}]
 drawn in combat, for every token with an Aura: true | the squares only on hover: true | both PixiJS 7 and 8 drawing: true | color pickers in the editor: true | a setting turns the combat outlines off: true
-the Paladin's auras have their own colors: Brace: #9aa3ad | Divine Vigil: #d4a62a
+the Paladin's auras have their own colors: Brace: #9aa3ad | Divine Vigil: undefined

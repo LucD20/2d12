@@ -6,7 +6,7 @@
 // It also checks that the cards whose rules were hidden carry them as settings or fields, and that no compendium item has hidden flags.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 import fs from "node:fs";
-const { docs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const { allDocs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
 const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 

@@ -1,0 +1,1169 @@
+[
+ {
+  "name": "Bandit Thug",
+  "type": "npc",
+  "img": "systems/twod12/art/npcs/bandit-thug.png",
+  "system": {
+   "level": 1,
+   "role": "grunt",
+   "npcRole": "",
+   "speed": 5,
+   "weaponAttribute": "body",
+   "powerAttribute": "mind",
+   "modLead": "weapon",
+   "ratings": {
+    "body": "high",
+    "mind": "medium",
+    "appeal": "low",
+    "instinct": "medium",
+    "bodyHm": "medium",
+    "mindHm": "medium",
+    "ad": "medium",
+    "wd": "medium",
+    "damage": "medium",
+    "speed": "5"
+   },
+   "useEscalation": false
+  },
+  "items": [
+   {
+    "_id": "j0OiPcjTOQDW3vlg",
+    "name": "Cudgel",
+    "type": "weapon",
+    "img": "icons/svg/hammer.svg",
+    "system": {
+     "traits": [
+      "melee"
+     ],
+     "hands": 1,
+     "subtype": "Bl",
+     "range": "1",
+     "thrownRange": "",
+     "damage": {
+      "t1": {
+       "pool": "B",
+       "count": 0,
+       "die": "",
+       "mod": 0
+      },
+      "t2": {
+       "pool": "B",
+       "count": 1,
+       "die": "d4",
+       "mod": 0
+      },
+      "t3": {
+       "pool": "B",
+       "count": 1,
+       "die": "d6",
+       "mod": 0
+      }
+     },
+     "wielded": true
+    },
+    "flags": {},
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "InXHPBiA4BiUjqFH",
+    "name": "Cudgel",
+    "type": "action",
+    "img": "icons/svg/hammer.svg",
+    "system": {
+     "category": "Basic attack",
+     "level": 0,
+     "traits": [
+      "melee",
+      "strike",
+      "weapon"
+     ],
+     "targets": "One creature",
+     "distance": "weapon",
+     "frequency": "atwill",
+     "basicAttack": true,
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [],
+       "t2": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "dice": "1d4+1",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "t3": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "dice": "1d6+2",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ],
+     "flavor": "A heavy stick and no reason to hold back."
+    },
+    "flags": {
+     "twod12": {
+      "weaponId": "j0OiPcjTOQDW3vlg"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "F3vpORjhedIFZBRW",
+    "name": "Low Blow",
+    "type": "action",
+    "img": "icons/svg/combat.svg",
+    "system": {
+     "category": "Special Action",
+     "level": 0,
+     "traits": [
+      "melee",
+      "strike",
+      "weapon"
+     ],
+     "targets": "One creature",
+     "distance": "weapon",
+     "frequency": "round",
+     "versions": [
+      {
+       "ap": 2,
+       "noTiers": false,
+       "t1": [],
+       "t2": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "dice": "1d6+4",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "t3": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "dice": "1d6+8",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "x1": "",
+       "x2": "@Condition[staggered|eot]{Staggered (EoT)}",
+       "x3": "@Condition[staggered|eot]{Staggered (EoT)}",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ],
+     "flavor": "No rules in a back alley."
+    },
+    "flags": {
+     "twod12": {
+      "weaponId": "j0OiPcjTOQDW3vlg"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "pMvAukaaC9UsRsIk",
+    "name": "Advance",
+    "type": "action",
+    "img": "icons/svg/wing.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You press forward, one deliberate step at a time.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "",
+     "traits": [
+      "move",
+      "self"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "When you use this Action, you move up to your Speed in squares. @Move[advance|distance:speed]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "advance"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "CJry9xGbt6FTnXTi",
+    "name": "Evade",
+    "type": "action",
+    "img": "icons/svg/shield.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You slip through the fray without giving anyone an opening.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "",
+     "traits": [
+      "self"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "@Move[evade|distance:1]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 2,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "@Move[evade|distance:floor(speed/2)]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "safeMovement"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "GDXhAl3b8zpb8NwG",
+    "name": "Reload",
+    "type": "action",
+    "img": "icons/svg/upgrade.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You work the mechanism and seat a fresh bolt.",
+     "frequency": "atwill",
+     "distance": "reach",
+     "requirements": "You or an ally within Reach is wielding an unloaded weapon.",
+     "traits": [
+      "handle",
+      "weapon"
+     ],
+     "targets": "One target",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "Your next Reload attempt gains 2 Boons.",
+       "x2": "You Reload the weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. @Reload[weapon] @Regrip[weapon|label:Regrip (1A)]",
+       "x3": "You Reload the weapon and its wielder can @Move[evade|distance:1]. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can. @Reload[weapon] @Regrip[weapon|label:Regrip (1A)]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "reload"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "0dZfk1FHrsoDNVvS",
+    "name": "Interact",
+    "type": "action",
+    "img": "icons/svg/book.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You pull the lever, open the door, grab what you need.",
+     "frequency": "atwill",
+     "distance": "reach",
+     "requirements": "",
+     "traits": [
+      "handle"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world.",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "interact"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "0R0OrlCsjyeptT1e",
+    "name": "Crawl",
+    "type": "action",
+    "img": "icons/svg/falling.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You drag yourself along the ground.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "",
+     "traits": [
+      "move",
+      "self"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "You move 1 square. @Move[advance|distance:1|label:Crawl 1]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 2,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "Requirements: Your Speed is 5 or higher. You move 3 squares. @Move[advance|distance:3|label:Crawl 3]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "crawl"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "JV6ZApt1eAry825F",
+    "name": "Regrip",
+    "type": "action",
+    "img": "icons/svg/sword.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You shift your hands on the grip, and the weapon sits where you want it.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "",
+     "traits": [
+      "self"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand. @Regrip[weapon]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "regrip"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "MSUd3dNcxXC5Oigr",
+    "name": "Release",
+    "type": "action",
+    "img": "icons/svg/downgrade.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You let it go.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "",
+     "traits": [
+      "self"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 0,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand). @Release[weapon]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "release"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "3UANdN5KoFoEgJRb",
+    "name": "Stand",
+    "type": "action",
+    "img": "icons/svg/up.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You get your feet back under you.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "",
+     "traits": [
+      "move",
+      "self"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "You stand up: you are no longer Prone.",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "stand"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "pCmSMGQWpBHBTS2A",
+    "name": "Break Free",
+    "type": "action",
+    "img": "icons/svg/net.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You tear loose from whatever holds you.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "You are Immobilized.",
+     "traits": [
+      "move",
+      "self"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "You are no longer Immobilized.",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "breakFree"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "MmeYZ2YxS2k6AZ6M",
+    "name": "Charge",
+    "type": "action",
+    "img": "icons/svg/thrust.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You close the distance in one straight, reckless line.",
+     "frequency": "round",
+     "distance": "",
+     "requirements": "You have at least Speed 3.",
+     "traits": [
+      "move",
+      "strike"
+     ],
+     "targets": "One creature",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 2,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "Advance in a @Book[Straight Line]{straight line} toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last empty square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target. That Weapon Attack counts toward At-will Banes. @Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|atwill:yes|label:Weapon Attack (1A, 1 Boon)]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "charge"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "pHVKHOq15ldAn4DP",
+    "name": "Leaning",
+    "type": "action",
+    "img": "icons/svg/eye.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You lean out from cover, just enough to see.",
+     "frequency": "atwill",
+     "distance": "self",
+     "requirements": "",
+     "traits": [
+      "self"
+     ],
+     "targets": "",
+     "vs": "",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": true,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "",
+       "x2": "",
+       "x3": "",
+       "effects": "Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost. Click a corner of your square on the map to choose which one you lean toward: your token peeks out a little past it (so you can see around a wall that ends there, and you are more exposed too), unless a wall is in the way. Click it again to go back to the center. @Condition[leaning|eot]",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "leaning"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "lOUdGdsBnyWVwPD4",
+    "name": "Relocate",
+    "type": "action",
+    "img": "icons/svg/up.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You take them by the arm and put them where you want them.",
+     "frequency": "atwill",
+     "distance": "reach",
+     "requirements": "The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement.",
+     "traits": [
+      "body",
+      "handle",
+      "instinct",
+      "strike"
+     ],
+     "targets": "One creature",
+     "vs": "roll",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "@Move[reposition|distance:1|reach:yes]",
+       "x3": "@Move[reposition|distance:2|reach:yes]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 2,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "@Move[reposition|distance:2|reach:yes]",
+       "x3": "@Move[reposition|distance:4|reach:yes]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 3,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "@Move[reposition|distance:1|reach:yes]",
+       "x2": "@Move[reposition|distance:3|reach:yes]",
+       "x3": "@Move[reposition|distance:5|reach:yes]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "relocate"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "AA3Ml6tg1z4iEanb",
+    "name": "Trip",
+    "type": "action",
+    "img": "icons/svg/falling.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "A hooked foot, a twist, and they hit the ground.",
+     "frequency": "round",
+     "distance": "reach",
+     "requirements": "The target's SR is at most 1 higher than yours.",
+     "traits": [
+      "body",
+      "handle",
+      "instinct",
+      "strike"
+     ],
+     "targets": "One creature",
+     "vs": "roll",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "No effect.",
+       "x3": "@Condition[prone]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 2,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [
+        {
+         "pool": "B",
+         "useW": false,
+         "wCount": 1,
+         "dice": "1d8",
+         "useAt": false,
+         "subtype": "Bl"
+        }
+       ],
+       "x1": "No effect.",
+       "x2": "@Condition[prone]",
+       "x3": "@Condition[prone]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "trip"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "K7MTGTH7HKepAE7l",
+    "name": "Shove",
+    "type": "action",
+    "img": "icons/svg/up.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You put your weight behind it and drive them back.",
+     "frequency": "round",
+     "distance": "reach",
+     "requirements": "The target's SR is at most 1 higher than yours.",
+     "traits": [
+      "body",
+      "handle",
+      "strike"
+     ],
+     "targets": "One creature",
+     "vs": "body",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "@Move[pushed|distance:1]",
+       "x3": "@Move[pushed|distance:2]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 2,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "@Move[pushed|distance:2]",
+       "x3": "@Move[pushed|distance:4]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 3,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "@Move[pushed|distance:1]",
+       "x2": "@Move[pushed|distance:3]",
+       "x3": "@Move[pushed|distance:5]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "shove"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "DrtX3o3dCJ5VLxH8",
+    "name": "Haul",
+    "type": "action",
+    "img": "icons/svg/down.svg",
+    "system": {
+     "category": "Basic Action",
+     "level": 0,
+     "flavor": "You snag them and drag them in.",
+     "frequency": "round",
+     "distance": "reach",
+     "requirements": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement.",
+     "traits": [
+      "appeal",
+      "body",
+      "handle",
+      "strike"
+     ],
+     "targets": "One creature",
+     "vs": "roll",
+     "versions": [
+      {
+       "ap": 1,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "@Move[pulled|distance:1]",
+       "x3": "@Move[pulled|distance:2]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 2,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "No effect.",
+       "x2": "@Move[pulled|distance:2]",
+       "x3": "@Move[pulled|distance:4]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      },
+      {
+       "ap": 3,
+       "noTiers": false,
+       "t1": [],
+       "t2": [],
+       "t3": [],
+       "x1": "@Move[pulled|distance:1]",
+       "x2": "@Move[pulled|distance:3]",
+       "x3": "@Move[pulled|distance:5]",
+       "effects": "",
+       "fx": {
+        "all": [],
+        "t1": [],
+        "t2": [],
+        "t3": []
+       }
+      }
+     ]
+    },
+    "flags": {
+     "twod12": {
+      "basic": "haul"
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   },
+   {
+    "_id": "qBAjKl2eMBsiBcBk",
+    "name": "Fists",
+    "type": "weapon",
+    "img": "icons/svg/combat.svg",
+    "system": {
+     "traits": [
+      "barehanded",
+      "melee",
+      "nonthreatening"
+     ],
+     "hands": 1,
+     "wielded": false,
+     "subtype": "Bl",
+     "range": "1",
+     "reach": 0,
+     "damage": {
+      "t1": {
+       "count": 0,
+       "die": "",
+       "mod": 0
+      },
+      "t2": {
+       "count": 0,
+       "die": "",
+       "mod": 2
+      },
+      "t3": {
+       "count": 1,
+       "die": "d4",
+       "mod": 1
+      }
+     }
+    },
+    "flags": {
+     "twod12": {
+      "fists": true
+     }
+    },
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+     "default": 0
+    }
+   }
+  ]
+ }
+]

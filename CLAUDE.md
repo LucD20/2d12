@@ -9,6 +9,7 @@ Read first, in this order: **HANDOFF.md** (state), **MASTER-PLAN.md** (the order
 - `foundry/twod12/` = the Foundry system (module/, templates/, tools/content.mjs = the compendium content, tools/tests = 256 tests; build the packs first in a fresh clone).
 - `book/ruler/sim/` = the automated playtest environment's engine (SIM; its README; the brief: `book/sim-brief.md`). It imports the system's pure rules (`foundry/twod12/module/calc.mjs`, `roundrules.mjs`, `config.mjs`): **a rule of the round goes into `roundrules.mjs` first, never a second copy in the ruler.** After a change to the engine, `node book/ruler/spec.mjs --check` prints only "ok" and the reports must come out unchanged unless a rule or decision changed on purpose.
 - Backlogs: `book/rules-backlog.md` (rules log), `foundry/foundry-backlog.md` (what Foundry must follow). `archive/` = applied change logs.
+- `foundry/deprecated/` = what left the system on 2026-11-17 (Lucas: only what we worked on matters): old class cards, Talents, placeholder weapons and Techniques, test items, the Bandit Thug (`DEPRECATED` in `tools/content.mjs`; `tools/dump-deprecated.mjs` writes it). `foundry/automation-ratings.md` = Claude's Bronze / Silver / Gold rating of every card's automation (separate from Mithril / Diamond).
 
 ## Commands
 - Book: `cd book && python3 build_rules.py` (goal: `unresolved refs: 0`; it also runs checks: names, pronouns, headings). Needs Python `markdown`.

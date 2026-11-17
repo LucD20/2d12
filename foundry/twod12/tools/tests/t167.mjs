@@ -7,7 +7,7 @@ const stub = () => { globalThis.foundry = { applications: { api: { DialogV2: { p
 const shown = []; let pick = "";
 const PICK = async o => { shown.push(`${o.text} [${o.options.map(x => x.l).join(", ")}]`); return pick; };   // v0.0.412: the pick window (was a DialogV2)
 stub(); globalThis.game = { settings: { get: () => true } };
-const { docs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const { allDocs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
 const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 stub();
 const W = (name, traits) => ({ name, type: "weapon", system: { traits: new Set(traits), masteryGroup: "" } });

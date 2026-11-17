@@ -517,14 +517,14 @@ pcBoth({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("ave
 // Commandment and Hallowed Stance (v0.0.409, pack F2: the redesigned Paladin)
 pcBoth({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
   picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1art: "Hold the Line", pal1esc2: "Armor of Faith" },
-    2: { pal2enc: "Bulwark of Faith", pal2esc4: "Tireless Vigil" }, 3: { pal3art: "Commandment", pal3esc6: "Hallowed Stance" } }, weapon: "Pike", armor: "Heavy Armor" });
+    2: { pal2enc: "Bulwark of Faith", pal2esc4: "Tireless Vigil" }, 3: { pal3art: "Commandment", pal3esc6: "Hallowed Stance" } }, weapon: "Arming Sword", armor: "Heavy Armor" });
 // v0.0.411 (pack F3, the redesigned Archer; no Starting Mastery Feature: the book's Starting Mastery comes with the weapons pass):
 // the far Archer: Quick Shots, Snap Shot, Spotter, Lean and Loose, Volley, Clear Lines, Trick Shots, One More Arrow; the Longbow and a Dagger.
-pcBoth({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Shifting Aim",
+pcBoth({ name: "Sylwen (Elf Archer, Quick Shots)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Shifting Aim",
   picks: { 1: { arc1hall: "Quick Shots", arc1react: "Snap Shot", arc1art: "Spotter", arc1esc2: "Lean and Loose" },
     2: { arc2enc: "Volley", arc2esc4: "Clear Lines" }, 3: { arc3art: "Trick Shots", arc3esc6: "One More Arrow" } }, extras: [["weapon", "Dagger"]], weapon: "Hunting Bow", armor: "Light Armor" });
 // the close Archer: Strafe, Slip Away, Footwork, Blade and Bow, Hit and Run, Opening Shot, Spotter, Fleet; the Shortbow and a Dagger.
-pcBoth({ name: "Kaela (Human Archer, Rolling Shot)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Shifting Aim",
+pcBoth({ name: "Kaela (Human Archer, Strafe)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Shifting Aim",
   picks: { 1: { arc1hall: "Strafe", arc1react: "Slip Away", arc1art: "Footwork", arc1esc2: "Blade and Bow" },
     2: { arc2enc: "Hit and Run", arc2esc4: "Opening Shot" }, 3: { arc3art: "Spotter", arc3esc6: "Fleet" } }, extras: [["weapon", "Dagger"]], weapon: "Recurve Bow", armor: "Light Armor" });
 
@@ -623,5 +623,42 @@ for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["act
   for (const d of docs) withRules(d);
   for (const a of [...actors, ...pcs]) for (const it of a.items ?? []) withRules(it);
 }
+
+// v0.0.413 (Lucas, 2026-11-17: "anything that we haven't done, either delete or put into a deprecated folder for future reference, including NPCs. I
+// want just thing we worked on to matter"): what the redesigns didn't touch leaves the packs. Kept: the Basic Actions, the conditions, the species, the
+// armor, the redesigned Paladin and Archer (their cards, effects and classes), the four designed weapons and their Techniques, the Dagger (the Archer's
+// cards need a Light weapon), the Bestiary's four Stage 0 example NPCs, the pregenerated PCs. Out: pack R's class cards and their effects (the "old
+// cards" folders), the Talents (set aside in the book) and what they grant, the placeholder weapons and their Techniques, the test Zone, Divine
+// Connection, the Bandit Thug (not in the book). They are written to foundry/deprecated/ (tools/dump-deprecated.mjs; Foundry's own data, ready to
+// import) and kept here as deprecatedDocs / deprecatedActors for the tests of the machinery they exercised.
+export const DEPRECATED = {
+  folders: ["Paladin (old cards)", "Archer (old cards)", "Testing", "Talents", "Lesser Blessing", "Weapon Techniques"],
+  types: ["talent"],
+  names: ["Divine Connection", "Hindered (until Move)", "Handaxe", "Greataxe", "Mace", "Maul", "Spear", "Pike", "Knuckle Dagger", "Hand Crossbow", "Crossbow", "Pistol", "Musket"],
+  actors: ["Bandit Thug"]
+};
+const isDeprecated = d => DEPRECATED.folders.includes(d.folder) || DEPRECATED.types.includes(d.type) || DEPRECATED.names.includes(d.name);
+export const deprecatedDocs = docs.filter(isDeprecated);
+export const deprecatedActors = actors.filter(a => DEPRECATED.actors.includes(a.name));
+for (let i = docs.length - 1; i >= 0; i--) if (isDeprecated(docs[i])) docs.splice(i, 1);
+for (let i = actors.length - 1; i >= 0; i--) if (DEPRECATED.actors.includes(actors[i].name)) actors.splice(i, 1);
+{
+  // a kept weapon loses a deprecated Technique (the Dagger's Stick and Slip), on the packs and on the pregens
+  const gone0 = new Set(deprecatedDocs.map(d => uuidOf(d.pack, d.name)));
+  for (const d of docs) if (d.type === "weapon" && d.system?.actions) d.system.actions = d.system.actions.filter(u => !gone0.has(u));
+  for (const a of [...actors, ...pcs]) {
+    a.items = (a.items ?? []).filter(i => !gone0.has(i.flags?.twod12?.sourceUuid));
+    for (const i of a.items) if (i.type === "weapon" && i.system?.actions) i.system.actions = i.system.actions.filter(u => !gone0.has(u));
+  }
+}
+{
+  // nothing kept may point to what left (a weapon's Technique, an Action's effect, a class's Feature, a pregen's item)
+  const gone = new Set(deprecatedDocs.map(d => uuidOf(d.pack, d.name))), keptIds = new Set(docs.map(d => uuidOf(d.pack, d.name)));
+  const bad = [];
+  for (const x of [...docs, ...actors, ...pcs]) for (const u of JSON.stringify(x).match(/Compendium\.twod12\.[a-z]+\.Item\.[A-Za-z0-9]{16}/g) ?? []) if (gone.has(u) && !keptIds.has(u)) bad.push(`${x.name} -> ${deprecatedDocs.find(d => uuidOf(d.pack, d.name) === u)?.name}`);
+  if (bad.length) throw new Error(`Kept content points to deprecated items: ${[...new Set(bad)].join("; ")}`);
+}
+/** Every document, the deprecated ones too (for the tests of the machinery). */
+export const allDocs = [...docs, ...deprecatedDocs];
 
 export { docs, folders, uuidOf, actors, pcs };

@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.412**. Tests: `node tools/tests/run.mjs` (256 tests, see the README; the next new test is t259). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.413**. Tests: `node tools/tests/run.mjs` (256 tests, see the README; the next new test is t259). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
@@ -54,6 +54,13 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] **BUILT v0.0.411 as labels** (the keys stay shot / gun: no migration; cardgen maps the book's projectile / firearm). **The traits Shot and Gun become Projectile and Firearm:** the keys in `config.mjs`, the card files, the weapons, the tests (t146 compares the book's GROUPS, which keeps the old keys until then) and a migration for items in worlds.
 - [x] **BUILT v0.0.412.** **The weapon property Light** (the Dagger and the Handaxe).
 - [ ] **Line of Effect for every effect:** whatever an Action or a feature does to a creature needs Line of Effect to it (not only its targets); a part with no line is skipped and the rest happens.
+
+## v0.0.413 (the leftovers out of the system, 2026-11-17, branch `pack-archer-foundry`): TO TEST
+**What left:** the compendium keeps only the worked-on content; the rest is in `foundry/deprecated/` (README there). Nothing in a world is deleted.
+- [ ] **The compendiums:** Actions = the 19 Basic Actions, the Paladin's 13, the Archer's 11, the four Weapon Techniques (no "old cards", Talents, Testing or placeholder Technique folders); Features = the 14 class Features, no Talents; Weapons = Arming Sword, Longsword, Dagger, Hunting Bow, Recurve Bow and the three armors; Effects = the 9 of the redesigned classes; NPCs = Goblin Sneak, Orc Warrior, Grave Wisp, Ogre Chieftain.
+- [ ] **The PCs:** Durgan holds an Arming Sword (Seizing Cut); "Sylwen (Elf Archer, Quick Shots)" and "Kaela (Human Archer, Strafe)"; the Dagger has no Technique.
+- [ ] **A level-up:** the Talent and Skill Talent slots are empty and don't block "complete".
+- [ ] **An old character** holding a Talent or an old card: it stays on the sheet; "Update from the compendium" leaves it alone.
 
 ## v0.0.412 (pack F3 part 2, the bows and the swords in Foundry, 2026-11-17, branch `pack-archer-foundry`): TO TEST
 **Start:** at load, Mastery moves to the new scale silently (a whisper lists it); after the Archer's window, "The book's weapons" asks once (Replace / Later) if a character holds a Shortbow, a Longbow, a Greatsword or a one-handed Longsword; back up first.

@@ -5,7 +5,7 @@ import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL(".
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
-const { docs } = await import(ROOTURL + "tools/content.mjs");
+const { allDocs: docs } = await import(ROOTURL + "tools/content.mjs");
 const fx = await import(ROOTURL + "module/fists.mjs"), FD = await import(ROOTURL + "module/fxdetails.mjs"), AP = await import(ROOTURL + "module/appliedflags.mjs");
 const T = (...t) => new Set(t);
 const W = (name, traits, o = {}) => ({ name, type: "weapon", system: { traits: T(...traits), wielded: true, hands: 1, ...o }, getFlag: (s, k) => o.flags?.[k] });

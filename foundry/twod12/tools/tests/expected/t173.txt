@@ -5,7 +5,6 @@ a damaging Action doesn't tick Affect yourself: true
 class window: the Talent filter before the scroll comes back: true
 the Line's bar: the banner look, Left and Right buttons: true
 NPC's Basic attack box: true
-  Bandit Thug: Basic attack box on Cudgel
   Goblin Sneak: Basic attack box on Rusty Knife
   Grave Wisp: Basic attack box on Chilling Touch
   Ogre Chieftain: Basic attack box on Club

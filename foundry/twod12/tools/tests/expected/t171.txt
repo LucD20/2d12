@@ -4,7 +4,6 @@ adding the Basic Actions removes them: Weapon Attack, Fists | creates: nothing |
 a character keeps them: true | it still has Weapon Attack: true
 the GM's first load updates such NPCs: true | the NPC compendium: true
 a Charge (or a grant) that uses Weapon Attack uses an NPC's Basic attack: true
-Bandit Thug: Weapon Attack false, Fists Action false, Fists weapon true, Basic attacks: Cudgel
 Goblin Sneak: Weapon Attack false, Fists Action false, Fists weapon true, Basic attacks: Rusty Knife
 Grave Wisp: Weapon Attack false, Fists Action false, Fists weapon true, Basic attacks: Chilling Touch
 Ogre Chieftain: Weapon Attack false, Fists Action false, Fists weapon true, Basic attacks: Club

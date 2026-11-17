@@ -19,10 +19,13 @@ console.log("reaction kind (data):", has(data, 'reactionKind: choice({ interrupt
 console.log("reaction kind select (item sheet):", has(item, 'seg("system.reactionKind"'), "| Empowered and Enfeebled inputs:", has(item, 'data-field="empowered" value="{{empowered}}"') && has(item, 'data-field="enfeebled" value="{{enfeebled}}"'), "| no old checkbox:", !has(item, 'type="checkbox" data-sfield="{{i}}" data-field="empowered"'));
 console.log("Tags input (NPC sheet):", has(actor, 'data-action="removeTag"') && has(actor, 'class="tagadd"'));
 console.log("--- the compendium");
-const pack = name => JSON.parse(fs.readFileSync(ROOT + `packs/_source/actions/${name}.action.json`, "utf8")).system;
+// v0.0.413: the Talents' items are in foundry/deprecated/ now
+const DEP = k => JSON.parse(fs.readFileSync(ROOT + `../deprecated/compendium/${k}.json`, "utf8"));
+const slug = n => n.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const pack = name => DEP("actions").find(d => slug(d.name) === name).system;
 // v0.0.234: Opportunity Attack is a Basic Action (pack R-core), read from the generated data, not the compendium.
 const oa = (await import("./oa-card.mjs")).OA, cut = pack("cut-through");   // v0.0.407: the set-aside card
 console.log("Opportunity Attack:", oa.reactionKind, "|", oa.trigger, "| reaction:", oa.reaction);
 console.log("Cut Through's Setup:", cut.setup.slice(0, 48));
-const bl = JSON.parse(fs.readFileSync(ROOT + "packs/_source/effects/bloodlust.effect.json", "utf8")).system.settings, fx = { ...bl.find(st => st.type === "boonbane"), empowered: bl.find(st => st.type === "damagestep")?.empowered };   // Empowered is its own setting since v0.0.126
+const bl = DEP("effects").find(d => d.name === "Bloodlust").system.settings, fx = { ...bl.find(st => st.type === "boonbane"), empowered: bl.find(st => st.type === "damagestep")?.empowered };   // Empowered is its own setting since v0.0.126
 console.log("Bloodlust (effect): Empowered", fx.empowered, "| Enfeebled", fx.enfeebled ?? "(none)", "| boons", fx.boons, "| for", JSON.stringify(fx.all));

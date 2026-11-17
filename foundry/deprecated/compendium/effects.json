@@ -1,0 +1,4682 @@
+[
+ {
+  "name": "Hindered (until Move)",
+  "type": "effect",
+  "img": "icons/svg/downgrade.svg",
+  "folder": "Conditions",
+  "system": {
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "expireOn": [
+    "move"
+   ],
+   "description": "<p>For 1 round, the creature is Hindered until they use a Move Action. The effect lasts through that Move Action and ends once it is resolved.</p>",
+   "settings": [
+    {
+     "type": "speed",
+     "speedMode": "override",
+     "speedFormula": "floor(speed/2)"
+    }
+   ],
+   "rules": [
+    {
+     "stat": "speed",
+     "which": "all",
+     "val": "floor(speed/2)",
+     "stype": "all",
+     "mode": "set",
+     "name": "",
+     "vs": "any",
+     "sees": false,
+     "origin": "",
+     "rally": "@origin.pow + 2",
+     "rallyRange": 0,
+     "rw": "resist",
+     "rwSub": "",
+     "rwVal": 1,
+     "id": "m0",
+     "kind": "value",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "move"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Every Speed becomes floor(speed÷2). Lasts 1 round, or until they use a [Move] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Rimebrand",
+  "type": "effect",
+  "img": "icons/svg/frozen.svg",
+  "folder": "Lesser Blessing",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>Until the end of your turn, your [Weapon] Actions deal an extra [R] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT).</p>",
+   "settings": [
+    {
+     "type": "bonusdamage",
+     "dmg": "1d4",
+     "dmgPool": "M",
+     "dmgSub": "Co",
+     "tiers": [
+      "t1",
+      "t2",
+      "t3"
+     ],
+     "text": "",
+     "fxUuid": "",
+     "all": [
+      "weapon"
+     ],
+     "any": [],
+     "none": []
+    },
+    {
+     "type": "bonusdamage",
+     "dmg": "",
+     "dmgPool": "M",
+     "dmgSub": "Co",
+     "tiers": [
+      "t3"
+     ],
+     "text": "Hindered (EoT)",
+     "fxUuid": "Compendium.twod12.conditions.Item.jFaSeypMhrmTdVU8",
+     "all": [
+      "weapon"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "automation": "gold",
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "M",
+        "sub": "Co",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "",
+        "pool": "M",
+        "sub": "Co",
+        "tiers": [
+         3
+        ],
+        "fx": "Compendium.twod12.conditions.Item.jFaSeypMhrmTdVU8",
+        "fxName": "",
+        "text": "Hindered (EoT)"
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Weapon] Actions: an extra 1d4 [R] Cold damage. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Precise Aim (1 Boon)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "expireOn": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "expireAll": true,
+   "description": "<p>1 Boon on your next [Ranged, Shot, Strike, Weapon] Action.</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 1,
+     "banes": 0,
+     "all": [
+      "ranged",
+      "shot",
+      "strike",
+      "weapon"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "ranged",
+       "shot",
+       "strike",
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 1,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "ranged",
+       "shot",
+       "strike",
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Ranged, Projectile, Strike, Weapon] Actions: 1 Boon. Lasts until the end of their turn, or until they use a [Ranged, Projectile, Strike, Weapon] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Precise Aim (2 Boons)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "expireOn": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "expireAll": true,
+   "description": "<p>2 Boons on your next [Ranged, Shot, Strike, Weapon] Action.</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 2,
+     "banes": 0,
+     "all": [
+      "ranged",
+      "shot",
+      "strike",
+      "weapon"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "ranged",
+       "shot",
+       "strike",
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 2,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "ranged",
+       "shot",
+       "strike",
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Ranged, Projectile, Strike, Weapon] Actions: 2 Boons. Lasts until the end of their turn, or until they use a [Ranged, Projectile, Strike, Weapon] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Bloodlust",
+  "type": "effect",
+  "img": "icons/svg/blood.svg",
+  "folder": "Talents",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>For 1 round, your [Melee, Weapon] Actions are Empowered 1 and gain 2 Boons, and you take 1 Bane on Saves.</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 2,
+     "banes": 0,
+     "all": [
+      "melee",
+      "weapon"
+     ],
+     "any": [],
+     "none": []
+    },
+    {
+     "type": "damagestep",
+     "empowered": 1,
+     "all": [
+      "melee",
+      "weapon"
+     ],
+     "any": [],
+     "none": []
+    },
+    {
+     "type": "boonbane",
+     "boons": 0,
+     "banes": 1,
+     "all": [],
+     "any": [],
+     "none": [],
+     "from": [
+      "strike",
+      "melee",
+      "ranged",
+      "weapon",
+      "magic",
+      "divine",
+      "focus",
+      "handle",
+      "move"
+     ]
+    }
+   ],
+   "automation": "gold",
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "melee",
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 2,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "melee",
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": true,
+      "mode": "set",
+      "emp": 1,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [
+      "strike",
+      "melee",
+      "ranged",
+      "weapon",
+      "magic",
+      "divine",
+      "focus",
+      "handle",
+      "move"
+     ],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 0,
+      "banes": 1,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m2",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Melee, Weapon] Actions: 2 Boons. Their Rolls with [Melee, Weapon] Actions: Empowered 1. Their Rolls against [Strike], [Melee], [Ranged], [Weapon], [Power], [Divine], [Focus], [Handle] or [Move] Actions: 1 Bane. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Double Shot (2 Attacks)",
+  "type": "effect",
+  "img": "icons/svg/combat.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>You can use Weapon Attack twice, each time against a different creature. These uses are free and don't count toward Weapon Attack's Frequency or the 3 Strikes of your turn.</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 2,
+     "grantAp": 0,
+     "grantDistinct": true,
+     "boons": 0,
+     "banes": 0
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 2,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": true,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack 2 times for 0 AP, a different creature each time. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hallowed Dawn (1 Bane)",
+  "type": "effect",
+  "img": "icons/svg/degen.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>1 Bane on [Strike] Actions for 1 round (Hallowed Dawn).</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 0,
+     "banes": 1,
+     "all": [
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 0,
+      "banes": 1,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Strike] Actions: 1 Bane. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hallowed Dawn (Bright light 1)",
+  "type": "effect",
+  "img": "icons/svg/light.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>The creature sheds Bright light in a 1 Emanation (Dim light 1 more) for 1 round (Hallowed Dawn).</p>",
+   "settings": [
+    {
+     "type": "light",
+     "bright": 1,
+     "dim": 2,
+     "color": "#ffd27a",
+     "lightAlpha": 0.2,
+     "lightAnim": "sunburst",
+     "lightSpeed": 2,
+     "lightIntensity": 3
+    }
+   ],
+   "rules": [
+    {
+     "bright": 1,
+     "dim": 1,
+     "color": "#ffd27a",
+     "alpha": 0.2,
+     "anim": "sunburst",
+     "aspeed": 2,
+     "aint": 3,
+     "id": "m0",
+     "kind": "light",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Sheds Bright light in a 1 Emanation and Dim light 1 squares further. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Smite (Bright light 1)",
+  "type": "effect",
+  "img": "icons/svg/light.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>The creature sheds Bright light in a 1 Emanation (Dim light 1 more) and takes 1 Bane when it tries to Hide, for 1 round (Smite).</p>",
+   "settings": [
+    {
+     "type": "light",
+     "bright": 1,
+     "dim": 2,
+     "color": "#ffd27a",
+     "lightAlpha": 0.2,
+     "lightAnim": "sunburst",
+     "lightSpeed": 2,
+     "lightIntensity": 3
+    },
+    {
+     "type": "note",
+     "title": "Smite",
+     "text": "1 Bane when it tries to Hide (by hand: Hide isn't written yet)."
+    }
+   ],
+   "rules": [
+    {
+     "bright": 1,
+     "dim": 1,
+     "color": "#ffd27a",
+     "alpha": 0.2,
+     "anim": "sunburst",
+     "aspeed": 2,
+     "aint": 3,
+     "id": "m0",
+     "kind": "light",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": true,
+      "title": "Smite",
+      "text": "1 Bane when it tries to Hide (by hand: Hide isn't written yet)."
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Sheds Bright light in a 1 Emanation and Dim light 1 squares further. Their Rolls: show the note Smite. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Smite (Bright light 2)",
+  "type": "effect",
+  "img": "icons/svg/light.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>The creature sheds Bright light in a 2 Emanation (Dim light 2 more) and takes 1 Bane when it tries to Hide, for 1 round (Smite).</p>",
+   "settings": [
+    {
+     "type": "light",
+     "bright": 2,
+     "dim": 4,
+     "color": "#ffd27a",
+     "lightAlpha": 0.2,
+     "lightAnim": "sunburst",
+     "lightSpeed": 2,
+     "lightIntensity": 3
+    },
+    {
+     "type": "note",
+     "title": "Smite",
+     "text": "1 Bane when it tries to Hide (by hand: Hide isn't written yet)."
+    }
+   ],
+   "rules": [
+    {
+     "bright": 2,
+     "dim": 2,
+     "color": "#ffd27a",
+     "alpha": 0.2,
+     "anim": "sunburst",
+     "aspeed": 2,
+     "aint": 3,
+     "id": "m0",
+     "kind": "light",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": true,
+      "title": "Smite",
+      "text": "1 Bane when it tries to Hide (by hand: Hide isn't written yet)."
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Sheds Bright light in a 2 Emanation and Dim light 2 squares further. Their Rolls: show the note Smite. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Lay On Hands (Holy Strike)",
+  "type": "effect",
+  "img": "icons/svg/regen.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "",
+    "rounds": 1
+   },
+   "expireOn": [
+    "strike"
+   ],
+   "description": "<p>Your next [Strike] Action deals an extra [R] 0/2d8/2d8 Ho (Tier 2 and 3).</p>",
+   "settings": [
+    {
+     "type": "bonusdamage",
+     "dmg": "2d8",
+     "dmgPool": "M",
+     "dmgSub": "Ho",
+     "tiers": [
+      "t2",
+      "t3"
+     ],
+     "all": [
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "2d8",
+        "pool": "M",
+        "sub": "Ho",
+        "tiers": [
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Strike] Actions: an extra 2d8 [R] Holy damage on T2/T3. Lasts until they use a [Strike] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Rolling Shot (Weapon Attack)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>One [Ranged, Shot] Weapon Attack (1A), free (Rolling Shot, 1 AP): the button on the card, or the sheet's ticket.</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 0,
+     "banes": 0
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Rolling Shot (+1d6 Pi)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "expireOn": [
+    "strike"
+   ],
+   "description": "<p>One [Ranged, Shot] Weapon Attack (1A), free, that deals an extra [V] 1d6 Pi (Rolling Shot, 2 AP): the button on the card, or the sheet's ticket.</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 0,
+     "banes": 0
+    },
+    {
+     "type": "bonusdamage",
+     "dmg": "1d6",
+     "dmgPool": "B",
+     "dmgSub": "Pi",
+     "tiers": [
+      "t2",
+      "t3"
+     ],
+     "all": [
+      "ranged",
+      "shot",
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "ranged",
+       "shot",
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "1d6",
+        "pool": "B",
+        "sub": "Pi",
+        "tiers": [
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP. Their Rolls with [Ranged, Projectile, Strike] Actions: an extra 1d6 [V] Pierce damage on T2/T3. Lasts until the end of their turn, or until they use a [Strike] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Rolling Shot (+2d6 Pi)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "expireOn": [
+    "strike"
+   ],
+   "description": "<p>One [Ranged, Shot] Weapon Attack (1A), free, that deals an extra [V] 2d6 Pi (Rolling Shot, 3 AP): the button on the card, or the sheet's ticket.</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 0,
+     "banes": 0
+    },
+    {
+     "type": "bonusdamage",
+     "dmg": "2d6",
+     "dmgPool": "B",
+     "dmgSub": "Pi",
+     "tiers": [
+      "t2",
+      "t3"
+     ],
+     "all": [
+      "ranged",
+      "shot",
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "ranged",
+       "shot",
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "2d6",
+        "pool": "B",
+        "sub": "Pi",
+        "tiers": [
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP. Their Rolls with [Ranged, Projectile, Strike] Actions: an extra 2d6 [V] Pierce damage on T2/T3. Lasts until the end of their turn, or until they use a [Strike] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Covering Shot (Weapon Attack, 1 Boon)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>One [Ranged, Shot] Weapon Attack (1A) with 1 Boon against the attacker (Covering Shot). On a Tier 3, the ally takes half of the triggering damage: the attacker's next damage card lights its Half button.</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 1,
+     "banes": 0,
+     "grantOn": "t3",
+     "grantDo": "half"
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 1,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [
+      {
+       "tiers": [
+        3
+       ],
+       "does": "half",
+       "text": "",
+       "crit": false
+      }
+     ],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP, with 1 Boon; on T3, the target's next damage is halved. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Overwatch (Weapon Attack)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>One [Ranged, Shot] Weapon Attack (1A) against the triggering creature (Overwatch): on a Tier 2 or 3 it is Hindered (EoT), on a Critical also Pushed 2 (the chips on the attack's rows).</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 0,
+     "banes": 0,
+     "grantOn": "t2",
+     "grantDo": "text",
+     "grantText": "The target is @Condition[hindered|rounds:eot]{Hindered (EoT)}.",
+     "grantOn2": "crit",
+     "grantDo2": "text",
+     "grantText2": "The target is also @Move[pushed|distance:2]{Pushed 2}."
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [
+      {
+       "tiers": [
+        2,
+        3
+       ],
+       "does": "text",
+       "text": "The target is @Condition[hindered|rounds:eot]{Hindered (EoT)}.",
+       "crit": false
+      },
+      {
+       "tiers": [],
+       "does": "text",
+       "text": "The target is also @Move[pushed|distance:2]{Pushed 2}.",
+       "crit": true
+      }
+     ],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP; on T2/T3, The target is @Condition[hindered|rounds:eot]{Hindered (EoT)}.; on a Critical, The target is also @Move[pushed|distance:2]{Pushed 2}.. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Deathmark (Weapon Attack)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>The target of Deathmark went Down: choose a new Marked Quarry (0R) and make one [Ranged, Shot] Weapon Attack (1A) against them, free (the sheet's ticket).</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 0,
+     "banes": 0
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Open Season (the Quarry)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>For 1 round, [Strike] Actions the Archer's allies make against this creature deal an extra [V] 1d6 Pi (Open Season).</p>",
+   "settings": [
+    {
+     "type": "bonusdamage",
+     "dmg": "1d6",
+     "dmgPool": "B",
+     "dmgSub": "Pi",
+     "all": [
+      "strike"
+     ],
+     "against": true,
+     "vsOrigin": "not",
+     "tiers": [
+      "t1",
+      "t2",
+      "t3"
+     ]
+    }
+   ],
+   "rules": [
+    {
+     "dir": "against",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "notorigin",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "1d6",
+        "pool": "B",
+        "sub": "Pi",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Rolls against them with [Strike] Actions made by anyone but {origin}: an extra 1d6 [V] Pierce damage. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Open Season (Weapon Attack)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>One [Ranged, Shot] Weapon Attack (1A) against your Marked Quarry, free (Open Season): the button on the card, or the sheet's ticket.</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 0,
+     "banes": 0
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Aim (Weapon Attack, 1 Boon)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Talents",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>One [Ranged] Weapon Attack (1A) with 1 Boon, free (Aim); it ignores Low cover.</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 1,
+     "banes": 0
+    },
+    {
+     "type": "cover",
+     "coverLevels": [
+      "low"
+     ],
+     "all": [
+      "ranged"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 1,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "ranged"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": true,
+      "low": true,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP, with 1 Boon. Their Rolls with [Ranged] Actions: ignore Low cover. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Covering Fire (1 Bane)",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "description": "<p>1 Bane on [Strike] Actions while in the Covering Fire (the old card).</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 0,
+     "banes": 1,
+     "all": [
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 0,
+      "banes": 1,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Strike] Actions: 1 Bane. Lasts until removed."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Covering Fire (+1 Defense)",
+  "type": "effect",
+  "img": "icons/svg/shield.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "description": "<p>+1 Defense while in the Covering Fire (the old card).</p>",
+   "settings": [
+    {
+     "type": "defense",
+     "defKind": "all",
+     "defValue": 1
+    }
+   ],
+   "rules": [
+    {
+     "stat": "defense",
+     "which": "all",
+     "val": "1",
+     "stype": "all",
+     "mode": "bonus",
+     "name": "",
+     "vs": "any",
+     "sees": false,
+     "origin": "",
+     "rally": "@origin.pow + 2",
+     "rallyRange": 0,
+     "rw": "resist",
+     "rwSub": "",
+     "rwVal": 1,
+     "id": "m0",
+     "kind": "value",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "+1 bonus to every Defense. Lasts until removed."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Challenged",
+  "type": "effect",
+  "img": "icons/svg/combat.svg",
+  "folder": "Talents",
+  "system": {
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>Your [Strike] Actions against creatures other than the one who challenged you take 1 Bane (Challenge, EoT).</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 0,
+     "banes": 1,
+     "all": [
+      "strike"
+     ],
+     "any": [],
+     "none": [],
+     "vsOrigin": "not"
+    }
+   ],
+   "automation": "gold",
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "notorigin",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 0,
+      "banes": 1,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Strike] Actions against anyone but {origin}: 1 Bane. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Consecrated Ground (1 Bane)",
+  "type": "effect",
+  "img": "icons/svg/sun.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "description": "<p>1 Bane on [Weapon], [Power] and [Signature] Actions while in the Consecrated Ground.</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 0,
+     "banes": 1,
+     "all": [],
+     "any": [
+      "weapon",
+      "magic",
+      "signature"
+     ],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [],
+      "any": [
+       "weapon",
+       "magic",
+       "signature"
+      ],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 0,
+      "banes": 1,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with Actions that are [Weapon], [Power] or [Signature]: 1 Bane. Lasts until removed."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Divine Power (1 Bane)",
+  "type": "effect",
+  "img": "icons/svg/degen.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>1 Bane on [Strike] Actions (EoT).</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 0,
+     "banes": 1,
+     "all": [
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 0,
+      "banes": 1,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Strike] Actions: 1 Bane. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Beacon (+1 Defense)",
+  "type": "effect",
+  "img": "icons/svg/shield.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "duration": {
+    "type": "",
+    "rounds": 1
+   },
+   "description": "<p>+1 Defense while you are inside the Beacon's Aura.</p>",
+   "settings": [
+    {
+     "type": "defense",
+     "defKind": "all",
+     "defValue": 1
+    }
+   ],
+   "rules": [
+    {
+     "stat": "defense",
+     "which": "all",
+     "val": "1",
+     "stype": "all",
+     "mode": "bonus",
+     "name": "",
+     "vs": "any",
+     "sees": false,
+     "origin": "",
+     "rally": "@origin.pow + 2",
+     "rallyRange": 0,
+     "rw": "resist",
+     "rwSub": "",
+     "rwVal": 1,
+     "id": "m0",
+     "kind": "value",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "+1 bonus to every Defense. Lasts until removed."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Divine Vigil (Boon against Fear)",
+  "type": "effect",
+  "img": "icons/svg/aura.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "duration": {
+    "type": "",
+    "rounds": 1
+   },
+   "description": "<p>1 Boon on Saves against [Fear] Actions, while you are inside Divine Vigil's Aura.</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 1,
+     "banes": 0,
+     "all": [
+      "__save"
+     ],
+     "any": [],
+     "none": [],
+     "from": [
+      "fear"
+     ]
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "__save"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [
+      "fear"
+     ],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 1,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Save] Actions against [Fear] Actions: 1 Boon. Lasts until removed."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Divine Surge",
+  "type": "effect",
+  "img": "icons/svg/sun.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>For 1 round, the next time an ally deals damage to this creature, they deal an extra @Damage[1d8[mind,holy]]{[R] 1d8 Ho} (Divine Surge). Then remove this mark.</p>",
+   "settings": [],
+   "rules": [],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Radiant Zeal",
+  "type": "effect",
+  "img": "icons/svg/sun.svg",
+  "folder": "Paladin (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "",
+    "rounds": 1
+   },
+   "minEscalation": 1,
+   "expireOn": [
+    "strike"
+   ],
+   "description": "<p>Your next [Strike] Action that deals damage deals an extra [R] 1d6 Ho (Radiant Zeal, while your Escalation is 1 or more). Given again at the start of each of your turns.</p>",
+   "settings": [
+    {
+     "type": "bonusdamage",
+     "dmg": "1d6",
+     "dmgPool": "M",
+     "dmgSub": "Ho",
+     "tiers": [
+      "t1",
+      "t2",
+      "t3"
+     ],
+     "text": "",
+     "fxUuid": "",
+     "all": [
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "1d6",
+        "pool": "M",
+        "sub": "Ho",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Strike] Actions: an extra 1d6 [R] Holy damage. Lasts until they use a [Strike] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Fire Patch (test Zone)",
+  "type": "effect",
+  "img": "icons/svg/fire.svg",
+  "folder": "Testing",
+  "system": {
+   "description": "<p>Burning ground: a creature that enters it takes [V] 1d6 Fire (at most once per turn-cycle). Lasts 3 rounds. A test Zone.</p>",
+   "where": "map",
+   "zone": {
+    "src": "action",
+    "shape": "emanation",
+    "size": "2",
+    "inside": {
+     "carry": {
+      "on": false,
+      "who": "enemies",
+      "self": false,
+      "fx": "",
+      "fxName": ""
+     },
+     "carry2": {
+      "who": "enemies",
+      "on": false,
+      "self": false,
+      "fx": "",
+      "fxName": ""
+     },
+     "heal": {
+      "on": false,
+      "who": "allies",
+      "self": true,
+      "formula": "1d4"
+     },
+     "ht": {
+      "gives": {
+       "on": false,
+       "fx": "",
+       "fxName": ""
+      },
+      "on": true,
+      "who": "all",
+      "self": true,
+      "entering": true,
+      "turn": false,
+      "movement": false,
+      "list": [
+       {
+        "dice": "1d6",
+        "pool": "B",
+        "sub": "Fi"
+       }
+      ]
+     },
+     "diff": {
+      "on": false,
+      "who": "all",
+      "self": false
+     },
+     "guard": {
+      "on": false,
+      "self": false,
+      "who": "allies",
+      "formula": "@origin.pow"
+     }
+    },
+    "show": true,
+    "outline": "#e8582a",
+    "fill": "#e8582a"
+   },
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 3
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": "1 Emanation. [HT: Entering] Creatures inside, and {origin}, take 1d6 [V] Fire damage. Lasts 3 rounds."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hunter's Focus",
+  "type": "effect",
+  "img": "icons/svg/eye.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "",
+    "rounds": 1
+   },
+   "description": "<p>For the rest of the encounter, against your Marked Quarry: you gain 1 Boon and Empowered 1, and you take less damage from each of their Actions, reduced by your Signature Modifier (you choose which instance). The damage reduction is not automated.</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 1,
+     "banes": 0,
+     "all": [],
+     "any": [],
+     "none": [],
+     "vsMarked": true
+    },
+    {
+     "type": "damagestep",
+     "empowered": 1,
+     "all": [],
+     "any": [],
+     "none": [],
+     "vsMarked": true
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "marked",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 1,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "marked",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": true,
+      "mode": "set",
+      "emp": 1,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls against the creature it marked: 1 Boon. Their Rolls against the creature it marked: Empowered 1. Lasts until removed."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Vanish (+1 Defense)",
+  "type": "effect",
+  "img": "icons/svg/invisible.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "rounds",
+    "rounds": 1
+   },
+   "description": "<p>+1 Defense for 1 round (Vanish).</p>",
+   "settings": [
+    {
+     "type": "defense",
+     "defKind": "all",
+     "defValue": 1
+    }
+   ],
+   "rules": [
+    {
+     "stat": "defense",
+     "which": "all",
+     "val": "1",
+     "stype": "all",
+     "mode": "bonus",
+     "name": "",
+     "vs": "any",
+     "sees": false,
+     "origin": "",
+     "rally": "@origin.pow + 2",
+     "rallyRange": 0,
+     "rw": "resist",
+     "rwSub": "",
+     "rwVal": 1,
+     "id": "m0",
+     "kind": "value",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "+1 bonus to every Defense. Lasts 1 round."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Pinning Shot",
+  "type": "effect",
+  "img": "icons/svg/net.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "expireOn": [
+    "strike"
+   ],
+   "description": "<p>Your next Weapon Attack this turn is free; on a Tier 2 or 3 the target is Immobilized (EoT) (Pinning Shot).</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 0,
+     "banes": 0
+    },
+    {
+     "type": "bonusdamage",
+     "dmg": "",
+     "dmgPool": "B",
+     "dmgSub": "",
+     "tiers": [
+      "t2",
+      "t3"
+     ],
+     "text": "Immobilized (EoT)",
+     "fxUuid": "Compendium.twod12.conditions.Item.oTXBlHBOcVYTSJr2",
+     "all": [
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         2,
+         3
+        ],
+        "fx": "Compendium.twod12.conditions.Item.oTXBlHBOcVYTSJr2",
+        "fxName": "",
+        "text": "Immobilized (EoT)"
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP. Lasts until the end of their turn, or until they use a [Strike] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Twin Shot",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "expireOn": [
+    "strike"
+   ],
+   "description": "<p>Your next Weapon Attack this turn is free: target two creatures no more than 5 squares apart; it deals an extra [V] 1d6 Pi to each of them (Twin Shot).</p>",
+   "settings": [
+    {
+     "type": "grant",
+     "grantAction": "Weapon Attack",
+     "grantCount": 1,
+     "grantAp": 0,
+     "grantDistinct": false,
+     "boons": 0,
+     "banes": 0
+    },
+    {
+     "type": "bonusdamage",
+     "dmg": "1d6",
+     "dmgPool": "B",
+     "dmgSub": "Pi",
+     "tiers": [
+      "t1",
+      "t2",
+      "t3"
+     ],
+     "text": "",
+     "fxUuid": "",
+     "all": [
+      "ranged",
+      "shot",
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "item": "",
+     "itemName": "Weapon Attack",
+     "itemType": "action",
+     "valued": false,
+     "src": "",
+     "val": 1,
+     "valMode": "set",
+     "origin": "",
+     "when": "lasts",
+     "amode": "uses",
+     "uses": 1,
+     "ap": 0,
+     "bbn": 0,
+     "bbk": "boons",
+     "distinct": false,
+     "riders": [],
+     "pool": "any",
+     "sub": "",
+     "tag": "",
+     "msg": {
+      "on": false,
+      "to": "owners",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "grant",
+     "minEsc": 0
+    },
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "ranged",
+       "shot",
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "1d6",
+        "pool": "B",
+        "sub": "Pi",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m1",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Can use Weapon Attack once for 0 AP. Their Rolls with [Ranged, Projectile, Strike] Actions: an extra 1d6 [V] Pierce damage. Lasts until the end of their turn, or until they use a [Strike] Action."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Harried",
+  "type": "effect",
+  "img": "icons/svg/downgrade.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "duration": {
+    "type": "eot",
+    "rounds": 1
+   },
+   "description": "<p>1 Bane on [Strike] Actions (Harrying Shots, EoT).</p>",
+   "settings": [
+    {
+     "type": "boonbane",
+     "boons": 0,
+     "banes": 1,
+     "all": [
+      "strike"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "strike"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": true,
+      "boons": 0,
+      "banes": 1,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": false,
+      "list": [
+       {
+        "dice": "1d4",
+        "pool": "B",
+        "sub": "",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": true,
+     "mode": "eot",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": false,
+     "filter": {
+      "all": [],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Strike] Actions: 1 Bane. Lasts until the end of their turn."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Killer's Focus",
+  "type": "effect",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer (old cards)",
+  "system": {
+   "selfApplied": true,
+   "duration": {
+    "type": "",
+    "rounds": 1
+   },
+   "minEscalation": 2,
+   "expireOn": [
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "expireAll": true,
+   "description": "<p>Your next [Shot, Strike, Weapon] Action deals an extra [V] 1d6 Pi (Killer's Focus, while your Escalation is 2 or more). Given again at the start of each of your turns.</p>",
+   "settings": [
+    {
+     "type": "bonusdamage",
+     "dmg": "1d6",
+     "dmgPool": "B",
+     "dmgSub": "Pi",
+     "tiers": [
+      "t1",
+      "t2",
+      "t3"
+     ],
+     "text": "",
+     "fxUuid": "",
+     "all": [
+      "shot",
+      "strike",
+      "weapon"
+     ],
+     "any": [],
+     "none": []
+    }
+   ],
+   "rules": [
+    {
+     "dir": "by",
+     "filter": {
+      "all": [
+       "shot",
+       "strike",
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     },
+     "attrs": [],
+     "from": [],
+     "vs": "any",
+     "uses": "every",
+     "sees": false,
+     "origin": "",
+     "bb": {
+      "on": false,
+      "boons": 0,
+      "banes": 0,
+      "name": "",
+      "byValue": false
+     },
+     "emp": {
+      "on": false,
+      "mode": "set",
+      "emp": 0,
+      "enf": 0
+     },
+     "dmg": {
+      "on": true,
+      "list": [
+       {
+        "dice": "1d6",
+        "pool": "B",
+        "sub": "Pi",
+        "tiers": [
+         1,
+         2,
+         3
+        ],
+        "fx": "",
+        "fxName": "",
+        "text": ""
+       }
+      ]
+     },
+     "ign": {
+      "on": false,
+      "low": false,
+      "medium": false,
+      "high": false,
+      "range": "none",
+      "engaged": false,
+      "engagedTarget": false
+     },
+     "note": {
+      "on": false,
+      "title": "",
+      "text": ""
+     },
+     "id": "m0",
+     "kind": "act",
+     "minEsc": 0
+    }
+   ],
+   "rulesOn": true,
+   "ends": {
+    "time": {
+     "on": false,
+     "mode": "rounds",
+     "rounds": 1
+    },
+    "save": {
+     "on": false,
+     "attr": "body",
+     "dc": "13",
+     "dcValue": 15,
+     "when": "eot",
+     "t2": "eot"
+    },
+    "down": {
+     "on": false
+    },
+    "action": {
+     "on": true,
+     "filter": {
+      "all": [
+       "shot",
+       "strike",
+       "weapon"
+      ],
+      "any": [],
+      "not": []
+     }
+    },
+    "someone": {
+     "on": false,
+     "who": "origin",
+     "ap": 1
+    }
+   },
+   "autoHover": "Their Rolls with [Projectile, Strike, Weapon] Actions: an extra 1d6 [V] Pierce damage. Lasts until they use a [Projectile, Strike, Weapon] Action."
+  },
+  "flags": {}
+ }
+]

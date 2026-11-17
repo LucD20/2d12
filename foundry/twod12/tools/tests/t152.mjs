@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t152.mjs)
 // v0.0.186 (pack C-a): a Talent's Category, Level and Prerequisites as data (talents.mjs), what the class window's Talent picker will check.
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
-const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.232 (pack CS): the cards are data (book/cards), read from the built content
+const CDOCS = (await import(ROOTURL + "tools/content.mjs")).allDocs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.232 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
 class Fld { constructor(o) { this.o = o; } }
 globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) { return s; } } }, data: { fields: { SchemaField: Fld, NumberField: Fld, StringField: Fld, BooleanField: Fld, ArrayField: Fld, SetField: Fld, HTMLField: Fld } }, utils: {} };

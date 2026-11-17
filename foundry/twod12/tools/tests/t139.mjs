@@ -1,6 +1,6 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t139.mjs)
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
-const CDOCS = (await import(ROOTURL + "tools/content.mjs")).docs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.232 (pack CS): the cards are data (book/cards), read from the built content
+const CDOCS = (await import(ROOTURL + "tools/content.mjs")).allDocs, cdoc = (n, t = "action") => CDOCS.find(d => d.name === n && d.type === t);   // v0.0.232 (pack CS): the cards are data (book/cards), read from the built content
 import fs from "node:fs";
 // v0.0.169 (F1): the Foundry system follows the book: [Ranged] Engaged banes, Fists as an ordinary weapon (Non-threatening; Brawler removes it), the Basic
 // Actions (Shove with 3 versions, Relocate, the Fists card as a Weapon Action), Collision counted from the destination the origin chose, Steadiness.

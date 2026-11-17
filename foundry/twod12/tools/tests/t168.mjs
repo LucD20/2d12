@@ -6,7 +6,7 @@ import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL(".
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 const stub = () => { globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } }; globalThis.Hooks = { on() {} }; };
 stub(); globalThis.game = { settings: { get: () => true } };
-const { docs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
+const { allDocs: docs0 , OLD_CLASS_DOCS } = await import(ROOTURL + "tools/content.mjs");
 const docs = [...docs0, ...OLD_CLASS_DOCS];   // v0.0.411 (pack F3): pack R's class cards (OLD_CLASS_DOCS) after the compendium's
 stub(); globalThis.game = { settings: { get: () => true }, packs: new Map() };
 const AU = await import(ROOTURL + "module/automation.mjs");
