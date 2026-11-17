@@ -42,3 +42,5 @@ the HUD found while fixed on screen: true | an area's Roll not blocked by target
 Target on a left click: true | a Tier line forces anywhere on it: true | "2× Ogre Chieftain": true | the selection given back after a pick: true
 --- v0.0.401 (Lucas, testing v0.0.400)
 a held token released during a pick is selected again: true | the side panel glows: true
+--- v0.0.403 (Lucas, testing v0.0.402)
+a right-click doesn't cancel an area (it pans): true | no release during a pick (no blink): true

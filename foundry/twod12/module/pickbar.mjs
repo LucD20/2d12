@@ -34,6 +34,19 @@ export async function pickBar(o) {
   // v0.0.401 (Lucas: "Don't deselect the token after push"; in target mode he can't select it again): Foundry releases the tokens on the map
   // click's pointer-up, after the pick: while the bar is up (and a moment after) a held token that is released is controlled again at once
   let guard = null;
+  // v0.0.403 (Lucas: "it does blink for me as a GM as the token unselects and selects again"): while the bar is up (and a moment after) the token
+  // layer's release-all does nothing, so a pick on the map doesn't release the tokens at all; the hook below stays as the fallback
+  let unpatch = () => {};
+  try {
+    const L = globalThis.canvas?.tokens;
+    if (held.length && L && typeof L.releaseAll === "function") {
+      // a count: the Push asks once a creature, and one question's tail overlaps the next
+      if (!L.__twod12Hold) { L.__twod12Orig = L.releaseAll; L.releaseAll = function () { return 0; }; }
+      L.__twod12Hold = (L.__twod12Hold || 0) + 1;
+      let done = false;
+      unpatch = () => { if (done) return; done = true; try { L.__twod12Hold = Math.max(0, (L.__twod12Hold || 1) - 1); if (!L.__twod12Hold && L.__twod12Orig) { L.releaseAll = L.__twod12Orig; delete L.__twod12Orig; } } catch (e) { /* gone */ } };
+    }
+  } catch (e) { unpatch = () => {}; }
   const keep = (token, on) => { if (on || !held.includes(token?.id)) return; setTimeout(reselect, 0); };
   try { if (held.length && globalThis.Hooks?.on) guard = Hooks.on("controlToken", keep); } catch (e) { guard = null; }
   const res = await new Promise(resolve => {
@@ -96,5 +109,6 @@ export async function pickBar(o) {
   await back();
   if (guard !== null) setTimeout(() => { try { Hooks.off("controlToken", guard); } catch (e) { /* gone */ } }, 800);
   setTimeout(reselect, 300);
+  setTimeout(unpatch, 400);
   return res;
 }

@@ -190,7 +190,7 @@ function compute(shape, n, pos, { user = null, side = "left" } = {}) {
 
 const localPos = ev => (ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage));
 
-/** Interactive placement: move to preview, left-click to place, right-click or Escape to cancel. */
+/** Interactive placement: move to preview, left-click to place, Escape to cancel (a right-drag pans the map, v0.0.403). */
 /** Minimize every open window (character sheets, item sheets, dialogs) while an area is placed on the map; returns what brings them back. */
 export async function stepAside() {
   const done = [];
@@ -214,7 +214,7 @@ function place(shape, n, { within = 0, user = null } = {}) {
     if (bar) {
       // v0.0.216 (Lucas: the bar looked poor and the button text overflowed): the target-picking banner's look; Left and Right are two buttons.
       bar.className = "twod12-linebar";
-      bar.innerHTML = `<i class="fa-solid fa-arrow-right-long lb-ic"></i><span class="lb-text">Line ${n}: aim with the mouse, click to place, right-click or Esc to cancel.</span><span class="lb-side" hidden><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the aim). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span>`;
+      bar.innerHTML = `<i class="fa-solid fa-arrow-right-long lb-ic"></i><span class="lb-text">Line ${n}: aim with the mouse, click to place, Esc to cancel.</span><span class="lb-side" hidden><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the aim). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span>`;
       document.body.append(bar);
       bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
     }
@@ -250,7 +250,8 @@ function place(shape, n, { within = 0, user = null } = {}) {
       resolve(result);
     };
     const down = ev => {
-      if (ev.button === 2) return done(null);
+      // v0.0.403 (Lucas: "Right click is still canceling area placement, it shouldn't, since we need to move the screen"): a right-drag pans the
+      // map; Esc (or the bar's Cancel) cancels
       if (ev.button !== 0) return;
       lastPos = localPos(ev); current = compute(shape, n, lastPos, { user, side });
       if (isLine && !current?.cells?.length) { ui.notifications.warn("Aim the Line at a square outside your space."); return; }
@@ -264,7 +265,7 @@ function place(shape, n, { within = 0, user = null } = {}) {
     canvas.stage.on("pointermove", move);
     canvas.stage.on("pointerdown", down);
     window.addEventListener("keydown", key_, true);
-    if (!isLine) ui.notifications.info(`${n} ${shape === "burst" ? "Burst" : "Emanation"}${within ? ` (within ${within} sq.)` : ""}: click to place, right-click or Esc to cancel.`);   // v0.0.246: the book's order (a 2 Emanation)
+    if (!isLine) ui.notifications.info(`${n} ${shape === "burst" ? "Burst" : "Emanation"}${within ? ` (within ${within} sq.)` : ""}: click to place, Esc to cancel.`);   // v0.0.246: the book's order (a 2 Emanation)
     else showBar();
   });
 }

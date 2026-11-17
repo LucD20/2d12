@@ -81,6 +81,11 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.403 (2026-11-17, branch `pack-hud-remake`): TO TEST
+- [ ] **Placing an area:** right-drag pans the map (the placement stays); Esc cancels.
+- [ ] **A Push picked on the map:** your token stays selected without blinking.
+- [ ] **After the Push:** a click on empty map deselects as usual (Foundry's own behavior is back).
+
 ## v0.0.402 (2026-11-17, branch `pack-hud-remake`): TO TEST
 - [ ] **Word of Radiance, Pushed 1 on two creatures, picked by clicking their tokens:** your token selected after each push and after the last (the HUD keeps showing it).
 

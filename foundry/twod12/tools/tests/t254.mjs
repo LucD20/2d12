@@ -98,3 +98,5 @@ console.log("Target on a left click:", src("module/rollwindow.mjs").includes('el
   "| \"2× Ogre Chieftain\":", cc0.includes('<span class="cc-cname">${cl.length}× ${esc(stem(cl[0].r.name))}</span>') && src("module/ccdamage.mjs").includes("button.dataset.rows.split"), "| the selection given back after a pick:", pb0.includes("const t = canvas.tokens?.get?.(id); if (t && !t.destroyed && !t.controlled)") && src("module/move.mjs").includes("} finally { try { giveBack();"));
 console.log("--- v0.0.401 (Lucas, testing v0.0.400)");
 console.log("a held token released during a pick is selected again:", src("module/pickbar.mjs").includes('guard = Hooks.on("controlToken", keep)'), "| the side panel glows:", src("styles/theme.css").includes("@keyframes twod12-hud-glow"));
+console.log("--- v0.0.403 (Lucas, testing v0.0.402)");
+console.log("a right-click doesn't cancel an area (it pans):", !src("module/template.mjs").includes("if (ev.button === 2) return done(null);"), "| no release during a pick (no blink):", src("module/pickbar.mjs").includes("L.releaseAll = function () { return 0; };"));
