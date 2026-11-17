@@ -1,7 +1,7 @@
 import { logEvent, makeLine, nextLog, stamp } from "./ticker.mjs";
 import { swapCardHtml, thawLineHtml, sysLine } from "./sysmsg.mjs";
 import { unusedApGuard, turnAP } from "./roundrules.mjs";
-import { hasMomentum, setMomentum } from "./escalation.mjs";
+import { momentumNow, setMomentum } from "./escalation.mjs";
 import { sideDisp, lastOrder } from "./initmodel.mjs";   // v0.0.310: the Initiative windows (initwindow.mjs, loaded when used)
 import { groupColor } from "./config.mjs";
 // Combat: attribute-roll Initiative for everyone, "zipper" turn order between the two sides,
@@ -47,7 +47,7 @@ export const getRAP = c => Math.max(0, Math.min(REACTION_AP, Math.trunc(Number(c
 /** Pure: how a Reaction's cost is paid: the Reaction AP first, then AP (kept from the turn, or the turn's own). { fromRap, fromAp } */
 export { payReaction };   // v0.0.297: the one AP rule lives in sheetmodel.mjs (pure), with versionCant
 /** The Stage of a combatant's creature (for the Guard an unspent AP gives). */
-const stageOfC = c => Math.max(1, Math.min(3, Number(c?.actor?.system?.stage) || 1));
+const stageOfC = c => Math.max(0, Math.min(3, Number(c?.actor?.system?.stage) || 0));   // v0.0.407: Stages 0 to 3
 
 /** Imperiled ends at the start of the creature's turn: it gets back to safety, to a legal square next to the hazard. */
 export async function climbUp(c) {
@@ -437,14 +437,15 @@ export function registerCombatHooks() {
       btn.innerHTML = '<i class="fa-solid fa-dice-d20"></i> Initiative';
       btn.addEventListener("click", () => rollPendingInitiative(combat));   // v0.0.273: only the ones still to roll, not left out
       (el.querySelector("header") ?? el).append(btn);
-      // v0.0.243 (book, Momentum): the GM's switch: the party starts this encounter at Escalation 2 (used up when it starts).
+      // v0.0.243 (book, Momentum): the GM's switch; v0.0.407: the party's Momentum 0 to 4 (left-click +1, right-click -1): every PC starts at 1 + Momentum.
       if (game.user.isGM) {
         const mo = document.createElement("button");
-        const on = hasMomentum();
-        mo.type = "button"; mo.className = `twod12-momentum${on ? " on" : ""}`;
-        mo.innerHTML = `<i class="fa-solid fa-fire"></i> Momentum${on ? ": on" : ""}`;
-        mo.dataset.tooltip = on ? "The party has Momentum: every PC starts this encounter at Escalation 2 (click to switch it off)" : "After an encounter harder than easy, the party has Momentum: it starts the next one at Escalation 2 (click to switch it on)";
-        mo.addEventListener("click", async () => { await setMomentum(!hasMomentum()); ui.combat?.render(); });
+        const n = momentumNow();
+        mo.type = "button"; mo.className = `twod12-momentum${n ? " on" : ""}`;
+        mo.innerHTML = `<i class="fa-solid fa-fire"></i> Momentum ${n}`;
+        mo.dataset.tooltip = `The party's Momentum (0 to 4): every PC starts this encounter at Escalation ${1 + n}. Left-click +1, right-click -1.`;
+        mo.addEventListener("click", async () => { await setMomentum(momentumNow() + 1, "set by the GM"); ui.combat?.render(); });
+        mo.addEventListener("contextmenu", async ev => { ev.preventDefault(); await setMomentum(momentumNow() - 1, "set by the GM"); ui.combat?.render(); });
         (el.querySelector("header") ?? el).append(mo);
       }
     }

@@ -2,6 +2,7 @@
 //   Weapons: Dropped, Worn (on you, ready to draw), In one hand (1H), In both hands (2H). A Barehanded weapon (Fists) uses no hand.
 //   Armor: Dropped, Carried (in the pack), Worn. One armor is worn at a time.
 // Pure, so the tests can check it; the sheet (actor-sheets.mjs) builds its rows and slots from it.
+import { weaponTierText } from "./explode.mjs";   // v0.0.407
 
 export const WEAPON_WHERE = { dropped: "Dropped", worn: "On you", "1h": "One hand", "2h": "Both hands" };   // v0.0.289: "Worn" reads "On you"
 export const ARMOR_WHERE = { dropped: "Dropped", carried: "Carried", worn: "Worn" };
@@ -66,7 +67,7 @@ export function armorAction(a) {
 /** A weapon's damage as three small Tier boxes. */
 export function tierBoxes(w) {
   const d = w?.system?.damage ?? {};
-  const txt = x => { if (!x) return "0"; const dice = x.die ? `${x.count}${x.die}` : ""; return (dice + (x.mod ? `${dice && x.mod > 0 ? "+" : ""}${x.mod}` : "")) || "0"; };
+  const txt = x => (x ? weaponTierText(x) : "0");   // v0.0.407: "3 + 1d4!"
   return [1, 2, 3].map(n => ({ l: `T${n}`, v: txt(d[`t${n}`]) }));
 }
 

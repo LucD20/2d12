@@ -517,7 +517,7 @@ export function poolBlock(comps) {
 }
 const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b style="color:${subInk(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`
   // v0.0.284 (Lucas): no "Dice: none" for a flat amount, and a Total only for a dice expression
-  + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.map(d => (d.results ?? []).map(v => `<span class="cc-ddie">${v}</span>`).join("")).join("")}</span>` : "")
+  + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.map(d => (d.results ?? []).map((v, k) => (d.ex?.[k] ? `<span class="cc-ddie ex" data-tooltip="Exploded: counts ${v - 1}, rolled again">${v}!</span>` : `<span class="cc-ddie">${v}</span>`)).join("")).join("")}</span>` : "")
   + (x.mods.length ? `<span class="cc-bl">Modifiers</span><span class="cc-bv">${x.mods.map(m => modTxt(m.v, m.label)).join(" ")}</span>` : "")
   + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Total</span><span class="cc-bv"><b>${x.total}</b></span>` : "") + "</div>";
 /**

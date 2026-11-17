@@ -218,7 +218,7 @@ export function parseSpec(text, file = "spec") {
   b.pool = b.bodyHealth + b.mindHealth;
   b.ad = 11 + b.armor; b.wd = 11 + b.powerMod + b.wdBonus;
   b.rallyPoints = b.rally + Math.ceil((at("body") + at("mind") + b.level) / 2);
-  if (b.vigor != null || b.resolve != null) { b.bodyHealth = b.vigor ?? b.bodyHealth; b.mindHealth = b.resolve ?? b.mindHealth; b.pool = b.bodyHealth + b.mindHealth; b.rallyPoints = b.rally + CF.stageOf(b.level); }
+  if (b.vigor != null || b.resolve != null) { b.bodyHealth = b.vigor ?? b.bodyHealth; b.mindHealth = b.resolve ?? b.mindHealth; b.pool = b.bodyHealth + b.mindHealth; b.rallyPoints = CF.rallyPointsOf(b.rally, b.level); }   // the system's Rally Points (Rally + 1 / 2 / 3 / 4 by Stage since v0.0.407)
   b.rallyHeal = Math.ceil(b.pool / 4);
   // The catch-up: every creature has the Opportunity Attack Reaction (Chapter 2, Reactions; the Basic Action's card): a build gets it without a line
   // (`basic`: used only while RULES.oaAll; a file's own `reaction ...: opportunity` line is the pre-R Talent and always counts).

@@ -3,7 +3,7 @@ import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL(".
 globalThis.Combat ??= class {}; globalThis.Hooks ??= { on() {}, once() {} }; globalThis.CONFIG ??= {}; globalThis.foundry ??= {}; globalThis.foundry.utils ??= { deepClone: o => JSON.parse(JSON.stringify(o)), debounce: f => f, setProperty() {} }; globalThis.foundry.applications ??= { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }; globalThis.game ??= { settings: { get: () => true } };
 globalThis.foundry = { applications: { api: { DialogV2: {} } } };
 globalThis.ui = { notifications: { warn: console.log, info: console.log, error: console.log } };
-class Roll { constructor(f){ this.f=f; } async evaluate(){ const m=this.f.match(/^(\d+)d(\d+)(?:\+(\d+))?$/); if(m){ const n=+m[1], faces=+m[2]; const res=Array.from({length:n},()=>({result:Math.ceil(faces/2)})); this.dice=[{faces,results:res}]; this.total=n*Math.ceil(faces/2)+(+m[3]||0);} else { this.dice=[]; this.total=eval(this.f);} return this; } }
+class Roll { constructor(f){ this.f=String(f).replace(/xs/g,""); } async evaluate(){ const m=this.f.match(/^(\d+)d(\d+)(?:\+(\d+))?$/); if(m){ const n=+m[1], faces=+m[2]; const res=Array.from({length:n},()=>({result:Math.ceil(faces/2)})); this.dice=[{faces,results:res}]; this.total=n*Math.ceil(faces/2)+(+m[3]||0);} else { this.dice=[]; this.total=eval(this.f);} return this; } }
 globalThis.Roll = Roll;
 const created = [];
 globalThis.ChatMessage = { create: async d => { created.push(d); return d; }, getSpeaker: () => ({}) };

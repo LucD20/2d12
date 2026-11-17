@@ -4,7 +4,7 @@ globalThis.Combat ??= class {}; globalThis.Hooks ??= { on() {}, once() {} }; glo
 globalThis.foundry = { applications: { api: { DialogV2: { prompt: async () => ({ dc: "30", mod: "0", boons: "0", banes: "0", fx: [] }) } }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.ui = { notifications: { warn: console.log, info: console.log } };
 globalThis.Hooks = { on() {} };
-class Roll { constructor(f) { this.f = f; } async evaluate() { const m = this.f.match(/^(\d+)d(\d+)(?:\+(\d+))?$/); const n = +m[1], faces = +m[2]; this.dice = [{ faces, results: Array.from({ length: n }, () => ({ result: Math.min(faces - 1, 7) })) }]; this.total = n * Math.min(faces - 1, 7) + (+m[3] || 0); return this; } }
+class Roll { constructor(f) { this.f = String(f).replace(/xs/g, ""); } async evaluate() { const m = this.f.match(/^(\d+)d(\d+)(?:\+(\d+))?$/); const n = +m[1], faces = +m[2]; this.dice = [{ faces, results: Array.from({ length: n }, () => ({ result: Math.min(faces - 1, 7) })) }]; this.total = n * Math.min(faces - 1, 7) + (+m[3] || 0); return this; } }
 globalThis.Roll = Roll;
 const msgs = [];
 globalThis.ChatMessage = { create: async d => msgs.push(d), getSpeaker: () => ({}) };

@@ -158,14 +158,16 @@ export const TWOD12 = {
   coverLevels: { low: "Low", medium: "Medium", high: "High" },   // v0.0.266 (Lucas, Aim): the "Ignores cover" setting's levels
   // v0.0.301 (PACK BB; book Ch. 1, Named Boons and Banes): the names that carry a limit of 2 (none: they always add up)
   bbNames: { "": "no name", field: "Field", pressure: "Pressure", support: "Support" },
-  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered and Enfeebled", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Bleed (damage each turn)", resist: "Resist, Weak or Immune", freqmore: "More uses of a Frequency", move: "Movement limit", encstart: "Effect each encounter" },
+  effectSettings: { inline: "Grants an Action while active", boonbane: "Boons and Banes", damagestep: "Empowered", bonusdamage: "Bonus Damage", defense: "Defense", aura: "Aura", ondamage: "On damage", grant: "Grant Action Use", zone: "Zone (the placed area)", cover: "Ignores cover", speed: "Speed", light: "Token Light", note: "Note", ignore: "Ignore a Bane", rally: "Rally Points", turnstart: "Effect each turn", message: "Chat message", weaponprop: "Weapon property", mastery: "Starting Mastery", eschook: "Escalation hook", bleed: "Bleed (damage each turn)", resist: "Resist, Weak or Immune", freqmore: "More uses of a Frequency", move: "Movement limit", encstart: "Effect each encounter" },
   // v0.0.314 (pack AU): a Boons and Banes setting can count only against creatures other than the effect's origin (Taunted), or only against it
   vsOriginChoices: { "": "against any creature", not: "only against creatures other than its origin", only: "only against its origin" },
   // v0.0.243 (pack R): the moments a class's Escalation hook names (once an encounter, +1 Escalation): Kindled Wrath, Thrill of the Kill.
   // v0.0.320 (pack AU part 2; book, Chapter 1 Resist, Weak and Immune; Bestiary, Elite Escalation): the kinds of a Resist setting, and the extra uses
   //   a "More uses of a Frequency" setting gives (the Elite ladder's rungs 2 and 3; Special Actions: not the Basic Actions).
   rwKinds: { resist: "Resist", weak: "Weak", immune: "Immune" },
-  npcRallyHeal: [9, 13, 17],   // v0.0.340 (book, Rally Points: NPCs): what one Rally Point an NPC is given heals, Stage 1 / 2 / 3 (a PC's, the classes' average)
+  // v0.0.340 (book, Rally Points: NPCs): what one Rally Point an NPC is given heals, by Stage. v0.0.407 (Stage 0 in Foundry): Stage 0 / 1 / 2 / 3;
+  // Stage 0 heals 9 (the book); the later Stages keep pack R's rows until they are written.
+  npcRallyHeal: [9, 9, 13, 17],
   freqMore: { round: "its Round Special Actions can be used twice a round", encounter: "its Encounter Special Actions can be used a second time" },
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down" },
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
@@ -179,12 +181,15 @@ export const TWOD12 = {
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"
-  // (3 today; 6 when Stage 0 is applied: book/decisions-s1.md item 10). Never write a fixed 1 / 2 / 3 in an editor.
-  escalationMax: 3,
+  // (6 since v0.0.407, Stage 0 in Foundry: the 1-to-6 ladder). Never write a fixed 1 / 2 / 3 in an editor.
+  escalationMax: 6,
   automationRanks: { "": "(not set)", none: "Not implemented", bronze: "Bronze", silver: "Silver", gold: "Gold", mithril: "Mithril", diamond: "Diamond" },   // v0.0.315 (Lucas): Diamond, a Mithril card changed since (even only its text or buttons): to revise with him   // v0.0.250 (Lucas): Mithril, a card written with him (book/cards/with-lucas.txt)
   automationHints: { diamond: "Diamond: written with Lucas (Mithril), then changed by a later pack; it needs his quick revision (book/cards/with-lucas.txt lists what changed)", none: "Not implemented: read the card and do it by hand", bronze: "Bronze: partly automated (buttons or an effect to apply; the rest by hand)", silver: "Silver: mostly automated (one part by hand)", gold: "Gold: fully automated", mithril: "Mithril: written with Lucas, card by card; what the rules leave by hand is listed" },
   // v0.0.186 (pack OT in the book, 16-talents.md): a Talent's Category, and the kinds of Prerequisite the Talent picker can check.
   talentGroups: { combat: "Combat", mobility: "Mobility", magic: "Magic", skill: "Skill" },
+  // v0.0.407 (Stage 0 in Foundry; book, Chapter 5, Talents): the Talents are set aside: the class window offers none (every Talent slot stays empty;
+  // the slots and the compendium's Talent items stay, and a Talent dropped on a sheet still works). book/cards/set-aside.txt lists them.
+  talentsSetAside: true,
   prereqKinds: { talent: "A Talent", level: "A Level", trait: "An Action with a trait", attribute: "An Attribute", other: "Other (not checked)" },
   // v0.0.186: the Bane rules a setting can switch off for matching Actions (the "Ignore a Bane" setting).
   // v0.0.207 (editability sweep): the general settings that replaced the last hidden card rules (automation.mjs, fists.mjs, mastery.mjs).
@@ -276,17 +281,22 @@ export const TWOD12 = {
     high: { label: "High", off: 1, score: 1, i: 3 },
     extreme: { label: "Extreme", off: 2, score: 2, i: 4 }
   },
-  // Stages (book, Chapter 5): levels 1-4, 5-7, 8-10 (a level above 10 counts as Stage 3, level 0 as Stage 1).
-  stages: [{ n: 1, from: 1, to: 4 }, { n: 2, from: 5, to: 7 }, { n: 3, from: 8, to: 10 }],
-  // A PC's Weapon and Power Modifiers by Stage (book, Chapter 5; pack R, v0.0.243): +1 at Stage 3 only, never above +4 (NPCs: no step).
-  stageModStep: [0, 0, 1], modCap: 4,
+  // Stages (book, Chapter 5; v0.0.407, Stage 0 in Foundry): Stage 0 levels 1-3, Stage 1 4-7, Stage 2 8-11, Stage 3 12-15 (above 15 counts as Stage 3,
+  // level 0 as Stage 0). Every table by Stage below has one entry a Stage, Stage 0 first.
+  stages: [{ n: 0, from: 1, to: 3 }, { n: 1, from: 4, to: 7 }, { n: 2, from: 8, to: 11 }, { n: 3, from: 12, to: 15 }],
+  // A PC's Weapon and Power Modifiers by Stage (book, Chapter 5): +1 to the one the player chooses at Stage 1 (modifiers.mjs classTrack), +1 to both at
+  // Stage 3, never above +4 (NPCs: no step). stageModStep is the step to both (a class copy from before pack MOD, stageMod below).
+  stageModStep: [0, 0, 0, 1], modCap: 4,
+  // Rally Points (book, Chapter 5, Stages): the class's Rally value + 1 / 2 / 3 / 4 by Stage.
+  rallyByStage: [1, 2, 3, 4],
   // modBy (v0.0.307, Lucas; the Bestiary, Attributes and Modifiers): an NPC's Weapon or Power Modifier by rating (Terrible to Extreme; a Minion has no Extreme).
   vsBase: 12,   // v0.0.307 (Lucas; book, Chapter 2, Defenses): Vs. an Attribute = 12 + the Attribute
   // Pack R (v0.0.243; book, Chapter 2): 4 AP a turn and 1 Reaction AP (the Reaction AP pays only for Reactions; Slowed and Quickened change the 4 only);
-  // each AP kept at the end of the turn is Guard 2 / 3 / 4 by Stage until the AP are regained (guard.mjs).
-  apPerTurn: 4, reactionAp: 1, guardPerAp: [2, 3, 4],
-  // Escalation (book, Chapter 2): a level from 1 to 3, never spent; 1 at the start of an encounter (2 with Momentum), +1 a round, +1 once an encounter on a Critical and on the class's hook.
-  escalation: { min: 1, max: 3, momentum: 2 },
+  // each AP kept at the end of the turn is Guard 2 / 2 / 3 / 4 by Stage (0 to 3) until the AP are regained (guard.mjs).
+  apPerTurn: 4, reactionAp: 1, guardPerAp: [2, 2, 3, 4],
+  // Escalation (book, Chapter 2; v0.0.407): a level from 1 to 6, never spent; 1 + the party's Momentum (0 to 4) at the start of an encounter, +1 a round,
+  // +1 once an encounter on a Critical and on the class's hook. momentumMax: the party's Momentum (roundrules.mjs momentumAfter).
+  escalation: { min: 1, max: 6, momentumMax: 4 },
   npcSpeeds: [3, 4, 5, 6, 7],   // the Builder's Speed choices (5 by default); any other Speed is Custom
   npcSpecial: [{ key: "basic", label: "Basic attack", sub: "1 AP, At-will", x: 1 }, { key: "s1", label: "Special, 1 AP", sub: "Round", x: 1.4 }, { key: "s2", label: "Special, 2 AP", sub: "Round", x: 2.2 }, { key: "s3", label: "Special, 3 AP", sub: "Encounter (not Minions)", x: 3.5 }],
   // A Stage 1 PC's damage a turn against a Defense (ruler: book/ruler/defense.mjs, mean of the Paladin's and the Archer's turn), for the Builder's check.
@@ -314,15 +324,21 @@ export const TWOD12 = {
 
 /* ------------------------------------------------------------------ Stages and the Bestiary's tables (v0.0.181, E3; book: Bestiary, Chapter 5) */
 const r5 = x => Math.round(x * 2) / 2;
-/** The Stage of a level: 1 (levels 1-4; level 0 too), 2 (5-7), 3 (8 and up). */
-export const stageOf = lv => { const l = Math.trunc(Number(lv)) || 0; return l >= 8 ? 3 : l >= 5 ? 2 : 1; };
-/** A PC's Modifier with its Stage's step: +1 at Stage 2, +2 at Stage 3, never raised above +4 (a higher Modifier stays as it is). */
-export const stageMod = (mod, lv) => Math.max(mod, Math.min(TWOD12.modCap, mod + TWOD12.stageModStep[stageOf(lv) - 1]));
+/** The Stage of a level (book, Chapter 5; v0.0.407): 0 (levels 1-3; level 0 too), 1 (4-7), 2 (8-11), 3 (12 and up). */
+export const stageOf = lv => { const l = Math.trunc(Number(lv)) || 0; return l >= 12 ? 3 : l >= 8 ? 2 : l >= 4 ? 1 : 0; };
+/** A Stage kept within 0 to 3 (a missing or odd value is Stage 0). */
+export const clampStage = st => Math.max(0, Math.min(3, Math.trunc(Number(st)) || 0));
+/** The row of pack R's Bestiary tables (npcRoles: three rows) a Stage reads: Stages 0 and 1 the first (Stage 0's NPCs use npcStage0), then one a Stage. */
+export const npcRoleRow = st => Math.max(0, Math.min(2, clampStage(st) - 1));
+/** A PC's Rally Points (book, Chapter 5): the class's Rally value + 1 / 2 / 3 / 4 by Stage. */
+export const rallyPointsOf = (rally, lv) => Math.max(0, (Number(rally) || 0) + TWOD12.rallyByStage[stageOf(lv)]);
+/** A PC's Modifier with its Stage's step to both (+1 at Stage 3), never raised above +4 (a higher Modifier stays as it is). */
+export const stageMod = (mod, lv) => Math.max(mod, Math.min(TWOD12.modCap, mod + TWOD12.stageModStep[stageOf(lv)]));
 const npcCol = (roleKey, rating) => { const role = TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard; return Math.min(role.hm[0].length - 1, TWOD12.npcRatings[rating]?.i ?? 2); };
-/** The Health Multiplier of a rating at the NPC's level (the row of its Stage). */
-export const npcHm = (roleKey, rating, lv) => (TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard).hm[stageOf(lv) - 1][npcCol(roleKey, rating)];
-/** The Basic attack's average damage [Tier 2, Tier 3] of a rating at the NPC's level, times x (a Special Action), rounded to 0.5. */
-export const npcDamage = (roleKey, rating, lv, x = 1) => (TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard).basic[stageOf(lv) - 1][npcCol(roleKey, rating)].map(v => r5(v * x));
+/** The Health Multiplier of a rating at the NPC's level (pack R's row of its Stage: npcRoleRow). */
+export const npcHm = (roleKey, rating, lv) => (TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard).hm[npcRoleRow(stageOf(lv))][npcCol(roleKey, rating)];
+/** The Basic attack's average damage [Tier 2, Tier 3] of a rating at the NPC's level, times x (a Special Action), rounded to 0.5 (pack R's rows). */
+export const npcDamage = (roleKey, rating, lv, x = 1) => (TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard).basic[npcRoleRow(stageOf(lv))][npcCol(roleKey, rating)].map(v => r5(v * x));
 /** The Combat Value of an NPC against a party: the role's CV, lower when the NPC's Stage is below the party's (one Stage x0.8, two x0.65, the book's table). */
 export const npcCv = (roleKey, npcLv = 1, partyLv = npcLv) => { const cv = (TWOD12.npcRoles[roleKey] ?? TWOD12.npcRoles.standard).cv; return cv[Math.min(2, Math.max(0, stageOf(partyLv) - stageOf(npcLv)))]; };
 

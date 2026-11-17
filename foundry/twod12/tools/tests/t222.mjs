@@ -8,7 +8,7 @@ globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class
 globalThis.game = { settings: { get: () => false }, time: { worldTime: 0 }, user: { id: "u", isGM: true }, combat: null, items: [], packs: new Map(), actors: [], socket: { emit() {} } };
 globalThis.fromUuidSync = () => null;
 // a Roll stand-in: every die rolls 3
-globalThis.Roll = class { constructor(f) { this.f = f; } async evaluate() { let total = 0; this.dice = []; for (const t of this.f.split("+").map(x => x.trim())) { const m = t.match(/^(\d+)d(\d+)$/); if (m) { const r = Array.from({ length: +m[1] }, () => ({ result: 3 })); this.dice.push({ faces: +m[2], results: r }); total += 3 * +m[1]; } else total += Number(t) || 0; } this.total = total; return this; } };
+globalThis.Roll = class { constructor(f) { this.f = String(f).replace(/xs/g, ""); } async evaluate() { let total = 0; this.dice = []; for (const t of this.f.split("+").map(x => x.trim())) { const m = t.match(/^(\d+)d(\d+)$/); if (m) { const r = Array.from({ length: +m[1] }, () => ({ result: 3 })); this.dice.push({ faces: +m[2], results: r }); total += 3 * +m[1]; } else total += Number(t) || 0; } this.total = total; return this; } };
 const CC = await import(ROOTURL + "module/chatcards.mjs");
 const A = await import(ROOTURL + "module/actions.mjs");
 const text = h => h.replace(/<i [^>]*data-tooltip="([^"]*)"[^>]*><\/i>/g, "[icon: $1]").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();

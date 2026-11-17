@@ -7,8 +7,8 @@ const { critProb, tierProbs } = await import(ROOTURL + "module/calc.mjs");
 const pc = x => (x * 100).toFixed(1) + "%";
 console.log("Critical chance: +0", pc(critProb(0)), "| +2", pc(critProb(2)), "| +3", pc(critProb(3)), "(simulation: 3.0 / 4.5 / 5.0)  | tier probs still sum to 1:", tierProbs(2).reduce((a, b) => a + b, 0).toFixed(3));
 // 20 above the DC and Doubles on a Tier 3
-let i = 0; globalThis.Roll = class { constructor(f) { this.f = f; } async evaluate() { const v = this._vals?.[i++]; this.dice = [{ results: [{ result: 1 }] }]; this.total = 0; return this; } };
-const rd = vals => { let k = 0; globalThis.Roll = class { constructor(f) { this.f = f; } async evaluate() { const n = Number(this.f.match(/^(\d+)d3/)?.[1] ?? 0); if (this.f.includes("d3")) { this.dice = [{ results: Array(n).fill({ result: 1 }) }]; this.total = 0; } else { const v = vals[k++]; this.dice = [{ results: [{ result: v }] }]; this.total = v; } return this; } }; };
+let i = 0; globalThis.Roll = class { constructor(f) { this.f = String(f).replace(/xs/g, ""); } async evaluate() { const v = this._vals?.[i++]; this.dice = [{ results: [{ result: 1 }] }]; this.total = 0; return this; } };
+const rd = vals => { let k = 0; globalThis.Roll = class { constructor(f) { this.f = String(f).replace(/xs/g, ""); } async evaluate() { const n = Number(this.f.match(/^(\d+)d3/)?.[1] ?? 0); if (this.f.includes("d3")) { this.dice = [{ results: Array(n).fill({ result: 1 }) }]; this.total = 0; } else { const v = vals[k++]; this.dice = [{ results: [{ result: v }] }]; this.total = v; } return this; } }; };
 const rl = await import(ROOTURL + "module/roll.mjs");
 rd([11, 11]); let r = await rl.performCheck({ mod: 3, dc: 13, boons: 0, banes: 0 }); console.log("11+11+3 = 25 (Tier 3, doubles): crit", r.crit);
 rd([11, 10]); r = await rl.performCheck({ mod: 12, dc: 13, boons: 0, banes: 0 }); console.log("11+10+12 = 33, no doubles (20 above the DC): crit", r.crit, "tier", r.tier);

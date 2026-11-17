@@ -3,6 +3,7 @@
 // hold settings that work at different moments. They are read like applied effects by the rolls (boons and banes, Empowered/Enfeebled), notes,
 // Defense and Speed. v0.0.186: a passive's Bonus Damage works on every matching Action (or the first each round); granted uses still need an applied effect.
 import { appliedFlags } from "./appliedflags.mjs";
+import { ELITE_RUNGS_LADDER } from "./roundrules.mjs";
 const F = "twod12";
 
 /**
@@ -53,17 +54,19 @@ export function passiveSources(actor) {
  * 1: 1 Boon on its first attack each round; 2: its Round Special Actions twice a round; 3: its Encounter Special Actions a second time (back, once).
  */
 const blank = { attrs: [], all: [], any: [], none: [], from: [], tiers: [], predicate: "", boons: 0, banes: 0, bbName: "", empowered: 0, enfeebled: 0, byValue: false, against: false, oncePerRound: false, vsMarked: false, vsOrigin: "" };
+// v0.0.407 (Stage 0 in Foundry; the Bestiary, Elite Escalation): on the 1-to-6 ladder the three come at Escalation 2, 4 and 6 (roundrules.mjs ELITE_RUNGS_LADDER).
+const [ER1, ER2, ER3] = ELITE_RUNGS_LADDER;
 export const ELITE_LADDER = [
-  { ...blank, type: "boonbane", boons: 1, all: ["__attack"], oncePerRound: true, minEscalation: 1 },
-  { ...blank, type: "freqmore", fmWhich: "round", minEscalation: 2 },
-  { ...blank, type: "freqmore", fmWhich: "encounter", minEscalation: 3 }
+  { ...blank, type: "boonbane", boons: 1, all: ["__attack"], oncePerRound: true, minEscalation: ER1 },
+  { ...blank, type: "freqmore", fmWhich: "round", minEscalation: ER2 },
+  { ...blank, type: "freqmore", fmWhich: "encounter", minEscalation: ER3 }
 ];
 /** Does this creature use the default Elite ladder? An NPC with Escalation on, unless its "Default ladder" switch is off. */
 export const usesEliteLadder = actor => actor?.type === "npc" && !!actor.system?.useEscalation && actor.system?.eliteLadder !== false;
 let ladderCache = null;   // D33: the same three for every Elite (nothing in them depends on the creature)
 function ladderSources(actor) {
   if (!usesEliteLadder(actor)) return [];
-  return ladderCache ??= [1, 2, 3].map(min => {
+  return ladderCache ??= ELITE_RUNGS_LADDER.map(min => {
     const flags = appliedFlags({ settings: ELITE_LADDER.filter(x => x.minEscalation === min), description: "", hover: "", expireOn: new Set(), expireAll: false }, null);
     flags.minEscalation = min; flags.passive = true;
     return { id: `passive-elite-${min}`, name: "Elite Escalation", srcUuid: "", disabled: false, statuses: new Set(), flags: { [F]: flags }, getFlag: (scope, k) => (scope === F ? flags[k] : undefined) };

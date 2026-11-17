@@ -24,25 +24,32 @@ export const STRIKES_PER_TURN = 3;
 export const atWillBanes = usesBefore => Math.max(0, Math.trunc(Number(usesBefore)) || 0);
 
 /* ---- Escalation (Ch. 2, Escalation and Momentum) ---- */
-export const ESC_MIN = TWOD12.escalation.min, ESC_MAX = TWOD12.escalation.max, ESC_MOMENTUM = TWOD12.escalation.momentum;
-/** The level an encounter starts at: 1, or 2 with Momentum. */
-export const escalationStart = momentum => (momentum ? ESC_MOMENTUM : ESC_MIN);
-/** The level after a raise (a new round, a Critical, the class's hook, the GM's valve): one more, at most 3. */
-export const escalationRaised = (now, by = 1) => Math.max(0, Math.min(ESC_MAX, (Number(now) || 0) + (Number(by) || 0)));
-/** Momentum (Ch. 2): after an encounter harder than easy (more than CV 75 a PC) the next one starts with it; that encounter uses it up. */
+/** The ladder (v0.0.407, Stage 0 in Foundry): Escalation runs 1 to 6 (config.mjs escalation). */
+export const ESC_MIN = TWOD12.escalation.min, ESC_MAX = TWOD12.escalation.max;
+/**
+ * Pack R's ladder (1 to 3; Momentum an on / off switch that started an encounter at 2), before Stage 0. The system no longer uses it (v0.0.407: the
+ * Stage 0 block below); the ruler's RULES_R still models it (book/ruler/sim/core.mjs), as the class cards in the ruler are written on it until the
+ * class card sessions. The numbers are pack R's, fixed here.
+ */
+export const ESC_MAX_R = 3, ESC_MOMENTUM_R = 2;
+/** Pack R: the level an encounter started at: 1, or 2 with Momentum. */
+export const escalationStart = momentum => (momentum ? ESC_MOMENTUM_R : ESC_MIN);
+/** Pack R: the level after a raise, at most 3. */
+export const escalationRaised = (now, by = 1) => Math.max(0, Math.min(ESC_MAX_R, (Number(now) || 0) + (Number(by) || 0)));
+/** Pack R's Momentum: after an encounter harder than easy (more than CV 75 a PC) the next one started with it. */
 export const givesMomentum = cvPerPc => (Number(cvPerPc) || 0) > 75;
-/** An Elite's Escalation ladder (the Bestiary): at 1 its first attack each round has 1 Boon; at 2 its Round Special twice a round; at 3 its Encounter Special back, once. */
-/** rungs: the Escalation each of the three starts at: [1, 2, 3] (the system today), or ELITE_RUNGS_LADDER on the 1-to-6 ladder (the book since Stage 0). */
+/** An Elite's Escalation ladder (the Bestiary): its first attack each round has 1 Boon, its Round Special twice a round, its Encounter Special back, once. */
+/** rungs: the Escalation each of the three starts at: [1, 2, 3] (pack R), or ELITE_RUNGS_LADDER on the 1-to-6 ladder (the book since Stage 0; the system since v0.0.407). */
 export const ELITE_RUNGS = [1, 2, 3], ELITE_RUNGS_LADDER = [2, 4, 6];
 export const eliteFirstAttackBoons = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[0] ? 1 : 0);
 export const eliteRoundSpecials = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[1] ? 2 : 1);
 export const eliteEncounterBack = (esc, rungs = ELITE_RUNGS) => (Number(esc) || 0) >= rungs[2];
 
 /* ---- Stage 0 in the book (2026-11-12, pack "Stage 0 into the book"; Ch. 2, Escalation and Momentum; Ch. 3, Ranged Combat While Engaged) ---- */
-// The book's rules since that pack. **The system's own callers still use the functions above** (the 1-to-3 ladder, the on / off Momentum, the 2 Banes)
-// until the pack "Stage 0 in Foundry" rewires them (foundry-backlog.md); the automated playtest environment (book/ruler/sim) uses these already.
+// The book's rules since that pack; the system's callers use them since v0.0.407 (pack "Stage 0 in Foundry": escalation.mjs, actions.mjs, combat.mjs),
+// and the automated playtest environment (book/ruler/sim) too.
 /** Escalation runs 1 to 6; Momentum is a number from 0 to 4 the party keeps between encounters. */
-export const ESC_LADDER_MAX = 6, MOMENTUM_MAX = 4;
+export const ESC_LADDER_MAX = ESC_MAX, MOMENTUM_MAX = TWOD12.escalation.momentumMax;
 const momentumOf = m => Math.max(0, Math.min(MOMENTUM_MAX, Math.trunc(Number(m)) || 0));
 /** The Escalation an encounter starts at: 1 + the party's Momentum (0 to 4), so 5 at most. */
 export const escalationStartAt = momentum => ESC_MIN + momentumOf(momentum);
@@ -54,8 +61,16 @@ export const escalationRaisedTo = (now, by = 1, max = ESC_LADDER_MAX) => Math.ma
  */
 export const momentumAfter = (now, { overcome = 0, downs = 0, sleeps = 0, retreat = false, rest = false } = {}) =>
   (retreat || rest ? 0 : momentumOf((Number(now) || 0) + (Number(overcome) || 0) - (Number(downs) || 0) - (Number(sleeps) || 0)));
+/** The party's Momentum as a number from 0 to 4 (a stored value of any kind: an old true / false switch reads 1 / 0). */
+export const momentumValue = m => momentumOf(m === true ? 1 : m);
+/** A Critical or a hook at the top of the ladder does nothing and isn't used up (Ch. 2, "At most 6"): can the level rise? */
+export const canRaise = (now, max = ESC_LADDER_MAX) => (Number(now) || 0) < max;
+/** Swapping on a Rest (Ch. 5): the order of the Modifiers can be swapped only during Stage 0; the other level-list choices at every Stage. */
+export const canSwapModifierOrder = stage => (Math.trunc(Number(stage)) || 0) === 0;
 /** Ranged Combat While Engaged since Stage 0: a [Ranged] Action while you are Engaged is Doomed (it was 2 Banes: ENGAGED_RANGED_BANES below). */
 export const ENGAGED_RANGED_DOOMED = true;
+/** A Thrown weapon thrown deals this much less damage on Tiers 2 and 3 (Ch. 15, Thrown; Lucas, 2026-11-12): each instance of its [W]. */
+export const THROWN_LESS = 1;
 /** Up to this many Minions can act in the same turn slot, one after another (the Bestiary; Lucas, 2026-11-12). */
 export const MINION_SQUAD = 3;
 /** No creature has an Opportunity Attack by default since Stage 0 (it left the Basic Actions, for PCs and NPCs; a Talent brings it back later). */

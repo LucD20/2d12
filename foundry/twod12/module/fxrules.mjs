@@ -122,7 +122,7 @@ const isNum = t => /^\s*[+-]?\d+\s*$/.test(String(t ?? ""));
 export function refValues(actor) {
   const s = actor?.system ?? {}, a = s.attributes ?? {};
   return { pow: Number(s.powerMod ?? s.magicMod) || 0, wpn: Number(s.weaponMod) || 0, sig: Number(s.signatureMod) || 0, body: Number(a.body) || 0, mind: Number(a.mind) || 0,
-    appeal: Number(a.appeal) || 0, instinct: Number(a.instinct) || 0, stage: Number(s.stage) || Math.max(1, Math.ceil((Number(s.level) || 1) / 3)) };
+    appeal: Number(a.appeal) || 0, instinct: Number(a.instinct) || 0, stage: Number.isFinite(Number(s.stage)) && s.stage !== undefined && s.stage !== null ? Number(s.stage) : 0 };   // v0.0.407: Stages 0 to 3
 }
 
 /* ------------------------------------------------------------------ defaults and the normalizer */

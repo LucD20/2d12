@@ -9,7 +9,7 @@ import { performCheck, checkHtml, esc, sgn, showDice, combineRolls } from "./rol
 import { traitChevrons } from "./config.mjs";
 import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
-import { perDieDelta, topStep } from "./calc.mjs";
+import { bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die
 import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem, findAction } from "./effects.mjs";
 import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
 import { dealDamageEx } from "./damage.mjs";
@@ -251,7 +251,7 @@ export function powForDoc(doc) {
   try { const a = doc?.documentName === "ChatMessage" ? (() => { const u = doc.getFlag?.("twod12", "action")?.actorUuid ?? doc.getFlag?.("twod12", "dmgCard")?.originUuid ?? doc.getFlag?.("twod12", "dmgMulti")?.originUuid; const d = u ? fromUuidSync(u) : null; return d?.documentName === "Actor" ? d : (d?.actor ?? null); })() : actorOfDoc(doc); const v = Number(a?.system?.powerMod); return a && Number.isFinite(v) ? v : null; } catch (e) { return null; }
 }
 export function stageForDoc(doc) {
-  try { const a = doc?.documentName === "ChatMessage" ? (() => { const u = doc.getFlag?.("twod12", "action")?.actorUuid ?? doc.getFlag?.("twod12", "dmgCard")?.originUuid ?? doc.getFlag?.("twod12", "dmgMulti")?.originUuid; const d = u ? fromUuidSync(u) : null; return d?.documentName === "Actor" ? d : (d?.actor ?? null); })() : actorOfDoc(doc); const v = Number(a?.system?.stage); return a && Number.isFinite(v) && v > 0 ? v : 1; } catch (e) { return 1; }
+  try { const a = doc?.documentName === "ChatMessage" ? (() => { const u = doc.getFlag?.("twod12", "action")?.actorUuid ?? doc.getFlag?.("twod12", "dmgCard")?.originUuid ?? doc.getFlag?.("twod12", "dmgMulti")?.originUuid; const d = u ? fromUuidSync(u) : null; return d?.documentName === "Actor" ? d : (d?.actor ?? null); })() : actorOfDoc(doc); const v = Number(a?.system?.stage); return a && Number.isFinite(v) && v >= 0 ? v : 0; } catch (e) { return 0; }   // v0.0.407: Stages 0 to 3
 }
 /** v0.0.255: what a Rally Point heals, for a Guard RP chip: the card's first target's, else the creature's own; null when unknown. */
 export function rallyForDoc(doc) {
@@ -289,9 +289,9 @@ export function registerInline() {
       // v0.0.352 (Lucas, playtest 4, Step 6: "calculated buttons in a slightly different text colour, the calculation on hover"): a chip whose
       // number was worked out for this creature (its [Mod] / Pow, its Stage's dice, a Rally Point, a distance from its Speed) has the class calc
       const inlineEl = (k, c, label, icon) => { const l2 = withPow(withMod(label, modN), powN); const el = mkEl(k, c, l2, icon); if (l2 !== label) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: ${label} with this creature's ${[modN !== null ? `[Mod] ${modN}` : "", powN !== null ? `Pow ${powN}` : ""].filter(Boolean).join(", ")} = ${l2}`; } return el; };
-      const staged = el => { if (cfg.stages && stageN > 1) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: Stage ${stageN}: ${stagedFormula(cfg, stageN)} (Stage 1: ${cfg.formula})${el.dataset.tooltip ? `. ${el.dataset.tooltip}` : ""}`; } return el; };
+      const staged = el => { if (cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: Stage ${stageN}: ${stagedFormula(cfg, stageN)} (Stage 0: ${cfg.formula})${el.dataset.tooltip ? `. ${el.dataset.tooltip}` : ""}`; } return el; };
       if (kind === "Heal") return staged(inlineEl("Heal", cfg, cfg.label ?? match[3] ?? `Heal ${healText(stagedFormula(cfg, stageN))}`, "fa-hand-holding-medical"));
-      if (kind === "Reduce") return staged(inlineEl("Reduce", cfg, (cfg.stages && stageN > 1 ? null : cfg.label ?? match[3]) ?? `reduced by ${healText(stagedFormula(cfg, stageN))}`, "fa-shield-halved"));
+      if (kind === "Reduce") return staged(inlineEl("Reduce", cfg, (cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula ? null : cfg.label ?? match[3]) ?? `reduced by ${healText(stagedFormula(cfg, stageN))}`, "fa-shield-halved"));
       if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
@@ -348,7 +348,7 @@ export function registerInline() {
       if (kind === "Guard") {
         // v0.0.255 (Lucas): "Guard RP" shows the number: the card's target's Rally Point heal (the first target), else this creature's own
         const rp = /\brally\b/.test(cfg.formula) ? rallyForDoc(options?.relativeTo) : null;
-        const lbl = cfg.stages && stageN > 1 ? null : cfg.label ?? match[3];
+        const lbl = cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula ? null : cfg.label ?? match[3];
         const text = rp !== null && (lbl === undefined || lbl === null || /\bRP\b/.test(lbl)) ? (lbl ? lbl.replace(/\bRP\b/, String(rp)) : `Guard ${rp}`) : lbl ?? `Guard ${guardText(stagedFormula(cfg, stageN))}`;
         const el = staged(inlineEl("Guard", cfg, text, "fa-shield-heart"));
         if (rp !== null) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: Guard equal to what one of their Rally Points heals (${rp})`; }
@@ -384,9 +384,9 @@ export async function rollParts(list, nonlethalAll) {
   const comps = [], rolls = [];
   for (const p of list) {
     try {
-      const r = await new Roll(p.formula).evaluate();
+      const r = await bookRoll(p.formula).evaluate();   // v0.0.407: a die written with ! explodes (explode.mjs)
       rolls.push(r);
-      comps.push({ pool: p.pool || "B", sub: p.sub, nl: nonlethalAll ? true : p.nl, kind: "D", formula: p.formula, total: r.total, dice: r.dice.map(d => ({ faces: d.faces, results: d.results.map(x => x.result) })) });
+      comps.push({ pool: p.pool || "B", sub: p.sub, nl: nonlethalAll ? true : p.nl, kind: "D", formula: p.formula, total: r.total, dice: diceOfRoll(r) });
     } catch (e) { ui.notifications.warn(`Invalid dice formula: ${p.formula}`); }
   }
   return { comps, rolls };
@@ -398,26 +398,23 @@ export async function rollParts(list, nonlethalAll) {
  */
 async function prerollTiers(cfg) {
   const out = {}, all = [];
-  let step = 0;
+  // v0.0.407 (book, Chapter 8): the Save Action's user Empowered: its first damage on each of its turns adds 1d6! (once a turn; Enfeebled is gone)
+  let empUser = null;
   try {
     const user = cfg.saveAction && cfg.actorUuid ? fromUuidSync(cfg.actorUuid) : null;
-    if (user) {
-      const st = damageSteps(user, new Set([...(cfg.actionTraits ?? []), "__action"]));
-      const emp = topStep(st.empowered), enf = topStep(st.enfeebled);   // v0.0.323: "Increase by" adds
-      step = emp - enf;   // the Enfeebled value is taken from the Empowered one
-    }
+    if (user && damageSteps(user, new Set([...(cfg.actionTraits ?? []), "__action"])).empowered.length && empoweredNow(user)) empUser = user;
   } catch (e) { console.warn("twod12 | Empowered on a Save", e); }
   for (let n = 1; n <= 3; n++) {
     const parts = parseParts(cfg.tiers?.[`t${n}`]);
     if (!parts.damage.length) continue;
     const { comps, rolls } = await rollParts(parts.damage, cfg.nonlethal);
-    // The Save Action's user is Empowered or Enfeebled: the value goes to every damage roll, per die (Several Targets in the rules).
-    // v0.0.283 (Ch. 8): per die, and Enfeebled leaves each die at least 1
-    if (step) for (const c of comps) { const res = (c.dice ?? []).flatMap(d => d.results ?? []); if (res.length) { const delta = perDieDelta(res, step); c.total = Math.max(0, c.total + delta); c.emp = delta; c.formula = `${c.formula} ${step > 0 ? "+" : "\u2212"}${Math.abs(step)}/die`; } }
+    // v0.0.407: the Empowered die, rolled once for each Tier (every creature on a Tier takes that Tier's roll: Several Targets)
+    if (empUser && comps.length) { const ec = await empoweredComponent(comps[0], rolls); if (ec) comps.push(ec); }
     if (comps.length) out[`t${n}`] = comps;
     all.push(...rolls);
   }
   if (all.length) { try { await showDice(all); } catch (e) { /* no dice to show */ } }
+  if (empUser && Object.keys(out).length) await markEmpoweredUsed(empUser);
   return out;
 }
 /** A Tier's line on a Save card once its damage is rolled: the amounts, with the dice in the tooltip, then its texts and effects. */
@@ -600,13 +597,13 @@ async function handleGuard(cfg, ctx) {
   const act = ctx.message?.getFlag?.("twod12", "action");
   const origin0 = originActor(ctx);
   const mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number.isFinite(Number(act?.attrVal)) && act?.attrVal !== undefined ? Number(act.attrVal) : (Number(origin0?.system?.signatureMod) || 0));
-  const formula = stagedFormula(cfg, Number(origin0?.system?.stage) || 1);   // v0.0.250: the Stage's dice (s2: / s3: on the chip)
+  const formula = stagedFormula(cfg, Number(origin0?.system?.stage) || 0);   // v0.0.250: the Stage's dice (s2: / s3: on the chip)
   const { origin, who, cancelled } = await allyRecipients(cfg, ctx, `Guard ${withMod(guardText(formula), mod)}`);
   if (cancelled) return;
   if (!who.length) return ui.notifications.warn("Select your token, or target the ally that gains the Guard.");
   for (const a of who) {
     const f = String(formula || "0").replace(/\bmod\b/g, `(${mod})`).replace(/\brally\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
-    const roll = await new Roll(f).evaluate();
+    const roll = await bookRoll(f).evaluate();
     const now = Number(a.system?.guard) || 0, next = gainGuard(now, roll.total);
     if (next !== now) {
       if (a.isOwner) await a.update({ "system.guard": next });
@@ -626,13 +623,13 @@ async function handleGuard(cfg, ctx) {
 async function handleReduce(cfg, ctx) {
   const origin0 = originActor(ctx);
   const mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number(origin0?.system?.weaponMod) || 0), pow = Number(origin0?.system?.powerMod) || 0;
-  const formula = stagedFormula(cfg, Number(origin0?.system?.stage) || 1);
+  const formula = stagedFormula(cfg, Number(origin0?.system?.stage) || 0);
   const { origin, who, cancelled } = await allyRecipients(cfg, ctx, `a reduction of ${withPow(healText(formula), pow)}`);
   if (cancelled) return;
   if (!who.length) return ui.notifications.warn("Select your token, or target the ally whose damage is reduced.");
   for (const a of who) {
     const f = String(formula || "0").replace(/\bpow\b/g, `(${pow})`).replace(/\bmod\b/g, `(${mod})`).replace(/\brp\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
-    const roll = await new Roll(f).evaluate();
+    const roll = await bookRoll(f).evaluate();
     const now = Number(a.system?.reduceNext) || 0, next = Math.max(now, roll.total);
     if (next !== now) { if (a.isOwner) await a.update({ "system.reduceNext": next }); else game.socket.emit("system.twod12", { type: "applyDamage", actorUuid: a.uuid, upd: { "system.reduceNext": next } }); }
     await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [],
@@ -680,7 +677,7 @@ async function handleHeal(cfg, ctx) {
   const targets = ctx.targets?.length ? ctx.targets : handTargetTokens(ctx).map(t => ({ uuid: t.document.uuid, name: t.name }));
   const list = targets.length ? targets : (origin ? [{ uuid: origin.uuid, name: origin.name }] : []);
   if (!list.length) return ui.notifications.warn("Target the creatures that heal first.");
-  const formula = stagedFormula(cfg, Number(origin?.system?.stage) || 1);
+  const formula = stagedFormula(cfg, Number(origin?.system?.stage) || 0);
   const pow = Number(origin?.system?.powerMod) || 0, mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number(origin?.system?.weaponMod) || 0);
   const source = ctx.message?.getFlag?.("twod12", "action")?.itemId ? (origin?.items?.get(ctx.message.getFlag("twod12", "action").itemId)?.name ?? "") : (ctx.source ?? "");
   const actors = [];
@@ -688,7 +685,7 @@ async function handleHeal(cfg, ctx) {
   if (!actors.length) return;
   const perCreature = /\brp\b/.test(formula);
   let shared = null, roll = null;
-  if (!perCreature) { roll = await new Roll(String(formula).replace(/\bpow\b/g, `(${pow})`).replace(/\bmod\b/g, `(${mod})`)).evaluate(); shared = roll.total; }
+  if (!perCreature) { roll = await bookRoll(String(formula).replace(/\bpow\b/g, `(${pow})`).replace(/\bmod\b/g, `(${mod})`)).evaluate(); shared = roll.total; }
   const amountFor = a => (perCreature ? Math.max(0, Math.round(Function("rp", `"use strict";return (${String(formula).replace(/\bpow\b/g, `(${pow})`).replace(/\bmod\b/g, `(${mod})`).replace(/[^0-9rp+\-*/(). ]/g, "")})`)(Number(a.system?.rallyHeal) || 0))) : shared);
   const { sysCard } = await import("./sysmsg.mjs");
   const text = perCreature ? actors.map(a => `${esc(a.name)} ${amountFor(a)}`).join(" · ") : actors.map(a => esc(a.name)).join(", ");

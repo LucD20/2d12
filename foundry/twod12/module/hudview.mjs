@@ -53,8 +53,8 @@ export function partyCardHtml(c) {
     + `<div class="row">${c.marks ?? ""}${c.esc ?? ""}${tagHtml(c.tag) || (c.guard ? `<span class="hb-tag">Guard ${n0(c.guard)}</span>` : "<span></span>")}</div>`
     + `${barsHtml(c.bars)}<div class="cond">${esc(c.cond || "")}&nbsp;</div></div>`;
 }
-/** The party strip: Momentum at its left (only while the party has some), then the cards. */
-export const partyStripHtml = ({ cards = [], momentum = "" } = {}) => `<div class="hb-strip">${momentum !== "" && momentum !== null ? `<div class="hb-mom">Momentum <b>${esc(momentum)}</b></div>` : ""}${cards.map(partyCardHtml).join("") || '<span class="hb-none">No characters yet.</span>'}</div>`;
+/** The party strip: Momentum at its left (v0.0.407: the party's number, 0 to 4, shown even at 0; "" leaves it out: several tokens selected), then the cards. */
+export const partyStripHtml = ({ cards = [], momentum = "" } = {}) => `<div class="hb-strip">${momentum !== "" && momentum !== null ? `<div class="hb-mom" data-hud-mom="1" data-tooltip="The party's Momentum (0 to 4): every PC starts an encounter at Escalation 1 + Momentum">Momentum <b>${esc(momentum)}</b></div>` : ""}${cards.map(partyCardHtml).join("") || '<span class="hb-none">No characters yet.</span>'}</div>`;
 
 /** A line of a column: the Action's name, its cost stamps (each a Version; struck when it can't be used), the roll or what to know under it. */
 export function lineHtml(l) {

@@ -2,7 +2,7 @@
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {};
 let seq = []; let idx = 0;
-globalThis.Roll = class { constructor(f) { this.f = f; this.dice = []; this.total = 0; } async evaluate() { const m = String(this.f).match(/^(\d+)d(\d+)$/); const n = Number(m[1]), s = Number(m[2]); const res = []; for (let i = 0; i < n; i++) res.push({ result: seq.length ? seq[idx++ % seq.length] : 1 + Math.floor(Math.random() * s) }); this.dice = [{ faces: s, results: res }]; this.total = res.reduce((a, b) => a + b.result, 0); return this; } };
+globalThis.Roll = class { constructor(f) { this.f = String(f).replace(/xs/g, ""); this.dice = []; this.total = 0; } async evaluate() { const m = String(this.f).match(/^(\d+)d(\d+)$/); const n = Number(m[1]), s = Number(m[2]); const res = []; for (let i = 0; i < n; i++) res.push({ result: seq.length ? seq[idx++ % seq.length] : 1 + Math.floor(Math.random() * s) }); this.dice = [{ faces: s, results: res }]; this.total = res.reduce((a, b) => a + b.result, 0); return this; } };
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true } };
 const { performCheck, checkHtml } = await import(ROOTURL + "module/roll.mjs");

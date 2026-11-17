@@ -205,7 +205,9 @@ export class TwoD12ItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       lead: opts(s.modPriority, [["weapon", "Weapon"], ["power", "Power"]]), leadField: "system.modPriority",
       stage2: opts(s.modStage2, [["", "the higher"], ["weapon", "Weapon"], ["power", "Power"]]), stage2Field: "system.modStage2"
     };
-    const hp = { high2: n(s.healthHigh) + n(s.stepHigh2), high3: n(s.healthHigh) + n(s.stepHigh2) + n(s.stepHigh3), low2: n(s.healthLow) + n(s.stepLow2), low3: n(s.healthLow) + n(s.stepLow2) + n(s.stepLow3) };
+    // v0.0.407 (Stage 0 in Foundry): Stages 0 to 3, a step at Stages 1, 2 and 3
+    const hp = { high1: n(s.healthHigh) + n(s.stepHigh1), high2: n(s.healthHigh) + n(s.stepHigh1) + n(s.stepHigh2), high3: n(s.healthHigh) + n(s.stepHigh1) + n(s.stepHigh2) + n(s.stepHigh3),
+      low1: n(s.healthLow) + n(s.stepLow1), low2: n(s.healthLow) + n(s.stepLow1) + n(s.stepLow2), low3: n(s.healthLow) + n(s.stepLow1) + n(s.stepLow2) + n(s.stepLow3) };
     const w = [...(s.weaponAttrs ?? [])], p = [...(s.magicAttrs ?? [])];
     const shared = w.filter(k => p.includes(k)).map(k => TWOD12.attributes[k]);
     return {

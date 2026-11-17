@@ -54,7 +54,7 @@ export async function useRally(actor, n, why = "", { announce = true, extra = ""
   const healed = Object.values(plan).reduce((a, b) => a + b, 0);
   const parts = BUCKETS.filter(([k]) => plan[k]).map(([k, l]) => `${plan[k]} ${l}`).join(", ");
   const leftN = s.rallyMax - s.rallyUsed - n;
-  const result = `Removes ${parts ? parts.replace(/(\d+)/g, "<b>$1</b>") : `<b>${healed}</b> damage`}. ${npc ? `An NPC: each Rally Point counts as ${s.rallyHeal} at Stage ${s.stage ?? 1} and spends nothing.` : `<b>${leftN}</b> Rally Point${leftN === 1 ? "" : "s"} left.`}`;
+  const result = `Removes ${parts ? parts.replace(/(\d+)/g, "<b>$1</b>") : `<b>${healed}</b> damage`}. ${npc ? `An NPC: each Rally Point counts as ${s.rallyHeal} at Stage ${s.stage ?? 0} and spends nothing.` : `<b>${leftN}</b> Rally Point${leftN === 1 ? "" : "s"} left.`}`;
   if (card) { try { await card.update({ content: rallyCard(`${sub}<br>${result}`) }); return true; } catch (e) { /* not the author */ } }
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}<br>${result}`) });
   return true;

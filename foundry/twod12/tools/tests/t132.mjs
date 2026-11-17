@@ -21,7 +21,9 @@ console.log("Action data has no check:", !/\n\s+check: choice\(TWOD12\.checks\)/
 console.log("OT: no [HT] on Rain of Arrows and Covering Fire:", !content.includes("[HT: Entering"), "| Covering Fire kept 3 rounds:", (() => { const a = cdoc("Covering Fire").system.areaCfg; return a.withinRange === "normal" && a.targets === "all" && a.keep === true && a.rounds === 3; })());
 // pack R-core: Opportunity Attack is a Basic Action (the basic Reaction every creature has), no longer a Talent; its Critical disrupt is gone.
 const BA = (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS;
-console.log("Opportunity Attack makes a Weapon Attack:", BA.opportunityAttack.versions[0].effects.includes("@Use[Weapon Attack|label:Weapon Attack (1A)]") && BA.opportunityAttack.reaction === true && BA.opportunityAttack.reactionKind === "interrupt" && !cdoc("Opportunity Attack", "talent"), "| Vow of Enmity 3 AP Tier 3:", content.includes('["1d6MH", "As 2 AP."]'));
+const { OA, OA_IS_BASIC } = await import("./oa-card.mjs");   // v0.0.407: set aside (no longer a Basic Action)
+console.log("Opportunity Attack is no longer a Basic Action:", !OA_IS_BASIC);
+console.log("Opportunity Attack makes a Weapon Attack:", OA.versions[0].effects.includes("@Use[Weapon Attack|label:Weapon Attack (1A)]") && OA.reaction === true && OA.reactionKind === "interrupt" && !cdoc("Opportunity Attack", "talent"), "| Vow of Enmity 3 AP Tier 3:", content.includes('["1d6MH", "As 2 AP."]'));
 // v0.0.158: "Distance:" written on the third line; the weapon is checked before an area is placed; windows step aside while placing
 const act = src("module/actions.mjs"), tpl = src("module/template.mjs");
 console.log("weapon checked before anything:", act.indexOf("A Weapon Action needs its weapon before anything else happens") < act.indexOf("areaConfigOf(it)"), "| windows minimized while placing, then back:", tpl.includes("const back = await stepAside();") && tpl.includes("finally { await back(); }"), "| Volley:", !content.includes("you included"));

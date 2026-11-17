@@ -104,7 +104,7 @@ export function tally(chips, st) {
     else if (c.kind === "minus") { t.flat -= n; t.flatSrc.push({ name: c.manual ? "Situational" : (c.srcName ?? c.label), v: -n }); }
     else if (c.kind === "emp") { if (c.inc) t.empInc = (t.empInc ?? 0) + n; else t.emp = Math.max(t.emp, n); t.empSrc.push({ name: c.srcName ?? c.label, n }); }   // v0.0.323: "Increase by" adds
     else if (c.kind === "enf") { if (c.inc) t.enfInc = (t.enfInc ?? 0) + n; else t.enf = Math.max(t.enf, n); t.enfSrc.push({ name: c.srcName ?? c.label, n }); }
-    else if (c.kind === "fav") { t.fav = true; t.favBy.push(name === "Favored" ? "Situational" : name); if (c.special === "reload") { t.emp = Math.max(t.emp, 2); t.empSrc.push({ name, n: 2 }); } }
+    else if (c.kind === "fav") { t.fav = true; t.favBy.push(name === "Favored" ? "Situational" : name); if (c.special === "reload") { t.emp = Math.max(t.emp, 1); t.empSrc.push({ name, n: 1 }); } }
     else if (c.kind === "doom") { t.doom = true; t.doomBy.push(name === "Doomed" ? "Situational" : name); }
   }
   t.emp += t.empInc ?? 0; t.enf += t.enfInc ?? 0;
@@ -163,7 +163,8 @@ export const bbNotes = t => [...(t.capped ?? []).map(x => `${x.name} ${x.side} $
 /** Empowered and Enfeebled: the highest of each, then the net on every damage die (Ch. 8). line: "" when the net is 0. */
 export function stepNet(inp, st) {
   const t = tally(chipsOf(inp, st, "shared"), st), net = t.emp - t.enf;
-  return { emp: t.emp, enf: t.enf, net, line: net > 0 ? `Empowered ${net} on every damage die` : net < 0 ? `Enfeebled ${-net} on every damage die (at least 1 each)` : "" };
+  // v0.0.407 (book, Chapter 8): Empowered adds 1d6! to the first damage on each of your turns; Enfeebled is gone
+  return { emp: t.emp, enf: 0, net: t.emp > 0 ? 1 : 0, line: t.emp > 0 ? "Empowered: +1d6! (the first damage on each of your turns)" : "" };
 }
 
 /* ------------------------------------------------------------------ folding */

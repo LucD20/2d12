@@ -89,7 +89,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       toggleFeat: CharacterSheet.toggleFeat, foldAll: CharacterSheet.foldAll, newGear: CharacterSheet.newGear, reloadWeapon: CharacterSheet.reloadWeapon,
       setWhere: CharacterSheet.setWhere, toggleItemFold: CharacterSheet.toggleItemFold,
       // v0.0.289 (PACK SHEET): Down mode's buttons, the Upkeep tab's Recovery, the Build tab's Review and the class card's Choices
-      downChoice: CharacterSheet.downChoice, downCheck: CharacterSheet.downCheck, recover: CharacterSheet.recover, reviewSlots: CharacterSheet.reviewSlots, openClass: CharacterSheet.openClass
+      downChoice: CharacterSheet.downChoice, downCheck: CharacterSheet.downCheck, recover: CharacterSheet.recover, reviewSlots: CharacterSheet.reviewSlots, openClass: CharacterSheet.openClass, swapRest: CharacterSheet.swapRest
     }
   };
   static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.289 (PACK SHEET); the NPC sheet keeps actor-sheet.hbs
@@ -501,7 +501,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       noArmorNote: !isPc && !(a.itemTypes.armor ?? []).some(x => x.system.worn),
       conditions,
       fx: { conditions, effects: fxEffects, passives: fxPassives },
-      escPips: a.type === "character" || s.useEscalation ? [1, 2, 3].map(n => ({ n, on: (Number(s.escalation) || 0) >= n })) : null,
+      escPips: a.type === "character" || s.useEscalation ? Array.from({ length: TWOD12.escalation.max }, (x, k) => ({ n: k + 1, on: (Number(s.escalation) || 0) >= k + 1 })) : null,   // v0.0.407: 1 to 6
       npcEsc: a.type === "npc", npcEscOn: !!s.useEscalation,
       mastery: a.type === "character" ? masteryRows(a).map(r => ({ ...r, open: !!this._masteryOpen?.has(r.key) })) : null,   // the Mastery tab (mastery.mjs)
       startMastery: startMasteryOf(a), showMastery: a.type === "character",
@@ -1331,6 +1331,20 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
   /** v0.0.289: the class card's Choices: the class (its levels, lists and choices) in its own window. */
   static openClass() { this.actor.itemTypes.class[0]?.sheet.render(true); }
+  /** v0.0.407 (book, Chapter 5, Swapping on a Rest): change a level's choices after a Rest (the GM: at any time). */
+  static async swapRest() {
+    const { swapOnRest, canSwapNow } = await import("./classwindow.mjs");
+    if (!canSwapNow(this.actor) && !game.user.isGM) return ui.notifications.warn("Swapping comes with a Rest: complete one first.");
+    const lv = Math.max(1, Number(this.actor.system.level) || 1);
+    let level = 1;
+    if (lv > 1) {
+      const { pickOne } = await import("./pickwindow.mjs");
+      level = await pickOne({ title: `Swap on a Rest: ${this.actor.name}`, name: "Swap on a Rest", sub: "which level's choices", icon: "fa-right-left",
+        text: "Change the choices a level of your class gave you: each new choice must be one you could have made at that level.", options: Array.from({ length: lv }, (x, k) => ({ k: String(k + 1), l: `Level ${k + 1}` })) });
+      if (!level) return;
+    }
+    await swapOnRest(this.actor, Number(level));
+  }
   static async deleteItem(event, target) { await this._item(target)?.delete(); }
   static async confirmDelete(event, target) {
     const item = this._item(target);

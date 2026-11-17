@@ -323,8 +323,9 @@ async function drawHud() {
     if (!cur.list && !setting("hudParty", true)) { setMain(main, emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token.")); return; }
     const pairs = cur.list ? cur.list.filter(t => t.actor).map(t => [t.actor, t]) : partyActors().map(a => [a, (globalThis.canvas?.tokens?.placeables ?? []).find(t => t.actor?.id === a.id) ?? null]);
     const cards = await Promise.all(pairs.map(([a, t]) => partyCard(a, t)));
+    // v0.0.407 (Stage 0 in Foundry; Lucas: "Momentum still doesn't show in the strip"): the party's number, 0 to 4, always at the strip's left
     let momentum = "";
-    try { const { hasMomentum } = await import("./escalation.mjs"); momentum = !cur.list && hasMomentum() ? "on" : ""; } catch (e) { momentum = ""; }
+    try { const { momentumNow } = await import("./escalation.mjs"); momentum = !cur.list ? String(momentumNow()) : ""; } catch (e) { momentum = ""; }
     const waiting = main.querySelector(".hb-ask > .twod12-linebar");
     setMain(main, partyStripHtml({ cards, momentum }));
     if (waiting) { root.querySelector(".hud-ask")?.append(waiting); waiting.classList.remove("in-side"); hudAsking(true, false); }
@@ -414,7 +415,16 @@ async function use(actor, item, ap, shift) {
   const skip = !!setting("hudSkipDialog", false) !== !!shift;
   return useAction(actor, item, { rdState: { ap }, skipDialog: skip });
 }
+/** v0.0.407: the GM changes the party's Momentum from the party strip (left-click +1, right-click -1). */
+async function momentumClick(ev, d) {
+  if (!game.user.isGM || !ev.target.closest?.("[data-hud-mom]")) return false;
+  ev.preventDefault();
+  const { momentumNow, setMomentum } = await import("./escalation.mjs");
+  await setMomentum(momentumNow() + d, "set by the GM");
+  return true;
+}
 async function onClick(ev) {
+  if (await momentumClick(ev, 1)) return;
   const b = ev.target.closest("[data-hud]");
   if (!b || b.disabled) return;
   const cur = current(), actor = cur.actor, kind = b.dataset.hud;
@@ -448,6 +458,7 @@ async function onClick(ev) {
   }
 }
 function onContext(ev) {
+  if (game.user.isGM && ev.target.closest?.("[data-hud-mom]")) { momentumClick(ev, -1); return; }
   // v0.0.390 (PACK HUD2): right-click on AP, Rally or Escalation adjusts it (-1; Shift: +1), for the owner and the GM
   const res = ev.target.closest('[data-hud="res"]');
   if (res) { ev.preventDefault(); return adjust(current().actor, res.dataset.res, ev.shiftKey ? 1 : -1); }

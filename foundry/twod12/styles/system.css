@@ -2157,6 +2157,9 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.chat.sysline.apguard > i { color: #2f6fb3; }
 .twod12.chat.sysline.statemsg > i { color: #a32d2d; }
 #combat .twod12-momentum { margin-left: 4px; } #combat .twod12-momentum.on { color: #c2521f; border-color: #c2521f; }
+/* v0.0.407: the combat strip's Momentum, the GM clicks it (left +1, right -1) */
+#twod12-carousel .tc-mom.gm { cursor: pointer; } #twod12-carousel .tc-mom b { color: inherit; }
+.twod12-hud .hb-mom[data-hud-mom] b { font-weight: 700; }
 
 /* v0.0.244 (Lucas): the Reaction AP pip is teal everywhere, in your turn too, with a thin divider before it; the pick windows (Species, Initiative) in the class window's look */
 .twod12.sheet.ns .hpip.rap, .twod12.sheet.ns .hpip.rap.on { border-color: #43b3a8; } .twod12.sheet.ns .hpip.rap.on { background: #43b3a8; }
@@ -3041,6 +3044,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ar.open > .ps-line, .twod12.sheet.pcs .ar.open > .ps-brow { background: #f3efe6; }
 .twod12.sheet.pcs .ps-lvlbar { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--ps-ink); }
 .twod12.sheet.pcs .ps-lvlbar .ps-lvl { font-family: "Source Serif 4", serif; font-weight: 700; font-size: 15px; color: #4a463d; }
+/* v0.0.407 (Stage 0 in Foundry; book, Swapping on a Rest): the Build tab's Swap button, at the bar's right */
+.twod12.sheet.pcs .ps-lvlbar .ps-swap { margin-left: auto; width: auto; height: 26px; padding: 0 10px; font-size: 12px; line-height: 24px; }
 .twod12.sheet.pcs .ps-lvlbar .ps-lvl input { width: 3.2em; height: 26px; text-align: center; color: var(--ps-ink); background: #fff; border: 1px solid var(--ps-cline); border-radius: 4px; font-family: var(--font-primary, "Source Sans 3", sans-serif); font-size: 14px; }
 
 /* ==== v0.0.291 PACK NPC-SHEET: the NPC sheet on the character sheet's layout (.twod12.sheet.pcs serves both), and the shared follow-ups:

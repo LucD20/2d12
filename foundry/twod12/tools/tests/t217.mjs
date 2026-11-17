@@ -35,7 +35,7 @@ console.log("5 Boons on a Doomed roll = normal:", pc(C.tierProbs(0, 13, 5, 0, "d
 for (const m of [0, 2, 4]) console.log(`Favored +${m} vs 13: T1 / T2 / T3 ${pc(C.tierProbs(m, 13, 0, 0, "favored"))} | Critical ${(C.critProb(m, 13, 0, 0, "favored") * 100).toFixed(1)} (the book's ruler run: T3 39.2 / 52.5 / 66.6, Crit 9.3 / 13.1 / 17.7)`);
 
 console.log("--- the dice kept (roll.mjs keepDice)");
-globalThis.Roll = class { constructor(f) { this.f = f; } async evaluate() { const v = SEQ.shift(); this.dice = [{ results: [{ result: v }] }]; this.total = v; return this; } };
+globalThis.Roll = class { constructor(f) { this.f = String(f).replace(/xs/g, ""); } async evaluate() { const v = SEQ.shift(); this.dice = [{ results: [{ result: v }] }]; this.total = v; return this; } };
 let SEQ = [];
 const R = await import(ROOTURL + "module/roll.mjs");
 const d = (f, t = f) => ({ first: f, total: t });
@@ -104,7 +104,7 @@ console.log("retarget: no Boon dice any more, a third d12 for a target that reac
 console.log("--- the sources in the code");
 const act = src("module/actions.mjs"), inl = src("module/inline.mjs"), fl = src("module/flanking.mjs"), cont = src("tools/content.mjs");
 console.log("High cover: Doomed, no Field Banes:", act.includes('else if (cov.banes >= 3) extraMods.push({ id: "syn:cover", name: "High cover (Doomed)", boons: 0, banes: 0, doomed: true'), "| several targets:", act.includes('else if (cov?.banes >= 3) { row.doomed = true; row.note.push({ text: "High cover", cls: "bane" }); }'));
-console.log("Low / Medium cover, Obscured, Long, the Engaged target are Field:", (act.match(/bb: "field"/g) ?? []).length >= 10, "| range and Engaged (you) unnamed:", /id: "syn:engaged", name: "You are Engaged \(2 Banes\)", boons: 0, banes: 2, match/.test(act));
+console.log("Low / Medium cover, Obscured, Long, the Engaged target are Field:", (act.match(/bb: "field"/g) ?? []).length >= 10, "| range unnamed, Engaged (you) Doomed since v0.0.407:", /id: "syn:engaged", name: "You are Engaged \(Doomed\)", boons: 0, banes: 0, doomed: true, match/.test(act));
 console.log("Saves: Cover gives Field Boons up to 2, High cover Favored:", inl.includes("const n = Math.min(2, c.level)") && inl.includes('favoredLabel: "High cover (Favored)"'));
 console.log("Flanking: the cancels first, then 2:", fl.includes("flankBoons(others.length, cancelledBy.length)") && src("module/roundrules.mjs").includes("boons: Math.min(BB_LIMIT, raw)"));   // v0.0.365 (SIM-1): the rule moved to roundrules.mjs
 console.log("Prone's are Field in the compendium:", cont.includes('against(1, 0, ["melee"], "field"), against(0, 1, ["ranged"], "field")'));
@@ -140,7 +140,7 @@ console.log("the sheet's rows have their color again (v0.0.298 had it in a comme
 console.log("--- v0.0.303 (Lucas tested v0.0.302)");
 const CV = await import(ROOTURL + "module/cardview.mjs");
 console.log("chip names, the tag says the rest:", ["Flanking 2", "Target is Engaged (1 Field Bane)", "Obscured by Orc (1 Field Boon)", "Medium cover (2 Banes)"].map(n => CV.cleanLabel(n)).join(" | "));
-const BD = await import(ROOTURL + "module/basic-data.mjs"), oa = BD.BASIC_ACTIONS.opportunityAttack;
+const BD = await import(ROOTURL + "module/basic-data.mjs"), oa = (await import("./oa-card.mjs")).OA;   // v0.0.407: the set-aside card
 console.log("Opportunity Attack:", JSON.stringify(oa.traits), "|", oa.trigger, "| only a creature you threaten:", oa.momentThreat === true, "range", oa.momentRange);
 const MO = src("module/moment.mjs");
 console.log("the Reactions message checks the threat (a Long weapon's min too):", MO.includes("const thr = item.system.momentThreat ? threatProfile(actor) : null;") && MO.includes("d >= thr.min && d <= thr.max"));

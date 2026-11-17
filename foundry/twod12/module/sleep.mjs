@@ -68,6 +68,8 @@ export async function completeSleep(actor, { force = false, ask = false } = {}) 
   } else if (ask && !(await pickConfirm({ title: `Sleep: ${actor.name}`, name: "Sleep", sub: "8 hours", icon: "fa-bed", confirm: "Sleep",
     text: "8 hours of sleep or quiet watch: your Daily Actions return and Exhausted goes down by 2. Complete a Sleep?" }))) return false;
   const { before, after } = await sleepEffects(actor);
+  // v0.0.407 (book, Momentum): -1 at each Sleep, once a night for the party (a player's Sleep: the GM's client writes it)
+  try { const m = await import("./escalation.mjs"); if (game.user.isGM) await m.momentumAfterSleep(); else m.momentumRequest({ sleeps: 1 }, "the party slept"); } catch (e) { /* no setting */ }
   const { sysCard } = await import("./sysmsg.mjs");
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysCard({ title: "Sleep", lead: `${esc(actor.name)} completes a Sleep`, text: `Daily Actions are renewed${before ? `, and Exhausted goes from ${before} to ${after}` : ""}.` }) });
   return true;

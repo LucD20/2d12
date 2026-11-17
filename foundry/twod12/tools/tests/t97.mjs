@@ -21,7 +21,7 @@ console.log("netStep with nothing:", C.netStep(), "| labels:", JSON.stringify([C
 // ------------------------------------------------------------------ the damage of an instance, rolled with a stand-in for Roll
 console.log("--- the damage of an instance");
 let queue = [];
-globalThis.Roll = class { constructor(f) { this.formula = f; } async evaluate() {
+globalThis.Roll = class { constructor(f) { this.formula = String(f).replace(/xs/g, ""); } async evaluate() {
   const dice = []; let expr = this.formula.replace(/(\d*)d(\d+)/g, (m, n, f) => { const c = Number(n || 1), results = []; for (let i = 0; i < c; i++) results.push({ result: queue.shift() ?? 1 }); dice.push({ faces: Number(f), results }); return `(${results.reduce((a, r) => a + r.result, 0)})`; });
   this.dice = dice; this.total = Function(`return (${expr})`)(); return this; } };
 const A = await import(ROOTURL + "module/actions.mjs");

@@ -7,7 +7,7 @@ import { esc, perFrame, logOnlyChange } from "./util.mjs";
 import { strikesUsed } from "./usage.mjs";
 import { marksHtml } from "./hudview.mjs";
 import { healthTags, downState } from "./sheetmodel.mjs";
-import { hasMomentum } from "./escalation.mjs";
+import { momentumNow, setMomentum } from "./escalation.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12", ID = "twod12-carousel";
 
@@ -99,10 +99,12 @@ export function renderCarousel() {
   const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm, gm };
   const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" data-tooltip="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
   const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for the creatures that haven't rolled (the window says who skips)")) : "";
-  // v0.0.397 (Lucas: "Momentum isn't showing in the combat strip"): an encounter that started with Momentum uses it up (the switch goes off), so
-  // the strip reads the encounter's own flag (escalation.mjs startAtOne sets it)
-  let mom = false; try { mom = hasMomentum() || !!combat?.getFlag?.("twod12", "momentumStart"); } catch (e) { mom = false; }
-  const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b>${mom ? ' <span class="tc-mom">· Momentum</span>' : ""}</span>` : `<span class="tc-round tc-prep">Preparing the encounter${mom ? ' <span class="tc-mom">· Momentum</span>' : ""}</span>`;   // v0.0.405: Momentum shows before the start too
+  // v0.0.397 (Lucas: "Momentum isn't showing in the combat strip"); v0.0.407 (Stage 0 in Foundry): the party's Momentum, 0 to 4, always shown (it is
+  // no longer used up when an encounter starts); the GM clicks it: left +1, right -1
+  let mom = 0; try { mom = momentumNow(); } catch (e) { mom = 0; }
+  const momTip = `The party's Momentum (0 to 4): every PC starts an encounter at Escalation 1 + Momentum (${1 + mom} now).${gm ? " Left-click +1, right-click -1." : ""}`;
+  const momHtml = ` <span class="tc-mom${gm ? " gm" : ""}" data-tc-mom="1" data-tooltip="${momTip}">· Momentum <b>${mom}</b></span>`;
+  const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b>${momHtml}</span>` : `<span class="tc-round tc-prep">Preparing the encounter${momHtml}</span>`;   // v0.0.405: Momentum shows before the start too
   const moving = cur ? stripMove(cur).n > 0 : false;
   const right = [
     // v0.0.199 (Lucas): End move stays in the bar (greyed when there is nothing to end, so it doesn't come and go); the MOVE row ends it too.
@@ -153,6 +155,10 @@ export function renderCarousel() {
     }
   }
   // v0.0.201 (Lucas): the GM can set the movement left by hand (right-click the MOVE row).
+  // v0.0.407: the GM's Momentum (left +1, right -1)
+  const momEl = gm ? el.querySelector("[data-tc-mom]") : null;
+  momEl?.addEventListener("click", async ev => { ev.stopPropagation(); await setMomentum(momentumNow() + 1, "set by the GM"); });
+  momEl?.addEventListener("contextmenu", async ev => { ev.preventDefault(); ev.stopPropagation(); await setMomentum(momentumNow() - 1, "set by the GM"); });
   if (gm && cur) el.querySelector(".tp-move")?.addEventListener("contextmenu", async ev => { ev.preventDefault(); ev.stopPropagation(); await setMoveLeft(cur); });
   if (gm) el.querySelectorAll(".tp").forEach(div => {
     div.addEventListener("mouseenter", () => showApButtons(div, combat));

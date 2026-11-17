@@ -9,6 +9,7 @@ globalThis.Combat = class {};
 globalThis.CONFIG = {};
 globalThis.game = { settings: { get: () => true } };
 const { parseTierFull, convertEffects, parseWeaponText, weaponSystemData } = await import("../module/gen.mjs");
+const { TWOD12 } = await import("../module/config.mjs");   // v0.0.407: talentsSetAside
 
 export const SYSTEM = "twod12";
 export const PACKS = {
@@ -55,8 +56,8 @@ const sIgnore = (rule, pred, extra = {}) => ({ type: "ignore", ignoreRule: rule,
 const sMessage = (when, text, action = "", ap = 0, to = "owners") => ({ type: "message", msgWhen: when, text, msgAction: action, msgAp: ap, msgTo: to });
 const sMastery = (trait, value) => ({ type: "mastery", mstTrait: trait, mstValue: value });
 const cond = (name, img, description, settings, extra = {}) => add("conditions", "effect", name, img, { isCondition: true, duration: { type: "", rounds: 1 }, description, settings, ...extra }, null);
-cond("Empowered", "icons/svg/upgrade.svg", "<p>Empowered N adds N to every die of your damage. Only the highest Empowered value applies, and the Enfeebled value is taken from it.</p>", [], { valued: true });
-cond("Enfeebled", "icons/svg/degen.svg", "<p>Enfeebled N subtracts N from every die of your damage, but each die still deals at least 1. Only the highest Enfeebled value applies, and it is taken from the Empowered value.</p>", [], { valued: true });
+// v0.0.407 (Stage 0 in Foundry; book, Chapter 8; Lucas, 2026-11-13): Empowered has no value; Enfeebled is gone (Divine Power and Hallowed Dawn use a Bane on [Strike] Actions)
+cond("Empowered", "icons/svg/upgrade.svg", "<p>The first time you deal damage on each of your turns, add 1d6! damage of the Action's pool and type (it explodes).</p>", []);
 cond("Hindered", "icons/svg/downgrade.svg", "<p>Your Speed is halved, rounded down.</p>", [speedSetting("override", "floor(speed/2)")]);
 cond("Immobilized", "icons/svg/net.svg", "<p>You can't use Move Actions or Evade. Unless otherwise specified, you can remove Immobilized by spending 1 AP [Move]: the one Move Action you can use while Immobilized (the Break Free Basic Action).</p>", [speedSetting("override", "0")]);
 cond("Leaning", "icons/svg/eye.svg", "<p>You calculate cover from one of your corners instead of the center, and your own cover is reduced by 1 level (Total → High → Medium → Low → none: leaning out of Total cover, you can be targeted). Click a corner of your square on the map to lean toward it: your token peeks out a little past it, unless a wall is in the way. It ends at the end of your turn, or when you stop Leaning (at any time on your turn, at no cost).</p>", []);
@@ -159,18 +160,21 @@ const weapon = (text, img, actions = []) => {
   if (w.problems.length) throw new Error(`${text}: ${w.problems.join("; ")}`);
   add("weapons", "weapon", w.name, img, { ...weaponSystemData(w), actions });
 };
-weapon("greatsword: two-handed, melee, slash, 0/1d8/2d6", "icons/svg/sword.svg");
-weapon("crossbow: projectile, reload, two-handed, pierce, ranges 10/20/40, 0/1d4+2/1d10+2", "icons/svg/target.svg");
+// v0.0.407 (Stage 0 in Foundry; book, Chapter 15; book/weapons-flat.md "DECIDED"): Tier 2 and Tier 3 as a flat part plus one die, which explodes (written
+// 1d6! in the book: every weapon's die explodes, explode.mjs). The book's table where it has the weapon; the Greatsword, the one-handed Longsword, the
+// Shortbow and the Longbow keep weapons-flat.md's numbers until the Bows and Swords pass replaces them (foundry-backlog.md, F3).
+weapon("greatsword: two-handed, melee, slash, 0/1d6+5/1d8+8", "icons/svg/sword.svg");
+weapon("crossbow: projectile, reload, two-handed, pierce, ranges 10/20/40, 0/1d4+2/1d4+4", "icons/svg/target.svg");
 // v0.0.331 (Lucas: the four PCs "as different as you can"): the rest of the book's weapons (15-gear.md, Melee and Ranged); each gets its Weapon Technique (cardgen)
 for (const [text, img] of [
-  ["dagger: melee, pierce, thrown 4/8/12, 0/1d4/1d8", "icons/svg/sword.svg"], ["longsword: melee, slash, 0/1d6/1d10", "icons/svg/sword.svg"],
-  ["handaxe: melee, slash, thrown 4/8/12, 0/1d4/1d8", "icons/svg/sword.svg"], ["greataxe: melee, two-handed, slash, 0/1d6/2d8", "icons/svg/sword.svg"],
-  ["mace: melee, blunt, 0/1d4+1/1d8+1", "icons/svg/sword.svg"], ["maul: melee, two-handed, blunt, 0/1d4+2/1d10+2", "icons/svg/sword.svg"],
-  ["spear: melee, pierce, thrown 4/8/12, 0/1d4/1d8", "icons/svg/sword.svg"], ["pike: long, melee, two-handed, pierce, range 3, 0/1d6/1d10", "icons/svg/sword.svg"],
-  ["knuckle dagger: barehanded, melee, pierce, 0/1d4/1d6", "icons/svg/combat.svg"],
-  ["shortbow: projectile, two-handed, pierce, ranges 8/16/32, 0/1d6/1d10", "icons/svg/target.svg"], ["longbow: projectile, two-handed, pierce, ranges 15/30/60, 0/1d4+1/1d8+1", "icons/svg/target.svg"],
-  ["hand crossbow: projectile, reload, pierce, ranges 6/12/24, 0/1d4/1d8", "icons/svg/target.svg"],
-  ["pistol: firearm, reload, pierce, ranges 5/10/20, 0/1d4/2d6", "icons/svg/target.svg"], ["musket: firearm, reload, two-handed, pierce, ranges 10/20/40, 0/1d4/2d8", "icons/svg/target.svg"]]) weapon(text, img);
+  ["dagger: melee, pierce, thrown 4/8/12, 0/1d4+2/1d4+4", "icons/svg/sword.svg"], ["longsword: melee, slash, 0/1d6+2/1d6+4", "icons/svg/sword.svg"],
+  ["handaxe: melee, slash, thrown 4/8/12, 0/1d4+2/1d8+2", "icons/svg/sword.svg"], ["greataxe: melee, two-handed, slash, 0/1d6+4/1d8+10", "icons/svg/sword.svg"],
+  ["mace: melee, blunt, 0/1d4+3/1d4+5", "icons/svg/sword.svg"], ["maul: melee, two-handed, blunt, 0/1d4+6/1d6+9", "icons/svg/sword.svg"],
+  ["spear: melee, pierce, thrown 4/8/12, 0/1d4+2/1d4+4", "icons/svg/sword.svg"], ["pike: long, melee, two-handed, pierce, range 3, 0/1d6+4/1d8+6", "icons/svg/sword.svg"],
+  ["knuckle dagger: barehanded, melee, pierce, 0/1d4+2/1d4+3", "icons/svg/combat.svg"],
+  ["shortbow: projectile, two-handed, pierce, ranges 8/16/32, 0/1d6/1d6+1", "icons/svg/target.svg"], ["longbow: projectile, two-handed, pierce, ranges 15/30/60, 0/1d4+1/1d4+2", "icons/svg/target.svg"],
+  ["hand crossbow: projectile, reload, pierce, ranges 6/12/24, 0/1d4/1d4+1", "icons/svg/target.svg"],
+  ["pistol: firearm, reload, pierce, ranges 5/10/20, 0/1d4/1d8+2", "icons/svg/target.svg"], ["musket: firearm, reload, two-handed, pierce, ranges 10/20/40, 0/1d4/1d8+4", "icons/svg/target.svg"]]) weapon(text, img);
 
 /* ------------------------------------------------------------------ Armor (generic for now: named armors and properties are still open in the book) */
 const armorDoc = (name, category, description) => add("weapons", "armor", name, "icons/svg/shield.svg", { description: `<p>${description}</p>`, category, bonus: 0, ward: 0, properties: "", worn: false }, "Armor");
@@ -195,8 +199,9 @@ const PAL_PASS1 = ["Radiant Zeal", "Divine Surge", "Font of Mercy"], PAL_PASS2 =
 const PAL_PASSIVES = [...PAL_PASS1, ...PAL_PASS2, ...PAL_PASS3];
 add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>A holy warrior.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
-  // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10, Stage 2 +12 / +6, Stage 3 +14 / +7; Rally 6 (+ the Stage).
-  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh2: 12, stepLow2: 6, stepHigh3: 14, stepLow3: 7, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
+  // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10, then pack R's steps +12 / +6 and +14 / +7, at Stages 1 and 2 since v0.0.407
+  // (the book hasn't set the later Stages' steps yet); Rally 6 (+ 1 / 2 / 3 / 4 by Stage).
+  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh1: 12, stepLow1: 6, stepHigh2: 14, stepLow2: 7, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
   // v0.0.305 (pack MOD; book, the Paladin's stat box): the Modifiers are +2 and +1, the player chooses which is the Weapon Modifier (no Attribute lists).
   modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "heavy", features: [],
   repertoire: U(["Holy Wrath", "Word of Radiance", "Bulwark of Faith", "Beacon", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_APEX),
@@ -207,7 +212,7 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
       sec("pal1pass1", "Escalation 1 Passive", "items", { items: U(PAL_PASS1) }), sec("pal1pass2", "Escalation 2 Passive", "items", { items: U(PAL_PASS2) }), sec("pal1pass3", "Escalation 3 Passive", "items", { items: U(PAL_PASS3) }),
       sec("pal1apex", "Apex", "items", { items: U(PAL_APEX) }), sec("pal1tal", "Talent", "talent")] },
     { sections: [sec("pal2tal", "Talent", "talent")] },
-    { sections: [sec("pal3daily", "Daily Pick", "repertoire", { freq: "daily" }), sec("pal3tal", "Talent", "talent")] },
+    { sections: [sec("pal3tal", "Talent", "talent")] },   // v0.0.407 (book, Chapter 5): no Daily Pick in Stage 0 (levels 1-3)
     { sections: [sec("pal4tal", "Talent", "talent")] }
   ]
 });
@@ -217,8 +222,8 @@ const ARC_PASS1 = ["Killer's Focus", "Vanish", "Harrying Shots"], ARC_PASS2 = ["
 const ARC_PASSIVES = [...ARC_PASS1, ...ARC_PASS2, ...ARC_PASS3];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
-  // Pack R (v0.0.243): high 16 / low 8, Stage 2 +9 / +5, Stage 3 +11 / +6; Rally 5 (+ the Stage).
-  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh2: 9, stepLow2: 5, stepHigh3: 11, stepLow3: 6, bodyMult: 0, mindMult: 0, rallyMod: 5,
+  // Pack R (v0.0.243): high 16 / low 8, then +9 / +5 and +11 / +6 (at Stages 1 and 2 since v0.0.407); Rally 5 (+ 1 / 2 / 3 / 4 by Stage).
+  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh1: 9, stepLow1: 5, stepHigh2: 11, stepLow2: 6, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 5,
   // v0.0.305 (pack MOD; book, the Archer's stat box): Weapon +2, Power +1, fixed.
   modHigh: 2, modLow: 1, modOrder: "weapon", armorTraining: "medium", speedMod: 1, features: [],
   repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_APEX),
@@ -229,7 +234,7 @@ add("classes", "class", "Archer", "icons/svg/target.svg", {
       sec("arc1pass1", "Escalation 1 Passive", "items", { items: U(ARC_PASS1) }), sec("arc1pass2", "Escalation 2 Passive", "items", { items: U(ARC_PASS2) }), sec("arc1pass3", "Escalation 3 Passive", "items", { items: U(ARC_PASS3) }),
       sec("arc1apex", "Apex", "items", { items: U(ARC_APEX) }), sec("arc1tal", "Talent", "talent")] },
     { sections: [sec("arc2tal", "Talent", "talent")] },
-    { sections: [sec("arc3daily", "Daily Pick", "repertoire", { freq: "daily" }), sec("arc3tal", "Talent", "talent")] },
+    { sections: [sec("arc3tal", "Talent", "talent")] },   // v0.0.407 (book, Chapter 5): no Daily Pick in Stage 0 (levels 1-3)
     { sections: [sec("arc4tal", "Talent", "talent")] }
   ]
 });
@@ -413,7 +418,10 @@ const pcs = [];
 // v0.0.189 (Lucas: "too similar"): picks by level ({ 1: {...}, 2: {...}, 3: {...} }), so a PC can be built at level 3 as the class window would.
 const pc = ({ name, token = "", img, species, chosen, cls, attrs, picks, level = 1, lead = "weapon", weapon, armor = "", extras = [], health = "", start = "", choices = {} }) => {
   const c = docOf("class", cls), lv1 = c.system.levels[0].sections, attrSec = lv1.find(x => x.kind === "attr");
-  const byLevel = typeof Object.values(picks)[0] === "string" ? { 1: picks } : picks;
+  const byLevel0 = typeof Object.values(picks)[0] === "string" ? { 1: picks } : picks;
+  // v0.0.407 (Stage 0 in Foundry; book, Chapter 5): no Daily Pick in Stage 0 and the Talents set aside: the builds keep their other picks
+  const kindAt = (L, id) => c.system.levels[L - 1]?.sections?.find(x => x.id === id)?.kind;
+  const byLevel = Object.fromEntries(Object.entries(byLevel0).map(([L, m]) => [L, Object.fromEntries(Object.entries(m).filter(([id]) => kindAt(Number(L), id) && !(TWOD12.talentsSetAside && kindAt(Number(L), id) === "talent")))]));
   const pickedAt = L => Object.fromEntries(Object.entries(byLevel[L] ?? {}).map(([id, n]) => [id, [uuidOf(PACK_OF[docOf(lv1Type(n), n).type], n)]]));
   const classPicks = Object.fromEntries(Array.from({ length: level }, (_, i) => [i + 1, pickedAt(i + 1)]));
   const items = [copyDoc(name, "species", species, {}, chosen ? { chosen } : {}),

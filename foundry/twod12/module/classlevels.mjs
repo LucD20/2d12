@@ -85,7 +85,7 @@ export function levelModel(cls, level, { owned = [], picks = {}, attrs = {}, pri
     const need = Math.min(Math.max(0, s.pick ?? 1), available.length), made = Math.min(need, chosen.length);
     const pill = need === 0 ? "Complete" : made >= need ? "Chosen" : `${made} / ${need}`;
     const sub = s.kind === "repertoire" ? `Choose ${s.pick} from the Repertoire (${s.freq && s.freq !== "any" ? SECTION_FREQS[s.freq] : "any Frequency"}).`
-      : s.kind === "talent" ? `Choose ${s.pick} Talent${s.pick === 1 ? "" : "s"}.` : `Choose ${s.pick}.`;
+      : s.kind === "talent" ? (cand.length ? `Choose ${s.pick} Talent${s.pick === 1 ? "" : "s"}.` : "The Talents are set aside for now (Chapter 5): this slot stays empty.") : `Choose ${s.pick}.`;
     out.push({ s, kind: "choice", list: available, chosen, need, made, pill, done: made >= need, empty: need === 0, sub });
   }
   const total = out.reduce((n, x) => n + x.need, 0), made = out.reduce((n, x) => n + x.made, 0);
@@ -169,4 +169,6 @@ export function playerSees(cls, level, sec, info = () => null) {
 }
 
 /** The Stage a level starts (5: Stage 2, 8: Stage 3), for the window's header. */
-export const stageLine = level => level === 5 ? "Stage 2: +1 to your Weapon or Power Modifier (never above +4)." : level === 8 ? "Stage 3: your Weapon and Power Modifiers +1 (never above +4)." : "";   // pack MOD (v0.0.305)
+// pack MOD (v0.0.305); v0.0.407 (Stage 0 in Foundry; book, Chapter 5): Stage 1 starts at level 4, Stage 3 at level 12.
+export const STAGE1_LEVEL = 4, STAGE3_LEVEL = 12;
+export const stageLine = level => level === STAGE1_LEVEL ? "Stage 1: +1 to your Weapon or Power Modifier (never above +4)." : level === STAGE3_LEVEL ? "Stage 3: your Weapon and Power Modifiers +1 (never above +4)." : "";

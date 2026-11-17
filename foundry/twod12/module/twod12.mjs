@@ -19,6 +19,7 @@ import { registerLightRadius } from "./lightradius.mjs";
 import { registerRegionSnap } from "./regionshape.mjs";
 import { chatChips } from "./chatchips.mjs";
 import { registerEscalationHooks, registerMomentumSetting, escalationAll } from "./escalation.mjs";
+import { registerExplodingDice } from "./explode.mjs";   // v0.0.407 (Stage 0 in Foundry): the book's exploding dice
 import { registerStateHooks } from "./states.mjs";
 import { registerMigrationR, registerMigrationMod } from "./migrater.mjs";
 import { registerMigrationFx } from "./fxmigrate.mjs";   // v0.0.323
@@ -69,6 +70,7 @@ import { frameMessage } from "./chatframe.mjs";
 import * as HUD from "./hud.mjs";
 
 Hooks.once("init", () => {
+  try { registerExplodingDice(); } catch (e) { console.warn("twod12 | exploding dice", e); }   // v0.0.407: a die written with ! (explode.mjs)
   try { registerTheme(); } catch (e) { console.warn("twod12 | theme", e); }
   try { HUD.registerHudSettings(); HUD.registerHud(); globalThis.__twod12Hud = HUD; } catch (e) { console.warn("twod12 | HUD", e); }   // v0.0.376 (STYLE-2): the HUD   // v0.0.369 (STYLE-1): dark (the default) or light, on <html>
   registerReactionSettings();   // v0.0.272 (pack RX): the Reactions message's auto-skip timer
@@ -275,8 +277,7 @@ Hooks.once("init", () => {
     ["hidden", "icons/svg/sound.svg"],
     ["unsensed", "icons/svg/invisible.svg"],
     ["vulnerable", "icons/svg/hazard.svg"],
-    ["empowered", "icons/svg/upgrade.svg"],
-    ["enfeebled", "icons/svg/degen.svg"],
+    ["empowered", "icons/svg/upgrade.svg"],   // v0.0.407: no value; Enfeebled is gone (book, Chapter 8)
     ["exhausted", "icons/svg/sleep.svg"],
     ["imperiled", "icons/svg/hazard.svg"],
     ["squeezing", "icons/svg/net.svg"],

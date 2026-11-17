@@ -24,14 +24,16 @@ export async function completeRest(actor) {
     upd[`system.${key}Wounds`] = wounds - removed;
     blocks.push(`${checkHtml(`${label} Wounds`, r, [`Modifier ${sgn(mod)}`, "DC 13"], { showTier: true })}<div>Removes <b>${removed}</b> Wound${removed === 1 ? "" : "s"} (${wounds - removed} left).</div>`);
   }
+  upd[`flags.twod12.restSwap`] = true;   // v0.0.407 (book, Swapping on a Rest): the Build tab's Swap until the next encounter starts
   await actor.update(upd);
-  try { const { hasMomentum, setMomentum } = await import("./escalation.mjs"); if (game.user.isGM && hasMomentum()) await setMomentum(false); } catch (e) { /* no setting */ }   // v0.0.243: a Rest uses up the party's Momentum
+  // v0.0.243: a Rest uses up the party's Momentum; v0.0.407 (book, Momentum): you leave a Rest with Momentum 0 (a player's Rest: the GM's client, escalation.mjs momentumRequest)
+  try { const { momentumEvent, momentumRequest } = await import("./escalation.mjs"); if (game.user.isGM) await momentumEvent({ rest: true }, "the party rested"); else momentumRequest({ rest: true }, "the party rested"); } catch (e) { /* no setting */ }
   const slept = await sleepEffects(actor);   // a Rest includes a Sleep
   const all = combineRolls(rolls);
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
     rolls: all ? [all] : [],
-    content: `${sysCard({ title: "Rest", lead: `${esc(actor.name)} completes a Rest`, text: `All damage is removed, all Rally Points are back, and Daily Actions are renewed (a Rest includes a Sleep)${slept.before ? `; Exhausted goes from ${slept.before} to ${slept.after}` : ""}.` })}${blocks.length ? `<div class="twod12 chat">${blocks.join("")}</div>` : ""}`
+    content: `${sysCard({ title: "Rest", lead: `${esc(actor.name)} completes a Rest`, text: `All damage is removed, all Rally Points are back, and Daily Actions are renewed (a Rest includes a Sleep). The level-list choices can be swapped (Build tab, Swap on a Rest)${slept.before ? `; Exhausted goes from ${slept.before} to ${slept.after}` : ""}.` })}${blocks.length ? `<div class="twod12 chat">${blocks.join("")}</div>` : ""}`
   });
   return true;
 }

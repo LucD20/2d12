@@ -1,7 +1,7 @@
 // PACK SHEET (v0.0.289, Lucas's approved design: foundry/mockups/sheet-prototype.html): the data of the character sheet's new layout.
 // pcModel(sheet, ctx) reads the actor and the context the sheet already built (_sheetModel: granted tickets, conditions, effects, gear) and returns
 // the template's `pc` object. The pure rules (sections, Defenses, Save DCs, Down state...) are in sheetmodel.mjs (tests t212).
-import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip } from "./config.mjs";
+import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip, npcRoleRow } from "./config.mjs";
 import { combatantOf, getAP, getRAP, slowedOf, apPerTurn, quickenedOf, baseAP } from "./combat.mjs";
 import { guardPerAP } from "./guard.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -107,9 +107,9 @@ export async function pcModel(sheet, ctx) {
   const pips = apPips(ap, regained, slowed).map((p, k) => ({ ...p, n: k + 1 }));
   const escNow = Number(s.escalation) || 0;
   const passives = a.itemTypes.feature.filter(f => isEscPassive(f, cls));
-  const rungNames = { 1: [], 2: [], 3: [] };
-  for (const p of passives) rungNames[passiveRung(p, cls)]?.push(p.name);
-  const apex = a.itemTypes.action.some(i => Number(i.system?.escalation) > 0);
+  const rungNames = {};   // v0.0.407: by the Passive's own Escalation (2 / 4 / 6 on the book's ladder; 1 / 2 / 3 on a card from before)
+  for (const p of passives) { const r = Number(passiveRung(p, cls)) || 0; if (r > 0) (rungNames[r] ??= []).push(p.name); }
+  const apexAt = Math.max(0, ...a.itemTypes.action.map(i => Number(i.system?.escalation) || 0)), apex = apexAt > 0;
   const used = a.getFlag(F, "escUsed") ?? {};
   const hookNames = [...new Set(escHooksOf(a).map(h => h.source))];
   const strip = {
@@ -118,8 +118,8 @@ export async function pcModel(sheet, ctx) {
       tip: `${ap} AP left of the ${regained} this turn gave (${baseAP(a)}${quickenedOf(a) ? ` + Quickened ${quickenedOf(a)}` : ""}${slowed ? ` − Slowed ${slowed}` : ""}). Click a pip to correct the AP (the chat says so).` },
     guard: { total: (Number(s.guard) || 0) + (Number(s.apGuard) || 0), per: guardPerAP(s.stage),
       tip: `Guard ${Number(s.guard) || 0}${s.apGuard ? ` + ${s.apGuard} from the AP your last turn kept (taken first, 1 round)` : ""}. It takes damage before your Health, can't be healed and ends with the encounter. Click +1, right-click −1, Ctrl: 5.` },
-    esc: { n: escNow, rungs: escRungs(escNow, rungNames, apex), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
-      momentum: !!combat?.getFlag?.(F, "momentumStart") },
+    esc: { n: escNow, rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
+      momentum: Number(combat?.getFlag?.(F, "momentumStart")) || 0 },   // v0.0.407: the Momentum the encounter started with (0 to 4)
     strikes: strikesLine(strikesUsed(a)),
     // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
     senses: senseChips(s.senses ?? {}), strikePips: strikePips(strikesUsed(a)), strikesLeft: Math.max(0, 3 - strikesUsed(a)),
@@ -278,7 +278,7 @@ export async function pcModel(sheet, ctx) {
   }
   const SEC_META = {
     granted: { title: "Granted", sub: "from other effects · gone when spent or expired", dot: "#4a5a78", cls: "granted" },
-    apex: { title: "Escalation 3", sub: "in combat only", dot: "#c9821f", cls: "escal" },
+    apex: { title: `Escalation ${apexAt || TWOD12.escalation.max}`, sub: "in combat only", dot: "#c9821f", cls: "escal" },
     round: { title: SHEET_FREQ.round.label, dot: SHEET_FREQ.round.color }, turn: { title: SHEET_FREQ.turn.label, dot: SHEET_FREQ.turn.color },
     encounter: { title: SHEET_FREQ.encounter.label, dot: SHEET_FREQ.encounter.color }, daily: { title: SHEET_FREQ.daily.label, dot: SHEET_FREQ.daily.color },
     atwill: { title: SHEET_FREQ.atwill.label, dot: SHEET_FREQ.atwill.color }, reaction: { title: SHEET_FREQ.reaction.label, dot: SHEET_FREQ.reaction.color }
@@ -404,11 +404,13 @@ export async function pcModel(sheet, ctx) {
       chips: [...chosen.map(k => ({ t: `${L[k]} +1` })), { t: `Vigor ${hl.classVigor ?? 0}`, cls: "v" }, { t: `Resolve ${hl.classResolve ?? 0}`, cls: "r" }],
       stats: [{ v: vals ? sg(s.weaponMod) : (L[s.weaponAttribute] ?? "—"), l: "Weapon" }, { v: vals ? sg(s.powerMod) : (L[s.powerAttribute] ?? "—"), l: "Power" }, { v: csys.rallyMod ?? 0, l: "Rally" }, { v: TWOD12.armorTrainings[s.armorTraining] ?? "—", l: "Armor" }] }] : [])
   ];
-  const stNext = TWOD12.stages.find(x => x.n === (Number(s.stage) || 1) + 1);
-  const next = cls ? nextLevels(lv, levels, stNext ? { at: stNext.from, n: stNext.n, health: [csys[`stepHigh${stNext.n}`] ?? 0, csys[`stepLow${stNext.n}`] ?? 0], guard: TWOD12.guardPerAp[stNext.n - 1], modifiers: (TWOD12.stageModStep[stNext.n - 1] ?? 0) > 0 } : null) : [];
+  const stNext = TWOD12.stages.find(x => x.n === (Number(s.stage) || 0) + 1);   // v0.0.407: Stages 0 to 3
+  const next = cls ? nextLevels(lv, levels, stNext ? { at: stNext.from, n: stNext.n, health: [csys[`stepHigh${stNext.n}`] ?? 0, csys[`stepLow${stNext.n}`] ?? 0], guard: TWOD12.guardPerAp[stNext.n], rally: TWOD12.rallyByStage[stNext.n] - TWOD12.rallyByStage[stNext.n - 1], modifiers: stNext.n === 1 ? "one" : (TWOD12.stageModStep[stNext.n] ?? 0) > 0 ? "both" : "" } : null) : [];
   const build = {
     banner: bad.length ? { count: bad.length, one: bad.length === 1, names: bad.map(c => c.name).join(" · ") } : null,
     cards: buildCards, levels: levelBlocks, esc: escRows.map(x => x.row), other, next,
+    // v0.0.407 (book, Swapping on a Rest): after a Rest, until the next encounter starts (the GM always)
+    swap: cls && (a.getFlag?.(F, "restSwap") || globalThis.game?.user?.isGM) ? { tip: a.getFlag?.(F, "restSwap") ? "You completed a Rest: change the choices your class's level list gave you (the Modifier order too during Stage 0)" : "The GM: change this character's level-list choices (Swapping comes with a Rest)" } : null,
     emptySlots: (ctx.talentSlots ?? []).filter(x => !x.talent)
   };
 
@@ -479,7 +481,7 @@ const fmtN = n => String(Math.round(n * 100) / 100);
 
 export function npcBuilderModel(a) {
   const vsWd = a?.getFlag?.("twod12", "nbVs") === "wd";   // v0.0.314: the Attack damage table's Vs. switch (the Builder's own view, nothing else reads it)
-  const s = a.system, R = TWOD12.npcRatings, role = TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard, stage = Number(s.stage) || 1;
+  const s = a.system, R = TWOD12.npcRatings, role = TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard, stage = Number(s.stage) || 0;
   const keys = ratingKeys(role, R), rating = k => { const r = s.ratings?.[k] || "medium"; return r === "custom" || keys.includes(r) ? r : keys[keys.length - 1]; };
   const row = (key, name, color, valOf, value) => {
     const cur = rating(key), at = keys.indexOf(cur);
@@ -518,7 +520,7 @@ export function npcBuilderModel(a) {
   const rwLook = { colors: TWOD12.subtypeColors, inks: TWOD12.subtypeInk, icons: TWOD12.subtypeIcons }, rwParsed = parseDmgMods(s.dmgMods ?? "");
   const rw = { chips: dmgModChips(rwParsed, SUBS), lines: dmgModLines(rwParsed, SUBS, rwLook), pal: dmgModPalette(SUBS, rwLook), types: Object.entries(SUBS).map(([key, v]) => ({ key, label: v[0] })) };
   // the summary: "Down in about" uses the PC damage a turn against a Medium Defense (13) at this Stage (the ruler's numbers, config pcDamageVsDefense)
-  const sh = TWOD12.npcRoles.standard.hm, pcDmg = TWOD12.pcDamageVsDefense[13] * (sh[stage - 1][2] / sh[0][2]);
+  const sh = TWOD12.npcRoles.standard.hm, pcDmg = TWOD12.pcDamageVsDefense[13] * (sh[npcRoleRow(stage)][2] / sh[0][2]);
   const pool = (Number(s.bdt) || 0) + (Number(s.mdt) || 0);
   const avg = ratingsAverage(["body", "mind", "appeal", "instinct", "bodyHm", "mindHm", "ad", "wd"].map(rating), R);
   const specials = [["Basic attack", "1 AP \u00b7 At-will", 1], ["Special, 1 AP", "Round \u00b7 \u00d71.4", 1.4], ["Special, 2 AP", "Round \u00b7 \u00d72.2", 2.2], ...(s.role === "minion" ? [] : [["Special, 3 AP", "Encounter \u00b7 \u00d73.5", 3.5]])];
@@ -558,6 +560,6 @@ export function statBlockHtml(a, sysCard) {
     const line = plainEnrichers(hoverOf(i.system.hover, i.system.description ?? i.system.versions?.[0]?.effects ?? "")).slice(0, 110);
     return `<b>${esc(i.name)}</b> (${esc(cost)}${f ? `, ${esc(TWOD12.frequencies[f])}` : ""})${line ? `: ${esc(line)}` : ""}`;
   });
-  return sysCard({ title: a.name, lead: `${esc(s.roleLabel ?? "")} \u00b7 CV ${esc(s.cv ?? "")} \u00b7 Stage ${esc(s.stage ?? 1)}`,
+  return sysCard({ title: a.name, lead: `${esc(s.roleLabel ?? "")} \u00b7 CV ${esc(s.cv ?? "")} \u00b7 Stage ${esc(s.stage ?? 0)}`,
     text: [`Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt}) \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, ...(dl.length ? [esc(dl.map(damageLineName).join(" \u00b7 "))] : []), `Senses: ${esc(chips)}`, ...acts].join("<br>") });
 }

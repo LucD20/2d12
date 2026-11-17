@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t37b.mjs)
 import { fileURLToPath as rootPath } from "node:url"; const ROOTURL = new URL("../../", import.meta.url).href, ROOT = rootPath(ROOTURL);
 globalThis.Combat = class {}; globalThis.CONFIG = {};
-globalThis.Roll = class { constructor(f) { this.f = f; this.dice = []; } async evaluate() { this.total = Function(`return (${this.f})`)(); return this; } };
+globalThis.Roll = class { constructor(f) { this.f = String(f).replace(/xs/g, ""); this.dice = []; } async evaluate() { this.total = Function(`return (${this.f})`)(); return this; } };
 globalThis.foundry = { applications: { api: { DialogV2: {} }, ux: { TextEditor: { implementation: { enrichHTML: async t => t } } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), getRoute: p => "/" + p } };
 globalThis.Hooks = { on() {} }; globalThis.game = { settings: { get: () => true }, user: { targets: [] } };
 const posted = []; globalThis.ChatMessage = { getSpeaker: () => ({}), create: async d => posted.push(d) };

@@ -1,4 +1,4 @@
-import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod } from "./config.mjs";
+import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod, rallyPointsOf } from "./config.mjs";
 import { evalExpr } from "./refs.mjs";
 import { migrateSettings, migrateRules, migrateZone } from "./settingsmigrate.mjs";
 import { classModifiers, modOf, classTrack } from "./modifiers.mjs";
@@ -35,7 +35,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       dmgMods: str(""),   // v0.0.283 (pack chat-cards): "Resist 5 Fire, Weak 2 Holy, Immune Cold" (book, Chapter 1), read by the damage message
       reduceNext: int(0, 0),   // v0.0.254 (cards 4, Shield of Faith): the next damage this creature takes is reduced by this much, then it is 0
       apGuard: int(0, 0),   // v0.0.243 (pack R): the Guard of the AP kept at the end of the turn (2 / 3 / 4 each by Stage): taken first, 0 when the AP are regained
-      escalation: int(1, 0),   // v0.0.243 (pack R): a level 1 to 3, never spent: 1 at the start of an encounter (2 with Momentum), +1 a round, +1 on a Critical and on the class hook once an encounter (escalation.mjs)
+      escalation: int(1, 0),   // v0.0.243 (pack R): a level, never spent (1 to 6 since v0.0.407): 1 + the party's Momentum at the start of an encounter, +1 a round, +1 on a Critical and on the class hook once an encounter (escalation.mjs)
       // v0.0.243 (pack R; book, Health Pool): the class's high Health value goes to Vigor or to Resolve (the player's choice, Vigor by default); a species that lets
       // the player choose the side of its bigger bonus (Human +3 / +2) puts it with the high value unless speciesHigh says a side.
       healthHigh: choice({ vigor: "Vigor", resolve: "Resolve" }, "vigor"), speciesHigh: choice({ "": "With the high value", vigor: "Vigor", resolve: "Resolve" }, ""),
@@ -80,7 +80,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     // Resolve bonuses, the class's Stage steps, a floor of a third; the Attributes are out. A class from before pack R (no high value, a multiplier)
     // keeps the old formula until it is updated from the compendium.
     const csys = cls?.system, ssys = species?.system;
-    const hl = healthLine({ high: csys?.healthHigh ?? 0, low: csys?.healthLow ?? 0, steps: { high2: csys?.stepHigh2 ?? 0, low2: csys?.stepLow2 ?? 0, high3: csys?.stepHigh3 ?? 0, low3: csys?.stepLow3 ?? 0 },
+    const hl = healthLine({ high: csys?.healthHigh ?? 0, low: csys?.healthLow ?? 0, steps: { high1: csys?.stepHigh1 ?? 0, low1: csys?.stepLow1 ?? 0, high2: csys?.stepHigh2 ?? 0, low2: csys?.stepLow2 ?? 0, high3: csys?.stepHigh3 ?? 0, low3: csys?.stepLow3 ?? 0 },
       stage: this.stage, highSide: this.healthHigh === "resolve" ? "resolve" : "vigor", bonus: { v: ssys?.bodyMod ?? 0, r: ssys?.mindMod ?? 0, pick: !!ssys?.pickHealth, side: this.speciesHigh || "" } });
     let mdtFull;
     const oldClass = !!csys && !(Number(csys.healthHigh) > 0 || Number(csys.healthLow) > 0) && (Number(csys.bodyMult) > 0 || Number(csys.mindMult) > 0);
@@ -95,15 +95,15 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     deriveHealth(this);
 
     this.rallyHeal = Math.ceil((this.bdt + mdtFull) / 4);   // Rally Points use the Health Pool before Exhausted lowers Resolve
-    // v0.0.243 (pack R; book, Rally Points): the class's Rally value + the Stage (1, 2 or 3).
-    this.rallyMax = Math.max(0, (csys?.rallyMod ?? 0) + this.stage);
+    // v0.0.243 (pack R; book, Rally Points): the class's Rally value + 1 / 2 / 3 / 4 by Stage (v0.0.407: Stages 0 to 3).
+    this.rallyMax = rallyPointsOf(csys?.rallyMod ?? 0, lv);
     this.rallyLeft = Math.max(0, this.rallyMax - this.rallyUsed);
     this.apPerTurn = TWOD12.apPerTurn;
 
     const cs = cls?.system;
     if (cs && (Number(cs.modHigh) > 0 || Number(cs.modLow) > 0)) {
       // v0.0.305 (pack MOD; book, Chapter 5): the class's two values, in the order the class fixes or the player chose, + the Stage steps (modifiers.mjs classTrack).
-      const t = classTrack({ high: cs.modHigh, low: cs.modLow, order: cs.modOrder, lead: cs.modPriority === "power" ? "power" : "weapon", stage2: cs.modStage2, stage: this.stage, cap: TWOD12.modCap });
+      const t = classTrack({ high: cs.modHigh, low: cs.modLow, order: cs.modOrder, lead: cs.modPriority === "power" ? "power" : "weapon", stage1: cs.modStage2, stage: this.stage, cap: TWOD12.modCap });
       this.modSource = "class"; this.modWeaponFirst = t.weaponFirst;
       this.weaponAttribute = ""; this.weaponAttrValue = 0; this.weaponMod = t.weapon;
       this.powerAttribute = ""; this.powerAttrValue = 0; this.powerMod = t.power;
@@ -120,7 +120,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     const wKeys = cs ? ([...(cs.weaponAttrs ?? [])].length ? [...cs.weaponAttrs] : [cs.chosenWeapon].filter(Boolean)) : [];
     const pKeys = cs ? ([...(cs.magicAttrs ?? [])].length ? [...cs.magicAttrs] : [cs.chosenMagic].filter(Boolean)) : [];
     const cm = classModifiers(a, wKeys, pKeys, cs?.modPriority === "power" ? "power" : "weapon");
-    // v0.0.243 (book, Chapter 5, pack R): the Stage step, +1 at Stage 3 (level 8), never above +4; the Signature Modifier follows the higher one.
+    // v0.0.243 (book, Chapter 5, pack R): the Stage step to both, +1 at Stage 3 (level 12 since v0.0.407), never above +4; the Signature Modifier follows the higher one.
     cm.weapon.mod = stageMod(cm.weapon.mod, lv); cm.power.mod = stageMod(cm.power.mod, lv);
     cm.signature.mod = cm.signature.from === "power" ? cm.power.mod : cm.weapon.mod;
     this.weaponAttribute = cm.weapon.key; this.weaponAttrValue = cm.weapon.value; this.weaponMod = cm.weapon.mod;
@@ -177,9 +177,11 @@ export function deriveDefenses(m, training) {   // exported for the tests (t135)
  * lets the player put the bigger bonus on a side: with the high value unless side says one); neither threshold may be under a third of the pool
  * (rounded up): points move from the other one. Pure (the tests load it). Returns { vigor, resolve, pool, moved, highSide, bonusHighSide, parts }.
  */
-export function healthLine({ high = 0, low = 0, steps = {}, stage = 1, highSide = "vigor", bonus = {} } = {}) {
-  const n = v => Math.max(0, Math.trunc(Number(v)) || 0), st = Math.min(3, Math.max(1, Math.trunc(Number(stage)) || 1));
+export function healthLine({ high = 0, low = 0, steps = {}, stage = 0, highSide = "vigor", bonus = {} } = {}) {
+  // v0.0.407 (Stage 0 in Foundry; book, Chapter 5): Stages 0 to 3; the class's steps at Stages 1, 2 and 3, each added to the ones before
+  const n = v => Math.max(0, Math.trunc(Number(v)) || 0), st = Math.min(3, Math.max(0, Math.trunc(Number(stage)) || 0));
   let hi = n(high), lo = n(low);
+  if (st >= 1) { hi += n(steps.high1); lo += n(steps.low1); }
   if (st >= 2) { hi += n(steps.high2); lo += n(steps.low2); }
   if (st >= 3) { hi += n(steps.high3); lo += n(steps.low3); }
   const hv = highSide === "resolve" ? "resolve" : "vigor";
@@ -302,7 +304,7 @@ export class NpcData extends CharacterData {
     // NPCs do not use the Dying and Shattered tables: at 0 HP they die with more lethal damage, or fall unconscious with more nonlethal.
     if (this.atZero) this.zeroState = this.lethal > this.nonlethal ? "Dead (more Lethal damage)" : (this.nonlethal > this.lethal ? "Unconscious (more Nonlethal damage)" : "Dead or Unconscious (the GM chooses)");
     // v0.0.340 (Lucas; book, Rally Points: NPCs): no Rally Points, but one an Action lets it use (or measures with: Guard RP) is its Stage's amount
-    this.rallyHeal = TWOD12.npcRallyHeal?.[Math.max(0, Math.min(2, (this.stage || 1) - 1))] ?? 9; this.rallyMax = 0; this.rallyLeft = 0;
+    this.rallyHeal = TWOD12.npcRallyHeal?.[Math.max(0, Math.min(3, Number(this.stage) || 0))] ?? 9; this.rallyMax = 0; this.rallyLeft = 0;
     // v0.0.305 (pack MOD; the Bestiary, Attributes and Modifiers): the role's two Modifiers (Minion and Grunt +2 / +1, Standard +2 / +2, Elite +3 / +2),
     // the lead one chosen (modLead; "" = the old Weapon / Power Attribute that is higher, Weapon on a tie). No Stage step; Signature: the higher.
     // v0.0.307 (Lucas): each Modifier is a rating of the role's table (npcModRatings, npcModValue).
@@ -335,6 +337,18 @@ export class SpeciesData extends foundry.abstract.TypeDataModel {
     };
   }
 }
+/**
+ * v0.0.407 (Stage 0 in Foundry; book, Chapter 5): a class copy saved before the Stages moved (Stage 1 was levels 1-4, Stage 2 5-7, Stage 3 8-10) has
+ * Health steps at Stages 2 and 3 and none at Stage 1: they move one Stage down (the old Stage 2 step at the new Stage 1, the old Stage 3 step at
+ * Stage 2, none at Stage 3 until the book writes it), so a character keeps its Health at about the same levels. Only a copy with no stepHigh1 key.
+ */
+export function migrateClassSteps(source) {
+  if (!source || typeof source !== "object" || "stepHigh1" in source || !("stepHigh2" in source || "stepLow2" in source)) return source;
+  source.stepHigh1 = source.stepHigh2 ?? 0; source.stepLow1 = source.stepLow2 ?? 0;
+  source.stepHigh2 = source.stepHigh3 ?? 0; source.stepLow2 = source.stepLow3 ?? 0;
+  source.stepHigh3 = 0; source.stepLow3 = 0;
+  return source;
+}
 
 export class ClassData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -343,14 +357,16 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       choiceA: attrSet(), choiceB: attrSet(),
       // bodyMult / mindMult: the Health multipliers of a class from before pack R (kept so an old copy still computes until it is updated).
       bodyMult: new NumberField({ required: true, nullable: false, initial: 0, min: 0, step: 0.5 }), mindMult: new NumberField({ required: true, nullable: false, initial: 0, min: 0, step: 0.5 }), rallyMod: sint(), speedMod: sint(),
-      // v0.0.243 (pack R; book, Chapter 4): the class's high and low Health values and the steps each grows by at Stages 2 and 3 (Paladin 20 / 10, +12 / +6, +14 / +7).
-      healthHigh: int(0, 0), healthLow: int(0, 0), stepHigh2: int(0, 0), stepLow2: int(0, 0), stepHigh3: int(0, 0), stepLow3: int(0, 0),
+      // v0.0.243 (pack R; book, Chapter 4): the class's high and low Health values and the steps each grows by at Stages 1, 2 and 3 (v0.0.407: Stages 0
+      // to 3; the book hasn't set the later steps yet: the Paladin keeps pack R's +12 / +6 and +14 / +7 at Stages 1 and 2, ClassData.migrateData).
+      healthHigh: int(0, 0), healthLow: int(0, 0), stepHigh1: int(0, 0), stepLow1: int(0, 0), stepHigh2: int(0, 0), stepLow2: int(0, 0), stepHigh3: int(0, 0), stepLow3: int(0, 0),
       weaponAttrs: attrSet(), magicAttrs: attrSet(),
       features: new ArrayField(new SchemaField({ uuid: str(), level: int(1, 0) })),
       chosenA: str(), chosenB: str(), chosenWeapon: str(), chosenMagic: str(),   // chosenWeapon / chosenMagic: only for classes from before v0.0.117
       modPriority: choice({ weapon: "Weapon Modifier", power: "Power Modifier" }, "weapon"),   // pack MOD: which Modifier leads (an "either" class) and takes a Signature tie; before: which kept an Attribute both would use
       // v0.0.305 (pack MOD; book, Chapter 5): the class's two Modifier values (Paladin +2 / +1 either way; Archer Weapon +2, Power +1). 0 / 0: a class
-      // from before keeps the Attribute formula until it is updated from the compendium. modStage2: the Modifier the player raised at Stage 2 ("" = the lead one).
+      // from before keeps the Attribute formula until it is updated from the compendium. modStage2: the Modifier the player raises at Stage 1 ("" = the lead one;
+      // the key kept from pack MOD, when it was the Stage 2 pick: v0.0.407 moved it to Stage 1, level 4).
       modHigh: sint(0), modLow: sint(0), modOrder: choice({ either: "Either way (the player chooses)", weapon: "Weapon Modifier first", power: "Power Modifier first" }, "either"),
       modStage2: choice({ "": "The higher one", weapon: "Weapon Modifier", power: "Power Modifier" }, ""),
       armorTraining: choice(TWOD12.armorTrainings, "light"),
@@ -366,6 +382,7 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       chosenAttrs: new ArrayField(str())   // on a character's copy: every Attribute increase chosen in the class window, level by level
     };
   }
+  static migrateData(source) { migrateClassSteps(source); return super.migrateData(source); }   // v0.0.407: the Health steps one Stage down
 }
 
 export class FeatureData extends foundry.abstract.TypeDataModel {

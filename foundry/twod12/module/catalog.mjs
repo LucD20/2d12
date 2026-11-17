@@ -3,8 +3,9 @@
 //   game.twod12.catalog("talents")           only one category
 //   game.twod12.catalog({ journal: true })   writes it to a Journal Entry "2d12 Catalog" (one page per category) instead
 import { TWOD12, categoryText } from "./config.mjs";
+import { weaponTierText } from "./explode.mjs";
 
-const dmg = d => { const dice = d.die ? `${d.count}${d.die}` : ""; return (dice + (d.mod ? `${dice && d.mod > 0 ? "+" : ""}${d.mod}` : "")) || "0"; };
+const dmg = d => weaponTierText(d);   // v0.0.407: "3 + 1d4!" (a weapon's die explodes)
 const link = i => `@UUID[${i.uuid}]{${i.name}}`;
 const traits = i => [...(i.system.traits ?? [])].map(t => TWOD12.traits[t] ?? TWOD12.weaponTraits?.[t] ?? t).join(", ");
 

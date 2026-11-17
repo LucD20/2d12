@@ -5,6 +5,7 @@
 import { TWOD12, subtypeCode } from "./config.mjs";
 import { instanceText } from "./actions.mjs";
 import { esc } from "./util.mjs";
+import { weaponTierText } from "./explode.mjs";
 const { DialogV2 } = foundry.applications.api;
 
 const POOL = { B: "body", M: "mind", C: "choice" };
@@ -24,7 +25,8 @@ function splitComma(str) {
   return out.filter(Boolean);
 }
 
-const DICE = new RegExp(`^([0-9]+(?:d[0-9]+)?(?:\\s*[+-]\\s*[0-9]+(?:d[0-9]+)?)*)\\s*([BMC])?\\s*(${SUBCODES}|[BCHMPS])?$`, "i");
+// v0.0.407: a die can be written with ! (1d6!: it explodes, explode.mjs)
+const DICE = new RegExp(`^([0-9]+(?:d[0-9]+!?)?(?:\\s*[+-]\\s*[0-9]+(?:d[0-9]+!?)?)*)\\s*([BMC])?\\s*(${SUBCODES}|[BCHMPS])?$`, "i");
 
 /** One token to an Instance, or to the tier's effect text (quoted text, or anything that is not damage). */
 function parseToken(tok) {
@@ -246,7 +248,7 @@ export function parseWeaponText(text) {
   return out;
 }
 
-const dmgText = d => { const dice = d.die ? `${d.count}${d.die}` : ""; return (dice + (d.mod ? `${dice && d.mod > 0 ? "+" : ""}${d.mod}` : "")) || "0"; };
+const dmgText = d => weaponTierText(d);   // v0.0.407: "3 + 1d4!" (a weapon's die explodes)
 
 /** The data a parsed weapon puts on a Weapon item. */
 export function weaponSystemData(w) {

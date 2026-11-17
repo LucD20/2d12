@@ -155,7 +155,8 @@ for (const n of ["Divine Intervention", "Shield of Faith", "Bulwark of Faith", "
 const step = CG.inlineCards(all.find(c => c.name === "Beacon")).find(c => c.name === "Beacon's Step");
 console.log(show("Beacon's Step", CG.cardSystem(step, x => x)));
 const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic-data.mjs");
-console.log("the Basic Action's data carries it:", BASIC_ACTIONS.opportunityAttack.moment, BASIC_ACTIONS.opportunityAttack.momentRange);
+const { OA, OA_IS_BASIC } = await import("./oa-card.mjs");   // v0.0.407: set aside
+console.log("the card (set aside) carries it:", OA.moment, OA.momentRange, "| no longer a Basic Action:", !OA_IS_BASIC);
 
 console.log("--- wired");
 const dmg = src("module/damage.mjs"), act = src("module/actions.mjs"), tw = src("module/twod12.mjs"), mo = src("module/moment.mjs");

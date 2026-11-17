@@ -34,14 +34,15 @@ export function classModifiers(attrs, weaponKeys, powerKeys, prefer = "weapon") 
 /**
  * Pack MOD (v0.0.305; book, Chapter 5, Weapon, Power and Signature Modifiers): the Modifiers are class values, not Attributes.
  * high / low: the class's two values (+2 and +1); order: "either" (the player chooses: lead), "weapon" or "power" (the class fixes it);
- * lead: the player's choice for an "either" class, and the side a tie of the Signature Modifier goes to; stage2: the Modifier that took
- * Stage 2's +1 ("" = the lead one); stage: 1 to 3 (Stage 2 +1 to one, Stage 3 +1 to both, never above cap).
+ * lead: the player's choice for an "either" class, and the side a tie of the Signature Modifier goes to; stage1: the Modifier that took
+ * Stage 1's +1 ("" = the lead one); stage: 0 to 3 (Stage 1 +1 to one, Stage 3 +1 to both, never above cap; v0.0.407).
  * Returns { weapon, power, signature, from, weaponFirst }.
  */
-export function classTrack({ high = 2, low = 1, order = "either", lead = "weapon", stage2 = "", stage = 1, cap = 4 } = {}) {
+export function classTrack({ high = 2, low = 1, order = "either", lead = "weapon", stage1 = "", stage = 0, cap = 4 } = {}) {
+  // v0.0.407 (Stage 0 in Foundry; book, Chapter 5): Stages 0 to 3; +1 to the one the player chose at Stage 1 (stage1, "" = the lead one), +1 to both at Stage 3
   const weaponFirst = order === "weapon" || (order !== "power" && lead !== "power");
   let w = Number(weaponFirst ? high : low) || 0, p = Number(weaponFirst ? low : high) || 0;
-  if (stage >= 2) { if ((stage2 || (weaponFirst ? "weapon" : "power")) === "power") p += 1; else w += 1; }
+  if (stage >= 1) { if ((stage1 || (weaponFirst ? "weapon" : "power")) === "power") p += 1; else w += 1; }
   if (stage >= 3) { w += 1; p += 1; }
   w = Math.min(cap, w); p = Math.min(cap, p);
   const from = p > w || (p === w && lead === "power") ? "power" : "weapon";

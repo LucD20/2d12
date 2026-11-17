@@ -74,7 +74,7 @@
     </div>{{/if}}
     {{else}}
     <div class="ps-cell">
-      <span class="ps-k">Escalation {{pc.strip.esc.n}}{{#if pc.strip.esc.momentum}} <span class="ps-mom" data-tooltip="This encounter started at Escalation 2 (Momentum)">Momentum</span>{{/if}}</span>
+      <span class="ps-k">Escalation {{pc.strip.esc.n}}{{#if pc.strip.esc.momentum}} <span class="ps-mom" data-tooltip="This encounter started with the party's Momentum {{pc.strip.esc.momentum}}: Escalation 1 + {{pc.strip.esc.momentum}}">Momentum {{pc.strip.esc.momentum}}</span>{{/if}}</span>
       <span class="ps-rungs">{{#each pc.strip.esc.rungs}}<a class="rung{{#if lit}} lit{{/if}}" data-action="setEscalation" data-n="{{n}}" role="button" data-tooltip="Escalation {{n}}: click to correct the level">{{label}}</a>{{/each}}</span>
       <span class="ps-s">{{#if pc.strip.esc.hooks}}Hooks still available: {{pc.strip.esc.hooks}}{{else}}No hooks left this encounter{{/if}}</span>
     </div>
@@ -285,7 +285,7 @@
       <div class="tab" data-tab="build">
         <div class="ps-stack">
           {{#if pc.build.banner}}<div class="ps-banner"><b>{{pc.build.banner.count}} card{{#unless pc.build.banner.one}}s{{/unless}} fill no slot:</b><span>{{pc.build.banner.names}}</span><button type="button" data-action="reviewSlots">Review</button></div>{{/if}}
-          <div class="ps-lvlbar"><label class="ps-lvl">Level <input type="number" min="0" name="system.level" value="{{system.level}}" aria-label="Level" data-tooltip="Your level: raising it opens the class window for the new level's choices"></label><span class="ps-mut">Stage {{system.stage}}</span></div>
+          <div class="ps-lvlbar"><label class="ps-lvl">Level <input type="number" min="0" name="system.level" value="{{system.level}}" aria-label="Level" data-tooltip="Your level: raising it opens the class window for the new level's choices"></label><span class="ps-mut">Stage {{system.stage}}</span>{{#if pc.build.swap}}<button type="button" class="ps-swap" data-action="swapRest" data-tooltip="{{pc.build.swap.tip}}"><i class="fa-solid fa-right-left"></i> Swap on a Rest</button>{{/if}}</div>
           <div class="ps-g2 wide">
             {{#each pc.build.cards}}
             <div class="ps-bcard">
@@ -378,7 +378,7 @@
             {{#if escOn}}<label class="ps-esctog"><input type="checkbox" name="system.eliteLadder" {{#if ladderOn}}checked{{/if}} data-tooltip="On: the Bestiary's ladder works by itself (1: 1 Boon on its first attack each round; 2: its Round Special Actions twice a round; 3: its Encounter Special Actions a second time). Off: its entry says otherwise: give it Features with those settings."> Default ladder</label>{{/if}}
             <span class="ps-right"></span>
             <label class="nb-stat"><span>Level</span><input type="number" min="0" name="system.level" value="{{level}}" aria-label="Level"></label>
-            <div class="nb-stat dark" data-tooltip="Levels 1-4: Stage 1; 5-7: Stage 2; 8-10: Stage 3"><span>Stage</span><b>{{stage}}</b></div>
+            <div class="nb-stat dark" data-tooltip="Levels 1-3: Stage 0; 4-7: Stage 1; 8-11: Stage 2; 12-15: Stage 3"><span>Stage</span><b>{{stage}}</b></div>
             <div class="nb-stat dark" data-tooltip="{{@root.npcCvTip}}"><span>CV</span><b>{{cv}}</b></div>
             <div class="nb-stat"><span>AP</span><b>{{ap}}</b></div>
           </div>

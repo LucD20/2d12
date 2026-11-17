@@ -26,8 +26,8 @@ export const wanted = (actor, key) => !(actor?.type === "npc" && NPC_NO_BASIC.in
  *  Compared: the texts of each Version, the requirements, the description, the targets, the traits, the distance and the Frequency (strings and numbers, not the tier shapes the data model normalizes). */
 const basicPrint = sys => JSON.stringify({ d: sys.description ?? "", r: sys.requirements ?? "", t: sys.targets ?? "", tr: [...(sys.traits ?? [])].sort(), di: sys.distance ?? "", f: sys.frequency ?? "", ...(sys.moment ? { m: [sys.moment, Number(sys.momentRange) || 0, !!sys.momentSelf, sys.momentTarget ?? "subject", !!sys.momentThreat] } : {}), tg: sys.trigger ?? "", v: (sys.versions ?? []).map(v => [v.ap, v.effects ?? "", v.x1 ?? "", v.x2 ?? "", v.x3 ?? ""]) });
 export const staleBasics = actor => actor.items.filter(i => { const k = i.type === "action" && i.getFlag(F, "basic"); return k && BASIC_ACTIONS[k] && basicPrint(i.system) !== basicPrint(toItem(k, BASIC_ACTIONS[k]).system); });
-/** The Basic Actions a creature has but shouldn't (an NPC made before v0.0.214 with Weapon Attack). */
-export const unwantedBasics = actor => actor.items.filter(i => i.type === "action" && i.getFlag(F, "basic") && !wanted(actor, i.getFlag(F, "basic")));
+/** The Basic Actions a creature has but shouldn't (an NPC made before v0.0.214 with Weapon Attack; v0.0.407: one that is no longer a Basic Action, Opportunity Attack). */
+export const unwantedBasics = actor => actor.items.filter(i => i.type === "action" && i.getFlag(F, "basic") && (!wanted(actor, i.getFlag(F, "basic")) || !BASIC_ACTIONS[i.getFlag(F, "basic")]));
 
 /** Add (or replace) the Basic Actions on an actor; an NPC loses the ones it doesn't get (v0.0.214: Weapon Attack, Fists). */
 export async function addBasicActions(actor, { replace = false } = {}) {

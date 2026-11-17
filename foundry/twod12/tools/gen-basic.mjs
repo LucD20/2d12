@@ -11,8 +11,11 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // The order of the entries (the Actions tab groups and the NPC compendium keep it): today's, new keys after.
 const ORDER = ["basicWeaponAttack", "advance", "safeMovement", "reload", "interact", "rally", "crawl", "regrip", "release", "stand", "breakFree", "charge", "leaning", "fists", "relocate", "trip", "shove", "haul"];
 
+// v0.0.407 (Stage 0 in Foundry; book, Chapter 6): a Basic Action listed in book/cards/set-aside.txt (Opportunity Attack) is no longer a Basic Action:
+// its card stays in basic-actions.json, but no creature gets it (a Talent brings it back later).
+const SET_ASIDE = new Set(fs.readFileSync(path.resolve(root, "../../book/cards/set-aside.txt"), "utf8").split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith("#")));
 export function basicDataSource() {
-  const cards = loadCards().filter(c => c.foundry?.basic);
+  const cards = loadCards().filter(c => c.foundry?.basic && !SET_ASIDE.has(c.name));
   const byKey = new Map(cards.map(c => [c.foundry.basic, c]));
   const keys = [...ORDER.filter(k => byKey.has(k)), ...cards.map(c => c.foundry.basic).filter(k => !ORDER.includes(k))];
   const entries = keys.map(k => `  ${k}: ${JSON.stringify(basicEntry(byKey.get(k)))}`);

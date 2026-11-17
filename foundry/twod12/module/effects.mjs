@@ -63,12 +63,11 @@ export function damageSteps(actor, traits, target = null) {
     if ((m.seen && !seesOrigin(actor, e)) || isSpent(e, m)) continue;   // v0.0.323: its own "While they see the origin"; "Next one only" already used
     const emp = m.empowered === true ? 1 : Math.trunc(Number(m.empowered)) || 0, enf = Math.trunc(Number(m.enfeebled)) || 0;   // (older effects stored true for Empowered)
     const inc = m.empMode === "inc", sp = m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}` } : {};   // v0.0.323: "Increase by" adds to the value they have
-    if (emp > 0) out.empowered.push({ name: shortName(e.name), n: emp, inc, ...sp });
-    if (enf > 0) out.enfeebled.push({ name: shortName(e.name), n: enf, inc, ...sp });
+    // v0.0.407 (book, Chapter 8; Lucas, 2026-11-13): Empowered has no value (any value is "on") and Enfeebled is gone: an old effect's Enfeebled counts for nothing
+    if (emp > 0 || inc && emp) out.empowered.push({ name: shortName(e.name), n: 1, inc: false, ...sp });
+    void enf;
   }
-  for (const e of actor?.effects ?? []) for (const id of ["empowered", "enfeebled"]) {   // the conditions Empowered N and Enfeebled N
-    if (e.statuses?.has?.(id)) out[id].push({ name: baseNameOf(e), n: Math.max(1, Math.trunc(Number(e.getFlag(F, "value"))) || 1) });
-  }
+  for (const e of actor?.effects ?? []) if (e.statuses?.has?.("empowered")) out.empowered.push({ name: baseNameOf(e), n: 1 });   // the condition Empowered (no value)
   return out;
 }
 

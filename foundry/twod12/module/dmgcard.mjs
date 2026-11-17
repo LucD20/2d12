@@ -9,7 +9,7 @@ const compHtml = c => {
   // v0.0.189: bonus damage names where it comes from ("Heavy Blows", a link that opens it), with its type when it has one.
   const name = c.src ? (c.sub ? `${TWOD12.subtypes[c.sub]} <span class="csrc">${srcA(c)}</span>` : srcA(c)) : (c.sub ? TWOD12.subtypes[c.sub] : (c.kind === "A" ? "Modifier" : "Untyped"));
   const icon = c.sub ? `${dtypeIcon(c.sub)} ` : "";
-  const dice = (c.dice ?? []).map(d => d.results.map(x => `<span class="die d${d.faces}">${x}</span>`).join("")).join("");
+  const dice = (c.dice ?? []).map(d => d.results.map((x, k) => `<span class="die d${d.faces}${d.ex?.[k] ? " ex" : ""}"${d.ex?.[k] ? ` data-tooltip="Exploded: counts ${x - 1}, rolled again"` : ""}>${x}${d.ex?.[k] ? "!" : ""}</span>`).join("")).join("");   // v0.0.407: an exploded die
   return `<div class="comp sub-${c.sub || "N"}" style="--sc:${TWOD12.subtypeInk[c.sub] ?? "#888780"}"><span class="ctype">${icon}${name}${c.nl ? ' <span class="nlb">NL</span>' : ""}</span><span class="cform">${esc(c.formula)}</span><span class="cdice">${dice}</span><span class="ctotal">${c.total}</span></div>`;
 };
 

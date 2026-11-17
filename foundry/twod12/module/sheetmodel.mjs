@@ -150,11 +150,15 @@ export function versionCant(cost, ap, rap = 0, reaction = false) {
 }
 
 /** The Escalation rungs: "1 · <passive>","2 · <passive>", "3 · <passive> + Apex"; lit up to the level. names: { 1: [...], 2: [...], 3: [...] }. */
-export function escRungs(level, names = {}, apex = false) {
-  const now = Math.max(0, Math.trunc(Number(level)) || 0);
-  return [1, 2, 3].map(n => {
+export function escRungs(level, names = {}, apex = false, apexAt = 6) {
+  // v0.0.407 (Stage 0 in Foundry; book, Chapter 2): the Passives at Escalation 2, 4 and 6 and the Apex at 6; a card still written on pack R's
+  // ladder (Escalation 1 / 2 / 3, until the class card sessions) shows at its own number. apex: the creature has an Action with an Escalation line
+  // (apexAt: the highest such line).
+  const now = Math.max(0, Math.trunc(Number(level)) || 0), at = Math.max(1, Math.trunc(Number(apexAt)) || 6);
+  const rungs = [...new Set([2, 4, 6, ...Object.keys(names).map(Number).filter(n => n > 0 && (names[n] ?? []).some(Boolean)), ...(apex ? [at] : [])])].sort((a, b) => a - b);
+  return rungs.map(n => {
     const list = (names[n] ?? []).filter(Boolean);
-    const text = [list.join(" / ") || "—", n === 3 && apex ? "Apex" : ""].filter(Boolean).join(" + ");
+    const text = [list.join(" / ") || (n === at && apex ? "" : "—"), n === at && apex ? "Apex" : ""].filter(Boolean).join(" + ");
     return { n, lit: now >= n, label: `${n} · ${text}` };
   });
 }
@@ -210,7 +214,7 @@ export function slotless(cards = [], sections = {}, hasItem = () => true) {
 /**
  * The "Next levels" lines, from the class table (the levels after this one, up to the next Stage's first level). levels: [{ sections: [{ kind,
  * title, pick }] }]; stage: { at, n, health: [high, low], guard, rally: 1 } for the level that starts the next Stage.
- * [{ level, text }]: "1 Talent · 1 Daily Pick"; the Stage level: "Stage 2: Stage Talent · +1 Attribute · Health +12 / +6 · Guard 3 per AP · Rally +1".
+ * [{ level, text }]: "1 Talent · 1 Daily Pick"; the Stage level: "Stage 2: Stage Talent · Health +14 / +7 · Guard 3 per AP · Rally +1" (no Attribute since v0.0.407).
  */
 export function nextLevels(level, levels = [], stage = null) {
   const lv = Math.max(1, Math.trunc(Number(level)) || 1), end = stage?.at ?? lv + 1, out = [];
@@ -218,11 +222,12 @@ export function nextLevels(level, levels = [], stage = null) {
     const secs = (levels[L - 1]?.sections ?? []).filter(s => s.kind !== "attr" || L === stage?.at);
     const parts = secs.filter(s => s.kind !== "attr").map(s => `${Math.max(1, Number(s.pick) || 1)} ${slotLabel(s.title)}`);
     if (stage && L === stage.at) {
-      const st = [`Stage ${stage.n}:`, "Stage Talent", "+1 Attribute"];
-      if (stage.health) st.push(`Health +${stage.health[0]} / +${stage.health[1]}`);
+      // v0.0.407 (Stage 0 in Foundry; book, Chapter 5): no Attribute increase at a Stage; +1 to one Modifier at Stage 1, to both at Stage 3
+      const st = [`Stage ${stage.n}:`, "Stage Talent"];
+      if (stage.health && (stage.health[0] || stage.health[1])) st.push(`Health +${stage.health[0]} / +${stage.health[1]}`);
       if (stage.guard) st.push(`Guard ${stage.guard} per AP`);
-      st.push("Rally +1");
-      if (stage.modifiers) st.push("Modifiers +1");
+      st.push(`Rally +${stage.rally ?? 1}`);
+      if (stage.modifiers === "one") st.push("+1 to one Modifier"); else if (stage.modifiers) st.push("Modifiers +1");
       out.push({ level: L, text: `${st[0]} ${st.slice(1).join(" · ")}` });
       continue;
     }
@@ -249,15 +254,15 @@ export const clampRating = (r, role, R) => { if (r === "custom") return r; const
 export function clampRatings(ratings = {}, role, R) {
   return Object.fromEntries(Object.entries(ratings).map(([k, v]) => [k, k === "speed" ? v : clampRating(v, role, R)]));
 }
-/** The table values of a role at a Stage (1..3) for a rating. */
-export function npcRow(role, R, rating, stage = 1) {
-  const st = Math.min(3, Math.max(1, Math.trunc(Number(stage)) || 1)) - 1, keys = ratingKeys(role, R), r = clampRating(rating, role, R), col = Math.min(role.hm[st].length - 1, R[r]?.i ?? 2);
+/** The table values of a role at a Stage (0..3; pack R's three rows: Stages 0 and 1 read the first, config.mjs npcRoleRow) for a rating. */
+export function npcRow(role, R, rating, stage = 0) {
+  const st = Math.max(0, Math.min(2, (Math.trunc(Number(stage)) || 0) - 1)), keys = ratingKeys(role, R), r = clampRating(rating, role, R), col = Math.min(role.hm[st].length - 1, R[r]?.i ?? 2);
   return { attr: role.attr + (R[r]?.off ?? 0), hm: role.hm[st][col], def: Math.max(11, role.defense + (R[r]?.off ?? 0)), basic: role.basic[st][col], keys, rating: r };
 }
 /** A threshold from the Bestiary: (Attribute + 2) x multiplier + Health Base, rounded up. */
 export const npcThreshold = (attr, hm, hb) => Math.max(0, Math.ceil((Number(attr) + 2) * Number(hm) + Number(hb) - 1e-9));
 /** An NPC's numbers from its ratings (one source of truth). ratings: { body, mind, appeal, instinct, bodyHm, mindHm, ad, wd }. */
-export function npcNumbers(role, R, ratings = {}, stage = 1) {
+export function npcNumbers(role, R, ratings = {}, stage = 0) {
   const at = k => npcRow(role, R, ratings[k] ?? "medium", stage).attr;
   const attributes = { body: at("body"), mind: at("mind"), appeal: at("appeal"), instinct: at("instinct") };
   const vigor = npcThreshold(attributes.body, npcRow(role, R, ratings.bodyHm ?? "medium", stage).hm, role.hb);
@@ -306,11 +311,11 @@ export function senseChips(senses = {}) {
 /** The Strikes pips of the NPC strip: three diamonds, filled = Strikes left this turn. */
 export const strikePips = used => Array.from({ length: 3 }, (_, k) => k < Math.max(0, 3 - (Math.trunc(Number(used)) || 0)));
 
-/** The Elite's default Escalation effects (Bestiary, Elite Escalation). */
+/** The Elite's default Escalation effects (Bestiary, Elite Escalation; v0.0.407: at Escalation 2, 4 and 6 on the 1-to-6 ladder, ELITE_RUNGS_LADDER). */
 export const ELITE_RUNGS = [
-  { n: 1, label: "1 · first attack +1 Boon", tip: "Escalation 1: 1 Boon on its first attack each round." },
-  { n: 2, label: "2 · Round Special ×2", tip: "Escalation 2: it can use its Round Special Action twice a round." },
-  { n: 3, label: "3 · Encounter Special back", tip: "Escalation 3: it gets its Encounter Special Action back, once." }
+  { n: 2, label: "2 · first attack +1 Boon", tip: "Escalation 2: 1 Boon on its first attack each round." },
+  { n: 4, label: "4 · Round Special ×2", tip: "Escalation 4: it can use its Round Special Action twice a round." },
+  { n: 6, label: "6 · Encounter Special back", tip: "Escalation 6: it gets its Encounter Special Action back, once." }
 ];
 
 /** Dice (and flat numbers) that come close to an average, the Modifier taken out: 2.5 -> "1d4". "" when the Modifier alone is enough. */

@@ -3,6 +3,7 @@ import { prereqLine } from "./talents.mjs";
 import { attrFromTier } from "./rollsource.mjs";
 import { TWOD12, expandAsText, cardVars, cardHead, flavorHtml, apIcon, apLabel, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, distanceNote, areaText, cardColorFor, vsText, areaButton, poolIcon, dtypeHtml, inkOf, prettyDamage } from "./config.mjs";
 import { setupFor } from "./setup.mjs";
+import { weaponTierText } from "./explode.mjs";   // v0.0.407: "3 + 1d4!" (the book's way)
 import { esc } from "./roll.mjs";
 import { tierAvg, tierProbs, critProb, fmt, avgFormula } from "./calc.mjs";
 
@@ -193,7 +194,7 @@ export async function buildWeaponCard(item) {
     <div class="trow"><span class="freq">${sub ? `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[w.subtype] ?? "#888"}"><i class="${TWOD12.subtypeIcons[w.subtype] ?? ""}"></i> ${esc(sub)}</span> damage` : "No damage type"}</span></div>
     ${w.range ? `<div class="vsrow"><b>Range</b> ${esc(w.range.split("/").join(" / "))}</div>` : ""}
     <div class="vsrow"><b>Weapon damage [W]</b></div>
-    <table class="tiers">${[1, 2, 3].map(n => { const d = w.damage[`t${n}`]; const dice = d.die ? `${d.count}${d.die}` : ""; const txt = dice + (d.mod ? `${dice && d.mod > 0 ? "+" : ""}${d.mod}` : ""); return `<tr><th>Tier ${n}</th><td>${esc(txt || "0")}</td></tr>`; }).join("")}</table>
+    <table class="tiers">${[1, 2, 3].map(n => { const txt = weaponTierText(w.damage[`t${n}`]); return `<tr><th>Tier ${n}</th><td>${esc(txt || "0")}</td></tr>`; }).join("")}</table>
     ${acts.length ? `<div class="effects"><b>Actions:</b> ${acts.map(esc).join(", ")}</div>` : ""}
     ${w.wielded ? '<div class="vsrow">Wielded</div>' : ""}</div>`;
 }

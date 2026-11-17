@@ -22,7 +22,9 @@ import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo,
 import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";   // (markAtWill: imported where used)
-import { tierProbs, perDieDelta, topStep, bbCount } from "./calc.mjs";
+import { tierProbs, topStep, bbCount } from "./calc.mjs";
+import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged
+import { weaponDiceFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
@@ -60,28 +62,25 @@ export function versionRow(v) {
 export const targetLine = ts => `<div class="tline">${ts.length ? `<i class="fa-solid fa-crosshairs"></i> ${esc(ts.map(t => t.name).join(", "))}` : ""}</div>`;
 const traitsHtml = t => traitChevrons(t, { compact: true });   // v0.0.180: the chat card shows tight chips (D0, option E)
 
-function weaponFormula(d, n) {
-  const dice = d.die ? d.count * n : 0, mod = d.mod * n;
-  if (dice > 0) return `${dice}${d.die}` + (mod ? `${mod > 0 ? "+" : ""}${mod}` : "");
-  return mod ? String(mod) : null;
-}
+// v0.0.407 (Stage 0 in Foundry; book, Chapter 15): a weapon's die explodes (explode.mjs: written with !); 2[W] is two instances, the flat part twice
+const weaponFormula = (d, n) => weaponDiceFormula(d, n);
 
 /** The step of a stored flag: Empowered N (positive) or Enfeebled N (negative). Older cards stored true for Empowered. */
 export const stepOf = v => (v === true ? 1 : Math.trunc(Number(v)) || 0);
 
-async function evalFormula(formula, rolls, step = 0) {
+// v0.0.407 (Stage 0 in Foundry): a die written with ! explodes (explode.mjs); Empowered no longer adds to every die (the step is ignored here: rollDamage adds its 1d6!)
+async function evalFormula(formula, rolls) {
   if (!formula) return { total: 0, dice: [], shown: "0" };
-  const r = await new Roll(formula).evaluate();
+  const r = await bookRoll(formula).evaluate();
   rolls.push(r);
-  const dice = r.dice.map(d => ({ faces: d.faces, results: d.results.map(x => x.result) }));
-  const delta = perDieDelta(dice.flatMap(d => d.results), step);   // Empowered N: N more on every die; Enfeebled N: N less on every die, at least 1 each
-  return { total: r.total + delta, dice, emp: delta, shown: delta ? `${formula} ${step > 0 ? "+" : "\u2212"}${Math.abs(step)} per die` : formula };
+  return { total: r.total, dice: diceOfRoll(r), emp: 0, shown: formula };
 }
 
 export async function resolveInstance(inst, ctx) {
   const comps = [];
   if (inst.useW && ctx.weapon) {
-    const d = ctx.weapon.system.damage[`t${ctx.tier}`];
+    const d0 = ctx.weapon.system.damage[`t${ctx.tier}`];
+    const d = d0 && ctx.thrown && ctx.tier >= 2 ? { ...d0, mod: (Number(d0.mod) || 0) - THROWN_LESS } : d0;   // v0.0.407: a Thrown weapon thrown, 1 less a [W]
     const f = d ? weaponFormula(d, inst.wCount) : null;
     const res = await evalFormula(f, ctx.rolls, ctx.empowered);
     comps.push({ kind: "W", formula: f ? res.shown : "0", total: res.total, dice: res.dice, emp: res.emp ?? 0, src: ctx.weapon.name, sub: ctx.weapon.system.subtype ?? "" });
@@ -263,7 +262,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
   const state = (name, label, cls, icon) =>
     `<label class="fxchip ${cls}" data-tooltip="${name === "favored" ? "Roll 3d12 and keep the two highest; any pair of the three is Doubles, three of a kind a Critical" : (defaults.doomedWhy ?? "Roll 3d12 and keep the two lowest")}"><input type="checkbox" name="${name}" ${(name === "doomed" && defaults.doomed) || (name === "favored" && defaults.favored) ? "checked" : ""}><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span></label>`;
   const stepChip = (name, label, icon, cls, n) =>
-    `<button type="button" class="bbchip ${cls} ${n ? "on" : ""}" data-bb="${name}" data-tooltip="Left-click: +1. Right-click: \u22121. ${name === "empowered" ? "Empowered N adds N to every damage die." : "Enfeebled N subtracts N from every damage die (each die still deals at least 1)."}${defaults.empowerWhy ? ` \u2014 ${defaults.empowerWhy}` : ""}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${name}" value="${n}">`;
+    `<button type="button" class="bbchip ${cls} ${n ? "on" : ""}" data-bb="${name}" data-tooltip="Left-click: +1. Right-click: \u22121. ${name === "empowered" ? "Empowered: the first damage on each of your turns adds 1d6! (v0.0.407)." : ""}${defaults.empowerWhy ? ` \u2014 ${defaults.empowerWhy}` : ""}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${name}" value="${n}">`;
   // v0.0.187: Bonus Damage from effects and passives (Killer's Focus) is a chip: unticked, it isn't added and its effect isn't used up.
   const bonusRow = bonusChips.length ? `<div class="rf-row"><span class="rf-label">Bonus</span>${bonusChips.map(b => `<label class="fxchip boon" data-tooltip="${esc(b.why ?? "")}"><input type="checkbox" name="bonusOn" value="${esc(b.key)}" checked><i class="fa-solid fa-sparkles"></i><span>${esc(b.text)}</span></label>`).join("")}</div>` : "";
   const special = [
@@ -271,7 +270,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
       ? `<label class="fxchip boon" data-tooltip="A powerful shot: Favored and Empowered 2. Afterwards the weapon must be reloaded before it is used again."><input type="checkbox" name="reloadshot"><i class="fa-solid fa-bullseye"></i><span>Reload shot</span></label>`
       : "",
     withDamage
-      ? `<span class="bbgroup">${stepChip("empowered", "Empowered", "up", "boon", defaults.empowerN ?? 0)}${stepChip("enfeebled", "Enfeebled", "down", "bane", defaults.enfeebleN ?? 0)}</span>`
+      ? `<span class="bbgroup">${stepChip("empowered", "Empowered", "up", "boon", defaults.empowerN ? 1 : 0)}</span>`
       : "",
     // v0.0.283 (pack chat-cards; book Ch. 4): switching a Lethal Action to Nonlethal (or back) costs a Bane on the roll; the damage message shows the tag
     withDamage && defaults.nlKnown
@@ -718,11 +717,14 @@ export async function useAction(actor, item, opts = {}) {
     if (wUse.long && band && band.squares <= 1) extraMods.push({ id: "syn:long", name: "Long weapon, adjacent", boons: 0, banes: 1, bb: "field", match: true, predicate: `${previewWeapon.name} is Long: 1 Field Bane against adjacent creatures` });
   }
   // Ranged Combat While Engaged: a [Ranged] Action (a ranged Weapon Action, or any Action with the Ranged trait) while you are Engaged has 2 banes; against an Engaged creature, 1 bane (v0.0.169).
+  // v0.0.407 (Stage 0 in Foundry; book, Chapter 3): while you are Engaged it is Doomed (roundrules.mjs ENGAGED_RANGED_DOOMED); "Ignore a Bane" (the Engaged Banes) still takes it away.
   const rangedWeapon = useTraits.has("ranged");
   // Flanking: [Melee] Actions gain a Field Boon for each other ally that flanks the target (the cancels first, then up to 2).
   if (useTraits.has("melee") && !multi && rollsAtOthers && selfToken && targetToken) { const fm = flankingMod(selfToken, targetToken, { na: true }); if (fm) extraMods.push(fm); }   // v0.0.302: no Flanking shows why (n/a)
   if (rangedWeapon && selfToken) {
-    if (isEngaged(selfToken) && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push({ id: "syn:engaged", name: "You are Engaged (2 Banes)", boons: 0, banes: 2, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
+    if (isEngaged(selfToken) && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push(ENGAGED_RANGED_DOOMED
+      ? { id: "syn:engaged", name: "You are Engaged (Doomed)", boons: 0, banes: 0, doomed: true, match: true, predicate: "A [Ranged] Action while you are Engaged is Doomed" }
+      : { id: "syn:engaged", name: `You are Engaged (${ENGAGED_RANGED_BANES} Banes)`, boons: 0, banes: ENGAGED_RANGED_BANES, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
     if (!multi && rollsAtOthers && targetToken && !noEngagedTarget.length && engagedWithOther(targetToken, selfToken))   // "Ignore a Bane" (Sharpshooter: [Shot] Actions)
       extraMods.push({
         id: "syn:engaged-target",
@@ -825,7 +827,8 @@ export async function useAction(actor, item, opts = {}) {
   }
   // The step the damage uses: the two chips (Empowered and Enfeebled; the player can change them, they start at the highest value that effects and conditions give), and a Reload shot is Empowered 2 by itself.
   const reloadShot = data.reloadshot === "on";
-  const damageStep = Math.max(Math.max(0, Math.trunc(Number(data.empowered)) || 0), reloadShot ? 2 : 0) - Math.max(0, Math.trunc(Number(data.enfeebled)) || 0);
+  // v0.0.407 (book, Chapter 8; Lucas, 2026-11-13): Empowered has no value (on: 1) and Enfeebled is gone (its old values are ignored)
+  const damageStep = (Math.trunc(Number(data.empowered)) || 0) > 0 || reloadShot ? 1 : 0;
   const talentMods = talentModsFor(actor, item);
   let version = applyTalentMods(versions.find(v => v.ap === Number(data.ap)), talentMods);
   // v0.0.264 (Lucas): a Grant's "On [a result], the card says [line]" goes on the granted use's card rows (freeuse.mjs withGrantLine)
@@ -1125,6 +1128,7 @@ export async function useAction(actor, item, opts = {}) {
           crit: !!chk?.crit, areaPoint: areaOutcome?.point ?? null,   // v0.0.249: the chain after the damage reads them (Prone on a Critical, a Push from the area's center)
           after: version.after ?? "", noTiers: !!version.noTiers,   // v0.0.250: a no-damage Version's chain runs from the card's Apply buttons
           weaponId: weapon?.id ?? "",
+          thrown: !!wUse?.thrown,   // v0.0.407 (book, Chapter 15, Thrown): thrown, its [W] deals 1 less on Tiers 2 and 3
           mode: opts.splitMode ?? "",
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
           isWeapon: modOnWeapon(src, useTraits),
@@ -1302,6 +1306,8 @@ export async function rollDamage(message, { again = false } = {}) {
   const version = item?.system.versions.find(v => v.ap === f.ap && (!f.mode || v.mode === f.mode));
   if (!version) return ui.notifications.warn("The action or version no longer exists.");
   const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
+  const empOn = stepOf(f.empowered) > 0 && empoweredNow(actor);   // v0.0.407: Empowered's 1d6!, once a turn (explode.mjs)
+  let empUsed = false;
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
     const insts = [...version[`t${tier}`], ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
@@ -1309,7 +1315,7 @@ export async function rollDamage(message, { again = false } = {}) {
     const fx = [...[...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => !f.fxOnUse || x.mode !== "auto"), ...riders];   // cards from v0.0.144 on applied their automatic effects when the Action was used (v0.0.283: riders wait for the damage)
     const rolls = [];
-    const ctx = { weapon, tier: tier, attrVal: f.attrVal, rolls, empowered: stepOf(f.empowered) };
+    const ctx = { weapon, tier: tier, attrVal: f.attrVal, rolls, empowered: stepOf(f.empowered), thrown: !!f.thrown };
     const resolved = [];
     for (const inst of insts) resolved.push(await resolveInstance(inst, ctx));
     const comps = [];
@@ -1325,6 +1331,8 @@ export async function rollDamage(message, { again = false } = {}) {
       comps.push({ pool, sub, kind: "A", formula: "", total: f.attrVal, dice: [], hidden: true, label: String(f.attrLabel || "Modifier").replace(/\s*Modifier$/i, "") || "Modifier" });   // v0.0.283: a visible line of the damage breakdown
       chip = `<div class="chips"><span class="chip">${esc(f.attrLabel || "Modifier")} +${f.attrVal}</span></div>`;
     }
+    // v0.0.407 (Stage 0 in Foundry; book, Chapter 8, Empowered): the first damage the creature deals on each of its turns adds 1d6! of the Action's pool and type
+    if (empOn && !again) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls) : null; if (ec) { comps.push(ec); empUsed = true; } }
     // v0.0.283: the Tier's riders as the card shows them (its text after the damage, its effects' names)
     const riderHtml = [];
     const xt = expandAsText(version[`x${tier}`], item.system.versions, version, tier);
@@ -1355,6 +1363,7 @@ export async function rollDamage(message, { again = false } = {}) {
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
     await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
+  if (empUsed) await markEmpoweredUsed(actor);
   // (the card is no longer collapsed: v0.0.388, the damage is on it)
 }
 

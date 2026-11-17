@@ -69,7 +69,7 @@ export async function healAtTurnStart(combatant) {
     if (!a.rows.heal.on || !isIn(a, cells) || !reaches(a, a.rows.heal, td)) continue;
     const o = actorOf(a.originUuid) ?? actor, f = evalFormula(a.rows.heal.formula, { origin: refValues(o), target: refValues(actor) }, { dice: true });
     if (!f.ok || !String(f.value).trim()) continue;
-    const roll = await new Roll(String(f.value)).evaluate();
+    const roll = await (await import("./explode.mjs")).bookRoll(String(f.value)).evaluate();   // v0.0.407: a die written with ! explodes
     try { const { showDice } = await import("./roll.mjs"); await showDice([roll]); } catch (e) { /* no dice */ }
     const { sysLine } = await import("./sysmsg.mjs");
     await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-medical", `<b>${esc(a.name)}</b>: <b>${esc(actor.name)}</b> heals <b>${roll.total}</b> (${esc(a.rows.heal.formula)}) at the start of its turn.`, "zoneheal") });

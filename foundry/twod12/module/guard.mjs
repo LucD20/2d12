@@ -5,8 +5,8 @@
 // Guard, damage takes it first, and it ends when the AP are regained (combat.mjs); a kept AP that pays a Reaction loses its Guard.
 import { TWOD12 } from "./config.mjs";
 
-/** The Guard one unspent AP gives at a Stage (1, 2, 3): 2 / 3 / 4. */
-export const guardPerAP = stage => TWOD12.guardPerAp[Math.min(3, Math.max(1, Math.trunc(Number(stage)) || 1)) - 1];
+/** The Guard one unspent AP gives at a Stage (0, 1, 2, 3; v0.0.407): 2 / 2 / 3 / 4. */
+export const guardPerAP = stage => TWOD12.guardPerAp[Math.min(3, Math.max(0, Math.trunc(Number(stage)) || 0))];
 /** The Guard of the AP kept at the end of a turn. */
 export const apGuardOf = (keptAp, stage) => Math.max(0, Math.trunc(Number(keptAp)) || 0) * guardPerAP(stage);
 /** A kept AP paid for a Reaction: its Guard goes (one AP's worth per AP, never under 0). */

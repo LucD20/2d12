@@ -2,7 +2,7 @@
 //   Every number is a row: its rating chips (each showing the table's value), the result, and how it was found. A row can be Custom (the typed number).
 //   The Basic attack and Special Actions are a reference only: the damage a rating gives, with dice that come close; the Actions are written by hand.
 //   The check at the bottom only informs (the ratings are guidance).
-import { TWOD12, npcHm, npcDamage, stageOf } from "./config.mjs";
+import { TWOD12, npcHm, npcDamage, stageOf, npcRoleRow } from "./config.mjs";
 import { npcBuild } from "./data.mjs";
 
 const sg = v => (v >= 0 ? `+${v}` : `\u2212${Math.abs(v)}`);
@@ -13,7 +13,7 @@ export { diceFor };
 const withMod = d => (d ? `${d} + [Mod]` : "[Mod]");
 
 /** "Stage 2 (levels 5-7)". */
-export const stageLabel = n => { const st = TWOD12.stages[n - 1] ?? TWOD12.stages[0]; return `Stage ${st.n} (levels ${st.from}-${st.to})`; };
+export const stageLabel = n => { const st = TWOD12.stages.find(x => x.n === Number(n)) ?? TWOD12.stages[0]; return `Stage ${st.n} (levels ${st.from}-${st.to})`; };
 /** The CV tooltip (v0.0.181): a normal fight is CV 100 a PC; an NPC of an earlier Stage than the party counts for less. */
 export const cvTip = role => `Combat Value: what it counts for in an encounter. A normal fight is CV 100 a PC (75 easy, 125 hard, 150 deadly). `
   + `Against a party of its Stage: ${role.cv[0]}; one Stage above it: ${role.cv[1]}; two Stages above it: ${role.cv[2]}`;
@@ -89,7 +89,7 @@ export function npcBuilderContext(actor) {
       return { label: R[r].label, avg: `${fmt(t2)} / ${fmt(t3)}`, dice: `${withMod(diceFor(t2 - wm))} / ${withMod(diceFor(t3 - wm))}` }; }) }));
 
   // The check (informs only). v0.0.181: a later Stage's PC deals more, as much as the tables' Health grows (the Standard's Medium multiplier).
-  const stage = stageOf(s.level), sh = TWOD12.npcRoles.standard.hm, pcGrow = sh[stage - 1][2] / sh[0][2];
+  const stage = stageOf(s.level), sh = TWOD12.npcRoles.standard.hm, pcGrow = sh[npcRoleRow(stage)][2] / sh[0][2];
   const pcAt = d => TWOD12.pcDamageVsDefense[Math.min(16, Math.max(11, d))] * pcGrow;
   const pool = Math.max(0, nb.bdt) + Math.max(0, nb.mdt), pcDmg = (pcAt(nb.armorDef) + pcAt(nb.wardDef)) / 2;
   const rated = Object.keys(R).length && ["body", "mind", "appeal", "instinct", "bodyHm", "mindHm", "ad", "wd"].map(k => nb.rating(k));

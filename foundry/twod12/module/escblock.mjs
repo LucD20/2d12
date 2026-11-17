@@ -2,7 +2,7 @@
 // Favorites tabs' lists. This file builds their data; actor-sheets.mjs renders it with the sheet's own Action rows.
 //   Granted: one ticket per granted use (an effect's Grant setting: Double Shot, Pinning Shot, Twin Shot): uses left, cost, source and
 //     duration, what it adds (different targets, Boons, the source's Bonus Damage and riders).
-//   Escalation: a ladder of rungs 3, 2, 1. Each rung lists the Escalation Passives whose threshold is that number (Active, Ready, Used,
+//   Escalation: a ladder of rungs 6 down to 1 (v0.0.407; only the rungs with something show). Each rung lists the Escalation Passives whose threshold is that number (Active, Ready, Used,
 //     greyed below it) and the Escalation Actions (the Apex) that need that level (greyed until the level is reached or while their Frequency is used;
 //     nothing is spent since pack R, v0.0.243).
 import { passiveSources } from "./passives.mjs";
@@ -67,7 +67,7 @@ export function escalationModel(actor, { actionRow, isFaded, open = null, openPa
   const passives = (actor.itemTypes?.feature ?? []).filter(f => isEscPassive(f, cls));
   const actives = (actor.itemTypes?.action ?? []).filter(i => Number(i.system?.escalation) > 0);
   const down = !!actor.statuses?.has?.("unconscious");
-  const rungs = [3, 2, 1].map(n => ({
+  const rungs = Array.from({ length: TWOD12.escalation.max }, (x, k) => TWOD12.escalation.max - k).map(n => ({   // v0.0.407: 6 to 1
     n, lit: now >= n,
     passives: passives.filter(p => passiveThreshold(p, cls) === n).map(p => {
       const state = passiveState(actor, p, now);
@@ -85,7 +85,7 @@ export function escalationModel(actor, { actionRow, isFaded, open = null, openPa
   })).map(r => ({ ...r, any: r.passives.length + r.actives.length > 0 }));
   const show = passives.length + actives.length > 0;
   const started = !!globalThis.game?.combat?.started;
-  return { show, now, pips: [1, 2, 3].map(k => ({ on: now >= k })), open: open ?? started, rungs: rungs.filter(r => r.any) };
+  return { show, now, pips: Array.from({ length: TWOD12.escalation.max }, (x, k) => ({ on: now >= k + 1 })), open: open ?? started, rungs: rungs.filter(r => r.any) };
 }
 
 /* ------------------------------------------------------------------ Granted */
