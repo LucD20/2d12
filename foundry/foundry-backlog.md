@@ -55,6 +55,11 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] **BUILT v0.0.412.** **The weapon property Light** (the Dagger and the Handaxe).
 - [ ] **Line of Effect for every effect:** whatever an Action or a feature does to a creature needs Line of Effect to it (not only its targets); a part with no line is skipped and the rest happens.
 
+## PLAYTEST 5 (Lucas, 2026-11-17; book/playtest-5.md, the notes A1 to H1 and the log's points; under review, nothing built)
+- [ ] **The Encounter Log (from the log's review):** the damage table splits damage to enemies from damage to allies (Lucas: "good idea"); creatures of the same name are numbered (GS1, GS2...); a Setup's movement is written as part of its Action ("Strafe (Setup: Advance 2)"); an area skips a creature that is out of the fight.
+- [ ] **A Reaction's condition not applied:** Rebuke's Hindered (G8) and Snap Shot's Hindered (G3): the Orc moved 4 more squares while it should have been Hindered.
+- [ ] **Minions' shared slot** (Bestiary: up to 3 Minions act in one turn slot, each with its own AP): does the combat tracker group them? (asked)
+
 ## CARD-ONE: one card for every place it shows (Lucas, 2026-11-17: "make sure in the future we don't have this problem anymore"; the draft's recommendations, all accepted: "All recommended, start")
 **Why:** five builders decided what a card shows (the book's Python, `actioncard.mjs`, `actions.mjs attackModelParts` for the roll dialog and the chat result, `statblock.mjs`, the old `preview.mjs`), each with its own CSS, and the surfaces' own CSS leaks into a card; the tests read the source, not what is drawn. **Decided:** the roll dialog and the chat result show the card's parts in the card's order, in a tighter layout; the stat block keeps its printed look, drawn from the model; the book: a parity test now, the shared model later; the screenshots are committed.
 - [x] **Step 1, the gallery (v0.0.416):** `foundry/gallery/` (README): every compendium card in the sheet, chat, tooltip and HUD markup, dark and light, the solo card, and the book's (`book/card-gallery.html`); `tools/gallery/shoot.mjs` (48 shots, 11 MB of JPEG; a label color change is caught on every card).

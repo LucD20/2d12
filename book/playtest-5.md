@@ -36,6 +36,19 @@ Knife, BF Break Free, SY Steel Yourself.
 **Damage dealt (total / per round), from the Encounter Log:** Ogre Chieftain 71 / 35.5; Kaela 29 / 14.5; Aveline 20 / 10; Sylwen 17 / 8.5; Orc
 Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin Sneak 3 / 1.5.
 
+## 1b. The log's review: Lucas's answers (2026-11-17)
+1. **Ground Slam hits the Ogre's own allies:** yes, it should (the card stays). Foundry: the Encounter Log's damage table splits damage to
+   enemies from damage to allies (the Ogre's 71 was mostly its own Goblins and the Wisp).
+2. **The Orc moved 4 while Hindered (Rebuke):** the Hindered wasn't applied, so Lucas didn't track it: Foundry, with G3 (a Reaction's
+   condition not applied). Added as **G8**: Rebuke's Hindered (EoT) didn't apply.
+3. **Two Paladins Judge the same creature:** they stack: "technically different effects, since each applies to a single creature using it; the
+   same name but different" (Judged by Aveline and Judged by Durgan). The book says it (Stacking today: "the same effect never stacks with
+   itself"); the open point: does the Ogre's first damage to an ally near both get both reductions? (asked)
+4. **Minions sharing a slot:** each Minion still has its own 3 AP (Claude didn't mean otherwise: the point was the turn order, 6 enemy slots
+   against 4 instead of 4 against 4); whether Foundry groups them (asked again).
+5. **Kaela's "Advance 2":** Strafe's Setup. Foundry: the Encounter Log writes a Setup's movement as part of its Action ("Strafe (Setup: Advance
+   2)"), and numbers creatures of the same name (GS1, GS2...); an area skips a creature that is out of the fight.
+
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 
 ### A. Cards (what a card says)
@@ -102,6 +115,7 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
 - **G5** Slip Away: its Advance button opens the book's rule instead of giving the movement.
 - **G6** Slip Away: an Evade 1 wasn't counted ("Kaela ends the movement. 1 free square unused." after moving 1).
 - **G7** Ground Slam gives every creature Cover on its Body Save.
+- **G8** (from the log) Rebuke's Hindered (EoT) didn't apply, so the Orc moved 4 more squares in round 2.
 
 ### H. Rules and settings
 - **H1** Apply Steadiness without asking; ask only when the Forced Movement is on an ally.
