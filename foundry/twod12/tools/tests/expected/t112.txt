@@ -6,7 +6,7 @@ Level 2: Talent (talent, pick 1)
 Level 3: Talent (talent, pick 1)
 Level 4: Talent (talent, pick 1)
 Repertoire: Holy Wrath, Word of Radiance, Bulwark of Faith, Beacon, Consecrated Ground, Miraculous Recovery, Divine Intervention | Escalation: Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance / Final Verdict, Hallowed Dawn
-pick Features gone: true | Health high 20 / low 10 (Stage 1 +12 / +6)
+pick Features gone: true | Health high 20 / low 10 (Stage 1 +0 / +0)
 --- the cards
 Smite: divine,signature,strike,weapon | 1 AP 1[W] / 1[W]+1d6 Ho / 1[W]+1d8 Ho || 2 AP 1[W]+1d6 Ho / 1[W]+2d6 Ho / 1[W]+2d10 Ho || 3 AP 1[W]+1d8 Ho / 1[W]+2d8 Ho / 1[W]+3d8 Ho
 Smite 3 AP effects: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to @UUID[Compendium.twod12.actions.Item.vq0nKfKlyhogs75E]{Hide}, for 1 round. You or one ally in the Bright light gain @Guard[1d8+mod|s2:2d6+mod|s3:2d8+mod]{Guard 1d8 + [Mod]}. The other creatures in the light, you excepted, are @Move[pushed|distance:1], away from the target.

@@ -114,7 +114,7 @@ export function registerMigrationMod() {
 // v0.0.407 (pack "Stage 0 in Foundry"; book, the pack "Stage 0 into the book"): an existing world brought to Stage 0 once, by the GM, after a
 // question in the system's window (Migrate / Later; asked again at the next load after Later; also game.twod12.migrateS0()). What it does: the
 // party's Momentum becomes a number (an old "on" is 1); the items are updated from the compendium (refresh.mjs: the weapons' new damage, the
-// classes without the level 3 Daily Pick and with their Health steps a Stage down, the Empowered condition, the Basic Actions without Opportunity
+// classes without the level 3 Daily Pick and with their Health steps at 0 (not written yet), the Empowered condition, the Basic Actions without Opportunity
 // Attack); every Escalation is kept within 1 to 6. Nothing is deleted: Talents (set aside), Daily Picks taken at Stage 0 and an Enfeebled effect stay
 // on the sheets, and the GM's card lists them to remove by hand. NPCs need nothing: at Stage 0 their Health and Defenses come from the Bestiary's
 // new tables by themselves; the card says that their Actions no longer add the Modifier to the damage.

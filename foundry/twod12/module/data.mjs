@@ -353,14 +353,12 @@ export class SpeciesData extends foundry.abstract.TypeDataModel {
 }
 /**
  * v0.0.407 (Stage 0 in Foundry; book, Chapter 5): a class copy saved before the Stages moved (Stage 1 was levels 1-4, Stage 2 5-7, Stage 3 8-10) has
- * Health steps at Stages 2 and 3 and none at Stage 1: they move one Stage down (the old Stage 2 step at the new Stage 1, the old Stage 3 step at
- * Stage 2, none at Stage 3 until the book writes it), so a character keeps its Health at about the same levels. Only a copy with no stepHigh1 key.
+ * Health steps at Stages 2 and 3 and none at Stage 1. v0.0.408 (Lucas, 2026-11-17: "0 until written"): the book hasn't written the steps of Stages 1
+ * to 3 yet, so every step is 0 until it does (pack R's steps are not carried over). Only a copy with no stepHigh1 key.
  */
 export function migrateClassSteps(source) {
   if (!source || typeof source !== "object" || "stepHigh1" in source || !("stepHigh2" in source || "stepLow2" in source)) return source;
-  source.stepHigh1 = source.stepHigh2 ?? 0; source.stepLow1 = source.stepLow2 ?? 0;
-  source.stepHigh2 = source.stepHigh3 ?? 0; source.stepLow2 = source.stepLow3 ?? 0;
-  source.stepHigh3 = 0; source.stepLow3 = 0;
+  for (const n of [1, 2, 3]) { source[`stepHigh${n}`] = 0; source[`stepLow${n}`] = 0; }
   return source;
 }
 
@@ -372,7 +370,7 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       // bodyMult / mindMult: the Health multipliers of a class from before pack R (kept so an old copy still computes until it is updated).
       bodyMult: new NumberField({ required: true, nullable: false, initial: 0, min: 0, step: 0.5 }), mindMult: new NumberField({ required: true, nullable: false, initial: 0, min: 0, step: 0.5 }), rallyMod: sint(), speedMod: sint(),
       // v0.0.243 (pack R; book, Chapter 4): the class's high and low Health values and the steps each grows by at Stages 1, 2 and 3 (v0.0.407: Stages 0
-      // to 3; the book hasn't set the later steps yet: the Paladin keeps pack R's +12 / +6 and +14 / +7 at Stages 1 and 2, ClassData.migrateData).
+      // to 3; v0.0.408: all 0 until the book writes them, Lucas 2026-11-17).
       healthHigh: int(0, 0), healthLow: int(0, 0), stepHigh1: int(0, 0), stepLow1: int(0, 0), stepHigh2: int(0, 0), stepLow2: int(0, 0), stepHigh3: int(0, 0), stepLow3: int(0, 0),
       weaponAttrs: attrSet(), magicAttrs: attrSet(),
       features: new ArrayField(new SchemaField({ uuid: str(), level: int(1, 0) })),
@@ -396,7 +394,7 @@ export class ClassData extends foundry.abstract.TypeDataModel {
       chosenAttrs: new ArrayField(str())   // on a character's copy: every Attribute increase chosen in the class window, level by level
     };
   }
-  static migrateData(source) { migrateClassSteps(source); return super.migrateData(source); }   // v0.0.407: the Health steps one Stage down
+  static migrateData(source) { migrateClassSteps(source); return super.migrateData(source); }   // v0.0.408: an old copy's Health steps to 0 (not written yet)
 }
 
 export class FeatureData extends foundry.abstract.TypeDataModel {

@@ -7,7 +7,7 @@
 <div class="statblock">
 <div class="sbt">The Archer at a glance</div>
 <div class="sbr"><span class="lbl">Attributes</span><span>Body or Instinct +1, Mind or Appeal +1</span></div>
-<div class="sbr"><span class="lbl">Health</span><span>high 16, low 8 (Stage 2: +9 / +5; Stage 3: +11 / +6)</span></div>
+<div class="sbr"><span class="lbl">Health</span><span>high 16, low 8 (the Stage steps come with the later levels)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>5</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+1</span></div>
 <div class="sbr"><span class="lbl">Modifiers</span><span>Weapon Modifier +2, Power Modifier +1</span></div>

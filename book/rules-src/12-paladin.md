@@ -7,7 +7,7 @@
 <div class="statblock">
 <div class="sbt">The Paladin at a glance</div>
 <div class="sbr"><span class="lbl">Attributes</span><span>Body or Appeal +1, Mind or Instinct +1</span></div>
-<div class="sbr"><span class="lbl">Health</span><span>high 20, low 10 (Stage 2: +12 / +6; Stage 3: +14 / +7)</span></div>
+<div class="sbr"><span class="lbl">Health</span><span>high 20, low 10 (the Stage steps come with the later levels)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>6</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+0</span></div>
 <div class="sbr"><span class="lbl">Modifiers</span><span>Weapon Modifier +1, Power Modifier +2</span></div>

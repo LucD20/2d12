@@ -182,7 +182,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     if (missing.length) m.complete = false;
     const dots = Array.from({ length: m.total }, (_, i) => `<i class="${i < m.made ? "on" : ""}"></i>`).join("");
     const hv = this.healthHigh === "resolve" ? ["Resolve", "Vigor"] : ["Vigor", "Resolve"];
-    const stats = [["Health", cls.healthHigh ? `${hv[0]} ${cls.healthHigh}, ${hv[1]} ${cls.healthLow} (Stage 1 +${cls.stepHigh1 ?? 0} / +${cls.stepLow1 ?? 0}; Stage 2 +${cls.stepHigh2} / +${cls.stepLow2}; Stage 3 +${cls.stepHigh3} / +${cls.stepLow3})` : `Body ×${cls.bodyMult}, Mind ×${cls.mindMult} (old)`], ["Rally", `${cls.rallyMod} + Stage`], ["Speed", `${cls.speedMod >= 0 ? "+" : "−"}${Math.abs(cls.speedMod)}`], ["Armor Training", TWOD12.armorTrainings[cls.armorTraining] ?? cls.armorTraining]];
+    const stats = [["Health", cls.healthHigh ? `${hv[0]} ${cls.healthHigh}, ${hv[1]} ${cls.healthLow} ${[1, 2, 3].some(n => cls[`stepHigh${n}`] || cls[`stepLow${n}`]) ? `(Stage 1 +${cls.stepHigh1 ?? 0} / +${cls.stepLow1 ?? 0}; Stage 2 +${cls.stepHigh2} / +${cls.stepLow2}; Stage 3 +${cls.stepHigh3} / +${cls.stepLow3})` : "(the Stage steps aren't written yet)"}` : `Body ×${cls.bodyMult}, Mind ×${cls.mindMult} (old)`], ["Rally", `${cls.rallyMod} + Stage`], ["Speed", `${cls.speedMod >= 0 ? "+" : "−"}${Math.abs(cls.speedMod)}`], ["Armor Training", TWOD12.armorTrainings[cls.armorTraining] ?? cls.armorTraining]];
     const left = m.total - m.made, stage = stageLine(level);
     const div = document.createElement("div");
     div.className = "cw";

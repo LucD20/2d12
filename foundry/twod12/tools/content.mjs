@@ -201,7 +201,7 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>A holy warrior.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
   // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10, then pack R's steps +12 / +6 and +14 / +7, at Stages 1 and 2 since v0.0.407
   // (the book hasn't set the later Stages' steps yet); Rally 6 (+ 1 / 2 / 3 / 4 by Stage).
-  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh1: 12, stepLow1: 6, stepHigh2: 14, stepLow2: 7, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
+  choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
   // v0.0.305 (pack MOD; book, the Paladin's stat box): the Modifiers are +2 and +1, the player chooses which is the Weapon Modifier (no Attribute lists).
   modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "heavy", features: [],
   repertoire: U(["Holy Wrath", "Word of Radiance", "Bulwark of Faith", "Beacon", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_APEX),
@@ -223,7 +223,7 @@ const ARC_PASSIVES = [...ARC_PASS1, ...ARC_PASS2, ...ARC_PASS3];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
   // Pack R (v0.0.243): high 16 / low 8, then +9 / +5 and +11 / +6 (at Stages 1 and 2 since v0.0.407); Rally 5 (+ 1 / 2 / 3 / 4 by Stage).
-  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh1: 9, stepLow1: 5, stepHigh2: 11, stepLow2: 6, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 5,
+  choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 5,
   // v0.0.305 (pack MOD; book, the Archer's stat box): Weapon +2, Power +1, fixed.
   modHigh: 2, modLow: 1, modOrder: "weapon", armorTraining: "medium", speedMod: 1, features: [],
   repertoire: U(["Marksman's Shot", "Volley", "Covering Fire", "Pinning Shot", "Twin Shot", "Hunter's Focus", "Deadeye", "Rain of Arrows"]), escPassives: U(ARC_PASSIVES), escActives: U(ARC_APEX),
