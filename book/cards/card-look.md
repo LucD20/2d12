@@ -213,4 +213,19 @@ A sample of Chapter 2 in the decided look: `book/cards/look-desk/page.html`, the
 
 **For Lucas:** yes, or the numbers to change; and the ornament and drop cap (drop, or keep).
 
+**Lucas's answer (2026-11-17): "Looks good." DECIDED: the page as proposed (1 to 9), and Claude's default for the open point: the class documents' ornament and drop cap are dropped.**
+
+## Decision 5: dark mode (PROPOSED 2026-11-17, waiting for Lucas)
+
+Today the book follows the reader's system setting (light or dark) and has no switch of its own. The research: dark text on light reads faster for normal vision, more so at small sizes, but many readers choose dark anyway (a Google study, 2023: light "read reliably faster", not preferred); designers advise light by default and a switch; light text on dark looks heavier, so dark wants a slightly lighter weight; pure white on pure black glares.
+
+1. **Light by default; dark when the reader's system asks for it,** and a plain switch ("Light · Dark") in the contents column that overrides it, remembered in the browser.
+2. **Dark colors:** a warm near-black page (#1c1a17), not pure black; text off-white (#e9e3d6), not pure white; the card's panel a step lighter (#25221d); rules and hairlines dimmer; the bronze lighter (#d2a75a, 7.1:1 on the panel); the pool colors' light twins ([V] #ef8a96, [R] #8db3ff).
+3. **Text a little lighter in dark:** Source Serif 4 is variable, so the body goes from weight 400 to about 360 in dark (the cards' sans, which is static from Google, stays).
+4. **Print is always light,** whatever the screen shows, and prints every card open.
+
+The sample page follows the reader's setting: switch the device to dark to see it.
+
+**For Lucas:** yes, or changes.
+
 **Lucas's answer:**
