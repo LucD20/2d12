@@ -82,6 +82,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
 ## v0.0.397 (2026-11-17, branch `pack-hud-remake`): TO TEST. The roll dialog as a card; the questions in the HUD; the area after the dialog
+- **The damage part of a card with several targets (Lucas: "way too long, repeating features multiple times. Make a new mockup"):** **PROPOSED** in `foundry/mockups/multi-damage.html` (the artifact "Multi-Target Damage Card"; CSS `multi-damage.css`): the roll once, one group a Tier (its damage on its line, Apply all, riders), each creature once under its Tier (Guard, sliders, Apply / Undo), the ladders on demand. Waiting for Lucas.
 - [ ] **The roll dialog** (Heartseeker, Smite, a Save Action like Rebuke, a Reaction): the card part (name and cost, Flavor, traits, Distance / Target, Attack or Save, Tier lines, Critical, Effects); the bonuses green with their source; the GM: click "Tier 2" to force it (again: back to rolling). The roll part as before.
 - [ ] **The ladder:** one line, each Tier's range and chance side by side, muted colors (dark and light).
 - [ ] **Word of Radiance:** the dialog opens first (no "which version?" bar); 2 AP / 3 AP changes "◇ 2 Burst" / "◇ 3 Burst"; press Roll: place the area; the roll happens with the dialog's choices (Boons you added kept). The "◇ 3 Burst" button: place it now, the dialog comes back with the creatures.
