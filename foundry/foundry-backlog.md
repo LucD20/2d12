@@ -81,7 +81,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
-## v0.0.406 (2026-11-17, branch `pack-hud-remake`): TO TEST
+## v0.0.406 (2026-11-17, branch `pack-hud-remake`): TESTED, MERGED (Lucas: "All works except momentum, but we can leave this for later, after stage 0"). **Momentum in the combat strip: moved to STAGE 0 IN FOUNDRY** (the 0-4 counter replaces the switch; show it in the strip and the party strip)
 - [ ] **Select and deselect a token several times:** nothing in the HUD's frame, the players box or the hotbar moves; the party cards fill the same height.
 - [ ] **Apply Unconscious (and another condition) to the selected creature:** the HUD updates once, without flickering.
 

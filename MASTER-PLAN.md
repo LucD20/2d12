@@ -37,9 +37,9 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 | ID | What | Size | Depends on |
 |---|---|---|---|
 | X | After the design sessions: Mastery and Gear (D2's list for X: foundry-backlog.md), Skills, Magic in the system | XL | D2 (done), D3, D4 |
-| STY3 | **BUILT: v0.0.387 (to test; branch `pack-foundry-style`).** Foundry's style fits the book: the type, the theme following Foundry's color schemes, a color only for a meaning, palette A for the Tiers (`foundry/mockups/style-book.md`) | M | - |
-| ONE | **BUILT: v0.0.388 (to test; branch `pack-one-message`, from `pack-foundry-style`).** One message per Action: the damage written into the attack or Save card (foundry-backlog.md "v0.0.388") | M | STY3 |
-| HUD2 | **BUILT: v0.0.390 (to test; branch `pack-hud-remake`).** The HUD remake after his 4e module and the Reaction alert (`foundry/mockups/hud2-brief.md`; checklist: foundry-backlog.md "v0.0.390") | L | - |
+| STY3 | **DONE and merged (2026-11-17, v0.0.387 to v0.0.406 with ONE and HUD2; Lucas: "All works except momentum ... Merge").** Was: **BUILT: v0.0.387 (branch `pack-foundry-style`).** Foundry's style fits the book: the type, the theme following Foundry's color schemes, a color only for a meaning, palette A for the Tiers (`foundry/mockups/style-book.md`) | M | - |
+| ONE | **DONE and merged (2026-11-17, with STY3 and HUD2).** Was: **BUILT: v0.0.388 (branch `pack-one-message`).** One message per Action: the damage written into the attack or Save card (foundry-backlog.md "v0.0.388") | M | STY3 |
+| HUD2 | **DONE and merged (2026-11-17, v0.0.390 to v0.0.406: the HUD, the roll dialog as a card, the multi-target card, the questions in the HUD; Momentum in the strip left for Stage 0 in Foundry).** Was: **BUILT: v0.0.390 (branch `pack-hud-remake`).** The HUD remake after his 4e module and the Reaction alert (`foundry/mockups/hud2-brief.md`; checklist: foundry-backlog.md "v0.0.390") | L | - |
 | ACL | The Action card in the book's look (decided 2026-11-17, `foundry/mockups/card/`): with the Structure's Foundry pass (foundry-backlog.md "THE PALADIN'S REDESIGN IN FOUNDRY") | L | the Structure's pass |
 | W | **DONE: v0.0.208 (to test).** Fewer clicks for weapons: a button per hand (mockup foundry/mockups/weapon-hands-W.html) | M | - |
 | K | **DONE: v0.0.221.** Shortcuts (Shift+A/W/R/Q, Alt+1..9 Favorites) | S | - |
