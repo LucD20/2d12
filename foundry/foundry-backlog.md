@@ -81,9 +81,18 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
-## THE HUD REMAKE AND THE REACTION ALERT (Lucas, 2026-11-17; a draft, nothing built: `foundry/mockups/hud2-brief.md`, `foundry/mockups/hud2/index.html`)
-- [ ] **The Reaction alert** (Lucas: "it can pass unnoticed"): a chime for the players who can react, a ring and floating text on the reacting token, the HUD's Reactions tab pulsing; each a setting. Waits for the draft's answers.
-- [ ] **The HUD remake:** the party strip, the bar with tabs by kind and columns by Frequency (the draft's nine decisions).
+## v0.0.390 (pack HUD2, 2026-11-17, branch `pack-hud-remake`): TO TEST. The HUD remade and the Reaction alert (the draft and the twelve decisions: `foundry/mockups/hud2-brief.md`)
+- [ ] **Nothing selected:** the party strip, a card per player character (a player sees it too); Momentum at the left when the GM has it on; a click selects that token; a double click opens the sheet. Select several tokens: their cards.
+- [ ] **A token selected:** its bar. The two bars (Nonlethal hatched), Guard, Rally with Steel Yourself, AP and Escalation in combat, the bottom row (AD, WD, Speed, Weapon, Bo, Mi, Ap, In: click an Attribute for a Check, Shift for a Save).
+- [ ] **The tabs** (Actions, Reactions, Basic, Escalation; an NPC: Attacks, Reactions, Basic), their counts, the columns by Frequency; click a line: the roll dialog on its first usable Version; click a stamp: that Version; right-click a line: the Action card; "+N more" in Basic.
+- [ ] **Granted uses:** an Effect that lets you use an Action (Double Shot): a "Granted" column with "Weapon Attack ×2"; click: it is used.
+- [ ] **AP above 4:** Quickened 1 (5 squares), an effect that gives AP past the maximum (more squares, the same look); Slowed 1: a struck square; a second Reaction AP (Tireless Vigil, when Foundry has it): two diamonds.
+- [ ] **Right-click** AP, Rally or Escalation: −1; Shift + right-click: +1.
+- [ ] **Fold** (the arrow at the portrait's corner): one line; it stays folded for you; a Reaction unfolds it.
+- [ ] **A Reaction waiting for you:** a soft chime (Foundry's interface volume), the Reaction's name over your token, the HUD on that creature's Reactions tab with the trigger and Use / Pass (the GM: when that creature's bar is open). Each a setting in Configure Settings.
+- [ ] **The carousel:** squares, a diamond and slashes with hairlines (the same on and off turn; frozen: dashed), "Acting" / "Foe" in plain words, Bloodied / Strained / Down under the names, "· Momentum" beside the round.
+- [ ] **Light theme** (Interface Light): the HUD and the strip in the light colors.
+- Known: Foundry's Escalation still tops at 3 and Momentum is on/off (the book now says 6 and 0 to 4): the HUD reads the system's maximum, so it follows when that pass is done. The old HUD builders in `hudmodel.mjs` (the Quick slots, the categories) are no longer drawn: to delete with their test (t252) once Lucas confirms.
 
 ## THE PALADIN'S REDESIGN IN FOUNDRY: what the system must follow (the book changed on 2026-11-16; nothing below is built; wait for Lucas's word)
 The book: `rules-src/12-paladin.md`, the cards in `book/cards/stage0/paladin.json`, the rules in rules-backlog.md "THE PALADIN'S REDESIGN AND THE CARD STRUCTURE: APPLIED TO THE BOOK".

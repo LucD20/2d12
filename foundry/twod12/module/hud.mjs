@@ -3,10 +3,11 @@
 // it). A Version's stamp opens the roll dialog on that Version ("Skip roll dialog", a per-player setting, rolls at once; Shift does the other);
 // right-click opens the Action card (a PC's menu also pins the Version to the Quick row). The hotbar becomes a row inside it (a setting), and the
 // pick bar (pickbar.mjs) asks its question in the HUD's middle while a choice waits. Client settings: Show the HUD, Skip roll dialog, Hotbar in the HUD.
-import { npcHudHtml, pcHudHtml, listHudHtml, emptyHudHtml, hudPanelHtml, HUD_SAVES } from "./hudmodel.mjs";
+import { emptyHudHtml, hudPanelHtml, HUD_SAVES } from "./hudmodel.mjs";
+import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, HUD_TABS_PC, HUD_TABS_NPC, FREQ_ORDER, FREQ_LABEL } from "./hudview.mjs";
 
 const F = "twod12";
-const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "" };
+const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set() };
 let root = null, timer = null;
 const setting = (k, d) => { try { return game.settings.get(F, k); } catch (e) { return d; } };
 
@@ -15,9 +16,36 @@ export function registerHudSettings() {
   game.settings.register(F, "hudShow", { name: "The HUD", hint: "The bar across the bottom of the screen for the selected token: its Actions, one click to the roll dialog. Only for you.", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
   game.settings.register(F, "hudSkipDialog", { name: "HUD: Skip roll dialog", hint: "A Version clicked in the HUD rolls at once with the roll dialog's defaults (it still shows when something stops the roll). Shift-click does the other.", scope: "client", config: true, type: Boolean, default: false });
   game.settings.register(F, "hudHotbar", { name: "HUD: the hotbar inside it", hint: "The macro hotbar becomes a small row at the HUD's right end. Off: Foundry keeps it where it was (reload to see it move back).", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
+  // v0.0.390 (PACK HUD2): the party strip, the fold, and the Reaction alert (Lucas: "it can pass unnoticed"), each its own setting
+  game.settings.register(F, "hudParty", { name: "HUD: the party strip", hint: "With no token selected, a small card for each player character (AD, WD, Speed, Rally Points, AP, Escalation, Vigor and Resolve).", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
+  game.settings.register(F, "hudFolded", { name: "HUD folded", scope: "client", config: false, type: Boolean, default: false, onChange: redraw });
+  game.settings.register(F, "rxChime", { name: "Reactions: a chime", hint: "A short soft chime when one of your creatures can react (it follows Foundry's interface volume).", scope: "client", config: true, type: Boolean, default: true });
+  game.settings.register(F, "rxFloat", { name: "Reactions: the name on the map", hint: "The Reaction's name over your reacting token, with its ring, until it is used or passed.", scope: "client", config: true, type: Boolean, default: true });
+  game.settings.register(F, "rxHud", { name: "Reactions: the HUD", hint: "The HUD unfolds, opens its Reactions tab and names the trigger, with Use and Pass.", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
 }
 
 /* ------------------------------------------------------------------ the model */
+/** v0.0.390: the roll an Action makes, as the HUD's line says it: "Weapon +2 vs AD · Strike", and "next: +1 Bane" on an At-will Action already used this turn. */
+let RL = null;
+async function rollLibs() {
+  if (RL) return RL;
+  const [{ rollSource }, { vsText }, { modText }, { atWillUses }] = await Promise.all([import("./rollsource.mjs"), import("./config.mjs"), import("./cardview.mjs"), import("./usage.mjs")]);
+  return (RL = { rollSource, vsText, modText, atWillUses });
+}
+function rollLine(actor, item) {
+  if (!RL) return "";
+  try {
+    const it = item.system, src = RL.rollSource(actor.system ?? {}, it), vs = RL.vsText(it, { src });
+    const bits = [];
+    if (src?.kind && vs) bits.push(`${RL.modText(src.chip, src.mod)} vs ${vs}`);
+    else if (vs) bits.push(`vs ${vs}`);
+    if (it.traits?.has?.("strike")) bits.push("Strike");
+    const uses = game.combat?.started ? RL.atWillUses(actor, item) : 0;
+    if (uses > 0 && /atwill|at-will/i.test(String(it.frequency ?? ""))) bits.push(`next: +${uses} Bane`);
+    if (it.reaction && it.trigger) bits.push(String(it.trigger).replace(/<[^>]+>/g, ""));
+    return bits.join(" · ");
+  } catch (e) { return ""; }
+}
 const quickKeys = actor => new Set(actor?.getFlag?.(F, "hudQuick") ?? []);
 async function apNow(actor) {
   try {
@@ -41,30 +69,129 @@ async function actionsOf(actor) {
     const why = lock ? `Needs Escalation ${it.escalation}` : row?.offWhy ?? "";
     const list = vs.map((v, k) => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: lock || !!row?.off || !!btns[k]?.off, used: /used|spent/i.test(why), why: why || btns[k]?.why || "", fav: quick.has(`${i.id}:${v.ap}`) }))
       .filter(v => !onlyAps || onlyAps.includes(Number(v.ap)));
-    return { id: i.id, name: i.name, fq: FREQ_COLORS[freq] ?? FREQ_COLORS.none, dim: lock || (!!row?.off && list.every(v => v.off)), versions: list, pc: actor.type !== "npc",
+    return { id: i.id, name: i.name, freq: freq || "none", fq: FREQ_COLORS[freq] ?? FREQ_COLORS.none, roll: rollLine(actor, i), dim: lock || (!!row?.off && list.every(v => v.off)), versions: list, pc: actor.type !== "npc",
       basic: !!i.getFlag(F, "basic"), basicAttack: !!it.basicAttack, reaction: !!it.reaction, escalation: Number(it.escalation) || 0, minAp: Math.min(99, ...vs.map(v => Number(v.ap) || 0)) };
   };
   return { pc, list: actor.itemTypes.action.map(i => one(i)), one };
 }
-async function npcModel(actor) {
-  const { TWOD12 } = await import("./config.mjs");
-  const { list } = await actionsOf(actor);
-  const own = list.filter(a => !a.basic);
-  const s = actor.system, rankKey = String(s.role ?? "standard");
-  const n = Number(s.escalation) || 0;
+/* v0.0.390 (PACK HUD2): the models of the new HUD (module/hudview.mjs draws them). */
+const nn = v => Math.max(0, Math.trunc(Number(v)) || 0);
+async function combatOf(actor) {
+  try {
+    if (!game.combat?.started) return null;
+    const C = await import("./combat.mjs"), U = await import("./usage.mjs");
+    const c = C.combatantOf(actor, game.combat);
+    return c ? { ap: C.getAP(c), max: C.apMax(c), slowed: C.slowedOf(actor), rap: C.getRAP(c), rapMax: C.REACTION_AP, strikes: U.strikesUsed(actor), c } : null;
+  } catch (e) { return null; }
+}
+async function healthOf(actor) {
+  const s = actor.system ?? {}, d = s.damage ?? {};
+  const { healthTags, downState } = await import("./sheetmodel.mjs");
+  const bars = [
+    { name: "Vigor", cls: "v", max: nn(s.bdt), left: nn(s.bdt) - nn(s.bodyDamage), nl: nn(d.bodyNonlethal) },
+    { name: "Resolve", cls: "r", max: nn(s.mdt), left: nn(s.mdt) - nn(s.mindDamage), nl: nn(d.mindNonlethal) }
+  ];
+  const statuses = actor.statuses ?? new Set(), dn = downState(s, statuses), t = healthTags(s);
+  const tag = dn.down ? { cls: "down", text: dn.state } : statuses.has?.("unconscious") ? { cls: "down", text: "Unconscious" } : t.bloodied && t.strained ? { cls: "hurt", text: "Bloodied, Strained" } : t.bloodied ? { cls: "hurt", text: "Bloodied" } : t.strained ? { cls: "hurt", text: "Strained" } : null;
+  return { bars, tag, guard: nn(s.guard) + nn(s.apGuard) };
+}
+async function escOf(actor) {
+  const { ESC_MAX } = await import("./escalation.mjs");
+  const s = actor.system ?? {}, has = actor.type !== "npc" || s.role === "elite" || !!s.useEscalation;
+  return has ? { n: nn(s.escalation), max: nn(ESC_MAX) } : null;
+}
+function condsOf(actor, durationText) {
+  return [...(actor.effects ?? [])].filter(e => !e.disabled && !e.getFlag?.(F, "wound") && !e.getFlag?.(F, "grants")?.length).map(e => ({ id: e.id, name: String(e.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), dur: durationText(e) }));
+}
+/** A party card (and the cards of several selected tokens). */
+async function partyCard(actor, token = null) {
+  const s = actor.system ?? {}, h = await healthOf(actor), cb = await combatOf(actor), e = await escOf(actor);
+  const { durationText } = await import("./sheet-common.mjs");
+  const cls = actor.itemTypes.class?.[0], sp = actor.itemTypes.species?.[0];
+  const speed = nn(s.moveSpeed ?? s.speed), base = nn(s.speed);
   return {
-    name: actor.name, img: actor.prototypeToken?.texture?.src || actor.img, rankKey, sub: `${TWOD12.npcRoles?.[rankKey]?.label ?? ""}${s.cv ? ` · CV ${s.cv}` : ""}`,
-    groups: { basic: own.filter(a => a.basicAttack && !a.escalation), special: own.filter(a => !a.basicAttack && !a.reaction && !a.escalation).sort((a, b) => a.minAp - b.minAp), react: own.filter(a => a.reaction && !a.escalation), esc: own.filter(a => a.escalation) },
-    escPips: (s.role === "elite" || s.useEscalation) ? "◆".repeat(n) + "◇".repeat(Math.max(0, (TWOD12.escalation?.max ?? 3) - n)) : "",
-    saves: HUD_SAVES.map(([key, label, short]) => ({ key, label, short, value: s.attributes?.[key] ?? 0 }))
+    key: token?.id ? `t:${token.id}` : `a:${actor.id}`, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
+    sub: actor.type === "npc" ? rankLabel(actor) : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
+    ad: nn(s.armorDC ?? 11), wd: nn(s.wardDC ?? 11), speed, speedTip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "",
+    rally: actor.type === "npc" ? "—" : `${nn(s.rallyLeft)}/${nn(s.rallyMax)}`, guard: h.guard, tag: h.tag, bars: h.bars,
+    marks: cb ? marksHtml({ ...cb, showStrikes: false }) : "", esc: e && cb ? escHtml(e.n, e.max) : "",
+    cond: condsOf(actor, durationText).map(c => `${c.name}${c.dur ? ` (${c.dur})` : ""}`).join(" · ")
   };
 }
-async function pcHudModel(actor) {
-  const { one } = await actionsOf(actor);
-  const cls = actor.itemTypes.class[0], sp = actor.itemTypes.species[0];
-  const keys = [...quickKeys(actor)], byItem = new Map();
-  for (const k of keys) { const [id, ap] = k.split(":"); if (!actor.items.get(id)) continue; (byItem.get(id) ?? byItem.set(id, []).get(id)).push(Number(ap)); }
-  return { name: actor.name, img: actor.prototypeToken?.texture?.src || actor.img, sub: [sp?.name, cls?.name, `Level ${actor.system?.level ?? 1}`].filter(Boolean).join(" ").replace(/ Level/, " · Level"), quick: [...byItem].map(([id, aps]) => one(actor.items.get(id), aps)), open: st.open };
+/** The party: the player characters (a player sees them too: Lucas, "for everyone"). */
+const partyActors = () => (game.actors?.contents ?? []).filter(a => a.type === "character" && a.hasPlayerOwner);
+/** The Action lines of a tab, grouped in columns by Frequency (three lines a column; Basic: "+N more" past four columns). */
+function colsOf(lines, { per = 3, maxCols = 6 } = {}) {
+  const cols = [];
+  for (const k of FREQ_ORDER) {
+    const ls = lines.filter(l => l.freq === k);
+    for (let i = 0; i < ls.length; i += per) cols.push({ key: k, label: FREQ_LABEL[k], fq: ls[0].fqColor, lines: ls.slice(i, i + per) });
+  }
+  if (cols.length <= maxCols) return cols;
+  const shown = cols.slice(0, maxCols), rest = cols.slice(maxCols).flatMap(c => c.lines);
+  shown[maxCols - 1] = { ...shown[maxCols - 1], more: `+${rest.length} more`, moreIds: rest.map(l => l.id) };
+  st.moreIds = rest.map(l => l.id);
+  return shown;
+}
+const lineOf = a => ({
+  id: a.id, name: a.name, freq: a.freq, fqColor: a.fq, sub: a.versions.every(v => v.off) && a.versions.some(v => v.used) ? (a.versions.find(v => v.why)?.why ?? "used") : a.roll,
+  used: a.versions.length > 0 && a.versions.every(v => v.off), stamps: a.versions.map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why }))
+});
+/** The bar's model for one creature. */
+async function barModel(actor, token = null) {
+  await rollLibs();
+  const s = actor.system ?? {}, npc = actor.type === "npc";
+  const { list } = await actionsOf(actor);
+  const h = await healthOf(actor), cb = await combatOf(actor), e = await escOf(actor);
+  const { durationText } = await import("./sheet-common.mjs");
+  const { FREQ_COLORS } = await import("./config.mjs");
+  const usable = l => !l.used;
+  // the lines of each tab
+  const grants = [];
+  for (const ef of actor.effects ?? []) {
+    if (ef.disabled) continue;
+    (ef.getFlag?.(F, "grants") ?? []).forEach((g, index) => { if (g.left > 0) grants.push({ id: "", name: `${String(g.spec ?? "").replace(/^(category|trait):/i, "")}${g.left > 1 ? ` ×${g.left}` : ""}`, freq: "granted", fqColor: "#d2a75a", sub: `from ${String(ef.name ?? "").replace(/\s*\([^)]*\)\s*$/, "")}`, grant: { effect: ef.id, index }, stamps: [{ ap: nn(g.ap), label: `${nn(g.ap)} AP` }] }); });
+  }
+  const act = [...grants, ...list.filter(a => !a.basic && !a.reaction && !a.escalation).map(lineOf)];
+  const rx = list.filter(a => a.reaction && !a.escalation).map(lineOf);
+  const basic = list.filter(a => a.basic && !a.reaction).map(lineOf);
+  const escLines = [...actor.itemTypes.feature.filter(f => Number(f.system?.escalation) > 0).map(f => ({ id: f.id, name: f.name, freq: "none", fqColor: FREQ_COLORS.none, pass: true, state: (e?.n ?? 0) >= Number(f.system.escalation) ? "working" : `at ${f.system.escalation}`, sub: `Escalation ${f.system.escalation}` })),
+    ...list.filter(a => a.escalation).map(a => ({ ...lineOf(a), sub: `Escalation ${a.escalation}${a.roll ? ` · ${a.roll}` : ""}` }))];
+  // the rx alert: a waiting Reaction of this creature that this user answers
+  const wait = st.rx && st.rx.actorUuid === actor.uuid ? st.rx : null;
+  if (wait) rx.forEach(l => { if (l.id === wait.itemId) l.ready = true; });
+  const tabs = (npc ? HUD_TABS_NPC : HUD_TABS_PC).map(([k, label]) => ({ k, label, count: k === "act" ? act.filter(usable).length : k === "rx" ? rx.filter(usable).length : k === "basic" ? basic.filter(usable).length : `${escLines.filter(l => l.state === "working").length} of ${escLines.filter(l => l.pass).length}` }));
+  if (!tabs.some(t => t.k === st.tab)) st.tab = "act";
+  const tab = wait && setting("rxHud", true) ? "rx" : st.tab;
+  const cols = tab === "rx" ? colsOf(rx) : tab === "basic" ? colsOf(basic, { maxCols: 4 }) : tab === "esc" ? colsOf(escLines.map(l => ({ ...l, freq: "none" })), { per: 3 }).map((c, i) => ({ ...c, label: i ? "" : "Escalation" })) : colsOf(act);
+  // the identity column
+  const sg = v => (Number(v) > 0 ? `+${Number(v)}` : Number(v) < 0 ? `−${-Number(v)}` : "0");
+  const speed = nn(s.moveSpeed ?? s.speed), base = nn(s.speed);
+  const defs = [
+    { label: "AD", value: nn(s.armorDC ?? 11), tip: "Armor Defense" }, { label: "WD", value: nn(s.wardDC ?? 11), tip: "Ward Defense" },
+    { label: "Spd", value: speed, tip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "Speed", chg: speed !== base },
+    { label: npc ? "Atk" : "Wpn", value: sg(s.weaponMod ?? 0), tip: "Weapon Modifier" }, { gap: true },
+    ...HUD_SAVES.map(([key, label, short]) => ({ label: short, value: sg(s.attributes?.[key] ?? 0), tip: `${label}: click a Check, Shift-click a Save`, hud: "attr", data: { key } }))
+  ];
+  const hands = actor.itemTypes.weapon?.length ? await handsOf(actor) : null;
+  const conds = condsOf(actor, durationText);
+  const cls = actor.itemTypes.class?.[0], sp = actor.itemTypes.species?.[0];
+  return {
+    npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
+    sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
+    bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
+    marks: cb ? marksHtml(cb) : "", escN: e?.n ?? 0, escMax: e?.max ?? 0, defs, tabs, tab, cols, rxAlert: !!wait,
+    side: { hands, conds, condLabel: npc ? "On it" : "On you", rx: wait && setting("rxHud", true) ? wait : null },
+    folded: !wait && !!setting("hudFolded", false), cond: conds.map(c => `${c.name}${c.dur ? ` (${c.dur})` : ""}`).join(" · ")
+  };
+}
+async function handsOf(actor) {
+  try {
+    const { weaponWhere } = await import("./loadout.mjs");
+    const held = actor.itemTypes.weapon.map(w => ({ w, at: weaponWhere(w) })).filter(x => x.at === "2h" || x.at === "1h");
+    if (!held.length) return { text: "empty", btn: "Draw" };
+    return { text: held.map(x => x.w.name).join(", "), note: held.some(x => x.at === "2h") ? "(both hands)" : "", btn: "Regrip" };
+  } catch (e) { return null; }
 }
 
 /** A PC's category panel (or an NPC's "Checks"): the rows. */
@@ -96,9 +223,10 @@ const CAT_TITLE = { actions: "Actions", basic: "Basic Actions", react: "Reaction
 const rankLabel = a => { const k = String(a?.system?.role ?? ""); try { return globalThis.CONFIG?.TWOD12?.npcRoles?.[k]?.label ?? (k.charAt(0).toUpperCase() + k.slice(1)); } catch (e) { return k; } };
 function current() {
   const ctrl = globalThis.canvas?.tokens?.controlled ?? [];
+  if (st.rx && !game.user.isGM && setting("rxHud", true)) { try { const d = fromUuidSync(st.rx.actorUuid); const actor = d?.documentName === "Actor" ? d : d?.actor; if (actor) return { actor, token: ctrl.find(t => t.actor === actor) ?? null }; } catch (e) { /* gone */ } }
   if (ctrl.length > 1) return { list: ctrl };
   if (ctrl.length === 1 && ctrl[0].actor) return { token: ctrl[0], actor: ctrl[0].actor };
-  if (!game.user.isGM && game.user.character) return { actor: game.user.character };
+  // v0.0.390: with nothing selected, the party strip (a player too)
   return {};
 }
 function ensureRoot() {
@@ -168,20 +296,27 @@ async function drawHud() {
   ensureRoot(); root.hidden = false; placeHotbar(); placePlayers(); placeRoot();
   const main = root.querySelector(".hud-main"), cur = current();
   closePop({ keepOpen: true });
-  if (cur.list) {
+  root.classList.remove("is-npc", "is-bar", "is-strip", "is-folded");
+  // v0.0.390: several tokens selected, or nothing (the party strip): small cards
+  if (cur.list || !cur.actor) {
     st.actorUuid = "";
-    main.innerHTML = listHudHtml(cur.list.map(t => ({ id: t.id, name: t.name, img: t.document?.texture?.src ?? t.actor?.img, rankKey: t.actor?.type === "npc" ? t.actor.system?.role : "", sub: t.actor?.type === "npc" ? rankLabel(t.actor) : (t.actor?.itemTypes?.class?.[0]?.name ?? "") })));
+    if (!cur.list && !setting("hudParty", true)) { main.innerHTML = emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token."); return; }
+    const pairs = cur.list ? cur.list.filter(t => t.actor).map(t => [t.actor, t]) : partyActors().map(a => [a, (globalThis.canvas?.tokens?.placeables ?? []).find(t => t.actor?.id === a.id) ?? null]);
+    const cards = await Promise.all(pairs.map(([a, t]) => partyCard(a, t)));
+    let momentum = "";
+    try { const { hasMomentum } = await import("./escalation.mjs"); momentum = !cur.list && hasMomentum() ? "on" : ""; } catch (e) { momentum = ""; }
+    main.innerHTML = partyStripHtml({ cards, momentum });
+    root.classList.add("is-strip");
+    st.cards = new Map(pairs.map(([a, t], k) => [cards[k].key, { actor: a, token: t }]));
     return;
   }
-  if (!cur.actor) { st.actorUuid = ""; main.innerHTML = emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token."); return; }
-  if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.actorUuid = cur.actor.uuid; }
-  const npc = cur.actor.type === "npc";
-  const m = npc ? await npcModel(cur.actor) : await pcHudModel(cur.actor);
-  if (cur.token?.document?.texture?.src) m.img = cur.token.document.texture.src;
-  if (cur.token?.name) m.name = cur.token.name;   // v0.0.377: the token's name (an actor's name can be long)
-  main.innerHTML = npc ? npcHudHtml(m) : pcHudHtml(m);
-  root.classList.toggle("is-npc", npc);
-  if (!npc && st.open) openPanel(st.open);
+  if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.actorUuid = cur.actor.uuid; }
+  const m = await barModel(cur.actor, cur.token);
+  main.innerHTML = tokenBarHtml(m);
+  root.classList.add("is-bar"); root.classList.toggle("is-npc", m.npc); root.classList.toggle("is-folded", !!m.folded);
+  // the hotbar sits in the side panel's foot
+  const hot = main.querySelector(".hb-hot"), hb = document.getElementById("hotbar");
+  if (hot && hb && setting("hudHotbar", true)) hot.append(hb);
 }
 
 /* ------------------------------------------------------------------ panels, the card, the menu */
@@ -243,10 +378,20 @@ async function onClick(ev) {
   if (!b || b.disabled) return;
   const cur = current(), actor = cur.actor, kind = b.dataset.hud;
   if (kind === "pick") { const t = canvas.tokens.get(b.dataset.token); t?.control({ releaseOthers: true }); return; }
+  // v0.0.390 (PACK HUD2)
+  if (kind === "party") { const c = st.cards?.get(b.dataset.key); if (!c) return; if (ev.detail >= 2) return c.actor.sheet?.render(true); if (c.token) return c.token.control({ releaseOthers: true }); if (!game.user.isGM && c.actor.isOwner) return c.actor.sheet?.render(true); return; }
+  if (kind === "fold") { await game.settings.set(F, "hudFolded", !setting("hudFolded", false)); return; }
+  if (kind === "tab") { st.tab = b.dataset.tab; if (st.rx) st.rx = null; return renderHud(); }
+  if (kind === "rx") { const msg = game.messages.get(b.dataset.msg); if (!msg) return; const { rxClick } = await import("./moment.mjs"); st.rx = null; await rxClick(msg, { dataset: { twod12: b.dataset.k, row: b.dataset.row }, tagName: "DIV" }); return renderHud(); }
   if (kind === "close") return closePop();
   if (!actor) return;
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
+  if (kind === "line" && item && !ev.target.closest(".hb-st")) { const first = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions.find(v => !v.off); if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
+  if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0); }
+  if (kind === "more") return openPanel("more", st.moreIds ?? []);
+  if (kind === "hands") return openPanel("hands");
+  if (kind === "steel") { const basic = actor.itemTypes.action.find(i => /steel yourself/i.test(i.name)); if (basic) return use(actor, basic, Math.min(...(basic.system.versions ?? [{ ap: 2 }]).map(v => Number(v.ap) || 0)), ev.shiftKey); return ui.notifications.info("No Steel Yourself on this sheet."); }
   if (kind === "card" && item) { if (st.card?.isConnected && st.cardId === item.id) return closePop({ keepOpen: true }); return showCard(actor, item, b); }
   if (kind === "cat") { const c = b.dataset.cat; if (actor.type !== "npc") { st.open = st.open === c ? "" : c; root.querySelectorAll(".cat").forEach(x => { x.classList.toggle("on", x.dataset.cat === st.open); x.setAttribute("aria-pressed", String(x.dataset.cat === st.open)); }); } return st.open || actor.type === "npc" ? openPanel(c) : closePop(); }
   if (kind === "attr") { const { CharacterSheet } = await import("./actor-sheets.mjs"); return CharacterSheet.rollAttr.call({ actor }, { shiftKey: ev.shiftKey || b.dataset.save === "1" }, { dataset: { key: b.dataset.key } }); }
@@ -261,6 +406,11 @@ async function onClick(ev) {
   }
 }
 function onContext(ev) {
+  // v0.0.390 (PACK HUD2): right-click on AP, Rally or Escalation adjusts it (-1; Shift: +1), for the owner and the GM
+  const res = ev.target.closest('[data-hud="res"]');
+  if (res) { ev.preventDefault(); return adjust(current().actor, res.dataset.res, ev.shiftKey ? 1 : -1); }
+  const ln = ev.target.closest(".hb-ln[data-item-id]");
+  if (ln && ln.dataset.itemId) { ev.preventDefault(); const actor = current().actor, item = actor?.items.get(ln.dataset.itemId); if (!item) return; if (st.card?.isConnected && st.cardId === item.id) return closePop({ keepOpen: true }); return showCard(actor, item, ln); }
   // v0.0.381 (Lucas): right-click on an Action opens its card at once; on a PC's Version stamp it pins or unpins that Version (Quick)
   const ha = ev.target.closest(".ha[data-item-id]");
   if (!ha) return;
@@ -273,6 +423,21 @@ function onContext(ev) {
   return showCard(actor, item, ha);
 }
 
+/** v0.0.390: right-click on a resource: AP (the combatant's, "edited" in the chat's line), Rally Points, Escalation. */
+async function adjust(actor, res, d) {
+  if (!actor || !(actor.isOwner || game.user.isGM)) return;
+  if (res === "ap") {
+    const C = await import("./combat.mjs"), c = game.combat?.started ? C.combatantOf(actor, game.combat) : null;
+    if (!c) return ui.notifications.info("AP are tracked in combat.");
+    return C.setAP(c, Math.max(0, C.getAP(c) + d), "edited");
+  }
+  if (res === "rally") { const s = actor.system ?? {}; const used = Math.min(Math.max(0, (Number(s.rallyUsed) || 0) - d), Number(s.rallyMax) || 0); return actor.update({ "system.rallyUsed": used }); }
+  if (res === "esc") {
+    if (d > 0) { const { raiseEscalation } = await import("./escalation.mjs"); return raiseEscalation(actor, "gm"); }
+    return actor.update({ "system.escalation": Math.max(1, (Number(actor.system?.escalation) || 1) - 1) });
+  }
+}
+
 /** The pick bar asks in the HUD's middle while a choice waits (pickbar.mjs calls it): the slot, or null when there is no HUD on screen. */
 export function hudAskSlot() {
   if (!root?.isConnected || root.hidden || !root.offsetParent) return null;
@@ -280,8 +445,39 @@ export function hudAskSlot() {
 }
 export const hudAsking = on => root?.classList.toggle("asking", !!on);
 
+/* ------------------------------------------------------------------ the Reaction alert (v0.0.390; Lucas: "it can pass unnoticed") */
+/** Pure: the waiting rows of a Reactions message this user answers: [{ row, actorUuid, itemId, name, cost, lead }]. */
+export function waitingFor(stx, userId, isGM = false) {
+  if (!stx || stx.done) return [];
+  return (stx.rows ?? []).filter(r => r.state === "wait" && (r.answerer === userId || (isGM && !r.answerer))).map(r => ({ row: r.i, actorUuid: r.actorUuid, itemId: r.itemId, name: r.itemName, cost: `${Number(r.ap) || 0}R`, lead: String(stx.lead ?? "").replace(/<[^>]+>/g, "") }));
+}
+/** A soft two-note chime, made by the browser (no sound file), at Foundry's interface volume. */
+export function chime() {
+  try {
+    const AC = globalThis.AudioContext ?? globalThis.webkitAudioContext; if (!AC) return;
+    let vol = 0.5; try { vol = Number(game.settings.get("core", "globalInterfaceVolume")) || 0.5; } catch (e) { vol = 0.5; }
+    const ctx = new AC(), t = ctx.currentTime;
+    [[880, 0], [1320, 0.12]].forEach(([f, at]) => { const o = ctx.createOscillator(), g = ctx.createGain(); o.type = "sine"; o.frequency.value = f; g.gain.setValueAtTime(0, t + at); g.gain.linearRampToValueAtTime(0.12 * vol, t + at + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + at + 0.45); o.connect(g).connect(ctx.destination); o.start(t + at); o.stop(t + at + 0.5); });
+    setTimeout(() => ctx.close?.(), 1200);
+  } catch (e) { /* no sound */ }
+}
+function onRxMessage(msg) {
+  const stx = msg?.getFlag?.(F, "rx");
+  if (!stx) return;
+  const w = waitingFor(stx, game.user.id, game.user.isGM);
+  const mine = w[0];
+  const fresh = w.filter(x => !st.chimed.has(`${msg.id}:${x.row}`));
+  fresh.forEach(x => st.chimed.add(`${msg.id}:${x.row}`));
+  if (fresh.length && setting("rxChime", true)) chime();
+  // a player: the HUD shows the reacting creature on its Reactions tab; the GM: the alert shows when that creature's bar is open
+  st.rx = mine ? { ...mine, msg: msg.id } : (st.rx?.msg === msg.id ? null : st.rx);
+  renderHud();
+}
+
 export function registerHud() {
   Hooks.once("ready", () => renderHud());
+  Hooks.on("createChatMessage", onRxMessage); Hooks.on("updateChatMessage", onRxMessage);
+  Hooks.on("deleteChatMessage", msg => { if (st.rx?.msg === msg.id) { st.rx = null; renderHud(); } });
   for (const h of ["controlToken", "canvasReady", "updateCombat", "combatTurn", "combatRound", "deleteCombat", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect"]) Hooks.on(h, () => renderHud());
   const mine = a => a && (a.uuid === st.actorUuid || (globalThis.canvas?.tokens?.controlled ?? []).some(t => t.actor === a));
   Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });

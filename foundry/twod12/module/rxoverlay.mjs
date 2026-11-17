@@ -129,7 +129,13 @@ function drawOne(st, gs, fs) {
     const me = tokenAt(r.tokenUuid);
     if (!me) continue;
     if (r.state === "wait") {
-      if (!ringed.has(r.actorUuid)) { ringed.add(r.actorUuid); g.lineStyle(3, AMBER, 0.95); dashCircle(g, centerOf(me), me.w * 0.62); }
+      if (!ringed.has(r.actorUuid)) {
+        ringed.add(r.actorUuid); g.lineStyle(3, AMBER, 0.95); dashCircle(g, centerOf(me), me.w * 0.62);
+        // v0.0.390 (Lucas: "it can pass unnoticed"): the Reaction's name over the token, only for the one who answers it (a player never sees an
+        // NPC's options), until it is used or passed; a client setting turns it off
+        let showName = true; try { showName = game.settings.get(F, "rxFloat") !== false; } catch (e) { showName = true; }
+        if (showName && r.answerer === game.user.id) { const names = st.rows.filter(x => x.actorUuid === r.actorUuid && x.state === "wait").map(x => x.itemName); const lb = tag(`${[...new Set(names)].join(" or ")}?`, "#1f1c18", 0xfff3d6, fs * 1.1); lb.position.set(centerOf(me).x, me.y - fs * 1.4); labels.addChild(lb); }
+      }
       if (hov === r.i) { const t = tokenAt(r.targetUuid); if (t && t !== me) { const col = hex(PALETTE[st.rows.filter(x => x.state === "use").length % PALETTE.length]); g.lineStyle(4, col, 0.9); const a = centerOf(me), z = shortOf(a, centerOf(t), t.w * 0.45); dashLine(g, a, z, 14, 9); arrowHead(g, a, z, col, fs); } }
       continue;
     }

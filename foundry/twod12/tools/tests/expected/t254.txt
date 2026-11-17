@@ -1,0 +1,20 @@
+--- the marks
+4 AP, 2 left: on,on,, | Slowed 1 (3 regained), 3 left: on,on,on,x | Quickened 1 (5): on,on,on,on,on | granted above the maximum (6 of 4): on,on,on,on,on,on
+the order, a hairline between: true | squares, a diamond, slashes: true | a Strike left is filled (2 of 3): true | the words on hover: true
+a second Reaction AP: two diamonds: true | no Strikes when asked: true
+Escalation ticks (the system's maximum): 3 2
+--- the bars and the party strip
+what is left: true | Nonlethal hatched beside it: true | its words: true
+a card: true
+Momentum at the strip's left: true | none without it: true
+--- the bar
+a line: a stamp a Version, the off one struck with its reason: true | its roll under it: true
+a granted use (Lucas: things can grant you actions): true
+columns by Frequency, the word with its square: true | the order: granted atwill turn round encounter daily none
+the bar: Guard, Rally with Steel Yourself, AP, Escalation: true | an Attribute rolls: true | the tabs: true | hands and conditions: true | the fold: true
+a waiting Reaction: the tab pulses, Use and Pass: true
+folded: one line (the name, Vigor, Guard, AP, Escalation, the conditions): true
+--- the wiring
+waiting rows this user answers: [{"row":0,"actorUuid":"A","itemId":"x","name":"Shield of Faith","cost":"1R","lead":"Cleaver on Durgan"}]
+the settings: true | the chime made by the browser at Foundry's interface volume: true | the name on the map, only for the one who answers: true | resources by right-click: true
+the carousel: the HUD's marks, the health tag, Momentum, plain words: true | the styles in rem: true | the bar 150 px, folded 40: true

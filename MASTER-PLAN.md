@@ -39,7 +39,7 @@ Finished: Phase 1 (Q, M1, M2, R, F), D0, T, E1, CH, E2, P1, LV, A1 (it was D1, t
 | X | After the design sessions: Mastery and Gear (D2's list for X: foundry-backlog.md), Skills, Magic in the system | XL | D2 (done), D3, D4 |
 | STY3 | **BUILT: v0.0.387 (to test; branch `pack-foundry-style`).** Foundry's style fits the book: the type, the theme following Foundry's color schemes, a color only for a meaning, palette A for the Tiers (`foundry/mockups/style-book.md`) | M | - |
 | ONE | **BUILT: v0.0.388 (to test; branch `pack-one-message`, from `pack-foundry-style`).** One message per Action: the damage written into the attack or Save card (foundry-backlog.md "v0.0.388") | M | STY3 |
-| HUD2 | **DRAFT (2026-11-17, waiting for Lucas):** the HUD remake after his 4e module (a party strip, a bar with tabs by kind and columns by Frequency) and the Reaction alert (`foundry/mockups/hud2-brief.md`) | L | his answers |
+| HUD2 | **BUILT: v0.0.390 (to test; branch `pack-hud-remake`).** The HUD remake after his 4e module and the Reaction alert (`foundry/mockups/hud2-brief.md`; checklist: foundry-backlog.md "v0.0.390") | L | - |
 | ACL | The Action card in the book's look (decided 2026-11-17, `foundry/mockups/card/`): with the Structure's Foundry pass (foundry-backlog.md "THE PALADIN'S REDESIGN IN FOUNDRY") | L | the Structure's pass |
 | W | **DONE: v0.0.208 (to test).** Fewer clicks for weapons: a button per hand (mockup foundry/mockups/weapon-hands-W.html) | M | - |
 | K | **DONE: v0.0.221.** Shortcuts (Shift+A/W/R/Q, Alt+1..9 Favorites) | S | - |
