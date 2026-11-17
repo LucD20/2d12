@@ -1,0 +1,105 @@
+<title>Foundry Theme Switch</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* An interactive sketch: pick a way (A, B, C) and the settings, and see which surfaces turn dark or light.
+   The surfaces are drawn small and plain on purpose: only their theme matters here. */
+:root{--bg:#f4ede0;--fg:#2a241d;--dim:#5d5446;--line:#cdb88a;--acc:#7a5418;--ui:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --d-pg:#28241d;--d-ink:#ece3cf;--d-mute:#b3a68e;--d-line:#4a4132;--d-acc:#d2a75a;--l-pg:#f4ede0;--l-ink:#2a241d;--l-mute:#5d5446;--l-line:#cdb88a;--l-acc:#7a5418}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1f1c18;--fg:#ece3cf;--dim:#b3a68e;--line:#4a4132;--acc:#d2a75a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1f1c18;--fg:#ece3cf;--dim:#b3a68e;--line:#4a4132;--acc:#d2a75a;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--ui)}
+.wrap{max-width:62rem;margin:0 auto;padding-block:1.5rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font:600 1.6rem/1.2 var(--ui);margin:0 0 .4rem}.sub{color:var(--dim);max-width:50rem;margin:0 0 1rem}
+h2{font:600 1.15rem/1.3 var(--ui);margin:2rem 0 .5rem;border-top:1px solid var(--line);padding-top:1rem}
+.ways{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:.8rem}
+.way{border:1px solid var(--line);padding:.7rem .9rem;cursor:pointer;background:none;color:inherit;text-align:left;font:inherit}
+.way[aria-pressed="true"]{border:2px solid var(--acc);padding:calc(.7rem - 1px) calc(.9rem - 1px)}
+.way b{display:block;margin-bottom:.2rem}.way span{color:var(--dim);font-size:.93rem}
+.controls{display:flex;flex-wrap:wrap;gap:.6rem 2rem;margin:1rem 0}
+.ctl{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}.ctl>span{font-weight:600}
+.seg button{font:inherit;border:1px solid var(--line);background:none;color:inherit;padding:.25rem .7rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.ctl.off{opacity:.4}
+.stage{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:1rem;margin-top:.5rem}
+@media (max-width:640px){.stage{grid-template-columns:minmax(0,1fr)}}
+.surf{border:1px solid var(--line);padding:.7rem;min-width:0}
+.surf h3{font:600 .82rem var(--ui);letter-spacing:.03em;margin:0 0 .5rem;opacity:.75}
+.dk{background:var(--d-pg);color:var(--d-ink);--ln:var(--d-line);--ac:var(--d-acc);--mt:var(--d-mute)}
+.lt{background:var(--l-pg);color:var(--l-ink);--ln:var(--l-line);--ac:var(--l-acc);--mt:var(--l-mute)}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;padding:0 .4rem;border:1px solid var(--ln);margin-left:.4rem}
+.card{border-top:2px solid var(--ac);border-bottom:2px solid var(--ac);padding:.4rem .6rem;margin:.4rem 0}
+.card b{color:var(--ac)}.card p{margin:.15rem 0;font-size:.9rem}.card .mt{color:var(--mt)}
+.rows div{display:flex;justify-content:space-between;border-bottom:1px solid var(--ln);padding:.25rem 0;font-size:.9rem}
+.btn{border:1px solid var(--ac);padding:0 .5rem;font-size:.8rem}
+.core{font-size:.9rem}.core .f{border:1px solid var(--ln);padding:.2rem .4rem;margin:.3rem 0}
+.why{margin-top:1rem;padding:.7rem .9rem;border-left:2px solid var(--acc)}
+</style>
+
+<div class="wrap">
+<h1>Foundry Theme Switch</h1>
+<p class="sub">Foundry V13 and V14 have two theme settings of their own: <strong>Interface</strong> (the sidebar, the chat log, the bars on the map) and <strong>Applications</strong> (windows and sheets), each Dark or Light, and a theme per sheet. The system also has its own setting (Theme: Dark or Light) for everything it draws. Pick a way and try the settings: the four surfaces show what each player would see.</p>
+
+<h2>The three ways</h2>
+<div class="ways" role="group" aria-label="The way">
+<button type="button" class="way" data-way="A" aria-pressed="true"><b>A. Follow Foundry (my pick)</b><span>The system's setting goes. Chat cards follow Interface; sheets and the system's windows follow Applications; a sheet's own theme works too.</span></button>
+<button type="button" class="way" data-way="B" aria-pressed="false"><b>B. Keep the system's setting (today)</b><span>One setting turns every surface the system draws dark or light, whatever Foundry's are.</span></button>
+<button type="button" class="way" data-way="C" aria-pressed="false"><b>C. Both</b><span>The system's setting stays, with a first choice "Follow Foundry" (the default); Dark or Light forces it.</span></button>
+</div>
+
+<div class="controls">
+<div class="ctl" id="c-int"><span>Foundry Interface</span><div class="seg"><button type="button" data-k="int" data-v="dk" aria-pressed="true">Dark</button><button type="button" data-k="int" data-v="lt" aria-pressed="false">Light</button></div></div>
+<div class="ctl" id="c-app"><span>Foundry Applications</span><div class="seg"><button type="button" data-k="app" data-v="dk" aria-pressed="false">Dark</button><button type="button" data-k="app" data-v="lt" aria-pressed="true">Light</button></div></div>
+<div class="ctl" id="c-sys"><span>System setting</span><div class="seg"><button type="button" data-k="sys" data-v="follow" aria-pressed="false">Follow Foundry</button><button type="button" data-k="sys" data-v="dk" aria-pressed="true">Dark</button><button type="button" data-k="sys" data-v="lt" aria-pressed="false">Light</button></div></div>
+</div>
+
+<div class="stage">
+<div>
+<div class="surf" id="s-side"><h3>THE SIDEBAR (Foundry's)<span class="tag" id="t-side"></span></h3>
+<div class="surf" id="s-chat" style="border-style:dashed"><h3>A SYSTEM CHAT CARD<span class="tag" id="t-chat"></span></h3>
+<div class="card"><p><b>Smite</b> <span class="mt">Round · 2 AP</span></p><p>Tier 2 · vs AD 13</p><p><span class="btn">Damage</span></p></div></div>
+</div>
+</div>
+<div style="display:grid;gap:1rem">
+<div class="surf" id="s-sheet"><h3>A SYSTEM SHEET<span class="tag" id="t-sheet"></span></h3>
+<div class="rows"><div><span>Lay On Hands</span><span class="btn">Use</span></div><div><span>Shield of Faith</span><span class="btn">Use</span></div></div></div>
+<div class="surf core" id="s-core"><h3>A FOUNDRY WINDOW (Settings)<span class="tag" id="t-core"></span></h3>
+<div class="f">Core · Interface · Dark</div><div class="f">Core · Applications · Light</div></div>
+</div>
+</div>
+<p class="why" id="why"></p>
+
+<h2>What each way means</h2>
+<ul class="sub">
+<li><strong>A, follow Foundry.</strong> One place to set the theme, the convention of dnd5e and Draw Steel, and the mix dnd5e documents as its default (a dark sidebar with light sheets) works as the user sets it. Foundry already follows the computer's dark or light setting. Popped-out chat messages are forced light by Foundry itself. The build: the theme file's scope changes from the system's class to Foundry's theme classes (the generator does it), and the system's setting is removed. Your current default, dark, becomes whatever each player's Foundry says.</li>
+<li><strong>B, the system's setting (today).</strong> Nothing to build. A player with Foundry in light still gets dark system sheets beside light Foundry windows, unless they set both.</li>
+<li><strong>C, both.</strong> A's behavior by default, with a way to force one look on the system's surfaces only. One more setting to explain.</li>
+</ul>
+<p class="sub">Not tried in Foundry: I can't run it. The facts come from Foundry's release notes (13.333 to 14.359) and three systems' source, in the research note on VTT styles.</p>
+</div>
+
+<script>
+(function(){
+  const st={way:"A",int:"dk",app:"lt",sys:"dk"};
+  const q=s=>document.querySelector(s);
+  function paint(el,th,tag){el.classList.remove("dk","lt");el.classList.add(th);q(tag).textContent=th==="dk"?"DARK":"LIGHT";}
+  function render(){
+    document.querySelectorAll(".way").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.way===st.way)));
+    document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",String(st[b.dataset.k]===b.dataset.v)));
+    const sysOn=st.way!=="A", followOk=st.way==="C";
+    q("#c-sys").classList.toggle("off",!sysOn);
+    document.querySelectorAll('#c-sys button').forEach(b=>{b.disabled=!sysOn||(b.dataset.v==="follow"&&!followOk);});
+    if(st.way==="B"&&st.sys==="follow")st.sys="dk";
+    const follow=st.way==="A"||(st.way==="C"&&st.sys==="follow");
+    const chat=follow?st.int:st.sys, sheet=follow?st.app:st.sys;
+    paint(q("#s-side"),st.int,"#t-side"); paint(q("#s-chat"),chat,"#t-chat"); paint(q("#s-sheet"),sheet,"#t-sheet"); paint(q("#s-core"),st.app,"#t-core");
+    document.querySelectorAll('#c-sys button').forEach(b=>b.setAttribute("aria-pressed",String(st.sys===b.dataset.v)));
+    q("#why").textContent= follow
+      ? "The system's surfaces follow Foundry: the chat card takes the Interface setting, the sheet takes Applications, so they always match Foundry's own sidebar and windows."
+      : "The system's setting decides the chat card and the sheet. Foundry's sidebar and windows follow Foundry's settings, so the two can disagree.";
+  }
+  document.querySelectorAll(".way").forEach(b=>b.addEventListener("click",()=>{st.way=b.dataset.way;if(st.way==="C")st.sys="follow";if(st.way==="B")st.sys="dk";render();}));
+  document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{if(b.disabled)return;st[b.dataset.k]=b.dataset.v;render();}));
+  render();
+})();
+</script>
