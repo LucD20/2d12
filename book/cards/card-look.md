@@ -254,3 +254,26 @@ Made without touching `rules.css`, `build_rules.py` or the built documents: `boo
 **What a reader does with it:** builds a character (reads the stat box, then makes four choices at level 1: a Hallmark Action of two, a Hallmark Reaction of two, an Art of three, an Escalation 2 ability of two); levels up (finds what level 2 and 3 add, which sits in three different sections); and at the table, finds his own cards among nineteen. Already visible: the level 2 gains are split across three sections (Repertoire, Escalation, the hook inside Escalation); the options of a choice are full cards one under the other, with no line saying how they differ; the order of the sections is neither by level nor by kind throughout (Level 1 is by level, the rest by kind).
 
 The research note will be `book/research/class-layout.md` (how published RPGs lay out a class chapter; presenting choices; finding abilities at the table).
+
+**The research** (`book/research/class-layout.md`; one pass, not re-checked; 2024 D&D, Pathfinder 2e, Draw Steel and OSE read on their pages or seen as images; the 2014 PHB and 4e from memory):
+1. **The order recurs:** an identity paragraph, a summary block, the level table, then the features **in level order with the choices inside them**, then subclasses (2024 D&D, Pathfinder 2e, Draw Steel, OSE).
+2. **The newest books print the level in every heading:** 2024 "Level 1: Lay On Hands"; Draw Steel "1st-Level Features", "7-Wrath Ability: Choose one..."; Pathfinder 2e the level beside each feature.
+3. **Summary blocks:** label left, value right, one fact a line; a choice marked by a word ("Choose 2", "Choose A or B", "(Quick Build: ...)").
+4. **The best-liked books point at a default pick and summarize before the detail:** Draw Steel's "(Quick Build: X)" on every level 1 choice; 2024's "X is recommended" and its overview tables; Daggerheart's suggested picks; Blades' starting templates. No source argued against marking a default.
+5. **The most repeated complaint is going elsewhere to finish a choice** (Pathfinder 2e's feats at the end of the class and in another chapter; 2024's Fighting Style moved to Feats; 4e's powers with no index; Draw Steel's "marathon of decision making"). OSE's one class a spread is praised in the opposite words.
+6. **Repeating text is the accepted price of not flipping;** reviewers name its cost in pages.
+7. **At the table, players take their abilities out of the book** (sleeved cards, a binder, page numbers on the sheet, apps). The book's job is building and levelling up.
+
+**The three ways** (a mockup of A, built from the real Paladin text: `paladin-by-level.html`, published as "Paladin by Level"):
+
+- **A, by level (Claude's pick; 2024 D&D, Draw Steel).** After the at-a-glance box and the level list: "Level 1" with, in order, its Features, then each of its choices under a heading that carries the level ("Level 1: Hallmark Action", "Level 1: Hallmark Reaction", "Level 1: Art", "Level 1: Escalation 2 Ability"); "Level 2" (the hook, the Encounter Pick, the Escalation 4 ability); "Level 3" (the second Art, a pointer back to Level 1's Arts; the Escalation 6 ability). **Each choice opens with "Choose one." and a list of its options in one line each** (name, frequency and cost, what it does), **and a "Quick build" pick**, then the cards. Everything a level gives is in one place; levelling up is reading one section.
+- **B, by kind, made consistent (today's, cleaned).** Features, Hallmark Actions, Hallmark Reactions, Arts, Encounter Picks, Escalation abilities, each section saying at which level it is chosen; the level list on top is the map. Finds a kind of card fast; levelling up still reads three sections.
+- **C, the build on one page, the cards after (OSE, playbooks).** The class's first page holds everything to build and level: the box, then each level's choices as one-line lists with the quick build marked; all nineteen cards follow in one alphabetical section. Fastest to choose; a card is found by its name.
+
+**Why A:** it answers the complaint the research found most (going elsewhere to finish a choice) and matches the order the newest books converged on; the one-line lists give C's quick choosing without moving the cards away from their choice; the quick build answers the one thing no source argued against. The cards stay closed until opened on screen, so a level reads as a short list.
+
+**To decide with A:** the quick-build picks themselves (the mockup's are Claude's placeholders: Binding Light, Shield of Faith, Hold the Line, Armor of Faith, Bulwark of Faith, Weight of Judgment, Reckoning); the one-line summaries are Claude's wording, to check; the Archer gets the same shape.
+
+**For Lucas:** A, B or C.
+
+**Lucas's answer:**
