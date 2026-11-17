@@ -229,13 +229,13 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   return true;
 }
 /** The "After the damage" chain, once, for the rows just applied whose damage landed on a Tier 2 or 3 (Ch. 1 Riders). */
-async function runChain(s, idx) {
+async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the chain's lines go into it)
   const list = idx.map(i => s.rows[i]).filter(r => r?.applied?.landed && !r.applied.chainDone && (s.save || (r.tier ?? 0) >= 2));
   if (!s.after || !list.length) return;
   for (const r of list) r.applied.chainDone = true;
   let actor = null; try { actor = s.originUuid ? await fromUuid(s.originUuid) : null; } catch (e) { actor = null; }
   const { runAfter } = await import("./inline.mjs");
-  await runAfter(s.after, { save: !!s.save, actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: list.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null });
+  await runAfter(s.after, { save: !!s.save, actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: list.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null, message: msg });
 }
 async function lockSource(s) {
   const src = s.srcId ? game.messages.get(s.srcId) : null;
@@ -256,7 +256,7 @@ export async function ccDamageClick(kind, button, msg) {
       s.rows = toks.map(t => { const p = rowPreview(s.groups[0]?.comps ?? [], t.actor); return { uuid: t.document.uuid, name: t.name, tier: s.groups[0]?.tier ?? 0, crit: !!s.groups[0]?.crit, g: 0, mods: p.mods, choice: p.choice, applied: null }; });
       s.groups.forEach((g, gi) => { g.rows = gi === 0 ? s.rows.map((r, k) => k) : []; });
       await save(msg, s);
-    } else if (kind === "ccApply") { if (await applyRow(s, i, f)) { await save(msg, s); await lockSource(s); await runChain(s, [i]); await save(msg, s); } }
+    } else if (kind === "ccApply") { if (await applyRow(s, i, f)) { await save(msg, s); await lockSource(s); await runChain(s, [i], msg); await save(msg, s); } }
     else if (kind === "ccApplyAll") {
       const done = [];
       // v0.0.398: the multi-target card's Apply all is a Tier's (data-group): only that group's rows
@@ -264,7 +264,7 @@ export async function ccDamageClick(kind, button, msg) {
       const gsel = button?.dataset?.group, inGroup = k => (only ? only.includes(k) : true) && (gsel === undefined || gsel === "" || (Number.isInteger(s.rows[k]?.g) ? s.rows[k].g === Number(gsel) : (s.groups?.[Number(gsel)]?.rows ?? []).includes(k)));
       for (const k of CC.applyAllRows(s.rows).filter(inGroup)) if (await applyRow(s, k, 1, { ask: false })) done.push(k);
       if (!done.length) ui.notifications.info("Every row left has a choice to make: apply them one by one.");
-      await save(msg, s); if (done.length) await lockSource(s); await runChain(s, done); await save(msg, s);
+      await save(msg, s); if (done.length) await lockSource(s); await runChain(s, done, msg); await save(msg, s);
     } else if (kind === "ccUndo" || kind === "ccAdjust") {
       const r = s.rows[i];
       if (!r?.applied) return;

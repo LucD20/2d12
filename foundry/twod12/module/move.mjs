@@ -745,12 +745,17 @@ function forcedBar(mode, target, origin, N, onEnd) {
   bar.className = "twod12-linebar twod12-setupbar twod12-forcedbar";
   bar.innerHTML = `<i class="fa-solid ${mode === "pull" ? "fa-hand-back-fist" : "fa-hand"} lb-ic"></i><span class="lb-text"><b>${esc(target.name)}</b> is ${label} up to ${N} square${N === 1 ? "" : "s"} ${how}. <small>Forced Movement ignores Difficult Terrain and triggers no Reactions; a wall or a creature in the way stops it (a Collision).</small><span class="lb-now"></span></span>`
     + '<button type="button" class="lb-go lb-book" data-tooltip="Forced Movement (Chapter 3)"><i class="fa-solid fa-book-open"></i> Rules</button>'
-    + '<button type="button" class="lb-go lb-end" data-tooltip="It moves 0 squares (the value is a maximum)"><i class="fa-solid fa-flag-checkered"></i> End forced movement</button>';
-  document.body.append(bar);
+    + '<button type="button" class="lb-go lb-end" data-tooltip="It moves 0 squares (the value is a maximum)"><i class="fa-solid fa-flag-checkered"></i> End movement</button>';
+  // v0.0.404 (Lucas: "Put this in the HUD area as well, that area will become the area for stuff like this"): in the HUD's side panel when a
+  // creature's bar is shown (else its middle), as the pick bar; at the bottom with no HUD
+  let hud = null, side = false;
+  try { hud = globalThis.__twod12Hud ?? null; } catch (e) { hud = null; }
+  const slot = hud?.hudAskSlot?.() ?? null;
+  if (slot) { side = !!slot.classList?.contains("hb-ask"); bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
   bar.querySelector(".lb-book").addEventListener("click", ev => { ev.preventDefault(); import("./inline.mjs").then(m => m.openBook({ ref: mode === "pull" ? "Pulled" : mode === "slid" ? "Slid" : mode === "push" ? "Pushed" : "Forced Movement", doc: "Chapter 3, Forced Movement" })).catch(() => {}); });
   bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); onEnd?.(); });
   const now = bar.querySelector(".lb-now");
-  return { set: t => { if (now) now.innerHTML = t ? ` <b class="lb-res">${esc(t)}</b>` : ""; }, close: () => bar.remove() };
+  return { set: t => { if (now) now.innerHTML = t ? ` <b class="lb-res">${esc(t)}</b>` : ""; }, close: () => { bar.remove(); if (slot) hud.hudAsking(false); } };
 }
 
 /**
@@ -1015,17 +1020,20 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   const label = MOVE_LABEL[mode];
   const st = await applySteadiness(target, N0, label), N = st.N;
   const { postFollow } = await import("./followup.mjs");   // v0.0.347 (Step 3): the lines go into the card that moved it (opts.msg)
-  if (N <= 0) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> is not moved: its Steadiness ${st.steady} reduces ${label} ${N0} to 0.`, { cls: "pushmsg" }); return; }
+  // v0.0.404 (Lucas: "just say 'X was Pushed Y by Z', one line, done, and merge with the Action that caused it"): one line into the card (opts.msg)
+  const byName = esc((opts.by ?? origin)?.name ?? "");
+  if (N <= 0) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> was not ${mode === "reposition" ? "Repositioned" : label} (Steadiness ${st.steady}).`, { cls: "pushmsg" }); return; }
   const pathTool = mode === "slid" || mode === "reposition";
   const pick = pathTool ? await choosePath(origin, target, N, mode, opts) : await choosePush(origin, target, N, mode);
   if (!pick) return;
-  if (pick.ended) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> is not moved: ${mode === "reposition" ? "the Reposition" : `${label} ${N0}`} ended at 0 squares (its value is a maximum).`, { cls: "pushmsg" }); return; }
+  if (pick.ended) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> was ${mode === "reposition" ? "Repositioned" : label} 0 by <b>${byName}</b>.`, { cls: "pushmsg" }); return; }
   const { result } = pick, f = result.final;
   if (pathTool) await moveAlong(target.document, pick.path.slice(0, result.done + 1));   // one movement along the path (v0.0.175)
   else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
   // v0.0.247 (Lucas): when the origin is another creature (a Push away from the target), the line names who pushes and whom it is away from
   const who = opts.by && opts.by.id !== origin.id ? `<b>${esc(opts.by.name)}</b>, away from <b>${esc(origin.name)}</b>,` : `<b>${esc(origin.name)}</b>`;
-  const lines = [`<b>${esc(target.name)}</b> is ${mode === "reposition" ? "Repositioned" : label} ${N0}${st.applied ? ` (Steadiness ${st.steady}: ${N})` : ""} by ${who} and moves ${result.done} square${result.done === 1 ? "" : "s"}.`];
+  void who;
+  const lines = [`<b>${esc(target.name)}</b> was ${mode === "reposition" ? "Repositioned" : label} ${result.done} by <b>${byName}</b>.`];
   if (result.block?.type === "loe") lines.push(`It stops: <b>${esc(origin.name)}</b> would lose Line of Effect to it (no damage).`);
   else if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? (result.block.corner ? "a solid corner" : "a wall") : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
   else if (result.block) {

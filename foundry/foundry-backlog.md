@@ -81,6 +81,11 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.404 (2026-11-17, branch `pack-hud-remake`): TO TEST
+- [ ] **A Push:** after picking the creature, "click the square where it ends" in the HUD's side panel (Rules, End movement).
+- [ ] **The chat:** no separate Push messages; the Word of Radiance card ends with "Ogre Chieftain was Pushed 1 by Durgan." (one line per creature; "was Pushed 0" when ended at once).
+- [ ] **Select and deselect a token:** the HUD's left edge, the players box and the hotbar don't move.
+
 ## v0.0.403 (2026-11-17, branch `pack-hud-remake`): TO TEST
 - [ ] **Placing an area:** right-drag pans the map (the placement stays); Esc cancels.
 - [ ] **A Push picked on the map:** your token stays selected without blinking.

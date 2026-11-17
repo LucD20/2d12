@@ -100,3 +100,7 @@ console.log("--- v0.0.401 (Lucas, testing v0.0.400)");
 console.log("a held token released during a pick is selected again:", src("module/pickbar.mjs").includes('guard = Hooks.on("controlToken", keep)'), "| the side panel glows:", src("styles/theme.css").includes("@keyframes twod12-hud-glow"));
 console.log("--- v0.0.403 (Lucas, testing v0.0.402)");
 console.log("a right-click doesn't cancel an area (it pans):", !src("module/template.mjs").includes("if (ev.button === 2) return done(null);"), "| no release during a pick (no blink):", src("module/pickbar.mjs").includes("L.releaseAll = function () { return 0; };"));
+console.log("--- v0.0.404 (Lucas, testing v0.0.403)");
+const mv4 = src("module/move.mjs");
+console.log("the forced movement's bar in the HUD:", mv4.includes('bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side);'), "| one line, 'X was Pushed Y by Z':", mv4.includes('was ${mode === "reposition" ? "Repositioned" : label} ${result.done} by <b>${byName}</b>.'),
+  "| into the card:", src("module/ccdamage.mjs").includes("await runChain(s, [i], msg);"), "| the HUD in the same place:", src("styles/theme.css").includes(".twod12-hud.is-strip { border: 1px solid transparent !important; }"));

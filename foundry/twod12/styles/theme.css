@@ -2247,3 +2247,12 @@
 @keyframes twod12-hud-glow { 50% { background-color: color-mix(in srgb, var(--s-gold, #d2a75a) 26%, transparent); box-shadow: inset 2px 0 0 var(--s-gold, #d2a75a), inset 0 0 10px color-mix(in srgb, var(--s-gold, #d2a75a) 45%, transparent); } }
 @media (prefers-reduced-motion: reduce) { .twod12-hud .hb-ask:not(:empty), .twod12-hud .hb-gr, .twod12-hud .hb-side .hb-info.alert { animation: none; background-color: color-mix(in srgb, var(--s-gold, #d2a75a) 20%, transparent); } }
 
+/* ==== v0.0.404 (Lucas, testing v0.0.403) ==== */
+/* the forced movement's bar in the side panel: the text, then Rules and End forced movement side by side; its small rule line hidden (Rules opens it) */
+.twod12-hud .hb-ask .twod12-forcedbar.in-side .lb-text small { display: none; }
+.twod12-hud .hb-ask .twod12-forcedbar.in-side .lb-res { display: block; color: var(--s-gold, #d2a75a); }
+.twod12-hud .hb-ask .twod12-forcedbar.in-side > button { overflow: hidden; text-overflow: ellipsis; }
+
+/* the HUD in the same place with or without a creature: the party strip keeps the bar's 1 px border, transparent */
+.twod12-hud.is-strip { border: 1px solid transparent !important; }
+
