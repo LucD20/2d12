@@ -1,22 +1,19 @@
-// STYLE-1 (v0.0.369; Lucas, 2026-11-12: "dark or light is a setting of the system"): the theme. styles/theme.css (built by
-// tools/build-theme.mjs) is scoped by classes on <html>: .twod12-type always (the settled type and shapes, both themes), and
-// .twod12-dark (the default) or .twod12-light (the chat card's parchment). A client setting: each player picks their own.
-export const THEMES = { dark: "Dark", light: "Light" };
+// STYLE-1 (v0.0.369): the theme. STYLE-3 (2026-11-17, Lucas: "A", foundry/mockups/style-book.md step 4): the system follows Foundry's own
+// color schemes, as dnd5e and Draw Steel do. styles/theme.css (built by tools/build-theme.mjs) puts its dark and light sets inside
+// @scope (.theme-dark) / (.theme-light) to (.themed): the chat and the bars on the map follow Foundry's Interface setting, the sheets and
+// windows its Applications setting (or a sheet's own theme). The system's own "Theme" setting is gone. <html> keeps .twod12-type (the
+// settled type and shapes, both themes).
 
-/** Pure: the classes <html> carries for a theme (an unknown value is the default, dark). */
-export const themeClasses = theme => ["twod12-type", theme === "light" ? "twod12-light" : "twod12-dark"];
+/** Pure: the classes <html> carries (the theme is Foundry's now; the argument is ignored, kept for old callers). */
+export const themeClasses = () => ["twod12-type"];
 
-/** Put the theme's classes on <html> (and take the other theme's off). */
-export function applyTheme(theme, root = globalThis.document?.documentElement) {
+/** Put the class on <html> and take off the old theme classes (a world that ran an earlier version). */
+export function applyTheme(_theme, root = globalThis.document?.documentElement) {
   if (!root) return;
   root.classList.remove("twod12-dark", "twod12-light");
-  root.classList.add(...themeClasses(theme));
+  root.classList.add(...themeClasses());
 }
 
 export function registerTheme() {
-  game.settings.register("twod12", "theme", {
-    name: "Theme", hint: "The look of the system's sheets, cards, chat messages and windows: Dark (the default) or Light (the parchment cards). Only for you.",
-    scope: "client", config: true, type: String, choices: THEMES, default: "dark", onChange: v => applyTheme(v)
-  });
-  applyTheme(game.settings.get("twod12", "theme"));
+  applyTheme();
 }

@@ -532,14 +532,21 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 @font-face { font-family: "Cinzel"; src: url("../fonts/cinzel-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
 @font-face { font-family: "Lilita One"; src: url("../fonts/lilita-one.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: "Cinzel"; src: url("../fonts/cinzel-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonts/source-sans-3.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Sans 3"; src: url("../fonts/source-sans-3-italic.woff2") format("woff2"); font-weight: 200 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Source Serif 4"; src: url("../fonts/source-serif-4.woff2") format("woff2"); font-weight: 200 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Serif 4"; src: url("../fonts/source-serif-4-italic.woff2") format("woff2"); font-weight: 200 900; font-style: italic; font-display: swap; }
+/* STYLE-3 (2026-11-17, foundry/mockups/style-book.md step 2): the book's faces, Source Sans 3 in the place of Signika and Source Serif 4 in the place
+   of Cinzel (shipped in fonts/, the book's files). Foundry's own font variable is the system's inside its surfaces. */
+.twod12, .twod12-hud, .twod12-dock, #twod12-carousel, .application.twod12-styled { --font-primary: "Source Sans 3", "Signika", sans-serif; }
 .twod12.chat.action, .twod12.chat.dmg { background: #f4ecdc; border: 1px solid #c8b48a; color: #2c2c2a; }
 .twod12.chat.action > .ahead, .twod12.chat.dmg > .ahead { border-bottom: 2px solid #EF9F27; }
-.twod12.chat .ahead > b { font-family: "Cinzel", "Palatino Linotype", "Book Antiqua", Georgia, serif; font-weight: 700; letter-spacing: .3px; }
+.twod12.chat .ahead > b { font-family: "Source Serif 4", "Palatino Linotype", "Book Antiqua", Georgia, serif; font-weight: 700; letter-spacing: .3px; }
 .twod12.chat.action .flavor { color: #6b5a3a; opacity: 1; }
 .twod12.chat hr.cdiv { border-top-color: #d6c9a8; }
 .twod12.chat .orn { display: flex; align-items: center; gap: 6px; color: #BA7517; font-size: 11px; line-height: 1; margin: 7px 8px; }
 .twod12.chat .orn::before, .twod12.chat .orn::after { content: ""; flex: 1; border-top: 1px solid #d6c9a8; }
-.twod12.chat.action .chk-title { flex-basis: 100%; font-family: "Cinzel", Georgia, serif; font-weight: 700; }
+.twod12.chat.action .chk-title { flex-basis: 100%; font-family: "Source Serif 4", Georgia, serif; font-weight: 700; }
 /* d12 faces as diamonds; a 12 and the dice it adds in gold; Doubles in blue; a dropped die faded and struck */
 .twod12.chat .die.d12 { position: relative; isolation: isolate; min-width: 26px; height: 26px; padding: 0; border: none; background: transparent; color: #2c2c2a; font-weight: 600; font-size: 11px; }
 .twod12.chat .die.d12::before { content: ""; position: absolute; inset: 4px; transform: rotate(45deg); background: #fff; border: 1.5px solid #5f5e5a; border-radius: 4px; z-index: -1; }
@@ -625,7 +632,7 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 .twod12.chat.pv .pv-p, .twod12.chat.pv .pv-odds, .twod12 .usepreview .tiers th small, .twod12 .usepreview td small { color: #6b5a3a; opacity: 1; }
 .twod12 .usepreview tr.forced { background: #EEEDFE; outline: 2px solid #7F77DD; }
 /* The AP version buttons (roll dialog, Action Builder): parchment tabs, the chosen one in brown */
-.twod12 .apbtn span { background: #f4ecdc; border-color: #c8b48a; color: #6b5a3a; font-family: "Cinzel", Georgia, serif; font-weight: 700; }
+.twod12 .apbtn span { background: #f4ecdc; border-color: #c8b48a; color: #6b5a3a; font-family: "Source Serif 4", Georgia, serif; font-weight: 700; }
 .twod12 .apbtn input:checked + span { background: #8a7650; border-color: #6b5a3a; color: #fbf7ee; }
 .twod12 .apbtn span:hover { background: #fbf7ee; color: #2c2c2a; }
 /* Buttons inside the parchment cards (areas, Saves, Move, Use...) */
@@ -636,7 +643,7 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 /* ===== v0.0.76: World Clock window and quick time bar ===== */
 .twod12.clockwin .window-content { padding: 8px 10px; background: #f4ecdc; color: #2c2c2a; }
 .twod12 .clockbody { display: flex; flex-direction: column; gap: 8px; }
-.twod12 .clock-date { text-align: center; font-family: "Cinzel", Georgia, serif; font-weight: 700; font-size: 1.05em; padding: 2px 0 6px; border-bottom: 2px solid #EF9F27; }
+.twod12 .clock-date { text-align: center; font-family: "Source Serif 4", Georgia, serif; font-weight: 700; font-size: 1.05em; padding: 2px 0 6px; border-bottom: 2px solid #EF9F27; }
 .twod12 .clock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .twod12 .clock-grid.four { grid-template-columns: repeat(4, 1fr); }
 .twod12 .clock-wide { width: 100%; white-space: normal; padding: 6px 8px; background: #fbf7ee; border: 1px solid #8a7650; color: #2c2c2a; border-radius: 4px; cursor: pointer; }
@@ -680,7 +687,7 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 .twod12.chat .mrow { grid-template-columns: minmax(0, 1fr) auto auto; padding: 2px 6px; }
 .twod12.chat .mrow .modds { grid-column: 1 / -1; font-size: 10px; color: #6b5a3a; margin-top: -1px; }
 .twod12.chat.dmg.multi .mdall { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-bottom: 1px solid #d6c9a8; }
-.twod12.chat.dmg.multi .mdl { font-family: "Cinzel", Georgia, serif; font-weight: 700; font-size: 12px; }
+.twod12.chat.dmg.multi .mdl { font-family: "Source Serif 4", Georgia, serif; font-weight: 700; font-size: 12px; }
 .twod12.chat.dmg.multi .mdrow { padding: 4px 8px; border-bottom: 1px solid #e3d8bf; }
 .twod12.chat.dmg.multi .mdrow.blocked { opacity: .55; text-decoration: line-through; }
 .twod12.chat.dmg.multi .mdrow.done { background: rgba(60,140,90,.10); }
@@ -1924,16 +1931,16 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* ------------------------------------------------------------------ v0.0.201 (Lucas): the strip in the chat cards' and sheet's own look */
 #twod12-carousel { --tp-navy: #1e2a3a; --tp-navy2: #2a3a52; --tp-parch: #f4ecdc; --tp-parch2: #ebe0c8; --tp-border: #c8b48a; --tp-ink: #2c2a26; --tp-mut: #6b5a3a;
   --tp-foe: #a32d2d; --tp-ally: #3b6d11; --tp-neutral: #8a7d62; --tp-gold: #BA7517; --tp-teal: #0f6e6e; --tp-ice: #3d7fc4; }
-#twod12-carousel .tc-head.tc-bar { background: var(--tp-navy); border-color: #0f1622; color: #f4ecdc; font-family: "Cinzel", Georgia, serif; font-variant: normal; letter-spacing: .03em; }
-#twod12-carousel .tc-bar .tc-btn { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-weight: 700; font-size: 10.5px; background: var(--tp-navy2); border-color: #3a4a62; color: #f4ecdc; }
+#twod12-carousel .tc-head.tc-bar { background: var(--tp-navy); border-color: #0f1622; color: #f4ecdc; font-family: "Source Serif 4", Georgia, serif; font-variant: normal; letter-spacing: .03em; }
+#twod12-carousel .tc-bar .tc-btn { font-family: "Source Serif 4", Georgia, serif; font-variant: normal; font-weight: 700; font-size: 10.5px; background: var(--tp-navy2); border-color: #3a4a62; color: #f4ecdc; }
 #twod12-carousel .tc-bar .tc-btn:hover:not([disabled]) { border-color: #EF9F27; }
 #twod12-carousel .tc-round b { color: #EF9F27; }
 #twod12-carousel .tp { background: linear-gradient(var(--tp-parch), var(--tp-parch2)); border-color: var(--tp-border); color: var(--tp-ink); }
-#twod12-carousel .tp-band { font-family: "Cinzel", Georgia, serif; letter-spacing: .08em; font-size: 9.5px; }
+#twod12-carousel .tp-band { font-family: "Source Serif 4", Georgia, serif; letter-spacing: .08em; font-size: 9.5px; }
 #twod12-carousel .tp.act { border-color: #EF9F27; box-shadow: 0 0 0 1px var(--tp-gold), 0 3px 10px rgba(0, 0, 0, .45); }
 #twod12-carousel .tp.act .tp-band { color: #EF9F27; }
-#twod12-carousel .tp-seal { background: var(--tp-navy); border-color: #EF9F27; font-family: "Cinzel", Georgia, serif; }
-#twod12-carousel .tp-name { font-family: "Cinzel", Georgia, serif; font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: .02em; }
+#twod12-carousel .tp-seal { background: var(--tp-navy); border-color: #EF9F27; font-family: "Source Serif 4", Georgia, serif; }
+#twod12-carousel .tp-name { font-family: "Source Serif 4", Georgia, serif; font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: .02em; }
 #twod12-carousel .tp.act .tp-name { font-size: 11.5px; }
 /* pips: its turn = indigo discs; out of turn = teal diamonds (AP left for Reactions); frozen = dashed ice rings */
 #twod12-carousel .tp-pips { gap: 3px; }
@@ -1945,10 +1952,10 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 #twod12-carousel .tp-pips.frozen i { border-style: dashed; border-color: var(--tp-ice); }
 #twod12-carousel .tp-pips.frozen i.on { background: color-mix(in srgb, var(--tp-ice) 35%, transparent); border-color: var(--tp-ice); }
 #twod12-carousel .tp.frozen .tp-pips i.on { background: color-mix(in srgb, var(--tp-ice) 35%, transparent); }
-#twod12-carousel .tp-move { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-size: 10px; font-weight: 700; color: var(--c-mv, #4d6b0a); background: rgba(77, 107, 10, .08); border-color: rgba(77, 107, 10, .35); }
+#twod12-carousel .tp-move { font-family: "Source Serif 4", Georgia, serif; font-variant: normal; font-size: 10px; font-weight: 700; color: var(--c-mv, #4d6b0a); background: rgba(77, 107, 10, .08); border-color: rgba(77, 107, 10, .35); }
 #twod12-carousel .tp-move b { font-size: 12px; }
 #twod12-carousel .tp-move.none { color: var(--tp-mut); }
-#twod12-carousel .tp-swap { font-family: "Cinzel", Georgia, serif; font-variant: normal; font-weight: 700; font-size: 10px; background: var(--tp-navy); border-color: #3a4a62; color: #f4ecdc; }
+#twod12-carousel .tp-swap { font-family: "Source Serif 4", Georgia, serif; font-variant: normal; font-weight: 700; font-size: 10px; background: var(--tp-navy); border-color: #3a4a62; color: #f4ecdc; }
 #twod12-carousel .tp-swap.on { background: #EF9F27; color: var(--tp-navy); border-color: var(--tp-gold); }
 #twod12-carousel .tp.swapok { outline-color: #EF9F27; }
 #twod12-carousel .tp-swapb { background: #EF9F27; }
@@ -1963,7 +1970,7 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* ------------------------------------------------------------------ v0.0.203 (Lucas): the system messages' default look (module/sysmsg.mjs): Swap Initiative, the thaw line */
 .twod12.chat.sysmsg { padding-bottom: 7px; }
 .twod12.chat.sysmsg > .ahead { align-items: center; margin-bottom: 5px; padding: 4px 8px; }
-.twod12.chat.sysmsg > .ahead > b { font-family: "Cinzel", Georgia, serif; font-size: 13px; letter-spacing: .02em; }
+.twod12.chat.sysmsg > .ahead > b { font-family: "Source Serif 4", Georgia, serif; font-size: 13px; letter-spacing: .02em; }
 .twod12.chat.sysmsg > .ahead .apmark { background: #5b6fd0; color: #fff; font-size: 10.5px; line-height: 16px; padding: 0 4px; }
 .twod12.chat.sysmsg .sm-lead { display: flex; flex-wrap: wrap; align-items: center; gap: 0 7px; font-weight: 700; font-size: 1.12em; line-height: 1.3; }
 .twod12.chat.sysmsg .sm-swap { font-size: .8em; opacity: .7; }
@@ -1980,7 +1987,7 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.chat.initcard { --ic-foe: #a32d2d; --ic-ally: #3b6d11; --ic-neutral: #8a7d62; padding-bottom: 0; }
 .twod12.chat.initcard > .orn { margin: 5px 8px 4px; }
 .twod12.chat.initcard > .ic-band, .twod12.chat.initcard > .ic-row, .twod12.chat.initcard > .ic-exp { margin-left: 0; margin-right: 0; }
-.twod12.chat.initcard .ic-band { display: flex; justify-content: space-between; align-items: center; padding: 3px 8px; background: var(--ic-neutral); color: #fff; font: 700 11px/1.2 "Cinzel", Georgia, serif; letter-spacing: .08em; text-transform: uppercase; }
+.twod12.chat.initcard .ic-band { display: flex; justify-content: space-between; align-items: center; padding: 3px 8px; background: var(--ic-neutral); color: #fff; font: 700 11px/1.2 "Source Serif 4", Georgia, serif; letter-spacing: .08em; text-transform: uppercase; }
 .twod12.chat.initcard .ic-band.foe { background: var(--ic-foe); }
 .twod12.chat.initcard .ic-band.ally { background: var(--ic-ally); }
 .twod12.chat.initcard .ic-best { font: 500 11px/1 var(--font-primary, sans-serif); letter-spacing: 0; text-transform: none; opacity: .92; }
@@ -1989,7 +1996,7 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .twod12.chat.initcard .ic-row.ally { --ic: var(--ic-ally); }
 .twod12.chat.initcard .ic-row:hover { background: rgba(186, 117, 23, .07); }
 .twod12.chat.initcard .ic-pos { flex: none; width: 19px; height: 19px; box-sizing: border-box; border: 2px solid var(--ic); border-radius: 50%; background: #fbf7ee; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 700; color: #2c2c2a; }
-.twod12.chat.initcard .ic-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 12px/1.3 "Cinzel", Georgia, serif; letter-spacing: .02em; color: #2c2c2a; }
+.twod12.chat.initcard .ic-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 12px/1.3 "Source Serif 4", Georgia, serif; letter-spacing: .02em; color: #2c2c2a; }
 .twod12.chat.initcard .ic-num { font: 600 11px/1 var(--font-primary, sans-serif); color: #6b5a3a; }
 .twod12.chat.initcard .ic-note { font: italic 400 11px/1 Georgia, serif; letter-spacing: 0; color: #6b5a3a; }
 .twod12.chat.initcard .ic-attr { flex: none; width: 16px; height: 16px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--c-ia, #5c5a55); background: color-mix(in srgb, var(--c-ia, #5c5a55) 15%, transparent); }
@@ -2092,7 +2099,7 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 .enclog .el-abbr label { display: inline-flex; align-items: center; gap: 4px; margin: 3px 12px 3px 0; color: #2c2a26; }
 .enclog .el-abbr input { width: 56px; height: 22px; color: #2c2a26; background: #fff; }
 .enclog .el-body { flex: 1; overflow-y: auto; padding: 6px 10px 12px; }
-.enclog .el-round { margin: 10px 0 4px; padding-bottom: 2px; border-bottom: 2px solid #8a7650; font-family: "Cinzel", Georgia, serif; font-size: 14px; color: #1e2a3a; }
+.enclog .el-round { margin: 10px 0 4px; padding-bottom: 2px; border-bottom: 2px solid #8a7650; font-family: "Source Serif 4", Georgia, serif; font-size: 14px; color: #1e2a3a; }
 .enclog .el-turn { margin: 4px 0 8px; padding: 4px 8px; border-left: 3px solid #1e2a3a; background: rgba(255, 255, 255, .45); border-radius: 0 5px 5px 0; }
 .enclog .el-own { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; color: #1e2a3a; }
 .enclog .el-own .el-ab { opacity: .6; font-size: 11px; }
@@ -2357,7 +2364,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.275 (pack RX-2, Lucas's design 2026-11-07, mockups "2d12 Reactions message mockups"): the Reactions message as a stack card
    (parchment, a navy header with the clock and the GM's skip; "Can react" rows with faces; "pick one" groups; the Stack's slabs in their
    map colors over the dark base slab; drag grips and Resolve for the GM), and once resolved one line that unfolds (a snapshot, the frozen stack). */
-.twod12.chat.rx2 { background: #f4eddc; border: 1px solid #bfae86; border-radius: 6px; overflow: hidden; color: #2b2216; font-family: "Signika", sans-serif; font-size: 13px; line-height: 1.25; }
+.twod12.chat.rx2 { background: #f4eddc; border: 1px solid #bfae86; border-radius: 6px; overflow: hidden; color: #2b2216; font-family: "Source Sans 3", sans-serif; font-size: 13px; line-height: 1.25; }
 .twod12.chat.rx2 .rx-i { display: block; flex: none; }
 .twod12.chat.rx2 .rx-hd { background: #1d2738; color: #ecdcae; display: flex; align-items: center; gap: 8px; min-height: 28px; padding: 3px 8px 3px 10px; font-variant: small-caps; font-weight: 600; letter-spacing: .04em; font-size: 14px; }
 .twod12.chat.rx2 .rx-hd .rx-ttl { flex: 1; }
@@ -2465,10 +2472,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
   --cc-bg: #f4ede0; --cc-line: #bfae8c; --cc-ink: #2a241d; --cc-mute: #5d5446; --cc-panel: #e8dec8; --cc-gold: #b07a12; --cc-gline: #cdb88a;
   --cc-t1: #a8261c; --cc-t1p: #f2cdc7; --cc-t1i: #8a1c13; --cc-t2: #cfe3c2; --cc-t2i: #234d27; --cc-t3: #2b5a2f; --cc-crit: #1d5a9e; --cc-critp: rgba(29,90,158,.35); --cc-criti: #1d3f6b;
   --cc-plus: #1d4f8f; --cc-minus: #a8261c; --cc-vig: #9b2c2c; --cc-res: #2c4a9b; --cc-btn: #3b3128; --cc-btn2: #8c7d63;
-  --cc-title: "Cinzel", "Palatino Linotype", Georgia, serif;
+  --cc-title: "Source Serif 4", "Palatino Linotype", Georgia, serif;
   padding: 0; background: none; border: 0; color: var(--cc-ink);
 }
-.twod12.chat.cc .cc-card { background: #f4ede0; border: 1px solid var(--cc-line); border-radius: 5px; padding: 7px 8px 6px; color: var(--cc-ink); font-family: var(--font-primary, "Signika", sans-serif); font-size: 12.5px; line-height: 1.35; overflow: hidden; }
+.twod12.chat.cc .cc-card { background: #f4ede0; border: 1px solid var(--cc-line); border-radius: 5px; padding: 7px 8px 6px; color: var(--cc-ink); font-family: var(--font-primary, "Source Sans 3", sans-serif); font-size: 12.5px; line-height: 1.35; overflow: hidden; }
 .twod12.chat.cc .cc-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .twod12.chat.cc button { font-family: inherit; line-height: 1.2; margin: 0; box-shadow: none; }
 .twod12.chat.cc button:focus-visible { outline: 2px solid var(--cc-crit); outline-offset: 1px; }
@@ -2716,7 +2723,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs { --ps-navy: #1b2433; --ps-cell: #222d40; --ps-edge: #33405a; --ps-tile: #243047; --ps-parch: #efebe3; --ps-card: #fffefb; --ps-cline: #c9bfab;
   --ps-strip: #f3efe6; --ps-amber: #d9902f; --ps-amberl: #f3d39c; --ps-teal: #17635c; --ps-tealr: #2fa59a; --ps-ink: #26241f; --ps-mut: #6b665a; --ps-lt: #c9cfda; --ps-k: #9aa6ba;
   position: absolute; inset: 0; padding: 0 !important; display: flex; flex-direction: column; overflow: hidden; background: var(--ps-navy); color: #e6e9ef;
-  font-family: var(--font-primary, Signika, "Segoe UI", sans-serif); font-size: 13px; }
+  font-family: var(--font-primary, "Source Sans 3", "Segoe UI", sans-serif); font-size: 13px; }
 .twod12.sheet.pcs button { font-family: inherit; height: auto; min-height: 0; line-height: 1.2; width: auto; cursor: pointer; box-shadow: none; margin: 0; }
 .twod12.sheet.pcs button:focus-visible, .twod12.sheet.pcs a:focus-visible, .twod12.sheet.pcs input:focus-visible { outline: 2px solid var(--ps-amber); outline-offset: 2px; }
 .twod12.sheet.pcs [aria-disabled="true"], .twod12.sheet.pcs .dis { cursor: not-allowed; }
@@ -2728,7 +2735,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ps-head { display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: #f3efe6; flex: none; }
 .twod12.sheet.pcs .ps-portrait { width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--ps-amber); background: #2a3548; object-fit: cover; flex: none; cursor: pointer; }
 .twod12.sheet.pcs .ps-id { display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0; }
-.twod12.sheet.pcs .ps-nameinput { font-family: "Cinzel", serif; font-size: 22px; font-weight: 700; color: #f3efe6; background: transparent; border: 1px solid transparent; height: auto; padding: 0 2px; }
+.twod12.sheet.pcs .ps-nameinput { font-family: "Source Serif 4", serif; font-size: 22px; font-weight: 700; color: #f3efe6; background: transparent; border: 1px solid transparent; height: auto; padding: 0 2px; }
 .twod12.sheet.pcs .ps-nameinput:hover, .twod12.sheet.pcs .ps-nameinput:focus { border-color: var(--ps-edge); }
 .twod12.sheet.pcs .ps-line1 { display: flex; align-items: center; gap: 5px; font-size: 13px; color: var(--ps-lt); flex-wrap: wrap; }
 .twod12.sheet.pcs .ps-line1 a { color: var(--ps-lt); }
@@ -2841,7 +2848,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ps-scroll { flex-grow: 1; min-height: 0; overflow-y: auto; }
 .twod12.sheet.pcs .ps-scroll > .tab { padding: 10px 14px; }
 .twod12.sheet.pcs .ps-stack { display: flex; flex-direction: column; gap: 12px; }
-.twod12.sheet.pcs .ps-h2 { font-family: "Cinzel", serif; font-size: 15px; font-weight: 700; color: #4a463d; }
+.twod12.sheet.pcs .ps-h2 { font-family: "Source Serif 4", serif; font-size: 15px; font-weight: 700; color: #4a463d; }
 .twod12.sheet.pcs .ps-empty { border: 1px dashed #c8bfac; border-radius: 8px; padding: 14px; font-size: 13px; color: var(--ps-mut); text-align: center; }
 .twod12.sheet.pcs .ps-colh, .twod12.sheet.pcs .ps-line { display: grid; grid-template-columns: minmax(0, 1fr) 72px 104px 80px 72px; column-gap: 18px; justify-items: center; align-items: center; }
 .twod12.sheet.pcs .ps-colh { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ps-mut); padding: 0 10px 6px; }
@@ -2957,7 +2964,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ps-bcard { background: var(--ps-card); border: 1px solid var(--ps-cline); border-radius: 6px; box-shadow: 0 1px 2px rgba(27,36,51,.12); overflow: hidden; display: flex; flex-direction: column; color: var(--ps-ink); }
 .twod12.sheet.pcs .ps-bch { background: var(--ps-navy); color: #f3efe6; padding: 7px 12px; display: flex; justify-content: space-between; align-items: baseline; }
 .twod12.sheet.pcs .ps-bch small { font-size: 10px; letter-spacing: .1em; color: var(--ps-k); }
-.twod12.sheet.pcs .ps-bch b { font-family: "Cinzel", serif; font-size: 16px; margin-left: 6px; }
+.twod12.sheet.pcs .ps-bch b { font-family: "Source Serif 4", serif; font-size: 16px; margin-left: 6px; }
 .twod12.sheet.pcs .ps-bch button { font-size: 12px; color: var(--ps-navy); background: var(--ps-amberl); border: none; border-radius: 4px; padding: 2px 8px; }
 .twod12.sheet.pcs .ps-bcb { padding: 9px 12px; display: flex; flex-direction: column; gap: 8px; }
 .twod12.sheet.pcs .ps-chips { display: flex; gap: 4px; flex-wrap: nowrap; overflow: hidden; }
@@ -3033,8 +3040,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.sheet.pcs .ps-brw > .ps-brow { border-top: none; }
 .twod12.sheet.pcs .ar.open > .ps-line, .twod12.sheet.pcs .ar.open > .ps-brow { background: #f3efe6; }
 .twod12.sheet.pcs .ps-lvlbar { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--ps-ink); }
-.twod12.sheet.pcs .ps-lvlbar .ps-lvl { font-family: "Cinzel", serif; font-weight: 700; font-size: 15px; color: #4a463d; }
-.twod12.sheet.pcs .ps-lvlbar .ps-lvl input { width: 3.2em; height: 26px; text-align: center; color: var(--ps-ink); background: #fff; border: 1px solid var(--ps-cline); border-radius: 4px; font-family: var(--font-primary, Signika, sans-serif); font-size: 14px; }
+.twod12.sheet.pcs .ps-lvlbar .ps-lvl { font-family: "Source Serif 4", serif; font-weight: 700; font-size: 15px; color: #4a463d; }
+.twod12.sheet.pcs .ps-lvlbar .ps-lvl input { width: 3.2em; height: 26px; text-align: center; color: var(--ps-ink); background: #fff; border: 1px solid var(--ps-cline); border-radius: 4px; font-family: var(--font-primary, "Source Sans 3", sans-serif); font-size: 14px; }
 
 /* ==== v0.0.291 PACK NPC-SHEET: the NPC sheet on the character sheet's layout (.twod12.sheet.pcs serves both), and the shared follow-ups:
    the Strike line on Action rows, the frequency + Strike lines on Basic Action buttons, 3px corners on chips / pills / badges, the Senses cell ==== */
@@ -3143,14 +3150,14 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
   --cc-bg: #f4ede0; --cc-line: #bfae8c; --cc-ink: #2a241d; --cc-mute: #5d5446; --cc-panel: #e8dec8; --cc-gold: #b07a12; --cc-gline: #cdb88a;
   --cc-t1: #a8261c; --cc-t1p: #f2cdc7; --cc-t1i: #8a1c13; --cc-t2: #cfe3c2; --cc-t2i: #234d27; --cc-t3: #2b5a2f; --cc-crit: #1d5a9e;
   --cc-vig: #9b2c2c; --cc-res: #2c4a9b; --cc-btn: #3b3128; --cc-btn2: #8c7d63;
-  --cc-title: "Cinzel", "Palatino Linotype", Georgia, serif;
+  --cc-title: "Source Serif 4", "Palatino Linotype", Georgia, serif;
   --rd-box: #fbf7ef; --rd-boxline: #d6c8a8; --rd-buff: #9cbf8c; --rd-debuff: #d9a39c; --rd-label: #6b6152; --rd-boon: #1d5a9e; --rd-bane: #a8261c;
   max-height: 90vh; background: var(--cc-bg); border: 1px solid var(--cc-line); border-radius: 5px; color: var(--cc-ink);
 }
 .twod12.rolldlg .window-header { background: #2a241d; color: #f4ede0; border-radius: 4px 4px 0 0; }
 .twod12.rolldlg .window-header button { color: #f4ede0; }
 .twod12.rolldlg .window-content { padding: 0; background: var(--cc-bg); display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
-.twod12.rolldlg .rd { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; font-family: "Signika", sans-serif; font-size: 13px; color: var(--cc-ink); }
+.twod12.rolldlg .rd { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; font-family: "Source Sans 3", sans-serif; font-size: 13px; color: var(--cc-ink); }
 .twod12.rolldlg .rd button { font-family: inherit; line-height: 1.1; box-shadow: none; }
 .twod12.rolldlg .rd-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 /* header (fixed): the name, the Versions, the traits and the Frequency chip */
@@ -3181,7 +3188,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-area { display: inline-flex; align-items: center; gap: 3px; min-height: 22px; padding: 0 7px; border: 1px solid var(--cc-btn2); border-radius: 3px; background: var(--rd-box); color: var(--cc-ink); font-size: 12px; font-weight: 600; cursor: pointer; vertical-align: middle; }
 .twod12.rolldlg .rd-tiers { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0 2px; margin: 8px 0 2px; font-size: 12.5px; }
 .twod12.rolldlg .rd-tiers th { width: 52px; text-align: center; font-weight: 700; border-radius: 2px 0 0 2px; padding: 3px 2px; vertical-align: middle; font-family: var(--cc-title); }
-.twod12.rolldlg .rd-tiers th small { display: block; font-family: "Signika", sans-serif; font-weight: 400; font-size: 10px; }
+.twod12.rolldlg .rd-tiers th small { display: block; font-family: "Source Sans 3", sans-serif; font-weight: 400; font-size: 10px; }
 .twod12.rolldlg .rd-tiers td { padding: 3px 8px; background: var(--rd-box); border: 1px solid var(--rd-boxline); border-left: 0; border-radius: 0 2px 2px 0; line-height: 1.4; }
 .twod12.rolldlg .rd-tiers tr.t1 th { background: var(--cc-t1p); color: var(--cc-t1i); }
 .twod12.rolldlg .rd-tiers tr.t2 th { background: var(--cc-t2); color: var(--cc-t2i); }
@@ -3287,7 +3294,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-pip.d12 { width: 14px; height: 14px; flex: 0 0 auto; }
 .twod12.rolldlg .rd-pip.d12 polygon { stroke: none; }
 .twod12.rolldlg .rd-pip.d12.fav polygon { fill: #1d5a9e; } .twod12.rolldlg .rd-pip.d12.doom polygon { fill: #a8261c; }
-.twod12.rolldlg .rd-pip.d12 text { fill: #fff; font: 700 10px "Signika", sans-serif; }
+.twod12.rolldlg .rd-pip.d12 text { fill: #fff; font: 700 10px "Source Sans 3", sans-serif; }
 .twod12.rolldlg .rd-chip.off .rd-pip.d12, .twod12.rolldlg .rd-chip.na .rd-pip.d12 { opacity: .45; }
 .twod12.rolldlg .rd-chip.na .rd-cbody[aria-disabled="true"] { cursor: not-allowed; }
 .twod12.rolldlg .rd-vers button.cant { cursor: pointer; }
@@ -3358,16 +3365,16 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* the open row: v0.0.298 (Lucas tested v0.0.297): the navy head and the ▸ / ▾ chevron only on the Build tab; an open Action row keeps the sheet's light look */
 .twod12.sheet.pcs .ar.open > .ps-brow, .twod12.sheet.pcs .ar.open > .ps-brow[data-action="toggleCard"]:hover { background: #1b2433; color: #f3efe6; }
 .twod12.sheet.pcs .ps-brw.open { border-top-color: #1b2433; }
-.twod12.sheet.pcs .ar.open > .ps-brow .ps-nm { font-family: "Cinzel", serif; font-weight: 700; font-size: 15px; color: #f3d39c; text-decoration: none; }
+.twod12.sheet.pcs .ar.open > .ps-brow .ps-nm { font-family: "Source Serif 4", serif; font-weight: 700; font-size: 15px; color: #f3d39c; text-decoration: none; }
 .twod12.sheet.pcs .ar.open > .ps-brow .ps-slot, .twod12.sheet.pcs .ar.open > .ps-brow .ps-bfreq { color: #f3efe6; }
 .twod12.sheet.pcs .ar.open > .ps-brow .ps-bctl a { color: #f3d39c; }
-.twod12.sheet.pcs .ps-brw > .ps-brow .ps-nm::before { content: "\25B8"; display: inline-block; width: 12px; margin-right: 4px; font-family: var(--font-primary, Signika, sans-serif); font-size: 12px; font-weight: 400; color: #6b665a; }
+.twod12.sheet.pcs .ps-brw > .ps-brow .ps-nm::before { content: "\25B8"; display: inline-block; width: 12px; margin-right: 4px; font-family: var(--font-primary, "Source Sans 3", sans-serif); font-size: 12px; font-weight: 400; color: #6b665a; }
 .twod12.sheet.pcs .ps-brw.open > .ps-brow .ps-nm::before { content: "\25BE"; color: #d9902f; }
 .twod12.sheet.pcs .ar.open > .ps-line .ps-nm { font-weight: 700; }
 /* the frame */
 .twod12.sheet.pcs .ar > .ar-card { padding: 0 8px 10px; }
 .twod12.acard.d2 { display: flex; flex-direction: column; gap: 9px; padding: 12px 14px; background: #fbf6ea; color: #26241f; border: 1px solid #1b2433; border-top: 0; border-radius: 0 0 4px 4px; outline: 1px solid #d9b26a; outline-offset: -5px; overflow: visible;
-  font-family: var(--font-primary, Signika, "Segoe UI", sans-serif); font-size: 13px; line-height: 1.4; }
+  font-family: var(--font-primary, "Source Sans 3", "Segoe UI", sans-serif); font-size: 13px; line-height: 1.4; }
 .twod12.acard.d2 > :empty:not(td):not(th) { display: none; }
 /* 1. the trait line */
 .twod12.acard.d2 .ap-trow { display: flex; align-items: flex-start; gap: 6px; flex-wrap: wrap; }
@@ -3391,7 +3398,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 .ap-st { color: #d9902f; margin: 0 6px; font-size: 11px; }
 .twod12.acard.d2 .ap-meta .trhl { background: #e3eef1; border: 1px solid #b6d0d6; color: #1d4f5a; border-radius: 3px; padding: 0 6px; font-size: 12px; font-weight: 600; }
 /* the inline pieces (meta, cells, Effects): an area chip (the Place Area button), a button, an Action button, book links, Bane */
-.twod12.acard.d2 a.twod12-inline { display: inline-flex; align-items: center; gap: 4px; min-height: 20px; padding: 0 6px; border: 1px solid #6b6152; border-radius: 3px; background: #efe6d3; color: #2a241d; font: 600 11.5px var(--font-primary, Signika, sans-serif); line-height: 1.2; vertical-align: 1px; text-decoration: none; white-space: nowrap; }
+.twod12.acard.d2 a.twod12-inline { display: inline-flex; align-items: center; gap: 4px; min-height: 20px; padding: 0 6px; border: 1px solid #6b6152; border-radius: 3px; background: #efe6d3; color: #2a241d; font: 600 11.5px var(--font-primary, "Source Sans 3", sans-serif); line-height: 1.2; vertical-align: 1px; text-decoration: none; white-space: nowrap; }
 .twod12.acard.d2 a.twod12-inline i { color: inherit; font-size: 10px; }
 .twod12.acard.d2 a.twod12-inline i.areaic { font-size: 11px; width: 11px; height: 11px; }
 .twod12.acard.d2 a.twod12-inline[data-twod12-inline="Template"] { background: #fff; }
@@ -3409,7 +3416,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 table.ap-tt tr { background: none; }
 .twod12.acard.d2 table.ap-tt td { padding: 6px 9px; border: none; border-bottom: 1px solid #e6d6b2; vertical-align: top; line-height: 1.5; background: none; color: #26241f; text-align: left; }
 .twod12.acard.d2 table.ap-tt td + td { border-left: 1px dotted #d9b26a; }
-.twod12.acard.d2 table.ap-tt td.tl { background: var(--bg); color: var(--c); font-family: "Cinzel", serif; font-weight: 700; font-size: 12px; box-shadow: inset 5px 0 0 var(--n, var(--c)); padding-left: 11px; white-space: nowrap; vertical-align: middle; }
+.twod12.acard.d2 table.ap-tt td.tl { background: var(--bg); color: var(--c); font-family: "Source Serif 4", serif; font-weight: 700; font-size: 12px; box-shadow: inset 5px 0 0 var(--n, var(--c)); padding-left: 11px; white-space: nowrap; vertical-align: middle; }
 .twod12.acard.d2 table.ap-tt tr.t1 { --c: #a8261c; --bg: #fbefed; }
 .twod12.acard.d2 table.ap-tt tr.t2 { --n: #7fae6c; --c: #3f6e31; --bg: #f1f7ec; }
 .twod12.acard.d2 table.ap-tt tr.t3, .twod12.acard.d2 table.ap-tt tr.tall { --c: #2b5a2f; --bg: #e8f1e3; }
@@ -3418,7 +3425,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 table.ap-tt td.dim { color: #8f8774; }
 .twod12.acard.d2 table.ap-tt td.dim .dt-body, .twod12.acard.d2 table.ap-tt td.dim .dt-mind { opacity: .45; }
 /* the head's Version buttons */
-.twod12.acard.d2 .ap-vbtn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 4px; height: auto; min-height: 26px; width: auto; padding: 0 10px; margin: 0; font: 700 12px var(--font-primary, Signika, sans-serif); line-height: 1.2; background: #d9902f; color: #1b2433; box-shadow: 0 2px 0 #7a4f12; cursor: pointer; }
+.twod12.acard.d2 .ap-vbtn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 4px; height: auto; min-height: 26px; width: auto; padding: 0 10px; margin: 0; font: 700 12px var(--font-primary, "Source Sans 3", sans-serif); line-height: 1.2; background: #d9902f; color: #1b2433; box-shadow: 0 2px 0 #7a4f12; cursor: pointer; }
 .twod12.acard.d2 .ap-vbtn:hover { background: #e8a345; }
 .twod12.acard.d2 .ap-vbtn.no { background: transparent; color: #9aa6ba; box-shadow: none; border: 1px dashed #5d6b85; text-decoration: line-through; cursor: not-allowed; pointer-events: none; }
 .twod12.acard.d2 .ap-vwrap { display: inline-block; cursor: not-allowed; }
@@ -3439,7 +3446,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 .ap-mv a.twod12-inline i, .twod12.acard.d2 table.ap-tt tr.crit a.twod12-inline i { display: none; }
 .twod12.acard.d2 table.ap-tt .chg { font-size: 11.5px; }
 /* 4. the Effects block: a heading with ◆ and a gold rule; one line per Version with its AP badge */
-.twod12.acard.d2 .ap-fxh { display: flex; align-items: center; gap: 8px; font-family: "Cinzel", serif; font-size: 11.5px; letter-spacing: .06em; color: #1b2433; font-weight: 700; }
+.twod12.acard.d2 .ap-fxh { display: flex; align-items: center; gap: 8px; font-family: "Source Serif 4", serif; font-size: 11.5px; letter-spacing: .06em; color: #1b2433; font-weight: 700; }
 .twod12.acard.d2 .ap-fxh::before { content: "\25C6"; color: #d9902f; font-size: 8px; }
 .twod12.acard.d2 .ap-fxh::after { content: ""; flex: 1; height: 1px; background: #d9b26a; }
 .twod12.acard.d2 .ap-fxl { display: grid; grid-template-columns: 52px minmax(0, 1fr); column-gap: 10px; font-size: 13px; line-height: 1.6; margin-top: -4px; }
@@ -3457,7 +3464,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 .ap-ac.bad { border-color: #d9a39c; }
 .twod12.acard.d2 .ap-ac.na { border-style: dashed; color: #7a6f5f; text-decoration: line-through; }
 .twod12.acard.d2 .ap-ac .tri { width: 10px; height: 9px; display: inline-block; flex: none; background: #a8261c; clip-path: polygon(0 0, 100% 0, 50% 100%); }
-.twod12.acard.d2 .ap-ac .pg { width: 13px; height: 13px; border-radius: 2px; color: #fff; font: 700 11px/13px var(--font-primary, Signika, sans-serif); text-align: center; background: #2b5a2f; display: inline-block; flex: none; }
+.twod12.acard.d2 .ap-ac .pg { width: 13px; height: 13px; border-radius: 2px; color: #fff; font: 700 11px/13px var(--font-primary, "Source Sans 3", sans-serif); text-align: center; background: #2b5a2f; display: inline-block; flex: none; }
 .twod12.acard.d2 .ap-ac.na .tri, .twod12.acard.d2 .ap-ac.na .pg { opacity: .55; }
 /* 6. the Flavor, at the bottom under ◆ ◆ ◆ */
 .twod12.acard.d2 .ap-flav { font-style: italic; font-size: 12.5px; text-align: center; display: flex; flex-direction: column; gap: 3px; color: #5d5446; }
@@ -3499,10 +3506,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 
 /* ==== v0.0.299 (Lucas tested v0.0.298): the Use buttons (the rows' and the card's "Use · N AP") in the sheet cards' title font, Cinzel; a Feature's
    "Description" heading carries its category and Frequency chip on the same line ==== */
-.twod12.sheet.pcs .ps-use, .twod12.acard.d2 .ap-vbtn { font-family: "Cinzel", serif; font-weight: 700; letter-spacing: .02em; }
+.twod12.sheet.pcs .ps-use, .twod12.acard.d2 .ap-vbtn { font-family: "Source Serif 4", serif; font-weight: 700; letter-spacing: .02em; }
 .twod12.acard.d2 .ap-fxh.withcat::after { content: none; }
 .twod12.acard.d2 .ap-fxh .ap-fxr { flex: 1; height: 1px; background: #d9b26a; }
-.twod12.acard.d2 .ap-fxh .ap-cat { margin-left: 0; font-family: var(--font-primary, Signika, sans-serif); letter-spacing: 0; font-weight: 400; min-height: 0; }
+.twod12.acard.d2 .ap-fxh .ap-cat { margin-left: 0; font-family: var(--font-primary, "Source Sans 3", sans-serif); letter-spacing: 0; font-weight: 400; min-height: 0; }
 /* ==== v0.0.300 (Lucas tested v0.0.299: the Use buttons looked bevelled next to the flat sheet): flat Use buttons, no drop shadow, 4px corners, a lighter
    navy on hover; the struck ones keep their dashed outline ==== */
 .twod12.sheet.pcs .ps-use, .twod12.acard.d2 .ap-vbtn { box-shadow: none; border-radius: 4px; }
@@ -3575,7 +3582,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
    its rating's color on top, like the rating pips; Medium framed. A long Frame label ("Unarmored") in a smaller font. ==== */
 .twod12.sheet.pcs .nb-dmg { display: flex; flex-direction: column; gap: 4px; padding: 6px 10px 10px; }
 .twod12.sheet.pcs .nb-dh, .twod12.sheet.pcs .nb-dr { display: grid; grid-template-columns: 112px repeat(var(--cols, 5), minmax(0, 1fr)); gap: 4px; align-items: stretch; }
-.twod12.sheet.pcs .nb-dh > span { font-family: "Cinzel", serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; text-align: center; color: var(--rc, #6b665a); padding: 2px 0; }
+.twod12.sheet.pcs .nb-dh > span { font-family: "Source Serif 4", serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; text-align: center; color: var(--rc, #6b665a); padding: 2px 0; }
 .twod12.sheet.pcs .nb-dh > span.nb-dl { text-align: left; color: #9a9384; }
 .twod12.sheet.pcs .nb-dl { display: flex; flex-direction: column; justify-content: center; gap: 1px; min-width: 0; }
 .twod12.sheet.pcs .nb-dl b { font-size: 12px; color: var(--ps-ink); }
@@ -3592,7 +3599,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
    #b9a988, ink #2a2320, muted #5f5244, navy #1d2a44 (header, selected). Helpful = blue, harmful = red; orange ONLY "changed from a plain roll".
    Roll is the only filled navy button. Click targets 24 px or more, visible focus outlines. ==== */
 .twod12.iwin .window-content { padding: 0; background: #efe7d7; overflow: hidden; display: flex; flex-direction: column; }
-.twod12.iwin .iw { display: flex; flex-direction: column; min-height: 0; flex: 1; font-family: Signika, sans-serif; color: #2a2320; background: #efe7d7; }
+.twod12.iwin .iw { display: flex; flex-direction: column; min-height: 0; flex: 1; font-family: "Source Sans 3", sans-serif; color: #2a2320; background: #efe7d7; }
 .twod12.iwin .iw button { font-family: inherit; cursor: pointer; box-shadow: none; line-height: 1; margin: 0; }
 .twod12.iwin .iw button:focus-visible, .twod12.iwin .iw select:focus-visible { outline: 2px solid #1d2a44; outline-offset: 1px; }
 .twod12.iwin .iw button[disabled] { cursor: default; }
@@ -3779,7 +3786,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 
 /* v0.0.322: the new card with its own title line (buildSoloCard: the chat's Card button, the Action sheet's preview, hover cards, the class window) */
 .twod12.acard.d2 > .ap-title { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-bottom: 6px; border-bottom: 1px solid #c9a35a; }
-.twod12.acard.d2 > .ap-title > b { font-family: "Cinzel", serif; font-size: 15px; color: #1b2433; letter-spacing: .02em; }
+.twod12.acard.d2 > .ap-title > b { font-family: "Source Serif 4", serif; font-size: 15px; color: #1b2433; letter-spacing: .02em; }
 .twod12.acard.d2 > .ap-title .ap-tcost { flex: none; font-size: 11px; font-weight: 700; color: #fbf6ea; background: #1b2433; border-radius: 3px; padding: 1px 6px; }
 .cc-window .window-content > .twod12.chat > .twod12.acard.d2 { margin-bottom: 8px; }
 
@@ -3800,14 +3807,14 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-ofu { margin: 0 0 6px; font-size: 12.5px; }
 /* the hover card */
 .application .fr-tab .fr-tip { background: var(--fr-navy); color: #e9e4d8; border-radius: 4px; padding: 8px 12px; border-left: 4px solid var(--fr-gold); font-size: 13px; line-height: 1.4; }
-.application .fr-tab .fr-tip b { font-family: "Cinzel", serif; color: var(--fr-gold); margin-right: 6px; }
+.application .fr-tab .fr-tip b { font-family: "Source Serif 4", serif; color: var(--fr-gold); margin-right: 6px; }
 .application .fr-tab .fr-own { font-size: 12px; color: var(--fr-mut); margin: 4px 0 0; }
 .application .fr-tab .fr-own a { color: var(--fr-maroon); cursor: pointer; text-decoration: underline; }
 .application .fr-tab .fr-own .fr-ownin { width: 100%; margin-top: 4px; }
 /* sections */
 .application .fr-tab .fr-sec { margin-top: 12px; }
-.application .fr-tab .fr-sec > h3 { margin: 0 0 6px; font: 700 13.5px "Cinzel", serif; color: var(--fr-maroon); background: linear-gradient(90deg, var(--fr-goldsoft), transparent 85%); border-left: 4px solid #3b342b; padding: 4px 9px; display: flex; justify-content: space-between; align-items: center; border-bottom: 0; }
-.application .fr-tab .fr-sec > h3 small { font: 500 12px var(--font-body, Signika, sans-serif); color: var(--fr-mut); }
+.application .fr-tab .fr-sec > h3 { margin: 0 0 6px; font: 700 13.5px "Source Serif 4", serif; color: var(--fr-maroon); background: linear-gradient(90deg, var(--fr-goldsoft), transparent 85%); border-left: 4px solid #3b342b; padding: 4px 9px; display: flex; justify-content: space-between; align-items: center; border-bottom: 0; }
+.application .fr-tab .fr-sec > h3 small { font: 500 12px var(--font-body, "Source Sans 3", sans-serif); color: var(--fr-mut); }
 /* the list and the pane */
 .application .fr-tab .fr-md { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); border: 1px solid var(--fr-line); border-radius: 4px; overflow: hidden; min-height: 300px; }
 @container (max-width: 560px) { .fr-tab .fr-md { grid-template-columns: 1fr; } }
@@ -3816,7 +3823,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-it { position: relative; display: flex; gap: 7px; align-items: flex-start; padding: 7px 30px 7px 8px; border-bottom: 1px solid var(--fr-line); cursor: pointer; font-size: 12.5px; line-height: 1.3; }
 .application .fr-tab .fr-it.on { background: var(--fr-par2); box-shadow: inset 3px 0 0 var(--fr-gold); }
 .application .fr-tab .fr-it.spent { opacity: .55; } .fr-tab .fr-spent { font-style: normal; font-size: 11px; color: var(--fr-mut); }
-.application .fr-tab .fr-kind { width: 18px; height: 18px; border-radius: 3px; display: grid; place-items: center; color: #fff; font: 700 10px var(--font-body, Signika, sans-serif); flex: none; }
+.application .fr-tab .fr-kind { width: 18px; height: 18px; border-radius: 3px; display: grid; place-items: center; color: #fff; font: 700 10px var(--font-body, "Source Sans 3", sans-serif); flex: none; }
 .application .fr-tab .k-bb { background: linear-gradient(135deg, var(--fr-boon) 50%, var(--fr-bane) 50%); } .fr-tab .k-rule { background: #5b3f8c; } .fr-tab .k-cond { background: #2f6b3c; }
 .application .fr-tab .k-lt { background: #b8860b; } .fr-tab .k-wp { background: #6b4a2a; } .fr-tab .k-esc { background: #8a5a12; } .fr-tab .k-tk { background: #7a2a2a; } .fr-tab .k-au { background: #2d6f8f; }
 .application .fr-tab .fr-trash { position: absolute; right: 4px; top: 5px; border: 1px solid transparent; background: none; color: var(--fr-mut); width: 22px; height: 22px; min-height: 0; padding: 0; border-radius: 3px; display: grid; place-items: center; cursor: pointer; opacity: 0; }
@@ -3826,7 +3833,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-adds { padding: 8px; margin-top: auto; }
 .application .fr-tab .fr-addsel { width: 100%; }
 .application .fr-tab .fr-pane { background: var(--fr-par2); padding: 9px 11px; min-width: 0; }
-.application .fr-tab .fr-pane h4 { margin: 0 0 5px; font: 700 12.5px "Cinzel", serif; color: var(--fr-maroon); border: 0; }
+.application .fr-tab .fr-pane h4 { margin: 0 0 5px; font: 700 12.5px "Source Serif 4", serif; color: var(--fr-maroon); border: 0; }
 .application .fr-tab .fr-says { font-size: 13px; background: var(--fr-field); border: 1px solid var(--fr-line); border-radius: 4px; padding: 6px 9px; margin-bottom: 8px; line-height: 1.55; }
 .application .fr-tab .fr-bo { color: var(--fr-boon); font-weight: 600; } .fr-tab .fr-bn { color: var(--fr-bane); font-weight: 600; }
 .application .fr-tab .fr-dv { color: #9b1c1c; font-weight: 700; } .fr-tab .fr-dr { color: #3d4fa8; font-weight: 700; } .fr-tab .fr-sub { font-weight: 600; }
@@ -3896,7 +3903,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .application .fr-tab .fr-pc .fr-drop { padding: 4px 8px; margin: 0; font-size: 12px; text-align: left; }
 .application .fr-tab .fr-dropped { border: 1px solid var(--fr-line); border-left: 4px solid #2f6b3c; border-radius: 3px; background: var(--fr-field); padding: 5px 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 8px; }
 .application .fr-tab .fr-dropped.is-a { border-left-color: #3d6f8f; }
-.application .fr-tab .fr-dropped b { font-family: "Cinzel", serif; } .fr-tab .fr-pc .fr-dropped { margin: 0; }
+.application .fr-tab .fr-dropped b { font-family: "Source Serif 4", serif; } .fr-tab .fr-pc .fr-dropped { margin: 0; }
 .application .fr-tab .fr-dk { font-size: 11px; color: var(--fr-mut); border: 1px solid var(--fr-line); border-radius: 3px; padding: 0 5px; }
 .application .fr-tab .fr-cost { background: #3a3f8f; color: #fff; border-radius: 3px; font-size: 11px; font-weight: 600; padding: 0 5px; }
 .application .fr-tab .fr-x { margin-left: auto; border: 0; background: none; color: var(--fr-mut); font-size: 16px; width: auto; min-height: 0; padding: 0 2px; cursor: pointer; }
@@ -4002,7 +4009,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-srow.t3 :is(.cc-pv, .cc-pr, .cc-sub, .cc-dot), .twod12.chat.cc .cc-srow.t1.hit :is(.cc-pv, .cc-pr, .cc-sub, .cc-dot) { color: revert !important; }
 .twod12.chat.cc .cc-srow .cc-pv { color: var(--c-body, #7a1626) !important; } .twod12.chat.cc .cc-srow .cc-pr { color: var(--c-mind, #17327a) !important; }
 .twod12.chat.cc .cc-srow .cc-scell { background: var(--bg); color: var(--c); box-shadow: inset 5px 0 0 var(--n); padding: 5px 6px 5px 11px; align-items: flex-start; justify-content: center; }
-.twod12.chat.cc .cc-srow .cc-scell b { font-family: "Cinzel", serif; font-size: 12px; white-space: nowrap; }
+.twod12.chat.cc .cc-srow .cc-scell b { font-family: "Source Serif 4", serif; font-size: 12px; white-space: nowrap; }
 .twod12.chat.cc .cc-srow .cc-scell small { color: #6f6a5c; }
 .twod12.chat.cc .cc-srow .cc-sbody { padding: 5px 8px; line-height: 1.45; }
 .twod12.chat.cc .cc-srow .cc-rchip, .twod12.chat.cc .cc-srow.t3 .cc-rchip { border-color: #d9b26a; }
@@ -4119,7 +4126,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 /* v0.0.350 (Lucas): the stamp's "Doubles ↑" line on gold (the "Doubles" tag over the outline is gone) */
 .twod12.chat.cc .cc-stamp .cc-stl.dbl { background: #e0b23a; color: #2a2010; border-radius: 3px; padding: 0 4px; font-weight: 700; }
 /* v0.0.350 (Lucas, playtest 4): the tooltip over a placed area */
-.twod12-zonetip { position: fixed; z-index: 1000; display: none; pointer-events: none; max-width: 280px; padding: 5px 9px; border-radius: 5px; background: rgba(27, 36, 51, .94); border: 1px solid #c9a24a; color: #f1e6c8; font: 12px/1.35 "Signika", sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.twod12-zonetip { position: fixed; z-index: 1000; display: none; pointer-events: none; max-width: 280px; padding: 5px 9px; border-radius: 5px; background: rgba(27, 36, 51, .94); border: 1px solid #c9a24a; color: #f1e6c8; font: 12px/1.35 "Source Sans 3", sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,.5); }
 .twod12-zonetip b { display: block; color: #ecdcae; font-size: 12.5px; margin-bottom: 2px; }
 /* v0.0.350 (Lucas, playtest 4): the granted uses' bar lower (just above the hotbar) and movable by its grip */
 .twod12-linebar.twod12-grantbar { bottom: 74px; }
@@ -4155,7 +4162,7 @@ a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.
    the order of events (the rail), the trait chips row, the Version tabs, the Tier rows, the steps after the damage, the by-Stage row. */
 .application .as-tab .as-flowcols { display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 14px; align-items: start; }
 .application .as-tab .as-flow { position: sticky; top: 4px; max-height: calc(100vh - 220px); overflow-y: auto; background: var(--sk-panel); border: 1px solid var(--sk-line); border-radius: 5px; padding: 8px 8px 10px; }
-.application .as-tab .as-railh { display: block; font: 700 11px Signika, sans-serif; letter-spacing: .07em; text-transform: uppercase; color: var(--sk-acc); margin-bottom: 6px; }
+.application .as-tab .as-railh { display: block; font: 700 11px "Source Sans 3", sans-serif; letter-spacing: .07em; text-transform: uppercase; color: var(--sk-acc); margin-bottom: 6px; }
 .application .as-tab .as-railh small { display: block; letter-spacing: 0; text-transform: none; font-weight: 400; color: var(--sk-mut); }
 .application .as-tab ol.as-rail { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; position: relative; }
 .application .as-tab ol.as-rail::before { content: ""; position: absolute; left: 30px; top: 12px; bottom: 12px; width: 2px; background: var(--sk-line); }
@@ -4168,14 +4175,14 @@ a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.
 .application .as-tab .as-evt b { display: block; font-size: 12.5px; line-height: 1.25; }
 .application .as-tab .as-evt em { display: block; font-style: normal; font-size: 11px; color: var(--sk-mut); line-height: 1.25; overflow-wrap: anywhere; }
 .application .as-tab .as-evt em.mono { font-family: ui-monospace, Consolas, monospace; font-size: 10px; }
-.application .as-tab .as-evsep { font: 700 10px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-acc); padding: 6px 0 2px 40px !important; background: var(--sk-panel); position: relative; }
+.application .as-tab .as-evsep { font: 700 10px "Source Sans 3", sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-acc); padding: 6px 0 2px 40px !important; background: var(--sk-panel); position: relative; }
 .application .as-tab .as-always { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--sk-line); display: grid; gap: 2px; }
 .application .as-tab [data-as-sec], .application .as-tab [data-as-anchor] { scroll-margin-top: 8px; }
 .application .as-tab .as-page { min-width: 0; }
 .application .as-tab .fr-in.wide, .application .as-tab .fr-in.as-tx { width: 100%; }
 .application .as-tab .fr-in.as-n2 { width: 4.2em; text-align: center; }
 .application .as-tab h4.as-h4 { margin: 14px 0 6px; font: 700 13px Georgia, serif; color: var(--sk-acc); display: flex; gap: 8px; align-items: baseline; border-bottom: 1px dotted var(--sk-line); padding-bottom: 3px; }
-.application .as-tab h4 small { font: 400 11px Signika, sans-serif; color: var(--sk-mut); }
+.application .as-tab h4 small { font: 400 11px "Source Sans 3", sans-serif; color: var(--sk-mut); }
 .application .as-tab .as-traits { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
 .application .as-tab .as-auto { display: inline-flex; gap: 6px; align-items: baseline; padding: 3px 8px; border: 1px dashed var(--sk-line); border-radius: 4px; background: rgba(30,36,48,.04); font-weight: 600; }
 .application .as-tab .as-auto small { font-weight: 400; color: var(--sk-mut); }
@@ -4243,7 +4250,7 @@ a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.
 .application.twod12-builder .bb-words, .application.twod12-builder .bb-fields { padding: 8px 10px; border: 1px solid var(--sk-line); border-left: 4px solid var(--sk-line); border-radius: 4px; background: var(--sk-panel); margin-bottom: 10px; }
 .application.twod12-builder .bb-words.on, .application.twod12-builder .bb-fields.on { border-left-color: var(--sk-amber); background: #fff; }
 .application.twod12-builder .bb-fields > h3 { margin: 0 0 8px; }
-.application.twod12-builder .bb-fields > h3 small { font: 400 11px Signika, sans-serif; color: var(--sk-mut); margin-left: 6px; }
+.application.twod12-builder .bb-fields > h3 small { font: 400 11px "Source Sans 3", sans-serif; color: var(--sk-mut); margin-left: 6px; }
 .application.twod12-styled .sk .bb-typel { display: block; font-weight: 700; color: var(--sk-ink); font-size: 13px; margin-bottom: 4px; }
 .application.twod12-builder .bb-typel small { font-weight: 400; color: var(--sk-mut); margin-left: 6px; }
 .application.twod12-builder .fr-tab .fr-ta.bb-type { width: 100%; font: 14px/1.5 ui-monospace, Consolas, monospace; min-height: 3.4em; }
@@ -4251,19 +4258,19 @@ a.twod12-inline.calc .ti-name, a.twod12-inline.calc { color: #1a3fb0; }   /* v0.
 .application.twod12-styled .sk .bb-quick button { font-size: 12px; padding: 2px 9px; width: auto; height: auto; line-height: 1.5; }
 .application.twod12-styled .sk table.bb-read { width: 100%; border-collapse: collapse; margin: 8px 0 0; background: #fff; border: 1px solid var(--sk-line); }
 .application.twod12-styled .sk table.bb-read th, .application.twod12-styled .sk table.bb-read td { border: 0; border-bottom: 1px solid var(--sk-line); padding: 4px 8px; text-align: left; vertical-align: middle; color: var(--sk-ink); background: none; }
-.application.twod12-styled .sk table.bb-read th { font: 700 11px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-mut); background: var(--sk-panel); }
+.application.twod12-styled .sk table.bb-read th { font: 700 11px "Source Sans 3", sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-mut); background: var(--sk-panel); }
 .application.twod12-styled .sk table.bb-read tr.no td { background: #fbf6e6; }
 .application.twod12-builder .bb-tick { display: inline-block; width: 16px; font-weight: 700; color: #2f6b3a; } .application.twod12-builder tr.no .bb-tick { color: #8a6a14; }
 .application.twod12-builder table.bb-read code { font-size: 11.5px; overflow-wrap: anywhere; }
 .application.twod12-builder .bb-kinds { display: grid; gap: 5px; margin-bottom: 10px; }
 .application.twod12-builder .bb-kg { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
-.application.twod12-builder .bb-kg > span { width: 104px; font: 700 11px Signika, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-mut); }
+.application.twod12-builder .bb-kg > span { width: 104px; font: 700 11px "Source Sans 3", sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--sk-mut); }
 .application.twod12-styled .sk button.bb-kind { display: inline-flex; gap: 6px; align-items: center; padding: 3px 9px 3px 4px; width: auto; height: auto; line-height: 1.4; cursor: pointer; }
 .application.twod12-styled .sk button.bb-kind.on { background: var(--sk-navy); color: #fff; border-color: var(--sk-navy); font-weight: 700; }
 .application.twod12-builder .bb-drow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 4px; }
 .application.twod12-builder .as-dc.bb-warn { background: #fbf0d0; border-color: #d9c078; }
 .application.twod12-builder .bb-out { display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--sk-line); border-left: 4px solid var(--sk-amber); border-radius: 4px; background: #fff; margin-bottom: 10px; }
-.application.twod12-builder .bb-cap { display: block; font: 700 11px Signika, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--sk-mut); }
+.application.twod12-builder .bb-cap { display: block; font: 700 11px "Source Sans 3", sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--sk-mut); }
 .application.twod12-builder .bb-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; align-items: center; }
 .application.twod12-builder code.bb-cmd { display: block; margin-top: 2px; padding: 5px 7px; font: 12px/1.45 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; white-space: pre-wrap; user-select: all; }
 .application.twod12-builder .bb-recent { border-top: 1px dotted var(--sk-line); padding: 8px 0; }
@@ -4328,7 +4335,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .application .as-tab .as-on { margin-left: 0; margin-right: 8px; }
 /* a step's Earlier / Later / Remove: in its pane's title, not over its row */
 .application .as-tab .as-ord { position: static; opacity: 1; margin-left: auto; display: inline-flex; gap: 4px; background: none; }
-.application.twod12-styled .sk .as-tab .as-ord button { width: auto; height: auto; padding: 1px 7px; line-height: 1.5; font: 400 11px Signika, sans-serif; }
+.application.twod12-styled .sk .as-tab .as-ord button { width: auto; height: auto; padding: 1px 7px; line-height: 1.5; font: 400 11px "Source Sans 3", sans-serif; }
 /* Create Button: even rows */
 .application.twod12-builder .bb-kinds { display: grid; grid-template-columns: 96px repeat(3, minmax(0, 1fr)); gap: 5px 6px; align-items: center; }
 .application.twod12-builder .bb-kg { display: contents; }
@@ -4344,7 +4351,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-dockwrap { flex: none; margin: 4px 6px 6px; }
 .twod12-dockwrap[hidden] { display: none; }
 .twod12-hidden { display: none !important; }
-.twod12-dock, .twod12.chat.turnend { background: #f4eddc; color: #2b2216; border: 1px solid #bfae86; border-radius: 6px; overflow: hidden; font-family: "Signika", sans-serif; font-size: 12.5px; line-height: 1.3; }
+.twod12-dock, .twod12.chat.turnend { background: #f4eddc; color: #2b2216; border: 1px solid #bfae86; border-radius: 6px; overflow: hidden; font-family: "Source Sans 3", sans-serif; font-size: 12.5px; line-height: 1.3; }
 .twod12-dock { box-shadow: 0 -2px 8px rgba(0, 0, 0, .35); }
 .twod12-dock .td-hd, .twod12.chat.turnend > summary { background: #1d2738; color: #ecdcae; display: flex; align-items: center; gap: 7px; min-height: 26px; padding: 2px 8px; cursor: pointer; user-select: none; list-style: none; white-space: nowrap; }
 .twod12.chat.turnend > summary::-webkit-details-marker { display: none; }
@@ -4420,7 +4427,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .chat-message.tw-framed::before, .chat-message.tw-framed::after { display: none; }
 .chat-message.tw-framed > .message-header { display: none; }
 .chat-message.tw-framed > .message-content { margin: 0; padding: 0; }
-.twod12 .tw-top { display: flex; align-items: center; gap: 7px; margin: -2px 0 6px; padding: 0 0 5px; border-bottom: 1px solid var(--cc-gline, #cdb88a); font: 400 12.5px/1.2 "Signika", sans-serif; color: var(--cc-mute, #5d5446); }
+.twod12 .tw-top { display: flex; align-items: center; gap: 7px; margin: -2px 0 6px; padding: 0 0 5px; border-bottom: 1px solid var(--cc-gline, #cdb88a); font: 400 12.5px/1.2 "Source Sans 3", sans-serif; color: var(--cc-mute, #5d5446); }
 .twod12.chat:not(.cc) > .tw-top { margin: 0; padding: 5px 8px; }
 .twod12 .tw-who { display: inline-flex; align-items: center; gap: 7px; flex: 1; min-width: 0; }
 .twod12 .tw-who b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -4449,14 +4456,14 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.sheet.pcs .nb-rw.rwA .rw-add { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 10px; align-items: start; padding: 8px 2px 2px; }
 .twod12.sheet.pcs .nb-rw.rwA .rw-add .rw-k { padding-top: 4px; color: var(--rw-mute); }
 .twod12.sheet.pcs .nb-rw.rwA .rw-pal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
-.twod12.sheet.pcs .nb-rw.rwA .rw-sub { display: flex; align-items: center; justify-content: flex-start; gap: 5px; width: auto; height: 26px; min-height: 0; margin: 0; padding: 0 7px; border: 1px solid var(--rw-hair); border-radius: 2px; background: transparent; box-shadow: none; color: var(--sc); font: 600 12.5px/1 "Signika", sans-serif; white-space: nowrap; overflow: hidden; cursor: pointer; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-sub { display: flex; align-items: center; justify-content: flex-start; gap: 5px; width: auto; height: 26px; min-height: 0; margin: 0; padding: 0 7px; border: 1px solid var(--rw-hair); border-radius: 2px; background: transparent; box-shadow: none; color: var(--sc); font: 600 12.5px/1 "Source Sans 3", sans-serif; white-space: nowrap; overflow: hidden; cursor: pointer; }
 .twod12.sheet.pcs .nb-rw.rwA .rw-sub span { overflow: hidden; text-overflow: ellipsis; color: var(--rw-ink); }
 .twod12.sheet.pcs .nb-rw.rwA .rw-sub.on { background: var(--rw-ona); border-color: var(--sc); box-shadow: inset 0 -3px 0 var(--sc); }
 .twod12.sheet.pcs .nb-rw.rwA .rw-go { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .twod12.sheet.pcs .nb-rw.rwA .rw-num { display: inline-flex; align-items: center; margin-right: 6px; border: 1px solid var(--rw-out); border-radius: 2px; }
 .twod12.sheet.pcs .nb-rw.rwA .rw-num button { width: 24px; height: 24px; min-height: 0; margin: 0; padding: 0; border: 0; background: transparent; box-shadow: none; color: var(--rw-ink); font-size: 14px; line-height: 1; cursor: pointer; }
 .twod12.sheet.pcs .nb-rw.rwA .rw-num input.nb-rwn { width: 34px; height: 24px; margin: 0; padding: 0; border: 0; background: transparent; color: var(--rw-ink); font-weight: 700; text-align: center; }
-.twod12.sheet.pcs .nb-rw.rwA .rw-btn { width: auto; height: 26px; min-height: 0; margin: 0; padding: 0 12px; border: 1px solid var(--rw-out); border-radius: 2px; background: transparent; box-shadow: none; color: var(--rw-ink); font: 700 12.5px/1 "Signika", sans-serif; cursor: pointer; }
+.twod12.sheet.pcs .nb-rw.rwA .rw-btn { width: auto; height: 26px; min-height: 0; margin: 0; padding: 0 12px; border: 1px solid var(--rw-out); border-radius: 2px; background: transparent; box-shadow: none; color: var(--rw-ink); font: 700 12.5px/1 "Source Sans 3", sans-serif; cursor: pointer; }
 .twod12.sheet.pcs .nb-rw.rwA .rw-btn.resist { border-color: var(--rw-res); color: var(--rw-res); } .twod12.sheet.pcs .nb-rw.rwA .rw-btn.weak { border-color: var(--rw-wk); color: var(--rw-wk); }
 /* the side panel (dark in both themes): the chip outlined in its subtype's color, its icon in that color, its words in the panel's ink */
 .twod12 button.ps-dl.rw-chip { display: inline-flex; align-items: center; gap: 4px; background: none; border-color: color-mix(in srgb, var(--sc) 60%, transparent); color: inherit; }
@@ -4466,12 +4473,12 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
    fr-pgrid, fr-seg, fr-step), Health and the Modifiers as tables by Stage, each list a Tier-like row in its Frequency's color. The dark values are in the theme. ==== */
 .application.twod12-styled .sk .fr-tab.cls2 { --cf-ink: #2a241d; --cf-mute: #5d5446; --cf-hair: #cdb88a; --cf-rule: #8a6d3b; --cf-band: #eae0c8; --cf-pg: #f4ede0; }
 .application.twod12-styled .sk .fr-tab.cls2 .fr-sec h3 { display: flex; align-items: baseline; gap: 8px; }
-.application.twod12-styled .sk .fr-tab.cls2 .fr-sec h3 button { margin-left: auto; width: auto; height: 22px; min-height: 0; line-height: 20px; padding: 0 9px; border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: var(--cf-ink); font: 600 12px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; }
+.application.twod12-styled .sk .fr-tab.cls2 .fr-sec h3 button { margin-left: auto; width: auto; height: 22px; min-height: 0; line-height: 20px; padding: 0 9px; border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: var(--cf-ink); font: 600 12px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; }
 .application.twod12-styled .sk .fr-tab.cls2 .fr-pgrid { grid-template-columns: 92px minmax(0, 1fr); margin: 0 0 6px; }
 .application.twod12-styled .sk .fr-tab.cls2 .fr-pgrid .fr-seg.w { display: inline-flex; width: auto; vertical-align: middle; } .application.twod12-styled .sk .fr-tab.cls2 .fr-seg.w button { flex: none; padding: 3px 14px; }
 .application.twod12-styled .sk .fr-tab.cls2 .fr-pc b { color: var(--cf-ink); } .application.twod12-styled .sk .fr-tab.cls2 .fr-in.wide { width: 100%; }
 .application.twod12-styled .sk .fr-tab.cls2 table.cls-st { width: 100%; margin: 2px 0 10px; border: 0; border-collapse: collapse; background: none; }
-.application.twod12-styled .sk .fr-tab.cls2 table.cls-st th, .application.twod12-styled .sk .fr-tab.cls2 table.cls-st td { padding: 5px 8px; border: 0; border-bottom: 1px solid var(--cf-hair); background: none; color: var(--cf-ink); text-align: left; font: 600 13px "Signika", sans-serif; }
+.application.twod12-styled .sk .fr-tab.cls2 table.cls-st th, .application.twod12-styled .sk .fr-tab.cls2 table.cls-st td { padding: 5px 8px; border: 0; border-bottom: 1px solid var(--cf-hair); background: none; color: var(--cf-ink); text-align: left; font: 600 13px "Source Sans 3", sans-serif; }
 .application.twod12-styled .sk .fr-tab.cls2 table.cls-st thead th { background: var(--cf-band); border-bottom: 1px solid var(--cf-rule); font-weight: 700; } .application.twod12-styled .sk .fr-tab.cls2 table.cls-st thead small { margin-left: 4px; font-weight: 400; color: var(--cf-mute); }
 .application.twod12-styled .sk .fr-tab.cls2 table.cls-st tbody th { width: 70px; color: var(--cf-mute); } .application.twod12-styled .sk .fr-tab.cls2 table.cls-st td.mid { vertical-align: middle; border-left: 1px solid var(--cf-hair); }
 .application.twod12-styled .sk .fr-tab.cls2 table.cls-st .fr-in.n { width: 46px; text-align: center; } .application.twod12-styled .sk .fr-tab.cls2 table.cls-st .pl { margin-right: 3px; color: var(--cf-mute); }
@@ -4480,7 +4487,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .application.twod12-styled .sk .fr-tab.cls2 .cls-levels > div { display: flex; gap: 12px; padding: 4px 2px; border: 0; border-bottom: 1px solid var(--cf-hair); border-radius: 0; background: none; font-size: 13px; color: var(--cf-ink); }
 .application.twod12-styled .sk .fr-tab.cls2 .cls-levels > div b { width: 58px; } .application.twod12-styled .sk .fr-tab.cls2 .cls-levels span { color: var(--cf-mute); }
 .application.twod12-styled .sk .fr-tab.cls2 .cls-grp { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 0 10px; align-items: stretch; margin: 0 0 3px; padding: 0; border: 0; border-left: 4px solid var(--fq, #5F5E5A); border-radius: 0; background: color-mix(in srgb, var(--fq, #5F5E5A) 11%, var(--cf-pg)); }
-.application.twod12-styled .sk .fr-tab.cls2 .cls-gl { display: flex; align-items: center; padding: 4px 8px; background: color-mix(in srgb, var(--fq, #5F5E5A) 26%, var(--cf-pg)); color: color-mix(in srgb, var(--fq, #5F5E5A), #000 25%); font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; }
+.application.twod12-styled .sk .fr-tab.cls2 .cls-gl { display: flex; align-items: center; padding: 4px 8px; background: color-mix(in srgb, var(--fq, #5F5E5A) 26%, var(--cf-pg)); color: color-mix(in srgb, var(--fq, #5F5E5A), #000 25%); font: 700 12.5px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; }
 .application.twod12-styled .sk .fr-tab.cls2 .cls-chips { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding: 5px 0; }
 .application.twod12-styled .sk .fr-tab.cls2 .cls-chip { display: inline-flex; align-items: center; gap: 2px; padding: 0; border: 0; border-radius: 0; background: none; font-size: 13.5px; }
 .application.twod12-styled .sk .fr-tab.cls2 .cls-chip a { font-weight: 600; color: var(--cf-ink); } .application.twod12-styled .sk .fr-tab.cls2 .cls-chip i { margin-left: 3px; font-size: 11.5px; color: var(--cf-mute); }
@@ -4492,10 +4499,10 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
    colors (--s-*, styles/theme.css), so it follows the Theme setting. The full NPC sheet is unchanged. ==== */
 .twod12.sheet.pcs.sbs .ps-body { grid-template-columns: minmax(0, 1fr); }
 .twod12.sheet.pcs.sbs .ps-main { padding: 0; }
-.twod12-sb { --rk: var(--s-rk-standard, #6e2318); color: var(--s-ink, #2a241d); font: 400 13.5px/1.4 "Signika", sans-serif; }
+.twod12-sb { --rk: var(--s-rk-standard, #6e2318); color: var(--s-ink, #2a241d); font: 400 13.5px/1.4 "Source Sans 3", sans-serif; }
 .twod12-sb.rk-minion { --rk: var(--s-rk-minion, #4d545c); } .twod12-sb.rk-grunt { --rk: var(--s-rk-grunt, #4b5a26); } .twod12-sb.rk-standard { --rk: var(--s-rk-standard, #6e2318); } .twod12-sb.rk-elite { --rk: var(--s-rk-elite, #4f2c69); }
 .twod12-sb .sb-plate { display: flex; align-items: center; gap: 12px; padding: 6px 12px 5px; background: var(--rk); color: #f8eed8; }
-.twod12-sb .sb-plate .nm { flex: 1; min-width: 0; font: 700 21px/1.15 "Cinzel", serif; font-variant: small-caps; letter-spacing: .01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12-sb .sb-plate .nm { flex: 1; min-width: 0; font: 700 21px/1.15 "Source Serif 4", serif; font-variant: small-caps; letter-spacing: .01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .twod12-sb .sb-plate .who { display: flex; flex-direction: column; align-items: flex-end; font-size: 12.5px; color: rgba(248, 238, 216, .82); white-space: nowrap; } .twod12-sb .sb-plate .who b { color: #f8eed8; font-size: 14px; }
 .twod12-sb .sb-ptools { display: flex; gap: 6px; } .twod12-sb .sb-ptools a { color: rgba(248, 238, 216, .82); cursor: pointer; }
 .twod12-sb .sb-stats { padding: 4px 0 6px; border-bottom: 1px solid var(--s-rule, #8a6d3b); }
@@ -4511,7 +4518,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-sb .sb-state { margin-left: auto; color: var(--s-bad, #8a1c13); font-weight: 700; font-variant: small-caps; font-size: 14px; }
 .twod12-sb .sb-rw { display: inline-flex; align-items: center; gap: 3px; margin-right: 6px; color: var(--sc); font-weight: 600; } .twod12-sb .sb-rw i { font-size: 11px; }
 .twod12-sb .sb-body { display: flex; flex-direction: column; gap: 6px; padding: 8px 12px 12px; }
-.twod12-sb .sb-band { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 0; padding: 0 0 2px; border-bottom: 1px solid var(--s-rule, #8a6d3b); color: var(--s-gold, #96670f); font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-sb .sb-band { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 0; padding: 0 0 2px; border-bottom: 1px solid var(--s-rule, #8a6d3b); color: var(--s-gold, #96670f); font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
 .twod12-sb .sb-band .r { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-variant: normal; color: var(--s-mute, #5d5446); }
 .twod12-sb .sb-band .add { margin-left: auto; font-size: 12px; font-variant: small-caps; color: var(--s-mute, #5d5446); cursor: pointer; } .twod12-sb .sb-band .r + .add { margin-left: 10px; }
 .twod12-sb .sb-pips { display: inline-flex; gap: 3px; } .twod12-sb .sb-pips i { width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid var(--s-gold, #96670f); } .twod12-sb .sb-pips i.on { background: var(--s-gold, #96670f); }
@@ -4522,7 +4529,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-sb .sb-oa-h .n { font-weight: 700; font-size: 14.5px; color: var(--s-ink, #2a241d); cursor: pointer; } .twod12-sb .sb-oa-h .tr { font-style: italic; color: var(--s-mute, #5d5446); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .twod12-sb .sb-oa-h .fq { margin-left: auto; white-space: nowrap; color: var(--s-ink, #2a241d); font-weight: 700; font-variant: small-caps; font-size: 14px; } .twod12-sb .sb-oa-h .fq i { font-style: normal; color: var(--s-gold, #96670f); }
 .twod12-sb .sb-tools { display: inline-flex; gap: 6px; color: var(--s-mute, #5d5446); } .twod12-sb .sb-tools a { cursor: pointer; color: inherit; }
-.twod12-sb .sb-vb, .twod12.sheet.pcs .twod12-sb .sb-vb { flex: none; width: auto; height: auto; min-height: 0; margin: 0; padding: 2px 7px; border: 0; border-radius: 2px; background: var(--s-stamp, #3b3128); color: var(--s-stamp-ink, #f4ede0); box-shadow: none; font: 700 12px/1.3 "Signika", sans-serif; cursor: pointer; }
+.twod12-sb .sb-vb, .twod12.sheet.pcs .twod12-sb .sb-vb { flex: none; width: auto; height: auto; min-height: 0; margin: 0; padding: 2px 7px; border: 0; border-radius: 2px; background: var(--s-stamp, #3b3128); color: var(--s-stamp-ink, #f4ede0); box-shadow: none; font: 700 12px/1.3 "Source Sans 3", sans-serif; cursor: pointer; }
 .twod12-sb .sb-vb:hover, .twod12.sheet.pcs .twod12-sb .sb-vb:hover { background: var(--s-stamp-hover, #2a231c); } .twod12-sb .sb-vb.no, .twod12.sheet.pcs .twod12-sb .sb-vb.no { background: transparent; border: 1px dashed var(--s-faint, #8f8774); color: var(--s-faint, #8f8774); cursor: default; } .twod12-sb .sb-vb.used { text-decoration: line-through; }
 .twod12-sb .sb-meta { padding: 4px 8px; } .twod12-sb .sb-meta b { font-weight: 700; } .twod12-sb .sb-meta .sep { color: var(--s-mute, #5d5446); }
 .twod12-sb .sb-tiers { margin: 0 8px; border-top: 1px solid var(--s-hair, #cdb88a); }
@@ -4534,7 +4541,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-sb .sb-oa > :last-child { padding-bottom: 6px; }
 .twod12-sb .sb-attrs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) 10px repeat(2, minmax(0, 1fr)); gap: 5px; margin-top: 6px; padding-top: 8px; border-top: 2px solid var(--s-rule, #8a6d3b); }
 .twod12-sb .sb-attr { display: flex; flex-direction: column; align-items: center; padding: 4px 2px 5px; border: 1px solid var(--s-hair, #cdb88a); border-top: 3px solid var(--ac, #8c7d63); background: var(--s-pg-2, #eae0c8); color: var(--s-ink, #2a241d); text-decoration: none; cursor: pointer; }
-.twod12-sb .sb-attr span { font: 700 11.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: var(--ac, #8c7d63); } .twod12-sb .sb-attr b { font-size: 16px; } .twod12-sb .sb-attr small { font-size: 11px; color: var(--s-mute, #5d5446); }
+.twod12-sb .sb-attr span { font: 700 11.5px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: var(--ac, #8c7d63); } .twod12-sb .sb-attr b { font-size: 16px; } .twod12-sb .sb-attr small { font-size: 11px; color: var(--s-mute, #5d5446); }
 .twod12-sb .sb-attr.gap { grid-column: 6; } div.twod12-sb .sb-attr.mod-weapon, .twod12-sb div.sb-attr { cursor: default; }
 .twod12-sb .sb-attr.at-body { --ac: #7a1626; } .twod12-sb .sb-attr.at-mind { --ac: #17327a; } .twod12-sb .sb-attr.at-appeal { --ac: #6b4e00; } .twod12-sb .sb-attr.at-instinct { --ac: #14532d; } .twod12-sb .sb-attr.mod-weapon { --ac: #9a4a00; } .twod12-sb .sb-attr.mod-power { --ac: #5b3a9e; }
 .twod12-sb .sb-empty { color: var(--s-mute, #5d5446); font-style: italic; }
@@ -4545,7 +4552,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
    npc-hud-screen.html): the dark table look, 70 px and two lines for every creature, the hotbar at its right end, the pick bar in its middle. ==== */
 .twod12-hud { --hud-bg: var(--s-pg, #1f1c18); --hud-line: var(--s-rule, #7a683f); --hud-hair: var(--s-hair, #4a4132); --hud-ink: var(--s-ink, #ece3cf); --hud-mute: var(--s-mute, #b3a68e);
   display: flex; align-items: stretch; gap: 0; box-sizing: border-box; height: 70px; width: 100%; margin: 0 0 4px; border: 1px solid var(--hud-line); border-radius: 3px; background: var(--hud-bg); color: var(--hud-ink);
-  font: 400 13px/1.25 "Signika", sans-serif; pointer-events: auto; position: relative; box-shadow: 0 3px 12px rgba(0, 0, 0, .45); }
+  font: 400 13px/1.25 "Source Sans 3", sans-serif; pointer-events: auto; position: relative; box-shadow: 0 3px 12px rgba(0, 0, 0, .45); }
 .twod12-hud[hidden] { display: none; }
 .twod12-hud.floating { position: fixed; left: 120px; right: 320px; bottom: 6px; width: auto; z-index: 60; }
 .twod12-hud .hud-main { display: flex; flex: 1; min-width: 0; align-items: stretch; }
@@ -4560,7 +4567,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hud-gl .fa-star { color: var(--s-gold, #d4a548); }
 .twod12-hud .ha { display: inline-flex; align-items: center; gap: 5px; flex: none; padding: 1px 3px 1px 7px; border: 1px solid var(--hud-hair); border-left: 3px solid var(--fq, #5F5E5A); border-radius: 2px; background: rgba(255, 255, 255, .02); }
 .twod12-hud .ha > b { font-weight: 600; cursor: context-menu; } .twod12-hud .ha.dim > b { opacity: .5; } .twod12-hud .ha[hidden] { display: none; }
-.twod12-hud :is(.hud-main, .hud-pop, .hud-menu) button { width: auto; min-height: 0; margin: 0; line-height: 1.2; box-shadow: none; font-family: "Signika", sans-serif; }
+.twod12-hud :is(.hud-main, .hud-pop, .hud-menu) button { width: auto; min-height: 0; margin: 0; line-height: 1.2; box-shadow: none; font-family: "Source Sans 3", sans-serif; }
 .twod12-hud .hv { height: 20px; padding: 0 6px; border: 0; border-radius: 2px; background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); font-weight: 700; font-size: 11.5px; cursor: pointer; }
 .twod12-hud .hv:hover { background: var(--s-stamp-hover, #fff8e8); } .twod12-hud .hv.fav { box-shadow: inset 0 -2px 0 var(--s-gold, #d4a548); }
 .twod12-hud .hv.no { background: transparent; border: 1px dashed var(--s-faint, #8a7f6b); color: var(--s-faint, #8a7f6b); cursor: default; } .twod12-hud .hv.used { text-decoration: line-through; }
@@ -4591,14 +4598,14 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hud-ask .twod12-linebar.in-hud { position: static; inset: auto; transform: none; width: 100%; max-width: none; margin: 0; box-shadow: none; border: 0; background: transparent; }
 /* a category's panel, the "+N more" panel and the right-click menu: above the HUD */
 .twod12-hud .hud-pop, .twod12-hud .hud-menu { position: absolute; bottom: calc(100% + 6px); left: 0; z-index: 2; min-width: 240px; max-width: 420px; max-height: 50vh; overflow: auto; border: 1px solid var(--hud-line); border-radius: 3px; background: var(--hud-bg); color: var(--hud-ink); box-shadow: 0 4px 16px rgba(0, 0, 0, .55); }
-.twod12-hud .hud-poph { display: flex; align-items: center; padding: 4px 8px; border-bottom: 1px solid var(--hud-line); background: var(--s-band, #332c22); font: 700 14px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-hud .hud-poph { display: flex; align-items: center; padding: 4px 8px; border-bottom: 1px solid var(--hud-line); background: var(--s-band, #332c22); font: 700 14px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
 .twod12-hud .hud-poph .x { margin-left: auto; border: 0; background: none; color: var(--hud-mute); font-size: 16px; cursor: pointer; }
 .twod12-hud .hud-popb { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px 8px; }
 .twod12-hud .pr { display: flex; align-items: center; gap: 8px; } .twod12-hud .pr small { color: var(--hud-mute); font-size: 11.5px; } .twod12-hud .pr.txt { flex-direction: column; align-items: flex-start; gap: 0; padding: 2px 0; border-bottom: 1px solid var(--hud-hair); }
 .twod12-hud .hp-btn { height: 24px; padding: 0 10px; border: 1px solid #8c7d63; border-radius: 2px; background: transparent; color: var(--hud-ink); font-weight: 600; cursor: pointer; } .twod12-hud .hp-btn:hover { background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); } .twod12-hud .hp-btn.out { border-style: dashed; }
 .twod12-hud .hud-menu { display: flex; flex-direction: column; min-width: 180px; padding: 4px; } .twod12-hud .hud-menu button { height: 26px; padding: 0 10px; border: 0; background: none; color: var(--hud-ink); text-align: left; cursor: pointer; } .twod12-hud .hud-menu button:hover { background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); }
 .twod12-hudcard { position: fixed; z-index: 100; width: 360px; max-height: 70vh; overflow: auto; box-shadow: 0 6px 20px rgba(0, 0, 0, .6); }
-.twod12-light .twod12-hud .hsv.at-body { --ac: #7a1626; } .twod12-light .twod12-hud .hsv.at-mind { --ac: #17327a; } .twod12-light .twod12-hud .hsv.at-appeal { --ac: #6b4e00; } .twod12-light .twod12-hud .hsv.at-instinct { --ac: #14532d; }
+.theme-light .twod12-hud .hsv.at-body { --ac: #7a1626; } .theme-light .twod12-hud .hsv.at-mind { --ac: #17327a; } .theme-light .twod12-hud .hsv.at-appeal { --ac: #6b4e00; } .theme-light .twod12-hud .hsv.at-instinct { --ac: #14532d; }
 /* ==== v0.0.377 (Lucas on v0.0.376) ==== */
 /* the HUD never sets the width of Foundry's bottom area (a long row made it push over the sidebar on a smaller window, whose buttons then took no clicks):
    it takes the area's full width, its own content is clipped inside it */
@@ -4642,7 +4649,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 /* v0.0.379: the HUD placed on the screen (hud.mjs placeRoot sets left, right and bottom) */
 .twod12-hud.floating { position: fixed; width: auto; margin: 0; z-index: 60; }
 /* v0.0.380 (Lucas: "the player list is still Foundry style"): the players list above the HUD in its look: a flat dark pill, a dot in each player's color */
-.twod12-hud .hud-players #players { min-width: 0; padding: 4px 8px; border: 1px solid var(--hud-line); border-radius: 2px; background: var(--hud-bg); color: var(--hud-ink); box-shadow: 0 2px 8px rgba(0, 0, 0, .4); font: 400 12px/1.3 "Signika", sans-serif; opacity: 1; }
+.twod12-hud .hud-players #players { min-width: 0; padding: 4px 8px; border: 1px solid var(--hud-line); border-radius: 2px; background: var(--hud-bg); color: var(--hud-ink); box-shadow: 0 2px 8px rgba(0, 0, 0, .4); font: 400 12px/1.3 "Source Sans 3", sans-serif; opacity: 1; }
 .twod12-hud .hud-players #players .players-list { gap: 2px; margin: 0; padding: 0; }
 .twod12-hud .hud-players #players .player { display: flex; align-items: center; gap: 6px; padding: 1px 0; border: 0; background: none; color: var(--hud-ink); font-weight: 600; }
 .twod12-hud .hud-players #players .player::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--player-color, #888); border: 0; }
@@ -4671,7 +4678,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hud-mid.pc .hud-quick { flex: 1 1 auto; flex-direction: row; flex-wrap: wrap; align-items: center; align-content: center; justify-content: center; gap: 6px; min-height: 0; }
 /* the players pill: Foundry's inner box and monospace font go */
 .twod12-hud .hud-players #players #players-active, .twod12-hud .hud-players #players #performance-stats, .twod12-hud .hud-players #players .players-list { margin: 0; padding: 0; border: 0 !important; border-radius: 0; background: none !important; box-shadow: none !important; }
-.twod12-hud .hud-players #players :is(span, label, li, div) { font-family: "Signika", sans-serif; }
+.twod12-hud .hud-players #players :is(span, label, li, div) { font-family: "Source Sans 3", sans-serif; }
 .twod12-hud .hud-players #players #performance-stats .average { font-weight: 600; }
 .twod12-hud .hud-blk .hud-g { flex: 0 1 auto; min-width: 0; } .twod12-hud .hud-mid.npc .hud-side { flex: 0 1 auto; max-width: 45%; }
 .twod12-hud .hud-mid.pc .hud-cats { justify-content: flex-start; }

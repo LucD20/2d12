@@ -1,12 +1,19 @@
 --- the theme file
 styles/theme.css is current (run node tools/build-theme.mjs): true | loaded after system.css: ["styles/system.css","styles/theme.css"]
-dark rules: true | both-theme rules: true | the shared colors: true
+dark rules (in Foundry's dark scope since STYLE-3): true | both-theme rules: true | the shared colors: true
 not in this pack (STYLE-2): 'On you' hidden: false | the Class sheet's ruled form: false | the Immune / Resist / Weak block (built in v0.0.373, STYLE-2): true
 the carousel's look B in both themes: true
 the yellower Tier 2 (dark / light): true true | Guard on dark / light: true true
---- the setting
-classes: dark twod12-type twod12-dark | light twod12-type twod12-light | unknown twod12-type twod12-dark
-apply dark over light: other twod12-dark twod12-type | registered in init: true | a client setting, dark by default: true
+--- the theme follows Foundry (STYLE-3, step 4 A): no system setting
+classes: twod12-type | any argument: twod12-type
+an old world's class taken off: other twod12-type | registered in init: true | no setting: true
+no old scope class left in the theme: true | dark sets in Foundry's scope: true | light rules too: true | a light window keeps its light variables: true
+the conversion: "@scope (.theme-dark) to (.themed) {\n:scope .a .b, :is(.a):scope .b { color: red; }\n}\n.d { color: blue; }\n@scope (.theme-dark) to (.themed) {\n:where(:scope) .c, :is(.c):where(:scope) { color: blue; }\n:scope:scope .e::before { color: green; }\n}\n.theme-light { --x: 1; }"
+--- STYLE-3 (steps 2 and 3)
+the book's faces shipped and declared: true | no Signika or Cinzel in a rule: true | Foundry's font variable inside the system's surfaces: true
+the accent is the book's bronze (dark / light): true true | palette A (dark / light): true true
+game words in the ink: true | no AP blue left with !important: true | the frequency a small mark: true
+the strips muted: true | Use outlined: true | the light pools line keeps its ink: true
 --- the pick window
 no empty heading: true | the text highlighted: true | no Confirm: true | Cancel: true
 a titled section keeps its heading and Confirm: true

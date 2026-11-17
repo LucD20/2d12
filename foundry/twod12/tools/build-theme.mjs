@@ -15,16 +15,23 @@ const here = f => fileURLToPath(new URL(f, import.meta.url));
 /* ------------------------------------------------------------------ 1. the shared colors */
 // Dark is the default. One name for one job: the page, a shaded row, a band (a heading or a table's head), a rule (a strong line), a
 // hairline, ink, muted ink, faint ink, gold (stars, diamonds, links, the open tab), the stamp (the one thing clicked) and its ink.
-const DARK = { pg: "#1f1c18", pg2: "#28241d", band: "#332c22", rule: "#7a683f", hair: "#4a4132", ink: "#ece3cf", mute: "#b3a68e", faint: "#8a7f6b", gold: "#d4a548", stamp: "#eadfc8", stampInk: "#221d16", stampHover: "#fff8e8",
+const DARK = { pg: "#1f1c18", pg2: "#28241d", band: "#332c22", rule: "#7a683f", hair: "#4a4132", ink: "#ece3cf", mute: "#b3a68e", faint: "#8a7f6b", gold: "#d2a75a", stamp: "#eadfc8", stampInk: "#221d16", stampHover: "#fff8e8",
   t1: "#f3a79e", t1bg: "#3a201d", t2: "#e0d65a", t2bg: "#35321a", t2n: "#bdb230", t3: "#8fd69b", t3bg: "#1d3a25", crit: "#8db8f0", critbg: "#17263a",
   vig: "#d0564f", res: "#6f90e6", boon: "#8db8f0", bane: "#f3a79e", good: "#8fd69b", bad: "#ff9c92",
   fqAtwill: "#6aa82e", fqRound: "#4a90de", fqEncounter: "#d65a5a", fqTurn: "#25a3a3", fqDaily: "#9279e0",
-  rkMinion: "#4d545c", rkGrunt: "#4b5a26", rkStandard: "#6e2318", rkElite: "#4f2c69" };
-const LIGHT = { pg: "#f4ede0", pg2: "#eae0c8", band: "#dfd2b6", rule: "#8a6d3b", hair: "#cdb88a", ink: "#2a241d", mute: "#5d5446", faint: "#8f8774", gold: "#96670f", stamp: "#3b3128", stampInk: "#f4ede0", stampHover: "#2a231c",
+  rkMinion: "#4d545c", rkGrunt: "#4b5a26", rkStandard: "#6e2318", rkElite: "#4f2c69",
+  // STYLE-3: palette A, the Tiers (fills; their text on a pale range; the pale range; the Critical's ring and ink)
+  ta1: "#a8471a", ta2: "#0e6e52", ta3: "#2366a3", taC: "#d9a62e", taCr: "#f0c35a", taCi: "#1f1c18",
+  ta1t: "#f2a17c", ta2t: "#6fd3b0", ta3t: "#8cc1f0", taCt: "#f0c35a",
+  ta1p: "color-mix(in srgb, #a8471a 22%, #28241d)", ta2p: "color-mix(in srgb, #0e6e52 22%, #28241d)", ta3p: "color-mix(in srgb, #2366a3 22%, #28241d)", taCp: "color-mix(in srgb, #d9a62e 22%, #28241d)" };
+const LIGHT = { pg: "#f4ede0", pg2: "#eae0c8", band: "#dfd2b6", rule: "#8a6d3b", hair: "#cdb88a", ink: "#2a241d", mute: "#5d5446", faint: "#8f8774", gold: "#7a5418", stamp: "#3b3128", stampInk: "#f4ede0", stampHover: "#2a231c",
   t1: "#a8261c", t1bg: "#fbefed", t2: "#6f6800", t2bg: "#f7f3cf", t2n: "#bdb230", t3: "#2b5a2f", t3bg: "#e8f1e3", crit: "#1d5a9e", critbg: "#e6eef8",
   vig: "#9b2c2c", res: "#2c4a9b", boon: "#1d4f8f", bane: "#a8261c", good: "#234d27", bad: "#8a1c13",
   fqAtwill: "#3B6D11", fqRound: "#185FA5", fqEncounter: "#A32D2D", fqTurn: "#0F6E6E", fqDaily: "#5B3FA6",
-  rkMinion: "#4d545c", rkGrunt: "#4b5a26", rkStandard: "#6e2318", rkElite: "#4f2c69" };
+  rkMinion: "#4d545c", rkGrunt: "#4b5a26", rkStandard: "#6e2318", rkElite: "#4f2c69",
+  ta1: "#b34a12", ta2: "#0f7a5a", ta3: "#0a64a8", taC: "#d9a62e", taCr: "#8a6414", taCi: "#1f1c18",
+  ta1t: "#b34a12", ta2t: "#0f7a5a", ta3t: "#0a64a8", taCt: "#8a6414",
+  ta1p: "color-mix(in srgb, #b34a12 18%, #f4ede0)", ta2p: "color-mix(in srgb, #0f7a5a 18%, #f4ede0)", ta3p: "color-mix(in srgb, #0a64a8 18%, #f4ede0)", taCp: "color-mix(in srgb, #d9a62e 25%, #f4ede0)" };
 const T = DARK;
 const kebab = k => k.replace(/([a-z])([A-Z0-9])/g, "$1-$2").toLowerCase();
 const vars = o => Object.entries(o).map(([k, v]) => `--s-${kebab(k)}: ${v};`).join(" ");
@@ -88,7 +95,7 @@ function darkSet(name, rules, scope = ".twod12-dark") {
     const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(WHITE, "rgba(255, 255, 255, .07)").replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc, name === "pcs"); })}`; });
     // :where() keeps each rule's own weight, so the system's cascade holds (a rule that colors with a variable, as "the lit pip is the row's color",
     // still beats the plain rule before it); the set only has to come after the system's rules.
-    return `${sel.split(",").map(s => `:where(${scope}) ${s.trim()}`).join(", ")} { ${out.join("; ")}; }`;
+    return `${topSplit(sel).map(s => `:where(${scope}) ${s.trim()}`).join(", ")} { ${out.join("; ")}; }`;
   }).filter(Boolean).join("\n");
 }
 
@@ -99,7 +106,7 @@ function warmSet(rules) {
     const sel = selOf(block).trim(), body = block.slice(block.indexOf("{") + 1, -1);
     if (/\.mind\b|\.body\b|\.ps-wb\b|\.ps-uw\b/.test(sel)) return "";
     const out = body.split(";").map(d => d.trim()).filter(d => /#[0-9a-fA-F]{3,8}\b/.test(d) && !/^--ps-/.test(d)).map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); let hit = false; const v = d.slice(i + 1).replace(HEX, c => { const w = auto(k, c.toLowerCase(), true), plain = auto(k, c.toLowerCase(), false); if (w !== plain) { hit = true; return k === "text" ? w : fromHsl([36, 0.14, toHsl(hex2(c))[2]]); } return c; }); return hit ? `${prop}:${v}` : ""; }).filter(Boolean);
-    return out.length ? `${sel.split(",").map(x => `:where(.twod12-type) ${x.trim()}`).join(", ")} { ${out.join("; ")}; }` : "";
+    return out.length ? `${topSplit(sel).map(x => `:where(.twod12-type) ${x.trim()}`).join(", ")} { ${out.join("; ")}; }` : "";
   }).filter(Boolean).join("\n");
 }
 
@@ -107,20 +114,20 @@ function warmSet(rules) {
 // Cinzel only for a big title. Names and labels are Signika: bold for a name, bold small capitals for a label (Tier 1, Effects, Your roll).
 const TYPE = `
 /* THE TYPE (Lucas, 2026-11-12: "copy the font style from the NPC sheet"), for both themes */
-.twod12-type .twod12.acard.d2 > .ap-title > b { font: 700 16.5px "Signika", sans-serif; letter-spacing: 0; }
-.twod12-type .twod12.acard.d2 table.ap-tt td.tl { font: 700 14px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
-.twod12-type .twod12.acard.d2 .ap-vbtn, .twod12-type .twod12.acard.d2 .ap-vcost { font: 700 12.5px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; }
-.twod12-type .twod12.acard.d2 .ap-fxh { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.acard.d2 > .ap-title > b { font: 700 16.5px "Source Sans 3", sans-serif; letter-spacing: 0; }
+.twod12-type .twod12.acard.d2 table.ap-tt td.tl { font: 700 14px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.acard.d2 .ap-vbtn, .twod12-type .twod12.acard.d2 .ap-vcost { font: 700 12.5px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; }
+.twod12-type .twod12.acard.d2 .ap-fxh { font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
 .twod12-type .twod12.acard.d2 .ap-fxh::before { content: none; }
-.twod12-type .twod12.acard.d2 .ap-strip .lab { font: 700 14px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; }
-.twod12-type .twod12.acard.d2 .ap-ap, .twod12-type .twod12.acard.d2 > .ap-title .ap-tcost { font: 700 12px "Signika", sans-serif; }
-.twod12-type .twod12.chat.cc .cc-name { font: 700 15.5px "Signika", sans-serif; letter-spacing: 0; }
-.twod12-type .twod12.chat.cc .cc-stamp b { font-family: "Signika", sans-serif; font-weight: 700; }
-.twod12-type .twod12.chat.cc .cc-stamp small { font: 700 12px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
+.twod12-type .twod12.acard.d2 .ap-strip .lab { font: 700 14px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; }
+.twod12-type .twod12.acard.d2 .ap-ap, .twod12-type .twod12.acard.d2 > .ap-title .ap-tcost { font: 700 12px "Source Sans 3", sans-serif; }
+.twod12-type .twod12.chat.cc .cc-name { font: 700 15.5px "Source Sans 3", sans-serif; letter-spacing: 0; }
+.twod12-type .twod12.chat.cc .cc-stamp b { font-family: "Source Sans 3", sans-serif; font-weight: 700; }
+.twod12-type .twod12.chat.cc .cc-stamp small { font: 700 12px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
 .twod12-type .twod12.chat.cc .cc-stamp .cc-stl { font-variant: normal; font-size: 11px; }
-.twod12-type .twod12.chat.cc .cc-seg, .twod12-type .twod12.chat.cc .cc-arrow b, .twod12-type .twod12.chat.cc .cc-total, .twod12-type .twod12.chat.cc .cc-stotal, .twod12-type .twod12.chat.cc .cc-savehead b, .twod12-type .twod12.chat.cc .cc-srow b, .twod12-type .twod12.chat.cc .cc-ptot, .twod12-type .twod12.chat.cc [class*="cc-"]:not(i):not([class*="fa-"]) { font-family: "Signika", sans-serif; }
-.twod12-type .twod12.chat .ahead > b, .twod12-type .twod12.chat.sysmsg > .ahead > b { font: 700 14.5px "Signika", sans-serif; letter-spacing: 0; }
-.twod12-type .twod12-dock .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.cc .cc-seg, .twod12-type .twod12.chat.cc .cc-arrow b, .twod12-type .twod12.chat.cc .cc-total, .twod12-type .twod12.chat.cc .cc-stotal, .twod12-type .twod12.chat.cc .cc-savehead b, .twod12-type .twod12.chat.cc .cc-srow b, .twod12-type .twod12.chat.cc .cc-ptot, .twod12-type .twod12.chat.cc [class*="cc-"]:not(i):not([class*="fa-"]) { font-family: "Source Sans 3", sans-serif; }
+.twod12-type .twod12.chat .ahead > b, .twod12-type .twod12.chat.sysmsg > .ahead > b { font: 700 14.5px "Source Sans 3", sans-serif; letter-spacing: 0; }
+.twod12-type .twod12-dock .td-ttl { font: 700 14.5px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
 /* the cost stamp in the light theme too (Lucas: "if it is helpful"): the chat card's dark brown button, square, no shadow */
 .twod12-type .twod12.acard.d2 .ap-vbtn { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; box-shadow: none; border-radius: 2px; }
 .twod12-type .twod12.acard.d2 .ap-vbtn:hover { background: ${LIGHT.stampHover}; }
@@ -130,22 +137,21 @@ const TYPE = `
 /* THE SYSTEM MESSAGES (sysCard, sysLine) in the chat card's look (Lucas: the navy header, the orange line and the Cinzel title no longer fit):
    the same card as an attack roll (a flat surface, a thin line), the title as a line of bold text over a hairline, the AP as the chat card's pill.
    Style only: the message's elements and text don't change. */
-.twod12-type .twod12.chat.action.sysmsg { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; padding: 7px 8px 6px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.action.sysmsg { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; padding: 7px 8px 6px; color: ${LIGHT.ink}; font-family: "Source Sans 3", sans-serif; }
 .twod12-type .twod12.chat.action.sysmsg > * { margin-left: 0; margin-right: 0; }
 .twod12-type .twod12.chat.action.sysmsg > .ahead { background: none !important; color: inherit !important; border: 0 !important; border-bottom: 1px solid ${LIGHT.hair} !important; padding: 0 0 4px; margin: 0 0 5px; align-items: center; }
-.twod12-type .twod12.chat.action.sysmsg > .ahead .apmark { background: #3b4cb8; color: #fff; border-radius: 3px; font: 700 10.5px/1 "Signika", sans-serif; padding: 2px 6px; margin: 0; }
+.twod12-type .twod12.chat.action.sysmsg > .ahead .apmark { background: #3b4cb8; color: #fff; border-radius: 3px; font: 700 10.5px/1 "Source Sans 3", sans-serif; padding: 2px 6px; margin: 0; }
 .twod12-type .twod12.chat.action.sysmsg .sm-lead { font-size: 14px; }
-.twod12-type .twod12.chat.sysline { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.sysline { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; color: ${LIGHT.ink}; font-family: "Source Sans 3", sans-serif; }
 /* AP is the AP blue wherever it is written (it was plain inside a system card's text); a Guard line's shield is the Guard blue (the Turn dock's) */
-.twod12-type .twod12.chat .kw-ap { color: #3b4cb8 !important; font-weight: 700; }
 .twod12-type .twod12.chat.sysline > i:has(svg), .twod12-type .twod12.chat.sysline > i { color: #6b5a3a; }
 .twod12-type .twod12.chat.sysline > i[data-ic^="shield"] { color: #2f6fb3; }
 .twod12-type .twod12.chat .kw-guard { color: #2f6fb3; font-weight: 700; }
 /* THE PC SHEET, both themes (style only): square corners, "Use" as the stamp, Signika for the headings (Cinzel stays on the character's name),
    gold in the place of amber. Light: the warm dark brown of the stamp in the place of navy for the head and the side panel. */
 .twod12-type .twod12.sheet.pcs { --ps-navy: #2b2520; --ps-cell: #332c25; --ps-edge: #54493a; --ps-tile: #3a3229; --ps-parch: ${LIGHT.pg}; --ps-card: #fbf7ee; --ps-cline: ${LIGHT.hair};
-  --ps-strip: ${LIGHT.band}; --ps-amber: #c9962b; --ps-amberl: #ecd9a4; --ps-ink: ${LIGHT.ink}; --ps-mut: ${LIGHT.mute}; --ps-lt: #d9cfba; --ps-k: #b3a68e; font-family: "Signika", sans-serif; }
-.twod12-type .twod12.sheet.pcs .ps-h2, .twod12-type .twod12.sheet.pcs .ps-bh b { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; color: ${LIGHT.ink}; }
+  --ps-strip: ${LIGHT.band}; --ps-amber: #c9962b; --ps-amberl: #ecd9a4; --ps-ink: ${LIGHT.ink}; --ps-mut: ${LIGHT.mute}; --ps-lt: #d9cfba; --ps-k: #b3a68e; font-family: "Source Sans 3", sans-serif; }
+.twod12-type .twod12.sheet.pcs .ps-h2, .twod12-type .twod12.sheet.pcs .ps-bh b { font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; color: ${LIGHT.ink}; }
 .twod12-type .twod12.sheet.pcs .ps-block, .twod12-type .twod12.sheet.pcs .ps-box, .twod12-type .twod12.sheet.pcs .ps-box.big, .twod12-type .twod12.sheet.pcs .ps-tile, .twod12-type .twod12.sheet.pcs .ps-bxbtn, .twod12-type .twod12.sheet.pcs .ps-init,
 .twod12-type .twod12.sheet.pcs .ps-bcard, .twod12-type .twod12.sheet.pcs .ps-rcard, .twod12-type .twod12.sheet.pcs .ps-irow, .twod12-type .twod12.sheet.pcs .ps-wb, .twod12-type .twod12.sheet.pcs .ps-lbox, .twod12-type .twod12.sheet.pcs .ps-mchip, .twod12-type .twod12.sheet.pcs .ps-seg, .twod12-type .twod12.sheet.pcs button { border-radius: 2px; }
 .twod12-type .twod12.sheet.pcs .ps-block, .twod12-type .twod12.sheet.pcs .ps-bxbtn { box-shadow: none; }
@@ -179,39 +185,39 @@ const TYPE = `
 .twod12-type .twod12.sheet.pcs .ps-dot[style*="#6b665a"] { background: ${LIGHT.gold} !important; }
 .twod12-dark .twod12.sheet.pcs .ps-dot[style*="#6b665a"] { background: ${T.gold} !important; }
 .twod12-dark .twod12.sheet.pcs .ps-dladd { color: ${T.ink}; }
-.twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b, .twod12-type .twod12.sheet.pcs .ps-bch small { font-family: "Signika", sans-serif; }
+.twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b, .twod12-type .twod12.sheet.pcs .ps-bch small { font-family: "Source Sans 3", sans-serif; }
 .twod12-type .twod12.sheet.pcs .ps-lvl, .twod12-type .twod12.sheet.pcs .ps-bch b { font-weight: 700; font-variant: small-caps; letter-spacing: .02em; }
-.twod12-type .twod12.sheet.pcs .ps-use { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; border: 0; border-radius: 2px; box-shadow: none; font: 700 12.5px "Signika", sans-serif; font-variant: normal; letter-spacing: 0; text-transform: none; }
+.twod12-type .twod12.sheet.pcs .ps-use { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; border: 0; border-radius: 2px; box-shadow: none; font: 700 12.5px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; text-transform: none; }
 .twod12-type .twod12.sheet.pcs .ps-use.rx { background: #1f7a72; color: #fff; }
 .twod12-type .twod12.sheet.pcs .ps-init:not(.dis) { background: #ecd9a4; color: #2b2520; box-shadow: none; }
 .twod12-type .twod12.sheet.pcs .ps-line[data-action="toggleCard"]:hover, .twod12-type .twod12.sheet.pcs .ps-brow[data-action="toggleCard"]:hover { background: ${LIGHT.pg2}; }
 /* THE CAROUSEL, both themes: Signika in the place of Cinzel, square corners; light keeps its parchment cards, its bar the warm dark brown. */
 .twod12-type #twod12-carousel { --tp-navy: #2b2520; --tp-navy2: #3a3229; --tp-parch: #f4ede0; --tp-parch2: #eae0c8; --tp-border: #bfae8c; --tp-ink: ${LIGHT.ink}; --tp-mut: ${LIGHT.mute}; --tp-gold: ${LIGHT.gold}; }
-.twod12-type #twod12-carousel .tc-head.tc-bar { font: 600 13px "Signika", sans-serif; letter-spacing: 0; border-color: #1a1612; border-radius: 3px; }
-.twod12-type #twod12-carousel .tc-round { font: 700 14px "Signika", sans-serif; font-variant: small-caps; font-style: normal; letter-spacing: .02em; }
-.twod12-type #twod12-carousel .tc-bar .tc-btn { font: 700 12px "Signika", sans-serif; letter-spacing: 0; text-transform: none; font-variant: normal; background: transparent; border: 1px solid #8c7d63; border-radius: 2px; color: #f4ede0; }
+.twod12-type #twod12-carousel .tc-head.tc-bar { font: 600 13px "Source Sans 3", sans-serif; letter-spacing: 0; border-color: #1a1612; border-radius: 3px; }
+.twod12-type #twod12-carousel .tc-round { font: 700 14px "Source Sans 3", sans-serif; font-variant: small-caps; font-style: normal; letter-spacing: .02em; }
+.twod12-type #twod12-carousel .tc-bar .tc-btn { font: 700 12px "Source Sans 3", sans-serif; letter-spacing: 0; text-transform: none; font-variant: normal; background: transparent; border: 1px solid #8c7d63; border-radius: 2px; color: #f4ede0; }
 .twod12-type #twod12-carousel .tp { border-radius: 3px; }
-.twod12-type #twod12-carousel .tp-band { font: 700 11px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .06em; text-transform: none; }
-.twod12-type #twod12-carousel .tp-name { font: 700 12.5px "Signika", sans-serif; letter-spacing: 0; text-transform: none; font-variant: normal; }
+.twod12-type #twod12-carousel .tp-band { font: 700 11px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .06em; text-transform: none; }
+.twod12-type #twod12-carousel .tp-name { font: 700 12.5px "Source Sans 3", sans-serif; letter-spacing: 0; text-transform: none; font-variant: normal; }
 /* THE ITEM SHEETS (an Action's, an Effect's, a Feature's: the editor), both themes: the warm dark brown for the head, gold for amber and maroon,
    Signika headings on a rule in the place of the Cinzel gradient bars, square corners, the chosen option filled as the stamp. */
 .twod12-type .application.twod12-styled { --sk-navy: #2b2520; --sk-amber: #c9962b; --sk-acc: ${LIGHT.gold}; --sk-par: ${LIGHT.pg}; --sk-panel: #fbf7ee; --sk-line: ${LIGHT.hair}; --sk-ink: ${LIGHT.ink}; --sk-mut: ${LIGHT.mute}; }
-.twod12-type .application .fr-tab { --fr-navy: ${LIGHT.stamp}; --fr-gold: #c9962b; --fr-maroon: ${LIGHT.ink}; --fr-goldsoft: transparent; --fr-line: ${LIGHT.hair}; --fr-par2: ${LIGHT.pg2}; --fr-field: #fbf7ee; --fr-ink: ${LIGHT.ink}; --fr-mut: ${LIGHT.mute}; font-family: "Signika", sans-serif; }
-.twod12-type .application.twod12-styled .sk .head .name { font: 700 20px "Signika", sans-serif; }
+.twod12-type .application .fr-tab { --fr-navy: ${LIGHT.stamp}; --fr-gold: #c9962b; --fr-maroon: ${LIGHT.ink}; --fr-goldsoft: transparent; --fr-line: ${LIGHT.hair}; --fr-par2: ${LIGHT.pg2}; --fr-field: #fbf7ee; --fr-ink: ${LIGHT.ink}; --fr-mut: ${LIGHT.mute}; font-family: "Source Sans 3", sans-serif; }
+.twod12-type .application.twod12-styled .sk .head .name { font: 700 20px "Source Sans 3", sans-serif; }
 .twod12-type .application.twod12-styled .sk .head img { border-radius: 2px; }
 /* the class's Levels window (the editor inside the class window) */
 .twod12-dark.twod12-dark .classwin .at-body { color: #f08a8a; } .twod12-dark.twod12-dark .classwin .at-mind { color: #8fb3ee; } .twod12-dark.twod12-dark .classwin .at-appeal { color: #e3c15a; } .twod12-dark.twod12-dark .classwin .at-instinct { color: #7fcf95; }
 .twod12-type .classwin .at-body { color: #7a1626; font-weight: 600; } .twod12-type .classwin .at-mind { color: #17327a; font-weight: 600; } .twod12-type .classwin .at-appeal { color: #6b4e00; font-weight: 600; } .twod12-type .classwin .at-instinct { color: #14532d; font-weight: 600; }
-.twod12-type .application.classwin .cw-ttl img { border-radius: 2px; } .twod12-type .application.classwin .cw-head h1 small { font: 600 13px "Signika", sans-serif; letter-spacing: 0; text-transform: none; }
-.twod12-type .application.classwin .ce-lvb { border-radius: 0; border-color: #8c7d63; background: transparent; font-family: "Signika", sans-serif; } .twod12-type .application.classwin .ce-lvb[aria-pressed="true"] { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
+.twod12-type .application.classwin .cw-ttl img { border-radius: 2px; } .twod12-type .application.classwin .cw-head h1 small { font: 600 13px "Source Sans 3", sans-serif; letter-spacing: 0; text-transform: none; }
+.twod12-type .application.classwin .ce-lvb { border-radius: 0; border-color: #8c7d63; background: transparent; font-family: "Source Sans 3", sans-serif; } .twod12-type .application.classwin .ce-lvb[aria-pressed="true"] { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
 .twod12-type .application.classwin .ce-sec { border-radius: 0; border: 0; border-top: 2px solid ${LIGHT.rule}; background: none; } .twod12-type .application.classwin .ce-sh { border-radius: 0; background: none; padding: 6px 0; border-bottom: 1px solid ${LIGHT.hair}; }
-.twod12-type .application.classwin .ce-sh input.ce-title { border: 0; border-radius: 0; background: transparent; color: ${LIGHT.ink}; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; padding: 0 2px; }
+.twod12-type .application.classwin .ce-sh input.ce-title { border: 0; border-radius: 0; background: transparent; color: ${LIGHT.ink}; font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; padding: 0 2px; }
 .twod12-type .application.classwin .ce-sb { padding: 6px 0; gap: 0; } .twod12-type .application.classwin .ce-row { border: 0; border-bottom: 1px solid ${LIGHT.hair}; border-radius: 0; background: none; padding: 4px 2px; }
 .twod12-type .application.classwin .ce-pair { padding: 3px 2px; } .twod12-type .application.classwin .ce-drop { border-radius: 0; border: 1px dashed ${LIGHT.hair}; margin-top: 6px; padding: 5px 8px; font-size: 12.5px; }
 .twod12-type .application.classwin .ce-prev { border-top: 0; padding: 2px 2px 6px; } .twod12-type .application.classwin .ce-x { border: 0; border-radius: 0; background: none; color: ${LIGHT.mute}; }
-.twod12-type .application.classwin .ce-btn { border-radius: 0; border-color: #8c7d63; background: transparent; font-family: "Signika", sans-serif; }
-.twod12-type .application.classwin .ce-lib h2 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.rule}; padding-bottom: 2px; }
-.twod12-type .application.classwin .ce-lib h4 { font: 700 12.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; margin: 10px 0 0; }
+.twod12-type .application.classwin .ce-btn { border-radius: 0; border-color: #8c7d63; background: transparent; font-family: "Source Sans 3", sans-serif; }
+.twod12-type .application.classwin .ce-lib h2 { font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.rule}; padding-bottom: 2px; }
+.twod12-type .application.classwin .ce-lib h4 { font: 700 12.5px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .04em; text-transform: none; margin: 10px 0 0; }
 .twod12-type .application.classwin .ce-li { border: 0; border-bottom: 1px solid ${LIGHT.hair}; border-radius: 0; background: none; margin: 0; padding: 4px 2px; }
 .twod12-type .application.classwin .ce-sh select, .twod12-type .application.classwin .ce-pair select, .twod12-type .application.classwin .ce-drop select, .twod12-type .application.classwin .ce-num input { border-radius: 0; }
 .twod12-dark .application.classwin .ce-lvb { color: ${T.ink}; } .twod12-dark .application.classwin .ce-lvb[aria-pressed="true"] { background: ${T.stamp}; border-color: ${T.stamp}; color: ${T.stampInk}; }
@@ -228,23 +234,23 @@ const TYPE = `
 .twod12-type.twod12-type .application.classwin .ce-lib h4 { margin: 12px 0 2px; padding: 3px 8px; border-left: 4px solid var(--fq, #8c7d63); background: color-mix(in srgb, var(--fq, #8c7d63) 24%, var(--lv-pg)); color: color-mix(in srgb, var(--fq, #8c7d63), #fff var(--lv-mix)); }
 .twod12-type.twod12-type .application.classwin .ce-li { padding: 4px 2px 4px 12px; }
 /* the encounter log and the Generate window */
-.twod12-type .enclog .el-round { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; border-bottom: 1px solid ${LIGHT.rule}; color: ${LIGHT.ink}; }
+.twod12-type .enclog .el-round { font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .03em; border-bottom: 1px solid ${LIGHT.rule}; color: ${LIGHT.ink}; }
 .twod12-type .enclog .el-turn { border-left: 2px solid ${LIGHT.rule}; border-radius: 0; background: none; padding: 2px 8px; } .twod12-type .enclog .el-own { color: ${LIGHT.ink}; }
-.twod12-type .enclog .el-bar button { border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: inherit; font: 600 12px "Signika", sans-serif; }
+.twod12-type .enclog .el-bar button { border: 1px solid #8c7d63; border-radius: 0; background: transparent; color: inherit; font: 600 12px "Source Sans 3", sans-serif; }
 .twod12-dark .enclog .el-turn { background: none; } .twod12-dark .enclog-app .window-content { background: ${T.pg}; color: ${T.ink}; } .twod12-dark .enclog .el-bar { background: ${T.pg2}; border-color: ${T.hair}; } .twod12-dark .enclog .el-abbr { border-color: ${T.hair}; }
 .twod12-dark .enclog .el-bar label, .twod12-dark .enclog .el-abbr label, .twod12-dark .enclog .el-line, .twod12-dark .enclog .el-own, .twod12-dark .enclog .el-round { color: ${T.ink}; } .twod12-dark .enclog .el-round, .twod12-dark .enclog .el-turn { border-color: ${T.rule}; }
 .twod12-dark .enclog .el-line > a { color: ${T.mute}; } .enclog .el-line > i svg, .enclog a svg, .enclog button svg { width: 1em; height: 1em; fill: currentColor; vertical-align: -.125em; } .twod12-dark .enclog .el-line > i { color: ${T.gold}; opacity: 1; } .twod12-dark .enclog .el-line > a, .twod12-dark .enclog .el-own a { color: ${T.mute}; opacity: 1; } .twod12-dark .enclog .el-line.k-dmg, .twod12-dark .enclog .el-line.k-down { color: #f0958a; } .twod12-dark .enclog .el-line.k-heal { color: #6fd0c4; }
-.twod12-type .application.twod12-gencard h4.gc-h { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: ${LIGHT.ink}; }
-.twod12-type .application.twod12-builder .bb-cap { font: 700 13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
+.twod12-type .application.twod12-gencard h4.gc-h { font: 700 13px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .03em; color: ${LIGHT.ink}; }
+.twod12-type .application.twod12-builder .bb-cap { font: 700 13px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
 .twod12-type .application.twod12-gencard ul.gc-lines, .twod12-type .application.twod12-gencard .fr-tab .fr-ta.gc-text { border-radius: 0; }
 .twod12-type .application.twod12-builder .bb-foot .fr-q { border-radius: 0; }
-.twod12-type.twod12-type .application.twod12-styled .sk .bb-foot button { border-radius: 0; border: 1px solid #8c7d63; background: transparent; color: ${LIGHT.ink}; font: 600 13px "Signika", sans-serif; }
+.twod12-type.twod12-type .application.twod12-styled .sk .bb-foot button { border-radius: 0; border: 1px solid #8c7d63; background: transparent; color: ${LIGHT.ink}; font: 600 13px "Source Sans 3", sans-serif; }
 .twod12-type.twod12-type .application.twod12-styled .sk .bb-foot button.bb-go { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; border-color: ${LIGHT.stamp}; }
 .twod12-dark.twod12-dark .application.twod12-styled .sk .bb-foot button { color: ${T.ink}; } .twod12-dark.twod12-dark .application.twod12-styled .sk .bb-foot button.bb-go { background: ${T.stamp}; color: ${T.stampInk}; border-color: ${T.stamp}; }
 .twod12-dark .application.twod12-gencard h4.gc-h { color: ${T.ink}; } .twod12-dark .application.twod12-gencard ul.gc-lines { background: ${T.pg2}; border-color: ${T.hair}; } .twod12-dark .application.twod12-gencard ul.gc-lines li.no { background: none; } .twod12-dark .application.twod12-gencard ul.gc-lines li.no > span { color: ${T.gold}; }
-.twod12-type .application .fr-tab .fr-sec > h3 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; background: none; border-left: 0; border-bottom: 1px solid #8a6d3b; padding: 2px 0; color: ${LIGHT.ink}; }
-.twod12-type .application .fr-tab .as-h4 { font-family: "Signika", sans-serif; font-variant: small-caps; color: ${LIGHT.gold}; }
-.twod12-type .application .fr-tab .as-tl, .twod12-type .application .fr-tab .as-railh, .twod12-type .application .fr-tab .fr-dropped b { font-family: "Signika", sans-serif; }
+.twod12-type .application .fr-tab .fr-sec > h3 { font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; background: none; border-left: 0; border-bottom: 1px solid #8a6d3b; padding: 2px 0; color: ${LIGHT.ink}; }
+.twod12-type .application .fr-tab .as-h4 { font-family: "Source Sans 3", sans-serif; font-variant: small-caps; color: ${LIGHT.gold}; }
+.twod12-type .application .fr-tab .as-tl, .twod12-type .application .fr-tab .as-railh, .twod12-type .application .fr-tab .fr-dropped b { font-family: "Source Sans 3", sans-serif; }
 .twod12-type .application .fr-tab .as-tl { font-weight: 700; font-variant: small-caps; font-size: 14px; }
 .twod12-type .application .fr-tab .as-tier.t2 { --tc: ${LIGHT.t2}; }
 .twod12-type .application .fr-tab button, .twod12-type .application .fr-tab input, .twod12-type .application .fr-tab select, .twod12-type .application .fr-tab textarea, .twod12-type .application .fr-tab .fr-seg, .twod12-type .application .fr-tab .fr-chip, .twod12-type .application .fr-tab .as-tier, .twod12-type .application .fr-tab .as-flow, .twod12-type .application .fr-tab .fr-part, .twod12-type .application .fr-tab .fr-dropped, .twod12-type .application .fr-tab .fr-drop, .twod12-type .application .fr-tab .as-prev, .twod12-type .application .fr-tab .fr-tog { border-radius: 2px; }
@@ -252,13 +258,13 @@ const TYPE = `
 /* THE WINDOWS (the pick window, the class window, the roll dialog): Signika for the title (no Cinzel), a band for the header in the place of navy,
    gold in the place of the class window's orange, the confirm button as the stamp. Style only. */
 .twod12-type .application.classwin { --cw-navy: ${LIGHT.band}; --cw-navy2: ${LIGHT.pg2}; --cw-paper: ${LIGHT.pg}; --cw-paper2: ${LIGHT.pg2}; --cw-card: #fbf7ee; --cw-ink: ${LIGHT.ink}; --cw-mut: ${LIGHT.mute};
-  --cw-line: ${LIGHT.hair}; --cw-acc: ${LIGHT.gold}; --cw-orange: ${LIGHT.gold}; --cw-chosen: ${LIGHT.band}; --cw-band: ${LIGHT.band}; --cw-head: ${LIGHT.gold}; font-family: "Signika", sans-serif; }
+  --cw-line: ${LIGHT.hair}; --cw-acc: ${LIGHT.gold}; --cw-orange: ${LIGHT.gold}; --cw-chosen: ${LIGHT.band}; --cw-band: ${LIGHT.band}; --cw-head: ${LIGHT.gold}; font-family: "Source Sans 3", sans-serif; }
 .twod12-type .application.classwin .cw-head { border-bottom: 1px solid #8a6d3b; }
 .twod12-type .application.classwin .cw-head, .twod12-type .application.classwin .cw-head h1, .twod12-type .application.classwin .cw-head small, .twod12-type .application.classwin .cw-stats, .twod12-type .application.classwin .cw-stats b { color: ${LIGHT.ink}; }
-.twod12-type .application.classwin .cw-head h1 { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
+.twod12-type .application.classwin .cw-head h1 { font: 700 18px "Source Sans 3", sans-serif; letter-spacing: 0; }
 .twod12-type .application.classwin .cw-icon { color: ${LIGHT.gold}; }
-.twod12-type .application.classwin .cw-sec h2 { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; }
-.twod12-type .application.classwin .cw-btn, .twod12-type .application.classwin .cw-seg button { border-radius: 2px; font-family: "Signika", sans-serif; }
+.twod12-type .application.classwin .cw-sec h2 { font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; }
+.twod12-type .application.classwin .cw-btn, .twod12-type .application.classwin .cw-seg button { border-radius: 2px; font-family: "Source Sans 3", sans-serif; }
 .twod12-type .application.classwin .cw-btn.primary, .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
 .twod12-type .application.classwin .cw-seg button[aria-pressed="true"] * { color: inherit; }
 /* the options: each its own outlined button, never wrapping its words; the chosen one is filled (no check mark, so nothing moves when it is picked) */
@@ -272,35 +278,35 @@ const TYPE = `
 .twod12-type .application.classwin .cw-attr > span { color: ${LIGHT.ink}; font-weight: 600; }
 .twod12-type .application.classwin .cw-btn { min-height: 28px; min-width: 84px; padding: 0 14px; }
 .twod12-type .application.classwin .cw-sec h2 { border-left: 0; background: none; padding: 0 0 2px; border-bottom: 1px solid #8a6d3b; color: ${LIGHT.gold}; }
-.twod12-type .twod12.rolldlg { font-family: "Signika", sans-serif; --cc-title: "Signika", sans-serif; --cc-t2: #e4dd80; --cc-t2i: #423d00; }
-.twod12-type .twod12.rolldlg .rd-name { font: 700 18px "Signika", sans-serif; letter-spacing: 0; }
+.twod12-type .twod12.rolldlg { font-family: "Source Sans 3", sans-serif; --cc-title: "Source Sans 3", sans-serif; --cc-t2: #e4dd80; --cc-t2i: #423d00; }
+.twod12-type .twod12.rolldlg .rd-name { font: 700 18px "Source Sans 3", sans-serif; letter-spacing: 0; }
 .twod12-type .twod12.rolldlg .rd-go { border-radius: 2px; }
 /* the roll dialog's Tier rows: the yellower Tier 2 (its own rules set these colors with !important) */
 .twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: ${LIGHT.t2bg} !important; color: ${LIGHT.t2}; box-shadow: inset 4px 0 0 ${LIGHT.t2n}, inset -1px 0 0 #dcd6a4; }
 /* THE OTHER CHAT MESSAGES in the chat card's look (style only): no navy bars, no orange line, no Cinzel; a heading is a band or a bold line. */
 .twod12-type .twod12.chat.rx2 { border-radius: 5px; border-color: #bfae8c; background: ${LIGHT.pg}; color: ${LIGHT.ink}; }
-.twod12-type .twod12.chat.rx2 .rx-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.rx2 .rx-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
 .twod12-type .twod12.chat.rx2.rxused .rxu-txt, .twod12-type .twod12.chat.rx2.rxused .rxu-txt b { color: ${LIGHT.ink}; }
 .twod12-type .twod12.chat.rx2 .rx-base { background: ${LIGHT.band}; color: ${LIGHT.ink}; border: 1px solid ${LIGHT.hair}; }
 .twod12-type .twod12.chat.rx2 .rx-it.rx-base, .twod12-type .twod12.chat.rx2 .rx-it.rx-base .rx-bw b, .twod12-type .twod12.chat.rx2 .rx-tm { color: ${LIGHT.ink}; }
 .twod12-type .twod12.chat.rx2 .rx-it.rx-base { background: ${LIGHT.band}; border-color: ${LIGHT.hair}; }
-.twod12-type .twod12.chat select { background: transparent; color: ${LIGHT.ink}; border: 1px solid #8c7d63; border-radius: 2px; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat select { background: transparent; color: ${LIGHT.ink}; border: 1px solid #8c7d63; border-radius: 2px; font-family: "Source Sans 3", sans-serif; }
 .twod12-type .twod12.chat.rx2 .rx-hd .rx-hb { background: transparent; border: 1px solid #8c7d63; color: ${LIGHT.ink}; border-radius: 2px; }
 .twod12-type .twod12.chat.initcard > .orn { display: none; }
 .twod12-type .twod12.chat.action.sysmsg.initcard { padding: 0 0 4px; overflow: hidden; }
 .twod12-type .twod12.chat.action.sysmsg.initcard > .ahead { background: ${LIGHT.band} !important; border-bottom: 1px solid ${LIGHT.hair} !important; padding: 4px 8px; margin: 0; justify-content: center; }
-.twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > b { flex: none; text-align: center; font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > b { flex: none; text-align: center; font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
 .twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > .aright:empty, .twod12-type .twod12.chat.action.sysmsg.initcard > .ahead > .aright { display: none; }
-.twod12-type .twod12.chat.initcard .ic-band { font: 700 13.5px/1.2 "Signika", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
-.twod12-type .twod12.chat.initcard .ic-name { font: 600 13.5px/1.3 "Signika", sans-serif; letter-spacing: 0; color: ${LIGHT.ink}; }
-.twod12-type .twod12.chat.dmg { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; color: ${LIGHT.ink}; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.initcard .ic-band { font: 700 13.5px/1.2 "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .03em; text-transform: none; }
+.twod12-type .twod12.chat.initcard .ic-name { font: 600 13.5px/1.3 "Source Sans 3", sans-serif; letter-spacing: 0; color: ${LIGHT.ink}; }
+.twod12-type .twod12.chat.dmg { background: ${LIGHT.pg}; border: 1px solid #bfae8c; border-radius: 5px; color: ${LIGHT.ink}; font-family: "Source Sans 3", sans-serif; }
 .twod12-type .twod12.chat.dmg > .ahead { background: none !important; color: inherit !important; border: 0 !important; border-bottom: 1px solid ${LIGHT.hair} !important; }
 .twod12-type .twod12.chat.dmg > .ahead * { color: inherit !important; }
-.twod12-type .twod12.chat.dmg.multi .mdl { font: 700 14px "Signika", sans-serif; font-variant: small-caps; }
-.twod12-type .twod12.chat .dbtns button, .twod12-type .twod12.chat .dbtns select { background: transparent; color: ${LIGHT.ink}; border: 1px solid #8c7d63; border-radius: 2px; box-shadow: none; font-family: "Signika", sans-serif; }
+.twod12-type .twod12.chat.dmg.multi .mdl { font: 700 14px "Source Sans 3", sans-serif; font-variant: small-caps; }
+.twod12-type .twod12.chat .dbtns button, .twod12-type .twod12.chat .dbtns select { background: transparent; color: ${LIGHT.ink}; border: 1px solid #8c7d63; border-radius: 2px; box-shadow: none; font-family: "Source Sans 3", sans-serif; }
 .twod12-type .twod12.chat .dbtns button:first-child { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
 .twod12-type .twod12.chat.turnend > summary { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; }
-.twod12-type .twod12.chat.turnend .td-ttl { font: 700 14.5px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.turnend .td-ttl { font: 700 14.5px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
 .twod12-type .twod12-dock { background: ${LIGHT.pg}; color: ${LIGHT.ink}; border: 1px solid #bfae8c; border-radius: 5px; box-shadow: none; font-size: 13px; }
 .twod12-type .twod12-dock .td-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; min-height: 28px; padding: 3px 8px 3px 10px; gap: 8px; }
 .twod12-type .twod12-dock:not(.open) .td-hd { border-bottom: 0; }
@@ -377,7 +383,7 @@ const BY_HAND = `
 .twod12-dark .twod12.chat.cc .cc-seg.s1 { background: rgba(143, 42, 34, .38); color: #f3a79e; } .twod12-dark .twod12.chat.cc .cc-seg.s1.lit { background: #8f2a22; color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-seg.s2 { background: rgba(140, 130, 24, .32); color: #e0d65a; } .twod12-dark .twod12.chat.cc .cc-seg.s2.lit { background: #7d7414; color: #fff; }
 .twod12-dark .twod12.chat.cc .cc-seg.s3 { background: rgba(47, 107, 58, .38); color: #8fd69b; } .twod12-dark .twod12.chat.cc .cc-seg.s3.lit { background: #2f6b3a; color: #fff; }
-.twod12-dark .twod12.chat .kw-ap { color: #9aa7ff !important; } .twod12-dark .twod12.chat .kw-bane { color: ${T.bane}; } .twod12-dark .twod12.chat .kw-boon { color: ${T.boon}; }
+.twod12-dark .twod12.chat .kw-bane { color: ${T.bane}; } .twod12-dark .twod12.chat .kw-boon { color: ${T.boon}; }
 /* ---- by hand: the other chat messages */
 .twod12-dark .twod12.chat.rx2, .twod12-dark .twod12.chat.dmg { background: ${T.pg}; border-color: ${T.rule}; color: ${T.ink}; }
 .twod12-dark .twod12.chat.rx2 .rx-hd, .twod12-dark .twod12.chat.rx2 .rx-base, .twod12-dark .twod12.chat.turnend > summary { background: ${T.band}; color: ${T.ink}; border-color: ${T.hair}; }
@@ -493,9 +499,9 @@ const BY_HAND = `
 .twod12-type #twod12-carousel .tp-pips i { border-color: ${T.mute}; }
 .twod12-type #twod12-carousel .tp-swap { background: transparent; color: ${T.ink}; border-color: #6a5d48; } .twod12-type #twod12-carousel .tp-move.none { color: ${T.mute}; }
 .twod12-type #twod12-carousel .tc-round { white-space: nowrap; }
-.twod12-type #twod12-carousel .tp-move, .twod12-type #twod12-carousel .tp-swap { font-family: "Signika", sans-serif; font-size: 11.5px; font-weight: 600; }
+.twod12-type #twod12-carousel .tp-move, .twod12-type #twod12-carousel .tp-swap { font-family: "Source Sans 3", sans-serif; font-size: 11.5px; font-weight: 600; }
 .twod12-dark .application.twod12-styled .sk .head, .twod12-dark .application.twod12-styled .sk .tabs { border-color: ${T.rule} !important; box-shadow: none; }
-.twod12-type .application .fr-tab .fr-tip b { font-family: "Signika", sans-serif; font-weight: 700; }
+.twod12-type .application .fr-tab .fr-tip b { font-family: "Source Sans 3", sans-serif; font-weight: 700; }
 .twod12-type.twod12-type .twod12.sheet .fr-headline { color: #b3a68e; } .twod12-type.twod12-type .twod12.sheet .fr-headline b { color: #eadfc8; }
 .twod12-dark .application .fr-tab .fr-tip { background: ${T.band}; color: ${T.ink}; border-radius: 0; }
 .twod12-dark .application .fr-tab .fr-chip { background: transparent; border: 1px solid currentColor; line-height: 16px; font-weight: 600; }
@@ -540,23 +546,23 @@ const BY_HAND = `
 
 /* ------------------------------------------------------------------ the carousel: look B, the medallions (Lucas, 2026-11-13), one dark look for both themes */
 const CAR_B = `
-.twod12-type.twod12-type #twod12-carousel { gap: 6px; font-family: "Signika", sans-serif; }
+.twod12-type.twod12-type #twod12-carousel { gap: 6px; font-family: "Source Sans 3", sans-serif; }
 .twod12-type.twod12-type #twod12-carousel .tc-head.tc-bar { align-self: center; width: auto; gap: 14px; background: rgba(26,23,19,.92); border: 0; border-bottom: 2px solid ${T.rule}; border-radius: 0; box-shadow: 0 2px 8px rgba(0,0,0,.4); padding: 4px 8px; }
-.twod12-type.twod12-type #twod12-carousel .tc-round { color: ${T.ink}; font: 700 14px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .04em; white-space: nowrap; } .twod12-type.twod12-type #twod12-carousel .tc-round b { color: ${T.gold}; font-size: 16px; }
+.twod12-type.twod12-type #twod12-carousel .tc-round { color: ${T.ink}; font: 700 14px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .04em; white-space: nowrap; } .twod12-type.twod12-type #twod12-carousel .tc-round b { color: ${T.gold}; font-size: 16px; }
 .twod12-type.twod12-type #twod12-carousel .tc-bar .tc-btn { border-radius: 0; border-color: #6a5d48; color: ${T.ink}; font-weight: 600; height: 22px; }
 .twod12-type.twod12-type #twod12-carousel .tc-bar .tc-btn[data-tc="next"], .twod12-type.twod12-type #twod12-carousel .tc-bar .tc-btn[data-tc="begin"] { background: ${T.stamp}; color: ${T.stampInk}; border-color: ${T.stamp}; }
 .twod12-type.twod12-type #twod12-carousel .tp-list { gap: 10px; padding: 0 4px 6px; justify-content: center; align-items: flex-start; }
 .twod12-type.twod12-type #twod12-carousel .tp, .twod12-type.twod12-type #twod12-carousel .tp.act { width: 104px; padding: 0; background: none; border: 0; border-radius: 0; box-shadow: none; overflow: visible; display: flex; flex-direction: column; align-items: stretch; filter: drop-shadow(0 3px 5px rgba(0,0,0,.55)); }
 .twod12-type.twod12-type #twod12-carousel .tp.act { width: 136px; }
-.twod12-type.twod12-type #twod12-carousel .tp-band { order: 2; height: auto; padding: 16px 4px 0; margin-top: -14px; background: rgba(26,23,19,.94); font: 700 10.5px/13px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .06em; color: ${T.mute}; border-top: 2px solid #8c7d63; }
+.twod12-type.twod12-type #twod12-carousel .tp-band { order: 2; height: auto; padding: 16px 4px 0; margin-top: -14px; background: rgba(26,23,19,.94); font: 700 10.5px/13px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .06em; color: ${T.mute}; border-top: 2px solid #8c7d63; }
 .twod12-type.twod12-type #twod12-carousel .tp.d1 .tp-band { color: #9fcf7a; border-top-color: #5c9a34; } .twod12-type.twod12-type #twod12-carousel .tp.dm1 .tp-band { color: #ea8f84; border-top-color: #c0453b; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-band { color: ${T.gold}; border-top-color: ${T.gold}; background: rgba(26,23,19,.94); }
 .twod12-type.twod12-type #twod12-carousel .tp-por { order: 1; position: relative; z-index: 2; width: 58px; height: 58px; margin: 0 auto; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-por { width: 76px; height: 76px; }
 .twod12-type.twod12-type #twod12-carousel .tp-por img { border: 2px solid #1a1612; outline: none; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-por img { border-color: ${T.gold}; box-shadow: 0 0 0 1px #1a1612, 0 0 12px rgba(212,165,72,.55); }
-.twod12-type.twod12-type #twod12-carousel .tp-seal { right: -6px; bottom: 0; border-radius: 0; border: 0; background: ${T.stamp}; color: ${T.stampInk}; font: 700 11px/17px "Signika", sans-serif; height: 17px; }
-.twod12-type.twod12-type #twod12-carousel .tp-name, .twod12-type.twod12-type #twod12-carousel .tp.act .tp-name { order: 3; margin: 0; padding: 0 5px 1px; background: rgba(26,23,19,.94); font: 700 13.5px/17px "Signika", sans-serif; color: ${T.ink}; }
+.twod12-type.twod12-type #twod12-carousel .tp-seal { right: -6px; bottom: 0; border-radius: 0; border: 0; background: ${T.stamp}; color: ${T.stampInk}; font: 700 11px/17px "Source Sans 3", sans-serif; height: 17px; }
+.twod12-type.twod12-type #twod12-carousel .tp-name, .twod12-type.twod12-type #twod12-carousel .tp.act .tp-name { order: 3; margin: 0; padding: 0 5px 1px; background: rgba(26,23,19,.94); font: 700 13.5px/17px "Source Sans 3", sans-serif; color: ${T.ink}; }
 .twod12-type.twod12-type #twod12-carousel .tp-pips { order: 4; margin: 0; padding: 3px 4px 5px; background: rgba(26,23,19,.94); } .twod12-type.twod12-type #twod12-carousel .tp-strikes { order: 5; margin: 0; padding: 0 4px 6px; background: rgba(26,23,19,.94); }
-.twod12-type.twod12-type #twod12-carousel .tp-move { order: 6; margin: 0; padding: 4px 4px; border: 0; border-top: 1px solid ${T.hair}; border-radius: 0; background: rgba(26,23,19,.94); font: 600 11.5px "Signika", sans-serif; }
-.twod12-type.twod12-type #twod12-carousel .tp-swap { order: 7; width: 100%; margin: 0; border-radius: 0; background: rgba(26,23,19,.94); border: 0; border-top: 1px solid ${T.hair}; color: ${T.ink}; font: 600 11.5px/22px "Signika", sans-serif; height: 24px; }`;
+.twod12-type.twod12-type #twod12-carousel .tp-move { order: 6; margin: 0; padding: 4px 4px; border: 0; border-top: 1px solid ${T.hair}; border-radius: 0; background: rgba(26,23,19,.94); font: 600 11.5px "Source Sans 3", sans-serif; }
+.twod12-type.twod12-type #twod12-carousel .tp-swap { order: 7; width: 100%; margin: 0; border-radius: 0; background: rgba(26,23,19,.94); border: 0; border-top: 1px solid ${T.hair}; color: ${T.ink}; font: 600 11.5px/22px "Source Sans 3", sans-serif; height: 24px; }`;
 
 
 /* ------------------------------------------------------------------ added at the build (STYLE-1), beyond the mockups' rules */
@@ -586,7 +592,7 @@ const EXTRA = `
 /* ---- v0.0.377 (Lucas: "the number on the Guard is almost unreadable"; "Health X could look more important"): dark ink on the gold shield, light on the grey one; Health as a heading */
 .twod12-type .twod12.sheet.pcs .ps-shield { color: #1f1a12; } .twod12-type .twod12.sheet.pcs .ps-shield b { font-size: 13px; font-weight: 800; }
 .twod12-type .twod12.sheet.pcs .ps-shield.zero { background: #6b6152; color: #fbf6ea; }
-.twod12-type .twod12.sheet.pcs .ps-hh:has(.ps-shield) > .ps-k { font: 700 15px "Signika", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; color: #f3ebd8; }
+.twod12-type .twod12.sheet.pcs .ps-hh:has(.ps-shield) > .ps-k { font: 700 15px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; text-transform: none; color: #f3ebd8; }
 .twod12-light .twod12.sheet.pcs .ps-hh:has(.ps-shield) > .ps-k { color: #f3ebd8; }
 /* ---- v0.0.377: the damage line window on the dark page */
 .twod12-dark .application.classwin .cw-seg > button.pw-sub { --sc: var(--sc-d); } .twod12-dark .application.classwin .cw-seg > button.pw-kind.resist span { color: #8fd69b; } .twod12-dark .application.classwin .cw-seg > button.pw-kind.weak span { color: #f3a79e; }
@@ -604,6 +610,102 @@ const EXTRA = `
 .twod12-dark .application.classwin .kw-ap { color: #9aa7ff; } .twod12-dark .application.classwin .kw-bane, .twod12-dark .application.classwin .kw-neg { color: ${T.bane}; } .twod12-dark .application.classwin .kw-boon, .twod12-dark .application.classwin .kw-pos { color: ${T.boon}; }
 `;
 
+
+
+/* ------------------------------------------------------------------ STYLE-3: Foundry's color schemes (style-book.md step 4, A) */
+// The rules are written with .twod12-dark / .twod12-light in front (as since STYLE-1); here each one moves into an @scope block of Foundry's
+// theme, the dnd5e and Draw Steel convention: @scope (.theme-dark) to (.themed) { ... }. A rule keeps its weight: ":where(.twod12-dark) X"
+// becomes "X" (the scope's own prefix weighs nothing) and ".twod12-dark X" becomes ":scope X" (one class, as before). A sheet is its own scope
+// root (Foundry puts .themed.theme-dark on the window, with the system's classes): so each selector also matches with its first part on the root.
+const topSplit = sel => { const out = []; let d = 0, cur = ""; for (const ch of sel) { if ("([".includes(ch)) d++; else if (")]".includes(ch)) d--; if (ch === "," && !d) { out.push(cur.trim()); cur = ""; } else cur += ch; } if (cur.trim()) out.push(cur.trim()); return out; };
+const firstCompound = s => { let d = 0; for (let i = 0; i < s.length; i++) { const ch = s[i]; if ("([".includes(ch)) d++; else if (")]".includes(ch)) d--; else if (!d && /[\s>+~]/.test(ch)) return [s.slice(0, i), s.slice(i)]; } return [s, ""]; };
+const THEME_HEAD = /^(:where\(\.twod12-(dark|light)\)|(?:\.twod12-(dark|light)\b(?!-))+)(?:\s+|(?=[.#[:])|$)/;
+function scoped(sel) {
+  const m = sel.match(THEME_HEAD);
+  if (!m) return null;
+  const theme = m[2] || m[3], weight = m[1].startsWith(":where") ? 0 : (m[1].match(/\.twod12-(dark|light)/g) ?? []).length;
+  const rest = sel.slice(m[0].length).trim(), sc = weight ? ":scope".repeat(weight) : ":where(:scope)";
+  if (!rest) return { theme, plain: `.theme-${theme}` };   // a theme's own variables: on Foundry's class (the nearest theme wins)
+  const [c, tail] = firstCompound(rest);
+  const sels = [`${sc} ${rest}`];
+  if (!c.includes("::")) sels.push(`:is(${c})${sc}${tail}`);
+  return { theme, sels };
+}
+export function foundryThemes(css) {
+  const out = [];
+  let run = null;   // consecutive rules of one theme share one @scope block, so the order of the rules is kept
+  const flush = () => { if (run) { out.push(`@scope (.theme-${run.theme}) to (.themed) {\n${run.rules.join("\n")}\n}`); run = null; } };
+  const push = (theme, rule) => { if (run && run.theme !== theme) flush(); if (!run) run = { theme, rules: [] }; run.rules.push(rule); };
+  let i = 0;
+  while (i < css.length) {
+    const open = css.indexOf("{", i);
+    if (open < 0) { flush(); out.push(css.slice(i)); break; }
+    let d = 0, j = open;
+    for (; j < css.length; j++) { if (css[j] === "{") d++; else if (css[j] === "}" && --d === 0) break; }
+    const head = css.slice(i, open), body = css.slice(open, j + 1);
+    const lead = head.match(/^[\s\S]*\*\/\s*/)?.[0] ?? (head.match(/^\s*/)?.[0] ?? ""), sel = head.slice(lead.length).trim();
+    i = j + 1;
+    if (lead.trim()) { flush(); out.push(lead.trimEnd()); }
+    if (sel.startsWith("@")) { flush(); out.push(`${sel} ${body}`); continue; }
+    const plain = [], byTheme = { dark: [], light: [] };
+    for (const one of topSplit(sel)) { const x = scoped(one); if (x?.plain) plain.push(x.plain); else if (x) byTheme[x.theme].push(...x.sels); else plain.push(one); }
+    if (plain.length) { flush(); out.push(`${plain.join(", ")} ${body}`); }
+    for (const t of ["dark", "light"]) if (byTheme[t].length) push(t, `${byTheme[t].join(", ")} ${body}`);
+  }
+  flush();
+  return out.join("\n").replace(/\n{3,}/g, "\n\n");
+}
+/* ---------------------------------------------------------------- STYLE-3 (2026-11-17, foundry/mockups/style-book.md): the book's restraint.
+   Step 3: a color only for a meaning. Steps 3 and 6 rounds: palette A for the Tiers, the Basic Actions' strips muted, Use outlined. */
+const STYLE3 = `
+/* ==== STYLE-3: game words in text take the ink (AP, Guard, Boon, Bane, the Attributes, the Modifiers); the frequency a small mark beside its word ==== */
+.twod12-type :is(.twod12, .classwin, .application, .twod12-hud) :is(.kw-ap, .kw-guard, .kw-bane, .kw-boon, .kw-pos, .kw-neg, .kw-rally, .kw-mv, .at-body, .at-mind, .at-instinct, .at-appeal, .mod-weapon, .mod-power, .mod-signature) { color: inherit !important; }
+.twod12-type .twod12.sheet.pcs .ps-pill:not(.line), .twod12-type .twod12.chat.cc .cc-cost, .twod12-type .twod12.acard.d2 .ap-freq { background: transparent !important; color: var(--s-ink) !important; border: 1px solid var(--s-hair) !important; }
+.twod12-type .twod12.sheet.pcs .ps-pill:not(.line)::before, .twod12-type .twod12.chat.cc .cc-cost::before, .twod12-type .twod12.acard.d2 .ap-freq::before { content: ""; display: inline-block; width: .55em; height: .55em; margin-right: .35em; vertical-align: .05em; background: var(--fqm, #888); }
+.twod12-type .twod12.sheet.pcs .ps-pill { --fqm: var(--fc); } .twod12-type .twod12.acard.d2 .ap-freq { --fqm: var(--fq); }
+.twod12-type .twod12.chat.cc .cc-cost.f-atwill { --fqm: var(--s-fq-atwill); } .twod12-type .twod12.chat.cc .cc-cost.f-round { --fqm: var(--s-fq-round); } .twod12-type .twod12.chat.cc .cc-cost.f-encounter { --fqm: var(--s-fq-encounter); }
+.twod12-type .twod12.chat.cc .cc-cost.f-turn { --fqm: var(--s-fq-turn); } .twod12-type .twod12.chat.cc .cc-cost.f-daily { --fqm: var(--s-fq-daily); }
+/* the trait chips lose their fills (their group names go with the Action card's Structure pass) */
+.twod12-type .twod12 .ap-chip { background: transparent !important; border-color: transparent !important; color: var(--s-ink) !important; padding-left: 0 !important; padding-right: 0 !important; }
+/* ==== STYLE-3: the Basic Actions' and the Reactions' strips, muted (the frequency's color and Strike's mixed toward the surface) ==== */
+.twod12-type .twod12.sheet.pcs { --tw-mute-to: ${LIGHT.pg}; }
+.twod12-dark .twod12.sheet.pcs { --tw-mute-to: ${DARK.pg2}; }
+.twod12-type .twod12.sheet.pcs .ps-bxbtn.ln { padding-left: 14px !important; box-shadow: inset 4px 0 0 color-mix(in srgb, var(--lnf) 55%, var(--tw-mute-to)) !important; }
+.twod12-type .twod12.sheet.pcs .ps-bxbtn.ln.ln-strike { padding-left: 16px !important; box-shadow: inset 4px 0 0 color-mix(in srgb, var(--lnf) 55%, var(--tw-mute-to)), inset 8px 0 0 color-mix(in srgb, var(--tw-strike) 55%, var(--tw-mute-to)) !important; }
+.twod12-type .twod12.sheet.pcs .ps-row.lnfreq > .ps-line { padding-left: 14px !important; box-shadow: inset 4px 0 0 color-mix(in srgb, var(--lnf) 55%, var(--tw-mute-to)) !important; }
+.twod12-type .twod12.sheet.pcs .ps-row.lnfreq.strike > .ps-line { padding-left: 18px !important; box-shadow: inset 4px 0 0 color-mix(in srgb, var(--lnf) 55%, var(--tw-mute-to)), inset 8px 0 0 color-mix(in srgb, var(--tw-strike) 55%, var(--tw-mute-to)) !important; }
+.twod12-type .twod12.sheet.pcs .ps-row.strike:not(.lnfreq) > .ps-line { box-shadow: inset 4px 0 0 color-mix(in srgb, var(--tw-strike) 55%, var(--tw-mute-to)) !important; }
+.twod12-type .twod12.sheet.pcs .ps-legend .sw { background: color-mix(in srgb, var(--lnf) 55%, var(--tw-mute-to)) !important; }
+/* ==== STYLE-3: "Use" outlined in the accent, the word in ink, filled on hover; the Reactions' the same (their teal gone) ==== */
+.twod12-type .twod12.sheet.pcs .ps-use, .twod12-type .twod12.sheet.pcs .ps-use.rx { background: transparent !important; color: var(--s-ink) !important; border: 1px solid var(--s-gold) !important; box-shadow: none !important; font-weight: 600 !important; min-width: 46px; height: 26px; }
+.twod12-type .twod12.sheet.pcs .ps-use:hover, .twod12-type .twod12.sheet.pcs .ps-use:focus-visible { background: var(--s-gold) !important; color: var(--s-pg) !important; }
+/* ==== STYLE-3: the Tiers in palette A (both themes through the --s-ta-* variables): a fill for the result, a pale range for the others ==== */
+.twod12-type .twod12.chat.cc .t1:is(.cc-stamp, .cc-pill), .twod12-type .twod12.chat.cc .cc-sband.t1, .twod12-type .twod12.chat.cc .cc-srow.t1.hit, .twod12-type .twod12.chat.cc .cc-seg.s1.lit, .twod12-type .twod12.rolldlg .rd-lseg.t1, .twod12-type .twod12.chat.cc .cc-stamp.dmg.t1:hover { background: var(--s-ta-1) !important; color: #fff !important; border-color: var(--s-ta-1) !important; }
+.twod12-type .twod12.chat.cc .t2:is(.cc-stamp, .cc-pill), .twod12-type .twod12.chat.cc .cc-sband.t2, .twod12-type .twod12.chat.cc .cc-srow.t2, .twod12-type .twod12.chat.cc .cc-seg.s2.lit, .twod12-type .twod12.rolldlg .rd-lseg.t2, .twod12-type .twod12.chat.cc .cc-stamp.dmg.t2:hover { background: var(--s-ta-2) !important; color: #fff !important; border-color: var(--s-ta-2) !important; }
+.twod12-type .twod12.chat.cc .t3:is(.cc-stamp, .cc-pill), .twod12-type .twod12.chat.cc .cc-sband.t3, .twod12-type .twod12.chat.cc .cc-srow.t3, .twod12-type .twod12.chat.cc .cc-seg.s3.lit, .twod12-type .twod12.rolldlg .rd-lseg.t3, .twod12-type .twod12.chat.cc .cc-stamp.dmg.t3:hover { background: var(--s-ta-3) !important; color: #fff !important; border-color: var(--s-ta-3) !important; }
+.twod12-type .twod12.chat.cc .crit:is(.cc-stamp, .cc-pill), .twod12-type .twod12.chat.cc .cc-sband.crit, .twod12-type .twod12.chat.cc .cc-czone.solid, .twod12-type .twod12.rolldlg .rd-lseg.crit, .twod12-type .twod12.chat.cc .cc-tag.crit, .twod12-type .twod12.chat.cc .cc-stamp.dmg.crit:hover { background: var(--s-ta-c) !important; color: var(--s-ta-ci) !important; border-color: var(--s-ta-cr) !important; }
+.twod12-type .twod12.chat.cc .cc-stamp.crit { box-shadow: inset 0 0 0 3px var(--s-ta-cr) !important; } .twod12-type .twod12.chat.cc .cc-pill.crit { box-shadow: inset 0 0 0 2px var(--s-ta-cr) !important; }
+.twod12-type .twod12.chat.cc .cc-stamp *, .twod12-type .twod12.chat.cc .cc-srow:is(.t2, .t3, .t1.hit) :is(.cc-pv, .cc-pr, .cc-sub, .cc-dot, .cc-none) { color: inherit !important; }
+.twod12-type .twod12.chat.cc .cc-seg.s1:not(.lit), .twod12-type .twod12.chat.cc .cc-srow.t1:not(.hit) { background: var(--s-ta-1p) !important; color: var(--s-ink) !important; }
+.twod12-type .twod12.chat.cc .cc-seg.s2:not(.lit) { background: var(--s-ta-2p) !important; color: var(--s-ink) !important; }
+.twod12-type .twod12.chat.cc .cc-seg.s3:not(.lit) { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; }
+.twod12-type .twod12.chat.cc .cc-czone:not(.solid) { background: var(--s-ta-cp) !important; color: var(--s-ink) !important; }
+.twod12-type .twod12.chat.cc .cc-dbl, .twod12-type .twod12.chat.cc .cc-dbl.crit { border-color: var(--s-ta-c) !important; box-shadow: none !important; }
+.twod12-type .twod12.rolldlg .rd-tiers tr.t1 th { background: var(--s-ta-1p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-1) !important; }
+.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: var(--s-ta-2p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-2) !important; }
+.twod12-type .twod12.rolldlg .rd-tiers tr.t3 th { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-3) !important; }
+.twod12-type .twod12.rolldlg .rd-tiers tr.crit th { background: var(--s-ta-cp) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-c) !important; }
+.twod12-type .twod12.acard.d2 table.ap-tt tr.t1 { --c: var(--s-ta-1t) !important; --n: var(--s-ta-1) !important; --bg: var(--s-ta-1p) !important; }
+.twod12-type .twod12.acard.d2 table.ap-tt tr.t2 { --c: var(--s-ta-2t) !important; --n: var(--s-ta-2) !important; --bg: var(--s-ta-2p) !important; }
+.twod12-type .twod12.acard.d2 table.ap-tt :is(tr.t3, tr.tall) { --c: var(--s-ta-3t) !important; --n: var(--s-ta-3) !important; --bg: var(--s-ta-3p) !important; }
+.twod12-type .twod12.acard.d2 table.ap-tt tr.crit { --c: var(--s-ta-ct) !important; --n: var(--s-ta-c) !important; --bg: var(--s-ta-cp) !important; }
+.twod12-type .twod12.acard.d2 table.ap-tt tr.crit td:not(.tl) { background: var(--s-ta-cp) !important; }
+/* ==== STYLE-3: a light window inside the dark interface keeps the light values of the variables the dark theme changes (system.css :root) ==== */
+.theme-light { --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55; --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; --tw-strike: #c25a28; }
+/* ==== STYLE-3: a button's text takes the browser's color scheme unless it is set: the damage card's pools line was white on the light card in a dark browser ==== */
+.twod12-type .twod12.chat.cc .cc-pools { color: var(--s-ink); }
+`;
+
 /** The theme's CSS from system.css's text (pure: the test calls it). */
 export function buildTheme(systemCss) {
   const ALL = blocks(systemCss.replace(/\/\*[\s\S]*?\*\//g, ""));
@@ -612,12 +714,13 @@ export function buildTheme(systemCss) {
   const WARM_PCS = warmSet(R.pcs);
   // the carousel takes the dark look in both themes (it sits on the map), so its set is scoped to the always-on class
   const SETS = Object.entries(R).map(([k, rules]) => [k, darkSet(k, rules, k === "car" ? ".twod12-type" : ".twod12-dark")]);
-  return `/* GENERATED by tools/build-theme.mjs from styles/system.css: do not edit; edit the script and run it again (node tools/build-theme.mjs).
-   STYLE-1 (v0.0.369): the settled look, on top of system.css. The scope classes are on <html> (module/theme.mjs): .twod12-type always,
-   .twod12-dark (the default) or .twod12-light. Surfaces: ${Object.entries(R).map(([k, r]) => `${k} ${r.length}`).join(", ")} rules read. */
-/* ==== the shared colors (the --s-* variables): dark on :root, light under .twod12-light ==== */
-:root { ${vars(DARK)} }
-.twod12-light { ${vars(LIGHT)} }
+  return foundryThemes(`/* GENERATED by tools/build-theme.mjs from styles/system.css: do not edit; edit the script and run it again (node tools/build-theme.mjs).
+   STYLE-1 (v0.0.369): the settled look, on top of system.css. .twod12-type is on <html> always (module/theme.mjs). STYLE-3 (2026-11-17):
+   the dark and light sets follow Foundry's own color schemes, as dnd5e and Draw Steel do: inside @scope (.theme-dark) to (.themed), so the
+   chat and the bars follow the Interface setting, a sheet or window its Applications setting or its own theme, the nearest theme winning. Surfaces: ${Object.entries(R).map(([k, r]) => `${k} ${r.length}`).join(", ")} rules read. */
+/* ==== the shared colors (the --s-* variables): dark on :root and Foundry's .theme-dark, light on .theme-light (the nearest wins) ==== */
+:root, .theme-dark { ${vars(DARK)} }
+.theme-light { ${vars(LIGHT)} }
 /* ==== the PC sheet, light: its navy family turned warm ==== */
 ${WARM_PCS}
 /* ==== the type and the shapes, both themes ==== */
@@ -627,7 +730,8 @@ ${SETS.map(([k, css]) => `/* ==== the dark set: ${k} ==== */\n${css}`).join("\n"
 ${BY_HAND}
 /* ==== the carousel, look B ==== */
 ${CAR_B}
-${EXTRA}`;
+${EXTRA}
+${STYLE3}`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

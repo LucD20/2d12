@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-17 from the repository at: 028aec3 2026-11-17 The book's new look and the class documents by level, applied
+Built by tools/knowledge.py on 2026-11-17 from the repository at: 38f26bc 2026-11-17 Foundry style step 6: C, one message per Action, drawn (the damage in the attack card)
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,8 +15,8 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (169 KB)
-- MASTER-PLAN.md (40 KB)
+- HANDOFF.md (170 KB)
+- MASTER-PLAN.md (41 KB)
 - open-design-items.md (184 KB)
 - rules-01-roll.md (26 KB)
 - rules-02-turns.md (33 KB)
@@ -58,7 +58,7 @@ Files:
 - research-versions-criticals.md (5 KB)
 - research-vtt-style.md (28 KB)
 - research-weapons-bows-light.md (32 KB)
-- design-style-book.md (8 KB)
+- design-style-book.md (21 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
