@@ -168,4 +168,8 @@ The page: `book/cards/look-desk/faces.html`, the artifact "Book Text Faces": the
 
 **For Lucas:** 1 (bronze or ink); 2 (drop the lines, or keep and redraw); then the face.
 
+**Lucas's answer (2026-11-17): "1. Bronze. 2. Yeah, lets drop it for now. Source Serif 4 yea, I like Alegreya but it is a bit hard to read. If there is a mid-way point, I'd like to see, otherwise, proceed."** **DECIDED: the accent is a dark bronze** (light #7a5418, 5.7:1 on the card's tint; dark #d2a75a, 7.1:1; red is Vigor's alone); **the trait lines are dropped "for now"** (traits in black, by group order). The face: Source Serif 4 unless a mid-way between it and Alegreya is better.
+
+**The mid-way faces, checked in their files** (real small caps and old-style figures needed; x-height as a share of the em, larger reads bigger): Piazzolla (Huerta Tipográfica, 2020; 0.478, optical sizes; full set), Brygada 1918 (0.46; full set), Spectral (0.45; full set); and a mix (the text in Source Serif 4, the small-caps headings in Alegreya). Rejected for lacking small caps: Lora, Gelasio, Besley, Fraunces (and Gentium Book Plus has small caps but no figure styles). The faces page now shows Source Serif 4, the four mid-way options and Alegreya for reference, in the decided look (bronze, traits in black). **Claude's pick for a mid-way: Piazzolla** (the same calligraphic school as Alegreya, with Source Serif 4's x-height).
+
 **Lucas's answer:**
