@@ -87,4 +87,14 @@ The illuminated-manuscript idiom McCoy calls fantasy's default: a display face f
 
 **For Lucas:** A, B or C.
 
+**Lucas (2026-11-17):** "Give me an example of each." Done: `book/cards/look-desk/examples.html`, the artifact "Book Look Examples" (the same Paladin slice: today, A, B, C). Then: "If we remove my words, book and serious, what would they look like, taking into consideration only the research."
+
+**Answered: the research alone points between A and B, nearer B, and not to C** (added to the examples as D).
+- **What the research supports with no word of his:** a fixed anatomy for every block; the block made findable by a light structure, and the praised books do it with a pale band or flat tint (Old-School Essentials' bands, 5e's panel), not with no frame at all; bold labels at the start of a line; one accent with a structural job; color never the only cue; the frequency as a word; no rounded corners, pills, colored left bars or a color per keyword (the "app look" parts); real small caps or none; tables without nets; light ground by default.
+- **What only his words add (A over D):** dropping the tint and the band, the serif inside the block, red reserved for what you act on. The research has no finding that a frameless block is faster; it has the opposite hint (a tint helps finding).
+- **Where the research is neutral, so D takes the plainer way:** serif or sans inside the block (no reading-speed difference; 5e sets its blocks in a sans, Scala Sans, and that is not what reads as an app); so D sets the card in a plain sans against the serif page, which also helps finding.
+- **What the research weighs against:** C (costume; "no fake parchment or genre fonts"), and today's look on four counts (a saturated bar coding the frequency by color, a color per keyword, rounded boxes in boxes, the system interface font). It does **not** condemn a header bar as such: Justin Alexander praised 4e's format for clarity; the complaint was tone ("gamey"), which is a word of his.
+
+**D, the research alone:** a pale band behind the name line with a dark rule on top; the name in the block's bold; frequency and cost in the accent; the card's text in a plain sans (Source Sans 3 as a stand-in); bold labels in a column; a rule under the block; Versions as accent subheads with a hairline.
+
 **Lucas's answer:**
