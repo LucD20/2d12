@@ -2,7 +2,9 @@
 // own modules in the browser (a real DOM: the inline buttons are the real enrichers' output) on the compendium's cards (data.json, written by
 // tools/gallery/data.mjs) and draws every card in each face inside each surface's real markup (the sheet's open row, a chat message, the hover
 // tooltip, the HUD's card), in Foundry's dark or light scheme. tools/gallery/shoot.mjs screenshots it and compares with the saved shots.
-// The page reads ?theme=dark|light&wrap=sheet|chat|tooltip|hud&face=full|solo&from=0&to=20 (all cards when from / to are left out).
+// The page reads ?theme=dark|light&wrap=sheet|chat|tooltip|hud|dialog&face=full|solo|roll|result&from=0&to=20 (all cards when from / to are left out).
+// Step 3: face=roll is the roll dialog's card (rolldlg.mjs cardHtml) and face=result the chat card of the Action's result (chatcards.mjs: the
+// attack card at a Tier 2 on one target, the Save card before its roll, the no-roll card), both with the card's lines (cardlines.mjs).
 const q = new URLSearchParams(location.search);
 const theme = q.get("theme") ?? "dark", wrap = q.get("wrap") ?? "sheet", face = q.get("face") ?? "full";
 const from = Number(q.get("from") ?? 0), to = Number(q.get("to") ?? 9999);
@@ -49,13 +51,39 @@ function asItem(d) {
 const { registerInline } = await import("../twod12/module/inline.mjs");
 registerInline();
 const AC = await import("../twod12/module/actioncard.mjs");
+const CL = await import("../twod12/module/cardlines.mjs");
+const CFG = await import("../twod12/module/config.mjs");
+let RD = null, CC = null, ACT = null;
+if (face === "roll" || face === "result") { RD = await import("../twod12/module/rolldlg.mjs"); CC = await import("../twod12/module/chatcards.mjs"); ACT = await import("../twod12/module/actions.mjs"); }
+const enrichCard = async (t, doc) => CFG.highlightText(await enrichHTML(t ?? "", doc ? { relativeTo: doc } : {}));
+/** Step 3's two faces of one Version (the first), built by the real code (actions.mjs attackModelParts, the chat renderers) on a fixed result. */
+async function oneVersionFace(item) {
+  const it = item.system, v = (it.versions ?? [])[0];
+  if (!v) return "<i>no Version</i>";
+  const card = await CL.versionCardLines(item, v, { enrich: enrichCard });
+  const fxn = { all: [], t1: [], t2: [], t3: [] }, cardCtx = { item, weapon: null, isWeapon: it.traits.has("weapon"), attrMode: "", attrVal: 2 };
+  const mk = v.noTiers ? { outcomes: {}, effectsHtml: v.effects ? await enrichCard(v.effects, item) : "", dist: CFG.distanceText(it), areaHtml: "" } : await ACT.attackModelParts({ it, item, version: v, weapon: null, cardCtx, fxn, fxNames: () => "", areaSize: 0, chip: "Weapon" });
+  const freq = CFG.effectiveFrequency(it), cost = it.reaction ? `${v.ap}R` : `${v.ap} AP`, save = it.traits.has("save");
+  if (face === "roll") {
+    const inp = { name: item.name, flavor: it.flavor ?? "", freqLabel: freq, freqColor: "#5F5E5A", roll: { name: "Weapon", mod: 2 }, canForce: false, chips: [], versions: [] };
+    const rv = { ap: v.ap, cost, traits: [...it.traits].map(k => ({ key: k, label: CFG.TWOD12.traits[k] ?? k, group: CFG.traitGroupOf(k) })), meta: { targets: it.targets ?? "", dist: CFG.distanceText(it), vs: CFG.vsText(it, { rolls: true }) },
+      tiers: mk.outcomes, crit: v.critical ? await enrichCard(v.critical, item) : "", effects: mk.effectsHtml, effectsFrom: 2, noTiers: !!v.noTiers, card };
+    return `<div class="rd"><div class="rd-body rd-cardbody">${RD.cardHtml(inp, { forceTier: 0, toggled: {}, manual: {} }, rv)}</div></div>`;
+  }
+  const m = { name: item.name, freq, cost, traitsHtml: "", tline: { targets: it.targets ?? "", dist: mk.dist ?? "", names: ["Orc Warrior"] }, flavor: it.flavor ?? "", card };
+  if (v.noTiers) return CC.cardContent({ ...m, kind: "noroll", effectHtml: mk.effectsHtml });
+  if (save) return CC.cardContent({ ...m, kind: "save", saveName: "Instinct Save", dc: 13, tiers: mk.outcomes, creatures: [{ uuid: "t1", name: "Orc Warrior", result: null }] });
+  const row = { name: "Orc Warrior", uuid: "t1", total: 15, dc: 15, dcLabel: "AD", d1: [6], d2: [7], boonFaces: [], baneFaces: [], sources: [], mods: [{ v: 2, label: "Weapon" }], tier: 2, base: 2, crit: false, doubles: false };
+  return CC.cardContent({ ...m, kind: "attack", hasDamage: true, outcomes: mk.outcomes, effectsHtml: mk.effectsHtml, effectsFrom: 2, critHtml: v.critical ? await enrichCard(v.critical, item) : "", rows: [row] });
+}
 
 // --- the surfaces, as Foundry and the system draw them around a card
 const WRAP = {
   sheet: c => `<div class="application twod12 twod12-actor themed theme-${theme}"><div class="window-content"><div class="twod12 sheet pcs"><div class="ar ps-row open"><div class="ar-card">${c}</div></div></div></div></div>`,
   chat: c => `<div id="chat-log"><li class="chat-message message flexcol"><div class="message-content">${c}</div></li></div>`,
   tooltip: c => `<aside id="tooltip" class="active" role="tooltip">${c}</aside>`,
-  hud: c => `<div class="twod12-hudcard"><button type="button" class="hc-x">&times;</button>${c}</div>`
+  hud: c => `<div class="twod12-hudcard"><button type="button" class="hc-x">&times;</button>${c}</div>`,
+  dialog: c => `<div class="application twod12 rolldlg themed theme-${theme}"><div class="window-content">${c}</div></div>`
 };
 const out = document.getElementById("cards");
 const list = data.cards.slice(from, to);
@@ -63,7 +91,8 @@ for (const d of list) {
   const item = asItem(d);
   let html = "";
   try {
-    html = face === "solo" ? await AC.buildSoloCard(item) : item.type === "action" ? await AC.buildActionCard(item, { use: false }) : await AC.buildFeatureCard(item);
+    if ((face === "roll" || face === "result") && item.type !== "action") continue;   // a Feature has no roll and no result
+    html = face === "roll" || face === "result" ? await oneVersionFace(item) : face === "solo" ? await AC.buildSoloCard(item) : item.type === "action" ? await AC.buildActionCard(item, { use: false }) : await AC.buildFeatureCard(item);
   } catch (e) { html = `<div class="gal-err">${d.name}: ${String(e.message ?? e)}</div>`; }
   const box = document.createElement("div");
   box.className = "gal-card";
@@ -71,4 +100,7 @@ for (const d of list) {
   box.innerHTML = `<div class="gal-name">${d.name}</div>${(WRAP[wrap] ?? WRAP.sheet)(html)}`;
   out.append(box);
 }
+// every card's box a multiple of 16 px high (the JPEG blocks): a card that grows doesn't change how the cards after it are compressed
+await document.fonts.ready;
+for (const el of document.querySelectorAll(".gal-card")) el.style.minHeight = `${Math.ceil(el.getBoundingClientRect().height / 16) * 16}px`;
 document.body.dataset.ready = "1";

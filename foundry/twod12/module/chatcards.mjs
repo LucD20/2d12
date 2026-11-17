@@ -247,10 +247,10 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const btns = inMain ? dmgFootHtml(din, view) : footHtml(m, view, din ? { hasDamage: false, locked: true } : {});
   const dpart = din && !inMain ? din.part : "";
   const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 2)) ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
-  const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
+  const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const pf = hide ? playerFoot("Player view · enemy Defenses hidden by the GM") : "";
-  const head = `${headHtml(m)}${metaLineHtml(m)}${m.setupHtml ?? ""}`;
+  const head = `${headHtml(m)}${metaLineHtml(m)}${m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(m.card.before) : m.setupHtml ?? ""}`;
   if (one) {
     const r = rows[0];
     const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(inMain ? { ...(m.outcomes?.[r.tier] ?? {}), parts: [] } : m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
@@ -341,14 +341,22 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const saveDmg = cs.some(c => c.result && c.hasDamage && !c.damageDone);
   const action = !cs.length ? '<div class="cc-muted cc-wait">No target yet: target the creatures, then press the target button below.</div>' : one && !r ? (view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}\u2026</div>`) : "";
   // v0.0.294 (brief section 12): the Trigger / Interrupt under the meta lines and the Save line, above the Tier rows, then one diamond
-  const trig = triggerLineHtml(m);
-  const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
+  // CARD-ONE step 3: the card's lines in its order: the top ones (the Trigger among them) above the Save, the Version's Special between it and the Tiers
+  const topLines = m.card ? cardLinesHtml(m.card.top) : "", trig = m.card ? cardLinesHtml(m.card.before) : triggerLineHtml(m);
+  const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${crows}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}${topLines}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${crows}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */
 /** "Trigger: …" / "Interrupt: …" in plain text, then a one-diamond divider (nothing when the Action has none). */
+/**
+ * Pack CARD-ONE step 3: the card's own lines (cardlines.mjs, from the card model) on a chat card, in the card's order, in the Trigger line's
+ * tight look: the lines before the roll (Requirement, Prerequisite, Interrupt / Trigger, Setup, the card's own lines), a Version's Special, the
+ * card's Special. A card posted before this version has no m.card: it keeps its Setup and Trigger lines.
+ */
+export const cardLinesHtml = list => (list ?? []).map(l => `<div class="cc-trigger plain cc-line"><b>${esc(l.label)}:</b> ${l.html}</div>`).join("");
+const cardSpecial = m => (m.card?.special ? cardLinesHtml([m.card.special]) : "");
 export const triggerLineHtml = m => (m.triggerHtml ? `<div class="cc-trigger plain"><b>${esc(m.triggerLabel || "Trigger")}:</b> ${m.triggerHtml}</div>${divider(1)}` : "");
 /**
  * A step of a non-roll card (Bulwark of Faith: "1 · Before the damage · [Give Guard 9]", "2 · After the damage · [Slide 1]"). Pure.
@@ -378,10 +386,10 @@ function nextHtml(m, view) {
 }
 /** v0.0.294 (brief section 13): an Action that makes no roll (Opportunity Attack, Bulwark of Faith, Aim): no stamp, no ladder, no category line, no Effects box. */
 export function nonRollCardHtml(m, view = FULL_VIEW) {
-  const flavor = m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "";
+  const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const effect = m.effectHtml ? `${m.triggerHtml ? "" : divider(1)}<div class="cc-effect full">${m.effectHtml}</div>` : "";
-  return `<div class="cc-card cc-noroll">${headHtml(m)}${metaLineHtml(m)}${triggerLineHtml(m)}${effect}${nextHtml(m, view)}${flavor}${footHtml(m, view, { hasDamage: false })}${des}</div>`;
+  return `<div class="cc-card cc-noroll">${headHtml(m)}${metaLineHtml(m)}${m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(m.card.before) : triggerLineHtml(m)}${effect}${nextHtml(m, view)}${flavor}${footHtml(m, view, { hasDamage: false })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the damage arithmetic */

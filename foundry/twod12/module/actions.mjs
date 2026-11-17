@@ -1067,7 +1067,11 @@ export async function useAction(actor, item, opts = {}) {
   const stance = !it.reaction ? activeHooks(actor, "setupAdvance").find(h => hasTraits(useTraits, h.hook.traits)) : null;
   const stanceN = stance ? Math.max(1, Number(stance.hook.n) || 3) : 0, stanceText = stance ? `You @Move[advance|distance:${stanceN}]{Advance ${stanceN}} (${stance.item.name}: once on your turn).` : "";
   const setupText = it.setup && stance ? `${it.setup} <i>Or, instead:</i> ${stanceText}` : (it.setup || stanceText);
-  const setupRow = setupText ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(setupText, setupDone), item)}</div>` : "";
+  const setupInner = setupText ? await enrich(setupFor(setupText, setupDone), item) : "";
+  const setupRow = setupText ? `<div class="trow setuprow"><b>Setup:</b> ${setupInner}</div>` : "";
+  // Pack CARD-ONE step 3: the card's lines of this Version (cardlines.mjs, from the card model), for the chat cards: in the card's order
+  let cardLines = null;
+  try { const { versionCardLines } = await import("./cardlines.mjs"); cardLines = await versionCardLines(item, version, { actor, weapon: weapon ?? previewWeapon ?? null, setupHtml: setupInner || null, enrich: (t, d) => enrich(t, d) }); } catch (e) { console.warn("twod12 | the card's lines", e); }
   // v0.0.283 (pack chat-cards): an Action that rolls gets the new card (chatcards.mjs); the rest (no roll, Save Actions) keep the card below.
   let ccModel = null, ccRoll = null;
   if ((chk || mres) && !version.noTiers && !saveAct) {
@@ -1080,7 +1084,7 @@ export async function useAction(actor, item, opts = {}) {
       v: 1, kind: "attack", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
       tline: { targets: it.targets ?? "", dist: mk.dist, area: mk.areaHtml, names: targets.map(t => t.name) },
       rows: rowsM, outcomes: mk.outcomes, effectsHtml: mk.effectsHtml, effectsFrom: 2, critHtml: version.critical ? await enrich(version.critical, item) : "", flavor: it.flavor ?? "",
-      setupHtml: setupRow, hasDamage: !!btn,
+      setupHtml: setupRow, hasDamage: !!btn, card: cardLines,
       shared: mres ? { d: multiRoll.dice.d.map(x => x.faces), mod: mod + (Number(data.mod) || 0) } : null,
       designer: { odds: (mres ? mres.map(r => ({ name: r.label ?? r.name, text: oddsText(r.chk).text })) : [{ name: "", text: oddsText(chk).text }]), ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}${it.automationNote ? ` (by hand: ${it.automationNote})` : ""}` : "" },
       sources: bonuses.map(b => `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${b.sub}` : ""}` : ""}${b.text ? ` ${b.text}` : ""}`),
@@ -1097,7 +1101,8 @@ export async function useAction(actor, item, opts = {}) {
   // the Trigger under the meta lines, the granted Action's row, the numbered steps of its chain, the Flavor at the foot
   if (!ccModel && version.noTiers && !saveAct) {
     const NR = await import("./noroll.mjs"), { halfCtx } = await import("./halfhint.mjs");
-    const vText = [version.special ? `<b>Special:</b> ${version.special}` : "", version.effects ?? ""].filter(Boolean).join(" ");   // v0.0.411: a Structure block's Special (Judge's 0 AP)
+    // v0.0.411: a Structure block's Special (Judge's 0 AP); Pack CARD-ONE step 3: it is a card line now (cardLines.before), drawn in its place
+    const vText = [version.special && !cardLines ? `<b>Special:</b> ${version.special}` : "", version.effects ?? ""].filter(Boolean).join(" ");
     const use = NR.splitUse(vText ? await enrich(vText, item) : "");
     const tActor = u => { try { const d = fromUuidSync(u); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } };
     const first = targets[0] ? tActor(targets[0].uuid) : null;
@@ -1115,7 +1120,7 @@ export async function useAction(actor, item, opts = {}) {
       v: 1, kind: "noroll", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
       tline: { distTip: distanceNote(it, weapon ?? previewWeapon ?? null), targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)) || (it.reaction && Number(it.momentRange) > 0 ? `${Number(it.momentRange)} sq.` : ""), area: "", names: targets.map(t => t.name) },
       triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger",
-      effectHtml: use.html, useHtml: use.anchor, useName, useOff,
+      effectHtml: use.html, useHtml: use.anchor, useName, useOff, card: cardLines,
       steps, afterDone: from ? steps.filter(x => x.k === 0).map(x => `0|${x.side}`) : [],
       // used while a Strike's damage is held (the Reactions message): its "After the damage" step waits for that damage to land
       afterWait: halfCtx.held && NR.waitsForDamage(after) && first ? { actor: first.uuid, token: targets[0].uuid } : null,
@@ -1218,7 +1223,7 @@ export async function useAction(actor, item, opts = {}) {
         const { ccSaveOnCard } = await import("./inline.mjs");
         const model = { name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
           tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)), area: "", names: targets.length ? [targets[0].name] : [] },
-          triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", flavor: it.flavor ?? "",
+          triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", flavor: it.flavor ?? "", card: cardLines,
           designer: { ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}` : "" } };
         await ccSaveOnCard(cmsg, cfg, targets, { model, point });
       } else await postSaveFor(cfg, targets, { point, source: item.name });

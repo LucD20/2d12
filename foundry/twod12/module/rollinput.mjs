@@ -10,6 +10,7 @@ import { applyTalentMods } from "./preview.mjs";
 import { esc } from "./util.mjs";
 import { saveDcOf } from "./rollsource.mjs";
 import { cleanLabel, versionButtons } from "./cardview.mjs";
+import { versionCardLines } from "./cardlines.mjs";   // Pack CARD-ONE step 3
 export { cleanLabel };
 
 /** The kinds of synthetic modifiers that are about one target (the creature's box), not about you (the shared panel). */
@@ -44,7 +45,10 @@ export async function rollDialogInput(c) {
     const v = c.talentMods ? applyTalentMods(v0, c.talentMods) : v0;
     const parts = await c.partsFor(v);
     const vb = versionButtons([v.ap], { reaction: !!it.reaction, inCombat: !!cbt, ap: have, rap, free: !!c.opts.free })[0];   // v0.0.297: the sheet card's check
-    versions.push({ ap: v.ap, cost: vb.cost, disabled: vb.off, why: vb.why, traits, meta: { ...meta, setup: parts.setup ?? "" }, tiers: parts.tiers, crit: parts.crit, effects: parts.effects, effectsFrom: 2, noTiers: !!v.noTiers });
+    // Pack CARD-ONE step 3: the card's lines of this Version, from the card model, in its order (the dialog places its Tier rows among them)
+    let card = null;
+    try { card = await versionCardLines(item, v0, { actor, weapon: c.previewWeapon ?? null, fists: item.getFlag?.("twod12", "weaponUse") === "fists", setupHtml: parts.setup || null }); } catch (e) { console.warn("twod12 | the card's lines", e); }
+    versions.push({ ap: v.ap, cost: vb.cost, disabled: vb.off, why: vb.why, traits, meta: { ...meta, setup: parts.setup ?? "" }, tiers: parts.tiers, crit: parts.crit, effects: parts.effects, effectsFrom: 2, noTiers: !!v.noTiers, card });
   }
   // the creatures (several: each its own Defense; one: the target, or the DC of an Action with no target)
   let creatures;

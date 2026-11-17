@@ -461,7 +461,7 @@ function creaturesHtml(inp, st, v) {
  * and the chat's stamp keep it); the bonuses keep theirs, with their source. The GM still clicks a Tier's name to force it.
  */
 const DEF_NAME = { AD: "Armor Defense", WD: "Ward Defense" };
-function cardHtml(inp, st, v) {
+export function cardHtml(inp, st, v) {   // exported for the card gallery (pack CARD-ONE step 3)
   const m = v?.meta ?? {}, cost = [inp.freqLabel, v?.cost].filter(Boolean).join(" · ");
   const head = `<div class="rdc-head"><h1 class="rd-name">${esc(inp.name)}</h1>${cost ? `<span class="rdc-cost rd-freq" style="--fq:${esc(inp.freqColor ?? "#5F5E5A")}">${esc(cost)}</span>` : ""}</div>`;
   const flavor = inp.flavor ? `<div class="rdc-flavor rd-flavor">${esc(inp.flavor)}</div>` : "";
@@ -473,6 +473,44 @@ function cardHtml(inp, st, v) {
   const line = (label, html, cls = "") => `<div class="rdc-l${cls}"><b>${label}</b><span>${html}</span></div>`;
   const out = [];
   if (Number(m.escalation) > 0) out.push(line("Escalation", String(Number(m.escalation))));
+  const C = v?.card;
+  if (C) {
+    // Pack CARD-ONE step 3: the card's lines in the card's order (cardlines.mjs, from the card model); the dialog's own Attack line (with the
+    // Modifier), Tier rows (the GM forces one) and Effects cell (with the effects the Action applies) go where the card has them
+    const can = inp.canForce && !inp.save;
+    if (C.heading && !/^\d+(R| AP)$/.test(C.heading)) out.push(line("Mode", esc(C.heading)));   // an Art's Mode (a Version's cost is on its button)
+    for (const l of C.top) out.push(line(esc(l.label), l.html));
+    if (m.vs) {
+      const save = /save$/i.test(m.vs);
+      const vsTxt = save ? esc(m.vs) : `${esc(inp.roll?.name ?? "Modifier")} ${sgn(Number(inp.roll?.mod) || 0)} vs. ${esc(String(m.vs).replace(/\b(AD|WD)\b/g, d => DEF_NAME[d]))}`;
+      out.push(line(C.roll?.label ?? (save ? "Save" : "Attack"), vsTxt));
+    }
+    for (const l of C.before) out.push(line(esc(l.label), l.html));
+    if (v && !v.noTiers) {
+      const stats = tierStats(inp, st, v);
+      const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" data-tooltip="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button>` : label);
+      const tierText = n => {
+        const tags = tierTags(inp, st, n);
+        const lines = poolLines(v.tiers?.[n], []);
+        const dmg = lines.map(l => `<span class="rdc-pv ${l.pool === "M" ? "r" : "v"}">${poolIcon(l.pool)} ${l.segs.map(s => `${esc(s.t)}${s.sub ? ` <b class="rd-sub">${esc(s.sub)}</b>` : ""}`).join(" + ")}</span>`).join(" ");
+        const bon = tags.map(c => ` <span class="rdc-chg">${esc(c.tag)} ${esc(c.label)}</span>`).join("");
+        const riders = (v.tiers?.[n]?.riders ?? []).map(r => ` <span class="rd-rider">${r}</span>`).join("");
+        const avg = stats[n]?.avg ? `<span class="rdc-avg">avg ${stats[n].avg}</span>` : "";
+        return (dmg || bon || riders ? `${dmg}${bon}${riders}` : "&mdash;") + avg;
+      };
+      // v0.0.400 (Lucas: "Selecting a Tier in the roll dialog isn't causing that Tier"): the whole line is clickable (GM), as the table's rows were
+      const fa = n => (can ? ` data-force="${n}"` : "");
+      for (const n of [1, 2, 3]) out.push(`<div class="rdc-l t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(n)}><b>${name(n, `Tier ${n}`)}</b><span>${tierText(n)}</span></div>`);
+    }
+    const EFF = ["Effect", "Tier 2 or 3", "Tier 1 or 2"];
+    for (const l of C.after) {
+      if (l.label === "Critical") out.push(`<div class="rdc-l crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${can ? ' data-force="4"' : ""}><b>${can ? `<button type="button" class="rd-tforce" data-act="force" data-t="4" aria-pressed="${Number(st.forceTier) === 4}">Critical</button>` : "Critical"}</b><span>${v.crit || l.html}</span></div>`);
+      else out.push(line(esc(l.label), EFF.includes(l.label) && v.effects ? v.effects : l.html));
+    }
+    if (v && !v.noTiers) { const net = stepNet(inp, st); if (net.line) out.push(`<div class="rd-step">${esc(net.line)}</div>`); }
+    if (C.special) out.push(line(esc(C.special.label), C.special.html));
+    return `<div class="rd-card">${head}${flavor}${traits}${grid}${out.join("")}</div>`;
+  }
   if (m.requirements) out.push(line("Requires", esc(m.requirements)));
   if (m.setup) out.push(line("Setup", m.setup));
   if (m.trigger) out.push(line(m.triggerKind === "interrupt" ? "Interrupt" : "Trigger", m.triggerHtml ?? esc(m.trigger)));
