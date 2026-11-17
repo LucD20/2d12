@@ -64,6 +64,7 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
 - **B3** not intended: a dark-mode rule paints every subtype gold in the roll dialog, over v0.0.369's tones. Proposed: one color per subtype
   everywhere with a dark variant (with E6), in CARD-ONE step 5.
 - **B4** confirmed: the calculated chips' blue (#1a3fb0, v0.0.354) has no dark variant. Proposed: the Boon light blue (#8db8f0) in dark mode.
+- **Lucas (2026-11-17): B3 yes, B4 yes.** B3 goes into CARD-ONE step 5 (one color per subtype everywhere, a dark variant; E6 with it).
 
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 

@@ -59,6 +59,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **The Encounter Log (from the log's review):** the damage table splits damage to enemies from damage to allies (Lucas: "good idea"); creatures of the same name are numbered (GS1, GS2...); a Setup's movement is written as part of its Action ("Strafe (Setup: Advance 2)"); an area skips a creature that is out of the fight.
 - [ ] **A Reaction's condition not applied:** Rebuke's Hindered (G8) and Snap Shot's Hindered (G3): the Orc moved 4 more squares while it should have been Hindered.
 - [ ] **Minions' shared slot** (an optional rule; Foundry offers nothing today; Lucas had forgotten it): an option in the Initiative window to put up to 3 Minions in one slot, off by default. Low priority.
+- [ ] **The roll dialog (B, Lucas: yes):** the roll line only where the card has one (Judge showed "Attack: Weapon +2 vs. DC 13"); the calculated chips' blue in dark mode the Boon light blue (#8db8f0); the subtypes one color everywhere with a dark variant (CARD-ONE step 5, with E6: Blunt on the dark NPC sheet).
 - [ ] **Judge's reduction a choice** (rules-backlog "PLAYTEST 5, THE LOG"): offered to the Paladin's player when the Judged creature's damage would land on an ally within 5 squares (the damage waits, as Shield of Faith's), once a round; each Paladin's own.
 
 ## CARD-ONE: one card for every place it shows (Lucas, 2026-11-17: "make sure in the future we don't have this problem anymore"; the draft's recommendations, all accepted: "All recommended, start")
