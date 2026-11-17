@@ -6,8 +6,6 @@ import { allEffects } from "./passives.mjs";
 import { effectOff, raiseEscalation, escalationOf, elitePhases } from "./escalation.mjs";
 import { tokenDistance } from "./light.mjs";
 import { areEnemies } from "./engaged.mjs";
-import { sysLine } from "./sysmsg.mjs";
-import { esc } from "./util.mjs";
 const F = "twod12";
 
 /** Pure: what changed between two states { bloodied, strained, down }: the words to announce ([] when nothing new). */
@@ -46,8 +44,7 @@ function allyWithin(hooked, other, range) {
 /** A creature became Bloodied or Strained, or went Down: say so, and run the "an ally within N squares" hooks of the creatures in the combat. */
 export async function onStateChange(actor, words) {
   if (!words.length) return;
-  const name = esc(actor.name);
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-heart-crack", `<b>${name}</b> is <b>${words.join("</b> and <b>")}</b>.${words.includes("Down") ? "" : " (No effect by itself: a hook for cards.)"}`, "statemsg") });
+  // v0.0.418 (Lucas, playtest 5, C3, C5): no "is Bloodied / Strained / Down" line any more (the HP bars and the token show it); the hooks still run
   // v0.0.314: Grabbed (an effect that ends with its origin) ends when the holder goes Down
   if (words.includes("Down")) { try { const { endHeldBy } = await import("./conditions.mjs"); await endHeldBy(actor); } catch (e) { console.warn("twod12 | Grabbed", e); } }
   if (words.includes("Down")) { try { await (await import("./areafx.mjs")).endZonesOfOrigin(actor); } catch (e) { console.warn("twod12 | Zones", e); } }   // v0.0.327: a Zone's "Origin goes Down"

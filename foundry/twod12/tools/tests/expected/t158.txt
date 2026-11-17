@@ -11,7 +11,7 @@ wired: no card when the banner takes it true | the movement tag (v0.0.197) true 
 --- the Talent filter bar
 search, Category, Only what I can take, compact list: true | checked by canTake at the level being taken: true | the reasons on the tile: true | filtered in place (no redraw): true | the actor reaches the window: 2 | compact list CSS: true
 --- v0.0.196: a drag is an Advance with the banner; no drag lines while it is up; the Evade key
-a drag that spends AP opens the banner (or adds to it): true | drag lines only without a banner: true | the banner counts the Speed left of a drag: true
+a drag that spends AP opens the banner (or adds to it): true | v0.0.418 (C6): no drag lines at all: true | the banner counts the Speed left of a drag: true
 the Evade key (Shift+E): true | no dialog for it: true
 --- v0.0.197: one line per movement, no AP line for it
 Kai uses Advance (1 AP: up to 7 squares) | Kai Advanced 4 of 7 squares (1 AP) | Nari Evaded 3 of 3 squares (2 AP)

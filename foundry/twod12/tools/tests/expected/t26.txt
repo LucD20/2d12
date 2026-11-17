@@ -12,8 +12,8 @@ dialog closed -> default (lethal first): {"bodyLethal":3,"mindLethal":4,"bodyNon
 {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"n":3}
 An ally uses @Rally[1] | You use @Rally[2]. @Move[pushed|distance:3] | Bright light @Template[emanation|distance:2|rounds:1]
 @Rally[2] @Move[pushed|distance:3]
-preMoveToken 15 units on a 5-unit grid = 3 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.Orc: Advance 3 sq
-pending without cost -> measured fallback 2 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 2 sq
+preMoveToken 15 units on a 5-unit grid = 3 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.
+pending without cost -> measured fallback 2 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | 
 forced move ignored: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0}
-preUpdateToken fallback 4 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 4 sq
-both routes, charged once: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | messages: 1
+preUpdateToken fallback 4 sq: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | 
+both routes, charged once: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | messages: 0

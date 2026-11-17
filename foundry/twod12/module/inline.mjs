@@ -651,7 +651,7 @@ async function handleReduce(cfg, ctx) {
   const origin0 = originActor(ctx);
   const mod = Number.isFinite(ctx.attrVal) ? ctx.attrVal : (Number(origin0?.system?.weaponMod) || 0), pow = Number(origin0?.system?.powerMod) || 0;
   const formula = stagedFormula(cfg, Number(origin0?.system?.stage) || 0);
-  const { origin, who, cancelled } = await allyRecipients(cfg, ctx, `a reduction of ${withPow(healText(formula), pow)}`);
+  const { who, cancelled } = await allyRecipients(cfg, ctx, `a reduction of ${withPow(healText(formula), pow)}`);
   if (cancelled) return;
   if (!who.length) return ui.notifications.warn("Select your token, or target the ally whose damage is reduced.");
   for (const a of who) {
@@ -659,8 +659,8 @@ async function handleReduce(cfg, ctx) {
     const roll = await bookRoll(f).evaluate();
     const now = Number(a.system?.reduceNext) || 0, next = Math.max(now, roll.total);
     if (next !== now) { if (a.isOwner) await a.update({ "system.reduceNext": next }); else game.socket.emit("system.twod12", { type: "applyDamage", actorUuid: a.uuid, upd: { "system.reduceNext": next } }); }
-    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: origin ?? a }), rolls: /d/.test(f) ? [roll] : [],
-      content: sysLine("fa-shield-halved", `The next damage <b>${esc(a.name)}</b> takes is reduced by <b>${next}</b> <small>(${esc(withPow(healText(formula), pow))} = ${roll.total}${next !== roll.total ? `; the higher kept` : ""})</small>.`, "guardmsg") });
+    // v0.0.418 (Lucas, playtest 5, C4): no chat line; the damage card shows the reduction when it lands (dice are still thrown)
+    if (/d/.test(f)) await showDice([roll]);
   }
 }
 

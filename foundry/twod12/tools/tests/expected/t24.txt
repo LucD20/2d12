@@ -2,11 +2,11 @@ no vs: 13 | vs body: Vs. Body (Orc): 12 + 1 (Body) = 13
 vs body + pushed action: Vs. Body (Orc): 12 + 1 (Body) = 13
 vs mind (negative): Vs. Mind (Orc): 12 − 1 (Mind) = 11 | no target: Vs. Body: no target, using DC 13
 tags: attack
-move 3: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 3 sq
-move 4: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 4 sq
-free 2, move 2: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 2 sq
-move 12 (3 allotments): {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 12 sq
-not enough AP: {"ap":1,"freeMove":0,"moveLeft":0,"evadeMove":0} | Orc: Advance 6 sq | warns: [
+move 3: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | 
+move 4: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | 
+free 2, move 2: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | 
+move 12 (3 allotments): {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0} | 
+not enough AP: {"ap":1,"freeMove":0,"moveLeft":0,"evadeMove":0} |  | warns: [
   'Orc has no Speed.',
   'Orc has no Speed.',
   'Orc has no Speed.',

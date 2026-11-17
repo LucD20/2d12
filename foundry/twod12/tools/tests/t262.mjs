@@ -53,3 +53,15 @@ console.log("an enemy pushes you: applies, no question:", MV.asksSteadiness(foe,
 
 console.log("--- D6 the HUD leaves out the Techniques not unlocked");
 console.log(hud.includes('actor.itemTypes.action.filter(i => techniqueState(actor, i) !== "locked").map(i => one(i))'));
+
+console.log("--- V1.3 the chat");
+const CS = await import(ROOTURL + "module/chatscroll.mjs");
+console.log("C1 pinned after a scroll: at the bottom", CS.scrollPinned(false, true, false), "| moved by a card redrawn (not the user)", CS.scrollPinned(true, false, false), "| scrolled up by the user", CS.scrollPinned(true, false, true));
+const theme = src("styles/theme.css"), css = src("styles/system.css"), CCm = await import(ROOTURL + "module/chatcards.mjs");
+console.log("C2 a follow-up line in the system line's look:", css.includes(".twod12.chat.follow .fl-line { display: flex; align-items: baseline; gap: 7px; padding: 4px 9px; border: 1px solid #c8b48a;"));
+console.log("C3-C6 removed: Bloodied / Strained / Down:", !src("module/states.mjs").includes("(No effect by itself: a hook for cards.)"), "| the Reactions' used line:", !src("module/moment.mjs").includes("content: usedBarHtml(st)"),
+  "| next damage reduced:", !inl.includes("The next damage <b>"), "| the movement lines:", !mvs.includes("free square${left === 1") && mvs.includes("no chat line for a drag of free movement"));
+console.log("C7 the stamp stretches to its row (with a target):", css.includes(".cc-attack.withdmg.notgt .cc-body { align-items: start; }"));
+const crit = CCm.ladderModel({ total: 22, dc: 14, base: 3, tier: 3, crit: true, doubles: true }), plain3 = CCm.ladderModel({ total: 26, dc: 14, base: 3, tier: 3, crit: false });
+console.log("C8 a Critical from Doubles: the ↑ over CRIT", crit.up, "(the total's arrow faded:", crit.arrow.faded + ") | C9 a Tier 3 with no Critical: no CRIT zone:", plain3.critZone === "", "| a Critical's zone:", crit.critZone);
+console.log("C11 Bloodied in the Vigor red on the dark card:", theme.includes(":scope .twod12.chat.cc .cc-state.bloodied, :is(.twod12.chat.cc):scope .cc-state.bloodied { background: #d0564f; }"), "| B4 the calculated blue's dark variant:", theme.includes("a.twod12-inline.calc .ti-name { color: #8db8f0; }"));

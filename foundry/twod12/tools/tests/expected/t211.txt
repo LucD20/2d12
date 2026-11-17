@@ -1,6 +1,6 @@
 --- the ladder: ranges, the arrow (21 steps, DC−7 to DC+13, 4%–95%)
 ranges DC 11: ≤10 · 11–17 · 18+ | arrow at 11: 35.7 | at 18: 69.0 | far below / above clamp: 4 95
-Doubles raise: faded arrow: true | the ↑ in the middle of Tier 3: 83.3 | lit: 3 | CRIT zone: pale
+Doubles raise: faded arrow: true | the ↑ in the middle of Tier 3: 83.3 | lit: 3 | CRIT zone (v0.0.418: only on a Critical): none
 hidden Defenses: labels Tier 1 · Tier 2 · Tier 3 | the arrow in the middle of its Tier: 50.0
 --- Doubles and the Critical (keepDice)
 3 + 6 + 2 vs 11: total 11 base 2 tier 2 crit false

@@ -4060,9 +4060,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.startstack .ss-skipped { font-size: 10px; opacity: .8; }
 .twod12.chat.startstack .ss-end { padding: 6px 9px 7px; font-size: 12px; }
 /* v0.0.347 (Lucas, playtest 4, Step 3): an Action's follow-ups inside its card, under a thin line (followup.mjs) */
-.twod12.chat.follow { margin: 5px 2px 0; padding-top: 4px; border-top: 1px solid rgba(110, 90, 58, .35); display: flex; flex-direction: column; gap: 2px; }
-.twod12.chat.follow .fl-line { display: flex; align-items: baseline; gap: 6px; font-size: 12px; line-height: 1.35; color: #2c2a26; }
-.twod12.chat.follow .fl-line > i { flex: none; font-size: 10.5px; color: #6b5a3a; }
+/* v0.0.418 (Lucas, playtest 5, C2: "nicely subtle but not the system's style"): each follow-up is the system's line (sysLine's look), inside its card */
+.twod12.chat.follow { margin: 5px 2px 0; display: flex; flex-direction: column; gap: 3px; }
+.twod12.chat.follow .fl-line { display: flex; align-items: baseline; gap: 7px; padding: 4px 9px; border: 1px solid #c8b48a; border-radius: 5px; background: #f4ecdc; font-size: 12.5px; line-height: 1.35; color: #2c2a26; }
+.twod12.chat.follow .fl-line > i { flex: none; font-size: 11px; color: #6b5a3a; }
 .twod12.chat.follow .fl-line small { opacity: .75; }
 /* v0.0.347 (Lucas, playtest 4, Step 3): granted uses as a condensed list of small buttons ("Weapon Attack: Ogre Chieftain"), no "Granted Action:" label */
 .twod12 .grantrow.grantlist .gbtns { display: flex; flex-direction: column; align-items: stretch; gap: 3px; width: 100%; }
@@ -4718,7 +4719,9 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow .cc-adjrow { flex-basis: 100%; }
 .twod12.chat.cc .cc-pools { color: var(--cc-ink); }
 /* v0.0.389 (Lucas: "without a target looks weird"): the stamp keeps its own height beside the damage (it stretched down the whole card) */
-.twod12.chat.cc .cc-attack.withdmg .cc-body { align-items: start; }
+/* v0.0.418 (Lucas, playtest 5, C7: "the box doesn't grow with the card when damage is rolled"): with a target it stretches to its row again; only
+   the card with no target keeps the stamp's own height */
+.twod12.chat.cc .cc-attack.withdmg.notgt .cc-body { align-items: start; }
 
 /* ==== v0.0.390 (PACK HUD2; Lucas: "All your picks"; foundry/mockups/hud2/index.html): the HUD remade. The party strip when nothing is selected,
    the bar for a token (the identity column, tabs over columns by Frequency, the side panel), folded to one line; the marks: AP squares, the

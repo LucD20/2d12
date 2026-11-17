@@ -16,3 +16,10 @@ the chip: {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"kind":"judg
 an enemy pushes you: applies, no question: false | an ally: true | yourself: false | no origin: false
 --- D6 the HUD leaves out the Techniques not unlocked
 true
+--- V1.3 the chat
+C1 pinned after a scroll: at the bottom true | moved by a card redrawn (not the user) true | scrolled up by the user false
+C2 a follow-up line in the system line's look: true
+C3-C6 removed: Bloodied / Strained / Down: true | the Reactions' used line: true | next damage reduced: true | the movement lines: true
+C7 the stamp stretches to its row (with a target): true
+C8 a Critical from Doubles: the ↑ over CRIT 95 (the total's arrow faded: true) | C9 a Tier 3 with no Critical: no CRIT zone: true | a Critical's zone: solid
+C11 Bloodied in the Vigor red on the dark card: true | B4 the calculated blue's dark variant: true

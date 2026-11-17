@@ -17,7 +17,7 @@ const D = f => ({ faces: f, total: CC.dieValue(f), first: f[0] });
 console.log("--- the ladder: ranges, the arrow (21 steps, DC−7 to DC+13, 4%–95%)");
 console.log("ranges DC 11:", CC.ranges(11).join(" · "), "| arrow at 11:", CC.arrowPos(11, 11).toFixed(1), "| at 18:", CC.arrowPos(18, 11).toFixed(1), "| far below / above clamp:", CC.arrowPos(-20, 11), CC.arrowPos(60, 11));
 const lm = CC.ladderModel({ total: 14, dc: 11, base: 2, tier: 3, crit: false, doubles: true });
-console.log("Doubles raise: faded arrow:", lm.arrow.faded, "| the ↑ in the middle of Tier 3:", lm.up?.toFixed(1), "| lit:", lm.segs.filter(s => s.lit).map(s => s.tier).join(), "| CRIT zone:", lm.critZone);
+console.log("Doubles raise: faded arrow:", lm.arrow.faded, "| the ↑ in the middle of Tier 3:", lm.up?.toFixed(1), "| lit:", lm.segs.filter(s => s.lit).map(s => s.tier).join(), "| CRIT zone (v0.0.418: only on a Critical):", lm.critZone || "none");
 const hid = CC.ladderModel({ total: 14, dc: 11, base: 2, tier: 2 }, true);
 console.log("hidden Defenses: labels", hid.segs.map(s => s.label).join(" · "), "| the arrow in the middle of its Tier:", hid.arrow.pos.toFixed(1));
 

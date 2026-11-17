@@ -40,7 +40,8 @@ for (const item of acts) {
   const { card, roll, result } = await faces(item);
   // the roll dialog: every line; the chat result: every line but the Critical and the Effect (they show with the rolled Tier) and the roll line
   const all = [...card.top, ...card.before, ...card.after, ...(card.special ? [card.special] : [])].map(l => l.label);
-  const res = [...card.top, ...card.before, ...(card.special ? [card.special] : [])].map(l => l.label);
+  // v0.0.418 (playtest 5, C10's stopgap): the Save card shows its card's Effect line too (after the Tier rows)
+  const res = [...card.top, ...card.before, ...(item.system.traits.has("save") && !item.system.versions[0].noTiers ? card.after : []), ...(card.special ? [card.special] : [])].map(l => l.label);
   for (const l of all) if (at(roll, l) < 0) missing.push(`${item.name} (roll dialog): ${l}`);
   for (const l of res) if (at(result, l) < 0) missing.push(`${item.name} (chat): ${l}`);
   for (const [f, html, list] of [["roll dialog", roll, all], ["chat", result, res]]) {
@@ -53,5 +54,5 @@ const sm = await faces(acts.find(a => a.name === "Smite"));
 const txt = h => h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 console.log("Smite's roll dialog:", ["Smite dice", "Attack", "Tier 1", "Special"].map(l => `${l} ${at(sm.roll, l) >= 0}`).join(", "), "| its chat card:", ["Smite dice", "Special"].map(l => `${l} ${at(sm.result, l) >= 0}`).join(", "));
 const rb = await faces(acts.find(a => a.name === "Rebuke"));
-console.log("Rebuke's Save card: the Trigger above the Save:", at(rb.result, "Trigger") >= 0 && at(rb.result, "Trigger") < rb.result.indexOf("cc-savehead"), "|", txt(rb.result).slice(0, 120));
+console.log("Rebuke's Save card: the Trigger above the Save:", at(rb.result, "Trigger") >= 0 && at(rb.result, "Trigger") < rb.result.indexOf("cc-savehead"), "| its Effect line after the Tiers (v0.0.418):", at(rb.result, "Effect") > rb.result.indexOf("cc-srows"), "|", txt(rb.result).slice(0, 120));
 console.log("wired: the dialog's Versions carry the card's lines:", src("module/rollinput.mjs").includes("card = await versionCardLines(item, v0,"), "| the chat models:", (src("module/actions.mjs").match(/card: cardLines/g) ?? []).length, "| a card posted before keeps its old lines:", src("module/chatcards.mjs").includes("m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(m.card.before) : triggerLineHtml(m)"));

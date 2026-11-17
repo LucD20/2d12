@@ -336,6 +336,12 @@ const surfaces = pick => ({
   wins: pick(/\.classwin\b|\.pickwin\b|\.twod12\.rolldlg\b|\.trhl\b|\.trgrp\b|\.twod12 \.kw-/)
 });
 const BY_HAND = `
+/* ---- v0.0.418 (Lucas, playtest 5, C11): Bloodied on the dark chat card in the Vigor red (the swap made it almost pink) */
+.twod12-dark .twod12.chat.cc .cc-state.bloodied { background: ${T.vig}; }
+/* ---- v0.0.418 (Lucas, playtest 5, B4): a calculated chip's blue (#1a3fb0) has a dark variant: the Boon blue */
+.twod12-dark a.twod12-inline.calc .ti-name, .twod12-dark a.twod12-inline.calc,
+.twod12-dark .application.twod12.twod12-actor .acard a.twod12-inline.calc .ti-name, .twod12-dark .application.twod12.twod12-actor .acard a.twod12-inline.calc,
+.twod12-dark .application.twod12.twod12-actor .twod12.chat a.twod12-inline.calc .ti-name { color: ${T.boon}; }
 /* ---- by hand: the Action card (the frame, the cost stamps, the Tier table's head, the book links) */
 .twod12-dark .twod12.acard.d2 { border-color: ${T.rule}; outline-color: ${T.hair}; }
 .twod12-dark .twod12.acard.d2 .ap-vbtn { background: ${T.stamp}; color: ${T.stampInk}; box-shadow: none; border-radius: 2px; }

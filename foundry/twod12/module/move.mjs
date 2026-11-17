@@ -268,7 +268,7 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   // v0.0.196 (Lucas): while the movement banner is up it says what is left, so the drags post nothing; a drag that spends AP (moving the
   // token without using Advance first) is an Advance: it opens the banner, and its Speed left counts there.
   if (spent && !useEvade && walk > 0) { if (bannerOn(c) && moveBar && !moveBar.logged()) moveBar.add(walk * spent, spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true, ap: spent }); }
-  else if (!spent && !bannerOn(c) && logMode !== "Charge") await post(`<b>${esc(c.name)}</b>: ${what}${left > 0 ? `, ${Math.round(left * 100) / 100} sq of Speed left` : ""}${free + evade > 0 ? `. ${free + evade} sq left ${endBtn(c)}` : ""}`);
+  // v0.0.418 (Lucas, playtest 5, C6): no chat line for a drag of free movement ("Advance 2 sq. 4 sq left"): the movement bar and the strip say it
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
 
@@ -667,7 +667,6 @@ export async function endMovement(combatantId) {
   const c = game.combat?.combatants.get(combatantId);
   if (!c) return warn("That combatant is no longer in the combat.");
   if (!c.isOwner) return warn("Only the owner can end this movement.");
-  const left = num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove"));
   const charging = c.getFlag(F, "charge");
   await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.charge`), ...unset(`flags.${F}.ignoreTerrain`) });
   clearRange();
@@ -691,7 +690,7 @@ export async function endMovement(combatantId) {
     const { sysLine } = await import("./sysmsg.mjs");
     return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: c.actor }), content: sysLine("fa-person-running-fast", `<b>${esc(c.name)}</b> gives up Charge.${back > 0 ? ` ${apText(back)} back.` : ""}`, "chargemsg") });
   }
-  await post(left > 0 ? `<b>${esc(c.name)}</b> ends the movement. ${left} free square${left === 1 ? "" : "s"} unused.` : `<b>${esc(c.name)}</b> has no free movement left.`);
+  // v0.0.418 (Lucas, playtest 5, C6): no "ends the movement. N free squares unused." line
 }
 
 /* ------------------------------------------------------------------ */

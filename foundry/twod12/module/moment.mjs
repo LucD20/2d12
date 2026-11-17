@@ -14,7 +14,7 @@ import { threatProfile } from "./flanking.mjs";   // v0.0.303: "a creature you t
 import { isFaded } from "./usage.mjs";
 import { answererFor } from "./healwin.mjs";
 import { sysLine } from "./sysmsg.mjs";
-import { esc, unset } from "./util.mjs";
+import { esc } from "./util.mjs";
 import { moveActionOf } from "./moveseq.mjs";   // v0.0.274: once per Move Action
 import * as O from "./rxoverlay.mjs";   // v0.0.275 (pack RX-2): the map overlay
 const F = "twod12", SOCKET = "system.twod12";
@@ -591,10 +591,9 @@ async function toBottom(msg, st) {
   try {
     // v0.0.347 (Lucas, playtest 4: "leave a 'Reaction used' line, to know where the Reaction chain started"): the first move leaves a short line
     // where it was (later moves remove the copy, as before)
-    const first = !st.lineLeft; st.lineLeft = true;
     nmsg = await ChatMessage.create({ content: rxCardHtml(st), flags: { [F]: { rx: st } } });
-    if (first) await msg.update({ content: usedBarHtml(st), ...unset(`flags.${F}.rx`) });
-    else await msg.delete();
+    // v0.0.418 (Lucas, playtest 5, C4: "Remove 'Reactions: Durgan uses Shield of Faith -> Sylwen'"): no line left behind any more (usedBarHtml kept, unused)
+    await msg.delete();
   } catch (e) { console.warn("twod12 | Reactions message", e); try { await msg.update({ content: rxCardHtml(st), [`flags.${F}.rx`]: st }); } catch (x) { /* */ } return msg; }
   return nmsg ?? msg;
 }

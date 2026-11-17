@@ -38,7 +38,7 @@ the frozen stack: 1 NA −5 vs KR | 2 LA T3 vs BA | BA Strike → Krysta 9 4 | n
 --- the edge case: the attacker drops before the rest resolve
 Covering Shot resolves first: cs
 Shield of Faith only pays its AP: true sof
-v0.0.278: resolved under the card: a new message at the bottom true | v0.0.347: the live one left a short line: Reactions Lana uses Covering Shot → Bandit; Nari uses Shield of Faith → Krysta | one message for the moment: 1
+v0.0.278: resolved under the card: a new message at the bottom true | v0.0.347: the live one left a short line: no | one message for the moment: 1
 the damage never lands: true | the chips: never:never lands ; hit:Down ; spent:spent ; never:never lands | struck through: false
 damage.mjs: never lands empties the damage: true | the final damage and the protection written back: true
 --- result chips

@@ -47,6 +47,7 @@ export const ranges = dc => [`≤${dc - 1}`, `${dc}–${dc + 6}`, `${dc + 7}+`];
 /** Where the total's arrow sits on the bar (%): a 21-step scale from DC−7 to DC+13, clamped to 4%–95%. */
 export const arrowPos = (total, dc) => Math.min(95, Math.max(4, ((total - (dc - 7) + 0.5) / 21) * 100));
 const segMid = t => (t - 0.5) * (100 / 3);
+const CRIT_MID = 95;   // the CRIT zone's middle (the last 30% of Tier 3: 90% to 100% of the ladder)
 /** The base Tier of a total (before Doubles). */
 export const baseTier = (total, dc) => (total < dc ? 1 : total < dc + 7 ? 2 : 3);
 /**
@@ -54,14 +55,17 @@ export const baseTier = (total, dc) => (total < dc ? 1 : total < dc + 7 ? 2 : 3)
  * r: { total, dc, tier, base, crit, doubles }; hide: the enemy Defense is hidden (labels "Tier N", the arrow in the middle of its Tier).
  */
 export function ladderModel(r, hide = false) {
-  const dc = Number(r.dc) || 13, base = r.base ?? baseTier(r.total, dc), tier = r.tier ?? base, raised = tier > base;
+  const dc = Number(r.dc) || 13, base = r.base ?? baseTier(r.total, dc), tier = r.tier ?? base;
+  // v0.0.418 (Lucas, playtest 5, C8): a Critical from Doubles (or three of a kind) raises the roll too: its "↑" goes over the CRIT zone
+  const critUp = !!r.crit && (tier > base || (!!r.doubles && base === 3)), raised = tier > base || critUp;
   const labels = hide ? ["Tier 1", "Tier 2", "Tier 3"] : ranges(dc);
   const pos = hide ? segMid(base) : arrowPos(r.total, dc);
   return {
     segs: [1, 2, 3].map(t => ({ tier: t, label: labels[t - 1], lit: t === tier })),
     arrow: { pos, faded: raised, total: r.total },
-    up: raised ? segMid(tier) : null,
-    critZone: tier === 3 ? (r.crit ? "solid" : "pale") : ""
+    up: critUp ? CRIT_MID : raised ? segMid(tier) : null,
+    // v0.0.418 (C9): the CRIT zone only on an actual Critical (it was shown pale on every Tier 3)
+    critZone: tier === 3 && r.crit ? "solid" : ""
   };
 }
 /** The ladder: a button (it opens the breakdown below it). thin: the small ladder of a creature's row. */
@@ -254,7 +258,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   if (one) {
     const r = rows[0];
     const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(inMain ? { ...(m.outcomes?.[r.tier] ?? {}), parts: [] } : m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
-    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}">${head}${body}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}${r.uuid ? "" : " notgt"}">${head}${body}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
@@ -345,7 +349,7 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const topLines = m.card ? cardLinesHtml(m.card.top) : "", trig = m.card ? cardLinesHtml(m.card.before) : triggerLineHtml(m);
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}${topLines}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${crows}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}${topLines}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${m.card ? cardLinesHtml(m.card.after) : ""}${crows}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */

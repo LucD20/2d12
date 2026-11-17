@@ -71,7 +71,7 @@ console.log("no target: '→ No target' and the crosshair in the footer:", ntFoo
   "| no Lethal tag or wide button under it:", !nt.includes('class="cc-nl') && !nt.includes("Target the selected tokens</button>"));
 const withOut = CC.attackCardHtml({ ...atk, outcomes: { 2: { parts: [{ pool: "B", t: "1d8", sub: "Sl" }], riders: ["The target sheds Bright light."] } }, dmg: dmg([{ uuid: "t1", name: "Orc Warrior", mods: [], choice: "", applied: null }]) }, V);
 console.log("the Tier's dice line not repeated under the rolled damage:", !withOut.includes("cc-dmgline") && withOut.includes("The target sheds Bright light."), "| before the damage it is there:", CC.attackCardHtml({ ...atk, outcomes: { 2: { parts: [{ pool: "B", t: "1d8", sub: "Sl" }], riders: [] } } }, V).includes("cc-dmgline"),
-  "| the stamp keeps its height:", src("styles/system.css").includes(".twod12.chat.cc .cc-attack.withdmg .cc-body { align-items: start; }"));
+  "| the stamp keeps its height with no target (v0.0.418: with one it stretches):", src("styles/system.css").includes(".twod12.chat.cc .cc-attack.withdmg.notgt .cc-body { align-items: start; }"));
 const TH = await import(ROOTURL + "module/theme.mjs");
 const cls = (...c) => ({ set: new Set(c), contains(x) { return this.set.has(x); }, add(...a) { a.forEach(x => this.set.add(x)); }, toggle(x, on) { if (on) this.set.add(x); else this.set.delete(x); } });
 console.log("the Interface's theme: body dark", TH.interfaceTheme({ classList: cls("theme-dark") }), "| body light", TH.interfaceTheme({ classList: cls("theme-light") }), "| none: the browser's", TH.interfaceTheme({ classList: cls() }, () => true), TH.interfaceTheme({ classList: cls() }, () => false));
