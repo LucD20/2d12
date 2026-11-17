@@ -1,4 +1,4 @@
-cards: 115 | files: archer.json, basic-actions.json, bestiary.json, gear.json, paladin.json, placeholders.json, talents.json
+cards: 112 | files: archer.json, basic-actions.json, bestiary.json, gear.json, placeholders.json, talents.json, stage0/paladin.json
 --- the generated Basic Actions
 module/basic-data.mjs up to date: true module/basic-data.mjs is up to date
 set aside, not a Basic Action: Opportunity Attack
@@ -11,7 +11,7 @@ shown in the book: 43 | placed once: true | markers with no card: none | stage0 
 cards of the files still written by hand in a chapter: none
 a card the book does not show (book: false): Marked Quarry, Break Free, Rusty Knife, Dirty Trick, Cudgel, Low Blow, Cleaver, Brutal Swing, Avenge Kin, Chilling Touch, Dread Whisper, Club, Overhead Smash, Ground Slam, Rally the Tribe
 --- the compendium items are the cards (content.mjs reads book/cards)
-compendium cards: 95 | one item each, equal to the card: all | CARDS exported: true
+compendium cards: 92 | one item each, equal to the card: all | CARDS exported: true
 Techniques whose weapon is not in the compendium yet (information, for pack X): 0 
 --- every card reads for Foundry and the ruler
 ruler lines: 83 | they parse: true

@@ -98,6 +98,7 @@ export function parseInline(kind, inner) {
       else if (/^crit\s*:/i.test(s)) cfg.crit = yes(s.replace(/^crit\s*:\s*/i, ""));   // v0.0.249: only the targets that rolled a Critical
       else if (/^tier\s*:/i.test(s)) cfg.tier = Math.max(0, Number(s.replace(/^tier\s*:\s*/i, "")) || 0);   // v0.0.267: only the targets that rolled that Tier or more
       else if (/^down\s*:/i.test(s)) cfg.down = yes(s.replace(/^down\s*:\s*/i, ""));   // v0.0.360
+      else if (/^to\s*:/i.test(s)) cfg.to = s.replace(/^to\s*:\s*/i, "").trim().toLowerCase();   // v0.0.409 (Shield of Faith): to:trigger, the Reaction's triggering creature
       else if (/^on\s*:/i.test(s)) cfg.onTiers = s.replace(/^on\s*:\s*/i, "").split(",").map(x => Number(x.trim())).filter(n => [1, 2, 3].includes(n));   // v0.0.358: exactly these Tiers (on:2)
       else if (/^(value|rounds?)\s*:\s*(?!eot$)(?=.*[a-z@(])/i.test(s.trim())) (cfg.exprs ??= {})[/^value/i.test(s.trim()) ? "value" : "rounds"] = s.replace(/^[a-z]+\s*:\s*/i, "").toLowerCase().replace(/\s+/g, "");   // v0.0.358: a formula (value:pow, rounds:stage)
       else if (/^value\s*:/i.test(s)) cfg.value = Math.max(1, Math.trunc(Number(s.replace(/^value\s*:\s*/i, ""))) || 1);   // v0.0.250: Enfeebled 1, Vulnerable 2
@@ -586,7 +587,7 @@ async function handleEffect(cfg, ctx) {
 }
 
 /** "1d8+mod" -> "1d8 + [Mod]"; "rally" -> "a Rally Point's heal". */
-export const guardText = f => String(f ?? "").replace(/\+/g, " + ").replace(/\bmod\b/g, "[Mod]").replace(/\brally\b/g, "a Rally Point's heal");
+export const guardText = f => String(f ?? "").replace(/\+/g, " + ").replace(/\bmod\b/g, "[Mod]").replace(/\bpow\b/g, "Pow").replace(/\brally\b/g, "a Rally Point's heal");
 
 /**
  * The @Guard[formula] button (v0.0.181; book: Guard, Chapter 4): @Guard[1d8+mod], @Guard[2d6|self:yes], @Guard[rally] (the creature's own Rally Point heal).
@@ -602,7 +603,8 @@ async function handleGuard(cfg, ctx) {
   if (cancelled) return;
   if (!who.length) return ui.notifications.warn("Select your token, or target the ally that gains the Guard.");
   for (const a of who) {
-    const f = String(formula || "0").replace(/\bmod\b/g, `(${mod})`).replace(/\brally\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
+    // v0.0.409 (pack F2, Lay On Hands): pow is the Action's user's Power Modifier
+    const f = String(formula || "0").replace(/\bmod\b/g, `(${mod})`).replace(/\bpow\b/g, `(${Number(origin0?.system?.powerMod) || 0})`).replace(/\brally\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
     const roll = await bookRoll(f).evaluate();
     const now = Number(a.system?.guard) || 0, next = gainGuard(now, roll.total);
     if (next !== now) {
@@ -868,7 +870,8 @@ async function handleCondition(cfg, ctx = {}) {
   const f = msg?.getFlag?.("twod12", "action") ?? msg?.getFlag?.("twod12", "dmgCard");
   let actors = [];
   const toActor = async uuid => { const d = await fromUuid(uuid); return d?.documentName === "Actor" ? d : d?.actor; };
-  if (ctx.targets?.length) actors = await Promise.all(ctx.targets.filter(t => !cfg.crit || t.crit).map(t => toActor(t.uuid)));   // v0.0.249: the chain's targets (crit:yes: the Criticals only)
+  if (cfg.to === "trigger" && f?.triggerUuid) actors = [await toActor(f.triggerUuid)];   // v0.0.409 (Shield of Faith): the Reaction's triggering creature
+  else if (ctx.targets?.length) actors = await Promise.all(ctx.targets.filter(t => !cfg.crit || t.crit).map(t => toActor(t.uuid)));   // v0.0.249: the chain's targets (crit:yes: the Criticals only)
   else actors = handTargetTokens(ctx).map(t => t.actor);   // v0.0.252 (Lucas): a hand click goes to the selected tokens, else the targeted, else the card's (the card's Self no longer wins)
   actors = actors.filter(Boolean);
   if (!actors.length) return cfg.crit && ctx.targets?.length ? ui.notifications.info("No Critical: nothing to apply.") : ui.notifications.warn("Target or select a token first.");

@@ -8,6 +8,9 @@ Session 4 (2026-11-06, v0.0.254): Shield of Faith, Bulwark of Faith; Beacon and 
 Session 5 (2026-11-06, v0.0.261): Holy Wrath (confirmed as written), Rolling Shot, Covering Shot, Consecrated Ground, Divine Intervention
 Session 5b (2026-11-06, v0.0.265 to v0.0.271, done by hand from Lucas's picks and tested by him): Overwatch, Deathmark, Open Season, Aim, Covering Fire
 Session 7 (2026-11-10, v0.0.336 to v0.0.338, Lucas: "Brawler: Mithril"; "all should be good now"): Brawler, Heartseeker (Vulnerable 1 after a Tier 3's damage), Marksman's Shot (Vulnerable 2 after a Tier 3, Blinded (EoT) after a Critical)
+The Paladin's redesign (2026-11-14 to 16, card by card with Lucas: book/cards/paladin-redesign.md; in Foundry since v0.0.409, pack F2): Judge, Binding Light,
+  Lantern of Faith, Hold the Line, Commandment, Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil (new cards; what Foundry leaves by
+  hand: each card's automationNote). The redesign's changed cards are Diamond (below).
 Session 6 (2026-11-10, v0.0.334 / v0.0.335, from Lucas's notes and tested by him: "Make Skirmish Shot, Rebuke and Mark Quarry mithril"): Rebuke (the Push and Frightened after the damage lands; Diamond before, Mithril again), Skirmish Shot (the Evade after a Tier 3's damage), Mark Quarry (the Archer's Action with Marked Quarry's rules; the Feature is Foundry-only)
 
 Diamond (Lucas, 2026-11-09): a Mithril card that a later pack changed, even only its text or its buttons, becomes Diamond (automation: "diamond")
@@ -45,3 +48,9 @@ until Lucas revises it (then Mithril again). Each one, with what changed:
 - Hallowed Dawn (2026-11-13, pack "The Bestiary's turn budget"; Lucas: "1 Bane on its Strikes is good"): Enfeebled left the game. Its text reads
   "Each enemy in the Area is Pushed 2 away from you, takes 1 Bane on its [Strike] Actions and sheds Bright light in a 1 Emanation for 1 round."; the
   chain applies the Effect "Hallowed Dawn (1 Bane)" (1 round) in the place of the Enfeebled condition. Nothing else changed.
+- The Paladin's redesign (2026-11-16 in the book, v0.0.409 in Foundry, pack F2): Smite, Lay On Hands, Shield of Faith, Rebuke, Bulwark of Faith,
+  Word of Radiance, Consecrated Ground, Kindled Wrath, Reckoning and Hallowed Stance were rewritten card by card with Lucas (paladin-redesign.md):
+  Diamond until he revises them in Foundry. Smite: one Encounter Action, its dice by Escalation (d8s against a Profane creature, 1 more for the
+  Reaction AP); Lay On Hands: a Setup Advance and Guard 2 + Pow; Shield of Faith: 1 + Pow off and the attacker Taunted; Rebuke: "moves away",
+  Hindered and a disrupted Move; Bulwark of Faith: within 5 of you; Word of Radiance: one Version, Appeal Save; Consecrated Ground: Difficult Terrain
+  for enemies and Guard at the start of a turn; Kindled Wrath: any ally; Reckoning: the Escalation 6 Action; Hallowed Stance: a Setup Advance 3.

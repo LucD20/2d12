@@ -314,6 +314,7 @@ export function result(inp, st) {
     boons: manB, banes: manN, mod: t.flat, adjLabel: flatNames, adjDefault: t.flat,
     dc: single?.dc ?? 13, favored: (multi ? sh.fav : t.fav) ? "on" : undefined, doomed: (multi ? sh.doom : t.doom) ? "on" : undefined,
     reloadshot: empChip ? "on" : undefined,
+    smiteMore: onIds(all).some(c => c.special === "smite") ? "on" : undefined,   // v0.0.409 (Smite): the Reaction AP spent for 1 more die
     empowered: t.emp, enfeebled: t.enf, switchNl: onIds(all).some(c => c.special === "nl") ? "on" : undefined,
     forceTier: st.forceTier ? String(st.forceTier) : "", removed: [...(st.removed ?? [])], perTarget, rollMode: st.rollMode, rd
   };

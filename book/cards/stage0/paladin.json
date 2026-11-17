@@ -1,5 +1,5 @@
 {
- "_about": "The Paladin's Stage 0 cards in the card Structure of 2026-11-16 (book/cards/card-structure.md). THE BOOK reads these in the place of the cards of the same name in ../paladin.json; Foundry and the ruler still read ../paladin.json until the Foundry pass. Format: name, category and level (data, not printed), flavor, traits, escalation, frequency, cost (the bar's text: '2 AP', '1R', '1 or 2 AP', 'Passive'), distance, area, target, body (labeled lines in play order: {label, text}), blocks (a Version or a Mode: heading, traits only it has, its own distance / target, its body).",
+ "_about": "The Paladin's Stage 0 cards in the card Structure of 2026-11-16 (book/cards/card-structure.md). THE BOOK reads these in the place of the cards of the same name in ../paladin.json; Foundry reads these since pack F2 (v0.0.409; load.mjs loadFoundryCards, each card's `foundry` block: its automation; a block's `foundry` is its Version's, a one-Version card's is `foundry.version`); the ruler still reads ../paladin.json until its own pass. Format: name, category and level (data, not printed), flavor, traits, escalation, frequency, cost (the bar's text: '2 AP', '1R', '1 or 2 AP', 'Passive'), distance, area, target, body (labeled lines in play order: {label, text}), blocks (a Version or a Mode: heading, traits only it has, its own distance / target, its body).",
  "structure": 2,
  "cards": [
   {
@@ -43,7 +43,33 @@
       }
      ]
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/eye.svg",
+    "folder": "Paladin",
+    "automation": "mithril",
+    "marksTarget": true,
+    "markKind": "judge",
+    "automationNote": "the mark (the ring on the token), Profane for you (Smite's and Word of Radiance's d8s, your Profane rules), the first damage each round of the Judged creature to an ally within 5 squares of you reduced by your Power Modifier, the reminders at the start of an encounter and when it goes Down; the 0 AP use only at the start of an encounter or as a 0R: by hand.",
+    "settings": [
+     {
+      "type": "message",
+      "msgWhen": "encounter",
+      "text": "choose a creature to Judge. Target it and use Judge:",
+      "msgAction": "Judge",
+      "msgAp": 0,
+      "msgTo": "owners"
+     },
+     {
+      "type": "message",
+      "msgWhen": "markDown",
+      "text": "{mark}, the creature you Judged, went Down. Judge another (0R): target it and use Judge:",
+      "msgAction": "Judge",
+      "msgAp": 0,
+      "msgTo": "owners"
+     }
+    ]
+   }
   },
   {
    "name": "Smite",
@@ -85,7 +111,21 @@
     "divine"
    ],
    "distance": "Weapon",
-   "target": "One creature"
+   "target": "One creature",
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "diamond",
+    "automationNote": "the Smite dice by your Escalation (up to 4, 1 more on a Tier 3), d8s against a Profane creature (Judged by you, or the Profane Tag), the Reaction AP for 1 more die (the roll dialog's chip, paid when used).",
+    "version": {
+     "diceRule": "smite",
+     "tiers": [
+      "[R] 1d6! Ho",
+      "[V] 1[W] + [Mod] + [R] 1d6! Ho",
+      "[V] 1[W] + [Mod] + [R] 2d6! Ho"
+     ]
+    }
+   }
   },
   {
    "name": "Binding Light",
@@ -118,7 +158,13 @@
     "divine"
    ],
    "distance": "Weapon",
-   "target": "One creature"
+   "target": "One creature",
+   "foundry": {
+    "img": "icons/svg/net.svg",
+    "folder": "Paladin",
+    "automation": "mithril",
+    "automationNote": "the damage, then Immobilized (1 round) on a Tier 2 or 3 once it lands."
+   }
   },
   {
    "name": "Lay On Hands",
@@ -158,7 +204,13 @@
       }
      ]
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/regen.svg",
+    "folder": "Paladin",
+    "automation": "diamond",
+    "automationNote": "the Setup's Advance (the button; the straight line toward the target by hand), the Guard (2 + Pow) and, at 2 AP, the Rally Point (the chips, on the target)."
+   }
   },
   {
    "name": "Shield of Faith",
@@ -182,7 +234,24 @@
     "focus"
    ],
    "distance": "5 sq.",
-   "target": "One ally"
+   "target": "One ally",
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Paladin",
+    "automation": "diamond",
+    "moment": "strikeDamage",
+    "momentRange": 5,
+    "automationNote": "offered by itself in the Reactions message when an enemy's Strike would damage an ally within 5 squares (the damage waits); Use reduces that damage by 1 + Pow and Taunts the attacker (1 round).",
+    "version": {
+     "after": "@Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger]",
+     "sub": [
+      [
+       "@Condition[taunted|rounds:1]",
+       "@Condition[taunted|rounds:1|to:trigger]"
+      ]
+     ]
+    }
+   }
   },
   {
    "name": "Rebuke",
@@ -215,7 +284,18 @@
     "divine"
    ],
    "distance": "3 sq.",
-   "target": "One enemy"
+   "target": "One enemy",
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "diamond",
+    "moment": "enemyAway",
+    "momentRange": 3,
+    "automationNote": "offered by itself in the Reactions message when an enemy within 3 squares moves away from you; Use makes the Appeal Save and the enemy is Hindered (EoT); on a Tier 1 or 2 its Move Action is disrupted: Move back in the Reactions message (to the square it left).",
+    "version": {
+     "after": "@Condition[hindered|eot]"
+    }
+   }
   },
   {
    "name": "Lantern of Faith",
@@ -235,7 +315,14 @@
        "label": "Effect",
        "text": "You shed [[Bright|Bright light]] 3 until the encounter ends."
       }
-     ]
+     ],
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Kindle (Bright light 3)}}"
+       ]
+      }
+     }
     },
     {
      "heading": "Reveal",
@@ -246,7 +333,14 @@
       }
      ],
      "distance": "5 sq.",
-     "target": "One creature you perceive"
+     "target": "One creature you perceive",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Reveal (Bright light 1)}}"
+       ]
+      }
+     }
     },
     {
      "heading": "Glare",
@@ -267,7 +361,13 @@
      "distance": "5 sq.",
      "target": "One enemy you can see"
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/light.svg",
+    "folder": "Paladin",
+    "automation": "mithril",
+    "automationNote": "the Mode's pick; Kindle and Reveal light the token (an effect); Glare's Instinct Save and Half-Blinded (EoT)."
+   }
   },
   {
    "name": "Hold the Line",
@@ -284,7 +384,14 @@
        "label": "Effect",
        "text": "Squares adjacent to you are Difficult Terrain for enemies (1 round)."
       }
-     ]
+     ],
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Brace}}"
+       ]
+      }
+     }
     },
     {
      "heading": "Trade Places",
@@ -308,7 +415,13 @@
      "distance": "Reach",
      "target": "One willing ally"
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/statue.svg",
+    "folder": "Paladin",
+    "automation": "mithril",
+    "automationNote": "the Mode's pick; Brace (an Aura 1 around you, Difficult Terrain for enemies, 1 round); Rescue's Reposition 2 (the button); Trade Places: move the two tokens by hand."
+   }
   },
   {
    "name": "Commandment",
@@ -330,7 +443,10 @@
       }
      ],
      "distance": "5 sq.",
-     "target": "One enemy"
+     "target": "One enemy",
+     "foundry": {
+      "after": "@Condition[taunted|rounds:1]"
+     }
     },
     {
      "heading": "Courage",
@@ -339,7 +455,14 @@
        "label": "Effect",
        "text": "You and allies within 3 squares of you ignore the Frightened condition (1 round)."
       }
-     ]
+     ],
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Courage}}"
+       ]
+      }
+     }
     },
     {
      "heading": "Kneel",
@@ -360,7 +483,13 @@
      "distance": "5 sq.",
      "target": "One enemy"
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/sound.svg",
+    "folder": "Paladin",
+    "automation": "mithril",
+    "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save and Prone; Courage: an effect on you as a reminder (you and allies within 3 squares ignore Frightened: by hand)."
+   }
   },
   {
    "name": "Armor of Faith",
@@ -374,7 +503,21 @@
      "label": "Passive",
      "text": "When you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "automation": "mithril",
+    "automationNote": "the Guard (1 + Pow, the higher kept) each time you use a [Divine] Reaction, while your Escalation is 2 or more.",
+    "hooks": [
+     {
+      "kind": "reactionGuard",
+      "traits": [
+       "divine"
+      ],
+      "formula": "1+pow"
+     }
+    ]
+   }
   },
   {
    "name": "Roving Judgment",
@@ -388,7 +531,20 @@
      "label": "Passive",
      "text": "The 1 AP use of Judge costs you 0 AP."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/eye.svg",
+    "automation": "mithril",
+    "automationNote": "Judge's 1 AP Version costs 0 AP while your Escalation is 2 or more.",
+    "hooks": [
+     {
+      "kind": "apCost",
+      "markKind": "judge",
+      "ap": 1,
+      "cost": 0
+     }
+    ]
+   }
   },
   {
    "name": "Kindled Wrath",
@@ -401,7 +557,18 @@
      "label": "Passive",
      "text": "Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/fire.svg",
+    "automation": "diamond",
+    "settings": [
+     {
+      "type": "eschook",
+      "hookWhen": "allyState",
+      "hookRange": 0
+     }
+    ]
+   }
   },
   {
    "name": "Bulwark of Faith",
@@ -425,7 +592,18 @@
     "focus"
    ],
    "distance": "5 sq.",
-   "target": "One ally"
+   "target": "One ally",
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Paladin",
+    "automation": "diamond",
+    "moment": "strikeDamage",
+    "momentRange": 5,
+    "automationNote": "offered by itself in the Reactions message when an enemy's Strike would damage an ally within 5 squares (the damage waits); Use gives the Guard (one of their Rally Points) before it lands, then Slides them 1 after.",
+    "version": {
+     "after": "@Guard[rally] @Pause[After the damage] @Move[slid|distance:1]"
+    }
+   }
   },
   {
    "name": "Consecrated Ground",
@@ -445,7 +623,25 @@
     "divine"
    ],
    "distance": "8 sq.",
-   "area": "2 Emanation"
+   "area": "2 Emanation",
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "diamond",
+    "areaCfg": {
+     "targets": "all",
+     "keep": true,
+     "rounds": 3
+    },
+    "automationNote": "the Zone (3 rounds): Difficult Terrain for enemies, and you and your allies who start a turn in it gain Guard equal to your Power Modifier.",
+    "version": {
+     "fx": {
+      "all": [
+       "{{fx:Consecrated Ground}}"
+      ]
+     }
+    }
+   }
   },
   {
    "name": "Word of Radiance",
@@ -484,7 +680,21 @@
     "divine"
    ],
    "area": "2 Emanation",
-   "target": "All enemies in the Area"
+   "target": "All enemies in the Area",
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "diamond",
+    "areaCfg": {
+     "targets": "enemies",
+     "center": true
+    },
+    "automationNote": "the Emanation around you, the Appeal Save and the damage of each enemy (d8s against a Profane one), then the Pushes one by one from you (3 / 2 / 1 by the Tier).",
+    "version": {
+     "diceRule": "profane",
+     "after": "@Move[pushed|distance:1|t1:3|t2:2|t3:1|pick:yes|from:area]"
+    }
+   }
   },
   {
    "name": "Weight of Judgment",
@@ -498,7 +708,12 @@
      "label": "Passive",
      "text": "A creature Judged by you has its Speed reduced by 2 (to a minimum of 1)."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/downgrade.svg",
+    "automation": "mithril",
+    "automationNote": "the Speed of the creature you Judged: by hand (its Speed reduced by 2, to a minimum of 1)."
+   }
   },
   {
    "name": "Tireless Vigil",
@@ -512,7 +727,18 @@
      "label": "Passive",
      "text": "You gain 1 more Reaction AP when you regain AP. It pays only for [Divine] Reactions."
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/eye.svg",
+    "automation": "mithril",
+    "automationNote": "the second Reaction AP while your Escalation is 4 or more; that it pays only for [Divine] Reactions: by hand.",
+    "hooks": [
+     {
+      "kind": "rapMore",
+      "n": 1
+     }
+    ]
+   }
   },
   {
    "name": "Reckoning",
@@ -548,7 +774,20 @@
     "divine"
    ],
    "area": "2 Emanation",
-   "target": "All enemies in the Area"
+   "target": "All enemies in the Area",
+   "foundry": {
+    "img": "icons/svg/sun.svg",
+    "folder": "Paladin",
+    "automation": "diamond",
+    "areaCfg": {
+     "targets": "enemies",
+     "center": true
+    },
+    "automationNote": "the Setup's Advance (the button), then the Emanation around you, the Pushes one by one and the Appeal Save: Frightened of you (1 round) on a Tier 1 or 2.",
+    "version": {
+     "after": "@Move[pushed|distance:2|pick:yes|from:area] @Condition[frightened|rounds:1]"
+    }
+   }
   },
   {
    "name": "Hallowed Stance",
@@ -562,7 +801,21 @@
      "label": "Passive",
      "text": "Once on your turn, a [Divine] Action you use gains \"Setup: You Advance 3.\""
     }
-   ]
+   ],
+   "foundry": {
+    "img": "icons/svg/statue.svg",
+    "automation": "diamond",
+    "automationNote": "a [Divine] Action you use shows \"Setup: You Advance 3\" with its button while your Escalation is 6 or more; once on your turn: by hand.",
+    "hooks": [
+     {
+      "kind": "setupAdvance",
+      "traits": [
+       "divine"
+      ],
+      "n": 3
+     }
+    ]
+   }
   }
  ]
 }

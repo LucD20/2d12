@@ -77,6 +77,18 @@ export async function healAtTurnStart(combatant) {
     await promptHeal(actor, roll.total, { source: a.name, lead: `${a.name}: ${roll.total} healing` });
     n++;
   }
+  // v0.0.409 (pack F2, Consecrated Ground): an area's Guard at the start of the creature's turn (the higher Guard kept, Chapter 4)
+  for (const a of areasNow(td.parent, { fresh: true })) {
+    if (!a.rows.guard?.on || !isIn(a, cells) || !reaches(a, a.rows.guard, td)) continue;
+    const o = actorOf(a.originUuid) ?? actor, f = evalFormula(a.rows.guard.formula, { origin: refValues(o), target: refValues(actor) }, { dice: true });
+    if (!f.ok || !String(f.value).trim()) continue;
+    const roll = await (await import("./explode.mjs")).bookRoll(String(f.value)).evaluate();
+    const now = Number(actor.system?.guard) || 0, next = Math.max(now, roll.total);
+    if (next !== now) { if (actor.isOwner) await actor.update({ "system.guard": next }); else game.socket?.emit("system.twod12", { type: "applyGuard", actorUuid: actor.uuid, value: next }); }
+    const { sysLine } = await import("./sysmsg.mjs");
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-heart", `<b>${esc(a.name)}</b>: <b>${esc(actor.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher)`} at the start of its turn.`, "fxm") });
+    n++;
+  }
   return n;
 }
 

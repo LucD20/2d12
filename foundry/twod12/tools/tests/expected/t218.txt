@@ -4,18 +4,18 @@ Paladin, faith first: level 1 +1 / +2 (Signature +2 from power) | Stage 1 defaul
 Archer (fixed Weapon first): level 1 +2 / +1 (Signature +2 from weapon) | Stage 1 default +3 / +1 (Signature +3 from weapon) | Stage 1 +1 to the other +2 / +2 (Signature +2 from power) | Stage 3 +4 / +2 (Signature +4 from weapon) | Stage 3 after the other +3 / +3 (Signature +3 from power)
 never above +4: +4 / +4 (Signature +4 from weapon) | a tie goes to the lead: +2 / +2 (Signature +2 from power)
 --- the compendium's classes
-Paladin: high 2, low 1, order either | no Attribute lists: true
+Paladin: high 2, low 1, order power | no Attribute lists: true
 Archer: high 2, low 1, order weapon | no Attribute lists: true
 --- a character (stubs)
-sword-first Paladin, level 1: Weapon +2, Power +1, Signature +2 (weapon) | WD 12 | Save DCs 13 / 12 | source class
-sword-first Paladin, level 4: Weapon +3, Power +1, Signature +3 (weapon) | WD 12 | Save DCs 14 / 12 | source class
-sword-first Paladin, level 12: Weapon +4, Power +2, Signature +4 (weapon) | WD 13 | Save DCs 15 / 13 | source class
+sword-first Paladin, level 1: Weapon +1, Power +2, Signature +2 (power) | WD 13 | Save DCs 12 / 13 | source class
+sword-first Paladin, level 4: Weapon +1, Power +3, Signature +3 (power) | WD 14 | Save DCs 12 / 14 | source class
+sword-first Paladin, level 12: Weapon +2, Power +4, Signature +4 (power) | WD 15 | Save DCs 13 / 15 | source class
 faith-first Paladin, level 1: Weapon +1, Power +2, Signature +2 (power) | WD 13 | Save DCs 12 / 13 | source class
 faith-first Paladin, level 4: Weapon +1, Power +3, Signature +3 (power) | WD 14 | Save DCs 12 / 14 | source class
 faith-first Paladin, level 12: Weapon +2, Power +4, Signature +4 (power) | WD 15 | Save DCs 13 / 15 | source class
-sword-first, Stage 2 to Power, level 1: Weapon +2, Power +1, Signature +2 (weapon) | WD 12 | Save DCs 13 / 12 | source class
-sword-first, Stage 2 to Power, level 4: Weapon +2, Power +2, Signature +2 (weapon) | WD 13 | Save DCs 13 / 13 | source class
-sword-first, Stage 2 to Power, level 12: Weapon +3, Power +3, Signature +3 (weapon) | WD 14 | Save DCs 14 / 14 | source class
+sword-first, Stage 2 to Power, level 1: Weapon +1, Power +2, Signature +2 (power) | WD 13 | Save DCs 12 / 13 | source class
+sword-first, Stage 2 to Power, level 4: Weapon +1, Power +3, Signature +3 (power) | WD 14 | Save DCs 12 / 14 | source class
+sword-first, Stage 2 to Power, level 12: Weapon +2, Power +4, Signature +4 (power) | WD 15 | Save DCs 13 / 15 | source class
 an Archer, level 1: Weapon +2, Power +1, Signature +2 (weapon) | WD 12 | Save DCs 13 / 12 | source class
 a class copy from before (values 0): the Attribute formula until updated: Weapon +2, Power +2, Signature +2 (weapon) | WD 13 | Save DCs 13 / 13 | source attrs | Weapon Attribute body
 --- NPCs (the role's values)
@@ -36,8 +36,8 @@ Orc Warrior: role standard, leads with weapon
 Grave Wisp: role standard, leads with power
 Ogre Chieftain: role elite, leads with weapon
 --- rolls: a class value has no Attribute behind it
-[weapon, strike]: weapon +2 "Weapon Modifier" attrKey "" | sees "body" (Body Rolls): false
-[magic]: power +1 "Power Modifier" attrKey "" | sees "body" (Body Rolls): false
+[weapon, strike]: weapon +1 "Weapon Modifier" attrKey "" | sees "body" (Body Rolls): false
+[magic]: power +2 "Power Modifier" attrKey "" | sees "body" (Body Rolls): false
 [signature, weapon]: signature +2 "Signature Modifier" attrKey "" | sees "body" (Body Rolls): false
 [body, strike]: attribute +2 "Body Check" attrKey "body" | sees "body" (Body Rolls): true
 a class copy from before still reads its Attribute: Weapon Modifier • Body | Body Rolls: true

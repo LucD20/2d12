@@ -80,6 +80,9 @@ export function convertEffects(text) {
   // v0.0.254 (cards 4): "reduced by 2d6 + your Power Modifier (3d6 at Stage 2, 4d6 at Stage 3)" -> a Reduce chip with the Stage dice (Shield of Faith); "Guard equal to what one of their Rally Points heals" -> @Guard[rally]{Guard RP} (Bulwark of Faith)
   s = s.replace(new RegExp(`\\breduced\\s+by\\s+(\\d+d\\d+)\\s*\\+\\s*${POW}(\\s*\\((\\d+d\\d+)\\s+at\\s+Stage\\s+2,\\s*(\\d+d\\d+)\\s+at\\s+Stage\\s+3\\))?`, "gi"), (m, dice, paren, d2, d3) => `reduced by @Reduce[${dice}+pow${d2 ? `|s2:${d2}+pow` : ""}${d3 ? `|s3:${d3}+pow` : ""}]{${dice} + Pow}${paren ?? ""}`);
   s = s.replace(/(?:@Book\[Guard\]\{Guard\}|\bGuard)\s+equal\s+to\s+what\s+one\s+of\s+their\s+Rally\s+Points\s+heals\b/g, "@Guard[rally]{Guard RP}");
+  // v0.0.409 (pack F2): "Guard equal to 2 + your Power Modifier" (Lay On Hands), "reduced by 1 + your Power Modifier" (Shield of Faith): flat plus Pow
+  s = s.replace(new RegExp(`(?:@Book\\[Guard\\]\\{Guard\\}|\\bGuard)\\s+equal\\s+to\\s+(?:(\\d+)\\s*\\+\\s*)?${POW}\\b`, "g"), (m, n) => `@Guard[${n ? `${n}+` : ""}pow]{Guard ${n ? `${n} + ` : ""}Pow}`);
+  s = s.replace(new RegExp(`\\breduced\\s+by\\s+(\\d+)\\s*\\+\\s*${POW}\\b`, "gi"), (m, n) => `reduced by @Reduce[${n}+pow]{${n} + Pow}`);
   s = s.replace(/\bheals?\s+(\d+d\d+)\b(?!\s*[+|\]])/gi, (m, dice) => `heal @Heal[${dice}]{Heal ${dice}}`);   // v0.0.261 (Consecrated Ground): "heal 1d4" is a Heal chip
   s = s.replace(/\bheals?\s+(twice|three times|four times)\s+what\s+1\s+Rally\s+Point\s+would\s+heal\b/gi, (m, w) => { const n = { twice: 2, "three times": 3, "four times": 4 }[w.toLowerCase()]; return `heals @Heal[rp*${n}]{${w.toLowerCase()} a Rally Point's heal}`; });
   // "Appeal Save: 1d6 / 1d4 / 0 [M] Holy damage" (the pool in brackets and the type are optional)
@@ -95,6 +98,9 @@ export function convertEffects(text) {
   s = s.replace(new RegExp(`\\b(${ATTRS})\\s+Check\\b(?![\\w\\[])`, "g"), (m, a) => `@Check[${a.toLowerCase()}]`);
   const REF = "(?:\\d+|speed|walk|move|body|mind|appeal|instinct|level|weapon|hp|rally)";
   const EXPR = `${REF}(?:\\s*[/*+\\-]\\s*${REF})*`;
+  // v0.0.409 (pack F2, the Paladin's Setups): "Advance up to 5 squares in a straight line toward the target" (Lay On Hands), "You Advance." (Reckoning)
+  s = s.replace(/\bAdvance\s+up\s+to\s+(\d+)\s+squares\b/g, (m, n) => `@Move[advance|distance:${n}]{Advance up to ${n} squares}`);
+  s = s.replace(/\b(You|you)\s+Advance(?=\s*\.)/g, (m, y) => `${y} @Move[advance|distance:speed]{Advance}`);
   s = s.replace(/\b(pushed|pulled|slid|advance|walk|evade|reposition)\s+half\s+(?:your\s+)?(speed|walk)\b(\s*\(rounded down\))?/gi, (m, k, r, down) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${down ? `floor(${r.toLowerCase()}/2)` : `${r.toLowerCase()}/2`}${k.toLowerCase() === "reposition" ? "|reach:yes" : ""}]`);   // v0.0.227: "(rounded down)" floors (the evaluator rounds up)
   s = s.replace(new RegExp(`\\b(pushed|pulled|slid|advance|walk|evade|reposition)\\s+(${EXPR})(?![\\w/])`, "gi"), (m, k, e) => `@Move[${k.toLowerCase() === "walk" ? "advance" : k.toLowerCase()}|distance:${e.replace(/\s+/g, "").toLowerCase()}${k.toLowerCase() === "reposition" ? "|reach:yes" : ""}]`);   // v0.0.227: "Reposition N" (Relocate) is a move button too, kept within Reach
   // "Reposition 3": a free-direction Forced Movement within an Emanation of that many squares
@@ -117,7 +123,9 @@ export function convertEffects(text) {
     s = s.replace(new RegExp(`${NOT}\\b(Frightened|Taunted)((?:\\s+(?:of|by)\\s+(?:you|it|them|the\\s+[A-Z][\\w'-]*(?:\\s+[A-Z][\\w'-]*)*|[A-Z][\\w'-]*(?:\\s+[A-Z][\\w'-]*)*))?)${DUR}${END}`, "g"),
       (m, c, src, n, p) => `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${c}}${m.slice(c.length)}`);
     // v0.0.336 (Lucas, Marksman's Shot: "Blinded (EoT) fully as a button, as Vulnerable does"): a duration in parentheses is part of the button
-    s = s.replace(new RegExp(`${NOT}\\b(Blinded|Staggered|Grabbed)${DUR}${END}`, "g"), (m, c, n, p) => { const lab = p ? m.match(/^\w+\s*\([^)]*\)/)[0] : c; return `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${lab}}${m.slice(lab.length)}`; });
+    // v0.0.409 (pack F2, Glare): Half-Blinded (a condition of its own, Chapter 8), before Blinded
+    s = s.replace(new RegExp(`(?:@Book\\[Half-Blinded\\]\\{Half-Blinded\\}|\\{\\{link:Half-Blinded\\|Half-Blinded\\}\\}|\\bHalf-Blinded)${DUR}${END}`, "g"), (m, n, p) => `@Condition[half-blinded${durOf(n, p)}]{Half-Blinded${p ? ` (${p})` : ""}}`);
+    s = s.replace(new RegExp(`${NOT}(?<!Half-)\\b(Blinded|Staggered|Grabbed)${DUR}${END}`, "g"), (m, c, n, p) => { const lab = p ? m.match(/^\w+\s*\([^)]*\)/)[0] : c; return `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${lab}}${m.slice(lab.length)}`; });
     s = s.replace(new RegExp(`${NOT}\\b(Dazed|Sickened)\\s+(\\d+)${DUR}${END}`, "g"), (m, c, v, n, p) => { const nm = m.match(/^\w+\s+\d+/)[0]; return `@Condition[${c.toLowerCase()}|value:${v}${durOf(n, p)}]{${nm}}${m.slice(nm.length)}`; });
     // "Bleed [R] 1d6 Ho (Mi/Ap)", "Bleed 2 (Bo/In; DC 15)": the card's own dice, pool, type, Attributes and DC
     s = s.replace(/\bBleed\s+(?:\[([VRBM])\]\s*)?(\d+d\d+(?:[+-]\d+)?|\d+)(?:\s+([A-Z][a-z]))?\s*\(((?:Bo|Mi|Ap|In)(?:\/(?:Bo|Mi|Ap|In))*)(?:;\s*DC\s*(\d+))?\)/g,
@@ -126,7 +134,7 @@ export function convertEffects(text) {
   // v0.0.246 (cards 1, Lucas): "Guard 1d8 + [Mod]" is a Guard button (the chip shows the Modifier as a number on a creature's card); a [[Guard]] link
   // written before the dice becomes the chip (the chip is the Guard). "Guard equal to..." and a bare "Guard" stay words.
   // v0.0.250: "(2d6 + [Mod] at Stage 2, 2d8 + [Mod] at Stage 3)" after it gives the chip its Stage dice (v0.0.352: the parenthesis no longer stays: the chip is calculated)
-  s = s.replace(/(?:@Book\[Guard\]\{Guard\}|\bGuard)\s+((?:\d+d\d+|\d+)(?:\s*\+\s*(?:\[Mod\]|\d+d\d+|\d+))*)(?![\w\[])(\s*\(((?:\d+d\d+)(?:\s*\+\s*\[Mod\])?)\s+at\s+Stage\s+2,\s*((?:\d+d\d+)(?:\s*\+\s*\[Mod\])?)\s+at\s+Stage\s+3\))?/g, (m, f, paren, f2, f3) => { const k = x => x.replace(/\s+/g, "").replace(/\[Mod\]/g, "mod").toLowerCase(); return `@Guard[${k(f)}${f2 ? `|s2:${k(f2)}` : ""}${f3 ? `|s3:${k(f3)}` : ""}]{Guard ${f.replace(/\s+/g, " ")}}`; });   // v0.0.352 (Lucas: "remove '(2d6 + [Mod] at Stage 2...)' from Foundry's Smite card"): the chip shows the creature's Stage dice; the parenthesis stays in the book only
+  s = s.replace(/(?:@Book\[Guard\]\{Guard\}|(?<!\{)\bGuard)\s+((?:\d+d\d+|\d+)(?:\s*\+\s*(?:\[Mod\]|\d+d\d+|\d+))*)(?![\w\[])(\s*\(((?:\d+d\d+)(?:\s*\+\s*\[Mod\])?)\s+at\s+Stage\s+2,\s*((?:\d+d\d+)(?:\s*\+\s*\[Mod\])?)\s+at\s+Stage\s+3\))?/g, (m, f, paren, f2, f3) => { const k = x => x.replace(/\s+/g, "").replace(/\[Mod\]/g, "mod").toLowerCase(); return `@Guard[${k(f)}${f2 ? `|s2:${k(f2)}` : ""}${f3 ? `|s3:${k(f3)}` : ""}]{Guard ${f.replace(/\s+/g, " ")}}`; });   // v0.0.352 (Lucas: "remove '(2d6 + [Mod] at Stage 2...)' from Foundry's Smite card"): the chip shows the creature's Stage dice; the parenthesis stays in the book only
   // "2Emanation 1/round" and "[2Burst EoT]": the area, and how long it stays. v0.0.246: "1 Line" and the book's "Line 6" too (the chip reads "6 Line").
   s = s.replace(/\[?\b(\d+)\s*(emanation|burst|line)\b(?:\s+(?:(\d+)\s*\/\s*rounds?|(EoT)))?\]?/gi, (m, n, shape, rounds, eot) =>
     `@Template[${shape.toLowerCase()}|distance:${n}${rounds ? `|rounds:${rounds}` : (eot ? "|rounds:eot" : "")}]`);   // v0.0.250 (Lucas): rounds:eot, not expire:eot

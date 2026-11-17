@@ -167,3 +167,42 @@ export function registerMigrationS0() {
     await migrateS0();
   });
 }
+
+// v0.0.409 (pack F2, "the Paladin in Foundry"; book, the Paladin redesigned on 2026-11-16): an existing world's Paladins, once, by the GM, after the
+// Stage 0 migration, with a question in the system's window (Migrate / Later). The items of the same name and type are updated from the compendium (the
+// class with its new levels, Smite, Lay On Hands, Shield of Faith, Rebuke, Bulwark of Faith, Word of Radiance, Consecrated Ground, Kindled Wrath,
+// Hallowed Stance: what each copy chose is kept). Nothing is deleted: pack R's cards that left the Paladin stay on the sheets and the GM's card lists
+// them, with the new choices to make in the class window (Judge, a Hallmark Action, an Art, the Escalation abilities).
+const DONE_F2 = "F2";
+/** Pure: what a character keeps of pack R's Paladin (the cards that left it on 2026-11-16; Reckoning was a Feature, it is an Action now): [names]. items: [{ name, type }]. */
+export function paladinLeftovers(items = []) {
+  const OLD = ["Divine Power", "Holy Wrath", "Beacon", "Beacon's Step", "Miraculous Recovery", "Divine Intervention", "Radiant Zeal", "Divine Surge", "Font of Mercy", "Searing Blows", "Mending Light", "Final Verdict", "Hallowed Dawn"];
+  return items.filter(i => (OLD.includes(i.name) && ["action", "feature"].includes(i.type)) || (i.name === "Reckoning" && i.type === "feature")).map(i => i.name);
+}
+const paladins = () => characters().filter(a => a.items.some(i => i.type === "class" && i.name === "Paladin"));
+export const needsMigrationF2 = () => { try { return game.settings.get(F, "migratedF2") !== DONE_F2 && paladins().length > 0; } catch (e) { return false; } };
+export async function migrateF2({ ask = true } = {}) {
+  if (!game.user.isGM) { ui.notifications.warn("Only the GM can run the Paladin migration."); return null; }
+  if (ask) {
+    const { pickConfirm } = await import("./pickwindow.mjs");
+    const ok = await pickConfirm({ title: "The Paladin", name: "The redesigned Paladin", sub: "the book's Paladin of 2026-11-16", icon: "fa-sun", confirm: "Migrate",
+      text: "<b>Back up your world first</b> (Foundry: Game Worlds, Backup). Nothing is deleted.<br>The Paladin was redesigned: Judge and Smite for every Paladin, a Hallmark Action (Binding Light or Lay On Hands), a Hallmark Reaction (Shield of Faith or Rebuke), the Arts, the Escalation 2, 4 and 6 abilities, Weapon +1 and Power +2.<br>Migrate updates the class and the cards of the same name from the compendium (what each copy chose is kept). The old cards stay on the sheets; a card for you lists them, and each Paladin chooses the new picks in the class window. Later asks again at the next load." });
+    if (!ok) return null;
+  }
+  const { refreshFromCompendium } = await import("./refresh.mjs");
+  const res = await refreshFromCompendium({ byName: true, basics: false });
+  const lines = paladins().map(a => { const left = paladinLeftovers(a.items.map(i => ({ name: i.name, type: i.type }))); return `${esc(a.name)}: level ${a.system.level}${left.length ? `; kept from the old Paladin: ${left.map(esc).join(", ")}` : ""}`; });
+  await game.settings.set(F, "migratedF2", DONE_F2);
+  await ChatMessage.create({ whisper: game.users.filter(u => u.isGM).map(u => u.id), content: sysCard({ title: "The Paladin: the world migrated", lead: `${lines.length} Paladin${lines.length === 1 ? "" : "s"}`,
+    text: `${lines.join("<br>")}<br>${res ? `${res.items} item${res.items === 1 ? "" : "s"} updated from the compendium.` : ""} Each Paladin opens the class window (the Build tab) to choose what the new levels give (Judge and Smite are granted; a Hallmark Action, a Hallmark Reaction, an Art, the Escalation abilities). The old cards can be removed by hand.` }) });
+  return { paladins: lines.length, refreshed: res };
+}
+export function registerMigrationF2() {
+  game.settings.register(F, "migratedF2", { scope: "world", config: false, type: String, default: "" });
+  Hooks.once("ready", async () => {
+    if (!game.user.isActiveGM || game.settings.get(F, "migratedF2") === DONE_F2) return;
+    try { if (game.settings.get(F, "migratedS0") !== DONE_S0) return; } catch (e) { return; }   // after Stage 0 (a world that needs it runs that first)
+    if (!needsMigrationF2()) { await game.settings.set(F, "migratedF2", DONE_F2); return; }
+    await migrateF2();
+  });
+}

@@ -1255,7 +1255,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     event?.stopPropagation?.();
     const item = this.actor.items.get(target.closest("[data-card-item]")?.dataset.cardItem) ?? this._item(target);
     if (!item || target.disabled) return;
-    await useAction(this.actor, item, { rdState: { ap: Number(target.dataset.ap) || 0 }, ...(event?.shiftKey ? { noGrant: true } : {}) });
+    await useAction(this.actor, item, { rdState: { ap: Number(target.dataset.ap) || 0 }, ...(target.dataset.mode ? { mode: target.dataset.mode } : {}), ...(event?.shiftKey ? { noGrant: true } : {}) });   // v0.0.409: an Art's Mode button
   }
   /** v0.0.208 (W): a hand button: the Action with the weapon in that hand (no "Which weapon?" window). */
   static async useWith(event, target) {

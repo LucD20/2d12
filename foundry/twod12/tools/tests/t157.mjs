@@ -22,7 +22,7 @@ function archer(esc) {
 const show = m => m.rungs.map(r => `${r.n}${r.lit ? "*" : ""}: ${[...r.passives.map(p => `${p.name}[${p.tag || "grey"}]`), ...r.actives.map(a => `${a.name}{${a.useOff ? "off" : "use"} ${a.freqText}}`)].join(", ")}`).join(" | ");
 const row = i => ({ id: i.id, name: i.name, freq: i.system.frequency, freqText: { round: "Round", turn: "Turn" }[i.system.frequency] ?? "" });
 const opts = (used = []) => ({ actionRow: row, isFaded: (a, i) => (used.includes(i.name) ? { faded: true, why: "Used: available again at the start of your next turn" } : { faded: false, why: "" }) });
-console.log("thresholds:", ["Killer's Focus", "Vanish", "Hallowed Stance", "Radiant Zeal", "Mending Light"].map(n => `${n} ${X.passiveThreshold(item(n, "feature"))}`).join(", "));
+console.log("thresholds:", ["Killer's Focus", "Vanish", "Hallowed Stance", "Armor of Faith", "Tireless Vigil"].map(n => `${n} ${X.passiveThreshold(item(n, "feature"))}`).join(", "));
 console.log("out of combat, Escalation 0 (collapsed):", show(X.escalationModel(archer(0), opts())), "| open:", X.escalationModel(archer(0), opts()).open, "| shown:", X.escalationModel(archer(0), opts()).show);
 const a3 = archer(3);
 game.combat = { started: true, round: 3, turn: 1, turns: [{ actor: {} }, { actor: a3 }] };

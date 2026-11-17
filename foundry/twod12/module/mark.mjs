@@ -8,9 +8,9 @@ export const quarryOf = actor => actor?.getFlag?.(F, "quarry") ?? null;
 const uuidOfToken = t => t?.document?.uuid ?? t?.uuid ?? "";
 
 /** Mark a creature (a token) as this creature's marked target, or clear it (token null). */
-export async function setQuarry(actor, token) {
+export async function setQuarry(actor, token, kind = "") {
   if (!token) { if (quarryOf(actor)) await actor.unsetFlag(F, "quarry"); return; }
-  await actor.setFlag(F, "quarry", { uuid: uuidOfToken(token), name: token.name });
+  await actor.setFlag(F, "quarry", { uuid: uuidOfToken(token), name: token.name, kind: String(kind ?? "") });   // v0.0.409: kind "judge" (Judge: the creature is Judged)
   // v0.0.343 (Lucas, playtest 4): no "X marks Y" line: the Action's card says it, and the mark shows on the map (its icon on the token)
 }
 

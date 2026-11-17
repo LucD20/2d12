@@ -26,6 +26,7 @@ export const MOMENTS = {
   strikeAgainst: { who: "ally" },
   enemyCloser: { who: "enemy", move: true, closer: true },
   enemyMoves: { who: "enemy", move: true },
+  enemyAway: { who: "enemy", move: true, away: true },   // v0.0.409 (pack F2, Rebuke): the mover ends a step farther from the Reaction's owner
   allyDamage: { who: "ally", damage: true }
 };
 
@@ -307,6 +308,7 @@ export async function collectReactions(ev) {
       if (ev.only && kind !== ev.only) continue;
       if (ev.filter && !ev.filter.has(`${actor.uuid}|${item.id}`)) continue;
       if (def.closer && ev.closer && !ev.closer(tk)) continue;
+      if (def.away && ev.away && !ev.away(tk)) continue;   // v0.0.409: moved away from this creature
       // v0.0.339 (the review of the Mithril cards, section 2): a Reaction an effect with an Aura brings (Beacon's Step) reaches as far as that Aura
       const auraOf = (() => { const e = item.getFlag?.("twod12", "inlineOf") ? actor.effects?.get?.(item.getFlag("twod12", "inlineOf")) : null; return Number((e?.getFlag?.("twod12", "auras") ?? [])[0]?.size) || 0; })();
       const range = auraOf || Number(item.system.momentRange) || 0;
@@ -389,6 +391,7 @@ export async function openMoment(ev) {
         i, moment: r.moment, actorUuid: r.actor.uuid, name: f.name ?? r.actor.name, img: f.img ?? "", ini: f.ini ?? initials(r.actor.name), disp: f.disp ?? 0, tokenUuid: f.uuid ?? "",
         itemId: r.item.id, itemName: r.item.name, kind: r.kind, role: r.role ?? "other",
         ap: Math.min(...(r.item.system.versions ?? [{ ap: 0 }]).map(v => Number(v.ap) || 0)),
+        sourceUuid: ev.source?.token?.document?.uuid ?? ev.source?.actor?.uuid ?? "",   // v0.0.409: the triggering creature (Shield of Faith's Taunted)
         targetUuid: r.target.token?.document?.uuid ?? r.target.actor.uuid, targetName: cleanName(r.target.token?.name ?? r.target.actor.name), targetImg: tf.img ?? "", targetDisp: tf.disp ?? 0,
         answerer: answererFor(r.actor)?.id ?? game.user.id, state: "wait", order: 0, result: "", color: "", out: null
       };
@@ -472,7 +475,7 @@ async function resolveStack(L) {
   const order = stackOrder(st.rows);
   for (const r of order) {
     const who = game.users.get(r.answerer)?.active ? r.answerer : (answererFor(fromUuidSync(r.actorUuid))?.id ?? game.user.id);
-    const data = { actorUuid: r.actorUuid, itemId: r.itemId, targetUuid: r.targetUuid, targetName: r.targetName };
+    const data = { actorUuid: r.actorUuid, itemId: r.itemId, targetUuid: r.targetUuid, targetName: r.targetName, sourceUuid: r.sourceUuid ?? "" };
     // v0.0.275 (the book, Chapter 2): the triggering creature dropped before this one resolved: its Reaction is spent (the AP lost), nothing is rolled
     if (st.base?.face?.actorUuid && (st.base.never || sourceDown(st))) {
       if (st.hold) st.base.never = true;
@@ -637,7 +640,7 @@ export async function runHere(data) {
   let ok = false;
   try {
     const { useAction } = await import("./actions.mjs");
-    ok = (await useAction(actor, item, {})) === true;
+    ok = (await useAction(actor, item, { triggerUuid: data.sourceUuid || "" })) === true;
     if (ok) {
       const card = game.messages.contents.slice(-8).reverse().find(m => !before.has(m.id) && m.getFlag?.(F, "grantCard")?.actorUuid === actor.uuid);   // the card this use just posted
       const g = card?.getFlag(F, "grantCard")?.effects?.[0];
@@ -969,6 +972,8 @@ export function backSquareIndices(path, rows, dist, nearer = () => true) {
     const range = Number(r.range) || Infinity, min = Number(r.min) || 0;   // v0.0.303: min, a threat that doesn't reach adjacent squares (a Long weapon)
     if (r.moment === "enemyMoves") for (let i = 0; i < path.length - 1; i++) { const d = dist(r, path[i]); if (d <= range && d >= min) out.add(i); }
     if (r.moment === "enemyCloser") for (let i = 1; i < path.length; i++) { if (dist(r, path[i]) <= range && nearer(r, path[i])) out.add(i); }
+    // v0.0.409 (Rebuke): "moves away from you": the step that took it farther, from a square within reach (it comes back to that square)
+    if (r.moment === "enemyAway") for (let i = 1; i < path.length; i++) { const d0 = dist(r, path[i - 1]); if (d0 <= range && dist(r, path[i]) > d0) out.add(i - 1); }
   }
   return [...out].sort((a, b) => b - a);
 }
@@ -1006,8 +1011,10 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const sqs = movePlaces(waypoints?.length ? waypoints : [fromAt, toAt], gsz, size);
     const left = stand ? [fromAt] : (sqs.length > 1 ? sqs.slice(0, -1) : [fromAt]), entered = sqs.length > 1 ? sqs.slice(1) : [toAt];
     const ev = {
-      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered },
-      closer: tk => cameCloser(sideToks(tk.document.disposition).map(s => ({ from: tokenDistance(fromAt, s), to: Math.min(...entered.map(e => tokenDistance(e, s))) })))
+      kinds: stand ? ["enemyMoves"] : ["enemyCloser", "enemyMoves", "enemyAway"], subjects: [party(actor, toAt)], source: null, at: { enemyMoves: left, enemyCloser: entered, enemyAway: left },
+      closer: tk => cameCloser(sideToks(tk.document.disposition).map(s => ({ from: tokenDistance(fromAt, s), to: Math.min(...entered.map(e => tokenDistance(e, s))) }))),
+      // v0.0.409 (Rebuke): a step of its path that ends farther from this creature than the square it left
+      away: tk => sqs.length > 1 ? sqs.some((q, i) => i > 0 && tokenDistance(q, tk) > tokenDistance(sqs[i - 1], tk)) : tokenDistance(toAt, tk) > tokenDistance(fromAt, tk)
     };
     const { rows, blocked } = await collectReactions(ev);
     const keyOf = r => `${turn}|${r.actor.uuid}|${r.item.id}`;

@@ -11,6 +11,7 @@ import { TWOD12 } from "./config.mjs";
 import { forgetRestored } from "./effects.mjs";
 import { unset } from "./util.mjs";   // v0.0.277: removing a key without the legacy "-=" syntax
 import { payReaction } from "./sheetmodel.mjs";
+import { activeHooks } from "./hooks.mjs";
 const { DialogV2 } = foundry.applications.api;
 const F = "twod12";
 const warn = m => ui.notifications.warn(m);
@@ -44,7 +45,9 @@ export const apPerTurn = combatant => {
 };
 /** The Reaction AP a creature has (0 or 1): regained with its AP, spent only on Reactions. */
 /** v0.0.407 (the Bestiary): a creature's Reaction AP (1; a Minion none: its data's reactionApMax). */
-export const rapMaxOf = c => { const v = c?.actor?.system?.reactionApMax; return v === undefined || v === null || !Number.isFinite(Number(v)) ? REACTION_AP : Math.max(0, Number(v)); };
+const rapMaxBase = c => { const v = c?.actor?.system?.reactionApMax; return v === undefined || v === null || !Number.isFinite(Number(v)) ? REACTION_AP : Math.max(0, Number(v)); };
+// v0.0.409 (pack F2, Tireless Vigil: hooks.mjs rapMore): more Reaction AP while the passive works (the book: only for [Divine] Reactions, by hand)
+export const rapMaxOf = c => rapMaxBase(c) + activeHooks(c?.actor, "rapMore").reduce((n, h) => n + Math.max(0, Math.trunc(Number(h.hook.n) || 1)), 0);
 export const getRAP = c => Math.max(0, Math.min(rapMaxOf(c), Math.trunc(Number(c?.getFlag(F, "rap"))) || 0));
 /** Pure: how a Reaction's cost is paid: the Reaction AP first, then AP (kept from the turn, or the turn's own). { fromRap, fromAp } */
 export { payReaction };   // v0.0.297: the one AP rule lives in sheetmodel.mjs (pure), with versionCant

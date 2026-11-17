@@ -409,6 +409,11 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
       talents: int(0, 0),
       // v0.0.187: an Escalation Passive (the Features tab shows it in its Escalation section).
       escalationPassive: bool(),
+      // v0.0.409 (pack F2, the Paladin's passives): small hooks the system reads while the passive works (its rung reached: escblock.mjs passiveThreshold):
+      //   { kind: "reactionGuard", traits: ["divine"], formula: "1+pow" } (Armor of Faith); { kind: "apCost", markKind: "judge", ap: 1, cost: 0 } (Roving
+      //   Judgment); { kind: "rapMore", n: 1 } (Tireless Vigil); { kind: "setupAdvance", traits: ["divine"], n: 3 } (Hallowed Stance); { kind: "markSpeed", by: 2 }
+      hooks: new ArrayField(new ObjectField()),
+      escalationRung: int(0, 0),   // v0.0.409 (pack F2): an Escalation ability's rung (2, 4 or 6; the card's Escalation), when no class section names it
       automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
         // v0.0.189: Not implemented / Bronze / Silver / Gold
       // Defense bonuses: +bonus to the DC of actions that roll "vs" this attribute (and carry all the listed tags, e.g. "pushed").
@@ -501,7 +506,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       vs: choice(TWOD12.vsChoices),
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
-      marksTarget: bool(),
+      marksTarget: bool(), markKind: str(),   // v0.0.409 (pack F2): "judge": the mark is Judged (Judge: it counts as Profane for its marker)
       basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
       basicRating: choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "medium"),   // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating (the Bestiary's suggested average; the dice stay the GM's)
       weaponUse: choice(TWOD12.weaponUses, ""),   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
@@ -512,7 +517,10 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       versions: new ArrayField(
         new SchemaField({
           ap: int(1, 0),   // 0: a 0 AP Action (only on your turn), or a 0R Reaction
-          mode: choice({ weapon: "Weapon mode", power: "Power mode" }),   // a Split Action's versions: "" for the others
+          // a Split Action's versions ("weapon" / "power"); v0.0.409 (pack F2): any other text is an Art's Mode (its name), with its own traits,
+          // Distance, Target and roll (empty: the Action's); "" for the others
+          mode: str(), modeTraits: new ArrayField(str()), modeDistance: str(), modeTargets: str(), modeVs: str(),
+          diceRule: str(),   // v0.0.409: "smite" (Smite's dice by Escalation, d8s against a Profane creature) or "profane" (d6s become d8s against one)
           noTiers: bool(),
           areaSize: int(0, 0),   // v0.0.215: this version's Area size (0: the Action's); Word of Radiance is "2 / 3 Emanation"
           areaRounds: int(0, 0),   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area (0: the Action's)

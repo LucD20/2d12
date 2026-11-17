@@ -21,7 +21,7 @@ function splitTop(str, sep) {
   return out.filter(Boolean);
 }
 
-const PART = /^(?:\[([BMCVR])\]\s*)?(?:(\d*)\s*\[W\]|\[(?:At|Mod)\]|(\d+d\d+(?:[+-]\d+)?|\d+))(?:\s+([A-Za-z]+))?$/i;
+const PART = /^(?:\[([BMCVR])\]\s*)?(?:(\d*)\s*\[W\]|\[(?:At|Mod)\]|(\d+d\d+!?(?:[+-]\d+)?|\d+))(?:\s+([A-Za-z]+))?$/i;   // v0.0.409: a die written with ! (Smite's 1d6!)
 
 /** One damage piece written like the card ("[B] 1[W] Sl + [M] 1d6 Ho"): its Instances, or null if it isn't damage. */
 function cardDamage(piece) {

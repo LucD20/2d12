@@ -105,11 +105,11 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
   const btns = versionButtons(versions.map(v => v.ap), { reaction: !!it.reaction, inCombat: !!now, ap: now?.ap ?? 0, rap: now?.rap ?? 0 });
   const offAt = ap => btns.find(b => b.ap === (Number(ap) || 0)) ?? { off: false, why: "" };
   const headBtn = v => {
-    const b = offAt(v.ap), mode = v.mode ? ` <span class="ap-mode">${MODE[v.mode]}</span>` : "";
+    const b = offAt(v.ap), mode = v.mode ? ` <span class="ap-mode">${esc(MODE[v.mode] ?? v.mode)}</span>` : "";   // v0.0.409: an Art's Mode by its name
     if (!canUse) return `<span class="ap-vcost">${esc(b.cost ?? (it.reaction ? `${v.ap}R` : `${v.ap} AP`))}</span>${mode}`;
     return b.off
       ? `<span class="ap-vwrap" data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn no" aria-disabled="true" disabled aria-label="${esc(`${b.label}: ${b.why}`)}">${esc(b.label)}</button></span>${mode}`
-      : `<button type="button" class="ap-vbtn" data-action="useVersion" data-ap="${v.ap}" data-tooltip="Use the ${esc(b.cost)} Version" aria-label="Use ${esc(item.name)}, the ${esc(b.cost)} Version">${esc(b.label)}</button>${mode}`;
+      : `<button type="button" class="ap-vbtn" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""} data-tooltip="Use the ${esc(b.cost)} Version" aria-label="Use ${esc(item.name)}, the ${esc(b.cost)} Version">${esc(b.label)}</button>${mode}`;
   };
 
   // The Tier table: a row per Tier (one "Tiers 1–3" row when nothing changes between them), then Critical; a column per Version.

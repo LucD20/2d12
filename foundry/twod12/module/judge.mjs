@@ -1,0 +1,68 @@
+// The Paladin's Judge (pack F2, v0.0.409; book, the Paladin: Judge). Judge marks a creature (mark.mjs, the mark's kind "judge"): it is Judged by
+// the Paladin until the encounter ends or it goes Down. A creature Judged by you counts as Profane for you (Smite's d8s, Word of Radiance's
+// d8s, every "Profane" rule of yours); the first time each round it damages an ally within 5 squares of you, that damage is reduced by your
+// Power Modifier (damage.mjs applyToActor). Weight of Judgment (Escalation 4) takes 2 from its Speed (data.mjs, to a minimum of 1).
+import { markOf, isMarked } from "./automation.mjs";
+import { tagChoices } from "./config.mjs";
+const F = "twod12";
+const norm = s => String(s ?? "").trim().toLowerCase();
+const actorOf = d => (d?.documentName === "Actor" ? d : d?.actor ?? null);
+
+/** Does this creature have an Action that Judges (Judge)? */
+export const judgesWith = actor => (actor?.itemTypes?.action ?? []).some(i => i.system?.marksTarget && i.system?.markKind === "judge");
+/** Is the target (an actor or a token) Judged by this creature? */
+export const isJudgedBy = (judge, target) => !!judge && !!target && judgesWith(judge) && markOf(judge)?.kind === "judge" && isMarked(judge, target);
+/** Pure: does a creature's Tags list hold Profane (keys or their labels)? */
+export function hasProfaneTag(target, labels = {}) {
+  const a = actorOf(target) ?? target;
+  return [...(a?.system?.tags ?? [])].some(k => norm(k) === "profane" || norm(labels[k]) === "profane");
+}
+/** Is the target Profane for this creature: the Profane Tag, or Judged by it ("counts as Profane for you")? */
+export function isProfaneFor(source, target) {
+  let labels = {};
+  try { labels = tagChoices() ?? {}; } catch (e) { /* no world tags */ }
+  return hasProfaneTag(target, labels) || isJudgedBy(source, target);
+}
+
+/** Pure: Smite's dice (book, Smite): 1 a point of Escalation, up to 4, plus the extra ones (Tier 3's, the Reaction AP's); d8s against a Profane creature. */
+export const smiteDice = (escalation, extra = 0, profane = false) => `${Math.min(4, Math.max(0, Math.trunc(Number(escalation) || 0))) + Math.max(0, Math.trunc(Number(extra) || 0))}d${profane ? 8 : 6}!`;
+/**
+ * Pure: a Version's dice under its dice rule (data.mjs diceRule). "smite": a written "Nd6!" is Smite's dice with N - 1 extra (Tier 1 and 2 write
+ * 1d6!, Tier 3 2d6!), plus 1 with the Reaction AP spent; "profane": its d6s are d8s against a Profane creature (Word of Radiance). Other dice stay.
+ */
+export function ruledDice(dice, rule, { escalation = 0, profane = false, more = false } = {}) {
+  const d = String(dice ?? "");
+  if (rule === "smite") { const m = d.match(/^(\d+)d6!?$/); return m ? smiteDice(escalation, Number(m[1]) - 1 + (more ? 1 : 0), profane) : d; }
+  if (rule === "profane" && profane) return d.replace(/(\d+)d6(!?)/g, "$1d8$2");
+  return d;
+}
+
+/** Pure: the key of the round (once each round), or "" outside a combat. */
+export const roundKey = combat => (combat?.started ? `${combat.id}:${combat.round}` : "");
+/**
+ * Before damage lands on `actor` (damage.mjs): the Paladins near it whose Judged creature is dealing it. The first time each round the Judged
+ * creature damages an ally within 5 squares of its judge, that damage is reduced by the judge's Power Modifier. Returns [{ judge, by }].
+ */
+export async function judgeReductions(actor, from) {
+  if (!from?.uuid || !globalThis.canvas?.tokens) return [];
+  let src = null;
+  try { src = actorOf(await fromUuid(from.uuid)); } catch (e) { src = null; }
+  if (!src) return [];
+  const me = actor.getActiveTokens?.()[0] ?? null;
+  if (!me) return [];
+  const { tokenDistance } = await import("./light.mjs");
+  const key = roundKey(game.combat), out = [];
+  for (const t of canvas.tokens.placeables) {
+    const j = t.actor;
+    if (!j || j.uuid === actor.uuid || !isJudgedBy(j, src)) continue;
+    if (Number(t.document.disposition) !== Number(me.document.disposition)) continue;   // the judge's ally
+    if (tokenDistance(t, me) > 5) continue;
+    const seen = j.getFlag?.(F, "judgeRound") ?? "";
+    if (key && seen === key) continue;   // the first time each round
+    const by = Math.max(0, Number(j.system?.powerMod) || 0);
+    if (!by) continue;
+    if (key) { try { if (j.isOwner) await j.setFlag(F, "judgeRound", key); else game.socket?.emit("system.twod12", { type: "setFlag", actorUuid: j.uuid, key: "judgeRound", value: key }); } catch (e) { /* not kept */ } }
+    out.push({ judge: j, by });
+  }
+  return out;
+}

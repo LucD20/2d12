@@ -135,7 +135,8 @@ export function perceive(observer, target, { loe = true } = {}) {
   if (loe && !blind && target) {
     const raw = tokenLight(target), light = seenLight(raw, os);
     const how = light === raw ? `Sight, ${LIGHT_NAMES[raw]} light` : `Sight (${os.darksight ? "Dark Sight" : "Dim-light Sight"}), ${LIGHT_NAMES[raw]} light`;
-    if (light === "bright") options.push(["clear", how]);
+    // v0.0.409 (pack F2; book, Chapter 8, Half-Blinded): its Sight perceives no creature better than Obscured
+    if (light === "bright") options.push(o?.statuses?.has?.("half-blinded") ? ["obscured", `${how} (Half-Blinded)`] : ["clear", how]);
     else if (light === "dim") options.push(["obscured", how]);
   }
   if (hears(observer, target)) options.push(["hidden", "Hearing"]);

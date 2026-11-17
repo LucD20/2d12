@@ -1,10 +1,10 @@
-Rebuke x1: @Move[pushed|distance:2], and @Condition[frightened|rounds:1]{Frightened} of you for 1 round. | its chain: @Move[pushed|distance:1|t1:2] @Condition[frightened|rounds:1|tier:1]
+Rebuke x1: Its Move Action is disrupted. | its chain: @Condition[hindered|eot]
 Heartseeker x3: @Condition[vulnerable|value:1|eot] | its chain: @Condition[vulnerable|value:1|eot|tier:3]
 Marksman's Shot critical: The target is @Condition[blinded|eot]{Blinded (EoT)}. | its chain: @Condition[vulnerable|value:2|eot|tier:3] @Condition[blinded|eot|crit:yes]
-Word of Radiance x3: @Move[pushed|distance:2] | its chain: @Move[pushed|distance:1|t3:2|pick:yes|from:area] @Condition[prone|crit:yes]
-Bulwark of Faith effects: The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. | its chain: @Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1]
+Word of Radiance x3: @Move[pushed|distance:1] | its chain: @Move[pushed|distance:1|t1:3|t2:2|t3:1|pick:yes|from:area]
+Bulwark of Faith effects: The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. | its chain: @Guard[rally] @Pause[After the damage] @Move[slid|distance:1]
 Open Season effects: Make a [Ranged, Shot] Weapon Attack (1A) against your @Book[Marked Quarry]{Marked Quarry}. For 1 round, they are @Condition[vulnerable|value:2], and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi. | its chain: @Condition[vulnerable|value:2|rounds:1] @Effect[Compendium.twod12.effects.Item.dA2NWETFGabgFNlC|who:targets]
 no chain marker left: true | no state module: true
 the per-card text overrides left (only Lock & Loose's: its Hindered is an Effect by Tier, not a chain): x2: For 1 round, the creature is Hindered un
 a Reaction an Aura brings reaches as far as the Aura: true | 'only a creature you threaten' only while on: true
-ranks: Word of Radiance mithril, Bulwark of Faith mithril, Rebuke diamond, Heartseeker diamond, Open Season diamond
+ranks: Word of Radiance diamond, Bulwark of Faith diamond, Rebuke diamond, Heartseeker diamond, Open Season diamond

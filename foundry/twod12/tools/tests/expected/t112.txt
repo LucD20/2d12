@@ -1,33 +1,40 @@
 documents: 223
-references: 148 | broken: none
+references: 131 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): true | its id is the old one: vaYnV1XM6HT1TpMP
-Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Divine Power, Kindled Wrath | Hallmark Action (items, choice, pick 1): Smite, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Encounter Pick (repertoire, encounter, pick 1) | Escalation 1 Passive (items, choice, pick 1): Radiant Zeal, Divine Surge, Font of Mercy | Escalation 2 Passive (items, choice, pick 1): Searing Blows, Mending Light | Escalation 3 Passive (items, choice, pick 1): Reckoning, Hallowed Stance | Apex (items, choice, pick 1): Final Verdict, Hallowed Dawn | Talent (talent, pick 1)
-Level 2: Talent (talent, pick 1)
-Level 3: Talent (talent, pick 1)
-Level 4: Talent (talent, pick 1)
-Repertoire: Holy Wrath, Word of Radiance, Bulwark of Faith, Beacon, Consecrated Ground, Miraculous Recovery, Divine Intervention | Escalation: Radiant Zeal, Divine Surge, Font of Mercy, Searing Blows, Mending Light, Reckoning, Hallowed Stance / Final Verdict, Hallowed Dawn
+Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Judge, Smite | Hallmark Action (items, choice, pick 1): Binding Light, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Art (items, choice, pick 1): Lantern of Faith, Hold the Line, Commandment | Escalation 2 Ability (items, choice, pick 1): Armor of Faith, Roving Judgment | Skill Talent (talent, pick 1)
+Level 2: Escalation Hook (items, granted): Kindled Wrath | Encounter Pick (items, choice, pick 1): Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation 4 Ability (items, choice, pick 1): Weight of Judgment, Tireless Vigil | Talent (talent, pick 1)
+Level 3: Second Art (items, choice, pick 1): Lantern of Faith, Hold the Line, Commandment | Escalation 6 Ability (items, choice, pick 1): Reckoning, Hallowed Stance | Skill Talent (talent, pick 1)
+Level 4: Stage Talent (talent, pick 1)
+Repertoire: Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation: Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil, Hallowed Stance / Reckoning
 pick Features gone: true | Health high 20 / low 10 (Stage 1 +0 / +0)
 --- the cards
-Smite: divine,signature,strike,weapon | 1 AP 1[W] / 1[W]+1d6 Ho / 1[W]+1d8 Ho || 2 AP 1[W]+1d6 Ho / 1[W]+2d6 Ho / 1[W]+2d10 Ho || 3 AP 1[W]+1d8 Ho / 1[W]+2d8 Ho / 1[W]+3d8 Ho
-Smite 3 AP effects: The target sheds @Book[Bright]{Bright light} in a @Template[emanation|distance:2|rounds:1] and takes 1 Bane when they try to @UUID[Compendium.twod12.actions.Item.vq0nKfKlyhogs75E]{Hide}, for 1 round. You or one ally in the Bright light gain @Guard[1d8+mod|s2:2d6+mod|s3:2d8+mod]{Guard 1d8 + [Mod]}. The other creatures in the light, you excepted, are @Move[pushed|distance:1], away from the target.
-Lay On Hands: One willing creature | 1 AP: The target can use @Rally[1]. || 2 AP: The target can use @Rally[1|extra:1d6+pow]{1 Rally Point (+1d6+Pow)}, healing 1d6 + your Power Modifier more. || 3 AP: The target can use @Rally[2|extra:1d6+pow]{2 Rally Points (+1d6+Pow)}, healing 1d6 + your Power Modifier more.
-Holy Wrath: encounter | 2 AP 1[W]+1d8 Ho / 1[W]+2d8 Ho / 1[W]+3d8 Ho || 3 AP 1[W]+2d8 Ho / 1[W]+3d8 Ho / 1[W]+4d8 Ho
-Shield of Faith: turn interrupt | 1R | A [Strike] Action would damage you or an ally within 5 squares. | The damage that Strike deals to the target is reduced by @Reduce[2d6+pow|s2:3d6+pow|s3:4d6+pow]{2d6 + Pow} (3d6 at Stage 2, 4d6 at Stage 3).
-Bulwark of Faith: encounter interrupt | 1R | A [Strike] Action would damage an ally within 5 squares. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1].
-Beacon (was Aura of Protection): Escalation undefined encounter 1 AP -> Beacon
-Final Verdict: Escalation 3 encounter 2 AP All enemies in the Area | 1 emanation (enemies) | You roll once and compare the result to each target's AD. Each target you hit is @Move[pus
-Hallowed Dawn: Escalation 3 encounter 3 AP All creatures in the Area | 2 emanation (all) | You and each ally in the Area heal @Heal[3d6+pow|s2:4d6+pow|s3:6d6+pow]{Heal 3d6 + Pow} (4
-Consecrated Ground: For 3 rounds, enemies in the area take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal @Heal[1d4]{Heal 1d4} at the start of each of their turns.
+Judge: atwill 10 One enemy you can see | marks: true judge | 0 AP: Special: You can use this only at the start of an encounter, or as a 0R when the creature you Judged goes Down. The target is Judged by you until the encounter ends. || 1 AP: The target is Judged by you instead of the one you had.
+Smite: divine,signature,strike,weapon encounter | 2 AP 1d6! Ho / 1[W]+1d6! Ho / 1[W]+2d6! Ho (dice rule smite)
+Binding Light: 2 AP 1d6 Ho / 1[W]+1d6 Ho / 1[W]+1d8 Ho |  / @Condition[immobilized|rounds:1] / @Condition[immobilized|rounds:1]
+Lay On Hands: One willing ally | Setup: You @Move[advance|distance:5]{Advance up to 5 squares} in a straight line toward the target. | 1 AP: The target gains @Guard[2+pow]{Guard 2 + Pow}. || 2 AP: The target gains @Guard[2+pow]{Guard 2 + Pow} and can use @Rally[1].
+Shield of Faith: turn interrupt strikeDamage 5 | 1R | An enemy's [Strike] Action would damage the target. | That damage is reduced by @Reduce[1+pow]{1 + Pow}, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). [after: @Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger]]
+Rebuke: turn trigger enemyAway 3 | 1R | The target moves away from you. | The target is @Condition[hindered|eot]. [after: @Condition[hindered|eot]]
+Bulwark of Faith: encounter interrupt strikeDamage 5 | 1R | An enemy's [Strike] Action would damage the target. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. [after: @Guard[rally] @Pause[After the damage] @Move[slid|distance:1]]
+Lantern of Faith (Art): Kindle 1 AP: You shed @Book[Bright]{Bright light} 3 until the encounter ends. {Kindle (Bright light 3)} || Reveal 1 AP 5: The target sheds @Book[Bright]{Bright light} 1 (1 round). {Reveal (Bright light 1)} || Glare 1 AP [magic,save] 5 vs instinct: @Condition[half-blinded|eot]{Half-Blinded (EoT)}
+Hold the Line (Art): Brace 1 AP: Squares adjacent to you are Difficult Terrain for enemies (1 round). {Brace} || Trade Places 1 AP reach: You and the target swap squares. Each of you is moved by a Reposition. || Rescue 1 AP reach: @Move[reposition|distance:2|reach:yes] the target.
+Commandment (Art): Challenge 1 AP 5: The target is @Condition[taunted|rounds:1]{Taunted} by you (1 round). || Courage 1 AP: You and allies within 3 squares of you ignore the Frightened condition (1 round). {Courage} || Kneel 1 AP [magic,save] 5 vs appeal: @Condition[prone]
+Word of Radiance: Escalation undefined encounter 2 AP All enemies in the Area | 2 emanation (enemies) | 3d6 Ho / 2d6 Ho / 1d6 Ho | @Move[pushed|distance:1|t1:3|t2:2|t3:1|pick:yes|from:area]
+Reckoning: Escalation 6 encounter 0 AP All enemies in the Area | 2 emanation (enemies) | - / - / - | @Move[pushed|distance:2|pick:yes|from:area] @Condition[frightened|rounds:1]
+Consecrated Ground: For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains @Guard[pow]{Guard Pow}. | the Zone: {"carry":{"on":false,"who":"enemies","self":false,"fx":"","fxName":""},"carry2":{"who":"enemies","on":false,"self":false,"fx":"","fxName":""},"heal":{"on":false,"who":"allies","self":true,"formula":"1d4"},"ht":{"gives":{"on":false,"fx":"","fxName":""},"on":false,"who":"all","self":false,"entering":t
 --- the passives and effects
-Divine Power: ondamage Ho Profane -> Divine Power (1 Bane) | that effect: boonbane Banes on [Strike] 1 eot | Profane Judgment gone: true
-Font of Mercy: Paladin Escalation | While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more.
-Radiant Zeal: Paladin Escalation | While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [R] 1d6 Ho.
-Hallowed Stance: Paladin Escalation | While your Escalation is 3 or more, you and your adjacent allies take less damage from each instance, reduced by twice your Power Modifier. (Not automated.)
-the Aura: aura Aura 2 allies -> Beacon (+1 Defense) | lasts: rounds
-Lay On Hands' strike: bonusdamage 2d8 M Ho t2,t3 | ends after: strike
-old cards: Vow of Enmity, Word of Radiance kept | in no level: false
-Aveline (Human Paladin, Smite): Divine Power, Kindled Wrath, Smite, Rebuke, Holy Wrath, Radiant Zeal, Searing Blows, Reckoning, Final Verdict | ids unique: true
-Durgan (Dwarf Paladin, Lay On Hands): Divine Power, Kindled Wrath, Lay On Hands, Shield of Faith, Beacon, Font of Mercy, Mending Light, Hallowed Stance, Hallowed Dawn, Keep Them Off | ids unique: true
+Kindled Wrath: Paladin Feature, escalation passive false | Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1. | hooks [] | settings eschook
+Armor of Faith: Paladin Escalation Passive, escalation passive true | When you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier. | hooks [{"kind":"reactionGuard","traits":["divine"],"formula":"1+pow"}] | settings 
+Roving Judgment: Paladin Escalation Passive, escalation passive true | The 1 AP use of Judge costs you 0 AP. | hooks [{"kind":"apCost","markKind":"judge","ap":1,"cost":0}] | settings 
+Weight of Judgment: Paladin Escalation Passive, escalation passive true | A creature Judged by you has its Speed reduced by 2 (to a minimum of 1). | hooks [] | settings 
+Tireless Vigil: Paladin Escalation Passive, escalation passive true | You gain 1 more Reaction AP when you regain AP. It pays only for [Divine] Reactions. | hooks [{"kind":"rapMore","n":1}] | settings 
+Hallowed Stance: Paladin Escalation Passive, escalation passive true | Once on your turn, a [Divine] Action you use gains "Setup: You Advance 3." | hooks [{"kind":"setupAdvance","traits":["divine"],"n":3}] | settings 
+Kindle (Bright light 3): encounter | light | You shed Bright light 3 (Dim light 3 more) until the encounter ends (Lantern of Faith, Kindle).
+Reveal (Bright light 1): rounds | light | The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).
+Brace: rounds | aura | For 1 round, the squares adjacent to you are Difficult Terrain for enemies (Hold the Line, Brace).
+Courage: rounds | note | For 1 round, you and allies within 3 squares of you ignore the Frightened condition (Commandment, Courage).
+the old cards out of Foundry: all gone | old cards kept in their folder: Vow of Enmity | in no level: true
+Aveline (Human Paladin, Smite): Judge, Smite, Binding Light, Rebuke, Commandment, Roving Judgment, Kindled Wrath, Word of Radiance, Weight of Judgment, Lantern of Faith, Reckoning | ids unique: true
+Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Kindled Wrath, Bulwark of Faith, Tireless Vigil, Commandment, Hallowed Stance, Keep Them Off | ids unique: true
 Sylwen (Elf Archer, Double Shot): Sharpshooter, Mark Quarry, Thrill of the Kill, Double Shot, Overwatch, Marksman's Shot, Killer's Focus, Hunter's Edge, Finisher, Deathmark, Heartseeker | ids unique: true
 Kaela (Human Archer, Rolling Shot): Sharpshooter, Mark Quarry, Thrill of the Kill, Rolling Shot, Covering Shot, Covering Fire, Vanish, Sure Step, Staggering Shot, Open Season, Skirmish Shot | ids unique: true
 Bandit Thug (grunt, speed 5): Cudgel atwill, Low Blow round

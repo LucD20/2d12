@@ -6,6 +6,7 @@ import { allEffects } from "./passives.mjs";
 import { applyEffects, originInfo } from "./effects.mjs";
 import { tagChoices, TWOD12 } from "./config.mjs";
 import { esc, hoverOf } from "./util.mjs";
+import { isJudgedBy } from "./judge.mjs";
 const F = "twod12";
 const norm = s => String(s ?? "").trim().toLowerCase();
 const fxName = uuid => { try { return (typeof fromUuidSync === "function" && fromUuidSync(uuid)?.name) || "an effect"; } catch (e) { return "an effect"; } };
@@ -16,6 +17,7 @@ export function matchingTriggers(source, target, comps) {
   let labels = {};
   try { labels = tagChoices() ?? {}; } catch (e) { /* no world tags */ }
   const tags = new Set([...(target?.system?.tags ?? [])].flatMap(k => [norm(k), norm(labels[k])]).filter(Boolean));
+  if (isJudgedBy(source, target)) tags.add("profane");   // v0.0.409 (Judge): a creature Judged by you counts as Profane for you
   const out = new Map();
   for (const e of allEffects(source)) {
     if (effectOff(source, e)) continue;

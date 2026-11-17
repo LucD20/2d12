@@ -25,28 +25,24 @@ paladin.levels.forEach((l, i) => console.log(`Level ${i + 1}:`, l.sections.map(s
 console.log("Repertoire:", paladin.repertoire.map(nameOf).join(", "), "| Escalation:", paladin.escPassives.map(nameOf).join(", "), "/", paladin.escActives.map(nameOf).join(", "));
 console.log("pick Features gone:", !["Hallmark Action", "Encounter Pick", "Talent (Level 1)", "Talent (Level 2)"].some(n => docs.some(d => d.name === n)), "| Health high " + paladin.healthHigh + " / low " + paladin.healthLow + " (Stage 1 +" + paladin.stepHigh1 + " / +" + paladin.stepLow1 + ")");
 console.log("--- the cards");
+// v0.0.409 (pack F2): the redesigned Paladin of Stage 0 (book/cards/stage0/paladin.json, read through load.mjs loadFoundryCards)
 const act = n => byName("actions", n).system;
 const tiersOf = (n, i) => ["t1", "t2", "t3"].map(t => act(n).versions[i][t].map(x => (x.useW ? "1[W]" : "") + (x.dice ? `${x.useW ? "+" : ""}${x.dice}${x.subtype ? " " + x.subtype : ""}` : "")).join("+") || "-").join(" / ");
 const txt = h => String(h ?? "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-console.log("Smite:", act("Smite").traits.join(","), "|", act("Smite").versions.map((v, i) => `${v.ap} AP ${tiersOf("Smite", i)}`).join(" || "));
-console.log("Smite 3 AP effects:", txt(act("Smite").versions[2].effects));
-console.log("Lay On Hands:", act("Lay On Hands").targets, "|", act("Lay On Hands").versions.map(v => `${v.ap} AP: ${txt(v.effects)}${v.fx.all.length ? ` [${v.fx.all.map(x => nameOf(x.uuid)).join(", ")}]` : ""}`).join(" || "));
-console.log("Holy Wrath:", act("Holy Wrath").frequency, "|", act("Holy Wrath").versions.map((v, i) => `${v.ap} AP ${tiersOf("Holy Wrath", i)}`).join(" || "));
-for (const n of ["Shield of Faith", "Bulwark of Faith"]) console.log(`${n}:`, act(n).frequency, act(n).reactionKind, `| ${act(n).versions.map(v => v.ap + "R").join("/")} | ${act(n).trigger} | ${act(n).versions.map(v => txt(v.effects)).join(" || ")}`);
-console.log("Beacon (was Aura of Protection):", `Escalation ${act("Beacon").escalation}`, act("Beacon").frequency, `${act("Beacon").versions[0].ap} AP`, "->", act("Beacon").versions[0].fx.all.map(x => nameOf(x.uuid)).join(", "));
-// Pack R-classes (v0.0.235): Divine Surge is an Escalation 1 Passive (a Feature), the Apexes are Encounter Actions that need Escalation 3.
-for (const n of ["Final Verdict", "Hallowed Dawn"]) console.log(`${n}:`, `Escalation ${act(n).escalation}`, act(n).frequency, `${act(n).versions[0].ap} AP`, act(n).targets, "|", act(n).areaCfg ? `${act(n).areaCfg.size} ${act(n).areaCfg.shape} (${act(n).areaCfg.targets})` : "no area", "|", txt(act(n).versions[0].effects).slice(0, 90));
-console.log("Consecrated Ground:", txt(act("Consecrated Ground").versions[0].effects));
+console.log("Judge:", act("Judge").frequency, act("Judge").distance, act("Judge").targets, "| marks:", act("Judge").marksTarget, act("Judge").markKind, "|", act("Judge").versions.map(v => `${v.ap} AP: ${txt(v.effects)}`).join(" || "));
+console.log("Smite:", act("Smite").traits.join(","), act("Smite").frequency, "|", act("Smite").versions.map((v, i) => `${v.ap} AP ${tiersOf("Smite", i)} (dice rule ${v.diceRule})`).join(" || "));
+console.log("Binding Light:", act("Binding Light").versions.map((v, i) => `${v.ap} AP ${tiersOf("Binding Light", i)} | ${[v.x1, v.x2, v.x3].map(txt).join(" / ")}`).join(" || "));
+console.log("Lay On Hands:", act("Lay On Hands").targets, "| Setup:", txt(act("Lay On Hands").setup), "|", act("Lay On Hands").versions.map(v => `${v.ap} AP: ${txt(v.effects)}`).join(" || "));
+for (const n of ["Shield of Faith", "Rebuke", "Bulwark of Faith"]) console.log(`${n}:`, act(n).frequency, act(n).reactionKind, act(n).moment, act(n).momentRange, `| ${act(n).versions.map(v => v.ap + "R").join("/")} | ${act(n).trigger} | ${act(n).versions.map(v => `${txt(v.effects)} [after: ${v.after}]`).join(" || ")}`);
+for (const n of ["Lantern of Faith", "Hold the Line", "Commandment"]) console.log(`${n} (Art):`, act(n).versions.map(v => `${v.mode} ${v.ap} AP${v.modeTraits?.length ? ` [${v.modeTraits.join(",")}]` : ""}${v.modeDistance ? ` ${v.modeDistance}` : ""}${v.modeVs ? ` vs ${v.modeVs}` : ""}: ${txt(v.effects || v.x1)}${v.fx.all.length ? ` {${v.fx.all.map(x => nameOf(x.uuid)).join(", ")}}` : ""}`).join(" || "));
+for (const n of ["Word of Radiance", "Reckoning"]) console.log(`${n}:`, `Escalation ${act(n).escalation}`, act(n).frequency, `${act(n).versions[0].ap} AP`, act(n).targets, "|", act(n).areaCfg ? `${act(n).areaCfg.size} ${act(n).areaCfg.shape} (${act(n).areaCfg.targets})` : "no area", "|", tiersOf(n, 0), "|", act(n).versions[0].after);
+console.log("Consecrated Ground:", txt(act("Consecrated Ground").versions[0].effects), "| the Zone:", JSON.stringify(byName("effects", "Consecrated Ground").system.zone?.inside ?? {}).slice(0, 300));
 console.log("--- the passives and effects");
 const feat = n => byName("features", n).system, fx = n => byName("effects", n).system;
-const pj = feat("Divine Power").settings[0];
-console.log("Divine Power:", pj.type, pj.trigSub, pj.trigTag, "->", nameOf(pj.fxUuid), "| that effect:", fx("Divine Power (1 Bane)").settings[0].type, "Banes on [Strike]", fx("Divine Power (1 Bane)").settings[0].banes, fx("Divine Power (1 Bane)").duration.type, "| Profane Judgment gone:", !byName("features", "Profane Judgment"));
-for (const n of ["Font of Mercy", "Radiant Zeal", "Hallowed Stance"]) console.log(`${n}: ${feat(n).category} | ${txt(feat(n).description)}`);
-const ap = fx("Beacon").settings[0];
-console.log("the Aura:", ap.type, `Aura ${ap.auraSize}`, ap.auraWho, "->", nameOf(ap.fxUuid), "| lasts:", fx("Beacon").duration.type || "until the encounter ends (an Escalation effect)");
-const lh = fx("Lay On Hands (Holy Strike)").settings[0];
-console.log("Lay On Hands' strike:", lh.type, lh.dmg, lh.dmgPool, lh.dmgSub, lh.tiers.join(","), "| ends after:", fx("Lay On Hands (Holy Strike)").expireOn.join(","));
-console.log("old cards:", docs.filter(d => d.name === "Vow of Enmity" || d.name === "Word of Radiance").map(d => d.name).join(", "), "kept | in no level:", !paladin.levels.some(l => l.sections.some(x => x.items.map(nameOf).some(n => ["Vow of Enmity", "Word of Radiance", "Call to Arms"].includes(n)))) && !paladin.repertoire.map(nameOf).some(n => ["Word of Radiance", "Call to Arms"].includes(n)));
+for (const n of ["Kindled Wrath", "Armor of Faith", "Roving Judgment", "Weight of Judgment", "Tireless Vigil", "Hallowed Stance"]) console.log(`${n}: ${feat(n).category}, escalation passive ${!!feat(n).escalationPassive} | ${txt(feat(n).description)} | hooks ${JSON.stringify(feat(n).hooks ?? [])} | settings ${(feat(n).settings ?? []).map(x => x.type).join(",")}`);
+for (const n of ["Kindle (Bright light 3)", "Reveal (Bright light 1)", "Brace", "Courage"]) console.log(`${n}: ${fx(n).duration.type} | ${(fx(n).settings ?? []).map(x => x.type).join(",")} | ${txt(fx(n).description)}`);
+console.log("the old cards out of Foundry:", ["Divine Power", "Holy Wrath", "Beacon", "Final Verdict", "Hallowed Dawn", "Radiant Zeal", "Font of Mercy", "Miraculous Recovery", "Divine Intervention"].filter(n => docs.some(d => d.name === n && ["actions", "features"].includes(d.pack))).join(", ") || "all gone",
+  "| old cards kept in their folder:", docs.filter(d => d.name === "Vow of Enmity").map(d => d.name).join(", "), "| in no level:", !paladin.levels.some(l => l.sections.some(x => x.items.map(nameOf).some(n => ["Vow of Enmity", "Call to Arms"].includes(n)))));
 // v0.0.183: the four builds of the ruler, and one NPC per role (the Bestiary's examples)
 for (const f of ["aveline-human-paladin-smite", "durgan-dwarf-paladin-lay-on-hands", "sylwen-elf-archer-double-shot", "kaela-human-archer-rolling-shot"]) {
   const pc = JSON.parse(fs.readFileSync(path.join(SRC, `pcs/${f}.pc.json`), "utf8")), ids = pc.items.map(i => i._id);

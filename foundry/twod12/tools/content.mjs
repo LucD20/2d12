@@ -84,6 +84,8 @@ cond("Squeezing", "icons/svg/net.svg", "<p>You stopped moving while squeezing th
 // Foundry's blind status (no sight: twod12.mjs CONFIG.specialStatusEffects).
 const bb1 = (banes, extra = {}) => ({ type: "boonbane", boons: 0, banes, all: [], any: [], none: [], ...extra });
 cond("Frightened", "icons/svg/terror.svg", "<p>Frightened is always <b>of</b> a source (the creature or object that applied it). While you see the source (Clear or Obscured to you), all your Rolls take 1 Bane, the Save that would end Frightened included, and every square that brings you closer to it is Difficult Terrain for you (Forced Movement ignores it). Out of your Sight (a wall, Darkness), the Bane and the Difficult Terrain stop until you see it again.</p>", [bb1(1), { type: "move", text: "closer", moveHow: "difficult" }], { whileSeen: true, originFromUser: true, hover: "" });   // v0.0.323 (PACK EFFECT-SHEET): the Movement limit is a rule now; the hover card is built from the rules (its old text was the same words)
+// v0.0.409 (pack F2, Glare; book, Chapter 8): Half-Blinded, the system's status (senses.mjs perceive: Sight gives no better than Obscured)
+cond("Half-Blinded", "icons/svg/blind.svg", "<p>Your Sight perceives no creature better than Obscured: a creature that would be Clear to you is Obscured (see Senses). Your other senses aren't affected.</p>", []);
 cond("Taunted", "icons/svg/target.svg", "<p>Taunted is always <b>by</b> a creature (the one that applied it). Your Actions against any creature other than it take 1 Bane.</p>", [bb1(1, { vsOrigin: "not" })], { originFromUser: true, hover: "1 Bane on your Actions against anyone but the creature that taunted you." });
 cond("Sickened", "icons/svg/poison.svg", "<p>Sickened always has a value, such as Sickened 1. Your Body and Instinct Saves take that many Banes, and you can't eat, drink or swallow anything: no potions.</p>", [bb1(1, { all: ["__save"], attrs: ["body", "instinct"], byValue: true })], { valued: true });
 cond("Staggered", "icons/svg/paralysis.svg", "<p>You can't use Reactions. Your Reaction AP isn't lost: you can use it again when Staggered ends.</p>", [], { noReactions: true });
@@ -189,31 +191,35 @@ sp("Human", { body: 0, mind: 0, appeal: 0, instinct: 0 }, true, 3, 2, 5, 0, true
 sp("Dwarf", { body: 1, mind: 1, appeal: -1, instinct: 1 }, false, 4, 1, 4, 1);
 sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 4, 6);
 // v0.0.185 (pack C2): the classes' levels as sections (module/classlevels.mjs), from the book's "by Level" tables; the class window reads them.
-const U = names => names.map(n => uuidOf(/^(Font of Mercy|Divine Power|Kindled Wrath|Sharpshooter|Hallowed Stance|Radiant Zeal|Mending Light|Divine Surge|Searing Blows|Reckoning|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Staggering Shot)$/.test(n) ? "features" : "actions", n));
+// v0.0.409 (pack F2): the Paladin's Stage 0 Features (book/cards/stage0/paladin.json); Reckoning is an Action now (its Escalation 6 Action)
+const U = names => names.map(n => uuidOf(/^(Kindled Wrath|Armor of Faith|Roving Judgment|Weight of Judgment|Tireless Vigil|Hallowed Stance|Sharpshooter|Killer's Focus|Thrill of the Kill|Vanish|Harrying Shots|Hunter's Edge|Sure Step|Finisher|Staggering Shot)$/.test(n) ? "features" : "actions", n));
 const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "choice", pick: o.pick ?? 1, items: o.items ?? [], pairs: (o.pairs ?? []).map(([a, b]) => ({ a, b })), freq: o.freq ?? "any", category: o.category ?? "" });
 // OT (book 2026-10-30): the Repertoire and Escalation lists with their options.
 // Pack R-classes (book 2026-11-04): the Paladin rebuilt for pack R: a Hallmark Reaction (Shield of Faith or Bulwark of Faith), an Encounter Pick, one Escalation Passive per
 // level (1, 2, 3) and an Apex (an Encounter Action that needs Escalation 3) at level 1, a Talent every level; Font of Mercy is an Escalation 1 Passive, Divine Surge too,
 // Aura of Protection an Encounter Pick, Hand of Mercy a Talent. The Apexes are the class's "escActives" list (the Escalation Actions): the sheet and the class window keep working.
-const PAL_PASS1 = ["Radiant Zeal", "Divine Surge", "Font of Mercy"], PAL_PASS2 = ["Searing Blows", "Mending Light"], PAL_PASS3 = ["Reckoning", "Hallowed Stance"], PAL_APEX = ["Final Verdict", "Hallowed Dawn"];
-const PAL_PASSIVES = [...PAL_PASS1, ...PAL_PASS2, ...PAL_PASS3];
+// v0.0.409 (pack F2; book, the Paladin by Level, 2026-11-16): the redesigned Paladin of Stage 0. Level 1: Judge and Smite, a Hallmark Action
+// (Binding Light or Lay On Hands), a Hallmark Reaction (Shield of Faith or Rebuke), an Art (one of three, with Modes), the Escalation 2 ability, a
+// Skill Talent; level 2: the Escalation hook (Kindled Wrath), an Encounter Pick, the Escalation 4 ability, a Talent; level 3: a second Art, the
+// Escalation 6 ability, a Skill Talent; level 4 (not written yet): a Stage Talent. The Talent slots stay empty (Talents set aside). The rung of an
+// Escalation ability is its section's title ("Escalation 2 Ability": escblock.mjs passiveThreshold). Modifiers fixed: Weapon +1, Power +2.
+const PAL_ARTS = ["Lantern of Faith", "Hold the Line", "Commandment"], PAL_ENC = ["Bulwark of Faith", "Consecrated Ground", "Word of Radiance"];
+const PAL_E2 = ["Armor of Faith", "Roving Judgment"], PAL_E4 = ["Weight of Judgment", "Tireless Vigil"], PAL_E6 = ["Reckoning", "Hallowed Stance"];
 add("classes", "class", "Paladin", "icons/svg/angel.svg", {
-  description: "<p>A holy warrior.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
-  // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10, then pack R's steps +12 / +6 and +14 / +7, at Stages 1 and 2 since v0.0.407
-  // (the book hasn't set the later Stages' steps yet); Rally 6 (+ 1 / 2 / 3 / 4 by Stage).
+  description: "<p>You stand in front so the others can stand back. A holy warrior who judges a foe before their god, shields the allies near them, and, when the fight has built long enough, brings all of it down in one blow.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
+  // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10; v0.0.408: the Stage steps 0 until the book writes them; Rally 6 (+ 1 / 2 / 3 / 4 by Stage).
   choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
-  // v0.0.305 (pack MOD; book, the Paladin's stat box): the Modifiers are +2 and +1, the player chooses which is the Weapon Modifier (no Attribute lists).
-  modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "heavy", features: [],
-  repertoire: U(["Holy Wrath", "Word of Radiance", "Bulwark of Faith", "Beacon", "Consecrated Ground", "Miraculous Recovery", "Divine Intervention"]), escPassives: U(PAL_PASSIVES), escActives: U(PAL_APEX),
+  // v0.0.409 (book, the Paladin at a glance, 2026-11-14): Weapon Modifier +1, Power Modifier +2, fixed (the Power Modifier first).
+  modHigh: 2, modLow: 1, modOrder: "power", armorTraining: "heavy", features: [],
+  repertoire: U(PAL_ENC), escPassives: U(["Armor of Faith", "Roving Judgment", "Weight of Judgment", "Tireless Vigil", "Hallowed Stance"]), escActives: U(["Reckoning"]),
   levels: [
-    { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Features", "items", { mode: "granted", items: U(["Divine Power", "Kindled Wrath"]) }),
-      sec("pal1hall", "Hallmark Action", "items", { items: U(["Smite", "Lay On Hands"]) }), sec("pal1react", "Hallmark Reaction", "items", { items: U(["Shield of Faith", "Rebuke"]) }),
-      sec("pal1enc", "Encounter Pick", "repertoire", { freq: "encounter" }),
-      sec("pal1pass1", "Escalation 1 Passive", "items", { items: U(PAL_PASS1) }), sec("pal1pass2", "Escalation 2 Passive", "items", { items: U(PAL_PASS2) }), sec("pal1pass3", "Escalation 3 Passive", "items", { items: U(PAL_PASS3) }),
-      sec("pal1apex", "Apex", "items", { items: U(PAL_APEX) }), sec("pal1tal", "Talent", "talent")] },
-    { sections: [sec("pal2tal", "Talent", "talent")] },
-    { sections: [sec("pal3tal", "Talent", "talent")] },   // v0.0.407 (book, Chapter 5): no Daily Pick in Stage 0 (levels 1-3)
-    { sections: [sec("pal4tal", "Talent", "talent")] }
+    { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Features", "items", { mode: "granted", items: U(["Judge", "Smite"]) }),
+      sec("pal1hall", "Hallmark Action", "items", { items: U(["Binding Light", "Lay On Hands"]) }), sec("pal1react", "Hallmark Reaction", "items", { items: U(["Shield of Faith", "Rebuke"]) }),
+      sec("pal1art", "Art", "items", { items: U(PAL_ARTS) }), sec("pal1esc2", "Escalation 2 Ability", "items", { items: U(PAL_E2) }), sec("pal1skill", "Skill Talent", "talent")] },
+    { sections: [sec("pal2hook", "Escalation Hook", "items", { mode: "granted", items: U(["Kindled Wrath"]) }), sec("pal2enc", "Encounter Pick", "items", { items: U(PAL_ENC) }),
+      sec("pal2esc4", "Escalation 4 Ability", "items", { items: U(PAL_E4) }), sec("pal2tal", "Talent", "talent")] },
+    { sections: [sec("pal3art", "Second Art", "items", { items: U(PAL_ARTS) }), sec("pal3esc6", "Escalation 6 Ability", "items", { items: U(PAL_E6) }), sec("pal3skill", "Skill Talent", "talent")] },
+    { sections: [sec("pal4tal", "Stage Talent", "talent")] }   // level 4 (the Apex, Stage 1) is not written yet
   ]
 });
 // Pack R-classes (book 2026-11-04): the Archer rebuilt for pack R, as the Paladin above: a Hallmark Reaction (Overwatch or Covering Shot), an Encounter Pick at level 1,
@@ -301,8 +307,18 @@ const dur = (type, rounds = 1) => ({ type, rounds });
 // v0.0.261 (cards session 5, Lucas): Consecrated Ground is a Zone: the placed area carries these settings; enemies inside carry the Bane while inside,
 // allies inside heal 1d4 at the start of each of their turns (the roll in the chat, then their Heal window). The zone effect itself is never applied to a creature.
 FX("Consecrated Ground (1 Bane)", "icons/svg/sun.svg", { description: "<p>1 Bane on [Weapon], [Power] and [Signature] Actions while in the Consecrated Ground.</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: [], any: ["weapon", "magic", "signature"], none: [] }] });
-FX("Consecrated Ground", "icons/svg/sun.svg", { description: "<p>The consecrated area: enemies in it take 1 Bane on [Weapon], [Power] and [Signature] Actions, and allies in it heal 1d4 at the start of each of their turns. It lasts 3 rounds (5 at 3 AP).</p>",
-  settings: [{ type: "zone", zoneWho: "enemies", fxUuid: uuidOf("effects", "Consecrated Ground (1 Bane)") }, { type: "zone", zoneWho: "allies", zoneHeal: "1d4" }] });
+// v0.0.409 (pack F2; book, Consecrated Ground, 2026-11-16): the Zone, 3 rounds: Difficult Terrain for enemies; you and your allies who start a turn in it
+// gain Guard equal to your Power Modifier (fxrules.mjs the "guard" row; areafx.mjs healAtTurnStart)
+FX("Consecrated Ground", "icons/svg/sun.svg", { description: "<p>The consecrated ground (3 rounds): Difficult Terrain for enemies; you and your allies who start a turn in it gain Guard equal to your Power Modifier.</p>",
+  where: "map", zone: { src: "action", inside: { carry: { on: false }, diff: { on: true, who: "enemies" }, guard: { on: true, who: "allies", self: true, formula: "@origin.pow" } }, show: true, outline: "#d4a62a", fill: "#d4a62a" },
+  ends: { time: { on: true, mode: "rounds", rounds: 3 } } });
+// v0.0.409 (pack F2): the effects of the Paladin's Arts (Lantern of Faith: Kindle, Reveal; Hold the Line: Brace; Commandment: Courage)
+const lantern = n => ({ type: "light", bright: n, dim: 2 * n, color: "#ffd27a", lightAlpha: 0.2, lightAnim: "sunburst", lightSpeed: 2, lightIntensity: 3 });
+FX("Kindle (Bright light 3)", "icons/svg/light.svg", { selfApplied: true, duration: dur("encounter"), description: "<p>You shed Bright light 3 (Dim light 3 more) until the encounter ends (Lantern of Faith, Kindle).</p>", settings: [lantern(3)] });
+FX("Reveal (Bright light 1)", "icons/svg/light.svg", { duration: dur("rounds"), description: "<p>The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).</p>", settings: [lantern(1)] });
+FX("Brace", "icons/svg/statue.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>For 1 round, the squares adjacent to you are Difficult Terrain for enemies (Hold the Line, Brace).</p>",
+  settings: [{ type: "aura", auraSize: 1, auraWho: "enemies", auraSelf: false, auraOutline: "#9aa3ad", auraFill: "#9aa3ad", areaRows: { carry: { on: false, who: "enemies", self: false }, diff: { on: true, who: "enemies" } } }] });
+FX("Courage", "icons/svg/aura.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>For 1 round, you and allies within 3 squares of you ignore the Frightened condition (Commandment, Courage).</p>", settings: [{ type: "note", title: "Courage", text: "You and allies within 3 squares of you ignore Frightened (1 round): by hand." }] });
 
 // Effects the Paladin's cards apply
 FX("Divine Power (1 Bane)", "icons/svg/degen.svg", { duration: dur("eot"), description: "<p>1 Bane on [Strike] Actions (EoT).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] });   // Lucas, 2026-11-13: Enfeebled left the game; Divine Power gives 1 Bane on its Strikes
@@ -310,7 +326,7 @@ FX("Beacon (+1 Defense)", "icons/svg/shield.svg", { duration: dur(""), descripti
 FX("Divine Vigil (Boon against Fear)", "icons/svg/aura.svg", { duration: dur(""), description: "<p>1 Boon on Saves against [Fear] Actions, while you are inside Divine Vigil's Aura.</p>", settings: [{ type: "boonbane", boons: 1, banes: 0, all: ["__save"], any: [], none: [], from: ["fear"] }] });
 // P1 (v0.0.181): Divine Surge marks an enemy (the ally's extra damage is a button on the mark); the Beacon (was Aura of Protection) lasts 3 rounds (v0.0.254).
 FX("Divine Surge", "icons/svg/sun.svg", { duration: dur("rounds"), description: "<p>For 1 round, the next time an ally deals damage to this creature, they deal an extra @Damage[1d8[mind,holy]]{[R] 1d8 Ho} (Divine Surge). Then remove this mark.</p>", settings: [] });
-FX("Beacon", "icons/svg/aura.svg", { selfApplied: true, duration: { type: "rounds", rounds: 3 }, description: "<p>Your Beacon: an Aura 2 around you for 3 rounds. You and allies inside gain +1 Defense, and you have Beacon's Step while it lasts (0R, Round: Evade 1 toward an ally in the Aura who takes damage).</p>", settings: [{ type: "aura", auraSize: 2, auraWho: "allies", auraSelf: true, auraOutline: "#3fb68b", auraFill: "#3fb68b", fxUuid: uuidOf("effects", "Beacon (+1 Defense)") }, { type: "inline", inlineAction: uuidOf("actions", "Beacon's Step") }] });
+// v0.0.409 (pack F2): the Beacon effect left with the old Beacon card (its Step was the card's inline Action)
 
 // Features: the Paladin's core features, the passives of the picks, and the choices
 // v0.0.187 (Lucas): the Escalation passives that add damage once a round give an Effect each turn, used up by the Action (switch it off in the roll dialog).
@@ -400,7 +416,9 @@ for (const c of CARDS) {
 
 // v0.0.185: the pick Features of v0.0.181 (Hallmark Action, Encounter Pick, Talent (Level 1)...) are gone: the classes have levels now.
 // The cards the P1 and A1 builds left out (book/paladin-old-cards.md, book/archer-old-cards.md): kept in the compendium, in folders of their own, for the Options step.
-const OLD = { "Paladin (old cards)": ["Aegis", "Mercy's Reward", "Divine Vigil", "Avenger's Oath", "Vow of Enmity", "Rebuke (old)", "Champion's Challenge", "Divine Retribution", "Call to Arms", "Judgment", "Sanctified Ground", "Divine Vigil (Boon against Fear)"],
+const OLD = { "Paladin (old cards)": ["Aegis", "Mercy's Reward", "Divine Vigil", "Avenger's Oath", "Vow of Enmity", "Rebuke (old)", "Champion's Challenge", "Divine Retribution", "Call to Arms", "Judgment", "Sanctified Ground", "Divine Vigil (Boon against Fear)",
+    // v0.0.409 (pack F2): the effects of the Paladin's pack R cards, out of Foundry's Paladin with them (kept for old worlds' sheets)
+    "Divine Power (1 Bane)", "Beacon (+1 Defense)", "Divine Surge", "Radiant Zeal", "Lay On Hands (Holy Strike)", "Smite (Bright light 1)", "Smite (Bright light 2)", "Hallowed Dawn (1 Bane)", "Hallowed Dawn (Bright light 1)", "Consecrated Ground (1 Bane)"],
   "Archer (old cards)": ["Precise Aim", "Precise Aim (1 Boon)", "Precise Aim (2 Boons)", "Quick Draw", "Wing Clip", "True Shot", "Suppressing Fire", "Steady Aim", "Perfect Shot", "Bow Mastery", "Patient Hunter"] };
 for (const [folder, names] of Object.entries(OLD)) for (const n of names) { const d = docs.filter(x => x.name === n); if (!d.length) throw new Error(`No item called ${n}`); d.forEach(x => { x.folder = folder; }); }
 
@@ -462,16 +480,16 @@ const ART = n => `systems/twod12/art/pcs/${n}`;
 // v0.0.332 (Lucas: "make level 1 versions, at least one using a shortbow and another a greatsword"): each build at level 4 and at level 1
 // (its level 1 picks only: the first Talent, no Daily Pick), named "..., level 1)"; Aveline's Greatsword and Kaela's Shortbow are among them.
 const pcBoth = o => { pc(o); pc({ ...o, name: o.name.replace(/\)$/, ", level 1)"), level: 1, picks: { 1: o.picks[1] } }); };
-// The wrath Paladin: Smite and the Greatsword (Weapon Modifier +2), the damage ladder (Radiant Zeal, Searing Blows, Reckoning, Final Verdict),
-// Holy Wrath for the opening turn, Consecrated Ground to hold a room; Heavy Blows and Whirlwind on the Greatsword, Bloodlust, Cut Through to reach the back line.
-pcBoth({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("aveline.png"), species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "weapon", health: "vigor",
-  picks: { 1: { pal1hall: "Smite", pal1react: "Rebuke", pal1tal: "Heavy Blows", pal1enc: "Holy Wrath", pal1pass1: "Radiant Zeal", pal1pass2: "Searing Blows", pal1pass3: "Reckoning", pal1apex: "Final Verdict" },
-    2: { pal2tal: "Whirlwind" }, 3: { pal3daily: "Consecrated Ground", pal3tal: "Bloodlust" }, 4: { pal4tal: "Cut Through" } }, weapon: "Greatsword", armor: "Heavy Armor" });
-// The mercy Paladin: Lay On Hands and the Pike (Power Modifier +2: the heals, Mending Light, Hallowed Stance and the Ward Defense), Range 3 to
-// guard the allies in front of him; Shield of Faith, Beacon, Divine Intervention; Challenge, Sacred Weapon, Hand of Mercy, Battering Charge (Speed 4).
+// The judging Paladin: Binding Light and the Greatsword, Rebuke, Commandment, Roving Judgment, Word of Radiance, Weight of Judgment, Lantern of
+// Faith and Reckoning (v0.0.409, pack F2: the redesigned Paladin; Smite and Judge come with every Paladin)
+pcBoth({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("aveline.png"), species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
+  picks: { 1: { pal1hall: "Binding Light", pal1react: "Rebuke", pal1art: "Commandment", pal1esc2: "Roving Judgment" },
+    2: { pal2enc: "Word of Radiance", pal2esc4: "Weight of Judgment" }, 3: { pal3art: "Lantern of Faith", pal3esc6: "Reckoning" } }, weapon: "Greatsword", armor: "Heavy Armor" });
+// The shield Paladin: Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Bulwark of Faith, Tireless Vigil (two [Divine] Reactions a round),
+// Commandment and Hallowed Stance (v0.0.409, pack F2: the redesigned Paladin)
 pcBoth({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
-  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1tal: "Challenge", pal1enc: "Beacon", pal1pass1: "Font of Mercy", pal1pass2: "Mending Light", pal1pass3: "Hallowed Stance", pal1apex: "Hallowed Dawn" },
-    2: { pal2tal: "Sacred Weapon" }, 3: { pal3daily: "Divine Intervention", pal3tal: "Hand of Mercy" }, 4: { pal4tal: "Battering Charge" } }, weapon: "Pike", armor: "Heavy Armor" });
+  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1art: "Hold the Line", pal1esc2: "Armor of Faith" },
+    2: { pal2enc: "Bulwark of Faith", pal2esc4: "Tireless Vigil" }, 3: { pal3art: "Commandment", pal3esc6: "Hallowed Stance" } }, weapon: "Pike", armor: "Heavy Armor" });
 // The far Archer: Double Shot and the Longbow (range 15, 30 with Long Draw and no Bane), the Quarry damage ladder (Killer's Focus, Hunter's Edge,
 // Finisher, Deathmark), Overwatch, Marksman's Shot, Hunter's Focus; Aim, Ricochet, Long Draw, Lesser Blessing (Rimebrand on a Double Shot turn).
 pcBoth({ name: "Sylwen (Elf Archer, Double Shot)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Sharpshooter",

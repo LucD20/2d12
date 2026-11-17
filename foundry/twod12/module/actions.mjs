@@ -2,7 +2,10 @@ import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll, techniqueState } from "./mastery.mjs";
 import { setQuarry } from "./mark.mjs";
 import { ignoredBy, markOnce, markSpent, coverIgnored } from "./automation.mjs";
-import { splitModes, splitView, SPLIT_LABEL } from "./split.mjs";
+import { splitModes, splitView, SPLIT_LABEL, artModes, modeView } from "./split.mjs";
+import { ruledDice, isProfaneFor } from "./judge.mjs";   // v0.0.409 (pack F2): Smite's dice, Profane
+import { activeHooks, hasTraits } from "./hooks.mjs";   // v0.0.409 (pack F2): the Paladin's passives
+import { sysLine } from "./sysmsg.mjs";
 import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
 import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
@@ -86,7 +89,9 @@ export async function resolveInstance(inst, ctx) {
     comps.push({ kind: "W", formula: f ? res.shown : "0", total: res.total, dice: res.dice, emp: res.emp ?? 0, src: ctx.weapon.name, sub: ctx.weapon.system.subtype ?? "" });
   }
   if (inst.dice || inst.useAt) {
-    const f = [inst.dice, inst.useAt ? String(ctx.attrVal) : ""].filter(Boolean).join(" + ");
+    // v0.0.409 (pack F2): a Version's dice rule (Smite's dice by Escalation, d8s against a Profane creature: judge.mjs ruledDice); not a bonus's dice
+    const dice = ctx.diceRule && inst.dice && !inst.source ? ruledDice(inst.dice, ctx.diceRule, ctx.ruleCtx ?? {}) : inst.dice;
+    const f = [dice, inst.useAt ? String(ctx.attrVal) : ""].filter(Boolean).join(" + ");
     const res = await evalFormula(f, ctx.rolls, ctx.empowered);
     // v0.0.321 (Lucas: Smite's "[W] + 2 Sl" didn't count as Slash): a written [Mod] (or dice) in a [W] term with no subtype of its own is the
     // weapon's damage, so it has the weapon's subtype (Ch. 1: the subtype written covers the whole expression), as the card shows it
@@ -466,6 +471,20 @@ export async function useAction(actor, item, opts = {}) {
       return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode });
     }
   }
+  // v0.0.409 (pack F2; book, Reading an Action): an Art has three Modes: the player picks one each time (the pick window), then it is used as that Mode
+  if (!opts.splitMode) {
+    const modes = artModes(item);
+    if (modes.length) {
+      let mode = modes.includes(opts.mode) ? opts.mode : null;
+      if (!mode) {
+        const { pickOne } = await import("./pickwindow.mjs");
+        const tip = m => { const v = item.system.versions.find(x => x.mode === m); return String(v?.effects || v?.x2 || "").replace(/@\w+\[[^\]]*\]\{([^}]*)\}/g, "$1").replace(/@\w+\[([^\]|]*)[^\]]*\]/g, "$1").replace(/<[^>]+>/g, ""); };
+        mode = await pickOne({ title: item.name, name: item.name, sub: "choose a Mode", icon: "fa-shapes", text: "Each time you use an Art, you choose one of its Modes.", options: modes.map(m => ({ k: m, l: m, tip: tip(m) })) });
+        if (!mode) return;
+      }
+      return useAction(actor, modeView(item, mode), { ...opts, splitMode: mode });
+    }
+  }
   const s = actor.system, it = item.system;
   // v0.0.189 asked for the targets on the map (targeting.mjs) here; v0.0.392 (Lucas) opens the roll dialog instead (its Target button and its DC).
   // v0.0.392 (Lucas: "Remove the target | no target: DC prompt. If you dont have a target, simply open the roll dialog"): the dialog shows
@@ -810,7 +829,7 @@ export async function useAction(actor, item, opts = {}) {
     targetActors: multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [],
     targetTiles: multi ? perT.map(p => ({ uuid: p.actorUuid, name: p.label, img: p.token.document?.texture?.src ?? p.actor.img ?? "", dc: p.dcInfo.dc })) : [],
     extraMods,
-    notices: [...(opts.grant ? [{ text: `Granted use: ${String(opts.grant.effect?.name ?? opts.label ?? "").replace(/\s*\(.*\)\s*$/, "")}, ${opts.grant.grant?.ap ? `${opts.grant.grant.ap} AP` : "free"}${opts.grant.grant?.boons ? `, ${opts.grant.grant.boons} Boon${opts.grant.grant.boons === 1 ? "" : "s"}` : ""}${opts.grant.grant?.banes ? `, ${opts.grant.grant.banes} Bane${opts.grant.grant.banes === 1 ? "" : "s"}` : ""} (${Math.max(0, (opts.grant.grant?.left ?? 1) - 1)} left after this)`, icon: "fa-gift", why: "A use another Action gave you: it doesn't count toward this Action's Frequency or the 3 Strikes of your turn. For a normal use, close this and Shift-click the use button." }] : []), ...extraNotices, ...(opts.splitMode ? [{ text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
+    notices: [...(opts.grant ? [{ text: `Granted use: ${String(opts.grant.effect?.name ?? opts.label ?? "").replace(/\s*\(.*\)\s*$/, "")}, ${opts.grant.grant?.ap ? `${opts.grant.grant.ap} AP` : "free"}${opts.grant.grant?.boons ? `, ${opts.grant.grant.boons} Boon${opts.grant.grant.boons === 1 ? "" : "s"}` : ""}${opts.grant.grant?.banes ? `, ${opts.grant.grant.banes} Bane${opts.grant.grant.banes === 1 ? "" : "s"}` : ""} (${Math.max(0, (opts.grant.grant?.left ?? 1) - 1)} left after this)`, icon: "fa-gift", why: "A use another Action gave you: it doesn't count toward this Action's Frequency or the 3 Strikes of your turn. For a normal use, close this and Shift-click the use button." }] : []), ...extraNotices, ...(opts.splitMode ? [SPLIT_LABEL[opts.splitMode] ? { text: `Split: ${SPLIT_LABEL[opts.splitMode]}`, icon: "fa-code-branch", why: "A Split Action is used as an Action of the mode you chose (Weapon or Power)." } : { text: `Mode: ${opts.splitMode}`, icon: "fa-shapes", why: "An Art is used in the Mode you chose." }] : []), ...(wUse?.thrown && wUse.mode === "ranged" ? [{ text: `Thrown: Ranged, Range ${wUse.range.split("/").join(" / ")}`, icon: "fa-person-rifle", why: `${previewWeapon?.name} is thrown: a Ranged Action with its Thrown Range (the target is beyond its melee Range, or the Action is Ranged). It leaves your hand.` }] : [])],
     withDamage: true,
     withReload: usesReload,
     bonusChips
@@ -834,7 +853,9 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.264 (Lucas): a Grant's "On [a result], the card says [line]" goes on the granted use's card rows (freeuse.mjs withGrantLine)
   if (opts.grant?.grant) version = withGrantLine(version, opts.grant.grant);
   if (basicKey === "crawl" && version.ap >= 2 && Number(s.moveSpeed ?? s.speed ?? 0) < 5) return ui.notifications.warn(`${actor.name}'s Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version).`);
-  const apCost = opts.free ? (opts.ap ?? 0) : version.ap;
+  // v0.0.409 (pack F2, Roving Judgment: hooks.mjs apCost): an Action of a mark kind at this AP costs less while the passive works
+  const costHook = opts.free ? null : activeHooks(actor, "apCost").find(h => (!h.hook.markKind || h.hook.markKind === it.markKind) && Number(h.hook.ap) === Number(version.ap));
+  const apCost = opts.free ? (opts.ap ?? 0) : costHook ? Math.max(0, Number(costHook.hook.cost) || 0) : version.ap;
   // An Escalation Action (the Apex): its Escalation is a requirement, checked before the AP is spent; nothing is spent (pack R, v0.0.243).
   const escCost = opts.free ? 0 : Math.max(0, Number(it.escalation) || 0);
   if (escCost) { const pay = canPayEscalation(actor, escCost); if (!pay.ok) return ui.notifications.warn(pay.why); }
@@ -849,6 +870,11 @@ export async function useAction(actor, item, opts = {}) {
     }
   }
   if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction, force: !!rdData }))) return;   // v0.0.293: the roll dialog already warned about the AP
+  // v0.0.409 (pack F2; book, Smite): the Reaction AP spent for 1 more Smite die (the roll dialog's chip); without one, no extra die
+  let smiteMore = false;
+  if (data.smiteMore === "on") {
+    try { const C = await import("./combat.mjs"); const cb = C.combatantOf(actor); if (!cb || !game.combat?.started) smiteMore = true; else if (C.getRAP(cb) > 0) { await C.setRAP(cb, C.getRAP(cb) - 1); smiteMore = true; } else ui.notifications.warn(`${actor.name} has no Reaction AP left: no extra Smite die.`); } catch (e) { console.warn("twod12 | Smite", e); }
+  }
   const isWeapon = it.traits.has("weapon");
 
   let attrKey = null, mod = null, weapon = null, title = "", chip = "";
@@ -1021,7 +1047,10 @@ export async function useAction(actor, item, opts = {}) {
   const color = cardColorFor(it);
   const trow = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, weapon), distanceTip: distanceNote(it, weapon), area: areaText(it), vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !version.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: isSelf });
   const areaRow = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";   // v0.0.249 (Lucas): on the chat card even once placed, to place it again and retarget
-  const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, setupDone), item)}</div>` : "";
+  // v0.0.409 (pack F2, Hallowed Stance: hooks.mjs setupAdvance): once on your turn, an Action with the hook's traits gains "Setup: You Advance N" (once: by hand)
+  const stance = !it.setup && !it.reaction ? activeHooks(actor, "setupAdvance").find(h => hasTraits(useTraits, h.hook.traits)) : null;
+  const setupText = it.setup || (stance ? `You @Move[advance|distance:${Math.max(1, Number(stance.hook.n) || 3)}]{Advance ${Math.max(1, Number(stance.hook.n) || 3)}} (${stance.item.name}: once on your turn).` : "");
+  const setupRow = setupText ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(setupText, setupDone), item)}</div>` : "";
   // v0.0.283 (pack chat-cards): an Action that rolls gets the new card (chatcards.mjs); the rest (no roll, Save Actions) keep the card below.
   let ccModel = null, ccRoll = null;
   if ((chk || mres) && !version.noTiers && !saveAct) {
@@ -1130,6 +1159,8 @@ export async function useAction(actor, item, opts = {}) {
           weaponId: weapon?.id ?? "",
           thrown: !!wUse?.thrown,   // v0.0.407 (book, Chapter 15, Thrown): thrown, its [W] deals 1 less on Tiers 2 and 3
           mode: opts.splitMode ?? "",
+          triggerUuid: opts.triggerUuid ?? "",   // v0.0.409: a Reaction's triggering creature (@Condition[...|to:trigger])
+          smiteMore,   // v0.0.409 (Smite): the Reaction AP spent for 1 more Smite die
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
           isWeapon: modOnWeapon(src, useTraits),
           escalation: escCost > 0,   // the effects it applies end with the encounter (escalation.mjs)
@@ -1181,7 +1212,17 @@ export async function useAction(actor, item, opts = {}) {
     } catch (e) { console.warn("twod12 | Save Action", e); }
   }
   // An Action that marks (Mark Quarry; v0.0.186 the Action's "Marks the target" box): the targeted creature becomes the marked one (mark.mjs).
-  if (it.marksTarget && game.user.targets.size) { try { await setQuarry(actor, [...game.user.targets][0]); } catch (e) { console.warn("twod12 | marking", e); } }
+  // v0.0.409 (pack F2, Armor of Faith: hooks.mjs reactionGuard): a Reaction with the hook's traits gives its user Guard (N + Pow; the higher kept)
+  if (it.reaction) {
+    for (const h of activeHooks(actor, "reactionGuard").filter(x => hasTraits(useTraits, x.hook.traits))) {
+      try {
+        const f = String(h.hook.formula ?? "1+pow").replace(/\bpow\b/g, `(${Number(actor.system?.powerMod) || 0})`), r = await bookRoll(f).evaluate(), now = Number(actor.system?.guard) || 0, next = Math.max(now, r.total);
+        if (next !== now) await actor.update({ "system.guard": next });
+        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-heart", `<b>${esc(h.item.name)}</b>: <b>${esc(actor.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${r.total})`}.`, "fxm") });
+      } catch (e) { console.warn("twod12 | Armor of Faith", e); }
+    }
+  }
+  if (it.marksTarget && game.user.targets.size) { try { await setQuarry(actor, [...game.user.targets][0], it.markKind ?? ""); } catch (e) { console.warn("twod12 | marking", e); } }
   // Mastery: a Tier 3 on a Weapon Action with a weapon gives +1 Mastery with that kind of weapon (once per Action; characters only).
   if (!version.noTiers) {
     // v0.0.189: a forced Tier (testing) gives no Mastery.
@@ -1316,6 +1357,12 @@ export async function rollDamage(message, { again = false } = {}) {
       .filter(x => !f.fxOnUse || x.mode !== "auto"), ...riders];   // cards from v0.0.144 on applied their automatic effects when the Action was used (v0.0.283: riders wait for the damage)
     const rolls = [];
     const ctx = { weapon, tier: tier, attrVal: f.attrVal, rolls, empowered: stepOf(f.empowered), thrown: !!f.thrown };
+    // v0.0.409 (pack F2): Smite's dice (the Escalation, 1 more with the Reaction AP spent) and d8s against a Profane creature (Judged, or the Tag)
+    if (version.diceRule) {
+      let tDoc = null; try { tDoc = targets?.[0]?.uuid ? await fromUuid(targets[0].uuid) : null; } catch (e) { tDoc = null; }
+      ctx.diceRule = version.diceRule;
+      ctx.ruleCtx = { escalation: Number(actor.system?.escalation) || 0, profane: !!(tDoc && isProfaneFor(actor, tDoc?.object ?? tDoc)), more: !!f.smiteMore };
+    }
     const resolved = [];
     for (const inst of insts) resolved.push(await resolveInstance(inst, ctx));
     const comps = [];

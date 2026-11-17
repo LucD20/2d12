@@ -44,7 +44,8 @@ console.log("Rally the Tribe:", (await import(ROOTURL + "tools/content.mjs")).ac
 console.log("an Emanation with no Distance is around you:", cf.includes('const onSelf = a.shape === "emanation" && !a.within && !c?.withinRange;'), "| asks about yourself:", tpl.includes("label: `Apply, ${escT(centerTok?.name ?? \"you\")} too`"));
 console.log("remove a target in the roll dialog:", acts.includes('class="ttx" data-rm=') && acts.includes('removed: fd.getAll("removed")'));
 console.log("Escalation Passive: description on click:", sheet.includes('data-action="toggleEscPass"') && esc.includes("desc:"));
-console.log("Word of Radiance and Consecrated Ground: 2 / 3 Emanation:", data.includes('areaSize: int(0, 0)') && ["Word of Radiance", "Consecrated Ground"].every(n => cdoc(n).system.areaCfg.size === 2 && cdoc(n).system.versions[1].areaSize === 3), "| the version asked before placing:", acts.includes("which version? The Area depends on it."));
+// v0.0.409 (pack F2): the redesigned Word of Radiance and Consecrated Ground have one Version (a 2 Emanation); a Version's own size stays possible
+console.log("Word of Radiance and Consecrated Ground: 2 Emanation, a Version's own size possible:", data.includes('areaSize: int(0, 0)') && ["Word of Radiance", "Consecrated Ground"].every(n => cdoc(n).system.areaCfg.size === 2 && cdoc(n).system.versions.length === 1), "| the version asked before placing:", acts.includes("which version? The Area depends on it."));
 const D = await import(ROOTURL + "module/data.mjs").catch(() => null);
 if (D?.ActionData) {
   const d = Object.assign(Object.create(D.ActionData.prototype), { areaCfg: { size: 2, shape: "emanation", within: 5 }, versions: [{ ap: 3, areaSize: 3 }, { ap: 2, areaSize: 0 }], traits: new Set() });

@@ -11,13 +11,13 @@ const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 
 const core = new Set([...Object.values(BASIC_ACTIONS).map(b => b.name), "Fists"]);
 const cards = [...new Set(docs.filter(d => !d.system?.isCondition && !["weapon", "armor", "species", "class"].includes(d.type)).map(d => d.name))].filter(n => !core.has(n));
-console.log("cards checked:", cards.length, "| e.g.", ["Mark Quarry", "Brawler", "Pummel", "Sharpshooter", "Font of Mercy"].every(n => cards.includes(n)));
+console.log("cards checked:", cards.length, "| e.g.", ["Mark Quarry", "Brawler", "Pummel", "Sharpshooter", "Armor of Faith"].every(n => cards.includes(n)));
 
 /** The source with comments blanked and the allowed regions (migrations) blanked; line numbers are kept. */
 function scrub(src) {
   let out = src.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, " "));
   out = out.split("\n").map(l => l.replace(/(^|[^:"'`\\])\/\/.*$/, "$1")).join("\n");
-  for (const re of [/export async function giveSettingsV\d+\s*\(/g, /static migrateData\s*\(/g]) {
+  for (const re of [/export async function giveSettingsV\d+\s*\(/g, /static migrateData\s*\(/g, /export function paladinLeftovers\s*\(/g]) {   // v0.0.409: the Paladin migration's list of old cards
     let m;
     while ((m = re.exec(out))) {
       let i = out.indexOf("{", m.index), depth = 0, j = i;

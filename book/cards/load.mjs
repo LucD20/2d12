@@ -34,3 +34,114 @@ export const isDamage = t => /^(0|-|(\[(B|M|V|R)\]\s*)?(\d*\[W\]|\[Mod\]|\d+d\d+
 export const stripLinks = s => String(s ?? "").replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2").replace(/\[\[([^\]]+)\]\]/g, "$1");
 /** The book's **bold** to plain text. */
 export const stripBold = s => String(s ?? "").replace(/\*\*(.+?)\*\*/g, "$1");
+
+/* ------------------------------------------------------------------ the Structure (2026-11-16) for Foundry (pack F2, v0.0.409) */
+// The book draws stage0/*.json itself (cards.py). Foundry reads a class's Structure cards once its Foundry pass is done (FOUNDRY_STRUCTURE): each
+// is turned into the old card shape below (versions, tiers, effects, vs, interrupt / trigger, setup, notes), so cardgen.mjs builds the item as
+// before. The class's old file stays for the ruler (spec.mjs reads loadCards: the ruler's builds are written on the old cards until its own pass).
+export const STRUCTURE_DIR = "stage0";
+/** The Structure files Foundry reads in the place of the old file's cards (the whole old file leaves Foundry). */
+export const FOUNDRY_STRUCTURE = { "paladin.json": "paladin.json" };
+const costAp = cost => { const m = String(cost ?? "").match(/(\d+)/); return m ? Number(m[1]) : 0; };
+/** The lines of a body ([{ label, text }]) sorted into the old card's fields (pure). */
+export function readBody(lines = []) {
+  const o = { tiers: [null, null, null], or: null, effects: [], notes: [], rules: [], text: [], seq: [] };   // seq: the Effect and Special lines in their order
+  for (const { label, text } of lines) {
+    const l = String(label ?? "").trim(), t = String(text ?? "").trim();
+    let m;
+    if (l === "Attack") o.vs = /Ward Defense/i.test(t) ? "WD" : /Armor Defense/i.test(t) ? "AD" : t.replace(/^.*?vs\.\s*/i, "");
+    else if (l === "Save") o.vs = `${t} Save`;
+    else if ((m = l.match(/^Tier ([123])$/))) o.tiers[Number(m[1]) - 1] = t;
+    else if ((m = l.match(/^Tier ([123]) or ([123])$/))) o.or = { tiers: [Number(m[1]), Number(m[2])], text: t };
+    else if (l === "Effect") { o.effects.push(t); o.seq.push(t); }
+    else if (l === "Interrupt") o.interrupt = t;
+    else if (l === "Trigger") o.trigger = t;
+    else if (l === "Setup") o.setup = t;
+    else if (l === "Requirement") o.requirements = t;
+    else if (l === "Prerequisite") o.prerequisites = t;
+    else if (l === "Passive") o.text.push(t);
+    else if (l === "Special") { o.notes.push(t); o.seq.push(`Special: ${t}`); }
+    else o.rules.push(l ? `**${l}:** ${t}` : t);
+  }
+  return o;
+}
+/** A body's tiers as the old three cells: the Tier lines, or "Tier 1 or 2" on two of them and "No effect." on the third; null: no tiers. */
+const tierCells = b => {
+  if (b.tiers.every(x => x == null) && !b.or) return null;
+  // a cell that is only damage drops the Structure's final period ("[R] 1d6 Ho." is the old "[R] 1d6 Ho")
+  const cell = t => { const m = String(t).match(/^(.*?)\.\s*$/); return m && isDamage(m[1]) ? m[1] : t; };
+  return [1, 2, 3].map(n => cell(b.tiers[n - 1] ?? (b.or?.tiers.includes(n) ? b.or.text : "No effect.")));
+};
+/**
+ * A Structure card as an old card (pure): `structure: 2` cards of stage0/. A block is a Version ("1 AP", "2R") or a Mode (any other heading: the
+ * Version's `mode` is its name, with the block's own traits, Distance, Target and roll as `modeTraits`, `modeDistance`, `modeTargets`, `modeVs`).
+ * The card's `foundry` stays; a block's `foundry` is its Version's. `foundry.tiers` (a card or a block) replaces the tier cells Foundry reads
+ * (Smite: the book's "your Smite dice" as dice Foundry rolls); a one-Version card writes its Version's extras in `foundry.version`.
+ */
+export function fromStructure(c) {
+  const top = readBody(c.body), passive = String(c.cost ?? "").trim() === "Passive";
+  const out = { name: c.name, category: c.category, level: c.level, flavor: c.flavor, traits: c.traits ?? [], structure: 2, _file: c._file };
+  for (const k of ["frequency", "escalation", "distance", "area", "target", "foundry", "ruler", "book"]) if (c[k] !== undefined) out[k] = c[k];
+  for (const k of ["vs", "interrupt", "trigger", "setup", "requirements", "prerequisites"]) if (top[k] !== undefined) out[k] = top[k];
+  if (top.rules.length) out.rules = top.rules.join(" ");
+  if (top.notes.length) out.notes = top.notes.join(" ");
+  if (passive) { out.text = [...top.text, ...top.effects].join(" "); return out; }
+  const version = (b, ap, extra = {}) => {
+    const v = { ap, ...extra };
+    const cells = b.foundry?.tiers ?? tierCells(b);
+    if (cells) v.tiers = cells;
+    const eff = b.seq ?? [...b.effects, ...b.notes.map(n => `Special: ${n}`)];
+    if (eff.length) v.effects = eff.join(" ");
+    if (b.foundry) { v.foundry = { ...b.foundry }; delete v.foundry.tiers; if (!Object.keys(v.foundry).length) delete v.foundry; }   // its tiers are the Version's tiers now
+    return v;
+  };
+  const blocks = c.blocks ?? [];
+  if (!blocks.length) {
+    // one Version: its Specials are the card's notes (after the table); the card's foundry.version is the Version's foundry block
+    const v = version({ ...top, seq: top.effects, foundry: c.foundry?.version }, costAp(c.cost));
+    out.versions = [v];
+    return out;
+  }
+  out.versions = blocks.map(bl => {
+    const b = readBody(bl.body), h = String(bl.heading ?? "").trim(), m = h.match(/^(\d+)\s*(AP|R)$/i);
+    const shared = top.tiers.some(x => x != null) || top.or ? { tiers: top.tiers, or: top.or } : {};   // a roll written above the blocks is every block's
+    const merged = { ...b, ...(b.tiers.some(x => x != null) || b.or ? {} : shared), seq: [...top.effects, ...b.seq], foundry: bl.foundry };
+    const extra = {};
+    if (!m) {
+      extra.mode = h;
+      if (bl.traits?.length) extra.modeTraits = bl.traits;
+      if (bl.distance) extra.modeDistance = bl.distance;
+      if (bl.target) extra.modeTargets = bl.target;
+      if (b.vs) extra.modeVs = b.vs;
+    }
+    const v = version(merged, m ? Number(m[1]) : costAp(c.cost), extra);
+    if (b.setup) v.setup = b.setup;
+    return v;
+  });
+  return out;
+}
+/** The Structure cards of stage0/ (each with structure: 2 and its _file), by file name. */
+export function loadStructure(dir = path.join(CARDS_DIR, STRUCTURE_DIR)) {
+  const out = {};
+  if (!fs.existsSync(dir)) return out;
+  for (const f of fs.readdirSync(dir).filter(f => f.endsWith(".json")).sort()) {
+    const data = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8"));
+    out[f] = (data.cards ?? []).map(c => ({ ...c, structure: 2, _file: `${STRUCTURE_DIR}/${f}` }));
+  }
+  return out;
+}
+/**
+ * The cards Foundry builds (pack F2, v0.0.409): loadCards(), with each file of FOUNDRY_STRUCTURE replaced by its Structure file (read through
+ * fromStructure). The ruler keeps loadCards().
+ */
+export function loadFoundryCards(dir = CARDS_DIR) {
+  const all = loadCards(dir), st = loadStructure(path.join(dir, STRUCTURE_DIR));
+  const out = [];
+  for (const c of all) if (!FOUNDRY_STRUCTURE[c._file]) out.push(c);
+  const names = new Set(out.map(c => c.name));
+  for (const [oldFile, newFile] of Object.entries(FOUNDRY_STRUCTURE)) for (const c of st[newFile] ?? []) {
+    if (names.has(c.name)) throw new Error(`${newFile}: the card "${c.name}" is also in another file`);
+    names.add(c.name); out.push(fromStructure(c));
+  }
+  return out;
+}

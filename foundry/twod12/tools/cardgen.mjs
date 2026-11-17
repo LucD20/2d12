@@ -6,8 +6,9 @@
 globalThis.foundry ??= { applications: { api: { DialogV2: {}, ApplicationV2: class {} }, ux: { TextEditor: { implementation: {} } } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } };
 globalThis.Hooks ??= { on() {} }; globalThis.Combat ??= class {}; globalThis.CONFIG ??= {}; globalThis.game ??= { settings: { get: () => true } };
 const { parseTierFull, convertEffects } = await import("../module/gen.mjs");
-const { loadCards, isReaction, hasVersions, splitTier, isDamage, stripLinks, stripBold } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);   // a URL, not a path: a Windows path is not a valid ESM import (v0.0.231)
-export { loadCards };
+const { loadFoundryCards, isReaction, hasVersions, splitTier, isDamage, stripLinks, stripBold } = await import(new URL("../../../book/cards/load.mjs", import.meta.url).href);   // a URL, not a path: a Windows path is not a valid ESM import (v0.0.231)
+// v0.0.409 (pack F2): Foundry's cards: the old files, with the Paladin's replaced by its Structure cards (load.mjs loadFoundryCards; the ruler keeps loadCards)
+export const loadCards = loadFoundryCards;
 // Pack R-classes (Lucas, 2026-11-04): the ruler's worth of each class card (book/ruler/worth.json, written by rclasses.mjs) is printed as a tiny line on the item, for the playtests.
 const { readFileSync, existsSync } = await import("node:fs");
 const WORTH_FILE = new URL("../../../book/ruler/worth.json", import.meta.url);
@@ -90,6 +91,8 @@ export function versionData(c, v, resolve = s => s) {
   // v0.0.246 (Lucas): a Version's `foundry.text` is its Foundry text written in full ("As 1 AP, but..." is the book's; Foundry says it all); `foundry.after` the chips that run after the damage.
   const out = { ap: v.ap, noTiers: !v.tiers, t1: [], t2: [], t3: [], x1: "", x2: "", x3: "", effects: resolve(fxText(v.foundry?.text ?? v.effects, appendOf(v, "effects"))), fx };
   if (v.foundry?.after) out.after = resolve(v.foundry.after);
+  // v0.0.409 (pack F2, Shield of Faith): replacements in the converted text (a button the book's words can't say: Taunted on the triggering creature)
+  for (const [a, b] of v.foundry?.sub ?? []) out.effects = out.effects.split(a).join(b);
   // v0.0.254 (Lucas): a card's inline Actions are written on its last Version's Foundry text (a link to the item and its line), so the sheet's preview shows them after "you gain the following Action:"
   if (c.inline?.length && v === (c.versions ?? [])[(c.versions ?? []).length - 1]) out.effects += " " + c.inline.map(a => resolve(`{{link:${a.name}|${a.name}}} \u2014 ${[a.cost, a.frequency, a.traits?.length ? `[${a.traits.join(", ")}]` : "", a.interrupt ? `Interrupt: ${a.interrupt}` : "", a.trigger ? `Trigger: ${a.trigger}` : "", a.target ? `Target: ${a.target}` : "", a.effects ? `Effects: ${convertEffects(stripBold(foundryLinks(a.effects)))}` : ""].filter(Boolean).join(" | ")}`)).join(" ");
   if (v.tiers) {
@@ -108,6 +111,12 @@ export function versionData(c, v, resolve = s => s) {
   if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical")));
   if (typeof v.foundry?.critical === "string") out.critical = resolve(v.foundry.critical);   // v0.0.338: the Critical's Foundry text as it is (its effect runs after the damage)
   if (v.mode) out.mode = v.mode;
+  // v0.0.409 (pack F2): an Art's Mode (a Structure block): its own traits, Distance, Target and roll
+  if (v.modeTraits?.length) out.modeTraits = traitKeys(v.modeTraits);
+  if (v.modeDistance) out.modeDistance = distanceKey({ distance: v.modeDistance, target: v.modeTargets });
+  if (v.modeTargets) out.modeTargets = stripLinks(v.modeTargets);
+  if (v.modeVs) out.modeVs = vsKey(v.modeVs);
+  if (v.foundry?.diceRule) out.diceRule = v.foundry.diceRule;
   if (v.foundry?.areaSize) out.areaSize = v.foundry.areaSize;
   if (v.foundry?.areaRounds) out.areaRounds = v.foundry.areaRounds;   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area
   return out;
@@ -149,12 +158,12 @@ export function cardSystem(c, resolve = s => s) {
   if (c.setup) sys.setup = resolve(fxText(c.setup, c.foundry?.appendSetup));
   const prose = [c.rules, c.notes, ...(c.placeholder ? [c.text] : [])].filter(Boolean).map(t => `<p>${boldHtml(foundryLinks(t))}</p>`).join("");
   if (prose) sys.description = resolve(prose);
-  if (worthOf(c.name)) sys.worth = worthOf(c.name);
+  if (worthOf(c.name) && !c.structure) sys.worth = worthOf(c.name);   // v0.0.409: the ruler's worth is of the old card (not a Structure card)
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));   // v0.0.360 (the audit's D17): an Action holds rules (Mark Quarry)
-  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
+  for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 
@@ -169,12 +178,13 @@ export function featureSystem(c, resolve = s => s) {
   const category = String(c.category).replace(/\s*\(Passive\)$/, "");
   const text = [boldHtml(foundryLinks(c.text ?? "")), c.foundry?.append ?? ""].filter(Boolean).join(" ");
   const sys = { category, level: c.level ?? c.foundry?.level ?? 0, description: text ? resolve(`<p>${text}</p>`) : "" };
-  if (worthOf(c.name)) sys.worth = worthOf(c.name);
+  if (worthOf(c.name) && !c.structure) sys.worth = worthOf(c.name);   // v0.0.409: the ruler's worth is of the old card (not a Structure card)
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));
   if (c.foundry?.actions) sys.actions = c.foundry.actions.map(n => resolve(`{{action:${n}}}`));
   if (c.flavor) sys.flavor = c.flavor;
-  for (const k of ["automation", "automationNote", "talents"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];
+  for (const k of ["automation", "automationNote", "talents", "hooks"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.409: hooks (hooks.mjs)
   if (/escalation/i.test(category) || c.foundry?.escalationPassive) sys.escalationPassive = true;
+  if (c.structure && Number(c.escalation) > 0) sys.escalationRung = Number(c.escalation);   // v0.0.409: a Structure card's rung (2 / 4 / 6)
   return sys;
 }
 

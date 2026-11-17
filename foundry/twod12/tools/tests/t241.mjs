@@ -29,7 +29,7 @@ console.log("every chain of the compendium reads and writes back unchanged:", ch
 const one = (n, ap) => { const d = acts.find(x => x.name === n), v = d.system.versions.find(x => x.ap === ap); return { v, save: (d.system.traits ?? []).includes("save") }; };
 const say = (n, ap) => { const { v, save } = one(n, ap); return A.parseAfter(v.after).map(s => A.stepSentence(s, save)).join(" "); };
 console.log("Rebuke:", say("Rebuke", 1));
-console.log("Smite 3 AP:", say("Smite", 3));
+console.log("Word of Radiance:", say("Word of Radiance", 2));   // v0.0.409 (pack F2): Smite has no chain now
 console.log("Marksman's Shot:", say("Marksman's Shot", 2));
 const st = A.parseAfter("@Condition[vulnerable|value:2|eot|tier:3]")[0];
 console.log("a bare option kept:", A.writeStep(st), "| its label:", A.stepLabel(st), "| an unknown option kept:", A.writeAfter(A.parseAfter("@Move[pushed|distance:2|terrain:ignore|foo:bar]")));
@@ -59,7 +59,7 @@ console.log("--- the order of events");
 const names = Object.fromEntries(C.docs.map(d => [C.uuidOf(d.pack, d.name), d.name]));
 const dmgText = l => (l ?? []).map(instanceText).filter(Boolean).join(" + ");
 const ev = (n, ap) => { const d = acts.find(x => x.name === n); return A.versionEvents(d.system, d.system.versions.find(x => x.ap === ap), { names, moments: TWOD12.moments, frequencies: TWOD12.frequencies, dmgText }).map(e => `${e.title}${e.after ? "*" : ""}`).join(" > "); };
-console.log("Smite 3 AP:", ev("Smite", 3));
+console.log("Bulwark of Faith:", ev("Bulwark of Faith", 1));   // v0.0.409 (pack F2): the old Smite 3 AP left with pack R's Paladin
 console.log("Rebuke:", ev("Rebuke", 1));
 console.log("Covering Fire:", ev("Covering Fire", 2));
 
@@ -72,8 +72,9 @@ for (const d of acts) {
   } catch (e) { bad.push(`${d.name}: ${e.message}`); }
 }
 console.log("renders for every Action:", n === acts.length, n, "| failures:", bad.length ? bad.join("; ") : "none");
-const smite = acts.find(x => x.name === "Smite"), sh = actionTabHtml({ sys: JSON.parse(JSON.stringify(smite.system)), v: 2, step: 0, names, lines: {}, card: "", rulesTab: "", dmgText });
-console.log("Smite 3 AP: 3 Version tabs:", (sh.match(/data-as="vsel"/g) ?? []).length, "| its Tier fields:", (sh.match(/data-as-dmg="t[123]"/g) ?? []).length, "| \"On a Tier 2 or 3\":", sh.includes('data-as-anchor="use">On a Tier 2 or 3'), "| 2 steps:", (sh.match(/data-as="stepsel"/g) ?? []).length, "| Fill:", sh.includes('data-as="fill"'), "| the chain isn't a text field:", !/data-as-in="v\.after"/.test(sh));
+// v0.0.409 (pack F2): Word of Radiance (a Save with Tiers and a chain) in the place of the old Smite 3 AP
+const smite = acts.find(x => x.name === "Word of Radiance"), sh = actionTabHtml({ sys: JSON.parse(JSON.stringify(smite.system)), v: 0, step: 0, names, lines: {}, card: "", rulesTab: "", dmgText });
+console.log("Word of Radiance: 1 Version tab:", (sh.match(/data-as="vsel"/g) ?? []).length, "| its Tier fields:", (sh.match(/data-as-dmg="t[123]"/g) ?? []).length, "| \"On a Tier 1 or 2\":", sh.includes('data-as-anchor="use">On a Tier 1 or 2'), "| 2 steps:", (sh.match(/data-as="stepsel"/g) ?? []).length, "| Fill:", sh.includes('data-as="fill"'), "| the chain isn't a text field:", !/data-as-in="v\.after"/.test(sh));
 const cf = acts.find(x => x.name === "Covering Fire"), ch = actionTabHtml({ sys: JSON.parse(JSON.stringify(cf.system)), v: 0, step: 0, names, lines: {}, zoneName: "Covering Fire", card: "", rulesTab: "", dmgText });
 console.log("Covering Fire: \"On use\":", ch.includes('data-as-anchor="use">On use'), "| the area's size and rounds on the Version:", ch.includes('data-f="v.@size"') && ch.includes('data-f="v.@rounds"'), "| Who set by the Zone:", ch.includes("set by the Zone"));
 let tiers = 0, okT = 0; const norm = l => JSON.stringify(l.map(i => [i.pool || "B", !!i.useW, i.useW ? i.wCount || 1 : 1, i.dice || "", !!i.useAt, i.subtype || ""]));
@@ -110,7 +111,8 @@ const { sysLine } = await import(ROOTURL + "module/sysmsg.mjs");
 globalThis.canvas = { tokens: { placeables: [{ name: "Aveline (Human Paladin, Smite, level 1)", actor: { name: "Aveline (Human Paladin, Smite, level 1)" } }] } }; globalThis.game.actors = [];
 console.log("a system line uses them:", sysLine("fa-shield", "<b>Aveline (Human Paladin, Smite, level 1)</b> keeps Guard 10").replace(/<[^>]+>/g, ""), "| its message shows no header:", src("module/twod12.mjs").includes('el.classList.add("twod12-bare")') && src("styles/system.css").includes(".chat-message.twod12-bare > .message-header { display: none; }"), "| the flanking overlay shares the rule:", src("module/flankoverlay.mjs").includes('export { firstName } from "./util.mjs"'));
 globalThis.canvas = {};
-const sm2 = actionTabHtml({ sys: JSON.parse(JSON.stringify(smite.system)), v: 2, step: 0, names, lines: {}, card: "", rulesTab: "", dmgText });
+// v0.0.409 (pack F2): a Guard step (was Smite 3 AP's)
+const sm2 = actionTabHtml({ sys: JSON.parse(JSON.stringify(acts.find(x => x.name === "Bulwark of Faith").system)), v: 0, step: 0, names, lines: {}, card: "", rulesTab: "", dmgText });
 console.log("the step's buttons in its pane, not on its row:", !/as-step[^>]*>(?:(?!<\/div>)[\s\S])*as-ord/.test(sm2) && /<h4>Guard<span class="as-ord">/.test(sm2), "| four Tier switches:", (sm2.match(/data-as="tiertog"/g) ?? []).length, "| the + trait picker first:", sm2.indexOf("data-as-trait") < sm2.indexOf('data-as="untrait"'), "| no hover underline on buttons:", src("styles/system.css").includes("a.twod12-inline:hover, a.twod12-inline:hover .ti-name"), "| the area tooltip hides over a window:", src("module/zonetip.mjs").includes('document.addEventListener("pointermove"'));
 console.log("--- v0.0.359 (Lucas on v0.0.358)");
 const dsrc = src("module/data.mjs"), rb2 = actionTabHtml({ sys: { ...JSON.parse(JSON.stringify(acts.find(x => x.name === "Rebuke").system)), momentRangeExpr: "pow+2", momentRange: 0 }, v: 0, step: 0, names, lines: {}, card: "", rulesTab: "", dmgText });

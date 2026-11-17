@@ -12,5 +12,6 @@ console.log("the Push list and the Guard list give the bar their tokens:", mv.in
 console.log("the Push list leaves you out unless self:yes:", mv.includes("(cfg.self || t.id !== me?.id)"));
 console.log("every chip is inline-flex (icon and words aligned everywhere):", /a\.twod12-inline \{ display: inline-flex; align-items: center; gap: 0\.3em;/.test(css));
 const G = await import(ROOTURL + "tools/cardgen.mjs");
-const smite = G.loadCards().find(c => c.name === "Smite");
-console.log("Smite 3 AP, the book and Foundry say 'you excepted':", smite.versions[2].effects.includes("The other creatures in the light, you excepted, are Pushed 1"), G.cardSystem(smite).versions[2].effects.includes("The other creatures in the light, you excepted, are @Move[pushed|distance:1], away from the target."));
+// v0.0.409 (pack F2): the old Smite 3 AP left with pack R's Paladin; Word of Radiance's Pushes are picked one by one from the Area (you never in its list)
+const wor = G.loadCards().find(c => c.name === "Word of Radiance");
+console.log("Word of Radiance: the Pushes one by one from the Area:", G.cardSystem(wor).versions[0].after.includes("pick:yes|from:area"), "| the book's tiers:", wor.versions[0].tiers.join(" / "));

@@ -57,11 +57,13 @@ for (const d of acts) {
   if (bad.length) diff.push(`${d.name} (${bad.join(", ")})`); else same++;
 }
 console.log(`${same} of ${acts.length} the same | not: ${diff.join("; ")}`);
-console.log("  (Divine Retribution is a Split Action: two Versions per cost; Hide has no Version and gets one)");
+console.log("  (Divine Retribution is a Split Action: two Versions per cost; Hide has no Version and gets one; v0.0.409: an Art's Modes are not in the text format yet)");
 
 console.log("--- filling an Action keeps what the text doesn't hold");
-const smite = acts.find(d => d.name === "Smite").system, back = G.cardSystem(G.parseCard(G.cardText("Smite", smite)), smite).system;
-console.log("Smite: its Effects kept:", back.versions.map(x => x.fx.all.length).join(","), "| its 3 AP steps kept:", back.versions[2].after === smite.versions[2].after);
+// v0.0.409 (pack F2): the old Smite (Effects on each Version, 3 AP steps) left with pack R's Paladin; Lantern of Faith's Effects and Bulwark of Faith's steps
+const lan = acts.find(d => d.name === "Lantern of Faith").system, back = G.cardSystem(G.parseCard(G.cardText("Lantern of Faith", lan)), lan).system;
+const bw = acts.find(d => d.name === "Bulwark of Faith").system, bwb = G.cardSystem(G.parseCard(G.cardText("Bulwark of Faith", bw)), bw).system;
+console.log("Lantern of Faith: its Effects kept:", back.versions.map(x => x.fx.all.length).join(","), "| Bulwark of Faith's steps kept:", bwb.versions[0].after === bw.versions[0].after);
 const shove = acts.find(d => d.name === "Shove").system, sb = G.cardSystem(G.parseCard(G.cardText("Shove", shove)), shove).system;
 console.log("Shove (not written with Lucas yet): its buttons stay buttons, no steps added:", sb.versions.every(x => !x.after) && sb.versions.some(x => /@Move\[/.test(`${x.x2}${x.x3}`)));
 

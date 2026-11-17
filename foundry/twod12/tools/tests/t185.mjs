@@ -41,10 +41,10 @@ console.log("a book link:", await chip("@Book[Bright]{Bright light}"), "|", awai
 const pi = (k, s) => { const c = I.parseInline(k, s); return JSON.stringify(Object.fromEntries(Object.entries(c).filter(([key]) => ["who", "area", "pick", "from", "ref", "doc", "kind", "distance", "formula"].includes(key)))); };
 console.log("options:", pi("Guard", "1d8+mod|who:pick|area:2"), pi("Move", "pushed|distance:1|pick:yes|area:2|from:target"), pi("Book", "Bright|doc:Core Rules"));
 
-console.log("--- the Smite card (book/cards/paladin.json) as Foundry data");
+console.log("--- the Smite card (book/cards/stage0/paladin.json since pack F2, v0.0.409) as Foundry data");
 const smite = G.loadCards().find(c => c.name === "Smite"), sys = G.cardSystem(smite);
-for (const v of sys.versions) console.log(`${v.ap} AP: ${v.effects.replace(/\{\{fx:[^}]+\}\}/g, m => m)} | fx: ${v.fx.all.map(x => x.uuid).join(", ")}${v.after ? ` | after: ${v.after}` : ""}`);
-console.log("the 2 and 3 AP texts are written in full (the book says As 1 AP):", smite.versions[1].effects, "|", sys.versions[1].effects.startsWith("The target sheds"), sys.versions[2].effects.startsWith("The target sheds"));
+for (const v of sys.versions) console.log(`${v.ap} AP: dice rule ${v.diceRule} | tiers ${["t1", "t2", "t3"].map(t => v[t].map(x => (x.useW ? "[W]" : "") + (x.dice ? ` ${x.dice} ${x.pool}${x.subtype}` : "")).join("+")).join(" / ")}`);
+console.log("the Structure card's tiers say 'your Smite dice'; Foundry rolls them:", smite.structure === 2, "|", sys.frequency, sys.traits.join(","));
 console.log("automation:", sys.automation, "|", sys.automationNote);
 console.log("the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16):", src("../../book/cards.py").includes("def structure("), "| the built book links Bright light on a card:", /sheds <a class="xref" href="[^"]*#bright">Bright light<\/a>/.test(src("../../book/paladin.html")), "| every card an anchor:", src("../../book/core-rules.html").includes('id="card-weapon-attack"'));
 
@@ -52,7 +52,8 @@ console.log("--- the placeholder card (Hide) and the Smite light effects");
 const hide = G.loadCards().find(c => c.name === "Hide"), hs = G.cardSystem(hide);
 console.log("Hide: placeholder", hide.placeholder, "| an Action:", G.isAction(hide), "| versions:", hs.versions.length, "| frequency:", JSON.stringify(hs.frequency), "| text:", hs.description.replace(/<[^>]+>/g, ""));
 console.log("in the Actions pack:", C.docs.filter(d => d.name === "Hide").map(d => `${d.pack}/${d.type}`).join(", "), "| placed in Chapter 6:", src("../../book/rules-src/06-basic-actions.md").includes("@@CARD:Hide@@"));
-const fx = C.docs.filter(d => d.type === "effect" && d.name.startsWith("Smite"));
+// v0.0.409 (pack F2): the light effects of Lantern of Faith (the old Smite's are in the old cards' folder)
+const fx = C.docs.filter(d => d.type === "effect" && /^(Kindle|Reveal) \(/.test(d.name));
 console.log("effects:", fx.map(d => `${d.name}: ${d.system.settings.map(s => s.type === "light" ? `light ${s.bright}/${s.dim}` : s.type).join(", ")}, ${d.system.duration.type} ${d.system.duration.rounds}`).join(" | "), "| the old +1 Defense is gone:", !C.docs.some(d => d.name === "Smite (+1 Defense)"));
 
 console.log("--- the chain and the pickers in the code");
@@ -60,4 +61,4 @@ const mv = src("module/move.mjs"), dm = src("module/damage.mjs"), ac = src("modu
 console.log("move.mjs: a Push picker (pick:yes), the card's target as the origin (from:target), the chain's targets:", mv.includes("async function pushPicker("), mv.includes('cfg.from === "target" ? targetTokens(ctx)[0]'), mv.includes("ctx?.targets ?? f?.targets"));
 console.log("damage.mjs: the chain runs after the damage (single and merged cards):", dm.includes("if (f.after) await runAfterDamage(f, targets)"), dm.includes("if (f.after && done.length) await runAfterDamage(f, done)"), "| actions.mjs passes it on Tier 2+:", ac.includes("after: f.tier >= 2 ? chainOf(f, version) : \"\""));
 console.log("the Version field exists and is editable:", dt.includes("after: str()"), ve.includes('data-field="after"'), "| inline.mjs: the who picker and runAfter:", src("module/inline.mjs").includes('cfg.who !== "pick"'), src("module/inline.mjs").includes("export async function runAfter("));
-console.log("the chips of the chain parse:", [...smite.versions[2].foundry.after.matchAll(/@(\w+)\[([^\]]*)\]/g)].map(m => `${m[1]}:${JSON.stringify(I.parseInline(m[1], m[2])).length > 0}`).join(" "));
+console.log("the chips of the chain parse:", [...G.loadCards().find(c => c.name === "Bulwark of Faith").versions[0].foundry.after.matchAll(/@(\w+)\[([^\]]*)\]/g)].map(m => `${m[1]}:${JSON.stringify(I.parseInline(m[1], m[2])).length > 0}`).join(" "));

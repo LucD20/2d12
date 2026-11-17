@@ -15,19 +15,19 @@ Word of Radiance: Power +2 | Frightened (bane) | Radiant Zeal (pass, struck: Not
 a target's chip is left out: true
 --- the card
 no title bar, no Place Area button, no old badge: true
-trait line: Signature Weapon Roll Strike Kind Divine Keywords Divine Power 1 Round
+trait line: Signature Weapon Roll Strike Kind Divine Keywords Paladin Feature 1 Encounter
 meta: Targets: One creature / Distance: Weapon ✦ Vs. AD
-head buttons: 2 live, 1 struck: Not enough AP: 2 left | dimmed cells: 3 | struck Effects badge: true | a button uses its Version: true
+head buttons: 1 live, 0 struck: undefined | dimmed cells: 0 | struck Effects badge: false | a button uses its Version: true
 labels: Tier 1, Tier 2, Tier 3
-order: traits, meta, table, Effects, Your roll, Flavor: true
-strip: Your roll Signature +2 Frightened + Radiant Zeal | flavor: ◆ ◆ ◆ Your weapon blazes with holy light. | ruler (Designer off): false
-Word of Radiance: the Area is the chip: Area: 2 / 3 Burst true | riders: 4 | Critical row: true | ruler (Designer on): Ruler 2 AP 1.34× (a little under) · 3 AP 1.40× (a little under).
-its strip: Your roll Power +2 Frightened + Radiant Zeal | Radiant Zeal struck: true
+order: traits, meta, table, Effects, Your roll, Flavor: false
+strip: Your roll Signature +2 Frightened + Radiant Zeal | flavor: ◆ ◆ ◆ Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow. | ruler (Designer off): false
+Word of Radiance: the Area is the chip: Area: 2 / 3 Burst true | riders: 3 | Critical row: false | ruler (Designer on): 
+its strip:  | Radiant Zeal struck: false
 Opportunity Attack: meta: Interrupt: An enemy adjacent to you would leave a square during a Move Action or uses the Stand Action. / Targets: The triggering creature | no table, no strip, no traits: false | Effects: Effects | no AP badge: true | category and Frequency: Basic Action At-will
-the Build tab (no Use): costs, not buttons: 3 | no actor (Generate Action): true
+the Build tab (no Use): costs, not buttons: 1 | no actor (Generate Action): true
 out of combat with 0 AP: nothing struck: true
 --- the sheet
 the Version button's action: true | the row's AP check shared: true | the roll dialog's too: true | CSS block: true
 --- v0.0.298 (Lucas tested v0.0.297)
 an NPC's cost once (costPill writes AP): 2/3 AP | true | navy head and chevron only on the Build tab: true | links don't break inside a word: true
-a Feature's card, in the Action card's look: true | heading (v0.0.299): Description Paladin Feature 1 | no trait line: true | text: When you deal Holy damage to a creature with the Profane Tag | flavor last: true | no title bar: true
+a Feature's card, in the Action card's look: true | heading (v0.0.299): Description Paladin Feature 2 | no trait line: true | text: Once an encounter, when an ally becomes Bloodied or goes Dow | flavor last: true | no title bar: true

@@ -24,11 +24,13 @@ export function passiveThreshold(it, cls = null) {
   const k = cls ?? it?.parent?.itemTypes?.class?.[0] ?? null, secId = it?.getFlag?.(F, "classSection");
   const sec = secId ? (k?.system?.levels ?? []).flatMap(l => l.sections ?? []).find(x => x.id === secId) : null;
   const rung = Number(String(sec?.title ?? "").match(/^Escalation\s+(\d)/i)?.[1]) || 0;
-  if (rung) return Math.min(3, rung);
+  if (rung) return Math.min(6, rung);   // v0.0.409 (pack F2): Escalation runs 1 to 6 (the abilities at 2 / 4 / 6)
+  const own = Math.trunc(Number(it?.system?.escalationRung)) || 0;   // v0.0.409: the card's own rung (a Feature dropped outside its class section)
+  if (own > 0) return Math.min(6, own);
   const mins = (it?.system?.settings ?? []).map(x => Math.trunc(Number(x.minEscalation)) || 0).filter(n => n > 0);
-  if (mins.length) return Math.min(3, ...mins);
+  if (mins.length) return Math.min(6, ...mins);
   const m = String(it?.system?.description ?? "").match(/Escalation is (\d) or more/i);
-  return m ? Math.min(3, Math.max(1, Number(m[1]))) : 1;
+  return m ? Math.min(6, Math.max(1, Number(m[1]))) : 1;
 }
 const ownIndex = (c, actor) => c.turns.findIndex(x => x.actor === actor || (actor?.isToken && x.tokenId === actor.token?.id));
 

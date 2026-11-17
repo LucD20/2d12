@@ -87,6 +87,6 @@ console.log("an NPC's cost once (costPill writes AP):", S.costPill([2, 3]), "|",
   "| links don't break inside a word:", css.includes(".twod12.acard.d2 a.content-link, .twod12.acard.d2 a.twod12-inline.book { word-break: normal; overflow-wrap: normal; white-space: nowrap; }"));
 globalThis.fromUuid = async () => null;
 const { buildFeatureCard } = await import(ROOTURL + "module/actioncard.mjs");
-const dp = asItem(load("pcs/aveline-human-paladin-smite.pc.json").items.find(i => i.name === "Divine Power"));
+const dp = asItem(load("pcs/aveline-human-paladin-smite.pc.json").items.find(i => i.name === "Kindled Wrath"));   // v0.0.409 (pack F2): Divine Power left with pack R's Paladin
 const fc = await buildFeatureCard(dp, { actor });
 console.log("a Feature's card, in the Action card's look:", /acard d2 feat/.test(fc), "| heading (v0.0.299):", txt(fc.match(/<div class="ap-fxh withcat">[\s\S]*?<\/span><\/div>/)?.[0]), "| no trait line:", !fc.includes("ap-trow"), "| text:", txt(fc.match(/ap-prose">([\s\S]*?)<\/div>/)?.[1]).slice(0, 60), "| flavor last:", fc.indexOf("ap-flav") > fc.indexOf("ap-prose"), "| no title bar:", !/ahead|ac-head/.test(fc));

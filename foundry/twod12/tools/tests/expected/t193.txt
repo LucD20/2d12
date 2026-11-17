@@ -3,9 +3,8 @@ The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, t
 Reduce: 2d6+pow {"s2":"3d6+pow","s3":"4d6+pow"} pick 5 | the Stage's: 3d6+pow | Pause: After the damage
 the steps of a chain: ["(first): 1","After the damage: 1"]
 two Apply buttons, the second named by the Pause: true
-Shield of Faith: Targets The triggering creature | Distance "" | A [Strike] Action would damage you or an ally within 5 squares. | The damage that Strike deals to the target is reduced by @Reduce[2d6+pow|s2:3d6+pow|s3:4d6+pow]{2d6 + Pow} (3d6 at Stage 2, 4d6 at Stage 3). | after: @Reduce[2d6+pow|s2:3d6+pow|s3:4d6+pow|who:pick|near:5] | mithril
-Bulwark of Faith: Targets The triggering creature | Distance "" | A [Strike] Action would damage an ally within 5 squares. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. | after: @Guard[rally|who:pick|near:5] @Pause[After the damage] @Move[slid|distance:1] | mithril
-the Beacon effect: 3 rounds, the aura, the inline Action: rounds 3 aura,inline | the card applies it: Beacon | no Aura of Protection left: true
-the inline Action on the parent's text: true
+Shield of Faith: Targets One ally | Distance "5" | An enemy's [Strike] Action would damage the target. | That damage is reduced by @Reduce[1+pow]{1 + Pow}, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). | after: @Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger] | diamond
+Bulwark of Faith: Targets One ally | Distance "5" | An enemy's [Strike] Action would damage the target. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. | after: @Guard[rally] @Pause[After the damage] @Move[slid|distance:1] | diamond
+the Consecrated Ground Zone: on the map, 3 rounds, Difficult Terrain for enemies, Guard for allies: map 3 enemies @origin.pow | the card applies it: Consecrated Ground
 the Interrupt / Trigger line first: true
 the HUD hover card to the left: true | the reduction waits on the creature and takes from the next damage: true

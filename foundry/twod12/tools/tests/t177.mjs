@@ -41,11 +41,13 @@ const aside = new Set(fs.readFileSync(ROOT + "../../book/cards/set-aside.txt", "
 // Foundry and the ruler read only the old files until the Foundry pass.
 const s0dir = ROOT + "../../book/cards/stage0/";
 const stage0 = fs.existsSync(s0dir) ? fs.readdirSync(s0dir).filter(f => f.endsWith(".json")).flatMap(f => JSON.parse(fs.readFileSync(s0dir + f, "utf8")).cards.map(c => c.name)) : [];
-const shown = cards.filter(c => c.book !== false && !aside.has(c.name));
-console.log("set aside:", aside.size, "| each is a card:", [...aside].every(n => cards.some(c => c.name === n)), "| none is placed:", [...aside].every(n => !placed.has(n)));
-console.log("shown in the book:", shown.length, "| placed once:", shown.every(c => placed.get(c.name)?.length === 1), "| markers with no card:", [...placed.keys()].filter(n => !cards.some(c => c.name === n) && !stage0.includes(n)).join(", ") || "none", "| stage0 cards, each placed once:", stage0.length, stage0.every(n => placed.get(n)?.length === 1));
+// v0.0.409 (pack F2): the book's cards are the old files' (load.mjs loadCards) with stage0's in their place: these checks read the old files, as before
+const bookCards = (await import(ROOTURL + "../../book/cards/load.mjs")).loadCards();
+const shown = bookCards.filter(c => c.book !== false && !aside.has(c.name));
+console.log("set aside:", aside.size, "| each is a card:", [...aside].every(n => bookCards.some(c => c.name === n)), "| none is placed:", [...aside].every(n => !placed.has(n)));
+console.log("shown in the book:", shown.length, "| placed once:", shown.every(c => placed.get(c.name)?.length === 1), "| markers with no card:", [...placed.keys()].filter(n => !bookCards.some(c => c.name === n) && !stage0.includes(n)).join(", ") || "none", "| stage0 cards, each placed once:", stage0.length, stage0.every(n => placed.get(n)?.length === 1));
 const byHand = [];
-for (const [f, t] of chapters) for (const m of t.matchAll(/<div class="action-head"><span>(.*?)<\/span>/g)) if (cards.some(c => c.name === m[1])) byHand.push(`${f}: ${m[1]}`);
+for (const [f, t] of chapters) for (const m of t.matchAll(/<div class="action-head"><span>(.*?)<\/span>/g)) if (bookCards.some(c => c.name === m[1])) byHand.push(`${f}: ${m[1]}`);
 console.log("cards of the files still written by hand in a chapter:", byHand.join(", ") || "none");
 console.log("a card the book does not show (book: false):", cards.filter(c => c.book === false).map(c => c.name).join(", ") || "none");
 
@@ -73,7 +75,9 @@ for (const c of cards) {
   for (const k of ["tiers", "ap", "traits", "frequency", "effects", "name", "cost"]) if (c.foundry?.[k] !== undefined) problems.push(`${c.name}: foundry.${k} repeats a core field`);
   for (const v of c.versions ?? []) for (const k of ["tiers", "ap", "effects"]) if (v.foundry?.[k] !== undefined) problems.push(`${c.name} ${v.ap} AP: foundry.${k} repeats a core field`);
 }
-try { const lines = S.cardLines(cards); S.parseSpec(`class X\n${lines.join("\n")}\n`, "book/cards"); console.log("ruler lines:", lines.length, "| they parse:", true); }
+// v0.0.409 (pack F2): the ruler reads the old files (load.mjs loadCards), Foundry the Paladin's Structure cards in their place
+const L0 = await import(ROOTURL + "../../book/cards/load.mjs");
+try { const lines = S.cardLines(L0.loadCards()); S.parseSpec(`class X\n${lines.join("\n")}\n`, "book/cards"); console.log("ruler lines:", lines.length, "| they parse:", true); }
 catch (e) { problems.push(`ruler: ${e.message}`); }
 console.log("problems:", problems.length ? problems.join(" ; ") : "none");
 if (problems.length || check.status !== 0 || byHand.length) throw new Error("the card files and their targets disagree (see above)");

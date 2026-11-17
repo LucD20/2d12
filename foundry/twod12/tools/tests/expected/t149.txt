@@ -1,43 +1,40 @@
 --- choices to make (a new character)
-Paladin: level 1 10, level 2 1, level 3 1 | Archer: level 1 10, level 2 1, level 3 1
+Paladin: level 1 7, level 2 3, level 3 3 | Archer: level 1 10, level 2 1, level 3 1
 Attribute increases (Details tab): Body or Appeal +1, Mind or Instinct +1 | Body or Instinct +1, Mind or Appeal +1
 --- the Paladin's level 1
-nothing chosen: 0 of 10 made, complete false | Attribute increases [Choose 2] | Features [Granted] | Hallmark Action [0 / 1] Smite/Lay On Hands | Hallmark Reaction [0 / 1] Shield of Faith/Rebuke | Encounter Pick [0 / 1] Holy Wrath/Word of Radiance/Bulwark of Faith/Beacon | Escalation 1 Passive [0 / 1] Radiant Zeal/Divine Surge/Font of Mercy | Escalation 2 Passive [0 / 1] Searing Blows/Mending Light | Escalation 3 Passive [0 / 1] Reckoning/Hallowed Stance | Apex [0 / 1] Final Verdict/Hallowed Dawn | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
-Font of Mercy is an Escalation 1 Passive pick: true | offers: Radiant Zeal, Divine Surge, Font of Mercy | Apex: Final Verdict, Hallowed Dawn
-Pick 1: choosing Lay On Hands after Smite replaces it: Lay On Hands
+nothing chosen: 0 of 7 made, complete false | Attribute increases [Choose 2] | Features [Granted] | Hallmark Action [0 / 1] Binding Light/Lay On Hands | Hallmark Reaction [0 / 1] Shield of Faith/Rebuke | Art [0 / 1] Lantern of Faith/Hold the Line/Commandment | Escalation 2 Ability [0 / 1] Armor of Faith/Roving Judgment | Skill Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
+Armor of Faith is an Escalation 2 pick: true | offers: Armor of Faith, Roving Judgment | Art: Lantern of Faith, Hold the Line, Commandment
+Pick 1: choosing Lay On Hands after Binding Light replaces it: Lay On Hands
 choosing it again puts it back: []
-Pick 2: a third choice drops the oldest: Lay On Hands, Holy Wrath
+Pick 2: a third choice drops the oldest: Lay On Hands, Word of Radiance
 Distinct Choices: Appeal for pair 1: ["appeal"]
 Body, then Mind: ["body","mind"] | list: body, mind
 the book's example (Body or Appeal, Appeal or Instinct): Appeal moves to the second pair and the first must be chosen again: [null,"appeal"]
 an Attribute chosen at an earlier level can't be chosen: {}
-all but the Talent: 9 of 10 made, complete false | Attribute increases [Chosen] | Features [Granted] | Hallmark Action [Chosen] Smite/Lay On Hands | Hallmark Reaction [Chosen] Shield of Faith/Rebuke | Encounter Pick [Chosen] Holy Wrath/Word of Radiance/Bulwark of Faith/Beacon | Escalation 1 Passive [Chosen] Radiant Zeal/Divine Surge/Font of Mercy | Escalation 2 Passive [Chosen] Searing Blows/Mending Light | Escalation 3 Passive [Chosen] Reckoning/Hallowed Stance | Apex [Chosen] Final Verdict/Hallowed Dawn | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
-with the Talent: complete true (10 of 10)
-what confirm gives: Divine Power (Features), Kindled Wrath (Features), Smite (Hallmark Action), Shield of Faith (Hallmark Reaction), Holy Wrath (Encounter Pick), Radiant Zeal (Escalation 1 Passive), Searing Blows (Escalation 2 Passive), Hallowed Stance (Escalation 3 Passive), Final Verdict (Apex), Heavy Blows (Talent)
+all but the Talent: 6 of 7 made, complete false | Attribute increases [Chosen] | Features [Granted] | Hallmark Action [Chosen] Binding Light/Lay On Hands | Hallmark Reaction [Chosen] Shield of Faith/Rebuke | Art [Chosen] Lantern of Faith/Hold the Line/Commandment | Escalation 2 Ability [Chosen] Armor of Faith/Roving Judgment | Skill Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
+with the Skill Talent: complete true (7 of 7)
+what confirm gives: Judge (Features), Smite (Features), Binding Light (Hallmark Action), Shield of Faith (Hallmark Reaction), Hold the Line (Art), Armor of Faith (Escalation 2 Ability), Heavy Blows (Skill Talent)
 --- the same item in two sections
-Hallowed Stance chosen in First: 1 of 2 made, complete false | First [Chosen] Hallowed Stance/Radiant Zeal | Second [0 / 1] Radiant Zeal
+Hallowed Stance chosen in First: 1 of 2 made, complete false | First [Chosen] Hallowed Stance/Tireless Vigil | Second [0 / 1] Tireless Vigil
 also in (Levels window): Second
-Radiant Zeal chosen in Second: 2 of 2 made, complete true | First [Chosen] Hallowed Stance | Second [Chosen] Radiant Zeal
+Tireless Vigil chosen in Second: 2 of 2 made, complete true | First [Chosen] Hallowed Stance | Second [Chosen] Tireless Vigil
 both owned from before: 0 of 0 made, complete true | First [Complete] - | Second [Complete] -
 --- level up: only that level's sections; what the character owns leaves the choices
-Paladin level 2: 0 of 1 made, complete false | Talent [0 / 1] Challenge/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
+Paladin level 2: 0 of 3 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground | Escalation 4 Ability [0 / 1] Weight of Judgment/Tireless Vigil | Talent [0 / 1] Challenge/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
 the level 2 Talent doesn't offer Heavy Blows (owned): true | 15 Talents offered
-Paladin level 3: 0 of 0 made, complete true | Talent [Complete] -
+Paladin level 3: 0 of 2 made, complete false | Second Art [0 / 1] Lantern of Faith/Commandment | Escalation 6 Ability [0 / 1] Reckoning/Hallowed Stance | Skill Talent [Complete] -
 Archer level 2: 0 of 1 made, complete false | Talent [0 / 1] Challenge/Heavy Blows/Whirlwind/Bloodlust/Brawler/Kickboxer/Aim/Ricochet/Long Draw/Steady Nerves/Battering Charge/Cut Through/Lesser Blessing/Sacred Weapon/Hand of Mercy/Class Expertise
-Repertoire filter: Any Holy Wrath, Word of Radiance, Bulwark of Faith, Beacon, Consecrated Ground, Miraculous Recovery, Divine Intervention | Turn  | Passive 0
-a Feature in the Repertoire is Passive: Radiant Zeal | and in Any: true
-a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Word of Radiance/Bulwark of Faith/Beacon
-and what the character owns: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Word of Radiance/Beacon
+Repertoire filter: Any Bulwark of Faith, Consecrated Ground, Word of Radiance | Turn  | Passive 0
+a Feature in the Repertoire is Passive: Tireless Vigil | and in Any: true
+a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground
+and what the character owns: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Consecrated Ground
 --- the Levels window's lines
 Attribute increases: {"text":"Body or Appeal +1 · Mind or Instinct +1","warn":false}
-Features: {"text":"Granted: Divine Power, Kindled Wrath","warn":false}
+Features: {"text":"Granted: Judge, Smite","warn":false}
 Hallmark Action: {"text":"Choose 1 of 2","warn":false}
 Hallmark Reaction: {"text":"Choose 1 of 2","warn":false}
-Encounter Pick: {"text":"Choose 1 from the Repertoire (Encounter, 4 available)","warn":false}
-Escalation 1 Passive: {"text":"Choose 1 of 3","warn":false}
-Escalation 2 Passive: {"text":"Choose 1 of 2","warn":false}
-Escalation 3 Passive: {"text":"Choose 1 of 2","warn":false}
-Apex: {"text":"Choose 1 of 2","warn":false}
-Talent: {"text":"Choose 1 Talent","warn":false}
+Art: {"text":"Choose 1 of 3","warn":false}
+Escalation 2 Ability: {"text":"Choose 1 of 2","warn":false}
+Skill Talent: {"text":"Choose 1 Talent","warn":false}
 an empty section: {"text":"Empty: drop at least one item.","warn":true} | too few: {"text":"Choose 3 but only 1 item to pick from.","warn":true}
 the Stage line: 1: - | 4: Stage 1: +1 to your Weapon or Power Modifier (never above +4). | 5: - | 8: -

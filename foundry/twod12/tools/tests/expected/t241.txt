@@ -1,7 +1,7 @@
 --- the chain as steps
 every chain of the compendium reads and writes back unchanged: true
-Rebuke: On a Tier 1 or a Tier 2: the target is Pushed 2 (Tier 1), 1 (Tier 2), away from you. On a Tier 1: the target is Frightened for 1 round.
-Smite 3 AP: After the damage: you or one ally in a 2 Emanation around the target gain Guard 1d8 + [Mod]. After the damage: the others in a 2 Emanation around the target, one by one are Pushed 1, away from the target.
+Rebuke: After the damage: the target is Hindered until the end of their turn.
+Word of Radiance: After the damage: the others in the area, one by one are Pushed 3 (Tier 1), 2 (Tier 2), 1 (Tier 3), away from the area's center.
 Marksman's Shot: On a Tier 3: the target is Vulnerable 2 until the end of their turn. On a Critical: the target is Blinded until the end of their turn.
 a bare option kept: @Condition[vulnerable|value:2|eot|tier:3] | its label: Vulnerable 2 (EoT) | an unknown option kept: @Move[pushed|distance:2|terrain:ignore|foo:bar]
 text between chips kept: first @Pause[After the damage] then @Guard[rally|who:pick]
@@ -18,12 +18,12 @@ v0.0.358: the Tiers as four switches: 1:|on:1 2:|on:2 3:|tier:3 12:|on:1,2 23:|t
   read back: t2 t1t3 t2t3 | the chain runs it only for those Tiers: true [1,3] [2]
 the same Push on every Tier is one distance: @Move[pushed|distance:1]
 --- the order of events
-Smite 3 AP: On your turn > Pay 3 AP > One creature > Your roll > Smite (Bright light 2) > The damage > Guard 1d8 + [Mod]* > Pushed 1*
-Rebuke: Trigger > Pay 1 AP (R) > The triggering creature > The target's Save > The damage > Pushed 2 / 1* > Frightened (1 round)*
+Bulwark of Faith: Interrupt > Pay 1 AP (R) > One ally > Guard rally* > Pause: After the damage* > Slid 1*
+Rebuke: Trigger > Pay 1 AP (R) > One enemy > The target's Save > The damage > Hindered (EoT)*
 Covering Fire: On your turn > Pay 2 AP > Place the area > Covering Fire
 --- the tab
-renders for every Action: true 88 | failures: none
-Smite 3 AP: 3 Version tabs: 3 | its Tier fields: 3 | "On a Tier 2 or 3": true | 2 steps: 2 | Fill: true | the chain isn't a text field: true
+renders for every Action: true 87 | failures: none
+Word of Radiance: 1 Version tab: 1 | its Tier fields: 3 | "On a Tier 1 or 2": false | 2 steps: 1 | Fill: true | the chain isn't a text field: true
 Covering Fire: "On use": true | the area's size and rounds on the Version: true | Who set by the Zone: true
 every Tier's damage reads back from its text: true
 no Foundry default window, no Versions window: true true | "Modifies other Actions" only while an Action has some: true

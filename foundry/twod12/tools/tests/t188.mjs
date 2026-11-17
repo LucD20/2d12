@@ -21,16 +21,15 @@ console.log("applyReachedEffects (only in an encounter, only once per Effect):",
 console.log("--- inline Actions");
 const ef = src("module/effects.mjs");
 console.log("the setting and its lifecycle:", src("module/data.mjs").includes("inlineAction: str()"), cfg.includes('inline: "Grants an Action while active"'), ef.includes("async function createInlineActions(") && ef.includes("export async function findAction(") && ef.includes('i.getFlag?.(F, "inlineOf") === fx.id'), "| in the Class group:", src("module/actor-sheets.mjs").includes('i.getFlag("twod12", "inlineOf") ? "Class"'));
-const beacon = G.loadCards().find(c => c.name === "Beacon"), step = G.inlineCards(beacon)[0], sys = G.cardSystem(step);
-console.log("Beacon's Step from the card:", `${step.name} | ${step.category} | ${step.cost} ${step.frequency} | ${step.interrupt} | ${step.text}`, "| as an item:", `${sys.reactionKind} ${sys.frequency} ${sys.versions[0].ap} AP, ${sys.versions[0].effects}`, "| flavor:", sys.flavor);
-const item = C.docs.find(d => d.name === "Beacon's Step"), aura = C.docs.find(d => d.name === "Beacon" && d.type === "effect");
-console.log("in the compendium:", item ? `${item.pack}/${item.type} in ${item.folder}` : "missing", "| the Beacon effect carries it:", aura.system.settings.some(x => x.type === "inline" && x.inlineAction === C.uuidOf("actions", "Beacon's Step")), "| the aura setting still first:", aura.system.settings[0].type);
-const bk = C.docs.find(d => d.name === "Beacon" && d.type === "action");
-console.log("Beacon: Area", JSON.stringify(bk.system.area), "| distance", JSON.stringify(bk.system.distance ?? ""), "| text:", bk.system.versions[0].effects);
+// v0.0.409 (pack F2): Beacon left Foundry with pack R's Paladin; the inline Actions still work from a card's `inline` list (a card written here)
+const host = { name: "Test Beacon", category: "Test", traits: [], frequency: "Encounter", versions: [{ ap: 1, effects: "You gain the following Action:" }], inline: [{ name: "Test Step", flavor: "You step in.", traits: ["move"], frequency: "Round", cost: "0R", interrupt: "An ally in the Aura takes damage.", effects: "Evade 1 toward them." }], foundry: { img: "icons/svg/aura.svg", automation: "mithril" }, _file: "test" };
+const step = G.inlineCards(host)[0], sys = G.cardSystem(step);
+console.log("an inline Action from the card:", `${step.name} | ${step.category} | ${step.cost} ${step.frequency} | ${step.interrupt} | ${step.text}`, "| as an item:", `${sys.reactionKind} ${sys.frequency} ${sys.versions[0].ap} AP, ${sys.versions[0].effects}`, "| flavor:", sys.flavor);
+console.log("the host's last Version names it:", G.cardSystem(host).versions[0].effects.includes("{{link:Test Step|Test Step}}"));
 console.log("the book (the card Structure of 2026-11-16; Beacon and its nested card left the book with the Paladin's redesign): an Interrupt is a labeled line:", /<div class="cl"><b>Interrupt<\/b>/.test(src("../../book/paladin.html")));
 console.log("--- Word of Radiance's chain");
 const w = C.docs.find(d => d.name === "Word of Radiance");
-console.log("after:", w.system.versions.map(v => `${v.ap} AP: ${v.after}`).join(" | "), "| no notes line:", !w.system.description);
+console.log("after:", w.system.versions.map(v => `${v.ap} AP: ${v.after}`).join(" | "), "| its Special (d8s against a Profane creature) is the description:", /Profane/.test(w.system.description ?? ""));   // v0.0.409 (pack F2)
 const mv = I.parseInline("Move", "pushed|distance:1|t3:2|pick:yes|from:area"), cd = I.parseInline("Condition", "prone|crit:yes");
 console.log("the chip options:", JSON.stringify({ from: mv.from, pick: mv.pick, t3: mv.tiers.t3 }), "| the distance by Tier:", I.tierDistance(mv, 2), I.tierDistance(mv, 3), "| Prone on the Criticals only:", cd.crit === true);
 const mvs = src("module/move.mjs");

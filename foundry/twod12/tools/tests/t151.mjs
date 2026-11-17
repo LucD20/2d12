@@ -14,7 +14,11 @@ globalThis.game = { settings: { get: () => true }, time: { worldTime: 0 }, user:
 const E = await import(ROOTURL + "module/effects.mjs"), B = await import(ROOTURL + "module/bonus.mjs"), AU = await import(ROOTURL + "module/automation.mjs");
 const FD = await import(ROOTURL + "module/fxdetails.mjs");
 const F = "twod12";
-const card = name => docs.find(d => d.name === name && ["feature", "talent"].includes(d.type)) ?? docs.find(d => d.name === name && d.type === "effect") ?? docs.find(d => d.name === name && d.type === "action" && d.system.settings?.length);   // v0.0.360: an Action that holds rules
+// v0.0.409 (pack F2): pack R's Paladin Features (Font of Mercy, Radiant Zeal) left the compendium; their settings still test the machinery, built from
+// the old card file the ruler keeps (book/cards/paladin.json, cardgen featureSystem)
+const { resolveRefs } = await import(ROOTURL + "tools/content.mjs"), G0 = await import(ROOTURL + "tools/cardgen.mjs"), L0 = await import(ROOTURL + "../../book/cards/load.mjs");
+const oldFeature = name => { const c = L0.loadCards().find(x => x.name === name && x._file === "paladin.json" && !G0.isAction(x)); return c ? { name, type: "feature", system: G0.featureSystem(c, resolveRefs) } : undefined; };
+const card = name => docs.find(d => d.name === name && ["feature", "talent"].includes(d.type)) ?? oldFeature(name) ?? docs.find(d => d.name === name && d.type === "effect") ?? docs.find(d => d.name === name && d.type === "action" && d.system.settings?.length);   // v0.0.360: an Action that holds rules
 const settingsOf = name => (card(name)?.system.settings ?? []).map(x => ({ all: [], any: [], none: [], from: [], tiers: ["t1", "t2", "t3"], ...x }));
 
 /** A creature with these Features (their compendium settings) and applied effects; its flags are kept in memory. */

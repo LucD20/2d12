@@ -489,7 +489,7 @@ export function sentence(rIn, ctx = {}) {
     case "weap":
       if (r.mode === "prop") return `${r.weapon === "fists" ? "Its Fists don't" : "Its weapons don't"} have the property ⟦a:${T().removableProps?.[r.prop] ?? r.prop}⟧${esc0}.`;
       return `Choose one weapon with the property ⟦a:${T().weaponTraits?.[r.mprop] ?? r.mprop}⟧: it starts at ${r.mval} Mastery${esc0}.`;
-    case "esc": return `Once an encounter, when ${(T().escHookWhen?.[r.trig] ?? "").replace(/^An /, "an ").replace(/^The /, "the ").replace(" N ", ` ${r.n} `)}: its Escalation rises by 1${esc0}.`;
+    case "esc": return `Once an encounter, when ${(T().escHookWhen?.[r.trig] ?? "").replace(/^An /, "an ").replace(/^The /, "the ").replace(" within N squares", Number(r.n) > 0 ? ` within ${r.n} squares` : "").replace(" N ", ` ${r.n} `)}: its Escalation rises by 1${esc0}.`;   // v0.0.409: 0 squares = any ally (Kindled Wrath)
     case "uses": return `${cap(T().freqMore?.[r.which] ?? "")}${esc0}.`;
     case "aura": {
       const sz = isNum(r.size) ? r.size.trim() : `(equal to ${formulaWords(r.size)})`;
@@ -603,8 +603,10 @@ export const insideDefault = (o = {}) => normInside(deepMerge({
   diff: { on: false, who: "all", self: false }
 }, o));
 export function normInside(x0) {
-  const x = deepMerge({ carry: {}, carry2: { who: "enemies" }, heal: {}, ht: { gives: {} }, diff: {} }, x0 ?? {});
-  for (const k of ["carry", "carry2", "heal", "ht", "diff"]) { x[k].on = !!x[k].on; x[k].self = !!x[k].self; }
+  // v0.0.409 (pack F2, Consecrated Ground): guard, Guard at the start of each of their turns inside (its formula: @origin.pow)
+  const x = deepMerge({ carry: {}, carry2: { who: "enemies" }, heal: {}, ht: { gives: {} }, diff: {}, guard: {} }, x0 ?? {});
+  for (const k of ["carry", "carry2", "heal", "ht", "diff", "guard"]) { x[k].on = !!x[k].on; x[k].self = !!x[k].self; }
+  x.guard.who = whoOk(x.guard.who); x.guard.formula = String(x.guard.formula ?? "@origin.pow");
   x.carry2.who = whoOk(x.carry2.who); x.carry2.fx = String(x.carry2.fx ?? ""); x.carry2.fxName = String(x.carry2.fxName ?? "");
   x.carry.who = whoOk(x.carry.who); x.heal.who = whoOk(x.heal.who); x.ht.who = ["allies", "enemies", "all"].includes(x.ht.who) ? x.ht.who : "all"; x.diff.who = ["allies", "enemies", "all"].includes(x.diff.who) ? x.diff.who : "all";
   x.carry.fx = String(x.carry.fx ?? ""); x.heal.formula = String(x.heal.formula ?? "1d4");
@@ -613,7 +615,7 @@ export function normInside(x0) {
   for (const k of ["entering", "turn", "movement"]) x.ht[k] = !!x.ht[k];
   return x;
 }
-export const insideActive = i => !!(i && ((i.carry?.on && i.carry.fx) || (i.carry2?.on && i.carry2.fx) || i.heal?.on || i.ht?.on || i.diff?.on));
+export const insideActive = i => !!(i && ((i.carry?.on && i.carry.fx) || (i.carry2?.on && i.carry2.fx) || i.heal?.on || i.ht?.on || i.diff?.on || i.guard?.on));
 /** The patterns of a Hazard row: none ticked = Entering and Turn (Chapter 3). */
 export const htPatterns = ht => { const l = ["entering", "turn", "movement"].filter(k => ht?.[k]); return l.length ? l : ["entering", "turn"]; };
 const PAT = { entering: "Entering", turn: "Turn", movement: "Movement" };
@@ -647,6 +649,7 @@ export function insideSentences(insideIn, ctx = {}) {
     const w = x.diff.who === "all" ? (x.diff.self ? "every creature" : `every creature but ${me}`) : `${x.diff.who}${x.diff.self ? ` and ${me}` : ""}`;
     out.push(`Its squares are Difficult Terrain for ${w}.`);
   }
+  if (x.guard.on) out.push(`${whoInside(x.guard, me)} gain Guard equal to ${formulaWords(x.guard.formula)} at the start of each of their turns.`);
   return out;
 }
 /** A part row's summary: "Enemies · Consecrated", "Allies · 1d4 (avg 2.5) a turn", "Everyone · Entering, Turn · 1d8 Fire", "Enemies". */

@@ -20,3 +20,18 @@ export function splitView(item, mode) {
   const distance = mode === "power" && /^\s*weapon\s*$/i.test(sys.distance ?? "") ? "reach" : sys.distance;
   return over(item, { system: over(sys, { traits, versions, distance }), splitMode: mode });
 }
+
+/* ---- v0.0.409 (pack F2; book, Reading an Action: Modes): an Art has three Modes, one chosen each time it is used ---- */
+/** The Modes of an Action (its Versions' mode names that are not Weapon or Power), in their order. */
+export const artModes = item => [...new Set((item?.system?.versions ?? []).map(v => String(v.mode ?? "")).filter(m => m && !SPLIT_TRAIT[m]))];
+/** The Action as it is in one Mode: that Mode's Version only, with the Mode's own traits, Distance, Target and roll (the card's when it writes none). */
+export function modeView(item, mode) {
+  const sys = item.system, v = (sys.versions ?? []).find(x => x.mode === mode);
+  if (!v) return item;
+  const traits = new Set([...sys.traits, ...(v.modeTraits ?? [])]);
+  const extra = { traits, versions: [v] };
+  if (v.modeDistance) extra.distance = v.modeDistance;
+  if (v.modeTargets) extra.targets = v.modeTargets;
+  if (v.modeVs) extra.vs = v.modeVs;
+  return over(item, { system: over(sys, extra), splitMode: mode, artMode: mode });
+}

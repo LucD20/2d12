@@ -38,7 +38,7 @@ function allyWithin(hooked, other, range) {
   for (const a of A) for (const b of B) {
     const da = a.document?.disposition ?? 0, db = b.document?.disposition ?? 0;
     if (da === 0 || db === 0 || areEnemies(a, b)) continue;
-    if (tokenDistance(a, b) <= range) return true;
+    if (!range || tokenDistance(a, b) <= range) return true;   // v0.0.409 (pack F2, Kindled Wrath): range 0 = any ally
   }
   return false;
 }

@@ -18,6 +18,7 @@ console.log("the confirm is a bar, you-too from the setting first, the windows a
 console.log("a retarget rebuilds the Apply rows with the targets' side:", ac.includes("const rows = applyAfterHtml({ after: f.after, noTiers: true }, targets, me)") && ac.includes("disposition: t.document.disposition }));"));
 console.log("a chain's Condition goes to the chain's targets before the card's Self:", /if \(ctx\.targets\?\.length\) actors = [\s\S]{0,500}else actors = handTargetTokens\(ctx\)/.test(inl));
 console.log(convertEffects("Each enemy in the Area is Pushed 2 away from you, is Enfeebled 1 and sheds Bright light in a 1 Emanation for 1 round. Vulnerable 2 (EoT) and Hindered."));
-const hd = G.loadCards().find(c => c.name === "Hallowed Dawn");
-console.log("Hallowed Dawn: you too by default:", hd.foundry.areaCfg.center === true, "| the Bane on Strikes (1 round) is in the chain:", hd.versions[0].foundry.after.includes("@Effect[{{fx:Hallowed Dawn (1 Bane)}}|side:enemies]"), "| and in the text:", G.cardSystem(hd).versions[0].effects.includes("takes 1 Bane on its [Strike] Actions"));   // Lucas, 2026-11-13: in the place of Enfeebled 1
+// v0.0.409 (pack F2): Hallowed Dawn left with pack R's Paladin; Reckoning is the Emanation around you now
+const rk = G.loadCards().find(c => c.name === "Reckoning");
+console.log("Reckoning: around you (centered):", rk.foundry.areaCfg.center === true, "| enemies only:", rk.foundry.areaCfg.targets === "enemies", "| Frightened in the chain:", G.cardSystem(rk).versions[0].after.includes("@Condition[frightened|rounds:1]"), "| its Setup's Advance:", G.cardSystem(rk).setup);
 console.log("the Mithril sheen:", src("styles/system.css").includes(".autodia.auto-mithril { background: linear-gradient(135deg, #5ad7ff"), "| the Apply rows styled:", src("styles/system.css").includes(".twod12.chat .applyrow button"));

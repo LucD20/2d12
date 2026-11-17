@@ -396,7 +396,7 @@ async function showCardNow(actor, item, at) {
   div.addEventListener("click", ev => {
     if (ev.target.closest(".hc-x")) { ev.preventDefault(); return closePop({ keepOpen: true }); }
     const b = ev.target.closest("[data-action='useVersion'][data-ap]");
-    if (b && !b.disabled) { ev.preventDefault(); closePop(); use(actor, item, Number(b.dataset.ap), ev.shiftKey); }
+    if (b && !b.disabled) { ev.preventDefault(); closePop(); use(actor, item, Number(b.dataset.ap), ev.shiftKey, b.dataset.mode); }   // v0.0.409: an Art's Mode button
   });
   // v0.0.385 (Lucas: "clicking the action again should close the card, not blink it"): a press on this Action's name is left to the click, which closes it
   const sameName = ev => !!ev.target.closest?.(`.ha[data-item-id="${item.id}"] [data-hud="card"], .hb-ln[data-item-id="${item.id}"]`);
@@ -410,10 +410,10 @@ async function toggleQuick(actor, item, ap) {
 }
 
 /* ------------------------------------------------------------------ clicks */
-async function use(actor, item, ap, shift) {
+async function use(actor, item, ap, shift, mode = "") {
   const { useAction } = await import("./actions.mjs");
   const skip = !!setting("hudSkipDialog", false) !== !!shift;
-  return useAction(actor, item, { rdState: { ap }, skipDialog: skip });
+  return useAction(actor, item, { rdState: { ap }, skipDialog: skip, ...(mode ? { mode } : {}) });
 }
 /** v0.0.407: the GM changes the party's Momentum from the party strip (left-click +1, right-click -1). */
 async function momentumClick(ev, d) {
