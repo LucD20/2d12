@@ -105,6 +105,12 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
   on the sheet (who edits it: asked). **E8** the NPC sheet's Level input (actor-sheet-pc.hbs line 382) reads `{{level}}`, empty in its context:
   the image picker submits the form and the empty Level fails ("must be a number"); read the real level, an empty Level is "unchanged".
 
+## 1i. Group E decided, and the tooltips (Lucas, 2026-11-17)
+- **E2 yes:** until the sheet redesign, the row's pill writes the Frequency word ("Turn · 1R").
+- **E7:** the player edits the Rally Points too (not only the GM), **with a chat message** (a sysLine: "Durgan sets his Rally Points to 2").
+- **New (Lucas): "tooltips are too much. Only ones that are necessary so far are the ones in the HP bars. Remove all for now."** Every
+  tooltip of the system goes for now except the HP bars'. Open: whether the hover cards count (asked).
+
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 
 ### A. Cards (what a card says)
