@@ -43,9 +43,9 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
    condition not applied). Added as **G8**: Rebuke's Hindered (EoT) didn't apply.
 3. **Two Paladins Judge the same creature:** they stack: "technically different effects, since each applies to a single creature using it; the
    same name but different" (Judged by Aveline and Judged by Durgan). The book says it (Stacking today: "the same effect never stacks with
-   itself"); the open point: does the Ogre's first damage to an ally near both get both reductions? (asked)
+   itself"); **the reduction becomes the Paladin's choice** (Lucas: "Judge should then allow the Paladins to decide if the attack is reduced or not, that way, they get more autonomy"): once each round, when the Judged creature damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier; two Paladins each decide (both can).
 4. **Minions sharing a slot:** each Minion still has its own 3 AP (Claude didn't mean otherwise: the point was the turn order, 6 enemy slots
-   against 4 instead of 4 against 4); whether Foundry groups them (asked again).
+   against 4 instead of 4 against 4); Foundry gave no choice; the shared slot is optional (Lucas forgot it): Foundry could offer it in the Initiative window, off by default (low priority).
 5. **Kaela's "Advance 2":** Strafe's Setup. Foundry: the Encounter Log writes a Setup's movement as part of its Action ("Strafe (Setup: Advance
    2)"), and numbers creatures of the same name (GS1, GS2...); an area skips a creature that is out of the fight.
 
