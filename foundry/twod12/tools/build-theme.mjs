@@ -913,6 +913,12 @@ const STYLE3 = `
    the party strip, its right edge where the bar puts it (6 px in, as the bar's slot; flush in a narrow window, where the bar sends it above) ==== */
 .twod12-hud.twod12-hud.is-strip.with-hot .hud-hot { background: transparent !important; border: 0 !important; backdrop-filter: none !important; padding: 0 6px 0 0 !important; margin-left: auto !important; }
 @container (max-width: 1000px) { .twod12-hud.twod12-hud.is-strip.with-hot .hud-hot { padding: 0 !important; } }
+/* ==== v0.0.406 (Lucas: "Still slightly twitching when clicking: the unselected is a bit bigger than the selected HUD"): the party strip as tall as a
+   creature's bar (150 px), its cards filling it, tighter, so the players box above never moves ==== */
+.twod12-hud.twod12-hud.is-strip { height: 150px !important; min-height: 150px !important; }
+.twod12-hud.is-strip .hud-main { align-self: stretch; display: flex; align-items: stretch; }
+.twod12-hud.is-strip .hb-strip { align-items: stretch !important; height: 100%; }
+.twod12-hud.twod12-hud .hb-pc { box-sizing: border-box; height: 100%; max-height: 100%; overflow: hidden; gap: 2px !important; padding: 4px 8px 3px !important; justify-content: space-between; }
 `;
 
 /** The theme's CSS from system.css's text (pure: the test calls it). */

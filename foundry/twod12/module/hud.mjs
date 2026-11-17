@@ -300,10 +300,15 @@ function placePlayers() {
   if (!pl || !slot) return;
   if (pl.parentElement !== slot) slot.append(pl);
 }
+let drawing = false, again = false;
+/** v0.0.406: the HUD's middle drawn only when its HTML changed (the same HTML again: no flash of the portrait and the lines). */
+function setMain(main, html) { if (main.__twod12Html === html && main.childElementCount) return false; main.innerHTML = html; main.__twod12Html = html; return true; }
 export function renderHud() {
   if (typeof document === "undefined") return;
   clearTimeout(timer);
-  timer = setTimeout(() => drawHud().catch(e => console.warn("twod12 | HUD", e)), 60);
+  // v0.0.406 (Lucas: "Applying some conditions makes the HUD flicker, like Unconscious"): a condition updates the actor, its Effect and the token one
+  // after the other; the redraws are gathered (150 ms), one at a time, and a redraw that changes nothing leaves the HUD as it is
+  timer = setTimeout(() => { if (drawing) { again = true; return; } drawing = true; drawHud().catch(e => console.warn("twod12 | HUD", e)).finally(() => { drawing = false; if (again) { again = false; renderHud(); } }); }, 150);
 }
 async function drawHud() {
   const show = setting("hudShow", true);
@@ -315,13 +320,13 @@ async function drawHud() {
   // v0.0.390: several tokens selected, or nothing (the party strip): small cards
   if (cur.list || !cur.actor) {
     st.actorUuid = "";
-    if (!cur.list && !setting("hudParty", true)) { main.innerHTML = emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token."); return; }
+    if (!cur.list && !setting("hudParty", true)) { setMain(main, emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token.")); return; }
     const pairs = cur.list ? cur.list.filter(t => t.actor).map(t => [t.actor, t]) : partyActors().map(a => [a, (globalThis.canvas?.tokens?.placeables ?? []).find(t => t.actor?.id === a.id) ?? null]);
     const cards = await Promise.all(pairs.map(([a, t]) => partyCard(a, t)));
     let momentum = "";
     try { const { hasMomentum } = await import("./escalation.mjs"); momentum = !cur.list && hasMomentum() ? "on" : ""; } catch (e) { momentum = ""; }
     const waiting = main.querySelector(".hb-ask > .twod12-linebar");
-    main.innerHTML = partyStripHtml({ cards, momentum });
+    setMain(main, partyStripHtml({ cards, momentum }));
     if (waiting) { root.querySelector(".hud-ask")?.append(waiting); waiting.classList.remove("in-side"); hudAsking(true, false); }
     root.classList.add("is-strip");
     st.cards = new Map(pairs.map(([a, t], k) => [cards[k].key, { actor: a, token: t }]));
@@ -330,7 +335,7 @@ async function drawHud() {
   if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
   const waiting = main.querySelector(".hb-ask > .twod12-linebar");
-  main.innerHTML = tokenBarHtml(m);
+  setMain(main, tokenBarHtml(m));
   if (waiting) (main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask"))?.append(waiting);
   root.classList.add("is-bar"); root.classList.toggle("is-npc", m.npc); root.classList.toggle("is-folded", !!m.folded);
   fitNames(main);

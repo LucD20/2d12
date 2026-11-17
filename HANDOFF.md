@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.405, 252 tests; READ THIS FIRST)
+## Where we are now (v0.0.406, 252 tests; READ THIS FIRST)
+- **2026-11-17 (v0.0.406, branch `pack-hud-remake`; NOT tested by Lucas):** the party strip 150 px like the bar (STYLE3; the card's content 147 px); hud.mjs renderHud gathers redraws (150 ms, one at a time) and setMain skips an identical redraw.
 - **2026-11-17 (v0.0.405, branch `pack-hud-remake`; NOT tested by Lucas):** the Momentum setting redraws the carousel and the HUD (escalation.mjs onChange), shown while preparing; the hotbar over the party strip without a frame, its right edge measured equal to the bar's (STYLE3).
 - **2026-11-17 (v0.0.404, branch `pack-hud-remake`; NOT tested by Lucas):** move.mjs forcedBar asks in the HUD slot; the Push lines "X was Pushed Y by Z" (postFollow into the card: ccdamage.mjs runChain passes message: msg); hud.mjs keeps any `.twod12-linebar` across redraws; the strip's transparent 1 px border.
 - **2026-11-17 (v0.0.403, branch `pack-hud-remake`; NOT tested by Lucas): the Push works (Lucas, v0.0.402).** template.mjs: a right-click no longer cancels a placement (it pans); pickbar.mjs: `canvas.tokens.releaseAll` is a no-op while a question is up (counted, restored 400 ms after the last), so no blink.

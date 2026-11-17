@@ -81,6 +81,10 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.406 (2026-11-17, branch `pack-hud-remake`): TO TEST
+- [ ] **Select and deselect a token several times:** nothing in the HUD's frame, the players box or the hotbar moves; the party cards fill the same height.
+- [ ] **Apply Unconscious (and another condition) to the selected creature:** the HUD updates once, without flickering.
+
 ## v0.0.405 (2026-11-17, branch `pack-hud-remake`): TO TEST
 - [ ] **Momentum:** switch it on in the combat tracker: the strip says "· Momentum" at once (before the start too); start the encounter: "Round 1 · Momentum".
 - [ ] **Select and deselect a token:** the hotbar's right edge doesn't move (it goes above the HUD with a token in a narrow window, as before); no frame around it over the party strip.
