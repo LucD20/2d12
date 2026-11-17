@@ -5,8 +5,8 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 25.5 | 324 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 33.3 | 349 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 40.5 | 468 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 33.8 | 353 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 41.1 | 472 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.0 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 43 |
@@ -75,21 +75,21 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 194:   ### Effect Timing
 - 206:   ### Buffs
 - 217:     #### Stacking
-- 236:   ### Frequency
-- 242:     #### At-will
-- 250:     #### Turn
-- 254:     #### Round
-- 258:     #### Encounter
-- 262:     #### Daily
-- 266: ## Versus
-- 270:   ### Defenses
-- 285: ## Rounds and Durations
-- 287:   ### Until
-- 291:   ### Your Next Action
-- 295:   ### Rounds
-- 304:   ### End of Turn
-- 312: ## Escalation
-- 335:   ### Momentum
+- 240:   ### Frequency
+- 246:     #### At-will
+- 254:     #### Turn
+- 258:     #### Round
+- 262:     #### Encounter
+- 266:     #### Daily
+- 270: ## Versus
+- 274:   ### Defenses
+- 289: ## Rounds and Durations
+- 291:   ### Until
+- 295:   ### Your Next Action
+- 299:   ### Rounds
+- 308:   ### End of Turn
+- 316: ## Escalation
+- 339:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 
@@ -123,20 +123,21 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 313: ## Cover
 - 330:   ### Leaning
 - 334: ## Areas
-- 340:   ### Emanation
-- 348:   ### Aura
-- 352:   ### Burst
-- 358:   ### Line
-- 380:   ### Other areas
-- 387: ## Light
-- 399:   ### Bright
-- 403:   ### Dim
-- 407:   ### Darkness
-- 411: ## Senses
-- 443:   ### Sight Senses
-- 450:   ### Other Senses
+- 340:   ### Cover against an area
+- 344:   ### Emanation
+- 352:   ### Aura
+- 356:   ### Burst
+- 362:   ### Line
+- 384:   ### Other areas
+- 391: ## Light
+- 403:   ### Bright
+- 407:   ### Dim
+- 411:   ### Darkness
+- 415: ## Senses
+- 447:   ### Sight Senses
+- 454:   ### Other Senses
 
-Open (to be decided) boxes: 196: "Still to decide: whether two creatures of different Sizes can swap, an"; 310: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 384: "Cones are not written yet (and Lines wider than 1 square)."; 440: "Hiding and sneaking are not written yet."
+Open (to be decided) boxes: 196: "Still to decide: whether two creatures of different Sizes can swap, an"; 310: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 388: "Cones are not written yet (and Lines wider than 1 square)."; 444: "Hiding and sneaking are not written yet."
 
 ## 04-health.md: Chapter 4: Health
 

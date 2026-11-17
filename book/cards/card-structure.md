@@ -153,7 +153,8 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 2. **The Flavor:** one sentence that describes what is done and seen.
 3. **The traits:** on their own line, by group.
 4. **The grid:** "Distance: ..." and "Area: ..." at the left, "Target: ..." at the right. A fact the card doesn't have is not printed.
-5. **The body, in play order, every line labeled:** Requirement · Interrupt or Trigger · Setup · a defined word ("Smite dice", "Judged") · Effect · Attack or Save · Tier 1 / 2 / 3 (or "Tier 1 or 2") · Critical · Effect · Special.
+5. **The body, in play order, every line labeled:** Requirement · Interrupt or Trigger · Setup · a defined word ("Smite dice", "Judged") · Effect · a Special that says how the roll is made · Attack or Save · Tier 1 / 2 / 3 (or "Tier 1 or 2") · Critical · Effect · Special.
+   **A Special about the roll goes above the Attack or Save line (Lucas, 2026-11-17, playtest 5, A1):** what changes how the roll is made (which weapon makes it, a Doomed or Favored condition) is read before the roll; a Special about the damage, the Tiers or a duration stays at the end (Darting Blade's "You make this Strike with a Light weapon you hold" above; Hit and Run's "The bow's hit is Doomed if you are Engaged" above, its "[W] is the weapon that hit" below).
 6. **Effect, Special, Passive:** Effect: what happens when the card is used, with no roll. Special: a rule about the card itself. Passive: what a card with no cost does.
 7. **The roll line:** "Attack: Weapon vs. Armor Defense" or "Save: Appeal", right above the Tiers. A Strike always writes its Defense.
 8. **Versions and Modes:** one block each, under a heading (the cost, or the Mode's name with the traits only it has), written in full; a Mode has its own Distance and Target. What every block shares is written once, above them.
@@ -177,7 +178,7 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 > *You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.*
 > Divine
 > Distance: 10 sq. | Target: One enemy you can see
-> **Judged:** A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier.
+> **Judged:** A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier.
 > — **0 AP** —
 > **Special:** You can use this only at the start of an encounter, or as a 0R when the creature you Judged goes Down.
 > **Effect:** The target is Judged by you until the encounter ends.

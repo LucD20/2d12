@@ -39,9 +39,19 @@ export function ruledDice(dice, rule, { escalation = 0, profane = false, more = 
 
 /** Pure: the key of the round (once each round), or "" outside a combat. */
 export const roundKey = combat => (combat?.started ? `${combat.id}:${combat.round}` : "");
+/** v0.0.419: asks the judge's player (the pick bar, on their client) whether to reduce this damage. The tests (no DOM): yes. */
+async function askJudge(judge, src, target, by) {
+  try {
+    const { askOwner } = await import("./ccdamage.mjs");
+    const name = s => String(s?.name ?? "").replace(/[<>&"]/g, "");
+    const pick = await askOwner(judge, `<b>Judge</b> (${name(judge)}): ${name(src)}, Judged by you, damages ${name(target)}. Reduce that damage by ${by} (once each round)?`,
+      [{ id: "yes", label: `Reduce by ${by}` }, { id: "no", label: "Not now" }]);
+    return pick !== "no";
+  } catch (e) { return true; }
+}
 /**
  * Before damage lands on `actor` (damage.mjs): the Paladins near it whose Judged creature is dealing it. The first time each round the Judged
- * creature damages an ally within 5 squares of its judge, that damage is reduced by the judge's Power Modifier. Returns [{ judge, by }].
+ * creature damages an ally within 5 squares of its judge, the judge can reduce that damage by its Power Modifier (v0.0.419: asked). Returns [{ judge, by }].
  */
 export async function judgeReductions(actor, from) {
   if (!from?.uuid || !globalThis.canvas?.tokens) return [];
@@ -61,6 +71,9 @@ export async function judgeReductions(actor, from) {
     if (key && seen === key) continue;   // the first time each round
     const by = Math.max(0, Number(j.system?.powerMod) || 0);
     if (!by) continue;
+    // v0.0.419 (Lucas, playtest 5: "allow the Paladins to decide if the attack is reduced or not"): the judge's player chooses; declined, the
+    // once-a-round is kept for a later damage this round
+    if (!(await askJudge(j, src, actor, by))) continue;
     if (key) { try { if (j.isOwner) await j.setFlag(F, "judgeRound", key); else game.socket?.emit("system.twod12", { type: "setFlag", actorUuid: j.uuid, key: "judgeRound", value: key }); } catch (e) { /* not kept */ } }
     out.push({ judge: j, by });
   }

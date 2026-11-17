@@ -51,6 +51,10 @@
      "text": "You draw a [[Light]] weapon."
     },
     {
+     "label": "Special",
+     "text": "You make this Strike with a Light weapon you hold."
+    },
+    {
      "label": "Attack",
      "text": "Weapon vs. Armor Defense"
     },
@@ -69,10 +73,6 @@
     {
      "label": "Effect",
      "text": "You Evade 2, then can stow the Light weapon you've drawn."
-    },
-    {
-     "label": "Special",
-     "text": "You make this Strike with a Light weapon you hold."
     }
    ],
    "traits": [
@@ -583,6 +583,10 @@
      "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
     },
     {
+     "label": "Special",
+     "text": "The bow's hit is Doomed if you are Engaged when you make it."
+    },
+    {
      "label": "Attack",
      "text": "Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll."
     },
@@ -600,7 +604,7 @@
     },
     {
      "label": "Special",
-     "text": "[W] is the weapon that hit. The bow's hit is Doomed if you are Engaged when you make it."
+     "text": "[W] is the weapon that hit."
     }
    ],
    "traits": [

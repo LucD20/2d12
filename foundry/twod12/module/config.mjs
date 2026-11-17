@@ -720,13 +720,15 @@ export function distanceText(d, weapon = null) {
   if (weapon?.system && (low === "weapon" || (d?.traits?.has?.("weapon") && low === "reach"))) {
     const r = weaponRanges(weapon, weapon.parent?.system?.reach ?? 1);
     const wants = d?.traits?.has?.("melee") ? "melee" : d?.traits?.has?.("ranged") ? "ranged" : "";
-    if (wants === "melee" && r.melee) return sp(r.melee);
+    // v0.0.419 (Lucas, playtest 5, A4: "Distance: Reach" sent him to the sheet's Reach): an NPC's melee attack reads "Reach (X)"
+    const npcOf = weapon.parent?.type === "npc" || d?.parent?.parent?.type === "npc";
+    if (wants === "melee" && r.melee) return npcOf && !String(r.melee).includes("/") ? `Reach (${r.melee})` : sp(r.melee);
     if (wants === "ranged" && r.ranged) return `${sp(r.ranged)}${r.thrown ? " (thrown)" : ""}`;
     if (r.melee && r.ranged) return `${sp(r.melee)}, thrown ${sp(r.ranged)}`;
     if (r.melee || r.ranged) return sp(r.melee || r.ranged);
     if (weapon.system.range) return sp(weapon.system.range);   // a weapon with a Range but no Melee or Ranged property
   }
-  if (low === "reach") return "Reach";
+  if (low === "reach") { const n = Number(d?.parent?.parent?.system?.reach); return n > 0 ? `Reach (${n})` : "Reach"; }   // v0.0.419 (A4): the creature's Reach
   if (low === "self") return "Self";
   if (low === "weapon") return "Weapon";
   return v;

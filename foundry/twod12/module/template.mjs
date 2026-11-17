@@ -35,7 +35,7 @@ export function placementDistance(user, placed) {
  */
 export function areaReach(placed, tokens, { blockedFn } = {}) {
   const affected = [], blocked = [], cover = {};
-  // v0.0.214: creatures in a Line don't give cover to other creatures in it (placed.noCover: their ids and the user's); walls still do.
+  // v0.0.214: creatures in a Line don't give cover to other creatures in it (placed.noCover: their ids and the user's); walls still do. v0.0.419: every area.
   const opts = { ...(blockedFn ? { blockedFn } : {}), exclude: [placed?.origin?.id, ...(placed?.noCover ?? [])].filter(Boolean) };
   for (const t of tokens) {
     const cov = placed?.point ? coverFromPoint(placed.point, t, opts) : null;
@@ -337,8 +337,10 @@ export async function startTemplate(cfg, ctx = {}) {
   if (shape === "line") {
     // v0.0.214: a Line is 1 square high (a creature flying above its squares is not in it), and its creatures give no cover to each other.
     tokens = tokens.filter(t => t.id !== origin?.id && lineHeightOk(origin, t, Number(cfg.height) || 1));
-    placed.noCover = [origin?.id, ...tokensIn(placed.cells).map(t => t.id)].filter(Boolean);
   }
+  // v0.0.419 (book, Chapter 3, Cover against an area; Lucas, playtest 5, G7: Ground Slam gave every creature Cover): the creatures inside any area
+  // never give Cover against it (they did only in a Line); walls and objects still do
+  placed.noCover = [origin?.id, ...tokensIn(placed.cells).map(t => t.id)].filter(Boolean);
   // Line of Effect from the Point of Origin to each creature: one it can't reach isn't affected. Its cover (from the Point of Origin) goes to the roll.
   const reach = areaReach(placed, tokens);
   tokens = reach.affected;

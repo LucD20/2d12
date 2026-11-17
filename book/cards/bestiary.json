@@ -53,10 +53,9 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1d4 Pi",
-      "[V] 1 + 1d4 Pi"
-     ],
-     "effects": "The target takes 1 Pressure Bane on its next roll."
+      "[V] 1d4 Pi; 1 Pressure Bane on its next roll.",
+      "[V] 1 + 1d4 Pi; 1 Pressure Bane on its next roll."
+     ]
     }
    ],
    "foundry": {
@@ -150,12 +149,13 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1 + 1d4! Sl",
-      "[V] 3 + 1d4! Sl"
+      "[V] 1 + 1d4! Sl; Pushed 1.",
+      "[V] 3 + 1d4! Sl; Pushed 1."
      ],
-     "effects": "It can Push the target 1.",
      "foundry": {
-      "after": "@Move[pushed|distance:1|pick:yes]"
+      "after": "@Move[pushed|distance:1|pick:yes]",
+      "x2": "Pushed 1.",
+      "x3": "Pushed 1."
      }
     }
    ],
@@ -316,12 +316,13 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[V] 1 + 1d4! Bl",
-      "[V] 3 + 1d6! Bl"
+      "[V] 1 + 1d4! Bl; Pushed 1.",
+      "[V] 3 + 1d6! Bl; Pushed 1."
      ],
-     "effects": "It can Push the target 1.",
      "foundry": {
-      "after": "@Move[pushed|distance:1|pick:yes]"
+      "after": "@Move[pushed|distance:1|pick:yes]",
+      "x2": "Pushed 1.",
+      "x3": "Pushed 1."
      }
     }
    ],
@@ -353,12 +354,13 @@
      "ap": 2,
      "tiers": [
       "0",
-      "[V] 3 + 1d6 Bl",
-      "[V] 7 + 1d6 Bl"
+      "[V] 3 + 1d6 Bl; Pushed 2.",
+      "[V] 7 + 1d6 Bl; Pushed 2."
      ],
-     "effects": "It can Push the target 2.",
      "foundry": {
-      "after": "@Move[pushed|distance:2|pick:yes]"
+      "after": "@Move[pushed|distance:2|pick:yes]",
+      "x2": "Pushed 2.",
+      "x3": "Pushed 2."
      }
     }
    ],

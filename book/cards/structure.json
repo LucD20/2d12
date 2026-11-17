@@ -572,15 +572,11 @@
    },
    {
     "label": "Tier 2",
-    "text": "[V] 1 + 1d4! Sl"
+    "text": "[V] 1 + 1d4! Sl; Pushed 1."
    },
    {
     "label": "Tier 3",
-    "text": "[V] 3 + 1d4! Sl"
-   },
-   {
-    "label": "Tier 2 or 3",
-    "text": "It can Push the target 1."
+    "text": "[V] 3 + 1d4! Sl; Pushed 1."
    }
   ],
   "blocks": [],
@@ -612,15 +608,11 @@
    },
    {
     "label": "Tier 2",
-    "text": "[V] 1 + 1d4! Bl"
+    "text": "[V] 1 + 1d4! Bl; Pushed 1."
    },
    {
     "label": "Tier 3",
-    "text": "[V] 3 + 1d6! Bl"
-   },
-   {
-    "label": "Tier 2 or 3",
-    "text": "It can Push the target 1."
+    "text": "[V] 3 + 1d6! Bl; Pushed 1."
    }
   ],
   "blocks": [],
@@ -908,6 +900,10 @@
     "text": "You draw a [[Light]] weapon."
    },
    {
+    "label": "Special",
+    "text": "You make this Strike with a Light weapon you hold."
+   },
+   {
     "label": "Attack",
     "text": "Weapon vs. Armor Defense"
    },
@@ -926,10 +922,6 @@
    {
     "label": "Effect",
     "text": "You Evade 2, then can stow the Light weapon you've drawn."
-   },
-   {
-    "label": "Special",
-    "text": "You make this Strike with a Light weapon you hold."
    }
   ],
   "blocks": [],
@@ -1047,15 +1039,11 @@
    },
    {
     "label": "Tier 2",
-    "text": "[V] 1d4 Pi"
+    "text": "[V] 1d4 Pi; 1 Pressure Bane on its next roll."
    },
    {
     "label": "Tier 3",
-    "text": "[V] 1 + 1d4 Pi"
-   },
-   {
-    "label": "Tier 2 or 3",
-    "text": "The target takes 1 Pressure Bane on its next roll."
+    "text": "[V] 1 + 1d4 Pi; 1 Pressure Bane on its next roll."
    }
   ],
   "blocks": [],
@@ -1813,6 +1801,10 @@
     "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
    },
    {
+    "label": "Special",
+    "text": "The bow's hit is Doomed if you are Engaged when you make it."
+   },
+   {
     "label": "Attack",
     "text": "Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll."
    },
@@ -1830,7 +1822,7 @@
    },
    {
     "label": "Special",
-    "text": "[W] is the weapon that hit. The bow's hit is Doomed if you are Engaged when you make it."
+    "text": "[W] is the weapon that hit."
    }
   ],
   "blocks": [],
@@ -2066,7 +2058,7 @@
   "body": [
    {
     "label": "Judged",
-    "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier."
+    "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier."
    }
   ],
   "blocks": [
@@ -2819,15 +2811,11 @@
    },
    {
     "label": "Tier 2",
-    "text": "[V] 3 + 1d6 Bl"
+    "text": "[V] 3 + 1d6 Bl; Pushed 2."
    },
    {
     "label": "Tier 3",
-    "text": "[V] 7 + 1d6 Bl"
-   },
-   {
-    "label": "Tier 2 or 3",
-    "text": "It can Push the target 2."
+    "text": "[V] 7 + 1d6 Bl; Pushed 2."
    }
   ],
   "blocks": [],

@@ -11,8 +11,8 @@ Commandment:
     Foundry # Challenge | Effect | # Courage | Effect | # Kneel | Save | Tier 1 | Tier 2 | Tier 3
     book    # Challenge | Effect | # Courage | Effect | # Kneel | Save | Tier 1 or 2
 Hit and Run:
-    Foundry Attack | Tier 1 | Tier 2 | Tier 3 | Effect | Special
-    book    Effect | Attack | Tier 1 | Tier 2 | Tier 3 | Special
+    Foundry Special | Attack | Tier 1 | Tier 2 | Tier 3 | Effect | Special
+    book    Effect | Special | Attack | Tier 1 | Tier 2 | Tier 3 | Special
 Lantern of Faith:
     Foundry # Kindle | Effect | # Reveal | Effect | # Glare | Save | Tier 1 | Tier 2 | Tier 3
     book    # Kindle | Effect | # Reveal | Effect | # Glare | Save | Tier 1 or 2

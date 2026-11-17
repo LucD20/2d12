@@ -322,7 +322,7 @@ A line that only touches the end of a wall isn't blocked.
 | 3 | High | **Doomed** (and no Field Banes from the Cover) |
 | 4 | Total | No Line of Effect: you can't target them |
 
-- **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
+- **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). Against an area, the creatures inside it never give cover ([[Cover against an area]]). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
 - **Cover and the rest.** Cover applies to melee and ranged Actions alike. Its Field Banes count with your other Field Banes. High cover gives no Field Banes, only Doomed; your other Field Banes still apply (Prone, Obscured). A target that is Hidden and behind High cover is still only Doomed once.
 
 @@DIAGRAM:cover@@
@@ -336,6 +336,10 @@ A creature behind a wall can lean out to attack. While you are **Leaning**, you 
 Some Actions have an **Area**, written on its own line, for example **Area: 1 Emanation**. These Actions have the [[Area]] trait. An Area Action can also have a **Distance**, on the next line: how far from the creature using the Action its area can be placed, for example **Distance: 10 sq.** With no Distance, an Emanation is around the creature that uses the Action.
 
 Every area spreads from a **Point of Origin**: for an Emanation, its target (a creature's space or a square); for a Line, your square; for other areas, the point the Action says they start from (for example, the tip of a cone). The Point of Origin is a place, not the creature that uses the Action, which is still called the origin.
+
+### Cover against an area
+
+[[Line of Effect]] and [[Cover]] are checked from the area's Point of Origin to each creature in it. **The creatures inside an area never give Cover against it**, to each other or to themselves: only walls and objects do. For example, an Ogre slams the ground in a 2 Emanation around itself with three Goblins and Wes in it: Wes, behind a Goblin, gets no Cover from that Goblin, but a pillar between the Ogre and Wes still gives him Cover.
 
 ### Emanation
 
@@ -365,7 +369,7 @@ A **Line**, written with a value like **Line 10**, is a row of squares that alwa
 - **Larger creatures.** A creature bigger than Medium starts the Line from one of the squares of its space on the side it aims toward.
 - **Walls.** A Line stops at the first square it can't enter (a wall or a solid obstacle): the squares behind it are not part of the Line. This matters for a Line that stays on the map, or Hazardous Terrain.
 - **Height.** A Line is 1 square high unless the Action says otherwise: it doesn't reach a creature flying above its squares.
-- **Targets and cover.** A Line affects every creature in its squares unless the Action says otherwise, and the Action is [[Several Targets|rolled once for all of them]]. [[Line of Effect]] and [[Cover]] are checked from your square, as for any area, but creatures in the Line don't give cover to other creatures in it (walls still do).
+- **Targets and cover.** A Line affects every creature in its squares unless the Action says otherwise, and the Action is [[Several Targets|rolled once for all of them]]. [[Line of Effect]] and [[Cover]] are checked from your square, as for any area, and the creatures in the Line give no cover to each other (walls still do; see [[Cover against an area]]).
 - **No range Banes.** The Line's value is its reach, so a weapon's far or maximum range adds no Banes inside it. Other Banes still apply: Engaged for a [Ranged] Action, Cover from walls.
 
 > [!example]

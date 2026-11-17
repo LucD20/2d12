@@ -12,7 +12,7 @@
    "body": [
     {
      "label": "Judged",
-     "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier."
+     "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier."
     }
    ],
    "traits": [
@@ -50,7 +50,7 @@
     "automation": "silver",
     "marksTarget": true,
     "markKind": "judge",
-    "automationNote": "the mark (the ring on the token), Profane for you (Smite's and Word of Radiance's d8s, your Profane rules), the first damage each round of the Judged creature to an ally within 5 squares of you reduced by your Power Modifier, the reminders at the start of an encounter and when it goes Down; the 0 AP use only at the start of an encounter or as a 0R: by hand.",
+    "automationNote": "the mark (the ring on the token), Profane for you (Smite's and Word of Radiance's d8s, your Profane rules), once each round, the Judged creature's damage to an ally within 5 squares of you reduced by your Power Modifier if you choose (you're asked when it lands), the reminders at the start of an encounter and when it goes Down; the 0 AP use only at the start of an encounter or as a 0R: by hand.",
     "settings": [
      {
       "type": "message",

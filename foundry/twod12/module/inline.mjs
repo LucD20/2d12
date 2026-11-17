@@ -1068,11 +1068,17 @@ export function saveActionCfg(actor, item, version, src) {
     fx: Object.fromEntries([1, 2, 3].map(n => [`t${n}`, [...(version.fx?.all ?? []), ...(version.fx?.[`t${n}`] ?? [])].filter(x => x?.uuid && (x.mode ?? "auto") === "auto").map(x => x.uuid)])), after: String(version.after ?? "").trim() };
 }
 
+/** v0.0.419: the token ids that give no Cover against the area: its creatures (the targets) and the creature using the Action. */
+const areaIds = (targets, actorUuid = "") => {
+  const ids = (targets ?? []).map(t => String(t.uuid ?? "").split(".").pop()).filter(Boolean);
+  try { const a = actorUuid ? fromUuidSync(actorUuid) : null; const act = a?.documentName === "Actor" ? a : a?.actor; for (const t of act?.getActiveTokens?.() ?? []) ids.push(t.id); } catch (e) { /* none */ }
+  return ids;
+};
 /**
  * The banes and boons a creature takes on a Save Action's Save: Vulnerable N gives N banes; Cover from the area's center gives Field Boons (Low 1,
  * Medium 2), and High cover makes the Save Favored (v0.0.301, PACK BB; book Ch. 1, Saves).
  */
-function saveRowMods(tokenDoc, point) {
+function saveRowMods(tokenDoc, point, exclude = []) {
   const out = { boon: 0, bane: 0, favored: false, why: [] };
   const a = tokenDoc?.actor;
   let v = 0;
@@ -1080,7 +1086,8 @@ function saveRowMods(tokenDoc, point) {
   if (v) { out.bane += v; out.why.push(`Vulnerable ${v}`); }
   try {
     if (point && tokenDoc?.object && canvas?.grid) {
-      const c = coverFromPoint(point, tokenDoc.object);   // counted from the center of the area (its Point of Origin)
+      // v0.0.419 (book, Chapter 3, Cover against an area): the creatures inside the area (the Save's creatures) never give Cover against it
+      const c = coverFromPoint(point, tokenDoc.object, { exclude });   // counted from the center of the area (its Point of Origin)
       if (c?.level >= 3 && !c.noLoE) { out.favored = true; out.why.push(`${c.label} (Favored)`); }
       else if (c?.level > 0 && !c.noLoE) { const n = Math.min(2, c.level); out.boon += n; out.why.push(`${c.label} (${n} Field Boon${n === 1 ? "" : "s"})`); }
     }
@@ -1093,7 +1100,7 @@ export async function postSaveFor(cfg, targets, { point = null, source = "", not
   const rows = [];
   for (const t of targets) {
     const doc = await fromUuid(t.uuid).catch(() => null);
-    const m = saveRowMods(doc, point);
+    const m = saveRowMods(doc, point, areaIds(targets, cfg.actorUuid));
     rows.push({ uuid: t.uuid, name: t.name, result: null, boon: m.boon, bane: m.bane, favored: m.favored, why: m.why.join(", ") });
   }
   const head = `<div class="twod12 chat"><b>${esc(source || cfg.source || "Save")}</b>: ${note ? `${note} ` : ""}${rows.length ? `${rows.map(r => esc(r.name)).join(", ")} roll${rows.length === 1 ? "s" : ""} a DC ${cfg.dc} ${esc(TWOD12.attributes[cfg.attr] ?? cfg.attr)} Save.` : "no creature is in the area."}</div>`;
@@ -1138,7 +1145,7 @@ export async function saveTierOutcomes(cfg) {
 export async function ccSaveOnCard(msg, cfg, targets, { model, point = null }) {
   targets = [].concat(targets);   // v0.0.286: one creature or several, a row each
   const rows = [];
-  for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, favored: mods.favored, why: mods.why.join(", ") }); }
+  for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point, areaIds(targets, cfg.actorUuid)); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, favored: mods.favored, why: mods.why.join(", ") }); }
   const st = { cfg, color: "", cc: true, rows, tierDmg: await prerollTiers(cfg) };
   const m = { ...model, kind: "save", saveName: `${TWOD12.attributes[cfg.attr] ?? cfg.attr} Save`, dc: cfg.dc, tiers: await saveTierOutcomes(cfg), creatures: rows.map(r => ({ uuid: r.uuid, name: r.name, result: null, damageDone: false, hasDamage: false })) };
   m.tline = { ...m.tline, names: rows.map(r => r.name), retargetKind: "retargetSave" };

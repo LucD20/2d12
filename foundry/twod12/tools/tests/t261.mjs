@@ -44,9 +44,11 @@ for (const item of acts) {
   const res = [...card.top, ...card.before, ...(item.system.traits.has("save") && !item.system.versions[0].noTiers ? card.after : []), ...(card.special ? [card.special] : [])].map(l => l.label);
   for (const l of all) if (at(roll, l) < 0) missing.push(`${item.name} (roll dialog): ${l}`);
   for (const l of res) if (at(result, l) < 0) missing.push(`${item.name} (chat): ${l}`);
+  // v0.0.419: a label can come twice (Hit and Run's two Specials): each is looked for after the one before it
+  const atFrom = (html, label, from) => { const xs = [`<b>${label}</b>`, `<b>${label}:</b>`].map(x => html.indexOf(x, from)).filter(p => p >= 0); return xs.length ? Math.min(...xs) : -1; };
   for (const [f, html, list] of [["roll dialog", roll, all], ["chat", result, res]]) {
-    const pos = list.map(l => at(html, l)).filter(p => p >= 0);
-    if (pos.some((p, i) => i && p < pos[i - 1])) order.push(`${item.name} (${f})`);
+    let from = 0;
+    for (const l of list) { if (at(html, l) < 0) continue; const p = atFrom(html, l, from); if (p < 0) { order.push(`${item.name} (${f})`); break; } from = p + 1; }
   }
 }
 console.log(`Actions: ${acts.length} | a card line missing from the roll dialog or the chat card: ${missing.length ? missing.join("; ") : "none"} | out of the card's order: ${order.join(", ") || "none"}`);

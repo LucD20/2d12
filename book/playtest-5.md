@@ -200,7 +200,7 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
 ### H. Rules and settings
 - **H1** Apply Steadiness without asking; ask only when the Forced Movement is on an ally.
 
-## 3. The plan (Claude, 2026-11-17, after the review; version 1 built in v0.0.418)
+## 3. The plan (Claude, 2026-11-17, after the review; version 1 built in v0.0.418, version 2 in v0.0.419)
 
 **Lucas's standing rule, repeated for this work (2026-11-17): "all effects need to be able to be recreated in Foundry, for homebrew purposes, no
 hard coding unless it's conditions and rules."** Every item below is either a general rule of the system or a setting / data on the card that a

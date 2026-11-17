@@ -52,8 +52,11 @@ const costAp = cost => { const m = String(cost ?? "").match(/(\d+)/); return m ?
 /** The lines of a body ([{ label, text }]) sorted into the old card's fields (pure). */
 export function readBody(lines = []) {
   const o = { tiers: [null, null, null], or: null, effects: [], notes: [], rules: [], text: [], seq: [] };   // seq: the Effect and Special lines in their order
-  for (const { label, text } of lines) {
+  // v0.0.419 (card-structure.md, A1): a Special written above the Attack or Save line says how the roll is made: it stays above it (a labeled line)
+  const rollAt = lines.findIndex(x => ["Attack", "Save"].includes(String(x?.label ?? "").trim()));
+  for (const [i, { label, text }] of lines.entries()) {
     const l = String(label ?? "").trim(), t = String(text ?? "").trim();
+    if (l === "Special" && rollAt >= 0 && i < rollAt) { o.rules.push(`**Special:** ${t}`); (o.lines ??= []).push({ label: l, text: t }); continue; }
     let m;
     if (l === "Attack") o.vs = /Ward Defense/i.test(t) ? "WD" : /Armor Defense/i.test(t) ? "AD" : t.replace(/^.*?vs\.\s*/i, "");
     else if (l === "Save") o.vs = `${t} Save`;
