@@ -6,92 +6,106 @@
 <title>Foundry HUD Remake</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap">
 <style>
-/* A draft (Lucas, 2026-11-17: "remake the HUD... draft and project first"): the system's dark table look (STYLE-3: Source Sans 3, the bronze accent,
-   palette A, the muted frequency colors), laid out after Lucas's 4e module: a party strip when nothing is selected, a bar for the selected token. */
+/* Draft 2 (2026-11-17): the first draft reviewed against STYLE-3, the research (book/research/vtt-style.md), Foundry and the HUD's decisions of
+   2026-11-12 (foundry/mockups/npc-hud-brief.md), then against the rules. The system's dark table look; sizes in rem in the build. */
 :root{--pg:#1f1c18;--pg2:#28241d;--band:#332c22;--rule:#7a683f;--hair:#4a4132;--ink:#ece3cf;--mute:#b3a68e;--faint:#8a7f6b;--acc:#d2a75a;
-  --vig:#d0564f;--res:#6f90e6;--good:#8fd69b;--bad:#ff9c92;
-  --f-atw:#6aa82e;--f-turn:#25a3a3;--f-round:#4a90de;--f-enc:#d65a5a;--f-daily:#9279e0;--f-basic:#9a8a6a;
+  --vig:#d0564f;--res:#6f90e6;--bad:#ff9c92;
+  --f-atw:#6aa82e;--f-turn:#25a3a3;--f-round:#4a90de;--f-enc:#d65a5a;--f-daily:#9279e0;--f-pass:#b3a68e;
   --sans:"Source Sans 3",system-ui,sans-serif;--serif:"Source Serif 4",Georgia,serif;color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:#171512;color:var(--ink);font:15px/1.5 var(--sans)}
+body{margin:0;background:#171512;color:var(--ink);font:15px/1.5 var(--sans);font-variant-numeric:tabular-nums}
 .wrap{max-width:96rem;margin:0 auto;padding:1.5rem 16px 4rem}
 h1{font:600 1.7rem/1.2 var(--serif);margin:0 0 .4rem}
 h2{font:600 1.25rem/1.3 var(--serif);margin:2.4rem 0 .4rem;padding-top:1rem;border-top:1px solid var(--hair)}
-p,li{max-width:62rem}.sub{color:var(--mute)}
-table.k{border-collapse:collapse;font-size:14px;margin:.6rem 0}
+h3{font:600 1rem var(--sans);margin:1.2rem 0 .3rem}
+p,li{max-width:64rem}.sub{color:var(--mute)}
+table.k{border-collapse:collapse;font-size:14px;margin:.6rem 0;max-width:80rem}
 table.k td,table.k th{border-bottom:1px solid var(--hair);padding:.3rem 1rem .3rem 0;text-align:left;vertical-align:top}
 table.k th{color:var(--mute);font-weight:400}
+.ch-new{color:var(--acc);font-weight:600}
 .scroll{overflow-x:auto;padding-bottom:6px}
 /* the map */
 .map{position:relative;width:1480px;height:var(--h,300px);background:radial-gradient(ellipse at 30% 20%,#4c5a2c 0,#36421f 40%,#232b16 100%);border:1px solid #000;overflow:hidden}
-.map .tok{position:absolute;width:64px;height:64px;border-radius:50%;background:#5a4a36;border:3px solid #8a6d3b;display:flex;align-items:center;justify-content:center;font:700 18px var(--sans);color:#f4ede0}
-.map .tok.foe{border-color:#7a2c24;background:#4a2a24}
-.players{position:absolute;left:8px;bottom:var(--pb,8px);font-size:12px;color:var(--mute);background:rgba(20,18,15,.8);padding:4px 8px;border:1px solid var(--hair)}
-/* the party strip */
-.strip{position:absolute;left:8px;bottom:8px;display:flex;gap:6px}
-.pc{width:212px;background:rgba(31,28,24,.96);border:1px solid var(--hair);border-top:2px solid var(--rule);padding:6px 8px 7px;font-size:12.5px;cursor:pointer}
-.pc.sel{border-color:var(--acc);border-top-color:var(--acc)}
-.pc .top{display:flex;gap:7px;align-items:center}
-.pc .av{width:34px;height:34px;flex:none;border-radius:50%;background:#5a4a36;border:2px solid #8a6d3b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
-.pc .nm{font-weight:700;font-size:14px;line-height:1.1}.pc .cl{color:var(--mute);font-size:11.5px}
-.pc .st{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:5px 0 4px;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
-.pc .st div{text-align:center;padding:2px 0}.pc .st b{display:block;font-size:14px;line-height:1.1}.pc .st small{color:var(--faint);font-size:10.5px}
-.pc .row{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:12px;margin:2px 0}
-/* bars */
-.bars{display:grid;gap:2px;margin-top:3px}
-.bar{position:relative;height:11px;background:#141210;border:1px solid #000}
-.bar i{position:absolute;left:0;top:0;bottom:0}
-.bar.v i{background:var(--vig)}.bar.r i{background:var(--res)}
-.bar span{position:absolute;right:3px;top:-2px;font-size:10px;font-weight:700;color:#fff;text-shadow:0 0 2px #000}
-.big .bar{height:13px}.big .bar span{top:-2px;font-size:11px}
-.guard{display:inline-block;border:1px solid var(--res);color:var(--ink);font-size:11px;font-weight:700;padding:0 5px;line-height:16px}
-.pips{display:inline-flex;gap:3px;align-items:center}
+.tok{position:absolute;width:64px;height:64px;border-radius:50%;background:#5a4a36;border:3px solid #8a6d3b;display:flex;align-items:center;justify-content:center;font:700 18px var(--sans);color:#f4ede0}
+.tok.foe{border-color:#7a2c24;background:#4a2a24}
+.players{position:absolute;left:8px;bottom:var(--pb,8px);font-size:12px;color:var(--mute);background:rgba(20,18,15,.85);padding:2px 8px;border:1px solid var(--hair)}
+/* bars, pips, small words */
+.bars{display:grid;gap:2px}
+.bar{position:relative;height:12px;background:#141210;border:1px solid #000}
+.bar i{position:absolute;left:0;top:0;bottom:0}.bar.v i{background:var(--vig)}.bar.r i{background:var(--res)}
+.bar u{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.55) 0 2px,transparent 2px 5px)}
+.bar span{position:absolute;left:4px;right:4px;top:-2px;display:flex;justify-content:space-between;font-size:10.5px;font-weight:700;color:#fff;text-shadow:0 0 2px #000,0 0 2px #000}
+.pips{display:inline-flex;gap:3px;align-items:center;vertical-align:-1px}
 .pips i{width:9px;height:9px;border:1px solid var(--acc);display:inline-block}
-.pips i.on{background:var(--acc)}
-.pips i.r{transform:rotate(45deg);width:8px;height:8px;margin-left:4px}
+.pips i.on{background:var(--acc)}.pips i.x{border-style:dashed;border-color:var(--faint);background:linear-gradient(135deg,transparent 45%,var(--faint) 45% 55%,transparent 55%)}
+.pips i.r{transform:rotate(45deg);width:8px;height:8px;margin-left:5px}.pips i.r+i.r{margin-left:3px}
 .esc i{width:7px;height:10px;border-color:var(--mute)}.esc i.on{background:var(--ink);border-color:var(--ink)}
-.state{font-size:10.5px;font-weight:700;padding:0 4px;border:1px solid var(--vig);color:#f3c2bd}
+.tag{font-size:11px;font-weight:700;padding:0 4px;border:1px solid var(--hair);color:var(--ink);white-space:nowrap}
+.tag.hurt{border-color:var(--vig)}.tag.down{border-color:var(--vig);background:color-mix(in srgb,var(--vig) 30%,transparent)}
+.k{color:var(--faint);font-size:11.5px;margin-right:3px}
+.chg{text-decoration:underline dotted var(--bad);text-underline-offset:2px}
+.btn{font:600 12px var(--sans);color:var(--ink);background:none;border:1px solid var(--acc);padding:0 8px;cursor:pointer;line-height:18px}
+.btn:hover{background:var(--acc);color:var(--pg)}.btn.q{border-color:var(--hair);color:var(--mute)}
+/* the party strip */
+.strip{position:absolute;left:8px;bottom:8px;display:flex;gap:6px;align-items:flex-end}
+.mom{align-self:stretch;writing-mode:vertical-rl;transform:rotate(180deg);font-size:11.5px;color:var(--mute);background:rgba(31,28,24,.96);border:1px solid var(--hair);padding:6px 3px;text-align:center}
+.mom b{color:var(--ink)}
+.pc{width:214px;background:rgba(31,28,24,.96);border:1px solid var(--hair);padding:6px 8px 7px;font-size:12.5px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.pc:hover{border-color:var(--acc)}
+.pc .top{display:flex;gap:7px;align-items:center}
+.pc .av{width:32px;height:32px;flex:none;border-radius:50%;background:#5a4a36;border:2px solid #8a6d3b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.pc .nm{font-weight:700;font-size:14px;line-height:1.1}.pc .cl{color:var(--mute);font-size:11.5px}
+.pc .st{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.pc .st div{text-align:center}.pc .st b{display:block;font-size:14px;line-height:1.15}.pc .st small{color:var(--faint);font-size:10.5px}
+.pc .row{min-height:18px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.pc .cond{font-size:11.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.2em}
 /* the token bar */
-.hud{position:absolute;left:0;right:0;bottom:0;height:178px;background:rgba(28,25,21,.97);border-top:1px solid var(--rule);display:grid;grid-template-columns:96px 262px minmax(0,1fr) 300px}
-.hud .por{background:linear-gradient(#4a3e30,#2a241d);display:flex;align-items:center;justify-content:center;font:700 26px var(--sans);border-right:1px solid var(--hair)}
-.id{padding:6px 10px;border-right:1px solid var(--hair);display:flex;flex-direction:column;gap:4px;font-size:12.5px}
-.id .nm{display:flex;justify-content:space-between;align-items:baseline}.id .nm b{font-size:16px}.id .nm small{color:var(--mute)}
-.id .line{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.id .k{color:var(--faint);font-size:11.5px;margin-right:3px}
-.btn{font:600 12px var(--sans);color:var(--ink);background:none;border:1px solid var(--acc);padding:1px 8px;cursor:pointer;line-height:17px}
-.btn:hover{background:var(--acc);color:var(--pg)}
-.btn.q{border-color:var(--hair);color:var(--mute)}
-.def{display:grid;grid-template-columns:repeat(8,1fr);border-top:1px solid var(--hair);margin-top:auto}
-.def div{text-align:center;padding-top:2px}.def b{display:block;font-size:15px;line-height:1.1}.def small{color:var(--faint);font-size:10.5px}
-.def button{all:unset;cursor:pointer;display:block;text-align:center}.def button:hover b{color:var(--acc)}
+.hud{position:absolute;left:0;right:0;bottom:0;height:150px;background:rgba(28,25,21,.97);border-top:1px solid var(--rule);display:grid;grid-template-columns:84px 268px minmax(0,1fr) 296px}
+.hud .por{background:linear-gradient(#4a3e30,#2a241d);display:flex;align-items:center;justify-content:center;font:700 24px var(--sans);border-right:1px solid var(--hair);position:relative}
+.hud .por .fold{position:absolute;top:3px;left:3px;font-size:11px;color:var(--mute);border:1px solid var(--hair);padding:0 4px;line-height:14px;background:var(--pg)}
+.id{padding:5px 9px;border-right:1px solid var(--hair);display:flex;flex-direction:column;gap:3px;font-size:12.5px;min-width:0}
+.id .nm{display:flex;justify-content:space-between;align-items:baseline;gap:6px}.id .nm b{font-size:15.5px}.id .nm small{color:var(--mute);white-space:nowrap}
+.id .line{display:flex;justify-content:space-between;align-items:center;gap:6px;white-space:nowrap}
+.def{display:grid;grid-template-columns:repeat(4,1fr) 6px repeat(4,1fr);border-top:1px solid var(--hair);margin-top:auto;padding-top:1px}
+.def button{all:unset;cursor:pointer;text-align:center}.def b{display:block;font-size:14px;line-height:1.1}.def small{color:var(--faint);font-size:10px}
+.def button:hover b{color:var(--acc)}.def .gap{border-left:1px solid var(--hair)}
 .mid{display:flex;flex-direction:column;min-width:0}
 .tabs{display:flex;border-bottom:1px solid var(--hair)}
-.tab{flex:1;font:600 13px var(--sans);color:var(--mute);background:none;border:0;border-right:1px solid var(--hair);padding:5px 6px;cursor:pointer;display:flex;justify-content:center;gap:6px;align-items:baseline}
+.tab{flex:1;font:600 13px var(--sans);color:var(--mute);background:none;border:0;border-right:1px solid var(--hair);padding:4px 6px;cursor:pointer;display:flex;justify-content:center;gap:6px;align-items:baseline}
 .tab small{color:var(--faint);font-weight:400}
-.tab[aria-selected="true"]{color:var(--ink);background:var(--band);box-shadow:inset 0 -2px 0 var(--acc)}
+.tab[aria-selected="true"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--acc)}
 .tab.alert{color:var(--ink);animation:pulse 1.2s ease-in-out infinite}
-@keyframes pulse{50%{background:color-mix(in srgb,var(--acc) 30%,transparent)}}
+@keyframes pulse{50%{background:color-mix(in srgb,var(--acc) 28%,transparent)}}
 .cols[hidden]{display:none}
-.cols{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;padding:6px;overflow:hidden}
-.col{display:flex;flex-direction:column;gap:4px;min-width:0}
-.ch{font-size:11.5px;font-weight:700;padding:1px 6px;background:color-mix(in srgb,var(--fq) 34%,var(--band));border-left:3px solid color-mix(in srgb,var(--fq) 70%,var(--band))}
-.tile{background:var(--pg2);border:1px solid var(--hair);border-left:3px solid color-mix(in srgb,var(--fq) 55%,var(--pg2));padding:2px 6px 3px;cursor:pointer;min-width:0}
-.tile:hover{border-color:var(--acc);border-left-color:var(--acc)}
-.tile b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tile .s{display:flex;justify-content:space-between;gap:6px;font-size:11.5px;color:var(--mute)}
-.tile .s .v{color:var(--ink);font-weight:600}
-.tile.used{opacity:.45}.tile.used .s::after{content:"used"}
-.tile.lock .s .v::before{content:"Escalation 6 \00b7 "}
-.tile.pass{cursor:default;border-left-style:dotted}
-.tile.ready{box-shadow:0 0 0 1px var(--acc),0 0 10px color-mix(in srgb,var(--acc) 50%,transparent)}
-.stp{display:inline-flex;gap:3px}.stp span{border:1px solid var(--hair);padding:0 4px;font-size:11px;color:var(--ink);font-weight:600}
-.empty{color:var(--faint);font-size:12px;padding:2px 6px}
-.side{border-left:1px solid var(--hair);display:grid;grid-template-rows:minmax(0,1fr) auto;font-size:12.5px}
-.info{padding:6px 10px;color:var(--mute);overflow:hidden}
+.cols{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0 14px;padding:4px 10px 4px;overflow:hidden}
+.col{min-width:0}
+.ch{font-size:12px;font-weight:700;color:var(--mute);border-bottom:1px solid var(--rule);padding-bottom:1px;margin-bottom:1px;display:flex;align-items:center;gap:5px}
+.ch::before{content:"";width:.6em;height:.6em;background:color-mix(in srgb,var(--fq) 75%,var(--pg));flex:none}
+.ln{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:8px;border-bottom:1px solid var(--hair);padding:2px 2px 2px 0;cursor:pointer}
+.ln:hover b{color:var(--acc)}
+.ln b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ln .r{grid-column:1/-1;font-size:11.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stp{display:inline-flex;gap:3px;align-self:center}.stp span{border:1px solid var(--acc);padding:0 4px;font-size:11px;font-weight:600;line-height:15px}
+.stp span:hover{background:var(--acc);color:var(--pg)}
+.ln.used{opacity:.5}.ln.used .stp span{border-style:dashed;border-color:var(--faint)}
+.ln.pass{cursor:default}.ln.pass .stp span{border:0;color:var(--mute);font-weight:400}
+.ln.ready{background:color-mix(in srgb,var(--acc) 14%,transparent);box-shadow:inset 2px 0 0 var(--acc);padding-left:6px}
+.more{font-size:11.5px;color:var(--mute);padding:2px 0;cursor:pointer;text-decoration:underline dotted}
+.side{border-left:1px solid var(--hair);display:grid;grid-template-rows:auto minmax(0,1fr) auto;font-size:12.5px;min-width:0}
+.sb{padding:4px 9px;border-bottom:1px solid var(--hair);display:flex;flex-direction:column;gap:2px}
+.sb .line{display:flex;gap:6px;align-items:baseline;white-space:nowrap;overflow:hidden}
+.cond a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--faint);margin-right:7px}
+.cond a small{color:var(--mute)}
+.info{padding:4px 9px;color:var(--mute);overflow:hidden}
 .info b{color:var(--ink)}
-.info.alert{background:color-mix(in srgb,var(--acc) 12%,transparent);border-bottom:1px solid var(--acc);color:var(--ink)}
-.hb{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:6px 8px;border-top:1px solid var(--hair)}
-.hb span{height:30px;border:1px dashed var(--hair);font-size:10px;color:var(--faint);padding:1px 3px}
+.info.alert{background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--ink)}
+.hb{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;padding:4px 6px;border-top:1px solid var(--hair)}
+.hb span{height:22px;border:1px dashed var(--hair);font-size:9px;color:var(--faint);padding:0 2px}
+/* folded */
+.hud.folded{height:40px;grid-template-columns:84px minmax(0,1fr) 296px}
+.hud.folded .por{font-size:15px}
+.fl{display:flex;align-items:center;gap:14px;padding:0 10px;font-size:12.5px;white-space:nowrap}
+.fl .bars{width:200px}
 /* the reaction alert on the map */
 .ring{position:absolute;width:88px;height:88px;border-radius:50%;border:3px solid var(--acc);animation:ring 1.4s ease-out infinite}
 @keyframes ring{from{transform:scale(.8);opacity:1}to{transform:scale(1.25);opacity:0}}
@@ -104,156 +118,192 @@ ol.dec li{margin:.45rem 0}
 <body>
 <div class="wrap">
 <h1>Foundry HUD Remake</h1>
-<p class="sub">A draft, nothing built (Lucas: "draft and project first"). Your 4e module's two layouts (a party strip when nothing is selected, a bar for the selected token) in the system's look, with what 2d12's rules put on the table each turn. The screens are drawn at 1480 px; scroll sideways on a small screen.</p>
+<p class="sub">Draft 2, nothing built. The first draft reviewed against the system's style (STYLE-3), the research, Foundry and your HUD decisions of 2026-11-12, then against the rules. What changed and why is first; the pictures follow; the decisions are at the end. Drawn at 1480 px; scroll sideways on a small screen.</p>
 
-<h2>What I took from your module, and what 2d12 needs instead</h2>
+<h2>The review: what changed since the first draft</h2>
 <table class="k">
-<tr><th>Your module</th><th>Why it works</th><th>In 2d12</th></tr>
-<tr><td>A small card per PC along the bottom when nothing is selected</td><td>The whole party at a glance, nothing to open</td><td>The same: AD, WD, Speed, Rally Points, AP and Escalation (in combat), Vigor and Resolve, Guard</td></tr>
-<tr><td>One bar for the selected token: portrait, health, the numbers on the left</td><td>Everything about you in one fixed place</td><td>Vigor and Resolve as two bars (the states are per threshold: Bloodied, Strained), Guard, Rally Points with Steel Yourself, AP and the Reaction AP, Escalation 1 to 6</td></tr>
-<tr><td>Tabs by action type, with a count (Standard 6, Move 0...)</td><td>One click narrows the list; the count says what is left</td><td>2d12 has no action types: AP pays for everything. Tabs by kind: <b>Actions</b>, <b>Reactions</b>, <b>Basic</b>, <b>Escalation</b> (the count: usable now)</td></tr>
-<tr><td>Columns by frequency, a colored header each</td><td>The once-a-fight things are where the eye expects them</td><td>Columns <b>At-will, Turn, Round, Encounter, Daily</b>, the header in the frequency's muted color; only the columns that have something</td></tr>
-<tr><td>"+6 vs AC" on each button</td><td>The number you roll, no sheet needed</td><td>"Weapon +2 vs AD" (the Modifier and the Defense), the cost ("2 AP", "1R"), the Versions as small stamps</td></tr>
-<tr><td>The defenses under the name</td><td>Asked for every attack</td><td>AD and WD, and the four Attributes (a Save is 12 + the Attribute): click one to roll its Check or Save</td></tr>
+<tr><th>Checked against</th><th>What I found</th><th>Changed</th></tr>
+<tr><td>The style (STYLE-3, 2026-11-17)</td><td>The Actions were boxes with colored side stripes under filled colored bands: the "boxes inside boxes" and "colored side stripes" you called an AI feel (2026-11-12). STYLE-3 writes a Frequency as a small square beside its word.</td><td class="ch-new">Actions are ruled lines (the name, the cost stamps at the right, the roll under it); a column's head is the Frequency's word with its square, on a bronze rule. The stamps are the one outlined thing to click, as Use on the sheet.</td></tr>
+<tr><td>Your HUD decisions (2026-11-12)</td><td>(1) "No Health, AP, Guard or uses; the Turn dock and the token bars show those." Your module shows them, so the draft does; that reverses the decision (decision 1). (2) The height was 70 px, "nothing jumps"; the draft was 178. (3) "No hover cards." (4) The categories had Hands and Gear, Checks and Saves, Conditions and Effects, Utility; the draft lost three.</td><td class="ch-new">150 px, with a fold to a 40 px line (picture 3). The side panel shows nothing on hover: it holds the hands, the conditions, a waiting Reaction. Hands and conditions are back; Checks and Saves are the Attributes row; Rest and Breather go in the Basic tab out of combat.</td></tr>
+<tr><td>The research (vtt-style.md)</td><td>Per-turn controls always visible (Draw Steel Plus, dnd5e's favourites, Daggerheart Sleek's mini sheets): supports the strip and the columns. Sizes in rem, so the HUD follows Foundry's font size slider. A state needs a word, not only a tint. Controls need 3:1 contrast. Sleek: resources clickable.</td><td class="ch-new">Every state has a word ("used, back at your turn", "Bloodied", "needs Escalation 6"); the build uses rem; the empty pips keep a 3:1 edge; a resource right-click adjusts it (decision 10).</td></tr>
+<tr><td>Foundry (V13 / V14)</td><td>The HUD is part of the interface: it follows the Interface color scheme (Light: the chat card's parchment). Foundry's players list and hotbar were moved into the HUD's frame on 2026-11-12; the Token HUD (right-click a token) stays Foundry's.</td><td class="ch-new">The hotbar is one row of ten under the side panel; the players list stays above the HUD's left end.</td></tr>
+</table>
+<h3>From the rules</h3>
+<table class="k">
+<tr><th>Rule</th><th>On the HUD</th></tr>
+<tr><td>At most 3 Strikes per turn, and 3 more on others' turns (Ch. 7)</td><td class="ch-new">"Strikes 1/3" beside the AP</td></tr>
+<tr><td>An At-will Action's later uses in a turn take 1 Bane each (Ch. 2)</td><td class="ch-new">its roll line says "next: +1 Bane" after a use</td></tr>
+<tr><td>Kept AP become Guard at your next turn: 2 each at Stages 0 and 1 (Ch. 2)</td><td class="ch-new">off your turn: "2 kept: Guard 4 at your turn"; Guard written as "4 (2 from AP)"</td></tr>
+<tr><td>Slowed and Quickened change the AP regained and the maximum; Exhausted lowers Speed, Resolve and every roll (Ch. 8)</td><td class="ch-new">an AP square struck out for Slowed; a changed number has a dotted red underline and its reason on hover ("Speed 5: Exhausted 1")</td></tr>
+<tr><td>Lethal and Nonlethal damage both count; Nonlethal at half the Health Pool knocks a Desperate creature Unconscious (Ch. 4)</td><td class="ch-new">the Nonlethal part of a bar is hatched</td></tr>
+<tr><td>Bloodied, Strained; Down: Desperate, Dying, Shattered, Unconscious (Ch. 4)</td><td class="ch-new">a tag on the strip and the bar; a Down state replaces the tags</td></tr>
+<tr><td>A feature can give a second Reaction AP (Tireless Vigil)</td><td class="ch-new">a second diamond</td></tr>
+<tr><td>Hands: the off hand takes 2 Banes, a Light weapon 1, a Two-handed weapon in one hand 3; Regrip, Release; Reload (Ch. 15)</td><td class="ch-new">"Hands: Longsword (both)" in the side panel; a click: Regrip, Release, Draw; "Unloaded" on a crossbow</td></tr>
+<tr><td>Conditions with values and rounds (Ch. 8: Slowed 1, Hindered, Bleed 2...)</td><td class="ch-new">a line of names with value and rounds left in the side panel and on the strip; a click opens the Effect</td></tr>
+<tr><td>Momentum 0 to 4, the party's (Ch. 2)</td><td class="ch-new">at the strip's left end</td></tr>
+<tr><td>Escalation Passives at 2, 4, 6; the Apex at 6</td><td>the Escalation tab: each rung, "working" or "at 4"</td></tr>
+<tr><td>Initiative: rolled once, at the start of an encounter</td><td class="ch-new">removed from the bar (the Combat Tracker has it)</td></tr>
 </table>
 
 <h2>1. Nothing selected: the party strip</h2>
-<p class="sub">In combat (AP and Escalation shown). A click on a card selects that token and opens its bar; a double click opens the sheet. The GM sees the same strip (the players' characters), so a glance answers "who is hurt, who has a Reaction left".</p>
-<div class="scroll"><div class="map" style="--h:260px">
-<div class="tok" style="left:420px;top:40px">AV</div><div class="tok" style="left:520px;top:70px">DU</div><div class="tok foe" style="left:700px;top:30px">OW</div>
-<div class="players" style="--pb:150px">Lucas [GM] · Latency 72 ms</div>
+<p class="sub">In combat. A click selects the token and opens its bar; a double click opens the sheet. The GM sees it too: who is hurt, who still has a Reaction.</p>
+<div class="scroll"><div class="map" style="--h:270px">
+<div class="tok" style="left:470px;top:40px">AV</div><div class="tok" style="left:570px;top:70px">DU</div><div class="tok foe" style="left:760px;top:30px">OW</div>
+<div class="players" style="--pb:170px">Lucas [GM] · 3 players</div>
 <div class="strip">
+<div class="mom">Momentum <b>1</b></div>
 <div class="pc"><div class="top"><span class="av">AV</span><div><div class="nm">Aveline</div><div class="cl">Human Paladin 1</div></div></div>
 <div class="st"><div><b>15</b><small>AD</small></div><div><b>13</b><small>WD</small></div><div><b>6</b><small>Speed</small></div><div><b>3/3</b><small>Rally</small></div></div>
-<div class="row"><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span><span class="pips esc" title="Escalation 2"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="guard">Guard 4</span></div>
-<div class="bars"><div class="bar v"><i style="width:78%"></i><span>Vigor 18/23</span></div><div class="bar r"><i style="width:100%"></i><span>Resolve 12/12</span></div></div></div>
+<div class="row"><span class="pips" title="AP 2 of 4, Reaction AP"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span><span class="pips esc" title="Escalation 2"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag">Guard 4</span></div>
+<div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div><div class="bar r"><i style="width:100%"></i><span><b>Resolve</b><b>12/12</b></span></div></div>
+<div class="cond">&nbsp;</div></div>
 <div class="pc"><div class="top"><span class="av">DU</span><div><div class="nm">Durgan</div><div class="cl">Dwarf Paladin 1</div></div></div>
-<div class="st"><div><b>16</b><small>AD</small></div><div><b>12</b><small>WD</small></div><div><b>5</b><small>Speed</small></div><div><b>1/3</b><small>Rally</small></div></div>
-<div class="row"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="state">Bloodied</span></div>
-<div class="bars"><div class="bar v"><i style="width:0%"></i><span>Vigor 0/24</span></div><div class="bar r"><i style="width:75%"></i><span>Resolve 9/12</span></div></div></div>
+<div class="st"><div><b>16</b><small>AD</small></div><div><b>12</b><small>WD</small></div><div><b class="chg" title="Speed 5: Slowed changes nothing here; Exhausted 1">4</b><small>Speed</small></div><div><b>1/3</b><small>Rally</small></div></div>
+<div class="row"><span class="pips" title="Slowed 1: 3 AP"><i class="on"></i><i class="on"></i><i class="on"></i><i class="x"></i><i class="r"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag hurt">Bloodied</span></div>
+<div class="bars"><div class="bar v"><i style="width:0%"></i><span><b>Vigor</b><b>0/24</b></span></div><div class="bar r"><i style="width:75%"></i><u style="left:55%;width:20%"></u><span><b>Resolve</b><b>9/12</b></span></div></div>
+<div class="cond">Slowed 1 · Exhausted 1 · Hindered (EoT)</div></div>
 <div class="pc"><div class="top"><span class="av">SY</span><div><div class="nm">Sylwen</div><div class="cl">Elf Archer 1</div></div></div>
 <div class="st"><div><b>14</b><small>AD</small></div><div><b>12</b><small>WD</small></div><div><b>7</b><small>Speed</small></div><div><b>2/2</b><small>Rally</small></div></div>
 <div class="row"><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span></span></div>
-<div class="bars"><div class="bar v"><i style="width:60%"></i><span>Vigor 6/10</span></div><div class="bar r"><i style="width:84%"></i><span>Resolve 16/19</span></div></div></div>
+<div class="bars"><div class="bar v"><i style="width:60%"></i><span><b>Vigor</b><b>6/10</b></span></div><div class="bar r"><i style="width:84%"></i><span><b>Resolve</b><b>16/19</b></span></div></div>
+<div class="cond">Bleed 2 (1 rd)</div></div>
 <div class="pc"><div class="top"><span class="av">NA</span><div><div class="nm">Nari</div><div class="cl">Human Archer 1</div></div></div>
-<div class="st"><div><b>14</b><small>AD</small></div><div><b>13</b><small>WD</small></div><div><b>6</b><small>Speed</small></div><div><b>2/2</b><small>Rally</small></div></div>
-<div class="row"><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span></span></div>
-<div class="bars"><div class="bar v"><i style="width:100%"></i><span>Vigor 11/11</span></div><div class="bar r"><i style="width:100%"></i><span>Resolve 19/19</span></div></div></div>
+<div class="st"><div><b>14</b><small>AD</small></div><div><b>13</b><small>WD</small></div><div><b>6</b><small>Speed</small></div><div><b>0/2</b><small>Rally</small></div></div>
+<div class="row"><span class="pips"><i></i><i></i><i></i><i></i><i class="r"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag down">Desperate</span></div>
+<div class="bars"><div class="bar v"><i style="width:0%"></i><span><b>Vigor</b><b>0/11</b></span></div><div class="bar r"><i style="width:0%"></i><span><b>Resolve</b><b>0/19</b></span></div></div>
+<div class="cond">Slowed 1 (Desperate)</div></div>
 </div></div></div>
-<p class="note">The bars show what is left of each threshold (Vigor 18/23 = 5 Vigor damage); a "Bloodied" or "Strained" tag when one is reached; Down states in its place. AP as four squares and the Reaction AP as a diamond; Escalation as six ticks.</p>
+<p class="note">The bars show what is left of each threshold. Durgan: Speed 4 underlined (Exhausted 1, its reason on hover), an AP square struck out (Slowed 1), the Nonlethal part of his Resolve damage hatched. Nari is Down: the tag says which state.</p>
 
 <h2>2. A token selected: its bar</h2>
-<p class="sub">Aveline on her turn, 2 AP left, Smite used. Click a tile: the roll dialog on that Version (as today); right-click: the Action card; the stamps on a tile pick the Version. Click AD, WD or an Attribute: its Check or Save. Try the tabs.</p>
-<div class="scroll"><div class="map" style="--h:330px">
+<p class="sub">Aveline on her turn: 2 AP left, one Strike made, Smite used, Judge used once (its next use takes 1 Bane). Click a line: the roll dialog on its first Version (as today); a stamp: that Version; right-click: the Action card. AD, WD or an Attribute: its Check or Save. Try the tabs.</p>
+<div class="scroll"><div class="map" style="--h:300px">
 <div class="tok" style="left:420px;top:30px;border-color:var(--acc)">AV</div><div class="tok foe" style="left:620px;top:20px">OW</div>
-<div class="players" style="--pb:186px">Lucas [GM] · Latency 72 ms</div>
+<div class="players" style="--pb:156px">Lucas [GM] · 3 players</div>
 <div class="hud" id="hud1">
-<div class="por">AV</div>
+<div class="por"><span class="fold" title="Fold the HUD to one line">&#9662;</span>AV</div>
 <div class="id">
 <div class="nm"><b>Aveline</b><small>Human Paladin 1</small></div>
-<div class="bars big"><div class="bar v"><i style="width:78%"></i><span>Vigor 18/23</span></div><div class="bar r"><i style="width:100%"></i><span>Resolve 12/12</span></div></div>
+<div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div><div class="bar r"><i style="width:100%"></i><span><b>Resolve</b><b>12/12</b></span></div></div>
 <div class="line"><span><span class="k">Guard</span><b>4</b></span><span><span class="k">Rally</span><b>3/3</b></span><button class="btn">Steel Yourself</button></div>
-<div class="line"><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span></span><span><span class="k">Escalation</span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span> <b>2</b></span></div>
-<div class="def"><button><b>15</b><small>AD</small></button><button><b>13</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+1</b><small>Init</small></button><button><b>+2</b><small>Bo</small></button><button><b>0</b><small>Mi</small></button><button><b>+1</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
+<div class="line"><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span></span><span><span class="k">Strikes</span><b>1/3</b></span><span><span class="k">Esc.</span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span> <b>2</b></span></div>
+<div class="def"><button><b>15</b><small>AD</small></button><button><b>13</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+2</b><small>Wpn</small></button><span class="gap"></span><button><b>+2</b><small>Bo</small></button><button><b>0</b><small>Mi</small></button><button><b>+1</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
 </div>
 <div class="mid">
 <div class="tabs" role="tablist">
 <button class="tab" role="tab" aria-selected="true" data-t="act">Actions <small>3</small></button>
-<button class="tab" role="tab" aria-selected="false" data-t="rx">Reactions <small>1</small></button>
-<button class="tab" role="tab" aria-selected="false" data-t="basic">Basic <small>14</small></button>
-<button class="tab" role="tab" aria-selected="false" data-t="esc">Escalation <small>2</small></button>
+<button class="tab" role="tab" aria-selected="false" data-t="rx">Reactions <small>2</small></button>
+<button class="tab" role="tab" aria-selected="false" data-t="basic">Basic <small>12</small></button>
+<button class="tab" role="tab" aria-selected="false" data-t="esc">Escalation <small>1 of 2</small></button>
 </div>
 <div class="cols" data-p="act">
-<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="tile"><b>Judge</b><div class="s"><span class="stp"><span>0</span><span>1 AP</span></span><span class="v">10 sq.</span></div></div></div>
-<div class="col" style="--fq:var(--f-round)"><div class="ch">Round</div><div class="tile"><b>Binding Light</b><div class="s"><span>2 AP</span><span class="v">Weapon +1 vs AD</span></div></div><div class="tile"><b>Lantern of Faith</b><div class="s"><span>1 AP</span><span class="v">Art</span></div></div></div>
-<div class="col" style="--fq:var(--f-enc)"><div class="ch">Encounter</div><div class="tile used"><b>Smite</b><div class="s"><span>2 AP</span></div></div></div>
+<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="ln"><b>Judge</b><span class="stp"><span>0</span><span>1 AP</span></span><span class="r">10 sq. · next: +1 Bane</span></div></div>
+<div class="col" style="--fq:var(--f-round)"><div class="ch">Round</div><div class="ln"><b>Binding Light</b><span class="stp"><span>2 AP</span></span><span class="r">Weapon +2 vs AD · Strike</span></div><div class="ln"><b>Lantern of Faith</b><span class="stp"><span>1 AP</span></span><span class="r">Art · Bright light 3</span></div></div>
+<div class="col" style="--fq:var(--f-enc)"><div class="ch">Encounter</div><div class="ln used"><b>Smite</b><span class="stp"><span>2 AP</span></span><span class="r">used this encounter</span></div></div>
 </div>
 <div class="cols" data-p="rx" hidden>
-<div class="col" style="--fq:var(--f-turn)"><div class="ch">Turn</div><div class="tile"><b>Shield of Faith</b><div class="s"><span>1R</span><span class="v">An enemy's Strike would damage</span></div></div></div>
-<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="tile"><b>Opportunity Attack</b><div class="s"><span>1R</span><span class="v">Weapon +1 vs AD</span></div></div></div>
+<div class="col" style="--fq:var(--f-turn)"><div class="ch">Turn</div><div class="ln"><b>Shield of Faith</b><span class="stp"><span>1R</span></span><span class="r">Interrupt: an enemy's Strike would damage</span></div></div>
+<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="ln"><b>Opportunity Attack</b><span class="stp"><span>1R</span></span><span class="r">Weapon +2 vs AD · Strike</span></div></div>
 </div>
 <div class="cols" data-p="basic" hidden>
-<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="tile"><b>Weapon Attack</b><div class="s"><span>1 AP</span><span class="v">Weapon +1 vs AD</span></div></div><div class="tile"><b>Advance</b><div class="s"><span>1 AP</span><span class="v">Speed 6</span></div></div><div class="tile"><b>Evade</b><div class="s"><span class="stp"><span>1</span><span>2 AP</span></span></div></div></div>
-<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="tile"><b>Interact</b><div class="s"><span>1 AP</span></div></div><div class="tile"><b>Stand</b><div class="s"><span>1 AP</span></div></div><div class="tile"><b>Regrip</b><div class="s"><span>1 AP</span></div></div></div>
-<div class="col" style="--fq:var(--f-round)"><div class="ch">Round</div><div class="tile"><b>Steel Yourself</b><div class="s"><span class="stp"><span>2</span><span>3 AP</span></span><span class="v">Rally</span></div></div><div class="tile"><b>Charge</b><div class="s"><span>2 AP</span></div></div><div class="tile"><b>Shove</b><div class="s"><span class="stp"><span>1</span><span>2</span><span>3</span></span></div></div></div>
-<div class="col" style="--fq:var(--f-round)"><div class="ch">Round</div><div class="tile"><b>Trip</b><div class="s"><span class="stp"><span>1</span><span>2 AP</span></span></div></div><div class="tile"><b>Haul</b><div class="s"><span class="stp"><span>1</span><span>2</span><span>3</span></span></div></div><div class="empty">+3 more</div></div>
+<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="ln"><b>Weapon Attack</b><span class="stp"><span>1 AP</span></span><span class="r">Weapon +2 vs AD · Strike</span></div><div class="ln"><b>Advance</b><span class="stp"><span>1 AP</span></span></div><div class="ln"><b>Evade</b><span class="stp"><span>1</span><span>2 AP</span></span></div></div>
+<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="ln"><b>Interact</b><span class="stp"><span>1 AP</span></span></div><div class="ln"><b>Stand</b><span class="stp"><span>1 AP</span></span></div><div class="ln"><b>Regrip</b><span class="stp"><span>1 AP</span></span></div></div>
+<div class="col" style="--fq:var(--f-round)"><div class="ch">Round</div><div class="ln"><b>Steel Yourself</b><span class="stp"><span>2</span><span>3 AP</span></span></div><div class="ln"><b>Charge</b><span class="stp"><span>2 AP</span></span></div><div class="ln"><b>Shove</b><span class="stp"><span>1</span><span>2</span><span>3</span></span></div></div>
+<div class="col" style="--fq:var(--f-round)"><div class="ch">Round</div><div class="ln"><b>Trip</b><span class="stp"><span>1</span><span>2 AP</span></span></div><div class="ln"><b>Haul</b><span class="stp"><span>1</span><span>2</span><span>3</span></span></div><div class="more">+5 more (Crawl, Fists, Release, Relocate, Break Free)</div></div>
 </div>
 <div class="cols" data-p="esc" hidden>
-<div class="col" style="--fq:var(--f-basic)"><div class="ch">Escalation 2 (on)</div><div class="tile pass"><b>Armor of Faith</b><div class="s"><span>Passive</span><span class="v">working</span></div></div></div>
-<div class="col" style="--fq:var(--f-basic)"><div class="ch">Escalation 4</div><div class="empty">Level 2</div></div>
-<div class="col" style="--fq:var(--f-basic)"><div class="ch">Escalation 6</div><div class="empty">Level 3</div></div>
+<div class="col" style="--fq:var(--f-pass)"><div class="ch">Escalation 2</div><div class="ln pass"><b>Armor of Faith</b><span class="stp"><span>working</span></span><span class="r">Passive</span></div><div class="ln pass"><b>Roving Judgment</b><span class="stp"><span>working</span></span><span class="r">Passive</span></div></div>
+<div class="col" style="--fq:var(--f-pass)"><div class="ch">Escalation 4</div><div class="ln pass"><b>Weight of Judgment</b><span class="stp"><span>at 4</span></span><span class="r">level 2</span></div></div>
+<div class="col" style="--fq:var(--f-pass)"><div class="ch">Escalation 6</div><div class="ln pass"><b>Reckoning</b><span class="stp"><span>at 6</span></span><span class="r">the Apex · level 3</span></div></div>
 </div>
 </div>
-<div class="side"><div class="info"><b>Smite</b> used this encounter. <br>Hover a tile: its line here (cost, roll, what it does in one sentence). <br><span style="color:var(--faint)">Actions are tracked in combat.</span></div><div class="hb"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div></div>
+<div class="side">
+<div class="sb"><div class="line"><span class="k">Hands</span><b>Longsword</b><span style="color:var(--mute)">(both hands)</span><button class="btn q" style="margin-left:auto">Regrip</button></div><div class="line cond"><span class="k">On you</span><a href="#">Hindered <small>EoT</small></a><a href="#">Empowered 1 <small>2 rd</small></a></div></div>
+<div class="info">Hover shows nothing here (no hover cards). This place holds a waiting Reaction (picture 4) and, for an NPC, its notes.</div>
+<div class="hb"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span></div>
+</div>
 </div></div></div>
-<p class="note">The counts on the tabs: what can be used now (AP, Frequency, Escalation). A used Action is dimmed with "used"; one locked by Escalation says so; a Passive is a tile you can't click, marked "working" while its Escalation is reached.</p>
+<p class="note">The Basic tab writes one line an Action (its roll only on Weapon Attack), so three fit a column. The bottom row on hover names each number in full (Speed, the Weapon Modifier, Body, Mind, Appeal, Instinct). Tab counts: what can be used now (AP, Frequency, Escalation). Basic out of combat also lists Take a Breather and Rest. "Weapon +2" in the bottom row is the Modifier the Weapon Actions use; Power and Signature appear when the class has them.</p>
 
-<h2>3. A Reaction is waiting (your note: "it can pass unnoticed")</h2>
-<p class="sub">The Orc Warrior's Cleaver would damage Durgan; Aveline can answer with Shield of Faith. Four signals, each its own setting, all on by default:</p>
+<h2>3. Folded: one line</h2>
+<p class="sub">The bar folds to 40 px (the arrow at the portrait's corner; remembered per player): the name, the bars, AP, Strikes and Escalation, and the hotbar. A Reaction unfolds it.</p>
+<div class="scroll"><div class="map" style="--h:120px">
+<div class="hud folded"><div class="por"><span class="fold" title="Unfold">&#9652;</span>AV</div>
+<div class="fl"><b style="font-size:14px">Aveline</b><div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div></div><span><span class="k">Guard</span><b>4</b></span><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span></span><span><span class="k">Strikes</span><b>1/3</b></span><span><span class="k">Esc.</span><b>2</b></span><span style="color:var(--mute)">Hindered (EoT)</span></div>
+<div class="side" style="display:block"><div class="hb" style="border:0"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span></div></div>
+</div></div></div>
+
+<h2>4. A Reaction is waiting (your note: "it can pass unnoticed")</h2>
+<p class="sub">The Orc Warrior's Cleaver would damage Durgan; Aveline can answer with Shield of Faith. Four signals, each a setting, all on:</p>
 <ol>
-<li><b>A short chime</b>, played only for the players who can react (two soft notes, made by the browser, no sound file; a volume setting).</li>
-<li><b>On the map:</b> a bronze ring pulsing on the reacting token, and "Shield of Faith?" floating over it until it is used or passed.</li>
-<li><b>In the HUD:</b> the Reactions tab pulses and opens itself if the bar is open; the Reaction's tile glows; the side panel names the trigger with Use and Pass.</li>
-<li><b>The chat's Reactions card</b> as today (the full stack, the timer).</li>
+<li><b>A short chime</b> for the players who can react (two soft notes made by the browser, no sound file; a volume setting).</li>
+<li><b>On the map:</b> a bronze ring pulsing on the reacting token and "Shield of Faith?" over it until it is used or passed.</li>
+<li><b>In the HUD:</b> it unfolds, the Reactions tab pulses and opens, the Reaction's line is marked, and the side panel names the trigger with Use and Pass and the time left.</li>
+<li><b>The chat's Reactions card</b> as today.</li>
 </ol>
-<div class="scroll"><div class="map" style="--h:330px">
+<div class="scroll"><div class="map" style="--h:300px">
 <div class="tok foe" style="left:640px;top:28px">OW</div><div class="tok" style="left:560px;top:60px">DU</div>
 <div class="ring" style="left:401px;top:41px"></div><div class="tok" style="left:412px;top:52px;border-color:var(--acc)">AV</div>
 <div class="float" style="left:384px;top:18px">Shield of Faith?</div>
-<div class="players" style="--pb:186px">Lucas [GM] · Latency 72 ms</div>
+<div class="players" style="--pb:156px">Lucas [GM] · 3 players</div>
 <div class="hud">
-<div class="por">AV</div>
+<div class="por"><span class="fold">&#9662;</span>AV</div>
 <div class="id">
 <div class="nm"><b>Aveline</b><small>Human Paladin 1</small></div>
-<div class="bars big"><div class="bar v"><i style="width:78%"></i><span>Vigor 18/23</span></div><div class="bar r"><i style="width:100%"></i><span>Resolve 12/12</span></div></div>
+<div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div><div class="bar r"><i style="width:100%"></i><span><b>Resolve</b><b>12/12</b></span></div></div>
 <div class="line"><span><span class="k">Guard</span><b>4</b></span><span><span class="k">Rally</span><b>3/3</b></span><button class="btn">Steel Yourself</button></div>
-<div class="line"><span><span class="k">AP</span><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span></span><span><span class="k">Escalation</span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span> <b>2</b></span></div>
-<div class="def"><button><b>15</b><small>AD</small></button><button><b>13</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+1</b><small>Init</small></button><button><b>+2</b><small>Bo</small></button><button><b>0</b><small>Mi</small></button><button><b>+1</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
+<div class="line"><span><span class="k">AP</span><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span></span><span style="color:var(--mute)">1 kept: Guard 2 at your turn</span></div>
+<div class="def"><button><b>15</b><small>AD</small></button><button><b>13</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+2</b><small>Wpn</small></button><span class="gap"></span><button><b>+2</b><small>Bo</small></button><button><b>0</b><small>Mi</small></button><button><b>+1</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
 </div>
 <div class="mid">
-<div class="tabs"><button class="tab" aria-selected="false">Actions <small>0</small></button><button class="tab alert" aria-selected="true">Reactions <small>1</small></button><button class="tab" aria-selected="false">Basic <small>0</small></button><button class="tab" aria-selected="false">Escalation <small>2</small></button></div>
+<div class="tabs"><button class="tab" aria-selected="false">Actions <small>0</small></button><button class="tab alert" aria-selected="true">Reactions <small>1</small></button><button class="tab" aria-selected="false">Basic <small>0</small></button><button class="tab" aria-selected="false">Escalation <small>1 of 2</small></button></div>
 <div class="cols">
-<div class="col" style="--fq:var(--f-turn)"><div class="ch">Turn</div><div class="tile ready"><b>Shield of Faith</b><div class="s"><span>1R</span><span class="v">An enemy's Strike would damage</span></div></div></div>
-<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="tile"><b>Opportunity Attack</b><div class="s"><span>1R</span><span class="v">Weapon +1 vs AD</span></div></div></div>
+<div class="col" style="--fq:var(--f-turn)"><div class="ch">Turn</div><div class="ln ready"><b>Shield of Faith</b><span class="stp"><span>1R</span></span><span class="r">Interrupt: an enemy's Strike would damage</span></div></div>
+<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="ln"><b>Opportunity Attack</b><span class="stp"><span>1R</span></span><span class="r">not this trigger</span></div></div>
 </div>
 </div>
-<div class="side"><div class="info alert"><b>Reaction: Shield of Faith</b> (1R)<br>The Orc Warrior's Cleaver would damage Durgan.<div style="display:flex;gap:6px;margin-top:6px"><button class="btn">Use · 1R</button><button class="btn q">Pass</button><span style="margin-left:auto;color:var(--mute)">0:42</span></div></div><div class="hb"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div></div>
+<div class="side">
+<div class="sb"><div class="line"><span class="k">Hands</span><b>Longsword</b><span style="color:var(--mute)">(both hands)</span></div><div class="line cond"><span class="k">On you</span><a href="#">Hindered <small>EoT</small></a></div></div>
+<div class="info alert"><b>Reaction: Shield of Faith</b> (1R)<br>The Orc Warrior's Cleaver would damage Durgan.<div style="display:flex;gap:6px;margin-top:4px"><button class="btn">Use · 1R</button><button class="btn q">Pass</button><span style="margin-left:auto;color:var(--mute)">0:42</span></div></div>
+<div class="hb"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span></div>
+</div>
 </div></div></div>
 
-<h2>4. An NPC selected</h2>
-<p class="sub">The same frame. No Rally Points; Escalation only for an Elite; the name plate's rank and CV; the tabs an NPC needs. The GM's checks and Saves on the left, as for a PC.</p>
-<div class="scroll"><div class="map" style="--h:240px">
+<h2>5. An NPC selected</h2>
+<p class="sub">The same frame. No Rally Points; Escalation only for an Elite; the rank and CV under the name; the NPC's Immune, Resist and Weak and its notes in the side panel.</p>
+<div class="scroll"><div class="map" style="--h:220px">
 <div class="tok foe" style="left:620px;top:20px;border-color:var(--acc)">OW</div>
 <div class="hud">
-<div class="por" style="background:linear-gradient(#5a2a22,#2a1a16)">OW</div>
+<div class="por" style="background:linear-gradient(#5a2a22,#2a1a16)"><span class="fold">&#9662;</span>OW</div>
 <div class="id">
 <div class="nm"><b>Orc Warrior</b><small>Standard · CV 100</small></div>
-<div class="bars big"><div class="bar v"><i style="width:55%"></i><span>Vigor 11/20</span></div><div class="bar r"><i style="width:100%"></i><span>Resolve 8/8</span></div></div>
-<div class="line"><span><span class="k">Guard</span><b>0</b></span><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="r on"></i></span></span></div>
-<div class="def"><button><b>14</b><small>AD</small></button><button><b>11</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+1</b><small>Init</small></button><button><b>+2</b><small>Bo</small></button><button><b>+1</b><small>Mi</small></button><button><b>0</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
+<div class="bars"><div class="bar v"><i style="width:55%"></i><span><b>Vigor</b><b>11/20</b></span></div><div class="bar r"><i style="width:100%"></i><span><b>Resolve</b><b>8/8</b></span></div></div>
+<div class="line"><span><span class="k">Guard</span><b>0</b></span><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="r on"></i></span></span><span><span class="k">Strikes</span><b>1/3</b></span></div>
+<div class="def"><button><b>14</b><small>AD</small></button><button><b>11</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+4</b><small>Atk</small></button><span class="gap"></span><button><b>+2</b><small>Bo</small></button><button><b>+1</b><small>Mi</small></button><button><b>0</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
 </div>
-<div class="mid"><div class="tabs"><button class="tab" aria-selected="true">Attacks <small>2</small></button><button class="tab" aria-selected="false">Reactions <small>1</small></button><button class="tab" aria-selected="false">Basic <small>14</small></button></div>
+<div class="mid"><div class="tabs"><button class="tab" aria-selected="true">Attacks <small>2</small></button><button class="tab" aria-selected="false">Reactions <small>1</small></button><button class="tab" aria-selected="false">Basic <small>12</small></button></div>
 <div class="cols">
-<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="tile"><b>Cleaver</b><div class="s"><span>1 AP</span><span class="v">+4 vs AD</span></div></div></div>
-<div class="col" style="--fq:var(--f-round)"><div class="ch">Round</div><div class="tile"><b>Brutal Swing</b><div class="s"><span>2 AP</span><span class="v">+4 vs AD</span></div></div></div>
-<div class="col" style="--fq:var(--f-turn)"><div class="ch">Reaction</div><div class="tile"><b>Avenge Kin</b><div class="s"><span>1R</span><span class="v">An ally goes Down</span></div></div></div>
+<div class="col" style="--fq:var(--f-atw)"><div class="ch">At-will</div><div class="ln"><b>Cleaver</b><span class="stp"><span>1 AP</span></span><span class="r">+4 vs AD · Strike</span></div></div>
+<div class="col" style="--fq:var(--f-round)"><div class="ch">Round</div><div class="ln"><b>Brutal Swing</b><span class="stp"><span>2 AP</span></span><span class="r">+4 vs AD · Strike</span></div></div>
+<div class="col" style="--fq:var(--f-turn)"><div class="ch">Reaction · Turn</div><div class="ln"><b>Avenge Kin</b><span class="stp"><span>1R</span></span><span class="r">Trigger: an ally goes Down</span></div></div>
 </div></div>
-<div class="side"><div class="info">GM: the NPC's line of text, its traits (Immune, Resist, Weak) and its conditions here.</div><div class="hb"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div></div>
+<div class="side"><div class="sb"><div class="line"><span class="k">Resist</span>Slash 2</div><div class="line cond"><span class="k">On it</span><a href="#">Judged <small>by Aveline</small></a></div></div><div class="info">GM notes: "Fights to the death near its chief."</div><div class="hb"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span></div></div>
 </div></div></div>
 
 <h2>The decisions (my pick first; answer by exception)</h2>
 <ol class="dec">
-<li><b>The party strip</b> when nothing is selected: <span class="pick">for everyone, the PCs' cards</span> · for the GM only · off.</li>
-<li><b>Grouping:</b> <span class="pick">tabs by kind (Actions, Reactions, Basic, Escalation) and columns by Frequency</span> · today's flat row with categories.</li>
-<li><b>Health:</b> <span class="pick">two thin bars, Vigor over Resolve</span> (the states are per threshold) · one Health Pool bar with the two thresholds marked.</li>
-<li><b>The roll on each tile:</b> <span class="pick">the Modifier and the Defense ("Weapon +1 vs AD")</span> · only the cost.</li>
-<li><b>The Basic tab:</b> <span class="pick">all Basic Actions, the rare ones behind "+N more"</span> · only the common five (Weapon Attack, Advance, Evade, Steel Yourself, Interact).</li>
+<li><b>Health, AP, Guard and uses on the HUD</b> (reverses 2026-11-12's "no Health, AP, Guard or uses"): <span class="pick">yes, as your module; the Turn dock stays for the turn's log</span> · no, as decided then.</li>
+<li><b>The party strip</b> when nothing is selected: <span class="pick">for everyone, the PCs' cards, Momentum at its left</span> · GM only · off.</li>
+<li><b>Grouping:</b> <span class="pick">tabs by kind and columns by Frequency, Actions as ruled lines</span> · today's flat row with categories.</li>
+<li><b>Height:</b> <span class="pick">150 px with a fold to one 40 px line</span> · 70 px as decided (fewer lines per column, more "+N more").</li>
+<li><b>Health:</b> <span class="pick">two thin bars, Vigor over Resolve, the Nonlethal part hatched</span> · one Health Pool bar with the thresholds marked.</li>
+<li><b>The roll on each line:</b> <span class="pick">the Modifier and the Defense, the trait that limits it (Strike), the next use's Bane</span> · only the cost.</li>
 <li><b>The pinned Actions</b> (today's Quick slots): <span class="pick">gone; the tabs show everything</span> · kept as a first tab, "Pinned".</li>
-<li><b>The hotbar</b> in the HUD's right end: <span class="pick">kept, under the side panel</span> · Foundry's own place.</li>
-<li><b>The Reaction alert:</b> <span class="pick">the chime, the map ring and text, the HUD's tab, each a setting, all on</span> · fewer of them.</li>
-<li><b>The side panel:</b> <span class="pick">the hovered tile's line, a waiting Reaction, the NPC's notes</span> · no side panel (more room for columns).</li>
+<li><b>The side panel:</b> <span class="pick">hands and conditions on top, a waiting Reaction or the NPC's notes, the hotbar</span> · none (wider columns; hands and conditions move to the identity column).</li>
+<li><b>The Reaction alert:</b> <span class="pick">the chime, the ring and text on the map, the HUD's tab, each a setting, all on</span> · fewer of them.</li>
+<li><b>Resources by hand</b> (Daggerheart Sleek): <span class="pick">right-click AP, Rally or Escalation: +1 / −1 (the owner and the GM)</span> · read only (the sheet changes them).</li>
 </ol>
-<p class="sub">What stays from today's HUD: one click on a Version opens the roll dialog ("Skip roll dialog" setting), right-click the Action card, several tokens selected show their cards (as the party strip), the pick bar's questions in the middle. Not tried in Foundry; the numbers are made up for the picture.</p>
+<p class="sub">Kept from today: a click on a Version opens the roll dialog ("Skip roll dialog"), right-click the Action card, several tokens selected show their cards (as the strip), the pick bar's questions in the middle, the players list above the left end. It follows Foundry's Interface color scheme (Light: the chat card's parchment). Not tried in Foundry; the numbers are made up for the picture.</p>
 </div>
 <script>
 document.querySelectorAll('#hud1 .tab').forEach(t=>t.addEventListener('click',()=>{
