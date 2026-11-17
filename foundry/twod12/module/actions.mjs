@@ -9,7 +9,7 @@ import { sysLine } from "./sysmsg.mjs";
 import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
 import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
-import { perceptionOf, perceive } from "./senses.mjs";
+import { perceptionOf, perceive, youGain } from "./senses.mjs";
 import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, areaConfigOf, autoChip } from "./config.mjs";
 import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
 import { handOf, HAND_LABEL } from "./loadout.mjs";
@@ -617,6 +617,8 @@ export async function useAction(actor, item, opts = {}) {
   const useTraits = new Set([...it.traits, ...(wUse?.mode ? [wUse.mode] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "projectile") ? ["shot"] : []), ...(wUse?.mode === "ranged" && !wUse.thrown && hasProp(previewWeapon, "firearm") ? ["gun"] : [])]);   // v0.0.208: with a Firearm, a Gun Action   // a Weapon Action with a Projectile weapon is a Shot
   // v0.0.188: a Weapon Action with a Two-handed weapon also matches "Two-handed weapon" in settings (Heavy Blows); not shown as a trait.
   // v0.0.320 (pack AU part 2): "Attack" in settings = an Action that rolls against another creature (the Elite ladder's 1 Boon on its first attack each round)
+  // v0.0.410 (pack F2; book, Setup): with a Setup (its own, or Hallowed Stance's), the Distance and the targets are checked after it: out of range now is a note
+  const withSetup = !!String(it.setup ?? "").trim() || (!it.reaction && activeHooks(actor, "setupAdvance").some(h => hasTraits(useTraits, h.hook.traits))), setupNotices = [];
   const rollUse = new Set([...useTraits, ...(it.traits.has("weapon") && hasProp(previewWeapon, "twohanded") ? ["__twohanded"] : []), ...(rollsAtOthers && src.kind ? ["__attack"] : [])]);
   const attrKeyForPreview = src.attrKey;
   // v0.0.193 (Lucas): the preview's Avg counts the Bonus Damage of each Tier and the Empowered / Enfeebled step the effects give.
@@ -667,12 +669,13 @@ export async function useAction(actor, item, opts = {}) {
         if (seenT === "obscured") extraMods.push({ id: `syn:obscured|${a.uuid}`, name: `Obscured (${tk.name})`, boons: 0, banes: 1, bb: "field", match: true, predicate: `You perceive ${tk.name} as Obscured: ${pv.why}` });
         if (seenT === "hidden") { row.doomed = true; row.note.push({ text: "Hidden", cls: "bane" }); }
         const pm = perceive(tk, selfToken, { loe: !coverBetween(tk, selfToken)?.noLoE }), mineT = pm.level === "clear" ? "" : pm.level;
-        if (mineT === "obscured") extraMods.push({ id: `syn:obscured-you|${a.uuid}`, name: `Obscured by ${tk.name} (1 Field Boon)`, boons: 1, banes: 0, bb: "field", match: true, predicate: `${tk.name} perceives you as Obscured: ${pm.why}` });
-        if (mineT === "hidden" || mineT === "unsensed") { row.favored = true; row.note.push({ text: `${mineT === "hidden" ? "Hidden" : "Unsensed"} to it`, cls: "boon" }); }
+        const gain = youGain(seenT, mineT);   // v0.0.410 (book, Senses): only when it perceives you worse than you perceive it
+        if (gain === "boon") extraMods.push({ id: `syn:obscured-you|${a.uuid}`, name: `Obscured by ${tk.name} (1 Field Boon)`, boons: 1, banes: 0, bb: "field", match: true, predicate: `${tk.name} perceives you as Obscured: ${pm.why}` });
+        if (gain === "favored") { row.favored = true; row.note.push({ text: `${mineT === "hidden" ? "Hidden" : "Unsensed"} to it`, cls: "boon" }); }
       }
       if (wUse?.range && selfToken && !isAreaAction) {
         const band = rangeBand(squaresBetween(selfToken, tk), wUse.range);
-        if (band?.out) { skipped.push(`${tk.name}: out of range (${band.squares} squares, maximum ${band.max})`); continue; }
+        if (band?.out && !withSetup) { skipped.push(`${tk.name}: out of range (${band.squares} squares, maximum ${band.max})`); continue; }
         const rb = band?.banes ? Math.max(0, band.banes - (lessRange.all ? band.banes : lessRange.length ? 1 : 0)) : 0;   // "Ignore a Bane: one range Bane less" (Long Draw): far range 0, maximum range 1
         if (rb) extraMods.push({ id: `syn:range|${a.uuid}`, name: `${band.label} (${tk.name})${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` });
         if (wUse.long && band?.squares <= 1) extraMods.push({ id: `syn:long|${a.uuid}`, name: `Long weapon, adjacent (${tk.name})`, boons: 0, banes: 1, bb: "field", match: true, predicate: `${previewWeapon.name} is Long: 1 Field Bane against adjacent creatures` });
@@ -701,8 +704,8 @@ export async function useAction(actor, item, opts = {}) {
     const cov = areaOutcome?.cover?.[targetToken?.id] ?? coverBetween(selfToken, targetToken);
     if (cov?.noLoE) {
       if (!game.user.isGM) return ui.notifications.warn(`No Line of Effect to ${targetToken.name}: all four corners are blocked.`);
-      const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p>No Line of Effect to <b>${esc(targetToken.name)}</b>: all four corners are blocked.</p><p>Use ${esc(item.name)} anyway?</p>`, rejectClose: false });
-      if (!ok) return;
+      const { pickConfirm } = await import("./pickwindow.mjs");   // v0.0.410: the system's window (was a DialogV2)
+      if (!(await pickConfirm({ title: item.name, name: item.name, sub: "no Line of Effect", icon: "fa-eye-slash", confirm: "Use anyway", text: `No Line of Effect to <b>${esc(targetToken.name)}</b>: all four corners are blocked. Use ${esc(item.name)} anyway?` }))) return;
     } else if (cov?.banes) {
       const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null);   // v0.0.266 (Aim); v0.0.270: a grant's own use only
       if (covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane` });
@@ -715,8 +718,8 @@ export async function useAction(actor, item, opts = {}) {
       if (lv && lv !== "clear") extraMods.push({ id: `syn:${lv === "obscured" ? "obscured" : "hidden"}-na`, name: lv === "hidden" ? "Hidden" : lv === "unsensed" ? "Unsensed" : "Obscured", boons: 0, banes: 1, ...(lv === "obscured" ? { bb: "field" } : {}), match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${targetToken.name} as ${lv}` }); }
     if (seen === "unsensed") {
       if (!game.user.isGM) return ui.notifications.warn(`${targetToken.name} is Unsensed: you can't target it.`);
-      const ok = await DialogV2.confirm({ window: { title: item.name }, content: `<p><b>${esc(targetToken.name)}</b> is Unsensed: it can't be targeted.</p><p>Use ${esc(item.name)} anyway (the roll is Doomed)?</p>`, rejectClose: false });
-      if (!ok) return;
+      const { pickConfirm } = await import("./pickwindow.mjs");   // v0.0.410: the system's window (was a DialogV2)
+      if (!(await pickConfirm({ title: item.name, name: item.name, sub: "Unsensed", icon: "fa-eye-slash", confirm: "Use anyway", text: `<b>${esc(targetToken.name)}</b> is Unsensed: it can't be targeted. Use ${esc(item.name)} anyway (the roll is Doomed)?` }))) return;
     }
     if (seen === "obscured") extraMods.push({ id: "syn:obscured", name: "Target is Obscured (1 Field Bane)", full: true, boons: 0, banes: 1, bb: "field", match: true, predicate: `You perceive the target as Obscured: ${seenWhy}` });
   }
@@ -726,12 +729,13 @@ export async function useAction(actor, item, opts = {}) {
     if (selfToken) { const pv = perceive(targetToken, selfToken, { loe: !coverBetween(targetToken, selfToken)?.noLoE }); mine = pv.level === "clear" ? "" : pv.level; mineWhy = pv.why; }
     else mine = perceptionOf(actor);
   }
-  if (mine === "obscured" && seen !== "hidden") extraMods.push({ id: "syn:obscured-you", name: "Obscured (1 Field Boon)", full: true, boons: 1, banes: 0, bb: "field", match: true, predicate: `Your target perceives you as Obscured: ${mineWhy || "status"}` });
-  const unseenYou = (mine === "hidden" || mine === "unsensed") && seen !== "hidden";   // you gain no Favored or boon from its poor perception of you if you perceive it as Hidden (Doomed only)
+  if (youGain(seen, mine) === "boon") extraMods.push({ id: "syn:obscured-you", name: "Obscured (1 Field Boon)", full: true, boons: 1, banes: 0, bb: "field", match: true, predicate: `Your target perceives you as Obscured: ${mineWhy || "status"}` });
+  const unseenYou = youGain(seen, mine) === "favored";   // v0.0.410 (book, Senses): only when it perceives you worse than you perceive it, never against a creature Hidden to you
   const untrainedTarget = !multi && rollsAtOthers && !!dcInfo.untrained;   // the target wears armor beyond its training: Favored
   if (wUse?.range && selfToken && targetToken && !multi && rollsAtOthers && !isAreaAction) {
     const band = rangeBand(squaresBetween(selfToken, targetToken), wUse.range);
-    if (band?.out) { outOfRange = `out of range (${band.squares} sq., the maximum is ${band.max}${wUse.thrown ? ", thrown" : ""})`; ui.notifications.warn(`${targetToken.name} is out of range: ${band.squares} squares away, the maximum is ${band.max}${wUse.thrown ? " (thrown)" : ""}.`); }
+    if (band?.out && withSetup) setupNotices.push({ text: `Out of range now: the Setup first`, icon: "fa-person-walking-arrow-right", why: `${targetToken.name} is ${band.squares} squares away (the maximum is ${band.max}). The Distance is checked after the Setup: if no valid target is in range then, the rest of the Action doesn't happen and its cost is still paid.` });
+    else if (band?.out) { outOfRange = `out of range (${band.squares} sq., the maximum is ${band.max}${wUse.thrown ? ", thrown" : ""})`; ui.notifications.warn(`${targetToken.name} is out of range: ${band.squares} squares away, the maximum is ${band.max}${wUse.thrown ? " (thrown)" : ""}.`); }
     else if (band?.banes) { const rb = Math.max(0, band.banes - (lessRange.all ? band.banes : lessRange.length ? 1 : 0)); if (rb) extraMods.push({ id: "syn:range", name: `${band.label}${rb < band.banes ? `, ${lessRange[0]}` : ""}`, boons: 0, banes: rb, match: true, predicate: `${previewWeapon.name}: Range ${wUse.range}` }); }
     if (wUse.long && band && band.squares <= 1) extraMods.push({ id: "syn:long", name: "Long weapon, adjacent", boons: 0, banes: 1, bb: "field", match: true, predicate: `${previewWeapon.name} is Long: 1 Field Bane against adjacent creatures` });
   }
@@ -770,7 +774,7 @@ export async function useAction(actor, item, opts = {}) {
   for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
   for (const { b } of bonusSeen.values()) if (b.sub && b.sub !== "W") dmgSubs.add(b.sub);
   const bonusChips = [...bonusSeen.entries()].map(([key, { b, tiers }]) => ({ key, text: `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub === "W" ? previewWeapon?.system?.subtype ?? "" : b.sub] ?? ""}` : ""}` : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, why: `${b.hover || "This effect adds to the damage of this roll."} Untick it to leave it out (its effect isn't used up).` }));
-  const extraNotices = [
+  const extraNotices = [...setupNotices,
     ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs),
     ...coverNotices
   ];
@@ -1048,8 +1052,10 @@ export async function useAction(actor, item, opts = {}) {
   const trow = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, weapon), distanceTip: distanceNote(it, weapon), area: areaText(it), vs: vsText(it, { src, fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !version.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: isSelf });
   const areaRow = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";   // v0.0.249 (Lucas): on the chat card even once placed, to place it again and retarget
   // v0.0.409 (pack F2, Hallowed Stance: hooks.mjs setupAdvance): once on your turn, an Action with the hook's traits gains "Setup: You Advance N" (once: by hand)
-  const stance = !it.setup && !it.reaction ? activeHooks(actor, "setupAdvance").find(h => hasTraits(useTraits, h.hook.traits)) : null;
-  const setupText = it.setup || (stance ? `You @Move[advance|distance:${Math.max(1, Number(stance.hook.n) || 3)}]{Advance ${Math.max(1, Number(stance.hook.n) || 3)}} (${stance.item.name}: once on your turn).` : "");
+  // v0.0.410 (book, Setup: Setups don't stack): with a Setup of its own, the card offers both and you choose one
+  const stance = !it.reaction ? activeHooks(actor, "setupAdvance").find(h => hasTraits(useTraits, h.hook.traits)) : null;
+  const stanceN = stance ? Math.max(1, Number(stance.hook.n) || 3) : 0, stanceText = stance ? `You @Move[advance|distance:${stanceN}]{Advance ${stanceN}} (${stance.item.name}: once on your turn).` : "";
+  const setupText = it.setup && stance ? `${it.setup} <i>Or, instead:</i> ${stanceText}` : (it.setup || stanceText);
   const setupRow = setupText ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(setupText, setupDone), item)}</div>` : "";
   // v0.0.283 (pack chat-cards): an Action that rolls gets the new card (chatcards.mjs); the rest (no roll, Save Actions) keep the card below.
   let ccModel = null, ccRoll = null;
@@ -1080,7 +1086,8 @@ export async function useAction(actor, item, opts = {}) {
   // the Trigger under the meta lines, the granted Action's row, the numbered steps of its chain, the Flavor at the foot
   if (!ccModel && version.noTiers && !saveAct) {
     const NR = await import("./noroll.mjs"), { halfCtx } = await import("./halfhint.mjs");
-    const use = NR.splitUse(version.effects ? await enrich(version.effects, item) : "");
+    const vText = [version.special ? `<b>Special:</b> ${version.special}` : "", version.effects ?? ""].filter(Boolean).join(" ");   // v0.0.411: a Structure block's Special (Judge's 0 AP)
+    const use = NR.splitUse(vText ? await enrich(vText, item) : "");
     const tActor = u => { try { const d = fromUuidSync(u); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } };
     const first = targets[0] ? tActor(targets[0].uuid) : null;
     const after = String(version.after ?? "").trim(), from = it.moment && after && targets.length ? 1 : 0;

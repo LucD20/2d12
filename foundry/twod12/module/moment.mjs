@@ -291,6 +291,31 @@ export async function blockedWhy(actor, item) {
 }
 
 /**
+ * v0.0.410 (pack F2; book, A Reaction's Target): pure: why a Reaction can't be used for what it sees, or "". loeTarget: Line of Effect to its target;
+ * seeTarget / seeSource: how you perceive the target and the triggering creature ("clear", "obscured", "hidden", "unsensed"; null: no such creature).
+ * Hidden is enough; Unsensed is not.
+ */
+export function reactionSightWhy({ loeTarget = true, seeTarget = "clear", seeSource = null, targetName = "the target", sourceName = "the triggering creature" } = {}) {
+  if (!loeTarget) return `no Line of Effect to ${targetName}`;
+  if (seeTarget === "unsensed") return `${targetName} is Unsensed to you`;
+  if (seeSource === "unsensed") return `${sourceName} is Unsensed to you`;
+  return "";
+}
+/** The token-side of reactionSightWhy (cover.mjs, senses.mjs): the reactor's token, the target's, the triggering creature's (or null). */
+async function reactionSight(tk, targetTok, sourceTok) {
+  try {
+    if (!tk || !targetTok?.document) return "";
+    const { coverBetween } = await import("./cover.mjs"), { perceive } = await import("./senses.mjs");
+    const self = targetTok === tk || targetTok.id === tk.id;
+    const loeTarget = self || !coverBetween(tk, targetTok)?.noLoE;
+    const seeTarget = self ? "clear" : perceive(tk, targetTok, { loe: loeTarget }).level;
+    const src = sourceTok?.document && sourceTok.id !== tk.id && sourceTok.id !== targetTok.id ? sourceTok : null;
+    const seeSource = src ? perceive(tk, src, { loe: !coverBetween(tk, src)?.noLoE }).level : null;
+    return reactionSightWhy({ loeTarget, seeTarget, seeSource, targetName: targetTok.name, sourceName: src?.name });
+  } catch (e) { return ""; }   // no map (tests): nothing to check
+}
+
+/**
  * The Reactions a moment triggers. ev: { kinds, subjects: [{ actor, token, at }] (nearest first wins), source: { actor, token } | null,
  * closer: (ownerToken) => bool (an enemy that moved closer to that creature's side), only: "interrupt" | "trigger" | "" }.
  * Returns { rows: [{ actor, token, item, kind, subject, target, dist }], blocked: [the same, with why] }.
@@ -332,7 +357,8 @@ export async function collectReactions(ev) {
       const sq = squaresOf(item.system.distance);   // a Distance in squares limits how far the target can be (Rebuke: 5 sq.)
       if (sq && target.token && target.token !== tk && tokenDistance(tk, target.token) > sq) continue;
       const row = { actor, token: tk, item, kind, moment: k, subject: hit.sj, target, dist: hit.dist, role: roleOf(item, def) };
-      const why = await blockedWhy(actor, item);
+      // v0.0.410 (book, A Reaction's Target): Line of Effect to the target, and the target and the triggering creature perceived (Hidden is enough)
+      const why = (await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item);
       if (why) blocked.push({ ...row, why }); else rows.push(row);
     }
   }

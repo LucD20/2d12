@@ -15,19 +15,20 @@ Word of Radiance: Power +2 | Frightened (bane) | Radiant Zeal (pass, struck: Not
 a target's chip is left out: true
 --- the card
 no title bar, no Place Area button, no old badge: true
-trait line: Signature Weapon Roll Strike Kind Divine Keywords Paladin Feature 1 Encounter
-meta: Targets: One creature / Distance: Weapon ✦ Vs. AD
-head buttons: 1 live, 0 struck: undefined | dimmed cells: 0 | struck Effects badge: false | a button uses its Version: true
-labels: Tier 1, Tier 2, Tier 3
-order: traits, meta, table, Effects, Your roll, Flavor: false
-strip: Your roll Signature +2 Frightened + Radiant Zeal | flavor: ◆ ◆ ◆ Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow. | ruler (Designer off): false
-Word of Radiance: the Area is the chip: Area: 2 / 3 Burst true | riders: 3 | Critical row: false | ruler (Designer on): 
-its strip:  | Radiant Zeal struck: false
-Opportunity Attack: meta: Interrupt: An enemy adjacent to you would leave a square during a Move Action or uses the Stand Action. / Targets: The triggering creature | no table, no strip, no traits: false | Effects: Effects | no AP badge: true | category and Frequency: Basic Action At-will
-the Build tab (no Use): costs, not buttons: 1 | no actor (Generate Action): true
+the new look: true | the Flavor first: true
+trait words: Signature · Weapon · Strike · Divine Diamond
+the grid: Distance: Weapon Target: One creature
+labels: Smite dice, Attack, Tier 1, Tier 2, Tier 3, Special, Your roll
+Use buttons: 1 live, 0 struck | at the end of Your roll: true | a button uses its Version: true
+Your roll: Your roll Signature +2 Frightened Radiant Zeal Use · 2 AP | Boons "+" and Banes "▼" by class: true | ruler (Designer off): false
+Word of Radiance: the Area is the chip: Area: 2 / 3 Burst true | its Save line: Save Appeal | its Tier labels: Tier 1, Tier 2, Tier 3 | no Your roll (the targets roll): true
+Opportunity Attack: Interrupt, Effect | no Tier lines: true | its Use alone: true
+Judge (two blocks): headers 0 AP, 1 AP | a Use button in each header: 2 | Special before Effect: true
+Smite with 1 AP left: its button struck with the reason: Not enough AP: 1 left
+the Build tab (no Use): no buttons: true | no actor (Generate Action): true
 out of combat with 0 AP: nothing struck: true
 --- the sheet
 the Version button's action: true | the row's AP check shared: true | the roll dialog's too: true | CSS block: true
 --- v0.0.298 (Lucas tested v0.0.297)
 an NPC's cost once (costPill writes AP): 2/3 AP | true | navy head and chevron only on the Build tab: true | links don't break inside a word: true
-a Feature's card, in the Action card's look: true | heading (v0.0.299): Description Paladin Feature 2 | no trait line: true | text: Once an encounter, when an ally becomes Bloodied or goes Dow | flavor last: true | no title bar: true
+a Feature's card, in the Action card's look (v0.0.411): true | its line: Passive Once an encounter, when an ally becomes Bloodied or goes Down, | the Flavor first: true | no title bar: true

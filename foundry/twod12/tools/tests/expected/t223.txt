@@ -2,7 +2,7 @@
 Smite 1/2/3 AP | Lay On Hands
 --- Smite's solo card (no creature: as written, no Use buttons)
 starts with the new card: true | its title first: true
-no Use buttons: true | no "Your roll" strip: true | the Tier table: true | the Flavor: true
+no Use buttons: true | no "Your roll" strip: true | the Tier lines (v0.0.411): true | the Flavor: true
 --- a Feature's solo card
 a Feature: the feature card: true | titled "Feature": true
 --- where the new card is used (the old buildRawCard stays only for posting to the chat)

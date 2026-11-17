@@ -98,6 +98,8 @@ export function convertEffects(text) {
   s = s.replace(new RegExp(`\\b(${ATTRS})\\s+Check\\b(?![\\w\\[])`, "g"), (m, a) => `@Check[${a.toLowerCase()}]`);
   const REF = "(?:\\d+|speed|walk|move|body|mind|appeal|instinct|level|weapon|hp|rally)";
   const EXPR = `${REF}(?:\\s*[/*+\\-]\\s*${REF})*`;
+  // v0.0.410 (pack F2, Trade Places; book, Swapping Places): "You and the target swap squares." is a Swap chip
+  s = s.replace(/\bYou and the target swap squares\b/g, "You and the target @Swap[]{swap squares}");
   // v0.0.409 (pack F2, the Paladin's Setups): "Advance up to 5 squares in a straight line toward the target" (Lay On Hands), "You Advance." (Reckoning)
   s = s.replace(/\bAdvance\s+up\s+to\s+(\d+)\s+squares\b/g, (m, n) => `@Move[advance|distance:${n}]{Advance up to ${n} squares}`);
   s = s.replace(/\b(You|you)\s+Advance(?=\s*\.)/g, (m, y) => `${y} @Move[advance|distance:speed]{Advance}`);

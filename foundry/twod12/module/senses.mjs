@@ -117,6 +117,16 @@ export function perceptionOf(actor) {
 }
 
 const RANK = { unsensed: 0, hidden: 1, obscured: 2, clear: 3 };
+/**
+ * v0.0.410 (pack F2; book, Senses: the two questions): what you gain from how the target perceives you ("boon": 1 Field Boon, "favored", or "").
+ * Only when it perceives you worse than you perceive it, and never against a creature that is Hidden (or Unsensed) to you. seen: how you perceive
+ * it, mine: how it perceives you ("" or "clear", "obscured", "hidden", "unsensed"). Two creatures each Obscured to the other gain nothing.
+ */
+export function youGain(seen, mine) {
+  const r = v => RANK[v || "clear"] ?? 3, sv = seen || "clear", mv = mine || "clear";
+  if (sv === "hidden" || sv === "unsensed" || r(mv) >= r(sv)) return "";
+  return mv === "obscured" ? "boon" : "favored";
+}
 const CAP = { unsensed: "Unsensed", hidden: "Hidden", obscured: "Obscured", clear: "Clear" };
 
 /**

@@ -8,7 +8,7 @@ globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = { TextEditor: { e
 globalThis.game = { settings: { get: () => true }, user: {}, combat: null };
 const P = await import(ROOTURL + "module/preview.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
-console.log("sheet card: the Effects text in its own span:", src("module/actioncard.mjs").includes('<span class="ap-fxt one">') && src("styles/system.css").includes(".twod12.acard.d2 .ap-fxl.plain { display: block; }")   /* v0.0.297 PACK ACTION-PREVIEW */);
+console.log("sheet card: each labeled line in its own span (v0.0.411, the Structure's look):", src("module/actioncard.mjs").includes('<div class="st-l${cls ? ` ${cls}` : ""}"><b>${esc(label)}</b><span>${html}</span></div>') && src("tools/build-theme.mjs").includes(".twod12-type .twod12.acard.d2.st .st-l { display: grid;"));
 console.log("Bonus chip without a type has no None:", src("module/actions.mjs").includes('text: `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub === "W" ? previewWeapon?.system?.subtype ?? "" : b.sub] ?? ""}` : ""}` : b.text}'));
 const gs = { system: { damage: { t3: { count: 2, die: "d6", mod: 0 } } } };
 const insts = [{ useW: true, wCount: 1 }, { dice: "1d6", pool: "M" }];

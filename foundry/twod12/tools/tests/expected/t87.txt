@@ -72,7 +72,7 @@ only Kai is Hidden to the Goblin                             Doomed off, Favored
 each is Hidden to the other (both in the dark)               Doomed on, Favored off | flanking(1b/0n)
 Kai Hidden to the Goblin, the Goblin Obscured to Kai         Doomed off, Favored on | obscured(0b/1n) flanking(1b/0n)
 Kai Obscured to the Goblin, the Goblin Hidden to Kai         Doomed on, Favored off | flanking(1b/0n)
-each is Obscured to the other (dim light)                    Doomed off, Favored off | obscured(0b/1n) obscured-you(1b/0n) flanking(1b/0n)
+each is Obscured to the other (dim light)                    Doomed off, Favored off | obscured(0b/1n) flanking(1b/0n)
 
 --- the target tiles of the roll dialog: numbered tabs from 10 creatures
 1 target:      no tiles

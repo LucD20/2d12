@@ -11,14 +11,14 @@
 // With actor: what effects add inside the cells in green or red (as before), the strip, the Version buttons. The pure pieces: cardview.mjs.
 // The chat cards are unchanged (chatcards.mjs, preview.mjs).
 import { mergeDiceLine, namesWithCount } from "./dicemerge.mjs";
-import { autoChip, TWOD12, traitGroupOf, highlightText, metaRowHtml, effectiveFrequency, distanceText, distanceNote, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
+import { autoChip, TWOD12, traitGroupOf, highlightText, effectiveFrequency, distanceText, distanceNote, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
 import { rawTierLine, modifierBlocks, actionOnlyTalent } from "./preview.mjs";
 import { prereqLine } from "./talents.mjs";
 import { actionChanges, unloadedWeapon, traitsFor } from "./actionrows.mjs";
 import { rollSource } from "./rollsource.mjs";
 import { modifierList, damageSteps } from "./effects.mjs";
 import { collectBonuses, bonusesNotNow } from "./bonus.mjs";
-import { versionButtons, tierLabel, rollStripChips, modText, rulerText, effectLines, rollsItself } from "./cardview.mjs";
+import { versionButtons, tierLabel, rollStripChips, modText, rulerText, rollsItself } from "./cardview.mjs";
 import { distanceShort, costPill } from "./sheetmodel.mjs";
 import { esc } from "./util.mjs";
 
@@ -78,11 +78,6 @@ export function rollStripSources(actor, item) {
   };
 }
 
-/** A chip of the strip: Bane / Doomed / Enfeebled / a penalty red with a down triangle; Boon / Passive / Empowered green with a "+"; struck when it can't apply. */
-const stripChip = c => {
-  const bad = ["bane", "doom", "enf", "flat"].includes(c.kind);
-  return `<span class="ap-ac${bad ? " bad" : ""}${c.applies ? "" : " na"}" data-tooltip="${esc(c.why)}">${bad ? '<span class="tri" aria-hidden="true"></span>' : '<span class="pg" aria-hidden="true">+</span>'}${esc(c.label)}</span>`;
-};
 
 /** The AP the creature has now, for the Version buttons (null: not in a started combat, nothing is struck). */
 async function apNow(actor) {
@@ -94,80 +89,127 @@ async function apNow(actor) {
   } catch (e) { return null; }
 }
 
+/* ------------------------------------------------------------------ v0.0.411 (pack F2): the card in the book's look and Structure */
+// Step 5 of the Foundry style plan (foundry/mockups/card, decided 2026-11-17 with the automation rank in its colors): the book's flat tinted panel
+// with an accent rule above and below; the Flavor at the top in the serif italic; the traits as words with dots and a line under them, the
+// automation rank at the right; Distance, Area and Target; then the labeled lines in play order (Requirement, Interrupt / Trigger, Setup, the
+// card's own lines, the roll, the Tiers, Effect, Special), a Version or a Mode a block with its cost or name as its header; no Tier color; the
+// Use button in each block's header, or at the end of the Your roll line with one Version; Your roll a labeled line under a hairline (the
+// Modifier, Boons "+" in the success color, Banes "▼" in the failure color); what effects change a short note after its line; the Ruler line small.
+const ROLL_WORDS = ["signature", "weapon", "magic", "body", "mind", "appeal", "instinct"];
+const DEF = { AD: "Armor Defense", WD: "Ward Defense" };
+/** Pure: the trait words in the book's group order, joined by dots. */
+export function traitWords(traits) {
+  const list = [...(traits ?? [])], label = k => String(TWOD12.traits[k] ?? k);
+  const order = TWOD12.traitGroups.flatMap(g => list.filter(k => traitGroupOf(k) === g.key).sort((a, b) => label(a).localeCompare(label(b))));
+  const rest = list.filter(k => !order.includes(k));
+  return [...order, ...rest].map(k => `<span data-tooltip="${esc(TWOD12.traitHelp?.[k] ?? "")}">${esc(label(k))}</span>`).join('<i class="st-dot" aria-hidden="true">&middot;</i>');
+}
+/** Pure: the roll line's label and text ("Attack" "Weapon vs. Armor Defense", "Save" "Appeal"), or null when the Action makes no roll. */
+export function rollLine(it, vs) {
+  if (!(it.versions ?? []).some(v => !v.noTiers)) return null;
+  const t = it.traits ?? new Set(), has = k => t.has?.(k) ?? false;
+  if (has("save")) return { label: "Save", text: String(vs || "").replace(/\s*Save$/, "") || "the target's choice" };
+  // a [Signature] Action rolls the Signature Modifier, whatever else it is (the book: "Signature vs. Armor Defense")
+  const words = (has("signature") ? ["signature"] : ROLL_WORDS.filter(has)).map(k => (k === "magic" ? "Power" : TWOD12.traits[k] ?? TWOD12.attributes[k] ?? k));
+  const def = DEF[vs] ?? vs;
+  return def ? { label: "Attack", text: `${words.length ? `${words.join(" or ")} ` : ""}vs. ${def}` } : null;
+}
+/** Pure: how a Version's three Tier texts are written: one line ("Tier 1 or 2" / "Tier 2 or 3" / "Tiers 1–3") or three. cells: [t1, t2, t3] HTML. */
+export function tierLines(cells, save, noDamage) {
+  const none = c => /^(No effect\.?|&mdash;)$/.test(String(c).trim());
+  if (cells[0] === cells[1] && cells[1] === cells[2]) return [[tierLabel("all"), cells[0]]];
+  if (noDamage && save && cells[0] === cells[1] && none(cells[2])) return [["Tier 1 or 2", cells[0]]];
+  if (noDamage && !save && none(cells[0]) && cells[1] === cells[2]) return [["Tier 2 or 3", cells[1]]];
+  return [1, 2, 3].map(n => [`Tier ${n}`, cells[n - 1]]);
+}
+const stLine = (label, html, cls = "") => `<div class="st-l${cls ? ` ${cls}` : ""}"><b>${esc(label)}</b><span>${html}</span></div>`;
+
 /** item: an Action. actor (optional): the creature that has it. use: the Version buttons are buttons (false on the Build tab and with no actor). */
 export async function buildActionCard(item, { actor = null, use = true } = {}) {
   const it = item.system, versions = it.versions ?? [];
-  const f = effectiveFrequency(it);
   const ch = actor ? actionChanges(actor, item) : null;
   const weapon = actor ? (actor.items?.get?.(item.getFlag?.("twod12", "weaponId")) ?? null) : null;
   const canUse = !!actor && use;
   const now = canUse ? await apNow(actor) : null;
   const btns = versionButtons(versions.map(v => v.ap), { reaction: !!it.reaction, inCombat: !!now, ap: now?.ap ?? 0, rap: now?.rap ?? 0 });
   const offAt = ap => btns.find(b => b.ap === (Number(ap) || 0)) ?? { off: false, why: "" };
-  const headBtn = v => {
-    const b = offAt(v.ap), mode = v.mode ? ` <span class="ap-mode">${esc(MODE[v.mode] ?? v.mode)}</span>` : "";   // v0.0.409: an Art's Mode by its name
-    if (!canUse) return `<span class="ap-vcost">${esc(b.cost ?? (it.reaction ? `${v.ap}R` : `${v.ap} AP`))}</span>${mode}`;
+  const costOf = v => (it.reaction ? `${v.ap}R` : `${v.ap} AP`);
+  // the Use button (outlined; struck and dashed with its reason); a Mode's button carries the Mode
+  const useBtn = v => {
+    if (!canUse) return "";
+    const b = offAt(v.ap), lab = `Use · ${costOf(v)}`;
     return b.off
-      ? `<span class="ap-vwrap" data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn no" aria-disabled="true" disabled aria-label="${esc(`${b.label}: ${b.why}`)}">${esc(b.label)}</button></span>${mode}`
-      : `<button type="button" class="ap-vbtn" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""} data-tooltip="Use the ${esc(b.cost)} Version" aria-label="Use ${esc(item.name)}, the ${esc(b.cost)} Version">${esc(b.label)}</button>${mode}`;
+      ? `<span class="ap-vwrap" data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn st-use no" aria-disabled="true" disabled aria-label="${esc(`${lab}: ${b.why}`)}">${esc(lab)}</button></span>`
+      : `<button type="button" class="ap-vbtn st-use" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""} data-tooltip="Use the ${esc(b.cost ?? costOf(v))} Version" aria-label="Use ${esc(item.name)}, the ${esc(b.cost ?? costOf(v))} Version">${esc(lab)}</button>`;
   };
-
-  // The Tier table: a row per Tier (one "Tiers 1–3" row when nothing changes between them), then Critical; a column per Version.
-  let grid = "";
-  const tiered = versions.filter(v => !v.noTiers);
-  if (tiered.length) {
-    const cols = await Promise.all(tiered.map(async v => [await cell(item, v, 1, ch), await cell(item, v, 2, ch), await cell(item, v, 3, ch)]));
-    const same = cols.every(c => c[0] === c[1] && c[1] === c[2]);
-    const rows = same ? [["tall", tierLabel("all"), cols.map(c => c[0])]] : [1, 2, 3].map(n => [`t${n}`, tierLabel(n), cols.map(c => c[n - 1])]);
-    if (tiered.some(v => v.critical)) rows.push(["crit", tierLabel("crit"), await Promise.all(tiered.map(async v => (v.critical ? await enrich(v.critical, item) : "&mdash;")))]);
-    const dim = tiered.map(v => offAt(v.ap).off);
-    grid = `<div class="ap-ttw"><table class="ap-tt"><thead><tr><th></th>${tiered.map(v => `<th>${headBtn(v)}</th>`).join("")}</tr></thead><tbody>${rows.map(([cls, label, cells]) => `<tr class="${cls}"><td class="tl">${label}</td>${cells.map((c, k) => `<td${dim[k] ? ' class="dim"' : ""}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  const save = !!it.traits?.has?.("save");
+  // a Version's labeled lines: its Special, the Tiers, the Critical, its Effect (an old card's Effects cell is "Tier 2 or 3", "Tier 1 or 2" on a Save)
+  const versionLines = async v => {
+    const out = [];
+    if (v.special) out.push(stLine("Special", await enrich(v.special, item)));
+    if (!v.noTiers) {
+      const cells = [await cell(item, v, 1, ch), await cell(item, v, 2, ch), await cell(item, v, 3, ch)];
+      const noDmg = ![1, 2, 3].some(n => (v[`t${n}`] ?? []).length);
+      for (const [l, h] of tierLines(cells, save, noDmg)) out.push(stLine(l, h));
+      if (v.critical) out.push(stLine("Critical", await enrich(v.critical, item)));
+    }
+    if (String(v.effects ?? "").trim()) out.push(stLine(it.structure || v.noTiers ? "Effect" : save ? "Tier 1 or 2" : "Tier 2 or 3", await enrich(v.effects, item)));
+    return out.join("");
+  };
+  // the grid: Distance, Area (the Place Area chip), Target
+  const area = areaText(it), aBtn = areaButton(it);
+  const areaHtml = area && aBtn ? await enrich(aBtn.replace(/\|label:[^|\]]*/, "").replace(/\]$/, `|label:${area.replace(/[|\]]/g, " ")}]`), item) : (area ? esc(area) : "");
+  const dist = distanceShort(distanceText(it, weapon)).replace(/^—$/, ""), distTip = distanceNote(it, weapon);
+  const grid = [dist && !/^self$/i.test(dist) ? `<span${distTip ? ` data-tooltip="${esc(distTip)}"` : ""}><b>Distance:</b> ${esc(dist)}</span>` : "", areaHtml ? `<span><b>Area:</b> ${areaHtml}</span>` : "",
+    it.targets ? `<span><b>Target:</b> ${highlightText(esc(it.targets))}</span>` : ""].filter(Boolean).join("");
+  const areaRow = aBtn && !areaHtml ? `<div class="st-l arearow"><b>Area</b><span>${await enrich(aBtn, item)}</span></div>` : "";
+  // the lines above the Versions: Requirement, Prerequisite, Interrupt / Trigger, Setup, the card's own lines, the roll
+  const top = [];
+  if (it.requirements) top.push(stLine("Requirement", highlightText(esc(it.requirements))));
+  if (it.prerequisites) top.push(stLine("Prerequisite", esc(it.prerequisites)));
+  if (it.reaction && it.trigger) top.push(stLine(it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", await enrich(esc(it.trigger), item)));
+  if (it.setup) top.push(stLine("Setup", await enrich(it.setup, item)));
+  for (const l of it.lines ?? []) top.push(stLine(l.label || "Note", await enrich(l.text, item)));
+  const vs = vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "weaponUse") === "fists" });
+  const rl = rollLine(it, vs);
+  // a Mode has its own Save: the roll line goes into its block
+  const modes = versions.some(v => v.modeVs || v.modeTraits?.length);
+  if (rl && !modes) top.push(stLine(rl.label, esc(rl.text)));
+  // one Version: its lines here; several: a block each (its cost, or its Mode's name, as the header; its own traits, Distance, Target, roll)
+  let body = "";
+  if (versions.length === 1) body = await versionLines(versions[0]);
+  else for (const v of versions) {
+    const b = offAt(v.ap), head = v.mode ? `${esc(MODE[v.mode] ?? v.mode)}` : esc(costOf(v));
+    const own = [v.modeTraits?.length ? `<span class="st-btr">${traitWords(v.modeTraits)}</span>` : "", v.modeDistance ? `<span><b>Distance:</b> ${esc(distanceShort(v.modeDistance))}</span>` : "", v.modeTargets ? `<span><b>Target:</b> ${highlightText(esc(v.modeTargets))}</span>` : ""].filter(Boolean).join("");
+    const vroll = v.modeVs ? stLine("Save", esc(TWOD12.attributes[v.modeVs] ?? v.modeVs)) : "";
+    body += `<div class="st-b${b.off ? " off" : ""}"><div class="st-bh"><span>${head}</span>${b.off && b.why ? `<span class="st-why">${esc(b.why)}</span>` : ""}${useBtn(v)}</div>${own ? `<div class="st-grid">${own}</div>` : ""}${vroll}${await versionLines(v)}</div>`;
   }
-
-  // Effects: one line per Version with its AP badge (struck with its column); once when every Version has the same text.
-  const fx = effectLines(versions);
-  let effects = "";
-  if (fx.lines.length) {
-    const lines = await Promise.all(fx.lines.map(async l => {
-      const b = offAt(l.ap), txt = await enrich(l.text, item);
-      return l.badge ? `<span class="ap-ap${b.off ? " no" : ""}"${b.off ? ` data-tooltip="${esc(b.why)}"` : ""}>${esc(it.reaction ? `${l.ap}R` : `${l.ap} AP`)}</span><span class="ap-fxt${b.off ? " dim" : ""}">${txt}</span>` : `<span class="ap-fxt one">${txt}</span>`;
-    }));
-    effects = `<div class="ap-fxh">${esc(fx.title)}</div><div class="ap-fxl${fx.lines.some(l => l.badge) ? "" : " plain"}">${lines.join("")}</div>`;
-  }
-
-  // "Your roll" (read-only): the Modifier and the self-side chips the roll dialog would detect by itself.
-  let strip = "";
-  if (actor && rollsItself(versions, it.traits)) {
+  // the card's Special (a Structure card's), or an old card's prose (the description)
+  const special = it.structure ? (it.special ? stLine("Special", await enrich(it.special, item)) : "")
+    : (it.description && String(it.description).replace(/<[^>]+>/g, "").trim() ? `<div class="st-prose">${await enrich(it.description, item)}</div>` : "");
+  // Your roll (read-only), and the Use button of a one-Version card at its end
+  let live = "";
+  const oneBtn = versions.length === 1 ? useBtn(versions[0]) : "";
+  if (actor && !modes && rollsItself(versions, it.traits)) {   // an Art whose Mode has its own Save: no one roll to show
     try {
       const { src, chips } = rollStripSources(actor, item);
       const out = unloadedWeapon(actor, item);
       if (out) chips.push({ kind: "bane", label: "Unloaded", applies: true, why: `${out.name} must be reloaded first (Reload, 1 AP)` });
-      strip = `<div class="ap-strip"><span class="lab">Your roll</span><b class="ap-rmod" data-tooltip="The roll's Modifier">${esc(modText(src.chip, src.mod))}</b>${chips.map(stripChip).join("")}</div>`;
+      const word = c => { const bad = ["bane", "doom", "enf", "flat"].includes(c.kind); return `<span class="st-rc ${bad ? "b" : "g"}${c.applies ? "" : " na"}" data-tooltip="${esc(c.why)}">${esc(c.label)}</span>`; };
+      live = `<div class="st-live"><div class="st-l"><b>Your roll</b><span class="st-roll"><span class="st-m" data-tooltip="The roll's Modifier">${esc(modText(src.chip, src.mod))}</span>${chips.map(word).join("")}${oneBtn}</span></div></div>`;
     } catch (e) { console.warn("twod12 | Your roll", e); }
   }
-  // (an Action with no roll has no strip: what changes a roll doesn't matter to it; the old "Changed by effects" line is gone, v0.0.297)
-
-  // The meta lines, the book's: the Area value is the Place Area chip.
-  const area = areaText(it), aBtn = areaButton(it);
-  const areaHtml = area && aBtn ? await enrich(aBtn.replace(/\|label:[^|\]]*/, "").replace(/\]$/, `|label:${area.replace(/[|\]]/g, " ")}]`), item) : "";
-  // the Distance as the row writes it ("10 sq.")
-  const meta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: "", targetText: it.targets, distance: distanceShort(distanceText(it, weapon)).replace(/^\u2014$/, ""), distanceTip: distanceNote(it, weapon), area, areaHtml, sepHtml: '<span class="ap-st" aria-hidden="true">✦</span>', vs: vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits?.has?.("self") });
-  // An area with no Area line (a Self Emanation without a Targets line): its chip on its own line, as before
-  const areaRow = aBtn && !(area && meta.includes("<b>Area:</b>")) ? `<div class="trow arearow">${await enrich(aBtn, item)}</div>` : "";
-  const setup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";
-  // v0.0.229 (pack CS): the card's prose (the book's text before and after the table: Weapon Attack, Steel Yourself) is the item's description.
-  const notes = it.description && String(it.description).replace(/<[^>]+>/g, "").trim() ? `<div class="ac-notes">${await enrich(it.description, item)}</div>` : "";
-  const cat = categoryText(it), fl = f && TWOD12.frequencies[f] && !["none", ""].includes(f) ? TWOD12.frequencies[f] : "";
-  const traits = it.traits?.size ? traitLine(it.traits) : "";
+  if (!live && oneBtn) live = `<div class="st-live st-only">${oneBtn}</div>`;
   const ruler = rulerText(it.worth, setting("designerMode"));
-  const flavor = it.flavor ? `<div class="ap-flav"><div class="dv" aria-hidden="true">◆ ◆ ◆</div>${esc(it.flavor)}</div>` : "";
-  return `<div class="twod12 acard d2" data-card-item="${esc(item.id ?? "")}">
-    <div class="ap-trow">${traits}<span class="ap-cat">${autoChip(it.automation, it.automationNote)}${cat ? ` ${esc(cat)}` : ""}${fl ? ` <span class="ap-freq" style="--fq:${FREQ_CHIP[f] ?? "#5f5e5a"};background:var(--fq)">${esc(fl)}</span>` : ""}</span></div>
-    ${meta ? `<div class="ap-meta">${meta}</div>` : ""}${areaRow}${setup}
-    ${it.prerequisites ? `<div class="trow"><b>Prerequisites:</b> ${esc(it.prerequisites)}</div>` : ""}
-    ${notes}
-    ${grid}${effects}${modifierBlocks(it).join("")}${strip}${flavor}
-    ${ruler ? `<div class="ap-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
+  const rank = it.automation ? `<span class="st-auto">${autoChip(it.automation, it.automationNote)} ${esc(TWOD12.automationRanks?.[it.automation] ?? "")}</span>` : "";
+  const traits = it.traits?.size ? traitWords(it.traits) : "";
+  return `<div class="twod12 acard d2 st" data-card-item="${esc(item.id ?? "")}">
+    ${it.flavor ? `<div class="st-flavor">${esc(it.flavor)}</div>` : ""}
+    ${traits || rank ? `<div class="st-traits">${traits}${rank}</div>` : ""}
+    ${grid ? `<div class="st-grid">${grid}</div>` : ""}${areaRow}
+    ${top.join("")}${body}${special}${modifierBlocks(it).join("")}${live}
+    ${ruler ? `<div class="st-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
   </div>`;
 }
 
@@ -178,33 +220,30 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
  * the ruler in Designer mode. A Talent that is only its Action shows that Action's card. The chat keeps buildInfoCard (preview.mjs).
  */
 export async function buildFeatureCard(item, { actor = null } = {}) {
+  // v0.0.411 (pack F2): the same look as the Action card (the book's): the Flavor on top, the trait words and the rank, the labeled lines
   const s = item.system ?? {};
   const load = async list => (await Promise.all((list ?? []).filter(Boolean).map(async u => { try { return await fromUuid(u); } catch (e) { return null; } }))).filter(Boolean);
   if (item.type === "talent" && actionOnlyTalent(s)) { const [a] = await load(s.actions); if (a?.type === "action") return buildActionCard(a, { actor, use: false }); }
-  const f = effectiveFrequency(s), fl = f && TWOD12.frequencies[f] && !["none", ""].includes(f) ? TWOD12.frequencies[f] : "";
-  const cat = categoryText(s), traits = s.traits?.size ? traitLine(s.traits) : "";
+  const traits = s.traits?.size ? traitWords(s.traits) : "";
   const pre = prereqLine(s), req = String(s.requirements ?? "").trim();
-  const meta = [pre ? `<div class="trow"><span><b>Prerequisites:</b> ${esc(pre)}</span></div>` : "", req ? `<div class="trow"><span><b>Requirements:</b> ${highlightText(esc(req))}</span></div>` : ""].join("");
   const body = String(s.description ?? "").replace(/<[^>]*>/g, "").trim() ? await enrich(s.description, item) : "";
-  // what it grants: each Action as its card under a small head (its name and cost), a choice's options folded
-  const head = d => `<div class="ap-ghead"><b>${esc(d.name)}</b>${d.type === "action" ? `<span class="ap-gcost">${esc(costPill((d.system.versions ?? []).map(v => v.ap), !!d.system.reaction))}</span>` : `<span class="ap-gcost kind">${esc(categoryText(d.system ?? {}) || d.type)}</span>`}</div>`;
+  const rung = s.escalationPassive ? Number(s.escalationRung) || 0 : 0;
+  const lines = [pre ? stLine("Prerequisite", esc(pre)) : "", req ? stLine("Requirement", highlightText(esc(req))) : "", rung ? stLine("Escalation", `${rung} or more`) : "",
+    body ? stLine(s.escalationPassive || /passive|feature/i.test(String(s.category ?? "")) ? "Passive" : "Effect", `<span class="st-prose">${body}</span>`) : ""].join("");
+  const head = d => `<div class="st-bh"><span>${esc(d.name)}</span><span class="st-why">${esc(d.type === "action" ? costPill((d.system.versions ?? []).map(v => v.ap), !!d.system.reaction) : categoryText(d.system ?? {}) || d.type)}</span></div>`;
   const full = async d => { try { return d.type === "action" ? await buildActionCard(d, { actor, use: false }) : await buildFeatureCard(d, { actor }); } catch (e) { return ""; } };
   const blocks = [];
   const grants = await load(s.actions), options = await load(s.choiceOptions);
-  if (grants.length) blocks.push(`<div class="ap-fxh">Grants</div>${(await Promise.all(grants.map(async d => `<div class="ap-grant">${head(d)}${await full(d)}</div>`))).join("")}`);
-  if (options.length) blocks.push(`<div class="ap-fxh">${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</div>${(await Promise.all(options.map(async d => `<details class="ap-grant ap-choice"><summary>${head(d)}</summary>${await full(d)}</details>`))).join("")}`);
-  if (s.talents) blocks.push(`<div class="ap-fxh">Talent slots</div><div class="ap-fxt one">${esc(String(s.talents))}</div>`);
+  if (grants.length) blocks.push(`<div class="st-b"><div class="st-bh"><span>Grants</span></div>${(await Promise.all(grants.map(async d => `<div class="ap-grant">${head(d)}${await full(d)}</div>`))).join("")}</div>`);
+  if (options.length) blocks.push(`<div class="st-b"><div class="st-bh"><span>${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</span></div>${(await Promise.all(options.map(async d => `<details class="ap-grant ap-choice"><summary>${head(d)}</summary>${await full(d)}</details>`))).join("")}</div>`);
+  if (s.talents) blocks.push(stLine("Talent slots", esc(String(s.talents))));
   const ruler = rulerText(s.worth, setting("designerMode"));
-  const flavor = s.flavor ? `<div class="ap-flav"><div class="dv" aria-hidden="true">◆ ◆ ◆</div>${esc(s.flavor)}</div>` : "";
-  // v0.0.299 (Lucas): the text is the "Description"; the category and the Frequency chip sit on its heading line (less height); a trait line only with traits
-  const catHtml = cat || fl || s.automation ? `<span class="ap-cat">${autoChip(s.automation, s.automationNote)}${cat ? ` ${esc(cat)}` : ""}${fl ? ` <span class="ap-freq" style="--fq:${FREQ_CHIP[f] ?? "#5f5e5a"};background:var(--fq)">${esc(fl)}</span>` : ""}</span>` : "";
-  const onHead = !!body && !traits;
-  return `<div class="twod12 acard d2 feat" data-card-item="${esc(item.id ?? "")}">
-    ${traits || (catHtml && !onHead) ? `<div class="ap-trow">${traits}${catHtml}</div>` : ""}
-    ${meta ? `<div class="ap-meta">${meta}</div>` : ""}
-    ${body ? `<div class="ap-fxh${onHead ? " withcat" : ""}">Description${onHead ? `<span class="ap-fxr" aria-hidden="true"></span>${catHtml}` : ""}</div><div class="ap-fxl plain"><div class="ap-fxt one ap-prose">${body}</div></div>` : ""}
-    ${blocks.join("")}${modifierBlocks(s).join("")}${flavor}
-    ${ruler ? `<div class="ap-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
+  const rank = s.automation ? `<span class="st-auto">${autoChip(s.automation, s.automationNote)} ${esc(TWOD12.automationRanks?.[s.automation] ?? "")}</span>` : "";
+  return `<div class="twod12 acard d2 st feat" data-card-item="${esc(item.id ?? "")}">
+    ${s.flavor ? `<div class="st-flavor">${esc(s.flavor)}</div>` : ""}
+    ${traits || rank ? `<div class="st-traits">${traits}${rank}</div>` : ""}
+    ${lines}${blocks.join("")}${modifierBlocks(s).join("")}
+    ${ruler ? `<div class="st-ruler"><b>Ruler</b> ${esc(ruler)}</div>` : ""}
   </div>`;
 }
 
@@ -219,6 +258,8 @@ export async function buildSoloCard(item, { actor = null } = {}) {
   if (!item) return "";
   const s = item.system ?? {};
   const card = item.type === "action" ? await buildActionCard(item, { actor, use: false }) : await buildFeatureCard(item, { actor });
-  const right = item.type === "action" ? costPill((s.versions ?? []).map(v => v.ap), !!s.reaction) : (KIND[item.type] ?? "");
+  // v0.0.411 (the book's card head): the Frequency and the cost ("Encounter · 2 AP"); a Feature or Talent its kind
+  const fq = item.type === "action" ? (TWOD12.frequencies[effectiveFrequency(s)] ?? "") : "";
+  const right = item.type === "action" ? [fq && !/^none$/i.test(fq) ? fq : "", costPill((s.versions ?? []).map(v => v.ap), !!s.reaction)].filter(Boolean).join(" \u00b7 ") : (KIND[item.type] ?? "");
   return card.replace(/^(\s*<div class="twod12 acard d2[^"]*"[^>]*>)/, `$1${soloTitle(item.name, right)}`);
 }

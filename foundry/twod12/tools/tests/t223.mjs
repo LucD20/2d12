@@ -24,13 +24,13 @@ console.log(txt(soloTitle("Smite", "1/2/3 AP")), "|", txt(soloTitle("Lay On Hand
 console.log("--- Smite's solo card (no creature: as written, no Use buttons)");
 const smite = asItem(JSON.parse(src("packs/_source/actions/smite.action.json")));
 const sm = await buildSoloCard(smite);
-console.log("starts with the new card:", /^\s*<div class="twod12 acard d2/.test(sm), "| its title first:", /acard d2[^>]*>\s*<div class="ap-title"><b>Smite<\/b><span class="ap-tcost">2 AP<\/span>/.test(sm));
-console.log("no Use buttons:", !/ap-vbtn/.test(sm), "| no \"Your roll\" strip:", !/ap-strip/.test(sm), "| the Tier table:", /ap-tt/.test(sm), "| the Flavor:", /ap-flav/.test(sm));
+console.log("starts with the new card:", /^\s*<div class="twod12 acard d2/.test(sm), "| its title first:", /acard d2[^>]*>\s*<div class="ap-title"><b>Smite<\/b><span class="ap-tcost">Encounter · 2 AP<\/span>/.test(sm));
+console.log("no Use buttons:", !/ap-vbtn/.test(sm), "| no \"Your roll\" strip:", !/st-live/.test(sm), "| the Tier lines (v0.0.411):", /<b>Tier 2<\/b>/.test(sm), "| the Flavor:", /st-flavor/.test(sm));
 
 console.log("--- a Feature's solo card");
 const feat = pack("features").filter(d => d.system).map(asItem).find(i => i.type === "feature" && String(i.system.description ?? "").length > 20);
 const fc = await buildSoloCard(feat);
-console.log(`${feat ? "a Feature" : "no Feature found"}: the feature card:`, /acard d2 feat/.test(fc), "| titled \"Feature\":", /<span class="ap-tcost">Feature<\/span>/.test(fc));
+console.log(`${feat ? "a Feature" : "no Feature found"}: the feature card:`, /acard d2 st feat/.test(fc), "| titled \"Feature\":", /<span class="ap-tcost">Feature<\/span>/.test(fc));
 
 console.log("--- where the new card is used (the old buildRawCard stays only for posting to the chat)");
 for (const f of ["module/ccdamage.mjs", "module/item-sheet.mjs", "module/classwindow.mjs", "module/actor-sheets.mjs"])

@@ -14,7 +14,8 @@ export function activeHooks(actor, kind) {
   const out = [];
   if (!actor?.items) return out;
   let esc = 0; try { esc = escalationOf(actor); } catch (e) { esc = Number(actor.system?.escalation) || 0; }
-  for (const it of actor.items) {
+  const items = actor.items?.contents ?? (typeof actor.items?.[Symbol.iterator] === "function" ? [...actor.items] : []);   // a Collection, or a list
+  for (const it of items) {
     const hooks = it.system?.hooks;
     if (!Array.isArray(hooks) || !hooks.length) continue;
     const rung = it.system?.escalationPassive ? passiveThreshold(it) : 0;

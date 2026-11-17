@@ -61,7 +61,7 @@ export function readBody(lines = []) {
     else if (l === "Prerequisite") o.prerequisites = t;
     else if (l === "Passive") o.text.push(t);
     else if (l === "Special") { o.notes.push(t); o.seq.push(`Special: ${t}`); }
-    else o.rules.push(l ? `**${l}:** ${t}` : t);
+    else { o.rules.push(l ? `**${l}:** ${t}` : t); (o.lines ??= []).push({ label: l, text: t }); }   // v0.0.411: the labeled line itself too (the card draws it)
   }
   return o;
 }
@@ -84,14 +84,17 @@ export function fromStructure(c) {
   for (const k of ["frequency", "escalation", "distance", "area", "target", "foundry", "ruler", "book"]) if (c[k] !== undefined) out[k] = c[k];
   for (const k of ["vs", "interrupt", "trigger", "setup", "requirements", "prerequisites"]) if (top[k] !== undefined) out[k] = top[k];
   if (top.rules.length) out.rules = top.rules.join(" ");
+  if (top.lines?.length) out.lines = top.lines;   // v0.0.411: the card's own labeled lines before the roll (Judged, Smite dice)
   if (top.notes.length) out.notes = top.notes.join(" ");
   if (passive) { out.text = [...top.text, ...top.effects].join(" "); return out; }
   const version = (b, ap, extra = {}) => {
     const v = { ap, ...extra };
     const cells = b.foundry?.tiers ?? tierCells(b);
     if (cells) v.tiers = cells;
-    const eff = b.seq ?? [...b.effects, ...b.notes.map(n => `Special: ${n}`)];
+    // v0.0.411: the Effect lines are the Version's effects; a block's Special lines its `special` (the card draws each under its label)
+    const eff = b.seq ? b.seq.filter(t => !t.startsWith("Special: ")) : b.effects, sp = b.seq ? b.seq.filter(t => t.startsWith("Special: ")).map(t => t.slice(9)) : [];
     if (eff.length) v.effects = eff.join(" ");
+    if (sp.length) v.special = sp.join(" ");
     if (b.foundry) { v.foundry = { ...b.foundry }; delete v.foundry.tiers; if (!Object.keys(v.foundry).length) delete v.foundry; }   // its tiers are the Version's tiers now
     return v;
   };

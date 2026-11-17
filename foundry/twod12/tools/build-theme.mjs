@@ -919,6 +919,47 @@ const STYLE3 = `
 .twod12-hud.is-strip .hud-main { align-self: stretch; display: flex; align-items: stretch; }
 .twod12-hud.is-strip .hb-strip { align-items: stretch !important; height: 100%; }
 .twod12-hud.twod12-hud .hb-pc { box-sizing: border-box; height: 100%; max-height: 100%; overflow: hidden; gap: 2px !important; padding: 4px 8px 3px !important; justify-content: space-between; }
+/* ==== v0.0.411 (pack F2; style-book.md step 5, foundry/mockups/card): the Action card in the book's look and Structure (actioncard.mjs, class "st") ==== */
+.twod12-type .twod12.acard.d2.st { display: block; background: color-mix(in srgb, var(--s-gold) 5%, var(--s-pg)) !important; color: var(--s-ink) !important; border: 0 !important; border-top: 2px solid var(--s-gold) !important; border-bottom: 2px solid var(--s-gold) !important; border-radius: 0 !important; outline: 0 !important; box-shadow: none !important; padding: 7px 11px 8px; font: 400 14px/1.5 "Source Sans 3", sans-serif; font-variant-numeric: lining-nums tabular-nums; }
+.twod12-type .twod12.acard.d2.st > .ap-title { display: flex; align-items: baseline; gap: 0 12px; margin: 0 0 2px; padding: 0; background: none !important; border: 0 !important; }
+.twod12-type .twod12.acard.d2.st > .ap-title > b { color: var(--s-gold) !important; font: 700 16px "Source Sans 3", sans-serif; flex: 1 1 auto; }
+.twod12-type .twod12.acard.d2.st > .ap-title .ap-tcost { background: none !important; color: var(--s-ink) !important; font: 600 13px "Source Sans 3", sans-serif; padding: 0; }
+.twod12-type .twod12.acard.d2.st .st-flavor { font: italic 400 14.5px/1.45 "Source Serif 4", Georgia, serif; color: var(--s-mute); margin: 0 0 3px; }
+.twod12-type .twod12.acard.d2.st .st-traits { display: flex; flex-wrap: wrap; align-items: baseline; font-weight: 600; padding-bottom: 2px; margin-bottom: 3px; border-bottom: 1px solid var(--s-gold); }
+.twod12-type .twod12.acard.d2.st .st-dot { font-style: normal; margin: 0 .45em; opacity: .55; }
+.twod12-type .twod12.acard.d2.st .st-auto { margin-left: auto; font-weight: 400; font-size: 12.5px; color: var(--s-mute); white-space: nowrap; }
+.twod12-type .twod12.acard.d2.st .st-auto .autodia { font-size: 13px; }
+.twod12-type .twod12.acard.d2.st .st-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 1.2rem; }
+.twod12-type .twod12.acard.d2.st .st-grid b, .twod12-type .twod12.acard.d2.st .st-l > b { font-weight: 700; color: var(--s-ink); }
+.twod12-type .twod12.acard.d2.st .st-l { display: grid; grid-template-columns: 6.2rem minmax(0, 1fr); gap: 0 .6rem; margin: 1px 0; }
+.twod12-type .twod12.acard.d2.st .st-l > span > p, .twod12-type .twod12.acard.d2.st .st-prose p { margin: 0; }
+.twod12-type .twod12.acard.d2.st .st-prose { display: block; }
+.twod12-type .twod12.acard.d2.st .ap-rid { display: inline; } .twod12-type .twod12.acard.d2.st .ap-rid .arr { display: none; } .twod12-type .twod12.acard.d2.st .ap-rid::before { content: "; "; }
+.twod12-type .twod12.acard.d2.st .st-b { margin-top: 6px; border-top: 1px solid var(--s-rule); padding-top: 4px; }
+.twod12-type .twod12.acard.d2.st .st-traits + .st-b, .twod12-type .twod12.acard.d2.st .st-grid + .st-b { border-top: 0; padding-top: 0; }
+.twod12-type .twod12.acard.d2.st .st-bh { display: flex; align-items: center; gap: .6rem; color: var(--s-gold); font-weight: 700; margin-bottom: 1px; }
+.twod12-type .twod12.acard.d2.st .st-bh > :last-child:not(:first-child) { margin-left: auto; }
+.twod12-type .twod12.acard.d2.st .st-bh .st-why { font-weight: 400; font-size: 12.5px; color: var(--s-mute); margin-left: auto; }
+.twod12-type .twod12.acard.d2.st .st-bh .st-why + * { margin-left: 0 !important; }
+.twod12-type .twod12.acard.d2.st .st-btr { font-weight: 600; }
+.twod12-type .twod12.acard.d2.st .st-b.off > :not(.st-bh) { opacity: .5; }
+.twod12-type .twod12.acard.d2.st .st-live { margin-top: 6px; padding-top: 4px; border-top: 1px solid var(--s-hair); }
+.twod12-type .twod12.acard.d2.st .st-live .st-l { align-items: center; } .twod12-type .twod12.acard.d2.st .st-live .st-l > b { font-weight: 600; color: var(--s-mute); }
+.twod12-type .twod12.acard.d2.st .st-live.st-only { display: flex; justify-content: flex-end; }
+.twod12-type .twod12.acard.d2.st .st-roll { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; }
+.twod12-type .twod12.acard.d2.st .st-m { font-weight: 700; }
+.twod12-type .twod12.acard.d2.st .st-rc.g { color: var(--s-good); } .twod12-type .twod12.acard.d2.st .st-rc.g::before { content: "+ "; font-weight: 700; }
+.twod12-type .twod12.acard.d2.st .st-rc.b { color: var(--s-bad); } .twod12-type .twod12.acard.d2.st .st-rc.b::before { content: "\\25BC  "; font-size: .75em; }
+.twod12-type .twod12.acard.d2.st .st-rc.na { color: var(--s-mute); text-decoration: line-through; }
+.twod12-type .twod12.acard.d2.st .st-roll > .ap-vbtn, .twod12-type .twod12.acard.d2.st .st-roll > .ap-vwrap { margin-left: auto; }
+.twod12-type .twod12.acard.d2.st .ap-vbtn.st-use { font: 600 12.5px/1 "Source Sans 3", sans-serif !important; color: var(--s-ink) !important; background: transparent !important; border: 1px solid var(--s-gold) !important; border-radius: 0 !important; padding: 5px 9px !important; box-shadow: none !important; white-space: nowrap; cursor: pointer; }
+.twod12-type .twod12.acard.d2.st .ap-vbtn.st-use:hover, .twod12-type .twod12.acard.d2.st .ap-vbtn.st-use:focus-visible { background: var(--s-gold) !important; color: var(--s-pg) !important; outline: 0; }
+.twod12-type .twod12.acard.d2.st .ap-vbtn.st-use.no { border-style: dashed !important; color: var(--s-mute) !important; text-decoration: line-through; cursor: not-allowed; }
+.twod12-type .twod12.acard.d2.st .ap-vbtn.st-use.no:hover { background: transparent !important; color: var(--s-mute) !important; }
+.twod12-type .twod12.acard.d2.st .chg { font-size: 13px; font-weight: 600; white-space: nowrap; } .twod12-type .twod12.acard.d2.st .chg.up { color: var(--s-good) !important; } .twod12-type .twod12.acard.d2.st .chg.down { color: var(--s-bad) !important; }
+.twod12-type .twod12.acard.d2.st .st-ruler { font-size: 12px; color: var(--s-mute); margin-top: 4px; }
+.twod12-type .twod12.acard.d2.st .ap-grant { margin: 3px 0 6px 10px; }
+.twod12-type .twod12.acard.d2.st .pool-b { color: var(--s-vig) !important; font-weight: 600; } .twod12-type .twod12.acard.d2.st .pool-m { color: var(--s-res) !important; font-weight: 600; }
 `;
 
 /** The theme's CSS from system.css's text (pure: the test calls it). */

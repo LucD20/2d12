@@ -1,4 +1,4 @@
-sheet card: the Effects text in its own span: true
+sheet card: each labeled line in its own span (v0.0.411, the Structure's look): true
 Bonus chip without a type has no None: true
 Smite Tier 3 with Heavy Blows: {"add":2,"why":["Heavy Blows +2"],"dice":3,"parts":[{"key":"Heavy Blows|2|undefined|undefined","name":"Heavy Blows +2","avg":2,"dice":0}]}
 with Killer's Focus and Empowered 1 (2d6 + 1d6 + 1d6 = 4 dice): {"add":7.5,"why":["Killer's Focus +1d6","Empowered 1"],"dice":3,"parts":[{"key":"Killer's Focus|1d6|undefined|undefined","name":"Killer's Focus +1d6","avg":3.5,"dice":1}]}

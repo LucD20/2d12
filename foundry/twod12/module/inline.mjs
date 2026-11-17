@@ -281,7 +281,7 @@ export function registerInline() {
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause|Swap)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
@@ -294,6 +294,7 @@ export function registerInline() {
       if (kind === "Heal") return staged(inlineEl("Heal", cfg, cfg.label ?? match[3] ?? `Heal ${healText(stagedFormula(cfg, stageN))}`, "fa-hand-holding-medical"));
       if (kind === "Reduce") return staged(inlineEl("Reduce", cfg, (cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula ? null : cfg.label ?? match[3]) ?? `reduced by ${healText(stagedFormula(cfg, stageN))}`, "fa-shield-halved"));
       if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
+      if (kind === "Swap") return inlineEl("Swap", cfg, match[3] ?? "Swap squares", "fa-right-left");   // v0.0.410 (Hold the Line, Trade Places)
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
         const el = mkEl("Book", cfg, cfg.label ?? match[3] ?? cfg.ref, "fa-book-open");
@@ -619,6 +620,22 @@ async function handleGuard(cfg, ctx) {
 }
 
 /**
+ * v0.0.410 (pack F2; book, Swapping Places): @Swap[]: you and the card's target (or the targeted token) swap squares at the same moment, each moved
+ * by a Reposition (no Move Action, no Reactions: the forced flag). A target of another size: by hand (the book hasn't decided Sizes yet).
+ */
+async function handleSwap(cfg, ctx) {
+  const me = tokenOfActor(originActor(ctx)), them = cardTargetTokens(ctx)[0] ?? [...(game.user.targets ?? [])][0] ?? null;
+  if (!me || !them || them.id === me.id) return ui.notifications.warn("Swap squares: your token and the target's must be on the map (target the ally).");
+  const a = me.document, b = them.document;
+  if ((a.width ?? 1) !== (b.width ?? 1) || (a.height ?? 1) !== (b.height ?? 1)) return ui.notifications.warn(`${me.name} and ${them.name} are not the same Size: swap them by hand (the book hasn't decided this case yet).`);
+  const move = async (d, x, y) => { if (d.isOwner) await d.update({ x, y }, { twod12Forced: true, animate: true }); else game.socket.emit("system.twod12", { type: "pushMove", tokenUuid: d.uuid, x, y }); };
+  const [ax, ay, bx, by] = [a.x, a.y, b.x, b.y];
+  await Promise.all([move(a, bx, by), move(b, ax, ay)]);
+  const { postFollow } = await import("./followup.mjs");
+  await postFollow(ctx.message, "fa-right-left", `<b>${esc(me.name)}</b> and <b>${esc(them.name)}</b> swap squares (a Reposition each).`);
+}
+
+/**
  * v0.0.254 (cards 4, Shield of Faith): the @Reduce chip: the next damage the creature takes is reduced by the formula (rolled now, the Stage's dice);
  * it waits on the creature (system.reduceNext, the higher kept) and is spent by that damage. Who: as a Guard (you or one ally, who:pick, near:N).
  */
@@ -726,7 +743,7 @@ export async function openBook(cfg) {
  * true when something was opened (otherwise the click uses the chip, as before).
  */
 const MOVE_REF = { pushed: "Pushed", pulled: "Pulled", slid: "Slid", reposition: "Reposition", advance: "Advance", walk: "Advance", evade: "Evade", charge: "Charge", crawl: "Crawl", shift: "Shift", climb: "Climb", jump: "Jump" };
-const RULE_REF = { Guard: "Guard", Heal: "Heal", Rally: "Rally Points", Reduce: "Damage", Check: "Checks", Save: "Saves", Template: "Areas", Damage: "Damage", Boon: "Boons and Banes", Cleave: "Cleave", Reload: "Reload", Release: "Hands", Regrip: "Hands", EndEffect: "Effects" };
+const RULE_REF = { Swap: "Swapping Places", Guard: "Guard", Heal: "Heal", Rally: "Rally Points", Reduce: "Damage", Check: "Checks", Save: "Saves", Template: "Areas", Damage: "Damage", Boon: "Boons and Banes", Cleave: "Cleave", Reload: "Reload", Release: "Hands", Regrip: "Hands", EndEffect: "Effects" };
 export async function openChip(kind, cfg, ctx = {}) {
   try {
     if (kind === "Condition" && cfg.cond) { const it = await conditionItem(cfg.cond); if (it?.sheet) { it.sheet.render(true); return true; } }
@@ -756,6 +773,7 @@ export async function handleInline(kind, cfg0, ctx = {}) {
   if (kind === "Heal") return handleHeal(cfg, ctx);
   if (kind === "Reduce") return handleReduce(cfg, ctx);
   if (kind === "Pause") return;   // a marker between the steps of a chain (actions.mjs applyAfter runs one step at a time)
+  if (kind === "Swap") return handleSwap(cfg, ctx);
   if (kind === "EndEffect") return handleEndEffect(cfg, ctx);
   if (kind === "Guard") return handleGuard(cfg, ctx);
   if (kind === "Effect") return handleEffect(cfg, ctx);
@@ -870,7 +888,19 @@ async function handleCondition(cfg, ctx = {}) {
   const f = msg?.getFlag?.("twod12", "action") ?? msg?.getFlag?.("twod12", "dmgCard");
   let actors = [];
   const toActor = async uuid => { const d = await fromUuid(uuid); return d?.documentName === "Actor" ? d : d?.actor; };
-  if (cfg.to === "trigger" && f?.triggerUuid) actors = [await toActor(f.triggerUuid)];   // v0.0.409 (Shield of Faith): the Reaction's triggering creature
+  if (cfg.to === "trigger" && f?.triggerUuid) {   // v0.0.409 (Shield of Faith): the Reaction's triggering creature
+    actors = [await toActor(f.triggerUuid)];
+    // v0.0.410 (book, A Reaction's Target): doing something to the triggering creature needs Line of Effect to it; without it that part doesn't happen
+    try {
+      const td = await fromUuid(f.triggerUuid), tt = td?.object ?? td?.getActiveTokens?.()[0], me = (ctx.actor ?? (f.actorUuid ? await fromUuid(f.actorUuid) : null))?.getActiveTokens?.()[0];
+      const { coverBetween } = await import("./cover.mjs");
+      if (tt && me && coverBetween(me, tt)?.noLoE) {
+        const { postFollow } = await import("./followup.mjs");
+        await postFollow(ctx.message, "fa-eye-slash", `No Line of Effect to <b>${esc(tt.name)}</b>: it isn't ${esc(cfg.cond)}.`);
+        return;
+      }
+    } catch (e) { /* no map: apply */ }
+  }
   else if (ctx.targets?.length) actors = await Promise.all(ctx.targets.filter(t => !cfg.crit || t.crit).map(t => toActor(t.uuid)));   // v0.0.249: the chain's targets (crit:yes: the Criticals only)
   else actors = handTargetTokens(ctx).map(t => t.actor);   // v0.0.252 (Lucas): a hand click goes to the selected tokens, else the targeted, else the card's (the card's Self no longer wins)
   actors = actors.filter(Boolean);

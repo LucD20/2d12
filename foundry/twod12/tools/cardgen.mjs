@@ -117,6 +117,7 @@ export function versionData(c, v, resolve = s => s) {
   if (v.modeTargets) out.modeTargets = stripLinks(v.modeTargets);
   if (v.modeVs) out.modeVs = vsKey(v.modeVs);
   if (v.foundry?.diceRule) out.diceRule = v.foundry.diceRule;
+  if (v.special) out.special = resolve(fxText(v.special));   // v0.0.411: a Structure block's Special
   if (v.foundry?.areaSize) out.areaSize = v.foundry.areaSize;
   if (v.foundry?.areaRounds) out.areaRounds = v.foundry.areaRounds;   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area
   return out;
@@ -162,6 +163,8 @@ export function cardSystem(c, resolve = s => s) {
   if (c.category === "Basic attack") sys.basicAttack = true;   // an NPC's Basic attack stands in for the Weapon Attack NPCs don't have
   sys.versions = versionsOf(c).map((v, i) => { const d = versionData(c, v, resolve); if (area && i > 0 && area.sizes[i] && area.sizes[i] !== area.sizes[0]) d.areaSize = area.sizes[i]; return d; });
   if (c.flavor) sys.flavor = c.flavor;
+  // v0.0.411 (pack F2, the card's look): a Structure card's labeled lines and Special, for the card (its prose stays the description for the other surfaces)
+  if (c.structure) { sys.structure = true; if (c.lines?.length) sys.lines = c.lines.map(l => ({ label: l.label, text: resolve(fxText(l.text)) })); if (c.notes) sys.special = resolve(fxText(c.notes)); }
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));   // v0.0.360 (the audit's D17): an Action holds rules (Mark Quarry)
   for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;

@@ -420,7 +420,7 @@
     "img": "icons/svg/statue.svg",
     "folder": "Paladin",
     "automation": "mithril",
-    "automationNote": "the Mode's pick; Brace (an Aura 1 around you, Difficult Terrain for enemies, 1 round); Rescue's Reposition 2 (the button); Trade Places: move the two tokens by hand."
+    "automationNote": "the Mode's pick; Brace (an Aura 1 around you, Difficult Terrain for enemies, 1 round); Trade Places (the Swap button: both tokens move at once, no Reactions; creatures of different Sizes by hand); Rescue's Reposition 2 (the button)."
    }
   },
   {

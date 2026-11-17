@@ -506,6 +506,9 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       vs: choice(TWOD12.vsChoices),
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
+      // v0.0.411 (pack F2, the card's look): a Structure card (book/cards/stage0): its own labeled lines before the roll (Judged, Smite dice) and its
+      // Special after it; the card draws them under their labels (an old card's prose stays the description)
+      structure: bool(), lines: new ArrayField(new SchemaField({ label: str(), text: str() })), special: str(),
       marksTarget: bool(), markKind: str(),   // v0.0.409 (pack F2): "judge": the mark is Judged (Judge: it counts as Profane for its marker)
       basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
       basicRating: choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "medium"),   // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating (the Bestiary's suggested average; the dice stay the GM's)
@@ -520,6 +523,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
           // a Split Action's versions ("weapon" / "power"); v0.0.409 (pack F2): any other text is an Art's Mode (its name), with its own traits,
           // Distance, Target and roll (empty: the Action's); "" for the others
           mode: str(), modeTraits: new ArrayField(str()), modeDistance: str(), modeTargets: str(), modeVs: str(),
+          special: str(),   // v0.0.411: a Structure block's Special line (Judge's 0 AP: when it can be used)
           diceRule: str(),   // v0.0.409: "smite" (Smite's dice by Escalation, d8s against a Profane creature) or "profane" (d6s become d8s against one)
           noTiers: bool(),
           areaSize: int(0, 0),   // v0.0.215: this version's Area size (0: the Action's); Word of Radiance is "2 / 3 Emanation"
