@@ -1,0 +1,17 @@
+/* the roll dialog's card part in the book's card format (step 5): a flat tinted panel, a bronze rule above and below */
+.twod12-type .twod12.rolldlg .rd-card { background: var(--s-pg-2); border-top: 2px solid var(--s-gold); border-bottom: 2px solid var(--s-gold); padding: 8px 12px 9px; margin: 2px 0 10px; font: 400 14.5px/1.5 "Source Sans 3", sans-serif; color: var(--s-ink); font-variant-numeric: lining-nums tabular-nums; }
+.twod12-type .twod12.rolldlg .rdc-head { display: flex; align-items: baseline; gap: 0 14px; }
+.twod12-type .twod12.rolldlg .rdc-head > b { font: 700 1.15rem "Source Sans 3", sans-serif; color: var(--s-gold); flex: 1; }
+.twod12-type .twod12.rolldlg .rdc-head .rdc-cost { font-weight: 600; white-space: nowrap; }
+.twod12-type .twod12.rolldlg .rdc-head .rdc-cost::before { content: ""; display: inline-block; width: .55em; height: .55em; margin-right: .35em; background: var(--fq); }
+.twod12-type .twod12.rolldlg .rdc-flavor { font: italic 400 15px/1.45 "Source Serif 4", Georgia, serif; color: var(--s-mute); margin: 1px 0 3px; }
+.twod12-type .twod12.rolldlg .rdc-traits { font-weight: 600; padding-bottom: 2px; margin-bottom: 4px; border-bottom: 1px solid var(--s-gold); }
+.twod12-type .twod12.rolldlg .rdc-traits i { font-style: normal; margin: 0 .45em; opacity: .55; }
+.twod12-type .twod12.rolldlg .rdc-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0 1.5rem; }
+.twod12-type .twod12.rolldlg .rdc-l { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr); gap: .6rem; margin: 1px 0; align-items: baseline; }
+.twod12-type .twod12.rolldlg .rdc-l > b, .twod12-type .twod12.rolldlg .rdc-grid b { font-weight: 700; }
+.twod12-type .twod12.rolldlg .rdc-l > button.rd-tforce { all: unset; font-weight: 700; cursor: pointer; }
+.twod12-type .twod12.rolldlg .rdc-pv { color: var(--s-vig); font-weight: 600; }
+.twod12-type .twod12.rolldlg .rdc-chg { color: var(--s-good); font-weight: 600; font-size: 13.5px; white-space: nowrap; }
+.twod12-type .twod12.rolldlg .rdc-avg { color: var(--s-faint); font-size: 12.5px; margin-left: .4em; white-space: nowrap; }
+.twod12-type .twod12.rolldlg .rdc-l a.twod12-inline { font-weight: 600; }

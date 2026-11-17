@@ -82,6 +82,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
 ## v0.0.396 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.395
+- **The roll dialog in the card format (Lucas: "Isn't it supposed to look like the book? The card format? Still, keep the color for bonuses"):** **PROPOSED** in `foundry/mockups/rolldlg-card.html` (the artifact "Roll Dialog Card Format"; CSS `rolldlg-card.css`): the card part as the step-5 card (Flavor on top, the grid, Attack and Tier lines without Tier color, bonuses green with their source); the roll part unchanged with its colors (the "leftovers" proposal `rolldlg-leftovers.html` withdrawn). Waiting for Lucas.
 - [ ] **A chat card's top line:** "Distance: …" at the left, "Target: …" at the right, no ✦.
 - [ ] **The HUD with Double Shot's granted uses:** Hands and On you on top, the granted uses under them; hover the hands line: Regrip appears; hover the granted block: Cancel appears.
 - [ ] **Four Round Actions:** one "Round" header over both columns.
