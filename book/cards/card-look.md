@@ -126,4 +126,22 @@ So the proposal for B with the research only: **black, one accent for structure,
 
 **Lucas (2026-11-17): "I meant as a full line, so it would go from power to save all the way."** Redone: one continuous 2 px line under each group's run of traits (the traits are already printed by group, so a group is always together), with a gap at the dot between two groups.
 
+**Lucas's answer (2026-11-17): "Keep the lines, next is the text face. Just give to me again: What the research said about frequency colors?"** DECIDED: the trait lines (one continuous line in the group's color under each group's run of traits) are kept. The frequency colors, again (in the message): 4e's green / red / black bars are the precedent; readers named the color coding and the light-on-dark bars as what made it look like cards; color as a code alone is the most criticised use (Paizo's publisher; the Pathfinder playtest's rarity colors replaced; red against green fails for 1 man in 12; WCAG 1.4.1); it passes only with the word printed beside it and colors that differ in lightness; no praised book does it; the praised books print the frequency as a word.
+
+## Decision 2: the text face (PROPOSED 2026-11-17, five candidates, waiting for Lucas)
+
+The page: `book/cards/look-desk/faces.html`, the artifact "Book Text Faces": the same Paladin slice (a small-caps heading, rules text, an example, a card, a subheading, a table) in each face, the faces embedded as subsets of their full files so their small caps and old-style figures are real (the files Google Fonts serves strip them; the book would carry the files in `rules-assets/`). The cards stay in Source Sans 3; their Flavor is in the text face's italic.
+
+| Face | What it is | For | Against |
+|---|---|---|---|
+| EB Garamond | Duffner's revival of Garamont's 16th-century romans | the most classical: an old book | small x-height (set a size larger), thin strokes on screen, weaker in dark mode |
+| Alegreya | del Peral, 2011, calligraphic, for literature | the most character without costume; a matching sans (Alegreya Sans) and real small caps | its liveliness is a taste |
+| **Source Serif 4 (Claude's pick)** | Grießhammer for Adobe, after Fournier's 18th-century types | large x-height and optical sizes, made for screens; the same family as the cards' sans (Source Sans 3), so page and card agree | the plainest; less "old" |
+| Literata | TypeTogether, for Google Play Books | made for long reading on screens | reads as a modern novel more than an old book |
+| Vollkorn | Althausen, "bread and butter" type | dark and sturdy, holds up in dark mode | heavy; italic without small caps |
+
+**Why Source Serif 4:** the direction he chose is the research-only one, which weighs reading at the table first; Source Serif 4 is the clearest on screen at 16 to 18 px, in both themes, and pairs by design with the card's sans. The book feel comes from the small caps, old-style figures, rules and restraint, which all five give. Second choice: Alegreya with Alegreya Sans for the cards, if he wants more character.
+
+**For Lucas:** one face (by eye, on the page).
+
 **Lucas's answer:**
