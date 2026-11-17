@@ -137,6 +137,23 @@ ol.dec li{margin:.45rem 0}
 .cmp{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.5rem;align-items:start}
 .cmp img{display:block;border:1px solid var(--hair);width:414px;height:auto}
 @media (max-width:900px){.cmp{grid-template-columns:minmax(0,1fr)}.cmp img{width:100%}}
+
+/* the marks: AP squares | the Reaction AP diamond | Strike slashes, a hairline between the groups (draft 3) */
+.sep{display:inline-block;width:1px;height:12px;background:var(--rule);margin:0 4px;vertical-align:-2px}
+.pips .sep{margin:0 2px}
+.pips i.r{margin-left:0}
+.sk{display:inline-flex;gap:3px;align-items:center}
+.sk i{width:4px;height:11px;transform:skewX(-22deg);border:1px solid #c0675c;display:inline-block;background:none;opacity:.45}
+.sk i.on{background:#c0675c;opacity:1}
+.mkrow{display:flex;align-items:center;gap:10px;font-size:13px;padding:6px 0;border-bottom:1px solid var(--hair)}
+.mkrow .who{width:150px;color:var(--mute)}
+.mkx{display:inline-flex;align-items:center;gap:3px}
+.mkx i{width:9px;height:9px;border:1px solid var(--acc);display:inline-block}.mkx i.on{background:var(--acc)}
+.mkx i.d{transform:rotate(45deg);width:8px;height:8px}
+.mkx i.sd{transform:rotate(45deg);width:7px;height:7px;border-color:#c0675c}.mkx i.sd.on{background:#c0675c}
+.mkx i.t{border-color:#6f90e6;border-radius:50%}.mkx i.t.on{background:#6f90e6}
+.cmp2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem}
+@media (max-width:900px){.cmp2{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -177,22 +194,22 @@ ol.dec li{margin:.45rem 0}
 <div class="mom">Momentum <b>1</b></div>
 <div class="pc"><div class="top"><span class="av">AV</span><div><div class="nm">Aveline</div><div class="cl">Human Paladin 1</div></div></div>
 <div class="st"><div><b>15</b><small>AD</small></div><div><b>13</b><small>WD</small></div><div><b>6</b><small>Speed</small></div><div><b>3/3</b><small>Rally</small></div></div>
-<div class="row"><span class="pips" title="AP 2 of 4, Reaction AP"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span><span class="pips esc" title="Escalation 2"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag">Guard 4</span></div>
+<div class="row"><span class="pips" title="AP 2 of 4, Reaction AP"><i class="on"></i><i class="on"></i><i></i><i></i><b class="sep"></b><i class="r on"></i></span><span class="pips esc" title="Escalation 2"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag">Guard 4</span></div>
 <div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div><div class="bar r"><i style="width:100%"></i><span><b>Resolve</b><b>12/12</b></span></div></div>
 <div class="cond">&nbsp;</div></div>
 <div class="pc"><div class="top"><span class="av">DU</span><div><div class="nm">Durgan</div><div class="cl">Dwarf Paladin 1</div></div></div>
 <div class="st"><div><b>16</b><small>AD</small></div><div><b>12</b><small>WD</small></div><div><b class="chg" title="Speed 5: Slowed changes nothing here; Exhausted 1">4</b><small>Speed</small></div><div><b>1/3</b><small>Rally</small></div></div>
-<div class="row"><span class="pips" title="Slowed 1: 3 AP"><i class="on"></i><i class="on"></i><i class="on"></i><i class="x"></i><i class="r"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag hurt">Bloodied</span></div>
+<div class="row"><span class="pips" title="Slowed 1: 3 AP"><i class="on"></i><i class="on"></i><i class="on"></i><i class="x"></i><b class="sep"></b><i class="r"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag hurt">Bloodied</span></div>
 <div class="bars"><div class="bar v"><i style="width:0%"></i><span><b>Vigor</b><b>0/24</b></span></div><div class="bar r"><i style="width:75%"></i><u style="left:55%;width:20%"></u><span><b>Resolve</b><b>9/12</b></span></div></div>
 <div class="cond">Slowed 1 · Exhausted 1 · Hindered (EoT)</div></div>
 <div class="pc"><div class="top"><span class="av">SY</span><div><div class="nm">Sylwen</div><div class="cl">Elf Archer 1</div></div></div>
 <div class="st"><div><b>14</b><small>AD</small></div><div><b>12</b><small>WD</small></div><div><b>7</b><small>Speed</small></div><div><b>2/2</b><small>Rally</small></div></div>
-<div class="row"><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span></span></div>
+<div class="row"><span class="pips"><i></i><i></i><i></i><i></i><b class="sep"></b><i class="r on"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span></span></div>
 <div class="bars"><div class="bar v"><i style="width:60%"></i><span><b>Vigor</b><b>6/10</b></span></div><div class="bar r"><i style="width:84%"></i><span><b>Resolve</b><b>16/19</b></span></div></div>
 <div class="cond">Bleed 2 (1 rd)</div></div>
 <div class="pc"><div class="top"><span class="av">NA</span><div><div class="nm">Nari</div><div class="cl">Human Archer 1</div></div></div>
 <div class="st"><div><b>14</b><small>AD</small></div><div><b>13</b><small>WD</small></div><div><b>6</b><small>Speed</small></div><div><b>0/2</b><small>Rally</small></div></div>
-<div class="row"><span class="pips"><i></i><i></i><i></i><i></i><i class="r"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag down">Desperate</span></div>
+<div class="row"><span class="pips"><i></i><i></i><i></i><i></i><b class="sep"></b><i class="r"></i></span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span><span class="tag down">Desperate</span></div>
 <div class="bars"><div class="bar v"><i style="width:0%"></i><span><b>Vigor</b><b>0/11</b></span></div><div class="bar r"><i style="width:0%"></i><span><b>Resolve</b><b>0/19</b></span></div></div>
 <div class="cond">Slowed 1 (Desperate)</div></div>
 </div></div></div>
@@ -209,7 +226,7 @@ ol.dec li{margin:.45rem 0}
 <div class="nm"><b>Aveline</b><small>Human Paladin 1</small></div>
 <div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div><div class="bar r"><i style="width:100%"></i><span><b>Resolve</b><b>12/12</b></span></div></div>
 <div class="line"><span><span class="k">Guard</span><b>4</b></span><span><span class="k">Rally</span><b>3/3</b></span><button class="btn">Steel Yourself</button></div>
-<div class="line"><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span></span><span><span class="k">Strikes</span><b>1/3</b></span><span><span class="k">Esc.</span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span> <b>2</b></span></div>
+<div class="line"><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><b class="sep"></b><i class="r on"></i></span></span><span><span class="k">Strikes</span><span class="sk"><i class="on"></i><i></i><i></i></span></span><span><span class="k">Esc.</span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span> <b>2</b></span></div>
 <div class="def"><button><b>15</b><small>AD</small></button><button><b>13</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+2</b><small>Wpn</small></button><span class="gap"></span><button><b>+2</b><small>Bo</small></button><button><b>0</b><small>Mi</small></button><button><b>+1</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
 </div>
 <div class="mid">
@@ -252,7 +269,7 @@ ol.dec li{margin:.45rem 0}
 <p class="sub">The bar folds to 40 px (the arrow at the portrait's corner; remembered per player): the name, the bars, AP, Strikes and Escalation, and the hotbar. A Reaction unfolds it.</p>
 <div class="scroll"><div class="map" style="--h:120px">
 <div class="hud folded"><div class="por"><span class="fold" title="Unfold">&#9652;</span>AV</div>
-<div class="fl"><b style="font-size:14px">Aveline</b><div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div></div><span><span class="k">Guard</span><b>4</b></span><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span></span><span><span class="k">Strikes</span><b>1/3</b></span><span><span class="k">Esc.</span><b>2</b></span><span style="color:var(--mute)">Hindered (EoT)</span></div>
+<div class="fl"><b style="font-size:14px">Aveline</b><div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div></div><span><span class="k">Guard</span><b>4</b></span><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><b class="sep"></b><i class="r on"></i></span></span><span><span class="k">Strikes</span><span class="sk"><i class="on"></i><i></i><i></i></span></span><span><span class="k">Esc.</span><b>2</b></span><span style="color:var(--mute)">Hindered (EoT)</span></div>
 <div class="side" style="display:block"><div class="hb" style="border:0"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span></div></div>
 </div></div></div>
 
@@ -275,7 +292,7 @@ ol.dec li{margin:.45rem 0}
 <div class="nm"><b>Aveline</b><small>Human Paladin 1</small></div>
 <div class="bars"><div class="bar v"><i style="width:78%"></i><span><b>Vigor</b><b>18/23</b></span></div><div class="bar r"><i style="width:100%"></i><span><b>Resolve</b><b>12/12</b></span></div></div>
 <div class="line"><span><span class="k">Guard</span><b>4</b></span><span><span class="k">Rally</span><b>3/3</b></span><button class="btn">Steel Yourself</button></div>
-<div class="line"><span><span class="k">AP</span><span class="pips"><i></i><i></i><i></i><i></i><i class="r on"></i></span></span><span><span class="k">Strikes</span><b>0/3</b></span><span><span class="k">Esc.</span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span> <b>2</b></span></div>
+<div class="line"><span><span class="k">AP</span><span class="pips"><i></i><i></i><i></i><i></i><b class="sep"></b><i class="r on"></i></span></span><span><span class="k">Strikes</span><span class="sk"><i></i><i></i><i></i></span></span><span><span class="k">Esc.</span><span class="pips esc"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span> <b>2</b></span></div>
 <div class="def"><button><b>15</b><small>AD</small></button><button><b>13</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+2</b><small>Wpn</small></button><span class="gap"></span><button><b>+2</b><small>Bo</small></button><button><b>0</b><small>Mi</small></button><button><b>+1</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
 </div>
 <div class="mid">
@@ -301,7 +318,7 @@ ol.dec li{margin:.45rem 0}
 <div class="id">
 <div class="nm"><b>Orc Warrior</b><small>Standard · CV 100</small></div>
 <div class="bars"><div class="bar v"><i style="width:55%"></i><span><b>Vigor</b><b>11/20</b></span></div><div class="bar r"><i style="width:100%"></i><span><b>Resolve</b><b>8/8</b></span></div></div>
-<div class="line"><span><span class="k">Guard</span><b>0</b></span><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="r on"></i></span></span><span><span class="k">Strikes</span><b>1/3</b></span></div>
+<div class="line"><span><span class="k">Guard</span><b>0</b></span><span><span class="k">AP</span><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><b class="sep"></b><i class="r on"></i></span></span><span><span class="k">Strikes</span><span class="sk"><i class="on"></i><i></i><i></i></span></span></div>
 <div class="def"><button><b>14</b><small>AD</small></button><button><b>11</b><small>WD</small></button><button><b>6</b><small>Spd</small></button><button><b>+4</b><small>Atk</small></button><span class="gap"></span><button><b>+2</b><small>Bo</small></button><button><b>+1</b><small>Mi</small></button><button><b>0</b><small>Ap</small></button><button><b>+1</b><small>In</small></button></div>
 </div>
 <div class="mid"><div class="tabs"><button class="tab" aria-selected="true">Attacks <small>2</small></button><button class="tab" aria-selected="false">Reactions <small>1</small></button><button class="tab" aria-selected="false">Basic <small>12</small></button></div>
@@ -329,8 +346,29 @@ ol.dec li{margin:.45rem 0}
 <div class="scroll"><div class="map" style="--h:250px">
 <div class="car">
 <div class="cbar"><button class="btn q">Previous turn</button><span class="rd">Round <b>2</b></span><span class="mo">· Momentum 1</span><button class="btn q">End move</button><button class="btn f">Next turn</button><button class="btn q">End</button></div>
-<div class="meds"><div class="med act"><div class="ph">AV</div><span class="ini">17</span><span class="who">Acting</span><span class="nm">Aveline</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><i class="r on"></i></span><span class="sk"><i class="on"></i><i></i><i></i></span></span><span class="mv">No move</span><button class="btn q sw">Swap · 1 AP</button></div><div class="med foe"><div class="ph">OC</div><span class="ini">14</span><span class="who">Foe</span><span class="nm">Ogre Chieftain</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="sk"><i></i><i></i><i></i></span></span><span class="tag hurt">Bloodied</span></div><div class="med "><div class="ph">DU</div><span class="ini">12</span><span class="nm">Durgan</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="x"></i><i class="r"></i></span><span class="sk"><i></i><i></i><i></i></span></span><span class="tag hurt">Bloodied</span></div><div class="med foe"><div class="ph">OW</div><span class="ini">9</span><span class="who">Foe</span><span class="nm">Orc Warrior</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="r on"></i></span><span class="sk"><i></i><i></i><i></i></span></span></div><div class="med "><div class="ph">NA</div><span class="ini">6</span><span class="nm">Nari</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="x"></i><i class="r on"></i></span><span class="sk"><i></i><i></i><i></i></span></span><span class="tag down">Desperate</span></div></div></div></div></div>
+<div class="meds"><div class="med act"><div class="ph">AV</div><span class="ini">17</span><span class="who">Acting</span><span class="nm">Aveline</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><b class="sep"></b><i class="r on"></i></span><b class="sep"></b><span class="sk"><i class="on"></i><i></i><i></i></span></span><span class="mv">No move</span><button class="btn q sw">Swap · 1 AP</button></div><div class="med foe"><div class="ph">OC</div><span class="ini">14</span><span class="who">Foe</span><span class="nm">Ogre Chieftain</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><b class="sep"></b><i class="r on"></i></span><b class="sep"></b><span class="sk"><i></i><i></i><i></i></span></span><span class="tag hurt">Bloodied</span></div><div class="med "><div class="ph">DU</div><span class="ini">12</span><span class="nm">Durgan</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="x"></i><b class="sep"></b><i class="r"></i></span><b class="sep"></b><span class="sk"><i></i><i></i><i></i></span></span><span class="tag hurt">Bloodied</span></div><div class="med foe"><div class="ph">OW</div><span class="ini">9</span><span class="who">Foe</span><span class="nm">Orc Warrior</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><b class="sep"></b><i class="r on"></i></span><b class="sep"></b><span class="sk"><i></i><i></i><i></i></span></span></div><div class="med "><div class="ph">NA</div><span class="ini">6</span><span class="nm">Nari</span><span class="pp"><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="x"></i><b class="sep"></b><i class="r on"></i></span><b class="sep"></b><span class="sk"><i></i><i></i><i></i></span></span><span class="tag down">Desperate</span></div></div></div></div></div>
 <p class="note">Durgan is Slowed 1 (a struck square) and Bloodied; Nari is Desperate (a Down state adds Slowed 1); the Ogre Chieftain is Bloodied, which the players know by the rule. Everything else as today: the initiative, Swap, End move, the three Strike marks (as the HUD's Strikes), and a foe's AP shown as today (outlines where they are hidden from the players; drawn filled here only to show the marks).</p>
+
+<h2>6b. The marks: AP, the Reaction AP and the Strikes (your question)</h2>
+<p class="sub">You asked: should the marks change off turn (the AP turning into diamonds, moving to the side), or would that be too flashy; and would a thin vertical line help tell them apart. The research (book/research/ui-marks-and-state.md) and the rules:</p>
+<table class="k">
+<tr><th>Idea</th><th>What the research says</th><th>What the rules say</th><th>So</th></tr>
+<tr><td>AP turn into diamonds off turn</td><td>One mark, one meaning: users "should not have to wonder whether different words, situations, or actions mean the same thing" (Nielsen's 4th heuristic). A square that becomes a diamond makes them wonder.</td><td>Kept AP can pay for a Reaction, but they are not Reaction AP: they become Guard when your turn starts, and the Reaction AP never does (Ch. 2). Drawing them as diamonds would say the wrong thing.</td><td class="ch-new">No. The marks keep their shape on every turn.</td></tr>
+<tr><td>The marks move to the side off turn</td><td>"The big advantage (and also drawback) of UI motion is that it attracts user attention"; it "must be unobtrusive, brief, and subtle" and "should not be overused" (NN/g). Every portrait moving at every turn change is motion in the corner of the eye all fight long. And your rule of 2026-11-12: nothing jumps.</td><td>Off turn nothing changes about what the marks count: kept AP and the Reaction AP still pay for Reactions, and you can make up to 3 Strikes on another creature's turn too (Ch. 7).</td><td class="ch-new">No. Motion is kept for the one thing that must be seen: a waiting Reaction (the ring on the map, the HUD's tab).</td></tr>
+<tr><td>A thin vertical line between the groups</td><td>"Items close together are likely to be perceived as part of the same group" and grouping "can overpower competing visual cues such as similarity of color or shape" (NN/g, proximity); a boundary groups more strongly still (common region). Today's carousel already has one between AP and the Reaction AP.</td><td>Three counts with three different rules: AP (4 a turn), the Reaction AP (1, only Reactions), Strikes (3 a turn, any turn).</td><td class="ch-new">Yes: a hairline between AP and the Reaction AP, and another before the Strikes.</td></tr>
+<tr><td>(found while checking) The Strikes are diamonds too</td><td>The same shape for two meanings (the Reaction AP, the Strikes), told apart only by color: the 4th heuristic again, and color alone (WCAG, already in vtt-style.md).</td><td>A Strike is not a resource you spend; it is a limit you count.</td><td class="ch-new">Strikes become three short slashes (tally marks), in Strike's red: a different shape from the AP squares, the Reaction diamond and the Escalation ticks.</td></tr>
+</table>
+<div class="cmp2">
+<div><h3>Today's carousel, and your idea</h3>
+<div class="mkrow"><span class="who">Today</span><span class="mkx"><i class="t on"></i><i class="t on"></i><i class="t"></i><i class="t"></i></span><span class="sep"></span><span class="mkx"><i class="d on" style="border-color:#25a3a3;background:#25a3a3"></i></span><span class="mkx" style="margin-left:6px"><i class="sd on"></i><i class="sd"></i><i class="sd"></i></span></div>
+<div class="mkrow"><span class="who">Off turn, as diamonds</span><span class="mkx"><i class="d on"></i><i class="d on"></i><i class="d on"></i></span><span class="mkx" style="margin-left:6px"><i class="sd on"></i><i class="sd"></i><i class="sd"></i></span><span style="color:var(--mute);font-size:12px">which diamond is what?</span></div>
+</div>
+<div><h3>Proposed (everywhere: the HUD, the strip, the carousel)</h3>
+<div class="mkrow"><span class="who">Your turn, 2 AP left</span><span class="pips"><i class="on"></i><i class="on"></i><i></i><i></i><b class="sep"></b><i class="r on"></i></span><b class="sep"></b><span class="sk"><i class="on"></i><i></i><i></i></span></div>
+<div class="mkrow"><span class="who">Off turn, 1 AP kept</span><span class="pips"><i class="on"></i><i></i><i></i><i></i><b class="sep"></b><i class="r on"></i></span><b class="sep"></b><span class="sk"><i></i><i></i><i></i></span></div>
+<div class="mkrow"><span class="who">Slowed 1, Reaction used</span><span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="x"></i><b class="sep"></b><i class="r"></i></span><b class="sep"></b><span class="sk"><i class="on"></i><i class="on"></i><i></i></span></div>
+</div></div>
+<p class="note">Squares are AP, the diamond is the Reaction AP, the slashes are Strikes, on every turn; a hairline between the three. The marks are the same in the HUD, the party strip and the carousel (the carousel and the strip above are redrawn with them). Hover names each one ("AP 2 of 4", "Reaction AP", "Strikes 1 of 3 this turn").</p>
 <h2>The decisions (my pick first; answer by exception)</h2>
 <ol class="dec">
 <li><b>Health, AP, Guard and uses on the HUD</b> (reverses 2026-11-12's "no Health, AP, Guard or uses"): <span class="pick">yes, as your module; the Turn dock stays for the turn's log</span> · no, as decided then.</li>
@@ -343,6 +381,7 @@ ol.dec li{margin:.45rem 0}
 <li><b>The side panel:</b> <span class="pick">hands and conditions on top, a waiting Reaction or the NPC's notes, the hotbar</span> · none (wider columns; hands and conditions move to the identity column).</li>
 <li><b>The Reaction alert:</b> <span class="pick">the chime, the ring and text on the map, the HUD's tab, each a setting, all on</span> · fewer of them.</li>
 <li><b>The combat strip:</b> <span class="pick">the five changes (the HUD's AP marks, plain words, Bloodied / Strained / Down tags for everyone, Slowed struck out, Momentum beside the round)</span> · as today.</li>
+<li><b>The marks:</b> <span class="pick">the same shapes on every turn (AP squares, the Reaction AP a diamond, Strikes slashes), a hairline between them</span> · AP turn into diamonds off turn.</li>
 <li><b>Resources by hand</b> (Daggerheart Sleek): <span class="pick">right-click AP, Rally or Escalation: +1 / −1 (the owner and the GM)</span> · read only (the sheet changes them).</li>
 </ol>
 <p class="sub">Kept from today: a click on a Version opens the roll dialog ("Skip roll dialog"), right-click the Action card, several tokens selected show their cards (as the strip), the pick bar's questions in the middle, the players list above the left end. It follows Foundry's Interface color scheme (Light: the chat card's parchment). Not tried in Foundry; the numbers are made up for the picture.</p>
