@@ -99,4 +99,25 @@ The illuminated-manuscript idiom McCoy calls fantasy's default: a display face f
 
 **Lucas (2026-11-17):** "Let me see B without my book and serious instructions, only research." Added to the examples as "B, with the research only": the flat pale panel kept (the findable block); the card's text in a plain sans against the serif page (5e's way); the name in the accent and bold, not small caps; an accent rule above and below the panel and one under the traits (5e carries structure in one color); frequency and cost as plain bold words; Distance and Target with bold labels; Versions as accent subheads with a rule.
 
+**Lucas's answer (2026-11-17): "B with research only is looking best so far. But Trait's 'labels', was that removed on purpose? And removal of color is preferred?"** Read as: the direction is B with the research only, unless the two answers change it.
+
+**1. The traits' colors: removed on purpose.** Today each trait is colored by its group (five colors: Roll teal, Requires blue, Kind rust, Damage gold, Keywords grey), and a [Strike] in running text sits in a tinted chip. The research's reasons to drop them: a color for each category is the most criticised use of color (a legend the reader never learned; Paizo's publisher "skeptical that color is a useful way to delineate information"; four competing accents "cancel each other out"); the group is already shown by **order** (Roll, Requires, Kind, Damage, Keywords: fixed by `GROUPS`), which costs nothing. The example sets them in bold, in that order, separated by a middle dot. (There was never a "Traits:" label; if that was the question: a label could be added, but the traits sit on their own line under the Flavor on every card, which the research counts as the cue.)
+
+**2. Color: the research does not ask for none. It asks for few, each with one job, never the only cue.** What each color of today's book is, against that:
+
+| Today's color | Its job | Never alone? | Research verdict |
+|---|---|---|---|
+| The accent (rules, the name, Version heads) | structure: where a card starts and its parts | yes (rules and bold carry it too) | **keep: one accent** |
+| [V] Vigor red, [R] Resolve blue on damage | which Health pool a damage hits: the distinction tracked on every hit | yes (the letter says it) | **keep, Claude's pick:** a second job the reader needs at a glance; two colors that also differ in lightness |
+| The frequency's color (title bar) | Round / Turn / Encounter | no (in 4e's way, the bar *was* the cue) | drop: the word does it |
+| Trait groups (five colors) | the group | the order does it | drop |
+| Game terms in running text (AP, Guard, Rally Point, Down, Boon, Bane) | "this is a game word" | yes | drop: a color per keyword is the "app" sign; a defined term is bold where it is defined |
+| Attributes (Body, Mind, Instinct, Appeal), the Modifiers | which one | yes | drop |
+| Damage subtypes (Ho, Pi...) | the subtype | the two letters do it | drop |
+| Links | "you can click this" | an underline does it | keep, in the text's color with an underline (Tufte CSS, Butterick) |
+
+So the proposal for B with the research only: **black, one accent for structure, and the two pool colors on damage**; everything else black.
+
+**For Lucas:** the traits without colors (yes or no); the pool colors (keep or drop); then B with the research only is the direction.
+
 **Lucas's answer:**
