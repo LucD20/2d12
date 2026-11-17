@@ -569,6 +569,8 @@ export async function useAction(actor, item, opts = {}) {
     // v0.0.216 (Lucas): a damaging Action doesn't tick "Affect the creature it is around" by default (Ground Slam); the window still asks.
     const damaging = versions.some(v => ["t1", "t2", "t3"].some(t => (v[t] ?? []).length));
     await startTemplate({ ...areaSet, self: areaSet.self && !damaging, quick: true, within, htSave: saveAct }, { token: selfToken, outcome });
+    // v0.0.399 (Lucas: "Placing a burst is unselecting the token"): back on the token layer with the creature's token selected (the HUD follows it)
+    try { if (selfToken && !selfToken.controlled) { if (canvas.tokens && canvas.tokens.active === false) canvas.tokens.activate?.(); selfToken.control?.({ releaseOthers: true }); } } catch (e) { console.warn("twod12 | reselect", e); }
     if (!outcome.ok) return;
     if (!outcome.count) ui.notifications.info("No creature is in the area.");
   }

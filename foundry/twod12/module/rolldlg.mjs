@@ -208,7 +208,9 @@ export const versionOf = (inp, st) => (inp.versions ?? []).find(v => Number(v.ap
 /** Why Roll can't be pressed now ("" when it can). */
 export function blockedReason(inp, st) {
   const v = versionOf(inp, st);
-  if (inp.area && !inp.area.placed && !liveCreatures(inp, st).some(c => c.uuid === "none")) return "Place the area first";   // v0.0.340: or roll against a DC
+  // v0.0.399 (Lucas: "with creatures targeted, Word of Radiance asks to place a burst and doesn't allow me to roll"): Roll places the area now
+  // (v0.0.397), so nothing blocks it; a caller that can't place it (noPlace unknown) keeps the old rule
+  if (inp.area && !inp.area.placed && inp.area.noPlace !== false && !liveCreatures(inp, st).some(c => c.uuid === "none")) return "Place the area first";   // v0.0.340: or roll against a DC
   if (v && !v.noTiers && !liveCreatures(inp, st).length && !inp.self) return "No target: target a creature";
   return "";
 }
@@ -347,7 +349,8 @@ export function rowsHtml(chips, st, scope, rows = ROWS) {
 }
 /** v0.0.294 (Lucas): the ladder carries the creature's chance of each Tier (when the setting shows them); the "≤" in a font that draws it well. */
 // v0.0.397 (Lucas: "reduce the height of the tier ladder, putting the percentages next to the tier number"): one line ("Tier 1 · ≤13 · 28%")
-const ladderHtml = (dc, crit, odds = null) => `<div class="rd-ladder one${crit ? " crit" : ""}">${ladder(dc, crit).map((s, i) => `<span class="rd-lseg ${s.k}"><span>${esc(s.label).replace("≤", '<span class="rd-le">≤</span>')}${odds ? ` · <b class="rd-lpct">${odds[i]}%</b>` : ""}</span></span>`).join("")}</div>`;
+// v0.0.399 (Lucas: "Need to reduce text size"): on the creature's line, smaller and "T1" for "Tier 1"
+const ladderHtml = (dc, crit, odds = null, short = false) => `<div class="rd-ladder one${short ? " short" : ""}${crit ? " crit" : ""}">${ladder(dc, crit).map((s, i) => `<span class="rd-lseg ${s.k}"><span>${esc(short ? s.label.replace(/^Tier /, "T").replace(" · ", " ") : s.label).replace("≤", '<span class="rd-le">≤</span>')}${odds ? `${short ? " " : " · "}<b class="rd-lpct">${odds[i]}%</b>` : ""}</span></span>`).join("")}</div>`;
 /** A creature's chances for its ladder: null when the setting hides them (or the player view hides the Defenses: no ladder then anyway). */
 const ladderOdds = (inp, st, c, crit) => (inp.showOdds && !inp.hideDef && !inp.save ? oddsOf(creatureCalc(inp, st, c.uuid), crit) : null);
 const defBadge = (c, hide) => `<span class="rd-def" ${hide ? 'data-tooltip="Hidden by the GM"' : ""}>${esc(c.def ?? "DC")}${hide ? "" : ` ${Number(c.dc) || 13}`}</span>`;
@@ -432,7 +435,7 @@ function creaturesHtml(inp, st, v) {
     // v0.0.398 (Lucas: "maybe even do just one line, with: Name | Tiers | DC"): the creature, its ladder, its DC (typed for "No target") and the Target
     // button on one line; its own Boons and Banes under it
     const dcIn = c.uuid === "none" ? `<label class="rd-dcin">DC <input type="number" min="1" max="40" data-field="noTargetDc" value="${Number(c.dc) || 13}" aria-label="The DC to roll against"></label>` : defBadge(c, hide);
-    return `<div class="rd-cbox one"><div class="rd-c1"><span class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</span>${hide ? '<span class="rd-c1sp"></span>' : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}${dcIn}${targetBtn(inp)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}</div>`;
+    return `<div class="rd-cbox one"><div class="rd-c1"><span class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</span>${hide ? '<span class="rd-c1sp"></span>' : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit), true)}${dcIn}${targetBtn(inp)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}</div>`;
   }
   const three = anyThree(inp, st);
   const tgtRow = targetBtn(inp) ? `<div class="rd-tgtrow"><span>${live.length} targets</span>${targetBtn(inp)}</div>` : "";

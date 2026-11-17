@@ -477,7 +477,9 @@ async function adjust(actor, res, d) {
 
 /** The pick bar asks in the HUD's middle while a choice waits (pickbar.mjs calls it): the slot, or null when there is no HUD on screen. */
 export function hudAskSlot() {
-  if (!root?.isConnected || root.hidden || !root.offsetParent) return null;
+  // v0.0.399 (Lucas: "The pushed HUD isn't merged into the token HUD"): the HUD is position: fixed, and a fixed element has no offsetParent, so
+  // this always said "no HUD"; its size says whether it is drawn
+  if (!root?.isConnected || root.hidden || !root.getBoundingClientRect().width) return null;
   // v0.0.397 (Lucas: "in the same area as the granted action"): a creature's bar asks in its side panel; the party strip in the middle
   return root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
 }

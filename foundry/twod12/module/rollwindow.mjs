@@ -65,7 +65,12 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
 
   _untarget(uuid) {
     const left = RD.liveCreatures(this.inp, this.st).length;
-    if (left <= 1) return ui.notifications?.warn("At least one target stays: close the dialog to use it on nobody.");
+    // v0.0.399 (Lucas: "it doesn't allow me to remove all targets"): the last one goes too: untargeted on the map, the dialog shows "No target"
+    if (left <= 1) {
+      if (this.inp.area) return ui.notifications?.warn("The area's creatures come from the area: place it again to change them.");
+      try { for (const t of [...(game.user?.targets ?? [])]) t.setTarget(false, { releaseOthers: false, groupSelection: true }); } catch (e) { console.warn("twod12 | untarget", e); }
+      return this._finish({ restart: true, state: this.st });
+    }
     this.st.removed.push(uuid); this.render();
   }
 

@@ -81,6 +81,13 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.399 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.398
+- [ ] **A Push with your token selected:** the question in the HUD's side panel under Hands (token squares, Done, Stop), not a bar over the HUD.
+- [ ] **Word of Radiance with creatures already targeted:** Roll works: it asks to place the burst, then rolls.
+- [ ] **After placing the burst:** your token is still selected (the HUD shows it).
+- [ ] **The roll dialog:** remove the only target (×): "No target" with its DC; Target brings back the creatures targeted on the map.
+- [ ] **The creature line's ladder:** smaller, "T1 ≤12 42%", a Critical segment whole.
+
 ## v0.0.398 (2026-11-17, branch `pack-hud-remake`): TO TEST. The multi-target card; the dialog's Target; the hotbar
 - [ ] **Word of Radiance on two or three creatures, damage rolled:** a group a Tier (pill, damage, Apply all, Pushed); each creature once with the sliders and Apply; click a name: its Defense, total and ladder. Apply all of a Tier applies only that Tier; with creatures in two Tiers, the card's Apply all under the groups applies all.
 - [ ] **The Guard:** no "−2 Guard" on any damage row (single target too); open the sliders: it is there.

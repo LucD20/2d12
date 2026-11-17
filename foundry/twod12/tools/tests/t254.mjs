@@ -89,3 +89,6 @@ console.log("a group a Tier, each creature once:", cc8.includes('<div class="cc-
   "| a Tier's Apply all:", src("module/ccdamage.mjs").includes("CC.applyAllRows(s.rows).filter(inGroup)"));
 console.log("the creature on one line with Target:", rd8.includes('<div class="rd-cbox one"><div class="rd-c1">') && rd8.includes("${targetBtn(inp)}</div>"), "| the dialog not live:", src("module/actions.mjs").includes("live: false,") && src("module/rollwindow.mjs").includes("if (tb) { ev.preventDefault(); return this._finish({ restart: true, state: this.st }); }"),
   "| the hotbar at the bottom with the party strip:", th8.includes(".twod12-hud.is-strip.with-hot .hud-hot { position: static !important;"));
+console.log("--- v0.0.399 (Lucas, testing v0.0.398)");
+console.log("the HUD found while fixed on screen:", hud.includes("root.hidden || !root.getBoundingClientRect().width) return null;"), "| an area's Roll not blocked by targets:", src("module/rolldlg.mjs").includes("inp.area.noPlace !== false"),
+  "| the last target removed: No target:", src("module/rollwindow.mjs").includes("t.setTarget(false, { releaseOthers: false, groupSelection: true }); } catch"), "| the token selected again after an area:", src("module/actions.mjs").includes("selfToken.control?.({ releaseOthers: true })"));

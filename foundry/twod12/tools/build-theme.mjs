@@ -883,6 +883,10 @@ const STYLE3 = `
 .twod12-type.twod12-type .twod12.rolldlg .rd-tgtbtn:hover { background: var(--s-gold); color: var(--s-pg); }
 .twod12-type .twod12.rolldlg .rd-tgtrow { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--s-mute); margin: 0 0 4px; }
 .twod12-type .twod12.rolldlg .rd-none .rd-tgtbtn { margin-left: 8px; }
+/* ==== v0.0.399 (Lucas: "Need to reduce text size"): the creature line's ladder ==== */
+.twod12-type.twod12-type .twod12.rolldlg .rd-ladder.short .rd-lseg { font-size: 10px !important; padding: 2px 2px !important; letter-spacing: -.01em; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-ladder.short { display: flex !important; } .twod12-type.twod12-type .twod12.rolldlg .rd-ladder.short .rd-lseg { flex: 1 1 auto; justify-content: center; }
+.twod12-type.twod12-type .twod12.rolldlg .rd-ladder.short .rd-lseg > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 `;
 
 /** The theme's CSS from system.css's text (pure: the test calls it). */
