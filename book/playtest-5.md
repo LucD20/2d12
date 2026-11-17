@@ -1,0 +1,107 @@
+# Playtest 5 (Stage 0, level 1; Lucas, 2026-11-17)
+
+Lucas's playtest of the Stage 0 build (Foundry v0.0.407 to v0.0.417), stopped in round 2 because the Rally Points couldn't be used.
+**Nothing here is applied yet** (Lucas: "Don't apply or do anything yet, first organize it, then review it ... step by step"). The review goes
+part by part: first the log (section 1), then each group of section 2. The screenshots he named (Roll dialog.png, Chat crit.png, Chat Card.png,
+Chat save.png) were not attached to the message.
+
+## 1. The log (as Lucas wrote it)
+
+**The fight:** Aveline (Human Paladin, Smite), Durgan (Dwarf Paladin, Lay On Hands), Kaela (Human Archer, Strafe), Sylwen (Elf Archer, Quick
+Shots), all level 1, against the Ogre Chieftain (Elite, CV 200), the Orc Warrior (Standard, 100), the Grave Wisp (Standard, 100) and three Goblin
+Sneaks (Minions, 25 each): **CV 475, about 119 per PC** (100 is normal, 125 hard: between the two, nearer hard).
+
+Abbreviations: OC Ogre Chieftain, OW Orc Warrior, GW Grave Wisp, GS1-3 Goblin Sneaks; BS Brutal Swing, WA Weapon Attack, OS Overhead Smash, DW
+Dread Whisper, CT Chilling Touch, QS Quick Shots, SA Slip Away, SS Snap Shot, DT Dirty Trick, SoF Shield of Faith, BL Binding Light, RK Rusty
+Knife, BF Break Free, SY Steel Yourself.
+
+**Round 1**
+- OW: Durgan Judge 0A vs OC; Aveline Judge 0A vs OC; Advance 2; BS vs Aveline T2; Cleaver vs Aveline T1.
+- Kaela: Strafe vs OW T2, OC T2, GW T2; WA vs OW T2; WA vs OW T1.
+- OC: Advance 4; OS vs Aveline T1; Club vs Durgan T2.
+- Durgan: WA vs OC T2; Shove 2A vs OC T1; WA vs OC T1.
+- GW: Advance 4; DW vs Durgan T2; CT vs Durgan T2.
+- Sylwen: Advance 4; QS vs OC T2; WA vs OC T3.
+- GS3: Advance 6; Kaela SA vs GS3; Sylwen SS vs GS3 T2; Advance 1; DT vs Sylwen T3; Durgan SoF vs Sylwen.
+- Aveline: Stand; Commandment vs Sylwen; BL vs OC T3.
+- GS1: Advance 5; RK vs Durgan T2; DT vs Durgan T2.
+- GS2: Advance 6; DT vs Aveline T1; RK vs Aveline T2.
+
+**Round 2**
+- OW: Advance 3; Aveline Rebuke vs OW (Appeal Save); Advance 4; BS vs Sylwen T2.
+- Kaela: WA vs GS3 T2; Advance 2; Strafe vs OW T2; WA vs OW T1. GS3 goes Down.
+- OC: BF; Advance 2; Ground Slam vs Aveline, Durgan, Sylwen, GW, GS2, GS1, GS3 (Body Save). GS2 goes Down.
+- Durgan: SY 3A. (The playtest stops: the Rally Points couldn't be used.)
+
+**Damage dealt (total / per round), from the Encounter Log:** Ogre Chieftain 71 / 35.5; Kaela 29 / 14.5; Aveline 20 / 10; Sylwen 17 / 8.5; Orc
+Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin Sneak 3 / 1.5.
+
+## 2. The notes, organized (IDs for the review; Lucas's words kept)
+
+### A. Cards (what a card says)
+- **A1** Darting Blade: its Special (the Light weapon) should be above the Attack line: people read the whole card before learning the Strike is
+  made with the Light weapon.
+- **A2** "At-will use 2" is confusing: write "2x At-will use".
+- **A3** Ogre Chieftain's Overhead Smash: drop the "Tier 2 or 3" line, add "; Push 2" to Tiers 2 and 3. The same for its Club.
+- **A4** NPCs: the Orc Warrior's Actions say "Distance: Weapon". NPCs don't use weapons.
+- **A5** Lots of Actions still show Mithril / Diamond: none are Mithril or Diamond any more.
+
+### B. The roll dialog
+- **B1** Judge: it doesn't show what the Action does, nor its Special (Roll dialog.png).
+- **B2** It still shows "Effects (T2+)": changed already?
+- **B3** The subtypes (Pi, Bl...) are gold: intended?
+- **B4** The calculated AP in the item sheet's roll is hard to read in dark mode (the blue numbers too dark).
+
+### C. The chat
+- **C1** After clicking Damage the card grows and the chat doesn't follow: scroll by the height it grew, so it stays in place.
+- **C2** "Durgan was not Pushed (Steadiness 1)." is nicely subtle but not the system's style: the chat card style, one line, attached to the
+  message that caused it (the Club).
+- **C3** Remove "Goblin is Bloodied. (No effect by itself: a hook for cards.)", and the same for Strained.
+- **C4** Remove "Reactions: Durgan uses Shield of Faith → Sylwen", and "The next damage Sylwen takes is reduced by 3 (1+2 = 3)."
+- **C5** Remove the "Goblin is Down." messages.
+- **C6** Remove "Kaela: Advance 2 sq. 4 sq left End movement" and "Kaela ends the movement. 4 free squares unused."
+- **C7** The "Tier X vs Defense Y" box doesn't grow with the card when damage is rolled (Chat Card.png).
+- **C8** A Crit after a Tier 3 with doubles: the arrow stays on Tier 3, not on Crit (Chat crit.png).
+- **C9** A 26 vs AD 14 (no doubles) put the arrow on the Crit section, though the Action has no Critical.
+- **C10** The Save card's Tiers are still very colored (Chat save.png).
+- **C11** Bloodied on the dark chat card is too bright (the red almost pink).
+- **C12** Clicking Heal in the chat opens the Rally Points book entry (it should heal).
+
+### D. The token HUD
+- **D1** The Basic tab needs refitting.
+- **D2** Remove the Vigor and Resolve words; Guard, Rally, AP, Esc, the Defenses and the Attributes in a type too thin to read; it shows only
+  the Weapon Modifier: show the Power Modifier too.
+- **D3** Idea: the macro bar stays at the bottom of the HUD, the Hands above it; the empty space (Hands and conditions today) becomes the
+  "Situational" section (Linked Actions, Forced Movements...), which also gets Stand and Crawl while Prone.
+- **D4** A condition shows under the Hands and makes the whole HUD grow: show it as a condition icon in the free space under AP / Esc.
+- **D5** Accepting a Reaction makes the HUD jump.
+- **D6** Seizing Cut shows in the HUD though Durgan doesn't have the Mastery.
+- **D7** Strafe still opens the old floating bar for its Advance, not the HUD's place (where the Linked Actions are).
+- **D8** The buttons' icons are a little off-center.
+
+### E. The sheets
+- **E1** Both sheets and the one-page NPC sheet need a redesign (with the sizes decided: PC and NPC sheets small, the one-page long).
+- **E2** Previewing a Reaction on the sheet doesn't show its Frequency.
+- **E3** Hands on the sheet: the right size but it doesn't fit: drop the word "Hands" and put one hand above the other.
+- **E4** The traits are still colored in the item sheet.
+- **E5** The PC sheet in the light mode still shows dark in Foundry's dark mode.
+- **E6** Blunt in the dark NPC sheet is too close to the background.
+- **E7** Rally Points editable by hand.
+- **E8** Bug: changing a sheet's image fails ("system.level: must be a number", NpcSheet._prepareSubmitData, from the FilePicker).
+
+### F. The combat strip
+- **F1** The AP pips: empty and full too alike; maybe the center the color of the border (Claude decides).
+- **F2** Remove Bloodied (and Strained) from the strip.
+
+### G. Automation that didn't happen
+- **G1** Brutal Swing (Orc Warrior) didn't apply its condition, and it couldn't be dragged from the chat to the token: an effect or condition in
+  the chat should drag onto a token.
+- **G2** Dread Whisper didn't apply Dazed.
+- **G3** Snap Shot didn't apply Hindered.
+- **G4** Judge: using it should ask for a target; with none, the chat card shows an "Apply Effect" button.
+- **G5** Slip Away: its Advance button opens the book's rule instead of giving the movement.
+- **G6** Slip Away: an Evade 1 wasn't counted ("Kaela ends the movement. 1 free square unused." after moving 1).
+- **G7** Ground Slam gives every creature Cover on its Body Save.
+
+### H. Rules and settings
+- **H1** Apply Steadiness without asking; ask only when the Forced Movement is on an ally.
