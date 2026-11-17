@@ -42,7 +42,7 @@ Each rank has tables (below) with five **ratings**: **Terrible, Low, Medium, Hig
 |---|---|---|---|---|
 | **CV for each step** | 5 | 10 | 15 | 30 |
 
-A Standard with High Health and High damage counts for 130; one with Low Health and Medium damage for 85. **A Defense step and a Modifier step each count as half a step** (Armor Defense and Ward Defense each on their own). So a High in Health pays for a Low in damage, and a High Armor Defense pays for a Low Ward Defense.
+A Standard with High Health and High damage counts for 130; one with Low Health and Medium damage for 85. **A Defense step and a Modifier step each count as half a step** (Armor Defense and Ward Defense each on their own). **A Modifier step is counted from the rank's default Modifiers** (Weapon Medium, Power Low; a Standard's both Medium; see Attributes and Modifiers below), so an NPC with its default Modifiers counts for its rank's CV, and one that swaps them counts for the same. So a High in Health pays for a Low in damage, and a High Armor Defense pays for a Low Ward Defense.
 
 > [!tbd]
 > Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.
