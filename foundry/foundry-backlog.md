@@ -81,6 +81,13 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.391 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.390
+- [ ] **A small window:** shrink the browser: the HUD stays whole (narrower columns, then the fold button only, then no side panel); names end in "…", the stamps stay on one line.
+- [ ] **The hotbar:** at the HUD's right end again, two rows of five, its pages; in a small window it sits above the HUD (as before).
+- [ ] **Granted uses (Double Shot):** the Actions tab shows "Weapon Attack → Ogre Chieftain" once per use, each going to that creature; Cancel under them; no separate grant bar. The chat card's buttons: outlined, no icons; a used one is plain text.
+- [ ] **The carousel:** bronze squares, a diamond and red slashes on every plate (no blue or teal); the plates shorter; Move and Swap on one row.
+- [ ] **The Turn breakdown:** its title ("Turn Aveline Round 5", "End of …'s Turn") in the same face as the rest, no small capitals.
+
 ## v0.0.390 (pack HUD2, 2026-11-17, branch `pack-hud-remake`): TO TEST. The HUD remade and the Reaction alert (the draft and the twelve decisions: `foundry/mockups/hud2-brief.md`)
 - [ ] **Nothing selected:** the party strip, a card per player character (a player sees it too); Momentum at the left when the GM has it on; a click selects that token; a double click opens the sheet. Select several tokens: their cards.
 - [ ] **A token selected:** its bar. The two bars (Nonlethal hatched), Guard, Rally with Steel Yourself, AP and Escalation in combat, the bottom row (AD, WD, Speed, Weapon, Bo, Mi, Ap, In: click an Attribute for a Check, Shift for a Save).

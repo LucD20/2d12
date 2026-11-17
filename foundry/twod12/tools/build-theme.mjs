@@ -127,7 +127,7 @@ const TYPE = `
 .twod12-type .twod12.chat.cc .cc-stamp .cc-stl { font-variant: normal; font-size: 11px; }
 .twod12-type .twod12.chat.cc .cc-seg, .twod12-type .twod12.chat.cc .cc-arrow b, .twod12-type .twod12.chat.cc .cc-total, .twod12-type .twod12.chat.cc .cc-stotal, .twod12-type .twod12.chat.cc .cc-savehead b, .twod12-type .twod12.chat.cc .cc-srow b, .twod12-type .twod12.chat.cc .cc-ptot, .twod12-type .twod12.chat.cc [class*="cc-"]:not(i):not([class*="fa-"]) { font-family: "Source Sans 3", sans-serif; }
 .twod12-type .twod12.chat .ahead > b, .twod12-type .twod12.chat.sysmsg > .ahead > b { font: 700 14.5px "Source Sans 3", sans-serif; letter-spacing: 0; }
-.twod12-type .twod12-dock .td-ttl { font: 700 14.5px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12-dock .td-ttl { font: 700 14.5px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; text-transform: none; }
 /* the cost stamp in the light theme too (Lucas: "if it is helpful"): the chat card's dark brown button, square, no shadow */
 .twod12-type .twod12.acard.d2 .ap-vbtn { background: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; box-shadow: none; border-radius: 2px; }
 .twod12-type .twod12.acard.d2 .ap-vbtn:hover { background: ${LIGHT.stampHover}; }
@@ -306,7 +306,7 @@ const TYPE = `
 .twod12-type .twod12.chat .dbtns button, .twod12-type .twod12.chat .dbtns select { background: transparent; color: ${LIGHT.ink}; border: 1px solid #8c7d63; border-radius: 2px; box-shadow: none; font-family: "Source Sans 3", sans-serif; }
 .twod12-type .twod12.chat .dbtns button:first-child { background: ${LIGHT.stamp}; border-color: ${LIGHT.stamp}; color: ${LIGHT.stampInk}; }
 .twod12-type .twod12.chat.turnend > summary { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; }
-.twod12-type .twod12.chat.turnend .td-ttl { font: 700 14.5px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .02em; }
+.twod12-type .twod12.chat.turnend .td-ttl { font: 700 14.5px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; text-transform: none; }
 .twod12-type .twod12-dock { background: ${LIGHT.pg}; color: ${LIGHT.ink}; border: 1px solid #bfae8c; border-radius: 5px; box-shadow: none; font-size: 13px; }
 .twod12-type .twod12-dock .td-hd { background: ${LIGHT.band}; color: ${LIGHT.ink}; border-bottom: 1px solid ${LIGHT.hair}; min-height: 28px; padding: 3px 8px 3px 10px; gap: 8px; }
 .twod12-type .twod12-dock:not(.open) .td-hd { border-bottom: 0; }
@@ -548,21 +548,25 @@ const BY_HAND = `
 const CAR_B = `
 .twod12-type.twod12-type #twod12-carousel { gap: 6px; font-family: "Source Sans 3", sans-serif; }
 .twod12-type.twod12-type #twod12-carousel .tc-head.tc-bar { align-self: center; width: auto; gap: 14px; background: rgba(26,23,19,.92); border: 0; border-bottom: 2px solid ${T.rule}; border-radius: 0; box-shadow: 0 2px 8px rgba(0,0,0,.4); padding: 4px 8px; }
-.twod12-type.twod12-type #twod12-carousel .tc-round { color: ${T.ink}; font: 700 14px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .04em; white-space: nowrap; } .twod12-type.twod12-type #twod12-carousel .tc-round b { color: ${T.gold}; font-size: 16px; }
+.twod12-type.twod12-type #twod12-carousel .tc-round { color: ${T.ink}; font: 700 14px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; white-space: nowrap; } .twod12-type.twod12-type #twod12-carousel .tc-round b { color: ${T.gold}; font-size: 16px; }
 .twod12-type.twod12-type #twod12-carousel .tc-bar .tc-btn { border-radius: 0; border-color: #6a5d48; color: ${T.ink}; font-weight: 600; height: 22px; }
 .twod12-type.twod12-type #twod12-carousel .tc-bar .tc-btn[data-tc="next"], .twod12-type.twod12-type #twod12-carousel .tc-bar .tc-btn[data-tc="begin"] { background: ${T.stamp}; color: ${T.stampInk}; border-color: ${T.stamp}; }
 .twod12-type.twod12-type #twod12-carousel .tp-list { gap: 10px; padding: 0 4px 6px; justify-content: center; align-items: flex-start; }
 .twod12-type.twod12-type #twod12-carousel .tp, .twod12-type.twod12-type #twod12-carousel .tp.act { width: 104px; padding: 0; background: none; border: 0; border-radius: 0; box-shadow: none; overflow: visible; display: flex; flex-direction: column; align-items: stretch; filter: drop-shadow(0 3px 5px rgba(0,0,0,.55)); }
 .twod12-type.twod12-type #twod12-carousel .tp.act { width: 136px; }
-.twod12-type.twod12-type #twod12-carousel .tp-band { order: 2; height: auto; padding: 16px 4px 0; margin-top: -14px; background: rgba(26,23,19,.94); font: 700 10.5px/13px "Source Sans 3", sans-serif; font-variant: small-caps; letter-spacing: .06em; color: ${T.mute}; border-top: 2px solid #8c7d63; }
+/* v0.0.391 (Lucas: "the whole strip is occupying too much vertical space"): Move and Swap side by side on the acting plate */
+.twod12-type.twod12-type #twod12-carousel .tp.act { flex-direction: row; flex-wrap: wrap; } .twod12-type.twod12-type #twod12-carousel .tp.act > * { flex: 0 0 100%; }
+.twod12-type.twod12-type #twod12-carousel .tp.act > .tp-por { flex: 0 0 auto; } .twod12-type.twod12-type #twod12-carousel .tp.act > .tp-move { flex: 1 1 0; min-width: 0; padding: 2px 4px; }
+.twod12-type.twod12-type #twod12-carousel .tp.act > .tp-swap { flex: 1 1 0; min-width: 0; height: auto; line-height: 18px; border-left: 1px solid ${T.hair}; }
+.twod12-type.twod12-type #twod12-carousel .tp-band { order: 2; height: auto; padding: 11px 4px 0; margin-top: -10px; background: rgba(26,23,19,.94); font: 700 11px/13px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; color: ${T.mute}; border-top: 2px solid #8c7d63; }
 .twod12-type.twod12-type #twod12-carousel .tp.d1 .tp-band { color: #9fcf7a; border-top-color: #5c9a34; } .twod12-type.twod12-type #twod12-carousel .tp.dm1 .tp-band { color: #ea8f84; border-top-color: #c0453b; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-band { color: ${T.gold}; border-top-color: ${T.gold}; background: rgba(26,23,19,.94); }
-.twod12-type.twod12-type #twod12-carousel .tp-por { order: 1; position: relative; z-index: 2; width: 58px; height: 58px; margin: 0 auto; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-por { width: 76px; height: 76px; }
+.twod12-type.twod12-type #twod12-carousel .tp-por { order: 1; position: relative; z-index: 2; width: 46px; height: 46px; margin: 0 auto; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-por { width: 58px; height: 58px; }
 .twod12-type.twod12-type #twod12-carousel .tp-por img { border: 2px solid #1a1612; outline: none; } .twod12-type.twod12-type #twod12-carousel .tp.act .tp-por img { border-color: ${T.gold}; box-shadow: 0 0 0 1px #1a1612, 0 0 12px rgba(212,165,72,.55); }
 .twod12-type.twod12-type #twod12-carousel .tp-seal { right: -6px; bottom: 0; border-radius: 0; border: 0; background: ${T.stamp}; color: ${T.stampInk}; font: 700 11px/17px "Source Sans 3", sans-serif; height: 17px; }
-.twod12-type.twod12-type #twod12-carousel .tp-name, .twod12-type.twod12-type #twod12-carousel .tp.act .tp-name { order: 3; margin: 0; padding: 0 5px 1px; background: rgba(26,23,19,.94); font: 700 13.5px/17px "Source Sans 3", sans-serif; color: ${T.ink}; }
+.twod12-type.twod12-type #twod12-carousel .tp-name, .twod12-type.twod12-type #twod12-carousel .tp.act .tp-name { order: 3; margin: 0; padding: 0 5px; background: rgba(26,23,19,.94); font: 700 13px/16px "Source Sans 3", sans-serif; color: ${T.ink}; }
 .twod12-type.twod12-type #twod12-carousel .tp-pips { order: 4; margin: 0; padding: 3px 4px 5px; background: rgba(26,23,19,.94); } .twod12-type.twod12-type #twod12-carousel .tp-strikes { order: 5; margin: 0; padding: 0 4px 6px; background: rgba(26,23,19,.94); }
 .twod12-type.twod12-type #twod12-carousel .tp-move { order: 6; margin: 0; padding: 4px 4px; border: 0; border-top: 1px solid ${T.hair}; border-radius: 0; background: rgba(26,23,19,.94); font: 600 11.5px "Source Sans 3", sans-serif; }
-.twod12-type.twod12-type #twod12-carousel .tp-swap { order: 7; width: 100%; margin: 0; border-radius: 0; background: rgba(26,23,19,.94); border: 0; border-top: 1px solid ${T.hair}; color: ${T.ink}; font: 600 11.5px/22px "Source Sans 3", sans-serif; height: 24px; }`;
+.twod12-type.twod12-type #twod12-carousel .tp-swap { order: 7; width: auto; margin: 0; border-radius: 0; background: rgba(26,23,19,.94); border: 0; border-top: 1px solid ${T.hair}; color: ${T.ink}; font: 600 11.5px/22px "Source Sans 3", sans-serif; height: 24px; }`;
 
 
 /* ------------------------------------------------------------------ added at the build (STYLE-1), beyond the mockups' rules */

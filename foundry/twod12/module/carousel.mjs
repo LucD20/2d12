@@ -27,7 +27,7 @@ function card(combat, c, st) {
   // v0.0.390 (PACK HUD2, Lucas: "All your picks"): the HUD's marks, the same shapes on every turn (book/research/ui-marks-and-state.md): AP squares,
   // the Reaction AP a diamond, the Strikes left as slashes, a hairline between them; frozen keeps its dashed look (CSS) and its tooltip
   const slowed = (() => { try { return slowedOf(c.actor); } catch (e) { return 0; } })();
-  const pips = `<div class="tp-pips ${pipKind}" data-tooltip="${pipTip}">${marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax: 1, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started })}</div>`;
+  const pips = `<div class="tp-marks ${pipKind}" data-tooltip="${pipTip}">${marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax: 1, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started })}</div>`;
   // v0.0.224 (Lucas, playtest 3): the 3 Strikes of this turn as three red diamonds; each Strike (not a Linked one) empties one.
   const strikes = "";   // v0.0.390: the Strikes are in the marks
   // v0.0.390: Bloodied, Strained or the Down state under the name: every creature knows it of a creature it perceives (Chapter 4)

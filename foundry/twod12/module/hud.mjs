@@ -147,10 +147,21 @@ async function barModel(actor, token = null) {
   const { FREQ_COLORS } = await import("./config.mjs");
   const usable = l => !l.used;
   // the lines of each tab
-  const grants = [];
+  // v0.0.391 (Lucas: "the granted action hud should be inserted in the actor hud"): a line per use left, each named for the creature it goes to (the
+  // card's targets still free, as the card's buttons and the old grant bar did), a Cancel under the column; the separate grant bar is off while the HUD is on
+  const grants = [], cancels = [];
+  const FU = await import("./freeuse.mjs");
   for (const ef of actor.effects ?? []) {
     if (ef.disabled) continue;
-    (ef.getFlag?.(F, "grants") ?? []).forEach((g, index) => { if (g.left > 0) grants.push({ id: "", name: `${String(g.spec ?? "").replace(/^(category|trait):/i, "")}${g.left > 1 ? ` ×${g.left}` : ""}`, freq: "granted", fqColor: "#d2a75a", sub: `from ${String(ef.name ?? "").replace(/\s*\([^)]*\)\s*$/, "")}`, grant: { effect: ef.id, index }, stamps: [{ ap: nn(g.ap), label: `${nn(g.ap)} AP` }] }); });
+    const source = String(ef.name ?? "").replace(/\s*\([^)]*\)\s*$/, "");
+    (ef.getFlag?.(F, "grants") ?? []).forEach((g, index) => {
+      if (!(g.left > 0)) return;
+      const action = FU.actionsFor(actor, g.spec)[0]?.name ?? String(g.spec ?? "").replace(/^(category|trait):/i, "");
+      let free = [];
+      try { free = FU.grantTargetOrder(FU.grantCardTargets(actor, ef.id), g.used ?? [], 0).filter(t => !(g.used ?? []).includes(t?.uuid)); } catch (e) { free = []; }
+      for (let k = 0; k < g.left; k++) { const t = free[k]; grants.push({ id: "", name: t?.name ? `${action} \u2192 ${t.name}` : action, freq: "granted", fqColor: "#d2a75a", sub: `from ${source}`, grant: { effect: ef.id, index, target: t?.uuid ?? "" }, stamps: [{ ap: nn(g.ap), label: `${nn(g.ap)} AP` }] }); }
+      if (!cancels.some(x => x.effect === ef.id)) cancels.push({ effect: ef.id, source });
+    });
   }
   const act = [...grants, ...list.filter(a => !a.basic && !a.reaction && !a.escalation).map(lineOf)];
   const rx = list.filter(a => a.reaction && !a.escalation).map(lineOf);
@@ -163,7 +174,9 @@ async function barModel(actor, token = null) {
   const tabs = (npc ? HUD_TABS_NPC : HUD_TABS_PC).map(([k, label]) => ({ k, label, count: k === "act" ? act.filter(usable).length : k === "rx" ? rx.filter(usable).length : k === "basic" ? basic.filter(usable).length : `${escLines.filter(l => l.state === "working").length} of ${escLines.filter(l => l.pass).length}` }));
   if (!tabs.some(t => t.k === st.tab)) st.tab = "act";
   const tab = wait && setting("rxHud", true) ? "rx" : st.tab;
-  const cols = tab === "rx" ? colsOf(rx) : tab === "basic" ? colsOf(basic, { maxCols: 4 }) : tab === "esc" ? colsOf(escLines.map(l => ({ ...l, freq: "none" })), { per: 3 }).map((c, i) => ({ ...c, label: i ? "" : "Escalation" })) : colsOf(act);
+  if (grants.length && !st.tabChosen) st.tab = "act";
+  const cols0 = tab === "rx" ? colsOf(rx) : tab === "basic" ? colsOf(basic, { maxCols: 4 }) : tab === "esc" ? colsOf(escLines.map(l => ({ ...l, freq: "none" })), { per: 3 }).map((c, i) => ({ ...c, label: i ? "" : "Escalation" })) : colsOf(act);
+  const cols = cols0.map(c => (c.key === "granted" && !cols0.slice(cols0.indexOf(c) + 1).some(x => x.key === "granted") ? { ...c, cancels } : c));
   // the identity column
   const sg = v => (Number(v) > 0 ? `+${Number(v)}` : Number(v) < 0 ? `−${-Number(v)}` : "0");
   const speed = nn(s.moveSpeed ?? s.speed), base = nn(s.speed);
@@ -310,13 +323,11 @@ async function drawHud() {
     st.cards = new Map(pairs.map(([a, t], k) => [cards[k].key, { actor: a, token: t }]));
     return;
   }
-  if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.actorUuid = cur.actor.uuid; }
+  if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
   main.innerHTML = tokenBarHtml(m);
   root.classList.add("is-bar"); root.classList.toggle("is-npc", m.npc); root.classList.toggle("is-folded", !!m.folded);
-  // the hotbar sits in the side panel's foot
-  const hot = main.querySelector(".hb-hot"), hb = document.getElementById("hotbar");
-  if (hot && hb && setting("hudHotbar", true)) hot.append(hb);
+  // (v0.0.391, Lucas: "macro bar is broken"): the hotbar stays at the HUD's right end, where it worked before (placeHotbar)
 }
 
 /* ------------------------------------------------------------------ panels, the card, the menu */
@@ -381,14 +392,15 @@ async function onClick(ev) {
   // v0.0.390 (PACK HUD2)
   if (kind === "party") { const c = st.cards?.get(b.dataset.key); if (!c) return; if (ev.detail >= 2) return c.actor.sheet?.render(true); if (c.token) return c.token.control({ releaseOthers: true }); if (!game.user.isGM && c.actor.isOwner) return c.actor.sheet?.render(true); return; }
   if (kind === "fold") { await game.settings.set(F, "hudFolded", !setting("hudFolded", false)); return; }
-  if (kind === "tab") { st.tab = b.dataset.tab; if (st.rx) st.rx = null; return renderHud(); }
+  if (kind === "tab") { st.tab = b.dataset.tab; st.tabChosen = true; if (st.rx) st.rx = null; return renderHud(); }
   if (kind === "rx") { const msg = game.messages.get(b.dataset.msg); if (!msg) return; const { rxClick } = await import("./moment.mjs"); st.rx = null; await rxClick(msg, { dataset: { twod12: b.dataset.k, row: b.dataset.row }, tagName: "DIV" }); return renderHud(); }
   if (kind === "close") return closePop();
   if (!actor) return;
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
   if (kind === "line" && item && !ev.target.closest(".hb-st")) { const first = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions.find(v => !v.off); if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
-  if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0); }
+  if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
+  if (kind === "grantcancel") { const { cancelGrantOf } = await import("./freeuse.mjs"); return cancelGrantOf(actor, b.dataset.effect); }
   if (kind === "more") return openPanel("more", st.moreIds ?? []);
   if (kind === "hands") return openPanel("hands");
   if (kind === "steel") { const basic = actor.itemTypes.action.find(i => /steel yourself/i.test(i.name)); if (basic) return use(actor, basic, Math.min(...(basic.system.versions ?? [{ ap: 2 }]).map(v => Number(v.ap) || 0)), ev.shiftKey); return ui.notifications.info("No Steel Yourself on this sheet."); }

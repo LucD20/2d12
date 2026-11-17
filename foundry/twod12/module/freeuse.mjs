@@ -206,6 +206,8 @@ function closeGrantBar() { grantBarEl?.remove(); grantBarEl = null; }
 /** The bar for the token the user controls (one token; its owner): a button per use left, each uses that grant (as the card's button does). */
 export function refreshGrantBar() {
   if (typeof document === "undefined") return;
+  // v0.0.391 (Lucas: "the granted action hud should be inserted in the actor hud"): the HUD's Granted column holds them while the HUD is on
+  try { if (game.settings.get(F, "hudShow") !== false) return closeGrantBar(); } catch (e) { /* the setting isn't there: the bar */ }
   const toks = globalThis.canvas?.tokens?.controlled ?? [];
   const tok = toks.length === 1 ? toks[0] : null, actor = tok?.actor;
   const list = actor?.isOwner ? grantBarModel(actor.effects, g => actionsFor(actor, g.spec)[0]?.name ?? g.spec) : [];
