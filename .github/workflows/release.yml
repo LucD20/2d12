@@ -1,0 +1,77 @@
+# Foundry updates itself from a manifest (Lucas, 2026-11-17: "I can update from Foundry automatically").
+# On a push to main or a pack-* branch that changes the system, when system.json's version has no release yet:
+# build the compendium packs, run the tests, zip foundry/twod12 (system.json at the zip's root) and publish release v<version>
+# with two files: system.json (its download pointing at this release's zip) and twod12.zip. It becomes "latest", which is what
+# Foundry's manifest URL reads:  https://github.com/LucD20/2d12/releases/latest/download/system.json
+# The repository must be public: Foundry downloads without logging in.
+name: Release the Foundry system
+
+on:
+  push:
+    branches: [main, "pack-*"]
+    paths: ["foundry/twod12/**", ".github/workflows/release.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Read the version
+        id: v
+        run: |
+          V=$(node -p "require('./foundry/twod12/system.json').version")
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          if gh release view "v$V" >/dev/null 2>&1; then echo "exists=true" >> "$GITHUB_OUTPUT"; else echo "exists=false" >> "$GITHUB_OUTPUT"; fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Build the compendium packs
+        if: steps.v.outputs.exists == 'false'
+        working-directory: foundry
+        run: |
+          npm install --no-save --no-package-lock @foundryvtt/foundryvtt-cli
+          node twod12/tools/build-packs.mjs
+
+      - name: Run the tests
+        if: steps.v.outputs.exists == 'false'
+        working-directory: foundry/twod12
+        run: node tools/tests/run.mjs
+
+      - name: Make the zip
+        if: steps.v.outputs.exists == 'false'
+        run: |
+          V=${{ steps.v.outputs.version }}
+          mkdir -p dist/twod12
+          rsync -a --exclude 'packs/_source' --exclude 'tools/tests' --exclude 'node_modules' foundry/twod12/ dist/twod12/
+          node -e '
+            const fs = require("fs"), p = "dist/twod12/system.json", s = JSON.parse(fs.readFileSync(p, "utf8"));
+            s.manifest = "https://github.com/LucD20/2d12/releases/latest/download/system.json";
+            s.download = "https://github.com/LucD20/2d12/releases/download/v" + process.argv[1] + "/twod12.zip";
+            fs.writeFileSync(p, JSON.stringify(s, null, 2) + "\n");' "$V"
+          cp dist/twod12/system.json dist/system.json
+          (cd dist/twod12 && zip -qr ../twod12.zip .)
+
+      - name: Publish the release
+        if: steps.v.outputs.exists == 'false'
+        run: |
+          V=${{ steps.v.outputs.version }}
+          NOTES=$(node -e '
+            const t = require("fs").readFileSync("foundry/twod12/docs/reference.md", "utf8");
+            const m = t.match(new RegExp("^- \\*\\*v" + process.argv[1].replace(/\./g, "\\.") + "\\b[^\\n]*", "m"));
+            console.log(m ? m[0] : "v" + process.argv[1]);' "$V")
+          gh release create "v$V" dist/system.json dist/twod12.zip --title "v$V (${GITHUB_REF_NAME})" --notes "$NOTES" --target "$GITHUB_SHA" --latest
+        env:
+          GH_TOKEN: ${{ github.token }}
