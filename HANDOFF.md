@@ -259,7 +259,7 @@ A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read
 HANDOFF.md, MASTER-PLAN.md   this file; the order of all open work
 CLAUDE.md                    the rules and commands every Claude Code session reads
 notes.txt                    Lucas's running notes (merged at the start of each pack)
-PROJECT-INSTRUCTIONS.md, SETUP.md   the claude.ai Project "2d12 design" and the one-time setup
+SETUP.md                     the one-time setup
 Update Foundry.cmd           Lucas's double-click update of his local Foundry (tools/sync-pack.ps1: finds the newest pack-* branch)
 tools/                       the sync scripts (Update Foundry.cmd)
 book/
