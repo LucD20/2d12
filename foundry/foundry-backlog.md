@@ -1,6 +1,6 @@
 # twod12 (Foundry V14): what is left
 
-Current version: **v0.0.415**. Tests: `node tools/tests/run.mjs` (257 tests, see the README; the next new test is t260). What each version did is in `docs/reference.md` (Changelog).
+Current version: **v0.0.416**. Tests: `node tools/tests/run.mjs` (258 tests, see the README; the next new test is t261). What each version did is in `docs/reference.md` (Changelog).
 Everything finished up to v0.0.207 (the done items, the per-version "to check" notes, the Foundry-follows-the-book plan) is in `archive/old-notes/foundry-backlog-to-v0.0.207.md`.
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
@@ -54,6 +54,20 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] **BUILT v0.0.411 as labels** (the keys stay shot / gun: no migration; cardgen maps the book's projectile / firearm). **The traits Shot and Gun become Projectile and Firearm:** the keys in `config.mjs`, the card files, the weapons, the tests (t146 compares the book's GROUPS, which keeps the old keys until then) and a migration for items in worlds.
 - [x] **BUILT v0.0.412.** **The weapon property Light** (the Dagger and the Handaxe).
 - [ ] **Line of Effect for every effect:** whatever an Action or a feature does to a creature needs Line of Effect to it (not only its targets); a part with no line is skipped and the rest happens.
+
+## CARD-ONE: one card for every place it shows (Lucas, 2026-11-17: "make sure in the future we don't have this problem anymore"; the draft's recommendations, all accepted: "All recommended, start")
+**Why:** five builders decided what a card shows (the book's Python, `actioncard.mjs`, `actions.mjs attackModelParts` for the roll dialog and the chat result, `statblock.mjs`, the old `preview.mjs`), each with its own CSS, and the surfaces' own CSS leaks into a card; the tests read the source, not what is drawn. **Decided:** the roll dialog and the chat result show the card's parts in the card's order, in a tighter layout; the stat block keeps its printed look, drawn from the model; the book: a parity test now, the shared model later; the screenshots are committed.
+- [x] **Step 1, the gallery (v0.0.416):** `foundry/gallery/` (README): every compendium card in the sheet, chat, tooltip and HUD markup, dark and light, the solo card, and the book's (`book/card-gallery.html`); `tools/gallery/shoot.mjs` (48 shots, 11 MB of JPEG; a label color change is caught on every card).
+- [x] **Step 2, the model (v0.0.416):** `module/cardmodel.mjs` (`cardModel`, `modelLabels`, `rollLine`, `tierLines`); `actioncard.mjs buildActionCard` draws from it (the gallery: no pixel changed). Test t260: the coverage (every model line in the sheet's and the solo card) and the parity with the book (`book/cards/structure.json`).
+- [ ] **Step 3: the roll dialog and the chat result** onto the model (`rolldlg.mjs` / `rollinput.mjs`, `chatcards.mjs`): the card's parts in its order (today they don't read the card's own lines, Special, Requirements, Prerequisites); their models pure (out of `useAction`), so the gallery draws them too.
+- [ ] **Step 4: the stat block** (`statblock.mjs sbActionHtml`) from the model, its printed look kept.
+- [ ] **Step 5: one card stylesheet** with the shared tokens under one root class that resets what the surface around it sets (font, color, line height, box): the same card in the sheet, the chat, a tooltip, the HUD; the book and the reading pages (desks, mockups) load it.
+- [ ] **Step 6: the book's model shared**, and the 9 differences t260 lists settled: the order of the Structure's lines (Hit and Run, Rebuke, Reckoning: the Effect before the roll in the book; the Foundry item doesn't keep the written order: load.mjs fromStructure should carry it), the lines Foundry drops (Weapon Attack's and Steel Yourself's Special), the Tier lines (Circling Shot, Trick Shots' Knock Back: no Tier 1 in the book; Commandment's Kneel and Lantern of Faith's Glare: "Tier 1 or 2" in the book).
+- [ ] **Step 7: the old builders retired:** `preview.mjs buildRawCard`, `buildInfoCard` (the Species and Class cards: to the Feature card), `buildPreviews` (the old roll preview, still computed on every Action).
+- **Seen in the gallery, for these steps:** the sheet's open card has no head bar (name, Frequency, cost: the row is its head; the solo card has one); the sheet draws a box around the card, the chat and the tooltip don't; Smite's Tier 1 reads "1d6! Holy" in Foundry and "Your Smite dice." in the book (the Tier text is rebuilt from the dice, not the card's words).
+
+## v0.0.416 (pack CARD-ONE steps 1 and 2, 2026-11-17, branch `pack-card-one`): TO TEST
+**Nothing you see should change** (the gallery's screenshots are pixel for pixel the same). If a card looks different anywhere (the sheet's open card, the HUD's right-click card, an item sheet, a hover card, Send to chat, a chat card's Card button, the class window), that is a bug of this version.
 
 ## v0.0.415 (pack CL, the code cleanup, 2026-11-17, branch `pack-cl`): TO TEST
 **What changed:** the Foundry dialogs are pick windows, plain chat lines are system lines, dead code is in `foundry/deprecated/`. Nothing in the rules changed. **Left:** Checks and Saves a creature rolls for itself still open the old roll dialog (`actions.mjs askRoll`): moving them to the roll card needs a Check layout (its own pack).

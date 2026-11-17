@@ -324,3 +324,13 @@ parsed = RT.parse(SRC)
 RT.write_index(parsed, SRC)
 RT.report(parsed, doc)
 RT.report_cards(CARD_DATA, PLACED_CARDS, CARD_PROBLEMS, parsed)
+
+# Pack CARD-ONE (Lucas, 2026-11-17: one card for every place it shows): every card's Structure as JSON (cards/structure.json; Foundry's card model,
+# module/cardmodel.mjs, is checked against it by a test) and the book's card gallery (card-gallery.html: every card in the book's look, the
+# screenshots of foundry/gallery compare it with Foundry's faces). Both are written by this build; never edit them.
+json.dump({n: CARDS.structure(c) for n, c in sorted(CARD_DATA.items())}, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cards', 'structure.json'), 'w'), indent=1, ensure_ascii=False)
+was_classy, CLASSY['on'] = CLASSY['on'], False
+gal_cards = ''.join(f'<div class="gal-card" data-card="{e(n)}">{re.sub(r'\[\[(?:[^\]|]*\|)?([^\]]*)\]\]', r'\1', card(CARDS.structure(c), anchor=False))}</div>' for n, c in sorted(CARD_DATA.items()))
+CLASSY['on'] = was_classy
+open(os.path.join(OUTDIR, 'card-gallery.html'), 'w').write(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Card gallery (book)</title><style>{css}.gal-card{{width:440px;margin:0 0 18px}}body{{padding:16px}}</style></head><body><main>{gal_cards}</main></body></html>')
+print('card gallery:', len(CARD_DATA), 'cards; cards/structure.json written')

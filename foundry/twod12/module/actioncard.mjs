@@ -11,16 +11,17 @@
 // With actor: what effects add inside the cells in green or red (as before), the strip, the Version buttons. The pure pieces: cardview.mjs.
 // The chat cards are unchanged (chatcards.mjs, preview.mjs).
 import { mergeDiceLine, namesWithCount } from "./dicemerge.mjs";
-import { autoChip, TWOD12, traitGroupOf, highlightText, effectiveFrequency, distanceText, distanceNote, areaText, vsText, areaButton, prettyDamage, categoryText, doomStatus } from "./config.mjs";
+import { autoChip, TWOD12, traitGroupOf, highlightText, effectiveFrequency, prettyDamage, categoryText, doomStatus } from "./config.mjs";
 import { rawTierLine, modifierBlocks, actionOnlyTalent } from "./preview.mjs";
 import { prereqLine } from "./talents.mjs";
 import { actionChanges, unloadedWeapon, traitsFor } from "./actionrows.mjs";
 import { rollSource } from "./rollsource.mjs";
 import { modifierList, damageSteps } from "./effects.mjs";
 import { collectBonuses, bonusesNotNow } from "./bonus.mjs";
-import { versionButtons, tierLabel, rollStripChips, modText, rulerText, rollsItself } from "./cardview.mjs";
-import { distanceShort, costPill } from "./sheetmodel.mjs";
+import { versionButtons, rollStripChips, modText, rulerText, rollsItself } from "./cardview.mjs";
+import { costPill } from "./sheetmodel.mjs";
 import { esc } from "./util.mjs";
+import { cardModel, tierLines } from "./cardmodel.mjs";   // Pack CARD-ONE step 2
 
 const enrich = async (txt, doc = null) => highlightText(await foundry.applications.ux.TextEditor.implementation.enrichHTML(txt ?? "", doc ? { relativeTo: doc } : {}));
 const MODE = { weapon: "Weapon mode", power: "Power mode" };
@@ -96,8 +97,6 @@ async function apNow(actor) {
 // card's own lines, the roll, the Tiers, Effect, Special), a Version or a Mode a block with its cost or name as its header; no Tier color; the
 // Use button in each block's header, or at the end of the Your roll line with one Version; Your roll a labeled line under a hairline (the
 // Modifier, Boons "+" in the success color, Banes "▼" in the failure color); what effects change a short note after its line; the Ruler line small.
-const ROLL_WORDS = ["signature", "weapon", "magic", "body", "mind", "appeal", "instinct"];
-const DEF = { AD: "Armor Defense", WD: "Ward Defense" };
 /** Pure: the trait words in the book's group order, joined by dots. */
 export function traitWords(traits) {
   const list = [...(traits ?? [])], label = k => String(TWOD12.traits[k] ?? k);
@@ -105,24 +104,7 @@ export function traitWords(traits) {
   const rest = list.filter(k => !order.includes(k));
   return [...order, ...rest].map(k => `<span data-tooltip="${esc(TWOD12.traitHelp?.[k] ?? "")}">${esc(label(k))}</span>`).join('<i class="st-dot" aria-hidden="true">&middot;</i>');
 }
-/** Pure: the roll line's label and text ("Attack" "Weapon vs. Armor Defense", "Save" "Appeal"), or null when the Action makes no roll. */
-export function rollLine(it, vs) {
-  if (!(it.versions ?? []).some(v => !v.noTiers)) return null;
-  const t = it.traits ?? new Set(), has = k => t.has?.(k) ?? false;
-  if (has("save")) return { label: "Save", text: String(vs || "").replace(/\s*Save$/, "") || "the target's choice" };
-  // a [Signature] Action rolls the Signature Modifier, whatever else it is (the book: "Signature vs. Armor Defense")
-  const words = (has("signature") ? ["signature"] : ROLL_WORDS.filter(has)).map(k => (k === "magic" ? "Power" : TWOD12.traits[k] ?? TWOD12.attributes[k] ?? k));
-  const def = DEF[vs] ?? vs;
-  return def ? { label: "Attack", text: `${words.length ? `${words.join(" or ")} ` : ""}vs. ${def}` } : null;
-}
-/** Pure: how a Version's three Tier texts are written: one line ("Tier 1 or 2" / "Tier 2 or 3" / "Tiers 1–3") or three. cells: [t1, t2, t3] HTML. */
-export function tierLines(cells, save, noDamage) {
-  const none = c => /^(No effect\.?|&mdash;)$/.test(String(c).trim());
-  if (cells[0] === cells[1] && cells[1] === cells[2]) return [[tierLabel("all"), cells[0]]];
-  if (noDamage && save && cells[0] === cells[1] && none(cells[2])) return [["Tier 1 or 2", cells[0]]];
-  if (noDamage && !save && none(cells[0]) && cells[1] === cells[2]) return [["Tier 2 or 3", cells[1]]];
-  return [1, 2, 3].map(n => [`Tier ${n}`, cells[n - 1]]);
-}
+export { rollLine, tierLines } from "./cardmodel.mjs";   // Pack CARD-ONE: they moved to the card model
 const stLine = (label, html, cls = "") => `<div class="st-l${cls ? ` ${cls}` : ""}"><b>${esc(label)}</b><span>${html}</span></div>`;
 
 /** item: an Action. actor (optional): the creature that has it. use: the Version buttons are buttons (false on the Build tab and with no actor). */
@@ -143,51 +125,44 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
       ? `<span class="ap-vwrap" data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn st-use no" aria-disabled="true" disabled aria-label="${esc(`${lab}: ${b.why}`)}">${esc(lab)}</button></span>`
       : `<button type="button" class="ap-vbtn st-use" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""} data-tooltip="Use the ${esc(b.cost ?? costOf(v))} Version" aria-label="Use ${esc(item.name)}, the ${esc(b.cost ?? costOf(v))} Version">${esc(lab)}</button>`;
   };
-  const save = !!it.traits?.has?.("save");
-  // a Version's labeled lines: its Special, the Tiers, the Critical, its Effect (an old card's Effects cell is "Tier 2 or 3", "Tier 1 or 2" on a Save)
-  const versionLines = async v => {
-    const out = [];
-    if (v.special) out.push(stLine("Special", await enrich(v.special, item)));
-    if (!v.noTiers) {
-      const cells = [await cell(item, v, 1, ch), await cell(item, v, 2, ch), await cell(item, v, 3, ch)];
-      const noDmg = ![1, 2, 3].some(n => (v[`t${n}`] ?? []).length);
-      for (const [l, h] of tierLines(cells, save, noDmg)) out.push(stLine(l, h));
-      if (v.critical) out.push(stLine("Critical", await enrich(v.critical, item)));
+  // Pack CARD-ONE step 2: what the card says, and in which order, is the card model (cardmodel.mjs); this face draws it (the creature's cells and buttons)
+  const M = cardModel(item, { actor, weapon, fists: item.getFlag?.("twod12", "weaponUse") === "fists" });
+  const save = !!it.traits?.has?.("save"), modes = M.modes;
+  const fmt = async l => (l.fmt === "hl" ? highlightText(esc(l.text)) : l.fmt === "esc" ? esc(l.text) : l.fmt === "rich-esc" ? await enrich(esc(l.text), item) : await enrich(l.text, item));
+  // a Version's labeled lines: its Special, the Tiers (with the creature's changes in the cells; grouped as the cells read), the Critical, its Effect
+  const versionLines = async vm => {
+    const v = vm.source, out = [];
+    for (const l of vm.lines) {
+      if (l.kind === "tier") {
+        if (l.tier !== vm.lines.find(x => x.kind === "tier").tier) continue;   // the Tiers are drawn once, together, at the first one
+        const cells = [await cell(item, v, 1, ch), await cell(item, v, 2, ch), await cell(item, v, 3, ch)];
+        const noDmg = ![1, 2, 3].some(n => (v[`t${n}`] ?? []).length);
+        for (const [lab, h] of tierLines(cells, save, noDmg)) out.push(stLine(lab, h));
+      } else out.push(stLine(l.label, await fmt(l)));
     }
-    if (String(v.effects ?? "").trim()) out.push(stLine(it.structure || v.noTiers ? "Effect" : save ? "Tier 1 or 2" : "Tier 2 or 3", await enrich(v.effects, item)));
     return out.join("");
   };
   // the grid: Distance, Area (the Place Area chip), Target
-  const area = areaText(it), aBtn = areaButton(it);
+  const area = M.grid.area, aBtn = M.grid.areaButton;
   const areaHtml = area && aBtn ? await enrich(aBtn.replace(/\|label:[^|\]]*/, "").replace(/\]$/, `|label:${area.replace(/[|\]]/g, " ")}]`), item) : (area ? esc(area) : "");
-  const dist = distanceShort(distanceText(it, weapon)).replace(/^—$/, ""), distTip = distanceNote(it, weapon);
+  const dist = M.grid.distance, distTip = M.grid.distTip;
   const grid = [dist && !/^self$/i.test(dist) ? `<span${distTip ? ` data-tooltip="${esc(distTip)}"` : ""}><b>Distance:</b> ${esc(dist)}</span>` : "", areaHtml ? `<span><b>Area:</b> ${areaHtml}</span>` : "",
-    it.targets ? `<span><b>Target:</b> ${highlightText(esc(it.targets))}</span>` : ""].filter(Boolean).join("");
+    M.grid.target ? `<span><b>Target:</b> ${highlightText(esc(M.grid.target))}</span>` : ""].filter(Boolean).join("");
   const areaRow = aBtn && !areaHtml ? `<div class="st-l arearow"><b>Area</b><span>${await enrich(aBtn, item)}</span></div>` : "";
   // the lines above the Versions: Requirement, Prerequisite, Interrupt / Trigger, Setup, the card's own lines, the roll
   const top = [];
-  if (it.requirements) top.push(stLine("Requirement", highlightText(esc(it.requirements))));
-  if (it.prerequisites) top.push(stLine("Prerequisite", esc(it.prerequisites)));
-  if (it.reaction && it.trigger) top.push(stLine(it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", await enrich(esc(it.trigger), item)));
-  if (it.setup) top.push(stLine("Setup", await enrich(it.setup, item)));
-  for (const l of it.lines ?? []) top.push(stLine(l.label || "Note", await enrich(l.text, item)));
-  const vs = vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists: item.getFlag?.("twod12", "weaponUse") === "fists" });
-  const rl = rollLine(it, vs);
-  // a Mode has its own Save: the roll line goes into its block
-  const modes = versions.some(v => v.modeVs || v.modeTraits?.length);
-  if (rl && !modes) top.push(stLine(rl.label, esc(rl.text)));
+  for (const l of M.top) top.push(stLine(l.label, await fmt(l)));
   // one Version: its lines here; several: a block each (its cost, or its Mode's name, as the header; its own traits, Distance, Target, roll)
   let body = "";
-  if (versions.length === 1) body = await versionLines(versions[0]);
-  else for (const v of versions) {
-    const b = offAt(v.ap), head = v.mode ? `${esc(MODE[v.mode] ?? v.mode)}` : esc(costOf(v));
-    const own = [v.modeTraits?.length ? `<span class="st-btr">${traitWords(v.modeTraits)}</span>` : "", v.modeDistance ? `<span><b>Distance:</b> ${esc(distanceShort(v.modeDistance))}</span>` : "", v.modeTargets ? `<span><b>Target:</b> ${highlightText(esc(v.modeTargets))}</span>` : ""].filter(Boolean).join("");
-    const vroll = v.modeVs ? stLine("Save", esc(TWOD12.attributes[v.modeVs] ?? v.modeVs)) : "";
-    body += `<div class="st-b${b.off ? " off" : ""}"><div class="st-bh"><span>${head}</span>${b.off && b.why ? `<span class="st-why">${esc(b.why)}</span>` : ""}${useBtn(v)}</div>${own ? `<div class="st-grid">${own}</div>` : ""}${vroll}${await versionLines(v)}</div>`;
+  if (M.versions.length === 1) body = await versionLines(M.versions[0]);
+  else for (const vm of M.versions) {
+    const v = vm.source, b = offAt(v.ap), head = esc(vm.heading);
+    const own = [vm.own.traits.length ? `<span class="st-btr">${traitWords(vm.own.traits)}</span>` : "", vm.own.distance ? `<span><b>Distance:</b> ${esc(vm.own.distance)}</span>` : "", vm.own.target ? `<span><b>Target:</b> ${highlightText(esc(vm.own.target))}</span>` : ""].filter(Boolean).join("");
+    const vroll = vm.roll ? stLine(vm.roll.label, await fmt(vm.roll)) : "";
+    body += `<div class="st-b${b.off ? " off" : ""}"><div class="st-bh"><span>${head}</span>${b.off && b.why ? `<span class="st-why">${esc(b.why)}</span>` : ""}${useBtn(v)}</div>${own ? `<div class="st-grid">${own}</div>` : ""}${vroll}${await versionLines(vm)}</div>`;
   }
   // the card's Special (a Structure card's), or an old card's prose (the description)
-  const special = it.structure ? (it.special ? stLine("Special", await enrich(it.special, item)) : "")
-    : (it.description && String(it.description).replace(/<[^>]+>/g, "").trim() ? `<div class="st-prose">${await enrich(it.description, item)}</div>` : "");
+  const special = M.special ? stLine(M.special.label, await fmt(M.special)) : (M.prose ? `<div class="st-prose">${await enrich(M.prose, item)}</div>` : "");
   // Your roll (read-only), and the Use button of a one-Version card at its end
   let live = "";
   const oneBtn = versions.length === 1 ? useBtn(versions[0]) : "";

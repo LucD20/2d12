@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" class="twod12-type"><!-- theme.mjs themeClasses: Foundry always has it -->
+<head>
+<meta charset="utf-8">
+<title>Card gallery (Foundry)</title>
+<!-- Pack CARD-ONE step 1: the system's own CSS, in Foundry's order (system.css, then the generated theme). Foundry's core CSS isn't here: the
+     surfaces' markup is, so a rule of the system that leaks into a card shows. -->
+<link rel="stylesheet" href="../twod12/styles/system.css">
+<link rel="stylesheet" href="../twod12/styles/theme.css">
+<style>
+  body { margin: 0; padding: 16px; font-family: "Signika", sans-serif; font-size: 14px; }
+  body.theme-dark { background: #2b2722; color: #e6dfd1; }
+  body.theme-light { background: #ddd6c8; color: #1d1a16; }
+  #cards { display: flex; flex-direction: column; gap: 14px; width: 460px; }
+  .gal-card { position: relative; }
+  .gal-name { font: 11px/1.4 monospace; opacity: .55; margin-bottom: 2px; }
+  /* the surfaces' outer boxes sit in the page's flow (in Foundry they are windows, pop-ups and the sidebar); nothing inside the card is touched */
+  .gal-card > .application, .gal-card > #chat-log, .gal-card > #tooltip, .gal-card > .twod12-hudcard { position: static !important; display: block !important; opacity: 1 !important; transform: none !important; inset: auto !important; width: 440px !important; max-width: 440px; height: auto !important; max-height: none !important; overflow: visible !important; }
+  .gal-card > .application > .window-content, .gal-card > .application > .window-content > .twod12.sheet { position: static !important; height: auto !important; max-height: none !important; overflow: visible !important; }
+  .gal-err { color: #f66; font: 12px monospace; }
+</style>
+</head>
+<body>
+<div id="cards"></div>
+<script type="module" src="gallery.mjs"></script>
+</body>
+</html>

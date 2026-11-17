@@ -1,0 +1,4830 @@
+{
+ "Advance": {
+  "name": "Advance",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You press forward, one deliberate step at a time.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "move",
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "You move up to your Speed in squares, in one piece: the movement you don't use is lost (you can't move part of it, use another Action and move the rest later). Once during this Advance, at any point of the movement, you can use the Interact Action (paying its 1 AP then) and go on moving."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Aim": {
+  "name": "Aim",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Patience turns a good shot into a sure one.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "Make a [Ranged] Weapon Attack (1A) with 1 Boon. It ignores [[Cover|Low cover]]."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Armor of Faith": {
+  "name": "Armor of Faith",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "Each time you answer for an ally, your god's light settles on you like mail.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "When you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Avenge Kin": {
+  "name": "Avenge Kin",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Touch its kin, and the orc answers.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "The attacker",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Trigger",
+    "text": "An ally within 2 squares is hit by a [Strike] Action."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1 + 1d4 Sl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 3 + 1d6 Sl"
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "It attacks the attacker, if it can reach it."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Battering Charge": {
+  "name": "Battering Charge",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Nothing slows you down once you start running.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "When you use Charge, your Speed counts as 2 higher for its movement, and its Weapon Attack (1A) is [[Empowered]]."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Beacon": {
+  "name": "Beacon",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You plant your feet, and light rims the shoulders of everyone near you.",
+  "distance": null,
+  "area": "Aura 2",
+  "target": "You and allies in the Area",
+  "traits": [
+   "area",
+   "divine",
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "For 3 rounds, you and allies in the [[Aura]] gain +1 Defense. While the Beacon is active, you gain the following Action:"
+   },
+   {
+    "label": "Special",
+    "text": "**Beacon's Step** — 0R | Round | Interrupt: An ally in the Aura takes damage. | Effects: You Evade 1 toward the ally."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Binding Light": {
+  "name": "Binding Light",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Your blow lands wreathed in light that roots your foe where it stands.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "strike",
+   "divine"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[R] 1d6 Ho."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod] + [R] 1d6 Ho; Immobilized (1 round)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod] + [R] 1d8 Ho; Immobilized (1 round)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Blade and Bow": {
+  "name": "Blade and Bow",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "Arrow, knife, arrow: each sets up the next.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action, or a [Ranged, Strike] Action after a [Melee, Strike] Action, it gains 1 Boon."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Bloodlust": {
+  "name": "Bloodlust",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "The red haze settles, and you stop caring about pain.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "For 1 round, your [Melee, Weapon] Actions are [[Empowered]] and gain 2 Boons, and you take 1 Bane on Saves."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Bowl Over": {
+  "name": "Bowl Over",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "All the weight of the head, low and through.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Bl"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + 2 + [Mod] Bl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d10 + 2 + [Mod] Bl; Prone."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Brawler": {
+  "name": "Brawler",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Your hands have won more fights than any blade.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "You gain the Pummel Action. Your [[Fists]] don't have the [[Non-threatening]] property: you can flank with them."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Break Free": {
+  "name": "Break Free",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You tear loose from whatever holds you.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "move",
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You are Immobilized."
+   },
+   {
+    "label": "Effect",
+    "text": "You are no longer Immobilized."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Brutal Swing": {
+  "name": "Brutal Swing",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The orc puts its whole weight behind one wild arc.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 3 + 1d4 Sl; Prone."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 4 + 1d6 Sl; Prone."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Bulwark of Faith": {
+  "name": "Bulwark of Faith",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You step into the blow meant for them, and your god holds the line with you.",
+  "distance": "5 sq.",
+  "area": null,
+  "target": "One ally",
+  "traits": [
+   "divine",
+   "focus"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Interrupt",
+    "text": "An enemy's [Strike] Action would damage the target."
+   },
+   {
+    "label": "Effect",
+    "text": "The target gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Challenge": {
+  "name": "Challenge",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "You call them out, and they cannot look away.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Once per round, when you deal damage to a creature with a [Melee, Strike] Action, you can challenge them: their [Strike] Actions against creatures other than you take 1 Bane (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Charge": {
+  "name": "Charge",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You close the distance in one straight, reckless line.",
+  "distance": null,
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "move",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You have at least Speed 3."
+   },
+   {
+    "label": "Effect",
+    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target. That Weapon Attack counts toward At-will Banes."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Chilling Touch": {
+  "name": "Chilling Touch",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "Fingers of fog, and the cold goes straight to the heart.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "power",
+   "strike",
+   "fear"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1 + 1d4! Co; Frightened of the Grave Wisp (EoT)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 2 + 1d4! Co; Frightened of the Grave Wisp (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Circling Shot": {
+  "name": "Circling Shot",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You circle your foe as you draw, and loose from the side it has left open.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "ranged",
+   "projectile",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Setup",
+    "text": "You Evade 1."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W]."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; you Evade 1 to a square that is no farther from the target."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Class Expertise": {
+  "name": "Class Expertise",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "You have studied your craft longer than most.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Prerequisite",
+    "text": "Level 5."
+   },
+   {
+    "label": "Passive",
+    "text": "Choose one Encounter or Daily Action from your class's Repertoire that you don't have. You gain it."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Clear Lines": {
+  "name": "Clear Lines",
+  "escalation": 4,
+  "frequency": null,
+  "flavor": "Your friends have learned where not to stand, and you have learned to shoot past their ears.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Your allies give your targets no Cover, and your [Ranged] Actions take no Field Bane for a target Engaged with one of your allies."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Cleaver": {
+  "name": "Cleaver",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A butcher's blade, swung by someone who enjoys it.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1 + 1d4! Sl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 3 + 1d4! Sl"
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "It can Push the target 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Club": {
+  "name": "Club",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A tree trunk with a handle.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1 + 1d4! Bl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 3 + 1d6! Bl"
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "It can Push the target 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Commandment": {
+  "name": "Commandment",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You speak with your god's authority: you call a foe to face you, steady the hearts around you, or order a foe to its knees.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "divine"
+  ],
+  "cost": "1 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "Challenge",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "The target is Taunted by you (1 round)."
+     }
+    ],
+    "distance": "5 sq.",
+    "target": "One enemy",
+    "foundry": {
+     "after": "@Condition[taunted|rounds:1]"
+    }
+   },
+   {
+    "heading": "Courage",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You and allies within 3 squares of you ignore the Frightened condition (1 round)."
+     }
+    ],
+    "foundry": {
+     "fx": {
+      "all": [
+       "{{fx:Courage}}"
+      ]
+     }
+    }
+   },
+   {
+    "heading": "Kneel",
+    "traits": [
+     "power",
+     "save"
+    ],
+    "body": [
+     {
+      "label": "Save",
+      "text": "Appeal"
+     },
+     {
+      "label": "Tier 1 or 2",
+      "text": "Prone."
+     }
+    ],
+    "distance": "5 sq.",
+    "target": "One enemy"
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Consecrated Ground": {
+  "name": "Consecrated Ground",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You drive your weapon into the earth and the ground around it shines: your foes wade through it, and your allies stand firmer on it.",
+  "distance": "8 sq.",
+  "area": "2 Emanation",
+  "target": null,
+  "traits": [
+   "area",
+   "divine"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains Guard equal to your Power Modifier."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Covering Fire": {
+  "name": "Covering Fire",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You keep the arrows coming down on one stretch of ground, and nobody crosses it without paying.",
+  "distance": "Weapon",
+  "area": "3 Burst",
+  "target": null,
+  "traits": [
+   "weapon",
+   "ranged",
+   "projectile",
+   "area"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "For 2 rounds, the Area is Difficult Terrain and [[Hazardous Terrain]] for enemies [HT: Entering, Turn, Movement]: [V] damage equal to 2 + your Weapon Modifier, of your weapon's subtype."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Covering Shot": {
+  "name": "Covering Shot",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "You see the blow coming before they do, and your bolt gets there first.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "The attacker",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Interrupt",
+    "text": "A [Strike] Action would damage an ally within 10 squares."
+   },
+   {
+    "label": "Effect",
+    "text": "Make a [Ranged, Projectile] Weapon Attack (1A) with 1 Boon against the attacker. On a Tier 3, the ally takes half of the triggering damage."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Crawl": {
+  "name": "Crawl",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You drag yourself along the ground.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "move",
+   "self"
+  ],
+  "cost": "1 or 2 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You move 1 square."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "**Requirements:** Your Speed is 5 or higher. You move 3 squares."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Cudgel": {
+  "name": "Cudgel",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A heavy stick and no reason to hold back.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1 + 1d4 Bl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 2 + 1d6 Bl"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Cut Through": {
+  "name": "Cut Through",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You drive through the line without stopping, and strike as you pass.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Setup",
+    "text": "Evade 2. During this Evade you can move through the space of any creature (you can't end in one), and you ignore Difficult Terrain."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod] + 2"
+   },
+   {
+    "label": "Critical",
+    "text": "Relocate (1A) the target, ignoring the Handle trait."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Darting Blade": {
+  "name": "Darting Blade",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You shift the bow to one hand, open a foe with the knife, and are gone before it turns.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "melee",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Setup",
+    "text": "You draw a [[Light]] weapon."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; Staggered (EoT)."
+   },
+   {
+    "label": "Effect",
+    "text": "You Evade 2, then can stow the Light weapon you've drawn."
+   },
+   {
+    "label": "Special",
+    "text": "You make this Strike with a Light weapon you hold."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Deadeye": {
+  "name": "Deadeye",
+  "escalation": null,
+  "frequency": "Daily",
+  "flavor": "You put everything into one shot, and everything into the one after.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Special",
+    "text": "This Action is Favored."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 1[W]"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod] + 1d6 Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod] + 2d6 Pi; Prone."
+   },
+   {
+    "label": "Critical",
+    "text": "The target is Blinded for 1 round."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Deathmark": {
+  "name": "Deathmark",
+  "escalation": 3,
+  "frequency": "Encounter",
+  "flavor": "One arrow, one name, and nothing left to argue.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 1[W] + 1d8 Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod] + 2d8 Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod] + 3d8 Pi"
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "Against your [[Marked Quarry]], this Action has 1 Boon. If the target goes Down, you can choose a new Marked Quarry (0R) and make a [Ranged, Projectile] Weapon Attack (1A) against them."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Dirty Trick": {
+  "name": "Dirty Trick",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Sand in the eyes, a heel on the toes, and the goblin is gone.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1 + 1d4 Pi"
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "The target takes 1 Pressure Bane on its next roll."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Divine Intervention": {
+  "name": "Divine Intervention",
+  "escalation": null,
+  "frequency": "Daily",
+  "flavor": "You reach out, and your god answers before you finish the prayer.",
+  "distance": null,
+  "area": null,
+  "target": "The triggering creature",
+  "traits": [
+   "divine"
+  ],
+  "cost": "2R",
+  "body": [
+   {
+    "label": "Interrupt",
+    "text": "You or an ally within 5 squares would go Down."
+   },
+   {
+    "label": "Effect",
+    "text": "Instead of going Down, the creature's total damage becomes 1 less than their Health Pool, and they gain [[Guard]] equal to what one of their Rally Points heals."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Divine Power": {
+  "name": "Divine Power",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Your god's strength flows through your weapon and your hands.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "When you deal Holy damage to a creature with the Profane [[Tags|Tag]], that creature takes 1 Bane on its [Strike] Actions (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Divine Surge": {
+  "name": "Divine Surge",
+  "escalation": 1,
+  "frequency": null,
+  "flavor": "You name the foe in your god's sight, and every blade that finds it burns.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 1 or more, at the start of each of your turns you can name one enemy within 5 squares of you. For 1 round, the first time an ally deals damage to them, they deal an extra [R] 1d8 Ho."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Double Shot": {
+  "name": "Double Shot",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Two shots, so close together they sound like one.",
+  "distance": null,
+  "area": null,
+  "target": "Two creatures",
+  "traits": [
+   "projectile",
+   "strike"
+  ],
+  "cost": "2 or 3 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You make two [Ranged, Projectile] Weapon Attacks (1A), each against a different creature."
+     }
+    ]
+   },
+   {
+    "heading": "3 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Evade 1, then as 2 AP."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Dread Whisper": {
+  "name": "Dread Whisper",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "It knows your name, and it says what you fear most.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "power",
+   "strike",
+   "fear"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 3 + 1d6 Ps; Dazed 1."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 7 + 1d6 Ps; Dazed 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Evade": {
+  "name": "Evade",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You slip through the fray without giving anyone an opening.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "self"
+  ],
+  "cost": "1 or 2 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Evade 1: a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Evade half your Speed (rounded down): a movement that doesn't trigger reactions, in one piece; you can't Evade into or through Difficult Terrain."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Final Verdict": {
+  "name": "Final Verdict",
+  "escalation": 3,
+  "frequency": "Encounter",
+  "flavor": "You name every sin within reach, and the light answers all at once.",
+  "distance": null,
+  "area": "1 Emanation",
+  "target": "All enemies in the Area",
+  "traits": [
+   "area",
+   "divine",
+   "melee",
+   "self",
+   "signature",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Signature or Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 1[W] + [R] 1d8 Ho"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod] + [R] 2d8 Ho"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod] + [R] 3d8 Ho"
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "You roll once and compare the result to each target's AD. Each target you hit is Pushed 1 and sheds Bright light in a 1 Emanation for 1 round. A Bloodied target is Prone instead; a Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Finisher": {
+  "name": "Finisher",
+  "escalation": 3,
+  "frequency": null,
+  "flavor": "A wounded thing runs in a straight line.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 3 or more, the first [Projectile] Action you make each round that deals damage to a Bloodied or Strained creature deals an extra [V] 1d8 Pi."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Fists": {
+  "name": "Fists",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "When there is nothing else in your hands, there are always your hands.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You have a free hand."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Fleet": {
+  "name": "Fleet",
+  "escalation": 6,
+  "frequency": null,
+  "flavor": "Nothing on this field is as fast as you are now.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Each Evade of yours moves you 1 more square, and your Evades can enter Difficult Terrain."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Font of Mercy": {
+  "name": "Font of Mercy",
+  "escalation": 1,
+  "frequency": null,
+  "flavor": "Where you kneel, wounds remember how to close.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 1 or more, when you or an ally within 5 squares of you uses a Rally Point, they heal your Power Modifier + 2 more."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Footwork": {
+  "name": "Footwork",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You are never where you were a breath ago: a long sidestep, a run through the press, or a step with your hands already busy.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "1 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "Sidestep",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You Evade 3."
+     }
+    ]
+   },
+   {
+    "heading": "Weave",
+    "traits": [
+     "move"
+    ],
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You Advance. During this Advance, Difficult Terrain doesn't slow you, and you can move through the squares of unwilling creatures (you can't end in one)."
+     }
+    ],
+    "foundry": {
+     "sub": [
+      [
+       "@Move[advance|distance:speed]",
+       "@Move[advance|distance:speed|terrain:ignore]"
+      ]
+     ]
+    }
+   },
+   {
+    "heading": "Hands Busy",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You Evade 1, and before or after it you use the Interact or Reload Action (1A)."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Ground Slam": {
+  "name": "Ground Slam",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "The ogre brings both fists down, and the ground jumps.",
+  "distance": null,
+  "area": "2 Emanation",
+  "target": "All creatures in the Area",
+  "traits": [
+   "area",
+   "body",
+   "save"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Save",
+    "text": "Body"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 10 + 1d8 Bl; Prone."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 6 + 1d6 Bl; Prone."
+   },
+   {
+    "label": "Tier 3",
+    "text": "No effect."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Guarded Cut": {
+  "name": "Guarded Cut",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The blade strikes and comes straight back to guard.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Sl"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d6 + [Mod] Sl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d10 + [Mod] Sl; you gain +1 Armor Defense for 1 round."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Gut Punch": {
+  "name": "Gut Punch",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A fist with a blade in it, right under the ribs.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Pi; Hindered (EoT)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d6 + [Mod] Pi; Hindered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Hallowed Dawn": {
+  "name": "Hallowed Dawn",
+  "escalation": 3,
+  "frequency": "Encounter",
+  "flavor": "Dawn breaks where you stand, and it chooses sides.",
+  "distance": null,
+  "area": "2 Emanation",
+  "target": "All creatures in the Area",
+  "traits": [
+   "area",
+   "divine",
+   "self"
+  ],
+  "cost": "3 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "You and each ally in the Area heal 3d6 + your Power Modifier (4d6 at Stage 2, 6d6 at Stage 3) and end one effect on them that is EoT or has 1 round left. Each enemy in the Area is Pushed 2 away from you, takes 1 Bane on its [Strike] Actions and sheds Bright light in a 1 Emanation for 1 round."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Hallowed Stance": {
+  "name": "Hallowed Stance",
+  "escalation": 6,
+  "frequency": null,
+  "flavor": "Your god's light carries you: wherever you are needed, you are already there.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Once on your turn, a [Divine] Action you use gains \"Setup: You Advance 3.\""
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Hand of Mercy": {
+  "name": "Hand of Mercy",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A single touch undoes what the enemy worked for.",
+  "distance": "5 sq.",
+  "area": null,
+  "target": "One ally",
+  "traits": [
+   "divine",
+   "focus"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Prerequisite",
+    "text": "A [Divine] Action."
+   },
+   {
+    "label": "Effect",
+    "text": "Choose one: the ally ends one effect on them that is EoT or has 1 round left; or, if the ally is Down, they can use 1 Rally Point."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Harrying Shots": {
+  "name": "Harrying Shots",
+  "escalation": 1,
+  "frequency": null,
+  "flavor": "Every arrow says the same thing: not yet.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 1 or more, the first time each round you deal damage to your Marked Quarry with a [Projectile] Action, they take 1 Bane on [Strike] Actions (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Haul": {
+  "name": "Haul",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You snag them and drag them in.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "appeal",
+   "body",
+   "handle",
+   "strike"
+  ],
+  "cost": "1, 2 or 3 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement."
+   },
+   {
+    "label": "Attack",
+    "text": "Appeal or Body vs. the target's same Attribute"
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Pulled 1."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Pulled 2."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Pulled 2."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Pulled 4."
+     }
+    ]
+   },
+   {
+    "heading": "3 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "Pulled 1."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Pulled 3."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Pulled 5."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Heartseeker": {
+  "name": "Heartseeker",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A full draw, aimed where the armor gives.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + 1 + [Mod] Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d8 + 1 + [Mod] Pi; Vulnerable 1 (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Heavy Blows": {
+  "name": "Heavy Blows",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Every swing carries the whole weight of the steel.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "When a [Melee, Strike, Weapon] Action you make with a Two-handed weapon deals damage on a Tier 3, it deals 2 more."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Hide": {
+  "name": "Hide",
+  "escalation": null,
+  "frequency": null,
+  "flavor": null,
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "",
+  "body": [
+   {
+    "label": "",
+    "text": "**Not written yet.** Hiding and sneaking are an open item (see [[Senses]]). This card holds the place, so that other cards can refer to Hide."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Hit and Run": {
+  "name": "Hit and Run",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You run the length of the fight with the knife out, opening every foe you pass, and somewhere along the way an arrow leaves your bow.",
+  "distance": null,
+  "area": null,
+  "target": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range",
+  "traits": [
+   "weapon",
+   "projectile",
+   "move",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense. Roll once, when the first creature is hit: every hit of this Action uses that roll."
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; Vulnerable 1 (EoT)."
+   },
+   {
+    "label": "Special",
+    "text": "[W] is the weapon that hit. The bow's hit is Doomed if you are Engaged when you make it."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Hold the Line": {
+  "name": "Hold the Line",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You plant yourself where the fight is worst: you crowd the ground at your feet, trade places with an ally, or carry one clear.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "1 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "Brace",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Squares adjacent to you are Difficult Terrain for enemies (1 round)."
+     }
+    ],
+    "foundry": {
+     "fx": {
+      "all": [
+       "{{fx:Brace}}"
+      ]
+     }
+    }
+   },
+   {
+    "heading": "Trade Places",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You and the target swap squares. Each of you is moved by a Reposition."
+     }
+    ],
+    "distance": "Reach",
+    "target": "One willing ally"
+   },
+   {
+    "heading": "Rescue",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Reposition 2 the target."
+     }
+    ],
+    "distance": "Reach",
+    "target": "One willing ally"
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Holy Wrath": {
+  "name": "Holy Wrath",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "For one blow, your god stops holding back.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "divine",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 or 3 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "[V] 1[W] + [R] 1d8 Ho"
+     },
+     {
+      "label": "Tier 2",
+      "text": "[V] 1[W] + [Mod] + [R] 2d8 Ho"
+     },
+     {
+      "label": "Tier 3",
+      "text": "[V] 1[W] + [Mod] + [R] 3d8 Ho"
+     }
+    ]
+   },
+   {
+    "heading": "3 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "[V] 1[W] + [R] 2d8 Ho"
+     },
+     {
+      "label": "Tier 2",
+      "text": "[V] 1[W] + [Mod] + [R] 3d8 Ho"
+     },
+     {
+      "label": "Tier 3",
+      "text": "[V] 1[W] + [Mod] + [R] 4d8 Ho"
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Hooking Chop": {
+  "name": "Hooking Chop",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The beard of the axe catches, and you pull.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Sl"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Sl; Pulled 1."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d8 + [Mod] Sl; Pulled 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Hunter's Edge": {
+  "name": "Hunter's Edge",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "You know where it will be before it does.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 2 or more, your [Projectile] Actions against your Marked Quarry ignore Cover, and the first one each round that deals damage deals an extra [V] 1d4 Pi."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Hunter's Focus": {
+  "name": "Hunter's Focus",
+  "escalation": null,
+  "frequency": "Daily",
+  "flavor": "You and the quarry, and nothing else in the world.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "focus",
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "For the rest of the encounter, against your Marked Quarry (a new Marked Quarry when you choose one): you gain 1 Boon and are Empowered against them, and you take less damage from each of their Actions, reduced by your **Signature Modifier** (you choose which instance of its damage is reduced)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Interact": {
+  "name": "Interact",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You pull the lever, open the door, grab what you need.",
+  "distance": "Reach",
+  "area": null,
+  "target": null,
+  "traits": [
+   "handle"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see [[Advance]])."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Judge": {
+  "name": "Judge",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.",
+  "distance": "10 sq.",
+  "area": null,
+  "target": "One enemy you can see",
+  "traits": [
+   "divine"
+  ],
+  "cost": "0 or 1 AP",
+  "body": [
+   {
+    "label": "Judged",
+    "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. The first time each round it damages an ally within 5 squares of you, that damage is reduced by your Power Modifier."
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "0 AP",
+    "body": [
+     {
+      "label": "Special",
+      "text": "You can use this only at the start of an encounter, or as a 0R when the creature you Judged goes Down."
+     },
+     {
+      "label": "Effect",
+      "text": "The target is Judged by you until the encounter ends."
+     }
+    ]
+   },
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "The target is Judged by you instead of the one you had."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Keep Them Off": {
+  "name": "Keep Them Off",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The point stays between you and them, and it pushes.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d6 + [Mod] Pi; Pushed 1."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d10 + [Mod] Pi; Pushed 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Kickboxer": {
+  "name": "Kickboxer",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Your legs hit as hard as your fists.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Prerequisite",
+    "text": "Brawler."
+   },
+   {
+    "label": "Passive",
+    "text": "You gain the Leg Sweep Action: a kick, so it needs no free hand. You can use it with your hands full."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Killer's Focus": {
+  "name": "Killer's Focus",
+  "escalation": 1,
+  "frequency": null,
+  "flavor": "First blood is the only blood that matters.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 1 or more, your first [Projectile, Strike, Weapon] Action each round that deals damage deals an extra [V] 1d6 Pi."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Kindled Wrath": {
+  "name": "Kindled Wrath",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "An ally's blood on the ground, and your god's anger is yours.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Once an encounter, when an ally becomes Bloodied or goes Down, your Escalation increases by 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Lantern of Faith": {
+  "name": "Lantern of Faith",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You call your god's light: around you, onto a foe, or into a foe's eyes.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "divine"
+  ],
+  "cost": "1 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "Kindle",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You shed [[Bright|Bright light]] 3 until the encounter ends."
+     }
+    ],
+    "foundry": {
+     "fx": {
+      "all": [
+       "{{fx:Kindle (Bright light 3)}}"
+      ]
+     }
+    }
+   },
+   {
+    "heading": "Reveal",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "The target sheds [[Bright|Bright light]] 1 (1 round)."
+     }
+    ],
+    "distance": "5 sq.",
+    "target": "One creature you perceive",
+    "foundry": {
+     "fx": {
+      "all": [
+       "{{fx:Reveal (Bright light 1)}}"
+      ]
+     }
+    }
+   },
+   {
+    "heading": "Glare",
+    "traits": [
+     "power",
+     "save"
+    ],
+    "body": [
+     {
+      "label": "Save",
+      "text": "Instinct"
+     },
+     {
+      "label": "Tier 1 or 2",
+      "text": "[[Half-Blinded]] (EoT)."
+     }
+    ],
+    "distance": "5 sq.",
+    "target": "One enemy you can see"
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Lay On Hands": {
+  "name": "Lay On Hands",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You stride to an ally's side and lay a hand on them, and a skin of pale light settles over them.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One willing ally",
+  "traits": [
+   "divine",
+   "focus"
+  ],
+  "cost": "1 or 2 AP",
+  "body": [
+   {
+    "label": "Setup",
+    "text": "You Advance up to 5 squares in a straight line toward the target."
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "The target gains Guard equal to 2 + your Power Modifier."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Lean and Loose": {
+  "name": "Lean and Loose",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "A wall is a quiver's best friend: you are out, the arrow is gone, and you are back.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "The [[Leaning]] Action costs you 0 AP."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Leaning": {
+  "name": "Leaning",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You lean out from cover, just enough to see.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Leg Sweep": {
+  "name": "Leg Sweep",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A low kick takes their legs out from under them.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Special",
+    "text": "This Action uses your [[Fists]] even when you have no free hand."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 1d4 Bl"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Bl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d6 + [Mod] Bl; Prone."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Lesser Blessing": {
+  "name": "Lesser Blessing",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "A small gift from the god you follow.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "divine",
+   "power"
+  ],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Pick one blessing from the list below, related to a god you follow. You gain its Action. (More blessings will be added.)"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Lock & Loose": {
+  "name": "Lock & Loose",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A bolt to the knee, and they go nowhere.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4+2+[Mod] Pi; For 1 round, the creature is Hindered until they use a Move Action."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d10 + [Mod] Pi; Immobilized"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Long Draw": {
+  "name": "Long Draw",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "You pull a little further, and the arrow flies a little truer.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "With a [[Projectile]] weapon, your far range has no Bane and your maximum range has 1 Bane instead of 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Low Blow": {
+  "name": "Low Blow",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "No rules in a back alley.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 4 + 1d6 Bl; Staggered (EoT)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 8 + 1d6 Bl; Staggered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Lunge": {
+  "name": "Lunge",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A full extension that reaches farther than they thought.",
+  "distance": "Weapon + 1",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d8 + [Mod] Pi; Hindered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Mark Quarry": {
+  "name": "Mark Quarry",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "One name, one face, and the rest of the field goes quiet.",
+  "distance": null,
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "focus"
+  ],
+  "cost": "0 or 1 AP",
+  "body": [
+   {
+    "label": "Special",
+    "text": "At the start of each encounter, choose one enemy as your Marked Quarry with this Action. You gain 1 Boon on [Projectile, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time."
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "0 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "The targeted creature becomes your Marked Quarry: at the start of an encounter, or as a 0R [Focus] when yours died or went Down."
+     }
+    ]
+   },
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "The targeted creature becomes your Marked Quarry instead of the one you had."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Marked Quarry": {
+  "name": "Marked Quarry",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "You pick the one, and the world narrows.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "At the start of each encounter, choose one enemy as your **Marked Quarry**. You gain 1 Boon on [Projectile, Strike] Actions against them, and those Actions deal [V] [Mod] extra damage (the same subtype as your weapon) on a Tier 1. You can only have one Marked Quarry at a time."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Marksman's Shot": {
+  "name": "Marksman's Shot",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "One shot, carefully placed. Everything after it is easier.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 1[W] + 1d8 Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod] + 2d6 Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod] + 3d6 Pi; Vulnerable 2 (EoT)."
+   },
+   {
+    "label": "Critical",
+    "text": "The target is Blinded (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Mending Light": {
+  "name": "Mending Light",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "Light gathers where you stand, and the hurt are drawn to it.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 2 or more, at the start of each of your turns, you or one ally within 5 squares of you heals twice your Power Modifier + your Stage."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Miraculous Recovery": {
+  "name": "Miraculous Recovery",
+  "escalation": null,
+  "frequency": "Daily",
+  "flavor": "You lay both hands on the wound and call in a debt owed to your god.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One [[Willing and Unwilling|willing]] creature",
+  "traits": [
+   "divine",
+   "focus"
+  ],
+  "cost": "2 or 3 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "The target heals twice what 1 Rally Point would heal, and you end one non-permanent effect of your choice on them."
+     }
+    ]
+   },
+   {
+    "heading": "3 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "As 2 AP, but three times what 1 Rally Point would heal."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "One More Arrow": {
+  "name": "One More Arrow",
+  "escalation": 6,
+  "frequency": null,
+  "flavor": "By now your hands move faster than you can think: there is always one more arrow in the air.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Once on each of your turns, a [Strike] Action of yours that deals [W] deals 1[W] more."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Open Season": {
+  "name": "Open Season",
+  "escalation": 3,
+  "frequency": "Encounter",
+  "flavor": "You call it, and every arrow in the party finds the mark.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "Your Marked Quarry",
+  "traits": [
+   "focus",
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "Make a [Ranged, Projectile] Weapon Attack (1A) against your [[Marked Quarry]]. For 1 round, they are Vulnerable 2, and [Strike] Actions your allies make against them deal an extra [V] 1d6 Pi."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Opening Shot": {
+  "name": "Opening Shot",
+  "escalation": 4,
+  "frequency": null,
+  "flavor": "Your arrow staggers the foe, and your ally's blade is already coming.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Weapon Attack (1A) against it."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Opportunity Attack": {
+  "name": "Opportunity Attack",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You punish anyone who moves carelessly near you.",
+  "distance": null,
+  "area": null,
+  "target": "The triggering creature",
+  "traits": [
+   "strike"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Interrupt",
+    "text": "An enemy adjacent to you would leave a square during a Move Action or uses the Stand Action."
+   },
+   {
+    "label": "Effect",
+    "text": "You can make a Weapon Attack (1A) against the triggering creature, as long as your weapon can target them. An NPC makes its Basic attack instead."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Overhead Smash": {
+  "name": "Overhead Smash",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Both hands on the club, and the floor cracks under it.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 3 + 1d6 Bl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 7 + 1d6 Bl"
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "It can Push the target 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Overwatch": {
+  "name": "Overwatch",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "Nothing moves in your sight without an arrow following it.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "The triggering creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Trigger",
+    "text": "An enemy within 10 squares moves closer to you or to an ally."
+   },
+   {
+    "label": "Effect",
+    "text": "Make a [Ranged, Projectile] Weapon Attack (1A) against the triggering creature. On a Tier 2 or 3, it is Hindered (EoT); on a Critical, it is also Pushed 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Pinning Shot": {
+  "name": "Pinning Shot",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You pin their foot to the ground with an arrow.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "Make a [Ranged] Weapon Attack (1A). On a Tier 2 or 3, the target is Immobilized (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Point Blank": {
+  "name": "Point Blank",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Too close for a bow. Not too close for this.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "firearm",
+   "ranged",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 2d6 + [Mod] Pi; Pushed 1."
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "While you are Engaged, this attack takes 1 Bane for it instead of 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Pummel": {
+  "name": "Pummel",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A flurry of blows until something gives.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You have a free hand."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Bl"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Bl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d6 + [Mod] Bl"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Quick Shots": {
+  "name": "Quick Shots",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You loose arrow after arrow into one foe before the first has landed, and step away while it reels.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "ranged",
+   "projectile",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 2[W] + [Mod]."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 3[W] + [Mod]."
+   },
+   {
+    "label": "Critical",
+    "text": "You regain 1 AP."
+   },
+   {
+    "label": "Effect",
+    "text": "You Evade 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Radiant Zeal": {
+  "name": "Radiant Zeal",
+  "escalation": 1,
+  "frequency": null,
+  "flavor": "The longer the fight, the brighter you burn.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 1 or more, the first [Strike] Action you make each round that deals damage deals an extra [R] 1d6 Ho."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Rain of Arrows": {
+  "name": "Rain of Arrows",
+  "escalation": null,
+  "frequency": "Daily",
+  "flavor": "Arrows fall from nothing, again and again, until the ground is gone.",
+  "distance": "Your weapon's maximum range",
+  "area": "3 Emanation",
+  "target": "All enemies in the Area",
+  "traits": [
+   "area",
+   "ranged",
+   "save",
+   "projectile",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Save",
+    "text": "Instinct"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 2d8 + [Mod] Pi; Prone."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 2d6 + [Mod] Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d6 Pi"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Rally the Tribe": {
+  "name": "Rally the Tribe",
+  "escalation": 4,
+  "frequency": "Round",
+  "flavor": "One bellow, and the whole tribe fights harder.",
+  "distance": "5 sq.",
+  "area": null,
+  "target": "Allies within 5 squares",
+  "traits": [
+   "focus"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Reaping Sweep": {
+  "name": "Reaping Sweep",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A wide, heavy arc for anyone standing too close.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Sl"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d10 + [Mod] Sl; Cleave 1"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 2d6 + [Mod] Sl; Cleave 2"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Rebuke": {
+  "name": "Rebuke",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "You call out in your god's name, and your foe's stride falters and stops.",
+  "distance": "3 sq.",
+  "area": null,
+  "target": "One enemy",
+  "traits": [
+   "power",
+   "save",
+   "divine"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Trigger",
+    "text": "The target moves away from you."
+   },
+   {
+    "label": "Effect",
+    "text": "The target is Hindered (EoT)."
+   },
+   {
+    "label": "Save",
+    "text": "Appeal"
+   },
+   {
+    "label": "Tier 1 or 2",
+    "text": "Its Move Action is disrupted."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Reckoning": {
+  "name": "Reckoning",
+  "escalation": 6,
+  "frequency": "Encounter",
+  "flavor": "You stride among your foes, and your god's light breaks from you and throws them back.",
+  "distance": null,
+  "area": "2 Emanation",
+  "target": "All enemies in the Area",
+  "traits": [
+   "power",
+   "save",
+   "area",
+   "self",
+   "divine"
+  ],
+  "cost": "0 AP",
+  "body": [
+   {
+    "label": "Setup",
+    "text": "You Advance."
+   },
+   {
+    "label": "Effect",
+    "text": "Each target is Pushed 2."
+   },
+   {
+    "label": "Save",
+    "text": "Appeal"
+   },
+   {
+    "label": "Tier 1 or 2",
+    "text": "Frightened of you (1 round)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Regrip": {
+  "name": "Regrip",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You shift your hands on the grip, and the weapon sits where you want it.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "You do one of the following: hold a weapon you hold in one hand with both hands (your other hand must be free); move a weapon from one hand to the other; or swap the weapons in your two hands. Regrip doesn't have the Handle trait: it doesn't need a free hand."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Release": {
+  "name": "Release",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You let it go.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "self"
+  ],
+  "cost": "0 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "You drop an object in your square, or let go of an object you hold with one hand (a two-handed weapon is then held with one hand)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Reload": {
+  "name": "Reload",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You work the mechanism and seat a fresh bolt.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One target",
+  "traits": [
+   "weapon",
+   "handle"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You or an ally within Reach is wielding an unloaded weapon."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. DC 13"
+   },
+   {
+    "label": "Tier 1",
+    "text": "Your next Reload attempt gains 2 Boons."
+   },
+   {
+    "label": "Tier 2",
+    "text": "You Reload the weapon. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can."
+   },
+   {
+    "label": "Tier 3",
+    "text": "You Reload the weapon and its wielder can Evade 1. Then you can Regrip (1A) to hold the weapon with two hands, or the ally can."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Relocate": {
+  "name": "Relocate",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You take them by the arm and put them where you want them.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "body",
+   "handle",
+   "instinct",
+   "strike"
+  ],
+  "cost": "1, 2 or 3 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "The target's SR is at most 1 higher than yours. The target must remain within your Reach throughout the whole movement."
+   },
+   {
+    "label": "Attack",
+    "text": "Body or Instinct vs. the target's same Attribute"
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Reposition 1."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Reposition 2."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Reposition 2."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Reposition 4."
+     }
+    ]
+   },
+   {
+    "heading": "3 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "Reposition 1."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Reposition 3."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Reposition 5."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Rending Chop": {
+  "name": "Rending Chop",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A blow that splits armor and leaves the flesh open.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Sl"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d6 + [Mod] Sl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 2d8 + [Mod] Sl; Vulnerable 1 (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Ricochet": {
+  "name": "Ricochet",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Walls, shields and stones are just more angles.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Prerequisite",
+    "text": "Aim."
+   },
+   {
+    "label": "Passive",
+    "text": "Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature to target them. A bounced shot takes 1 Bane."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Rimebrand (Cold)": {
+  "name": "Rimebrand (Cold)",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Frost creeps along your weapon, a gift from a winter god.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "divine",
+   "power",
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "Until the end of your turn, your [Weapon] Actions deal an extra [R] 1d4 Co, and the first one that deals damage on a Tier 3 makes the target Hindered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Ringing Blow": {
+  "name": "Ringing Blow",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A crack on the helm, and their next swing goes wide.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Bl"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + 1 + [Mod] Bl"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d8 + 1 + [Mod] Bl; its next [Strike] Action takes 1 Pressure Bane (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Rolling Shot": {
+  "name": "Rolling Shot",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You keep moving, and the shot rides along with the motion.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1, 2 or 3 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Evade 1, then make a [Ranged, Projectile] Weapon Attack (1A)."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Evade 2, then make a [Ranged, Projectile] Weapon Attack (1A) that deals an extra [V] 1d6 Pi."
+     }
+    ]
+   },
+   {
+    "heading": "3 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Evade 3, then make a [Ranged, Projectile] Weapon Attack (1A) that deals an extra [V] 2d6 Pi."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Roving Judgment": {
+  "name": "Roving Judgment",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "Your eye passes from one guilty foe to the next, and your god's attention follows it.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "The 1 AP use of Judge costs you 0 AP."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Rusty Knife": {
+  "name": "Rusty Knife",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A notched blade, quick and dirty.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1 + 1d4 Pi"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Sacred Weapon": {
+  "name": "Sacred Weapon",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You lay a hand on the steel and bless it for what comes next.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One / two creatures",
+  "traits": [
+   "divine",
+   "focus"
+  ],
+  "cost": "1 or 2 AP",
+  "body": [
+   {
+    "label": "Prerequisite",
+    "text": "Lesser Blessing, or a [Divine] Action."
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You touch a creature (yourself or an ally). They become Empowered for 1 round."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "As 1 AP, but you can touch up to two creatures."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Searing Blows": {
+  "name": "Searing Blows",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "Every blow you land leaves a little of the light behind.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 2 or more, your [Strike] Actions that deal damage deal an extra [R] 2 Ho."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Seizing Cut": {
+  "name": "Seizing Cut",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You catch your foe's arm with your empty hand, cut, and turn it to where you want it standing.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "melee",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You have at least one hand free."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[[Reposition]] 1 the target."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W]; [[Reposition]] 1 the target."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; [[Slid]] 1, then [[Grabbed]]."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Shake Off": {
+  "name": "Shake Off",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You beat out the flames, press on the wound, scrape off what burns.",
+  "distance": "Reach",
+  "area": null,
+  "target": "You, or one Lingering creature within your Reach",
+  "traits": [
+   "handle"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of this turn, then the Lingering ends. **Tier 3:** the Lingering ends."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Sharpshooter": {
+  "name": "Sharpshooter",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "You were made for the shot no one else would take.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Choose your Hallmark Action: **Double Shot** or **Rolling Shot**. Choose one [[Projectile]] weapon, such as a bow or a crossbow: you start with **3 Mastery** with it. Your [Projectile] Actions don't take the Bane for targeting a creature Engaged with a creature other than you."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Shield of Faith": {
+  "name": "Shield of Faith",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "You raise a hand, and a pane of light turns part of the blow aside and pulls your foe's eye to you.",
+  "distance": "5 sq.",
+  "area": null,
+  "target": "One ally",
+  "traits": [
+   "divine",
+   "focus"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Interrupt",
+    "text": "An enemy's [Strike] Action would damage the target."
+   },
+   {
+    "label": "Effect",
+    "text": "That damage is reduced by 1 + your Power Modifier, and the triggering creature is Taunted by you (1 round)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Shifting Aim": {
+  "name": "Shifting Aim",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "You never loose twice from the same spot: a step to the side, and the line is clean again.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn since your last [Strike] Action (or since your turn began)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Shove": {
+  "name": "Shove",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You put your weight behind it and drive them back.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "body",
+   "handle",
+   "strike"
+  ],
+  "cost": "1, 2 or 3 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "The target's SR is at most 1 higher than yours."
+   },
+   {
+    "label": "Attack",
+    "text": "Body vs. Body"
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Pushed 1."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Pushed 2."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Pushed 2."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Pushed 4."
+     }
+    ]
+   },
+   {
+    "heading": "3 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "Pushed 1."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Pushed 3."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Pushed 5."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Skirmish Shot": {
+  "name": "Skirmish Shot",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Loose, and be gone before the arrow lands.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d6 + [Mod] Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d10 + [Mod] Pi; you can Evade 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Slip Away": {
+  "name": "Slip Away",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "The moment a foe commits to reaching you, you are already somewhere else.",
+  "distance": "5 sq.",
+  "area": null,
+  "target": "One enemy",
+  "traits": [],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Interrupt",
+    "text": "The target would enter a square adjacent to you."
+   },
+   {
+    "label": "Effect",
+    "text": "You Evade 1, then Advance 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Smite": {
+  "name": "Smite",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "Holy light gathers on your weapon as the fight wears on, and you bring all of it down in one blow.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "signature",
+   "weapon",
+   "strike",
+   "divine"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Smite dice",
+    "text": "[R] 1d6! Ho for each Escalation you have, up to 4 dice. Against a Profane creature they are 1d8!s."
+   },
+   {
+    "label": "Attack",
+    "text": "Signature vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "Your Smite dice."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod] + your Smite dice."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod] + your Smite dice + 1 more Smite die."
+   },
+   {
+    "label": "Special",
+    "text": "When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. Neither extra die counts toward the 4."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Snap Shot": {
+  "name": "Snap Shot",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "A foe lunges for you, and you put an arrow in it before it has finished the step.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One enemy",
+  "traits": [
+   "weapon",
+   "ranged",
+   "projectile",
+   "strike"
+  ],
+  "cost": "1R",
+  "body": [
+   {
+    "label": "Interrupt",
+    "text": "The target would enter a square adjacent to you."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]; Hindered (EoT)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; Immobilized (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Spotter": {
+  "name": "Spotter",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You read the field the way others read a page: where a foe hides, where the gap in its cover is, where you yourself are hardest to hit.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "1 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "Call Out",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear (1 round)."
+     }
+    ],
+    "distance": "10 sq.",
+    "target": "One creature you perceive",
+    "foundry": {
+     "fx": {
+      "all": [
+       "{{fx:Called-Out}}"
+      ]
+     }
+    }
+   },
+   {
+    "heading": "Find the Gap",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower."
+     }
+    ],
+    "foundry": {
+     "fx": {
+      "all": [
+       "{{fx:Find the Gap}}"
+      ]
+     }
+    }
+   },
+   {
+    "heading": "Keep Low",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Against each creature you have Cover from, your Cover is one level higher, up to High (1 round)."
+     }
+    ],
+    "foundry": {
+     "fx": {
+      "all": [
+       "{{fx:Keep Low}}"
+      ]
+     }
+    }
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Staggering Shot": {
+  "name": "Staggering Shot",
+  "escalation": 3,
+  "frequency": null,
+  "flavor": "The bolt knocks the wind out of them.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 3 or more, the first time each round you deal damage to your Marked Quarry with a [Projectile] Action, they are Dazed 1 and Hindered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Stand": {
+  "name": "Stand",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You get your feet back under you.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "move",
+   "self"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "You stand up: you are no longer Prone."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Steady Nerves": {
+  "name": "Steady Nerves",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "They are in your face. You are still calm.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Your [Ranged] Actions don't take the Banes for being Engaged."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Steel Yourself": {
+  "name": "Steel Yourself",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You grit your teeth and find a little more to give.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "self"
+  ],
+  "cost": "2 or 3 AP",
+  "body": [],
+  "blocks": [
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You use 1 Rally Point."
+     }
+    ]
+   },
+   {
+    "heading": "3 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "You use 2 Rally Points."
+     }
+    ]
+   }
+  ],
+  "after": [
+   {
+    "label": "Special",
+    "text": "You can't use this Action while Down (Desperate, Dying or Shattered) or Unconscious."
+   }
+  ],
+  "passive": false
+ },
+ "Stick and Slip": {
+  "name": "Stick and Slip",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "In, a quick cut, and out before they can answer.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "melee",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Pi; you can Evade 1."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d8 + [Mod] Pi; you can Evade 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Sting": {
+  "name": "Sting",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A small bolt in the leg: small, and enough.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1d8 + [Mod] Pi; Hindered (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Strafe": {
+  "name": "Strafe",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You run across the line of fight and put an arrow into each foe you pass.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "Up to three creatures",
+  "traits": [
+   "weapon",
+   "ranged",
+   "projectile",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Setup",
+    "text": "You Advance."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; Pushed 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Sure Step": {
+  "name": "Sure Step",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "Loose, step, and let them wonder where the next one comes from.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 2 or more, once a round, when you deal damage to your Marked Quarry with a [Projectile] Action, you can Evade 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Thrill of the Kill": {
+  "name": "Thrill of the Kill",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "One of yours drops, and your blood is up.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Once an encounter, when an enemy you have damaged goes Down, your Escalation increases by 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Thunderclap": {
+  "name": "Thunderclap",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "The shot and the smoke, and they are on the ground.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "firearm",
+   "ranged",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod] Pi"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1d4 + [Mod] Pi"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 2d8 + [Mod] Pi; Prone."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Thwart Cut": {
+  "name": "Thwart Cut",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You cut across your foe's blade and stay on it, and every blow it tries has to come through your steel.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "melee",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[[Pressed]] 1 (EoT)."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W]; [[Pressed]] 1 (EoT)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; [[Pressed]] 2 (EoT)."
+   },
+   {
+    "label": "Special",
+    "text": "This Pressed ends if you stop threatening the target."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Tireless Vigil": {
+  "name": "Tireless Vigil",
+  "escalation": 4,
+  "frequency": null,
+  "flavor": "The longer the fight lasts, the less escapes you: your guard is on two allies at once.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "You gain 1 more Reaction AP when you regain AP. It pays only for [Divine] Reactions."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Trick Shots": {
+  "name": "Trick Shots",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You put the arrow where it will do something other than wound: through a cloak, past an ear, square on a shield.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "ranged",
+   "projectile",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "Pin",
+    "body": [
+     {
+      "label": "Tier 2 or 3",
+      "text": "[V] [Mod]; Hindered (1 round)."
+     }
+    ]
+   },
+   {
+    "heading": "Startle",
+    "body": [
+     {
+      "label": "Tier 2 or 3",
+      "text": "[V] [Mod]; Vulnerable 1 (EoT)."
+     }
+    ]
+   },
+   {
+    "heading": "Knock Back",
+    "body": [
+     {
+      "label": "Tier 2",
+      "text": "[V] [Mod]; Pushed 1."
+     },
+     {
+      "label": "Tier 3",
+      "text": "[V] [Mod]; Pushed 2."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Trip": {
+  "name": "Trip",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "A hooked foot, a twist, and they hit the ground.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "body",
+   "handle",
+   "instinct",
+   "strike"
+  ],
+  "cost": "1 or 2 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "The target's SR is at most 1 higher than yours."
+   },
+   {
+    "label": "Attack",
+    "text": "Body or Instinct vs. the target's same Attribute"
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 3",
+      "text": "Prone."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Tier 1",
+      "text": "No effect."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Prone."
+     },
+     {
+      "label": "Tier 3",
+      "text": "[V] 1d8 Bl; Prone."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Twin Shot": {
+  "name": "Twin Shot",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "Two arrows, one motion, two answers.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "Two creatures",
+  "traits": [
+   "ranged",
+   "projectile",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "Make one [Ranged, Projectile] Weapon Attack (1A) and compare its result to two different creatures no more than 5 squares apart. It deals an extra [V] 1d6 Pi to each of them."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Vanish": {
+  "name": "Vanish",
+  "escalation": 1,
+  "frequency": null,
+  "flavor": "They reach for you, and you are already somewhere else.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "While your Escalation is 1 or more, you have the **Vanish** Reaction (0R, Round). **Interrupt:** An enemy would enter a square adjacent to you during a Move Action. You can Evade 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Volley": {
+  "name": "Volley",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You send a flight of arrows high, and they come down on everything standing in one patch of ground.",
+  "distance": "Weapon",
+  "area": "3 Burst",
+  "target": "All creatures in the Area",
+  "traits": [
+   "weapon",
+   "ranged",
+   "projectile",
+   "area",
+   "strike"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 2[W] + [Mod]; Hindered (EoT)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 3[W] + [Mod]; Hindered (EoT)."
+   },
+   {
+    "label": "Critical",
+    "text": "The target is Prone."
+   },
+   {
+    "label": "Effect",
+    "text": "You Evade 2."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Weapon Attack": {
+  "name": "Weapon Attack",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You strike with the weapon in your hands.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Special",
+    "text": "You attack with the weapon you are wielding. Weapon Attack takes the Melee or Ranged trait of that weapon, and its Range."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Weight of Judgment": {
+  "name": "Weight of Judgment",
+  "escalation": 4,
+  "frequency": null,
+  "flavor": "Your judgment hangs on your foe like a chain, and its steps drag.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "A creature Judged by you has its Speed reduced by 2 (to a minimum of 1)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Whirlwind": {
+  "name": "Whirlwind",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You spin, and everything within reach feels the blade.",
+  "distance": null,
+  "area": "1 Emanation",
+  "target": "All creatures in the Area",
+  "traits": [
+   "area",
+   "melee",
+   "self",
+   "strike",
+   "weapon"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Prerequisite",
+    "text": "Heavy Blows."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] 1[W] + [Mod]"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod] + 4"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod] + 6"
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Word of Radiance": {
+  "name": "Word of Radiance",
+  "escalation": null,
+  "frequency": "Encounter",
+  "flavor": "You speak a single word of your god, and light bursts from you: your foes burn in it and stagger back.",
+  "distance": null,
+  "area": "2 Emanation",
+  "target": "All enemies in the Area",
+  "traits": [
+   "power",
+   "save",
+   "area",
+   "self",
+   "divine"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Save",
+    "text": "Appeal"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[R] 3d6 Ho; Pushed 3."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 2d6 Ho; Pushed 2."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 1d6 Ho; Pushed 1."
+   },
+   {
+    "label": "Special",
+    "text": "Against a Profane creature, the damage dice are d8s."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Wounding Shot": {
+  "name": "Wounding Shot",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You hold your ground until your foe shows its flank, and put a broad-headed arrow where the wound will not close.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "weapon",
+   "ranged",
+   "projectile",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You haven't left your square this turn."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]; [[Lingering]] 1 (Bo/In)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; [[Lingering]] 2 (Bo/In)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ }
+}
