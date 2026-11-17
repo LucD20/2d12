@@ -78,6 +78,17 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
   whatever the Save (v0.0.417 draws it neither: the Save card skips the lines after the Tiers; test t261 skipped them for the chat too). Very
   likely tied to G8 (Rebuke's Hindered not applied).
 
+## 1f. Group C decided (Lucas, 2026-11-17)
+- **C1** the chat follows a card that grows (only when you were at the bottom). **C2** the Steadiness line in the card that caused it, the
+  system's line style (the Push remembers its card). **C3-C6** removed: Bloodied / Strained, the Reactions' "uses ... →" and "next damage
+  reduced" lines, **"is Down" for every creature (PCs too: yes)**, the movement lines (End movement goes to the movement bar / the HUD).
+- **C7** the stamp stretches to its row. **C8** a Critical from doubles: the "↑" over CRIT. **C9 yes:** the CRIT zone only on an actual
+  Critical. **C11** Bloodied in the Vigor red (#d0564f) on the dark card.
+- **C10 yes, but "it likely needs a redesign to fit the new system's design":** the Save card redesigned (a mockup first): quiet Tier rows, only
+  the rolled one colored, the Tiers merged as the card writes them ("Tier 1 or 2"), the card's Effect line shown (the Hindered of Rebuke).
+- **C12 yes:** a click anywhere on an action button uses it; a right-click opens its rule or item (a button that names an item keeps opening it
+  on its name). Fixes the Rally Points (the playtest's stop) and G5.
+
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 
 ### A. Cards (what a card says)
