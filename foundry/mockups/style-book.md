@@ -51,3 +51,11 @@
 5. **The Action card and the previews, in the book's look:** with the Structure's Foundry pass (the data and the look together), mocked from the book's own cards.
 6. **The chat cards' size:** the research's main complaint; a review of what each card shows, still a style change (collapse what can be collapsed).
 7. **Then the build,** one pack, and Lucas's test checklist.
+
+## Lucas's answers
+
+**Step 1 (2026-11-17): "Yes to step 1, show me the fonts next." DECIDED: the principle.** The Action card and every preview of a card take the book's look; chat cards, sheets, bars and windows keep the table look with the book's type, accent and restraint.
+
+**Step 2, the fonts (PROPOSED 2026-11-17):** `foundry/mockups/fonts/index.html`, the artifact "Foundry Fonts": the approved Action card (dark), chat cards (dark and light) and PC sheet (dark), today beside the same page with **Source Sans 3 in the place of Signika** and **Source Serif 4 in the place of Cinzel**; nothing else changed. What to look at: the names and numbers (Source Sans 3 is a little wider and lighter than Signika, so a few labels may need a size or weight step at the build), the character's name in a serif in normal case (Cinzel set it in capitals), the small caps of the group headings (real in Source Sans 3). In the system: the two families' files (the book's) shipped in `foundry/twod12/fonts/` and declared once; every `Signika` and `Cinzel` in system.css and the generator replaced by one font variable each.
+
+**Lucas's answer:**
