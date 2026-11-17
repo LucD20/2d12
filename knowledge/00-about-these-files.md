@@ -1,6 +1,6 @@
 # About these knowledge files
 
-Built by tools/knowledge.py on 2026-11-17 from the repository at: b08cc80 2026-11-17 Card look: the class layout by level decided with the quick builds; the level table and the at-a-glance labels redone in the mockup
+Built by tools/knowledge.py on 2026-11-17 from the repository at: 028aec3 2026-11-17 The book's new look and the class documents by level, applied
 Topic sets included: none (core set only). Topic sets not loaded: weapons
 (if the chat needs one, ask Lucas to re-run tools/knowledge.py with that topic and re-upload).
 If a rule here disagrees with what Lucas says was changed later, the files are stale: ask him to re-run tools/knowledge.py.
@@ -15,7 +15,7 @@ If a rule here disagrees with what Lucas says was changed later, the files are s
   scripts), the book's writing conventions, the applied design documents and the change history.
 
 Files:
-- HANDOFF.md (168 KB)
+- HANDOFF.md (169 KB)
 - MASTER-PLAN.md (40 KB)
 - open-design-items.md (184 KB)
 - rules-01-roll.md (26 KB)
@@ -56,7 +56,9 @@ Files:
 - research-tactical-combat.md (5 KB)
 - research-targeting.md (6 KB)
 - research-versions-criticals.md (5 KB)
+- research-vtt-style.md (28 KB)
 - research-weapons-bows-light.md (32 KB)
+- design-style-book.md (8 KB)
 - design-style-audit.md (31 KB)
 - design-npc-hud-brief.md (25 KB)
 - design-sim-brief.md (22 KB)
