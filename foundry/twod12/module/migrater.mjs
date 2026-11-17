@@ -110,3 +110,60 @@ export function registerMigrationMod() {
     await migrateMod();
   });
 }
+
+// v0.0.407 (pack "Stage 0 in Foundry"; book, the pack "Stage 0 into the book"): an existing world brought to Stage 0 once, by the GM, after a
+// question in the system's window (Migrate / Later; asked again at the next load after Later; also game.twod12.migrateS0()). What it does: the
+// party's Momentum becomes a number (an old "on" is 1); the items are updated from the compendium (refresh.mjs: the weapons' new damage, the
+// classes without the level 3 Daily Pick and with their Health steps a Stage down, the Empowered condition, the Basic Actions without Opportunity
+// Attack); every Escalation is kept within 1 to 6. Nothing is deleted: Talents (set aside), Daily Picks taken at Stage 0 and an Enfeebled effect stay
+// on the sheets, and the GM's card lists them to remove by hand. NPCs need nothing: at Stage 0 their Health and Defenses come from the Bestiary's
+// new tables by themselves; the card says that their Actions no longer add the Modifier to the damage.
+const DONE_S0 = "S0";
+/** Pure: what a character keeps that Stage 0 no longer gives: { talents: [names], daily: [names], enfeebled: bool }. items: [{ name, type, frequency, classLevel }]. */
+export function stage0Leftovers(items = [], effects = []) {
+  return {
+    talents: items.filter(i => i.type === "talent").map(i => i.name),
+    daily: items.filter(i => i.type === "action" && i.frequency === "daily" && (Number(i.classLevel) || 0) > 0 && Number(i.classLevel) <= 3).map(i => i.name),
+    enfeebled: effects.some(e => [...(e.statuses ?? [])].includes("enfeebled"))
+  };
+}
+export const needsMigrationS0 = () => { try { return game.settings.get(F, "migratedS0") !== DONE_S0 && [...(game.actors ?? [])].some(a => a.type === "character" || a.type === "npc"); } catch (e) { return false; } };
+
+export async function migrateS0({ ask = true } = {}) {
+  if (!game.user.isGM) { ui.notifications.warn("Only the GM can run the Stage 0 migration."); return null; }
+  if (ask) {
+    const { pickConfirm } = await import("./pickwindow.mjs");
+    const ok = await pickConfirm({ title: "Stage 0", name: "Stage 0 in Foundry", sub: "the book's Stage 0 rules", icon: "fa-stairs", confirm: "Migrate",
+      text: "<b>Back up your world first</b> (Foundry: Game Worlds, Backup). Nothing is deleted.<br>The system now follows the book's Stage 0: Stages 0 to 3 (levels 1-3, 4-7, 8-11, 12-15), Escalation 1 to 6, Momentum 0 to 4, exploding weapon dice, the weapon table, the Bestiary's Stage 0 numbers, no Opportunity Attack and no Talents for now.<br>Migrate now updates the items from the compendium (weapons, classes, conditions, Basic Actions: what each copy chose is kept) and makes Momentum a number. Later asks again at the next load." });
+    if (!ok) return null;
+  }
+  const lines = [];
+  // Momentum: an old switch (true / false) becomes a number
+  try { const { momentumValue } = await import("./roundrules.mjs"); const v = game.settings.get(F, "momentum"); const n = momentumValue(v); if (v !== n) await game.settings.set(F, "momentum", n); lines.push(`Momentum: <b>${n}</b>`); } catch (e) { console.warn("twod12 | Momentum", e); }
+  // Escalation within 1 to 6
+  for (const a of game.actors ?? []) { const e = Number(a.system?.escalation); if (Number.isFinite(e) && (e < 1 || e > 6) && (a.type === "character" || a.system?.useEscalation)) await a.update({ "system.escalation": Math.max(1, Math.min(6, e)) }); }
+  const { refreshFromCompendium } = await import("./refresh.mjs");
+  const res = await refreshFromCompendium({ byName: true, basics: true });
+  for (const a of characters()) {
+    const left = stage0Leftovers(a.items.map(i => ({ name: i.name, type: i.type, frequency: i.system?.frequency, classLevel: i.getFlag?.(F, "classLevel") })), [...(a.effects ?? [])]);
+    const keep = [left.talents.length ? `Talents (set aside): ${left.talents.map(esc).join(", ")}` : "", left.daily.length ? `a Daily Pick at Stage 0: ${left.daily.map(esc).join(", ")}` : "", left.enfeebled ? "an Enfeebled effect (gone from the book)" : ""].filter(Boolean);
+    lines.push(`${esc(a.name)}: level ${a.system.level}, <b>Stage ${a.system.stage}</b>, Rally Points ${a.system.rallyMax}, Escalation ${a.system.escalation}${keep.length ? `; kept: ${keep.join("; ")}` : ""}`);
+  }
+  const npcs = [...(game.actors ?? [])].filter(a => a.type === "npc").length;
+  await game.settings.set(F, "migratedS0", DONE_S0);
+  await game.settings.set(F, "refreshAskedFor", game.system.version);   // the refresh ran here
+  await ChatMessage.create({ whisper: game.users.filter(u => u.isGM).map(u => u.id), content: sysCard({ title: "Stage 0: the world migrated", lead: `${characters().length} character${characters().length === 1 ? "" : "s"}, ${npcs} NPC${npcs === 1 ? "" : "s"}`,
+    text: `${lines.join("<br>")}<br>${res ? `${res.items} item${res.items === 1 ? "" : "s"} updated from the compendium.` : ""} What is kept on a sheet but no longer given (Talents, a Daily Pick at Stage 0, Enfeebled) can be removed by hand. NPCs: at Stage 0 their Health and Defenses are the Bestiary's new numbers, and their damage is written whole (the Modifier is no longer added): check your own NPCs' Actions against the Builder tab's turn budget; the compendium's five NPCs are rebuilt.` }) });
+  return { characters: characters().length, npcs, refreshed: res };
+}
+
+export function registerMigrationS0() {
+  game.settings.register(F, "migratedS0", { scope: "world", config: false, type: String, default: "" });
+  Hooks.once("ready", async () => {
+    if (!game.user.isActiveGM || game.settings.get(F, "migratedS0") === DONE_S0) return;
+    // after the pack R migration (a world that still needs it runs that first; this one asks at the next load)
+    try { if (game.settings.get(F, "migratedR") !== DONE) return; } catch (e) { return; }
+    if (!needsMigrationS0()) { await game.settings.set(F, "migratedS0", DONE_S0); return; }
+    await migrateS0();
+  });
+}

@@ -162,9 +162,9 @@ export function diceLine(inp, st) {
 }
 /** The notes for the names past their limit and the five: ["Field Banes 3, limit 2", "5 Boons left: Favored instead"]. */
 export const bbNotes = t => [...(t.capped ?? []).map(x => `${x.name} ${x.side} ${x.raw}, limit ${x.kept}`), ...(t.five ? [`${Math.abs((t.boons ?? 0) - (t.banes ?? 0))} ${t.five === "favored" ? "Boons" : "Banes"} left: ${t.five === "favored" ? "Favored" : "Doomed"} instead`] : [])];
-/** Empowered and Enfeebled: the highest of each, then the net on every damage die (Ch. 8). line: "" when the net is 0. */
+/** Empowered (Ch. 8; v0.0.407: on / off, Enfeebled gone): net 1 when it is on. line: "" when it is off. */
 export function stepNet(inp, st) {
-  const t = tally(chipsOf(inp, st, "shared"), st), net = t.emp - t.enf;
+  const t = tally(chipsOf(inp, st, "shared"), st);
   // v0.0.407 (book, Chapter 8): Empowered adds 1d6! to the first damage on each of your turns; Enfeebled is gone
   return { emp: t.emp, enf: 0, net: t.emp > 0 ? 1 : 0, line: t.emp > 0 ? "Empowered: +1d6! (the first damage on each of your turns)" : "" };
 }

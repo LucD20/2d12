@@ -21,7 +21,7 @@ import { chatChips } from "./chatchips.mjs";
 import { registerEscalationHooks, registerMomentumSetting, escalationAll } from "./escalation.mjs";
 import { registerExplodingDice } from "./explode.mjs";   // v0.0.407 (Stage 0 in Foundry): the book's exploding dice
 import { registerStateHooks } from "./states.mjs";
-import { registerMigrationR, registerMigrationMod } from "./migrater.mjs";
+import { registerMigrationR, registerMigrationMod, registerMigrationS0 } from "./migrater.mjs";
 import { registerMigrationFx } from "./fxmigrate.mjs";   // v0.0.323
 import { registerInitiativeSettings, registerInitiativeSocket } from "./initwindow.mjs";
 import { registerArmorHooks } from "./armor.mjs";
@@ -89,7 +89,7 @@ Hooks.once("init", () => {
   registerMomentumSetting();   // v0.0.243 (pack R)
   registerStateHooks();   // v0.0.243: Bloodied / Strained announced, the Escalation hooks
   registerInitiativeSettings();   // v0.0.310: Initiative opens for the players; NPCs in the players' window
-  registerMigrationMod(); registerMigrationFx();   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
+  registerMigrationMod(); registerMigrationFx(); registerMigrationS0();   // v0.0.407: Stage 0 (after pack R)   // v0.0.305 (pack MOD): each character keeps the order of its Modifiers, once (before the R migration may refresh the classes)
   registerMigrationR();   // v0.0.243: existing characters brought to pack R, once, by the GM
   registerAuraHooks();
   registerHazardHooks();
@@ -158,6 +158,7 @@ Hooks.once("init", () => {
     escalation: (delta = 1, actors = null) => escalationAll(delta, actors),
     migrateMod: () => import("./migrater.mjs").then(m => m.migrateMod()),
     migrateEffects: (o = {}) => import("./fxmigrate.mjs").then(m => m.migrateEffects(o)),   // v0.0.323 (PACK EFFECT-SHEET): store the effects' rules (write: false only reports)   // v0.0.305: the pack MOD migration again
+    migrateS0: () => import("./migrater.mjs").then(m => m.migrateS0()),   // v0.0.407: the Stage 0 migration again
     migrateR: () => import("./migrater.mjs").then(m => m.migrateR()),   // v0.0.243: the pack R migration again (Health line, Escalation 1, the cards refreshed)   // v0.0.243: the GM's valve: every PC in the combat +1 Escalation (or the given creatures)
     shadowedEffects,
     rulerInfo,
