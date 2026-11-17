@@ -97,4 +97,6 @@ The illuminated-manuscript idiom McCoy calls fantasy's default: a display face f
 
 **D, the research alone:** a pale band behind the name line with a dark rule on top; the name in the block's bold; frequency and cost in the accent; the card's text in a plain sans (Source Sans 3 as a stand-in); bold labels in a column; a rule under the block; Versions as accent subheads with a hairline.
 
+**Lucas (2026-11-17):** "Let me see B without my book and serious instructions, only research." Added to the examples as "B, with the research only": the flat pale panel kept (the findable block); the card's text in a plain sans against the serif page (5e's way); the name in the accent and bold, not small caps; an accent rule above and below the panel and one under the traits (5e carries structure in one color); frequency and cost as plain bold words; Distance and Target with bold labels; Versions as accent subheads with a rule.
+
 **Lucas's answer:**
