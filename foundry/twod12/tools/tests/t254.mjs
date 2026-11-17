@@ -63,3 +63,8 @@ console.log("no refusal for too few targets:", !act.includes("different creature
 console.log("a used Action says so:", V.lineHtml({ id: "i1", name: "Judge", used: true, stamps: [{ ap: 1, label: "1 AP" }] }).includes('<span class="hb-pv used">used</span>'),
   "| the roll dialog's Tiers in palette A (above the dark set):", th.includes(".twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: var(--s-ta-2p) !important;"),
   "| the granted uses on the chat card outlined:", th.includes(".twod12-type .twod12.chat .tline.grantrow .cc-gbtn { flex: 1 1 100% !important;"));
+console.log("--- v0.0.394 (Lucas, on the chat leftovers mockup)");
+const th4 = src("styles/theme.css"), dock = src("module/turndock.mjs");
+console.log("the chat card's traits as words:", th4.includes(".twod12-type.twod12-type .twod12 .tcompact .tchip.tc { background: none !important;"), "| the trait words in ink:", th4.includes(".twod12-type.twod12-type .twod12.chat .trhl { background: none !important;"),
+  "| a line under an open header:", th4.includes(".twod12-type.twod12-type .twod12.chat.turnend[open] > summary, .twod12-type.twod12-type .twod12-dock.open .td-hd { border-bottom: 1px solid var(--s-hair) !important; }"),
+  "| the HUD's marks on the turn lines:", dock.includes('<b class="hsep"></b><i class="r'), "| Swap without its cost:", src("module/carousel.mjs").includes('<i class="fa-solid fa-right-left"></i> Swap</button>'));

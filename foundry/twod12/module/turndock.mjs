@@ -55,7 +55,7 @@ export function headPips(ap, rap, max) {
   if (ap === null || ap === undefined) return "";
   const m = Math.max(1, num(max), num(ap));
   const out = []; for (let i = 0; i < m; i++) out.push(`<i class="${i < num(ap) ? "on" : ""}"></i>`);
-  if (rap !== null && rap !== undefined) out.push(`<i class="r${num(rap) ? " on" : ""}"></i>`);
+  if (rap !== null && rap !== undefined) out.push(`<b class="hsep"></b><i class="r${num(rap) ? " on" : ""}"></i>`);   // v0.0.394: a hairline, as the HUD
   return `<span class="td-pips" data-tooltip="${num(ap)} AP left${rap !== null && rap !== undefined ? `, Reaction AP ${num(rap) ? "ready" : "spent"}` : ""}">${out.join("")}</span>`;
 }
 const tickBadge = t => (t.step === "end" ? badge(t.done ? "ended" : "ends", "end") : badge(t.done ? `${t.rem} rd left` : `${t.rem + 1} → ${t.rem}`, "tick"));

@@ -43,7 +43,7 @@ function card(combat, c, st) {
     const move = m.n > 0
       ? `<div class="tp-move${m.evade ? " evade" : ""}" data-tc="endmove" data-tooltip="${m.evade ? "Evade" : "Movement"} left this turn. Click to end it (the squares left are lost)${st.gm ? "; right-click to set it" : ""}"><span>${m.evade ? "Evade" : "Move"}</span> <b>${m.n}</b> sq${m.evade && st.canAct ? ' <a class="tp-adv" data-tc="evadeadv" data-tooltip="Use the Evade as an Advance (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></a>' : ""}</div>`
       : `<div class="tp-move none" data-tooltip="No movement left this turn (Advance or drag the token to move)${st.gm ? "; right-click to set it" : ""}">No move</div>`;
-    const swap = `<button type="button" class="tp-swap${st.swapping ? " on" : ""}" data-tc="swap"${st.swapWhy ? ` disabled data-tooltip="${esc(st.swapWhy)}"` : ` data-tooltip="${st.swapping ? "Click an ally with the swap badge, or here to cancel" : "Swap initiative with an ally who hasn't had a turn this round (1 AP)"}"`}><i class="fa-solid fa-right-left"></i> Swap &middot; 1 AP</button>`;
+    const swap = `<button type="button" class="tp-swap${st.swapping ? " on" : ""}" data-tc="swap"${st.swapWhy ? ` disabled data-tooltip="${esc(st.swapWhy)}"` : ` data-tooltip="${st.swapping ? "Click an ally with the swap badge, or here to cancel" : "Swap initiative with an ally who hasn't had a turn this round (1 AP)"}"`}><i class="fa-solid fa-right-left"></i> Swap</button>`;   // v0.0.394: the cost in the tooltip (it was cut off)
     extra = move + swap;
   }
   // v0.0.201 (Lucas): no tooltip on the creature whose turn it is (its plate says it all); the others name themselves.

@@ -81,6 +81,15 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Still separate:** Bleed at the start of a turn, an area hazard, an inline damage link in a description: their own damage card, as before. An old damage card in the log still applies.
 - [ ] **Light theme** (Interface Light, or a popped-out message): the damage lines are dark text.
 
+## v0.0.394 (2026-11-17, branch `pack-hud-remake`): TO TEST. The chat leftovers in the STYLE-3 look (the mockup: `foundry/mockups/chat-leftovers.html`)
+- [ ] **Press Ctrl+F5 once after updating** (Foundry can keep an old stylesheet).
+- [ ] **A chat card (Double Shot, any attack):** traits as words ("Shot · Strike") over a bronze line; "[Ranged, Shot]" in the text in plain bold ink; the dividers plain lines.
+- [ ] **An End of Turn line, opened:** flat, a thin border, a line under its title; bronze squares, a hairline, the diamond (no lavender dots).
+- [ ] **The Turn panel, opened:** the same, with a line under "Turn Sylwen Round 9"; on the Double Shot row the spent AP as red outlined squares; "+2 +R" and "Guard 4" not blue; "1 rd" and "ends" outlined.
+- [ ] **The light theme (Interface Light):** the same in its colors.
+- [ ] **The carousel:** the acting plate reads "Swap" whole (hover: the 1 AP cost).
+- [ ] **The roll dialog** (open one, then in the console F12): `getComputedStyle(document.querySelector(".rd-trait")).backgroundColor` prints `rgba(0, 0, 0, 0)`.
+
 ## v0.0.393 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.392
 - **Lucas on v0.0.393: "still old format and turn breakdown and such still have old fonts; roll dialog nor chat dialog didn't change."** His own HTML rendered with the shipped styles shows the v0.0.393 look (the fonts are Source Sans 3, matching letter for letter), so the roll dialog is likely a cached stylesheet (Ctrl+F5; a console check given). What reads as "old" is the leftovers STYLE-3 missed: the chat card's filled trait chips and colored trait words, the diamond dividers, the turn lines' banded headers and lavender AP dots. **PROPOSED (mockup first):** `foundry/mockups/chat-leftovers.html` (the artifact "Chat Leftovers Restyle"; its CSS: `chat-leftovers-after.css`). Waiting for Lucas.
 - [ ] **No targets:** use Double Shot (or any Action for two creatures) with one or none targeted: the roll dialog opens (no warning); roll: it goes against the creature targeted or the DC typed. A marking Action (Marked Quarry) with nothing targeted: it rolls, marks nobody.

@@ -732,6 +732,30 @@ const STYLE3 = `
 .twod12-hud .hb-pv.used { font-style: italic; }
 /* ==== STYLE-3: a button's text takes the browser's color scheme unless it is set: the damage card's pools line was white on the light card in a dark browser ==== */
 .twod12-type .twod12.chat.cc .cc-pools { color: var(--s-ink); }
+/* ==== v0.0.394 (Lucas, on the mockup foundry/mockups/chat-leftovers.html: "Yes, but add a horizontal line below the header"): the leftovers
+   STYLE-3 missed. The chat card's traits as words (a bronze line under them), the trait words in its text in ink, plain dividers; the End of Turn
+   lines and the Turn panel flat with one thin line (a line under the header when open), the HUD's marks, game words in ink ==== */
+.twod12-type.twod12-type .twod12.chat.cc .cc-traits { border-bottom: 1px solid var(--s-gold); padding-bottom: 3px; margin-bottom: 4px; }
+.twod12-type.twod12-type .twod12 .tcompact { gap: 0 !important; }
+.twod12-type.twod12-type .twod12 .tcompact .tchip.tc { background: none !important; border: 0 !important; color: var(--s-ink) !important; padding: 0 !important; height: auto !important; font: 600 12px "Source Sans 3", sans-serif !important; border-radius: 0 !important; box-shadow: none !important; }
+.twod12-type.twod12-type .twod12 .tcompact .tchip.tc + .tchip.tc::before, .twod12-type.twod12-type .twod12 .tcompact .tsep::before { content: "\\00b7"; margin: 0 .4em; color: var(--s-mute); font-weight: 400; }
+.twod12-type.twod12-type .twod12 .tcompact .tsep { width: auto !important; height: auto !important; background: none !important; margin: 0 !important; border: 0 !important; }
+.twod12-type.twod12-type .twod12.chat .trhl { background: none !important; color: inherit !important; padding: 0 !important; border: 0 !important; font-weight: 600; }
+.twod12-type.twod12-type .twod12.chat.cc .cc-div { gap: 0; } .twod12-type.twod12-type .twod12.chat.cc .cc-div i { display: none; }
+.twod12-type.twod12-type .twod12.chat.cc .cc-div span { background: var(--s-hair) !important; }
+.twod12-type.twod12-type .twod12.chat.turnend, .twod12-type.twod12-type .twod12-dock { background: var(--s-pg) !important; border: 1px solid var(--s-hair) !important; border-radius: 0 !important; box-shadow: none !important; }
+.twod12-type.twod12-type .twod12.chat.turnend > summary, .twod12-type.twod12-type .twod12-dock .td-hd { background: none !important; box-shadow: none !important; border: 0 !important; }
+.twod12-type.twod12-type .twod12.chat.turnend[open] > summary, .twod12-type.twod12-type .twod12-dock.open .td-hd { border-bottom: 1px solid var(--s-hair) !important; }
+.twod12-type.twod12-type .twod12.chat.turnend .td-ttl, .twod12-type.twod12-type .twod12-dock .td-ttl { font: 600 13px "Source Sans 3", sans-serif !important; color: var(--s-ink) !important; }
+.twod12-type.twod12-type .twod12-dock .td-ttl { color: var(--s-mute) !important; }
+.twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) :is(.td-pips, .tk-pips) { display: inline-flex !important; gap: 3px !important; align-items: center; }
+.twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) :is(.td-pips, .tk-pips) i { width: 8px !important; height: 8px !important; border-radius: 0 !important; border: 1px solid var(--s-gold) !important; background: none !important; box-shadow: none !important; box-sizing: border-box; margin: 0 !important; }
+.twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) :is(.td-pips, .tk-pips) i.on { background: var(--s-gold) !important; }
+.twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) .tk-pips i.spent { border-color: #c0675c !important; background: none !important; }
+.twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) :is(.td-pips i.r, .tk-pips i.rap) { transform: rotate(45deg); width: 7px !important; height: 7px !important; margin: 0 2px !important; }
+.twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) :is(.td-pips, .tk-pips) .hsep { display: inline-block !important; width: 1px !important; height: 11px !important; background: var(--s-rule) !important; margin: 0 2px !important; border: 0 !important; }
+.twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) :is(.td-ic.ap, .td-c.ap, .td-g) { color: var(--s-ink) !important; }
+.twod12-type.twod12-type :is(.twod12-dock, .twod12.chat.turnend) .td-badge { background: none !important; border: 1px solid var(--s-hair) !important; border-radius: 0 !important; color: var(--s-mute) !important; }
 `;
 
 /** The theme's CSS from system.css's text (pure: the test calls it). */

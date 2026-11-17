@@ -24,3 +24,5 @@ no Reaction taken: the message removed: true | a bronze bell, not a beep: true |
 --- v0.0.393 (Lucas, testing v0.0.392)
 no refusal for too few targets: true | a marking Action rolls with none: true | the multi roll with no creature falls to the DC row: true
 a used Action says so: true | the roll dialog's Tiers in palette A (above the dark set): true | the granted uses on the chat card outlined: true
+--- v0.0.394 (Lucas, on the chat leftovers mockup)
+the chat card's traits as words: true | the trait words in ink: true | a line under an open header: true | the HUD's marks on the turn lines: true | Swap without its cost: true
