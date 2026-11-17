@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.404, 252 tests; READ THIS FIRST)
+## Where we are now (v0.0.405, 252 tests; READ THIS FIRST)
+- **2026-11-17 (v0.0.405, branch `pack-hud-remake`; NOT tested by Lucas):** the Momentum setting redraws the carousel and the HUD (escalation.mjs onChange), shown while preparing; the hotbar over the party strip without a frame, its right edge measured equal to the bar's (STYLE3).
 - **2026-11-17 (v0.0.404, branch `pack-hud-remake`; NOT tested by Lucas):** move.mjs forcedBar asks in the HUD slot; the Push lines "X was Pushed Y by Z" (postFollow into the card: ccdamage.mjs runChain passes message: msg); hud.mjs keeps any `.twod12-linebar` across redraws; the strip's transparent 1 px border.
 - **2026-11-17 (v0.0.403, branch `pack-hud-remake`; NOT tested by Lucas): the Push works (Lucas, v0.0.402).** template.mjs: a right-click no longer cancels a placement (it pans); pickbar.mjs: `canvas.tokens.releaseAll` is a no-op while a question is up (counted, restored 400 ms after the last), so no blink.
 - **2026-11-17 (v0.0.402, branch `pack-hud-remake`; NOT tested by Lucas): the token kept selected through a Push, for real** (pickbar.mjs held by id, `canvas.tokens.get(id)`; move.mjs pushPicker gives the selection back after each push and at the end). The glow (v0.0.401) works (Lucas). **Lucas's proposed order after this pack:** merge, Foundry up to date (Stage 0 in Foundry, then the Paladin's and the Archer's new cards with the bows and swords), the sheets, the effects tab (keep the effects engine; audit unused features after the cards are in).

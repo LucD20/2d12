@@ -47,7 +47,9 @@ export function canPayEscalation(actor, cost) {
 export const hasMomentum = () => { try { return !!game.settings.get(F, "momentum"); } catch (e) { return false; } };
 export async function setMomentum(on) { try { await game.settings.set(F, "momentum", !!on); } catch (e) { /* not registered yet */ } }
 export function registerMomentumSetting() {
-  game.settings.register(F, "momentum", { name: "Momentum", hint: "After an encounter harder than easy, the party has Momentum: every PC starts the next encounter at Escalation 2. That encounter (or a Rest) uses it up.", scope: "world", config: true, type: Boolean, default: false });
+  game.settings.register(F, "momentum", { name: "Momentum", hint: "After an encounter harder than easy, the party has Momentum: every PC starts the next encounter at Escalation 2. That encounter (or a Rest) uses it up.", scope: "world", config: true, type: Boolean, default: false,
+    // v0.0.405 (Lucas: "Momentum isn't showing in the combat strip"): the strip and the HUD redraw when it is switched
+    onChange: () => { import("./carousel.mjs").then(m => m.renderCarousel?.()).catch(() => null); import("./hud.mjs").then(m => m.renderHud?.()).catch(() => null); } });
 }
 
 /** Pure: the level an encounter starts at. */

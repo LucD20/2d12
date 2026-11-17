@@ -2256,3 +2256,8 @@
 /* the HUD in the same place with or without a creature: the party strip keeps the bar's 1 px border, transparent */
 .twod12-hud.is-strip { border: 1px solid transparent !important; }
 
+/* ==== v0.0.405 (Lucas: "Still slightly off"; measured: the hotbar moved 7 px between the party strip and a creature's bar): no frame of its own over
+   the party strip, its right edge where the bar puts it (6 px in, as the bar's slot; flush in a narrow window, where the bar sends it above) ==== */
+.twod12-hud.twod12-hud.is-strip.with-hot .hud-hot { background: transparent !important; border: 0 !important; backdrop-filter: none !important; padding: 0 6px 0 0 !important; margin-left: auto !important; }
+@container (max-width: 1000px) { .twod12-hud.twod12-hud.is-strip.with-hot .hud-hot { padding: 0 !important; } }
+

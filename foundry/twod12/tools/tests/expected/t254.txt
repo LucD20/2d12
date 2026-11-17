@@ -46,3 +46,5 @@ a held token released during a pick is selected again: true | the side panel glo
 a right-click doesn't cancel an area (it pans): true | no release during a pick (no blink): true
 --- v0.0.404 (Lucas, testing v0.0.403)
 the forced movement's bar in the HUD: true | one line, 'X was Pushed Y by Z': true | into the card: true | the HUD in the same place: true
+--- v0.0.405 (Lucas, testing v0.0.404)
+Momentum redraws the strip, shown before the start: true | the hotbar where the bar puts it: true

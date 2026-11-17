@@ -104,3 +104,5 @@ console.log("--- v0.0.404 (Lucas, testing v0.0.403)");
 const mv4 = src("module/move.mjs");
 console.log("the forced movement's bar in the HUD:", mv4.includes('bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side);'), "| one line, 'X was Pushed Y by Z':", mv4.includes('was ${mode === "reposition" ? "Repositioned" : label} ${result.done} by <b>${byName}</b>.'),
   "| into the card:", src("module/ccdamage.mjs").includes("await runChain(s, [i], msg);"), "| the HUD in the same place:", src("styles/theme.css").includes(".twod12-hud.is-strip { border: 1px solid transparent !important; }"));
+console.log("--- v0.0.405 (Lucas, testing v0.0.404)");
+console.log("Momentum redraws the strip, shown before the start:", src("module/escalation.mjs").includes('m.renderCarousel?.()') && src("module/carousel.mjs").includes("Preparing the encounter${mom ?"), "| the hotbar where the bar puts it:", src("styles/theme.css").includes(".twod12-hud.twod12-hud.is-strip.with-hot .hud-hot { background: transparent !important;"));

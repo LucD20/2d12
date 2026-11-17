@@ -102,7 +102,7 @@ export function renderCarousel() {
   // v0.0.397 (Lucas: "Momentum isn't showing in the combat strip"): an encounter that started with Momentum uses it up (the switch goes off), so
   // the strip reads the encounter's own flag (escalation.mjs startAtOne sets it)
   let mom = false; try { mom = hasMomentum() || !!combat?.getFlag?.("twod12", "momentumStart"); } catch (e) { mom = false; }
-  const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b>${mom ? ' <span class="tc-mom">· Momentum</span>' : ""}</span>` : '<span class="tc-round tc-prep">Preparing the encounter</span>';
+  const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b>${mom ? ' <span class="tc-mom">· Momentum</span>' : ""}</span>` : `<span class="tc-round tc-prep">Preparing the encounter${mom ? ' <span class="tc-mom">· Momentum</span>' : ""}</span>`;   // v0.0.405: Momentum shows before the start too
   const moving = cur ? stripMove(cur).n > 0 : false;
   const right = [
     // v0.0.199 (Lucas): End move stays in the bar (greyed when there is nothing to end, so it doesn't come and go); the MOVE row ends it too.
