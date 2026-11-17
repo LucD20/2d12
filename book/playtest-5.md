@@ -111,6 +111,23 @@ Warrior 10 / 5; Grave Wisp 9 / 4.5; Goblin Sneak 8 / 4; Durgan 5 / 2.5; Goblin S
 - **New (Lucas): "tooltips are too much. Only ones that are necessary so far are the ones in the HP bars. Remove all for now."** Every
   tooltip of the system goes for now except the HP bars'. Open: whether the hover cards count (asked).
 
+## 1j. Group F, and the tooltips' stage (Lucas, 2026-11-17)
+- **Tooltips:** when the work reaches the tooltip stage, Claude writes every tooltip down, categorized, and Lucas reviews the list (nothing
+  removed before that).
+- **F1** (Claude decides): a full AP pip a solid square in the AP color (center and border the same), an empty one the outline only with a dark
+  center; checked in a render. **F2** Bloodied and Strained off the strip.
+
+## 1k. Groups G and H reviewed (Claude, 2026-11-17; two questions asked)
+- **G1-G3, one cause:** a Tier's condition is a button in the Tier's text (Brutal Swing `@Condition[prone]`, Dread Whisper `@Condition[dazed|
+  value:1]`, Snap Shot `@Condition[hindered|eot]`): only an "after the damage" chain applies by itself (Binding Light). Proposed: a Tier's
+  condition applies when its Tier lands, every card; and a condition / effect chip dragged from the chat onto a token (asked).
+- **G8** Rebuke's Hindered is in its "after" chain and still didn't apply: to trace (the Save card's path; its missing Effect line, C10).
+- **G4** as written (Judge asks for a target; with none, an "Apply Effect" button). **G5** = C12. **G6** a Reaction's movement off its turn
+  (Evade 1 + Advance 2): to trace.
+- **G7, a rule:** the book says creatures in a Line give no Cover to each other; other areas only "Cover from the Point of Origin". Proposed:
+  creatures inside an area never give Cover against it (walls and objects do), for every area (asked).
+- **H1** as written: Steadiness applies without asking; asked only for a Forced Movement on an ally.
+
 ## 2. The notes, organized (IDs for the review; Lucas's words kept)
 
 ### A. Cards (what a card says)
