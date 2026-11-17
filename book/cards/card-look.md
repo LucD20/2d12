@@ -144,4 +144,28 @@ The page: `book/cards/look-desk/faces.html`, the artifact "Book Text Faces": the
 
 **For Lucas:** one face (by eye, on the page).
 
+**Lucas (2026-11-17), before choosing the face:** "Drop my book and serious instructions for good, lets go only by the research from now on. Then check if the current still fit the research." **DECIDED: from now on the look is decided by the research only; "book" and "serious" are no longer criteria.**
+
+## The decisions so far, checked against the research only (2026-11-17)
+
+| Decided | Fits? | Why |
+|---|---|---|
+| B with the research only: a flat pale square panel, accent rules, the card in a plain sans against the serif page, bold labels | yes | it was built from the research alone |
+| Frequency and cost as words, no frequency color | yes | color alone as a code is the most criticised use; the praised books print a word |
+| No colored game terms, Attributes, Modifiers or subtypes; a defined term bold where it is defined | yes | "no praised book colors each keyword"; one of bold or italic |
+| Traits without group colors, in group order | yes | the order is the cue |
+| [V] and [R] in their pool colors | yes, with a note | the letter is the cue, so color is not alone (WCAG 1.4.1); red and blue are not the red-green trap; but the two have the same lightness (contrast 1.07), so the color helps only readers who see hue |
+| **The trait lines by group (kept 2026-11-17)** | **no** | the research's weight is against five accent colors on a card ("four competing accent colors... cancel each other out"; "one accent, given one job"); measured, they collide with the other colors: Requires blue against Resolve blue (contrast 1.5), Kind rust against Vigor red and the accent (1.7); the grey Keywords line barely shows on the tint (3.0) |
+| **The accent's red** | **no** | it is the same color as Vigor damage (contrast 1.01): one color with two jobs, which the research rejects ("one accent, given one job holds its meaning") |
+| The example as an indented passage, no panel; examples and boxes without colored left bars | yes | space first, then a rule, then a box; the colored left bar is an "app" sign |
+| Light ground by default, dark as a choice | yes | dark text on light reads faster; dark mode is chosen anyway |
+| Real small caps, old-style figures in text and lining tabular figures in tables | yes | fake small caps are "a parody"; figures that match their place |
+| Text face candidates (Source Serif 4 the pick) | yes | the pick already rested on reading on screen (x-height, optical sizes, a matching sans); "classic serif for mood" no longer counts, which helps Source Serif 4 and Literata over EB Garamond |
+
+**Two fixes proposed:**
+1. **The accent changes hue**, so red is Vigor's alone: a dark bronze (Claude's pick: no pool, trait or rule uses it, it is not on the red-green axis, and it keeps 7:1 on the tint), or a dark ink (structure by weight and rules only, no hue at all).
+2. **The trait lines go** (back to traits in black, by group order), as the research weighs; or, if he keeps them, they are redrawn in hues and lightnesses no other color uses, which five groups make hard.
+
+**For Lucas:** 1 (bronze or ink); 2 (drop the lines, or keep and redraw); then the face.
+
 **Lucas's answer:**
