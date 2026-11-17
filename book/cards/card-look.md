@@ -174,4 +174,24 @@ The page: `book/cards/look-desk/faces.html`, the artifact "Book Text Faces": the
 
 **Lucas (2026-11-17): "Piazzolla is good but the '2' looks bad, Tier 2 for example doesnt read well right? It is the only bad thing, the numbers readability. Spectral is good with numbers for example."** Checked in the font file: Piazzolla's default "2" is already a lining figure (its old-style "2" is a separate glyph), and it is short by design; switching the text to lining figures changes nothing visible (tried on the page, then removed). So the figures can't be fixed without mixing faces. **Piazzolla is out.** Left: Source Serif 4 (Claude's pick: the clearest figures and text, a matching sans) or Spectral (his note: good figures; the lightest of the faces, thin strokes, x-height 0.45, so it would be set at 18 px and in a slightly heavier weight on screen).
 
+**Lucas's answer (2026-11-17): "Source Serif 4." DECIDED: the text face is Source Serif 4** (the book carries its full files for real small caps and figures); the cards' text is Source Sans 3 (its family).
+
+## Decision 3: the card's anatomy (PROPOSED 2026-11-17, waiting for Lucas)
+
+Every kind of card drawn in the decided look: `book/cards/look-desk/anatomy.html`, the artifact "Card Anatomy" (a Strike with Tiers, Versions, Modes, two Reactions, a Passive, two Weapon Techniques), from the card files as they stand.
+
+1. **The panel:** a flat tint of the page, square corners, a 2 px bronze rule above and below; never split across a printed page.
+2. **The name line:** the name in bold bronze at the left; at the right, in bold black, the Escalation it needs, the frequency and the cost.
+3. **The Flavor:** one line in Source Serif 4's italic, a shade lighter.
+4. **The traits:** bold, black, in group order, joined by a middle dot; a thin bronze rule under them (kept on a card with no traits).
+5. **The grid:** Distance and Area at the left, Target at the right, bold labels.
+6. **The body:** one line each, the label bold in a fixed column (the same width on every card, wide enough for "Tier 1 or 2" and "Requirement").
+7. **A Version or a Mode:** its heading in bold bronze over a thin grey rule; a Mode's own traits after its name in black; its own Distance and Target under it.
+8. **Inside the text:** game terms in the text's color; links underlined thinly; [V] and [R] damage in their pool colors; brackets plain.
+9. **The card's text** in Source Sans 3; the page in Source Serif 4.
+
+Why (the research): the same anatomy every time is the findability rule cited most; labels at the start of the line in bold; space and rules, no boxes inside the box (a Version is a heading and a rule, not a band); one accent with one job (bronze marks where a card and its parts begin); never split by a page turn.
+
+**For Lucas:** yes, or the lines to change.
+
 **Lucas's answer:**
