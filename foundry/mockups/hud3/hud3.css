@@ -1,0 +1,73 @@
+/* The HUD mockup, round 3: the page, then the proposal's layout (h3-*). The marks, bars, tabs, lines and buttons are the system's (.twod12-hud). */
+body { margin: 0; padding: 20px; font-family: "Source Sans 3", sans-serif; font-size: 14px; } * { animation: none !important; transition: none !important; }
+body.theme-dark { background: #2b2722; color: #e6dfd1; } body.theme-light { background: #ddd6c8; color: #1d1a16; }
+.mk-err { color: #f66; font: 12px monospace; white-space: pre-wrap; }
+#nav { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; font-size: 13px; } #nav a { color: inherit; opacity: .7; } #nav a.on { opacity: 1; font-weight: 700; text-decoration: none; }
+#page { width: 1500px; }
+h1 { font: 600 28px "Source Serif 4", serif; margin: 0 0 4px; } h2 { font: 600 20px "Source Serif 4", serif; margin: 0 0 4px; }
+h3 { font: 600 13.5px "Source Sans 3", sans-serif; margin: 0 0 5px; opacity: .8; } h3 b { opacity: 1; }
+.mk-top p, .mk-lead { max-width: 1100px; margin: 0 0 12px; line-height: 1.45; opacity: .9; } .mk-state { margin: 0 0 38px; } .mk-top { margin-bottom: 26px; }
+.mk-row { margin-bottom: 14px; } .mk-row:has(.today) { margin-bottom: 40px; }
+/* a strip of the screen's bottom: the map behind, the HUD on it */
+.mk-scene { position: relative; width: 1500px; padding: 64px 0 6px; box-sizing: border-box; background: #54604a linear-gradient(rgba(0,0,0,.14) 1px, transparent 1px) 0 0 / 50px 50px, #54604a; background-image: linear-gradient(rgba(0,0,0,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.16) 1px, transparent 1px); background-size: 50px 50px; }
+.mk-scene .twod12-hud { position: relative; width: 100%; margin: 0; }
+.mk-scene .twod12-linebar:not(.in-hud) { position: absolute; bottom: 160px; }
+i.fa-x { display: inline-flex; width: 1em; height: 1em; vertical-align: -0.125em; } i.fa-x > svg { width: 1em; height: 1em; fill: currentColor; }
+/* Foundry's macro bar: a stand-in (its own CSS is not on this page) */
+.mk-scene #hotbar ol { list-style: none; } .mk-scene #hotbar .slot { position: relative; box-sizing: border-box; border: 1px solid var(--s-hair); background: rgba(0, 0, 0, .28); color: var(--s-mute); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; }
+.theme-light .mk-scene #hotbar .slot { background: rgba(0, 0, 0, .06); }
+.mk-scene #hotbar .slot .key { position: absolute; right: 2px; top: 0; font-size: 8.5px; line-height: 10px; color: var(--s-faint); }
+/* v0.0.421's rule for a full AP pip loses to v0.0.418's scoped rule for every pip in this page's Chromium (same specificity: the scoped one is
+   nearer), so every pip drew empty; the look both versions meant is set here for both HUDs (to check in Foundry: README, "Found") */
+#page .twod12-hud .hm .hm-ap i.on { background: var(--s-gold); border-color: var(--s-gold); }
+
+/* ------------------------------------------------------------------ THE PROPOSAL */
+.twod12-hud.h3 { display: block; }
+.h3-wrap { display: grid; grid-template-columns: 84px 300px minmax(0, 1fr) 312px; grid-template-rows: minmax(0, 1fr); height: 100%; } .h3-wrap > * { min-height: 0; overflow: hidden; }
+/* D2: the identity column. Every label in a readable weight (600, the muted ink, .78rem; today .63 to .72rem in the faint ink), every number bold */
+.h3-id { box-sizing: border-box; padding: 3px 10px 2px; border-right: 1px solid var(--hud-hair); display: flex; flex-direction: column; gap: 1px; font-size: .81rem; min-width: 0; }
+.h3-id .nm { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; line-height: 1.15; } .h3-id .nm b { font-size: .97rem; } .h3-id .nm small { color: var(--hud-mute); font-size: .78rem; white-space: nowrap; }
+.h3-l { display: flex; justify-content: space-between; align-items: center; gap: 8px; white-space: nowrap; height: 18.5px; flex: none; }
+.h3-id .hb-bars { flex: none; gap: 1px; }
+.h3-l.rule { border-top: 1px solid var(--hud-hair); padding-top: 1px; }
+.h3-p { all: unset; display: inline-flex; align-items: center; gap: 4px; } .h3-p b { font-weight: 700; font-size: .88rem; }
+.twod12-hud.h3 .h3-id .k { color: var(--hud-mute); font-size: .78rem; font-weight: 600; margin: 0; }
+.h3-p.at { cursor: pointer; } .h3-p.at:hover b { color: var(--s-gold); }
+.h3-p.chg b { text-decoration: underline dotted var(--s-bad, #ff9c92); text-underline-offset: 2px; }
+.h3-l .sep { width: 1px; height: 13px; background: var(--hud-line); }
+.h3-id .hb-btn { font-size: .78rem; line-height: 1.3; }
+.h3-id .hm-esc { margin-right: 2px; }
+/* D4: the conditions, in the space under AP and Escalation: the row is always there (20 px), so a condition never changes the HUD's height */
+.h3-conds { display: flex; gap: 10px; align-items: center; height: 19px; flex: none; overflow: hidden; }
+.h3-c { all: unset; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; white-space: nowrap; font-size: .78rem; font-weight: 600; color: var(--hud-ink); }
+.h3-c i { box-sizing: border-box; width: 18px; height: 18px; border: 1px solid var(--hud-line); display: inline-flex; align-items: center; justify-content: center; flex: none; } .h3-c svg { width: 13px; height: 13px; fill: var(--hud-ink); }
+.h3-c small { color: var(--hud-mute); font-weight: 400; font-size: .72rem; } .h3-c:hover i { border-color: var(--s-gold); }
+.h3-conds.ic { gap: 5px; } .h3-conds.ic .h3-c { gap: 2px; }
+/* D1: the Basic tab */
+.h3 .hb-mid { position: relative; }
+.h3-basic { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 14px; padding: 3px 10px 0; overflow: hidden; align-content: start; }
+.h3-bh { font-size: .75rem; font-weight: 700; color: var(--hud-mute); border-bottom: 1px solid var(--hud-line); line-height: 1.25; margin-bottom: 1px; }
+.h3-bl { display: flex; justify-content: space-between; align-items: center; gap: 6px; height: 15.5px; padding-left: 6px; border-left: 3px solid color-mix(in srgb, var(--fq) 60%, var(--hud-bg)); border-bottom: 1px solid var(--hud-hair); cursor: pointer; }
+.h3-bl.strike { box-shadow: inset 2px 0 0 color-mix(in srgb, #c0675c 70%, var(--hud-bg)); }
+.h3-bl > b { font-size: .78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; } .h3-bl:hover > b { color: var(--s-gold); }
+.h3-bl .hb-st { line-height: 11.5px; font-size: .66rem; } .h3-bl.off > b { color: var(--s-faint); font-weight: 400; } .h3-bl.off { cursor: default; border-left-style: dotted; }
+/* D3 / D7: the right column: the Situational section, the Hands, the macro bar */
+.h3-side { border-left: 1px solid var(--hud-hair); display: grid; grid-template-rows: minmax(0, 1fr) auto auto; min-width: 0; font-size: .81rem; }
+.h3-sit { padding: 4px 9px; overflow: hidden; display: flex; flex-direction: column; gap: 5px; }
+.h3-sit.on { box-shadow: inset 0 2px 0 var(--s-gold); background: color-mix(in srgb, var(--s-gold) 9%, transparent); }
+.h3-none { color: var(--s-faint); font-size: .78rem; }
+.h3-si .h { display: flex; align-items: baseline; gap: 7px; } .h3-si .h b { font-size: .88rem; } .h3-si .tg { color: var(--hud-mute); font-size: .75rem; }
+.h3-si .t { line-height: 1.25; margin: 1px 0 4px; color: var(--hud-ink); } .h3-si .bs { display: flex; gap: 6px; flex-wrap: wrap; } .h3-si .h .bs { margin-left: auto; }
+.h3-si .hb-btn { font-size: .78rem; line-height: 1.55; padding: 0 9px; } .h3-si .hb-btn.q { color: var(--hud-mute); }
+.h3-si.inline .t { margin: 3px 0 0; color: var(--hud-mute); font-size: .75rem; } .h3-si.inline .bs { margin-top: 3px; }
+.h3-hands { display: flex; gap: 5px; padding: 4px 9px; border-top: 1px solid var(--hud-hair); }
+.h3-hand { all: unset; box-sizing: border-box; flex: 1 1 0; min-width: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 1px 7px; border: 1px solid var(--hud-line); font: 600 .78rem/1.4 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; }
+.h3-hand span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .h3-hand b { color: var(--hud-mute); font-weight: 400; font-size: .72rem; }
+.h3-hand.free { border-style: dashed; border-color: var(--hud-hair); color: var(--hud-mute); font-weight: 400; } .h3-hand:hover { border-color: var(--s-gold); }
+.h3-hot { padding: 3px 9px 4px; border-top: 1px solid var(--hud-hair); }
+.h3-hot #hotbar ol { display: grid; grid-template-columns: repeat(10, 27px); gap: 2.6px; margin: 0; padding: 0; } .h3-hot #hotbar .slot { width: 27px; height: 27px; }
+/* an inset under a state */
+.mk-inset { display: flex; gap: 26px; align-items: flex-start; margin-top: 6px; } .mk-inset > div > p { margin: 0 0 4px; font-size: 12.5px; opacity: .8; max-width: 320px; line-height: 1.35; }
+.mk-inset .twod12-hud { height: auto; min-height: 0; }
+.mk-inset .twod12-hud { display: block; width: 302px; } .mk-inset .h3-id { border: 0; padding-bottom: 4px; }
+.mk-extra { margin: 0 0 38px; }
