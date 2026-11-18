@@ -126,7 +126,7 @@
    "foundry": {
     "img": "icons/svg/sword.svg",
     "automation": "silver",
-    "automationNote": "its Requirement (a free hand: Release offered, as Handle Actions); the Reposition 1 (Tiers 1 and 2), the Slide 1 then Grabbed (Tier 3): the buttons; the holding hand marked busy by hand."
+    "automationNote": "its Requirement (a free hand: Release offered, as Handle Actions); the Reposition 1 (Tiers 1 and 2) and the Slide 1 then Grabbed (Tier 3) run by themselves when the Tier lands; the holding hand marked busy by hand."
    }
   },
   {

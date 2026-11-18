@@ -373,8 +373,10 @@ Hooks.once("ready", () => { startChecklist().catch(e => console.warn("twod12 | t
 
 // "Roll Damage" buttons on action cards (delegated so it works regardless of chat re-rendering).
 Hooks.once("ready", () => { try { registerInitiativeSocket(); } catch (e) { console.warn("twod12 | initiative socket", e); } });   // v0.0.310: the players' Initiative windows
-/** v0.0.418: the chips whose name opens the item they name (a left click on the name); the others are used wherever they are clicked. */
-const NAMES_ITEM = new Set(["Condition", "Effect", "Use"]);
+/** v0.0.418: the chips whose name opens the item they name (a left click on the name); the others are used wherever they are clicked.
+ *  v0.0.440 (Lucas, checklist: "left-click or right-click Grabbed opened the book page"): a condition is applied wherever it is clicked; a
+ *  right-click opens its rule. */
+const NAMES_ITEM = new Set(["Effect", "Use"]);
 Hooks.once("ready", async () => {
   // v0.0.418 (playtest 5, C12): a right-click on a chip opens its rule (a movement, Heal, Guard...) or the item it names
   // v0.0.421 (the audit): caught on the way down and stopped, so Foundry's own chat-message menu (or a sheet row's) doesn't open over the rule

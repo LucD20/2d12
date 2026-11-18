@@ -199,13 +199,38 @@ export function zipper(list) {
   for (const c of list) {
     if (leaderOf.has(c.id)) continue;
     const k = sideOf(c); if (!groups.has(k)) groups.set(k, []);
-    groups.get(k).push([c, ...(c.id ? list.filter(x => x !== c && leaderOf.has(x.id) && leaderOf.get(x.id) === c.id) : [])]);
+    // v0.0.440 (Lucas: "The GM decides the order each minion goes"): a squad in the order the GM picked (init.sqOrder), else the leader first
+    const sq = [c, ...(c.id ? list.filter(x => x !== c && leaderOf.has(x.id) && leaderOf.get(x.id) === c.id) : [])], ord = (x, i) => { const v = Number((x.getFlag?.(F, "init") ?? x.flags?.[F]?.init)?.sqOrder); return Number.isFinite(v) ? v : i; };
+    groups.get(k).push(sq.length > 1 ? sq.map((x, i) => [x, ord(x, i)]).sort((a, b) => a[1] - b[1]).map(e => e[0]) : sq);
   }
   const tieAttr = c => Number(c.getFlag?.(F, "initAttr")) || 0;
   const order = [...groups.entries()].sort((a, b) => ((b[1][0][0].initiative ?? -Infinity) - (a[1][0][0].initiative ?? -Infinity)) || (tieAttr(b[1][0][0]) - tieAttr(a[1][0][0])) || (b[0] - a[0])).map(e => e[1]);
   const out = [];
   while (order.some(g => g.length)) for (const g of order) if (g.length) out.push(...g.shift());
   return out;
+}
+
+/** Pure (v0.0.440): the squad a combatant is in (its leader's id; "" for none): its init.squad, or the leader that others name. */
+export function squadKeyOf(c, turns) {
+  const flag = x => x?.getFlag?.(F, "init") ?? x?.flags?.[F]?.init ?? {};
+  const s = flag(c).squad;
+  if (s && (turns ?? []).some(x => x.id === s)) return s;
+  return c?.id && (turns ?? []).some(x => x !== c && flag(x).squad === c.id) ? c.id : "";
+}
+/** Pure (v0.0.440): the members of the squad at turns[i] still to act, from i on (the run of that squad); [] when turns[i] is in none. */
+export function squadRun(turns, i) {
+  const k = turns?.[i] ? squadKeyOf(turns[i], turns) : "";
+  if (!k) return [];
+  const out = [];
+  for (let j = i; j < turns.length && squadKeyOf(turns[j], turns) === k; j++) out.push(turns[j]);
+  return out;
+}
+/** Pure (v0.0.440): the squad's new order (its members' ids) when `pick` goes next at turns[i]: those already gone, the pick, the rest. */
+export function squadOrderAfter(turns, i, pick) {
+  const run = squadRun(turns, i), k = run.length ? squadKeyOf(run[0], turns) : "";
+  if (!k) return [];
+  const before = turns.slice(0, i).filter(x => squadKeyOf(x, turns) === k).map(x => x.id);
+  return [...before, pick, ...run.map(x => x.id).filter(id => id !== pick)];
 }
 
 // v0.0.244: the Initiative window (initwindow.mjs) replaced the dialog; it answers the same { attr, per, boons, banes, favored, doomed }.
@@ -218,6 +243,31 @@ export class TwoD12Combat extends Combat {
       if (!ok) return this;
     }
     return super.endCombat();
+  }
+
+  /**
+   * v0.0.440 (Lucas, the checklist: "The GM decides the order each minion goes ... when ending the turn, you get to select who of the next two left
+   * is next"): before a turn goes to a Minions' squad with two or more still to act (at the start of the combat and of each round too), the GM picks
+   * on the bottom bar which of them goes now; the others follow, and the next pick comes at the end of that turn.
+   */
+  async _squadPick(i) {
+    if (!game.user?.isGM) return;
+    const run = squadRun(this.turns ?? [], i);
+    if (run.length < 2) return;
+    const { pickBar } = await import("./pickbar.mjs");
+    const pick = await pickBar({ icon: "fa-people-group", text: `<b>${esc(run[0].name.replace(/\s*\d+$/, ""))}</b>: which one goes now? (${run.length} of the squad left)`,
+      options: run.map(c => ({ id: c.id, label: c.name, token: c.token?.object ?? null })) });
+    if (!pick || pick === run[0].id) return;
+    const order = squadOrderAfter(this.turns, i, pick);
+    await this.updateEmbeddedDocuments("Combatant", order.map((id, k) => ({ _id: id, [`flags.${F}.init.sqOrder`]: k })));
+  }
+  async startCombat() {
+    try { await this._squadPick(0); } catch (e) { console.warn("twod12 | the squad's order", e); }
+    return super.startCombat();
+  }
+  async nextTurn() {
+    try { if (this.started) await this._squadPick((this.turn ?? -1) + 1 < (this.turns?.length ?? 0) ? (this.turn ?? -1) + 1 : 0); } catch (e) { console.warn("twod12 | the squad's order", e); }
+    return super.nextTurn();
   }
 
   setupTurns() {

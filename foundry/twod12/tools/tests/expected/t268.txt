@@ -1,6 +1,6 @@
 --- the list
 checklist.json follows foundry/to-test.md: true
-the first group is the bar's own test: true
+the first group is the bar's own test: false
 every test has an id, a version, Do and Expect: true
 the release ships it (the zip takes the system folder but tools/tests): true
 --- the parser

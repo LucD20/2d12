@@ -968,6 +968,21 @@ export async function dropChip(kind, cfg, tokenDoc, message = null) {
 /** Pure (v0.0.421, the audit): the conditions a Tier's text gives by itself: its @Condition chips, but not one written after a movement ("Slid 1,
  *  then Grabbed": it waits for that movement, a button to click after it, or the movement would meet the condition's Immobilized). */
 export const tierConditionChips = text => { const s = String(text ?? ""), mi = s.search(/@Move\[/); return (mi < 0 ? s : s.slice(0, mi)).match(/@Condition\[[^\]]*\]/g) ?? []; };
+/** Pure (v0.0.440, Lucas, checklist: Seizing Cut "didn't slide automatically"): a Tier's forced movement (Pushed, Pulled, Slid, Repositioned) and
+ *  the conditions written after it ("Slid 1, then Grabbed"), which run by themselves, in that order, when the Tier lands. null: none. */
+export const tierMoveThen = text => {
+  const s = String(text ?? ""), m = s.match(/@Move\[((?:pushed|pulled|slid|reposition)\b[^\]]*)\]/);
+  if (!m) return null;
+  return { move: m[1], conds: s.slice(m.index + m[0].length).match(/@Condition\[[^\]]*\]/g) ?? [] };
+};
+/** v0.0.440: runs a Tier's forced movement on its creatures, one at a time, then the conditions written after it. ctx: { targets, actor, message, attrVal }. */
+export async function runTierMove(text, ctx = {}) {
+  const mt = tierMoveThen(text);
+  if (!mt || !(ctx.targets ?? []).length) return false;
+  try { await handleInline("Move", parseInline("Move", mt.move), ctx); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
+  for (const chip of mt.conds) { try { await applyConditionChip(chip, ctx); } catch (e) { console.warn("twod12 | a condition after the movement", chip, e); } }
+  return true;
+}
 export async function applyConditionChip(chip, ctx = {}) {
   const m = String(chip).match(/^@Condition\[([^\]]*)\]/);
   if (!m) return;

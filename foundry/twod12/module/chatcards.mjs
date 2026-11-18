@@ -369,7 +369,14 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const topLines = m.card ? cardLinesHtml(m.card.top) : "", trig = m.card ? cardLinesHtml(m.card.before) : triggerLineHtml(m);
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}${topLines}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}${body}${m.card ? cardLinesHtml(m.card.after) : ""}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  // v0.0.440 (Lucas, checklist: "the message becomes huge. After applying damage, it should collapse"): every creature rolled and every damage
+  // row applied: the Save's lines fold under one line (each creature's Tier and name; a click opens them again), the damage part stays
+  const settled = cs.length > 0 && cs.every(c => c.result) && (m.dmg?.rows ?? []).length > 0 && m.dmg.rows.every(x => x.applied);
+  const saveHead = `<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>`, after = m.card ? cardLinesHtml(m.card.after) : "";
+  const lines = settled
+    ? `${saveHead}<details class="cc-fold"><summary class="cc-foldsum">${cs.map(c => `<span class="cc-foldc">${tierPill(c.result.tier)} ${esc(c.name)}</span>`).join("")}</summary>${topLines}${trig}${body}${after}</details>`
+    : `${topLines}${saveHead}${trig}${body}${after}`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}${settled ? " settled" : ""}">${headHtml(m)}${settled ? "" : metaLineHtml(m)}${lines}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${settled ? "" : flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */
@@ -528,11 +535,12 @@ export function instancesOf(comps) {
       const host = list.find(x => x.pool === (c.pool || "B") && x.sub === (c.sub || "")) ?? (!c.sub ? list.find(x => x.pool === (c.pool || "B")) : null) ?? null;
       if (host) { host.mods.push({ v: Number(c.total) || 0, label: c.label || c.src || (c.kind === "A" ? "Modifier" : "Flat") }); host.total += Number(c.total) || 0; continue; }
     }
-    const emp = Number(c.emp) || 0, flat = (Number(c.total) || 0) - dice.reduce((a, b) => a + b, 0) - emp;
+    // v0.0.440 (Lucas, checklist: "where is the die coming from?"): Empowered's own 1d6! (kind E) is its dice, named, not a step on top of them
+    const emp = c.kind === "E" ? 0 : Number(c.emp) || 0, flat = (Number(c.total) || 0) - dice.reduce((a, b) => a + b, 0) - emp;
     const mods = [];
     if (flat) mods.push({ v: flat, label: c.flatLabel || (dice.length ? "Flat" : c.label || c.src || (c.kind === "A" ? "Modifier" : "")) });   // v0.0.326 (Lucas: "+3 Empowered +2" read as +5 from Empowered): the dice's own flat part is named
     if (emp) mods.push({ v: emp, label: emp > 0 ? "Empowered" : "Enfeebled" });
-    list.push({ pool: c.pool || "B", sub: c.sub || "", src: c.src || c.weapon || "", dice: c.dice ?? [], mods, total: Number(c.total) || 0, formula: c.formula ?? "" });
+    list.push({ pool: c.pool || "B", sub: c.sub || "", src: c.src || c.weapon || (c.kind === "E" ? "Empowered" : ""), dice: c.dice ?? [], mods, total: Number(c.total) || 0, formula: c.formula ?? "" });
   }
   return list;
 }

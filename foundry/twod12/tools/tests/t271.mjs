@@ -8,7 +8,7 @@ const A = src("module/actions.mjs"), I = src("module/inline.mjs"), M = src("modu
 
 console.log("Snap Shot (an Interrupt on 'would enter a square adjacent to you') isn't Doomed by the mover:", M.includes('notEngagedBy: r.moment === "enemyAdjacent" ? r.targetUuid : ""') && A.includes("engagedWith(selfToken).some(t => (t.document?.uuid ?? t.uuid) !== opts.notEngagedBy)"));
 console.log("Word of Radiance's d8s: a Profane creature's own roll on the Save card:", I.includes('diceRule: version.diceRule ?? ""') && I.includes('if (cfg.diceRule === "profane")') && I.includes('replace(/(\\d+)d6(!?)/g, "$1d8$2")'));
-console.log("Hallowed Stance's Advance before the roll, on your own turn:", A.includes("setupDone = stanceRan = st.done;") && A.includes("game.combat.combatant?.tokenId === (actor.token?.id"));
+console.log("Hallowed Stance's Advance before the roll, on your own turn:", A.includes("return { ok: st.ok, done: st.done, stance: st.done };") && A.includes("game.combat.combatant?.tokenId === (actor.token?.id"));
 const { EMPOWERED_AVG } = await import(ROOTURL + "module/preview.mjs");
 console.log("the roll dialog's Avg: Empowered's 1d6! once (avg", EMPOWERED_AVG, "), no Enfeebled:", !src("module/preview.mjs").includes("Enfeebled ${-step}") && !src("module/preview.mjs").includes("Enfeebled ${-k}"));
 console.log("the GM's re-roll keeps the Empowered die:", A.includes('const hadEmp = again && (message.getFlag("twod12", "ccDmg")?.groups ?? []).some(g => (g.comps ?? []).some(c => c.kind === "E"));'));

@@ -12,10 +12,12 @@ function rowHtml(r) {
   const d = `data-row="${k}" data-ids="${ids}"`;
   const chips = r.chips.map(t => `<span class="iw-fx">${esc(t)}</span>`).join("") + (r.last ? '<span class="iw-lastb">Goes last</span>' : "");
   const stackBtn = r.stack ? `<button type="button" class="iw-stackbtn" data-act="stack" data-key="${esc(r.stack)}" aria-expanded="${r.expanded}">${esc(r.stackLabel)}</button>` : "";
+  // v0.0.440 (Lucas: "The GM decides who goes together when initiative is rolled"): a Minion's squad; a click moves it to the next squad
+  const squadBtn = r.squad ? `<button type="button" class="iw-stackbtn iw-sqb" data-act="squad" data-v="${r.squad.next}" ${d}>Squad ${r.squad.n} of ${r.squad.of}</button>` : "";
   const side = r.moving ? `<div class="iw-side"><span class="iw-sidel">Side</span><select class="iw-sel iw-sidesel" data-act="side" ${d} aria-label="Side of ${esc(r.name)}">${[["friendly", "Heroes"], ["hostile", "Enemies"], ["neutral", "Third side"], ["fourth", "Fourth side"]].map(([v, l]) => `<option value="${v}"${v === r.side ? " selected" : ""}>${l}</option>`).join("")}</select></div>` : "";   // v0.0.313: no <label> (Foundry's label style broke the line)
   // v0.0.312 (Lucas): one row height always: while moving, the Side dropdown takes the second line's place (it no longer adds a line)
   const name = `<div class="iw-cr${r.member ? " member" : ""}">${portrait(r.img, r.member)}<div class="iw-crt"><div class="iw-nm">${esc(r.name)}</div>
-    ${r.moving ? side : `<div class="iw-sub">${stackBtn}<span class="iw-own">${esc(r.owner)}</span>${chips}</div>`}</div>
+    ${r.moving ? side : `<div class="iw-sub">${stackBtn}${squadBtn}<span class="iw-own">${esc(r.owner)}</span>${chips}</div>`}</div>
     <div class="iw-ico"><button type="button" class="iw-ib" data-act="move" ${d} aria-label="Move ${esc(r.name)} to another side">&#8644;</button>
     <button type="button" class="iw-ib${r.last ? " on" : ""}" data-act="last" ${d} ${pressed(r.last)} aria-label="${esc(r.name)} goes last">&#10515;</button></div></div>`;
   if (r.rolled) {

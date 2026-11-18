@@ -14,7 +14,7 @@ globalThis.foundry = { abstract: { TypeDataModel: class { static migrateData(s) 
 const tw = src("module/twod12.mjs"), inl = src("module/inline.mjs"), act = src("module/actions.mjs"), ccd = src("module/ccdamage.mjs"), mvs = src("module/move.mjs"), hud = src("module/hud.mjs");
 
 console.log("--- V1.1 a click uses the button, a right-click opens its rule (C12, G5)");
-console.log("only a chip naming an item opens it on its name:", tw.includes('const NAMES_ITEM = new Set(["Condition", "Effect", "Use"]);'), "| the right-click opens the rule or the item:", tw.includes('document.addEventListener("contextmenu"') && tw.includes("openChip(inl.dataset.twod12Inline"));
+console.log("only a chip naming an item opens it on its name:", tw.includes('const NAMES_ITEM = new Set(["Effect", "Use"]);'), "| the right-click opens the rule or the item:", tw.includes('document.addEventListener("contextmenu"') && tw.includes("openChip(inl.dataset.twod12Inline"));
 
 console.log("--- V1.2 a Tier's condition applies when the Tier lands (G1-G3)");
 const IN = await import(ROOTURL + "module/inline.mjs");
@@ -80,7 +80,7 @@ if (AS.cleanLevel) {
 } else console.log("(actor-sheets.mjs:", AS.err, ")");
 console.log("D2 both Modifiers, no Vigor / Resolve words on the bars:", hud.includes('{ label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }') && !hv.includes("<span><b>${esc(b.name)}</b>"),
   "| D5 no jump (v0.0.421: the classes switch with the new content, after the data):", hud.includes('shape("is-bar", ...(m.npc ? ["is-npc"] : []), ...(m.folded ? ["is-folded"] : []));') && !hud.includes("minHeight"), "| F2 Bloodied / Strained off the strip:", hud.includes('tag: h.tag?.cls === "hurt" ? null : h.tag'));
-console.log("F1 a full AP pip solid gold, an empty one dark:", theme.includes(".twod12-type .twod12-hud .hm-ap i.on, .twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }"), "| D8 the HUD's icons centered:", css.includes(".twod12-hud .hud-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar button { display: inline-flex; align-items: center; justify-content: center;"));
+console.log("F1 a full AP pip solid gold, an empty one dark:", theme.includes(".twod12-type.twod12-type .twod12-hud .hm-ap i.on, .twod12-type.twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }"), "| D8 the HUD's icons centered:", css.includes(".twod12-hud .hud-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar button { display: inline-flex; align-items: center; justify-content: center;"));
 
 console.log("--- V1.6 the Encounter Log");
 const DL = await import(ROOTURL + "module/damagelog.mjs");

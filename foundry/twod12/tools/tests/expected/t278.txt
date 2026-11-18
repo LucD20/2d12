@@ -1,0 +1,25 @@
+--- the automations
+a Setup runs when the dialog's Roll is pressed, then the Action again from the new square: true
+Reckoning: the on-use chain after the Save card: true
+Seizing Cut's Tier 3, its movement then its condition: {"move":"slid|distance:1","conds":["@Condition[grabbed]"]} | a self movement isn't one: null
+a click on a condition applies it (its rule on a right-click): true
+the HUD's Basic tab in the fixed order: Fists, Advance, Stand
+Avenge Kin aims at the attacker: source
+Shake Off's half rounds up (book, Rounding): 1 → 1 | 7 → 4 | 3 + 2 → 3 + 0
+--- the roll dialog and the chat
+a pinned choice shows while off (the Reload shot, Smite's Reaction AP): Reload shot | folded: Other
+Smite's Reaction AP die joins the Tiers when on: 1
+the dialog's dice under the dice rule (Smite by Escalation): true
+the Empowered die is a named part, no '−4 Flat': Empowered []
+One More Arrow's [W] a part of its own: [[1,""],[1,"One More Arrow"]]
+a Requirement only warns: true | Immobilized still stops a move: true
+the Save card folds once its damage is applied: true true
+--- the looks
+a pill keeps one line: true | the header wraps: true
+trait chips are plain words everywhere: true
+the dark Resolve blue lighter: true | the HUD's 10 defense cells: true | a full AP pip gold in dark: true
+--- Minion squads (book: as even as possible; the GM picks the groups and who goes next)
+sizes for 1 to 7: 1 | 2 | 3 | 2+2 | 3+2 | 3+3 | 3+2+2
+the GM's groups kept (m0, m1 in squad 2): {"m2":["m2","m3"],"m0":["m0","m1"]}
+a squad in the GM's order: M2 M3 M1 P1 | still to act after M2: M3, M1 | M1 picked next: M2, M1, M3
+the book: true

@@ -7,6 +7,8 @@
 //   set: { who: "gm" | "wait", attr, fav, doom, boons, banes, side, last } (the GM's settings: the combatant flag twod12.init) }.
 // call: { attr } (the Attribute the GM calls: Instinct by default). ui: { closed: { side }, open: { stackKey }, moving: { id } }.
 
+import { minionGroupOf } from "./roundrules.mjs";   // v0.0.440: the Minions' squads (pure)
+
 export const ATTRS = ["body", "mind", "appeal", "instinct"];
 export const ATTR_NAMES = { body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct" };
 export const ATTR_COLORS = { body: "#8f1d1d", mind: "#1f4a8f", appeal: "#7a5a00", instinct: "#1d6338" };
@@ -94,6 +96,7 @@ export function rowView(ms, call, opts = {}) {
     attr, attrMixed: !attr, overridden, mods: Object.fromEntries(ATTRS.map(a => [a, sgn(Number(r.mods?.[a]) || 0)])),
     fav, doom, favFx, doomFx, both: fav && doom, favBy: (r.fx?.favBy ?? []).join(", "), doomBy: (r.fx?.doomBy ?? []).join(", "),
     boons, banes, boonsOn: boons !== 0, banesOn: banes !== 0, manB, manN,
+    squad: !rolled && opts.squad ? { n: opts.squad.n, of: opts.squad.of, next: (opts.squad.n % opts.squad.of) + 1 } : null,   // v0.0.440: a Minion's squad (a click: the next one)
     tint: changed ? "changed" : (rolled || waiting ? "quiet" : "plain")
   };
 }
@@ -102,6 +105,8 @@ export function rowView(ms, call, opts = {}) {
 export function gmModel(list, call, ui = {}, opts = {}) {
   list = list ?? []; call = { attr: ATTRS.includes(call?.attr) ? call.attr : "instinct" };
   const st = stacking(list), closed = ui.closed ?? {}, open = ui.open ?? {}, moving = ui.moving ?? {};
+  // v0.0.440 (Lucas: "The GM decides who goes together when initiative is rolled"): each Minion not rolled yet shows its squad (even by default)
+  const sq = minionGroupOf(list.filter(c => !isRolled(c)).map(c => ({ id: c.id, kind: c.minion ?? "", group: c.set?.group ?? 0 })));
   const sides = SIDES.map(def => {
     const inSide = list.filter(c => sideOf(c) === def.key), rows = [], done = new Set();
     for (const c of inSide) {
@@ -111,8 +116,8 @@ export function gmModel(list, call, ui = {}, opts = {}) {
         done.add(k);
         const ms = inSide.filter(x => stackKeyOf(x, list) === k), ex = !!open[k];
         rows.push(rowView(ms, call, { stack: k, expanded: ex, moving: !!moving[`stack:${k}`] }));
-        if (ex) ms.forEach(m => rows.push(rowView([m], call, { member: true, moving: !!moving[m.id] })));
-      } else rows.push(rowView([c], call, { moving: !!moving[c.id] }));
+        if (ex) ms.forEach(m => rows.push(rowView([m], call, { member: true, moving: !!moving[m.id], squad: sq[m.id] })));
+      } else rows.push(rowView([c], call, { moving: !!moving[c.id], squad: sq[c.id] }));
     }
     return { ...def, open: !closed[def.key], caret: closed[def.key] ? "▸" : "▾", count: plural(inSide.length, "creature"), rows };
   }).filter(s => s.rows.length);
@@ -160,6 +165,7 @@ export function applyClick(ms, call, act, value) {
     else if (act === "side") put(x, { side: SIDE_BY[value] ? value : "" });
     else if (act === "last") put(x, { last: !ms.every(goesLast) });
     else if (act === "gmAll") { if (!isRolled(x)) put(x, { who: "gm" }); }
+    else if (act === "squad") put(x, { group: Math.max(1, Math.trunc(Number(value)) || 1) });   // v0.0.440: the Minion's squad (the GM's choice)
   }
   return out;
 }
