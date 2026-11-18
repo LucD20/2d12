@@ -286,31 +286,29 @@ Its name is open ("push" is a working word): Strain, Overreach, Surge.
 
 Claude's pick: C, 1d6!, once a casting.
 
-## 5g. The basics on one page (as decided up to decision 30; the wording is Claude's draft, not rules text)
+## 5g. The basics on one page (REWRITTEN 2026-11-18 after decision 72; the wording is Claude's draft, not rules text; the page as it stood at decision 30 is in the file's history)
 
-**A spell** is a Power Action with the traits **[Spell]**, one **Path** and one **School**, and it writes a minimum level in each ("Fire 2 • Evocation 1"). You can cast it if you have chosen it and meet both. Every spell needs concentration ([Focus]).
+**A spell** is a Power Action with the traits **[Spell]**, one **Path** and one **School**, and it writes a minimum level in each ("Fire 2 • Evocation 1"). A rare spell writes two Paths (63). You can cast it if you have chosen it and meet every minimum. Power Actions add no Modifier to damage (Chapter 1). A [Spell] counts as [Ranged] while you are Engaged, unless it is [Melee] (46).
 
-**The eight Paths** (what the magic is made of), each with its damage subtype and its rider: Fire (Fire; Lingering), Air (Electricity, Thunder; Pushed), Water (Cold; Hindered), Earth (Blunt, Slash, Pierce; Prone), Astral (Force; Dazed 1), Death (Unholy; Frightened), Nature (Poison, Pierce; Immobilized), Glamour (Psychic; Pressed 1). Blood and the Divine are outside the grid.
+**The eight Paths**, each with its usual damage subtype and its rider (what a Merge lends): Fire (Fire; Lingering), Air (Electricity, Thunder; Pushed), Water (Cold; Hindered), Earth (Blunt, Slash, Pierce; Prone), Astral (Force; Dazed 1), Death (Unholy; Frightened), Nature (Poison, Pierce; Immobilized), Glamour (Psychic; Pressed 1). A spell may use another subtype or another Path's condition when its fiction calls for it (64). Blood and the Divine are outside the grid.
 
-**The six Schools** (what the spell does), sorted by the main effect; a rider never changes the School:
-1. It leaves a magic that you hold → **Enchantment** (lay). Its spells are [Woven] or [Sustained].
-2. It brings a creature or an object → **Conjuration** (bring).
-3. It stops or undoes something: a blow, a spell, a presence → **Abjuration** (stop).
-4. It releases the Path on a target, to harm or to heal → **Evocation** (release).
-5. It works on a mind or on the senses → **Thaumaturgy** (command).
-6. Anything else: a creature or the ground changed for a set time → **Alteration** (change).
+**The six Schools**, by the sorting order (65; the first yes decides): it brings a creature or a thing, **Conjuration**; it answers or stops something, **Abjuration**; it is held, **Enchantment**; its main effect is damage, **Evocation**; otherwise the body or the ground, **Alteration**; the mind or the senses, **Thaumaturgy**.
 
-**Held magic.** **[Woven]:** you hold one Woven spell; casting another ends it. **[Sustained]:** "Sustain: 1 AP" at the start of your turn, or it ends; as many as you pay for. Both end when you go Down, when you choose, at the end of the encounter, and when you become Bloodied or Strained.
+**Held magic.** **[Woven]:** you hold one; casting another ends it. **[Sustained]:** "Sustain: 1 AP" at the start of your turn, or it ends. Both end when you go Down, when you choose, at the end of the encounter, and when you become Bloodied or Strained.
 
-**Getting magic.** A Magic Talent or a class **opens** a Path and a School together at level 1, with two spells of your choice. A later Talent opens one more Path or School (one spell). When your side wins a normal or harder encounter in which you cast a spell, you gain **1 Mastery in a Path or a School** you cast in it. Level 2 at 10 Mastery, 3 at 20, 4 at 30, 5 at 45, 6 at 60; no cap. At each new level you choose one spell. Spells swap on a Rest. Talents grant more spells and change spells by trait; they never give levels.
+**Getting magic.** A Magic Talent or a class opens a Path and a School together at level 1, with two spells. One Mastery point a won fight (normal or harder), into a Path or a School you cast in it; level 2 at 10, 3 at 20, 4 at 30, 5 at 45, 6 at 60; no cap; one spell chosen at each new level; spells swap on a Rest. Talents grant spells and change spells by trait, never levels. A level is never a number on a roll or a DC; dice grow with the Stage.
 
-**A level** is never a number on a roll or a DC. Dice grow with the Stage.
+**Surge** (66 to 72; unplayed). You start an encounter with Surge equal to your Escalation and gain 1 whenever your Escalation rises; spending it doesn't lower Escalation; it is gone when the encounter ends. Outside an encounter you have Surge equal to your party's Momentum, back when the party wins a normal or harder encounter. Every PC has it; only spells spend it for now. An NPC caster gains 1 a round.
 
-**Overcast** (its own line on a card). A step needs one level above the spell's minimum in its axis, and the fight's clock: your first step needs Escalation 2, your second Escalation 3. **School levels** climb the form ladders the card lists, in small rungs (decision 43): **Reach** +2 squares a step, **Breadth** +1 creature a step (an area spell: +1 to its Burst or Emanation), **Hold** +1 round a step. One creature to an area is a different spell. A casting holds as many steps as your Escalation minus 1. **Path levels** pay the spell's own step (written on it) or a **Merge**: the rider of a second Path you have, in the rider slot; the spell gains that Path's trait for the casting.
+**What a casting costs.** Its AP; its Frequency; a printed Surge cost on a stronger spell ("2 AP · 1 Surge"); and 1 Surge for each Overcast step.
 
-**Overreach.** Once a casting, take one Overcast step you couldn't otherwise take, for 1d6! Nonlethal Resolve damage that nothing absorbs or reduces.
+**Overcast** (its own line on a card). A step needs one spare level in its axis and 1 Surge; a casting holds at most Escalation minus 1 steps (outside an encounter, as many as you can pay). School levels climb the ladders the card lists: **Reach** +2 squares, **Breadth** +1 creature, **Hold** +1 round. An [Area] spell has no Breadth (61). Path levels pay the spell's own substance step, or a **Merge** (a second Path's rider in the rider slot; not on a two-Path spell).
 
-**Still open in the basics:** healing's School (Evocation as "the Path released", proposed); summons (so Conjuration); how much AP and which Frequency a spell of each size has; the Tags; Talents' structure.
+**Overreach.** Only a spell that prints the line has it (57). Once a casting, chosen before any roll, paid even on a miss; the card prints what it buys and the whole price, usually Nonlethal Resolve damage that nothing absorbs (58). A line may get past one limit, once, and says so (59). Nonlethal damage stays until a Sleep, a Rally Point or a heal (55).
+
+**Summons.** One Summon spell for each Path (62); the rule is 5k.
+
+**Still open in the basics:** see 5n.
 
 ## 5h. The review before the first cards (2026-11-18; Lucas: "take a closer look on what we have so far, compare with the research, then compare with 2d12 rules. See if anything worth noting pops up")
 
@@ -412,11 +410,56 @@ Lucas's principle (decision 44): the base rule carries the limit; Talents are ho
 
 **From the core rules, on every Action:** AP (4 and 1 Reaction AP); Frequency (At-will with a Bane a repeat, Turn, Round, Encounter, Daily); three Strikes a turn; Doomed for a [Ranged] Action while Engaged (a Save spell escapes it: 5h B3); Line of Effect; the Modifier never above +4.
 
-**Decided for magic:** the two minimums (5); few spells known (19, 27); one Mastery point a fight (27); a level never a number (18); an Overcast step needs a spare level (26) and costs 1 Surge (67), a casting holding at most Escalation minus 1 steps (20, 43); a stronger spell prints a Surge cost (69); small rungs (43); Overreach only on a spell that prints the line (57), once a casting, its usual price Nonlethal Resolve damage (30); a line may get past one limit once, and says so (59), which now stays until a Sleep unless a Rally Point or a heal removes it (55); one [Woven] spell (28); Sustain: 1 AP (29); held magic breaks on Down, Bloodied, Strained (28); one rider (26); the summons limits (41, 44); magic gives Guard, not Health (36).
+**Decided for magic:** the minimums (5, 63); few spells known (19, 27); one Mastery point a fight (27); a level never a number (18); Surge (66 to 72): an Overcast step needs a spare level (26) and costs 1 Surge (67), a casting holds at most Escalation minus 1 steps (20, 43, 70), a stronger spell prints a Surge cost (69); small rungs (43); no area growth (61); Overreach only on a spell that prints the line (57), once a casting, its usual price Nonlethal Resolve damage (58) that stays until a Sleep unless a Rally Point or a heal removes it (55); a line may get past one limit once, and says so (59); one [Woven] spell (28); Sustain: 1 AP (29); held magic breaks on Down, Bloodied, Strained (28); the summons limits (41, 44, 62); magic gives Guard, not Health (36); no limit across the fight beyond these, on watch (60).
 
-**Not limiters (dropped or never added):** mana, slots or points; a Health cost but Overreach; gems; casting time or interruption ([Focus] has no rule); a cap on levels; a cap on steps a ladder.
+**Not limiters (dropped or never added):** mana or slots; a daily pool; a Health cost but Overreach; gems; casting time or interruption ([Focus] has no rule); a cap on levels; a cap on steps a ladder. **Surge is a pool of points** (refused as "mana" in the first answers, taken up in decision 66 in a form built in the fight and gone at its end).
 
-**How it adds up:** in play a caster is held by AP, Frequency and (for Overcast) Escalation; everything else limits the build. A Round spell can be cast every round of every fight at no cost. Unmeasured.
+**How it adds up:** in play a caster is held by AP, Frequency and Surge; Overreach and its lasting damage are the only cost that crosses fights; everything else limits the build. Unmeasured: the SIM has no caster.
+
+## 5n. The second review (2026-11-18, after decision 72; Lucas: "take one look through everything, see if something is missing or off, rules problems etc. Compare to Dominions just in case")
+
+**How it was done.** Claude reread this whole record against the rules it touches. Two independent readers were started (one for the rulebook, one for Dominions) and **both stopped on a usage limit before reporting**, so this review has had no second pair of eyes. The Dominions comparison is from the four research notes as Claude remembers them and `dominions-core.md` (reread this session); the other three were not reopened. **Nothing below is decided.**
+
+### A. Rules problems
+
+1. **Surge stops at Escalation 6.** Surge comes only "whenever your Escalation rises", and Escalation can't pass 6 (Chapter 2). A fight never gives more than 6 Surge in all; a party at Momentum 4 starts with 5, gains 1 in round 2 and nothing after. High Momentum makes magic front-loaded, then dry.
+2. **An Unconscious PC gains no Escalation** (Chapter 2), so no Surge while out.
+3. **Most of magic's limits now rest on one unplayed rule.** Decisions 67, 69, 70, 71 and 72 all stand on Surge (66).
+4. **Overreach now compounds with held magic.** Its damage is Resolve damage and lasts until a Sleep (55); held magic breaks when you become Strained (28). A caster who Overreached in the morning starts every later fight nearer to losing their [Woven] and [Sustained] spells.
+5. **The nova of 5h B1 is smaller, not gone.** At Momentum 4: 5 Surge and up to 4 steps in round 1. Decision 71 adds Surge spent before Initiative (on watch).
+6. **A gish's Mastery is still undefined** (5h B10): one point in all, or one for the weapon and one for the magic.
+7. **A level 3 arrives sooner than a note says.** Level 3 is 20 Mastery: "3 • 3" is about 40 won fights, near character level 8 or 9, not sixty (the fourth pass's Iron Will note, corrected).
+
+### B. Rules magic needs and nobody has written
+
+- **What casting takes:** hands, a voice, armor. Nothing says whether a caster can cast in plate, bound or silenced. (Dominions: armor adds to every spell's fatigue.)
+- **[Focus]:** on every spell (7), with no rule.
+- **Whether a spell is seen or heard,** and whether it can be recognized or answered as it is cast.
+- **Which Attribute the Power Modifier is** for a caster with no class.
+- **Charmed and Confused** (drafts in the second pass, not in Chapter 8); **the Poison subtype** (13; not in Chapter 4); **Flying and Climbing** (the summons' menu leans on them).
+- **The [Melee] trait's text for a spell; an Interrupt that answers a result; a [Save] spell while Engaged** (asked, not answered); **one rule for two Lingering effects; a lowered Defense against Vulnerable.**
+- **A held spell whose target dies or leaves; two casters' same spell on one creature** (Chapter 8's Stacking probably covers it: to check).
+- **Rituals and everything out of combat; the Tags; the Talents' structure; a caster class.**
+- **The words not in the book yet:** [Spell], the Path and School traits, [Woven], [Sustained], Sustain, Overcast, Reach / Breadth / Hold, Merge, Overreach, Surge, summon.
+
+### C. Against Dominions
+
+**Where 2d12 has moved toward it:** minimums in a Path and a level track; small rungs with scarce spare levels; two-Path spells (63); a second Path as a dab; Overreach as the cost that adds up (fatigue) and as the gem's "+1 for one spell"; battlefield enchantments that last while the caster stands ([Woven], Storm); friendly fire in areas.
+
+**Where it has moved away:**
+1. **The direction of a fight is reversed.** A Dominions mage opens with the biggest spell they can and tires (fatigue runs up to unconsciousness). A 2d12 caster starts small and builds (Surge). It is Draw Steel's arc on Dominions' theme. Chosen on purpose (66, 69), worth knowing.
+2. **Summons.** Dominions' are armies, mostly permanent and called outside battle. 2d12's is one Minion, on purpose (37).
+3. **Nature doesn't heal** (36: Guard only), though healing and regeneration are what Nature is in Dominions.
+4. **No Construction School** (forging items): dropped without a recorded reason when the six were chosen (9). Items are their own design (`book/items-economy.md`).
+5. **The two numbers rise together in Dominions**; here they part (section 4, tension 1), so off-diagonal spells must be written on purpose. The four passes have few.
+
+**In Dominions, with no counterpart and no recorded refusal:** casting in armor; items and boosters that raise a Path; magic sites and a land's heat, cold or magic changing what a Path can do; afflictions (2d12 has Wounds: no spell touches them); spells that take longer to cast; research.
+**Has a counterpart:** magic resistance and penetration (Ward Defense, Saves: 5h A); dispelling (Abjuration); linked casters (Circle); precision and scatter (areas hit allies). **Refused or parked on record:** gems as a currency; a cap on levels; rituals; Blood; Holy.
+
+### D. Stale text in this record (corrected or marked in this pass)
+
+- 5g rewritten to the current basics; 5m's two paragraphs corrected (they still said "a Round spell can be cast every round at no cost" and listed "points" as never added).
+- Left as history, each replaced by a later decision: 5c's ladder table and "Warding" (43, 31); decision 43's and 5j's "+1 to its Burst or Emanation" (61); 5d point 2's "one in each" (27); 5f (57); decision 20 and 5l's "a step needs Escalation" (67); 5l's "1d6!" seeds (57, 58); 5h C's "Overreach is the caster's round-1 choice" and "an NPC writes its spells already Overcast" (57, 72); 5k point 3's "it acts at once" (the fourth pass has the summon's first turn after the caster's); section 6's order of work.
 
 ## 6. The order of work from here (proposed)
 

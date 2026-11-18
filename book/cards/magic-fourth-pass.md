@@ -149,7 +149,7 @@ Fireball one size up, with the ground left burning. **Three Surge is most of a f
 > **Effect:** The target gains none of those conditions from that Action.
 > **Overcast:** *Reach.* *Astral:* the will turns: if that Action was an enemy's, that enemy is Dazed 1.
 
-**It leans on two things not yet written:** an Interrupt that answers a result (Chapter 2 lists only "would damage"; the same gap as Stone Ward's), and Charmed and Confused, which are drafts in the second pass and not in Chapter 8. **Written to test decision 69's other half:** a high spell that is different, not stronger. It is Stone Ward's size (Earth 1 • Abjuration 1) and answers the mind where Stone Ward answers the body. **A question it raises:** does a 3 • 3 spell that is no stronger than a 1 • 1 feel like a reward for sixty fights of Mastery?
+**It leans on two things not yet written:** an Interrupt that answers a result (Chapter 2 lists only "would damage"; the same gap as Stone Ward's), and Charmed and Confused, which are drafts in the second pass and not in Chapter 8. **Written to test decision 69's other half:** a high spell that is different, not stronger. It is Stone Ward's size (Earth 1 • Abjuration 1) and answers the mind where Stone Ward answers the body. **A question it raises:** does a 3 • 3 spell that is no stronger than a 1 • 1 feel like a reward for about forty won fights of Mastery (level 3 is 20 Mastery in each)?
 
 ---
 
