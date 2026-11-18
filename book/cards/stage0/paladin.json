@@ -12,7 +12,7 @@
    "body": [
     {
      "label": "Judged",
-     "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier. Two Paladins can Judge the same creature: it is Judged by each of them."
+     "text": "A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier. Multiple Paladins can Judge the same creature: it is Judged by each of them."
     }
    ],
    "traits": [

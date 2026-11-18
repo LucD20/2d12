@@ -7,7 +7,7 @@ import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(ROOTURL), src = f => fs.readFileSync(ROOT + f, "utf8");
 const book = f => fs.readFileSync(ROOT + "../../book/" + f, "utf8");
-const LINE = "Two Paladins can Judge the same creature: it is Judged by each of them.";
+const LINE = "Multiple Paladins can Judge the same creature: it is Judged by each of them.";   // v0.0.423 (Lucas): "Better to say Multiple Paladins"
 
 console.log("--- (1) Stacking: a card says when it stacks");
 const ch2 = book("rules-src/02-turns.md"), ch8 = book("rules-src/08-conditions.md");
