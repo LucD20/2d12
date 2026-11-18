@@ -47,4 +47,5 @@ console.log("Reach (X) on NPCs only:", src("module/config.mjs").includes('return
 console.log("a Slowed AP pip keeps its look on dark:", src("tools/build-theme.mjs").includes(".hm-ap i:not(.x)"));
 console.log("--- the book");
 const b = fs.readFileSync(ROOT + "../../book/rules-src/02-turns.md", "utf8");
-console.log("Stacking: Judge-type effects per giver; conditions keep Chapter 8's rule:", b.includes('**An effect tied to the creature that gave it**, such as "Judged by you"') && b.includes("a creature can't have the same condition twice"));
+// v0.0.422 (Lucas, the audit's question): no general per-giver rule; a card says when it stacks (Judge), Chapters 2 and 8 say "Unless a card says otherwise".
+console.log("Stacking: Judge-type effects per giver; conditions keep Chapter 8's rule:", b.includes("**A card can say otherwise.** [[Judge]] does") && fs.readFileSync(ROOT + "../../book/rules-src/08-conditions.md", "utf8").includes("Unless a card says otherwise, a creature can't have the same condition twice"));

@@ -10,7 +10,8 @@ globalThis.foundry = { utils: { deepClone: o => JSON.parse(JSON.stringify(o)) } 
 const book = f => fs.readFileSync(ROOT + "../../book/" + f, "utf8");
 
 console.log("--- (1) Stacking and Judge");
-console.log("Chapter 2:", book("rules-src/02-turns.md").includes("**An effect tied to the creature that gave it**"), "| the card:", book("cards/stage0/paladin.json").includes("Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier."));
+// v0.0.422 (Lucas): the general per-giver rule became Judge's own line ("Two Paladins can Judge the same creature"); Chapter 2 says "A card can say otherwise".
+console.log("Chapter 2:", book("rules-src/02-turns.md").includes("**A card can say otherwise.** [[Judge]] does: two Paladins can Judge the same creature."), "| the card:", book("cards/stage0/paladin.json").includes("Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier."));
 const J = src("module/judge.mjs");
 console.log("Foundry asks the judge's player (declined: the round's use is kept):", J.includes("if (!(await askJudge(j, src, actor, by))) continue;") && J.indexOf("askJudge(j, src, actor, by)") < J.indexOf('setFlag(F, "judgeRound", key)'),
   "| each Paladin's own mark (two Judges):", J.includes("isJudgedBy(j, src)"));

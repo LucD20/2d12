@@ -1,7 +1,7 @@
 <!-- part: Part III: Reference -->
 # Chapter 8: Conditions
 
-These conditions are in alphabetical order. A creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). The effect that gives a condition says how long it lasts (EoT, a number of rounds, until a Save: see [[Effect Timing]]); a condition written with no duration lasts until the end of the encounter. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
+These conditions are in alphabetical order. Unless a card says otherwise, a creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). The effect that gives a condition says how long it lasts (EoT, a number of rounds, until a Save: see [[Effect Timing]]); a condition written with no duration lasts until the end of the encounter. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
 
 ### Blinded
 

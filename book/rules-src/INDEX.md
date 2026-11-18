@@ -5,7 +5,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 25.5 | 324 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 33.8 | 353 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 33.6 | 351 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 41.1 | 472 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.0 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
@@ -75,21 +75,21 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 194:   ### Effect Timing
 - 206:   ### Buffs
 - 217:     #### Stacking
-- 240:   ### Frequency
-- 246:     #### At-will
-- 254:     #### Turn
-- 258:     #### Round
-- 262:     #### Encounter
-- 266:     #### Daily
-- 270: ## Versus
-- 274:   ### Defenses
-- 289: ## Rounds and Durations
-- 291:   ### Until
-- 295:   ### Your Next Action
-- 299:   ### Rounds
-- 308:   ### End of Turn
-- 316: ## Escalation
-- 339:   ### Momentum
+- 238:   ### Frequency
+- 244:     #### At-will
+- 252:     #### Turn
+- 256:     #### Round
+- 260:     #### Encounter
+- 264:     #### Daily
+- 268: ## Versus
+- 272:   ### Defenses
+- 287: ## Rounds and Durations
+- 289:   ### Until
+- 293:   ### Your Next Action
+- 297:   ### Rounds
+- 306:   ### End of Turn
+- 314: ## Escalation
+- 337:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 

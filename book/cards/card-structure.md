@@ -178,7 +178,7 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 > *You pronounce a foe guilty before your god, and holy light dulls its blows against those who stand near you.*
 > Divine
 > Distance: 10 sq. | Target: One enemy you can see
-> **Judged:** A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier.
+> **Judged:** A creature stops being Judged when it goes Down. A creature Judged by you counts as Profane for you. Once each round, when it damages an ally within 5 squares of you, you can reduce that damage by your Power Modifier. Two Paladins can Judge the same creature: it is Judged by each of them.
 > — **0 AP** —
 > **Special:** You can use this only at the start of an encounter, or as a 0R when the creature you Judged goes Down.
 > **Effect:** The target is Judged by you until the encounter ends.

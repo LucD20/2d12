@@ -216,7 +216,7 @@ A **Buff** is an effect that modifies another Action, such as Rimebrand's extra 
 
 #### Stacking
 
-The same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2.
+Unless a card says otherwise, the same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2.
 
 Five things do add up:
 
@@ -228,9 +228,7 @@ Five things do add up:
 
 For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus to Armor Defense: his Armor Defense rises by 2. A second +1 Support bonus changes nothing, and an unnamed +1 bonus doesn't add to them either: he keeps +2.
 
-**An effect tied to the creature that gave it**, such as "Judged by you", is a different effect for each creature that gives it: a creature can be Judged by two Paladins at once, and each Paladin's cards read only their own. (Conditions keep their own rule: a creature can't have the same condition twice, see [[Chapter 8: Conditions]].)
-
-For example, Chris and Krysta are Paladins and both Judge the same Orc. It is Judged by Chris and Judged by Krysta: it counts as Profane for each of them, and each of them can reduce its damage once each round.
+**A card can say otherwise.** [[Judge]] does: two Paladins can Judge the same creature. For example, Chris and Krysta are Paladins and both Judge the same Orc. It is Judged by Chris and Judged by Krysta: it counts as Profane for each of them, and each of them can reduce its damage once each round.
 
 **Equipment is not a bonus.** Your armor gives your Armor value and your charm your Ward value; effects add to those. With +1 AD and +1 Defense, your Armor Defense rises by 1 (not 2) and every other Defense by 1.
 

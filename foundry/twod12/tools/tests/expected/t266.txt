@@ -1,0 +1,8 @@
+--- (1) Stacking: a card says when it stacks
+Chapter 2: true | Judge is the example: true | the old general rule gone: true
+Chapter 8: true
+the card: true | card-structure.md's example: true | the book's structure.json: true
+copies of Judge in the compendium (the Action and the PCs'): true | every one has the line: true
+Foundry keeps each Paladin's own Judged (unchanged): true
+--- (2) the area's hover card kept
+zonetip.mjs registered: true
