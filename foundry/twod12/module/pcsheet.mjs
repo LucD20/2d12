@@ -247,8 +247,8 @@ export async function pcModel(sheet, ctx) {
     // v0.0.303 (Lucas): no "back once at Escalation 3" on the row (the Elite Escalation strip says it)
     if (area) subs.push(`Area: ${area}`);
     // v0.0.418 (Lucas, playtest 5, E2: a Reaction's row didn't show its Frequency): until the sheet's redesign, a row outside its Frequency's
-    // section (a Reaction, a Basic Action) writes the Frequency word in its pill ("Turn · 1R")
-    const aps = (it.versions ?? []).map(v => v.ap), fq = effectiveFrequency(it), fqWord = FREQ_WORD[fq] && (reaction || sec !== fq) ? FREQ_WORD[fq] : "";
+    // section writes the Frequency word in its pill (v0.0.421: a Reaction only) ("Turn · 1R")
+    const aps = (it.versions ?? []).map(v => v.ap), fq = effectiveFrequency(it), fqWord = reaction && FREQ_WORD[fq] ? FREQ_WORD[fq] : "";   // v0.0.421 (the audit): Reactions only (the Basic Actions' boxes and the granted rows read the same cost)
     const pillTxt = [fqWord, costPill(aps, reaction)].filter(Boolean).join(" · ");
     return {
       id: i.id, name: i.name, sub: subs.join(" \u00b7 "), fav: favs.includes(i.id), section: sec, lines: rowLines({ frequency: effectiveFrequency(it), reaction, strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),   // Opportunity Attack makes a Weapon Attack: a Strike

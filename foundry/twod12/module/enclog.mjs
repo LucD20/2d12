@@ -40,6 +40,15 @@ export function creatureAbbrs(list, overrides = {}) {
   return out;
 }
 
+/** v0.0.421 (the audit; Lucas, playtest 5: "numbers creatures of the same name"): the full names, numbered when two creatures share one
+ *  ("Goblin Sneak 1", "Goblin Sneak 2"), in the list's order (the combat's). list: [{ id, name }]. Pure. */
+export function fullNames(list) {
+  const base = c => String(c.name ?? "").replace(/\s+\d+$/, "").trim();
+  const count = new Map(); for (const c of list) count.set(base(c), (count.get(base(c)) ?? 0) + 1);
+  const seen = new Map(), out = {};
+  for (const c of list) { const b = base(c); if ((count.get(b) ?? 0) < 2) continue; const n = (seen.get(b) ?? 0) + 1; seen.set(b, n); out[c.id] = `${b} ${n}`; }
+  return out;
+}
 /** One line, written out. nm(ref) gives a creature's name (full or short); an: an Action's name (full or short). */
 export function lineText(e, nm = r => r?.name ?? "?", an = n => n) {
   if (e.txt) return e.txt;   // edited by hand
@@ -105,9 +114,9 @@ export function turnText(turn, nm, an, { details = false } = {}) {
 }
 
 /** The whole log in the playtest format, by Round, with the abbreviations used (a legend) first. */
-export function exportText(log, { abbr = {}, short = true, details = false } = {}) {
+export function exportText(log, { abbr = {}, short = true, details = false, full = {} } = {}) {
   const used = new Map(), usedAct = new Map();
-  const nm = r => { if (!r) return "?"; const s = short ? (abbr[r.id] ?? r.name) : r.name; if (short && s !== r.name) used.set(s, r.name); return s; };
+  const nm = r => { if (!r) return "?"; const s = short ? (abbr[r.id] ?? r.name) : (full[r.id] ?? r.name); if (short && s !== r.name) used.set(s, r.name); return s; };
   // An Action's short name that is also a creature's (Ground Slam and the Goblin Sneaks: GS) stays whole.
   const taken = new Set(Object.values(abbr).flatMap(a => [a, String(a).replace(/\d+$/, "")]));
   const an = n => { let s = short ? actionAbbr(n) || n : n; if (taken.has(s)) s = n; if (short && s !== n) usedAct.set(s, n); return s; };
@@ -220,14 +229,14 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     const log = logOf(combat);
     const list = [...combat.combatants].map(c => ({ id: c.tokenId ?? c.actorId, name: c.token?.name ?? c.name }));
     const ab = creatureAbbrs(list, combat.getFlag(F, ABBR) ?? {});
-    const nm = r => esc(r?.name ?? "?");
+    const fn = fullNames(list), nm = r => esc(fn[r?.id] ?? r?.name ?? "?");
     const rows = [];
     let round = null;
     for (const turn of turnsOf(log, { all: true })) {
       if (turn.r !== round) { round = turn.r; rows.push(`<h3 class="el-round">${round > 0 ? `Round ${round}` : "Before the first round"}</h3>`); }
       const lines = turn.items.filter(e => (this.show.dmg || e.k !== "dmg") && (this.show.cond || e.k !== "cond") && (this.show.off || !e.off)).map(e => {
         const who = e.who?.id && e.who.id !== turn.own?.id && !["dmg", "heal", "cond", "down", "up", "note"].includes(e.k) ? `<b>${nm(e.who)}</b> ` : "";
-        return `<div class="el-line k-${e.k}${e.off ? " off" : ""}" data-id="${e.id}"${e.why ? ` aria-label="${esc(e.why)}"` : ""}><i class="fa-solid ${ICON[e.k] ?? "fa-circle"}"></i><span class="el-txt">${who}${esc(lineText(e))}${e.txt ? ' <i class="fa-solid fa-pen el-edited" aria-label="Edited by hand"></i>' : ""}</span>
+        return `<div class="el-line k-${e.k}${e.off ? " off" : ""}" data-id="${e.id}"${e.why ? ` data-tooltip="${esc(e.why)}"` : ""}><i class="fa-solid ${ICON[e.k] ?? "fa-circle"}"></i><span class="el-txt">${who}${esc(lineText(e))}${e.txt ? ' <i class="fa-solid fa-pen el-edited" aria-label="Edited by hand"></i>' : ""}</span>
           <a data-el="edit" aria-label="Edit the text"><i class="fa-solid fa-pen-to-square"></i></a><a data-el="${e.off ? "restore" : "remove"}" aria-label="${e.off ? "Put it back" : "Remove (a misclick): struck through, left out of the copy"}"><i class="fa-solid ${e.off ? "fa-rotate-left" : "fa-xmark"}"></i></a></div>`;
       }).join("");
       rows.push(`<div class="el-turn" data-r="${turn.r}" data-t="${turn.t}"><div class="el-own"><b>${nm(turn.own)}</b> <span class="el-ab">(${esc(ab[turn.own?.id] ?? "")})</span><a data-el="note" aria-label="Add a note to this turn"><i class="fa-solid fa-plus"></i> note</a></div>${lines || '<div class="el-line empty">(nothing)</div>'}</div>`);
@@ -261,7 +270,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     const id = b.closest("[data-id]")?.dataset.id, what = b.dataset.el;
     if (what === "copy") {
       const list = [...combat.combatants].map(c => ({ id: c.tokenId ?? c.actorId, name: c.token?.name ?? c.name }));
-      let text = exportText(logOf(combat), { abbr: creatureAbbrs(list, combat.getFlag(F, ABBR) ?? {}), short: this.short !== false, details: !!this.details });
+      let text = exportText(logOf(combat), { abbr: creatureAbbrs(list, combat.getFlag(F, ABBR) ?? {}), short: this.short !== false, details: !!this.details, full: fullNames(list) });
       try { const { reportRows } = await import("./damagelog.mjs"); const rows = reportRows(combat); if (rows.length) text += `\n\nDamage dealt to enemies (total / per round; to allies)\n${rows.map(r => `${r.name}: ${r.total} / ${Math.round(r.perRound * 10) / 10}${r.allies ? `; to allies ${r.allies}` : ""}`).join("\n")}`; } catch (e) { /* no report */ }
       try { await (game.clipboard?.copyPlainText?.(text) ?? navigator.clipboard.writeText(text)); ui.notifications.info("Encounter log copied."); } catch (e) { console.log(text); ui.notifications.warn("Could not copy: the log is in the console (F12)."); }
       return;

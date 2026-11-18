@@ -69,7 +69,7 @@ console.log("C11 Bloodied in the Vigor red on the dark card:", theme.includes(":
 console.log("--- V1.4-5 the roll dialog, the sheets, the HUD");
 const rd = src("module/rolldlg.mjs"), pcs = src("module/pcsheet.mjs"), as = src("module/actor-sheets.mjs"), hv = src("module/hudview.mjs");
 console.log("B1 the roll line only where the card has one:", rd.includes("if (m.vs && C.roll) {"), "| A2:", act.includes("name: `${atWill + 1}x At-will use`"));
-console.log("E2 a Reaction's pill writes its Frequency (\"Turn · 1R\"):", pcs.includes("fqWord = FREQ_WORD[fq] && (reaction || sec !== fq) ? FREQ_WORD[fq] : \"\""), "| E4 the Action sheet's traits plain:", src("module/actionsheet.mjs").includes('class="fr-chip plain"'));
+console.log("E2 a Reaction's pill writes its Frequency (\"Turn · 1R\"):", pcs.includes("fqWord = reaction && FREQ_WORD[fq] ? FREQ_WORD[fq] : \"\""), "| E4 the Action sheet's traits plain:", src("module/actionsheet.mjs").includes('class="fr-chip plain"'));
 const AS = await import(ROOTURL + "module/sheetmodel.mjs").catch(e => ({ err: e.message }));
 if (AS.cleanLevel) {
   console.log("E8 an empty Level is left unchanged:", JSON.stringify(["", null, "3", ["", "4"], "x", -2].map(AS.cleanLevel)));

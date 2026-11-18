@@ -374,12 +374,13 @@ Hooks.once("ready", () => { try { registerInitiativeSocket(); } catch (e) { cons
 const NAMES_ITEM = new Set(["Condition", "Effect", "Use"]);
 Hooks.once("ready", async () => {
   // v0.0.418 (playtest 5, C12): a right-click on a chip opens its rule (a movement, Heal, Guard...) or the item it names
+  // v0.0.421 (the audit): caught on the way down and stopped, so Foundry's own chat-message menu (or a sheet row's) doesn't open over the rule
   document.addEventListener("contextmenu", async ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");
     if (!inl || ["Book", "Pause"].includes(inl.dataset.twod12Inline)) return;
-    ev.preventDefault();
+    ev.preventDefault(); ev.stopPropagation();
     try { const { openChip } = await import("./inline.mjs"); await openChip(inl.dataset.twod12Inline, JSON.parse(inl.dataset.cfg), { message: game.messages.get(inl.closest("[data-message-id]")?.dataset.messageId) ?? null }); } catch (err) { console.warn("twod12 | chip's rule", err); }
-  });
+  }, true);
   // v0.0.418 (playtest 5, G1: "it couldn't be dragged from the chat to the token"): a condition or effect chip dragged onto a token applies to it
   document.addEventListener("dragstart", ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");

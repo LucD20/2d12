@@ -228,7 +228,7 @@ Five things do add up:
 
 For example, Jacob has a +1 Support bonus to every Defense and a +1 Field bonus to Armor Defense: his Armor Defense rises by 2. A second +1 Support bonus changes nothing, and an unnamed +1 bonus doesn't add to them either: he keeps +2.
 
-**An effect tied to the creature that gave it** ("Judged by you", "Frightened of you", "Taunted by you") is a different effect for each creature it names, so the same name can be on a creature more than once: it can be Judged by two Paladins at once, and each one's card reads its own. What those effects change still follows the rule above (two Banes from them are counted by their name's limit).
+**An effect tied to the creature that gave it**, such as "Judged by you", is a different effect for each creature that gives it: a creature can be Judged by two Paladins at once, and each Paladin's cards read only their own. (Conditions keep their own rule: a creature can't have the same condition twice, see [[Chapter 8: Conditions]].)
 
 For example, Chris and Krysta are Paladins and both Judge the same Orc. It is Judged by Chris and Judged by Krysta: it counts as Profane for each of them, and each of them can reduce its damage once each round.
 

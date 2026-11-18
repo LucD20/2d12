@@ -1212,7 +1212,10 @@ export async function useAction(actor, item, opts = {}) {
   if ((it.moment && version.noTiers || saveNoDamage) && String(version.after ?? "").trim() && targets.length) {
     const { runAfter } = await import("./inline.mjs");
     // v0.0.272 (pack RX): only its first step: the steps after a @Pause ("After the damage") stay buttons on the card (applyAfterHtml from step 1)
-    try { await runAfter(chainSteps(version.after)[0]?.chips.join(" ") ?? "", { actor, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })), attrVal: src.kind ? (Number(src.mod) || 0) : null, message: cmsg, source: item.name }); } catch (e) { console.warn("twod12 | moment chain", e); }
+    // v0.0.421 (the audit: Reckoning gave every target Frightened before the Save): a chip that is also written in a Tier is that Tier's (it applies
+    // with the Tier, to the creatures that get it), so the chain run on use leaves it out
+    const inTier = c => { const key = String(c).replace(/\{[^}]*\}$/, ""); return saveNoDamage && [1, 2, 3].some(n => String(version[`x${n}`] ?? "").includes(key)); };
+    try { await runAfter((chainSteps(version.after)[0]?.chips ?? []).filter(c => !inTier(c)).join(" "), { actor, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })), attrVal: src.kind ? (Number(src.mod) || 0) : null, message: cmsg, source: item.name }); } catch (e) { console.warn("twod12 | moment chain", e); }
   }
   // A Save Action: a Save card for the creatures in the area (each player rolls their own), and the area remembers it for [HT] (v0.0.159).
   if (saveAct && !version.noTiers) {
@@ -1302,6 +1305,17 @@ export async function useAction(actor, item, opts = {}) {
       const u = autoFor(tier, bonuses);
       if (u.length) await applyEffects(u, isSelf ? [actor.uuid] : targets.map(t => t.uuid), how);
     }
+    // v0.0.421 (the audit: Trip's Prone, Thwart Cut's Tier 1 Pressed, Trick Shots' Pin and Startle never applied): a condition written in a Tier
+    // that deals no damage applies now, to each creature that got that Tier (a damaging Tier's conditions wait for its damage to land: ccdamage.mjs)
+    const tierConds = t => (ridesOn(t) ? [] : String(expandAsText(version[`x${t}`], item.system.versions, version, t) ?? "").match(/@Condition\[[^\]]*\]/g) ?? []);
+    const giveConds = async (t, uuids, crit) => {
+      const chips = t >= 1 ? tierConds(t) : [];
+      if (!chips.length || !uuids.length) return;
+      const { applyConditionChip } = await import("./inline.mjs");
+      for (const chip of chips) { try { await applyConditionChip(chip, { targets: uuids.map(u => ({ uuid: u, crit: !!crit })), actor, message: cmsg }); } catch (e) { console.warn("twod12 | a Tier's condition", chip, e); } }
+    };
+    if (mres) { for (const r of mres) await giveConds(r.chk.tier, [isSelf ? actor.uuid : r.uuid], r.chk.crit); }
+    else await giveConds(tier, isSelf ? [actor.uuid] : targets.map(t => t.uuid), chk?.crit);
   }
   // Actions used because of another Action do not count toward Frequency or the Strike limit.
   if (!opts.free) await markUsed(actor, item);
