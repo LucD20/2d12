@@ -1434,7 +1434,9 @@ export async function rollDamage(message, { again = false } = {}) {
   const empOn = stepOf(f.empowered) > 0 && empoweredNow(actor);   // v0.0.407: Empowered's 1d6!, once a turn (explode.mjs)
   // v0.0.411 (pack F3, One More Arrow: hooks.mjs moreW): once on each of its turns, a [Strike] that deals [W] deals 1[W] more
   let moreW = 0;
-  if (!again && (item.system.traits?.has?.("strike")) && [1, 2, 3].some(t => (version[`t${t}`] ?? []).some(i => i.useW))) {
+  // v0.0.426 (the audit: a Tier 1 Quick Shots, "[V] [Mod]", used it up): only a Tier that was rolled and deals [W] takes it
+  const rolledTiers = f.results?.length ? f.results.map(r => r.tier).filter(t => t >= 1) : [f.tier];
+  if (!again && (item.system.traits?.has?.("strike")) && rolledTiers.some(t => (version[`t${t}`] ?? []).some(i => i.useW))) {
     const mw = activeHooks(actor, "moreW");
     if (mw.length && await (await import("./hooks.mjs")).takeMoreW(actor)) moreW = Math.max(1, Number(mw[0].hook.n) || 1);
   }

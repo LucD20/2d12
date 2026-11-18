@@ -15,7 +15,7 @@ export function basicGroupsOf(rows) {
   if (rest.length) out.push({ key: "other", label: "Other", rows: rest });
   return out;
 }
-import { masteryRows, masteryOf, setMastery, setCollapsed, techniqueState, startMasteryOf, chooseStartMastery } from "./mastery.mjs";
+import { masteryRows, masteryOf, masteryValue, setMastery, setCollapsed, techniqueState, startMasteryOf, chooseStartMastery } from "./mastery.mjs";
 import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
 import { setWorn } from "./armor.mjs";
@@ -1034,8 +1034,10 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /** Mastery: +1 / -1 by hand (the GM correcting, or a feature that grants it). */
   static async masteryStep(event, target) {
     if (!game.user.isGM) return ui.notifications.warn("Only the GM can change Mastery by hand.");
-    const k = target.dataset.key, d = Number(target.dataset.d) || 0, cur = Number(masteryOf(this.actor)[k]?.value) || 0;
-    await setMastery(this.actor, k, cur + d, target.closest(".mst-row")?.querySelector(".mst-name b")?.textContent ?? "");
+    // v0.0.426 (the audit): from the value the tab shows (with the group's floor), not the stored one ("+" stayed at the floor for many clicks)
+    const k = target.dataset.key, d = Number(target.dataset.d) || 0, nm = target.closest(".mst-row")?.querySelector(".mst-name b")?.textContent ?? "";
+    const cur = Number(masteryValue(this.actor, masteryOf(this.actor)[k]?.name || nm || k)) || 0;
+    await setMastery(this.actor, k, cur + d, nm);
   }
   static async chooseStartMastery(event, target) { await chooseStartMastery(this.actor, target.dataset.item); }
 

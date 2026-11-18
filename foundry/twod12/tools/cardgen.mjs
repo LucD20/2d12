@@ -126,6 +126,9 @@ export function versionData(c, v, resolve = s => s) {
   if (v.special) out.special = resolve(fxText(v.special));   // v0.0.411: a Structure block's Special
   if (v.foundry?.areaSize) out.areaSize = v.foundry.areaSize;
   if (v.foundry?.areaRounds) out.areaRounds = v.foundry.areaRounds;   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area
+  // v0.0.426 (the audit: Rescue's Reposition 2 was held within the Paladin's Reach; book, Chapter 3: "Your Reach and the creature's Size don't limit
+  // it"): only a card that says so keeps the target within its Reach (Relocate: "must remain within your Reach throughout the whole movement")
+  if (!/remain within your Reach/i.test(String(c.requirements ?? ""))) for (const k of ["effects", "x1", "x2", "x3", "critical", "after"]) if (typeof out[k] === "string") out[k] = out[k].replace(/(@Move\[reposition\|[^\]]*?)\|reach:yes/g, "$1");
   return out;
 }
 

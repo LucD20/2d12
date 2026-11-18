@@ -52,13 +52,16 @@ export async function onStateChange(actor, words) {
   if (!combat?.started) return;
   // v0.0.314 (pack AU; book, Elite Escalation): an Elite's phases, +1 Escalation when it becomes Bloodied and when it becomes Strained (once each)
   if (actor.type === "npc" && escalationOf(actor) !== null) for (const ph of elitePhases(words)) await raiseEscalation(actor, ph, { combat, label: `${actor.name} becomes ${ph === "bloodied" ? "Bloodied" : "Strained"} (Elite phase)` });
-  for (const c of combat.combatants) {
+  // v0.0.426 (the audit): "An ally within N squares becomes Bloodied or goes Down" (Kindled Wrath): not Strained; the name is the ally's (v0.0.418
+  // removed the line's own name, and the label read "( is Strained)")
+  const ally = words.filter(w => w === "Bloodied" || w === "Down");
+  for (const c of ally.length ? combat.combatants : []) {
     const a = c.actor;
     if (!a || a === actor) continue;
     for (const h of escHooksOf(a)) {
       if (h.when !== "allyState") continue;
       if (!allyWithin(a, actor, h.range)) continue;
-      await raiseEscalation(a, "hook", { combat, label: `${h.source} (${name} is ${words.join(" and ")})` });
+      await raiseEscalation(a, "hook", { combat, label: `${h.source} (${actor.name} is ${ally.join(" and ")})` });
     }
   }
 }

@@ -11,6 +11,7 @@ import { combatantOf } from "./combat.mjs";
 import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
 import { bbCount, bbKey } from "./calc.mjs";
 import { originOk, attrsOk, bleedOf, bleedText, needsOrigin, hasBleed } from "./condrules.mjs";   // v0.0.314 (pack AU)
+import { diceAvg } from "./fxrules.mjs";   // v0.0.426: Lingering keeps the higher average
 const SOCKET = "system.twod12";
 const F = "twod12";
 
@@ -271,6 +272,13 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   // A condition with a value: the same condition again doesn't stack, it keeps the higher value.
   let value = s.valued ? Math.max(1, Math.trunc(Number(over?.value)) || 1) : undefined;
   if (s.valued) for (const e of olds) if (keeps(e)) value = Math.max(value, Number(e.getFlag(F, "value")) || 0);
+  // v0.0.426 (the audit; book, Chapter 8, Lingering: "If you would gain Lingering again, keep the one with the higher average"): a weaker or equal new
+  // Lingering leaves the one the creature has
+  if (olds.length && hasBleed(s)) {
+    const avg = b => diceAvg(String(b?.dmg ?? "").replace(/!/g, ""));
+    const now = Math.max(...olds.map(e => avg(bleedOf(e)) ?? -1)), next = avg(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over?.bleed ?? null } } }));
+    if (next !== null && now >= next) return;
+  }
   if (old.length) await actor.deleteEmbeddedDocuments("ActiveEffect", old);
   const sid0 = shortName(item.name).trim().toLowerCase(), sid = Object.keys(COND_NAME).find(k => COND_NAME[k] === sid0) ?? sid0;   // v0.0.414: Lingering is the status bleed
   const baseId = sid.replace(/\s*\(.*\)\s*$/, "");   // "Hindered (until Move)" is the Hindered status

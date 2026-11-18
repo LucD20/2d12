@@ -355,9 +355,14 @@ export async function collectReactions(ev) {
         if (!hit || dist < hit.dist) hit = { sj, dist };
       }
       if (!hit) continue;
+      // v0.0.426 (the audit; book, Shield of Faith, Bulwark of Faith: "An enemy's [Strike] Action would damage the target"): not an ally's Strike
+      if (k === "strikeDamage" && ev.source?.actor && !sideOk("enemy", tk.document?.disposition, ev.source.token?.document?.disposition ?? ev.source.disposition, false)) continue;
       const target = item.system.momentTarget === "source" && ev.source?.actor ? ev.source : hit.sj;
       const sq = squaresOf(item.system.distance);   // a Distance in squares limits how far the target can be (Rebuke: 5 sq.)
-      if (sq && target.token && target.token !== tk && tokenDistance(tk, target.token) > sq) continue;
+      // v0.0.426 (the audit: Rebuke wasn't offered when the enemy ended its move more than 3 squares away): a movement's target is measured on the
+      // squares the movement used (hit.dist), not where it stopped
+      const tDist = def.move && target === hit.sj ? hit.dist : (target.token ? tokenDistance(tk, target.token) : 0);
+      if (sq && target.token && target.token !== tk && tDist > sq) continue;
       const row = { actor, token: tk, item, kind, moment: k, subject: hit.sj, target, dist: hit.dist, role: roleOf(item, def) };
       // v0.0.410 (book, A Reaction's Target): Line of Effect to the target, and the target and the triggering creature perceived (Hidden is enough)
       const why = (await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item);
