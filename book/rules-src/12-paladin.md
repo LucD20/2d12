@@ -89,7 +89,7 @@ Every Paladin has these two. **Judge** names the foe your god's attention is on:
 
 ### Level 2: Escalation Hook
 
-You gain Kindled Wrath: it raises your Escalation when an ally is hurt.
+You gain Kindled Wrath: it raises your Escalation when an ally becomes Bloodied or goes Down.
 
 @@CARD:Kindled Wrath@@
 

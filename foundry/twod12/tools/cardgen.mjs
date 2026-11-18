@@ -35,7 +35,7 @@ export const traitKeys = traits => [...new Set((traits ?? []).map(t => TRAIT_KEY
 export function distanceKey(c) {
   const t = String(c.distance ?? "").trim();
   if (!t) return c.target ? "" : "self";
-  if (/^weapon$/i.test(t)) return "weapon";
+  if (/^weapon(\s*\((normal|far|maximum) range\))?$/i.test(t)) return "weapon";   // v0.0.427: "Weapon (Normal range)" (an area's placement, areaOf)
   if (/^reach$/i.test(t)) return "reach";
   if (/^self$/i.test(t)) return "self";
   const m = t.match(/^(\d+)\s*sq\.?$/i);
@@ -143,9 +143,10 @@ export function areaOf(c) {
   const sizes = m[1].split("/").map(x => Number(x.trim()));
   const cfg = { size: sizes[0], shape: m[2].toLowerCase(), within: 0, targets: "all", center: false, keep: false, rounds: 0 };
   const d = String(c.distance ?? "").trim(), r = d.match(/weapon's (normal|far|maximum) range/i);
-  // v0.0.426 (the audit: Volley's and Covering Fire's Burst could be placed at any distance): Distance "Weapon" places it within the weapon's range
-  // (its maximum: Claude's reading, a question for Lucas)
-  if (r) cfg.withinRange = r[1].toLowerCase(); else if (/^weapon$/i.test(d)) cfg.withinRange = "maximum"; else if (d) cfg.within = Number(distanceKey(c)) || 0;
+  // v0.0.426 (the audit: Volley's and Covering Fire's Burst could be placed at any distance); v0.0.427 (Lucas: "normal range. Put 'Distance: Weapon
+  // (Normal range)'"): the card writes which range; a bare "Weapon" on an area is its normal range too
+  const wr = d.match(/^weapon\s*\((normal|far|maximum) range\)$/i);
+  if (r) cfg.withinRange = r[1].toLowerCase(); else if (wr) cfg.withinRange = wr[1].toLowerCase(); else if (/^weapon$/i.test(d)) cfg.withinRange = "normal"; else if (d) cfg.within = Number(distanceKey(c)) || 0;
   Object.assign(cfg, c.foundry?.areaCfg ?? {});
   return { cfg, sizes };
 }

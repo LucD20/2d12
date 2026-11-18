@@ -714,7 +714,7 @@
   "escalation": null,
   "frequency": "Encounter",
   "flavor": "You keep the arrows coming down on one stretch of ground, and nobody crosses it without paying.",
-  "distance": "Weapon",
+  "distance": "Weapon (Normal range)",
   "area": "3 Burst",
   "target": null,
   "traits": [
@@ -897,7 +897,7 @@
   "body": [
    {
     "label": "Setup",
-    "text": "You draw a [[Light]] weapon."
+    "text": "You draw a [[Light (property)|Light]] weapon."
    },
    {
     "label": "Special",
@@ -1798,7 +1798,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
+    "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light (property)|Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
    },
    {
     "label": "Special",
@@ -2991,7 +2991,7 @@
    },
    {
     "label": "Critical",
-    "text": "You regain 1 AP."
+    "text": "You gain 1 AP."
    },
    {
     "label": "Effect",
@@ -3697,7 +3697,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of this turn, then the Lingering ends. **Tier 3:** the Lingering ends."
+    "text": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. **Tier 3:** the Lingering ends."
    }
   ],
   "blocks": [],
@@ -4245,7 +4245,7 @@
   "name": "Strafe",
   "escalation": null,
   "frequency": "Round",
-  "flavor": "You run across the line of fight and put an arrow into each foe you pass.",
+  "flavor": "You run to a better angle and put an arrow into each of up to three foes.",
   "distance": "Weapon",
   "area": null,
   "target": "Up to three creatures",
@@ -4590,7 +4590,7 @@
   "escalation": null,
   "frequency": "Encounter",
   "flavor": "You send a flight of arrows high, and they come down on everything standing in one patch of ground.",
-  "distance": "Weapon",
+  "distance": "Weapon (Normal range)",
   "area": "3 Burst",
   "target": "All creatures in the Area",
   "traits": [

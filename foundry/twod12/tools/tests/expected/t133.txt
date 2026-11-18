@@ -2,7 +2,7 @@ Volley: AD DC 14 | T1 3[body,none] | T2 3[body,none], "@Condition[hindered|eot]"
   parsed T1: {"damage":[{"formula":"3","pool":"B","sub":""}],"texts":[],"uuids":[]}
 Rain of Arrows: Instinct Save DC 14 | T1 2d8[body,pierce], 3[body,pierce], "@Condition[prone]" | T2 2d6[body,pierce], 3[body,pierce] | T3 1d6[body,pierce]
   parsed T1: {"damage":[{"formula":"2d8","pool":"B","sub":"Pi"},{"formula":"3","pool":"B","sub":"Pi"}],"texts":["@Condition[prone]"],"uuids":[]}
-area text: Volley {"shape":"burst","distance":3,"targets":"all","self":false,"keep":false,"rounds":0,"at":"","withinRange":"maximum","ht":""} | Rain {"shape":"emanation","distance":3,"targets":"enemies","self":false,"keep":false,"rounds":0,"at":"","withinRange":"maximum","ht":""}
+area text: Volley {"shape":"burst","distance":3,"targets":"all","self":false,"keep":false,"rounds":0,"at":"","withinRange":"normal","ht":""} | Rain {"shape":"emanation","distance":3,"targets":"enemies","self":false,"keep":false,"rounds":0,"at":"","withinRange":"maximum","ht":""}
 you don't roll a Save Action: true | a Save card for the creatures in the area: true | no automatic [Mod] on Tier 2-3: true
 Save card: posted with nobody in the area true | Vulnerable banes and Cover boons per target true | start in the Save dialog true
 [HT] repeats the Save: true | no double Save when it appears: true | the area knows the Save: true

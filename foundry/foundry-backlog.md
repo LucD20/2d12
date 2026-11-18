@@ -86,9 +86,8 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
   - [ ] **The roll dialog's Avg** still counts Empowered as +1 a die and an old Enfeebled (`preview.mjs`, `actions.mjs liveAvg`).
   - [ ] **Sleep's −1 Momentum** needs 12 hours of world time since the last one (a GM who never moves the clock loses it after the first night).
   - [ ] **The GM's "Roll the damage again"** drops the Empowered die.
-  - [ ] **Covering Fire's Zone** placed with no distance limit (Volley's Burst is fixed; the Zone goes through the Zone placement).
   - [ ] **"Update from the compendium" before the weapons migration** can make an old one-handed Longsword a two-handed one held in one hand (ask the refresh only after `migratedWeapons`).
-- **Questions for Lucas:** (1) Shake Off at Tier 2 on an ally: the book says "you take half the Lingering at the end of this turn"; Foundry deals it at the Lingering creature's own next end of turn (the same total). (2) Volley's "Distance: Weapon" for its Burst: Foundry uses the weapon's maximum range (Claude's reading).
+- **Answered (v0.0.427):** Shake Off at Tier 2: the half at the end of the current turn, whoever's; Volley and Covering Fire: "Distance: Weapon (Normal range)".
 
 ## CARD-ONE: one card for every place it shows (Lucas, 2026-11-17: "make sure in the future we don't have this problem anymore"; the draft's recommendations, all accepted: "All recommended, start")
 **Why:** five builders decided what a card shows (the book's Python, `actioncard.mjs`, `actions.mjs attackModelParts` for the roll dialog and the chat result, `statblock.mjs`, the old `preview.mjs`), each with its own CSS, and the surfaces' own CSS leaks into a card; the tests read the source, not what is drawn. **Decided:** the roll dialog and the chat result show the card's parts in the card's order, in a tighter layout; the stat block keeps its printed look, drawn from the model; the book: a parity test now, the shared model later; the screenshots are committed.

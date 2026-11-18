@@ -91,7 +91,7 @@ Speed is **free**: every NPC has Speed 5 unless it says otherwise. But it is str
 - **A fast creature** (Speed 6 or more, or one that flies) chooses its fights: it reaches the back line, gets out of reach, and makes the PCs come to it. Give it a downside: Low Health, Low Armor Defense, or a Low Basic attack.
 - **A slow creature** (Speed 4 or less) is easy to avoid and to keep away. Give it an upside: High Health, a High Basic attack, or Reach.
 
-## Steadiness
+## An NPC's Steadiness
 
 An NPC has Steadiness 0 unless it says otherwise. A big or heavy creature can have 1 or more (see [[Steadiness]] in Chapter 3).
 
@@ -209,9 +209,9 @@ An Action that only helps the NPC's side (a buff, a heal, a wall) or only puts a
 | An ally heals 1 Health | 1 |
 | A condition or a Forced Movement on a PC | its rider price (on a hit, in the Setup or on Tier 3) |
 
-A help is cheap because one Boon or a few Health matter little in a fight of three or four rounds; **put it on a Round Special as a rider** ("and each ally within 5 squares gains 1 Boon on its next attack") rather than as an Action of its own, which costs the creature an attack. Healing an enemy is weak: its allies have more Health than the PCs, and the fight is short.
+A help is cheap because one Boon or a few Health matter little in a fight of three or four rounds; **put it on a Round Special as a rider** ("and each ally within 5 squares gains 1 Support Boon on its next attack") rather than as an Action of its own, which costs the creature an attack. Healing an enemy is weak: its allies have more Health than the PCs, and the fight is short.
 
-### Reactions
+### NPC Reactions
 
 - **No NPC has a Reaction by default**: an NPC has the Reactions its entry gives it (see [[Reactions]]). It pays for one as a PC does: with its Reaction AP or an AP it kept from its turn. **Minions have no Reaction AP**; a Grunt's Reaction is priced as anyone's.
 - **A Reaction's attack has the points of a Round Action of its cost:** a 1R Reaction a 1 AP Round Action's (28 for a Medium Standard), a 2R Reaction a 2 AP Round Action's (55).
@@ -452,4 +452,4 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 - *Club* (Basic attack, 1 AP, At-will, High, Reach (1); 40, Push 1 2, then Ground Slam's pay-back, a quarter): 1 + 1d4! / 3 + 1d6! Bl, and Pushed 1.
 - *Overhead Smash* (2 AP, Round, Reach (1); 73, Push 2 8, the pay-back): 3 + 1d6 / 7 + 1d6 Bl, and Pushed 2.
 - *Ground Slam* (2 AP, Encounter, Area 2 Emanation, a Save Action: Body Save, DC 14; 145, Prone 12, half to each): 10 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
-- *Rally the Tribe* (Escalation 4, 1 AP, Round): allies within 5 squares gain 1 Boon on their next [Weapon] Action.
+- *Rally the Tribe* (Escalation 4, 1 AP, Round): allies within 5 squares gain 1 Support Boon on their next [Weapon] Action.

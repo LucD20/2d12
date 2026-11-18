@@ -18,6 +18,14 @@
      "do": "On any test, click **Fail**, type a note, Save. Open List, click **Copy report**, paste it somewhere.",
      "expect": "The report has a FAIL line with your note (and \"console:\" lines if Foundry logged errors since that test was shown). Click Fail again on that test: it opens again. Clear it before you go on.",
      "rev": 1
+    },
+    {
+     "id": "book-links",
+     "v": "v0.0.427",
+     "title": "The book's links",
+     "do": "Open the Core Rules in the Claude app (or the published page) and click a few links (a condition, Stacking, a Basic Action such as Shake Off); in the Archer's document click Darting Blade's \"Light\".",
+     "expect": "Each scrolls to its target and opens the chapter or card around it; Shake Off lands on its card; \"Light\" lands on Gear's weapon property.",
+     "rev": 1
     }
    ]
   },
@@ -456,6 +464,14 @@
      "do": "As a player (not the GM), with the GM connected, use Shake Off on another player's Lingering character and get a Tier 3.",
      "expect": "The Lingering ends (no permission error in the console).",
      "rev": 1
+    },
+    {
+     "id": "shake-off-ally",
+     "v": "v0.0.427",
+     "title": "Shake Off by an ally: the current turn",
+     "do": "On Kaela's turn, she uses Shake Off on Durgan's Lingering and gets a Tier 2.",
+     "expect": "At the end of Kaela's turn Durgan takes half the Lingering's damage (\"Halved (Shake Off, Tier 2)\"), then it ends; nothing at the end of Durgan's own turn.",
+     "rev": 1
     }
    ]
   },
@@ -658,11 +674,11 @@
     },
     {
      "id": "volley-range",
-     "v": "v0.0.426",
-     "title": "Volley's Burst within the bow's range",
-     "do": "Place Volley's Burst far beyond the bow's maximum range.",
-     "expect": "The placement is limited to the weapon's maximum range.",
-     "rev": 1
+     "v": "v0.0.427",
+     "title": "Volley's Burst within the bow's normal range",
+     "do": "Place Volley's and Covering Fire's Burst beyond the bow's normal range.",
+     "expect": "The placement is limited to the weapon's normal range (the cards read \"Distance: Weapon (Normal range)\").",
+     "rev": 2
     }
    ]
   },

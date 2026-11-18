@@ -26,6 +26,10 @@ Expect: Pass moves to the next open test; Show brings that test here; Shift+K hi
 Do: On any test, click **Fail**, type a note, Save. Open List, click **Copy report**, paste it somewhere.
 Expect: The report has a FAIL line with your note (and "console:" lines if Foundry logged errors since that test was shown). Click Fail again on that test: it opens again. Clear it before you go on.
 
+### book-links · v0.0.427 · The book's links
+Do: Open the Core Rules in the Claude app (or the published page) and click a few links (a condition, Stacking, a Basic Action such as Shake Off); in the Archer's document click Darting Blade's "Light".
+Expect: Each scrolls to its target and opens the chapter or card around it; Shake Off lands on its card; "Light" lands on Gear's weapon property.
+
 ## After the update
 
 ### update-compendium · v0.0.418 · Update from the compendium
@@ -242,6 +246,10 @@ Expect: It keeps Lingering 2 (the higher average). After the encounter it has no
 Do: As a player (not the GM), with the GM connected, use Shake Off on another player's Lingering character and get a Tier 3.
 Expect: The Lingering ends (no permission error in the console).
 
+### shake-off-ally · v0.0.427 · Shake Off by an ally: the current turn
+Do: On Kaela's turn, she uses Shake Off on Durgan's Lingering and gets a Tier 2.
+Expect: At the end of Kaela's turn Durgan takes half the Lingering's damage ("Halved (Shake Off, Tier 2)"), then it ends; nothing at the end of Durgan's own turn.
+
 ## Movement
 
 ### advance-one · v0.0.414 · Advance is one piece
@@ -340,9 +348,10 @@ Expect: No Cover from your ally and no Field Bane; the Tier 3 line names your al
 Do: Sylwen Calls Out an Orc in Dim light; Sylwen attacks it; an ally attacks it.
 Expect: Sylwen still has the Obscured Field Bane; the ally doesn't.
 
-### volley-range · v0.0.426 · Volley's Burst within the bow's range
-Do: Place Volley's Burst far beyond the bow's maximum range.
-Expect: The placement is limited to the weapon's maximum range.
+### volley-range · v0.0.427 · Volley's Burst within the bow's normal range
+Do: Place Volley's and Covering Fire's Burst beyond the bow's normal range.
+Expect: The placement is limited to the weapon's normal range (the cards read "Distance: Weapon (Normal range)").
+Rev: 2
 
 ## Ending an encounter and resting
 

@@ -119,7 +119,7 @@ A **Check** is a roll of one Attribute Modifier against a DC, written "Body Chec
 
 ## Saves
 
-Some effects make a creature roll a **Save**, written like "Appeal Save: 1d6 / 1d4 / 0 [R] Holy". The creature that must save rolls the named Attribute Modifier against the DC of the effect.
+Some effects make a creature roll a **Save**, written like "Appeal Save: [R] 1d6 / 1d4 / 0 Ho". The creature that must save rolls the named Attribute Modifier against the DC of the effect.
 
 The DC is usually 11 + the Weapon, Power or Signature Modifier that sets it (or 11 + ⌈Attribute ÷ 2⌉ + 1 for an Attribute-based Save); if no DC is listed, it is usually 13.
 
@@ -159,7 +159,7 @@ All damage a creature takes is either **Vigor damage** (wounds, bruises, broken 
 
 Vigor and Resolve are not the Body and Mind Attributes: an Action of any Attribute can deal either.
 
-Some Actions include two types of damage. For example, "[V] 1d4+1d6+3 Sl; [R] 1d8 Ps" deals 1d4+1d6+3 Slash Vigor damage and 1d8 Psychic Resolve damage.
+Some Actions include two types of damage. For example, "[V] 1d4+1d6+3 Sl + [R] 1d8 Ps" deals 1d4+1d6+3 Slash Vigor damage and 1d8 Psychic Resolve damage.
 
 ### Damage Subtypes
 
@@ -201,7 +201,7 @@ When one Action affects several creatures (an Area, or a Strike that says "all c
 
 For instance, if the Action deals 1d4 / 1d6 / 1d8, and two creatures get Tier 1 and one gets Tier 2, you roll 1d4 once and apply it to the two creatures on Tier 1.
 
-All damage is rolled per die. If the Tier 2 damage of a Save is [V] 1d8 Co + [R] 1d6 Ho, the creature causing the Save rolls both 1d8 and 1d6 and deals that damage to all creatures who got a Tier 2. If the creature causing the Save is Empowered or Enfeebled, the value is added to all the damage rolls.
+All damage is rolled per die. If the Tier 2 damage of a Save is [V] 1d8 Co + [R] 1d6 Ho, the creature causing the Save rolls both 1d8 and 1d6 and deals that damage to all creatures who got a Tier 2. If the creature causing the Save is Empowered, its 1d6! goes to one creature it damages (see [[Empowered]]).
 
 You roll every die that any of the targets needs, and each target uses only the ones that apply to it. If any target has Favored or Doomed, roll 3d12: a Favored target keeps the two highest and has Doubles if any two of the three dice match, a Doomed target keeps the two lowest, and any other target uses the first two d12 you rolled.
 
@@ -289,7 +289,7 @@ The numbers on the two cards below are the numbers of the list. The first card n
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP. You can use it only on your turn. |
 | [[Linked Actions\|**Weapon Attack (1A)**, **(1A/2A)**]] | A Linked Action and the Version you use (or a choice of two). |
 | [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP, or none (which AP can pay: see [[Reactions]]). |
-| [[Escalation\|**Escalation 3**]] | The Escalation an Action needs: you can use it only while your Escalation is at least that number. Nothing is spent. |
+| [[Escalation\|**Escalation 4**]] | The Escalation an Action needs: you can use it only while your Escalation is at least that number. Nothing is spent. |
 
 ### Rules Language
 

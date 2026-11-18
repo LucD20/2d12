@@ -17,7 +17,7 @@
 </div>
 
 > [!tbd]
-> **Levels 1 to 3 are written.** Level 4 (the Apex and the numbers of Stage 1) and the Talents are not written yet: every Talent slot is empty for now. The Archer's cards need a bow or a crossbow and, for some, a [[Light]] weapon such as a Dagger: the Hunting Bow and the Recurve Bow are written (see [[Weapons]]); the other weapons are placeholders.
+> **Levels 1 to 3 are written.** Level 4 (the Apex and the numbers of Stage 1) and the Talents are not written yet: every Talent slot is empty for now. The Archer's cards need a bow or a crossbow and, for some, a [[Light (property)|Light]] weapon such as a Dagger: the Hunting Bow and the Recurve Bow are written (see [[Weapons]]); the other weapons are placeholders.
 
 ## The Archer by Level
 
@@ -131,7 +131,7 @@ Choose a second Art from the three at [[Level 1: Art]], one you don't have.
 
 **Choose one.** *Quick build: One More Arrow.*
 
-- **One More Arrow:** once a turn, one more [W] on a Strike.
+- **One More Arrow:** once on each of your turns, one more [W] on a Strike.
 - **Fleet:** your Evades are longer and cross Difficult Terrain.
 
 @@CARD:One More Arrow@@

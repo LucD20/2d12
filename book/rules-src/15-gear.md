@@ -109,14 +109,14 @@ The two bows deal the same on average and are played in opposite ways. The **Hun
 
 You have two hands: your **main hand** and your **off hand**. You choose which is which when you make your character. Each weapon you hold uses one or two hands.
 
-**[Strike, Weapon] Actions with a weapon you hold in your off hand take 2 Banes.** A weapon you hold with both hands doesn't take them, and a [[Light]] weapon takes only 1. Your [[Fists]] use a free hand: with only your off hand free, they take 1 Bane.
+**[Strike, Weapon] Actions with a weapon you hold in your off hand take 2 Banes.** A weapon you hold with both hands doesn't take them, and a [[Light (property)|Light]] weapon takes only 1. Your [[Fists (the weapon)|Fists]] use a free hand: with only your off hand free, they take 1 Bane.
 
 > [!example]
 > Steven holds an Arming Sword in his main hand and a Dagger in his off hand. A Weapon Attack with the Arming Sword has no Bane for his hands; one with the Dagger takes 1 Bane, as a Light weapon in the off hand. With the two weapons the other way around, the Arming Sword in his off hand would take 2 Banes.
 
  A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on [Strike, Weapon] Actions with that weapon**. A weapon or your Fists in the other hand don't take them.
 
-You need a hand free to use Handle Actions. A creature with both hands full has to **Release** something first (0 AP: drop an object, or let go of it with one hand), and can **[[Chapter 6: Basic Actions|Regrip]]** (1 AP) to hold a weapon with both hands again, move a weapon to the other hand or swap the weapons in your hands (Regrip doesn't need a free hand).
+You need a hand free to use Handle Actions. A creature with both hands full has to **Release** something first (0 AP: drop an object, or let go of it with one hand), and can **[[Regrip|Regrip]]** (1 AP) to hold a weapon with both hands again, move a weapon to the other hand or swap the weapons in your hands (Regrip doesn't need a free hand).
 
 ### Properties
 
@@ -130,9 +130,9 @@ A **Barehanded** weapon can't be disarmed and doesn't occupy a hand (or a simila
 
 #### Firearm
 
-A **Firearm** shoots with powder, such as a pistol or a musket. It is not a Projectile weapon: Projectile Actions can't use it. Firearm Actions need a Firearm, and a Weapon Action with a Firearm is a [Gun] Action.
+A **Firearm** shoots with powder, such as a pistol or a musket. It is not a Projectile weapon: Projectile Actions can't use it. Firearm Actions need a Firearm, and a Weapon Action with a Firearm is a Firearm Action.
 
-#### Light
+#### Light (property)
 
 A **Light** weapon is a small melee weapon you hold in one hand, such as a Dagger or a Handaxe. In your off hand, a Light weapon takes **1 Bane** instead of 2 (see [[Hands]]). Some Actions need a Light weapon, such as the Archer's Darting Blade.
 
@@ -150,13 +150,13 @@ You hold a **Strung** weapon in one hand and draw it with the other: **[Strike, 
 
 #### Thrown
 
-A weapon with the **Thrown** property can be used in hand or thrown, and it has a Range for each, written like "Range 1, Thrown 4 / 8 / 12". Used in hand, a Weapon Action with it is a Melee Action; thrown, it is a Ranged Action, uses the thrown Range and **deals 1 less damage on Tiers 2 and 3** (a thrown Dagger: 0 / 1 + 1d4 / 3 + 1d4). A thrown weapon leaves your hand.
+A weapon with the **Thrown** property can be used in hand or thrown, and it has a Range for each, written like "Range 1, Thrown 4 / 8 / 12". Used in hand, a Weapon Action with it is a Melee Action; thrown, it is a Ranged Action, uses the thrown Range and **deals 1 less damage on Tiers 2 and 3** (a thrown Dagger: [V] 0 / 1 + 1d4! / 3 + 1d4!). A thrown weapon leaves your hand.
 
 #### Non-threatening
 
 A weapon with the **Non-threatening** property doesn't threaten: you can't flank with it (see [[Flanking]]), unless a feature says otherwise. Fists have it.
 
-#### Reload
+#### Reload (property)
 
 A weapon with the Reload property doesn't need to be reloaded every time you use it: you can reload quickly between shots. But you can make a more powerful shot that does require a reload.
 
@@ -191,7 +191,7 @@ Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (
 > [!tbd]
 > Only the two Basic swords and the two Basic bows are written this way so far, each with its Weapon Technique. Not written yet: each weapon's unlocks at 20, 30, 45 and 60, the Advanced and Exotic weapons, a rule to help a table that fights less than about five times a level, how classes or Talents grant Mastery beyond the Archer's starting Mastery (5 with one Projectile weapon), and Spell Mastery for casters (D4).
 
-### Fists
+### Fists (the weapon)
 
 Every creature counts as having **Fists**. They are a weapon like any other, with the properties Barehanded, Melee and Non-threatening, in the Unarmed group. While you have a free hand, your Fists count as a weapon you are wielding, alongside any other weapon you hold: a Weapon Action can use them. Fists have no Weapon Technique: Unarmed Talents give their Actions.
 
@@ -214,7 +214,7 @@ The armor a creature wears gives its **Armor value**, and its Armor Defense is *
 
 ### Armor Training
 
-Each class has an **Armor Training**: Light, Medium or Heavy. Each one includes the lighter ones (Heavy covers Medium and Light), and every creature is trained in Unarmored. The Paladin has Heavy and the Archer Medium.
+Each class has an **Armor Training**: Light, Medium or Heavy. Each one includes the lighter ones (Heavy covers Medium and Light), and every creature is trained in Unarmored. The Paladin has Heavy and the Archer Light.
 
 If you wear armor you are not trained in, **all your Rolls are Doomed**, and **Actions that roll against your Armor Defense or Ward Defense are Favored**.
 

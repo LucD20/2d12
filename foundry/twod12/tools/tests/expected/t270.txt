@@ -1,0 +1,10 @@
+--- (1) Shake Off: the current turn
+Chapter 8: true | the card: true
+at the end of any turn, a halved Lingering deals its half and ends: true
+--- (2) Weapon (Normal range)
+the cards write it: true | Volley: normal | Covering Fire: normal
+--- (3) the book
+a link to a place in the same document scrolls by script (any viewer): true
+the weapon property's own headings: true | the glossary links them: true
+a Basic Action link goes to its card: true
+the audit's record: true

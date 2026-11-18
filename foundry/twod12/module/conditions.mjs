@@ -73,8 +73,10 @@ export async function dazeAtTurnStart(c) {
 }
 
 /** Lingering (the key stays bleed; v0.0.414 the book's name): at the end of each of the creature's turns, its damage is rolled on a damage card targeting it (the Damage button applies it). */
-export async function bleedAtTurnEnd(actor) {
-  const list = fxList(actor).filter(e => !e.disabled).map(e => [e, bleedOf(e)]).filter(([, b]) => b);
+// v0.0.427 (Lucas: Shake Off's "this turn" is the current turn, even if it's an ally's): onlyHalf: at the end of another creature's turn, only a
+// Lingering a Shake Off halved (Tier 2) deals its half and ends
+export async function bleedAtTurnEnd(actor, { onlyHalf = false } = {}) {
+  const list = fxList(actor).filter(e => !e.disabled && (!onlyHalf || e.getFlag?.("twod12", "shakeHalf"))).map(e => [e, bleedOf(e)]).filter(([, b]) => b);
   if (!list.length) return;
   const { parseParts, rollParts } = await import("./inline.mjs");
   const tok = tokenOf(actor);
@@ -154,6 +156,7 @@ export function registerConditionRules() {
     if (!game.user.isActiveGM) return;
     const ended = combat.combatants.get(prior?.combatantId);
     if (ended?.actor) { try { await bleedAtTurnEnd(ended.actor); } catch (e) { console.warn("twod12 | Bleed", e); } }
+    for (const c of combat.combatants) if (c.id !== prior?.combatantId && c.actor) { try { await bleedAtTurnEnd(c.actor, { onlyHalf: true }); } catch (e) { console.warn("twod12 | Shake Off", e); } }   // v0.0.427
     if (ended?.actor) { try { await saveEndAtTurnEnd(ended.actor); } catch (e) { console.warn("twod12 | Save ends", e); } }   // v0.0.323
   });
 }

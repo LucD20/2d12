@@ -736,7 +736,7 @@ async function handleEndEffect(cfg, ctx) {
 /**
  * v0.0.414 (book, Chapter 6, Shake Off; Chapter 8, Lingering): the @ShakeOff chip: the targeted creature (none targeted: the Action's user) makes a
  * Save with the better of its Lingering's two Attributes against its DC (13 unless it writes one), one Save for each Lingering it has. Tier 3: it
- * ends. Tier 2: it ends after this turn's damage, which is halved (conditions.mjs bleedAtTurnEnd reads the flag shakeHalf). Tier 1: no effect.
+ * ends. Tier 2: it ends after half its damage at the end of the current turn, whoever's it is (v0.0.427; conditions.mjs bleedAtTurnEnd reads the flag shakeHalf). Tier 1: no effect.
  */
 async function handleShakeOff(cfg, ctx) {
   const origin = originActor(ctx);
@@ -765,7 +765,7 @@ async function handleShakeOff(cfg, ctx) {
         else if (game.users?.activeGM) game.socket.emit("system.twod12", { type: "shakeOff", effectUuid: e.uuid, what });
         else ui.notifications.warn("A GM must be connected to end another player's Lingering.");
       }
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-droplet-slash", `<b>${esc(actor.name)}</b>: ${esc(bleedText(b))} ${what === "ends" ? "ends." : what === "half" ? "ends after this turn's damage, which is halved." : "goes on (no effect)."}`) });
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-droplet-slash", `<b>${esc(actor.name)}</b>: ${esc(bleedText(b))} ${what === "ends" ? "ends." : what === "half" ? "takes half its damage at the end of the current turn, then it ends." : "goes on (no effect)."}`) });
     }
   }
 }

@@ -80,7 +80,7 @@ A **Reaction** is an Action you use in response to something another creature do
 
 ### What a Reaction Responds To
 
-An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action; an enemy would enter a square adjacent to you or to an ally; an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one (an Advance can be split through the turn).
+An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action; an enemy would enter a square adjacent to you or to an ally; an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one.
 
 While the name "triggering" is similar to "Trigger", it isn't only for Trigger Reactions: it also applies to Interrupt Reactions. The **triggering creature** is the creature who caused the Reaction to happen; the **triggering Action** is the Action that caused the Reaction to happen, and so on.
 
@@ -205,7 +205,7 @@ Some cards mark an effect for some Tiers only, with the Tiers in parentheses: "I
 
 ### Buffs
 
-A **Buff** is an effect that modifies another Action, such as Rimebrand's extra damage on your Weapon Actions.
+A **Buff** is an effect that modifies another Action, such as One More Arrow's 1[W] more on one of your [Strike] Actions.
 
 - A Buff that gives a single value ("+[R] 1d6 Co") applies on every Tier, Tier 1 included.
 - A Buff that gives a value per Tier ("+[R] 1d4/1d6/1d8 Co") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.
@@ -298,7 +298,7 @@ When an Action says an effect happens on your **next Action** and gives no durat
 
 A **round** is one full cycle of turns. It starts with the first creature's turn and ends when the last creature ends their turn.
 
-An effect that lasts a number of rounds counts down by 1 at the end of its origin's turn (the creature that created the effect), starting with the origin's next turn, meaning the first "end of turn" is ignored if the effect is created during the origin's turn. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". Durations are written only as rounds or as [[End of Turn|EoT]]: nothing lasts "until the start of your next turn".
+An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". Durations are written only as rounds or as [[End of Turn|EoT]]: nothing lasts "until the start of your next turn".
 
 > [!example]
 > On the first round of combat, Victor (the first creature in the turn order) causes an effect on Wes that lasts 2 rounds. The effect ends at the end of Victor's turn on the third round.
@@ -322,9 +322,9 @@ Each position in the turn order is an **initiative slot**. Effects end at the en
 - **At most 6:** you can't have more than 6 Escalation, unless a feature says so. A Critical or a hook that happens while your Escalation is already 6 does nothing, and it isn't used up for the encounter.
 - **The end:** when the encounter ends, your Escalation goes back to 1, and the abilities that need it stop working.
 
-Your class has two kinds of Escalation abilities:
+Your class has two kinds of Escalation abilities (see [[Escalation Abilities]]):
 
-- **Escalation Passives**, at Escalation **2, 4 and 6**: each works while your Escalation is at least its number ("while your Escalation is 4 or more"). You gain them one level at a time (see [[Stages]]).
+- **Escalation abilities**, at Escalation **2, 4 and 6**: a Passive works while your Escalation is at least its number ("while your Escalation is 4 or more"); an Action whose card says Escalation N can be used only then (Reckoning, Escalation 6). You gain them one level at a time (see [[Leveling Up]]).
 - **The Apex**: an Encounter Action whose card says **Escalation 6**. You can use it only while your Escalation is 6; it spends nothing. It comes at level 4, the first level of Stage 1.
 
 An Action with an **Escalation** line on its card needs that much Escalation, the same way.
@@ -347,4 +347,4 @@ NPCs have no Escalation, except Elites (see the [[Bestiary]]).
 > Jacob's party has Momentum 2 after two fights, so the third starts at Escalation 3. In it Jacob goes Down: Momentum 1. They win: Momentum 2 again. They sleep in the ruins: 1 in the morning.
 
 > [!tip]
-> The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. Nothing else raises it, and nothing spends it.
+> The GM's valve: after a bad turn of the dice for the whole table, the GM can give every PC +1 Escalation. It is the only raise outside the rules above, and nothing spends Escalation.

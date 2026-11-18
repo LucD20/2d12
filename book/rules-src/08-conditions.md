@@ -7,10 +7,6 @@ These conditions are in alphabetical order. Unless a card says otherwise, a crea
 
 You can't see: for your Sight, everything is Darkness (see [[Senses]]). Creatures you only hear are Hidden to you, so your Actions against them are Doomed, and you can't target a creature you don't perceive. Any other Roll that needs sight is Doomed. Actions with the Area trait still affect the creatures in their area.
 
-### Half-Blinded
-
-Your Sight perceives no creature better than Obscured: a creature that would be Clear to you is Obscured (see [[Senses]]). Your other senses aren't affected.
-
 ### Dazed
 
 Dazed always has a value, such as **Dazed 1**. When you become Dazed, you lose that many AP right away (never your Reaction AP). If you have fewer AP than the value, you lose the AP you have, and the rest is taken from the AP you regain at the start of your next turn; then Dazed ends. Dazed is the condition that takes AP now; [[Slowed]] takes them on your next turn.
@@ -49,6 +45,10 @@ Frightened is always **of** a source: a creature or an object. While you perceiv
 
 A creature within its Reach holds you: you are [[Immobilized]], and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you. Grabbed ends when the holder lets go (no Action), leaves your Reach, goes Down or is Unconscious, or when you end Immobilized (1 AP [Move]: Break Free), against the holder's Immobilized DC when the card that grabbed you says so. The holder can't use the hand or limb that holds you for anything else.
 
+### Half-Blinded
+
+Your Sight perceives no creature better than Obscured: a creature that would be Clear to you is Obscured (see [[Senses]]). Your other senses aren't affected.
+
 ### Hindered
 
 Your Speed is halved, rounded down. If you become Hindered while you are moving, the movement you have left is halved too, rounded down.
@@ -78,7 +78,7 @@ At the start of your turn you get back to safety, to a legal square next to the 
 
 **Lingering X (Attributes)** is damage that keeps coming: at the end of each of your turns, you take X damage, a number or dice rolled each time. It is Vigor damage when the Attributes are **Bo/In** and Resolve damage when they are **Mi/Ap**, unless the Lingering writes its pool before the value: **Lingering [V] 1 (Ap)** is Vigor damage with an Appeal Save. A Lingering can have a subtype, written after the value: **Lingering [R] 1d6 Ho (Mi/Ap)**: a wound that bleeds, a fire that clings, holy light that keeps burning.
 
-You can end it with the [[Chapter 6: Basic Actions|Shake Off]] Action (1 AP), on yourself or on a Lingering creature within your Reach: the Lingering creature makes a Save with the better of the two Attributes against **DC 13**, or the DC the Lingering writes (**Lingering 1d6 (Bo/In; DC 15)**). **Tier 1:** no effect. **Tier 2:** you take half the Lingering at the end of this turn, then it ends. **Tier 3:** it ends. Healing doesn't end a Lingering; the end of the encounter does. If you would gain Lingering again, keep the one with the higher average (see [[Stacking]]).
+You can end it with the [[Shake Off]] Action (1 AP), on yourself or on a Lingering creature within your Reach: the Lingering creature makes a Save with the better of the two Attributes against **DC 13**, or the DC the Lingering writes (**Lingering 1d6 (Bo/In; DC 15)**). **Tier 1:** no effect. **Tier 2:** you take half the Lingering at the end of the current turn (even when it is another creature's turn, such as an ally's who used Shake Off on you), then it ends. **Tier 3:** it ends. Healing doesn't end a Lingering; the end of the encounter does. If you would gain Lingering again, keep the one with the higher average (see [[Stacking]]).
 
 ### Pressed
 
@@ -88,7 +88,7 @@ Pressed always has a value, such as **Pressed 1**. Your [Strike] Actions take th
 
 - Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane.
 - You can't [[Evade]].
-- The only [Move] Actions you can use are [[Chapter 6: Basic Actions|Crawl]] and [[Chapter 6: Basic Actions|Stand]].
+- The only [Move] Actions you can use are [[Crawl|Crawl]] and [[Stand|Stand]].
 
 ### Quickened
 

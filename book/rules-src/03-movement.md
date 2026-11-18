@@ -51,13 +51,13 @@ Advance is the normal movement, and the Action every creature uses to move. **Yo
 
 **An Advance is one piece.** You move once, up to the distance, and stop: the movement you don't use is lost. You can't move part of an Advance, use another Action, then move the rest later. For instance, with Speed 5 you can't Advance 2, make a Weapon Attack and then Advance the other 3: that is two Advance Actions.
 
-**Interact during an Advance.** During the Advance Action, at any one point of the movement, you can use the [[Chapter 6: Basic Actions|Interact Action]] (draw a weapon, open a door on the way, help an ally stand up), paying its 1 AP then, and go on with the same Advance. Once an Advance, and only in the Advance Action used on its own: not in an Advance that is part of another Action (a Linked Action such as "Advance 5, make a Weapon Attack (1A) and Advance 5 again", a Setup such as "Setup: Advance 3", or a Charge), unless its card says so, and not during an Evade.
+**Interact during an Advance.** During the Advance Action, at any one point of the movement, you can use the [[Interact|Interact Action]] (draw a weapon, open a door on the way, help an ally stand up), paying its 1 AP then, and go on with the same Advance. Once an Advance, and only in the Advance Action used on its own: not in an Advance that is part of another Action (a Linked Action such as "Advance 5, make a Weapon Attack (1A) and Advance 5 again", a Setup such as "Setup: Advance 3", or a Charge), unless its card says so, and not during an Evade.
 
-A Reaction that triggers on your movement can fire only once for an Advance, at the square the reacting creature chooses (see [[What a Reaction Responds To]]).
+A Reaction that triggers on your movement can fire only once for an Advance, at the square the reacting creature chooses (see [[Reactions]]).
 
 ### Evade
 
-Evade is a type of movement that doesn't trigger reactions. You can't Evade into or pass through Difficult Terrain. What an Evade costs is decided by the Action that lets you Evade, such as the [[Chapter 6: Basic Actions|Evade Action]]. The Evade Action doesn't have the Move trait.
+Evade is a type of movement that doesn't trigger reactions. You can't Evade into or pass through Difficult Terrain. What an Evade costs is decided by the Action that lets you Evade, such as the [[Evade|Evade Action]]. The Evade Action doesn't have the Move trait.
 
 An Evade is one piece too, and nothing fits inside it: if an Action lets you Evade 3 and you Evade 1 square, the other 2 squares are lost.
 
@@ -223,7 +223,7 @@ An [HT] effect with no declared pattern uses Entering and Turn by default.
 **Size.** An [HT] area affects a creature once regardless of its Size.
 
 > [!example]
-> A 2 Emanation of fire (Distance 10 sq.) has [HT: Entering, Turn]. A creature that walks into it takes 1d8 Body Fire damage on entering; a creature already inside takes the same damage when it ends its turn there. A creature that enters, leaves and re-enters with a different Movement in the same turn-cycle is affected at most once.
+> A 2 Emanation of fire (Distance 10 sq.) has [HT: Entering, Turn]. A creature that walks into it takes [V] 1d8 Fi damage on entering; a creature already inside takes the same damage when it ends its turn there. A creature that enters, leaves and re-enters with a different Movement in the same turn-cycle is affected at most once.
 
 ### Deadly Hazards
 
@@ -251,7 +251,7 @@ Every weapon has a **Range**, melee weapons included. An Action whose distance i
 
 ### Weapon Actions and Your Weapon
 
-A Weapon Action takes its distance and its Melee or Ranged nature from the weapon you use for it, and from how you use it. With a Ranged weapon, or a weapon with the Thrown property when thrown, it uses the weapon's ranged Range and counts as a Ranged Action (Prone's Bane applies to it). With a Melee weapon used in hand, it uses the weapon's melee Range and counts as a Melee Action (Prone's Boon applies). An Action that has the Melee or Ranged trait itself needs a weapon used that way. While you have a free hand, you can use your [[Fists]] as your weapon.
+A Weapon Action takes its distance and its Melee or Ranged nature from the weapon you use for it, and from how you use it. With a Ranged weapon, or a weapon with the Thrown property when thrown, it uses the weapon's ranged Range and counts as a Ranged Action (Prone's Bane applies to it). With a Melee weapon used in hand, it uses the weapon's melee Range and counts as a Melee Action (Prone's Boon applies). An Action that has the Melee or Ranged trait itself needs a weapon used that way. While you have a free hand, you can use your [[Fists (the weapon)|Fists]] as your weapon.
 
 ## Engaged
 
@@ -343,7 +343,7 @@ Every area spreads from a **Point of Origin**: for an Emanation, its target (a c
 
 ### Emanation
 
-An Emanation, written with a value like **1 Emanation**, extends a number of squares around its **target**: a creature or a square. It affects every creature in its area unless the Action says otherwise. If its target is a creature, the origin decides whether that creature is affected too. For example, a creature using Whirlwind (an Emanation around itself) decides whether it is affected.
+An Emanation, written with a value like **1 Emanation**, extends a number of squares around its **target**: a creature or a square. It affects every creature in its area unless the Action says otherwise. If its target is a creature, the origin decides whether that creature is affected too. For example, a creature using Ground Slam (an Emanation around itself) decides whether it is affected.
 
 An Emanation around a creature extends that many squares from every square the creature occupies, so it follows the creature's Size. A 1 Emanation around a Medium (3) creature covers 3 × 3 squares (its square and the 8 around it); around a Huge (5) creature, which occupies 3 × 3, it covers 5 × 5. A **Distance** of 10 sq. means the Emanation is placed up to 10 squares from the creature using the Action; with no Distance, it is around that creature.
 

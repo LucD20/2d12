@@ -189,7 +189,7 @@
       "target": "You, or one Lingering creature within your Reach",
       "distance": "Reach",
       "versions": [
-        { "ap": 1, "effects": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of this turn, then the Lingering ends. **Tier 3:** the Lingering ends.",
+        { "ap": 1, "effects": "The target makes a Save against its [[Lingering]], with the better of the Lingering's two Attributes, against DC 13 or the DC the Lingering writes. **Tier 1:** no effect. **Tier 2:** it takes half the Lingering at the end of the current turn (whoever's turn it is), then the Lingering ends. **Tier 3:** the Lingering ends.",
           "foundry": { "append": "@ShakeOff[save]" } }
       ],
       "foundry": { "basic": "shakeOff", "automation": "silver", "img": "icons/svg/regen.svg" }

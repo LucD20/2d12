@@ -19,7 +19,7 @@ the weapon settled before the dialog (a Shot from a bow): true
 One More Arrow only on a rolled [W] Tier: true
 Call Out helps the caller's allies, not the caller: true
 Thrill of the Kill: the author noted before the damage, enemies only: true
-Volley's Burst within the weapon's range: maximum
+Volley's Burst within the weapon's range: normal
 --- the Paladin
 Rebuke measured on the squares the enemy left; Shield of Faith not against an ally's Strike: true
 Kindled Wrath: Bloodied or Down, the ally's name: true

@@ -48,7 +48,7 @@
    "body": [
     {
      "label": "Setup",
-     "text": "You draw a [[Light]] weapon."
+     "text": "You draw a [[Light (property)|Light]] weapon."
     },
     {
      "label": "Special",
@@ -115,7 +115,7 @@
     },
     {
      "label": "Critical",
-     "text": "You regain 1 AP."
+     "text": "You gain 1 AP."
     },
     {
      "label": "Effect",
@@ -141,7 +141,7 @@
    "name": "Strafe",
    "category": "Archer Hallmark Action",
    "level": 1,
-   "flavor": "You run across the line of fight and put an arrow into each foe you pass.",
+   "flavor": "You run to a better angle and put an arrow into each of up to three foes.",
    "frequency": "Round",
    "cost": "2 AP",
    "body": [
@@ -554,7 +554,7 @@
     "area",
     "strike"
    ],
-   "distance": "Weapon",
+   "distance": "Weapon (Normal range)",
    "area": "3 Burst",
    "target": "All creatures in the Area",
    "foundry": {
@@ -580,7 +580,7 @@
    "body": [
     {
      "label": "Effect",
-     "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
+     "text": "You Advance. After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light (property)|Light]] weapon. Once, at any point of the Advance, you hit one creature within your bow's Range with your bow. You draw and stow the two weapons freely during this Action."
     },
     {
      "label": "Special",
@@ -640,7 +640,7 @@
     "projectile",
     "area"
    ],
-   "distance": "Weapon",
+   "distance": "Weapon (Normal range)",
    "area": "3 Burst",
    "foundry": {
     "img": "icons/svg/target.svg",

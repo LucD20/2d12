@@ -25,7 +25,7 @@ Over its first levels, every class gives you the same kinds of things:
 
 - A **Hallmark Action**: a choice of two Actions that are the class's fantasy; you take one, and the other is not yours. A Hallmark Action doesn't need the [[Signature]] trait: that trait only sets the Modifier an Action rolls.
 - A **Hallmark Reaction**: a choice of two Reactions, the same way.
-- An **Art**: a small Action with three **Modes** (see [[Reading an Action]]), for the things that are neither damage nor healing. A class offers three; you take one at level 1 and a second at level 3.
+- An **Art**: a small Action with three **Modes** (see [[Reading an Action]]), for the things that are neither damage nor healing (at most a Modifier's damage, as Trick Shots). A class offers three; you take one at level 1 and a second at level 3.
 - An **Encounter Pick**.
 - The **Escalation** abilities: one for each of Escalation 2, 4 and 6, then the Apex (see [[Escalation Abilities]]).
 - Its **Features**.
