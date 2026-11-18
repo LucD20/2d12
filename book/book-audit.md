@@ -82,7 +82,8 @@ Hidden (only when it perceives you better), Threatens (Chapter 3's words), Criti
 39. **An Exotic weapon's Technique at 20** vs "every weapon's unlocks are at the same Mastery". *Default:* keep the exception and say it in that sentence.
 40. **A Minion's EoT in a shared slot.** *Default:* "A Minion's EoT effects end at the end of its own turn; rounds count down at the end of the slot."
 
-**Housekeeping (no decision, a later pass):** the example names reused before all twenty were used (Krysta, Nari, Jacob, Wes, Zack in
-Chapters 2 to 4); glossary entries missing (Prone, Desperate, Dying, Shattered, Unconscious, Emanation, Burst, turn-cycle, Charge, Buff,
-Escalation hook) and its order; the Bestiary's and Gear's damage examples without their pool ([V]); three Bestiary numbers rounded down (79 → 87
-and 173 → 174, 145 → 146; the Lingering 2d6 price off the ladder); the "As X AP" notation no card uses.
+**Housekeeping:** DONE (v0.0.428, the book only): the twelve missing glossary entries (Prone, Desperate, Dying, Shattered, Unconscious,
+Emanation, Burst, Turn-cycle, Charge, Buff, Weapon DC / Power DC, Escalation hook) and the glossary in alphabetical order; the Bestiary's and
+Gear's damage examples with their pool ([V]). LEFT: the example names reused before all twenty were used (Krysta, Nari, Jacob, Wes, Zack in
+Chapters 2 to 4: renaming examples, cosmetic); three Bestiary numbers (79 → 87 and 173 → 174, 145 → 146 if rounded up; the Lingering 2d6 price
+off the ladder: the Bestiary's budget code makes them, so they change with it); the "As X AP" notation no card uses (Lucas's Chapter 1 text).

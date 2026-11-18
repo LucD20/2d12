@@ -6,13 +6,13 @@
 Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
-> A Paladin with a Weapon Modifier of +1 deals 6 + 1d4! + 1 Slashing damage on a Tier 2 with a Longsword Weapon Attack: 8 to 10, and more when the die explodes.
+> A Paladin with a Weapon Modifier of +1 deals [V] 6 + 1d4! + 1 Sl on a Tier 2 with a Longsword Weapon Attack: 8 to 10, and more when the die explodes.
 
 ### Weapon Damage [W]
 
 **[W]** is the damage of your weapon: on each Tier, **a flat number plus at most one small die**. **A weapon's die explodes**, so it is written with **!** (see [[Exploding Dice]]): on its highest face, count it as one less and roll it again. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
 
-*Example:* an Action that deals 2[W] deals 0 / 12 + 2d4! / 18 + 2d6! with a Longsword, and 0 / 4 + 2d4! / 8 + 2d4! with a Crossbow.
+*Example:* an Action that deals 2[W] deals [V] 0 / 12 + 2d4! / 18 + 2d6! with a Longsword, and [V] 0 / 4 + 2d4! / 8 + 2d4! with a Crossbow.
 
 ### Reading the Weapon Tables
 
