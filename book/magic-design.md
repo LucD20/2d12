@@ -44,6 +44,12 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 13 | **A poison subtype is added** to the damage subtypes (Nature's). | "We can add a poison subtype." | 2026-11-18 |
 | 14 | **No cap on Path and School levels for now.** | "We can remove the cap of 3, leave without cap just in case, later we can add cap if necessary." | 2026-11-18 |
 | 15 | **The borders between the Paths are Dominions'** (the table in `dominions-paths.md` 3.1), with 12 and 13 as the two changes. Not objected to; **to confirm.** | (answered only on healing and poison) | 2026-11-18 |
+| 16 | **The marker of magic:** a spell is a Power Action with three new traits: [Spell], its Path, its School. Divine cards have none. | "All defaults except 4." | 2026-11-18 |
+| 17 | **Levels grow with use, the weapons' way.** A Talent or a class opens a Path or a School at level 1; the level then rises by use, as Mastery does. Talents add tricks keyed on the trait, never levels. | "I like the idea of growing with use." | 2026-11-18 |
+| 18 | **A level is never a number on a roll or a DC.** It unlocks what asks for it and gives Overcast steps on the spells below it; dice grow with the Stage only. | (default) | 2026-11-18 |
+| 19 | **You don't know every spell.** Mastery unlocks **choices** (a spell picked at a threshold), and **Talents can grant more spells**. | "I think knowing every spell is too much. Mastery should unlock choices and talents can grant more spells etc." | 2026-11-18 |
+| 20 | **An Overcast step is paid by the fight's clock:** it needs Escalation (the first at 2, the next at 3...); the Nonlethal push takes one step early. | (default) | 2026-11-18 |
+| 21 | **Spells belong to the grid; a caster class owns how you cast** (readying, pushing, holding, merging, linking) and starts with a Path and a School open. Any class can take a little magic through Talents. | (default) | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -127,7 +133,7 @@ Read for this record on 2026-11-18: the class charter (all of it), the set-aside
 
 ---
 
-## 5. Open questions (asked 2026-11-18; Claude's default first)
+## 5. The six questions of 2026-11-18 (ANSWERED: decisions 16 to 21; kept for the alternatives)
 
 1. **The marker of magic.** A spell is a Power Action with three new traits: **[Spell]**, its Path ([Fire]) and its School ([Evocation]). Divine cards have none of them.
 2. **Where Path and School levels come from.** Default: **the weapons' way.** A Talent (or a class) *opens* a Path or a School at level 1; after that the level **rises by use**, as Mastery does, at set thresholds. Talents then add tricks keyed on the trait, never levels. Alternatives: every level a Talent pick; or levels only from a class's level list.
