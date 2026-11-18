@@ -1,5 +1,5 @@
 // The sheet mockups' screenshots: serves the repository, opens index.html for each sheet in dark and light, and saves <sheet>-<theme>.jpg here.
-//   node foundry/mockups/sheets/shoot.mjs [pc|npc|onepage] [--png dir]     (Playwright with its Chromium; actors.json: node data.mjs)
+//   node foundry/mockups/sheets/shoot.mjs [pc|npc] [--png dir]     (Playwright with its Chromium; actors.json: node data.mjs)
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
 }).listen(0);
 const BASE = `http://127.0.0.1:${server.address().port}`;
 const args = process.argv.slice(2), outDir = args.includes("--out") ? args[args.indexOf("--out") + 1] : HERE;
-const sheets = ["pc", "npc", "onepage"].filter(s => !args.some(a => ["pc", "npc", "onepage"].includes(a)) || args.includes(s));
+const sheets = ["pc", "npc"].filter(s => !args.some(a => ["pc", "npc"].includes(a)) || args.includes(s));
 const themes = args.includes("--dark") ? ["dark"] : ["dark", "light"];
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1700, height: 1000 }, deviceScaleFactor: args.includes("--1x") ? 1 : 2 });

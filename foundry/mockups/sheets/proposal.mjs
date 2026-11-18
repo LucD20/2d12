@@ -1,40 +1,40 @@
-// The sheet mockups: the proposals. One family for the three sheets, the settled "printed stat block" (the one-page NPC sheet's look, its own
-// CSS: .twod12-sb in system.css): a name plate, the stats as ruled lines, an Action under a header bar in its Frequency's color.
-//   the PC sheet and the full NPC sheet, SMALL: the Actions as their header bars only (a click opens the SHORT CARD under the bar), tabs kept;
-//   the one-page NPC sheet, LONG: no tabs, every Action written out (statblock.mjs as it is), then Effects, Notes and Build down the page.
-// An Action's bar and body are the system's own stat-block face (statblock.mjs sbActionModel + sbActionHtml); what is new is the layout (sheets.css, .mk-*).
-import { esc, enrichCard } from "./model.mjs";
-const SB = await import("../../twod12/module/statblock.mjs");
+// The sheet mockups: the proposals, in STYLE-3's look (style-book.md, built v0.0.387): Source Serif 4 for the one big title and Source Sans 3
+// for everything read, color only for a meaning (the Frequency a small square beside its word, the tiles and game words in ink), no Tier color
+// on a card, the bronze accent, the stamp, the pools', ranks' and subtypes' colors kept.
+//   the PC sheet and the full NPC sheet, SMALL: a name plate, the stats as ruled lines, each Action as one bar (a click opens the SHORT CARD).
+// The short card is the system's own Action card (actioncard.mjs buildActionCard, the approved card of style-book step 5) with lines left out.
+import { esc } from "./model.mjs";
+const AC = await import("../../twod12/module/actioncard.mjs");
 const SM = await import("../../twod12/module/sheetmodel.mjs");
 const { TWOD12 } = await import("../../twod12/module/config.mjs");
 
 const pct = (v, mx) => Math.max(0, Math.min(100, Math.round((100 * (Number(v) || 0)) / (Number(mx) || 1))));
 const FQ = { atwill: "At-will", round: "Round", encounter: "Encounter", turn: "Turn", daily: "Daily" };
 
-/** The short card's model from the stat-block face's. Option 1 (the proposal): what the row's bar already says is not written again (the Attack /
- *  Save line and the Distance: the bar's "Distance · Vs."). Option 2: the stat-block face as the one-page sheet writes it. */
-export function shortModel(m, option = 1) {
-  if (option === 2) return m;
-  return { ...m, meta: (m.meta ?? []).filter(([l]) => !/^(Attack|Save|Distance)$/.test(l) && !/: (Attack|Save)$/.test(l)) };
+/** The short card: the system's Action card with lines left out. Option 1 (the proposal): the Flavor, the rank's word, the Distance and the
+ *  Attack / Save line (the bar says both) and Your roll. Option 2: only the Flavor and Your roll. */
+export async function shortCard(item, actor, option = 1) {
+  const doc = new DOMParser().parseFromString(await AC.buildActionCard(item, { actor, use: false }), "text/html").body;   // an inert document
+  const card = doc.firstElementChild;
+  for (const el of card.querySelectorAll(".st-flavor, .st-live, .st-ruler")) el.remove();
+  if (option === 1) {
+    for (const el of card.querySelectorAll(".st-auto")) el.remove();
+    for (const el of card.querySelectorAll(".st-grid > span")) if (/^Distance:/.test(el.textContent.trim())) el.remove();
+    for (const el of card.querySelectorAll(".st-grid")) if (!el.children.length) el.remove();
+    for (const el of card.querySelectorAll(".st-l")) if (/^(Attack|Save)$/.test(el.querySelector("b")?.textContent.trim() ?? "")) el.remove();
+  }
+  card.classList.add("mk-short");
+  return card.outerHTML;
 }
 
-/** One Action of a small sheet: the stat-block face's header bar (the Version stamps are the Use buttons), with the row's Distance and Vs.; open:
- *  its body under it (the short card). row: the sheet's row (model.mjs). */
-export async function actionBar(row, { open = false, option = 1, escNow = 0, tools = false } = {}) {
-  const m = await SB.sbActionModel(row.item, { enrich: enrichCard, row, escNow });
-  const host = new DOMParser().parseFromString(SB.sbActionHtml(shortModel(m, option)), "text/html").body;   // an inert document: nothing loads
-  const oa = host.firstElementChild, h = oa.querySelector(".sb-oa-h");
-  oa.classList.add("mk-oa"); if (open) oa.classList.add("open");
-  if (!tools) h.querySelector(".sb-tools")?.remove();
-  h.querySelector(".n").insertAdjacentHTML("afterend", row.auto ?? "");
-  const seen = new Set();   // Versions of one cost (an Art's Modes: Spotter) show one stamp; the Mode is chosen as today, after the click
-  for (const b of h.querySelectorAll(".sb-vb")) { if (seen.has(b.textContent)) b.remove(); else seen.add(b.textContent); }
-  const tr = h.querySelector(".tr");
-  if (!open) { if (tr) tr.remove(); if (row.sub) h.querySelector(".fq").insertAdjacentHTML("beforebegin", `<span class="tr">${esc(row.sub)}</span>`); }
-  const dv = [row.dist && row.dist !== "—" ? row.dist : "", row.vs ? `<b class="mk-vs">${esc(row.vs)}</b>` : ""].filter(Boolean).join(" · ");
-  h.querySelector(".fq").insertAdjacentHTML("beforebegin", `<span class="mk-dv">${dv}</span>`);
-  if (!open) for (const el of [...oa.children]) if (el !== h) el.remove();
-  return oa.outerHTML;
+/** One Action of a small sheet: its bar (the cost stamps are the Use buttons; the name; Distance · Vs.; the Frequency as a small square and
+ *  its word) and, open, the short card under it. row: the sheet's row (model.mjs). */
+export async function actionBar(row, { open = false, option = 1, actor = null } = {}) {
+  const it = row.item.system, costs = [...new Set((it.versions ?? []).map(v => (it.reaction ? `${v.ap}R` : `${v.ap} AP`)))];   // Versions of one cost (an Art's Modes) show one stamp
+  const stamps = costs.map(c => `<button type="button" class="sb-vb${row.off ? " no" : ""}"${row.off ? " disabled" : ""}>${esc(c)}</button>`).join("");
+  const dv = [row.dist && row.dist !== "—" ? esc(row.dist) : "", row.vs ? `<b>${esc(row.vs)}</b>` : ""].filter(Boolean).join(" · ");
+  const fq = `<span class="mk-fq"><i style="background:var(--s-fq-${esc(row.frequency || "atwill")})"></i>${row.escalation ? `Escalation ${row.escalation}, ` : ""}${FQ[row.frequency] ?? "At-will"}</span>`;
+  return `<div class="mk-oa${open ? " open" : ""}${row.off ? " dim" : ""}"><div class="mk-bar">${stamps}<a class="n">${esc(row.name)}</a>${row.auto ?? ""}${row.sub ? `<span class="tr">${esc(row.sub)}</span>` : ""}<span class="mk-dv">${dv}</span>${fq}</div>${open ? await shortCard(row.item, actor, option) : ""}</div>`;
 }
 
 /** The stat lines of a small sheet (the one-page's .sb-stats, with the full sheets' own reading: the damage taken, Lethal and Nonlethal). */
@@ -47,7 +47,7 @@ export function statLines(a, pc) {
   const rw = ["Immune", "Resist", "Weak"].map(k => { const r = rwRows.find(x => x.label === k); return `<span class="s2"><span class="k">${k}</span> ${(r?.lines ?? []).map(l => `<span class="rw-chip sb-rw" style="--sc-l:${TWOD12.subtypeInk?.[l.code] ?? "#5d5446"};--sc-d:${TWOD12.subtypeColors?.[l.code] ?? "#b3a68e"}"><i class="${TWOD12.subtypeIcons?.[l.code] ?? ""}" aria-hidden="true"></i>${esc(SM.damageLineChip(l))}</span>`).join(" ") || "—"}</span>`; }).join("");
   const rally = npc ? "" : `<div class="sbl mk-split"><span><span class="k">Rally</span> <span class="mk-rpips">${pc.rally.pips.map(on => `<i class="${on ? "on" : ""}"></i>`).join("")}</span> <b>${pc.rally.left}</b> / ${pc.rally.max} <span class="mk-q">· each heals ${pc.rally.heal}</span></span><span><span class="k">Wounds</span> Body <span class="mk-in">${pc.wounds[0].count}</span> Mind <span class="mk-in">${pc.wounds[1].count}</span></span></div>`;
   return `<div class="sb-stats">
-    <div class="sbl mk-split"><span><span class="k">Health</span> <b class="big">${pc.health.pool}</b> <span class="mk-q">·</span> <b class="big mk-gold">${pc.health.toDown}</b> to Down <a class="mk-guard"><span class="k">Guard</span> <b>${pc.strip.guard.total}</b></a></span>${npc ? "" : `<span class="mk-q">Dominant Damage: <b style="color:${pc.health.dominant === "Resolve" ? "var(--s-res)" : pc.health.dominant === "Vigor" ? "var(--s-vig)" : "inherit"}">${pc.health.dominant}</b></span>`}</div>
+    <div class="sbl mk-split"><span><span class="k">Health</span> <b class="big">${pc.health.pool}</b> <span class="mk-q">·</span> <b class="big">${pc.health.toDown}</b> to Down <a class="mk-guard"><span class="k">Guard</span> <b>${pc.strip.guard.total}</b></a></span>${npc ? "" : `<span class="mk-q">Dominant Damage: <b style="color:${pc.health.dominant === "Resolve" ? "var(--s-res)" : pc.health.dominant === "Vigor" ? "var(--s-vig)" : "inherit"}">${pc.health.dominant}</b></span>`}</div>
     <div class="sbl two">${pc.health.bars.map(gauge).join("")}</div>
     <div class="sbl grid">${stats.map(([k, v]) => `<span><span class="k">${k}</span> <b class="big">${esc(v)}</b></span>`).join("")}</div>
     <div class="sbl grid">${rw}</div>
@@ -96,32 +96,16 @@ export async function smallSheet(a, pc, { option = 1 } = {}) {
   let list = "";
   if (npc) list += `<div class="mk-tools"><a><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Action</a><a><i class="fa-solid fa-book-open"></i> Browse compendium</a><a><i class="fa-solid fa-plus"></i> New Action</a></div>`;
   for (const sec of pc.sections) {
-    list += `<div class="sb-band">${esc(sec.title)}${sec.sub ? `<span class="r">${esc(sec.sub)}</span>` : ""}</div>`;
-    for (const r of sec.rows) list += await actionBar(r, { open: r.open, option, escNow });
+    list += `<div class="sb-band"><i class="mk-sq" style="background:${esc(sec.dot ?? "#888")}"></i>${esc(sec.title)}${sec.sub ? `<span class="r">${esc(sec.sub)}</span>` : ""}</div>`;
+    for (const r of sec.rows) list += await actionBar(r, { open: r.open, option, actor: a });
   }
   return `<div class="twod12-sb mk-sheet rk-${npc ? esc(a.system.role) : "pc"}${npc ? "" : " mk-pc"}">${plate(a, pc)}${statLines(a, pc)}<div class="mk-pad">${attrTiles(pc)}</div>${combatLine(a, pc)}${tabsNav(pc)}<div class="mk-scroll"><div class="sb-body">${list}${basicGrid(pc)}</div></div></div>`;
 }
 
 /** The short card's two options and today's card, for one Action (under the pair). */
 export async function shortCompare(a, pc, name, fullCard, frame = h => h) {
-  const row = pc.sections.flatMap(s => s.rows).find(r => r.name === name), escNow = Number(a.system.escalation) || 0;
+  const row = pc.sections.flatMap(s => s.rows).find(r => r.name === name);
   const col = (t, note, h) => `<div class="mk-opt"><h4>${t}</h4><p>${note}</p>${h}</div>`;
   const wrap = h => frame(`<div class="twod12-sb mk-sheet mk-loose"><div class="sb-body">${h}</div></div>`);
-  return `<div class="mk-opts">${col("Short card, option 1 (drawn in the sheet)", "The bar: cost (the Use button), name, traits, Distance · Vs., Frequency. Under it only what the bar doesn't say: Trigger or Requirement, Target, the Tiers, the Critical, the Effect, a Special.", wrap(await actionBar(row, { open: true, option: 1, escNow })))}${col("Short card, option 2", "The Action exactly as the one-page sheet writes it: the Attack line and the Distance are written again under the bar.", wrap(await actionBar(row, { open: true, option: 2, escNow })))}${col("Today's card on the sheet (the full card)", "No head bar; the Flavor, the rank's word, the Attack line and Your roll are what the short card leaves out.", fullCard)}</div>`;
-}
-
-/** The long one-page NPC sheet: the stat block as statblock.mjs draws it, then Effects, Notes and Build down the page (no tabs). */
-export function longPage(m, pc, { notes = "", gmNotes = "" } = {}) {
-  const fx = [...pc.effects.conditions.map(c => ({ ...c, kind: "Condition" })), ...pc.effects.effects.map(c => ({ ...c, kind: "Effect" }))];
-  const fxRows = fx.map(e => `<div class="mk-fx"><b>${esc(e.name)}</b><span class="tx">${e.text}</span><span class="du">${esc(e.pill ?? "")}</span><a aria-label="Remove ${esc(e.name)}">&times;</a></div>`).join("") || `<div class="mk-fx none">No conditions or effects on it.</div>`;
-  const b = pc.builder ?? {};
-  const sum = (b.summary ?? []).map(x => `<span><span class="k">${esc(x.k)}</span> ${esc(x.v)}</span>`).join("");
-  const tail = `<div class="twod12-sb mk-tail rk-${esc(m.rankKey)}"><div class="sb-body">
-    <div class="sb-band">Effects<span class="r">${fx.length ? `${fx.length} · ` : ""}drop an effect or a condition on the sheet to apply it</span></div>${fxRows}
-    <div class="sb-band">Notes<a class="add"><i class="fa-solid fa-pen-to-square"></i> Edit</a></div><div class="mk-notes">${notes}</div>
-    <div class="sb-band">GM notes<span class="r"><i class="fa-solid fa-eye-slash"></i> only the GM sees them</span><a class="add"><i class="fa-solid fa-pen-to-square"></i> Edit</a></div><div class="mk-notes">${gmNotes}</div>
-    <div class="sb-band mk-fold">Build<span class="r">${esc([m.rank, `Level ${m.level}`, `Stage ${m.stage}`, `CV ${m.cv}`].join(" · "))}</span><a class="add"><i class="fa-solid fa-chevron-right"></i> Open</a></div>
-    <div class="mk-bsum">${sum}</div>
-  </div></div>`;
-  return `<div class="mk-long">${SB.sbPlateHtml(m)}<div class="mk-scroll">${SB.statBlockHtml(m)}${tail}</div></div>`;
+  return `<div class="mk-opts">${col("Short card, option 1 (drawn in the sheet)", "The bar: the cost (the Use button), the name, Distance · Vs., the Frequency. Under it the card without what the bar says: no Flavor, no rank word, no Distance, no Attack line, no Your roll.", wrap(await actionBar(row, { open: true, option: 1, actor: a })))}${col("Short card, option 2", "The same bar; the card loses only the Flavor and Your roll (the Distance and the Attack line are written again, the rank's word stays).", wrap(await actionBar(row, { open: true, option: 2, actor: a })))}${col("Today's card on the sheet (the full card)", "No head bar: a Reaction's Frequency is only in its row's pill.", fullCard)}</div>`;
 }

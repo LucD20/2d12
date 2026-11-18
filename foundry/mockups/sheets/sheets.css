@@ -1,5 +1,5 @@
 /* The sheets redesign mockup: the page, and the proposals' layout. */
-body { margin: 0; padding: 20px; font-family: "Signika", sans-serif; font-size: 14px; } * { animation: none !important; transition: none !important; }
+body { margin: 0; padding: 20px; font-family: "Source Sans 3", sans-serif; font-size: 14px; } * { animation: none !important; transition: none !important; }
 body.theme-dark { background: #2b2722; color: #e6dfd1; } body.theme-light { background: #ddd6c8; color: #1d1a16; }
 .mk-err { color: #f66; font: 12px monospace; white-space: pre-wrap; }
 .mk-cols { display: flex; gap: 28px; align-items: flex-start; }
@@ -8,8 +8,8 @@ body.theme-dark { background: #2b2722; color: #e6dfd1; } body.theme-light { back
 .mk-win > .application > .window-header { flex: none; display: flex; align-items: center; justify-content: space-between; height: 30px; padding: 0 10px; background: #14110e; color: #e6dfd1; font-size: 13px; }
 .mk-win > .application > .window-content { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
 i.fa-x { display: inline-flex; width: 1em; height: 1em; vertical-align: -0.125em; } i.fa-x > svg { width: 1em; height: 1em; fill: currentColor; }
-h2 { font: 700 22px "Signika", sans-serif; margin: 0 0 4px; } h3 { font: 600 14px "Signika", sans-serif; margin: 0 0 8px; opacity: .8; } h3 b { opacity: 1; }
-h4 { font: 700 13.5px "Signika", sans-serif; margin: 0 0 2px; }
+h2 { font: 600 24px "Source Serif 4", serif; margin: 0 0 4px; } h3 { font: 600 14px "Source Sans 3", sans-serif; margin: 0 0 8px; opacity: .8; } h3 b { opacity: 1; }
+h4 { font: 700 13.5px "Source Sans 3", sans-serif; margin: 0 0 2px; }
 .mk-lead { max-width: 1100px; margin: 0 0 16px; line-height: 1.45; opacity: .9; } .mk-pair { margin-bottom: 44px; }
 #nav { display: flex; gap: 14px; margin-bottom: 18px; font-size: 13px; } #nav a { color: inherit; opacity: .7; } #nav a.on { opacity: 1; font-weight: 700; text-decoration: none; }
 .mk-win > .application > .window-header .mk-x { opacity: .6; }
@@ -25,7 +25,7 @@ h4 { font: 700 13.5px "Signika", sans-serif; margin: 0 0 2px; }
 .mk-sheet, .mk-long { display: flex; flex-direction: column; flex: 1; min-height: 0; background: var(--s-pg); color: var(--s-ink); }
 .mk-sheet.mk-loose { display: block; } .mk-sheet.mk-loose .sb-body { padding: 8px; }
 .mk-scroll { flex: 1; min-height: 0; overflow: hidden; }
-.twod12-sb.rk-pc { --rk: #23324a; }
+.twod12-sb.rk-pc { --rk: #2a241d; }
 .mk-pad { padding: 0 8px 8px; }
 /* the plate: the portrait and the line under the name */
 .twod12-sb .mk-plate { gap: 10px; padding: 5px 10px; flex: none; }
@@ -54,7 +54,7 @@ h4 { font: 700 13.5px "Signika", sans-serif; margin: 0 0 2px; }
 .mk-esc .mk-q { font-size: 12.5px; }
 /* E3: no word "Hands"; one hand above the other; each tile the size it has today (12 px, 4 px 8 px) */
 .mk-hands { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 6px 8px; }
-.mk-hand { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 4px 8px; border: 1px solid var(--s-rule); border-radius: 2px; font: 400 12px/1.35 "Signika", sans-serif; color: var(--s-ink); cursor: pointer; }
+.mk-hand { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 4px 8px; border: 1px solid var(--s-rule); border-radius: 2px; font: 400 12px/1.35 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
 .mk-hand span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .mk-hand b { color: var(--s-gold); font-size: 11px; }
 .mk-hand.free { border-style: dashed; border-color: var(--s-hair); color: var(--s-mute); } .mk-hand.warn { border-color: #e0a030; }
 .mk-ap { align-items: flex-start; gap: 6px; }
@@ -65,24 +65,35 @@ h4 { font: 700 13.5px "Signika", sans-serif; margin: 0 0 2px; }
 /* the tabs */
 .mk-tabs { display: flex; gap: 2px; padding: 4px 8px 0; border-bottom: 1px solid var(--s-rule); flex: none; }
 .mk-tabs a { padding: 5px 9px 6px; color: var(--s-mute); font-size: 13.5px; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; } .mk-tabs a.on { color: var(--s-ink); font-weight: 700; border-bottom-color: var(--s-gold); } .mk-tabs a small { color: var(--s-gold); font-weight: 700; }
-/* an Action's bar (the stat-block face's header) and the short card under it */
-.twod12-sb .mk-oa .sb-oa-h { cursor: pointer; padding-top: 3px; padding-bottom: 3px; } .twod12-sb .mk-oa .sb-oa-h .n { white-space: nowrap; } .twod12-sb .mk-oa:not(.open) { background: none; }
-.twod12-sb .mk-oa .sb-oa-h .autodia { font-size: 9px; margin-left: -3px; }
-.mk-dv { margin-left: auto; white-space: nowrap; color: var(--s-ink); font-size: 13px; } .mk-dv + .fq { margin-left: 4px !important; min-width: 82px; text-align: right; } .mk-vs { font-weight: 700; }
-.twod12-sb .mk-oa .sb-oa-h .tr { flex: 0 1 auto; }
 .mk-tools { display: flex; justify-content: flex-end; gap: 16px; font-size: 12.5px; color: var(--s-mute); } .mk-tools a { color: inherit; cursor: pointer; }
 /* the Basic Actions */
 .mk-basic { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 8px; align-items: start; }
 .mk-bh { display: block; padding: 2px 0; font-weight: 700; font-variant: small-caps; color: var(--s-mute); font-size: 13px; }
-.mk-bx { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; gap: 6px; width: 100%; min-height: 25px; padding: 2px 6px; margin-bottom: 3px; border-left: 3px solid var(--lnf); background: var(--s-pg-2); font: 400 13px/1.25 "Signika", sans-serif; color: var(--s-ink); cursor: pointer; }
+.mk-bx { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; gap: 6px; width: 100%; min-height: 25px; padding: 2px 6px; margin-bottom: 3px; border-left: 3px solid var(--lnf); background: var(--s-pg-2); font: 400 13px/1.25 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
 .mk-bx.strike { box-shadow: inset 2px 0 0 #d9773a; } .mk-bx span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .mk-bx b { font-size: 12px; white-space: nowrap; }
 .mk-bx.off { color: var(--s-faint); background: none; border-left-style: dashed; } .mk-bx small { display: block; font-size: 10.5px; font-style: italic; }
-/* the long page's tail: Effects, Notes, Build */
-.mk-long .mk-tail .sb-body { padding-top: 0; }
-.mk-fx { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto 14px; gap: 8px; padding: 3px 4px; border-bottom: 1px solid var(--s-hair); align-items: baseline; } .mk-fx .du { color: var(--s-mute); font-size: 12.5px; white-space: nowrap; } .mk-fx a { color: var(--s-mute); cursor: pointer; } .mk-fx.none { display: block; color: var(--s-mute); font-style: italic; } .mk-fx .tx p { margin: 0; }
-.mk-notes { padding: 2px 4px 4px; line-height: 1.45; } .mk-notes p { margin: 0 0 4px; }
-.mk-bsum { display: flex; flex-wrap: wrap; gap: 2px 16px; padding: 2px 4px; color: var(--s-ink); } .mk-bsum .k { font-weight: 700; }
 .twod12-sb .sb-band .add i, .twod12-sb .sb-band .r i { font-size: 10px; }
-.mk-long > .twod12-sb.sb-platew { flex: none; } .mk-end .mk-scroll, .mk-long .mk-scroll { overflow: hidden; }
-.mk-inset { display: flex; gap: 22px; align-items: flex-start; margin-top: 14px; } .mk-inset > div { width: 176px; } .mk-inset .mk-hands { padding: 0; } .mk-inset p { margin: 0 0 4px; font-size: 12px; opacity: .75; }
-.mk-inset .mk-hands { background: var(--s-pg-2); padding: 6px 8px; border: 1px solid var(--s-hair); }
+
+/* ------------------------------------------------------------------ STYLE-3 (style-book.md, v0.0.387) on the proposals */
+/* the one big title in the serif, in its own case (no capitals); everything else Source Sans 3 */
+.mk-sheet.twod12-sb .mk-plate .nm { font: 600 20px/1.2 "Source Serif 4", serif; font-variant: normal; letter-spacing: 0; }
+/* color only for a meaning: the tiles in ink, no colored tops; labels in their own case */
+.mk-sheet.twod12-sb .mk-attrs .sb-attr { --ac: var(--s-mute); border: 1px solid var(--s-hair); border-top: 1px solid var(--s-hair); }
+.mk-sheet.twod12-sb .mk-attrs .sb-attr span { font: 600 12.5px "Source Sans 3", sans-serif; font-variant: normal; letter-spacing: 0; color: var(--s-mute); }
+.mk-sheet.twod12-sb .sb-band { color: var(--s-ink); } .mk-sq { display: inline-block; width: 8px; height: 8px; align-self: center; flex: none; }
+.mk-hand b { color: var(--s-mute); font-weight: 600; }
+.mk-bh { font-variant: normal; font-weight: 600; font-size: 12.5px; }
+/* an Action's bar: the neutral band, the stamp, the Frequency a small square beside its word */
+.mk-oa { border-top: 1px solid var(--s-hair); } .mk-oa:last-of-type { border-bottom: 1px solid var(--s-hair); } .mk-oa.dim > * { opacity: .5; }
+.mk-sheet .sb-body { gap: 0; } .mk-sheet .sb-body > .sb-band { margin-top: 10px; margin-bottom: 0; border-bottom-color: var(--s-rule); } .mk-sheet .sb-body > .sb-band:first-child, .mk-sheet .sb-body > .mk-tools + .sb-band { margin-top: 2px; }
+.mk-bar { display: flex; align-items: center; gap: 8px; padding: 4px 8px 4px 6px; cursor: pointer; } .mk-oa.open > .mk-bar { background: var(--s-band); }
+.mk-bar .n { font-weight: 700; font-size: 14.5px; color: var(--s-ink); white-space: nowrap; } .mk-bar .tr { font-style: italic; color: var(--s-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.mk-bar .autodia { font-size: 9px; margin-left: -3px; }
+.mk-dv { margin-left: auto; white-space: nowrap; font-size: 13.5px; color: var(--s-ink); } .mk-dv b { font-weight: 700; }
+.mk-fq { display: inline-flex; align-items: center; gap: 6px; min-width: 84px; justify-content: flex-start; font-size: 13.5px; color: var(--s-ink); white-space: nowrap; margin-left: 6px; } .mk-fq i { width: 8px; height: 8px; flex: none; }
+/* the short card: the system's Action card under the bar (its own frame's rule kept at the bottom) */
+.mk-oa > .mk-short { margin: 0; padding: 6px 10px 8px 10px; border: 0; border-bottom: 1px solid var(--s-gold); background: var(--s-pg-2); }
+/* the Basic Actions' strips, muted (step 3) */
+.mk-bx { border-left-color: color-mix(in srgb, var(--lnf) 55%, var(--s-pg-2)); } .mk-bx.strike { box-shadow: inset 2px 0 0 color-mix(in srgb, #d9773a 55%, var(--s-pg-2)); }
+.mk-inset { display: flex; gap: 22px; align-items: flex-start; margin-top: 14px; } .mk-inset > div { width: 240px; } .mk-inset p { margin: 0 0 4px; font-size: 12px; opacity: .75; }
+.mk-inset .mk-hands { width: 176px; box-sizing: border-box; background: var(--s-pg-2); padding: 6px 8px; border: 1px solid var(--s-hair); }
