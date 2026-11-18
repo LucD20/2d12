@@ -1,0 +1,833 @@
+name	school	research	paths	kind	stats
+Fire Flies	evocation	No Research Required	fire1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / 6 Projectiles / -1 Precision / AOE: One Target (each) / 8 AP Fire DMG
+Freezing Touch	evocation	No Research Required	water1	battle	10 Fatigue / 50% Casting Time / Range: 1 Square / +1 Precision / AOE: One Target / 9 AN Cold DMG (+1 per )
+Flying Shards	evocation	No Research Required	earth1	battle	30 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / 4 Projectiles (+2 per ) / AOE: One Target (each) / 7 Nonmagical DMG (+1 per ) / (Blunt or Slash)
+Burning Hands	evocation	Evo 1	fire1	battle	5 Fatigue / 50% Casting Time / Range: 1 Square / AOE: 1 Square / 15 AP Fire DMG (+1 per )
+Fire Darts	evocation	Evo 1	fire1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / 4 Projectiles (+3 per ) / +1 Precision / AOE: One Target (each) / 10 AP Fire DMG
+Flame Bolt	evocation	Evo 1	fire2	battle	20 Fatigue / 75% Casting Time / Range: 45 Squares (+5 per ) / +2 Precision / AOE: One Square / 13 AP Fire DMG (+2 per )
+Gust of Winds	evocation	Evo 1	air1	battle	10 Fatigue / 75% Casting Time / Range: 35 Squares (+5 per ) / +2 Precision / AOE: 2 Squares / Nonmagical Stun / S = ( Size - 3) / 4 / T = ( STR - 14) / 20 / S% chance to negate / T% chance to negate / Stunned (1 rnd. of helplessness) / Also: Minor Blunt Damage / 8 Blunt DMG (nonmagical)
+Shocking Grasp	evocation	Evo 1	air1	battle	3 Fatigue / Works Underwater / 50% Casting Time / Range: 1 Square / AOE: One Target / 18 AN Shock DMG (+3 per ) / Also: Minor Area Shock / AOE: 1 Square / 1 AN Shock DMG (capped)
+Slime	evocation	Evo 1	water1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / +2 Precision / AOE: 1 Square / Base Penetration: 7 () / Slimed / Slowed (-2 ATT, -2 DEF, halved rnds.) / -2 Attack Skill (on top of the above) / -2 Defence Skill (on top of the above)
+Water Strike	evocation	Evo 1	water1	battle	20 Fatigue / Underwater ONLY / 75% Casting Time / Range: 35 Squares (+5 per ) / +2 Precision / AOE: 1 Square / 13 Magic DMG (+2 per )
+Geyser	evocation	Evo 1	water1 fire1	battle	10 Fatigue / 75% Casting Time / Range: 20 Squares (+5 per ) / +3 Precision / AOE: 3 Squares / 6 AP Fire DMG (+1 per )
+Cold Bolt	evocation	Evo 1	water2	battle	20 Fatigue / 100% Casting Time / Range: 50 Squares (+5 per ) / +3 Precision / AOE: 1 Square / 13 AP Cold DMG (+1 per )
+Acid Spray	evocation	Evo 1	water2 fire1	battle	20 Fatigue / 75% Casting Time / Range: 2 Squares / AOE: 5 Squares / 10 AP Acid DMG
+Astral Projection	evocation	Evo 1	astral1	ritual	Ritual / Range: 7 Provinces (Enemy) / Mindless cannot cast / Scrying (As though a Spy is present) / Duration: 1 (+1 per [astralpearl]) / (Or until the caster's mind fails) / Each Turn: Detection Risk / Each local mage searches / S = (Astral Lv.) x 40 - 20 / S%
+Star Fires	evocation	Evo 1	astral1	battle	20 Fatigue / 75% Casting Time / Range: 35 Squares / 3 Bolts / +2 Precision / AOE: One Target / 5 AN Magic DMG (+1 per )
+Arcane Bolt	evocation	Evo 1	astral2	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 40 Squares (+5 per ) / +3 Precision / AOE: 1 Square / Magic Beings only / 10 AN Magic DMG (+1 per )
+Vine Arrow	evocation	Evo 1	nature1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / AOE: One Target / 14 Pierce DMG (+1 per ) / On Hit: Entanglement / V = 19 + Growth / (In Forests, add 1) / (In Wastes, subtract 1) / Nonmagical Entrapment / STR vs. V to break out
+Bewitching Lights	evocation	Evo 1	glamour1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares / +1 Precision / AOE: 3 Squares / Base Penetration: 7 () / Mindless negates / No Friendly Fire / Stunned (1 rnd. of helplessness)
+Fire Blast	evocation	Evo 2	fire2	battle	20 Fatigue / 75% Casting Time / Range: 7 Squares (+1 per ) / AOE: 3 Squares / 15 AP Fire DMG (+2 per ) / Also: Heat Shock / Heat Clouds (Level 2)
+Sulphur Haze	evocation	Evo 2	fire2 air1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares / AOE: 4 Squares (+1 per ) / Sulphur Clouds (Level 5) / Also: Heat Stun / 10 AN Fire FAT (+2 per )
+Flare	evocation	Evo 2	fire3	battle	50 Fatigue / 75% Casting Time / Range: 45 Squares (+5 per ) / +1 Precision / AOE: 1 Square / 22 AP Fire DMG (+2 per ) / Also: Heat Shock / Heat Clouds (Level 3)
+Lightning Bolt	evocation	Evo 2	air2	battle	10 Fatigue / Works Underwater / 75% Casting Time / Range: 40 Squares (+5 per ) / +4 Precision / AOE: One Target / 14 AN Shock DMG (+1 per ) / Also hits the mount/rider / Also: Minor Area Shock / AOE: 1 Square / 1 AN Shock DMG (capped)
+Shock Wave	evocation	Evo 2	air2	battle	10 Fatigue / Works Underwater / 75% Casting Time / Range: 2 Squares / AOE: 6 Squares / 9 AN Shock DMG (+1 per )
+Cold Blast	evocation	Evo 2	water2	battle	20 Fatigue / 75% Casting Time / Range: 7 Squares (+1 per ) / AOE: 3 Squares / 12 AP Cold DMG (+2 per ) / Also: Cold Shock / Frost Clouds (Level 2)
+Rust Mist	evocation	Evo 2	earth2 water1	battle	30 Fatigue / 75% Casting Time / Range: 30 Squares / AOE: 9 Squares (+1 per ) / Rust Clouds
+Solar Rays	evocation	Evo 2	astral2	battle	Requires a Sun / 20 Fatigue / 75% Casting Time / Range: 40 Squares (+5 per ) / Sure Hit / AOE: 1 Square / Undead only / 14 AN Magic DMG (+1 per )
+Web	evocation	Evo 2	nature1	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 25 Squares (+2 per ) / +2 Precision / AOE: 3 Squares / Webbing / S = ( Size - 3) / 4 / T = ( STR - 14) / 20 / S% chance to negate / T% chance to negate / Nonmagical Entrapment / STR vs. 22 to break out
+Warrior Illusion	evocation	Evo 2	glamour1	battle	10 Fatigue / Works Underwater / 75% Casting Time / Range: 5 Squares / Warrior Illusion x1
+Ephemeral Bolt	evocation	Evo 2	glamour2	battle	10 Fatigue / Works Underwater / 75% Casting Time / Range: 35 Squares (+5 per ) / +2 Precision / AOE: 1 Square / Base Penetration: 11 () / 4 False Magic DMG (+1 per )
+Fireball	evocation	Evo 3	fire2	battle	20 Fatigue / 75% Casting Time / Range: 35 Squares (+5 per ) / 16 AP Fire DMG (+2 per ) / Also: Heat Shock / AOE: 8 Squares / Heat Clouds (Level 1) / Also Also: Area Flames / 6 AP Fire DMG
+Storm Wind	evocation	Evo 3	air2	battle	10 Fatigue / 75% Casting Time / Range: 40 Squares (+5 per ) / +3 Precision / AOE: 8 Squares (+2 per ) / Nonmagical Stun / S = ( Size - 3) / 4 / T = ( STR - 14) / 20 / S% chance to negate / T% chance to negate / Stunned (1 rnd. of helplessness) / Also: Minor Blunt Damage / 8 Blunt DMG (nonmagical)
+Acid Bolt	evocation	Evo 3	water2 fire1	battle	30 Fatigue / 75% Casting Time / Range: 35 Squares (+5 per ) / AOE: 1 Square / 16 AP Acid DMG (+1 per ) / Also: Acid Splash / AOE: 8 Squares / 6 AP Acid DMG
+Rain	evocation	Evo 3	water3	battle	100 Fatigue / Impossible in Caves / May already be in effect / 200% Casting Time / Battlefield Enchantment (Neutral) / Doubles Flying Encumbrance / Douses Burning units / Clouds dissipate 25% faster / In [Heat]0+: / Primarily-Fire spells that / can't be cast Underwater / cost 50% more Fatigue
+Freezing Mist	evocation	Evo 3	water3 air1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares / AOE: 10 Squares (+1 per ) / Frost Clouds (Level 4)
+Magma Bolts	evocation	Evo 3	earth1 fire1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / 5 Projectiles / +2 Precision / AOE: One Target / 25 Blunt DMG (+2 per ) / On Hit: Burning / Burns (temp. 1dSize DMG per round)
+Arcane Probing	evocation	Evo 3	astral1	ritual	Ritual / Works Underwater / Range: 4 Provinces (Friendly) / Site-Searching ()
+Magic Duel	evocation	Evo 3	astral1	battle	100 Fatigue / Works Underwater / Mindless cannot cast / 125% Casting Time / Infinite Range / Sure Hit / AOE: One Target / Mindless negates / Target must have at least [astral 1]1 / Magic Duel / A = Caster's Astral Lv. minus pathboosts / X = A + 1d6 (no drn) / B = Target's Astral Lv. minus pathboosts / Y = B + 1d6 (no drn) / If X ≥ Y, Instakill Target / If X ≤ Y, Instakill Caster
+Healing Light	evocation	Evo 3	astral1 nature1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / Sure Hit / AOE: 1 Square / Mindless negates / Undead negates / Inanimate negates / 15 pts. of Healing
+Shadow Bolt	evocation	Evo 3	death2	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 35 Squares (+5 per ) / +3 Precision / AOE: 1 Square / Base Penetration: 11 () / Undead negates / 7 AN Magic DMG (+1 per ) / MR only halves DMG taken / Also: Minor Paralysis / Base Penetration: 11 () / Undead negates / 5 AN Paralysis DMG
+Poison Darts	evocation	Evo 3	nature1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / 5 Projectiles (+1 per ) / +3 Precision / AOE: One Target / 9 AP Pierce DMG (capped) / On DMG: Minor Poison / 5 AN Poison DMG
+False Fire	evocation	Evo 3	glamour1 fire1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / +1 Precision / AOE: 1 Square / Base Penetration: 11 () / 14 AP False Fire DMG (+2 per ) / Also: Lingering Shimmer / AOE: 8 Squares / Shimmering Light (Level 1) / Also Also: Area False Flames / Base Penetration: 11 () / 8 AP False Fire DMG
+Elf Shot	evocation	Evo 3	glamour1 nature1	battle	20 Fatigue / 50% Casting Time / Range: 30 Squares (+5 per ) / +4 Precision / AOE: One Target / Base Penetration: 11 () / 100 AN Magic FAT (+50 per )
+Dance of Ephemeral Swords	evocation	Evo 3	glamour2	battle	10 Fatigue / Works Underwater / 100% Casting Time / 3 Extra Attacks per Round / (Bonus Weapons) / MR vs. 11 negates () / 1 AN False Magic DMG (no STR)
+Cloud of Dreamless Slumber	evocation	Evo 3	glamour2 air1	battle	20 Fatigue / Works Underwater / 100% Casting Time / Range: 30 Squares / +3 Precision / AOE: 3 Squares (+1 per ) / Sleep Clouds (Level 4) / (The Mod Inspector says +1 per )
+Breath of the Desert	evocation	Evo 4	fire3 air1	ritual	"Ritual / Range: 5 Provinces / Seas are immune / Scorching Wind / ""Anonymous"" / Max. 1/province/turn / +[Heat]3 (Scale Dump) / 5% Popkill"
+Fire Cloud	evocation	Evo 4	fire3 air1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares / +1 Precision / AOE: 8 Squares (+1 per ) / Heat Clouds (Level 4)
+Fate of Oedipus	evocation	Evo 4	fire4	ritual	Ritual / Local / Works Underwater / Ends The Eyes of God / Blinds whoever was upholding it
+Hurricane	evocation	Evo 4	air3	ritual	"Ritual / Range: 5 Provinces / Seas are immune / Caves are immune / Hurricane / ""Anonymous"" / Max. 1/province/turn / +15 Unrest / 3% Popkill"
+Thunder Strike	evocation	Evo 4	air3	battle	50 Fatigue / 75% Casting Time / Infinite Range / -2 Precision / Deviates by another square / in a random direction / AOE: 1 Square / 26 AN Shock DMG (+2 per ) / Also: Thunder Shock / AOE: 10 Squares / 2 AN Shock DMG
+Acid Rain	evocation	Evo 4	water3 fire1	battle	30 Fatigue / 75% Casting Time / Range: 30 Squares / -1 Precision / Slight delay / Deviates by another square / in a random direction / AOE: 6 Squares (+1 per ) / 12 AP Acid DMG / Two Rust Attempts
+Blade Wind	evocation	Evo 4	earth3	battle	80 Fatigue / 75% Casting Time / Range: 35 Squares (+5 per ) / 50 Projectiles (+3 per ) / AOE: One Target / 14 Slash DMG (nonmagical) / (Iron)
+Nether Bolt	evocation	Evo 4	astral1 death1	battle	15 Fatigue / Works Underwater / 75% Casting Time / Range: 35 Squares (+5 per ) / +2 Precision / AOE: 1 Square / Base Penetration: 15 () / 20 AP Magic DMG (+1 per ) / Also: Area Feeblemind / Base Penetration: 11 () / Feebleminded (Severed from Magic)
+Bane Fire Dart	evocation	Evo 4	death1 fire1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / +4 Precision / AOE: One Target / 15 AP Magic DMG (+1 per ) / Also: Area Decay / AOE: 1 Square / Base Penetration: 11 () / Decaying (+5 Years/round)
+Bolt of Unlife	evocation	Evo 4	death2	battle	30 Fatigue / Works Underwater / 75% Casting Time / Range: 30 Squares (+1 per ) / +1 Precision / AOE: 1 Square / Base Penetration: 11 () / Mindless negates / Undead negates / 15 AN Unlife DMG (+1 per )
+Breath of the Dragon	evocation	Evo 4	nature2	battle	20 Fatigue / 75% Casting Time / Range: 20 Squares (+5 per ) / -1 Precision / AOE: 4 Squares (+1 per ) / 7 AN Poison DMG (+2 per )
+Ephemeral Blast	evocation	Evo 4	glamour3	battle	10 Fatigue / Works Underwater / 75% Casting Time / Range: 40 Squares (+5 per ) / +2 Precision / AOE: 4 Squares (+1 per ) / Base Penetration: 11 () / 7 False Magic DMG (+2 per )
+Ghost Wolves	evocation	Evo 4	glamour3	battle	10 Fatigue / Works Underwater / 75% Casting Time / Range: 5 Squares / Wolf Illusion x2
+Falling Fires	evocation	Evo 5	fire3	battle	20 Fatigue / 125% Casting Time / Range: 50 Squares / -3 Precision / Slight delay / Deviates by another square / in a random direction / AOE: 6 Squares (+1 per ) / 15 AP Fire DMG / Also: Heat Shock / Heat Clouds (Level 1)
+Hidden Flame	evocation	Evo 5	fire3 astral1	battle	20 Fatigue / 75% Casting Time / Range: 40 Squares (+5 per ) / AOE: 1 Square / Base Penetration: 11 () / Magic Beings only / 25 AN Fire DMG (+3 per ) / MR only halves DMG taken / Also: Astral Conflagration / AOE: 9 Squares / Base Penetration: 11 () / Mindless negates / 1 AN Magic DMG
+Fires from Afar	evocation	Evo 5	fire4	ritual	Ritual / Range: 3 Provinces (Enemy) / Seas are immune / Caves are immune / The Attack: / 20 Projectiles / Slight delay / AOE: 1 Square (each) / 20 AP Fire DMG (+2 per ) / Also: Lingering Heat / AOE: 16 Squares (each) [FIXME] / Heat Clouds (Level 2) / Also: Lar
+Orb Lightning	evocation	Evo 5	air2	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 20 Squares / AOE: One Target / Bounces 7 Times / (Bounce Range: 1 Square) / 5 AN Shock DMG / Also hits the mount/rider
+Falling Frost	evocation	Evo 5	water3	battle	20 Fatigue / 125% Casting Time / Range: 50 Squares / -2 Precision / Slight delay / Deviates by another square / in a random direction / AOE: 10 Squares (+1 per ) / 10 AP Cold DMG (+1 per ) / Also: Cold Shock / Frost Clouds (Level 2)
+Gifts from Heaven	evocation	Evo 5	earth3 astral1	battle	50 Fatigue / Impossible in Caves / 75% Casting Time / Infinite Range / Three Effects (AOE) / -3 Precision / Slight delay / Deviates by another square / in a random direction / AOE: 1 Square / 150 Blunt DMG / Also: Area Fire / (One per Meteor) / AOE: 8 Squares / 10 AP Fire DMG
+Earthquake	evocation	Evo 5	earth4	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Neutral) / DEF vs. 3d6 negates (Exploding, No Parry) / Floating negates / Flying negates / 8 AP Nonmagical DMG / In Caves: Stalactites / Targets a random 10% of the battlefield / DEF vs. 3d6 negates (Exploding, No Parry) / 20 AP Nonmagical DMG / Either Way: Knockdown / 100% Battlefield Spell (Neutral) / DEF vs. 3d6 negates (Exploding, No Parry) / Floating negates / Flying negates / Stunned (1 rnd. helplessness)
+Stellar Cascades	evocation	Evo 5	astral2	battle	20 Fatigue / 75% Casting Time / Range: 35 Squares / Sure Hit / AOE: 7 Squares / Base Penetration: 11 () / 25 AP Magic FAT / MR only halves FAT taken
+Astral Geyser	evocation	Evo 5	astral3	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 50 Squares (+5 per ) / AOE: 1 Square / Base Penetration: 11 () / Mindless negates / Horror Marks Targets Twice / Also: Astral Geyser Blast / AOE: 10 Squares / Base Penetration: 11 () / 2 AN Magic DMG
+Shadow Blast	evocation	Evo 5	death2	battle	100 Fatigue / Works Underwater / 125% Casting TIme / Range: 35 Squares (+5 per ) / AOE: 9 Squares (+1 per ) / Base Penetration: 11 () / Undead negates / 8 AN Magic DMG (+1 per ) / MR only halves DMG taken / Also: Minor Paralysis / Base Penetration: 11 () / Undead negates / 5 AN Paralysis DMG
+Poison Arrows	evocation	Evo 5	nature2	battle	20 Fatigue / 75% Casting Time / Range: 35 Squares (+5 per ) / 3 Projectiles (+2 per ) / +3 Precision / AOE: One Target / 15 Pierce DMG (+1 per ) / On DMG: Minor Poison / 5 AN Poison DMG
+Poison Cloud	evocation	Evo 5	nature3 air1	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 30 Squares / -1 Precision / AOE: 6 Squares (+1 per ) / Poison Clouds (Level 3)
+Illusory Army	evocation	Evo 5	glamour3	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: 3 Squares (+1 per ) / Warrior Illusion x20 (+5 per )
+Project Self	evocation	Evo 5	glamour3 astral1	ritual	Ritual / Works Underwater / Range: 5 Provinces (Enemy) / Projection Commander x1 / It has your Magic levels, / including pathboosts, / but no items or gems. / It's considered a combat summon.
+Flame Eruption	evocation	Evo 6	fire2	battle	30 Fatigue / 75% Casting Time / Range: 7 Squares (+1 per ) / AOE: 15 Squares / 13 AP Fire DMG (+1 per )
+Wrathful Skies	evocation	Evo 6	air5	battle	200 Fatigue / 225% Casting Time / Battlefield Enchantment (Neutral) / Just Under 24 times a Round: / Affects a random 0.3% of the battlefield / (Doubled in a Storm/Blizzard) / 15 AN Shock DMG
+Perpetual Storm	evocation	Evo 6	air5	global	Global Enchantment / Works Underwater / Seas are immune / Caves are immune / -20% Income / Out-of-Battle Storm / +1 to Half-Step Movement Costs / Bans Crossing Mountains / Bans Sailing / Bans Flying / (Storm Immunity allows Flying) / Blocks Seeking Arrow (75% 
+Cleansing Water	evocation	Evo 6	water2	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares (+5 per ) / AOE: 5 Squares (+1 per ) / Undead only / Demons only / (either one works, they don't need both) / 5 AN Magic DMG (+1 per )
+Magma Eruption	evocation	Evo 6	earth2 fire2	battle	50 Fatigue / Works Underwater / 75% Casting Time / Range: 30 Squares / AOE: 6 Squares (+1 per ) / 22 Blunt DMG / Also: Lingering Heat / Heat Clouds (Level 4)
+Mind Hunt	evocation	Evo 6	astral4	ritual	Ritual / Works Underwater / Mindless cannot cast / Range: 6 Provinces / Detection Risk: / Each Local Mage Searches / S = (Astral Lv. x 40) - 20 / S% chance to Feeblemind caster / If Not Caught: Commander-Hunting / Picks a random hostile Commander / (Can find H
+Astral Fires	evocation	Evo 6	astral4 fire1	battle	20 Fatigue / Works Underwater / Range: 45 Squares (+5 per ) / Sure Hit / AOE: 1 Square / Base Penetration: 15 () / 10 AN Magic DMG / Also: Astral Fires Area / AOE: 6 Squares / Base Penetration: 11 () / 10 AN Magic DMG
+The Wrath of God	evocation	Evo 6	astral5 air3	global	Global Enchantment / Works Underwater / Seas are immune / Caves are immune / For Each Hostile Unit: / Samples local Dominion & Scales / W = 2 + 2 x Dominion + Turmoil / (Or 1, whichever's higher) / W% Chance of Smiting / 9 AN Shock DMG
+Blast of Unlife	evocation	Evo 6	death3	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 30 Squares (+1 per ) / AOE: 2 Squares / Base Penetration: 11 () / Mindless negates / Undead negates / 20 AN Unlife DMG (+1 per )
+Bane Fire	evocation	Evo 6	death3 fire1	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 45 Squares (+5 per ) / +1 Precision / AOE: 1 Square / 55 AP Magic DMG (+1 per ) / Also: Bane Flame Area / AOE: 8 Squares / 8 AP Magic DMG / Also: Large Area Decay / AOE: 10 Squares [FIXME] / Base Penetration: 11 () / Decaying (+5 Years/round)
+Stream of Life	evocation	Evo 6	nature3	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 40 Squares (+5 per ) / +2 Precision / AOE: 1 Square / Base Penetration: 11 () / Undead negates / Inanimate negates / Overload / X = 40 (+5 per ) / 999 pts. of Healing / Extra Strength (+4 STR) / Gone Berserk (Unflinching Charge) / Instakill (X% chance)
+False Horror	evocation	Evo 6	glamour3	battle	10 Fatigue / Works Underwater / 75% Casting Time / Range: Closest Square / False Horror x1
+Fire Storm	evocation	Evo 7	fire5	battle	300 Fatigue / 250% Casting Time / Battlefield Enchantment (Neutral) / Reduces Darkness by 1 / Just under 24 Times a Round: / Affects a random 3% of the battlefield / AOE: 15 Squares / 6 AP Fire DMG
+Elemental Opposition of Water	evocation	Evo 7	fire5	global	Ritual / Works Underwater / Local / Attempts to Dispel / ALL Global Enchantments at once, / if Water is their primary path
+Thunderstorm	evocation	Evo 7	air4	ritual	Ritual / Range: 3 Provinces (Enemy) / Seas are immune / Caves are immune / The Attack: / 40 Thunder Strikes (+5 per ) / AOE: 1 Square (each) / 28 AN Shock DMG (+2 per ) / Also: Thunder Shock / AOE: 10 Squares (each) / 2 AN Shock DMG / (Listed as Independent)
+Elemental Opposition of Earth	evocation	Evo 7	air5	global	Ritual / Works Underwater / Local / Attempts to Dispel / ALL Global Enchantments at once, / if Earth is their primary path
+Ice Strike	evocation	Evo 7	water2	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares / +1 Precision / AOE: 4 Squares (+2 per ) / 18 Slash DMG / Also: Cold Shock / Frost Clouds (Level 2)
+Acid Storm	evocation	Evo 7	water4 fire1	battle	300 Fatigue / 250% Casting Time / Battlefield Enchantment (Neutral) / Just under 24 Times a Round: / Affects a random 3% of the battlefield / 4 AN Acid DMG
+Elemental Opposition of Fire	evocation	Evo 7	water5	global	Ritual / Works Underwater / Local / Attempts to Dispel / ALL Global Enchantments at once, / if Fire is their primary path
+Murdering Winter	evocation	Evo 7	water5	ritual	"Ritual / Range: 4 Provinces (Enemy) / Seas are immune / [Heat]3+ provinces are immune / The Attack: / Baleful Blizzard / ""Anonymous"" / Max. 1/province/turn / Samples local terrain & Scales / D = (4 + Cold) x 2 / In Caves, divide D by 2 / Affects 75% of Local U"
+Rain of Stones	evocation	Evo 7	earth3 air1	battle	100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Just under 24 Times a Round: / Targets a random 1% of the battlefield / with One Projectile each / AOE: One Target / 5 nonmagical Blunt DMG (capped) / Also Just under 24 Times a Round: / Targets a random 10% of unit-filled squares / with One Projectile each / AOE: One Target / 5 nonmagical Blunt DMG / All rocks will aim for the Head
+Elemental Opposition of Air	evocation	Evo 7	earth5	global	Ritual / Works Underwater / Local / Attempts to Dispel / ALL Global Enchantments at once, / if Air is their primary path
+Nether Darts	evocation	Evo 7	astral1 death1	battle	15 Fatigue / Works Underwater / 75% Casting Time / Range: 30 Squares (+5 per ) / 15 Projectiles (+1 per ) / AOE: One Target / Base Penetration: 15 () / 15 AP Magic DMG (+1 per ) / Also: Area Feeblemind / AOE: 1 Square (each) / Base Penetration: 11 () / Feebleminded (Severed from Magic)
+Stygian Rains	evocation	Evo 7	death3 water2	battle	200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Neutral) / Inanimate negates / Stygian Invulnerability / (Min. 15 Mundane NAT PROT) / Also casts Rain for free
+Cloud of Death	evocation	Evo 7	death4 air1	battle	20 Fatigue / 75% Casting Time / Range: 30 Squares / -3 Precision / AOE: 15 Squares (+2 per ) / Death Clouds
+Wind of Death	evocation	Evo 7	death4 air1	battle	100 Fatigue / 200% Casting Time / 100% Battlefield Spell (Neutral) / Base Penetration: 7 () / Decaying (+5 Years/round)
+Storm of Thorns	evocation	Evo 7	nature2	battle	20 Fatigue / 75% Casting Time / Range: 35 Squares (+5 per ) / 10 Projectiles (+2 per ) / AOE: One Target / 15 Pierce DMG (+1 per ) / On Hit: Entanglement / V = 19 + Growth / (In Forests, add 1) / (In Wastes, subtract 1) / Nonmagical Entrapment / STR vs. V to break out
+Poison Mist	evocation	Evo 7	nature3 air1	battle	40 Fatigue / Works Underwater / 75% Casting Time / Range: 30 Squares / -1 Precision / AOE: 15 Squares (+3 per ) / Poison Clouds
+Miasma	evocation	Evo 7	nature4	ritual	Ritual / Range: 4 Provinces (Enemy) / Swamps or Drip Caves ONLY / The Attack: / AOE: 150 Squares ([FIXME]) / Poison Clouds (Level 5, +1 per ) / (Levels over 7 merely spread the cloud) / (Listed as Independent)
+Illusory Attack	evocation	Evo 7	glamour4	ritual	Ritual / Works Underwater / Range: 4 Provinces / Warrior Illusion x55 (+10 per ) / Archer Illusion x40 / Captain Illusion Commander x2 / (Independent, lasts only one battle/phase)
+Wailing Winds	evocation	Evo 7	glamour4 air1	battle	"200 Fatigue / 225% Casting Time / Battlefield Enchantment (Enemy) / Just under 24 Times a Round: / Affects a random 5% of the battlefield / Morale negates / 1 Fear ""DMG"""
+Shimmering Fields	evocation	Evo 7	glamour5	battle	200 Fatigue / Works Underwater / 150% Casting Time / Range: 25 Squares / AOE: 50 Squares / Base Penetration: 11 () / 9 False Magic DMG (+1 per ) / Also: Lingering Shimmer / Shimmering Light (Level 1)
+Pillar of Fire	evocation	Evo 8	fire2	battle	20 Fatigue / 75% Casting Time / Infinite Range / AOE: 1 Square / 35 AP Fire DMG (+3 per ) / Also: Lingering Heat / AOE: 10 Squares / Heat Clouds (Level 2)
+Second Sun	evocation	Evo 8	fire8	global	Global Enchantment / Impossible in Deep Seas / (Works Underwater otherwise) / Impossible in Caves / Night never Happens / Bans Solar Eclipse / Bans Twilight / Bans Nightfall / Negates Utterdark / Negates Eternal Twilight / Negates Blood Moon / Lifts Theft of t
+Chain Lightning	evocation	Evo 8	air3	battle	30 Fatigue / Works Underwater / 75% Casting Time / Range: 25 Squares / AOE: One Target / Bounces 20 Times / (Bounce Range: 1 Square) / 6 AN Shock DMG (+1 per ) / Also hits the mount/rider
+Maelstrom	evocation	Evo 8	water6	global	Global Enchantment (Local) / Underwater ONLY / From the Whirlpool: / 15[watergem]/turn / 5[astralpearl]/turn / 3[airgem]/turn / 1[firegem]1[earthgem]1[deathgem]1[naturegem]1[glamourgem]/turn
+Meteor Shower	evocation	Evo 8	earth5 astral4	battle	300 Fatigue / Impossible in Caves / 250% Casting Time / Battlefield Enchantment (Neutral) / Just under 24 Times per Round: / Drops up to 5 Meteors, / each on a random square / (Each has a 15% chance to drop.)
+Astral Tempest	evocation	Evo 8	astral5	battle	200 Fatigue / Works Underwater / 225% Casting Time / Battlefield Enchantment (Neutral) / Just under 24 Times a Round: / Affects a random 2% of the battlefield / MR vs. 11 negates () / Mindless negates / 1 AN Magic DMG / Also Just under 24 Times a Round: / Affects a random 4% of the battlefield / MR vs. 11 negates () / Mindless negates / Interrupts Spellcasting
+Vortex of Unlife	evocation	Evo 8	death5	battle	20 Fatigue / Works Underwater / 75% Casting Time / Range: 30 Squares (+2 per ) / AOE: 8 Squares (+1 per ) / Base Penetration: 11 () / Mindless negates / Undead negates / 16 AN Unlife DMG (+1 per )
+Aurora Borealis	evocation	Evo 8	glamour5 astral1	battle	200 Fatigue / Impossible in Caves / 225% Casting Time / Battlefield Enchantment (Enemies) / Only works in Twilight / or similar Darkness / MR vs. 11 negates () / - Twilight makes MR negate vs. 7 / Mindless negates / Periodic Stunning
+Volcanic Eruption	evocation	Evo 9	fire4 earth3	ritual	"Ritual / Range: 6 Provinces (Enemy) / Capitals are immune / Volcanic Eruption / ""Anonymous"" / +[Heat]2 (Scale Dump) / Destroys the Lab / Destroys the Temple / +125 Unrest / 30% Popkill"
+Flames from the Sky	evocation	Evo 9	fire5	ritual	Ritual / Range: 4 Provinces (Enemy) / Seas are immune / Caves are immune / The Attack: / Targets a random 10% of the battlefield / Slight delay / 20 AP Fire DMG (+1 per ) / Also: Heat Shock / Heat Clouds (Level 2) / Also Also: Large Fireballs / 25 Projectiles 
+Flame Storm	evocation	Evo 9	fire5	battle	100 Fatigue / 125% Casting Time / Range: 40 Squares (+5 per ) / AOE: 50 Squares / 15 AP Fire DMG (+2 per ) / Also: Heat Shock / Heat Clouds (Level 2)
+Lightning Field	evocation	Evo 9	air6	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: 30 Squares / AOE: 100 Squares / On Hit: Chain Lightning / AOE: One Target (each) / Bounces 8 Times / (Bounce Range: 1 Square) / 1 AN Shock DMG / Also hits the mount/rider
+Niefel Flames	evocation	Evo 9	water5	battle	100 Fatigue / 125% Casting Time / Range: (+5 per ) / AOE: 75 Squares (+5 per ) / 12 AP Cold DMG (+1 per ) / Also: Cold Shock / Frost Clouds (Level 2)
+Tidal Wave	evocation	Evo 9	water5	ritual	"Ritual / Works Underwater / Range: 6 Provinces (Enemy) / Coasts ONLY / Tidal Wave / ""Anonymous"" / +50 Unrest / 30% Popkill"
+Lost Land	evocation	Evo 9	earth6 water5	ritual	Ritual / Works Underwater / Range: 3 Provinces / Coasts ONLY / Capitals are immune / Mountains are immune / Caves are immune / Sinking Land / 50% Emigration / 100% Popkill (after emigration) / Province Becomes a Plain Sea / Destroys the Lab / Unit Flight: / Fo
+Stellar Strike	evocation	Evo 9	astral5 earth3	ritual	Ritual / Works Underwater / Range: 5 Provinces (Enemy) / Seas are immune / Caves are immune / The Attack: / 40 Meteors / Slight delay / AOE: 1 Square (each) / 150 Blunt DMG / Also: Area Fire / (One per Meteor) / AOE: 8 Squares (each) / 10 AP Fire DMG
+Strands of Arcane Power	evocation	Evo 9	astral7	global	Global Enchantment / Works Underwater / Mindless cannot cast / Within Friendly Dominion: / Unfocused Site-Searching / For each province, / roll an exploding 1d10 for each path. / If 11+ (9% chance), search at level 1 / If 16+ (4% chance), search at level 2 / I
+Celestial Rainbow	evocation	Evo 9	glamour7 water5	global	Global Enchantment / Impossible in Caves / +500 Gold/turn (or so) / In Your Provinces Only: / +[Luck]2 (Adjusts the Base) / L = Fortune x 10 / Blocks L% of Enemy Rituals
+Air Shield	alteration	No Research Required	air1	battle	Impossible Underwater / 10 Fatigue / 100% Casting Time / Air Shield (80%)
+Twist Fate	alteration	No Research Required	astral1	battle	10 Fatigue / 100% Casting Time / Twisted Fate / (negates the next wound)
+Hand of Dust	alteration	No Research Required	death1	battle	10 Fatigue / 50% Casting Time / Range: 1 Square / AOE: One Target / 6 AN Magic DMG (+1 per )
+Poison Touch	alteration	No Research Required	nature1	battle	5 Fatigue / 50% Casting Time / Range: 1 Square / AOE: One Target / 10 AN Poison DMG (+5 per )
+Distill Gold	alteration	Alt 1	fire1	ritual	Ritual / Local / +250 Gold / (Alchemical Ritual)
+Charge Body	alteration	Alt 1	air1	battle	5 Fatigue / 100% Casting Time / Overcharged / When Hit in Melee: Discharge / 20 AN Shock DMG (Attacker) / 5 AN Shock DMG (Caster)
+Earth Grip	alteration	Alt 1	earth1	battle	10 Fatigue / 100% Casting Time / Range: 20 Squares / +5 Precision / AOE: One Target / Floating negates / Flying negates / Nonmagical Entrapment / (STR vs. 23 to break out)
+Fists of Iron	alteration	Alt 1	earth1	battle	20 Fatigue / 50% Casting Time / Range: 1 Square / 1 Punch (+1 per ) / AOE: One Target / 15 Blunt DMG (+STR)
+Skeletal Body	alteration	Alt 1	death1	battle	20 Fatigue / 100% Casting Time / Spiritform negates / Pierce Resistance (50%)
+Hand of Death	alteration	Alt 1	death2	battle	5 Fatigue / 50% Casting Time / Range: 1 Square / AOE: One Target / 40 AN Magic DMG (+5 per )
+Cat Eyes	alteration	Alt 1	nature1	battle	5 Fatigue / 100% Casting Time / Low-light Vision / (50% Darkvision)
+Eagle Eyes	alteration	Alt 1	nature1	battle	5 Fatigue / 100% Casting Time / Improved Precision / (+4 PREC)
+Personal Barkskin	alteration	Alt 1	nature1	battle	5 Fatigue / 100% Casting Time / Spiritform negates / Barkskin / (+7 NAT PROT, up to 10, / or +1 if already 10 or higher) / (-5 Fire Resistance)
+Personal Poison Resistance	alteration	Alt 1	nature1	battle	5 Fatigue / 100% Casting Time / +10 Poison Resistance
+Blurred Body	alteration	Alt 1	glamour1	battle	10 Fatigue / 100% Casting Time / Blur (Distracts Attackers) / On a Melee Hit Attempt: / True Sight negates / Blindness negates / -2 ATT (this attempt)
+Burn	alteration	Alt 2	fire1	battle	Impossible Underwater / 10 Fatigue / 100% Casting Time / Range: 30 Squares / AOE: One Target / Burn (Temporary 1dSize DMG/rnd.)
+Resist Cold	alteration	Alt 2	fire1	battle	10 Fatigue / 100% Casting Time / +5 Cold Resistance
+Personal Mistform	alteration	Alt 2	air2	battle	10 Fatigue / 100% Casting Time / Mistform (DR 25/) / When HP Damage is Taken: / Reduce it by 25, or to 1 point; / whichever lowers it by less. / Ended by the Following Hits, / after reducing their Damage: / - Hits that would otherwise do 25+ DMG / - Hits that would otherwise do 2+ DMG (1% chance) / - Magic Hits (even 0-to-1-DMG Hits)
+Ice Shield	alteration	Alt 2	water1	battle	20 Fatigue / Underwater ONLY / 100% Casting Time / Protective Force / (50% chance of +20 PROT)
+Quicken Self	alteration	Alt 2	water1	battle	20 Fatigue / 100% Casting Time / Quickness (+2 ATT, +2 DEF, doubled rounds)
+Resist Fire	alteration	Alt 2	water1	battle	10 Fatigue / 100% Casting Time / +5 Fire Resistance
+Gooey Water	alteration	Alt 2	water2	battle	20 Fatigue / Underwater ONLY / 100% Casting Time / Range: 35 Squares (+5 per ) / +2 Precision / AOE: 5 Squares (+1 per ) / Base Penetration: 11 () / Slimed / Slowed (-2 ATT, -2 DEF, halved rnds.) / -2 Attack Skill (on top of the above) / -2 Defence Skill (on top of the above)
+Alchemical Transmutation	alteration	Alt 2	earth1	ritual	Ritual / Local / +200 Gold / (Alchemical Ritual)
+Armor of Achilles	alteration	Alt 2	earth1	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / +3 Precision / AOE: 1 Square / 10 Armor/Shield DMG
+Personal Stoneskin	alteration	Alt 2	earth1	battle	10 Fatigue / 100% Casting Time / Spiritform negates / Overrides Barkskin / Stoneskin / (+10 NAT PROT, up to 15, / or +3 if already 13 or higher) / (-5 Cold Resistance)
+Resist Lightning	alteration	Alt 2	earth1	battle	10 Fatigue / 100% Casting Time / +5 Shock Resistance
+Gift of Cheated Fate	alteration	Alt 2	astral1	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Twisted Fate / (negates the next wound)
+Weakness	alteration	Alt 2	death1	battle	20 Fatigue / 100% Casting Time / Range: 25 Squares / +3 Precision / AOE: One Target / Base Penetration: 11 () / 3 Weakness (Reduces Strength) / (Ignores Air Shield)
+Enlarge	alteration	Alt 2	nature2	battle	20 Fatigue / Range: 10 Squares / AOE: 1 Square / Spiritform negates / Enlarged (for the battle) / +1 Size / +30% HP (Current and Max) / +3 STR / -1 DEF
+Mirror Image	alteration	Alt 2	glamour1	battle	10 Fatigue / 100% Casting Time / Mirror Images (2 per ) / (1 if you don't have levels) / When Hit in Melee: / Spirit Sight negates / Blindness negates / n = # of Mirror Images / N = n / (n + 1) / N chance the DMG is negated; / if 1+ DMG is negated, / one Mirror Image disappears
+Blur	alteration	Alt 2	glamour1	battle	20 Fatigue / 100% Casting Time / Range: 20 Squares / AOE: 1 Square / Blur (Distracts Attackers) / On a Melee Hit Attempt: / True Sight negates / Blindness negates / -2 ATT (this attempt)
+Inner Sun	alteration	Alt 3	fire1 astral1	ritual	Ritual / Local (Self-Application) / The Undead cannot cast / Inner Fire / Light Explosion On Death / AOE: 35 Squares / Base Penetration: 11 () / Demons only / Undead only / (Either one works) / 15 AN Magic DMG
+Cold Resistance	alteration	Alt 3	fire2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / +5 Cold Resistance
+Immolation	alteration	Alt 3	fire2	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 0 Squares (Centered on Caster) / AOE: 7 Squares / 12 AP Fire DMG (+1 per )
+Protective Winds	alteration	Alt 3	air2	battle	Impossible Underwater / 40 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 3 Squares (+1 per ) / Air Shield (80%)
+Mist	alteration	Alt 3	air3	battle	Impossible Underwater / 100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Halves base Precision / Clouds no longer dissipate
+Fire Resistance	alteration	Alt 3	water2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / +5 Fire Resistance
+Freeze	alteration	Alt 3	water2	battle	20 Fatigue / 100% Casting Time / Range: 25 Squares / Sure Hit / AOE: 1 Square / Freeze (Slowed, 2d6 Cold FAT/rnd.)
+Personal Ironskin	alteration	Alt 3	earth1	battle	20 Fatigue / 100% Casting Time / Spiritform negates / Overrides Barkskin / Overrides Stoneskin / Ironskin / (+13 NAT PROT, up to 20, / or +5 if already 16 or higher) / (-5 Shock Resistance)
+Earth Meld	alteration	Alt 3	earth2	battle	60 Fatigue / 100% Casting Time / Range: 25 Squares / +3 Precision / AOE: 5 Squares / Floating negates / Flying negates / Nonmagical Entrapment / (STR vs. 23 to break out)
+Lightning Resistance	alteration	Alt 3	earth2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / +5 Shock Resistance
+Body Ethereal	alteration	Alt 3	astral1	battle	30 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Ethereal / (75% Mundanity Resistance)
+Animate Tree	alteration	Alt 3	nature1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 10 Squares / Sure Hit / AOE: 1 Square / Only affects Bushes & Trees / (These aren't in Wastes or Caves.) / Replaces Bushes with / Animated Bushes (Same Size) / Replaces Trees with / Animated Trees (Same Size)
+Barkskin	alteration	Alt 3	nature1	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Spiritform negates / Barkskin / (+7 NAT PROT, up to 10, / or +1 if already 10 or higher) / (-5 Fire Resistance)
+Gift of Cat Eyes	alteration	Alt 3	nature1	battle	20 Fatigue / Range: 15 Squares / AOE: 2 Squares (+1 per ) / Low-light Vision / (50% Darkvision)
+Mossbody	alteration	Alt 3	nature1 water1	battle	"20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Spiritform negates / Mossbody (DR 15/) / Reduces DMG taken (75% chance) / - Doesn't affect Internal Damage. / - First, adds 5 Fire Resistance, / just against this Damage. / - Then, reduces DMG by 15 or to zero; / whichever lowers it by less. / D = (DMG taken / 15) / (calculated after Fire Resistance, / but before Damage Reduction) / D chance to ""Pop"" / after reducing the DMG taken: / Removes the trait / AOE: 4 Squares / 1 AN Poison DMG"
+Torpor	alteration	Alt 3	nature2	battle	20 Fatigue / 100% Casting Time / Range: 35 Squares / Sure Hit / AOE: 1 Square / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / 20 AN Magic FAT (+5 per ) / Asleep (useless until harmed)
+Displace Body	alteration	Alt 3	glamour2	battle	10 Fatigue / 100% Casting Time / Overrides Blur / Displacement (Fools Attackers) / On a Melee Hit Attempt: / True Sight negates / Blindness negates / -10 ATT (first attempt only) / -5 ATT (successive attempts)
+Group Blur	alteration	Alt 3	glamour2	battle	40 Fatigue / 100% Casting Time / Range: 20 Squares / AOE: 3 Squares (+1 per ) / Blur (Distracts Attackers) / On a Melee Hit Attempt: / True Sight negates / Blindness negates / -2 ATT (this attempt)
+Combustion	alteration	Alt 4	fire1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 30 Squares / AOE: 1 Square / Burn (Temporary 1dSize DMG/rnd.)
+Lacerating Winds	alteration	Alt 4	air2	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 45 Squares (+5 per ) / +1 Precision / AOE: 5 Squares (+1 per ) / 5 Magic DMG (+1 per )
+Mistform	alteration	Alt 4	air2	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Mistform (DR 25/) / When HP Damage is Taken: / Reduce it by 25, or to 1 point; / whichever lowers it by less. / Ended by the Following Hits, / after reducing their Damage: / - Hits that would otherwise do 25+ DMG / - Hits that would otherwise do 2+ DMG (1% chance) / - Magic Hits (even 0-to-1-DMG Hits)
+Liquid Body	alteration	Alt 4	water1	battle	20 Fatigue / 100% Casting Time / Spiritform negates / Liquid Body (Soft Fortitude) / Slash Resistance (50%) / Blunt Resistance (50%) / Pierce Resistance (50%) / +1 Affliction Resistance (1 gives ~50%) / -4 STR / -25% CS
+Encase in Ice	alteration	Alt 4	water2	battle	Underwater ONLY / 20 Fatigue / 100% Casting Time / Range: 25 Squares / Sure Hit / AOE: 1 Square / Encased in Ice (Entrapped) / C = 10 / +C Armor Protection / 5 AN Cold FAT/rnd. / STR vs. (12 + C) to break out / On a Failed Breakout: / → Take your roll and the opposing roll / → Subtract C from the opposing roll / → B = (STR roll) - (opposing roll) / → If B ≤ 0, subtract 1 from C; / Otherwise, subtract B from C / → If C ≤ 0, break out
+Quickness	alteration	Alt 4	water2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / +1 Precision / AOE: 1 Square / Quickness (+2 ATT, +2 DEF, doubled rounds)
+Slow	alteration	Alt 4	water2	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: 1 Square / Base Penetration: 11 () / Slowed (-2 ATT, -2 DEF, halved rounds)
+Wolven Winter	alteration	Alt 4	water3	ritual	"Ritual / Range: 5 Provinces / Seas are immune / Cold Wave / ""Anonymous"" / +[Cold]3 (Scale Dump) / 5% Popkill"
+Temper Flesh	alteration	Alt 4	earth1	battle	20 Fatigue / 100% Casting Time / Spiritform negates / +5 Fire Resistance / Fortitude / Slash Resistance (50%) / Blunt Resistance (50%) / Pierce Resistance (50%)
+Stoneskin	alteration	Alt 4	earth2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / Spiritform negates / Overrides Barkskin / Stoneskin / (+10 NAT PROT, up to 15, / or +3 if already 13 or higher) / (-5 Cold Resistance)
+Blight	alteration	Alt 4	earth2 death1	ritual	"Ritual / Range: 5 Provinces (Enemy) / Seas are immune / Crop Blight / ""Anonymous"" / Max. 1/province/turn / +15 Unrest / 5% Popkill / -120 Gold"
+Curse of Stones	alteration	Alt 4	earth3	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Enemies) / Base Penetration: 7 () / The Curse of Stones / -25% CS / +3 ENC / +1d4 FAT whenever a unit changes position
+Destruction	alteration	Alt 4	earth3	battle	40 Fatigue / 100% Casting Time / Range: 30 Squares / +3 Precision / AOE: 6 Squares / 5 Armor/Shield DMG
+Stygian Skin	alteration	Alt 4	death1 water1	battle	20 Fatigue / 100% Casting Time / Stygian Invulnerability / (Min. 15 Mundane NAT PROT)
+Arouse Hunger	alteration	Alt 4	death3	ritual	Ritual / Impossible Underwater / Range: 5 Provinces / Seas are immune / Ghoul x40 (+5 per )
+Elemental Fortitude	alteration	Alt 4	nature1	battle	10 Fatigue / 100% Casting Time / +5 Fire Resistance / +5 Shock Resistance / +5 Cold Resistance
+Group Barkskin	alteration	Alt 4	nature2	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 3 Squares (+1 per ) / Spiritform negates / Barkskin / (+7 NAT PROT, up to 10, / or +1 if already 10 or higher) / (-5 Fire Resistance)
+Shrink	alteration	Alt 4	nature2	battle	20 Fatigue / 100% Casting Time / Range: 20 Squares (+2 per ) / AOE: 1 Square / Base Penetration: 11 () / Spiritform negates / Shrunk (forever) / -1 Size / -30% HP (Current and Max) / -3 STR / +1 DEF / -2 MM
+Swarm	alteration	Alt 4	nature2	battle	100 Fatigue / 125% Casting Time / Range: Closest Squares / 20 Random Fellas (+2 per ) / - Frog (land) / - Large Ant (land) / - Large Beetle (land) / - Large Spider (land) / - Dragonfly (land) / - Fish (Underwater) / - Large Shrimp (Underwater) / - Large Fish (Underwater, rare)
+Twilight	alteration	Alt 4	glamour3	battle	Impossible Underwater / 100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / No effect in any Darkness value / other than zero / +[glamour 1]1 pathboost / Skewed Perspectives / True Sight negates / Darkvision negates / -2 PREC
+Transmute Fire	alteration	Alt 5	fire2	ritual	Ritual / Local / +350 Gold / (Alchemical Ritual)
+Cold Resistant Warriors	alteration	Alt 5	fire3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / +5 Cold Resistance
+Incinerate	alteration	Alt 5	fire3	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: One Target / 18 Internal Fire DMG (+2 per )
+Solar Eclipse	alteration	Alt 5	fire3 astral1	battle	Impossible Underwater / 100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Sets Darkness to 3 / (Other effects can make it higher.)
+Arrow Ward	alteration	Alt 5	air3	battle	Impossible Underwater / 40 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Air Shield (80%)
+Storm	alteration	Alt 5	air4	battle	Impossible Underwater / Impossible in Caves / 100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Halves base PREC / Interrupts 50% of Projectiles / (but only nonmagical ones) / Bans Flying / (Storm Immunity allows Flying) / Douses Burning units / Clouds dissipate 100% faster / In [Heat]0+: / Primarily-Fire spells that / can't be cast Underwater / cost 50% more Fatigue
+Gift of Formlessness	alteration	Alt 5	water2	battle	40 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Spiritform negates / Liquid Body (Soft Fortitude) / Slash Resistance (50%) / Blunt Resistance (50%) / Pierce Resistance (50%) / +1 Affliction Resistance (1 gives ~50%) / -4 STR / -25% CS
+Fire Resistant Warriors	alteration	Alt 5	water3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / +5 Fire Resistance
+Winter's Chill	alteration	Alt 5	water3	battle	20 Fatigue / 100% Casting Time / Range: 25 Squares / Sure Hit / AOE: 5 Squares (+1 per ) / Freeze (Slowed, 2d6 Cold FAT/rnd.)
+Bone Melter	alteration	Alt 5	water3 nature2	battle	20 Fatigue / 100% Casting Time / Range: 25 Squares / +3 Precision / AOE: 1 Square / Base Penetration: 11 () / Spiritform negates / Nonmagical Instakill
+Ironskin	alteration	Alt 5	earth2	battle	40 Fatigue / 100% Casting Time / Range: 10 Squares / +2 Precision / AOE: 1 Square / Spiritform negates / Overrides Barkskin / Overrides Stoneskin / Ironskin / (+13 NAT PROT, up to 20, / or +5 if already 16 or higher) / (-5 Shock Resistance)
+Group Stoneskin	alteration	Alt 5	earth3	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 3 Squares (+1 per ) / Spiritform negates / Overrides Barkskin / Stoneskin / (+10 NAT PROT, up to 15, / or +3 if already 13 or higher) / (-5 Cold Resistance)
+Lightning Resistant Warriors	alteration	Alt 5	earth3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / +5 Shock Resistance
+Maws of the Earth	alteration	Alt 5	earth3	battle	100 Fatigue / 125% Casting Time / Range: 30 Squares (+5 per ) / +3 Precision / AOE: 7 Squares (+1 per ) / Floating negates / Flying negates / 15 AP Magic DMG (+1 per ) / Also: Nonmagical Entrapment / (STR vs. 23 to break out)
+Shatter	alteration	Alt 5	earth3	battle	20 Fatigue / Range: 15 Squares / Sure Hit / AOE: One Target / Inanimate only / 35 AN Magic DMG (+5 per ) / On DMG: Limp / Nonmagical / Limp (Halved CS) / Also on DMG: Cripple / Base Penetration: 11 () / Nonmagical / Crippled (CS capped at 2)
+Baleful Star	alteration	Alt 5	astral3	ritual	"Ritual / Impossible Underwater / Range: 7 Provinces / An Ill Omen / ""Anonymous"" / Max. 1/province/turn / +[Misfortune]3 (Scale Dump) / +30 Unrest / Curses Units (10%)"
+Enfeeble	alteration	Alt 5	death2	battle	100 Fatigue / 125% Casting Time / Range: 25 Squares / +3 Precision / AOE: 6 Squares (+2 per ) / Base Penetration: 11 () / 2 Weakness (Reduces Strength)
+Invulnerability	alteration	Alt 5	death3	battle	20 Fatigue / 100% Casting Time / Overrides Stygian Invulnerability / Lichlike Invulnerability / (Min. 25 Mundane NAT PROT)
+Drain Life	alteration	Alt 5	death4	battle	10 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: One Target / Inanimate negates / 14 AN Drain DMG (+1 per )
+Blood Poisoning	alteration	Alt 5	nature2	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: One Target / 15 Internal Poison DMG (+2 per )
+Gift of Cat Eyes	alteration	Alt 5	nature3	battle	100 Fatigue / Range: 15 Squares / 125% Casting Time / AOE: 20 Squares (+1 per ) / Low-light Vision / (50% Darkvision)
+Mother Oak	alteration	Alt 5	nature5	global	Global Enchantment (Local) / +[Growth]2 (Adjusts the Base) / +10[naturegem] per turn
+Nightfall	alteration	Alt 5	glamour3	battle	Impossible Underwater / 100 Fatigue / 200% Casting Time / Requires Twilight / Battlefield Enchantment (Neutral) / Sets Darkness to 3 / (Other effects can make it higher.) / Stops working if Twilight is Dispelled
+Shadow Warriors	alteration	Alt 5	glamour3	battle	100 Fatigue / 125% Casting Time / Range: 20 Squares / AOE: 20 Squares (+1 per ) / Blur (Distracts Attackers) / On a Melee Hit Attempt: / True Sight negates / Blindness negates / -2 ATT (this attempt)
+Blindness	alteration	Alt 6	fire1	battle	20 Fatigue / 100% Casting Time / Range: 20 Squares / Sure Hit / AOE: One Target / Blinded (-9 ATT, -9 DEF, & -9 PREC)
+Boil	alteration	Alt 6	fire3 water1	battle	Underwater ONLY / 20 Fatigue / Range: 30 Squares / Sure Hit / AOE: 1 Square / 9 AN Fire DMG (+1 per )
+Blizzard	alteration	Alt 6	air4 water3	battle	Impossible Underwater / Impossible in Caves / Requires [Heat]0 or [Heat]1 / 100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Sets Scales to [Cold]1 / Also casts Storm for free
+Frozen Heart	alteration	Alt 6	water1	battle	20 Fatigue / 100% Casting Time / Range: 25 Squares (+5 per ) / Inanimate negates / 10 Internal Cold DMG (+2 per )
+Manifest Vitriol	alteration	Alt 6	water2 fire1	ritual	Ritual / Impossible Underwater / Local / Green Lion x1
+Earth Gem Alchemy	alteration	Alt 6	earth2	ritual	Ritual / Local / +300 Gold / (Alchemical Ritual)
+Group Ironskin	alteration	Alt 6	earth3	battle	60 Fatigue / 100% Casting Time / Range: 15 Squares / +2 Precision / AOE: 3 Squares (+1 per ) / Spiritform negates / Overrides Barkskin / Overrides Stoneskin / Ironskin / (+13 NAT PROT, up to 20, / or +5 if already 16 or higher) / (-5 Shock Resistance)
+Iron Bane	alteration	Alt 6	earth3	battle	100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Neutral) / Rusty Equipment (brittleness) / (Only affects Iron gear!)
+Iron Pigs	alteration	Alt 6	earth3 nature1	ritual	Ritual / Impossible Underwater / Local / Iron Pig x10 (+½ per )
+Petrify	alteration	Alt 6	earth5	battle	40 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: 1 Square / Spiritform negates / Stone negates / Petrification (Statue'd) / Helpless / Min. 20 Natural Protection / Slash Resistance (50%) / Pierce Resistance (50%) / This ends with the battle, / or upon Round 100. / When This Ends: / MR vs. 13 negates () / Instakill
+Control	alteration	Alt 6	astral3	battle	100 Fatigue / 125% Casting Time / Range: 25 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Magic Beings only / Enslavement (Made your Pawn)
+Rewrite Fate	alteration	Alt 6	astral4	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / +5 Precision / AOE: 20 Squares (+1 per ) / Twisted Fate / (negates the next wound)
+Soul Vortex	alteration	Alt 6	death3	battle	40 Fatigue / 100% Casting Time / Drain Aura (8) / Roughly 8 Times a Round: / Targets a random adjacent square, / or the caster's square. / The caster's Mount is immune. / Base Penetration: 11 () / 1 AN Drain DMG
+Darkness	alteration	Alt 6	death4	battle	Impossible Underwater / 400 Fatigue / 275% Casting Time / Battlefield Enchantment (Neutral) / Sets Darkness to 6
+Skeletal Legion	alteration	Alt 6	death4	battle	100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / Does not affect the caster, / except in Assassination battles. / Pierce Resistance (50%) / On Hit: Disease All Friendly / Base Penetration: 11 () / Diseased (-10% HP/turn)
+Transformation	alteration	Alt 6	nature2	ritual	Ritual / Local / Undead negates / Inanimate negates / Spiritform negates / Transform (random result)
+Venomous Death	alteration	Alt 6	nature2 death1	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: One Target / 25 Internal Poison DMG (+3 per ) / On DMG: Decay / Base Penetration: 11 () / Decaying (Age 5 years/rnd.)
+Eagle-eyed Warriors	alteration	Alt 6	nature3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Improved Precision / (+4 PREC)
+Giant Warriors	alteration	Alt 6	nature3	battle	20 Fatigue / 125% Casting Time / Range: 10 Squares / AOE: 10 Squares / Spiritform negates / Enlarged (for the battle) / +1 Size / +30% HP (Current and Max) / +3 STR / -1 DEF
+Wooden Warriors	alteration	Alt 6	nature3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Spiritform negates / Barkskin / (+7 NAT PROT, up to 10, / or +1 if already 10 or higher) / (-5 Fire Resistance)
+Gift of Displacement	alteration	Alt 6	glamour2	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Overrides Blur / Displacement (Fools Attackers) / On a Melee Hit Attempt: / True Sight negates / Blindness negates / -10 ATT (first attempt only) / -5 ATT (successive attempts)
+Invisibility	alteration	Alt 6	glamour3	battle	10 Fatigue / 100% Casting Time / Overrides Blur / Overrides Displacement / Overrides Mirror Image / Unseen (Temp. Invisibility) / On a Melee Hit Attempt: / True Sight negates / Attacker swings Blindly (-9 ATT) / When Attacking Someone Else: / True Sight negates / Defender dodges Blindly (-9 DEF) / Unseen ends when DMG is taken.
+Mirage	alteration	Alt 6	glamour4	ritual	Ritual / Range: 4 Provinces (Friendly) / Duration: 1 (+3 per [glamourgem]) / (Or until the province changes Hands) / Adds a fake Fort
+Phoenix Pyre	alteration	Alt 7	fire2	battle	"Impossible Underwater / 20 Fatigue / 100% Casting Time / Phoenix Pyre / On Death: / Triggers on your ""last"" life, / if you have under 100 Fatigue. / First, you explode. / - Range: 0 Squares (Centered on Caster) / - AOE: 50 Squares / - 10 AP Fire DMG / Then, you come back. / - Random Teleport / - Resurrect / This exhausts you. / - F = 30 + (exploding 1d20) / - Gain F FAT"
+Arrow Fend	alteration	Alt 7	air3	battle	Impossible Underwater / 100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / Air Shield (80%)
+Fog Warriors	alteration	Alt 7	air4	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Mistform (DR 25/) / When HP Damage is Taken: / Reduce it by 25, or to 1 point; / whichever lowers it by less. / Ended by the Following Hits, / after reducing their Damage: / - Hits that would otherwise do 25+ DMG / - Hits that would otherwise do 2+ DMG (1% chance) / - Magic Hits (even 0-to-1-DMG Hits)
+Crawl	alteration	Alt 7	water3	battle	100 Fatigue / 125% Casting Time / Range: 30 Squares / Sure Hit / AOE: 6 Squares (+2 per ) / Base Penetration: 11 () / Slowed (-2 ATT, -2 DEF, halved rounds)
+Prison of Sedna	alteration	Alt 7	water3	battle	Underwater ONLY / 100 Fatigue / 125% Casting Time / Range: 25 Squares / Sure Hit / AOE: 6 Squares (+2 per ) / Encased in Ice (Entrapped) / C = 10 / +C Armor Protection / 5 AN Cold FAT/rnd. / STR vs. (12 + C) to break out / On a Failed Breakout: / → Take your roll and the opposing roll / → Subtract C from the opposing roll / → B = (STR roll) - (opposing roll) / → If B ≤ 0, subtract 1 from C; / Otherwise, subtract B from C / → If C ≤ 0, break out
+Wave Warriors	alteration	Alt 7	water3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Spiritform negates / Liquid Body (Soft Fortitude) / Slash Resistance (50%) / Blunt Resistance (50%) / Pierce Resistance (50%) / +1 Affliction Resistance (1 gives ~50%) / -4 STR / -25% CS
+Ice Walls	alteration	Alt 7	water5	ritual	Ritual / Impossible Underwater / Local (Fort) / Ends in [Heat]0 or hotter temperatures / (Or if the Fort changes Hands, / or if the Caster's Mind fails) / W = 500 x Cold / If W < 0, make it 0 / Boosts Wall Integrity by W, / unless the Walls are Breached / Wall
+Sea of Ice	alteration	Alt 7	water6	global	Global Enchantment / Breaks all Land-Sea Province Connections / Until Dispelled / Coastal provinces won't be Coasts / for the purpose of Rituals: / - Bans Trade Wind / - Bans Tidal Wave / - Bans Lost Land / Also Freezes Fresh Water / - Makes all Rivers Crossab
+Marble Warriors	alteration	Alt 7	earth3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Spiritform negates / Overrides Barkskin / Stoneskin / (+10 NAT PROT, up to 15, / or +3 if already 13 or higher) / (-5 Cold Resistance)
+Iron Walls	alteration	Alt 7	earth5	ritual	Ritual / Local (Fort) / Duration: 1 (+1 per [earthgem]) / (Or until the Fort changes hands, / or until the Caster's Mind fails) / Boosts Wall Integrity by 2000, / unless the Walls are Breached / Walls will block Ethereal units.
+Doom	alteration	Alt 7	astral4	battle	100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Enemy) / Cursed (+15% Affliction chance)
+Will of the Fates	alteration	Alt 7	astral5	battle	200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Twisted Fate (negates the next wound)
+Enchanted Walls	alteration	Alt 7	astral5	ritual	Ritual / Local (Fort) / Duration: 1 (+3 per [astralpearl]) / (Or until the Fort changes hands, / or until the Caster's Mind fails) / Boosts Wall Integrity by 100, / unless the Walls are Breached / Walls will block Ethereal units.
+Bone Grinding	alteration	Alt 7	death7	battle	100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Caster) / 3 AN Nonmagical DMG / Also: Battlefield Limp / 50% Battlefield Spell (Caster) / Base Penetration: 11 () / Nonmagical / Limp (Halved CS) / Also Also: Battlefield Cripple / 50% Battlefield Spell (Caster) / Base Penetration: 7 () / Nonmagical / Crippled (CS capped at 2)
+Curse of the Frog Prince	alteration	Alt 7	nature2	battle	20 Fatigue / 100% Casting Time / Range: 25 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / Spiritform negates / Transform (Frog)
+Creeping Doom	alteration	Alt 7	nature3	battle	Impossible Underwater / 100 Fatigue / 125% Casting Time / Range: Closest Squares / 70 Random Fellas (+5 per ) / - Frog (land) / - Large Ant (land) / - Large Beetle (land) / - Large Spider (land) / - Dragonfly (land)
+Oaken Army	alteration	Alt 7	nature4	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Spiritform negates / Barkskin / (+7 NAT PROT, up to 10, / or +1 if already 10 or higher) / (-5 Fire Resistance)
+Army of Shades	alteration	Alt 7	glamour4	battle	200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Blur (Distracts Attackers) / On a Melee Hit Attempt: / True Sight negates / Blindness negates / -2 ATT (this attempt)
+Immaculate Fort	alteration	Alt 7	glamour5	ritual	Ritual / Local (Fort) / Duration: 1 (+1 per [glamourgem]) / (Or until the Fort changes Hands, / or until the Caster's Mind fails) / -5 Unrest/turn / Halves Siege Strength against this Fort / Walls will block Ethereal units.
+Conflagration	alteration	Alt 8	fire2	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: 10 Squares / Burn (Temporary 1dSize DMG/rnd.)
+Flameflesh Army	alteration	Alt 8	fire4	battle	200 Fatigue / 175% Casting time / 100% Battlefield Spell (Friendly) / +5 Cold Resistance
+All-consuming Pyre	alteration	Alt 8	fire5	battle	100 Fatigue / 125% Casting Time / Range: 0 Squares (Centered on Caster) / AOE: 40 Squares / 20 AP Fire DMG (+2 per )
+Army of Mist	alteration	Alt 8	air5	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Mistform (DR 25/) / When HP Damage is Taken: / Reduce it by 25, or to 1 point; / whichever lowers it by less. / Ended by the Following Hits, / after reducing their Damage: / - Hits that would otherwise do 25+ DMG / - Hits that would otherwise do 2+ DMG (1% chance) / - Magic Hits (even 0-to-1-DMG Hits)
+Quickening	alteration	Alt 8	water2	battle	100 Fatigue / 125% Casting Time / Range: 20 Squares / AOE: 9 Squares (+1 per ) / Quickness (+2 ATT, +2 DEF, doubled rounds)
+Liquify	alteration	Alt 8	water4	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: 3 Squares / Base Penetration: 7 () / Spiritform negates / Nonmagical Instakill / Also: Cripple / Base Penetration: 15 () / Spiritform negates / Nonmagical / Crippled (CS capped at 2)
+Frostflesh Army	alteration	Alt 8	water4	battle	200 Fatigue / 175% Casting time / 100% Battlefield Spell (Friendly) / +5 Fire Resistance
+Ground Army	alteration	Alt 8	earth4	battle	200 Fatigue / 175% Casting time / 100% Battlefield Spell (Friendly) / +5 Shock Resistance
+Iron Warriors	alteration	Alt 8	earth4	battle	200 Fatigue / 150% Casting Time / Range: 15 Squares / +2 Precision / AOE: 20 Squares (+1 per ) / Spiritform negates / Overrides Barkskin / Overrides Stoneskin / Ironskin / (+13 NAT PROT, up to 20, / or +5 if already 16 or higher) / (-5 Shock Resistance)
+Marble Army	alteration	Alt 8	earth4	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Spiritform negates / Overrides Barkskin / Stoneskin / (+10 NAT PROT, up to 15, / or +3 if already 13 or higher) / (-5 Cold Resistance)
+Wizard's Tower	alteration	Alt 8	earth4	ritual	Ritual / Range: 4 Provinces (Friendly) / Fort negates / Wizard's Tower
+Crumble	alteration	Alt 8	earth5	ritual	Ritual / Range: 4 Provinces (Fort) / Does 400 Wall Damage (+50 per ) / Also: Crumbling Infrastructure / Targets half of those inside the fort / (Not Patrollers or Besiegers) / DEF vs. 3d6 negates (Exploding, No Parry) / 3 AP Blunt DMG
+Arcane Domination	alteration	Alt 8	astral7	battle	700 Fatigue / 300% Casting Time / 100% Battlefield Spell (Enemy) / Base Penetration: 7 () / Magic Beings only / Enslavement (Made your Pawn)
+Disintegrate	alteration	Alt 8	death2	battle	10 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Instakill
+Polymorph	alteration	Alt 8	nature3	battle	200 Fatigue / 150% Casting Time / Range: 25 Squares / +5 Precision / AOE: 10 Squares (+2 per ) / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / Spiritform negates / No Friendly Fire / Transform (Boar)
+Army of Giants	alteration	Alt 8	nature5	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Spiritform negates / Enlarged (for the battle) / +1 Size / +30% HP (Current and Max) / +3 STR / -1 DEF
+Displaced Warriors	alteration	Alt 8	glamour4	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Overrides Blur / Displacement (Fools Attackers) / On a Melee Hit Attempt: / True Sight negates / Blindness negates / -10 ATT (first attempt only) / -5 ATT (successive attempts)
+Eternal Twilight	alteration	Alt 8	glamour8	global	Global Enchantment / Deep Seas are immune / Caves are immune / +[Magic]1 (Adjusts the Base) / For each Hostile Unit: / MOR vs. 10 negates / (Easier check in Crowded Provinces) / MR vs. 10 negates / (Easier check in Crowded Provinces) / Instakill / Outside your
+Army of Gold	alteration	Alt 9	earth5 fire1	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Spiritform negates / +5 Fire Resistance / Overrides Barkskin / Overrides Stoneskin / Ironskin / (+13 NAT PROT, up to 20, / or +5 if already 16 or higher) / (-5 Shock Resistance)
+Army of Lead	alteration	Alt 9	earth5 astral1	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Spiritform negates / Magic Resistance (+4 MR) / Overrides Barkskin / Overrides Stoneskin / Ironskin / (+13 NAT PROT, up to 20, / or +5 if already 16 or higher) / (-5 Shock Resistance)
+Army of Bronze	alteration	Alt 9	earth6	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Spiritform negates / Extra Strength (+4 STR) / Overrides Barkskin / Overrides Stoneskin / Ironskin / (+13 NAT PROT, up to 20, / or +5 if already 16 or higher) / (-5 Shock Resistance)
+Time Stop	alteration	Alt 9	astral6	battle	"100 Fatigue / 125% Casting Time / 100% Battlefield Spell (Neutral) / Duration: ~10 Rounds / ""Battlefield ticks"" take 10x longer, slowing: / - Projectiles / - The arrival of certain spells / - Clouds (both DMG and dissipation) / - Aura applications / - Most Battlefield Enchantments / - Per-round effects on every unit / Also Slows Units other than the Caster / Base Penetration: 11 () / -9 Attack Skill (against the not-Slowed) / -9 Defence Skill (against the not-Slowed) / All actions are 10x slower / (Effectively ""Slowed"", but 5 times stronger) / ( Also slows Innate Spellcasting) / Dispelled if another Time Stop is cast"
+Arcane Decree	alteration	Alt 9	astral6	global	Global Enchantment / R = Half this Enchantment's Overcast / When a foe casts a Dispel, / or a new Global Enchantment, / reduce its Overcast by R
+Wish	alteration	Alt 9	astral9	ritual	Ritual / Local / Some of the Things to Wish for: / - A specific unit (not a commander) or item / - Remove Curse / - Gems: [firegem][airgem][watergem][earthgem][deathgem][naturegem][glamourgem] x25 / - Blood: 250[bloodslave] / - Dominion: 20 Dominion Candles / 
+Utterdark	alteration	Alt 9	death9	global	Global Enchantment / Overrides Dark Skies / Overrides Eternal Twilight / Negates Second Sun / Overrides Theft of the Sun's / negative effects / Sets Darkness to 6 / Each Turn: Attacks Four Hostile Provinces / Random armies invade random provinces: / - Fiend of
+Awaken Forest	alteration	Alt 9	nature5	battle	Impossible Underwater / 200 Fatigue / 150% Casting Time / 50% Battlefield Spell (Friendly Half) / Only affects Bushes & Trees / (These aren't in Wastes or Caves.) / Replaces Bushes with / Animated Bushes (Same Size) / Replaces Trees with / Animated Trees (Same Size)
+Army of Rats	alteration	Alt 9	nature5	battle	400 Fatigue / 225% Casting Time / 100% Battlefield Spell (Enemy) / Base Penetration: 15 () / Spiritform negates / Shrunk (forever) / -1 Size / -30% HP (Current and Max) / -3 STR / +1 DEF / -2 MM / On DMG: Mousiness / Battle Fright (-5 Morale)
+Protection from Fire	enchantment	Ench 1	fire1	battle	5 Fatigue / 100% Casting Time / +10 Fire Resistance
+Levitate	enchantment	Ench 1	air1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Floating (Earthquake-immune)
+Protection from Lightning	enchantment	Ench 1	air1	battle	5 Fatigue / 100% Casting Time / +10 Shock Resistance
+Trueshot	enchantment	Ench 1	air1	battle	5 Fatigue / 100% Casting Time / Range: 10 Squares / +5 Precision / AOE: 1 Square / Improved Precision (+4 PREC)
+Windrunner	enchantment	Ench 1	air1	battle	10 Fatigue / 100% Casting Time / Swiftness (x2 CS)
+Protection from Cold	enchantment	Ench 1	water1	battle	5 Fatigue / 100% Casting Time / +10 Cold Resistance
+Strength of Giants	enchantment	Ench 1	earth2	battle	20 Fatigue / 100% Casting Time / Range: 5 Squares / AOE: 1 Square / Extra Strength (+4 STR)
+Resist Magic	enchantment	Ench 1	astral1	battle	20 Fatigue / 100% Casting Time / Magic Resistance (+4 MR)
+Animate Skeleton	enchantment	Ench 1	death1	battle	30 Fatigue / Range: Closest Square / Random Longdead x1
+Animate Dead	enchantment	Ench 1	death1	battle	20 Fatigue / Range: Closest Square / Random Soulless x1
+Reanimation	enchantment	Ench 1	death1	ritual	Ritual / Local / Random Longdead x10
+Healing Touch	enchantment	Ench 1	nature1	battle	20 Fatigue / 50% Casting Time / Range: 1 Square / +1 Precision / AOE: One Target / Inanimate negates / 30 Pts. of Healing (+10 per )
+Protection from Poison	enchantment	Ench 1	nature1	battle	5 Fatigue / 100% Casting Time / +25 Poison Resistance
+True Sight	enchantment	Ench 1	glamour1	battle	5 Fatigue / 100% Casting Time / True Sight (Aims true)
+False Fetters	enchantment	Ench 1	glamour2	battle	10 Fatigue / Range: 15 Squares / AOE: 2 Squares (+1 per ) / Base Penetration: 11 () / Entrapment (MR vs. 20 negates)
+Ignite Arrows	enchantment	Ench 2	fire2	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Flaming Arrows / On Fire Weapon Hit: Fire / 8 AP Fire DMG
+Personal Flight	enchantment	Ench 2	air1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Flying
+Breath of Winter	enchantment	Ench 2	water1	battle	20 Fatigue / 100% Casting Time / Chill Aura (+3 Chill, +10 Cold Resistance)
+Water Shield	enchantment	Ench 2	water2	battle	Underwater ONLY / 20 Fatigue / 100% Casting Time / Water Shield (+5 DEF)
+Flying Shield	enchantment	Ench 2	earth1 air1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Protective Force 20 / (50% chance-per-hit of +20 PROT)
+Revive King	enchantment	Ench 2	death1	ritual	Ritual / Local / Mound King Commander x1
+Envenom Arrows	enchantment	Ench 2	nature1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Venomous Arrows / On Poison Weapon DMG: Weak Poison / 5 AN Poison DMG
+Gift of the Hare	enchantment	Ench 2	nature1	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square (+1 per ) / Swiftness (x2 CS)
+Gift of the Serpent	enchantment	Ench 2	nature1	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / +10 Poison Resistance
+Proud Steed	enchantment	Ench 2	nature1	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / +2 Precision / AOE: 1 Square / Animal Mounts only / Mindless negates / Pride (+2 DEF, +2 MOR, +2 MR)
+Personal Regeneration	enchantment	Ench 2	nature2	battle	20 Fatigue / 100% Casting Time / Undead negates / Inanimate negates / +10 Regeneration (% Healing/turn)
+Shroud of Splendor	enchantment	Ench 2	glamour1 fire1	battle	10 Fatigue / 100% Casting Time / +1 Awe (MOR vs. 11 to attack)
+Fire Shield	enchantment	Ench 3	fire1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / +9 Fire Shield (+1 per ) / Burns Melee Attackers / (Attack must have hit) / (Fire Shield) AP Fire DMG / (Weapon Length reduces DMG)
+Lesser Flame Ward	enchantment	Ench 3	fire2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / +5 Fire Resistance
+Farflight	enchantment	Ench 3	air1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Farshot (+50% Missile Weapon Range)
+Arrow of the Western Wind	enchantment	Ench 3	air2	battle	Impossible Underwater / Impossible in Caves [FIXME] / 20 Fatigue / 50% Casting Time / Range: 50 Squares (+5 per ) / +25 Precision / AOE: One Target / 20 Pierce DMG (+1 per )
+Gift of Flight	enchantment	Ench 3	air2	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / Flying
+Lesser Thunder Ward	enchantment	Ench 3	air2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / +5 Shock Resistance
+Seeking Arrow	enchantment	Ench 3	air3	ritual	Ritual / Range: 3 Provinces (Enemy) / Shoots A Random Commander / Ignores Hiding Commanders / Air Shield negates (90% chance) / 8 AN Magic DMG (Chest)
+Claymen	enchantment	Ench 3	water1 earth1	ritual	Ritual / Local / Clayman x10 (+½ per )
+Lesser Winter Ward	enchantment	Ench 3	water2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / +5 Cold Resistance
+Gift of Giant Strength	enchantment	Ench 3	earth2	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 3 Squares (+1 per ) / Extra Strength (+4 STR)
+Astral Shield	enchantment	Ench 3	astral1	battle	20 Fatigue / 100% Casting Time / +13 Astral Shield (+1 per ) / Paralyzes Successful Attackers / MR vs. 11 negates () / Mindless negates / (Astral Shield) Paralysis DMG / (Weapon Length reduces DMG)
+Second Sight	enchantment	Ench 3	astral1 death1	battle	20 Fatigue / 100% Casting Time / Spirit Sight (Unobstructed Vision)
+Raise Skeletons	enchantment	Ench 3	death2	battle	40 Fatigue / 100% Casting Time / Range: 5 Squares / Random Longdead x3
+Create Revenant	enchantment	Ench 3	death2	ritual	Ritual / Impossible Underwater / Revenant Commander x1
+Heal	enchantment	Ench 3	nature1	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / +5 Precision / AOE: 1 Square / Inanimate negates / 30 Pts. of Healing (+10 per )
+Regeneration	enchantment	Ench 3	nature3	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / Undead negates / Inanimate negates / +10 Regeneration (% Healing/turn)
+Gift of True Sight	enchantment	Ench 3	glamour1	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / True Sight (Aims true)
+Shroud of Bewilderment	enchantment	Ench 3	glamour2	battle	20 Fatigue / 100% Casting Time / Bewildering Shield / Bewilders Attackers / Base Penetration: 11 () / ( 7 against True Sight) / Attack Misses / Bewildered (1 turn of randomness)
+Horrible Visage	enchantment	Ench 3	glamour2 death1	battle	10 Fatigue / 100% Casting Time / +5 Dread (Fake Fear Aura)
+Terracotta Army	enchantment	Ench 4	fire1 earth1	ritual	Ritual / Local / Terracotta Soldier x15 (+1 per )
+Levitate Soldiers	enchantment	Ench 4	air2	battle	Impossible Underwater / 40 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 3 Squares (+1 per ) / Floating (Earthquake-immune)
+Trueshot Warriors	enchantment	Ench 4	air2	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Improved Precision (+4 PREC)
+Cloud Trapeze	enchantment	Ench 4	air2	ritual	Ritual / Impossible Underwater / Impossible in Caves / Range: 5 Provinces / Self-Transport
+Vile Water	enchantment	Ench 4	water2	ritual	Ritual / Impossible Underwater / Local / Gelatinous Cube x1
+Earth Shatter Hammers	enchantment	Ench 4	earth2	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / On Slash or Blunt Hit: Stun / S = ( Size - 3) / 4 / T = ( STR - 14) / 20 / S% chance to negate / T% chance to negate / Stunned (1 rnd. of helplessness)
+Shroud of Flying Shards	enchantment	Ench 4	earth2 air1	battle	20 Fatigue / 100% Casting Time / Air Shield (25) / Attacks 6 times per Round / (Bonus Weapon) / 1 AP Slash DMG (capped, no STR)
+Spell Ward	enchantment	Ench 4	astral2	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Magic Resistance (+4 MR)
+Astral Healing	enchantment	Ench 4	astral3	battle	100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / Mindless negates / Inanimate negates / 2 Pts. of Healing
+Raise Dead	enchantment	Ench 4	death2	battle	40 Fatigue / 100% Casting Time / Range: 5 Squares / Random Soulless x10 (+2 per )
+Twiceborn	enchantment	Ench 4	death2	ritual	Ritual / Local (Self-Application) / Cost: (10 + Size x 3)[deathgem] / Various traits negate / Twiceborn / On Death: / Return to Casting Location / Gain +1 (20% chance, max 4) / Transform: Wight Mage / Resurrect (if possible)
+Behemoth	enchantment	Ench 4	death3	ritual	Ritual / Impossible Underwater / Local / Behemoth x1
+Immaculate Mounts	enchantment	Ench 4	nature2	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / +2 Precision / AOE: 3 Squares (+1 per ) / Animal Mounts only / Mindless negates / Pride (+2 DEF, +2 MOR, +2 MR)
+Poison Ward	enchantment	Ench 4	nature2	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / +10 Poison Resistance
+Haste	enchantment	Ench 4	nature3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Inanimate negates / Swiftness (x2 CS)
+Serpent Arrows	enchantment	Ench 4	nature3	battle	Impossible Underwater / 100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Venomous Arrows / On Poison Weapon DMG: Weak Poison / 5 AN Poison DMG
+Gift of Splendor	enchantment	Ench 4	glamour2 fire1	battle	10 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 1 Square / +1 Awe (MOR vs. 11 to attack)
+Simulacrum	enchantment	Ench 4	glamour3	ritual	Ritual / Local (Self-Application) / Simulacrum / On Death: / Return to Casting Location / Each Turn After Death: The Journey / M = # of turns since Death / C = 160 / (2 to the Mth power) / Resurrect (C% chance, if possible) / (Limit 1 Resurrection per cast) / 
+Flame Ward	enchantment	Ench 5	fire2	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / +5 Fire Resistance
+Flaming Arrows	enchantment	Ench 5	fire3	battle	Impossible Underwater / 100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Flaming Arrows / On Fire Weapon Hit: Fire / 8 AP Fire DMG
+Farflight Arrows	enchantment	Ench 5	air2	battle	Impossible Underwater / 100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Farshot (+50% Missile Weapon Range)
+Thunder Ward	enchantment	Ench 5	air2	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / +5 Shock Resistance
+Watcher	enchantment	Ench 5	air3 earth1	ritual	Ritual / Local / Watcher x1
+Trade Wind	enchantment	Ench 5	air4	ritual	Ritual / Local / Coasts only / +25% Income / Duration: 1 (+1 per [airgem]) / (or until the province changes hands)
+Winter Ward	enchantment	Ench 5	water2	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / +5 Cold Resistance
+Friendly Currents	enchantment	Ench 5	water3	battle	Underwater ONLY / 100 Fatigue / 200% Casting Time / Battlefield Enchantment (Friendly) / For Your Team: / +4 CS / -2 ENC / Also, for the Other Team: / -4 CS / +2 ENC
+Quagmire	enchantment	Ench 5	water4	battle	Impossible Underwater / 100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Swampy / Swamp Survival ignores this / -1 ATT / -1 DEF / -20% CS / +2 ENC
+Giant Strength Warriors	enchantment	Ench 5	earth3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Extra Strength (+4 STR)
+Weapons of Sharpness	enchantment	Ench 5	earth3	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / Makes Pierces & Slashes AP
+Enliven Gargoyles	enchantment	Ench 5	earth3 air1	ritual	Ritual / Local / Gargoyle x10 (+½ per )
+Ritual of Returning	enchantment	Ench 5	astral2	ritual	Ritual / Local (Self-Application) / Returning / On Taking DMG: / Teleport (Capital, once per Casting)
+Dispel	enchantment	Ench 5	astral3	global	Ritual / Dispel: / Picks a Random Global Enchantment / C = Overcast (max. 100[astralpearl] per Astral Lv.) / (+5 per ) / L = Local Grand Communicant Astral Lvs. / G = Global Overcast (counted differently) / A = C + L + Exploding 1d20 / D = G + Exploding 1d20 /
+The Eyes of God	enchantment	Ench 5	astral5	global	Global Enchantment / Reveals the Whole Map / Just for the Duration: / Reveals Ownership, Forts, Dominion, & Scales / Reveals Discovered Magic Sites / Reveals all Score Graphs / Reveals Hall of Fame Character Sheets / Within Your Dominion: / Reveals Province At
+Gift of Spirit Sight	enchantment	Ench 5	astral3 death1	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 1 Square / Spirit Sight (Unobstructed Vision)
+Pale Riders	enchantment	Ench 5	death3	ritual	Ritual / Impossible Underwater / Local / Longdead Horseman x25 (+2 per )
+Horde of Skeletons	enchantment	Ench 5	death2	battle	40 Fatigue / 100% Casting Time / Range: 5 Squares / Random Longdead x5 (+½ per )
+Group Regeneration	enchantment	Ench 5	nature3	battle	60 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 3 Squares (+1 per ) / Undead negates / Inanimate negates / +10 Regeneration (% Healing/turn)
+Faery Trod	enchantment	Ench 5	nature4 glamour1	ritual	Ritual / Forests ONLY / (And Kelp Forests, and Cave Forests) / Range: 10 Provinces (Matching Forest) / Teleport (with Troops) / 50% chance to end up in a random / neighboring Forest instead
+Awaken the Dreamwild	enchantment	Ench 5	glamour4 nature2	ritual	Ritual / Impossible Underwater / Forests ONLY / (And Cave Forests) / Local / +[Magic]2 (Adjusts the Base) / +[Turmoil]2 (Adjusts the Base) / Whenever you Summon Fay Folk, / summon 3 more / Duration: 1 (+1 per [glamourgem]) / (or until the province changes hand
+Dreamwild Demesne	enchantment	Ench 5	glamour5	ritual	Ritual / Impossible Underwater / Local / - 2-10 Unrest/turn / Fortune Teller (50) / Duration: 1 (+3 per [glamourgem]) / (or until the province changes hands)
+Heat from Hell	enchantment	Ench 6	fire4	battle	Impossible Underwater / 200 Fatigue / 225% Casting Time / Battlefield Enchantment (Neutral) / Cancels out Grip of Winter / Just under 24 Times a Round: / Affects a random 3% of the battlefield / Heat Clouds (Level 1)
+Vafur Flames	enchantment	Ench 6	fire5	ritual	Ritual / Impossible Underwater / Local (Fort) / When the Walls are Breached: / Continuously targets the walls / (and the gap in the walls) / No Friendly Fire / 10 AP Fire DMG / Those who pass the squares by / Flying take 5 AP Fire DMG
+Eternal Pyre	enchantment	Ench 6	fire6	global	Global Enchantment (Local) / Impossible Underwater / +20[firegem]/turn / +[Heat]3 (Adjusts the Base) / Negates all local Darkness
+Wind Guide	enchantment	Ench 6	air3	battle	Impossible Underwater / 100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / Wind Guide / +2 PREC / Halves all Precision penalties / Negates Storm's chance of / deleting their missiles
+Greater Farflight	enchantment	Ench 6	air4	battle	Impossible Underwater / 100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / Farshot (+50% Missile Weapon Range)
+Dome of Solid Air	enchantment	Ench 6	air5	ritual	Ritual / Impossible Underwater / Local / Ends if Caster's Mind Fails / (or if the province changes hands) / Blocks 80% of Outer Rituals / Ends if it Fails to Block One
+Water Ward	enchantment	Ench 6	water1	battle	Underwater ONLY / 100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 25 Squares / Water Shield (+5 DEF)
+Hidden in Snow	enchantment	Ench 6	water3 death1	ritual	Ritual / Mountains & Caves ONLY / Finds an Undead Tribe: / 1 Unfrozen Lord (Commander) / 0-2 Unfrozen Mages (Commanders) / (Local Luck modifies odds) / Up to 50 Troops / C = 9 + Turmoil + Magic / (C + 1d8) Unfrozen Warriors / The rest are regular Unfrozen
+Grip of Winter	enchantment	Ench 6	water4	battle	200 Fatigue / 225% Casting Time / Battlefield Enchantment (Neutral) / Cancels out Heat from Hell / Just under 24 Times a Round: / Affects a random 3% of the battlefield / Frost Clouds (Level 1)
+Frost Dome	enchantment	Ench 6	water5	ritual	Ritual / Local / Duration: 1 (+1 per [watergem]) / (or until the caster's mind fails) / (or until the province changes hands) / Blocks 30% of Outer Rituals / Dome Trap: Cold / Doesn't even have to Block / 1-15 AN Cold DMG (uncapped)
+Enliven Statues	enchantment	Ench 6	earth3	ritual	Ritual / Local / Living Statue x10 (+1 per )
+Hidden in Sand	enchantment	Ench 6	earth3 death1	ritual	Ritual / Wastes ONLY / Finds an Undead Court: / 1 Dust King (Commander) / 0-2 Dust Priests (Commanders) / (Local Luck modifies odds) / Up to 50 Troops / C = 9 + Order + Magic / (C + 1d8) Dust Warriors / The rest are Dust Walkers
+Hidden Underneath	enchantment	Ench 6	earth3 death1	ritual	Ritual / Caves ONLY / Finds an Undead Court: / 1 Released King (Commander) / 0-2 Released Sages (Commanders) / (Local Luck modifies odds) / Up to 50 Troops / C = 9 + Order + Magic / (C + 1d8) Released Warriors / The rest are Released Ones
+Earthquake Warriors	enchantment	Ench 6	earth4	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / On Slash or Blunt Hit: Stun / S = ( Size - 3) / 4 / T = ( STR - 14) / 20 / S% chance to negate / T% chance to negate / Stunned (1 rnd. of helplessness)
+Riches from Beneath	enchantment	Ench 6	earth5	global	Global Enchantment / Your Provinces Only / Y = Local Dominion (max. 5) / +(20 x Y)% Resources / +([4 x Y]% x Resources) Income / +(20 x Y)% Mine Income
+Opposition	enchantment	Ench 6	astral3	battle	20 Fatigue / Range: 25 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Magic Beings only / Instakill / Also: Stun Magic Being / Base Penetration: 15 () / Magic Beings only / Stunned (1 rnd. of helplessness)
+Dome of Arcane Warding	enchantment	Ench 6	astral4	ritual	Ritual / Local / Duration: 1 (+1 per [astralpearl]) / (or until the caster's mind fails) / (or until the province changes hands) / Blocks 50% of Outer Rituals / Blocks 60% of Horror Attacks / (only 30% of Doom Horror attacks)
+Reanimate Archers	enchantment	Ench 6	death2 fire1	ritual	Ritual / Impossible Underwater / Local / Longdead Archer x10
+Ziz	enchantment	Ench 6	death3 air2	ritual	Ritual / Impossible Underwater / Local / Ziz x1
+Rigor Mortis	enchantment	Ench 6	death4	battle	300 Fatigue / 250% Casting Time / Battlefield Enchantment (Caster) / Just under 24 Times a Round: / Affects a random 3% of the battlefield / Base Penetration: 15 () / Undead negates / Inanimate negates / 10 AN Magic FAT
+Hail of Serpent Fangs	enchantment	Ench 6	nature4	battle	Impossible Underwater / 200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Venomous Arrows / On Poison Weapon DMG: Weak Poison / 5 AN Poison DMG
+Foul Vapors	enchantment	Ench 6	nature4 water1	battle	200 Fatigue / 225% Casting Time / Battlefield Enchantment (Neutral) / Just under 24 Times a Round: / Affects a random 1% of the battlefield / Poison Clouds (Level 1)
+Relief	enchantment	Ench 6	nature5	battle	100 Fatigue / 200% Casting Time / Battlefield Enchantment (Friendly) / Just under 24 Times a Round: / Affects a random 6% of the battlefield / Removes 1 FAT / (with a dueling DRN, min. 0)
+Forest Dome	enchantment	Ench 6	nature5	ritual	Ritual / Local / Ends if Province Changes Hands / Blocks 30% of Outer Rituals / Ends if a Fire Ritual is Blocked
+Steal Sight	enchantment	Ench 6	glamour1	battle	20 Fatigue / Range: 20 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Blind negates / Blinded (-9 ATT, -9 DEF, & -9 PREC)
+Fay-eyed Warriors	enchantment	Ench 6	glamour3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / True Sight (Aims true)
+Aura of Splendor	enchantment	Ench 6	glamour3 fire1	battle	40 Fatigue / 100% Casting Time / Range: 10 Squares / AOE: 5 Squares (+1 per ) / +1 Awe (MOR vs. 11 to attack)
+Dome of Misdirection	enchantment	Ench 6	glamour5	ritual	Ritual / Impossible Underwater / Local / Duration: 1 (+1 per [glamourgem]) / (or until the caster's mind fails) / (or until the province changes hands) / Redirects 70% of Outer Rituals
+Hail of Burning Embers	enchantment	Ench 7	fire4	battle	Impossible Underwater / 200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Flaming Arrows / On Fire Weapon Hit: Fire / 8 AP Fire DMG
+Dome of Flaming Death	enchantment	Ench 7	fire4	ritual	Ritual / Impossible Underwater / Local / Duration: 1 (+1 per [firegem]) / (or until the caster's mind fails) / (or until the province changes hands) / Responds to Outer Rituals / Dome Trap: Fire / 2-40 AP Fire DMG / F = 10 + Misfortune (Trap-Tripper's Province
+Mass Flight	enchantment	Ench 7	air4	battle	Impossible Underwater / 100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Flying
+Featherweight Army	enchantment	Ench 7	air4	battle	Impossible Underwater / 200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Floating (Earthquake-immune)
+Thetis' Blessing	enchantment	Ench 7	water5	global	Global Enchantment / Water Breathing
+Ghost Ship Armada	enchantment	Ench 7	water5 death3	global	Global Enchantment / Picks a random hostile Coast / Pirate Armada / Damned Admiral x1 / At least 5 Damned Captains / At least 2 Damned Boatswains / At least 76 Damned Buccaneers / (Independent, moves each turn) / With Each Victory: / K = Exploding 2d100 / If K
+Steel Slice Warriors	enchantment	Ench 7	earth4	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Makes Pierces & Slashes AP
+Lion Sentinels	enchantment	Ench 7	earth5	ritual	Ritual / Local (Fort) / +[Order]1 (Adjusts the Base) / When the Walls are Breached: / Marble Lion Commander x1 / Marble Lion x10 (Troops) / (Fort Defenders) / Ends if the Province Changes Hands
+Earth Blood Deep Well	enchantment	Ench 7	earth6	global	Global Enchantment (Local) / Impossible Underwater / In Caves / +22[earthgem]/turn / Elsewhere / +17[earthgem]/turn
+Antimagic	enchantment	Ench 7	astral3	battle	200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Magic Resistance (+4 MR)
+Solar Brilliance	enchantment	Ench 7	astral5	battle	Requires a Sun / 300 Fatigue / 250% Casting Time / Battlefield Enchantment (Neutral) / Sets Darkness to -1 / ( Awful for the Darkness-Empowered) / Just under 24 Times a Round: / Affects a random 5% of the battlefield / Base Penetration: 7 () / Blind negates / Blinded (-9 ATT, -9 DEF, & -9 PREC) / Also Just under 24 Times a Round: / Affects a random 5% of the battlefield / Base Penetration: 7 () / Demons or Undead only / 5 AP Magic DMG
+Stellar Focus	enchantment	Ench 7	astral5	global	Global Enchantment (Local) / Impossible in Caves / +10[astralpearl]/turn / +[Magic]3 (Adjusts the Base) / In Every Other Province: / +[Drain]1 (Adjusts the Base)
+Disenchantment	enchantment	Ench 7	astral5	global	Ritual / Dispel: / Picks a Random Global Enchantment / C = Overcast (max. 100[astralpearl] per Astral Lv.) / (+5 per ) / L = Local Grand Communicant Astral Lvs. / G = Global Overcast (counted differently) / A = C + L + Exploding 1d20 / D = G + Exploding 1d20 /
+Carrion Reanimation	enchantment	Ench 7	death3	ritual	Ritual / Range: 5 Provinces (Friendly) / Reanimates 200 Corpses (+100 per )
+Leviathan	enchantment	Ench 7	death3 water1	ritual	Ritual / Underwater ONLY / Local / Leviathan x1
+Life after Death	enchantment	Ench 7	death4	battle	400 Fatigue / 225% Casting Time / Battlefield Enchantment (Friendly) / Slain Units Arise as Zombies / (if possible, of course) / Pretender God negates / Mindless negates / Undead negates / Inanimate negates / Spiritform negates / Becomes a matching Soulless / Dies Again after the Battle
+Ritual of Rebirth	enchantment	Ench 7	death4	ritual	Ritual / Local / Mummification / Pick one Hall of Fame figure / (They must be yours, and dead) / (They must not be Soul-Slain, / nor dead in a disconnected Plane) / Inanimate negates (except for Mummies) / Moves to Casting Location / Transforms Target: Mummy /
+Mass Regeneration	enchantment	Ench 7	nature4	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Regeneration +10 (% Healing/turn)
+Army of Immaculate Mounts	enchantment	Ench 7	nature4	battle	200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Animal Mounts only / Mindless negates / Pride (+2 DEF, +2 MOR, +2 MR)
+Serpent's Blessing	enchantment	Ench 7	nature4	battle	200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / +10 Poison Resistance
+Awaken Treelord	enchantment	Ench 7	nature5	ritual	Ritual / Range: 4 Provinces (Forests) / (NOT Kelp Forests) / Summons One of Three Commanders: / Treelord ([earth 1]1[nature 4]4, Boars, Spreads Growth) / Treelord ([nature 4]4[blood 1]1, Wolves) / Dying Treelord ([nature 5]5, Bugs)
+Gift of Health	enchantment	Ench 7	nature6	global	Global Enchantment / Affects Your Units Only / Undead negates / Inanimate negates / Spiritform negates / +(10 x Dominion)% HP / Each Affliction has a / (10 x Dominion)% chance / to go away each turn / Within Your Dominion: / Unaging (50%)
+Aura of Bewilderment	enchantment	Ench 7	glamour4	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 5 Squares (+1 per ) / Bewildering Shield / Bewilders Attackers / Base Penetration: 11 () / ( 7 against True Sight) / Attack Misses / Bewildered (1 turn of randomness)
+Warriors of the Dawn	enchantment	Ench 7	glamour4 fire1	battle	100 Fatigue / 125% Casting Time / Range: 20 Squares / AOE: 20 Squares (+1 per ) / +1 Awe (MOR vs. 11 to attack)
+Nightmare Masks	enchantment	Ench 7	glamour4 death1	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / AOE: 5 Squares (+1 per ) / +5 Dread (Fake Fear Aura)
+Veil of Perpetual Mists	enchantment	Ench 7	glamour5	ritual	Ritual / Local / Duration: 1 (+1 per [glamourgem]) / (or until the caster's mind fails) / (or until the province changes hands) / Turns Invaders Around / Affects Enemies Only / For Troops: / Morale negates / Cancels their Movement / For Commanders: / MR negate
+Land of the Ever Young	enchantment	Ench 7	glamour5 nature1	ritual	Ritual / Local / Unaging (75) / Duration: 1 (+1 per [glamourgem]) / (or until the province changes hands)
+Fire Fend	enchantment	Ench 8	fire4	battle	100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / +5 Fire Resistance
+Thunder Fend	enchantment	Ench 8	air4	battle	100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / +5 Shock Resistance
+Soaring Army	enchantment	Ench 8	air5	battle	Impossible Underwater / 300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Flying
+Frost Fend	enchantment	Ench 8	water4	battle	100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / +5 Cold Resistance
+Wrath of the Sea	enchantment	Ench 8	water5	global	Global Enchantment / Floods Coastal Provinces / and Fresh Water Provinces / -30% Income / 0.4% Popkill
+Void Pattern Labyrinth	enchantment	Ench 8	astral4 glamour3	ritual	Ritual / Local / Duration: 1 (+1 per [astralpearl]) / (or until the caster's mind fails) / (or if the province changes hands) / Blocks Horror-Summoning Spells/Rituals / (Including battlefield summons) / Blocks Horror Attacks / (Only 50% of Doom Horror attacks)
+Unraveling	enchantment	Ench 8	astral6	battle	600 Fatigue / 275% Casting Time / 100% Battlefield Spell / Base Penetration: 11 () / Magic Beings only / Decaying (Ages 5 years/rnd.) / Also: Feeblemind Battlefield / Base Penetration: 7 () / Mindless negates / Feebleminded (Severed from Magic)
+Fields of the Dead	enchantment	Ench 8	death5 earth2	battle	"200 Fatigue / 225% Casting Time / Battlefield Enchatnment (Friendly) / Around 4 times a Round: / Reanimates (DRN) Corpses / (Dueling DRN, random squares) / Most will be Soulless Warriors / 10% will be ""national"" Soulless"
+Army Regeneration	enchantment	Ench 8	nature5	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Regeneration +10 (% Healing/turn)
+Haunted Forests	enchantment	Ench 8	nature5 death1	global	Global Enchantment / Impossible Underwater / Within Your Dominion: / Undead negates / Inanimate negates / Spiritform negates / Reanimates Slain Units as Manikin / (Independent in battles you're not in; / they belong to you otherwise)
+Dragon Master	enchantment	Ench 8	glamour3	ritual	Ritual / Local (Self-Application) / Dragon Master (2) / (doesn't stack with itself)
+Mists of Deception	enchantment	Ench 8	glamour5 air1	battle	200 Fatigue / 225% Casting Time / Battlefield Enchantment (Caster) / Roughly (Glamour Lv.) times a Round: / Summons a random Illusion / 45% chance: Warrior Illusion / 45% chance: Wolf Illusion / 5% chance: Beast Illusion / 5% chance: Knight Illusion / (random squares) / Also: Mist / Halves Precision (before buffs/debuffs) / Prevents Clouds from Dissipating
+Fata Morgana	enchantment	Ench 8	glamour7	global	Global Enchantment / Your Provinces Only / Within Your Dominion: / -10 Unrest/turn / Blanks Scouting Reports / If they're not in the province, / they'll see nothing. / Illusory Militia / Warrior Illusion x2 per PD point / Archer Illusion x1 per PD point / Knig
+Demon Cleansing	enchantment	Ench 9	water5	battle	100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Demons only / Doubles DMG against them
+Earth Shatter Army	enchantment	Ench 9	earth5	battle	200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / On Slash or Blunt Hit: Stun / S = ( Size - 3) / 4 / T = ( STR - 14) / 20 / S% chance to negate / T% chance to negate / Stunned (1 rnd. of helplessness)
+Dome of Seven Seals	enchantment	Ench 9	astral4 earth4	ritual	Ritual / Local / Ends if Caster's Mind Fails / (or if the province changes hands) / Blocks 7 Outer Rituals / Rituals from friendly mages / with [astral 1]1+ aren't blocked.
+Arcane Nexus	enchantment	Ench 9	astral8	global	Global Enchantment / Whenever Gems are Spent: / Adds to the Gem Treasury / [firegem][airgem][watergem][earthgem][deathgem][naturegem][glamourgem]: 50% / [astralpearl][bloodslave]: 0% / Only Grants [astralpearl] / (2 non-[astralpearl]'s → 1[astralpearl])
+Army of the Dead	enchantment	Ench 9	death5	ritual	Ritual / Range: 5 Provinces / Random Longdead x100 (+5 per ) / Mound King Commander x1 / If Corpses are Present: / Reanimates 150 Corpses (+75 per ) / Mound King Commander x1 /
+Lichcraft	enchantment	Ench 9	death5	ritual	Ritual / Local (Self-Application) / Cost: (25 + Size x 5)[deathgem] / Various traits negate / Instakill / (No damage is dealt) / Gain +1 (max 10) / Transform: Lich / Resurrect / You will reform in the province / you casted it in.
+Gaia's Blessing	enchantment	Ench 9	nature5 earth2	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / +5 Fire Resistance / +5 Shock Resistance / +5 Cold Resistance / +10 Poison Resistance
+Gift of Nature's Bounty	enchantment	Ench 9	nature7	global	Global Enchantment / Your Provinces Only / In [Dominion strength]0 or Higher: / +(15 x Dominion)% Income / +[Growth]1 x Dominion (Adjusts the Base)
+Summon Cave Grubs	conjuration	Conj 1	earth1	ritual	Ritual / Caves ONLY / Local / Cave Grub x10 (+½ per )
+Spirit Curse	conjuration	Conj 1	death1	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: 50 Squares / Sure Hit / AOE: One Target / Cursed (+15% Affliction chance)
+Shadow Servant	conjuration	Conj 1	death2	ritual	Ritual / Works Underwater / Local / Shadow Servant (Commander) x1
+Tangle Vines	conjuration	Conj 1	nature1	battle	20 Fatigue / Works Underwater / 100% Casting Time / Range: 20 Squares / +2 Precision / AOE: 1 Square / Entanglement / V = 19 + Growth / (In Forests, add 1) / (In Wastes, subtract 1) / Nonmagical Entrapment / STR vs. V to break out
+Summon Sea Dogs	conjuration	Conj 1	nature1 water1	ritual	Ritual / Works Underwater / Local / Sea Dog x10 (+½ per )
+Summon Crocodiles	conjuration	Conj 1	nature1 water1	ritual	Ritual / Local / Crocodile x10 (+½ per )
+Summon Animals	conjuration	Conj 1	nature2	ritual	Ritual / Works Underwater / Local / 30 Random Animals (+2 per ) / (Affected by the local terrain)
+Summon Fire Ants	conjuration	Conj 2	fire2 nature1	ritual	Ritual / Local / Fire Ant x10 (+1 per )
+Summon Hawk	conjuration	Conj 2	air1	battle	20 Fatigue / Impossible in Caves / 100% Casting Time / Black Hawk x1 / (Enters from the Side)
+Summon Storm Power	conjuration	Conj 2	air1	battle	10 Fatigue / 100% Casting Time / Storm Power (Magic) / During a Storm: / +[air 1]1 pathboost
+Summon Water Power	conjuration	Conj 2	water1	battle	20 Fatigue / Underwater ONLY / 100% Casting Time / +[water 1]1 pathboost
+Summon Ogres	conjuration	Conj 2	earth1	ritual	Ritual / Local / Ogre x5 (+½ per )
+Summon Shades	conjuration	Conj 2	death2	ritual	Ritual / Works Underwater / Local / Shade x5 (+½ per )
+Awaken Algae Men	conjuration	Conj 2	nature1	ritual	Ritual / Underwater ONLY / Local / Algae Man x4
+Awaken Vine Men	conjuration	Conj 2	nature1	ritual	Ritual / Local / Vine Man x4 / Ivy Lord boosts!
+Pack of Wolves	conjuration	Conj 2	nature1	ritual	Ritual / Local / Wolf x15 (+1 per )
+Summon Horned Serpents	conjuration	Conj 2	nature1	ritual	Ritual / Wastes ONLY / Local / Horned Serpent x10 (+½ per )
+Summon Killer Mantis	conjuration	Conj 2	nature2	ritual	Ritual / Local / Killer Mantis x10 (+½ per )
+Tapestry of Dreams	conjuration	Conj 2	glamour2	ritual	Ritual / Works Underwater / Range: 4 Provinces (Enemy) / Scrying / Duration: 1 (+1 per [glamourgem])
+Summon Lesser Fire Elemental	conjuration	Conj 3	fire1	battle	100 Fatigue / 125% Casting Time / Range: Closest Square / Fire Elemental x1 (Size 4)
+Bind Scorpion Beast	conjuration	Conj 3	fire1 earth1	ritual	Ritual / Local / Scorpion Beast x1
+Phoenix Power	conjuration	Conj 3	fire2	battle	20 Fatigue / 100% Casting Time / +[fire 1]1 pathboost / +5 Fire Resistance
+Summon Lesser Air Elemental	conjuration	Conj 3	air1	battle	100 Fatigue / 125% Casting Time / Range: Closest Square / Air Elemental x1 (Size 4)
+Call of the Winds	conjuration	Conj 3	air2	ritual	Ritual / Range: 5 Provinces / Blocked by Seas / Great Hawk Commander x1 / Black Hawk x51
+Summon Amphiptere	conjuration	Conj 3	air2 nature1	ritual	Ritual / Local / Amphiptere x1
+Summon Lesser Water Elemental	conjuration	Conj 3	water1	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: Closest Square / Underwater: / Water Elemental x1 (Size 4) / On Land: / Samples local Temperature / In [Cold]1 or colder: / Ice Elemental x1 (Size 4) / Otherwise: / Water Elemental x1 (Size 4)
+Summon Yetis	conjuration	Conj 3	water2 air1	ritual	Ritual / Local / Yeti x5 (+½ per )
+Summon Cave Cows	conjuration	Conj 3	water2 earth2	ritual	Ritual / Caves ONLY / Local / Cave Cow x10 (+½ per )
+Call Krakens	conjuration	Conj 3	water3	ritual	Ritual / Underwater ONLY / Local / Kraken x5 (+½ per )
+Summon Lesser Earth Elemental	conjuration	Conj 3	earth1	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: Closest Square / Earth Elemental x1 (Size 4)
+Summon Cave Crab	conjuration	Conj 3	earth1 water1	ritual	Ritual / Caves ONLY / Works Underwater(?) / Local / Cave Crab x1
+Summon Earthpower	conjuration	Conj 3	earth2	battle	20 Fatigue / Works Underwater / 100% Casting Time / Earth Power / +[earth 1]1 pathboost / +4 Reinvigoration (-4 FAT/rnd.)
+Power of the Spheres	conjuration	Conj 3	astral1	battle	100 Fatigue / Works Underwater / 125% Casting Time / Magic Power (Magic) / Elemental +1 pathboost / Sorcerous +1 pathboost
+Dark Knowledge	conjuration	Conj 3	death1	ritual	Ritual / Works Underwater / Range: 3 Provinces (Friendly) / Site-Searching ()
+Revive Bane	conjuration	Conj 3	death2	ritual	Ritual / Works Underwater / Local / Bane Commander x1
+Revive Wights	conjuration	Conj 3	death2	ritual	Ritual / Works Underwater / Local / Wight x5
+Summon Sea Lions	conjuration	Conj 3	nature2 water1	ritual	Ritual / Underwater ONLY / Local / Leocampus x16 (+1 per )
+Summon Bog Beasts	conjuration	Conj 3	nature2 water2	ritual	Ritual / Local / Bog Beast x5 (+½ per )
+Call of the Wild	conjuration	Conj 3	nature4	ritual	Ritual / Range: 4 Provinces / Blocked by Seas / If Targeting Woods: / Werewolf Commander x1 / Wolf x40 / Otherwise: / Werewolf Commander x1 / Wolf x20
+Conjure Phantasmal Wolves	conjuration	Conj 3	glamour1	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: 5 Squares / If Underwater: / Phantasmal Sea Dog x2 / Otherwise: / Phantasmal Wolf x2
+Summon Fay Folk	conjuration	Conj 3	glamour2 nature1	ritual	Ritual / Woods ONLY / Summons 10 random Fay Folk / - Most have spears & bronze / - Some are Poor Amphibians / - Some are archers / - Some have two attacks / - Some are really quite skilled / [FIXME] There's a mystery / trait in the Modinspector.
+Nest of Salamanders	conjuration	Conj 4	fire2	battle	100 Fatigue / 125% Casting Time / Range: Closest Square(s) / Salamander Asp x10 (+1 per )
+Summon Fire Drake	conjuration	Conj 4	fire2	ritual	Ritual / Local / Fire Drake x1 / Dragon Master boosts!
+Summon Flame Jellies	conjuration	Conj 4	fire2	ritual	Ritual / Underwater ONLY / Local / Flame Jelly x10 (+1 per )
+Summon Wyverns	conjuration	Conj 4	air2	ritual	Ritual / Local / Wyvern x2 / Dragon Master boosts!
+Summon Storm Drake	conjuration	Conj 4	air2	ritual	Ritual / Local / Storm Drake x1 / Dragon Master boosts!
+Summon Gryphons	conjuration	Conj 4	air2	ritual	Ritual / Local / Gryphon x10 (+½ per )
+School of Sharks	conjuration	Conj 4	water2	battle	100 Fatigue / Underwater ONLY / 125% Casting Time / Small Shark x10 (+2 per ) / (Enters from the Side)
+Voice of Apsu	conjuration	Conj 4	water2	ritual	Ritual / Works Underwater / Range: 3 Provinces / Seas are immune / Site-Searching ()
+Summon Sea Serpent	conjuration	Conj 4	water2	ritual	Ritual / Underwater ONLY / Local / Sea Serpent x1 / Dragon Master boosts!
+Summon Ice Drake	conjuration	Conj 4	water2	ritual	Ritual / Local / Ice Drake x1 / Dragon Master boosts!
+Summon Cave Drake	conjuration	Conj 4	earth2	ritual	Ritual / Local / Cave Drake x1 / Dragon Master boosts!
+Light of the Northern Star	conjuration	Conj 4	astral3	battle	200 Fatigue / Works Underwater / 225% Casting Time / Battlefield Enchantment (Neutral) / +[astral 1]1 pathboost
+Summon Lammashtas	conjuration	Conj 4	death2	battle	100 Fatigue / 125% Casting Time / Two Summons / Lammashta x1 (each) / (Enters from the Side)
+Summon Shade Beasts	conjuration	Conj 4	death3	ritual	Ritual / Works Underwater / Local / Shade Beast x30 (+3 per )
+Maggots	conjuration	Conj 4	nature1	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: 25 Squares / Sure Hit / AOE: One Target / Undead only / Nonmagical / 50 AN Poison DMG
+Tangle Thicket	conjuration	Conj 4	nature2	battle	30 Fatigue / Works Underwater / 100% Casting Time / Range: 20 Squares / +2 Precision / AOE: 3 Squares (+1 per ) / Entanglement / V = 19 + Growth / (In Forests, add 1) / (In Wastes, subtract 1) / Nonmagical Entrapment / STR vs. V to break out
+Summon Leogryphs	conjuration	Conj 4	nature2	ritual	Ritual / Local / Leogryph x20 (+2 per )
+Summon Spine Frog	conjuration	Conj 4	nature2 water1	ritual	Ritual / Local / Spine Frog x1
+Summon Swamp Drake	conjuration	Conj 4	nature2 water1	ritual	Ritual / Swamps ONLY / Local / Swamp Drake x1 / Dragon Master boosts!
+Nest of Asps	conjuration	Conj 4	nature2 death1	battle	100 Fatigue / 125% Casting Time / Range: Closest Square(s) / Asp x10 (1 per )
+Awaken Vine Ogres	conjuration	Conj 4	nature3	ritual	Ritual / Local / Vine Ogre x3 / Ivy Lord boosts!
+Strength of Gaia	conjuration	Conj 4	nature3 earth1	battle	20 Fatigue / Works Underwater / 100% Casting Time / +[nature 1]1 pathboost / Also: Some Other Stuff / Spiritform negates / Extra Strength (+4 STR) / +10 Regeneration (% Healing/rnd.) / Barkskin / (+7 NAT PROT, up to 10, / or +1 if already 10 or higher) / (-5 Fire Resistance)
+Summon Kithaironic Lion	conjuration	Conj 4	nature3 earth1	ritual	Ritual / Local / Kithaironic Lion x1
+Summon Water Kobold	conjuration	Conj 4	glamour1 water1	ritual	Ritual / Local / Water Kobold Commander x1
+Summon Cave Kobolds	conjuration	Conj 4	glamour1 earth1	ritual	Ritual / Local / Cave Kobold x5 (+½ per )
+Conjure Phantasmal Warriors	conjuration	Conj 4	glamour2	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: 5 Squares / If Underwater: / Phantasmal Triton x2 / Otherwise: / Phantasmal Warrior x2
+At the End of the Rainbow	conjuration	Conj 4	glamour2	ritual	Ritual / Local / Range: 3 Provinces (Friendly) / Blocked by Seas / Site-Searching ()
+Summon Fay Footfolk	conjuration	Conj 4	glamour2 nature1	ritual	Ritual / Woods ONLY / Local / Samples Local Temperature / If [Cold]1 or colder: / Unseelie Soldier x5 (+½ per ) / Otherwise: / Fay Footman x5 (+½ per )
+Will o' the Wisp	conjuration	Conj 5	fire1	battle	100 Fatigue / 125% Casting Time / Two Summons / Will o' the Wisp x1 (each) / (Enters from the Side)
+Summon Fire Elemental	conjuration	Conj 5	fire3	battle	100 Fatigue / 125% Casting Time / Range: Closest Square / Fire Elemental x1 (Size 7)
+Summon Summer Lions	conjuration	Conj 5	fire3	ritual	Ritual / Local / Summer Lion x5 (+½ per )
+Summon Air Elemental	conjuration	Conj 5	air3	battle	100 Fatigue / 125% Casting Time / Range: Closest Square / Air Elemental x1 (Size 7)
+Summon Spring Hawks	conjuration	Conj 5	air3	ritual	Ritual / Local / Spring Hawk x5 (+½ per )
+Contact Draconians	conjuration	Conj 5	air3	ritual	Ritual / Local / Draconian Chief Commander x1 / Draconian x30
+Raven Feast	conjuration	Conj 5	air4	ritual	Ritual / Range: 5 Provinces / Seas are immune / Consumes all Corpses / C = Corpses Consumed / G = √(C) x ½ / → If C = 100, G = 5 / → If C = 400, G = 10 / → If C = 576, G = 12 / Grants G[deathgem]
+Messenger Crows	conjuration	Conj 5	air4	ritual	Ritual / Works Underwater / Range: 4 Provinces (Friendly) / +50 Patrol Strength / (Only for Spotting)
+Wind Ride	conjuration	Conj 5	air5	ritual	Ritual / Range: 3 Provinces / Seas are immune / Picks a Random Commander / (Can't find the Stealthy) / S = their Size / A = 5 x their Air level / D = 10 + 5 x S - A / Whirlwind Transport / Size 8-10 negates / Ethereal negates / [earth 4]4 or higher negates / (
+Voice of Tiamat	conjuration	Conj 5	water2	ritual	Ritual / Underwater ONLY / Range: 4 Provinces (Friendly) / Blocked by Land / Site-Searching ( Elements)
+Summon Water Elemental	conjuration	Conj 5	water3	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: Closest Square / Underwater: / Water Elemental x1 (Size 7) / On Land: / Samples local Temperature / In [Cold]1 or colder: / Ice Elemental x1 (Size 7) / Otherwise: / Water Elemental x1 (Size 7)
+Summon Winter Wolves	conjuration	Conj 5	water3	ritual	Ritual / Local / Winter Wolf x5 (+½ per )
+Contact Sea Trolls	conjuration	Conj 5	water3	ritual	Ritual / Works Underwater / Local / Sea Troll x10 (+½ per )
+Naiad Warriors	conjuration	Conj 5	water3 nature1	ritual	Ritual / Works Underwater / Local / Kydnid x25
+Contact Naiad	conjuration	Conj 5	water3 nature1	ritual	Ritual / Works Underwater / Local / Naiad Commander x1
+Summon Earth Elemental	conjuration	Conj 5	earth1	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: Closest Square / Earth Elemental x1 (Size 7)
+Contact Trolls	conjuration	Conj 5	earth3	ritual	Ritual / Local / Troll x5 (+½ per )
+Summon Fall Bears	conjuration	Conj 5	earth3	ritual	Ritual / Local / Fall Bear x5 (+½ per )
+Acashic Record	conjuration	Conj 5	astral2	ritual	Ritual / Range: 10 Provinces (Enemy Capital) / Pulls Score Graphs of that Nation / / [FIXME] might it / pull other info?
+Summon Ether Warriors	conjuration	Conj 5	astral3 death1	ritual	Ritual / Local / Ether Warrior x3
+Ghost Grip	conjuration	Conj 5	death1	battle	10 Fatigue / Works Underwater / 100% Casting Time / Range: 25 Squares / Five Ghost Hands / +3 Precision / AOE: One Target / 25 Magic FAT (+2 per )
+Spirit Mastery	conjuration	Conj 5	death1	ritual	Ritual / Works Underwater / Local / Dispossessed Spirit x25 (+1 per )
+Corpse Candle	conjuration	Conj 5	death1 fire1	battle	100 Fatigue / 125% Casting Time / Three Summons / Corpse Candle x1 (each) / (Enters from the Side)
+Revive Bane Lord	conjuration	Conj 5	death4	ritual	Ritual / Works Underwater / Local / Bane Lord Commander x1
+Summon Manticores	conjuration	Conj 5	nature2 earth2	ritual	Ritual / Local / Manticore x3
+Howl	conjuration	Conj 5	nature3	battle	300 Fatigue / 250% Casting Time / Battlefield Enchantment (Friendly) / Around Twice a Round: / In Mountains or Woods: / Wolf x(Exploding 1d6) / (Enters from the Side) / Otherwise: / Wolf x(Exploding 1d3) / (Enters from the Side)
+Spirits of the Wood	conjuration	Conj 5	nature3	ritual	Ritual / Local / Woodland Spirit x15 (+1 per )
+Contact Forest Trolls	conjuration	Conj 5	nature3	ritual	Ritual / Local / Forest Troll x10 (+½ per )
+Winged Monkeys	conjuration	Conj 5	nature3 astral2	ritual	Ritual / Range: 5 Provinces / Blocked by Seas / Finds an Enemy Commander / Won't pick Mages / ( Priests are valid targets, / if they lack other paths) / Assassination: Winged Monkey x8 / When the target has 100 Fatigue: / Size 6-10 negates / Transport to Caste
+Vermin Feast	conjuration	Conj 5	nature4	ritual	Ritual / Works Underwater / Range: 4 Provinces (Enemy Fort) / Duration: 1 (+1 per [naturegem]) / Doubles Supply Usage
+Summon Bluecap	conjuration	Conj 5	glamour2 earth1	ritual	Ritual / Local / Bluecap Commander x1
+Phantasmal Beast	conjuration	Conj 5	glamour3	battle	100 Fatigue / Works Underwater / 125% Casting Time / Range: Closest Square / Phantasmal Beast x1
+Summon Fay Knights	conjuration	Conj 5	glamour3 nature1	ritual	Ritual / Woods ONLY / Local / Samples Local Temperature / If [Cold]1 or colder: / Unseelie Knight x3 / Otherwise: / Fay Knight x3
+Awaken Sleeper	conjuration	Conj 5	glamour4	ritual	Ritual / Local / Sleeper Commander x1
+Summon Fire Snakes	conjuration	Conj 6	fire2	ritual	Ritual / Local / Fire Snake x10 (+½ per )
+Summon Flame Spirit	conjuration	Conj 6	fire3	ritual	Ritual / Local / Flame Spirit Commander x1
+Summon Great Eagles	conjuration	Conj 6	air3	ritual	Ritual / Local / Great Eagle x10 (+½ per )
+Shark Attack	conjuration	Conj 6	water3	battle	"300 Fatigue / Underwater ONLY / 250% Casting Time / Battlefield Enchantment (Friendly) / Around Once a Round: / Checks if any living / non-Sharks are damaged / If So: / Shark x?? (12.5% chance) / (Enters from the Side) / Small Shark x?? (12.5% chance) / (Enters from the Side) / Numbers probably scale with / the number of damaged units. / Max. 13 Summonings ""Pulses"""
+Summon Bishop Fish	conjuration	Conj 6	water3	ritual	Ritual / Underwater ONLY / Local / Bishop Fish Commander x1
+Sea King's Court	conjuration	Conj 6	water4	ritual	Ritual / Works Underwater / Local / Sea King Commander x1 / Sea Troll x15 / Troll Guard x5
+Streams from Hades	conjuration	Conj 6	water4 death1	ritual	Ritual / Works Underwater / Local / Kokythiad Commander x1
+Contact Hill Giant	conjuration	Conj 6	earth3	ritual	Ritual / Local / Hill Giant x1
+Troll King's Court	conjuration	Conj 6	earth3	ritual	Ritual / Local / Troll King Commander x1 / Troll x10 / War Troll x5 / Troll Moose Knight x2
+Acashic Knowledge	conjuration	Conj 6	astral3	ritual	Ritual / Range: 10 Provinces (Friendly) / Site-Searching (All)
+Ether Gate	conjuration	Conj 6	astral4 death1	ritual	Ritual / Works Underwater / Local / Ether Lord Commander x1 / Ether Warrior x15 / +[Magic]2 (Scale Dump) / Also: Ether Gate / Duration: 1 (+1 per [astralpearl]) / When you summon Ether Warriors, / summon 2 more
+Summon Ghosts	conjuration	Conj 6	death2	ritual	Ritual / Works Underwater / Local / Ghost x5 (+½ per )
+Summon Spectre	conjuration	Conj 6	death3	ritual	Ritual / Works Underwater / Local / Spectral Mage Commander x1
+Contact Forest Giants	conjuration	Conj 6	nature3	ritual	Ritual / Local / Forest Giant x2
+Contact Lamias	conjuration	Conj 6	nature3	ritual	Ritual / Local / Lamia x10 (+½ per ) / Some Casters get 2 extra: / - Lamia Queen / - Serpent King (Pretender) / - Mother of Monsters (Pretender)
+Locust Swarms	conjuration	Conj 6	nature3	ritual	"Ritual / Range: 5 Provinces / ""Small Provinces"" are Immune(?) / Swarm of Locusts / Seas are Immune / ""Anonymous"" / -50% Income (That Turn) / +20 Unrest"
+Forest Troll Tribe	conjuration	Conj 6	nature3	ritual	Ritual / Local / Troll Shaman Commander x1 / Forest Troll x15
+Contact Lamia Queen	conjuration	Conj 6	nature5 death2	ritual	Ritual / Local / Lamia Queen Commander x1
+Summon Sprites	conjuration	Conj 6	glamour1 nature1	battle	100 Fatigue / 125% Casting Time / Range: Closest Square / Sprite x6
+Summon Gnome	conjuration	Conj 6	glamour3 earth2	ritual	Ritual / Local / Gnome Commander x1
+Summon Fay Prince	conjuration	Conj 6	glamour4 nature1	ritual	Ritual / Woods ONLY / Local / Samples Local Temperature / If [Cold]1 or colder: / Unseelie Prince Commander x1 / Otherwise: / Fay Prince Commander x1
+Living Fire	conjuration	Conj 7	fire4	battle	200 Fatigue / 150% Casting time / Fire Elemental x4 (+1 per ) / (Size 6)
+Living Clouds	conjuration	Conj 7	air4	battle	200 Fatigue / 150% Casting time / Air Elemental x4 (+1 per ) / (Size 6)
+Summon Asp Turtle	conjuration	Conj 7	water3	ritual	Ritual / Underwater ONLY / Local / Asp Turtle x1
+Summon Catoblepas	conjuration	Conj 7	water3 death2	ritual	Ritual / Local / Catoblepas x1
+Living Water	conjuration	Conj 7	water4	battle	200 Fatigue / Works Underwater / 150% Casting Time / Range: Closest Square / Underwater: / Water Elemental x4 (+1 per ) / (Size 6) / On Land: / Samples local Temperature / In [Cold]1 or colder: / Ice Elemental x4 (+1 per ) / (Size 6) / Otherwise: / Water Elemental x1 (+1 per ) / (Size 6)
+Living Earth	conjuration	Conj 7	earth4	battle	200 Fatigue / Works Underwater / 150% Casting Time / Earth Elemental x4 (+1 per ) / (Size 6)
+Summon Mound Fiend	conjuration	Conj 7	death3	ritual	Ritual / Local / Mound Fiend Commander x1
+Harvester of Sorrows	conjuration	Conj 7	death4	ritual	Ritual / Works Underwater / Local / Harvester of Sorrows Scout x1
+Animal Horde	conjuration	Conj 7	nature4	ritual	Ritual / Works Underwater / Local / 100 Random Animals / (Affected by the local terrain)
+Awaken Ivy King	conjuration	Conj 7	nature4	ritual	Ritual / Local / Ivy King Commander x1
+Living Castle	conjuration	Conj 7	nature4 water1	ritual	Ritual / Underwater ONLY / Range: 4 Provinces (Friendly Sea) / Kelp Fortress
+Summon Calydonian Boar	conjuration	Conj 7	nature5	ritual	Ritual / Local / Calydonian Boar x1
+Conjure Phantasmal Knight	conjuration	Conj 7	glamour2	battle	100 Fatigue / Works Underwater / 125% Casting Time / If Underwater: / Phantasmal Knight x1 / Otherwise: / Phantasmal Knight x1
+Lore of Legends	conjuration	Conj 7	glamour4	ritual	Ritual / Duration: Until the Caster's / next turn / +1 pathboost to all paths
+Wild Hunt	conjuration	Conj 7	glamour5 nature3	global	Global Enchantment / First, the Main Hunt / Checks Forests & Cave Forests / - Checks around 5 provinces (max 10), / stops if a hostile Commander is found / - Passes over [holy 5]5's; threshold lowers / by 1 level for roughly each check / - The Stealthy might s
+King of Elemental Fire	conjuration	Conj 8	fire5	ritual	Ritual / Local / One of Two Commanders: / Pyriphlogos - King of Flames (Ethereal) / Rhuax - King of Magma ([earth 1]1)
+The Kindly Ones	conjuration	Conj 8	fire6 nature4	global	Global Enchantment / Works Underwater / Essentially three Global effects sharing a slot; / each end separately, unless Dispelled. / The Avenger of Murder / Each turn, targets a Commander who has Kills, / preferring higher kill counts. / Assassination: Tisiphon
+Queen of Elemental Air	conjuration	Conj 8	air5	ritual	Ritual / Local / One of Three Commanders: / Aella - Queen of Storms (Storm Power 5) / Thuella - Queen of Thunder (4 attacks) / Nephele - Queen of Clouds (Glamour)
+Queen of Elemental Water	conjuration	Conj 8	water5	ritual	Ritual / Underwater ONLY / Local / One of Three Commanders: / Thalassa - Queen of the Sea (Summoner) / Bathusma - Queen of the Deeps (90% Regen) / Limne - Queen of the Lake (Amphibious)
+Guardians of the Deep	conjuration	Conj 8	water6	global	Global Enchantment / Underwater ONLY / When Attacked, / If the Province Defense is Lv. 1 or Greater: / Summons random Animals; / they will be Amphibious or Aquatic. / This only defends Underwater provinces. / Within your Dominion: / Random Animal Attacks; / th
+Earth Attack	conjuration	Conj 8	earth5	ritual	Ritual / Works Underwater / Range: 4 Provinces / Finds a random enemy Commander / - Can find Hiding fellas / - Can find Glamoured fellas / - Can't find Floating fellas / Assassination: Earth Elemental (Size 6)
+King of Elemental Earth	conjuration	Conj 8	earth5	ritual	Ritual / Works Underwater / Local / One of Two Commanders: / Oreigenes - King of Mountains (Summoner) / Barathrus - King of Deeper Earth (1[earthgem]/turn)
+Call the Eater of the Dead	conjuration	Conj 8	astral4 death4	ritual	Ritual / Local / Eater of the Dead x1 / / This summon is unique, / despite its troop status.
+King of Banefires	conjuration	Conj 8	death3 fire4	ritual	Ritual / Local / Antrax - King of Banefires ([fire 4]4[death 3]3)
+Manifestation	conjuration	Conj 8	death4	ritual	"Ritual / Range: 4 Provinces / Checks for Commanders / - Has a 50% chance to ""pardon"" / Commanders without Horror Marks / Assassination: Ashen Angel / (Independent) / Will Assassinate YOU instead, if: / - the province has no Commanders / - all Commanders there "
+Call Wraith Lord	conjuration	Conj 8	death5	ritual	Ritual / Works Underwater / Local / Wraith Lord Commander x1
+Well of Misery	conjuration	Conj 8	death6	global	Global Enchantment (Local) / In the Province: / +21[deathgem]/turn / +5 (Adjusts the Base) / Everywhere Else: / +[Growth]2 (Adjusts the Base)
+Wild Growth	conjuration	Conj 8	nature4	battle	40 Fatigue / Works Underwater / 100% Casting Time / Range: 20 Squares / +2 Precision / AOE: 10 Squares (+2 per ) / Entanglement / V = 19 + Growth / (In Forests, add 1) / (In Wastes, subtract 1) / Nonmagical Entrapment / STR vs. V to break out
+Faerie Court	conjuration	Conj 8	glamour4 nature1	ritual	Ritual / Woods ONLY / Local / Samples Local Temperature / If [Cold]1 or colder: Unseelie Court / - Queen of Winter Commander x1 / - Unseelie Knight x2 / - Unseelie Soldier x3 / - Unseelie Sprite x10 / - Also casts Summon Fay Folk / Otherwise: Seelie Court / - 
+Call Ancient Presence	conjuration	Conj 9	water5 nature4	ritual	Ritual / Swamps ONLY / Ancient Presence x1
+Call Abomination	conjuration	Conj 9	astral5 water2	ritual	Ritual / Works Underwater / Local / Abomination x1
+Ghost Riders	conjuration	Conj 9	death5	ritual	Ritual / Works Underwater / Range: 4 Provinces / Wraith Lord Commander x1 / Longdead Horseman x75 / (Independent, lasts only one battle/phase)
+Legion of Wights	conjuration	Conj 9	death5	ritual	Ritual / Local / Wight x17 (+3 per )
+Tartarian Gate	conjuration	Conj 9	death7	ritual	Ritual / Local / One of Seven Chassis: / Tartarian Cyclops ([air 2]2[earth 3]3, Lightning) / Tartarian Cyclops ([earth 4]4, Magic Gear) / Tartarian Spirit ([earth 3]3[death 2]2, 5% Regen) / Tartarian Titan ([random]5300% / 200%, Female) / Tartarian Titan ([ran
+Awaken Tarrasque	conjuration	Conj 9	nature5	ritual	Ritual / Local / Tarrasque x1
+Enchanted Forests	conjuration	Conj 9	nature7	global	Global Enchantment / Seas are immune / In Forests of [Dominion strength]0 or lower: / Does a Temple check in each / In Forests of [Dominion strength]1 or higher: / Up to 3 Invasion Attempts / Randomly picks either the Forest / or an adjacent province. / Sample
+Sleep Ray	thaumaturgy	No Research Required	glamour1	battle	20 Fatigue / 50% Casting Time / Range: 1 Square / AOE: 1 Square / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / Asleep (useless until harmed)
+Desiccation	thaumaturgy	Thau 1	water2	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: 1 Square / Base Penetration: 11 () / Undead negates / Inanimate negates / Desiccated (+2d8 FAT/round)
+Farstrike	thaumaturgy	Thau 1	earth2 astral1	battle	5 Fatigue / 100% Casting Time / Range: 50 Squares / +5 Precision / AOE: One Target / 17 Blunt DMG (+1 per ) / (STR added to DMG)
+Blink	thaumaturgy	Thau 1	astral1	battle	10 Fatigue / 100% Casting Time / Self-Affecting / Random Teleport / (Max. 30 Squares away)
+Communion Master	thaumaturgy	Thau 1	astral1	battle	20 Fatigue / 100% Casting Time / Communion Master
+Communion Slave	thaumaturgy	Thau 1	astral1	battle	20 Fatigue / 100% Casting Time / Communion Slave
+Horror Mark	thaumaturgy	Thau 1	astral2	battle	20 Fatigue / 100% Casting Time / Range: 50 Squares / Sure Hit / AOE: One Target / Mindless negates / Horror Mark
+Dust to Dust	thaumaturgy	Thau 1	death1	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / AOE: 1 Square / Base Penetration: 11 () / Undead only / 22 AN Magic DMG (+2 per ) / (MR only halves DMG)
+Decay	thaumaturgy	Thau 1	death1	battle	20 Fatigue / 100% Casting Time / Range: 25 Squares / +3 Precision / AOE: One Target / Base Penetration: 11 () / Decaying (+5 Years/round)
+Frighten	thaumaturgy	Thau 1	death1	battle	"5 Fatigue / 100% Casting Time / Range: 50 Squares / +5 Precision / AOE: 1 Square / 5 Frighten ""DMG"""
+Seven Year Fever	thaumaturgy	Thau 1	nature1 fire1	battle	30 Fatigue / 100% Casting Time / Range: 25 Squares / +3 Precision / AOE: 1 Square / Base Penetration: 11 () / Undead negates / Inanimate negates / Diseased (-10% HP/turn)
+Fascination	thaumaturgy	Thau 1	glamour1	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / Stunned (helpless for 1 round)
+Personal Luck	thaumaturgy	Thau 1	glamour1	battle	20 Fatigue / 100% Casting Time / Undead negates / Inanimate negates / Lucky (negates 75% of kills)
+Curse	thaumaturgy	Thau 1	glamour1 astral1	battle	30 Fatigue / 100% Casting Time / Range: 50 Squares / Sure Hit / AOE: One Target / Cursed (+15% Affliction chance)
+Bonds of Fire	thaumaturgy	Thau 2	fire1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 20 Squares / +3 Precision / AOE: One Target / Entrapment (MOR vs. 21 escapes) / On Escape: / 3 AN Fire DMG
+Battle Fury	thaumaturgy	Thau 2	fire2	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / +2 Precision / AOE: 1 Square / Mindless negates / Animal negates / Fury (+2 ATT, +2 MOR)
+Steal Breath	thaumaturgy	Thau 2	air1	battle	Impossible Underwater / 20 Fatigue / 100% Casting Time / Range: 30 Squares / +5 Precision / AOE: One Target / Base Penetration: 11 () / Water Breathing negates / Undead negates / Inanimate negates / 40 AN FAT (+5 per )
+Calm Emotions	thaumaturgy	Thau 2	water1	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / Phlegmatic Imbalance: / -1 STR / -1 ATT / -1 Berserker / -4 MOR (for Berserk checks) / Each Round While Berserk / MR vs. 7 negates / Ends Berserker Rage
+Scrying Pool	thaumaturgy	Thau 2	water1 glamour1	ritual	Ritual / Impossible Underwater / Range: 5 Provinces / Scrying / Duration: 1 (+1 per [watergem])
+Returning	thaumaturgy	Thau 2	astral2	battle	200 Fatigue / 150% Casting Time / Self-Affecting / Insecure Returning: / ~93%: Teleport (Capital) / - May Return Late & Insane / ~7%: Banishes to the Void
+Mind Burn	thaumaturgy	Thau 2	astral2	battle	20 Fatigue / 100% Casting Time / Infinite Range / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / 12 AN Magic DMG (+1 per )
+Beast Fury	thaumaturgy	Thau 2	nature1	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / +2 Precision / AOE: 1 Square / Animals only / Mindless negates / Fury (+2 ATT, +2 MOR)
+Sleep	thaumaturgy	Thau 2	glamour2	battle	20 Fatigue / 100% Casting Time / Range: 35 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / Asleep (useless until harmed)
+Rage	thaumaturgy	Thau 3	fire2	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / Enraged (50% Random Melee Chance)
+Augury	thaumaturgy	Thau 3	fire2	ritual	Ritual / Impossible Underwater / Range: 5 Provinces (Friendly) / Site-Search ()
+Carrier Birds	thaumaturgy	Thau 3	air2	ritual	Ritual / Impossible Underwater / Range: 4 Provinces / Seas immune / Must have a Commander there / Transfers up to 15 Gems
+Carrier Eagle	thaumaturgy	Thau 3	air2	ritual	Ritual / Impossible Underwater / Range: 4 Provinces / Seas immune / Must have a Commander there / Transfers one Item
+Sailors' Death	thaumaturgy	Thau 3	water3	battle	Impossible Underwater / 20 Fatigue / Range: 30 Squares / +1 Precision / AOE: 1 Square / Base Penetration: 11 () / Water Breathing negates / Undead negates / Inanimate negates / 14 Internal Magic DMG (+3 per )
+Iron Will	thaumaturgy	Thau 3	earth1	battle	20 Fatigue / Range: 25 Squares / Sure Hit / AOE: 1 Square / Mindless negates / +4 MR
+Teleport Gems	thaumaturgy	Thau 3	astral3	ritual	Ritual / Range: 6 Provinces / Must have a Commander there / Transfers up to 10 Gems
+Haruspex	thaumaturgy	Thau 3	nature2	ritual	Ritual / Range: 3 Provinces (Friendly) / Site-Search ()
+Panic	thaumaturgy	Thau 3	nature2	battle	"20 Fatigue / 100% Casting Time / Range: 30 Squares / +1 Precision / AOE: 5 Squares (+2 per ) / 1 Fear ""DMG"""
+Whispers of the Wild	thaumaturgy	Thau 3	nature2	ritual	Ritual / Range: 4 Provinces / Forest/Kelp Forest only / Scrying / Duration: 1 (+1 per [naturegem])
+Luck	thaumaturgy	Thau 3	glamour1	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / +2 Precision / AOE: 1 Square / Undead negates / Inanimate negates / Lucky (negates 75% of kills)
+Despair	thaumaturgy	Thau 3	glamour2	battle	"10 Fatigue / 100% Casting Time / Range: 30 Squares / +1 Precision / AOE: 5 Squares (+1 per ) / Base Penetration: 11 () / No Friendly Fire / 4 Fear ""DMG"""
+Furious Warriors	thaumaturgy	Thau 4	fire2	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / +2 Precision / AOE: 3 Squares (+1 per ) / Mindless negates / Animal negates / Fury (+2 ATT, +2 MOR)
+Prison of Fire	thaumaturgy	Thau 4	fire3	battle	Impossible Underwater / 30 Fatigue / 100% Casting Time / Range: 30 Squares / +2 Precision / AOE: 3 Squares (+1 per ) / Entrapment (MOR vs. 21 escapes) / On Escape: / 3 AN Fire DMG
+Auspex	thaumaturgy	Thau 4	air2	ritual	Ritual / Impossible Underwater / Range: 2 Provinces (Friendly) / Cannot cross seas / Seas immune / Site-Search ()
+Curse of the Desert	thaumaturgy	Thau 4	water3	battle	Impossible Underwater / 30 Fatigue / 100% Casting Time / Range: 30 Squares / Sure Hit / AOE: 5 Squares / Base Penetration: 11 () / Undead negates / Inanimate negates / Desiccated (+2d8 FAT/round)
+Gnome Lore	thaumaturgy	Thau 4	earth2	ritual	Ritual / Range: 3 Provinces (Friendly) / Site-Search ()
+Paralyze	thaumaturgy	Thau 4	astral2	battle	20 Fatigue / 100% Casting Time / Infinite Range / Sure Hit / AOE: One Target / Base Penetration: 11 () / 60 AN Paralysis DMG (+9 per )
+Telestic Animation	thaumaturgy	Thau 4	astral2	ritual	Ritual / Local / Telestic Animate x1
+Astral Window	thaumaturgy	Thau 4	astral2	ritual	Ritual / Range: 6 Provinces / Scrying / Duration: 1 (+1 per [astralpearl])
+Teleport	thaumaturgy	Thau 4	astral3	ritual	Ritual / Range: 6 Provinces / Teleport
+Terror	thaumaturgy	Thau 4	death3	battle	"20 Fatigue / 100% Casting Time / Range: 50 Squares / +1 Precision / AOE: 5 Squares (+1 per ) / 3 Fear ""DMG"""
+Touch of Madness	thaumaturgy	Thau 4	nature1	battle	30 Fatigue / 100% Casting Time / Range: 20 Squares / AOE: 1 Square / Mindless negates / Inanimate negates / Gone Berserk (Unflinching Charge)
+Rage of the Cornered Rat	thaumaturgy	Thau 4	nature2	battle	20 Fatigue / 100% Casting Time / Range: 20 Squares / AOE: 3 Squares (+1 per ) / Animals only / Gone Berserk (Unflinching Charge)
+Ferocity	thaumaturgy	Thau 4	nature2	battle	20 Fatigue / 100% Casting Time / Range: 15 Squares / +2 Precision / AOE: 3 Squares (+1 per ) / Animals only / Mindless negates / Fury (+2 ATT, +2 MOR)
+Wildness	thaumaturgy	Thau 4	nature3	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / +3 Precision / AOE: 1 Square / Base Penetration: 11 () / Animals only / Confused (50% randomness)
+Cure Disease	thaumaturgy	Thau 4	nature4	ritual	Ritual / Local (1 Unit) / Cures Disease
+Mind Blank	thaumaturgy	Thau 4	glamour1 astral1	battle	"20 Fatigue / 100% Casting Time / Mind Blank (75% Chance/spell): / Dulls "" Mindless negates"" Spells / Magic Duel must Penetrate / [Base Penetration: 11 ()] / +10 MR against the other spells"
+Slumber	thaumaturgy	Thau 4	glamour2	battle	20 Fatigue / Range: 35 Squares / 100% Casting Time / Sure Hit / AOE: 3 Squares (+1 per ) / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / Asleep (useless until harmed)
+Visions of Death	thaumaturgy	Thau 4	glamour3	battle	20 Fatigue / Range: 35 Squares (+5 per ) / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / 25 False Magic DMG (+5 per )
+Vengeance of the Dead	thaumaturgy	Thau 4	glamour3 death1	ritual	Ritual / Range: 5 Provinces / Base Penetration: 11 () / Target must have Kills / Mindless negates / Undead negates / Dead One x(Target's Kills) / (Independent Assassination Squad)
+Gift of the Furies	thaumaturgy	Thau 5	fire3	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / +2 Precision / AOE: 20 Squares (+1 per ) / Mindless negates / Animal negates / Fury (+2 ATT, +2 MOR)
+Pyre of Catharsis	thaumaturgy	Thau 5	fire3	ritual	Ritual / Impossible Underwater / Local (Caster) / Cures Disease / 20 AN Fire DMG
+Raging Hearts	thaumaturgy	Thau 5	fire4	ritual	"Ritual / Range: 5 Provinces / Raging Rebels / ""Anonymous"" / +60 Unrest / 5% Popkill"
+Serenity	thaumaturgy	Thau 5	water3	battle	20 Fatigue / 100% Casting Time / Range: 10 Squares / Sure Hit / AOE: 3 Squares (+1 per ) / Base Penetration: 11 () / Mindless negates / Phlegmatic Imbalance: / -1 STR / -1 ATT / -1 Berserker / -4 MOR (for Berserk checks) / Each Round While Berserk / MR vs. 7 negates / Ends Berserker Rage
+Earth Sense	thaumaturgy	Thau 5	earth4	ritual	Ritual / Local / +100 Patrol Strength / (Only against Hiding units) / Spirit Sight (Patrol) / Doesn't catch Floating units / Someone must Patrol / Duration: 1 (+3 per [earthgem])
+Teleport Item	thaumaturgy	Thau 5	astral2	ritual	Ritual / Range: 6 Provinces / Must have a Commander there / Transfers one Item
+Soul Slay	thaumaturgy	Thau 5	astral3	battle	20 Fatigue / 100% Casting Time / Infinite Range / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / Instakill / Soul-Slayed (Not Coming Back) / (Doesn't prevent Re-Summoning)
+Control the Dead	thaumaturgy	Thau 5	death2	battle	20 Fatigue / 100% Casting Time / Range: 25 Squares / AOE: 1 Square / Base Penetration: 11 () / Undead only / No Friendly Fire / Enslavement (Made your Pawn)
+Leeching Darkness	thaumaturgy	Thau 5	death3	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / +1 Precision / AOE: 3 Squares (+1 per ) / Leeching Cloud
+Charm Animal	thaumaturgy	Thau 5	nature2	battle	20 Fatigue / 100% Casting Time / Range: 20 Squares / Sure Hit / AOE: One Target / Base Penetration: 7 () / Animals only / Charms (Switches Allegiance)
+Pack Ferocity	thaumaturgy	Thau 5	nature2	battle	100 Fatigue / 125% Casting Time / Range: 15 Squares / +2 Precision / AOE: 20 Squares (+1 per ) / Animals only / Mindless negates / Fury (+2 ATT, +2 MOR)
+The Ravenous Swarm	thaumaturgy	Thau 5	nature3	battle	Impossible Underwater / 100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Eats One Target at a Time: / Prefers the Undead / 7 AN Holy DMG (x2 vs. Undead)/rnd.
+Gift of Reason	thaumaturgy	Thau 5	nature4	ritual	Ritual / Local (1 Troop) / Mindless negates / Promotes to Commandership
+Confusion	thaumaturgy	Thau 5	glamour2	battle	10 Fatigue / 100% Casting Time / Range: 30 Squares / +3 Precision / AOE: 1 Square / Base Penetration: 11 () / Mindless negates / Confused (50% randomness)
+Group Luck	thaumaturgy	Thau 5	glamour2	battle	40 Fatigue / 100% Casting Time / Range: 15 Squares / +2 Precision / AOE: 3 Squares (+1 per ) / Undead negates / Inanimate negates / Lucky (negates 75% of kills)
+Choleria	thaumaturgy	Thau 6	fire5	ritual	Ritual / Range: 5 Provinces (Friendly) / +[Productivity]2 (Adjusts the Base) / + 1-6 Unrest/turn / Duration: 1 (+1 per [firegem])
+Sanguinia	thaumaturgy	Thau 6	air5	ritual	Ritual / Range: 5 Provinces (Friendly) / - 1-6 Unrest/turn / Duration: 1 (+1 per [airgem])
+Phlegmatia	thaumaturgy	Thau 6	water5	ritual	Ritual / Range: 5 Provinces (Enemy) / +[Sloth]3 (Scale Dump) / - [Dominion strength]1-2 (Friendly or Hostile) / Desertion (All Units): / MR vs. 10 negates / Morale vs. 10 negates / Disappear (No Corpse)
+Melancholia	thaumaturgy	Thau 6	earth5	ritual	Ritual / Range: 5 Provinces (Enemy) / +[Sloth]2 (Scale Dump) / - [Dominion strength]2-3 (Friendly or Hostile) / Desertion (All Units): / MR vs. 10 negates / Morale vs. 10 negates / Disappear (No Corpse)
+Enslave Mind	thaumaturgy	Thau 6	astral4	battle	20 Fatigue / 100% Casting Time / Infinite Range / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / Enslavement (Made your Pawn)
+Imprint Souls	thaumaturgy	Thau 6	astral4	ritual	Ritual / Range: 5 Provinces / W = 120 (+4 per ) / Y = 12 + 6 x (Penetration - 11) () / Affects W Fellas / (Pop Loss rounds to the nearest 10) / Mass Brainwashing (Land): / 1 becomes a Mad Priest / 50% become Corpses / (Y)% become Flagellants / Rest become Madm
+Gateway	thaumaturgy	Thau 6	astral4	ritual	Ritual / Range: 6 Provinces (Friendly Lab) / Teleport w/ Troops
+Wither Bones	thaumaturgy	Thau 6	death3	battle	20 Fatigue / 100% Casting Time / Range: 30 Squares / AOE: 6 Squares (+2 per ) / Base Penetration: 11 () / Undead only / 16 AN Magic DMG (+2 per ) / (MR only halves DMG)
+Leprosy	thaumaturgy	Thau 6	death5	ritual	Ritual / Range: 4 Provinces (Enemy) / Leprosy (50% of Units): / MR vs. 11 negates / Inanimate negates / Diseased (-10% HP/turn)
+Foul Air	thaumaturgy	Thau 6	death5 air1	global	Global Enchantment / Impossible Underwater / Seas are immune / + 1-4 Unrest/turn / Upon Having Below-Max. HP in Battle: / Demon negates / Inanimate negates / Diseased (-10% HP/turn)
+Growing Fury	thaumaturgy	Thau 6	nature4	battle	100 Fatigue / 200% Casting Time / Battlefield Enchantment (Neutral) / Berserker (+0)
+Mirror Mind	thaumaturgy	Thau 6	glamour2 astral1	battle	"20 Fatigue / 100% Casting Time / Range: 15 Squares / AOE: 3 Squares (+1 per ) / Mind Blank (75% Chance/spell): / Dulls "" Mindless negates"" Spells / Magic Duel must Penetrate / [Base Penetration: 11 ()] / +10 MR against the other spells"
+Unending Nightmare	thaumaturgy	Thau 6	glamour3 death1	battle	20 Fatigue / Range: 35 Squares / 100% Casting Time / Sure Hit / AOE: 3 Squares (+1 per ) / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / Asleep (useless until harmed) / Confused (50% randomness)
+Beckoning	thaumaturgy	Thau 6	glamour4 nature2	ritual	Ritual / Range: 4 Provinces (Enemy Forest) / Seas are immune / Beckons at least 75 Units (+5 per ) / Base Penetration: 11 () / Morale vs. 10 negates / Mindless negates / Forest Survival negates / Disappear (No Corpse) [FIXME]
+Sandman's Blessing	thaumaturgy	Thau 6	glamour5	battle	20 Fatigue / Range: 30 Squares / 100% Casting Time / Sure Hit / AOE: 25 Squares / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / Asleep (useless until harmed)
+Forgotten Palace	thaumaturgy	Thau 6	glamour5	ritual	Ritual / Range: 3 Provinces (Friendly) / Hides the local Fort / Lasts Until Province Changes Hands
+Purgatory	thaumaturgy	Thau 7	fire6	global	Global Enchantment / Impossible Underwater / Seas are immune / For Each Enemy Unit: / (10 x Dominion)% chance / (Dominion sampled from target's province) / Undead only / 18 AP Fire DMG
+Dark Skies	thaumaturgy	Thau 7	air5	global	"Global Enchantment / Impossible Underwater / Deep Seas are immune / Caves are immune / Within Your Dominion: / Darkness (1) / Doom & Gloom / No ""Friendly Fire"" / -1 MOR x Dominion"
+Vengeful Water	thaumaturgy	Thau 7	water7	global	Global Enchantment / Wastes are immune / Within Your Dominion: / For Each Enemy Commander: / (5 + 2 x Dominion)% chance / Assassination Attempt / Samples the Target's Province Scales: / [Cold]2+: Ice Elemental (Size 4 + Cold) / Otherwise, Samples the Target's 
+Vortex of Returning	thaumaturgy	Thau 7	astral4	battle	300 Fatigue / 200% Casting Time / 100% Battlefield Spell (Friendly) / Insecure Returning: / ~93%: Teleport (Capital) / - May Return Late & Insane / ~7%: Banishes to the Void
+Divine Name	thaumaturgy	Thau 7	astral5	ritual	Ritual / Local (1 Troop) / Promote to Commandership
+Plague	thaumaturgy	Thau 7	death4	battle	100 Fatigue / 125% Casting Time / Range: 25 Squares / AOE: 1 Square / Base Penetration: 11 () / Undead negates / Inanimate negates / Plagued (1-2 Internal DMG, 1-4 FAT/rnd.) / Gradually spreads across units
+Burden of Time	thaumaturgy	Thau 7	death7	global	Global Enchantment / +[Death]2 (Adjusts the Base) / + 1-4 Unrest/turn / 2% Popkill / For Each Unit / 40% Chance / Age: + 1-4 Years
+Fury of the Wild	thaumaturgy	Thau 7	nature4	battle	200 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Animals only / Mindless negates / Fury (+2 ATT, +2 MOR)
+Charm	thaumaturgy	Thau 7	glamour3	battle	30 Fatigue / 100% Casting Time / Range: 25 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Mindless negates / Charms (Switches Allegiance)
+Mass Confusion	thaumaturgy	Thau 7	glamour3	battle	10 Fatigue / 100% Casting Time / Range: 30 Squares / +3 Precision / AOE: 5 Squares (+1 per ) / Base Penetration: 11 () / Mindless negates / Confused (50% randomness)
+Gates of Horn and Ivory	thaumaturgy	Thau 7	glamour5	global	Global Enchantment (Local) / Impossible Underwater / +15[glamourgem]/turn / Far Caster (3, Glamour)
+Hydrophobia	thaumaturgy	Thau 8	fire2	battle	100 Fatigue / 125% Casting Time / Range: 30 Squares / Sure Hit / AOE: 5 Squares / Base Penetration: 11 () / Mindless negates / Undead negates / Inanimate negates / Enraged (50% Random Melee Chance)
+Ordeal by Fire	thaumaturgy	Thau 8	fire6 astral6	global	Global Enchantment / If Gems (not Blood Slaves) are Spent: / G = Gems Spent / 2 / 2 Effects / 1dG AN Fire DMG (x½ Underwater) / If Gems are Used in Battle: / Burn (temp. 1dSize DMG/round)
+Gale Gate	thaumaturgy	Thau 8	air5	global	"Global Enchantment (Local) / +20[airgem]/turn / +1 Air Elemental Size (Everywhere) / Random Number of ""Effects""/turn: / In a Random Province: / [If a friendly one is picked, / there's a (50 + 10 x )% chance / to pick an enemy one instead] / Seas are immune / C"
+Astral Travel	thaumaturgy	Thau 8	astral5	ritual	Ritual / Range: 5 Provinces / Teleport (with Troops)
+Soul Drain	thaumaturgy	Thau 8	astral5 death5	battle	500 Fatigue / 300% Casting Time / Battlefield Enchantment (Caster) / Just Under 24 Times a Round: / Affects a random 3% of the Battlefield / Base Penetration: 11 () / Mindless negates / 2 AN Drain DMG
+Stygian Paths	thaumaturgy	Thau 8	death5	ritual	Ritual / Range: 10 Provinces / Teleport (with Troops) / Poor Hospitality (All Units): / 1 AN Magic DMG / On DMG: Death / MR vs. 11 negates () / Stygian Guide negates (listed % chance) / (for everyone) / Stealthy negates (listed % chance) / (per-unit basis, not
+Black Death	thaumaturgy	Thau 8	death5	ritual	"Ritual / Range: 5 Provinces / The Plague / ""Anonymous"" / +10 Unrest / 50% Popkill / Diseases Units (10%)"
+Undead Mastery	thaumaturgy	Thau 8	death7	battle	700 Fatigue / 300% Casting Time / 100% Battlefield Spell (Enemy) / Base Penetration: 7 () / Undead only / Enslavement (Made your Pawn)
+Call the Worm that Walks	thaumaturgy	Thau 8	nature5	ritual	Ritual / Local / Worm Mage Commander x1
+Battle Fortune	thaumaturgy	Thau 8	glamour4	battle	200 Fatigue / 150% Casting Time / Range: 15 Squares / +5 Precision / AOE: 20 Squares (+1 per ) / Undead negates / Inanimate negates / Lucky (Negates 75% of kills)
+Lure of the Deep	thaumaturgy	Thau 8	glamour5 water2	global	Global Enchantment / Underwater ONLY / Affects Seas & Coasts only / Sirens are 50 Gold cheaper / For Each Enemy Unit: / [20 x (Dominion + 1)]% chance / Lure of the Deep / ( MR vs. 7 negates, instead of 16)
+Winds of Arcane Drought	thaumaturgy	Thau 9	air7 astral6	global	Global Enchantment (Local) / Impossible Underwater / Drain (Adjusts the Base) / Locally: +5 / Within 6 Provinces: +[Drain]3 / Elsewhere: +[Drain]1 / Locally & Within 6 Provinces: / Gem-Sucking / Seas are immune / Caves are immune / Steals Magic Site Output / [
+Elemental Dampening	thaumaturgy	Thau 9	earth7 astral3	global	Global Enchantment / Fast Caster (-100, Elements) / Forge Bonus (-20%, [firegem][airgem][watergem][earthgem]) / Elemental Rituals cost 20% more. / -1 Size to all Elementals
+Arcane Analysis	thaumaturgy	Thau 9	astral4	global	Ritual / Local (One Global Enchantment) / Reveals the Target's Overcast
+Nexus Gate	thaumaturgy	Thau 9	astral5 earth3	ritual	Ritual / Local / Makes a Province Connection / (with Nexus) / This cannot be undone!
+Astral Disruption	thaumaturgy	Thau 9	astral6	global	Ritual / Local / Dispels Local Rituals Everywhere / (Not Including Local Globals) / Attempts to Dispel / ALL Global Enchantments at once / (May be Overcast for this purpose) / Horror Marks Caster (150%) / Worldwide Effects: / If Enough [astralpearl] are Spent:
+Master Enslave	thaumaturgy	Thau 9	astral8	battle	800 Fatigue / 325% Casting Time / 100% Battlefield Spell (Enemy) / Base Penetration: 7 () / Mindless negates / Enslavement (Made your Pawn)
+Remnants in the Depths	thaumaturgy	Thau 9	death6 water4	global	Global Enchantment / Underwater ONLY / For Seas: / +[Death]1/turn (Adjusts the Base) / For Seas at 5: / 4% Popkill / Diseases Units (5%?) [FIXME] / For Coasts: / +[Death]1/turn (Adjusts the Base, max 2)
+Beast Mastery	thaumaturgy	Thau 9	nature6	battle	400 Fatigue / 225% Casting Time / 100% Battlefield Spell (Enemy) / Base Penetration: 7 () / Animals only / Enslavement (Made your Pawn)
+Dreamwild Legion	thaumaturgy	Thau 9	glamour5	battle	400 Fatigue / 225% Casting Time / 100% Battlefield Spell (Friendly) / Undead negates / Inanimate negates / Lucky (Negates 75% of kills)
+Legion's Demise	thaumaturgy	Thau 9	glamour7	battle	400 Fatigue / 275% Casting Time / Battlefield Enchantment (Caster) / Each Round: / Affects the whole Battlefield / Base Penetration: 7 () / No Friendly Fire / 5 False Magic DMG
+Dreams of the Awakening God	thaumaturgy	Thau 9	glamour8	global	Global Enchantment / In Provinces with [Dominion strength]0 or lower: / (Neutral or Hostile Dominion) / +[Dominion strength]1/turn (85% chance)
+Bleed	blood-magic	No Research Required	blood1	battle	100 Fatigue / 150% Casting Time / Range: 30 Squares (+5 per ) / AOE: One Target / Base Penetration: 11 () / Undead negates / Inanimate negates / Bleed (temp. -5% HP/rnd.)
+Blood Burst	blood-magic	Blood 1	blood1	battle	100 Fatigue / 175% Casting Time / Range: 35 Squares / +5 Precision / AOE: 1 square / Undead negates / Inanimate negates / 11 AN Magic DMG (+1 per )
+Blood Heal	blood-magic	Blood 1	blood1	battle	100 Fatigue / 150% Casting Time / Undead negates / Inanimate negates / 50 Points of Healing
+Sabbath Master	blood-magic	Blood 1	blood1	battle	100 Fatigue / 150% Casting Time / Sabbath Master
+Sabbath Slave	blood-magic	Blood 1	blood1	battle	100 Fatigue / 150% Casting Time / Sabbath Slave
+Reinvigoration	blood-magic	Blood 1	blood1	battle	100 Fatigue / 150% Casting Time / Wipes 200 Fatigue
+Bind Shadow Imp	blood-magic	Blood 1	blood1	ritual	Ritual / Local / Shadow Imp Commander x1
+Summon Imps	blood-magic	Blood 1	blood1	battle	100 Fatigue / 150% Casting Time / Range: 1 square / Imp x5
+Bind Fiery Imps	blood-magic	Blood 1	blood1 fire1	ritual	Ritual / Local / Fiery Imp x5 (+0.5 per )
+Blood Boil	blood-magic	Blood 1	blood1 fire1	battle	50 Fatigue / 125% Casting Time / Range: 25 Squares / AOE: One Target / Base Penetration: 11 () / Undead negates / Inanimate negates / 11 Internal Fire DMG (+1 per )
+Bowl of Blood	blood-magic	Blood 2	blood1	ritual	Ritual / Range: 5 provinces (Friendly) / Site-Search ()
+Banish Demon	blood-magic	Blood 2	blood1	battle	100 Fatigue / 150% Casting Time / Range: 30 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / Demon only / Instakill
+Bind Bone Fiends	blood-magic	Blood 2	blood1 death1	ritual	Ritual / Local / Bone Fiend x5 (+0.5 per )
+Agony	blood-magic	Blood 2	blood2	battle	"100 Fatigue / 150% Casting Time / Range: 40 Squares / +2 Precision / AOE: 4 squares (+2 per ) / Base Penetration: 11 () / Undead negates / Inanimate negates / 1 AN Magic DMG / On DMG: Major Fear / 3 Fear ""DMG"""
+Bind Spine Devil	blood-magic	Blood 2	blood2	ritual	Ritual / Local / Spine Devil x1
+Bind Fiend	blood-magic	Blood 2	blood2	ritual	Ritual / Local / Fiend of Darkness x1
+Hell Power	blood-magic	Blood 2	blood3	battle	300 Fatigue / 225% Casting Time / Hell Power / Also: Mark / Mindless negates / 1 Horror Mark / Horrors visit each round! / [(20 + 2 x Marks)% chance]
+Leeching Touch	blood-magic	Blood 3	blood1	battle	20 Fatigue / 50% Casting Time / Range: 1 Square / AOE: One Target / Inanimate negates / 15 AN Drain DMG (+1 per )
+Cross Breeding	blood-magic	Blood 3	blood1 nature1	ritual	Ritual / Local / Cross Breeding / [30 Attempts (+1 per )]
+Pain Transfer	blood-magic	Blood 3	blood2	battle	20 Fatigue / 125% Casting Time / Pain Transfer
+Blood Feast	blood-magic	Blood 3	blood2	ritual	Ritual / Local / Inanimate negates / Kills 250-750 Population / Heals Afflictions (10) / Population Killer (25% chance)
+Bind Devil	blood-magic	Blood 3	blood2 fire2	ritual	Ritual / Local / Devil x1
+Bind Frost Fiend	blood-magic	Blood 3	blood2 water2	ritual	Ritual / Local / Frost Fiend x1
+Infernal Circle	blood-magic	Blood 3	blood5	ritual	Ritual / Local / Far Caster (1, Blood Rituals) / Duration: 1 (+1 per [bloodslave])
+Bind Serpent Fiends	blood-magic	Blood 4	blood1	ritual	Ritual / Local / Serpent Fiend x3
+Hellfire	blood-magic	Blood 4	blood1 fire2	battle	100 Fatigue / 150% Casting Time / Range: 25 Squares (+5 per ) / AOE: 3 squares / 2 Effects (AOE) / 9 AP Fire DMG (+1 per )
+Blood Lust	blood-magic	Blood 4	blood2	battle	100 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Demon only / Extra Strength (+4 STR)
+Bind Storm Demon	blood-magic	Blood 4	blood2 air2	ritual	Ritual / Local / Storm Demon x1
+Call Lesser Horror	blood-magic	Blood 4	blood2 astral2	battle	200 Fatigue / 175% Casting Time / Range: 5 Squares / Lesser Horror x1
+Blood Fecundity	blood-magic	Blood 4	blood2 nature2	ritual	Ritual / Local / +[Growth]2 (Adjusts the Base) / Duration: 1 (+1 per [bloodslave])
+Hell Ride	blood-magic	Blood 4	blood3	ritual	Ritual / Max Size: 3 / Range: 3 provinces / Self-Transport
+Wrath of Pazuzu	blood-magic	Blood 5	blood1 air3	ritual	"Ritual / Range: 5 provinces / Seas are immune / Caves are immune / Shed-Caused Storm / ""Anonymous"" / +35 Unrest / 4% Popkill"
+Awaken Dark Vines	blood-magic	Blood 5	blood1 nature3	ritual	Ritual / Local / Dark Vines x2
+Hellbind Heart	blood-magic	Blood 5	blood2	battle	100 Fatigue / 150 Casting Time / Range: 30 Squares / Sure Hit / AOE: One Target / Mindless negates / Base Penetration: 11 () / Charms (Switches Allegiance)
+Bind Demon Knight	blood-magic	Blood 5	blood2 earth2	ritual	Ritual / Local / Demon Knight x1
+Summon Illearth	blood-magic	Blood 5	blood2 earth2	battle	200 Fatigue / 175% Casting Time / Illearth (Size 7) x1 /
+Send Lesser Horror	blood-magic	Blood 5	blood3 astral3	ritual	Ritual / Range: 4 provinces / Lesser Horror x1 / (Independent) / Horror Marks Caster (10%)
+Rain of Toads	blood-magic	Blood 5	blood3 nature1	ritual	"Ritual / Range: 4 / Seas are immune / Toad Omen / ""Anonymous"" / +[Misfortune]3 (Scale Dump) / +30 Unrest / Diseases Units (4%)"
+Horde from Hell	blood-magic	Blood 5	blood4	ritual	Ritual / Range: 4 provinces / Devil Commander x1 / Imp x40
+Bloodletting	blood-magic	Blood 5	blood4	battle	400 Fatigue / 250% Casting Time / 100% Battlefield Spell / Base Penetration: 11 () / Undead negates / Inanimate negates / 1 AN Drain DMG
+Bind Succubus	blood-magic	Blood 5	blood4 glamour1	ritual	Ritual / Local / Succubus Commander x1
+Bind Incubus	blood-magic	Blood 5	blood4 glamour1	ritual	Ritual / Local / Incubus Commander x1
+Rejuvenate	blood-magic	Blood 6	blood1	ritual	Ritual / Undead negates / Inanimate negates / Age: -10 Years
+Soul Transaction	blood-magic	Blood 6	blood1 glamour1	battle	100 Fatigue / 150% Casting Time / Range: 20 Squares / Sure Hit / AOE: One Target / Base Penetration: 15 () / Morale negates / Charms (Switches Allegiance) / On Success: Infernal Invisibility / Invisible (Attackers get -9 ATT) / Rout
+Harm	blood-magic	Blood 6	blood2	battle	100 Fatigue / 150% Casting Time / Range: 50 Squares / +5 Precision / AOE: 4 Squares (+2 per ) / Base Penetration: 11 () / Inanimate negates / 2 AN Magic DMG (+1 per ) / Also: Area Chest Wound / Base Penetration: 11 () / Inanimate negates / Chest Wound (-1 STR, +5 ENC)
+Blood Rite	blood-magic	Blood 6	blood2 death2	ritual	Ritual / Local / Vampire x1
+Blood Rain	blood-magic	Blood 6	blood3	battle	"300 Fatigue / 275% Casting Time / Battlefield Enchantment (Enemies) / Periodic 1 Frighten ""DMG"""
+Bind Ice Devil	blood-magic	Blood 6	blood3 water3	ritual	Ritual / Local / One of Six Commanders: / Nycafor - Ice Devil (3 attacks) / Oriax - Ice Devil (Frost Brand) / Gaap - Ice Devil (Hell Sword) / Bifrons - Ice Devil ([astral 2]2) / Cimejes - Ice Devil (Frost Fiends) / Bune - Ice Devil ([death 3]3)
+Call Horror	blood-magic	Blood 6	blood3 astral3	battle	200 Fatigue / 225% Casting Time / Range: 5 Squares / Greater Horror x1
+Infernal Disease	blood-magic	Blood 6	blood5	ritual	Ritual / Range: 5 provinces / Disease Demon x1 / (Independent Assassin)
+Ritual of Five Gates	blood-magic	Blood 6	blood5	ritual	Ritual / Local / Fiend of Darkness x1 / Devil x1 / Frost Fiend x1 / Storm Demon x1 / Demon Knight x1
+Leech	blood-magic	Blood 7	blood1	battle	100 Fatigue / 150% Casting Time / Range: 30 Squares / +25 Precision / AOE: 1 square / Inanimate negates / 25 AN Drain DMG (+1 per )
+Father Illearth	blood-magic	Blood 7	blood3 earth4	ritual	Ritual / Local / Pedoseion - Father Illearth x1 / (Unique Commander)
+Send Dream Horror	blood-magic	Blood 7	blood3 astral4	ritual	"Ritual / Range: 6 provinces / Horror Marks Caster (20%) / Horrific Dreams / ""Anonymous"" / +30 Unrest / Defiler of Dreams Commander x1 / (Independent & Stealthy)"
+Bind Arch Devil	blood-magic	Blood 7	blood4 fire2	ritual	Ritual / Local / One of Five Commanders: / Buriol - Arch Devil (Devils) / Ethanim - Arch Devil (Fire Brand) / Furcas - Arch Devil (1[firegem]/turn) / Magoth - Arch Devil ([astral 3]3) / Igarak - Arch Devil (Fear Aura)
+Dome of Corruption	blood-magic	Blood 7	blood4 astral4	ritual	"Ritual / Local / +[Magic]2 (Adjusts the Base) / Horror Marks Locals (2%) / Horrors ""visit"" each turn! / [(Marks*10)% chance, max 50%] / Duration: 1 (+1 per 1[bloodslave]) / Blocks 75% of Outer Rituals / On Block: Feeblemind / Base Penetration: 11 () / Feeblemi"
+Purify Blood	blood-magic	Blood 7	blood4 nature1	battle	300 Fatigue / 225% Casting Time / 100% Battlefield Spell (Friendly) / Poison Resistance (10)
+Plague of Locusts	blood-magic	Blood 7	blood5	ritual	Ritual / Range: 6 provinces / Demonic Locust x11
+Blood Moon	blood-magic	Blood 7	blood7 astral5	global	Global Enchantment / Seas are immune / Caves are immune / +[Misfortune]2 (Adjusts the Base) / Master Ritualist (1, Blood) / Blood Searcher (1)
+Damage Reversal	blood-magic	Blood 8	blood1	battle	100 Fatigue / 150% Casting Time / Damage Reversal (Returns DMG taken) / [Base Penetration: 11 ()]
+Improved Cross Breeding	blood-magic	Blood 8	blood2 nature2	ritual	Ritual / Local / Cross Breeding / [40 Attempts (+3 per )]
+Rush of Strength	blood-magic	Blood 8	blood3	battle	100 Fatigue / 175% Casting Time / 100% Battlefield Spell (Friendly) / Extra Strength (+4 STR)
+Life for a Life	blood-magic	Blood 8	blood3	battle	199 Fatigue / 150% Casting Time / Infinite Range / Sure Hit / AOE: One Target / Base Penetration: 11 () / Inanimate negates / 40 AN Magic DMG (+5 per )
+Infernal Prison	blood-magic	Blood 8	blood3 fire1	battle	200 Fatigue / 175% Casting Time / Range: 35 Squares / Sure Hit / AOE: One Target / Banishes to the Inferno
+Claws of Kokytos	blood-magic	Blood 8	blood3 water1	battle	200 Fatigue / 175% Casting Time / Range: 35 Squares / Sure Hit / AOE: One Target / Banishes to Kokytos
+Horror Seed	blood-magic	Blood 8	blood3 astral4	ritual	Ritual / Range: 6 Provinces (Random Unit) / Base Penetration: 15 () / Horror Seed (Blooms on Death) / Each Turn before Blooming, it: / - Horror Marks the Seeded (20% chance) / - Curses the Seeded (10% chance) / - Marks 5 Others / MR vs. 15 negates / Mindless n
+Curse of Blood	blood-magic	Blood 8	blood3 death4	ritual	Ritual / Local / Vampire Lord Commander x1
+Bind Heliophagus	blood-magic	Blood 8	blood5	ritual	Ritual / Local / One of Four Commanders: / Mastema - Heliophagus ([blood 4]4, Summoner) / Amaimon - Heliophagus ([fire 4]4[blood 3]3, Leader) / Gorilon - Heliophagus ([death 4]4[blood 3]3, Summoner) / Mabakiel - Heliophagus ([death 3]3[blood 3]3, Jerk)
+Three Red Seconds	blood-magic	Blood 8	blood5	ritual	Ritual / Range: 4 Provinces / Fort negates / Citadel of Power
+Blood Vortex	blood-magic	Blood 8	blood7	global	Global Enchantment (Local) / Seas are immune / Caves are immune / Kills Population in 4 provinces/turn / (Casting place, 1 adjacent, & 2 random) / In the Province it's cast in: / 10% + 10*D100 Killed / [bloodslave]Slave Yield: Pop Loss / 30 / In each of the ot
+Infernal Fumes	blood-magic	Blood 9	blood4 earth3	ritual	Ritual / Range: 5 Provinces / Seas only / The Attack: / Targets a random 50% of the battlefield / Sulphur Clouds (10 Levels, +1 per ) / (Levels beyond 7 disperse outward)
+Send Horror	blood-magic	Blood 9	blood4 astral4	ritual	Ritual / Range: 6 Prrovinces / Greater Horror x1 / (Independent) / Horror Marks Caster (40%)
+Infernal Forces	blood-magic	Blood 9	blood5 fire2	ritual	Ritual / Local / Devil x18 (+1 per ) / Imp x40
+Infernal Tempest	blood-magic	Blood 9	blood5 air2	ritual	Ritual / Local / Storm Demon x12 (+1 per )
+Forces of Ice	blood-magic	Blood 9	blood5 water2	ritual	Ritual / Local / Frost Fiend x15 (+1 per )
+Infernal Crusade	blood-magic	Blood 9	blood5 earth2	ritual	Ritual / Local / Demon Knight x10 (+1 per )
+Forces of Darkness	blood-magic	Blood 9	blood6	ritual	Ritual / Local / Fiend of Darkness x22 (+1 per )
+Astral Corruption	blood-magic	Blood 9	blood6 astral6	global	Global Enchantment / Makes Horrors 10x more Common / Makes Stronger Horrors more Common / If Gems (not Blood Slaves) are Spent: / x = 1 - Drain + (Gems Spent) / y = 20 * Horror Marks / z = [(x + y) / 35] * 100 / (z)% chance of Assassination by Horror
+The Looming Hell	blood-magic	Blood 9	blood8	global	Global Enchantment / Within Dominion: / Targets a random fellow / Morale negates (vs. 10) / -Fear makes Morale negate vs. 6 / Charms / (5 x Dominion)% chance to go again, / even if it fails! / (Dominion sampled from target's province) / 5 Effects/turn (without
+Bind Demon Lord	blood-magic	Blood 9	blood8	ritual	Ritual / Local / One of Six Commanders: / Pazuzu - Lord of the Plague Wind / ([air 5]5[death 3]3[blood 4]4, deadly to be around) / Belphegor - Lord of Hell / ([fire 4]4[earth 4]4[blood 4]4, 3[bloodslave]/turn, duplicitous) / Belial - Lord of Corruption / ([nat
+Blessing	divine-magic	Common Spell List	holy1	battle	Range: 15 Squares (+10 per ) / Sure Hit / AOE: 5 Squares (+5 per ) / Sacreds only
+Banishment	divine-magic	Common Spell List	holy1	battle	Range: 25 Squares (+5 per ) / AOE: 4 Squares (+2 per ) / Undead only / Base Penetration: 11 () / 4 AN Magic DMG (+3 per )
+Sermon of Courage	divine-magic	Common Spell List	holy2	battle	Range: 25 Squares (+10 per ) / Sure Hit / AOE: 10 Squares (+5 per ) / +1 Morale
+Smite Demon	divine-magic	Common Spell List	holy2	battle	Range: 30 Squares (+5 per ) / Sure Hit / AOE: One Target / Demons only / Base Penetration: 11 () / 15 AN Magic DMG (+5 per )
+Holy Word	divine-magic	Common Spell List	holy2	battle	Range: 25 Squares / Sure Hit / AOE: One Target / Sacreds/Blessed only / Base Penetration: 11 () / Stun (1-round helplessness)
+Holy Avenger	divine-magic	Common Spell List	holy2	battle	Bolt Stats: / Unlimited Range / Sure Hit / AOE: One Target / Base Penetration: 11 () / 20 AN Magic DMG
+Divine Blessing	divine-magic	Common Spell List	holy3	battle	100% Battlefield Spell (Friendly) / Sacreds only
+Smite	divine-magic	Common Spell List	holy3	battle	Range: 30 Squares / Sure Hit / AOE: One Target / Base Penetration: 11 () / 10 AN Magic DMG
+Fanaticism	divine-magic	Common Spell List	holy4	battle	100% Battlefield Spell (Friendly) / +1 Morale
+Divine Channeling	divine-magic	Common Spell List	holy5	battle	90 Fatigue / Battlefield Enchantment (Friendly) / +[holy 1]1 boost
+Corpse Man Construction	construction	Const 2	air1 death1	ritual	Ritual / Local / Corpse Construct x1
+Clockwork Soldiers	construction	Const 2	earth1	ritual	Ritual / Local / Clockwork Soldier x10 (+½ per )
+Temper Armors	construction	Const 2	earth2	battle	Works Underwater / 30 Fatigue / Range: 15 Squares / AOE: 5 Squares (+1 per ) / Toughened Armor / (+3 PROT per piece)
+Construct Manikin	construction	Const 2	nature1 death1	ritual	Ritual / Local / Manikin x16 (+2 per )
+Clockwork Horrors	construction	Const 4	earth2	ritual	Ritual / Local / Clockwork Horror x10 (+1 per )
+Crusher Construction	construction	Const 4	earth3	ritual	Ritual / Local / Crusher x1
+Soldiers of Steel	construction	Const 4	earth3	battle	Works Underwater / 60 Fatigue / Range: 15 Squares / AOE: 20 Squares (+1 per ) / Toughened Armor / (+3 PROT per piece)
+Construct Mandragora	construction	Const 4	nature2 death1	ritual	Ritual / Local / Mandragora x10 (+2 per )
+Wooden Construction	construction	Const 4	nature3	ritual	Ritual / Local / Lumber Construct x1
+Iron Gryphon	construction	Const 6	fire3 earth1	ritual	Ritual / Local / Iron Gryphon x1
+Mechanical Men	construction	Const 6	earth2	ritual	Ritual / Local / Mechanical Man x15 (+1 per )
+Legions of Steel	construction	Const 6	earth4	battle	Works Underwater / 100 Fatigue / 150% Casting Time / 100% Battlefield Spell (Friendly) / Toughened Armor / (+3 PROT per piece)
+Forge of the Ancients	construction	Const 6	earth5	global	Global Enchantment / Works Underwater / Your Provinces Only / Master Smith +1 / Forge Bonus (20%)
+Golem Construction	construction	Const 6	astral3 earth2	ritual	Ritual / Works Underwater / Local / Golem Commander x1
+Siege Golem	construction	Const 8	earth3	ritual	Ritual / Local / Siege Golem x1
+Iron Dragon	construction	Const 8	earth4 fire2	ritual	Ritual / Local / Iron Dragon x1
+Mechanical Militia	construction	Const 8	earth5	global	Global Enchantment / Works Underwater / Your Provinces Only / Mechanical Militia / Mechanical Man x1 per PD point / Iron Fly x1 per PD point after 19
+Juggernaut Construction	construction	Const 8	astral5	ritual	Ritual / Works Underwater / Local / Juggernaut x1
+Poison Golem	construction	Const 8	death4 earth2	ritual	Ritual / Works Underwater / Local / Poison Golem Commander x1

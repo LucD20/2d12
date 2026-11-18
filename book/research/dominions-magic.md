@@ -9,6 +9,8 @@
 
 **These are Dominions' rules, not 2d12's. Nothing here is decided.** The fit ratings are Claude's.
 
+**Read with (added 2026-11-18, the same day):** `dominions-paths.md` (the ten Paths in depth, every battle spell read) and `dominions-rules.md` (the rules around the magic). They correct this note in three places: the Sabbath slave's extra fatigue is 25% on the wiki (the manual's 20% is given below); a spell's School research level is the nation's, but every spell does carry both numbers (Fireball: Fire 2, Evocation 3), so row 20's "two lookups for one card" undersold the second axis, which Lucas has since chosen; and Holy has no healing at all.
+
 ---
 
 ## 1. What Dominions' magic is, in one page
