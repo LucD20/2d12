@@ -171,7 +171,7 @@ export const TWOD12 = {
   // v0.0.340 (book, Rally Points: NPCs): what one Rally Point an NPC is given heals, by Stage. v0.0.407 (Stage 0 in Foundry): Stage 0 / 1 / 2 / 3;
   // Stage 0 heals 9 (the book); the later Stages keep pack R's rows until they are written.
   npcRallyHeal: [9, 9, 13, 17],
-  freqMore: { round: "its Round Special Actions can be used twice a round", encounter: "its Encounter Special Actions can be used a second time" },
+  freqMore: { round: "its Round Special Actions can be used twice per turn-cycle", encounter: "its Encounter Special Actions can be used a second time" },
   escHookWhen: { allyState: "An ally within N squares becomes Bloodied or goes Down", markDown: "The creature it marked goes Down", damagedDown: "An enemy it has damaged goes Down" },   // v0.0.411 (Thrill of the Kill): damagedDown
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
@@ -223,7 +223,7 @@ export const TWOD12 = {
     minion: { label: "Minion", mods: [2, 1], modBy: [0, 1, 2, 3], cv: [25, 20, 15], ap: 3, attr: 0, hb: 1, defense: 12, extreme: false, deals: "5", takes: "one PC hit",
       hm: [[0, 0.75, 1, 1.25], [0, 1, 1.25, 1.5], [0, 1.5, 2, 2.75]],
       basic: [[[1, 2.5], [1.5, 3.5], [2, 4], [2.5, 5]], [[1.5, 3.5], [2, 5], [3, 5.5], [3.5, 7]], [[2, 5], [3, 7], [4, 8], [5, 10]]] },
-    grunt: { label: "Grunt", mods: [2, 1], modBy: [0, 1, 2, 3, 4], cv: [50, 40, 30], ap: 4, attr: 0, hb: 3, defense: 13, extreme: true, deals: "8", takes: "1 PC turn",
+    grunt: { label: "Grunt", mods: [2, 1], modBy: [0, 1, 2, 3, 4], cv: [50, 40, 30], ap: 3, attr: 0, hb: 3, defense: 13, extreme: true, deals: "8", takes: "1 PC turn",
       hm: [[2, 3, 4.25, 5.25, 6.25], [2.5, 3.75, 4.75, 6, 7.25], [4, 6, 8, 10, 12]],
       basic: [[[2, 3], [2.5, 3.5], [3, 4], [4, 5.5], [4.5, 6.5]], [[3, 4], [3.5, 5], [4, 6.5], [5.5, 8], [6.5, 10]], [[4, 6.5], [5, 7], [6.5, 9], [8, 11], [9, 14]]] },
     standard: { label: "Standard", mods: [2, 2], modBy: [0, 1, 2, 3, 4], cv: [100, 80, 65], ap: 4, attr: 1, hb: 4, defense: 13, extreme: true, deals: "12", takes: "2 PC turns",
@@ -236,14 +236,14 @@ export const TWOD12 = {
   // Stage 0 (levels 1 to 3) in the book's Bestiary (pack "Stage 0 into the book", 2026-11-12; fitted by book/ruler/sim/stage0fit.mjs, reported in
   // book/ruler/stage0.md): ready numbers, exactly the book's tables. health: an NPC's Vigor or Resolve by rating (each has its own rating; the Health Pool
   // is the two added; no Attribute, no multiplier). basic / s1 / s2 / s3: the damage as written (Tier 2, Tier 3), a flat part plus at most one small die,
-  // the Modifier already in it, for the Basic attack and the 1 AP, 2 AP and 3 AP Specials. **The system doesn't read this yet** (its NPCs still use
-  // npcRoles above, pack R's rows): the pack "Stage 0 in Foundry" wires it. Lucas, 2026-11-12 (after the first fit): a Minion has no Reaction AP and up to 3 Minions can share a turn slot (squad); it has 6 + 6 Health
+  // the Modifier already in it, for the Basic attack and the 1 AP, 2 AP and 3 AP Specials. v0.0.433 (the Bestiary audit): read by npcbudget.mjs and the
+  // ruler; its damage rows are the old damage-only yardstick (the book now builds damage from the turn budget). Lucas, 2026-11-12 (after the first fit): a Minion has no Reaction AP and up to 3 Minions can share a turn slot (squad); it has 6 + 6 Health
   // (one hit to kill was tried and dropped: it was worth half its CV); a Grunt has 3 AP a turn (ap), as a Minion; a Standard's Medium 2 AP Special is half a step up (4 + 1d6 on Tier 2); the automated playtest environment reads it (book/ruler/sim/core.mjs npcS0).
   // A ranged NPC attack pays for its range with this many steps of damage rating (the Bestiary, Ranged attacks; measured: four ranged Standards at full damage are a hard fight).
   npcRangedStep: 1,
-  // An NPC's CV moves by about this much for each step its Health and damage ratings sit above or below Medium in total (the Bestiary, Ratings; Defense steps are free).
+  // An NPC's CV moves by about this much for each step its Health and damage ratings sit above or below Medium in total (the Bestiary, Ratings; a Defense or a Modifier step counts half a step: npcbudget.mjs cvSteps).
   npcCvStep: { minion: 5, grunt: 10, standard: 15, elite: 30 },
-  // An NPC's Armor or Ward Defense by rating (the Bestiary since 2026-11-12: two points a step going up, so a Defense rating is worth half a CV step; every Stage). Not read by the system yet (npcRoles.defense and the ratings' off: one point a step).
+  // An NPC's Armor or Ward Defense by rating (the Bestiary since 2026-11-12: two points a step going up, so a Defense rating is worth half a CV step; every Stage). Read by npcbudget.mjs.
   npcDefense: { minion: [10, 11, 12, 13], grunt: [10, 11, 13, 15, 17], standard: [10, 11, 13, 15, 17], elite: [11, 12, 14, 16, 18] },
   // The Bestiary's turn budget (pack "The Bestiary's turn budget", 2026-11-12; the book's Bestiary, "The turn budget"; calibrated by
   // book/ruler/sim/calib.mjs, reported in book/ruler/budget.md). Points are damage: toDamage turns them into Tier 2 / Tier 3 averages (a Medium
@@ -253,7 +253,7 @@ export const TWOD12 = {
   // Action that is not the Basic attack; multi: an Action that hits several creatures deals this share to each (multiEnc: an Encounter one); reaction.give: the share of a Reaction's points (a cost-AP Round Action's) that
   // comes off the creature's turn (self: a Reaction to being hit; other: to an ally or a movement; twoR: a 2R one, which keeps an AP instead);
   // payBack: by an Encounter Action's AP, the share of their points every other Action of the creature loses; help: a Boon on an ally's next attack, and a point
-  // of Health healed, in points. **The system doesn't read this yet** (the pack "Stage 0 in Foundry": the Builder's points).
+  // of Health healed, in points. Read by npcbudget.mjs (the Builder's points).
   npcBudget: { perAp: { minion: 18, grunt: 25, standard: 25, elite: 33 }, turnAp: { minion: 3, grunt: 3, standard: 4, elite: 4 },
     rating: { terrible: 0.65, low: 0.8, medium: 1, high: 1.2, extreme: 1.5 }, size: [0, 0, 0, 0.05], round: 0.1, encounter: 2, payBack: [0, 0.2, 0.25, 0.5], over: 0.15,
     riders: { forced: 2, mild: 3, moderate: 8, severe: 12, extreme: 18, step: 6 }, explode: 6, multi: 2 / 3, multiEnc: 0.5, toDamage: [0.14, 0.22], help: { boon: 3, health: 1 }, reaction: { self: 1 / 3, other: 0.25, twoR: 0 } },

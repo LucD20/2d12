@@ -186,14 +186,24 @@ const sideOf = c => {
 /**
  * list is sorted by initiative (highest first). Each group keeps that order. Groups take turns, one creature at a time,
  * in the order of their highest result (a tie goes to the higher disposition: Friendly first). A group with no creatures left is skipped.
+ * A Minions' squad takes one turn of its side: its members one after another (v0.0.433).
  */
 export function zipper(list) {
+  // v0.0.433 (the Bestiary audit; book, Bestiary: "Up to 3 Minions can act in the same turn slot, one after another"): a Minions' squad (the members
+  // whose init.squad names their leader, on its side, with its Initiative) is one entry of its side: its members go one after another.
+  const squadOf = c => c.getFlag?.(F, "init")?.squad ?? c.flags?.[F]?.init?.squad ?? "";
+  const leaderOf = new Map();
+  for (const c of list) { const s = squadOf(c), l = s && s !== c.id ? list.find(x => x.id === s) : null; if (l && sideOf(l) === sideOf(c) && l.initiative === c.initiative) leaderOf.set(c.id, l.id); }
   const groups = new Map();
-  for (const c of list) { const k = sideOf(c); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(c); }
+  for (const c of list) {
+    if (leaderOf.has(c.id)) continue;
+    const k = sideOf(c); if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push([c, ...(c.id ? list.filter(x => x !== c && leaderOf.has(x.id) && leaderOf.get(x.id) === c.id) : [])]);
+  }
   const tieAttr = c => Number(c.getFlag?.(F, "initAttr")) || 0;
-  const order = [...groups.entries()].sort((a, b) => ((b[1][0].initiative ?? -Infinity) - (a[1][0].initiative ?? -Infinity)) || (tieAttr(b[1][0]) - tieAttr(a[1][0])) || (b[0] - a[0])).map(e => e[1]);
+  const order = [...groups.entries()].sort((a, b) => ((b[1][0][0].initiative ?? -Infinity) - (a[1][0][0].initiative ?? -Infinity)) || (tieAttr(b[1][0][0]) - tieAttr(a[1][0][0])) || (b[0] - a[0])).map(e => e[1]);
   const out = [];
-  while (order.some(g => g.length)) for (const g of order) if (g.length) out.push(g.shift());
+  while (order.some(g => g.length)) for (const g of order) if (g.length) out.push(...g.shift());
   return out;
 }
 

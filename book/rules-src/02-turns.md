@@ -335,7 +335,7 @@ An Action with an **Escalation** line on its card needs that much Escalation, th
 > [!example]
 > Nari's party has Momentum 1, so he starts a fight at Escalation 2: his Escalation 2 Passive works from his first turn. Round 2 starts: he is at 3. In round 2 he scores a Critical: he is at 4, and his Escalation 4 Passive starts working. Round 3 starts: 5. Round 4: 6, and he stays there. When the fight ends, he is back at 1.
 
-NPCs have no Escalation, except Elites (see the [[Bestiary]]).
+NPCs have no Escalation, except Elites (see [[Elite Escalation]]).
 
 ### Momentum
 

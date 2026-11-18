@@ -76,13 +76,20 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] (v0.0.418) **The combat strip (F):** a full AP pip solid in the AP color, an empty one only its outline (a render check); Bloodied and Strained off the strip.
 - [x] (v0.0.419: asked on the bottom bar, not in the Reactions message) **Judge's reduction a choice** (rules-backlog "PLAYTEST 5, THE LOG"): offered to the Paladin's player when the Judged creature's damage would land on an ally within 5 squares (the damage waits, as Shield of Faith's), once a round; each Paladin's own.
 
+## THE BESTIARY AUDIT (v0.0.433, 2026-11-18; `book/bestiary-audit.md`)
+- **Fixed in v0.0.433:** Minion squads in the turn order (`combat.mjs zipper`); EoT and rounds in a shared slot (`effects.mjs durationStep`, `pendingSteps` passes `shared` and `lastOfSlot`); an NPC Down on Nonlethal (Unconscious; a pick window on a tie); Avenge Kin's moment; the Elite rank sets Escalation; the ladder's names; the Builder's Stage 0 notes hidden and its best turn labelled.
+- [ ] **The Builder's best turn counts damage only:** price the riders (`@Condition` and `@Move` against the rider table), the Reaction's share and the pay-back (waits for the Bestiary audit's question 20 on the order).
+- [ ] **The Builder's price table** has four rows: add the 2 AP Encounter and the 3 AP for Minions, a several-creatures switch (two thirds; half for an Encounter), the pay-back, and the 6 points of "!".
+- [ ] **Dirty Trick's and Rally the Tribe's Boons** are words: `@Boon[-1|bb:pressure]` and `@Boon[1|bb:support]` buttons (Rally the Tribe for [Weapon] Actions).
+- [ ] **Waiting for Lucas's answers:** a Minor enemy's dice that never explode (not enforced: `roundrules.mjs npcDieExplodes` is unused), Relentless on Round Reactions (`usage.mjs isSpecial`), NPC Guard from unspent AP (`combat.mjs`), the Grave Wisp's flying, Escalation for ranks other than Elite.
+
 ## THE BOOK AUDIT'S ANSWERS (v0.0.431, 2026-11-18): what Foundry doesn't follow yet
 - **Done in v0.0.431:** [HT] once per turn-cycle (`fxrules.mjs htMayHit`, `areafx.mjs`); Judge's reduction and Opening Shot once per turn-cycle (`judge.mjs roundKey / usedThisCycle`); Speed halved last (`speedmods.mjs`, Exhausted passed in); Armor of Faith not on Judge's 0R; the Reload shot's 1d6! (`actions.mjs reloadShot`); Trade Places refuses different Sizes; the Elite ladder's names (`escalation.mjs ELITE_RUNGS`); the Save card (`chatcards.mjs`).
 - [ ] **A Save Action switched to Nonlethal** (Chapter 4: each creature gains 1 Boon on its Save): no switch on the Save card yet (by hand: the GM adds the Boon, the damage is applied as Nonlethal).
 - [ ] **Immobilized while moving ends the movement** (a Snap Shot's Tier 3 mid-Advance): Foundry can't stop a drag in progress; by hand (move the token back).
 - [ ] **Brace's squares are fixed** where you used it: Foundry draws an Aura 1 that follows you (the effect says so). To do: place it as a Zone on your squares.
 - [ ] **Each Elite's own steps:** the NPC sheet's "Default ladder" switch gives the default (Pressing, Relentless, Second Wind); the other common steps are by hand (switch it off). To do: a pick of the three steps on the NPC sheet.
-- [ ] **Not checked against the new text:** Flanking's order (Chapter 3: count, cancel, then the limit of 2), 5 Boons on a Doomed roll (a normal roll, nothing added), Desperate only after a Nonlethal blow, a Minion's EoT at the end of its own turn, the "next roll" given to another creature wasted at the end of its next turn, Blinded's squares as Difficult Terrain.
+- [ ] **Not checked against the new text** (v0.0.433: Flanking's order checked fine by the Bestiary audit, `roundrules.mjs flankBoons`; a Minion's EoT fixed): 5 Boons on a Doomed roll (a normal roll, nothing added), Desperate only after a Nonlethal blow, a Minion's EoT at the end of its own turn, the "next roll" given to another creature wasted at the end of its next turn, Blinded's squares as Difficult Terrain.
 - [ ] **The inline @Save card** (an [HT] area's repeat Save, `inline.mjs saveCardHtml(st)`) keeps the old look; the old Save card's CSS (`.cc-srows`, `.cc-srow*`, `.cc-scell`, `.cc-sbody`) is unused since v0.0.431 (remove with a visual check and `build-theme.mjs`).
 - [ ] **Hit and Run** is flagged for a redesign (Lucas, Q20): its automation stays Bronze until then.
 

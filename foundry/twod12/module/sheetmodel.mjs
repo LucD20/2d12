@@ -313,9 +313,9 @@ export const strikePips = used => Array.from({ length: 3 }, (_, k) => k < Math.m
 
 /** The Elite's default Escalation effects (Bestiary, Elite Escalation; v0.0.407: at Escalation 2, 4 and 6 on the 1-to-6 ladder, ELITE_RUNGS_LADDER). */
 export const ELITE_RUNGS = [
-  { n: 2, label: "2 · first attack +1 Boon", tip: "Escalation 2: 1 Boon on its first attack each round." },
-  { n: 4, label: "4 · Round Special ×2", tip: "Escalation 4: it can use its Round Special Action twice a round." },
-  { n: 6, label: "6 · Encounter Special back", tip: "Escalation 6: it gets its Encounter Special Action back, once." }
+  { n: 2, label: "2 · Pressing", tip: "Escalation 2, Pressing: 1 Boon on its first attack each round." },
+  { n: 4, label: "4 · Relentless", tip: "Escalation 4, Relentless: it can use each of its Round Special Actions twice per turn-cycle." },
+  { n: 6, label: "6 · Second Wind", tip: "Escalation 6, Second Wind: it gets its Encounter Special Actions back, once." }
 ];
 
 /** Dice (and flat numbers) that come close to an average, the Modifier taken out: 2.5 -> "1d4". "" when the Modifier alone is enough. */

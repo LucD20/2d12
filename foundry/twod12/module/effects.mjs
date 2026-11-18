@@ -412,15 +412,17 @@ export function durationStep(flags, ended, prior, me) {
   if (!dur?.type || !ended) return null;
   const has = v => v !== null && v !== undefined && v !== "";
   if (dur.type === "eot") {
-    if (has(flags.slotInit)) return Number(ended.initiative) === Number(flags.slotInit) && ended.initiative !== null ? "end" : null;
     const mine = (me?.combatantId && ended.id === me.combatantId) || (me?.tokenId && ended.tokenId === me.tokenId) || (me?.uuid && ended.actorUuid === me.uuid) || (!!me?.ref && ended.ref === me.ref);
+    // v0.0.433 (the Bestiary: "A Minion's EoT effects end at the end of its own turn"): in a slot several creatures share (a squad, a tie), its own turn
+    if (has(flags.slotInit)) return Number(ended.initiative) === Number(flags.slotInit) && ended.initiative !== null && (!ended.shared || mine) ? "end" : null;
     return mine ? "end" : null;
   }
   if (dur.type !== "rounds") return null;
   const oslot = has(flags.anchorSlot) ? flags.anchorSlot : flags.originSlot;
-  const mine = has(oslot) ? ended.initiative !== null && Number(ended.initiative) === Number(oslot) : (flags.anchorCombatantId || flags.originCombatantId || "") === ended.id;
+  // v0.0.433: a slot several creatures share counts down once, at the end of its last creature's turn ("after the last of them")
+  const mine = has(oslot) ? ended.initiative !== null && Number(ended.initiative) === Number(oslot) && ended.lastOfSlot !== false : (flags.anchorCombatantId || flags.originCombatantId || "") === ended.id;
   if (!mine) return null;
-  if (flags.appliedRound === prior?.round && flags.appliedTurn === prior?.turn) return null;
+  if (flags.appliedRound === prior?.round && (flags.appliedTurn === prior?.turn || ended.shared)) return null;   // the slot it was applied in (a shared one: the whole slot, v0.0.433)
   if (flags.lastTick === prior?.round) return null;
   const rem = (flags.remaining ?? dur.rounds) - 1;
   return rem <= 0 ? "end" : "tick";
@@ -489,7 +491,11 @@ export function pendingSteps(combat, ended, prior) {
   const actors = new Map();
   for (const c of combat.combatants) if (c.actor) actors.set(c.actor.uuid, c.actor);
   for (const td of canvas?.scene?.tokens ?? []) if (td.actor && !actors.has(td.actor.uuid)) actors.set(td.actor.uuid, td.actor);
-  const endInfo = { id: ended.id, initiative: ended.initiative ?? null, tokenId: ended.tokenId ?? "", actorUuid: ended.actor?.uuid ?? "", ref: ended.actor ?? null };
+  // v0.0.433 (the Bestiary audit: a Minions' squad shares one Initiative): shared = another combatant has the same Initiative; lastOfSlot = no
+  // combatant after this one in the turn order has it (the slot ends with its last creature)
+  const turns = combat.turns ?? [], at = turns.findIndex(c => c.id === ended.id), same = c => c.initiative !== null && c.initiative !== undefined && c.initiative === ended.initiative;
+  const endInfo = { id: ended.id, initiative: ended.initiative ?? null, tokenId: ended.tokenId ?? "", actorUuid: ended.actor?.uuid ?? "", ref: ended.actor ?? null,
+    shared: turns.some(c => c.id !== ended.id && same(c)), lastOfSlot: at < 0 || !turns.slice(at + 1).some(same) };
   const short = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
   for (const actor of actors.values()) {
     for (const e of [...actor.effects]) {

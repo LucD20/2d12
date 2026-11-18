@@ -11,22 +11,22 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 |---|---|---|---|---|
 | **Minion** | 25 | **3** | one or two PC hits | 4 |
 | **Grunt** | 50 | **3** | 1 PC turn | 6 |
-| **Standard** | 100 | 4 | 2 to 3 PC turns | 9 |
-| **Elite** | 200 | 4 | 5 PC turns | 13 |
+| **Standard** | 100 | 4 | 2 to 3 PC turns | 10 |
+| **Elite** | 200 | 4 | 5 PC turns | 14 |
 
-"Deals about" is a whole turn: the Basic attack and the Special Actions it can fit after moving, against an average Defense, before anything the PCs do about it (Guard, blocks, damage reduction take about half of it away). A turn in which it doesn't need to move deals about a quarter more. It is what you check a new NPC's Actions against.
+"Deals about" is a whole turn: the Basic attack and the Special Actions it can fit after moving, against an average Defense, before anything the PCs do about it (Guard, blocks, damage reduction take about half of it away). A turn in which it doesn't need to move deals about a third more. It is what you check a new NPC's Actions against.
 
 **Minions and Grunts have 3 AP a turn**, not 4: simple creatures that move and strike. Every NPC also gains the Reaction AP, as a PC does (see [[Action Points]]), **except Minions, which have none**.
 
-**Minions share turns.** Up to **3 Minions** can act in the same turn slot, one after another: the GM rolls Initiative once for the group. Each still has its own turn (its own AP, its own start and end of turn), and takes it whole before the next one starts. A Minion's EoT effects end at the end of its own turn; durations in rounds count down at the end of the slot, after the last of them.
+**Minions share turns.** Up to **3 Minions** can act in the same turn slot, one after another: the GM rolls one Initiative for the three, and they take one place in their side's turn order (see [[Initiative]]). Each still has its own turn (its own AP, its own start and end of turn), and takes it whole before the next one starts. A Minion's EoT effects end at the end of its own turn; durations in rounds count down at the end of the slot, after the last of them.
 
 ### Minor enemies
 
-**Minor enemies** are Minions and Grunts: the ranks with a CV below 100. Both have 3 AP a turn.
+**Minor enemies** are the Minion and Grunt ranks, whatever their Stage (a Standard of an earlier Stage, worth CV 80, is not one). Both have 3 AP a turn.
 
 ## Ratings
 
-Each rank has tables (below) with five **ratings**: **Terrible, Low, Medium, High, Extreme**. Medium is the rank's normal value; the others go down or up from it. Minions have no Extreme. The Health and damage tables are written by **[[Stages|Stage]]**: an NPC uses the tables of its level's Stage, and nothing changes inside a Stage. Attributes, Defenses and Modifiers don't change with the Stage. **The tables below are Stage 0's (levels 1 to 3).**
+Each rank has tables (below) with five **ratings**: **Terrible, Low, Medium, High, Extreme**. Medium is the rank's normal value; the others go down or up from it. Minions have no Extreme. The Health and damage tables are written by **[[Stages|Stage]]**: an NPC uses its Stage's tables, and nothing changes inside a Stage. Attributes, Defenses and Modifiers don't change with the Stage. **The tables below are Stage 0's (levels 1 to 3).**
 
 - **Attributes**: by default one **High**, two **Medium** and one **Low**.
 - **Health**: a rating for its **Vigor** and one for its **Resolve**, Medium by default. A brute might have High Vigor and Low Resolve; a ghost, Terrible Vigor and High Resolve.
@@ -51,7 +51,7 @@ A Standard with High Health and High damage counts for 130; one with Low Health 
 
 An NPC has an **Armor Defense** and a **Ward Defense**. Each one is a rating from its rank's Defense table, picked **independently** of the other: a Standard is Medium in both by default (13 and 13); a knight could have a High Armor Defense (15) and a Low Ward Defense (11). An NPC's Defenses come from these ratings only.
 
-**A Defense rating is the mildest step.** One rating up is 2 points of Defense (a Minion's, 1 point: a Minion dies to the hits it doesn't avoid, so each point of its Defense counts double), which takes about 10% off what the PCs deal in a turn and makes the fight almost half a round longer; a rating of Health or damage is 20 to 25%. Defense makes a creature last by making the PCs miss: against an Extreme Defense a level 1 PC gets a Tier 1 more than half the time. **Give an Extreme Defense to one creature in a fight, not to all of them**, and prefer a High in one Defense with a Low in the other: it rewards attacking the right one. That trade is even only for a party that can attack both Defenses: against one that attacks only Armor Defense, a High Armor Defense with a Low Ward Defense is simply a High.
+**A Defense rating is the mildest step.** One rating up is 2 points of Defense (1 from Terrible to Low; a Minion's, 1 point: a Minion dies to the hits it doesn't avoid, so each point of its Defense counts double), which takes about 10% off what the PCs deal in a turn and makes the fight almost half a round longer; a rating of Health or damage is 20 to 25%. Defense makes a creature last by making the PCs miss: against an Extreme Defense a level 1 PC gets a Tier 1 more than half the time. **Give an Extreme Defense to one creature in a fight, not to all of them**, and prefer a High in one Defense with a Low in the other: it rewards attacking the right one. That trade is even only for a party that can attack both Defenses: against one that attacks only Armor Defense, a High Armor Defense with a Low Ward Defense is simply a High.
 
 ### What an Action attacks, rolls and damages
 
@@ -63,13 +63,15 @@ Every NPC Action that attacks makes **three separate choices**:
 
 Two sets are the usual ones: **a Weapon Action Vs. AD that deals [V]**, and **a Power Action Vs. WD that deals [R]**. They are the default, not a limit: a Power Action can burn Vigor, a Power Action can strike Armor Defense, and in rare cases a Weapon Action strikes Ward Defense. Write on the Action whatever is not the usual set.
 
+**Distance.** An NPC's melee Action has Distance Reach (X), X its Reach: written "Reach (1)". A ranged one has its squares (see [[Ranged attacks]]).
+
 The damage tables are the same whatever the three are: a PC's Ward Defense is 12 or 13 at Stage 0, close to its Armor Defense, so an attack on it hits about as often. What changes most is the pool: Resolve is most PCs' low pool, so a creature that deals [R] makes them Strained early (see [[Bloodied]] and [[Strained]]). Some creatures deal **only** [R] (a ghost, a nightmare, a wisp of dread); about one NPC in four should, so the PCs' Resolve and everything that cares about Strained get their share of the fights.
 
 ## Attributes and Modifiers
 
 Assign the Attributes to **Body, Mind, Appeal and Instinct**. Its Vs. Attributes are 12 + the Attribute, as for anyone.
 
-An NPC's **Weapon Modifier** and **Power Modifier** are each a rating of its rank's table. They don't come from its Attributes and don't grow with its Stage (its Health and damage tables do). **An NPC's Modifier is for its rolls only: its damage is written whole in the tables, with nothing to add.** By default the Weapon Modifier is **Medium** and the Power Modifier **Low** (a Standard's is Medium too); a creature that attacks Ward Defense usually swaps them. A Modifier is never above +4.
+An NPC's **Weapon Modifier** and **Power Modifier** are each a rating of its rank's table. They don't come from its Attributes and don't grow with its Stage (its Health and damage tables do). **An NPC's Modifiers are for its rolls and its DCs only: its damage is written whole in the tables, with nothing to add.** By default the Weapon Modifier is **Medium** and the Power Modifier **Low** (a Standard's is Medium too); a creature that attacks Ward Defense usually swaps them. A Modifier is never above +4.
 
 | Rank | **Terrible** | **Low** | **Medium** | **High** | **Extreme** |
 |---|---|---|---|---|---|
@@ -97,13 +99,13 @@ An NPC has Steadiness 0 unless it says otherwise. A big or heavy creature can ha
 
 ## Actions: the turn budget
 
-An NPC's Actions are bought with **points**. Points are damage: the [[Points into damage]] table turns them into a Tier 2 and a Tier 3. Each rank has a **turn budget** (the points of a whole turn) and **points an AP** (what one AP of an Action is worth), by its damage rating; both are in the rank's tables below. A Medium Standard has **25 points an AP** and a **turn budget of 100**: its Basic attack is 25 points, its 2 AP Round Special 55, and its usual turn (the Special and two Basic attacks, the second with its At-will Bane) is about 100.
+An NPC's Actions are bought with **points**. Points are damage: the [[Points into damage]] table turns them into a Tier 2 and a Tier 3. Each rank has a **turn budget** (the points of a whole turn) and **points an AP** (what one AP of an Action is worth), by its damage rating; both are in the rank's tables below. Its Basic attack and its **Special Actions** (every other Action it has, of any AP cost and any Frequency) are bought with them. A Medium Standard has **25 points an AP** and a **turn budget of 100**: its Basic attack is 25 points, its 2 AP Round Special 55, and its usual turn (the Special and two Basic attacks, the second with its At-will Bane) is about 100.
 
 You spend the points on what the creature does: damage, conditions, Forced Movement, help for its allies, a Reaction. **These are guidance, not a rule:** an NPC should feel balanced at the table, and the points are how you get there quickly. You can always write an NPC by hand and check it against them.
 
 ### The Basic attack
 
-Every NPC has one **Basic attack**: 1 AP, At-will, its rank's points an AP. It is usually a Weapon Action Vs. AD that deals [V], or a Power Action Vs. WD that deals [R] (see [[What an Action attacks, rolls and damages]]). Tier 1 deals nothing. **Its damage die explodes: write it with !** (1 + 1d4!; see [[Exploding Dice]]), except a Minion's or a Grunt's: **a Minor enemy's dice never explode.** The weapon in its hands is only what the attack looks like. **A Basic attack is not always damage only:** it can carry a cheap rider (a Push 1, a Mild condition) and keep most of its damage.
+Every NPC has one **Basic attack**: 1 AP, At-will, its rank's points an AP. It is usually a Weapon Action Vs. AD that deals [V], or a Power Action Vs. WD that deals [R] (see [[What an Action attacks, rolls and damages]]). Tier 1 deals nothing. **Its damage die explodes: write it with !** (1 + 1d4!; see [[Exploding Dice]]), except a Minion's or a Grunt's: **a Minor enemy's damage dice never explode.** The weapon in its hands is only what the attack looks like. **A Basic attack is not always damage only:** it can carry a cheap rider (a Push 1, a Mild condition) and keep most of its damage.
 
 **NPCs have no Weapon Attack.** Their Basic attack takes its place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (1A) at the end of a Charge, for example), an NPC uses its Basic attack.
 
@@ -138,7 +140,7 @@ A Medium Standard's prices:
 | **2 AP** | a quarter | **several creatures** (see [[Actions that hit several creatures]]) |
 | **3 AP** | half | **several creatures** |
 
-**A 2 AP or 3 AP Encounter Action should hit several creatures.** Against one PC it is a killing blow: double damage, or the same points in heavy riders stacked on one creature, takes a PC from full Health to Down in one hit, and no pay-back makes up for that. You can still give one to a boss as its signature: count the encounter **one step harder** (a normal fight as a hard one) and let the players see it coming. A 3 AP one is the creature's whole identity: it gives up half of everything else for it.
+**A 2 AP or 3 AP Encounter Action should hit several creatures.** Against one PC it is a killing blow: double damage, or the same points in heavy riders stacked on one creature, takes most of a PC's Health in one hit (a Standard's 2 AP one deals about 24 on a Tier 3), and an Elite's or a 3 AP one takes a PC from full Health to Down; no pay-back makes up for that. You can still give one to a boss as its signature: count the encounter **one step harder** (a normal fight as a hard one) and let the players see it coming. A 3 AP one is the creature's whole identity: it gives up half of everything else for it.
 
 ### Points into damage
 
@@ -161,7 +163,7 @@ The damage of an Action is the points left after its riders (below). The table w
 
 ### Ranged attacks
 
-An attack an NPC can make from more than 2 squares away **pays one rating for its range**: a Medium creature's ranged attack has its Low points. A creature that attacks from safety is worth more than its numbers (at full damage, four ranged Standards are a hard fight, not a normal one). Reach doesn't count as range.
+An attack an NPC can make from more than 2 squares away **pays one rating for its range**: with Medium damage, its ranged attack uses the Low points an AP (its damage rating and its CV don't change). A creature that attacks from safety is worth more than its numbers (at full damage, four ranged Standards are a hard fight, not a normal one). Reach doesn't count as range.
 
 ### Riders and their price
 
@@ -176,9 +178,11 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | **Extreme** | 18 | Slowed 2; Dazed 2; Lingering 2; Lingering 1d4 |
 | **Beyond** | +6 a size | Lingering 1d6 (24); Lingering 2d6 (40) |
 
-The prices are for a rider that **one creature in the encounter has**. **When four or more creatures in the encounter carry the same rider** (a pack of Grunts, a swarm of Minions), **price it one size less:** most of its landings are wasted on a PC that already has it. **AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Lingering is damage that keeps coming** (it lasts until the PC spends 1 AP to Shake it Off), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
+A condition in the table written with no duration is priced for EoT: write (EoT) on the card, since a condition written with no duration lasts until the end of the encounter (see [[Chapter 8: Conditions|Conditions]]). Prone, Grabbed, Dazed and Lingering have their own end.
 
-- **Forced Movement is the most common rider:** in the open it changes little, and against a wall or another PC it deals Collision damage (see [[Steadiness]] and Collision in Chapter 3). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price; in the open, nothing.
+The prices are for a rider that **one creature in the encounter has**. **When four or more creatures in the encounter carry the same rider** (a pack of Grunts, a swarm of Minions), **price it one size less:** most of its landings are wasted on a PC that already has it. **AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Lingering is damage that keeps coming** (it lasts until the PC Shakes it Off, 1 AP and a Save, or the encounter ends), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT, or that a Save can't shake off, is one size more, unless the table already lists that duration.
+
+- **Forced Movement is the most common rider:** in the open it changes little, and against a wall or another PC it deals Collision damage (see [[Collision]] and [[Steadiness]]). Push the PC when it hurts: into a wall, into another PC, off a ledge, out of an ally's aura; pushing a PC away from you in the open only frees it. Against walls a Push is worth about twice its price; in the open, nothing.
 - **No limit on repeating a rider.** A rider on a creature that already has it is wasted: spread the attacks.
 - **At most 2 riders on an Action**, as guidance.
 
@@ -196,7 +200,7 @@ A **unique effect** ("the Dragon grabs you, flies up and drops you to the ground
 
 An Action that hits several creatures (an Area, a Save Action against everyone in it, "two creatures") deals **two thirds** of its points to each, after its riders. **An Encounter Action deals half to each:** every creature in it takes what a Round Action of its AP would deal. It pays when it catches two or more, and a party that spreads out often gives it one: give it a real area (a 2 Emanation, a Line along the front) or a reason for the PCs to stand together.
 
-- **Area Save Actions** use a Save the targets roll (DC 11 + the Modifier); the PC's Tier 1 takes the Action's Tier 3, its Tier 2 the Tier 2, its Tier 3 nothing.
+- **Area [[Save Actions]]**: the targets roll against the NPC's DC for the Action's traits (its Weapon DC for a [Save, Weapon] Action, its Power DC for a [Power, Save] one, an Attribute's DC for one such as [Body, Save]); the PC's Tier 1 takes the Action's Tier 3, its Tier 2 the Tier 2, its Tier 3 nothing.
 
 ### Actions with no damage
 
@@ -209,7 +213,7 @@ An Action that only helps the NPC's side (a buff, a heal, a wall) or only puts a
 | An ally heals 1 Health | 1 |
 | A condition or a Forced Movement on a PC | its rider price (on a hit, in the Setup or on Tier 3) |
 
-A help is cheap because one Boon or a few Health matter little in a fight of three or four rounds; **put it on a Round Special as a rider** ("and each ally within 5 squares gains 1 Support Boon on its next attack") rather than as an Action of its own, which costs the creature an attack. Healing an enemy is weak: its allies have more Health than the PCs, and the fight is short.
+A help is cheap because one Boon or a few Health matter little in a fight of three or four rounds; **put it on a Round Special as a rider** ("and each ally within 5 squares gains 1 Support Boon on its next attack") rather than as an Action of its own, which costs the creature an attack. Healing an NPC is weak: its allies have more Health than the PCs, and the fight is short.
 
 ### NPC Reactions
 
@@ -219,8 +223,8 @@ A help is cheap because one Boon or a few Health matter little in a fight of thr
 
 | Reaction | Off its turn budget |
 |---|---|
-| **1R**, on its own being hit or targeted ("Trigger: a creature hits you"): it fires often | **a third** of its points (9) |
-| **1R**, on an ally or a movement ("Trigger: an ally within 2 squares is hit"; "Interrupt: a creature would enter a square next to you"): it fires now and then | **a quarter** (7) |
+| **1R**, on an Action against itself ("Trigger: a creature deals damage to you"): it fires often | **a third** of its points (9) |
+| **1R**, on an ally or a movement ("Trigger: an ally within 2 squares takes damage from a [Strike] Action"; "Interrupt: a creature would enter a square next to you"): it fires now and then | **a quarter** (7) |
 | **2R** | nothing more: the AP it keeps from its turn is its price |
 
 **A 2R Reaction is weak on an NPC:** the AP it keeps costs more than the Reaction gives back, unless it fires in most rounds. Prefer 1R. A Reaction that only protects (an ally gains +2 Defense against the triggering Strike) is cheap: 2 points off the turn.
@@ -238,16 +242,16 @@ Most NPC Actions should do more than damage. As guidance, from most to least com
 
 ### Check its best turn
 
-Add the points of the most it can do in one turn: its AP (4, or 3), at most 3 Strikes, each Round Action once, **without its Encounter Action** (the pay-back covers that turn). It should be within its turn budget, or up to **15% over**. A turn of Basic attacks only, or with only a 1 AP Special, is well under the budget (the repeated Basic attacks take At-will Banes): give it a 2 AP Special.
+Add the points of the most it can do in one turn: its AP (4, or 3), at most 3 Strikes, each Round Action once, **without its Encounter Action** (the pay-back covers that turn). It should be within its turn budget, or up to **15% over**. On a 4 AP rank, a turn of Basic attacks only, or with only a 1 AP Special, is well under the budget (75 or 78 of 100; the repeated Basic attacks take At-will Banes): give it a 2 AP Special. On a 3 AP rank (a Minion or a Grunt), such a turn reaches the budget in points but deals less (the At-will Banes).
 
 > [!example]
-> **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). *Avenge Kin* is a 1R Reaction on an ally being hit: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Severe, 12) and the Reaction's 7 leave 36: 3 + 1d4 / 4 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
+> **Building the Orc Warrior** (a Medium Standard: 25 points an AP, turn budget 100). *Cleaver* is its Basic attack: 25 points; a Push 1 (2) leaves 23: 1 + 1d4! / 3 + 1d4! (a Basic attack's die explodes). *Avenge Kin* is a 1R Reaction on an ally taking damage from a [Strike] Action: its attack has 28 points, and a quarter of that (7) comes off the turn, here off the Special. *Brutal Swing* is a 2 AP Round Special: 55 points, Prone on a hit (Severe, 12) and the Reaction's 7 leave 36: 3 + 1d4 / 4 + 1d6. Its best turn: Brutal Swing and two Cleavers, 55 + 25 + 25 = 105: within the budget.
 
 ### Elite Escalation
 
-An **Elite** has Escalation (the NPC sheet's switch); no other NPC does. It follows the same ladder as a PC's, from **1 to 6** (see [[Escalation]]), with the Elite's own rules:
+An **Elite** has Escalation; no other NPC does. It follows the same ladder as a PC's, from **1 to 6** (see [[Escalation]]), with the Elite's own rules:
 
-- **Start and rounds:** an Elite starts every encounter at **Escalation 1** and gains 1 at the start of each round after the first, up to 6. It has no Momentum and no Critical hook.
+- **Start and rounds:** an Elite starts every encounter at **Escalation 1** and gains 1 at the start of each round after the first, up to 6. Momentum doesn't count for it, a Critical doesn't raise its Escalation, and it has no class hook: its phases take that place.
 - **Phases:** when an Elite **becomes Bloodied**, and when it **becomes Strained**, its Escalation increases by 1 (once each). The GM says so when it happens: the players always see an Elite change.
 - **Its steps:** what its Escalation does is the Elite's own. Each Elite has three steps, at Escalation **2**, **4** and **6**, and gains each step's ability (and keeps it) when its Escalation reaches that number.
 
@@ -268,7 +272,7 @@ With its Escalation, an Elite is worth its CV: two Elites cost the party what fo
 
 ## Roles
 
-A **role** says what a creature does in a fight. It is a ready set of ratings for a rank's tables and a way to spend its points, to build an NPC quickly and to tell the GM how to play it. **Every role below is balanced: an NPC built with it is worth its rank's CV**, its Actions bought with its turn budget. A role has no rules of its own, and an NPC needs none: every rating a role doesn't name is Medium.
+A **role** says what a creature does in a fight. It is a ready set of ratings for a rank's tables and a way to spend its points, to build an NPC quickly and to tell the GM how to play it. **Every role below is balanced: an NPC built with it is worth its rank's CV**, its Actions bought with its turn budget. A role has no rules of its own, and an NPC needs none: every rating a role doesn't name keeps the rank's default (Medium; the Attributes and Modifiers as [[Attributes and Modifiers]] writes them).
 
 | Role | It... | Ratings | Its points go to |
 |---|---|---|---|
@@ -277,7 +281,7 @@ A **role** says what a creature does in a fight. It is a ready set of ratings fo
 | **Skirmisher** | moves, strikes and gets away | Speed 6 or 7, **High** Weapon Modifier; **Low** Vigor and Resolve | a Special with a movement in it; Hindered |
 | **Artillery** | attacks from far away | ranged attacks (each pays its rating for the range), **High** Modifier; **Low** Armor Defense | damage; a Pressure Bane, Vulnerable |
 | **Controller** | changes the fight with conditions and areas | **High** Ward Defense, **Low** Armor Defense; often Power Actions Vs. WD | Moderate and Severe conditions (Dazed, Slowed, Prone), an Area |
-| **Leader** | makes its allies better; one in a fight | Medium everything | help on its Round Special (Boons for its allies, an ally's Basic attack) |
+| **Leader** | makes its allies better; one in a fight | the rank's defaults | help on its Round Special (Boons for its allies, an ally's Basic attack) |
 
 All six are measured with what makes them: four of a role cost a party about what four Standards with effects do, a Controller's conditions and a Soldier's Reaction included. Speed costs nothing by itself.
 
@@ -423,12 +427,12 @@ What the fight model gives for 4 PCs of levels 1 to 3 with no [[Momentum]] (all 
 
 | Enemies (total CV) | Rounds | The party's Health | A PC goes Down in | The party wins |
 |---|---|---|---|---|
-| 3 Standards, or 12 Minions (300, easy) | 2½ to 3 | about 15% | 1 fight in 30 or more | always |
+| 3 Standards, or 12 Minions (300, easy) | 2½ to 3 | about 15% | about 1 fight in 25 | always |
 | 4 Standards, 1 Elite and 2 Standards, 2 Elites, 8 Grunts, 16 Minions, or 2 Standards and 8 Minions (400, normal) | 3½ | about a quarter | 1 fight in 10 | always |
 | 5 Standards, or 1 Elite and 3 Standards (500, hard) | 4 | 40 to 45% | 1 fight in 4 | 97 to 98% |
-| 6 Standards, 3 Elites, 2 Elites and 2 Standards, 1 Elite and 4 Standards, or 4 Standards and 8 Minions (600, deadly) | 5 | 60 to 65% | about half the time | 86 to 88% |
+| 6 Standards, 3 Elites, 2 Elites and 2 Standards, 1 Elite and 4 Standards, or 4 Standards and 8 Minions (600, deadly) | 5 | 60 to 70% | about half the time | 82 to 88% |
 
-The three levels are about as hard as each other. Elites, Grunts and Minions are worth their CV in any mix. **With enemies that use effects** (built on the turn budget, most of their Actions with a rider), a normal fight costs the same with fewer PCs Down (about 1 fight in 15), and the fights are a little longer; a deadly fight of Standards is about half a step harder (won about three times in four): the effects add up in a long fight, and that is what deadly means. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less, and at Momentum 4 a level 3 party wins the deadly fight 98% of the time. A party late in a good expedition can take one step more.
+The three levels are about as hard as each other. Elites, Grunts and Minions are worth their CV in any mix. **With enemies that use effects** (built on the turn budget, most of their Actions with a rider), a normal fight costs the same with fewer PCs Down (about 1 fight in 15), and the fights are a little longer; a deadly fight of Standards is about half a step harder (won about three times in four): the effects add up in a long fight, and that is what deadly means. **Momentum makes every fight easier**: at Momentum 2 the same fights cost about a quarter less at levels 2 and 3 (about a tenth at level 1), and at Momentum 4 a level 3 party wins the deadly fight 97% of the time. A party late in a good expedition can take one step more.
 
 > [!tip]
 > These numbers assume the enemies **spread their attacks**: each strikes the PC it can reach best. If every enemy strikes **the same PC** (the weakest one, or simply the nearest), the encounter plays about **one step harder**: a normal fight like a hard one, a hard one like a deadly one. Do it on purpose (a wolf pack, a disciplined squad), and count it when you choose the CV.
@@ -446,7 +450,7 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 - *Brutal Swing* (2 AP, Round, Reach (1); 55, Prone 12, Avenge Kin's share 7): [V] 3 + 1d4 / 4 + 1d6 Sl, and Prone.
 - *Avenge Kin* (Reaction, 1R, Trigger: an ally within 2 squares takes damage from a [Strike] Action; 28): it makes an attack against the attacker if it can reach it: [V] 1 + 1d4 / 3 + 1d6 Sl.
 
-**Grave Wisp** (Standard, CV 100; 25 points an AP): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
+**Grave Wisp** (Standard, CV 100; 25 points an AP, turn budget 100): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - *Chilling Touch* (Basic attack, 1 AP, At-will, Reach (1), Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4! / 2 + 1d4! Co, and Frightened of it (EoT).
 - *Dread Whisper* (2 AP, Round, Reach (1), Vs. WD, [Fear]; 55, Dazed 1 8): [R] 3 + 1d6 / 7 + 1d6 Ps, and Dazed 1.
 

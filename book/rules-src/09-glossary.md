@@ -169,7 +169,7 @@
 | [[Slid\|**Slid**]] | Forced Movement along a path the origin chooses (it can curve); the origin needs Line of Effect. |
 | [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction AP doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
 | [[Reading an Action\|**Special**]] | A card's line that is a rule about the card itself. |
-| [[The price of an Action\|**Special Action**]] | An NPC Action beyond its Basic attack: any AP cost and any Frequency, bought with the points of its rank's turn budget. |
+| [[Actions: the turn budget\|**Special Action**]] | An NPC Action beyond its Basic attack: any AP cost and any Frequency, bought with the points of its rank's turn budget. |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
 | [[Building a Character\|**Speed**]] | How far a creature can move with an Advance: species Speed plus class Speed Modifier. |
 | [[Split\|**Split**]] | A trait: the Action has a Weapon mode and a Power mode, and you choose one each time you use it. |

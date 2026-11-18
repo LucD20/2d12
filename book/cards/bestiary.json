@@ -227,7 +227,9 @@
    ],
    "foundry": {
     "img": "icons/svg/shield.svg",
-    "npcWeapon": "Cleaver"
+    "npcWeapon": "Cleaver",
+    "moment": "strikeDamage",
+    "momentRange": 2
    },
    "ruler": false,
    "_note": "1R: a 1 AP Round Action's 28 points; a quarter (7) comes off the turn."

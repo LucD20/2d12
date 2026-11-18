@@ -1,0 +1,34 @@
+// Run with: node tools/tests/run.mjs (or node tools/tests/t275.mjs)
+// v0.0.433 (the Bestiary audit; Lucas, 2026-11-18: "we do a bestiary audit"): what Foundry didn't do as the Bestiary says (book/bestiary-audit.md).
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
+const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(ROOTURL), src = f => fs.readFileSync(ROOT + f, "utf8");
+globalThis.Combat = class {}; globalThis.CONFIG = { time: {}, TextEditor: { enrichers: [] }, statusEffects: [] };
+globalThis.Hooks = { on() {}, once() {} }; globalThis.ui = { notifications: { info() {}, warn() {} } };
+globalThis.foundry = { applications: { api: { DialogV2: {}, ApplicationV2: class {} } }, utils: { deepClone: o => JSON.parse(JSON.stringify(o)), mergeObject: (a, b) => ({ ...a, ...b }) } };
+globalThis.game = { settings: { get: () => false }, user: { id: "u" }, combat: null, items: [], packs: new Map(), actors: [] };
+
+console.log("--- a Minions' squad takes one turn of its side");
+const { zipper } = await import(ROOTURL + "module/combat.mjs");
+const mk = (name, init, disp, squad) => ({ id: name, name, initiative: init, token: { disposition: disp }, flags: { twod12: { init: { squad: squad ?? "" } } } });
+console.log("three Minions at 15, PCs at 14 and 12, an Orc at 10:", zipper([mk("M1", 15, -1), mk("M2", 15, -1, "M1"), mk("M3", 15, -1, "M1"), mk("P1", 14, 1), mk("P2", 12, 1), mk("Orc", 10, -1)]).map(c => c.name).join(" "));
+console.log("a member whose roll differs goes on its own:", zipper([mk("M1", 15, -1), mk("M2", 9, -1, "M1"), mk("P1", 14, 1)]).map(c => c.name).join(" "));
+
+console.log("--- EoT and rounds in a shared slot");
+const { durationStep } = await import(ROOTURL + "module/effects.mjs");
+const eot = { duration: { type: "eot" }, slotInit: 15 }, rnd = { duration: { type: "rounds", rounds: 1 }, remaining: 1, anchorSlot: 15, appliedRound: 1, appliedTurn: 0 };
+const end = (id, last) => ({ id, initiative: 15, shared: true, lastOfSlot: last });
+console.log("EoT on M3: M1's turn ends", durationStep(eot, end("M1", false), { round: 1, turn: 0 }, { combatantId: "M3" }), "| M3's own", durationStep(eot, end("M3", true), { round: 1, turn: 2 }, { combatantId: "M3" }));
+console.log("1 round from M1's turn: M3 ends round 1", durationStep(rnd, end("M3", true), { round: 1, turn: 2 }, {}), "| M1 ends round 2", durationStep(rnd, end("M1", false), { round: 2, turn: 0 }, {}), "| M3 ends round 2", durationStep(rnd, end("M3", true), { round: 2, turn: 2 }, {}));
+console.log("a lone slot still ends at its own end:", durationStep({ duration: { type: "eot" }, slotInit: 12 }, { id: "P", initiative: 12, shared: false, lastOfSlot: true }, { round: 1, turn: 3 }, { combatantId: "X" }));
+
+console.log("--- the rest");
+const T = src("module/twod12.mjs");
+console.log("an NPC Down on more Nonlethal falls Unconscious; equal, the GM picks:", T.includes('else if (s.nonlethal > s.lethal) want = "unconscious";') && T.includes('options: [{ k: "dead", l: "It dies" }, { k: "unconscious", l: "It falls Unconscious" }]'));
+const C = await import(ROOTURL + "tools/content.mjs");
+const avenge = [...C.docs, ...C.actors.flatMap(a => a.items ?? [])].find(x => x.name === "Avenge Kin");
+console.log("Avenge Kin offered by itself:", avenge?.system?.moment, avenge?.system?.momentRange);
+console.log("the Elite rank turns Escalation on:", src("module/actor-sheets.mjs").includes('const was = this.actor.system.role, now = target.dataset.role, esc = now === "elite"'));
+const { ELITE_RUNGS } = await import(ROOTURL + "module/sheetmodel.mjs");
+console.log("the sheet's ladder:", ELITE_RUNGS.map(r => r.label).join(" | "));
+console.log("the Builder at Stage 0: the old notes hidden, the best turn labelled:", src("templates/actor-sheet-pc.hbs").includes('{{#unless s0}}<ul class="nb-rules">') && src("module/pcsheet.mjs").includes("(damage only: riders and shares not counted)"));

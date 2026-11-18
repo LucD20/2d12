@@ -427,7 +427,7 @@
               <div class="nb-dh"><span class="nb-dl">AP</span>{{#each heads}}<span class="nb-dhc{{#if med}} med{{/if}}" style="--rc:{{color}}">{{label}}</span>{{/each}}</div>
               {{#each attacks}}<div class="nb-dr"><div class="nb-dl"><b>{{label}}</b><small>{{sub}}</small></div>{{#each cells}}<div class="nb-dc{{#if med}} med{{/if}}" style="--rc:{{color}}"><b>{{v}}</b><small>{{dice}}</small></div>{{/each}}</div>{{/each}}
             </div>
-            <ul class="nb-rules"><li><b>Vs. WD:</b> the same table; the dice use the Power Modifier ({{powerMod}}) instead, to [R] Resolve unless the Action writes [V] (the switch above shows them).</li><li><b>Conditions</b> cost damage: a Mild one takes the column 1 step to the left, Moderate 2, Severe 3.</li><li><b>Area Save Actions:</b> about half the damage, to each creature in the area (DC 11 + the Modifier).</li><li><b>Reactions:</b> a Trigger deals one column more than an Action of the same AP; an Interrupt the same.</li></ul>
+            {{#unless s0}}<ul class="nb-rules"><li><b>Vs. WD:</b> the same table; the dice use the Power Modifier ({{powerMod}}) instead, to [R] Resolve unless the Action writes [V] (the switch above shows them).</li><li><b>Conditions</b> cost damage: a Mild one takes the column 1 step to the left, Moderate 2, Severe 3.</li><li><b>Area Save Actions:</b> about half the damage, to each creature in the area (DC 11 + the Modifier).</li><li><b>Reactions:</b> a Trigger deals one column more than an Action of the same AP; an Interrupt the same.</li></ul>{{/unless}}
           </div>
         </div>
         {{/with}}

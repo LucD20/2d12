@@ -1,5 +1,5 @@
 --- the numbers
-AP a turn: 4 | Reaction AP: 1 | roles: minion 3, grunt 4, standard 4, elite 4 | Guard an AP by Stage: 2 / 3 / 4
+AP a turn: 4 | Reaction AP: 1 | roles: minion 3, grunt 3, standard 4, elite 4 | Guard an AP by Stage: 2 / 3 / 4
 regain: healthy 4 | Slowed 2 (conditionValue stub: none) Minion 3 | most AP 4
 paying a Reaction (the Reaction AP first): 1R with RAP {"fromRap":1,"fromAp":0} 1R without {"fromRap":0,"fromAp":1} 2R with RAP {"fromRap":1,"fromAp":1} 0R {"fromRap":0,"fromAp":0}
 Guard of kept AP: 1 AP at Stage 1 / 2 / 3: 2 / 3 / 4 | 2 AP at Stage 1: 4 | after a 1R paid with a kept AP (Guard 4, Stage 1): 2 | never under 0: 0

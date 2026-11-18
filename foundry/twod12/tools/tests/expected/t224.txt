@@ -6,7 +6,7 @@ Their Rolls with [Projectile] Actions: ignore Low cover and one range Bane.
 Their Rolls with [Body] Actions: show the note Brute Force.
 Rolls against them made by anyone but Ogre Chieftain: 1 Bane. | Their Rolls: 5 Boons (Favored). | Does nothing yet: switch on a part below.
 filter in the book's notation: [Melee, Strike] Actions, not [Divine] | [Strike] Actions that are [Melee] or [Ranged], not [Fear] | any Action
-list labels: (empty) | Grants (empty) | Aura 2: (empty) | Light 1 / 2 | Can't move closer | Fists lose Non-threatening | Escalation +1: ally Bloodied / Down | Round Specials twice a round
+list labels: (empty) | Grants (empty) | Aura 2: (empty) | Light 1 / 2 | Can't move closer | Fists lose Non-threatening | Escalation +1: ally Bloodied / Down | Round Specials twice per turn-cycle
 part summaries: 1 Boon | off | Low cover and one range Bane
 --- 5.2 to 5.8
 +1 Support bonus to every Defense.

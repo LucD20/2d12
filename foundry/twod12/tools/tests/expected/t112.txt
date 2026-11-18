@@ -30,8 +30,8 @@ Tireless Vigil: Paladin Escalation Passive, escalation passive true | You gain 1
 Hallowed Stance: Paladin Escalation Passive, escalation passive true | Once on your turn, a [Divine] Action you use gains "Setup: You Advance 3." | hooks [{"kind":"setupAdvance","traits":["divine"],"n":3}] | settings 
 Kindle (Bright light 3): encounter | light | You shed Bright light 3 (Dim light 3 more) until the encounter ends (Lantern of Faith, Kindle).
 Reveal (Bright light 1): rounds | light | The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).
-Brace: rounds | aura | For 1 round, the squares adjacent to you are Difficult Terrain for enemies (Hold the Line, Brace).
-Courage: rounds | note | For 1 round, you and allies within 3 squares of you ignore the Frightened condition (Commandment, Courage).
+Brace: rounds | aura | For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). Foundry draws it as an Aura 1 that follows you: if you move, the squares stay where they were (by hand).
+Courage: rounds | note | For 1 round, an Aura 3 around you: you and your allies in it ignore the Frightened condition (Commandment, Courage).
 the old cards out of Foundry: all gone | old cards kept in their folder:  | in no level: true
 Aveline (Human Paladin, Smite): Judge, Smite, Binding Light, Rebuke, Commandment, Roving Judgment, Kindled Wrath, Word of Radiance, Weight of Judgment, Lantern of Faith, Reckoning, Thwart Cut | ids unique: true
 Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Kindled Wrath, Bulwark of Faith, Tireless Vigil, Commandment, Hallowed Stance, Seizing Cut | ids unique: true

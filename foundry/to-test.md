@@ -82,9 +82,10 @@ Expect: The Level saves; the image picker opens.
 Do: Open a class's Levels Editor, rename a section, save, open it again.
 Expect: The new title is kept.
 
-### builder-tab · v0.0.407 · The NPC Builder tab
-Do: Open the Orc Warrior's Builder tab; click the Striker preset on a copy.
-Expect: Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100; the Damage row "25/AP" for a Standard; the turn-budget table; Best turn about 93 of 100 with no warning. Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged.
+### builder-tab · v0.0.433 · The NPC Builder tab
+Do: Open the Orc Warrior's Builder tab; click the Striker preset on a copy. Then make a new NPC and set its rank to Elite, then back to Standard.
+Expect: Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100; the Damage row "25/AP" for a Standard; the turn-budget table, with no list of old notes under it; Best turn "about 93 of 100 (damage only: riders and shares not counted)". Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged. The new Elite has Escalation on, at 1, and its ladder reads "2 · Pressing | 4 · Relentless | 6 · Second Wind"; back to Standard, Escalation is off.
+Rev: 2
 
 ### no-levels-class · v0.0.415 · A class without levels
 Do: Drop a class item with no levels on a character.
@@ -92,9 +93,14 @@ Expect: A warning to give it levels first (no Attribute window).
 
 ## Starting a combat
 
-### minion-squad · v0.0.407 · Three Goblins on one Initiative roll
-Do: Put three Goblin Sneaks in a combat and roll Initiative from the Initiative window.
-Expect: One roll, the same Initiative for the three (the card says "×3"), each with its own turn. A Goblin Sneak has 3 AP and no Reaction AP.
+### minion-squad · v0.0.433 · Three Goblins on one Initiative roll
+Do: Put three Goblin Sneaks and two PCs in a combat and roll Initiative from the Initiative window.
+Expect: One roll, the same Initiative for the three (the card says "×3"), each with its own turn, and the three act one after another: no PC's turn between them. A Goblin Sneak has 3 AP and no Reaction AP.
+Rev: 2
+
+### minion-eot · v0.0.433 · A Goblin's EoT in the squad's slot
+Do: In that combat, on a PC's turn, make the third Goblin Hindered (EoT); in the first Goblin's turn, give the second Goblin an effect for 1 round.
+Expect: The third Goblin's Hindered ends at the end of its own turn, not the first one's. The 1-round effect ends at the end of the third Goblin's turn in the next round, not before.
 
 ### momentum-start · v0.0.407 · Momentum and Escalation at the start
 Do: Before starting, set Momentum to 2 (left-click +1, right-click −1 on the strip). Start the combat; go to round 2.
@@ -274,6 +280,10 @@ Expect: A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halve
 Do: Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.
 Expect: The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.
 
+### npc-unconscious · v0.0.433 · An NPC Down on Nonlethal damage
+Do: Take an Orc Warrior Down with more Nonlethal damage than Lethal (a Nonlethal Action, or a Lethal Action switched with its Bane); then a copy with equal Lethal and Nonlethal.
+Expect: The first falls Unconscious, not Dead (it stops flanking). For the equal one the GM gets a pick window: "It dies" or "It falls Unconscious".
+
 ### one-source · v0.0.424 · A condition from a second creature
 Do: Make an Orc Frightened of Aveline for 3 rounds, then Frightened of Durgan for 1 round.
 Expect: It is Frightened of Durgan only, for 1 round. Made Frightened of Durgan again for 2 rounds: it keeps the longer duration.
@@ -329,6 +339,10 @@ Do: Use Lay On Hands on an ally 4 squares away; use Circling Shot.
 Expect: No "out of range" block; the Setup's button Advances (Circling Shot: Evade 1, then the shot, Tier 3's Evade 1). The Encounter Log writes it as one line ("Strafe (Setup: Advance 2)").
 
 ## Reactions and Judge
+
+### avenge-kin · v0.0.433 · Avenge Kin offers itself
+Do: Put two Orc Warriors next to each other; a PC hits one of them with a Strike that deals damage.
+Expect: The Reactions message offers the other Orc's Avenge Kin (its trigger: an ally within 2 squares takes damage from a [Strike] Action).
 
 ### judge-question · v0.0.421 · Judge's reduction is a question
 Do: The Judged enemy damages an ally within 5 squares of the Paladin. Answer "Not now"; then hit again the same round and answer "Reduce by N".

@@ -1,7 +1,7 @@
 <!-- part: Part III: Reference -->
 # Chapter 6: Basic Actions
 
-Every creature can use these Actions, except that an NPC's attacks are its own cards (it has no Weapon Attack: see [[Bestiary: Building NPCs]]).
+Every creature can use these Actions, except that an NPC's attacks are its own cards (it has no Weapon Attack: see [[The Basic attack]]).
 
 @@CARD:Advance@@
 

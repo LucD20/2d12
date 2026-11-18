@@ -535,7 +535,7 @@ export function ruleLabel(rIn, ctx = {}) {
     }
     case "value": t = r.stat === "rally" ? "Rally Points heal more" : plainText(sentence(r, ctx)).replace(/\.$/, "").replace(/, while.*/, "").replace(/^Has /, ""); break;
     case "esc": t = `Escalation +1: ${r.trig === "markDown" ? "mark Down" : "ally Bloodied / Down"}`; break;
-    case "uses": t = r.which === "encounter" ? "Encounter Specials a second time" : "Round Specials twice a round"; break;
+    case "uses": t = r.which === "encounter" ? "Encounter Specials a second time" : "Round Specials twice per turn-cycle"; break;
     case "aura": { const c = r.inside.carry, bits = [c.on ? (nm(c.fx) || c.fxName || "(empty)") : "", r.inside.heal.on ? `heal ${r.inside.heal.formula}` : "", r.inside.ht.on ? `HT ${r.inside.ht.list.map(d => `${d.dice}${d.sub ? ` ${SUB(d.sub)}` : ""}`).join(" + ")}` : "", r.inside.diff.on ? "Difficult" : ""].filter(Boolean);
       t = `Aura ${String(r.size).replace(/@origin\./g, "")}: ${bits.join(" + ") || "(empty)"}`; break; }
     case "weap": t = r.mode === "prop" ? `${r.weapon === "fists" ? "Fists" : "Weapons"} lose ${T().removableProps?.[r.prop] ?? r.prop}` : `Starting Mastery ${r.mval}`; break;

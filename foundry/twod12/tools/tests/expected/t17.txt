@@ -1,6 +1,6 @@
 --- every rating Medium, level 1 (the Bestiary, v0.0.181: 6 / 24 / 56 / 118 Health)
 minion    Health 12 (6 + 6)  Attributes 0/0/0/0  AD 12 WD 12  AP 3
-grunt     Health 26 (13 + 13)  Attributes 0/0/0/0  AD 13 WD 13  AP 4
+grunt     Health 26 (13 + 13)  Attributes 0/0/0/0  AD 13 WD 13  AP 3
 standard  Health 60 (30 + 30)  Attributes 1/1/1/1  AD 13 WD 13  AP 4
 elite     Health 130 (65 + 65)  Attributes 2/2/2/2  AD 14 WD 14  AP 4
 --- every Defense rating (Terrible..Extreme; never below 11)

@@ -9,14 +9,14 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 42.1 | 477 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.3 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
-| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.6 | 45 |
+| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.5 | 45 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.8 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.8 | 118 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 29.8 | 216 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.8 | 137 |
 | 13-archer.md | Archer | archer |  | 5.3 | 140 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 33.8 | 458 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 35.2 | 462 |
 | 15-gear.md | Gear | gear |  | 14.2 | 224 |
 
 ## 01-roll.md: Chapter 1: The Roll
@@ -294,33 +294,33 @@ Open (to be decided) boxes: 19: "Levels 1 to 3 are written. Level 4 (the Apex an
 - 27: ## Ratings
 - 50: ## Defenses
 - 56:   ### What an Action attacks, rolls and damages
-- 68: ## Attributes and Modifiers
-- 81: ## Health
-- 87: ## Speed
-- 94: ## An NPC's Steadiness
-- 98: ## Actions: the turn budget
-- 104:   ### The Basic attack
-- 110:   ### The price of an Action
-- 143:   ### Points into damage
-- 162:   ### Ranged attacks
-- 166:   ### Riders and their price
-- 185:   ### Where the effect is
-- 195:   ### Actions that hit several creatures
-- 201:   ### Actions with no damage
-- 214:   ### NPC Reactions
-- 228:   ### How common each kind of Action is
-- 239:   ### Check its best turn
-- 246:   ### Elite Escalation
-- 269: ## Roles
-- 284: ## The ranks
-- 288:   ### Minions
-- 319:   ### Grunts
-- 350:   ### Standards
-- 379:   ### Elites
-- 408: ## Building an encounter
-- 436: ## Example NPCs (Stage 0)
+- 70: ## Attributes and Modifiers
+- 83: ## Health
+- 89: ## Speed
+- 96: ## An NPC's Steadiness
+- 100: ## Actions: the turn budget
+- 106:   ### The Basic attack
+- 112:   ### The price of an Action
+- 145:   ### Points into damage
+- 164:   ### Ranged attacks
+- 168:   ### Riders and their price
+- 189:   ### Where the effect is
+- 199:   ### Actions that hit several creatures
+- 205:   ### Actions with no damage
+- 218:   ### NPC Reactions
+- 232:   ### How common each kind of Action is
+- 243:   ### Check its best turn
+- 250:   ### Elite Escalation
+- 273: ## Roles
+- 288: ## The ranks
+- 292:   ### Minions
+- 323:   ### Grunts
+- 354:   ### Standards
+- 383:   ### Elites
+- 412: ## Building an encounter
+- 440: ## Example NPCs (Stage 0)
 
-Open (to be decided) boxes: 47: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 266: "The CV was measured with the default ladder. The other common steps ar"
+Open (to be decided) boxes: 47: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 270: "The CV was measured with the default ladder. The other common steps ar"
 
 ## 15-gear.md: Gear
 

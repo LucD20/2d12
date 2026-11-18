@@ -1,0 +1,13 @@
+--- a Minions' squad takes one turn of its side
+three Minions at 15, PCs at 14 and 12, an Orc at 10: M1 M2 M3 P1 Orc P2
+a member whose roll differs goes on its own: M1 P1 M2
+--- EoT and rounds in a shared slot
+EoT on M3: M1's turn ends null | M3's own end
+1 round from M1's turn: M3 ends round 1 null | M1 ends round 2 null | M3 ends round 2 end
+a lone slot still ends at its own end: end
+--- the rest
+an NPC Down on more Nonlethal falls Unconscious; equal, the GM picks: true
+Avenge Kin offered by itself: strikeDamage 2
+the Elite rank turns Escalation on: true
+the sheet's ladder: 2 · Pressing | 4 · Relentless | 6 · Second Wind
+the Builder at Stage 0: the old notes hidden, the best turn labelled: true

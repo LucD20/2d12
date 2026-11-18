@@ -3,7 +3,7 @@ dmgMods [{"kind":"resist","sub":"Fi","n":3},{"kind":"weak","sub":"Ho","n":2},{"k
 The creature has Resist 3 Fire. | Resist 3 Fire
 The creature has Weak 2 Holy. | Weak 2 Holy
 The creature has Immune Cold. | Immune Cold
-While this works, its Round Special Actions can be used twice a round. | Round Specials twice a round
+While this works, its Round Special Actions can be used twice per turn-cycle. | Round Specials twice per turn-cycle
 While this works, its Encounter Special Actions can be used a second time. | Encounter Specials a second time
 --- merged with the creature's own line: the highest of each counts (Ch. 1, Stacking)
 {"resist":{"Fi":5},"weak":{"Ho":1},"immune":["Ps"]}

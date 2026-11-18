@@ -544,7 +544,7 @@ export function npcBuilderModel(a) {
     return { name: i.name, ap: Number(v.ap) || 1, freq, pts: damagePoints(avgOf(v.t2), avgOf(v.t3)), strike: [...(i.system.traits ?? [])].includes("strike") || !!i.system.basicAttack };
   });
   const best = bestTurn(acts, rankAp(rank));
-  const bestLine = !acts.length ? "no Actions yet" : `${Math.round(best.pts)} of ${Math.round(budget)}${best.pts > budget * (1 + TWOD12.npcBudget.over) ? " (over: more than 15% above the budget)" : ""}`;
+  const bestLine = !acts.length ? "no Actions yet" : `${Math.round(best.pts)} of ${Math.round(budget)} (damage only: riders and shares not counted)${best.pts > budget * (1 + TWOD12.npcBudget.over) ? " (over: more than 15% above the budget)" : ""}`;
   return {
     roles: Object.entries(TWOD12.npcRoles).map(([k, v]) => ({ key: k, label: v.label, on: (s.role || "standard") === k })),
     // v0.0.407 (the Bestiary, Roles): a role is a preset of ratings (clicked, it sets them; its name is kept on the NPC)

@@ -12,5 +12,5 @@ Goblin Sneak: Dirty Trick | Tier 2 1 Pressure Bane on its next roll. | Tier 3 1 
 Orc Warrior: Cleaver | Tier 2 Pushed 1. | Tier 3 Pushed 1. | Effect "" | after @Move[pushed|distance:1|pick:yes]
 Ogre Chieftain: Club | Tier 2 Pushed 1. | Tier 3 Pushed 1. | Effect "" | after @Move[pushed|distance:1|pick:yes]
 Ogre Chieftain: Overhead Smash | Tier 2 Pushed 2. | Tier 3 Pushed 2. | Effect "" | after @Move[pushed|distance:2|pick:yes]
-the book's bullets: 3 Pushed | 8 Reach (1)
+the book's bullets: 3 Pushed | 9 Reach (1)
 Foundry's Distance: an NPC's melee "Reach (X)": true

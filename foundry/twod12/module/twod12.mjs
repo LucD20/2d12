@@ -526,13 +526,33 @@ Hooks.on("deleteItem", (item, options, userId) => {
 });
 
 
-/** An NPC that is Down with more Lethal damage is dead: the Dead condition, shown as an overlay on its token. If it is healed it is back. */
+/**
+ * An NPC that goes Down (Chapter 4, NPCs Going Down) dies with more Lethal damage (the Dead condition, an overlay on its token) and falls Unconscious
+ * with more Nonlethal damage; equal, the GM chooses (a pick window). If it is healed it is back. v0.0.433 (the Bestiary audit): Unconscious and the
+ * GM's choice were missing (a Down NPC on more Nonlethal damage stayed up: it threatened, flanked and took its turns).
+ */
+const askingDown = new Set();
 async function checkDead(actor) {
   if (!game.user.isActiveGM || actor?.type !== "npc") return;
-  const s = actor.system;
-  const dead = !!s.atZero && s.lethal > s.nonlethal;
-  const has = actor.statuses?.has("dead");
-  if (dead !== !!has) await actor.toggleStatusEffect("dead", { active: dead, overlay: dead });
+  const s = actor.system, down = !!s.atZero;
+  let want = null;
+  if (down) {
+    if (s.lethal > s.nonlethal) want = "dead";
+    else if (s.nonlethal > s.lethal) want = "unconscious";
+    else {
+      if (actor.statuses?.has("dead") || actor.statuses?.has("unconscious") || askingDown.has(actor.uuid)) return;
+      askingDown.add(actor.uuid);
+      try {
+        const { pickOne } = await import("./pickwindow.mjs");
+        want = await pickOne({ title: "Down", name: `${actor.name} goes Down`, sub: "Lethal and Nonlethal damage are equal", icon: "fa-skull",
+          text: "The GM chooses (Chapter 4, NPCs Going Down).", options: [{ k: "dead", l: "It dies" }, { k: "unconscious", l: "It falls Unconscious" }] });
+      } finally { askingDown.delete(actor.uuid); }
+      if (!want) return;
+    }
+  }
+  const hasDead = !!actor.statuses?.has("dead");
+  if ((want === "dead") !== hasDead) await actor.toggleStatusEffect("dead", { active: want === "dead", overlay: want === "dead" });
+  if (want === "unconscious" && !actor.statuses?.has("unconscious")) await actor.toggleStatusEffect("unconscious", { active: true });
 }
 function registerDeadHooks() {
   // A Down creature whose damage drops below its Health Pool is no longer Down and wakes up at once.

@@ -135,11 +135,11 @@
     },
     {
      "id": "builder-tab",
-     "v": "v0.0.407",
+     "v": "v0.0.433",
      "title": "The NPC Builder tab",
-     "do": "Open the Orc Warrior's Builder tab; click the Striker preset on a copy.",
-     "expect": "Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100; the Damage row \"25/AP\" for a Standard; the turn-budget table; Best turn about 93 of 100 with no warning. Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged.",
-     "rev": 1
+     "do": "Open the Orc Warrior's Builder tab; click the Striker preset on a copy. Then make a new NPC and set its rank to Elite, then back to Standard.",
+     "expect": "Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100; the Damage row \"25/AP\" for a Standard; the turn-budget table, with no list of old notes under it; Best turn \"about 93 of 100 (damage only: riders and shares not counted)\". Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged. The new Elite has Escalation on, at 1, and its ladder reads \"2 · Pressing | 4 · Relentless | 6 · Second Wind\"; back to Standard, Escalation is off.",
+     "rev": 2
     },
     {
      "id": "no-levels-class",
@@ -156,10 +156,18 @@
    "items": [
     {
      "id": "minion-squad",
-     "v": "v0.0.407",
+     "v": "v0.0.433",
      "title": "Three Goblins on one Initiative roll",
-     "do": "Put three Goblin Sneaks in a combat and roll Initiative from the Initiative window.",
-     "expect": "One roll, the same Initiative for the three (the card says \"×3\"), each with its own turn. A Goblin Sneak has 3 AP and no Reaction AP.",
+     "do": "Put three Goblin Sneaks and two PCs in a combat and roll Initiative from the Initiative window.",
+     "expect": "One roll, the same Initiative for the three (the card says \"×3\"), each with its own turn, and the three act one after another: no PC's turn between them. A Goblin Sneak has 3 AP and no Reaction AP.",
+     "rev": 2
+    },
+    {
+     "id": "minion-eot",
+     "v": "v0.0.433",
+     "title": "A Goblin's EoT in the squad's slot",
+     "do": "In that combat, on a PC's turn, make the third Goblin Hindered (EoT); in the first Goblin's turn, give the second Goblin an effect for 1 round.",
+     "expect": "The third Goblin's Hindered ends at the end of its own turn, not the first one's. The 1-round effect ends at the end of the third Goblin's turn in the next round, not before.",
      "rev": 1
     },
     {
@@ -522,6 +530,14 @@
      "rev": 1
     },
     {
+     "id": "npc-unconscious",
+     "v": "v0.0.433",
+     "title": "An NPC Down on Nonlethal damage",
+     "do": "Take an Orc Warrior Down with more Nonlethal damage than Lethal (a Nonlethal Action, or a Lethal Action switched with its Bane); then a copy with equal Lethal and Nonlethal.",
+     "expect": "The first falls Unconscious, not Dead (it stops flanking). For the equal one the GM gets a pick window: \"It dies\" or \"It falls Unconscious\".",
+     "rev": 1
+    },
+    {
      "id": "one-source",
      "v": "v0.0.424",
      "title": "A condition from a second creature",
@@ -635,6 +651,14 @@
   {
    "name": "Reactions and Judge",
    "items": [
+    {
+     "id": "avenge-kin",
+     "v": "v0.0.433",
+     "title": "Avenge Kin offers itself",
+     "do": "Put two Orc Warriors next to each other; a PC hits one of them with a Strike that deals damage.",
+     "expect": "The Reactions message offers the other Orc's Avenge Kin (its trigger: an ally within 2 squares takes damage from a [Strike] Action).",
+     "rev": 1
+    },
     {
      "id": "judge-question",
      "v": "v0.0.421",

@@ -18,7 +18,7 @@ Rebuke (Reaction): ln #1f7a72 | a Daily: ln #5B3FA6 | can't be used: ln #b5ad9c
 Steel Yourself: No Rally Points | Stand: Not Prone | Crawl: ""
 Strikes left (0, 1, 3 used): ◆◆◆ ◆◆◇ ◇◇◇
 senses: ["Sight","Hearing 10"] ["Dark Sight","Hearing 10"] ["Dim-light Sight","Deaf","Tremorsense 6"]
-the Elite's ladder: 2 · first attack +1 Boon | 4 · Round Special ×2 | 6 · Encounter Special back
+the Elite's ladder: 2 · Pressing | 4 · Relentless | 6 · Second Wind
 --- the template and the CSS
 NPC tabs: true | the Builder's steps (v0.0.308: pip and number one button): true | Post stat block (GM): true | Give to a PC: true
 the Strike line on rows: true | two lines on a Basic button: true | 3px corners: true | no row tooltips: true
