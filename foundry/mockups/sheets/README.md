@@ -158,3 +158,8 @@ hooks); AP, the Reaction AP and the Strikes on one line. In both the rungs' numb
 **Round 3 (Lucas: "I like C. But I need to see with two weapons, one on each hand"; "C" read as the third picture, Option B):** at the top of
 the page, Sylwen with her Hunting Bow in the main hand and her Dagger in the off hand: the build, Option B, Option A
 (`fixes-two-hands-dark.jpg`, `fixes-two-hands-light.jpg`). With B the combat line is the two hand tiles' height.
+
+**Round 4 (Lucas: "Put escalation (not the hooks) on the same section as AP/R/Strikes, and make the Hooks more pronunced"):** at the top of the
+page (`fixes-hooks-dark.jpg`, `fixes-hooks-light.jpg`): the marks cell has two rows, AP (pips, the Reaction AP, the Strikes' slashes) and Esc.
+(six pips, the rungs ringed, the number); the left cell holds only the hooks: "Hooks left", then each hook in bold at an Action name's size with
+the accent's small diamond, or "None this encounter", faded. Drawn with one hook (Sylwen, a weapon in each hand), two and none (Aveline).

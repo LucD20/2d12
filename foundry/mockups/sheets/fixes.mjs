@@ -67,6 +67,22 @@ function compact(host, v, pc) {
   const hooks = pc.strip.esc.hooks ? `Hooks: ${esc_(pc.strip.esc.hooks)}` : "No hooks left";
   const rungAt = new Set(rungs.map(r => Number(r.n)));
   const pips = mark => `<span class="fx-ep">${pc.strip.esc.pips.map((on, k) => `<a class="${on ? "on" : ""}${mark && rungAt.has(k + 1) ? " rg" : ""}" data-action="setEscalation" data-n="${k + 1}" role="button" aria-label="Escalation ${k + 1}"></a>`).join("")}</span>`;
+  if (v === "c") {
+    // round 4: the hooks alone in the left cell, pronounced; Escalation a second row of marks beside AP
+    const list = String(pc.strip.esc.hooks ?? "").split(" · ").filter(Boolean);
+    if (esc) { esc.classList.add("fx-hooks"); esc.innerHTML = list.length ? `<span class="fx-hk">Hooks left</span><span class="fx-hl">${list.map(h => `<b><i></i>${esc_(h)}</b>`).join("")}</span>` : '<span class="fx-hk">Hooks left</span><span class="fx-none">None this encounter</span>'; }
+    if (ap) {
+      const p = ap.querySelector(".ps2-pips"), st = ap.querySelector(".ps2-strk"), bane = ap.querySelector(".bane");
+      p.querySelector(".k")?.remove();
+      st.innerHTML = pc.strip.strikePips.map(on => `<i class="${on ? "on" : ""}"></i>`).join("");
+      ap.innerHTML = ""; ap.className += " fx-apc";
+      const row1 = document.createElement("span"); row1.className = "fx-row"; row1.append(p, Object.assign(document.createElement("span"), { className: "fx-sep" }), st);
+      const row2 = document.createElement("span"); row2.className = "fx-row"; row2.innerHTML = `${pips(true)}<b class="fx-n">${n}</b>`;
+      ap.append(Object.assign(document.createElement("span"), { className: "k", textContent: "AP" }), row1, Object.assign(document.createElement("span"), { className: "k", textContent: "Esc." }), row2);
+      if (bane) ap.append(bane);
+    }
+    return;
+  }
   if (esc) esc.innerHTML = v === "a"
     ? `<span class="fx-l1"><span class="k">Escalation ${n}</span>${pips(false)}</span><span class="fx-lit">${lit.map(esc_).join(" · ") || "No Passive yet"}</span><span class="ps2-q">${hooks}</span>`
     : `<span class="fx-l1"><span class="k">Escalation ${n}</span>${pips(true)}</span><span class="ps2-q">${hooks}</span>`;
@@ -90,6 +106,15 @@ const pair = async (title, note, items, mk, st, opts, h, extra = "") => {
   return `<section class="fx-sec"><h2>${title}</h2>${note}<div class="fx-pair"><div><h3>As built (v0.0.441)</h3>${win(a1.name, 540, h, await render(a1, model(a1, st), opts))}</div><div><h3><b>Proposed</b></h3><div class="fx-new">${win(a2.name, 540, h, await render(a2, model(a2, st), { ...opts, fix: true }))}</div></div>${extra}</div></section>`;
 };
 const out = document.getElementById("page");
+{
+  // round 4 (Lucas: "Put escalation (not the hooks) on the same section as AP/R/Strikes, and make the Hooks more pronounced")
+  const sylTwo = () => makeActor(data.sylwen, { system: { escalation: 4, damage: { bodyLethal: 6, mindNonlethal: 3 } }, items: { Dagger: { wielded: true, hand: "off" }, "Hunting Bow": { hand: "main" } } });
+  const cases = [["Sylwen, a weapon in each hand, one hook left", sylTwo, { inCombat: true, round: 3, ap: 3, strikes: 1, rungs: { 2: ["Lean and Loose"], 4: ["Steady Draw"] }, hooks: "Critical", dl: DL, cd: CD }],
+    ["Aveline, two hooks left", ave, { ...aveSt }], ["Aveline, no hook left", ave, { ...aveSt, hooks: "" }]];
+  let html = "";
+  for (const [t, mk, st] of cases) { const a = mk(); html += `<div><h3>${t}</h3><div class="fx-new">${win(a.name, 540, 330, await render(a, model(a, st), { fix: true, v: "c" }))}</div></div>`; }
+  out.insertAdjacentHTML("beforeend", `<section class="fx-sec" id="round4"><h2>Round 4: Escalation with the marks, the hooks on their own</h2><ul class="fx-list"><li><b>The marks cell</b> (right): two rows, each with its word: <b>AP</b> (the AP pips, the Reaction AP's diamond, a hairline, the Strikes' slashes) and <b>Esc.</b> (the six pips, the ones where a Passive or the Apex comes ringed, then the number). A click on a pip sets the AP or the Escalation, as today.</li><li><b>The hooks cell</b> (left, where Escalation was): "Hooks left" as its heading, then each hook in bold at the card's size (14.5 px, the size of an Action's name) with the accent's small diamond before it; with none, "None this encounter", faded. They are the encounter's one-time triggers, so they get the most visible place of the line.</li></ul><div class="fx-pair">${html}</div></section>`);
+}
 {
   // round 3 (Lucas: "I need to see with two weapons, one on each hand"): Sylwen, her Hunting Bow in the main hand and her Dagger in the off hand
   const sylTwo = () => makeActor(data.sylwen, { system: { escalation: 6, damage: { bodyLethal: 6, mindNonlethal: 3 } }, items: { Dagger: { wielded: true, hand: "off" }, "Hunting Bow": { hand: "main" } } });
