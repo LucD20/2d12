@@ -57,6 +57,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 26 | **Overcast's shape:** its own line on the card after the Tiers; three shared form ladders (Reach, Breadth, Hold) paid by excess School level, the card listing which it may climb; one substance step written on each spell, paid by excess Path level; **Merge** on every spell (a second Path's rider, in the rider slot; the spell gains that Path's trait for the casting). | "Yes." | 2026-11-18 |
 | 27 | **Mastery for magic** (5d), with one change: **one point a fight, placed in a Path or a School you cast in it** (the weapon rule exactly), not one in each. Opening gives a Path and a School together and two spells; levels at 10, 20, 30, 45, 60; a spell chosen at each new level; spells swap on a Rest; "the group follows" left out. | "Works, but school and path at 2 by level 3, isn't that too soon?" then "Yes." | 2026-11-18 |
 | 28 | **A magic that stands: A, one at a time** (it lasts until the encounter ends, you go Down, or you end it; casting another ends the first), **with room left for B as a second kind**: some spells that you "maintain by spending AP". **Both break when you become Bloodied or Strained.** The name "Standing" is refused ("doesn't sound magic"; his examples: sustaining, concentrating): names to choose. | "A is good but nothing stops B from existing as well. We focus on A with gap for B, some spells that you can 'maintain by spending AP'. Break on bloodied and strained is good." | 2026-11-18 |
+| 29 | **The names: [Woven]** for the one-at-a-time kind ("you can hold one Woven spell; casting another ends it") **and [Sustained]** for the paid kind ("Sustain: 1 AP" at the start of your turn, or it ends). | "Sustained and Woven." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -220,10 +221,25 @@ A new trait, working name **[Standing]**. Common to the three: it lasts until th
 
 Claude's pick: A, with the break on Bloodied or Strained.
 
-**The two kinds after decision 28, and their names (PROPOSED; waiting for Lucas).** [Focus] can't be used (it is concentration, on every spell: decision 7).
+**The two kinds after decision 28, and their names (DECIDED 2026-11-18, decision 29: [Woven] and [Sustained]; the candidates below kept for the record).** [Focus] can't be used (it is concentration, on every spell: decision 7).
 - **The one-at-a-time kind (A):** Claude's pick **[Bound]** ("you can have one Bound spell; casting another ends it"). Others: Anchored, Woven, Attuned, Enduring.
 - **The paid kind (B):** Claude's pick **[Sustained]**, with a cost on the card ("Sustain: 1 AP"): at the start of your turn you pay it or the spell ends; you can sustain as many as you can pay for. "Sustain" already means exactly this to players of Pathfinder 2e. Others: Maintained, Channeled.
 - Both end when you go Down, when you choose, at the end of the encounter, and when you become Bloodied or Strained.
+
+## 5f. The push (PROPOSED 2026-11-18, three structures; waiting for Lucas)
+
+Decided already: Nonlethal damage as extra fuel is an option, never the main cost (1, 2); an Overcast step needs a level above the minimum and Escalation (20, 26); the push takes one step early (20). Sources: Dominions' gem (+1 level for one spell, never +2), Ars Magica (a casting that falls a little short still works, and tires you).
+
+**What a push buys: one Overcast step you couldn't otherwise take, once a casting.**
+- **A, the clock only.** It ignores the Escalation the step needs; you still need the level. A round-1 tool for those who have the levels.
+- **B, the level only.** It counts you as one level higher in the spell's Path or School; the Escalation is still needed.
+- **C, either.** One step that ignores what it needs, whichever is missing. A level 1 caster in round 1 can already stretch a spell, at a price.
+
+**What it costs:** Nonlethal Resolve damage to you, **1d6!** (a die, as the charter asks of a number on a card; exploding, so pushing is never quite safe). It is a cost: Guard doesn't take it and nothing reduces it. Against a Health Pool of about 30 it is a real price, and Chapter 4 already says what happens if it adds up (Down with half the pool in Nonlethal damage is Unconscious, not Dying).
+
+Its name is open ("push" is a working word): Strain, Overreach, Surge.
+
+Claude's pick: C, 1d6!, once a casting.
 
 ## 6. The order of work from here (proposed)
 
