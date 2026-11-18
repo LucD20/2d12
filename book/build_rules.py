@@ -276,7 +276,11 @@ css += _ff('Source Serif 4', 'source-serif-4.woff2', 'normal') + _ff('Source Ser
 css += '@font-face{font-family:"Cinzel";font-weight:700;font-style:normal;font-display:swap;src:url(data:font/woff2;base64,' + base64.b64encode(open(os.path.join(ASSETS, 'cinzel-700.woff2'), 'rb').read()).decode() + ') format("woff2")}\n'
 js = '''
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
-document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.getAttribute('href').slice(1));openUp(t);}));
+// v0.0.427 (Lucas: "the links in the book are broken"): shown inside another page's frame (the Claude app, a published page), a "#..." link
+// resolved against that page and reloaded the frame instead of scrolling. A link to a place in this document (written "#id", or with this
+// document's own file name) now opens the chapter or card around it and scrolls there itself, in any viewer.
+const ownFile=(document.querySelector('.docnav a.cur')||{}).getAttribute?.('href')||'';
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey)return;const h=a.getAttribute('href')||'';const m=h.match(/^([^#]*)#(.+)$/);if(!m||(m[1]&&m[1]!==ownFile))return;const id=decodeURIComponent(m[2]),t=document.getElementById(id);if(!t)return;e.preventDefault();openUp(t);t.scrollIntoView({block:'start'});try{history.replaceState(null,'','#'+id)}catch(_){}});
 window.addEventListener('hashchange',()=>openUp(document.getElementById(location.hash.slice(1))));
 if(location.hash)openUp(document.getElementById(location.hash.slice(1)));
 document.getElementById('expandAll').onclick=()=>document.querySelectorAll('details.chapter-d,section.chapter>details').forEach(d=>d.open=true);
