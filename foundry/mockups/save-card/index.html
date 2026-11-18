@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" class="twod12-type">
+<head>
+<meta charset="utf-8">
+<title>Save Card Redesign</title>
+<link rel="stylesheet" href="../../twod12/styles/system.css">
+<link rel="stylesheet" href="../../twod12/styles/theme.css">
+<style>
+  body { margin: 0; padding: 16px; font-family: "Source Sans 3", sans-serif; font-size: 14px; } * { animation: none !important; transition: none !important; }
+  body.theme-dark { background: #2b2722; color: #e6dfd1; } body.theme-light { background: #ddd6c8; color: #1d1a16; }
+  #grid { display: flex; flex-direction: column; gap: 22px; }
+  .sc-row { display: grid; grid-template-columns: 300px 300px; gap: 18px; align-items: start; }
+  .sc-cap { grid-column: 1 / -1; font-weight: 700; font-size: 15px; border-bottom: 1px solid currentColor; opacity: .85; padding-bottom: 2px; }
+  .sc-h { font-size: 12px; opacity: .7; margin-bottom: 4px; }
+  .sc-col > #chat-log { position: static !important; display: block !important; overflow: visible !important; }
+</style>
+</head>
+<body><div id="grid"></div><script type="module" src="save-card.mjs"></script></body>
+</html>
