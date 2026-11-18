@@ -220,6 +220,10 @@ Expect: The enemy is Hindered (the Effect runs for the creature the retarget add
 Do: Give a PC Empowered and hit three enemies with an area (two on the same Tier).
 Expect: One Empowered 1d6! is rolled, and only one creature (the first hit) takes it: it has its own line on the card.
 
+### save-effect-words · v0.0.430 · A self-running Effect on the Save card
+Do: Use Reckoning on two enemies.
+Expect: They are pushed once on use; the Save card's "Effect: Each target is Pushed 2." is words (no button to push again).
+
 ## Conditions and their Tiers
 
 ### tier-no-damage · v0.0.421 · A Tier's condition with no damage

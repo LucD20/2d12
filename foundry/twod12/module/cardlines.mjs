@@ -20,7 +20,9 @@ export async function lineHtml(l, item, enrich = richText) {
  * several), before: [{ label, html }] (the Version's lines before its Tiers: Special), tiers: [labels] (where the face's Tier rows go; none for a
  * Version with no roll), after: [{ label, html }] (after the Tiers: Critical, Effect), special: { label, html } | null (the card's Special) }.
  */
-export async function versionCardLines(item, version, { actor = null, weapon = null, fists = false, enrich = richText, setupHtml = null } = {}) {
+/** v0.0.429 (the audit's gap: Reckoning's "Pushed 2" on its Save card pushed again): a chip drawn as its plain words (what it does already ran). */
+export const plainChips = html => String(html ?? "").replace(/<a\b[^>]*class="[^"]*twod12-inline[^"]*"[^>]*>[\s\S]*?<span class="ti-name">([\s\S]*?)<\/span>[\s\S]*?<\/a>/g, '<span class="ti-done">$1</span>');
+export async function versionCardLines(item, version, { actor = null, weapon = null, fists = false, enrich = richText, setupHtml = null, plainEffect = false } = {}) {
   const M = cardModel(item, { actor, weapon, fists });
   const vs = M.versions;
   const vm = vs.find(v => v.source === version) ?? vs.find(v => v.ap === Number(version?.ap ?? version) && (!version?.mode || v.mode === version.mode)) ?? vs[0] ?? { lines: [], roll: null, heading: "" };
@@ -39,11 +41,13 @@ export async function versionCardLines(item, version, { actor = null, weapon = n
   if (!roll && vm.roll) roll = { label: vm.roll.label, text: vm.roll.text };
   const first = vm.lines.findIndex(l => l.kind === "tier"), last = vm.lines.findLastIndex(l => l.kind === "tier");
   const part = async list => Promise.all(list.filter(l => l.kind !== "tier").map(async l => ({ label: l.label, html: await lineHtml(l, item, enrich) })));
+  // v0.0.429: an Effect that runs by itself on use (a damage-free Save Action's chain) is drawn as words on the chat card, not buttons to press again
+  const fx = list => (plainEffect ? list.map(l => (l.label === "Effect" ? { ...l, html: plainChips(l.html) } : l)) : list);
   return {
-    top, roll, heading: vs.length > 1 ? vm.heading : "",
+    top: fx(top), roll, heading: vs.length > 1 ? vm.heading : "",
     before: await part(first < 0 ? vm.lines.filter(l => l.label === "Special") : vm.lines.slice(0, first)),
     tiers: vm.lines.filter(l => l.kind === "tier").map(l => l.label),
-    after: await part(first < 0 ? vm.lines.filter(l => l.label !== "Special") : vm.lines.slice(last + 1)),
+    after: fx(await part(first < 0 ? vm.lines.filter(l => l.label !== "Special") : vm.lines.slice(last + 1))),
     special: M.special ? { label: M.special.label, html: await lineHtml(M.special, item, enrich) } : null
   };
 }

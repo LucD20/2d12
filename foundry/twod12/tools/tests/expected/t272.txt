@@ -4,3 +4,4 @@ Basic Actions' Specials: Weapon Attack ["Special"] | Steel Yourself special true
 the model places them: true
 the attack chat card draws such an Effect once: true
 t260's parity: 48 of 48
+a self-running Effect as words on the Save card: true

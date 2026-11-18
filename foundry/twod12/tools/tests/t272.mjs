@@ -19,3 +19,7 @@ console.log("the model places them:", M.includes("top.splice(effectAt, 0, ...vms
 console.log("the attack chat card draws such an Effect once:", src("module/chatcards.mjs").includes('!(m.card?.top ?? []).some(l => l.label === "Effect")'));
 const t260 = fs.readFileSync(ROOT + "tools/tests/expected/t260.txt", "utf8");
 console.log("t260's parity:", (t260.match(/the same lines: (\d+) of (\d+)/) ?? []).slice(1).join(" of "));
+// v0.0.430 (the audit's gap: Reckoning's "Pushed 2" on its Save card pushed again): an Effect that runs by itself on use is drawn as words there
+globalThis.foundry ??= { applications: { api: { ApplicationV2: class {} } } };
+const CLm = await import(ROOTURL + "module/cardlines.mjs");
+console.log("a self-running Effect as words on the Save card:", CLm.plainChips('is <a class="twod12-inline" data-cfg="{}"><i></i> <span class="ti-name">Pushed 2</span></a>.') === 'is <span class="ti-done">Pushed 2</span>.' && src("module/actions.mjs").includes("plainEffect: saveAct && !version.noTiers"));

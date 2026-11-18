@@ -1097,7 +1097,7 @@ export async function useAction(actor, item, opts = {}) {
   const setupRow = setupText ? `<div class="trow setuprow"><b>Setup:</b> ${setupInner}</div>` : "";
   // Pack CARD-ONE step 3: the card's lines of this Version (cardlines.mjs, from the card model), for the chat cards: in the card's order
   let cardLines = null;
-  try { const { versionCardLines } = await import("./cardlines.mjs"); cardLines = await versionCardLines(item, version, { actor, weapon: weapon ?? previewWeapon ?? null, setupHtml: setupInner || null, enrich: (t, d) => enrich(t, d) }); } catch (e) { console.warn("twod12 | the card's lines", e); }
+  try { const { versionCardLines } = await import("./cardlines.mjs"); cardLines = await versionCardLines(item, version, { actor, weapon: weapon ?? previewWeapon ?? null, setupHtml: setupInner || null, enrich: (t, d) => enrich(t, d), plainEffect: saveAct && !version.noTiers && !["t1", "t2", "t3"].some(t => (version[t] ?? []).length) && !!String(version.after ?? "").trim() });   /* v0.0.429: its chain ran on use */ } catch (e) { console.warn("twod12 | the card's lines", e); }
   // v0.0.283 (pack chat-cards): an Action that rolls gets the new card (chatcards.mjs); the rest (no roll, Save Actions) keep the card below.
   let ccModel = null, ccRoll = null;
   if ((chk || mres) && !version.noTiers && !saveAct) {
