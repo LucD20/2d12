@@ -148,3 +148,9 @@ Sylwen out of combat, Aveline's Build tab.
 4. The Build tab: the cost an outlined stamp in ink, the Frequency a muted word (no colored pill).
 5. AP and Strikes: two aligned rows with their words, the Strikes the AP pips' size, no wrapping.
 6. Escalation: the title and its pips; the rungs one under the other (the number a column); the hooks one line ("Hooks left: ...").
+
+**Round 2 of 5 and 6 (Lucas: "Didnt like the Escalation and AP/R/Strike section, it is too large. Others are fine"):** at the top of the page,
+the build beside two compact options (`fixes-compact-dark.jpg`, `fixes-compact-light.jpg`), the combat line no taller than the two hand tiles.
+**A:** Escalation in three short lines (the title and six clickable pips; the Passives reached, by name, on one line; the hooks); the AP pips and
+the Reaction AP over the Strikes as the HUD's slashes. **B:** Escalation in two lines (the pips where a Passive or the Apex comes ringed; the
+hooks); AP, the Reaction AP and the Strikes on one line. In both the rungs' numbers leave the sheet (the Build tab lists each Passive).

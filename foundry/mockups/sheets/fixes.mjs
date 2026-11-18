@@ -38,7 +38,7 @@ function model(a, st) {
   return pc;
 }
 const win = (title, w, h, inner, cls = "") => `<div class="fx-clip ${cls}" style="--h:${h}px"><div class="mk-win" style="width:${w}px"><div class="application sheet twod12 twod12-actor themed theme-${theme}" style="width:${w}px;height:${h}px"><header class="window-header"><span class="window-title">${esc(title)}</span><span class="mk-x">&times;</span></header><section class="window-content">${inner}</section></div></div></div>`;
-async function render(a, pc, { tab = "actions", fix = false } = {}) {
+async function render(a, pc, { tab = "actions", fix = false, v = "" } = {}) {
   const host = new DOMParser().parseFromString("<body></body>", "text/html").body;
   host.innerHTML = art(tpl({ actor: a, system: a.system, pc, isGM: true, isGMUser: true, missingBasic: false, npcTags: { have: [], add: [] }, notesFields: {}, notesEnriched: {}, gear: [], startMastery: [] }));
   for (const t of host.querySelectorAll(".tab")) t.classList.toggle("active", t.dataset.tab === tab);
@@ -49,6 +49,7 @@ async function render(a, pc, { tab = "actions", fix = false } = {}) {
     for (const sec of host.querySelectorAll(".ps2-sec")) if (!/\b(reaction|granted|escal)\b/.test(sec.className) && !sec.querySelector(".fq-reaction, .fq-granted, .fq-apex")) sec.querySelectorAll(".ps2-fq").forEach(x => x.remove());
     // 2. out of combat: the words alone
     host.querySelectorAll(".ps2-combat.out .ps2-cell").forEach(c => { c.innerHTML = '<span class="fx-out">Out of combat</span>'; });
+    if (v) { compact(host, v, pc); return icons(art(host.innerHTML)); }
     // 5. AP and Strikes: their words as a column
     host.querySelectorAll(".ps2-ap").forEach(c => { const pips = c.querySelector(".ps2-pips"), st = c.querySelector(".ps2-strk"), bane = c.querySelector(".bane"); c.innerHTML = ""; c.append(Object.assign(document.createElement("span"), { className: "fx-k", textContent: "AP" }), pips, Object.assign(document.createElement("span"), { className: "fx-k", textContent: "Strikes" }), st); if (bane) c.append(bane); });
     // 6. the rungs: the number and the name as two columns
@@ -57,6 +58,29 @@ async function render(a, pc, { tab = "actions", fix = false } = {}) {
   }
   return icons(art(host.innerHTML));
 }
+/** Round 2 of fixes 5 and 6 (Lucas: "too large"): the combat line no taller than the two hand tiles.
+ *  A: Escalation in three short lines (the title and its pips; the lit Passives' names on one line; the hooks); AP over the Strikes, the same height.
+ *  B: Escalation in two lines (the title and its pips, the rungs marked on the pips; the hooks); AP, the Reaction AP and the Strikes on one line. */
+function compact(host, v, pc) {
+  const esc = host.querySelector(".ps2-esc"), ap = host.querySelector(".ps2-ap");
+  const n = pc.strip.esc.n, rungs = pc.strip.esc.rungs, lit = rungs.filter(r => r.lit).map(r => String(r.label).replace(/^\d+\s*·\s*/, "").replace(/\s*—\s*$/, "")).filter(x => x && x !== "—");
+  const hooks = pc.strip.esc.hooks ? `Hooks: ${esc_(pc.strip.esc.hooks)}` : "No hooks left";
+  const rungAt = new Set(rungs.map(r => Number(r.n)));
+  const pips = mark => `<span class="fx-ep">${pc.strip.esc.pips.map((on, k) => `<a class="${on ? "on" : ""}${mark && rungAt.has(k + 1) ? " rg" : ""}" data-action="setEscalation" data-n="${k + 1}" role="button" aria-label="Escalation ${k + 1}"></a>`).join("")}</span>`;
+  if (esc) esc.innerHTML = v === "a"
+    ? `<span class="fx-l1"><span class="k">Escalation ${n}</span>${pips(false)}</span><span class="fx-lit">${lit.map(esc_).join(" · ") || "No Passive yet"}</span><span class="ps2-q">${hooks}</span>`
+    : `<span class="fx-l1"><span class="k">Escalation ${n}</span>${pips(true)}</span><span class="ps2-q">${hooks}</span>`;
+  if (ap) {
+    const p = ap.querySelector(".ps2-pips"), st = ap.querySelector(".ps2-strk"), bane = ap.querySelector(".bane");
+    p.querySelector(".k")?.remove();
+    st.innerHTML = pc.strip.strikePips.map(on => `<i class="${on ? "on" : ""}"></i>`).join("");
+    ap.innerHTML = "";
+    ap.className += ` fx-ap${v}`;
+    if (v === "a") { ap.append(p); ap.append(st); } else { const row = document.createElement("span"); row.className = "fx-row"; row.innerHTML = '<span class="k">AP</span>'; row.append(p, Object.assign(document.createElement("span"), { className: "pip-sep fx-sep" }), st); ap.append(row); }
+    if (bane) ap.append(bane);
+  }
+}
+const esc_ = esc;
 const ave = () => makeActor(data.aveline, { system: { escalation: 6, damage: { bodyLethal: 4, mindNonlethal: 2 } }, items: { Longsword: { wielded: true, hand: "main", grip: "two" } } });
 const aveSt = { inCombat: true, round: 3, ap: 4, strikes: 1, rungs: { 2: ["Roving Judgment"], 4: ["Weight of Judgment"] }, hooks: "Critical · Kindled Wrath", dl: DL, cd: CD };
 const syl = () => makeActor(data.sylwen, { system: { escalation: 0 } });
@@ -66,6 +90,12 @@ const pair = async (title, note, items, mk, st, opts, h, extra = "") => {
   return `<section class="fx-sec"><h2>${title}</h2>${note}<div class="fx-pair"><div><h3>As built (v0.0.441)</h3>${win(a1.name, 540, h, await render(a1, model(a1, st), opts))}</div><div><h3><b>Proposed</b></h3><div class="fx-new">${win(a2.name, 540, h, await render(a2, model(a2, st), { ...opts, fix: true }))}</div></div>${extra}</div></section>`;
 };
 const out = document.getElementById("page");
+{
+  const cols = [["As built (v0.0.441)", {}], ["<b>Option A</b>: three short lines; AP over the Strikes", { fix: true, v: "a" }], ["<b>Option B</b>: two lines; one line of marks", { fix: true, v: "b" }]];
+  let html = "";
+  for (const [t, o] of cols) { const a = ave(); html += `<div><h3>${t}</h3><div class="${o.fix ? "fx-new" : ""}">${win(a.name, 540, 330, await render(a, model(a, aveSt), o))}</div></div>`; }
+  out.insertAdjacentHTML("beforeend", `<section class="fx-sec"><h2>Round 2: Escalation and AP / Reaction AP / Strikes, compact</h2><ul class="fx-list"><li><b>The goal:</b> the combat line no taller than the two hand tiles (Lucas: the first proposal was "too large").</li><li><b>Option A:</b> Escalation in three short lines: the title and its six pips (a click on a pip sets the Escalation, as the rungs did); the Passives it has reached, by name, on one line; the hooks. The AP pips and the Reaction AP's diamond, the Strikes under them at the same height (the HUD's slashes). The rungs' numbers leave the sheet (the Build tab lists each Passive at its Escalation).</li><li><b>Option B:</b> Escalation in two lines: the title and its pips, the pips where a Passive or the Apex comes (2, 4, 6) drawn with a ring; the hooks. AP, the Reaction AP and the Strikes on one line, a hairline between them (the HUD's order). The Passives' names are only on the Build tab and the HUD's Escalation tab.</li></ul><div class="fx-pair">${html}</div></section>`);
+}
 const ul = xs => `<ul class="fx-list">${xs.map(x => `<li>${x}</li>`).join("")}</ul>`;
 out.insertAdjacentHTML("beforeend", await pair("Aveline in combat: the bars, the gauges, the combat line",
   ul(["<b>1. The Frequency at a bar's right end</b> goes where its section's heading already says it (Once per round, At will, Once per encounter...). Under <b>Reactions</b> (and Granted, Escalation), whose heading is not a Frequency, the word stays, muted, with no square: a Reaction's Frequency was E2's ask.",

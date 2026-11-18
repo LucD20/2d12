@@ -29,3 +29,21 @@
 .fx-new .twod12.sheet.pcs.ps2 .ps2-rungs .rung.lit span { font-weight: 600; color: var(--s-ink); }
 .fx-new .twod12.sheet.pcs.ps2 .ps2-esc > .ps2-q { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
 .fx-new .twod12.sheet.pcs.ps2 .ps2-combat { grid-template-columns: minmax(0, 1fr) 168px auto; }
+
+/* ---- round 2 of fixes 5 and 6: compact (Option A, Option B) */
+.fx-new .twod12.sheet.pcs.ps2 .ps2-esc .fx-l1 { display: flex; align-items: center; gap: 8px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-ep { display: inline-flex; gap: 3px; align-items: center; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-ep a { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid var(--s-gold); box-sizing: border-box; margin: 0 1px; cursor: pointer; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-ep a.on { background: var(--s-gold); }
+.fx-new .twod12.sheet.pcs.ps2 .fx-ep a.rg { outline: 1px solid var(--s-gold); outline-offset: 2px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-lit { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-esc .ps2-q { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-ap.fx-apa, .fx-new .twod12.sheet.pcs.ps2 .ps2-ap.fx-apb { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 5px; white-space: nowrap; }
+/* the Strikes as the HUD draws them: slashes, the AP pips' height */
+.fx-new .twod12.sheet.pcs.ps2 .fx-apa .ps2-strk, .fx-new .twod12.sheet.pcs.ps2 .fx-apb .ps2-strk { display: inline-flex; gap: 4px; padding: 0; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apa .ps2-strk i, .fx-new .twod12.sheet.pcs.ps2 .fx-apb .ps2-strk i { width: 4px; height: 13px; transform: skewX(-20deg); border: 1.5px solid rgb(217, 119, 58); box-sizing: border-box; margin: 0 1px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apa .ps2-strk i.on, .fx-new .twod12.sheet.pcs.ps2 .fx-apb .ps2-strk i.on { background: rgb(217, 119, 58); }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apa .ps2-strk { padding-left: 1px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apb .fx-row { display: inline-flex; align-items: center; gap: 6px; } .fx-new .twod12.sheet.pcs.ps2 .fx-apb .ps2-pips { gap: 4px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-sep { display: inline-block; width: 1px; height: 14px; background: var(--s-hair); }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-combat:has(.fx-apa), .fx-new .twod12.sheet.pcs.ps2 .ps2-combat:has(.fx-apb) { grid-template-columns: minmax(0, 1fr) 160px auto; }
