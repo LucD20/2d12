@@ -1148,11 +1148,11 @@ export async function saveTierOutcomes(cfg) {
   return out;
 }
 /** v0.0.283: a one-target Save Action: its own card becomes the Save card (the target's owner rolls on it); the Tier's damage waits for the Damage button. */
-export async function ccSaveOnCard(msg, cfg, targets, { model, point = null }) {
+export async function ccSaveOnCard(msg, cfg, targets, { model, point = null, chain = null }) {
   targets = [].concat(targets);   // v0.0.286: one creature or several, a row each
   const rows = [];
   for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point, areaIds(targets, cfg.actorUuid)); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, favored: mods.favored, why: mods.why.join(", ") }); }
-  const st = { cfg, color: "", cc: true, rows, tierDmg: await prerollTiers(cfg) };
+  const st = { cfg, color: "", cc: true, rows, tierDmg: await prerollTiers(cfg), ...(chain ? { chain } : {}) };   // v0.0.426: a damage-free Save Action's use-time chain (retargetSave)
   const m = { ...model, kind: "save", saveName: `${TWOD12.attributes[cfg.attr] ?? cfg.attr} Save`, dc: cfg.dc, tiers: await saveTierOutcomes(cfg), creatures: rows.map(r => ({ uuid: r.uuid, name: r.name, result: null, damageDone: false, hasDamage: false })) };
   m.tline = { ...m.tline, names: rows.map(r => r.name), retargetKind: "retargetSave" };
   await msg.update({ content: CC.cardContent(m), "flags.twod12.cc": m, "flags.twod12.saveCard": st });
@@ -1194,7 +1194,15 @@ export async function retargetSave(msg) {
   const old = new Map(st.rows.map(r => [r.uuid, r]));
   if (st.cc && st.rows.some(r => r.result)) return ui.notifications.warn("The Save was rolled: its target can't change now.");
   st.rows = toks.map(t => old.get(t.document.uuid) ?? { uuid: t.document.uuid, name: t.name, result: null });
-  try { await writeSaveCard(msg, st); } catch (e) { ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
+  // v0.0.426 (the audit's gap): a damage-free Save Action used with no target ran no chain on use (Rebuke's Hindered): a new creature gets it now
+  const fresh = st.chain?.chips ? st.rows.filter(r => !(st.chain.done ?? []).includes(r.uuid)) : [];
+  if (fresh.length) st.chain.done = [...(st.chain.done ?? []), ...fresh.map(r => r.uuid)];
+  try { await writeSaveCard(msg, st); } catch (e) { return ui.notifications.warn("Only the author of this card or the GM can change its targets."); }
+  if (fresh.length) {
+    let actor = null; try { actor = st.cfg?.actorUuid ? await fromUuid(st.cfg.actorUuid) : null; } catch (e) { actor = null; }
+    try { await runAfter(st.chain.chips, { actor, targets: fresh.map(r => ({ uuid: r.uuid, name: r.name })), attrVal: st.chain.attrVal ?? null, message: msg, source: st.chain.source ?? "" }); }
+    catch (e) { console.warn("twod12 | the Save card's chain after a retarget", e); }
+  }
 }
 
 export function registerInlineSocket() {

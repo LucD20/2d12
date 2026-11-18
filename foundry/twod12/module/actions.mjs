@@ -1208,6 +1208,9 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.418 (playtest 5, G8: Rebuke's Hindered never landed): a Save Action that deals no damage has no Damage button either, so its chain (its
   // Effect line: "The target is Hindered (EoT)") runs now on its targets, whatever they roll; a damaging one's chain waits for its damage
   const saveNoDamage = saveAct && !version.noTiers && !["t1", "t2", "t3"].some(t => (version[t] ?? []).length);
+  // v0.0.426 (the audit's gap): the chain a damage-free Save Action runs on use, kept on its Save card so that a retarget runs it for the new creatures
+  const useChain = saveNoDamage && String(version.after ?? "").trim()
+    ? (chainSteps(version.after)[0]?.chips ?? []).filter(c => { const key = String(c).replace(/\{[^}]*\}$/, ""); return ![1, 2, 3].some(n => String(version[`x${n}`] ?? "").includes(key)); }).join(" ") : "";
   if ((it.moment && version.noTiers || saveNoDamage) && String(version.after ?? "").trim() && targets.length) {
     const { runAfter } = await import("./inline.mjs");
     // v0.0.272 (pack RX): only its first step: the steps after a @Pause ("After the damage") stay buttons on the card (applyAfterHtml from step 1)
@@ -1230,7 +1233,7 @@ export async function useAction(actor, item, opts = {}) {
           tline: { targets: it.targets ?? "", dist: sqText(distanceText(it, weapon ?? previewWeapon ?? null)), area: "", names: targets.length ? [targets[0].name] : [] },
           triggerHtml: it.trigger ? await enrich(esc(it.trigger), item) : "", triggerLabel: it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", flavor: it.flavor ?? "", card: cardLines,
           designer: { ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}` : "" } };
-        await ccSaveOnCard(cmsg, cfg, targets, { model, point });
+        await ccSaveOnCard(cmsg, cfg, targets, { model, point, chain: useChain ? { chips: useChain, attrVal: src.kind ? (Number(src.mod) || 0) : null, source: item.name, done: targets.map(t => t.uuid) } : null });
       } else await postSaveFor(cfg, targets, { point, source: item.name });
       const region = areaOutcome?.region;
       if (region?.getFlag?.("twod12", "ht")) {

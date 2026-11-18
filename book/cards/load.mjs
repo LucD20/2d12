@@ -118,6 +118,9 @@ export function fromStructure(c) {
   }
   out.versions = blocks.map(bl => {
     const b = readBody(bl.body), h = String(bl.heading ?? "").trim(), m = h.match(/^(\d+)\s*(AP|R)$/i);
+    // v0.0.426 (the audit's gap): a Special above the roll inside a block isn't carried to Foundry (only the card's own is): refuse it rather than
+    // drop it silently; write it at the card level, or carry a Version's lines through cardgen first
+    if ((b.lines ?? []).some(x => x.label === "Special")) throw new Error(`${c._file ?? ""}: "${c.name}", block "${h}": a Special above the Attack / Save line inside a block isn't read by Foundry yet`);
     const shared = top.tiers.some(x => x != null) || top.or ? { tiers: top.tiers, or: top.or } : {};   // a roll written above the blocks is every block's
     const merged = { ...b, ...(b.tiers.some(x => x != null) || b.or ? {} : shared), seq: [...top.effects, ...b.seq], foundry: bl.foundry, critical: b.critical ?? top.critical };
     const extra = {};
