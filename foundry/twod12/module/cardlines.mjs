@@ -30,6 +30,12 @@ export async function versionCardLines(item, version, { actor = null, weapon = n
     if (["Attack", "Save"].includes(l.label) && l === M.top.at(-1)) { roll = { label: l.label, text: l.text }; continue; }
     top.push({ label: l.label, html: l.label === "Setup" && setupHtml != null ? setupHtml : await lineHtml(l, item, enrich) });
   }
+  // v0.0.426 (the audit: Hallowed Stance's "Setup: You Advance 3" vanished from a [Divine] card that has no Setup of its own, since v0.0.417): a
+  // Setup given by the caller that the card doesn't write gets its own line, after the Requirement and the Trigger
+  if (setupHtml != null && !top.some(l => l.label === "Setup")) {
+    const at = top.reduce((n, l, i) => (["Requirement", "Trigger", "Interrupt"].includes(l.label) ? i + 1 : n), 0);
+    top.splice(at, 0, { label: "Setup", html: setupHtml });
+  }
   if (!roll && vm.roll) roll = { label: vm.roll.label, text: vm.roll.text };
   const first = vm.lines.findIndex(l => l.kind === "tier"), last = vm.lines.findLastIndex(l => l.kind === "tier");
   const part = async list => Promise.all(list.filter(l => l.kind !== "tier").map(async l => ({ label: l.label, html: await lineHtml(l, item, enrich) })));

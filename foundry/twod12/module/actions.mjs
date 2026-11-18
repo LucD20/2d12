@@ -611,6 +611,14 @@ export async function useAction(actor, item, opts = {}) {
   if (it.traits.has("shot") && it.traits.has("weapon")) { const shooters = candidates.filter(w => hasProp(w, "projectile")); if (!linkedW && !shooters.length) return ui.notifications.warn(`${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).`); candidates.splice(0, candidates.length, ...shooters); }
   // v0.0.208 (D2): a Gun Action needs a Firearm (a pistol, a musket); a Firearm is not a Projectile weapon.
   if (it.traits.has("gun") && it.traits.has("weapon")) { const guns = candidates.filter(w => hasProp(w, "firearm")); if (!linkedW && !guns.length) return ui.notifications.warn(`${item.name} is a Gun Action: it needs a wielded Firearm (a pistol or a musket).`); candidates.splice(0, candidates.length, ...guns); }
+  // v0.0.426 (the audit: from the HUD, with a Dagger and a bow held, the dialog's hands' Banes and range were the Dagger's, then the roll used the
+  // bow): the weapon is settled before the dialog: a Shot only from a Projectile weapon, a Gun Action from a Firearm; asked first when several fit
+  if (!linkedW && !opts.weaponId && it.traits.has("weapon")) {
+    const fit = it.traits.has("shot") ? candidates.filter(w => hasProp(w, "projectile")) : it.traits.has("gun") ? candidates.filter(w => hasProp(w, "firearm")) : candidates;
+    const held = heldFirst(fit).filter(w => w.system?.wielded);
+    if (held.length === 1) opts.weaponId = held[0].id;
+    else if (held.length > 1) { const w = await pickWeapon(actor, item, held, ""); if (w === null) return; if (w?.id) opts.weaponId = w.id; }   // null: Cancel
+  }
   const previewWeapon = linkedW ? actor.items.get(linkedW) : (candidates.find(w => w.id === opts.weaponId) ?? heldFirst(candidates)[0] ?? null);   // v0.0.208: the hand button's weapon
   // A Weapon Action takes Melee or Ranged from its weapon and how it is used (a Thrown weapon thrown is Ranged), and the weapon's Range
   // for that use, with Reach above 1 added to a melee Range (weaponrange.mjs). Prone, Precise Aim and other effects use the trait.
@@ -622,7 +630,9 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.320 (pack AU part 2): "Attack" in settings = an Action that rolls against another creature (the Elite ladder's 1 Boon on its first attack each round)
   // v0.0.410 (pack F2; book, Setup): with a Setup (its own, or Hallowed Stance's), the Distance and the targets are checked after it: out of range now is a note
   const handMods = [];   // v0.0.412: the hands' Banes (before extraMods is made)
-  const withSetup = !!String(it.setup ?? "").trim() || (!it.reaction && activeHooks(actor, "setupAdvance").some(h => hasTraits(useTraits, h.hook.traits))), setupNotices = [];
+  // v0.0.426 (the audit: any Setup skipped the range check, even after its movement ran or with no movement at all: Darting Blade stabbed 8 squares
+  // away): the Distance waits only for a Setup movement still to come (one not run before the dialog, or Hallowed Stance's Advance)
+  const withSetup = (String(it.setup ?? "").includes("@Move") && !setupDone) || (!it.reaction && activeHooks(actor, "setupAdvance").some(h => hasTraits(useTraits, h.hook.traits))), setupNotices = [];
   // v0.0.412 (pack F3 part 2; book, Hands, Strung): the Banes of the hand the weapon is in (loadout.mjs handBanes)
   if (useTraits.has("strike") && it.traits.has("weapon") && previewWeapon) {
     try { const hb = handBanes(actor.itemTypes?.weapon ?? [], previewWeapon, isFists(previewWeapon)); if (hb.banes) handMods.push({ id: "syn:hand", name: hb.banes === 3 ? "Strung, the other hand full" : hb.banes === 2 ? "Off hand" : hb.why.startsWith("Fists") ? "Fists, off hand" : "Off hand (Light)", boons: 0, banes: hb.banes, match: true, predicate: hb.why }); } catch (e) { console.warn("twod12 | hands", e); }
