@@ -50,6 +50,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 19 | **You don't know every spell.** Mastery unlocks **choices** (a spell picked at a threshold), and **Talents can grant more spells**. | "I think knowing every spell is too much. Mastery should unlock choices and talents can grant more spells etc." | 2026-11-18 |
 | 20 | **An Overcast step is paid by the fight's clock:** it needs Escalation (the first at 2, the next at 3...); the Nonlethal push takes one step early. | (default) | 2026-11-18 |
 | 21 | **Spells belong to the grid; a caster class owns how you cast** (readying, pushing, holding, merging, linking) and starts with a Path and a School open. Any class can take a little magic through Talents. | (default) | 2026-11-18 |
+| 22 | **The Health question is parked** in rules-backlog.md ("[Q] IS THE NEARLY FLAT HEALTH HURTING THE FEELING OF PROGRESSION?"); magic goes on. | "Keep in the backlog, proceed with magic." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -143,6 +144,25 @@ Read for this record on 2026-11-18: the class charter (all of it), the set-aside
 6. **Classes.** Default: **spells belong to the grid, classes own how you cast.** A caster class's Features and Hallmark cards are about readying, pushing, holding, merging or linking (and it starts with a Path and a School open); any class can take a little magic through Talents. Alternative: each caster class has its own spells as its cards.
 
 ---
+
+## 5b. The Paths: definitions, subtypes and riders (PROPOSED 2026-11-18; waiting for Lucas)
+
+From `dominions-paths.md` (section 2 and 3.5), with the borders of decision 15. **The rider is the one condition a Path adds** when a spell has a rider, and what a second Path lends in a merge. Each is a word Chapter 8 or Chapter 3 already defines, and no two Paths share one.
+
+| Path | It is | Damage subtype | Rider on an enemy | Why this one | The runner-up |
+|---|---|---|---|---|---|
+| **Fire** | Flame, heat, rage | Fire | **Lingering Fi** | It keeps burning (Dominions' Burn and heat clouds) | none |
+| **Air** | Wind, storm, lightning | Electricity, Thunder | **Pushed** | The wind moves you; a positional rider for a tactical game | Staggered (the shock's stun, softened) |
+| **Water** | Water, ice, cold; tempo | Cold (Acid with Fire) | **Hindered** | Cold and slime slow; rider-sized (Slowed takes AP, so it is a main effect) | Slowed 1 |
+| **Earth** | Stone, metal, weight | Blunt, Slash, Pierce | **Prone** | The ground itself throws you down; leaves Immobilized to Nature | Immobilized (its grip) |
+| **Astral** | Magic itself, the stars, the will, fate | Force | **Dazed 1** | Paralysis, softened to 1 AP lost | Staggered |
+| **Death** | Death, decay, darkness, the dead | Unholy | **Frightened** (of you) | Its real fear; Dominions' only Fear bless | Sickened |
+| **Nature** | Life, growth, beasts, poison | Poison (new), Pierce | **Immobilized** | Vines and webs; Break Free already exists | Lingering Po |
+| **Glamour** | Illusion, dreams, emotion, luck | Psychic | **Pressed 1** | It can't see you truly: Banes on its Strikes (Dominions' Blur) | Half-Blinded |
+
+**The lean of the roll** (from `dominions-paths.md` 1.7; proposed, not a rule): an Element's spell attacks the body (a roll against Armor Defense, or a Body or Instinct Save); a Sorcery's attacks the mind (Ward Defense, or a Mind or Appeal Save). The card always writes its own.
+
+**What each Path gives an ally** (for helpful spells; a first list, not asked yet): Fire: Empowered. Air: a free step. Water: Quickened. Earth: Guard. Astral: the next instance of damage cancelled. Death: healing from damage dealt. Nature: healing. Glamour: attackers Pressed.
 
 ## 6. The order of work from here (proposed)
 
