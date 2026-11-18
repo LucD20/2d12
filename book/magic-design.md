@@ -90,6 +90,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 58 | **What every Overreach line shares (Lucas: "B").** (1) Once a casting; you decide when you cast, before any roll. (2) The price is paid even if the spell misses or is resisted. (3) The usual price is Nonlethal Resolve damage that Guard doesn't take and nothing reduces, with exploding dice; a card may print another price. (4) **The card prints the whole price ("2d6!") and it never changes with Stage** (the die sized by Stage was refused). (5) What it buys is free-form: a step taken early, an effect the spell can't otherwise reach, a stronger version. First drafts of lines: `book/cards/magic-overreach-lines.md`. | Decided |
 | 59 | **An Overreach line may get past one of magic's limits, but only once, and the line says so (Lucas: "A").** "A second time in this encounter", "one casting of this kind": the limit still holds and Overreach buys one exception at its price. A line that lifts a limit without a count is not allowed. First cases: Earthquake (its Encounter Frequency) and Darkness (the one-[Woven] limit), `book/cards/magic-overreach-lines.md`. | Decided |
 | 60 | **No limit across the fight, for now, and watched closely (Lucas: "Try A for now, but keeping a close watch").** In play a caster is held by AP, Frequency and Escalation, as a martial is; nothing runs down but Overreach's damage and Health. A cost for repeating a spell and a fatigue counter (Dominions' way) stay as the two fallbacks. **What to watch in playtests:** one Round spell cast every round of every fight (a best button); whether a caster's long day differs from a short one; whether casters ask for a Sleep sooner than martials. | Decided for now; on watch |
+| 61 | **An area spell doesn't grow in size (Lucas: "C, we can likely make it a Talent later").** An [Area] spell has no Breadth: its Overcast climbs Reach and Hold only, and a bigger area is the next spell of the line (decision 43). **A Talent may open area growth later** (seed added to 5l). | Decided |
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
 ---
@@ -394,6 +395,7 @@ Lucas's principle (decision 44): the base rule carries the limit; Talents are ho
 | Real healing from one Path | Healing magic gives Guard only | 36 |
 | Ranged spells while Engaged | Doomed (and the gap for Save spells, 5h B3) | Chapter 3 |
 | Changing a spell by its trait ("your [Evocation] spells...") | none: this is what Talents already do | the Talents chapter |
+- **Area growth (decision 61):** a Talent that lets an [Area] spell grow (one creature within 1 square of the Area is also a target; or one more square touching the Area). The plain rule gives areas no Breadth.
 
 ## 5m. The limiters, as they stand (2026-11-18; Lucas: "What are the current limiters? Because I might change them for spells")
 
