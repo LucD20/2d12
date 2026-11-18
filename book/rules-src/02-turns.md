@@ -216,7 +216,7 @@ A **Buff** is an effect that modifies another Action, such as Rimebrand's extra 
 
 #### Stacking
 
-Unless a card says otherwise, the same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2.
+Unless a card says otherwise, the same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2. A condition with a source, such as Frightened of a creature, comes from one source at a time (see [[Chapter 8: Conditions]]).
 
 Five things do add up:
 

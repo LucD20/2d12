@@ -5,13 +5,13 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 25.5 | 324 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 33.6 | 351 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 33.7 | 351 |
 | 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 41.1 | 472 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.0 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.4 | 43 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.8 | 95 |
-| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 8.9 | 118 |
+| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.2 | 118 |
 | 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 27.4 | 205 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.8 | 137 |

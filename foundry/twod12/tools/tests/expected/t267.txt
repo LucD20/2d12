@@ -1,0 +1,10 @@
+--- the book
+Chapter 8: true | Chapter 2 points to it: true
+--- sameSourceKeeps (pure)
+Frightened of the Ogre, then of the Ogre again: kept (the longer duration): true
+Frightened of the Ogre, then of the Paladin: replaced: true
+a condition with no source (Slowed) from two creatures: kept as one (Stacking): true
+--- createEffect on a creature that is Frightened of the Ogre for 3 rounds
+the compendium's Frightened has a source: true
+of the Paladin for 1 round: the Paladin's, 1 round, the old one deleted: true {"rounds":1,"origin":"Actor.paladin","deleted":"e1"}
+of the Ogre again for 1 round: the longer duration kept (3): true {"rounds":3,"origin":"Actor.ogre","deleted":"e1"}

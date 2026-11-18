@@ -23,7 +23,7 @@
 3. **Stacking fear has a story (fear of both) but a cost:** two sources to track, two Saves, and a rule for the Bane (with Boons and Banes adding up, Frightened of two would mean 2 Banes unless written otherwise). 5e 2014 pays it; 5e 2024 dropped the sentence.
 4. **Replacement has one odd case:** a short fear from one creature can replace a longer one from another. 4e's players found the trick (mark your ally to clear the enemy's mark). In 2d12 a creature only gets these from cards that target enemies, so the trick needs the enemy's own cooperation.
 
-### How they apply (Claude's recommendation, for Lucas)
+### How they apply (Claude's recommendation; Lucas: "Stack: Good, add that", applied in v0.0.424)
 
 - **No stacking for Frightened or Taunted**, and Chapter 8 writes the missing sentence once, for every condition with a source (Frightened of, Taunted by, Grabbed by): "A condition with a source comes from one source at a time: if a different creature gives it to you, the new one replaces the old one, with its own duration." The same source again keeps today's rule (the longer duration, the higher value).
 - Foundry would follow exactly (today it mixes the new source with the longer duration).

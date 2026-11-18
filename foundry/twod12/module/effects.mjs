@@ -256,15 +256,21 @@ export function withBleed(af, b) {
   const bleeds = (af.bleeds?.length ? af.bleeds : [{ dmg: "1", pool: "", sub: "", attrs: ["body", "instinct"], dc: 13 }]).map((x, i) => (i ? x : { ...x, ...(set.dmg ? { dmg: set.dmg } : {}), ...(set.dmgPool ? { pool: set.dmgPool } : {}), ...(set.dmgSub ? { sub: set.dmgSub } : {}), ...(set.attrs ? { attrs: set.attrs } : {}), ...(set.bleedDc ? { dc: set.bleedDc } : {}) }));
   return { ...af, bleeds, ...(af.source ? { source: { ...af.source, settings } } : {}) };
 }
+/** v0.0.424 (Lucas, Chapter 8): does the effect the creature has count as "the same one again" (its duration and value kept)? Always, but for a
+ *  condition with a source given by a different creature: then the new one replaces it. Pure. */
+export const sameSourceKeeps = (sys, have, originUuid) => !needsOrigin(sys) || String(have?.origin ?? "") === String(originUuid ?? "");
 export async function createEffect(actor, item, origin, over = null, extra = {}) {
   const s = item.system;
   const olds = actor.effects.filter(e => e.getFlag(F, "effectUuid") === item.uuid), old = olds.map(e => e.id);
   const d = over?.duration ? { type: over.duration.type, rounds: over.duration.rounds ?? 1 } : { type: s.duration.type, rounds: s.duration.rounds };
   // The same effect again doesn't stack: it keeps the longer duration (the value is the same: it is the same effect).
-  if (d.type === "rounds") for (const e of olds) if (e.getFlag(F, "duration")?.type === "rounds") d.rounds = Math.max(d.rounds, Number(e.getFlag(F, "remaining")) || 0);
+  // v0.0.424 (Lucas, Chapter 8): a condition with a source (Frightened of, Taunted by, Grabbed by) comes from one source at a time: from a
+  // different source the new one replaces the old one with its own duration; only the same source again keeps the longer duration.
+  const keeps = e => sameSourceKeeps(s, e, origin?.actorUuid);
+  if (d.type === "rounds") for (const e of olds) if (keeps(e) && e.getFlag(F, "duration")?.type === "rounds") d.rounds = Math.max(d.rounds, Number(e.getFlag(F, "remaining")) || 0);
   // A condition with a value: the same condition again doesn't stack, it keeps the higher value.
   let value = s.valued ? Math.max(1, Math.trunc(Number(over?.value)) || 1) : undefined;
-  if (s.valued) for (const e of olds) value = Math.max(value, Number(e.getFlag(F, "value")) || 0);
+  if (s.valued) for (const e of olds) if (keeps(e)) value = Math.max(value, Number(e.getFlag(F, "value")) || 0);
   if (old.length) await actor.deleteEmbeddedDocuments("ActiveEffect", old);
   const sid0 = shortName(item.name).trim().toLowerCase(), sid = Object.keys(COND_NAME).find(k => COND_NAME[k] === sid0) ?? sid0;   // v0.0.414: Lingering is the status bleed
   const baseId = sid.replace(/\s*\(.*\)\s*$/, "");   // "Hindered (until Move)" is the Hindered status
@@ -332,7 +338,7 @@ export async function createRiders(actor, item, parent, origin, duration) {
     // halfLevel (Squeezing, v0.0.170): the value is half the creature's level, rounded up, when the condition is applied.
     const value = r.valued ? (r.mode === "halfLevel" ? Math.max(1, Math.ceil((Number(actor.system?.level) || 1) / 2)) : Math.max(1, Number(r.value) || 1)) : undefined;
     const have = actor.effects.find(x => x.getFlag(F, "effectUuid") === cond.uuid);
-    if (have) {
+    if (have && sameSourceKeeps(cond.system, have, origin?.actorUuid)) {   // v0.0.424: from a different source, createEffect replaces it
       const now = Number(have.getFlag(F, "value")) || 0;
       if (value !== undefined && r.mode === "increase") await setValued(have, now + value);   // "increase your value by N": this one does stack
       else if (value !== undefined && value > now) await setValued(have, value);                // the same condition again doesn't stack: the higher value
@@ -350,7 +356,8 @@ async function createLinked(actor, item, parent, origin, duration) {
     const linked = await conditionItem(name);
     if (!linked || linked.uuid === item.uuid) continue;
     const id = shortName(linked.name).trim().toLowerCase();
-    if (actor.effects.some(x => shortName(x.name).trim().toLowerCase() === id || x.statuses?.has?.(id))) continue;   // already has it from somewhere else: don't double it
+    const had = actor.effects.find(x => shortName(x.name).trim().toLowerCase() === id || x.statuses?.has?.(id));
+    if (had && sameSourceKeeps(linked.system, had, origin?.actorUuid)) continue;   // already has it from somewhere else: don't double it (v0.0.424: a condition with a source from a different creature is replaced)
     await createEffect(actor, linked, origin, { duration }, { linkedTo: parent.id });
   }
 }
