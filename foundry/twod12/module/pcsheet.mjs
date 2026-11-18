@@ -20,7 +20,7 @@ import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
   healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers,
-  rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
+  rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, escMarks, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { creatureDamageLines } from "./ccdamage.mjs";
@@ -125,6 +125,9 @@ export async function pcModel(sheet, ctx) {
     guard: { total: (Number(s.guard) || 0) + (Number(s.apGuard) || 0), per: guardPerAP(s.stage),
       tip: `Guard ${Number(s.guard) || 0}${s.apGuard ? ` + ${s.apGuard} from the AP your last turn kept (taken first, 1 round)` : ""}. It takes damage before your Health, can't be healed and ends with the encounter. Click +1, right-click −1, Ctrl: 5.` },
     esc: { n: escNow, pips: Array.from({ length: Math.max(1, Number(TWOD12.escalation?.max) || 6) }, (_, k) => k < escNow), rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
+      // v0.0.442 (Lucas on the fixes mockup, round 4): the hooks as a list (their own cell), the Escalation pips with the rungs ringed (the marks cell)
+      hookList: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }),
+      marks: escMarks(escNow, Math.max(1, Number(TWOD12.escalation?.max) || 6), escRungs(escNow, rungNames, apex, apexAt).map(r => Number(r.n))),
       momentum: Number(combat?.getFlag?.(F, "momentumStart")) || 0 },   // v0.0.407: the Momentum the encounter started with (0 to 4)
     strikes: strikesLine(strikesUsed(a)),
     // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
@@ -307,6 +310,8 @@ export async function pcModel(sheet, ctx) {
   // so they can be built and edited; a PC's stay in combat only (its Build tab lists them)
   // v0.0.336 (Lucas: "nothing showing the granted actions"): Granted shows out of combat too (v0.0.337: this comment had cut the line's .map off)
   const sections = SECTION_ORDER.filter(k => secRows[k].length && (inCombat || npc || k !== "apex")).map(k => ({ key: k, ...SEC_META[k], rows: secRows[k] }));
+  // v0.0.442 (Lucas on v0.0.441): a bar writes its Frequency only where its section's heading doesn't (Reactions, Granted, Escalation; the Favorites)
+  for (const k of ["reaction", "granted", "apex"]) for (const r of secRows[k] ?? []) r.showFq = true;
 
   // Basic Actions: the four columns (config basicGroups), each button with its reason when it can't be used.
   const held = weapons.filter(w => w.system?.wielded && !w.system?.traits?.has?.("barehanded"));
@@ -332,7 +337,7 @@ export async function pcModel(sheet, ctx) {
   const restB = basics.filter(i => !used2.has(i.id)).map(bRow);
   if (restB.length) basic.push({ key: "other", label: "Other", rows: restB });
 
-  const favRows = favs.map(id => a.items.get(id)).filter(i => i?.type === "action").map(i => rowOf(i));
+  const favRows = favs.map(id => a.items.get(id)).filter(i => i?.type === "action").map(i => ({ ...rowOf(i), showFq: true }));
 
   // ---- Effects tab
   const conditions = [], ctexts = await conditionTexts();

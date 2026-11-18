@@ -87,7 +87,7 @@ const WRAP = {
   tooltip: c => `<aside id="tooltip" class="active" role="tooltip">${c}</aside>`,
   hud: c => `<div class="twod12-hudcard"><button type="button" class="hc-x">&times;</button>${c}</div>`,
   dialog: c => `<div class="application twod12 rolldlg themed theme-${theme}"><div class="window-content">${c}</div></div>`,
-  bar: (c, b) => `<div class="application twod12 twod12-actor themed theme-${theme}"><div class="window-content"><div class="twod12 sheet pcs ps2"><div class="ar ps2-oa open"><div class="ps2-bar"><span class="ps2-sts">${b.stamps.map(x => `<button type="button" class="ps2-st">${x.label}</button>`).join("")}</span><a class="ps-nm">${b.name}</a><span class="ps2-dv">${b.dist}${b.dist && b.vs ? " &middot; " : ""}${b.vs ? `<b>${b.vs}</b>` : ""}</span><span class="ps2-fq"><i class="fq-${b.fq}"></i>${b.fqWord}</span></div><div class="ar-card">${c}</div></div></div></div></div>`
+  bar: (c, b) => `<div class="application twod12 twod12-actor themed theme-${theme}"><div class="window-content"><div class="twod12 sheet pcs ps2"><div class="ar ps2-oa open"><div class="ps2-bar"><span class="ps2-sts">${b.stamps.map(x => `<button type="button" class="ps2-st">${x.label}</button>`).join("")}</span><a class="ps-nm">${b.name}</a><span class="ps2-dv">${b.dist}${b.dist && b.vs ? " &middot; " : ""}${b.vs ? `<b>${b.vs}</b>` : ""}</span>${b.reaction ? `<span class="ps2-fq">${b.fqWord}</span>` : ""}</div><div class="ar-card">${c}</div></div></div></div></div>`
 };
 const out = document.getElementById("cards");
 const list = data.cards.slice(from, to);
@@ -96,7 +96,7 @@ for (const d of list) {
   let html = "", bar = null;
   try {
     if ((face === "roll" || face === "result" || face === "short") && item.type !== "action") continue;   // a Feature has no roll, no result, no Action bar
-    if (face === "short") { const it = item.system; bar = { name: item.name, ...SB.actionBar({ aps: (it.versions ?? []).map(v => v.ap), reaction: !!it.reaction, frequency: CFG.effectiveFrequency(it), escalation: Number(it.escalation) || 0, dist: SB.distanceShort(CFG.distanceText(it, null)), vs: SB.vsShort(CFG.vsText(it, {})) }) }; }
+    if (face === "short") { const it = item.system; bar = { name: item.name, reaction: !!it.reaction, ...SB.actionBar({ aps: (it.versions ?? []).map(v => v.ap), reaction: !!it.reaction, frequency: CFG.effectiveFrequency(it), escalation: Number(it.escalation) || 0, dist: SB.distanceShort(CFG.distanceText(it, null)), vs: SB.vsShort(CFG.vsText(it, {})) }) }; }
     html = face === "short" ? await AC.buildActionCard(item, { short: true }) : face === "roll" || face === "result" ? await oneVersionFace(item) : face === "solo" ? await AC.buildSoloCard(item) : item.type === "action" ? await AC.buildActionCard(item, { use: false }) : await AC.buildFeatureCard(item);
   } catch (e) { html = `<div class="gal-err">${d.name}: ${String(e.message ?? e)}</div>`; }
   const box = document.createElement("div");

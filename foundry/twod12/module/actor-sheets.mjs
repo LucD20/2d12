@@ -35,7 +35,7 @@ import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
 import { buildActionCard, buildFeatureCard, buildSoloCard } from "./actioncard.mjs";
-import { versionCant, dmgModsEdit, dmgModsText, cleanLevel, rallyAfterClick, ensureWindowTheme } from "./sheetmodel.mjs";
+import { versionCant, dmgModsEdit, dmgModsText, cleanLevel, rallyAfterClick, ensureWindowTheme, fitHooks } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
 import { isFaded, grantMatches, activeGrants } from "./usage.mjs";
@@ -719,6 +719,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this.element.querySelector("select.sortsel")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "sheetSort", ev.target.value); this.render(); });
     this._bindActionTable();
     this._bindHandTiles();
+    this._fitHooks();
     // v0.0.289: the Action names are keyboard links (Enter or Space opens the card)
     this.element.querySelectorAll(".ps-nm[tabindex], .tabbtn[tabindex]").forEach(el => el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); (el.closest("[data-action='toggleCard']") ?? el).click(); } }));
     this.element.querySelectorAll("[data-opt]").forEach(el => {
@@ -751,9 +752,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const cur = this.actor.system.damage[key] ?? 0;
       await this.actor.update({ [`system.damage.${key}`]: Math.max(0, cur + step) });
     };
-    this.element.querySelectorAll(".np-track[data-pool]").forEach(t => {
-      t.addEventListener("click", ev => change(ev, t.dataset.pool, 1));
-      t.addEventListener("contextmenu", ev => change(ev, t.dataset.pool, -1));
+    // v0.0.442 (Lucas on v0.0.441: "the Resolve and Vigor bar need a bigger click area"): the small sheet's whole gauge (its word, its track and the
+    // room around it) is the click area; its numbers still open the edit
+    this.element.querySelectorAll(".np-track[data-pool], .np-gauge[data-pool]").forEach(t => {
+      t.addEventListener("click", ev => { if (ev.target.closest(".hpnum")) return; change(ev, t.dataset.pool, 1); });
+      t.addEventListener("contextmenu", ev => { if (ev.target.closest(".hpnum")) return; change(ev, t.dataset.pool, -1); });
     });
     // v0.0.183: the Guard button works like the health view: click +1, right-click -1, Ctrl 5 at a time.
     for (const gb of this.element.querySelectorAll(".np-guardbtn")) for (const [evName, sign] of [["click", 1], ["contextmenu", -1]]) gb.addEventListener(evName, async ev => {
@@ -788,6 +791,20 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     box?.addEventListener("keydown", ev => { if (ev.key === "Enter") ev.preventDefault(); });   // not a form submit
     apply();
     el.querySelectorAll(".ar.open").forEach(r => this._loadCard(r));
+  }
+
+  /**
+   * v0.0.442 (Lucas: "Escalation hooks should always fit in there, so resizing them to fit is necessary. That area should never grow"): the hooks
+   * shrink until they fit their cell (sheetmodel.mjs fitHooks).
+   */
+  _fitHooks() {
+    const hl = this.element?.querySelector?.(".ps2-hooks .ps2-hl");
+    if (!hl) return;
+    const fit = () => fitHooks(hl);
+    fit();
+    requestAnimationFrame?.(fit);   // once the fonts and the window's size are settled
+    // the window resized: fit again
+    try { this._hooksRO?.disconnect(); this._hooksRO = new ResizeObserver(() => fit()); this._hooksRO.observe(hl.parentElement); } catch (e) { /* no observer */ }
   }
 
   /** Put an Action's card into its row (once). */

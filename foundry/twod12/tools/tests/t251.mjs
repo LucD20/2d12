@@ -16,7 +16,7 @@ console.log("PC 540 x 840:", as.includes("position: { width: 540, height: 840 }"
 console.log("the plate: the portrait, the name an input (renamed there), the rank's color:", tpl.includes('class="ps2-port"') && tpl.includes('class="ps-nameinput ps2-name" type="text" name="name"') && tpl.includes('class="ps2-plate rk-{{#if pc.npc}}{{pc.head.roleKey}}{{else}}pc{{/if}}"'));
 console.log("its tools: Post stat block (GM, NPC), Roll Initiative (when there is a roll), Senses:", ['data-action="postStatBlock"', 'data-action="rollInitiative"', 'data-action="editSenses"'].every(x => tpl.includes(x)));
 console.log("no side panel:", !tpl.includes('<aside class="ps-side'), "| the stat lines: Health, the pools (click: damage), Defenses, Immune / Resist / Weak, Rally and the Wounds:",
-  ['data-action="hpEdit"', 'class="ps2-track np-track"', "{{#each pc.defs.main}}", "{{{pc.dmgHtml}}}", 'data-action="setRally"', 'name="system.{{key}}Wounds"'].every(x => tpl.includes(x)));
+  ['data-action="hpEdit"', 'class="ps2-gauge np-gauge', "{{#each pc.defs.main}}", "{{{pc.dmgHtml}}}", 'data-action="setRally"', 'name="system.{{key}}Wounds"'].every(x => tpl.includes(x)));
 console.log("the tiles: the Attribute rolls, Vs. under it, the Modifiers with their DC:", tpl.includes('data-action="rollAttr" data-key="{{key}}"') && tpl.includes("<small>Vs. {{vs}}</small>") && tpl.includes("<small>{{dc}}</small>"));
 console.log("the Hands with no word, one above the other:", !tpl.includes('<span class="ps-k">Hands</span>') && (tpl.match(/class="ps2-hands"/g) ?? []).length === 2);
 console.log("the Wounds' rolls on the Upkeep tab:", tpl.indexOf('data-action="rollTable"') > tpl.indexOf('data-tab="upkeep"'));

@@ -8,8 +8,9 @@ const src = n => fs.readFileSync(ROOT + n, "utf8");
 const t = src("templates/actor-sheet-pc.hbs");
 // v0.0.441 (pack SHEETS-HUD): the small sheet's combat line (Escalation | the Hands, no word | AP), the Senses as words in the plate, Guard in the Health line
 const strip = t.slice(t.indexOf('<div class="ps2-combat{{'), t.indexOf('{{else}}\n  <div class="ps2-combat out'));
-const order = ["Escalation {{pc.strip.esc.n}}", '<div class="ps2-hands">', '<span class="k">AP</span>'].map(x => strip.indexOf(x));
-console.log("the strip's order (Escalation, Hands, AP; v0.0.373: no On you):", order.every((x, i) => x >= 0 && (i === 0 || x > order[i - 1])), "| the Strike pips under the AP:", strip.indexOf('class="ps2-strk"') > strip.indexOf('<span class="k">AP</span>'), "| no AP text:", !strip.includes("pc.strip.ap.text"), "| no Guard cell:", !strip.includes('<span class="ps-k">Guard</span>'), "| no Senses cell:", !strip.includes('<span class="ps-k">Senses</span>'));
+// v0.0.442 (Lucas, the fixes mockup round 4): the hooks alone, the Hands, the marks (AP, then Esc.)
+const order = ['<div class="ps2-cell ps2-hooks">', '<div class="ps2-hands">', '<span class="k">AP</span>', '<span class="k">Esc.</span>'].map(x => strip.indexOf(x));
+console.log("the strip's order (the hooks, Hands, AP, Esc.):", order.every((x, i) => x >= 0 && (i === 0 || x > order[i - 1])), "| the Strike pips under the AP:", strip.indexOf('class="ps2-strk"') > strip.indexOf('<span class="k">AP</span>'), "| no AP text:", !strip.includes("pc.strip.ap.text"), "| no Guard cell:", !strip.includes('<span class="ps-k">Guard</span>'), "| no Senses cell:", !strip.includes('<span class="ps-k">Senses</span>'));
 console.log("Senses under the name (both):", (t.match(/pc\.head\.senseWords/g) ?? []).length === 2, "| Guard's shield in the Health header:", /<span class="k">Health<\/span>[\s\S]{0,200}<a class="ps2-guard np-guardbtn/.test(t), "| no On you anywhere (v0.0.373):", !t.includes("ps-onyou"));
 const deep = () => new Proxy(function () {}, { get: (o, k) => (k in o ? o[k] : k === "then" ? undefined : deep()), construct: () => deep(), apply: () => deep() });
 globalThis.foundry = deep(); Object.assign(globalThis.foundry, { utils: { deepClone: o => JSON.parse(JSON.stringify(o ?? null)) } });

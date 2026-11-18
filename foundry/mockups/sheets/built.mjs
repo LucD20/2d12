@@ -32,6 +32,10 @@ function built(a, pc, st) {
   pc.attrs.forEach(x => { x.vs = vs[x.key]; });
   pc.mods.forEach(m => { m.tile = pc.npc ? `${m.label} Mod.` : m.label; });
   pc.strip.esc.pips = Array.from({ length: 6 }, (_, k) => k < (Number(a.system.escalation) || 0));
+  // v0.0.442: the hooks as a list, the Escalation marks, the Frequency only where the heading doesn't say it
+  pc.strip.esc.hookList = st.hookList ?? [];
+  pc.strip.esc.marks = SM.escMarks(Number(a.system.escalation) || 0, 6, [2, 4, 6]);
+  for (const sec of pc.sections) if (["reaction", "granted", "apex"].includes(sec.key)) sec.rows.forEach(r => { r.showFq = true; });
   pc.head.senseWords = pc.strip.senses.map(x => x.label).join(", ");
   pc.head.round = `Round ${st.round ?? 1}`;
   pc.dmgHtml = DL.damageBlockHtml(DL.damageBlockModel(pc.rwLines ?? [], { gm: true }), { line: true });
@@ -49,7 +53,7 @@ async function sheet(a, pc) {
 const S = {
   pc: async () => {
     const a = makeActor(data.sylwen, { system: { escalation: 2, damage: { bodyLethal: 6, mindNonlethal: 3 } }, items: { Dagger: { wielded: true, hand: "off" }, "Hunting Bow": { hand: "main" } } });
-    const st = { inCombat: true, round: 2, ap: 3, strikes: 1, open: ["Snap Shot"], hooks: [], dl: DL, cd: CD };
+    const st = { inCombat: true, round: 2, ap: 3, strikes: 1, open: ["Snap Shot"], hooks: [], hookList: q.get("hooks") === "many" ? ["Critical", "Kindled Wrath", "Thrill of the Kill"] : ["Critical"], dl: DL, cd: CD };
     return win(a.name, 540, 840, await sheet(a, built(a, sheetModel(a, st), st)));
   },
   npc: async () => {
@@ -62,4 +66,6 @@ const out = document.getElementById("page");
 out.style.display = "flex"; out.style.gap = "28px"; out.style.alignItems = "flex-start";
 for (const k of ["pc", "npc"]) if (!only || only === k) { try { out.insertAdjacentHTML("beforeend", await S[k]()); } catch (e) { console.error(e); out.insertAdjacentHTML("beforeend", `<pre class="mk-err">${esc(k)}: ${esc(e.stack ?? e)}</pre>`); } }
 await document.fonts.ready;
+// actor-sheets.mjs _fitHooks, as the sheet runs it
+for (const hl of document.querySelectorAll(".ps2-hooks .ps2-hl")) SM.fitHooks(hl);
 document.body.dataset.ready = "1";

@@ -19,17 +19,32 @@ differ):
 
 ## Characters and sheets
 
-### small-pc-sheet · v0.0.441 · The small PC sheet
+### small-pc-sheet · v0.0.442 · The small PC sheet
 Do: In a combat, open Sylwen's sheet (it opens at 540 × 840); look over the top part, in the dark interface, then the light one.
-Expect: A name plate (her portrait, her name in the serif, Level · Stage · Elf Archer · Medium · Sight, Hearing 10, "Round N" at the right with the eye for Senses); ruled lines for Health and to Down with Guard, Dominant Damage, the Vigor and Resolve gauges (damage taken, Nonlethal hatched), AD, WD, Speed, Reach, Size, Steady, Immune / Resist / Weak, Rally's pips and the two Wounds counts; seven tiles (Body to Instinct with "Vs. N" under each, then Weapon, Power and Signature with their DC); a combat line (Escalation with six pips and its rungs as words, her two hands one above the other with no word "Hands", the AP pips and Strikes). No side panel; nothing cut off or overlapping.
+Expect: A name plate (her portrait, her name in the serif, Level · Stage · Elf Archer · Medium · Sight, Hearing 10, "Round N" at the right with the eye for Senses); ruled lines for Health and to Down with Guard, Dominant Damage, the Vigor and Resolve gauges (damage taken, Nonlethal hatched), AD, WD, Speed, Reach, Size, Steady, Immune / Resist / Weak, Rally's pips and the two Wounds counts; seven tiles (Body to Instinct with "Vs. N" under each, then Weapon, Power and Signature with their DC); the combat line (her hooks at the left, her two hands one above the other with no word "Hands", then AP and Esc. as two rows of marks). No side panel; nothing cut off or overlapping.
+Rev: 2
 
-### small-sheet-works · v0.0.441 · Everything on the small sheet still works
-Do: On Sylwen's sheet: rename her in the plate; click her portrait; click the Vigor gauge (Shift-click, right-click); click the gauge's numbers; click Guard and right-click it; click a Rally pip; change a Wounds count; click the Body tile; click a hand tile; click an AP pip and the Reaction AP diamond; click an Escalation rung; the eye (Senses).
-Expect: Each does what it did on the old sheet: the name saves, the image picker opens, damage is added (Nonlethal with Shift) and removed, the numbers open the HP edit, Guard goes up and down, Rally and the Wounds save, Body rolls its Check, the hand menu opens, the AP and the Escalation change, the Senses window opens.
+### small-sheet-works · v0.0.442 · Everything on the small sheet still works
+Do: On Sylwen's sheet: rename her in the plate; click her portrait; click anywhere on the Vigor gauge (its word, its bar, just above or under the bar; then Shift-click, right-click); click the gauge's numbers; click Guard and right-click it; click a Rally pip; change a Wounds count; click the Body tile; click a hand tile; click an AP pip, the Reaction AP diamond and an Escalation pip; the eye (Senses).
+Expect: Each does what it did on the old sheet: the name saves, the image picker opens, damage is added anywhere on the gauge (Nonlethal with Shift) and removed with a right-click, the numbers open the HP edit (and add no damage), Guard goes up and down, Rally and the Wounds save, Body rolls its Check, the hand menu opens, the AP and the Escalation change, the Senses window opens.
+Rev: 2
 
-### action-bars · v0.0.441 · Each Action is one bar; the stamp is its Use button
+### action-bars · v0.0.442 · Each Action is one bar; the stamp is its Use button
 Do: On Sylwen's sheet, Actions tab: look at the bars; click Snap Shot's bar (not its stamp), then click Quick Shots' "2 AP" stamp; with 1 AP left, look at a 2 AP stamp and click it.
-Expect: Each bar: the cost stamp(s) at the left, the name with its automation diamond, "Distance · Vs." at the right (8 / 16 / 24 · AD), then the Frequency as a small colored square and its word (Snap Shot: "Turn"). A click on the bar opens the short card under it (no Flavor, no rank word, no Distance, no Attack line, no Your roll); the stamp opens the roll dialog on that Version. A stamp she can't pay is struck and dashed; a click still uses it with a warning, as the old Use button did.
+Expect: Each bar: the cost stamp(s) at the left, the name with its automation diamond, "Distance · Vs." at the right (8 / 16 / 24 · AD). Under "Once per round" no Frequency is written at the end; under Reactions the word stays, muted (Snap Shot: "Turn"). A click on the bar opens the short card under it (no Flavor, no rank word, no Distance, no Attack line, no Your roll); the stamp opens the roll dialog on that Version. A stamp she can't pay is struck and dashed; a click still uses it with a warning, as the old Use button did.
+Rev: 2
+
+### combat-line · v0.0.442 · The combat line: the hooks, the Hands, AP and Esc.
+Do: In a combat, open Aveline's sheet at Escalation 4 with both hooks left; then use her Critical hook; then give Sylwen her Dagger in the off hand; then narrow and widen Aveline's window.
+Expect: At the left "Hooks left" and each hook in bold with a small gold diamond ("Critical", "Kindled Wrath"); when one is used it goes, with none "None this encounter", faded. At the right two rows: AP (the AP pips, the Reaction AP's diamond, a hairline, the Strikes as orange slashes) and Esc. (six diamonds, the 2nd, 4th and 6th ringed, filled up to 4, then "4"). The line keeps the same height with one or two hand tiles and with any number of hooks: long hooks shrink, then go to two smaller lines, never past the line.
+
+### out-of-combat · v0.0.442 · Out of combat
+Do: Open Sylwen's sheet with no combat.
+Expect: The combat line says only "Out of combat", centered and faded, with her hand tiles at its right.
+
+### build-ink · v0.0.442 · The Build tab's costs in ink
+Do: Open Aveline's Build tab.
+Expect: Each Action's cost is an outlined stamp in ink ("2 AP", "1R"), its Frequency a muted word; no colored pill or square.
 
 ### two-hands-stamp · v0.0.441 · Two weapons that fit one Action
 Do: Give Aveline a second one-handed melee weapon in her off hand (Items tab), then look at her Weapon Actions on the Actions tab and use one with each small hand button.

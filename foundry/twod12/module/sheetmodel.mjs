@@ -453,3 +453,30 @@ export function actionBar({ aps = [], reaction = false, frequency = "", escalati
   const fq = BAR_FREQ[frequency] ? frequency : "atwill", esc = Math.max(0, Math.trunc(Number(escalation)) || 0);
   return { stamps, dist: dist && dist !== "—" ? String(dist) : "", vs: String(vs ?? ""), fq, fqWord: `${esc ? `Escalation ${esc}, ` : ""}${BAR_FREQ[fq]}` };
 }
+
+/** v0.0.442 (Lucas, the fixes mockup round 4): the Escalation pips of the sheet's marks cell: [{ n, on, rung }], a rung (a Passive or the Apex
+ *  comes there) ringed. A click on pip n sets the Escalation to n (as the rungs' words did). */
+export function escMarks(level, max = 6, rungs = []) {
+  const at = new Set((rungs ?? []).map(Number).filter(n => n > 0)), lv = Math.max(0, Math.trunc(Number(level)) || 0);
+  return Array.from({ length: Math.max(1, Math.trunc(Number(max)) || 6) }, (_, k) => ({ n: k + 1, on: k < lv, rung: at.has(k + 1) }));
+}
+
+/**
+ * v0.0.442 (Lucas: the hooks "should always fit in there... That area should never grow"): fits the hooks' list (an element) into its cell, which
+ * never grows: one line, shrinking from 14 px to 11 px; then two lines at the largest size (13 px down to 8 px) whose height fits the cell.
+ * Needs a DOM (the sheet runs it after each render and when the window is resized).
+ */
+export function fitHooks(hl) {
+  const cell = hl?.parentElement;
+  if (!cell) return;
+  const wide = () => hl.scrollWidth > hl.clientWidth + 0.5, tall = () => cell.scrollHeight > cell.clientHeight + 0.5;
+  hl.classList.remove("wrap");
+  let size = 14;
+  hl.style.fontSize = `${size}px`;
+  while (wide() && size > 11) { size -= 0.5; hl.style.fontSize = `${size}px`; }
+  if (!wide()) return;
+  hl.classList.add("wrap");
+  size = 13;
+  hl.style.fontSize = `${size}px`;
+  while ((tall() || wide()) && size > 8) { size -= 0.5; hl.style.fontSize = `${size}px`; }
+}
