@@ -434,3 +434,22 @@ export function cleanLevel(v) {
   for (const x of list) { if (x === "" || x === null || x === undefined) continue; const n = Number(x); if (Number.isFinite(n)) return Math.max(0, Math.trunc(n)); }
   return null;
 }
+
+/* ------------------------------------------------------------------ v0.0.441 (pack SHEETS-HUD): an Action's bar on the small sheets */
+// The approved sheets (foundry/mockups/sheets, "Option 1", Lucas 2026-11-18): each Action is one bar: its cost stamps (each the Use button),
+// the name, "Distance · Vs." in words, and the Frequency as a small square beside its word. A click on the bar opens the short card under it.
+const BAR_FREQ = { atwill: "At-will", round: "Round", encounter: "Encounter", turn: "Turn", daily: "Daily" };
+/**
+ * Pure: the bar of a row. o = { aps (each Version's AP), reaction, frequency, escalation, dist (the row's short Distance, "—" for none),
+ * vs (the row's short Vs.), inCombat, ap, rap }. Returns { stamps: [{ ap, label, off, why }] (one per cost: Versions of one cost, an Art's
+ * Modes, show one), dist, vs, fq (the Frequency key), fqWord ("Round", "Escalation 3, Encounter") }.
+ */
+export function actionBar({ aps = [], reaction = false, frequency = "", escalation = 0, dist = "", vs = "", inCombat = false, ap = 0, rap = 0 } = {}) {
+  const costs = [...new Set((aps ?? []).map(v => Math.max(0, Math.trunc(Number(v)) || 0)))];
+  const stamps = costs.map(n => {
+    const why = inCombat ? versionCant(n, ap, reaction ? rap : 0, reaction) : "";   // the one rule the card's Use buttons and the HUD read
+    return { ap: n, label: reaction ? `${n}R` : `${n} AP`, off: !!why, why };
+  });
+  const fq = BAR_FREQ[frequency] ? frequency : "atwill", esc = Math.max(0, Math.trunc(Number(escalation)) || 0);
+  return { stamps, dist: dist && dist !== "—" ? String(dist) : "", vs: String(vs ?? ""), fq, fqWord: `${esc ? `Escalation ${esc}, ` : ""}${BAR_FREQ[fq]}` };
+}

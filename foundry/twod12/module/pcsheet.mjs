@@ -20,7 +20,7 @@ import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
   healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers,
-  rowLines, senseChips, strikePips, ELITE_RUNGS, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
+  rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { creatureDamageLines } from "./ccdamage.mjs";
@@ -103,6 +103,8 @@ export async function pcModel(sheet, ctx) {
   const head = {
     npc, role: role?.label ?? "", roleKey: s.role ?? "", cv: npc ? (s.cv ?? role.cv[0]) : "", isGM: !!game.user?.isGM,
     species: sp ? { id: sp.id, name: sp.name } : null, cls: cls ? { id: cls.id, name: cls.name } : null, size: SIZE_NAMES[s.size ?? 3] ?? "",
+    senseWords: senseChips(s.senses ?? {}).map(x => x.label).join(", "),   // v0.0.441: the Senses as words in the plate's line
+    round: combat?.started ? `Round ${combat.round}` : "Not started",
     combat: !combat ? { mode: "none" } : (!cbt || cbt.initiative === null || cbt.initiative === undefined) ? { mode: "roll" } : { mode: "status", text: combat.started ? `In combat · Round ${combat.round}` : "In combat · not started" }
   };
 
@@ -122,7 +124,7 @@ export async function pcModel(sheet, ctx) {
       tip: `${ap} AP left of the ${regained} this turn gave (${baseAP(a)}${quickenedOf(a) ? ` + Quickened ${quickenedOf(a)}` : ""}${slowed ? ` − Slowed ${slowed}` : ""}). Click a pip to correct the AP (the chat says so).` },
     guard: { total: (Number(s.guard) || 0) + (Number(s.apGuard) || 0), per: guardPerAP(s.stage),
       tip: `Guard ${Number(s.guard) || 0}${s.apGuard ? ` + ${s.apGuard} from the AP your last turn kept (taken first, 1 round)` : ""}. It takes damage before your Health, can't be healed and ends with the encounter. Click +1, right-click −1, Ctrl: 5.` },
-    esc: { n: escNow, rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
+    esc: { n: escNow, pips: Array.from({ length: Math.max(1, Number(TWOD12.escalation?.max) || 6) }, (_, k) => k < escNow), rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
       momentum: Number(combat?.getFlag?.(F, "momentumStart")) || 0 },   // v0.0.407: the Momentum the encounter started with (0 to 4)
     strikes: strikesLine(strikesUsed(a)),
     // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
@@ -171,7 +173,7 @@ export async function pcModel(sheet, ctx) {
     ],
     vs: [["body", "vs Body"], ["mind", "vs Mind"], ["appeal", "vs Appeal"], ["instinct", "vs Inst."]].map(([k, l]) => ({ label: l, value: vs[k], tip: `Vs. ${TWOD12.attributes[k]}: 12 + your ${TWOD12.attributes[k]} (${sg(s.attributes?.[k] ?? 0)})${vsB[k] ? ` ${sg(vsB[k])} bonus` : ""}.` }))
   };
-  const attrs = Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, value: sg(s.attributes?.[key] ?? 0) }));
+  const attrs = Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, value: sg(s.attributes?.[key] ?? 0), vs: vs[key] }));   // v0.0.441: the tile's "Vs. N"
   const speedNow = s.moveSpeed ?? s.speed ?? 0, speedRef = s.speed === undefined ? speedNow : applySpeedMods(a, s.speed, { baseOnly: true });
   const steady = steadinessOf(a).total;
   const move = [
@@ -197,6 +199,7 @@ export async function pcModel(sheet, ctx) {
     { label: "Signature", attr: s.signatureFrom === "power" ? "Power" : "Weapon", value: has(s.signatureAttribute) ? sg(s.signatureMod) : "—", dc: `DC ${dcs.signature}`, tip: `Signature Modifier: the higher of your Weapon and Power Modifiers (${s.signatureFrom === "power" ? "Power" : "Weapon"}). Save DC 11 + it (@signature.dc)` }
   ];
 
+  for (const m of mods) m.tile = npc ? `${m.label} Mod.` : m.label;   // v0.0.441: the tile's label (a PC's three Modifiers have no room for "Mod.")
   // ---- Wounds (a named Wound is an effect with the flag twod12.wound: "body" or "mind")
   const namedW = k => [...a.effects].filter(e => e.getFlag?.(F, "wound") === k).map(e => ({ id: e.id, name: clean(e.name) }));
   const wounds = [
@@ -262,9 +265,17 @@ export async function pcModel(sheet, ctx) {
       basicAtk: !!(npc && it.basicAttack),
       auto: autoChip(it.automation, it.automationNote),   // v0.0.303 (Lucas): the automation diamond beside the name
       // v0.0.370 (Lucas): every row carries its Frequency line (and a dim tint of it), also inside "Once per round"
-      freqLine: rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" })
+      freqLine: rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),
+      // v0.0.441 (pack SHEETS-HUD): the bar (the stamps are the Use buttons; "Distance · Vs."; the Frequency's square and word)
+      bar: barOf(actionBar({ aps, reaction, frequency: fq, escalation: esc, dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "") : distanceShort(dist), vs: vsShort(vsText(it, { fists })), inCombat, ap, rap }), handBtns)
     };
   };
+  // v0.0.441: two weapons in hand that both fit the Action keep a small button each after the stamps (decision 3 of the sheets' mockup); with one,
+  // the stamps use it
+  function barOf(b, hb) {
+    const on = (hb ?? []).filter(h => !h.off);
+    return { ...b, weaponId: on.length === 1 ? on[0].id : "", hands: (hb ?? []).length >= 2 ? hb : null };
+  }
   const actions = a.itemTypes.action.filter(i => techniqueState(a, i) !== "locked");
   const secRows = Object.fromEntries(SECTION_ORDER.map(k => [k, []]));
   for (const i of actions) {
@@ -281,7 +292,8 @@ export async function pcModel(sheet, ctx) {
     secRows.granted.push({ ...base, sub: `from ${g.source || "an effect"}${g.dur ? ` · ${g.dur}` : ""}${g.inline ? "" : ` · ${g.left} of ${g.count} left`}`,
       cost: g.inline ? String(g.cost ?? "").replace(/\s*AP$/, "") : (g.free ? "0" : String(g.cost).replace(/\s*AP$/, "")), outline: true, fc: "#1b2433",
       off: base.off && !/used|Round|turn/i.test(base.offWhy ?? "") ? base.off : false, handBtns: null,
-      grant: { tip: g.tip, effectId: g.effectId ?? "", index: g.grantIndex ?? 0 } });
+      grant: { tip: g.tip, effectId: g.effectId ?? "", index: g.grantIndex ?? 0 },
+      bar: { ...(base.bar ?? actionBar({})), stamps: [{ ap: 0, label: g.inline ? String(g.cost ?? "") || "Use" : (g.free ? "0 AP" : `${String(g.cost).replace(/\s*AP$/, "")} AP`), off: false, why: "" }], weaponId: "", hands: null } });
   }
   const SEC_META = {
     granted: { title: "Granted", sub: "from other effects · gone when spent or expired", dot: "#4a5a78", cls: "granted" },
@@ -454,7 +466,7 @@ export async function pcModel(sheet, ctx) {
     head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained,
     effects: { conditions, effects }, weapons: weaponRows, armor: armorRows, build, mastery, upkeep, down,
     // v0.0.333 (PACK RWI): the Damage block under Defenses (Immune / Resist / Weak, every source; hidden with none, but a GM sees + Add)
-    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM })); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
+    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM }), { line: true }); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
     modConflict: s.modConflict ? `Both Modifiers wanted the same Attribute: the ${csys?.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it.` : ""
   };
 }

@@ -2,13 +2,15 @@
 // window: an icon, a text, one button per option, and Done / Cancel. "Who gains the Guard?" and the Push picker use it; any map picker can.
 import { esc } from "./util.mjs";
 
+/** v0.0.441 (the HUD mockup, R5): a question that already has a "no" answer (Judge's "Not now") shows no third button "Cancel" (Escape still cancels). */
+export const hasNo = o => (o.options ?? []).some(x => /^no$/i.test(String(x.id ?? "")) || /^(no|not now)$/i.test(String(x.label ?? "").trim()));
 /** Pure: the bar's HTML. o: { icon, text, options: [{ id, label, tip, cls }], done (the label of the Done button, or "" for none), cancel (label, default "Cancel") }. */
 export function pickBarHtml(o) {
   // v0.0.397 (Lucas: "token images only, side by side in squares, like Draw Steel; hover over shows the name"): an option with a picture is a square
   const opts = (o.options ?? []).map(x => (x.img
     ? `<button type="button" class="lb-opt sq${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}" aria-label="${esc(x.label)}"><img src="${esc(x.img)}" alt=""></button>`
     : `<button type="button" class="lb-opt${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}"${x.tip && x.off ? ` data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.label)}</button>`)).join("");
-  return `<i class="fa-solid ${esc(o.icon ?? "fa-hand-pointer")} lb-ic"></i><span class="lb-text">${o.text ?? ""}</span><span class="lb-side lb-opts">${opts}</span>${o.done ? `<button type="button" class="lb-go" data-id="__done"><i class="fa-solid fa-check"></i> ${esc(o.done)}</button>` : ""}<button type="button" class="lb-give" data-id="__cancel">${esc(o.cancel ?? "Cancel")}</button>`;
+  return `<i class="fa-solid ${esc(o.icon ?? "fa-hand-pointer")} lb-ic"></i><span class="lb-text">${o.text ?? ""}</span><span class="lb-side lb-opts">${opts}</span>${o.done ? `<button type="button" class="lb-go" data-id="__done"><i class="fa-solid fa-check"></i> ${esc(o.done)}</button>` : ""}${hasNo(o) ? "" : `<button type="button" class="lb-give" data-id="__cancel">${esc(o.cancel ?? "Cancel")}</button>`}`;
 }
 
 /**

@@ -368,10 +368,12 @@ export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-m
 export const dtypeIcon = k => (k === "Sl" ? '<img class="dt-img" src="icons/svg/sword.svg" alt="">' : `<i class="${TWOD12.subtypeIcons[k] ?? ""}"></i>`);
 export const dtypeHtml = code => {
   const k = Object.keys(TWOD12.subtypeInk).find(x => x.toLowerCase() === String(code ?? "").toLowerCase());
-  return k ? `<span class="dtype dt-${k.toLowerCase()}" style="color:${TWOD12.subtypeInk[k]}">${dtypeIcon(k)} ${TWOD12.subtypes[k]}</span>` : "";
+  return k ? `<span class="dtype dt-${k.toLowerCase()}" style="color:${TWOD12.subtypeInk[k]};--sc-d:${TWOD12.subtypeColors?.[k] ?? TWOD12.subtypeInk[k]}">${dtypeIcon(k)} ${TWOD12.subtypes[k]}</span>` : "";
 };
 /** Turn "[B] 1[W] Sl" (already escaped) into the card's look: icons for [B]/[M]/[C], the damage type as a colored name. */
 /** The ink of a damage type ("Co" -> its color), for the amount written before it (v0.0.137: "1d8 Cold" is all in Cold's color). */
+/** v0.0.441 (E6): a damage type's bright color, for a dark surface (styles: the dark scope reads --sc-d over the parchment's inline ink). */
+export const brightOf = code => { const k = Object.keys(TWOD12.subtypeColors ?? {}).find(x => x.toLowerCase() === String(code ?? "").toLowerCase()); return k ? TWOD12.subtypeColors[k] : ""; };
 export const inkOf = code => { const k = Object.keys(TWOD12.subtypeInk ?? {}).find(x => x.toLowerCase() === String(code ?? "").toLowerCase()); return k ? TWOD12.subtypeInk[k] : ""; };
 // v0.0.179 (the book's look): a damage expression after [B] or [M] ("[B] 1[W] + [Mod]", "[M] 1d4") is in its pool's color, the damage type in its own;
 // an amount with no pool before it ("+1d6 Ho" from a bonus) keeps the type's ink as before.
@@ -380,7 +382,7 @@ const POOL_CSS = { B: "b", V: "b", M: "m", R: "m" }, POOL_KEY = { B: "B", V: "B"
 const POOL_EXPR = /\[(B|M|V|R)\](\s*)((?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
 export const prettyDamage = html => String(html ?? "")
   .replace(POOL_EXPR, (m, p, sp, expr) => `${poolIcon(POOL_KEY[p])}${sp}<span class="pool-${POOL_CSS[p]}">${expr}</span>`)
-  .replace(/(\d*\[W\]|\[At\]|\d+d\d+(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)}">${amt}</span>${sp}${code}` : m))
+  .replace(/(\d*\[W\]|\[At\]|\d+d\d+(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)};--sc-d:${brightOf(code) || inkOf(code)}">${amt}</span>${sp}${code}` : m))
   .replace(/\[(B|M|C|V|R)\]/g, (m, p) => poolIcon(POOL_KEY[p]))
   .replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, m => dtypeHtml(m));
 

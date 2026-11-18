@@ -19,24 +19,60 @@ differ):
 
 ## Characters and sheets
 
-### sheet-pills · v0.0.440 · The Frequency word on Reactions only
-Do: Open Durgan's sheet; look at his Basic Actions and his Reactions (Bulwark of Faith, Shield of Faith).
-Expect: A Basic Action's box shows only its cost ("1 AP"); a Reaction's pill shows its Frequency and cost on one line ("Encounter · 1R" for Bulwark of Faith), not wrapped.
-Rev: 2
+### small-pc-sheet · v0.0.441 · The small PC sheet
+Do: In a combat, open Sylwen's sheet (it opens at 540 × 840); look over the top part, in the dark interface, then the light one.
+Expect: A name plate (her portrait, her name in the serif, Level · Stage · Elf Archer · Medium · Sight, Hearing 10, "Round N" at the right with the eye for Senses); ruled lines for Health and to Down with Guard, Dominant Damage, the Vigor and Resolve gauges (damage taken, Nonlethal hatched), AD, WD, Speed, Reach, Size, Steady, Immune / Resist / Weak, Rally's pips and the two Wounds counts; seven tiles (Body to Instinct with "Vs. N" under each, then Weapon, Power and Signature with their DC); a combat line (Escalation with six pips and its rungs as words, her two hands one above the other with no word "Hands", the AP pips and Strikes). No side panel; nothing cut off or overlapping.
+
+### small-sheet-works · v0.0.441 · Everything on the small sheet still works
+Do: On Sylwen's sheet: rename her in the plate; click her portrait; click the Vigor gauge (Shift-click, right-click); click the gauge's numbers; click Guard and right-click it; click a Rally pip; change a Wounds count; click the Body tile; click a hand tile; click an AP pip and the Reaction AP diamond; click an Escalation rung; the eye (Senses).
+Expect: Each does what it did on the old sheet: the name saves, the image picker opens, damage is added (Nonlethal with Shift) and removed, the numbers open the HP edit, Guard goes up and down, Rally and the Wounds save, Body rolls its Check, the hand menu opens, the AP and the Escalation change, the Senses window opens.
+
+### action-bars · v0.0.441 · Each Action is one bar; the stamp is its Use button
+Do: On Sylwen's sheet, Actions tab: look at the bars; click Snap Shot's bar (not its stamp), then click Quick Shots' "2 AP" stamp; with 1 AP left, look at a 2 AP stamp and click it.
+Expect: Each bar: the cost stamp(s) at the left, the name with its automation diamond, "Distance · Vs." at the right (8 / 16 / 24 · AD), then the Frequency as a small colored square and its word (Snap Shot: "Turn"). A click on the bar opens the short card under it (no Flavor, no rank word, no Distance, no Attack line, no Your roll); the stamp opens the roll dialog on that Version. A stamp she can't pay is struck and dashed; a click still uses it with a warning, as the old Use button did.
+
+### two-hands-stamp · v0.0.441 · Two weapons that fit one Action
+Do: Give Aveline a second one-handed melee weapon in her off hand (Items tab), then look at her Weapon Actions on the Actions tab and use one with each small hand button.
+Expect: After the stamp, a small button for each hand (the sword icon with 1H / 2H); each uses the Action with that hand's weapon. With one fitting weapon there is only the stamp, and it uses that weapon (a two-handed weapon in one hand still asks first).
+
+### small-npc-sheet · v0.0.441 · The small NPC sheet
+Do: Open the Orc Warrior's sheet (540 × 760), then the Ogre Chieftain's (an Elite), in and out of combat.
+Expect: The plate in the rank's color (Standard red, Elite purple) with "Standard" or "Elite" and the round; the scroll icon posts the stat block to the chat (GM); "Generate Action · Browse compendium · New Action" as links over the Actions; no Rally, Wounds, Hands or Signature; the Ogre's combat line shows Elite Escalation with its pips, rungs and phases. The Builder tab fits the width (its rank and role buttons wrap). Avenge Kin's bar says "Round".
+
+### npc-statblock-gone · v0.0.441 · The one-page NPC sheet is retired
+Do: In a world where an NPC used the one-page stat block sheet, reload as the GM and open that NPC; look in Game Settings for "New NPCs open with"; open an NPC's sheet settings (the window's menu).
+Expect: The NPC opens on the small NPC sheet; the setting is gone; the sheet list has no "2d12 NPC Stat Block (one page)". "Post stat block" still posts to the chat.
+
+### sheet-tabs-fit · v0.0.441 · The other tabs in the small sheet
+Do: On Sylwen's sheet open Effects, Items, Build, Mastery, Upkeep and Notes; on the Orc Warrior's, Builder and Loot.
+Expect: Everything is readable at 540 px wide (one column where there were two); nothing is cut off at the right; the Upkeep tab's Wounds section has Roll Dying / Roll Shattered (moved there from the side panel).
+
+### e6-blunt · v0.0.441 · A damage type's word on a dark card
+Do: In the dark interface, open the Orc Warrior's Cleaver on its sheet and Aveline's Smite; then the same in the light interface.
+Expect: "Slash", "Blunt", "Holy" and their flat amounts are in their bright color on the dark card (readable), and in the parchment's darker ink on the light one. A trait word in a card's text ("[Strike]" in Avenge Kin's Trigger) is plain bold ink, with no tinted box.
+
+## The HUD
+
+### hud-identity · v0.0.441 · The HUD's identity column
+Do: In a combat, select Durgan's token; then Sylwen's with a changed Speed (give her Hindered).
+Expect: Under the bars: Guard, Rally and Steel Yourself; AP and Esc.; a row for conditions; then "AD 14  WD 13  Speed 4 | Weapon +1  Power +2" and "Body +2  Mind +1  Appeal −1  Instinct +2" in words (no Wpn, Pow, Bo, In), all inside the bar. A click on Instinct rolls the Check, Shift-click the Save; Sylwen's halved Speed is underlined.
+
+### hud-conditions · v0.0.441 · Conditions as marks under AP
+Do: Make Sylwen Prone and Hindered (end of turn), then add Dazed and Lingering 2.
+Expect: With two, each is its icon in a small square and its word ("Prone", "Hindered EoT"); with four, the icons alone (a duration keeps its small text). The HUD's height never changes. A click opens the Effect.
+
+### hud-basic-tab · v0.0.441 · The Basic tab
+Do: Select Sylwen, make her Prone, open the HUD's Basic tab; click Stand's "1 AP".
+Expect: Four columns, Attack, Movement, Control, Utility, every Basic Action on one line with its cost stamps (no "+N more"); Advance, Evade and Charge are dim with struck stamps, in their place. Stand's stamp uses Stand. The Orc Warrior's Basic tab shows its Fists in the Attack column.
+
+### hud-right · v0.0.441 · The right column: Situational, Hands, macro bar
+Do: Select Sylwen's token with nothing waiting; click a hand tile; drag a macro onto the bar; make her Prone.
+Expect: The right column: "Nothing waiting." on top, her two hand tiles side by side (Hunting Bow Main, Free (Fists) Off), Foundry's macro bar as one row of ten at the bottom (the macros still work). A hand tile opens the Hands panel. Prone puts "Prone" with Stand · 1 AP, Crawl 1 · 1 AP and Crawl 3 · 2 AP in the Situational section (gold top line); each button uses that Version.
 
 ### item-traits · v0.0.440 · An item sheet's traits
 Do: From Aveline's sheet open Smite's item sheet, then her weapon's; in the dark interface, then the light one.
 Expect: The traits (and a weapon's properties) are plain words with a dot between them, in ink: no colored chips, in the card at the top and in the edit part.
 Rev: 2
-
-### npc-level · v0.0.440 · The NPC sheet's header
-Do: Open the Ogre Chieftain's sheet (an Elite) at its usual size; change its Level, then click its image.
-Expect: The header fits without widening the window: the name and rank, then Level · Stage · Size · CV · Senses, and the buttons wrap to a row of their own when there is no room. The Level saves; the image picker opens.
-Rev: 2
-
-### hud-defs-pips · v0.0.440 · The HUD's Attributes and AP pips
-Do: In a combat, in the dark interface, open Aveline's HUD.
-Expect: The bottom row shows AD, WD, Spd, Wpn, Pow, then Bo, Mi, Ap and In (Instinct inside the bar); a full AP pip is solid gold, a spent one dark.
 
 ## Starting a combat
 
@@ -114,14 +150,10 @@ Expect: The same card look as a Feature: the name with "Class" (or "Species") on
 Do: In the dark interface, send Aveline's Smite to the chat (right-click its row, Send to chat), hover one of her Actions' rows, and open an Action from her HUD; then do the same with a light sheet.
 Expect: The Vigor heart and Resolve brain icons are the light red and blue of the sheet's card everywhere (no dark red on dark), the keyword highlights the same color; a card in a tooltip reads left-aligned, as in the sheet.
 
-### statblock-card · v0.0.437 · The stat block follows the card
-Do: Open the Orc Warrior and the Ogre Chieftain with the one-page NPC sheet; read Avenge Kin, Ground Slam and Rally the Tribe; then drag Aveline's Rebuke onto an NPC and look at it.
-Expect: Each Action reads as its card: the Trigger on a row of its own, then "Attack Weapon vs. Armor Defense; Distance …; Target …" on one line, then its Tiers; Rebuke shows "Tier 1 or 2" on one line with the label not wrapped. The look (header bar in the frequency's color, the Tier colors, the Effects box) is as before; the buttons still use the Action.
-
-### npc-fists · v0.0.440 · An NPC's Fists
+### npc-fists · v0.0.441 · An NPC's Fists
 Do: Open the Orc Warrior's HUD, Basic tab, and its sheet's Basic Actions; use its Fists on Aveline.
-Expect: Fists is in the Basic tab's first column (the attacks come first; the movements may be under "+N more"); it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. The GM uses it only when the Orc has lost its cleaver.
-Rev: 2
+Expect: Fists is in the Basic tab's Attack column (every Basic Action shows, in four groups); it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. The GM uses it only when the Orc has lost its cleaver.
+Rev: 3
 
 ### shake-off-other · v0.0.426 · Shake Off on another player's creature
 Do: As Sylwen's player (not the GM), with the GM connected, use Shake Off on Kaela (another player's character) while she is Lingering, and get a Tier 3.
@@ -133,12 +165,24 @@ Expect: At the end of Kaela's turn Durgan takes half the Lingering's damage ("Ha
 
 ## Movement
 
+### setup-in-hud · v0.0.441 · A Setup's movement in the HUD
+Do: In a combat, select Kaela's token and use Strafe (2 AP); move her token; then use an Action whose card gives an Evade or Advance (Sylwen's Footwork).
+Expect: No floating bar over the map: the Situational section shows "Strafe: You Advance. Move your token, then Continue." with Continue: the roll and Cancel the Action (Enter and Escape still work). The Evade / Advance shows there too with End movement (and Advance instead for an Evade). With the HUD turned off they float at the bottom as before.
+
 ### setup-move · v0.0.440 · A Setup runs when you press Roll
 Do: In a combat, on Durgan's turn: target an ally 4 squares away and use Lay On Hands; press Roll in the roll dialog. On Kaela's turn use Circling Shot. On Durgan's turn at Escalation 6, use Smite (Hallowed Stance's Advance 3).
 Expect: The roll dialog opens first (no "out of range" block; a note "Out of range now: the Setup first"); Roll starts the Setup's bar (move your token, Continue); then the roll is made from where you stand, without the dialog again. Circling Shot: Evade 1, then the shot, Tier 3's Evade 1. Cancel on the Setup's bar cancels the Action (no AP spent). The Encounter Log writes it as one line.
 Rev: 2
 
 ## Reactions and Judge
+
+### rx-situational · v0.0.441 · A trigger shows only in the Situational section
+Do: Sylwen keeps 1 AP and her Reaction AP; the Goblin Sneak moves next to her. As her player, have her Actions tab open.
+Expect: The chime and the name on the map as before; the HUD stays on the Actions tab (no jump to Reactions); the Situational section shows "Snap Shot · Reaction", the trigger's line and Use · 1R / Pass, all inside the bar (nothing hangs under it). Use and Pass answer the Reaction.
+
+### judge-in-hud · v0.0.441 · Judge's question in the Situational section
+Do: Durgan Judges the Orc Warrior; the Orc hits Sylwen within 5 squares of Durgan. As Durgan's player, look at his HUD.
+Expect: The question "Reduce that damage by 1?" is in the Situational section with Not now and Reduce by 1 only (no third Cancel button); Escape still closes it.
 
 ### avenge-kin · v0.0.440 · Avenge Kin offers itself
 Do: Delete the Orcs on the scene and drag two fresh Orc Warriors from the compendium, next to each other. Aveline hits one of them with a Strike that deals damage (apply it).

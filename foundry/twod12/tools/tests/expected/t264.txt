@@ -1,4 +1,4 @@
-hover texts left: 35
+hover texts left: 33
   module/actioncard.mjs: data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn st-u
   module/actions.mjs: data-tooltip="${esc(m.why ?? "")}"><i class="fa-solid ${esc(m.icon ?? 
   module/actions.mjs: data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? 
@@ -23,14 +23,12 @@ hover texts left: 35
   module/rolldlg.mjs: data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${e
   module/rolldlg.mjs: data-tooltip="${esc(x.why ?? "")}" class="cant"` : ""}>${esc(x.cost)}<
   module/rolldlg.mjs: data-tooltip="${esc(n.why)}"` : ""}>${esc(n.text)}</span>`).join("")}<
-  module/statblock.mjs: data-tooltip="${esc(v.why || (v.used ? "Used" : ""))}" aria-label="${e
-  templates/actor-sheet-pc.hbs: data-tooltip="Unloaded: Reload first (1 AP)" aria-label="Reload"><i cl
-  templates/actor-sheet-pc.hbs: data-tooltip="{{offWhy}} (click to use it anyway)" aria-label="{{name}
+  templates/actor-sheet-pc.hbs: data-tooltip="Unloaded: Reload first (1 AP)" aria-label="{{name}}: unl
+  templates/actor-sheet-pc.hbs: data-tooltip="{{#if ../off}}{{../offWhy}}{{else}}{{why}}{{/if}} (click
   templates/actor-sheet-pc.hbs: data-tooltip="{{tip}}" aria-label="{{tip}}"><i class="fa-solid fa-khan
-  templates/actor-sheet-pc.hbs: data-tooltip="No active combat: the GM starts an encounter first">Roll
   templates/actor-sheet-pc.hbs: data-tooltip="{{down.keepOff}}"{{/if}}>Keep fighting</button>
   templates/actor-sheet-pc.hbs: data-tooltip="{{down.collapseOff}}"{{/if}}>{{down.collapseWord}}</butt
-  templates/actor-sheet-pc.hbs: data-tooltip="{{tip}}"><span class="sl" style="width:{{seg.lethal}}%;b
+  templates/actor-sheet-pc.hbs: data-tooltip="{{tip}}"><i class="l" style="width:{{seg.lethal}}%"></i>
   templates/actor-sheet-pc.hbs: data-tooltip="{{offWhy}} (click to use it anyway)"{{else}}{{#if weapon
   templates/actor-sheet-pc.hbs: data-tooltip="Unloaded: Reload (1 AP)">Unloaded</a>{{/if}}{{#if warn}}
   templates/actor-sheet-pc.hbs: data-tooltip="{{off}}"{{/if}}>{{button}}</button>

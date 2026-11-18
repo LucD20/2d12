@@ -4957,3 +4957,211 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.chat.cc .cc-fold > summary.cc-foldsum::after { content: "\25B8"; margin-left: auto; color: var(--cc-mute); }
 .twod12.chat.cc .cc-fold[open] > summary.cc-foldsum::after { content: "\25BE"; }
 .twod12.chat.cc .cc-foldc { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
+
+/* ==================================================================== v0.0.441 (pack SHEETS-HUD): THE SMALL SHEETS
+   Lucas, 2026-11-18: the approved sheets (foundry/mockups/sheets, "Option 1"; the PC 540 x 840, the NPC 540 x 760), in STYLE-3's look: Source Serif 4
+   for the one big title (the name), Source Sans 3 for everything read, color only for a meaning (the pools, the Frequency's square, the rank's
+   plate, the bronze accent). Only the shared --s-* colors (no hex: the dark and light sets are the variables'), scoped under .twod12-actor so
+   they win over the older .pcs rules and their generated theme. */
+.twod12-actor .twod12.sheet.pcs.ps2 { --rk: var(--s-band); background: var(--s-pg); color: var(--s-ink); font: 400 13.5px/1.35 "Source Sans 3", sans-serif; }
+.twod12-actor .twod12.sheet.pcs.ps2 .k { font-weight: 700; white-space: nowrap; color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-q { color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 b.big { font-size: 15px; }
+.twod12-actor .twod12.sheet.pcs.ps2 b.up { color: var(--s-good); } .twod12-actor .twod12.sheet.pcs.ps2 b.down { color: var(--s-bad); }
+/* the plate: the portrait, the name (the serif, its own case; an input, so it can be renamed), the line under it; an NPC's in its rank's color */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate { flex: none; display: flex; align-items: center; gap: 10px; padding: 5px 10px; background: var(--rk); color: rgba(248, 238, 216, 1); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-pc { --rk: var(--s-band); color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-minion { --rk: var(--s-rk-minion); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-grunt { --rk: var(--s-rk-grunt); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-standard { --rk: var(--s-rk-standard); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-elite { --rk: var(--s-rk-elite); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-port { width: 40px; height: 40px; flex: none; border-radius: 50%; border: 1px solid currentColor; object-fit: cover; cursor: pointer; opacity: .95; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-id { flex: 1; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-name { display: block; width: 100%; height: auto; margin: 0; padding: 0; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; color: inherit; box-shadow: none;
+  font: 600 20px/1.2 "Source Serif 4", serif; font-variant: normal; letter-spacing: 0; text-transform: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-name:hover, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-name:focus { border-bottom-color: currentColor; outline: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l1 { font-size: 12.5px; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l1 a { color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-who { display: flex; flex-direction: column; align-items: flex-end; font-size: 12.5px; white-space: nowrap; opacity: .9; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-who b { font-size: 14px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tools { display: flex; gap: 10px; font-size: 14px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tools a { color: inherit; opacity: .8; cursor: pointer; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tools a:hover { opacity: 1; }
+/* the stat lines */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-stats { flex: none; padding: 2px 10px 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 14px; padding: 3px 0; border-bottom: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l.split { justify-content: space-between; flex-wrap: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l.two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; align-items: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l.grid { display: grid; grid-template-columns: repeat(6, auto); justify-content: space-between; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-guard { margin-left: 12px; padding: 0 6px; border-left: 1px solid var(--s-hair); color: inherit; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-guard.zero b { color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .dom-Vigor { color: var(--s-vig); } .twod12-actor .twod12.sheet.pcs.ps2 .dom-Resolve { color: var(--s-res); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge { display: grid; grid-template-columns: auto auto 1fr; align-items: baseline; column-gap: 6px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .hpnum { color: inherit; cursor: pointer; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tag { justify-self: start; font-size: 11.5px; font-weight: 700; color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-track { grid-column: 1 / -1; display: flex; height: 6px; margin: 2px 0 1px; background: var(--s-pg-2); box-shadow: inset 0 0 0 1px var(--s-hair); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.v { --c: var(--s-vig); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.r { --c: var(--s-res); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-track i.l { background: var(--c); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-track i.n { background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 6px); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw { gap: 2px 10px; align-items: center; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rwk { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl { height: auto; padding: 0 5px; font-size: 12.5px; line-height: 1.5; background: transparent; border: 1px solid var(--s-hair); border-radius: 2px; color: var(--sc-d, var(--s-ink)); }
+.theme-light .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl, .twod12-actor.theme-light .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl { color: var(--sc-l, var(--s-ink)); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl i { margin-right: 3px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dladd { margin-left: auto; height: auto; padding: 0 8px; font-size: 12px; line-height: 1.5; background: transparent; border: 1px solid var(--s-hair); border-radius: 2px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rpips { display: inline-flex; gap: 3px; vertical-align: 1px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rpips i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--s-good); box-sizing: border-box; cursor: pointer; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rpips i.on { background: var(--s-good); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-in { width: 30px; height: 18px; margin: 0 4px 0 2px; padding: 0 2px; border: 0; border-bottom: 1px solid var(--s-rule); border-radius: 0; background: transparent; color: var(--s-ink); text-align: center; font: 700 13px "Source Sans 3", sans-serif; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-downbox { margin: 4px 0; }
+/* the Attribute and Modifier tiles (in ink: no colored tops); the Vs. Defense and the Save DC under each */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles { flex: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) 6px repeat(3, minmax(0, 1fr)); gap: 4px; padding: 6px 10px 8px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m2 { grid-template-columns: repeat(4, minmax(0, 1fr)) 6px repeat(2, minmax(0, 1fr)); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m1 { grid-template-columns: repeat(4, minmax(0, 1fr)) 6px minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile { all: unset; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; padding: 2px 2px 3px; border: 1px solid var(--s-hair); color: var(--s-ink); line-height: 1.2; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 button.ps2-tile { cursor: pointer; } .twod12-actor .twod12.sheet.pcs.ps2 button.ps2-tile:hover { border-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile.gap { grid-column-start: 6; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile span { font-size: 12.5px; font-weight: 600; color: var(--s-mute); white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile b { font-size: 17px; font-weight: 700; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile small { font-size: 11.5px; color: var(--s-mute); white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-note { flex: none; padding: 0 10px 6px; font-size: 12px; color: var(--s-mute); }
+/* the combat line: Escalation | the Hands (one above the other, no word "Hands") | AP */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat { flex: none; display: grid; grid-template-columns: minmax(0, 1fr) 176px auto; border-top: 1px solid var(--s-rule); border-bottom: 1px solid var(--s-rule); background: var(--s-pg-2); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.npc { grid-template-columns: minmax(0, 1fr) auto; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.one { grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.out { grid-template-columns: minmax(0, 1fr) 176px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.out.npc { grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-cell { display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 6px 10px; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat > * + * { border-left: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-esc .ps2-q { font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs { display: flex; flex-wrap: wrap; gap: 0 12px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs .rung { color: var(--s-faint); cursor: pointer; white-space: nowrap; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs .rung.lit { color: var(--s-ink); font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hands { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 6px 8px; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 4px 8px; border: 1px solid var(--s-rule); border-radius: 2px; font: 400 12px/1.35 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand b { color: var(--s-mute); font-size: 11px; font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand.free { border-style: dashed; border-color: var(--s-hair); color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand.warn { border-color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand:hover { border-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ap { align-items: flex-start; gap: 6px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips { display: inline-flex; gap: 5px; align-items: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip { display: inline-block; width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid var(--s-gold); box-sizing: border-box; background: transparent; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.on { background: var(--s-gold); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.spent { border-color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.slowed { width: auto; height: auto; border: 0; color: var(--s-bad); font-weight: 700; cursor: default; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip-sep { width: 1px; height: 14px; background: var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap { border-radius: 0; transform: rotate(45deg); width: 11px; height: 11px; margin-left: 2px; border-color: var(--s-fq-turn); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap.on { background: var(--s-fq-turn); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-strk { display: inline-flex; gap: 5px; padding-left: 26px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-strk i { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid rgb(217, 119, 58); box-sizing: border-box; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-strk i.on { background: rgb(217, 119, 58); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.one .ps2-ap { flex-direction: row; align-items: center; gap: 4px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.one .ps2-strk { padding-left: 12px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-q.bane { font-size: 12px; }
+/* the tabs and the pane under them */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-body { display: flex; flex: 1; min-height: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-main { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; background: var(--s-pg); color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-tabs { display: flex; gap: 2px; padding: 4px 8px 0; border-bottom: 1px solid var(--s-rule); background: none; flex-wrap: nowrap; overflow: hidden; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-tabs .tabbtn { padding: 5px 8px 6px; color: var(--s-mute); font: 400 13.5px "Source Sans 3", sans-serif; border-bottom: 2px solid transparent; white-space: nowrap; background: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-tabs .tabbtn.active { color: var(--s-ink); font-weight: 700; border-bottom-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-tabs .tabcount { padding: 0; border-radius: 0; background: none; color: var(--s-gold); font-size: 12px; font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-scroll > .tab { padding: 6px 8px 10px; }
+/* each Action one bar; the short card under it */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sec { margin-top: 8px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps-stack { gap: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band { display: flex; align-items: center; gap: 7px; padding: 4px 2px 2px; border-bottom: 1px solid var(--s-rule); color: var(--s-ink); font-size: 14px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band b { font-weight: 700; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bsub { color: var(--s-mute); font-size: 12px; font-style: italic; margin-left: auto; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band .ps-upd { margin-left: auto; color: var(--s-mute); font-size: 12px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sq, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-fq i { display: inline-block; width: 8px; height: 8px; flex: none; background: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .fq-atwill { background: var(--s-fq-atwill); } .twod12-actor .twod12.sheet.pcs.ps2 .fq-round { background: var(--s-fq-round); }
+.twod12-actor .twod12.sheet.pcs.ps2 .fq-turn, .twod12-actor .twod12.sheet.pcs.ps2 .fq-reaction { background: var(--s-fq-turn); } .twod12-actor .twod12.sheet.pcs.ps2 .fq-encounter { background: var(--s-fq-encounter); }
+.twod12-actor .twod12.sheet.pcs.ps2 .fq-daily { background: var(--s-fq-daily); } .twod12-actor .twod12.sheet.pcs.ps2 .fq-apex { background: var(--s-gold); } .twod12-actor .twod12.sheet.pcs.ps2 .fq-granted { background: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa { border-bottom: 1px solid var(--s-hair); background: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.off .ps2-bar > :not(.ps2-sts) { opacity: .55; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bar { display: flex; align-items: center; gap: 8px; padding: 4px 6px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.open > .ps2-bar { background: var(--s-band); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sts { display: inline-flex; gap: 3px; flex: none; align-items: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-st { min-width: 40px; height: auto; padding: 2px 6px; border: 1px solid var(--s-stamp); border-radius: 2px; background: var(--s-stamp); color: var(--s-stamp-ink); font: 700 12.5px/1.25 "Source Sans 3", sans-serif; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-st:hover { background: var(--s-stamp-hover); border-color: var(--s-stamp-hover); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-st.no { background: transparent; color: var(--s-faint); border: 1px dashed var(--s-faint); text-decoration: line-through; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hb { display: inline-flex; gap: 2px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hbtn { height: auto; padding: 1px 4px; border: 1px solid var(--s-rule); border-radius: 2px; background: transparent; color: var(--s-ink); font-size: 11px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hbtn small { margin-left: 2px; font-size: 10px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hbtn.no { border-style: dashed; color: var(--s-faint); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hbtn.warn { border-color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bar .ps-nm { font-weight: 700; font-size: 14.5px; color: var(--s-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 0 1 auto; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bar .autodia { font-size: 9px; margin-left: -4px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bar .ps-fav { font-size: 9px; color: var(--s-gold); margin-left: -4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sub { font-style: italic; color: var(--s-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 0 1 auto; font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-dv { margin-left: auto; white-space: nowrap; font-size: 13.5px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-dv b { font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-fq { display: inline-flex; align-items: center; gap: 6px; min-width: 84px; margin-left: 6px; font-size: 13.5px; white-space: nowrap; flex: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa > .ar-card { display: none; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.open > .ar-card { display: block; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa > .ar-card > .acard.st { margin: 0; padding: 6px 10px 8px; border: 0; border-bottom: 1px solid var(--s-gold); background: var(--s-pg-2); }
+/* the NPC's tools as a line of links */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-links { display: flex; justify-content: flex-end; gap: 16px; font-size: 12.5px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-links a { color: var(--s-mute); cursor: pointer; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-links a:hover { color: var(--s-ink); }
+/* the Basic Actions: the four columns, each Action one line with its muted strips */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-basic { margin-top: 10px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 8px; align-items: start; padding-top: 2px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bgh { display: block; padding: 2px 0; font-weight: 600; font-size: 12.5px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx { margin-bottom: 3px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; gap: 6px; width: 100%; min-height: 25px; padding: 2px 6px;
+  border-left: 3px solid color-mix(in srgb, var(--lnf) 55%, var(--s-pg-2)); background: var(--s-pg-2); font: 400 13px/1.25 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn.strike { box-shadow: inset 2px 0 0 color-mix(in srgb, var(--s-bad) 55%, var(--s-pg-2)); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn:hover { background: var(--s-band); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxl { min-width: 0; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxn { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn small { display: block; font-size: 10.5px; font-style: italic; color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn b { font-size: 12px; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx.off .ps2-bxbtn { color: var(--s-faint); background: none; border-left-style: dashed; }
+/* the other tabs in 540 px: two-column grids become one, the Builder's columns stack */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-g2.wide, .twod12-actor .twod12.sheet.pcs.ps2 .ps-g3 { grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .nb-cols { flex-direction: column; grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-irow { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs .rung { all: unset; color: var(--s-faint); cursor: pointer; white-space: nowrap; font-size: 13px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs .rung.lit { color: var(--s-ink); font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-cl { display: flex; align-items: center; gap: 6px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-epips { display: inline-flex; gap: 2px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-epips i { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid var(--s-gold); box-sizing: border-box; margin: 0 1px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-epips i.on { background: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge { grid-template-columns: auto auto minmax(40px, 1fr) auto; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-track { grid-column: 3; grid-row: 1; align-self: center; margin: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-tag { grid-column: 4; grid-row: 1; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.v > .k { color: var(--s-vig); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.r > .k { color: var(--s-res); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band { font-variant: small-caps; letter-spacing: .02em; }
+/* v0.0.441 (E6, playtest 5: Blunt too close to the dark sheet's background): on a dark surface a damage type's word and its flat amount take its bright
+   color (config.mjs subtypeColors, as the Resist / Weak chips do); the parchment's ink stays inline for a light one */
+@scope (.theme-dark) to (.theme-light) { .dtype[style*="--sc-d"], .dtamt[style*="--sc-d"] { color: var(--sc-d) !important; } }
+/* v0.0.441 (STYLE-3, flagged by the sheets' mockup): a trait word in a card's text ("[Strike]" in a Trigger) in ink, no tinted box (the trait chips' fills went in v0.0.387) */
+.twod12-type .twod12.acard.st .trhl, .twod12.acard.st .trhl { background: none; border: 0; padding: 0; color: inherit; font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band .ps-upd { font-variant: normal; letter-spacing: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .nb-top { flex-wrap: wrap; row-gap: 4px; }
+
+/* ==================================================================== v0.0.441 (pack SHEETS-HUD): THE HUD OF THE APPROVED MOCKUP
+   foundry/mockups/hud3 (Lucas, 2026-11-18: "All recommended"): portrait 84 | identity 300 | the tabs | one right column 312 (the Situational section
+   over the Hands over the macro bar). The bar keeps its height. Only the HUD's own variables (--hud-*) and the shared --s-* colors. */
+.twod12-hud .hb-bar-wrap.h3-wrap { grid-template-columns: 84px 300px minmax(0, 1fr) 312px; grid-template-rows: minmax(0, 1fr); }
+.twod12-hud .hb-bar-wrap.h3-wrap > * { min-height: 0; overflow: hidden; }
+.twod12-hud.hot-in-bar .hud-hot { display: none; }
+/* D2: the identity column, every label readable (600, the muted ink), every number bold */
+.twod12-hud .h3-id { box-sizing: border-box; padding: 3px 10px 2px; border-right: 1px solid var(--hud-hair); display: flex; flex-direction: column; gap: 1px; font-size: .81rem; min-width: 0; }
+.twod12-hud .h3-id .nm { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; line-height: 1.15; } .twod12-hud .h3-id .nm b { font-size: .97rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .twod12-hud .h3-id .nm small { color: var(--hud-mute); font-size: .78rem; white-space: nowrap; }
+.twod12-hud .h3-l { display: flex; justify-content: space-between; align-items: center; gap: 8px; white-space: nowrap; height: 18.5px; flex: none; }
+.twod12-hud .h3-id .hb-bars { flex: none; gap: 1px; }
+.twod12-hud .h3-l.rule { border-top: 1px solid var(--hud-hair); padding-top: 1px; }
+.twod12-hud .h3-p { all: unset; display: inline-flex; align-items: center; gap: 4px; } .twod12-hud .h3-p b { font-weight: 700; font-size: .88rem; }
+.twod12-hud .h3-id .k { color: var(--hud-mute); font-size: .78rem; font-weight: 600; margin: 0; }
+.twod12-hud .h3-p.at { cursor: pointer; } .twod12-hud .h3-p.at:hover b { color: var(--s-gold); }
+.twod12-hud .h3-p.chg b { text-decoration: underline dotted var(--s-bad); text-underline-offset: 2px; }
+.twod12-hud .h3-l .sep { width: 1px; height: 13px; background: var(--hud-line); }
+.twod12-hud .h3-id .hb-btn { font-size: .78rem; line-height: 1.3; }
+/* D4: the conditions, a row always there (19 px) */
+.twod12-hud .h3-conds { display: flex; gap: 10px; align-items: center; height: 19px; flex: none; overflow: hidden; }
+.twod12-hud .h3-c { all: unset; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; white-space: nowrap; font-size: .78rem; font-weight: 600; color: var(--hud-ink); }
+.twod12-hud .h3-c i { box-sizing: border-box; width: 18px; height: 18px; border: 1px solid var(--hud-line); display: inline-flex; align-items: center; justify-content: center; flex: none; font-style: normal; font-size: .7rem; }
+.twod12-hud .h3-c i img { width: 14px; height: 14px; border: 0; object-fit: contain; }
+.twod12-hud .h3-c small { color: var(--hud-mute); font-weight: 400; font-size: .72rem; } .twod12-hud .h3-c:hover i { border-color: var(--s-gold); }
+.twod12-hud .h3-conds.ic { gap: 5px; } .twod12-hud .h3-conds.ic .h3-c { gap: 2px; }
+/* D1: the Basic tab, the four groups */
+.twod12-hud .h3-wrap .hb-mid { position: relative; }
+.twod12-hud .h3-basic { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 14px; padding: 3px 10px 0; overflow: hidden; align-content: start; }
+.twod12-hud .h3-bh { font-size: .75rem; font-weight: 700; color: var(--hud-mute); border-bottom: 1px solid var(--hud-line); line-height: 1.25; margin-bottom: 1px; }
+.twod12-hud .h3-bl { display: flex; justify-content: space-between; align-items: center; gap: 6px; height: 15.5px; padding-left: 6px; border-left: 3px solid color-mix(in srgb, var(--fq) 60%, var(--hud-bg)); border-bottom: 1px solid var(--hud-hair); cursor: pointer; }
+.twod12-hud .h3-bl.strike { box-shadow: inset 2px 0 0 color-mix(in srgb, var(--s-bad) 70%, var(--hud-bg)); }
+.twod12-hud .h3-bl > b { font-size: .78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; } .twod12-hud .h3-bl:hover > b { color: var(--s-gold); }
+.twod12-hud .h3-bl .hb-st { line-height: 11.5px; font-size: .66rem; } .twod12-hud .h3-bl.off > b { color: var(--s-faint); font-weight: 400; } .twod12-hud .h3-bl.off { cursor: default; border-left-style: dotted; }
+/* D3 / D7: the right column */
+.twod12-hud .h3-side { border-left: 1px solid var(--hud-hair); display: grid; grid-template-rows: minmax(0, 1fr) auto auto; min-width: 0; font-size: .81rem; }
+.twod12-hud .h3-sit { padding: 4px 9px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
+.twod12-hud .h3-sit.on, .twod12-hud .h3-sit:has(.hb-ask > *) { box-shadow: inset 0 2px 0 var(--s-gold); background: color-mix(in srgb, var(--s-gold) 9%, transparent); }
+.twod12-hud .h3-none { color: var(--s-faint); font-size: .78rem; } .twod12-hud .h3-sit.on .h3-none, .twod12-hud .h3-sit:has(.hb-ask > *) .h3-none { display: none; }
+.twod12-hud .h3-sit .hb-ask:empty { display: none; }
+.twod12-hud .h3-si .h { display: flex; align-items: baseline; gap: 7px; } .twod12-hud .h3-si .h b { font-size: .88rem; } .twod12-hud .h3-si .tg { color: var(--hud-mute); font-size: .75rem; }
+.twod12-hud .h3-si .t { line-height: 1.25; margin: 1px 0 4px; color: var(--hud-ink); } .twod12-hud .h3-si .bs { display: flex; gap: 6px; flex-wrap: wrap; }
+.twod12-hud .h3-si .hb-btn { font-size: .78rem; line-height: 1.55; padding: 0 9px; } .twod12-hud .h3-si .hb-btn.q { color: var(--hud-mute); }
+.twod12-hud .h3-sit .hb-gr { margin: 0; border: 0; background: none; box-shadow: none; padding: 0; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud { position: static; transform: none; margin: 0; width: auto; max-width: none; flex-wrap: wrap; gap: 4px 6px; padding: 0; border: 0; background: none; box-shadow: none; font-size: .8rem; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-ic { display: none; } .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text { flex: 1 1 100%; white-space: normal; line-height: 1.25; }
+.twod12-hud .h3-hands { display: flex; gap: 5px; padding: 4px 9px; border-top: 1px solid var(--hud-hair); }
+.twod12-hud .h3-hand { all: unset; box-sizing: border-box; flex: 1 1 0; min-width: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 1px 7px; border: 1px solid var(--hud-line); font: 600 .78rem/1.4 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; }
+.twod12-hud .h3-hand span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .twod12-hud .h3-hand b { color: var(--hud-mute); font-weight: 400; font-size: .72rem; }
+.twod12-hud .h3-hand.free { border-style: dashed; border-color: var(--hud-hair); color: var(--hud-mute); font-weight: 400; } .twod12-hud .h3-hand.warn { border-color: var(--s-bad); } .twod12-hud .h3-hand:hover { border-color: var(--s-gold); }
+.twod12-hud .h3-hot { padding: 3px 9px 4px; border-top: 1px solid var(--hud-hair); }
+.twod12-hud .h3-hot:empty { display: none; }
+.twod12-hud .h3-hot #hotbar { position: static; inset: auto; margin: 0; width: auto; height: auto; transform: none; display: flex; align-items: center; gap: 3px; }
+.twod12-hud .h3-hot #hotbar #action-bar, .twod12-hud .h3-hot #hotbar .action-bar, .twod12-hud .h3-hot #hotbar ol { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); grid-auto-rows: 24px; gap: 2px; flex: 1; margin: 0; padding: 0; width: auto; height: auto; list-style: none; }
+.twod12-hud .h3-hot #hotbar .slot { width: auto; height: 24px; min-width: 0; flex: none; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+.twod12-hud .h3-hot #hotbar .slot > img { width: 100%; height: 100%; object-fit: cover; margin: 0; }
+.twod12-hud .h3-hot #hotbar button { width: 18px; min-width: 0; height: 24px; padding: 0; font-size: 10px; }
+/* a smaller screen: the identity and the right column narrow (container queries on the HUD's width, as v0.0.391) */
+@container (max-width: 1250px) { .twod12-hud .hb-bar-wrap.h3-wrap { grid-template-columns: 64px 280px minmax(0, 1fr) 260px; } }
+@container (max-width: 1020px) { .twod12-hud .hb-bar-wrap.h3-wrap { grid-template-columns: 26px 270px minmax(0, 1fr) 220px; } .twod12-hud .h3-basic { gap: 0 8px; } }
+@container (max-width: 820px) { .twod12-hud .hb-bar-wrap.h3-wrap { grid-template-columns: 26px 260px minmax(0, 1fr) 200px; } }

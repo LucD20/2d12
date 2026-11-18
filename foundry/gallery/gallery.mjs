@@ -2,7 +2,7 @@
 // own modules in the browser (a real DOM: the inline buttons are the real enrichers' output) on the compendium's cards (data.json, written by
 // tools/gallery/data.mjs) and draws every card in each face inside each surface's real markup (the sheet's open row, a chat message, the hover
 // tooltip, the HUD's card), in Foundry's dark or light scheme. tools/gallery/shoot.mjs screenshots it and compares with the saved shots.
-// The page reads ?theme=dark|light&wrap=sheet|chat|tooltip|hud|dialog&face=full|solo|roll|result&from=0&to=20 (all cards when from / to are left out).
+// The page reads ?theme=dark|light&wrap=sheet|chat|tooltip|hud|dialog|bar&face=full|solo|roll|result|short&from=0&to=20 (all cards when from / to are left out).
 // Step 3: face=roll is the roll dialog's card (rolldlg.mjs cardHtml) and face=result the chat card of the Action's result (chatcards.mjs: the
 // attack card at a Tier 2 on one target, the Save card before its roll, the no-roll card), both with the card's lines (cardlines.mjs).
 const q = new URLSearchParams(location.search);
@@ -54,7 +54,9 @@ const AC = await import("../twod12/module/actioncard.mjs");
 const CL = await import("../twod12/module/cardlines.mjs");
 const CFG = await import("../twod12/module/config.mjs");
 let RD = null, CC = null, ACT = null, SB = null;
-if (face === "statblock") SB = await import("../twod12/module/statblock.mjs");   // CARD-ONE step 4: the one-page NPC sheet's printed stat block
+// v0.0.441 (pack SHEETS-HUD): the one-page NPC sheet's stat block face is retired with that sheet; face=short is the small sheets' short card
+// under its Action bar (sheetmodel.mjs actionBar; actioncard.mjs buildActionCard({ short }))
+if (face === "short") SB = await import("../twod12/module/sheetmodel.mjs");
 if (face === "roll" || face === "result") { RD = await import("../twod12/module/rolldlg.mjs"); CC = await import("../twod12/module/chatcards.mjs"); ACT = await import("../twod12/module/actions.mjs"); }
 const enrichCard = async (t, doc) => CFG.highlightText(await enrichHTML(t ?? "", doc ? { relativeTo: doc } : {}));
 /** Step 3's two faces of one Version (the first), built by the real code (actions.mjs attackModelParts, the chat renderers) on a fixed result. */
@@ -85,21 +87,22 @@ const WRAP = {
   tooltip: c => `<aside id="tooltip" class="active" role="tooltip">${c}</aside>`,
   hud: c => `<div class="twod12-hudcard"><button type="button" class="hc-x">&times;</button>${c}</div>`,
   dialog: c => `<div class="application twod12 rolldlg themed theme-${theme}"><div class="window-content">${c}</div></div>`,
-  statblock: c => `<div class="application twod12 twod12-actor twod12-sbsheet themed theme-${theme}"><div class="window-content"><div class="twod12-sb rk-standard"><div class="sb-body">${c}</div></div></div></div>`
+  bar: (c, b) => `<div class="application twod12 twod12-actor themed theme-${theme}"><div class="window-content"><div class="twod12 sheet pcs ps2"><div class="ar ps2-oa open"><div class="ps2-bar"><span class="ps2-sts">${b.stamps.map(x => `<button type="button" class="ps2-st">${x.label}</button>`).join("")}</span><a class="ps-nm">${b.name}</a><span class="ps2-dv">${b.dist}${b.dist && b.vs ? " &middot; " : ""}${b.vs ? `<b>${b.vs}</b>` : ""}</span><span class="ps2-fq"><i class="fq-${b.fq}"></i>${b.fqWord}</span></div><div class="ar-card">${c}</div></div></div></div></div>`
 };
 const out = document.getElementById("cards");
 const list = data.cards.slice(from, to);
 for (const d of list) {
   const item = asItem(d);
-  let html = "";
+  let html = "", bar = null;
   try {
-    if ((face === "roll" || face === "result" || face === "statblock") && item.type !== "action") continue;   // a Feature has no roll, no result, no stat block line
-    html = face === "statblock" ? SB.sbActionHtml(await SB.sbActionModel(item, { enrich: enrichCard })) : face === "roll" || face === "result" ? await oneVersionFace(item) : face === "solo" ? await AC.buildSoloCard(item) : item.type === "action" ? await AC.buildActionCard(item, { use: false }) : await AC.buildFeatureCard(item);
+    if ((face === "roll" || face === "result" || face === "short") && item.type !== "action") continue;   // a Feature has no roll, no result, no Action bar
+    if (face === "short") { const it = item.system; bar = { name: item.name, ...SB.actionBar({ aps: (it.versions ?? []).map(v => v.ap), reaction: !!it.reaction, frequency: CFG.effectiveFrequency(it), escalation: Number(it.escalation) || 0, dist: SB.distanceShort(CFG.distanceText(it, null)), vs: SB.vsShort(CFG.vsText(it, {})) }) }; }
+    html = face === "short" ? await AC.buildActionCard(item, { short: true }) : face === "roll" || face === "result" ? await oneVersionFace(item) : face === "solo" ? await AC.buildSoloCard(item) : item.type === "action" ? await AC.buildActionCard(item, { use: false }) : await AC.buildFeatureCard(item);
   } catch (e) { html = `<div class="gal-err">${d.name}: ${String(e.message ?? e)}</div>`; }
   const box = document.createElement("div");
   box.className = "gal-card";
   box.dataset.card = d.name;
-  box.innerHTML = `<div class="gal-name">${d.name}</div>${(WRAP[wrap] ?? WRAP.sheet)(html)}`;
+  box.innerHTML = `<div class="gal-name">${d.name}</div>${(WRAP[wrap] ?? WRAP.sheet)(html, bar)}`;
   out.append(box);
 }
 // v0.0.439: a chunk with no Action in an Action-only face (the Species and Classes) still has something to shoot

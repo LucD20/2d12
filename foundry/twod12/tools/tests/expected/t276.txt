@@ -1,10 +1,18 @@
-Rebuke: pre [Trigger, Effect] | meta [Save, Distance, Target] | post [] | tiers {} Tier 1 or 2 | effects no
-Reckoning: pre [Setup, Effect] | meta [Save, Target] | post [] | tiers {} Tier 1 or 2 | effects no
-Smite: pre [Smite dice] | meta [Attack, Distance, Target] | post [Special] | tiers {} Tier 1 / Tier 2 / Tier 3 | effects no
-Brutal Swing: pre [] | meta [Attack, Distance, Target] | post [] | tiers {} Tier 1 / Tier 2 / Tier 3 | effects no
-Avenge Kin: pre [Trigger] | meta [Attack, Distance, Target] | post [] | tiers {} Tier 1 / Tier 2 / Tier 3 | effects yes
-Ground Slam: pre [] | meta [Save, Target] | post [] | tiers {} Tier 1 / Tier 2 / Tier 3 | effects no
-Commandment: pre [] | meta [Kneel: Save] | post [] | tiers {Kneel · Distance 5 sq.; Target One enemy} Tier 1 or 2 | effects yes
-Judge: pre [Judged] | meta [Distance, Target] | post [] | tiers  | effects yes
-Rebuke's Trigger on its own row: true | a merged Tier line widens the labels: true | "Tier 1 or 2": true
-the gallery has the stat block face: true | statBlockModel uses sbActionModel: true
+--- the short card's model: what it leaves out
+Snap Shot: full [Interrupt, Attack, Tier 1, Tier 2, Tier 3] distance "Weapon" | short [Interrupt, Tier 1, Tier 2, Tier 3] distance "" flavor ""
+Smite: full [Smite dice, Attack, Tier 1, Tier 2, Tier 3, Special] distance "Weapon" | short [Smite dice, Tier 1, Tier 2, Tier 3, Special] distance "" flavor ""
+Avenge Kin: full [Trigger, Attack, Tier 1, Tier 2, Tier 3, Tier 2 or 3] distance "Weapon" | short [Trigger, Tier 1, Tier 2, Tier 3, Tier 2 or 3] distance "" flavor ""
+Ground Slam: full [Save, Tier 1, Tier 2, Tier 3] distance "" | short [Tier 1, Tier 2, Tier 3] distance "" flavor ""
+Rebuke: full [Trigger, Effect, Save, Tier 1 or 2] distance "3 sq." | short [Trigger, Effect, Tier 1 or 2] distance "" flavor ""
+--- the short card drawn
+Snap Shot: no Flavor true (full has one: true) | no rank word true | no Distance true | no Use true | no Ruler true | marked true
+Smite: no Flavor true (full has one: true) | no rank word true | no Distance true | no Use true | no Ruler true | marked true
+Weapon &middot; Projectile &middot; Ranged &middot; Strike Target: One enemy Interrupt The target would enter a square adjacent to you. Tier 1 [Mod] Tier 2 1[W] + [Mod] ↳ @Condition[hindered|eot] Tier 3 1[W] + [Mod] ↳ @Condition[immobilized|eot]
+--- the bar
+{"stamps":[{"ap":1,"label":"1 AP","off":false,"why":""},{"ap":2,"label":"2 AP","off":false,"why":""},{"ap":3,"label":"3 AP","off":true,"why":"Not enough AP: 2 left"}],"dist":"8/16","vs":"AD","fq":"encounter","fqWord":"Encounter"}
+{"stamps":[{"ap":1,"label":"1R","off":true,"why":"Not enough AP: 0 left and 0 Reaction AP"}],"dist":"","vs":"","fq":"turn","fqWord":"Turn"}
+{"stamps":[{"ap":2,"label":"2 AP","off":false,"why":""}],"dist":"","vs":"","fq":"round","fqWord":"Escalation 6, Round"} | out of combat nothing is struck
+--- the wiring
+a bar's row opens the short card: true | the stamp is the Use button: true | two fitting weapons keep a hand button each: true
+the gallery has the short face: true | no stat block face: true
+E6: a damage type's bright color for a dark surface: true

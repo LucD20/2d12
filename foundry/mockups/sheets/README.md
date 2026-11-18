@@ -132,3 +132,7 @@ Blunt bronze `#b9a58c`, what the Resist / Weak chips already do with `--sc-l` / 
 ## Seen in today's sheets while drawing them (not part of this mockup)
 
 - The Reactions' pill "Round · 1R" wraps onto two lines in its column (the Orc's Avenge Kin).
+
+## Built (v0.0.441, pack SHEETS-HUD)
+
+The approved proposal is built into the system. `built.html` (`built.mjs`) draws the sheets **as built**: the system's own template and CSS on this mockup's model, with the open cards as the short card; `built-dark.jpg` / `built-light.jpg` are its screenshots. The proposal pages above stay as the record of what was approved.

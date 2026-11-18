@@ -28,9 +28,12 @@ export async function setupBar(o) {
     const bar = document.createElement("div");
     bar.className = "twod12-linebar twod12-setupbar";
     const txt = String(o.text ?? "").trim();
-    bar.innerHTML = `<i class="fa-solid fa-person-running lb-ic"></i><span class="lb-text"><b>${esc(o.title ?? "Setup")}</b>${txt ? `: ${esc(txt)}` : ""} Move your token, then Continue.</span><button type="button" class="lb-go"><i class="fa-solid fa-dice"></i> Continue</button><button type="button" class="lb-give">Cancel</button>`;
-    document.body.append(bar);
-    const done = v => { bar.remove(); window.removeEventListener("keydown", key, true); resolve(v); };
+    bar.innerHTML = `<i class="fa-solid fa-person-running lb-ic"></i><span class="lb-text"><b>${esc(o.title ?? "Setup")}</b>${txt ? `: ${esc(txt)}` : ""} Move your token, then Continue.</span><button type="button" class="lb-go"><i class="fa-solid fa-dice"></i> Continue: the roll</button><button type="button" class="lb-give">Cancel the Action</button>`;
+    // v0.0.441 (pack SHEETS-HUD, D7: "Strafe's Advance in the HUD's place, not the old floating bar"): in the HUD's Situational section when a
+    // creature's bar is on screen, as the pick bar asks; at the bottom of the screen with no HUD
+    const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
+    if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
+    const done = v => { bar.remove(); if (slot) hud.hudAsking(false); window.removeEventListener("keydown", key, true); resolve(v); };
     const key = ev => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); done("cancel"); } if (ev.key === "Enter" && !/input|textarea/i.test(ev.target?.tagName ?? "")) { ev.preventDefault(); done("go"); } };
     bar.querySelector(".lb-go").addEventListener("click", ev => { ev.preventDefault(); done("go"); });
     bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); done("cancel"); });

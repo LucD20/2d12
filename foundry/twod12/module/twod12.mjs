@@ -40,7 +40,7 @@ import { registerHealthBar } from "./healthbar.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards)
 import { registerInline, handleInline, saveRoll, retargetSave, registerInlineSocket } from "./inline.mjs";
 import { openBuilder } from "./builder.mjs";
-import { CharacterSheet, NpcSheet, NpcStatBlockSheet, TwoD12ItemSheet, registerSheetHooks } from "./sheets.mjs";
+import { CharacterSheet, NpcSheet, TwoD12ItemSheet, registerSheetHooks } from "./sheets.mjs";
 import { registerHandSetting } from "./hands.mjs";
 import { grantClassFeatures } from "./grants.mjs";
 import { classLevelChange } from "./classwindow.mjs";
@@ -215,15 +215,14 @@ Hooks.once("init", () => {
   const { DocumentSheetConfig } = foundry.applications.apps;
   DocumentSheetConfig.registerSheet(Actor, "twod12", CharacterSheet, { types: ["character"], makeDefault: true, label: "2d12 Sheet" });
   DocumentSheetConfig.registerSheet(Actor, "twod12", NpcSheet, { types: ["npc"], makeDefault: true, label: "2d12 NPC Sheet" });
-  // v0.0.375 (PACK STYLE-2): the one-page NPC sheet (a stat block), for experienced GMs; the full sheet stays the default. A world setting picks
-  // which one new NPCs open with; each NPC can switch in Foundry's sheet settings.
-  DocumentSheetConfig.registerSheet(Actor, "twod12", NpcStatBlockSheet, { types: ["npc"], makeDefault: false, label: "2d12 NPC Stat Block (one page)" });
-  game.settings.register("twod12", "npcSheetDefault", { name: "New NPCs open with", hint: "The sheet a new NPC gets: the full NPC sheet, or the one-page stat block (for experienced GMs). Each NPC can switch in its sheet settings.", scope: "world", config: true, type: String, choices: { full: "The full NPC sheet", statblock: "The one-page stat block" }, default: "full" });
-  Hooks.on("preCreateActor", (actor, data) => {
-    try {
-      if (actor.type !== "npc" || data?.flags?.core?.sheetClass || game.settings.get("twod12", "npcSheetDefault") !== "statblock") return;
-      actor.updateSource({ "flags.core.sheetClass": "twod12.NpcStatBlockSheet" });
-    } catch (e) { /* cosmetic */ }
+  // v0.0.441 (pack SHEETS-HUD): the one-page NPC sheet (v0.0.375) and its world setting "New NPCs open with" are retired: the small NPC sheet
+  // replaces it. An NPC still set to it opens the NPC sheet (the GM's client clears the flag once, at ready).
+  Hooks.once("ready", async () => {
+    if (!game.user?.isGM) return;
+    for (const a of game.actors?.contents ?? []) {
+      if (a.getFlag?.("core", "sheetClass") !== "twod12.NpcStatBlockSheet") continue;
+      try { await a.unsetFlag("core", "sheetClass"); } catch (e) { console.warn("twod12 | the retired one-page sheet", a.name, e); }
+    }
   });
   DocumentSheetConfig.registerSheet(Item, "twod12", TwoD12ItemSheet, { types: ["species", "class", "feature", "action", "weapon", "armor", "gear", "effect", "talent"], makeDefault: true, label: "2d12 Item Sheet" });
 

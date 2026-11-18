@@ -84,7 +84,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static DEFAULT_OPTIONS = {
     classes: ["twod12", "twod12-actor"],
-    position: { width: 900, height: 1100 },   // v0.0.289 (PACK SHEET): Lucas's design size
+    position: { width: 540, height: 840 },   // v0.0.441 (pack SHEETS-HUD; Lucas, 2026-11-18): the small sheet (was 900 × 1100 since v0.0.289)
     window: { resizable: true },
     form: { submitOnChange: true },
     actions: {
@@ -99,7 +99,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseStartMastery: CharacterSheet.chooseStartMastery, hpEdit: CharacterSheet.hpEdit,
       setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip, toggleRap: CharacterSheet.toggleRap,
       openSpecies: CharacterSheet.openSpecies,   // v0.0.244 (pack R): the Species window (the Health line's high side is chosen in the class window at level 1, v0.0.245: no swap after that)
-      toggleCard: CharacterSheet.toggleCard, useVersion: CharacterSheet.useVersion, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
+      toggleCard: CharacterSheet.toggleCard, useVersion: CharacterSheet.useVersion, useStamp: CharacterSheet.useStamp, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
       toggleFeat: CharacterSheet.toggleFeat, foldAll: CharacterSheet.foldAll, newGear: CharacterSheet.newGear, reloadWeapon: CharacterSheet.reloadWeapon,
       setWhere: CharacterSheet.setWhere, toggleItemFold: CharacterSheet.toggleItemFold,
       // v0.0.289 (PACK SHEET): Down mode's buttons, the Upkeep tab's Recovery, the Build tab's Review and the class card's Choices
@@ -796,10 +796,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (!box || !item || box.dataset.loaded) return;
     // v0.0.334 (Lucas: Rebuke used with the sheet open "closed and opened the preview card a few times"): each re-render (AP, uses, damage) rebuilt
     // the open card from empty. The last card of the row is put back at once, and the fresh one replaces it when it is ready.
-    const ck = `${item.id}|${row.classList.contains("ps-brw") ? "b" : "a"}`, cached = (this._cardCache ??= new Map()).get(ck);
+    const ck = `${item.id}|${row.classList.contains("ps-brw") ? "b" : row.classList.contains("ps2-oa") ? "s" : "a"}`, cached = (this._cardCache ??= new Map()).get(ck);
     if (cached) box.innerHTML = cached;
     // v0.0.297 (PACK ACTION-PREVIEW): a Build tab row has no Use: its card shows the Versions' costs, not their Use buttons
-    try { const html = item.type === "action" ? await buildActionCard(item, { actor: this.actor, use: !row.classList.contains("ps-brw") }) : await buildFeatureCard(item, { actor: this.actor }); this._cardCache.set(ck, html); if (html !== cached) box.innerHTML = html; box.dataset.loaded = "1"; }   // v0.0.298: Features and Talents in the same look
+    // v0.0.441 (pack SHEETS-HUD): an Action's bar opens the SHORT card (cardmodel.mjs SHORT_CARD: the bar says the cost, Distance, Vs. and Frequency)
+    try { const html = item.type === "action" ? await buildActionCard(item, { actor: this.actor, use: !row.classList.contains("ps-brw"), short: row.classList.contains("ps2-oa") }) : await buildFeatureCard(item, { actor: this.actor }); this._cardCache.set(ck, html); if (html !== cached) box.innerHTML = html; box.dataset.loaded = "1"; }   // v0.0.298: Features and Talents in the same look
     catch (e) { console.warn("twod12 | could not show the card", e); box.innerHTML = `<div class="tferr">Could not show this card (${esc(String(e.message ?? e).slice(0, 80))}).</div>`; }
   }
 
@@ -1277,6 +1278,21 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (off.override) ui.notifications.warn(`${this._item(target)?.name ?? "This Action"}: ${target.dataset.off}. Used anyway.`);
     await useAction(this.actor, this._item(target), { ...(event?.shiftKey ? { noGrant: true } : gk), ...off });
   }
+  /**
+   * v0.0.441 (pack SHEETS-HUD): an Action bar's cost stamp, its Use button (the sheets' decision 3). data-ap: the Version of that cost (an Action
+   * with several); data-weapon-id: the one weapon in hand that fits (the two-handed check of a hand button); data-off: it can't be used now (a click
+   * still uses it, with a warning, as the old Use button); data-grant-effect: a ticket of the Granted section.
+   */
+  static async useStamp(event, target) {
+    event?.stopPropagation?.();
+    if (target.dataset.weaponId && !target.dataset.off) return CharacterSheet.useWith.call(this, event, target);
+    const item = this._item(target);
+    if (!item) return;
+    const gk = target.dataset.grantEffect ? { grantKey: { effectId: target.dataset.grantEffect, index: Number(target.dataset.grantIndex) || 0 } } : {};
+    const off = target.dataset.off ? { override: true } : {};
+    if (off.override) ui.notifications.warn(`${item.name}: ${target.dataset.off}. Used anyway.`);
+    await useAction(this.actor, item, { ...(target.dataset.ap ? { rdState: { ap: Number(target.dataset.ap) || 0 } } : {}), ...(target.dataset.weaponId ? { weaponId: target.dataset.weaponId } : {}), ...(event?.shiftKey ? { noGrant: true } : gk), ...off });
+  }
   /** v0.0.297 (PACK ACTION-PREVIEW): a "Use · N AP" button of the open card: the row's Use with that Version chosen in the roll dialog. */
   static async useVersion(event, target) {
     event?.stopPropagation?.();
@@ -1305,7 +1321,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         if (text) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content: sysLine("fa-hands", `<b>Regrip</b> (1 AP): ${esc(this.actor.name)} ${text}.`) });
       }
     }
-    await useAction(this.actor, this._item(target), { weaponId: target.dataset.weaponId, ...(event?.shiftKey ? { noGrant: true } : {}) });
+    await useAction(this.actor, this._item(target), { weaponId: target.dataset.weaponId, ...(target.dataset.ap ? { rdState: { ap: Number(target.dataset.ap) || 0 } } : {}), ...(event?.shiftKey ? { noGrant: true } : {}) });   // v0.0.441: a stamp's Version
   }
   /** v0.0.211 (Lucas): a greyed hand button. The Fists with no free hand: Release first (0 AP: one hand off a two-handed grip, or drop a weapon). A weapon that can't be used for this Action: say why. */
   static async handBlocked(event, target) {
@@ -1433,7 +1449,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
 
 export class NpcSheet extends CharacterSheet {
-  static DEFAULT_OPTIONS = { position: { width: 900, height: 1100 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setNpcPreset: NpcSheet.setNpcPreset, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, setNbVs: NpcSheet.setNbVs, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
+  static DEFAULT_OPTIONS = { position: { width: 540, height: 760 }, actions: { postStatBlock: NpcSheet.postStatBlock, giveLoot: NpcSheet.giveLoot, newAction: NpcSheet.newAction, newWeapon: NpcSheet.newWeapon, setRole: NpcSheet.setRole, setNpcPreset: NpcSheet.setNpcPreset, setRating: NpcSheet.setRating, setSteadiness: NpcSheet.setSteadiness, levelStep: NpcSheet.levelStep, removeTag: NpcSheet.removeTag, setFrame: NpcSheet.setFrame, addDmgMod: NpcSheet.addDmgMod, setNbVs: NpcSheet.setNbVs, removeDmgMod: NpcSheet.removeDmgMod, generateAction: NpcSheet.generateAction, browseCompendium: NpcSheet.browseCompendium } };
   static PARTS = { main: { template: "systems/twod12/templates/actor-sheet-pc.hbs" } };   // v0.0.291 (PACK NPC-SHEET): one template for both sheets
   _groupLabels = ["Actions", "Features", "Items", "Basic"];
   _groupOf(i) {
@@ -1582,30 +1598,5 @@ export function registerSheetHooks() {
   Hooks.on("deleteCombat", combat => combat.combatants.forEach(redraw));
 }
 
-/**
- * v0.0.375 (PACK STYLE-2): the one-page NPC sheet (module/statblock.mjs), a second NPC sheet for experienced GMs; the full sheet stays.
- * It is the NPC sheet with its Main tab as the stat block and three of its tabs (Build = the Builder, Effects, Notes); every action of the full
- * sheet still works. Chosen per NPC in Foundry's sheet settings; the world setting "New NPCs open with" picks it for new NPCs.
- */
-export class NpcStatBlockSheet extends NpcSheet {
-  static DEFAULT_OPTIONS = { position: { width: 480, height: 820 } };   // v0.0.377 (Lucas: "around this size")
-  _activeTab = "main";
-  async _prepareContext(options) {
-    const ctx = await super._prepareContext(options);
-    const { statBlockModel, statBlockHtml, sbPlateHtml } = await import("./statblock.mjs");
-    try { const m = await statBlockModel(this.actor, ctx.pc); this._sbRank = m.rankKey; ctx.statblockHtml = statBlockHtml(m); ctx.statblockPlate = sbPlateHtml(m); }
-    catch (e) { console.warn("twod12 | stat block", e); ctx.statblockHtml = '<p class="sb-empty">The stat block could not be drawn (see the console). The full NPC sheet still works.</p>'; ctx.statblockPlate = ""; }
-    const effN = ctx.pc.tabs.find(t => t.k === "effects")?.n ?? 0;
-    ctx.pc = { ...ctx.pc, statblock: true, tabs: [{ k: "main", l: "Main", n: 0 }, { k: "builder", l: "Build", n: 0 }, { k: "effects", l: "Effects", n: effN }, { k: "notes", l: "Notes", n: 0 }] };
-    return ctx;
-  }
-  _onRender(context, options) {
-    super._onRender(context, options);
-    // the window's own header takes the rank's color (a little darker than the name plate)
-    const el = this.element;
-    if (!el) return;
-    el.classList.add("twod12-sbsheet");
-    [...el.classList].filter(c => c.startsWith("sb-rk-")).forEach(c => el.classList.remove(c));
-    el.classList.add(`sb-rk-${this._sbRank ?? "standard"}`);
-  }
-}
+// v0.0.441 (pack SHEETS-HUD; Lucas, 2026-11-18: "no need for one-page sheet since the npc one is already better anyway"): the one-page NPC sheet
+// (NpcStatBlockSheet, v0.0.375) is retired: the small NPC sheet replaces it. An NPC that used it opens the NPC sheet (twod12.mjs clears its flag).

@@ -1,15 +1,12 @@
---- the groups
-Basic attack: basic | a Reaction: react | an Escalation Action: esc | anything else: special
---- an Action
-1 AP Club (Weapon, Melee, Strike) ✦ At-will Vs. AD ; Distance Melee ; Target One creature Tier 1 No effect Tier 2 [V] 3 + 1d6 Bl Tier 3 [V] 5 + 1d6 Bl
-its stamp opens the roll dialog on that Version: true | the row knows its item: true | its frequency's color: true
-3 AP Ground Slam (Save, Body, Area) ✦ Encounter, used Vs. Body Save, DC 14 Tier 1 7 + 1d6 Bl, Prone Tier 2 4 + 1d6 Bl Tier 3 0 | struck, can't be clicked: true
-1 AP Rally the Tribe (Focus) ✦ Escalation 2, Round Distance 5 squares Effects Allies gain 1 Boon. | no Tiers: true | Effects under a line: true
---- the sheet
-Ogre Chieftain Elite Level 1 (Stage 1) · CV 200 | the rank's color: true
-HP 35 / 130 Bloodied Vigor −6 / 65 Resolve 41 / 65 AD 14 WD 12 Speed 4 Reach 1 Steadiness 0 Size Large (4) Immune — Resist 5 Fire Weak —
-bands: Basic, Special, Escalation | the Elite's pips 2 of 3: 2 | a rung not reached is dim: true | + Add on each: 3
-the Attributes roll: true | no Actions: true
---- the wiring
-registered, not the default: true | a world setting for new NPCs: true
-Main, Build, Effects, Notes: true | opens on Main: true | no head, strip or side panel: true
+--- the one-page sheet retired
+no class: true | not registered: true | no setting: true | not exported: true | the module moved to deprecated: true
+an NPC set to it opens the NPC sheet (its flag cleared by the GM): true
+no stat block in the template: true
+--- the small sheets
+PC 540 x 840: true | NPC 540 x 760: true
+the plate: the portrait, the name an input (renamed there), the rank's color: true
+its tools: Post stat block (GM, NPC), Roll Initiative (when there is a roll), Senses: true
+no side panel: true | the stat lines: Health, the pools (click: damage), Defenses, Immune / Resist / Weak, Rally and the Wounds: true
+the tiles: the Attribute rolls, Vs. under it, the Modifiers with their DC: true
+the Hands with no word, one above the other: true
+the Wounds' rolls on the Upkeep tab: true

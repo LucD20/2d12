@@ -22,7 +22,7 @@ export function registerHudSettings() {
   game.settings.register(F, "hudFolded", { name: "HUD folded", scope: "client", config: false, type: Boolean, default: false, onChange: redraw });
   game.settings.register(F, "rxChime", { name: "Reactions: a chime", hint: "A short soft chime when one of your creatures can react (it follows Foundry's interface volume).", scope: "client", config: true, type: Boolean, default: true });
   game.settings.register(F, "rxFloat", { name: "Reactions: the name on the map", hint: "The Reaction's name over your reacting token, with its ring, until it is used or passed.", scope: "client", config: true, type: Boolean, default: true });
-  game.settings.register(F, "rxHud", { name: "Reactions: the HUD", hint: "The HUD unfolds, opens its Reactions tab and names the trigger, with Use and Pass.", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
+  game.settings.register(F, "rxHud", { name: "Reactions: the HUD", hint: "The HUD unfolds and names the trigger in its Situational section, with Use and Pass (it stays on the tab you had open).", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
 }
 
 /* ------------------------------------------------------------------ the model */
@@ -104,7 +104,7 @@ async function escOf(actor) {
   return has ? { n: nn(s.escalation), max: nn(ESC_MAX) } : null;
 }
 function condsOf(actor, durationText) {
-  return [...(actor.effects ?? [])].filter(e => !e.disabled && !e.getFlag?.(F, "wound") && !e.getFlag?.(F, "grants")?.length).map(e => ({ id: e.id, name: String(e.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), dur: durationText(e) }));
+  return [...(actor.effects ?? [])].filter(e => !e.disabled && !e.getFlag?.(F, "wound") && !e.getFlag?.(F, "grants")?.length).map(e => ({ id: e.id, name: String(e.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), dur: durationText(e), img: e.img ?? e.icon ?? "" }));   // v0.0.441: its picture (D4)
 }
 /** A party card (and the cards of several selected tokens). */
 async function partyCard(actor, token = null) {
@@ -182,7 +182,8 @@ async function barModel(actor, token = null) {
   if (wait) rx.forEach(l => { if (l.id === wait.itemId) l.ready = true; });
   const tabs = (npc ? HUD_TABS_NPC : HUD_TABS_PC).map(([k, label]) => ({ k, label, count: k === "act" ? act.filter(usable).length : k === "rx" ? rx.filter(usable).length : k === "basic" ? basic.filter(usable).length : `${escLines.filter(l => l.state === "working").length} of ${escLines.filter(l => l.pass).length}` }));
   if (!tabs.some(t => t.k === st.tab)) st.tab = "act";
-  const tab = wait && setting("rxHud", true) ? "rx" : st.tab;
+  // v0.0.441 (the HUD mockup's decision 2, R4): a waiting Reaction no longer opens the Reactions tab: it shows in the Situational section
+  const tab = st.tab;
   if (grants.length && !st.tabChosen) st.tab = "act";
   const cols0 = tab === "rx" ? colsOf(rx) : tab === "basic" ? colsOf(basic, { maxCols: 4 }) : tab === "esc" ? colsOf(escLines.map(l => ({ ...l, freq: "none" })), { per: 3 }).map((c, i) => ({ ...c, label: i ? "" : "Escalation" })) : colsOf(act);
   const cols = cols0;
@@ -190,16 +191,42 @@ async function barModel(actor, token = null) {
   const sg = v => (Number(v) > 0 ? `+${Number(v)}` : Number(v) < 0 ? `−${-Number(v)}` : "0");
   const speed = nn(s.moveSpeed ?? s.speed), base = nn(s.speed);
   const defs = [
-    { label: "AD", value: nn(s.armorDC ?? 11), tip: "Armor Defense" }, { label: "WD", value: nn(s.wardDC ?? 11), tip: "Ward Defense" },
-    { label: "Spd", value: speed, tip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "Speed", chg: speed !== base },
+    { key: "ad", word: "AD", label: "AD", value: nn(s.armorDC ?? 11), tip: "Armor Defense" }, { key: "wd", word: "WD", label: "WD", value: nn(s.wardDC ?? 11), tip: "Ward Defense" },
+    { key: "speed", word: "Speed", label: "Spd", value: speed, tip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "Speed", chg: speed !== base },
     // v0.0.418 (Lucas, playtest 5, D2): both Modifiers ("Weapon +2 · Power +1"; it showed only the Weapon one)
-    { label: npc ? "Atk" : "Wpn", value: sg(s.weaponMod ?? 0), tip: "Weapon Modifier" }, { label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }, { gap: true },
-    ...HUD_SAVES.map(([key, label, short]) => ({ label: short, value: sg(s.attributes?.[key] ?? 0), tip: `${label}: click a Check, Shift-click a Save`, hud: "attr", data: { key } }))
+    { key: "weapon", word: "Weapon", label: npc ? "Atk" : "Wpn", value: sg(s.weaponMod ?? 0), tip: "Weapon Modifier" }, { key: "power", word: "Power", label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }, { gap: true },
+    ...HUD_SAVES.map(([key, label, short]) => ({ word: label, label: short, value: sg(s.attributes?.[key] ?? 0), tip: `${label}: click a Check, Shift-click a Save`, hud: "attr", data: { key } }))
   ];
   const hands = actor.itemTypes.weapon?.length ? await handsOf(actor) : null;
   const conds = condsOf(actor, durationText);
   const cls = actor.itemTypes.class?.[0], sp = actor.itemTypes.species?.[0];
+  // v0.0.441 (pack SHEETS-HUD, D1): the Basic tab as the sheet's four groups, every Basic Action shown (no "+N more")
+  const { TWOD12 } = await import("./config.mjs");
+  const strikeOf = id => !!actor.items.get(id)?.system?.traits?.has?.("strike");
+  const bLines = basic.map(l => ({ ...l, strike: strikeOf(l.id) })), placed = new Set();
+  const basicGroups = TWOD12.basicGroups.map(g => ({ label: g.label, lines: g.names.map(n => bLines.find(l => l.name === n)).filter(Boolean) })).filter(g => g.lines.length);
+  basicGroups.forEach(g => g.lines.forEach(l => placed.add(l.id)));
+  const restB = bLines.filter(l => !placed.has(l.id));
+  if (restB.length) (basicGroups.at(-1) ?? basicGroups[basicGroups.push({ label: "Other", lines: [] }) - 1]).lines.push(...restB);
+  // D3: Prone: Stand and Crawl in the Situational section (and Break Free when Immobilized too), each Version a button
+  const statuses = actor.statuses ?? new Set();
+  let prone = null;
+  if (statuses.has?.("prone")) {
+    const pick = k => list.find(a => a.bkey === k);
+    const btns = [];
+    for (const k of ["stand", "crawl", ...(statuses.has?.("immobilized") ? ["breakFree"] : [])]) {
+      const a = pick(k); if (!a) continue;
+      const it = actor.items.get(a.id)?.system ?? {};
+      a.versions.forEach((v, i) => { const sq = /distance:(\d+)/.exec(it.versions?.[i]?.effects ?? "")?.[1]; btns.push({ label: `${a.name}${k === "crawl" && sq ? ` ${sq}` : ""} \u00b7 ${v.label}`, hud: "use", data: { item: a.id, ap: v.ap }, off: v.off && !v.used ? true : v.used, why: v.why }); });
+    }
+    prone = { lead: "Prone", text: "Your only Move Actions: Stand, Crawl, Break Free.", btns };
+  }
+  let tiles = null;
+  try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
+  const rxWait = wait && setting("rxHud", true) ? wait : null;
   return {
+    h3: true, basicGroups, conds,
+    right: { rx: rxWait, grants, cancels, prone, tiles },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
@@ -296,11 +323,14 @@ function placeRoot() {
 }
 /** The hotbar into the HUD's right end (a setting), and back out when the setting is off (a reload puts it back exactly). */
 function placeHotbar() {
-  const hb = document.getElementById("hotbar"), slot = root?.querySelector(".hud-hot");
+  // v0.0.441 (D3): a creature's bar takes the macro bar at the bottom of its right column (one row of ten); the party strip at the HUD's end
+  const hb = document.getElementById("hotbar"), inBar = root?.querySelector(".hud-main .h3-hot"), slot = inBar ?? root?.querySelector(".hud-hot");
   if (!hb || !slot) return;
-  if (setting("hudHotbar", true)) { if (hb.parentElement !== slot) slot.append(hb); root.classList.add("with-hot"); }
-  else root.classList.remove("with-hot");
+  if (setting("hudHotbar", true)) { if (hb.parentElement !== slot) slot.append(hb); root.classList.add("with-hot"); root.classList.toggle("hot-in-bar", !!inBar); }
+  else root.classList.remove("with-hot", "hot-in-bar");
 }
+/** Before the HUD's middle is drawn again, the macro bar goes back to its own slot (else it would be thrown away with the old HTML). */
+function parkHotbar() { const hb = document.getElementById("hotbar"), park = root?.querySelector(".hud-hot"); if (hb && park && root?.querySelector(".hud-main")?.contains(hb)) park.append(hb); }
 /** v0.0.378 (Lucas: "the collapsed pill over the HUD"): Foundry's players list sits above the HUD's left end (collapsed as Foundry keeps it, its own
  *  arrow opens it), which also frees the left column, so the HUD gets that width. Off with the HUD. */
 function placePlayers() {
@@ -310,7 +340,7 @@ function placePlayers() {
 }
 let drawing = false, again = false;
 /** v0.0.406: the HUD's middle drawn only when its HTML changed (the same HTML again: no flash of the portrait and the lines). */
-function setMain(main, html) { if (main.__twod12Html === html && main.childElementCount) return false; main.innerHTML = html; main.__twod12Html = html; return true; }
+function setMain(main, html) { if (main.__twod12Html === html && main.childElementCount) return false; parkHotbar(); main.innerHTML = html; main.__twod12Html = html; placeHotbar(); return true; }
 export function renderHud() {
   if (typeof document === "undefined") return;
   clearTimeout(timer);
@@ -346,12 +376,13 @@ async function drawHud() {
   }
   if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
-  const waiting = main.querySelector(".hb-ask > .twod12-linebar");
+  const waiting = [...main.querySelectorAll(".hb-ask > .twod12-linebar")];   // v0.0.441: every question waiting (a Setup's movement and a pick bar can both be up)
   shape("is-bar", ...(m.npc ? ["is-npc"] : []), ...(m.folded ? ["is-folded"] : []));
   setMain(main, tokenBarHtml(m));
-  if (waiting) (main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask"))?.append(waiting);
+  const slot = main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
+  for (const w of waiting) slot?.append(w);
   fitNames(main);
-  // (v0.0.391, Lucas: "macro bar is broken"): the hotbar stays at the HUD's right end, where it worked before (placeHotbar)
+  // v0.0.441 (D3): the hotbar is at the bottom of the bar's right column (placeHotbar, from setMain)
 }
 
 /**

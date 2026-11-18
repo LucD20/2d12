@@ -544,9 +544,11 @@ function freeMoveBar(c, kind, text) {
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-freebar";
   bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button>`;
-  document.body.append(bar);
+  // v0.0.441 (D7): End movement asks in the HUD's Situational section too (the floating bar only with no HUD)
+  const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
+  if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
   const turn = `${game.combat?.round}:${game.combat?.turn}`;
-  const close = () => { bar.remove(); if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); };
+  const close = () => { bar.remove(); if (slot) hud.hudAsking(false); if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); };
   const watch = cb => { if (cb.id !== c.id) return; if (num(cb.getFlag(F, "freeMove")) + num(cb.getFlag(F, "evadeMove")) <= 0) close(); };
   const watchTurn = cb => { if (`${cb.round}:${cb.turn}` !== turn) close(); };
   Hooks.on("updateCombatant", watch); Hooks.on("updateCombat", watchTurn);

@@ -131,3 +131,7 @@ box inside a box, no spaced capital label.
   not drawn), the map behind the HUD.
 - **Mockup CSS only:** the identity column, the conditions row, the Basic tab, the right column (`hud3.css`, the classes `h3-*`).
 - Not tried in Foundry. The action card on right-click, the folded bar, the party strip and an NPC's bar are unchanged and not drawn.
+
+## Built (v0.0.441, pack SHEETS-HUD)
+
+The approved proposal ("All recommended") is built into the system. `built.html` (`built.mjs`, `built.css`) draws the HUD **as built** (hudview.mjs tokenBarHtml with the system's CSS) in six of this page's states; `built-dark.jpg` / `built-light.jpg` are its screenshots. The "Found while drawing" items: Instinct fixed in v0.0.440; the AP pips draw full in the built page; the waiting Reaction's alert now stays inside the bar (the Situational section scrolls in its row).

@@ -1,3 +1,4 @@
+// RETIRED v0.0.441 (pack SHEETS-HUD): the one-page NPC sheet's stat block face (NpcStatBlockSheet). Kept as the record; nothing imports it.
 // v0.0.375 (PACK STYLE-2; Lucas, 2026-11-12/13; the brief foundry/mockups/npc-hud-brief.md, the approved page foundry/mockups/npc-hud-sheet.html):
 // the one-page NPC sheet. A second NPC sheet for experienced GMs (the full sheet stays): its Main tab is a printed stat block (a name plate in the
 // rank's color, the stats as ruled lines, each Action under a header bar in its frequency's color with the Tiers as three lines and its Effects

@@ -1,5 +1,5 @@
 Not understood: ["glows faintly","[B] 3d8 Frost","the bones rattle"]
-colored amounts:  <span class="pool-b">1d8</span> <span class="dtype dt-co" style="color:#185FA5"> Cold</span> +  <span class="pool-m">1[W] + 2d6</span> <span class="dtype dt-ho" style="color:#854F0B"> Holy</span>
+colored amounts:  <span class="pool-b">1d8</span> <span class="dtype dt-co" style="color:#185FA5;--sc-d:#4fc3e8"> Cold</span> +  <span class="pool-m">1[W] + 2d6</span> <span class="dtype dt-ho" style="color:#854F0B;--sc-d:#d9b52e"> Holy</span>
 Favorites: rows like the Actions table false | reorder true | old view switch gone true
 sheet pinned to the window: true | sent-to-chat card colored too (v0.0.439: the solo card): true
 generators: fixed height, content scrolls, buttons stay true | weapon preview has its own colors true | Not understood line true

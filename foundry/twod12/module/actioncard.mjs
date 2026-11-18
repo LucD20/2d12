@@ -21,7 +21,7 @@ import { collectBonuses, bonusesNotNow } from "./bonus.mjs";
 import { versionButtons, rollStripChips, modText, rulerText, rollsItself } from "./cardview.mjs";
 import { costPill } from "./sheetmodel.mjs";
 import { esc } from "./util.mjs";
-import { cardModel, tierLines } from "./cardmodel.mjs";   // Pack CARD-ONE step 2
+import { cardModel, shortModel, tierLines } from "./cardmodel.mjs";   // Pack CARD-ONE step 2
 
 const enrich = async (txt, doc = null) => highlightText(await foundry.applications.ux.TextEditor.implementation.enrichHTML(txt ?? "", doc ? { relativeTo: doc } : {}));
 const MODE = { weapon: "Weapon mode", power: "Power mode" };
@@ -107,8 +107,11 @@ export function traitWords(traits) {
 export { rollLine, tierLines } from "./cardmodel.mjs";   // Pack CARD-ONE: they moved to the card model
 const stLine = (label, html, cls = "") => `<div class="st-l${cls ? ` ${cls}` : ""}"><b>${esc(label)}</b><span>${html}</span></div>`;
 
-/** item: an Action. actor (optional): the creature that has it. use: the Version buttons are buttons (false on the Build tab and with no actor). */
-export async function buildActionCard(item, { actor = null, use = true } = {}) {
+/** item: an Action. actor (optional): the creature that has it. use: the Version buttons are buttons (false on the Build tab and with no actor).
+ *  short (v0.0.441, pack SHEETS-HUD): the sheets' short card under an Action's bar (cardmodel.mjs SHORT_CARD: no Flavor, rank word, Distance,
+ *  Attack / Save line, Your roll, Ruler or Use button; the bar's stamps are the Use buttons). */
+export async function buildActionCard(item, { actor = null, use = true, short = false } = {}) {
+  if (short) use = false;
   const it = item.system, versions = it.versions ?? [];
   const ch = actor ? actionChanges(actor, item) : null;
   const weapon = actor ? (actor.items?.get?.(item.getFlag?.("twod12", "weaponId")) ?? null) : null;
@@ -126,7 +129,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
       : `<button type="button" class="ap-vbtn st-use" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""}>${esc(lab)}</button>`;
   };
   // Pack CARD-ONE step 2: what the card says, and in which order, is the card model (cardmodel.mjs); this face draws it (the creature's cells and buttons)
-  const M = cardModel(item, { actor, weapon, fists: item.getFlag?.("twod12", "weaponUse") === "fists" });
+  const M0 = cardModel(item, { actor, weapon, fists: item.getFlag?.("twod12", "weaponUse") === "fists" }), M = short ? shortModel(M0) : M0;
   const save = !!it.traits?.has?.("save"), modes = M.modes;
   const fmt = async l => (l.fmt === "hl" ? highlightText(esc(l.text)) : l.fmt === "esc" ? esc(l.text) : l.fmt === "rich-esc" ? await enrich(esc(l.text), item) : await enrich(l.text, item));
   // a Version's labeled lines: its Special, the Tiers (with the creature's changes in the cells; grouped as the cells read), the Critical, its Effect
@@ -166,7 +169,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
   // Your roll (read-only), and the Use button of a one-Version card at its end
   let live = "";
   const oneBtn = versions.length === 1 ? useBtn(versions[0]) : "";
-  if (actor && !modes && rollsItself(versions, it.traits)) {   // an Art whose Mode has its own Save: no one roll to show
+  if (actor && !short && !modes && rollsItself(versions, it.traits)) {   // an Art whose Mode has its own Save: no one roll to show
     try {
       const { src, chips } = rollStripSources(actor, item);
       const out = unloadedWeapon(actor, item);
@@ -176,11 +179,11 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
     } catch (e) { console.warn("twod12 | Your roll", e); }
   }
   if (!live && oneBtn) live = `<div class="st-live st-only">${oneBtn}</div>`;
-  const ruler = rulerText(it.worth, setting("designerMode"));
-  const rank = it.automation ? `<span class="st-auto">${autoChip(it.automation, it.automationNote)} ${esc(TWOD12.automationRanks?.[it.automation] ?? "")}</span>` : "";
+  const ruler = short ? "" : rulerText(it.worth, setting("designerMode"));
+  const rank = it.automation && !short ? `<span class="st-auto">${autoChip(it.automation, it.automationNote)} ${esc(TWOD12.automationRanks?.[it.automation] ?? "")}</span>` : "";
   const traits = it.traits?.size ? traitWords(it.traits) : "";
-  return `<div class="twod12 acard d2 st" data-card-item="${esc(item.id ?? "")}">
-    ${it.flavor ? `<div class="st-flavor">${esc(it.flavor)}</div>` : ""}
+  return `<div class="twod12 acard d2 st${short ? " st-short" : ""}" data-card-item="${esc(item.id ?? "")}">
+    ${it.flavor && !short ? `<div class="st-flavor">${esc(it.flavor)}</div>` : ""}
     ${traits || rank ? `<div class="st-traits">${traits}${rank}</div>` : ""}
     ${grid ? `<div class="st-grid">${grid}</div>` : ""}${areaRow}
     ${top.join("")}${body}${special}${modifierBlocks(it).join("")}${live}

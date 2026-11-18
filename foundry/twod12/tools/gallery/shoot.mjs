@@ -28,7 +28,7 @@ fs.mkdirSync(NEW, { recursive: true });
 const shots = [];
 const N = data.cards.length, chunks = Array.from({ length: Math.ceil(N / CHUNK) }, (_, i) => [i * CHUNK, Math.min(N, (i + 1) * CHUNK)]);
 for (const theme of ["dark", "light"]) {
-  for (const [face, wraps] of [["full", ["sheet", "chat", "tooltip", "hud"]], ["solo", ["tooltip", "chat"]], ["roll", ["dialog"]], ["result", ["chat"]], ["statblock", ["statblock"]]]) for (const wrap of wraps)
+  for (const [face, wraps] of [["full", ["sheet", "chat", "tooltip", "hud"]], ["solo", ["tooltip", "chat"]], ["roll", ["dialog"]], ["result", ["chat"]], ["short", ["bar"]]]) for (const wrap of wraps)
     for (const [a, b] of chunks) shots.push({ name: `foundry-${face}-${wrap}-${theme}-${String(a).padStart(3, "0")}`, url: `${BASE}/foundry/gallery/gallery.html?theme=${theme}&wrap=${wrap}&face=${face}&from=${a}&to=${b}`, sel: "#cards" });
   shots.push({ name: `book-${theme}`, url: `${BASE}/book/card-gallery.html`, sel: "main", theme, book: true });
 }
