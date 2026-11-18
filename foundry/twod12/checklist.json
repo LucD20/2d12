@@ -180,11 +180,11 @@
     },
     {
      "id": "elite-steps",
-     "v": "v0.0.431",
+     "v": "v0.0.434",
      "title": "The Elite's default ladder by name",
      "do": "Turn on the Ogre Chieftain's Escalation (Default ladder ticked) and play to round 2, then make it Bloodied.",
-     "expect": "The system lines name the steps: \"Pressing (1 Boon on its first attack each round)\", then with Relentless (\"each of its Round Special Actions twice per turn-cycle\").",
-     "rev": 1
+     "expect": "The system lines name the steps: \"Pressing (1 Boon on its first [Strike] Action each turn-cycle)\", then with Relentless (\"each of its Round Special Actions twice per turn-cycle\"). Its first [Strike] each turn-cycle has the Boon in the roll dialog; a Save Action or an Action that isn't a Strike doesn't take it.",
+     "rev": 2
     },
     {
      "id": "judge-start",

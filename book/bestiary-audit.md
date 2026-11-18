@@ -39,12 +39,19 @@ fixed, then the questions (each with Claude's recommendation; "all defaults" is 
   with Shake Off (1 AP and a Save) or the encounter.
 - "Hit" retired from the Reaction examples (Q21): "takes damage from a [Strike] Action", "deals damage to you".
 - Minor enemies are the Minion and Grunt **ranks** (a Standard of an earlier Stage, CV 80, isn't one); their **damage** dice never explode; an
-  NPC uses its Stage's tables (it has no level).
+  NPC of an earlier Stage counts less by its Stage (v0.0.434: an NPC does have a level; see question 10).
 - Ranged attacks: "with Medium damage, its ranged attack uses the Low points" (not "a Medium creature").
 - The roles: a rating a role doesn't name keeps the rank's default (not always Medium: a Power Modifier is Low by default).
 - The Minions' squad "takes one place in its side's turn order"; the Elite's "no Momentum and no Critical hook" spelled out; "the NPC sheet's
   switch" (a Foundry word) removed; the Grave Wisp's turn budget printed; "Healing an NPC is weak"; links (Collision, Save Actions, Elite
   Escalation, The Basic attack).
+
+## Lucas's answers (2026-11-18), applied in v0.0.434
+- **4:** "just write like any normal Action, adding the frequency. NPCs dont have 'set actions', they have numbers to help balance. They can have turn reactions, at-will reactions, encounter reactions etc": an NPC's Reaction is written with its Frequency and priced by it (a Turn or At-will one as a Round one: its AP is the limit; Claude's choice); "An NPC has no set list of Actions."
+- **7:** "NPCs should have all basic actions too": every Basic Action is theirs, except Weapon Attack and Fists (the Basic attack takes their place: his playtest 2 decision, which Foundry follows) and Steel Yourself (no Rally Points).
+- **10:** "Didnt we make NPCs have levels? ... how complex their actions are, they might have some more high numbers than normal, some more actions than normal etc. ... there is no limit on how many actions an npc should have": yes (Foundry's NPC sheet has a Level that sets its Stage); written in the Ratings section, and the line "it has no level" from v0.0.433 is undone.
+- **12:** "Do [Strike]": Pressing is "1 Boon on its first [Strike] Action each turn-cycle"; "next attack" became "next [Strike] Action" (the help table, the help rider). Foundry follows.
+- **Still open:** questions 1 to 3, 5, 6, 8, 9, 11, 13 to 30.
 
 ## Questions for Lucas (each with Claude's recommendation)
 

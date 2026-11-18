@@ -106,9 +106,10 @@ Expect: The third Goblin's Hindered ends at the end of its own turn, not the fir
 Do: Before starting, set Momentum to 2 (left-click +1, right-click −1 on the strip). Start the combat; go to round 2.
 Expect: The strip reads "Preparing the encounter · Momentum 2", then "Round 1 · Momentum 2"; every PC starts at Escalation 3 (an Elite at 1). Round 2 raises everyone by 1, up to 6 (six pips on the sheet and the HUD).
 
-### elite-steps · v0.0.431 · The Elite's default ladder by name
+### elite-steps · v0.0.434 · The Elite's default ladder by name
 Do: Turn on the Ogre Chieftain's Escalation (Default ladder ticked) and play to round 2, then make it Bloodied.
-Expect: The system lines name the steps: "Pressing (1 Boon on its first attack each round)", then with Relentless ("each of its Round Special Actions twice per turn-cycle").
+Expect: The system lines name the steps: "Pressing (1 Boon on its first [Strike] Action each turn-cycle)", then with Relentless ("each of its Round Special Actions twice per turn-cycle"). Its first [Strike] each turn-cycle has the Boon in the roll dialog; a Save Action or an Action that isn't a Strike doesn't take it.
+Rev: 2
 
 ### judge-start · v0.0.409 · Judge at the start of an encounter
 Do: Start a combat with Aveline and Durgan in it.

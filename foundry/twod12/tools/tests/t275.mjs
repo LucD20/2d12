@@ -32,3 +32,10 @@ console.log("the Elite rank turns Escalation on:", src("module/actor-sheets.mjs"
 const { ELITE_RUNGS } = await import(ROOTURL + "module/sheetmodel.mjs");
 console.log("the sheet's ladder:", ELITE_RUNGS.map(r => r.label).join(" | "));
 console.log("the Builder at Stage 0: the old notes hidden, the best turn labelled:", src("templates/actor-sheet-pc.hbs").includes('{{#unless s0}}<ul class="nb-rules">') && src("module/pcsheet.mjs").includes("(damage only: riders and shares not counted)"));
+
+console.log("--- v0.0.434: Lucas's answers to questions 4, 7, 10 and 12");
+const B = fs.readFileSync(ROOT + "../../book/rules-src/14-bestiary.md", "utf8");
+console.log("(10) an NPC has a level; no set list of Actions:", B.includes("**An NPC has a level**, as a PC does") && B.includes("**An NPC has no set list of Actions:**"));
+console.log("(4) a Reaction written with its Frequency, priced by it:", B.includes("**written like any Action, with its Frequency** (At-will, Turn, Round or Encounter)") && B.includes("*Avenge Kin* (Reaction, 1R, Round,"));
+console.log("(7) every other Basic Action is theirs:", B.includes("**Every other Basic Action is theirs too**"), "| Foundry leaves out only:", (await import(ROOTURL + "module/basic.mjs")).NPC_NO_BASIC.join(", "));
+console.log("(12) Pressing on [Strike]:", B.includes("**Pressing:** 1 Boon on its first [Strike] Action each turn-cycle."), "| Foundry:", src("module/passives.mjs").includes('boons: 1, all: ["strike"], oncePerRound: true, minEscalation: ER1'));

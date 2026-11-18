@@ -26,7 +26,9 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 
 ## Ratings
 
-Each rank has tables (below) with five **ratings**: **Terrible, Low, Medium, High, Extreme**. Medium is the rank's normal value; the others go down or up from it. Minions have no Extreme. The Health and damage tables are written by **[[Stages|Stage]]**: an NPC uses its Stage's tables, and nothing changes inside a Stage. Attributes, Defenses and Modifiers don't change with the Stage. **The tables below are Stage 0's (levels 1 to 3).**
+Each rank has tables (below) with five **ratings**: **Terrible, Low, Medium, High, Extreme**. Medium is the rank's normal value; the others go down or up from it. Minions have no Extreme. The Health and damage tables are written by **[[Stages|Stage]]**: an NPC uses the tables of its level's Stage, and nothing changes inside a Stage. Attributes, Defenses and Modifiers don't change with the Stage. **The tables below are Stage 0's (levels 1 to 3).**
+
+**An NPC has a level**, as a PC does: its level's Stage sets its tables. Within a Stage, a higher level is a more complex creature: more High ratings, more Actions, more riders, as the GM sees fit, each priced as usual (its ratings by the CV steps below, its Actions by the [[Actions: the turn budget|turn budget]]).
 
 - **Attributes**: by default one **High**, two **Medium** and one **Low**.
 - **Health**: a rating for its **Vigor** and one for its **Resolve**, Medium by default. A brute might have High Vigor and Low Resolve; a ghost, Terrible Vigor and High Resolve.
@@ -101,13 +103,13 @@ An NPC has Steadiness 0 unless it says otherwise. A big or heavy creature can ha
 
 An NPC's Actions are bought with **points**. Points are damage: the [[Points into damage]] table turns them into a Tier 2 and a Tier 3. Each rank has a **turn budget** (the points of a whole turn) and **points an AP** (what one AP of an Action is worth), by its damage rating; both are in the rank's tables below. Its Basic attack and its **Special Actions** (every other Action it has, of any AP cost and any Frequency) are bought with them. A Medium Standard has **25 points an AP** and a **turn budget of 100**: its Basic attack is 25 points, its 2 AP Round Special 55, and its usual turn (the Special and two Basic attacks, the second with its At-will Bane) is about 100.
 
-You spend the points on what the creature does: damage, conditions, Forced Movement, help for its allies, a Reaction. **These are guidance, not a rule:** an NPC should feel balanced at the table, and the points are how you get there quickly. You can always write an NPC by hand and check it against them.
+You spend the points on what the creature does: damage, conditions, Forced Movement, help for its allies, a Reaction. **These are guidance, not a rule:** an NPC should feel balanced at the table, and the points are how you get there quickly. **An NPC has no set list of Actions:** it can have as many Actions and Reactions as the GM wants, of any AP cost and any [[Frequency]]; the points only help balance them. You can always write an NPC by hand and check it against them.
 
 ### The Basic attack
 
 Every NPC has one **Basic attack**: 1 AP, At-will, its rank's points an AP. It is usually a Weapon Action Vs. AD that deals [V], or a Power Action Vs. WD that deals [R] (see [[What an Action attacks, rolls and damages]]). Tier 1 deals nothing. **Its damage die explodes: write it with !** (1 + 1d4!; see [[Exploding Dice]]), except a Minion's or a Grunt's: **a Minor enemy's damage dice never explode.** The weapon in its hands is only what the attack looks like. **A Basic attack is not always damage only:** it can carry a cheap rider (a Push 1, a Mild condition) and keep most of its damage.
 
-**NPCs have no Weapon Attack.** Their Basic attack takes its place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (1A) at the end of a Charge, for example), an NPC uses its Basic attack.
+**NPCs have no Weapon Attack and no Fists.** Their Basic attack takes their place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (1A) at the end of a Charge, for example), an NPC uses its Basic attack. **Every other Basic Action is theirs too** (see [[Chapter 6: Basic Actions|Basic Actions]]: Shove and Trip included), except Steel Yourself: an NPC has no Rally Points.
 
 ### The price of an Action
 
@@ -208,17 +210,17 @@ An Action that only helps the NPC's side (a buff, a heal, a wall) or only puts a
 
 | It gives | Points |
 |---|---:|
-| An ally's next attack has 1 Boon (each ally) | 3 |
+| An ally's next [Strike] Action has 1 Boon (each ally) | 3 |
 | An ally makes its Basic attack (each ally) | the ally's Basic attack |
 | An ally heals 1 Health | 1 |
 | A condition or a Forced Movement on a PC | its rider price (on a hit, in the Setup or on Tier 3) |
 
-A help is cheap because one Boon or a few Health matter little in a fight of three or four rounds; **put it on a Round Special as a rider** ("and each ally within 5 squares gains 1 Support Boon on its next attack") rather than as an Action of its own, which costs the creature an attack. Healing an NPC is weak: its allies have more Health than the PCs, and the fight is short.
+A help is cheap because one Boon or a few Health matter little in a fight of three or four rounds; **put it on a Round Special as a rider** ("and each ally within 5 squares gains 1 Support Boon on its next [Strike] Action") rather than as an Action of its own, which costs the creature an attack. Healing an NPC is weak: its allies have more Health than the PCs, and the fight is short.
 
 ### NPC Reactions
 
-- **No NPC has a Reaction by default**: an NPC has the Reactions its entry gives it (see [[Reactions]]). It pays for one as a PC does: with its Reaction AP or an AP it kept from its turn. **Minions have no Reaction AP**; a Grunt's Reaction is priced as anyone's.
-- **A Reaction's attack has the points of a Round Action of its cost:** a 1R Reaction a 1 AP Round Action's (28 for a Medium Standard), a 2R Reaction a 2 AP Round Action's (55).
+- **No NPC has a Reaction by default**: an NPC has the Reactions its entry gives it (see [[Reactions]]), **written like any Action, with its Frequency** (At-will, Turn, Round or Encounter). It pays for one as a PC does: with its Reaction AP or an AP it kept from its turn. **Minions have no Reaction AP**; a Grunt's Reaction is priced as anyone's.
+- **A Reaction's attack has the points of an Action of its cost and its Frequency:** a 1R Round Reaction a 1 AP Round Action's (28 for a Medium Standard), a 2R Round Reaction a 2 AP Round Action's (55), an Encounter Reaction an Encounter Action's. A Turn or At-will Reaction is priced as a Round one: the AP it needs is its limit.
 - **It is paid from the turn:**
 
 | Reaction | Off its turn budget |
@@ -259,7 +261,7 @@ An **Elite** has Escalation; no other NPC does. It follows the same ladder as a 
 
 | Escalation | Common steps (pick one) |
 |---|---|
-| **2** | **Pressing:** 1 Boon on its first attack each round. **Unmoved:** its Steadiness increases by 1, and its Saves have 1 Boon. **Watchful:** it has a second Reaction AP, for its own Reactions (an Elite with a Reaction). |
+| **2** | **Pressing:** 1 Boon on its first [Strike] Action each turn-cycle. **Unmoved:** its Steadiness increases by 1, and its Saves have 1 Boon. **Watchful:** it has a second Reaction AP, for its own Reactions (an Elite with a Reaction). |
 | **4** | **Relentless:** it can use each of its Round Special Actions twice per turn-cycle. **Shrugs It Off:** at the start of each of its turns, it ends one condition on itself (not a Health state). **Swift:** its Speed increases by 2, and it ignores Difficult Terrain. |
 | **6** | **Second Wind:** it gets its Encounter Special Actions back, once. **Fury:** it is [[Empowered]]. **Last Stand:** it is [[Quickened]] 1. |
 
@@ -415,7 +417,7 @@ Add up the CV of the enemies. **CV 100 per PC is a normal fight**: 75 per PC is 
 
 **The CV is counted for 4 to 6 PCs.** With three PCs a normal fight costs the same, but there is less room for bad luck: a hard or a deadly fight plays about one step harder.
 
-**An NPC of an earlier Stage counts for less.** The NPCs of a Stage are the same at every level of it, so only the Stage matters:
+**An NPC of an earlier Stage counts for less.** Its tables are the same at every level of a Stage, so its base CV depends only on the Stage (what its level adds is counted by its ratings):
 
 | The NPC's Stage is | Minion | Grunt | Standard | Elite |
 |---|---|---|---|---|
@@ -448,7 +450,7 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 **Orc Warrior** (Standard, CV 100; 25 points an AP, turn budget 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier Medium (+2), Power Modifier Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
 - *Cleaver* (Basic attack, 1 AP, At-will, Reach (1); 25, Push 1 2): [V] 1 + 1d4! / 3 + 1d4! Sl, and Pushed 1.
 - *Brutal Swing* (2 AP, Round, Reach (1); 55, Prone 12, Avenge Kin's share 7): [V] 3 + 1d4 / 4 + 1d6 Sl, and Prone.
-- *Avenge Kin* (Reaction, 1R, Trigger: an ally within 2 squares takes damage from a [Strike] Action; 28): it makes an attack against the attacker if it can reach it: [V] 1 + 1d4 / 3 + 1d6 Sl.
+- *Avenge Kin* (Reaction, 1R, Round, Trigger: an ally within 2 squares takes damage from a [Strike] Action; 28): it makes an attack against the attacker if it can reach it: [V] 1 + 1d4 / 3 + 1d6 Sl.
 
 **Grave Wisp** (Standard, CV 100; 25 points an AP, turn budget 100): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - *Chilling Touch* (Basic attack, 1 AP, At-will, Reach (1), Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4! / 2 + 1d4! Co, and Frightened of it (EoT).

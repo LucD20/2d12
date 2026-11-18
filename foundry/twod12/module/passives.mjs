@@ -51,13 +51,13 @@ export function passiveSources(actor) {
 
 /**
  * v0.0.320 (pack AU part 2; book, Bestiary, Elite Escalation): the default Elite ladder as settings, each with the Escalation it needs:
- * 1: 1 Boon on its first attack each round; 2: its Round Special Actions twice a round; 3: its Encounter Special Actions a second time (back, once).
+ * 1: 1 Boon on its first [Strike] Action each turn-cycle (v0.0.434); 2: its Round Special Actions twice per turn-cycle; 3: its Encounter Special Actions a second time (back, once).
  */
 const blank = { attrs: [], all: [], any: [], none: [], from: [], tiers: [], predicate: "", boons: 0, banes: 0, bbName: "", empowered: 0, enfeebled: 0, byValue: false, against: false, oncePerRound: false, vsMarked: false, vsOrigin: "" };
 // v0.0.407 (Stage 0 in Foundry; the Bestiary, Elite Escalation): on the 1-to-6 ladder the three come at Escalation 2, 4 and 6 (roundrules.mjs ELITE_RUNGS_LADDER).
 const [ER1, ER2, ER3] = ELITE_RUNGS_LADDER;
 export const ELITE_LADDER = [
-  { ...blank, type: "boonbane", boons: 1, all: ["__attack"], oncePerRound: true, minEscalation: ER1 },
+  { ...blank, type: "boonbane", boons: 1, all: ["strike"], oncePerRound: true, minEscalation: ER1 },   // v0.0.434 (Lucas: Pressing is "[Strike]"; was any Action that rolls against a creature)
   { ...blank, type: "freqmore", fmWhich: "round", minEscalation: ER2 },
   { ...blank, type: "freqmore", fmWhich: "encounter", minEscalation: ER3 }
 ];

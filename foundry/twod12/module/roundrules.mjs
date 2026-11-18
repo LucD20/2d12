@@ -38,7 +38,7 @@ export const escalationStart = momentum => (momentum ? ESC_MOMENTUM_R : ESC_MIN)
 export const escalationRaised = (now, by = 1) => Math.max(0, Math.min(ESC_MAX_R, (Number(now) || 0) + (Number(by) || 0)));
 /** Pack R's Momentum: after an encounter harder than easy (more than CV 75 a PC) the next one started with it. */
 export const givesMomentum = cvPerPc => (Number(cvPerPc) || 0) > 75;
-/** An Elite's Escalation ladder (the Bestiary): its first attack each round has 1 Boon, its Round Special twice a round, its Encounter Special back, once. */
+/** An Elite's Escalation ladder (the Bestiary): its first [Strike] Action each turn-cycle has 1 Boon (Pressing), its Round Specials twice per turn-cycle, its Encounter Special back, once. */
 /** rungs: the Escalation each of the three starts at: [1, 2, 3] (pack R), or ELITE_RUNGS_LADDER on the 1-to-6 ladder (the book since Stage 0; the system since v0.0.407). */
 export const ELITE_RUNGS = [1, 2, 3], ELITE_RUNGS_LADDER = [2, 4, 6];
 export const eliteFirstAttackBoons = (esc, rungs = ELITE_RUNGS) => ((Number(esc) || 0) >= rungs[0] ? 1 : 0);

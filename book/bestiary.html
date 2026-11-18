@@ -353,7 +353,8 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <h3 id="minor-enemies">Minor enemies</h3>
 <p><strong>Minor enemies</strong> are the Minion and Grunt ranks, whatever their Stage (a Standard of an earlier Stage, worth CV 80, is not one). Both have <span class="kw-ap">3 AP</span> a turn.</p>
 <h2 id="ratings">Ratings</h2>
-<p>Each rank has tables (below) with five <strong>ratings</strong>: <strong>Terrible, Low, Medium, High, Extreme</strong>. Medium is the rank's normal value; the others go down or up from it. Minions have no Extreme. The Health and damage tables are written by <strong><a class="xref" href="core-rules.html#stages">Stage</a></strong>: an NPC uses its Stage's tables, and nothing changes inside a Stage. Attributes, Defenses and Modifiers don't change with the Stage. <strong>The tables below are Stage 0's (levels 1 to 3).</strong></p>
+<p>Each rank has tables (below) with five <strong>ratings</strong>: <strong>Terrible, Low, Medium, High, Extreme</strong>. Medium is the rank's normal value; the others go down or up from it. Minions have no Extreme. The Health and damage tables are written by <strong><a class="xref" href="core-rules.html#stages">Stage</a></strong>: an NPC uses the tables of its level's Stage, and nothing changes inside a Stage. Attributes, Defenses and Modifiers don't change with the Stage. <strong>The tables below are Stage 0's (levels 1 to 3).</strong></p>
+<p><strong>An NPC has a level</strong>, as a PC does: its level's Stage sets its tables. Within a Stage, a higher level is a more complex creature: more High ratings, more Actions, more riders, as the GM sees fit, each priced as usual (its ratings by the CV steps below, its Actions by the <a class="xref" href="#actions-the-turn-budget">turn budget</a>).</p>
 <ul>
 <li><strong>Attributes</strong>: by default one <strong>High</strong>, two <strong>Medium</strong> and one <strong>Low</strong>.</li>
 <li><strong>Health</strong>: a rating for its <strong>Vigor</strong> and one for its <strong>Resolve</strong>, Medium by default. A brute might have High Vigor and Low Resolve; a ghost, Terrible Vigor and High Resolve.</li>
@@ -460,10 +461,10 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>An NPC has Steadiness 0 unless it says otherwise. A big or heavy creature can have 1 or more (see <a class="xref" href="core-rules.html#steadiness">Steadiness</a> in Chapter 3).</p>
 <h2 id="actions-the-turn-budget">Actions: the turn budget</h2>
 <p>An NPC's Actions are bought with <strong>points</strong>. Points are damage: the <a class="xref" href="#points-into-damage">Points into damage</a> table turns them into a Tier 2 and a Tier 3. Each rank has a <strong>turn budget</strong> (the points of a whole turn) and <strong>points an AP</strong> (what one AP of an Action is worth), by its damage rating; both are in the rank's tables below. Its Basic attack and its <strong>Special Actions</strong> (every other Action it has, of any AP cost and any Frequency) are bought with them. A Medium Standard has <strong>25 points an AP</strong> and a <strong>turn budget of 100</strong>: its Basic attack is 25 points, its <span class="kw-ap">2 AP</span> Round Special 55, and its usual turn (the Special and two Basic attacks, the second with its At-will <span class="kw-bane">Bane</span>) is about 100.</p>
-<p>You spend the points on what the creature does: damage, conditions, Forced Movement, help for its allies, a Reaction. <strong>These are guidance, not a rule:</strong> an NPC should feel balanced at the table, and the points are how you get there quickly. You can always write an NPC by hand and check it against them.</p>
+<p>You spend the points on what the creature does: damage, conditions, Forced Movement, help for its allies, a Reaction. <strong>These are guidance, not a rule:</strong> an NPC should feel balanced at the table, and the points are how you get there quickly. <strong>An NPC has no set list of Actions:</strong> it can have as many Actions and Reactions as the GM wants, of any AP cost and any <a class="xref" href="core-rules.html#frequency">Frequency</a>; the points only help balance them. You can always write an NPC by hand and check it against them.</p>
 <h3 id="the-basic-attack">The Basic attack</h3>
 <p>Every NPC has one <strong>Basic attack</strong>: <span class="kw-ap">1 AP</span>, At-will, its rank's points an AP. It is usually a <span class="trhl" style="--tc:var(--g-roll)">Weapon</span> Action Vs. AD that deals [V], or a <span class="trhl" style="--tc:var(--g-roll)">Power</span> Action Vs. WD that deals [R] (see <a class="xref" href="#what-an-action-attacks-rolls-and-damages">What an Action attacks, rolls and damages</a>). Tier 1 deals nothing. <strong>Its damage die explodes: write it with !</strong> (1 + 1d4!; see <a class="xref" href="core-rules.html#exploding-dice">Exploding Dice</a>), except a Minion's or a Grunt's: <strong>a Minor enemy's damage dice never explode.</strong> The weapon in its hands is only what the attack looks like. <strong>A Basic attack is not always damage only:</strong> it can carry a cheap rider (a Push 1, a Mild condition) and keep most of its damage.</p>
-<p><strong>NPCs have no Weapon Attack.</strong> Their Basic attack takes its place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (<span class="kw-ap">1A</span>) at the end of a Charge, for example), an NPC uses its Basic attack.</p>
+<p><strong>NPCs have no Weapon Attack and no Fists.</strong> Their Basic attack takes their place: when an Action or rule calls for a Weapon Attack (the Weapon Attack (<span class="kw-ap">1A</span>) at the end of a Charge, for example), an NPC uses its Basic attack. <strong>Every other Basic Action is theirs too</strong> (see <a class="xref" href="core-rules.html#chapter-6-basic-actions">Basic Actions</a>: Shove and Trip included), except Steel Yourself: an NPC has no <span class="kw-rally">Rally Points</span>.</p>
 <h3 id="the-price-of-an-action">The price of an Action</h3>
 <p>An Action's points are <strong>its AP × the rank's points an AP</strong>, then:</p>
 <div class="tablewrap"><table>
@@ -744,7 +745,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </thead>
 <tbody>
 <tr>
-<td>An ally's next attack has <span class="kw-boon">1 Boon</span> (each ally)</td>
+<td>An ally's next [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action has <span class="kw-boon">1 Boon</span> (each ally)</td>
 <td style="text-align: right;">3</td>
 </tr>
 <tr>
@@ -761,11 +762,11 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 </tbody>
 </table></div>
-<p>A help is cheap because one <span class="kw-boon">Boon</span> or a few Health matter little in a fight of three or four rounds; <strong>put it on a Round Special as a rider</strong> ("and each ally within 5 squares gains 1 Support <span class="kw-boon">Boon</span> on its next attack") rather than as an Action of its own, which costs the creature an attack. Healing an NPC is weak: its allies have more Health than the PCs, and the fight is short.</p>
+<p>A help is cheap because one <span class="kw-boon">Boon</span> or a few Health matter little in a fight of three or four rounds; <strong>put it on a Round Special as a rider</strong> ("and each ally within 5 squares gains 1 Support <span class="kw-boon">Boon</span> on its next [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action") rather than as an Action of its own, which costs the creature an attack. Healing an NPC is weak: its allies have more Health than the PCs, and the fight is short.</p>
 <h3 id="npc-reactions">NPC Reactions</h3>
 <ul>
-<li><strong>No NPC has a Reaction by default</strong>: an NPC has the Reactions its entry gives it (see <a class="xref" href="core-rules.html#reactions">Reactions</a>). It pays for one as a PC does: with its Reaction AP or an AP it kept from its turn. <strong>Minions have no Reaction AP</strong>; a Grunt's Reaction is priced as anyone's.</li>
-<li><strong>A Reaction's attack has the points of a Round Action of its cost:</strong> a <span class="kw-ap">1R</span> Reaction a <span class="kw-ap">1 AP</span> Round Action's (28 for a Medium Standard), a <span class="kw-ap">2R</span> Reaction a <span class="kw-ap">2 AP</span> Round Action's (55).</li>
+<li><strong>No NPC has a Reaction by default</strong>: an NPC has the Reactions its entry gives it (see <a class="xref" href="core-rules.html#reactions">Reactions</a>), <strong>written like any Action, with its Frequency</strong> (At-will, Turn, Round or Encounter). It pays for one as a PC does: with its Reaction AP or an AP it kept from its turn. <strong>Minions have no Reaction AP</strong>; a Grunt's Reaction is priced as anyone's.</li>
+<li><strong>A Reaction's attack has the points of an Action of its cost and its Frequency:</strong> a <span class="kw-ap">1R</span> Round Reaction a <span class="kw-ap">1 AP</span> Round Action's (28 for a Medium Standard), a <span class="kw-ap">2R</span> Round Reaction a <span class="kw-ap">2 AP</span> Round Action's (55), an Encounter Reaction an Encounter Action's. A Turn or At-will Reaction is priced as a Round one: the AP it needs is its limit.</li>
 <li><strong>It is paid from the turn:</strong></li>
 </ul>
 <div class="tablewrap"><table>
@@ -822,7 +823,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <tbody>
 <tr>
 <td><strong>2</strong></td>
-<td><strong>Pressing:</strong> <span class="kw-boon">1 Boon</span> on its first attack each round. <strong>Unmoved:</strong> its Steadiness increases by 1, and its Saves have <span class="kw-boon">1 Boon</span>. <strong>Watchful:</strong> it has a second Reaction AP, for its own Reactions (an Elite with a Reaction).</td>
+<td><strong>Pressing:</strong> <span class="kw-boon">1 Boon</span> on its first [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action each turn-cycle. <strong>Unmoved:</strong> its Steadiness increases by 1, and its Saves have <span class="kw-boon">1 Boon</span>. <strong>Watchful:</strong> it has a second Reaction AP, for its own Reactions (an Elite with a Reaction).</td>
 </tr>
 <tr>
 <td><strong>4</strong></td>
@@ -1296,7 +1297,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <h2 id="building-an-encounter">Building an encounter</h2>
 <p>Add up the CV of the enemies. <strong>CV 100 per PC is a normal fight</strong>: 75 per PC is easy, <strong>125 is hard, 150 is deadly</strong>. Many Minions act often: no more than 4 Minions per PC.</p>
 <p><strong>The CV is counted for 4 to 6 PCs.</strong> With three PCs a normal fight costs the same, but there is less room for bad luck: a hard or a deadly fight plays about one step harder.</p>
-<p><strong>An NPC of an earlier Stage counts for less.</strong> The NPCs of a Stage are the same at every level of it, so only the Stage matters:</p>
+<p><strong>An NPC of an earlier Stage counts for less.</strong> Its tables are the same at every level of a Stage, so its base CV depends only on the Stage (what its level adds is counted by its ratings):</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -1383,7 +1384,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p><strong>Orc Warrior</strong> (Standard, CV 100; 25 points an AP, turn budget 100): <span class="at-body">Body</span> High (+2), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-mind">Mind</span> Medium (+1), <span class="at-appeal">Appeal</span> Low (0). <span class="mod-weapon">Weapon Modifier</span> Medium (+2), <span class="mod-power">Power Modifier</span> Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
 - <em>Cleaver</em> (Basic attack, <span class="kw-ap">1 AP</span>, At-will, Reach (1); 25, Push 1 2): <span class="pool-b">[V] 1 + 1d4! / 3 + 1d4!</span> Sl, and <span class="kw-mv">Pushed 1</span>.
 - <em>Brutal Swing</em> (<span class="kw-ap">2 AP</span>, Round, Reach (1); 55, Prone 12, Avenge Kin's share 7): <span class="pool-b">[V] 3 + 1d4 / 4 + 1d6</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>, and Prone.
-- <em>Avenge Kin</em> (Reaction, <span class="kw-ap">1R</span>, Trigger: an ally within 2 squares takes damage from a [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action; 28): it makes an attack against the attacker if it can reach it: <span class="pool-b">[V] 1 + 1d4 / 3 + 1d6</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>.</p>
+- <em>Avenge Kin</em> (Reaction, <span class="kw-ap">1R</span>, Round, Trigger: an ally within 2 squares takes damage from a [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action; 28): it makes an attack against the attacker if it can reach it: <span class="pool-b">[V] 1 + 1d4 / 3 + 1d6</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>.</p>
 <p><strong>Grave Wisp</strong> (Standard, CV 100; 25 points an AP, turn budget 100): <span class="at-mind">Mind</span> High (+2), <span class="at-appeal">Appeal</span> Medium (+1), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-body">Body</span> Low (0). <span class="mod-power">Power Modifier</span> Medium (+2), <span class="mod-weapon">Weapon Modifier</span> Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - <em>Chilling Touch</em> (Basic attack, <span class="kw-ap">1 AP</span>, At-will, Reach (1), Vs. WD, [Fear]; 25, Frightened 3): <span class="pool-m">[R] 1 + 1d4! / 2 + 1d4!</span> Co, and Frightened of it (EoT).
 - <em>Dread Whisper</em> (<span class="kw-ap">2 AP</span>, Round, Reach (1), Vs. WD, [Fear]; 55, Dazed 1 8): <span class="pool-m">[R] 3 + 1d6 / 7 + 1d6</span> <span class="dcode" style="--dc:#c9577f">Ps</span>, and Dazed 1.</p>
