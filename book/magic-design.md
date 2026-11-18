@@ -58,6 +58,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 27 | **Mastery for magic** (5d), with one change: **one point a fight, placed in a Path or a School you cast in it** (the weapon rule exactly), not one in each. Opening gives a Path and a School together and two spells; levels at 10, 20, 30, 45, 60; a spell chosen at each new level; spells swap on a Rest; "the group follows" left out. | "Works, but school and path at 2 by level 3, isn't that too soon?" then "Yes." | 2026-11-18 |
 | 28 | **A magic that stands: A, one at a time** (it lasts until the encounter ends, you go Down, or you end it; casting another ends the first), **with room left for B as a second kind**: some spells that you "maintain by spending AP". **Both break when you become Bloodied or Strained.** The name "Standing" is refused ("doesn't sound magic"; his examples: sustaining, concentrating): names to choose. | "A is good but nothing stops B from existing as well. We focus on A with gap for B, some spells that you can 'maintain by spending AP'. Break on bloodied and strained is good." | 2026-11-18 |
 | 29 | **The names: [Woven]** for the one-at-a-time kind ("you can hold one Woven spell; casting another ends it") **and [Sustained]** for the paid kind ("Sustain: 1 AP" at the start of your turn, or it ends). | "Sustained and Woven." | 2026-11-18 |
+| 30 | **The push is C and is named Overreach:** once a casting, one Overcast step you couldn't otherwise take (the Escalation or the level it lacks), for **1d6! Nonlethal Resolve damage** to you; a cost, so Guard doesn't take it and nothing reduces it. The name was Claude's to pick between Overreach and Strain: Overreach, because **Strained** is already a defined state and "Strain" beside it would be two near-identical words with different rules. | "C; exploding d6 is good; overreach or strain [...] your pick." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -226,7 +227,7 @@ Claude's pick: A, with the break on Bloodied or Strained.
 - **The paid kind (B):** Claude's pick **[Sustained]**, with a cost on the card ("Sustain: 1 AP"): at the start of your turn you pay it or the spell ends; you can sustain as many as you can pay for. "Sustain" already means exactly this to players of Pathfinder 2e. Others: Maintained, Channeled.
 - Both end when you go Down, when you choose, at the end of the encounter, and when you become Bloodied or Strained.
 
-## 5f. The push (PROPOSED 2026-11-18, three structures; waiting for Lucas)
+## 5f. The push: Overreach (DECIDED 2026-11-18, decision 30: C, 1d6!, named Overreach)
 
 Decided already: Nonlethal damage as extra fuel is an option, never the main cost (1, 2); an Overcast step needs a level above the minimum and Escalation (20, 26); the push takes one step early (20). Sources: Dominions' gem (+1 level for one spell, never +2), Ars Magica (a casting that falls a little short still works, and tires you).
 
@@ -240,6 +241,32 @@ Decided already: Nonlethal damage as extra fuel is an option, never the main cos
 Its name is open ("push" is a working word): Strain, Overreach, Surge.
 
 Claude's pick: C, 1d6!, once a casting.
+
+## 5g. The basics on one page (as decided up to decision 30; the wording is Claude's draft, not rules text)
+
+**A spell** is a Power Action with the traits **[Spell]**, one **Path** and one **School**, and it writes a minimum level in each ("Fire 2 • Evocation 1"). You can cast it if you have chosen it and meet both. Every spell needs concentration ([Focus]).
+
+**The eight Paths** (what the magic is made of), each with its damage subtype and its rider: Fire (Fire; Lingering), Air (Electricity, Thunder; Pushed), Water (Cold; Hindered), Earth (Blunt, Slash, Pierce; Prone), Astral (Force; Dazed 1), Death (Unholy; Frightened), Nature (Poison, Pierce; Immobilized), Glamour (Psychic; Pressed 1). Blood and the Divine are outside the grid.
+
+**The six Schools** (what the spell does), sorted by the main effect; a rider never changes the School:
+1. It leaves a magic that you hold → **Enchantment** (lay). Its spells are [Woven] or [Sustained].
+2. It brings a creature or an object → **Conjuration** (bring).
+3. It stops or undoes something: a blow, a spell, a presence → the protection School (stop; name open).
+4. It releases the Path on a target, to harm or to heal → **Evocation** (release).
+5. It works on a mind or on the senses → **Thaumaturgy** (command).
+6. Anything else: a creature or the ground changed for a set time → **Alteration** (change).
+
+**Held magic.** **[Woven]:** you hold one Woven spell; casting another ends it. **[Sustained]:** "Sustain: 1 AP" at the start of your turn, or it ends; as many as you pay for. Both end when you go Down, when you choose, at the end of the encounter, and when you become Bloodied or Strained.
+
+**Getting magic.** A Magic Talent or a class **opens** a Path and a School together at level 1, with two spells of your choice. A later Talent opens one more Path or School (one spell). When your side wins a normal or harder encounter in which you cast a spell, you gain **1 Mastery in a Path or a School** you cast in it. Level 2 at 10 Mastery, 3 at 20, 4 at 30, 5 at 45, 6 at 60; no cap. At each new level you choose one spell. Spells swap on a Rest. Talents grant more spells and change spells by trait; they never give levels.
+
+**A level** is never a number on a roll or a DC. Dice grow with the Stage.
+
+**Overcast** (its own line on a card). A step needs one level above the spell's minimum in its axis, and the fight's clock: your first step needs Escalation 2, your second Escalation 3. **School levels** climb the form ladders the card lists: **Reach** (Reach → 5 → 10 → 15 sq.), **Breadth** (yourself → one creature → two → 1 Burst → 2 Burst), **Hold** (EoT → 1 round → 3 rounds). **Path levels** pay the spell's own step (written on it) or a **Merge**: the rider of a second Path you have, in the rider slot; the spell gains that Path's trait for the casting.
+
+**Overreach.** Once a casting, take one Overcast step you couldn't otherwise take, for 1d6! Nonlethal Resolve damage that nothing absorbs or reduces.
+
+**Still open in the basics:** the protection School's name; healing's School (Evocation as "the Path released", proposed); summons (so Conjuration); how much AP and which Frequency a spell of each size has; the Tags; Talents' structure.
 
 ## 6. The order of work from here (proposed)
 
