@@ -1,0 +1,10 @@
+Rebuke: pre [Trigger, Effect] | meta [Save, Distance, Target] | post [] | tiers {} Tier 1 or 2 | effects no
+Reckoning: pre [Setup, Effect] | meta [Save, Target] | post [] | tiers {} Tier 1 or 2 | effects no
+Smite: pre [Smite dice] | meta [Attack, Distance, Target] | post [Special] | tiers {} Tier 1 / Tier 2 / Tier 3 | effects no
+Brutal Swing: pre [] | meta [Attack, Distance, Target] | post [] | tiers {} Tier 1 / Tier 2 / Tier 3 | effects no
+Avenge Kin: pre [Trigger] | meta [Attack, Distance, Target] | post [] | tiers {} Tier 1 / Tier 2 / Tier 3 | effects yes
+Ground Slam: pre [] | meta [Save, Target] | post [] | tiers {} Tier 1 / Tier 2 / Tier 3 | effects no
+Commandment: pre [] | meta [Kneel: Save] | post [] | tiers {Kneel · Distance 5 sq.; Target One enemy} Tier 1 or 2 | effects yes
+Judge: pre [Judged] | meta [Distance, Target] | post [] | tiers  | effects yes
+Rebuke's Trigger on its own row: true | a merged Tier line widens the labels: true | "Tier 1 or 2": true
+the gallery has the stat block face: true | statBlockModel uses sbActionModel: true

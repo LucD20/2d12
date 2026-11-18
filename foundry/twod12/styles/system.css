@@ -4934,3 +4934,6 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .application.pickwin .tc-lrow .tc-ln { display: block; font-style: italic; }
 .application.pickwin .tc-lrow.fail .tc-ln { color: var(--s-bad, #8a1c13); }
 .application.pickwin .tc-lrow .cw-seg { flex: none; }
+
+/* v0.0.437 (CARD-ONE step 4): a stat block card that writes a merged Tier line ("Tier 1 or 2") gets a wider label column */
+.twod12-sb .sb-tiers.wide .sb-t { grid-template-columns: 92px minmax(0, 1fr); }

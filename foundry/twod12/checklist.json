@@ -538,6 +538,14 @@
      "rev": 1
     },
     {
+     "id": "statblock-card",
+     "v": "v0.0.437",
+     "title": "The stat block follows the card",
+     "do": "Open the Orc Warrior and the Ogre Chieftain with the one-page NPC sheet; read Avenge Kin, Ground Slam and Rally the Tribe; then put Rebuke on an NPC and look at it.",
+     "expect": "Each Action reads as its card: the Trigger on a row of its own, then \"Attack Weapon vs. Armor Defense; Distance …; Target …\" on one line, then its Tiers; Rebuke shows \"Tier 1 or 2\" on one line with the label not wrapped. The look (header bar in the frequency's color, the Tier colors, the Effects box) is as before; the buttons still use the Action.",
+     "rev": 1
+    },
+    {
      "id": "npc-fists",
      "v": "v0.0.435",
      "title": "An NPC without its weapon",

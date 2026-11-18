@@ -3,7 +3,7 @@
 // rank's color, the stats as ruled lines, each Action under a header bar in its frequency's color with the Tiers as three lines and its Effects
 // under a line, the Attributes and Modifiers as tiles); Build, Effects and Notes are the full sheet's own tabs. statBlockHtml is pure (test t251);
 // statBlockModel reads the actor and the full sheet's model (pcsheet.mjs), so the numbers are the ones the full sheet shows.
-import { esc } from "./util.mjs";
+import { esc, tierOfLabel } from "./util.mjs";
 
 export const SB_GROUPS = [["basic", "Basic"], ["special", "Special"], ["react", "Reactions"], ["esc", "Escalation"]];
 export const SB_FREQ = { atwill: "At-will", round: "Round", encounter: "Encounter", turn: "Turn", daily: "Daily" };
@@ -16,17 +16,19 @@ const sign = n => (Number(n) > 0 ? `+${Number(n)}` : Number(n) < 0 ? `−${-Numb
 export const sbGroupOf = a => (a.escalation ? "esc" : a.reaction ? "react" : a.basicAttack ? "basic" : "special");
 
 /** Pure: one Action. a: { id, name, traits, freq, fqColor, escalation, dim, why, versions: [{ ap, label, off, used, why }], meta: [[label, html]],
- *  tiers: [{ label, cells: [html, html, html] }], crit: html, effects: html, noTiers } */
+ *  tiers: [{ label, rows: [{ label, html }] (the card's Tier lines; or cells: [html, html, html]) }], crit: html, effects: html, noTiers } */
 export function sbActionHtml(a) {
   const stamp = v => (v.off || v.used
     ? `<button type="button" class="sb-vb no${v.used ? " used" : ""}" disabled data-tooltip="${esc(v.why || (v.used ? "Used" : ""))}" aria-label="${esc(`${a.name}, ${v.label}: ${v.why || "used"}`)}">${esc(v.label)}</button>`
     : `<button type="button" class="sb-vb" data-action="useVersion" data-ap="${Number(v.ap) || 0}">${esc(v.label)}</button>`);
   const fq = [a.escalation ? `Escalation ${a.escalation}` : "", SB_FREQ[a.freq] ?? "", a.usedWord ? "used" : ""].filter(Boolean).join(", ");
   const meta = (a.meta ?? []).filter(([, h]) => h).map(([l, h]) => `<b>${esc(l)}</b> ${h}`).join('<span class="sep">;</span> ');
-  const tiers = a.noTiers ? "" : (a.tiers ?? []).map(t => `<div class="sb-tiers">${t.label ? `<div class="sb-vl">${esc(t.label)}</div>` : ""}${t.cells.map((c, i) => `<div class="sb-t t${i + 1}"><span class="tl">${TIER_NAMES[i]}</span><span class="tv">${c || '<span class="none">No effect</span>'}</span></div>`).join("")}${t.crit ? `<div class="sb-t crit"><span class="tl">Critical</span><span class="tv">${t.crit}</span></div>` : ""}</div>`).join("");
+  // v0.0.437 (CARD-ONE step 4): the card's long lines (a Trigger, a Setup, an Effect above the roll, a Special) each on a row of its own
+  const rowsOf = list => (list ?? []).filter(([, h]) => h).map(([l, h]) => `<div class="sb-meta"><b>${esc(l)}</b> ${h}</div>`).join("");
+  const tiers = a.noTiers ? "" : (a.tiers ?? []).map(t => `<div class="sb-tiers${(t.rows ?? []).some(r => / or /.test(r.label)) ? " wide" : ""}">${t.label ? `<div class="sb-vl">${esc(t.label)}</div>` : ""}${(t.rows ?? t.cells.map((c, i) => ({ label: TIER_NAMES[i], html: c }))).map(r => `<div class="sb-t t${tierOfLabel(r.label)}"><span class="tl">${esc(r.label)}</span><span class="tv">${r.html || '<span class="none">No effect</span>'}</span></div>`).join("")}${t.crit ? `<div class="sb-t crit"><span class="tl">Critical</span><span class="tv">${t.crit}</span></div>` : ""}</div>`).join("");
   return `<div class="sb-oa${a.dim ? " dim" : ""}" data-item-id="${esc(a.id)}" style="--fq:${esc(a.fqColor)}">
     <div class="sb-oa-h">${(a.versions ?? []).map(stamp).join("")}<a class="n" data-action="openItem">${esc(a.name)}</a>${a.traits ? `<span class="tr">(${esc(a.traits)})</span>` : ""}<span class="fq"><i aria-hidden="true">✦</i> ${esc(fq)}</span><span class="sb-tools"><a data-action="openItem" aria-label="Edit ${esc(a.name)}"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete" aria-label="Delete ${esc(a.name)}"><i class="fa-solid fa-trash"></i></a></span></div>
-    ${meta ? `<div class="sb-meta">${meta}</div>` : ""}${tiers}${a.effects ? `<div class="sb-fx"><span class="fxl">Effects</span> ${a.effects}</div>` : ""}
+    ${rowsOf(a.pre)}${meta ? `<div class="sb-meta">${meta}</div>` : ""}${rowsOf(a.post)}${tiers}${a.effects ? `<div class="sb-fx"><span class="fxl">Effects</span> ${a.effects}</div>` : ""}
   </div>`;
 }
 
@@ -59,12 +61,64 @@ export function statBlockHtml(m) {
 /** Pure: the name plate (over the tab bar): the name in Cinzel on the rank's color, the rank and the level at the right, Initiative and Senses. */
 export const sbPlateHtml = m => `<div class="twod12-sb sb-platew rk-${esc(m.rankKey)}"><div class="sb-plate"><div class="nm">${esc(m.name)}</div><div class="who"><b>${esc([m.rank, m.role].filter(Boolean).join(" "))}</b><span>Level ${esc(m.level)} (Stage ${esc(m.stage)}) \u00b7 CV ${esc(m.cv)}</span></div><span class="sb-ptools"><a data-action="rollInitiative" aria-label="Roll Initiative"><i class="fa-solid fa-dice-d20"></i></a><a data-action="editSenses" aria-label="Senses"><i class="fa-solid fa-eye"></i></a></span></div></div>`;
 
+/* ------------------------------------------------------------------ one Action (CARD-ONE step 4) */
+/** One Action of the stat block (sbActionHtml's model). i: the item; ctx: { enrich (text, item) => html, row (the full sheet's row: off, offWhy),
+ *  escNow (the creature's Escalation) }. v0.0.437: taken out of statBlockModel so the card gallery draws the stat block face too. */
+export async function sbActionModel(i, { enrich, row = {}, escNow = 0 } = {}) {
+  // v0.0.437 (CARD-ONE step 4): drawn from the card model (cardmodel.mjs), as every other face: the card's lines in its order (a Requirement, a
+  // Trigger, a Setup, the roll line, the Distance and Target, a Special), its Tier lines as the card writes them ("Tier 1 or 2"), the Critical and
+  // its Effects; only the printed look is the stat block's own.
+  const { TWOD12, FREQ_COLORS, effectiveFrequency, prettyDamage } = await import("./config.mjs");
+  const { cardModel, tierLines } = await import("./cardmodel.mjs");
+  const { rawTierLine } = await import("./preview.mjs");
+  const { lineHtml } = await import("./cardlines.mjs");
+  const it = i.system, freq = effectiveFrequency(it), save = !!it.traits?.has?.("save");
+  const M = cardModel(i, { actor: i.parent ?? i.actor ?? null });
+  const versions = it.versions ?? [];
+  const used = /used|spent/i.test(String(row.offWhy ?? "")) && !/AP/i.test(String(row.offWhy ?? ""));
+  const locked = Number(it.escalation) > 0 && escNow < Number(it.escalation);
+  const line = l => lineHtml(l, i, enrich);
+  const pre = [], meta = [], post = [];
+  for (const l of M.top) (/^(Attack|Save)$/.test(l.label) && l === M.top.at(-1) ? meta : pre).push([l.label, await line(l)]);
+  if (M.grid.distance && !/^self$/i.test(M.grid.distance)) meta.push(["Distance", esc(M.grid.distance)]);
+  if (M.grid.area) meta.push(["Area", esc(M.grid.area)]);
+  if (M.grid.target) meta.push(["Target", await enrich(esc(M.grid.target), i)]);
+  const cellOf = async (v, n) => {
+    const { dmg, effects } = rawTierLine(v[`t${n}`] ?? [], v[`x${n}`], n >= 2 && !save && (it.traits?.has?.("weapon") || v.mode === "weapon"));
+    const riders = await Promise.all(effects.map(x => enrich(x, i)));
+    return [dmg ? prettyDamage(esc(dmg)) : "", ...riders].filter(Boolean).join(", ");
+  };
+  const several = M.versions.filter(vm => !vm.source?.noTiers).length > 1, tiers = [], fxParts = [];
+  for (const vm of M.versions) {
+    const v = vm.source, label = M.versions.length > 1 ? vm.heading : "";
+    const own = [vm.own?.distance ? `Distance ${esc(vm.own.distance)}` : "", vm.own?.target ? `Target ${esc(vm.own.target)}` : ""].filter(Boolean).join("; ");
+    if (vm.roll) meta.push([`${label ? `${label}: ` : ""}${vm.roll.label}`, esc(vm.roll.text)]);
+    const before = vm.lines.filter((l, k) => l.kind !== "tier" && k < vm.lines.findIndex(x => x.kind === "tier"));
+    for (const l of before) post.push([`${label ? `${label}: ` : ""}${l.label}`, await line(l)]);
+    if (!v?.noTiers && vm.lines.some(l => l.kind === "tier")) {
+      const cells = [await cellOf(v, 1), await cellOf(v, 2), await cellOf(v, 3)];
+      const noDmg = ![1, 2, 3].some(n => (v[`t${n}`] ?? []).length);
+      const rows = tierLines(cells.map(c => c || "No effect."), save, noDmg, v.orTiers ?? "", v.tiersWritten ?? "").map(([l, h]) => ({ label: l, html: /^No effect\.?$/.test(h) ? "" : h }));
+      const crit = vm.lines.find(l => l.label === "Critical");
+      tiers.push({ label: several || M.versions.length > 1 ? [label, own].filter(Boolean).join(" · ") : own, rows, crit: crit ? await line(crit) : "" });
+    }
+    const after = vm.lines.filter((l, k) => l.kind !== "tier" && l.label !== "Critical" && (vm.lines.findIndex(x => x.kind === "tier") < 0 || k > vm.lines.findIndex(x => x.kind === "tier")));
+    for (const l of after) fxParts.push(`${label ? `<b>${esc(label)}:</b> ` : ""}${l.label === "Effect" ? "" : `<b>${esc(l.label)}:</b> `}${await line(l)}`);
+  }
+  if (M.special) post.push([M.special.label, await line(M.special)]);
+  return {
+    id: i.id, name: i.name, group: sbGroupOf({ basicAttack: it.basicAttack, reaction: it.reaction, escalation: Number(it.escalation) || 0 }),
+    traits: [...(it.traits ?? [])].map(k => TWOD12.traits?.[k] ?? k).join(", "), freq, fqColor: FREQ_COLORS[freq] ?? FREQ_COLORS.none, escalation: Number(it.escalation) || 0,
+    dim: !!row.off || locked, usedWord: used,
+    versions: versions.map(v => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: !!row.off || locked, used, why: locked ? `Needs Escalation ${it.escalation}` : row.offWhy ?? "" })),
+    pre, meta, post, tiers, effects: fxParts.join(" "), noTiers: !tiers.length, minAp: Math.min(...versions.map(v => Number(v.ap) || 0), 99)
+  };
+}
+
 /* ------------------------------------------------------------------ the model (Foundry) */
 /** The model from the actor and the full sheet's model (pc: pcsheet.mjs's, so the numbers agree with the full sheet). */
 export async function statBlockModel(actor, pc) {
-  const { TWOD12, FREQ_COLORS, effectiveFrequency, vsText, distanceText, prettyDamage, highlightText } = await import("./config.mjs");
-  const { rawTierLine } = await import("./preview.mjs");
-  const { effectLines } = await import("./cardview.mjs");
+  const { TWOD12, highlightText } = await import("./config.mjs");
   const { creatureDamageLines } = await import("./ccdamage.mjs");
   const { damageLineRows, damageLineChip } = await import("./sheetmodel.mjs");
   const TE = foundry.applications.ux.TextEditor.implementation;
@@ -76,30 +130,7 @@ export async function statBlockModel(actor, pc) {
   const actions = [];
   for (const i of actor.itemTypes.action) {
     if (i.getFlag(F, "basic")) continue;   // the Basic Actions every creature has (Advance, Shove...) are not the stat block's
-    const it = i.system, row = rows.get(i.id) ?? {}, freq = effectiveFrequency(it);
-    const versions = it.versions ?? [], tiered = versions.filter(v => !v.noTiers);
-    const used = /used|spent/i.test(String(row.offWhy ?? "")) && !/AP/i.test(String(row.offWhy ?? ""));
-    const locked = Number(it.escalation) > 0 && escNow < Number(it.escalation);
-    const addMod = n => n >= 2 && !it.traits?.has?.("save") && (it.traits?.has?.("weapon"));
-    const tiers = await Promise.all(tiered.map(async v => ({
-      label: tiered.length > 1 ? (it.reaction ? `${v.ap}R` : `${v.ap} AP`) : "",
-      cells: await Promise.all([1, 2, 3].map(async n => {
-        const { dmg, effects } = rawTierLine(v[`t${n}`] ?? [], v[`x${n}`], addMod(n) || (n >= 2 && v.mode === "weapon"));
-        const riders = await Promise.all(effects.map(x => enrich(x, i)));
-        return [dmg ? prettyDamage(esc(dmg)) : "", ...riders].filter(Boolean).join(", ");
-      })),
-      crit: v.critical ? await enrich(v.critical, i) : ""
-    })));
-    const fx = effectLines(versions);
-    const effects = fx.lines.length ? (await Promise.all(fx.lines.map(async l => `${l.badge ? `<b>${esc(it.reaction ? `${l.ap}R` : `${l.ap} AP`)}:</b> ` : ""}${await enrich(l.text, i)}`))).join(" ") : "";
-    actions.push({
-      id: i.id, name: i.name, group: sbGroupOf({ basicAttack: it.basicAttack, reaction: it.reaction, escalation: Number(it.escalation) || 0 }),
-      traits: [...(it.traits ?? [])].map(k => TWOD12.traits?.[k] ?? k).join(", "), freq, fqColor: FREQ_COLORS[freq] ?? FREQ_COLORS.none, escalation: Number(it.escalation) || 0,
-      dim: !!row.off || locked, usedWord: used,
-      versions: versions.map(v => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: !!row.off || locked, used, why: locked ? `Needs Escalation ${it.escalation}` : row.offWhy ?? "" })),
-      meta: [["Trigger", it.trigger ? await enrich(it.trigger, i) : ""], ["Vs.", esc(vsText(it) ?? "")], ["Distance", esc(distanceText(it) ?? "")], ["Target", it.targets ? await enrich(it.targets, i) : ""]],
-      tiers, effects, noTiers: !tiered.length, minAp: Math.min(...versions.map(v => Number(v.ap) || 0), 99)
-    });
+    actions.push(await sbActionModel(i, { enrich, row: rows.get(i.id) ?? {}, escNow }));
   }
   const groups = SB_GROUPS.map(([key, label]) => {
     const list = actions.filter(a => a.group === key).sort((a, b) => (key === "special" ? a.minAp - b.minAp : 0));

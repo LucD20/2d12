@@ -285,6 +285,10 @@ Expect: A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halve
 Do: Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.
 Expect: The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.
 
+### statblock-card · v0.0.437 · The stat block follows the card
+Do: Open the Orc Warrior and the Ogre Chieftain with the one-page NPC sheet; read Avenge Kin, Ground Slam and Rally the Tribe; then put Rebuke on an NPC and look at it.
+Expect: Each Action reads as its card: the Trigger on a row of its own, then "Attack Weapon vs. Armor Defense; Distance …; Target …" on one line, then its Tiers; Rebuke shows "Tier 1 or 2" on one line with the label not wrapped. The look (header bar in the frequency's color, the Tier colors, the Effects box) is as before; the buttons still use the Action.
+
 ### npc-fists · v0.0.435 · An NPC without its weapon
 Do: Open the Orc Warrior's sheet and HUD; use its Fists on a PC.
 Expect: Fists is there (it wasn't before); it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. The GM uses it only when the Orc has lost its cleaver.

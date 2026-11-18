@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.436, 273 tests; READ THIS FIRST)
+## Where we are now (v0.0.437, 274 tests; READ THIS FIRST)
+- **2026-11-18 (v0.0.437, branch `pack-audit-2`; NOT tested by Lucas): CARD-ONE STEP 4:** the stat block drawn from the card model (`statblock.mjs sbActionModel`), its printed look kept; the gallery's stat block face (80 shots). Next in CARD-ONE: step 5 (one card stylesheet), step 7 (the old builders retired); the sheets' sizes wait for Lucas's one-page remake.
 - **2026-11-18 (v0.0.436, branch `pack-audit-2`; NOT tested by Lucas):** an NPC's CV: half a step or less counts as none (Lucas: "round within half a step"); the example NPCs' CV settled. The Bestiary audit is closed except question 30 (the ruler's Stage 0 NPCs on the points table: its own pack).
 - **2026-11-18 (v0.0.435, branch `pack-audit-2`; NOT tested by Lucas):** the Bestiary audit closed: Lucas's Fists rule (an NPC without its weapon makes Fists Strikes) and "Rest default" for the other 26 questions, in the book and Foundry (NPC Fists, no unspent-AP Guard for NPCs, Relentless not on Reactions, Elite Extreme Modifier as High, a Minor enemy's Empowered die doesn't explode, the Ogre Large). **Open:** the example NPCs' CV (round within half a step, or change four stats); question 30 (the ruler's Stage 0 NPCs on the points table) is its own pack.
 - **2026-11-18 (v0.0.434, branch `pack-audit-2`; NOT tested by Lucas):** Lucas's answers to the Bestiary audit's questions 4, 7, 10 and 12: NPC Reactions with their Frequency, no set list of Actions, every Basic Action but Weapon Attack / Fists / Steel Yourself, NPCs have levels (complexity within a Stage), Pressing on [Strike] (Foundry follows). 26 questions still open (`book/bestiary-audit.md`).

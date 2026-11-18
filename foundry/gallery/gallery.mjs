@@ -53,7 +53,8 @@ registerInline();
 const AC = await import("../twod12/module/actioncard.mjs");
 const CL = await import("../twod12/module/cardlines.mjs");
 const CFG = await import("../twod12/module/config.mjs");
-let RD = null, CC = null, ACT = null;
+let RD = null, CC = null, ACT = null, SB = null;
+if (face === "statblock") SB = await import("../twod12/module/statblock.mjs");   // CARD-ONE step 4: the one-page NPC sheet's printed stat block
 if (face === "roll" || face === "result") { RD = await import("../twod12/module/rolldlg.mjs"); CC = await import("../twod12/module/chatcards.mjs"); ACT = await import("../twod12/module/actions.mjs"); }
 const enrichCard = async (t, doc) => CFG.highlightText(await enrichHTML(t ?? "", doc ? { relativeTo: doc } : {}));
 /** Step 3's two faces of one Version (the first), built by the real code (actions.mjs attackModelParts, the chat renderers) on a fixed result. */
@@ -83,7 +84,8 @@ const WRAP = {
   chat: c => `<div id="chat-log"><li class="chat-message message flexcol"><div class="message-content">${c}</div></li></div>`,
   tooltip: c => `<aside id="tooltip" class="active" role="tooltip">${c}</aside>`,
   hud: c => `<div class="twod12-hudcard"><button type="button" class="hc-x">&times;</button>${c}</div>`,
-  dialog: c => `<div class="application twod12 rolldlg themed theme-${theme}"><div class="window-content">${c}</div></div>`
+  dialog: c => `<div class="application twod12 rolldlg themed theme-${theme}"><div class="window-content">${c}</div></div>`,
+  statblock: c => `<div class="application twod12 twod12-actor twod12-sbsheet themed theme-${theme}"><div class="window-content"><div class="twod12-sb rk-standard"><div class="sb-body">${c}</div></div></div></div>`
 };
 const out = document.getElementById("cards");
 const list = data.cards.slice(from, to);
@@ -91,8 +93,8 @@ for (const d of list) {
   const item = asItem(d);
   let html = "";
   try {
-    if ((face === "roll" || face === "result") && item.type !== "action") continue;   // a Feature has no roll and no result
-    html = face === "roll" || face === "result" ? await oneVersionFace(item) : face === "solo" ? await AC.buildSoloCard(item) : item.type === "action" ? await AC.buildActionCard(item, { use: false }) : await AC.buildFeatureCard(item);
+    if ((face === "roll" || face === "result" || face === "statblock") && item.type !== "action") continue;   // a Feature has no roll, no result, no stat block line
+    html = face === "statblock" ? SB.sbActionHtml(await SB.sbActionModel(item, { enrich: enrichCard })) : face === "roll" || face === "result" ? await oneVersionFace(item) : face === "solo" ? await AC.buildSoloCard(item) : item.type === "action" ? await AC.buildActionCard(item, { use: false }) : await AC.buildFeatureCard(item);
   } catch (e) { html = `<div class="gal-err">${d.name}: ${String(e.message ?? e)}</div>`; }
   const box = document.createElement("div");
   box.className = "gal-card";
