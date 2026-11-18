@@ -73,6 +73,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 42 | **One big jump a ladder is not good** (against Claude's rewrite of the rungs after the cap). To go deeper, the core of Dominions' mechanics is to be read first. | "Cap: I see, one big jump isn't good I think. To make this more in depth: if you haven't already, read on and research the core of Dominions 6 mechanics, that are important for its magical system. You will likely find where my exploding dice idea is from." | 2026-11-18 |
 | 43 | **Overcast has no cap of its own (A), with small rungs.** A step needs a spare level in its axis, and a casting holds as many steps as your Escalation minus 1; nothing else limits it. The rungs: **Reach +2 squares, Breadth +1 creature, Hold +1 round** a step; **"one creature" to "an area" is a different spell**, and an area spell's own Breadth step is +1 to its Burst or Emanation. **This replaces decision 32** (one step a ladder), which was made for rungs that tripled an area. | "Let's do a for cap decision." | 2026-11-18 |
 | 44 | **The summons rule is decided as proposed (5k, points 1 to 7).** Point 5 stays: a summon leaves when its caster becomes Bloodied or Strained, like every [Sustained] spell; **a Talent tree will later lift it** ("I think this is the best way"). The general lesson, his: **"Remember, progression is horizontal"**: the base rule carries the limit, and Talents are where a character grows past it. | "Let's remove number 5, strained and bloodied don't remove it immediately. Or we keep it and later make a talent tree for it (I think this is the best way). Remember, progression is horizontal." | 2026-11-18 |
+| 45 | **The second pass is done, with a double check:** 26 spells against the basics, audited by an independent reader (36 findings) and corrected: `book/cards/magic-second-pass.md`. Its "Found" table lists 16 points to decide or write; its last section lists what the checks changed. | "Do A. Do a double pass to make sure you haven't forgotten anything." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -376,6 +377,16 @@ Lucas's principle (decision 44): the base rule carries the limit; Talents are ho
 | Real healing from one Path | Healing magic gives Guard only | 36 |
 | Ranged spells while Engaged | Doomed (and the gap for Save spells, 5h B3) | Chapter 3 |
 | Changing a spell by its trait ("your [Evocation] spells...") | none: this is what Talents already do | the Talents chapter |
+
+## 5m. The limiters, as they stand (2026-11-18; Lucas: "What are the current limiters? Because I might change them for spells")
+
+**From the core rules, on every Action:** AP (4 and 1 Reaction AP); Frequency (At-will with a Bane a repeat, Turn, Round, Encounter, Daily); three Strikes a turn; Doomed for a [Ranged] Action while Engaged (a Save spell escapes it: 5h B3); Line of Effect; the Modifier never above +4.
+
+**Decided for magic:** the two minimums (5); few spells known (19, 27); one Mastery point a fight (27); a level never a number (18); an Overcast step needs a spare level (26) and Escalation, a casting holding Escalation minus 1 steps (20, 43); small rungs (43); Overreach once a casting for 1d6! Nonlethal Resolve damage (30); one [Woven] spell (28); Sustain: 1 AP (29); held magic breaks on Down, Bloodied, Strained (28); one rider (26); the summons limits (41, 44); magic gives Guard, not Health (36).
+
+**Not limiters (dropped or never added):** mana, slots or points; a Health cost but Overreach; gems; casting time or interruption ([Focus] has no rule); a cap on levels; a cap on steps a ladder.
+
+**How it adds up:** in play a caster is held by AP, Frequency and (for Overcast) Escalation; everything else limits the build. A Round spell can be cast every round of every fight at no cost. Unmeasured.
 
 ## 6. The order of work from here (proposed)
 
