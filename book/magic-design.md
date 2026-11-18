@@ -59,6 +59,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 28 | **A magic that stands: A, one at a time** (it lasts until the encounter ends, you go Down, or you end it; casting another ends the first), **with room left for B as a second kind**: some spells that you "maintain by spending AP". **Both break when you become Bloodied or Strained.** The name "Standing" is refused ("doesn't sound magic"; his examples: sustaining, concentrating): names to choose. | "A is good but nothing stops B from existing as well. We focus on A with gap for B, some spells that you can 'maintain by spending AP'. Break on bloodied and strained is good." | 2026-11-18 |
 | 29 | **The names: [Woven]** for the one-at-a-time kind ("you can hold one Woven spell; casting another ends it") **and [Sustained]** for the paid kind ("Sustain: 1 AP" at the start of your turn, or it ends). | "Sustained and Woven." | 2026-11-18 |
 | 30 | **The push is C and is named Overreach:** once a casting, one Overcast step you couldn't otherwise take (the Escalation or the level it lacks), for **1d6! Nonlethal Resolve damage** to you; a cost, so Guard doesn't take it and nothing reduces it. The name was Claude's to pick between Overreach and Strain: Overreach, because **Strained** is already a defined state and "Strain" beside it would be two near-identical words with different rules. | "C; exploding d6 is good; overreach or strain [...] your pick." | 2026-11-18 |
+| 31 | **The sixth School is Abjuration, for now** ("Warding" clashed with Ward Defense and the Ward value). | "Abjuration for now." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -251,7 +252,7 @@ Claude's pick: C, 1d6!, once a casting.
 **The six Schools** (what the spell does), sorted by the main effect; a rider never changes the School:
 1. It leaves a magic that you hold → **Enchantment** (lay). Its spells are [Woven] or [Sustained].
 2. It brings a creature or an object → **Conjuration** (bring).
-3. It stops or undoes something: a blow, a spell, a presence → the protection School (stop; name open).
+3. It stops or undoes something: a blow, a spell, a presence → **Abjuration** (stop).
 4. It releases the Path on a target, to harm or to heal → **Evocation** (release).
 5. It works on a mind or on the senses → **Thaumaturgy** (command).
 6. Anything else: a creature or the ground changed for a set time → **Alteration** (change).
@@ -266,7 +267,56 @@ Claude's pick: C, 1d6!, once a casting.
 
 **Overreach.** Once a casting, take one Overcast step you couldn't otherwise take, for 1d6! Nonlethal Resolve damage that nothing absorbs or reduces.
 
-**Still open in the basics:** the protection School's name; healing's School (Evocation as "the Path released", proposed); summons (so Conjuration); how much AP and which Frequency a spell of each size has; the Tags; Talents' structure.
+**Still open in the basics:** healing's School (Evocation as "the Path released", proposed); summons (so Conjuration); how much AP and which Frequency a spell of each size has; the Tags; Talents' structure.
+
+## 5h. The review before the first cards (2026-11-18; Lucas: "take a closer look on what we have so far, compare with the research, then compare with 2d12 rules. See if anything worth noting pops up")
+
+Claude read section 5g against the six research notes and against Chapters 1 to 5, 7 and 8, the charter and Chapter 15's Mastery. **Nothing below is decided.**
+
+### A. What holds up
+
+- **The second Path as a dab.** In Dominions 118 of 188 two-Path spells ask level 1 of the second Path; Merge asks only that you have it.
+- **Overcast on the fight's clock** replaces Dominions' "raise your own level" spell that every Path casts first, with no card and no action.
+- **Breadth is Dominions' scope ladder** (yourself, one, a group, an area), and its bottom rungs match what the wiki calls a dabbler (itself, a touch) and an average mage (another creature).
+- **Ward Defense already makes casters resist magic better** (11 + the target's Power Modifier): Dominions and Ars Magica both give a mage resistance from their own skill, and 2d12 has it without a rule.
+- **A dabbler works.** A weapon class has Power Modifier +1 against a caster's +2: one point on the roll and the DC. A Magic Talent is worth taking with no other investment, which is what horizontal growth needs.
+- **Held magic breaking on Bloodied or Strained** uses the system's own convention for hooks ("when it becomes", pack R's decision 11) and adds nothing to the sheet.
+- **Mastery by use** is the weapons' rule with the weapons' numbers: one table, one sentence to learn.
+
+### B. Problems found (each needs a decision or a rule)
+
+1. **Overcast is free power that grows every round, and nothing prices it.** A step costs no AP: a spare level and the clock. By round 3 a Round spell can hold two steps (two creatures become a 2 Burst), where a martial's growth over the same rounds is three Passives and an Encounter card (Smite: +1d6 a point of Escalation, once a fight). With Momentum 4 a party starts at Escalation 5: four steps in round 1. **The SIM has no caster, so this is unmeasured.** A cheap guard to consider: at most one step on each ladder a casting, so a spell that lists two ladders tops out at two form steps and one substance step.
+2. **"Lasting wins" plus "one Woven spell" removes the buffer.** Almost every Dominions buff lasts the battle and a mage stacks them (Stoneskin on each fighter, the scope ladder up to the whole army). In 2d12 a buff that lasts the encounter is an Enchantment, so [Woven], so **one at a time**. The Earth "armorer" and the Nature healer-buffer can keep one buff up. The ways out: such buffs are Alterations with a count of rounds (3 rounds is nearly a 3.5-round fight, so the Hold ladder's top quietly replaces Woven); or a Woven spell covers several creatures through Breadth; or buffs are what [Sustained] is for.
+3. **A Save spell escapes the cost of range.** "Using a [Ranged] Action while you are Engaged is very hard: the roll is Doomed" (Chapter 3), but on a [Save] Action the caster doesn't roll, so nothing is Doomed. The charter's rule 22 says a cost of a class's range "is never erased for free". Chapter 1's Save Actions cover Cover and Senses, not Engaged. A rule is missing ("the targets' Saves are Favored", or a Boon on them).
+4. **A ladder step can change a spell's traits, and no sentence says so.** Reach turns a touch spell into a [Ranged] one (Engaged, range Banes); Breadth's Burst turns it into an [Area] one (it ignores Senses, Line of Effect from the Point of Origin, and **it affects every creature in it, allies included**). Needed: "the spell gains the trait", and whether a Burst from Breadth spares allies.
+5. **A Merge has no Tier and no numbers.** "Add the second Path's rider" doesn't say on which Tiers, for how long, or how much (Lingering needs a value, Pushed a distance, Frightened and Hindered a duration). Each Path needs **its rider written once as a full line** (for example "Lingering [V] 1d4 Fi", "Pushed 2", "Hindered (EoT)") and one sentence for where it lands (on a Strike, Tier 2 and 3; on a Save, Tier 1 and 2).
+6. **The eight riders are not the same size.** Dazed 1 takes an AP now (the charter prices an unused AP at 12 points), and two Dazed 1 from two spells take two; Immobilized costs an AP to leave; Hindered (EoT) and Pressed 1 are small. If every spell can Merge, the best rider is the best button. They need pricing, or durations and values that level them.
+7. **Two spells from Mastery against "no one best button".** A Round frequency and 4 AP mean a caster with two 2-AP spells casts the same two every round: the turn Lucas found "quite boring" on Double Shot. A caster class must bring the variety in its own cards, or opening gives three spells and one of them is At-will.
+8. **The grid needs off-diagonal spells, and many cells.** With one point a fight the axes part (Fire 3 / Evocation 1), but Dominions has 17 such spells in 442. Suggested rule of thumb for writing: **most spells ask for 1 or 2 in each axis, and mastery shows through Overcast**; a spell with a high minimum is a rare signature. Even so, three Paths by four Schools by three spells is 36 cards for the first test.
+9. **The School sorting has one soft edge left.** A spell that only Immobilizes, or only frightens: Dominions files its five "hold" spells in five different Schools. Proposed sharpening: **Evocation's main effect is a number on Health** (damage or healing); a condition of the body or a change to the ground is **Alteration**; a condition of the mind or the senses (Frightened, Dazed, Pressed, Half-Blinded) is **Thaumaturgy**.
+10. **A gish's Mastery is undefined.** Decision 27 says one point a fight in a Path or a School, "the weapon rule exactly"; 5d's first draft said it sits beside the weapon's point. Does someone who strikes and casts in a fight gain one point in all, or one for the weapon and one for the magic?
+11. **Mastery depends on how often the table fights.** Chapter 15 notes that "a rule to help a table that fights less than about five times a level" is not written. Magic leans on that pace twice (levels and spells).
+12. **A pure caster has no step like the weapons' 2[W].** The 2026-10-29 entry wanted "free growth matched". With dice growing only by Stage, the spells' Stage step must be visible on the cards.
+
+### C. Interactions worth knowing (no change proposed)
+
+- **Overreach can break your own held spell.** Its damage is Resolve damage; when it makes you Strained, your [Woven] and [Sustained] spells end. A caster with a low Resolve (10 to 12) is there after about three Overreaches. The class's high-or-low choice becomes: high Resolve (Overreach freely, but physical hits make you Bloodied and break your spells) or high Vigor (the reverse).
+- **A held spell breaks at most twice a fight** (once on Bloodied, once on Strained), unless healing takes you back under a threshold. After both, only going Down or a dispel ends it.
+- **Half a pool of Nonlethal damage means never rolling on the Dying or Shattered Table** (Chapter 4: Down with Nonlethal damage at half the pool or more is Unconscious). A caster who Overreaches that far has paid half their Health for it; it is in the rules as written, not an exploit to close.
+- **Overcast is a round-2 thing by default.** At Momentum 0 nobody has a step in round 1 but through Overreach, so **Overreach is the caster's round-1 choice every fight**, at about 4 damage of 30. That is "an option", as Lucas asked, but it will be used often.
+- **Momentum now matters more to casters than to anyone.**
+- **An NPC is Bloodied about a round before it dies** (the ruler: round 2.2 of 2.4), so breaking an enemy caster's held spell by damage rarely beats killing it. The break rule is counterplay against PCs; against NPCs, Abjuration is.
+- **NPCs have no Escalation** (Elites aside): an NPC caster's stat block writes its spells already Overcast, or not.
+- **Area spells that roll** follow Chapter 1's Several Targets (one roll, a Tier for each creature, damage rolled once a Tier) and count as one of the three Strikes of a turn.
+
+### D. In the research and not yet used (kept as options)
+
+- **Air as a second Path means "as a cloud"** (Dominions): a Merge with Air could turn a spell into a lingering zone instead of adding Pushed. A zone whose level drops by 1 a round is in `dominions-rules.md` 3.
+- **Each Path protects, holds and retaliates in its own way** (`dominions-paths.md` 3.2): the content for Abjuration's and Alteration's cells.
+- **A counterspell that needs the spell's Path** (Ars Magica): Abjuration's first card.
+- **The Limits of Magic** (Ars Magica): a list of what no spell does, written before the first spell.
+- **Linked casters** (the communion), **spells that take time and can be broken** (and so a rule for [Focus]), **gems as loot**, **the Tags**, **rituals**, **Blood**: all parked.
+- **Protections of one family replace each other; a ward as a count; a buff with a price** (`dominions-rules.md` 7).
 
 ## 6. The order of work from here (proposed)
 
