@@ -60,6 +60,10 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 29 | **The names: [Woven]** for the one-at-a-time kind ("you can hold one Woven spell; casting another ends it") **and [Sustained]** for the paid kind ("Sustain: 1 AP" at the start of your turn, or it ends). | "Sustained and Woven." | 2026-11-18 |
 | 30 | **The push is C and is named Overreach:** once a casting, one Overcast step you couldn't otherwise take (the Escalation or the level it lacks), for **1d6! Nonlethal Resolve damage** to you; a cost, so Guard doesn't take it and nothing reduces it. The name was Claude's to pick between Overreach and Strain: Overreach, because **Strained** is already a defined state and "Strain" beside it would be two near-identical words with different rules. | "C; exploding d6 is good; overreach or strain [...] your pick." | 2026-11-18 |
 | 31 | **The sixth School is Abjuration, for now** ("Warding" clashed with Ward Defense and the Ward value). | "Abjuration for now." | 2026-11-18 |
+| 32 | **Overcast is capped:** at most one step on each ladder a casting. | "1. Cap." | 2026-11-18 |
+| 33 | **Buffs: rounds is the main way, and all three work together** (a count of rounds; one [Woven] spell over several allies; [Sustained]). | "Well, rounds is usually the main way, but I can see all working together." | 2026-11-18 |
+| 34 | **Riders will never be rated perfectly, so spells follow more open rules:** a spell can have "descriptions of their own and rules inside themselves". Reference: **Crucible**, the Foundry system, where "adding a word to the spell shapes it" (an arrow + cold makes a ranged cold attack). | "Yes riders aren't ever going to be rated perfectly, which is why spells can follow more open rules. They can have descriptions of their own and rules inside themselves." | 2026-11-18 |
+| 35 | **The first pass is done:** seventeen Dominions spells as 2d12 cards, with what held and what strained: `book/cards/magic-first-pass.md`. A test, not a spell list. | "You can get spells from dominions, simple ones and more complex ones, and see how they hold up." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -317,6 +321,10 @@ Claude read section 5g against the six research notes and against Chapters 1 to 
 - **The Limits of Magic** (Ars Magica): a list of what no spell does, written before the first spell.
 - **Linked casters** (the communion), **spells that take time and can be broken** (and so a rule for [Focus]), **gems as loot**, **the Tags**, **rituals**, **Blood**: all parked.
 - **Protections of one family replace each other; a ward as a count; a buff with a price** (`dominions-rules.md` 7).
+
+## 5i. Crucible (a lead, not researched)
+
+Lucas's reference (decision 34). **[memory]: from Claude's training, no page opened.** Crucible is the Foundry VTT system by Foundry's own lead developer. Its spells are composed at casting time from parts: a **Rune** (the substance: flame, frost, lightning, earth, life, death, mind and others), a **Gesture** (the delivery: touch, arrow, ray, fan, aura, ward, and others, each with its own cost, range and shape) and an optional **Inflection** (a modifier: extend, push, pull, and others). The pieces map closely onto what is decided here: Rune = Path, Gesture = a finer cut than School (a delivery shape, nearer to the Breadth and Reach ladders), Inflection = an Overcast step. Two differences to keep in mind: Crucible composes every spell on the fly, where 2d12 writes cards (Lucas's "least ambiguity"); and its Gestures are shapes, where 2d12's Schools are verbs. **To research before leaning on it** (its rules are public on Foundry's site and wiki): what a Gesture fixes, how its composed spells are priced, and what its players say.
 
 ## 6. The order of work from here (proposed)
 
