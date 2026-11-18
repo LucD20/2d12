@@ -24,7 +24,7 @@ console.log("no Advance under way: nothing:", show(st(0), ""), "| the marks are 
 const fakeC = f => ({ getFlag: (s, k) => f[k] });
 console.log("the state read from the combatant:", JSON.stringify(CB.advState(fakeC({ freeMove: 2, moveLeft: 1.5, advOwn: true }))));
 const combat = src("module/combat.mjs"), act = src("module/actions.mjs"), mv = src("module/move.mjs"), pc = src("module/pcsheet.mjs");
-console.log("wired: spendAP (not for a Reaction):", combat.includes("if (!reaction) { const upd = advanceAfterAction(advState(c), kind);"),
+console.log("wired: spendAP (not for a Reaction):", combat.includes("upd = !reaction ? advanceAfterAction(advState(c), kind) : null;"),   /* v0.0.428 */
   "| the Action's Basic key:", act.includes("kind: basicKey ?? \"\" })"), "| the hands' Interact:", pc.includes('spendAP(actor, 1, "Interact", { kind: "interact" })'),
   "| a drag that pays AP is the Advance Action:", mv.includes("...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {})"));
 

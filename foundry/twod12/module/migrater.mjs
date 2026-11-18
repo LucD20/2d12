@@ -274,6 +274,11 @@ export function oldWeaponSwap(name, traits = []) {
   return "";
 }
 const oldWeapons = a => a.items.filter(i => i.type === "weapon" && oldWeaponSwap(i.name, [...(i.system?.traits ?? [])]));
+/** v0.0.428 (the audit): is the weapons migration still to run in this world (an old weapon on a character)? The refresh waits for it. */
+export function weaponsMigrationPending() {
+  try { if (game.settings.get(F, "migratedWeapons") === DONE_W) return false; } catch (e) { return false; }
+  return characters().some(a => oldWeapons(a).length > 0);
+}
 export async function migrateWeapons({ ask = true } = {}) {
   if (!game.user.isGM) { ui.notifications.warn("Only the GM can run the weapons migration."); return null; }
   const who = characters().filter(a => oldWeapons(a).length);

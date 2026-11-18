@@ -63,10 +63,13 @@ export function avgExtras(insts, tier, ctx = {}) {
   for (const b of bon) { const a = avgFormula(b.dmg) ?? 0, d = diceIn(b.dmg); if (a) { add += a; why.push(`${b.effect} +${b.dmg}`); } dice += d; parts.push({ key: `${b.effect}|${b.dmg}|${b.sub}|${b.text}`, name: `${b.effect} +${b.dmg}`, avg: a, dice: d }); }
   for (const i of insts) { if (i.useW && ctx.weapon) own += (Number(ctx.weapon.system?.damage?.[`t${tier}`]?.count) || 0) * (i.wCount || 1); if (i.dice) own += diceIn(i.dice); }
   dice += own;
+  // v0.0.428 (the audit; v0.0.407's Empowered): 1d6! once (its average 4: a 6 counts 5 and rolls again), no longer +1 a die; Enfeebled is gone
   const step = Math.trunc(Number(ctx.step) || 0);
-  if (step && dice) { add += step * dice; why.push(step > 0 ? `Empowered ${step}` : `Enfeebled ${-step}`); }
+  if (step > 0 && dice) { add += EMPOWERED_AVG; why.push("Empowered 1d6!"); }
   return { add, why, dice: own, parts };   // v0.0.194: dice and parts let the dialog recompute it live
 }
+/** v0.0.428: the average of Empowered's 1d6! (a 6 counts 5 and rolls again: 2.5 + (5 + E) / 6 = E, so E = 4). */
+export const EMPOWERED_AVG = 4;
 const diceIn = f => [...String(f ?? "").matchAll(/(\d*)d\d+/g)].reduce((s, m) => s + (Number(m[1]) || 1), 0);
 
 export async function buildPreviews(ctx) {
@@ -255,6 +258,6 @@ export function liveAvg(d, on, step) {
   const why = [];
   for (const p of d?.parts ?? []) if (on.has(p.key)) { avg += p.avg; dice += p.dice; if (p.avg) why.push(p.name); }
   const k = Math.trunc(Number(step) || 0);
-  if (k && dice) { avg += k * dice; why.push(k > 0 ? `Empowered ${k}` : `Enfeebled ${-k}`); }
+  if (k > 0 && dice) { avg += EMPOWERED_AVG; why.push("Empowered 1d6!"); }   // v0.0.428
   return { avg, why };
 }

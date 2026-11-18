@@ -4,7 +4,7 @@ import { setQuarry } from "./mark.mjs";
 import { ignoredBy, markOnce, markSpent, coverIgnored } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL, artModes, modeView } from "./split.mjs";
 import { ruledDice, isProfaneFor } from "./judge.mjs";   // v0.0.409 (pack F2): Smite's dice, Profane
-import { activeHooks, hasTraits } from "./hooks.mjs";   // v0.0.409 (pack F2): the Paladin's passives
+import { activeHooks, hasTraits, effectiveAp } from "./hooks.mjs";   // v0.0.409 (pack F2): the Paladin's passives
 import { sysLine } from "./sysmsg.mjs";
 import { canPayEscalation, raiseEscalation } from "./escalation.mjs";
 import { weaponUse, weaponRanges } from "./weaponrange.mjs";
@@ -14,7 +14,7 @@ import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, a
 import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
 import { handOf, HAND_LABEL, handBanes } from "./loadout.mjs";
 import { isFists } from "./fists.mjs";   // v0.0.412: the hands' Banes
-import { isEngaged, engagedWithOther } from "./engaged.mjs";
+import { isEngaged, engagedWith, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
 import { offerWake } from "./down.mjs";
 import { performCheck, performMultiCheck, multiCheckHtml, collapseNames, uniqueLabels, checkHtml, esc, sgn } from "./roll.mjs";
@@ -540,12 +540,22 @@ export async function useAction(actor, item, opts = {}) {
   if ((basicKey === "rally" && (s.atZero || actor.statuses?.has?.("unconscious"))) && refuse(`${actor.name} can't use Steel Yourself while Down or Unconscious.`)) return;
   if (basicKey === "interact") await offerWake(actor, [...game.user.targets]);   // v0.0.176: waking an Unconscious creature (not one that is Down)
   // Setup: what happens before the dice are rolled. Its movement is made first, so the range, cover and Engaged of the roll come from where the creature ends.
-  let setupDone = false;
+  let setupDone = false, stanceRan = false;
   if (!opts.noSetup && String(it.setup ?? "").includes("@Move")) {
     const { runSetup } = await import("./setup.mjs");
     const st = await runSetup(actor, item, actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null);
     if (!st.ok) return;
     setupDone = st.done;
+  } else if (!opts.noSetup && !it.reaction && game.combat?.started && game.combat.combatant?.tokenId === (actor.token?.id ?? actor.getActiveTokens?.()[0]?.document?.id)) {   // on your own turn
+    // v0.0.428 (the audit; book, Hallowed Stance: a [Divine] Action you use gains "Setup: You Advance 3"): the Setup comes before the roll, as any
+    // Setup (move 0 and Continue to skip it), when the card has no movement Setup of its own (Lay On Hands keeps its "Or, instead" on the card)
+    const stance = activeHooks(actor, "setupAdvance").find(h => hasTraits(it.traits, h.hook.traits));
+    if (stance) {
+      const n = Math.max(1, Number(stance.hook.n) || 3), { runSetup } = await import("./setup.mjs");
+      const st = await runSetup(actor, { name: item.name, system: { setup: `You @Move[advance|distance:${n}]{Advance ${n}} (${stance.item.name}).` } }, actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null);
+      if (!st.ok) return;
+      setupDone = stanceRan = st.done;
+    }
   }
   const isSelf = it.traits.has("self");
   const selfToken = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
@@ -632,7 +642,7 @@ export async function useAction(actor, item, opts = {}) {
   const handMods = [];   // v0.0.412: the hands' Banes (before extraMods is made)
   // v0.0.426 (the audit: any Setup skipped the range check, even after its movement ran or with no movement at all: Darting Blade stabbed 8 squares
   // away): the Distance waits only for a Setup movement still to come (one not run before the dialog, or Hallowed Stance's Advance)
-  const withSetup = (String(it.setup ?? "").includes("@Move") && !setupDone) || (!it.reaction && activeHooks(actor, "setupAdvance").some(h => hasTraits(useTraits, h.hook.traits))), setupNotices = [];
+  const withSetup = (String(it.setup ?? "").includes("@Move") && !setupDone) || (!stanceRan && !setupDone && !it.reaction && activeHooks(actor, "setupAdvance").some(h => hasTraits(useTraits, h.hook.traits))), setupNotices = [];
   // v0.0.412 (pack F3 part 2; book, Hands, Strung): the Banes of the hand the weapon is in (loadout.mjs handBanes)
   if (useTraits.has("strike") && it.traits.has("weapon") && previewWeapon) {
     try { const hb = handBanes(actor.itemTypes?.weapon ?? [], previewWeapon, isFists(previewWeapon)); if (hb.banes) handMods.push({ id: "syn:hand", name: hb.banes === 3 ? "Strung, the other hand full" : hb.banes === 2 ? "Off hand" : hb.why.startsWith("Fists") ? "Fists, off hand" : "Off hand (Light)", boons: 0, banes: hb.banes, match: true, predicate: hb.why }); } catch (e) { console.warn("twod12 | hands", e); }
@@ -764,7 +774,9 @@ export async function useAction(actor, item, opts = {}) {
   // Flanking: [Melee] Actions gain a Field Boon for each other ally that flanks the target (the cancels first, then up to 2).
   if (useTraits.has("melee") && !multi && rollsAtOthers && selfToken && targetToken) { const fm = flankingMod(selfToken, targetToken, { na: true }); if (fm) extraMods.push(fm); }   // v0.0.302: no Flanking shows why (n/a)
   if (rangedWeapon && selfToken) {
-    if (isEngaged(selfToken) && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push(ENGAGED_RANGED_DOOMED
+    // v0.0.428: an Interrupt on "would enter a square adjacent to you" (Snap Shot) is rolled before the mover enters: it doesn't Engage you
+    const engagedNow = opts.notEngagedBy ? engagedWith(selfToken).some(t => (t.document?.uuid ?? t.uuid) !== opts.notEngagedBy) : isEngaged(selfToken);
+    if (engagedNow && !ignoredBy(actor, "engagedSelf", useTraits).length) extraMods.push(ENGAGED_RANGED_DOOMED
       ? { id: "syn:engaged", name: "You are Engaged (Doomed)", boons: 0, banes: 0, doomed: true, match: true, predicate: "A [Ranged] Action while you are Engaged is Doomed" }
       : { id: "syn:engaged", name: `You are Engaged (${ENGAGED_RANGED_BANES} Banes)`, boons: 0, banes: ENGAGED_RANGED_BANES, match: true, predicate: "Using a [Ranged] Action while you are Engaged is hard" });
     if (!multi && rollsAtOthers && targetToken && !noEngagedTarget.length && engagedWithOther(targetToken, selfToken))   // "Ignore a Bane" (Sharpshooter: [Shot] Actions)
@@ -879,7 +891,7 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.409 (pack F2, Roving Judgment: hooks.mjs apCost): an Action of a mark kind at this AP costs less while the passive works
   // v0.0.411 (Lean and Loose): or a Basic Action by its key (Leaning)
   const costHook = opts.free ? null : activeHooks(actor, "apCost").find(h => (h.hook.markKind || h.hook.basic) && (!h.hook.markKind || h.hook.markKind === it.markKind) && (!h.hook.basic || h.hook.basic === item.getFlag?.("twod12", "basic")) && Number(h.hook.ap) === Number(version.ap));
-  const apCost = opts.free ? (opts.ap ?? 0) : costHook ? Math.max(0, Number(costHook.hook.cost) || 0) : version.ap;
+  const apCost = opts.free ? (opts.ap ?? 0) : costHook ? effectiveAp(actor, item, version) : version.ap;   // v0.0.428: the shared rule
   // An Escalation Action (the Apex): its Escalation is a requirement, checked before the AP is spent; nothing is spent (pack R, v0.0.243).
   const escCost = opts.free ? 0 : Math.max(0, Number(it.escalation) || 0);
   if (escCost) { const pay = canPayEscalation(actor, escCost); if (!pay.ok) return ui.notifications.warn(pay.why); }
@@ -1441,7 +1453,9 @@ export async function rollDamage(message, { again = false } = {}) {
   const version = item?.system.versions.find(v => v.ap === f.ap && (!f.mode || v.mode === f.mode));
   if (!version) return ui.notifications.warn("The action or version no longer exists.");
   const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
-  const empOn = stepOf(f.empowered) > 0 && empoweredNow(actor);   // v0.0.407: Empowered's 1d6!, once a turn (explode.mjs)
+  // v0.0.428 (the audit: the GM's "Roll the damage again" dropped the Empowered die): a re-roll keeps it when the first roll had it (not spent again)
+  const hadEmp = again && (message.getFlag("twod12", "ccDmg")?.groups ?? []).some(g => (g.comps ?? []).some(c => c.kind === "E"));
+  const empOn = hadEmp || (stepOf(f.empowered) > 0 && empoweredNow(actor));   // v0.0.407: Empowered's 1d6!, once a turn (explode.mjs)
   // v0.0.411 (pack F3, One More Arrow: hooks.mjs moreW): once on each of its turns, a [Strike] that deals [W] deals 1[W] more
   let moreW = 0;
   // v0.0.426 (the audit: a Tier 1 Quick Shots, "[V] [Mod]", used it up): only a Tier that was rolled and deals [W] takes it
@@ -1482,7 +1496,7 @@ export async function rollDamage(message, { again = false } = {}) {
       chip = `<div class="chips"><span class="chip">${esc(f.attrLabel || "Modifier")} +${f.attrVal}</span></div>`;
     }
     // v0.0.407 (Stage 0 in Foundry; book, Chapter 8, Empowered): the first damage the creature deals on each of its turns adds 1d6! of the Action's pool and type
-    if (empOn && !again && !empLater && !empUsed) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls) : null; if (ec) { comps.push(ec); empUsed = true; } }
+    if (empOn && (!again || hadEmp) && !empLater && !empUsed) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls) : null; if (ec) { comps.push(ec); empUsed = true; } }
     // v0.0.283: the Tier's riders as the card shows them (its text after the damage, its effects' names)
     const riderHtml = [];
     const xt = expandAsText(version[`x${tier}`], item.system.versions, version, tier);
@@ -1513,7 +1527,7 @@ export async function rollDamage(message, { again = false } = {}) {
       const gOf = rows.map(r => tiers.indexOf(r.tier));
       // v0.0.426 (the audit; book, Chapter 8, Empowered: "If the Action damages several creatures, you choose which one takes it"): one die, for one
       // creature: the first one hit (its own group, so the others on its Tier don't take it)
-      if (empOn && !again) {
+      if (empOn && (!again || hadEmp)) {
         const k = rows.findIndex((r, i) => groups[gOf[i]].comps.some(c => c.kind === "W" || c.kind === "D"));
         const g0 = k >= 0 ? groups[gOf[k]] : null, ec = g0 ? await empoweredComponent(g0.comps.find(c => c.kind === "W" || c.kind === "D"), all) : null;
         if (ec) {
@@ -1530,7 +1544,7 @@ export async function rollDamage(message, { again = false } = {}) {
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
     await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
-  if (empUsed) await markEmpoweredUsed(actor);
+  if (empUsed && !hadEmp) await markEmpoweredUsed(actor);
   // (the card is no longer collapsed: v0.0.388, the damage is on it)
 }
 

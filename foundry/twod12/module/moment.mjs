@@ -508,7 +508,9 @@ async function resolveStack(L) {
   const order = stackOrder(st.rows);
   for (const r of order) {
     const who = game.users.get(r.answerer)?.active ? r.answerer : (answererFor(fromUuidSync(r.actorUuid))?.id ?? game.user.id);
-    const data = { actorUuid: r.actorUuid, itemId: r.itemId, targetUuid: r.targetUuid, targetName: r.targetName, sourceUuid: r.sourceUuid ?? "" };
+    // v0.0.428 (the audit: a Snap Shot rolled before Move back was Doomed by the mover itself): "would enter a square adjacent to you" is answered
+    // before the mover enters, so the mover doesn't Engage the reactor for that roll
+    const data = { actorUuid: r.actorUuid, itemId: r.itemId, targetUuid: r.targetUuid, targetName: r.targetName, sourceUuid: r.sourceUuid ?? "", notEngagedBy: r.moment === "enemyAdjacent" ? r.targetUuid : "" };
     // v0.0.275 (the book, Chapter 2): the triggering creature dropped before this one resolved: its Reaction is spent (the AP lost), nothing is rolled
     if (st.base?.face?.actorUuid && (st.base.never || sourceDown(st))) {
       if (st.hold) st.base.never = true;
@@ -672,7 +674,7 @@ export async function runHere(data) {
   let ok = false;
   try {
     const { useAction } = await import("./actions.mjs");
-    ok = (await useAction(actor, item, { triggerUuid: data.sourceUuid || "" })) === true;
+    ok = (await useAction(actor, item, { triggerUuid: data.sourceUuid || "", notEngagedBy: data.notEngagedBy || "" })) === true;
     if (ok) {
       const card = game.messages.contents.slice(-8).reverse().find(m => !before.has(m.id) && m.getFlag?.(F, "grantCard")?.actorUuid === actor.uuid);   // the card this use just posted
       const g = card?.getFlag(F, "grantCard")?.effects?.[0];

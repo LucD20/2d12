@@ -76,17 +76,17 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] (v0.0.418) **The combat strip (F):** a full AP pip solid in the AP color, an empty one only its outline (a render check); Bloodied and Strained off the strip.
 - [x] (v0.0.419: asked on the bottom bar, not in the Reactions message) **Judge's reduction a choice** (rules-backlog "PLAYTEST 5, THE LOG"): offered to the Paladin's player when the Judged creature's damage would land on an ally within 5 squares (the damage waits, as Shield of Faith's), once a round; each Paladin's own.
 
-## THE AUDIT OF v0.0.407-417 (2026-11-18; three independent reviewers, 29 findings; FIXED in v0.0.426 but what is listed here)
+## THE AUDIT OF v0.0.407-417 (2026-11-18; three independent reviewers, 29 findings; FIXED in v0.0.426; the ten left FIXED in v0.0.428)
 - **Left (checked, not fixed; a later pack):**
-  - [ ] **Word of Radiance's d8s against a Profane creature** never roll: its Save card's damage is rolled once per Tier from the raw dice (`inline.mjs saveActionCfg`, `prerollTiers`), the `diceRule` is read only on attack cards; a Profane creature needs its own roll.
-  - [ ] **Snap Shot rolled while the mover is already adjacent** is Doomed if it is used before Move back (the moment opens after the move; an Interrupt "would enter" should put the mover back first: the `back` square is known).
-  - [ ] **Hallowed Stance's Advance** is a button on the chat card after the roll; the book's Setup comes before it (run it in `runSetup` as an offered choice).
-  - [ ] **The HUD and the sheet show a card's raw cost** (Roving Judgment's Judge, Lean and Loose's Leaning at 0 AP struck when they cost 0): one shared "effective cost" with the `apCost` hooks.
-  - [ ] **The Turn Breakdown and "End of X's Turn"** log a split Advance wrong (`combat.mjs spendAP` clears the squares before `closeMoveLine`; the Encounter Log is right).
-  - [ ] **The roll dialog's Avg** still counts Empowered as +1 a die and an old Enfeebled (`preview.mjs`, `actions.mjs liveAvg`).
-  - [ ] **Sleep's −1 Momentum** needs 12 hours of world time since the last one (a GM who never moves the clock loses it after the first night).
-  - [ ] **The GM's "Roll the damage again"** drops the Empowered die.
-  - [ ] **"Update from the compendium" before the weapons migration** can make an old one-handed Longsword a two-handed one held in one hand (ask the refresh only after `migratedWeapons`).
+  - [x] (v0.0.428) **Word of Radiance's d8s against a Profane creature** never roll: its Save card's damage is rolled once per Tier from the raw dice (`inline.mjs saveActionCfg`, `prerollTiers`), the `diceRule` is read only on attack cards; a Profane creature needs its own roll.
+  - [x] (v0.0.428) **Snap Shot rolled while the mover is already adjacent** is Doomed if it is used before Move back (the moment opens after the move; an Interrupt "would enter" should put the mover back first: the `back` square is known).
+  - [x] (v0.0.428) **Hallowed Stance's Advance** is a button on the chat card after the roll; the book's Setup comes before it (run it in `runSetup` as an offered choice).
+  - [x] (v0.0.428) **The HUD and the sheet show a card's raw cost** (Roving Judgment's Judge, Lean and Loose's Leaning at 0 AP struck when they cost 0): one shared "effective cost" with the `apCost` hooks.
+  - [x] (v0.0.428) **The Turn Breakdown and "End of X's Turn"** log a split Advance wrong (`combat.mjs spendAP` clears the squares before `closeMoveLine`; the Encounter Log is right).
+  - [x] (v0.0.428) **The roll dialog's Avg** still counts Empowered as +1 a die and an old Enfeebled (`preview.mjs`, `actions.mjs liveAvg`).
+  - [x] (v0.0.428) **Sleep's −1 Momentum** needs 12 hours of world time since the last one (a GM who never moves the clock loses it after the first night).
+  - [x] (v0.0.428) **The GM's "Roll the damage again"** drops the Empowered die.
+  - [x] (v0.0.428) **"Update from the compendium" before the weapons migration** can make an old one-handed Longsword a two-handed one held in one hand (ask the refresh only after `migratedWeapons`).
 - **Answered (v0.0.427):** Shake Off at Tier 2: the half at the end of the current turn, whoever's; Volley and Covering Fire: "Distance: Weapon (Normal range)".
 
 ## CARD-ONE: one card for every place it shows (Lucas, 2026-11-17: "make sure in the future we don't have this problem anymore"; the draft's recommendations, all accepted: "All recommended, start")

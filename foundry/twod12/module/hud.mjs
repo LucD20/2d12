@@ -59,6 +59,7 @@ async function apNow(actor) {
 async function actionsOf(actor) {
   const { FREQ_COLORS, effectiveFrequency } = await import("./config.mjs");
   const { versionButtons } = await import("./cardview.mjs");
+  const { effectiveAp } = await import("./hooks.mjs");   // v0.0.428
   let pc = null;
   try { const { pcModel } = await import("./pcsheet.mjs"); pc = await pcModel(actor.sheet, {}); } catch (e) { console.warn("twod12 | HUD: the sheet's model", e); }
   const rows = new Map([...(pc?.sections ?? []).flatMap(s => s.rows ?? []), ...(pc?.basic ?? []).flatMap(c => c.rows ?? [])].map(r => [r.id, r]));
@@ -66,7 +67,7 @@ async function actionsOf(actor) {
   const one = (i, onlyAps = null) => {
     const it = i.system, freq = effectiveFrequency(it), row = rows.get(i.id), vs = it.versions ?? [];
     const lock = Number(it.escalation) > 0 && escNow < Number(it.escalation);
-    const btns = versionButtons(vs.map(v => v.ap), { reaction: !!it.reaction, inCombat: !!now, ap: now?.ap ?? 0, rap: now?.rap ?? 0 });
+    const btns = versionButtons(vs.map(v => effectiveAp(actor, i, v)), { reaction: !!it.reaction, inCombat: !!now, ap: now?.ap ?? 0, rap: now?.rap ?? 0 });   // v0.0.428: the cost a passive lowers
     const why = lock ? `Needs Escalation ${it.escalation}` : row?.offWhy ?? "";
     const list = vs.map((v, k) => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: lock || !!row?.off || !!btns[k]?.off, used: /used|spent/i.test(why), why: why || btns[k]?.why || "", fav: quick.has(`${i.id}:${v.ap}`) }))
       .filter(v => !onlyAps || onlyAps.includes(Number(v.ap)));

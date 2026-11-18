@@ -15,6 +15,7 @@ export function basicGroupsOf(rows) {
   if (rest.length) out.push({ key: "other", label: "Other", rows: rest });
   return out;
 }
+import { effectiveAp } from "./hooks.mjs";   // v0.0.428
 import { masteryRows, masteryOf, masteryValue, setMastery, setCollapsed, techniqueState, startMasteryOf, chooseStartMastery } from "./mastery.mjs";
 import { weaponRanges } from "./weaponrange.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -599,7 +600,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // v0.0.224 (Lucas, playtest 3): three limits, three looks: a used Frequency greys the row; too few AP dims its cost and dice; 3 Strikes made
     // this turn put a red diamond before its name.
     const cbt = game.combat?.started ? combatantOf(a, game.combat) : null, apNow = cbt ? getAP(cbt) + (it.reaction ? getRAP(cbt) : 0) : null;   // v0.0.243: a Reaction can use the Reaction AP
-    const minCost = Math.min(...(it.versions ?? []).map(v => Number(v.ap) || 0), 99);
+    const minCost = Math.min(...(it.versions ?? []).map(v => effectiveAp(a, i, v)), 99);   // v0.0.428: the cost a passive lowers
     const noAp = apNow !== null && minCost < 99 && !!versionCant(minCost, getAP(cbt), it.reaction ? getRAP(cbt) : 0, !!it.reaction), strikeCap = !!f.strikeCap;   // v0.0.297: the card's Version buttons use the same check
     // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
     const g = activeGrants(a, i)[0];

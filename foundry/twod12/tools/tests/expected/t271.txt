@@ -1,0 +1,9 @@
+Snap Shot (an Interrupt on 'would enter a square adjacent to you') isn't Doomed by the mover: true
+Word of Radiance's d8s: a Profane creature's own roll on the Save card: true
+Hallowed Stance's Advance before the roll, on your own turn: true
+the roll dialog's Avg: Empowered's 1d6! once (avg 4 ), no Enfeebled: true
+the GM's re-roll keeps the Empowered die: true
+Sleep's −1 Momentum: a Sleep after an encounter ended is another night's: true
+a split Advance logs the squares moved (the line is written before they are cleared): true
+the HUD and the sheet use the cost a passive lowers: true
+Update from the compendium waits for the weapons migration: true

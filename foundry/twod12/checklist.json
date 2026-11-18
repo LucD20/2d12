@@ -310,6 +310,30 @@
      "do": "Use Darting Blade on a creature 8 squares away; at Escalation 6 with Hallowed Stance, open Smite's chat card.",
      "expect": "Darting Blade is out of range (no \"the Setup first\" note: its Setup moves nobody). Smite's card shows \"Setup: You Advance 3\" with its button.",
      "rev": 1
+    },
+    {
+     "id": "stance-setup",
+     "v": "v0.0.428",
+     "title": "Hallowed Stance before the roll",
+     "do": "At Escalation 6 with Hallowed Stance, on Aveline's turn use Smite on an enemy 4 squares away.",
+     "expect": "Before the roll dialog the Setup bar lets you Advance up to 3 (move, then Continue); the range is then checked from where you stopped. Not offered off your turn.",
+     "rev": 1
+    },
+    {
+     "id": "free-cost-hud",
+     "v": "v0.0.428",
+     "title": "A free cost in the HUD",
+     "do": "With Roving Judgment active (Escalation 2), spend all your AP, look at Judge's 1 AP in the HUD and on the sheet.",
+     "expect": "It isn't struck (it costs 0 now) and can be used.",
+     "rev": 1
+    },
+    {
+     "id": "avg-empowered",
+     "v": "v0.0.428",
+     "title": "The roll dialog's Avg with Empowered",
+     "do": "Give a PC Empowered and open a damaging Action's roll dialog.",
+     "expect": "The Avg adds 4 once, \"(with Empowered 1d6!)\", not one per die.",
+     "rev": 1
     }
    ]
   },
@@ -610,6 +634,14 @@
      "do": "Use Hold the Line's Rescue on an adjacent ally and move it 2 squares away from you.",
      "expect": "Allowed (a Reposition isn't held within your Reach); Relocate still is.",
      "rev": 1
+    },
+    {
+     "id": "snap-shot-doom",
+     "v": "v0.0.428",
+     "title": "Snap Shot isn't Doomed by the mover",
+     "do": "An enemy walks up next to Sylwen; use Snap Shot from the Reactions message before clicking Move back.",
+     "expect": "The roll is not Doomed for being Engaged (the enemy hasn't entered yet); another enemy already adjacent still makes it Doomed.",
+     "rev": 1
     }
    ]
   },
@@ -679,6 +711,14 @@
      "do": "Place Volley's and Covering Fire's Burst beyond the bow's normal range.",
      "expect": "The placement is limited to the weapon's normal range (the cards read \"Distance: Weapon (Normal range)\").",
      "rev": 2
+    },
+    {
+     "id": "radiance-d8",
+     "v": "v0.0.428",
+     "title": "Word of Radiance against the Judged one",
+     "do": "Aveline Judges an Orc, then uses Word of Radiance on it and another enemy (both fail on the same Tier).",
+     "expect": "On the Save card the Judged Orc has its own damage line with d8s; the other enemy takes the d6 roll.",
+     "rev": 1
     }
    ]
   },
@@ -731,6 +771,14 @@
      "title": "Mastery's + and −",
      "do": "A character with the Hunting Bow at 20 Mastery: on the Mastery tab, click + on the Recurve Bow (it shows 10).",
      "expect": "It goes to 11 at once (it counted from the shown 10).",
+     "rev": 1
+    },
+    {
+     "id": "sleep-momentum",
+     "v": "v0.0.428",
+     "title": "Sleep after a fight",
+     "do": "Without moving the world clock: Sleep (−1 Momentum), fight an encounter, Sleep again.",
+     "expect": "The second Sleep takes −1 too (a fight ended between them); two Sleeps with no fight between take only one.",
      "rev": 1
     }
    ]

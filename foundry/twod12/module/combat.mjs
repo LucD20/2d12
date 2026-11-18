@@ -156,12 +156,15 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
     if (!ok) return false;
   }
   await c.setFlag(F, "acted", true);
-  if (Number(c.getFlag(F, "evadeMove")) > 0) await c.update({ [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });   // v0.0.182: an Evade left unused ends when another Action is used
   // v0.0.414 (book, Chapter 3, "An Advance is one piece"): another Action ends an Advance under way (its movement left is lost), except one Interact
   // during the Advance Action used on its own (advanceAfterAction); a Reaction off your turn leaves it alone.
-  if (!reaction) { const upd = advanceAfterAction(advState(c), kind); if (upd) await c.update(Object.fromEntries(Object.entries(upd).map(([k, v]) => [`flags.${F}.${k}`, v]))); }
-  // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first).
-  try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ }
+  const evading = Number(c.getFlag(F, "evadeMove")) > 0, upd = !reaction ? advanceAfterAction(advState(c), kind) : null;
+  const goesOn = !!upd?.advInteract && !("freeMove" in upd);   // the one Interact inside the Advance: its movement (and its line) go on
+  // v0.0.200: a movement still under way is written to the Turn Log before this Action (its line comes first). v0.0.428 (the audit: the line read
+  // "Advance 5 sq." after 2): written before its squares left are cleared, so it counts only the squares moved
+  if (!goesOn) { try { const { closeMoveLine } = await import("./move.mjs"); await closeMoveLine(c); } catch (e) { /* none */ } }
+  if (evading) await c.update({ [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });   // v0.0.182: an Evade left unused ends when another Action is used
+  if (upd) await c.update(Object.fromEntries(Object.entries(upd).map(([k, v]) => [`flags.${F}.${k}`, v])));
   if (pay.fromRap) await setRAP(c, rap - pay.fromRap);
   // v0.0.274: a kept AP that pays a Reaction is simply one AP less at the start of the next turn (its Guard comes then: setUnusedApGuard)
   await setAP(c, Math.max(0, have - pay.fromAp), label, { quiet, reaction, rap: reaction ? { b: rap, a: rap - pay.fromRap } : null });

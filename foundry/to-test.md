@@ -170,6 +170,18 @@ Expect: The Tier 1 doesn't use it up; the Tier 2 Strike deals 1[W] more.
 Do: Use Darting Blade on a creature 8 squares away; at Escalation 6 with Hallowed Stance, open Smite's chat card.
 Expect: Darting Blade is out of range (no "the Setup first" note: its Setup moves nobody). Smite's card shows "Setup: You Advance 3" with its button.
 
+### stance-setup · v0.0.428 · Hallowed Stance before the roll
+Do: At Escalation 6 with Hallowed Stance, on Aveline's turn use Smite on an enemy 4 squares away.
+Expect: Before the roll dialog the Setup bar lets you Advance up to 3 (move, then Continue); the range is then checked from where you stopped. Not offered off your turn.
+
+### free-cost-hud · v0.0.428 · A free cost in the HUD
+Do: With Roving Judgment active (Escalation 2), spend all your AP, look at Judge's 1 AP in the HUD and on the sheet.
+Expect: It isn't struck (it costs 0 now) and can be used.
+
+### avg-empowered · v0.0.428 · The roll dialog's Avg with Empowered
+Do: Give a PC Empowered and open a damaging Action's roll dialog.
+Expect: The Avg adds 4 once, "(with Empowered 1d6!)", not one per die.
+
 ## Chat cards
 
 ### card-order · v0.0.417 · The chat card follows the card
@@ -318,6 +330,10 @@ Expect: Strained raises nothing; Bloodied raises her Escalation once, and the li
 Do: Use Hold the Line's Rescue on an adjacent ally and move it 2 squares away from you.
 Expect: Allowed (a Reposition isn't held within your Reach); Relocate still is.
 
+### snap-shot-doom · v0.0.428 · Snap Shot isn't Doomed by the mover
+Do: An enemy walks up next to Sylwen; use Snap Shot from the Reactions message before clicking Move back.
+Expect: The roll is not Doomed for being Engaged (the enemy hasn't entered yet); another enemy already adjacent still makes it Doomed.
+
 ## Areas, light and Cover
 
 ### area-cover · v0.0.419 · Creatures in an area give no Cover
@@ -353,6 +369,10 @@ Do: Place Volley's and Covering Fire's Burst beyond the bow's normal range.
 Expect: The placement is limited to the weapon's normal range (the cards read "Distance: Weapon (Normal range)").
 Rev: 2
 
+### radiance-d8 · v0.0.428 · Word of Radiance against the Judged one
+Do: Aveline Judges an Orc, then uses Word of Radiance on it and another enemy (both fail on the same Tier).
+Expect: On the Save card the Judged Orc has its own damage line with d8s; the other enemy takes the d6 roll.
+
 ## Ending an encounter and resting
 
 ### momentum-end · v0.0.407 · Momentum at the end
@@ -378,6 +398,10 @@ Expect: The kill raises her Escalation; the ally's Down doesn't.
 ### mastery-step · v0.0.426 · Mastery's + and −
 Do: A character with the Hunting Bow at 20 Mastery: on the Mastery tab, click + on the Recurve Bow (it shows 10).
 Expect: It goes to 11 at once (it counted from the shown 10).
+
+### sleep-momentum · v0.0.428 · Sleep after a fight
+Do: Without moving the world clock: Sleep (−1 Momentum), fight an encounter, Sleep again.
+Expect: The second Sleep takes −1 too (a fight ended between them); two Sleeps with no fight between take only one.
 
 ## The Encounter Log
 

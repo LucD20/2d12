@@ -1074,7 +1074,7 @@ export function saveActionCfg(actor, item, version, src) {
     if (x && !/^no effect\.?$/i.test(x)) parts.push(`"${x.replace(/"/g, "'")}"`);
     return parts.join(", ") || "0";
   };
-  return { attr: it.vs && it.vs !== "roll" ? it.vs : "body", dc: saveDcOf(src, actor.system?.attributes), adj: 0, boon: 0, bane: 0, traits: [], tiers: { t1: tier(1), t2: tier(2), t3: tier(3) }, saveAction: true, source: item.name, actorUuid: actor.uuid, actionTraits: [...(it.traits ?? [])],
+  return { attr: it.vs && it.vs !== "roll" ? it.vs : "body", dc: saveDcOf(src, actor.system?.attributes), adj: 0, boon: 0, bane: 0, traits: [], tiers: { t1: tier(1), t2: tier(2), t3: tier(3) }, saveAction: true, source: item.name, actorUuid: actor.uuid, diceRule: version.diceRule ?? "", actionTraits: [...(it.traits ?? [])],   /* v0.0.428: Word of Radiance's d8s (saveDamage) */
     // v0.0.334 (Lucas, Rebuke): the Version's Effects by Tier (applied when the damage is applied and lands) and its "After the damage" chain
     fx: Object.fromEntries([1, 2, 3].map(n => [`t${n}`, [...(version.fx?.all ?? []), ...(version.fx?.[`t${n}`] ?? [])].filter(x => x?.uuid && (x.mode ?? "auto") === "auto").map(x => x.uuid)])), after: String(version.after ?? "").trim() };
 }
@@ -1175,6 +1175,24 @@ export async function saveDamage(msg) {
     return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: [...parts.uuids, ...(cfg.fx?.[`t${t}`] ?? [])].map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [], conds: tierConditionChips(cfg.tiers[`t${t}`]) }; });
   let actor = null; try { actor = cfg.actorUuid ? await fromUuid(cfg.actorUuid) : null; } catch (e) { actor = null; }
   const gOf = ready.map(({ r }) => tiers.indexOf(r.result.tier));
+  // v0.0.428 (the audit: Word of Radiance's d8s against a Profane creature never rolled on its Save card): a creature that is Profane for the user
+  // (Judged by it, or the Tag) gets its own roll of its Tier, d6s as d8s, on a line of its own
+  const extraRolls = [];
+  if (cfg.diceRule === "profane") {
+    let user = null; try { user = cfg.actorUuid ? await fromUuid(cfg.actorUuid) : null; } catch (e) { user = null; }
+    const { isProfaneFor } = await import("./judge.mjs");
+    for (let k = 0; k < ready.length; k++) {
+      const r = ready[k].r; let doc = null; try { doc = await fromUuid(r.uuid); } catch (e) { doc = null; }
+      if (!user || !doc || !isProfaneFor(user, doc.object ?? doc)) continue;
+      const p = parseParts(String(cfg.tiers?.[`t${r.result.tier}`] ?? "").replace(/(\d+)d6(!?)/g, "$1d8$2"));
+      if (!p.damage.length) continue;
+      const { comps, rolls } = await rollParts(p.damage, cfg.nonlethal);
+      extraRolls.push(...rolls);
+      groups.push({ ...groups[gOf[k]], comps: comps.map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })) });
+      gOf[k] = groups.length - 1;
+    }
+    if (extraRolls.length) { try { await showDice(extraRolls); } catch (e) { /* no dice to show */ } }
+  }
   // v0.0.426 (the audit; book, Chapter 8, Empowered: one creature takes it): the die rolled with the Tiers goes to the first creature whose damage
   // is dealt (its own group, so the others on its Tier don't take it), once
   if (st.tierDmg?.emp && !st.empDone) {

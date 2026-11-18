@@ -10,6 +10,14 @@ import { escalationOf } from "./escalation.mjs";
 /** Pure: does a hook's passive work at this Escalation (rung 0: always)? */
 export const hookOn = (rung, escalation) => !rung || (Number(escalation) || 0) >= rung;
 /** The working hooks of this kind on a creature's Features: [{ hook, item }]. */
+/** v0.0.428 (the audit: the HUD and the sheet struck Judge's 1 AP and Leaning at 0 AP though Roving Judgment and Lean and Loose make them free):
+ *  a Version's cost with the apCost hooks (an Action of a mark kind, or a Basic Action, at this AP costs `cost`). One rule for the HUD, the sheet
+ *  and useAction. */
+export function effectiveAp(actor, item, v) {
+  const it = item?.system ?? {}, ap = Number(v?.ap ?? v) || 0;
+  const h = activeHooks(actor, "apCost").find(x => (x.hook.markKind || x.hook.basic) && (!x.hook.markKind || x.hook.markKind === it.markKind) && (!x.hook.basic || x.hook.basic === item?.getFlag?.("twod12", "basic")) && Number(x.hook.ap) === ap);
+  return h ? Math.max(0, Number(h.hook.cost) || 0) : ap;
+}
 export function activeHooks(actor, kind) {
   const out = [];
   if (!actor?.items) return out;

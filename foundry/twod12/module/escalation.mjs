@@ -232,7 +232,12 @@ export function registerEscalationHooks() {
   }); } catch (e) { /* no socket */ } });
   Hooks.on("combatStart", combat => startAtOne(combat));
   Hooks.on("updateCombat", (combat, changes) => { if ("round" in changes) gainForRound(combat); });
-  Hooks.on("deleteCombat", combat => { resetAfterCombat(combat); askEncounterEnd(combat).catch(e => console.warn("twod12 | Momentum at the end", e)); });
+  Hooks.on("deleteCombat", combat => {
+    resetAfterCombat(combat); askEncounterEnd(combat).catch(e => console.warn("twod12 | Momentum at the end", e));
+    // v0.0.428 (the audit: with the world clock never moved, only the first night's Sleep took Momentum): an encounter ended, so the next Sleep is
+    // another night's and takes its −1
+    if (game.user?.isActiveGM) game.settings.set(F, "momentumSleepAt", -1e12).catch?.(() => {});
+  });
   // v0.0.407 (book, Momentum): -1 each time a PC goes Down (data.mjs atZero is Down). The active GM's client remembers who was Down (whoever made
   // the update: a player's client sends it), so a change from up to Down counts once.
   const wasDown = new Map();

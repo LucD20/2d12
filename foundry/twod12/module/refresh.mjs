@@ -129,6 +129,9 @@ export function registerRefresh() {
     const v = game.system.version, asked = game.settings.get(F, "refreshAskedFor");
     if (asked === v) return;
     try { const { needsMigrationR } = await import("./migrater.mjs"); if (needsMigrationR()) return; } catch (e) { /* none */ }   // v0.0.243: the pack R migration asks and runs the refresh itself
+    // v0.0.428 (the audit: refreshed first, an old one-handed Longsword became the two-handed one, still in one hand): the weapons migration first;
+    // the refresh is asked at the next load
+    try { const { weaponsMigrationPending } = await import("./migrater.mjs"); if (weaponsMigrationPending()) return; } catch (e) { /* none */ }
     await game.settings.set(F, "refreshAskedFor", v);
     if (!asked && !(game.actors?.size || game.items?.size)) return;   // a new, empty world: nothing to update
     await askRefresh(`The 2d12 system was updated to v${v}.`);

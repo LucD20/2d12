@@ -37,7 +37,7 @@ console.log("ends with the encounter: a Lingering with no duration", endsWithEnc
 console.log("Lingering keeps the higher average:", src("module/effects.mjs").includes("if (next !== null && now >= next) return;"));
 console.log("Shake Off on another player's creature goes through the GM:", src("module/inline.mjs").includes('game.socket.emit("system.twod12", { type: "shakeOff"') && src("module/damage.mjs").includes('data?.type === "shakeOff"'));
 const A = src("module/actions.mjs"), I = src("module/inline.mjs");
-console.log("Empowered: one die for one creature (attack, Save):", A.includes("if (empOn && !again && !empLater && !empUsed)") && A.includes("groups.splice(at, 0, { ...g0, comps: [...g0.comps, ec] })") && I.includes("if (st.tierDmg?.emp && !st.empDone)"));
+console.log("Empowered: one die for one creature (attack, Save):", A.includes("if (empOn && (!again || hadEmp) && !empLater && !empUsed)") && A.includes("groups.splice(at, 0, { ...g0, comps: [...g0.comps, ec] })") && I.includes("if (st.tierDmg?.emp && !st.empDone)"));
 
 console.log("--- the Archer");
 console.log("Shifting Aim's / Blade and Bow's Boons are rolled:", src("module/rollinput.mjs").includes("fx: `syn:hook:${k}`") && A.includes("resolveModifiers(actor, data.fx, [...extraMods, ...hookMods])"));
