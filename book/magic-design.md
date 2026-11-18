@@ -72,6 +72,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 41 | **A summon is paid by Sustain: 1 AP, and has a Minion's 3 AP (A).** | "Summon: A." | 2026-11-18 |
 | 42 | **One big jump a ladder is not good** (against Claude's rewrite of the rungs after the cap). To go deeper, the core of Dominions' mechanics is to be read first. | "Cap: I see, one big jump isn't good I think. To make this more in depth: if you haven't already, read on and research the core of Dominions 6 mechanics, that are important for its magical system. You will likely find where my exploding dice idea is from." | 2026-11-18 |
 | 43 | **Overcast has no cap of its own (A), with small rungs.** A step needs a spare level in its axis, and a casting holds as many steps as your Escalation minus 1; nothing else limits it. The rungs: **Reach +2 squares, Breadth +1 creature, Hold +1 round** a step; **"one creature" to "an area" is a different spell**, and an area spell's own Breadth step is +1 to its Burst or Emanation. **This replaces decision 32** (one step a ladder), which was made for rungs that tripled an area. | "Let's do a for cap decision." | 2026-11-18 |
+| 44 | **The summons rule is decided as proposed (5k, points 1 to 7).** Point 5 stays: a summon leaves when its caster becomes Bloodied or Strained, like every [Sustained] spell; **a Talent tree will later lift it** ("I think this is the best way"). The general lesson, his: **"Remember, progression is horizontal"**: the base rule carries the limit, and Talents are where a character grows past it. | "Let's remove number 5, strained and bloodied don't remove it immediately. Or we keep it and later make a talent tree for it (I think this is the best way). Remember, progression is horizontal." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -343,7 +344,7 @@ Lucas refused one big jump a ladder (decision 42). `research/dominions-core.md` 
 - **The cap of decision 32** (one step a ladder) was meant for rungs that tripled an area. With rungs this size, the limits already decided may be enough: a step needs a spare level in its axis, and a casting can hold as many steps as your Escalation minus 1. To choose: keep one step a ladder; allow two; or no cap beyond those two limits.
 - **Which pool a Path damages** (from the three tracks, `dominions-core.md` 3; proposed): the Elements wound (Vigor); Death and Glamour break the spirit (Resolve); Astral's Force is Resolve; Nature's poison is Vigor. A habit like the lean of the roll, never a rule.
 
-## 5k. The summons rule (PROPOSED 2026-11-18; waiting for Lucas: "defaults except")
+## 5k. The summons rule (DECIDED 2026-11-18, decision 44: all seven points; point 5 to be lifted by a Talent tree)
 
 Decided: a creature of about your level with a Minion's stats, growing with you; built from a menu at preparation; limited on purpose (37); Sustain: 1 AP for its 3 AP (41). Research: `research/charm-confusion-summons.md` part 2. Claude's defaults for the rest:
 
@@ -354,6 +355,27 @@ Decided: a creature of about your level with a Minion's stats, growing with you;
 5. **It leaves** when it goes Down, when you don't pay, and when a [Sustained] spell ends (you go Down, or become Bloodied or Strained).
 6. **The build, chosen on a Rest:** the Path gives its theme and its Basic attack's subtype; then **two picks from a short menu** (for example: a movement such as flying or climbing; Reach 2; a ranged Basic attack; its Path's rider on a Tier 3; Resist to one subtype; a sense). A Talent or a level in Conjuration adds a pick.
 7. **A Minor enemy to its foes:** spells and effects that are stronger against Minor enemies (decision 39) are stronger against a summon.
+
+## 5l. Talent seeds (limits in the base rules that a Talent could lift; a running list, nothing designed)
+
+Lucas's principle (decision 44): the base rule carries the limit; Talents are how a character grows past it, sideways. Each seed names the limit and where it was set.
+
+| Seed | The limit it lifts | Set in |
+|---|---|---|
+| **A summoner's chain** | A summon leaves when you become Bloodied or Strained | 44 (Lucas named this one) |
+| A second summon, or a third build pick | One summon at a time; two picks | 44 |
+| A summon that Flanks, or has a Reaction | It can't Flank; a Minion has no Reactions | 44 |
+| Holding two [Woven] spells | One at a time | 28 |
+| A held spell that survives one break | Held magic ends when you become Bloodied or Strained | 28 |
+| A cheaper Sustain for one School or Path | Sustain: 1 AP | 29 |
+| An Overcast step in round 1 for one Path | A step needs Escalation | 20 |
+| A safer Overreach (a smaller die, or once a fight for free) | 1d6! Nonlethal Resolve damage | 30 |
+| A second Overreach step | Once a casting | 30 |
+| Opening a Path or a School; extra spells | Mastery gives few spells | 19, 27 |
+| A Merge that keeps the spell's own rider | The rider slot holds one | 26 |
+| Real healing from one Path | Healing magic gives Guard only | 36 |
+| Ranged spells while Engaged | Doomed (and the gap for Save spells, 5h B3) | Chapter 3 |
+| Changing a spell by its trait ("your [Evocation] spells...") | none: this is what Talents already do | the Talents chapter |
 
 ## 6. The order of work from here (proposed)
 
