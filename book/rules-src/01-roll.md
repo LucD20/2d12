@@ -184,7 +184,7 @@ Some creatures take less, or more, damage of a subtype. It is written on the cre
 
 ### Riders
 
-In a tier cell, what follows the damage **rides on it**: "[V] 2d8 Pi; Prone" knocks the target Prone only if the Action deals that damage, more than 0 once Resist and Immune are applied. [[Guard]] doesn't stop a rider: Guard takes damage that was dealt. An effect that must happen even without the damage is written on the **Effects** row, or in a cell of its own with no damage. A Save Action's cells read the same way, each on its own result.
+In a tier cell, what follows the damage is a **rider**: "[V] 2d8 Pi; Prone" knocks the target Prone on that Tier. **A rider happens whatever damage is dealt:** Resist, Immune, a damage reduction or [[Guard]] can take the damage to 0 (all of it, or one of several damages), and the rider still happens. A Save Action's cells read the same way, each on its own result.
 
 ### Cleave
 

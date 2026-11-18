@@ -48,7 +48,7 @@ Guard 8 over ♥ 13 and 🧠 3: a choice: guard | Vigor first: {"B":5,"M":3,"tak
 no choice: one pool, or a Guard that takes it all: true
 Apply all applies: [0,4] (skips the rows with a choice and the applied ones)
 --- riders, Enfeebled, Empowered
-a rider lands with damage over 0 after Resist: false true | the damage message gates them: true
+a rider happens whatever damage is dealt (v0.0.432; 0 after Resist, then 3): true true | the damage message still reads it: true
 Enfeebled 2 on 1, 3, 6: each die at least 1: -4 | Empowered 1 on 2d6: 2
 the Save's damage per die too (inline.mjs no longer adds the step to the total): true
 --- the damage message

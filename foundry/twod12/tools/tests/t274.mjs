@@ -25,6 +25,8 @@ console.log("Break Free is shown in Chapter 6:", book("rules-src/06-basic-action
 const pal = book("cards/stage0/paladin.json");
 console.log("Courage is an Aura 3; Brace's squares are fixed; Judge's 1 AP is clear:", pal.includes("An [[Aura]] 3 around you (1 round)") && pal.includes("The squares adjacent to you now are Difficult Terrain") && pal.includes("If another creature was Judged by you, it no longer is."));
 
+console.log("v0.0.432: a rider happens whatever damage is dealt:", book("rules-src/01-roll.md").includes("**A rider happens whatever damage is dealt:**") && !book("rules-src/01-roll.md").includes("only if the Action deals that damage"));
+
 console.log("--- Foundry");
 const { htMayHit } = await import(ROOTURL + "module/fxrules.mjs");
 console.log("[HT] Movement after an Entering hit this turn-cycle:", htMayHit("movement", [2, 1], { round: 2, turn: 2, own: 1 }), "| the next turn-cycle:", htMayHit("movement", [2, 1], { round: 3, turn: 1, own: 1 }));

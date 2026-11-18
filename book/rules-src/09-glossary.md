@@ -150,7 +150,7 @@
 | [[Resist, Weak and Immune\|**Resist**]] | Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0). |
 | [[Health Pool\|**Resolve, Vigor**]] | The two thresholds of your Health Pool: your class's high and low Health values (you choose which is which), your species' bonuses, and the Stage steps. |
 | [[Rest\|**Rest**]] | A day in a safe place. It includes a Sleep. |
-| [[Riders\|**Rider**]] | What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); Guard doesn't stop it. |
+| [[Riders\|**Rider**]] | What follows the damage in a tier cell ("; Prone"): it happens on that Tier whatever damage is dealt (Resist, Immune, a reduction or Guard don't stop it). |
 | [[Roles\|**Role**]] | What an NPC does in a fight (Striker, Soldier, Skirmisher, Artillery, Controller, Leader): a ready set of ratings, with no rules of its own. |
 | [[Rolls\|**Roll**]] | Anything you roll: a Check, a Save, a Weapon, Power or Signature roll, or an Attribute Action. |
 | [[Rounds\|**Round**]] | One full cycle of turns. |

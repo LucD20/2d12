@@ -581,7 +581,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <li>Two Resists or two Weaks of the same subtype don't add up: the highest applies (see <a class="xref" href="#stacking">Stacking</a>).</li>
 </ul>
 <h3 id="riders">Riders</h3>
-<p>In a tier cell, what follows the damage <strong>rides on it</strong>: "<span class="pool-b">[V] 2d8</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Prone" knocks the target Prone only if the Action deals that damage, more than 0 once Resist and Immune are applied. <a class="xref" href="#guard"><span class="kw-guard">Guard</span></a> doesn't stop a rider: <span class="kw-guard">Guard</span> takes damage that was dealt. An effect that must happen even without the damage is written on the <strong>Effects</strong> row, or in a cell of its own with no damage. A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action's cells read the same way, each on its own result.</p>
+<p>In a tier cell, what follows the damage is a <strong>rider</strong>: "<span class="pool-b">[V] 2d8</span> <span class="dcode" style="--dc:#8a8a8a">Pi</span>; Prone" knocks the target Prone on that Tier. <strong>A rider happens whatever damage is dealt:</strong> Resist, Immune, a damage reduction or <a class="xref" href="#guard"><span class="kw-guard">Guard</span></a> can take the damage to 0 (all of it, or one of several damages), and the rider still happens. A <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action's cells read the same way, each on its own result.</p>
 <h3 id="cleave">Cleave</h3>
 <p>When you <strong>Cleave</strong> N, you deal the Modifier used as damage (with the same damage type and subtype as your weapon) to up to N creatures that are adjacent to the original target.</p>
 <h2 id="several-targets">Several Targets</h2>
@@ -1607,7 +1607,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p>Only a Rest restores <span class="kw-rally">Rally Points</span>. Sleep does not. A new encounter does not.</p>
 <p><strong>NPCs.</strong> NPCs have no <span class="kw-rally">Rally Points</span>. When an Action lets an NPC use one (an ally's Lay On Hands on it) or measures something in its <span class="kw-rally">Rally Points</span> (<span class="kw-guard">Guard</span> equal to what one of their <span class="kw-rally">Rally Points</span> heals), one of its <span class="kw-rally">Rally Points</span> removes <strong>9</strong> damage at Stage 0, and it spends nothing (the later Stages' numbers come with their Bestiary tables).</p>
 <h2 id="guard">Guard</h2>
-<p>Some effects give you <strong><span class="kw-guard">Guard</span></strong>, written with a value: <strong><span class="kw-guard">Guard 6</span></strong>. When you take damage, your <span class="kw-guard">Guard</span> takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your <span class="kw-guard">Guard</span> takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A <a class="xref" href="#riders">rider</a> on that damage still happens: <span class="kw-guard">Guard</span> takes damage that was dealt.</p>
+<p>Some effects give you <strong><span class="kw-guard">Guard</span></strong>, written with a value: <strong><span class="kw-guard">Guard 6</span></strong>. When you take damage, your <span class="kw-guard">Guard</span> takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your <span class="kw-guard">Guard</span> takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A <a class="xref" href="#riders">rider</a> on that damage still happens: a rider happens whatever damage is dealt.</p>
 <ul>
 <li>Damage reduction (such as Shield of Faith) applies first; <span class="kw-guard">Guard</span> takes what is left. Reductions from different effects add up (Judge's and Shield of Faith's), and each applies once to an Action's damage to that creature, after <a class="xref" href="#resist-weak-and-immune">Resist</a>.</li>
 <li><span class="kw-guard">Guard</span> isn't Health: it can't be healed, and <span class="kw-rally">Rally Points</span> don't restore it.</li>
@@ -2701,7 +2701,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </tr>
 <tr>
 <td><a class="xref" href="#riders"><strong>Rider</strong></a></td>
-<td>What follows the damage in a tier cell ("; Prone"): it happens only if that damage is dealt (more than 0 after Resist); <span class="kw-guard">Guard</span> doesn't stop it.</td>
+<td>What follows the damage in a tier cell ("; Prone"): it happens on that Tier whatever damage is dealt (Resist, Immune, a reduction or <span class="kw-guard">Guard</span> don't stop it).</td>
 </tr>
 <tr>
 <td><a class="xref" href="bestiary.html#roles"><strong>Role</strong></a></td>

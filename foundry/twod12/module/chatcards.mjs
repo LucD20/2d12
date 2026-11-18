@@ -511,8 +511,9 @@ export function guardSplit(a, guard, first = "B") {
   out.left = g;
   return out;
 }
-/** A rider lands when its damage does: more than 0 after Resist and Immune (the book, Ch. 1 Riders: Guard doesn't stop a rider). */
-export const riderLands = afterResistTotal => Number(afterResistTotal) > 0;
+/** v0.0.432 (Lucas, 2026-11-18; the book, Ch. 1 Riders): a rider happens on its Tier whatever damage is dealt (Resist, Immune, a reduction or Guard
+ *  can take it to 0). Before: only when more than 0 landed after Resist and Immune. The argument is kept for the callers. */
+export const riderLands = () => true;
 /** The rows Apply all applies: every row not applied yet whose damage needs no choice. */
 export const applyAllRows = rows => (rows ?? []).map((r, i) => ({ r, i })).filter(({ r }) => !r.applied && !r.choice).map(({ i }) => i);
 

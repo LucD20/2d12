@@ -132,7 +132,7 @@ export const summaryText = a => [[a.B.l, "Vigor"], [a.B.n, "Vigor Nonlethal"], [
 
 /**
  * v0.0.320 (pack AU part 2; book, Ch. 1): the Save cards that still deal their damage at once (an Area Save's rows) apply Resist / Weak / Immune too
- * (once per subtype, both pools together), and say whether the damage landed: its riders (the Tier's effects) happen only if it did.
+ * (once per subtype, both pools together), and say whether the damage landed (v0.0.432: the riders no longer wait for it; Ch. 1 Riders).
  * Returns { text, landed, mods: ["Resist 2 Fire"] }.
  */
 export async function dealDamageEx(actor, comps) {

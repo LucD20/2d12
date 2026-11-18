@@ -105,7 +105,7 @@ console.log("no choice: one pool, or a Guard that takes it all:", CC.choiceOf([{
 console.log("Apply all applies:", JSON.stringify(CC.applyAllRows([{ choice: "" }, { choice: "guard" }, { choice: "", applied: {} }, { choice: "resist" }, { choice: "" }])), "(skips the rows with a choice and the applied ones)");
 
 console.log("--- riders, Enfeebled, Empowered");
-console.log("a rider lands with damage over 0 after Resist:", CC.riderLands(CC.afterResist([{ pool: "B", sub: "Fi", total: 4 }], CC.parseDmgMods("Resist 5 Fire")).B), CC.riderLands(3), "| the damage message gates them:", src("module/ccdamage.mjs").includes("(!x.rider || landed)"));
+console.log("a rider happens whatever damage is dealt (v0.0.432; 0 after Resist, then 3):", CC.riderLands(CC.afterResist([{ pool: "B", sub: "Fi", total: 4 }], CC.parseDmgMods("Resist 5 Fire")).B), CC.riderLands(3), "| the damage message still reads it:", src("module/ccdamage.mjs").includes("(!x.rider || landed)"));
 console.log("Enfeebled 2 on 1, 3, 6: each die at least 1:", perDieDelta([1, 3, 6], -2), "| Empowered 1 on 2d6:", perDieDelta([3, 4], 1));
 console.log("the Save's damage per die too (inline.mjs no longer adds the step to the total):", !src("module/inline.mjs").includes("c.total = Math.max(0, c.total + step * k)"));
 

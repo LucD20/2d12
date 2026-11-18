@@ -89,10 +89,10 @@ Hidden (only when it perceives you better), Threatens (Chapter 3's words), Criti
 - **8:** asked what it meant (Chapter 3 let a creature that can't Evade use an Evade's movement as an Advance, which read as a way for an Immobilized or Prone creature to walk); the default applied: it can't.
 - **9:** "Why wouldn't you be able to Break Free while prone?": the default (Prone allows Break Free; its card in Chapter 6).
 - **10:** asked what the Immobilized DC is (Chapter 8: 11 + the Modifier the condition's origin used; 13 with no origin); the default applied.
-- **12:** asked for research ("isn't it best to halve first?"): no official rule in 5e or Pathfinder; the common view applies flat changes first and halving last (it keeps the halving proportional and doesn't drive Speed to 0). Applied as halve last; open for Lucas.
+- **12:** asked for research ("isn't it best to halve first?"): no official rule in 5e or Pathfinder; the common view applies flat changes first and halving last (it keeps the halving proportional and doesn't drive Speed to 0). Applied as halve last; **decided** (Lucas: "Ok, do that way you wrote").
 - **13:** Courage as an Aura 3 (Lucas: "this or add Aura, whichever you think best"); the rest at its default.
 - **16:** "HT should only trigger once per turn or round": [HT] once per turn-cycle whatever the patterns (the Movement exemption removed).
-- **17:** "most games do the rider even if deal 0 damage. Are you sure?": the add-up part applied; the rider at 0 damage NOT changed (the Riders rule is his 2026-11-04 decision): open.
+- **17:** "most games do the rider even if deal 0 damage. Are you sure?": the add-up part applied; **then decided (v0.0.432): a rider happens whatever damage is dealt**, with no Immune exception (Lucas: an exception for Immune is confusing when an Action deals several damages).
 - **20:** Hit and Run flagged for a redesign (a damage bonus would apply to every creature it hits); nothing changed.
 - **25:** "Allow to switch, granting 1 boon to everyone making the save" (Chapter 4); Desperate at its default.
 - **27:** "doesn't trigger Reactions from movement" (Chapter 3). "Moment" is still Chapter 2's word ("What a Reaction Responds To"); "answering a moment" was proposed on 2026-11-15 but never applied.

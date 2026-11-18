@@ -1279,15 +1279,14 @@ export async function saveRoll(msg, idx) {
   }
   const bits = [], extras = [];
   let amount = null;
-  let dealt = null;   // v0.0.320: Resist / Weak / Immune, and the riders only if the damage landed (Ch. 1 Riders)
+  let dealt = null;   // v0.0.320: Resist / Weak / Immune; v0.0.432: the riders happen whatever damage is dealt (Ch. 1 Riders)
   if (comps.length) { dealt = await dealDamageEx(actor, comps); bits.push(dealt.text); amount = comps.reduce((s, c) => s + c.total, 0); }
   bits.push(...parts.texts); extras.push(...parts.texts);
-  if (dealt && !dealt.landed && (parts.texts.length || parts.uuids.length)) bits.push("No damage landed: the rest of this Tier doesn't happen.");
-  if (parts.uuids.length && (!dealt || dealt.landed)) {
+  if (parts.uuids.length) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));
     for (const u of parts.uuids) { const b = `\u2726 ${(await fromUuid(u))?.name ?? "?"}`; bits.push(b); extras.push(b); }
   }
-  if (!dealt || dealt.landed) for (const chip of tierConditionChips(cfg.tiers[`t${chk.tier}`])) {
+  for (const chip of tierConditionChips(cfg.tiers[`t${chk.tier}`])) {
     try { await applyConditionChip(chip, { targets: [{ uuid: actor.uuid, name: actor.name }], actor: cfg.actorUuid ? await fromUuid(cfg.actorUuid).catch(() => null) : null }); } catch (e) { console.warn("twod12 | a Tier's condition", e); }
   }
   const tip = `${TWOD12.attributes[key]} ${sgn(mod)}${chk.adj ? `, modifier ${sgn(chk.adj)}` : ""}: 2d12 ${chk.d1.join("+")} + ${chk.d2.join("+")}${chk.bo ? `, +${chk.bo} Boon${chk.bo === 1 ? "" : "s"}` : ""}${chk.ba ? `, \u2212${chk.ba} Bane${chk.ba === 1 ? "" : "s"}` : ""}${chk.five ? `, 5 b/b: ${chk.five === "favored" ? "Favored" : "Doomed"}` : ""}${chk.doubles ? ", doubles" : ""} = ${chk.total} vs DC ${dc} (${saveLabels(dc)[chk.tier - 1]})${comps.length ? `. Damage: ${comps.map(c => `${c.formula} [${c.dice.map(d => d.results.join("+")).join(" ")}] = ${c.total}`).join("; ")}` : ""}`;

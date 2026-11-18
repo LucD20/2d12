@@ -514,6 +514,14 @@
      "rev": 1
     },
     {
+     "id": "rider-zero",
+     "v": "v0.0.432",
+     "title": "A rider at 0 damage",
+     "do": "Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.",
+     "expect": "The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.",
+     "rev": 1
+    },
+    {
      "id": "one-source",
      "v": "v0.0.424",
      "title": "A condition from a second creature",

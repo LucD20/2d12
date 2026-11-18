@@ -10,6 +10,7 @@ a Save Action switches to Nonlethal with 1 Boon on each Save: true
 each Elite has its own Escalation (three steps, the default ladder): true
 Break Free is shown in Chapter 6: true
 Courage is an Aura 3; Brace's squares are fixed; Judge's 1 AP is clear: true
+v0.0.432: a rider happens whatever damage is dealt: true
 --- Foundry
 [HT] Movement after an Entering hit this turn-cycle: false | the next turn-cycle: true
 Judge used after its own turn: c:1:2 | still that round: true | round 2 before its turn (same turn-cycle): true | its next turn: false | an old key (round only): true

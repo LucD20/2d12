@@ -270,6 +270,10 @@ Expect: Its DC is 11 + the user's Modifier (not 13).
 Do: Target a Lingering creature (or none, for yourself) and use Shake Off; get each Tier once.
 Expect: A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halved ("Halved (Shake Off, Tier 2)"), then it ends. Tier 1: a line says it goes on.
 
+### rider-zero · v0.0.432 · A rider at 0 damage
+Do: Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.
+Expect: The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.
+
 ### one-source · v0.0.424 · A condition from a second creature
 Do: Make an Orc Frightened of Aveline for 3 rounds, then Frightened of Durgan for 1 round.
 Expect: It is Frightened of Durgan only, for 1 round. Made Frightened of Durgan again for 2 rounds: it keeps the longer duration.
