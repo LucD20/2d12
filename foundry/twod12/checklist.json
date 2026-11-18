@@ -538,6 +538,14 @@
      "rev": 1
     },
     {
+     "id": "card-surfaces",
+     "v": "v0.0.438",
+     "title": "The same card in the chat, a tooltip and the HUD",
+     "do": "In the dark interface, send Smite to the chat (right-click its row, Send to chat), hover a Paladin Action's row, and open an Action from the HUD; then do the same with a light sheet.",
+     "expect": "The Vigor heart and Resolve brain icons are the light red and blue of the sheet's card everywhere (no dark red on dark), the keyword highlights the same color; a card in a tooltip reads left-aligned, as in the sheet.",
+     "rev": 1
+    },
+    {
      "id": "statblock-card",
      "v": "v0.0.437",
      "title": "The stat block follows the card",

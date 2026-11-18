@@ -285,6 +285,10 @@ Expect: A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halve
 Do: Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.
 Expect: The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.
 
+### card-surfaces · v0.0.438 · The same card in the chat, a tooltip and the HUD
+Do: In the dark interface, send Smite to the chat (right-click its row, Send to chat), hover a Paladin Action's row, and open an Action from the HUD; then do the same with a light sheet.
+Expect: The Vigor heart and Resolve brain icons are the light red and blue of the sheet's card everywhere (no dark red on dark), the keyword highlights the same color; a card in a tooltip reads left-aligned, as in the sheet.
+
 ### statblock-card · v0.0.437 · The stat block follows the card
 Do: Open the Orc Warrior and the Ogre Chieftain with the one-page NPC sheet; read Avenge Kin, Ground Slam and Rally the Tribe; then put Rebuke on an NPC and look at it.
 Expect: Each Action reads as its card: the Trigger on a row of its own, then "Attack Weapon vs. Armor Defense; Distance …; Target …" on one line, then its Tiers; Rebuke shows "Tier 1 or 2" on one line with the label not wrapped. The look (header bar in the frequency's color, the Tier colors, the Effects box) is as before; the buttons still use the Action.

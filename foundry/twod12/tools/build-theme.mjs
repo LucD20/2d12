@@ -336,6 +336,9 @@ const surfaces = pick => ({
   wins: pick(/\.classwin\b|\.pickwin\b|\.twod12\.rolldlg\b|\.trhl\b|\.trgrp\b|\.twod12 \.kw-/)
 });
 const BY_HAND = `
+/* ---- v0.0.438 (CARD-ONE step 5): a card keeps its own keyword color in the sheet too (the light PC sheet's warm tokens, set on every .twod12 inside it,
+   reached the card; the dark set's scoped values still win in the dark theme) */
+:where(.twod12-type) .application.twod12.twod12-actor .acard, :where(.twod12-type) .application.twod12.twod12-actor .acard .twod12 { --g-keywords: #5c5a55; }
 /* ---- v0.0.418 (Lucas, playtest 5, C11): Bloodied on the dark chat card in the Vigor red (the swap made it almost pink) */
 .twod12-dark .twod12.chat.cc .cc-state.bloodied { background: ${T.vig}; }
 /* ---- v0.0.418 (Lucas, playtest 5, F1: "the AP pips: empty and full too alike"): a full pip a solid square in the AP gold (center and border the

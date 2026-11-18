@@ -1,0 +1,6 @@
+the card's tokens on every card, not only one in the actor sheet: true
+their dark values reach every card (the theme, generated): true
+the inline calc button's color on every card: true
+the keyword color kept in the light sheet: true
+the card's root reset: true
+the surfaces tool: true
