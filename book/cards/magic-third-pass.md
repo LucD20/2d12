@@ -188,12 +188,12 @@ Against Air's Gust it is the elements answering each other again, here as a Reac
 > [Power, Spell, Astral, Evocation, Save]
 > Distance: 10 sq. · Target: One creature you perceive (no Line of Effect needed)
 > **Save:** Mind
-> **Tier 1:** [R] 2d6 Fo.
-> **Tier 2:** [R] 1d6 Fo.
-> **Tier 3:** [R] 1d4 Fo.
+> **Tier 1:** [R] 2d6 Ps.
+> **Tier 2:** [R] 1d6 Ps.
+> **Tier 3:** [R] 1d4 Ps.
 > **Overcast:** *Reach.* *Astral:* the thought stays: on a Tier 1, the target also takes Astral's rider.
 
-Two things no other card has: it **needs no Line of Effect** (a creature you hear behind a wall is Hidden to you, and that is enough), and it **always does something**, even on a Tier 3. **Corrected after the audit:** the first version said "a creature you can see", which can never be true without Line of Effect (Chapter 3: "You can't see [...] creatures you have no Line of Effect to"); and it is an Evocation, since all it does is damage.
+**Psychic, not Force (Lucas, 2026-11-18: "wouldn't psychic damage fit best in such a spell?"):** a Path's subtype is its usual one, not its only one; the subtype follows what the spell does. Two things no other card has: it **needs no Line of Effect** (a creature you hear behind a wall is Hidden to you, and that is enough), and it **always does something**, even on a Tier 3. **Corrected after the audit:** the first version said "a creature you can see", which can never be true without Line of Effect (Chapter 3: "You can't see [...] creatures you have no Line of Effect to"); and it is an Evocation, since all it does is damage.
 
 ### 12. Circle
 *Dominions: the Communion, Astral 1 / Thaumaturgy 1. Linked mages: the master's levels rise, the cost is shared, and the slaves suffer if the master falls.*
