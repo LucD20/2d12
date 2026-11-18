@@ -4902,3 +4902,35 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .application.pickwin .pw-field { display: flex; align-items: center; gap: .6rem; }
 .application.pickwin .pw-field > span { min-width: 7rem; }
 .application.pickwin .pw-field input, .application.pickwin .pw-field select { flex: 1; min-width: 0; }
+
+/* v0.0.425: the Test checklist (checklist.mjs): the bar in the table look (a flat surface, a thin line, outlined buttons, the answer given filled), the
+   List window's rows. The colors are the shared tokens (--s-*), so the bar follows the interface's dark or light theme. */
+.twod12-tests { position: fixed; top: 12px; right: 320px; z-index: 70; width: 380px; max-width: calc(100vw - 24px); background: var(--s-pg, #1f1c18); color: var(--s-ink, #ece3cf); border: 1px solid var(--s-hair, #4a4132); border-top: 2px solid var(--s-gold, #d2a75a); box-shadow: 0 4px 16px rgba(0, 0, 0, .45); font-family: "Source Sans 3", sans-serif; font-size: 13.5px; line-height: 1.35; }
+.twod12-tests .tc-head { display: flex; align-items: center; gap: 8px; padding: 5px 6px 5px 10px; cursor: move; user-select: none; border-bottom: 1px solid var(--s-hair, #4a4132); }
+.twod12-tests.folded .tc-head { border-bottom: 0; }
+.twod12-tests .tc-ttl { font-weight: 700; }
+.twod12-tests .tc-tally { flex: 1; color: var(--s-mute, #b3a68e); font-size: 12.5px; }
+.twod12-tests .tc-bad { color: var(--s-bad, #ff9c92); font-weight: 600; }
+.twod12-tests .tc-body { padding: 7px 10px 9px; }
+.twod12-tests .tc-grp { color: var(--s-mute, #b3a68e); font-size: 12.5px; }
+.twod12-tests .tc-name { font-weight: 700; font-size: 14.5px; margin: 1px 0 5px; }
+.twod12-tests p { margin: 0 0 5px; }
+.twod12-tests .tc-was { color: var(--s-mute, #b3a68e); font-style: italic; }
+.twod12-tests .tc-was.fail { color: var(--s-bad, #ff9c92); }
+.twod12-tests .tc-done { display: flex; align-items: center; gap: 8px; justify-content: space-between; border-top: 1px solid var(--s-hair, #4a4132); padding-top: 6px; }
+.twod12-tests .tc-row { display: flex; align-items: center; gap: 5px; margin-top: 8px; }
+.twod12-tests .tc-nav { margin-left: auto; display: flex; gap: 4px; }
+.twod12-tests button { all: unset; box-sizing: border-box; cursor: pointer; line-height: 1; }
+.twod12-tests .tc-btn { padding: 5px 11px; border: 1px solid var(--s-rule, #7a683f); color: var(--s-ink, #ece3cf); font-weight: 600; }
+.twod12-tests .tc-btn:hover, .twod12-tests .tc-btn:focus-visible { border-color: var(--s-gold, #d2a75a); }
+.twod12-tests .tc-btn.on { background: var(--s-stamp, #eadfc8); border-color: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); font-weight: 700; }
+.twod12-tests .tc-btn.neg.on { background: var(--s-bad, #ff9c92); border-color: var(--s-bad, #ff9c92); color: var(--s-stamp-ink, #221d16); }
+.twod12-tests .tc-ic { width: 26px; height: 24px; display: inline-flex; align-items: center; justify-content: center; color: var(--s-mute, #b3a68e); border: 1px solid transparent; }
+.twod12-tests .tc-ic:hover, .twod12-tests .tc-ic:focus-visible { color: var(--s-ink, #ece3cf); border-color: var(--s-hair, #4a4132); }
+.application.pickwin .tc-lrow { align-items: flex-start; gap: .8rem; padding: 5px 0; border-bottom: 1px solid var(--s-hair, #cdb88a); }
+.application.pickwin .tc-lrow .tc-lt { flex: 1; min-width: 0; }
+.application.pickwin .tc-lrow .tc-lt small { opacity: .7; }
+.application.pickwin .tc-lrow .tc-ld { display: block; font-size: .92em; opacity: .85; }
+.application.pickwin .tc-lrow .tc-ln { display: block; font-style: italic; }
+.application.pickwin .tc-lrow.fail .tc-ln { color: var(--s-bad, #8a1c13); }
+.application.pickwin .tc-lrow .cw-seg { flex: none; }

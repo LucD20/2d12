@@ -1,0 +1,629 @@
+{
+ "groups": [
+  {
+   "name": "The test bar",
+   "items": [
+    {
+     "id": "bar-works",
+     "v": "v0.0.425",
+     "title": "This bar works",
+     "do": "Read this test, click **Pass**. Then open **List**, click **Show** on another test, and press Shift+K twice.",
+     "expect": "Pass moves to the next open test; Show brings that test here; Shift+K hides the bar and shows it again. The bar can be dragged by its top line and folded (the arrow).",
+     "rev": 1
+    },
+    {
+     "id": "bar-fail",
+     "v": "v0.0.425",
+     "title": "A Fail keeps a note and the console errors",
+     "do": "On any test, click **Fail**, type a note, Save. Open List, click **Copy report**, paste it somewhere.",
+     "expect": "The report has a FAIL line with your note (and \"console:\" lines if Foundry logged errors since that test was shown). Click Fail again on that test: it opens again. Clear it before you go on.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "After the update",
+   "items": [
+    {
+     "id": "update-compendium",
+     "v": "v0.0.418",
+     "title": "Update from the compendium",
+     "do": "Open the world as the GM after the update. When asked, accept **Update from the compendium**.",
+     "expect": "The PCs' cards are refreshed (Judge on a Paladin ends with \"Multiple Paladins can Judge the same creature: it is Judged by each of them.\"). Nothing you added to a sheet by hand is removed.",
+     "rev": 1
+    },
+    {
+     "id": "update-npcs",
+     "v": "v0.0.419",
+     "title": "NPCs from the compendium again",
+     "do": "Delete the NPCs on the scene and drag the Goblin Sneak, Orc Warrior, Grave Wisp and Ogre Chieftain in again from the compendium.",
+     "expect": "Their melee cards read \"Distance: Reach (1)\" (the Ogre: its own Reach), and the cards with a push write \"Pushed N\" in Tiers 2 and 3.",
+     "rev": 1
+    },
+    {
+     "id": "compendium-content",
+     "v": "v0.0.413",
+     "title": "What the compendiums hold",
+     "do": "Open the compendiums.",
+     "expect": "Actions: the Basic Actions, the Paladin's, the Archer's and four Weapon Techniques (no \"old cards\", Talents or Testing folders). Weapons: Arming Sword, Longsword, Dagger, Hunting Bow, Recurve Bow and the armors. NPCs: the four above. PCs: Durgan holds an Arming Sword; Sylwen and Kaela are the Archers.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Characters and sheets",
+   "items": [
+    {
+     "id": "new-paladin",
+     "v": "v0.0.409",
+     "title": "A new Paladin's levels",
+     "do": "Make a new character, drop the Paladin class from the compendium, open the class window.",
+     "expect": "Level 1: Judge and Smite granted; Binding Light or Lay On Hands; Shield of Faith or Rebuke; an Art (three); Armor of Faith or Roving Judgment. Level 2: Kindled Wrath, the three Encounter Picks, Weight of Judgment or Tireless Vigil. Level 3: the two Arts you don't have, Reckoning or Hallowed Stance.",
+     "rev": 1
+    },
+    {
+     "id": "new-archer",
+     "v": "v0.0.411",
+     "title": "A new Archer's levels",
+     "do": "Make a new character, drop the Archer class, open the class window.",
+     "expect": "Level 1 offers Quick Shots or Strafe, Slip Away or Snap Shot, an Art, Lean and Loose or Blade and Bow (Shifting Aim and Darting Blade granted); Light Armor Training. Shifting Aim's bow choice opens the system's pick window and gives Mastery 5 with that bow.",
+     "rev": 1
+    },
+    {
+     "id": "stages",
+     "v": "v0.0.407",
+     "title": "Stage 0 on the sheet",
+     "do": "Open a level 1 to 3 character's sheet and its Build tab; take a test character to level 4.",
+     "expect": "The sheet says Stage 0. The Build tab's \"Next levels\" at level 3 reads \"Stage 1: Stage Talent · ... · Rally +1 · +1 to one Modifier\" with no Health part (the steps aren't written yet). At level 4 the class window asks which Modifier takes the +1. The Talent slots say they stay empty and don't block \"complete\".",
+     "rev": 1
+    },
+    {
+     "id": "action-card",
+     "v": "v0.0.410",
+     "title": "The Action card in the book's look",
+     "do": "Open Smite, Judge and Commandment on a Paladin's Actions tab, in the dark and the light interface.",
+     "expect": "Smite: the Flavor in italic, the traits line, Distance and Target, Smite dice, Attack, Tier 1 / 2 / 3, Special, then Use. Judge: two blocks (0 AP, 1 AP) each with its Use. Commandment: three Mode blocks, Kneel with its own Save. Both themes readable.",
+     "rev": 1
+    },
+    {
+     "id": "sheet-pills",
+     "v": "v0.0.421",
+     "title": "The Frequency word on Reactions only",
+     "do": "Look at a Paladin's Basic Actions and Reactions on the sheet.",
+     "expect": "A Basic Action's box shows only its cost (\"1 AP\"); a Reaction's shows its Frequency and cost (\"Turn · 1R\").",
+     "rev": 1
+    },
+    {
+     "id": "rally-edit",
+     "v": "v0.0.418",
+     "title": "Rally Points editable by the player",
+     "do": "As a player, change your character's Rally Points on the sheet.",
+     "expect": "It saves, and a short system line in the chat says the change.",
+     "rev": 1
+    },
+    {
+     "id": "item-traits",
+     "v": "v0.0.418",
+     "title": "An item sheet's traits",
+     "do": "Open a weapon's and an Action's item sheet.",
+     "expect": "The traits are the card's plain words (no colored chips), and a sheet keeps its own light look inside a dark interface where it has one.",
+     "rev": 1
+    },
+    {
+     "id": "npc-level",
+     "v": "v0.0.418",
+     "title": "The NPC sheet's Level",
+     "do": "On an NPC sheet, change its Level, then click its image.",
+     "expect": "The Level saves; the image picker opens.",
+     "rev": 1
+    },
+    {
+     "id": "class-editor",
+     "v": "v0.0.421",
+     "title": "The Class Levels Editor saves a section's title",
+     "do": "Open a class's Levels Editor, rename a section, save, open it again.",
+     "expect": "The new title is kept.",
+     "rev": 1
+    },
+    {
+     "id": "builder-tab",
+     "v": "v0.0.407",
+     "title": "The NPC Builder tab",
+     "do": "Open the Orc Warrior's Builder tab; click the Striker preset on a copy.",
+     "expect": "Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100; the Damage row \"25/AP\" for a Standard; the turn-budget table; Best turn about 93 of 100 with no warning. Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged.",
+     "rev": 1
+    },
+    {
+     "id": "no-levels-class",
+     "v": "v0.0.415",
+     "title": "A class without levels",
+     "do": "Drop a class item with no levels on a character.",
+     "expect": "A warning to give it levels first (no Attribute window).",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Starting a combat",
+   "items": [
+    {
+     "id": "minion-squad",
+     "v": "v0.0.407",
+     "title": "Three Goblins on one Initiative roll",
+     "do": "Put three Goblin Sneaks in a combat and roll Initiative from the Initiative window.",
+     "expect": "One roll, the same Initiative for the three (the card says \"×3\"), each with its own turn. A Goblin Sneak has 3 AP and no Reaction AP.",
+     "rev": 1
+    },
+    {
+     "id": "momentum-start",
+     "v": "v0.0.407",
+     "title": "Momentum and Escalation at the start",
+     "do": "Before starting, set Momentum to 2 (left-click +1, right-click −1 on the strip). Start the combat; go to round 2.",
+     "expect": "The strip reads \"Preparing the encounter · Momentum 2\", then \"Round 1 · Momentum 2\"; every PC starts at Escalation 3 (an Elite at 1). Round 2 raises everyone by 1, up to 6 (six pips on the sheet and the HUD).",
+     "rev": 1
+    },
+    {
+     "id": "judge-start",
+     "v": "v0.0.409",
+     "title": "Judge at the start of an encounter",
+     "do": "Start a combat with Aveline and Durgan in it.",
+     "expect": "Each Paladin's player is reminded to Judge (target it and use Judge, 0 AP). Both can Judge the same Orc: its token shows both rings, and it counts as Profane for each of them.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Your turn: Actions and the roll dialog",
+   "items": [
+    {
+     "id": "roll-order",
+     "v": "v0.0.417",
+     "title": "The roll dialog follows the card",
+     "do": "Open the roll dialog of Smite, Lay On Hands and Rebuke.",
+     "expect": "Smite: \"Smite dice\" above Attack, then Tier 1 to 3, then Special. Lay On Hands: Setup above the Tiers. Rebuke: Trigger at the top. A label reads \"Requirement\". Judge's dialog has no \"Attack: ...\" line (it has no roll).",
+     "rev": 1
+    },
+    {
+     "id": "smite-dice",
+     "v": "v0.0.409",
+     "title": "Smite by Escalation and the Reaction AP die",
+     "do": "At Escalation 3, Smite the Judged enemy; tick \"Reaction AP: 1 more Smite die\" in the roll dialog. Then Smite an enemy that isn't Judged.",
+     "expect": "Against the Judged one: d8s (Tier 2: 3d8! Holy with the weapon), 4 dice with the tick and the Reaction AP spent. Against the other: d6s.",
+     "rev": 1
+    },
+    {
+     "id": "hands-banes",
+     "v": "v0.0.412",
+     "title": "The hands' Banes",
+     "do": "Strike with a weapon in the off hand; then with a bow while the other hand holds a Dagger; then with a bow and the other hand free.",
+     "expect": "Off hand: 2 Banes in the roll dialog (a Dagger: 1); the bow with a Dagger in the other hand: 3 Banes; the bow with a free hand: none.",
+     "rev": 1
+    },
+    {
+     "id": "doomed-engaged",
+     "v": "v0.0.407",
+     "title": "A ranged shot while Engaged",
+     "do": "With an Archer adjacent to an enemy, use a [Ranged] Action.",
+     "expect": "The roll dialog's chip reads \"You are Engaged (Doomed)\" and the roll is Doomed.",
+     "rev": 1
+    },
+    {
+     "id": "shifting-aim",
+     "v": "v0.0.411",
+     "title": "Shifting Aim and Blade and Bow",
+     "do": "On Sylwen's turn, shoot from where you started; Evade a square and shoot; shoot again without moving. At Escalation 2 with Blade and Bow, use Darting Blade after a shot, twice.",
+     "expect": "No Boon on the first shot; \"Shifting Aim\" (1 Field Boon) on the second; none on the third. Darting Blade gets 1 Boon the first time that turn, none the second.",
+     "rev": 1
+    },
+    {
+     "id": "quick-shots",
+     "v": "v0.0.411",
+     "title": "Quick Shots and One More Arrow",
+     "do": "Use Quick Shots at Tier 2 and Tier 3; at Escalation 6, make your turn's first Strike.",
+     "expect": "Tier 2 deals the bow twice (2[W]), Tier 3 three times, then the Evade 2 button. At Escalation 6 the first Strike deals 1[W] more.",
+     "rev": 1
+    },
+    {
+     "id": "wounding-shot",
+     "v": "v0.0.414",
+     "title": "Wounding Shot and Lingering",
+     "do": "Use Wounding Shot from where you started your turn; then move a square and try again. Land a Tier 2.",
+     "expect": "From your square it rolls; after moving it is refused (\"has left its square this turn\"). Tier 2 applies \"Lingering [V] 1 (Bo/In)\"; at the end of the creature's turn its damage card says \"Ends with Shake Off (1 AP)\".",
+     "rev": 1
+    },
+    {
+     "id": "exploding",
+     "v": "v0.0.407",
+     "title": "Exploding dice and Empowered",
+     "do": "Roll Weapon Attacks until a die shows its top face. Give a PC Empowered and make two damaging Actions in its turn.",
+     "expect": "A 6 on a d6 shows \"6!\", counts 5 and adds a new roll. The first damage card has an \"Empowered 1d6!\" line; the second has none.",
+     "rev": 1
+    },
+    {
+     "id": "arts-modes",
+     "v": "v0.0.409",
+     "title": "An Art's Modes (Commandment)",
+     "do": "Use Commandment from the sheet or the HUD; pick Kneel.",
+     "expect": "A pick window asks Challenge / Courage / Kneel. Kneel rolls the target's Appeal Save; Tier 1 or 2 makes it Prone by itself.",
+     "rev": 1
+    },
+    {
+     "id": "lantern",
+     "v": "v0.0.409",
+     "title": "Lantern of Faith",
+     "do": "Use Kindle, then Glare on an enemy.",
+     "expect": "Kindle lights you (Bright 3) until the encounter ends. Glare: an Instinct Save; on a failure the target is Half-Blinded until the end of its turn.",
+     "rev": 1
+    },
+    {
+     "id": "hud-techniques",
+     "v": "v0.0.418",
+     "title": "The HUD shows only usable Techniques",
+     "do": "Select Durgan without the Mastery for Seizing Cut and open the HUD.",
+     "expect": "Seizing Cut is not in the HUD (it shows once the Mastery unlocks it at 10). The HUD shows the Pow Defense.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Chat cards",
+   "items": [
+    {
+     "id": "card-order",
+     "v": "v0.0.417",
+     "title": "The chat card follows the card",
+     "do": "Use Smite, Rebuke (its Save card) and Judge.",
+     "expect": "Smite: \"Smite dice:\" above the Tier stamp, \"Special:\" under it, before the Flavor. Rebuke's Save card: the Trigger above the Save and its Effect line (Hindered). Judge: \"Judged:\" and its Special once.",
+     "rev": 1
+    },
+    {
+     "id": "chat-click",
+     "v": "v0.0.418",
+     "title": "Click uses, right-click opens the rule",
+     "do": "Click anywhere on a chat card's button (its icon, its word); right-click a button.",
+     "expect": "A click uses it. A right-click opens its rule only (Foundry's message menu does not open).",
+     "rev": 1
+    },
+    {
+     "id": "chat-drag",
+     "v": "v0.0.421",
+     "title": "Drag a condition from the chat",
+     "do": "Drag a condition button (e.g. Prone) from a chat card onto a token. Try dragging a button from a sheet.",
+     "expect": "The token gets the condition. A sheet's button doesn't drag.",
+     "rev": 1
+    },
+    {
+     "id": "chat-follow",
+     "v": "v0.0.418",
+     "title": "The chat follows a growing card",
+     "do": "Use an Action whose card grows (the damage written into it); scroll up a little in the chat, then click a damage stamp's link to its roll card.",
+     "expect": "At the bottom, the chat follows the card as it grows. The jump to the roll card stays there (no snap back down).",
+     "rev": 1
+    },
+    {
+     "id": "chat-removed",
+     "v": "v0.0.418",
+     "title": "Lines removed from the chat",
+     "do": "Play a round: someone becomes Bloodied, someone uses a Reaction, someone goes Down, someone moves.",
+     "expect": "No Bloodied / Strained, Reaction-use, \"next damage reduced\", \"is Down\" or movement lines. The stamp is stretched; the Critical's arrow sits over CRIT, the CRIT zone shows only on a Critical; Bloodied is in the Vigor red on dark.",
+     "rev": 1
+    },
+    {
+     "id": "old-card",
+     "v": "v0.0.417",
+     "title": "An old chat card still works",
+     "do": "In a chat card posted before the update, click Apply and retarget.",
+     "expect": "It redraws with its old lines and Apply works.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Conditions and their Tiers",
+   "items": [
+    {
+     "id": "tier-no-damage",
+     "v": "v0.0.421",
+     "title": "A Tier's condition with no damage",
+     "do": "Use Trip (2 AP) and land a Tier 2; use Trick Shots' Pin and Startle; use Thwart Cut and land a Tier 1.",
+     "expect": "Each condition is applied by itself when its Tier lands (Prone, the Pin's and the Startle's, Pressed).",
+     "rev": 1
+    },
+    {
+     "id": "reckoning",
+     "v": "v0.0.421",
+     "title": "Reckoning",
+     "do": "Use Reckoning on several enemies.",
+     "expect": "Everyone is pushed; only those who rolled Tier 1 or 2 are Frightened (none is Frightened before its Save).",
+     "rev": 1
+    },
+    {
+     "id": "seizing-cut",
+     "v": "v0.0.421",
+     "title": "Seizing Cut's order",
+     "do": "Land Seizing Cut at Tier 3 (both hands full first: Release is offered).",
+     "expect": "Slid 1 first; Grabbed is a button to click after the Slide.",
+     "rev": 1
+    },
+    {
+     "id": "thwart-pressed",
+     "v": "v0.0.412",
+     "title": "Thwart Cut's Pressed",
+     "do": "Land Thwart Cut; the target makes its next Strike.",
+     "expect": "The target is Pressed 1 (Tier 3: 2) until the end of its turn; its Strike shows the Pressure Banes.",
+     "rev": 1
+    },
+    {
+     "id": "immobilized-dc",
+     "v": "v0.0.421",
+     "title": "Immobilized from a Tier",
+     "do": "Immobilize a creature with a Tier; try to Break Free.",
+     "expect": "Its DC is 11 + the user's Modifier (not 13).",
+     "rev": 1
+    },
+    {
+     "id": "shake-off",
+     "v": "v0.0.414",
+     "title": "Shake Off",
+     "do": "Target a Lingering creature (or none, for yourself) and use Shake Off; get each Tier once.",
+     "expect": "A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halved (\"Halved (Shake Off, Tier 2)\"), then it ends. Tier 1: a line says it goes on.",
+     "rev": 1
+    },
+    {
+     "id": "one-source",
+     "v": "v0.0.424",
+     "title": "A condition from a second creature",
+     "do": "Make an Orc Frightened of Aveline for 3 rounds, then Frightened of Durgan for 1 round.",
+     "expect": "It is Frightened of Durgan only, for 1 round. Made Frightened of Durgan again for 2 rounds: it keeps the longer duration.",
+     "rev": 1
+    },
+    {
+     "id": "reaction-conditions",
+     "v": "v0.0.418",
+     "title": "A Reaction's condition",
+     "do": "Rebuke an enemy that walks away; Snap Shot an enemy that walks up.",
+     "expect": "Each is Hindered and its movement is cut to half from that moment.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Movement",
+   "items": [
+    {
+     "id": "advance-one",
+     "v": "v0.0.414",
+     "title": "Advance is one piece",
+     "do": "In combat, Advance, move 2 of 5 squares, then use a Weapon Attack; drag again.",
+     "expect": "The squares left are gone (the banner closes); dragging pays 1 AP for a new Advance.",
+     "rev": 1
+    },
+    {
+     "id": "advance-interact",
+     "v": "v0.0.414",
+     "title": "One Interact inside an Advance",
+     "do": "Advance, move 2, draw a weapon (or Interact); Interact a second time. Also Release mid-Advance.",
+     "expect": "The first Interact pays 1 AP and the Advance's squares stay; the second ends it. Release (0 AP) doesn't end it.",
+     "rev": 1
+    },
+    {
+     "id": "off-turn-move",
+     "v": "v0.0.421",
+     "title": "Moving on someone else's turn",
+     "do": "End a creature's turn with squares left; on the next creature's turn, drag the first one.",
+     "expect": "It isn't free movement (refused, or the GM's normal drag). A Reaction's squares (e.g. Slip Away's) are free during that turn only.",
+     "rev": 1
+    },
+    {
+     "id": "steadiness",
+     "v": "v0.0.421",
+     "title": "Steadiness asked on the right screen",
+     "do": "Push a player's creature with a GM creature; push a neutral creature with another neutral one.",
+     "expect": "The pushed creature's player is asked (Apply / Ignore), not the GM. Two neutral creatures don't count as allies.",
+     "rev": 1
+    },
+    {
+     "id": "trade-places",
+     "v": "v0.0.410",
+     "title": "Trade Places",
+     "do": "Use Hold the Line's Trade Places on an adjacent ally.",
+     "expect": "The Swap button swaps both tokens at once; no Reaction is offered.",
+     "rev": 1
+    },
+    {
+     "id": "setup-move",
+     "v": "v0.0.418",
+     "title": "A Setup's movement",
+     "do": "Use Lay On Hands on an ally 4 squares away; use Circling Shot.",
+     "expect": "No \"out of range\" block; the Setup's button Advances (Circling Shot: Evade 1, then the shot, Tier 3's Evade 1). The Encounter Log writes it as one line (\"Strafe (Setup: Advance 2)\").",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Reactions and Judge",
+   "items": [
+    {
+     "id": "judge-question",
+     "v": "v0.0.421",
+     "title": "Judge's reduction is a question",
+     "do": "The Judged enemy damages an ally within 5 squares of the Paladin. Answer \"Not now\"; then hit again the same round and answer \"Reduce by N\".",
+     "expect": "The Paladin's player is asked on the bottom bar. \"Not now\" reduces nothing and keeps the round's use; the second hit asks again and is reduced. Unanswered for 2 minutes counts as \"Not now\".",
+     "rev": 1
+    },
+    {
+     "id": "two-judges",
+     "v": "v0.0.423",
+     "title": "Two Paladins Judge the same Orc",
+     "do": "Aveline and Durgan both Judge one Orc; it damages an ally near both.",
+     "expect": "Each Paladin is asked for their own reduction; Smite reads it as Profane for each.",
+     "rev": 1
+    },
+    {
+     "id": "shield-of-faith",
+     "v": "v0.0.409",
+     "title": "Shield of Faith and its target",
+     "do": "An enemy Strikes an ally within 5 of the Paladin; use Shield of Faith. Then try with the ally behind a wall from the Paladin.",
+     "expect": "The damage is 1 + Pow less and the attacker is Taunted (1 round). Behind a wall: the Reactions message says it's blocked (\"no Line of Effect to ...\").",
+     "rev": 1
+    },
+    {
+     "id": "rebuke-move-back",
+     "v": "v0.0.409",
+     "title": "Rebuke and Snap Shot's Move back",
+     "do": "An enemy within 3 walks away from the Paladin: use Rebuke; an enemy walks up to an Archer: use Snap Shot or Slip Away.",
+     "expect": "The Reactions message offers each; Move back puts the enemy on the square before.",
+     "rev": 1
+    },
+    {
+     "id": "hud-jump",
+     "v": "v0.0.421",
+     "title": "The HUD doesn't jump",
+     "do": "Accept a Reaction from the Reactions message with the HUD open.",
+     "expect": "The HUD keeps its place and size.",
+     "rev": 1
+    },
+    {
+     "id": "passives",
+     "v": "v0.0.409",
+     "title": "The Paladin's passives",
+     "do": "At Escalation 2 use a [Divine] Reaction (Armor of Faith) or Judge's 1 AP (Roving Judgment); reach Escalation 4 and 6.",
+     "expect": "Guard 1 + Pow, or Judge's 1 AP costs 0; at 4, two Reaction AP (Tireless Vigil); at 6, a [Divine] Action's card shows \"Setup: You Advance 3\" (Hallowed Stance).",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Areas, light and Cover",
+   "items": [
+    {
+     "id": "area-cover",
+     "v": "v0.0.419",
+     "title": "Creatures in an area give no Cover",
+     "do": "The Ogre uses Ground Slam on several creatures in a row.",
+     "expect": "No creature gets Cover from another inside the area (walls still give it). The Ogre's allies in it are hit too.",
+     "rev": 1
+    },
+    {
+     "id": "area-hover",
+     "v": "v0.0.422",
+     "title": "The hover card over an area",
+     "do": "Hover a placed area (Covering Fire, Consecrated Ground).",
+     "expect": "A small card follows the mouse: its name and what it does inside.",
+     "rev": 1
+    },
+    {
+     "id": "consecrated",
+     "v": "v0.0.409",
+     "title": "Consecrated Ground and Word of Radiance",
+     "do": "Place Consecrated Ground; walk an enemy in; start an ally's turn inside. Use Word of Radiance on enemies with one Judged.",
+     "expect": "Enemies pay double in it; the ally gains Guard equal to your Power Modifier (a line). Word of Radiance: Appeal Saves, d8s against the Judged one, Pushes 3 / 2 / 1.",
+     "rev": 1
+    },
+    {
+     "id": "covering-fire",
+     "v": "v0.0.411",
+     "title": "Covering Fire, Volley, Spotter",
+     "do": "Place Covering Fire and walk an enemy in; use Volley on a 3 Burst; Call Out a creature in Dim light.",
+     "expect": "The enemy takes [V] 2 + Weapon Modifier and pays double; Volley makes Prone on a Critical; your allies see the called-out creature Clear for 1 round.",
+     "rev": 1
+    },
+    {
+     "id": "senses-light",
+     "v": "v0.0.410",
+     "title": "Dim and Bright light on a roll",
+     "do": "Attack with you and the enemy both in Dim light; you in Bright and the enemy in Dim; the enemy in Bright and you in Dim.",
+     "expect": "Both Dim: 1 Field Bane, no Boon. You Bright, it Dim: 1 Field Bane, no Boon. It Bright, you Dim: 1 Field Boon.",
+     "rev": 1
+    },
+    {
+     "id": "clear-lines",
+     "v": "v0.0.411",
+     "title": "Clear Lines and Opening Shot",
+     "do": "At Escalation 4, shoot past an ally at an enemy Engaged with another ally; land a Tier 3.",
+     "expect": "No Cover from your ally and no Field Bane; the Tier 3 line names your allies who threaten the target.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Ending an encounter and resting",
+   "items": [
+    {
+     "id": "momentum-end",
+     "v": "v0.0.407",
+     "title": "Momentum at the end",
+     "do": "End an encounter (Overcome, then another one Retreat); a PC goes Down; two PCs Sleep the same night.",
+     "expect": "The window asks Overcome / Retreat / Neither (Overcome 3, Retreat 0); a Down: −1; the first Sleep −1, the second nothing.",
+     "rev": 1
+    },
+    {
+     "id": "mastery",
+     "v": "v0.0.412",
+     "title": "Mastery at the end of an encounter",
+     "do": "End an Overcome encounter in which characters made Strikes; answer \"Normal or harder\".",
+     "expect": "Each character who made a Strike gains 1 Mastery (several weapons: you pick); a chat line says so. The Mastery tab shows 10 / 20 / 30 / 45 / 60.",
+     "rev": 1
+    },
+    {
+     "id": "thrill-wrath",
+     "v": "v0.0.411",
+     "title": "Thrill of the Kill and Kindled Wrath",
+     "do": "An enemy the Archer damaged goes Down; an ally of the Paladin becomes Bloodied.",
+     "expect": "The Archer's Escalation +1; the Paladin's Escalation +1 (once).",
+     "rev": 1
+    },
+    {
+     "id": "swap-rest",
+     "v": "v0.0.407",
+     "title": "Swap on a Rest",
+     "do": "Complete a Rest as a player and open the Build tab.",
+     "expect": "\"Swap on a Rest\" shows (gone when an encounter starts); it asks the level, then the class window with that level's choices; the Attribute buttons are locked unless the optional world setting is on.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "The Encounter Log",
+   "items": [
+    {
+     "id": "log-allies",
+     "v": "v0.0.421",
+     "title": "Damage to allies and numbered names",
+     "do": "In a fight with two Goblin Sneaks, an area hits an ally and the user itself; open the Encounter Log.",
+     "expect": "The damage table has a \"To allies\" column (damage to itself counts there); the Goblins are \"Goblin Sneak 1\" and \"Goblin Sneak 2\" in the window and in the copied text.",
+     "rev": 1
+    },
+    {
+     "id": "log-struck",
+     "v": "v0.0.421",
+     "title": "A struck line's reason",
+     "do": "Hover a struck line in the Encounter Log.",
+     "expect": "Its reason shows (one of the few hovers left).",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Windows",
+   "items": [
+    {
+     "id": "pick-windows",
+     "v": "v0.0.415",
+     "title": "Every question is a pick window",
+     "do": "Meet a few of these: a Split Action's mode, a Strike out of your turn, a fourth Strike, Shift+E, the GM's \"movement left\", swap initiative, not enough AP, End Combat with a creature Dying, an Action with both hands full, Regrip, Reload, waking an Unconscious creature.",
+     "expect": "Each opens in the class window's style (no Foundry dialog) and Cancel closes it doing nothing.",
+     "rev": 1
+    },
+    {
+     "id": "pick-forms",
+     "v": "v0.0.415",
+     "title": "The forms",
+     "do": "Open the Senses editor, the Encounter Log's Edit line and Add a note, an area placed by hand, Recovery, Generate Weapon.",
+     "expect": "Each is a pick window; Save keeps what you typed; Generate Weapon's preview follows the type.",
+     "rev": 1
+    }
+   ]
+  }
+ ]
+}

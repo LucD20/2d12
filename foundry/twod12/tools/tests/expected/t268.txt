@@ -1,0 +1,35 @@
+--- the list
+checklist.json follows foundry/to-test.md: true
+the first group is the bar's own test: true
+every test has an id, a version, Do and Expect: true
+the release ships it (the zip takes the system folder but tools/tests): true
+--- the parser
+{"groups":[{"name":"G1","items":[{"id":"a-1","v":"v0.0.425","title":"First","do":"one two","expect":"three","rev":1},{"id":"b-2","v":"v0.0.424","title":"Second","do":"x","expect":"y","rev":3}]}]}
+a field goes on over lines; Rev read; a comment and an empty group dropped: true
+--- the answers
+a-1 passed; b-2's answer was for Rev 2, the test is Rev 3: open: pass open
+counts: {"pass":1,"fail":0,"skip":0,"open":1,"total":2} | next open after a-1: b-2 | none open: null
+previous of a-1 wraps to b-2: b-2 | current with no cursor = the first open: b-2
+--- the bar
+Test 2 of 2, Do / Expect, Pass Fail Skip, previous / next named, List: true
+no hover text: true
+the answer given is filled: true
+all answered: Copy report offered: true
+**bold** in a test's text, the rest escaped: true
+--- the List window and the report
+stats, a section per group plus Clear, Close and Copy report: [["Pass",1],["Fail",0],["Skipped",0],["Open",1]] 2 Close Copy report true
+2d12 test results · system v0.0.425 · D · 2 tests: 1 pass, 1 fail, 0 skipped, 0 open
+
+FAIL b-2 (v0.0.424, G1) Second
+  note: the Orc wasn't Prone
+  console: [12:00] TypeError: x
+
+PASS: a-1
+
+Console errors not kept with a Fail (the last ones):
+  [12:01] other
+the pick window's Cancel takes a word: true
+--- wired
+registered at init, started at ready: true
+GM only, behind the world setting; answers in a world setting; Shift+K: true
+a Fail asks in a pick window and keeps the errors since the test was shown: true

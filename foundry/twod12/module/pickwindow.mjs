@@ -3,7 +3,7 @@
 // message and Cancel / Confirm. Nothing is applied before Confirm. The Species window and the Initiative window are built on it.
 // A model (pure, from the window's owner) describes what is shown:
 //   { name, sub, img | icon, stats: [[label, value]], sections: [{ title, pill, done, sub, rows: [{ label, key, opts: [{ k, l, on, off, tip, cls }] }], html }],
-//     complete, message, confirm }
+//     complete, message, confirm, cancel (v0.0.425: the Cancel button's word, "Close" for a window that only shows) }
 // The owner handles pick(rowKey, optKey) and input(field, value), and gives result().
 import { esc } from "./util.mjs";
 import { highlightText } from "./config.mjs";
@@ -29,7 +29,7 @@ export function pickWindowHtml(m) {
   const pic = m.img ? `<img src="${esc(m.img)}" alt="">` : (m.icon ? `<span class="cw-icon"><i class="fa-solid ${esc(m.icon)}"></i></span>` : "");
   return `<header class="cw-head"><div class="cw-top"><div class="cw-ttl">${pic}<h1>${esc(m.name)}${m.sub ? ` <small>${esc(m.sub)}</small>` : ""}</h1></div></div>${stats ? `<div class="cw-stats">${stats}</div>` : ""}</header>
     <div class="cw-body"><div class="cw-col cw-slots">${secs}</div></div>
-    <footer class="cw-foot"><span class="cw-msg">${esc(m.message ?? "")}</span><span class="cw-btns"><button type="button" class="cw-btn" data-key="cancel" data-cancel>Cancel</button>${m.confirm === false ? "" : `<button type="button" class="cw-btn primary" data-key="confirm" data-confirm${m.complete === false ? " disabled" : ""}>${esc(m.confirm ?? "Confirm")}</button>`}</span></footer>`;
+    <footer class="cw-foot"><span class="cw-msg">${esc(m.message ?? "")}</span><span class="cw-btns"><button type="button" class="cw-btn" data-key="cancel" data-cancel>${esc(m.cancel ?? "Cancel")}</button>${m.confirm === false ? "" : `<button type="button" class="cw-btn primary" data-key="confirm" data-confirm${m.complete === false ? " disabled" : ""}>${esc(m.confirm ?? "Confirm")}</button>`}</span></footer>`;
 }
 
 export class PickWindow extends (ApplicationV2 ?? class {}) {

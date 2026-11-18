@@ -69,7 +69,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] (v0.0.418) **The sheets (E, decided):** the row's pill "Frequency · cost" ("Turn · 1R") until the redesign; the item sheet's traits as the card's plain words; a sheet's own light theme over Foundry's dark (trace); Rally Points editable by the player too, with a sysLine; the NPC sheet's Level input (E8: the image picker failed).
 - [ ] **Known gaps the audit left (v0.0.421, 2026-11-18):** the Save card's Effect line keeps its chips as buttons, so a click repeats what the chain did on use (Reckoning's Push; the C10 redesign settles it); a damage-free Save Action used with no target and then retargeted on its Save card never runs its chain; a Special above the roll inside a Version block (no card has one) would be dropped by `load.mjs` (only a card-level one is read); Judge's question holds the damage until it is answered (up to 2 minutes, then "Not now"); the sheets' and HUD's tooltip texts are still computed in the models (`tip` fields) for the mockups' "show it instead", but nothing draws them.
 - [x] **(v0.0.422) The hover card over a placed area is kept** (Lucas, 2026-11-18: "Keep it"; `module/zonetip.mjs`, his playtest 4 ask; the third hover left with the HP bars and the reasons a button is off). The audit's other question (two Judges vs. conditions) went into the book: rules-backlog "STACKING, A CARD SAYS SO".
-- [ ] **The version checklists (Lucas, 2026-11-18: "there should be a better way for me to follow the Checklists every Version ... maybe something that can be wired directly into Foundry"): PROPOSED; Lucas picked option 3 (2026-11-18: "I think I will go with 3"), not started.** Found: the checklists are one section per version in this file (154 open boxes, 94 of them from v0.0.387-406, which Lucas approved when merging: "All works except momentum"; items a later version replaced stay open), v0.0.418-422's only in the reports and the changelog, and his results come back as free text. Proposed (the session's report): (1) one rolling list in "do / expect" lines, grouped by where you meet it, the approved and replaced items closed, only what the tests can't see (needed for any option); (2) a checklist page on his phone (an Artifact whose results Claude reads); (3) **recommended: a Test Checklist inside Foundry** (GM only, behind a world setting; a list window and a strip docked by the HUD showing one item; Pass / Fail / Skip and a note saved in the world; a Fail keeps the console errors and the version; "Copy report"; the list shipped in the release from the repo's list, a test keeping them equal); (4) set-up buttons on top of it (a Test Arena scene with the PCs and the Stage 0 NPCs, an item's button selects the token and opens the card); (5) later, the system runs the mechanical checks itself in the Arena. Mockup first for 3.
+- [ ] **The version checklists (Lucas, 2026-11-18: "there should be a better way for me to follow the Checklists every Version ... maybe something that can be wired directly into Foundry"): PROPOSED; Lucas picked option 3 (2026-11-18: "I think I will go with 3"); BUILT in v0.0.425 (`module/checklist.mjs`, `foundry/to-test.md`, test t268). Left: option 4's set-up buttons (a Test Arena), option 5 (the system runs the checks), both later.** Found: the checklists are one section per version in this file (154 open boxes, 94 of them from v0.0.387-406, which Lucas approved when merging: "All works except momentum"; items a later version replaced stay open), v0.0.418-422's only in the reports and the changelog, and his results come back as free text. Proposed (the session's report): (1) one rolling list in "do / expect" lines, grouped by where you meet it, the approved and replaced items closed, only what the tests can't see (needed for any option); (2) a checklist page on his phone (an Artifact whose results Claude reads); (3) **recommended: a Test Checklist inside Foundry** (GM only, behind a world setting; a list window and a strip docked by the HUD showing one item; Pass / Fail / Skip and a note saved in the world; a Fail keeps the console errors and the version; "Copy report"; the list shipped in the release from the repo's list, a test keeping them equal); (4) set-up buttons on top of it (a Test Arena scene with the PCs and the Stage 0 NPCs, an item's button selects the token and opens the card); (5) later, the system runs the mechanical checks itself in the Arena. Mockup first for 3.
 - [ ] **The HUD mockup (Lucas, book/playtest-5.md 1g; NOT built):** D1 the Basic tab refitted, D3 the macro bar at the bottom with the Hands above it, D4 a condition as an icon in the free space under AP / Esc (no growing HUD), D7 a Setup's movement in the HUD (no floating bar), D2's readable weight; **the Situational section** holding every "act now" control (Linked Actions, Forced Movements, Stand and Crawl while Prone, a Setup's movement, End movement, Judge's "reduce this damage?") **and the triggers** (a Reaction you can use shows there the moment it triggers). C's reasons on screen (the tooltip review) belong here too.
 - [ ] **E1, E3 (NOT in v0.0.418):** the sheet mockups (the PC and NPC sheets small, the one-page long; the Hands without the word, one hand above the other).
 - [x] **(v0.0.420: the inventory `foundry/tooltips-inventory.md` reviewed by Lucas, "remove both"; only the HP bars and the reasons a button is off are left (C: on screen with the mockups); test t264.)** **The tooltips (Lucas, 2026-11-17): "too much ... remove all for now"**, except the HP bars'. **First an inventory:** every tooltip written down, categorized (plain help, hover cards, the "why" of a struck button, calculated values, rule notes...), for Lucas's review. (Not built: a switch to bring them back; Lucas didn't ask for one. The removed ones are listed in the inventory, and a chip's calculation is kept in `data-calc`.)
@@ -89,15 +89,17 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [x] **"Send to chat" (Lucas, 2026-11-17: "was this added to the unification?"):** yes since step 2: every Send to chat (the row's and the item list's right-click menu, the item's image) and a chat card's Card button go through `buildSoloCard`, on the card model; the gallery now draws it in a chat message too (`solo` in `chat`, 8 more shots, 72 in all): the same as the hover card.
 - **Seen in the gallery, for these steps:** the sheet's open card has no head bar (name, Frequency, cost: the row is its head; the solo card has one); the sheet draws a box around the card, the chat and the tooltip don't; Smite's Tier 1 reads "1d6! Holy" in Foundry and "Your Smite dice." in the book (the Tier text is rebuilt from the dice, not the card's words).
 
-## v0.0.417 (pack CARD-ONE step 3, 2026-11-17, branch `pack-card-one-3`): TO TEST
+**Since v0.0.425 the open tests live in `foundry/to-test.md`** (Foundry shows them: the world setting Test checklist). The version sections below are history: v0.0.407 to v0.0.417's open boxes were rewritten there; v0.0.387 to v0.0.406 were tested at the merge.
+
+## v0.0.417 (pack CARD-ONE step 3, 2026-11-17, branch `pack-card-one-3`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history)
 - [ ] **The roll dialog** of Smite: "Smite dice" above Attack, then Tier 1 to 3, then Special. Of Lay On Hands: Setup above the Tiers. Of Rebuke (a Reaction): Trigger at the top. A label reads "Requirement" (it was "Requires").
 - [ ] **The chat card** of Smite: "Smite dice:" above the Tier stamp, "Special:" under it, before the Flavor. Rebuke's Save card: the Trigger above "Instinct Save". Judge (no roll): "Judged:" and its 0 AP Special line once (not twice).
 - [ ] **An old chat card** (posted before this version) still re-renders (Apply, retarget) with its old lines.
 
-## v0.0.416 (pack CARD-ONE steps 1 and 2, 2026-11-17, branch `pack-card-one`): TO TEST
+## v0.0.416 (pack CARD-ONE steps 1 and 2, 2026-11-17, branch `pack-card-one`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history)
 **Nothing you see should change** (the gallery's screenshots are pixel for pixel the same). If a card looks different anywhere (the sheet's open card, the HUD's right-click card, an item sheet, a hover card, Send to chat, a chat card's Card button, the class window), that is a bug of this version.
 
-## v0.0.415 (pack CL, the code cleanup, 2026-11-17, branch `pack-cl`): TO TEST
+## v0.0.415 (pack CL, the code cleanup, 2026-11-17, branch `pack-cl`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history)
 **What changed:** the Foundry dialogs are pick windows, plain chat lines are system lines, dead code is in `foundry/deprecated/`. Nothing in the rules changed. **Left:** Checks and Saves a creature rolls for itself still open the old roll dialog (`actions.mjs askRoll`): moving them to the roll card needs a Check layout (its own pack).
 - [ ] **Windows (each opens in the class window's style, Cancel closes it):** a Split Action's mode; a Strike out of your turn; a fourth Strike; Shift+E (which Evade); the GM's "movement left" on the turn carousel; swap initiative (an ally list); not enough AP; End Combat with a creature Dying; an Action with both hands full (Release first); Regrip from its card; Reload with two unloaded weapons near; waking an Unconscious creature with Interact; Choice [C] damage.
 - [ ] **Forms:** the Senses editor (Hearing, the checkboxes, other senses: Save keeps them); the Encounter Log's Edit line and Add a note; an area placed by hand (a chip without quick:yes): targets, keep, rounds, Difficult for whom and which movements, [HT] patterns and text; Recovery (the Exhausted − / + and a click on Breather / Sleep / Rest); Update from the compendium (two Yes / No rows); Generate Weapon (type: the preview follows; Create / Give / Update).
@@ -105,7 +107,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Sheets look the same** (the old sheet's 552 CSS rules are gone: they styled no live element): the PC sheet, the NPC sheet, the item sheets.
 - [ ] **A class without levels** dropped on a character: a warning to give it levels first (no Attribute dialog).
 
-## v0.0.414 (pack "Advance is one piece", 2026-11-17, branch `pack-advance-one-piece`): TO TEST
+## v0.0.414 (pack "Advance is one piece", 2026-11-17, branch `pack-advance-one-piece`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history)
 - [ ] **One piece:** in combat, Advance (the button), move 2 of 5 squares, use a Weapon Attack: the Speed left is gone (the banner closes; dragging again pays 1 AP, a new Advance).
 - [ ] **Interact inside it:** Advance, move 2, draw a weapon on the hands buttons (or use Interact): 1 AP paid, the Advance's squares are still there; a second Interact ends it. A Setup's Advance (Lay On Hands) ends at an Interact.
 - [ ] **Release** (0 AP) mid-Advance doesn't end it; a Reaction you take off your turn doesn't either.
@@ -113,14 +115,14 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Shake Off** (Actions tab, Utility; also on NPCs): target the Lingering creature (or none, for yourself), click "Shake Off: the Save": a Save card; Tier 3: it ends; Tier 2: its next end-of-turn card is halved ("Halved (Shake Off, Tier 2)"), then it ends; Tier 1: a line says it goes on.
 - [ ] **The cards:** Advance, Evade, Interact and Shake Off read the new rules (sheet and chat).
 
-## v0.0.413 (the leftovers out of the system, 2026-11-17, branch `pack-archer-foundry`): TO TEST
+## v0.0.413 (the leftovers out of the system, 2026-11-17, branch `pack-archer-foundry`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history)
 **What left:** the compendium keeps only the worked-on content; the rest is in `foundry/deprecated/` (README there). Nothing in a world is deleted.
 - [ ] **The compendiums:** Actions = the 19 Basic Actions, the Paladin's 13, the Archer's 11, the four Weapon Techniques (no "old cards", Talents, Testing or placeholder Technique folders); Features = the 14 class Features, no Talents; Weapons = Arming Sword, Longsword, Dagger, Hunting Bow, Recurve Bow and the three armors; Effects = the 9 of the redesigned classes; NPCs = Goblin Sneak, Orc Warrior, Grave Wisp, Ogre Chieftain.
 - [ ] **The PCs:** Durgan holds an Arming Sword (Seizing Cut); "Sylwen (Elf Archer, Quick Shots)" and "Kaela (Human Archer, Strafe)"; the Dagger has no Technique.
 - [ ] **A level-up:** the Talent and Skill Talent slots are empty and don't block "complete".
 - [ ] **An old character** holding a Talent or an old card: it stays on the sheet; "Update from the compendium" leaves it alone.
 
-## v0.0.412 (pack F3 part 2, the bows and the swords in Foundry, 2026-11-17, branch `pack-archer-foundry`): TO TEST
+## v0.0.412 (pack F3 part 2, the bows and the swords in Foundry, 2026-11-17, branch `pack-archer-foundry`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history)
 **Start:** at load, Mastery moves to the new scale silently (a whisper lists it); after the Archer's window, "The book's weapons" asks once (Replace / Later) if a character holds a Shortbow, a Longbow, a Greatsword or a one-handed Longsword; back up first.
 - [ ] **The weapons migration:** a character's old Longsword is an Arming Sword (Seizing Cut), the Greatsword a two-handed Longsword (Thwart Cut), the Shortbow a Recurve Bow (Circling Shot), the Longbow a Hunting Bow (Wounding Shot); still in hand; the old Technique is gone; its Mastery kept.
 - [ ] **The compendium:** Arming Sword, Longsword (Two-handed), Hunting Bow, Recurve Bow (Strung) with the book's damage and ranges; no Greatsword, Shortbow, Longbow; Dagger and Handaxe are Light.
@@ -132,7 +134,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Thwart Cut:** the target is Pressed 1 (Tier 3: 2), EoT; its next Strike shows the Pressure Banes.
 - [ ] **Circling Shot:** the Setup's Evade 1 button, the shot, the Tier 3's Evade 1.
 
-## v0.0.411 (pack F3 part 1, the Archer in Foundry, 2026-11-17, branch `pack-archer-foundry`): TO TEST
+## v0.0.411 (pack F3 part 1, the Archer in Foundry, 2026-11-17, branch `pack-archer-foundry`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history)
 **Start:** after the Paladin's window, "The redesigned Archer" asks once (Migrate / Later); back up first.
 - [ ] **A new Archer:** level 1 offers Quick Shots or Strafe, Slip Away or Snap Shot, an Art, Lean and Loose or Blade and Bow (Shifting Aim and Darting Blade granted); Light Armor Training.
 - [ ] **Shifting Aim:** in a combat, on your turn: shoot from where you started: no Boon; Evade or Advance a square, shoot: "Shifting Aim" (1 Field Boon) in the roll dialog; shoot again without moving: no Boon.
@@ -143,7 +145,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Spotter:** Call Out on a creature in Dim light: your allies see it Clear (1 round). **Covering Fire:** the Zone: enemies walking in take [V] 2 + Weapon Modifier and pay double. **Volley:** a 3 Burst in range, Prone on a Critical. **Thrill of the Kill:** an enemy you damaged goes Down: Escalation +1.
 - **Not tried in Foundry:** all of it (the pure parts: t257).
 
-## v0.0.410 (pack F2 part 2, 2026-11-17, branch `pack-paladin-foundry`): TO TEST, with v0.0.409 below
+## v0.0.410 (pack F2 part 2, 2026-11-17, branch `pack-paladin-foundry`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history), with v0.0.409 below
 - [ ] **The Action card:** open Smite on a Paladin's Actions tab: the Flavor on top in italic, "Signature · Weapon · Strike · Divine" with the rank at the right (Diamond), Distance and Target, then Smite dice, Attack, Tier 1 / 2 / 3, Special, and "Your roll" with Use at its end. Open Judge: two blocks (0 AP, 1 AP), each with its Use. Open Commandment: three Mode blocks, Kneel with its own Save. Check dark and light (Foundry's Applications scheme), and the chat's Card button (the title reads "Encounter · 2 AP").
 - [ ] **Senses:** you and an enemy both in Dim light (each Obscured to the other): your roll shows 1 Field Bane and no Field Boon. You in Bright light, the enemy in Dim: your roll shows 1 Field Bane (it is Obscured to you) and still no Boon (it sees you better than you see it). The enemy in Bright light, you in Dim: your roll shows the 1 Field Boon.
 - [ ] **A Reaction's target:** Shield of Faith with the ally behind a wall from the Paladin: the Reactions message lists it as blocked ("no Line of Effect to ..."); the attacker behind a wall, the ally in the open: Shield of Faith works and the attacker is not Taunted (a line says why).
@@ -151,7 +153,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Trade Places:** Hold the Line, Trade Places on an adjacent ally: the Swap button swaps both tokens at once; no Reaction is offered.
 - **Not tried in Foundry:** all of it (the pure parts: t256; the card drawn with the system's CSS in Chromium, dark and light).
 
-## v0.0.409 (pack F2, the Paladin in Foundry, 2026-11-17, branch `pack-paladin-foundry`): TO TEST
+## v0.0.409 (pack F2, the Paladin in Foundry, 2026-11-17, branch `pack-paladin-foundry`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history)
 **Start:** update the system, open a world as the GM: after the Stage 0 window, "The redesigned Paladin" asks once (Migrate / Later); back up first. The card lists each Paladin and the old cards it keeps.
 - [ ] **A new Paladin** (the class from the compendium, a new character): the class window offers level 1: Judge and Smite (granted), Binding Light or Lay On Hands, Shield of Faith or Rebuke, an Art (three), Armor of Faith or Roving Judgment; level 2: Kindled Wrath, the three Encounter Picks, Weight of Judgment or Tireless Vigil; level 3: the two Arts you don't have, Reckoning or Hallowed Stance. Weapon +1, Power +2.
 - [ ] **Judge:** target an enemy, use Judge (0 AP): the ring on its token; hit an ally within 5 squares of the Paladin with that enemy: the first damage this round is reduced by the Paladin's Power Modifier (a "Judge" line); the second isn't. Knock it Down: the reminder to Judge another.
@@ -163,10 +165,10 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **The passives:** at Escalation 2 a [Divine] Reaction gives you Guard 1 + Pow (Armor of Faith), or Judge's 1 AP costs 0 (Roving Judgment); at 4, two Reaction AP (Tireless Vigil); at 6, a [Divine] Action's card shows "Setup: You Advance 3" (Hallowed Stance). Kindled Wrath: any ally Bloodied or Down raises your Escalation once.
 - **Not tried in Foundry:** everything above (the tests cover the pure parts: t255). **By hand:** Weight of Judgment's Speed, Tireless Vigil's "only [Divine]", Trade Places, Courage, Judge's 0 AP timing, Hallowed Stance's once a turn.
 
-## v0.0.408 (Lucas's answers to F1's questions, 2026-11-17, branch `pack-stage0-foundry`): TO TEST, with v0.0.407 below
+## v0.0.408 (Lucas's answers to F1's questions, 2026-11-17, branch `pack-stage0-foundry`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history), with v0.0.407 below
 - [ ] **Health steps at 0:** the Paladin's and the Archer's class window shows "high 20, low 10 (the Stage steps aren't written yet)"; a character taken to level 4 keeps its Stage 0 Health (the Build tab's "Next levels" line at level 3 has no Health part); an existing world's class copy (Migrate, or the class from the compendium) has every step at 0.
 
-## v0.0.407 (pack F1, "Stage 0 in Foundry", 2026-11-17, branch `pack-stage0-foundry`): TO TEST. What it built: the section "STAGE 0 IN FOUNDRY" below; the changelog: docs/reference.md
+## v0.0.407 (pack F1, "Stage 0 in Foundry", 2026-11-17, branch `pack-stage0-foundry`): TO TEST: moved to `foundry/to-test.md` (v0.0.425; this section is history). What it built: the section "STAGE 0 IN FOUNDRY" below; the changelog: docs/reference.md
 **Start:** update the system (Foundry's Update button, or the release v0.0.407), open a world, as the GM: the "Stage 0 in Foundry" window asks once (Migrate / Later); **back up first**. Migrate: a card for the GM lists each character (level, Stage, Rally Points, Escalation, what it keeps that Stage 0 no longer gives).
 - [ ] **Stages:** a level 1 to 3 character's sheet says **Stage 0**; level 4 is Stage 1 (+1 to one Modifier, Rally + 2, the next Health step). The Build tab's "Next levels" line at level 3 reads "Stage 1: Stage Talent · Health ... · Guard 2 per AP · Rally +1 · +1 to one Modifier" (no "+1 Attribute"). The class window at level 4 asks which Modifier takes the +1.
 - [ ] **Escalation 1 to 6:** six pips on the sheet and in the HUD; a combat's round 2 raises everyone by 1 up to 6 (a Critical or a hook at 6 does nothing and isn't used up); the sheet's strip shows the rungs 2 / 4 / 6 (the old cards' Passives at their own 1 / 2 / 3 until F2 and F3).
@@ -181,7 +183,7 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **The Builder tab (an NPC):** the Rank row; the role presets (Striker sets High damage, High Vigor, Low Resolve, Low Armor Defense, Low Weapon Modifier; CV unchanged); the Damage row (25/AP for a Standard, "100 a turn"); the turn-budget table (a Medium Standard's 2 AP Special: 55 pts, 4 + 1d6 / 8 + 1d8); the summary: Health, Turn budget, Best turn (an Orc Warrior: about 93 of 100, its riders not counted; no warning), CV steps (High Vigor and High Resolve: +1, CV 115). An NPC Action's sheet shows "suggested N points: ..." for its AP and Frequency.
 - [ ] Nothing else changed: the HUD, the chat cards and the sheets look as in v0.0.406.
 
-## v0.0.387 (pack STYLE-3, 2026-11-17, branch `pack-foundry-style`): TO TEST. The plan and the decisions: `foundry/mockups/style-book.md`
+## v0.0.387 (pack STYLE-3, 2026-11-17, branch `pack-foundry-style`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). The plan and the decisions: `foundry/mockups/style-book.md`
 - [ ] **The type:** names, labels and text in Source Sans 3 on the sheets, the chat cards, the HUD, the windows; the big titles (the character's name, the carousel's names) in Source Serif 4, not in capitals. Nothing looks too light or cut off (a label may need a size or weight step).
 - [ ] **The theme follows Foundry** (Configure Settings, Core: Interface and Applications color schemes): the system's own "Theme" setting is gone. Interface Dark + Applications Light: dark chat cards and HUD, light sheets. Both Dark: all dark. Both Light: all light. A sheet's own theme (its header menu) changes only that sheet. A popped-out chat message is light (Foundry forces it).
 - [ ] **Colors:** AP, Guard, Boon, Bane, the Attributes and the Modifiers are plain ink in text (sheets, chat, windows); the chat card's cost, the sheet's Frequency pill and the Action card's chip are outlined with a small colored square; the trait chips have no fill; gold is now the book's bronze.
@@ -190,13 +192,13 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **The light damage card in a dark browser:** the Vigor and Resolve line is dark text, not white.
 - [ ] Nothing else moved: no element added or removed on any surface.
 
-## v0.0.389 (2026-11-17, branch `pack-one-message`): TO TEST. Lucas's two notes on v0.0.388
+## v0.0.389 (2026-11-17, branch `pack-one-message`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). Lucas's two notes on v0.0.388
 - [ ] **Interface Dark:** the system's chat cards are dark (attack, Save, damage, the system's other messages); Interface Light: light. Change the setting: the cards already in the log follow. Sheets and windows still follow Applications.
 - [ ] **A card's damage with no target:** the bottom row reads "→ No target" with the crosshair and Card; select or target tokens, press the crosshair: their rows appear with Apply. No "Lethal" tag or wide button under the card.
 - [ ] The Tier stamp keeps its size beside the damage; the "1d8 Sl · 1d6 Ho" line no longer repeats under "Damage N" (the Tier's text, Bright light and so on, stays).
 - [ ] A popped-out chat message: tell me whether it follows the Interface too (Foundry forces it light; the card may now follow your setting inside it).
 
-## v0.0.388 (pack ONE, 2026-11-17, branch `pack-one-message`): TO TEST. One message per Action (decided 2026-11-17, Lucas: "C"; drawn: `foundry/mockups/chatone/index.html`)
+## v0.0.388 (pack ONE, 2026-11-17, branch `pack-one-message`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). One message per Action (decided 2026-11-17, Lucas: "C"; drawn: `foundry/mockups/chatone/index.html`)
 - [ ] **One target:** use an attack Action, then Damage: no new message; the same card shows "Damage N" and the Vigor / Resolve lines beside the Tier stamp (click them: the dice), and the footer shows the target with Apply (the sliders: Full / Half / Double). Apply: "Took ..." under the name, Undo; Undo puts it back. The Damage and retarget buttons are gone.
 - [ ] **Several targets** (Whirlwind, a Line): a "Damage" part under the card, a group a Tier, a row a creature with Apply, Apply all.
 - [ ] **A Save Action** (Rebuke, Ground Slam): Damage after the Saves: the damage on the Save card; a creature that rolls later: Damage again adds its row.
@@ -211,47 +213,47 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **Select and deselect a token several times:** nothing in the HUD's frame, the players box or the hotbar moves; the party cards fill the same height.
 - [ ] **Apply Unconscious (and another condition) to the selected creature:** the HUD updates once, without flickering.
 
-## v0.0.405 (2026-11-17, branch `pack-hud-remake`): TO TEST
+## v0.0.405 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked)
 - [ ] **Momentum:** switch it on in the combat tracker: the strip says "· Momentum" at once (before the start too); start the encounter: "Round 1 · Momentum".
 - [ ] **Select and deselect a token:** the hotbar's right edge doesn't move (it goes above the HUD with a token in a narrow window, as before); no frame around it over the party strip.
 
-## v0.0.404 (2026-11-17, branch `pack-hud-remake`): TO TEST
+## v0.0.404 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked)
 - [ ] **A Push:** after picking the creature, "click the square where it ends" in the HUD's side panel (Rules, End movement).
 - [ ] **The chat:** no separate Push messages; the Word of Radiance card ends with "Ogre Chieftain was Pushed 1 by Durgan." (one line per creature; "was Pushed 0" when ended at once).
 - [ ] **Select and deselect a token:** the HUD's left edge, the players box and the hotbar don't move.
 
-## v0.0.403 (2026-11-17, branch `pack-hud-remake`): TO TEST
+## v0.0.403 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked)
 - [ ] **Placing an area:** right-drag pans the map (the placement stays); Esc cancels.
 - [ ] **A Push picked on the map:** your token stays selected without blinking.
 - [ ] **After the Push:** a click on empty map deselects as usual (Foundry's own behavior is back).
 
-## v0.0.402 (2026-11-17, branch `pack-hud-remake`): TO TEST
+## v0.0.402 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked)
 - [ ] **Word of Radiance, Pushed 1 on two creatures, picked by clicking their tokens:** your token selected after each push and after the last (the HUD keeps showing it).
 
-## v0.0.401 (2026-11-17, branch `pack-hud-remake`): TO TEST. The last fixes of the HUD pack
+## v0.0.401 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). The last fixes of the HUD pack
 - [ ] **Word of Radiance, Pushed 1 on two creatures, picked by clicking their tokens:** your token stays selected after each; the second question in the HUD's side panel.
 - [ ] **The side panel glows** while a question waits, while granted uses wait (Double Shot), and while a Reaction waits.
 
-## v0.0.400 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.399
+## v0.0.400 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). Lucas's notes on v0.0.399
 - [ ] **GM, roll dialog:** click anywhere on "Tier 2" (it lights up); Roll: the chat card shows Tier 2. Click it again: back to rolling.
 - [ ] **Target:** target another creature on the map, press Target: the dialog takes it; untarget all, press Target: "No target".
 - [ ] **Word of Radiance, Pushed 1 on two creatures:** pick the first by clicking its token on the map: it moves, your token stays selected, the second question still in the HUD's side panel.
 - [ ] **Two Ogre Chieftains in the same Tier:** "2× Ogre Chieftain" with one Apply (both take their damage, each with its own Guard); click the name: each one's row.
 
-## v0.0.399 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.398
+## v0.0.399 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). Lucas's notes on v0.0.398
 - [ ] **A Push with your token selected:** the question in the HUD's side panel under Hands (token squares, Done, Stop), not a bar over the HUD.
 - [ ] **Word of Radiance with creatures already targeted:** Roll works: it asks to place the burst, then rolls.
 - [ ] **After placing the burst:** your token is still selected (the HUD shows it).
 - [ ] **The roll dialog:** remove the only target (×): "No target" with its DC; Target brings back the creatures targeted on the map.
 - [ ] **The creature line's ladder:** smaller, "T1 ≤12 42%", a Critical segment whole.
 
-## v0.0.398 (2026-11-17, branch `pack-hud-remake`): TO TEST. The multi-target card; the dialog's Target; the hotbar
+## v0.0.398 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). The multi-target card; the dialog's Target; the hotbar
 - [ ] **Word of Radiance on two or three creatures, damage rolled:** a group a Tier (pill, damage, Apply all, Pushed); each creature once with the sliders and Apply; click a name: its Defense, total and ladder. Apply all of a Tier applies only that Tier; with creatures in two Tiers, the card's Apply all under the groups applies all.
 - [ ] **The Guard:** no "−2 Guard" on any damage row (single target too); open the sliders: it is there.
 - [ ] **The roll dialog:** one line: name, ladder, DC, Target. Target a creature on the map: the dialog does not change; press Target: it takes it. Untarget everything, press Target: "No target" with its DC.
 - [ ] **No token selected:** the hotbar at the bottom beside the party cards, see-through; select a token: the HUD as before.
 
-## v0.0.397 (2026-11-17, branch `pack-hud-remake`): TO TEST. The roll dialog as a card; the questions in the HUD; the area after the dialog
+## v0.0.397 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). The roll dialog as a card; the questions in the HUD; the area after the dialog
 - **The damage part of a card with several targets (Lucas: "way too long, repeating features multiple times. Make a new mockup"):** **PROPOSED** in `foundry/mockups/multi-damage.html` (the artifact "Multi-Target Damage Card"; CSS `multi-damage.css`): the roll once, one group a Tier (its damage on its line, Apply all, riders), each creature once under its Tier (Guard, sliders, Apply / Undo), the ladders on demand. Waiting for Lucas.
 - [ ] **The roll dialog** (Heartseeker, Smite, a Save Action like Rebuke, a Reaction): the card part (name and cost, Flavor, traits, Distance / Target, Attack or Save, Tier lines, Critical, Effects); the bonuses green with their source; the GM: click "Tier 2" to force it (again: back to rolling). The roll part as before.
 - [ ] **The ladder:** one line, each Tier's range and chance side by side, muted colors (dark and light).
@@ -259,20 +261,20 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **A Push (Word of Radiance's Pushed 1), with the HUD showing a creature:** the question in the HUD's side panel under Hands; the creatures as token squares (the name on hover, the token lit on the map); click one: it moves; Done / Stop. With nothing selected: the question in the HUD's middle.
 - [ ] **Momentum:** switch it on, start an encounter: the strip says "Round 1 · Momentum" for that encounter.
 
-## v0.0.396 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.395
+## v0.0.396 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). Lucas's notes on v0.0.395
 - **The roll dialog in the card format (Lucas: "Isn't it supposed to look like the book? The card format? Still, keep the color for bonuses"):** **PROPOSED** in `foundry/mockups/rolldlg-card.html` (the artifact "Roll Dialog Card Format"; CSS `rolldlg-card.css`): the card part as the step-5 card (Flavor on top, the grid, Attack and Tier lines without Tier color, bonuses green with their source); the roll part unchanged with its colors (the "leftovers" proposal `rolldlg-leftovers.html` withdrawn). Waiting for Lucas.
 - [ ] **A chat card's top line:** "Distance: …" at the left, "Target: …" at the right, no ✦.
 - [ ] **The HUD with Double Shot's granted uses:** Hands and On you on top, the granted uses under them; hover the hands line: Regrip appears; hover the granted block: Cancel appears.
 - [ ] **Four Round Actions:** one "Round" header over both columns.
 - [ ] **A narrow window (about 820 px):** nothing spills out of the HUD; long names smaller or on two lines.
 
-## v0.0.395 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.394
+## v0.0.395 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). Lucas's notes on v0.0.394
 - **The roll dialog (Lucas: "didn't change"; his console check proved the v0.0.393 look live):** the leftovers (the modifier marks' colors, green chips and tags, "Vs." orange, the diamonds) are **PROPOSED** in `foundry/mockups/rolldlg-leftovers.html` (the artifact "Roll Dialog Leftovers"; its CSS `rolldlg-leftovers-after.css`). Waiting for Lucas.
 - [ ] **The HUD:** no cost buttons at rest; long names whole (smaller text, no "…"); hover a line: it fades, its cost buttons appear; click one: that Version; click the line itself: its first Version. A used Action: "used" on hover.
 - [ ] **A chat card's top line:** "Distance: … ✦ Target: …" (an Area Action: "Area: …").
 - [ ] **The marks:** bigger on the carousel and the HUD; the red slashes only on the acting plate; a 5-AP creature's plate fits.
 
-## v0.0.394 (2026-11-17, branch `pack-hud-remake`): TO TEST. The chat leftovers in the STYLE-3 look (the mockup: `foundry/mockups/chat-leftovers.html`)
+## v0.0.394 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). The chat leftovers in the STYLE-3 look (the mockup: `foundry/mockups/chat-leftovers.html`)
 - [ ] **Press Ctrl+F5 once after updating** (Foundry can keep an old stylesheet).
 - [ ] **A chat card (Double Shot, any attack):** traits as words ("Shot · Strike") over a bronze line; "[Ranged, Shot]" in the text in plain bold ink; the dividers plain lines.
 - [ ] **An End of Turn line, opened:** flat, a thin border, a line under its title; bronze squares, a hairline, the diamond (no lavender dots).
@@ -281,14 +283,14 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **The carousel:** the acting plate reads "Swap" whole (hover: the 1 AP cost).
 - [ ] **The roll dialog** (open one, then in the console F12): `getComputedStyle(document.querySelector(".rd-trait")).backgroundColor` prints `rgba(0, 0, 0, 0)`.
 
-## v0.0.393 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.392
+## v0.0.393 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). Lucas's notes on v0.0.392
 - **Lucas on v0.0.393: "still old format and turn breakdown and such still have old fonts; roll dialog nor chat dialog didn't change."** His own HTML rendered with the shipped styles shows the v0.0.393 look (the fonts are Source Sans 3, matching letter for letter), so the roll dialog is likely a cached stylesheet (Ctrl+F5; a console check given). What reads as "old" is the leftovers STYLE-3 missed: the chat card's filled trait chips and colored trait words, the diamond dividers, the turn lines' banded headers and lavender AP dots. **PROPOSED (mockup first):** `foundry/mockups/chat-leftovers.html` (the artifact "Chat Leftovers Restyle"; its CSS: `chat-leftovers-after.css`). Waiting for Lucas.
 - [ ] **No targets:** use Double Shot (or any Action for two creatures) with one or none targeted: the roll dialog opens (no warning); roll: it goes against the creature targeted or the DC typed. A marking Action (Marked Quarry) with nothing targeted: it rolls, marks nobody.
 - [ ] **The roll dialog:** the traits as words ("Weapon · Ranged · Shot · Strike"), the Frequency a small square beside "Encounter · 2 AP", the Tier rows tinted vermilion / green / blue / gold with a bar at the left, in the dark and the light theme.
 - [ ] **A used Action in the HUD:** after using an Encounter Action, its line is faded, struck through, and says "used".
 - [ ] **Double Shot's card in the chat:** the granted uses are outlined buttons in the accent, no icons; a used one is plain text.
 
-## v0.0.392 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.391
+## v0.0.392 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). Lucas's notes on v0.0.391
 - [ ] **No target:** use a targeting Action with nothing targeted: the roll dialog opens (no bottom-bar prompt), "No target" with a DC box and a **Target** button; press Target, click a creature: the dialog shows it. Roll with no target: against the DC typed. The chat card's retarget button works as before.
 - [ ] **A Reaction nobody takes** (everyone passes, or the clock runs out): its chat message disappears.
 - [ ] **The chime:** a small bell, struck twice.
@@ -297,14 +299,14 @@ The book: `rules-src/13-archer.md`, the cards in `book/cards/stage0/archer.json`
 - [ ] **The HUD's background** a little see-through; the hairlines between the marks with more room; the carousel's Swap on one line.
 - [ ] **Not done yet (Lucas asked for it): several manual targets.** "Add target, up to the amount of targets of the action, which you can set manual DCs": the dialog has one "No target" row with its DC; several rows with their own DCs need the multi-target roll to take creatures with no token (each its own Tier on the chat card). Logged for the next pack.
 
-## v0.0.391 (2026-11-17, branch `pack-hud-remake`): TO TEST. Lucas's notes on v0.0.390
+## v0.0.391 (2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). Lucas's notes on v0.0.390
 - [ ] **A small window:** shrink the browser: the HUD stays whole (narrower columns, then the fold button only, then no side panel); names end in "…", the stamps stay on one line.
 - [ ] **The hotbar:** at the HUD's right end again, two rows of five, its pages; in a small window it sits above the HUD (as before).
 - [ ] **Granted uses (Double Shot):** the Actions tab shows "Weapon Attack → Ogre Chieftain" once per use, each going to that creature; Cancel under them; no separate grant bar. The chat card's buttons: outlined, no icons; a used one is plain text.
 - [ ] **The carousel:** bronze squares, a diamond and red slashes on every plate (no blue or teal); the plates shorter; Move and Swap on one row.
 - [ ] **The Turn breakdown:** its title ("Turn Aveline Round 5", "End of …'s Turn") in the same face as the rest, no small capitals.
 
-## v0.0.390 (pack HUD2, 2026-11-17, branch `pack-hud-remake`): TO TEST. The HUD remade and the Reaction alert (the draft and the twelve decisions: `foundry/mockups/hud2-brief.md`)
+## v0.0.390 (pack HUD2, 2026-11-17, branch `pack-hud-remake`): TESTED at the merge into main (Lucas, 2026-11-17: "All works except momentum"; boxes left unticked). The HUD remade and the Reaction alert (the draft and the twelve decisions: `foundry/mockups/hud2-brief.md`)
 - [ ] **Nothing selected:** the party strip, a card per player character (a player sees it too); Momentum at the left when the GM has it on; a click selects that token; a double click opens the sheet. Select several tokens: their cards.
 - [ ] **A token selected:** its bar. The two bars (Nonlethal hatched), Guard, Rally with Steel Yourself, AP and Escalation in combat, the bottom row (AD, WD, Speed, Weapon, Bo, Mi, Ap, In: click an Attribute for a Check, Shift for a Save).
 - [ ] **The tabs** (Actions, Reactions, Basic, Escalation; an NPC: Attacks, Reactions, Basic), their counts, the columns by Frequency; click a line: the roll dialog on its first usable Version; click a stamp: that Version; right-click a line: the Action card; "+N more" in Basic.

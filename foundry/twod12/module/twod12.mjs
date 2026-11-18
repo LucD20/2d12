@@ -10,6 +10,7 @@ import { registerMasteryHooks } from "./mastery.mjs";
 import { registerChatScroll } from "./chatscroll.mjs";   // v0.0.343
 import { registerFearLine } from "./fearline.mjs";   // v0.0.345
 import { renderFollow, renderDamageUsed, registerDamageUsed, addHealButton } from "./followup.mjs";
+import { registerChecklist, startChecklist } from "./checklist.mjs";   // v0.0.425
 import { registerZoneTip } from "./zonetip.mjs";   // v0.0.350   // v0.0.347
 import { registerMarkHooks } from "./mark.mjs";
 import { registerLoE } from "./loe.mjs";
@@ -102,6 +103,7 @@ Hooks.once("init", () => {
   registerFearLine();   // v0.0.345: a selected Frightened creature shows its source on the map
   registerDamageUsed();   // v0.0.347
   registerZoneTip();   // v0.0.350: hovering a placed area shows what it does
+  try { registerChecklist(); } catch (e) { console.warn("twod12 | test checklist", e); }   // v0.0.425: the Test checklist (GM, a world setting)
   registerMarkHooks();
   registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
   registerFlankOverlay();   // v0.0.302
@@ -365,6 +367,7 @@ Hooks.on("renderChatMessageHTML", markHalfHint);
 Hooks.on("renderChatMessageHTML", frameMessage);   // v0.0.372 (Lucas: B): no Foundry box; the name, time and trash in the card (last, after the cards are drawn)
 Hooks.on("renderChatMessageHTML", rxRender);   // v0.0.272: Use / Pass for the row's owner, Skip all others for the GM, the timer
 Hooks.once("ready", registerVersionTabs);
+Hooks.once("ready", () => { startChecklist().catch(e => console.warn("twod12 | test checklist", e)); });   // v0.0.425: the Test checklist's bar (GM, when its setting is on)
 // v0.0.361 (PACK PERF, D36): the same four on the old renderChatMessage hook are gone (the system is V14 only: if it still fired, they ran
 // twice per message and the Reactions card bound its listeners twice)
 
