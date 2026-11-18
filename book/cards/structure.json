@@ -59,7 +59,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "When you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier."
+    "text": "When you use a [Divine] Reaction (not Judge's 0R), you gain Guard equal to 1 + your Power Modifier."
    }
   ],
   "blocks": [],
@@ -83,7 +83,7 @@
   "body": [
    {
     "label": "Trigger",
-    "text": "An ally within 2 squares is hit by a [Strike] Action."
+    "text": "An ally within 2 squares takes damage from a [Strike] Action."
    },
    {
     "label": "Attack",
@@ -207,7 +207,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action, or a [Ranged, Strike] Action after a [Melee, Strike] Action, it gains 1 Boon."
+    "text": "Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action this turn, or a [Ranged, Strike] Action after a [Melee, Strike] Action this turn, it gains 1 Boon."
    }
   ],
   "blocks": [],
@@ -312,7 +312,7 @@
    },
    {
     "label": "Effect",
-    "text": "You are no longer Immobilized."
+    "text": "You are no longer Immobilized, and no longer Grabbed if you were. When the card that Grabbed you says so, make a Body or Instinct Check (the higher) against the holder's Immobilized DC first: below it, you stay Grabbed."
    }
   ],
   "blocks": [],
@@ -652,7 +652,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "You and allies within 3 squares of you ignore the Frightened condition (1 round)."
+      "text": "An [[Aura]] 3 around you (1 round): you and your allies in it ignore the Frightened condition."
      }
     ],
     "foundry": {
@@ -1846,7 +1846,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "Squares adjacent to you are Difficult Terrain for enemies (1 round)."
+      "text": "The squares adjacent to you now are Difficult Terrain for enemies (1 round). They stay where they are if you move."
      }
     ],
     "foundry": {
@@ -1866,7 +1866,7 @@
      }
     ],
     "distance": "Reach",
-    "target": "One willing ally"
+    "target": "One willing ally of your Size"
    },
    {
     "heading": "Rescue",
@@ -2080,7 +2080,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "The target is Judged by you instead of the one you had."
+      "text": "The target is Judged by you until the encounter ends. If another creature was Judged by you, it no longer is."
      }
     ]
    }
@@ -2707,7 +2707,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Once on each of your turns, a [Strike] Action of yours that deals [W] deals 1[W] more."
+    "text": "Once on each of your turns, when a [Strike] Action of yours deals [W] on a Tier, it deals 1[W] more to each creature on that Tier."
    }
   ],
   "blocks": [],
@@ -4015,7 +4015,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear (1 round)."
+      "text": "Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear; Unsensed stays Unsensed (1 round)."
      }
     ],
     "distance": "10 sq.",
@@ -4033,7 +4033,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower."
+      "text": "Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower (Total Cover stays Total)."
      }
     ],
     "foundry": {

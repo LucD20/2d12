@@ -160,7 +160,7 @@ A weapon with the **Non-threatening** property doesn't threaten: you can't flank
 
 A weapon with the Reload property doesn't need to be reloaded every time you use it: you can reload quickly between shots. But you can make a more powerful shot that does require a reload.
 
-Before you roll a Weapon Strike with the weapon, you can choose to make a **Reload Shot**: the Strike is **[[Favored and Doomed Rolls|Favored]]** and **[[Empowered]]**. After the shot, you must Reload before you can use that weapon again. See the Reload Action in [[Chapter 6: Basic Actions]].
+Before you roll a Weapon Strike with the weapon, you can choose to make a **Reload Shot**: the Strike is **[[Favored and Doomed Rolls|Favored]]**, and its damage adds **1d6!**, as [[Empowered]] does (even if you already dealt damage this turn; you don't become Empowered). After the shot, you must Reload before you can use that weapon again. See the Reload Action in [[Chapter 6: Basic Actions]].
 
 ### Weapon Groups
 
@@ -179,7 +179,7 @@ Mastery belongs to you, not to the weapon you hold: it is for a kind of weapon (
 > [!example]
 > Zack has 20 Mastery with the Hunting Bow. His Mastery with every other bow is at least 10, so the Recurve Bow's Weapon Technique is unlocked for him. If he wins his next fight shooting the Recurve Bow, he can raise it to 11.
 
-**Every weapon's unlocks are at the same Mastery.** A deeper weapon has fewer of them.
+**Every weapon's unlocks are at the same Mastery**, except an Exotic weapon's Weapon Technique, unlocked at 20 (below). A deeper weapon has fewer of them.
 
 | Mastery | You unlock |
 |---|---|

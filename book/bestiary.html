@@ -349,7 +349,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </table></div>
 <p>"Deals about" is a whole turn: the Basic attack and the Special Actions it can fit after moving, against an average Defense, before anything the PCs do about it (<span class="kw-guard">Guard</span>, blocks, damage reduction take about half of it away). A turn in which it doesn't need to move deals about a quarter more. It is what you check a new NPC's Actions against.</p>
 <p><strong>Minions and Grunts have <span class="kw-ap">3 AP</span> a turn</strong>, not 4: simple creatures that move and strike. Every NPC also gains the Reaction AP, as a PC does (see <a class="xref" href="core-rules.html#action-points">Action Points</a>), <strong>except Minions, which have none</strong>.</p>
-<p><strong>Minions share turns.</strong> Up to <strong>3 Minions</strong> can act in the same turn slot, one after another: the GM rolls Initiative once for the group. Each still has its own turn (its own AP, its own start and end of turn).</p>
+<p><strong>Minions share turns.</strong> Up to <strong>3 Minions</strong> can act in the same turn slot, one after another: the GM rolls Initiative once for the group. Each still has its own turn (its own AP, its own start and end of turn), and takes it whole before the next one starts. A Minion's EoT effects end at the end of its own turn; durations in rounds count down at the end of the slot, after the last of them.</p>
 <h3 id="minor-enemies">Minor enemies</h3>
 <p><strong>Minor enemies</strong> are Minions and Grunts: the ranks with a CV below 100. Both have <span class="kw-ap">3 AP</span> a turn.</p>
 <h2 id="ratings">Ratings</h2>
@@ -553,7 +553,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 </table></div>
 <p><strong>A <span class="kw-ap">2 AP</span> or <span class="kw-ap">3 AP</span> Encounter Action should hit several creatures.</strong> Against one PC it is a killing blow: double damage, or the same points in heavy riders stacked on one creature, takes a PC from full Health to <span class="kw-neg">Down</span> in one hit, and no pay-back makes up for that. You can still give one to a boss as its signature: count the encounter <strong>one step harder</strong> (a normal fight as a hard one) and let the players see it coming. A <span class="kw-ap">3 AP</span> one is the creature's whole identity: it gives up half of everything else for it.</p>
 <h3 id="points-into-damage">Points into damage</h3>
-<p>The damage of an Action is the points left after its riders (below). The table writes them as a flat number plus at most one small die; between two rows, take the nearer one. Add the <strong>!</strong> to the die where it explodes (a Standard's or an Elite's Basic attack; another Action that paid for it).</p>
+<p>The damage of an Action is the points left after its riders (below). The table writes them as a flat number plus at most one small die; between two rows, take the nearer one. Add the <strong>!</strong> to the die where it explodes (a Standard's or an Elite's Basic attack; another Action that paid for it). The table follows a formula, which the example NPCs below use directly: the average of a Tier 2 is about <strong>0.14 × the points</strong>, of a Tier 3 about <strong>0.22 × the points</strong>.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -807,27 +807,28 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <ul>
 <li><strong>Start and rounds:</strong> an Elite starts every encounter at <strong>Escalation 1</strong> and gains 1 at the start of each round after the first, up to 6. It has no Momentum and no Critical hook.</li>
 <li><strong>Phases:</strong> when an Elite <strong>becomes Bloodied</strong>, and when it <strong>becomes Strained</strong>, its Escalation increases by 1 (once each). The GM says so when it happens: the players always see an Elite change.</li>
-<li><strong>What its Escalation does</strong>, unless the Elite's entry says otherwise:</li>
+<li><strong>Its steps:</strong> what its Escalation does is the Elite's own. Each Elite has three steps, at Escalation <strong>2</strong>, <strong>4</strong> and <strong>6</strong>, and gains each step's ability (and keeps it) when its Escalation reaches that number.</li>
 </ul>
+<p><strong>Each Elite has its own Escalation.</strong> The table gives the common steps: for each Elite, the GM picks one at each number, a different mix for each Elite, or writes their own. An Elite whose entry names no steps has the first of each, <strong>the default ladder</strong>: Pressing, Relentless and Second Wind.</p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
 <th>Escalation</th>
-<th>The Elite...</th>
+<th>Common steps (pick one)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>2</strong></td>
-<td>has <strong><span class="kw-boon">1 Boon</span></strong> on its first attack each round.</td>
+<td><strong>Pressing:</strong> <span class="kw-boon">1 Boon</span> on its first attack each round. <strong>Unmoved:</strong> its Steadiness increases by 1, and its Saves have <span class="kw-boon">1 Boon</span>. <strong>Watchful:</strong> it has a second Reaction AP, for its own Reactions (an Elite with a Reaction).</td>
 </tr>
 <tr>
 <td><strong>4</strong></td>
-<td>can use its <strong>Round Special Action twice</strong> a round.</td>
+<td><strong>Relentless:</strong> it can use each of its Round Special Actions twice per turn-cycle. <strong>Shrugs It Off:</strong> at the start of each of its turns, it ends one condition on itself (not a Health state). <strong>Swift:</strong> its Speed increases by 2, and it ignores Difficult Terrain.</td>
 </tr>
 <tr>
 <td><strong>6</strong></td>
-<td>gets its <strong>Encounter Special Action back</strong>, once.</td>
+<td><strong>Second Wind:</strong> it gets its Encounter Special Actions back, once. <strong>Fury:</strong> it is <a class="xref" href="core-rules.html#empowered"><span class="kw-pos">Empowered</span></a>. <strong>Last Stand:</strong> it is <a class="xref" href="core-rules.html#quickened">Quickened</a> 1.</td>
 </tr>
 </tbody>
 </table></div>
@@ -835,7 +836,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <li>An Elite can also have Actions with an <strong>Escalation</strong> line (Rally the Tribe below): it can use them while its Escalation is at least that number, and they spend nothing.</li>
 </ul>
 <p>With its Escalation, an Elite is worth its CV: two Elites cost the party what four Standards do, and three what six do. The phases are there to be seen, and they bring its later abilities a round sooner.</p>
-<div class="callout tbd"><div class="ctitle">To be decided</div><p>An Elite's own steps of Escalation (what each Elite gains, and at which numbers) come later; until then every Elite uses the table above.</p></div>
+<div class="callout tbd"><div class="ctitle">To be decided</div><p>The CV was measured with the default ladder. The other common steps are close to it by judgment, not measured yet: the next Bestiary measurement prices them.</p></div>
 <h2 id="roles">Roles</h2>
 <p>A <strong>role</strong> says what a creature does in a fight. It is a ready set of ratings for a rank's tables and a way to spend its points, to build an NPC quickly and to tell the GM how to play it. <strong>Every role below is balanced: an NPC built with it is worth its rank's CV</strong>, its Actions bought with its turn budget. A role has no rules of its own, and an NPC needs none: every rating a role doesn't name is Medium.</p>
 <div class="tablewrap"><table>
@@ -1380,16 +1381,16 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <p><strong>Orc Warrior</strong> (Standard, CV 100; 25 points an AP, turn budget 100): <span class="at-body">Body</span> High (+2), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-mind">Mind</span> Medium (+1), <span class="at-appeal">Appeal</span> Low (0). <span class="mod-weapon">Weapon Modifier</span> Medium (+2), <span class="mod-power">Power Modifier</span> Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
 - <em>Cleaver</em> (Basic attack, <span class="kw-ap">1 AP</span>, At-will, Reach (1); 25, Push 1 2): <span class="pool-b">[V] 1 + 1d4! / 3 + 1d4!</span> Sl, and <span class="kw-mv">Pushed 1</span>.
 - <em>Brutal Swing</em> (<span class="kw-ap">2 AP</span>, Round, Reach (1); 55, Prone 12, Avenge Kin's share 7): <span class="pool-b">[V] 3 + 1d4 / 4 + 1d6</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>, and Prone.
-- <em>Avenge Kin</em> (Reaction, <span class="kw-ap">1R</span>, Trigger: an ally within 2 squares is hit by a Strike; 28): it makes an attack against the attacker if it can reach it: <span class="pool-b">[V] 1 + 1d4 / 3 + 1d6</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>.</p>
+- <em>Avenge Kin</em> (Reaction, <span class="kw-ap">1R</span>, Trigger: an ally within 2 squares takes damage from a [<span class="trhl" style="--tc:var(--g-kind)">Strike</span>] Action; 28): it makes an attack against the attacker if it can reach it: <span class="pool-b">[V] 1 + 1d4 / 3 + 1d6</span> <span class="dcode" style="--dc:#8a8a8a">Sl</span>.</p>
 <p><strong>Grave Wisp</strong> (Standard, CV 100; 25 points an AP): <span class="at-mind">Mind</span> High (+2), <span class="at-appeal">Appeal</span> Medium (+1), <span class="at-instinct">Instinct</span> Medium (+1), <span class="at-body">Body</span> Low (0). <span class="mod-power">Power Modifier</span> Medium (+2), <span class="mod-weapon">Weapon Modifier</span> Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - <em>Chilling Touch</em> (Basic attack, <span class="kw-ap">1 AP</span>, At-will, Reach (1), Vs. WD, [Fear]; 25, Frightened 3): <span class="pool-m">[R] 1 + 1d4! / 2 + 1d4!</span> Co, and Frightened of it (EoT).
 - <em>Dread Whisper</em> (<span class="kw-ap">2 AP</span>, Round, Reach (1), Vs. WD, [Fear]; 55, Dazed 1 8): <span class="pool-m">[R] 3 + 1d6 / 7 + 1d6</span> <span class="dcode" style="--dc:#c9577f">Ps</span>, and Dazed 1.</p>
-<p><strong>Ogre Chieftain</strong> (Elite, CV 200; 33 points an AP, turn budget 132): <span class="at-body">Body</span> High (+3), <span class="at-instinct">Instinct</span> Medium (+2), <span class="at-mind">Mind</span> Medium (+2), <span class="at-appeal">Appeal</span> Low (+1). <span class="mod-weapon">Weapon Modifier</span> Medium (+3), <span class="mod-power">Power Modifier</span> Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation (the ladder above).
+<p><strong>Ogre Chieftain</strong> (Elite, CV 200; 33 points an AP, turn budget 132): <span class="at-body">Body</span> High (+3), <span class="at-instinct">Instinct</span> Medium (+2), <span class="at-mind">Mind</span> Medium (+2), <span class="at-appeal">Appeal</span> Low (+1). <span class="mod-weapon">Weapon Modifier</span> Medium (+3), <span class="mod-power">Power Modifier</span> Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation: the default ladder (Pressing, Relentless, Second Wind).
 - <em>Club</em> (Basic attack, <span class="kw-ap">1 AP</span>, At-will, High, Reach (1); 40, Push 1 2, then Ground Slam's pay-back, a quarter): <span class="pool-b">[V] 1 + 1d4! / 3 + 1d6!</span> Bl, and <span class="kw-mv">Pushed 1</span>.
 - <em>Overhead Smash</em> (<span class="kw-ap">2 AP</span>, Round, Reach (1); 73, Push 2 8, the pay-back): <span class="pool-b">[V] 3 + 1d6 / 7 + 1d6</span> <span class="dcode" style="--dc:#8a8a8a">Bl</span>, and <span class="kw-mv">Pushed 2</span>.
 - <em>Ground Slam</em> (<span class="kw-ap">2 AP</span>, Encounter, Area 2 Emanation, a <span class="trhl" style="--tc:var(--g-roll)">Save</span> Action: <span class="at-body">Body</span> Save, DC 14; 145, Prone 12, half to each): <span class="pool-b">[V] 10 + 1d8 / 6 + 1d6 / 0</span> <span class="dcode" style="--dc:#8a8a8a">Bl</span> (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.
 - <em>Rally the Tribe</em> (Escalation 4, <span class="kw-ap">1 AP</span>, Round): allies within 5 squares gain 1 Support <span class="kw-boon">Boon</span> on their next [<span class="trhl" style="--tc:var(--g-roll)">Weapon</span>] Action.</p></div></details></section>
-<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#ratings">Ratings</a>: Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.</li><li><a href="#elite-escalation">Elite Escalation</a>: An Elite's own steps of Escalation (what each Elite gains, and at which numbers) come later; until then every Elite uses the table above.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Text fonts: Source Serif 4 and Source Sans 3 (SIL Open Font License). Card title font of the sample card: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
+<section class="chapter"><details open><summary><h1 id="open-items">Appendix: Open Items</h1></summary><div class="cbody"><p>Rules that are not decided or not written yet. They are collected from the "To be decided" boxes in the chapters.</p><ol class="openitems"><li><a href="#ratings">Ratings</a>: Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 come with those Stages.</li><li><a href="#elite-escalation">Elite Escalation</a>: The CV was measured with the default ladder. The other common steps are close to it by judgment, not measured yet: the next Bestiary measurement prices them.</li></ol></div></details></section><p class="credits">Icons: Font Awesome Free (CC BY 4.0). Text fonts: Source Serif 4 and Source Sans 3 (SIL Open Font License). Card title font of the sample card: Cinzel (SIL Open Font License).</p><p class="totop"><a href="#top">Back to top</a></p></main></div><script>
 function openUp(el){let d=el&&el.closest('details');while(d){d.open=true;d=d.parentElement&&d.parentElement.closest('details');}}
 // v0.0.427 (Lucas: "the links in the book are broken"): shown inside another page's frame (the Claude app, a published page), a "#..." link
 // resolved against that page and reloaded the frame instead of scrolling. A link to a place in this document (written "#id", or with this

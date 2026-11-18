@@ -45,7 +45,7 @@
 | [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away (never the Reaction AP); the rest, if any, from your next turn's AP. |
 | [[Deadly Hazards\|**Deadly Hazard**]] | A hazard that kills Minor enemies at once and leaves anyone else Imperiled. |
 | [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or a Vs. Attribute (12 + the Attribute). "+1 Defense" raises all of them. |
-| [[Desperate\|**Desperate**]] | You are Down and still fighting (some Nonlethal damage): Slowed 1, or your Slowed value + 1 (at most 3). |
+| [[Desperate\|**Desperate**]] | You are Down and still fighting (some Nonlethal damage, and a Nonlethal blow took you Down): Slowed 1, or your Slowed value + 1 (at most 3). |
 | [[Difficult Terrain\|**Difficult Terrain**]] | Each square counts double. |
 | [[Sight Senses\|**Dim-light Sight**]] | A Sight Sense: Dim light counts as Bright for you. |
 | [[Disrupting Actions\|**Disrupted**]] | A disrupted Action doesn't happen, and its AP and resources are wasted. |
@@ -57,7 +57,7 @@
 | [[Dying\|**Dying**]] | Down with Vigor as your Dominant Damage: Slowed 1, or your Slowed value + 1 (at most 3); the first time in an encounter, roll on the Dying Table, then collapse or keep fighting. |
 | [[Effect Timing\|**Effect**]] | A card's line that happens whenever the card is used, whatever the roll. |
 | [[Playing on the Grid\|**Elevation**]] | Squares up or down count like a diagonal: the larger count plus half the smaller one. A creature is as tall as it is wide. |
-| [[Elites\|**Elite**]] | An NPC rank with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase). |
+| [[Elites\|**Elite**]] | An NPC rank with CV 200: about 130 Health at Stage 0, and the only NPC with Escalation (Elite Escalation: the 1-to-6 ladder, +1 a round and at each phase, with its own three steps at 2, 4 and 6). |
 | [[Areas\|**Emanation**]] | An area around its target, a creature or a square: a 2 Emanation reaches 2 squares from it (the 1-2-1 shape; 21 squares). |
 | [[Empowered\|**Empowered**]] | The first time you deal damage on each of your turns, add 1d6! to it. No value. |
 | [[Encounters\|**Encounter**]] | A fight or similar scene, from Initiative until the GM ends it. |
@@ -73,7 +73,7 @@
 | [[Firearm\|**Firearm**]] | A trait and a weapon property with one name: the weapon shoots with powder (a pistol, a musket), and a Firearm Action needs one. It is not Projectile. |
 | [[Fists (the weapon)\|**Fists**]] | The Barehanded weapon every creature has (Melee, Non-threatening). While you have a free hand, it counts as a weapon you wield. |
 | [[Flanking\|**Flanking**]] | Creatures that threaten the same enemy: each gets 1 Field Boon on [Melee] Actions against it for each other flanker, minus 1 for each ally of the enemy that threatens it. |
-| [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no reactions, ignores Difficult Terrain, each square counts 1. |
+| [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no Reactions from movement, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Frightened\|**Frightened**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
 | [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free. |
@@ -83,12 +83,12 @@
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Action**]] | A choice of two class Actions at level 1; you take one. |
 | [[Class Actions, Picks and the Repertoire\|**Hallmark Reaction**]] | A choice of two class Reactions at level 1; you take one. |
 | [[Hands\|**Hands**]] | Your main hand and your off hand, chosen when you make your character, and how many of them hold a weapon. |
-| [[Hazardous Terrain\|**Hazardous Terrain [HT]**]] | Terrain that harms the creatures in it. Written [HT: Entering, Turn] in the text of the effect that creates it (notation, not a trait). |
+| [[Hazardous Terrain\|**Hazardous Terrain [HT]**]] | Terrain that harms the creatures in it. Written [HT: Entering, Turn] in the text of the effect that creates it (notation, not a trait). It affects a creature at most once per turn-cycle. |
 | [[Rally Points\|**Heal**]] | To remove damage. The creature chooses which damage. |
 | [[Senses\|**Hearing**]] | A sense every creature has: you perceive creatures that make noise within 10 squares as Hidden, even through walls. |
 | [[Senses\|**Hidden**]] | Your Actions against the creature are Doomed; its Actions against you are Favored when it perceives you better than you perceive it (two creatures Hidden to each other are both Doomed). |
-| [[Hindered\|**Hindered**]] | Your Speed is halved. |
-| [[Immobilized\|**Immobilized**]] | No Move Actions or Evade; 1 AP [Move] ends it; Forced Movement without a roll fails on you. |
+| [[Hindered\|**Hindered**]] | Your Speed is halved (after every other change to it). |
+| [[Immobilized\|**Immobilized**]] | No Move Actions or Evade, and a movement you are making ends; Break Free (1 AP [Move]) ends it; Forced Movement without a roll fails on you. |
 | [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
 | [[Imperiled\|**Imperiled**]] | Barely avoided a Deadly Hazard: all your Rolls are Doomed, Vulnerable 3, safe again at the start of your turn. |
 | [[End of Turn\|**Initiative slot**]] | A position in the turn order. |
@@ -126,7 +126,7 @@
 | [[Pressed\|**Pressed**]] | A condition with a value: your [Strike] Actions take that many Pressure Banes (at most 2 count). |
 | [[Named Boons and Banes\|**Pressure**]] | A named Bane an effect of another creature puts on you. Up to 2. |
 | [[Projectile\|**Projectile**]] | A trait and a weapon property with one name: the weapon shoots (a bow, a crossbow), and a Projectile Action needs one. |
-| [[Prone\|**Prone**]] | A condition: Melee Actions against you gain 1 Field Boon and Ranged Actions against you take 1 Field Bane; you can't Evade, and your only [Move] Actions are Crawl and Stand. |
+| [[Prone\|**Prone**]] | A condition: Melee Actions against you gain 1 Field Boon and Ranged Actions against you take 1 Field Bane; you can't Evade, and your only [Move] Actions are Crawl, Stand and Break Free. |
 | [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Light, Long, Projectile, Firearm, Strung, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
 | [[Pulled\|**Pulled**]] | Forced Movement toward the origin, up to its value, inside a 45° cone. |
 | [[Pushed\|**Pushed**]] | Forced Movement away from the origin, up to its value, inside a 45° cone. |

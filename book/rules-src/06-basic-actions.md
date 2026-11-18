@@ -5,6 +5,8 @@ Every creature can use these Actions, except that an NPC's attacks are its own c
 
 @@CARD:Advance@@
 
+@@CARD:Break Free@@
+
 @@CARD:Charge@@
 
 @@CARD:Crawl@@

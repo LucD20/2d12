@@ -99,7 +99,7 @@ The book's shape for levels 1 to 3 stays (Chapter 5); the redesign adds the Arts
 
 **How a card is written** (the Structure: `book/cards/card-structure.md`).
 6. **Don't invent a word the book already has** ("arrows" were [W]: "2[W]" is the weapon twice).
-7. **Every Tier's line holds its whole result; a Tier 3 adds something beyond the weapon's own Tier 3 damage** (a rider, one more [W]); a Tier 1 can deal [Mod] ("[V] [Mod]", no subtype: the Modifier takes the weapon's).
+7. **Every Tier's line holds its whole result; a Tier 3 adds something beyond the weapon's own Tier 3 damage** (a rider, one more [W]); a Tier 1 can deal [Mod] ("[V] [Mod]", no subtype: the Modifier takes the weapon's). **The exception** (Lucas, 2026-11-18, the book audit): an Art's Mode is a small effect, so its Tier 3 can do what its Tier 2 does ("Tier 2 or 3": Trick Shots' Pin and Startle).
 8. **Fixed dice are written on the Tiers; a named value ("Smite dice") only when the count changes.**
 9. **A few cards get their own Critical entry, to be unique; no Critical line a class.** A Critical is about 3% of rolls.
 10. **A second Version only when it does a different thing, never a bigger one** (`book/research/versions-criticals.md`). The Arts' Modes are that idea at one cost.

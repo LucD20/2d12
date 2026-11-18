@@ -87,14 +87,17 @@ const chat = c => `<div id="chat-log"><li class="chat-message message flexcol"><
 const cases = [
   ["Rebuke, before the Save", "Rebuke", [{ name: "Orc Warrior", uuid: "o", result: null }]],
   ["Rebuke, the Orc rolled 14 (Tier 2)", "Rebuke", [roll("Orc Warrior", 14)]],
-  ["Reckoning on three, two rolled", "Reckoning", [roll("Orc Warrior", 9), roll("Goblin Sneak", 21), { name: "Grave Wisp", uuid: "w", result: null }]]
+  ["Reckoning on three, two rolled", "Reckoning", [roll("Orc Warrior", 9), roll("Goblin Sneak", 21), { name: "Grave Wisp", uuid: "w", result: null }]],
+  // v0.0.431: a Save with damage on two creatures, before their Saves (each row its Roll button; the quiet lines keep the damage line)
+  ["Word of Radiance on two, before the Saves", "Word of Radiance", [{ name: "Orc Warrior", uuid: "o", result: null }, { name: "Grave Wisp", uuid: "w", result: null }]]
 ];
 const out = document.getElementById("grid");
 for (const [title, name, cs] of cases) {
   const m = await modelOf(name, cs);
+  // v0.0.431: the system's own Save card (chatcards.mjs saveCardHtml) is now the proposal, built; the mockup's drawing stays beside it
   let now = ""; try { now = CC.cardContent(m); } catch (e) { now = `<div>${e.message}</div>`; }
   const row = document.createElement("div"); row.className = "sc-row";
-  row.innerHTML = `<div class="sc-cap">${esc(title)}</div><div class="sc-col"><div class="sc-h">Now</div>${chat(now)}</div><div class="sc-col"><div class="sc-h">Proposed</div>${chat(`<div class="twod12 chat cc">${proposedSave(m)}</div>`)}</div>`;
+  row.innerHTML = `<div class="sc-cap">${esc(title)}</div><div class="sc-col"><div class="sc-h">Built (v0.0.431)</div>${chat(now)}</div><div class="sc-col"><div class="sc-h">Proposed</div>${chat(`<div class="twod12 chat cc">${proposedSave(m)}</div>`)}</div>`;
   out.append(row);
 }
 await document.fonts.ready;

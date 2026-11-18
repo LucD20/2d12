@@ -33,9 +33,9 @@ shared roll: 3d12 9 7 7 +2 Modifier | a row per creature: 3 | defenses: WD 13 | 
 grouped by Tier: Tier 3 Grave Wisp Vigor 2d6 + 2 Sl · Resolve 2d10 Ho ↳ Pushed 2 Tier 2 Bandit Thug Ogre Chieftain Vigor 1d8 Sl · Resolve 2d6 + 1d6 Ho ◆ Brig
 player view: no WD labels: true
 --- the Save card
-Tier 1 on top (v0.0.335, the Action preview's order): T1 ≤12 | T2 13–19 | T3 20+ | the DC: Appeal Save DC 13 | no effect on Tier 3: true
-before the roll: the owner rolls: true | the others wait: Waiting for Ogre Chieftain's Appeal Save… | no row lit: true
-after: the result row is a button: true | its total: 8 | the others dim: 0 | Their Tier: Their Tier 1 | Damage at the bottom: true
+Tier 1 on top (v0.0.335, the Action preview's order; v0.0.431 quiet lines): Tier 1: Resolve 1d8 Ho ; Pushed 2; Frightened of you for 1 round | Tier 2: Resolve 1d6 Ho ; Pushed 1 | Tier 3: No effect. | the DC: Appeal Save DC 13 | no effect on Tier 3: true
+before the roll: the owner rolls: true | the others wait: Waiting for Ogre Chieftain's Appeal Save… | no stamp yet: true
+after (v0.0.431): the stamp: TIER 1 vs DC 13 | the ladder opens the roll: true | its total: 8 | only the rolled Tier: true | Their Tier: Their Tier 1 | Damage at the bottom: true
 v0.0.294 (brief section 12): the Trigger under the Save line, above the Tier rows, then one diamond: true | Trigger: An enemy within 5 squares makes a [Strike] Action against an ally.
 --- Resist / Weak / Immunity: once per subtype per Action, across both pools; Resist capped at what that subtype dealt
 parsed: {"resist":{"Fi":5},"weak":{"Ho":2},"immune":["Co"]}
@@ -67,7 +67,7 @@ the pool total in its own column: true | the Tier group names as chips: 3
 no "targeting x, y" chat line after placing an area: true
 --- v0.0.286 (Lucas tested v0.0.285)
 each creature's Defense as a framed badge: WD 13 | WD 13 | WD 14 | hidden for players: true
-a Save on three creatures: a row each: 3 | who got each Tier: T1: Bandit Thug | T2: Grave Wisp | T3: -
+a Save on three creatures: a row each: 3 | who got each Tier (v0.0.431: the attack card's groups): T2: Grave Wisp | T1: Bandit Thug | one still to roll: the quiet lines stay: true
 the owner rolls on their row, the others wait: 1 1 | Damage once someone rolled: true | a one-target card of v0.0.283 still reads: 1
 Save Actions use the new card with several targets (actions.mjs): true | and with none (v0.0.317): true
 --- v0.0.287 (Lucas tested v0.0.286)

@@ -52,8 +52,8 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Shield of Faith | Gold | |
 | Rebuke | Gold | |
 | Lantern of Faith | Gold | |
-| Hold the Line | Silver | Trade Places between creatures of different Sizes |
-| Commandment | Silver | Courage (ignore Frightened) is only a reminder |
+| Hold the Line | Silver | Brace's squares stay where you used it if you move (Foundry's Aura follows you); Trade Places between different Sizes is refused (v0.0.431) |
+| Commandment | Silver | Courage (an Aura 3: ignore Frightened) is only a reminder |
 | Bulwark of Faith | Gold | |
 | Consecrated Ground | Gold | |
 | Word of Radiance | Gold | |

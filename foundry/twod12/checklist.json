@@ -171,6 +171,14 @@
      "rev": 1
     },
     {
+     "id": "elite-steps",
+     "v": "v0.0.431",
+     "title": "The Elite's default ladder by name",
+     "do": "Turn on the Ogre Chieftain's Escalation (Default ladder ticked) and play to round 2, then make it Bloodied.",
+     "expect": "The system lines name the steps: \"Pressing (1 Boon on its first attack each round)\", then with Relentless (\"each of its Round Special Actions twice per turn-cycle\").",
+     "rev": 1
+    },
+    {
      "id": "judge-start",
      "v": "v0.0.409",
      "title": "Judge at the start of an encounter",
@@ -245,6 +253,14 @@
      "title": "Exploding dice and Empowered",
      "do": "Roll Weapon Attacks until a die shows its top face. Give a PC Empowered and make two damaging Actions in its turn.",
      "expect": "A 6 on a d6 shows \"6!\", counts 5 and adds a new roll. The first damage card has an \"Empowered 1d6!\" line; the second has none.",
+     "rev": 1
+    },
+    {
+     "id": "reload-shot",
+     "v": "v0.0.431",
+     "title": "A Reload Shot's die",
+     "do": "Give a weapon the Reload property (its sheet). Deal damage with another Action, then make a Reload shot with the weapon in the same turn.",
+     "expect": "The shot is Favored and its damage has the 1d6! even after the first damage of the turn; an Empowered PC's own Empowered die isn't spent by it.",
      "rev": 1
     },
     {
@@ -419,6 +435,30 @@
      "do": "Use Reckoning on two enemies.",
      "expect": "They are pushed once on use; the Save card's \"Effect: Each target is Pushed 2.\" is words (no button to push again).",
      "rev": 1
+    },
+    {
+     "id": "save-card-before",
+     "v": "v0.0.431",
+     "title": "The Save card before the roll",
+     "do": "As the GM, use Rebuke on an Orc Warrior; then use Word of Radiance on two enemies. Look at the cards as a player who owns neither.",
+     "expect": "Rebuke: under \"Appeal Save — DC 13\", one quiet line \"Tier 1 or 2: Its Move Action is disrupted.\" (no colored bands, no Tier 3 line), then Roll Appeal Save. Word of Radiance: a row per enemy with its own Roll button, then \"Tier 1: 3d6 Ho; Pushed 3\", \"Tier 2: …\", \"Tier 3: …\" with the pool icons. The player sees \"Waiting for …\" instead of the buttons.",
+     "rev": 1
+    },
+    {
+     "id": "save-card-rolled",
+     "v": "v0.0.431",
+     "title": "The Save card after one roll",
+     "do": "Use Rebuke on an Orc Warrior and roll its Save; click the ladder. Then use Word of Radiance on one enemy, roll, click Damage, then Apply.",
+     "expect": "The attack card's Tier stamp (\"TIER 2\", \"vs DC 13\") and ladder (≤12 / 13–19 / 20+, the total above it, its Tier filled), and only that Tier's words under it. The ladder opens the roll. The target button is gone. Word of Radiance: Damage at the bottom; once it is rolled, its Damage part is under the card and Apply works.",
+     "rev": 1
+    },
+    {
+     "id": "save-card-many",
+     "v": "v0.0.431",
+     "title": "The Save card with several creatures",
+     "do": "Use Reckoning on three enemies; roll two of their Saves (on different Tiers), click one's total, then roll the third.",
+     "expect": "A row each: its Tier pill and total (the total opens its roll), or its Roll button. Under the rows, each Tier rolled as on the attack card (the Tier, the names, its words). The quiet \"Tier 1 or 2: …\" line stays until the last one rolls, then goes.",
+     "rev": 1
     }
    ]
   },
@@ -559,6 +599,22 @@
      "rev": 1
     },
     {
+     "id": "swap-size",
+     "v": "v0.0.431",
+     "title": "Trade Places needs the same Size",
+     "do": "Make an ally's token 2 × 2 (a Large creature) and use Hold the Line's Trade Places on it.",
+     "expect": "Refused with a notice (\"not the same Size: they can't swap squares\"); nothing moves.",
+     "rev": 1
+    },
+    {
+     "id": "speed-halve-last",
+     "v": "v0.0.431",
+     "title": "Speed: halved last",
+     "do": "Give a PC with Speed 6 the Hindered condition and Exhausted 2; look at its Speed on the sheet and the HUD.",
+     "expect": "Speed 2 ((6 − 2) halved), not 1.",
+     "rev": 1
+    },
+    {
      "id": "setup-move",
      "v": "v0.0.418",
      "title": "A Setup's movement",
@@ -585,6 +641,22 @@
      "title": "Two Paladins Judge the same Orc",
      "do": "Aveline and Durgan both Judge one Orc; it damages an ally near both.",
      "expect": "Each Paladin is asked for their own reduction; Smite reads it as Profane for each.",
+     "rev": 1
+    },
+    {
+     "id": "judge-cycle",
+     "v": "v0.0.431",
+     "title": "Judge once per turn-cycle",
+     "do": "Put the Paladin last in the order. The Judged Orc damages an ally near him (reduce it); next round the Orc acts before the Paladin and damages the ally again.",
+     "expect": "The second damage isn't offered a reduction (still the Paladin's turn-cycle); after the Paladin's turn starts, the next one is.",
+     "rev": 1
+    },
+    {
+     "id": "armor-faith-judge",
+     "v": "v0.0.431",
+     "title": "Armor of Faith and Judge's 0R",
+     "do": "With Escalation 2 or more, Judge again as a 0R when the creature you Judged goes Down; then use Shield of Faith.",
+     "expect": "No Guard from Judge's 0R; Shield of Faith gives the Guard (1 + Power Modifier).",
      "rev": 1
     },
     {
@@ -727,6 +799,14 @@
      "do": "Place Volley's and Covering Fire's Burst beyond the bow's normal range.",
      "expect": "The placement is limited to the weapon's normal range (the cards read \"Distance: Weapon (Normal range)\").",
      "rev": 2
+    },
+    {
+     "id": "ht-once",
+     "v": "v0.0.431",
+     "title": "Hazardous Terrain once per turn-cycle",
+     "do": "Place Covering Fire; move an enemy into it (Advance), move it again inside it in the same turn, and end its turn there.",
+     "expect": "One hit only (on entering); none for the second move or the end of the turn; it can be hit again from its next turn.",
+     "rev": 1
     },
     {
      "id": "radiance-d8",

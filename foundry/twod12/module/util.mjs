@@ -29,6 +29,9 @@ export function vsKind(label) {
   return a ? ({ bo: "body", mi: "mind", ap: "appeal", in: "instinct" })[a[1].toLowerCase()] : "";
 }
 export const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+/** The first Tier a card's Tier label stands for ("Tiers 1–3" 1, "Tier 1 or 2" 1, "Tier 2 or 3" 2, "Tier 3" 3): the card model's (cardmodel.mjs
+ *  re-exports it) and the Save card's quiet Tier lines (chatcards.mjs, v0.0.431). */
+export const tierOfLabel = l => (/^Tiers? 1/.test(l) ? 1 : /^Tier 2/.test(l) ? 2 : 3);
 
 /** The hover text of an effect or ability: its own "Hover text" if it has one, else the start of its description (plain text). */
 /**

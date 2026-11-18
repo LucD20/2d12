@@ -71,7 +71,7 @@ A **Reaction** is an Action you use in response to something another creature do
 
 - **Paying:** A Reaction is paid with your **Reaction AP**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn. A feature can give you a second Reaction AP: it follows the same rules, and the feature says what it can pay for.
 - **No Reaction by default:** No creature has a Reaction of its own: every Reaction comes from a class, an item or a creature's entry. Moving away from an enemy doesn't let it attack you, unless it has a Reaction that says so.
-- **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it.
+- **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it. An Interrupt on a creature that **would damage** someone happens once the triggering Action's roll is made and its damage is known, before that damage is dealt: the Reaction can't change that roll.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
 - **Once per triggering Action:** You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.
 - **Multiple creatures reacting to the same trigger, at the same time:** You must decide to react before making the rolls: when a creature triggers a Reaction from several creatures, they all decide whether they will react before making any rolls. The creatures taking the Reactions decide the order; if they are opposed, the GM decides or asks for a simple Check to decide who goes first, similar to how Initiative is rolled. If the triggering creature becomes an invalid target after a creature reacts (such as being killed), the remaining creatures still lose the AP as if they had used the Reaction.
@@ -80,7 +80,7 @@ A **Reaction** is an Action you use in response to something another creature do
 
 ### What a Reaction Responds To
 
-An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action; an enemy would enter a square adjacent to you or to an ally; an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one.
+An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action. The moments cards use: a creature would leave a square during a Move Action, or uses the Stand Action; an enemy would enter a square adjacent to you or to an ally; an enemy moves closer to you (see [[Moving Closer]]); a creature would be moved by [[Forced Movement]], or would fall Prone; a creature moves away from you (see [[Moving Away]]); a creature makes a [Strike] Action, or would damage someone; a creature would use a [Power] Action; a creature scores a Tier 3 or a [[Critical]]; an ally or an enemy becomes Bloodied or Strained; a creature goes Down; a creature uses a Rally Point; a creature Charges, or enters a square from which it Flanks you. A card can name another moment, as long as the rules define when it happens: "ends a Move Action" is not one.
 
 While the name "triggering" is similar to "Trigger", it isn't only for Trigger Reactions: it also applies to Interrupt Reactions. The **triggering creature** is the creature who caused the Reaction to happen; the **triggering Action** is the Action that caused the Reaction to happen, and so on.
 
@@ -176,7 +176,8 @@ An Action that another Action lets you use as part of it is a **Linked Action**.
 - It keeps its traits and requirements, unless the Action says otherwise: you must still be able to use it. If an Action lets you Evade (a Linked Action) while you are Immobilized, you can't.
 - It affects the target of the original Action, unless it says otherwise. If the original Action doesn't list a target, you can choose the target per Linked Action.
 - It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes, unless the Action says otherwise (a Charge's Weapon Attack counts toward At-will Banes).
-- If it isn't optional and you can't make it, the whole Action is **[[Disrupting Actions|disrupted]]**. A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Weapon Attack (1A) and Advance 5 again").
+- If it isn't optional and you can't make it, the whole Action is **[[Disrupting Actions|disrupted]]**, except for a movement (below). A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Weapon Attack (1A) and Advance 5 again").
+- **A movement you can't make.** When an Action has you move ("You Evade 2") and you can't (you are Immobilized or Prone, or no square is open to you), you move 0 squares and the rest of the Action happens. If the Action says you **must** move ("you must Evade 2 first"), the movement is necessary: the whole Action is disrupted.
 
 If a Linked Action has no valid target, the rest of the Action is disrupted (that Linked Action and anything after it don't happen); what already happened stays. By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".
 
@@ -255,7 +256,7 @@ A **Turn** Action can be used once per turn: once on your turn, and once on each
 
 #### Round
 
-A **Round** Action can be used once per turn-cycle, not once per round number: if you are at the end of the Initiative order, use a Round Action, end your turn and a new round begins, you still can't use it again until your whole turn-cycle completes.
+A **Round** Action can be used once per turn-cycle, not once per round number: if you are at the end of the Initiative order, use a Round Action, end your turn and a new round begins, you still can't use it again until your whole turn-cycle completes. A card that says **"once a round"** or **"once each round"** means the same: once per turn-cycle.
 
 #### Encounter
 
@@ -294,11 +295,13 @@ When an effect says it lasts **until** something happens, it lasts through that 
 
 When an Action says an effect happens on your **next Action** and gives no duration (unlike "For 1 round"), you must make that Action before the end of your current turn. If you don't, the effect is wasted.
 
+When an effect gives **another creature** its next roll or its next Action ("its next roll has 1 Boon"), it lasts until that creature makes one. It is wasted if the creature hasn't made one by the end of its next turn (given during that creature's own turn, by the end of that turn).
+
 ### Rounds
 
 A **round** is one full cycle of turns. It starts with the first creature's turn and ends when the last creature ends their turn.
 
-An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". Durations are written only as rounds or as [[End of Turn|EoT]]: nothing lasts "until the start of your next turn".
+An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". A duration is one of these: [[End of Turn|EoT]]; a number of rounds; "until the encounter ends"; until a Save ends it; or a condition's own end (Prone lasts until you Stand). Nothing lasts "until the start of your next turn".
 
 > [!example]
 > On the first round of combat, Victor (the first creature in the turn order) causes an effect on Wes that lasts 2 rounds. The effect ends at the end of Victor's turn on the third round.

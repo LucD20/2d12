@@ -100,6 +100,10 @@ Expect: One roll, the same Initiative for the three (the card says "×3"), each 
 Do: Before starting, set Momentum to 2 (left-click +1, right-click −1 on the strip). Start the combat; go to round 2.
 Expect: The strip reads "Preparing the encounter · Momentum 2", then "Round 1 · Momentum 2"; every PC starts at Escalation 3 (an Elite at 1). Round 2 raises everyone by 1, up to 6 (six pips on the sheet and the HUD).
 
+### elite-steps · v0.0.431 · The Elite's default ladder by name
+Do: Turn on the Ogre Chieftain's Escalation (Default ladder ticked) and play to round 2, then make it Bloodied.
+Expect: The system lines name the steps: "Pressing (1 Boon on its first attack each round)", then with Relentless ("each of its Round Special Actions twice per turn-cycle").
+
 ### judge-start · v0.0.409 · Judge at the start of an encounter
 Do: Start a combat with Aveline and Durgan in it.
 Expect: Each Paladin's player is reminded to Judge (target it and use Judge, 0 AP). Both can Judge the same Orc: its token shows both rings, and it counts as Profane for each of them.
@@ -137,6 +141,10 @@ Expect: From your square it rolls; after moving it is refused ("has left its squ
 ### exploding · v0.0.407 · Exploding dice and Empowered
 Do: Roll Weapon Attacks until a die shows its top face. Give a PC Empowered and make two damaging Actions in its turn.
 Expect: A 6 on a d6 shows "6!", counts 5 and adds a new roll. The first damage card has an "Empowered 1d6!" line; the second has none.
+
+### reload-shot · v0.0.431 · A Reload Shot's die
+Do: Give a weapon the Reload property (its sheet). Deal damage with another Action, then make a Reload shot with the weapon in the same turn.
+Expect: The shot is Favored and its damage has the 1d6! even after the first damage of the turn; an Empowered PC's own Empowered die isn't spent by it.
 
 ### arts-modes · v0.0.409 · An Art's Modes (Commandment)
 Do: Use Commandment from the sheet or the HUD; pick Kneel.
@@ -224,6 +232,18 @@ Expect: One Empowered 1d6! is rolled, and only one creature (the first hit) take
 Do: Use Reckoning on two enemies.
 Expect: They are pushed once on use; the Save card's "Effect: Each target is Pushed 2." is words (no button to push again).
 
+### save-card-before · v0.0.431 · The Save card before the roll
+Do: As the GM, use Rebuke on an Orc Warrior; then use Word of Radiance on two enemies. Look at the cards as a player who owns neither.
+Expect: Rebuke: under "Appeal Save — DC 13", one quiet line "Tier 1 or 2: Its Move Action is disrupted." (no colored bands, no Tier 3 line), then Roll Appeal Save. Word of Radiance: a row per enemy with its own Roll button, then "Tier 1: 3d6 Ho; Pushed 3", "Tier 2: …", "Tier 3: …" with the pool icons. The player sees "Waiting for …" instead of the buttons.
+
+### save-card-rolled · v0.0.431 · The Save card after one roll
+Do: Use Rebuke on an Orc Warrior and roll its Save; click the ladder. Then use Word of Radiance on one enemy, roll, click Damage, then Apply.
+Expect: The attack card's Tier stamp ("TIER 2", "vs DC 13") and ladder (≤12 / 13–19 / 20+, the total above it, its Tier filled), and only that Tier's words under it. The ladder opens the roll. The target button is gone. Word of Radiance: Damage at the bottom; once it is rolled, its Damage part is under the card and Apply works.
+
+### save-card-many · v0.0.431 · The Save card with several creatures
+Do: Use Reckoning on three enemies; roll two of their Saves (on different Tiers), click one's total, then roll the third.
+Expect: A row each: its Tier pill and total (the total opens its roll), or its Roll button. Under the rows, each Tier rolled as on the attack card (the Tier, the names, its words). The quiet "Tier 1 or 2: …" line stays until the last one rolls, then goes.
+
 ## Conditions and their Tiers
 
 ### tier-no-damage · v0.0.421 · A Tier's condition with no damage
@@ -292,6 +312,14 @@ Expect: The pushed creature's player is asked (Apply / Ignore), not the GM. Two 
 Do: Use Hold the Line's Trade Places on an adjacent ally.
 Expect: The Swap button swaps both tokens at once; no Reaction is offered.
 
+### swap-size · v0.0.431 · Trade Places needs the same Size
+Do: Make an ally's token 2 × 2 (a Large creature) and use Hold the Line's Trade Places on it.
+Expect: Refused with a notice ("not the same Size: they can't swap squares"); nothing moves.
+
+### speed-halve-last · v0.0.431 · Speed: halved last
+Do: Give a PC with Speed 6 the Hindered condition and Exhausted 2; look at its Speed on the sheet and the HUD.
+Expect: Speed 2 ((6 − 2) halved), not 1.
+
 ### setup-move · v0.0.418 · A Setup's movement
 Do: Use Lay On Hands on an ally 4 squares away; use Circling Shot.
 Expect: No "out of range" block; the Setup's button Advances (Circling Shot: Evade 1, then the shot, Tier 3's Evade 1). The Encounter Log writes it as one line ("Strafe (Setup: Advance 2)").
@@ -305,6 +333,14 @@ Expect: The Paladin's player is asked on the bottom bar. "Not now" reduces nothi
 ### two-judges · v0.0.423 · Two Paladins Judge the same Orc
 Do: Aveline and Durgan both Judge one Orc; it damages an ally near both.
 Expect: Each Paladin is asked for their own reduction; Smite reads it as Profane for each.
+
+### judge-cycle · v0.0.431 · Judge once per turn-cycle
+Do: Put the Paladin last in the order. The Judged Orc damages an ally near him (reduce it); next round the Orc acts before the Paladin and damages the ally again.
+Expect: The second damage isn't offered a reduction (still the Paladin's turn-cycle); after the Paladin's turn starts, the next one is.
+
+### armor-faith-judge · v0.0.431 · Armor of Faith and Judge's 0R
+Do: With Escalation 2 or more, Judge again as a 0R when the creature you Judged goes Down; then use Shield of Faith.
+Expect: No Guard from Judge's 0R; Shield of Faith gives the Guard (1 + Power Modifier).
 
 ### shield-of-faith · v0.0.409 · Shield of Faith and its target
 Do: An enemy Strikes an ally within 5 of the Paladin; use Shield of Faith. Then try with the ally behind a wall from the Paladin.
@@ -376,6 +412,10 @@ Expect: Sylwen still has the Obscured Field Bane; the ally doesn't.
 Do: Place Volley's and Covering Fire's Burst beyond the bow's normal range.
 Expect: The placement is limited to the weapon's normal range (the cards read "Distance: Weapon (Normal range)").
 Rev: 2
+
+### ht-once · v0.0.431 · Hazardous Terrain once per turn-cycle
+Do: Place Covering Fire; move an enemy into it (Advance), move it again inside it in the same turn, and end its turn there.
+Expect: One hit only (on entering); none for the second move or the end of the turn; it can be hit again from its next turn.
 
 ### radiance-d8 · v0.0.428 · Word of Radiance against the Judged one
 Do: Aveline Judges an Orc, then uses Word of Radiance on it and another enemy (both fail on the same Tier).

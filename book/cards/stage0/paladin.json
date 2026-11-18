@@ -39,7 +39,7 @@
      "body": [
       {
        "label": "Effect",
-       "text": "The target is Judged by you instead of the one you had."
+       "text": "The target is Judged by you until the encounter ends. If another creature was Judged by you, it no longer is."
       }
      ]
     }
@@ -382,7 +382,7 @@
      "body": [
       {
        "label": "Effect",
-       "text": "Squares adjacent to you are Difficult Terrain for enemies (1 round)."
+       "text": "The squares adjacent to you now are Difficult Terrain for enemies (1 round). They stay where they are if you move."
       }
      ],
      "foundry": {
@@ -402,7 +402,7 @@
       }
      ],
      "distance": "Reach",
-     "target": "One willing ally"
+     "target": "One willing ally of your Size"
     },
     {
      "heading": "Rescue",
@@ -420,7 +420,7 @@
     "img": "icons/svg/statue.svg",
     "folder": "Paladin",
     "automation": "silver",
-    "automationNote": "the Mode's pick; Brace (an Aura 1 around you, Difficult Terrain for enemies, 1 round); Trade Places (the Swap button: both tokens move at once, no Reactions; creatures of different Sizes by hand); Rescue's Reposition 2 (the button)."
+    "automationNote": "the Mode's pick; Brace (an Aura 1 around you, Difficult Terrain for enemies, 1 round; the book fixes the squares when you use it: if you move, by hand); Trade Places (the Swap button: both tokens move at once, no Reactions; different Sizes refused); Rescue's Reposition 2 (the button)."
    }
   },
   {
@@ -453,7 +453,7 @@
      "body": [
       {
        "label": "Effect",
-       "text": "You and allies within 3 squares of you ignore the Frightened condition (1 round)."
+       "text": "An [[Aura]] 3 around you (1 round): you and your allies in it ignore the Frightened condition."
       }
      ],
      "foundry": {
@@ -488,7 +488,7 @@
     "img": "icons/svg/sound.svg",
     "folder": "Paladin",
     "automation": "silver",
-    "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save and Prone; Courage: an effect on you as a reminder (you and allies within 3 squares ignore Frightened: by hand)."
+    "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save and Prone; Courage: an effect on you as a reminder (an Aura 3: you and allies in it ignore Frightened: by hand)."
    }
   },
   {
@@ -501,7 +501,7 @@
    "body": [
     {
      "label": "Passive",
-     "text": "When you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier."
+     "text": "When you use a [Divine] Reaction (not Judge's 0R), you gain Guard equal to 1 + your Power Modifier."
     }
    ],
    "foundry": {

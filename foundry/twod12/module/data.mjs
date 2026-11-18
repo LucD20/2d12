@@ -71,8 +71,7 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     this.reach = species?.system.reach ?? 1;
     this.size = species?.system.size ?? 3;
     this.steadiness = Math.max(0, Number(species?.system.steadiness) || 0);   // Features, Talents and effects that add to it: later
-    this.moveSpeed = applySpeedMods(this.parent, this.speed);
-    if (this.exhausted > 0) this.moveSpeed = Math.max(1, this.moveSpeed - this.exhausted);   // Exhausted: Speed - value, minimum 1
+    this.moveSpeed = applySpeedMods(this.parent, this.speed, { minus: this.exhausted > 0 ? this.exhausted : 0 });   // Exhausted: Speed - value, minimum 1, before halving (v0.0.431)
     this.wounds = this.bodyWounds + this.mindWounds;
 
     const lv = this.level;

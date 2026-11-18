@@ -879,7 +879,7 @@ export async function useAction(actor, item, opts = {}) {
     perT.splice(0, perT.length, ...perT.filter(x => !gone.has(x.actorUuid)));
     if (!perT.length) return ui.notifications.warn(`${item.name} has no target left.`);
   }
-  // The step the damage uses: the two chips (Empowered and Enfeebled; the player can change them, they start at the highest value that effects and conditions give), and a Reload shot is Empowered 2 by itself.
+  // The step the damage uses: the two chips (Empowered and Enfeebled; the player can change them, they start at the highest value that effects and conditions give), and a Reload shot adds the 1d6! by itself (v0.0.431: as Empowered does, even after this turn's first damage; you don't become Empowered).
   const reloadShot = data.reloadshot === "on";
   // v0.0.407 (book, Chapter 8; Lucas, 2026-11-13): Empowered has no value (on: 1) and Enfeebled is gone (its old values are ignored)
   const damageStep = (Math.trunc(Number(data.empowered)) || 0) > 0 || reloadShot ? 1 : 0;
@@ -1196,6 +1196,7 @@ export async function useAction(actor, item, opts = {}) {
           bonuses,
           weaponSub: weapon?.system?.subtype ?? "",
           empowered: damageStep,
+          reloadShot,   // v0.0.431 (the book audit Q37): its 1d6! even after this turn's first damage, and it doesn't spend Empowered
           actorUuid: actor.uuid,
           itemId: item.id,
           ap: version.ap,
@@ -1273,7 +1274,7 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.411 (pack F3): the turn's Strike state (Shifting Aim, Blade and Bow: hooks.mjs)
   if (useTraits.has("strike")) { try { await (await import("./hooks.mjs")).noteStrike(actor, useTraits); } catch (e) { console.warn("twod12 | strike state", e); } }
   // v0.0.409 (pack F2, Armor of Faith: hooks.mjs reactionGuard): a Reaction with the hook's traits gives its user Guard (N + Pow; the higher kept)
-  if (it.reaction) {
+  if (it.reaction && it.markKind !== "judge") {   // v0.0.431 (the book audit Q29): Judge's 0R is not a [Divine] Reaction for Armor of Faith
     for (const h of activeHooks(actor, "reactionGuard").filter(x => hasTraits(useTraits, x.hook.traits))) {
       try {
         const f = String(h.hook.formula ?? "1+pow").replace(/\bpow\b/g, `(${Number(actor.system?.powerMod) || 0})`), r = await bookRoll(f).evaluate(), now = Number(actor.system?.guard) || 0, next = Math.max(now, r.total);
@@ -1288,8 +1289,8 @@ export async function useAction(actor, item, opts = {}) {
   if (openHook) {
     try {
       const hits = (mres ? mres.filter(r => r.chk?.tier === 3).map(r => r.uuid) : (tier === 3 && targets[0] ? [targets[0].uuid] : []));
-      const { roundKey } = await import("./judge.mjs"), key = roundKey(game.combat);
-      if (hits.length && (!key || actor.getFlag("twod12", "openingRound") !== key)) {
+      const { roundKey, usedThisCycle } = await import("./judge.mjs"), key = roundKey(game.combat);
+      if (hits.length && (!key || !usedThisCycle(game.combat, actor, actor.getFlag("twod12", "openingRound")))) {   // once a round = per turn-cycle (v0.0.431)
         const { threatProfile } = await import("./flanking.mjs"), { tokenDistance } = await import("./light.mjs");
         const me = selfToken, lines = [];
         for (const u of hits) {
@@ -1455,7 +1456,7 @@ export async function rollDamage(message, { again = false } = {}) {
   const weapon = f.weaponId ? actor.items.get(f.weaponId) : null;
   // v0.0.428 (the audit: the GM's "Roll the damage again" dropped the Empowered die): a re-roll keeps it when the first roll had it (not spent again)
   const hadEmp = again && (message.getFlag("twod12", "ccDmg")?.groups ?? []).some(g => (g.comps ?? []).some(c => c.kind === "E"));
-  const empOn = hadEmp || (stepOf(f.empowered) > 0 && empoweredNow(actor));   // v0.0.407: Empowered's 1d6!, once a turn (explode.mjs)
+  const empOn = hadEmp || !!f.reloadShot || (stepOf(f.empowered) > 0 && empoweredNow(actor));   // v0.0.407: Empowered's 1d6!, once a turn (explode.mjs)
   // v0.0.411 (pack F3, One More Arrow: hooks.mjs moreW): once on each of its turns, a [Strike] that deals [W] deals 1[W] more
   let moreW = 0;
   // v0.0.426 (the audit: a Tier 1 Quick Shots, "[V] [Mod]", used it up): only a Tier that was rolled and deals [W] takes it
@@ -1544,7 +1545,7 @@ export async function rollDamage(message, { again = false } = {}) {
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
     await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
-  if (empUsed && !hadEmp) await markEmpoweredUsed(actor);
+  if (empUsed && !hadEmp && !f.reloadShot) await markEmpoweredUsed(actor);
   // (the card is no longer collapsed: v0.0.388, the damage is on it)
 }
 

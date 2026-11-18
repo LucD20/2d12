@@ -384,7 +384,7 @@
      "body": [
       {
        "label": "Effect",
-       "text": "Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear (1 round)."
+       "text": "Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear; Unsensed stays Unsensed (1 round)."
       }
      ],
      "distance": "10 sq.",
@@ -402,7 +402,7 @@
      "body": [
       {
        "label": "Effect",
-       "text": "Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower."
+       "text": "Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower (Total Cover stays Total)."
       }
      ],
      "foundry": {
@@ -474,7 +474,7 @@
    "body": [
     {
      "label": "Passive",
-     "text": "Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action, or a [Ranged, Strike] Action after a [Melee, Strike] Action, it gains 1 Boon."
+     "text": "Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action this turn, or a [Ranged, Strike] Action after a [Melee, Strike] Action this turn, it gains 1 Boon."
     }
    ],
    "foundry": {
@@ -719,7 +719,7 @@
    "body": [
     {
      "label": "Passive",
-     "text": "Once on each of your turns, a [Strike] Action of yours that deals [W] deals 1[W] more."
+     "text": "Once on each of your turns, when a [Strike] Action of yours deals [W] on a Tier, it deals 1[W] more to each creature on that Tier."
     }
    ],
    "foundry": {

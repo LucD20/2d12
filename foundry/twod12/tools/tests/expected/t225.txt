@@ -29,7 +29,7 @@ an old Aura's Affects -> its Carries row: {"on":true,"who":"allies","self":true,
 the Aura compiles to its Carries (auraWho, auraSelf, fxUuid) and its rows: allies true W true | read back: {"on":true,"who":"allies","self":true,"fx":"W","fxName":""}
 a placed Zone of v0.0.261 (flags rules) read as rows: {"on":true,"who":"allies","self":false,"formula":"1d4"}
 --- Hazard: Entering and Turn share one hit per turn-cycle; Movement each time
-entering, hit this cycle: false | turn after an entering hit this cycle: false | next cycle: true | movement: true
+entering, hit this cycle: false | turn after an entering hit this cycle: false | next cycle: true | movement: false
 entered: ["b"]
 patterns: none ticked entering+turn | movement only movement
 --- the preview's footprints (Set here)

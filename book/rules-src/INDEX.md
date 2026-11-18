@@ -4,20 +4,20 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
-| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 25.5 | 324 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 33.9 | 351 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 41.1 | 472 |
-| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 13.9 | 256 |
+| 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 26.4 | 324 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.0 | 354 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 42.1 | 477 |
+| 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.3 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
-| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.5 | 43 |
+| 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.6 | 45 |
 | 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.8 | 95 |
-| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.2 | 118 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 29.5 | 216 |
+| 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.8 | 118 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 29.8 | 216 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.8 | 137 |
 | 13-archer.md | Archer | archer |  | 5.3 | 140 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 32.5 | 456 |
-| 15-gear.md | Gear | gear |  | 14.0 | 224 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 33.8 | 458 |
+| 15-gear.md | Gear | gear |  | 14.2 | 224 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -71,25 +71,25 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 163:   ### Requirements
 - 167:   ### 0 AP Actions
 - 171:   ### Linked Actions
-- 186:   ### Targets of Effects
-- 194:   ### Effect Timing
-- 206:   ### Buffs
-- 217:     #### Stacking
-- 238:   ### Frequency
-- 244:     #### At-will
-- 252:     #### Turn
-- 256:     #### Round
-- 260:     #### Encounter
-- 264:     #### Daily
-- 268: ## Versus
-- 272:   ### Defenses
-- 287: ## Rounds and Durations
-- 289:   ### Until
-- 293:   ### Your Next Action
-- 297:   ### Rounds
-- 306:   ### End of Turn
-- 314: ## Escalation
-- 337:   ### Momentum
+- 187:   ### Targets of Effects
+- 195:   ### Effect Timing
+- 207:   ### Buffs
+- 218:     #### Stacking
+- 239:   ### Frequency
+- 245:     #### At-will
+- 253:     #### Turn
+- 257:     #### Round
+- 261:     #### Encounter
+- 265:     #### Daily
+- 269: ## Versus
+- 273:   ### Defenses
+- 288: ## Rounds and Durations
+- 290:   ### Until
+- 294:   ### Your Next Action
+- 300:   ### Rounds
+- 309:   ### End of Turn
+- 317: ## Escalation
+- 340:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 
@@ -97,47 +97,47 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 16: ## Size
 - 36:   ### Squeezing
 - 44: ## Movement
-- 48:   ### Advance
-- 58:   ### Evade
-- 66:   ### Moving and Leaving Your Square
-- 82:   ### Corners
-- 90: ## Straight Line
-- 100: ## Forced Movement
-- 112:   ### Pushed
-- 125:   ### Pulled
-- 138:   ### Slid
-- 149:   ### Collision
-- 165: ## Reposition
-- 192:   ### Swapping Places
-- 199: ## Steadiness
-- 203: ## Difficult Terrain
-- 209: ## Hazardous Terrain
-- 228:   ### Deadly Hazards
-- 234: ## Reach
-- 244:   ### Weapon Range
-- 252:   ### Weapon Actions and Your Weapon
-- 256: ## Engaged
-- 266:   ### Ranged Combat While Engaged
-- 272: ## Flanking
-- 300: ## Line of Effect
-- 313: ## Cover
-- 330:   ### Leaning
-- 334: ## Areas
-- 340:   ### Cover against an area
-- 344:   ### Emanation
-- 352:   ### Aura
-- 356:   ### Burst
-- 362:   ### Line
-- 384:   ### Other areas
-- 391: ## Light
-- 403:   ### Bright
-- 407:   ### Dim
-- 411:   ### Darkness
-- 415: ## Senses
-- 447:   ### Sight Senses
-- 454:   ### Other Senses
+- 52:   ### Advance
+- 62:   ### Evade
+- 70:   ### Moving and Leaving Your Square
+- 86:   ### Corners
+- 94: ## Straight Line
+- 104: ## Forced Movement
+- 116:   ### Pushed
+- 129:   ### Pulled
+- 142:   ### Slid
+- 153:   ### Collision
+- 169: ## Reposition
+- 198:   ### Swapping Places
+- 204: ## Steadiness
+- 208: ## Difficult Terrain
+- 214: ## Hazardous Terrain
+- 233:   ### Deadly Hazards
+- 239: ## Reach
+- 249:   ### Weapon Range
+- 257:   ### Weapon Actions and Your Weapon
+- 261: ## Engaged
+- 271:   ### Ranged Combat While Engaged
+- 277: ## Flanking
+- 305: ## Line of Effect
+- 318: ## Cover
+- 335:   ### Leaning
+- 339: ## Areas
+- 345:   ### Cover against an area
+- 349:   ### Emanation
+- 357:   ### Aura
+- 361:   ### Burst
+- 367:   ### Line
+- 389:   ### Other areas
+- 396: ## Light
+- 408:   ### Bright
+- 412:   ### Dim
+- 416:   ### Darkness
+- 420: ## Senses
+- 452:   ### Sight Senses
+- 459:   ### Other Senses
 
-Open (to be decided) boxes: 196: "Still to decide: whether two creatures of different Sizes can swap, an"; 310: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 388: "Cones are not written yet (and Lines wider than 1 square)."; 444: "Hiding and sneaking are not written yet."
+Open (to be decided) boxes: 315: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 393: "Cones are not written yet (and Lines wider than 1 square)."; 449: "Hiding and sneaking are not written yet."
 
 ## 04-health.md: Chapter 4: Health
 
@@ -184,7 +184,7 @@ Open (to be decided) boxes: 54: "The Talents are set aside for now: none is in t
 ## 06-basic-actions.md: Chapter 6: Basic Actions
 
 
-Action cards: Advance (6, Basic Action, At-will); Charge (8, Basic Action, Round); Crawl (10, Basic Action, At-will); Evade (12, Basic Action, At-will); Fists (14, Basic Action, At-will); Haul (16, Basic Action, Round); Hide (18, Basic Action); Interact (20, Basic Action, At-will); Leaning (22, Basic Action, At-will); Regrip (24, Basic Action, At-will); Release (26, Basic Action, At-will); Reload (28, Basic Action, At-will); Relocate (30, Basic Action, At-will); Shake Off (32, Basic Action, At-will); Shove (34, Basic Action, Round); Stand (36, Basic Action, At-will); Steel Yourself (38, Basic Action, Round); Trip (40, Basic Action, Round); Weapon Attack (42, Basic Action, At-will)
+Action cards: Advance (6, Basic Action, At-will); Break Free (8, Basic Action, At-will); Charge (10, Basic Action, Round); Crawl (12, Basic Action, At-will); Evade (14, Basic Action, At-will); Fists (16, Basic Action, At-will); Haul (18, Basic Action, Round); Hide (20, Basic Action); Interact (22, Basic Action, At-will); Leaning (24, Basic Action, At-will); Regrip (26, Basic Action, At-will); Release (28, Basic Action, At-will); Reload (30, Basic Action, At-will); Relocate (32, Basic Action, At-will); Shake Off (34, Basic Action, At-will); Shove (36, Basic Action, Round); Stand (38, Basic Action, At-will); Steel Yourself (40, Basic Action, Round); Trip (42, Basic Action, Round); Weapon Attack (44, Basic Action, At-will)
 
 ## 07-traits.md: Chapter 7: Traits
 
@@ -311,16 +311,16 @@ Open (to be decided) boxes: 19: "Levels 1 to 3 are written. Level 4 (the Apex an
 - 228:   ### How common each kind of Action is
 - 239:   ### Check its best turn
 - 246:   ### Elite Escalation
-- 267: ## Roles
-- 282: ## The ranks
-- 286:   ### Minions
-- 317:   ### Grunts
-- 348:   ### Standards
-- 377:   ### Elites
-- 406: ## Building an encounter
-- 434: ## Example NPCs (Stage 0)
+- 269: ## Roles
+- 284: ## The ranks
+- 288:   ### Minions
+- 319:   ### Grunts
+- 350:   ### Standards
+- 379:   ### Elites
+- 408: ## Building an encounter
+- 436: ## Example NPCs (Stage 0)
 
-Open (to be decided) boxes: 47: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 264: "An Elite's own steps of Escalation (what each Elite gains, and at whic"
+Open (to be decided) boxes: 47: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 266: "The CV was measured with the default ladder. The other common steps ar"
 
 ## 15-gear.md: Gear
 

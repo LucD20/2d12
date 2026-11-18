@@ -213,7 +213,7 @@
    "target": "The attacker",
    "distance": "Weapon",
    "vs": "AD",
-   "trigger": "An ally within 2 squares is hit by a [Strike] Action.",
+   "trigger": "An ally within 2 squares takes damage from a [Strike] Action.",
    "versions": [
     {
      "ap": 1,

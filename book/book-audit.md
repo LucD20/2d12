@@ -82,6 +82,26 @@ Hidden (only when it perceives you better), Threatens (Chapter 3's words), Criti
 39. **An Exotic weapon's Technique at 20** vs "every weapon's unlocks are at the same Mastery". *Default:* keep the exception and say it in that sentence.
 40. **A Minion's EoT in a shared slot.** *Default:* "A Minion's EoT effects end at the end of its own turn; rounds count down at the end of the slot."
 
+## Lucas's answers (2026-11-18) and what was applied (v0.0.431)
+
+"All rest default seems good": every item at its default except these.
+- **6:** the default, "unless it is a 'Must', which then the Action is Disrupted" (Chapter 2, Linked Actions).
+- **8:** asked what it meant (Chapter 3 let a creature that can't Evade use an Evade's movement as an Advance, which read as a way for an Immobilized or Prone creature to walk); the default applied: it can't.
+- **9:** "Why wouldn't you be able to Break Free while prone?": the default (Prone allows Break Free; its card in Chapter 6).
+- **10:** asked what the Immobilized DC is (Chapter 8: 11 + the Modifier the condition's origin used; 13 with no origin); the default applied.
+- **12:** asked for research ("isn't it best to halve first?"): no official rule in 5e or Pathfinder; the common view applies flat changes first and halving last (it keeps the halving proportional and doesn't drive Speed to 0). Applied as halve last; open for Lucas.
+- **13:** Courage as an Aura 3 (Lucas: "this or add Aura, whichever you think best"); the rest at its default.
+- **16:** "HT should only trigger once per turn or round": [HT] once per turn-cycle whatever the patterns (the Movement exemption removed).
+- **17:** "most games do the rider even if deal 0 damage. Are you sure?": the add-up part applied; the rider at 0 damage NOT changed (the Riders rule is his 2026-11-04 decision): open.
+- **20:** Hit and Run flagged for a redesign (a damage bonus would apply to every creature it hits); nothing changed.
+- **25:** "Allow to switch, granting 1 boon to everyone making the save" (Chapter 4); Desperate at its default.
+- **27:** "doesn't trigger Reactions from movement" (Chapter 3). "Moment" is still Chapter 2's word ("What a Reaction Responds To"); "answering a moment" was proposed on 2026-11-15 but never applied.
+- **29:** asked what "the one you had stops being Judged" meant: reworded "The target is Judged by you until the encounter ends. If another creature was Judged by you, it no longer is."
+- **35:** NOT applied: the Speed step fixes only the Grave Wisp (Sneak 20, Orc 92.5, Ogre 170); the gap in the other three is the Low Ward Defense. Open.
+- **37:** asked if Reload is now underpowered: the default applied; the Reload weapons are placeholders, their power waits for the crossbow group's redesign.
+- **38:** the Elite Escalation rewritten per Lucas: each Elite has its own steps at 2, 4 and 6 from a table of common ones (three each; the first of each is the default ladder); GMs mix them or write their own.
+- **40:** asked if Minions can split their Actions: by the text, no (each takes its whole turn); EoT at the end of its own turn, rounds at the end of the slot (the default applied).
+
 **Housekeeping:** DONE (v0.0.428, the book only): the twelve missing glossary entries (Prone, Desperate, Dying, Shattered, Unconscious,
 Emanation, Burst, Turn-cycle, Charge, Buff, Weapon DC / Power DC, Escalation hook) and the glossary in alphabetical order; the Bestiary's and
 Gear's damage examples with their pool ([V]). LEFT: the example names reused before all twenty were used (Krysta, Nari, Jacob, Wes, Zack in

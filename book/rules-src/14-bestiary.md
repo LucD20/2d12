@@ -18,7 +18,7 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 
 **Minions and Grunts have 3 AP a turn**, not 4: simple creatures that move and strike. Every NPC also gains the Reaction AP, as a PC does (see [[Action Points]]), **except Minions, which have none**.
 
-**Minions share turns.** Up to **3 Minions** can act in the same turn slot, one after another: the GM rolls Initiative once for the group. Each still has its own turn (its own AP, its own start and end of turn).
+**Minions share turns.** Up to **3 Minions** can act in the same turn slot, one after another: the GM rolls Initiative once for the group. Each still has its own turn (its own AP, its own start and end of turn), and takes it whole before the next one starts. A Minion's EoT effects end at the end of its own turn; durations in rounds count down at the end of the slot, after the last of them.
 
 ### Minor enemies
 
@@ -142,7 +142,7 @@ A Medium Standard's prices:
 
 ### Points into damage
 
-The damage of an Action is the points left after its riders (below). The table writes them as a flat number plus at most one small die; between two rows, take the nearer one. Add the **!** to the die where it explodes (a Standard's or an Elite's Basic attack; another Action that paid for it).
+The damage of an Action is the points left after its riders (below). The table writes them as a flat number plus at most one small die; between two rows, take the nearer one. Add the **!** to the die where it explodes (a Standard's or an Elite's Basic attack; another Action that paid for it). The table follows a formula, which the example NPCs below use directly: the average of a Tier 2 is about **0.14 × the points**, of a Tier 3 about **0.22 × the points**.
 
 | Points | Tier 2 / Tier 3 | | Points | Tier 2 / Tier 3 |
 |---:|---|---|---:|---|
@@ -249,20 +249,22 @@ An **Elite** has Escalation (the NPC sheet's switch); no other NPC does. It foll
 
 - **Start and rounds:** an Elite starts every encounter at **Escalation 1** and gains 1 at the start of each round after the first, up to 6. It has no Momentum and no Critical hook.
 - **Phases:** when an Elite **becomes Bloodied**, and when it **becomes Strained**, its Escalation increases by 1 (once each). The GM says so when it happens: the players always see an Elite change.
-- **What its Escalation does**, unless the Elite's entry says otherwise:
+- **Its steps:** what its Escalation does is the Elite's own. Each Elite has three steps, at Escalation **2**, **4** and **6**, and gains each step's ability (and keeps it) when its Escalation reaches that number.
 
-| Escalation | The Elite... |
+**Each Elite has its own Escalation.** The table gives the common steps: for each Elite, the GM picks one at each number, a different mix for each Elite, or writes their own. An Elite whose entry names no steps has the first of each, **the default ladder**: Pressing, Relentless and Second Wind.
+
+| Escalation | Common steps (pick one) |
 |---|---|
-| **2** | has **1 Boon** on its first attack each round. |
-| **4** | can use its **Round Special Action twice** a round. |
-| **6** | gets its **Encounter Special Action back**, once. |
+| **2** | **Pressing:** 1 Boon on its first attack each round. **Unmoved:** its Steadiness increases by 1, and its Saves have 1 Boon. **Watchful:** it has a second Reaction AP, for its own Reactions (an Elite with a Reaction). |
+| **4** | **Relentless:** it can use each of its Round Special Actions twice per turn-cycle. **Shrugs It Off:** at the start of each of its turns, it ends one condition on itself (not a Health state). **Swift:** its Speed increases by 2, and it ignores Difficult Terrain. |
+| **6** | **Second Wind:** it gets its Encounter Special Actions back, once. **Fury:** it is [[Empowered]]. **Last Stand:** it is [[Quickened]] 1. |
 
 - An Elite can also have Actions with an **Escalation** line (Rally the Tribe below): it can use them while its Escalation is at least that number, and they spend nothing.
 
 With its Escalation, an Elite is worth its CV: two Elites cost the party what four Standards do, and three what six do. The phases are there to be seen, and they bring its later abilities a round sooner.
 
 > [!tbd]
-> An Elite's own steps of Escalation (what each Elite gains, and at which numbers) come later; until then every Elite uses the table above.
+> The CV was measured with the default ladder. The other common steps are close to it by judgment, not measured yet: the next Bestiary measurement prices them.
 
 ## Roles
 
@@ -442,13 +444,13 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 **Orc Warrior** (Standard, CV 100; 25 points an AP, turn budget 100): Body High (+2), Instinct Medium (+1), Mind Medium (+1), Appeal Low (0). Weapon Modifier Medium (+2), Power Modifier Medium (+2). Vigor High (36), Resolve Low (24): Health 60. Armor Defense Medium (13), Ward Defense Low (11).
 - *Cleaver* (Basic attack, 1 AP, At-will, Reach (1); 25, Push 1 2): [V] 1 + 1d4! / 3 + 1d4! Sl, and Pushed 1.
 - *Brutal Swing* (2 AP, Round, Reach (1); 55, Prone 12, Avenge Kin's share 7): [V] 3 + 1d4 / 4 + 1d6 Sl, and Prone.
-- *Avenge Kin* (Reaction, 1R, Trigger: an ally within 2 squares is hit by a Strike; 28): it makes an attack against the attacker if it can reach it: [V] 1 + 1d4 / 3 + 1d6 Sl.
+- *Avenge Kin* (Reaction, 1R, Trigger: an ally within 2 squares takes damage from a [Strike] Action; 28): it makes an attack against the attacker if it can reach it: [V] 1 + 1d4 / 3 + 1d6 Sl.
 
 **Grave Wisp** (Standard, CV 100; 25 points an AP): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (a fast creature: its Vigor is Terrible).
 - *Chilling Touch* (Basic attack, 1 AP, At-will, Reach (1), Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4! / 2 + 1d4! Co, and Frightened of it (EoT).
 - *Dread Whisper* (2 AP, Round, Reach (1), Vs. WD, [Fear]; 55, Dazed 1 8): [R] 3 + 1d6 / 7 + 1d6 Ps, and Dazed 1.
 
-**Ogre Chieftain** (Elite, CV 200; 33 points an AP, turn budget 132): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation (the ladder above).
+**Ogre Chieftain** (Elite, CV 200; 33 points an AP, turn budget 132): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation: the default ladder (Pressing, Relentless, Second Wind).
 - *Club* (Basic attack, 1 AP, At-will, High, Reach (1); 40, Push 1 2, then Ground Slam's pay-back, a quarter): [V] 1 + 1d4! / 3 + 1d6! Bl, and Pushed 1.
 - *Overhead Smash* (2 AP, Round, Reach (1); 73, Push 2 8, the pay-back): [V] 3 + 1d6 / 7 + 1d6 Bl, and Pushed 2.
 - *Ground Slam* (2 AP, Encounter, Area 2 Emanation, a Save Action: Body Save, DC 14; 145, Prone 12, half to each): [V] 10 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it comes back once.

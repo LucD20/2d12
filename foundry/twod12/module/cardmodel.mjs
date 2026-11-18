@@ -10,6 +10,7 @@ import { rawTierLine } from "./preview.mjs";
 import { distanceShort } from "./sheetmodel.mjs";
 import { rollSource } from "./rollsource.mjs";
 import { tierLabel } from "./cardview.mjs";
+import { tierOfLabel } from "./util.mjs";
 
 export const MODE_NAME = { weapon: "Weapon mode", power: "Power mode" };
 const ROLL_WORDS = ["signature", "weapon", "magic", "body", "mind", "appeal", "instinct"];
@@ -41,8 +42,8 @@ function tierLinesAll(cells, save, noDamage, orTiers = "") {
   if (noDamage && !save && none(cells[0]) && cells[1] === cells[2]) return [["Tier 2 or 3", cells[1]]];
   return [1, 2, 3].map(n => [`Tier ${n}`, cells[n - 1]]);
 }
-/** The first Tier a tierLines label stands for ("Tiers 1–3" 1, "Tier 2 or 3" 2, "Tier 3" 3). */
-export const tierOfLabel = l => (/^Tiers? 1/.test(l) ? 1 : /^Tier 2/.test(l) ? 2 : 3);
+/** The first Tier a tierLines label stands for ("Tiers 1–3" 1, "Tier 2 or 3" 2, "Tier 3" 3): util.mjs (v0.0.431: the Save card reads it too). */
+export { tierOfLabel };
 
 const L = (label, text, fmt) => ({ label, text: String(text ?? ""), fmt });
 /** Pure: a Version's Tier n as written, with no creature: its damage and its rider (the key that decides how the Tiers are grouped). */

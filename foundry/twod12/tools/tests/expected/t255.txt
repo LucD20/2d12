@@ -2,19 +2,19 @@
 readBody: {"vs":"Appeal Save","tiers":["[R] 1d6 Ho.",null,null],"or":{"tiers":[1,2],"text":"Prone."},"seq":["A.","Special: B."],"rules":["**Judged:** C."]}
 the Structure files: archer.json, gear.json, paladin.json | Foundry reads: {"paladin.json":"paladin.json","archer.json":"archer.json"}
 Foundry's cards: no card of the old paladin.json: true | the ruler still reads it: true | every stage0 Paladin card: true
-Judge (two blocks, Special first): [[0,"The target is Judged by you until the en"],[1,"The target is Judged by you instead of t"]]
+Judge (two blocks, Special first): [[0,"The target is Judged by you until the en"],[1,"The target is Judged by you until the en"]]
 Rebuke (Save, Tier 1 or 2, Effect): {"ap":1,"tiers":["Its Move Action is disrupted.","Its Move Action is disrupted.","No effect."],"effects":"The target is Hindered (EoT).","orTiers":"12","tiersWritten":"12","effectFirst":true,"foundry":{"after":"@Condition[hindered|eot]"}} Appeal Save The target moves away from you.
 Binding Light's Tier 1 is damage (the final period dropped): [R] 1d6 Ho
 Lantern of Faith's Modes: Kindle | Reveal 5 sq. (One creature you perceive) | Glare[power,save] 5 sq. (One enemy you can see) vs Instinct Save
 Smite's Foundry tiers and dice rule: [R] 1d6! Ho / [V] 1[W] + [Mod] + [R] 1d6! Ho / [V] 1[W] + [Mod] + [R] 2d6! Ho | smite | no foundry.tiers left on the Version: true
-a Passive is a Feature's text: When you use a [Divine] Reaction, you gain Guard equal to 1 + your Power Modifier. | its rung: 2
+a Passive is a Feature's text: When you use a [Divine] Reaction (not Judge's 0R), you gain Guard equal to 1 + your Power Modifier. | its rung: 2
 --- an Art's Modes (split.mjs)
 the Modes: Kindle, Glare | a Split Action's modes are not Modes: 0
 Glare as used: divine,magic,save 5 One enemy you can see instinct 1 Glare | Kindle keeps the card's: self divine
 --- Smite's dice and Profane (judge.mjs)
 Smite dice by Escalation: 1d6! 2d6! 4d6! 4d6! | Profane: 3d8! | Tier 3 (1d6! -> 2d6!) at 4: 5d6! | with the Reaction AP: 6d8!
 Word of Radiance against a Profane creature: 3d8 | not: 3d6 | another die stays: 1d4
-the Profane Tag: true false true | once each round: c:2 ""
+the Profane Tag: true false true | once each round: c:2:0 ""
 --- the passives' hooks (hooks.mjs)
 works at its rung: false true false true | the traits: true false
 --- Rebuke: moves away (moment.mjs)

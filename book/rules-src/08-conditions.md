@@ -1,11 +1,11 @@
 <!-- part: Part III: Reference -->
 # Chapter 8: Conditions
 
-These conditions are in alphabetical order. Unless a card says otherwise, a creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). **A condition with a source**, such as Frightened of a creature, Taunted by one or Grabbed by one, comes from one source at a time: if you gain it from a different source, the new one replaces the old one, with its own duration. The effect that gives a condition says how long it lasts (EoT, a number of rounds, until a Save: see [[Effect Timing]]); a condition written with no duration lasts until the end of the encounter. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
+These conditions are in alphabetical order. Unless a card says otherwise, a creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). **A condition with a source**, such as Frightened of a creature, Taunted by one or Grabbed by one, comes from one source at a time: if you gain it from a different source, the new one replaces the old one, with its own duration. The effect that gives a condition says how long it lasts (EoT, a number of rounds, until a Save: see [[Effect Timing]]); a condition written with no duration lasts until the end of the encounter. **Ignoring a condition.** A creature that ignores a condition keeps it, but the condition does nothing to it; its duration still runs, and it works again when the creature stops ignoring it. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
 
 ### Blinded
 
-You can't see: for your Sight, everything is Darkness (see [[Senses]]). Creatures you only hear are Hidden to you, so your Actions against them are Doomed, and you can't target a creature you don't perceive. Any other Roll that needs sight is Doomed. Actions with the Area trait still affect the creatures in their area.
+You can't see: for your Sight, everything is Darkness (see [[Senses]]). Creatures you only hear are Hidden to you, so your Actions against them are Doomed, and you can't target a creature you don't perceive. Any other Roll that needs sight is Doomed. Actions with the Area trait still affect the creatures in their area. Every square is [[Difficult Terrain]] for you, as Darkness is for a creature that can't see in it: you move by feel.
 
 ### Dazed
 
@@ -39,11 +39,11 @@ If your Resolve reaches 0, you must make a **Mind Save** (DC 13). Resolve cannot
 
 ### Frightened
 
-Frightened is always **of** a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see [[Senses]]), all your [[Rolls]] take **1 Bane**, the Save that would end Frightened included, and every square that brings you closer to the source is [[Difficult Terrain]] for you (Forced Movement ignores it). Put a wall or Darkness between you and the source, and it is out of your Sight: the Bane and the Difficult Terrain stop until you see it again.
+Frightened is always **of** a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see [[Senses]]), all your [[Rolls]] take **1 Bane**, the Save that would end Frightened included, and every square that brings you closer to the source is [[Difficult Terrain]] for you (Forced Movement ignores it). Put a wall between you and the source, or let the source stand in Darkness, and it is out of your Sight: the Bane and the Difficult Terrain stop until you see it again.
 
 ### Grabbed
 
-A creature within its Reach holds you: you are [[Immobilized]], and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you. Grabbed ends when the holder lets go (no Action), leaves your Reach, goes Down or is Unconscious, or when you end Immobilized (1 AP [Move]: Break Free), against the holder's Immobilized DC when the card that grabbed you says so. The holder can't use the hand or limb that holds you for anything else.
+A creature within its Reach holds you: you are [[Immobilized]], and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you (the holder's own Forced Movement or Reposition of you ignores your Immobilized). Grabbed ends when the holder lets go (no Action), when you are no longer within the holder's Reach, when the holder goes Down or is Unconscious, or when you end Immobilized with [[Break Free]] (1 AP [Move]). When the card that grabbed you says so, Break Free is a Body or Instinct Check (the higher) against the holder's **Immobilized DC** (see [[Immobilized]]). The holder can't use the hand or limb that holds you for anything else.
 
 ### Half-Blinded
 
@@ -55,7 +55,7 @@ Your Speed is halved, rounded down. If you become Hindered while you are moving,
 
 ### Immobilized
 
-You can't use Move Actions or Evade. Unless otherwise specified, you can remove Immobilized by spending 1 AP [Move]: the one Move Action you can use while Immobilized.
+You can't use Move Actions or Evade. If you become Immobilized while you are moving, your movement ends. Unless otherwise specified, you can remove Immobilized with [[Break Free]] (1 AP [Move]): the one Move Action you can use while Immobilized.
 
 An Immobilized creature is also hard to move. An Action or effect that attempts to [[Forced Movement|Force Move]] or [[Reposition]] you and doesn't roll is automatically disrupted: you aren't moved.
 
@@ -88,7 +88,7 @@ Pressed always has a value, such as **Pressed 1**. Your [Strike] Actions take th
 
 - Melee Actions against you gain 1 Field Boon, and Ranged Actions against you suffer 1 Field Bane.
 - You can't [[Evade]].
-- The only [Move] Actions you can use are [[Crawl|Crawl]] and [[Stand|Stand]].
+- The only [Move] Actions you can use are [[Crawl|Crawl]], [[Stand|Stand]] and [[Break Free]].
 
 ### Quickened
 

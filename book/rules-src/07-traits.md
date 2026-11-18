@@ -39,7 +39,7 @@ A **Move** is an Action with the Move trait.
 
 To use an Action with the Move trait, you must have a Speed of at least 1.
 
-You can't end your movement in a square with another creature. A creature can allow you to pass through their squares. Otherwise, passing through the squares of an unwilling creature is Difficult Terrain.
+You can't end your movement in a square with another creature (no movement can: see [[Movement]]). A creature can allow you to pass through their squares. Otherwise, passing through the squares of an unwilling creature is Difficult Terrain.
 
 ### Nonlethal
 

@@ -1,0 +1,19 @@
+--- before the roll
+the Tiers as the card writes them: Tier 1 or 2: Its Move Action is disrupted. | no Tier 3 line: true | no band, no rider box, no ranges: true
+in the card's order (Trigger, Effect, the Save, the Tiers, the Roll button, the Flavor, the target row): true
+its owner's Roll button: Roll Appeal Save | the others wait: Waiting for Orc Warrior's Appeal Save… | no stamp yet: true | the retarget: true
+a Tier with damage: Tier 1: Resolve 3d6 Ho ; Pushed 3 | Tier 2: Resolve 2d6 Ho ; Pushed 2 | Tier 3: Resolve 1d6 Ho ; Pushed 1 | its damage line: 3 | two riders read as words: Tier 1 or 2: Pushed 2; Frightened of you (1 round)
+no target yet: No target yet: target the creatures, then press the target button below.
+--- one creature rolled
+the attack card's stamp: TIER 2 vs DC 13 | its ladder: ≤12 · 13–19 (lit) · 20+ | the total: 14
+the ladder opens the breakdown: true | its chip: Their Tier 2 | only the rolled Tier's words: ↳ Its Move Action is disrupted. | no quiet lines, no Roll button: true
+a Tier 3 with Doubles: no Critical on a Save (the book, Chapter 1): true | an empty Tier says so: No effect.
+with damage: its Damage button at the bottom: true | no retarget once rolled: true | the rolled Tier: Resolve 3d6 Ho ↳ Pushed 3
+--- several creatures, one still to roll
+a row each: T1 Orc Warrior: 9 | T3 Goblin Sneak: 21 | - Grave Wisp: Roll Appeal Save
+each rolled total opens its roll: true | the Roll button on the third row: true | another player waits: 1
+the Tiers rolled as the attack card's groups: Tier 3 Goblin Sneak: No effect. | Tier 1 Orc Warrior: ↳ Frightened of you (1 round).
+the quiet lines under them while one still has to roll: true | all rolled: only the Tiers rolled: true
+--- no new look
+the card's classes: 65 | not the attack card's or the Save card's before: none | without CSS and not the attack card's: none
+the old Tier band is gone from the Save card: true

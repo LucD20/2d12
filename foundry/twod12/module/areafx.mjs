@@ -2,7 +2,7 @@
 // (the squares around its creature), with one set of rows (fxrules.mjs normInside): Carries an Effect (zone.mjs and aura.mjs, as before), Heals,
 // Hazard [HT] and Difficult Terrain (here), and a Zone's Ends (the encounter, its origin going Down, "Someone uses an Action").
 // Each row has its own Who, judged from the origin's side (a neutral counts as an enemy) and "self" (the origin, or the Aura's creature).
-// The rules: Chapter 3 (Areas, Aura, Hazardous Terrain: Entering and Turn share one hit per turn-cycle, Movement once per Movement; Difficult Terrain),
+// The rules: Chapter 3 (Areas, Aura, Hazardous Terrain: one hit per turn-cycle, whatever the patterns (v0.0.431; Movement was once per Movement); Difficult Terrain),
 // Chapter 4 (Heal: the creature chooses which damage, the Heal window), Chapter 2 (a duration in rounds counts down at its slot).
 import { normInside, rowReaches, htPatterns, evalFormula, refValues, zoneSentence, zoneEndsSentence, plainText, normEnds, zoneRows, htMayHit, entered } from "./fxrules.mjs";
 export { zoneRows, htMayHit, entered };
@@ -97,7 +97,7 @@ async function htHit(area, tokenDoc, pattern) {
   const ht = area.rows.ht, actor = tokenDoc?.actor;
   if (!ht.on || !actor || !htPatterns(ht).includes(pattern) || !reaches(area, ht, tokenDoc)) return false;
   const c = game.combat;
-  if (pattern !== "movement" && c?.started) {
+  if (c?.started) {   // v0.0.431: one hit per turn-cycle, whatever the pattern (Chapter 3)
     const own = c.turns.findIndex(x => x.tokenId === tokenDoc.id), hits = actor.getFlag(F, "areaHits") ?? {};
     if (!htMayHit(pattern, hits[area.key], { round: c.round, turn: c.turn, own })) return false;
     await actor.setFlag(F, "areaHits", { ...hits, [area.key]: [c.round, c.turn] });

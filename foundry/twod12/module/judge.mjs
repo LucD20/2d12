@@ -4,6 +4,7 @@
 // Power Modifier (damage.mjs applyToActor). Weight of Judgment (Escalation 4) takes 2 from its Speed (data.mjs, to a minimum of 1).
 import { markOf, isMarked } from "./automation.mjs";
 import { tagChoices } from "./config.mjs";
+import { turnCycleBlocked } from "./usage.mjs";
 const F = "twod12";
 const norm = s => String(s ?? "").trim().toLowerCase();
 const actorOf = d => (d?.documentName === "Actor" ? d : d?.actor ?? null);
@@ -37,8 +38,18 @@ export function ruledDice(dice, rule, { escalation = 0, profane = false, more = 
   return d;
 }
 
-/** Pure: the key of the round (once each round), or "" outside a combat. */
-export const roundKey = combat => (combat?.started ? `${combat.id}:${combat.round}` : "");
+/** The key of now (once each round), or "" outside a combat. v0.0.431 (the book audit Q2, Chapter 2: "once a round" and "once each round" mean once
+ *  per turn-cycle): it carries the turn too, and usedThisCycle reads it against the creature's own turn-cycle. */
+export const roundKey = combat => (combat?.started ? `${combat.id}:${combat.round}:${combat.turn ?? 0}` : "");
+/** Pure: was a use recorded at `seen` (a roundKey) in this creature's current turn-cycle? Outside a combat, or another combat's key: no. */
+export function usedThisCycle(combat, actor, seen) {
+  if (!combat?.started || !seen) return false;
+  const [id, r, t] = String(seen).split(":");
+  if (id !== combat.id || !Number.isFinite(Number(r))) return false;
+  if (t === undefined) return Number(r) === combat.round;   // a key written before v0.0.431 (the round only)
+  const own = (combat.turns ?? []).findIndex(x => (x.actor && actor && (x.actor === actor || x.actor.uuid === actor.uuid)) || (actor?.isToken && x.tokenId === actor.token?.id));
+  return turnCycleBlocked(combat.round, combat.turn, own, [Number(r), Number(t)]);
+}
 /** v0.0.419: asks the judge's player (the pick bar, on their client) whether to reduce this damage. The tests (no DOM): yes. */
 async function askJudge(judge, src, target, by) {
   try {
@@ -68,7 +79,7 @@ export async function judgeReductions(actor, from) {
     if (Number(t.document.disposition) !== Number(me.document.disposition)) continue;   // the judge's ally
     if (tokenDistance(t, me) > 5) continue;
     const seen = j.getFlag?.(F, "judgeRound") ?? "";
-    if (key && seen === key) continue;   // the first time each round
+    if (key && usedThisCycle(game.combat, j, seen)) continue;   // the first time each round (per the judge's turn-cycle: v0.0.431)
     const by = Math.max(0, Number(j.system?.powerMod) || 0);
     if (!by) continue;
     // v0.0.419 (Lucas, playtest 5: "allow the Paladins to decide if the attack is reduced or not"): the judge's player chooses; declined, the

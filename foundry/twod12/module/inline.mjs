@@ -631,13 +631,13 @@ async function handleGuard(cfg, ctx) {
 
 /**
  * v0.0.410 (pack F2; book, Swapping Places): @Swap[]: you and the card's target (or the targeted token) swap squares at the same moment, each moved
- * by a Reposition (no Move Action, no Reactions: the forced flag). A target of another size: by hand (the book hasn't decided Sizes yet).
+ * by a Reposition (no Move Action, no Reactions: the forced flag). v0.0.431 (the book audit Q33, Chapter 3): only two creatures of the same Size swap.
  */
 async function handleSwap(cfg, ctx) {
   const me = tokenOfActor(originActor(ctx)), them = cardTargetTokens(ctx)[0] ?? [...(game.user.targets ?? [])][0] ?? null;
   if (!me || !them || them.id === me.id) return ui.notifications.warn("Swap squares: your token and the target's must be on the map (target the ally).");
   const a = me.document, b = them.document;
-  if ((a.width ?? 1) !== (b.width ?? 1) || (a.height ?? 1) !== (b.height ?? 1)) return ui.notifications.warn(`${me.name} and ${them.name} are not the same Size: swap them by hand (the book hasn't decided this case yet).`);
+  if ((a.width ?? 1) !== (b.width ?? 1) || (a.height ?? 1) !== (b.height ?? 1)) return ui.notifications.warn(`${me.name} and ${them.name} are not the same Size: they can't swap squares (Chapter 3, Swapping Places).`);
   const move = async (d, x, y) => { if (d.isOwner) await d.update({ x, y }, { twod12Forced: true, animate: true }); else game.socket.emit("system.twod12", { type: "pushMove", tokenUuid: d.uuid, x, y }); };
   const [ax, ay, bx, by] = [a.x, a.y, b.x, b.y];
   await Promise.all([move(a, bx, by), move(b, ax, ay)]);

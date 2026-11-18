@@ -269,14 +269,13 @@
     {
       "name": "Break Free",
       "category": "Basic Action",
-      "book": false,
-      "_note": "v0.0.224 (Lucas, playtest 3): removing Immobilized costs 1 AP and is a Move Action (08-conditions.md, Immobilized). The book has no card for it: this is that rule as a Basic Action in Foundry.",
+      "_note": "v0.0.224 (Lucas, playtest 3): removing Immobilized costs 1 AP and is a Move Action (08-conditions.md, Immobilized). v0.0.431 (the book audit, Q9 and Q10): shown in Chapter 6; Prone allows it; a Grab can ask for a Check.",
       "flavor": "You tear loose from whatever holds you.",
       "traits": ["move", "self"],
       "frequency": "At-will",
       "requirements": "You are Immobilized.",
       "versions": [
-        { "ap": 1, "effects": "You are no longer Immobilized." }
+        { "ap": 1, "effects": "You are no longer Immobilized, and no longer Grabbed if you were. When the card that Grabbed you says so, make a Body or Instinct Check (the higher) against the holder's Immobilized DC first: below it, you stay Grabbed." }
       ],
       "foundry": { "basic": "breakFree", "automation": "gold", "img": "icons/svg/net.svg" }
     }

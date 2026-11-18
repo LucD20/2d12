@@ -38,7 +38,7 @@ const C = await import(ROOTURL + "module/chatcards.mjs");
 const r = { d1: [6], d2: [7], total: 15, tier: 2, dc: 13, dcLabel: "AD", boons: [{ name: "Marked Quarry", n: 1 }], banes: [{ name: "Situational", n: 1 }], mods: [{ v: 2, label: "Weapon" }] };
 const bd = C.breakdownHtml({ ...r, bb: [{ kind: "boon", val: 1, name: "Marked Quarry" }, { kind: "bane", val: -1, name: "Situational" }] }, { applied: [{ name: "Killer's Focus", uuid: "Item.kf" }] });
 console.log("breakdown:", txt(bd).slice(0, 160), "| Applied is a link:", bd.includes('data-uuid="Item.kf"'));
-console.log("the Damage button used:", src("module/followup.mjs").includes('b.classList.add("dmg-used")'), "| the Save condensed once rolled:", cc.includes("if (condensed && !hit) return \"\";"));
+console.log("the Damage button used:", src("module/followup.mjs").includes('b.classList.add("dmg-used")'), "| the Save condensed once rolled:", cc.includes("${rolled.length < cs.length ? quiet : \"\"}"));   // v0.0.431: once every creature rolled, only the Tiers rolled
 
 // 8. Rally
 const ra = src("module/rally.mjs");

@@ -15,4 +15,8 @@ Reckoning on three creatures with two rolled. Shots: `save-card-dark.jpg`, `save
 - **Several creatures:** a row each (its Tier pill and total, or its Roll button), then the Tiers rolled as the attack card's groups (the Tier, the
   names, its words); while one still has to roll, the quiet lines stay under them.
 
-**Status:** waiting for Lucas (mockups first). Built in Foundry: `chatcards.mjs saveCardHtml` would take `proposedSave`'s shape.
+**Status:** Built in v0.0.431 (Lucas, 2026-11-18: "Yes to card mockup"): `chatcards.mjs saveCardHtml` takes `proposedSave`'s shape, wired to
+the real card (the Roll buttons, each roll's breakdown, the Damage button, the retarget, the player's view; test t273). The page's left column
+is now the built card (beside the mockup's drawing), with a fourth case: Word of Radiance on two creatures before their Saves (a Tier with
+damage, a row each with its Roll button). Shots of the built card: `built-dark.jpg`, `built-light.jpg` (the system's icons are not loaded on
+this page).

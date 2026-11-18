@@ -69,7 +69,7 @@ When a roll is **Favored**, you roll **3d12** and keep the **two highest**. If *
 
 When a roll is **Doomed**, you roll **3d12** and keep the **two lowest**. A Doomed roll can't produce Doubles.
 
-A roll that is both Favored and Doomed is a normal roll. A roll can't be Favored or Doomed twice.
+A roll that is both Favored and Doomed is a normal roll, and nothing is added to it: 5 Boons that make a Doomed roll Favored leave a normal roll, not a roll with 5 Boons. A roll can't be Favored or Doomed twice.
 
 Roll three dice, then see if there are any explosions, calculated per die.
 
@@ -92,14 +92,14 @@ A **Roll** is anything you roll. There are six kinds, and every roll is exactly 
 |---|---|
 | **Check** | One Attribute Modifier against a DC, outside an Action: a "Body Check" (see [[Checks]]). |
 | **Save** | A roll to resist something: an "Appeal Save" (see [[Saves]]). |
-| **Weapon roll** | An Action with the Weapon trait. It rolls your [[Weapon, Power and Signature Modifiers\|Weapon Modifier]]. |
-| **Power roll** | An Action with the Power trait. It rolls your Power Modifier. |
+| **Weapon roll** | An Action with the Weapon trait, and not the Signature or Save trait. It rolls your [[Weapon, Power and Signature Modifiers\|Weapon Modifier]]. |
+| **Power roll** | An Action with the Power trait, and not the Signature or Save trait. It rolls your Power Modifier. |
 | **Signature roll** | An Action with the Signature trait. It rolls your Signature Modifier. |
 | **Attribute Action** | Any other Action that rolls: it rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait. |
 
 If an Action has multiple traits that reference the type of roll, such as the Trip Basic Action that has both Body and Instinct traits, it is both a Body and Instinct Action, even though you only use one Attribute.
 
-A Split Action is a Weapon roll or a Power roll, depending on the mode you choose when you use it.
+A Split Action is a Weapon roll or a Power roll, depending on the mode you choose when you use it. A [Save] Action doesn't roll: its targets roll Saves (see [[Save Actions]]). Damage dice and the [[Dying]] and [[Shattered]] Tables are **not Rolls**: nothing that changes a Roll (a Boon, Doomed, Unconscious) changes them.
 
 An effect on Actions names their **trait**: "1 Boon on [Weapon] Actions" helps every Action with the Weapon trait, whatever Modifier it rolls (a [Signature, Weapon] Action too). An effect that names a Check or a Save applies only to that kind. An effect that names an Attribute and "Rolls" applies to every kind that rolls that Attribute: its Checks, its Saves and its Attribute Actions. Weapon, Power and Signature rolls use no Attribute. "Your Rolls" means all of them.
 
@@ -131,7 +131,7 @@ An Action with the **Save** trait doesn't roll: each target rolls the Save the c
 
 The tiers are the target's result: **Tier 1 is the worst for them**. So everything that follows your result on an attack follows theirs here, reversed: a [Save, Weapon] Action deals its [Mod] on **Tier 1 and 2**, and a line for two Tiers is written **Tier 1 or 2**.
 
-A Save Action has no Critical. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target.
+A Save Action has no Critical. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target (from your square when the Action has no area). Your [[Senses]] don't change a Save Action: the target rolls, so a target that is Obscured or Hidden to you adds no Bane to its Save.
 
 ## Roll Effects
 
@@ -145,7 +145,7 @@ The damage of an Action is what its card says: it adds a Modifier or a weapon's 
 
 When an Action deals damage equal to your Modifier, it is written **[Mod]**. The Modifier is always the one you used to roll for that Action. You never add a Modifier to the same damage twice.
 
-When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier.
+When a Weapon Action adds your Modifier to its damage, the Modifier joins the **weapon's damage** and keeps its damage type and subtype: if the weapon deals Resolve damage, so does the Modifier. A Tier that writes [Mod] with no [W] deals it as the weapon's damage too, with the weapon's type and subtype.
 
 **Power Actions** don't add their Modifier to damage on any Tier: their damage is the dice on the card.
 
@@ -192,7 +192,7 @@ When you **Cleave** N, you deal the Modifier used as damage (with the same damag
 
 ## Several Targets
 
-When one Action affects several creatures (an Area, or a Strike that says "all creatures"), you **roll once**, after the targets are chosen (for an Area, after you place it). The dice are shared, but every target is calculated on its own:
+When one Action affects several creatures (an Area, a Strike on "up to three creatures", or one that says "all creatures"), you **roll once**, after the targets are chosen (for an Area, after you place it). The dice are shared, but every target is calculated on its own:
 
 - The **DC** is [[Versus|calculated against each creature]].
 - Each creature has its own Boons, Banes, Favored and Doomed: cover, Prone, Vulnerable, range and so on can apply to one target and not to another.
@@ -299,7 +299,7 @@ A single creature is referred to as **they**: "the creature is Hindered until th
 
 **Origin.** The origin of an effect is the creature that uses the Action, or the Point of Origin of an Area. When a rule says "the origin chooses", the origin decides, not the creature affected.
 
-**Since your last turn, this turn.** A feature that says "since your last turn" counts from the end of your last turn. One that says "this turn" counts from the start of your turn.
+**Since your last turn, this turn.** A feature that says "since your last turn" counts from the end of your last turn. "This turn" is the turn in progress, whoever's it is: on your turn, it counts from the start of your turn; on another creature's turn (a Reaction), from the start of that turn.
 
 **Up to.** A number of things you can use, gain or move is a maximum: you can use fewer, or none, unless the rule says you **must**. "The target can use 2 Rally Points" lets them use 0, 1 or 2.
 

@@ -123,7 +123,8 @@ export async function gainForRound(combat) {
  */
 /** v0.0.314 (pack AU; book, Bestiary, Elite Escalation): what an Elite's Escalation does (unless its entry says otherwise); v0.0.407: at 2, 4 and 6. */
 const [ER1, ER2, ER3] = ELITE_RUNGS_LADDER;
-export const ELITE_RUNGS = { [ER1]: "1 Boon on its first attack each round", [ER2]: "1 Boon on its first attack each round, its Round Special Action twice a round", [ER3]: "1 Boon on its first attack each round, its Round Special Action twice a round, its Encounter Special Action back, once" };
+// v0.0.431 (Lucas, 2026-11-18, the book audit Q38): each Elite has its own steps; these are the default ladder's (Pressing, Relentless, Second Wind)
+export const ELITE_RUNGS = { [ER1]: "Pressing (1 Boon on its first attack each round)", [ER2]: "Pressing (1 Boon on its first attack each round), Relentless (each of its Round Special Actions twice per turn-cycle)", [ER3]: "Pressing (1 Boon on its first attack each round), Relentless (each of its Round Special Actions twice per turn-cycle), Second Wind (its Encounter Special Actions back, once)" };
 /** What an Elite's ladder gives at this level (everything up to it), or "nothing yet" below the first step. */
 export const eliteRung = n => { const l = Math.trunc(Number(n)) || 0, at = [...ELITE_RUNGS_LADDER].reverse().find(r => l >= r); return at ? ELITE_RUNGS[at] : `nothing yet (its ladder starts at Escalation ${ER1})`; };
 /** Pure: the Elite phases an Elite gains from these state words (["Bloodied", "Strained", "Down"]): "bloodied" and/or "strained". */

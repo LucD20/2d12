@@ -57,4 +57,4 @@ console.log("a player who isn't the author sees no buttons:", !/data-twod12="app
 
 console.log("--- the Save card: the Trigger above the Tier rows (section 12)");
 const sv = CC.renderCard({ kind: "save", name: "Rebuke", freq: "turn", cost: "1R", saveName: "Appeal Save", dc: 13, tline: { targets: "The triggering creature", dist: "5 sq.", names: ["Bandit Thug"] }, creatures: [{ uuid: "t", name: "Bandit Thug" }], tiers: {}, triggerHtml: "An enemy within 5 squares makes a [Strike] Action against an ally.", triggerLabel: "Trigger" }, CC.viewOf({ gm: true }));
-console.log("Save line, Trigger, diamond, Tier rows:", sv.indexOf("cc-savehead") < sv.indexOf("cc-trigger plain") && sv.indexOf("cc-trigger plain") < sv.indexOf("cc-div") && sv.indexOf("cc-div") < sv.indexOf("cc-srows"));
+console.log("Save line, Trigger, diamond, Tier rows:", sv.indexOf("cc-savehead") < sv.indexOf("cc-trigger plain") && sv.indexOf("cc-trigger plain") < sv.indexOf("cc-div") && sv.indexOf("cc-div") < sv.indexOf("<b>Tier 1:</b>"));   // v0.0.431: the Tiers as quiet lines

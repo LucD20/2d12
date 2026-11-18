@@ -45,6 +45,10 @@ Forced Movement and Reposition never squeeze a creature: they stop in the last s
 
 An Action that lets you move gives a distance, written "Advance 5" or "Evade 2". You can always move less than the specified amount: "Advance 5" means up to 5 squares, not exactly 5. But each time you move with an Action, you can't move more than your current Speed, unless an ability says otherwise: with Speed 2, an Action that lets you Evade 3 lets you Evade only 2. Forced Movement and Reposition don't use your Speed.
 
+**No movement ends in another creature's square:** an Advance, an Evade, a Forced Movement or a Reposition (passing through one is covered under [[Move]] and [[Difficult Terrain]]).
+
+**Changes to your Speed.** Apply every other change first, then halve it: with Speed 6, Weight of Judgment's −2 and Hindered, your Speed is (6 − 2) halved = 2. Halving rounds down.
+
 ### Advance
 
 Advance is the normal movement, and the Action every creature uses to move. **You only move with an Action that moves you**: Advance, Evade, or another Action that says so (someone else moving you, with Forced Movement or Reposition, is not you moving). An Advance can trigger reactions.
@@ -61,7 +65,7 @@ Evade is a type of movement that doesn't trigger reactions. You can't Evade into
 
 An Evade is one piece too, and nothing fits inside it: if an Action lets you Evade 3 and you Evade 1 square, the other 2 squares are lost.
 
-When an Action allows you to Evade, you can use the movement as an Advance instead. By itself this brings no benefit, but it lets a creature move willingly through reactions, or move at all if they are unable to Evade.
+When an Action allows you to Evade, you can use the movement as an Advance instead. By itself this brings no benefit, but it lets a creature move willingly through reactions, or through Difficult Terrain, where an Evade can't go. A creature that can't use Move Actions (Immobilized) or is Prone can't use the movement as an Advance either.
 
 ### Moving and Leaving Your Square
 
@@ -101,7 +105,7 @@ In the figures, Y is you. Blue squares are the squares the token passes, the gre
 
 Forced Movement is movement you impose on another creature, choosing where it goes. There are three types: Pushed, Pulled and Slid. [[Reposition]] also moves a creature of your choice, but it isn't Forced Movement. Every Forced Movement follows these rules:
 
-- It doesn't trigger reactions.
+- It doesn't trigger Reactions from movement. (A Reaction that triggers on the Forced Movement itself, "a creature would be moved by Forced Movement", still does.)
 - It ignores Difficult Terrain.
 - It can move a creature into [[Hazardous Terrain]] or a Deadly Hazard.
 - It doesn't use the creature's Speed, and each square counts as 1, even when it is diagonal.
@@ -166,7 +170,7 @@ A Reposition stops at an object or a creature without taking Collision damage.
 
 Reposition moves a creature of your choice along a path, but it isn't Forced Movement. Reposition has a value: up to that many squares of path. Your Reach and the creature's Size don't limit it. The path follows the rules of [[Slid]] (each square next to the previous one, each counting as 1 even when it is diagonal, and the origin must have Line of Effect to the creature at every square), with these rules:
 
-- It doesn't trigger reactions.
+- It doesn't trigger Reactions from movement.
 - It ignores Difficult Terrain.
 - Its value is reduced by the creature's [[Steadiness]].
 - It can't move a creature into Hazardous Terrain or a Deadly Hazard, though it can move the creature to a less advantageous position, for example into a flanked square.
@@ -183,18 +187,19 @@ The four movements side by side:
 |---|---|---|---|---|
 | Forced Movement | Yes | Yes | Yes | No |
 | Direction | Away (cone) | Toward (cone) | Any path | Any path |
-| The origin needs Line of Effect | No | No | Yes | Yes |
+| The origin needs Line of Effect at every square of the path | No | No | Yes | Yes |
 | Into Hazardous Terrain or a Deadly Hazard | Yes | Yes | Yes | No |
 | Creatures in the way | Collision | Collision | Collision | Stops, no damage |
 | Objects in the way | Collision damage | Collision damage | Collision damage | Stops, no damage |
 | Each diagonal square counts | 1 | 1 | 1 | 1 |
 
+All four need [[Line of Effect]] to the creature when they begin, like anything a card does to a creature (see [[Targets of Effects]]); the table's row is about the rest of the path.
+
 ### Swapping Places
 
 When a rule makes two creatures **swap squares**, each enters the square the other left, at the same moment. Each of them is moved by a [[Reposition]]: it is not a Move Action, it triggers no Reactions, and both have left their square (see [[Moving and Leaving Your Square]]).
 
-> [!tbd]
-> Still to decide: whether two creatures of different Sizes can swap, and whether Steadiness stops a swap.
+Only two creatures of the same Size can swap squares. Steadiness doesn't stop a swap with a willing creature: it chooses not to apply it.
 
 ## Steadiness
 
@@ -214,11 +219,11 @@ Each square of difficult terrain counts double the squares it would normally cou
 
 - **Entering:** "When a creature enters this area." A creature in the area when it appears is treated as entering it.
 - **Turn:** "When a creature ends its turn in this area."
-- **Movement:** "When a creature moves within this area." Triggers once per Movement (Advance, Evade, or Forced Movement) that crosses any square of the area.
+- **Movement:** "When a creature moves within this area." A movement (an Advance, an Evade or a Forced Movement) that crosses any square of the area.
 
 An [HT] effect with no declared pattern uses Entering and Turn by default.
 
-**Turn-cycle limit.** Entering and Turn both count against the same per-creature turn-cycle limit. A creature that enters and ends its turn in the same area is affected at most once per turn-cycle. The Movement pattern is exempt: it can hit the same creature multiple times per round, once per Movement.
+**Once per turn-cycle.** An [HT] area affects each creature at most once per turn-cycle (from the start of that creature's turn to the start of its next), whatever its patterns: a creature that Advances into an area with Entering and Movement, or enters it and ends its turn there, is affected once.
 
 **Size.** An [HT] area affects a creature once regardless of its Size.
 
@@ -275,7 +280,7 @@ A creature **threatens** every enemy within the **normal range** of a Melee weap
 
 Like [[Engaged]], threatening does not depend on what you perceive, but it uses range and not adjacency: a creature with a Range 2 weapon threatens an enemy 2 squares away, which is not Engaged with it.
 
-Creatures that threaten the same enemy **flank** it. A creature that flanks an enemy gains **1 Field Boon** on its [Melee] Actions against that enemy for **each other creature** that flanks it. But each **ally of that enemy that threatens the flanker** cancels 1 of those Boons, and a creature never gains fewer than 0.
+Creatures that threaten the same enemy **flank** it. A creature that flanks an enemy gains **1 Field Boon** on its [Melee] Actions against that enemy for **each other creature** that flanks it. But each **ally of that enemy that threatens the flanker** cancels 1 of those Boons, and a creature never gains fewer than 0. Count in this order: 1 for each other flanker, minus 1 for each ally of the enemy that threatens you (never below 0); only then does the limit of 2 Field Boons apply (see [[Named Boons and Banes]]).
 
 Blue tokens are allies and red-brown tokens are enemies. A badge is the Boons that creature gets on [Melee] Actions against the creature in the middle (G, John in the fifth picture) or against D in the last one.
 

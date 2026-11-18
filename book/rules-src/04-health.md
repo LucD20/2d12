@@ -36,7 +36,7 @@ An Action's damage can come in several **instances**: each part with its own poo
 
 ### Lethal and Nonlethal
 
-Actions deal **Lethal** damage by default. Actions with the **Nonlethal** trait deal **Nonlethal** damage by default. A Nonlethal Action can deal Lethal damage by taking a Bane, and a Lethal Action can deal Nonlethal damage by taking a Bane as well.
+Actions deal **Lethal** damage by default. Actions with the **Nonlethal** trait deal **Nonlethal** damage by default. A Nonlethal Action can deal Lethal damage by taking a Bane, and a Lethal Action can deal Nonlethal damage by taking a Bane as well. A [[Save Actions|Save Action]] doesn't roll, so it switches the other way: every creature that makes its Save gains **1 Boon** on it.
 
 How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in [[Roll Effects]]. Empowered, which adds a die to your damage, is in [[Chapter 8: Conditions|Conditions]].
 
@@ -45,8 +45,8 @@ How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is i
 When your total damage equals or goes above your Health Pool, you are **Down**. Follow these steps in order:
 
 1. **Nonlethal damage ≥ 50% of your Health Pool:** you fall **Unconscious**.
-2. **Some Nonlethal damage, but under 50%:** choose to fall **Unconscious** or keep fighting as **Desperate**.
-3. **No Nonlethal damage:** check your **Dominant Damage** and become **Dying** or **Shattered**.
+2. **Some Nonlethal damage, but under 50%, and the damage that took you Down was Nonlethal:** choose to fall **Unconscious** or keep fighting as **Desperate**.
+3. **Otherwise** (no Nonlethal damage, or a Lethal blow took you Down): check your **Dominant Damage** and become **Dying** or **Shattered**.
 
 ### Getting Back Up
 
@@ -110,7 +110,7 @@ Only a Rest restores Rally Points. Sleep does not. A new encounter does not.
 
 Some effects give you **Guard**, written with a value: **Guard 6**. When you take damage, your Guard takes it first (Vigor or Resolve damage alike), and only the rest reaches your Health. Damage your Guard takes isn't damage you take: it doesn't count toward your thresholds or your Health Pool, and it doesn't trigger anything that happens when you take damage. A [[Riders|rider]] on that damage still happens: Guard takes damage that was dealt.
 
-- Damage reduction (such as Shield of Faith) applies first; Guard takes what is left.
+- Damage reduction (such as Shield of Faith) applies first; Guard takes what is left. Reductions from different effects add up (Judge's and Shield of Faith's), and each applies once to an Action's damage to that creature, after [[Resist, Weak and Immune|Resist]].
 - Guard isn't Health: it can't be healed, and Rally Points don't restore it.
 - It doesn't stack: if you gain Guard while you have some, keep the higher value (see [[Stacking]]). The exception is the Guard your [[Unspent AP]] give you: it adds to your other Guard, damage takes it first, and it lasts 1 round (from the start of your turn until you regain AP again).
 - It ends at the end of the encounter.

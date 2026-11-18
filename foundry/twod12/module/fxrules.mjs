@@ -677,7 +677,9 @@ export function zoneRows(zone) {
   return normInside({ carry: carry ? { on: true, who: carry.who, self: false, fx: carry.fxUuid } : {}, carry2: carry2 ? { on: true, who: carry2.who, self: false, fx: carry2.fxUuid } : {}, heal: heal ? { on: true, who: heal.who, self: false, formula: heal.heal } : {} });
 }
 /** Hazard (Chapter 3): may this pattern hit now? Entering and Turn share the creature's turn-cycle limit (at: the last such hit [round, turn]); Movement has none. */
-export const htMayHit = (pattern, at, { round, turn, own }) => pattern === "movement" || !turnCycleBlocked(round, turn, own, at);
+// v0.0.431 (Lucas, 2026-11-18, the book audit Q16: "HT should only trigger once per turn or round"): every pattern, Movement too, counts against the
+//   one hit per turn-cycle (pattern is kept for the callers).
+export const htMayHit = (pattern, at, { round, turn, own }) => !turnCycleBlocked(round, turn, own, at);
 /** The areas a creature enters (now in, not before). */
 export const entered = (before, now) => [...now].filter(k => !before.has(k));
 

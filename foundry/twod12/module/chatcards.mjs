@@ -3,7 +3,7 @@
 // The card is drawn for each viewer (the render hook in twod12.mjs calls render with that viewer's view): the GM sees everything; a player may have
 // the enemy Defenses or the target details hidden by the GM; Designer mode (a client setting) adds the odds, the Ruler line and the Mithril mark.
 // The message's stored content is the GM's view without Designer mode (the fallback when the hook can't run).
-import { esc, vsKind } from "./util.mjs";
+import { esc, vsKind, tierOfLabel } from "./util.mjs";
 import { mergeDiceLine, mergeInstances } from "./dicemerge.mjs";
 /** v0.0.314 (pack AU): an AD / WD (or an Attribute's) badge in its color: the Vs. line's colors (util.mjs VS_COLORS). */
 const vsk = label => { const k = vsKind(label); return k ? ` vsk-${k}` : ""; };
@@ -322,34 +322,54 @@ export function attackCardHtml(m, view = FULL_VIEW) {
 export const saveRanges = dc => ({ 3: `${dc + 7}+`, 2: `${dc}–${dc + 6}`, 1: `≤${dc - 1}` });
 /** The creatures of a Save card: [{ uuid, name, result, damageDone, hasDamage }] (a one-target card of v0.0.283 kept its target and result alone). */
 export const saveCreatures = m => m.creatures ?? (m.target ? [{ uuid: m.target.uuid, name: m.target.name, result: m.result ?? null, damageDone: !!m.damageDone, hasDamage: !!m.hasDamage }] : []);
+/**
+ * v0.0.431 (Lucas, 2026-11-18: "Yes to card mockup", foundry/mockups/save-card; playtest 5, C10): the Save card in the attack card's parts, no look of
+ * its own. Before the roll: the Tiers as the card writes them (its model's Tier labels: "Tier 1 or 2", an empty Tier 3 not written), quiet and
+ * inline (no band, no rider box; a Tier with damage keeps its damage line), then the card's lines after them (its Effect) and the Roll button. One
+ * creature rolled: the attack card's stamp ("TIER 2, vs DC 13") and ladder (a click opens the breakdown) and only the rolled Tier's words. Several
+ * creatures: a row each (its Tier pill and total, a click opens its roll; or its Roll button), then the Tiers rolled as the attack card's groups
+ * (the Tier, the names, its words); while one still has to roll, the quiet lines stay under them. A Save Action has no Critical (the book,
+ * Chapter 1): its stamp and ladder never show one.
+ */
 export function saveCardHtml(m, view = FULL_VIEW) {
-  const rg = saveRanges(m.dc), cs = saveCreatures(m), one = cs.length <= 1, r = one ? cs[0]?.result ?? null : null;
-  const anyRolled = cs.some(c => c.result);
-  // v0.0.335 (Lucas: "the save card tier table can look more like the Action preview's"): Tier 1, 2, 3 from the top, "Tier N" in full, the preview's look
-  // v0.0.347 (Lucas, playtest 4: "after the Save is rolled, condense to show just the rolled result"): once every creature rolled, only the Tiers rolled
-  const condensed = cs.length > 0 && cs.every(c => c.result);
-  const rows = [1, 2, 3].map(t => {
-    const who = cs.filter(c => c.result?.tier === t), hit = one ? !!r && r.tier === t : who.length > 0;
-    if (condensed && !hit) return "";
-    const cls = `cc-srow t${t}${anyRolled ? (hit ? " hit" : " dim") : ""}${one ? "" : " many"}`;
-    const names = !one && who.length ? `<span class="cc-who">${who.map(c => `<span class="cc-nchip">${esc(c.name)}</span>`).join("")}</span>` : "";
-    const inner = `<span class="cc-scell"><b>Tier ${t}</b><small>${esc(rg[t])}</small></span><span class="cc-sbody">${names}${outcomeHtml(m.tiers?.[t], { none: t === 3 ? "No effect." : "" })}</span>${one && hit ? `<span class="cc-stotal">${r.total}</span>` : ""}`;
-    return one && hit ? `<button type="button" class="${cls}" data-cc-toggle="save" aria-expanded="false" aria-label="${esc(`Their Tier ${t}: total ${r.total}. Show the roll`)}">${inner}</button>${breakdownHtml(r, { save: true, id: "save" })}` : `<div class="${cls}">${inner}</div>`;
-  }).join("");
+  const cs = saveCreatures(m), one = cs.length <= 1, r = one ? cs[0]?.result ?? null : null;
+  const anyRolled = cs.some(c => c.result), rolled = cs.filter(c => c.result);
+  const out = t => outcomeHtml(m.tiers?.[t], { none: "No effect." });
+  // the quiet lines: each Tier as the card writes it, its damage line ("♥ 3d6 Ho") then its riders as words, as the book writes "[R] 3d6 Ho; Pushed 3."
+  // (riders as words: "Pushed 2; Frightened of you"; after a rider that ends its sentence, a space)
+  const words = list => list.filter(Boolean).reduce((a, h) => (a ? `${a}${/[.!?]$/.test(a.replace(/<[^>]+>/g, "").trim()) ? " " : "; "}${h}` : h), "");
+  const inline = t => {
+    const o = m.tiers?.[t] ?? {}, dmg = poolLines(o.parts), riders = words(o.riders ?? []);
+    return dmg ? `<span class="cc-dmgline">${dmg}</span>${riders ? `; ${riders}` : ""}` : riders || "No effect.";
+  };
+  const labels = m.card?.tiers?.length ? m.card.tiers : ["Tier 1", "Tier 2", "Tier 3"];
+  const quiet = labels.map(l => `<div class="cc-trigger plain cc-line"><b>${esc(l)}:</b> ${inline(tierOfLabel(l))}</div>`).join("");
   const rollBtn = i => `<button type="button" class="cc-btn${one ? " primary" : " small primary"}" data-twod12="saveRoll" data-idx="${i}">Roll ${esc(m.saveName)}</button>`;
-  // v0.0.286 (Lucas: Rebuke on three targets gave the old cards): several creatures, a row each; each rolls its own Save
-  const crows = one ? "" : `<div class="cc-crows">${cs.map((c, i) => `<div class="cc-crow save"><span class="cc-cname">${esc(c.name)}</span>${c.result
-    ? `<button type="button" class="cc-sres t${c.result.tier}" data-cc-toggle="s${i}" aria-expanded="false" aria-label="${esc(`${c.name}: their Tier ${c.result.tier}, total ${c.result.total}. Show the roll`)}">${tierPill(c.result.tier)}<span class="cc-stotal">${c.result.total}</span></button>${breakdownHtml(c.result, { save: true, id: `s${i}` })}`
-    : view.owns(c.uuid) ? rollBtn(i) : '<span class="cc-muted">Waiting\u2026</span>'}</div>`).join("")}</div>`;
+  const noCrit = x => ({ ...x, crit: false, dcLabel: "DC" });
+  let body;
+  if (one && r) {
+    // one creature rolled: the attack card's stamp, ladder and breakdown (the ladder opens it), then only the rolled Tier's words
+    body = `<div class="cc-body">${stampHtml(noCrit(r))}<div class="cc-main">${ladderHtml(noCrit(r), { id: "s0" })}${breakdownHtml(r, { save: true, id: "s0" })}<div class="cc-outcome">${out(r.tier)}</div></div></div>`;
+  } else if (!one) {
+    // several creatures: a row each (v0.0.286: each rolls its own Save), then the Tiers rolled grouped as on the attack card
+    const crows = cs.map((c, i) => `<div class="cc-crow">${c.result ? tierPill(c.result.tier) : '<span class="cc-pill">&ndash;</span>'}<span class="cc-cname">${esc(c.name)}</span><span class="cc-cdef">${c.result
+      ? `<button type="button" class="cc-sres t${c.result.tier}" data-cc-toggle="s${i}" aria-expanded="false" aria-label="${esc(`${c.name}: their Tier ${c.result.tier}, total ${c.result.total}. Show the roll`)}"><span class="cc-stotal">${c.result.total}</span></button>`
+      : view.owns(c.uuid) ? rollBtn(i) : '<span class="cc-muted">Waiting…</span>'}</span>${c.result ? breakdownHtml(c.result, { save: true, id: `s${i}` }) : ""}</div>`).join("");
+    const groups = [3, 2, 1].map(t => {
+      const who = rolled.filter(c => c.result.tier === t);
+      return who.length ? `<div class="cc-tgroup"><div class="cc-ghd">${tierPill(t, false, true)}<span class="cc-who">${who.map(c => `<span class="cc-nchip">${esc(c.name)}</span>`).join("")}</span></div>${out(t)}</div>` : "";
+    }).join("");
+    body = `<div class="cc-crows">${crows}</div>${groups ? `<div class="cc-groups">${groups}</div>` : ""}${rolled.length < cs.length ? quiet : ""}`;
+  } else body = quiet;
   // v0.0.287 (Lucas): the target row at the bottom, with the Damage button, as on the attack card
   const saveDmg = cs.some(c => c.result && c.hasDamage && !c.damageDone);
-  const action = !cs.length ? '<div class="cc-muted cc-wait">No target yet: target the creatures, then press the target button below.</div>' : one && !r ? (view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}\u2026</div>`) : "";
-  // v0.0.294 (brief section 12): the Trigger / Interrupt under the meta lines and the Save line, above the Tier rows, then one diamond
-  // CARD-ONE step 3: the card's lines in its order: the top ones (the Trigger among them) above the Save, the Version's Special between it and the Tiers
+  const action = !cs.length ? '<div class="cc-muted cc-wait">No target yet: target the creatures, then press the target button below.</div>' : one && !r ? (view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}…</div>`) : "";
+  // CARD-ONE step 3: the card's lines in its order: the top ones (the Trigger, an Effect written above the roll) above the Save, the Version's Special
+  // between it and the Tiers, the lines after the Tiers (its Effect) under them; a card posted before CARD-ONE keeps its Trigger line
   const topLines = m.card ? cardLinesHtml(m.card.top) : "", trig = m.card ? cardLinesHtml(m.card.before) : triggerLineHtml(m);
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
-  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}${topLines}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}<div class="cc-srows">${rows}</div>${m.card ? cardLinesHtml(m.card.after) : ""}${crows}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}">${headHtml(m)}${metaLineHtml(m)}${topLines}<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>${trig}${body}${m.card ? cardLinesHtml(m.card.after) : ""}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */
