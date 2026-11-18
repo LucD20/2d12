@@ -51,6 +51,9 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 20 | **An Overcast step is paid by the fight's clock:** it needs Escalation (the first at 2, the next at 3...); the Nonlethal push takes one step early. | (default) | 2026-11-18 |
 | 21 | **Spells belong to the grid; a caster class owns how you cast** (readying, pushing, holding, merging, linking) and starts with a Path and a School open. Any class can take a little magic through Talents. | (default) | 2026-11-18 |
 | 22 | **The Health question is parked** in rules-backlog.md ("[Q] IS THE NEARLY FLAT HEALTH HURTING THE FEELING OF PROGRESSION?"); magic goes on. | "Keep in the backlog, proceed with magic." | 2026-11-18 |
+| 23 | **The eight Paths' definitions, subtypes and riders are decided** (the table in 5b): Fire Lingering, Air Pushed, Water Hindered, Earth Prone, Astral Dazed 1, Death Frightened, Nature Immobilized, Glamour Pressed 1. | "Looks good." | 2026-11-18 |
+| 24 | **A spell has no fixed shape.** Not every spell is damage and a rider; some are only damage, some only a rider, and "they can be innovative or special in their own way". The rider is what a Path adds *when* a spell has one, and what it lends in a merge. | "Keep note, not every spells needs to have damage + rider, or just damage or just rider; they can be innovative or special in their own way." | 2026-11-18 |
+| 25 | **After the basics, Dominions' own spells are pulled and shown as 2d12 cards** (from `research/raw/2026-11-18-dominions-spells.tsv`), as the grid's test. It takes the place of the classic-spell pass in the order of work. | "You could pull some spells from there and see how they would look in 2d12 after we are done with the basics." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -145,7 +148,7 @@ Read for this record on 2026-11-18: the class charter (all of it), the set-aside
 
 ---
 
-## 5b. The Paths: definitions, subtypes and riders (PROPOSED 2026-11-18; waiting for Lucas)
+## 5b. The Paths: definitions, subtypes and riders (DECIDED 2026-11-18: decision 23)
 
 From `dominions-paths.md` (section 2 and 3.5), with the borders of decision 15. **The rider is the one condition a Path adds** when a spell has a rider, and what a second Path lends in a merge. Each is a word Chapter 8 or Chapter 3 already defines, and no two Paths share one.
 
@@ -164,12 +167,34 @@ From `dominions-paths.md` (section 2 and 3.5), with the borders of decision 15. 
 
 **What each Path gives an ally** (for helpful spells; a first list, not asked yet): Fire: Empowered. Air: a free step. Water: Quickened. Earth: Guard. Astral: the next instance of damage cancelled. Death: healing from damage dealt. Nature: healing. Glamour: attackers Pressed.
 
+## 5c. Overcast: how a spell grows (PROPOSED 2026-11-18; waiting for Lucas)
+
+Decided already: Overcast reads both levels (6); a level is never a number on a roll (18); a step needs Escalation, the first at 2, the next at 3 (20); the push takes one step early (2, 20). The charter forbids sizes as Versions, so **Overcast is its own line on the card**, after the Tiers.
+
+**A step.** When you cast a spell, you can add Overcast steps to it. Each step needs **one level above the spell's minimum** in the axis it belongs to, and the fight's clock: your first step needs Escalation 2, your second Escalation 3, and so on.
+
+**Form steps (paid by excess School level): three ladders, the same in every spell.** The card lists which it may climb ("Overcast: Reach, Breadth").
+
+| Ladder | Its rungs | From |
+|---|---|---|
+| **Reach** | Reach → 5 sq. → 10 sq. → 15 sq. (+5 a step) | Dominions' "+5 squares a level" on Evocations |
+| **Breadth** | yourself → one creature → two creatures → 1 Burst → 2 Burst | Dominions' scope ladder (personal, one, group, area) |
+| **Hold** | EoT → 1 round → 3 rounds | the charter's two durations; a magic that stands is an Enchantment and isn't on this ladder |
+
+Each School's usual pair: Evocation: Reach and Breadth. Alteration: Breadth and Hold. Thaumaturgy: Reach and Breadth. Warding: Breadth (who is protected). Enchantment: Breadth (its area) and how hard it is to break. Conjuration: waits for the summons rules.
+
+**Substance steps (paid by excess Path level): written on each spell, plus one universal.**
+- **The spell's own step:** one line a spell, the thing that makes it itself (Dominions: "each spell grows a different number": one more dart, a chain to an adjacent creature, the flames stay on the ground).
+- **Merge (universal):** add the rider of a second Path you have. The spell also gains that Path's trait for this casting. It takes the spell's rider slot: a spell that already has a rider swaps it, never carries two.
+
+**Why split it this way.** The form ladders are one rule learned once (the "intuitive" test); the substance step is where each spell stays special (decision 24).
+
 ## 6. The order of work from here (proposed)
 
 1. Lucas's answers to section 5.
 2. The Paths' one-line definitions, subtypes and riders, from `dominions-paths.md` (borders decided).
 3. The Schools' definitions and what each one's Overcast ladder is.
 4. The new traits and words, each with its rule ([Spell], the Path and School traits, [Standing], Overcast, the push).
-5. The classic-spell pass (Lucas's offer): about twenty well-known spells sorted into Path and School, as the grid's test.
+5. Dominions' own spells pulled and shown as 2d12 cards (decision 25), as the grid's test.
 6. The first cards, for three or four Paths, in the analysis format of `paladin-analyses.md`.
 7. A first class, by the charter (a record and a reading page).
