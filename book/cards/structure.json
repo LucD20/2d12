@@ -3068,9 +3068,7 @@
   "distance": "5 sq.",
   "area": null,
   "target": "Allies within 5 squares",
-  "traits": [
-   "focus"
-  ],
+  "traits": [],
   "cost": "1 AP",
   "body": [
    {

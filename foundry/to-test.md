@@ -93,6 +93,10 @@ Expect: A warning to give it levels first (no Attribute window).
 
 ## Starting a combat
 
+### ogre-large · v0.0.435 · The Ogre Chieftain is Large
+Do: Drag the Ogre Chieftain from the compendium onto a scene.
+Expect: Its token is 2 × 2, and its sheet's Size is Large (4).
+
 ### minion-squad · v0.0.433 · Three Goblins on one Initiative roll
 Do: Put three Goblin Sneaks and two PCs in a combat and roll Initiative from the Initiative window.
 Expect: One roll, the same Initiative for the three (the card says "×3"), each with its own turn, and the three act one after another: no PC's turn between them. A Goblin Sneak has 3 AP and no Reaction AP.
@@ -280,6 +284,18 @@ Expect: A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halve
 ### rider-zero · v0.0.432 · A rider at 0 damage
 Do: Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.
 Expect: The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.
+
+### npc-fists · v0.0.435 · An NPC without its weapon
+Do: Open the Orc Warrior's sheet and HUD; use its Fists on a PC.
+Expect: Fists is there (it wasn't before); it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. The GM uses it only when the Orc has lost its cleaver.
+
+### npc-no-ap-guard · v0.0.435 · No Guard from an NPC's unspent AP
+Do: End an Orc Warrior's turn with 1 AP left; then end a PC's turn with 1 AP left.
+Expect: At the Orc's next turn it gains no Guard; the PC gains Guard for its unused AP as before.
+
+### minor-empowered · v0.0.435 · A Goblin's Empowered die
+Do: Make a Goblin Sneak Empowered and hit a PC with its Rusty Knife; then make the Orc Warrior Empowered and hit.
+Expect: The Goblin's Empowered die is 1d6 and never explodes; the Orc's is 1d6! as before.
 
 ### npc-unconscious · v0.0.433 · An NPC Down on Nonlethal damage
 Do: Take an Orc Warrior Down with more Nonlethal damage than Lethal (a Nonlethal Action, or a Lethal Action switched with its Bane); then a copy with equal Lethal and Nonlethal.

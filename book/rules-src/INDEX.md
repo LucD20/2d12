@@ -6,7 +6,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 26.3 | 324 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.0 | 354 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 42.1 | 477 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 42.4 | 482 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.3 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.6 | 45 |
@@ -16,7 +16,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.8 | 137 |
 | 13-archer.md | Archer | archer |  | 5.3 | 140 |
-| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 36.2 | 464 |
+| 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 38.6 | 475 |
 | 15-gear.md | Gear | gear |  | 14.2 | 224 |
 
 ## 01-roll.md: Chapter 1: The Roll
@@ -99,45 +99,46 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 44: ## Movement
 - 52:   ### Advance
 - 62:   ### Evade
-- 70:   ### Moving and Leaving Your Square
-- 86:   ### Corners
-- 94: ## Straight Line
-- 104: ## Forced Movement
-- 116:   ### Pushed
-- 129:   ### Pulled
-- 142:   ### Slid
-- 153:   ### Collision
-- 169: ## Reposition
-- 198:   ### Swapping Places
-- 204: ## Steadiness
-- 208: ## Difficult Terrain
-- 214: ## Hazardous Terrain
-- 233:   ### Deadly Hazards
-- 239: ## Reach
-- 249:   ### Weapon Range
-- 257:   ### Weapon Actions and Your Weapon
-- 261: ## Engaged
-- 271:   ### Ranged Combat While Engaged
-- 277: ## Flanking
-- 305: ## Line of Effect
-- 318: ## Cover
-- 335:   ### Leaning
-- 339: ## Areas
-- 345:   ### Cover against an area
-- 349:   ### Emanation
-- 357:   ### Aura
-- 361:   ### Burst
-- 367:   ### Line
-- 389:   ### Other areas
-- 396: ## Light
-- 408:   ### Bright
-- 412:   ### Dim
-- 416:   ### Darkness
-- 420: ## Senses
-- 452:   ### Sight Senses
-- 459:   ### Other Senses
+- 70:   ### Flying
+- 75:   ### Moving and Leaving Your Square
+- 91:   ### Corners
+- 99: ## Straight Line
+- 109: ## Forced Movement
+- 121:   ### Pushed
+- 134:   ### Pulled
+- 147:   ### Slid
+- 158:   ### Collision
+- 174: ## Reposition
+- 203:   ### Swapping Places
+- 209: ## Steadiness
+- 213: ## Difficult Terrain
+- 219: ## Hazardous Terrain
+- 238:   ### Deadly Hazards
+- 244: ## Reach
+- 254:   ### Weapon Range
+- 262:   ### Weapon Actions and Your Weapon
+- 266: ## Engaged
+- 276:   ### Ranged Combat While Engaged
+- 282: ## Flanking
+- 310: ## Line of Effect
+- 323: ## Cover
+- 340:   ### Leaning
+- 344: ## Areas
+- 350:   ### Cover against an area
+- 354:   ### Emanation
+- 362:   ### Aura
+- 366:   ### Burst
+- 372:   ### Line
+- 394:   ### Other areas
+- 401: ## Light
+- 413:   ### Bright
+- 417:   ### Dim
+- 421:   ### Darkness
+- 425: ## Senses
+- 457:   ### Sight Senses
+- 464:   ### Other Senses
 
-Open (to be decided) boxes: 315: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 393: "Cones are not written yet (and Lines wider than 1 square)."; 449: "Hiding and sneaking are not written yet."
+Open (to be decided) boxes: 72: "Flying isn't written yet: going up and down, ending a turn in the air,"; 320: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 398: "Cones are not written yet (and Lines wider than 1 square)."; 454: "Hiding and sneaking are not written yet."
 
 ## 04-health.md: Chapter 4: Health
 
@@ -294,33 +295,33 @@ Open (to be decided) boxes: 19: "Levels 1 to 3 are written. Level 4 (the Apex an
 - 27: ## Ratings
 - 52: ## Defenses
 - 58:   ### What an Action attacks, rolls and damages
-- 72: ## Attributes and Modifiers
-- 85: ## Health
-- 91: ## Speed
-- 98: ## An NPC's Steadiness
-- 102: ## Actions: the turn budget
-- 108:   ### The Basic attack
-- 114:   ### The price of an Action
-- 147:   ### Points into damage
-- 166:   ### Ranged attacks
-- 170:   ### Riders and their price
-- 191:   ### Where the effect is
-- 201:   ### Actions that hit several creatures
-- 207:   ### Actions with no damage
-- 220:   ### NPC Reactions
-- 234:   ### How common each kind of Action is
-- 245:   ### Check its best turn
-- 252:   ### Elite Escalation
-- 275: ## Roles
-- 290: ## The ranks
-- 294:   ### Minions
-- 325:   ### Grunts
-- 356:   ### Standards
-- 385:   ### Elites
-- 414: ## Building an encounter
-- 442: ## Example NPCs (Stage 0)
+- 74: ## Attributes and Modifiers
+- 87: ## Health
+- 93: ## Speed
+- 102: ## An NPC's Steadiness
+- 106: ## Actions: the turn budget
+- 112:   ### The Basic attack
+- 120:   ### The price of an Action
+- 155:   ### Points into damage
+- 174:   ### Ranged attacks
+- 178:   ### Riders and their price
+- 199:   ### Where the effect is
+- 209:   ### Actions that hit several creatures
+- 215:   ### Actions with no damage
+- 231:   ### NPC Reactions
+- 245:   ### How common each kind of Action is
+- 256:   ### Check its best turn
+- 263:   ### Elite Escalation
+- 286: ## Roles
+- 301: ## The ranks
+- 305:   ### Minions
+- 336:   ### Grunts
+- 367:   ### Standards
+- 396:   ### Elites
+- 425: ## Building an encounter
+- 453: ## Example NPCs (Stage 0)
 
-Open (to be decided) boxes: 49: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 272: "The CV was measured with the default ladder. The other common steps ar"
+Open (to be decided) boxes: 49: "Only Stage 0's tables are written. The tables of Stages 1, 2 and 3 com"; 228: "Walls, lasting areas and Hazardous Terrain that an NPC makes aren't pr"; 283: "The CV was measured with the default ladder. The other common steps ar"
 
 ## 15-gear.md: Gear
 

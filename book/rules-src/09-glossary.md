@@ -106,8 +106,8 @@
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. [Strike, Weapon] Actions with a weapon in your off hand take 2 Banes (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none). |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks. |
-| [[Minions\|**Minion**]] | An NPC rank with CV 25: about 12 Health at Stage 0, 3 AP a turn, no Reaction AP and no Dying. Up to 3 Minions act in the same turn slot. |
-| [[Minor enemies\|**Minor enemies**]] | Minions and Grunts (CV below 100; 3 AP a turn). |
+| [[Minions\|**Minion**]] | An NPC rank with CV 25: about 12 Health at Stage 0, 3 AP a turn, no Reactions. Up to 3 Minions act in the same turn slot. |
+| [[Minor enemies\|**Minor enemies**]] | The Minion and Grunt ranks: 3 AP a turn, and their damage dice never explode. |
 | [[Reading an Action\|**Mode**]] | One of several things a card can do at the same cost; you choose one each time you use the card. |
 | [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
 | [[Rules Language\|**Move**]] | An Action with the Move trait. |

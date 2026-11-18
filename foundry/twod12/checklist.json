@@ -155,6 +155,14 @@
    "name": "Starting a combat",
    "items": [
     {
+     "id": "ogre-large",
+     "v": "v0.0.435",
+     "title": "The Ogre Chieftain is Large",
+     "do": "Drag the Ogre Chieftain from the compendium onto a scene.",
+     "expect": "Its token is 2 × 2, and its sheet's Size is Large (4).",
+     "rev": 1
+    },
+    {
      "id": "minion-squad",
      "v": "v0.0.433",
      "title": "Three Goblins on one Initiative roll",
@@ -527,6 +535,30 @@
      "title": "A rider at 0 damage",
      "do": "Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.",
      "expect": "The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.",
+     "rev": 1
+    },
+    {
+     "id": "npc-fists",
+     "v": "v0.0.435",
+     "title": "An NPC without its weapon",
+     "do": "Open the Orc Warrior's sheet and HUD; use its Fists on a PC.",
+     "expect": "Fists is there (it wasn't before); it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. The GM uses it only when the Orc has lost its cleaver.",
+     "rev": 1
+    },
+    {
+     "id": "npc-no-ap-guard",
+     "v": "v0.0.435",
+     "title": "No Guard from an NPC's unspent AP",
+     "do": "End an Orc Warrior's turn with 1 AP left; then end a PC's turn with 1 AP left.",
+     "expect": "At the Orc's next turn it gains no Guard; the PC gains Guard for its unused AP as before.",
+     "rev": 1
+    },
+    {
+     "id": "minor-empowered",
+     "v": "v0.0.435",
+     "title": "A Goblin's Empowered die",
+     "do": "Make a Goblin Sneak Empowered and hit a PC with its Rusty Knife; then make the Orc Warrior Empowered and hit.",
+     "expect": "The Goblin's Empowered die is 1d6 and never explodes; the Orc's is 1d6! as before.",
      "rev": 1
     },
     {

@@ -20,7 +20,9 @@ export const basicItemData = key => toItem(key, BASIC_ACTIONS[key]);
  * The Basic Actions an NPC doesn't get: Rally (NPCs have no Rally Points) and, v0.0.214 (Lucas, playtest 2), Weapon Attack and the Fists Action:
  * NPCs have no weapons of their own, their Basic attack is their weapon attack (with both they made two Bane-free attacks a turn).
  */
-export const NPC_NO_BASIC = ["rally", "basicWeaponAttack", "fists"];
+// v0.0.435 (Lucas, 2026-11-18, the Bestiary audit's question 7: "NPCs have Fist ... if the NPC loses their weapon, they make fists strikes"): Fists is
+//   back; the GM uses it only when the NPC has no weapon that fits its Basic attack (by hand).
+export const NPC_NO_BASIC = ["rally", "basicWeaponAttack"];
 export const wanted = (actor, key) => !(actor?.type === "npc" && NPC_NO_BASIC.includes(key));
 /** v0.0.228 (pack CS): a Basic Action on the actor whose texts or fields differ from the generated data (a card edited in book/cards): it is replaced.
  *  Compared: the texts of each Version, the requirements, the description, the targets, the traits, the distance and the Frequency (strings and numbers, not the tier shapes the data model normalizes). */

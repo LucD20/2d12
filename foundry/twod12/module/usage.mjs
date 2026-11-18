@@ -68,7 +68,8 @@ export function freqMoreOf(actor) {
 }
 const isSpecial = item => !(item?.getFlag?.(F, "basic") ?? item?.flags?.[F]?.basic);
 /** Pure: how many uses this Frequency allows in its span (a turn-cycle for Round, the encounter for Encounter). */
-export const usesAllowed = (freq, more, special) => (special && ((freq === "round" && more.has("round")) || (freq === "encounter" && more.has("encounter"))) ? 2 : 1);
+// v0.0.435 (the Bestiary audit, question 13): Relentless doubles a Round Special Action, not a Reaction
+export const usesAllowed = (freq, more, special, reaction = false) => (special && ((freq === "round" && more.has("round") && !reaction) || (freq === "encounter" && more.has("encounter"))) ? 2 : 1);
 
 /** Is this Action unavailable right now? { faded, why } */
 export function isFaded(actor, item) {
@@ -81,7 +82,7 @@ export function isFaded(actor, item) {
   if (activeGrants(actor, item).length) return { faded: false, why: "" };   // a granted use is free: the Action is available
   const f = effectiveFrequency(item.system);
   if (f === "turn" && s.turnUsed.includes(item.id)) return { faded: true, why: "Used this turn" };
-  const twice = (f === "round" || f === "encounter") && usesAllowed(f, freqMoreOf(actor), isSpecial(item)) > 1;   // v0.0.320: the Elite ladder
+  const twice = (f === "round" || f === "encounter") && usesAllowed(f, freqMoreOf(actor), isSpecial(item), !!item?.system?.reaction) > 1;   // v0.0.320: the Elite ladder
   if (f === "round" && (s.roundUsed.includes(item.id) || roundBlocked(actor, s.combat, s.roundAt[item.id])) && (!twice || roundBlocked(actor, s.combat, s.roundPrev[item.id]))) return { faded: true, why: twice ? "Used twice: available again at the start of your next turn" : "Used: available again at the start of your next turn" };
   if (f === "encounter" && s.encounter.includes(item.id) && (!twice || s.encounter2.includes(item.id))) return { faded: true, why: twice ? "Used twice this encounter" : "Used this encounter" };
   // v0.0.224 (Lucas): the 3 Strikes are not greyed like a used Frequency: the row gets its own marker (strikeCap).

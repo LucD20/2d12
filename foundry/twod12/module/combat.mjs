@@ -121,7 +121,8 @@ export { unusedApGuard };   // v0.0.365 (SIM-1): the rule itself is in roundrule
 export async function setUnusedApGuard(c, hadTurn, apLeft) {
   const a = c?.actor;
   if (!a) return 0;
-  const { guard } = unusedApGuard(hadTurn, apLeft, stageOfC(c));
+  // v0.0.435 (the Bestiary audit, question 3): an NPC gains no Guard from unspent AP (an AP it keeps only pays a Reaction)
+  const { guard } = a.type === "npc" ? { guard: 0 } : unusedApGuard(hadTurn, apLeft, stageOfC(c));
   if ((Number(a.system?.apGuard) || 0) !== guard) await a.update({ "system.apGuard": guard });
   // v0.0.362 (Lucas): no chat line: the Turn Breakdown dock shows "Kaela: Guard 8 (unused AP)" (turndock.mjs), and the End of Turn line keeps it
   return guard;

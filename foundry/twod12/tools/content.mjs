@@ -268,12 +268,12 @@ const embedded = (actorName, type, name, img, system, flags = {}) => ({ _id: idO
 const npcWeapon = (actorName, text, img) => { const w = parseWeaponText(text); if (w.problems.length) throw new Error(`${text}: ${w.problems.join("; ")}`); return embedded(actorName, "weapon", w.name, img, { ...weaponSystemData(w), wielded: true }); };
 const npcAction = (actorName, name, img, system, flags = {}) => embedded(actorName, "action", name, img, system, flags);
 // The Bestiary (v0.0.163): a role and ratings. By default its Weapon Attribute is High, the others Medium, Appeal Low (Appeal Medium when Appeal is its Weapon Attribute).
-const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLead = "weapon", ratings = {}, speed = 5, extra = [], npcRole = "" }) => {
+const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLead = "weapon", ratings = {}, speed = 5, extra = [], npcRole = "", size = 3 }) => {
   const r = { body: "medium", mind: "medium", appeal: "low", instinct: "medium", bodyHm: "medium", mindHm: "medium", ad: "medium", wd: "medium", damage: "medium", [weaponAttribute]: "high", ...ratings };
   const basics = Object.keys(BASIC_ACTIONS).filter(k => wanted({ type: "npc" }, k)).map(k => { const d = basicItemData(k); return embedded(name, "action", d.name, d.img, d.system, d.flags); });
   // v0.0.184: the Speed is a rating (3 to 7, or Custom with system.speed), as the Builder sets it
   r.speed = [3, 4, 5, 6, 7].includes(speed) ? String(speed) : "custom";
-  actors.push({ name, img, system: { level: 1, role, npcRole, speed, weaponAttribute, powerAttribute, modLead, ratings: r, useEscalation: role === "elite" }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
+  actors.push({ name, img, system: { level: 1, size, role, npcRole, speed, weaponAttribute, powerAttribute, modLead, ratings: r, useEscalation: role === "elite" }, items: [...extra, ...basics, (() => { const f = fistsItemData(), e = embedded(name, "weapon", f.name, f.img, f.system, f.flags); e._id = idOf("Item", `${name}:weapon:Fists`); return e; })()] });
 };
 // v0.0.333 (Lucas): the portraits (art/npcs/; the Grave Wisp has none yet).
 // v0.0.183 (Lucas: a complete rebuild, simple NPCs to test with): one NPC for each rank, at level 1. v0.0.407 (Stage 0 in Foundry): the Bestiary's
@@ -301,7 +301,7 @@ const npc = ({ name, img, role, weaponAttribute, powerAttribute = "mind", modLea
 }
 {
   const n = "Ogre Chieftain", club = npcWeapon(n, "great club: two-handed, melee, blunt, 0/1d10/2d10", "icons/svg/hammer.svg");
-  npc({ name: n, img: "systems/twod12/art/npcs/ogre-chieftain.png", role: "elite", weaponAttribute: "body", speed: 4, ratings: { wd: "low" },
+  npc({ name: n, img: "systems/twod12/art/npcs/ogre-chieftain.png", role: "elite", weaponAttribute: "body", speed: 4, size: 4, ratings: { wd: "low" },   // v0.0.435: Large (4), the Bestiary audit's question 8
     extra: [club] });
 }
 actors.forEach(a => { a.system.level = 1; });

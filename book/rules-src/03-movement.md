@@ -67,6 +67,11 @@ An Evade is one piece too, and nothing fits inside it: if an Action lets you Eva
 
 When an Action allows you to Evade, you can use the movement as an Advance instead. By itself this brings no benefit, but it lets a creature move willingly through reactions, or through Difficult Terrain, where an Evade can't go. A creature that can't use Move Actions (Immobilized) or is Prone can't use the movement as an Advance either.
 
+### Flying
+
+> [!tbd]
+> Flying isn't written yet: going up and down, ending a turn in the air, falling when knocked Prone or Immobilized. Until it is, a creature that flies hovers just above the ground: it moves as on the ground, and the GM rules where flying matters.
+
 ### Moving and Leaving Your Square
 
 Rules ask three different questions about movement, and the answers are not the same:

@@ -51,8 +51,10 @@ export const ratingStep = r => { const i = RATINGS.indexOf(r); return i < 0 ? 0 
 export function cvSteps(rank, ratings = {}, mods = {}) {
   const powerDefault = rank === "standard" ? "medium" : "low";
   const half = k => ratingStep(ratings[k] ?? "medium") / 2;
+  // v0.0.435 (the Bestiary audit, question 19): an Elite's Extreme Modifier is +4, the cap, as its High: it counts as High
+  const modStep = r => ratingStep(rank === "elite" && r === "extreme" ? "high" : r);
   return half("bodyHm") + half("mindHm") + ratingStep(ratings.damage ?? "medium") + half("ad") + half("wd")
-    + (ratingStep(mods.weapon ?? "medium") - ratingStep("medium")) / 2 + (ratingStep(mods.power ?? powerDefault) - ratingStep(powerDefault)) / 2;
+    + (modStep(mods.weapon ?? "medium") - ratingStep("medium")) / 2 + (modStep(mods.power ?? powerDefault) - ratingStep(powerDefault)) / 2;
 }
 /** An NPC's CV: its rank's (lower an earlier Stage than the party's: base) plus its steps times the rank's CV step (config.mjs npcCvStep), never under 0. */
 export const cvWithSteps = (rank, base, steps) => Math.max(0, Math.round(Number(base) + (TWOD12.npcCvStep[rank] ?? 15) * steps));

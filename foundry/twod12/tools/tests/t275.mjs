@@ -39,3 +39,13 @@ console.log("(10) an NPC has a level; no set list of Actions:", B.includes("**An
 console.log("(4) a Reaction written with its Frequency, priced by it:", B.includes("**written like any Action, with its Frequency** (At-will, Turn, Round or Encounter)") && B.includes("*Avenge Kin* (Reaction, 1R, Round,"));
 console.log("(7) every other Basic Action is theirs:", B.includes("**Every other Basic Action is theirs too**"), "| Foundry leaves out only:", (await import(ROOTURL + "module/basic.mjs")).NPC_NO_BASIC.join(", "));
 console.log("(12) Pressing on [Strike]:", B.includes("**Pressing:** 1 Boon on its first [Strike] Action each turn-cycle."), "| Foundry:", src("module/passives.mjs").includes('boons: 1, all: ["strike"], oncePerRound: true, minEscalation: ER1'));
+
+console.log("--- v0.0.435: question 7 (Fists) and the defaults");
+const U = await import(ROOTURL + "module/usage.mjs");
+console.log("(13) Relentless: a Round Special twice", U.usesAllowed("round", new Set(["round"]), true), "| a Round Reaction once", U.usesAllowed("round", new Set(["round"]), true, true), "| Second Wind on an Encounter Reaction", U.usesAllowed("encounter", new Set(["encounter"]), true, true));
+const NB = await import(ROOTURL + "module/npcbudget.mjs");
+console.log("(19) an Elite's Extreme Modifier counts as High:", NB.cvSteps("elite", {}, { weapon: "extreme" }) === NB.cvSteps("elite", {}, { weapon: "high" }), "| a Standard's doesn't:", NB.cvSteps("standard", {}, { weapon: "extreme" }) > NB.cvSteps("standard", {}, { weapon: "high" }));
+const EX = await import(ROOTURL + "module/explode.mjs");
+console.log("(11) a Minor enemy's Empowered die doesn't explode:", EX.minorNpc({ type: "npc", system: { role: "grunt" } }), EX.minorNpc({ type: "npc", system: { role: "standard" } }), src("module/explode.mjs").includes('const formula = explode ? EMPOWERED_FORMULA : EMPOWERED_FORMULA.replace(/!/g, "");'));
+console.log("(3) no Guard from unspent AP for an NPC:", src("module/combat.mjs").includes('const { guard } = a.type === "npc" ? { guard: 0 } : unusedApGuard('));
+console.log("(8) the Ogre is Large:", C.actors.find(a => a.name === "Ogre Chieftain")?.system?.size, "| (29) Rally the Tribe's traits:", JSON.stringify(C.actors.flatMap(a => a.items ?? []).find(x => x.name === "Rally the Tribe")?.system?.traits ?? []));

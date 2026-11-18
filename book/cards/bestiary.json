@@ -413,9 +413,7 @@
    "book": false,
    "npc": "Ogre Chieftain",
    "flavor": "One bellow, and the whole tribe fights harder.",
-   "traits": [
-    "focus"
-   ],
+   "traits": [],
    "escalation": 4,
    "frequency": "Round",
    "target": "Allies within 5 squares",

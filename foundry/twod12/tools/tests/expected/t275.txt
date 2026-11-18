@@ -14,5 +14,11 @@ the Builder at Stage 0: the old notes hidden, the best turn labelled: true
 --- v0.0.434: Lucas's answers to questions 4, 7, 10 and 12
 (10) an NPC has a level; no set list of Actions: true
 (4) a Reaction written with its Frequency, priced by it: true
-(7) every other Basic Action is theirs: true | Foundry leaves out only: rally, basicWeaponAttack, fists
+(7) every other Basic Action is theirs: true | Foundry leaves out only: rally, basicWeaponAttack
 (12) Pressing on [Strike]: true | Foundry: true
+--- v0.0.435: question 7 (Fists) and the defaults
+(13) Relentless: a Round Special twice 2 | a Round Reaction once 1 | Second Wind on an Encounter Reaction 2
+(19) an Elite's Extreme Modifier counts as High: true | a Standard's doesn't: true
+(11) a Minor enemy's Empowered die doesn't explode: true false true
+(3) no Guard from unspent AP for an NPC: true
+(8) the Ogre is Large: 4 | (29) Rally the Tribe's traits: []
