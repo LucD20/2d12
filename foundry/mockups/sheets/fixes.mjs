@@ -91,6 +91,15 @@ const pair = async (title, note, items, mk, st, opts, h, extra = "") => {
 };
 const out = document.getElementById("page");
 {
+  // round 3 (Lucas: "I need to see with two weapons, one on each hand"): Sylwen, her Hunting Bow in the main hand and her Dagger in the off hand
+  const sylTwo = () => makeActor(data.sylwen, { system: { escalation: 6, damage: { bodyLethal: 6, mindNonlethal: 3 } }, items: { Dagger: { wielded: true, hand: "off" }, "Hunting Bow": { hand: "main" } } });
+  const st2 = { inCombat: true, round: 3, ap: 3, strikes: 1, rungs: { 2: ["Lean and Loose"], 4: ["Steady Draw"] }, hooks: "Critical", dl: DL, cd: CD };
+  const cols = [["As built (v0.0.441)", {}], ["<b>Option B</b> (the third picture of round 2)", { fix: true, v: "b" }], ["Option A, for comparison", { fix: true, v: "a" }]];
+  let html = "";
+  for (const [t, o] of cols) { const a = sylTwo(); html += `<div><h3>${t}</h3><div class="${o.fix ? "fx-new" : ""}">${win(a.name, 540, 330, await render(a, model(a, st2), o))}</div></div>`; }
+  out.insertAdjacentHTML("beforeend", `<section class="fx-sec" id="two-hands"><h2>Round 3: a weapon in each hand</h2><ul class="fx-list"><li>Sylwen in combat at Escalation 6: her Hunting Bow in the main hand, her Dagger in the off hand (the Hands one above the other, as built). 3 AP left, one Strike made. Her Passives' names at 2 and 4 are stand-ins for the page.</li></ul><div class="fx-pair">${html}</div></section>`);
+}
+{
   const cols = [["As built (v0.0.441)", {}], ["<b>Option A</b>: three short lines; AP over the Strikes", { fix: true, v: "a" }], ["<b>Option B</b>: two lines; one line of marks", { fix: true, v: "b" }]];
   let html = "";
   for (const [t, o] of cols) { const a = ave(); html += `<div><h3>${t}</h3><div class="${o.fix ? "fx-new" : ""}">${win(a.name, 540, 330, await render(a, model(a, aveSt), o))}</div></div>`; }

@@ -154,3 +154,7 @@ the build beside two compact options (`fixes-compact-dark.jpg`, `fixes-compact-l
 **A:** Escalation in three short lines (the title and six clickable pips; the Passives reached, by name, on one line; the hooks); the AP pips and
 the Reaction AP over the Strikes as the HUD's slashes. **B:** Escalation in two lines (the pips where a Passive or the Apex comes ringed; the
 hooks); AP, the Reaction AP and the Strikes on one line. In both the rungs' numbers leave the sheet (the Build tab lists each Passive).
+
+**Round 3 (Lucas: "I like C. But I need to see with two weapons, one on each hand"; "C" read as the third picture, Option B):** at the top of
+the page, Sylwen with her Hunting Bow in the main hand and her Dagger in the off hand: the build, Option B, Option A
+(`fixes-two-hands-dark.jpg`, `fixes-two-hands-light.jpg`). With B the combat line is the two hand tiles' height.
