@@ -71,6 +71,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 40 | **An idea, not decided: an enemy of a lower level or Stage can count as a Minor enemy,** "to give the feeling of progression". (It meets Claude's suggestion in the parked Health question: an enemy two Stages below is a Minion to you.) | "Which could also help with progression: just an idea: lower level/stage can count as minor enemies, to give the feeling of progression." | 2026-11-18 |
 | 41 | **A summon is paid by Sustain: 1 AP, and has a Minion's 3 AP (A).** | "Summon: A." | 2026-11-18 |
 | 42 | **One big jump a ladder is not good** (against Claude's rewrite of the rungs after the cap). To go deeper, the core of Dominions' mechanics is to be read first. | "Cap: I see, one big jump isn't good I think. To make this more in depth: if you haven't already, read on and research the core of Dominions 6 mechanics, that are important for its magical system. You will likely find where my exploding dice idea is from." | 2026-11-18 |
+| 43 | **Overcast has no cap of its own (A), with small rungs.** A step needs a spare level in its axis, and a casting holds as many steps as your Escalation minus 1; nothing else limits it. The rungs: **Reach +2 squares, Breadth +1 creature, Hold +1 round** a step; **"one creature" to "an area" is a different spell**, and an area spell's own Breadth step is +1 to its Burst or Emanation. **This replaces decision 32** (one step a ladder), which was made for rungs that tripled an area. | "Let's do a for cap decision." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -274,7 +275,7 @@ Claude's pick: C, 1d6!, once a casting.
 
 **A level** is never a number on a roll or a DC. Dice grow with the Stage.
 
-**Overcast** (its own line on a card). A step needs one level above the spell's minimum in its axis, and the fight's clock: your first step needs Escalation 2, your second Escalation 3. **School levels** climb the form ladders the card lists: **Reach** (Reach → 5 → 10 → 15 sq.), **Breadth** (yourself → one creature → two → 1 Burst → 2 Burst), **Hold** (EoT → 1 round → 3 rounds). **Path levels** pay the spell's own step (written on it) or a **Merge**: the rider of a second Path you have, in the rider slot; the spell gains that Path's trait for the casting.
+**Overcast** (its own line on a card). A step needs one level above the spell's minimum in its axis, and the fight's clock: your first step needs Escalation 2, your second Escalation 3. **School levels** climb the form ladders the card lists, in small rungs (decision 43): **Reach** +2 squares a step, **Breadth** +1 creature a step (an area spell: +1 to its Burst or Emanation), **Hold** +1 round a step. One creature to an area is a different spell. A casting holds as many steps as your Escalation minus 1. **Path levels** pay the spell's own step (written on it) or a **Merge**: the rider of a second Path you have, in the rider slot; the spell gains that Path's trait for the casting.
 
 **Overreach.** Once a casting, take one Overcast step you couldn't otherwise take, for 1d6! Nonlethal Resolve damage that nothing absorbs or reduces.
 
@@ -333,7 +334,7 @@ Claude read section 5g against the six research notes and against Chapters 1 to 
 
 Lucas's reference (decision 34). **[memory]: from Claude's training, no page opened.** Crucible is the Foundry VTT system by Foundry's own lead developer. Its spells are composed at casting time from parts: a **Rune** (the substance: flame, frost, lightning, earth, life, death, mind and others), a **Gesture** (the delivery: touch, arrow, ray, fan, aura, ward, and others, each with its own cost, range and shape) and an optional **Inflection** (a modifier: extend, push, pull, and others). The pieces map closely onto what is decided here: Rune = Path, Gesture = a finer cut than School (a delivery shape, nearer to the Breadth and Reach ladders), Inflection = an Overcast step. Two differences to keep in mind: Crucible composes every spell on the fly, where 2d12 writes cards (Lucas's "least ambiguity"); and its Gestures are shapes, where 2d12's Schools are verbs. **To research before leaning on it** (its rules are public on Foundry's site and wiki): what a Gesture fixes, how its composed spells are priced, and what its players say.
 
-## 5j. Overcast's rungs, after the core research (PROPOSED 2026-11-18; waiting for Lucas)
+## 5j. Overcast's rungs, after the core research (DECIDED 2026-11-18, decision 43: small rungs, no cap of its own; the pool habit below still only proposed)
 
 Lucas refused one big jump a ladder (decision 42). `research/dominions-core.md` 4: Dominions doesn't cap growth inside a spell; **each step is small** (a tenth to a quarter of one number) and **spare levels are scarce**; the jump from one creature to an area is a different spell.
 
@@ -341,6 +342,18 @@ Lucas refused one big jump a ladder (decision 42). `research/dominions-core.md` 
 - **"One creature" to "an area" is a different spell** with higher minimums (Fire Darts and Fireball are two cards), never a Breadth step. An area spell's Breadth step, when it has one, is +1 to its Burst or Emanation.
 - **The cap of decision 32** (one step a ladder) was meant for rungs that tripled an area. With rungs this size, the limits already decided may be enough: a step needs a spare level in its axis, and a casting can hold as many steps as your Escalation minus 1. To choose: keep one step a ladder; allow two; or no cap beyond those two limits.
 - **Which pool a Path damages** (from the three tracks, `dominions-core.md` 3; proposed): the Elements wound (Vigor); Death and Glamour break the spirit (Resolve); Astral's Force is Resolve; Nature's poison is Vigor. A habit like the lean of the roll, never a rule.
+
+## 5k. The summons rule (PROPOSED 2026-11-18; waiting for Lucas: "defaults except")
+
+Decided: a creature of about your level with a Minion's stats, growing with you; built from a menu at preparation; limited on purpose (37); Sustain: 1 AP for its 3 AP (41). Research: `research/charm-confusion-summons.md` part 2. Claude's defaults for the rest:
+
+1. **One summon at a time.** Casting a second summon ends the first, whatever you could pay.
+2. **Its stats are the Minion row of your Stage** in Chapter 14 (Health for one or two hits, 3 AP, no Reactions), so it grows when you reach a Stage, with no table of its own.
+3. **It acts on your turn, after you,** and only if you paid the Sustain this turn. The turn you cast it, it acts at once (the casting pays that turn's Sustain).
+4. **What it can't do:** Reactions (a Minion has none); Flank; summon; use Rally Points or be healed. It can be given Guard.
+5. **It leaves** when it goes Down, when you don't pay, and when a [Sustained] spell ends (you go Down, or become Bloodied or Strained).
+6. **The build, chosen on a Rest:** the Path gives its theme and its Basic attack's subtype; then **two picks from a short menu** (for example: a movement such as flying or climbing; Reach 2; a ranged Basic attack; its Path's rider on a Tier 3; Resist to one subtype; a sense). A Talent or a level in Conjuration adds a pick.
+7. **A Minor enemy to its foes:** spells and effects that are stronger against Minor enemies (decision 39) are stronger against a summon.
 
 ## 6. The order of work from here (proposed)
 
