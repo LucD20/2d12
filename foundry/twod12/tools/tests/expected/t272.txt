@@ -1,0 +1,6 @@
+Effect above the roll: Rebuke true, Reckoning true, Hit and Run true
+Tiers written: Circling Shot 23 | Knock Back 23 | Weapon Attack (all)
+Basic Actions' Specials: Weapon Attack ["Special"] | Steel Yourself special true
+the model places them: true
+the attack chat card draws such an Effect once: true
+t260's parity: 48 of 48

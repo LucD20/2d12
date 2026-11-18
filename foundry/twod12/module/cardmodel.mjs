@@ -26,7 +26,12 @@ export function rollLine(it, vs) {
   return def ? { label: "Attack", text: `${words.length ? `${words.join(" or ")} ` : ""}vs. ${def}` } : null;
 }
 /** Pure: how a Version's three Tier texts are written: one line ("Tier 1 or 2" / "Tier 2 or 3" / "Tiers 1–3") or three. cells: [t1, t2, t3]. */
-export function tierLines(cells, save, noDamage, orTiers = "") {
+export function tierLines(cells, save, noDamage, orTiers = "", written = "") {
+  // v0.0.429 (CARD-ONE step 6): a card that writes only some Tiers (Circling Shot: no Tier 1 line) shows only those
+  const all = tierLinesAll(cells, save, noDamage, orTiers);
+  return written ? all.filter(([l]) => !/^Tier (\d)$/.test(l) || written.includes(l.slice(-1))) : all;
+}
+function tierLinesAll(cells, save, noDamage, orTiers = "") {
   const none = c => /^(No effect\.?|&mdash;)$/.test(String(c).trim());
   if (cells[0] === cells[1] && cells[1] === cells[2]) return [[tierLabel("all"), cells[0]]];
   // v0.0.426: the card's own "Tier 2 or 3" / "Tier 1 or 2" (load.mjs keeps it as orTiers), with damage too (Trick Shots' Pin and Startle)
@@ -63,6 +68,7 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   if (it.prerequisites) top.push(L("Prerequisite", it.prerequisites, "esc"));
   if (it.reaction && it.trigger) top.push(L(it.reactionKind === "interrupt" ? "Interrupt" : "Trigger", it.trigger, "rich-esc"));
   if (it.setup) top.push(L("Setup", it.setup, "rich"));
+  const effectAt = top.length;   // v0.0.429: where an Effect written above the roll goes (before the card's own lines and the roll)
   for (const l of it.lines ?? []) top.push(L(l.label || "Note", l.text, "rich"));
   if (rl && !modes) top.push(L(rl.label, rl.text, "esc"));
   const versionModel = v => {
@@ -70,7 +76,7 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
     if (v.special) lines.push(L("Special", v.special, "rich"));
     if (!v.noTiers) {
       const noDmg = ![1, 2, 3].some(n => (v[`t${n}`] ?? []).length);
-      for (const [label] of tierLines([1, 2, 3].map(n => rawCell(it, v, n)), save, noDmg, v.orTiers ?? "")) lines.push({ label, tier: tierOfLabel(label), kind: "tier" });
+      for (const [label] of tierLines([1, 2, 3].map(n => rawCell(it, v, n)), save, noDmg, v.orTiers ?? "", v.tiersWritten ?? "")) lines.push({ label, tier: tierOfLabel(label), kind: "tier" });
       if (v.critical) lines.push(L("Critical", v.critical, "rich"));
     }
     if (String(v.effects ?? "").trim()) lines.push(L(it.structure || v.noTiers ? "Effect" : save ? "Tier 1 or 2" : "Tier 2 or 3", v.effects, "rich"));
@@ -80,14 +86,17 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
       roll: v.modeVs ? L("Save", TWOD12.attributes[v.modeVs] ?? v.modeVs, "esc") : null, lines, source: v
     };
   };
+  const vms = versions.map(versionModel);
+  // v0.0.429 (CARD-ONE step 6): one Version whose Effect the card writes above the roll (Rebuke, Reckoning, Hit and Run): it goes there
+  if (vms.length === 1 && vms[0].source?.effectFirst) { const k = vms[0].lines.findIndex(l => l.label === "Effect"); if (k >= 0) top.splice(effectAt, 0, ...vms[0].lines.splice(k, 1)); }
   const proseText = String(it.description ?? "");
   return {
     name: item.name ?? "", frequency: effectiveFrequency(it), cost: [...new Set(versions.map(costOf))].join(" / "), reaction: !!it.reaction,
     flavor: it.flavor ?? "", traits: [...(it.traits ?? [])], automation: it.automation ? { rank: it.automation, note: it.automationNote ?? "" } : null,
     grid: { distance: distanceShort(distanceText(it, weapon)).replace(/^—$/, ""), distTip: distanceNote(it, weapon), area: areaText(it), areaButton: areaButton(it), target: it.targets ?? "" },
-    top, modes, versions: versions.map(versionModel),
-    special: it.structure && it.special ? L("Special", it.special, "rich") : null,
-    prose: !it.structure && proseText.replace(/<[^>]+>/g, "").trim() ? proseText : "",
+    top, modes, versions: vms,
+    special: it.special ? L("Special", it.special, "rich") : null,
+    prose: !it.structure && !it.special && !(it.lines ?? []).length && proseText.replace(/<[^>]+>/g, "").trim() ? proseText : "",   // v0.0.429: a Basic Action's Specials are lines
     worth: it.worth ?? ""
   };
 }

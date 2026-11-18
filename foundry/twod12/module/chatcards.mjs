@@ -249,7 +249,8 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const din = m.dmg ? damageInHtml(m.dmg, view) : null, inMain = one && din?.compact;
   const btns = inMain ? dmgFootHtml(din, view) : footHtml(m, view, din ? { hasDamage: false, locked: true } : {});
   const dpart = din && !inMain ? din.part : "";
-  const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 2)) ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
+  // v0.0.429: an Effect the card writes above the roll is among its top lines (drawn once, there)
+  const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 2)) && !(m.card?.top ?? []).some(l => l.label === "Effect") ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const pf = hide ? playerFoot("Player view · enemy Defenses hidden by the GM") : "";

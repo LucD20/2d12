@@ -116,7 +116,9 @@ export function versionData(c, v, resolve = s => s) {
   if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical")));
   if (typeof v.foundry?.critical === "string") out.critical = resolve(v.foundry.critical);   // v0.0.338: the Critical's Foundry text as it is (its effect runs after the damage)
   if (v.mode) out.mode = v.mode;
-  if (v.orTiers) out.orTiers = v.orTiers;   // v0.0.426: the card writes "Tier 2 or 3" / "Tier 1 or 2" (cardmodel.mjs tierLines draws one line)
+  if (v.orTiers) out.orTiers = v.orTiers;
+  if (v.tiersWritten) out.tiersWritten = v.tiersWritten;   // v0.0.429: the Tiers the card writes (cardmodel.mjs tierLines draws only those)
+  if (v.effectFirst) out.effectFirst = true;   // v0.0.429: the Effect written above the roll   // v0.0.426: the card writes "Tier 2 or 3" / "Tier 1 or 2" (cardmodel.mjs tierLines draws one line)
   // v0.0.409 (pack F2): an Art's Mode (a Structure block): its own traits, Distance, Target and roll
   if (v.modeTraits?.length) out.modeTraits = traitKeys(v.modeTraits);
   if (v.modeDistance) out.modeDistance = distanceKey({ distance: v.modeDistance, target: v.modeTargets });
@@ -177,6 +179,9 @@ export function cardSystem(c, resolve = s => s) {
   if (c.flavor) sys.flavor = c.flavor;
   // v0.0.411 (pack F2, the card's look): a Structure card's labeled lines and Special, for the card (its prose stays the description for the other surfaces)
   if (c.structure) { sys.structure = true; if (c.lines?.length) sys.lines = c.lines.map(l => ({ label: l.label, text: resolve(fxText(l.text)) })); if (c.notes) sys.special = resolve(fxText(c.notes)); }
+  // v0.0.429 (CARD-ONE step 6): a Basic Action's rules and notes are its Special lines on the card, as the book draws them (Weapon Attack's above
+  // the roll, Steel Yourself's at the end); its description keeps them for the other surfaces
+  else if (c.category === "Basic Action") { if (c.rules) sys.lines = [{ label: "Special", text: resolve(fxText(c.rules)) }]; if (c.notes) sys.special = resolve(fxText(c.notes)); }
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));   // v0.0.360 (the audit's D17): an Action holds rules (Mark Quarry)
   for (const k of ["weaponUse", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
@@ -232,6 +237,8 @@ export function basicEntry(c) {
   if (s.requirements) e.requirements = s.requirements;
   if (s.weaponUse) e.weaponUse = s.weaponUse;
   if (s.description) e.description = s.description;
+  if (s.lines) e.lines = s.lines;   // v0.0.429 (CARD-ONE step 6): its Specials as the card's lines
+  if (s.special) e.special = s.special;
   if (s.reaction) Object.assign(e, { reaction: true, reactionKind: s.reactionKind, trigger: s.trigger });   // pack R-core: Opportunity Attack, the basic Reaction
   for (const k of ["moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (s[k] !== undefined) e[k] = s[k];   // v0.0.272 (pack RX): its moment
   e.flavor = c.flavor ?? "";

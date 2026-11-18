@@ -334,6 +334,14 @@
      "do": "Give a PC Empowered and open a damaging Action's roll dialog.",
      "expect": "The Avg adds 4 once, \"(with Empowered 1d6!)\", not one per die.",
      "rev": 1
+    },
+    {
+     "id": "card-order-book",
+     "v": "v0.0.429",
+     "title": "Seven cards in the book's order",
+     "do": "Open Rebuke, Reckoning, Hit and Run, Circling Shot, Trick Shots, Weapon Attack and Steel Yourself on a sheet, and use Rebuke and Hit and Run.",
+     "expect": "Rebuke's and Reckoning's Effect sits above their Save (sheet and chat card); Hit and Run's Effect above its Attack, drawn once on the chat card; Circling Shot and Knock Back show no Tier 1 line; Weapon Attack's Special is above its Attack, Steel Yourself's at the end.",
+     "rev": 1
     }
    ]
   },

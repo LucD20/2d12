@@ -182,6 +182,10 @@ Expect: It isn't struck (it costs 0 now) and can be used.
 Do: Give a PC Empowered and open a damaging Action's roll dialog.
 Expect: The Avg adds 4 once, "(with Empowered 1d6!)", not one per die.
 
+### card-order-book · v0.0.429 · Seven cards in the book's order
+Do: Open Rebuke, Reckoning, Hit and Run, Circling Shot, Trick Shots, Weapon Attack and Steel Yourself on a sheet, and use Rebuke and Hit and Run.
+Expect: Rebuke's and Reckoning's Effect sits above their Save (sheet and chat card); Hit and Run's Effect above its Attack, drawn once on the chat card; Circling Shot and Knock Back show no Tier 1 line; Weapon Attack's Special is above its Attack, Steel Yourself's at the end.
+
 ## Chat cards
 
 ### card-order · v0.0.417 · The chat card follows the card

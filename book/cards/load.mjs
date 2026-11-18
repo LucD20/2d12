@@ -54,6 +54,9 @@ export function readBody(lines = []) {
   const o = { tiers: [null, null, null], or: null, effects: [], notes: [], rules: [], text: [], seq: [] };   // seq: the Effect and Special lines in their order
   // v0.0.419 (card-structure.md, A1): a Special written above the Attack or Save line says how the roll is made: it stays above it (a labeled line)
   const rollAt = lines.findIndex(x => ["Attack", "Save"].includes(String(x?.label ?? "").trim()));
+  // v0.0.429 (CARD-ONE step 6): an Effect written above the roll stays above it (Rebuke, Reckoning, Hit and Run)
+  const effAt = lines.findIndex(x => String(x?.label ?? "").trim() === "Effect");
+  if (rollAt >= 0 && effAt >= 0 && effAt < rollAt) o.effectFirst = true;
   for (const [i, { label, text }] of lines.entries()) {
     const l = String(label ?? "").trim(), t = String(text ?? "").trim();
     if (l === "Special" && rollAt >= 0 && i < rollAt) { o.rules.push(`**Special:** ${t}`); (o.lines ??= []).push({ label: l, text: t }); continue; }
@@ -107,6 +110,10 @@ export function fromStructure(c) {
     if (sp.length) v.special = sp.join(" ");
     if (b.critical) v.critical = b.critical;
     if (b.or?.tiers?.length === 2 && !(b.foundry?.tiers)) v.orTiers = b.or.tiers.join("");   // v0.0.426: "Tier 2 or 3" as written (the card draws one line)
+    // v0.0.429 (CARD-ONE step 6): the Tiers the card writes (Circling Shot has no Tier 1 line); the effect written above the roll
+    const written = [1, 2, 3].filter(n => b.tiers?.[n - 1] != null || b.or?.tiers?.includes(n));
+    if (written.length && written.length < 3 && !(b.foundry?.tiers)) v.tiersWritten = written.join("");
+    if (b.effectFirst) v.effectFirst = true;
     if (b.foundry) { v.foundry = { ...b.foundry }; delete v.foundry.tiers; if (!Object.keys(v.foundry).length) delete v.foundry; }   // its tiers are the Version's tiers now
     return v;
   };
