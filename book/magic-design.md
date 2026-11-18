@@ -55,6 +55,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 24 | **A spell has no fixed shape.** Not every spell is damage and a rider; some are only damage, some only a rider, and "they can be innovative or special in their own way". The rider is what a Path adds *when* a spell has one, and what it lends in a merge. | "Keep note, not every spells needs to have damage + rider, or just damage or just rider; they can be innovative or special in their own way." | 2026-11-18 |
 | 25 | **After the basics, Dominions' own spells are pulled and shown as 2d12 cards** (from `research/raw/2026-11-18-dominions-spells.tsv`), as the grid's test. It takes the place of the classic-spell pass in the order of work. | "You could pull some spells from there and see how they would look in 2d12 after we are done with the basics." | 2026-11-18 |
 | 26 | **Overcast's shape:** its own line on the card after the Tiers; three shared form ladders (Reach, Breadth, Hold) paid by excess School level, the card listing which it may climb; one substance step written on each spell, paid by excess Path level; **Merge** on every spell (a second Path's rider, in the rider slot; the spell gains that Path's trait for the casting). | "Yes." | 2026-11-18 |
+| 27 | **Mastery for magic** (5d), with one change: **one point a fight, placed in a Path or a School you cast in it** (the weapon rule exactly), not one in each. Opening gives a Path and a School together and two spells; levels at 10, 20, 30, 45, 60; a spell chosen at each new level; spells swap on a Rest; "the group follows" left out. | "Works, but school and path at 2 by level 3, isn't that too soon?" then "Yes." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -190,7 +191,7 @@ Each School's usual pair: Evocation: Reach and Breadth. Alteration: Breadth and 
 
 **Why split it this way.** The form ladders are one rule learned once (the "intuitive" test); the substance step is where each spell stays special (decision 24).
 
-## 5d. Mastery for magic: how levels rise and spells are gained (PROPOSED 2026-11-18; waiting for Lucas)
+## 5d. Mastery for magic: how levels rise and spells are gained (DECIDED 2026-11-18: decision 27; point 2 changed to ONE point a fight, in a Path or a School)
 
 Decided already: levels grow with use, the weapons' way, opened by a Talent or a class (17); Mastery unlocks choices of spells and Talents can grant more (19); no cap (14). Chapter 15's weapon rule is the model: 1 Mastery with a weapon you struck with when your side wins a normal or harder encounter; unlocks at 10, 20, 30, 45, 60; Mastery is yours, not the weapon's.
 
@@ -200,7 +201,23 @@ Decided already: levels grow with use, the weapons' way, opened by a Talent or a
 4. **Spells.** Each time a Path or a School reaches a new level, **you choose one spell** you meet both minimums for. Spells are choices of your build, so they can be swapped on a Rest like every other choice (each new one must be a spell you could have chosen).
 5. **Not taken from the weapons:** "the group follows" (half your best Mastery for every weapon of the group). Paths have two families (the Elements, the Sorceries) and it could apply to them, but an unopened Path can't be cast at all, so it would only matter after a second opening. Left out unless Lucas wants it.
 
-**What it gives.** A character who opens Fire and Evocation at level 1 holds 2 spells; around level 3 both are level 2 and they hold 4; a second Path opened by a Talent adds a spell at once and its own track. Talents never add levels: they open, grant extra spells, or change spells by trait.
+**Why one point (Lucas's question).** A point in each axis made both level 2 by character level 3 and 4 / 4 by level 7, and kept the two axes always equal, which removes the choice between depth in a Path and depth in a School. With one point: 2 / 1 around level 3, 3 / 1 or 2 / 2 around level 5, 4 / 2 or 3 / 3 around level 9, 6 / 2 or 4 / 4 at level 15; the first level 2 comes when a weapon user unlocks their Weapon Technique. Mastery then gives few spells (2, then 3 around level 3, 4 around level 5): Talents and the class give the rest.
+
+**What it gave before the change (kept for the record).** A character who opens Fire and Evocation at level 1 holds 2 spells; around level 3 both are level 2 and they hold 4; a second Path opened by a Talent adds a spell at once and its own track. Talents never add levels: they open, grant extra spells, or change spells by trait.
+
+## 5e. A magic that stands: the Enchantment's rule (PROPOSED 2026-11-18, three structures; waiting for Lucas)
+
+Decided already: anything that stands is an Enchantment (10); [Focus] is not its marker (7); durations are EoT, rounds or the encounter (the charter). Sources: Dominions (a battlefield enchantment lasts while its caster is on the field), Draw Steel (a persistent ability taxes each turn's income and all end on one turn of heavy damage: `research/caster-class-shape.md`).
+
+A new trait, working name **[Standing]**. Common to the three: it lasts until the encounter ends, until you go Down, or until you end it (no Action).
+
+- **A, one at a time.** You hold one [Standing] spell; casting another ends the first. Nothing to pay, nothing to count. Dominions' feel, the least text.
+- **B, as many as you pay for.** Each one you hold makes you Slowed 1 (increasing): a held spell costs 1 AP every turn. Draw Steel's idea in 2d12's words; a real choice each fight, more to track.
+- **C, one free, a second for a price.** One as in A; a second makes you Slowed 1.
+
+**How an enemy breaks it** (with any of the three): it ends **when you become Bloodied or Strained**. Both are moments the whole table already sees (the GM announces them), so no threshold is added to the sheet; you can cast it again afterwards. The protection School's dispel is the other way.
+
+Claude's pick: A, with the break on Bloodied or Strained.
 
 ## 6. The order of work from here (proposed)
 
