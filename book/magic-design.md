@@ -56,6 +56,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 25 | **After the basics, Dominions' own spells are pulled and shown as 2d12 cards** (from `research/raw/2026-11-18-dominions-spells.tsv`), as the grid's test. It takes the place of the classic-spell pass in the order of work. | "You could pull some spells from there and see how they would look in 2d12 after we are done with the basics." | 2026-11-18 |
 | 26 | **Overcast's shape:** its own line on the card after the Tiers; three shared form ladders (Reach, Breadth, Hold) paid by excess School level, the card listing which it may climb; one substance step written on each spell, paid by excess Path level; **Merge** on every spell (a second Path's rider, in the rider slot; the spell gains that Path's trait for the casting). | "Yes." | 2026-11-18 |
 | 27 | **Mastery for magic** (5d), with one change: **one point a fight, placed in a Path or a School you cast in it** (the weapon rule exactly), not one in each. Opening gives a Path and a School together and two spells; levels at 10, 20, 30, 45, 60; a spell chosen at each new level; spells swap on a Rest; "the group follows" left out. | "Works, but school and path at 2 by level 3, isn't that too soon?" then "Yes." | 2026-11-18 |
+| 28 | **A magic that stands: A, one at a time** (it lasts until the encounter ends, you go Down, or you end it; casting another ends the first), **with room left for B as a second kind**: some spells that you "maintain by spending AP". **Both break when you become Bloodied or Strained.** The name "Standing" is refused ("doesn't sound magic"; his examples: sustaining, concentrating): names to choose. | "A is good but nothing stops B from existing as well. We focus on A with gap for B, some spells that you can 'maintain by spending AP'. Break on bloodied and strained is good." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -205,7 +206,7 @@ Decided already: levels grow with use, the weapons' way, opened by a Talent or a
 
 **What it gave before the change (kept for the record).** A character who opens Fire and Evocation at level 1 holds 2 spells; around level 3 both are level 2 and they hold 4; a second Path opened by a Talent adds a spell at once and its own track. Talents never add levels: they open, grant extra spells, or change spells by trait.
 
-## 5e. A magic that stands: the Enchantment's rule (PROPOSED 2026-11-18, three structures; waiting for Lucas)
+## 5e. A magic that stands: the Enchantment's rule (DECIDED 2026-11-18: decision 28: A, with room for B; the names open)
 
 Decided already: anything that stands is an Enchantment (10); [Focus] is not its marker (7); durations are EoT, rounds or the encounter (the charter). Sources: Dominions (a battlefield enchantment lasts while its caster is on the field), Draw Steel (a persistent ability taxes each turn's income and all end on one turn of heavy damage: `research/caster-class-shape.md`).
 
@@ -218,6 +219,11 @@ A new trait, working name **[Standing]**. Common to the three: it lasts until th
 **How an enemy breaks it** (with any of the three): it ends **when you become Bloodied or Strained**. Both are moments the whole table already sees (the GM announces them), so no threshold is added to the sheet; you can cast it again afterwards. The protection School's dispel is the other way.
 
 Claude's pick: A, with the break on Bloodied or Strained.
+
+**The two kinds after decision 28, and their names (PROPOSED; waiting for Lucas).** [Focus] can't be used (it is concentration, on every spell: decision 7).
+- **The one-at-a-time kind (A):** Claude's pick **[Bound]** ("you can have one Bound spell; casting another ends it"). Others: Anchored, Woven, Attuned, Enduring.
+- **The paid kind (B):** Claude's pick **[Sustained]**, with a cost on the card ("Sustain: 1 AP"): at the start of your turn you pay it or the spell ends; you can sustain as many as you can pay for. "Sustain" already means exactly this to players of Pathfinder 2e. Others: Maintained, Channeled.
+- Both end when you go Down, when you choose, at the end of the encounter, and when you become Bloodied or Strained.
 
 ## 6. The order of work from here (proposed)
 
