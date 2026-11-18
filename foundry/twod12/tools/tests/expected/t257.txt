@@ -4,7 +4,7 @@ Level 2: Escalation Hook: Thrill of the Kill | Encounter Pick: Volley, Hit and R
 Level 3: Second Art: Footwork, Trick Shots, Spotter | Escalation 6 Ability: One More Arrow, Fleet | Skill Talent
 Level 4: Stage Talent
 Light armor, Weapon +2 / Power +1, Speed +1: light 2 1 weapon 1
-Quick Shots' Tiers: Mod / 2[W] / 3[W] | traits: ranged,shot,strike,weapon | Critical: You regain 1 AP.
+Quick Shots' Tiers: Mod / 2[W]+Mod / 3[W]+Mod | traits: ranged,shot,strike,weapon | Critical: You regain 1 AP.
 Snap Shot and Slip Away: Snap Shot interrupt enemyAdjacent | Slip Away interrupt enemyAdjacent | Volley: burst 3 @Condition[prone|crit:yes]
 the Arts' Modes: Footwork: Sidestep/Weave/Hands Busy | Trick Shots: Pin/Startle/Knock Back | Spotter: Call Out/Find the Gap/Keep Low | Weave ignores terrain: true
 the hooks: Shifting Aim movedBoon | Lean and Loose apCost | Blade and Bow alternateBoon | Clear Lines clearLines | Opening Shot openingShot | One More Arrow moreW | Fleet evadeMore | Thrill of the Kill: [["eschook","damagedDown"]]

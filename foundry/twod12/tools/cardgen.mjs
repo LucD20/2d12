@@ -56,24 +56,26 @@ export function vsKey(vs) {
 export function tierTokens(dmg, weaponAction, tier) {
   const s = String(dmg ?? "").trim();
   if (!s || s === "0" || s === "-") return "";
-  let pool = "B", sub = "", flat = null;
+  let pool = "B", flat = null;
+  const subOf = {};   // v0.0.426: a subtype is its own pool's ("[V] 1[W] + [Mod] + [R] 1d6! Ho": the Holy is the Resolve dice's, not the [Mod]'s)
   const tokens = [];
   for (let p of s.split("+").map(x => x.trim()).filter(Boolean)) {
     let m;
     if ((m = p.match(/^\[(B|M|V|R)\]\s*(.*)$/))) { pool = ({ V: "B", R: "M" })[m[1]] ?? m[1]; p = m[2].trim(); }   // pack R-core: [V] Vigor / [R] Resolve are Foundry's B / M pools
-    if ((m = p.match(/^(.*?)\s+(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)$/))) { sub = SUB[m[2]]; p = m[1].trim(); }
+    if ((m = p.match(/^(.*?)\s+(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)$/))) { subOf[pool] = SUB[m[2]]; p = m[1].trim(); }
     if (p) tokens.push({ p, pool });
   }
   const out = [];
   for (const { p, pool: pl } of tokens) {
     let m;
+    const sub = subOf[pl] ?? "";
     if ((m = p.match(/^(\d*)\[W\]$/))) out.push({ k: "w", t: `${m[1] || 1}W${pl}` });
     else if (p === "[Mod]") { if (!(weaponAction && tier >= 2)) out.push({ k: "at", t: `Mod${pl}${sub}` }); }
     else if (/^\d+d\d+!?$/.test(p)) out.push({ k: "dice", t: `${p}${pl}${sub}` });   // v0.0.407: a die written with ! explodes
     else if (/^\d+$/.test(p)) flat = { n: p, pool: pl };
     else throw new Error(`can't read the damage "${dmg}" (the part "${p}")`);
   }
-  if (flat !== null) { const d = out.find(x => x.k === "dice"); if (d) d.t = d.t.replace(/^(\d+d\d+!?)/, `$1+${flat.n}`); else out.push({ k: "dice", t: `${flat.n}${flat.pool}${sub}` }); }   // "[B] 1[W] + [Mod] + 4": a flat 4 of its own
+  if (flat !== null) { const d = out.find(x => x.k === "dice"); if (d) d.t = d.t.replace(/^(\d+d\d+!?)/, `$1+${flat.n}`); else out.push({ k: "dice", t: `${flat.n}${flat.pool}${subOf[flat.pool] ?? ""}` }); }   // "[B] 1[W] + [Mod] + 4": a flat 4 of its own
   return out.map(x => x.t).join(",");
 }
 
@@ -84,7 +86,10 @@ const appendOf = (v, key) => { const a = v.foundry?.append; if (!a) return ""; i
 
 /** One Version of a card as the item's version data. */
 export function versionData(c, v, resolve = s => s) {
-  const weaponAction = (c.traits ?? []).includes("weapon") && !(c.traits ?? []).includes("save");   // a Save Action's tiers are the target's result: its [Mod] stays explicit
+  // v0.0.426 (the audit: Smite lost its Signature Modifier, Trick Shots' "[V] [Mod]" dealt nothing, Seizing Cut's Tier 2 got one the book doesn't
+  // write): a Structure card's [Mod] stays where it is written (Chapter 1: a Modifier is added only where the card writes [Mod]); rollsource.mjs adds
+  // none for it. The old cards keep the old way (the Weapon Modifier added from Tier 2).
+  const weaponAction = (c.traits ?? []).includes("weapon") && !(c.traits ?? []).includes("save") && !c.structure;   // a Save Action's tiers are the target's result: its [Mod] stays explicit
   const fx = { all: [], t1: [], t2: [], t3: [] };
   // v0.0.265: an entry can be { "uuid": "{{fx:X}}", "mode": "conditional" } (the damage card's Effects button applies it: Deathmark's shot when the target goes Down)
   for (const [k, list] of Object.entries(v.foundry?.fx ?? {})) fx[k] = list.map(u => (typeof u === "object" && u ? { uuid: resolve(u.uuid), mode: u.mode || "auto" } : { uuid: resolve(u), mode: "auto" }));
@@ -111,6 +116,7 @@ export function versionData(c, v, resolve = s => s) {
   if (v.critical) out.critical = resolve(fxText(v.critical, appendOf(v, "critical")));
   if (typeof v.foundry?.critical === "string") out.critical = resolve(v.foundry.critical);   // v0.0.338: the Critical's Foundry text as it is (its effect runs after the damage)
   if (v.mode) out.mode = v.mode;
+  if (v.orTiers) out.orTiers = v.orTiers;   // v0.0.426: the card writes "Tier 2 or 3" / "Tier 1 or 2" (cardmodel.mjs tierLines draws one line)
   // v0.0.409 (pack F2): an Art's Mode (a Structure block): its own traits, Distance, Target and roll
   if (v.modeTraits?.length) out.modeTraits = traitKeys(v.modeTraits);
   if (v.modeDistance) out.modeDistance = distanceKey({ distance: v.modeDistance, target: v.modeTargets });

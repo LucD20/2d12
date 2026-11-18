@@ -526,6 +526,7 @@ export class ActionData extends foundry.abstract.TypeDataModel {
           special: str(),   // v0.0.411: a Structure block's Special line (Judge's 0 AP: when it can be used)
           diceRule: str(),   // v0.0.409: "smite" (Smite's dice by Escalation, d8s against a Profane creature) or "profane" (d6s become d8s against one)
           noTiers: bool(),
+          orTiers: str(),   // v0.0.426: "23" / "12" when the card writes "Tier 2 or 3" / "Tier 1 or 2" (one line on the card)
           areaSize: int(0, 0),   // v0.0.215: this version's Area size (0: the Action's); Word of Radiance is "2 / 3 Emanation"
           areaRounds: int(0, 0),   // v0.0.261 (Consecrated Ground): this version's rounds for the kept area (0: the Action's)
           t1: tier(),

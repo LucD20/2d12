@@ -137,7 +137,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
         if (l.tier !== vm.lines.find(x => x.kind === "tier").tier) continue;   // the Tiers are drawn once, together, at the first one
         const cells = [await cell(item, v, 1, ch), await cell(item, v, 2, ch), await cell(item, v, 3, ch)];
         const noDmg = ![1, 2, 3].some(n => (v[`t${n}`] ?? []).length);
-        for (const [lab, h] of tierLines(cells, save, noDmg)) out.push(stLine(lab, h));
+        for (const [lab, h] of tierLines(cells, save, noDmg, v.orTiers ?? "")) out.push(stLine(lab, h));
       } else out.push(stLine(l.label, await fmt(l)));
     }
     return out.join("");

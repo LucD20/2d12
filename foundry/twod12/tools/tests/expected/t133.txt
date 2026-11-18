@@ -1,4 +1,4 @@
-Volley: AD DC 14 | T1 3[body,none] | T2 "@Condition[hindered|eot]" | T3 "@Condition[hindered|eot]"
+Volley: AD DC 14 | T1 3[body,none] | T2 3[body,none], "@Condition[hindered|eot]" | T3 3[body,none], "@Condition[hindered|eot]"
   parsed T1: {"damage":[{"formula":"3","pool":"B","sub":""}],"texts":[],"uuids":[]}
 Rain of Arrows: Instinct Save DC 14 | T1 2d8[body,pierce], 3[body,pierce], "@Condition[prone]" | T2 2d6[body,pierce], 3[body,pierce] | T3 1d6[body,pierce]
   parsed T1: {"damage":[{"formula":"2d8","pool":"B","sub":"Pi"},{"formula":"3","pool":"B","sub":"Pi"}],"texts":["@Condition[prone]"],"uuids":[]}

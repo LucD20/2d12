@@ -26,9 +26,12 @@ export function rollLine(it, vs) {
   return def ? { label: "Attack", text: `${words.length ? `${words.join(" or ")} ` : ""}vs. ${def}` } : null;
 }
 /** Pure: how a Version's three Tier texts are written: one line ("Tier 1 or 2" / "Tier 2 or 3" / "Tiers 1–3") or three. cells: [t1, t2, t3]. */
-export function tierLines(cells, save, noDamage) {
+export function tierLines(cells, save, noDamage, orTiers = "") {
   const none = c => /^(No effect\.?|&mdash;)$/.test(String(c).trim());
   if (cells[0] === cells[1] && cells[1] === cells[2]) return [[tierLabel("all"), cells[0]]];
+  // v0.0.426: the card's own "Tier 2 or 3" / "Tier 1 or 2" (load.mjs keeps it as orTiers), with damage too (Trick Shots' Pin and Startle)
+  if (orTiers === "23" && cells[1] === cells[2]) return [["Tier 1", cells[0]], ["Tier 2 or 3", cells[1]]].filter(([l, c]) => l !== "Tier 1" || !none(c));
+  if (orTiers === "12" && cells[0] === cells[1]) return [["Tier 1 or 2", cells[0]], ["Tier 3", cells[2]]].filter(([l, c]) => l !== "Tier 3" || !none(c));
   if (noDamage && save && cells[0] === cells[1] && none(cells[2])) return [["Tier 1 or 2", cells[0]]];
   if (noDamage && !save && none(cells[0]) && cells[1] === cells[2]) return [["Tier 2 or 3", cells[1]]];
   return [1, 2, 3].map(n => [`Tier ${n}`, cells[n - 1]]);
@@ -67,7 +70,7 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
     if (v.special) lines.push(L("Special", v.special, "rich"));
     if (!v.noTiers) {
       const noDmg = ![1, 2, 3].some(n => (v[`t${n}`] ?? []).length);
-      for (const [label] of tierLines([1, 2, 3].map(n => rawCell(it, v, n)), save, noDmg)) lines.push({ label, tier: tierOfLabel(label), kind: "tier" });
+      for (const [label] of tierLines([1, 2, 3].map(n => rawCell(it, v, n)), save, noDmg, v.orTiers ?? "")) lines.push({ label, tier: tierOfLabel(label), kind: "tier" });
       if (v.critical) lines.push(L("Critical", v.critical, "rich"));
     }
     if (String(v.effects ?? "").trim()) lines.push(L(it.structure || v.noTiers ? "Effect" : save ? "Tier 1 or 2" : "Tier 2 or 3", v.effects, "rich"));

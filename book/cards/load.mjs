@@ -106,6 +106,7 @@ export function fromStructure(c) {
     if (eff.length) v.effects = eff.join(" ");
     if (sp.length) v.special = sp.join(" ");
     if (b.critical) v.critical = b.critical;
+    if (b.or?.tiers?.length === 2 && !(b.foundry?.tiers)) v.orTiers = b.or.tiers.join("");   // v0.0.426: "Tier 2 or 3" as written (the card draws one line)
     if (b.foundry) { v.foundry = { ...b.foundry }; delete v.foundry.tiers; if (!Object.keys(v.foundry).length) delete v.foundry; }   // its tiers are the Version's tiers now
     return v;
   };

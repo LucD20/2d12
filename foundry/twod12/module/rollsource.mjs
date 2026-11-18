@@ -9,6 +9,12 @@ import { modOf } from "./modifiers.mjs";
 
 /** s: the actor's system; it: the Action's system. { kind, attrKey, mod, label, attrMode: "all" | "t2" | "none" } (kind null: no roll). */
 export function rollSource(s, it) {
+  const src = rollSourceOf(s, it);
+  // v0.0.426 (the audit): a Structure card writes its [Mod] where it counts (cardgen keeps it), so nothing is added by the kind of roll; an NPC's
+  // damage is written whole (the Bestiary; actions.mjs rollDamage adds nothing for an NPC), so its roll dialog and card show no Modifier either
+  return (it?.structure || s?.modSource === "role") && src.kind ? { ...src, attrMode: "none" } : src;
+}
+function rollSourceOf(s, it) {
   const traits = it?.traits ?? new Set(), has = k => traits.has?.(k) ?? false;
   const ca = checkAttr(it, s?.attributes ?? null);
   const L = k => TWOD12.attributes[k] ?? "?";

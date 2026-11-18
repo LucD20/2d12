@@ -14,7 +14,7 @@ Guard on an Action card (Modifier 3): <i class="fa-solid fa-shield-heart"></i> <
 a book link: <i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span> [twod12-inline book] (rule: Bright: a rule of the book) | <i class="fa-solid fa-book-open"></i> <span class="ti-name">Guard</span> [twod12-inline book] (rule: Guard: a rule of the book (Core Rules))
 options: {"formula":"1d8+mod","who":"pick","area":2} {"kind":"pushed","distance":1,"pick":true,"area":2,"from":"target"} {"ref":"Bright","doc":"Core Rules"}
 --- the Smite card (book/cards/stage0/paladin.json since pack F2, v0.0.409) as Foundry data
-2 AP: dice rule smite | tiers  1d6! MHo / [W]+ 1d6! MHo / [W]+ 2d6! MHo
+2 AP: dice rule smite | tiers  1d6! MHo / [W]++ 1d6! MHo / [W]++ 2d6! MHo
 the Structure card's tiers say 'your Smite dice'; Foundry rolls them: true | encounter divine,signature,strike,weapon
 automation: gold | the Smite dice by your Escalation (up to 4, 1 more on a Tier 3), d8s against a Profane creature (Judged by you, or the Profane Tag), the Reaction AP for 1 more die (the roll dialog's chip, paid when used).
 the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16): true | the built book links Bright light on a card: true | every card an anchor: true

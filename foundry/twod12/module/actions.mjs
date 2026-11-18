@@ -96,7 +96,7 @@ export async function resolveInstance(inst, ctx) {
     const res = await evalFormula(f, ctx.rolls, ctx.empowered);
     // v0.0.321 (Lucas: Smite's "[W] + 2 Sl" didn't count as Slash): a written [Mod] (or dice) in a [W] term with no subtype of its own is the
     // weapon's damage, so it has the weapon's subtype (Ch. 1: the subtype written covers the whole expression), as the card shows it
-    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, emp: res.emp ?? 0, sub: inst.subtype || (inst.useW ? (ctx.weapon?.system?.subtype ?? "") : ""), ...(!inst.dice && inst.useAt ? { label: "Modifier" } : {}) });   // v0.0.326: a written [Mod] is named on the card
+    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, emp: res.emp ?? 0, sub: inst.subtype || (inst.useW || (inst.useAt && !inst.dice) ? (ctx.weapon?.system?.subtype ?? "") : ""),   /* v0.0.426: a written [Mod] takes the weapon's type (Chapter 1), as the added one did */ ...(!inst.dice && inst.useAt ? { label: "Modifier" } : {}) });   // v0.0.326: a written [Mod] is named on the card
   }
   return { inst, comps };
 }
@@ -161,7 +161,8 @@ const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === t
 
 /* ---- v0.0.283 (pack chat-cards): the pieces of the new attack card's model (chatcards.mjs draws it) ---- */
 /** The modifiers kept for a retarget (the same for every target): the dialog's own effects, the Engaged banes on you, a granted use's. */
-const CC_GENERAL = id => !id.includes("|") && (!id.startsWith("syn:") || ["syn:engaged", "syn:granted", "syn:nlswitch"].includes(id));
+// v0.0.426 (the audit: a retarget dropped them): the hands' Banes, the At-will Bane, a two-handed weapon in one hand and the Strike hooks' Boons are yours too
+const CC_GENERAL = id => !id.includes("|") && (!id.startsWith("syn:") || ["syn:engaged", "syn:granted", "syn:nlswitch", "syn:hand", "syn:atwill", "syn:onehand"].includes(id) || id.startsWith("syn:hook:"));
 /** A distance on the card: a number of squares has "sq." (brief 4.1). */
 export const sqText = d => (/^\d+$/.test(String(d ?? "").trim()) ? `${String(d).trim()} sq.` : String(d ?? "").replace(/(\d+)\s*(?:squares?|sq\.?)?$/i, (m, n) => `${n} sq.`));
 /** One creature's row of the card from a check. */
@@ -903,7 +904,11 @@ export async function useAction(actor, item, opts = {}) {
   const nlSwitched = data.switchNl === "on", dealsNl = it.traits.has("nonlethal") !== nlSwitched;
   if (nlSwitched) { extraMods.push({ id: "syn:nlswitch", name: dealsNl ? "Nonlethal instead" : "Lethal instead", boons: 0, banes: 1, match: true, predicate: "Book, Chapter 4: changing Lethal and Nonlethal costs a Bane" }); data.fx = [...(data.fx ?? []), "syn:nlswitch"]; }
   let chk = null;
-  const fxm = resolveModifiers(actor, data.fx, extraMods);
+  // v0.0.426 (the audit: Shifting Aim's and Blade and Bow's Boons were shown but never rolled): their chips carry the id syn:hook:N, read here from
+  // the same hook data the dialog drew them from (rollinput.mjs)
+  let hookMods = [];
+  try { const { strikeHookChipsFor } = await import("./hooks.mjs"); hookMods = (await strikeHookChipsFor(actor, useTraits)).map((h, k) => ({ id: `syn:hook:${k}`, name: h.name, boons: h.boons, banes: 0, bb: h.field ? "field" : "" })); } catch (e) { console.warn("twod12 | hook Boons", e); }
+  const fxm = resolveModifiers(actor, data.fx, [...extraMods, ...hookMods]);
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0;
   // v0.0.292 (brief section 7): the Boons and Banes added by hand are named "Situational" on the chat card's breakdown
   const situational = (b, n) => (data.rd && (b || n) ? [{ name: "Situational", boons: b, banes: n }] : []);
@@ -915,7 +920,7 @@ export async function useAction(actor, item, opts = {}) {
     const globalFavored = data.favored === "on" || data.reloadshot === "on",
       globalDoomed = data.doomed === "on";
     const specs = perT.map(p => {
-      const fxm = resolveModifiers(actor, modifiersForTarget(data.fx, p.actorUuid), extraMods);
+      const fxm = resolveModifiers(actor, modifiersForTarget(data.fx, p.actorUuid), [...extraMods, ...hookMods]);
       // v0.0.292: the roll dialog decides each creature's own Favored / Doomed (auto or by hand), Boons, Banes and Flat (perTarget)
       const pt = data.perTarget?.[p.actorUuid] ?? null, ownB = Number(pt?.boons) || 0, ownN = Number(pt?.banes) || 0, ownFlat = Number(pt?.flat) || 0;
       return {
@@ -1094,7 +1099,7 @@ export async function useAction(actor, item, opts = {}) {
     const dice = mres ? multiRoll.dice : { d: [{ faces: chk.d1 }, { faces: chk.d2 }, ...(chk.dropped ? [{ faces: chk.dropped }] : [])].map(x => ({ faces: x.faces, total: CC.dieValue(x.faces), first: x.faces[0] })), boonFaces: chk.boonFaces, baneFaces: chk.baneFaces };
     ccRoll = { dice: { d: dice.d.map(x => ({ faces: x.faces, total: x.total ?? CC.dieValue(x.faces), first: x.first ?? x.faces[0] })), boonFaces: dice.boonFaces ?? [], baneFaces: dice.baneFaces ?? [] },
       mod, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), manualBoons: manB, manualBanes: manN, favored: data.favored === "on" || data.reloadshot === "on", doomed: data.doomed === "on",
-      general: resolveModifiers(actor, (data.fx ?? []).filter(id => CC_GENERAL(String(id))), extraMods).sources, attrKey, srcKind: src.kind, forced: forcedTier || 0, chip: src.chip };
+      general: resolveModifiers(actor, (data.fx ?? []).filter(id => CC_GENERAL(String(id))), [...extraMods, ...hookMods]).sources, attrKey, srcKind: src.kind, forced: forcedTier || 0, chip: src.chip };
   }
   // v0.0.294 (chat cards addendum, brief section 13): an Action that makes no roll gets the new card too: no category line, no Effects box,
   // the Trigger under the meta lines, the granted Action's row, the numbered steps of its chain, the Flavor at the foot
