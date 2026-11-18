@@ -102,6 +102,8 @@ for (const d of list) {
   box.innerHTML = `<div class="gal-name">${d.name}</div>${(WRAP[wrap] ?? WRAP.sheet)(html)}`;
   out.append(box);
 }
+// v0.0.439: a chunk with no Action in an Action-only face (the Species and Classes) still has something to shoot
+if (!out.children.length) out.innerHTML = '<div class="gal-card"><div class="gal-name">(no Action in these cards)</div></div>';
 // every card's box a multiple of 16 px high (the JPEG blocks): a card that grows doesn't change how the cards after it are compressed
 await document.fonts.ready;
 for (const el of document.querySelectorAll(".gal-card")) el.style.minHeight = `${Math.ceil(el.getBoundingClientRect().height / 16) * 16}px`;

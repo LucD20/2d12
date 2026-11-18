@@ -36,7 +36,7 @@ import { reactionsOff } from "./condrules.mjs";   // v0.0.314 (pack AU): Stagger
 import { consumeGrant, attachGrantCard, withGrantLine } from "./freeuse.mjs";
 import { zoneOf } from "./zone.mjs";   // v0.0.261 (Consecrated Ground): the zone a Version's effects describe goes on the placed area
 import { setHalfHint, halfHits } from "./halfhint.mjs";   // v0.0.261 (Covering Shot): on a Tier 3, the target's next damage card lights its Half button
-import { buildPreviews, updateOdds, applyTalentMods, tierLines, liveAvg } from "./preview.mjs";
+import { updateOdds, applyTalentMods, tierLines, liveAvg } from "./preview.mjs";
 const { DialogV2 } = foundry.applications.api;
 import { ensureFreeHand } from "./hands.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards)
@@ -648,17 +648,6 @@ export async function useAction(actor, item, opts = {}) {
     try { const hb = handBanes(actor.itemTypes?.weapon ?? [], previewWeapon, isFists(previewWeapon)); if (hb.banes) handMods.push({ id: "syn:hand", name: hb.banes === 3 ? "Strung, the other hand full" : hb.banes === 2 ? "Off hand" : hb.why.startsWith("Fists") ? "Fists, off hand" : "Off hand (Light)", boons: 0, banes: hb.banes, match: true, predicate: hb.why }); } catch (e) { console.warn("twod12 | hands", e); }
   }
   const rollUse = new Set([...useTraits, ...(it.traits.has("weapon") && hasProp(previewWeapon, "twohanded") ? ["__twohanded"] : []), ...(rollsAtOthers && src.kind ? ["__attack"] : [])]);
-  const attrKeyForPreview = src.attrKey;
-  // v0.0.193 (Lucas): the preview's Avg counts the Bonus Damage of each Tier and the Empowered / Enfeebled step the effects give.
-  const pvTarget = rollsAtOthers ? (aimed[0]?.actor ?? null) : null, pvTraits = rollTraits(rollUse, src, item.name);
-  const pvBonus = Object.fromEntries([1, 2, 3].map(t => [t, collectBonuses(actor, pvTraits, t, { target: pvTarget, mod: src.mod }).filter(b => b.dmg)]));
-  const pvSteps = damageSteps(actor, pvTraits, pvTarget), pvStep = topStep(pvSteps.empowered) - topStep(pvSteps.enfeebled);
-  const preview = await buildPreviews({ setupDone, talentMods: talentModsFor(actor, item), bonusByTier: pvBonus, step: pvStep,
-    item, actor, isSelf, weapon: previewWeapon, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, mod: previewMod, dc: dcInfo.dc, dcNote: dcInfo.note,
-    attrVal: src.kind ? (Number(src.mod) || 0) : 0, attrLabel: src.kind === "attribute" ? (TWOD12.attributes[attrKeyForPreview] ?? "") : (src.chip ?? ""),   // [Mod]: the Modifier used on the roll
-    checkLabel: (src.kind === "attribute" || !src.kind ? `${TWOD12.attributes[src.attrKey] ?? ""} Check` : (src.attrKey ? `${src.chip} (${TWOD12.attributes[src.attrKey] ?? "?"})` : src.chip)) + (it.vs ? ` vs. ${vsText(it)}` : "")
-  });
-  if (saveAct) preview.noOdds = true;   // a Save Action: you don't roll, so no odds in the dialog (its targets roll)
   // A ranged weapon: the distance to the target decides the banes (far range 1, maximum range 2).
   let extraMods = [...handMods];
   const coverNotices = [];   // v0.0.267 (Lucas): a cover level the Action ignores is a notice (the small chip), not a chip to untick
@@ -792,7 +781,7 @@ export async function useAction(actor, item, opts = {}) {
   }
   if (opts.boons || opts.banes) extraMods.push({ id: "syn:granted", name: opts.label ?? "Granted use", boons: opts.boons ?? 0, banes: opts.banes ?? 0, match: true, predicate: "From the Action that allowed this use" });
   if (opts.excludeTargets?.length && targetToken && opts.excludeTargets.includes(targetToken.document?.uuid)) return ui.notifications.warn(`${targetToken.name} was already a target: choose a different creature.`);
-  // What makes the roll Doomed or Empowered, shown on the option itself ("Target is Hidden (Doomed)").
+  // What makes the roll Doomed or Empowered, shown on the option itself ("Target is Hidden (Doomed)") (the tests' old dialog)
   const doomReason = doomStatus(actor) || (seen === "hidden" ? "Target is Hidden" : seen === "unsensed" ? "Target is Unsensed" : "");
   // Empowered and Enfeebled: what gives them, and the one value that counts (the highest of each; the Enfeebled value is taken from the Empowered one).
   const steps = damageSteps(actor, rollTraits(rollUse, src, item.name), rollsAtOthers ? (aimed[0]?.actor ?? null) : null);   // v0.0.186: the target, for "only against my marked target"
@@ -835,7 +824,7 @@ export async function useAction(actor, item, opts = {}) {
     // the targets changed on the map, or the area is placed again: the Action runs again with the same choices (no Setup, hands or turn question again)
     if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
   }
-  const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : rdData ? rdData : await askRoll(actor, {
+  const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : rdData ? rdData : await askRoll(actor, {   // v0.0.439: only the tests reach this (no ApplicationV2.render): the old dialog, now without its preview
     title: item.name,
     attrKey: preAttr,
     traits: rollTraits(rollUse, src, item.name),
@@ -859,7 +848,6 @@ export async function useAction(actor, item, opts = {}) {
               ? "Unsensed: you don't perceive the target"
               : undefined
     },
-    preview,
     dcNote: multi ? perT.map(p => `${p.name} DC ${p.dcInfo.dc}`).join(" \u00b7 ") : dcInfo.note,
     targetActors: multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [],
     targetTiles: multi ? perT.map(p => ({ uuid: p.actorUuid, name: p.label, img: p.token.document?.texture?.src ?? p.actor.img ?? "", dc: p.dcInfo.dc })) : [],

@@ -14,8 +14,10 @@ console.log("freq: weapon default", JSON.stringify(effectiveFrequency({ frequenc
 const pv = await import(ROOTURL + "module/preview.mjs");
 const I = o => ({ pool: "B", useW: false, wCount: 1, dice: "", useAt: false, subtype: "", ...o });
 const item = { name: "Trip", system: { category: "Basic Action", level: 0, frequency: "", traits: T("strike", "handle", "melee", "weapon"), targets: "One creature", check: "weapon", vs: "", versions: [{ ap: 2, noTiers: false, t1: [], t2: [I({ useW: true }), I({ dice: "1d4", subtype: "H" })], t3: [I({ dice: "1d10", subtype: "B" })], x1: "Hindered (EoT).", x2: "Prone.", x3: "Prone.", effects: "" }] } };
-const raw = await pv.buildRawCard(item);
-console.log([...raw.matchAll(/<th>Tier (\d)<\/th><td>(.*?)<\/td>/g)].map(m => `T${m[1]}: ${m[2]}`).join(" | "), "| frequency shown (weapon default):", /Round/.test(raw));
+const { prettyDamage } = await import(ROOTURL + "module/config.mjs");
+// v0.0.439 (CARD-ONE step 7: buildRawCard retired): a Version's Tier text as every card draws it (rawTierLine, then the pool icons)
+const rawCells = it => it.system.versions.flatMap(v => [1, 2, 3].map(n => { const { dmg, effects } = pv.rawTierLine(v[`t${n}`] ?? [], v[`x${n}`] ?? "", n >= 2 && it.system.traits.has("weapon")); return `T${n}: ${[dmg ? prettyDamage(dmg) : "", ...effects].filter(Boolean).join("; ") || "&mdash;"}`; }));
+console.log(rawCells(item).join(" | "));
 // 4. usage / faded
 const flags = {}; const actor = { type: "character", getFlag: (s, k) => flags[k], setFlag: async (s, k, v) => { flags[k] = v; }, isOwner: true };
 const combat = { id: "c1", started: true, round: 1, turn: 0 }; game.combat = combat;

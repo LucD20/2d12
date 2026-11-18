@@ -49,7 +49,7 @@ Engaged Banes read the Ignore a Bane settings: 2
 Defense: [Signature, Weapon] (Smite) from power: armor | [Power, Signature]: ward | Signature alone: ward
 card: Smite Vs. AD
 Rally Points read the Rally settings (Font of Mercy): true true
-a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (preview, card, damage): 4
+a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (card, damage; v0.0.439: the old preview retired): 3
 --- v0.0.182: Evade, the damage line with the Guard, the Guard display, granted uses
 an Evade keeps its unused squares until another Action: true
 one damage line: 12 − Guard 5 = 7 Body <small>(the Guard ends)</small> | 4 − Guard 4 = no damage <small>(Guard 3 left)</small> | ""

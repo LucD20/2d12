@@ -7,5 +7,5 @@ dying + other Slowed 3 -> Slowed 3 (Dying)
 not Down + other Slowed 2 -> no rider
 going Down: >= 50% Nonlethal Unconscious true | some Nonlethal: ask true | none: Dying/Shattered, Table once per encounter, then ask true
 taking damage while fighting: Check, Tier 1-2 Table true | end of turn: Tier 1 Table, collapsed Tier 3 stabilizes true | asked to the player who owns it: true | registered true
-description cards: Versions by class true | Split Effects once true | Reload always listed true
+description cards: an old chat card's Versions still switch (v0.0.439: its builder retired) true | Split Effects once true | Reload always listed true
 Slowed text: lowers the most AP, Desperate/Dying/Shattered true

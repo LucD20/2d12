@@ -6,7 +6,7 @@ Ground Slam: {"faded":true,"why":"Used this encounter"}
 --- the rest (source checks)
 Charge disrupted: measured from the end square: true
 class window keeps its scroll: true
-an Action-only Talent shows its Action: true | granted Actions in full: true
+an Action-only Talent shows its Action: true | granted Actions in full (the Feature card): true
 a choice picked in the class window: true
 Armor Training on the Loadout: false
 new tokens: bars always, no rotation: true | core rotation off once: true

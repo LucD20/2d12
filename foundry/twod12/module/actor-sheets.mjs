@@ -27,7 +27,7 @@ import { useAction, askRoll, adjLabelOf } from "./actions.mjs";
 import { handleDrop } from "./grants.mjs";
 import { hasLevels, classTabSections, classTalentSlots } from "./classwindow.mjs";
 import { resolveModifiers } from "./effects.mjs";
-import { buildInfoCard, sendItemToChat } from "./preview.mjs";
+import { buildWeaponCard, sendItemToChat } from "./preview.mjs";
 import { openWeaponGenerator } from "./gen.mjs";
 import { openActionGenerator } from "./genaction.mjs";
 import { rollActorInitiative, combatantOf, getAP, setAP, spendAP, getRAP, setRAP } from "./combat.mjs";
@@ -709,7 +709,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const item = d.dataset.itemId ? this.actor.items.get(d.dataset.itemId) : (d.dataset.itemUuid ? await fromUuid(d.dataset.itemUuid) : null);
       try {
         if (!item) throw new Error("item not found");
-        box.innerHTML = ["action", "feature", "talent"].includes(item.type) ? await buildSoloCard(item, { actor: this.actor }) : await buildInfoCard(item);   // v0.0.322
+        box.innerHTML = item.type === "weapon" ? await buildWeaponCard(item) : await buildSoloCard(item, { actor: this.actor });   // v0.0.322; v0.0.439 (CARD-ONE step 7): every other kind on the Feature card
         box.dataset.loaded = "1";
       } catch (e) {
         console.warn("twod12 | could not show the card", e);

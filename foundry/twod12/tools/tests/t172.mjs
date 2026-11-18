@@ -34,7 +34,7 @@ const mv = src("module/move.mjs"), cw = src("module/classwindow.mjs"), pv = src(
 const rally = src("module/rally.mjs"), tpl = src("module/template.mjs"), acts = src("module/actions.mjs"), esc = src("module/escblock.mjs"), sheet = src("templates/actor-sheet-pc.hbs"), data = src("module/data.mjs"), content = src("tools/content.mjs");
 console.log("Charge disrupted: measured from the end square:", mv.includes("chargeFollowUp(c, doc, reach, go.stopTl)"));
 console.log("class window keeps its scroll:", cw.includes("focus({ preventScroll: true })") && cw.includes("content.scrollTop = own"));
-console.log("an Action-only Talent shows its Action:", pv.includes("export const actionOnlyTalent") && !/tal\("Aim"[^\n]*You gain the Aim Action/.test(content), "| granted Actions in full:", pv.includes('class="igrant"'));
+console.log("an Action-only Talent shows its Action:", pv.includes("export const actionOnlyTalent") && !/tal\("Aim"[^\n]*You gain the Aim Action/.test(content), "| granted Actions in full (the Feature card):", src("module/actioncard.mjs").includes('class="ap-grant"'));
 console.log("a choice picked in the class window:", cw.includes("_choiceBlock(") && gr.includes("grantChoices(actor, parent, copy, preset = null)"));
 console.log("Armor Training on the Loadout:", sheet.includes('class="lo-train"'));
 console.log("new tokens: bars always, no rotation:", tw.includes('"prototypeToken.displayBars": bars') && tw.includes('"prototypeToken.lockRotation": true'), "| core rotation off once:", tw.includes("tokenDefaultsV215"));

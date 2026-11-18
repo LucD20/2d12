@@ -1,16 +1,11 @@
-// Roll dialog preview: what the action will roll, per Version, in the look of the chat card.
-import { prereqLine } from "./talents.mjs";
+// The old card builders' last pieces (pack CARD-ONE step 7, v0.0.439: buildPreviews, buildRawCard and buildInfoCard retired; every card is
+// drawn from the card model now): the tier text helpers, the odds of the Checks' and Saves' dialog, the weapon's card, Send to chat.
 import { attrFromTier } from "./rollsource.mjs";
-import { TWOD12, expandAsText, cardVars, cardHead, flavorHtml, apIcon, apLabel, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, distanceNote, areaText, cardColorFor, vsText, areaButton, poolIcon, dtypeHtml, inkOf, prettyDamage } from "./config.mjs";
-import { setupFor } from "./setup.mjs";
+import { TWOD12, cardVars, traitChevrons, highlightText, poolIcon, dtypeHtml, inkOf } from "./config.mjs";
 import { weaponTierText } from "./explode.mjs";   // v0.0.407: "3 + 1d4!" (the book's way)
 import { esc } from "./roll.mjs";
-import { tierAvg, tierProbs, critProb, fmt, avgFormula } from "./calc.mjs";
-
-
+import { tierProbs, critProb } from "./calc.mjs";
 const enrich = async (txt, doc = null) => highlightText(await foundry.applications.ux.TextEditor.implementation.enrichHTML(txt ?? "", doc ? { relativeTo: doc } : {}));
-const sgnN = n => (n >= 0 ? `+${n}` : `\u2212${Math.abs(n)}`);
-
 /** Weapon damage for a tier as dice text ("1d8", "2d6+1"). */
 export function weaponText(weapon, tier, n = 1) {
   const d = weapon?.system?.damage?.[`t${tier}`];
@@ -51,59 +46,8 @@ export function applyTalentMods(v, mods = []) {
   return { ...v, critical: [v.critical, ...mods.map(m => m.critical)].filter(Boolean).join(" "), effects: [v.effects, ...mods.map(m => m.effects)].filter(Boolean).join(" ") };
 }
 
-/**
- * v0.0.193: what the effects add to a Tier's average: its Bonus Damage (ctx.bonusByTier) and the Empowered / Enfeebled step (ctx.step) on
- * every die. { add, why: ["Heavy Blows +2", "Empowered 1"] }. Only for a Tier that deals damage.
- */
-export function avgExtras(insts, tier, ctx = {}) {
-  if (!insts.length) return { add: 0, why: [] };
-  const bon = ctx.bonusByTier?.[tier] ?? [];
-  let add = 0, dice = 0, own = 0;
-  const why = [], parts = [];
-  for (const b of bon) { const a = avgFormula(b.dmg) ?? 0, d = diceIn(b.dmg); if (a) { add += a; why.push(`${b.effect} +${b.dmg}`); } dice += d; parts.push({ key: `${b.effect}|${b.dmg}|${b.sub}|${b.text}`, name: `${b.effect} +${b.dmg}`, avg: a, dice: d }); }
-  for (const i of insts) { if (i.useW && ctx.weapon) own += (Number(ctx.weapon.system?.damage?.[`t${tier}`]?.count) || 0) * (i.wCount || 1); if (i.dice) own += diceIn(i.dice); }
-  dice += own;
-  // v0.0.428 (the audit; v0.0.407's Empowered): 1d6! once (its average 4: a 6 counts 5 and rolls again), no longer +1 a die; Enfeebled is gone
-  const step = Math.trunc(Number(ctx.step) || 0);
-  if (step > 0 && dice) { add += EMPOWERED_AVG; why.push("Empowered 1d6!"); }
-  return { add, why, dice: own, parts };   // v0.0.194: dice and parts let the dialog recompute it live
-}
 /** v0.0.428: the average of Empowered's 1d6! (a 6 counts 5 and rolls again: 2.5 + (5 + E) / 6 = E, so E = 4). */
 export const EMPOWERED_AVG = 4;
-const diceIn = f => [...String(f ?? "").matchAll(/(\d*)d\d+/g)].reduce((s, m) => s + (Number(m[1]) || 1), 0);
-
-export async function buildPreviews(ctx) {
-  const { item } = ctx, it = item.system;
-  const color = cardColorFor(it);
-  const out = {};
-  for (const v0 of it.versions) {
-    const v = applyTalentMods(v0, ctx.talentMods ?? []);
-    const rows = [];
-    for (const [n, k] of (v.noTiers ? [] : [1, 2, 3]).map(n => [n, `t${n}`])) {
-      const lines = await tierLines(v[k] ?? [], n, ctx, expandAsText(v[`x${n}`], item.system.versions, v0, n));   // "As 1 AP" written out (the dialog shows one Version)
-      const avg0 = tierAvg(v[k] ?? [], n, ctx), extra = avgExtras(v[k] ?? [], n, ctx), avg = avg0 ? avg0 + extra.add : 0;
-      const live = avg0 ? ` data-avg="${esc(JSON.stringify({ base: avg0, dice: extra.dice, parts: extra.parts }))}"` : "";   // v0.0.194: recomputed when a Bonus chip or Empowered changes
-      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc"${live}>Avg ${fmt(avg)}${extra.why.length ? ` <small>(with ${esc(extra.why.join(", "))})</small>` : ""}</div>` : ""}</td></tr>`);
-    }
-    // The Critical row sits under Tier 3, only for Actions that have one.
-    if (!v.noTiers && v.critical) rows.push(`<tr class="critp"><th>Critical <small class="pv-c"></small></th><td>${await enrich(v.critical, item)}</td></tr>`);
-    const pvMeta = metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it, ctx.weapon), distanceTip: distanceNote(it, ctx.weapon), area: areaText(it), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists", rolls: !v.noTiers }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: ctx.isSelf });
-    const pvArea = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
-    const pvSetup = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(setupFor(it.setup, ctx.setupDone), item)}</div>` : "";
-    const check = ctx.mod === null || v.noTiers ? "" : `<div class="pv-check">${esc(ctx.checkLabel)}: 2d12 ${sgnN(ctx.mod)} vs DC <b class="pv-dc">${ctx.dc}</b> <span class="pv-odds"></span></div>`;
-    out[v.ap] = `<div class="twod12 chat action pv" style="${cardVars(color)}">
-      ${cardHead(item.name, categoryText(it), apIcon(v.ap, it.reaction), effectiveFrequency(it), it.automation, it.automationNote)}
-      ${flavorHtml(it)}
-      ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
-      ${pvMeta}${pvArea}${pvSetup}
-      ${ctx.dcNote && !v.noTiers ? `<div class="vsrow">${esc(ctx.dcNote)}</div>` : ""}
-      ${(it.traits.size || pvMeta) && (check || rows.length || v.effects) ? `<hr class="cdiv">` : ""}
-      ${check}
-      ${rows.length ? `<table class="tiers">${rows.join("")}</table>` : ""}
-      ${v.effects ? `<div class="effects${rows.length ? " sep" : ""}"><div class="eh">${v.noTiers ? "Effects" : "Effects (Tier 2+)"}</div><div class="et">${await enrich(v.effects, item)}</div></div>` : ""}</div>`;
-  }
-  return { byAp: out, mod: ctx.mod, label: ctx.checkLabel, noTiers: Object.fromEntries(it.versions.map(v => [v.ap, !!v.noTiers])) };
-}
 
 /** Fill the tier odds (T1 / T2 / T3 %) in a preview element. */
 export function updateOdds(el, mod, dc, boons, banes, state = "") {
@@ -134,45 +78,6 @@ export function rawTierLine(insts, effectText = "", addMod = false) {
   }
   if (effectText) effects.push(effectText);
   return { dmg: [...groups].map(([pool, parts]) => `[${({ B: "V", M: "R" })[pool] ?? pool}] ${parts.join(" + ")}`).join(" + "), effects };
-}
-
-/** The Action as written in the rules, in the chat-card look: every Version in order, [W] and [Mod] left as they are. */
-export async function buildRawCard(item) {
-  const it = item.system;
-  if (!it.versions.length) return "";
-  const color = cardColorFor(it);
-  const blocks = [];
-  for (const [vi, v] of it.versions.entries()) {
-    const rows = [];
-    if (!v.noTiers) {
-      const cells = [];
-      for (const n of [1, 2, 3]) {
-        const { dmg, effects } = rawTierLine(v[`t${n}`] ?? [], v[`x${n}`], n >= 2 && !it.traits.has("save") && (it.traits.has("weapon") || v.mode === "weapon"));
-        const bits = [prettyDamage(esc(dmg)), ...(await Promise.all(effects.map(x => enrich(x, item))))].filter(Boolean);   // icons and colored types (v0.0.137)
-        cells.push(bits.length ? bits.join("; ") : "&mdash;");
-      }
-      // The same result on every tier (Weapon Attack: 1[W]) is written once.
-      if (cells[0] === cells[1] && cells[1] === cells[2]) rows.push(`<tr><th>Tiers 1-3</th><td>${cells[0]}</td></tr>`);
-      else cells.forEach((cell, k) => rows.push(`<tr><th>Tier ${k + 1}</th><td>${cell}</td></tr>`));
-      if (v.critical) rows.push(`<tr class="crit"><th>Critical</th><td>${await enrich(v.critical, item)}</td></tr>`);
-    }
-    blocks.push(`<div class="rawv${vi ? " off" : ""}" data-v="${vi}">
-      ${rows.length ? `<table class="tiers">${rows.join("")}</table>` : ""}
-      ${v.effects ? `<div class="effects${rows.length ? " sep" : ""}"><div class="eh">${v.noTiers ? "Effects" : "Effects (Tier 2+)"}</div><div class="et">${await enrich(v.effects, item)}</div></div>` : ""}</div>`);
-  }
-  // One Version at a time: the cost badges switch between them (see registerVersionTabs).
-  const areaRow = areaButton(it) ? `<div class="trow arearow">${await enrich(areaButton(it), item)}</div>` : "";
-  const setupRow = it.setup ? `<div class="trow setuprow"><b>Setup:</b> ${await enrich(it.setup, item)}</div>` : "";
-  const tabs = it.versions.length > 1 ? `<div class="vtabs">${it.versions.map((v, vi) => `<a class="vtab${vi ? "" : " on"}" data-vtab="${vi}">${apIcon(v.ap, it.reaction)}</a>`).join("")}</div>` : "";
-  return `<div class="twod12 chat action rawcard" style="${cardVars(color)}">
-    ${cardHead(item.name, categoryText(it), apLabel(it.versions.map(v => v.ap), it.reaction), effectiveFrequency(it), it.automation, it.automationNote)}
-    ${flavorHtml(it)}
-    ${it.traits.size ? `<div class="traits">${traitChevrons(it.traits)}</div>` : ""}
-    ${metaRowHtml({ escalation: it.escalation ?? 0, frequency: effectiveFrequency(it), targetText: it.targets, distance: distanceText(it), area: areaText(it), vs: vsText(it, { fists: item.getFlag?.("twod12", "basic") === "fists" }), requirements: it.requirements, trigger: it.trigger, reactionKind: it.reactionKind, self: it.traits.has("self") })}${areaRow}${setupRow}
-    ${(it.traits.size || it.targets || it.requirements || it.trigger || effectiveFrequency(it)) ? `<hr class="cdiv">` : ""}
-    ${it.prerequisites ? `<div class="trow"><b>Prerequisites:</b> ${esc(it.prerequisites)}</div>` : ""}
-    ${tabs}
-    ${blocks.join("")}${modifierBlocks(it).join("")}</div>`;
 }
 
 /** The cost badges of a description card switch the Version shown, wherever the card is (chat, sheets, item sheets). Called once. */
@@ -216,36 +121,12 @@ export const modifierBlocks = s => (s.modifiers ?? []).filter(m => m.spec).map(m
 export const actionOnlyTalent = s => (s?.actions ?? []).filter(Boolean).length === 1 && !String(s.description ?? "").replace(/<[^>]*>/g, "").trim()
   && !(s.settings ?? []).length && !(s.modifiers ?? []).length && !(s.choiceOptions ?? []).filter(Boolean).length && !s.talents;
 
-export async function buildInfoCard(item) {
-  // A Talent or Feature (not an Action): a plain title bar, then traits, Frequency and Requirements, the text, and what it gives.
-  const s = item.system, cat = categoryText(s);
-  const load = async list => (await Promise.all((list ?? []).filter(Boolean).map(async u => { try { return await fromUuid(u); } catch (e) { return null; } }))).filter(Boolean);
-  if (item.type === "talent" && actionOnlyTalent(s)) { const [a] = await load(s.actions); if (a?.type === "action") return buildRawCard(a); }
-  const body = await foundry.applications.ux.TextEditor.implementation.enrichHTML(s.description ?? "", { relativeTo: item }) + (s.worth ? `<div class="ac-worth">${esc(s.worth)}</div>` : "");   // v0.0.239: the ruler's worth
-  const ef = effectiveFrequency(s), freq = ef ? TWOD12.frequencies[ef] : "";
-  const kid = d => `<div class="ikid">${d.type === "action" ? apLabel(d.system.versions.map(v => v.ap), d.system.reaction) : ""}<span>${esc(d.name)}</span></div>`;
-  // v0.0.215 (Lucas): what it grants is shown in full (the Action's card), not only its name; a choice's options too, folded.
-  const full = async d => { try { return d.type === "action" ? await buildRawCard(d) : await buildInfoCard(d); } catch (e) { return kid(d); } };
-  const grants = await load(s.actions), options = await load(s.choiceOptions);
-  const blocks = [];
-  if (grants.length) blocks.push(`<div class="iblock"><div class="eh">Grants</div>${(await Promise.all(grants.map(full))).map(h => `<div class="igrant">${h}</div>`).join("")}</div>`);
-  if (options.length) blocks.push(`<div class="iblock"><div class="eh">${esc(s.choiceLabel || "Choose")} ${Math.max(1, s.choiceCount || 1)}</div>${(await Promise.all(options.map(async d => `<details class="ichoice"><summary>${kid(d)}</summary><div class="igrant">${await full(d)}</div></details>`))).join("")}</div>`);
-  if (s.talents) blocks.push(`<div class="iblock"><div class="eh">Talent slots</div><div class="et">${s.talents}</div></div>`);
-  blocks.push(...modifierBlocks(s));
-  const meta = [freq ? `<span class="freq">${esc(freq)}</span>` : "", prereqLine(s) ? `<span><b>Prerequisites:</b> ${esc(prereqLine(s))}</span>` : ""].filter(Boolean);
-  const head = `${flavorHtml(s)}${s.traits?.size ? `<div class="traits">${traitChevrons(s.traits)}</div>` : ""}${meta.length ? `<div class="trow">${meta.join('<i class="fa-solid fa-sparkle sep"></i>')}</div>` : ""}`;
-  const text = body.trim() ? `<div class="anote">${highlightText(body)}</div>` : "";
-  return `<div class="twod12 chat action rawcard infocard">
-    ${cardHead(item.name, cat, "", "", s.automation, s.automationNote)}
-    ${head}${head && (text || blocks.length) ? `<hr class="cdiv">` : ""}${text}${blocks.join("")}</div>`;
-}
-
 /** Send an item to the chat as a card (Actions: every Version, like the Description tab). */
 export async function sendItemToChat(item, actor = null) {
   // v0.0.334 (Lucas: "sending a Feature to the chat is still sending the old card"): a Feature or a Talent goes as the new card (buildSoloCard)
   // v0.0.340 (Lucas: "Send to chat" on an Action still sent the old card): an Action goes as the new card too
-  const solo = ["action", "feature", "talent"].includes(item.type) ? await (await import("./actioncard.mjs")).buildSoloCard(item, { actor }) : "";
-  const content = solo || (item.type === "action" ? await buildRawCard(item) : (item.type === "weapon" ? await buildWeaponCard(item) : await buildInfoCard(item)));
+  // v0.0.439 (CARD-ONE step 7): a weapon its own card; every other kind (a Species, a Class too) the new card
+  const content = item.type === "weapon" ? await buildWeaponCard(item) : await (await import("./actioncard.mjs")).buildSoloCard(item, { actor });
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content });
 }
 

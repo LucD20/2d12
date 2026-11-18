@@ -192,7 +192,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
  * v0.0.298 (Lucas tested v0.0.297: "Features should look similar to cards like Opportunity Attack"): a Feature's or Talent's card on the sheets
  * in the same look as an Action with no table: the trait line (traits, category, Frequency chip), the meta lines (Prerequisites, Requirements),
  * "◆ Effects" and its text, what it grants (each Action as its card, a choice folded), the Talent slots and "Modifies", the Flavor at the bottom,
- * the ruler in Designer mode. A Talent that is only its Action shows that Action's card. The chat keeps buildInfoCard (preview.mjs).
+ * the ruler in Designer mode. A Talent that is only its Action shows that Action's card. v0.0.439 (CARD-ONE step 7): a Species and a Class too (buildInfoCard retired).
  */
 export async function buildFeatureCard(item, { actor = null } = {}) {
   // v0.0.411 (pack F2): the same look as the Action card (the book's): the Flavor on top, the trait words and the rank, the labeled lines
@@ -204,7 +204,7 @@ export async function buildFeatureCard(item, { actor = null } = {}) {
   const body = String(s.description ?? "").replace(/<[^>]*>/g, "").trim() ? await enrich(s.description, item) : "";
   const rung = s.escalationPassive ? Number(s.escalationRung) || 0 : 0;
   const lines = [pre ? stLine("Prerequisite", esc(pre)) : "", req ? stLine("Requirement", highlightText(esc(req))) : "", rung ? stLine("Escalation", `${rung} or more`) : "",
-    body ? stLine(s.escalationPassive || /passive|feature/i.test(String(s.category ?? "")) ? "Passive" : "Effect", `<span class="st-prose">${body}</span>`) : ""].join("");
+    body ? (["species", "class"].includes(item.type) ? `<div class="st-prose">${body}</div>` : stLine(s.escalationPassive || /passive|feature/i.test(String(s.category ?? "")) ? "Passive" : "Effect", `<span class="st-prose">${body}</span>`)) : ""].join("");   // v0.0.439: a Species or a Class reads as prose
   const head = d => `<div class="st-bh"><span>${esc(d.name)}</span><span class="st-why">${esc(d.type === "action" ? costPill((d.system.versions ?? []).map(v => v.ap), !!d.system.reaction) : categoryText(d.system ?? {}) || d.type)}</span></div>`;
   const full = async d => { try { return d.type === "action" ? await buildActionCard(d, { actor, use: false }) : await buildFeatureCard(d, { actor }); } catch (e) { return ""; } };
   const blocks = [];
@@ -228,7 +228,7 @@ export async function buildFeatureCard(item, { actor = null } = {}) {
  * (the name, and the cost or the kind) on top of buildActionCard / buildFeatureCard. No Use buttons: these are for reading.
  */
 export const soloTitle = (name, right = "") => `<div class="ap-title"><b>${esc(name)}</b>${right ? `<span class="ap-tcost">${esc(right)}</span>` : ""}</div>`;
-const KIND = { feature: "Feature", talent: "Talent" };
+const KIND = { feature: "Feature", talent: "Talent", species: "Species", class: "Class" };   // v0.0.439 (CARD-ONE step 7): a Species and a Class on this card too
 export async function buildSoloCard(item, { actor = null } = {}) {
   if (!item) return "";
   const s = item.system ?? {};

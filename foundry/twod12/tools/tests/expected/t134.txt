@@ -1,3 +1,3 @@
 wired: marked-target steps true | range Bane true | Engaged Banes true | once-per-round bonuses true | marking Action true | hooks true
 content: Mark Quarry (0 or 1 AP, granted by Marked Quarry) true | Hunter's Focus applies its effect true
-Save Actions: no odds true | the Save's damage: Empowered's 1d6! once a turn (v0.0.407; Enfeebled gone) true
+Save Actions: no modifiers of yours in the dialog (v0.0.439: the old preview retired) true | the Save's damage: Empowered's 1d6! once a turn (v0.0.407; Enfeebled gone) true

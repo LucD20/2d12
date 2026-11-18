@@ -6,7 +6,6 @@ import { TWOD12, effectiveFrequency, categoryText } from "./config.mjs";
 import { esc } from "./util.mjs";
 import { levelModel, togglePick, setAttr, attrList, levelPlan, sectionsAt, stageLine, STAGE1_LEVEL } from "./classlevels.mjs";
 import { grantFeature, grantTalent } from "./grants.mjs";
-import { buildInfoCard } from "./preview.mjs";
 import { classTrack } from "./modifiers.mjs";
 const { ApplicationV2 } = foundry.applications.api;
 const F = "twod12";
@@ -108,7 +107,7 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
   async _card(uuid) {
     if (!this.cards.has(uuid)) {
       const d = this.o.data.docs.get(uuid);
-      this.cards.set(uuid, d ? (["action", "feature", "talent"].includes(d.type) ? await (await import("./actioncard.mjs")).buildSoloCard(d) : await buildInfoCard(d)) : "");   // v0.0.322: the new card
+      this.cards.set(uuid, d ? await (await import("./actioncard.mjs")).buildSoloCard(d) : "");   // v0.0.439 (CARD-ONE step 7): a Species and a Class on the Feature card too   // v0.0.322: the new card
     }
     return this.cards.get(uuid);
   }

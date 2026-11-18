@@ -10,7 +10,7 @@ const C = await import(new URL("../content.mjs", import.meta.url).href);
 const plain = v => JSON.parse(JSON.stringify(v, (k, x) => (x instanceof Set ? [...x] : x)));
 const pick = d => ({ id: C.idOf("Item", d.name), name: d.name, type: d.type, img: d.img, folder: d.folder ?? "", pack: d.pack, flags: plain(d.flags ?? {}), system: plain(d.system) });
 const order = (a, b) => (a.folder || "").localeCompare(b.folder || "") || a.name.localeCompare(b.name);
-const cards = C.docs.filter(d => ["action", "feature"].includes(d.type)).map(pick).sort(order);
+const cards = C.docs.filter(d => ["action", "feature", "species", "class"].includes(d.type)).map(pick).sort(order);   // v0.0.439 (CARD-ONE step 7): the Species and the Classes on the Feature card too
 const names = Object.fromEntries(C.docs.map(d => [C.uuidOf(d.pack, d.name), { name: d.name, type: d.type, pack: d.pack, system: plain(d.system) }]));
 const out = new URL("../../../gallery/data.json", import.meta.url);
 fs.mkdirSync(new URL(".", out), { recursive: true });

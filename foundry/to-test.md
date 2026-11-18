@@ -285,6 +285,10 @@ Expect: A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halve
 Do: Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.
 Expect: The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.
 
+### species-class-card · v0.0.439 · Species and Class cards
+Do: Open the class window (a new character) and look at the Paladin and a Species; expand the Class and Species rows on a character sheet; send the Paladin class to the chat.
+Expect: The same card look as a Feature: the name with "Class" (or "Species") on the right, the Flavor, the text as plain prose; nothing broken or empty that showed before. Using an Action still opens the roll dialog with its card (nothing changed there).
+
 ### card-surfaces · v0.0.438 · The same card in the chat, a tooltip and the HUD
 Do: In the dark interface, send Smite to the chat (right-click its row, Send to chat), hover a Paladin Action's row, and open an Action from the HUD; then do the same with a light sheet.
 Expect: The Vigor heart and Resolve brain icons are the light red and blue of the sheet's card everywhere (no dark red on dark), the keyword highlights the same color; a card in a tooltip reads left-aligned, as in the sheet.

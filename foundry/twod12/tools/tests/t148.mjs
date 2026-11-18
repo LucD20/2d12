@@ -64,7 +64,7 @@ console.log("Defense: [Signature, Weapon] (Smite) from power:", D.defenseOf(item
 console.log("card: Smite Vs.", cf.vsText({ traits: new Set(["divine", "signature", "strike", "weapon"]), versions: [{ noTiers: false }] }));
 const ral = src("module/rally.mjs");
 console.log("Rally Points read the Rally settings (Font of Mercy):", ral.includes("const fm = await rallyBonusFor(actor);"), ral.includes("const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n + (extraRoll?.total ?? 0);"));
-console.log("a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (preview, card, damage):", (src("module/actions.mjs").match(/isWeapon: modOnWeapon\(src, useTraits\)/g) ?? []).length);
+console.log("a [Signature, Weapon] Action adds its [Mod] on Tier 2-3 (card, damage; v0.0.439: the old preview retired):", (src("module/actions.mjs").match(/isWeapon: modOnWeapon\(src, useTraits\)/g) ?? []).length);
 console.log("--- v0.0.182: Evade, the damage line with the Guard, the Guard display, granted uses");
 const mv = src("module/move.mjs"), cb = src("module/combat.mjs");
 console.log("an Evade keeps its unused squares until another Action:", mv.includes("need -= useEvade; evade -= useEvade;") && cb.includes('const evading = Number(c.getFlag(F, "evadeMove")) > 0') && cb.includes('if (evading) await c.update(')   /* v0.0.428: the line written first */);

@@ -54,7 +54,7 @@ await run("the first refused, the second granted", "Advance up to 1 (@Move[advan
 // the order of things in useAction: the Setup comes before the Area is placed and before the roll modifiers are worked out
 const code = fs.readFileSync(ROOT + "module/actions.mjs", "utf8");
 const pos = k => code.indexOf(k);
-console.log("in useAction: Setup before the Area:", pos("runSetup(") < pos("startTemplate("), "| before the modifiers (buildPreviews):", pos("runSetup(") < pos("await buildPreviews("), "| after the checks of Prone and Immobilized:", pos("runSetup(") > pos("is Prone and can't Evade"), "| the card takes the movement button out:", code.includes("setupFor(it.setup, setupDone)"));
+console.log("in useAction: Setup before the Area:", pos("runSetup(") < pos("startTemplate("), "| before the modifiers (damageSteps; v0.0.439: buildPreviews retired):", pos("runSetup(") < pos("const steps = damageSteps("), "| after the checks of Prone and Immobilized:", pos("runSetup(") > pos("is Prone and can't Evade"), "| the card takes the movement button out:", code.includes("setupFor(it.setup, setupDone)"));
 // ---------------------------------------------------------------- the kept Emanation
 console.log("--- a kept Emanation");
 const tpl = fs.readFileSync(ROOT + "module/template.mjs", "utf8");
