@@ -54,6 +54,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 23 | **The eight Paths' definitions, subtypes and riders are decided** (the table in 5b): Fire Lingering, Air Pushed, Water Hindered, Earth Prone, Astral Dazed 1, Death Frightened, Nature Immobilized, Glamour Pressed 1. | "Looks good." | 2026-11-18 |
 | 24 | **A spell has no fixed shape.** Not every spell is damage and a rider; some are only damage, some only a rider, and "they can be innovative or special in their own way". The rider is what a Path adds *when* a spell has one, and what it lends in a merge. | "Keep note, not every spells needs to have damage + rider, or just damage or just rider; they can be innovative or special in their own way." | 2026-11-18 |
 | 25 | **After the basics, Dominions' own spells are pulled and shown as 2d12 cards** (from `research/raw/2026-11-18-dominions-spells.tsv`), as the grid's test. It takes the place of the classic-spell pass in the order of work. | "You could pull some spells from there and see how they would look in 2d12 after we are done with the basics." | 2026-11-18 |
+| 26 | **Overcast's shape:** its own line on the card after the Tiers; three shared form ladders (Reach, Breadth, Hold) paid by excess School level, the card listing which it may climb; one substance step written on each spell, paid by excess Path level; **Merge** on every spell (a second Path's rider, in the rider slot; the spell gains that Path's trait for the casting). | "Yes." | 2026-11-18 |
 
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
@@ -167,7 +168,7 @@ From `dominions-paths.md` (section 2 and 3.5), with the borders of decision 15. 
 
 **What each Path gives an ally** (for helpful spells; a first list, not asked yet): Fire: Empowered. Air: a free step. Water: Quickened. Earth: Guard. Astral: the next instance of damage cancelled. Death: healing from damage dealt. Nature: healing. Glamour: attackers Pressed.
 
-## 5c. Overcast: how a spell grows (PROPOSED 2026-11-18; waiting for Lucas)
+## 5c. Overcast: how a spell grows (DECIDED 2026-11-18: decision 26)
 
 Decided already: Overcast reads both levels (6); a level is never a number on a roll (18); a step needs Escalation, the first at 2, the next at 3 (20); the push takes one step early (2, 20). The charter forbids sizes as Versions, so **Overcast is its own line on the card**, after the Tiers.
 
@@ -188,6 +189,18 @@ Each School's usual pair: Evocation: Reach and Breadth. Alteration: Breadth and 
 - **Merge (universal):** add the rider of a second Path you have. The spell also gains that Path's trait for this casting. It takes the spell's rider slot: a spell that already has a rider swaps it, never carries two.
 
 **Why split it this way.** The form ladders are one rule learned once (the "intuitive" test); the substance step is where each spell stays special (decision 24).
+
+## 5d. Mastery for magic: how levels rise and spells are gained (PROPOSED 2026-11-18; waiting for Lucas)
+
+Decided already: levels grow with use, the weapons' way, opened by a Talent or a class (17); Mastery unlocks choices of spells and Talents can grant more (19); no cap (14). Chapter 15's weapon rule is the model: 1 Mastery with a weapon you struck with when your side wins a normal or harder encounter; unlocks at 10, 20, 30, 45, 60; Mastery is yours, not the weapon's.
+
+1. **Opening.** A Magic Talent (or a class) **opens one Path and one School together**, each at level 1, and you choose **two spells** you meet the minimums for. A later Talent opens one more Path or one more School (one spell chosen). Opening alone never needs a second Talent before you can cast.
+2. **Gaining.** You have a Mastery with each Path and each School you have opened. When your side wins a normal or harder encounter in which you cast a spell, you gain **1 Mastery with one Path and 1 with one School** you cast in it. This is beside the weapon's point, not instead of it.
+3. **Levels.** Level 2 at 10 Mastery, 3 at 20, 4 at 30, 5 at 45, 6 at 60: the weapons' own numbers. At about five fights a character level that is a level of a Path every two or three character levels.
+4. **Spells.** Each time a Path or a School reaches a new level, **you choose one spell** you meet both minimums for. Spells are choices of your build, so they can be swapped on a Rest like every other choice (each new one must be a spell you could have chosen).
+5. **Not taken from the weapons:** "the group follows" (half your best Mastery for every weapon of the group). Paths have two families (the Elements, the Sorceries) and it could apply to them, but an unopened Path can't be cast at all, so it would only matter after a second opening. Left out unless Lucas wants it.
+
+**What it gives.** A character who opens Fire and Evocation at level 1 holds 2 spells; around level 3 both are level 2 and they hold 4; a second Path opened by a Talent adds a spell at once and its own track. Talents never add levels: they open, grant extra spells, or change spells by trait.
 
 ## 6. The order of work from here (proposed)
 
