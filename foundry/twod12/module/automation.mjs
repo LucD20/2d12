@@ -201,12 +201,22 @@ export async function applyEncounterStartEffects(actor) {
   }
   return n;
 }
-/** v0.0.323: the effects that last "This encounter" end when it does. */
+/** v0.0.426 (the audit; book, Chapter 8: "a condition written with no duration lasts until the end of the encounter"; Lingering: "the end of the
+ *  encounter does [end it]"): an applied condition (a status from a condition item) with no duration, no Save to end it and no parent effect. The
+ *  health states (Dying, Unconscious...) are Foundry's own statuses with no condition item: never. Pure. */
+const HEALTH = new Set(["dying", "shattered", "unconscious", "dead", "bloodied", "strained", "desperate"]);
+export const endsWithEncounter = e => {
+  const d = e?.getFlag?.(F, "duration")?.type;
+  if (d === "encounter") return true;
+  const st = [...(e?.statuses ?? [])];
+  return !d && !!e?.getFlag?.(F, "effectUuid") && st.length > 0 && !st.some(s => HEALTH.has(s)) && !e.getFlag(F, "linkedTo") && !e.getFlag(F, "saveEnd");
+};
+/** v0.0.323: the effects that last "This encounter" end when it does (v0.0.426: and the conditions with no duration). */
 export async function endEncounterEffects(combat) {
   for (const c of combat?.combatants ?? []) {
     const a = c.actor;
     if (!a?.isOwner) continue;
-    const gone = a.effects.filter(e => e.getFlag(F, "duration")?.type === "encounter").map(e => e.id);
+    const gone = a.effects.filter(endsWithEncounter).map(e => e.id);
     if (gone.length) await a.deleteEmbeddedDocuments("ActiveEffect", gone);
   }
 }

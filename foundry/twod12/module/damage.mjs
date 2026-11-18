@@ -107,6 +107,7 @@ export function registerSocket() {
     }
     if (!game.user.isActiveGM) return;
     if (data?.type === "followUp") return (await import("./followup.mjs")).onFollowSocket(data);   // v0.0.347: a line into another user's card
+    if (data?.type === "shakeOff") { const e = await fromUuid(data.effectUuid); if (e) await (data.what === "ends" ? e.delete() : e.setFlag("twod12", "shakeHalf", true)); return; }   // v0.0.426: Shake Off on a creature its user doesn't own
     if (data?.type === "deleteMessage") { const m = game.messages?.get(data.messageId); if (m) await m.delete(); return; }   // v0.0.343: a given-up Charge's card
     if (data?.type === "applyEffects") return applyEffects(data.effectUuids, data.targetUuids, data.origin, data.over);
     if (data?.type === "applyBoon") { const a = await fromUuid(data.actorUuid); if (a) await applyBoonEffect(a, data.cfg, data.origin); return; }

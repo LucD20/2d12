@@ -405,6 +405,7 @@ export async function rollParts(list, nonlethalAll) {
  */
 async function prerollTiers(cfg) {
   const out = {}, all = [];
+  let empFirst = null;
   // v0.0.407 (book, Chapter 8): the Save Action's user Empowered: its first damage on each of its turns adds 1d6! (once a turn; Enfeebled is gone)
   let empUser = null;
   try {
@@ -415,13 +416,13 @@ async function prerollTiers(cfg) {
     const parts = parseParts(cfg.tiers?.[`t${n}`]);
     if (!parts.damage.length) continue;
     const { comps, rolls } = await rollParts(parts.damage, cfg.nonlethal);
-    // v0.0.407: the Empowered die, rolled once for each Tier (every creature on a Tier takes that Tier's roll: Several Targets)
-    if (empUser && comps.length) { const ec = await empoweredComponent(comps[0], rolls); if (ec) comps.push(ec); }
-    if (comps.length) out[`t${n}`] = comps;
+    if (comps.length) { out[`t${n}`] = comps; empFirst ??= comps[0]; }
     all.push(...rolls);
   }
+  // v0.0.426 (the audit; book, Chapter 8, Empowered: one creature takes it): one die, kept apart; saveDamage gives it to one creature
+  if (empUser && empFirst) { const ec = await empoweredComponent(empFirst, all); if (ec) out.emp = ec; }
   if (all.length) { try { await showDice(all); } catch (e) { /* no dice to show */ } }
-  if (empUser && Object.keys(out).length) await markEmpoweredUsed(empUser);
+  if (empUser && out.emp) await markEmpoweredUsed(empUser);
   return out;
 }
 /** A Tier's line on a Save card once its damage is rolled: the amounts, with the dice in the tooltip, then its texts and effects. */
@@ -758,8 +759,12 @@ async function handleShakeOff(cfg, ctx) {
       const chk = await performCheck({ mod: actor.system.attributes?.[key] ?? 0, boons: fxm.boons + manB, banes: fxm.banes + manN, dc: dcUsed, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
       await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: chk.rolls, content: `<div class="twod12 chat">${checkHtml(label, chk, [`DC ${dcUsed}`], { showTier: true })}</div>` });
       const what = shakeOffResult(chk.tier);
-      if (what === "ends") await e.delete();
-      else if (what === "half") await e.setFlag("twod12", "shakeHalf", true);
+      // v0.0.426 (the audit: Shake Off on another player's creature failed for lack of permission): the GM ends or flags it when you don't own it
+      if (what !== "none") {
+        if (e.isOwner) await (what === "ends" ? e.delete() : e.setFlag("twod12", "shakeHalf", true));
+        else if (game.users?.activeGM) game.socket.emit("system.twod12", { type: "shakeOff", effectUuid: e.uuid, what });
+        else ui.notifications.warn("A GM must be connected to end another player's Lingering.");
+      }
       await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-droplet-slash", `<b>${esc(actor.name)}</b>: ${esc(bleedText(b))} ${what === "ends" ? "ends." : what === "half" ? "ends after this turn's damage, which is halved." : "goes on (no effect)."}`) });
     }
   }
@@ -1169,8 +1174,19 @@ export async function saveDamage(msg) {
   const groups = tiers.map(t => { const parts = parseParts(cfg.tiers[`t${t}`]), first = ready.find(x => x.r.result.tier === t).r.result;
     return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: [...parts.uuids, ...(cfg.fx?.[`t${t}`] ?? [])].map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [], conds: tierConditionChips(cfg.tiers[`t${t}`]) }; });
   let actor = null; try { actor = cfg.actorUuid ? await fromUuid(cfg.actorUuid) : null; } catch (e) { actor = null; }
+  const gOf = ready.map(({ r }) => tiers.indexOf(r.result.tier));
+  // v0.0.426 (the audit; book, Chapter 8, Empowered: one creature takes it): the die rolled with the Tiers goes to the first creature whose damage
+  // is dealt (its own group, so the others on its Tier don't take it), once
+  if (st.tierDmg?.emp && !st.empDone) {
+    const g0 = groups[gOf[0]], ec = { ...st.tierDmg.emp, kind: "E" };
+    if (g0) {
+      if (ready.filter(x => x.r.result.tier === ready[0].r.result.tier).length === 1) g0.comps = [...g0.comps, ec];
+      else { const at = gOf[0] + 1; groups.splice(at, 0, { ...g0, comps: [...g0.comps, ec] }); for (let j = 0; j < gOf.length; j++) gOf[j] = j === 0 ? at : gOf[j] >= at ? gOf[j] + 1 : gOf[j]; }
+      st.empDone = true;
+    }
+  }
   const { postCcDamage } = await import("./ccdamage.mjs");
-  await postCcDamage({ actor, title: cfg.source || m?.name || "Save", groups, targets: ready.map(({ r }) => ({ uuid: r.uuid, name: r.name, tier: r.result.tier, g: tiers.indexOf(r.result.tier) })), nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id, into: msg, after: cfg.after ?? "", save: true });
+  await postCcDamage({ actor, title: cfg.source || m?.name || "Save", groups, targets: ready.map(({ r }, i) => ({ uuid: r.uuid, name: r.name, tier: r.result.tier, g: gOf[i] })), nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id, into: msg, after: cfg.after ?? "", save: true });
   for (const { i } of ready) st.rows[i].damageDone = true;
   await writeSaveCard(msg, st);
 }

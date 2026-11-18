@@ -1433,7 +1433,7 @@ export async function rollDamage(message, { again = false } = {}) {
     const mw = activeHooks(actor, "moreW");
     if (mw.length && await (await import("./hooks.mjs")).takeMoreW(actor)) moreW = Math.max(1, Number(mw[0].hook.n) || 1);
   }
-  let empUsed = false;
+  let empUsed = false, empLater = false;   // v0.0.426: with several targets the Empowered die is rolled once, after the Tiers, for one creature
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
     const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW) : version[`t${tier}`]), ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
@@ -1465,7 +1465,7 @@ export async function rollDamage(message, { again = false } = {}) {
       chip = `<div class="chips"><span class="chip">${esc(f.attrLabel || "Modifier")} +${f.attrVal}</span></div>`;
     }
     // v0.0.407 (Stage 0 in Foundry; book, Chapter 8, Empowered): the first damage the creature deals on each of its turns adds 1d6! of the Action's pool and type
-    if (empOn && !again) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls) : null; if (ec) { comps.push(ec); empUsed = true; } }
+    if (empOn && !again && !empLater && !empUsed) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls) : null; if (ec) { comps.push(ec); empUsed = true; } }
     // v0.0.283: the Tier's riders as the card shows them (its text after the damage, its effects' names)
     const riderHtml = [];
     const xt = expandAsText(version[`x${tier}`], item.system.versions, version, tier);
@@ -1482,6 +1482,7 @@ export async function rollDamage(message, { again = false } = {}) {
   if (f.results?.length) {
     // Several targets: the damage is rolled once per Tier and dealt to every creature on that Tier (Several Targets), posted in one card.
     const rows = [], all = [], byTier = new Map();
+    empLater = true;
     for (const r of f.results) {
       if (!(r.tier >= 1)) continue;
       if (!byTier.has(r.tier)) { const d = await rollFor(r.tier, r.bonuses ?? [], [{ uuid: r.uuid, name: r.name }], r.name, r.tier === 3 && f.results.filter(x => x.tier === 3).every(x => x.crit)); byTier.set(r.tier, d); all.push(...d.rolls); }
@@ -1491,7 +1492,20 @@ export async function rollDamage(message, { again = false } = {}) {
     if (rows.length) {
       const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283: one group per Tier (damage rolled once per Tier), the rider written once under it
       const tiers = [...byTier.keys()].sort((a, b) => b - a);
-      await postCcDamage({ actor, title: item.name, groups: tiers.map(t => ({ tier: t, crit: false, comps: byTier.get(t).comps, fx: byTier.get(t).fx, riders: byTier.get(t).riders, conds: byTier.get(t).conds })), targets: rows.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: tiers.indexOf(r.tier) })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });
+      const groups = tiers.map(t => ({ tier: t, crit: false, comps: byTier.get(t).comps, fx: byTier.get(t).fx, riders: byTier.get(t).riders, conds: byTier.get(t).conds }));
+      const gOf = rows.map(r => tiers.indexOf(r.tier));
+      // v0.0.426 (the audit; book, Chapter 8, Empowered: "If the Action damages several creatures, you choose which one takes it"): one die, for one
+      // creature: the first one hit (its own group, so the others on its Tier don't take it)
+      if (empOn && !again) {
+        const k = rows.findIndex((r, i) => groups[gOf[i]].comps.some(c => c.kind === "W" || c.kind === "D"));
+        const g0 = k >= 0 ? groups[gOf[k]] : null, ec = g0 ? await empoweredComponent(g0.comps.find(c => c.kind === "W" || c.kind === "D"), all) : null;
+        if (ec) {
+          if (rows.filter(r => r.tier === rows[k].tier).length === 1) g0.comps = [...g0.comps, ec];
+          else { const at = gOf[k] + 1; groups.splice(at, 0, { ...g0, comps: [...g0.comps, ec] }); for (let j = 0; j < gOf.length; j++) gOf[j] = j === k ? at : gOf[j] >= at ? gOf[j] + 1 : gOf[j]; }
+          empUsed = true;
+        }
+      }
+      await postCcDamage({ actor, title: item.name, groups, targets: rows.map((r, i) => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: gOf[i] })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });
     }
   } else {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "", !!f.crit);
