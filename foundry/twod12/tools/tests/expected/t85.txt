@@ -11,4 +11,4 @@ an exploding 12 (12 → 4)                               a: 12+4|5 boons  banes 
 card: one dice line, a row per target: 2 rows, 3 d12 faces shown | has the chain for the exploded 12: true | a target's chip: true | names escaped: true
 collapseNames: Skeleton Captain ×3, Nari ×2, Lonny | "" | A
 uniqueLabels: Orc 1, Nari, Orc 2, Orc 3, Lonny | A, B
-four creatures, three rows: 3 | the shared row says ×2: true | the third Orc is its own row with its number: true | odds shown: 1 | the calculation is in a tooltip: true
+four creatures, three rows: 3 | the shared row says ×2: true | the third Orc is its own row with its number: true | odds shown: 1 | no calculation on hover (v0.0.420, the tooltip review): true

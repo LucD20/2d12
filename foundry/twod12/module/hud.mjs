@@ -396,7 +396,7 @@ async function showCardNow(actor, item, at) {
   const { buildActionCard } = await import("./actioncard.mjs");
   const div = document.createElement("div");
   div.className = "twod12-hudcard";
-  div.innerHTML = `<button type="button" class="hc-x" aria-label="Close the card" title="Close">&times;</button>${await buildActionCard(item, { actor })}`;
+  div.innerHTML = `<button type="button" class="hc-x" aria-label="Close the card">&times;</button>${await buildActionCard(item, { actor })}`;
   document.body.append(div);
   const r = at.getBoundingClientRect();
   div.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - div.offsetWidth - 8))}px`;

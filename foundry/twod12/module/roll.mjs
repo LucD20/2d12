@@ -81,32 +81,32 @@ export async function performCheck({ mod = 0, boons = 0, banes = 0, dc = 13, sou
 
 /** Check block: title, dice, modifier chips, total. */
 export function checkHtml(title, r, chips = [], { showTier = false, status: showStatus = true } = {}) {
-  const die = (f, dbl, chain = false) => `<span class="die d12${f === 12 ? " boom" : ""}${dbl ? " dbl" : ""}${chain ? " chain" : ""}"${f === 12 ? ' data-tooltip="A 12 counts as 11 and is rolled again."' : (chain ? ' data-tooltip="Rolled again after a 12"' : "")}>${f}</span>`;
+  const die = (f, dbl, chain = false) => `<span class="die d12${f === 12 ? " boom" : ""}${dbl ? " dbl" : ""}${chain ? " chain" : ""}"${f === 12 ? '' : (chain ? '' : "")}>${f}</span>`;
   // An exploding die: the 12, then each die it adds, joined by a small chain.
   const dieChain = (faces, dblFirst) => faces.map((f, i) => `${i ? '<i class="fa-solid fa-link dlink"></i>' : ""}${die(f, dblFirst && i === 0, i > 0)}`).join("");
   // v0.0.301 (PACK BB): Boons and Banes are a flat +1 / -1 each: one number, no dice
   const side = (f, label, cls, sign) => f.length
-    ? `<span class="plus">${sign}</span><span class="dgroup ${cls}" data-tooltip="${f.length} ${label}"><small>${label}</small><span class="modv">${f.length}</span></span>` : "";
+    ? `<span class="plus">${sign}</span><span class="dgroup ${cls}" aria-label="${f.length} ${label}"><small>${label}</small><span class="modv">${f.length}</span></span>` : "";
   const chipHtml =
     (r.state
-      ? `<span class="chip ${r.state === "favored" ? "boon" : "bane"}" data-tooltip="${r.state === "favored" ? "3d12, keep the two highest; any pair of the three is Doubles, three of a kind a Critical" : "3d12, keep the two lowest (no Doubles)"}">${r.state === "favored" ? "Favored" : "Doomed"}</span>`
+      ? `<span class="chip ${r.state === "favored" ? "boon" : "bane"}">${r.state === "favored" ? "Favored" : "Doomed"}</span>`
       : "") +
-    (r.five ? `<span class="chip ${r.five === "favored" ? "boon" : "bane"}" data-tooltip="5 or more ${r.five === "favored" ? "Boons" : "Banes"} left after cancelling: the roll is ${r.five === "favored" ? "Favored" : "Doomed"} instead">5 ${r.five === "favored" ? "Boons" : "Banes"}</span>` : "") +
+    (r.five ? `<span class="chip ${r.five === "favored" ? "boon" : "bane"}">5 ${r.five === "favored" ? "Boons" : "Banes"}</span>` : "") +
     chips.map(c => `<span class="chip">${esc(c)}</span>`).join("") +
     (r.adj ? `<span class="chip${r.adjLabel ? " bane" : ""}">${esc(r.adjLabel || "Modifier")} ${sgn(r.adj)}</span>` : "") +
     (r.sources ?? [])
       .map(
         x =>
-          `${x.boons ? `<span class="chip boon" data-tooltip="Boon">${esc(x.name)}</span>` : ""}${x.banes ? `<span class="chip bane" data-tooltip="Bane">${esc(x.name)}</span>` : ""}`
+          `${x.boons ? `<span class="chip boon" aria-label="Boon">${esc(x.name)}</span>` : ""}${x.banes ? `<span class="chip bane" aria-label="Bane">${esc(x.name)}</span>` : ""}`
       )
       .join("") +
-    (r.manualBoons ? `<span class="chip boon" data-tooltip="Added by hand: +1 each">Boons +${r.manualBoons}</span>` : "") +
-    (r.manualBanes ? `<span class="chip bane" data-tooltip="Added by hand: -1 each">Banes -${r.manualBanes}</span>` : "");
+    (r.manualBoons ? `<span class="chip boon">Boons +${r.manualBoons}</span>` : "") +
+    (r.manualBanes ? `<span class="chip bane">Banes -${r.manualBanes}</span>` : "");
   // Doubles and Critical are chips under the roll (a card with tier rows also marks them in the rows).
   const status = r.crit && showStatus ? `<span class="chip crit">Critical: ${r.triple ? "three of a kind" : r.doubles && r.base === 3 ? "Doubles on a Tier 3" : "20 above the DC"}</span>` : (r.doubles && r.base < 3 ? `<span class="chip dbl">Doubles: +1 Tier</span>` : "");
   return `<div class="chk"><div class="chkline"><span class="chk-title">${esc(title)}</span>
-    <span class="dice"><span class="dgroup">${dieChain(r.d1, r.doubles)}</span><span class="plus">+</span><span class="dgroup">${dieChain(r.d2, r.doubles)}</span>${r.dropped ? `<span class="dgroup dropped" data-tooltip="Dropped die">${r.dropped.map(f => die(f, false)).join("")}</span>` : ""}${r.mod ? `<span class="plus">${r.mod > 0 ? "+" : "&minus;"}</span><span class="modv" data-tooltip="Modifier">${Math.abs(r.mod)}</span>` : ""}${side(r.boonFaces, "Boons", "boon", "+")}${side(r.baneFaces, "Banes", "bane", "&minus;")}</span>
-    <span class="shield${r.dc ? (r.total >= r.dc ? " win" : " lose") : ""}" data-tooltip="Total ${r.total}${r.dc ? ` against ${r.dcLabel ?? "DC"} ${r.dc}` : ""}"><b class="rtotal">${r.total}</b>${r.dc ? `<small class="vsdc">${r.dcLabel ?? "DC"} ${r.dc}</small>` : ""}</span></div>
+    <span class="dice"><span class="dgroup">${dieChain(r.d1, r.doubles)}</span><span class="plus">+</span><span class="dgroup">${dieChain(r.d2, r.doubles)}</span>${r.dropped ? `<span class="dgroup dropped" aria-label="Dropped die">${r.dropped.map(f => die(f, false)).join("")}</span>` : ""}${r.mod ? `<span class="plus">${r.mod > 0 ? "+" : "&minus;"}</span><span class="modv" aria-label="Modifier">${Math.abs(r.mod)}</span>` : ""}${side(r.boonFaces, "Boons", "boon", "+")}${side(r.baneFaces, "Banes", "bane", "&minus;")}</span>
+    <span class="shield${r.dc ? (r.total >= r.dc ? " win" : " lose") : ""}"><b class="rtotal">${r.total}</b>${r.dc ? `<small class="vsdc">${r.dcLabel ?? "DC"} ${r.dc}</small>` : ""}</span></div>
     ${chipHtml || status ? `<div class="chips">${chipHtml}${status}</div>` : ""}
     ${showTier ? `<div class="tier t${r.tier}">Tier ${r.tier}: ${TIER_NAMES[r.tier]}</div>` : ""}</div>`;
 }
@@ -163,11 +163,10 @@ export function uniqueLabels(names) {
  * rows: [{ name, label, chk, chips: [{ text, cls }], odds }]; label is the creature's own (numbered) name, odds a short text.
  */
 export function multiCheckHtml(title, dice, rows, chips = []) {
-  const die = (f, chain) => `<span class="die d12${f === 12 ? " boom" : ""}${chain ? " chain" : ""}"${f === 12 ? ' data-tooltip="A 12 counts as 11 and is rolled again."' : ""}>${f}</span>`;
+  const die = (f, chain) => `<span class="die d12${f === 12 ? " boom" : ""}${chain ? " chain" : ""}"${f === 12 ? '' : ""}>${f}</span>`;
   const chain = faces => faces.map((f, i) => `${i ? '<i class="fa-solid fa-link dlink"></i>' : ""}${die(f, i > 0)}`).join("");
-  const dtot = faces => faces.reduce((a, f) => a + (f === 12 ? 11 : f), 0);
   const diceHtml = `<span class="dgroup">${chain(dice.d[0].faces)}</span><span class="plus">+</span><span class="dgroup">${chain(dice.d[1].faces)}</span>`
-    + (dice.d[2] ? `<span class="plus">&middot;</span><span class="dgroup third" data-tooltip="A third die: Favored keeps the two highest, Doomed the two lowest">${chain(dice.d[2].faces)}</span>` : "");
+    + (dice.d[2] ? `<span class="plus">&middot;</span><span class="dgroup third">${chain(dice.d[2].faces)}</span>` : "");
   // Same name and same result: one row.
   const key = r => [r.name, r.chk.dc, r.chk.total, r.chk.tier, r.chk.doubles, r.chk.crit, r.chk.state ?? "", (r.chips ?? []).map(c => c.text).join(",")].join("|");
   const groups = [], at = new Map();
@@ -177,12 +176,11 @@ export function multiCheckHtml(title, dice, rows, chips = []) {
     groups[at.get(k)].labels.push(r.label ?? r.name);
   }
   const rowHtml = groups.map(g => {
-    const chk = g.chk, win = chk.total >= chk.dc, mods = chk.mod + chk.adj;
-    const calc = `${dtot(chk.d1)} + ${dtot(chk.d2)}${mods ? ` ${mods > 0 ? "+" : "\u2212"} ${Math.abs(mods)}` : ""}${chk.bo ? ` + ${chk.bo}` : ""}${chk.ba ? ` \u2212 ${chk.ba}` : ""} = ${chk.total} vs ${chk.dcLabel ?? "DC"} ${chk.dc}`;
+    const chk = g.chk, win = chk.total >= chk.dc;
     const name = g.labels.length > 1 ? `${g.name} \u00d7${g.labels.length}` : g.labels[0];
     const tags = [...(g.chips ?? []), ...(chk.five ? [{ text: chk.five === "favored" ? "5 Boons" : "5 Banes", cls: chk.five === "favored" ? "boon" : "bane" }] : []), ...(chk.state ? [{ text: chk.state === "favored" ? "Favored" : "Doomed", cls: chk.state === "favored" ? "boon" : "bane" }] : []), ...(chk.doubles ? [{ text: "Doubles", cls: "dbl" }] : []), ...(chk.crit ? [{ text: "Critical", cls: "crit" }] : [])];
-    return `<div class="mrow t${chk.tier}"><span class="mname" data-tooltip="${esc(g.labels.length > 1 ? g.labels.join(", ") : name)}">${esc(name)}</span>`
-      + `<span class="shield small ${win ? "win" : "lose"}" data-tooltip="${esc(`${chk.dropped ? "A die was dropped. " : ""}${calc}`)}"><b class="rtotal">${chk.total}</b><small class="vsdc">${chk.dcLabel ?? "DC"} ${chk.dc}</small></span><span class="rtag rolled${chk.tier === 1 ? " fail" : ""}">Tier ${chk.tier}</span>`
+    return `<div class="mrow t${chk.tier}"><span class="mname" aria-label="${esc(g.labels.length > 1 ? g.labels.join(", ") : name)}">${esc(name)}</span>`
+      + `<span class="shield small ${win ? "win" : "lose"}"><b class="rtotal">${chk.total}</b><small class="vsdc">${chk.dcLabel ?? "DC"} ${chk.dc}</small></span><span class="rtag rolled${chk.tier === 1 ? " fail" : ""}">Tier ${chk.tier}</span>`
       + (tags.length ? `<div class="mchips">${tags.map(t => `<span class="chip ${t.cls ?? ""}">${esc(t.text)}</span>`).join("")}</div>` : "")
       + (g.odds ? `<div class="modds">${esc(g.odds)}</div>` : "") + `</div>`;
   }).join("");

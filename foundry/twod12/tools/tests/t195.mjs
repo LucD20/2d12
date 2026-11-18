@@ -8,5 +8,5 @@ const U = await import(ROOTURL + "module/util.mjs");
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 console.log("tipAttrs:", U.tipAttrs('<div class="x">a "b" &amp; c</div>'), "| none:", JSON.stringify(U.tipAttrs("")));
 console.log("the chips, the chat's effect names and the HUD write both attributes:", src("templates/actor-sheet-pc.hbs").includes("{{{tipAttrs}}}>{{#if linkedTo}}") && src("module/actor-sheets.mjs").includes("c.tipAttrs = tipAttrs(c.tip)") && src("module/actions.mjs").includes("${tipAttrs(x.tip)}") && src("module/effects.mjs").includes("el.dataset.tooltipHtml = html; el.dataset.tooltip = html;"));
-console.log("the HUD gives the manager an element on pointerover (capture):", src("module/effects.mjs").includes('game.tooltip?.activate?.(el, { content: box, direction: "LEFT" })') && src("module/effects.mjs").includes('root.addEventListener("pointerover"'));
+console.log("no hover card handed to the tooltip manager (v0.0.420, the tooltip review):", !src("module/effects.mjs").includes("game.tooltip?.activate"));
 console.log("the Apply rows' grid and the target name:", src("styles/system.css").includes(".twod12.chat .applyrow { display: grid; grid-template-columns: minmax(0, 1fr) 196px;") && src("styles/system.css").includes(".twod12.chat .cardtargets { font-size: 14px; font-weight: 700; }"));

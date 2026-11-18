@@ -81,7 +81,7 @@ each is Obscured to the other (dim light)                    Doomed off, Favored
 10 targets:    compact | tiles 12 (one is yours) | numbered tabs 1..10 (10) | pictures 0
 12 targets:    compact | tiles 14 (one is yours) | numbered tabs 1..12 (12) | pictures 0
 20 targets:    compact | tiles 22 (one is yours) | numbered tabs 1..20 (20) | pictures 0
-a compact tab keeps the creature's name and DC for the caption: true | the tooltip: true
+a compact tab keeps the creature's name and DC for the caption: true | its name for screen readers, no hover (v0.0.420): true
 
 --- Prone
 Prone uses Advance                               no card | chips: (none) | bane dice - | total null | warn: Kai is Prone: the only Move Actions it can use are Crawl and Stand.

@@ -12,7 +12,7 @@ Armor Training on the Loadout: false
 new tokens: bars always, no rotation: true | core rotation off once: true
 Rally card: true
 shortcuts Shift+L and Shift+H: true
-the diamond says what is by hand: true | notes: true
+the diamond says what is by hand (a screen-reader label since v0.0.420): false | notes: true
 Rally the Tribe: true
 an Emanation with no Distance is around you: true | asks about yourself: true
 remove a target in the roll dialog: true

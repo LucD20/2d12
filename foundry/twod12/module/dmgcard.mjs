@@ -4,12 +4,12 @@ import { damageOdds } from "./calc.mjs";
 
 const POOL_LABEL = { B: "Vigor", M: "Resolve", C: "Vigor or Resolve", "": "Other" };
 
-const srcA = c => (c.srcUuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(c.srcUuid)}" data-tooltip="Open ${esc(c.src)}">${esc(c.src)}</a>` : esc(c.src));
+const srcA = c => (c.srcUuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(c.srcUuid)}" aria-label="Open ${esc(c.src)}">${esc(c.src)}</a>` : esc(c.src));
 const compHtml = c => {
   // v0.0.189: bonus damage names where it comes from ("Heavy Blows", a link that opens it), with its type when it has one.
   const name = c.src ? (c.sub ? `${TWOD12.subtypes[c.sub]} <span class="csrc">${srcA(c)}</span>` : srcA(c)) : (c.sub ? TWOD12.subtypes[c.sub] : (c.kind === "A" ? "Modifier" : "Untyped"));
   const icon = c.sub ? `${dtypeIcon(c.sub)} ` : "";
-  const dice = (c.dice ?? []).map(d => d.results.map((x, k) => `<span class="die d${d.faces}${d.ex?.[k] ? " ex" : ""}"${d.ex?.[k] ? ` data-tooltip="Exploded: counts ${x - 1}, rolled again"` : ""}>${x}${d.ex?.[k] ? "!" : ""}</span>`).join("")).join("");   // v0.0.407: an exploded die
+  const dice = (c.dice ?? []).map(d => d.results.map((x, k) => `<span class="die d${d.faces}${d.ex?.[k] ? " ex" : ""}">${x}${d.ex?.[k] ? "!" : ""}</span>`).join("")).join("");   // v0.0.407: an exploded die
   return `<div class="comp sub-${c.sub || "N"}" style="--sc:${TWOD12.subtypeInk[c.sub] ?? "#888780"}"><span class="ctype">${icon}${name}${c.nl ? ' <span class="nlb">NL</span>' : ""}</span><span class="cform">${esc(c.formula)}</span><span class="cdice">${dice}</span><span class="ctotal">${c.total}</span></div>`;
 };
 
@@ -49,7 +49,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
     }
     const o = damageOdds(comps);
     return o.hasDice
-      ? `<div class="oddsrow" data-tooltip="Average of all the dice and the chance of this total">Avg ${Math.round(o.avg * 10) / 10} &middot; this total or more: ${Math.round(o.atLeast * 100)}% &middot; exactly: ${Math.round(o.exact * 1000) / 10}%</div>`
+      ? `<div class="oddsrow">Avg ${Math.round(o.avg * 10) / 10} &middot; this total or more: ${Math.round(o.atLeast * 100)}% &middot; exactly: ${Math.round(o.exact * 1000) / 10}%</div>`
       : "";
   })();
   const tline = ts => `<div class="tline">${ts.length ? `<i class="fa-solid fa-crosshairs"></i> ${esc(ts.map(t => t.name).join(", "))}` : ""}</div>`;
@@ -57,7 +57,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
         <button type="button" data-twod12="applyDamage">Damage</button>
         <button type="button" data-twod12="applyHalf">Half</button>
         <button type="button" data-twod12="applyDouble">Double</button>
-        <button type="button" class="blk" data-twod12="block" data-tooltip="Toggle (no mechanics yet)">Block</button>
+        <button type="button" class="blk" data-twod12="block" aria-label="Toggle (no mechanics yet)">Block</button>
         ${fx.some(x => x.mode === "conditional" || x.mode === "down") ? '<button type="button" data-twod12="applyFx">Effects</button>' : ""}
         <select class="kind"><option value="lethal" ${defaultNl ? "" : "selected"}>Lethal</option><option value="nonlethal" ${defaultNl ? "selected" : ""}>Nonlethal</option></select>
       </div>`;
@@ -66,7 +66,7 @@ export async function postDamageCard({ actor = null, title, subtitle = "", comps
       ${
         applied
           ? `<div class="dtotal"><span>Total <b>${grand}</b></span></div>${odds}<div class="applied">${applied}</div></div>`
-          : `<div class="dtotal"><button type="button" class="tgt" data-twod12="retarget" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button><span>Total <b>${grand}</b></span></div>
+          : `<div class="dtotal"><button type="button" class="tgt" data-twod12="retarget" aria-label="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button><span>Total <b>${grand}</b></span></div>
       ${odds}
       ${tline(targets)}
       ${dmgBtns}</div>`
@@ -93,10 +93,10 @@ export function multiDamageHtml({ title, rows, color = TWOD12.cardColors.default
   const nl = kind ? kind === "nonlethal" : defaultNl;
   const btn = (k, i, f, label, extra = "") => `<button type="button"${extra} data-twod12="${k}"${i == null ? "" : ` data-row="${i}"`} data-factor="${f}">${label}</button>`;
   const rowHtml = (r, i) =>
-    `<div class="mdrow${r.blocked ? " blocked" : ""}${r.applied ? " done" : ""}" data-row="${i}"><div class="mdtop"><b class="mdname" data-tooltip="${esc(r.name)}">${esc(r.name)}</b><span class="rtag rolled${r.tier === 1 ? " fail" : ""}">Tier ${r.tier}</span><span class="mdsum">${damageSummary(r.comps)}</span></div>` +
+    `<div class="mdrow${r.blocked ? " blocked" : ""}${r.applied ? " done" : ""}" data-row="${i}"><div class="mdtop"><b class="mdname" aria-label="${esc(r.name)}">${esc(r.name)}</b><span class="rtag rolled${r.tier === 1 ? " fail" : ""}">Tier ${r.tier}</span><span class="mdsum">${damageSummary(r.comps)}</span></div>` +
     (r.applied
       ? `<div class="applied">${r.applied}</div>`
-      : `<div class="dbtns">${btn("rowApply", i, 1, "Damage")}${btn("rowApply", i, 0.5, "Half")}${btn("rowApply", i, 2, "Double")}<button type="button" class="blk${r.blocked ? " active" : ""}" data-twod12="rowBlock" data-row="${i}" data-tooltip="Toggle (no mechanics yet). Blocked rows are skipped by the All buttons.">Block</button>${(r.fx ?? []).some(x => x.mode === "conditional" || x.mode === "down") ? `<button type="button" data-twod12="rowFx" data-row="${i}">Effects</button>` : ""}</div>`) +
+      : `<div class="dbtns">${btn("rowApply", i, 1, "Damage")}${btn("rowApply", i, 0.5, "Half")}${btn("rowApply", i, 2, "Double")}<button type="button" class="blk${r.blocked ? " active" : ""}" data-twod12="rowBlock" data-row="${i}" aria-label="Toggle (no mechanics yet). Blocked rows are skipped by the All buttons.">Block</button>${(r.fx ?? []).some(x => x.mode === "conditional" || x.mode === "down") ? `<button type="button" data-twod12="rowFx" data-row="${i}">Effects</button>` : ""}</div>`) +
     `</div>`;
   const pending = rows.some(r => !r.applied && !r.blocked);
   return `<div class="twod12 chat dmg multi" style="${color ? cardVars(color) : ""}">${dmgHead(title, "Damage \u2022 Each target")}<div class="orn">&#10022; &#10022; &#10022;</div>`

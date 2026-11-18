@@ -11,7 +11,7 @@ import { esc } from "./util.mjs";
 const F = "twod12";
 const FACE_BG = { "-1": "#8a2f22", "0": "#6b5d45", "1": "#2d5d7a", "-2": "#3a3a3a" };
 const ini = name => { const w = String(name ?? "").trim().split(/\s+/).filter(Boolean); return (w.length > 1 ? w[0][0] + w[1][0] : (w[0] ?? "?").slice(0, 2)).toUpperCase(); };
-const face = r => `<span class="rx-av rx-av-m" style="background:${FACE_BG[String(r.disp ?? 0)] ?? FACE_BG[0]}" data-tooltip="${esc(r.name)}"><b>${esc(ini(r.name))}</b>${r.img ? `<img src="${esc(r.img)}" alt="">` : ""}</span>`;   // as moment.mjs faceHtml
+const face = r => `<span class="rx-av rx-av-m" style="background:${FACE_BG[String(r.disp ?? 0)] ?? FACE_BG[0]}" aria-label="${esc(r.name)}"><b>${esc(ini(r.name))}</b>${r.img ? `<img src="${esc(r.img)}" alt="">` : ""}</span>`;   // as moment.mjs faceHtml
 const fa = c => `<i class="${c}" aria-hidden="true"></i>`;
 
 /* ---------------------------------------------------------------- pure */
@@ -48,11 +48,11 @@ export function stackHtml(st) {
   const by = new Map(st.rows.map(r => [r.i, r])), before = st.cur === -1;
   const slabs = st.order.map((i, n) => {
     const r = by.get(i);
-    const mark = r.state === "done" ? `<span class="rx-ok" data-tooltip="Done">${fa("fa-solid fa-check")}</span>` : r.state === "skip" ? `<span class="ss-skipped" data-tooltip="Skipped">${fa("fa-solid fa-forward")}</span>` : "";
-    const use = r.action ? `<button type="button" class="rx-ch ss-use" data-ss="use" data-i="${i}" data-tooltip="${esc(r.text || `Use ${r.action}`)}">${esc(r.action)}${r.ap !== undefined && r.ap !== "" ? ` <span class="ss-ap">${esc(r.ap)} AP</span>` : ""}</button>` : `<span class="rx-tg" data-tooltip="${esc(r.text)}">${esc(r.source)}</span>`;
-    const card = r.itemId ? `<button type="button" class="rx-ib ss-card" data-ss="card" data-i="${i}" data-tooltip="See the Action's card" aria-label="See the card">${fa("fa-regular fa-id-card")}</button>` : "";
-    const gm = r.state === "now" ? `<span class="ss-gmb ss-gm"><button type="button" class="rx-ib rx-use" data-ss="done" data-tooltip="Done: the next one" aria-label="Done">${fa("fa-solid fa-check")}</button><button type="button" class="rx-ib rx-pass" data-ss="skip" data-tooltip="Skip it" aria-label="Skip">${fa("fa-solid fa-forward")}</button></span>` : "";
-    return `<div class="rx-it ss-it ${r.state}${n === 0 ? " top" : ""}" data-i="${i}">${before ? `<span class="rx-grip ss-gm" data-tooltip="Drag to change the order">${fa("fa-solid fa-grip-vertical")}</span>` : ""}<span class="rx-num">${n + 1}</span>${face(r)}<b class="ss-nm">${esc(r.name)}</b>${mark}<span class="ss-btns">${use}${card}${gm}</span></div>`;
+    const mark = r.state === "done" ? `<span class="rx-ok" aria-label="Done">${fa("fa-solid fa-check")}</span>` : r.state === "skip" ? `<span class="ss-skipped" aria-label="Skipped">${fa("fa-solid fa-forward")}</span>` : "";
+    const use = r.action ? `<button type="button" class="rx-ch ss-use" data-ss="use" data-i="${i}" aria-label="${esc(r.text || `Use ${r.action}`)}">${esc(r.action)}${r.ap !== undefined && r.ap !== "" ? ` <span class="ss-ap">${esc(r.ap)} AP</span>` : ""}</button>` : `<span class="rx-tg" aria-label="${esc(r.text)}">${esc(r.source)}</span>`;
+    const card = r.itemId ? `<button type="button" class="rx-ib ss-card" data-ss="card" data-i="${i}" aria-label="See the card">${fa("fa-regular fa-id-card")}</button>` : "";
+    const gm = r.state === "now" ? `<span class="ss-gmb ss-gm"><button type="button" class="rx-ib rx-use" data-ss="done" aria-label="Done">${fa("fa-solid fa-check")}</button><button type="button" class="rx-ib rx-pass" data-ss="skip" aria-label="Skip">${fa("fa-solid fa-forward")}</button></span>` : "";
+    return `<div class="rx-it ss-it ${r.state}${n === 0 ? " top" : ""}" data-i="${i}">${before ? `<span class="rx-grip ss-gm" aria-label="Drag to change the order">${fa("fa-solid fa-grip-vertical")}</span>` : ""}<span class="rx-num">${n + 1}</span>${face(r)}<b class="ss-nm">${esc(r.name)}</b>${mark}<span class="ss-btns">${use}${card}${gm}</span></div>`;
   }).join("");
   const foot = before ? `<div class="rx-ft ss-gm"><button type="button" class="rx-btn rx-pri" data-ss="resolve">${fa("fa-solid fa-play")} Resolve</button></div>`
     : resolved(st) ? `<div class="ss-end">${fa("fa-solid fa-flag-checkered")} ${st.first ? `<b>${esc(st.first)}</b>'s turn begins.` : "The first turn begins."}</div>`

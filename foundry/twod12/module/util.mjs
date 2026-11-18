@@ -46,7 +46,8 @@ export const fxTipHtml = ({ name, dur = "", text = "", what = "", source = "", c
   return `<div class="twod12 fxtip"><div class="ft-head"><b>${e(name)}</b>${dur ? `<span class="ft-dur">${e(dur)}</span>` : ""}</div>${text ? `<div class="ft-text">${e(shortText(text))}</div>` : ""}${what ? `<div class="ft-what">${e(shortText(what, 200))}</div>` : ""}${source ? `<div class="ft-src">${e(source)}</div>` : ""}${controls ? `<div class="ft-ctl">${e(controls)}</div>` : ""}</div>`;
 };
 /** v0.0.256: the attributes that make an element show an HTML card on hover: Foundry 13 reads data-tooltip-html, older versions data-tooltip (both are written). */
-export const tipAttrs = html => { const e = String(html ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); return html ? `data-tooltip-html="${e}" data-tooltip="${e}"` : ""; };
+// v0.0.420 (Lucas, 2026-11-18, the tooltip review: "remove both", the hover cards among them): no hover card; kept as a name for its callers
+export const tipAttrs = () => "";
 export const hoverOf = (hover, description) => {
   const h = String(hover ?? "").trim().replace(/\{origin\}/g, "its origin");   // v0.0.323: the built text of an effect with no origin yet
   if (h) return h;

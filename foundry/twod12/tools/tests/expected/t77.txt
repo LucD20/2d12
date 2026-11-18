@@ -9,5 +9,5 @@ twod12 | time bar 10
 a failing move says so on screen: error: The time bar couldn't move the clock: permission denied
 hidden by the setting: true
 not shown to players: true
-HUD tooltip: true | Exhausted 1 · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove
+HUD label (no hover since v0.0.420): true | Exhausted 1 · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove | no tooltip: true
 a non-character gets nothing: false | no icon in the HUD: false

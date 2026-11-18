@@ -30,10 +30,10 @@ settings.timeBar = false; made.length = 0; C.insertBar({ prepend: () => (made.pu
 settings.timeBar = true; game.user.isGM = false; made.length = 0; C.insertBar({ prepend: () => (made.push("x")), querySelector: () => null }); console.log("not shown to players:", made.length === 0);
 // the token HUD: only the tooltip (the clicks go through Foundry's own status toggle, tested in t82)
 {
-  const el = { dataset: {} };
+  const el = { dataset: {}, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; } };   // v0.0.420: the instructions are a screen-reader label now
   const kai = { name: "Kai", type: "character", isOwner: true, system: { exhausted: 1, mdt: 8 }, effects: [] };
   const app = { document: { actor: kai } };
   const root = { querySelector: sel => (sel === '[data-status-id="exhausted"]' ? el : null) };
-  console.log("HUD tooltip:", S.exhaustedHud(app, root), "|", el.dataset.tooltip);
+  console.log("HUD label (no hover since v0.0.420):", S.exhaustedHud(app, root), "|", el.attrs["aria-label"], "| no tooltip:", el.dataset.tooltip === undefined);
   console.log("a non-character gets nothing:", S.exhaustedHud({ document: { actor: { type: "npc" } } }, root), "| no icon in the HUD:", S.exhaustedHud(app, { querySelector: () => null }));
 }

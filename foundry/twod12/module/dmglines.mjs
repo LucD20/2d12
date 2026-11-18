@@ -29,9 +29,9 @@ export function damageBlockHtml(m) {
   if (!m?.show) return "";
   // v0.0.373 (STYLE-2, Lucas): each chip in its subtype's icon and color, as the Builder's (--sc-l on parchment, --sc-d on the dark page)
   const look = c => { const T = TWOD12; return { icon: T.subtypeIcons?.[c] ?? "", style: `--sc-l:${T.subtypeInk?.[c] ?? "#5d5446"};--sc-d:${T.subtypeColors?.[c] ?? "#b3a68e"}` }; };
-  const chip = c => { const l = look(c.code); return `<button type="button" class="ps-dl ${c.kind}${c.dashed ? " tmp" : ""} rw-chip" style="${l.style}" data-action="dmgLineOpen" data-kind="${c.kind}" data-sub="${esc(c.code)}" data-uuid="${esc(c.uuid)}" data-src="${c.src}" data-tooltip="${esc(c.tip)}" aria-label="${esc(c.aria)}">${l.icon ? `<i class="${l.icon}" aria-hidden="true"></i>` : ""}${esc(c.text)}</button>`; };
+  const chip = c => { const l = look(c.code); return `<button type="button" class="ps-dl ${c.kind}${c.dashed ? " tmp" : ""} rw-chip" style="${l.style}" data-action="dmgLineOpen" data-kind="${c.kind}" data-sub="${esc(c.code)}" data-uuid="${esc(c.uuid)}" data-src="${c.src}" aria-label="${esc(c.aria)}">${l.icon ? `<i class="${l.icon}" aria-hidden="true"></i>` : ""}${esc(c.text)}</button>`; };
   const rows = m.rows.map(r => `<div class="ps-dlrow"><span class="ps-dll">${r.label}</span><span class="ps-dlc">${r.chips.map(chip).join("")}</span></div>`).join("");
-  const add = m.add ? `<button type="button" class="ps-dladd" data-action="dmgLineAdd" data-tooltip="Add a lasting Immune, Resist or Weak line (GM)">+ Add</button>` : "";
+  const add = m.add ? `<button type="button" class="ps-dladd" data-action="dmgLineAdd">+ Add</button>` : "";
   return `<section class="ps-sec line ps-rwi"><span class="ps-k">Damage Immune/Resist/Weak</span>${rows}${add}</section>`;
 }
 
@@ -84,6 +84,6 @@ export const ownLines = doc => damageLinesFrom([{ name: doc?.name ?? "", type: "
 /** Pure: the item sheet's "Damage lines" list (armor: while worn; weapon: while wielded). */
 export function itemDamageHtml(doc, { editable = true } = {}) {
   const lines = ownLines(doc), when = doc?.type === "armor" ? "while worn" : "while wielded";
-  const chips = lines.map(l => `<button type="button" class="ps-dl ${l.kind}" data-dl-edit data-kind="${l.kind}" data-sub="${esc(l.code)}" data-value="${l.value ?? ""}" aria-label="${esc(damageLineTip(l).split(": ")[0])}" data-tooltip="${esc(damageLineTip(l).replace(/, from [^:]*:/, ` (${when}):`))}"${editable ? "" : " disabled"}>${esc(l.kind === "immune" ? `Immune ${l.subtype}` : `${KIND[l.kind]} ${l.value} ${l.subtype}`)}</button>`).join("");
+  const chips = lines.map(l => `<button type="button" class="ps-dl ${l.kind}" data-dl-edit data-kind="${l.kind}" data-sub="${esc(l.code)}" data-value="${l.value ?? ""}" aria-label="${esc(damageLineTip(l).split(": ")[0])}"${editable ? "" : " disabled"}>${esc(l.kind === "immune" ? `Immune ${l.subtype}` : `${KIND[l.kind]} ${l.value} ${l.subtype}`)}</button>`).join("");
   return `<div class="it-dmg"><span class="it-dmgl">Damage lines <small>${when}</small></span><span class="ps-dlc">${chips || '<span class="ps-mut">None.</span>'}${editable ? '<button type="button" class="ps-dladd" data-dl-add>+ Add</button>' : ""}</span></div>`;
 }

@@ -18,7 +18,7 @@ export const SUBS = {
 const subInk = s => SUBS[s]?.[1] ?? "#4a443b";
 export const subName = s => SUBS[s]?.[0] ?? (s || "Untyped");
 /** A subtype's code in its color ("Ho"). */
-export const subCode = s => (s ? `<span class="cc-sub" style="color:${subInk(s)}" title="${esc(subName(s))}">${esc(s)}</span>` : "");
+export const subCode = s => (s ? `<span class="cc-sub" style="color:${subInk(s)}" aria-label="${esc(subName(s))}">${esc(s)}</span>` : "");
 const POOL = { B: "Vigor", M: "Resolve", C: "Vigor or Resolve" };
 /** The pool's icon: a heart for Vigor, a brain for Resolve (both for a [C] choice). */
 export const poolIc = p => (p === "M" ? '<i class="fa-solid fa-brain cc-pr" aria-hidden="true"></i>'
@@ -86,10 +86,10 @@ export function stampHtml(r, { hide = false } = {}) {
   // Doubles has a gold outline and a "Doubles" tag on its stamp
   // v0.0.350 (Lucas: "no 'Doubles' word on the outline; the Doubles inside the Tier square with the golden background"): the outline alone, and the
   // stamp's "Doubles ↑" line in gold
-  return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}${r.doubles ? " dbl" : ""}"${r.doubles ? ' data-tooltip="Doubles"' : ""}><small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl${/Doubles/.test(line) ? " dbl" : ""}">${esc(line)}</small>` : ""}</div>`;
+  return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}${r.doubles ? " dbl" : ""}"${r.doubles ? ' aria-label="Doubles"' : ""}><small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl${/Doubles/.test(line) ? " dbl" : ""}">${esc(line)}</small>` : ""}</div>`;
 }
 /** A small Tier pill (22px, the numeral) or a word pill ("Tier 2"). */
-export const tierPill = (tier, crit = false, word = false, dbl = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}${dbl ? " dbl" : ""}"${dbl ? ' data-tooltip="Doubles"' : ""}>${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips
+export const tierPill = (tier, crit = false, word = false, dbl = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}${dbl ? " dbl" : ""}"${dbl ? ' aria-label="Doubles"' : ""}>${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips
 
 /* ------------------------------------------------------------------ the roll breakdown */
 /**
@@ -130,20 +130,19 @@ export function breakdownHtml(r, { hide = false, save = false, id = "", open = f
   const exploded = [r.d1, r.d2].some(f => (f ?? []).length > 1);
   const dblCls = r.doubles ? (r.crit && (r.base ?? 3) === 3 ? "crit" : "up") : "";
   const pair = `${dieGroup(r.d1)}${dieGroup(r.d2)}`;
-  const dice = `${r.doubles ? `<span class="cc-dbl ${dblCls}">${pair}</span>` : pair}${r.dropped ? `<span class="cc-dropped" title="Dropped die">${dieGroup(r.dropped)}</span>` : ""}`;
+  const dice = `${r.doubles ? `<span class="cc-dbl ${dblCls}">${pair}</span>` : pair}${r.dropped ? `<span class="cc-dropped">${dieGroup(r.dropped)}</span>` : ""}`;
   const chainTxt = exploded ? `<span class="cc-muted">${[r.d1, r.d2].map(f => f.map(x => (x === 12 ? 11 : x)).join(" + ")).join(" · ")}</span>` : "";
   const dblTag = r.doubles ? `<span class="cc-tag ${dblCls}">Doubles · ${dblCls === "crit" ? "Critical" : "+1 Tier"}</span>` : "";
   const rows = [`<span class="cc-bl">2d12</span><span class="cc-bv cc-dicerow">${dice}${chainTxt}${dblTag}</span>`];
   const bb = boonBaneLines(r);
   // v0.0.301 (PACK BB): +1 / -1 each (no dice); over a name's limit: +0; 5 or more left: the roll is Favored / Doomed instead
-  const bbTip = x => `${x.bb ? `${x.bb} ` : ""}${x.kind === "boon" ? "Boon" : "Bane"}${x.name ? `: ${x.name}` : ""}${x.over ? ` (over the ${x.bb} limit of 2: +0)` : ""}`;
   const five = r.five ? `<span class="cc-bbl five"><span class="cc-tag ${r.five === "favored" ? "up" : "down"}">5 or more ${r.five === "favored" ? "Boons" : "Banes"} left: ${r.five === "favored" ? "Favored" : "Doomed"} instead</span></span>` : "";
   // v0.0.347 (Lucas, playtest 4: "+1 Marked Quarry / −1 Situational, smaller, on the right, no Boon / Bane words, no triangle")
-  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv cc-bbv">${bb.map(x => `<span class="cc-bbl ${x.kind}${x.over ? " over" : ""}" title="${esc(bbTip(x))}">${modTxt(x.val, "")} <span>${esc(x.name || (x.kind === "boon" ? "Boon" : "Bane"))}</span>${x.bb ? ` <small class="cc-bbn">${esc(x.bb)}</small>` : ""}${x.over ? ' <small class="cc-muted">over the limit</small>' : ""}</span>`).join("")}${five}</span>`);
+  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv cc-bbv">${bb.map(x => `<span class="cc-bbl ${x.kind}${x.over ? " over" : ""}">${modTxt(x.val, "")} <span>${esc(x.name || (x.kind === "boon" ? "Boon" : "Bane"))}</span>${x.bb ? ` <small class="cc-bbn">${esc(x.bb)}</small>` : ""}${x.over ? ' <small class="cc-muted">over the limit</small>' : ""}</span>`).join("")}${five}</span>`);
   const mods = (r.mods ?? []).filter(m => m && Number(m.v));
   if (mods.length) rows.push(`<span class="cc-bl">Modifiers</span><span class="cc-bv">${mods.map(m => modTxt(Number(m.v), m.label)).join(" ")}</span>`);
   // v0.0.347: "Applied": the effects this roll's damage takes something from (Killer's Focus), each a link that opens it
-  if ((applied ?? []).length) rows.push(`<span class="cc-bl">Applied</span><span class="cc-bv cc-applied">${applied.map(a => (a.uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(a.uuid)}" data-tooltip="Open ${esc(a.name)}"><i class="fa-solid fa-sparkles"></i>${esc(a.name)}</a>` : `<span>${esc(a.name)}</span>`)).join(" ")}</span>`);
+  if ((applied ?? []).length) rows.push(`<span class="cc-bl">Applied</span><span class="cc-bv cc-applied">${applied.map(a => (a.uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(a.uuid)}" aria-label="Open ${esc(a.name)}"><i class="fa-solid fa-sparkles"></i>${esc(a.name)}</a>` : `<span>${esc(a.name)}</span>`)).join(" ")}</span>`);
   const badge = `${esc(r.dcLabel ?? "DC")}${hide && !save ? "" : ` ${r.dc}`}`;
   rows.push(`<span class="cc-btot"><b class="cc-total">${r.total}</b><small>vs</small><span class="cc-badge${vsk(r.dcLabel)}">${badge}</span><span class="cc-chips">${resultChips(r, { save, hide })}</span></span>`);
   return `<div class="cc-break${open ? " open" : ""}" data-cc-panel="${esc(id)}">${rows.join("")}</div>`;
@@ -189,8 +188,8 @@ export function headHtml(m) {
 export function targetLineHtml(m, view = FULL_VIEW, { locked = false } = {}) {
   const t = m.tline ?? {}, star = '<span class="cc-star" aria-hidden="true">✦</span>';
   const names = t.names?.length === 1 ? esc(t.names[0]) : t.names?.length ? `${t.names.length} targets` : "No target";
-  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? `${esc(t.dist)}${t.distTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${esc(t.distTip)}" aria-label="${esc(t.distTip)}"></i>` : ""}` : ""].filter(Boolean).join(` ${star} `);
-  const btn = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
+  const bits = [t.area ? t.area : t.targets ? esc(t.targets) : "", t.dist ? esc(t.dist) : ""].filter(Boolean).join(` ${star} `);
+  const btn = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
   return `<div class="cc-tline"><span>${bits}${bits ? " " : ""}<span aria-hidden="true">→</span> <b>${names}</b></span>${btn}</div>`;
 }
 /**
@@ -204,7 +203,7 @@ export function metaLineHtml(m) {
   // v0.0.396 (Lucas: "Didn't we change how this is? The ✦?"): the Structure's grid has no star: Distance and Area at the left, Target at the right
   void star;
   const left = [
-    t.dist ? `<span><b class="cc-ml">Distance:</b> ${esc(t.dist)}${t.distTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${esc(t.distTip)}" aria-label="${esc(t.distTip)}"></i>` : ""}</span>` : "",
+    t.dist ? `<span><b class="cc-ml">Distance:</b> ${esc(t.dist)}</span>` : "",
     t.area ? `<span><b class="cc-ml">Area:</b> ${t.area}</span>` : ""
   ].filter(Boolean).join("");
   const right = !t.area && t.targets ? `<span class="cc-mlr"><b class="cc-ml">Target:</b> ${esc(t.targets)}</span>` : "";
@@ -214,8 +213,8 @@ export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage
   // v0.0.296 (Lucas: "the target should be kept at the bottom"): the target and the retarget stay on the bottom row (v0.0.285 / v0.0.287); target: false = buttons only
   if (!target) return `<hr class="cc-hr"><div class="cc-foot">${hasDamage ? `<button type="button" class="cc-btn small primary" data-twod12="${damage}"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>` : ""}<span class="cc-ftgt"></span><button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
   const t = m.tline ?? {}, n = t.names ?? [];
-  const names = n.length === 1 ? `<b class="cc-tname">${esc(n[0])}</b>` : n.length ? `<b class="cc-tname" title="${esc(n.join(", "))}">${n.length} targets</b>` : '<span class="cc-muted">No target</span>';
-  const re = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
+  const names = n.length === 1 ? `<b class="cc-tname">${esc(n[0])}</b>` : n.length ? `<b class="cc-tname" aria-label="${esc(n.join(", "))}">${n.length} targets</b>` : '<span class="cc-muted">No target</span>';
+  const re = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
   const dmg = hasDamage ? `<button type="button" class="cc-btn small primary" data-twod12="${damage}"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>` : "";
   return `<hr class="cc-hr"><div class="cc-foot">${re}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> ${names}</span>${dmg}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
 }
@@ -223,7 +222,7 @@ export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage
  *  Half / Double behind the sliders) in the place of "→ target" and Damage; Card at the right. No retarget once the damage is rolled. */
 // v0.0.389 (Lucas: "without a target looks weird"): no target yet: the bottom row reads as before the damage ("→ No target"), the crosshair targets the
 // selected tokens for the damage (the damage card's "Target the selected tokens"); no Lethal tag or wide button under the card.
-const noTargetFoot = view => `${view.author ? '<button type="button" class="cc-icon" data-twod12="ccDmgTarget" aria-label="Target the selected tokens" title="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>' : ""}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> <span class="cc-muted">No target</span></span>`;
+const noTargetFoot = view => `${view.author ? '<button type="button" class="cc-icon" data-twod12="ccDmgTarget" aria-label="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>' : ""}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> <span class="cc-muted">No target</span></span>`;
 export const dmgFootHtml = (din, view = FULL_VIEW) => `<hr class="cc-hr"><div class="cc-foot cc-dfoot">${din.row || noTargetFoot(view)}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>${din.extra ?? ""}`;
 const designerFoot = (lines, view) => (view.designer && lines.filter(Boolean).length ? `<div class="cc-designer">${lines.filter(Boolean).join("<br>")}</div>` : "");
 const playerFoot = txt => `<div class="cc-pfoot">${esc(txt)}</div>`;
@@ -276,7 +275,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   if (m.dmg) {
     const d = dmgParts(m.dmg, view, { riders: false, idp: "d" });
     const tiers = [...new Set([...rows.map(r => r.tier), ...d.groups.map(g => g.tier)])].filter(t => t > 0).sort((a, b) => b - a);
-    const nameBtn = (r, k) => `<button type="button" class="cc-cnbtn" data-cc-toggle="l${k}" aria-expanded="false" title="Its roll"><span class="cc-cname">${esc(r.name)}</span></button>`;
+    const nameBtn = (r, k) => `<button type="button" class="cc-cnbtn" data-cc-toggle="l${k}" aria-expanded="false" aria-label="Its roll"><span class="cc-cname">${esc(r.name)}</span></button>`;
     const ladderPanel = (r, k) => `<div class="cc-break cc-lad" data-cc-panel="l${k}"><div class="cc-ladcap">${esc(defText(r, hide))}${hide ? "" : ` · rolled ${Number(r.total) || 0}`}</div>${ladderHtml(r, { hide, id: `l${k}` })}</div>`;
     const tgroups = tiers.map(t => {
       const who = rows.map((r, k) => ({ r, k })).filter(x => x.r.tier === t);
@@ -302,7 +301,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
         const idx = cl.map(({ r }) => d.rows.findIndex(x => (x.uuid && x.uuid === r.uuid) || (!x.uuid && x.name === r.name))).filter(i => i >= 0);
         const pend = idx.filter(i => !d.rows[i].applied), id = `c${t}_${ci}`;
         const act = !view.author || view.hideTgt ? "" : pend.length ? `<button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApplyAll" data-rows="${pend.join(",")}">Apply${pend.length < idx.length ? ` (${pend.length})` : ""}</button>` : (idx.length ? '<span class="cc-muted">✓ Applied</span>' : "");
-        const name = `<button type="button" class="cc-cnbtn" data-cc-toggle="${id}" aria-expanded="false" title="Each one"><span class="cc-cname">${cl.length}× ${esc(stem(cl[0].r.name))}</span></button>`;
+        const name = `<button type="button" class="cc-cnbtn" data-cc-toggle="${id}" aria-expanded="false" aria-label="Each one"><span class="cc-cname">${cl.length}× ${esc(stem(cl[0].r.name))}</span></button>`;
         return `<div class="cc-trow cc-clus">${name}${act}</div><div class="cc-break cc-clp" data-cc-panel="${id}">${cl.map(one).join("")}</div>`;
       }).join("");
       // a creature hit by this Tier's damage with no roll row (an area's extra target): its damage row alone
@@ -529,7 +528,7 @@ export function poolBlock(comps) {
 }
 const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b style="color:${subInk(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`
   // v0.0.284 (Lucas): no "Dice: none" for a flat amount, and a Total only for a dice expression
-  + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.map(d => (d.results ?? []).map((v, k) => (d.ex?.[k] ? `<span class="cc-ddie ex" data-tooltip="Exploded: counts ${v - 1}, rolled again">${v}!</span>` : `<span class="cc-ddie">${v}</span>`)).join("")).join("")}</span>` : "")
+  + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.map(d => (d.results ?? []).map((v, k) => (d.ex?.[k] ? `<span class="cc-ddie ex">${v}!</span>` : `<span class="cc-ddie">${v}</span>`)).join("")).join("")}</span>` : "")
   + (x.mods.length ? `<span class="cc-bl">Modifiers</span><span class="cc-bv">${x.mods.map(m => modTxt(m.v, m.label)).join(" ")}</span>` : "")
   + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Total</span><span class="cc-bv"><b>${x.total}</b></span>` : "") + "</div>";
 /**
@@ -541,7 +540,7 @@ export const rwIcons = (mods = []) => Object.entries(RWI).map(([k, [ic, word]]) 
   const list = (mods ?? []).filter(x => x?.kind === k);
   if (!list.length) return "";
   const tip = list.map(x => (k === "immune" ? x.label : `${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)} ${x.label}`)).join(", ");
-  return `<i class="fa-solid ${ic} cc-rwi ${k}" data-tooltip="${esc(tip)}" aria-label="${esc(`${word}: ${tip}`)}"></i>`;
+  return `<i class="fa-solid ${ic} cc-rwi ${k}" aria-label="${esc(`${word}: ${tip}`)}"></i>`;
 }).join("");
 const tookTxt = (t, mods = []) => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return `${bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"}${rwIcons(mods)}`; };
 const stateChip = s => (s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : s === "both" ? '<span class="cc-state bloodied">Bloodied</span><span class="cc-state strained">Strained</span>' : "");
@@ -567,14 +566,14 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
       const f = r.applied.factor ?? 1, adj = ["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${String(f) === k ? " on" : ""}" data-twod12="ccAdjust" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("");
       // v0.0.285 (Lucas): the applied row as compact as a pending one: "Took …" under the name, Full / Half / Double on demand
       // v0.0.321 (Lucas): Undo in Apply's place (the far right, the same width); the Lethal tag in the on-demand row
-      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double" title="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}${nlTag}</div>` : ""}</div>`;
+      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}${nlTag}</div>` : ""}</div>`;
     }
     // v0.0.321 (Lucas): Resist / Weak / Immune show only once applied (an icon after "Took"); the Guard stays
     // v0.0.398 (Lucas: "remove the '− Guard' from all damages, this should only show in the damage breakdown when you click to see it"): in the
     // on-demand panel (the sliders button) beside Full / Half / Double
     const mods = (r.mods ?? []).filter(x => x.kind === "guard").map(x => modTxt(x.v, x.label)).join(" ");
     const adj = view.author ? `<div class="cc-adjrow ondemand">${["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${k === "1" ? " on" : ""}" data-twod12="ccApply" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("")}${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${nlTag}</div>` : "";
-    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Half or Double" title="Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1">Apply</button>` : ""}${adj}</div>`;
+    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1">Apply</button>` : ""}${adj}</div>`;
   };
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {

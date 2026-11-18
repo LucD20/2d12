@@ -7,4 +7,4 @@ Shield of Faith: Targets One ally | Distance "5" | An enemy's [Strike] Action wo
 Bulwark of Faith: Targets One ally | Distance "5" | An enemy's [Strike] Action would damage the target. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. | after: @Guard[rally] @Pause[After the damage] @Move[slid|distance:1] | gold
 the Consecrated Ground Zone: on the map, 3 rounds, Difficult Terrain for enemies, Guard for allies: map 3 enemies @origin.pow | the card applies it: Consecrated Ground
 the Interrupt / Trigger line first: true
-the HUD hover card to the left: true | the reduction waits on the creature and takes from the next damage: true
+no HUD hover card (v0.0.420): true | the reduction waits on the creature and takes from the next damage: true

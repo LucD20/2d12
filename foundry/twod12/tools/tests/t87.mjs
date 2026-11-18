@@ -216,7 +216,7 @@ for (const n of [1, 2, 9, 10, 12, 20]) {
   console.log(`${n} target${n === 1 ? "" : "s"}:`.padEnd(14), n < 2 ? "no tiles" : `${compact ? "compact" : "with pictures"} | tiles ${tiles} (one is yours) | numbered tabs ${tabs.length ? tabs[0] + ".." + tabs.at(-1) + " (" + tabs.length + ")" : "none"} | pictures ${imgs}`);
 }
 dialogContent = ""; await A.askRoll(kai, { title: "Whirl", attrKey: "body", targetActors: [], targetTiles: mkTiles(10), extraMods: [] });
-console.log("a compact tab keeps the creature's name and DC for the caption:", /data-name="Skeleton 10" data-dc="13"|data-name="Goblin"/.test(dialogContent), "| the tooltip:", /data-tooltip="Skeleton 2: DC 14\. Right-click to remove it from the targets"/.test(dialogContent));
+console.log("a compact tab keeps the creature's name and DC for the caption:", /data-name="Skeleton 10" data-dc="13"|data-name="Goblin"/.test(dialogContent), "| its name for screen readers, no hover (v0.0.420):", /aria-label="Skeleton 2: DC 14\. Right-click to remove it from the targets"/.test(dialogContent) && !/data-tooltip="Skeleton 2/.test(dialogContent));
 // ------------------------------------------------------------------------------------------------ Prone
 console.log("\n--- Prone");
 const { BASIC_ACTIONS, basicItemData } = await import(ROOTURL + "module/basic.mjs");

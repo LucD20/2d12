@@ -215,7 +215,7 @@ function place(shape, n, { within = 0, user = null } = {}) {
     if (bar) {
       // v0.0.216 (Lucas: the bar looked poor and the button text overflowed): the target-picking banner's look; Left and Right are two buttons.
       bar.className = "twod12-linebar";
-      bar.innerHTML = `<i class="fa-solid fa-arrow-right-long lb-ic"></i><span class="lb-text">Line ${n}: aim with the mouse, click to place, Esc to cancel.</span><span class="lb-side" hidden><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the aim). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span>`;
+      bar.innerHTML = `<i class="fa-solid fa-arrow-right-long lb-ic"></i><span class="lb-text">Line ${n}: aim with the mouse, click to place, Esc to cancel.</span><span class="lb-side" hidden><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span>`;
       document.body.append(bar);
       bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
     }

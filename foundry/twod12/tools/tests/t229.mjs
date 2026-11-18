@@ -14,7 +14,7 @@ const volley = { area: "2 Emanation", areaDistance: "Your weapon's normal range"
 console.log("--- the weapon's range");
 for (const band of ["normal", "far", "maximum"]) { const it = { ...volley, areaDistance: `Your weapon's ${band} range` }; console.log(band, "->", K.distanceText(it, bow), "| ⓘ:", K.distanceNote(it, bow)); }
 console.log("no weapon: the words stay:", K.distanceText(volley), "| no ⓘ:", JSON.stringify(K.distanceNote(volley)), "| a plain Distance:", K.distanceText({ distance: "5" }, bow), JSON.stringify(K.distanceNote({ distance: "5" }, bow)));
-console.log("the meta line:", /Distance:<\/b> 8 sq\. <i class="fa-solid fa-circle-info dist-i" data-tooltip="Your weapon's normal range"/.test(K.metaRowHtml({ distance: K.distanceText(volley, bow), distanceTip: K.distanceNote(volley, bow) })));
+console.log("the meta line (no ⓘ since v0.0.420, the tooltip review):", /Distance:<\/b> 8 sq\.<\/span>/.test(K.metaRowHtml({ distance: K.distanceText(volley, bow), distanceTip: K.distanceNote(volley, bow) })));
 
 console.log("--- the roll window: the GM forces a Tier or the Critical");
 const src = n => fs.readFileSync(ROOT + n, "utf8");

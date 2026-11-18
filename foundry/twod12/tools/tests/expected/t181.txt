@@ -8,7 +8,7 @@ taken 3 (2 from the AP Guard), AP Guard left 0, other Guard left 4, to the Healt
 a 10 hit against 4 + 5: taken 9 (AP 4), left 0 / 0, Health takes Vigor 0 Resolve 1
 the old call still works: {"a":{"B":{"l":2,"n":0},"M":{"l":0,"n":0}},"taken":3,"takenAp":0,"guard":0,"apGuard":0}
 --- the ticker's line: the Reaction AP as a diamond
-["+4 +R","−1R","−1R"] | <span class="tk-pips" data-tooltip="4 AP left, Reaction AP ready"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><span class="hsep"></span><i class="rap on"></i></span> | <i class="rap spent" | no rap on an old line
+["+4 +R","−1R","−1R"] | <span class="tk-pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><span class="hsep"></span><i class="rap on"></i></span> | <i class="rap spent" | no rap on an old line
 --- a combat (stubs): a Reaction out of turn pays with the Reaction AP, then a kept AP (v0.0.274: the Guard of the unused AP is not touched)
 1R: true | AP 1 RAP 0 AP Guard 2 (the Reaction AP paid: the Guard stays)
 another 1R: true | AP 0 RAP 0 AP Guard 2 (a kept AP paid: one AP less unused when its turn starts)

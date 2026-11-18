@@ -140,7 +140,7 @@ const oddsText = chk => {
   const pct = x => `${Math.round(x * 100)}%`;
   return { p, text: `T1 ${pct(p[0])} \u00b7 T2 ${pct(p[1])} \u00b7 T3 ${pct(p[2])}`, html: `T1 ${pct(p[0])} &middot; T2 ${pct(p[1])} &middot; <b>T3 ${pct(p[2])}</b>` };
 };
-const oddsRow = chk => `<div class="oddsrow" data-tooltip="Chance of each tier for this roll">Odds: ${oddsText(chk).html}</div>`;
+const oddsRow = chk => `<div class="oddsrow">Odds: ${oddsText(chk).html}</div>`;
 /**
  * v0.0.195: the @Move inside a movement-only Action's text (Advance, Evade, Crawl): a version with no roll and no effect to apply, one @Move of
  * the creature's own movement (advance or evade) and no other button, on a [Move] Action or Evade. null for anything else (Charge, Vanish...).
@@ -155,7 +155,7 @@ export function pureMove(it, version, basicKey = "") {
   return moves[0][1];
 }
 /** v0.0.189: the name of what a bonus comes from, as a link that opens it (Foundry's content links); plain text when it has no item. */
-export const srcLink = (name, uuid) => (uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(uuid)}" data-tooltip="Open ${esc(name)}">${esc(name)}</a>` : esc(name));
+export const srcLink = (name, uuid) => (uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(uuid)}" aria-label="Open ${esc(name)}">${esc(name)}</a>` : esc(name));
 /** Does this tier need a Damage button? attrFrom: the lowest Tier on which the Attribute is added (0: never; true: Weapon, from Tier 2). */
 const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === true ? 2 : Number(attrFrom) || 0; return tier > 0 && (insts.some(i => i.useW || i.dice || i.useAt) || (from > 0 && tier >= from) || fx.length > 0); };
 
@@ -249,7 +249,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
   const notesHtml = notes.length ? `<aside class="usenotes"><div class="unhead">Effects</div><ul>${notes.map(n => `<li><b>${esc(n.title)}</b>${n.title !== n.name ? ` <small>(${esc(n.name)})</small>` : ""}${n.text ? `<div>${esc(n.text)}</div>` : ""}</li>`).join("")}</ul></aside>` : "";
   const ap = versions ? `<div class="apbtns">${versions.map((v, i) => `<label class="apbtn"><input type="radio" name="ap" value="${v.ap}" ${i === 0 ? "checked" : ""}><span>${apIcon(v.ap, defaults.reaction)}</span></label>`).join("")}</div>` : "";
   const chipOf = m => m.info ? `<span class="rnotice" data-tooltip="${esc(m.why ?? "")}"><i class="fa-solid ${esc(m.icon ?? "fa-circle-info")}"></i> ${esc(m.text)}</span>` :
-    `<label class="fxchip ${m.banes && !m.boons ? "bane" : "boon"}" data-tooltip="${esc(m.predicate)}"><input type="checkbox" name="fx" value="${m.id}" data-b="${m.boons ?? 0}" data-n="${m.banes ?? 0}" ${m.match ? "checked" : ""}><i class="fa-solid fa-chevron-${m.banes && !m.boons ? "down" : "up"}"></i><span>${esc(m.name)}</span><small${m.full ? " hidden" : ""}>${m.boons ? `+${m.boons}` : ""}${m.boons && m.banes ? "/" : ""}${m.banes ? `\u2212${m.banes}` : ""}</small></label>`;
+    `<label class="fxchip ${m.banes && !m.boons ? "bane" : "boon"}"><input type="checkbox" name="fx" value="${m.id}" data-b="${m.boons ?? 0}" data-n="${m.banes ?? 0}" ${m.match ? "checked" : ""}><i class="fa-solid fa-chevron-${m.banes && !m.boons ? "down" : "up"}"></i><span>${esc(m.name)}</span><small${m.full ? " hidden" : ""}>${m.boons ? `+${m.boons}` : ""}${m.boons && m.banes ? "/" : ""}${m.banes ? `\u2212${m.banes}` : ""}</small></label>`;
   const chips = mods.map(chipOf).join("");
   // Several targets: a tile for each creature; clicking one shows the modifiers that affect that creature (the first tile: yours, for all).
   const ownerOf = id => { const t = String(id); return t.startsWith("syn:") ? (t.split("|")[1] ?? null) : (t.includes("|") ? t.split("|")[0] : null); };
@@ -258,28 +258,28 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     const shared = mods.filter(m => !ownerOf(m.id)), own = u => mods.filter(m => ownerOf(m.id) === u);
     const first = shared.length ? "all" : (targetTiles.find(t => own(t.uuid).length)?.uuid ?? "all");
     const group = (id, list) => `<div class="fxgroup${id === first ? "" : " off"}" data-for="${esc(id)}">${list.length ? list.map(chipOf).join("") : '<span class="hint">Nothing changes this roll for this creature.</span>'}</div>`;
-    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" data-tooltip="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" data-tooltip="${esc(t.name)}: DC ${t.dc}. Right-click to remove it from the targets"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}<span class="ttx" data-rm="${esc(t.uuid)}" data-tooltip="Remove ${esc(t.name)} from the targets"><i class="fa-solid fa-xmark"></i></span></button>`).join("")}</div></div><div class="tremoved"></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
+    effectsRows = `<div class="rf-row tilesrow"><span class="rf-label">Targets</span><div class="ttiles${targetTiles.length >= 10 ? " compact" : ""}"><button type="button" class="ttile${first === "all" ? " on" : ""}" data-tg="all" data-name="Yours" aria-label="Your own effects, for every target"><span class="tdots"></span><i class="fa-solid fa-user"></i></button>${targetTiles.map((t, k) => `<button type="button" class="ttile${first === t.uuid ? " on" : ""}" data-tg="${esc(t.uuid)}" data-name="${esc(t.name)}" data-dc="${t.dc}" aria-label="${esc(t.name)}: DC ${t.dc}. Right-click to remove it from the targets"><span class="tdots"></span>${targetTiles.length >= 10 ? `<b class="tabnum">${k + 1}</b>` : `<img src="${esc(t.img)}" alt="">${tileNumber(t.name) ? `<span class="tnum">${tileNumber(t.name)}</span>` : ""}`}<span class="ttx" data-rm="${esc(t.uuid)}" aria-label="Remove ${esc(t.name)} from the targets"><i class="fa-solid fa-xmark"></i></span></button>`).join("")}</div></div><div class="tremoved"></div><div class="tcap"></div><div class="fxgroups">${group("all", shared)}${targetTiles.map(t => group(t.uuid, own(t.uuid))).join("")}</div>`;
   } else effectsRows = chips ? `<div class="rf-row"><span class="rf-label">Effects</span>${chips}</div>` : "";
   // Notices: how the roll is made, shown as labels (a Thrown weapon thrown, for example).
   if (generalNotices.length) effectsRows = `<div class="rf-row"><span class="rf-label">Use</span>${generalNotices.map(n => `<span class="rnotice" data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? "fa-circle-info")}"></i> ${esc(n.text)}</span>`).join("")}</div>` + effectsRows;
   const bb = (kind, label, icon, n) =>
-    `<button type="button" class="bbchip ${kind === "boons" ? "boon" : "bane"} ${n ? "on" : ""}" data-bb="${kind}" data-tooltip="Left-click: +1. Right-click: \u22121."><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${kind}" value="${n}">`;
+    `<button type="button" class="bbchip ${kind === "boons" ? "boon" : "bane"} ${n ? "on" : ""}" data-bb="${kind}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${kind}" value="${n}">`;
   const state = (name, label, cls, icon) =>
-    `<label class="fxchip ${cls}" data-tooltip="${name === "favored" ? "Roll 3d12 and keep the two highest; any pair of the three is Doubles, three of a kind a Critical" : (defaults.doomedWhy ?? "Roll 3d12 and keep the two lowest")}"><input type="checkbox" name="${name}" ${(name === "doomed" && defaults.doomed) || (name === "favored" && defaults.favored) ? "checked" : ""}><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span></label>`;
+    `<label class="fxchip ${cls}"><input type="checkbox" name="${name}" ${(name === "doomed" && defaults.doomed) || (name === "favored" && defaults.favored) ? "checked" : ""}><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span></label>`;
   const stepChip = (name, label, icon, cls, n) =>
-    `<button type="button" class="bbchip ${cls} ${n ? "on" : ""}" data-bb="${name}" data-tooltip="Left-click: +1. Right-click: \u22121. ${name === "empowered" ? "Empowered: the first damage on each of your turns adds 1d6! (v0.0.407)." : ""}${defaults.empowerWhy ? ` \u2014 ${defaults.empowerWhy}` : ""}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${name}" value="${n}">`;
+    `<button type="button" class="bbchip ${cls} ${n ? "on" : ""}" data-bb="${name}"><i class="fa-solid fa-chevron-${icon}"></i><span>${label}</span><b>${n}</b></button><input type="hidden" name="${name}" value="${n}">`;
   // v0.0.187: Bonus Damage from effects and passives (Killer's Focus) is a chip: unticked, it isn't added and its effect isn't used up.
-  const bonusRow = bonusChips.length ? `<div class="rf-row"><span class="rf-label">Bonus</span>${bonusChips.map(b => `<label class="fxchip boon" data-tooltip="${esc(b.why ?? "")}"><input type="checkbox" name="bonusOn" value="${esc(b.key)}" checked><i class="fa-solid fa-sparkles"></i><span>${esc(b.text)}</span></label>`).join("")}</div>` : "";
+  const bonusRow = bonusChips.length ? `<div class="rf-row"><span class="rf-label">Bonus</span>${bonusChips.map(b => `<label class="fxchip boon"><input type="checkbox" name="bonusOn" value="${esc(b.key)}" checked><i class="fa-solid fa-sparkles"></i><span>${esc(b.text)}</span></label>`).join("")}</div>` : "";
   const special = [
     withReload
-      ? `<label class="fxchip boon" data-tooltip="A powerful shot: Favored and Empowered 2. Afterwards the weapon must be reloaded before it is used again."><input type="checkbox" name="reloadshot"><i class="fa-solid fa-bullseye"></i><span>Reload shot</span></label>`
+      ? `<label class="fxchip boon"><input type="checkbox" name="reloadshot"><i class="fa-solid fa-bullseye"></i><span>Reload shot</span></label>`
       : "",
     withDamage
       ? `<span class="bbgroup">${stepChip("empowered", "Empowered", "up", "boon", defaults.empowerN ? 1 : 0)}</span>`
       : "",
     // v0.0.283 (pack chat-cards; book Ch. 4): switching a Lethal Action to Nonlethal (or back) costs a Bane on the roll; the damage message shows the tag
     withDamage && defaults.nlKnown
-      ? `<label class="fxchip bane" data-tooltip="Deal ${defaults.nonlethal ? "Lethal" : "Nonlethal"} damage instead: 1 Bane on this roll"><input type="checkbox" name="switchNl"><i class="fa-solid fa-hand-fist"></i><span>${defaults.nonlethal ? "Lethal" : "Nonlethal"} (1 Bane)</span></label>`
+      ? `<label class="fxchip bane"><input type="checkbox" name="switchNl"><i class="fa-solid fa-hand-fist"></i><span>${defaults.nonlethal ? "Lethal" : "Nonlethal"} (1 Bane)</span></label>`
       : ""
   ]
     .filter(Boolean)
@@ -293,7 +293,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
     window: { title },
     position: { width: notes.length || preview ? 580 : 380 },
     content: `<div class="twod12 usedlg">${ap}<div class="usepreview"></div><div class="usewrap"><div class="useleft">
-      <div class="rollfields"><div class="rf-row"><label class="mini">DC <input class="num" type="number" name="dc" value="${defaults.dc ?? 13}"></label><label class="mini"${defaults.adjLabel ? ` data-tooltip="${esc(defaults.adjLabel)}: −${exh} on all Rolls"` : ""}>Modifier <input class="num" type="number" name="mod" value="${defaults.mod ?? 0}">${defaults.adjLabel ? `<input type="hidden" name="adjLabel" value="${esc(defaults.adjLabel)}"><input type="hidden" name="adjDefault" value="${defaults.adjDefault}">` : ""}</label>${dcNote ? `<span class="dcnote">${esc(dcNote)}</span>` : ""}</div>
+      <div class="rollfields"><div class="rf-row"><label class="mini">DC <input class="num" type="number" name="dc" value="${defaults.dc ?? 13}"></label><label class="mini">Modifier <input class="num" type="number" name="mod" value="${defaults.mod ?? 0}">${defaults.adjLabel ? `<input type="hidden" name="adjLabel" value="${esc(defaults.adjLabel)}"><input type="hidden" name="adjDefault" value="${defaults.adjDefault}">` : ""}</label>${dcNote ? `<span class="dcnote">${esc(dcNote)}</span>` : ""}</div>
       ${chipRow}</div></div>${notesHtml}</div></div>`,
     render: (event, dialog) => {
       const root = dialog.element,
@@ -333,7 +333,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
           // v0.0.216 (Lucas: "the X does nothing"): the tile's own display beat the hidden attribute; it is now display:none, with an undo chip.
           tile.classList.add("gone"); tile.style.display = "none";
           const box = root.querySelector(".tremoved"), u = u0, group = root.querySelector(`.fxgroup[data-for="${CSS.escape(u)}"]`);
-          const chip = document.createElement("span"); chip.className = "trm-chip"; chip.dataset.tooltip = "Removed from the targets: click to put it back";
+          const chip = document.createElement("span"); chip.className = "trm-chip"; chip.setAttribute("aria-label", "Removed from the targets: click to put it back");
           chip.innerHTML = `<input type="hidden" name="removed" value="${esc(u)}"><i class="fa-solid fa-rotate-left"></i> ${esc(tile.dataset.name ?? "")}`;
           const was = [...(group?.querySelectorAll("[name=fx]") ?? [])].map(c => c.checked);
           group?.querySelectorAll("[name=fx]").forEach(c => { c.checked = false; c.disabled = true; });
@@ -385,7 +385,7 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
           try { d = JSON.parse(el.dataset.avg); } catch (e) { return; }
           const r = liveAvg(d, on, step);
           el.innerHTML = `Avg ${Math.round(r.avg * 10) / 10}${r.why.length ? ` <small>(with ${esc(r.why.join(", "))})</small>` : ""}`;
-          el.dataset.tooltip = r.why.length ? `Without them: ${Math.round(d.base * 10) / 10}` : "";
+          void r;   // v0.0.420 (the tooltip review): no "Without them" hover
         });
         const forced = root.querySelector("[name=forceTier]")?.value ?? "";
         pv.querySelectorAll("tr[data-t]").forEach(tr => tr.classList.toggle("forced", tr.dataset.t === forced));
@@ -1009,7 +1009,7 @@ export async function useAction(actor, item, opts = {}) {
       chk?.forced && n === tier
         ? `<span class="rtag forced">Forced</span>`
         : isUp
-          ? `<span class="rtag dbl" data-tooltip="Doubles">Tier ${n}</span>`
+          ? `<span class="rtag dbl" aria-label="Doubles">Tier ${n}</span>`
           : isRolled
             ? movedUp
               ? `<span class="rtag rolled small">Rolled</span>`
@@ -1018,12 +1018,12 @@ export async function useAction(actor, item, opts = {}) {
     if (mres) {
       const landed = mres.filter(r => r.chk.tier === n);
       cls = landed.length ? (n === 1 ? "hit fail" : "hit") : "";
-      tag = landed.length ? `<span class="rtag rolled${n === 1 ? " fail" : ""}" data-tooltip="${esc(landed.map(r => r.label).join(", "))}">${esc(collapseNames(landed.map(r => r.name)))}</span>` : "";
+      tag = landed.length ? `<span class="rtag rolled${n === 1 ? " fail" : ""}">${esc(collapseNames(landed.map(r => r.name)))}</span>` : "";
     }
     // The weapon's real dice and the Modifier, like the roll dialog's preview (the sheet keeps the book's 1[W]).
     const lines = await tierLines(version[k], n, cardCtx, expandAsText(version[`x${n}`], item.system.versions, version, n));   // "As 1 AP" written out
     const txt = lines.length ? lines.join("<br>") : "&mdash;";
-    rowParts.push(`<tr class="${cls}"><th data-tooltip="Tier ${n}">${ranges[i] || `Tier ${n}`}</th><td><div class="tcell"><div class="ttxt">${txt}${fxn[k].length ? `<div class="fxrow">&#10022; ${fxNames(fxn[k])}</div>` : ""}</div>${tag}</div></td></tr>`);
+    rowParts.push(`<tr class="${cls}"><th>${ranges[i] || `Tier ${n}`}</th><td><div class="tcell"><div class="ttxt">${txt}${fxn[k].length ? `<div class="fxrow">&#10022; ${fxNames(fxn[k])}</div>` : ""}</div>${tag}</div></td></tr>`);
   }
   // Critical: a row under Tier 3, gold when it happened (Doubles on a Tier 3, or 20 above the DC), dimmed otherwise.
   if (!version.noTiers && version.critical) {
@@ -1032,7 +1032,7 @@ export async function useAction(actor, item, opts = {}) {
     const why = mres ? (critNames.length ? "Critical" : "") : (chk?.crit ? (chk.doubles && chk.base === 3 ? "Doubles" : "20 above") : "");
     const tagText = mres ? esc(collapseNames(critNames)) : "Critical";
     rowParts.push(
-      `<tr class="crit${happened ? " up" : ""}"><th>Critical</th><td><div class="tcell"><div class="ttxt">${await enrich(version.critical, item)}</div>${why ? `<span class="rtag critt" data-tooltip="${mres ? "Critical" : why === "Doubles" ? "Doubles on a Tier 3" : "20 or more above the DC"}">${tagText}</span>` : ""}</div></td></tr>`
+      `<tr class="crit${happened ? " up" : ""}"><th>Critical</th><td><div class="tcell"><div class="ttxt">${await enrich(version.critical, item)}</div>${why ? `<span class="rtag critt">${tagText}</span>` : ""}</div></td></tr>`
     );
   }
   const rows = rowParts.join("");

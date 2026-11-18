@@ -108,7 +108,7 @@ console.log("the moment's answer:", JSON.stringify({ ...res, id: !!res.id }));
 console.log("edited in place, no new message:", created.length === nMsgs, msg.content.startsWith('<div class="twod12 chat rx2 rx-done"'), "| no overlay for it any more (done):", rx.done);
 await M.noteLanded(res.id, { final: 4, blocked: 5 });
 const line = msg.content.match(/<div class="rx-line"[\s\S]*?<\/button><\/div>/)?.[0] ?? "";
-console.log("the collapsed line:", txt(line), "| faces in resolve order:", [...line.matchAll(/data-tooltip="([^"]*)" aria-label/g)].map(m => m[1]).join(", "), "| icons (Font Awesome, v0.0.276):", [...line.matchAll(/class="rx-i (fa-\w+ fa-[\w-]+)/g)].map(m => m[1].split(" ")[1]).join(" "), "| no <svg> in the content:", !msg.content.includes("<svg"));
+console.log("the collapsed line:", txt(line), "| faces in resolve order:", [...line.matchAll(/class="rx-av[^"]*" style="[^"]*" aria-label="([^"]*)"/g)].map(m => m[1]).join(", "), "| icons (Font Awesome, v0.0.276):", [...line.matchAll(/class="rx-i (fa-\w+ fa-[\w-]+)/g)].map(m => m[1].split(" ")[1]).join(" "), "| no <svg> in the content:", !msg.content.includes("<svg"));
 console.log("the result chip: struck held, final:", line.match(/rx-out dmg">(.*?)<\/span>/)?.[1]);
 const full = msg.content.match(/<div class="rx-full">[\s\S]*$/)?.[0] ?? "";
 console.log("unfolded: header", txt(full.match(/<div class="rx-hd">[\s\S]*?<\/div>/)?.[0]), "| the map button (v0.0.281, replaces the snapshot):", full.includes('class="rx-hb rx-replay" data-twod12="rxPan"'), "| its labels (drawn on each client, v0.0.276):", [...M.snapshotSvg(rx).matchAll(/font-weight="700" fill="[^"]*">([^<]*)<\/text><\/g>/g)].map(m => m[1]).filter(s => s.includes("·") || s.includes("→")).join(" ; "));
@@ -195,7 +195,7 @@ console.log("--- v0.0.279 (Lucas tested v0.0.278)");
 const svg279 = M.snapshotSvg(rx);
 console.log("the snapshot: no labels on the lines, a numbered pin on each reactor:", [...svg279.matchAll(/<title>(\d\.[^<]*)<\/title>/g)].map(m => m[1]).join(" ; "), "| the damage stays over the target:", /9 → 4/.test(svg279));
 console.log("closer in: a token's radius", M.snapshotLayout({ snap: { gs: 70, pos: [{ u: "a", x: 0, y: 0 }, { u: "b", x: 70, y: 70 }] } }).r, "(was 11 at most)");
-console.log("the frozen stack shows the target's face:", /rx-vs">vs<\/span><span class="rx-av rx-av-m"[^>]*data-tooltip="Krysta"/.test(msg.content));
+console.log("the frozen stack shows the target's face:", /rx-vs">vs<\/span><span class="rx-av rx-av-m"[^>]*aria-label="Krysta"/.test(msg.content));
 // Move back to the last possible square: a path of 6 squares along a row, a watcher next to square 3 (range 1), another far
 const P6 = [0, 1, 2, 3, 4, 5].map(x => ({ x: x * 100, y: 0 }));
 const d = (r, sq) => Math.max(Math.abs(r.at.x - sq.x), Math.abs(r.at.y - sq.y)) / 100;
@@ -213,7 +213,7 @@ const pb = src("module/pickbar.mjs"), mo5 = src("module/moment.mjs");
 console.log("the bottom bar takes squares as well as tokens (clicked on the map too):", pb.includes("const toks = (o.options ?? []).filter(x => x.token || x.cells?.length);") && pb.includes("const cellsOf = x => x.cells ?? T.tokenCells(x.token);"), "| Move back opens it when there is a choice:", mo5.includes("if (!toStart && b.start && choices.length > 2)") && mo5.includes('const { pickBar } = await import("./pickbar.mjs");'), "| no Foundry window:", !/DialogV2|Dialog\./.test(mo5));
 
 console.log("--- v0.0.281 (Lucas: \"Ally T1/2/3/not used vs Target\", drop the chat's grid, the overlay's labels overlapped)");
-const rows281 = [...msg.content.matchAll(/<div class="rx-it rx-res[^"]*"[^>]*data-twod12="rxOpen" data-tooltip="([^"]*)">([\s\S]*?)<\/div>/g)];
+const rows281 = [...msg.content.matchAll(/<div class="rx-it rx-res[^"]*"[^>]*data-twod12="rxOpen" aria-label="([^"]*)">([\s\S]*?)<\/div>/g)];
 console.log("the resolved rows:", rows281.map(m => txt(m[2])).join(" | "), "| a click opens the Action:", rows281.map(m => m[1]).join(" ; "));
 console.log("a result not read yet: an ellipsis pill:", M.rxCardHtml({ v: 2, id: "q", done: true, base: { kind: "move" }, rows: [{ i: 0, state: "use", order: 1, role: "attack", itemName: "OA", targetName: "X", targetImg: "", ap: 1, result: "done", out: {} }] }).includes('rx-out none">\u2026'));
 const ov281 = src("module/rxoverlay.mjs"), mo281 = src("module/moment.mjs");

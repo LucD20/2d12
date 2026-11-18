@@ -3,7 +3,7 @@ normal -> 8 | ⓘ: Your weapon's normal range
 far -> 16 | ⓘ: Your weapon's far range
 maximum -> 32 | ⓘ: Your weapon's maximum range
 no weapon: the words stay: Your weapon's normal range | no ⓘ: "" | a plain Distance: 5 ""
-the meta line: true
+the meta line (no ⓘ since v0.0.420, the tooltip review): true
 --- the roll window: the GM forces a Tier or the Critical
 Tier and Critical names are buttons for the GM: true | 4 = a Critical (Tier 3 and its line): true
 --- Save Actions: Effects by Tier and the chain after the damage

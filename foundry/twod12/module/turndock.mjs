@@ -49,14 +49,14 @@ export function dockModel({ who = "", round = 0, lines = [], reacts = [], live =
 }
 
 const badge = (txt, cls = "rd") => (txt ? `<span class="td-badge ${cls}">${esc(txt)}</span>` : "");
-const unspent = () => `<a class="td-link" data-twod12-book="${UNSPENT_AP_LINK}" data-tooltip="The book, Chapter 2: Unspent AP">unused AP</a>`;
+const unspent = () => `<a class="td-link" data-twod12-book="${UNSPENT_AP_LINK}">unused AP</a>`;
 /** Pure: the header's pips (AP left, then the Reaction AP). */
 export function headPips(ap, rap, max) {
   if (ap === null || ap === undefined) return "";
   const m = Math.max(1, num(max), num(ap));
   const out = []; for (let i = 0; i < m; i++) out.push(`<i class="${i < num(ap) ? "on" : ""}"></i>`);
   if (rap !== null && rap !== undefined) out.push(`<b class="hsep"></b><i class="r${num(rap) ? " on" : ""}"></i>`);   // v0.0.394: a hairline, as the HUD
-  return `<span class="td-pips" data-tooltip="${num(ap)} AP left${rap !== null && rap !== undefined ? `, Reaction AP ${num(rap) ? "ready" : "spent"}` : ""}">${out.join("")}</span>`;
+  return `<span class="td-pips">${out.join("")}</span>`;
 }
 const tickBadge = t => (t.step === "end" ? badge(t.done ? "ended" : "ends", "end") : badge(t.done ? `${t.rem} rd left` : `${t.rem + 1} → ${t.rem}`, "tick"));
 
@@ -67,7 +67,7 @@ export function bodyHtml(m, { done = false } = {}) {
     if (r.kind === "guard") return `<div class="td-r"><span class="td-ic guard"><i class="fa-solid fa-shield-halved"></i></span><span class="td-nm"><b class="td-g">${esc(r.name)}</b> (${unspent()})</span>${badge(r.badge)}</div>`;
     const cls = r.kind === "move" ? "mv" : (r.kind === "react" ? "rx" : "ap");
     const cost = r.kind === "start" ? `<span class="td-c ap">${esc(r.line.c)}</span>` : pipsHtml(r.line, true);
-    return `<div class="td-r${r.live ? " now" : ""}"><span class="td-ic ${cls}">${ICON[r.kind] ?? ICON.act}</span><span class="td-nm">${esc(r.name)}${r.kind === "move" && (r.sq !== undefined || r0.live) ? " sq" : ""}${r.live ? '<span class="td-live" data-tooltip="Still moving"></span>' : ""}</span>${cost}</div>`;
+    return `<div class="td-r${r.live ? " now" : ""}"><span class="td-ic ${cls}">${ICON[r.kind] ?? ICON.act}</span><span class="td-nm">${esc(r.name)}${r.kind === "move" && (r.sq !== undefined || r0.live) ? " sq" : ""}${r.live ? '<span class="td-live" aria-label="Still moving"></span>' : ""}</span>${cost}</div>`;
   };
   const tl = m.rows.length ? m.rows.map(row).join("") : `<div class="td-r td-none">Nothing yet.</div>`;
   const ticks = m.ticks.length ? `<div class="td-sep">${done ? "When the turn ended" : "At the end of this turn"}</div>${m.ticks.map(t => `<div class="td-r"><span class="td-ic">⏳</span><span class="td-nm">${esc(t.name)}${t.on ? ` <span class="td-on">on ${esc(t.on)}</span>` : ""}</span>${tickBadge({ ...t, done })}</div>`).join("")}` : "";
@@ -191,7 +191,7 @@ function makeTurnButton() {
   b.type = "button";
   b.className = "ui-control icon fa-solid fa-list-check twod12-turnbtn";
   b.setAttribute("aria-pressed", String(shown()));
-  b.dataset.tooltip = "Turn Breakdown: show or hide";
+  b.setAttribute("aria-label", "Turn Breakdown: show or hide");
   b.setAttribute("aria-label", "Turn Breakdown");
   b.addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await game.settings.set(F, "turnDockShown", !shown()); document.querySelectorAll(".twod12-turnbtn").forEach(x => x.setAttribute("aria-pressed", String(shown()))); renderDock(); });
   return b;
@@ -213,7 +213,7 @@ function journalExport(root) {
   const b = document.createElement("button");
   b.type = "button"; b.className = "twod12-exportchat";
   b.innerHTML = '<i class="fa-solid fa-file-export"></i> Export Chat Log';
-  b.dataset.tooltip = "Save the chat log as a text file (Foundry's Export Chat Log, moved here from the chat)";
+  b.setAttribute("aria-label", "Save the chat log as a text file");
   b.addEventListener("click", ev => { ev.preventDefault(); try { (game.messages?.export ?? (() => ui.chat?.exportLog?.())).call(game.messages); } catch (e) { console.warn("twod12 | export chat", e); } });
   foot.append(b);
 }

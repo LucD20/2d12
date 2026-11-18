@@ -18,7 +18,7 @@ console.log("the panel's card:", card);
 const valued = { ...e, name: "Enfeebled 2", getFlag: (ns, k) => ({ value: 2, baseName: "Enfeebled" }[k] ?? null) };
 console.log("a valued condition's card:", fx.panelCardHtml(valued, actor, { dur: "1 round" }).replace(/<div class="ft-text">[\s\S]*?<\/div>/, ""));
 const s = src("module/effects.mjs");
-console.log("the panel marks each icon and hands the card to the manager on hover:", s.includes("markTip(el, panelCardHtml(e, actor, { dur, note }))") && s.includes('panel.addEventListener("pointerover", ev => activateTip(ev.target.closest("[data-effect-id]")), true)') && s.includes('el.dataset.tooltipDirection = "LEFT"'));
+console.log("no hover card on the token's condition panel (v0.0.420, the tooltip review):", s.includes("const markTip = () => {};"));
 console.log("targets row:", cf.targetsRowHtml(["Goblin, Nari"], { retarget: true }));
 console.log("no target:", cf.targetsRowHtml([], { retarget: true }));
 console.log("without the button:", cf.targetsRowHtml(["Goblin"]));

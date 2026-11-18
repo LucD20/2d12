@@ -129,7 +129,7 @@ export function exhaustedHud(app, html) {
   const el = root?.querySelector?.('[data-status-id="exhausted"]');
   if (!el || actor?.type !== "character") return false;
   const n = Number(actor.system.exhausted ?? 0);
-  el.dataset.tooltip = `Exhausted${n ? ` ${n}` : ""} · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove`;
+  el.setAttribute("aria-label", `Exhausted${n ? ` ${n}` : ""} · Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove`);
   return true;
 }
 

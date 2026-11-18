@@ -10,8 +10,8 @@ labels: 1 Emanation | 2 Burst | 6 Line | icons: emanation, burst, line | each an
 withMod: Guard 1d8+3 | Guard 1d8 + [Mod] | 2 to all | Pushed 1
 modForDoc: an Action card 3 | a damage card 2 | nothing null | no document null
 chips: <icon/> <span class="ti-name">2 Emanation</span> [twod12-inline] | <icon/> <span class="ti-name">3 Burst</span> [twod12-inline] | <icon/> <span class="ti-name">6 Line</span> [twod12-inline]
-Guard on an Action card (Modifier 3): <i class="fa-solid fa-shield-heart"></i> <span class="ti-name">Guard 1d8+3</span> [twod12-inline calc] (Calculated: Guard 1d8 + [Mod] with this creature's [Mod] 3 = Guard 1d8+3) | on the sheet with no creature: <i class="fa-solid fa-shield-heart"></i> <span class="ti-name">Guard 1d8 + [Mod]</span> [twod12-inline]
-a book link: <i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span> [twod12-inline book] (Bright: a rule of the book) | <i class="fa-solid fa-book-open"></i> <span class="ti-name">Guard</span> [twod12-inline book] (Guard: a rule of the book (Core Rules))
+Guard on an Action card (Modifier 3): <i class="fa-solid fa-shield-heart"></i> <span class="ti-name">Guard 1d8+3</span> [twod12-inline calc] | on the sheet with no creature: <i class="fa-solid fa-shield-heart"></i> <span class="ti-name">Guard 1d8 + [Mod]</span> [twod12-inline]
+a book link: <i class="fa-solid fa-book-open"></i> <span class="ti-name">Bright light</span> [twod12-inline book] | <i class="fa-solid fa-book-open"></i> <span class="ti-name">Guard</span> [twod12-inline book]
 options: {"formula":"1d8+mod","who":"pick","area":2} {"kind":"pushed","distance":1,"pick":true,"area":2,"from":"target"} {"ref":"Bright","doc":"Core Rules"}
 --- the Smite card (book/cards/stage0/paladin.json since pack F2, v0.0.409) as Foundry data
 2 AP: dice rule smite | tiers  1d6! MHo / [W]+ 1d6! MHo / [W]+ 2d6! MHo

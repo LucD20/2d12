@@ -125,11 +125,11 @@ export function grantRowsHtml(actor, card) {
     const order = grantTargetOrder(tg, grant?.used ?? [], count - left);
     const btns = Array.from({ length: count }, (_, k) => {
       const t = order[k], name = `${escT(g.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}`, spent = k < count - left;
-      return spent ? `<span class="cc-used gl-used"><i class="fa-solid fa-check"></i> ${name}</span>` : `<button type="button" class="cc-gbtn gl-btn" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} data-tooltip="${t?.name ? `Use ${escT(g.actionName)} against ${escT(t.name)}` : `Use ${escT(g.actionName)}`}">${grantIcon(g.actionName)} ${name}</button>`;
+      return spent ? `<span class="cc-used gl-used"><i class="fa-solid fa-check"></i> ${name}</span>` : `<button type="button" class="cc-gbtn gl-btn" data-twod12="useGrant" data-effect-id="${g.id}" data-index="${g.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} aria-label="${t?.name ? `Use ${escT(g.actionName)} against ${escT(t.name)}` : `Use ${escT(g.actionName)}`}">${grantIcon(g.actionName)} ${name}</button>`;
     }).join("");
     // v0.0.351 (Lucas: "there should also be a button to cancel"): the uses can be given up (the Effect that grants them ends)
     if (g.cancelled) return `<div class="tline grantrow grantlist"><div class="gbtns"><span class="cc-used gl-used gl-cancelled"><i class="fa-solid fa-ban"></i> ${escT(g.actionName)}: cancelled</span></div></div>`;
-    const cancel = left > 0 ? `<button type="button" class="cc-gbtn gl-cancel" data-twod12="cancelGrant" data-effect-id="${g.id}" data-tooltip="Give up these uses (the Effect that grants them ends)"><i class="fa-solid fa-xmark"></i> Cancel</button>` : "";
+    const cancel = left > 0 ? `<button type="button" class="cc-gbtn gl-cancel" data-twod12="cancelGrant" data-effect-id="${g.id}" aria-label="Give up these uses (the Effect that grants them ends)"><i class="fa-solid fa-xmark"></i> Cancel</button>` : "";
     return `<div class="tline grantrow grantlist"><div class="gbtns">${btns}${cancel}</div></div>`;
   }).join("");
 }
@@ -215,11 +215,11 @@ export function refreshGrantBar() {
   // targets one of the card's creatures still free
   const btns = list.flatMap(x => {
     const grant = actor.effects.get(x.effectId)?.getFlag(F, "grants")?.[x.index], free = grantTargetOrder(grantCardTargets(actor, x.effectId), grant?.used ?? [], 0).filter(t => !(grant?.used ?? []).includes(t?.uuid));
-    return Array.from({ length: x.left }, (_, k) => { const t = free[k]; return `<button type="button" class="lb-go lb-grant" data-effect-id="${escT(x.effectId)}" data-index="${x.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} data-tooltip="${escT(`${x.actionName}${t?.name ? ` against ${t.name}` : ""}, granted by ${x.source} (free)`)}">${grantIcon(x.actionName)} ${escT(x.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}</button>`; });
+    return Array.from({ length: x.left }, (_, k) => { const t = free[k]; return `<button type="button" class="lb-go lb-grant" data-effect-id="${escT(x.effectId)}" data-index="${x.index}"${t?.uuid ? ` data-target="${escT(t.uuid)}"` : ""} aria-label="${escT(`${x.actionName}${t?.name ? ` against ${t.name}` : ""}, granted by ${x.source} (free)`)}">${grantIcon(x.actionName)} ${escT(x.actionName)}${t?.name ? `: ${escT(t.name)}` : ""}</button>`; });
   }).join("");
   const sources = [...new Set(list.map(x => x.source))].join(", ");
-  const cancels = [...new Map(list.map(x => [x.effectId, x])).values()].map(x => `<button type="button" class="lb-give lb-gcancel" data-effect-id="${escT(x.effectId)}" data-tooltip="${escT(`Give up the uses left from ${x.source}`)}">Cancel</button>`).join("");   // v0.0.351
-  const html = `<span class="lb-grip" data-tooltip="Drag to move this bar (double-click: back to its place)"><i class="fa-solid fa-grip-vertical"></i></span><i class="fa-solid fa-bolt lb-ic"></i><span class="lb-text"><b>${escT(tok.name)}</b>: granted by <b>${escT(sources)}</b></span>${btns}${cancels}`;
+  const cancels = [...new Map(list.map(x => [x.effectId, x])).values()].map(x => `<button type="button" class="lb-give lb-gcancel" data-effect-id="${escT(x.effectId)}" aria-label="${escT(`Give up the uses left from ${x.source}`)}">Cancel</button>`).join("");   // v0.0.351
+  const html = `<span class="lb-grip" aria-label="Drag to move this bar (double-click: back to its place)"><i class="fa-solid fa-grip-vertical"></i></span><i class="fa-solid fa-bolt lb-ic"></i><span class="lb-text"><b>${escT(tok.name)}</b>: granted by <b>${escT(sources)}</b></span>${btns}${cancels}`;
   if (!grantBarEl) {
     grantBarEl = document.createElement("div"); grantBarEl.className = "twod12-linebar twod12-setupbar twod12-grantbar"; document.body.append(grantBarEl);
     makeMovable(grantBarEl);   // v0.0.350 (Lucas, playtest 4: "the granted actions HUD should be movable and lower on the screen")

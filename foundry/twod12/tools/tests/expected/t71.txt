@@ -2,6 +2,6 @@ explosion: Weapon Modifier · Body [12:boom] ⛓ [8:chain] + [4] + 2 + Boons 1 2
 failure:   Weapon Modifier · Body [9] + [3] [11] + 1 &minus; Banes 1 11 DC 13 Doomed
 doubles:   Weapon Modifier · Body [6:dbl] + [6:dbl] + 2 + Boons 1 &minus; Banes 1 15 DC 13 Doubles: +1 Tier
 shield classes: class="shield win" | fail shield: class="shield lose"
-damage line: <i class="fa-solid fa-heart dt-body" ></i> <span class="pool-b">1[W]</span> <span class="dtype dt-sl" style="color:#4a5058"><img class="dt-img" src="icons/svg/sword.svg" alt=""> Slash</span>
-Mind Holy:   <i class="fa-solid fa-brain dt-mind" ></i> <span class="pool-m">1d4</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span>
+damage line: <i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W]</span> <span class="dtype dt-sl" style="color:#4a5058"><img class="dt-img" src="icons/svg/sword.svg" alt=""> Slash</span>
+Mind Holy:   <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d4</span> <span class="dtype dt-ho" style="color:#854F0B"><i class="fa-solid fa-sun"></i> Holy</span>
 choose: true | Electricity: <span class="dtype dt-el" style="color:#9A7400"><i class="fa-solid fa-bolt"></i> Electricity</span> | unknown: ""

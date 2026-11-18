@@ -34,7 +34,7 @@ export function traitLine(traits) {
   const list = [...(traits ?? [])], label = k => String(TWOD12.traits[k] ?? k);
   const blocks = TWOD12.traitGroups.map(g => {
     const ks = list.filter(k => traitGroupOf(k) === g.key).sort((a, b) => label(a).localeCompare(label(b)));
-    return ks.length ? `<span class="ap-tg"><span class="ap-cs">${ks.map(k => `<span class="ap-chip g-${g.key}" data-tooltip="${esc(TWOD12.traitHelp?.[k] ?? "")}">${esc(label(k))}</span>`).join("")}</span><i>${esc(g.label)}</i></span>` : "";
+    return ks.length ? `<span class="ap-tg"><span class="ap-cs">${ks.map(k => `<span class="ap-chip g-${g.key}">${esc(label(k))}</span>`).join("")}</span><i>${esc(g.label)}</i></span>` : "";
   }).filter(Boolean);
   return blocks.join('<span class="ap-gdiv" aria-hidden="true"></span>');
 }
@@ -52,10 +52,10 @@ async function cell(item, v, n, ch) {
   if (riders.length) html += dmg ? riders.map(r => `<span class="ap-rid"><span class="arr">↳</span> <span class="ap-mv">${r}</span></span>`).join("") : riders.join("; ");
   const extra = [];
   if (ch && insts.some(i => i.useW || i.dice)) {
-    if (ch.net > 0) extra.push(`<span class="chg up" data-tooltip="Empowered: the first damage on each of your turns adds 1d6!">+1d6!</span>`);   // v0.0.407: no value; Enfeebled is gone
+    if (ch.net > 0) extra.push(`<span class="chg up" aria-label="Empowered: the first damage on each of your turns adds 1d6!">+1d6!</span>`);   // v0.0.407: no value; Enfeebled is gone
   }
-  if (plain.length) extra.push(`<span class="chg up" data-tooltip="${esc(plain.map(b => `${b.source}: ${b.text}`).join("; "))}">+ ${esc(namesWithCount(plain.map(b => b.source)))}</span>`);
-  if (ch && (insts.length || n > 1)) for (const b of (ch.bonuses[n] ?? []).filter(b => !plain.includes(b))) extra.push(`<span class="chg up" data-tooltip="${esc(b.source)}">${prettyDamage(esc(b.text))}</span>`);
+  if (plain.length) extra.push(`<span class="chg up" aria-label="${esc(plain.map(b => `${b.source}: ${b.text}`).join("; "))}">+ ${esc(namesWithCount(plain.map(b => b.source)))}</span>`);
+  if (ch && (insts.length || n > 1)) for (const b of (ch.bonuses[n] ?? []).filter(b => !plain.includes(b))) extra.push(`<span class="chg up" aria-label="${esc(b.source)}">${prettyDamage(esc(b.text))}</span>`);
   return (html || "&mdash;") + (extra.length ? ` ${extra.join(" ")}` : "");
 }
 
@@ -102,7 +102,7 @@ export function traitWords(traits) {
   const list = [...(traits ?? [])], label = k => String(TWOD12.traits[k] ?? k);
   const order = TWOD12.traitGroups.flatMap(g => list.filter(k => traitGroupOf(k) === g.key).sort((a, b) => label(a).localeCompare(label(b))));
   const rest = list.filter(k => !order.includes(k));
-  return [...order, ...rest].map(k => `<span data-tooltip="${esc(TWOD12.traitHelp?.[k] ?? "")}">${esc(label(k))}</span>`).join('<i class="st-dot" aria-hidden="true">&middot;</i>');
+  return [...order, ...rest].map(k => `<span>${esc(label(k))}</span>`).join('<i class="st-dot" aria-hidden="true">&middot;</i>');
 }
 export { rollLine, tierLines } from "./cardmodel.mjs";   // Pack CARD-ONE: they moved to the card model
 const stLine = (label, html, cls = "") => `<div class="st-l${cls ? ` ${cls}` : ""}"><b>${esc(label)}</b><span>${html}</span></div>`;
@@ -123,7 +123,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
     const b = offAt(v.ap), lab = `Use · ${costOf(v)}`;
     return b.off
       ? `<span class="ap-vwrap" data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn st-use no" aria-disabled="true" disabled aria-label="${esc(`${lab}: ${b.why}`)}">${esc(lab)}</button></span>`
-      : `<button type="button" class="ap-vbtn st-use" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""} data-tooltip="Use the ${esc(b.cost ?? costOf(v))} Version" aria-label="Use ${esc(item.name)}, the ${esc(b.cost ?? costOf(v))} Version">${esc(lab)}</button>`;
+      : `<button type="button" class="ap-vbtn st-use" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""} aria-label="Use ${esc(item.name)}, the ${esc(b.cost ?? costOf(v))} Version">${esc(lab)}</button>`;
   };
   // Pack CARD-ONE step 2: what the card says, and in which order, is the card model (cardmodel.mjs); this face draws it (the creature's cells and buttons)
   const M = cardModel(item, { actor, weapon, fists: item.getFlag?.("twod12", "weaponUse") === "fists" });
@@ -145,8 +145,8 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
   // the grid: Distance, Area (the Place Area chip), Target
   const area = M.grid.area, aBtn = M.grid.areaButton;
   const areaHtml = area && aBtn ? await enrich(aBtn.replace(/\|label:[^|\]]*/, "").replace(/\]$/, `|label:${area.replace(/[|\]]/g, " ")}]`), item) : (area ? esc(area) : "");
-  const dist = M.grid.distance, distTip = M.grid.distTip;
-  const grid = [dist && !/^self$/i.test(dist) ? `<span${distTip ? ` data-tooltip="${esc(distTip)}"` : ""}><b>Distance:</b> ${esc(dist)}</span>` : "", areaHtml ? `<span><b>Area:</b> ${areaHtml}</span>` : "",
+  const dist = M.grid.distance;
+  const grid = [dist && !/^self$/i.test(dist) ? `<span><b>Distance:</b> ${esc(dist)}</span>` : "", areaHtml ? `<span><b>Area:</b> ${areaHtml}</span>` : "",
     M.grid.target ? `<span><b>Target:</b> ${highlightText(esc(M.grid.target))}</span>` : ""].filter(Boolean).join("");
   const areaRow = aBtn && !areaHtml ? `<div class="st-l arearow"><b>Area</b><span>${await enrich(aBtn, item)}</span></div>` : "";
   // the lines above the Versions: Requirement, Prerequisite, Interrupt / Trigger, Setup, the card's own lines, the roll
@@ -171,8 +171,8 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
       const { src, chips } = rollStripSources(actor, item);
       const out = unloadedWeapon(actor, item);
       if (out) chips.push({ kind: "bane", label: "Unloaded", applies: true, why: `${out.name} must be reloaded first (Reload, 1 AP)` });
-      const word = c => { const bad = ["bane", "doom", "enf", "flat"].includes(c.kind); return `<span class="st-rc ${bad ? "b" : "g"}${c.applies ? "" : " na"}" data-tooltip="${esc(c.why)}">${esc(c.label)}</span>`; };
-      live = `<div class="st-live"><div class="st-l"><b>Your roll</b><span class="st-roll"><span class="st-m" data-tooltip="The roll's Modifier">${esc(modText(src.chip, src.mod))}</span>${chips.map(word).join("")}${oneBtn}</span></div></div>`;
+      const word = c => { const bad = ["bane", "doom", "enf", "flat"].includes(c.kind); return `<span class="st-rc ${bad ? "b" : "g"}${c.applies ? "" : " na"}">${esc(c.label)}</span>`; };
+      live = `<div class="st-live"><div class="st-l"><b>Your roll</b><span class="st-roll"><span class="st-m" aria-label="The roll's Modifier">${esc(modText(src.chip, src.mod))}</span>${chips.map(word).join("")}${oneBtn}</span></div></div>`;
     } catch (e) { console.warn("twod12 | Your roll", e); }
   }
   if (!live && oneBtn) live = `<div class="st-live st-only">${oneBtn}</div>`;

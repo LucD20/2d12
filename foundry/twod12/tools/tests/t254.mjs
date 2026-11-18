@@ -13,7 +13,7 @@ console.log("4 AP, 2 left:", V.apSquares({ ap: 2, max: 4 }).join(","), "| Slowed
   "| Quickened 1 (5):", V.apSquares({ ap: 5, max: 5 }).join(","), "| granted above the maximum (6 of 4):", V.apSquares({ ap: 6, max: 4 }).join(","));
 const mk = V.marksHtml({ ap: 2, max: 4, rap: 1, rapMax: 1, strikes: 1 });
 console.log("the order, a hairline between:", /hm-ap.*hm-sep.*hm-r.*hm-sep.*hm-sk/.test(mk), "| squares, a diamond, slashes:", (mk.match(/<i( class="(on|x)")?><\/i>/g) ?? []).length === 8,
-  "| a Strike left is filled (2 of 3):", (mk.split('class="hm-sk"')[1].match(/class="on"/g) ?? []).length === 2, "| the words on hover:", mk.includes('title="AP 2 of 4"') && mk.includes("Reaction AP 1 of 1") && mk.includes("2 of 3 Strikes left this turn"));
+  "| a Strike left is filled (2 of 3):", (mk.split('class="hm-sk"')[1].match(/class="on"/g) ?? []).length === 2, "| no words on hover (v0.0.420, the tooltip review):", !mk.includes('title='));
 const two = V.marksHtml({ ap: 0, max: 4, rap: 2, rapMax: 2, showStrikes: false });
 console.log("a second Reaction AP: two diamonds:", (two.split('class="hm-r"')[1].split("</span>")[0].match(/<i/g) ?? []).length === 2, "| no Strikes when asked:", !two.includes("hm-sk"));
 console.log("Escalation ticks (the system's maximum):", (V.escHtml(2, 3).match(/<i/g) ?? []).length, (V.escHtml(2, 6).match(/class="on"/g) ?? []).length);
@@ -79,7 +79,7 @@ console.log("the granted uses under the hands:", g6.indexOf('class="hb-sb"') < g
 console.log("--- v0.0.397 (Lucas: \"Go, build it\")");
 const P7 = await import(ROOTURL + "module/pickbar.mjs"), rd7 = src("module/rolldlg.mjs"), ac7 = src("module/actions.mjs"), rw7 = src("module/rollwindow.mjs"), th7 = src("styles/theme.css");
 console.log("the roll dialog's card part:", rd7.includes("function cardHtml(inp, st, v)") && rd7.includes('<div class="rd-body rd-cardbody">${cardHtml(inp, st, v)}'), "| the ladder one line:", rd7.includes('<div class="rd-ladder one'),
-  "| a square with its picture:", P7.pickBarHtml({ options: [{ id: "0", label: "Ogre", img: "o.png" }] }).includes('class="lb-opt sq" data-id="0" data-tooltip="Ogre" aria-label="Ogre"><img src="o.png"'));
+  "| a square with its picture:", P7.pickBarHtml({ options: [{ id: "0", label: "Ogre", img: "o.png" }] }).includes('class="lb-opt sq" data-id="0" aria-label="Ogre"><img src="o.png"'));
 console.log("the question in the HUD's side panel:", hud.includes('root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask")') && th7.includes(".twod12-hud .hb-ask .twod12-linebar.in-side"),
   "| the area after the dialog:", ac7.includes("const deferArea = ") && rw7.includes("return this._finish({ restart: true, place: true, rollAfter: true, state: this.st });") && ac7.includes("rollAfterPlace: !!rdData.rollAfter"),
   "| Momentum: the party's number (v0.0.407, it isn't used up):", src("module/carousel.mjs").includes("mom = momentumNow();"));

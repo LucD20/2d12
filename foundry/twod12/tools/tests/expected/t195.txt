@@ -1,4 +1,4 @@
-tipAttrs: data-tooltip-html="&lt;div class=&quot;x&quot;&gt;a &quot;b&quot; &amp;amp; c&lt;/div&gt;" data-tooltip="&lt;div class=&quot;x&quot;&gt;a &quot;b&quot; &amp;amp; c&lt;/div&gt;" | none: ""
+tipAttrs:  | none: ""
 the chips, the chat's effect names and the HUD write both attributes: false
-the HUD gives the manager an element on pointerover (capture): true
+no hover card handed to the tooltip manager (v0.0.420, the tooltip review): true
 the Apply rows' grid and the target name: true

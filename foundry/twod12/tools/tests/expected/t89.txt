@@ -1,20 +1,20 @@
 --- on a character (Speed 5)
-@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade 2</span>" + calculator (Calculated from your stats: floor(speed/2) = 2)
-@Move[advance|distance:speed]                        → "<span class="ti-name">Advance 5</span>" + calculator (Calculated from your stats: speed = 5)
+@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade 2</span>" + calculator (undefined)
+@Move[advance|distance:speed]                        → "<span class="ti-name">Advance 5</span>" + calculator (undefined)
 @Move[evade|distance:1]                              → "<span class="ti-name">Evade 1</span>"
 @Move[charge|distance:speed+2|min:3|label:Charge]    → "<span class="ti-name">Charge</span>"
 @Move[evade|distance:floor(speed/2)]{Slip away}      → "<span class="ti-name">Slip away</span>"
 --- on a chat card of that character
-@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade 2</span>" + calculator (Calculated from your stats: floor(speed/2) = 2)
+@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade 2</span>" + calculator (undefined)
 --- after the Speed changes to 8
-@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade 4</span>" + calculator (Calculated from your stats: floor(speed/2) = 4)
-@Move[advance|distance:speed]                        → "<span class="ti-name">Advance 8</span>" + calculator (Calculated from your stats: speed = 8)
+@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade 4</span>" + calculator (undefined)
+@Move[advance|distance:speed]                        → "<span class="ti-name">Advance 8</span>" + calculator (undefined)
 --- Hindered (base Speed 6, current Speed 3)
-@Move[advance|distance:speed]                        → "<span class="ti-name">Advance 3</span>" + calculator (Calculated from your stats: speed = 3)
-@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade 1</span>" + calculator (Calculated from your stats: floor(speed/2) = 1)
+@Move[advance|distance:speed]                        → "<span class="ti-name">Advance 3</span>" + calculator (undefined)
+@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade 1</span>" + calculator (undefined)
 --- with no character (a compendium item, a text without a document)
-@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade Floor(Speed/2)</span>" + calculator (Calculated: floor(speed/2))
-@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade Floor(Speed/2)</span>" + calculator (Calculated: floor(speed/2))
+@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade Floor(Speed/2)</span>" + calculator (undefined)
+@Move[evade|distance:floor(speed/2)]                 → "<span class="ti-name">Evade Floor(Speed/2)</span>" + calculator (undefined)
 actorOfDoc: Kai Kai null null null
 --- the line on the left of a row
 Action, At-will                                    #3B6D11

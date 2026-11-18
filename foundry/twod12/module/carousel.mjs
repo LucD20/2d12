@@ -17,16 +17,15 @@ export const DISP_LABEL = { 1: "Ally", 0: "Neutral", "-1": "Foe", "-2": "Secret"
 const dispOf = c => { const d = c.token?.disposition; return d === undefined || d === null ? (c.actor?.type === "character" ? 1 : -1) : d; };
 function card(combat, c, st) {
   const current = combat.started && combat.combatant?.id === c.id;
-  const ap = getAP(c), rap = combat.started ? getRAP(c) : 0, apGuard = Number(c.actor?.system?.apGuard) || 0;
+  const ap = getAP(c), rap = combat.started ? getRAP(c) : 0;
   const frozen = !!c.getFlag(F, "frozen");
   // v0.0.201 (Lucas): three kinds of pips, by shape as well as color: its turn (discs), out of turn (diamonds: AP for Reactions), frozen (dashed rings).
   // v0.0.243 (pack R): the Reaction AP is the last pip (a diamond with an R); out of its turn the kept AP are Guard (the tooltip says how much).
   const pipKind = frozen ? "frozen" : (current ? "turn" : "react");
-  const pipTip = { turn: `${ap} AP this turn`, react: `${ap} AP kept: they can pay Reactions; still unused when its turn starts, each is Guard for 1 round${apGuard ? `. Guard ${apGuard} from its last unused AP` : ""}`, frozen: `${ap} AP, frozen until its new turn (it swapped initiative)` }[pipKind] + (combat.started ? `. Reaction AP ${rap ? "ready" : "spent"}` : "");
   // v0.0.390 (PACK HUD2, Lucas: "All your picks"): the HUD's marks, the same shapes on every turn (book/research/ui-marks-and-state.md): AP squares,
   // the Reaction AP a diamond, the Strikes left as slashes, a hairline between them; frozen keeps its dashed look (CSS) and its tooltip
   const slowed = (() => { try { return slowedOf(c.actor); } catch (e) { return 0; } })();
-  const pips = `<div class="tp-marks ${pipKind}" data-tooltip="${pipTip}">${marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax: 1, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started })}</div>`;
+  const pips = `<div class="tp-marks ${pipKind}">${marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax: 1, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started })}</div>`;
   // v0.0.224 (Lucas, playtest 3): the 3 Strikes of this turn as three red diamonds; each Strike (not a Linked one) empties one.
   const strikes = "";   // v0.0.390: the Strikes are in the marks
   // v0.0.390: Bloodied, Strained or the Down state under the name: every creature knows it of a creature it perceives (Chapter 4)
@@ -40,14 +39,14 @@ function card(combat, c, st) {
   if (current) {
     const m = stripMove(c);
     const move = m.n > 0
-      ? `<div class="tp-move${m.evade ? " evade" : ""}" data-tc="endmove" data-tooltip="${m.evade ? "Evade" : "Movement"} left this turn. Click to end it (the squares left are lost)${st.gm ? "; right-click to set it" : ""}"><span>${m.evade ? "Evade" : "Move"}</span> <b>${m.n}</b> sq${m.evade && st.canAct ? ' <a class="tp-adv" data-tc="evadeadv" data-tooltip="Use the Evade as an Advance (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></a>' : ""}</div>`
-      : `<div class="tp-move none" data-tooltip="No movement left this turn (Advance or drag the token to move)${st.gm ? "; right-click to set it" : ""}">No move</div>`;
-    const swap = `<button type="button" class="tp-swap${st.swapping ? " on" : ""}" data-tc="swap"${st.swapWhy ? ` disabled data-tooltip="${esc(st.swapWhy)}"` : ` data-tooltip="${st.swapping ? "Click an ally with the swap badge, or here to cancel" : "Swap initiative with an ally who hasn't had a turn this round (1 AP)"}"`}><i class="fa-solid fa-right-left"></i> Swap</button>`;   // v0.0.394: the cost in the tooltip (it was cut off)
+      ? `<div class="tp-move${m.evade ? " evade" : ""}" data-tc="endmove" aria-label="${m.evade ? "Evade" : "Movement"} left this turn. Click to end it (the squares left are lost)${st.gm ? "; right-click to set it" : ""}"><span>${m.evade ? "Evade" : "Move"}</span> <b>${m.n}</b> sq${m.evade && st.canAct ? ' <a class="tp-adv" data-tc="evadeadv" aria-label="Use the Evade as an Advance (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></a>' : ""}</div>`
+      : `<div class="tp-move none">No move</div>`;
+    const swap = `<button type="button" class="tp-swap${st.swapping ? " on" : ""}" data-tc="swap"${st.swapWhy ? ` disabled data-tooltip="${esc(st.swapWhy)}"` : ` aria-label="${st.swapping ? "Click an ally with the swap badge, or here to cancel" : "Swap initiative with an ally who hasn't had a turn this round (1 AP)"}"`}><i class="fa-solid fa-right-left"></i> Swap</button>`;   // v0.0.394: the cost in the tooltip (it was cut off)
     extra = move + swap;
   }
   // v0.0.201 (Lucas): no tooltip on the creature whose turn it is (its plate says it all); the others name themselves.
   const tip = current ? "" : `${noInit ? "Click to roll initiative · " : ""}${swapOk ? "Click to swap with this ally · " : ""}${esc(c.name)}`;
-  return `<div class="tp ${current ? "act" : ""} d${d < 0 ? "m" : ""}${Math.abs(d)} ${noInit ? "noinit" : ""} ${c.isDefeated ? "defeated" : ""} ${frozen ? "frozen" : ""} ${swapOk ? "swapok" : ""}" data-combatant-id="${c.id}" style="--tcc:${groupColor(c)}"${tip ? ` data-tooltip="${tip}"` : ""}>
+  return `<div class="tp ${current ? "act" : ""} d${d < 0 ? "m" : ""}${Math.abs(d)} ${noInit ? "noinit" : ""} ${c.isDefeated ? "defeated" : ""} ${frozen ? "frozen" : ""} ${swapOk ? "swapok" : ""}" data-combatant-id="${c.id}" style="--tcc:${groupColor(c)}"${tip ? ` aria-label="${tip}"` : ""}>
     <div class="tp-band">${band}</div>
     <div class="tp-por"><img src="${img}" alt="">${noInit ? "" : `<span class="tp-seal">${Math.round(c.initiative)}</span>`}${swapOk ? '<span class="tp-swapb"><i class="fa-solid fa-right-left"></i></span>' : ""}</div>
     <div class="tp-name">${esc(c.name)}</div>
@@ -98,13 +97,12 @@ export function renderCarousel() {
   const swapWhy = cur ? swapBlock({ mine: mine || gm, acted: !!cur.getFlag(F, "acted"), down: !!cur.actor?.system?.atZero, ap: getAP(cur), candidates: cands.length, thawed: thawedNow(combat, cur) }) : "Not started";
   if (swapping && (swapping !== cur?.id || swapWhy)) swapping = null;
   const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm, gm };
-  const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" data-tooltip="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
+  const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" aria-label="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
   const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for the creatures that haven't rolled (the window says who skips)")) : "";
   // v0.0.397 (Lucas: "Momentum isn't showing in the combat strip"); v0.0.407 (Stage 0 in Foundry): the party's Momentum, 0 to 4, always shown (it is
   // no longer used up when an encounter starts); the GM clicks it: left +1, right -1
   let mom = 0; try { mom = momentumNow(); } catch (e) { mom = 0; }
-  const momTip = `The party's Momentum (0 to 4): every PC starts an encounter at Escalation 1 + Momentum (${1 + mom} now).${gm ? " Left-click +1, right-click -1." : ""}`;
-  const momHtml = ` <span class="tc-mom${gm ? " gm" : ""}" data-tc-mom="1" data-tooltip="${momTip}">· Momentum <b>${mom}</b></span>`;
+  const momHtml = ` <span class="tc-mom${gm ? " gm" : ""}" data-tc-mom="1">· Momentum <b>${mom}</b></span>`;
   const middle = started ? `<span class="tc-round">Round <b>${combat.round}</b>${momHtml}</span>` : `<span class="tc-round tc-prep">Preparing the encounter${momHtml}</span>`;   // v0.0.405: Momentum shows before the start too
   const moving = cur ? stripMove(cur).n > 0 : false;
   const right = [
@@ -173,7 +171,7 @@ function ensureFloat() {
   let f = document.getElementById("twod12-apfloat");
   if (!f) {
     f = document.createElement("div"); f.id = "twod12-apfloat";
-    f.innerHTML = '<button type="button" data-tc="apminus" data-tooltip="Remove 1 AP">&minus;</button><button type="button" data-tc="applus" data-tooltip="Add 1 AP">+</button>';
+    f.innerHTML = '<button type="button" data-tc="apminus" aria-label="Remove 1 AP">&minus;</button><button type="button" data-tc="applus" aria-label="Add 1 AP">+</button>';
     f.addEventListener("mouseenter", () => clearTimeout(hideTimer));
     f.addEventListener("mouseleave", hideApButtons);
     f.addEventListener("click", async ev => {

@@ -53,7 +53,7 @@ export function markDamageButton(el, used) {
   if (!b || !used || b.classList.contains("dmg-used")) return;
   b.classList.add("dmg-used");
   b.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Damage';
-  b.dataset.tooltip = "Damage rolled (click to roll it again)";
+  b.setAttribute("aria-label", "Damage rolled (click to roll it again)");
 }
 export function renderDamageUsed(msg, html) {
   const el = html instanceof HTMLElement ? html : html?.[0];
@@ -79,7 +79,7 @@ export function addHealButton(msg, html) {
   const b = document.createElement("button");
   b.type = "button"; b.className = "cc-btn small primary cc-healproxy";
   b.innerHTML = '<i class="fa-solid fa-heart-pulse" aria-hidden="true"></i> Heal';
-  b.dataset.tooltip = chip.textContent?.trim() || "Rally Points";
+  b.setAttribute("aria-label", chip.textContent?.trim() || "Rally Points");
   b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); chip.click(); });
   const card = foot.querySelector('[data-twod12="ccCard"]');
   foot.insertBefore(b, card ?? null);

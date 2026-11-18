@@ -47,21 +47,21 @@ export function initCardData(rows, order) {
 }
 
 /** A die chain: the 12 (counts as 11, rolled again), a link, the reroll; again for each 12. */
-const chainHtml = faces => faces.map((f, i) => `${i ? '<i class="fa-solid fa-link dlink"></i>' : ""}<span class="die d12${f === 12 ? " boom" : ""}${i ? " chain" : ""}"${f === 12 ? ' data-tooltip="A 12 counts as 11 and is rolled again"' : ""}>${f}</span>`).join("");
+const chainHtml = faces => faces.map((f, i) => `${i ? '<i class="fa-solid fa-link dlink"></i>' : ""}<span class="die d12${f === 12 ? " boom" : ""}${i ? " chain" : ""}"${f === 12 ? '' : ""}>${f}</span>`).join("");
 
 /** The dice line of one row. */
 export function diceLineHtml(x) {
-  const tag = x.state ? `<span class="ic-pill ${x.state === "favored" ? "boon" : "bane"}" data-tooltip="${x.state === "favored" ? "3d12, the two highest kept" : "3d12, the lowest two kept"}">${x.state === "favored" ? "Favored" : "Doomed"}</span>` : "";
-  const dropped = x.dropped ? `<span class="dgroup ic-drop" data-tooltip="Dropped die">${chainHtml(x.dropped)}</span>` : "";
+  const tag = x.state ? `<span class="ic-pill ${x.state === "favored" ? "boon" : "bane"}">${x.state === "favored" ? "Favored" : "Doomed"}</span>` : "";
+  const dropped = x.dropped ? `<span class="dgroup ic-drop" aria-label="Dropped die">${chainHtml(x.dropped)}</span>` : "";
   // v0.0.301 (PACK BB): +1 / -1 each, they cancel
-  const boon = x.boons ? `<span class="ic-pill boon" data-tooltip="${x.boons} Boon${x.boons === 1 ? "" : "s"}: +1 each">Boon${x.boons === 1 ? "" : `s ×${x.boons}`} +${x.bo}</span>` : "";
-  const bane = x.banes ? `<span class="ic-pill bane" data-tooltip="${x.banes} Bane${x.banes === 1 ? "" : "s"}: −1 each">Bane${x.banes === 1 ? "" : `s ×${x.banes}`} −${x.ba}</span>` : "";
-  return `${tag}<span class="dgroup">${chainHtml(x.d1)}</span><span class="plus">+</span><span class="dgroup">${chainHtml(x.d2)}</span>${dropped}<span class="plus ic-mod" data-tooltip="${esc(ATTR_NAME[x.attr] ?? "")} Modifier">${sgn(x.mod)}</span>${boon}${bane}`;
+  const boon = x.boons ? `<span class="ic-pill boon">Boon${x.boons === 1 ? "" : `s ×${x.boons}`} +${x.bo}</span>` : "";
+  const bane = x.banes ? `<span class="ic-pill bane">Bane${x.banes === 1 ? "" : `s ×${x.banes}`} −${x.ba}</span>` : "";
+  return `${tag}<span class="dgroup">${chainHtml(x.d1)}</span><span class="plus">+</span><span class="dgroup">${chainHtml(x.d2)}</span>${dropped}<span class="plus ic-mod" aria-label="${esc(ATTR_NAME[x.attr] ?? "")} Modifier">${sgn(x.mod)}</span>${boon}${bane}`;
 }
 
 /** Pure: the card's HTML. */
 export function initCardHtml(data) {
-  const row = x => `<div class="ic-row ${x.k}" data-ic-row><span class="ic-pos">${x.pos}</span><span class="ic-name">${esc(x.base)}${x.num ? ` <span class="ic-num">${x.num}</span>` : ""}${x.note ? ` <i class="ic-note">(${esc(x.note)})</i>` : ""}</span><span class="ic-attr ${x.attr}" data-tooltip="${esc(ATTR_NAME[x.attr] ?? x.attr)}">${ATTR_LETTER[x.attr] ?? "?"}</span><span class="ic-tot">${x.total}</span><i class="fa-solid fa-chevron-right ic-chev"></i></div>`
+  const row = x => `<div class="ic-row ${x.k}" data-ic-row><span class="ic-pos">${x.pos}</span><span class="ic-name">${esc(x.base)}${x.num ? ` <span class="ic-num">${x.num}</span>` : ""}${x.note ? ` <i class="ic-note">(${esc(x.note)})</i>` : ""}</span><span class="ic-attr ${x.attr}" aria-label="${esc(ATTR_NAME[x.attr] ?? x.attr)}">${ATTR_LETTER[x.attr] ?? "?"}</span><span class="ic-tot">${x.total}</span><i class="fa-solid fa-chevron-right ic-chev"></i></div>`
     + `<div class="ic-exp"><div class="ic-k">${esc(ATTR_NAME[x.attr] ?? "")} Check</div><div class="ic-dice dice">${diceLineHtml(x)}</div></div>`;
   const bands = data.bands.map(b => `<div class="ic-band ${b.key}"><span>${b.label}</span><span class="ic-best">best ${b.best}</span></div>${b.rows.map(x => row({ ...x, k: b.key })).join("")}`).join("");
   return `<div class="twod12 chat action sysmsg initcard" style="${cardVars(SYS_COLOR)}">${cardHead("Initiative", "", "")}<div class="orn">&#10022; &#10022; &#10022;</div>${bands}</div>`;

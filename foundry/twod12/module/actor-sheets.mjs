@@ -374,7 +374,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         granted.push({
           key: `${e.id}:${granted.length}`, actionId: act?.id ?? "", name: act?.name ?? g.spec.replace(/^(category|trait):/i, ""), img: act?.img ?? e.img,
           effectId: e.id, grantIndex: gi,   // v0.0.269: the ticket's button uses this very grant
-          apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" data-tooltip="A free use">Free</span>`, cost: g.ap ? `${g.ap} AP` : "Free", free: !g.ap,
+          apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" aria-label="A free use">Free</span>`, cost: g.ap ? `${g.ap} AP` : "Free", free: !g.ap,
           traitShort: tr.slice(0, 3).join(" \u00b7 "), source, dur, left: g.left, count, badges: bd.short, adds: bd.long,
           range: row?.range ?? "", traits: tr.join(" \u00b7 "), open: !!this._openGrant?.has(`${e.id}:${granted.length}`),
           tip: [`From ${source}${dur ? ` · ${dur}` : ""}`, `${g.left} of ${count} left`, ...bd.long].join(" · "),
@@ -1151,8 +1151,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "header-control icon fa-solid fa-circle-user twod12-proto";
-      btn.dataset.tooltip = this.actor.isToken ? "Token" : "Prototype Token";
-      btn.setAttribute("aria-label", btn.dataset.tooltip);
+      btn.setAttribute("aria-label", this.actor.isToken ? "Token" : "Prototype Token");
       btn.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); this._openTokenConfig(); });
       header.insertBefore(btn, header.querySelector('[data-action="close"]') ?? null);
     }

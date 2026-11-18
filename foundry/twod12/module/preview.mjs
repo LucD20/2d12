@@ -80,7 +80,7 @@ export async function buildPreviews(ctx) {
       const lines = await tierLines(v[k] ?? [], n, ctx, expandAsText(v[`x${n}`], item.system.versions, v0, n));   // "As 1 AP" written out (the dialog shows one Version)
       const avg0 = tierAvg(v[k] ?? [], n, ctx), extra = avgExtras(v[k] ?? [], n, ctx), avg = avg0 ? avg0 + extra.add : 0;
       const live = avg0 ? ` data-avg="${esc(JSON.stringify({ base: avg0, dice: extra.dice, parts: extra.parts }))}"` : "";   // v0.0.194: recomputed when a Bonus chip or Empowered changes
-      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc"${live}${extra.why.length ? ` data-tooltip="${esc(`Without them: ${fmt(avg0)}`)}"` : ""}>Avg ${fmt(avg)}${extra.why.length ? ` <small>(with ${esc(extra.why.join(", "))})</small>` : ""}</div>` : ""}</td></tr>`);
+      rows.push(`<tr data-t="${n}"><th>Tier ${n} <small class="pv-p"></small></th><td>${lines.length ? lines.join("<br>") : "&mdash;"}${avg ? `<div class="calc"${live}>Avg ${fmt(avg)}${extra.why.length ? ` <small>(with ${esc(extra.why.join(", "))})</small>` : ""}</div>` : ""}</td></tr>`);
     }
     // The Critical row sits under Tier 3, only for Actions that have one.
     if (!v.noTiers && v.critical) rows.push(`<tr class="critp"><th>Critical <small class="pv-c"></small></th><td>${await enrich(v.critical, item)}</td></tr>`);

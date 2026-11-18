@@ -749,8 +749,8 @@ function forcedBar(mode, target, origin, N, onEnd) {
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-forcedbar";
   bar.innerHTML = `<i class="fa-solid ${mode === "pull" ? "fa-hand-back-fist" : "fa-hand"} lb-ic"></i><span class="lb-text"><b>${esc(target.name)}</b> is ${label} up to ${N} square${N === 1 ? "" : "s"} ${how}. <small>Forced Movement ignores Difficult Terrain and triggers no Reactions; a wall or a creature in the way stops it (a Collision).</small><span class="lb-now"></span></span>`
-    + '<button type="button" class="lb-go lb-book" data-tooltip="Forced Movement (Chapter 3)"><i class="fa-solid fa-book-open"></i> Rules</button>'
-    + '<button type="button" class="lb-go lb-end" data-tooltip="It moves 0 squares (the value is a maximum)"><i class="fa-solid fa-flag-checkered"></i> End movement</button>';
+    + '<button type="button" class="lb-go lb-book"><i class="fa-solid fa-book-open"></i> Rules</button>'
+    + '<button type="button" class="lb-go lb-end"><i class="fa-solid fa-flag-checkered"></i> End movement</button>';
   // v0.0.404 (Lucas: "Put this in the HUD area as well, that area will become the area for stuff like this"): in the HUD's side panel when a
   // creature's bar is shown (else its middle), as the pick bar; at the bottom with no HUD
   let hud = null, side = false;
@@ -1627,7 +1627,7 @@ export function openChargePicker(c, token) {
   let side = "left", pos = null, cur = null, armed = "";
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-chargebar";
-  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl" data-tooltip="Where the line passes exactly between two squares, every tie takes this side (seen from you toward the destination). Tab switches.">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-go" data-tooltip="Charge to the square shown (as clicking it; a blocked or too-long line charges anyway)">Charge!</button><button type="button" class="lb-give" data-tooltip="Give up the Charge: it is taken back, and its AP are refunded">Give up</button>`;
+  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-go">Charge!</button><button type="button" class="lb-give">Give up</button>`;
   document.body.append(bar);
   const text = () => {
     if (cur?.target) {

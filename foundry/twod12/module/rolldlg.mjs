@@ -338,9 +338,9 @@ export function chipHtml(c, st) {
   const on = chipOn(c, st), na = c.start === "na";
   const cls = `rd-chip ${isBuff(c) ? "buff" : "debuff"}${na ? " na" : on ? " on" : " off"}`;
   const tip = na ? `Not this time: ${c.why || "it doesn't apply"}` : [c.tip ?? "", c.manual ? "Right-click: one less" : ""].filter(Boolean).join(". ");
-  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${tip ? ` data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span>${c.bb && BB_NAMES[c.bb] ? `<small class="rd-bbn">${esc(BB_NAMES[c.bb])}</small>` : ""}</button>`;
-  const x = c.manual ? `<button type="button" class="rd-cx" data-act="rm" data-id="${esc(c.id)}" aria-label="Remove ${esc(c.label)}" data-tooltip="Remove">×</button>` : "";
-  const i = c.rule?.uuid ? `<button type="button" class="rd-ci" data-act="rule" data-uuid="${esc(c.rule.uuid)}" aria-label="Open the rule: ${esc(c.rule.label ?? c.label)}" data-tooltip="Open ${esc(c.rule.label ?? c.label)}">i</button>` : "";
+  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${tip ? ` aria-label="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span>${c.bb && BB_NAMES[c.bb] ? `<small class="rd-bbn">${esc(BB_NAMES[c.bb])}</small>` : ""}</button>`;
+  const x = c.manual ? `<button type="button" class="rd-cx" data-act="rm" data-id="${esc(c.id)}" aria-label="Remove ${esc(c.label)}">×</button>` : "";
+  const i = c.rule?.uuid ? `<button type="button" class="rd-ci" data-act="rule" data-uuid="${esc(c.rule.uuid)}" aria-label="Open the rule: ${esc(c.rule.label ?? c.label)}">i</button>` : "";
   return `<span class="${cls}"${c.manual ? ` data-manual="${esc(c.id)}"` : ""}>${body}${x}${i}</span>`;
 }
 /** A panel's rows (the shared panel, or one creature's). */
@@ -359,7 +359,7 @@ export function rowsHtml(chips, st, scope, rows = ROWS) {
 const ladderHtml = (dc, crit, odds = null, short = false) => `<div class="rd-ladder one${short ? " short" : ""}${crit ? " crit" : ""}">${ladder(dc, crit).map((s, i) => `<span class="rd-lseg ${s.k}"><span>${esc(short ? s.label.replace(/^Tier /, "T").replace(" · ", " ") : s.label).replace("≤", '<span class="rd-le">≤</span>')}${odds ? `${short ? " " : " · "}<b class="rd-lpct">${odds[i]}%</b>` : ""}</span></span>`).join("")}</div>`;
 /** A creature's chances for its ladder: null when the setting hides them (or the player view hides the Defenses: no ladder then anyway). */
 const ladderOdds = (inp, st, c, crit) => (inp.showOdds && !inp.hideDef && !inp.save ? oddsOf(creatureCalc(inp, st, c.uuid), crit) : null);
-const defBadge = (c, hide) => `<span class="rd-def" ${hide ? 'data-tooltip="Hidden by the GM"' : ""}>${esc(c.def ?? "DC")}${hide ? "" : ` ${Number(c.dc) || 13}`}</span>`;
+const defBadge = (c, hide) => `<span class="rd-def" ${hide ? 'aria-label="Hidden by the GM"' : ""}>${esc(c.def ?? "DC")}${hide ? "" : ` ${Number(c.dc) || 13}`}</span>`;
 const counts = (b, n) => `<span class="rd-cnt"><span class="up" aria-label="${b} Boons">▲${b}</span> <span class="down" aria-label="${n} Banes">▼${n}</span></span>`;
 
 /** v0.0.293 (Lucas): the small line under each Tier: its average damage (with everything that is on) and each creature's chance of it. */
@@ -386,7 +386,7 @@ function tierTableHtml(inp, st, v) {
     return (dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;") + statLine(stats[n]);
   };
   // v0.0.334 (Lucas): the GM clicks a Tier (or Critical) to make it the result (again: back to the roll); forceTier 4 = a Critical
-  const th = (n, label) => (inp.canForce && !inp.save ? `<th scope="row"><button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" data-tooltip="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button></th>` : `<th scope="row">${label}</th>`);
+  const th = (n, label) => (inp.canForce && !inp.save ? `<th scope="row"><button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" aria-label="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button></th>` : `<th scope="row">${label}</th>`);
   const can = inp.canForce && !inp.save, rowAt = n => (can ? ` data-force="${n}"` : "");
   const rows = [1, 2, 3].map(n => `<tr class="t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(n)}>${th(n, `Tier ${n}`)}<td>${cell(n)}</td></tr>`);
   if (v.crit) rows.push(`<tr class="crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(4)}>${th(4, "Critical")}<td>${v.crit}</td></tr>`);
@@ -399,7 +399,7 @@ function metaHtml(inp, v) {
   const m = v?.meta ?? {}, sep = '<span class="rd-star" aria-hidden="true"> ✦ </span>';
   // v0.0.294 (Lucas): the book's format (Ch. 1, Reading an Action): Targets (✦ the Area) on one line, "Distance: X ✦ Vs. X" on the next, the
   // Trigger / Interrupt after the meta lines (the chat cards' order too, brief section 12)
-  const l1 = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label)}</button>` : ""].filter(Boolean);
+  const l1 = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" aria-label="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label)}</button>` : ""].filter(Boolean);
   const l2 = [m.dist && !/^self$/i.test(m.dist) ? `<b>Distance:</b> ${esc(m.dist)}` : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "<b>Vs.</b> "}${vsColored(m.vs)}` : ""].filter(Boolean);
   const out = [];
   if (Number(m.escalation) > 0) out.push(`<div class="rd-meta">${Number(m.escalation)} Escalation</div>`);
@@ -415,7 +415,7 @@ function metaHtml(inp, v) {
 function traitsHtml(inp, v) {
   const groups = [];
   for (const t of v?.traits ?? []) { let g = groups.find(x => x.key === t.group); if (!g) groups.push(g = { key: t.group, label: t.groupLabel ?? t.group, list: [] }); g.list.push(t); }
-  const blocks = groups.map(g => `<span class="rd-tgroup"><span class="rd-tchips">${g.list.map(t => `<span class="rd-trait tg-${esc(g.key)}"${t.tip ? ` data-tooltip="${esc(t.tip)}"` : ""}>${esc(t.label)}</span>`).join("")}</span><span class="rd-glabel">${esc(g.label)}</span></span>`);
+  const blocks = groups.map(g => `<span class="rd-tgroup"><span class="rd-tchips">${g.list.map(t => `<span class="rd-trait tg-${esc(g.key)}">${esc(t.label)}</span>`).join("")}</span><span class="rd-glabel">${esc(g.label)}</span></span>`);
   const freq = `<span class="rd-freq" style="--fq:${esc(inp.freqColor ?? "#5F5E5A")};background:var(--fq)">${esc([inp.freqLabel, v?.cost].filter(Boolean).join(" · "))}</span>`;
   return `<div class="rd-traits"><span class="rd-tlist">${blocks.join('<span class="rd-tsep" aria-hidden="true"></span>')}</span>${freq}</div>`;
 }
@@ -425,7 +425,7 @@ function traitsHtml(inp, v) {
  * or to remove them; if no token is targeted and you click it, it becomes without a target"): the dialog doesn't follow the map any more; Target reads
  * the creatures targeted now. Not for an area (its creatures come from the area) or a roll on yourself.
  */
-const targetBtn = inp => (inp.area || inp.self ? "" : '<button type="button" class="rd-tgtbtn" data-act="targetmode" data-tooltip="Use the creatures targeted on the map now (none targeted: no target)">Target</button>');
+const targetBtn = inp => (inp.area || inp.self ? "" : '<button type="button" class="rd-tgtbtn" data-act="targetmode" aria-label="Use the creatures targeted on the map now (none targeted: no target)">Target</button>');
 // v0.0.370 (Lucas): the target's token image before its name (none for "No target" and "Your roll")
 const cImg = c => (c.img ? `<img class="rd-cimg" src="${esc(c.img)}" alt="">` : "");
 function creaturesHtml(inp, st, v) {
@@ -447,7 +447,7 @@ function creaturesHtml(inp, st, v) {
   const tgtRow = targetBtn(inp) ? `<div class="rd-tgtrow"><span>${live.length} targets</span>${targetBtn(inp)}</div>` : "";
   return tgtRow + live.map(c => {
     const k = creatureCalc(inp, st, c.uuid), open = !!st.open?.[c.uuid], own = chipsOf(inp, st, c.uuid);
-    const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span>${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}${bbNotes(k).length ? `<span class="rd-dnote rd-bbcap">${esc(bbNotes(k).join(" · "))}</span>` : ""}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}" data-tooltip="Remove ${esc(c.name)} from the targets (or right-click its line)">×</button></div>`;
+    const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span>${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}${bbNotes(k).length ? `<span class="rd-dnote rd-bbcap">${esc(bbNotes(k).join(" · "))}</span>` : ""}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}">×</button></div>`;
     if (!open) return `<div class="rd-cbox multi" data-uuid="${esc(c.uuid)}">${head}</div>`;
     const add = `<div class="rd-row"><span class="rd-rlabel">Add here:</span><span class="rd-chips">${["boon", "bane", "fav", "doom"].map(kd => `<button type="button" class="rd-addhere" data-act="quick" data-scope="${esc(c.uuid)}" data-k="${kd}">${pip({ kind: kd })}${QUICK_LABEL[kd]}</button>`).join("")}</span></div>`;
     return `<div class="rd-cbox multi open" data-uuid="${esc(c.uuid)}">${head}${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${add}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
@@ -465,9 +465,9 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
   const m = v?.meta ?? {}, cost = [inp.freqLabel, v?.cost].filter(Boolean).join(" · ");
   const head = `<div class="rdc-head"><h1 class="rd-name">${esc(inp.name)}</h1>${cost ? `<span class="rdc-cost rd-freq" style="--fq:${esc(inp.freqColor ?? "#5F5E5A")}">${esc(cost)}</span>` : ""}</div>`;
   const flavor = inp.flavor ? `<div class="rdc-flavor rd-flavor">${esc(inp.flavor)}</div>` : "";
-  const words = (v?.traits ?? []).map(t => `<span class="rd-trait tg-${esc(t.group)}"${t.tip ? ` data-tooltip="${esc(t.tip)}"` : ""}>${esc(t.label)}</span>`);
+  const words = (v?.traits ?? []).map(t => `<span class="rd-trait tg-${esc(t.group)}">${esc(t.label)}</span>`);
   const traits = words.length ? `<div class="rdc-traits rd-traits">${words.join('<i aria-hidden="true">·</i>')}</div>` : "";
-  const area = inp.area ? `<button type="button" class="rd-area" data-act="place" data-tooltip="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label)}</button>` : "";
+  const area = inp.area ? `<button type="button" class="rd-area" data-act="place" aria-label="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label)}</button>` : "";
   const left = [m.dist && !/^self$/i.test(m.dist) ? `<span><b>Distance:</b> ${esc(m.dist)}</span>` : "", area ? `<span><b>Area:</b> ${area}</span>` : ""].filter(Boolean).join("");
   const grid = left || m.targets ? `<div class="rdc-grid"><span class="rdc-gl">${left}</span>${m.targets ? `<span><b>Target:</b> ${esc(m.targets)}</span>` : ""}</div>` : "";
   const line = (label, html, cls = "") => `<div class="rdc-l${cls}"><b>${label}</b><span>${html}</span></div>`;
@@ -489,7 +489,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
     for (const l of C.before) out.push(line(esc(l.label), l.html));
     if (v && !v.noTiers) {
       const stats = tierStats(inp, st, v);
-      const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" data-tooltip="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button>` : label);
+      const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" aria-label="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button>` : label);
       const tierText = n => {
         const tags = tierTags(inp, st, n);
         const lines = poolLines(v.tiers?.[n], []);
@@ -522,7 +522,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
   }
   if (v && !v.noTiers) {
     const stats = tierStats(inp, st, v), can = inp.canForce && !inp.save;
-    const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" data-tooltip="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button>` : label);
+    const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" aria-label="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button>` : label);
     const tierText = n => {
       const tags = tierTags(inp, st, n);
       const lines = poolLines(v.tiers?.[n], []);

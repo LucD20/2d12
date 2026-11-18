@@ -17,7 +17,7 @@ console.log("Relocate (4 traits): ", row(["strike", "handle", "body", "instinct"
 console.log("5 groups:            ", row(["nonlethal", "focus", "area", "ranged", "magic"]));
 console.log("one group:           ", row(["body"]), "| no traits:", JSON.stringify(cf.traitChevrons(new Set(), { compact: true })));
 const smite = cf.traitChevrons(new Set(["weapon", "strike", "divine"]), { compact: true });
-console.log("no group labels:", !smite.includes('class="tgl"'), "| the tooltip is the group, then the rule:", smite.match(/data-tooltip="([^"]*)"/)[1]);
+console.log("no group labels:", !smite.includes('class="tgl"'), "| no hover on a trait (v0.0.420, the tooltip review):", !smite.includes("data-tooltip"));
 console.log("the sheets keep the labeled groups:", cf.traitChevrons(new Set(["weapon", "strike"])).includes('<span class="tgl">Roll</span>'), "| weapon properties stay neutral:", cf.traitChevrons(new Set(["melee"]), { properties: true }).includes("tchip prop"));
 console.log("--- who uses which");
 const act = src("module/actions.mjs"), inl = src("module/inline.mjs");

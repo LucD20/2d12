@@ -81,7 +81,7 @@ export function heightHtml(st) {
   const ground = `<line class="hc-ground" x1="0" y1="${Y(0)}" x2="${W}" y2="${Y(0)}"></line>`;   // the ground (height 0)
   const num = (n, v, step, label) => `<label>${label} <input type="number" name="${n}" value="${v}" step="${step}"></label>`;
   return `<div class="hc">
-    <div class="hc-row">${num("hA", st.hA, 0.5, `${esc(st.nameA)} height`)}${num("hT", st.hT, 0.5, `${esc(st.nameT)} height`)}${num("dist", st.dist, 1, "Squares apart")}<button type="button" class="hc-clear">Clear blocks</button><button type="button" class="hc-snapbtn" data-tooltip="Send this side view and its result to the chat, for everyone"><i class="fa-solid fa-camera"></i> Snapshot</button></div>
+    <div class="hc-row">${num("hA", st.hA, 0.5, `${esc(st.nameA)} height`)}${num("hT", st.hT, 0.5, `${esc(st.nameT)} height`)}${num("dist", st.dist, 1, "Squares apart")}<button type="button" class="hc-clear">Clear blocks</button><button type="button" class="hc-snapbtn" aria-label="Send this side view and its result to the chat, for everyone"><i class="fa-solid fa-camera"></i> Snapshot</button></div>
     <div class="hc-view"><svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Side view: ${esc(heightLabel(cov))}">${cells}${ground}${creature(L.A, st.imgA, st.nameA, "you")}${creature(L.T, st.imgT, st.nameT, "target")}${lines}${corners}</svg></div>
     <p class="hc-result ${cov.noLoE ? "noloe" : cov.level ? "cover" : "clear"}"><b>${esc(heightLabel(cov))}</b></p>
     <p class="hc-hint">Click a square: a half square, then a full square, then empty. Click the center or a corner of your space to start the lines there. Heights in squares (from the tokens' elevation); a creature is as tall as it is wide.</p>

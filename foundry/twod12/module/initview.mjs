@@ -15,13 +15,13 @@ function rowHtml(r) {
   const side = r.moving ? `<div class="iw-side"><span class="iw-sidel">Side</span><select class="iw-sel iw-sidesel" data-act="side" ${d} aria-label="Side of ${esc(r.name)}">${[["friendly", "Heroes"], ["hostile", "Enemies"], ["neutral", "Third side"], ["fourth", "Fourth side"]].map(([v, l]) => `<option value="${v}"${v === r.side ? " selected" : ""}>${l}</option>`).join("")}</select></div>` : "";   // v0.0.313: no <label> (Foundry's label style broke the line)
   // v0.0.312 (Lucas): one row height always: while moving, the Side dropdown takes the second line's place (it no longer adds a line)
   const subTip = [r.owner, ...r.chips, ...(r.last ? ["Goes last"] : [])].join(" · ");
-  const name = `<div class="iw-cr${r.member ? " member" : ""}">${portrait(r.img, r.member)}<div class="iw-crt"><div class="iw-nm" data-tooltip="${esc(r.name)}">${esc(r.name)}</div>
-    ${r.moving ? side : `<div class="iw-sub" data-tooltip="${esc(subTip)}">${stackBtn}<span class="iw-own">${esc(r.owner)}</span>${chips}</div>`}</div>
-    <div class="iw-ico"><button type="button" class="iw-ib" data-act="move" ${d} data-tooltip="Move to another side" aria-label="Move ${esc(r.name)} to another side">&#8644;</button>
-    <button type="button" class="iw-ib${r.last ? " on" : ""}" data-act="last" ${d} ${pressed(r.last)} data-tooltip="Goes last (Dying or Shattered before the encounter)" aria-label="${esc(r.name)} goes last">&#10515;</button></div></div>`;
+  const name = `<div class="iw-cr${r.member ? " member" : ""}">${portrait(r.img, r.member)}<div class="iw-crt"><div class="iw-nm" aria-label="${esc(r.name)}">${esc(r.name)}</div>
+    ${r.moving ? side : `<div class="iw-sub" aria-label="${esc(subTip)}">${stackBtn}<span class="iw-own">${esc(r.owner)}</span>${chips}</div>`}</div>
+    <div class="iw-ico"><button type="button" class="iw-ib" data-act="move" ${d} aria-label="Move ${esc(r.name)} to another side">&#8644;</button>
+    <button type="button" class="iw-ib${r.last ? " on" : ""}" data-act="last" ${d} ${pressed(r.last)} aria-label="${esc(r.name)} goes last">&#10515;</button></div></div>`;
   if (r.rolled) {
     return `<div class="iw-row quiet${r.member ? " member" : ""}">${name}
-      <div><div class="iw-rr"><button type="button" class="iw-btn2" data-act="reroll" ${d} data-tooltip="GM correction: roll this creature again">Reroll</button><span class="iw-by">${esc(r.rolledBy)}</span></div></div>
+      <div><div class="iw-rr"><button type="button" class="iw-btn2" data-act="reroll" ${d} aria-label="GM correction: roll this creature again">Reroll</button><span class="iw-by">${esc(r.rolledBy)}</span></div></div>
       <div><div class="iw-rr"><span class="iw-res">${esc(r.result)}</span><span class="iw-by">${esc(r.rolledWith)}</span></div></div><div></div><div></div><div></div></div>`;
   }
   if (r.last) {
@@ -29,7 +29,7 @@ function rowHtml(r) {
   }
   const who = `<div class="iw-seg"><button type="button" data-act="who" data-v="gm" ${d} ${pressed(r.who === "gm")}>GM</button><button type="button" data-act="who" data-v="wait" ${d} ${pressed(r.who === "wait")}>${esc(r.waitLabel)}</button></div>${r.liveNote ? `<div class="iw-live">${esc(r.liveNote)}</div>` : ""}`;
   const sel = `<select class="iw-sel iw-check${r.overridden ? " over" : ""}" data-act="attr" ${d} style="--ac:${r.attr ? ATTR_COLORS[r.attr] : "#2a2320"}" aria-label="Check for ${esc(r.name)}">${r.attrMixed ? '<option value="" selected disabled>· mixed</option>' : ""}${ATTRS.map(a => `<option value="${a}"${a === r.attr ? " selected" : ""}>${ATTR_NAMES[a]} ${esc(r.mods[a])}</option>`).join("")}</select>`;
-  const tog = (act, label, on, fx, by) => `<button type="button" class="iw-tg ${act}${on ? " on" : ""}" data-act="${act}" ${d} ${pressed(on)}${fx ? ` disabled data-tooltip="From an effect: ${esc(by)}"` : ""}>${label}</button>`;
+  const tog = (act, label, on, fx, by) => `<button type="button" class="iw-tg ${act}${on ? " on" : ""}" data-act="${act}" ${d} ${pressed(on)}${fx ? ` disabled aria-label="From an effect: ${esc(by)}"` : ""}>${label}</button>`;
   const roll = `<div class="iw-seg tg">${tog("fav", "Favored", r.fav, r.favFx, r.favBy)}${tog("doom", "Doomed", r.doom, r.doomFx, r.doomBy)}</div>${r.both ? '<div class="iw-live dim">both: a normal roll</div>' : ""}`;
   const step = (k, n, on, man, word) => `<div class="iw-step ${k}${on ? " on" : ""}"><button type="button" data-act="${k}-" ${d} aria-label="One ${word} less"${man ? "" : " disabled"}>&minus;</button><span>${esc(n)}</span><button type="button" data-act="${k}+" ${d} aria-label="One ${word} more">+</button></div>`;
   return `<div class="iw-row ${r.tint}${r.member ? " member" : ""}">${name}<div>${who}</div><div>${sel}</div><div>${roll}</div><div>${step("boons", r.boons, r.boonsOn, r.manB, "Boon")}</div><div>${step("banes", r.banes, r.banesOn, r.manN, "Bane")}</div></div>`;

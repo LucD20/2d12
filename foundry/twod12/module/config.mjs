@@ -356,14 +356,14 @@ export const cardVars = hex => {
 /** The title bar of an Action card: name on the left, category and cost on the right. */
 /** v0.0.189: the automation rank as a small chip (nothing when it isn't set). */
 // v0.0.215 (Lucas, playtest 2): the diamond's tooltip also says what is not implemented yet (the item's "By hand" note), for Bronze and Silver.
-export const autoChip = (rank, note = "") => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" data-tooltip="${escAttr(`${TWOD12.automationHints[rank] ?? ""}${String(note ?? "").trim() ? ` By hand: ${String(note).trim()}` : ""}`)}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
+export const autoChip = (rank, note = "") => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
 export const cardHead = (name, cat, costHtml, freq = "", auto = "", autoNote = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto, autoNote)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
 /** v0.0.234 (pack R-core): the book writes the pool keys B / M as [V] / [R]: the tag of a stored pool in the text Foundry writes. */
 export const poolTag = pool => ({ B: "V", M: "R" })[pool] ?? pool;
 /** Damage on cards: a filled heart for Vigor, a filled brain for Resolve, and each damage type in its own color with its icon. */
-export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind" data-tooltip="Resolve damage"></i>'
-  : pool === "C" ? '<span class="dt-choose" data-tooltip="Vigor or Resolve: the origin chooses"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
-  : '<i class="fa-solid fa-heart dt-body" data-tooltip="Vigor damage"></i>';
+export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-mind"></i>'
+  : pool === "C" ? '<span class="dt-choose"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
+  : '<i class="fa-solid fa-heart dt-body"></i>';
 /** A damage type's icon (on parchment cards, Slash uses Foundry's sword image). */
 export const dtypeIcon = k => (k === "Sl" ? '<img class="dt-img" src="icons/svg/sword.svg" alt="">' : `<i class="${TWOD12.subtypeIcons[k] ?? ""}"></i>`);
 export const dtypeHtml = code => {
@@ -392,8 +392,8 @@ export const flavorHtml = d => (d?.flavor ? `<div class="flavor">${escAttr(d.fla
 export const apLabel = (aps, reaction = false) => {
   const list = [...new Set([].concat(aps))].sort((a, b) => a - b), txt = list.join("/");
   return reaction
-    ? `<span class="rmark" data-tooltip="Reaction: ${txt} Action Point${list.length === 1 && list[0] === 1 ? "" : "s"}, used as a response to its Trigger">${txt}R</span>`
-    : (list.length === 1 && list[0] === 0 ? `<span class="apmark" data-tooltip="0 AP: it costs no Action Points, and can be used only on your turn">0AP</span>` : `<span class="apmark" data-tooltip="${txt} Action Point${list.length === 1 && list[0] === 1 ? "" : "s"}">${txt}AP</span>`);
+    ? `<span class="rmark">${txt}R</span>`
+    : (list.length === 1 && list[0] === 0 ? `<span class="apmark">0AP</span>` : `<span class="apmark">${txt}AP</span>`);
 };
 export const apIcon = (n, reaction = false) => apLabel([n], reaction);
 
@@ -421,7 +421,7 @@ export const traitColor = k => `var(--g-${traitGroupOf(k)})`;
 export function traitChevrons(traits, { properties = false, compact = false } = {}) {
   const label = k => String(TWOD12.traits[k] ?? k), byLabel = (a, b) => label(a).localeCompare(label(b));
   const help = k => TWOD12.traitHelp[k] ?? "TBD";
-  const chip = (k, cls = "", tip = help(k), style = "") => `<span class="tchip${cls}"${style ? ` style="${style}"` : ""} data-tooltip="${escAttr(tip)}">${escAttr(label(k))}</span>`;
+  const chip = (k, cls = "", tip = help(k), style = "") => `<span class="tchip${cls}"${style ? ` style="${style}"` : ""}>${escAttr(label(k))}</span>`;
   const list = [...(traits ?? [])];
   if (properties) return list.length ? `<span class="tprops">${list.sort(byLabel).map(k => chip(k, " prop")).join("")}</span>` : "";
   if (compact) {
@@ -473,7 +473,7 @@ const TOKEN_RE = new RegExp([
   String.raw`(?<guard>\bGuard\b(?:\s\d+\b)?)`,   // v0.0.369 (STYLE-1, Lucas: "I like the proposed"): the word Guard in the Guard blue
   `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b(?!\\s+(?:Attack|Technique)))`
 ].join("|"), "g");
-const traitTip = k => (TWOD12.traitHelp[k] ? ` data-tooltip="${escAttr(TWOD12.traitHelp[k])}"` : "");
+const traitTip = k => (TWOD12.traitHelp[k] ? `` : "");
 /** One colored token of text (the class names are the book's). */
 function colorToken(m, g) {
   if (g.slash) return `<span class="pool-${POOL_CSS[g.sp]}">${m}</span>`;
@@ -537,7 +537,7 @@ export function metaRowHtml({ distanceTip = "", frequency = "", targetText = "",
   const hl = t => { try { return highlightText(escAttr(t)); } catch (e) { return escAttr(t); } };
   const l1 = Number(escalation) > 0 ? [`<span class="esc">${Number(escalation)} Escalation</span>`] : [];
   const l2 = [(!self || areaLine) && targetText ? `<span class="tgt"><b>Targets:</b> ${hl(targetText)}</span>` : "", areaLine ? `<span class="dist"><b>Area:</b> ${areaHtml || hl(areaLine)}</span>` : ""].filter(Boolean);
-  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(/^\d+$/.test(String(distance).trim()) && distanceTip ? `${distance} sq.` : distance)}${distanceTip ? ` <i class="fa-solid fa-circle-info dist-i" data-tooltip="${escAttr(distanceTip)}" aria-label="${escAttr(distanceTip)}"></i>` : ""}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "<b>Vs.</b> "}${vsColored(vs)}</span>` : ""   /* v0.0.295 (Lucas): Vs. bold, the value colored */].filter(Boolean);
+  const l3 = [distance && distance.toLowerCase() !== "self" ? `<span class="dist"><b>Distance:</b> ${hl(/^\d+$/.test(String(distance).trim()) && distanceTip ? `${distance} sq.` : distance)}</span>` : "", vs ? `<span class="vs">${/save$/i.test(String(vs).trim()) ? "" : "<b>Vs.</b> "}${vsColored(vs)}</span>` : ""   /* v0.0.295 (Lucas): Vs. bold, the value colored */].filter(Boolean);
   const row = [l1, l2, l3].filter(l => l.length).map(l => `<div class="trow"><span>${l.join(sep)}</span></div>`).join("");
   const req = requirements ? `<div class="trow reqrow"><span><b>Requirements:</b> ${hl(requirements)}</span></div>` : "";
   const trg = trigger ? `<div class="trow trgrow"><span><b>${reactionKind === "interrupt" ? "Interrupt" : "Trigger"}:</b> ${hl(trigger)}</span></div>` : "";
@@ -569,7 +569,7 @@ const entryOf = t => (typeof t === "string" ? { name: t, side: "", n: 1 } : { na
 export const targetsRowHtml = (tokens, { retarget = false, side = "" } = {}) => {
   if (!tokens?.length && !retarget) return "";
   const es = (tokens ?? []).map(entryOf), total = es.reduce((a, e) => a + e.n, 0);
-  const btn = retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" data-tooltip="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : "";
+  const btn = retarget ? `<button type="button" class="tgt" data-twod12="retargetAction" aria-label="Target the selected tokens"><i class="fa-solid fa-bullseye"></i></button>` : "";
   const one = n => `${escAttr(n.name)}${n.n > 1 ? ` \u00d7${n.n}` : ""}`;
   if (!es.length) return `<div class="tline cardtargets"><span class="tname none"><i class="fa-solid fa-crosshairs"></i>No target</span>${btn}</div>`;
   const sd = side || (es.every(e => e.side === "ally") ? "ally" : es.every(e => e.side === "enemy") ? "enemy" : "");

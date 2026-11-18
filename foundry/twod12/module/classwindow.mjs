@@ -83,8 +83,8 @@ export class ClassWindow extends (ApplicationV2 ?? class {}) {
     const t = this.tf, opt = (v, l) => `<option value="${v}"${t.cat === v ? " selected" : ""}>${l}</option>`;
     return `<div class="cw-filter" data-sec="${sec}"><input type="search" class="cw-fq" placeholder="Search Talents…" value="${esc(t.q)}" aria-label="Search Talents">
       <select class="cw-fcat" aria-label="Category">${opt("", "All categories")}${Object.entries(TWOD12.talentGroups).map(([k, l]) => opt(k, l)).join("")}</select>
-      <label class="cw-fonly" data-tooltip="Hide the Talents whose Level or Prerequisites you don't meet yet"><input type="checkbox" class="cw-fok"${t.only ? " checked" : ""}> Only what I can take</label>
-      <button type="button" class="cw-fview" data-key="tfview" data-tooltip="${t.compact ? "Show as tiles" : "Show as a compact list"}"><i class="fa-solid ${t.compact ? "fa-grip" : "fa-list"}"></i></button></div>`;
+      <label class="cw-fonly" aria-label="Hide the Talents whose Level or Prerequisites you don't meet yet"><input type="checkbox" class="cw-fok"${t.only ? " checked" : ""}> Only what I can take</label>
+      <button type="button" class="cw-fview" data-key="tfview" aria-label="${t.compact ? "Show as tiles" : "Show as a compact list"}"><i class="fa-solid ${t.compact ? "fa-grip" : "fa-list"}"></i></button></div>`;
   }
   /** Show or hide the Talent tiles by the filter (no redraw: typing keeps its place). The chosen ones always show. */
   _applyFilter() {

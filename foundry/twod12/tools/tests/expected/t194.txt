@@ -1,5 +1,5 @@
 the damage line with a reduction: 12 − reduction 7 − Guard 5 = 0 <small>(the reduction is spent; Guard 3 left)</small> | only Guard: 12 − Guard 5 = 7 <small>(the Guard ends)</small> | only a reduction: 9 − reduction 9 = no damage <small>(the reduction is spent)</small>
-the HUD card through the tooltip manager, delegated from the HUD's root: true
+no hover card handed to the tooltip manager (v0.0.420, the tooltip review): true
 a picker uses the card's targets first: true | Guard RP shows the number: true
 linked conditions chained and sorted after their effect: false
 inline Actions as Granted tickets with their own icon, out of the list: false

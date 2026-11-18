@@ -1,9 +1,9 @@
 --- the chat card's tight chips
-Smite (4 groups):     Weapon(roll: "Roll") | Melee(requires: "Requires") | Strike(kind: "Kind") | Divine(keywords: "Keywords")
-Relocate (4 traits):  Body(roll: "Roll") Instinct(roll: "Roll") | Handle(requires: "Requires") | Strike(kind: "Kind")
-5 groups:             Power(roll: "Roll") | Ranged(requires: "Requires") | Area(kind: "Kind") | Nonlethal(damage: "Damage") | Focus(keywords: "Keywords")
-one group:            Body(roll: "Roll") | no traits: ""
-no group labels: true | the tooltip is the group, then the rule: Roll · Requires a weapon. Rolls your Weapon Modifier. On a Tier 2 or 3, your Weapon Attribute is added to the weapon's damage.
+Smite (4 groups):     Weapon | Melee | Strike | Divine
+Relocate (4 traits):  BodyInstinct | Handle | Strike
+5 groups:             Power | Ranged | Area | Nonlethal | Focus
+one group:            Body | no traits: ""
+no group labels: true | no hover on a trait (v0.0.420, the tooltip review): true
 the sheets keep the labeled groups: true | weapon properties stay neutral: true
 --- who uses which
 the Action chat card: true | the Save card: true | the item sheet card, the roll dialog's preview and the weapon card stay labeled: true

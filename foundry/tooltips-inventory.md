@@ -1,4 +1,9 @@
-# Tooltip inventory (for Lucas's review; nothing removed yet)
+# Tooltip inventory (Lucas's review done; APPLIED in v0.0.420)
+
+**Lucas's answer (2026-11-18): B and H "Remove both"; the other categories as proposed.** Applied in v0.0.420: A (the HP bars) and C (why a
+button is off, until the mockups show it on screen) stay; B, D, E, F, G and H are gone; a button showing only an icon or a picture keeps its
+name for screen readers (aria-label). The Distance's ⓘ and the effect formula's ⓘ went with their hovers. Test t264 lists the hover texts
+left. The rows below are the record of what was there (their line numbers are of v0.0.419).
 
 Lucas, 2026-11-17 (playtest 5): "tooltips are too much. Only ones that are necessary so far are the ones in the HP bars. Remove all for now."
 Then: "When we are done reviewing and get to the tooltip stage, write them all down, categorized, and I will review."

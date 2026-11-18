@@ -26,8 +26,7 @@ export function pipsHtml(line, small = false) {
   const out = [];
   for (let i = 0; i < line.m; i++) out.push(i < line.a ? '<i class="on"></i>' : (i < line.a + line.s ? '<i class="spent"></i>' : "<i></i>"));
   if (line.ra !== undefined) out.push(`<span class="hsep"></span><i class="rap${line.ra ? " on" : ((line.rb ?? 0) > line.ra ? " spent" : "")}"></i>`);
-  const tip = `${line.a} AP left${line.ra !== undefined ? `, Reaction AP ${line.ra ? "ready" : "spent"}` : ""}`;
-  return `<span class="tk-pips${small ? " sm" : ""}${line.m > 5 ? " many" : ""}" data-tooltip="${tip}">${out.join("")}</span>`;
+  return `<span class="tk-pips${small ? " sm" : ""}${line.m > 5 ? " many" : ""}">${out.join("")}</span>`;
 }
 
 /** Pure: the ticker of the last line of `lines` (the snapshot), with the Turn Log of all of them inside. */

@@ -6,7 +6,7 @@ import { esc } from "./util.mjs";
 export function pickBarHtml(o) {
   // v0.0.397 (Lucas: "token images only, side by side in squares, like Draw Steel; hover over shows the name"): an option with a picture is a square
   const opts = (o.options ?? []).map(x => (x.img
-    ? `<button type="button" class="lb-opt sq${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}" data-tooltip="${esc(x.tip || x.label)}" aria-label="${esc(x.label)}"><img src="${esc(x.img)}" alt=""></button>`
+    ? `<button type="button" class="lb-opt sq${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}" aria-label="${esc(x.label)}"><img src="${esc(x.img)}" alt=""></button>`
     : `<button type="button" class="lb-opt${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}"${x.tip ? ` data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.label)}</button>`)).join("");
   return `<i class="fa-solid ${esc(o.icon ?? "fa-hand-pointer")} lb-ic"></i><span class="lb-text">${o.text ?? ""}</span><span class="lb-side lb-opts">${opts}</span>${o.done ? `<button type="button" class="lb-go" data-id="__done"><i class="fa-solid fa-check"></i> ${esc(o.done)}</button>` : ""}<button type="button" class="lb-give" data-id="__cancel">${esc(o.cancel ?? "Cancel")}</button>`;
 }

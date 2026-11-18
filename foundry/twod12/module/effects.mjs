@@ -528,11 +528,10 @@ export function panelCardHtml(e, actor, { dur = "", note = "" } = {}) {
     controls: valued || counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: open · Right-click: remove" });
 }
 /** The attributes that show an HTML card on hover, to the left: Foundry 13 reads data-tooltip-html (its data-tooltip is text), older versions data-tooltip. */
-const markTip = (el, html) => { el.dataset.tooltipHtml = html; el.dataset.tooltip = html; el.dataset.tooltipDirection = "LEFT"; };
+const markTip = () => {};   // v0.0.420 (the tooltip review): no hover card on the token's condition panel
 /** On hover the card is also handed to the tooltip manager as an element (the HUD's way, v0.0.256), in case the attribute is read as text. */
 function activateTip(el) {
-  const html = el?.dataset?.tooltipHtml; if (!html) return;
-  try { const box = document.createElement("div"); box.innerHTML = html; game.tooltip?.activate?.(el, { content: box, direction: "LEFT" }); } catch (e) { /* the attributes stay */ }
+  void el;   // v0.0.420 (the tooltip review, B: removed): no hover card
 }
 /** Is this effect on the creature the panel shows (an effect on one of its items counts)? */
 function panelShows(effect) {
@@ -554,7 +553,7 @@ function renderPanel() {
         const link = document.createElement("div");
         link.className = "fx-chain";
         link.innerHTML = `<span class="fx-chainline"></span><i class="fa-solid fa-link"></i>`;
-        link.dataset.tooltip = `Brought by ${shown.find(p => p.id === e.getFlag(F, "linkedTo")).name}: it leaves with it`;
+        link.setAttribute("aria-label", `Brought by ${shown.find(p => p.id === e.getFlag(F, "linkedTo")).name}: it leaves with it`);
         panel.appendChild(link);
       }
       const dur = durationText(e.getFlag(F, "duration"));
@@ -669,8 +668,7 @@ export function valuedHud(app, html) {
     root.addEventListener("pointerover", ev => {
       const el = ev.target?.closest?.("[data-status-id]"); if (!el) return;
       const html = cardOf(el.dataset.statusId); if (!html) return;
-      mark(el, html);
-      try { const box = document.createElement("div"); box.innerHTML = html; game.tooltip?.activate?.(el, { content: box, direction: "LEFT" }); } catch (e) { /* the attributes stay */ }
+      mark(el, html);   // v0.0.420 (the tooltip review): marks nothing; no card handed to the tooltip manager
     }, true);
   }
   return n;

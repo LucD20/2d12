@@ -20,12 +20,12 @@ export const sbGroupOf = a => (a.escalation ? "esc" : a.reaction ? "react" : a.b
 export function sbActionHtml(a) {
   const stamp = v => (v.off || v.used
     ? `<button type="button" class="sb-vb no${v.used ? " used" : ""}" disabled data-tooltip="${esc(v.why || (v.used ? "Used" : ""))}" aria-label="${esc(`${a.name}, ${v.label}: ${v.why || "used"}`)}">${esc(v.label)}</button>`
-    : `<button type="button" class="sb-vb" data-action="useVersion" data-ap="${Number(v.ap) || 0}" data-tooltip="Use the ${esc(v.label)} Version (the roll dialog)" aria-label="Use ${esc(a.name)}, ${esc(v.label)}">${esc(v.label)}</button>`);
+    : `<button type="button" class="sb-vb" data-action="useVersion" data-ap="${Number(v.ap) || 0}" aria-label="Use ${esc(a.name)}, ${esc(v.label)}">${esc(v.label)}</button>`);
   const fq = [a.escalation ? `Escalation ${a.escalation}` : "", SB_FREQ[a.freq] ?? "", a.usedWord ? "used" : ""].filter(Boolean).join(", ");
   const meta = (a.meta ?? []).filter(([, h]) => h).map(([l, h]) => `<b>${esc(l)}</b> ${h}`).join('<span class="sep">;</span> ');
   const tiers = a.noTiers ? "" : (a.tiers ?? []).map(t => `<div class="sb-tiers">${t.label ? `<div class="sb-vl">${esc(t.label)}</div>` : ""}${t.cells.map((c, i) => `<div class="sb-t t${i + 1}"><span class="tl">${TIER_NAMES[i]}</span><span class="tv">${c || '<span class="none">No effect</span>'}</span></div>`).join("")}${t.crit ? `<div class="sb-t crit"><span class="tl">Critical</span><span class="tv">${t.crit}</span></div>` : ""}</div>`).join("");
   return `<div class="sb-oa${a.dim ? " dim" : ""}" data-item-id="${esc(a.id)}" style="--fq:${esc(a.fqColor)}">
-    <div class="sb-oa-h">${(a.versions ?? []).map(stamp).join("")}<a class="n" data-action="openItem" data-tooltip="Open the Action">${esc(a.name)}</a>${a.traits ? `<span class="tr">(${esc(a.traits)})</span>` : ""}<span class="fq"><i aria-hidden="true">✦</i> ${esc(fq)}</span><span class="sb-tools"><a data-action="openItem" data-tooltip="Edit" aria-label="Edit ${esc(a.name)}"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete" data-tooltip="Delete" aria-label="Delete ${esc(a.name)}"><i class="fa-solid fa-trash"></i></a></span></div>
+    <div class="sb-oa-h">${(a.versions ?? []).map(stamp).join("")}<a class="n" data-action="openItem" aria-label="Open the Action">${esc(a.name)}</a>${a.traits ? `<span class="tr">(${esc(a.traits)})</span>` : ""}<span class="fq"><i aria-hidden="true">✦</i> ${esc(fq)}</span><span class="sb-tools"><a data-action="openItem" aria-label="Edit ${esc(a.name)}"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete" aria-label="Delete ${esc(a.name)}"><i class="fa-solid fa-trash"></i></a></span></div>
     ${meta ? `<div class="sb-meta">${meta}</div>` : ""}${tiers}${a.effects ? `<div class="sb-fx"><span class="fxl">Effects</span> ${a.effects}</div>` : ""}
   </div>`;
 }
@@ -38,10 +38,10 @@ export function statBlockHtml(m) {
   const pips = (now, max) => `<span class="sb-pips">${Array.from({ length: max }, (_, i) => `<i class="${i < now ? "on" : ""}"></i>`).join("")}</span>`;
   const groups = (m.groups ?? []).map(g => {
     const right = g.esc ? `<span class="r">${pips(g.esc.n, g.esc.max)} ${g.esc.n} / ${g.esc.max}</span>` : "";
-    const ladder = (g.ladder ?? []).map(r => `<div class="sb-rung${r.lit ? "" : " off"}"${r.tip ? ` data-tooltip="${esc(r.tip)}"` : ""}><span class="num">${esc(r.n)}.</span><span>${esc(r.text)}</span></div>`).join("");
-    return `<div class="sb-band">${esc(g.label)}${right}<a class="add" data-action="newAction" data-tooltip="Add an Action">+ Add</a></div>${ladder}${(g.actions ?? []).map(sbActionHtml).join("")}`;
+    const ladder = (g.ladder ?? []).map(r => `<div class="sb-rung${r.lit ? "" : " off"}"><span class="num">${esc(r.n)}.</span><span>${esc(r.text)}</span></div>`).join("");
+    return `<div class="sb-band">${esc(g.label)}${right}<a class="add" data-action="newAction" aria-label="Add an Action">+ Add</a></div>${ladder}${(g.actions ?? []).map(sbActionHtml).join("")}`;
   }).join("");
-  const stats = (m.stats ?? []).map(([k, v, tip, big]) => `<span${tip ? ` data-tooltip="${esc(tip)}"` : ""}><span class="k">${esc(k)}</span> <b${big ? ' class="big"' : ""}>${esc(v)}</b></span>`).join("");
+  const stats = (m.stats ?? []).map(([k, v, tip, big]) => `<span><span class="k">${esc(k)}</span> <b${big ? ' class="big"' : ""}>${esc(v)}</b></span>`).join("");
   const rw = (m.rw ?? []).map(([k, h]) => `<span class="s2"><span class="k">${esc(k)}</span> ${h || "—"}</span>`).join("");
   return `<div class="twod12-sb rk-${esc(m.rankKey)}">
   <div class="sb-stats">
@@ -51,13 +51,13 @@ export function statBlockHtml(m) {
     <div class="sbl grid">${rw}</div>
   </div>
   <div class="sb-body">${groups || '<p class="sb-empty">No Actions yet. Drag Actions onto this sheet, or + Add.</p>'}
-    <div class="sb-attrs">${(m.attrs ?? []).map(x => `<a class="sb-attr at-${esc(x.key)}" data-action="rollAttr" data-key="${esc(x.key)}" data-tooltip="Click: ${esc(x.label)} Check · Shift-click: ${esc(x.label)} Save"><span>${esc(x.label)}</span><b>${esc(x.value)}</b><small>Vs. ${esc(x.vs)}</small></a>`).join("")}${(m.mods ?? []).map((x, i) => `<div class="sb-attr mod-${esc(x.key)}${i === 0 ? " gap" : ""}"><span>${esc(x.label)} Mod.</span><b>${esc(x.value)}</b><small>${esc(x.dc ?? "")}</small></div>`).join("")}</div>
+    <div class="sb-attrs">${(m.attrs ?? []).map(x => `<a class="sb-attr at-${esc(x.key)}" data-action="rollAttr" data-key="${esc(x.key)}" aria-label="Click: ${esc(x.label)} Check · Shift-click: ${esc(x.label)} Save"><span>${esc(x.label)}</span><b>${esc(x.value)}</b><small>Vs. ${esc(x.vs)}</small></a>`).join("")}${(m.mods ?? []).map((x, i) => `<div class="sb-attr mod-${esc(x.key)}${i === 0 ? " gap" : ""}"><span>${esc(x.label)} Mod.</span><b>${esc(x.value)}</b><small>${esc(x.dc ?? "")}</small></div>`).join("")}</div>
   </div>
 </div>`;
 }
 
 /** Pure: the name plate (over the tab bar): the name in Cinzel on the rank's color, the rank and the level at the right, Initiative and Senses. */
-export const sbPlateHtml = m => `<div class="twod12-sb sb-platew rk-${esc(m.rankKey)}"><div class="sb-plate"><div class="nm">${esc(m.name)}</div><div class="who"><b>${esc([m.rank, m.role].filter(Boolean).join(" "))}</b><span>Level ${esc(m.level)} (Stage ${esc(m.stage)}) \u00b7 CV ${esc(m.cv)}</span></div><span class="sb-ptools"><a data-action="rollInitiative" data-tooltip="Roll Initiative" aria-label="Roll Initiative"><i class="fa-solid fa-dice-d20"></i></a><a data-action="editSenses" data-tooltip="Senses" aria-label="Senses"><i class="fa-solid fa-eye"></i></a></span></div></div>`;
+export const sbPlateHtml = m => `<div class="twod12-sb sb-platew rk-${esc(m.rankKey)}"><div class="sb-plate"><div class="nm">${esc(m.name)}</div><div class="who"><b>${esc([m.rank, m.role].filter(Boolean).join(" "))}</b><span>Level ${esc(m.level)} (Stage ${esc(m.stage)}) \u00b7 CV ${esc(m.cv)}</span></div><span class="sb-ptools"><a data-action="rollInitiative" aria-label="Roll Initiative"><i class="fa-solid fa-dice-d20"></i></a><a data-action="editSenses" aria-label="Senses"><i class="fa-solid fa-eye"></i></a></span></div></div>`;
 
 /* ------------------------------------------------------------------ the model (Foundry) */
 /** The model from the actor and the full sheet's model (pc: pcsheet.mjs's, so the numbers agree with the full sheet). */

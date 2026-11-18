@@ -1,9 +1,9 @@
 --- the icons after "Took" (one per kind, the numbers in the tooltip)
-[icon: +2 Weak Holy][icon: −3 Resist Fire][icon: Immune Cold]
+[icon: Weak: +2 Weak Holy][icon: Resist: −3 Resist Fire][icon: Immune: Immune Cold]
 none: ""
 --- a damage message: one row waiting, one applied
 waiting: Ogre Apply Full Half Double −2 Guard Lethal
-applied: Imp Took 2[icon: −3 Resist Fire] ✓ Undo Full Half Double Lethal
+applied: Imp Took 2[icon: Resist: −3 Resist Fire] ✓ Undo Full Half Double Lethal
 Apply and Undo share the class cc-rbtn: true | the Lethal tag only in the rows: true
 a card with no target keeps the tag at the bottom: true
 --- a written [Mod] in a [W] term takes the weapon's subtype (Smite: [V] 1[W] + [Mod])

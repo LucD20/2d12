@@ -110,7 +110,7 @@ export async function everyoneSleeps() {
 /* ------------------------------------------------------------------ the window */
 const gmOnly = html => (game.user?.isGM ? html : "");
 const STEP = (s, label) => `<button type="button" data-s="${s}">${label}</button>`;
-const TO = (k, icon, tip) => `<button type="button" data-to="${k}" data-tooltip="${tip}"><i class="fa-solid ${icon}"></i></button>`;
+const TO = (k, icon, tip) => `<button type="button" data-to="${k}" aria-label="${tip}"><i class="fa-solid ${icon}"></i></button>`;
 
 function clockHtml() {
   return `<div class="clockbody">
@@ -129,7 +129,7 @@ function clockHtml() {
         .map(u => `<option value="${u}">${u[0].toUpperCase() + u.slice(1)}</option>`)
         .join("")}</select>
       <button type="button" data-act="advance">Advance</button>
-      <button type="button" data-act="back" data-tooltip="Move the clock back">Back</button>
+      <button type="button" data-act="back" aria-label="Move the clock back">Back</button>
     </div>
     <details class="clock-set"><summary>Set the date</summary>
       <div class="clock-setrow">
@@ -142,7 +142,7 @@ function clockHtml() {
       <p class="hint">Setting a date moves the clock, and Exhaustion counts the hours since each character's last Sleep. Turn off "Count Exhaustion" first to jump without it.</p>
     </details>
     <button type="button" class="clock-wide" data-act="sleep"><i class="fa-solid fa-bed"></i> Everyone sleeps (8 hours)</button>
-    <label class="clock-track" data-tooltip="Counts Exhaustion from the time awake. Turn it off to move the clock many days without it (a journey); turning it on again starts everyone's time awake from now."><input type="checkbox" name="track" ${trackingExhaustion() ? "checked" : ""}> Count Exhaustion from the time awake</label>
+    <label class="clock-track"><input type="checkbox" name="track" ${trackingExhaustion() ? "checked" : ""}> Count Exhaustion from the time awake</label>
     </div>`)}
   </div>`;
 }
@@ -202,8 +202,8 @@ const BAR = [[-3600, "fa-backward-fast", "Back 1 hour"], [-600, "fa-angles-left"
 
 export function barHtml() {
   const { date, time } = clockParts();
-  const btn = ([s, icon, tip]) => `<button type="button" data-s="${s}" data-tooltip="${tip}"><i class="fa-solid ${icon}"></i></button>`;
-  return `${BAR.slice(0, 3).map(btn).join("")}<span class="tb-time" data-open="1" data-tooltip="${esc(date)}: open the World Clock">${esc(time)}</span>${BAR.slice(3).map(btn).join("")}`;
+  const btn = ([s, icon, tip]) => `<button type="button" data-s="${s}" aria-label="${tip}"><i class="fa-solid ${icon}"></i></button>`;
+  return `${BAR.slice(0, 3).map(btn).join("")}<span class="tb-time" data-open="1" aria-label="${esc(date)}: open the World Clock">${esc(time)}</span>${BAR.slice(3).map(btn).join("")}`;
 }
 
 /** A click anywhere on the page: if it is on one of the bar's buttons, move the clock. (Whole-page, so it works however the chat is redrawn.) */

@@ -289,10 +289,11 @@ export function registerInline() {
       const cfg = parseInline(kind, match[2]);
       // v0.0.246: "[Mod]" in a chip's words becomes the number of the creature the text belongs to (the tooltip says whose). v0.0.250: "Pow" too (the Power Modifier), and a Stage formula.
       const modN = modForDoc(options?.relativeTo), powN = powForDoc(options?.relativeTo), stageN = stageForDoc(options?.relativeTo);
+      // v0.0.420 (the tooltip review): the calculation is kept in data-calc, no longer shown on hover.
       // v0.0.352 (Lucas, playtest 4, Step 6: "calculated buttons in a slightly different text colour, the calculation on hover"): a chip whose
       // number was worked out for this creature (its [Mod] / Pow, its Stage's dice, a Rally Point, a distance from its Speed) has the class calc
-      const inlineEl = (k, c, label, icon) => { const l2 = withPow(withMod(label, modN), powN); const el = mkEl(k, c, l2, icon); if (l2 !== label) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: ${label} with this creature's ${[modN !== null ? `[Mod] ${modN}` : "", powN !== null ? `Pow ${powN}` : ""].filter(Boolean).join(", ")} = ${l2}`; } return el; };
-      const staged = el => { if (cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: Stage ${stageN}: ${stagedFormula(cfg, stageN)} (Stage 0: ${cfg.formula})${el.dataset.tooltip ? `. ${el.dataset.tooltip}` : ""}`; } return el; };
+      const inlineEl = (k, c, label, icon) => { const l2 = withPow(withMod(label, modN), powN); const el = mkEl(k, c, l2, icon); if (l2 !== label) { el.classList.add("calc"); el.dataset.calc = `Calculated: ${label} with this creature's ${[modN !== null ? `[Mod] ${modN}` : "", powN !== null ? `Pow ${powN}` : ""].filter(Boolean).join(", ")} = ${l2}`; } return el; };
+      const staged = el => { if (cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula) { el.classList.add("calc"); el.dataset.calc = `Calculated: Stage ${stageN}: ${stagedFormula(cfg, stageN)} (Stage 0: ${cfg.formula})${el.dataset.calc ? `. ${el.dataset.calc}` : ""}`; } return el; };
       if (kind === "Heal") return staged(inlineEl("Heal", cfg, cfg.label ?? match[3] ?? `Heal ${healText(stagedFormula(cfg, stageN))}`, "fa-hand-holding-medical"));
       if (kind === "Reduce") return staged(inlineEl("Reduce", cfg, (cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula ? null : cfg.label ?? match[3]) ?? `reduced by ${healText(stagedFormula(cfg, stageN))}`, "fa-shield-halved"));
       if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
@@ -302,7 +303,7 @@ export function registerInline() {
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
         const el = mkEl("Book", cfg, cfg.label ?? match[3] ?? cfg.ref, "fa-book-open");
-        el.classList.add("book"); el.dataset.tooltip = `${cfg.ref}: a rule of the book${cfg.doc ? ` (${cfg.doc})` : ""}`;
+        el.classList.add("book"); el.dataset.rule = `${cfg.ref}: a rule of the book${cfg.doc ? ` (${cfg.doc})` : ""}`;
         return el;
       }
       if (kind === "Check" || kind === "Save") {
@@ -320,7 +321,7 @@ export function registerInline() {
         span.append(inlineEl("Save", cfg, label, "fa-shield-halved"));
         const card = inlineEl("SaveCard", cfg, "", "fa-comment");
         card.classList.add("chatbtn");
-        card.dataset.tooltip = "Create a save card for the targeted tokens";
+        card.setAttribute("aria-label", "Create a save card for the targeted tokens");
         span.append(card);
         return span;
       }
@@ -332,7 +333,7 @@ export function registerInline() {
         const nm = cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1);
         const dur = cfg.dur === "eot" ? " (EoT)" : (cfg.dur === "rounds" ? ` (${cfg.rounds} round${cfg.rounds === 1 ? "" : "s"})` : "");
         const el = inlineEl("Condition", cfg, cfg.label ?? match[3] ?? `${nm}${cfg.value ? ` ${cfg.value}` : ""}${cfg.quiet ? "" : dur}`, "fa-triangle-exclamation");
-        if (cfg.quiet && dur) el.dataset.tooltip = `${nm}${dur}`;
+        if (cfg.quiet && dur) el.dataset.rule = `${nm}${dur}`;
         return el;
       }
       if (kind === "Use") {
@@ -357,7 +358,7 @@ export function registerInline() {
         const lbl = cfg.stages && stagedFormula(cfg, stageN) !== cfg.formula ? null : cfg.label ?? match[3];
         const text = rp !== null && (lbl === undefined || lbl === null || /\bRP\b/.test(lbl)) ? (lbl ? lbl.replace(/\bRP\b/, String(rp)) : `Guard ${rp}`) : lbl ?? `Guard ${guardText(stagedFormula(cfg, stageN))}`;
         const el = staged(inlineEl("Guard", cfg, text, "fa-shield-heart"));
-        if (rp !== null) { el.classList.add("calc"); el.dataset.tooltip = `Calculated: Guard equal to what one of their Rally Points heals (${rp})`; }
+        if (rp !== null) { el.classList.add("calc"); el.dataset.calc = `Calculated: Guard equal to what one of their Rally Points heals (${rp})`; }
         return el;
       }
       if (kind === "Move") {
@@ -368,7 +369,7 @@ export function registerInline() {
         const name = { pushed: "Pushed", pulled: "Pulled", slid: "Slid", evade: "Evade", charge: "Charge", reposition: "Reposition" }[cfg.kind] ?? "Advance", icon = { pushed: "fa-hand", pulled: "fa-hand-back-fist", slid: "fa-route", evade: "fa-wind", charge: "fa-person-running-fast", reposition: "fa-arrows-up-down-left-right" }[cfg.kind] ?? "fa-person-running";
         const el = inlineEl("Move", cfg, cfg.label ?? match[3] ?? `${name} ${n}`, icon);
         if (calc) el.classList.add("calc");   // v0.0.352
-        if (calc) { const c = document.createElement("i"); c.className = "fa-solid fa-calculator calc"; c.dataset.tooltip = value ? `Calculated from your stats: ${cfg.distanceExpr} = ${value}` : `Calculated: ${cfg.distanceExpr}`; el.append(" ", c); }
+        if (calc) { const c = document.createElement("i"); c.className = "fa-solid fa-calculator calc"; c.dataset.calc = value ? `Calculated from your stats: ${cfg.distanceExpr} = ${value}` : `Calculated: ${cfg.distanceExpr}`; el.append(" ", c); }
         return el;
       }
       // v0.0.246 (Lucas): an area chip reads "1 Emanation", "2 Burst", "6 Line", with the shape's footprint as its icon (AREA_ICONS).
@@ -425,7 +426,7 @@ async function prerollTiers(cfg) {
 }
 /** A Tier's line on a Save card once its damage is rolled: the amounts, with the dice in the tooltip, then its texts and effects. */
 async function tierRolled(parts, comps) {
-  const bits = comps.map(c => `<span data-tooltip="${esc(`${c.formula}: ${(c.dice ?? []).flatMap(d => d.results ?? []).join(" + ") || c.total}`)}">${prettyDamage(esc(`[${({ B: "V", M: "R" })[c.pool || "B"] ?? c.pool}] ${c.total}${c.sub ? ` ${c.sub}` : ""}${c.nl ? " NL" : ""}`))}</span>`);
+  const bits = comps.map(c => `<span>${prettyDamage(esc(`[${({ B: "V", M: "R" })[c.pool || "B"] ?? c.pool}] ${c.total}${c.sub ? ` ${c.sub}` : ""}${c.nl ? " NL" : ""}`))}</span>`);
   bits.push(...parts.texts.map(t => prettyDamage(esc(t))));
   for (const u of parts.uuids) bits.push(`\u2726 ${esc((await fromUuid(u))?.name ?? "?")}`);
   return bits.join("<br>") || "&mdash;";
@@ -1013,8 +1014,8 @@ const sside = (f, cls, sign) => f?.length ? `<span class="plus">${sign}</span><s
 const diceRowHtml = (d, tier = 0) => {
   if (!d) return "";
   // each damage roll has its symbols in front: a heart or a brain, and the damage type's icon ("Body Bl" is a heart and a hammer)
-  const sym = c => `${c.pool ? poolIcon(c.pool) : ""}${c.sub ? `<span class="dtic" data-tooltip="${esc(TWOD12.subtypes[c.sub] ?? c.sub)}" style="color:${TWOD12.subtypeInk[c.sub] ?? "inherit"}">${dtypeIcon(c.sub)}</span>` : ""}`;
-  const dmg = (d.dmg ?? []).filter(c => c.faces?.length).map(c => `${c.pool || c.sub ? `<span class="dsym">${sym(c)}</span>` : ""}<span class="dgroup dmgdice" data-tooltip="${esc(c.formula)}">${c.faces.map(f => `<span class="die d${c.d}">${f}</span>`).join("")}</span>`).join("");
+  const sym = c => `${c.pool ? poolIcon(c.pool) : ""}${c.sub ? `<span class="dtic" aria-label="${esc(TWOD12.subtypes[c.sub] ?? c.sub)}" style="color:${TWOD12.subtypeInk[c.sub] ?? "inherit"}">${dtypeIcon(c.sub)}</span>` : ""}`;
+  const dmg = (d.dmg ?? []).filter(c => c.faces?.length).map(c => `${c.pool || c.sub ? `<span class="dsym">${sym(c)}</span>` : ""}<span class="dgroup dmgdice">${c.faces.map(f => `<span class="die d${c.d}">${f}</span>`).join("")}</span>`).join("");
   const anySym = (d.dmg ?? []).some(c => c.faces?.length && (c.pool || c.sub));
   return `<div class="dice sdice">${tier ? `<span class="rtag rolled${tier === 1 ? " fail" : ""}">Tier ${tier}</span>` : ""}<span class="dgroup">${d.d1.map((f, i) => sdie(f, d.doubles && i === 0)).join("")}</span><span class="plus">+</span><span class="dgroup">${d.d2.map((f, i) => sdie(f, d.doubles && i === 0)).join("")}</span>${sside(d.boon, "boon", "+")}${sside(d.bane, "bane", "&minus;")}${dmg ? `<span class="grow"></span>${anySym ? "" : '<i class="fa-solid fa-burst sdicon"></i>'}${dmg}` : ""}</div>`;
 };
@@ -1032,16 +1033,16 @@ async function saveCardHtml(st) {
   const rows = [];
   for (let n = 1; n <= 3; n++) {
     const parts = parseParts(cfg.tiers[`t${n}`]), rolled = st.tierDmg?.[`t${n}`];
-    rows.push(`<tr class="t${n}"><th data-tooltip="Tier ${n}">${labels[n - 1]}</th><td>${rolled ? await tierRolled(parts, rolled) : await tierSummary(parts)}</td></tr>`);
+    rows.push(`<tr class="t${n}"><th>${labels[n - 1]}</th><td>${rolled ? await tierRolled(parts, rolled) : await tierSummary(parts)}</td></tr>`);
   }
   const traits = cfg.traits.length ? `<div class="traits">${traitChevrons(cfg.traits, { compact: true })}</div>` : "";   // a chat card: tight chips (v0.0.180)
   const targets = st.rows.map((r, i) => {
     const res = r.result;
-    const mid = res ? `<span class="shield small ${res.total >= dc ? "win" : "lose"}" data-tooltip="${esc(res.tip)}"><b class="rtotal">${res.total}</b><small class="vsdc">DC ${dc}</small></span>` : `<button type="button" data-twod12="saveRoll" data-idx="${i}">${esc(attr)}</button>`;
+    const mid = res ? `<span class="shield small ${res.total >= dc ? "win" : "lose"}"><b class="rtotal">${res.total}</b><small class="vsdc">DC ${dc}</small></span>` : `<button type="button" data-twod12="saveRoll" data-idx="${i}">${esc(attr)}</button>`;
     return `<div class="srow"><span class="sname"><i class="fa-solid fa-crosshairs"></i> ${esc(r.name)}</span>${mid}<span class="sdmg ${res ? `t${res.tier}` : ""}">${res ? dmgCellHtml(res) : ""}</span></div>${extraLineHtml(res)}${res ? diceRowHtml(res.dice, res.tier) : ""}`;
   }).join('<hr class="sep">');
   return `<div class="twod12 chat action savecard" style="${st.color ? cardVars(st.color) : ""}">${cardHead(`${attr} Save`, "", `<span class="apmark">DC ${dc}</span>`)}${traits}
-    <div class="orn">&#10022; &#10022; &#10022;</div><table class="tiers">${rows.join("")}</table><div class="orn">&#10022;</div><div class="stargets"><div class="srow sthead"><span class="sname"><button type="button" class="tgt" data-twod12="retargetSave" data-tooltip="Retarget"><i class="fa-solid fa-bullseye"></i></button> Name</span><span class="scol">Save</span><span class="scol r">Damage</span></div>${targets || "<i>No targets</i>"}</div></div>`;
+    <div class="orn">&#10022; &#10022; &#10022;</div><table class="tiers">${rows.join("")}</table><div class="orn">&#10022;</div><div class="stargets"><div class="srow sthead"><span class="sname"><button type="button" class="tgt" data-twod12="retargetSave" aria-label="Retarget"><i class="fa-solid fa-bullseye"></i></button> Name</span><span class="scol">Save</span><span class="scol r">Damage</span></div>${targets || "<i>No targets</i>"}</div></div>`;
 }
 
 /**

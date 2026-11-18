@@ -428,9 +428,9 @@ export function registerCombatHooks() {
       if (!c || li.querySelector(".twod12-ap")) return;
       const box = document.createElement("label");
       box.className = "twod12-ap";
-      box.dataset.tooltip = "Action Points";
+      box.setAttribute("aria-label", "Action Points");
       const canSwap = combat.started && combat.combatant?.id === c.id && c.isOwner && !c.getFlag(F, "acted") && getAP(c) >= 1;
-      box.innerHTML = `<span>AP</span><input type="number" min="0" value="${getAP(c)}" ${c.isOwner ? "" : "disabled"}><span class="hsep"></span><a class="twod12-rap${getRAP(c) ? " on" : ""}" data-tooltip="Reaction AP: ${getRAP(c) ? "ready (pays only for Reactions; click to spend it by hand)" : "spent (back at the start of its turn; click to give it back)"}"></a>${canSwap ? '<button type="button" class="twod12-swap" data-tooltip="Swap initiative with an ally (1 AP)"><i class="fa-solid fa-right-left"></i></button>' : ""}`;
+      box.innerHTML = `<span>AP</span><input type="number" min="0" value="${getAP(c)}" ${c.isOwner ? "" : "disabled"}><span class="hsep"></span><a class="twod12-rap${getRAP(c) ? " on" : ""}" aria-label="Reaction AP: ${getRAP(c) ? "ready (pays only for Reactions; click to spend it by hand)" : "spent (back at the start of its turn; click to give it back)"}"></a>${canSwap ? '<button type="button" class="twod12-swap" aria-label="Swap initiative with an ally (1 AP)"><i class="fa-solid fa-right-left"></i></button>' : ""}`;
       box.querySelector(".twod12-swap")?.addEventListener("click", () => requestSwap(combat, c));
       box.querySelector(".twod12-rap")?.addEventListener("click", () => { if (c.isOwner) setRAP(c, getRAP(c) ? 0 : rapMaxOf(c)); });
       if (c.getFlag(F, "frozen")) box.classList.add("frozen");
@@ -462,7 +462,7 @@ export function registerCombatHooks() {
         const n = momentumNow();
         mo.type = "button"; mo.className = `twod12-momentum${n ? " on" : ""}`;
         mo.innerHTML = `<i class="fa-solid fa-fire"></i> Momentum ${n}`;
-        mo.dataset.tooltip = `The party's Momentum (0 to 4): every PC starts this encounter at Escalation ${1 + n}. Left-click +1, right-click -1.`;
+        mo.setAttribute("aria-label", `The party's Momentum (0 to 4): every PC starts this encounter at Escalation ${1 + n}. Left-click +1, right-click -1.`);
         mo.addEventListener("click", async () => { await setMomentum(momentumNow() + 1, "set by the GM"); ui.combat?.render(); });
         mo.addEventListener("contextmenu", async ev => { ev.preventDefault(); await setMomentum(momentumNow() - 1, "set by the GM"); ui.combat?.render(); });
         (el.querySelector("header") ?? el).append(mo);
