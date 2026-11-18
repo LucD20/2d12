@@ -134,3 +134,7 @@ fixed, then the questions (each with Claude's recommendation; "all defaults" is 
 - The book: each example NPC's bullet doesn't list its traits ([Melee, Strike, Weapon]) nor Avenge Kin's Frequency and Target (waits for
   questions 2 and 4); "Vs. AD / Vs. WD" against the glossary's "Vs." (names an Attribute); `bestiary.json` still carries the deprecated Bandit
   Thug's two cards.
+
+## The example NPCs' CV: decided (v0.0.436)
+
+Lucas: "(a), round within half a step." Chapter 14: half a step or less, either way, counts as none; Foundry follows. The four examples, the Soldier and the Skirmisher are worth their rank's CV with no stat changed.

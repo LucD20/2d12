@@ -57,7 +57,8 @@ export function cvSteps(rank, ratings = {}, mods = {}) {
     + (modStep(mods.weapon ?? "medium") - ratingStep("medium")) / 2 + (modStep(mods.power ?? powerDefault) - ratingStep(powerDefault)) / 2;
 }
 /** An NPC's CV: its rank's (lower an earlier Stage than the party's: base) plus its steps times the rank's CV step (config.mjs npcCvStep), never under 0. */
-export const cvWithSteps = (rank, base, steps) => Math.max(0, Math.round(Number(base) + (TWOD12.npcCvStep[rank] ?? 15) * steps));
+// v0.0.436 (Lucas, 2026-11-18: "round within half a step"): half a step or less, either way, counts as none
+export const cvWithSteps = (rank, base, steps) => Math.max(0, Math.round(Number(base) + (TWOD12.npcCvStep[rank] ?? 15) * (Math.abs(Number(steps) || 0) <= 0.5 ? 0 : steps)));
 
 /** A Stage 0 table's value by rating (config.mjs npcStage0 health, npcDefense): a Minion has no Extreme (its High is the last). */
 export const s0Col = (rank, rating) => { const i = RATINGS.indexOf(rating); return rank === "minion" ? Math.min(3, i < 0 ? 2 : i) : i < 0 ? 2 : i; };

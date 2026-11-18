@@ -82,10 +82,10 @@ Expect: The Level saves; the image picker opens.
 Do: Open a class's Levels Editor, rename a section, save, open it again.
 Expect: The new title is kept.
 
-### builder-tab · v0.0.433 · The NPC Builder tab
+### builder-tab · v0.0.436 · The NPC Builder tab
 Do: Open the Orc Warrior's Builder tab; click the Striker preset on a copy. Then make a new NPC and set its rank to Elite, then back to Standard.
-Expect: Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100; the Damage row "25/AP" for a Standard; the turn-budget table, with no list of old notes under it; Best turn "about 93 of 100 (damage only: riders and shares not counted)". Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged. The new Elite has Escalation on, at 1, and its ladder reads "2 · Pressing | 4 · Relentless | 6 · Second Wind"; back to Standard, Escalation is off.
-Rev: 2
+Expect: Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100 (its Low Ward Defense is half a step: counted as none); the Damage row "25/AP" for a Standard; the turn-budget table, with no list of old notes under it; Best turn "about 93 of 100 (damage only: riders and shares not counted)". Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged; Soldier and Skirmisher also keep CV 100. The new Elite has Escalation on, at 1, and its ladder reads "2 · Pressing | 4 · Relentless | 6 · Second Wind"; back to Standard, Escalation is off.
+Rev: 3
 
 ### no-levels-class · v0.0.415 · A class without levels
 Do: Drop a class item with no levels on a character.

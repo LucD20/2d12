@@ -15,7 +15,7 @@ Body 1  Body Health 3 (xnull)  Mind Health 6
 --- Custom values (typed numbers); a typed Defense under 11 is 11
 Appeal 3  Body Health 44 (hm null)  AD 17 WD 9
 --- the derived NPC
-Orc Warrior                    pool 60  AP 4  Weapon 2 (body)  Power 2 (instinct)  Signature 2 from weapon  AD 13 WD 11  Standard CV 93
+Orc Warrior                    pool 60  AP 4  Weapon 2 (body)  Power 2 (instinct)  Signature 2 from weapon  AD 13 WD 11  Standard CV 100
 a Minion                       pool 12  AP 3  Weapon 2 (body)  Power 1 (mind)  Signature 2 from weapon  AD 12 WD 12  Minion CV 25
 Elite, Power Attribute higher  pool 130  AP 4  Weapon 2 (body)  Power 3 (mind)  Signature 3 from power  AD 14 WD 14  Elite CV 200
 --- dice that come close (the Modifier taken out)

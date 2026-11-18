@@ -49,3 +49,6 @@ const EX = await import(ROOTURL + "module/explode.mjs");
 console.log("(11) a Minor enemy's Empowered die doesn't explode:", EX.minorNpc({ type: "npc", system: { role: "grunt" } }), EX.minorNpc({ type: "npc", system: { role: "standard" } }), src("module/explode.mjs").includes('const formula = explode ? EMPOWERED_FORMULA : EMPOWERED_FORMULA.replace(/!/g, "");'));
 console.log("(3) no Guard from unspent AP for an NPC:", src("module/combat.mjs").includes('const { guard } = a.type === "npc" ? { guard: 0 } : unusedApGuard('));
 console.log("(8) the Ogre is Large:", C.actors.find(a => a.name === "Ogre Chieftain")?.system?.size, "| (29) Rally the Tribe's traits:", JSON.stringify(C.actors.flatMap(a => a.items ?? []).find(x => x.name === "Rally the Tribe")?.system?.traits ?? []));
+
+console.log("--- v0.0.436: half a step or less counts as none (Lucas: \"round within half a step\")");
+console.log("a Standard at -0.5:", NB.cvWithSteps("standard", 100, -0.5), "| +0.5:", NB.cvWithSteps("standard", 100, 0.5), "| -1:", NB.cvWithSteps("standard", 100, -1), "| an Elite at +1.5:", NB.cvWithSteps("elite", 200, 1.5));

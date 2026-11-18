@@ -38,7 +38,7 @@ Each rank has tables (below) with five **ratings**: **Terrible, Low, Medium, Hig
 
 **The ratings are guidance, not a rule: choose any rating for any number, or a number between two ratings.**
 
-**Health and damage must balance, or the CV changes.** Count the steps the NPC's Vigor, Resolve and damage ratings sit above Medium, minus the steps below it (a step on Vigor or on Resolve alone is half a step; damage is its turn budget's rating). At zero, the NPC is worth its rank's CV. For each step left over, its CV goes up or down (the rank's step, whatever the NPC's Stage):
+**Health and damage must balance, or the CV changes.** Count the steps the NPC's Vigor, Resolve and damage ratings sit above Medium, minus the steps below it (a step on Vigor or on Resolve alone is half a step; damage is its turn budget's rating). At zero, the NPC is worth its rank's CV. For each step left over, its CV goes up or down (the rank's step, whatever the NPC's Stage). **Half a step or less, either way, counts as none:** the NPC is worth its rank's CV.
 
 | Rank | Minion | Grunt | Standard | Elite |
 |---|---|---|---|---|

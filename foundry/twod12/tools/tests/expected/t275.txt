@@ -22,3 +22,5 @@ the Builder at Stage 0: the old notes hidden, the best turn labelled: true
 (11) a Minor enemy's Empowered die doesn't explode: true false true
 (3) no Guard from unspent AP for an NPC: true
 (8) the Ogre is Large: 4 | (29) Rally the Tribe's traits: []
+--- v0.0.436: half a step or less counts as none (Lucas: "round within half a step")
+a Standard at -0.5: 100 | +0.5: 100 | -1: 85 | an Elite at +1.5: 245

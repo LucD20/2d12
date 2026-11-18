@@ -135,11 +135,11 @@
     },
     {
      "id": "builder-tab",
-     "v": "v0.0.433",
+     "v": "v0.0.436",
      "title": "The NPC Builder tab",
      "do": "Open the Orc Warrior's Builder tab; click the Striker preset on a copy. Then make a new NPC and set its rank to Elite, then back to Standard.",
-     "expect": "Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100; the Damage row \"25/AP\" for a Standard; the turn-budget table, with no list of old notes under it; Best turn \"about 93 of 100 (damage only: riders and shares not counted)\". Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged. The new Elite has Escalation on, at 1, and its ladder reads \"2 · Pressing | 4 · Relentless | 6 · Second Wind\"; back to Standard, Escalation is off.",
-     "rev": 2
+     "expect": "Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100 (its Low Ward Defense is half a step: counted as none); the Damage row \"25/AP\" for a Standard; the turn-budget table, with no list of old notes under it; Best turn \"about 93 of 100 (damage only: riders and shares not counted)\". Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged; Soldier and Skirmisher also keep CV 100. The new Elite has Escalation on, at 1, and its ladder reads \"2 · Pressing | 4 · Relentless | 6 · Second Wind\"; back to Standard, Escalation is off.",
+     "rev": 3
     },
     {
      "id": "no-levels-class",
