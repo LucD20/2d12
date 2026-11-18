@@ -319,35 +319,32 @@ async function drawHud() {
   ensureRoot(); root.hidden = false; placeHotbar(); placePlayers(); placeRoot();
   const main = root.querySelector(".hud-main"), cur = current();
   closePop({ keepOpen: true });
-  root.classList.remove("is-npc", "is-bar", "is-strip", "is-folded");
+  // v0.0.421 (the audit; Lucas, playtest 5, D5: "accepting a Reaction makes the HUD jump"): the classes that size the HUD (the bar's fixed 150 px)
+  // change in the same step as its new content, after the data is ready; they were taken off before the awaits, and for that moment the HUD
+  // took its natural height (the jump). v0.0.418's min-height (measured in that moment) is gone.
+  const shape = (...on) => { root.classList.remove("is-npc", "is-bar", "is-strip", "is-folded"); root.classList.add(...on); };
   // v0.0.390: several tokens selected, or nothing (the party strip): small cards
   if (cur.list || !cur.actor) {
     st.actorUuid = "";
-    main.style.minHeight = ""; main.__twod12Actor = "";   // v0.0.418 (D5)
-    if (!cur.list && !setting("hudParty", true)) { setMain(main, emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token.")); return; }
+    if (!cur.list && !setting("hudParty", true)) { shape(); setMain(main, emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token.")); return; }
     const pairs = cur.list ? cur.list.filter(t => t.actor).map(t => [t.actor, t]) : partyActors().map(a => [a, (globalThis.canvas?.tokens?.placeables ?? []).find(t => t.actor?.id === a.id) ?? null]);
     const cards = await Promise.all(pairs.map(([a, t]) => partyCard(a, t)));
     // v0.0.407 (Stage 0 in Foundry; Lucas: "Momentum still doesn't show in the strip"): the party's number, 0 to 4, always at the strip's left
     let momentum = "";
     try { const { momentumNow } = await import("./escalation.mjs"); momentum = !cur.list ? String(momentumNow()) : ""; } catch (e) { momentum = ""; }
     const waiting = main.querySelector(".hb-ask > .twod12-linebar");
+    shape("is-strip");
     setMain(main, partyStripHtml({ cards, momentum }));
     if (waiting) { root.querySelector(".hud-ask")?.append(waiting); waiting.classList.remove("in-side"); hudAsking(true, false); }
-    root.classList.add("is-strip");
     st.cards = new Map(pairs.map(([a, t], k) => [cards[k].key, { actor: a, token: t }]));
     return;
   }
   if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
   const waiting = main.querySelector(".hb-ask > .twod12-linebar");
-  // v0.0.418 (Lucas, playtest 5, D5: "accepting a Reaction makes the HUD jump"): for the same creature the HUD keeps the height it had (the
-  // Reactions tab giving way to the Actions tab no longer shrinks it); a new creature, or folding it, lets it size again
-  const keepH = main.__twod12Actor === cur.actor.uuid && !m.folded ? main.offsetHeight : 0;
-  main.style.minHeight = keepH ? `${keepH}px` : "";
-  main.__twod12Actor = cur.actor.uuid;
+  shape("is-bar", ...(m.npc ? ["is-npc"] : []), ...(m.folded ? ["is-folded"] : []));
   setMain(main, tokenBarHtml(m));
   if (waiting) (main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask"))?.append(waiting);
-  root.classList.add("is-bar"); root.classList.toggle("is-npc", m.npc); root.classList.toggle("is-folded", !!m.folded);
   fitNames(main);
   // (v0.0.391, Lucas: "macro bar is broken"): the hotbar stays at the HUD's right end, where it worked before (placeHotbar)
 }

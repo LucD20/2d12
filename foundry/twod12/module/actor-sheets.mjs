@@ -374,7 +374,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         granted.push({
           key: `${e.id}:${granted.length}`, actionId: act?.id ?? "", name: act?.name ?? g.spec.replace(/^(category|trait):/i, ""), img: act?.img ?? e.img,
           effectId: e.id, grantIndex: gi,   // v0.0.269: the ticket's button uses this very grant
-          apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free" aria-label="A free use">Free</span>`, cost: g.ap ? `${g.ap} AP` : "Free", free: !g.ap,
+          apsHtml: g.ap ? apLabel([g.ap]) : `<span class="apmark free">Free</span>`, cost: g.ap ? `${g.ap} AP` : "Free", free: !g.ap,
           traitShort: tr.slice(0, 3).join(" \u00b7 "), source, dur, left: g.left, count, badges: bd.short, adds: bd.long,
           range: row?.range ?? "", traits: tr.join(" \u00b7 "), open: !!this._openGrant?.has(`${e.id}:${granted.length}`),
           tip: [`From ${source}${dur ? ` · ${dur}` : ""}`, `${g.left} of ${count} left`, ...bd.long].join(" · "),
@@ -1340,7 +1340,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
    *  left to that pip (the last one lit, clicked: one fewer). */
   static async setRally(event, target) {
     const s = this.actor.system, max = Number(s.rallyMax) || 0, n = rallyAfterClick(Number(target.dataset.n) || 0, Number(s.rallyLeft) || 0);
-    if (!this.actor.isOwner || n === s.rallyLeft) return;
+    if (!this.actor.isOwner || !this.isEditable || n === s.rallyLeft) return;
     await this.actor.update({ "system.rallyUsed": Math.max(0, max - n) });
     const { sysLine } = await import("./sysmsg.mjs");
     await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content: sysLine("fa-hand-holding-medical", `<b>${esc(this.actor.name)}</b> sets the Rally Points to <b>${n}</b> of ${max}.`, "healmsg") });

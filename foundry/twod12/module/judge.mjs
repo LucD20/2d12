@@ -45,8 +45,8 @@ async function askJudge(judge, src, target, by) {
     const { askOwner } = await import("./ccdamage.mjs");
     const name = s => String(s?.name ?? "").replace(/[<>&"]/g, "");
     const pick = await askOwner(judge, `<b>Judge</b> (${name(judge)}): ${name(src)}, Judged by you, damages ${name(target)}. Reduce that damage by ${by} (once each round)?`,
-      [{ id: "yes", label: `Reduce by ${by}` }, { id: "no", label: "Not now" }]);
-    return pick !== "no";
+      [{ id: "no", label: "Not now" }, { id: "yes", label: `Reduce by ${by}` }]);   // v0.0.421 (the audit): dismissed or no answer: not reduced (the use is kept)
+    return pick === "yes";
   } catch (e) { return true; }
 }
 /**

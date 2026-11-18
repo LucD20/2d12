@@ -81,12 +81,12 @@ export async function performCheck({ mod = 0, boons = 0, banes = 0, dc = 13, sou
 
 /** Check block: title, dice, modifier chips, total. */
 export function checkHtml(title, r, chips = [], { showTier = false, status: showStatus = true } = {}) {
-  const die = (f, dbl, chain = false) => `<span class="die d12${f === 12 ? " boom" : ""}${dbl ? " dbl" : ""}${chain ? " chain" : ""}"${f === 12 ? '' : (chain ? '' : "")}>${f}</span>`;
+  const die = (f, dbl, chain = false) => `<span class="die d12${f === 12 ? " boom" : ""}${dbl ? " dbl" : ""}${chain ? " chain" : ""}">${f}</span>`;
   // An exploding die: the 12, then each die it adds, joined by a small chain.
   const dieChain = (faces, dblFirst) => faces.map((f, i) => `${i ? '<i class="fa-solid fa-link dlink"></i>' : ""}${die(f, dblFirst && i === 0, i > 0)}`).join("");
   // v0.0.301 (PACK BB): Boons and Banes are a flat +1 / -1 each: one number, no dice
   const side = (f, label, cls, sign) => f.length
-    ? `<span class="plus">${sign}</span><span class="dgroup ${cls}" aria-label="${f.length} ${label}"><small>${label}</small><span class="modv">${f.length}</span></span>` : "";
+    ? `<span class="plus">${sign}</span><span class="dgroup ${cls}"><small>${label}</small><span class="modv">${f.length}</span></span>` : "";
   const chipHtml =
     (r.state
       ? `<span class="chip ${r.state === "favored" ? "boon" : "bane"}">${r.state === "favored" ? "Favored" : "Doomed"}</span>`
@@ -97,7 +97,7 @@ export function checkHtml(title, r, chips = [], { showTier = false, status: show
     (r.sources ?? [])
       .map(
         x =>
-          `${x.boons ? `<span class="chip boon" aria-label="Boon">${esc(x.name)}</span>` : ""}${x.banes ? `<span class="chip bane" aria-label="Bane">${esc(x.name)}</span>` : ""}`
+          `${x.boons ? `<span class="chip boon">${esc(x.name)}</span>` : ""}${x.banes ? `<span class="chip bane">${esc(x.name)}</span>` : ""}`
       )
       .join("") +
     (r.manualBoons ? `<span class="chip boon">Boons +${r.manualBoons}</span>` : "") +
@@ -163,7 +163,7 @@ export function uniqueLabels(names) {
  * rows: [{ name, label, chk, chips: [{ text, cls }], odds }]; label is the creature's own (numbered) name, odds a short text.
  */
 export function multiCheckHtml(title, dice, rows, chips = []) {
-  const die = (f, chain) => `<span class="die d12${f === 12 ? " boom" : ""}${chain ? " chain" : ""}"${f === 12 ? '' : ""}>${f}</span>`;
+  const die = (f, chain) => `<span class="die d12${f === 12 ? " boom" : ""}${chain ? " chain" : ""}">${f}</span>`;
   const chain = faces => faces.map((f, i) => `${i ? '<i class="fa-solid fa-link dlink"></i>' : ""}${die(f, i > 0)}`).join("");
   const diceHtml = `<span class="dgroup">${chain(dice.d[0].faces)}</span><span class="plus">+</span><span class="dgroup">${chain(dice.d[1].faces)}</span>`
     + (dice.d[2] ? `<span class="plus">&middot;</span><span class="dgroup third">${chain(dice.d[2].faces)}</span>` : "");
@@ -179,7 +179,7 @@ export function multiCheckHtml(title, dice, rows, chips = []) {
     const chk = g.chk, win = chk.total >= chk.dc;
     const name = g.labels.length > 1 ? `${g.name} \u00d7${g.labels.length}` : g.labels[0];
     const tags = [...(g.chips ?? []), ...(chk.five ? [{ text: chk.five === "favored" ? "5 Boons" : "5 Banes", cls: chk.five === "favored" ? "boon" : "bane" }] : []), ...(chk.state ? [{ text: chk.state === "favored" ? "Favored" : "Doomed", cls: chk.state === "favored" ? "boon" : "bane" }] : []), ...(chk.doubles ? [{ text: "Doubles", cls: "dbl" }] : []), ...(chk.crit ? [{ text: "Critical", cls: "crit" }] : [])];
-    return `<div class="mrow t${chk.tier}"><span class="mname" aria-label="${esc(g.labels.length > 1 ? g.labels.join(", ") : name)}">${esc(name)}</span>`
+    return `<div class="mrow t${chk.tier}"><span class="mname">${esc(name)}</span>`
       + `<span class="shield small ${win ? "win" : "lose"}"><b class="rtotal">${chk.total}</b><small class="vsdc">${chk.dcLabel ?? "DC"} ${chk.dc}</small></span><span class="rtag rolled${chk.tier === 1 ? " fail" : ""}">Tier ${chk.tier}</span>`
       + (tags.length ? `<div class="mchips">${tags.map(t => `<span class="chip ${t.cls ?? ""}">${esc(t.text)}</span>`).join("")}</div>` : "")
       + (g.odds ? `<div class="modds">${esc(g.odds)}</div>` : "") + `</div>`;

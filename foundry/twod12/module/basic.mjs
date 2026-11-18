@@ -24,7 +24,10 @@ export const NPC_NO_BASIC = ["rally", "basicWeaponAttack", "fists"];
 export const wanted = (actor, key) => !(actor?.type === "npc" && NPC_NO_BASIC.includes(key));
 /** v0.0.228 (pack CS): a Basic Action on the actor whose texts or fields differ from the generated data (a card edited in book/cards): it is replaced.
  *  Compared: the texts of each Version, the requirements, the description, the targets, the traits, the distance and the Frequency (strings and numbers, not the tier shapes the data model normalizes). */
-const basicPrint = sys => JSON.stringify({ au: sys.automation ?? "", d: sys.description ?? "", r: sys.requirements ?? "", t: sys.targets ?? "", tr: [...(sys.traits ?? [])].sort(), di: sys.distance ?? "", f: sys.frequency ?? "", ...(sys.moment ? { m: [sys.moment, Number(sys.momentRange) || 0, !!sys.momentSelf, sys.momentTarget ?? "subject", !!sys.momentThreat] } : {}), tg: sys.trigger ?? "", v: (sys.versions ?? []).map(v => [v.ap, v.effects ?? "", v.x1 ?? "", v.x2 ?? "", v.x3 ?? ""]) });
+const basicPrint = sys => JSON.stringify({ d: sys.description ?? "", r: sys.requirements ?? "", t: sys.targets ?? "", tr: [...(sys.traits ?? [])].sort(), di: sys.distance ?? "", f: sys.frequency ?? "", ...(sys.moment ? { m: [sys.moment, Number(sys.momentRange) || 0, !!sys.momentSelf, sys.momentTarget ?? "subject", !!sys.momentThreat] } : {}), tg: sys.trigger ?? "", v: (sys.versions ?? []).map(v => [v.ap, v.effects ?? "", v.x1 ?? "", v.x2 ?? "", v.x3 ?? ""]) });
+/** v0.0.421: the in-place updates of the Basic Actions whose automation rating differs from the compendium's ([{ _id, "system.automation" }]). */
+export const ratingUpdates = actor => actor.items.filter(i => i.type === "action" && BASIC_ACTIONS[i.getFlag(F, "basic")] && (i.system.automation ?? "") !== (BASIC_ACTIONS[i.getFlag(F, "basic")].automation ?? ""))
+  .map(i => ({ _id: i.id, "system.automation": BASIC_ACTIONS[i.getFlag(F, "basic")].automation ?? "" }));
 export const staleBasics = actor => actor.items.filter(i => { const k = i.type === "action" && i.getFlag(F, "basic"); return k && BASIC_ACTIONS[k] && basicPrint(i.system) !== basicPrint(toItem(k, BASIC_ACTIONS[k]).system); });
 /** The Basic Actions a creature has but shouldn't (an NPC made before v0.0.214 with Weapon Attack; v0.0.407: one that is no longer a Basic Action, Opportunity Attack). */
 export const unwantedBasics = actor => actor.items.filter(i => i.type === "action" && i.getFlag(F, "basic") && (!wanted(actor, i.getFlag(F, "basic")) || !BASIC_ACTIONS[i.getFlag(F, "basic")]));
@@ -129,6 +132,9 @@ export function registerBasicHooks() {
         const oldRelocate = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "relocate" && !JSON.stringify(i.system.versions ?? []).includes("reach:yes"));
         const old = actor.items.some(i => i.type === "action" && i.getFlag(F, "basic") === "reposition") || missingBasic(actor) || oldRelocate || unwantedBasics(actor).length > 0 || staleBasics(actor).length > 0;   // v0.0.214: an NPC with Weapon Attack; v0.0.228: a card changed in book/cards
         if (old) { await addBasicActions(actor, { replace: true }); n++; } else await ensureFists(actor);
+        // v0.0.421 (the audit): a Basic Action whose only change is its automation rating is updated in place (replacing it would lose the
+        // favorites, the uses tracked by its id and the macros that point at it)
+        if (!old) { const upd = ratingUpdates(actor); if (upd.length) await actor.updateEmbeddedDocuments("Item", upd); }
       } catch (e) { console.warn("twod12 | could not update the Basic Actions of", actor.name, e); }
     }
     if (n) ui.notifications.info(`2d12: the Basic Actions were updated on ${n} creature${n === 1 ? "" : "s"} (their cards changed; NPCs have no Weapon Attack).`);

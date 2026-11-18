@@ -18,7 +18,7 @@ const show = async (src, doc) => {
   const el = await en.enricher(m, doc === undefined ? {} : { relativeTo: doc });
   const label = el.innerHTML.replace(/<i class="[^"]*"><\/i>\s*/, "").trim();
   const calc = el.children.find(c => c.className?.includes("calculator"));
-  return `${src.padEnd(52)} → "${label}"${calc ? ` + calculator (${calc.dataset.tooltip})` : ""}`;
+  return `${src.padEnd(52)} → "${label}"${calc ? ` + calculator (${calc.dataset.calc})` : ""}`;
 };
 const item = { documentName: "Item", parent: kai }, offItem = { documentName: "Item", parent: null };
 const msg = { documentName: "ChatMessage", getFlag: (s, k) => (k === "action" ? { actorUuid: "Actor.kai" } : undefined) };

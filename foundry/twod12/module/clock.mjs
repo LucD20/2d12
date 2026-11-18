@@ -129,7 +129,7 @@ function clockHtml() {
         .map(u => `<option value="${u}">${u[0].toUpperCase() + u.slice(1)}</option>`)
         .join("")}</select>
       <button type="button" data-act="advance">Advance</button>
-      <button type="button" data-act="back" aria-label="Move the clock back">Back</button>
+      <button type="button" data-act="back">Back</button>
     </div>
     <details class="clock-set"><summary>Set the date</summary>
       <div class="clock-setrow">
@@ -201,9 +201,9 @@ const BAR = [[-3600, "fa-backward-fast", "Back 1 hour"], [-600, "fa-angles-left"
   [10, "fa-chevron-right", "Forward 1 round (10 seconds)"], [600, "fa-angles-right", "Forward 10 minutes"], [3600, "fa-forward-fast", "Forward 1 hour"]];
 
 export function barHtml() {
-  const { date, time } = clockParts();
+  const { time } = clockParts();
   const btn = ([s, icon, tip]) => `<button type="button" data-s="${s}" aria-label="${tip}"><i class="fa-solid ${icon}"></i></button>`;
-  return `${BAR.slice(0, 3).map(btn).join("")}<span class="tb-time" data-open="1" aria-label="${esc(date)}: open the World Clock">${esc(time)}</span>${BAR.slice(3).map(btn).join("")}`;
+  return `${BAR.slice(0, 3).map(btn).join("")}<span class="tb-time" data-open="1">${esc(time)}</span>${BAR.slice(3).map(btn).join("")}`;
 }
 
 /** A click anywhere on the page: if it is on one of the bar's buttons, move the clock. (Whole-page, so it works however the chat is redrawn.) */

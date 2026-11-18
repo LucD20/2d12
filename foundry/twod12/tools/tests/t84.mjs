@@ -120,7 +120,7 @@ await a3.toggleStatusEffect("prone", { active: false }); console.log("a conditio
 const mkEl = id => ({ dataset: { statusId: id } }); const els = [mkEl("empowered"), mkEl("prone"), mkEl("enfeebled")];
 const hudRoot = { querySelectorAll: () => els };
 const fxE = mkValued("empowered", 2); const count = E.valuedHud({ document: { actor: act2([fxE]) } }, hudRoot);
-console.log("the HUD tooltips:", count, "set |", els.map(e => e.dataset.tooltip ?? "(none)").join(" || "));
+console.log("the HUD's statuses the creature has:", count, "| hover texts written (none since v0.0.420):", els.filter(e => e.dataset.tooltip).length);
 console.log("no HUD root or no creature:", E.valuedHud({ document: { actor: act2([]) } }, null), E.valuedHud({}, hudRoot));
 
 // ---------------------------------------------------------------- "increase your value by N": a rider can stack

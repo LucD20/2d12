@@ -67,7 +67,7 @@ export function lineHtml(l) {
 }
 /** The columns of a tab: one per Frequency that has something, its word with its small square on a rule. cols = [{ key, label, fq, lines, more }] */
 export const colsHtml = cols => (cols.length
-  ? `<div class="hb-cols">${cols.map(c => `<div class="hb-col" style="--fq:${esc(c.fq ?? "#b3a68e")}"><div class="hb-ch">${esc(c.label)}</div>${c.lines.map(lineHtml).join("")}${c.more ? `<button type="button" class="hb-more" data-hud="more" data-col="${esc(c.key)}">${esc(c.more)}</button>` : ""}${(c.cancels ?? []).map(x => `<button type="button" class="hb-more" data-hud="grantcancel" data-effect="${esc(x.effect)}" aria-label="${esc(`Give up the uses left from ${x.source}`)}">Cancel ${esc(x.source)}</button>`).join("")}</div>`).join("")}</div>`
+  ? `<div class="hb-cols">${cols.map(c => `<div class="hb-col" style="--fq:${esc(c.fq ?? "#b3a68e")}"><div class="hb-ch">${esc(c.label)}</div>${c.lines.map(lineHtml).join("")}${c.more ? `<button type="button" class="hb-more" data-hud="more" data-col="${esc(c.key)}">${esc(c.more)}</button>` : ""}${(c.cancels ?? []).map(x => `<button type="button" class="hb-more" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel ${esc(x.source)}</button>`).join("")}</div>`).join("")}</div>`
   : '<div class="hb-cols"><span class="hb-none">Nothing here.</span></div>');
 
 /** The side panel: the hands, the conditions on the creature, then a waiting Reaction (Use / Pass) or the NPC's notes. */
@@ -77,7 +77,7 @@ export function sideHtml(s = {}) {
   const extra = s.resist ? `<div class="line"><span class="k">Damage</span>${esc(s.resist)}</div>` : "";
   const top = hands || conds || extra ? `<div class="hb-sb">${hands}${extra}${conds}</div>` : "";
   // v0.0.392 (Lucas: "The granted section should be more obvious, likely adding in the right corner"): the uses an Effect grants, on top, in the accent
-  const gr = (s.grants ?? []).length ? `<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}" aria-label="${esc(`Give up the uses left from ${x.source}`)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>` : "";
+  const gr = (s.grants ?? []).length ? `<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>` : "";
   const rx = s.rx ? `<div class="hb-info alert"><b>Reaction: ${esc(s.rx.name)}</b> (${esc(s.rx.cost)})<br>${esc(s.rx.lead)}<div class="hb-rxb"><button type="button" class="hb-btn" data-hud="rx" data-msg="${esc(s.rx.msg)}" data-row="${n0(s.rx.row)}" data-k="rxUse">Use · ${esc(s.rx.cost)}</button><button type="button" class="hb-btn q" data-hud="rx" data-msg="${esc(s.rx.msg)}" data-row="${n0(s.rx.row)}" data-k="rxPass">Pass</button></div></div>` : "";
   const notes = !rx && s.notes ? `<div class="hb-info">${esc(s.notes)}</div>` : !rx ? '<div class="hb-info"></div>' : "";
   // v0.0.396 (Lucas: "Show granted actions below the hands / on you area, so that part is static")
@@ -95,12 +95,12 @@ export function tokenBarHtml(m) {
   if (m.folded) {
     return `<div class="hb-bar-wrap folded">${por}<div class="hb-fl"><b class="nm">${esc(m.name)}</b>${barHtml(m.bars?.[0] ?? { name: "Vigor", cls: "v", left: 0, max: 1 })}<span><span class="k">Guard</span><b>${n0(m.guard)}</b></span>${m.marks ? `<span><span class="k">AP</span>${m.marks}</span>` : ""}${esc6}${m.cond ? `<span class="m">${esc(m.cond)}</span>` : ""}</div>${sideHtml({ ...(m.side ?? {}), hands: null, conds: [], notes: "", rx: null })}</div>`;
   }
-  const rally = m.rally ? `<span aria-label="Rally Points (right-click: −1; Shift: +1)" data-hud="res" data-res="rally"><span class="k">Rally</span><b>${n0(m.rally.left)}/${n0(m.rally.max)}</b></span><button type="button" class="hb-btn" data-hud="steel">Steel Yourself</button>` : "";
-  const def = d => `<button type="button" class="hb-d${d.chg ? " chg" : ""}"${d.hud ? ` data-hud="${esc(d.hud)}"` : ""}${Object.entries(d.data ?? {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("")} aria-label="${esc(d.tip ?? d.label)}"><b>${esc(d.value)}</b><small>${esc(d.label)}</small></button>`;
+  const rally = m.rally ? `<span data-hud="res" data-res="rally"><span class="k">Rally</span><b>${n0(m.rally.left)}/${n0(m.rally.max)}</b></span><button type="button" class="hb-btn" data-hud="steel">Steel Yourself</button>` : "";
+  const def = d => `<button type="button" class="hb-d${d.chg ? " chg" : ""}"${d.hud ? ` data-hud="${esc(d.hud)}"` : ""}${Object.entries(d.data ?? {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("")}><b>${esc(d.value)}</b><small>${esc(d.label)}</small></button>`;
   const defs = (m.defs ?? []).map(d => (d.gap ? '<span class="gap"></span>' : def(d))).join("");
   const id = `<div class="hb-id"><div class="nm"><b>${esc(m.name)}</b><small>${esc(m.sub ?? "")}</small></div>${barsHtml(m.bars)}`
-    + `<div class="line"><span aria-label="Guard"><span class="k">Guard</span><b>${n0(m.guard)}</b></span>${rally || (m.tag ? tagHtml(m.tag) : "")}</div>`
-    + `<div class="line">${m.marks ? `<span data-hud="res" data-res="ap" aria-label="Right-click: −1 AP; Shift: +1"><span class="k">AP</span>${m.marks}</span>` : '<span class="m">Out of combat</span>'}${escIn ? `<span data-hud="res" data-res="esc" aria-label="Right-click: −1 Escalation; Shift: +1">${escIn}</span>` : ""}</div>`
+    + `<div class="line"><span><span class="k">Guard</span><b>${n0(m.guard)}</b></span>${rally || (m.tag ? tagHtml(m.tag) : "")}</div>`
+    + `<div class="line">${m.marks ? `<span data-hud="res" data-res="ap"><span class="k">AP</span>${m.marks}</span>` : '<span class="m">Out of combat</span>'}${escIn ? `<span data-hud="res" data-res="esc">${escIn}</span>` : ""}</div>`
     + `<div class="hb-defs">${defs}</div></div>`;
   const tabs = `<div class="hb-tabs" role="tablist">${(m.tabs ?? []).map(t => `<button type="button" class="hb-tab${t.k === "rx" && m.rxAlert ? " alert" : ""}" role="tab" aria-selected="${t.k === m.tab}" data-hud="tab" data-tab="${esc(t.k)}">${esc(t.label)} <small>${esc(String(t.count ?? ""))}</small></button>`).join("")}</div>`;
   return `<div class="hb-bar-wrap${m.side?.rx || (m.side?.grants ?? []).length ? " rx" : ""}">${por}${id}<div class="hb-mid">${tabs}${colsHtml(m.cols ?? [])}</div>${sideHtml(m.side)}</div>`;

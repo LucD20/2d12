@@ -58,17 +58,19 @@ export async function runSetup(actor, item, token, deps = {}) {
     if (!deps.dialog) cfg.quiet = true;   // v0.0.224: the bar says it all, no chat line
     const setLog = deps.setLog ?? (await import("./move.mjs")).setSetupLog;   // v0.0.418: the Encounter Log writes the movement inside the Action
     setLog(item.name);
-    const granted = await handleMove(cfg, { actor, token });
-    if (!granted) { setLog(""); continue; }   // it said why (not in combat, Immobilized...): the Action goes on without this movement
-    const pick = await ask({
-      title: item.name, text: plainSetup(text),
-      window: { title: `${item.name}: Setup` },
-      content: `<p>${esc(plainSetup(text))}</p><p>Move your token, then press <b>Continue</b> to make the roll.</p>`,
-      buttons: [{ action: "go", label: "Continue", icon: "fa-solid fa-dice", default: true }, { action: "cancel", label: "Cancel the Action", icon: "fa-solid fa-xmark" }],
-      rejectClose: false
-    });
-    await finish();
-    setLog("");
+    let granted = false, pick = null;
+    try {
+      granted = await handleMove(cfg, { actor, token });
+      if (!granted) continue;   // it said why (not in combat, Immobilized...): the Action goes on without this movement
+      pick = await ask({
+        title: item.name, text: plainSetup(text),
+        window: { title: `${item.name}: Setup` },
+        content: `<p>${esc(plainSetup(text))}</p><p>Move your token, then press <b>Continue</b> to make the roll.</p>`,
+        buttons: [{ action: "go", label: "Continue", icon: "fa-solid fa-dice", default: true }, { action: "cancel", label: "Cancel the Action", icon: "fa-solid fa-xmark" }],
+        rejectClose: false
+      });
+      await finish();
+    } finally { setLog(""); }   // v0.0.421 (the audit): never left set (an error, a movement not granted)
     if (pick !== "go") return { ok: false, done };
     done = true;
   }

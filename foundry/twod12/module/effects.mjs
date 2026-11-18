@@ -527,12 +527,6 @@ export function panelCardHtml(e, actor, { dur = "", note = "" } = {}) {
   return fxTipHtml({ name, dur: dur || "until removed", text: [text, note].filter(Boolean).join(" "), what: effectWhat(e), source: by ? `From ${by}` : "",
     controls: valued || counter ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: open · Right-click: remove" });
 }
-/** The attributes that show an HTML card on hover, to the left: Foundry 13 reads data-tooltip-html (its data-tooltip is text), older versions data-tooltip. */
-const markTip = () => {};   // v0.0.420 (the tooltip review): no hover card on the token's condition panel
-/** On hover the card is also handed to the tooltip manager as an element (the HUD's way, v0.0.256), in case the attribute is read as text. */
-function activateTip(el) {
-  void el;   // v0.0.420 (the tooltip review, B: removed): no hover card
-}
 /** Is this effect on the creature the panel shows (an effect on one of its items counts)? */
 function panelShows(effect) {
   const shown = currentActor();
@@ -556,14 +550,12 @@ function renderPanel() {
         link.setAttribute("aria-label", `Brought by ${shown.find(p => p.id === e.getFlag(F, "linkedTo")).name}: it leaves with it`);
         panel.appendChild(link);
       }
-      const dur = durationText(e.getFlag(F, "duration"));
-      const note = (e.getFlag(F, "notes") ?? []).map(n => n.text).filter(Boolean).join(" ");
       const el = document.createElement("div");
       el.className = `fx-icon${e.getFlag(F, "linkedTo") && shown.some(p => p.id === e.getFlag(F, "linkedTo")) ? " fx-linked" : ""}`;
       el.dataset.effectId = e.id;
       el.innerHTML = `<img src="${e.img}" alt="">${isExhaustedFx(e) && actor.type === "character" && actor.system.exhausted > 0 ? `<span class="fx-val">${actor.system.exhausted}</span>` : ""}`;
       if (isValued(e)) el.innerHTML = `<img src="${e.img}" alt=""><span class="fx-val">${Number(e.getFlag(F, "value")) || 1}</span>`;
-      markTip(el, panelCardHtml(e, actor, { dur, note }));   // v0.0.257 (Lucas): the hover card here too, to the left of the panel (away from the chat)
+      el.setAttribute("aria-label", e.name);   // v0.0.421 (the audit): a picture only: its name for screen readers (the hover card went in v0.0.420)
       panel.appendChild(el);
     }
   }
@@ -580,7 +572,7 @@ export function setupPanel() {
   window.addEventListener("resize", positionPanel);
   const sb = document.getElementById("sidebar");
   if (sb && window.ResizeObserver) new ResizeObserver(positionPanel).observe(sb);
-  panel.addEventListener("pointerover", ev => activateTip(ev.target.closest("[data-effect-id]")), true);   // v0.0.257: the hover card
+  // (v0.0.421: the hover card on pointerover went with the tooltip review)
   panel.addEventListener("contextmenu", async ev => {
     const el = ev.target.closest("[data-effect-id]");
     if (!el) return;
@@ -652,25 +644,8 @@ export function valuedHud(app, html) {
   const actor = (app?.document ?? app?.object)?.actor;
   if (!root?.querySelectorAll || !actor) return 0;
   let n = 0;
-  // v0.0.254 (Lucas): the hover card on the token HUD's statuses too, shown to the left (away from the chat). v0.0.255: through the tooltip manager on hover,
-  // delegated from the HUD's root (the statuses are drawn after the render, so a tooltip written at render is lost).
-  const cardOf = id => {
-    const fx = actor.effects.find(x => x.statuses?.has?.(id));
-    if (!fx) return "";
-    const valued = isValued(fx);
-    return fxTipHtml({ name: valued ? `${baseNameOf(fx)} ${Number(fx.getFlag(F, "value")) || 1}` : fx.name, dur: durationText(fx.getFlag(F, "duration")) || "until removed", text: hoverOf(fx.getFlag(F, "hover"), fx.getFlag(F, "description") ?? fx.description), what: effectWhat(fx), controls: valued ? "Click: +1 · Right-click: −1 · Shift+click: settings · Ctrl+click: remove" : "Click: remove · Right-click: overlay" });
-  };
-  // v0.0.256: Foundry 13 reads data-tooltip-html (data-tooltip is text there); both are written, and the manager is given the card as an element on hover
-  const mark = markTip;
-  for (const el of root.querySelectorAll("[data-status-id]")) { const html = cardOf(el.dataset.statusId); if (html) { mark(el, html); n++; } }
-  if (root.dataset && root.addEventListener && !root.dataset.twod12Hud) {
-    root.dataset.twod12Hud = "1";
-    root.addEventListener("pointerover", ev => {
-      const el = ev.target?.closest?.("[data-status-id]"); if (!el) return;
-      const html = cardOf(el.dataset.statusId); if (!html) return;
-      mark(el, html);   // v0.0.420 (the tooltip review): marks nothing; no card handed to the tooltip manager
-    }, true);
-  }
+  // v0.0.421 (the audit): the hover cards went in v0.0.420 (the tooltip review); this counts the statuses the creature has (no card is built)
+  for (const el of root.querySelectorAll("[data-status-id]")) if (actor.effects.some(x => x.statuses?.has?.(el.dataset.statusId))) n++;
   return n;
 }
 

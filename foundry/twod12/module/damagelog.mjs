@@ -8,7 +8,8 @@ export async function logDamage({ originUuid = "", originName = "", targetName =
   const combat = game.combat;
   if (!combat?.started || !amount) return;
   // v0.0.418 (Lucas, playtest 5: the Ogre's 71 was mostly its own Goblins): damage to the origin's allies (its side) is kept apart
-  const al = !!targetUuid && !!originUuid && targetUuid !== originUuid && sameSide(dispositionOf(originUuid), dispositionOf(targetUuid));
+  // v0.0.421 (the audit): itself counts with its allies (its own side); the origin is an actor uuid, the target a token's: compared as actors
+  const al = !!targetUuid && !!originUuid && (actorUuidOf(targetUuid) === actorUuidOf(originUuid) || sameSide(dispositionOf(originUuid), dispositionOf(targetUuid)));
   const entry = { o: originUuid, on: originName, tn: targetName, a: amount, r: combat.round, t: combat.turn, ...(al ? { al: true } : {}) };
   if (game.user.isGM) return writeEntry(combat, entry);
   game.socket.emit(SOCKET, { type: "logDamage", combatId: combat.id, entry });
@@ -20,6 +21,10 @@ function dispositionOf(uuid) {
     const tok = d?.documentName === "Token" ? d : d?.token ?? d?.getActiveTokens?.()?.[0]?.document ?? d?.prototypeToken ?? null;
     return tok?.disposition;
   } catch (e) { return undefined; }
+}
+/** An actor or token uuid as its actor's uuid ("" when it can't be read). */
+function actorUuidOf(uuid) {
+  try { const d = fromUuidSync(uuid); return (d?.documentName === "Actor" ? d : d?.actor)?.uuid ?? ""; } catch (e) { return ""; }
 }
 /** Pure (v0.0.418): two dispositions on the same side (a neutral, 0, is nobody's ally; unknown: not allies). */
 export const sameSide = (a, b) => Number.isFinite(a) && Number.isFinite(b) && a !== 0 && a === b;
@@ -90,9 +95,9 @@ export class DamageReport extends (ApplicationV2 ?? class {}) {
     if (!combat) { div.innerHTML = "<p>No combat.</p>"; return div; }
     const rows = reportRows(combat);
     const n = x => (Math.round(x * 10) / 10).toString();
-    div.innerHTML = `<p class="hint">Round ${combat.round}. Damage dealt to enemies (after Half or Block), from the damage cards; damage to its own allies is counted apart.</p>
+    div.innerHTML = `<p class="hint">Round ${combat.round}. Damage dealt to enemies (after Half or Block), from the damage cards; damage to its own side (its allies, itself) is counted apart.</p>
       <table><thead><tr><th>Creature</th><th>This turn</th><th>This round</th><th>Total</th><th>Per turn</th><th>Per round</th><th>To allies</th></tr></thead>
-      <tbody>${rows.map(r => `<tr><td>${foundry.utils.escapeHTML?.(r.name) ?? r.name}</td><td class="c">${r.turn}</td><td class="c">${r.round}</td><td class="c"><b>${r.total}</b></td><td class="c">${n(r.perTurn)}</td><td class="c">${n(r.perRound)}</td><td class="c">${r.allies || "\u2014"}</td></tr>`).join("") || '<tr><td colspan="6"><i>Nothing yet.</i></td></tr>'}</tbody></table>`;
+      <tbody>${rows.map(r => `<tr><td>${foundry.utils.escapeHTML?.(r.name) ?? r.name}</td><td class="c">${r.turn}</td><td class="c">${r.round}</td><td class="c"><b>${r.total}</b></td><td class="c">${n(r.perTurn)}</td><td class="c">${n(r.perRound)}</td><td class="c">${r.allies || "\u2014"}</td></tr>`).join("") || '<tr><td colspan="7"><i>Nothing yet.</i></td></tr>'}</tbody></table>`;
     return div;
   }
   _replaceHTML(result, content) { content.replaceChildren(result); }

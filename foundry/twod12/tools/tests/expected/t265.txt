@@ -1,0 +1,22 @@
+--- the automation
+a Tier's conditions, not one written after a movement: [] | Snap Shot's: ["@Condition[hindered|eot]"] | Trip's: ["@Condition[prone]"]
+Reckoning: a chain chip that is also in a Tier waits for the Tier: true
+a no-damage Tier's conditions apply on use (Trip, Thwart Cut, Trick Shots): true
+Immobilized from a Tier: the user's Modifier (its DC): true | formula options worked out (through handleInline): true
+Judge: dismissed or unanswered is "Not now": true | Apply Effect checks the owner: true
+--- movement
+Steadiness: two neutral creatures aren't allies: false | asked on the moved creature's player's screen: true
+off its turn only a Reaction's squares of this turn: 2:3 true | the Setup's name never left set: true
+--- the chat and the sheets
+the right-click caught first, Foundry's menu stopped: true | a chip dragged from the chat only: true
+a scroll the system makes unpins the chat: true
+the Class Levels Editor's section titles save again: true
+pick bar: a hover only on an option that is off: false true
+Encounter Log, full names numbered: {"a":"Goblin Sneak 1","c":"Goblin Sneak 2"} | a struck line's reason (why it is off): true
+damage to itself counts with its side: true | the table's 7 columns: true
+a Basic Action's new rating updated in place (not replaced): true
+the HUD's classes switch with its content (the jump): true
+Reach (X) on NPCs only: true | the Frequency word on Reactions only: true
+a Slowed AP pip keeps its look on dark: true
+--- the book
+Stacking: Judge-type effects per giver; conditions keep Chapter 8's rule: true

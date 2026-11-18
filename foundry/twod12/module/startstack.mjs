@@ -49,7 +49,7 @@ export function stackHtml(st) {
   const slabs = st.order.map((i, n) => {
     const r = by.get(i);
     const mark = r.state === "done" ? `<span class="rx-ok" aria-label="Done">${fa("fa-solid fa-check")}</span>` : r.state === "skip" ? `<span class="ss-skipped" aria-label="Skipped">${fa("fa-solid fa-forward")}</span>` : "";
-    const use = r.action ? `<button type="button" class="rx-ch ss-use" data-ss="use" data-i="${i}" aria-label="${esc(r.text || `Use ${r.action}`)}">${esc(r.action)}${r.ap !== undefined && r.ap !== "" ? ` <span class="ss-ap">${esc(r.ap)} AP</span>` : ""}</button>` : `<span class="rx-tg" aria-label="${esc(r.text)}">${esc(r.source)}</span>`;
+    const use = r.action ? `<button type="button" class="rx-ch ss-use" data-ss="use" data-i="${i}">${esc(r.action)}${r.ap !== undefined && r.ap !== "" ? ` <span class="ss-ap">${esc(r.ap)} AP</span>` : ""}</button>` : `<span class="rx-tg">${esc(r.source)}</span>`;
     const card = r.itemId ? `<button type="button" class="rx-ib ss-card" data-ss="card" data-i="${i}" aria-label="See the card">${fa("fa-regular fa-id-card")}</button>` : "";
     const gm = r.state === "now" ? `<span class="ss-gmb ss-gm"><button type="button" class="rx-ib rx-use" data-ss="done" aria-label="Done">${fa("fa-solid fa-check")}</button><button type="button" class="rx-ib rx-pass" data-ss="skip" aria-label="Skip">${fa("fa-solid fa-forward")}</button></span>` : "";
     return `<div class="rx-it ss-it ${r.state}${n === 0 ? " top" : ""}" data-i="${i}">${before ? `<span class="rx-grip ss-gm" aria-label="Drag to change the order">${fa("fa-solid fa-grip-vertical")}</span>` : ""}<span class="rx-num">${n + 1}</span>${face(r)}<b class="ss-nm">${esc(r.name)}</b>${mark}<span class="ss-btns">${use}${card}${gm}</span></div>`;

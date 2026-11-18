@@ -227,7 +227,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
     if (landed && (g.conds ?? []).length) {
       const { applyConditionChip } = await import("./inline.mjs");
       let user = null; try { const d = s.originUuid ? await fromUuid(s.originUuid) : null; user = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { user = null; }
-      for (const chip of g.conds) { try { await applyConditionChip(chip, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user }); } catch (e) { console.warn("twod12 | a Tier's condition", chip, e); } }
+      for (const chip of g.conds) { try { await applyConditionChip(chip, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null }); } catch (e) { console.warn("twod12 | a Tier's condition", chip, e); } }
     }
   }
   const rwi = CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, label: x.label, v: x.v }));   // v0.0.321: shown as icons after "Took"
@@ -288,6 +288,7 @@ export function openSource(msg) {
   const el = id ? document.querySelector(`#chat [data-message-id="${id}"], .chat-log [data-message-id="${id}"]`) : null;
   if (!el) return ui.notifications.info("Its roll card is not in the chat log any more.");
   el.querySelector(".cc-card")?.classList.remove("collapsed");
+  import("./chatscroll.mjs").then(m => m.releaseChatLogs()).catch(() => {});   // v0.0.421: this scroll unpins the chat (it doesn't jump back down)
   el.scrollIntoView({ behavior: "smooth", block: "center" });
   el.classList.add("cc-flash"); setTimeout(() => el.classList.remove("cc-flash"), 1600);
 }

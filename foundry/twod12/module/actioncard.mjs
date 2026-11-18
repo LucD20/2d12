@@ -52,10 +52,10 @@ async function cell(item, v, n, ch) {
   if (riders.length) html += dmg ? riders.map(r => `<span class="ap-rid"><span class="arr">↳</span> <span class="ap-mv">${r}</span></span>`).join("") : riders.join("; ");
   const extra = [];
   if (ch && insts.some(i => i.useW || i.dice)) {
-    if (ch.net > 0) extra.push(`<span class="chg up" aria-label="Empowered: the first damage on each of your turns adds 1d6!">+1d6!</span>`);   // v0.0.407: no value; Enfeebled is gone
+    if (ch.net > 0) extra.push(`<span class="chg up">+1d6!</span>`);   // v0.0.407: no value; Enfeebled is gone
   }
-  if (plain.length) extra.push(`<span class="chg up" aria-label="${esc(plain.map(b => `${b.source}: ${b.text}`).join("; "))}">+ ${esc(namesWithCount(plain.map(b => b.source)))}</span>`);
-  if (ch && (insts.length || n > 1)) for (const b of (ch.bonuses[n] ?? []).filter(b => !plain.includes(b))) extra.push(`<span class="chg up" aria-label="${esc(b.source)}">${prettyDamage(esc(b.text))}</span>`);
+  if (plain.length) extra.push(`<span class="chg up">+ ${esc(namesWithCount(plain.map(b => b.source)))}</span>`);
+  if (ch && (insts.length || n > 1)) for (const b of (ch.bonuses[n] ?? []).filter(b => !plain.includes(b))) extra.push(`<span class="chg up">${prettyDamage(esc(b.text))}</span>`);
   return (html || "&mdash;") + (extra.length ? ` ${extra.join(" ")}` : "");
 }
 
@@ -123,7 +123,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
     const b = offAt(v.ap), lab = `Use · ${costOf(v)}`;
     return b.off
       ? `<span class="ap-vwrap" data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn st-use no" aria-disabled="true" disabled aria-label="${esc(`${lab}: ${b.why}`)}">${esc(lab)}</button></span>`
-      : `<button type="button" class="ap-vbtn st-use" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""} aria-label="Use ${esc(item.name)}, the ${esc(b.cost ?? costOf(v))} Version">${esc(lab)}</button>`;
+      : `<button type="button" class="ap-vbtn st-use" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""}>${esc(lab)}</button>`;
   };
   // Pack CARD-ONE step 2: what the card says, and in which order, is the card model (cardmodel.mjs); this face draws it (the creature's cells and buttons)
   const M = cardModel(item, { actor, weapon, fists: item.getFlag?.("twod12", "weaponUse") === "fists" });
@@ -172,7 +172,7 @@ export async function buildActionCard(item, { actor = null, use = true } = {}) {
       const out = unloadedWeapon(actor, item);
       if (out) chips.push({ kind: "bane", label: "Unloaded", applies: true, why: `${out.name} must be reloaded first (Reload, 1 AP)` });
       const word = c => { const bad = ["bane", "doom", "enf", "flat"].includes(c.kind); return `<span class="st-rc ${bad ? "b" : "g"}${c.applies ? "" : " na"}">${esc(c.label)}</span>`; };
-      live = `<div class="st-live"><div class="st-l"><b>Your roll</b><span class="st-roll"><span class="st-m" aria-label="The roll's Modifier">${esc(modText(src.chip, src.mod))}</span>${chips.map(word).join("")}${oneBtn}</span></div></div>`;
+      live = `<div class="st-live"><div class="st-l"><b>Your roll</b><span class="st-roll"><span class="st-m">${esc(modText(src.chip, src.mod))}</span>${chips.map(word).join("")}${oneBtn}</span></div></div>`;
     } catch (e) { console.warn("twod12 | Your roll", e); }
   }
   if (!live && oneBtn) live = `<div class="st-live st-only">${oneBtn}</div>`;

@@ -39,7 +39,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 |---|---|---|
 | Wounding Shot | Gold | |
 | Circling Shot | Silver | the Tier 3's square "no farther from the target" isn't checked |
-| Seizing Cut | Silver | the hand that holds the Grabbed creature isn't marked busy |
+| Seizing Cut | Silver | the hand that holds the Grabbed creature isn't marked busy; the Tier 3 Grabbed is a button to click after the Slide (v0.0.421: a condition written after a movement waits for it) |
 | Thwart Cut | Silver | Pressed doesn't end when you stop threatening the target |
 
 ## The Paladin (13 Actions, 6 Features)

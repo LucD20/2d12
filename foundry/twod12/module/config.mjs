@@ -356,7 +356,7 @@ export const cardVars = hex => {
 /** The title bar of an Action card: name on the left, category and cost on the right. */
 /** v0.0.189: the automation rank as a small chip (nothing when it isn't set). */
 // v0.0.215 (Lucas, playtest 2): the diamond's tooltip also says what is not implemented yet (the item's "By hand" note), for Bronze and Silver.
-export const autoChip = (rank, note = "") => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold), the rank on hover
+export const autoChip = (rank, note = "") => (rank && TWOD12.automationRanks[rank] ? `<i class="fa-solid fa-diamond autodia auto-${rank}" aria-label="${escAttr(TWOD12.automationRanks[rank])}"></i>` : "");   // v0.0.190: a diamond (grey, bronze, silver, gold); v0.0.420: no hover (the rank is its screen-reader name; what is by hand is on the item)
 export const cardHead = (name, cat, costHtml, freq = "", auto = "", autoNote = "") => `<div class="ahead"><b>${escAttr(name)}${autoChip(auto, autoNote)}</b><div class="aright"><span class="atop">${freq && TWOD12.frequencies[freq] ? `<span class="afreq">${escAttr(TWOD12.frequencies[freq])}</span>` : ""}${costHtml ? `<span class="aps">${costHtml}</span>` : ""}</span>${cat ? `<span class="acat">${escAttr(cat)}</span>` : ""}</div></div>`;
 /** v0.0.234 (pack R-core): the book writes the pool keys B / M as [V] / [R]: the tag of a stored pool in the text Foundry writes. */
 export const poolTag = pool => ({ B: "V", M: "R" })[pool] ?? pool;
@@ -473,7 +473,7 @@ const TOKEN_RE = new RegExp([
   String.raw`(?<guard>\bGuard\b(?:\s\d+\b)?)`,   // v0.0.369 (STYLE-1, Lucas: "I like the proposed"): the word Guard in the Guard blue
   `(?<word>\\b(?:${[...Object.keys(TRAIT_WORDS), ...Object.keys(DAMAGE_WORDS)].sort((a, b) => b.length - a.length).join("|")})\\b(?!\\s+(?:Attack|Technique)))`
 ].join("|"), "g");
-const traitTip = k => (TWOD12.traitHelp[k] ? `` : "");
+const traitTip = () => "";   // v0.0.420 (the tooltip review): no hover on a trait word
 /** One colored token of text (the class names are the book's). */
 function colorToken(m, g) {
   if (g.slash) return `<span class="pool-${POOL_CSS[g.sp]}">${m}</span>`;
@@ -728,7 +728,7 @@ export function distanceText(d, weapon = null) {
     if (r.melee || r.ranged) return sp(r.melee || r.ranged);
     if (weapon.system.range) return sp(weapon.system.range);   // a weapon with a Range but no Melee or Ranged property
   }
-  if (low === "reach") { const n = Number(d?.parent?.parent?.system?.reach); return n > 0 ? `Reach (${n})` : "Reach"; }   // v0.0.419 (A4): the creature's Reach
+  if (low === "reach") { const a = d?.parent?.parent, n = Number(a?.system?.reach); return a?.type === "npc" && n > 0 ? `Reach (${n})` : "Reach"; }   // v0.0.419 (A4): an NPC's Reach (v0.0.421: NPCs only, as decided)
   if (low === "self") return "Self";
   if (low === "weapon") return "Weapon";
   return v;

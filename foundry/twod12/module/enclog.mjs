@@ -244,7 +244,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
     div.innerHTML = `<div class="el-bar"><button type="button" data-el="copy"><i class="fa-solid fa-copy"></i> Copy log</button>
         <label><input type="checkbox" data-opt="short" ${this.short === false ? "" : "checked"}> Short names</label>
         <label><input type="checkbox" data-opt="details" ${this.details ? "checked" : ""}> Damage and conditions in the copy</label>
-        <span class="el-sp"></span><label aria-label="Show damage lines"><input type="checkbox" data-show="dmg" ${this.show.dmg ? "checked" : ""}> Damage</label><label><input type="checkbox" data-show="cond" ${this.show.cond ? "checked" : ""}> Conditions</label><label><input type="checkbox" data-show="off" ${this.show.off ? "checked" : ""}> Removed</label></div>
+        <span class="el-sp"></span><label><input type="checkbox" data-show="dmg" ${this.show.dmg ? "checked" : ""}> Damage</label><label><input type="checkbox" data-show="cond" ${this.show.cond ? "checked" : ""}> Conditions</label><label><input type="checkbox" data-show="off" ${this.show.off ? "checked" : ""}> Removed</label></div>
       <details class="el-abbr"><summary>Short names</summary>${list.map(c => `<label>${esc(c.name)} <input type="text" data-abbr="${esc(c.id)}" value="${esc(ab[c.id])}"></label>`).join("")}</details>
       <div class="el-body">${rows.join("") || "<p class=\"hint\">Nothing logged yet. Actions, movement, damage, healing and conditions in this combat appear here.</p>"}</div>`;
     return div;

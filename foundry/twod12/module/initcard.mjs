@@ -47,7 +47,7 @@ export function initCardData(rows, order) {
 }
 
 /** A die chain: the 12 (counts as 11, rolled again), a link, the reroll; again for each 12. */
-const chainHtml = faces => faces.map((f, i) => `${i ? '<i class="fa-solid fa-link dlink"></i>' : ""}<span class="die d12${f === 12 ? " boom" : ""}${i ? " chain" : ""}"${f === 12 ? '' : ""}>${f}</span>`).join("");
+const chainHtml = faces => faces.map((f, i) => `${i ? '<i class="fa-solid fa-link dlink"></i>' : ""}<span class="die d12${f === 12 ? " boom" : ""}${i ? " chain" : ""}">${f}</span>`).join("");
 
 /** The dice line of one row. */
 export function diceLineHtml(x) {

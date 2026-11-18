@@ -12,6 +12,6 @@ Psychic  ⟶  Immune Psychic, from its own line: its Psychic damage is 0.
 5 Fire  ⟶  Weak 5 Fire, from its own line: each Action's Fire damage, both pools together, is increased by 5 once.
 2 Holy · EoT  ⟶  Weak 2 Holy, from Hex (effect) · until the end of the turn: each Action's Holy damage, both pools together, is increased by 2 once.
 rows: Immune: Psychic | Resist: 3 Blunt, 3 Fire · 2 rd | Weak: 1 Cold, 5 Fire, 2 Holy · EoT | dashed: 3 | no + Add for a player: true
-chips are buttons with an aria-label: true | under the Damage label: true
+chips are buttons, named by their words (no hover, v0.0.420): true | under the Damage label: true
 no line: hidden for a player: true | v0.0.378: no + Add on the side panel, hidden for a GM too: true
 an item's Damage lines: Damage lines while worn Immune Cold Resist 2 Fire + Add

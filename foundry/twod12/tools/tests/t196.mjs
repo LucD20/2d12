@@ -18,7 +18,7 @@ console.log("the panel's card:", card);
 const valued = { ...e, name: "Enfeebled 2", getFlag: (ns, k) => ({ value: 2, baseName: "Enfeebled" }[k] ?? null) };
 console.log("a valued condition's card:", fx.panelCardHtml(valued, actor, { dur: "1 round" }).replace(/<div class="ft-text">[\s\S]*?<\/div>/, ""));
 const s = src("module/effects.mjs");
-console.log("no hover card on the token's condition panel (v0.0.420, the tooltip review):", s.includes("const markTip = () => {};"));
+console.log("no hover card on the token's condition panel (v0.0.420; v0.0.421: its icons named for screen readers):", !s.includes("markTip") && s.includes('el.setAttribute("aria-label", e.name);'));
 console.log("targets row:", cf.targetsRowHtml(["Goblin, Nari"], { retarget: true }));
 console.log("no target:", cf.targetsRowHtml([], { retarget: true }));
 console.log("without the button:", cf.targetsRowHtml(["Goblin"]));

@@ -5,6 +5,12 @@ button is off, until the mockups show it on screen) stay; B, D, E, F, G and H ar
 name for screen readers (aria-label). The Distance's ⓘ and the effect formula's ⓘ went with their hovers. Test t264 lists the hover texts
 left. The rows below are the record of what was there (their line numbers are of v0.0.419).
 
+**Corrected by the audit (v0.0.421):** three reasons a button is off had been filed under F and are back as hovers (C): Favored / Doomed from an
+effect (Initiative window), End move with no movement (the combat strip), a struck roll-dialog chip ("Not this time"); and a struck Encounter Log
+line's reason. A pick window or pick bar option shows its hover only when it is off. The Charge bar's `title` (set by code, missed by the scan)
+went. `aria-label` stays only on elements that show no words. Not in this inventory, to ask Lucas: the hover card over a placed area
+(`module/zonetip.mjs`, his playtest 4 ask).
+
 Lucas, 2026-11-17 (playtest 5): "tooltips are too much. Only ones that are necessary so far are the ones in the HP bars. Remove all for now."
 Then: "When we are done reviewing and get to the tooltip stage, write them all down, categorized, and I will review."
 

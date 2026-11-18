@@ -192,7 +192,6 @@ function makeTurnButton() {
   b.className = "ui-control icon fa-solid fa-list-check twod12-turnbtn";
   b.setAttribute("aria-pressed", String(shown()));
   b.setAttribute("aria-label", "Turn Breakdown: show or hide");
-  b.setAttribute("aria-label", "Turn Breakdown");
   b.addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await game.settings.set(F, "turnDockShown", !shown()); document.querySelectorAll(".twod12-turnbtn").forEach(x => x.setAttribute("aria-pressed", String(shown()))); renderDock(); });
   return b;
 }

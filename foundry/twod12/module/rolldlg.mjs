@@ -338,7 +338,7 @@ export function chipHtml(c, st) {
   const on = chipOn(c, st), na = c.start === "na";
   const cls = `rd-chip ${isBuff(c) ? "buff" : "debuff"}${na ? " na" : on ? " on" : " off"}`;
   const tip = na ? `Not this time: ${c.why || "it doesn't apply"}` : [c.tip ?? "", c.manual ? "Right-click: one less" : ""].filter(Boolean).join(". ");
-  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${tip ? ` aria-label="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span>${c.bb && BB_NAMES[c.bb] ? `<small class="rd-bbn">${esc(BB_NAMES[c.bb])}</small>` : ""}</button>`;
+  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${na ? ` data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span>${c.bb && BB_NAMES[c.bb] ? `<small class="rd-bbn">${esc(BB_NAMES[c.bb])}</small>` : ""}</button>`;
   const x = c.manual ? `<button type="button" class="rd-cx" data-act="rm" data-id="${esc(c.id)}" aria-label="Remove ${esc(c.label)}">×</button>` : "";
   const i = c.rule?.uuid ? `<button type="button" class="rd-ci" data-act="rule" data-uuid="${esc(c.rule.uuid)}" aria-label="Open the rule: ${esc(c.rule.label ?? c.label)}">i</button>` : "";
   return `<span class="${cls}"${c.manual ? ` data-manual="${esc(c.id)}"` : ""}>${body}${x}${i}</span>`;
@@ -386,7 +386,7 @@ function tierTableHtml(inp, st, v) {
     return (dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;") + statLine(stats[n]);
   };
   // v0.0.334 (Lucas): the GM clicks a Tier (or Critical) to make it the result (again: back to the roll); forceTier 4 = a Critical
-  const th = (n, label) => (inp.canForce && !inp.save ? `<th scope="row"><button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" aria-label="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button></th>` : `<th scope="row">${label}</th>`);
+  const th = (n, label) => (inp.canForce && !inp.save ? `<th scope="row"><button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">${label}</button></th>` : `<th scope="row">${label}</th>`);
   const can = inp.canForce && !inp.save, rowAt = n => (can ? ` data-force="${n}"` : "");
   const rows = [1, 2, 3].map(n => `<tr class="t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(n)}>${th(n, `Tier ${n}`)}<td>${cell(n)}</td></tr>`);
   if (v.crit) rows.push(`<tr class="crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(4)}>${th(4, "Critical")}<td>${v.crit}</td></tr>`);
@@ -425,7 +425,7 @@ function traitsHtml(inp, v) {
  * or to remove them; if no token is targeted and you click it, it becomes without a target"): the dialog doesn't follow the map any more; Target reads
  * the creatures targeted now. Not for an area (its creatures come from the area) or a roll on yourself.
  */
-const targetBtn = inp => (inp.area || inp.self ? "" : '<button type="button" class="rd-tgtbtn" data-act="targetmode" aria-label="Use the creatures targeted on the map now (none targeted: no target)">Target</button>');
+const targetBtn = inp => (inp.area || inp.self ? "" : '<button type="button" class="rd-tgtbtn" data-act="targetmode">Target</button>');
 // v0.0.370 (Lucas): the target's token image before its name (none for "No target" and "Your roll")
 const cImg = c => (c.img ? `<img class="rd-cimg" src="${esc(c.img)}" alt="">` : "");
 function creaturesHtml(inp, st, v) {
@@ -489,7 +489,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
     for (const l of C.before) out.push(line(esc(l.label), l.html));
     if (v && !v.noTiers) {
       const stats = tierStats(inp, st, v);
-      const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" aria-label="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button>` : label);
+      const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">${label}</button>` : label);
       const tierText = n => {
         const tags = tierTags(inp, st, n);
         const lines = poolLines(v.tiers?.[n], []);
@@ -522,7 +522,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
   }
   if (v && !v.noTiers) {
     const stats = tierStats(inp, st, v), can = inp.canForce && !inp.save;
-    const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}" aria-label="${Number(st.forceTier) === n ? "Forced: click again to roll normally" : `Make ${label} the result (GM)`}">${label}</button>` : label);
+    const name = (n, label) => (can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">${label}</button>` : label);
     const tierText = n => {
       const tags = tierTags(inp, st, n);
       const lines = poolLines(v.tiers?.[n], []);

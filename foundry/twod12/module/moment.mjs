@@ -191,9 +191,9 @@ function liveHtml(st) {
   const ctl = (r, inner) => `<span class="rx-ctl" data-answerer="${esc(r.answerer)}">${inner}<span class="rx-deciding">deciding…</span></span>`;
   const can = groups.map(g => {
     const r = g[0], tg = one ? "" : ` ${kindTag(r.kind)}`;
-    if (g.length === 1) return `<div class="rx-dl" data-rx-hover="${r.i}" data-actor="${esc(r.actorUuid)}">${faceHtml(faceOfRow(r))}<span class="rx-nm"><a class="rx-open" data-twod12="rxOpen" data-row="${r.i}" aria-label="Open the Action">${esc(r.itemName)}</a> ${esc(r.ap)}R <span class="rx-tg">→ ${esc(r.targetName)}</span>${tg}</span>${ctl(r, `<button type="button" class="rx-ib rx-use" data-twod12="rxUse" data-row="${r.i}" aria-label="Use">${ICON.check()}</button><button type="button" class="rx-ib rx-pass" data-twod12="rxPass" data-row="${r.i}" aria-label="Pass">${ICON.x()}</button>`)}</div>`;
+    if (g.length === 1) return `<div class="rx-dl" data-rx-hover="${r.i}" data-actor="${esc(r.actorUuid)}">${faceHtml(faceOfRow(r))}<span class="rx-nm"><a class="rx-open" data-twod12="rxOpen" data-row="${r.i}">${esc(r.itemName)}</a> ${esc(r.ap)}R <span class="rx-tg">→ ${esc(r.targetName)}</span>${tg}</span>${ctl(r, `<button type="button" class="rx-ib rx-use" data-twod12="rxUse" data-row="${r.i}" aria-label="Use">${ICON.check()}</button><button type="button" class="rx-ib rx-pass" data-twod12="rxPass" data-row="${r.i}" aria-label="Pass">${ICON.x()}</button>`)}</div>`;
     const same = g.every(x => x.targetName === r.targetName);
-    return `<div class="rx-grp" data-actor="${esc(r.actorUuid)}"><div class="rx-gh">${faceHtml(faceOfRow(r))}<span class="rx-nm"><span class="rx-own"><b>Pick one</b></span><span class="rx-oth"><b>${esc(r.name)}</b> <span class="rx-tg">· ${g.length} options</span></span>${same ? ` <span class="rx-tg">→ ${esc(r.targetName)}</span>` : ""}${tg}</span>${ctl(r, `<button type="button" class="rx-ib rx-pass" data-twod12="rxPass" data-row="${r.i}" aria-label="Pass">${ICON.x()}</button>`)}</div><div class="rx-chs" data-answerer="${esc(r.answerer)}">${g.map(x => `<button type="button" class="rx-ch" data-twod12="rxUse" data-row="${x.i}" data-rx-hover="${x.i}" aria-label="Use ${esc(x.itemName)}${same ? "" : ` → ${esc(x.targetName)}`}">${esc(x.itemName)} ${esc(x.ap)}R</button>`).join("")}</div></div>`;
+    return `<div class="rx-grp" data-actor="${esc(r.actorUuid)}"><div class="rx-gh">${faceHtml(faceOfRow(r))}<span class="rx-nm"><span class="rx-own"><b>Pick one</b></span><span class="rx-oth"><b>${esc(r.name)}</b> <span class="rx-tg">· ${g.length} options</span></span>${same ? ` <span class="rx-tg">→ ${esc(r.targetName)}</span>` : ""}${tg}</span>${ctl(r, `<button type="button" class="rx-ib rx-pass" data-twod12="rxPass" data-row="${r.i}" aria-label="Pass">${ICON.x()}</button>`)}</div><div class="rx-chs" data-answerer="${esc(r.answerer)}">${g.map(x => `<button type="button" class="rx-ch" data-twod12="rxUse" data-row="${x.i}" data-rx-hover="${x.i}">${esc(x.itemName)} ${esc(x.ap)}R</button>`).join("")}</div></div>`;
   }).join("");
   const stack = stackOrder(st.rows), ready = st.ready && !st.resolving;
   const slabs = stack.map((r, k) => {
@@ -802,7 +802,7 @@ export function rxRender(msg, html) {
   });
   el.querySelectorAll(".rx-grp").forEach(g => g.classList.toggle("mine", !!g.querySelector(".rx-chs")));
   if (!game.user.isGM) el.querySelectorAll(".rx-gm, .rx-gmonly, .rx-grip").forEach(b => b.remove());
-  if (!mayManage(st, game.user)) el.querySelectorAll(".rx-tm").forEach(t => { delete t.dataset.twod12; delete t.dataset.tooltip; });
+  if (!mayManage(st, game.user)) el.querySelectorAll(".rx-tm").forEach(t => { delete t.dataset.twod12; delete t.dataset.tooltip; t.removeAttribute("aria-label"); });
   const b = st.base?.back;
   if (b && !b.used) { const doc = docSync(b.tokenUuid); if (!doc?.isOwner) el.querySelectorAll('[data-twod12="rxBack"]').forEach(x => x.remove()); }
   el.querySelectorAll("[data-rx-hover]").forEach(h => {
@@ -846,7 +846,7 @@ function dragSlabs(st, el) {
 function oldRender(st, el) {
   el.querySelectorAll('button[data-twod12="rxUse"], button[data-twod12="rxPass"]').forEach(b => { const r = st.rows[Number(b.dataset.row)]; if (!(r && (r.answerer === game.user.id || game.user.isGM))) b.remove(); });
   if (!game.user.isGM) el.querySelectorAll(".rx-gm").forEach(b => b.remove());
-  if (!mayManage(st, game.user)) { el.querySelectorAll(".rx-move, .rx-go").forEach(b => b.remove()); el.querySelectorAll(".rx-timer").forEach(t => { delete t.dataset.twod12; delete t.dataset.tooltip; }); }
+  if (!mayManage(st, game.user)) { el.querySelectorAll(".rx-move, .rx-go").forEach(b => b.remove()); el.querySelectorAll(".rx-timer").forEach(t => { delete t.dataset.twod12; delete t.dataset.tooltip; t.removeAttribute("aria-label"); }); }
   ticker();
 }
 let ticking = null;

@@ -8,7 +8,7 @@ dragged onto a token (G1): true
 --- G8 Rebuke's Hindered: a Save Action with no damage runs its chain on use
 Rebuke: true "@Condition[hindered|eot]" | no damage in its Tiers: true | wired: true
 --- G6 a Reaction's movement off its turn is tracked
-the creature whose turn it is: c1 | Kaela, not on the turn, with Evade 1: c2 (free squares 1) | a creature off its turn with none: not tracked
+the creature whose turn it is: c1 | Kaela, not on the turn, with Evade 1: c2 (free squares 1) | a creature off its turn with none: not tracked | v0.0.421: squares left from its own turn (no Reaction this turn): not tracked
 beyond its free squares off its turn: refused: true
 --- G4 Judge with no target
 the chip: {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"kind":"judge"} | it marks the targeted creature: true | used with no target: asks on the map, else the button: true
@@ -29,7 +29,7 @@ E2 a Reaction's pill writes its Frequency ("Turn · 1R"): true | E4 the Action s
 E8 an empty Level is left unchanged: [null,null,3,4,null,0]
 E7 a Rally pip clicked (3 left): the 2nd → 2 | the 3rd (the last lit) → 2 | the 4th → 4 | the line: true
 E5 a window with no scheme takes the Applications one: true themed theme-light | one with its own is left: false
-D2 both Modifiers, no Vigor / Resolve words on the bars: true | D5 the same creature keeps its height: true | F2 Bloodied / Strained off the strip: true
+D2 both Modifiers, no Vigor / Resolve words on the bars: true | D5 no jump (v0.0.421: the classes switch with the new content, after the data): true | F2 Bloodied / Strained off the strip: true
 F1 a full AP pip solid gold, an empty one dark: true | D8 the HUD's icons centered: true
 --- V1.6 the Encounter Log
 same side: true | foes: false | a neutral is nobody's ally: false | unknown: false

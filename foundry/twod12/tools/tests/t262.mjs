@@ -18,10 +18,10 @@ console.log("only a chip naming an item opens it on its name:", tw.includes('con
 
 console.log("--- V1.2 a Tier's condition applies when the Tier lands (G1-G3)");
 const IN = await import(ROOTURL + "module/inline.mjs");
-console.log("the chip read from the Tier's text:", JSON.stringify(IN.parseInline("Condition", "hindered|eot")), "| the Tier's group carries them:", act.includes("const conds = String(xt ?? \"\").match(/@Condition\\[[^\\]]*\\]/g) ?? [];"),
+console.log("the chip read from the Tier's text:", JSON.stringify(IN.parseInline("Condition", "hindered|eot")), "| the Tier's group carries them:", act.includes('const conds = (await import("./inline.mjs")).tierConditionChips(xt);'),
   "| both damage cards pass them:", (act.match(/conds: byTier\.get\(t\)\.conds|conds: d\.conds/g) ?? []).length === 2);
-console.log("an attack's row applies them when its damage landed:", ccd.includes("if (landed && (g.conds ?? []).length)") && ccd.includes("applyConditionChip(chip, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user })"),
-  "| a Save's Tier (the old card, the new card's Damage button, a Tier with no damage):", inl.includes("if (!dealt || dealt.landed) for (const chip of String(cfg.tiers[`t${tier}`]") && inl.includes("conds: String(cfg.tiers[`t${t}`] ?? \"\").match(") && inl.includes("if (!comps.length) for (const chip of String(cfg.tiers[`t${chk.tier}`]"));
+console.log("an attack's row applies them when its damage landed:", ccd.includes("if (landed && (g.conds ?? []).length)") && ccd.includes("applyConditionChip(chip, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null })"),
+  "| a Save's Tier (the old card, the new card's Damage button, a Tier with no damage):", inl.includes("if (!dealt || dealt.landed) for (const chip of tierConditionChips(cfg.tiers[`t${tier}`]))") && inl.includes("conds: tierConditionChips(cfg.tiers[`t${t}`])") && inl.includes("if (!comps.length) for (const chip of tierConditionChips(cfg.tiers[`t${chk.tier}`]))"));
 const C = await import(ROOTURL + "tools/content.mjs");
 const ss = C.docs.find(d => d.name === "Snap Shot").system.versions[0];
 console.log("Snap Shot's Tiers 2 and 3 hold the chips:", JSON.stringify([ss.x2, ss.x3]));
@@ -35,10 +35,11 @@ console.log("Rebuke:", rb.traits.includes("save"), JSON.stringify(rb.versions[0]
 console.log("--- G6 a Reaction's movement off its turn is tracked");
 const MV = await import(ROOTURL + "module/move.mjs");
 const cb = (id, tok, f) => ({ id, tokenId: tok, getFlag: (s, k) => f[k] });
-const kaela = cb("c2", "tK", { evadeMove: 1 }), orc = cb("c1", "tO", {}), still = cb("c3", "tD", {});
-game.combat = { started: true, combatant: orc, combatants: [orc, kaela, still] };
+const kaela = cb("c2", "tK", { evadeMove: 1, offTurnAt: "1:0" }), orc = cb("c1", "tO", {}), still = cb("c3", "tD", {}), left = cb("c4", "tL", { freeMove: 3 });
+game.combat = { started: true, round: 1, turn: 0, combatant: orc, combatants: [orc, kaela, still, left] };
 console.log("the creature whose turn it is:", MV.currentCombatantFor({ id: "tO" })?.id, "| Kaela, not on the turn, with Evade 1:", MV.currentCombatantFor({ id: "tK" })?.id, "(free squares", MV.offTurnFree(kaela) + ")",
-  "| a creature off its turn with none:", MV.currentCombatantFor({ id: "tD" }) ?? "not tracked");
+  "| a creature off its turn with none:", MV.currentCombatantFor({ id: "tD" }) ?? "not tracked",
+  "| v0.0.421: squares left from its own turn (no Reaction this turn):", MV.currentCombatantFor({ id: "tL" }) ?? "not tracked");
 game.combat = null;
 console.log("beyond its free squares off its turn: refused:", mvs.includes("if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6)"));
 
@@ -78,7 +79,7 @@ if (AS.cleanLevel) {
   console.log("E5 a window with no scheme takes the Applications one:", AS.ensureWindowTheme(el, "light"), [...cl].join(" "), "| one with its own is left:", AS.ensureWindowTheme(el, "dark"));
 } else console.log("(actor-sheets.mjs:", AS.err, ")");
 console.log("D2 both Modifiers, no Vigor / Resolve words on the bars:", hud.includes('{ label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }') && !hv.includes("<span><b>${esc(b.name)}</b>"),
-  "| D5 the same creature keeps its height:", hud.includes("main.__twod12Actor === cur.actor.uuid && !m.folded ? main.offsetHeight : 0"), "| F2 Bloodied / Strained off the strip:", hud.includes('tag: h.tag?.cls === "hurt" ? null : h.tag'));
+  "| D5 no jump (v0.0.421: the classes switch with the new content, after the data):", hud.includes('shape("is-bar", ...(m.npc ? ["is-npc"] : []), ...(m.folded ? ["is-folded"] : []));') && !hud.includes("minHeight"), "| F2 Bloodied / Strained off the strip:", hud.includes('tag: h.tag?.cls === "hurt" ? null : h.tag'));
 console.log("F1 a full AP pip solid gold, an empty one dark:", theme.includes(".twod12-type .twod12-hud .hm-ap i.on, .twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }"), "| D8 the HUD's icons centered:", css.includes(".twod12-hud .hud-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar button { display: inline-flex; align-items: center; justify-content: center;"));
 
 console.log("--- V1.6 the Encounter Log");

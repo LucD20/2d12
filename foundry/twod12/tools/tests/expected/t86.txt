@@ -34,7 +34,7 @@ dialog tiles: Yours | Skeleton Captain 1 | Skeleton Captain 2 | Skeleton Captain
 rows on the card (one per creature): 6 | Tier groups: Tier 2 Skeleton Captain 1 Skeleton Captain 2 Skeleton Captain 3 Skeleton Captain 4 Skeleton Captain 5 Skeleton Captain 6
 targets line (v0.0.285, kept in v0.0.296: at the bottom, beside the buttons): → 6 targets Damage Card | the top keeps the area: Area: @Template[emanation|distance:5|targets:all|self:no|at:self|quick:yes]
 damage: one card with 6 rows, named: Skeleton Captain 1, Skeleton Captain 2, Skeleton Captain 3, Skeleton Captain 4, Skeleton Captain 5, Skeleton Captain 6 | Apply all: true
-size of the roll card: about 9564 characters for 6 creatures (one row), against 6881 for 3
+size of the roll card: about 9425 characters for 6 creatures (one row), against 6810 for 3
 gridless scene: Whirlwind still rolls: true 
 dots: "" | g g r | capped at 5 each: 5 5 | never negative: ""
 captions: {"name":"Skeleton Captain 2","detail":"DC 13 · 2 Banes"} {"name":"Nari","detail":"DC 17 · 1 Boon"} {"name":"Goblin","detail":"DC 20"} {"name":"Lonny","detail":"DC 15 · 3 Boons · 1 Bane"}

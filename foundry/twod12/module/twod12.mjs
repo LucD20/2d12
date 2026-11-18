@@ -385,6 +385,7 @@ Hooks.once("ready", async () => {
   document.addEventListener("dragstart", ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");
     if (!inl || !["Condition", "Effect"].includes(inl.dataset.twod12Inline)) return;
+    if (!inl.closest?.(".chat-message, .message, #chat-log")) return;   // v0.0.421 (the audit): from the chat only (a sheet row keeps its own drag)
     try { ev.dataTransfer.setData("text/plain", JSON.stringify({ type: "twod12Chip", kind: inl.dataset.twod12Inline, cfg: JSON.parse(inl.dataset.cfg), messageId: inl.closest("[data-message-id]")?.dataset.messageId ?? "" })); } catch (err) { /* no data */ }
   });
   Hooks.on("dropCanvasData", (cv, data) => {

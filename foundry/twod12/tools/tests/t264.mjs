@@ -7,7 +7,8 @@ import { fileURLToPath } from "node:url";
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const files = [...fs.readdirSync(ROOT + "module").filter(f => f.endsWith(".mjs")).map(f => "module/" + f),
   ...["templates/actor-sheet-pc.hbs", "templates/item-sheet.hbs", "templates/parts/preds.hbs", "templates/parts/settings.hbs"]];
-const pat = /(?:data-tooltip(?:-html)?=|\btitle=|dataset\.tooltip(?:Html)?\s*=|tooltip\??\.activate)/g;
+// v0.0.421 (the audit): also a title or a tooltip set by code (a ".title =" on an element, setAttribute)
+const pat = /(?:data-tooltip(?:-html)?=|\btitle=|dataset\.tooltip(?:Html)?\s*=|tooltip\??\.activate|querySelector\([^)]*\)\.title\s*=|setAttribute\("(?:title|data-tooltip)")/g;
 const found = [];
 for (const f of files.sort()) {
   const lines = fs.readFileSync(ROOT + f, "utf8").split("\n");

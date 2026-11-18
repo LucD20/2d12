@@ -507,6 +507,7 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   const key = kind === "evade" ? "evadeMove" : "freeMove";
   if (kind !== "evade") newMoveAction(c.id);   // v0.0.274: a Move Action's movement (Advance, Charge, Crawl): a new one for the Reactions
   await c.setFlag(F, key, num(c.getFlag(F, key)) + n);
+  if (combat?.combatant?.id !== c.id) await c.setFlag(F, "offTurnAt", turnStamp(combat));   // v0.0.421: granted off its turn (a Reaction): tracked during this turn only
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
   if (kind === "charge") {
@@ -1012,7 +1013,7 @@ export const reducedValue = (N, steady) => Math.max(0, num(N) - Math.max(0, num(
  *  not to apply it); against an enemy it simply applies. */
 export const asksSteadiness = (origin, target) => {
   const d = t => t?.document?.disposition ?? t?.disposition;
-  return !!origin && !!target && origin !== target && d(origin) !== undefined && d(origin) === d(target);
+  return !!origin && !!target && origin !== target && d(origin) !== undefined && d(origin) !== 0 && d(origin) === d(target);   // v0.0.421: a neutral is nobody's ally
 };
 async function applySteadiness(target, N, label, origin = null) {
   const st = steadinessOf(target.actor), steady = st.total;   // v0.0.174: with the bonuses of Features, Talents and effects
@@ -1020,12 +1021,11 @@ async function applySteadiness(target, N, label, origin = null) {
   const eff = reducedValue(N, steady);
   if (!asksSteadiness(origin, target)) return { N: eff, steady, applied: true };
   const from = st.parts.length ? ` (${st.base} + ${st.parts.map(p => `${p.name} ${p.bonus >= 0 ? "+" : "\u2212"}${Math.abs(p.bonus)}`).join(", ")})` : "";
-  // v0.0.415 (pack CL): the pick window (was a DialogV2); closing it applies the Steadiness (the default)
-  const { pickTwo } = await import("./pickwindow.mjs");
-  const keep = await pickTwo({ title: "Steadiness", name: "Steadiness", sub: target.name, icon: "fa-anchor",
-    text: `${target.name} has Steadiness ${steady}${from}: ${label} ${N} becomes ${label} ${eff}. A willing creature can choose not to apply its Steadiness.`,
-    yes: `Apply Steadiness (${label} ${eff})`, no: `Don't apply it (${label} ${N})` });
-  const choice = keep === false ? "ignore" : "apply";
+  // v0.0.421 (the audit): the moved creature's player chooses (on their own screen, the bottom bar; ccdamage.mjs askOwner), not the mover; no
+  // answer in time: it applies (the default)
+  const { askOwner } = await import("./ccdamage.mjs");
+  const choice = await askOwner(target.actor, `<b>${esc(target.name)}</b> has Steadiness ${steady}${esc(from)}: ${label} ${N} becomes ${label} ${eff}. A willing creature can choose not to apply its Steadiness.`,
+    [{ id: "apply", label: `Apply Steadiness (${label} ${eff})` }, { id: "ignore", label: `Don't apply it (${label} ${N})` }]);
   return choice === "ignore" ? { N, steady, applied: false } : { N: eff, steady, applied: true };
 }
 
@@ -1173,8 +1173,12 @@ export function currentCombatantFor(doc) {
   const c = game.combat.combatant;
   if (c && c.tokenId === doc.id) return c;
   const off = game.combat.combatants?.find?.(x => x.tokenId === doc.id);
-  return off && offTurnFree(off) > 0 ? off : null;
+  // v0.0.421 (the audit): only squares a Reaction gave during this very turn (stamped by grantFreeMove); what is left from the creature's own turn
+  // doesn't let it move on someone else's
+  return off && offTurnFree(off) > 0 && off.getFlag?.(F, "offTurnAt") === turnStamp(game.combat) ? off : null;
 }
+/** Pure (v0.0.421): the key of the combat's current turn ("round:turn"). */
+export const turnStamp = combat => (combat ? `${combat.round}:${combat.turn}` : "");
 /** Pure: the free squares a combatant has off its turn (a Reaction's Evade or Advance); it has no Walk of its own then. */
 export const offTurnFree = c => num(c?.getFlag?.(F, "evadeMove")) + num(c?.getFlag?.(F, "freeMove"));
 const gridUnit = () => canvas.grid?.distance || canvas.scene?.grid?.distance || 1;
@@ -1682,7 +1686,7 @@ export function openChargePicker(c, token) {
   const draw = () => {
     gfx.clear();
     outlineCells(gfx, limit, { color: 0xf1c84b, width: 2 });
-    const t = text(); bar.querySelector(".lb-text").textContent = t; bar.querySelector(".lb-text").title = t;
+    const t = text(); bar.querySelector(".lb-text").textContent = t;   // v0.0.421 (the audit): no title (the tooltip review)
     // v0.0.219 (Lucas): the bar keeps one size; the Ties buttons keep their place (hidden, not removed) so Give up never moves.
     const sb = bar.querySelector(".lb-side"), tie = !!cur?.path.ties;
     sb.hidden = false; sb.style.visibility = tie ? "visible" : "hidden";

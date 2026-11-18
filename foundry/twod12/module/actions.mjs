@@ -155,7 +155,7 @@ export function pureMove(it, version, basicKey = "") {
   return moves[0][1];
 }
 /** v0.0.189: the name of what a bonus comes from, as a link that opens it (Foundry's content links); plain text when it has no item. */
-export const srcLink = (name, uuid) => (uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(uuid)}" aria-label="Open ${esc(name)}">${esc(name)}</a>` : esc(name));
+export const srcLink = (name, uuid) => (uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(uuid)}">${esc(name)}</a>` : esc(name));
 /** Does this tier need a Damage button? attrFrom: the lowest Tier on which the Attribute is added (0: never; true: Weapon, from Tier 2). */
 const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === true ? 2 : Number(attrFrom) || 0; return tier > 0 && (insts.some(i => i.useW || i.dice || i.useAt) || (from > 0 && tier >= from) || fx.length > 0); };
 
@@ -385,7 +385,6 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
           try { d = JSON.parse(el.dataset.avg); } catch (e) { return; }
           const r = liveAvg(d, on, step);
           el.innerHTML = `Avg ${Math.round(r.avg * 10) / 10}${r.why.length ? ` <small>(with ${esc(r.why.join(", "))})</small>` : ""}`;
-          void r;   // v0.0.420 (the tooltip review): no "Without them" hover
         });
         const forced = root.querySelector("[name=forceTier]")?.value ?? "";
         pv.querySelectorAll("tr[data-t]").forEach(tr => tr.classList.toggle("forced", tr.dataset.t === forced));
@@ -1009,7 +1008,7 @@ export async function useAction(actor, item, opts = {}) {
       chk?.forced && n === tier
         ? `<span class="rtag forced">Forced</span>`
         : isUp
-          ? `<span class="rtag dbl" aria-label="Doubles">Tier ${n}</span>`
+          ? `<span class="rtag dbl">Tier ${n}</span>`
           : isRolled
             ? movedUp
               ? `<span class="rtag rolled small">Rolled</span>`
@@ -1307,7 +1306,8 @@ export async function useAction(actor, item, opts = {}) {
     }
     // v0.0.421 (the audit: Trip's Prone, Thwart Cut's Tier 1 Pressed, Trick Shots' Pin and Startle never applied): a condition written in a Tier
     // that deals no damage applies now, to each creature that got that Tier (a damaging Tier's conditions wait for its damage to land: ccdamage.mjs)
-    const tierConds = t => (ridesOn(t) ? [] : String(expandAsText(version[`x${t}`], item.system.versions, version, t) ?? "").match(/@Condition\[[^\]]*\]/g) ?? []);
+    const { tierConditionChips } = await import("./inline.mjs");
+    const tierConds = t => (ridesOn(t) ? [] : tierConditionChips(expandAsText(version[`x${t}`], item.system.versions, version, t)));
     const giveConds = async (t, uuids, crit) => {
       const chips = t >= 1 ? tierConds(t) : [];
       if (!chips.length || !uuids.length) return;
@@ -1473,7 +1473,7 @@ export async function rollDamage(message, { again = false } = {}) {
     if (crit && String(version.critical ?? "").trim()) riderHtml.push(`<b class="cc-critl">Critical:</b> ${await enrich(String(version.critical).trim(), item)}`);
     // v0.0.418 (Lucas, playtest 5, G1-G3): the conditions written in the Tier's text are applied when its damage lands (a rule of the system,
     // read from the card's text, so a homebrew card gets it too): the chips, kept for the damage card (ccdamage.mjs applyRow)
-    const conds = String(xt ?? "").match(/@Condition\[[^\]]*\]/g) ?? [];
+    const conds = (await import("./inline.mjs")).tierConditionChips(xt);   // v0.0.421: not one written after a movement
     return { comps, fx, chip, rolls, riders: riderHtml, conds };
   };
   if (f.results?.length) {

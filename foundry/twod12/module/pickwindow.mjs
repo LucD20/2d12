@@ -14,8 +14,9 @@ export const pwStepHtml = (field, value, label = "") => `<span class="pw-step">$
 
 /** Pure: the HTML of a segmented row. */
 export function segRowHtml(row) {
+  // v0.0.421 (the tooltip review): a hover only on an option that is off (its reason)
   // v0.0.245 (Lucas): the names are colored (the Attributes' colors, a creature's side): the label sits in a span with the option's class, as the class window does.
-  const btn = o => `<button type="button" data-key="pick:${esc(row.key)}:${esc(o.k)}" data-row="${esc(row.key)}" data-k="${esc(o.k)}" aria-pressed="${!!o.on}"${o.off ? " disabled" : ""}${o.tip ? ` data-tooltip="${esc(o.tip)}"` : ""}${o.style ? ` style="${esc(o.style)}"` : ""}${o.bcls ? ` class="${esc(o.bcls)}"` : ""}>${o.on ? `${CHECK} ` : ""}${o.icon ? `<i class="${esc(o.icon)}" aria-hidden="true"></i> ` : ""}<span class="${esc(o.cls ?? "")}">${esc(o.l)}</span></button>`;   // v0.0.377: an option can carry an icon, a style (its color) and a class
+  const btn = o => `<button type="button" data-key="pick:${esc(row.key)}:${esc(o.k)}" data-row="${esc(row.key)}" data-k="${esc(o.k)}" aria-pressed="${!!o.on}"${o.off ? " disabled" : ""}${o.tip && o.off ? ` data-tooltip="${esc(o.tip)}"` : ""}${o.style ? ` style="${esc(o.style)}"` : ""}${o.bcls ? ` class="${esc(o.bcls)}"` : ""}>${o.on ? `${CHECK} ` : ""}${o.icon ? `<i class="${esc(o.icon)}" aria-hidden="true"></i> ` : ""}<span class="${esc(o.cls ?? "")}">${esc(o.l)}</span></button>`;   // v0.0.377: an option can carry an icon, a style (its color) and a class
   return `<div class="cw-attr">${row.label ? `<span class="${esc(row.labelCls ?? "")}">${esc(row.label)}</span>` : ""}<div class="cw-seg">${row.opts.map(btn).join("")}</div></div>`;
 }
 

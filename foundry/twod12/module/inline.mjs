@@ -452,7 +452,7 @@ async function resolveSaveTier(actor, title, subtitle, cfg, tier, pre = null) {
     for (const u of parts.uuids) names.push((await fromUuid(u))?.name ?? "?");
   }
   // v0.0.418 (playtest 5): the conditions written in the Tier's text, as on an attack (when its damage landed, or a Tier with no damage)
-  if (!dealt || dealt.landed) for (const chip of String(cfg.tiers[`t${tier}`] ?? "").match(/@Condition\[[^\]]*\]/g) ?? []) {
+  if (!dealt || dealt.landed) for (const chip of tierConditionChips(cfg.tiers[`t${tier}`])) {
     try { await applyConditionChip(chip, { targets: [{ uuid: actor.uuid, name: actor.name }], actor: cfg.actorUuid ? await fromUuid(cfg.actorUuid).catch(() => null) : null }); names.push(chip.match(/^@Condition\[([^|\]]*)/)[1]); } catch (e) { console.warn("twod12 | a Tier's condition", e); }
   }
   const applied = dealt && !dealt.landed ? `${esc(actor.name)} takes <b>${esc(summary)}</b>: the rest of this Tier doesn't happen.`
@@ -847,6 +847,7 @@ async function handleMark(cfg, ctx = {}) {
   let user = null; try { const d = f?.actorUuid ? await fromUuid(f.actorUuid) : null; user = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { user = null; }
   user ??= ctx.actor ?? null;
   if (!user) return ui.notifications.warn("This button works from the card of the Action that marks.");
+  if (!user.isOwner) return ui.notifications.warn(`Only ${user.name}'s player (or the GM) can mark with it.`);   // v0.0.421 (the audit)
   const mine = new Set(user.getActiveTokens?.().map(t => t.id) ?? []);
   const tok = [...(game.user?.targets ?? [])].find(t => t.actor && !mine.has(t.id)) ?? (canvas.tokens?.controlled ?? []).find(t => t.actor && !mine.has(t.id));
   if (!tok) return ui.notifications.warn("Target the creature first, then click the button.");
@@ -955,13 +956,17 @@ async function handleReloadWeapon(ctx = {}) {
  *  origin). */
 export async function dropChip(kind, cfg, tokenDoc, message = null) {
   const targets = [{ uuid: tokenDoc.uuid, name: tokenDoc.name }];
-  if (kind === "Condition") return handleCondition({ ...cfg, crit: false, to: "" }, { targets, message });
-  if (kind === "Effect") return handleEffect({ ...cfg, who: "targets" }, { targets, message });
+  // v0.0.421 (the audit): through handleInline, which works out the formula options (value:pow, rounds:stage...)
+  if (kind === "Condition") return handleInline("Condition", { ...cfg, crit: false, to: "" }, { targets, message });
+  if (kind === "Effect") return handleInline("Effect", { ...cfg, who: "targets" }, { targets, message });
 }
+/** Pure (v0.0.421, the audit): the conditions a Tier's text gives by itself: its @Condition chips, but not one written after a movement ("Slid 1,
+ *  then Grabbed": it waits for that movement, a button to click after it, or the movement would meet the condition's Immobilized). */
+export const tierConditionChips = text => { const s = String(text ?? ""), mi = s.search(/@Move\[/); return (mi < 0 ? s : s.slice(0, mi)).match(/@Condition\[[^\]]*\]/g) ?? []; };
 export async function applyConditionChip(chip, ctx = {}) {
   const m = String(chip).match(/^@Condition\[([^\]]*)\]/);
   if (!m) return;
-  return handleCondition(parseInline("Condition", m[1]), ctx);
+  return handleInline("Condition", parseInline("Condition", m[1]), ctx);   // v0.0.421: with its formula options worked out
 }
 
 async function handleCondition(cfg, ctx = {}) {
@@ -1001,7 +1006,7 @@ async function handleCondition(cfg, ctx = {}) {
     }
   }
   const dur = cfg.dur === "eot" ? { type: "eot" } : (cfg.dur === "rounds" ? { type: "rounds", rounds: cfg.rounds } : null);
-  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) }, cfg.value ?? null, cfg.bleed ? { bleed: cfg.bleed } : {});
+  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(ctx.attrVal) ? { mod: ctx.attrVal } : Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) }, cfg.value ?? null, cfg.bleed ? { bleed: cfg.bleed } : {});
   ui.notifications.info(`${cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1)}${cfg.value ? ` ${cfg.value}` : ""} applied to ${actors.map(a => a.name).join(", ")}${found ? "" : " (as a status: there is no Effect item with that name)"}.`);
 }
 
@@ -1162,7 +1167,7 @@ export async function saveDamage(msg) {
   const cfg = st.cfg, m = msg.getFlag("twod12", "cc");
   const tiers = [...new Set(ready.map(x => x.r.result.tier))].sort((a, b) => a - b);
   const groups = tiers.map(t => { const parts = parseParts(cfg.tiers[`t${t}`]), first = ready.find(x => x.r.result.tier === t).r.result;
-    return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: [...parts.uuids, ...(cfg.fx?.[`t${t}`] ?? [])].map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [], conds: String(cfg.tiers[`t${t}`] ?? "").match(/@Condition\[[^\]]*\]/g) ?? [] }; });
+    return { tier: t, crit: false, comps: (st.tierDmg?.[`t${t}`] ?? first.ccComps ?? []).map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), fx: [...parts.uuids, ...(cfg.fx?.[`t${t}`] ?? [])].map(u => ({ uuid: u, mode: "auto", rider: true })), riders: m?.tiers?.[t]?.riders ?? [], conds: tierConditionChips(cfg.tiers[`t${t}`]) }; });
   let actor = null; try { actor = cfg.actorUuid ? await fromUuid(cfg.actorUuid) : null; } catch (e) { actor = null; }
   const { postCcDamage } = await import("./ccdamage.mjs");
   await postCcDamage({ actor, title: cfg.source || m?.name || "Save", groups, targets: ready.map(({ r }) => ({ uuid: r.uuid, name: r.name, tier: r.result.tier, g: tiers.indexOf(r.result.tier) })), nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id, into: msg, after: cfg.after ?? "", save: true });
@@ -1222,7 +1227,7 @@ export async function saveRoll(msg, idx) {
     const r = ccRowOf(chk, actor.name, row.uuid, TWOD12.attributes[key]);
     if (!comps.length && parts.uuids.length) await applyEffects(parts.uuids, [actor.uuid], originInfo(cfg.actorUuid ?? ""));
     // v0.0.418 (playtest 5): a Tier with no damage gives its conditions now (with damage, they ride on the Damage button when it lands)
-    if (!comps.length) for (const chip of String(cfg.tiers[`t${chk.tier}`] ?? "").match(/@Condition\[[^\]]*\]/g) ?? []) {
+    if (!comps.length) for (const chip of tierConditionChips(cfg.tiers[`t${chk.tier}`])) {
       try { await applyConditionChip(chip, { targets: [{ uuid: actor.uuid, name: actor.name }], actor: cfg.actorUuid ? await fromUuid(cfg.actorUuid).catch(() => null) : null }); } catch (e) { console.warn("twod12 | a Tier's condition", e); }
     }
     const result = { total: chk.total, tier: chk.tier, row: r, ccComps: comps.map(c => ({ pool: c.pool, sub: c.sub, nl: c.nl, total: c.total, formula: c.formula, dice: c.dice, kind: c.kind ?? "D" })), tierDmg: shared ? null : comps };
@@ -1240,7 +1245,7 @@ export async function saveRoll(msg, idx) {
     await applyEffects(parts.uuids, [actor.uuid], originInfo(""));
     for (const u of parts.uuids) { const b = `\u2726 ${(await fromUuid(u))?.name ?? "?"}`; bits.push(b); extras.push(b); }
   }
-  if (!dealt || dealt.landed) for (const chip of String(cfg.tiers[`t${chk.tier}`] ?? "").match(/@Condition\[[^\]]*\]/g) ?? []) {
+  if (!dealt || dealt.landed) for (const chip of tierConditionChips(cfg.tiers[`t${chk.tier}`])) {
     try { await applyConditionChip(chip, { targets: [{ uuid: actor.uuid, name: actor.name }], actor: cfg.actorUuid ? await fromUuid(cfg.actorUuid).catch(() => null) : null }); } catch (e) { console.warn("twod12 | a Tier's condition", e); }
   }
   const tip = `${TWOD12.attributes[key]} ${sgn(mod)}${chk.adj ? `, modifier ${sgn(chk.adj)}` : ""}: 2d12 ${chk.d1.join("+")} + ${chk.d2.join("+")}${chk.bo ? `, +${chk.bo} Boon${chk.bo === 1 ? "" : "s"}` : ""}${chk.ba ? `, \u2212${chk.ba} Bane${chk.ba === 1 ? "" : "s"}` : ""}${chk.five ? `, 5 b/b: ${chk.five === "favored" ? "Favored" : "Doomed"}` : ""}${chk.doubles ? ", doubles" : ""} = ${chk.total} vs DC ${dc} (${saveLabels(dc)[chk.tier - 1]})${comps.length ? `. Damage: ${comps.map(c => `${c.formula} [${c.dice.map(d => d.results.join("+")).join(" ")}] = ${c.total}`).join("; ")}` : ""}`;

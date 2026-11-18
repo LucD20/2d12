@@ -26,7 +26,7 @@ export function hudActionHtml(a) {
 /** A group on a line: its name in small grey capitals, then its Actions. */
 const groupHtml = (label, acts, cls = "") => (acts.length ? `<span class="hud-g${cls ? ` ${cls}` : ""}"><span class="hud-gl">${esc(label)}</span>${acts.map(hudActionHtml).join("")}</span>` : "");
 /** The four Check / Save buttons (click: a Check; Shift: a Save), and their folded form (one button). */
-export const hudSavesHtml = saves => `<span class="hud-g g-saves"><span class="hud-gl">Checks and Saves</span>${saves.map(s => `<button type="button" class="hsv at-${esc(s.key)}" data-hud="attr" data-key="${esc(s.key)}" aria-label="${esc(s.label)}: click a Check, Shift-click a Save">${esc(s.short)} ${esc(sign(s.value))}</button>`).join("")}<button type="button" class="hsv fold" data-hud="cat" data-cat="checks" aria-label="Checks and Saves">Checks</button></span>`;
+export const hudSavesHtml = saves => `<span class="hud-g g-saves"><span class="hud-gl">Checks and Saves</span>${saves.map(s => `<button type="button" class="hsv at-${esc(s.key)}" data-hud="attr" data-key="${esc(s.key)}">${esc(s.short)} ${esc(sign(s.value))}</button>`).join("")}<button type="button" class="hsv fold" data-hud="cat" data-cat="checks">Checks</button></span>`;
 
 /** NPC: m = { name, img, sub, rankKey, groups: { basic, special, react, esc: [action] }, saves: [{ key, label, short, value }], escPips } */
 export function npcHudHtml(m) {
@@ -47,7 +47,7 @@ export function pcHudHtml(m) {
   // one; a slot is sized for one stamp and grows with an Action that has more pinned Versions; more pins than slots add columns.
   const pinned = (m.quick ?? []).map(a => `<div class="qslot full">${hudActionHtml(a)}</div>`);
   const empty = Array.from({ length: Math.max(0, HUD_QUICK_SLOTS - pinned.length) }, () => '<div class="qslot" aria-label="Right-click a Version\'s stamp to pin it here"></div>');
-  const cats = HUD_CATS.map(([k, l, later]) => (later ? `<span class="cat later" aria-label="Skills come later">${esc(l)} <i>later</i></span>` : `<button type="button" class="cat${m.open === k ? " on" : ""}" data-hud="cat" data-cat="${k}" aria-pressed="${m.open === k}">${esc(l)}</button>`)).join("");
+  const cats = HUD_CATS.map(([k, l, later]) => (later ? `<span class="cat later">${esc(l)} <i>later</i></span>` : `<button type="button" class="cat${m.open === k ? " on" : ""}" data-hud="cat" data-cat="${k}" aria-pressed="${m.open === k}">${esc(l)}</button>`)).join("");
   return `${hudIdHtml(m)}<div class="hud-mid pc"><div class="hud-blk hud-cats">${cats}</div><div class="hud-blk hud-quick">${[...pinned, ...empty].join("")}</div></div>`;
 }
 
@@ -60,7 +60,7 @@ export const emptyHudHtml = (text = "No token selected.") => `<div class="hud-mi
 /** A category's panel (or "+N more"): rows, each an Action's line, a Passive's text, or a button. rows: [{ action } | { text, sub } | { button, hud, data }] */
 export function hudPanelHtml(title, rows) {
   const row = r => (r.action ? `<div class="pr">${hudActionHtml(r.action)}${r.action.sub ? `<small>${esc(r.action.sub)}</small>` : ""}</div>`
-    : r.button ? `<div class="pr"><button type="button" class="hp-btn${r.cls ? ` ${esc(r.cls)}` : ""}" data-hud="${esc(r.hud)}"${Object.entries(r.data ?? {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("")}${r.tip ? ` aria-label="${esc(r.tip)}"` : ""}>${esc(r.button)}</button>${r.sub ? `<small>${esc(r.sub)}</small>` : ""}</div>`
+    : r.button ? `<div class="pr"><button type="button" class="hp-btn${r.cls ? ` ${esc(r.cls)}` : ""}" data-hud="${esc(r.hud)}"${Object.entries(r.data ?? {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("")}${r.tip ? `` : ""}>${esc(r.button)}</button>${r.sub ? `<small>${esc(r.sub)}</small>` : ""}</div>`
       : `<div class="pr txt"><b>${esc(r.text)}</b>${r.sub ? `<small>${esc(r.sub)}</small>` : ""}</div>`);
   return `<div class="hud-pop"><div class="hud-poph">${esc(title)}<button type="button" class="x" data-hud="close" aria-label="Close">&times;</button></div><div class="hud-popb">${rows.length ? rows.map(row).join("") : '<div class="pr txt"><small>Nothing here.</small></div>'}</div></div>`;
 }

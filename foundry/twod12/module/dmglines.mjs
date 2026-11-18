@@ -29,7 +29,7 @@ export function damageBlockHtml(m) {
   if (!m?.show) return "";
   // v0.0.373 (STYLE-2, Lucas): each chip in its subtype's icon and color, as the Builder's (--sc-l on parchment, --sc-d on the dark page)
   const look = c => { const T = TWOD12; return { icon: T.subtypeIcons?.[c] ?? "", style: `--sc-l:${T.subtypeInk?.[c] ?? "#5d5446"};--sc-d:${T.subtypeColors?.[c] ?? "#b3a68e"}` }; };
-  const chip = c => { const l = look(c.code); return `<button type="button" class="ps-dl ${c.kind}${c.dashed ? " tmp" : ""} rw-chip" style="${l.style}" data-action="dmgLineOpen" data-kind="${c.kind}" data-sub="${esc(c.code)}" data-uuid="${esc(c.uuid)}" data-src="${c.src}" aria-label="${esc(c.aria)}">${l.icon ? `<i class="${l.icon}" aria-hidden="true"></i>` : ""}${esc(c.text)}</button>`; };
+  const chip = c => { const l = look(c.code); return `<button type="button" class="ps-dl ${c.kind}${c.dashed ? " tmp" : ""} rw-chip" style="${l.style}" data-action="dmgLineOpen" data-kind="${c.kind}" data-sub="${esc(c.code)}" data-uuid="${esc(c.uuid)}" data-src="${c.src}">${l.icon ? `<i class="${l.icon}" aria-hidden="true"></i>` : ""}${esc(c.text)}</button>`; };
   const rows = m.rows.map(r => `<div class="ps-dlrow"><span class="ps-dll">${r.label}</span><span class="ps-dlc">${r.chips.map(chip).join("")}</span></div>`).join("");
   const add = m.add ? `<button type="button" class="ps-dladd" data-action="dmgLineAdd">+ Add</button>` : "";
   return `<section class="ps-sec line ps-rwi"><span class="ps-k">Damage Immune/Resist/Weak</span>${rows}${add}</section>`;

@@ -1568,8 +1568,9 @@
 /* ---- v0.0.418 (Lucas, playtest 5, F1: "the AP pips: empty and full too alike"): a full pip a solid square in the AP gold (center and border the
    same), an empty one the outline only with a dark center; the HUD's and the carousel's */
 @scope (.theme-dark) to (.themed) {
-:scope .twod12-hud .hm-ap i, :is(.twod12-hud):scope .hm-ap i, :scope #twod12-carousel .tp-marks .hm-ap i, :is(#twod12-carousel):scope .tp-marks .hm-ap i { background: #1f1c18; border-color: #d2a75a; }
+:scope .twod12-hud .hm-ap i:not(.x), :is(.twod12-hud):scope .hm-ap i:not(.x), :scope #twod12-carousel .tp-marks .hm-ap i:not(.x), :is(#twod12-carousel):scope .tp-marks .hm-ap i:not(.x) { background: #1f1c18; border-color: #d2a75a; }
 }
+   /* v0.0.421: a Slowed pip (x) keeps its own look */
 .twod12-type .twod12-hud .hm-ap i.on, .twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }
 
 /* ---- v0.0.418 (Lucas, playtest 5, B4): a calculated chip's blue (#1a3fb0) has a dark variant: the Boon blue */

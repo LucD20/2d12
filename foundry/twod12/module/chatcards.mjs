@@ -18,7 +18,7 @@ export const SUBS = {
 const subInk = s => SUBS[s]?.[1] ?? "#4a443b";
 export const subName = s => SUBS[s]?.[0] ?? (s || "Untyped");
 /** A subtype's code in its color ("Ho"). */
-export const subCode = s => (s ? `<span class="cc-sub" style="color:${subInk(s)}" aria-label="${esc(subName(s))}">${esc(s)}</span>` : "");
+export const subCode = s => (s ? `<span class="cc-sub" style="color:${subInk(s)}">${esc(s)}</span>` : "");
 const POOL = { B: "Vigor", M: "Resolve", C: "Vigor or Resolve" };
 /** The pool's icon: a heart for Vigor, a brain for Resolve (both for a [C] choice). */
 export const poolIc = p => (p === "M" ? '<i class="fa-solid fa-brain cc-pr" aria-hidden="true"></i>'
@@ -86,10 +86,10 @@ export function stampHtml(r, { hide = false } = {}) {
   // Doubles has a gold outline and a "Doubles" tag on its stamp
   // v0.0.350 (Lucas: "no 'Doubles' word on the outline; the Doubles inside the Tier square with the golden background"): the outline alone, and the
   // stamp's "Doubles ↑" line in gold
-  return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}${r.doubles ? " dbl" : ""}"${r.doubles ? ' aria-label="Doubles"' : ""}><small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl${/Doubles/.test(line) ? " dbl" : ""}">${esc(line)}</small>` : ""}</div>`;
+  return `<div class="cc-stamp ${tierCls(r.tier, r.crit)}${r.doubles ? " dbl" : ""}"${r.doubles ? '' : ""}><small>${r.crit ? "CRIT" : "TIER"}</small><b>${r.tier}</b>${line ? `<small class="cc-stl${/Doubles/.test(line) ? " dbl" : ""}">${esc(line)}</small>` : ""}</div>`;
 }
 /** A small Tier pill (22px, the numeral) or a word pill ("Tier 2"). */
-export const tierPill = (tier, crit = false, word = false, dbl = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}${dbl ? " dbl" : ""}"${dbl ? ' aria-label="Doubles"' : ""}>${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips
+export const tierPill = (tier, crit = false, word = false, dbl = false) => `<span class="cc-pill ${tierCls(tier, crit)}${word ? " word" : ""}${dbl ? " dbl" : ""}"${dbl ? '' : ""}>${word ? (crit ? "Critical" : `Tier ${tier}`) : `T${tier}`}</span>`;   // v0.0.287 (Lucas): "T1", squared like the trait chips
 
 /* ------------------------------------------------------------------ the roll breakdown */
 /**
@@ -213,7 +213,7 @@ export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage
   // v0.0.296 (Lucas: "the target should be kept at the bottom"): the target and the retarget stay on the bottom row (v0.0.285 / v0.0.287); target: false = buttons only
   if (!target) return `<hr class="cc-hr"><div class="cc-foot">${hasDamage ? `<button type="button" class="cc-btn small primary" data-twod12="${damage}"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>` : ""}<span class="cc-ftgt"></span><button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
   const t = m.tline ?? {}, n = t.names ?? [];
-  const names = n.length === 1 ? `<b class="cc-tname">${esc(n[0])}</b>` : n.length ? `<b class="cc-tname" aria-label="${esc(n.join(", "))}">${n.length} targets</b>` : '<span class="cc-muted">No target</span>';
+  const names = n.length === 1 ? `<b class="cc-tname">${esc(n[0])}</b>` : n.length ? `<b class="cc-tname">${n.length} targets</b>` : '<span class="cc-muted">No target</span>';
   const re = view.author && !locked && t.retarget !== false ? `<button type="button" class="cc-icon" data-twod12="${esc(t.retargetKind ?? "retargetAction")}" aria-label="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>` : "";
   const dmg = hasDamage ? `<button type="button" class="cc-btn small primary" data-twod12="${damage}"><i class="fa-solid fa-dice" aria-hidden="true"></i> Damage</button>` : "";
   return `<hr class="cc-hr"><div class="cc-foot">${re}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> ${names}</span>${dmg}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>`;
@@ -275,7 +275,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   if (m.dmg) {
     const d = dmgParts(m.dmg, view, { riders: false, idp: "d" });
     const tiers = [...new Set([...rows.map(r => r.tier), ...d.groups.map(g => g.tier)])].filter(t => t > 0).sort((a, b) => b - a);
-    const nameBtn = (r, k) => `<button type="button" class="cc-cnbtn" data-cc-toggle="l${k}" aria-expanded="false" aria-label="Its roll"><span class="cc-cname">${esc(r.name)}</span></button>`;
+    const nameBtn = (r, k) => `<button type="button" class="cc-cnbtn" data-cc-toggle="l${k}" aria-expanded="false"><span class="cc-cname">${esc(r.name)}</span></button>`;
     const ladderPanel = (r, k) => `<div class="cc-break cc-lad" data-cc-panel="l${k}"><div class="cc-ladcap">${esc(defText(r, hide))}${hide ? "" : ` · rolled ${Number(r.total) || 0}`}</div>${ladderHtml(r, { hide, id: `l${k}` })}</div>`;
     const tgroups = tiers.map(t => {
       const who = rows.map((r, k) => ({ r, k })).filter(x => x.r.tier === t);
@@ -301,7 +301,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
         const idx = cl.map(({ r }) => d.rows.findIndex(x => (x.uuid && x.uuid === r.uuid) || (!x.uuid && x.name === r.name))).filter(i => i >= 0);
         const pend = idx.filter(i => !d.rows[i].applied), id = `c${t}_${ci}`;
         const act = !view.author || view.hideTgt ? "" : pend.length ? `<button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApplyAll" data-rows="${pend.join(",")}">Apply${pend.length < idx.length ? ` (${pend.length})` : ""}</button>` : (idx.length ? '<span class="cc-muted">✓ Applied</span>' : "");
-        const name = `<button type="button" class="cc-cnbtn" data-cc-toggle="${id}" aria-expanded="false" aria-label="Each one"><span class="cc-cname">${cl.length}× ${esc(stem(cl[0].r.name))}</span></button>`;
+        const name = `<button type="button" class="cc-cnbtn" data-cc-toggle="${id}" aria-expanded="false"><span class="cc-cname">${cl.length}× ${esc(stem(cl[0].r.name))}</span></button>`;
         return `<div class="cc-trow cc-clus">${name}${act}</div><div class="cc-break cc-clp" data-cc-panel="${id}">${cl.map(one).join("")}</div>`;
       }).join("");
       // a creature hit by this Tier's damage with no roll row (an area's extra target): its damage row alone

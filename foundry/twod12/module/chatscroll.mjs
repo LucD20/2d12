@@ -8,11 +8,13 @@ export const atBottom = el => !!el && el.scrollHeight - el.scrollTop - el.client
 /** Pure (v0.0.418): after a scroll, is the log still pinned? At the bottom: yes; away from it: only if the user scrolled it there. */
 export const scrollPinned = (was, bottom, byUser) => (bottom ? true : byUser ? false : was);
 
-const watched = new WeakSet();
+const watched = new WeakSet(), logs = new Set();
+/** v0.0.421 (the audit): a scroll the system makes on purpose (the damage stamp scrolls to its roll card) unpins the logs, as the user's own does. */
+export function releaseChatLogs() { for (const log of logs) log.dispatchEvent(new CustomEvent("twod12-release")); }
 /** Keeps one chat log pinned to its bottom while it was there. */
 export function pinChatLog(log) {
   if (!log || watched.has(log) || typeof ResizeObserver === "undefined") return;
-  watched.add(log);
+  watched.add(log); logs.add(log);
   let pinned = atBottom(log), userAt = 0;
   // v0.0.418 (Lucas, playtest 5, C1: after Damage the card grew and the chat didn't follow): a card redrawn is removed and put back, and the scroll
   // the browser makes then (the log clamped) unpinned it. Only the user's own scrolling (the wheel, a touch, a key, the scrollbar) unpins it now;
@@ -20,6 +22,7 @@ export function pinChatLog(log) {
   const mark = () => { userAt = Date.now(); };
   for (const ev of ["wheel", "touchmove", "keydown"]) log.addEventListener(ev, mark, { passive: true });
   log.addEventListener("pointerdown", ev => { if (ev.target === log) mark(); }, { passive: true });
+  log.addEventListener("twod12-release", () => { mark(); pinned = false; });
   log.addEventListener("scroll", () => { pinned = scrollPinned(pinned, atBottom(log), Date.now() - userAt < 600); }, { passive: true });
   const stick = () => { if (pinned && !atBottom(log)) log.scrollTop = log.scrollHeight; };
   const ro = new ResizeObserver(stick);

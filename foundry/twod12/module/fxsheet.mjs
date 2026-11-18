@@ -170,7 +170,7 @@ function escPane(r) {
 }
 const usesPane = r => grid([["Gives", seg("which", r.which, [["round", "Round Specials twice"], ["encounter", "Encounter Specials again"]], "w")]]) + help("The Elite ladder (Bestiary, Elite Escalation). Special Actions are the creature's own, not the Basic Actions.");
 const ASW = [["Gold", "#e8a33a"], ["Holy", "#ffd27a"], ["Ally", "#4a8fd8"], ["Enemy", "#c0392b"], ["Arcane", "#9b6bd8"], ["Nature", "#4caf6a"]];
-const colorRow = (f, v, sw) => `<span class="fr-colors"><input type="color" data-fr-in="${f}" value="${esc(/^#[0-9a-f]{6}$/i.test(v) ? v : "#e8a33a")}" aria-label="Color">${sw.map(([n, c]) => `<button type="button" class="fr-sw${v === c ? " on" : ""}" style="--c:${c}" data-fr="set" data-f="${f}" data-v="${c}" aria-label="${n}">${n}</button>`).join("")}</span>`;
+const colorRow = (f, v, sw) => `<span class="fr-colors"><input type="color" data-fr-in="${f}" value="${esc(/^#[0-9a-f]{6}$/i.test(v) ? v : "#e8a33a")}" aria-label="Color">${sw.map(([n, c]) => `<button type="button" class="fr-sw${v === c ? " on" : ""}" style="--c:${c}" data-fr="set" data-f="${f}" data-v="${c}">${n}</button>`).join("")}</span>`;
 /* v0.0.327 (PACK ZONE): what an area does inside, the Aura's and the Zone's one block (foundry/mockups/zone-prototype.html): four part rows, each with
    its own Who (Allies / Enemies / Everyone) and "And the origin" (on an Aura: "And this creature itself"). p: the path of the block ("inside", "zone.inside"). */
 const WHO_OPTS = [["allies", "Allies"], ["enemies", "Enemies"], ["all", "Everyone"]];

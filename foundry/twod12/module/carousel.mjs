@@ -39,7 +39,7 @@ function card(combat, c, st) {
   if (current) {
     const m = stripMove(c);
     const move = m.n > 0
-      ? `<div class="tp-move${m.evade ? " evade" : ""}" data-tc="endmove" aria-label="${m.evade ? "Evade" : "Movement"} left this turn. Click to end it (the squares left are lost)${st.gm ? "; right-click to set it" : ""}"><span>${m.evade ? "Evade" : "Move"}</span> <b>${m.n}</b> sq${m.evade && st.canAct ? ' <a class="tp-adv" data-tc="evadeadv" aria-label="Use the Evade as an Advance (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></a>' : ""}</div>`
+      ? `<div class="tp-move${m.evade ? " evade" : ""}" data-tc="endmove"><span>${m.evade ? "Evade" : "Move"}</span> <b>${m.n}</b> sq${m.evade && st.canAct ? ' <a class="tp-adv" data-tc="evadeadv" aria-label="Use the Evade as an Advance (it can trigger Reactions)"><i class="fa-solid fa-person-running"></i></a>' : ""}</div>`
       : `<div class="tp-move none">No move</div>`;
     const swap = `<button type="button" class="tp-swap${st.swapping ? " on" : ""}" data-tc="swap"${st.swapWhy ? ` disabled data-tooltip="${esc(st.swapWhy)}"` : ` aria-label="${st.swapping ? "Click an ally with the swap badge, or here to cancel" : "Swap initiative with an ally who hasn't had a turn this round (1 AP)"}"`}><i class="fa-solid fa-right-left"></i> Swap</button>`;   // v0.0.394: the cost in the tooltip (it was cut off)
     extra = move + swap;
@@ -97,7 +97,7 @@ export function renderCarousel() {
   const swapWhy = cur ? swapBlock({ mine: mine || gm, acted: !!cur.getFlag(F, "acted"), down: !!cur.actor?.system?.atZero, ap: getAP(cur), candidates: cands.length, thawed: thawedNow(combat, cur) }) : "Not started";
   if (swapping && (swapping !== cur?.id || swapWhy)) swapping = null;
   const st = { swapWhy, swapping: !!swapping, swapIds: new Set(swapping ? cands.map(x => x.id) : []), canAct: mine || gm, gm };
-  const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}" aria-label="${tip}"${off ? " disabled" : ""}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;
+  const btn = (k, icon, label, tip, off = false) => `<button type="button" class="tc-btn" data-tc="${k}"${off ? ` disabled data-tooltip="${tip}"` : label ? "" : ` aria-label="${tip}"`}><i class="fa-solid ${icon}"></i>${label ? ` ${label}` : ""}</button>`;   // v0.0.421 (the audit): off: its reason on hover (C); an icon only: its name
   const left = gm ? (started ? btn("prev", "fa-backward-step", "Previous turn", "Go back one turn") : btn("init", "fa-dice-d20", "Initiative", "Roll initiative for the creatures that haven't rolled (the window says who skips)")) : "";
   // v0.0.397 (Lucas: "Momentum isn't showing in the combat strip"); v0.0.407 (Stage 0 in Foundry): the party's Momentum, 0 to 4, always shown (it is
   // no longer used up when an encounter starts); the GM clicks it: left +1, right -1

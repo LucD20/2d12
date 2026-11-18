@@ -34,7 +34,7 @@ console.log("modForDoc: an Action card", I.modForDoc(msg({ action: { attrVal: 3 
 CONFIG.TextEditor = { enrichers: [] };   // content.mjs replaces CONFIG when it loads
 I.registerInline();
 const enr = CONFIG.TextEditor.enrichers[0];
-const chip = async (text, relativeTo = null) => { const m = [...text.matchAll(enr.pattern)][0]; const el = await enr.enricher(m, { relativeTo }); return `${el.html.replace(/<i class="areaic \w+"><\/i>/, "<icon/>")}${el.classes.length ? ` [${el.classes.join(" ")}]` : ""}${el.dataset.tooltip ? ` (${el.dataset.tooltip})` : ""}`; };
+const chip = async (text, relativeTo = null) => { const m = [...text.matchAll(enr.pattern)][0]; const el = await enr.enricher(m, { relativeTo }); return `${el.html.replace(/<i class="areaic \w+"><\/i>/, "<icon/>")}${el.classes.length ? ` [${el.classes.join(" ")}]` : ""}${el.dataset.calc ? ` (calc: ${el.dataset.calc})` : ""}${el.dataset.rule ? ` (rule: ${el.dataset.rule})` : ""}`; };
 console.log("chips:", await chip("@Template[emanation|distance:2|rounds:1]"), "|", await chip("@Template[burst|distance:3]"), "|", await chip("@Template[line|distance:6]"));
 console.log("Guard on an Action card (Modifier 3):", await chip("@Guard[1d8+mod]{Guard 1d8 + [Mod]}", msg({ action: { attrVal: 3 } })), "| on the sheet with no creature:", await chip("@Guard[1d8+mod]{Guard 1d8 + [Mod]}"));
 console.log("a book link:", await chip("@Book[Bright]{Bright light}"), "|", await chip("@Book[Guard|doc:Core Rules]"));
