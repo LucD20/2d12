@@ -146,6 +146,26 @@ Expect: Kindle lights you (Bright 3) until the encounter ends. Glare: an Instinc
 Do: Select Durgan without the Mastery for Seizing Cut and open the HUD.
 Expect: Seizing Cut is not in the HUD (it shows once the Mastery unlocks it at 10). The HUD shows the Pow Defense.
 
+### mod-as-written · v0.0.426 · [Mod] where the card writes it
+Do: Land a Tier 2 Smite with Aveline; a Tier 2 Trick Shots (Pin) with an Archer; a Tier 2 and a Tier 3 Seizing Cut (any character with the Mastery, or give it by hand).
+Expect: Smite's Tier 2 adds the Signature Modifier to 1[W] and the Smite dice; Trick Shots' Pin deals [Mod] damage (a Damage button) and Hindered; Seizing Cut's Tier 2 is 1[W] alone, its Tier 3 1[W] + [Mod].
+
+### npc-no-mod · v0.0.426 · An NPC's damage shows no Modifier
+Do: Open the Orc Warrior's Cleaver roll dialog and land a Tier 2.
+Expect: The Tier 2 line reads 1 + 1d4! (no "+ Weapon Modifier"), and that is what it deals.
+
+### hud-weapon · v0.0.426 · The weapon is chosen before the dialog
+Do: Give Sylwen her Dagger and bow in hand. From the HUD, use Weapon Attack, then Quick Shots.
+Expect: Weapon Attack asks "Which weapon?" before the roll dialog, and the dialog's hands' Banes and range are that weapon's. Quick Shots uses the bow without asking (a Shot needs a bow).
+
+### one-more-arrow · v0.0.426 · One More Arrow waits for a [W] hit
+Do: At Escalation 6, roll a Tier 1 Quick Shots ([V] [Mod]), then a Tier 2 Strike that deals [W] the same turn.
+Expect: The Tier 1 doesn't use it up; the Tier 2 Strike deals 1[W] more.
+
+### setup-range · v0.0.426 · A Setup and the range
+Do: Use Darting Blade on a creature 8 squares away; at Escalation 6 with Hallowed Stance, open Smite's chat card.
+Expect: Darting Blade is out of range (no "the Setup first" note: its Setup moves nobody). Smite's card shows "Setup: You Advance 3" with its button.
+
 ## Chat cards
 
 ### card-order · v0.0.417 · The chat card follows the card
@@ -171,6 +191,14 @@ Expect: No Bloodied / Strained, Reaction-use, "next damage reduced", "is Down" o
 ### old-card · v0.0.417 · An old chat card still works
 Do: In a chat card posted before the update, click Apply and retarget.
 Expect: It redraws with its old lines and Apply works.
+
+### save-retarget · v0.0.426 · A damage-free Save card retargeted
+Do: Use Rebuke with no target, then target the enemy and click the card's target button.
+Expect: The enemy is Hindered (the Effect runs for the creature the retarget added).
+
+### empowered-one · v0.0.426 · Empowered with several creatures
+Do: Give a PC Empowered and hit three enemies with an area (two on the same Tier).
+Expect: One Empowered 1d6! is rolled, and only one creature (the first hit) takes it: it has its own line on the card.
 
 ## Conditions and their Tiers
 
@@ -205,6 +233,14 @@ Expect: It is Frightened of Durgan only, for 1 round. Made Frightened of Durgan 
 ### reaction-conditions · v0.0.418 · A Reaction's condition
 Do: Rebuke an enemy that walks away; Snap Shot an enemy that walks up.
 Expect: Each is Hindered and its movement is cut to half from that moment.
+
+### lingering-end · v0.0.426 · Lingering ends with the encounter, keeps the higher
+Do: Give an Orc Lingering 2 (Wounding Shot Tier 3), then Lingering 1 (Tier 2). End the encounter; start another.
+Expect: It keeps Lingering 2 (the higher average). After the encounter it has no Lingering left.
+
+### shake-off-other · v0.0.426 · Shake Off on another player's creature
+Do: As a player (not the GM), with the GM connected, use Shake Off on another player's Lingering character and get a Tier 3.
+Expect: The Lingering ends (no permission error in the console).
 
 ## Movement
 
@@ -258,6 +294,22 @@ Expect: The HUD keeps its place and size.
 Do: At Escalation 2 use a [Divine] Reaction (Armor of Faith) or Judge's 1 AP (Roving Judgment); reach Escalation 4 and 6.
 Expect: Guard 1 + Pow, or Judge's 1 AP costs 0; at 4, two Reaction AP (Tireless Vigil); at 6, a [Divine] Action's card shows "Setup: You Advance 3" (Hallowed Stance).
 
+### rebuke-far · v0.0.426 · Rebuke when the enemy runs far
+Do: An Orc adjacent to Aveline (with Rebuke) Advances 6 squares away from her.
+Expect: The Reactions message offers Rebuke (it is measured on the squares it left, not where it stopped).
+
+### shield-not-ally · v0.0.426 · Shield of Faith not against an ally
+Do: An Archer's Volley hits Durgan, next to Aveline (with Shield of Faith).
+Expect: Shield of Faith is not offered (it answers an enemy's Strike).
+
+### kindled-wrath · v0.0.426 · Kindled Wrath
+Do: Make an ally of Aveline Strained (Resolve damage), then Bloodied.
+Expect: Strained raises nothing; Bloodied raises her Escalation once, and the line names the ally.
+
+### rescue-reach · v0.0.426 · Rescue moves the ally 2 squares
+Do: Use Hold the Line's Rescue on an adjacent ally and move it 2 squares away from you.
+Expect: Allowed (a Reposition isn't held within your Reach); Relocate still is.
+
 ## Areas, light and Cover
 
 ### area-cover · v0.0.419 · Creatures in an area give no Cover
@@ -284,6 +336,14 @@ Expect: Both Dim: 1 Field Bane, no Boon. You Bright, it Dim: 1 Field Bane, no Bo
 Do: At Escalation 4, shoot past an ally at an enemy Engaged with another ally; land a Tier 3.
 Expect: No Cover from your ally and no Field Bane; the Tier 3 line names your allies who threaten the target.
 
+### spotter-self · v0.0.426 · Call Out helps the allies, not the caller
+Do: Sylwen Calls Out an Orc in Dim light; Sylwen attacks it; an ally attacks it.
+Expect: Sylwen still has the Obscured Field Bane; the ally doesn't.
+
+### volley-range · v0.0.426 · Volley's Burst within the bow's range
+Do: Place Volley's Burst far beyond the bow's maximum range.
+Expect: The placement is limited to the weapon's maximum range.
+
 ## Ending an encounter and resting
 
 ### momentum-end · v0.0.407 · Momentum at the end
@@ -301,6 +361,14 @@ Expect: The Archer's Escalation +1; the Paladin's Escalation +1 (once).
 ### swap-rest · v0.0.407 · Swap on a Rest
 Do: Complete a Rest as a player and open the Build tab.
 Expect: "Swap on a Rest" shows (gone when an encounter starts); it asks the level, then the class window with that level's choices; the Attribute buttons are locked unless the optional world setting is on.
+
+### thrill-kill · v0.0.426 · Thrill of the Kill on a first hit
+Do: The Archer's first damage on an enemy brings it Down; later, an ally she hit with a Volley goes Down.
+Expect: The kill raises her Escalation; the ally's Down doesn't.
+
+### mastery-step · v0.0.426 · Mastery's + and −
+Do: A character with the Hunting Bow at 20 Mastery: on the Mastery tab, click + on the Recurve Bow (it shows 10).
+Expect: It goes to 11 at once (it counted from the shown 10).
 
 ## The Encounter Log
 

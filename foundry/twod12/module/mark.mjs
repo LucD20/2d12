@@ -108,6 +108,9 @@ export function registerMarkHooks() {
       for (const u of h.by ?? []) {
         let who = null; try { who = await fromUuid(u); } catch (e) { who = null; }
         if (!who) continue;
+        // v0.0.426 (the audit): an enemy of the one who damaged it (an ally hit by a Volley that later goes Down doesn't count)
+        const wa = who.documentName === "Actor" ? who : who.actor, dw = Number(wa?.getActiveTokens?.()[0]?.document?.disposition ?? wa?.prototypeToken?.disposition), da = Number(a.getActiveTokens?.()[0]?.document?.disposition ?? a.prototypeToken?.disposition);
+        if (Number.isFinite(dw) && Number.isFinite(da) && !(dw * da < 0)) continue;
         for (const x of escHooksOf(who)) if (x.when === "damagedDown") await raiseEscalation(who, "hook", { label: `${x.source} (${a.name} goes Down)` });
       }
     } catch (e) { console.warn("twod12 | Escalation hook (damaged)", e); }

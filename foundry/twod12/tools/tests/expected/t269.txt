@@ -1,0 +1,30 @@
+--- [Mod] as the card writes it (a Structure card), none added by the roll; none shown for an NPC
+Smite: 1d6! Ho / 1W + Mod + 1d6! Ho / 1W + Mod + 2d6! Ho | Trick Shots (Pin): - / Mod / Mod | Seizing Cut: - / 1W / 1W + Mod | Quick Shots: Mod / 2W + Mod / 3W + Mod
+the Basic Weapon Attack keeps the old way (added from Tier 2): - / 1W / 1W
+attrMode: a Structure card none | an old card t2 | an NPC's none
+a subtype is its pool's ([V] 1[W] + [Mod] + [R] 1d6! Ho): 1WB,ModB,1d6!MH
+a written [Mod] takes the weapon's type: true
+--- the card's own "Tier 2 or 3" / "Tier 1 or 2"
+written 23, damage: [["Tier 2 or 3","Mod | Hindered"]] | written 12, a Save: [["Tier 1 or 2","a"]]
+Trick Shots' Pin carries it: 23 | not written: three lines: 3
+--- Lingering, Shake Off, Empowered
+ends with the encounter: a Lingering with no duration true | an encounter one true | not: Dying false | not: a Save ends it false | not: 2 rounds false
+Lingering keeps the higher average: true
+Shake Off on another player's creature goes through the GM: true
+Empowered: one die for one creature (attack, Save): true
+--- the Archer
+Shifting Aim's / Blade and Bow's Boons are rolled: true
+a retarget keeps the hands' Banes, the At-will Bane and the hooks: true
+the weapon settled before the dialog (a Shot from a bow): true
+One More Arrow only on a rolled [W] Tier: true
+Call Out helps the caller's allies, not the caller: true
+Thrill of the Kill: the author noted before the damage, enemies only: true
+Volley's Burst within the weapon's range: maximum
+--- the Paladin
+Rebuke measured on the squares the enemy left; Shield of Faith not against an ally's Strike: true
+Kindled Wrath: Bloodied or Down, the ally's name: true
+Rescue's Reposition not held within Reach; Relocate's is: true
+Hallowed Stance's Setup line on a card without one; the range waits only for a Setup movement to come: true
+--- the rest
+Mastery's +/- from the shown value: true
+a damage-free Save card's chain on a retarget; a Special inside a block refused: true

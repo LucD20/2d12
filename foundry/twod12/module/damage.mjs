@@ -63,9 +63,10 @@ export async function applyToActor(actor, a, opts = {}) {
   const add = (k, amt) => { if (amt) upd[`system.damage.${k}`] = (upd[`system.damage.${k}`] ?? d[k]) + amt; };
   add("bodyLethal", a.B.l); add("bodyNonlethal", a.B.n); add("mindLethal", a.M.l); add("mindNonlethal", a.M.n);
   if (g.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s Guard takes <b>${g.taken}</b> damage${g.takenAp ? ` (${g.takenAp} from the kept AP)` : ""}${a.guardLeft ? ` (Guard ${a.guardLeft} left)` : " and ends"}.`) });
-  if (Object.keys(upd).length) await writeDamage(actor, upd);
   // v0.0.411 (pack F3, Thrill of the Kill: "an enemy you have damaged goes Down"): who damaged this creature in this combat (mark.mjs reads it)
+  // v0.0.426 (the audit): noted before the damage is written, so a killing blow's "goes Down" (created from the update) already sees its author
   if (Object.keys(upd).length && from?.uuid && game.combat?.started) { try { const s = await fromUuid(from.uuid), by = (s?.documentName === "Actor" ? s : s?.actor)?.uuid; if (by && by !== actor.uuid) await noteHurtBy(actor, by); } catch (e) { /* not kept */ } }
+  if (Object.keys(upd).length) await writeDamage(actor, upd);
   // v0.0.275: the result into the Reactions message(s): the final damage, and what the Reactions' protection took off (a reduction, a Guard)
   if (rxIds.some(Boolean)) { try { const final = a.B.l + a.B.n + a.M.l + a.M.n; await M.noteLanded(rxIds[0], { final, blocked: Math.min(rxGained, (Number(a.reduced) || 0) + (Number(g.taken) || 0)) }); if (rxIds[1]) await M.noteLanded(rxIds[1], { final, cut: a.momentCut || 0 }); } catch (e) { console.warn("twod12 | moment", e); } }
   // v0.0.272: the damage landed: the Triggers of these moments are offered now (they hold nothing)

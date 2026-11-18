@@ -143,7 +143,9 @@ export function areaOf(c) {
   const sizes = m[1].split("/").map(x => Number(x.trim()));
   const cfg = { size: sizes[0], shape: m[2].toLowerCase(), within: 0, targets: "all", center: false, keep: false, rounds: 0 };
   const d = String(c.distance ?? "").trim(), r = d.match(/weapon's (normal|far|maximum) range/i);
-  if (r) cfg.withinRange = r[1].toLowerCase(); else if (d) cfg.within = Number(distanceKey(c)) || 0;
+  // v0.0.426 (the audit: Volley's and Covering Fire's Burst could be placed at any distance): Distance "Weapon" places it within the weapon's range
+  // (its maximum: Claude's reading, a question for Lucas)
+  if (r) cfg.withinRange = r[1].toLowerCase(); else if (/^weapon$/i.test(d)) cfg.withinRange = "maximum"; else if (d) cfg.within = Number(distanceKey(c)) || 0;
   Object.assign(cfg, c.foundry?.areaCfg ?? {});
   return { cfg, sizes };
 }

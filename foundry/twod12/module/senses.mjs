@@ -164,7 +164,16 @@ export function perceive(observer, target, { loe = true } = {}) {
   }
   let best = options.reduce((a, c) => (!a || RANK[c[0]] > RANK[a[0]] ? c : a), null) ?? ["unsensed", "no sense reaches it"];
   // v0.0.411 (pack F3, Spotter's Call Out): a Called Out creature is perceived one step better by its enemies (Hidden as Obscured, Obscured as Clear)
-  if (t?.statuses?.has?.("called-out") && observer?.document && target?.document && Number(observer.document.disposition) !== Number(target.document.disposition)) best = calledOut(best);
+  // v0.0.426 (the audit; book, Spotter: "Your allies perceive the target one step better"; "You are never your own ally"): the caller's allies only,
+  // the caller excluded (the effect's origin); with no origin kept, every enemy of the target as before
+  if (t?.statuses?.has?.("called-out") && observer?.document && target?.document && Number(observer.document.disposition) !== Number(target.document.disposition)) {
+    const fx = [...(t.effects ?? [])].find(e => e.statuses?.has?.("called-out")), by = fx?.origin ?? "";
+    let caller = null; try { caller = by ? globalThis.fromUuidSync?.(by) : null; } catch (e) { caller = null; }
+    const callerActor = caller?.documentName === "Actor" ? caller : caller?.actor ?? null;
+    const callerDisp = callerActor ? Number(callerActor.token?.disposition ?? callerActor.getActiveTokens?.()[0]?.document?.disposition ?? callerActor.prototypeToken?.disposition) : null;
+    const isCaller = !!callerActor && observer.actor?.uuid === callerActor.uuid;
+    if (!callerActor || (!isCaller && Number(observer.document.disposition) === callerDisp)) best = calledOut(best);
+  }
   const st = perceptionOf(t);
   if (st && RANK[st] < RANK[best[0]]) best = [st, `${CAP[st]} (status)`];
   return { level: best[0], why: best[1], name: CAP[best[0]] };

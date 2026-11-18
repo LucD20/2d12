@@ -262,6 +262,46 @@
      "do": "Select Durgan without the Mastery for Seizing Cut and open the HUD.",
      "expect": "Seizing Cut is not in the HUD (it shows once the Mastery unlocks it at 10). The HUD shows the Pow Defense.",
      "rev": 1
+    },
+    {
+     "id": "mod-as-written",
+     "v": "v0.0.426",
+     "title": "[Mod] where the card writes it",
+     "do": "Land a Tier 2 Smite with Aveline; a Tier 2 Trick Shots (Pin) with an Archer; a Tier 2 and a Tier 3 Seizing Cut (any character with the Mastery, or give it by hand).",
+     "expect": "Smite's Tier 2 adds the Signature Modifier to 1[W] and the Smite dice; Trick Shots' Pin deals [Mod] damage (a Damage button) and Hindered; Seizing Cut's Tier 2 is 1[W] alone, its Tier 3 1[W] + [Mod].",
+     "rev": 1
+    },
+    {
+     "id": "npc-no-mod",
+     "v": "v0.0.426",
+     "title": "An NPC's damage shows no Modifier",
+     "do": "Open the Orc Warrior's Cleaver roll dialog and land a Tier 2.",
+     "expect": "The Tier 2 line reads 1 + 1d4! (no \"+ Weapon Modifier\"), and that is what it deals.",
+     "rev": 1
+    },
+    {
+     "id": "hud-weapon",
+     "v": "v0.0.426",
+     "title": "The weapon is chosen before the dialog",
+     "do": "Give Sylwen her Dagger and bow in hand. From the HUD, use Weapon Attack, then Quick Shots.",
+     "expect": "Weapon Attack asks \"Which weapon?\" before the roll dialog, and the dialog's hands' Banes and range are that weapon's. Quick Shots uses the bow without asking (a Shot needs a bow).",
+     "rev": 1
+    },
+    {
+     "id": "one-more-arrow",
+     "v": "v0.0.426",
+     "title": "One More Arrow waits for a [W] hit",
+     "do": "At Escalation 6, roll a Tier 1 Quick Shots ([V] [Mod]), then a Tier 2 Strike that deals [W] the same turn.",
+     "expect": "The Tier 1 doesn't use it up; the Tier 2 Strike deals 1[W] more.",
+     "rev": 1
+    },
+    {
+     "id": "setup-range",
+     "v": "v0.0.426",
+     "title": "A Setup and the range",
+     "do": "Use Darting Blade on a creature 8 squares away; at Escalation 6 with Hallowed Stance, open Smite's chat card.",
+     "expect": "Darting Blade is out of range (no \"the Setup first\" note: its Setup moves nobody). Smite's card shows \"Setup: You Advance 3\" with its button.",
+     "rev": 1
     }
    ]
   },
@@ -314,6 +354,22 @@
      "title": "An old chat card still works",
      "do": "In a chat card posted before the update, click Apply and retarget.",
      "expect": "It redraws with its old lines and Apply works.",
+     "rev": 1
+    },
+    {
+     "id": "save-retarget",
+     "v": "v0.0.426",
+     "title": "A damage-free Save card retargeted",
+     "do": "Use Rebuke with no target, then target the enemy and click the card's target button.",
+     "expect": "The enemy is Hindered (the Effect runs for the creature the retarget added).",
+     "rev": 1
+    },
+    {
+     "id": "empowered-one",
+     "v": "v0.0.426",
+     "title": "Empowered with several creatures",
+     "do": "Give a PC Empowered and hit three enemies with an area (two on the same Tier).",
+     "expect": "One Empowered 1d6! is rolled, and only one creature (the first hit) takes it: it has its own line on the card.",
      "rev": 1
     }
    ]
@@ -383,6 +439,22 @@
      "title": "A Reaction's condition",
      "do": "Rebuke an enemy that walks away; Snap Shot an enemy that walks up.",
      "expect": "Each is Hindered and its movement is cut to half from that moment.",
+     "rev": 1
+    },
+    {
+     "id": "lingering-end",
+     "v": "v0.0.426",
+     "title": "Lingering ends with the encounter, keeps the higher",
+     "do": "Give an Orc Lingering 2 (Wounding Shot Tier 3), then Lingering 1 (Tier 2). End the encounter; start another.",
+     "expect": "It keeps Lingering 2 (the higher average). After the encounter it has no Lingering left.",
+     "rev": 1
+    },
+    {
+     "id": "shake-off-other",
+     "v": "v0.0.426",
+     "title": "Shake Off on another player's creature",
+     "do": "As a player (not the GM), with the GM connected, use Shake Off on another player's Lingering character and get a Tier 3.",
+     "expect": "The Lingering ends (no permission error in the console).",
      "rev": 1
     }
    ]
@@ -490,6 +562,38 @@
      "do": "At Escalation 2 use a [Divine] Reaction (Armor of Faith) or Judge's 1 AP (Roving Judgment); reach Escalation 4 and 6.",
      "expect": "Guard 1 + Pow, or Judge's 1 AP costs 0; at 4, two Reaction AP (Tireless Vigil); at 6, a [Divine] Action's card shows \"Setup: You Advance 3\" (Hallowed Stance).",
      "rev": 1
+    },
+    {
+     "id": "rebuke-far",
+     "v": "v0.0.426",
+     "title": "Rebuke when the enemy runs far",
+     "do": "An Orc adjacent to Aveline (with Rebuke) Advances 6 squares away from her.",
+     "expect": "The Reactions message offers Rebuke (it is measured on the squares it left, not where it stopped).",
+     "rev": 1
+    },
+    {
+     "id": "shield-not-ally",
+     "v": "v0.0.426",
+     "title": "Shield of Faith not against an ally",
+     "do": "An Archer's Volley hits Durgan, next to Aveline (with Shield of Faith).",
+     "expect": "Shield of Faith is not offered (it answers an enemy's Strike).",
+     "rev": 1
+    },
+    {
+     "id": "kindled-wrath",
+     "v": "v0.0.426",
+     "title": "Kindled Wrath",
+     "do": "Make an ally of Aveline Strained (Resolve damage), then Bloodied.",
+     "expect": "Strained raises nothing; Bloodied raises her Escalation once, and the line names the ally.",
+     "rev": 1
+    },
+    {
+     "id": "rescue-reach",
+     "v": "v0.0.426",
+     "title": "Rescue moves the ally 2 squares",
+     "do": "Use Hold the Line's Rescue on an adjacent ally and move it 2 squares away from you.",
+     "expect": "Allowed (a Reposition isn't held within your Reach); Relocate still is.",
+     "rev": 1
     }
    ]
   },
@@ -543,6 +647,22 @@
      "do": "At Escalation 4, shoot past an ally at an enemy Engaged with another ally; land a Tier 3.",
      "expect": "No Cover from your ally and no Field Bane; the Tier 3 line names your allies who threaten the target.",
      "rev": 1
+    },
+    {
+     "id": "spotter-self",
+     "v": "v0.0.426",
+     "title": "Call Out helps the allies, not the caller",
+     "do": "Sylwen Calls Out an Orc in Dim light; Sylwen attacks it; an ally attacks it.",
+     "expect": "Sylwen still has the Obscured Field Bane; the ally doesn't.",
+     "rev": 1
+    },
+    {
+     "id": "volley-range",
+     "v": "v0.0.426",
+     "title": "Volley's Burst within the bow's range",
+     "do": "Place Volley's Burst far beyond the bow's maximum range.",
+     "expect": "The placement is limited to the weapon's maximum range.",
+     "rev": 1
     }
    ]
   },
@@ -579,6 +699,22 @@
      "title": "Swap on a Rest",
      "do": "Complete a Rest as a player and open the Build tab.",
      "expect": "\"Swap on a Rest\" shows (gone when an encounter starts); it asks the level, then the class window with that level's choices; the Attribute buttons are locked unless the optional world setting is on.",
+     "rev": 1
+    },
+    {
+     "id": "thrill-kill",
+     "v": "v0.0.426",
+     "title": "Thrill of the Kill on a first hit",
+     "do": "The Archer's first damage on an enemy brings it Down; later, an ally she hit with a Volley goes Down.",
+     "expect": "The kill raises her Escalation; the ally's Down doesn't.",
+     "rev": 1
+    },
+    {
+     "id": "mastery-step",
+     "v": "v0.0.426",
+     "title": "Mastery's + and −",
+     "do": "A character with the Hunting Bow at 20 Mastery: on the Mastery tab, click + on the Recurve Bow (it shows 10).",
+     "expect": "It goes to 11 at once (it counted from the shown 10).",
      "rev": 1
     }
    ]
