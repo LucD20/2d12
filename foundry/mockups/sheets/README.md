@@ -136,3 +136,15 @@ Blunt bronze `#b9a58c`, what the Resist / Weak chips already do with `--sc-l` / 
 ## Built (v0.0.441, pack SHEETS-HUD)
 
 The approved proposal is built into the system. `built.html` (`built.mjs`) draws the sheets **as built**: the system's own template and CSS on this mockup's model, with the open cards as the short card; `built-dark.jpg` / `built-light.jpg` are its screenshots. The proposal pages above stay as the record of what was approved.
+
+## The fixes mockup (Lucas on v0.0.441, 2026-11-18: "Dont remake it yet... Make the mockup of these changes")
+
+`fixes.html` (`fixes.mjs`, `fixes.css`; screenshots `fixes-dark.jpg`, `fixes-light.jpg`): the sheet as built beside the proposal (the same HTML
+with the mockup's changes; nothing in `foundry/twod12` changed). Aveline in combat at Escalation 6 (Roving Judgment, Weight of Judgment, Apex),
+Sylwen out of combat, Aveline's Build tab.
+1. The Frequency at a bar's right end goes under a Frequency's heading; under Reactions (Granted, Escalation) the word stays, muted, no square.
+2. Out of combat: only "Out of combat", centered, faded.
+3. The Vigor and Resolve gauges: the whole gauge is the click area (the track 18 px to the pointer, drawn 6 px); the numbers still open the edit.
+4. The Build tab: the cost an outlined stamp in ink, the Frequency a muted word (no colored pill).
+5. AP and Strikes: two aligned rows with their words, the Strikes the AP pips' size, no wrapping.
+6. Escalation: the title and its pips; the rungs one under the other (the number a column); the hooks one line ("Hooks left: ...").
