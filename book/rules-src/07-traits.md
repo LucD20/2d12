@@ -31,7 +31,7 @@ To use an Action with the Handle trait, you must be able to use your hands (or s
 
 ### Melee
 
-These Actions need a melee weapon used in hand, and use its Range as their Distance. A Weapon Action without this trait gets it when you use a melee weapon in hand (see [[Weapon Actions and Your Weapon]]).
+These Actions target creatures in close combat. A Weapon Action without this trait gets it when you use a melee weapon in hand (see [[Weapon Actions and Your Weapon]]).
 
 ### Move
 
