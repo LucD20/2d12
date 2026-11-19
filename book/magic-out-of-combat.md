@@ -166,3 +166,7 @@ The skill list, its numbers and the Skill Talents stay for the Skills session (D
 | 5 | **What skills cover: five kinds of outcome, as a guide and not a wall.** Getting past; swaying people; finding out; enduring and travelling; making and mending. **The test for any use of magic: does it open a way, or solve it right away?** Charm, domination, an alarm and the like are to exist, each written so that it opens a way | "Yeah magic should open ways, not solve them right away. So it is option A with a bit of C; we shouldn't lock behind too much otherwise there is no charm spells, dominate, alarm, etc" | 118 |
 
 **The frame is closed (decisions 113 to 118).** Next: step 3, the shape.
+
+| # | Decided | Lucas's words | Record |
+|---|---|---|---|
+| 6 (step 3) | **The shape: written spells, and a line of small magic for each Path.** A spell outside a fight is a card (Path, School, minimum ranks, a long duration, a Surge cost, its limit printed). Small magic costs nothing, never changes a Check, never matters in a fight. A small share of free-form: in the small magic, and in the room a written spell leaves to argue a use | "A with a bit of B, but 95% A" | 119 |
