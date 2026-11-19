@@ -43,7 +43,8 @@
 - **A failed Check:** Tier 1 no, or yes at a real cost; Tier 2 yes, but; Tier 3 yes, and more. A casting always spends its Surge and is always noticed [116].
 - **No help Action outside a fight:** the one best suited makes the Check; what the others do changes the task or is its own Check. **In a fight, a help Basic Action gives 1 Support Boon, no roll** [117].
 - **Five kinds of outcome belong to a Check,** as a guide: getting past, swaying people, finding out, enduring and travelling, making and mending [118].
-- **A retry rule, in principle:** a failed attempt at a task can't be repeated until the situation changes or you try something different; a different way of reaching the goal is always open (wording to come).
+- **A retry rule:** a failed attempt at a task can't be repeated until the situation changes or you try something different; a different way of reaching the goal is always open (wording to come).
+- **The attempt belongs to the party (Lucas, 2026-11-19: "A is good"):** when a Check fails, nobody may make the same attempt until the situation changes; a different way is always open. **The party's Check is rolled by the PC with the highest modifier for it.** An adventure writes it as "While in this room, PCs can make a DC 13 Athletics **Party Check**" (his placeholder name; a group check that everyone rolls may become another mechanic, so the name is open). **Low stakes:** a task with nothing at stake needs no roll, but **a GM may still ask for one** (his: "Sometimes, we want locked chests to exist to hold some extra loot, just you know, so people have that dungeoneer feeling"), usually with time as its price, or with the loot as an extra on a success. Research: `research/party-retries.md`.
 - **Skill numbers grow on their own track, never from the Skill Talent slot** [T7].
 
 ## 4. Talents (`book/talents-design.md`)
