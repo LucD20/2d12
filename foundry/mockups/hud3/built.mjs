@@ -34,7 +34,7 @@ function built(h) {
   const bl = h.basic.map(l => ({ ...l, strike: strike.has(l.name) }));
   m.basicGroups = TWOD12.basicGroups.map(g => ({ label: g.label, lines: g.names.map(n => bl.find(l => l.name === n)).filter(Boolean) })).filter(g => g.lines.length);
   const prone = S.prone ? { lead: "Prone", text: "Your only Move Actions: Stand, Crawl, Break Free.", btns: [{ label: "Stand · 1 AP" }, { label: "Crawl 1 · 1 AP" }, { label: "Crawl 3 · 2 AP" }] } : null;
-  m.right = { rx: S.rx ?? null, grants: [], cancels: [], prone, tiles: h.tiles };
+  m.right = { rx: S.rx ?? null, grants: [], cancels: [], prone, tiles: h.tiles, view: S.rx || prone || S.ask || S.askPick ? "sit" : (q.get("view") ?? "hands") };
   return m;
 }
 const out = document.getElementById("page");
@@ -46,6 +46,7 @@ for (const st of STATES) {
     if (st.S.ask) bar = bar.replace('<div class="hb-ask"></div>', `<div class="hb-ask">${st.S.ask}</div>`);
     if (st.S.askPick) bar = bar.replace('<div class="hb-ask"></div>', `<div class="hb-ask"><div class="twod12-linebar twod12-pickbar in-hud in-side">${PB.pickBarHtml(st.S.askPick)}</div></div>`);
     bar = bar.replace('<div class="h3-hot"></div>', `<div class="h3-hot">${hotbar()}</div>`);
+    if (st.S.ask || st.S.askPick) bar = bar.replace('<div class="h3-side" data-rtab="hands">', '<div class="h3-side has-sit" data-rtab="sit">').replace('<div class="h3-side" data-rtab="macros">', '<div class="h3-side has-sit" data-rtab="sit">');
     out.insertAdjacentHTML("beforeend", `<section class="mk-state"><h3>${esc(st.id)}</h3><div class="mk-scene"><div class="twod12-hud is-bar with-hot hot-in-bar"><div class="hud-players"></div><div class="hud-main">${icons(bar)}</div><div class="hud-ask"></div><div class="hud-hot"></div></div></div></section>`);
   } catch (e) { console.error(e); out.insertAdjacentHTML("beforeend", `<pre class="mk-err">${esc(st.id)}: ${esc(e.stack ?? e)}</pre>`); }
 }

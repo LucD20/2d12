@@ -8,7 +8,7 @@ import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, HUD_TABS_PC, HUD_TABS
 import { techniqueState } from "./mastery.mjs";   // v0.0.418 (D6)
 
 const F = "twod12";
-const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set() };
+const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set(), view: "hands", rview: "hands", sitWas: false };   // v0.0.446: the right column's tab
 let root = null, timer = null;
 const setting = (k, d) => { try { return game.settings.get(F, k); } catch (e) { return d; } };
 
@@ -228,7 +228,7 @@ async function barModel(actor, token = null) {
   const rxWait = wait && setting("rxHud", true) ? wait : null;
   return {
     h3: true, basicGroups, conds,
-    right: { rx: rxWait, grants, cancels, prone, tiles },
+    right: { rx: rxWait, grants, cancels, prone, tiles, view: st.view },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
@@ -384,7 +384,8 @@ async function drawHud() {
   const slot = main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
   for (const w of waiting) slot?.append(w);
   fitNames(main);
-  // v0.0.441 (D3): the hotbar is at the bottom of the bar's right column (placeHotbar, from setMain)
+  syncSide();
+  // v0.0.441 (D3): the hotbar is in the bar's right column (placeHotbar, from setMain); v0.0.446: its Macros tab
 }
 
 /**
@@ -511,6 +512,7 @@ async function onClick(ev) {
   // v0.0.390 (PACK HUD2)
   if (kind === "party") { const c = st.cards?.get(b.dataset.key); if (!c) return; if (ev.detail >= 2) return c.actor.sheet?.render(true); if (c.token) return c.token.control({ releaseOthers: true }); if (!game.user.isGM && c.actor.isOwner) return c.actor.sheet?.render(true); return; }
   if (kind === "fold") { await game.settings.set(F, "hudFolded", !setting("hudFolded", false)); return; }
+  if (kind === "rtab") { st.view = b.dataset.rtab; if (st.view !== "sit") st.rview = st.view; return syncSide(); }   // v0.0.446: the right column's tabs
   if (kind === "tab") { st.tab = b.dataset.tab; st.tabChosen = true; if (st.rx) st.rx = null; return renderHud(); }
   if (kind === "rx") { const msg = game.messages.get(b.dataset.msg); if (!msg) return; const { rxClick } = await import("./moment.mjs"); st.rx = null; await rxClick(msg, { dataset: { twod12: b.dataset.k, row: b.dataset.row }, tagName: "DIV" }); return renderHud(); }
   if (kind === "close") return closePop();
@@ -578,7 +580,25 @@ export function hudAskSlot() {
   // v0.0.397 (Lucas: "in the same area as the granted action"): a creature's bar asks in its side panel; the party strip in the middle
   return root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
 }
-export const hudAsking = (on, side = false) => { root?.classList.toggle("asking", !!on && !side); root?.classList.toggle("asking-side", !!on && side); };
+export const hudAsking = (on, side = false) => { root?.classList.toggle("asking", !!on && !side); root?.classList.toggle("asking-side", !!on && side); syncSide(); };
+/**
+ * v0.0.446 (Lucas: "only show the 'Situational' tab when there is something happening. When it happens, change tabs to the situational
+ * automatically"): the right column's tab. Something waits (a Reaction, granted uses, Prone, a question or a movement in .hb-ask): the
+ * Situational tab shows, and the HUD switches to it when it starts waiting; when nothing waits any more, back to the tab chosen before.
+ */
+function syncSide() {
+  const side = root?.querySelector(".hud-main .h3-side");
+  if (!side) return;
+  const has = !!side.querySelector(".h3-sit > .h3-si, .h3-sit > .hb-gr, .hb-ask > *");
+  side.classList.toggle("has-sit", has);
+  if (has && !st.sitWas) st.view = "sit";
+  if (!has && st.view === "sit") st.view = st.rview;
+  st.sitWas = has;
+  let v = st.view;
+  if (v === "hands" && !side.querySelector(".h3-p-hands .h3-hands")) v = "macros";
+  side.dataset.rtab = v;
+  side.querySelectorAll(".h3-rt").forEach(b => b.setAttribute("aria-selected", String(b.dataset.rtab === v)));
+}
 
 /* ------------------------------------------------------------------ the Reaction alert (v0.0.390; Lucas: "it can pass unnoticed") */
 /** Pure: the waiting rows of a Reactions message this user answers: [{ row, actorUuid, itemId, name, cost, lead }]. */

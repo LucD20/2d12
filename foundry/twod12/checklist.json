@@ -98,11 +98,11 @@
     },
     {
      "id": "hud-right",
-     "v": "v0.0.441",
-     "title": "The right column: Situational, Hands, macro bar",
-     "do": "Select Sylwen's token with nothing waiting; click a hand tile; drag a macro onto the bar; make her Prone.",
-     "expect": "The right column: \"Nothing waiting.\" on top, her two hand tiles side by side (Hunting Bow Main, Free (Fists) Off), Foundry's macro bar as one row of ten at the bottom (the macros still work). A hand tile opens the Hands panel. Prone puts \"Prone\" with Stand · 1 AP, Crawl 1 · 1 AP and Crawl 3 · 2 AP in the Situational section (gold top line); each button uses that Version.",
-     "rev": 1
+     "v": "v0.0.446",
+     "title": "The right column's tabs: Situational, Hands, Macros",
+     "do": "Select Sylwen's token with nothing waiting; click Hands, then Macros; make her Prone; click Stand; then, on the Goblin Sneak's turn, let it move next to her (Snap Shot).",
+     "expect": "Two tabs, Hands and Macros, the one you choose kept. When she becomes Prone a third tab, Situational, appears and opens by itself with \"Prone\" and Stand · 1 AP, Crawl 1 · 1 AP, Crawl 3 · 2 AP, nothing cut; each button uses that Version. Once she stands, the Situational tab goes and the HUD is back on the tab you had. Snap Shot's trigger opens the Situational tab the same way with Use · 1R and Pass.",
+     "rev": 2
     },
     {
      "id": "item-traits",

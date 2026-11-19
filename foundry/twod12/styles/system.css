@@ -5292,3 +5292,18 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button:hover, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a:hover { color: var(--s-ink) !important; border-color: var(--s-gold) !important; }
 .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) i { font-size: 8px !important; margin: 0 !important; }
 .twod12-hud .h3-hot #hotbar .page-number, .twod12-hud .h3-hot #hotbar [class*="page-number"] { font-size: 9px !important; line-height: 1 !important; color: var(--s-faint) !important; width: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
+
+/* ==================================================================== v0.0.446 (Lucas: "Make each a tab, but only show the 'Situational' tab when there
+   is something happening. When it happens, change tabs to the situational automatically"): the HUD's right column as three tabs */
+.twod12-hud .h3-side { grid-template-rows: auto minmax(0, 1fr); }
+.twod12-hud .h3-rtabs { display: flex; border-bottom: 1px solid var(--hud-hair); }
+.twod12-hud .h3-rt { all: unset; box-sizing: border-box; flex: 1 1 0; text-align: center; padding: 3px 6px 4px; font: 600 .78rem/1.3 "Source Sans 3", sans-serif; color: var(--hud-mute); border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; }
+.twod12-hud .h3-rt:hover { color: var(--hud-ink); } .twod12-hud .h3-rt[aria-selected="true"] { color: var(--hud-ink); border-bottom-color: var(--s-gold); }
+.twod12-hud .h3-side:not(.has-sit) .h3-rt-sit { display: none; }
+.twod12-hud .h3-side.has-sit .h3-rt-sit { color: var(--s-gold); }
+.twod12-hud .h3-pane { display: none; min-height: 0; overflow: hidden; }
+.twod12-hud .h3-side[data-rtab="sit"] .h3-p-sit, .twod12-hud .h3-side[data-rtab="hands"] .h3-p-hands, .twod12-hud .h3-side[data-rtab="macros"] .h3-p-macros { display: flex; flex-direction: column; }
+.twod12-hud .h3-p-sit .h3-sit { flex: 1; min-height: 0; overflow-y: auto; }
+.twod12-hud .h3-p-hands { justify-content: center; } .twod12-hud .h3-p-hands .h3-hands { border-top: 0; padding: 6px 9px; }
+.twod12-hud .h3-p-hands .h3-hand { padding: 4px 8px; font-size: .82rem; }
+.twod12-hud .h3-p-macros { justify-content: center; } .twod12-hud .h3-p-macros .h3-hot { border-top: 0; padding: 4px 9px; }

@@ -65,10 +65,10 @@ Expect: With two, each is its icon in a small square and its word ("Prone", "Hin
 Do: Select Sylwen, make her Prone, open the HUD's Basic tab; click Stand's "1 AP".
 Expect: Four columns, Attack, Movement, Control, Utility, every Basic Action on one line with its cost stamps (no "+N more"); Advance, Evade and Charge are dim with struck stamps, in their place. Stand's stamp uses Stand. The Orc Warrior's Basic tab shows its Fists in the Attack column.
 
-### hud-right · v0.0.441 · The right column: Situational, Hands, macro bar
-Do: Select Sylwen's token with nothing waiting; click a hand tile; drag a macro onto the bar; make her Prone.
-Expect: The right column: "Nothing waiting." on top, her two hand tiles side by side (Hunting Bow Main, Free (Fists) Off), Foundry's macro bar as one row of ten at the bottom (the macros still work). A hand tile opens the Hands panel. Prone puts "Prone" with Stand · 1 AP, Crawl 1 · 1 AP and Crawl 3 · 2 AP in the Situational section (gold top line); each button uses that Version.
-
+### hud-right · v0.0.446 · The right column's tabs: Situational, Hands, Macros
+Do: Select Sylwen's token with nothing waiting; click Hands, then Macros; make her Prone; click Stand; then, on the Goblin Sneak's turn, let it move next to her (Snap Shot).
+Expect: Two tabs, Hands and Macros, the one you choose kept. When she becomes Prone a third tab, Situational, appears and opens by itself with "Prone" and Stand · 1 AP, Crawl 1 · 1 AP, Crawl 3 · 2 AP, nothing cut; each button uses that Version. Once she stands, the Situational tab goes and the HUD is back on the tab you had. Snap Shot's trigger opens the Situational tab the same way with Use · 1R and Pass.
+Rev: 2
 ### item-traits · v0.0.440 · An item sheet's traits
 Do: From Aveline's sheet open Smite's item sheet, then her weapon's; in the dark interface, then the light one.
 Expect: The traits (and a weapon's properties) are plain words with a dot between them, in ink: no colored chips, in the card at the top and in the edit part.
