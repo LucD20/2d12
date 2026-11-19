@@ -211,3 +211,9 @@ Read together: Fire and Enchantment, a hearth that keeps a camp warm; Death and 
 | **How long** | 10 minutes | An hour | Until your next Sleep | It stays |
 
 **No Overcast ladders outside a fight.** A card says what it does; where it matters, it prints its own stretch with its price ("+1 Surge for each one more creature").
+
+### Skeleton decision (c): the price (Lucas: "A"; record, decision 125)
+
+- **Every spell outside a fight takes 10 minutes to cast,** unless its card says otherwise. Magic is the slow way; under pressure the skilled character acts.
+- **A card prints a Surge cost from 0 to 3.** The narrow ones cost none (a caster still has magic after a Rest, when the pool is 0); the ones that open a large way cost Surge.
+- Where a result is uncertain, the card calls for a Check. The casting is always noticed, and a failed casting has still spent its Surge.
