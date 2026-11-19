@@ -3,8 +3,8 @@ c86d5f0b7829b0a8775fb8f981b61ce2ce9d32e4aa7b1c1d9d52f37effdc5bf7  cards/magic-fi
 08805d93a93df2b2da76bb2c65a2c99e5a7864e02da3925e0c5e425ce742b193  cards/magic-overreach-lines.md
 575f9cdf2f66f09f8125e198a3159a59ca8ce43aa083cae4524ca1d6ce21f79d  cards/magic-second-pass.md
 63ef709c199b1c30a5830158c98751218efbd7255bed5d522d0d7ec7fa091d43  cards/magic-third-pass.md
-fdb4cb29c03b5eb7f913ced2819e58e3ac87b5aa42c02c8d219aa3e3f66ee41f  magic-design.md
-c23765e55d8094e64053ea8c50803f1c17c5a7550dec9e1a8ab4a9f6e1017b43  magic-out-of-combat.md
+9bb69513579e05e152a0ce60681dc90c54ac52068e426f4cf09565dfa676cf09  magic-design.md
+6d7e230952540807507321be1e7488c3a581595829c0ac8c43e0bc9a753ce835  magic-out-of-combat.md
 48905d88a7dc2b6b1e76daa0c96f67ee2978a3b5e6c773bfd86fc07c448ce417  magic-rules-draft.md
 2e768b7f9c578c3178ed448a66dea0f9cb0e7571fb7ddfb20f55e0ecd8c0c162  research/ars-magica.md
 56f71a5e182edd53bde2fac40c4701484784287c68973d6022d35f40dab7ab20  research/caster-class-shape.md
@@ -25,6 +25,7 @@ efd4839d2affe071c5c7cf547d9ee56c212da692627ee46867d2c8b454b8c7ce  research/raw/2
 6555eaae78823330527c817daf7ecfd24d785f92a726886fed46e455ecadfa37  research/raw/2026-11-18-martial-resources.md
 e7b446876a6187c6e48a4e90d1b268e01e1b7e84304cccfa31abd04252eff9b3  research/raw/2026-11-18-recovery-and-rest.md
 08d49430a0ac313b4ce7e3df9b7a44c3d06497ae4e998eaeec2f413fc1dd446c  research/raw/2026-11-19-crucible.md
+00bfa67fdb0ee5224e860f9c4e9cbf7717138880ee616852fdda1a141d8e68e0  research/raw/2026-11-19-helping.md
 34f47f5feaa7024038d0ddabb96ea92f9badfa405288d99437513d4a7c963701  research/raw/2026-11-19-magic-vs-skills.md
 9b108dc31a77229add86f09c04b8e16ac8cd4032457fb468f47f3242ec8eaf7e  research/raw/2026-11-19-out-of-combat-magic.md
 3f67bb3151323226f78d4803c504b5ff2e21d9a5c1cdf3f30e102fd82e089ed9  research/raw/2026-11-19-revival.md
