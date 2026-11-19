@@ -65,7 +65,7 @@
 
 **Small, still open:**
 4. The retry rule: can another character make the same attempt? Lucas, 2026-11-19: "This requires extensive search". His points: a failed attempt must mean something and never stop the story; it needs a drawback where the task matters (the villain prepares, the noise alerts others, time is lost); a low-stakes task (a locked chest) has none, so anyone can just try again; group rolls don't fit a chest; "everyone rolls" is easy but dull; "Tier 1 means failure and nobody can try again" is decent; in a social scene a retry needs good faith and a changed situation. Research: `research/raw/2026-11-19-party-retries.md` (running). And: is "the GM decides" a separate exit, or the judge of whether the situation changed?
-5. The Lingerings written without a subtype, for Lucas to review: the Archer's **Wounding Shot** (`book/cards/stage0/gear.json`: "Lingering 1 / Lingering 2 (Bo/In) by Tier"); and the Bestiary's rider price table (Chapter 14: "Lingering 1", "Lingering 2", "Lingering 1d4", "Lingering 1d6", "Lingering 2d6"), which is a price list, not a card.
+5. **Answered (Lucas, 2026-11-19): a Lingering may have no subtype after all** (it replaces decision 105's "every Lingering writes its subtype"). An untyped Lingering is the default "bleed", and the rule says what it is for any body: "this can mean bleeding for a living creature with blood, the sap of a plant, the parts of an elemental creature... What matters is that it affects any creature that doesn't have Immune Lingering" (his words; the cure for Pathfinder 2e's "how does an ooze bleed?"). It counts as its own kind for one-Lingering-a-subtype (82) and works like any damage. **Resist, Weak and Immune can name Lingering** ("Resist Lingering 5") and then cover every Lingering; **when two Resists cover the same Lingering, the highest applies, one only** (his example: Resist Lingering 5 and Resist Fire 10 against an 8 Fire Lingering: Fire 10 applies). Claude's reading, to confirm: the same for two Weaks; a Resist and a Weak that both cover it each apply once. Wounding Shot (the Archer's) keeps its untyped Lingering. **Asked with it:** a better way to write "Weak 2 Fire" (`research` not needed: Claude's options in the conversation).
 
 **For the pieces still to design:**
 7. Retraining after Stage 0: its mechanic [T8].
@@ -81,11 +81,11 @@
 
 | Chapter | Change |
 |---|---|
-| 1 | The Save DC: a Save Action's DC takes the user's Boons and Banes |
+| 1 | The Save DC: a Save Action's DC takes the user's Boons and Banes; a hidden target lowers it unless the spell is an [Area]; Resist, Weak and Immune may name Lingering, and the highest of two that cover one Lingering applies |
 | 2 | Surge; an Interrupt on "would gain a condition"; the order of a turn's start; the help Basic Action (1 Support Boon) |
 | 4 | Nonlethal damage leaves on a Sleep; **the Breather is deleted** (still printed); false damage; the Poison subtype |
 | 7 | [Melee] no longer asks for a weapon (**written**); [Spell], the Paths and Schools, [Woven], [Sustained], [Incanted], [Subtle]; a class trait on each class's cards |
-| 8 | One Lingering for each damage subtype, every Lingering writes its subtype; one Shake Off ends one, your choice; Charmed, Confused |
+| 8 | One Lingering for each damage subtype, an untyped Lingering its own kind (the default, described for any body); one Shake Off ends one, your choice; Charmed, Confused |
 | 12 | Hallowed Stance keys on [Paladin, Divine] |
 | 15 | Mastery: one point for a single thing |
 | Play outside a fight | Routine; the failed-Check guide; no help outside a fight; the retry rule |
