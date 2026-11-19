@@ -1,0 +1,112 @@
+/* Group 4 (Lucas, 2026-11-19): the Inventory tab and the NPC's Loot tab. The page, then the proposal's rules, each under .g4-*.
+   Only the sheet's own variables (--s-*: theme.css). Mockup only: nothing in the system changed. */
+h1 { font: 600 28px "Source Serif 4", serif; margin: 0 0 6px; }
+h2 { font: 600 21px "Source Serif 4", serif; margin: 0 0 8px; }
+.g4-shot h3, .g4-h3 { margin: 0 0 6px; font: 600 15px "Source Sans 3", sans-serif; }
+.g4-h3 { margin-top: 10px; }
+.g4-lead { max-width: 1160px; margin: 0 0 28px; line-height: 1.45; opacity: .9; }
+.g4-sec-page { margin-bottom: 52px; }
+.g4-list { margin: 0 0 14px 18px; padding: 0; max-width: 1160px; line-height: 1.45; } .g4-list li { margin: 3px 0; }
+.g4-pair { display: flex; gap: 28px; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; }
+.g4-shot { display: flex; flex-direction: column; gap: 10px; }
+.g4-shot h3 { margin: 0; }
+.g4-chat { width: 300px; padding: 8px; background: var(--s-pg); }
+
+/* the crops: the tab and its tab line only (the plate, the stats, the tiles and the combat line hidden), the window as tall as asked or its content */
+.g4-crop .ps2-plate, .g4-crop .ps2-stats, .g4-crop .ps2-tiles, .g4-crop .ps2-combat, .g4-crop .ps2-l, .g4-crop .ps2-rw { display: none !important; }
+.g4-crop:not([style*="height"]) > .application, .g4-crop:not([style*="height"]) .window-content, .g4-crop:not([style*="height"]) .twod12.sheet.pcs,
+.g4-crop:not([style*="height"]) .ps-body, .g4-crop:not([style*="height"]) .ps-scroll { height: auto !important; flex: none !important; overflow: visible !important; }
+.g4-crop:not([style*="height"]) .ps-main { height: auto !important; flex: 1 1 auto !important; min-width: 0 !important; overflow: visible !important; }
+.g4-crop:not([style*="height"]) .twod12.sheet.pcs.ps2 { position: static !important; min-height: 0 !important; }
+.g4-crop.g4-c-gear .ps-tabs, .g4-crop.g4-c-gear .g4-top, .g4-crop.g4-c-gear .g4-sec:not(:last-child) { display: none !important; }
+.g4-crop.g4-c-gear { margin-top: 14px; }
+
+/* ================================================================ THE PROPOSAL */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-inv { display: flex; flex-direction: column; }
+/* the first line: Coins and Weight on the left, the links on the right */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 2px 3px; font-size: 13px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-top .ps2-links { gap: 14px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-top i, .twod12-actor .twod12.sheet.pcs.ps2 .g4-dl > i, .twod12-actor .twod12.sheet.pcs.ps2 .g4-traits > i { font-style: normal; color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-coins { white-space: nowrap; color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-coins label, .twod12-actor .twod12.sheet.pcs.ps2 .g4-coins label input { flex: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-coins label { display: inline-flex; flex-direction: row; align-items: baseline; gap: 4px; margin: 0; font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-coins input { width: 3.4em; height: 20px; padding: 0 2px; border: 0; border-bottom: 1px solid var(--s-hair); border-radius: 0; background: transparent; color: var(--s-ink); font: 700 13.5px "Source Sans 3", sans-serif; text-align: center; -moz-appearance: textfield; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-coins input::-webkit-inner-spin-button { display: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-note { padding: 1px 2px 2px; color: var(--s-mute); font-size: 12.5px; font-style: italic; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-flagl { padding: 0 4px 4px 2px; margin-top: -3px; font-size: 12.5px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-sec { margin-top: 6px; }
+/* the section heading: the Actions tab's heading on a rule, the column words in plain small text in the line's grid */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-band { display: grid; grid-template-columns: minmax(0, 1fr) 128px 46px 104px; gap: 0 10px; align-items: baseline; padding: 4px 4px 2px 2px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-band.g, .twod12-actor .twod12.sheet.pcs.ps2 .g4-row.g { grid-template-columns: minmax(0, 1fr) 84px 50px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-band.l, .twod12-actor .twod12.sheet.pcs.ps2 .g4-row.l { grid-template-columns: minmax(0, 1fr) 84px 64px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-band .g4-c { font-variant: normal; letter-spacing: 0; font-size: 12px; font-weight: 400; color: var(--s-mute); text-align: right; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-band.w .g4-c:last-child, .twod12-actor .twod12.sheet.pcs.ps2 .g4-band.a .g4-c:last-child { text-align: left; padding-left: 1px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-band.g .g4-c:nth-of-type(1) { text-align: center; }
+/* a line: one ruled line of text */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-r { position: relative; border-bottom: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-row { display: grid; grid-template-columns: minmax(0, 1fr) 128px 46px 104px; gap: 0 10px; align-items: center; min-height: 29px; padding: 1px 4px 1px 2px; background: none; border: 0; border-radius: 0; color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-r.open > .g4-row { background: var(--s-band); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-r.dropped > .g4-row > :not(.g4-wc) { opacity: .55; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-n { display: flex; align-items: baseline; gap: 7px; min-width: 0; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-nm { flex: none; font-weight: 700; font-size: 14.5px; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-row.g .g4-nm, .twod12-actor .twod12.sheet.pcs.ps2 .g4-row.l .g4-nm { font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-sub { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-style: italic; font-size: 12.5px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-sub.bad { color: var(--s-bad); font-style: normal; font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-dt { color: var(--s-mute); }
+@scope (.theme-dark) to (.theme-light) { .twod12-actor .twod12.sheet.pcs.ps2 .g4-detail .g4-dt { color: var(--sc-d); } }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-flags { flex: none; font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-warn { color: var(--s-bad); font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-lnk, .twod12-actor .twod12.sheet.pcs.ps2 .g4-dlinks a { color: var(--s-ink); text-decoration: underline; text-decoration-color: var(--s-rule); text-underline-offset: 2px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-dmg { text-align: right; white-space: nowrap; font-size: 13px; font-variant-numeric: tabular-nums; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-mst { text-align: right; white-space: nowrap; font-weight: 700; font-size: 13.5px; } .twod12-actor .twod12.sheet.pcs.ps2 .g4-mst small { font-weight: 400; font-size: 12px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-wt { text-align: right; font-size: 13px; }
+/* where it is: one outlined button (A), or three words (B) */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-wc { position: relative; min-width: 0; display: flex; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-where { all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; height: 22px; padding: 0 6px 0 7px; border: 1px solid var(--s-rule); border-radius: 2px; font: 600 12.5px "Source Sans 3", sans-serif; color: var(--s-ink); white-space: nowrap; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-where .fa-x { font-size: 9px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-where:hover, .twod12-actor .twod12.sheet.pcs.ps2 .g4-where.on { background: var(--s-band); border-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-where.warn { border-color: var(--s-bad); color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .optB .g4-band.w, .twod12-actor .twod12.sheet.pcs.ps2 .optB .g4-band.a, .twod12-actor .twod12.sheet.pcs.ps2 .optB .g4-row.w, .twod12-actor .twod12.sheet.pcs.ps2 .optB .g4-row.a { grid-template-columns: minmax(0, 1fr) 200px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-ww { display: flex; gap: 0; justify-content: flex-end; width: 100%; font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-ww button { all: unset; padding: 1px 5px 2px; color: var(--s-faint); cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-ww button + button { border-left: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-ww button.on { color: var(--s-ink); font-weight: 700; border-bottom-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-row2 { display: flex; gap: 18px; padding: 0 4px 3px 2px; margin-top: -3px; font-size: 12.5px; color: var(--s-mute); }
+/* the quantity: − n + (a click on the number types it) */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-qty { display: inline-flex; align-items: center; justify-content: center; gap: 2px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-qty button { all: unset; box-sizing: border-box; width: 18px; height: 18px; line-height: 16px; text-align: center; border: 1px solid var(--s-hair); border-radius: 2px; color: var(--s-mute); font-size: 13px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-qty button:hover { color: var(--s-ink); border-color: var(--s-rule); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-qty b { min-width: 24px; text-align: center; font-size: 13.5px; font-variant-numeric: tabular-nums; cursor: text; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-lq { display: flex; justify-content: center; } .twod12-actor .twod12.sheet.pcs.ps2 .g4-q1 { font-size: 13.5px; font-weight: 700; }
+/* Give…: one outlined button */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-give { all: unset; box-sizing: border-box; height: 22px; padding: 0 8px; border: 1px solid var(--s-rule); border-radius: 2px; text-align: center; font: 600 12.5px "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-give:hover, .twod12-actor .twod12.sheet.pcs.ps2 .g4-give.on { background: var(--s-band); border-color: var(--s-gold); }
+/* the line opened: the short card's place on the Actions tab (a tinted panel ending on the bronze rule), ruled lines of text */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-detail { padding: 5px 10px 6px; background: var(--s-pg-2); border-top: 1px solid var(--s-hair); border-bottom: 1px solid var(--s-gold); margin-bottom: -1px; font-size: 13px; line-height: 1.4; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-traits { padding-bottom: 3px; margin-bottom: 3px; border-bottom: 1px solid var(--s-rule); font-size: 13.5px; } .twod12-actor .twod12.sheet.pcs.ps2 .g4-traits b { font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-dl { padding: 1px 0; } .twod12-actor .twod12.sheet.pcs.ps2 .g4-dl b { font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-tiers { display: flex; gap: 18px; } .twod12-actor .twod12.sheet.pcs.ps2 .g4-desc { color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-dlinks { display: flex; justify-content: flex-end; gap: 16px; padding-top: 3px; margin-top: 3px; border-top: 1px solid var(--s-hair); font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-dlinks a { color: var(--s-mute); }
+/* an empty section, the warning line, option B's add line */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-empty { padding: 6px 2px; border-bottom: 1px solid var(--s-hair); font-size: 13px; font-style: italic; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-warnl { padding: 4px 2px; border-bottom: 1px solid var(--s-hair); font-size: 12.5px; color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-addl { padding: 3px 2px 0; }
+/* the menus: the HUD hand tile's menu (system.css .twod12-hud .hud-hmenu) on the sheet, opening under its button */
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu { position: absolute; z-index: 30; top: calc(100% + 3px); right: 0; box-sizing: border-box; width: max-content; min-width: 230px; max-width: 330px; border: 1px solid var(--s-rule); background: var(--s-pg); color: var(--s-ink); box-shadow: 0 4px 16px rgba(0, 0, 0, .45); font: 400 13px/1.3 "Source Sans 3", sans-serif; text-align: left; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-h { padding: 5px 9px 4px; color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-h b { color: var(--s-ink); font-weight: 700; font-size: 14px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-w { display: block; padding-top: 2px; font-size: 12.5px; color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-g { display: flex; flex-direction: column; padding: 3px 0; border-top: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-row { all: unset; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; align-items: baseline; padding: 3px 9px; font: 600 13px/1.3 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-row:first-child:hover, .twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-g:nth-child(2) .hm-row:first-child { background: color-mix(in srgb, var(--s-ink) 9%, transparent); }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-c { white-space: nowrap; font-weight: 400; color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-c b { color: var(--s-ink); font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-row.off .hm-l, .twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-row.off .hm-c { text-decoration: line-through; color: var(--s-mute); font-weight: 400; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-menu .hm-l small { display: block; text-decoration: none; font-weight: 400; font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-ctx { top: 22px; left: 120px; right: auto; min-width: 170px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-ctx .hm-g { border-top: 0; } .twod12-actor .twod12.sheet.pcs.ps2 .g4-ctx .hm-l .fa-x { width: 14px; font-size: 11px; color: var(--s-mute); margin-right: 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-ctx .hm-row { font-weight: 400; }
+/* the Give window's How many */
+.g4-pwn { display: flex; align-items: center; gap: 10px; padding: 2px 0 6px; } .g4-pwn > span:last-child { opacity: .75; }
+.twod12-actor .twod12.sheet.pcs.ps2 .optB .g4-band.w .g4-c:last-child, .twod12-actor .twod12.sheet.pcs.ps2 .optB .g4-band.a .g4-c:last-child { text-align: right; }
+
+.twod12-actor .twod12.sheet.pcs.ps2 .g4-tiers span { color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .g4-tiers span b { color: var(--s-ink); font-weight: 700; }
