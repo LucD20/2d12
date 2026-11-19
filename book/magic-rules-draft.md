@@ -2,6 +2,8 @@
 
 **2026-11-19.** The rules of magic as they stand after decision 99 of `book/magic-design.md`, put in reading order. **This is not rulebook text and nothing here is in the book.** It is Claude's wording of Lucas's decisions, written so that the whole can be read in one sitting. **The record is the authority:** where this page and the record differ, the record wins. A number in brackets is the decision it comes from.
 
+**Words (decision 107).** A Path or a School has a **rank**; "level" is the character's. A spell is the card; a casting is one use. This page still says "level" in places.
+
 **Marks.** **[A]** an assumption of Claude's that Lucas has not confirmed. **[open]** not decided. **[unplayed]** decided, never tried at a table. Nothing is priced: the SIM has no caster.
 
 ---
@@ -28,7 +30,7 @@
 | Glamour | Illusion, dreams, emotion, luck | **False damage** | Pressed |
 
 - A Path's damage and condition are its usual ones, not its only ones: any spell may use another when its fiction calls for it. [23, 64, 91, 95]
-- **False damage** is Nonlethal Resolve damage. All the false damage a caster has dealt is removed when that caster goes Down; what is left is removed when the encounter ends. A creature brought Down by it is Unconscious. [95; no Lethal switch and its subtype: A]
+- **False damage** is Nonlethal Resolve damage. All the false damage a caster has dealt is removed when that caster goes Down; what is left is removed when the encounter ends. A creature brought Down by it is Unconscious. It has no subtype: nothing Resists it. [95, 105; no Lethal switch: A]
 
 ### The six Schools (what a spell does)
 
@@ -48,7 +50,7 @@ A School doesn't say whether a spell is a Strike or a Save. [8]
 
 - A Magic Talent or a class **opens** one Path and one School together, each at level 1, with two spells of your choice. A later Talent opens one more Path or School, with one spell. [27]
 - **Mastery.** When your side wins an encounter that was normal or harder, you gain **1 Mastery in a single thing you used in it: a weapon, a Path or a School**, chosen at its end. [75]
-- Level 2 at 10 Mastery, 3 at 20, 4 at 30, 5 at 45, 6 at 60. No cap. [14, 27; the numbers past 60: open]
+- Rank 2 at 10 Mastery, 3 at 20, 4 at 30, 5 at 45, 6 at 60. **6 is the cap.** [27, 105]
 - At each new level you choose one spell you meet the minimums for. Spells can be swapped on a Rest. [19, 27]
 - **A level is never a number on a roll or a DC.** It unlocks spells and Overcast steps. Dice grow with the Stage, as everything does. [18]
 - Talents grant more spells and change spells by their traits. They never give levels. [17, 19]
@@ -62,7 +64,7 @@ A School doesn't say whether a spell is a Strike or a Save. [8]
 A card prints one of these only when the spell needs it. [77, 78, 85]
 
 - **[Handle]:** you must be able to use your hands and have one free (Chapter 7).
-- **[Incanted]:** you must be able to speak; the words are spoken aloud. [wording: A]
+- **[Incanted]:** you must be able to speak. [78, 105]
 - **[Focus]:** it needs concentration. Most spells have it. It has no rule of its own; other rules can key on it.
 
 ### Who notices
@@ -113,8 +115,8 @@ A [Spell] counts as [Ranged] while you are Engaged, unless it is [Melee]: its ro
 
 ## 5. Overcast: stretching a spell
 
-- Overcast is its own line on a card. A step needs **one spare level** in its axis and **1 Surge**. [26, 67]
-- A casting holds at most **Escalation minus 1** steps. A spell's printed Surge cost doesn't count against that. [43, 70]
+- Overcast is its own line on a card. A step needs **one spare rank** in its axis and Surge: **1 for a step on a shared ladder; a spell's own steps print their price** ("+2 Surge: ..."). [26, 67, 104]
+- The Surge you spend on Overcast in one casting is at most **Escalation minus 1**. A spell's printed Surge cost doesn't count against that. [70, 104]
 - **Spare School level** climbs the ladders the card lists: **Reach** +2 squares, **Breadth** +1 creature, **Hold** +1 round. [43]
 - **Spare Path level** pays the spell's own step, written on the card. [26]
 - **An [Area] spell has no Breadth.** A bigger area is the next spell of the line. A Talent may open area growth later. [43, 61]
@@ -125,7 +127,7 @@ A [Spell] counts as [Ranged] while you are Engaged, unless it is [Melee]: its ro
 ## 6. Overreach: only where a card says so
 
 - Only a spell that prints an **Overreach** line can be Overreached. The line says what it buys and its whole price. [57, 58]
-- Once a casting; you decide before any roll; the price is paid even if the spell fails.
+- Once a casting; you decide before any roll; the price is paid even if the spell fails. **It is paid after the casting and any Reaction to it have resolved.** [105]
 - The usual price is Nonlethal Resolve damage that Guard doesn't take and nothing reduces, with exploding dice. It doesn't grow with Stage.
 - A line may get past one of magic's limits, **once**, and says so ("a second time in this encounter"). [59]
 - **Nonlethal damage now stays until a Sleep,** unless a Rally Point or a heal removes it. The Breather is deleted. [55, 56]
@@ -151,7 +153,7 @@ A [Spell] counts as [Ranged] while you are Engaged, unless it is [Melee]: its ro
 - **Built on a Rest:** its Path gives its theme and its attack's subtype; then picks from a short menu. [44]
 - It leaves when it goes Down, when you don't pay, and when the spell ends (so also when you become Bloodied or Strained; a Talent tree will lift that). [44]
 - It can't Flank, summon, use Rally Points or be healed. It can be given Guard. [44]
-- **It fights beside you like any ally, and never triggers or earns anything:** no class hook, no Mastery, no Momentum. [92; the wording to redo]
+- **It fights beside you like any ally, and never triggers or earns anything:** no class hook, no Mastery, no Momentum. It never counts for Escalation, Mastery, Momentum, or any rule that counts creatures going Down or becoming Bloodied or Strained. [92, 105]
 
 ---
 
@@ -159,7 +161,7 @@ A [Spell] counts as [Ranged] while you are Engaged, unless it is [Melee]: its ro
 
 - **A spell with a duration is combat only.** Held magic, buffs and summons exist only in an encounter. [87]
 - **An instant spell can be cast outside,** paying its printed Surge cost and its Overcast steps; there the Surge you have is the only limit on steps. [71, 87]
-- **Surge outside a fight is a pool:** it refills to your party's Momentum when the party wins a normal or harder encounter, and is cut down to Momentum when Momentum drops below what you hold. [71, 86]
+- **Surge outside a fight is a pool:** it refills to your party's Momentum whenever the party gains Momentum (any encounter overcome), and is cut down to Momentum when Momentum drops below what you hold. [71, 86]
 - **Lasting magic outside a fight is its own piece, [open]:** read from the same two words (the Path is what it is made of, the School what it does), wider with level, paid with that Surge. Its name and rules are not designed. Research: `research/out-of-combat-magic.md`. [87]
 
 ---
