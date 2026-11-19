@@ -221,6 +221,7 @@ Claude reread T1 to T6 against the magic record, `magic-out-of-combat.md`, `role
 | # | Decided | Lucas's words |
 |---|---|---|
 | T7 | **Skill numbers grow on their own track, never from the Skill Talent slot.** A skill point is never chosen instead of a Skill Talent (the swap the number always wins: 5e's feat against +2). How skill numbers grow is for the Skills pass (D3); every Skill Talent stays a verb (T1). Settles review problem 1. | "A" |
+| T8 | **Retraining: free in Stage 0, its own mechanic after.** In Stage 0 (levels 1 to 3, "the tutorial") every Talent and Skill Talent can be swapped freely on a Rest (Chapter 5's rule). **After Stage 0, swapping a Talent needs its own mechanic, still to design; Skill Talents follow that same mechanic.** Open with it: whether the class's own choices (Hallmarks, Arts, Picks, upgrades) keep Chapter 5's free swap after Stage 0. Settles review problem 7. | "Free respec just on Stage 0 for all talents. After stage 0, respec will need its own mechanic. Skill talents will follow this mechanic. Since stage 0 is the 'tutorial'." |
 
 ### Housekeeping done with this review
 
