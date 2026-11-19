@@ -12,7 +12,8 @@ const { ICONS } = await import("../npc-hud-icons.mjs");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const icons = html => html.replace(/<i class="fa-(?:solid|regular) fa-([a-z0-9-]+)([^"]*)"([^>]*)><\/i>/g, (m, n, rest, attrs) => (ICONS[n] ? `<i class="fa-x ${rest.trim()}"${attrs}><svg viewBox="${ICONS[n][0]}" aria-hidden="true"><path d="${ICONS[n][1]}"/></svg></i>` : m));
 const data = await (await fetch("actors.json")).json();
-const hotbar = () => `<div id="hotbar"><ol id="action-bar">${Array.from({ length: 10 }, (_, k) => `<li class="slot"><span class="key">${(k + 1) % 10}</span></li>`).join("")}</ol></div>`;
+// Foundry V13 / V14's macro bar: its controls at the left (lock, clear) and the page arrows and number at the right (as Foundry draws them)
+const hotbar = () => `<div id="hotbar"><menu id="hotbar-controls-left" class="flexcol"><button type="button" class="ui-control icon fa-solid fa-lock"></button><button type="button" class="ui-control icon fa-solid fa-trash"></button></menu><ol id="action-bar">${Array.from({ length: 10 }, (_, k) => `<li class="slot"><span class="key">${(k + 1) % 10}</span></li>`).join("")}</ol><nav id="hotbar-controls-right" class="flexcol"><button type="button" class="ui-control icon fa-solid fa-caret-up"></button><span class="page-number">1</span><button type="button" class="ui-control icon fa-solid fa-caret-down"></button></nav></div>`;
 const SYL = { short: "Sylwen", over: { system: { escalation: 2, damage: { bodyLethal: 6, mindNonlethal: 3 } } } };
 const DUR = { short: "Durgan", over: { system: { escalation: 2, damage: { bodyLethal: 9 } } } };
 const STATES = [

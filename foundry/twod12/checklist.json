@@ -66,11 +66,11 @@
     },
     {
      "id": "g2-hotbar",
-     "v": "v0.0.444",
-     "title": "The macro bar's look",
-     "do": "Select Sylwen's token and look at the macro bar in the HUD's right column, in the dark and the light interface; drag a macro onto a slot and click it.",
-     "expect": "Flat square slots with a thin line, the slot's number small at the top right, the icon a little muted; the macros still work.",
-     "rev": 1
+     "v": "v0.0.445",
+     "title": "The macro bar's look and fit",
+     "do": "Select Sylwen's token and look at the macro bar in the HUD's right column, in the dark and the light interface; use its lock, its page arrows; drag a macro onto a slot and click it.",
+     "expect": "Flat square slots with a thin line, the slot's number small at the top right; Foundry's lock and clear at the left and the page arrows with the page number at the right are small and flat, stacked within a slot's height (no tall dark boxes); the ten slots share the width; every control and macro still works.",
+     "rev": 2
     },
     {
      "id": "hud-identity",
