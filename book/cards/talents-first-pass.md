@@ -34,19 +34,38 @@ A Talent is written on the card Structure (`book/cards/card-structure.md`), with
 
 ### Opportunity Attack
 
-*Lucas's own example (T9). The card exists in `cards/basic-actions.json` but the book prints no Opportunity Attack, and Chapter 2 says no creature has a Reaction of its own.*
+*Lucas's own example (T9), rewritten after his answers: a Talent, made weaker so it competes (Round, not At-will), with branching ranks (T11). The card exists in `cards/basic-actions.json` but the book prints no Opportunity Attack, and Chapter 2 says no creature has a Reaction of its own.*
 
 > **Opportunity Attack** · Talent · Sentinel · Stage 0
 > *You were waiting for them to look away.*
-> **Opportunity Attack** · 1R · At-will · [Melee, Strike, Weapon]
+> **Opportunity Attack** · 1R · Round · [Melee, Strike, Weapon]
 > **Interrupt:** An enemy adjacent to you would leave a square during a Move Action, or would use the Stand Action.
 > **Target:** The triggering creature.
 > **Attack:** Weapon vs. Armor Defense
 > You make a Weapon Attack (1A) against the target.
-> **Rank II:** The Interrupt also happens when an enemy adjacent to you would use a [Spell] Action. (A [Subtle] casting isn't noticed: magic record, 97.)
-> **Rank III (Stage 1):** When the Weapon Attack of an Opportunity Attack triggered by a [Spell] Action gets a Critical, that [Spell] Action is disrupted (Chapter 2).
+>
+> **Rank II (Stage 1), choose one branch:**
+> - **Spellwatch:** the Interrupt also happens when an enemy adjacent to you would use a [Spell] Action. (A [Subtle] casting isn't noticed: magic record, 97.)
+> - **Hamstring:** a new line: on a Tier 3, the triggering Move Action is disrupted; the target stays in the square it was leaving.
+> - **Bodyguard:** the Interrupt also happens when an enemy within your Reach would leave a square adjacent to one of your allies.
+>
+> **Rank III (Stage 2), the next step of your branch:**
+> - **Spellbreaker** (after Spellwatch): when the Weapon Attack of an Opportunity Attack triggered by a [Spell] Action gets a Critical, that [Spell] Action is disrupted (Chapter 2).
+> - **Cripple** (after Hamstring): a new line: on a Tier 3, the target is also Prone.
+> - **Interpose** (after Bodyguard): a new line: after the Weapon Attack, you can Evade 1 toward the ally.
 
-**No prerequisite:** every creature has Fists, a Melee weapon (Chapter 15). **Rank III** is a second way to stop a casting, beside the counterspell Talent decision 99 assigned (it acts before the casting begins, by an Interrupt: T9 names this specialty). **Answered (Lucas, 2026-11-19: "C for sure"): it stays a Talent, made weaker so it competes on equal terms** (to rewrite: Round, not At-will, as the starting point). The question was: the audit expects this to be the obvious Stage 0 pick of nearly every melee character (the only Reaction one can get without a class Reaction; At-will; its moment comes most rounds). The research's rule is "if everyone must take it, build it in" (`research/talents.md`, section 4).
+```
+ Rank I            [ Opportunity Attack ]   1R · Round
+                              │
+          ┌───────────────────┼───────────────────┐
+ Rank II  ▼                   ▼                   ▼
+    [ Spellwatch ]       [ Hamstring ]       [ Bodyguard ]
+          │                   │                   │
+ Rank III ▼                   ▼                   ▼
+    [ Spellbreaker ]     [ Cripple ]         [ Interpose ]
+```
+
+**No prerequisite:** every creature has Fists, a Melee weapon (Chapter 15). **Spellbreaker** is a second way to stop a casting, beside the counterspell Talent of decision 99 (it acts before the casting begins, by an Interrupt). **Stage 2 is not written in the game yet**; the Stages on the ranks are placeholders. **Lucas's earlier answer (2026-11-19, "C for sure"):** it stays a Talent, made weaker so it competes, rather than a Basic Action everyone has.
 
 ### Shoulder Through
 
