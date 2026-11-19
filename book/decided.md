@@ -59,6 +59,9 @@
 - **T8** Free retraining in Stage 0 (the tutorial) for every choice; after Stage 0, its own mechanic, for Talents, Skill Talents and the class's choices alike.
 - **T9** No memory rule: Talents as wide as can be (new Reactions, triggers, specialties: an Opportunity Attack that triggers on [Spell] Actions, that disrupts one). **A Talent never changes a class's own Actions or Reactions:** that is the class upgrades' job.
 - **T10** A class card keyed on a trait reaches every Action with that trait, Talents included. A trait Talents key on must be carried by more than one source. **A class's own cards carry the class's name as a trait** ([Paladin, Divine]); Hallowed Stance is to key on [Paladin, Divine].
+- **T11** Ranks may branch: at a rank a card may offer up to three branches, each a new rule, drawn as a small tree on the card.
+- **T12** A rank is a pick, never a gift of the Stage; a rank may write a minimum Stage as a gate. Deepen or widen at each Talent level.
+- **T13** Every rank is worth a whole pick (checked against an average Rank I); a Talent has as many ranks as it needs, none to two.
 
 ## 5. Questions still to ask
 
