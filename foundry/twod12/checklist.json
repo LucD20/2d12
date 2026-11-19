@@ -1,152 +1,38 @@
 {
  "groups": [
   {
-   "name": "The test bar",
-   "items": [
-    {
-     "id": "bar-works",
-     "v": "v0.0.425",
-     "title": "This bar works",
-     "do": "Read this test, click **Pass**. Then open **List**, click **Show** on another test, and press Shift+K twice.",
-     "expect": "Pass moves to the next open test; Show brings that test here; Shift+K hides the bar and shows it again. The bar can be dragged by its top line and folded (the arrow).",
-     "rev": 1
-    },
-    {
-     "id": "bar-fail",
-     "v": "v0.0.425",
-     "title": "A Fail keeps a note and the console errors",
-     "do": "On any test, click **Fail**, type a note, Save. Open List, click **Copy report**, paste it somewhere.",
-     "expect": "The report has a FAIL line with your note (and \"console:\" lines if Foundry logged errors since that test was shown). Click Fail again on that test: it opens again. Clear it before you go on.",
-     "rev": 1
-    },
-    {
-     "id": "book-links",
-     "v": "v0.0.427",
-     "title": "The book's links",
-     "do": "Open the Core Rules in the Claude app (or the published page) and click a few links (a condition, Stacking, a Basic Action such as Shake Off); in the Archer's document click Darting Blade's \"Light\".",
-     "expect": "Each scrolls to its target and opens the chapter or card around it; Shake Off lands on its card; \"Light\" lands on Gear's weapon property.",
-     "rev": 1
-    }
-   ]
-  },
-  {
-   "name": "After the update",
-   "items": [
-    {
-     "id": "update-compendium",
-     "v": "v0.0.418",
-     "title": "Update from the compendium",
-     "do": "Open the world as the GM after the update. When asked, accept **Update from the compendium**.",
-     "expect": "The PCs' cards are refreshed (Judge on a Paladin ends with \"Multiple Paladins can Judge the same creature: it is Judged by each of them.\"). Nothing you added to a sheet by hand is removed.",
-     "rev": 1
-    },
-    {
-     "id": "update-npcs",
-     "v": "v0.0.419",
-     "title": "NPCs from the compendium again",
-     "do": "Delete the NPCs on the scene and drag the Goblin Sneak, Orc Warrior, Grave Wisp and Ogre Chieftain in again from the compendium.",
-     "expect": "Their melee cards read \"Distance: Reach (1)\" (the Ogre: its own Reach), and the cards with a push write \"Pushed N\" in Tiers 2 and 3.",
-     "rev": 1
-    },
-    {
-     "id": "compendium-content",
-     "v": "v0.0.413",
-     "title": "What the compendiums hold",
-     "do": "Open the compendiums.",
-     "expect": "Actions: the Basic Actions, the Paladin's, the Archer's and four Weapon Techniques (no \"old cards\", Talents or Testing folders). Weapons: Arming Sword, Longsword, Dagger, Hunting Bow, Recurve Bow and the armors. NPCs: the four above. PCs: Durgan holds an Arming Sword; Sylwen and Kaela are the Archers.",
-     "rev": 1
-    }
-   ]
-  },
-  {
    "name": "Characters and sheets",
    "items": [
     {
-     "id": "new-paladin",
-     "v": "v0.0.409",
-     "title": "A new Paladin's levels",
-     "do": "Make a new character, drop the Paladin class from the compendium, open the class window.",
-     "expect": "Level 1: Judge and Smite granted; Binding Light or Lay On Hands; Shield of Faith or Rebuke; an Art (three); Armor of Faith or Roving Judgment. Level 2: Kindled Wrath, the three Encounter Picks, Weight of Judgment or Tireless Vigil. Level 3: the two Arts you don't have, Reckoning or Hallowed Stance.",
-     "rev": 1
-    },
-    {
-     "id": "new-archer",
-     "v": "v0.0.411",
-     "title": "A new Archer's levels",
-     "do": "Make a new character, drop the Archer class, open the class window.",
-     "expect": "Level 1 offers Quick Shots or Strafe, Slip Away or Snap Shot, an Art, Lean and Loose or Blade and Bow (Shifting Aim and Darting Blade granted); Light Armor Training. Shifting Aim's bow choice opens the system's pick window and gives Mastery 5 with that bow.",
-     "rev": 1
-    },
-    {
-     "id": "stages",
-     "v": "v0.0.407",
-     "title": "Stage 0 on the sheet",
-     "do": "Open a level 1 to 3 character's sheet and its Build tab; take a test character to level 4.",
-     "expect": "The sheet says Stage 0. The Build tab's \"Next levels\" at level 3 reads \"Stage 1: Stage Talent · ... · Rally +1 · +1 to one Modifier\" with no Health part (the steps aren't written yet). At level 4 the class window asks which Modifier takes the +1. The Talent slots say they stay empty and don't block \"complete\".",
-     "rev": 1
-    },
-    {
-     "id": "action-card",
-     "v": "v0.0.410",
-     "title": "The Action card in the book's look",
-     "do": "Open Smite, Judge and Commandment on a Paladin's Actions tab, in the dark and the light interface.",
-     "expect": "Smite: the Flavor in italic, the traits line, Distance and Target, Smite dice, Attack, Tier 1 / 2 / 3, Special, then Use. Judge: two blocks (0 AP, 1 AP) each with its Use. Commandment: three Mode blocks, Kneel with its own Save. Both themes readable.",
-     "rev": 1
-    },
-    {
      "id": "sheet-pills",
-     "v": "v0.0.421",
+     "v": "v0.0.440",
      "title": "The Frequency word on Reactions only",
-     "do": "Look at a Paladin's Basic Actions and Reactions on the sheet.",
-     "expect": "A Basic Action's box shows only its cost (\"1 AP\"); a Reaction's shows its Frequency and cost (\"Turn · 1R\").",
-     "rev": 1
-    },
-    {
-     "id": "rally-edit",
-     "v": "v0.0.418",
-     "title": "Rally Points editable by the player",
-     "do": "As a player, change your character's Rally Points on the sheet.",
-     "expect": "It saves, and a short system line in the chat says the change.",
-     "rev": 1
+     "do": "Open Durgan's sheet; look at his Basic Actions and his Reactions (Bulwark of Faith, Shield of Faith).",
+     "expect": "A Basic Action's box shows only its cost (\"1 AP\"); a Reaction's pill shows its Frequency and cost on one line (\"Encounter · 1R\" for Bulwark of Faith), not wrapped.",
+     "rev": 2
     },
     {
      "id": "item-traits",
-     "v": "v0.0.418",
+     "v": "v0.0.440",
      "title": "An item sheet's traits",
-     "do": "Open a weapon's and an Action's item sheet.",
-     "expect": "The traits are the card's plain words (no colored chips), and a sheet keeps its own light look inside a dark interface where it has one.",
-     "rev": 1
+     "do": "From Aveline's sheet open Smite's item sheet, then her weapon's; in the dark interface, then the light one.",
+     "expect": "The traits (and a weapon's properties) are plain words with a dot between them, in ink: no colored chips, in the card at the top and in the edit part.",
+     "rev": 2
     },
     {
      "id": "npc-level",
-     "v": "v0.0.418",
-     "title": "The NPC sheet's Level",
-     "do": "On an NPC sheet, change its Level, then click its image.",
-     "expect": "The Level saves; the image picker opens.",
-     "rev": 1
+     "v": "v0.0.440",
+     "title": "The NPC sheet's header",
+     "do": "Open the Ogre Chieftain's sheet (an Elite) at its usual size; change its Level, then click its image.",
+     "expect": "The header fits without widening the window: the name and rank, then Level · Stage · Size · CV · Senses, and the buttons wrap to a row of their own when there is no room. The Level saves; the image picker opens.",
+     "rev": 2
     },
     {
-     "id": "class-editor",
-     "v": "v0.0.421",
-     "title": "The Class Levels Editor saves a section's title",
-     "do": "Open a class's Levels Editor, rename a section, save, open it again.",
-     "expect": "The new title is kept.",
-     "rev": 1
-    },
-    {
-     "id": "builder-tab",
-     "v": "v0.0.436",
-     "title": "The NPC Builder tab",
-     "do": "Open the Orc Warrior's Builder tab; click the Striker preset on a copy. Then make a new NPC and set its rank to Elite, then back to Standard.",
-     "expect": "Health 60 (Vigor 36, Resolve 24), AD 13, WD 11, CV 100 (its Low Ward Defense is half a step: counted as none); the Damage row \"25/AP\" for a Standard; the turn-budget table, with no list of old notes under it; Best turn \"about 93 of 100 (damage only: riders and shares not counted)\". Striker sets High damage, High Vigor, Low Resolve, Low AD, Low Weapon Modifier, CV unchanged; Soldier and Skirmisher also keep CV 100. The new Elite has Escalation on, at 1, and its ladder reads \"2 · Pressing | 4 · Relentless | 6 · Second Wind\"; back to Standard, Escalation is off.",
-     "rev": 3
-    },
-    {
-     "id": "no-levels-class",
-     "v": "v0.0.415",
-     "title": "A class without levels",
-     "do": "Drop a class item with no levels on a character.",
-     "expect": "A warning to give it levels first (no Attribute window).",
+     "id": "hud-defs-pips",
+     "v": "v0.0.440",
+     "title": "The HUD's Attributes and AP pips",
+     "do": "In a combat, in the dark interface, open Aveline's HUD.",
+     "expect": "The bottom row shows AD, WD, Spd, Wpn, Pow, then Bo, Mi, Ap and In (Instinct inside the bar); a full AP pip is solid gold, a spent one dark.",
      "rev": 1
     }
    ]
@@ -155,224 +41,48 @@
    "name": "Starting a combat",
    "items": [
     {
-     "id": "ogre-large",
-     "v": "v0.0.435",
-     "title": "The Ogre Chieftain is Large",
-     "do": "Drag the Ogre Chieftain from the compendium onto a scene.",
-     "expect": "Its token is 2 × 2, and its sheet's Size is Large (4).",
-     "rev": 1
-    },
-    {
      "id": "minion-squad",
-     "v": "v0.0.433",
-     "title": "Three Goblins on one Initiative roll",
-     "do": "Put three Goblin Sneaks and two PCs in a combat and roll Initiative from the Initiative window.",
-     "expect": "One roll, the same Initiative for the three (the card says \"×3\"), each with its own turn, and the three act one after another: no PC's turn between them. A Goblin Sneak has 3 AP and no Reaction AP.",
-     "rev": 2
-    },
-    {
-     "id": "minion-eot",
-     "v": "v0.0.433",
-     "title": "A Goblin's EoT in the squad's slot",
-     "do": "In that combat, on a PC's turn, make the third Goblin Hindered (EoT); in the first Goblin's turn, give the second Goblin an effect for 1 round.",
-     "expect": "The third Goblin's Hindered ends at the end of its own turn, not the first one's. The 1-round effect ends at the end of the third Goblin's turn in the next round, not before.",
-     "rev": 1
-    },
-    {
-     "id": "momentum-start",
-     "v": "v0.0.407",
-     "title": "Momentum and Escalation at the start",
-     "do": "Before starting, set Momentum to 2 (left-click +1, right-click −1 on the strip). Start the combat; go to round 2.",
-     "expect": "The strip reads \"Preparing the encounter · Momentum 2\", then \"Round 1 · Momentum 2\"; every PC starts at Escalation 3 (an Elite at 1). Round 2 raises everyone by 1, up to 6 (six pips on the sheet and the HUD).",
-     "rev": 1
-    },
-    {
-     "id": "elite-steps",
-     "v": "v0.0.434",
-     "title": "The Elite's default ladder by name",
-     "do": "Turn on the Ogre Chieftain's Escalation (Default ladder ticked) and play to round 2, then make it Bloodied.",
-     "expect": "The system lines name the steps: \"Pressing (1 Boon on its first [Strike] Action each turn-cycle)\", then with Relentless (\"each of its Round Special Actions twice per turn-cycle\"). Its first [Strike] each turn-cycle has the Boon in the roll dialog; a Save Action or an Action that isn't a Strike doesn't take it.",
-     "rev": 2
-    },
-    {
-     "id": "judge-start",
-     "v": "v0.0.409",
-     "title": "Judge at the start of an encounter",
-     "do": "Start a combat with Aveline and Durgan in it.",
-     "expect": "Each Paladin's player is reminded to Judge (target it and use Judge, 0 AP). Both can Judge the same Orc: its token shows both rings, and it counts as Profane for each of them.",
-     "rev": 1
+     "v": "v0.0.440",
+     "title": "Minion squads: even, the GM's groups, the GM's order",
+     "do": "Make the Goblin Sneak a Minion (its sheet's rank), put four Goblin Sneaks, Aveline and Sylwen in a combat and open the Initiative window. Click one Goblin's \"Squad 1 of 2\". Roll. Start the combat; when a Goblin squad's turn comes, and at the end of that Goblin's turn, answer the bottom bar.",
+     "expect": "Two squads of two by default (not three and one); a click moves that Goblin to the other squad (the label changes). One roll per squad (\"×2\" on the card), each Goblin with its own turn, no PC's turn inside a squad. Before a squad's turn the bar asks which Goblin goes now; the one picked goes, and at the end of its turn the bar asks again while two or more are left. A Minion has 3 AP and no Reaction AP.",
+     "rev": 3
     }
    ]
   },
   {
-   "name": "Your turn: Actions and the roll dialog",
+   "name": "The roll dialog",
    "items": [
     {
-     "id": "roll-order",
-     "v": "v0.0.417",
-     "title": "The roll dialog follows the card",
-     "do": "Open the roll dialog of Smite, Lay On Hands and Rebuke.",
-     "expect": "Smite: \"Smite dice\" above Attack, then Tier 1 to 3, then Special. Lay On Hands: Setup above the Tiers. Rebuke: Trigger at the top. A label reads \"Requirement\". Judge's dialog has no \"Attack: ...\" line (it has no roll).",
-     "rev": 1
-    },
-    {
      "id": "smite-dice",
-     "v": "v0.0.409",
-     "title": "Smite by Escalation and the Reaction AP die",
-     "do": "At Escalation 3, Smite the Judged enemy; tick \"Reaction AP: 1 more Smite die\" in the roll dialog. Then Smite an enemy that isn't Judged.",
-     "expect": "Against the Judged one: d8s (Tier 2: 3d8! Holy with the weapon), 4 dice with the tick and the Reaction AP spent. Against the other: d6s.",
+     "v": "v0.0.440",
+     "title": "Smite's dice in the roll dialog",
+     "do": "Aveline at Escalation 3: Judge the Orc Warrior, then Smite it; look at the roll dialog's Tiers, tick \"Reaction AP: 1 more Smite die\", look again. Then Smite a Goblin Sneak that isn't Judged.",
+     "expect": "The Reaction AP chip shows (not under \"+1 off\"). Against the Judged Orc the Tiers read 3d8! Holy (Tier 3: 4d8!) and one more die when ticked; the chat card's Tiers say the same. Against the Goblin: d6s.",
      "rev": 1
     },
     {
-     "id": "hands-banes",
-     "v": "v0.0.412",
-     "title": "The hands' Banes",
-     "do": "Strike with a weapon in the off hand; then with a bow while the other hand holds a Dagger; then with a bow and the other hand free.",
-     "expect": "Off hand: 2 Banes in the roll dialog (a Dagger: 1); the bow with a Dagger in the other hand: 3 Banes; the bow with a free hand: none.",
+     "id": "dice-sources",
+     "v": "v0.0.440",
+     "title": "Where a die comes from",
+     "do": "Sylwen at Escalation 6 uses Quick Shots (her turn's first Strike) and lands a Tier 2; open the damage breakdown. Then give Sylwen Empowered and make a damaging Action; open its breakdown.",
+     "expect": "The roll dialog has the note \"One More Arrow: +1[W] on a Tier that deals [W]\". The breakdown lists a part \"(One More Arrow)\" with its own die, and a part \"(Empowered)\" with its 1d6! (no \"−4 Flat +4 Empowered\").",
      "rev": 1
     },
     {
-     "id": "doomed-engaged",
-     "v": "v0.0.407",
-     "title": "A ranged shot while Engaged",
-     "do": "With an Archer adjacent to an enemy, use a [Ranged] Action.",
-     "expect": "The roll dialog's chip reads \"You are Engaged (Doomed)\" and the roll is Doomed.",
+     "id": "reload-chip",
+     "v": "v0.0.440",
+     "title": "The Reload shot's chip",
+     "do": "Give Sylwen's bow the Reload property (its sheet) and open a Weapon Attack's roll dialog with it.",
+     "expect": "The \"Reload shot\" chip shows in the Boons row while off (dashed, struck through), green when on. If its outline is still red, send a screenshot.",
      "rev": 1
     },
     {
-     "id": "shifting-aim",
-     "v": "v0.0.411",
-     "title": "Shifting Aim and Blade and Bow",
-     "do": "On Sylwen's turn, shoot from where you started; Evade a square and shoot; shoot again without moving. At Escalation 2 with Blade and Bow, use Darting Blade after a shot, twice.",
-     "expect": "No Boon on the first shot; \"Shifting Aim\" (1 Field Boon) on the second; none on the third. Darting Blade gets 1 Boon the first time that turn, none the second.",
-     "rev": 1
-    },
-    {
-     "id": "quick-shots",
-     "v": "v0.0.411",
-     "title": "Quick Shots and One More Arrow",
-     "do": "Use Quick Shots at Tier 2 and Tier 3; at Escalation 6, make your turn's first Strike.",
-     "expect": "Tier 2 deals the bow twice (2[W]), Tier 3 three times, then the Evade 2 button. At Escalation 6 the first Strike deals 1[W] more.",
-     "rev": 1
-    },
-    {
-     "id": "wounding-shot",
-     "v": "v0.0.414",
-     "title": "Wounding Shot and Lingering",
-     "do": "Use Wounding Shot from where you started your turn; then move a square and try again. Land a Tier 2.",
-     "expect": "From your square it rolls; after moving it is refused (\"has left its square this turn\"). Tier 2 applies \"Lingering [V] 1 (Bo/In)\"; at the end of the creature's turn its damage card says \"Ends with Shake Off (1 AP)\".",
-     "rev": 1
-    },
-    {
-     "id": "exploding",
-     "v": "v0.0.407",
-     "title": "Exploding dice and Empowered",
-     "do": "Roll Weapon Attacks until a die shows its top face. Give a PC Empowered and make two damaging Actions in its turn.",
-     "expect": "A 6 on a d6 shows \"6!\", counts 5 and adds a new roll. The first damage card has an \"Empowered 1d6!\" line; the second has none.",
-     "rev": 1
-    },
-    {
-     "id": "reload-shot",
-     "v": "v0.0.431",
-     "title": "A Reload Shot's die",
-     "do": "Give a weapon the Reload property (its sheet). Deal damage with another Action, then make a Reload shot with the weapon in the same turn.",
-     "expect": "The shot is Favored and its damage has the 1d6! even after the first damage of the turn; an Empowered PC's own Empowered die isn't spent by it.",
-     "rev": 1
-    },
-    {
-     "id": "arts-modes",
-     "v": "v0.0.409",
-     "title": "An Art's Modes (Commandment)",
-     "do": "Use Commandment from the sheet or the HUD; pick Kneel.",
-     "expect": "A pick window asks Challenge / Courage / Kneel. Kneel rolls the target's Appeal Save; Tier 1 or 2 makes it Prone by itself.",
-     "rev": 1
-    },
-    {
-     "id": "lantern",
-     "v": "v0.0.409",
-     "title": "Lantern of Faith",
-     "do": "Use Kindle, then Glare on an enemy.",
-     "expect": "Kindle lights you (Bright 3) until the encounter ends. Glare: an Instinct Save; on a failure the target is Half-Blinded until the end of its turn.",
-     "rev": 1
-    },
-    {
-     "id": "hud-techniques",
-     "v": "v0.0.418",
-     "title": "The HUD shows only usable Techniques",
-     "do": "Select Durgan without the Mastery for Seizing Cut and open the HUD.",
-     "expect": "Seizing Cut is not in the HUD (it shows once the Mastery unlocks it at 10). The HUD shows the Pow Defense.",
-     "rev": 1
-    },
-    {
-     "id": "mod-as-written",
-     "v": "v0.0.426",
-     "title": "[Mod] where the card writes it",
-     "do": "Land a Tier 2 Smite with Aveline; a Tier 2 Trick Shots (Pin) with an Archer; a Tier 2 and a Tier 3 Seizing Cut (any character with the Mastery, or give it by hand).",
-     "expect": "Smite's Tier 2 adds the Signature Modifier to 1[W] and the Smite dice; Trick Shots' Pin deals [Mod] damage (a Damage button) and Hindered; Seizing Cut's Tier 2 is 1[W] alone, its Tier 3 1[W] + [Mod].",
-     "rev": 1
-    },
-    {
-     "id": "npc-no-mod",
-     "v": "v0.0.426",
-     "title": "An NPC's damage shows no Modifier",
-     "do": "Open the Orc Warrior's Cleaver roll dialog and land a Tier 2.",
-     "expect": "The Tier 2 line reads 1 + 1d4! (no \"+ Weapon Modifier\"), and that is what it deals.",
-     "rev": 1
-    },
-    {
-     "id": "hud-weapon",
-     "v": "v0.0.426",
-     "title": "The weapon is chosen before the dialog",
-     "do": "Give Sylwen her Dagger and bow in hand. From the HUD, use Weapon Attack, then Quick Shots.",
-     "expect": "Weapon Attack asks \"Which weapon?\" before the roll dialog, and the dialog's hands' Banes and range are that weapon's. Quick Shots uses the bow without asking (a Shot needs a bow).",
-     "rev": 1
-    },
-    {
-     "id": "one-more-arrow",
-     "v": "v0.0.426",
-     "title": "One More Arrow waits for a [W] hit",
-     "do": "At Escalation 6, roll a Tier 1 Quick Shots ([V] [Mod]), then a Tier 2 Strike that deals [W] the same turn.",
-     "expect": "The Tier 1 doesn't use it up; the Tier 2 Strike deals 1[W] more.",
-     "rev": 1
-    },
-    {
-     "id": "setup-range",
-     "v": "v0.0.426",
-     "title": "A Setup and the range",
-     "do": "Use Darting Blade on a creature 8 squares away; at Escalation 6 with Hallowed Stance, open Smite's chat card.",
-     "expect": "Darting Blade is out of range (no \"the Setup first\" note: its Setup moves nobody). Smite's card shows \"Setup: You Advance 3\" with its button.",
-     "rev": 1
-    },
-    {
-     "id": "stance-setup",
-     "v": "v0.0.428",
-     "title": "Hallowed Stance before the roll",
-     "do": "At Escalation 6 with Hallowed Stance, on Aveline's turn use Smite on an enemy 4 squares away.",
-     "expect": "Before the roll dialog the Setup bar lets you Advance up to 3 (move, then Continue); the range is then checked from where you stopped. Not offered off your turn.",
-     "rev": 1
-    },
-    {
-     "id": "free-cost-hud",
-     "v": "v0.0.428",
-     "title": "A free cost in the HUD",
-     "do": "With Roving Judgment active (Escalation 2), spend all your AP, look at Judge's 1 AP in the HUD and on the sheet.",
-     "expect": "It isn't struck (it costs 0 now) and can be used.",
-     "rev": 1
-    },
-    {
-     "id": "avg-empowered",
-     "v": "v0.0.428",
-     "title": "The roll dialog's Avg with Empowered",
-     "do": "Give a PC Empowered and open a damaging Action's roll dialog.",
-     "expect": "The Avg adds 4 once, \"(with Empowered 1d6!)\", not one per die.",
-     "rev": 1
-    },
-    {
-     "id": "card-order-book",
-     "v": "v0.0.429",
-     "title": "Seven cards in the book's order",
-     "do": "Open Rebuke, Reckoning, Hit and Run, Circling Shot, Trick Shots, Weapon Attack and Steel Yourself on a sheet, and use Rebuke and Hit and Run.",
-     "expect": "Rebuke's and Reckoning's Effect sits above their Save (sheet and chat card); Hit and Run's Effect above its Attack, drawn once on the chat card; Circling Shot and Knock Back show no Tier 1 line; Weapon Attack's Special is above its Attack, Steel Yourself's at the end.",
+     "id": "warn-only",
+     "v": "v0.0.440",
+     "title": "A Requirement only warns",
+     "do": "On Sylwen's turn, move a square, then use Wounding Shot.",
+     "expect": "A warning (\"has left its square this turn (its Requirement). Used anyway.\"), and the Action goes on.",
      "rev": 1
     }
    ]
@@ -381,34 +91,26 @@
    "name": "Chat cards",
    "items": [
     {
-     "id": "card-order",
-     "v": "v0.0.417",
-     "title": "The chat card follows the card",
-     "do": "Use Smite, Rebuke (its Save card) and Judge.",
-     "expect": "Smite: \"Smite dice:\" above the Tier stamp, \"Special:\" under it, before the Flavor. Rebuke's Save card: the Trigger above the Save and its Effect line (Hindered). Judge: \"Judged:\" and its Special once.",
+     "id": "save-fold",
+     "v": "v0.0.440",
+     "title": "The Save card folds after its damage",
+     "do": "Aveline uses Word of Radiance on two enemies; each rolls its Save; apply the damage to both.",
+     "expect": "Once both are applied, the Save's lines fold under one line (each creature's Tier and name, an arrow); a click opens them again. The damage part stays.",
      "rev": 1
     },
     {
-     "id": "chat-click",
-     "v": "v0.0.418",
-     "title": "Click uses, right-click opens the rule",
-     "do": "Click anywhere on a chat card's button (its icon, its word); right-click a button.",
-     "expect": "A click uses it. A right-click opens its rule only (Foundry's message menu does not open).",
-     "rev": 1
-    },
-    {
-     "id": "chat-drag",
-     "v": "v0.0.421",
-     "title": "Drag a condition from the chat",
-     "do": "Drag a condition button (e.g. Prone) from a chat card onto a token. Try dragging a button from a sheet.",
-     "expect": "The token gets the condition. A sheet's button doesn't drag.",
+     "id": "resolve-color",
+     "v": "v0.0.440",
+     "title": "The Resolve blue on a dark card",
+     "do": "In the dark interface, send Aveline's Smite to the chat.",
+     "expect": "\"[R] 1d6!\" in the Smite dice line is an easy-to-read light blue.",
      "rev": 1
     },
     {
      "id": "chat-follow",
      "v": "v0.0.418",
      "title": "The chat follows a growing card",
-     "do": "Use an Action whose card grows (the damage written into it); scroll up a little in the chat, then click a damage stamp's link to its roll card.",
+     "do": "Aveline uses Smite (its card grows when the damage is written into it); scroll up a little in the chat, then click a damage stamp's link to its roll card.",
      "expect": "At the bottom, the chat follows the card as it grows. The jump to the roll card stays there (no snap back down).",
      "rev": 1
     },
@@ -416,31 +118,15 @@
      "id": "chat-removed",
      "v": "v0.0.418",
      "title": "Lines removed from the chat",
-     "do": "Play a round: someone becomes Bloodied, someone uses a Reaction, someone goes Down, someone moves.",
+     "do": "Play a round with Aveline, Sylwen and two Orcs: someone becomes Bloodied, Durgan uses a Reaction, someone goes Down, someone moves.",
      "expect": "No Bloodied / Strained, Reaction-use, \"next damage reduced\", \"is Down\" or movement lines. The stamp is stretched; the Critical's arrow sits over CRIT, the CRIT zone shows only on a Critical; Bloodied is in the Vigor red on dark.",
-     "rev": 1
-    },
-    {
-     "id": "old-card",
-     "v": "v0.0.417",
-     "title": "An old chat card still works",
-     "do": "In a chat card posted before the update, click Apply and retarget.",
-     "expect": "It redraws with its old lines and Apply works.",
-     "rev": 1
-    },
-    {
-     "id": "save-retarget",
-     "v": "v0.0.426",
-     "title": "A damage-free Save card retargeted",
-     "do": "Use Rebuke with no target, then target the enemy and click the card's target button.",
-     "expect": "The enemy is Hindered (the Effect runs for the creature the retarget added).",
      "rev": 1
     },
     {
      "id": "empowered-one",
      "v": "v0.0.426",
      "title": "Empowered with several creatures",
-     "do": "Give a PC Empowered and hit three enemies with an area (two on the same Tier).",
+     "do": "Give Sylwen Empowered; she uses Volley on three enemies (two on the same Tier).",
      "expect": "One Empowered 1d6! is rolled, and only one creature (the first hit) takes it: it has its own line on the card.",
      "rev": 1
     },
@@ -448,32 +134,8 @@
      "id": "save-effect-words",
      "v": "v0.0.430",
      "title": "A self-running Effect on the Save card",
-     "do": "Use Reckoning on two enemies.",
+     "do": "Aveline (level 3, Escalation 6) uses Reckoning on two enemies.",
      "expect": "They are pushed once on use; the Save card's \"Effect: Each target is Pushed 2.\" is words (no button to push again).",
-     "rev": 1
-    },
-    {
-     "id": "save-card-before",
-     "v": "v0.0.431",
-     "title": "The Save card before the roll",
-     "do": "As the GM, use Rebuke on an Orc Warrior; then use Word of Radiance on two enemies. Look at the cards as a player who owns neither.",
-     "expect": "Rebuke: under \"Appeal Save — DC 13\", one quiet line \"Tier 1 or 2: Its Move Action is disrupted.\" (no colored bands, no Tier 3 line), then Roll Appeal Save. Word of Radiance: a row per enemy with its own Roll button, then \"Tier 1: 3d6 Ho; Pushed 3\", \"Tier 2: …\", \"Tier 3: …\" with the pool icons. The player sees \"Waiting for …\" instead of the buttons.",
-     "rev": 1
-    },
-    {
-     "id": "save-card-rolled",
-     "v": "v0.0.431",
-     "title": "The Save card after one roll",
-     "do": "Use Rebuke on an Orc Warrior and roll its Save; click the ladder. Then use Word of Radiance on one enemy, roll, click Damage, then Apply.",
-     "expect": "The attack card's Tier stamp (\"TIER 2\", \"vs DC 13\") and ladder (≤12 / 13–19 / 20+, the total above it, its Tier filled), and only that Tier's words under it. The ladder opens the roll. The target button is gone. Word of Radiance: Damage at the bottom; once it is rolled, its Damage part is under the card and Apply works.",
-     "rev": 1
-    },
-    {
-     "id": "save-card-many",
-     "v": "v0.0.431",
-     "title": "The Save card with several creatures",
-     "do": "Use Reckoning on three enemies; roll two of their Saves (on different Tiers), click one's total, then roll the third.",
-     "expect": "A row each: its Tier pill and total (the total opens its roll), or its Roll button. Under the rows, each Tier rolled as on the attack card (the Tier, the names, its words). The quiet \"Tier 1 or 2: …\" line stays until the last one rolls, then goes.",
      "rev": 1
     }
    ]
@@ -482,66 +144,34 @@
    "name": "Conditions and their Tiers",
    "items": [
     {
-     "id": "tier-no-damage",
-     "v": "v0.0.421",
-     "title": "A Tier's condition with no damage",
-     "do": "Use Trip (2 AP) and land a Tier 2; use Trick Shots' Pin and Startle; use Thwart Cut and land a Tier 1.",
-     "expect": "Each condition is applied by itself when its Tier lands (Prone, the Pin's and the Startle's, Pressed).",
-     "rev": 1
-    },
-    {
      "id": "reckoning",
-     "v": "v0.0.421",
+     "v": "v0.0.440",
      "title": "Reckoning",
-     "do": "Use Reckoning on several enemies.",
-     "expect": "Everyone is pushed; only those who rolled Tier 1 or 2 are Frightened (none is Frightened before its Save).",
-     "rev": 1
+     "do": "Aveline (level 3, Escalation 6) uses Reckoning on several enemies.",
+     "expect": "Its Save card is in the chat first (the new look, the Roll buttons), then each enemy is pushed (Push 2, one at a time); only those who roll Tier 1 or 2 are Frightened (none before its Save).",
+     "rev": 2
     },
     {
      "id": "seizing-cut",
-     "v": "v0.0.421",
-     "title": "Seizing Cut's order",
-     "do": "Land Seizing Cut at Tier 3 (both hands full first: Release is offered).",
-     "expect": "Slid 1 first; Grabbed is a button to click after the Slide.",
-     "rev": 1
-    },
-    {
-     "id": "thwart-pressed",
-     "v": "v0.0.412",
-     "title": "Thwart Cut's Pressed",
-     "do": "Land Thwart Cut; the target makes its next Strike.",
-     "expect": "The target is Pressed 1 (Tier 3: 2) until the end of its turn; its Strike shows the Pressure Banes.",
-     "rev": 1
-    },
-    {
-     "id": "immobilized-dc",
-     "v": "v0.0.421",
-     "title": "Immobilized from a Tier",
-     "do": "Immobilize a creature with a Tier; try to Break Free.",
-     "expect": "Its DC is 11 + the user's Modifier (not 13).",
-     "rev": 1
+     "v": "v0.0.440",
+     "title": "Seizing Cut's Slide, then Grabbed",
+     "do": "Durgan (Arming Sword, one hand free) uses Seizing Cut on the Orc Warrior; land a Tier 3 (the GM can click Tier 3 in the roll dialog), then click Apply on the damage. Then land a Tier 1. Then left-click a condition on any card, and right-click it.",
+     "expect": "Tier 3: when the damage is applied, the Slide 1 starts by itself (place the Orc), then the Orc is Grabbed. Tier 1: the Reposition 1 starts on use. A left click on a condition applies it to the targeted or selected token; a right-click opens its rule.",
+     "rev": 2
     },
     {
      "id": "shake-off",
-     "v": "v0.0.414",
+     "v": "v0.0.440",
      "title": "Shake Off",
-     "do": "Target a Lingering creature (or none, for yourself) and use Shake Off; get each Tier once.",
-     "expect": "A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halved (\"Halved (Shake Off, Tier 2)\"), then it ends. Tier 1: a line says it goes on.",
-     "rev": 1
-    },
-    {
-     "id": "rider-zero",
-     "v": "v0.0.432",
-     "title": "A rider at 0 damage",
-     "do": "Give the Orc Warrior Resist 10 Pierce (an Effect with a Resist setting). Hit it with Trick Shots' Pin on a Tier 2.",
-     "expect": "The damage is 0 (Resist), and the Orc is still Hindered (1 round); the card doesn't say the rest of the Tier is lost.",
-     "rev": 1
+     "do": "Sylwen lands Wounding Shot on the Orc (Lingering); the GM uses the Orc's Shake Off; get each Tier once, one of them on a Lingering whose damage rolls 1.",
+     "expect": "A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halved, rounded up (1 stays 1, 7 becomes 4; \"Halved (Shake Off, Tier 2)\"), then it ends. Tier 1: a line says it goes on.",
+     "rev": 2
     },
     {
      "id": "species-class-card",
      "v": "v0.0.439",
      "title": "Species and Class cards",
-     "do": "Open the class window (a new character) and look at the Paladin and a Species; expand the Class and Species rows on a character sheet; send the Paladin class to the chat.",
+     "do": "Make a new character and open the class window: look at the Paladin and a Species; on Aveline's sheet expand the Class and Species rows; send the Paladin class to the chat.",
      "expect": "The same card look as a Feature: the name with \"Class\" (or \"Species\") on the right, the Flavor, the text as plain prose; nothing broken or empty that showed before. Using an Action still opens the roll dialog with its card (nothing changed there).",
      "rev": 1
     },
@@ -549,7 +179,7 @@
      "id": "card-surfaces",
      "v": "v0.0.438",
      "title": "The same card in the chat, a tooltip and the HUD",
-     "do": "In the dark interface, send Smite to the chat (right-click its row, Send to chat), hover a Paladin Action's row, and open an Action from the HUD; then do the same with a light sheet.",
+     "do": "In the dark interface, send Aveline's Smite to the chat (right-click its row, Send to chat), hover one of her Actions' rows, and open an Action from her HUD; then do the same with a light sheet.",
      "expect": "The Vigor heart and Resolve brain icons are the light red and blue of the sheet's card everywhere (no dark red on dark), the keyword highlights the same color; a card in a tooltip reads left-aligned, as in the sheet.",
      "rev": 1
     },
@@ -557,71 +187,23 @@
      "id": "statblock-card",
      "v": "v0.0.437",
      "title": "The stat block follows the card",
-     "do": "Open the Orc Warrior and the Ogre Chieftain with the one-page NPC sheet; read Avenge Kin, Ground Slam and Rally the Tribe; then put Rebuke on an NPC and look at it.",
+     "do": "Open the Orc Warrior and the Ogre Chieftain with the one-page NPC sheet; read Avenge Kin, Ground Slam and Rally the Tribe; then drag Aveline's Rebuke onto an NPC and look at it.",
      "expect": "Each Action reads as its card: the Trigger on a row of its own, then \"Attack Weapon vs. Armor Defense; Distance …; Target …\" on one line, then its Tiers; Rebuke shows \"Tier 1 or 2\" on one line with the label not wrapped. The look (header bar in the frequency's color, the Tier colors, the Effects box) is as before; the buttons still use the Action.",
      "rev": 1
     },
     {
      "id": "npc-fists",
-     "v": "v0.0.435",
-     "title": "An NPC without its weapon",
-     "do": "Open the Orc Warrior's sheet and HUD; use its Fists on a PC.",
-     "expect": "Fists is there (it wasn't before); it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. The GM uses it only when the Orc has lost its cleaver.",
-     "rev": 1
-    },
-    {
-     "id": "npc-no-ap-guard",
-     "v": "v0.0.435",
-     "title": "No Guard from an NPC's unspent AP",
-     "do": "End an Orc Warrior's turn with 1 AP left; then end a PC's turn with 1 AP left.",
-     "expect": "At the Orc's next turn it gains no Guard; the PC gains Guard for its unused AP as before.",
-     "rev": 1
-    },
-    {
-     "id": "minor-empowered",
-     "v": "v0.0.435",
-     "title": "A Goblin's Empowered die",
-     "do": "Make a Goblin Sneak Empowered and hit a PC with its Rusty Knife; then make the Orc Warrior Empowered and hit.",
-     "expect": "The Goblin's Empowered die is 1d6 and never explodes; the Orc's is 1d6! as before.",
-     "rev": 1
-    },
-    {
-     "id": "npc-unconscious",
-     "v": "v0.0.433",
-     "title": "An NPC Down on Nonlethal damage",
-     "do": "Take an Orc Warrior Down with more Nonlethal damage than Lethal (a Nonlethal Action, or a Lethal Action switched with its Bane); then a copy with equal Lethal and Nonlethal.",
-     "expect": "The first falls Unconscious, not Dead (it stops flanking). For the equal one the GM gets a pick window: \"It dies\" or \"It falls Unconscious\".",
-     "rev": 1
-    },
-    {
-     "id": "one-source",
-     "v": "v0.0.424",
-     "title": "A condition from a second creature",
-     "do": "Make an Orc Frightened of Aveline for 3 rounds, then Frightened of Durgan for 1 round.",
-     "expect": "It is Frightened of Durgan only, for 1 round. Made Frightened of Durgan again for 2 rounds: it keeps the longer duration.",
-     "rev": 1
-    },
-    {
-     "id": "reaction-conditions",
-     "v": "v0.0.418",
-     "title": "A Reaction's condition",
-     "do": "Rebuke an enemy that walks away; Snap Shot an enemy that walks up.",
-     "expect": "Each is Hindered and its movement is cut to half from that moment.",
-     "rev": 1
-    },
-    {
-     "id": "lingering-end",
-     "v": "v0.0.426",
-     "title": "Lingering ends with the encounter, keeps the higher",
-     "do": "Give an Orc Lingering 2 (Wounding Shot Tier 3), then Lingering 1 (Tier 2). End the encounter; start another.",
-     "expect": "It keeps Lingering 2 (the higher average). After the encounter it has no Lingering left.",
-     "rev": 1
+     "v": "v0.0.440",
+     "title": "An NPC's Fists",
+     "do": "Open the Orc Warrior's HUD, Basic tab, and its sheet's Basic Actions; use its Fists on Aveline.",
+     "expect": "Fists is in the Basic tab's first column (the attacks come first; the movements may be under \"+N more\"); it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. The GM uses it only when the Orc has lost its cleaver.",
+     "rev": 2
     },
     {
      "id": "shake-off-other",
      "v": "v0.0.426",
      "title": "Shake Off on another player's creature",
-     "do": "As a player (not the GM), with the GM connected, use Shake Off on another player's Lingering character and get a Tier 3.",
+     "do": "As Sylwen's player (not the GM), with the GM connected, use Shake Off on Kaela (another player's character) while she is Lingering, and get a Tier 3.",
      "expect": "The Lingering ends (no permission error in the console).",
      "rev": 1
     },
@@ -639,68 +221,12 @@
    "name": "Movement",
    "items": [
     {
-     "id": "advance-one",
-     "v": "v0.0.414",
-     "title": "Advance is one piece",
-     "do": "In combat, Advance, move 2 of 5 squares, then use a Weapon Attack; drag again.",
-     "expect": "The squares left are gone (the banner closes); dragging pays 1 AP for a new Advance.",
-     "rev": 1
-    },
-    {
-     "id": "advance-interact",
-     "v": "v0.0.414",
-     "title": "One Interact inside an Advance",
-     "do": "Advance, move 2, draw a weapon (or Interact); Interact a second time. Also Release mid-Advance.",
-     "expect": "The first Interact pays 1 AP and the Advance's squares stay; the second ends it. Release (0 AP) doesn't end it.",
-     "rev": 1
-    },
-    {
-     "id": "off-turn-move",
-     "v": "v0.0.421",
-     "title": "Moving on someone else's turn",
-     "do": "End a creature's turn with squares left; on the next creature's turn, drag the first one.",
-     "expect": "It isn't free movement (refused, or the GM's normal drag). A Reaction's squares (e.g. Slip Away's) are free during that turn only.",
-     "rev": 1
-    },
-    {
-     "id": "steadiness",
-     "v": "v0.0.421",
-     "title": "Steadiness asked on the right screen",
-     "do": "Push a player's creature with a GM creature; push a neutral creature with another neutral one.",
-     "expect": "The pushed creature's player is asked (Apply / Ignore), not the GM. Two neutral creatures don't count as allies.",
-     "rev": 1
-    },
-    {
-     "id": "trade-places",
-     "v": "v0.0.410",
-     "title": "Trade Places",
-     "do": "Use Hold the Line's Trade Places on an adjacent ally.",
-     "expect": "The Swap button swaps both tokens at once; no Reaction is offered.",
-     "rev": 1
-    },
-    {
-     "id": "swap-size",
-     "v": "v0.0.431",
-     "title": "Trade Places needs the same Size",
-     "do": "Make an ally's token 2 × 2 (a Large creature) and use Hold the Line's Trade Places on it.",
-     "expect": "Refused with a notice (\"not the same Size: they can't swap squares\"); nothing moves.",
-     "rev": 1
-    },
-    {
-     "id": "speed-halve-last",
-     "v": "v0.0.431",
-     "title": "Speed: halved last",
-     "do": "Give a PC with Speed 6 the Hindered condition and Exhausted 2; look at its Speed on the sheet and the HUD.",
-     "expect": "Speed 2 ((6 − 2) halved), not 1.",
-     "rev": 1
-    },
-    {
      "id": "setup-move",
-     "v": "v0.0.418",
-     "title": "A Setup's movement",
-     "do": "Use Lay On Hands on an ally 4 squares away; use Circling Shot.",
-     "expect": "No \"out of range\" block; the Setup's button Advances (Circling Shot: Evade 1, then the shot, Tier 3's Evade 1). The Encounter Log writes it as one line (\"Strafe (Setup: Advance 2)\").",
-     "rev": 1
+     "v": "v0.0.440",
+     "title": "A Setup runs when you press Roll",
+     "do": "In a combat, on Durgan's turn: target an ally 4 squares away and use Lay On Hands; press Roll in the roll dialog. On Kaela's turn use Circling Shot. On Durgan's turn at Escalation 6, use Smite (Hallowed Stance's Advance 3).",
+     "expect": "The roll dialog opens first (no \"out of range\" block; a note \"Out of range now: the Setup first\"); Roll starts the Setup's bar (move your token, Continue); then the roll is made from where you stand, without the dialog again. Circling Shot: Evade 1, then the shot, Tier 3's Evade 1. Cancel on the Setup's bar cancels the Action (no AP spent). The Encounter Log writes it as one line.",
+     "rev": 2
     }
    ]
   },
@@ -709,17 +235,17 @@
    "items": [
     {
      "id": "avenge-kin",
-     "v": "v0.0.433",
+     "v": "v0.0.440",
      "title": "Avenge Kin offers itself",
-     "do": "Put two Orc Warriors next to each other; a PC hits one of them with a Strike that deals damage.",
-     "expect": "The Reactions message offers the other Orc's Avenge Kin (its trigger: an ally within 2 squares takes damage from a [Strike] Action).",
-     "rev": 1
+     "do": "Delete the Orcs on the scene and drag two fresh Orc Warriors from the compendium, next to each other. Aveline hits one of them with a Strike that deals damage (apply it).",
+     "expect": "The Reactions message offers the other Orc's Avenge Kin (its trigger: an ally within 2 squares takes damage from a [Strike] Action), aimed at Aveline (the attacker).",
+     "rev": 2
     },
     {
      "id": "judge-question",
      "v": "v0.0.421",
      "title": "Judge's reduction is a question",
-     "do": "The Judged enemy damages an ally within 5 squares of the Paladin. Answer \"Not now\"; then hit again the same round and answer \"Reduce by N\".",
+     "do": "Aveline Judges the Orc Warrior; the Orc damages Sylwen within 5 squares of Aveline. Answer \"Not now\"; then it hits Sylwen again the same round: answer \"Reduce by N\".",
      "expect": "The Paladin's player is asked on the bottom bar. \"Not now\" reduces nothing and keeps the round's use; the second hit asks again and is reduced. Unanswered for 2 minutes counts as \"Not now\".",
      "rev": 1
     },
@@ -735,7 +261,7 @@
      "id": "judge-cycle",
      "v": "v0.0.431",
      "title": "Judge once per turn-cycle",
-     "do": "Put the Paladin last in the order. The Judged Orc damages an ally near him (reduce it); next round the Orc acts before the Paladin and damages the ally again.",
+     "do": "Put Aveline last in the order. The Orc she Judged damages Sylwen near her (reduce it); next round the Orc acts before Aveline and damages Sylwen again.",
      "expect": "The second damage isn't offered a reduction (still the Paladin's turn-cycle); after the Paladin's turn starts, the next one is.",
      "rev": 1
     },
@@ -743,7 +269,7 @@
      "id": "armor-faith-judge",
      "v": "v0.0.431",
      "title": "Armor of Faith and Judge's 0R",
-     "do": "With Escalation 2 or more, Judge again as a 0R when the creature you Judged goes Down; then use Shield of Faith.",
+     "do": "Durgan at Escalation 2 or more (Armor of Faith): Judge again as a 0R when the creature he Judged goes Down; then use Shield of Faith.",
      "expect": "No Guard from Judge's 0R; Shield of Faith gives the Guard (1 + Power Modifier).",
      "rev": 1
     },
@@ -751,7 +277,7 @@
      "id": "shield-of-faith",
      "v": "v0.0.409",
      "title": "Shield of Faith and its target",
-     "do": "An enemy Strikes an ally within 5 of the Paladin; use Shield of Faith. Then try with the ally behind a wall from the Paladin.",
+     "do": "An Orc Strikes Sylwen within 5 squares of Durgan; Durgan uses Shield of Faith. Then try with Sylwen behind a wall from Durgan.",
      "expect": "The damage is 1 + Pow less and the attacker is Taunted (1 round). Behind a wall: the Reactions message says it's blocked (\"no Line of Effect to ...\").",
      "rev": 1
     },
@@ -759,23 +285,15 @@
      "id": "rebuke-move-back",
      "v": "v0.0.409",
      "title": "Rebuke and Snap Shot's Move back",
-     "do": "An enemy within 3 walks away from the Paladin: use Rebuke; an enemy walks up to an Archer: use Snap Shot or Slip Away.",
+     "do": "An Orc within 3 squares walks away from Aveline: she uses Rebuke. An Orc walks up to Sylwen: she uses Snap Shot; one walks up to Kaela: she uses Slip Away.",
      "expect": "The Reactions message offers each; Move back puts the enemy on the square before.",
-     "rev": 1
-    },
-    {
-     "id": "hud-jump",
-     "v": "v0.0.421",
-     "title": "The HUD doesn't jump",
-     "do": "Accept a Reaction from the Reactions message with the HUD open.",
-     "expect": "The HUD keeps its place and size.",
      "rev": 1
     },
     {
      "id": "passives",
      "v": "v0.0.409",
      "title": "The Paladin's passives",
-     "do": "At Escalation 2 use a [Divine] Reaction (Armor of Faith) or Judge's 1 AP (Roving Judgment); reach Escalation 4 and 6.",
+     "do": "Durgan at Escalation 2 uses a [Divine] Reaction (Armor of Faith: Shield of Faith); Aveline at Escalation 2 uses Judge's 1 AP (Roving Judgment); Durgan reaches Escalation 4 and 6.",
      "expect": "Guard 1 + Pow, or Judge's 1 AP costs 0; at 4, two Reaction AP (Tireless Vigil); at 6, a [Divine] Action's card shows \"Setup: You Advance 3\" (Hallowed Stance).",
      "rev": 1
     },
@@ -791,7 +309,7 @@
      "id": "shield-not-ally",
      "v": "v0.0.426",
      "title": "Shield of Faith not against an ally",
-     "do": "An Archer's Volley hits Durgan, next to Aveline (with Shield of Faith).",
+     "do": "Sylwen's Volley hits Aveline, next to Durgan (with Shield of Faith).",
      "expect": "Shield of Faith is not offered (it answers an enemy's Strike).",
      "rev": 1
     },
@@ -799,7 +317,7 @@
      "id": "kindled-wrath",
      "v": "v0.0.426",
      "title": "Kindled Wrath",
-     "do": "Make an ally of Aveline Strained (Resolve damage), then Bloodied.",
+     "do": "Make Sylwen, an ally of Aveline, Strained (Resolve damage), then Bloodied.",
      "expect": "Strained raises nothing; Bloodied raises her Escalation once, and the line names the ally.",
      "rev": 1
     },
@@ -807,7 +325,7 @@
      "id": "rescue-reach",
      "v": "v0.0.426",
      "title": "Rescue moves the ally 2 squares",
-     "do": "Use Hold the Line's Rescue on an adjacent ally and move it 2 squares away from you.",
+     "do": "Durgan uses Hold the Line's Rescue on an adjacent ally (Aveline) and moves her 2 squares away from him.",
      "expect": "Allowed (a Reposition isn't held within your Reach); Relocate still is.",
      "rev": 1
     },
@@ -825,18 +343,10 @@
    "name": "Areas, light and Cover",
    "items": [
     {
-     "id": "area-cover",
-     "v": "v0.0.419",
-     "title": "Creatures in an area give no Cover",
-     "do": "The Ogre uses Ground Slam on several creatures in a row.",
-     "expect": "No creature gets Cover from another inside the area (walls still give it). The Ogre's allies in it are hit too.",
-     "rev": 1
-    },
-    {
      "id": "area-hover",
      "v": "v0.0.422",
      "title": "The hover card over an area",
-     "do": "Hover a placed area (Covering Fire, Consecrated Ground).",
+     "do": "Hover a placed area: Sylwen's Covering Fire, or Aveline's Consecrated Ground.",
      "expect": "A small card follows the mouse: its name and what it does inside.",
      "rev": 1
     },
@@ -844,7 +354,7 @@
      "id": "consecrated",
      "v": "v0.0.409",
      "title": "Consecrated Ground and Word of Radiance",
-     "do": "Place Consecrated Ground; walk an enemy in; start an ally's turn inside. Use Word of Radiance on enemies with one Judged.",
+     "do": "Aveline places Consecrated Ground; walk an enemy in; start Durgan's turn inside. Aveline uses Word of Radiance on enemies with one Judged.",
      "expect": "Enemies pay double in it; the ally gains Guard equal to your Power Modifier (a line). Word of Radiance: Appeal Saves, d8s against the Judged one, Pushes 3 / 2 / 1.",
      "rev": 1
     },
@@ -852,7 +362,7 @@
      "id": "covering-fire",
      "v": "v0.0.411",
      "title": "Covering Fire, Volley, Spotter",
-     "do": "Place Covering Fire and walk an enemy in; use Volley on a 3 Burst; Call Out a creature in Dim light.",
+     "do": "Sylwen places Covering Fire and the GM walks an enemy in; she uses Volley on a 3 Burst; she Calls Out (Spotter) a creature in Dim light.",
      "expect": "The enemy takes [V] 2 + Weapon Modifier and pays double; Volley makes Prone on a Critical; your allies see the called-out creature Clear for 1 round.",
      "rev": 1
     },
@@ -860,7 +370,7 @@
      "id": "senses-light",
      "v": "v0.0.410",
      "title": "Dim and Bright light on a roll",
-     "do": "Attack with you and the enemy both in Dim light; you in Bright and the enemy in Dim; the enemy in Bright and you in Dim.",
+     "do": "Sylwen attacks with her and the enemy both in Dim light; her in Bright and the enemy in Dim; the enemy in Bright and her in Dim.",
      "expect": "Both Dim: 1 Field Bane, no Boon. You Bright, it Dim: 1 Field Bane, no Boon. It Bright, you Dim: 1 Field Boon.",
      "rev": 1
     },
@@ -868,7 +378,7 @@
      "id": "clear-lines",
      "v": "v0.0.411",
      "title": "Clear Lines and Opening Shot",
-     "do": "At Escalation 4, shoot past an ally at an enemy Engaged with another ally; land a Tier 3.",
+     "do": "Sylwen at Escalation 4 (Clear Lines) shoots past Aveline at an Orc Engaged with Durgan; then Kaela (Opening Shot) lands a Tier 3.",
      "expect": "No Cover from your ally and no Field Bane; the Tier 3 line names your allies who threaten the target.",
      "rev": 1
     },
@@ -884,7 +394,7 @@
      "id": "volley-range",
      "v": "v0.0.427",
      "title": "Volley's Burst within the bow's normal range",
-     "do": "Place Volley's and Covering Fire's Burst beyond the bow's normal range.",
+     "do": "Sylwen places Volley's and Covering Fire's Burst beyond her bow's normal range.",
      "expect": "The placement is limited to the weapon's normal range (the cards read \"Distance: Weapon (Normal range)\").",
      "rev": 2
     },
@@ -892,16 +402,8 @@
      "id": "ht-once",
      "v": "v0.0.431",
      "title": "Hazardous Terrain once per turn-cycle",
-     "do": "Place Covering Fire; move an enemy into it (Advance), move it again inside it in the same turn, and end its turn there.",
+     "do": "Sylwen places Covering Fire; the GM moves an Orc into it (Advance), moves it again inside it in the same turn, and ends its turn there.",
      "expect": "One hit only (on entering); none for the second move or the end of the turn; it can be hit again from its next turn.",
-     "rev": 1
-    },
-    {
-     "id": "radiance-d8",
-     "v": "v0.0.428",
-     "title": "Word of Radiance against the Judged one",
-     "do": "Aveline Judges an Orc, then uses Word of Radiance on it and another enemy (both fail on the same Tier).",
-     "expect": "On the Save card the Judged Orc has its own damage line with d8s; the other enemy takes the d6 roll.",
      "rev": 1
     }
    ]
@@ -910,59 +412,19 @@
    "name": "Ending an encounter and resting",
    "items": [
     {
-     "id": "momentum-end",
-     "v": "v0.0.407",
-     "title": "Momentum at the end",
-     "do": "End an encounter (Overcome, then another one Retreat); a PC goes Down; two PCs Sleep the same night.",
-     "expect": "The window asks Overcome / Retreat / Neither (Overcome 3, Retreat 0); a Down: −1; the first Sleep −1, the second nothing.",
-     "rev": 1
-    },
-    {
-     "id": "mastery",
-     "v": "v0.0.412",
-     "title": "Mastery at the end of an encounter",
-     "do": "End an Overcome encounter in which characters made Strikes; answer \"Normal or harder\".",
-     "expect": "Each character who made a Strike gains 1 Mastery (several weapons: you pick); a chat line says so. The Mastery tab shows 10 / 20 / 30 / 45 / 60.",
-     "rev": 1
-    },
-    {
      "id": "thrill-wrath",
      "v": "v0.0.411",
      "title": "Thrill of the Kill and Kindled Wrath",
-     "do": "An enemy the Archer damaged goes Down; an ally of the Paladin becomes Bloodied.",
+     "do": "An enemy Sylwen damaged goes Down; Durgan, an ally of Aveline, becomes Bloodied.",
      "expect": "The Archer's Escalation +1; the Paladin's Escalation +1 (once).",
-     "rev": 1
-    },
-    {
-     "id": "swap-rest",
-     "v": "v0.0.407",
-     "title": "Swap on a Rest",
-     "do": "Complete a Rest as a player and open the Build tab.",
-     "expect": "\"Swap on a Rest\" shows (gone when an encounter starts); it asks the level, then the class window with that level's choices; the Attribute buttons are locked unless the optional world setting is on.",
      "rev": 1
     },
     {
      "id": "thrill-kill",
      "v": "v0.0.426",
      "title": "Thrill of the Kill on a first hit",
-     "do": "The Archer's first damage on an enemy brings it Down; later, an ally she hit with a Volley goes Down.",
+     "do": "Sylwen's first damage on an Orc brings it Down; later, Aveline, whom Sylwen hit with a Volley, goes Down.",
      "expect": "The kill raises her Escalation; the ally's Down doesn't.",
-     "rev": 1
-    },
-    {
-     "id": "mastery-step",
-     "v": "v0.0.426",
-     "title": "Mastery's + and −",
-     "do": "A character with the Hunting Bow at 20 Mastery: on the Mastery tab, click + on the Recurve Bow (it shows 10).",
-     "expect": "It goes to 11 at once (it counted from the shown 10).",
-     "rev": 1
-    },
-    {
-     "id": "sleep-momentum",
-     "v": "v0.0.428",
-     "title": "Sleep after a fight",
-     "do": "Without moving the world clock: Sleep (−1 Momentum), fight an encounter, Sleep again.",
-     "expect": "The second Sleep takes −1 too (a fight ended between them); two Sleeps with no fight between take only one.",
      "rev": 1
     }
    ]
@@ -974,7 +436,7 @@
      "id": "log-allies",
      "v": "v0.0.421",
      "title": "Damage to allies and numbered names",
-     "do": "In a fight with two Goblin Sneaks, an area hits an ally and the user itself; open the Encounter Log.",
+     "do": "In a fight with two Goblin Sneaks, Sylwen's Volley hits Aveline and the Goblins; open the Encounter Log.",
      "expect": "The damage table has a \"To allies\" column (damage to itself counts there); the Goblins are \"Goblin Sneak 1\" and \"Goblin Sneak 2\" in the window and in the copied text.",
      "rev": 1
     },
@@ -995,7 +457,7 @@
      "id": "pick-windows",
      "v": "v0.0.415",
      "title": "Every question is a pick window",
-     "do": "Meet a few of these: a Split Action's mode, a Strike out of your turn, a fourth Strike, Shift+E, the GM's \"movement left\", swap initiative, not enough AP, End Combat with a creature Dying, an Action with both hands full, Regrip, Reload, waking an Unconscious creature.",
+     "do": "With Aveline and Sylwen, meet a few of these: a Split Action's mode, a Strike out of your turn, a fourth Strike, Shift+E, the GM's \"movement left\", swap initiative, not enough AP, End Combat with a creature Dying, an Action with both hands full, Regrip, Reload, waking an Unconscious creature.",
      "expect": "Each opens in the class window's style (no Foundry dialog) and Cancel closes it doing nothing.",
      "rev": 1
     },
@@ -1003,7 +465,7 @@
      "id": "pick-forms",
      "v": "v0.0.415",
      "title": "The forms",
-     "do": "Open the Senses editor, the Encounter Log's Edit line and Add a note, an area placed by hand, Recovery, Generate Weapon.",
+     "do": "On Aveline's sheet open the Senses editor; in the Encounter Log, Edit line and Add a note; place an area by hand; Recovery; on an NPC, Generate Weapon.",
      "expect": "Each is a pick window; Save keeps what you typed; Generate Weapon's preview follows the type.",
      "rev": 1
     }

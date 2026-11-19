@@ -69,6 +69,13 @@ export async function noteStrike(actor, traits) {
     await actor.setFlag(F, "strikeState", { ...st, moved: false, last: kind || st.last, altUsed: st.altUsed || !!alt });
   } catch (e) { console.warn("twod12 | strike state", e); }
 }
+/** v0.0.440: One More Arrow is still there this turn (not spent; outside a combat always): read only, for the roll dialog's note. */
+export async function moreWReady(actor) {
+  const key = await turnOf(actor);
+  if (key === null) return true;
+  if (!key) return false;
+  return !stateNow(actor.getFlag?.(F, "strikeState"), key).moreW;
+}
 /** One More Arrow: true once on each of the creature's turns (and outside a combat every time); spends it. */
 export async function takeMoreW(actor) {
   const key = await turnOf(actor);

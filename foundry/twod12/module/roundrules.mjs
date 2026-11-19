@@ -74,17 +74,30 @@ export const THROWN_LESS = 1;
 /** Up to this many Minions can act in the same turn slot, one after another (the Bestiary; Lucas, 2026-11-12). */
 export const MINION_SQUAD = 3;
 /**
- * The Minions' squads for an Initiative roll: list [{ id, kind }] in order (kind: the same creature, such as its actor; "" for one that isn't a
+ * The Minions' squads for an Initiative roll: list [{ id, kind, group }] in order (kind: the same creature, such as its actor; "" for one that isn't a
  * Minion). Up to MINION_SQUAD Minions of the same kind share one roll: { leaderId: [memberIds] }, the leader first (it rolls; the others take its result).
+ * v0.0.440 (Lucas, 2026-11-18, the checklist: "always attempt to keep as even as possible. If there are four minions, two groups of two ... The GM
+ * decides who goes together when initiative is rolled"): the fewest squads that hold them (n / 3, rounded up), as even as can be (4: 2 + 2, 5: 3 + 2,
+ * 7: 3 + 2 + 2); group (1, 2...) is the GM's choice for a Minion (the Initiative window), honored while its squad has room.
  */
 export function minionSquads(list, size = MINION_SQUAD) {
-  const out = {}, open = new Map();
-  for (const x of list ?? []) {
-    if (!x?.kind) continue;
-    const cur = open.get(x.kind);
-    if (cur && out[cur].length < size) { out[cur].push(x.id); continue; }
-    out[x.id] = [x.id]; open.set(x.kind, x.id);
-  }
+  const out = {}, kinds = new Map();
+  for (const x of list ?? []) { if (!x?.kind) continue; if (!kinds.has(x.kind)) kinds.set(x.kind, []); kinds.get(x.kind).push(x); }
+  for (const xs of kinds.values()) for (const g of evenGroups(xs, size)) if (g.length) out[g[0].id] = g.map(x => x.id);
+  return out;
+}
+/** Pure (v0.0.440): the squads of one kind of Minion, [[x]]: the fewest that hold them, as even as can be; a Minion's own group first. */
+export function evenGroups(xs, size = MINION_SQUAD) {
+  const k = Math.max(1, Math.ceil((xs?.length ?? 0) / size)), gs = Array.from({ length: k }, () => []), cap = Math.ceil((xs?.length ?? 0) / k), rest = [];
+  for (const x of xs ?? []) { const g = Math.trunc(Number(x.group)) || 0; if (g >= 1 && g <= k && gs[g - 1].length < cap) gs[g - 1].push(x); else rest.push(x); }
+  for (const x of rest) { let i = 0; for (let j = 1; j < k; j++) if (gs[j].length < gs[i].length) i = j; gs[i].push(x); }
+  return gs;
+}
+/** Pure (v0.0.440): each Minion's squad for the Initiative window, { id: { n, of } } (its squad's number and how many squads its kind has). */
+export function minionGroupOf(list, size = MINION_SQUAD) {
+  const out = {}, kinds = new Map();
+  for (const x of list ?? []) { if (!x?.kind) continue; if (!kinds.has(x.kind)) kinds.set(x.kind, []); kinds.get(x.kind).push(x); }
+  for (const xs of kinds.values()) { const gs = evenGroups(xs, size); if (gs.length < 2) continue; gs.forEach((g, i) => g.forEach(x => { out[x.id] = { n: i + 1, of: gs.length }; })); }
   return out;
 }
 /** No creature has an Opportunity Attack by default since Stage 0 (it left the Basic Actions, for PCs and NPCs; a Talent brings it back later). */

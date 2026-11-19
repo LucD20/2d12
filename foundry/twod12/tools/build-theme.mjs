@@ -17,7 +17,7 @@ const here = f => fileURLToPath(new URL(f, import.meta.url));
 // hairline, ink, muted ink, faint ink, gold (stars, diamonds, links, the open tab), the stamp (the one thing clicked) and its ink.
 const DARK = { pg: "#1f1c18", pg2: "#28241d", band: "#332c22", rule: "#7a683f", hair: "#4a4132", ink: "#ece3cf", mute: "#b3a68e", faint: "#8a7f6b", gold: "#d2a75a", stamp: "#eadfc8", stampInk: "#221d16", stampHover: "#fff8e8",
   t1: "#f3a79e", t1bg: "#3a201d", t2: "#e0d65a", t2bg: "#35321a", t2n: "#bdb230", t3: "#8fd69b", t3bg: "#1d3a25", crit: "#8db8f0", critbg: "#17263a",
-  vig: "#d0564f", res: "#6f90e6", boon: "#8db8f0", bane: "#f3a79e", good: "#8fd69b", bad: "#ff9c92",
+  vig: "#d0564f", res: "#8fb0f5", boon: "#8db8f0", bane: "#f3a79e", good: "#8fd69b", bad: "#ff9c92", // v0.0.440 (Lucas, checklist: "[R] 1d6!" hard to read on the dark card): res was #6f90e6
   fqAtwill: "#6aa82e", fqRound: "#4a90de", fqEncounter: "#d65a5a", fqTurn: "#25a3a3", fqDaily: "#9279e0",
   rkMinion: "#4d545c", rkGrunt: "#4b5a26", rkStandard: "#6e2318", rkElite: "#4f2c69",
   // STYLE-3: palette A, the Tiers (fills; their text on a pale range; the pale range; the Critical's ring and ink)
@@ -344,7 +344,8 @@ const BY_HAND = `
 /* ---- v0.0.418 (Lucas, playtest 5, F1: "the AP pips: empty and full too alike"): a full pip a solid square in the AP gold (center and border the
    same), an empty one the outline only with a dark center; the HUD's and the carousel's */
 .twod12-dark .twod12-hud .hm-ap i:not(.x), .twod12-dark #twod12-carousel .tp-marks .hm-ap i:not(.x) { background: #1f1c18; border-color: #d2a75a; }   /* v0.0.421: a Slowed pip (x) keeps its own look */
-.twod12-type .twod12-hud .hm-ap i.on, .twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }
+/* v0.0.440 (the HUD mockup found it: full AP pips drew empty in dark): doubled .twod12-type so it beats the scoped "every pip dark" rule (equal specificity lost on scope proximity) */
+.twod12-type.twod12-type .twod12-hud .hm-ap i.on, .twod12-type.twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }
 /* ---- v0.0.418 (Lucas, playtest 5, B4): a calculated chip's blue (#1a3fb0) has a dark variant: the Boon blue */
 .twod12-dark a.twod12-inline.calc .ti-name, .twod12-dark a.twod12-inline.calc,
 .twod12-dark .application.twod12.twod12-actor .acard a.twod12-inline.calc .ti-name, .twod12-dark .application.twod12.twod12-actor .acard a.twod12-inline.calc,
@@ -753,6 +754,11 @@ const STYLE3 = `
 .twod12-type.twod12-type .twod12 .tcompact .tchip.tc { background: none !important; border: 0 !important; color: var(--s-ink) !important; padding: 0 !important; height: auto !important; font: 600 12px "Source Sans 3", sans-serif !important; border-radius: 0 !important; box-shadow: none !important; }
 .twod12-type.twod12-type .twod12 .tcompact .tchip.tc + .tchip.tc::before, .twod12-type.twod12-type .twod12 .tcompact .tsep::before { content: "\\00b7"; margin: 0 .4em; color: var(--s-mute); font-weight: 400; }
 .twod12-type.twod12-type .twod12 .tcompact .tsep { width: auto !important; height: auto !important; background: none !important; margin: 0 !important; border: 0 !important; }
+/* ==== v0.0.440 (Lucas, checklist: an item sheet's traits "still colored in the preview and edit"): STYLE-3's "no trait chip fills" for the
+   grouped chips too (a sheet's, a picker's, an item sheet's) and a weapon's properties: the plain words, a dot between them ==== */
+.twod12-type.twod12-type .twod12 .tg .tgc .tchip, .twod12-type.twod12-type .twod12 .tprops .tchip.prop { background: none !important; border: 0 !important; color: var(--s-ink) !important; padding: 0 !important; height: auto !important; font: 600 12px "Source Sans 3", sans-serif !important; border-radius: 0 !important; box-shadow: none !important; margin: 0 !important; }
+.twod12-type.twod12-type .twod12 .tg .tgc .tchip + .tchip::before, .twod12-type.twod12-type .twod12 .tprops .tchip.prop + .tchip.prop::before { content: "\\00b7"; margin: 0 .4em; color: var(--s-mute); font-weight: 400; }
+.twod12-type.twod12-type .twod12 .tg .tgc, .twod12-type.twod12-type .twod12 .tprops { gap: 0 !important; }
 .twod12-type.twod12-type .twod12.chat .trhl { background: none !important; color: inherit !important; padding: 0 !important; border: 0 !important; font-weight: 600; }
 .twod12-type.twod12-type .twod12.chat.cc .cc-div { gap: 0; } .twod12-type.twod12-type .twod12.chat.cc .cc-div i { display: none; }
 .twod12-type.twod12-type .twod12.chat.cc .cc-div span { background: var(--s-hair) !important; }

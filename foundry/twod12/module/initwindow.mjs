@@ -71,7 +71,7 @@ export function creatureOf(c, call) {
   const pc = a?.type === "character" && !!c.hasPlayerOwner, npc = a?.type === "npc";
   const st = k => !!a?.statuses?.has?.(k);
   const cr = { id: c.id, name: cleanName(c.name), base: cleanName(game.actors?.get(c.actorId)?.name ?? a?.name ?? c.name), img: c.img || a?.img, actorId: c.actorId,
-    pc, npc, ally: npc && disp === 1, owner: pc ? ownerName(a) : "", disp, hidden: !!(c.hidden || c.token?.hidden), mine: !game.user?.isGM && !!c.isOwner && !!a,
+    pc, npc, ally: npc && disp === 1, minion: npc && a?.system?.role === "minion" ? `${c.actorId}|${a.name}` : "" /* v0.0.440: its kind, for the squads */, owner: pc ? ownerName(a) : "", disp, hidden: !!(c.hidden || c.token?.hidden), mine: !game.user?.isGM && !!c.isOwner && !!a,
     mods: { ...(a?.system?.attributes ?? {}) }, rolled: c.initiative ?? null, rolledAttr: set.rolledAttr || "", rolledBy: set.by || "",
     dying: st("dying") ? "Dying" : st("shattered") ? "Shattered" : "", set };
   cr.fx = fxFor(a, attrOf(cr, call));
@@ -87,7 +87,8 @@ export async function rollCreatures(combat, ids, by = "GM") {
   const curId = combat.started ? combat.combatant?.id : null;
   // v0.0.407 (the Bestiary, Minions): up to 3 Minions of the same creature share one Initiative roll (roundrules.mjs minionSquads); each keeps its own turn
   const todo = ids.map(id => combat.combatants.get(id)).filter(c => c?.actor && c.isOwner && !isRolled(creatureOf(c, call)) && !goesLast(creatureOf(c, call)));
-  const squads = minionSquads(todo.map(c => ({ id: c.id, kind: c.actor?.type === "npc" && c.actor.system?.role === "minion" ? `${c.actorId}|${c.actor.name}` : "" })));
+  // v0.0.440 (Lucas: "as even as possible ... The GM decides who goes together"): even squads, each Minion's squad as the GM set it in the window
+  const squads = minionSquads(todo.map(c => ({ id: c.id, kind: c.actor?.type === "npc" && c.actor.system?.role === "minion" ? `${c.actorId}|${c.actor.name}` : "", group: c.getFlag?.(F, "init")?.group ?? 0 })));
   const follows = new Set(Object.values(squads).flatMap(m => m.slice(1)));
   for (const id of ids) {
     const c = combat.combatants.get(id);

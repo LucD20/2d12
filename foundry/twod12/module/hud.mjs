@@ -72,7 +72,7 @@ async function actionsOf(actor) {
     const list = vs.map((v, k) => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: lock || !!row?.off || !!btns[k]?.off, used: /used|spent/i.test(why), why: why || btns[k]?.why || "", fav: quick.has(`${i.id}:${v.ap}`) }))
       .filter(v => !onlyAps || onlyAps.includes(Number(v.ap)));
     return { id: i.id, name: i.name, freq: freq || "none", fq: FREQ_COLORS[freq] ?? FREQ_COLORS.none, roll: rollLine(actor, i), dim: lock || (!!row?.off && list.every(v => v.off)), versions: list, pc: actor.type !== "npc",
-      basic: !!i.getFlag(F, "basic"), basicAttack: !!it.basicAttack, reaction: !!it.reaction, escalation: Number(it.escalation) || 0, minAp: Math.min(99, ...vs.map(v => Number(v.ap) || 0)) };
+      basic: !!i.getFlag(F, "basic"), bkey: i.getFlag(F, "basic") || "", basicAttack: !!it.basicAttack, reaction: !!it.reaction, escalation: Number(it.escalation) || 0, minAp: Math.min(99, ...vs.map(v => Number(v.ap) || 0)) };
   };
   // v0.0.418 (playtest 5, D6: Seizing Cut showed though Durgan lacked the Mastery): a Technique not unlocked is left out, as on the sheet
   return { pc, list: actor.itemTypes.action.filter(i => techniqueState(actor, i) !== "locked").map(i => one(i)), one };
@@ -124,6 +124,10 @@ async function partyCard(actor, token = null) {
 /** The party: the player characters (a player sees them too: Lucas, "for everyone"). */
 const partyActors = () => (game.actors?.contents ?? []).filter(a => a.type === "character" && a.hasPlayerOwner);
 /** The Action lines of a tab, grouped in columns by Frequency (three lines a column; Basic: "+N more" past four columns). */
+/** v0.0.440 (Lucas, checklist: "I don't see the Fists" on the Orc): the Basic Actions in the sheet's fixed order (the attacks first), so the ones
+ *  past the tab's last column ("+N more") are the movements and the rest, never an NPC's Fists added after its other items. */
+export const BASIC_ORDER = ["basicWeaponAttack", "fists", "rally", "charge", "shove", "haul", "relocate", "trip", "advance", "safeMovement", "stand", "leaning", "interact", "reload"];
+export const basicOrder = list => [...list].sort((x, y) => { const p = k => { const n = BASIC_ORDER.indexOf(k); return n < 0 ? 99 : n; }; return p(x.bkey) - p(y.bkey) || String(x.name).localeCompare(String(y.name)); });
 function colsOf(lines, { per = 3, maxCols = 6 } = {}) {
   const cols = [];
   for (const k of FREQ_ORDER) {
@@ -170,7 +174,7 @@ async function barModel(actor, token = null) {
   }
   const act = list.filter(a => !a.basic && !a.reaction && !a.escalation).map(lineOf);
   const rx = list.filter(a => a.reaction && !a.escalation).map(lineOf);
-  const basic = list.filter(a => a.basic && !a.reaction).map(lineOf);
+  const basic = basicOrder(list.filter(a => a.basic && !a.reaction)).map(lineOf);
   const escLines = [...actor.itemTypes.feature.filter(f => Number(f.system?.escalation) > 0).map(f => ({ id: f.id, name: f.name, freq: "none", fqColor: FREQ_COLORS.none, pass: true, state: (e?.n ?? 0) >= Number(f.system.escalation) ? "working" : `at ${f.system.escalation}`, sub: `Escalation ${f.system.escalation}` })),
     ...list.filter(a => a.escalation).map(a => ({ ...lineOf(a), sub: `Escalation ${a.escalation}${a.roll ? ` · ${a.roll}` : ""}` }))];
   // the rx alert: a waiting Reaction of this creature that this user answers
@@ -218,7 +222,7 @@ async function panelRows(actor, cat) {
   const { list } = await actionsOf(actor);
   const act = a => ({ action: a });
   if (cat === "actions") return list.filter(a => !a.basic && !a.reaction && !a.escalation).sort((a, b) => a.minAp - b.minAp).map(act);
-  if (cat === "basic") return list.filter(a => a.basic && !a.reaction).map(act);
+  if (cat === "basic") return basicOrder(list.filter(a => a.basic && !a.reaction)).map(act);
   if (cat === "react") return list.filter(a => a.reaction && !a.escalation).map(act);
   if (cat === "esc") {
     const passives = actor.itemTypes.feature.filter(f => Number(f.system?.escalation) > 0).map(f => ({ text: f.name, sub: `Passive, Escalation ${f.system.escalation}${(Number(actor.system?.escalation) || 0) >= Number(f.system.escalation) ? "" : " (not yet)"}` }));

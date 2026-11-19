@@ -72,6 +72,13 @@ export async function dazeAtTurnStart(c) {
   }
 }
 
+/** Pure (v0.0.440): halves damage parts in place: their sum becomes half of it, rounded up (book, Rounding), the cut taken from the last parts first. */
+export function halveComps(comps) {
+  const sum = comps.reduce((t, c) => t + (Number(c.total) || 0), 0);
+  let cut = sum - Math.ceil(sum / 2);
+  for (let i = comps.length - 1; i >= 0 && cut > 0; i--) { const v = Number(comps[i].total) || 0, k = Math.min(v, cut); comps[i].total = v - k; cut -= k; }
+  return comps;
+}
 /** Lingering (the key stays bleed; v0.0.414 the book's name): at the end of each of the creature's turns, its damage is rolled on a damage card targeting it (the Damage button applies it). */
 // v0.0.427 (Lucas: Shake Off's "this turn" is the current turn, even if it's an ally's): onlyHalf: at the end of another creature's turn, only a
 // Lingering a Shake Off halved (Tier 2) deals its half and ends
@@ -85,9 +92,11 @@ export async function bleedAtTurnEnd(actor, { onlyHalf = false } = {}) {
     const parts = parseParts(`[${pool === "M" ? "R" : "V"}] ${b.dmg}${b.sub ? ` ${b.sub}` : ""}`);
     if (!parts.damage.length) continue;
     const { comps, rolls } = await rollParts(parts.damage, false);
-    // v0.0.414 (book, Shake Off): a Tier 2 halves this turn's damage (rounded down), then the Lingering ends
+    // v0.0.414 (book, Shake Off): a Tier 2 halves this turn's damage, then the Lingering ends
+    // v0.0.440 (Lucas, checklist: "1 is rounding to 0, intended?"; book, Chapter 1, Rounding: round up by default): the half of the whole
+    // damage, rounded up (1 deals 1), taken off its last parts
     const half = !!e.getFlag?.("twod12", "shakeHalf");
-    if (half) for (const cp of comps) cp.total = Math.floor((Number(cp.total) || 0) / 2);
+    if (half) halveComps(comps);
     // v0.0.315 (Lucas: the card was too long): the Save as one short line under the damage (no ↳ box), and no Lethal tag
     const attrs = (b.attrs?.length ? b.attrs : ["body", "instinct"]).map(a => (TWOD12.attributes[a] ?? a).slice(0, 2)).join("/");
     const note = half ? `<i class="fa-solid fa-droplet-slash" aria-hidden="true"></i> Halved (Shake Off, Tier 2): it ends now.` : `<i class="fa-solid fa-hand" aria-hidden="true"></i> Ends with Shake Off (1 AP) and a ${esc(attrs)} Save, DC ${b.dc || 13}.`;

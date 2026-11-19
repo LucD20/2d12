@@ -175,14 +175,15 @@ export function ccRowOf(c, name, uuid, chip = "") {
   };
 }
 /** The outcome lines of each Tier, the effect text, the target line's distance and area. */
-export async function attackModelParts({ it, item, version, weapon, cardCtx, fxn, fxNames, areaSize, chip }) {
+export async function attackModelParts({ it, item, version, weapon, cardCtx, fxn, fxNames, areaSize, chip, ruleCtx = null }) {
   const { weaponText } = await import("./preview.mjs");
   const wsub = weapon?.system?.subtype ?? "";
   const outcomeFor = (n, bon = []) => {
     const insts = version[`t${n}`] ?? [], parts = [];
     for (const i of insts) {
       if (i.useW) parts.push({ pool: i.pool || "B", t: weapon ? weaponText(weapon, n, i.wCount) : `${i.wCount}[W]`, sub: wsub });
-      if (i.dice) parts.push({ pool: i.pool || "B", t: i.dice, sub: i.subtype ?? "" });
+      // v0.0.440 (Lucas, checklist: Smite's roll dialog "only shows 1d6 / 2d6"): the dice under the Version's dice rule, as the roll will make them
+      if (i.dice) parts.push({ pool: i.pool || "B", t: ruleCtx && version.diceRule && !i.source ? ruledDice(i.dice, version.diceRule, ruleCtx) : i.dice, sub: i.subtype ?? "" });
       if (i.useAt) parts.push({ pool: i.pool || "B", t: String(cardCtx.attrVal), sub: i.subtype ?? "" });
     }
     // [Mod] on the Tiers that add it (a Weapon Action from Tier 2), with the weapon's damage and subtype (Ch. 1)
@@ -449,12 +450,16 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.293 (Lucas: "allow use of actions even if they aren't normally allowed"): from a faded row of the sheet (opts.override) a rule
   // that would refuse the Action is only a warning; true = stop here
   const refuse = msg => { ui.notifications.warn(opts.override ? `${msg} Used anyway.` : msg); return !opts.override; };
+  // v0.0.440 (Lucas, checklist: Wounding Shot "only warning, never prevent these unless very necessary"): a Requirement, a Frequency-like rule or a
+  // locked Technique warns and the Action goes on; only what can't happen at all (a movement while Immobilized or Prone, a Technique without its
+  // weapon in hand) still stops it
+  const warnOnly = msg => { ui.notifications.warn(`${msg} Used anyway.`); return false; };
   // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction AP waits until Staggered ends)
-  if (item.system?.reaction && reactionsOff(actor) && refuse(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
+  if (item.system?.reaction && reactionsOff(actor) && warnOnly(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
   // v0.0.412 (book, Wounding Shot): "You haven't left your square this turn": its Requirement, checked on its turn in a combat (hooks.mjs leftThisTurn)
   const H0 = await import("./hooks.mjs");
-  if (H0.needsStayed(item.system?.requirements)) { const H = H0; if ((await H.leftThisTurn(actor)) === true && refuse(`${item.name}: ${actor.name} has left its square this turn (its Requirement).`)) return; }
-  if (lock.locked && refuse(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`)) return;
+  if (H0.needsStayed(item.system?.requirements)) { const H = H0; if ((await H.leftThisTurn(actor)) === true && warnOnly(`${item.name}: ${actor.name} has left its square this turn (its Requirement).`)) return; }
+  if (lock.locked && warnOnly(`${item.name} is locked: ${TECHNIQUE_AT} ${lock.group} Mastery unlocks it (${actor.name} has ${lock.value}).`)) return;
   // v0.0.213 (Lucas): a Weapon Technique is used only with its own weapon, in hand (a Favorite or a macro can still call it).
   if (techniqueState(actor, item) === "unwielded" && refuse(`${item.name} is ${actor.items.get(item.getFlag("twod12", "weaponId"))?.name ?? "its weapon"}'s Weapon Technique: wield it first.`)) return;
   // A Split Action has two modes: choose one (Weapon needs a weapon, Power doesn't), then it is used as an Action of that mode (split.mjs).
@@ -525,7 +530,7 @@ export async function useAction(actor, item, opts = {}) {
   const reqOpts = { skipHands: true };   // hands: checked above
   if (reqTarget && reqUser) reqOpts.distance = squaresBetween(reqUser, reqTarget);   // Haul: "at least 2 squares away"
   const reqProblem = requirementProblem(it, actor, reqTarget?.actor ?? null, reqOpts);
-  if ((reqProblem) && refuse(`${actor.name} can't use ${item.name}: it ${reqProblem}.`)) return;
+  if ((reqProblem) && warnOnly(`${actor.name} can't use ${item.name}: it ${reqProblem}.`)) return;
   // An Action that needs several different creatures (Double Shot: "Two creatures") can't be made against fewer: its Linked Actions would be disrupted.
   // v0.0.393 (Lucas: "Actions are still asking for Targets, and can't use them without targets"): no refusal; the roll dialog shows the creatures
   // targeted (or "No target" with its DC and a Target button)
@@ -540,22 +545,35 @@ export async function useAction(actor, item, opts = {}) {
   if ((basicKey === "rally" && (s.atZero || actor.statuses?.has?.("unconscious"))) && refuse(`${actor.name} can't use Steel Yourself while Down or Unconscious.`)) return;
   if (basicKey === "interact") await offerWake(actor, [...game.user.targets]);   // v0.0.176: waking an Unconscious creature (not one that is Down)
   // Setup: what happens before the dice are rolled. Its movement is made first, so the range, cover and Engaged of the roll come from where the creature ends.
-  let setupDone = false, stanceRan = false;
-  if (!opts.noSetup && String(it.setup ?? "").includes("@Move")) {
-    const { runSetup } = await import("./setup.mjs");
-    const st = await runSetup(actor, item, actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null);
-    if (!st.ok) return;
-    setupDone = st.done;
-  } else if (!opts.noSetup && !it.reaction && game.combat?.started && game.combat.combatant?.tokenId === (actor.token?.id ?? actor.getActiveTokens?.()[0]?.document?.id)) {   // on your own turn
-    // v0.0.428 (the audit; book, Hallowed Stance: a [Divine] Action you use gains "Setup: You Advance 3"): the Setup comes before the roll, as any
-    // Setup (move 0 and Continue to skip it), when the card has no movement Setup of its own (Lay On Hands keeps its "Or, instead" on the card)
-    const stance = activeHooks(actor, "setupAdvance").find(h => hasTraits(it.traits, h.hook.traits));
-    if (stance) {
-      const n = Math.max(1, Number(stance.hook.n) || 3), { runSetup } = await import("./setup.mjs");
-      const st = await runSetup(actor, { name: item.name, system: { setup: `You @Move[advance|distance:${n}]{Advance ${n}} (${stance.item.name}).` } }, actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null);
-      if (!st.ok) return;
-      setupDone = stanceRan = st.done;
+  // v0.0.440 (Lucas, checklist: "Setup for Smite triggered before the roll dialog, it needs to be as soon as the message is sent"): with the roll
+  // dialog, the Setup runs when Roll is pressed (before the dice); the Action then runs again from where the creature stands, with the dialog's
+  // choices and without the dialog (its range, cover and Engaged come from there). Without the dialog (Skip roll dialog, a shortcut) it runs first.
+  let setupDone = !!opts.setupDone, stanceRan = !!opts.stanceRan;
+  const runSetups = async () => {
+    if (String(it.setup ?? "").includes("@Move")) {
+      const { runSetup } = await import("./setup.mjs");
+      const st = await runSetup(actor, item, actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null);
+      return { ok: st.ok, done: st.done, stance: false };
     }
+    if (!it.reaction && game.combat?.started && game.combat.combatant?.tokenId === (actor.token?.id ?? actor.getActiveTokens?.()[0]?.document?.id)) {   // on your own turn
+      // v0.0.428 (the audit; book, Hallowed Stance: a [Divine] Action you use gains "Setup: You Advance 3"): the Setup comes before the roll, as any
+      // Setup (move 0 and Continue to skip it), when the card has no movement Setup of its own (Lay On Hands keeps its "Or, instead" on the card)
+      const stance = activeHooks(actor, "setupAdvance").find(h => hasTraits(it.traits, h.hook.traits));
+      if (stance) {
+        const n = Math.max(1, Number(stance.hook.n) || 3), { runSetup } = await import("./setup.mjs");
+        const st = await runSetup(actor, { name: item.name, system: { setup: `You @Move[advance|distance:${n}]{Advance ${n}} (${stance.item.name}).` } }, actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null);
+        return { ok: st.ok, done: st.done, stance: st.done };
+      }
+    }
+    return { ok: true, done: false, stance: false };
+  };
+  const dialogWillShow = opts.quickAp == null && !(opts.skipDialog && !opts.restart) && !opts.rollAfterPlace
+    && (typeof globalThis.__twod12RollDialog === "function" || typeof foundry.applications?.api?.ApplicationV2?.prototype?.render === "function");
+  const setupLater = !opts.noSetup && !opts.setupRan && dialogWillShow;
+  if (!opts.noSetup && !opts.setupRan && !setupLater) {
+    const st = await runSetups();
+    if (!st.ok) return;
+    setupDone = st.done; stanceRan = st.stance;
   }
   const isSelf = it.traits.has("self");
   const selfToken = actor.token?.object ?? actor.getActiveTokens?.()[0] ?? null;
@@ -794,6 +812,11 @@ export async function useAction(actor, item, opts = {}) {
   for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
   for (const { b } of bonusSeen.values()) if (b.sub && b.sub !== "W") dmgSubs.add(b.sub);
   const bonusChips = [...bonusSeen.entries()].map(([key, { b, tiers }]) => ({ key, text: `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub === "W" ? previewWeapon?.system?.subtype ?? "" : b.sub] ?? ""}` : ""}` : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, why: `${b.hover || "This effect adds to the damage of this roll."} Untick it to leave it out (its effect isn't used up).` }));
+  // v0.0.440 (Lucas, checklist: "the roll dialog doesn't show where the die comes from"): One More Arrow's 1[W] more, when this Strike would take it
+  try {
+    const mw = useTraits.has("strike") && versions.some(v => [1, 2, 3].some(t => (v[`t${t}`] ?? []).some(i => i.useW))) ? activeHooks(actor, "moreW")[0] : null;
+    if (mw && await (await import("./hooks.mjs")).moreWReady(actor)) setupNotices.push({ text: `${mw.item?.name ?? "1[W] more"}: +${Math.max(1, Number(mw.hook.n) || 1)}[W] on a Tier that deals [W]`, icon: "fa-plus", why: "Once on each of your turns, your first [Strike] that deals [W] deals 1[W] more (it is spent when this damage is rolled)." });
+  } catch (e) { console.warn("twod12 | One More Arrow note", e); }
   const extraNotices = [...setupNotices,
     ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs),
     ...coverNotices
@@ -813,7 +836,8 @@ export async function useAction(actor, item, opts = {}) {
       const fxn = { all: await fxNameOf("all"), t1: await fxNameOf("t1"), t2: await fxNameOf("t2"), t3: await fxNameOf("t3") };
       const fxNames = list => list.map(x => `<span class="fxname">${esc(x.name)}</span>`).join(", ");
       const cardCtx = { item, weapon: previewWeapon, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0 };
-      const mk = await attackModelParts({ it, item, version: v, weapon: previewWeapon, cardCtx, fxn, fxNames, areaSize: v.areaSize || areaSet?.distance, chip: src.chip });
+      const ruleCtx = v.diceRule ? { escalation: Number(actor.system?.escalation) || 0, profane: !!(rollsAtOthers && targetToken && isProfaneFor(actor, targetToken)), more: false } : null;   // v0.0.440
+      const mk = await attackModelParts({ it, item, version: v, weapon: previewWeapon, cardCtx, fxn, fxNames, areaSize: v.areaSize || areaSet?.distance, chip: src.chip, ruleCtx });
       return { tiers: mk.outcomes, crit: v.critical ? await enrich(v.critical, item) : "", effects: mk.effectsHtml, setup: it.setup ? await enrich(setupFor(it.setup, setupDone), item) : "" };
     };
     const inp = await rollDialogInput({ actor, item, versions, src, useTraits, dlgTraits, previewWeapon, multi, perT, aimed, targetToken, rollsAtOthers, isSelf, areaSet, areaOutcome, extraMods, steps, bonusSeen, usesReload,
@@ -821,8 +845,15 @@ export async function useAction(actor, item, opts = {}) {
     // v0.0.398 (Lucas): live: false: the targets change only with the dialog's Target button
     rdData = await askAction({ inp, state: opts.rdState ?? null, live: false, card: () => item.sheet?.render(true), skip: (!!opts.skipDialog && !opts.restart) || !!opts.rollAfterPlace });   // v0.0.376: the HUD's Skip roll dialog; v0.0.397: Roll placed the area: roll at once
     if (!rdData) return;
-    // the targets changed on the map, or the area is placed again: the Action runs again with the same choices (no Setup, hands or turn question again)
-    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
+    // v0.0.440: Roll was pressed (or Roll placing the area): the Setup now; after its movement the Action runs again from the new square
+    if (setupLater && (!rdData.restart || rdData.rollAfter)) {
+      const st = await runSetups();
+      if (!st.ok) return;
+      if (st.done) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, setupRan: true, setupDone: true, stanceRan: st.stance, noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: true });
+    }
+    // the targets changed on the map, or the area is placed again: the Action runs again with the same choices (no hands or turn question again;
+    // v0.0.440: a Setup not made yet still comes when Roll is pressed)
+    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: opts.noSetup || opts.setupRan, setupRan: !!opts.setupRan || (setupLater && !!rdData.rollAfter), noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
   }
   const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : rdData ? rdData : await askRoll(actor, {   // v0.0.439: only the tests reach this (no ApplicationV2.render): the old dialog, now without its preview
     title: item.name,
@@ -1089,7 +1120,7 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.283 (pack chat-cards): an Action that rolls gets the new card (chatcards.mjs); the rest (no roll, Save Actions) keep the card below.
   let ccModel = null, ccRoll = null;
   if ((chk || mres) && !version.noTiers && !saveAct) {
-    const mk = await attackModelParts({ it, item, version, weapon: weapon ?? previewWeapon ?? null, cardCtx, fxn, fxNames, bonuses, mres, areaSize: areaSet?.distance, chip: src.chip });
+    const mk = await attackModelParts({ it, item, version, weapon: weapon ?? previewWeapon ?? null, cardCtx, fxn, fxNames, bonuses, mres, areaSize: areaSet?.distance, chip: src.chip, ruleCtx: version.diceRule ? { escalation: Number(actor.system?.escalation) || 0, profane: !!(rollsAtOthers && targetToken && isProfaneFor(actor, targetToken)), more: smiteMore } : null });   // v0.0.440
     const rowOf = (c, name, uuid) => ccRowOf(c, name, uuid, src.chip);
     const rowsM = mres ? mres.map(r => rowOf(r.chk, r.label ?? r.name, r.uuid)) : [rowOf(chk, targets[0]?.name ?? (isSelf ? actor.name : ""), targets[0]?.uuid ?? "")];
     if (mres) for (const r of mres) mk.outcomes[r.chk.tier] = mk.outcomeFor(r.chk.tier, r.bonuses ?? []);
@@ -1227,14 +1258,6 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.426 (the audit's gap): the chain a damage-free Save Action runs on use, kept on its Save card so that a retarget runs it for the new creatures
   const useChain = saveNoDamage && String(version.after ?? "").trim()
     ? (chainSteps(version.after)[0]?.chips ?? []).filter(c => { const key = String(c).replace(/\{[^}]*\}$/, ""); return ![1, 2, 3].some(n => String(version[`x${n}`] ?? "").includes(key)); }).join(" ") : "";
-  if ((it.moment && version.noTiers || saveNoDamage) && String(version.after ?? "").trim() && targets.length) {
-    const { runAfter } = await import("./inline.mjs");
-    // v0.0.272 (pack RX): only its first step: the steps after a @Pause ("After the damage") stay buttons on the card (applyAfterHtml from step 1)
-    // v0.0.421 (the audit: Reckoning gave every target Frightened before the Save): a chip that is also written in a Tier is that Tier's (it applies
-    // with the Tier, to the creatures that get it), so the chain run on use leaves it out
-    const inTier = c => { const key = String(c).replace(/\{[^}]*\}$/, ""); return saveNoDamage && [1, 2, 3].some(n => String(version[`x${n}`] ?? "").includes(key)); };
-    try { await runAfter((chainSteps(version.after)[0]?.chips ?? []).filter(c => !inTier(c)).join(" "), { actor, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })), attrVal: src.kind ? (Number(src.mod) || 0) : null, message: cmsg, source: item.name }); } catch (e) { console.warn("twod12 | moment chain", e); }
-  }
   // A Save Action: a Save card for the creatures in the area (each player rolls their own), and the area remembers it for [HT] (v0.0.159).
   if (saveAct && !version.noTiers) {
     try {
@@ -1257,6 +1280,16 @@ export async function useAction(actor, item, opts = {}) {
         await region.setFlag("twod12", "ht", { ...region.getFlag("twod12", "ht"), save: cfg, point, hits });
       }
     } catch (e) { console.warn("twod12 | Save Action", e); }
+  }
+  // v0.0.440 (Lucas, checklist: Reckoning "sends a very old chat version of it, asks creatures to be pushed" before its Save card): the chain run
+  // on use comes after the card has become the Save card
+  if ((it.moment && version.noTiers || saveNoDamage) && String(version.after ?? "").trim() && targets.length) {
+    const { runAfter } = await import("./inline.mjs");
+    // v0.0.272 (pack RX): only its first step: the steps after a @Pause ("After the damage") stay buttons on the card (applyAfterHtml from step 1)
+    // v0.0.421 (the audit: Reckoning gave every target Frightened before the Save): a chip that is also written in a Tier is that Tier's (it applies
+    // with the Tier, to the creatures that get it), so the chain run on use leaves it out
+    const inTier = c => { const key = String(c).replace(/\{[^}]*\}$/, ""); return saveNoDamage && [1, 2, 3].some(n => String(version[`x${n}`] ?? "").includes(key)); };
+    try { await runAfter((chainSteps(version.after)[0]?.chips ?? []).filter(c => !inTier(c)).join(" "), { actor, targets: targets.map(t => ({ uuid: t.uuid, name: t.name })), attrVal: src.kind ? (Number(src.mod) || 0) : null, message: cmsg, source: item.name }); } catch (e) { console.warn("twod12 | moment chain", e); }
   }
   // An Action that marks (Mark Quarry; v0.0.186 the Action's "Marks the target" box): the targeted creature becomes the marked one (mark.mjs).
   // v0.0.411 (pack F3): the turn's Strike state (Shifting Aim, Blade and Bow: hooks.mjs)
@@ -1335,6 +1368,14 @@ export async function useAction(actor, item, opts = {}) {
     };
     if (mres) { for (const r of mres) await giveConds(r.chk.tier, [isSelf ? actor.uuid : r.uuid], r.chk.crit); }
     else await giveConds(tier, isSelf ? [actor.uuid] : targets.map(t => t.uuid), chk?.crit);
+    // v0.0.440 (Lucas, checklist: Seizing Cut): a no-damage Tier's forced movement runs now too (Reposition 1 the target), then what follows it
+    const moveNow = async (t, list) => {
+      if (!(t >= 1) || ridesOn(t) || isSelf || !list.length) return;
+      const { runTierMove } = await import("./inline.mjs");
+      try { await runTierMove(expandAsText(version[`x${t}`], item.system.versions, version, t), { targets: list, actor, message: cmsg, attrVal: src.kind ? (Number(src.mod) || 0) : null }); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
+    };
+    if (mres) { for (const r of mres) await moveNow(r.chk.tier, [{ uuid: r.uuid, name: r.name }]); }
+    else await moveNow(tier, targets.map(t => ({ uuid: t.uuid, name: t.name })));
   }
   // Actions used because of another Action do not count toward Frequency or the Strike limit.
   if (!opts.free) await markUsed(actor, item);
@@ -1430,8 +1471,9 @@ export async function applyAfter(msg, side = "", step = 0) {
   if (cc?.kind === "noroll") { const { markStepDone } = await import("./noroll.mjs"); await markStepDone(msg, step, side); }
 }
 
-/** v0.0.411: a Tier's instances with n more [W] on its first [W] (One More Arrow). */
-const withMoreW = (insts, n) => { let done = false; return (insts ?? []).map(i => { if (done || !i.useW) return i; done = true; return { ...i, wCount: (Number(i.wCount) || 1) + n }; }); };
+/** v0.0.411: a Tier's instances with n more [W] on its first [W] (One More Arrow).
+ *  v0.0.440 (Lucas, checklist: "where is the die coming from?"): the n [W] are a part of their own, named after the card that gives them. */
+export const withMoreW = (insts, n, name = "1[W] more") => { const first = (insts ?? []).find(i => i.useW); return first ? [...insts, { ...first, wCount: n, useAt: false, dice: "", source: name }] : (insts ?? []); };
 /** Roll the damage for the tier rolled on an action card; v0.0.388 (pack ONE): written into that card (again: the GM's "Roll the damage again"). */
 export async function rollDamage(message, { again = false } = {}) {
   const f = message.getFlag("twod12", "action");
@@ -1446,17 +1488,17 @@ export async function rollDamage(message, { again = false } = {}) {
   const hadEmp = again && (message.getFlag("twod12", "ccDmg")?.groups ?? []).some(g => (g.comps ?? []).some(c => c.kind === "E"));
   const empOn = hadEmp || !!f.reloadShot || (stepOf(f.empowered) > 0 && empoweredNow(actor));   // v0.0.407: Empowered's 1d6!, once a turn (explode.mjs)
   // v0.0.411 (pack F3, One More Arrow: hooks.mjs moreW): once on each of its turns, a [Strike] that deals [W] deals 1[W] more
-  let moreW = 0;
+  let moreW = 0, moreWName = "1[W] more";
   // v0.0.426 (the audit: a Tier 1 Quick Shots, "[V] [Mod]", used it up): only a Tier that was rolled and deals [W] takes it
   const rolledTiers = f.results?.length ? f.results.map(r => r.tier).filter(t => t >= 1) : [f.tier];
   if (!again && (item.system.traits?.has?.("strike")) && rolledTiers.some(t => (version[`t${t}`] ?? []).some(i => i.useW))) {
     const mw = activeHooks(actor, "moreW");
-    if (mw.length && await (await import("./hooks.mjs")).takeMoreW(actor)) moreW = Math.max(1, Number(mw[0].hook.n) || 1);
+    if (mw.length && await (await import("./hooks.mjs")).takeMoreW(actor)) { moreW = Math.max(1, Number(mw[0].hook.n) || 1); moreWName = mw[0].item?.name || "1[W] more"; }
   }
   let empUsed = false, empLater = false;   // v0.0.426: with several targets the Empowered die is rolled once, after the Tiers, for one creature
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
-    const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW) : version[`t${tier}`]), ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
+    const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW, moreWName) : version[`t${tier}`]), ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
     const fx = [...[...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => !f.fxOnUse || x.mode !== "auto"), ...riders];   // cards from v0.0.144 on applied their automatic effects when the Action was used (v0.0.283: riders wait for the damage)
@@ -1497,7 +1539,9 @@ export async function rollDamage(message, { again = false } = {}) {
     // v0.0.418 (Lucas, playtest 5, G1-G3): the conditions written in the Tier's text are applied when its damage lands (a rule of the system,
     // read from the card's text, so a homebrew card gets it too): the chips, kept for the damage card (ccdamage.mjs applyRow)
     const conds = (await import("./inline.mjs")).tierConditionChips(xt);   // v0.0.421: not one written after a movement
-    return { comps, fx, chip, rolls, riders: riderHtml, conds };
+    // v0.0.440 (Seizing Cut): a forced movement in the Tier runs when its damage lands, then the conditions written after it (ccdamage.mjs)
+    const move = (await import("./inline.mjs")).tierMoveThen(xt) ? String(xt) : "";
+    return { comps, fx, chip, rolls, riders: riderHtml, conds, move };
   };
   if (f.results?.length) {
     // Several targets: the damage is rolled once per Tier and dealt to every creature on that Tier (Several Targets), posted in one card.
@@ -1512,7 +1556,7 @@ export async function rollDamage(message, { again = false } = {}) {
     if (rows.length) {
       const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283: one group per Tier (damage rolled once per Tier), the rider written once under it
       const tiers = [...byTier.keys()].sort((a, b) => b - a);
-      const groups = tiers.map(t => ({ tier: t, crit: false, comps: byTier.get(t).comps, fx: byTier.get(t).fx, riders: byTier.get(t).riders, conds: byTier.get(t).conds }));
+      const groups = tiers.map(t => ({ tier: t, crit: false, comps: byTier.get(t).comps, fx: byTier.get(t).fx, riders: byTier.get(t).riders, conds: byTier.get(t).conds, move: byTier.get(t).move }));
       const gOf = rows.map(r => tiers.indexOf(r.tier));
       // v0.0.426 (the audit; book, Chapter 8, Empowered: "If the Action damages several creatures, you choose which one takes it"): one die, for one
       // creature: the first one hit (its own group, so the others on its Tier don't take it)
@@ -1531,7 +1575,7 @@ export async function rollDamage(message, { again = false } = {}) {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "", !!f.crit);
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
-    await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
+    await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds, move: d.move }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
   if (empUsed && !hadEmp && !f.reloadShot) await markEmpoweredUsed(actor);
   // (the card is no longer collapsed: v0.0.388, the damage is on it)

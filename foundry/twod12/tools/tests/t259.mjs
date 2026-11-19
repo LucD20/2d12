@@ -49,5 +49,5 @@ const I = src("module/inline.mjs"), cond = src("module/conditions.mjs");
 const IN = await import(ROOTURL + "module/inline.mjs").catch(e => ({ err: e.message }));
 console.log("the Tiers:", IN.shakeOffResult ? [1, 2, 3].map(t => `${t}: ${IN.shakeOffResult(t)}`).join(" | ") : `(inline.mjs: ${IN.err})`);
 console.log("the chip: a Save with the better Attribute against its DC, then ends or halves:", I.includes("async function handleShakeOff(cfg, ctx)") && I.includes('if (e.isOwner) await (what === "ends" ? e.delete() : e.setFlag("twod12", "shakeHalf", true));')   /* v0.0.426: through the GM when not the owner */ && I.includes('e.setFlag("twod12", "shakeHalf", true)'),
-  "| the turn's damage halved, then it ends:", cond.includes("if (half) for (const cp of comps) cp.total = Math.floor((Number(cp.total) || 0) / 2);") && cond.includes("if (half) await e.delete();"));
+  "| the turn's damage halved, then it ends:", cond.includes("if (half) halveComps(comps);") && cond.includes("if (half) await e.delete();"));
 console.log("on the Actions tab (Utility):", JSON.stringify(src("module/config.mjs").match(/key: "utility", label: "Utility", names: (\[[^\]]*\])/)?.[1] ?? "?"));

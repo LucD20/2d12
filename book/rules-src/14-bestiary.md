@@ -18,7 +18,7 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 
 **Minions and Grunts have 3 AP a turn**, not 4: simple creatures that move and strike. Every NPC also gains the Reaction AP, as a PC does (see [[Action Points]]), **except Minions, which have no Reactions**. **An NPC gains no Guard from unspent AP:** an AP it keeps only pays for a Reaction (see [[Unspent AP]]).
 
-**Minions share turns.** Up to **3 Minions** can act in the same turn slot, one after another: the GM rolls one Initiative for the three, and they take one place in their side's turn order (see [[Initiative]]). Each still has its own turn (its own AP, its own start and end of turn), and takes it whole before the next one starts. A Minion's EoT effects end at the end of its own turn; durations in rounds count down at the end of the slot, after the last of them.
+**Minions share turns.** Up to **3 Minions** can act in the same turn slot, one after another: the GM rolls one Initiative for the squad, and it takes one place in their side's turn order (see [[Initiative]]). **Keep the squads as even as you can:** the fewest squads that hold them, of sizes as close as possible (four Minions are two squads of two, not three and one; five are three and two). **The GM decides who goes together** when Initiative is rolled, and **the order inside a squad**: who goes first, and, at the end of each turn, which of the ones left goes next. Each still has its own turn (its own AP, its own start and end of turn), and takes it whole before the next one starts. A Minion's EoT effects end at the end of its own turn; durations in rounds count down at the end of the slot, after the last of them.
 
 ### Minor enemies
 

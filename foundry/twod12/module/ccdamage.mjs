@@ -91,7 +91,7 @@ export async function postCcDamage({ actor = null, title, groups, targets = [], 
     const p = rowPreview(groups[g]?.comps ?? [], actorOf(t.uuid));
     return { uuid: t.uuid, name: t.name, tier: t.tier ?? groups[g]?.tier ?? 0, crit: !!t.crit, g, mods: p.mods, choice: p.choice, applied: null };
   });
-  const gs = groups.map((g, i) => ({ conds: g.conds ?? [], tier: g.tier ?? 0, crit: !!g.crit, comps: g.comps.map(c => ({ pool: c.pool || "B", sub: c.sub ?? "", nl: c.nl, total: Number(c.total) || 0, formula: c.formula ?? "", dice: c.dice ?? [], kind: c.kind ?? "", src: c.src ?? "", emp: c.emp ?? 0, label: c.label ?? "" })), fx: g.fx ?? [], riders: g.riders ?? [], rows: rows.map((r, k) => (r.g === i ? k : -1)).filter(k => k >= 0) }));
+  const gs = groups.map((g, i) => ({ conds: g.conds ?? [], move: g.move ?? "", tier: g.tier ?? 0, crit: !!g.crit, comps: g.comps.map(c => ({ pool: c.pool || "B", sub: c.sub ?? "", nl: c.nl, total: Number(c.total) || 0, formula: c.formula ?? "", dice: c.dice ?? [], kind: c.kind ?? "", src: c.src ?? "", emp: c.emp ?? 0, label: c.label ?? "" })), fx: g.fx ?? [], riders: g.riders ?? [], rows: rows.map((r, k) => (r.g === i ? k : -1)).filter(k => k >= 0) }));
   const state = { name: title, nl: !!nl, groups: gs, rows, originUuid, originMod, after, areaPoint, strike: !!strike, srcId, escalation: !!escalation, note, noNl: !!noNl, save: !!save };   // v0.0.334: save: from a Save Action (its chain runs on the Tiers the damage landed: 1 and 2)
   const first = gs[0];
   // v0.0.388: into a card that draws its damage (an attack or Save card); an old card (no card model) still gets a damage message
@@ -228,6 +228,12 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
       const { applyConditionChip } = await import("./inline.mjs");
       let user = null; try { const d = s.originUuid ? await fromUuid(s.originUuid) : null; user = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { user = null; }
       for (const chip of g.conds) { try { await applyConditionChip(chip, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null }); } catch (e) { console.warn("twod12 | a Tier's condition", chip, e); } }
+    }
+    // v0.0.440 (Lucas, checklist: Seizing Cut "didn't slide automatically"): the Tier's forced movement, then the conditions written after it
+    if (landed && g.move) {
+      const { runTierMove } = await import("./inline.mjs");
+      let user = null; try { const d = s.originUuid ? await fromUuid(s.originUuid) : null; user = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { user = null; }
+      try { await runTierMove(g.move, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: game.messages?.get?.(s.srcId) ?? null }); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
     }
   }
   const rwi = CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, label: x.label, v: x.v }));   // v0.0.321: shown as icons after "Took"
