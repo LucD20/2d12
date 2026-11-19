@@ -1,4 +1,5 @@
 // Inline rolls for chat, descriptions and card text:
+import { expireOnUse } from "./bonus.mjs";   // v0.0.458
 // @Check[body|dc:14|adj:2|boon:1|bane:2|traits:divine]   @Damage[(1d4+1)[body,slash],1d6[mind,holy]]
 // @Save[appeal|dc:13|t1:1d6[mind,holy]|t2:"text"|t3:0]   @Template[emanation|distance:2|targets:enemies|self:no|places:yes]
 import { releaseOptions, regripPrompt } from "./hands.mjs";
@@ -182,6 +183,7 @@ export function parseInline(kind, inner) {
     else if (key === "side") cfg.side = val.toLowerCase();
     else if (key === "extra") cfg.extra = val.toLowerCase().replace(/\s+/g, "");
     else if (key === "bb") cfg.bb = ({ field: "field", pressure: "pressure", support: "support" })[val.toLowerCase()] ?? "";   // v0.0.301 (PACK BB): @Boon[-1|bb:pressure] = 1 Pressure Bane
+    else if (key === "next") cfg.next = val.toLowerCase();   // v0.0.458: @Boon[-1|bb:pressure|next:roll]: spent by the next roll of any kind
     else if (key === "near") cfg.near = Math.max(0, Number(val) || 0);   // v0.0.254: the candidates within N squares of you (a Reaction's "an ally within 5 squares")
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
@@ -491,6 +493,7 @@ async function doCheck(kind, cfg, ctx = {}) {
     const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0;
     const dc = Number(data.dc) || 13;
     const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
+    expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
     const labels = [`\u2264 ${dc - 1}`, `${dc}\u2013${dc + 6}`, `\u2265 ${dc + 7}`];
     const dbl = chk.doubles;
     const rows = [];
@@ -759,6 +762,7 @@ async function handleShakeOff(cfg, ctx) {
       if (!data) continue;
       const fxm = resolveModifiers(actor, data.fx), manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dcUsed = Number(data.dc) || dc;
       const chk = await performCheck({ mod: actor.system.attributes?.[key] ?? 0, boons: fxm.boons + manB, banes: fxm.banes + manN, dc: dcUsed, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
+      expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
       await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: chk.rolls, content: `<div class="twod12 chat">${checkHtml(label, chk, [`DC ${dcUsed}`], { showTier: true })}</div>` });
       const what = shakeOffResult(chk.tier);
       // v0.0.426 (the audit: Shake Off on another player's creature failed for lack of permission): the GM ends or flags it when you don't own it
@@ -1271,6 +1275,7 @@ export async function saveRoll(msg, idx) {
   const fxm = resolveModifiers(actor, data.fx);
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dc = Number(data.dc) || cfg.dc;
   const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
+  expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
   // The damage of the tier rolled is calculated right away and every die (check and damage) is thrown at once.
   const parts = parseParts(cfg.tiers[`t${chk.tier}`]);
   // Several Targets: the damage of a Tier is rolled once, by the first creature on that Tier, and every other creature on it takes the same.

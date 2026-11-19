@@ -280,8 +280,9 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
       ? `<span class="bbgroup">${stepChip("empowered", "Empowered", "up", "boon", defaults.empowerN ? 1 : 0)}</span>`
       : "",
     // v0.0.283 (pack chat-cards; book Ch. 4): switching a Lethal Action to Nonlethal (or back) costs a Bane on the roll; the damage message shows the tag
+    // v0.0.458 (Lucas, 2026-11-19; book Ch. 4): a Save Action doesn't roll, so its switch gives every creature 1 Boon on its Save instead
     withDamage && defaults.nlKnown
-      ? `<label class="fxchip bane"><input type="checkbox" name="switchNl"><i class="fa-solid fa-hand-fist"></i><span>${defaults.nonlethal ? "Lethal" : "Nonlethal"} (1 Bane)</span></label>`
+      ? `<label class="fxchip ${defaults.nlSave ? "boon" : "bane"}"><input type="checkbox" name="switchNl"><i class="fa-solid fa-hand-fist"></i><span>${defaults.nonlethal ? "Lethal" : "Nonlethal"} (${defaults.nlSave ? "+1 Boon on each Save" : "1 Bane"})</span></label>`
       : ""
   ]
     .filter(Boolean)
@@ -893,7 +894,7 @@ export async function useAction(actor, item, opts = {}) {
       enfeebleN: topStep(steps.enfeebled),
       dc: opts.noTargetDc ?? dcInfo.dc,
       reaction: it.reaction,
-      nlKnown: !saveAct, nonlethal: it.traits.has("nonlethal"),
+      nlKnown: true, nlSave: saveAct, nonlethal: it.traits.has("nonlethal"),   // v0.0.458: a Save Action has the switch too
       favored: unseenYou || untrainedTarget,
       favoredLabel: unseenYou ? `${mine === "hidden" ? "Hidden" : "Unsensed"} (Favored)` : (untrainedTarget ? "Target's untrained armor (Favored)" : undefined),
       empowerWhy: stepSources.join(", "),
@@ -970,7 +971,7 @@ export async function useAction(actor, item, opts = {}) {
   if (title && it.vs) title += ` vs. ${it.vs === "roll" ? (TWOD12.attributes[attrKey] ?? "") : TWOD12.attributes[it.vs]}`;
   // v0.0.283: Lethal switched to Nonlethal (or back) in the dialog: a Bane on the roll, and the damage follows the choice
   const nlSwitched = data.switchNl === "on", dealsNl = it.traits.has("nonlethal") !== nlSwitched;
-  if (nlSwitched) { extraMods.push({ id: "syn:nlswitch", name: dealsNl ? "Nonlethal instead" : "Lethal instead", boons: 0, banes: 1, match: true, predicate: "Book, Chapter 4: changing Lethal and Nonlethal costs a Bane" }); data.fx = [...(data.fx ?? []), "syn:nlswitch"]; }
+  if (nlSwitched && !saveAct) { extraMods.push({ id: "syn:nlswitch", name: dealsNl ? "Nonlethal instead" : "Lethal instead", boons: 0, banes: 1, match: true, predicate: "Book, Chapter 4: changing Lethal and Nonlethal costs a Bane" }); data.fx = [...(data.fx ?? []), "syn:nlswitch"]; }
   let chk = null;
   // v0.0.426 (the audit: Shifting Aim's and Blade and Bow's Boons were shown but never rolled): their chips carry the id syn:hook:N, read here from
   // the same hook data the dialog drew them from (rollinput.mjs)
@@ -1054,7 +1055,7 @@ export async function useAction(actor, item, opts = {}) {
   if (chk || mres) { try { await useOnceModifiers(actor, rt, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], null, data.fx); } catch (e) { console.warn("twod12 | once per round", e); } }
   // An effect whose Bonus Damage was unticked stays (it wasn't used).
   { const kept = new Set(); for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, rt, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) if (bonusOff.has(bonusKey(b))) kept.add(b.effectId);
-    await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept); }
+    await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept, { rolled: !!(chk || mres) }); }
   const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name, disposition: t.document?.disposition ?? t.disposition }));   // v0.0.250: the side, for the Apply buttons
   // v0.0.243 (pack R; book, Chapter 1): once an encounter, a Critical on one of the creature's Actions raises its Escalation by 1 (at 3: nothing, not used up).
   if (game.combat?.started && (chk?.crit || mres?.some(r => r.chk?.crit))) { try { await raiseEscalation(actor, "crit"); } catch (e) { console.warn("twod12 | Escalation on a Critical", e); } }
@@ -1289,6 +1290,8 @@ export async function useAction(actor, item, opts = {}) {
     try {
       const { postSaveFor, saveActionCfg } = await import("./inline.mjs");
       const cfg = saveActionCfg(actor, item, version, src);
+      cfg.nonlethal = dealsNl;   // v0.0.458: its damage Nonlethal when it has the trait or was switched to it
+      if (nlSwitched) { cfg.boon = (Number(cfg.boon) || 0) + 1; cfg.nlSwitched = true; }   // the switch: every creature gains 1 Boon on its Save (book, Chapter 4)
       const point = areaOutcome?.point ?? null;
       // v0.0.283 (pack chat-cards): this card becomes the Save card (v0.0.286: several targets too, a row each; an [HT] area's repeat keeps the old card)
       // v0.0.317 (Lucas: "without a target (setting the DC) it uses the old card"): no target is the new card too, empty, with its target button

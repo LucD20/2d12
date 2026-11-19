@@ -112,6 +112,14 @@ Expect: A warning ("has left its square this turn (its Requirement). Used anyway
 
 ## Chat cards
 
+### dirty-trick-boon · v0.0.458 · Dirty Trick's Bane and Rally the Tribe's Boon as buttons
+Do: In a combat, the Goblin Sneak uses Dirty Trick on Sylwen and rolls Tier 2 or 3; click "1 Pressure Bane" on the card. Then Sylwen moves 2 squares, then rolls Snap Shot. Then the Ogre Chieftain (Escalation 4) targets the Orc Warrior and uses Rally the Tribe; click "1 Support Boon"; the Orc Warrior uses a Weapon Attack.
+Expect: Sylwen gets "1 Pressure Bane on the next Roll"; moving keeps it; Snap Shot's dialog has the Pressure Bane, and after the roll it is gone (a Save or a Check would spend it too). The Orc Warrior gets "1 Support Boon on the next Weapon", it is in its Weapon Attack's dialog, and gone after.
+
+### save-nonlethal · v0.0.458 · A Save Action switched to Nonlethal
+Do: Durgan uses Word of Radiance on two goblins; in the roll dialog, turn on "Nonlethal: +1 Boon on each Save", Use; each goblin rolls its Save; apply the damage.
+Expect: No Bane on Durgan. Each goblin's Save dialog starts with 1 Boon more. The damage card says Nonlethal and the damage is applied as Nonlethal.
+
 ### dmg-ledger · v0.0.454 · The damage breakdown and Apply's right-click
 Do: Durgan Smites the Orc Warrior (give it Resist 2 Slash and Weak 2 Holy in its Builder, and Guard 2); on the card click the equals button beside Apply; right-click Apply and choose Apply half; then right-click Undo and choose Apply double. Then a Goblin Sneak's Rusty Knife hits Sylwen while Durgan's Shield of Faith reduces it.
 Expect: The equals button opens a ledger under the Orc's row: Vigor: Slash (its dice) 8, Resist Slash −2, Guard −2, Takes 4; Resolve: Holy (its dice) 7, Weak Holy +2, Takes 9; "Lethal · Full" under it. No Full / Half / Double buttons: the right-click on Apply opens "Apply full / Apply half (rounded up) / Apply double", and on Undo the same to change it. On Sylwen's row the ledger reads "Shield of Faith −3" (not "Guard"), and Takes 0.

@@ -13,7 +13,7 @@ new tokens: bars always, no rotation: true | core rotation off once: true
 Rally line (v0.0.454: sysLine, the heart): true
 shortcuts Shift+L and Shift+H: true
 the diamond: no hover since v0.0.420 (Lucas: the hover cards removed); what is by hand stays on the item (automationNote): true | notes: true
-Rally the Tribe: true
+Rally the Tribe (v0.0.458: the Boon a button): true
 an Emanation with no Distance is around you: true | asks about yourself: true
 remove a target in the roll dialog: true
 Escalation Passive: description on click: false

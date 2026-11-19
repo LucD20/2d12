@@ -192,6 +192,22 @@
    "name": "Chat cards",
    "items": [
     {
+     "id": "dirty-trick-boon",
+     "v": "v0.0.458",
+     "title": "Dirty Trick's Bane and Rally the Tribe's Boon as buttons",
+     "do": "In a combat, the Goblin Sneak uses Dirty Trick on Sylwen and rolls Tier 2 or 3; click \"1 Pressure Bane\" on the card. Then Sylwen moves 2 squares, then rolls Snap Shot. Then the Ogre Chieftain (Escalation 4) targets the Orc Warrior and uses Rally the Tribe; click \"1 Support Boon\"; the Orc Warrior uses a Weapon Attack.",
+     "expect": "Sylwen gets \"1 Pressure Bane on the next Roll\"; moving keeps it; Snap Shot's dialog has the Pressure Bane, and after the roll it is gone (a Save or a Check would spend it too). The Orc Warrior gets \"1 Support Boon on the next Weapon\", it is in its Weapon Attack's dialog, and gone after.",
+     "rev": 1
+    },
+    {
+     "id": "save-nonlethal",
+     "v": "v0.0.458",
+     "title": "A Save Action switched to Nonlethal",
+     "do": "Durgan uses Word of Radiance on two goblins; in the roll dialog, turn on \"Nonlethal: +1 Boon on each Save\", Use; each goblin rolls its Save; apply the damage.",
+     "expect": "No Bane on Durgan. Each goblin's Save dialog starts with 1 Boon more. The damage card says Nonlethal and the damage is applied as Nonlethal.",
+     "rev": 1
+    },
+    {
      "id": "dmg-ledger",
      "v": "v0.0.454",
      "title": "The damage breakdown and Apply's right-click",
