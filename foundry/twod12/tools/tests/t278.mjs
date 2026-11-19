@@ -44,7 +44,7 @@ console.log("the Save card folds once its damage is applied:", !save(false).incl
 console.log("--- the looks");
 console.log("a pill keeps one line:", CSS.includes(".twod12.sheet.pcs .ps-pill { width: auto; min-width: 64px;"), "| the header wraps:", CSS.includes(".twod12.sheet.pcs .ps-head { flex-wrap: wrap;"));
 console.log("trait chips are plain words everywhere:", THEME.includes(".twod12-type.twod12-type .twod12 .tg .tgc .tchip, .twod12-type.twod12-type .twod12 .tprops .tchip.prop { background: none !important;"));
-console.log("the dark Resolve blue lighter:", THEME.includes("--s-res: #8fb0f5"), "| the HUD's 10 defense cells:", CSS.includes(".twod12-hud .hb-defs { display: grid; grid-template-columns: repeat(5, 1fr) 6px repeat(4, 1fr);"), "| a full AP pip gold in dark:", THEME.includes(".twod12-type.twod12-type .twod12-hud .hm-ap i.on"));
+console.log("the dark Resolve blue lighter (v0.0.447: lighter again, less saturated):", THEME.includes("--s-res: #aec4f0"), "| the HUD's 10 defense cells:", CSS.includes(".twod12-hud .hb-defs { display: grid; grid-template-columns: repeat(5, 1fr) 6px repeat(4, 1fr);"), "| a full AP pip gold in dark:", THEME.includes(".twod12-type.twod12-type .twod12-hud .hm-ap i.on"));
 
 console.log("--- Minion squads (book: as even as possible; the GM picks the groups and who goes next)");
 const R = await import(ROOTURL + "module/roundrules.mjs");

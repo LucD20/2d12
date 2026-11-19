@@ -19,61 +19,33 @@ differ):
 
 ## Characters and sheets
 
-### g1-line · v0.0.443 · The combat line: hooks, the ladder's shields, the marks
-Do: In a combat, open Aveline's sheet at Escalation 4 with both hooks left; use her Critical hook; then open the Ogre Chieftain's sheet (an Elite) and Bloody it; then the Orc Warrior's.
-Expect: Aveline: at the left "Hooks" (Critical, Kindled Wrath in bold) beside "Escalation" (a plain shield, 2, Roving Judgment; a shield with a chevron, 4, Weight of Judgment; a shield with a chevron and a band, 6, Apex; 2 and 4 in ink, 6 faint); a used Critical stays, faint, with a check. At the right AP (gold squares, a gold diamond, red slashes) over Esc. (six upright ticks, the 2nd, 4th and 6th taller, filled to 4, then "4"); a click on a tick sets the Escalation. No Hands on the line. The Ogre: the same layout, Bloodied +1 checked and faint, Strained +1 bold, its ladder 2 Pressing, 4 Relentless, 6 Second Wind. The Orc: a shorter line, its AP marks at the right. The line never changes height.
+### g3-info · v0.0.447 · A hook or a rung opens what it does
+Do: In a combat, on Aveline's sheet click "Critical" and "Kindled Wrath" under Hooks, then "2 Roving Judgment" and "6 Apex" under Escalation; on the Ogre Chieftain's, click "Bloodied +1" and "4 Relentless".
+Expect: Each opens the system's window: Critical, the class hook and Bloodied +1 with the book's words; Roving Judgment its Passive's card, the Apex its Action's card; Relentless the Elite step's words. No underline on the names; the pointer shows they can be clicked.
 
-### g1-out · v0.0.443 · Out of combat, and a combat not started
-Do: Open Sylwen's sheet with no combat; then add her token to a combat that the GM has not started and look at her sheet and her HUD.
-Expect: Out of combat the line keeps its lists, quiet, and says "Out of combat" at the right. In the prepared combat both the sheet and the HUD show her AP marks (the HUD no longer says "Out of combat" until the combat starts).
+### g3-still · v0.0.447 · The sheet doesn't jump
+Do: In a combat, open Aveline's sheet; move the pointer over the AP marks, the Esc. ticks, the hooks and the Basic Actions; click an Esc. tick to raise her Escalation; resize the window narrower and wider.
+Expect: Nothing moves when the pointer passes over it; raising the Escalation redraws without elements jumping; a narrower window shrinks the hooks and names to fit, a wider one lets them grow back.
 
-### g1-basic · v0.0.443 · The Basic Actions
-Do: Open Aveline's Actions tab, Basic Actions, in the dark and the light interface.
-Expect: Four columns; each box's left strip clearly visible in its Frequency's color (a Strike's second strip red beside it); the costs without "AP" ("1", "2/3", "1/2/3"); "Weapon Attack" and "Steel Yourself" whole, never cut.
+### g3-res · v0.0.447 · The dark Resolve color
+Do: In the dark interface, open Aveline's Smite on her sheet and in the roll dialog, and Durgan's Word of Radiance.
+Expect: "[R] 1d6! Ho" and every Resolve damage read in a lighter, less saturated blue that is easy to read on the dark card; Vigor's red unchanged.
 
-### g2-bars · v0.0.444 · No hand buttons on the Action bars
-Do: With Aveline's Longsword and Dagger in hand, look at her Actions tab.
-Expect: No small "1H" buttons after the stamps; each stamp opens the roll dialog (g2-dialog).
-
-### g1-npc · v0.0.443 · An NPC's tiles and its Basic attack
-Do: Open the Orc Warrior's and the Ogre Chieftain's sheets.
-Expect: Their Attribute and Modifier tiles are the PC's size, the empty places left blank, the Modifier named "Weapon". The Cleaver's bar says "Basic attack · 1 + 1d4! / 3 + 1d4!", the Club's "Basic attack · 1 + 1d4! / 3 + 1d6!" (no "High", no "~", no "+1 Boon"); the name is never cut.
-
-### e6-blunt · v0.0.443 · A damage type's icon and word on a dark card
-Do: In the dark interface, open the Orc Warrior's sheet and its Cleaver's short card; roll the Cleaver at Aveline and look at the chat card's damage row; then the same in the light interface.
-Expect: Slash is an icon (a slash) in its color, like Blunt's hammer, on the sheet's card and in the chat's damage row; bright on the dark card, the darker ink on the light one. No black sword picture.
-Rev: 2
 ## The HUD
 
-### g2-handmenu · v0.0.444 · The HUD's hand menu
+### g2-handmenu · v0.0.447 · The HUD's hand menu
 Do: In a combat with 3 AP, Aveline holding the Longsword in one hand and a Dagger in the other, and an Arming Sword worn: click her main hand's tile on the HUD, then her off hand's; out of combat, click a free hand's tile; with no AP left, click the Longsword when held with both hands.
-Expect: A small menu opens just above the tile (not at the HUD's far left), inside the screen: the weapon and its hand, the warning "Two-handed, held in one hand: 3 Banes on its Strikes", then: Hold with both hands struck ("Your off hand holds the Dagger") and "Drop the Dagger, then hold with both hands"; Swap hands with the Dagger; Change to the Arming Sword; Stow; Drop; each with its Action and cost ("free" out of combat). A one-handed weapon has no "both hands" row. With no AP, the rows that cost AP are struck with "No AP left". Each row does what it says and posts its line in the chat.
+Expect: A small menu opens just above the tile (not at the HUD's far left), inside the screen: the weapon and its hand, the warning "Two-handed, held in one hand: 3 Banes on its Strikes", then: Hold with both hands struck ("Your off hand holds the Dagger") and "Drop the Dagger, then hold with both hands"; Swap hands with the Dagger; Change to the Arming Sword; Stow; Drop; each with its Action and cost ("free" out of combat). A one-handed weapon has no "both hands" row. With no AP, the rows that cost AP are struck with "No AP left". Each row does what it says and posts its line in the chat. Each row's text is centered on its line.
 
+Rev: 2
 ### g2-hotbar · v0.0.445 · The macro bar's look and fit
 Do: Select Sylwen's token and look at the macro bar in the HUD's right column, in the dark and the light interface; use its lock, its page arrows; drag a macro onto a slot and click it.
 Expect: Flat square slots with a thin line, the slot's number small at the top right; Foundry's lock and clear at the left and the page arrows with the page number at the right are small and flat, stacked within a slot's height (no tall dark boxes); the ten slots share the width; every control and macro still works.
 Rev: 2
-### hud-identity · v0.0.441 · The HUD's identity column
-Do: In a combat, select Durgan's token; then Sylwen's with a changed Speed (give her Hindered).
-Expect: Under the bars: Guard, Rally and Steel Yourself; AP and Esc.; a row for conditions; then "AD 14  WD 13  Speed 4 | Weapon +1  Power +2" and "Body +2  Mind +1  Appeal −1  Instinct +2" in words (no Wpn, Pow, Bo, In), all inside the bar. A click on Instinct rolls the Check, Shift-click the Save; Sylwen's halved Speed is underlined.
-
-### hud-conditions · v0.0.441 · Conditions as marks under AP
-Do: Make Sylwen Prone and Hindered (end of turn), then add Dazed and Lingering 2.
-Expect: With two, each is its icon in a small square and its word ("Prone", "Hindered EoT"); with four, the icons alone (a duration keeps its small text). The HUD's height never changes. A click opens the Effect.
-
-### hud-basic-tab · v0.0.441 · The Basic tab
-Do: Select Sylwen, make her Prone, open the HUD's Basic tab; click Stand's "1 AP".
-Expect: Four columns, Attack, Movement, Control, Utility, every Basic Action on one line with its cost stamps (no "+N more"); Advance, Evade and Charge are dim with struck stamps, in their place. Stand's stamp uses Stand. The Orc Warrior's Basic tab shows its Fists in the Attack column.
-
-### hud-right · v0.0.446 · The right column's tabs: Situational, Hands, Macros
-Do: Select Sylwen's token with nothing waiting; click Hands, then Macros; make her Prone; click Stand; then, on the Goblin Sneak's turn, let it move next to her (Snap Shot).
-Expect: Two tabs, Hands and Macros, the one you choose kept. When she becomes Prone a third tab, Situational, appears and opens by itself with "Prone" and Stand · 1 AP, Crawl 1 · 1 AP, Crawl 3 · 2 AP, nothing cut; each button uses that Version. Once she stands, the Situational tab goes and the HUD is back on the tab you had. Snap Shot's trigger opens the Situational tab the same way with Use · 1R and Pass.
+### hud-identity · v0.0.447 · The HUD's Attributes roll a Check or a Save
+Do: In a combat, select Durgan's token; click Instinct in the HUD's identity column, then Shift-click it; then Shift-click Body on his sheet.
+Expect: The words AD, WD, Speed, Weapon, Power, Body, Mind, Appeal, Instinct inside the bar. Each roll posts the current chat card (its name "Instinct Check" / "Instinct Save", the Tier stamp, the dice against DC 13, the breakdown), not the old block with chips.
 Rev: 2
-### item-traits · v0.0.440 · An item sheet's traits
-Do: From Aveline's sheet open Smite's item sheet, then her weapon's; in the dark interface, then the light one.
-Expect: The traits (and a weapon's properties) are plain words with a dot between them, in ink: no colored chips, in the card at the top and in the edit part.
-Rev: 2
-
 ## Starting a combat
 
 ### minion-squad · v0.0.440 · Minion squads: even, the GM's groups, the GM's order

@@ -99,7 +99,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       setHands: CharacterSheet.setHands, setWorn: CharacterSheet.setWorn, setEscalation: CharacterSheet.setEscalation, toggleEscalation: CharacterSheet.toggleEscalation, masteryStep: CharacterSheet.masteryStep, masteryCollapse: CharacterSheet.masteryCollapse, masteryOpen: CharacterSheet.masteryOpen, chooseStartMastery: CharacterSheet.chooseStartMastery, hpEdit: CharacterSheet.hpEdit,
       setHealthView: CharacterSheet.setHealthView, setApPip: CharacterSheet.setApPip, toggleRap: CharacterSheet.toggleRap,
       openSpecies: CharacterSheet.openSpecies,   // v0.0.244 (pack R): the Species window (the Health line's high side is chosen in the class window at level 1, v0.0.245: no swap after that)
-      toggleCard: CharacterSheet.toggleCard, useVersion: CharacterSheet.useVersion, useStamp: CharacterSheet.useStamp, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
+      toggleCard: CharacterSheet.toggleCard, useVersion: CharacterSheet.useVersion, useStamp: CharacterSheet.useStamp, showInfo: CharacterSheet.showInfo, reloadFor: CharacterSheet.reloadFor, toggleBasic: CharacterSheet.toggleBasic,
       toggleFeat: CharacterSheet.toggleFeat, foldAll: CharacterSheet.foldAll, newGear: CharacterSheet.newGear, reloadWeapon: CharacterSheet.reloadWeapon,
       setWhere: CharacterSheet.setWhere, toggleItemFold: CharacterSheet.toggleItemFold,
       // v0.0.289 (PACK SHEET): Down mode's buttons, the Upkeep tab's Recovery, the Build tab's Review and the class card's Choices
@@ -721,6 +721,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this._bindHandTiles();
     this._fitLists();
     // v0.0.289: the Action names are keyboard links (Enter or Space opens the card)
+    this.element.querySelectorAll('[data-action="showInfo"][tabindex]').forEach(el => el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); el.click(); } }));   // v0.0.447
     this.element.querySelectorAll(".ps-nm[tabindex], .tabbtn[tabindex]").forEach(el => el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); (el.closest("[data-action='toggleCard']") ?? el).click(); } }));
     this.element.querySelectorAll("[data-opt]").forEach(el => {
       el.addEventListener("change", () => { this.rollOpts[el.dataset.opt] = Number(el.value) || 0; });
@@ -804,7 +805,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const fit = () => { el.querySelectorAll(".ps2-combat .ps2-ls").forEach(l => fitList(l)); el.querySelectorAll('.ps2-bxn[data-fit]').forEach(n => fitName(n)); };
     fit();
     requestAnimationFrame?.(fit);   // once the fonts and the window's size are settled
-    try { this._fitRO?.disconnect(); this._fitRO = new ResizeObserver(() => fit()); const t = el.querySelector(".twod12.sheet"); if (t) this._fitRO.observe(t); } catch (e) { /* no observer */ }
+    // v0.0.447: again only when the sheet's width changes (not for every change of its height or content)
+    try { this._fitRO?.disconnect(); let w = 0; this._fitRO = new ResizeObserver(en => { const nw = Math.round(en[0]?.contentRect?.width ?? 0); if (nw && nw !== w) { w = nw; fit(); } }); const t = el.querySelector(".twod12.sheet"); if (t) this._fitRO.observe(t); } catch (e) { /* no observer */ }
   }
 
   /** Put an Action's card into its row (once). */
@@ -1309,6 +1311,30 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const off = target.dataset.off ? { override: true } : {};
     if (off.override) ui.notifications.warn(`${item.name}: ${target.dataset.off}. Used anyway.`);
     await useAction(this.actor, item, { ...(target.dataset.ap ? { rdState: { ap: Number(target.dataset.ap) || 0 } } : {}), ...(target.dataset.weaponId ? { weaponId: target.dataset.weaponId } : {}), ...(event?.shiftKey ? { noGrant: true } : gk), ...off });
+  }
+  /**
+   * v0.0.447 (Lucas: "Click in a hook shows what it does. Same with escalation. Dont add an underline or anything, just allow click to open it"):
+   * the combat line's hook or rung: its cards (a Passive's, the Apex's), or the book's words (sheetmodel.mjs ESC_RULES, an Elite's step), in
+   * the system's window.
+   */
+  static async showInfo(event, target) {
+    event?.stopPropagation?.();
+    const info = String(target.dataset.info ?? ""), [kind, a, b] = info.split(":");
+    const { pickWith } = await import("./pickwindow.mjs"), SM = await import("./sheetmodel.mjs");
+    let name = target.textContent.replace(/\u2713/g, "").trim(), sub = "Escalation", html = "";
+    if (kind === "item") {
+      const items = String(a ?? "").split(",").map(id => this.actor.items.get(id)).filter(Boolean);
+      const cards = await Promise.all(items.map(i => (i.type === "action" ? buildActionCard(i, { actor: this.actor, use: false }) : buildFeatureCard(i, { actor: this.actor }))));
+      html = items.map((i, k) => `<h4 class="pw-ih">${esc(i.name)}</h4>${cards[k]}`).join("");
+    } else if (kind === "rule" && a === "elite") {
+      const r = SM.ELITE_RUNGS.find(x => String(x.n) === String(b));
+      name = r?.label?.replace(/^\d+\s*·\s*/, "") ?? name; sub = `Elite Escalation ${b}`; html = `<p>${esc(r?.tip ?? "")}</p>`;
+    } else if (kind === "rule") {
+      const [t, text] = SM.ESC_RULES[a] ?? [name, ""];
+      name = t; html = `<p>${esc(text)}</p>`;
+    }
+    if (!html) return;
+    await pickWith({ title: name, model: () => ({ name, sub, icon: "fa-shield-halved", stats: [], sections: [{ title: "", html: `<div class="cw-sub pw-text pw-info">${html}</div>` }], message: "", confirm: "Close" }), result: () => true });
   }
   /** v0.0.297 (PACK ACTION-PREVIEW): a "Use · N AP" button of the open card: the row's Use with that Version chosen in the roll dialog. */
   static async useVersion(event, target) {

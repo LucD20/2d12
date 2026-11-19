@@ -1497,7 +1497,7 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }
 .application.twod12.twod12-actor, .application.twod12.twod12-actor .twod12 {
   --g-roll: #5fd3c8; --g-requires: #7db1f5; --g-kind: #f29272; --g-damage: #e8c25a; --g-keywords: #aeb0b5;
-  --c-body: #ef8a96; --c-mind: #8db3ff; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
+  --c-body: #ef8a96; --c-mind: #aec4f0; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
   --c-bane: #ff6a4d; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a; }
 /* v0.0.438 (CARD-ONE step 5): a card carries its own color tokens wherever it is drawn (the sheet, the chat, a tooltip, the HUD): they were set
    only for a card inside the actor sheet, so a card in the chat, a tooltip or the HUD took the page's values (dark ink on the dark card). */
@@ -4133,7 +4133,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat .tline.grantrow.grantlist .cc-gbtn.gl-cancel { background: transparent; color: #8a2f22; border: 1px solid #c9a080; justify-content: center; font-size: 11.5px; min-height: 20px; }
 .twod12.chat .tline.grantrow.grantlist .gl-cancelled { color: #6b5a3a; }
 /* v0.0.352 (Lucas): the area tooltip's sides in their colors, the system's word colors in their light (dark background) variants */
-.twod12.twod12-zonetip { --c-body: #ef8a96; --c-mind: #8db3ff; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
+.twod12.twod12-zonetip { --c-body: #ef8a96; --c-mind: #aec4f0; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
   --c-bane: #ff6a4d; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a;
   --g-roll: #5fd3c8; --g-requires: #7db1f5; --g-kind: #f29272; --g-damage: #e8c25a; --g-keywords: #aeb0b5; }
 .twod12-zonetip .zt-who { font-weight: 700; }
@@ -5307,3 +5307,8 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-p-hands { justify-content: center; } .twod12-hud .h3-p-hands .h3-hands { border-top: 0; padding: 6px 9px; }
 .twod12-hud .h3-p-hands .h3-hand { padding: 4px 8px; font-size: .82rem; }
 .twod12-hud .h3-p-macros { justify-content: center; } .twod12-hud .h3-p-macros .h3-hot { border-top: 0; padding: 4px 9px; }
+/* v0.0.447: a hook or a rung opens what it does (no underline: Lucas); the hand menu's text centered in its rows (Lucas's checklist, g2-handmenu) */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b[data-action], .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span[data-action] { cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b[data-action]:focus-visible, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span[data-action]:focus-visible { outline: 1px solid var(--s-gold); outline-offset: 1px; }
+.twod12-hud .hud-hmenu .hm-row { align-items: center; } .twod12-hud .hud-hmenu .hm-c { text-align: right; }
+.application.pickwin .pw-info h4.pw-ih { margin: 8px 0 2px; font: 700 14px "Source Sans 3", sans-serif; }

@@ -476,13 +476,24 @@ export const rungSymbol = k => `<svg class="ps2-sym" viewBox="0 0 24 28" aria-hi
  * other hooks; a used one stays, faint, with a check) and its Passives' rungs; an Elite: its phases as its hooks (Bloodied +1, Strained +1, a
  * triggered one checked) and the Elite ladder; a Standard NPC: none (its line holds only the marks). rungs: escRungs' or ELITE_RUNGS' { n, label, lit }.
  */
-export function combatLists({ npc = false, elite = false, hookNames = [], used = {}, rungs = [], bloodied = false, strained = false } = {}) {
+export function combatLists({ npc = false, elite = false, hookNames = [], used = {}, rungs = [], bloodied = false, strained = false, info = {} } = {}) {
   if (npc && !elite) return null;
-  const hooks = npc ? [{ name: "Bloodied +1", used: !!bloodied }, { name: "Strained +1", used: !!strained }]
-    : [{ name: "Critical", used: !!used.crit }, ...[...new Set(hookNames)].map(n => ({ name: n, used: !!used.hook }))];
-  const ladder = (rungs ?? []).slice(0, 3).map((r, k) => { const [n, ...rest] = String(r.label ?? "").split(" · "); const name = rest.join(" · ").replace(/^—$/, ""); return { n: Number(n) || r.n, name: name || "—", lit: !!r.lit, sym: rungSymbol(k) }; });
+  // v0.0.447 (Lucas: "Click in a hook shows what it does. Same with escalation"): each carries what a click opens (sheet showInfo): a rule of the
+  // book ("rule:critical") or the cards that give it ("item:id,id")
+  const hooks = npc ? [{ name: "Bloodied +1", used: !!bloodied, info: "rule:bloodied" }, { name: "Strained +1", used: !!strained, info: "rule:strained" }]
+    : [{ name: "Critical", used: !!used.crit, info: "rule:critical" }, ...[...new Set(hookNames)].map(n => ({ name: n, used: !!used.hook, info: info.hooks?.[n] || "rule:hook" }))];
+  const ladder = (rungs ?? []).slice(0, 3).map((r, k) => { const [n, ...rest] = String(r.label ?? "").split(" · "); const name = rest.join(" · ").replace(/^—$/, ""), num = Number(n) || r.n;
+    return { n: num, name: name || "—", lit: !!r.lit, sym: rungSymbol(k), info: npc ? `rule:elite:${num}` : (info.rungs?.[num] || "rule:escalation") }; });
   return { hooks, ladder };
 }
+/** v0.0.447: the book's words a hook or a rung click shows when no card gives it (Chapter 2, Escalation; Chapter 14, Elite Escalation). */
+export const ESC_RULES = {
+  critical: ["Critical", "Once an encounter, when you score a Critical on one of your Actions, your Escalation increases by 1. At Escalation 6 it does nothing, and it isn't used up for the encounter."],
+  hook: ["Your class's hook", "Your class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally becomes Bloodied or goes Down; the Archer: an enemy you have damaged goes Down). You gain it at level 2."],
+  escalation: ["Escalation", "At each rung, 2, 4 and 6, your class gives you a Passive (and the Apex at 6), which works while your Escalation is that high or higher."],
+  bloodied: ["Bloodied +1", "When an Elite becomes Bloodied, its Escalation increases by 1 (once). The GM says so when it happens."],
+  strained: ["Strained +1", "When an Elite becomes Strained, its Escalation increases by 1 (once). The GM says so when it happens."]
+};
 /** Pure: the Basic attack's subtitle from its own Tier 2 / Tier 3 damage, the flat number first (Lucas: "the basic attack plus tiers like
  *  'Basic attack - 2 + 1d6! / 5 + 1d6!'"): "Basic attack · 1 + 1d4! / 3 + 1d6!". v: the Action's Version. */
 export function basicAttackLine(v) {
@@ -494,20 +505,27 @@ export function basicAttackLine(v) {
   const t2 = words(v?.t2), t3 = words(v?.t3);
   return t2 || t3 ? `Basic attack · ${t2 || "—"} / ${t3 || "—"}` : "Basic attack";
 }
-/** Needs a DOM: a list shrinks its text by half pixels until no line is wider than its column and it is no taller than its place (the combat
- *  line never grows: Lucas, 2026-11-18/19). Never cut, never taller; 7 px at the least. */
-export function fitList(l, min = 7) {
-  if (!l) return;
-  l.style.fontSize = "";
-  let size = parseFloat(globalThis.getComputedStyle?.(l)?.fontSize) || 14;
-  const over = () => l.scrollWidth > l.clientWidth + 0.5 || l.scrollHeight > l.clientHeight + 0.5;
-  while (over() && size > min) { size -= 0.5; l.style.fontSize = `${size}px`; }
-}
+/**
+ * Needs a DOM: a list shrinks its text by half pixels until no line is wider than its column and it is no taller than its place (the combat
+ * line never grows: Lucas, 2026-11-18/19). Never cut, never taller; 7 px at the least. v0.0.447 (Lucas: "many elements of the sheet jumped"):
+ * it never resets to the full size first (it grows back step by step only while that still fits) and leaves a hidden element alone.
+ */
+export function fitList(l, min = 7) { fitBy(l, () => l.scrollWidth > l.clientWidth + 0.5 || l.scrollHeight > l.clientHeight + 0.5, min); }
 /** Needs a DOM: a Basic Action's name shrinks by half pixels to 9.5 px until it fits its box; below that, two lines. Never cut (option A). */
 export function fitName(n, min = 9.5) {
-  if (!n) return;
-  n.style.fontSize = ""; n.classList.remove("wrap");
-  let size = parseFloat(globalThis.getComputedStyle?.(n)?.fontSize) || 13;
-  while (n.scrollWidth > n.clientWidth + 0.5 && size > min) { size -= 0.5; n.style.fontSize = `${size}px`; }
-  if (n.scrollWidth > n.clientWidth + 0.5) n.classList.add("wrap");
+  if (!n || !n.clientWidth) return;
+  const over = () => n.scrollWidth > n.clientWidth + 0.5;
+  if (n.classList.contains("wrap")) { n.classList.remove("wrap"); if (over()) { n.classList.add("wrap"); return; } }
+  fitBy(n, over, min);
+  if (over()) n.classList.add("wrap");
+}
+function fitBy(el, over, min) {
+  if (!el || !el.clientWidth) return;   // hidden (another tab): nothing to measure
+  const full = parseFloat(el.dataset.fitFull || "") || parseFloat(globalThis.getComputedStyle?.(el)?.fontSize) || 14;
+  el.dataset.fitFull = String(full);
+  let size = parseFloat(el.style.fontSize) || full;
+  while (over() && size > min) { size -= 0.5; el.style.fontSize = `${size}px`; }
+  // grow back (a wider window) only while it still fits
+  while (!over() && size < full) { const next = Math.min(full, size + 0.5); el.style.fontSize = `${next}px`; if (over()) { el.style.fontSize = `${size}px`; break; } size = next; }
+  if (size >= full) el.style.fontSize = "";
 }

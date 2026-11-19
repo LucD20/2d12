@@ -174,7 +174,14 @@ export async function pcModel(sheet, ctx) {
     elite, eliteRungs: ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n, tip: `${r.tip}${s.eliteLadder !== false ? " Automated (the Builder's Default ladder)." : " By hand: the Builder's Default ladder is off (its entry says otherwise)."}` })),   // v0.0.320
     // v0.0.443 (group 1): the combat line's two lists (hooks, the ladder with its shields); none for a Standard NPC
     lists: combatLists({ npc, elite, hookNames, used: { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id },
-      rungs: npc ? ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n })) : escRungs(escNow, rungNames, apex, apexAt), bloodied: s.bloodied, strained: s.strained }),
+      rungs: npc ? ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n })) : escRungs(escNow, rungNames, apex, apexAt), bloodied: s.bloodied, strained: s.strained,
+      info: (() => {   // v0.0.447: the cards a hook or a rung click shows
+        const rungs = {};
+        for (const p of passives) { const r = Number(passiveRung(p, cls)) || 0; if (r > 0) (rungs[r] ??= []).push(p.id); }
+        for (const i of a.itemTypes.action) { const e = Number(i.system?.escalation) || 0; if (e > 0) (rungs[e] ??= []).push(i.id); }
+        const hooks = Object.fromEntries(hookNames.map(n => { const it = a.items.find(i => i.name === n); return [n, it ? `item:${it.id}` : ""]; }));
+        return { hooks, rungs: Object.fromEntries(Object.entries(rungs).map(([k, v]) => [k, `item:${v.join(",")}`])) };
+      })() }),
     phases: `Phases: Bloodied +1 ${s.bloodied ? "\u2713" : "not yet"} \u00b7 Strained +1 ${s.strained ? "\u2713" : "not yet"}`
   };
   const hands = { tiles: handTiles(weapons, inCombat) };
