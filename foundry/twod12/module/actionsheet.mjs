@@ -164,7 +164,7 @@ function versionBody(v, vi, m) {
     ${tiers}
     ${grid([["Effects", `<textarea class="fr-ta" rows="3" data-as-in="v.effects" placeholder="The card's Effects line (the book's words)" aria-label="Effects">${esc(v.effects)}</textarea><a class="as-link" data-as="button" role="button" tabindex="0">+ a button in this text</a>`],
       areaOn ? ["Area", `<span class="fr-m">Size</span> ${step("v.@size", v.areaSize || a.size, 1, 30)}${a.keep ? ` <span class="fr-m">Rounds</span> ${step("v.@rounds", v.areaRounds || a.rounds || 0, 0, 20)} <span class="fr-m">0: until removed</span>` : ""}`] : null])}
-    <h4 class="as-h4" data-as-anchor="use">${v.noTiers ? "On use" : "On a Tier 2 or 3"} <small>${v.noTiers ? "Effects applied when the Action is used" : "Effects applied with the card's Effects line (Tier 2+)"}</small></h4>${fxBlock(v, m)}
+    <h4 class="as-h4" data-as-anchor="use">On use <small>${v.noTiers ? "Effects applied when the Action is used" : "Effects applied with the card's Effects line (whatever the roll)"}</small></h4>${fxBlock(v, m)}
     <h4 class="as-h4" data-as-anchor="after">After the damage <small>${A.parseAfter(v.after).filter(x => x.kind !== "text").length} step(s)</small></h4>${afterBlock(v, m)}`;
 }
 function versionsSec(m) {

@@ -69,7 +69,7 @@ async function actionsOf(actor) {
     const lock = Number(it.escalation) > 0 && escNow < Number(it.escalation);
     const btns = versionButtons(vs.map(v => effectiveAp(actor, i, v)), { reaction: !!it.reaction, inCombat: !!now, ap: now?.ap ?? 0, rap: now?.rap ?? 0 });   // v0.0.428: the cost a passive lowers
     const why = lock ? `Needs Escalation ${it.escalation}` : row?.offWhy ?? "";
-    const list = vs.map((v, k) => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: lock || !!row?.off || !!btns[k]?.off, used: /used|spent/i.test(why), why: why || btns[k]?.why || "", fav: quick.has(`${i.id}:${v.ap}`) }))
+    const list = vs.map((v, k) => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: lock || !!row?.off || !!btns[k]?.off, lock, used: /used|spent/i.test(why), why: why || btns[k]?.why || "", fav: quick.has(`${i.id}:${v.ap}`) }))
       .filter(v => !onlyAps || onlyAps.includes(Number(v.ap)));
     return { id: i.id, name: i.name, freq: freq || "none", fq: FREQ_COLORS[freq] ?? FREQ_COLORS.none, roll: rollLine(actor, i), dim: lock || (!!row?.off && list.every(v => v.off)), versions: list, pc: actor.type !== "npc",
       basic: !!i.getFlag(F, "basic"), bkey: i.getFlag(F, "basic") || "", basicAttack: !!it.basicAttack, reaction: !!it.reaction, escalation: Number(it.escalation) || 0, minAp: Math.min(99, ...vs.map(v => Number(v.ap) || 0)) };
@@ -146,7 +146,9 @@ function colsOf(lines, { per = 3, maxCols = 6 } = {}) {
 const lineOf = a => ({
   id: a.id, name: a.name, freq: a.freq, fqColor: a.fq, sub: a.versions.every(v => v.off) && a.versions.some(v => v.used) ? (a.versions.find(v => v.why)?.why ?? "used") : a.roll,
   used: a.versions.length > 0 && a.versions.every(v => v.used),   // v0.0.393: "used" only when spent (not when short of AP)
-  stamps: a.versions.map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why }))
+  // v0.0.453 (Lucas, playtest 6: "Token hud shouldnt prevent clicking on used actions. Just give a warning, like using from the sheet"): only an
+  // Escalation lock blocks; a spent Frequency or too few AP open the roll dialog, which says so (rolldlg.mjs warnings)
+  stamps: a.versions.map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why, lock: !!v.lock }))
 });
 /** The bar's model for one creature. */
 async function barModel(actor, token = null) {
@@ -519,7 +521,7 @@ async function onClick(ev) {
   if (!actor) return;
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
-  if (kind === "line" && item && !ev.target.closest(".hb-st")) { const first = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions.find(v => !v.off); if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
+  if (kind === "line" && item && !ev.target.closest(".hb-st")) { const vs0 = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions ?? [], first = vs0.find(v => !v.off) ?? vs0.find(v => !v.lock); /* v0.0.453: a spent one too (the dialog warns) */ if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
   if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
   if (kind === "grantcancel") { const { cancelGrantOf } = await import("./freeuse.mjs"); return cancelGrantOf(actor, b.dataset.effect); }
   if (kind === "more") return openPanel("more", st.moreIds ?? []);

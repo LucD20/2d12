@@ -120,9 +120,9 @@ export function atWillUses(actor, item) {
 }
 
 /** Remember that an Action was used (in combat). */
-export async function markUsed(actor, item) {
+export async function markUsed(actor, item, { keepFrequency = false } = {}) {   // v0.0.453: keepFrequency (Unfailing on a Tier 1): only the Strike counts
   // Daily: remembered in or out of combat, until a Sleep or a Rest (sleep.mjs) clears it.
-  if (actor?.isOwner && effectiveFrequency(item.system) === "daily") {
+  if (actor?.isOwner && !keepFrequency && effectiveFrequency(item.system) === "daily") {
     const used = actor.getFlag(F, "dailyUsed") ?? [];
     if (!used.includes(item.id)) await actor.setFlag(F, "dailyUsed", [...used, item.id]);
   }
@@ -131,7 +131,7 @@ export async function markUsed(actor, item) {
   const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
   if (u.combatId !== combat.id) Object.assign(u, { combatId: combat.id, round: combat.round, roundUsed: [], encounter: [], turnKey: "", strikes: 0 });
   if (u.round !== combat.round) { u.round = combat.round; u.roundUsed = []; }
-  const f = effectiveFrequency(item.system);
+  const f = keepFrequency ? "" : effectiveFrequency(item.system);
   if (f === "turn") {
     const k = `${combat.round}:${combat.turn}`;
     if (u.turnUsedKey !== k) { u.turnUsedKey = k; u.turnUsed = []; }

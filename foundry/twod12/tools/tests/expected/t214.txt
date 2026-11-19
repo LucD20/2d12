@@ -54,7 +54,7 @@ the last target removed: No target: target a creature
 --- Versions: switching updates the Tier table and the meta line
 2 AP has 2d10: true | 1 AP has 2d10: false | 1 AP has 1d4: true | Effects row only at 2 AP: true true
 3 AP button struck through, can be chosen, its reason on hover: true | aria-pressed on 2 AP: true
-meta lines (v0.0.294: the book's format): Distance: WeaponTarget: One creature / AttackSignature + 2 vs. Armor Defense / Effects (T2+)The target sheds Bright light in a 2 Emanation and takes 1 Bane when they try to Hide, for 1 round.
+meta lines (v0.0.294: the book's format): Distance: WeaponTarget: One creature / AttackSignature + 2 vs. Armor Defense / EffectsThe target sheds Bright light in a 2 Emanation and takes 1 Bane when they try to Hide, for 1 round.
 the order: Escalation, Targets, Distance ✦ Vs., Requirements, Trigger: Distance: 5 sq.Target: The triggering creature / Escalation2 / RequiresA free hand / TriggerAn enemy attacks / SaveAppeal Save
 no Tier prefix in Effects, no T1 "0" line: true true
 --- the player view (Hide enemy Defenses on) and Designer mode

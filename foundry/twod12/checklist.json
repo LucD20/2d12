@@ -14,15 +14,44 @@
    ]
   },
   {
+   "name": "The HUD",
+   "items": [
+    {
+     "id": "hud-used",
+     "v": "v0.0.453",
+     "title": "A used Action from the HUD: a warning, not a stop",
+     "do": "In a combat, Sylwen uses Quick Shots, then clicks it again on her HUD (its line reads \"used\", its stamp struck); then with 1 AP left click a 2 AP stamp. Ask for an Escalation 2 Passive's or the Apex's line before her Escalation reaches it.",
+     "expect": "The used Action and the 2 AP stamp still open the roll dialog, which says why it isn't allowed (\"used this round\", \"Not enough AP\") and lets you Roll. A struck stamp shows the hand pointer and lights on hover. Only an Escalation lock stays unclickable.",
+     "rev": 1
+    },
+    {
+     "id": "strip-marks",
+     "v": "v0.0.453",
+     "title": "The combat strip: the Reaction diamond, no state words",
+     "do": "In the dark interface, start a combat with Durgan and the Orc Warrior; let the Orc become Bloodied, then put Durgan Down.",
+     "expect": "Each creature's Reaction AP diamond on the strip is filled in the same gold as a full AP square (empty: the outline). No \"Bloodied\", \"Strained\", \"Dying\" or \"Down\" word under the names.",
+     "rev": 1
+    }
+   ]
+  },
+  {
    "name": "Starting a combat",
    "items": [
     {
+     "id": "judge-start",
+     "v": "v0.0.453",
+     "title": "Judge on the Start of the Encounter card",
+     "do": "Put Aveline, Durgan and the Ogre Chieftain in a combat, roll Initiative and start it.",
+     "expect": "The \"Start of the Encounter\" card has a row for each Paladin: \"Aveline can Judge a creature (0 AP, at the start of the encounter)\" with its Judge button; Resolve runs them in order (each asks for its target), as the other rows.",
+     "rev": 1
+    },
+    {
      "id": "minion-squad",
-     "v": "v0.0.440",
-     "title": "Minion squads: even, the GM's groups, the GM's order",
-     "do": "Make the Goblin Sneak a Minion (its sheet's rank), put four Goblin Sneaks, Aveline and Sylwen in a combat and open the Initiative window. Click one Goblin's \"Squad 1 of 2\". Roll. Start the combat; when a Goblin squad's turn comes, and at the end of that Goblin's turn, answer the bottom bar.",
-     "expect": "Two squads of two by default (not three and one); a click moves that Goblin to the other squad (the label changes). One roll per squad (\"×2\" on the card), each Goblin with its own turn, no PC's turn inside a squad. Before a squad's turn the bar asks which Goblin goes now; the one picked goes, and at the end of its turn the bar asks again while two or more are left. A Minion has 3 AP and no Reaction AP.",
-     "rev": 3
+     "v": "v0.0.453",
+     "title": "Minion squads: the recommendation, the GM's groups and order",
+     "do": "Make the Goblin Sneak a Minion (its sheet's rank), put three Goblin Sneaks, Aveline and Sylwen in a combat and open the Initiative window. Click the label of the Goblin that is alone in its squad, then the label of one of the pair; then add a fourth and a fifth Goblin. Roll. Start the combat; when a Goblin squad's turn comes, and at the end of that Goblin's turn, answer the bar.",
+     "expect": "Three Goblins start as two squads, 2 + 1 (four: 2 + 2; five: 2 + 2 + 1). The lone one's click puts it with the others (one squad of three); a click on one of a pair after the last squad makes a new squad; a squad never holds more than three; two Goblins can be split. One roll per squad, each Goblin its own turn, no PC's turn inside a squad; before a squad's turn the bar asks which Goblin goes now, and again at the end of each turn while two or more are left.",
+     "rev": 4
     }
    ]
   },
@@ -30,28 +59,36 @@
    "name": "The roll dialog",
    "items": [
     {
-     "id": "g2-dialog",
-     "v": "v0.0.444",
-     "title": "Two weapons: a Roll button for each",
-     "do": "Give Aveline a Dagger (Items tab) and hold her Longsword in her main hand and the Dagger in her off hand; target the Orc Warrior beside her and click Weapon Attack's stamp on her sheet, then on her HUD; then step 4 squares away and do it again.",
-     "expect": "No \"Which weapon?\" window: the dialog opens with a column for each weapon (Longsword main hand, Dagger off hand: its Distance, Tiers 1 to 3, its roll and its Banes, every line on one line) and two buttons, \"Roll · Longsword\" and \"Roll · Dagger\". Each rolls with its weapon (the chat card says which). At 4 squares the Longsword's button is struck with \"Orc Warrior is 4 squares away: its Range is 1\" in its column, and the Dagger's reads \"Roll · Dagger (thrown)\". With only one weapon that fits (Sylwen's Quick Shots: only the bow) the dialog has its single Roll. Hold the Longsword in one hand: under its column \"▼3 Two-handed weapon in one hand\" is a button: a click strikes it and its roll line loses the 3 Banes (the roll made without them), another click puts them back.",
-     "rev": 2
+     "id": "unfailing",
+     "v": "v0.0.453",
+     "title": "Unfailing: Smite isn't spent on a Tier 1",
+     "do": "In a combat, Aveline Smites the Orc Warrior until she gets a Tier 1 (the GM's force-Tier in the roll dialog helps); then Smite again; then get a Tier 2 and try a third time.",
+     "expect": "Smite's traits read \"… Unfailing …\" (sheet, card, book). After the Tier 1 a chat line says \"Unfailing: a Tier 1, so Smite isn't spent. Aveline can use it again.\"; Smite is not marked used and its Strike still counts (the strip). After the Tier 2 it is used as usual.",
+     "rev": 1
+    },
+    {
+     "id": "effects-tier1",
+     "v": "v0.0.453",
+     "title": "An Effect line happens on a Tier 1 too",
+     "do": "Sylwen uses Quick Shots on the Orc Warrior and gets a Tier 1 (force it); then Darting Blade with the Dagger, a Tier 1.",
+     "expect": "Each chat card shows its Effect line (not dimmed, no \"Tier 2+\") with its Evade 2 button, and Sylwen can Evade 2. The roll dialog writes \"Effects\" with no \"(T2+)\". The Orc's Club and Overhead Smash still Push only on a Tier 2 or 3.",
+     "rev": 1
+    },
+    {
+     "id": "warn-dialog",
+     "v": "v0.0.453",
+     "title": "Rules broken: warnings in the roll dialog",
+     "do": "As a player (not the GM): Sylwen targets the Orc Warrior behind a wall (all four corners blocked) and uses a Weapon Attack; then a target the GM marked Unsensed; then Quick Shots' second shot at the creature of the first; give her bow Reload and shoot it unloaded.",
+     "expect": "None of them stops the Action: each opens the roll dialog with its warning above the bar (\"No Line of Effect to Orc Warrior: all four corners are blocked\", \"… is Unsensed: it can't be targeted (the roll is Doomed)\", \"… was already a target: the card asks for a different creature\", \"… is unloaded: Reload it before using it again\"), and Roll works.",
+     "rev": 1
     },
     {
      "id": "g2-darting",
-     "v": "v0.0.444",
-     "title": "Darting Blade needs a Light weapon",
-     "do": "Sylwen with her Hunting Bow in hand and her Dagger worn: use Darting Blade; then with the Dagger drawn; open Darting Blade's item sheet.",
-     "expect": "Its Setup draws a Light weapon; only the Dagger can make the Strike (never the bow, no \"Which weapon?\"); the item sheet shows \"Weapon needs: A Light weapon\" beside \"Weapon used\".",
-     "rev": 1
-    },
-    {
-     "id": "smite-dice",
-     "v": "v0.0.440",
-     "title": "Smite's dice in the roll dialog",
-     "do": "Aveline at Escalation 3: Judge the Orc Warrior, then Smite it; look at the roll dialog's Tiers, tick \"Reaction AP: 1 more Smite die\", look again. Then Smite a Goblin Sneak that isn't Judged.",
-     "expect": "The Reaction AP chip shows (not under \"+1 off\"). Against the Judged Orc the Tiers read 3d8! Holy (Tier 3: 4d8!) and one more die when ticked; the chat card's Tiers say the same. Against the Goblin: d6s.",
-     "rev": 1
+     "v": "v0.0.453",
+     "title": "Darting Blade without a Light weapon: a warning",
+     "do": "Sylwen with her Hunting Bow in hand and her Dagger worn: use Darting Blade; then with the Dagger drawn; then put the Dagger in her pack (no Light weapon at all) and use it again; open Darting Blade's item sheet.",
+     "expect": "Its Setup draws a Light weapon; with the Dagger in hand only the Dagger makes the Strike. With no Light weapon the Action is not stopped: the roll dialog opens with the warning \"Darting Blade needs a light weapon in hand\" above its bar, and Roll still works. The item sheet shows \"Weapon needs: A Light weapon\".",
+     "rev": 2
     },
     {
      "id": "dice-sources",
@@ -91,28 +128,12 @@
      "rev": 1
     },
     {
-     "id": "resolve-color",
-     "v": "v0.0.440",
-     "title": "The Resolve blue on a dark card",
-     "do": "In the dark interface, send Aveline's Smite to the chat.",
-     "expect": "\"[R] 1d6!\" in the Smite dice line is an easy-to-read light blue.",
-     "rev": 1
-    },
-    {
      "id": "chat-follow",
-     "v": "v0.0.418",
+     "v": "v0.0.453",
      "title": "The chat follows a growing card",
-     "do": "Aveline uses Smite (its card grows when the damage is written into it); scroll up a little in the chat, then click a damage stamp's link to its roll card.",
-     "expect": "At the bottom, the chat follows the card as it grows. The jump to the roll card stays there (no snap back down).",
-     "rev": 1
-    },
-    {
-     "id": "chat-removed",
-     "v": "v0.0.418",
-     "title": "Lines removed from the chat",
-     "do": "Play a round with Aveline, Sylwen and two Orcs: someone becomes Bloodied, Durgan uses a Reaction, someone goes Down, someone moves.",
-     "expect": "No Bloodied / Strained, Reaction-use, \"next damage reduced\", \"is Down\" or movement lines. The stamp is stretched; the Critical's arrow sits over CRIT, the CRIT zone shows only on a Critical; Bloodied is in the Vigor red on dark.",
-     "rev": 1
+     "do": "With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior: click Damage, then Apply. Then scroll up a little and click a damage stamp's link to its roll card.",
+     "expect": "At the bottom, the chat follows the card each time it grows (after Damage, after Apply): its last line stays in sight. Scrolled up, or after the jump to the roll card, it stays where you are.",
+     "rev": 2
     },
     {
      "id": "empowered-one",
@@ -168,14 +189,6 @@
      "rev": 1
     },
     {
-     "id": "card-surfaces",
-     "v": "v0.0.438",
-     "title": "The same card in the chat, a tooltip and the HUD",
-     "do": "In the dark interface, send Aveline's Smite to the chat (right-click its row, Send to chat), hover one of her Actions' rows, and open an Action from her HUD; then do the same with a light sheet.",
-     "expect": "The Vigor heart and Resolve brain icons are the light red and blue of the sheet's card everywhere (no dark red on dark), the keyword highlights the same color; a card in a tooltip reads left-aligned, as in the sheet.",
-     "rev": 1
-    },
-    {
      "id": "npc-fists",
      "v": "v0.0.441",
      "title": "An NPC's Fists",
@@ -205,20 +218,36 @@
    "name": "Movement",
    "items": [
     {
-     "id": "setup-in-hud",
-     "v": "v0.0.441",
-     "title": "A Setup's movement in the HUD",
-     "do": "In a combat, select Kaela's token and use Strafe (2 AP); move her token; then use an Action whose card gives an Evade or Advance (Sylwen's Footwork).",
-     "expect": "No floating bar over the map: the Situational section shows \"Strafe: You Advance. Move your token, then Continue.\" with Continue: the roll and Cancel the Action (Enter and Escape still work). The Evade / Advance shows there too with End movement (and Advance instead for an Evade). With the HUD turned off they float at the bottom as before.",
+     "id": "charge-new",
+     "v": "v0.0.453",
+     "title": "Charge: another target, never on a creature, in the HUD",
+     "do": "In a combat, Durgan targets the Goblin Sneak and uses Charge; while the Charge line is shown, click the Orc Warrior's token; then a Charge whose line would end on Aveline's space; then click \"Weapon Attack (1A, 1 Boon)\" on the Charge card, on its name.",
+     "expect": "The Charge bar asks in the HUD's Situational tab (the tab opens by itself). The click on the Orc makes it the Charge's target (the line goes toward it; the bar names it); clicking an ally does nothing. A line that would end in a creature's space stops on the last free square before it. The chip's name uses the Weapon Attack (no item sheet).",
      "rev": 1
     },
     {
-     "id": "setup-move",
-     "v": "v0.0.440",
-     "title": "A Setup runs when you press Roll",
-     "do": "In a combat, on Durgan's turn: target an ally 4 squares away and use Lay On Hands; press Roll in the roll dialog. On Kaela's turn use Circling Shot. On Durgan's turn at Escalation 6, use Smite (Hallowed Stance's Advance 3).",
-     "expect": "The roll dialog opens first (no \"out of range\" block; a note \"Out of range now: the Setup first\"); Roll starts the Setup's bar (move your token, Continue); then the roll is made from where you stand, without the dialog again. Circling Shot: Evade 1, then the shot, Tier 3's Evade 1. Cancel on the Setup's bar cancels the Action (no AP spent). The Encounter Log writes it as one line.",
-     "rev": 2
+     "id": "rewind-refund",
+     "v": "v0.0.453",
+     "title": "Move back refunds the movement",
+     "do": "In a combat, the Orc Warrior drags its token (no Advance first: the drag buys an Advance, 1 AP) toward Kaela, who has Slip Away; on the Reactions card click Move back, once all the way (Shift-click), once part of the way (pick a square).",
+     "expect": "All the way: the Orc is back where it started with its AP and free squares as before the drag (its AP pips). Part of the way: the squares gone back return as movement left (the strip and the movement bar), its AP stay spent.",
+     "rev": 1
+    },
+    {
+     "id": "large-difficult",
+     "v": "v0.0.453",
+     "title": "A Large creature passing creatures pays Difficult Terrain",
+     "do": "Move the Ogre Chieftain (Large) past the Orc Warrior so that only the edge of its space crosses the Orc's square (not its center), with an enemy of the Ogre there; watch the ruler while dragging.",
+     "expect": "Every square of the Ogre's movement in which its space overlaps an unwilling creature's square costs double (the ruler's number), not only when its center crosses it; an ally's square costs nothing extra.",
+     "rev": 1
+    },
+    {
+     "id": "pushed-button",
+     "v": "v0.0.453",
+     "title": "A Pushed button on a card (diagnostic)",
+     "do": "With the console open (F12), the Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2, in the open; click the card's \"Pushed 2\" button.",
+     "expect": "A bar (in the HUD's Situational tab when the HUD is up) asks which creature to push; Durgan is pushed 2. If nothing happens, Fail it with the console's errors and say where the HUD was (which token selected, folded or not).",
+     "rev": 1
     }
    ]
   },
@@ -226,11 +255,11 @@
    "name": "Reactions and Judge",
    "items": [
     {
-     "id": "rx-situational",
-     "v": "v0.0.441",
-     "title": "A trigger shows only in the Situational section",
-     "do": "Sylwen keeps 1 AP and her Reaction AP; the Goblin Sneak moves next to her. As her player, have her Actions tab open.",
-     "expect": "The chime and the name on the map as before; the HUD stays on the Actions tab (no jump to Reactions); the Situational section shows \"Snap Shot · Reaction\", the trigger's line and Use · 1R / Pass, all inside the bar (nothing hangs under it). Use and Pass answer the Reaction.",
+     "id": "armor-faith-source",
+     "v": "v0.0.453",
+     "title": "Armor of Faith says what granted it",
+     "do": "Durgan at Escalation 2 uses Shield of Faith on Aveline when the Orc Warrior's Strike would damage her.",
+     "expect": "The chat line reads \"Armor of Faith (Durgan's Passive, for using Shield of Faith): Durgan gains Guard 3\", both names links that open their cards.",
      "rev": 1
     },
     {
@@ -350,6 +379,14 @@
   {
    "name": "Areas, light and Cover",
    "items": [
+    {
+     "id": "cover-lines",
+     "v": "v0.0.453",
+     "title": "The cover lines as they count",
+     "do": "Turn on Sylwen's Line of Effect button and target the Orc Warrior with Kaela standing so that one corner line crosses her square but the center line doesn't; then move Kaela onto the center line; then put a wall on two corners.",
+     "expect": "The four corner lines are thin and dashed (faint green when clear, red when a wall blocks them); the center line is solid and stronger (pale when clear; red-orange with a ring around Kaela when she is on it). The label reads \"No cover: walls block 0 of 4 corners, no creature on the center line\", then \"Low cover: … Kaela on the center line\", then \"Medium cover: walls block 2 of 4 corners …\".",
+     "rev": 1
+    },
     {
      "id": "area-hover",
      "v": "v0.0.422",

@@ -17,7 +17,7 @@ console.log("--- D1: the Basic tab");
 const groups = [{ label: "Attack", lines: [{ id: "a", name: "Weapon Attack", fqColor: "#4c7a2e", strike: true, stamps: [{ ap: 1, label: "1 AP" }] }, { id: "b", name: "Charge", fqColor: "#2c5d9e", stamps: [{ ap: 2, label: "2 AP", off: true, why: "Prone" }] }] },
   { label: "Movement", lines: [{ id: "c", name: "Stand", fqColor: "#4c7a2e", stamps: [{ ap: 1, label: "1 AP" }] }] }];
 const b = HV.basicTabHtml(groups);
-console.log(strip(b), "| groups:", (b.match(/class="h3-bg"/g) ?? []).length, "| Charge dim in its place:", /class="h3-bl off"[^>]*data-item-id="b"/.test(b), "| its stamp struck:", b.includes('class="hb-st no" disabled'), "| a Strike's strip:", b.includes('class="h3-bl strike"'));
+console.log(strip(b), "| groups:", (b.match(/class="h3-bg"/g) ?? []).length, "| Charge dim in its place:", /class="h3-bl off"[^>]*data-item-id="b"/.test(b), "| its stamp struck, still clicked (v0.0.453):", b.includes('class="hb-st no" data-hud="use"'), "| a Strike's strip:", b.includes('class="h3-bl strike"'));
 console.log("--- D3: the right column");
 const empty = HV.rightHtml({ tiles: [{ name: "Hunting Bow", grip: "Main" }, { name: "Free (Fists)", grip: "Off", free: true }] });
 console.log("empty:", strip(empty), "| the ask slot is in the Situational section:", /class="h3-sit"><div class="hb-ask"><\/div>/.test(empty), "| the macro bar's slot last:", empty.endsWith('<div class="h3-hot"></div></div></div>'));

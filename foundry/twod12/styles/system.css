@@ -5342,3 +5342,8 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-hot #hotbar #hotbar-controls-right #hotbar-page-controls > button::before { font-size: 8px !important; color: inherit !important; }
 .twod12-hud .h3-hot #hotbar #hotbar-controls-right #hotbar-page-controls > button.page-prev::before { display: inline-block; transform: scaleX(.75) scaleY(-1); }
 .twod12-hud .h3-hot #hotbar #hotbar-page-controls > .hotbar-page-number { display: block !important; position: static !important; text-align: center; width: auto !important; height: 10px !important; margin: 0 !important; padding: 0 !important; font-size: 10px !important; line-height: 10px !important; font-weight: 600; color: var(--hud-ink) !important; background: none !important; border: 0 !important; }
+/* v0.0.453 (Lucas, playtest 6: "Token hud shouldnt prevent clicking on used actions. Just give a warning"): a struck stamp that isn't locked can
+   be clicked (the roll dialog warns); a used line keeps its word and its struck stamps */
+.twod12-hud .hb-st.no:not(:disabled) { cursor: pointer; }
+.twod12-hud .hb-st.no:not(:disabled):hover { border-color: var(--s-gold, #d2a75a); color: var(--hud-ink); }
+.twod12-hud .hb-pv.used + .hb-st { margin-left: 4px; }

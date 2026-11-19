@@ -2,7 +2,7 @@
 two: Prone H Hindered EoT | their words: true | a click opens the Effect: true | its picture: true
 four: the marks alone: true | H EoT D L 2 | none: the row stays: true
 --- D1: the Basic tab
-Attack Weapon Attack 1 AP Charge 2 AP Movement Stand 1 AP | groups: 2 | Charge dim in its place: true | its stamp struck: true | a Strike's strip: true
+Attack Weapon Attack 1 AP Charge 2 AP Movement Stand 1 AP | groups: 2 | Charge dim in its place: true | its stamp struck, still clicked (v0.0.453): true | a Strike's strip: true
 --- D3: the right column
 empty: Situational Hands Hunting Bow Main Free (Fists) Off | the ask slot is in the Situational section: true | the macro bar's slot last: true
 a Reaction: Situational Macros Snap Shot Reaction The Goblin Sneak would enter a square adjacent to you. Use · 1R Pass | Use and Pass answer it: true | lit: true

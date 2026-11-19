@@ -765,7 +765,10 @@ async function moveBack(msg, st, toStart = false) {
   const c = game.combat?.combatants?.get?.(b.combatantId);
   if (c && b.flags) {
     const now = Object.fromEntries(Object.keys(b.flags).map(k => [k, Number(c.getFlag(F, k)) || 0]));
-    const flags = whole ? b.flags : partialRefund(b.flags, now, steps / b.total);
+    // v0.0.453 (Lucas, playtest 6: "Rewinding movement in the Reactions chat card doesn't refund movement"): a move that bought an Advance (1 AP)
+    // during the drag had more free squares after it than before, so nothing came back. All the way back: the AP and the squares as before; part
+    // of the way: the squares gone back return as free movement (the AP stay spent)
+    const flags = whole ? b.flags : backRefund(b.flags, now, steps);
     try { await c.update(Object.fromEntries(Object.entries(flags).map(([k, v]) => [`flags.${F}.${k}`, v]))); } catch (e) { console.warn("twod12 | movement refund", e); }
   }
   await markBack(msg.id);
@@ -1021,6 +1024,15 @@ export function backChoices(back) {
   return opts;
 }
 /** v0.0.279: pure: Move back's refund when the mover goes back only part of the way: each kind of movement gets back its share of what this move spent. */
+/** Pure (v0.0.453): part of the way back: the squares return to the pool the move took them from last (an Advance's squares, bought with AP
+ *  during the drag or left from one; else the free squares; else an Evade's), the AP stay spent. */
+export function backRefund(before, now, steps) {
+  const b = k => Number(before?.[k]) || 0, n = k => Number(now?.[k]) || 0, back = Math.max(0, Number(steps) || 0);
+  if (n("ap") < b("ap") || n("moveLeft") !== b("moveLeft")) return { moveLeft: Math.round((n("moveLeft") + back) * 100) / 100 };
+  if (b("freeMove") > n("freeMove")) return { freeMove: Math.min(b("freeMove"), n("freeMove") + back) };
+  if (b("evadeMove") > n("evadeMove")) return { evadeMove: Math.min(b("evadeMove"), n("evadeMove") + back) };
+  return {};
+}
 export function partialRefund(before, now, part) {
   const out = {};
   for (const k of Object.keys(before ?? {})) { const b = Number(before[k]) || 0, n = Number(now?.[k]) || 0; out[k] = b > n ? Math.round((n + (b - n) * part) * 100) / 100 : n; }
@@ -1087,7 +1099,7 @@ export function registerMomentHooks() {
       if (operation?.twod12Lean || movement?.method === "undo") return;
       const c = game.combat?.combatants?.find?.(x => x.tokenId === doc.id);
       // v0.0.273: the movement it has before this move (Move back refunds it)
-      const flags = c ? { freeMove: Number(c.getFlag(F, "freeMove")) || 0, evadeMove: Number(c.getFlag(F, "evadeMove")) || 0, moveLeft: Number(c.getFlag(F, "moveLeft")) || 0 } : null;
+      const flags = c ? { freeMove: Number(c.getFlag(F, "freeMove")) || 0, evadeMove: Number(c.getFlag(F, "evadeMove")) || 0, moveLeft: Number(c.getFlag(F, "moveLeft")) || 0, ap: Number(c.getFlag(F, "ap")) || 0 } : null;   // v0.0.453: its AP too (a drag that bought an Advance)
       moving.set(doc.id, { forced: !!operation?.twod12Forced, evading: Number(c?.getFlag?.(F, "evadeMove")) > 0, before: c ? { combatantId: c.id, flags } : null });
     } catch (e) { /* not tracked */ }
   });

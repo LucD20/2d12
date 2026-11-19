@@ -48,7 +48,7 @@ export async function rollDialogInput(c) {
     // Pack CARD-ONE step 3: the card's lines of this Version, from the card model, in its order (the dialog places its Tier rows among them)
     let card = null;
     try { card = await versionCardLines(item, v0, { actor, weapon: c.previewWeapon ?? null, fists: item.getFlag?.("twod12", "weaponUse") === "fists", setupHtml: parts.setup || null }); } catch (e) { console.warn("twod12 | the card's lines", e); }
-    versions.push({ ap: v.ap, cost: vb.cost, disabled: vb.off, why: vb.why, traits, meta: { ...meta, setup: parts.setup ?? "" }, tiers: parts.tiers, crit: parts.crit, effects: parts.effects, effectsFrom: 2, noTiers: !!v.noTiers, card });
+    versions.push({ ap: v.ap, cost: vb.cost, disabled: vb.off, why: vb.why, traits, meta: { ...meta, setup: parts.setup ?? "" }, tiers: parts.tiers, crit: parts.crit, effects: parts.effects, effectsFrom: 1, noTiers: !!v.noTiers, card });
   }
   // the creatures (several: each its own Defense; one: the target, or the DC of an Action with no target)
   let creatures;
@@ -128,6 +128,7 @@ export async function rollDialogInput(c) {
   const blocked = [];
   const fd = c.opts.free ? null : isFaded(actor, item);
   if (fd?.faded) blocked.push(fd.why);
+  blocked.push(...(c.warns ?? []));   // v0.0.453: what the Action breaks but may still do (a weapon the card doesn't name): a warning, never a stop
   let hideDef = false, designer = false, stats = "all";
   try { hideDef = !game.user.isGM && game.settings.get("twod12", "hideEnemyDefenses") === true; designer = game.settings.get("twod12", "designerMode") === true; stats = game.settings.get("twod12", "rollDialogStats") ?? "all"; } catch (e) { /* settings not ready */ }
   const showStats = stats === "all" || (stats === "gm" && !!game.user?.isGM);

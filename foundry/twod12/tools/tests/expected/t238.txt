@@ -1,5 +1,5 @@
 a creature on the center line: true Low cover | who: Durgan (Dwarf Paladin) | the center: {"x":650,"y":50}
-the label: Low cover: 0 blocked, Durgan in the way | the line drawn: true
+the label: Low cover: walls block 0 of 4 corners, Durgan on the center line | the line drawn: true
 label: Flanked: Aveline +2 | all cancelled: ""
 labels never on each other: [{"x":100,"y":100},{"x":100,"y":123},{"x":110,"y":72}] | no idle notes: true
 Covering Fire: Enemies: 1 Bane / Allies: +1 Defense / 3 rounds

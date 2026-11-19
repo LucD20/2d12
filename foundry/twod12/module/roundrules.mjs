@@ -86,18 +86,37 @@ export function minionSquads(list, size = MINION_SQUAD) {
   for (const xs of kinds.values()) for (const g of evenGroups(xs, size)) if (g.length) out[g[0].id] = g.map(x => x.id);
   return out;
 }
-/** Pure (v0.0.440): the squads of one kind of Minion, [[x]]: the fewest that hold them, as even as can be; a Minion's own group first. */
+/** Pure (v0.0.440; v0.0.453, playtest 6: the book's recommendation, "3-4, 2 squads, 5-6, 3 squads"): the squads of one kind of Minion, [[x]].
+ *  With no squad set by the GM: one squad for every 2 Minions, rounded up, as even as can be. Once the GM has set them (x.group, 1 to n), the
+ *  squads are the GM's (never more than `size` in one; an empty squad number is dropped). */
 export function evenGroups(xs, size = MINION_SQUAD) {
-  const k = Math.max(1, Math.ceil((xs?.length ?? 0) / size)), gs = Array.from({ length: k }, () => []), cap = Math.ceil((xs?.length ?? 0) / k), rest = [];
-  for (const x of xs ?? []) { const g = Math.trunc(Number(x.group)) || 0; if (g >= 1 && g <= k && gs[g - 1].length < cap) gs[g - 1].push(x); else rest.push(x); }
+  const n = xs?.length ?? 0, min = Math.max(1, Math.ceil(n / size)), gOf = x => Math.trunc(Number(x.group)) || 0;
+  const valid = (xs ?? []).map(gOf).filter(g => g >= 1 && g <= n), allSet = n > 0 && valid.length === n;
+  const k = Math.max(min, allSet ? Math.max(...valid) : Math.max(Math.ceil(n / 2), ...valid, 0));
+  const gs = Array.from({ length: k }, () => []), cap = allSet ? size : Math.ceil(n / k), rest = [];
+  for (const x of xs ?? []) { const g = gOf(x); if (g >= 1 && g <= k && gs[g - 1].length < cap) gs[g - 1].push(x); else rest.push(x); }
   for (const x of rest) { let i = 0; for (let j = 1; j < k; j++) if (gs[j].length < gs[i].length) i = j; gs[i].push(x); }
-  return gs;
+  const out = gs.filter(g => g.length);
+  return out.length ? out : [[]];
 }
 /** Pure (v0.0.440): each Minion's squad for the Initiative window, { id: { n, of } } (its squad's number and how many squads its kind has). */
 export function minionGroupOf(list, size = MINION_SQUAD) {
   const out = {}, kinds = new Map();
   for (const x of list ?? []) { if (!x?.kind) continue; if (!kinds.has(x.kind)) kinds.set(x.kind, []); kinds.get(x.kind).push(x); }
-  for (const xs of kinds.values()) { const gs = evenGroups(xs, size); if (gs.length < 2) continue; gs.forEach((g, i) => g.forEach(x => { out[x.id] = { n: i + 1, of: gs.length }; })); }
+  // v0.0.453: shown from 2 Minions (the GM can split two); `next` is the squad a click moves it to: the next one, a new one after the last while
+  // its own squad has others (and there are fewer squads than Minions), then the first
+  for (const xs of kinds.values()) {
+    if (xs.length < 2) continue;
+    const gs = evenGroups(xs, size);
+    gs.forEach((g, i) => g.forEach(x => {
+      const n = i + 1, of = gs.length, fits = j => j !== n && (gs[j - 1]?.length ?? 0) < size;
+      let next = 0;
+      for (let j = n + 1; j <= of && !next; j++) if (fits(j)) next = j;
+      if (!next && g.length > 1 && of < xs.length) next = of + 1;
+      for (let j = 1; j < n && !next; j++) if (fits(j)) next = j;
+      out[x.id] = { n, of, next: next || n, groups: Object.fromEntries(gs.flatMap((gg, gi) => gg.map(y => [y.id, gi + 1]))) };
+    }));
+  }
   return out;
 }
 /** No creature has an Opportunity Attack by default since Stage 0 (it left the Basic Actions, for PCs and NPCs; a Talent brings it back later). */

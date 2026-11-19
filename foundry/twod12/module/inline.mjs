@@ -10,7 +10,7 @@ import { traitChevrons } from "./config.mjs";
 import { askRoll, enrich, adjLabelOf, ccRowOf } from "./actions.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards): the one-target Save card
 import { bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die
-import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem, findAction } from "./effects.mjs";
+import { resolveModifiers, applyEffects, applyCondition, originInfo, applyBoonEffect, damageSteps, conditionItem } from "./effects.mjs";
 import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack AU): Bleed's Attributes
 import { dealDamageEx } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
@@ -788,7 +788,8 @@ export async function openBook(cfg) {
 
 /**
  * v0.0.352 (Lucas, playtest 4, Step 6: "clicking the left side (the symbol) uses it, clicking the right side (the name) opens the sheet of the
- * feature"): a chip's name opens what it names: a condition or an Effect its item, @Use its Action, a movement or a rule its book rule. Returns
+ * feature"): a chip's name opens what it names: a condition or an Effect its item, a movement or a rule its book rule (v0.0.453: an @Use chip's name
+ * uses it, as its symbol does: Lucas, playtest 6, Charge's Weapon Attack opened the item sheet). Returns
  * true when something was opened (otherwise the click uses the chip, as before).
  */
 const MOVE_REF = { pushed: "Pushed", pulled: "Pulled", slid: "Slid", reposition: "Reposition", advance: "Advance", walk: "Advance", evade: "Evade", charge: "Charge", crawl: "Crawl", shift: "Shift", climb: "Climb", jump: "Jump" };
@@ -797,12 +798,7 @@ export async function openChip(kind, cfg, ctx = {}) {
   try {
     if (kind === "Condition" && cfg.cond) { const it = await conditionItem(cfg.cond); if (it?.sheet) { it.sheet.render(true); return true; } }
     if (kind === "Effect" && cfg.uuid) { const d = await fromUuid(cfg.uuid); if (d?.sheet) { d.sheet.render(true); return true; } }
-    if (kind === "Use" && cfg.target && !/^(category|trait):/i.test(cfg.target)) {
-      const f = ctx.message?.getFlag?.("twod12", "action");
-      let actor = null; try { const d = cfg.actor ? await fromUuid(cfg.actor) : f?.actorUuid ? await fromUuid(f.actorUuid) : null; actor = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { actor = null; }
-      const it = await findAction(cfg.target, actor);
-      if (it?.sheet) { it.sheet.render(true); return true; }
-    }
+    // v0.0.453 (Lucas, playtest 6: "Clicking on weapon attack from Charge is opening the weapon attack item-sheet"): a Use chip's name uses it too
     const ref = kind === "Move" ? MOVE_REF[cfg.kind] : RULE_REF[kind];
     if (ref) { await openBook({ ref }); return true; }
   } catch (e) { console.warn("twod12 | chip name", e); }

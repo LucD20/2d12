@@ -392,7 +392,7 @@ function tierTableHtml(inp, st, v) {
   const can = inp.canForce && !inp.save, rowAt = n => (can ? ` data-force="${n}"` : "");
   const rows = [1, 2, 3].map(n => `<tr class="t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(n)}>${th(n, `Tier ${n}`)}<td>${cell(n)}</td></tr>`);
   if (v.crit) rows.push(`<tr class="crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(4)}>${th(4, "Critical")}<td>${v.crit}</td></tr>`);
-  if (v.effects) rows.push(`<tr class="rd-eff"><th scope="row">Effects<small>(T${v.effectsFrom ?? 2}+)</small></th><td>${v.effects}</td></tr>`);
+  if (v.effects) rows.push(`<tr class="rd-eff"><th scope="row">Effects${(v.effectsFrom ?? 1) > 1 ? `<small>(T${v.effectsFrom}+)</small>` : ""}</th><td>${v.effects}</td></tr>`);
   const net = stepNet(inp, st);
   return `<table class="rd-tiers">${rows.join("")}</table>${net.line ? `<div class="rd-step">${esc(net.line)}</div>` : ""}`;
 }
@@ -562,7 +562,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
     const fa = n => (can ? ` data-force="${n}"` : "");
     for (const n of [1, 2, 3]) out.push(`<div class="rdc-l t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(n)}><b>${name(n, `Tier ${n}`)}</b><span>${tierText(n)}</span></div>`);
     if (v.crit) out.push(`<div class="rdc-l crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(4)}><b>${name(4, "Critical")}</b><span>${v.crit}</span></div>`);
-    if (v.effects) out.push(line(`Effects <small>(T${v.effectsFrom ?? 2}+)</small>`, v.effects));
+    if (v.effects) out.push(line((v.effectsFrom ?? 1) > 1 ? `Effects <small>(T${v.effectsFrom}+)</small>` : "Effects", v.effects));
     const net = stepNet(inp, st);
     if (net.line) out.push(`<div class="rd-step">${esc(net.line)}</div>`);
   } else if (v?.effects) out.push(line("Effects", v.effects));

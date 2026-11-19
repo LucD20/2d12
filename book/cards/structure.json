@@ -3922,7 +3922,8 @@
    "signature",
    "weapon",
    "strike",
-   "divine"
+   "divine",
+   "unfailing"
   ],
   "cost": "2 AP",
   "body": [

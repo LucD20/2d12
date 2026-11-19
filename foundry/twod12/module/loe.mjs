@@ -16,7 +16,8 @@ let queued = false;
 /** The text over a target: its cover and why. */
 export function loeLabel(c) {
   if (c.noLoE) return `No Line of Effect: ${c.blocked} of 4 blocked`;
-  const why = [`${c.blocked} blocked`, c.inWay ? `${(c.blockers ?? []).map(b => String(b.name ?? "").replace(/\s*\(.*\)\s*$/, "").split(/\s+/)[0]).filter(Boolean).join(", ") || "a creature"} in the way` : "", c.exposed ? "it is Leaning (-1)" : ""].filter(Boolean).join(", ");
+  // v0.0.453 (Lucas, playtest 6: the lines as they count): walls on the corners, creatures on the center line
+  const why = [`walls block ${c.blocked} of 4 corners`, c.inWay ? "" : "no creature on the center line", c.inWay ? `${(c.blockers ?? []).map(b => String(b.name ?? "").replace(/\s*\(.*\)\s*$/, "").split(/\s+/)[0]).filter(Boolean).join(", ") || "a creature"} on the center line` : "", c.exposed ? "it is Leaning (-1)" : ""].filter(Boolean).join(", ");
   return `${c.label}: ${why}`;
 }
 
@@ -37,17 +38,18 @@ function draw() {
     const c = coverBetween(src, t);
     if (!c?.origin) continue;
     const g = new PIXI.Graphics();
+    // v0.0.453 (Lucas, playtest 6: "Change the display to be more intuitive": a corner line crossing Kaela looked like it should give cover): the
+    // corner lines only count walls, so they are thin and dashed, faint when clear and red when a wall blocks them; the center line is the one
+    // creatures count on, so it is solid and strong: pale when clear, amber with a ring on the creature in the way (Low cover)
+    const dashed = (a, z, col, w, alpha, on = 8, off = 7) => { const dx = z.x - a.x, dy = z.y - a.y, len = Math.hypot(dx, dy) || 1; g.lineStyle(w, col, alpha); for (let s0 = 0; s0 < len; s0 += on + off) { const e = Math.min(len, s0 + on); g.moveTo(a.x + (dx * s0) / len, a.y + (dy * s0) / len).lineTo(a.x + (dx * e) / len, a.y + (dy * e) / len); } };
     for (const k of c.corners) {
-      g.lineStyle(3, k.blocked ? RED : GREEN, 0.95).moveTo(c.origin.x, c.origin.y).lineTo(k.x, k.y);
-      g.lineStyle(0).beginFill(k.blocked ? RED : GREEN, 1).drawCircle(k.x, k.y, 5).endFill();
+      dashed(c.origin, k, k.blocked ? RED : GREEN, k.blocked ? 2.5 : 1.5, k.blocked ? 0.95 : 0.5);
+      g.lineStyle(0).beginFill(k.blocked ? RED : GREEN, k.blocked ? 1 : 0.7).drawCircle(k.x, k.y, k.blocked ? 5 : 3.5).endFill();
     }
-    // v0.0.350 (Lucas: "show center-to-center cover too"): the center-to-center line, dashed: amber when a creature is in the way (Low cover; a
-    // ring on it), pale when nothing is
     if (c.center) {
-      const a = c.origin, z = c.center, dx = z.x - a.x, dy = z.y - a.y, len = Math.hypot(dx, dy) || 1, col = c.inWay ? AMBER : 0xe8e2d0;
-      g.lineStyle(c.inWay ? 4 : 2.5, col, c.inWay ? 1 : 0.6);
-      for (let s0 = 0; s0 < len; s0 += 16) { const e = Math.min(len, s0 + 10); g.moveTo(a.x + (dx * s0) / len, a.y + (dy * s0) / len).lineTo(a.x + (dx * e) / len, a.y + (dy * e) / len); }
-      g.lineStyle(0).beginFill(col, 1).drawCircle(z.x, z.y, 4).endFill();
+      const a = c.origin, z = c.center, col = c.inWay ? AMBER : 0xe8e2d0;
+      g.lineStyle(c.inWay ? 5 : 3.5, col, 1).moveTo(a.x, a.y).lineTo(z.x, z.y);
+      g.lineStyle(0).beginFill(col, 1).drawCircle(z.x, z.y, 5).endFill();
       for (const b of c.blockers ?? []) { const bt = canvas.tokens?.get(b.id); if (bt) g.lineStyle(3, AMBER, 0.95).drawCircle(bt.center.x, bt.center.y, Math.max(bt.w, bt.h) / 2 + 3); }
     }
     g.lineStyle(2, 0x1e2430, 1).beginFill(0xffffff, 1).drawCircle(c.origin.x, c.origin.y, 6).endFill();

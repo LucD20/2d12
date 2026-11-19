@@ -17,7 +17,7 @@ folded: one line (the name, Vigor, Guard, AP, Escalation, the conditions): true
 --- the wiring
 waiting rows this user answers: [{"row":0,"actorUuid":"A","itemId":"x","name":"Shield of Faith","cost":"1R","lead":"Cleaver on Durgan"}]
 the settings: true | the chime made by the browser at Foundry's interface volume: true | the name on the map, only for the one who answers: true | resources by right-click: true
-the carousel: the HUD's marks, the health tag, Momentum, plain words: true | the styles in rem: true | the bar 150 px, folded 40: true
+the carousel: the HUD's marks, no health tag (v0.0.453), Momentum, plain words: true | the styles in rem: true | the bar 150 px, folded 40: true
 --- v0.0.392 (Lucas, testing v0.0.391)
 the granted uses top right, in the accent: true | the side panel kept in a small window while they wait: true
 no Reaction taken: the message removed: true | a bronze bell, not a beep: true | the card's x, a second right-click closes it: true | the HUD see-through: true

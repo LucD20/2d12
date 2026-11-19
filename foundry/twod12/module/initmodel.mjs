@@ -96,7 +96,7 @@ export function rowView(ms, call, opts = {}) {
     attr, attrMixed: !attr, overridden, mods: Object.fromEntries(ATTRS.map(a => [a, sgn(Number(r.mods?.[a]) || 0)])),
     fav, doom, favFx, doomFx, both: fav && doom, favBy: (r.fx?.favBy ?? []).join(", "), doomBy: (r.fx?.doomBy ?? []).join(", "),
     boons, banes, boonsOn: boons !== 0, banesOn: banes !== 0, manB, manN,
-    squad: !rolled && opts.squad ? { n: opts.squad.n, of: opts.squad.of, next: (opts.squad.n % opts.squad.of) + 1 } : null,   // v0.0.440: a Minion's squad (a click: the next one)
+    squad: !rolled && opts.squad ? { n: opts.squad.n, of: opts.squad.of, next: opts.squad.next ?? ((opts.squad.n % opts.squad.of) + 1), ids: Object.keys(opts.squad.groups ?? {}) } : null,   // v0.0.440: a Minion's squad (a click: the next one)
     tint: changed ? "changed" : (rolled || waiting ? "quiet" : "plain")
   };
 }
@@ -166,6 +166,17 @@ export function applyClick(ms, call, act, value) {
     else if (act === "last") put(x, { last: !ms.every(goesLast) });
     else if (act === "gmAll") { if (!isRolled(x)) put(x, { who: "gm" }); }
     else if (act === "squad") put(x, { group: Math.max(1, Math.trunc(Number(value)) || 1) });   // v0.0.440: the Minion's squad (the GM's choice)
+  }
+  return out;
+}
+
+/** v0.0.453 (playtest 6): a squad click fixes every Minion of that kind where it stands now (the window's squads), then moves this one: so the
+ *  squads stay as the GM sees them, and one click makes a new squad or joins another. `all`: the window's creatures; `groups`: { id: squad }. */
+export function squadMove(all, id, value, groups = {}) {
+  const out = {};
+  for (const x of all ?? []) {
+    if (!(x.id in groups)) continue;
+    out[x.id] = { ...(x.set ?? {}), group: x.id === id ? Math.max(1, Math.trunc(Number(value)) || 1) : groups[x.id] };
   }
   return out;
 }

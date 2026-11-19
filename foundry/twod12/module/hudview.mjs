@@ -57,14 +57,15 @@ export const partyStripHtml = ({ cards = [], momentum = "" } = {}) => `<div clas
 
 /** A line of a column: the Action's name, its cost stamps (each a Version; struck when it can't be used), the roll or what to know under it. */
 /** A cost stamp (a Version's Use button; struck when it can't be used, its reason the one hover text). l: its line; s: { ap, label, off, why } */
-const stampHtml = (l, s) => (s.off
+// v0.0.453 (playtest 6): an off stamp is still clicked (struck: spent, or too few AP; the roll dialog warns); only an Escalation lock is disabled
+const stampHtml = (l, s) => (s.off && (s.lock || l.grant)
   ? `<button type="button" class="hb-st no" disabled title="${esc(s.why || "")}">${esc(s.label)}</button>`
-  : `<button type="button" class="hb-st" data-hud="${l.grant ? "grant" : "use"}" data-ap="${n0(s.ap)}"${l.grant ? ` data-effect="${esc(l.grant.effect)}" data-index="${n0(l.grant.index)}"${l.grant.target ? ` data-target="${esc(l.grant.target)}"` : ""}` : ""} aria-label="${esc(`Use ${l.name}, ${s.label}`)}">${esc(s.label)}</button>`);
+  : `<button type="button" class="hb-st${s.off ? " no" : ""}" data-hud="${l.grant ? "grant" : "use"}" data-ap="${n0(s.ap)}"${l.grant ? ` data-effect="${esc(l.grant.effect)}" data-index="${n0(l.grant.index)}"${l.grant.target ? ` data-target="${esc(l.grant.target)}"` : ""}` : ""} aria-label="${esc(`Use ${l.name}, ${s.label}`)}">${esc(s.label)}</button>`);
 export function lineHtml(l) {
   const stamp = s => stampHtml(l, s);
   const cls = ["hb-ln", l.used ? "used" : "", l.pass ? "pass" : "", l.ready ? "ready" : "", l.dim ? "dim" : ""].filter(Boolean).join(" ");
   // v0.0.393 (Lucas: "difficult to see what has been used"): a used Action shows the word, not struck stamps; its name is struck through
-  const stamps = l.pass ? `<span class="hb-pv">${esc(l.state ?? "")}</span>` : l.used ? '<span class="hb-pv used">used</span>' : (l.stamps ?? []).map(stamp).join("");
+  const stamps = l.pass ? `<span class="hb-pv">${esc(l.state ?? "")}</span>` : `${l.used ? '<span class="hb-pv used">used</span>' : ""}${(l.stamps ?? []).map(stamp).join("")}`;   // v0.0.453: a used one keeps its stamps (struck, clickable)
   return `<div class="${cls}" data-item-id="${esc(l.id ?? "")}"${l.pass ? "" : ` data-hud="line"`}><b>${esc(l.name)}</b><span class="hb-sts">${stamps}</span>${l.sub ? `<span class="r">${esc(l.sub)}</span>` : ""}</div>`;
 }
 /** The columns of a tab: one per Frequency that has something, its word with its small square on a rule. cols = [{ key, label, fq, lines, more }] */
@@ -102,7 +103,7 @@ export function condsHtml(conds = [], { max = 3 } = {}) {
 export function basicTabHtml(groups = []) {
   const row = l => {
     const off = !l.used && (l.stamps ?? []).length && l.stamps.every(x => x.off);
-    const stamps = l.used ? '<span class="hb-pv used">used</span>' : (l.stamps ?? []).map(x => stampHtml(l, x)).join("");
+    const stamps = `${l.used ? '<span class="hb-pv used">used</span>' : ""}${(l.stamps ?? []).map(x => stampHtml(l, x)).join("")}`;   // v0.0.453
     return `<div class="h3-bl${off || l.used ? " off" : ""}${l.strike ? " strike" : ""}" data-item-id="${esc(l.id ?? "")}" data-hud="line" style="--fq:${esc(l.fqColor ?? "#b3a68e")}"><b>${esc(l.name)}</b><span class="hb-sts">${stamps}</span></div>`;
   };
   return groups.length ? `<div class="h3-basic">${groups.map(g => `<div class="h3-bg"><div class="h3-bh">${esc(g.label)}</div>${g.lines.map(row).join("")}</div>`).join("")}</div>` : '<div class="hb-cols"><span class="hb-none">Nothing here.</span></div>';

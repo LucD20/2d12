@@ -77,6 +77,11 @@ export async function postStartStack(combat) {
          img: c.token?.texture?.src ?? c.img ?? a.img ?? "", disp: c.token?.disposition ?? (a.type === "character" ? 1 : -1),
         source: m.source ?? "", action: m.action ?? "", ap: m.action ? Number(m.ap) || 0 : "", itemId: item?.id ?? "", text });
     }
+    // v0.0.453 (playtest 6: both Paladins forgot to Judge when the encounter started): Judge's 0 AP use (at the start of an encounter) is a row too
+    for (const j of (a.items ?? []).filter(i => i.type === "action" && i.system?.markKind === "judge")) {
+      rows.push({ actorUuid: a.uuid, name: String(c.name ?? a.name).replace(/\s*\([^()]*\)\s*$/, "").trim() || a.name, img: c.token?.texture?.src ?? c.img ?? a.img ?? "",
+        disp: c.token?.disposition ?? (a.type === "character" ? 1 : -1), source: j.name, action: j.name, ap: 0, itemId: j.id, text: `${a.name} can ${j.name} a creature (0 AP, at the start of the encounter).` });
+    }
   }
   if (!rows.length) return null;
   const st = { ...newStack(rows), first: combat.combatant?.name ?? "" };

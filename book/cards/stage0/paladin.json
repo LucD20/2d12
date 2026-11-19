@@ -108,7 +108,8 @@
     "signature",
     "weapon",
     "strike",
-    "divine"
+    "divine",
+    "unfailing"
    ],
    "distance": "Weapon",
    "target": "One creature",

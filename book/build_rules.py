@@ -24,7 +24,7 @@ GROUPS = [("roll", "Roll", ["appeal", "body", "instinct", "mind", "power", "save
           ("requires", "Requires", ["gun", "handle", "melee", "ranged", "shot"]),   # the keys Foundry still has (test t146 compares the two lists); the book prints gun as Firearm and shot as Projectile (cards.py RENAMED) until the Foundry pass renames the keys
           ("kind", "Kind", ["area", "move", "self", "strike"]),
           ("damage", "Damage", ["nonlethal"]),
-          ("keywords", "Keywords", ["divine", "focus", "fear"])]
+          ("keywords", "Keywords", ["divine", "focus", "fear", "unfailing"])]
 def group_of(k):
     if k.startswith('ht:'): return 'kind'
     k = {'projectile': 'shot', 'firearm': 'gun'}.get(k, k)

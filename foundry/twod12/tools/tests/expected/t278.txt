@@ -19,7 +19,7 @@ a pill keeps one line: true | the header wraps: true
 trait chips are plain words everywhere: true
 the dark Resolve blue lighter (v0.0.447: lighter again, less saturated): true | the HUD's 10 defense cells: true | a full AP pip gold in dark: true
 --- Minion squads (book: as even as possible; the GM picks the groups and who goes next)
-sizes for 1 to 7: 1 | 2 | 3 | 2+2 | 3+2 | 3+3 | 3+2+2
+sizes for 1 to 7: 1 | 2 | 2+1 | 2+2 | 2+2+1 | 2+2+2 | 2+2+2+1
 the GM's groups kept (m0, m1 in squad 2): {"m2":["m2","m3"],"m0":["m0","m1"]}
 a squad in the GM's order: M2 M3 M1 P1 | still to act after M2: M3, M1 | M1 picked next: M2, M1, M3
 the book: true

@@ -335,7 +335,10 @@ function hardStep(doc, to, step, cost, from = null) {
   try {
     if (!doc?.actor || !to) return cost;
     if (ignoresTerrain(doc)) return Number.isFinite(step) && step > 0 ? step : cost;   // (Cut Through) the terrain costs nothing extra
-    const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), at = squareOf(to);
+    // v0.0.453 (Lucas, playtest 6: "Large tokens count difficult square for each square moving past someone. Foundry is calculating only when the
+    // center passes through a token"): Foundry gives the cost function the square of the token's CENTER, so a Large token's space is the block
+    // around it (it was taken as the top left: half the space was never checked)
+    const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), c0 = squareOf(to), at = { i: c0.i - Math.floor(h / 2), j: c0.j - Math.floor(w / 2) };
     const cells = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) cells.push({ i: at.i + di, j: at.j + dj });
     const senses = doc.actor.system?.senses ?? {};
     let hard = cells.some(c => seenLight(lightAt(canvas.grid.getCenterPoint(c)), senses) === "dark");
@@ -344,9 +347,10 @@ function hardStep(doc, to, step, cost, from = null) {
       hard = others.some(t => tokenCells(t).some(c => cells.some(m => m.i === c.i && m.j === c.j)));
     }
     // v0.0.171: a diagonal between two creatures is Difficult Terrain too, so the movement label shows it while dragging.
-    if (!hard && from) hard = stepCorners(squareOf(from), at, { w, h, creatureAt: c => unwillingIn(c, doc) }).kind === "creatures";
+    const f0 = from ? squareOf(from) : null, fromTl = f0 ? { i: f0.i - Math.floor(h / 2), j: f0.j - Math.floor(w / 2) } : null;
+    if (!hard && fromTl) hard = stepCorners(fromTl, at, { w, h, creatureAt: c => unwillingIn(c, doc) }).kind === "creatures";
     // v0.0.345 (book, Frightened): a step that brings it closer to the source of a "Difficult Terrain" Movement limit costs double
-    if (!hard && from) hard = moveLimitsOf(doc).some(l => l.how === "difficult" && moveLimitBreaks(l.dir, limitSquares(from, l.token), limitSquares(at, l.token)));
+    if (!hard && from) hard = moveLimitsOf(doc).some(l => l.how === "difficult" && moveLimitBreaks(l.dir, limitSquares(fromTl, l.token), limitSquares(at, l.token)));
     if (!hard) hard = areaDifficult(doc, cells);   // v0.0.327 (PACK ZONE): a Zone's or an Aura's Difficult Terrain, for the creatures its row reaches only
     if (!hard) return cost;
     return Number.isFinite(step) && step > 0 ? Math.max(cost, 2 * step) : cost * 2;
@@ -1634,16 +1638,18 @@ export function openChargePicker(c, token) {
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-chargebar";
   bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-go">Charge!</button><button type="button" class="lb-give">Give up</button>`;
-  document.body.append(bar);
+  // v0.0.453 (Lucas, playtest 6: "Charge should show in the situational section of the hud"): it asks there, as End movement and a Setup do
+  const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, inSide = !!slot?.classList?.contains("hb-ask");
+  if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", inSide); slot.append(bar); hud.hudAsking(true, inSide); } else document.body.append(bar);
   const text = () => {
     if (cur?.target) {
       const r = cur.path, who = cur.inReach.some(t => t.id === target.id);
       if (cur.tooFar) return `${target.name} is out of reach: a Charge goes up to ${ch.max} squares. Give up, or click to Charge anyway (it would be disrupted).`;
       if (r.bad < 0 && r.sq + 1e-6 < ch.min) return `Too close: a Charge moves at least ${ch.min} squares (${target.name} is in Reach after ${r.sq}).`;
       if (r.bad >= 0) return `${r.problem}: the Charge stops after ${cur.stopSq} squares${who ? "" : `, ${target.name} not in Reach: it would be disrupted`}. ${armed === cur.key ? "Click again to Charge anyway." : "Click to choose it, then again to confirm."}`;
-      return `Charge ${r.sq} squares toward ${target.name}: in Reach at the end. Click to Charge.`;
+      return `Charge ${r.sq} squares toward ${target.name}: in Reach at the end. Click to Charge, or click another enemy to Charge it.`;
     }
-    if (!cur) return `Charge: at least ${ch.min}, up to ${ch.max} squares (the gold outline). Click the destination.`;
+    if (!cur) return `Charge: at least ${ch.min}, up to ${ch.max} squares (the gold outline). Click the destination, or an enemy to Charge it.`;
     const r = cur.path, last = r.bad >= 0 ? r.cells[r.bad - 1] : r.cells.at(-1);
     if (r.cells.length < 2) return "Click a square outside your space.";
     if (r.sq + 1e-6 < ch.min) return `Too short: a Charge moves at least ${ch.min} squares (this is ${r.sq}).`;
@@ -1656,7 +1662,13 @@ export function openChargePicker(c, token) {
   const sqName = cell => `${String.fromCharCode(65 + ((cell.j % 26) + 26) % 26)}${cell.i + 1}`;
   // v0.0.224 (Lucas, playtest 3): with a target, the line goes toward it (to the square of its space nearest to you) and stops on the first
   // square from which it is within Reach; the mouse only confirms. A blocked line stops earlier (a second click confirms it).
-  const target = ch.targetId ? canvas.tokens?.get?.(ch.targetId) : null;
+  let target = ch.targetId ? canvas.tokens?.get?.(ch.targetId) : null;   // v0.0.453 (playtest 6): a click on another creature changes it
+  // v0.0.453 (Lucas, playtest 6: "Charge is allowing to end movement on an ally's space"): no movement ends in another creature's space, so the
+  // Charge stops on the last free square before it (its path is cut there)
+  const footOf = cell => { const out = []; for (let di = 0; di < Math.max(1, Math.round(doc.height)); di++) for (let dj = 0; dj < Math.max(1, Math.round(doc.width)); dj++) out.push(`${cell.i + di},${cell.j + dj}`); return out; };
+  const taken = () => { const set = new Set(); for (const t of canvas.tokens?.placeables ?? []) { if (t.id === doc.id || t.document?.hidden) continue; for (const x of tokenCells(t)) set.add(`${x.i},${x.j}`); } return set; };
+  const freeBack = (cells, idx) => { const occ = taken(); let n = idx; while (n > 0 && footOf(cells[n]).some(k => occ.has(k))) n--; return n; };
+  const tokenAtPoint = p => (canvas.tokens?.placeables ?? []).find(t => t.id !== doc.id && !t.document?.hidden && t.visible !== false && Number(t.document?.disposition) !== Number(doc.disposition) && t.bounds?.contains?.(p.x, p.y)) ?? null;   // a creature of another side
   const tl0 = cell => canvas.grid.getTopLeftPoint({ i: cell.i, j: cell.j });
   const virtAt = cell => { const t = tl0(cell); return { id: doc.id, document: { id: doc.id, x: t.x, y: t.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } }; };
   const computeTarget = () => {
@@ -1670,16 +1682,18 @@ export function openChargePicker(c, token) {
     const lim = blockedFirst ? end - 1 : end;
     if (measureSquares(tl0(a), tl0(full.cells[lim])) > ch.max + 1e-6) { let n = lim; while (n > 0 && measureSquares(tl0(a), tl0(full.cells[n])) > ch.max + 1e-6) n--; end = n; tooFar = true; }
     const blocked = blockedFirst && !tooFar;
+    if (!blocked) { const n = freeBack(full.cells, end); if (n !== end) { end = n; } }
     const cells = full.cells.slice(0, end + 1);
     const stop = blocked ? cells[end - 1] : cells[end], stopTl = tl0(stop), stopSq = measureSquares(tl0(a), stopTl);
     const path = { cells, ties: full.ties, bad: blocked ? end : -1, problem: blocked ? full.problem : "", sq: stopSq, tl: tl0 };
-    return { key: `T|${side}`, path, stop, stopTl, stopSq, inReach: creaturesInReach(virtAt(stop), reach), target: true, reachAt, tooFar };
+    return { key: `T|${side}|${target.id}`, path, stop, stopTl, stopSq, inReach: creaturesInReach(virtAt(stop), reach), target: true, reachAt, tooFar };
   };
   const compute = p => {
     if (target) return computeTarget();
     // v0.0.221: a larger creature aims with the center of its space (the space is centered on the mouse), not its top-left square.
     const gs = canvas.grid.size, b = cellAt({ x: p.x - ((Math.max(1, Math.round(doc.width ?? 1)) - 1) * gs) / 2, y: p.y - ((Math.max(1, Math.round(doc.height ?? 1)) - 1) * gs) / 2 });
     const path = chargePath(doc, a, b, side);
+    if (path.bad < 0 && path.cells.length > 1) { const n = freeBack(path.cells, path.cells.length - 1); if (n < path.cells.length - 1) path.cells = path.cells.slice(0, n + 1); }   // v0.0.453: not on a creature
     const stop = path.bad >= 0 ? path.cells[path.bad - 1] : path.cells.at(-1), stopTl = path.tl(stop);
     const stopSq = measureSquares(path.tl(a), stopTl);
     const virt = { id: doc.id, document: { id: doc.id, x: stopTl.x, y: stopTl.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } };
@@ -1721,7 +1735,11 @@ export function openChargePicker(c, token) {
   const down = async ev => {
     if (ev.button === 2) return close(true);
     if (ev.button !== 0) return;
-    pos = local(ev); cur = compute(pos);
+    pos = local(ev);
+    // v0.0.453 (Lucas, playtest 6: "it should allow changing targets while the 'Charge X square' is shown"): a click on another creature makes it the target
+    const other = tokenAtPoint(pos);
+    if (other && other.id !== target?.id) { target = other; armed = ""; try { await c.setFlag(F, "charge", { ...ch, targetId: other.id }); ch.targetId = other.id; } catch (e) { /* the flag is only a record */ } cur = computeTarget(); draw(); return; }
+    cur = compute(pos);
     const r = cur.path;
     if (cur.target) {
       if (r.cells.length < 2 || (r.bad < 0 && !cur.tooFar && r.sq + 1e-6 < ch.min)) { draw(); return; }
@@ -1744,6 +1762,7 @@ export function openChargePicker(c, token) {
     canvas.tokens.interactiveChildren = prevInteractive;
     try { gfx.destroy(); } catch (e) { /* gone */ }
     bar.remove();
+    if (slot) hud.hudAsking(false);
     chargePick = null;
     if (giveUp) endMovement(c.id).catch(() => {});
   };

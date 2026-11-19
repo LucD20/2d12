@@ -189,6 +189,8 @@ button. **Round 2:**
 
 ## 8. The order proposed
 
+**Status (2026-11-19, Lucas: "proceed"):** steps 1, 2 and 4 BUILT in v0.0.453 (the book: Unfailing on Smite, the squads' recommendation; Foundry: F1 to F7 but F3 c, R3's audit, R5). F3 c (the Pushed button) had no cause found in the code: a diagnostic test. D2's right-click on Apply waits for the mockup. **Step 3, the mockups D1 to D5: made** (`foundry/mockups/pt6/`), waiting for Lucas. R3's audit left these rule stops in niche flows for Lucas to call: swapping initiative (once a round, before acting, an AP), swapping squares only with the same Size, ending a Zone from outside its Reach or without the AP, waking while Dying.
+
 1. **A fixes version:** F1 (the Tier 2 gate, first), F2, F3, F4 a-c, F5 a-c, and the Judge reminder (R5).
 2. **The warning audit (R3):** a list of the 174, sorted in its three kinds, for Lucas to answer by exception; then the change.
 3. **The mockups D1 to D5** (Fable), then building them.

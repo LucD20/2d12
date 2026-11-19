@@ -77,6 +77,10 @@ A Split Action has two modes, **Weapon** and **Power**, and you choose one each 
 
 Strike is any Action that tries to hit a creature, such as an attack with a weapon or a spell. You can make at most 3 Strikes per turn.
 
+### Unfailing
+
+When the roll of an Unfailing Action gets a Tier 1, that use doesn't count toward the Action's Frequency: you can use it again. You still spend its AP, and its Tier 1 still happens. An Encounter Action with Unfailing that gets a Tier 1 is still unspent this encounter.
+
 ### Weapon
 
 This uses a weapon you are wielding. Actions with this trait require a weapon, and their Distance is the weapon's Range unless they say otherwise.

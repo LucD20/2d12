@@ -9,7 +9,7 @@ Repertoire: Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation:
 pick Features gone: true | Health high 20 / low 10 (Stage 1 +0 / +0)
 --- the cards
 Judge: atwill 10 One enemy you can see | marks: true judge | 0 AP: The target is Judged by you until the encounter ends. || 1 AP: The target is Judged by you until the encounter ends. If another creature was Judged by you, it no longer is.
-Smite: divine,signature,strike,weapon encounter | 2 AP 1d6! Ho / 1[W]++1d6! Ho / 1[W]++2d6! Ho (dice rule smite)
+Smite: divine,signature,strike,unfailing,weapon encounter | 2 AP 1d6! Ho / 1[W]++1d6! Ho / 1[W]++2d6! Ho (dice rule smite)
 Binding Light: 2 AP 1d6 Ho / 1[W]++1d6 Ho / 1[W]++1d8 Ho |  / @Condition[immobilized|rounds:1] / @Condition[immobilized|rounds:1]
 Lay On Hands: One willing ally | Setup: You @Move[advance|distance:5]{Advance up to 5 squares} in a straight line toward the target. | 1 AP: The target gains @Guard[2+pow]{Guard 2 + Pow}. || 2 AP: The target gains @Guard[2+pow]{Guard 2 + Pow} and can use @Rally[1].
 Shield of Faith: turn interrupt strikeDamage 5 | 1R | An enemy's [Strike] Action would damage the target. | That damage is reduced by @Reduce[1+pow]{1 + Pow}, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). [after: @Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger]]
