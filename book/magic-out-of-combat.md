@@ -173,3 +173,5 @@ The skill list, its numbers and the Skill Talents stay for the Skills session (D
 | 7 | **Paired picks:** whenever you would choose a spell, you choose one for fights and one for outside a fight | "A yes" | 120 |
 
 **Lucas's caution (record, decision 121): this piece decides the skeleton and leaves the meat to Talents.** "Are we jumping the gun and doing what should be the Talents job?" His three traps: Pathfinder 2e's skill feats (permission), the skill tax of D&D 3.5 and Pathfinder 1e, Savage Worlds' Edges (combat and social picks competing).
+
+**The plan from here (record, decision 122; Lucas: "Good, let's keep going with A"):** five skeleton decisions, then the Talents' structure. (a) What the Path and School words mean outside a fight. (b) How size and duration are bounded. (c) The price. (d) What a rank opens. (e) The policy for the scene-breaking families. Steps 9 and 10 of section 5 shrink to hooks for Talents; no spell list is written here.
