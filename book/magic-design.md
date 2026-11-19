@@ -126,6 +126,7 @@ And the system's purpose (CLAUDE.md, 2026-11-15): fun, engaging, tactical, **wit
 | 93 | **The Limits of Magic: a list of what no spell does is adopted, with changes (Lucas: "B").** Standing: (1) magic doesn't restore Health, it can give Guard (36); (3) magic doesn't take a whole turn from a PC or a major enemy (39); (4) magic that lasts needs a fight: a spell with a duration works only in an encounter (87). **Changed:** (2) **bringing back the dead is to exist**, "with extreme limits and likely just once": "I think bringing back the dead is necessary for the health of the game [...] I like no revive spells but this is a big missed mechanic in games that do have it that I think is my job to fix." To design (and to research first: `rules-backlog.md`); "magic doesn't remove a Wound" was not objected to and stays for now. (6) **"Magic makes nothing that stays" is dropped:** "Untrue; I think the out of combat spells will need something like this, like creating a bridge." **Pending:** (5) magic and the Divine (Claude had stretched decision 12, which only says the Paladin isn't magic). Each limit is something a Talent, a class or a rare spell may later break on purpose. | Decided; 5 answered by 94; revival to design |
 | 94 | **Magic and the Divine meet like any two effects (Lucas: "A"). There is no limit 5.** A Divine card is not a spell: nothing keyed on [Spell], a Path or a School reads it, and a Paladin gains no Path from it (12). But an effect that ends "an effect", or that protects against damage, works on both, and neither is immune to the other by nature. Whether a creature is Profane stays the Paladin's business (Judge; the Tags when written). **The Limits of Magic as they stand:** magic doesn't restore Health (36); it doesn't remove a Wound (for now); it doesn't take a whole turn from a PC or a major enemy (39); magic that lasts needs a fight (87). Revival is to exist, heavily limited (93). | Decided |
 | 95 | **Glamour deals false damage, and Psychic moves to Astral beside Force (Lucas: "A"; it changes 5b's table and decision 23 for those two Paths).** **False damage** (a new word for Chapter 4): it is Nonlethal Resolve damage; all the false damage a caster has dealt is removed when that caster goes Down; what is left is removed when the encounter ends. A creature brought Down by it is Unconscious, never dead. From Dominions (`dominions-rules.md` 2; the third review, 5o C). To settle when written: whether false damage has a subtype for Resist and Weak; how a sheet and Foundry tell it apart from real damage; whether it can be made Lethal by the Bane switch of Chapter 4 (Claude's assumption: no). | Decided; details to write |
+| 96 | **The flavor list is saved, to be made when the mechanics are done (Lucas: "Save the list to make when the mechanics are done").** Section 5p. Not to be drafted before then. | Parked on purpose |
 **Superseded:** point 7 of "PROGRESSION AND MAGIC" (2026-10-29: "no new casting mechanic"; reopened by "something bold"). Still standing from that entry unless changed: spells are open to anyone through Talents; classes differ by repertoire; theme chains keyed on traits; "spells must not feel bad"; a caster's round 1 at least 90% of a weapon user's.
 
 ---
@@ -531,6 +532,19 @@ Lucas's principle (decision 44): the base rule carries the limit; Talents are ho
 ### E. Stale lines found by the rulebook reader (corrected in this pass or left as history)
 
 Corrected: decision 70's "Surge is never above Escalation"; 5g's header and its missing decisions 76 to 85; 5m's "only cost that crosses fights"; 5l's Save-spell gap. Left as history: "about 4 to 6 steps a fight" (67, 69; about 9 at Momentum 4 after 73); decision 43's "nothing else limits it"; decision 57's "open: whether the die is sized by Stage" (58 answered it); 5c's Enchantment Breadth (61); 5h C's "not an exploit to close", written before 55.
+
+## 5p. Flavor to make when the mechanics are done (saved 2026-11-19, decision 96; from the third review's roleplay read, 5o D)
+
+**Needing no rule (the seven shown to Lucas):**
+1. **A sigil:** one line on the sheet for how your magic looks, sounds or smells; every spell you cast carries it, and it is what a witness remembers (Ars Magica; `research/ars-magica.md`).
+2. **A temperament for each Path:** a short paragraph on what walking that Path does to a person, as the Paladin's intro does. Dominions' start (`research/dominions-paths.md` section 2): Fire dynamic and emotional, Water flexible and wise, Earth conservative, Nature subtle.
+3. **What Overreach looks like, Path by Path** (frost on the lips, a nosebleed, ash on the breath): a mark that lasts until a Sleep (55).
+4. **Surge as something seen** around a caster late in a fight (heat shimmer, static, a smell of rain).
+5. **Why iron dulls magic:** the fiction for the armor rule (79, 80, 89).
+6. **A named summon:** one sentence that makes it the same creature each time (5k doesn't say).
+7. **Schools as professions:** the warder, the binder, the interrogator.
+
+**Also from that read, for the same moment:** how a broken held spell unravels; rival Paths; readable enemy casters (a sigil and a tell); species leanings that the numbers already give (an Elf's Resolve, a Dwarf's); the fiction of 87 (battle magic feeds on the fight); a spell as treasure; oaths and taboos as Talents. Claude writes the Flavor (CLAUDE.md); Lucas reads it.
 
 ## 6. The order of work from here (proposed)
 
