@@ -201,3 +201,13 @@ The skill list, its numbers and the Skill Talents stay for the Skills session (D
 | Abjuration | Guards a place or a person against something it names: a ward, an alarm | It warns or bars. It never harms |
 
 Read together: Fire and Enchantment, a hearth that keeps a camp warm; Death and Thaumaturgy, speaking with the dead; Earth and Conjuration, a bridge of stone; Air and Abjuration, a ward that carries a sound to you.
+
+### Skeleton decision (b): how size and duration are bounded (Lucas: "A"; record, decision 124)
+
+| | Step 1 | Step 2 | Step 3 | Only where a card says |
+|---|---|---|---|---|
+| **How far** | Touch | 10 squares | Within sight | A place you have been |
+| **How many** | One creature or thing | | | A room, a camp |
+| **How long** | 10 minutes | An hour | Until your next Sleep | It stays |
+
+**No Overcast ladders outside a fight.** A card says what it does; where it matters, it prints its own stretch with its price ("+1 Surge for each one more creature").
