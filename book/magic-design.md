@@ -449,7 +449,7 @@ Lucas's principle (decision 44): the base rule carries the limit; Talents are ho
 - **What casting takes:** hands, a voice, armor. Nothing says whether a caster can cast in plate, bound or silenced. (Dominions: armor adds to every spell's fatigue.) **(Decision 77: [Handle] and a voice trait spell by spell; armor for all spells, its effect open.)**
 - **[Focus]:** on every spell (7), with no rule. **(Decision 85: a hook, printed on most spells and not all.)**
 - **Whether a spell is seen or heard,** and whether it can be recognized or answered as it is cast.
-- **Which Attribute the Power Modifier is** for a caster with no class.
+- ~~Which Attribute the Power Modifier is for a caster with no class.~~ **Not a gap (checked 2026-11-19):** Chapter 5 gives every character a Power Modifier from their class (+2 or +1 at level 1); no Attribute is involved, and a martial who takes a Magic Talent casts with the +1.
 - **Charmed and Confused** (drafts in the second pass, not in Chapter 8); **the Poison subtype** (13; not in Chapter 4); **Flying and Climbing** (the summons' menu leans on them).
 - **The [Melee] trait's text for a spell (settled: decision 77); an Interrupt that answers a result (settled: decision 81); a [Save] spell while Engaged** (settled: decision 76); **one rule for two Lingering effects (decision 82: one for each subtype); a lowered Defense against Vulnerable.**
 - **A held spell whose target dies or leaves; two casters' same spell on one creature** (Chapter 8's Stacking probably covers it: to check).
