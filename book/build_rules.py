@@ -41,7 +41,7 @@ def icon_svg(name):
     i = ICONS[name]
     return f'<svg class="ico" viewBox="0 0 {i["w"]} {i["h"]}" aria-hidden="true"><path fill="currentColor" d="{i["d"]}"/></svg>'
 DCODE = {"Ac": "Acid", "Bl": "Blunt", "Co": "Cold", "El": "Electricity", "Fi": "Fire", "Fo": "Force", "Ho": "Holy", "Pi": "Pierce", "Ps": "Psychic", "Sl": "Slash", "Th": "Thunder", "Un": "Unholy"}
-DCODE_RE = re.compile(r'(?<=[\d\]]) (' + '|'.join(DCODE) + r')\b')   # a code after a number or a [At]: "1d6 Ho", "[At] Bl"
+DCODE_RE = re.compile(r'(?<=[\d\]!]) (' + '|'.join(DCODE) + r')\b')   # a code after a number, a die's ! or a [At]: "1d6 Ho", "1d6! Ho", "[At] Bl"
 def dcode_html(code): return f'<span class="dcode" style="--dc:{DTYPE[DCODE[code]]}">{code}</span>'
 def dtype_html(name): return f'<span class="dtype" style="--dc:{DTYPE[name]}">{icon_svg(name)}{name}</span>'
 def pool_html(k):

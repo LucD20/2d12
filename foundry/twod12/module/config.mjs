@@ -383,10 +383,10 @@ export const inkOf = code => { const k = Object.keys(TWOD12.subtypeInk ?? {}).fi
 // an amount with no pool before it ("+1d6 Ho" from a bonus) keeps the type's ink as before.
 // Pack R-core: [V] Vigor and [R] Resolve damage are the B and M pools (both spellings read until R-Foundry).
 const POOL_CSS = { B: "b", V: "b", M: "m", R: "m" }, POOL_KEY = { B: "B", V: "B", M: "M", R: "M", C: "C" };
-const POOL_EXPR = /\[(B|M|V|R)\](\s*)((?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
+const POOL_EXPR = /\[(B|M|V|R)\](\s*)((?:\d+d\d+!?|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+!?|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
 export const prettyDamage = html => String(html ?? "")
   .replace(POOL_EXPR, (m, p, sp, expr) => `${poolIcon(POOL_KEY[p])}${sp}<span class="pool-${POOL_CSS[p]}">${expr}</span>`)
-  .replace(/(\d*\[W\]|\[At\]|\d+d\d+(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)};--sc-d:${brightOf(code) || inkOf(code)}">${amt}</span>${sp}${code}` : m))
+  .replace(/(\d*\[W\]|\[At\]|\d+d\d+!?(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)};--sc-d:${brightOf(code) || inkOf(code)}">${amt}</span>${sp}${code}` : m))
   .replace(/\[(B|M|C|V|R)\]/g, (m, p) => poolIcon(POOL_KEY[p]))
   .replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, m => dtypeHtml(m));
 
@@ -463,10 +463,12 @@ const TRAIT_KEY_OF = Object.fromEntries([...Object.entries(TWOD12.traits).map(([
 const TRAIT_KEYS = [...new Set(Object.values(TWOD12.traits).map(String))].sort((a, b) => b.length - a.length).map(l => l.replace(/[.*+?^${}()|[\]\\-]/g, "\\$&")).join("|");
 
 /* ------------------------------------------------------------------ text colors (v0.0.179: the book's CLASS_TOKEN, book/build_rules.py) */
-const ATOM = String.raw`(?:\d+d\d+|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
+const ATOM = String.raw`(?:\d+d\d+!?|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
 const TOKEN_RE = new RegExp([
   String.raw`(?<slash>${ATOM}(?:\s*/\s*${ATOM})+\s*\[(?<sp>[BMVR])\])`,    // "1d6 / 1d4 / 0 [R]": tier values with the pool after them
   String.raw`(?<tag>\[(?<tp>[BMVR])\]\s*${EXPR})`,                           // "[B] 1[W] + [Mod]", "[M] 1d6+1"
+  // v0.0.451 (Lucas, g3-res: "the '!' and 'Ho' arent colored"): a damage code after a die, a number or a ] in its type's color, as the book does
+  String.raw`(?<dcode>(?<=[\d\]!]\s)(?:Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b)`,
   String.raw`(?<ht>\[HT(?::[^\]]*)?\])`,                                      // "[HT: Entering, Turn]"
   // v0.0.192: a bracketed list of traits, "[Ranged, Shot]" or "[Strike]", colored as one group (each trait in its group's color).
   String.raw`(?<tgrp>\[(?:${TRAIT_KEYS})(?:,\s*(?:${TRAIT_KEYS}))*\])`,
@@ -484,6 +486,7 @@ const traitTip = () => "";   // v0.0.420 (the tooltip review): no hover on a tra
 function colorToken(m, g) {
   if (g.slash) return `<span class="pool-${POOL_CSS[g.sp]}">${m}</span>`;
   if (g.tag) return `<span class="pool-${POOL_CSS[g.tp]}">${m}</span>`;
+  if (g.dcode) return inkOf(m) ? `<span class="dtamt dcode" style="color:${inkOf(m)};--sc-d:${brightOf(m) || inkOf(m)}">${m}</span>` : m;
   if (g.ht) return `<span class="kw-ht">${m}</span>`;
   // v0.0.261 (Lucas, Rolling Shot): a trait in a text carries its tooltip, like the chips of the Traits line
   if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}"${traitTip(TRAIT_KEY_OF[w.toLowerCase()])}>${w}</span>`).join(", ")}]</span>`;

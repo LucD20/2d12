@@ -68,7 +68,7 @@ The first line says which Part it belongs to. Headings (`##`, `###`) are the tar
 
 ## Placeholders and automatic coloring
 - `{{dt:Holy}}` is a damage type with its icon and color: Acid, Blunt, Cold, Electricity, Fire, Force, Holy, Pierce, Psychic, Slash, Thunder, Unholy.
-- `{{dc:Ho}}` is a two-letter code in the type's color (Ac, Bl, Co, El, Fi, Fo, Ho, Pi, Ps, Sl, Th, Un). A code written after a number or a `]` ("1d6 Ho", "[Mod] Bl") is colored by itself.
+- `{{dc:Ho}}` is a two-letter code in the type's color (Ac, Bl, Co, El, Fi, Fo, Ho, Pi, Ps, Sl, Th, Un). A code written after a number, a die's `!` or a `]` ("1d6 Ho", "1d6! Ho", "[Mod] Bl") is colored by itself (Foundry's text colors do the same since v0.0.451).
 - `{{pool:V}}` and `{{pool:R}}` are the heart (Vigor) and the brain (Resolve); `{{pool:B}}` / `{{pool:M}}` still work.
 - `@@CARD:Name@@` places a card of `book/cards/` (see "An Action card" below). `@@SAMPLE_CARD@@` is drawn by the builder. `@@DIAGRAM:name@@` puts a diagram in the text: cover, leaning, flanking, engaged, reach, emanation, light, burst, straight (charge), line1 to line3 (the Line area), difficult, push, senses (the four scenes of the two questions), movingaway and the rest. They are drawn by `diagrams/diagrams.py` (the names are listed in `book_diagram` there); a new one needs a drawing function and a name. Every number in them is computed from the rule. `python3 diagrams/build_diagrams_draft.py` builds a page with all of them to look at. The builder needs the `diagrams/` folder beside it.
 - Trait words (Strike, Weapon, Melee, Ranged, Move...) and damage type names are colored by the builder wherever they appear: write them as plain words.

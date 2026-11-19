@@ -19,17 +19,17 @@ differ):
 
 ## Characters and sheets
 
-### g3-res · v0.0.450 · The dark Resolve color
+### g3-res · v0.0.451 · The dark Resolve color
 Do: In the dark interface, have Aveline Smite the Orc Warrior and read the chat card's line "Smite dice: [R] 1d6! Ho…"; open Smite on her sheet and in the roll dialog, and Durgan's Word of Radiance.
-Expect: "[R] 1d6" in the chat card and every Resolve damage on the sheet and in the dialog read in the same pale blue, easy to read on the dark card (the chat card no longer darker than the rest); the other colors in chat cards (Attributes, Boons, Banes) readable too; Vigor's red unchanged.
-Rev: 3
+Expect: "[R] 1d6!" in the chat card (the "!" with the dice) and "Ho" in Holy's gold, and every Resolve damage on the sheet and in the dialog read in the same pale blue, easy to read on the dark card (the chat card no longer darker than the rest); the other colors in chat cards (Attributes, Boons, Banes) readable too; Vigor's red unchanged.
+Rev: 4
 
 ## The HUD
 
-### g2-hotbar · v0.0.450 · The Hands and the macro bar together; the macro bar's buttons
+### g2-hotbar · v0.0.451 · The Hands and the macro bar together; the macro bar's buttons
 Do: Select Sylwen's token out of combat and look at the HUD's right column, in the dark and the light interface; use the macro bar's lock, mute, menu and page arrows; drag a macro onto a slot and click it. Then knock her Prone (her sheet's conditions).
-Expect: With nothing waiting there are no tabs: her hand tiles above the macro bar in one pane. Foundry's small buttons left of the slots show their icons (menu, mute, lock, clear) in the text color on a faint fill, two rows within a slot's height; right of the slots the page arrows and the number are one tidy column, ▲ 1 ▼; the ten slots share the width; every control and macro still works. Prone: the tabs "Situational" and "Hands" appear and Situational opens with Stand and Crawl; "Hands" shows the tiles and the macro bar together; when she stands, the tabs go away.
-Rev: 4
+Expect: With nothing waiting there are no tabs: her hand tiles above the macro bar in one pane. Left of the slots, mute over menu: two small flat buttons with their icons in the text color; right of the slots, a thin column ▲ 1 ▼ (bare arrows, the number between them, not over them), then lock over clear, boxed like mute and menu; all within a slot's height; the ten slots share the width; every control and macro still works. Prone: the tabs "Situational" and "Hands" appear and Situational opens with Stand and Crawl; "Hands" shows the tiles and the macro bar together; when she stands, the tabs go away.
+Rev: 5
 ## Starting a combat
 
 ### minion-squad · v0.0.440 · Minion squads: even, the GM's groups, the GM's order
@@ -262,7 +262,3 @@ Expect: Its reason shows (one of the few hovers left).
 ### pick-windows · v0.0.415 · Every question is a pick window
 Do: With Aveline and Sylwen, meet a few of these: a Split Action's mode, a Strike out of your turn, a fourth Strike, Shift+E, the GM's "movement left", swap initiative, not enough AP, End Combat with a creature Dying, an Action with both hands full, Regrip, Reload, waking an Unconscious creature.
 Expect: Each opens in the class window's style (no Foundry dialog) and Cancel closes it doing nothing.
-
-### pick-forms · v0.0.415 · The forms
-Do: On Aveline's sheet open the Senses editor; in the Encounter Log, Edit line and Add a note; place an area by hand; Recovery; on an NPC, Generate Weapon.
-Expect: Each is a pick window; Save keeps what you typed; Generate Weapon's preview follows the type.
