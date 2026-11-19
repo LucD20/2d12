@@ -389,7 +389,7 @@ Claude read section 5g against the six research notes and against Chapters 1 to 
 - **Linked casters** (the communion), **spells that take time and can be broken** (and so a rule for [Focus]), **gems as loot**, **the Tags**, **rituals**, **Blood**: all parked.
 - **Protections of one family replace each other; a ward as a count; a buff with a price** (`dominions-rules.md` 7).
 
-## 5i. Crucible (a lead, not researched)
+## 5i. Crucible (RESEARCHED 2026-11-19 from its source: `research/crucible.md`; the paragraph below is the earlier description from memory, kept for the record)
 
 Lucas's reference (decision 34). **[memory]: from Claude's training, no page opened.** Crucible is the Foundry VTT system by Foundry's own lead developer. Its spells are composed at casting time from parts: a **Rune** (the substance: flame, frost, lightning, earth, life, death, mind and others), a **Gesture** (the delivery: touch, arrow, ray, fan, aura, ward, and others, each with its own cost, range and shape) and an optional **Inflection** (a modifier: extend, push, pull, and others). The pieces map closely onto what is decided here: Rune = Path, Gesture = a finer cut than School (a delivery shape, nearer to the Breadth and Reach ladders), Inflection = an Overcast step. Two differences to keep in mind: Crucible composes every spell on the fly, where 2d12 writes cards (Lucas's "least ambiguity"); and its Gestures are shapes, where 2d12's Schools are verbs. **To research before leaning on it** (its rules are public on Foundry's site and wiki): what a Gesture fixes, how its composed spells are priced, and what its players say.
 
@@ -561,6 +561,13 @@ Corrected: decision 70's "Surge is never above Escalation"; 5g's header and its 
 3. 5o (the third review: problems, Dominions, roleplay) and 5l (the Talent seeds), 5p (the flavor list, parked on purpose).
 4. `book/rules-backlog.md`: the entries dated 2026-11-18 and 2026-11-19 (what each decision asks of the rulebook).
 
+### Done while paused (2026-11-19, Lucas: "all three"): research only, no decision
+
+- **`research/revival.md`:** how other games bring back the dead; the praised returns combine a count, the party's part and a mark; what each shape could hang on in 2d12 (Wounds, a Rest, Momentum).
+- **`research/out-of-combat-magic.md`:** eight shapes of magic outside a fight; Fabula Ultima as the closest match; a verb + noun pair says *what* may be attempted and never, alone, *how much*.
+- **`research/crucible.md`:** read from its source; composing covers what is a number, a written card covers what needs a sentence; a substance's condition only on a Critical; out-of-fight magic written by substance.
+- **`book/magic-rules-draft.md`:** the rules of magic as decided, in reading order, with every assumption marked. A reading copy: this record stays the authority.
+
 ### The question that was on the table (not answered)
 
 **Which piece next:** (A) out-of-combat magic, the piece of decision 87 (Claude's pick); (B) bringing back the dead (93: research first); (C) a playtest kit, one page of rules and one test caster, to try Surge; (D) Talents (where about eighteen seeds wait, and the Talents' structure is still set aside).
@@ -596,4 +603,4 @@ Spells are Power Actions with [Spell], a Path and a School and a minimum in each
 
 ### Files of the brainstorm (the list `book/magic-files.sha256` guards)
 
-`book/magic-design.md` (this record); `book/cards/magic-first-pass.md`, `magic-second-pass.md`, `magic-third-pass.md`, `magic-fourth-pass.md`, `magic-overreach-lines.md` (placeholders); `book/research/`: `dominions-magic.md`, `dominions-paths.md`, `dominions-rules.md`, `dominions-core.md`, `ars-magica.md`, `magic-schools.md`, `caster-class-shape.md`, `charm-confusion-summons.md`, `progression-feel.md`, `cones.md`, `resources-and-recovery.md`, and in `raw/`: the 832-spell table, Lucas's cones picture, three research reports, and `tools/` (the scripts that built the table).
+`book/magic-design.md` (this record); `book/magic-rules-draft.md` (the reading copy); `book/cards/magic-first-pass.md`, `magic-second-pass.md`, `magic-third-pass.md`, `magic-fourth-pass.md`, `magic-overreach-lines.md` (placeholders); `book/research/`: `dominions-magic.md`, `dominions-paths.md`, `dominions-rules.md`, `dominions-core.md`, `ars-magica.md`, `magic-schools.md`, `caster-class-shape.md`, `charm-confusion-summons.md`, `progression-feel.md`, `cones.md`, `resources-and-recovery.md`, `revival.md`, `crucible.md`, `out-of-combat-magic.md`, and in `raw/` (with the three 2026-11-19 reports): the 832-spell table, Lucas's cones picture, three research reports, and `tools/` (the scripts that built the table).
