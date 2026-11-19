@@ -48,3 +48,19 @@ Skill feats that unlock basic uses; abilities that remove the roll or the scene;
 
 ## Decisions for Lucas
 1. Skill growth: A, B or C. 2. About 8 to 12 broad skills. 3. Backgrounds as 1 Boon (1 or 2 per PC). 4. Routine. 5. Challenges and Negotiations for big moments, "repeat an approach: 1 Bane". 6. Drives and Sparks: in, out or later. 7. One grounded out-of-combat Feature per class.
+
+## Lucas on how a skill's number is made, and on Routine (2026-11-19, during the magic outside a fight sitting; nothing decided)
+
+"The system don't have a Trained skill, at least I didn't have this in mind, it was just modifiers." His five directions, with his own notes:
+
+| # | The direction | His note |
+|---|---|---|
+| 1 | Attribute + skill points (given at levels to be decided) | "Good but no 'trained' tick" |
+| 2 | Attribute + trained (the Stage's number) | "Has trained tick but less customizable" |
+| 3 | Skill points + trained (the Stage's number) | "Customizable, trained tick, but attributes mean almost nothing. Stage automatically growing could be problematic" |
+| 4 | Skill points + Talents can increase | "Talent tax, customizable, talents mean more" |
+| 5 | Skill points only | "Most customizable, easy to put limits, no trained tick" |
+
+**Routine, his formula:** "Routine should be something used and it's a good idea. Trained can mean you can do routine stuff and it's good to remember, but there is a more custom way though it requires math: If 11 + total skill mod beats the DC of the task, the character can do as a Routine (no threats, no time constraint etc). This is the best way but more complex."
+
+Claude's opinion, given the same day, is in the conversation's log (`book/magic-out-of-combat.md`, the first sitting); what the rulebook already fixes for it: "Your Attributes don't grow with your level or your Stage. A Modifier is never above +4" (Chapter 5); a Skill Talent slot at levels 1 and 3, "the Skill Talents come with the Skills rules"; the Save DCs are already "11 + a Modifier" (Chapter 1).
