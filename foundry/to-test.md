@@ -19,21 +19,17 @@ differ):
 
 ## Characters and sheets
 
-### g3-res · v0.0.449 · The dark Resolve color
+### g3-res · v0.0.450 · The dark Resolve color
 Do: In the dark interface, have Aveline Smite the Orc Warrior and read the chat card's line "Smite dice: [R] 1d6! Ho…"; open Smite on her sheet and in the roll dialog, and Durgan's Word of Radiance.
-Expect: "[R] 1d6" in the chat card and every Resolve damage on the sheet and in the dialog read in the same pale blue, easy to read on the dark card (the chat card no longer darker than the rest); Vigor's red unchanged.
-Rev: 2
+Expect: "[R] 1d6" in the chat card and every Resolve damage on the sheet and in the dialog read in the same pale blue, easy to read on the dark card (the chat card no longer darker than the rest); the other colors in chat cards (Attributes, Boons, Banes) readable too; Vigor's red unchanged.
+Rev: 3
 
 ## The HUD
 
-### g2-handmenu · v0.0.448 · The HUD's hand menu
-Do: In a combat with 3 AP, Aveline holding the Longsword in one hand and a Dagger in the other, and an Arming Sword worn: click her main hand's tile on the HUD, then her off hand's; out of combat, click a free hand's tile; with no AP left, click the Longsword when held with both hands.
-Expect: A small menu opens just above the tile (not at the HUD's far left), inside the screen: the weapon and its hand, the warning "Two-handed, held in one hand: 3 Banes on its Strikes", then: Hold with both hands struck ("Your off hand holds the Dagger") and "Drop the Dagger, then hold with both hands"; Swap hands with the Dagger; Change to the Arming Sword; Stow; Drop; each with its Action and cost ("free" out of combat). A one-handed weapon has no "both hands" row. With no AP, the rows that cost AP are struck with "No AP left". Each row does what it says and posts its line in the chat. Each row's text is centered on its line. The red warning line is only text: a click on it does nothing.
-Rev: 4
-### g2-hotbar · v0.0.449 · The Hands and the macro bar together; the macro bar's buttons
+### g2-hotbar · v0.0.450 · The Hands and the macro bar together; the macro bar's buttons
 Do: Select Sylwen's token out of combat and look at the HUD's right column, in the dark and the light interface; use the macro bar's lock, mute, menu and page arrows; drag a macro onto a slot and click it. Then knock her Prone (her sheet's conditions).
-Expect: With nothing waiting there are no tabs: her hand tiles above the macro bar in one pane. Foundry's small buttons beside the slots show their icons in the text color on a faint fill, two rows within a slot's height, easy to see; the page number beside them; the ten slots share the width; every control and macro still works. Prone: the tabs "Situational" and "Hands" appear and Situational opens with Stand and Crawl; "Hands" shows the tiles and the macro bar together; when she stands, the tabs go away.
-Rev: 3
+Expect: With nothing waiting there are no tabs: her hand tiles above the macro bar in one pane. Foundry's small buttons left of the slots show their icons (menu, mute, lock, clear) in the text color on a faint fill, two rows within a slot's height; right of the slots the page arrows and the number are one tidy column, ▲ 1 ▼; the ten slots share the width; every control and macro still works. Prone: the tabs "Situational" and "Hands" appear and Situational opens with Stand and Crawl; "Hands" shows the tiles and the macro bar together; when she stands, the tabs go away.
+Rev: 4
 ## Starting a combat
 
 ### minion-squad · v0.0.440 · Minion squads: even, the GM's groups, the GM's order

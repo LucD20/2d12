@@ -1501,8 +1501,9 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   --c-bane: #ff6a4d; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a; }
 /* v0.0.438 (CARD-ONE step 5): a card carries its own color tokens wherever it is drawn (the sheet, the chat, a tooltip, the HUD): they were set
    only for a card inside the actor sheet, so a card in the chat, a tooltip or the HUD took the page's values (dark ink on the dark card). */
+/* v0.0.450 (Lucas, g3-res: "Still very dark blue" in the chat log): a chat card in the sidebar carries the tokens too (it took :root's) */
 .twod12.acard, .application.twod12.twod12-actor .acard, .application.twod12.twod12-actor .twod12.chat, .twod12.acard .twod12, .application.twod12.twod12-actor .acard .twod12, .application.twod12.twod12-actor .twod12.chat .twod12,
-.application.twod12.twod12-actor .nb {
+.application.twod12.twod12-actor .nb, .twod12.chat, .twod12.chat .twod12 {
   --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55;
   --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00; --c-wmod: #9a4a00; --c-pmod: #5b3a9e; --c-smod: #455566;
   --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }
@@ -4565,6 +4566,8 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .ha { display: inline-flex; align-items: center; gap: 5px; flex: none; padding: 1px 3px 1px 7px; border: 1px solid var(--hud-hair); border-left: 3px solid var(--fq, #5F5E5A); border-radius: 2px; background: rgba(255, 255, 255, .02); }
 .twod12-hud .ha > b { font-weight: 600; cursor: context-menu; } .twod12-hud .ha.dim > b { opacity: .5; } .twod12-hud .ha[hidden] { display: none; }
 .twod12-hud :is(.hud-main, .hud-pop, .hud-menu) button { width: auto; min-height: 0; margin: 0; line-height: 1.2; box-shadow: none; font-family: "Source Sans 3", sans-serif; }
+/* v0.0.450 (Lucas, g2-hotbar: the macro bar's buttons "have no icons"): an icon button (Foundry's fa-* classes) keeps the icon font */
+.twod12-hud :is(.hud-main, .hud-pop, .hud-menu) button[class*="fa-"], .twod12-hud #hotbar [class*="fa-"]::before { font-family: var(--font-awesome, "Font Awesome 6 Pro"), "Font Awesome 6 Pro", "Font Awesome 6 Free" !important; }
 .twod12-hud .hv { height: 20px; padding: 0 6px; border: 0; border-radius: 2px; background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); font-weight: 700; font-size: 11.5px; cursor: pointer; }
 .twod12-hud .hv:hover { background: var(--s-stamp-hover, #fff8e8); } .twod12-hud .hv.fav { box-shadow: inset 0 -2px 0 var(--s-gold, #d4a548); }
 .twod12-hud .hv.no { background: transparent; border: 1px dashed var(--s-faint, #8a7f6b); color: var(--s-faint, #8a7f6b); cursor: default; } .twod12-hud .hv.used { text-decoration: line-through; }
@@ -5326,3 +5329,10 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a { width: 16px !important; height: 12px !important; background: color-mix(in srgb, var(--hud-ink) 10%, transparent) !important; color: var(--hud-ink) !important; border-color: var(--hud-line) !important; font-size: 9px !important; }
 .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button::before, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a::before { font-size: 8px !important; line-height: 1 !important; color: var(--hud-ink) !important; margin: 0 !important; }
 .twod12-hud .h3-hot #hotbar .page-number, .twod12-hud .h3-hot #hotbar [class*="page-number"] { display: flex !important; align-items: center; justify-content: center; font-size: 9px !important; color: var(--hud-ink) !important; }
+/* v0.0.450 (Lucas, g2-hotbar: "The three on the right still are cluttered together and weird"): the page arrows and the number one column,
+   ▲ 1 ▼ like Foundry's own, bare carets (no boxes); the left buttons keep their 2-row grid */
+.twod12-hud .h3-hot #hotbar > :is(#hotbar-controls-right, nav:last-child):not(#action-bar):not(ol) { display: flex !important; flex-direction: column; align-items: center; justify-content: space-between; width: 14px !important; height: 26px !important; gap: 0; }
+.twod12-hud .h3-hot #hotbar > :is(#hotbar-controls-right, nav:last-child):not(#action-bar):not(ol) button { width: 14px !important; height: 8px !important; border: 0 !important; background: none !important; }
+.twod12-hud .h3-hot #hotbar > :is(#hotbar-controls-right, nav:last-child):not(#action-bar):not(ol) button:hover { color: var(--s-gold) !important; }
+.twod12-hud .h3-hot #hotbar > :is(#hotbar-controls-right, nav:last-child):not(#action-bar):not(ol) button::before { font-size: 10px !important; }
+.twod12-hud .h3-hot #hotbar > :is(#hotbar-controls-right, nav:last-child):not(#action-bar):not(ol) .page-number { height: 10px !important; font-size: 10px !important; line-height: 10px !important; font-weight: 600; }
