@@ -10,7 +10,7 @@
 
 ## Surge, as these cards use it (a draft of the rule, Claude's wording)
 
-> **Surge.** You start an encounter with Surge equal to your Escalation. Each time your Escalation increases, you gain 1 Surge. Spending Surge doesn't lower your Escalation. Surge has no maximum of its own. When the encounter ends, you lose all your Surge. Surge does nothing unless one of your Actions spends it. Outside an encounter, you have Surge equal to your party's Momentum; what you spend comes back when your party wins an encounter that was normal or harder (decision 71).
+> **Surge.** You start an encounter with Surge equal to your Escalation. You gain 1 Surge at the start of every round after the first, and 1 more when a Critical or your class's hook raises your Escalation (decision 73). Spending Surge doesn't lower your Escalation. Surge has no maximum of its own. When the encounter ends, you lose all your Surge. Surge does nothing unless one of your Actions spends it. Outside an encounter, you have Surge equal to your party's Momentum; what you spend comes back when your party wins an encounter that was normal or harder (decision 71).
 >
 > **On a spell:** a card can print a Surge cost beside its AP ("2 AP · 1 Surge"): you pay both to cast it. Each Overcast step costs 1 Surge, and a casting holds at most as many steps as your Escalation minus 1. A step still needs its spare level.
 
