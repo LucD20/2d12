@@ -240,3 +240,5 @@ A rank opens the spells that ask for it. A card may also print a line that a hig
 | "attempt a dc 13 skill [...] On a success" | Magic opens the way and a skill does the rest (114, 118); the Check is a skill's, not the caster's Power Modifier |
 | "1 surge: it sends to you and your other creatures" | A card prints its own stretch with its price (124) |
 | "Abjuration 4: You make it in 10 minutes" | A line a higher rank unlocks (126) |
+
+**One word or two (Lucas: "Let's do A"; record, decision 127):** a spell outside a fight prints a Path or a School with its minimum rank, or both. Camp Alarm is pure Abjuration; a hearth is pure Fire; speaking with the dead is Death and Thaumaturgy.
