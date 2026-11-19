@@ -8,5 +8,5 @@ the plate: the portrait, the name an input (renamed there), the rank's color: tr
 its tools: Post stat block (GM, NPC), Roll Initiative (when there is a roll), Senses: true
 no side panel: true | the stat lines: Health, the pools (click: damage), Defenses, Immune / Resist / Weak, Rally and the Wounds: true
 the tiles: the Attribute rolls, Vs. under it, the Modifiers with their DC: true
-the Hands with no word, one above the other: true
+v0.0.443 (group 1): the Hands left the sheet's line (the HUD and the Inventory hold them): true
 the Wounds' rolls on the Upkeep tab: true

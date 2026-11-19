@@ -35,6 +35,12 @@ function built(a, pc, st) {
   // v0.0.442: the hooks as a list, the Escalation marks, the Frequency only where the heading doesn't say it
   pc.strip.esc.hookList = st.hookList ?? [];
   pc.strip.esc.marks = SM.escMarks(Number(a.system.escalation) || 0, 6, [2, 4, 6]);
+  // v0.0.443 (group 1): the line's two lists, the Basic Actions' Frequency and cost, the tiles' labels, the Basic attack's line
+  const escN = Number(a.system.escalation) || 0;
+  pc.strip.lists = SM.combatLists({ npc: pc.npc, elite: pc.strip.elite, hookNames: st.hookNames ?? [], used: st.used ?? {}, rungs: pc.npc ? SM.ELITE_RUNGS.map(r => ({ ...r, lit: escN >= r.n })) : SM.escRungs(escN, st.rungs ?? {}, true, 6), bloodied: a.system.bloodied, strained: a.system.strained });
+  for (const g of pc.basic) for (const r of g.rows) { const f = CFG.effectiveFrequency(r.item.system); r.fq = f === "round" ? "round" : "atwill"; r.cost = String(r.cost).replace(/\s*AP$/, ""); }
+  pc.mods.forEach(m => { m.tile = m.label; });
+  for (const sec of pc.sections) for (const r of sec.rows) if (r.basicAtk) r.sub = [SM.basicAttackLine(r.item.system.versions?.[0]), ...String(r.sub).split(" · ").filter(x => /^Area/.test(x))].join(" · ");
   for (const sec of pc.sections) if (["reaction", "granted", "apex"].includes(sec.key)) sec.rows.forEach(r => { r.showFq = true; });
   pc.head.senseWords = pc.strip.senses.map(x => x.label).join(", ");
   pc.head.round = `Round ${st.round ?? 1}`;
@@ -52,20 +58,26 @@ async function sheet(a, pc) {
 }
 const S = {
   pc: async () => {
-    const a = makeActor(data.sylwen, { system: { escalation: 2, damage: { bodyLethal: 6, mindNonlethal: 3 } }, items: { Dagger: { wielded: true, hand: "off" }, "Hunting Bow": { hand: "main" } } });
-    const st = { inCombat: true, round: 2, ap: 3, strikes: 1, open: ["Snap Shot"], hooks: [], hookList: q.get("hooks") === "many" ? ["Critical", "Kindled Wrath", "Thrill of the Kill"] : ["Critical"], dl: DL, cd: CD };
+    const a = makeActor(data.sylwen, { system: { escalation: 4, damage: { bodyLethal: 6, mindNonlethal: 3 } }, items: { Dagger: { wielded: true, hand: "off" }, "Hunting Bow": { hand: "main" } } });
+    const st = { inCombat: true, round: 2, ap: 3, strikes: 1, open: ["Snap Shot"], hooks: [], hookList: [], hookNames: q.get("hooks") === "many" ? ["Kindled Wrath", "Thrill of the Kill"] : [], rungs: { 2: ["Lean and Loose"], 4: ["Steady Draw"] }, dl: DL, cd: CD };
     return win(a.name, 540, 840, await sheet(a, built(a, sheetModel(a, st), st)));
   },
   npc: async () => {
     const a = makeActor(data.orc, { system: { damage: { bodyLethal: 5 }, dmgMods: "Resist 2 Blunt, Weak 2 Fire" } });
     const st = { inCombat: true, round: 2, ap: 4, open: ["Avenge Kin"], dl: DL, cd: CD };
     return win(a.name, 540, 760, await sheet(a, built(a, sheetModel(a, st), st)));
+  },
+  // v0.0.443: an Elite (the Ogre Chieftain at Elite Escalation 2, Bloodied)
+  ogre: async () => {
+    const a = makeActor(data.ogre, { system: { escalation: 2, bloodied: true, useEscalation: true } });
+    const st = { inCombat: true, round: 2, ap: 4, dl: DL, cd: CD };
+    return win(a.name, 540, 760, await sheet(a, built(a, sheetModel(a, st), st)));
   }
 };
 const out = document.getElementById("page");
 out.style.display = "flex"; out.style.gap = "28px"; out.style.alignItems = "flex-start";
-for (const k of ["pc", "npc"]) if (!only || only === k) { try { out.insertAdjacentHTML("beforeend", await S[k]()); } catch (e) { console.error(e); out.insertAdjacentHTML("beforeend", `<pre class="mk-err">${esc(k)}: ${esc(e.stack ?? e)}</pre>`); } }
+for (const k of ["pc", "npc", "ogre"]) if (!only || only === k) { try { out.insertAdjacentHTML("beforeend", await S[k]()); } catch (e) { console.error(e); out.insertAdjacentHTML("beforeend", `<pre class="mk-err">${esc(k)}: ${esc(e.stack ?? e)}</pre>`); } }
 await document.fonts.ready;
-// actor-sheets.mjs _fitHooks, as the sheet runs it
-for (const hl of document.querySelectorAll(".ps2-hooks .ps2-hl")) SM.fitHooks(hl);
+// actor-sheets.mjs _fitLists, as the sheet runs it
+document.querySelectorAll(".ps2-combat .ps2-ls").forEach(l => SM.fitList(l)); document.querySelectorAll(".ps2-bxn[data-fit]").forEach(n => SM.fitName(n));
 document.body.dataset.ready = "1";

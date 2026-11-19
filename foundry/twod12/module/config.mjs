@@ -365,7 +365,9 @@ export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-m
   : pool === "C" ? '<span class="dt-choose"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
   : '<i class="fa-solid fa-heart dt-body"></i>';
 /** A damage type's icon (on parchment cards, Slash uses Foundry's sword image). */
-export const dtypeIcon = k => (k === "Sl" ? '<img class="dt-img" src="icons/svg/sword.svg" alt="">' : `<i class="${TWOD12.subtypeIcons[k] ?? ""}"></i>`);
+// v0.0.443 (Lucas's checklist, e6-blunt: "The Icon from Slash on the NPCs sheet is black, and its different colored than Blunt"): Slash was
+// Foundry's sword picture, which can't take its type's color; every type is now its icon, in its color
+export const dtypeIcon = k => `<i class="${TWOD12.subtypeIcons[k] ?? ""}"></i>`;
 export const dtypeHtml = code => {
   const k = Object.keys(TWOD12.subtypeInk).find(x => x.toLowerCase() === String(code ?? "").toLowerCase());
   return k ? `<span class="dtype dt-${k.toLowerCase()}" style="color:${TWOD12.subtypeInk[k]};--sc-d:${TWOD12.subtypeColors?.[k] ?? TWOD12.subtypeInk[k]}">${dtypeIcon(k)} ${TWOD12.subtypes[k]}</span>` : "";

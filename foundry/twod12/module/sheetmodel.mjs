@@ -461,22 +461,53 @@ export function escMarks(level, max = 6, rungs = []) {
   return Array.from({ length: Math.max(1, Math.trunc(Number(max)) || 6) }, (_, k) => ({ n: k + 1, on: k < lv, rung: at.has(k + 1) }));
 }
 
+
+/* ------------------------------------------------------------------ v0.0.443 (group 1; Lucas, 2026-11-19, the mockup foundry/mockups/group1, rounds 1 to 3) */
+/** The rungs' heraldic symbols (round 3, family A, the escutcheon): one shield, the same outline on every rung, gaining a charge: the plain
+ *  shield (the 1st rung), with a chevron (the 2nd), with a chevron under a chief (the 3rd, the Apex). One color (currentColor): ink when reached. */
+const RS = 'fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="miter" stroke-linecap="butt"';
+const SHIELD = `<path ${RS} d="M3.25 3.25H20.75V14C20.75 19.6 17 23.6 12 26.2C7 23.6 3.25 19.6 3.25 14Z"/>`;
+export const RUNG_SYMBOLS = [SHIELD, `${SHIELD}<path ${RS} d="M6.6 17.6L12 11.6L17.4 17.6"/>`,
+  `${SHIELD}<path fill="currentColor" d="M3.25 3.25H20.75V10H3.25Z"/><path ${RS} d="M7 20.4L12 14.8L17 20.4"/>`];
+export const rungSymbol = k => `<svg class="ps2-sym" viewBox="0 0 24 28" aria-hidden="true">${RUNG_SYMBOLS[Math.max(0, Math.min(2, k))]}</svg>`;
+
 /**
- * v0.0.442 (Lucas: the hooks "should always fit in there... That area should never grow"): fits the hooks' list (an element) into its cell, which
- * never grows: one line, shrinking from 14 px to 11 px; then two lines at the largest size (13 px down to 8 px) whose height fits the cell.
- * Needs a DOM (the sheet runs it after each render and when the window is resized).
+ * Pure: the combat line's left part (rounds 2 and 3): the hooks and the Escalation ladder, side by side. A PC: its hooks (Critical, then its
+ * other hooks; a used one stays, faint, with a check) and its Passives' rungs; an Elite: its phases as its hooks (Bloodied +1, Strained +1, a
+ * triggered one checked) and the Elite ladder; a Standard NPC: none (its line holds only the marks). rungs: escRungs' or ELITE_RUNGS' { n, label, lit }.
  */
-export function fitHooks(hl) {
-  const cell = hl?.parentElement;
-  if (!cell) return;
-  const wide = () => hl.scrollWidth > hl.clientWidth + 0.5, tall = () => cell.scrollHeight > cell.clientHeight + 0.5;
-  hl.classList.remove("wrap");
-  let size = 14;
-  hl.style.fontSize = `${size}px`;
-  while (wide() && size > 11) { size -= 0.5; hl.style.fontSize = `${size}px`; }
-  if (!wide()) return;
-  hl.classList.add("wrap");
-  size = 13;
-  hl.style.fontSize = `${size}px`;
-  while ((tall() || wide()) && size > 8) { size -= 0.5; hl.style.fontSize = `${size}px`; }
+export function combatLists({ npc = false, elite = false, hookNames = [], used = {}, rungs = [], bloodied = false, strained = false } = {}) {
+  if (npc && !elite) return null;
+  const hooks = npc ? [{ name: "Bloodied +1", used: !!bloodied }, { name: "Strained +1", used: !!strained }]
+    : [{ name: "Critical", used: !!used.crit }, ...[...new Set(hookNames)].map(n => ({ name: n, used: !!used.hook }))];
+  const ladder = (rungs ?? []).slice(0, 3).map((r, k) => { const [n, ...rest] = String(r.label ?? "").split(" · "); const name = rest.join(" · ").replace(/^—$/, ""); return { n: Number(n) || r.n, name: name || "—", lit: !!r.lit, sym: rungSymbol(k) }; });
+  return { hooks, ladder };
+}
+/** Pure: the Basic attack's subtitle from its own Tier 2 / Tier 3 damage, the flat number first (Lucas: "the basic attack plus tiers like
+ *  'Basic attack - 2 + 1d6! / 5 + 1d6!'"): "Basic attack · 1 + 1d4! / 3 + 1d6!". v: the Action's Version. */
+export function basicAttackLine(v) {
+  const words = list => (list ?? []).map(d => {
+    const w = d.useW ? `${Math.max(1, Number(d.wCount) || 1)}[W]` : "", dice = String(d.dice ?? "").trim();
+    const m = /^(.+?)\s*([+\-−])\s*(\d+)$/.exec(dice), part = !dice ? "" : !m ? dice : m[2] === "+" ? `${m[3]} + ${m[1]}` : `${m[1]} − ${m[3]}`;
+    return [w, part].filter(Boolean).join(" + ");
+  }).filter(Boolean).join(" + ");
+  const t2 = words(v?.t2), t3 = words(v?.t3);
+  return t2 || t3 ? `Basic attack · ${t2 || "—"} / ${t3 || "—"}` : "Basic attack";
+}
+/** Needs a DOM: a list shrinks its text by half pixels until no line is wider than its column and it is no taller than its place (the combat
+ *  line never grows: Lucas, 2026-11-18/19). Never cut, never taller; 7 px at the least. */
+export function fitList(l, min = 7) {
+  if (!l) return;
+  l.style.fontSize = "";
+  let size = parseFloat(globalThis.getComputedStyle?.(l)?.fontSize) || 14;
+  const over = () => l.scrollWidth > l.clientWidth + 0.5 || l.scrollHeight > l.clientHeight + 0.5;
+  while (over() && size > min) { size -= 0.5; l.style.fontSize = `${size}px`; }
+}
+/** Needs a DOM: a Basic Action's name shrinks by half pixels to 9.5 px until it fits its box; below that, two lines. Never cut (option A). */
+export function fitName(n, min = 9.5) {
+  if (!n) return;
+  n.style.fontSize = ""; n.classList.remove("wrap");
+  let size = parseFloat(globalThis.getComputedStyle?.(n)?.fontSize) || 13;
+  while (n.scrollWidth > n.clientWidth + 0.5 && size > min) { size -= 0.5; n.style.fontSize = `${size}px`; }
+  if (n.scrollWidth > n.clientWidth + 0.5) n.classList.add("wrap");
 }

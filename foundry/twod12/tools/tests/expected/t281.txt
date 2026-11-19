@@ -1,0 +1,20 @@
+--- the two lists
+a PC: [{"name":"Critical","used":true},{"name":"Kindled Wrath","used":false}] | 2 Roving Judgment (reached) / 4 Weight of Judgment (reached) / 6 Apex
+its shields: 3 kinds, one outline: true | the 2nd has a chevron, the 3rd a chief too: true
+an Elite: [{"name":"Bloodied +1","used":true},{"name":"Strained +1","used":false}] | 2 Pressing (reached) / 4 Relentless / 6 Second Wind | a Standard: none: true
+--- the Basic attack's line
+Basic attack · 1 + 1d4! / 3 + 1d6! | Basic attack · 1[W] / 1[W] + 2 | Basic attack
+no rating word, no Boon sentence: true
+--- the fit
+2 hooks: 13px | 3: 13px | 5: 8px | run after each render and on a resize: true
+--- the template and the look
+the line's left: the lists partial (hooks, then the ladder: shield, number, name): true | a used hook checked: true
+the Esc. row the HUD's ticks (a rung's taller): true | no Hands on the line: true
+the marks the HUD's: AP squares: true | the Reaction AP gold: true | Strike slashes: true
+the line fixed (72 px; a Standard 44 px): true
+Basic Actions: the theme's Frequency color, 4 px: true | the cost without AP: true | the name fitted: true
+an NPC's tiles in the PC's grid, named as a PC's: true
+--- fixes
+Slash an icon in its color: true | the dice row's icon bright on dark: true
+the HUD's marks once a combat is prepared (not only started): true
+true [shield]

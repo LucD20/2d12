@@ -5200,3 +5200,52 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-epips a.on { background: var(--s-gold); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-epips a.rg { outline: 1px solid var(--s-gold); outline-offset: 1.5px; }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-en { font-size: 13.5px; margin-left: 2px; }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .bane { grid-column: 1 / -1; font-size: 12px; }
+
+/* ==================================================================== v0.0.443 (group 1; Lucas, 2026-11-19: foundry/mockups/group1, rounds 1 to 3) */
+/* the strikes' red, a meaning (a Strike): the HUD's on dark, a darker one on parchment */
+.theme-dark, :root { --ps-strike: #c0675c; } .theme-light { --ps-strike: #a8433a; }
+/* the combat line: the two lists (hooks, the ladder), then the marks. Fixed: 72 px (a Standard NPC 44 px); the lists shrink to fit (fitList) */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.out { grid-template-columns: minmax(0, 1fr) auto; height: 72px; min-height: 0; box-sizing: border-box; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.std { height: 44px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat > * { min-height: 0; overflow: hidden; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-lists { display: grid; grid-template-columns: fit-content(50%) minmax(0, 1fr); gap: 0 16px; padding: 4px 10px; align-items: stretch; justify-content: stretch; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-col { display: flex; flex-direction: column; min-width: 0; min-height: 0; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-col:first-child { min-width: 118px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-col .ps2-hk { flex: none; line-height: 15px; font-size: 12px; font-weight: 600; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ls { flex: 1 1 0; min-height: 0; min-width: 0; overflow: hidden; display: block; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ls > * { display: block; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks { font-size: 14px; line-height: 1.143; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b { font-size: 1em; font-weight: 700; color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b.used { font-weight: 400; color: var(--s-faint); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b i { font-style: normal; margin-left: 5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ls.ps2-none { font-size: 13px; line-height: 16px; color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld { font-size: 13px; line-height: 1.231; color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span { display: flex; align-items: center; height: 1.231em; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld b { flex: none; display: inline-block; width: 1.1em; font-size: 1em; font-weight: 600; color: inherit; font-variant-numeric: tabular-nums; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld .lit { color: var(--s-ink); font-weight: 600; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld .lit b { font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sym { flex: none; width: 0.923em; height: 1.077em; margin-right: 0.42em; overflow: visible; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-lists.idle .ps2-hks b { font-weight: 400; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-lists.idle .ps2-ld .lit { color: var(--s-faint); font-weight: 400; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-outw { align-items: center; padding: 6px 18px; font-size: 13px; color: var(--s-mute); white-space: nowrap; }
+/* the marks, as the HUD draws them (.twod12-hud .hm-ap / .hm-r / .hm-sk), a little bigger: AP squares, the Reaction AP a gold diamond, Strike slashes */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks { gap: 5px 8px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-pips { gap: 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip { width: 12px; height: 12px; border-radius: 0; border: 1.5px solid var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.spent { border-color: var(--s-gold); background: transparent; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap { width: 10px; height: 10px; margin: 0 2px; border-color: var(--s-gold); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap.on { background: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip-sep { margin: 0 3px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-sep { margin: 0 1px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk i { width: 5px; height: 13px; transform: skewX(-22deg); border: 1.5px solid var(--ps-strike); opacity: .45; background: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk i.on { background: var(--ps-strike); opacity: 1; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.std .ps2-marks { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+/* the Esc. row: the HUD's upright ticks, a rung's taller (a ruler's long marks); a click sets the Escalation */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ticks { display: inline-flex; align-items: flex-end; gap: 4px; height: 16px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ticks a { width: 8px; height: 11px; box-sizing: border-box; border: 1.5px solid var(--s-mute); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ticks a.rg { height: 16px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ticks a.on { background: var(--s-ink); border-color: var(--s-ink); }
+/* the Basic Actions: the strips at nearly full color (4 px; a Strike's 3 px in its red), the name fitted, never cut */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx:not(.off) .ps2-bxbtn { border-left: 4px solid color-mix(in srgb, var(--lnf) 88%, var(--s-pg-2)); gap: 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx:not(.off) .ps2-bxbtn.strike { box-shadow: inset 1px 0 0 var(--s-pg-2), inset 4px 0 0 var(--ps-strike); padding-left: 7px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxl { flex: 1 1 auto; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxn { text-overflow: clip; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxn.wrap { white-space: normal; }
+/* an NPC's tiles in the PC's grid (the places it doesn't use stay empty) */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m1, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m2 { grid-template-columns: repeat(4, minmax(0, 1fr)) 6px repeat(3, minmax(0, 1fr)); }
+/* the Basic attack's bar: the name is never the part that is cut; the subtitle gives way */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.basicatk .ps2-bar .ps-nm { flex: none; }
+/* v0.0.443 (E6): the dice row's damage-type icon too (inline.mjs .dtic) */
+@scope (.theme-dark) to (.theme-light) { .dtic[style*="--sc-d"] { color: var(--sc-d) !important; } }

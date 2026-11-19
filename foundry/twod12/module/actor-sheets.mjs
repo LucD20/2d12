@@ -35,7 +35,7 @@ import { healthView, donutPoolAt } from "./healthview.mjs";
 import { applySpeedMods } from "./speedmods.mjs";
 import { unloadedWeapon, costText, frequencyText, costGroup, groupRows, GROUP_BY, SORT_BY, sortKeyOf } from "./actionrows.mjs";
 import { buildActionCard, buildFeatureCard, buildSoloCard } from "./actioncard.mjs";
-import { versionCant, dmgModsEdit, dmgModsText, cleanLevel, rallyAfterClick, ensureWindowTheme, fitHooks } from "./sheetmodel.mjs";
+import { versionCant, dmgModsEdit, dmgModsText, cleanLevel, rallyAfterClick, ensureWindowTheme, fitList, fitName } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { enableDragging, dropEffect } from "./drag.mjs";
 import { isFaded, grantMatches, activeGrants } from "./usage.mjs";
@@ -719,7 +719,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     this.element.querySelector("select.sortsel")?.addEventListener("change", async ev => { await game.user.setFlag("twod12", "sheetSort", ev.target.value); this.render(); });
     this._bindActionTable();
     this._bindHandTiles();
-    this._fitHooks();
+    this._fitLists();
     // v0.0.289: the Action names are keyboard links (Enter or Space opens the card)
     this.element.querySelectorAll(".ps-nm[tabindex], .tabbtn[tabindex]").forEach(el => el.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); (el.closest("[data-action='toggleCard']") ?? el).click(); } }));
     this.element.querySelectorAll("[data-opt]").forEach(el => {
@@ -794,17 +794,17 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   /**
-   * v0.0.442 (Lucas: "Escalation hooks should always fit in there, so resizing them to fit is necessary. That area should never grow"): the hooks
-   * shrink until they fit their cell (sheetmodel.mjs fitHooks).
+   * v0.0.442 (Lucas: "Escalation hooks should always fit in there... That area should never grow"); v0.0.443 (group 1): the combat line's two
+   * lists shrink until they fit their place (sheetmodel.mjs fitList), and a Basic Action's name until it fits its box (fitName: option A, never cut).
+   * Again when the window is resized.
    */
-  _fitHooks() {
-    const hl = this.element?.querySelector?.(".ps2-hooks .ps2-hl");
-    if (!hl) return;
-    const fit = () => fitHooks(hl);
+  _fitLists() {
+    const el = this.element;
+    if (!el?.querySelector) return;
+    const fit = () => { el.querySelectorAll(".ps2-combat .ps2-ls").forEach(l => fitList(l)); el.querySelectorAll('.ps2-bxn[data-fit]').forEach(n => fitName(n)); };
     fit();
     requestAnimationFrame?.(fit);   // once the fonts and the window's size are settled
-    // the window resized: fit again
-    try { this._hooksRO?.disconnect(); this._hooksRO = new ResizeObserver(() => fit()); this._hooksRO.observe(hl.parentElement); } catch (e) { /* no observer */ }
+    try { this._fitRO?.disconnect(); this._fitRO = new ResizeObserver(() => fit()); const t = el.querySelector(".twod12.sheet"); if (t) this._fitRO.observe(t); } catch (e) { /* no observer */ }
   }
 
   /** Put an Action's card into its row (once). */

@@ -20,7 +20,7 @@ import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
   healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers,
-  rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, escMarks, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
+  rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, escMarks, combatLists, basicAttackLine, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { creatureDamageLines } from "./ccdamage.mjs";
@@ -127,13 +127,16 @@ export async function pcModel(sheet, ctx) {
     esc: { n: escNow, pips: Array.from({ length: Math.max(1, Number(TWOD12.escalation?.max) || 6) }, (_, k) => k < escNow), rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
       // v0.0.442 (Lucas on the fixes mockup, round 4): the hooks as a list (their own cell), the Escalation pips with the rungs ringed (the marks cell)
       hookList: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }),
-      marks: escMarks(escNow, Math.max(1, Number(TWOD12.escalation?.max) || 6), escRungs(escNow, rungNames, apex, apexAt).map(r => Number(r.n))),
+      marks: escMarks(escNow, Math.max(1, Number(TWOD12.escalation?.max) || 6), npc ? ELITE_RUNGS.map(r => r.n) : escRungs(escNow, rungNames, apex, apexAt).map(r => Number(r.n))),
       momentum: Number(combat?.getFlag?.(F, "momentumStart")) || 0 },   // v0.0.407: the Momentum the encounter started with (0 to 4)
     strikes: strikesLine(strikesUsed(a)),
     // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
     senses: senseChips(s.senses ?? {}), strikePips: strikePips(strikesUsed(a)), strikesLeft: Math.max(0, 3 - strikesUsed(a)),
     nextBane: basicAtk && combat?.started ? nextBanes(atWillUses(a, basicAtk)).replace(/^next: /, "Basic attack: next +") : "",
     elite, eliteRungs: ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n, tip: `${r.tip}${s.eliteLadder !== false ? " Automated (the Builder's Default ladder)." : " By hand: the Builder's Default ladder is off (its entry says otherwise)."}` })),   // v0.0.320
+    // v0.0.443 (group 1): the combat line's two lists (hooks, the ladder with its shields); none for a Standard NPC
+    lists: combatLists({ npc, elite, hookNames, used: { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id },
+      rungs: npc ? ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n })) : escRungs(escNow, rungNames, apex, apexAt), bloodied: s.bloodied, strained: s.strained }),
     phases: `Phases: Bloodied +1 ${s.bloodied ? "\u2713" : "not yet"} \u00b7 Strained +1 ${s.strained ? "\u2713" : "not yet"}`
   };
   const hands = { tiles: handTiles(weapons, inCombat) };
@@ -202,7 +205,7 @@ export async function pcModel(sheet, ctx) {
     { label: "Signature", attr: s.signatureFrom === "power" ? "Power" : "Weapon", value: has(s.signatureAttribute) ? sg(s.signatureMod) : "—", dc: `DC ${dcs.signature}`, tip: `Signature Modifier: the higher of your Weapon and Power Modifiers (${s.signatureFrom === "power" ? "Power" : "Weapon"}). Save DC 11 + it (@signature.dc)` }
   ];
 
-  for (const m of mods) m.tile = npc ? `${m.label} Mod.` : m.label;   // v0.0.441: the tile's label (a PC's three Modifiers have no room for "Mod.")
+  for (const m of mods) m.tile = m.label;   // v0.0.443 (group 1): an NPC's tiles named as a PC's ("Weapon"), in the PC's grid   // v0.0.441: the tile's label (a PC's three Modifiers have no room for "Mod.")
   // ---- Wounds (a named Wound is an effect with the flag twod12.wound: "body" or "mind")
   const namedW = k => [...a.effects].filter(e => e.getFlag?.(F, "wound") === k).map(e => ({ id: e.id, name: clean(e.name) }));
   const wounds = [
@@ -248,7 +251,8 @@ export async function pcModel(sheet, ctx) {
     const sec = extra.section ?? actionSection({ basic: !!i.getFlag(F, "basic"), basicKey: i.getFlag(F, "basic"), reaction, escalation: esc, frequency: effectiveFrequency(it) });
     const fists = it.weaponUse === "fists" || i.getFlag(F, "basic") === "fists";
     const subs = [];
-    if (npc && it.basicAttack) { const rr = it.basicRating || "medium"; subs.push(`Basic attack \u00b7 ${TWOD12.npcRatings[rr]?.label ?? rr} \u00b7 ~${(Number(s.stage) || 0) === 0 ? npcSuggest({ rank: TWOD12.npcRoles[s.role] ? s.role : "standard", rating: rr, basic: true }).t2 + " / " + npcSuggest({ rank: TWOD12.npcRoles[s.role] ? s.role : "standard", rating: rr, basic: true }).t3 : npcRow(role, TWOD12.npcRatings, rr, s.stage).basic.join(" / ")}`); if (elite && atk && escNow >= ELITE_RUNGS[0].n) subs.push("+1 Boon on its first attack this round"); }
+    // v0.0.443 (group 1; Lucas: "Remove '- high...' from basic attack, just put the basic attack plus tiers"; "+1 Boon on its first attack this round": "Remove it"): its own Tier 2 / Tier 3 damage
+    if (npc && it.basicAttack) subs.push(basicAttackLine((it.versions ?? [])[0]));
     if (npc && i.getFlag(F, "basic") === "opportunityAttack" && basicAtk) subs.push(`with ${basicAtk.name}`);
     // v0.0.303 (Lucas): no "back once at Escalation 3" on the row (the Elite Escalation strip says it)
     if (area) subs.push(`Area: ${area}`);
@@ -324,8 +328,8 @@ export async function pcModel(sheet, ctx) {
     const r = sheet._actionRow(i), key = i.getFlag(F, "basic"), f = effectiveFrequency(i.system);
     const why = basicUnavailable(key, bctx) || (unconscious ? "Unconscious" : "") || r.fadedWhy || r.noApWhy || (r.strikeCap ? "Three Strikes this turn" : "");
     const one = r.hands?.filter(h => !h.off) ?? [];
-    const c = costPill((i.system.versions ?? []).map(v => v.ap));
-    return { id: i.id, name: i.name, cost: c, fc: f === "round" ? SHEET_FREQ.round.color : SHEET_FREQ.atwill.color, lines: rowLines({ frequency: f, strike: !!i.system?.traits?.has?.("strike"), off: !!why }),
+    const c = costPill((i.system.versions ?? []).map(v => v.ap)).replace(/\s*AP$/, "");   // v0.0.443 (option A): every number in that place is AP
+    return { id: i.id, name: i.name, cost: c, fq: f === "round" ? "round" : "atwill", fc: f === "round" ? SHEET_FREQ.round.color : SHEET_FREQ.atwill.color, lines: rowLines({ frequency: f, strike: !!i.system?.traits?.has?.("strike"), off: !!why }),
       off: !!why, offWhy: why, next: key === "basicWeaponAttack" && atk ? nextBanes(atWillUses(a, i)) : "", open: r.open,
       weaponId: one.length === 1 ? one[0].id : (r.solo?.id ?? ""), tip: `${i.name}: ${r.useTip || "use it"}` };
   };

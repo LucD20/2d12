@@ -18,5 +18,5 @@ console.log("its tools: Post stat block (GM, NPC), Roll Initiative (when there i
 console.log("no side panel:", !tpl.includes('<aside class="ps-side'), "| the stat lines: Health, the pools (click: damage), Defenses, Immune / Resist / Weak, Rally and the Wounds:",
   ['data-action="hpEdit"', 'class="ps2-gauge np-gauge', "{{#each pc.defs.main}}", "{{{pc.dmgHtml}}}", 'data-action="setRally"', 'name="system.{{key}}Wounds"'].every(x => tpl.includes(x)));
 console.log("the tiles: the Attribute rolls, Vs. under it, the Modifiers with their DC:", tpl.includes('data-action="rollAttr" data-key="{{key}}"') && tpl.includes("<small>Vs. {{vs}}</small>") && tpl.includes("<small>{{dc}}</small>"));
-console.log("the Hands with no word, one above the other:", !tpl.includes('<span class="ps-k">Hands</span>') && (tpl.match(/class="ps2-hands"/g) ?? []).length === 2);
+console.log("v0.0.443 (group 1): the Hands left the sheet's line (the HUD and the Inventory hold them):", !tpl.includes('<span class="ps-k">Hands</span>') && !tpl.includes('class="ps2-hands"') && !tpl.includes("data-hand-tile"));
 console.log("the Wounds' rolls on the Upkeep tab:", tpl.indexOf('data-action="rollTable"') > tpl.indexOf('data-tab="upkeep"'));

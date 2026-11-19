@@ -92,31 +92,26 @@
   </div>
   {{#if pc.modConflict}}<div class="ps2-note">{{pc.modConflict}}</div>{{/if}}
 
-  {{!-- the combat line: Escalation (a PC's, or an Elite's with its phases), the Hands (no word "Hands": one hand above the other), the AP --}}
+  {{!-- v0.0.443 (group 1; Lucas, 2026-11-19, foundry/mockups/group1 rounds 1 to 3): the combat line. A PC and an Elite: the hooks and the Escalation
+        ladder (each rung's shield, its number, its name) side by side, then the marks: AP (the HUD's squares, the Reaction AP's gold diamond, the
+        Strikes' slashes) and Esc. (the HUD's ticks, a rung's taller). A Standard NPC: its marks at the right. The Hands left the line (the HUD and
+        the Inventory hold them). The line never grows (fixed height; actor-sheets.mjs _fitLists shrinks the lists). --}}
+  {{#*inline "lists"}}<div class="ps2-cell ps2-lists{{#if idle}} idle{{/if}}"><div class="ps2-col"><span class="ps2-hk">Hooks</span>{{#if pc.strip.lists.hooks.length}}<span class="ps2-ls ps2-hks">{{#each pc.strip.lists.hooks}}<b class="{{#if used}}used{{/if}}">{{name}}{{#if used}}<i>&#10003;</i>{{/if}}</b>{{/each}}</span>{{else}}<span class="ps2-ls ps2-none">None</span>{{/if}}</div><div class="ps2-col"><span class="ps2-hk">Escalation</span><span class="ps2-ls ps2-ld">{{#each pc.strip.lists.ladder}}<span class="{{#if lit}}lit{{/if}}">{{{sym}}}<b>{{n}}</b>{{name}}</span>{{/each}}</span></div></div>{{/inline}}
   {{#if pc.strip.inCombat}}
-  <div class="ps2-combat{{#if pc.npc}} npc{{#unless pc.strip.elite}} one{{/unless}}{{/if}}">
-    {{#if pc.npc}}
-    {{#if pc.strip.elite}}<div class="ps2-cell ps2-esc"><span class="ps2-cl"><span class="k">Elite Escalation {{pc.strip.esc.n}}</span> <span class="ps2-epips">{{#each pc.strip.esc.pips}}<i class="{{#if this}}on{{/if}}"></i>{{/each}}</span></span>
-      <span class="ps2-rungs">{{#each pc.strip.eliteRungs}}<a class="rung{{#if lit}} lit{{/if}}" data-action="setEscalation" data-n="{{n}}" role="button">{{label}}</a>{{/each}}</span>
-      <span class="ps2-q">{{pc.strip.phases}}</span></div>{{/if}}
-    {{else}}
-    {{!-- v0.0.442 (Lucas, the fixes mockup round 4): the hooks alone, pronounced, in a cell that never grows (actor-sheets.mjs _fitHooks shrinks them) --}}
-    <div class="ps2-cell ps2-hooks"><span class="ps2-hk">Hooks left</span>{{#if pc.strip.esc.hookList.length}}<span class="ps2-hl">{{#each pc.strip.esc.hookList}}<b><i></i>{{this}}</b>{{/each}}</span>{{else}}<span class="ps2-none">None this encounter</span>{{/if}}</div>
-    <div class="ps2-hands">{{#each pc.hands.tiles}}<button type="button" class="ps2-hand{{#if free}} free{{/if}}{{#if warn}} warn{{/if}}" data-hand-tile="{{hand}}" aria-label="{{tip}}"><span>{{name}}</span><b>{{grip}}</b></button>{{/each}}</div>
-    {{/if}}
-    {{!-- v0.0.442: the marks: AP (the AP pips, the Reaction AP, a hairline, the Strikes' slashes) and, for a PC, Esc. (six pips, a rung ringed) --}}
+  <div class="ps2-combat{{#unless pc.strip.lists}} std{{/unless}}">
+    {{#if pc.strip.lists}}{{> lists pc=pc}}{{else}}<div class="ps2-cell"></div>{{/if}}
     <div class="ps2-cell ps2-ap ps2-marks">
       <span class="k">AP</span>
       <span class="ps2-mrow"><span class="ps2-pips" aria-label="{{pc.strip.ap.tip}}">{{#each pc.strip.ap.pips}}{{#if (eq k "slowed")}}<span class="pip slowed" aria-label="{{../pc.strip.ap.slowedTip}}">&times;</span>{{else}}<a class="pip {{k}}" data-action="setApPip" data-n="{{n}}" role="button" aria-label="AP {{n}}"></a>{{/if}}{{/each}}<span class="pip-sep"></span><a class="pip rap{{#if pc.strip.ap.rap}} on{{/if}}" data-action="toggleRap" role="button" aria-label="Reaction AP"></a></span><span class="ps2-sep"></span><span class="ps2-strk" aria-label="Strikes left this turn: {{pc.strip.strikesLeft}} of 3">{{#each pc.strip.strikePips}}<i class="{{#if this}}on{{/if}}"></i>{{/each}}</span></span>
-      {{#unless pc.npc}}<span class="k">Esc.</span>
-      <span class="ps2-mrow"><span class="ps2-epips">{{#each pc.strip.esc.marks}}<a class="{{#if on}}on{{/if}}{{#if rung}} rg{{/if}}" data-action="setEscalation" data-n="{{n}}" role="button" aria-label="Escalation {{n}}"></a>{{/each}}</span><b class="ps2-en">{{pc.strip.esc.n}}</b>{{#if pc.strip.esc.momentum}} <span class="ps2-q">Momentum {{pc.strip.esc.momentum}}</span>{{/if}}</span>{{/unless}}
+      {{#if pc.strip.lists}}<span class="k">Esc.</span>
+      <span class="ps2-mrow"><span class="ps2-ticks">{{#each pc.strip.esc.marks}}<a class="{{#if on}}on{{/if}}{{#if rung}} rg{{/if}}" data-action="setEscalation" data-n="{{n}}" role="button" aria-label="Escalation {{n}}"></a>{{/each}}</span><b class="ps2-en">{{pc.strip.esc.n}}</b>{{#if pc.strip.esc.momentum}} <span class="ps2-q">Momentum {{pc.strip.esc.momentum}}</span>{{/if}}</span>{{/if}}
       {{#if pc.strip.nextBane}}<span class="ps2-q bane">{{pc.strip.nextBane}}</span>{{/if}}
     </div>
   </div>
   {{else}}
-  <div class="ps2-combat out{{#if pc.npc}} npc{{/if}}">
-    <div class="ps2-cell"><span class="ps2-outc">Out of combat</span></div>
-    {{#unless pc.npc}}<div class="ps2-hands">{{#each pc.hands.tiles}}<button type="button" class="ps2-hand{{#if free}} free{{/if}}{{#if warn}} warn{{/if}}" data-hand-tile="{{hand}}" aria-label="{{tip}}"><span>{{name}}</span><b>{{grip}}</b></button>{{/each}}</div>{{/unless}}
+  <div class="ps2-combat out{{#unless pc.strip.lists}} std{{/unless}}">
+    {{#if pc.strip.lists}}{{> lists pc=pc idle=true}}{{else}}<div class="ps2-cell"></div>{{/if}}
+    <div class="ps2-cell ps2-outw"><span>Out of combat</span></div>
   </div>
   {{/if}}
 
@@ -148,8 +143,8 @@
             <div class="ps2-bcol"><span class="ps2-bgh">{{label}}</span>
               {{#each rows}}
               <div class="ar ps-bx ps2-bx{{#if off}} off{{/if}}{{#if open}} open{{/if}}" data-item-id="{{id}}">
-                <button type="button" class="ps2-bxbtn{{#if lines.strike}} strike{{/if}}" style="{{lines.style}}" {{#if off}}data-action="useAction" data-off="{{offWhy}}" data-tooltip="{{offWhy}} (click to use it anyway)"{{else}}{{#if weaponId}}data-action="useWith" data-weapon-id="{{weaponId}}"{{else}}data-action="useAction"{{/if}}{{/if}} aria-label="{{name}}{{#if off}}: {{offWhy}}{{/if}}">
-                  <span class="ps2-bxl"><span class="ps2-bxn">{{name}}</span>{{#if next}}<small>{{next}}</small>{{/if}}{{#if off}}<small>{{offWhy}}</small>{{/if}}</span>
+                <button type="button" class="ps2-bxbtn{{#if lines.strike}} strike{{/if}}" style="--lnf:{{#if off}}var(--s-faint){{else}}var(--s-fq-{{fq}}){{/if}}" {{#if off}}data-action="useAction" data-off="{{offWhy}}" data-tooltip="{{offWhy}} (click to use it anyway)"{{else}}{{#if weaponId}}data-action="useWith" data-weapon-id="{{weaponId}}"{{else}}data-action="useAction"{{/if}}{{/if}} aria-label="{{name}}{{#if off}}: {{offWhy}}{{/if}}">
+                  <span class="ps2-bxl"><span class="ps2-bxn" data-fit="1">{{name}}</span>{{#if next}}<small>{{next}}</small>{{/if}}{{#if off}}<small>{{offWhy}}</small>{{/if}}</span>
                   {{#unless off}}<b>{{cost}}</b>{{/unless}}
                 </button>
                 <div class="ar-card"></div>

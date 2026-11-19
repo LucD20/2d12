@@ -81,7 +81,9 @@ async function actionsOf(actor) {
 const nn = v => Math.max(0, Math.trunc(Number(v)) || 0);
 async function combatOf(actor) {
   try {
-    if (!game.combat?.started) return null;
+    // v0.0.443 (Lucas: "Token HUD shows 'Out of combat' while combat is prepared but not started; it should mimic the sheet's behavior"): a
+    // creature in a combat shows its marks once it is a combatant, started or not, as the sheet does
+    if (!game.combat) return null;
     const C = await import("./combat.mjs"), U = await import("./usage.mjs");
     const c = C.combatantOf(actor, game.combat);
     return c ? { ap: C.getAP(c), max: C.apMax(c), slowed: C.slowedOf(actor), rap: C.getRAP(c), rapMax: C.rapMaxOf(c), strikes: U.strikesUsed(actor), c } : null;

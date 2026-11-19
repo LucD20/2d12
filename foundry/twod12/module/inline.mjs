@@ -1039,7 +1039,7 @@ const sside = (f, cls, sign) => f?.length ? `<span class="plus">${sign}</span><s
 const diceRowHtml = (d, tier = 0) => {
   if (!d) return "";
   // each damage roll has its symbols in front: a heart or a brain, and the damage type's icon ("Body Bl" is a heart and a hammer)
-  const sym = c => `${c.pool ? poolIcon(c.pool) : ""}${c.sub ? `<span class="dtic" aria-label="${esc(TWOD12.subtypes[c.sub] ?? c.sub)}" style="color:${TWOD12.subtypeInk[c.sub] ?? "inherit"}">${dtypeIcon(c.sub)}</span>` : ""}`;
+  const sym = c => `${c.pool ? poolIcon(c.pool) : ""}${c.sub ? `<span class="dtic" aria-label="${esc(TWOD12.subtypes[c.sub] ?? c.sub)}" style="color:${TWOD12.subtypeInk[c.sub] ?? "inherit"};--sc-d:${TWOD12.subtypeColors?.[c.sub] ?? TWOD12.subtypeInk[c.sub] ?? "inherit"}">${dtypeIcon(c.sub)}</span>` : ""}`;   // v0.0.443: its bright color on a dark card (E6)
   const dmg = (d.dmg ?? []).filter(c => c.faces?.length).map(c => `${c.pool || c.sub ? `<span class="dsym">${sym(c)}</span>` : ""}<span class="dgroup dmgdice">${c.faces.map(f => `<span class="die d${c.d}">${f}</span>`).join("")}</span>`).join("");
   const anySym = (d.dmg ?? []).some(c => c.faces?.length && (c.pool || c.sub));
   return `<div class="dice sdice">${tier ? `<span class="rtag rolled${tier === 1 ? " fail" : ""}">Tier ${tier}</span>` : ""}<span class="dgroup">${d.d1.map((f, i) => sdie(f, d.doubles && i === 0)).join("")}</span><span class="plus">+</span><span class="dgroup">${d.d2.map((f, i) => sdie(f, d.doubles && i === 0)).join("")}</span>${sside(d.boon, "boon", "+")}${sside(d.bane, "bane", "&minus;")}${dmg ? `<span class="grow"></span>${anySym ? "" : '<i class="fa-solid fa-burst sdicon"></i>'}${dmg}` : ""}</div>`;
