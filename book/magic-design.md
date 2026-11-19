@@ -550,12 +550,50 @@ Corrected: decision 70's "Surge is never above Escalation"; 5g's header and its 
 
 **Also from that read, for the same moment:** how a broken held spell unravels; rival Paths; readable enemy casters (a sigil and a tell); species leanings that the numbers already give (an Elf's Resolve, a Dwarf's); the fiction of 87 (battle magic feeds on the fight); a spell as treasure; oaths and taboos as Talents. Claude writes the Flavor (CLAUDE.md); Lucas reads it.
 
-## 6. The order of work from here (proposed)
+## 6. Where the brainstorm stopped (2026-11-19) and how to resume
 
-1. Lucas's answers to section 5.
-2. The Paths' one-line definitions, subtypes and riders, from `dominions-paths.md` (borders decided).
-3. The Schools' definitions and what each one's Overcast ladder is.
-4. The new traits and words, each with its rule ([Spell], the Path and School traits, [Standing], Overcast, the push).
-5. Dominions' own spells pulled and shown as 2d12 cards (decision 25), as the grid's test.
-6. The first cards, for three or four Paths, in the analysis format of `paladin-analyses.md`.
-7. A first class, by the charter (a record and a reading page).
+**Lucas, 2026-11-19:** "None yet. Let's save it, I will finish the current playtest, then we go back to it." The brainstorm is paused after decision 99. **Nothing of magic is in rules-src or Foundry, except one sentence of Chapter 7** ([Melee] no longer asks for a weapon: decision 77).
+
+### To resume: read in this order
+
+1. Section 1 (his brief and the four tests) and **5g (the basics on one page, current to decision 85; decisions 86 to 99 are in the table only)**.
+2. The decisions table from 55 on (the second day's work: the limiters, Surge, casting, the reviews' answers).
+3. 5o (the third review: problems, Dominions, roleplay) and 5l (the Talent seeds), 5p (the flavor list, parked on purpose).
+4. `book/rules-backlog.md`: the entries dated 2026-11-18 and 2026-11-19 (what each decision asks of the rulebook).
+
+### The question that was on the table (not answered)
+
+**Which piece next:** (A) out-of-combat magic, the piece of decision 87 (Claude's pick); (B) bringing back the dead (93: research first); (C) a playtest kit, one page of rules and one test caster, to try Surge; (D) Talents (where about eighteen seeds wait, and the Talents' structure is still set aside).
+
+### What is decided, in one paragraph
+
+Spells are Power Actions with [Spell], a Path and a School and a minimum in each (rarely two Paths); eight Paths, six Schools sorted by a fixed order; levels rise by Mastery, one point an encounter for a single thing; a level is never a number. In a fight a caster spends AP, a Frequency and **Surge** (built with Escalation and the rounds; an Overcast step costs 1; a stronger spell prints a cost; at most Escalation minus 1 steps on a casting). **Overreach** is a line on some spells, its usual price Nonlethal damage that now lasts until a Sleep (the Breather is deleted). Held magic is [Woven] or [Sustained] and breaks on Down, Bloodied or Strained. One Summon spell a Path; a summon fights like an ally and counts for nothing. A card asks for [Handle], [Incanted] or [Focus] when it needs them; armor costs Surge. A casting is always noticed unless [Subtle]; a spell is identified by those who meet its minimums. Spells with a duration are combat only; out-of-combat magic is its own piece. Merge is cut. Glamour deals false damage. The Limits of Magic are four. The spell cards are placeholders.
+
+### Assumptions of Claude's waiting for Lucas's word
+
+| What | Where |
+|---|---|
+| "Save DC" as the one name for the DC a target saves against; the caps, Doomed and Favored, and target-dependent Banes on a Save Action | 88 |
+| [Subtle] hides the signs of the casting, not what the spell does; identifying needs no roll and no Action | 97 |
+| Surge's gain in one sentence (rounds, plus anything else that raises Escalation; an Elite the same) | 90 |
+| An NPC caster starts with 1 Surge; its Overcast cap is the round's number minus 1 | 72 |
+| Every Overcast step costs the same 1 Surge; never three Paths on a spell | 67, 63 |
+| Your Surge at the start of a fight can't go below 0; whether armor's cut also applies outside a fight | 80 |
+| [Melee]'s new first sentence in Chapter 7: "These Actions target creatures in close combat" | 77 |
+| [Incanted]'s wording | 78 |
+| "Magic doesn't remove a Wound" stays among the Limits | 93, 94 |
+| False damage has no Lethal switch; its subtype for Resist and Weak | 95 |
+| A Lingering with no subtype is a kind of its own | 82 |
+| The summon rule's wording ("fights beside you like any ally; never triggers or earns anything") | 92 |
+
+### Open, by size
+
+- **Large, unstarted:** out-of-combat magic (87); Talents for magic and their structure (5l); a first caster class; bringing back the dead (93); pricing (the SIM has no caster); Blood as its own class.
+- **Rules to write when the chapters are:** Surge (Chapter 2); Save DC (Chapter 1); the Interrupt on a condition (Chapter 2; its wording against Save Actions and zones: 5o A6); Lingering by subtype and Shake Off (Chapter 8; its exceptions: 5o A7); Nonlethal on a Sleep and no Breather (Chapter 4); false damage and the Poison subtype (Chapter 4); Charmed and Confused, a condition that stops speech (Chapter 8); [Spell], the Path and School traits, [Woven], [Sustained], [Incanted], [Subtle] (Chapter 7); Mastery for one thing (Chapter 15); Flying and Climbing (Chapter 3); the Tags.
+- **On watch (decided for now):** no limit across a fight (60); Momentum's word (the fallback "starting Escalation"); Momentum adding to a caster's whole budget (74); a Heavy caster's empty round 1 (89).
+- **Left from the reviews, not asked:** the words used in two senses (5o B); the Dominions ideas that are spell themes and not rules (the field as the spell, arming allies, magic at the moment of going Down, curses on Wounds, three origins for summoned bodies, information magic: 5o C); a spell that reads or gives a Wound; Mastery outside fights; places where a Path is stronger; Crucible (5i, never researched).
+- **Parked on purpose:** the flavor list (5p); a Stamina pool for martials (56; Surge took its place for now, the classes' Surge uses at their next pass: 68); the flat Health question and "a lower-Stage enemy counts as Minor" (22, 40); cones (`research/cones.md`).
+
+### Files of the brainstorm (the list `book/magic-files.sha256` guards)
+
+`book/magic-design.md` (this record); `book/cards/magic-first-pass.md`, `magic-second-pass.md`, `magic-third-pass.md`, `magic-fourth-pass.md`, `magic-overreach-lines.md` (placeholders); `book/research/`: `dominions-magic.md`, `dominions-paths.md`, `dominions-rules.md`, `dominions-core.md`, `ars-magica.md`, `magic-schools.md`, `caster-class-shape.md`, `charm-confusion-summons.md`, `progression-feel.md`, `cones.md`, `resources-and-recovery.md`, and in `raw/`: the 832-spell table, Lucas's cones picture, three research reports, and `tools/` (the scripts that built the table).
