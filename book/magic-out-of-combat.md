@@ -69,27 +69,65 @@
 | `research/ars-magica.md` | Five verbs each with a hard edge; spontaneous magic; the Limits |
 | `research/dominions-magic.md`, `dominions-rules.md` | Rituals as a separate list (347 of 832 spells): scrying, searching, wards, remote attacks |
 | `research/revival.md` | A return as a rite, not a spell |
-| **Running (2026-11-19):** `raw/2026-11-19-magic-vs-skills.md` | Magic outshining non-magical characters outside combat: the mechanisms and the fixes on record |
-| **Running (2026-11-19):** `raw/2026-11-19-roleplay-and-utility-magic.md` | Scene-breakers and how games tame them; what makes utility magic fun; how magic marks its user; raw themes for each Path |
+| **`research/magic-vs-skills.md`** (2026-11-19) | Why casters outshine everyone outside a fight; nine mechanisms; what each game's fix cost; what feels good for the non-magical; **a 12-point checklist** |
+| **`research/roleplay-and-utility-magic.md`** (2026-11-19) | A divination is not a mystery's enemy; ten scene-breaking families and their fixes; eight principles of fun utility magic; **toolbox against solution**; how magic marks its user; raw themes for each Path |
 
 ---
 
 ## 4. The problems to design against
 
-(To be completed when the two research passes return.)
+**Two failures, opposite each other. Both are common.**
 
-1. **Magic solves everything.** A spell that removes a challenge instead of helping with it.
-2. **Martials feel lame.** The caster has a verb for every scene and the others have a number.
-3. **Disuse.** A second magic system that players forget exists.
-4. **Negotiation.** Free-form magic that turns into arguing with the GM.
-5. **Prebuffing by the back door.** A lasting effect that leaks a number into the next fight (item 14 forbids it).
-6. **Scene-breakers.** Divination against a mystery, charm against a talk, flight and teleport against travel.
+### Abuse: magic solves everything, and the others watch
+
+The research's diagnosis (`research/magic-vs-skills.md`): the gap is **breadth outside the fight**, not damage; a niche protects **an outcome**, so a spell that reaches the same outcome by another road destroys it ("You have a chance to pick a lock? I just use knock"). The mechanisms, and where 2d12 stands on each:
+
+| # | Mechanism | 2d12 today |
+|---|---|---|
+| 1 | The spell is **certain** where the skill rolls | **Open.** The project's proposal for every out-of-combat ability is "no certainty" |
+| 2 | **One need a day:** a rare spell covers the day's one lock, and the at-will skill never gets its turn | **Open.** Depends on the price |
+| 3 | **No opportunity cost** | Mostly closed: the Surge held outside is 0 to 4, earned by encounters overcome, not by sleeping |
+| 4 | **A toolkit changed daily** | Partly open: few spells known, but swapped on a Rest |
+| 5 | **Magic is general by default:** what it can't do must be written | **Open.** The Limits of Magic have nothing on skills |
+| 6 | **Magic is exclusive:** nobody else can sense it, answer it or help | Partly closed: a casting is always noticed |
+| 7 | A bonus so large that the roll is decided | Closed: a rank is never a number |
+| 8 | A lasting buff carried into everything | Closed: duration spells are combat only; item 14 |
+| 9 | **It drifts back** with every new spell | **Open.** Needs a written test every later spell passes |
+
+### Disuse: magic hedged until nobody uses it
+
+D&D 4e's rituals lost to their cost and casting time; Fabula Ultima's get forgotten; Pathfinder 2e's casters are reported as feeling weak after its fix. A second magic system is invisible unless ready-made uses sit on the sheet.
+
+### And four more
+
+- **Negotiation.** Free-form magic becomes arguing with the GM ("Mother May I"). Every free-form game ended up adding the same supports: a never-list, named scope steps, fixed prices, worked examples.
+- **A pair is not a limit.** In every game read, verb + noun says *what* may be attempted and never, alone, *how much*.
+- **Scene-breakers.** Finding out (the dead, truth, locating), charm, flight and teleport, shelters, opening, invisibility. Repeatable and certain breaks a scene; once and partial gives a lead.
+- **The non-magical side isn't written.** Skills, Routine, Backgrounds and Challenges are proposals. What feels good there, by the research: being good without spending, no roll for your own trade, things only they do.
+
+### Two tests a rule or a use can be held to
+
+- **Toolbox or solution?** A solution names the obstacle it removes (open the lock, feed the party, make the camp safe, force the truth). A toolbox names a thing it does and leaves the obstacle to the player (an image, an unseen hand, a voice for a tree).
+- **The 12-point checklist** of `research/magic-vs-skills.md`, section 6.
 
 ---
 
-## 5. The steps
+## 5. The steps (one decision at a time; the order is Claude's proposal)
 
-(Drafted before the research returned; to be put in final order with it.)
+| # | The step | What is decided | Why here |
+|---|---|---|---|
+| **1** | **The stance** | The one principle magic outside a fight obeys against "solves everything". The two printed answers contradict each other: magic *helps* the Check (Pathfinder 2e) or magic *changes what is possible and never does what a skill does* (Worlds Without Number). 2d12's own decisions lean one way already | Everything after is written to it |
+| **2** | **The Check outside a fight** | What this piece assumes of Skills, which aren't written: an Attribute Check as the rules have it, with Skills as a hook to fill later; or the few Skills decisions it leans on taken first | "Magic and a Check" needs to know what a Check is |
+| **3** | **The shape** | A few written uses for each Path; a free-form rule with a price table; or both (written uses on the sheet, and a bounded rule for the rest) | Abuse and disuse pull opposite ways here |
+| **4** | **What the two words mean outside** | One line for each Path (what it works on) and one for each School (what it does), each with a hard edge | The pair is the permission |
+| **5** | **How much** | The scope steps in named things: how big, how far, how many, how long. And permanence (Lucas's bridge) | The pair can't say this |
+| **6** | **The price** | Surge from the pool of 0 to 4; time; being noticed, and Alert in a site; whether a Check is rolled and what failing costs | Mechanisms 1, 2 and 3 |
+| **7** | **What a rank opens** | New kinds of doing and wider scope, never a number | Horizontal growth |
+| **8** | **The scene-breakers** | A policy for each family: finding out, charm, travel, shelter, opening, hiding. Which are written narrow, which are rare, which don't exist | Where "solves everything" actually happens |
+| **9** | **The others at the table** | What a non-caster has that magic can't reach; helpers who can only help; magic's place in a Challenge | "Martials feeling lame" |
+| **10** | **The Path changes its user** | Lucas's idea (106): a mark, a temperament, how the world reacts. Free, visible and chosen marks are the ones tables keep | His to shape; it also feeds roleplay |
+| **11** | **The never-list, the name, the examples** | The Limits for this piece; what it is called; the ready-made uses that sit on the sheet | Against negotiation and disuse |
+| **12** | **The test** | Six scenes run with a caster and without one (a locked door, a chasm, a witness who won't talk, a night in a dangerous place, a murder, a negotiation), then an independent audit against the checklist | Before anything is shown as done |
 
 ---
 
