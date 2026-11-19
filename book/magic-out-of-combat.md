@@ -242,3 +242,36 @@ A rank opens the spells that ask for it. A card may also print a line that a hig
 | "Abjuration 4: You make it in 10 minutes" | A line a higher rank unlocks (126) |
 
 **One word or two (Lucas: "Let's do A"; record, decision 127):** a spell outside a fight prints a Path or a School with its minimum rank, or both. Camp Alarm is pure Abjuration; a hearth is pure Fire; speaking with the dead is Death and Thaumaturgy.
+
+### Skeleton decision (e): the scene-breaking families (Lucas: "A"; record, decision 128)
+
+| Family | It exists as | It never does |
+|---|---|---|
+| **Speaking with the dead, beasts, plants** | A small count of questions. The witness answers as what it is, knowing only what it knew. Not the same witness again before a Sleep | Give a certain answer, or one the witness couldn't have |
+| **Truth and thoughts** | The target knows (a casting is always noticed). A feeling, or whether one statement is a lie. **A [Subtle] form can exist, likely at a higher rank** (Lucas) | Force a confession or read a memory |
+| **Finding and watching from afar** | You must have seen the thing. A direction, not a place. The one watched can notice | Answer "where is it?" outright |
+| **Charm** | The target hears you out as a friend would, and knows afterwards. Persuading is still a Check | Decide for a mind |
+| **Domination** | One simple act of your choice. A hostile act: against someone aware it starts a fight unless the spell is [Subtle] | Take a creature over for a scene |
+| **Flight and far travel** | Slow, or straight up and down. A distant arrival only at a place you have been, on a spell that says so | Skip a journey |
+| **Shelter and alarm** | Comfort, warmth, a warning | Make a rest safe by itself |
+| **Food, water, light** | Light, freely. Food and water stretched | Replace Supplies |
+| **Hiding and disguise** | Sight only (sound, scent, tracks remain). A face only (voice, manner, knowledge are yours) | Make you undetectable, or make you someone |
+| **Opening** | Breaking it open, loudly (an Evocation; noise has a price in a guarded place) | Open quietly and surely: that stays the lockpicker's |
+
+**Above all ten:** once and partial gives a lead; repeatable and certain ends the scene. The few spells that could skip a whole scene are **rare**: handed out by the GM, not picked (far travel, bringing back the dead).
+
+---
+
+## 7. The skeleton, closed (2026-11-19; record decisions 112 to 128)
+
+**A spell outside a fight** is a written card with a Path or a School (or both) and a minimum rank. It takes 10 minutes to cast unless it says otherwise, prints a Surge cost from 0 to 3, is always noticed unless [Subtle], and works with a printed limit that leaves the obstacle standing. Where it can do better, it names a skill's Check. It may print its own stretch with a price, and a line that a higher rank unlocks. It is written in three scales (how far, how many, how long). It is chosen as the second half of a paired pick. Each Path also gives a line of free small magic that changes no Check.
+
+**It obeys:** magic opens a way and never solves it; never does what a skill does; never a number in a fight; the Limits of Magic.
+
+**Left for Talents (hooks only, nothing designed here):**
+- What a non-caster can do outside a fight that magic can't reach (the research: being good without spending, no roll for your own trade, things only they do).
+- A skill's outcome by magic, one outcome a Talent (Lucas's lockpicking example, 114).
+- Extra spells outside a fight; a [Subtle] form earlier; a shorter casting time.
+- The Path changes its user (106): a free, visible mark is skeleton and still to write; oaths and taboos are Talents.
+
+**Left for later, on purpose:** the spell list itself; the small magic's eight lines; the name of this kind of spell; the six test scenes and the independent audit (step 12), to run when a first list exists.
