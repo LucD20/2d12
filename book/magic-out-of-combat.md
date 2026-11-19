@@ -131,6 +131,20 @@ D&D 4e's rituals lost to their cost and casting time; Fabula Ultima's get forgot
 
 ---
 
+### The order as agreed (Lucas, 2026-11-19: "Yes")
+
+**Side by side with the frame of Skills, not the list** (`research/skills-or-magic-first.md`: magic leans on nine decisions about skills, and none of them is the number of skills or their bonuses). Steps 1 and 2 become one sitting of five short decisions, taken together because they are one balance seen from two sides:
+
+1. The stance for magic outside a fight.
+2. Whether anything succeeds without a roll, for skills and for magic alike (Routine; "no certainty").
+3. What a failed Check costs outside a fight.
+4. How one character helps another's Check.
+5. What skills cover, as five or six broad categories of outcome (not the final list).
+
+The skill list, its numbers and the Skill Talents stay for the Skills session (D3), which inherits whatever is fixed here. Then steps 3 to 12 as above.
+
+---
+
 ## 6. Decisions
 
 (None yet.)
