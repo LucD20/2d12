@@ -216,6 +216,12 @@ Claude reread T1 to T6 against the magic record, `magic-out-of-combat.md`, `role
 9. **The set-aside chapter says Stage Talents at levels 5 and 8;** Chapter 5 says 4, 8, 12. Moot after T6, but the set-aside file should not be brought back as written.
 10. **The skeleton files still disagree on the skill count** (8 to 12 in `roleplay-skills.md`, 16 in MASTER-PLAN): for the Skills pass.
 
+### Answered
+
+| # | Decided | Lucas's words |
+|---|---|---|
+| T7 | **Skill numbers grow on their own track, never from the Skill Talent slot.** A skill point is never chosen instead of a Skill Talent (the swap the number always wins: 5e's feat against +2). How skill numbers grow is for the Skills pass (D3); every Skill Talent stays a verb (T1). Settles review problem 1. | "A" |
+
 ### Housekeeping done with this review
 
 The Talents record is now named in HANDOFF and CLAUDE.md.
