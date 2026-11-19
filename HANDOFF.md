@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.448, 280 tests; READ THIS FIRST)
+## Where we are now (v0.0.449, 280 tests; READ THIS FIRST)
+- **2026-11-19 (v0.0.449, branch `pack-sheets-hud`; NOT tested by Lucas): Lucas's v0.0.448 report.** The chat card's dark [R] now #aec4f0 (build-theme's map had the old blue); v0.0.448's clickable hand-menu warning REVERTED (flag `oneHandOff` gone) and moved to the roll dialog: each weapon column's hand Banes are buttons (`dualbane`, `st.toggled`); the HUD's right column is Situational + one pane of Hands over the macro bar (tabs only while something waits); Foundry's macro bar buttons visible. Passed and deleted: g3-info, g3-still, hud-identity. Rewritten: g3-res Rev 2, g2-handmenu Rev 4, g2-hotbar Rev 3, g2-dialog Rev 2.
 - **2026-11-19 (v0.0.448, branch `pack-sheets-hud`; NOT tested by Lucas): the hand menu's warning line switches a weapon's 3 Banes off or on** (Lucas's answer "1"; the weapon's flag `oneHandOff`). g2-handmenu Rev 3.
 - **2026-11-19 (v0.0.447, branch `pack-sheets-hud`; NOT tested by Lucas): Lucas's notes on v0.0.444 to 446 and his checklist report (10 passed, removed).** A hook or a rung opens what it does (`showInfo`, `ESC_RULES`); the sheet's fit no longer resets first (the jumps); the dark Resolve lighter (#aec4f0); a Check or a Save posts the current chat card; the hand menu's text centered.
 - **2026-11-19 (v0.0.446, branch `pack-sheets-hud`; NOT tested by Lucas): the HUD's right column as tabs** (Lucas: Situational only while something happens, switched to automatically; then Hands and Macros). `hud.mjs syncSide`; checklist hud-right Rev 2.

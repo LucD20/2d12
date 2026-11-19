@@ -13,8 +13,8 @@ const strip = h => h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 console.log("--- the roll dialog's columns");
 const tiers = (a, b) => ({ 1: { pools: [] }, 2: { pools: [{ pool: "B", text: a }] }, 3: { pools: [{ pool: "B", text: b }] } });
 const inp = { name: "Weapon Attack", versions: [{ ap: 1, cost: "1 AP", tiers: tiers("x", "y") }], roll: { name: "Weapon", mod: 1 }, chips: [{ id: "syn:onehand", scope: "shared", row: "banes", kind: "bane", n: 3, label: "Two-handed weapon in one hand", start: "on" }], creatures: [],
-  dual: { current: "ls", weapons: [{ id: "ls", name: "Longsword", hand: "main hand", dist: "1", out: "Orc Warrior is 4 squares away: its Range is 1", banes: [{ n: 3, text: "Two-handed weapon in one hand" }], tiers: {} },
-    { id: "dg", name: "Dagger", hand: "off hand", dist: "thrown 4/8/12", thrown: true, out: "", banes: [{ n: 1, text: "Off hand (Light)" }], tiers: {} }] } };
+  dual: { current: "ls", weapons: [{ id: "ls", name: "Longsword", hand: "main hand", dist: "1", out: "Orc Warrior is 4 squares away: its Range is 1", banes: [{ id: "syn:onehand", n: 3, text: "Two-handed weapon in one hand" }], tiers: {} },
+    { id: "dg", name: "Dagger", hand: "off hand", dist: "thrown 4/8/12", thrown: true, out: "", banes: [{ id: "syn:hand", n: 1, text: "Off hand (Light)" }], tiers: {} }] } };
 const st = RD.newState(inp);
 const d = RD.dualHtml(inp, st, inp.versions[0]);
 console.log(strip(d));
@@ -40,9 +40,11 @@ const actor = { itemTypes: { weapon: [W("ls", "Longsword", ["melee", "twohanded"
 console.log("Darting Blade fits:", FI.weaponCandidates(actor, item).map(w => w.name).join(", "), "| its card sets it:", src("../../book/cards/stage0/archer.json").includes('"weaponNeeds": "light"'), "| the Action sheet edits it:", src("module/actionsheet.mjs").includes('name="system.weaponNeeds"'));
 console.log("--- the book");
 console.log("Handle: stowing and swapping need no free hand:", src("../../book/rules-src/07-traits.md").includes("stowing an object you hold, or swapping it for another you carry (Interact), needs no free hand"), "| Thrown stays in hand:", src("../../book/rules-src/09-glossary.md").includes("A thrown weapon stays in your hand for the rules"));
-// v0.0.448 (Lucas, g2-handmenu: "Allow clicking on the effect of each weapon to disable it"; his answer: the warning line): its 3 Banes off or on
-const Wf = (off) => ({ id: "ls", name: "Longsword", getFlag: (s, k) => (k === "oneHandOff" ? off : undefined), system: { traits: new Set(["melee", "twohanded"]), wielded: true, hand: "main", hands: 1, worn: true } });
-const mOn = P.handMenuModel([Wf(false)], "main", { inCombat: true, ap: 2 }), mOff = P.handMenuModel([Wf(true)], "main", { inCombat: true, ap: 2 });
-console.log("the warning a button:", mOn.warnKey, "|", mOn.warn, "|", mOff.warn, mOff.warnOff);
-const EF = await import(ROOTURL + "module/effects.mjs");
-console.log("the Banes follow it:", EF.derivedMods({ itemTypes: { weapon: [Wf(false)] } }).some(m => m.id === "syn:onehand"), EF.derivedMods({ itemTypes: { weapon: [Wf(true)] } }).some(m => m.id === "syn:onehand"), "| the HUD's menu draws it as a button:", src("module/hud.mjs").includes('<button type="button" class="hm-w${m.warnOff ? " off" : ""}" data-k="${esc(m.warnKey)}">'));
+// v0.0.449 (Lucas, g2-handmenu: "that part shouldnt be clickable. I mean in the roll dialog"): the menu's warning is text; the dialog's column Banes are buttons
+const Wf = { id: "ls", name: "Longsword", system: { traits: new Set(["melee", "twohanded"]), wielded: true, hand: "main", hands: 1, worn: true } };
+const mW = P.handMenuModel([Wf], "main", { inCombat: true, ap: 2 });
+console.log("the menu's warning plain text:", mW.warn, "|", mW.warnKey === undefined, "| the HUD draws it as text:", src("module/hud.mjs").includes('<span class="hm-w">') && !src("module/hud.mjs").includes('class="hm-w${'));
+console.log("the dialog's Banes are buttons:", (d.match(/data-act="dualbane"/g) ?? []).length, d.includes('data-id="syn:onehand"'));
+const stOff = RD.newState(inp); stOff.toggled = { ...(stOff.toggled ?? {}), "syn:onehand": false };
+const dOff = RD.dualHtml(inp, stOff, inp.versions[0]);
+console.log("off: struck, out of both rolls:", dOff.includes('class="rdd-bane off" data-act="dualbane" data-id="syn:onehand" aria-pressed="false"'), "|", strip(dOff).match(/Your roll .*?(?= ▼3 Two)/)?.[0], "| the window toggles it:", win.includes('else if (a === "dualbane" && b.dataset.id) st.toggled[b.dataset.id] = st.toggled[b.dataset.id] === false;'));

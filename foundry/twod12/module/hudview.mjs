@@ -126,12 +126,14 @@ export function rightHtml(s = {}) {
   if (s.notes) items.push(`<div class="h3-si"><div class="t">${esc(s.notes)}</div></div>`);
   const tiles = s.tiles ?? [];
   const hands = tiles.length ? `<div class="h3-hands">${tiles.map(t => `<button type="button" class="h3-hand${t.free ? " free" : ""}${t.warn ? " warn" : ""}" data-hud="hands" data-hand="${esc(t.hand ?? "")}" aria-label="${esc(t.tip ?? t.name)}"><span>${esc(t.name)}</span><b>${esc(t.grip)}</b></button>`).join("")}</div>` : "";
-  const has = items.length > 0, view = has && (s.view === "sit" || !s.view) ? "sit" : (s.view === "hands" && hands ? "hands" : s.view === "macros" || !hands ? "macros" : "hands");
+  // v0.0.449 (Lucas, g2-hotbar: "Hands and macro should be in the same tab still, only the situational is new"): two panes, the Hands over the
+  // macro bar ("main") and Situational; the tabs show only while something waits
+  const has = items.length > 0, view = has && (s.view === "sit" || !s.view) ? "sit" : "main";
   const tab = (k, label) => `<button type="button" class="h3-rt h3-rt-${k}" role="tab" data-hud="rtab" data-rtab="${k}" aria-selected="${k === view}">${label}</button>`;
-  const tabs = `<div class="h3-rtabs" role="tablist">${tab("sit", "Situational")}${hands ? tab("hands", "Hands") : ""}${tab("macros", "Macros")}</div>`;
+  const tabs = `<div class="h3-rtabs" role="tablist">${tab("sit", "Situational")}${tab("main", hands ? "Hands" : "Macros")}</div>`;
   // the pick bar, a Forced Movement, a Setup's movement and End movement ask in .hb-ask (pickbar.mjs, move.mjs, setup.mjs: hudAskSlot)
   return `<div class="h3-side${has ? " has-sit" : ""}" data-rtab="${view}">${tabs}<div class="h3-pane h3-p-sit"><div class="h3-sit${has ? " on" : ""}">${items.join("")}<div class="hb-ask"></div></div></div>`
-    + `<div class="h3-pane h3-p-hands">${hands}</div><div class="h3-pane h3-p-macros"><div class="h3-hot"></div></div></div>`;
+    + `<div class="h3-pane h3-p-main">${hands}<div class="h3-hot"></div></div></div>`;
 }
 /** D2: the identity column. m: the bar's model (tokenBarHtml). */
 function idHtml(m) {

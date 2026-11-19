@@ -54,7 +54,7 @@ const MAP = {
     "#fff3df": "#3a3125", "#efe6d3": T.pg2, "#efe7d6": T.band, "#fbf7ef": T.pg2, "#fbf7ee": T.pg2, "#fffdf8": T.pg2, "#e8dec8": T.band, "#dfd2b6": T.band, "#e0d4ba": T.band, "#e6dcc4": T.band,
     "#e6d6b2": T.hair, "#c9bfab": T.hair, "#b8a988": T.hair, "#cdb88a": T.hair, "#c9a35a": T.rule, "#bfae8c": T.rule, "#bfae86": T.rule, "#c8b48a": T.rule,
     "#f3d39c": T.gold, "#7a4f12": "transparent", "#e8a345": T.stampHover, "#f4ede0": T.pg, "#f4eddc": T.pg, "#f4ecdc": T.pg,
-    "#7a1626": "#ef8a96", "#17327a": "#8db3ff", "#14532d": "#7fd49a", "#6b4e00": "#e6bd5a", "#9a4a00": "#f4a259", "#5b3a9e": "#b794f6",   // the Attribute and Modifier colors
+    "#7a1626": "#ef8a96", "#17327a": "#aec4f0", "#14532d": "#7fd49a", "#6b4e00": "#e6bd5a", "#9a4a00": "#f4a259", "#5b3a9e": "#b794f6",   // the Attribute and Modifier colors
     "#185fa5": T.fqRound, "#a32d2d": T.fqEncounter, "#0f6e6e": T.fqTurn, "#3b6d11": T.fqAtwill, "#5b3fa6": T.fqDaily
   },
   text: { "#1b2433": T.ink, "#1d2738": T.ink, "#d9902f": T.gold, "#d9b26a": T.gold, "#fff": "#fff", "#fbf6ea": T.stampInk, "#2b5a2f": T.t3, "#1f6b3a": T.t3, "#2f6b3a": T.good, "#3b3128": T.ink, "#f4ede0": T.stampInk, "#2a231c": T.ink },

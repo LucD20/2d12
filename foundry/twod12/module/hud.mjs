@@ -8,7 +8,7 @@ import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, HUD_TABS_PC, HUD_TABS
 import { techniqueState } from "./mastery.mjs";   // v0.0.418 (D6)
 
 const F = "twod12";
-const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set(), view: "hands", rview: "hands", sitWas: false };   // v0.0.446: the right column's tab
+const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set(), view: "main", rview: "main", sitWas: false };   // v0.0.446: the right column's tab
 let root = null, timer = null;
 const setting = (k, d) => { try { return game.settings.get(F, k); } catch (e) { return d; } };
 
@@ -461,7 +461,7 @@ async function handMenu(actor, tile) {
   const rowHtml = r => `<button type="button" class="hm-row${r.off ? " off" : ""}"${r.key && !r.off ? ` data-k="${esc(r.key)}"` : " disabled"}><span class="hm-l">${esc(r.label)}${r.off && r.why ? `<small>${esc(r.why)}</small>` : ""}</span><span class="hm-c">${esc(r.act)} <b>${esc(r.cost)}</b></span></button>`;
   const div = document.createElement("div");
   div.className = "hud-hmenu"; div.setAttribute("role", "menu");
-  div.innerHTML = `<div class="hm-h"><b>${esc(m.title)}</b> <small>${esc(m.sub)}</small>${m.warn ? (m.warnKey ? `<button type="button" class="hm-w${m.warnOff ? " off" : ""}" data-k="${esc(m.warnKey)}">${esc(m.warn)}</button>` : `<span class="hm-w">${esc(m.warn)}</span>`) : ""}</div>${m.groups.map(g => `<div class="hm-g">${g.map(rowHtml).join("")}</div>`).join("")}`;
+  div.innerHTML = `<div class="hm-h"><b>${esc(m.title)}</b> <small>${esc(m.sub)}</small>${m.warn ? `<span class="hm-w">${esc(m.warn)}</span>` : ""}</div>${m.groups.map(g => `<div class="hm-g">${g.map(rowHtml).join("")}</div>`).join("")}`;
   root.append(div);
   tile.classList.add("on");
   const r = tile.getBoundingClientRect(), h = root.getBoundingClientRect();
@@ -512,7 +512,7 @@ async function onClick(ev) {
   // v0.0.390 (PACK HUD2)
   if (kind === "party") { const c = st.cards?.get(b.dataset.key); if (!c) return; if (ev.detail >= 2) return c.actor.sheet?.render(true); if (c.token) return c.token.control({ releaseOthers: true }); if (!game.user.isGM && c.actor.isOwner) return c.actor.sheet?.render(true); return; }
   if (kind === "fold") { await game.settings.set(F, "hudFolded", !setting("hudFolded", false)); return; }
-  if (kind === "rtab") { st.view = b.dataset.rtab; if (st.view !== "sit") st.rview = st.view; return syncSide(); }   // v0.0.446: the right column's tabs
+  if (kind === "rtab") { st.view = b.dataset.rtab === "sit" ? "sit" : "main"; st.rview = "main"; return syncSide(); }   // v0.0.446: the right column's tabs
   if (kind === "tab") { st.tab = b.dataset.tab; st.tabChosen = true; if (st.rx) st.rx = null; return renderHud(); }
   if (kind === "rx") { const msg = game.messages.get(b.dataset.msg); if (!msg) return; const { rxClick } = await import("./moment.mjs"); st.rx = null; await rxClick(msg, { dataset: { twod12: b.dataset.k, row: b.dataset.row }, tagName: "DIV" }); return renderHud(); }
   if (kind === "close") return closePop();
@@ -594,8 +594,7 @@ function syncSide() {
   if (has && !st.sitWas) st.view = "sit";
   if (!has && st.view === "sit") st.view = st.rview;
   st.sitWas = has;
-  let v = st.view;
-  if (v === "hands" && !side.querySelector(".h3-p-hands .h3-hands")) v = "macros";
+  const v = has && st.view === "sit" ? "sit" : "main";   // v0.0.449: Situational, or the Hands with the macro bar
   side.dataset.rtab = v;
   side.querySelectorAll(".h3-rt").forEach(b => b.setAttribute("aria-selected", String(b.dataset.rtab === v)));
 }

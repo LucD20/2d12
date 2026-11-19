@@ -293,7 +293,7 @@ if (q.get("built")) {
       const xs = []; for (const w of held) xs.push(await dlgInput(av, wa, w, { squares: sq }));
       const all = av.itemTypes.weapon;
       const cols = xs.map(x => ({ id: x.w.id, name: x.w.name, hand: (LO.HAND_LABEL[x.hand] ?? "").toLowerCase(), dist: x.inp.versions[0].meta.dist.replace(/^Weapon$/, "1"), thrown: x.thrown, out: x.blocked,
-        banes: x.own.map(c => ({ n: c.n, text: c.label })), tiers: { [x.inp.versions[0].ap]: x.inp.versions[0].tiers } }));
+        banes: x.own.map(c => ({ id: c.id, n: c.n, text: c.label })), tiers: { [x.inp.versions[0].ap]: x.inp.versions[0].tiers } }));
       const inp = { ...xs[0].inp, dual: { current: xs[0].w.id, weapons: cols } };
       html += `<div style="margin-bottom:24px">${win(`Roll · Weapon Attack (${sq} sq.)`, RD.dialogHtml(inp, RD.newState(inp)))}</div>`;
     }

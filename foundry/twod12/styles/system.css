@@ -5312,7 +5312,17 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b[data-action]:focus-visible, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span[data-action]:focus-visible { outline: 1px solid var(--s-gold); outline-offset: 1px; }
 .twod12-hud .hud-hmenu .hm-row { align-items: center; } .twod12-hud .hud-hmenu .hm-c { text-align: right; }
 .application.pickwin .pw-info h4.pw-ih { margin: 8px 0 2px; font: 700 14px "Source Sans 3", sans-serif; }
-/* v0.0.448 (Lucas, g2-handmenu): the hand menu's warning line is a button (its Banes off or on) */
-.twod12-hud .hud-hmenu button.hm-w { all: unset; display: block; box-sizing: border-box; width: 100%; padding-top: 2px; font-size: 12.5px; color: var(--s-bad); cursor: pointer; }
-.twod12-hud .hud-hmenu button.hm-w:hover, .twod12-hud .hud-hmenu button.hm-w:focus-visible { color: var(--hud-ink); }
-.twod12-hud .hud-hmenu button.hm-w.off { color: var(--hud-mute); }
+/* v0.0.449 (Lucas: "I mean in the roll dialog"): a weapon column's hand Bane is a button: off, it is struck and muted */
+.twod12.rolldlg .rdd-notes button.rdd-bane { all: unset; display: block; font-size: 12px; white-space: nowrap; color: var(--s-bane); cursor: pointer; }
+.twod12.rolldlg .rdd-notes button.rdd-bane:hover, .twod12.rolldlg .rdd-notes button.rdd-bane:focus-visible { text-decoration: underline; }
+.twod12.rolldlg .rdd-notes button.rdd-bane.off { color: var(--s-faint); text-decoration: line-through; }
+/* v0.0.449 (Lucas, g2-hotbar): the Hands over the macro bar in one pane; the tabs only while something waits; Foundry's macro bar buttons
+   (mute, menu, lock, clear, page arrows) visible: their icon in ink, a slight fill */
+.twod12-hud .h3-side:not(.has-sit) .h3-rtabs { display: none; }
+.twod12-hud .h3-side[data-rtab="main"] .h3-p-main { display: flex; flex-direction: column; justify-content: flex-end; }
+.twod12-hud .h3-p-main .h3-hands { border-top: 0; padding: 4px 9px; }
+.twod12-hud .h3-p-main .h3-hot { border-top: 1px solid var(--hud-hair); padding: 4px 9px 5px; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) { display: grid !important; grid-template-rows: repeat(2, 12px); grid-auto-flow: column; grid-auto-columns: 16px; gap: 2px; width: auto !important; height: 26px !important; max-height: none; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a { width: 16px !important; height: 12px !important; background: color-mix(in srgb, var(--hud-ink) 10%, transparent) !important; color: var(--hud-ink) !important; border-color: var(--hud-line) !important; font-size: 9px !important; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button::before, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a::before { font-size: 8px !important; line-height: 1 !important; color: var(--hud-ink) !important; margin: 0 !important; }
+.twod12-hud .h3-hot #hotbar .page-number, .twod12-hud .h3-hot #hotbar [class*="page-number"] { display: flex !important; align-items: center; justify-content: center; font-size: 9px !important; color: var(--hud-ink) !important; }

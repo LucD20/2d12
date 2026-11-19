@@ -475,11 +475,14 @@ export function dualHtml(inp, st, v, can = false) {
   const dist = `<div class="rdd-r"><b>Distance</b>${ws.map(w => `<span>${esc(w.dist || "—")}</span>`).join("")}</div>`;
   const fa = n => (can ? ` data-force="${n}"` : "");
   const tiers = [1, 2, 3].map(n => `<div class="rdd-r t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(n)}><b>${can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">Tier ${n}</button>` : `Tier ${n}`}</b>${ws.map(w => `<span>${dmg(w.tiers?.[v?.ap] ?? v?.tiers, n)}</span>`).join("")}</div>`).join("");
-  // the roll: the dialog's count without the current weapon's hand Banes, plus each weapon's own
-  const dl = diceLine(inp, st), base = (dl.banes ?? 0) - (cur?.banes ?? []).reduce((t, b) => t + b.n, 0);
-  const roll = `<div class="rdd-r rdd-roll"><b>Your roll</b>${ws.map(w => { const n = base + w.banes.reduce((t, b) => t + b.n, 0); return `<span><span class="rdd-dice">${esc(dl.dice)} ${sgn(dl.mod)}</span> ${counts(dl.boons, Math.max(0, n))}</span>`; }).join("")}</div>`;
+  // v0.0.449 (Lucas, g2-handmenu: "I mean in the roll dialog"): a weapon's hand Bane is a button: a click switches it off for this roll (the same
+  // chip as a one-weapon dialog's: st.toggled by its id, so the other weapon's Roll keeps the choice), again on
+  const on = b => st.toggled?.[b.id] !== false;
+  // the roll: the dialog's count without the current weapon's hand Banes that are on, plus each weapon's own that are on
+  const dl = diceLine(inp, st), base = (dl.banes ?? 0) - (cur?.banes ?? []).filter(on).reduce((t, b) => t + b.n, 0);
+  const roll = `<div class="rdd-r rdd-roll"><b>Your roll</b>${ws.map(w => { const n = base + w.banes.filter(on).reduce((t, b) => t + b.n, 0); return `<span><span class="rdd-dice">${esc(dl.dice)} ${sgn(dl.mod)}</span> ${counts(dl.boons, Math.max(0, n))}</span>`; }).join("")}</div>`;
   // each Bane and the out-of-range reason on a line of its own, never wrapped
-  const notes = ws.some(w => w.banes.length || w.out) ? `<div class="rdd-r rdd-notes"><b></b>${ws.map(w => `<span>${w.banes.map(b => `<i class="rdd-bane">▼${b.n} ${esc(b.text)}</i>`).join("")}${w.out ? `<i class="rdd-out">${esc(w.out)}</i>` : ""}</span>`).join("")}</div>` : "";
+  const notes = ws.some(w => w.banes.length || w.out) ? `<div class="rdd-r rdd-notes"><b></b>${ws.map(w => `<span>${w.banes.map(b => `<button type="button" class="rdd-bane${on(b) ? "" : " off"}" data-act="dualbane" data-id="${esc(b.id ?? "")}" aria-pressed="${on(b)}">▼${b.n} ${esc(b.text)}</button>`).join("")}${w.out ? `<i class="rdd-out">${esc(w.out)}</i>` : ""}</span>`).join("")}</div>` : "";
   return `<div class="rd-dual" style="--n:${ws.length}">${head}${dist}${tiers}${roll}${notes}</div>`;
 }
 

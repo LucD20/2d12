@@ -81,6 +81,7 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     if (a === "ver") st.ap = Number(b.dataset.ap);
     else if (a === "quick") RD.addManual(st, b.dataset.scope, b.dataset.k);
     else if (a === "chip") RD.toggleChip(st, this._chip(b.dataset.id));
+    else if (a === "dualbane" && b.dataset.id) st.toggled[b.dataset.id] = st.toggled[b.dataset.id] === false;   // v0.0.449: a weapon column's hand Bane, off or on again
     else if (a === "rm") { const [, scope, kind] = /^man:(.*):([a-z]+)$/.exec(b.dataset.id) ?? []; if (kind) RD.removeManual(st, scope, kind); }
     else if (a === "fold") st.fold[b.dataset.key] = !st.fold[b.dataset.key];
     else if (a === "open") st.open[b.dataset.uuid] = !st.open[b.dataset.uuid];

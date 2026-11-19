@@ -860,8 +860,8 @@ export async function useAction(actor, item, opts = {}) {
           const banes = [];
           if (strike) {
             const hb = handBanes(all, w, isFists(w));
-            if (hb.banes) banes.push({ n: hb.banes, text: hb.banes === 3 ? "Strung, the other hand full" : hb.banes === 2 ? "Off hand" : "Off hand (Light)" });
-            if (hasProp(w, "twohanded") && (Number(w.system?.hands) || 1) < 2 && !w.getFlag?.("twod12", "oneHandOff")) banes.push({ n: 3, text: "Two-handed weapon in one hand" });
+            if (hb.banes) banes.push({ id: "syn:hand", n: hb.banes, text: hb.banes === 3 ? "Strung, the other hand full" : hb.banes === 2 ? "Off hand" : "Off hand (Light)" });
+            if (hasProp(w, "twohanded") && (Number(w.system?.hands) || 1) < 2) banes.push({ id: "syn:onehand", n: 3, text: "Two-handed weapon in one hand" });
           }
           const tiers = {};
           for (const v of versions) if (!v.noTiers) tiers[v.ap] = (await partsFor(v, w)).tiers;
