@@ -170,3 +170,6 @@ The skill list, its numbers and the Skill Talents stay for the Skills session (D
 | # | Decided | Lucas's words | Record |
 |---|---|---|---|
 | 6 (step 3) | **The shape: written spells, and a line of small magic for each Path.** A spell outside a fight is a card (Path, School, minimum ranks, a long duration, a Surge cost, its limit printed). Small magic costs nothing, never changes a Check, never matters in a fight. A small share of free-form: in the small magic, and in the room a written spell leaves to argue a use | "A with a bit of B, but 95% A" | 119 |
+| 7 | **Paired picks:** whenever you would choose a spell, you choose one for fights and one for outside a fight | "A yes" | 120 |
+
+**Lucas's caution (record, decision 121): this piece decides the skeleton and leaves the meat to Talents.** "Are we jumping the gun and doing what should be the Talents job?" His three traps: Pathfinder 2e's skill feats (permission), the skill tax of D&D 3.5 and Pathfinder 1e, Savage Worlds' Edges (combat and social picks competing).
