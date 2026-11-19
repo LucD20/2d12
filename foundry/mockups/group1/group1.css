@@ -1,0 +1,54 @@
+/* Group 1 (Lucas on v0.0.442, 2026-11-19): the page, then the proposals' rules, each only under its .g1-* class. Mockup only: nothing in the system changed. */
+h1 { font: 600 28px "Source Serif 4", serif; margin: 0 0 6px; }
+.g1-lead { max-width: 1100px; margin: 0 0 28px; line-height: 1.45; opacity: .9; }
+.g1-sec { margin-bottom: 48px; } .g1-q { margin: 0 0 8px; font-style: italic; opacity: .8; max-width: 1100px; }
+.g1-list { margin: 0 0 14px 18px; padding: 0; max-width: 1100px; line-height: 1.45; } .g1-list li { margin: 3px 0; }
+.g1-pair { display: flex; gap: 28px; align-items: flex-start; margin-bottom: 20px; } .g1-shot h3 { margin: 0 0 6px; }
+.g1-clip .mk-win, .g1-clip .mk-win > .application { height: auto !important; }
+.g1-clip .window-content { flex: none !important; } .g1-clip .twod12.sheet.pcs.ps2 { position: static !important; flex: none !important; height: auto !important; min-height: 0 !important; }
+.g1-clip .ps-body { flex: none !important; height: auto !important; overflow: visible !important; } .g1-clip .ps-main { height: auto !important; overflow: visible !important; } .g1-clip .ps-scroll { flex: none !important; height: auto !important; overflow: visible !important; }
+/* the crops: the parts of the sheet a picture leaves out */
+.g1-crop-top .ps-body, .g1-crop-top .ps2-stats, .g1-crop-tiles .ps-body, .g1-crop-tiles .ps2-stats, .g1-crop-tiles .ps2-combat { display: none !important; }
+.g1-crop-basic .ps2-plate, .g1-crop-basic .ps2-stats, .g1-crop-basic .ps2-tiles, .g1-crop-basic .ps2-combat, .g1-crop-basic .ps-tabs, .g1-crop-basic .ps-stack, .g1-crop-basic .ps2-links, .g1-crop-basic .ps2-basic ~ * { display: none !important; }
+.g1-crop-basic .twod12-actor .twod12.sheet.pcs.ps2 .ps2-basic { margin-top: 0; }
+.g1-crop-acts .ps2-plate, .g1-crop-acts .ps2-stats, .g1-crop-acts .ps2-tiles, .g1-crop-acts .ps2-combat, .g1-crop-acts .ps2-basic, .g1-crop-acts .ps2-basic ~ * { display: none !important; }
+
+/* ---- 1. the marks, as the HUD draws them (system.css .twod12-hud .hm-ap / .hm-r / .hm-sk), a little bigger */
+.theme-dark { --g1-strike: #c0675c; } .theme-light { --g1-strike: #a8433a; }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-pips { gap: 4px; }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip { width: 12px; height: 12px; border-radius: 0; border: 1.5px solid var(--s-gold); }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.spent { border-color: var(--s-gold); background: transparent; }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap { width: 10px; height: 10px; margin: 0 2px; border-color: var(--s-gold); }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap.on { background: var(--s-gold); }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip-sep { margin: 0 3px; }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-sep { margin: 0 1px; }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk i { width: 5px; height: 13px; transform: skewX(-22deg); border: 1.5px solid var(--g1-strike); opacity: .45; }
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk i.on { background: var(--g1-strike); opacity: 1; }
+/* a Standard NPC's one line (no Esc. row): the same marks, in a row */
+.g1-marks .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.one .ps2-marks { display: flex; gap: 8px; }
+
+/* ---- 2. the Basic Actions' strips */
+.g1-strips .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx:not(.off) .ps2-bxbtn { border-left: 4px solid color-mix(in srgb, var(--lnf) 88%, var(--s-pg-2)); }
+.g1-strips .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx:not(.off) .ps2-bxbtn.strike { box-shadow: inset 1px 0 0 var(--s-pg-2), inset 4px 0 0 var(--g1-strike); padding-left: 7px; }
+.g1-strips .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn { gap: 4px; }
+
+/* ---- 3a. four columns: the name never cut (fitted by the script), two lines only below 9.5 px */
+.g1-a .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxl { flex: 1 1 auto; }
+.g1-a .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxn { text-overflow: clip; } .g1-a .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxn.wrap { white-space: normal; }
+/* ---- 3b. three columns: Attack over Control, Movement, Utility */
+.g1-b .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 10px; }
+.g1-b .g1-stack { min-width: 0; } .g1-b .g1-stack > .ps2-bcol + .ps2-bcol { margin-top: 4px; }
+
+/* ---- 4. an Elite's combat line: the phases where a PC's hooks are, the marks cell with an Esc. row */
+.g1-elite .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.npc.g1-el { grid-template-columns: minmax(0, 1fr) auto; height: 66px; min-height: 0; }
+.g1-elite .twod12-actor .twod12.sheet.pcs.ps2 .g1-ph { gap: 1px; padding-top: 4px; padding-bottom: 4px; }
+.g1-elite .twod12-actor .twod12.sheet.pcs.ps2 .g1-pl { display: flex; gap: 0 14px; font-size: 14px; line-height: 1.25; white-space: nowrap; color: var(--s-ink); }
+.g1-elite .twod12-actor .twod12.sheet.pcs.ps2 .g1-pl b { font-weight: 700; } .g1-elite .twod12-actor .twod12.sheet.pcs.ps2 .g1-pl i { font-style: normal; font-size: 12.5px; color: var(--s-mute); }
+.g1-elite .twod12-actor .twod12.sheet.pcs.ps2 .g1-rungs { display: flex; gap: 0 12px; font-size: 12px; line-height: 1.25; white-space: nowrap; color: var(--s-faint); }
+.g1-elite .twod12-actor .twod12.sheet.pcs.ps2 .g1-rungs .lit { color: var(--s-ink); font-weight: 600; }
+
+/* ---- 5. an NPC's tiles in the PC's grid (the places it doesn't use stay empty) */
+.g1-tiles .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m1, .g1-tiles .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m2 { grid-template-columns: repeat(4, minmax(0, 1fr)) 6px repeat(3, minmax(0, 1fr)); }
+
+/* ---- 6. the Basic attack's bar: the name is never the part that is cut (today "Club" becomes "C…" beside a long subtitle); the subtitle gives way */
+.g1-sub .twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.basicatk .ps2-bar .ps-nm { flex: none; }
