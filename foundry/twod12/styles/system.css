@@ -1501,9 +1501,10 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   --c-bane: #ff6a4d; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a; }
 /* v0.0.438 (CARD-ONE step 5): a card carries its own color tokens wherever it is drawn (the sheet, the chat, a tooltip, the HUD): they were set
    only for a card inside the actor sheet, so a card in the chat, a tooltip or the HUD took the page's values (dark ink on the dark card). */
-/* v0.0.450 (Lucas, g3-res: "Still very dark blue" in the chat log): a chat card in the sidebar carries the tokens too (it took :root's) */
+/* v0.0.450 (Lucas, g3-res: "Still very dark blue" in the chat log): a chat card in the sidebar carries the tokens too (it took :root's);
+   v0.0.452 ("on the roll dialog is still looking with the dark blue"): the roll dialog too */
 .twod12.acard, .application.twod12.twod12-actor .acard, .application.twod12.twod12-actor .twod12.chat, .twod12.acard .twod12, .application.twod12.twod12-actor .acard .twod12, .application.twod12.twod12-actor .twod12.chat .twod12,
-.application.twod12.twod12-actor .nb, .twod12.chat, .twod12.chat .twod12 {
+.application.twod12.twod12-actor .nb, .twod12.chat, .twod12.chat .twod12, .twod12.rolldlg, .twod12.rolldlg .twod12 {
   --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55;
   --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00; --c-wmod: #9a4a00; --c-pmod: #5b3a9e; --c-smod: #455566;
   --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }

@@ -5,23 +5,10 @@
    "items": [
     {
      "id": "g3-res",
-     "v": "v0.0.451",
+     "v": "v0.0.452",
      "title": "The dark Resolve color",
      "do": "In the dark interface, have Aveline Smite the Orc Warrior and read the chat card's line \"Smite dice: [R] 1d6! Ho…\"; open Smite on her sheet and in the roll dialog, and Durgan's Word of Radiance.",
-     "expect": "\"[R] 1d6!\" in the chat card (the \"!\" with the dice) and \"Ho\" in Holy's gold, and every Resolve damage on the sheet and in the dialog read in the same pale blue, easy to read on the dark card (the chat card no longer darker than the rest); the other colors in chat cards (Attributes, Boons, Banes) readable too; Vigor's red unchanged.",
-     "rev": 4
-    }
-   ]
-  },
-  {
-   "name": "The HUD",
-   "items": [
-    {
-     "id": "g2-hotbar",
-     "v": "v0.0.451",
-     "title": "The Hands and the macro bar together; the macro bar's buttons",
-     "do": "Select Sylwen's token out of combat and look at the HUD's right column, in the dark and the light interface; use the macro bar's lock, mute, menu and page arrows; drag a macro onto a slot and click it. Then knock her Prone (her sheet's conditions).",
-     "expect": "With nothing waiting there are no tabs: her hand tiles above the macro bar in one pane. Left of the slots, mute over menu: two small flat buttons with their icons in the text color; right of the slots, a thin column ▲ 1 ▼ (bare arrows, the number between them, not over them), then lock over clear, boxed like mute and menu; all within a slot's height; the ten slots share the width; every control and macro still works. Prone: the tabs \"Situational\" and \"Hands\" appear and Situational opens with Stand and Crawl; \"Hands\" shows the tiles and the macro bar together; when she stands, the tabs go away.",
+     "expect": "\"[R] 1d6!\" in the chat card (the \"!\" with the dice) and \"Ho\" in Holy's gold, and every Resolve damage on the sheet and in the dialog read in the same pale blue, easy to read on the dark card (the chat card no longer darker than the rest); the other colors in chat cards (Attributes, Boons, Banes) readable too; Vigor's red unchanged. The roll dialog too: its Smite dice line and Tiers in the same pale blue, not the dark blue.",
      "rev": 5
     }
    ]
