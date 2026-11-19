@@ -179,4 +179,6 @@ Steps 1 to 3 are the skeleton of Talents; steps 4 to 8 its structure; 9 to 12 it
 
 ## 7. Decisions
 
-(None yet.)
+| # | Decided | Lucas's words |
+|---|---|---|
+| T1 | **What a Talent may contain: never a bare number.** A Talent adds a verb (a new Action, or a new way to use one), changes a rule, or lifts a limit of the base rules. A number may appear only as part of a verb (a new Action's damage), never as "+1 to X". **A fallback, not the default:** a Boon in a very circumstantial situation ("a boon when haggling") may be allowed from time to time, only if Talents without it don't hold up in play; he would rather not. | "A, but I think it can grant boons to very circumstantial situations from time to time, though I'd like it not to. This is just an idea in case Talents without it doesn't really hold up, like a boon when haggling." |
