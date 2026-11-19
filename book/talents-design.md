@@ -122,30 +122,58 @@ Collected from every record on 2026-11-19. Nothing here is designed; each is a j
 
 ---
 
-## 4. The research
+## 4. The research (done, 2026-11-19)
 
-Four independent passes, started 2026-11-19, each with its own brief and file in `research/raw/`:
+**The combined note: `research/talents.md`** (Claude's summary of four independent passes; about 290 searches and page loads; four raw reports in `research/raw/2026-11-19-talents-*.md`). About half the tabletop rules in two of the reports are from memory and marked so; no source measured what players pick or remember.
 
-| Pass | Its scope | Raw report |
-|---|---|---|
-| The d20 family's feats | D&D 3.0 to 2024, Pathfinder 1e and 2e, 4e, 13th Age, Starfinder, Level Up, DC20, Draw Steel's split, Star Wars Saga | `2026-11-19-talents-d20-feats.md` |
-| Edges, advantages and free picks | **Savage Worlds in depth** (why social Edges lose), GURPS, Fate, Cypher, Blades, PbtA, Ironsworn, L5R, Worlds Without Number, Year Zero, Symbaroum, Daggerheart, Lancer, ICON and others | `2026-11-19-talents-edges-and-picks.md` |
-| Trees, careers and ranked talents | **Fantasy Flight's Star Wars in depth**, Genesys's pyramid, Warhammer, the AGE system, Lancer, Crucible's tree, Exalted, path games, and video game trees where designers wrote about them | `2026-11-19-talents-trees-and-ranks.md` |
-| The design thinking across games | What an option is for; horizontal growth; traps and taxes; combat against non-combat in one budget; permission; two characters of one class; the structure of choosing; options keyed on traits; writing and balancing a large set | `2026-11-19-talents-design-thinking.md` |
-
-Already in the project: the short pass behind the 2026-11-09 proposal; `roleplay-skills.md` (six failure modes); `research/magic-vs-skills.md` (what feels good for the non-magical); `research/helping.md`; `research/crucible.md`.
+Also read: the short pass behind the 2026-11-09 proposal; `roleplay-skills.md`; `research/magic-vs-skills.md` (what feels good for the non-magical); `research/helping.md`; `research/crucible.md`.
 
 ---
 
 ## 5. The problems to design against
 
-(To be written when the research returns.)
+### Lucas's three traps, with their causes on record
+
+| Trap | Its causes, by the research | What 2d12 already has against it |
+|---|---|---|
+| **Permission** | The sentence "anyone can try; this makes you better" not printed on the pick; **a list so long each pick needs ground, taken from the base rule**; a GM made to remember a penalty for everyone without the pick | `roleplay-skills.md` proposal 1 (the sentence Pathfinder didn't print); Routine is a base rule, not a Talent |
+| **Tax** | A pick that restores a number the math assumes; a rung used only to reach the next; a pick everyone of a kind takes first; buying back a penalty; a forced order of upgrades | Flat numbers, the +4 cap, no "trained" tick, no rising DCs |
+| **Competition** | One budget, and the fight is where you die; **the non-combat pick is a number while the combat pick is an action**; the skill alone already does the job; the circumstance never comes up; the leak: actions usable in a fight in the non-combat slot | Typed slots in the level list; separate spell picks (magic, 120) |
+
+### Four more, from the research
+
+- **Memory.** Conditional and off-turn triggers are what players forget; a wider sheet nobody can remember is the risk of horizontal growth. The class charter already says "no silent bonuses, no tracking across turns".
+- **Filler.** More picks than good ideas, a fixed number of boxes, a single node everybody races to. "We don't think it's humanly possible to have 40-50 fun, interesting and balanced talents in a tree" (Street).
+- **Dominated options.** Two picks that can be put on one scale; one of them wins.
+- **Sameness.** Two characters of a class end up alike (Genesys's recorded worry). Lucas's own test: a diplomatic Paladin against a quiet, ranged one.
+
+### Conflicts already on file
+
+- **The set-aside chapter is Savage Worlds' Edge structure almost item for item** (categories, a level, Prerequisites, chains); its example Heavy Blows is a number.
+- **Retraining:** any Rest (Chapter 5) against one swap at each level-up (the 2026-11-09 proposal).
+- **"Skill Talents never give combat numbers"** (the proposal) is narrower than the leak the research found (actions used in a fight).
+- **"No certainty"** (`roleplay-skills.md`) against the research's finding that loved non-combat options are reliable (Routine is one answer already taken).
 
 ---
 
-## 6. The steps
+## 6. The steps (one decision at a time; the order is Claude's proposal)
 
-(To be ordered when the research returns.)
+| # | The step | What is decided |
+|---|---|---|
+| **1** | **What a Talent is for** | What a Talent may contain: a new verb, a rule exception, a lifted limit, a number? The rule every Talent obeys |
+| **2** | **The budgets** | The tracks and what may sit in each: the wall on content (what a non-combat Talent may never do in a fight, and the reverse) |
+| **3** | **What the class fixes and what Talents decide** | The line between the class's cards and the Talents, so a diplomatic and a ranged Paladin differ by Talents and share the class |
+| **4** | **The size of a pick** | One size, or Minor and Major; ranks inside a Talent (three written steps) or not |
+| **5** | **How picks are gated and found** | A list with prerequisites, trees, a pyramid, paths, a small hand drawn by trait; prerequisites by trait, level, Stage |
+| **6** | **The schedule** | How many picks, at which levels, of which kind (the level list's slots are in the book and empty) |
+| **7** | **Retraining** | Any Rest, one at a level-up, or another rule |
+| **8** | **The memory budget** | How many live Talents and triggers a character carries at each Stage |
+| **9** | **Skill Talents** | What they do, by the frame of play outside a fight (Routine, the five kinds of outcome, no help action); with the Skills pass |
+| **10** | **Magic Talents and the seeds** | How the ~30 seeds already assigned become Talents (opening a Path, the counterspell tree, the summoner's chain, the classes' Surge uses) |
+| **11** | **Writing and pricing** | A template for a Talent card, a price method, how many at launch, the filler test |
+| **12** | **The test** | Build the two Paladins and a few others on paper; an independent audit against the tests in `research/talents.md` sections 6 and 7 |
+
+Steps 1 to 3 are the skeleton of Talents; steps 4 to 8 its structure; 9 to 12 its content.
 
 ---
 
