@@ -40,7 +40,7 @@
 3. **Stakes.** "As a player, I know that Combat Edges and skills may make a difference between life and death. If, after a few sessions, I feel that Charismatic, Scholar, Woodsman won't make a dramatic impact on my adventures, changing the course of events for the better, I'll keep stacking Combat Edge upon Combat Edge." [checked, same]
 4. **The pick's shape.** A flat +2 to one roll against a new action, shown in the list above. [read]
 5. **The skill already does the job, and the bonus stacks to certainty.** Zadmar's "Politician" reaches Persuasion d12+2 and Charisma +8, "ensuring 2+ raises except on snake eyes". [checked] https://savage-stuff.blogspot.com/2018/10/status-and-renown.html . One or two picks finish the job; a fifth is wasted, where a fifth Combat Edge is not.
-6. **The GM caps what the roll can do.** Zadmar: high Persuasion makes characters "likable and convincing (particularly for Social Conflicts), but it doesn't let them control the actions of others." [checked] https://savage-stuff.blogspot.com/2016/04/persuasion-is-not-mind-control.html . A combat pick's effect is fixed by the rules; a social pick's is negotiated.
+6. **The GM caps what the roll can do.** Zadmar: high Persuasion makes characters "likable and convincing (particularly for Social Conflicts), but it doesn't let them control the actions of others." [checked] https://savage-stuff.blogspot.com/2016/04/persuasion-is-not-mind-control.html (a post that condenses the forum rulings of Pinnacle's Clint Black, which were not opened). A combat pick's effect is fixed by the rules; a social pick's is negotiated.
 7. **Prerequisites point elsewhere.** Charismatic needs Spirit d8, Investigator two skills at d8: a fighter's attributes qualify for combat Edges, and Background and Professional Edges are closed after creation without the GM's word. [read, rulespal]
 8. **More combat Edges exist.** "Combat characters can easily nab six Edges without overlap, scientists get about two." [lead: a search summary of a Giant in the Playground thread; the site refused]
 9. **The game's weight.** Zadmar: "Although Savage Worlds places a strong emphasis on combat, it is perfectly possible to create viable and interesting characters who focus on social abilities, relying on their resources and minions (and perhaps Tricks and Tests of Will) when a fight cannot be avoided." [checked, status-and-renown]
@@ -56,8 +56,8 @@
 
 ## 2. Point-buy with one currency: GURPS, HERO, Mutants & Masterminds, Shadowrun, World of Darkness, 7th Sea
 
-- **GURPS.** One currency (character points) buys attributes, advantages, disadvantages (points back, up to a campaign limit), 1-point perks, skills, techniques (one use of a skill raised alone), Talents (+1 a level to a group of related skills) and wildcard skills (one broad skill at triple cost). [memory] **The documented cost is the menu.** Steve Jackson Games: "new players sometimes find themselves overwhelmed by the game before they even start to play. One way to make character creation less daunting is to use a 'quick-start' technique known as a template." A template "reduces the amount of work needed to create the character and guarantees its competence." [read] https://www.sjgames.com/gurps/books/Wizards/excerpts.html . Lenses are smaller packages laid over a template. [memory] A GM's blog on writing one: the write-up "helped trimmed down the dizzying options". [checked] https://gameinthebrain.blogspot.com/2014/02/gurps-templates-notes-write-up-instead.html . The pressure: every point in Diplomacy is a point not in a weapon skill, so templates fix a spread and Dungeon Fantasy's templates become classes. [memory]
-- **HERO System.** The same idea, more exact: skills, perks, talents and powers all from one pool, complications refunding points. Reputation: exact and heavy. [memory]
+- **GURPS.** One currency (character points) buys attributes, advantages, disadvantages (points back, up to a campaign limit), 1-point perks, skills, techniques (one use of a skill raised alone), Talents (+1 a level to a group of related skills) and wildcard skills (one broad skill at triple cost). [memory] **The documented cost is the menu.** Steve Jackson Games: "new players sometimes find themselves overwhelmed by the game before they even start to play. One way to make character creation less daunting is to use a 'quick-start' technique known as a template." A template "reduces the amount of work needed to create the character and guarantees its competence." [read] https://www.sjgames.com/gurps/books/Wizards/excerpts.html . Lenses are smaller packages laid over a template. [memory] Every point in Diplomacy is a point not in a weapon skill, so a template fixes the spread, and Dungeon Fantasy's templates are classes in all but name. [memory]
+- **HERO System.** The same idea, more exact; reputation: heavy. [memory]
 - **Mutants & Masterminds.** "Advantages cost 1 Character point per rank"; four types: Combat, Fortune, General, Skill; some are "Ranked" ("+1 bonus to close attack checks per rank"). [read] https://www.d20herosrd.com/5-advantages/ . The Power Level caps attack and defense totals, so once they are at the cap further points can only go sideways. [memory] A cap on combat numbers is itself a fix: it ends the competition at a known point.
 - **Shadowrun.** Positive qualities cost karma, negative ones refund it, each side capped at creation; karma also buys skills and attributes. The usual complaints: negative qualities taken as free points, a short list of always-taken positives. [memory]
 - **World of Darkness / Chronicles of Darkness.** Merits in dots (1 to 5); Style merits are chains where each dot adds a maneuver; social merits (Allies, Contacts, Status, Resources) are dots that the Storyteller turns into effect. [memory] Reception found: "Fighting Styles can be more powerful than actual supernatural abilities" (TV Tropes) and "Numerous people have told us that equipment and fighting Merits in God-Machine Chronicle were wasted space" (a comment on Onyx Path's site). [lead: search summaries] **The complaint in the brief, "social merits are either mandatory or ignored", was not found on any page.**
@@ -135,8 +135,7 @@
 - **Mythras / RuneQuest.** A combat style is a skill carrying a set of weapons and one trait; special effects are chosen after the roll, by the margin, from one list everybody has. A fighter differs by style and by the effect chosen in the moment. [memory]
 - **Into the Odd / Electric Bastionland.** No abilities: a failed career hands you odd gear, and gear is what you can do. [memory]
 - **Wildsea.** An aspect is a name, a short track (which is also the damage it soaks) and one special line, taken freely from the lists of a bloodline, an origin and a post. Losing the track loses the ability for a while. [memory]
-- **Break!!** (a Calling's fixed abilities plus elective ones at ranks; Quirks at creation), **Gubat Banwa** (a martial discipline for the fight, a separate looser side for drama), **Beacon** (Lancer's descendant). [memory, thin; no page opened for any of the three]
-- **Burning Wheel:** traits are also voted onto a character by the table for how they were played. [memory]
+- **Break!!**, **Gubat Banwa**, **Beacon** (Lancer's descendant): nothing opened, and too little remembered to report. [memory]
 - **FFG Star Wars / Genesys** (another report's ground): a specialization tree is a 5 × 4 grid bought with the XP that also buys skills; Genesys replaced it with a pyramid (more low-tier talents than high). [memory]
 
 ---
@@ -145,19 +144,13 @@
 
 ### (1) Why non-combat picks lose in a shared budget, and each fix tried
 
-The reasons are checklist (b) in section 10. The fixes found, and how each went:
+The reasons are checklist (b) in section 10; the fixes, each with its game and cost, are list (c). How they went, in short:
 
-- **Change the adventures, not the rules** (Axian Spice). The honest GM-side answer; it is not a rule, and the same author rejects caps and bribes as "not great".
-- **Give the social pick work inside a fight** (SWADE's Tests and Support; L5R's shūji). L5R's beta shows it working so well that the fight-only picks became the weak ones. The cost: a "social" Edge that is chosen for its combat use.
-- **Separate tracks fed by what you did** (Blades; The One Ring). No complaint found. It needs an XP engine.
-- **A forced free non-combat pick at creation** (Stars Without Number). Reviews are warm; the one play report shows a player routing around the class. It shapes level 1 only.
-- **Two sheets** (ICON) or **two halves** (Lancer). ICON's idea is praised and its narrative content is uneven and being rewritten; Lancer's narrative half is "slim". The cost is the one `book/roleplay-skills.md` already names: two games.
-- **Typed slots** (Draw Steel: the feature says which type of perk). Solves the budget; what goes in the slot then has to earn its place, and Draw Steel's answer was certainty.
-- **Bundles** (Professional Edges, Class Edges, Backgrounds, templates). They hide the competition inside a package. SWADE toned its bundles down.
-- **Free written descriptors** (Experiences, triggers, aspects). Free, always fit, and are flat bonuses.
-- **Cap the combat number** (Mutants & Masterminds' Power Level; SWADE turning bonuses into rerolls). Once the fighting number is at its cap, the next pick goes sideways whatever the player wants.
-- **A hand smaller than the collection** (Daggerheart). A narrow pick costs little if it can sit in the vault until its day; the complaint is the sorting.
-- **No fight mode** (PbtA, Ironsworn). One budget does no harm when a fight is resolved by the same moves as everything else. It does not transfer to a tactical game, but it locates the cause: the competition exists because the fight is a separate, larger and deadlier game.
+- **Removed the competition, no complaint found:** separate tracks fed by play (Blades, The One Ring); typed slots (Draw Steel, though what fills the slot drew Lucas's own complaint); a cap on the combat number (Mutants & Masterminds).
+- **Worked, with a side effect:** social picks that work in a fight (L5R's beta: the fight-only picks became the weak ones); a forced free non-combat pick (Stars Without Number: warm reviews, one report of a player routing around the class, level 1 only); a hand smaller than the collection (Daggerheart: the sorting).
+- **Half worked:** two sheets or two halves (ICON's idea praised, its narrative content uneven and being rewritten; Lancer's narrative half "slim"); bundles (SWADE weakened its own); free written descriptors (always fit, always a flat bonus).
+- **Rejected by its own proposer:** caps and bribes on Combat Edges ("not great, frankly"); his answer is the adventure.
+- **Locates the cause:** games with no fight mode (PbtA, Ironsworn) run one budget without the problem. The competition exists because the fight is a separate, larger and deadlier game.
 
 ### (2) A flat bonus against a change in what the character can do
 
@@ -171,7 +164,7 @@ Cypher's focus (one phrase, an ability a tier, "No two PCs in a group should hav
 
 ### (4) Ranks inside a pick
 
-Section 5. Three ranks with a different effect at each rank is the common shape (Lancer, Ironsworn, Symbaroum, Year Zero), and two games price deepening below broadening (Ironsworn 2 against 3; Lancer one rank either way). Number-only ranks (Improved Block, ranked advantages) are the ones called filler. No source measured which players prefer.
+See the end of section 5: a rank that is a new effect is liked, a rank that is +1 more is filler, and no source measured which players prefer.
 
 ### (5) What makes a list easy to choose from
 
@@ -203,7 +196,7 @@ Section 5. Three ranks with a different effect at each rank is the common shape 
 | A short list that is yours | PbtA, Blades, Cypher | Easy choice; rule-bending picks | Uneven strength inside a list |
 | A named card with ranks | Ironsworn assets, Lancer talents, Symbaroum, Year Zero | Identity in a name; deepen or widen | A few dominant combinations (Symbaroum) |
 | A loadout smaller than the collection | Daggerheart | Narrow picks stay worth owning | Sorting at each rest |
-| A pick earned by an event | Heart's beats, Dragonbane, Burning Wheel's vote | The pick records the story | Not plannable; uneven pace |
+| A pick earned by an event | Heart's beats, Dragonbane | The pick records the story | Not plannable; uneven pace |
 | No picks | Call of Cthulhu, Traveller, Into the Odd, Mythras | Nothing to optimize | Difference lives in history, gear or the moment only |
 
 ### (b) Why social and other non-combat picks go untaken: a checklist
@@ -242,12 +235,12 @@ Section 5. Three ranks with a different effect at each rank is the common shape 
 
 ## 11. Sources opened
 
-Savage Worlds: rulespal.com/savage-worlds/rulebook · peginc.com/savage-worlds-kickstarter-support-rules-preview/ · savage-stuff.blogspot.com (2025/08 Charisma; 2018/10 Status and Renown; 2016/04 Persuasion is not mind control) · godwars2.org/SavageWorlds/SavageAbilities.pdf · axianspice.blogspot.com/2020/09/about-character-variety-in-savage-worlds.html · z-toast.blogspot.com/2019/02 · nerdist.com/?p=878739.
-Others: fate-srd.com (building-stunts, stunts-refresh, fate-accelerated/stunts) · keeper.farirpgs.com (Fate System Toolkit, stunts) · callmepartario.github.io/og-csrd/ · tbr.bearblog.dev/on-generic-systems-cypher/ · gnomestew.com/decrypting-the-cypher-system-part-4-setup/ · bladesinthedark.com/advancement · dokk.org/library/ironsworn_starforged_rulebook_2019 · github.com/seansbox/daggerheart-srd · thaumavore.substack.com/p/daggerhearts-card-system-essential · github.com/massif-press/lancer-data · startplaying.games/blog/posts/how-do-you-create-a-character-for-lancer · massif-press.itch.io/icon · lyssa-rpg-docs.neocities.org/icon/rules-summary · steelcompendium.io (Perks) · d20herosrd.com/5-advantages/ · sjgames.com/gurps/books/Wizards/excerpts.html · gameinthebrain.blogspot.com/2014/02 · ffg-forum-archive.entropicdreams.com/topic/264986 · rpgworkshop.wordpress.com/2018/01/24 · stargazersworld.com/?p=18438.
+Every page opened is linked at the line that uses it (31 pages: 8 on Savage Worlds, 23 on the others).
 
 ## 12. What could not be opened or verified
 
+- **Length:** the report runs past the 5,000 words asked for (about 6,000 of prose, plus links and a table), to keep the exact quotes.
 - **Refused:** Giant in the Playground (403), d20 Radio (403), every Reddit mirror tried (a bot wall), the free Stars Without Number PDF on a mirror (403), swnsrd.com, bladesinthedark.com's playbook and character pages (connection reset), cortexrpg.com's compendium (404), codexofdarkness.com (an empty page), Scribd.
 - **Opened and empty-handed:** two EN World threads on Savage Worlds (read through a summarizing tool) did not contain the claims a search summary gave for them.
 - **Not found at all:** a Pinnacle designer on Social against Combat Edges; Kevin Crawford on the Expert's free non-combat focus; Tom Bloom on ICON's two sheets; Shawn Tomkin on why an asset has three abilities (an interview opened, without it); the complaint that World of Darkness social merits are "mandatory or ignored"; reception of L5R's shūji in the finished game; any measure of whether players prefer deepening to broadening.
-- **[memory] for all rules:** GURPS, HERO, Shadowrun, World of Darkness, 7th Sea, Cortex Prime, Apocalypse World, Heart, Spire, Dragonbane, Year Zero Engine, Symbaroum, The One Ring, Fabula Ultima, Mythras, Traveller, Call of Cthulhu, Unknown Armies, Wildsea, Break!!, Gubat Banwa, Beacon, Into the Odd, Burning Wheel, FFG Star Wars, SWADE's advance list and Edge names, L5R 5e's curriculum, the Worlds Without Number focus schedule. **Trophy** was asked for and nothing was found or remembered worth a line.
+- **[memory] for all rules:** GURPS, HERO, Shadowrun, World of Darkness, 7th Sea, Cortex Prime, Apocalypse World, Heart, Spire, Dragonbane, Year Zero Engine, Symbaroum, The One Ring, Fabula Ultima, Mythras, Traveller, Call of Cthulhu, Unknown Armies, Wildsea, Break!!, Gubat Banwa, Beacon, Into the Odd, FFG Star Wars, SWADE's advance list and Edge names, L5R 5e's curriculum, the Worlds Without Number focus schedule. **Trophy** was asked for and nothing was found or remembered worth a line.
