@@ -5312,3 +5312,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b[data-action]:focus-visible, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span[data-action]:focus-visible { outline: 1px solid var(--s-gold); outline-offset: 1px; }
 .twod12-hud .hud-hmenu .hm-row { align-items: center; } .twod12-hud .hud-hmenu .hm-c { text-align: right; }
 .application.pickwin .pw-info h4.pw-ih { margin: 8px 0 2px; font: 700 14px "Source Sans 3", sans-serif; }
+/* v0.0.448 (Lucas, g2-handmenu): the hand menu's warning line is a button (its Banes off or on) */
+.twod12-hud .hud-hmenu button.hm-w { all: unset; display: block; box-sizing: border-box; width: 100%; padding-top: 2px; font-size: 12.5px; color: var(--s-bad); cursor: pointer; }
+.twod12-hud .hud-hmenu button.hm-w:hover, .twod12-hud .hud-hmenu button.hm-w:focus-visible { color: var(--hud-ink); }
+.twod12-hud .hud-hmenu button.hm-w.off { color: var(--hud-mute); }

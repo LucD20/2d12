@@ -116,7 +116,10 @@ export function handMenuModel(weapons, hand, { inCombat = false, ap = 99 } = {})
     groups.push(grip);
     groups.push(carried.map(y => (two(y) && ow && !tile.both ? row(`dropdraw:${ow.id}:${y.id}:${w.id}`, `Drop the ${ow.name}, then change to the ${y.name}`, "Release, Interact", 1) : row(`chg:${w.id}:${y.id}:${hand}`, `Change to the ${y.name}`, "Interact", 1))));
     groups.push([row(`stow:${w.id}`, "Stow", "Interact", 1), row(`drop:${w.id}`, "Drop", "Release", 0)]);
-    return { title: w.name, sub: handWord(tile.both ? "both" : hand), warn: two(w) && !tile.both ? "Two-handed, held in one hand: 3 Banes on its Strikes." : "", groups: groups.filter(g => g.length) };
+    // v0.0.448 (Lucas, g2-handmenu): the warning is a button: a click switches its 3 Banes off (the weapon's flag oneHandOff), again on
+    const off = !!w.getFlag?.("twod12", "oneHandOff");
+    return { title: w.name, sub: handWord(tile.both ? "both" : hand), warn: two(w) && !tile.both ? (off ? "Two-handed, held in one hand: its 3 Banes are off. Click to turn them on." : "Two-handed, held in one hand: 3 Banes on its Strikes. Click to turn them off.") : "",
+      warnKey: two(w) && !tile.both ? `toggle1h:${w.id}` : "", warnOff: off, groups: groups.filter(g => g.length) };
   }
   // a free hand: what it can draw; and a Two-handed weapon in the other hand can be held with both
   groups.push(carried.map(y => (two(y) && ow ? row(`dropdraw:${ow.id}:${y.id}:`, `Drop the ${ow.name}, then draw the ${y.name}`, "Release, Interact", 1) : row(`draw:${y.id}:${hand}`, `${weaponWhere(y) === "dropped" ? "Pick up" : "Draw"} the ${y.name}`, "Interact", 1))));
@@ -535,6 +538,13 @@ export async function applyHandPick(actor, weapons, key, { spendAP, applyRegrip,
     const text = await applyRegrip(actor, weapons, key);
     if (text) await say("fa-hands", `<b>Regrip</b> (1 AP): ${esc(actor.name)} ${text}.`);
     return !!text;
+  }
+  // v0.0.448: the warning line: the weapon's 3 Banes for a Two-handed weapon in one hand switched off, or on again (no AP; said in the chat)
+  if (kind === "toggle1h" && w) {
+    const off = !w.getFlag?.(F, "oneHandOff");
+    await (off ? w.setFlag(F, "oneHandOff", true) : w.unsetFlag(F, "oneHandOff"));
+    await say("fa-hand", `<b>${esc(w.name)}</b>, a Two-handed weapon in one hand: its 3 Banes are ${off ? "<b>off</b>" : "on again"} for ${esc(actor.name)}.`);
+    return true;
   }
   // v0.0.444 (group 2): the hand menu's new rows. "rel2:other:w": drop the other weapon (Release), then hold w with both hands (Regrip, 1 AP)
   if (kind === "rel2") {

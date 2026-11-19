@@ -40,3 +40,9 @@ const actor = { itemTypes: { weapon: [W("ls", "Longsword", ["melee", "twohanded"
 console.log("Darting Blade fits:", FI.weaponCandidates(actor, item).map(w => w.name).join(", "), "| its card sets it:", src("../../book/cards/stage0/archer.json").includes('"weaponNeeds": "light"'), "| the Action sheet edits it:", src("module/actionsheet.mjs").includes('name="system.weaponNeeds"'));
 console.log("--- the book");
 console.log("Handle: stowing and swapping need no free hand:", src("../../book/rules-src/07-traits.md").includes("stowing an object you hold, or swapping it for another you carry (Interact), needs no free hand"), "| Thrown stays in hand:", src("../../book/rules-src/09-glossary.md").includes("A thrown weapon stays in your hand for the rules"));
+// v0.0.448 (Lucas, g2-handmenu: "Allow clicking on the effect of each weapon to disable it"; his answer: the warning line): its 3 Banes off or on
+const Wf = (off) => ({ id: "ls", name: "Longsword", getFlag: (s, k) => (k === "oneHandOff" ? off : undefined), system: { traits: new Set(["melee", "twohanded"]), wielded: true, hand: "main", hands: 1, worn: true } });
+const mOn = P.handMenuModel([Wf(false)], "main", { inCombat: true, ap: 2 }), mOff = P.handMenuModel([Wf(true)], "main", { inCombat: true, ap: 2 });
+console.log("the warning a button:", mOn.warnKey, "|", mOn.warn, "|", mOff.warn, mOff.warnOff);
+const EF = await import(ROOTURL + "module/effects.mjs");
+console.log("the Banes follow it:", EF.derivedMods({ itemTypes: { weapon: [Wf(false)] } }).some(m => m.id === "syn:onehand"), EF.derivedMods({ itemTypes: { weapon: [Wf(true)] } }).some(m => m.id === "syn:onehand"), "| the HUD's menu draws it as a button:", src("module/hud.mjs").includes('<button type="button" class="hm-w${m.warnOff ? " off" : ""}" data-k="${esc(m.warnKey)}">'));

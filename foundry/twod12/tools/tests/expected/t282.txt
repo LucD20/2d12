@@ -6,7 +6,7 @@ the current weapon's hand Banes leave the shared rows: true
 one weapon: one Roll: true | CSS: every line one line: true
 no Which weapon? window with two held: true | the other's Roll runs it again with that weapon at once: true
 --- the hand menu
-Longsword (main hand) [Two-handed, held in one hand: 3 Banes on its Strikes.]: Hold with both hands = Regrip 1 AP STRUCK (Your off hand holds the Dagger); Drop the Dagger, then hold with both hands = Release, Regrip 1 AP; Swap hands with the Dagger = Regrip 1 AP || Change to the Arming Sword = Interact 1 AP; Drop the Dagger, then change to the Greatsword = Release, Interact 1 AP || Stow = Interact 1 AP; Drop = Release 0 AP
+Longsword (main hand) [Two-handed, held in one hand: 3 Banes on its Strikes. Click to turn them off.]: Hold with both hands = Regrip 1 AP STRUCK (Your off hand holds the Dagger); Drop the Dagger, then hold with both hands = Release, Regrip 1 AP; Swap hands with the Dagger = Regrip 1 AP || Change to the Arming Sword = Interact 1 AP; Drop the Dagger, then change to the Greatsword = Release, Interact 1 AP || Stow = Interact 1 AP; Drop = Release 0 AP
 Dagger (off hand): Swap hands with the Longsword = Regrip free || Change to the Arming Sword = Interact free; Drop the Longsword, then change to the Greatsword = Release, Interact free || Stow = Interact free; Drop = Release free
 Free hand (off hand): Drop the Arming Sword, then draw the Greatsword = Release, Interact 1 AP STRUCK (No AP left)
 a one-handed weapon has no "both hands" row: true
@@ -15,3 +15,5 @@ the HUD opens it above the tile: true | the macro bar's look: true
 Darting Blade fits: Dagger | its card sets it: true | the Action sheet edits it: true
 --- the book
 Handle: stowing and swapping need no free hand: true | Thrown stays in hand: true
+the warning a button: toggle1h:ls | Two-handed, held in one hand: 3 Banes on its Strikes. Click to turn them off. | Two-handed, held in one hand: its 3 Banes are off. Click to turn them on. true
+the Banes follow it: true false | the HUD's menu draws it as a button: true

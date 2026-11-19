@@ -33,11 +33,11 @@ Expect: "[R] 1d6! Ho" and every Resolve damage read in a lighter, less saturated
 
 ## The HUD
 
-### g2-handmenu · v0.0.447 · The HUD's hand menu
+### g2-handmenu · v0.0.448 · The HUD's hand menu
 Do: In a combat with 3 AP, Aveline holding the Longsword in one hand and a Dagger in the other, and an Arming Sword worn: click her main hand's tile on the HUD, then her off hand's; out of combat, click a free hand's tile; with no AP left, click the Longsword when held with both hands.
-Expect: A small menu opens just above the tile (not at the HUD's far left), inside the screen: the weapon and its hand, the warning "Two-handed, held in one hand: 3 Banes on its Strikes", then: Hold with both hands struck ("Your off hand holds the Dagger") and "Drop the Dagger, then hold with both hands"; Swap hands with the Dagger; Change to the Arming Sword; Stow; Drop; each with its Action and cost ("free" out of combat). A one-handed weapon has no "both hands" row. With no AP, the rows that cost AP are struck with "No AP left". Each row does what it says and posts its line in the chat. Each row's text is centered on its line.
+Expect: A small menu opens just above the tile (not at the HUD's far left), inside the screen: the weapon and its hand, the warning "Two-handed, held in one hand: 3 Banes on its Strikes", then: Hold with both hands struck ("Your off hand holds the Dagger") and "Drop the Dagger, then hold with both hands"; Swap hands with the Dagger; Change to the Arming Sword; Stow; Drop; each with its Action and cost ("free" out of combat). A one-handed weapon has no "both hands" row. With no AP, the rows that cost AP are struck with "No AP left". Each row does what it says and posts its line in the chat. Each row's text is centered on its line. A click on the red warning line switches the Longsword's 3 Banes off (the line says so, the chat too; the roll dialog no longer shows them); another click turns them on again.
 
-Rev: 2
+Rev: 3
 ### g2-hotbar · v0.0.445 · The macro bar's look and fit
 Do: Select Sylwen's token and look at the macro bar in the HUD's right column, in the dark and the light interface; use its lock, its page arrows; drag a macro onto a slot and click it.
 Expect: Flat square slots with a thin line, the slot's number small at the top right; Foundry's lock and clear at the left and the page arrows with the page number at the right are small and flat, stacked within a slot's height (no tall dark boxes); the ten slots share the width; every control and macro still works.

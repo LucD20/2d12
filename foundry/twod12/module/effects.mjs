@@ -107,7 +107,8 @@ export const shortName = n => String(n ?? "").replace(/^\s*Effect:\s*/i, "");
 export function derivedMods(actor) {
   const out = [];
   // A two-handed weapon held with one hand: 3 banes on [Strike, Weapon] Actions with that weapon (v0.0.212, Lucas: not the other hand's weapon or Fists).
-  if ((actor?.itemTypes?.weapon ?? []).some(w => w.system.wielded && w.system.traits?.has?.("twohanded") && (w.system.hands ?? 1) < 2)) out.push({ id: "syn:onehand", name: "Two-handed weapon in one hand", boons: 0, banes: 3, all: ["strike", "weapon", "__twohanded"], any: [], none: [] });
+  // v0.0.448 (Lucas, g2-handmenu: "Allow clicking on the effect of each weapon to disable it"): a weapon whose Banes were switched off in the hand menu (its flag oneHandOff) gives none
+  if ((actor?.itemTypes?.weapon ?? []).some(w => w.system.wielded && w.system.traits?.has?.("twohanded") && (w.system.hands ?? 1) < 2 && !w.getFlag?.("twod12", "oneHandOff"))) out.push({ id: "syn:onehand", name: "Two-handed weapon in one hand", boons: 0, banes: 3, all: ["strike", "weapon", "__twohanded"], any: [], none: [] });
   return out;
 }
 

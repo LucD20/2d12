@@ -461,7 +461,7 @@ async function handMenu(actor, tile) {
   const rowHtml = r => `<button type="button" class="hm-row${r.off ? " off" : ""}"${r.key && !r.off ? ` data-k="${esc(r.key)}"` : " disabled"}><span class="hm-l">${esc(r.label)}${r.off && r.why ? `<small>${esc(r.why)}</small>` : ""}</span><span class="hm-c">${esc(r.act)} <b>${esc(r.cost)}</b></span></button>`;
   const div = document.createElement("div");
   div.className = "hud-hmenu"; div.setAttribute("role", "menu");
-  div.innerHTML = `<div class="hm-h"><b>${esc(m.title)}</b> <small>${esc(m.sub)}</small>${m.warn ? `<span class="hm-w">${esc(m.warn)}</span>` : ""}</div>${m.groups.map(g => `<div class="hm-g">${g.map(rowHtml).join("")}</div>`).join("")}`;
+  div.innerHTML = `<div class="hm-h"><b>${esc(m.title)}</b> <small>${esc(m.sub)}</small>${m.warn ? (m.warnKey ? `<button type="button" class="hm-w${m.warnOff ? " off" : ""}" data-k="${esc(m.warnKey)}">${esc(m.warn)}</button>` : `<span class="hm-w">${esc(m.warn)}</span>`) : ""}</div>${m.groups.map(g => `<div class="hm-g">${g.map(rowHtml).join("")}</div>`).join("")}`;
   root.append(div);
   tile.classList.add("on");
   const r = tile.getBoundingClientRect(), h = root.getBoundingClientRect();
