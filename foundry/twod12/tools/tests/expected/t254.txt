@@ -34,7 +34,7 @@ the granted uses under the hands: true | one header for a Frequency's two column
 the roll dialog's card part: true | the ladder one line: true | a square with its picture: true
 the question in the HUD's side panel: true | the area after the dialog: true | Momentum: the party's number (v0.0.407, it isn't used up): true
 --- v0.0.398 (Lucas, on the multi-target mockup and v0.0.397)
-a group a Tier, each creature once: true | the Guard in the on-demand row: true | a Tier's Apply all: true
+a group a Tier, each creature once: true | the Guard in the on-demand ledger (v0.0.454): true | a Tier's Apply all: true
 the creature on one line with Target: true | the dialog not live: true | the hotbar at the bottom with the party strip: true
 --- v0.0.399 (Lucas, testing v0.0.398)
 the HUD found while fixed on screen: true | an area's Roll not blocked by targets: true | the last target removed: No target: true | the token selected again after an area: true

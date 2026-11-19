@@ -660,7 +660,9 @@ async function handleReduce(cfg, ctx) {
     const f = String(formula || "0").replace(/\bpow\b/g, `(${pow})`).replace(/\bmod\b/g, `(${mod})`).replace(/\brp\b/g, `(${Number(a.system?.rallyHeal) || 0})`);
     const roll = await bookRoll(f).evaluate();
     const now = Number(a.system?.reduceNext) || 0, next = Math.max(now, roll.total);
-    if (next !== now) { if (a.isOwner) await a.update({ "system.reduceNext": next }); else game.socket.emit("system.twod12", { type: "applyDamage", actorUuid: a.uuid, upd: { "system.reduceNext": next } }); }
+    // v0.0.454 (Lucas, playtest 6, D2): the reduction remembers what gave it (Shield of Faith), so the breakdown names it ("− 3 Shield of Faith")
+    const from = String(ctx?.source ?? ctx?.message?.getFlag?.("twod12", "action")?.title ?? "").trim();
+    if (next !== now) { const upd = { "system.reduceNext": next, ...(from ? { "system.reduceFrom": from } : {}) }; if (a.isOwner) await a.update(upd); else game.socket.emit("system.twod12", { type: "applyDamage", actorUuid: a.uuid, upd }); }
     // v0.0.418 (Lucas, playtest 5, C4): no chat line; the damage card shows the reduction when it lands (dice are still thrown)
     if (/d/.test(f)) await showDice([roll]);
   }

@@ -19,12 +19,24 @@ differ):
 
 ## Characters and sheets
 
+### rally-window · v0.0.454 · The Rally window and its line
+Do: Give Durgan 9 Vigor, 2 Vigor Nonlethal and 6 Resolve damage; click his Rally (sheet or HUD); click "Change the split", move a point with − and +, Use. Then use Lay On Hands' "up to N" Rally Points on Aveline (an Action that lets her use several), pick 2 on the window's first line, Use; once more and Cancel.
+Expect: A 400 px window in the dark table look: "Durgan heals 9" (with parts under it when there are bonuses), his Rally Points as marks with "N of 7 left", Vigor and Resolve as bars (the healed part hatched, "12 → 18 / 23"), "Split evenly between the two." and "Change the split", which shows the rows with − and +. Nothing in the chat while the window is open or after Cancel. After Use, one line with the heart: "Durgan heals 9 · 1 Rally Point, 6 left", then "9 Vigor …", then the parts when there are several. With "up to N", the count is the window's first line (no separate "How many?" window).
+
+### npc-symbols · v0.0.454 · The NPC sheet's symbols
+Do: Open the Orc Warrior's and the Ogre Chieftain's sheets in the dark and the light interface; give the Orc a Resist and a Weak (its Builder).
+Expect: A small line drawing in the word's color before AD (a shield with a dot), WD (a talisman), Speed (a boot), Reach (a spear), Size, Steady (an anchor), Guard (a buckler), Immune (a barred ring), Resist (a half-filled shield), Weak (a cracked shield); none on the Attribute tiles; nothing moves, the sheet keeps its height. A PC's sheet has none.
+
 ### g3-res · v0.0.452 · The dark Resolve color
 Do: In the dark interface, have Aveline Smite the Orc Warrior and read the chat card's line "Smite dice: [R] 1d6! Ho…"; open Smite on her sheet and in the roll dialog, and Durgan's Word of Radiance.
 Expect: "[R] 1d6!" in the chat card (the "!" with the dice) and "Ho" in Holy's gold, and every Resolve damage on the sheet and in the dialog read in the same pale blue, easy to read on the dark card (the chat card no longer darker than the rest); the other colors in chat cards (Attributes, Boons, Banes) readable too; Vigor's red unchanged. The roll dialog too: its Smite dice line and Tiers in the same pale blue, not the dark blue.
 Rev: 5
 
 ## The HUD
+
+### art-card · v0.0.454 · A click on an Art opens its card
+Do: Aveline clicks Commandment's cost on her sheet, then on her HUD; then use Sylwen's Spotter with no AP left.
+Expect: No "choose a Mode" window: the Art's card opens beside what was clicked, with a top line ("Commandment", "Paladin Art · Once per round", "Choose a Mode") and each Mode's "Use · 1 AP"; a click on one uses that Mode; Escape, the × or a click elsewhere closes it. With no AP left each Use button stays in place, struck and faded, with no reason written beside it; a click still opens the roll dialog, which warns.
 
 ### hud-used · v0.0.453 · A used Action from the HUD: a warning, not a stop
 Do: In a combat, Sylwen uses Quick Shots, then clicks it again on her HUD (its line reads "used", its stamp struck); then with 1 AP left click a 2 AP stamp. Ask for an Escalation 2 Passive's or the Apex's line before her Escalation reaches it.
@@ -35,6 +47,10 @@ Do: In the dark interface, start a combat with Durgan and the Orc Warrior; let t
 Expect: Each creature's Reaction AP diamond on the strip is filled in the same gold as a full AP square (empty: the outline). No "Bloodied", "Strained", "Dying" or "Down" word under the names.
 
 ## Starting a combat
+
+### squad-pictures · v0.0.454 · The Minions' picker with pictures
+Do: Three Goblin Sneaks as one squad (merge them in the Initiative window) in a combat with Aveline; when their turn comes, look at the HUD's Situational tab; hover the squares; click one.
+Expect: "Goblin Sneak · 3 of the squad left" and "Which one goes now?", then a square per Goblin with its token's picture and its number in a corner; a hover shows the name and lights its token on the map; a click (or a click on the token) picks it.
 
 ### judge-start · v0.0.453 · Judge on the Start of the Encounter card
 Do: Put Aveline, Durgan and the Ogre Chieftain in a combat, roll Initiative and start it.
@@ -75,6 +91,10 @@ Do: On Sylwen's turn, move a square, then use Wounding Shot.
 Expect: A warning ("has left its square this turn (its Requirement). Used anyway."), and the Action goes on.
 
 ## Chat cards
+
+### dmg-ledger · v0.0.454 · The damage breakdown and Apply's right-click
+Do: Durgan Smites the Orc Warrior (give it Resist 2 Slash and Weak 2 Holy in its Builder, and Guard 2); on the card click the equals button beside Apply; right-click Apply and choose Apply half; then right-click Undo and choose Apply double. Then a Goblin Sneak's Rusty Knife hits Sylwen while Durgan's Shield of Faith reduces it.
+Expect: The equals button opens a ledger under the Orc's row: Vigor: Slash (its dice) 8, Resist Slash −2, Guard −2, Takes 4; Resolve: Holy (its dice) 7, Weak Holy +2, Takes 9; "Lethal · Full" under it. No Full / Half / Double buttons: the right-click on Apply opens "Apply full / Apply half (rounded up) / Apply double", and on Undo the same to change it. On Sylwen's row the ledger reads "Shield of Faith −3" (not "Guard"), and Takes 0.
 
 ### save-fold · v0.0.440 · The Save card folds after its damage
 Do: Aveline uses Word of Radiance on two enemies; each rolls its Save; apply the damage to both.

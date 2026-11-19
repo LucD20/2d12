@@ -1,0 +1,17 @@
+--- D1
+Rally Points to use 1 2 3 each heals 9 Durgan heals 21 18 + 3 Font of Mercy Rally Points 4 of 7 left Vigor 12 &rarr; 23 / 23 Resolve 6 &rarr; 12 / 12 Cancel Use 2 Rally Points
+the count's buttons: 3 | two bars: 2 | the link to the split: false
+the line: Durgan heals 15 1 Rally Point · 5 left 9 Vigor, 5 Resolve, 1 Vigor Nonlethal 9 + 3 Font of Mercy + 4 Lay On Hands
+nothing posted before Use: true
+--- D2
+2 Pi, Shield of Faith 3: Vigor: Pierce (1d4: 2) 2; Shield of Faith −3 = 0
+the reduction remembers its source: true | named in the row: true
+the right-click menu: true | a Reaction's half makes Apply 'Apply half': true
+--- D3
+symbols: ad, wd, speed, reach, size, steady, guard, immune, resist, weak | none on the Attributes: true | only on an NPC: true
+--- D4
+the top line: Commandment Paladin Art · Once per round Choose a Mode | the click opens it (no pick window): true
+a Use button with too few AP stays, struck, and is clicked: true | no reason written: true
+--- D5
+<button type="button" class="lb-opt sq" data-id="a" aria-label="Goblin Sneak 2" data-tooltip="Goblin Sneak 2"><img src="g.png" alt=""><b class="lb-num">2</b></button>
+the squad's question: true

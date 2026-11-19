@@ -8,7 +8,8 @@ export const hasNo = o => (o.options ?? []).some(x => /^no$/i.test(String(x.id ?
 export function pickBarHtml(o) {
   // v0.0.397 (Lucas: "token images only, side by side in squares, like Draw Steel; hover over shows the name"): an option with a picture is a square
   const opts = (o.options ?? []).map(x => (x.img
-    ? `<button type="button" class="lb-opt sq${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}" aria-label="${esc(x.label)}"><img src="${esc(x.img)}" alt=""></button>`
+    // v0.0.454 (Lucas, playtest 6, D5 "Proposed A"): its token's number in a corner, the name on a hover (asked by Lucas: t264's list)
+    ? `<button type="button" class="lb-opt sq${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}" aria-label="${esc(x.label)}" data-tooltip="${esc(x.label)}"><img src="${esc(x.img)}" alt="">${x.num ? `<b class="lb-num">${esc(x.num)}</b>` : ""}</button>`
     : `<button type="button" class="lb-opt${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}"${x.tip && x.off ? ` data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.label)}</button>`)).join("");
   return `<i class="fa-solid ${esc(o.icon ?? "fa-hand-pointer")} lb-ic"></i><span class="lb-text">${o.text ?? ""}</span><span class="lb-side lb-opts">${opts}</span>${o.done ? `<button type="button" class="lb-go" data-id="__done"><i class="fa-solid fa-check"></i> ${esc(o.done)}</button>` : ""}${hasNo(o) ? "" : `<button type="button" class="lb-give" data-id="__cancel">${esc(o.cancel ?? "Cancel")}</button>`}`;
 }

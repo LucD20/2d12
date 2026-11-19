@@ -5347,3 +5347,88 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hb-st.no:not(:disabled) { cursor: pointer; }
 .twod12-hud .hb-st.no:not(:disabled):hover { border-color: var(--s-gold, #d2a75a); color: var(--hud-ink); }
 .twod12-hud .hb-pv.used + .hb-st { margin-left: 4px; }
+/* v0.0.454 (Lucas, playtest 6, D5 "Proposed A"): a picture option of the pick bar is a 40 px square with its token's picture, its number in a corner;
+   the Minions' question in the Situational section's format (the lead, a quiet tag, the question on its line, the squares) */
+.twod12-pickbar .lb-opt.sq { all: unset; position: relative; box-sizing: border-box; width: 40px; height: 40px; flex: none; border: 1px solid var(--s-gold, #d2a75a); background: rgba(0, 0, 0, .25); cursor: pointer; }
+.twod12-pickbar .lb-opt.sq img { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
+.twod12-pickbar .lb-opt.sq .lb-num { position: absolute; right: -1px; bottom: -1px; min-width: 14px; height: 14px; box-sizing: border-box; padding: 0 3px; background: var(--hud-bg, #1f1c18); border: 1px solid var(--s-gold, #d2a75a); font: 700 11px/12px "Source Sans 3", sans-serif; text-align: center; color: var(--hud-ink, #ece3cf); }
+.twod12-pickbar .lb-opt.sq:hover, .twod12-pickbar .lb-opt.sq.hover, .twod12-pickbar .lb-opt.sq:focus-visible { background: rgba(0, 0, 0, .25); outline: 2px solid var(--s-stamp, #e8c25a); outline-offset: 0; border-color: var(--s-stamp, #e8c25a); }
+.twod12-pickbar.squadpick .lb-text .lb-tag { margin-left: 6px; font-weight: 400; color: var(--hud-mute, #b3a68e); }
+.twod12-pickbar.squadpick .lb-text .lb-q { display: block; }
+.twod12-pickbar.squadpick .lb-opts { gap: 6px; }
+/* v0.0.454 (Lucas, playtest 6, D3): a stat's symbol on the NPC sheet, 14 px, in the word's color, before the word; nothing moves */
+.twod12 .stat-sym { width: 14px; height: 14px; flex: none; display: inline-block; vertical-align: -2px; margin-right: 3px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.twod12 .stat-sym .f { fill: currentColor; stroke: none; }
+/* v0.0.454 (Lucas, playtest 6, D4): a struck Use button can still be clicked (the roll dialog warns): faded, struck, the hand pointer */
+.twod12.acard.d2 .ap-vbtn.no { pointer-events: auto; cursor: pointer; opacity: .6; text-decoration: line-through; }
+.twod12.acard.d2 .ap-vbtn.no:hover { opacity: 1; }
+/* v0.0.454 (Lucas, playtest 6, D4): an Art's card opened by a click: its top line (the name, its kind and Frequency, "Choose a Mode") */
+.twod12-artcard .ac-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 0 10px; padding: 7px 30px 6px 10px; background: var(--s-pg, #1f1c18); color: var(--s-ink, #ece3cf); border-bottom: 1px solid var(--s-rule, #7a683f); font: 400 13px/1.3 "Source Sans 3", sans-serif; }
+.twod12-artcard .ac-top .ac-name { font: 600 18px/1.2 "Source Serif 4", serif; }
+.twod12-artcard .ac-top .ac-kind { color: var(--s-mute, #b3a68e); white-space: nowrap; }
+.twod12-artcard .ac-top .ac-ask { grid-column: 1 / -1; font-weight: 600; color: var(--s-gold, #d2a75a); }
+/* v0.0.454 (Lucas, playtest 6, D2 "B"): the damage breakdown under a target's row, a ledger (one step a line, the numbers in a column), opened by
+   the equals button; Full / Half / Double in a small menu on a right-click of Apply or Undo */
+.twod12.chat.cc .cc-adjrow.ondemand .cc-ledger { flex: 1 1 100%; box-sizing: border-box; margin: 2px 0 0; padding: 5px 7px; background: var(--cc-panel); border-left: 2px solid var(--s-rule, #7a683f); font-size: 12.5px; line-height: 1.4; color: var(--cc-ink); font-variant-numeric: tabular-nums; }
+.twod12.chat.cc .cc-ledger .cc-lg { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; padding: 1px 0 3px; }
+.twod12.chat.cc .cc-ledger .cc-lg + .cc-lg { border-top: 1px solid color-mix(in srgb, var(--cc-ink) 18%, transparent); padding-top: 3px; }
+.twod12.chat.cc .cc-ledger .cc-lgh { grid-column: 1 / -1; font-weight: 700; }
+.twod12.chat.cc .cc-ledger .cc-lgl { display: contents; }
+.twod12.chat.cc .cc-ledger .cc-lgl > span { padding-left: 16px; color: var(--cc-mute); }
+.twod12.chat.cc .cc-ledger .cc-lgl > b { text-align: right; font-weight: 400; }
+.twod12.chat.cc .cc-ledger .cc-lgt > span { color: var(--cc-ink); font-weight: 700; }
+.twod12.chat.cc .cc-ledger .cc-lgt > b { font-weight: 700; font-size: 14px; border-top: 1px solid var(--cc-ink); }
+.twod12.chat.cc .cc-ledger .cc-lgf { margin-top: 3px; padding-top: 3px; border-top: 1px solid color-mix(in srgb, var(--cc-ink) 18%, transparent); font-size: 11.5px; color: var(--cc-mute); }
+.twod12.chat.cc .cc-trow { position: relative; }
+.cc-ctxmenu { position: absolute; z-index: 20; display: flex; flex-direction: column; min-width: 150px; padding: 3px 0; background: var(--s-pg, #1f1c18); border: 1px solid var(--s-rule, #7a683f); box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
+.cc-ctxmenu button { all: unset; box-sizing: border-box; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 3px 10px; font: 600 13px/1.4 "Source Sans 3", sans-serif; color: var(--s-ink, #ece3cf); cursor: pointer; }
+.cc-ctxmenu button small { font-weight: 400; font-size: 11.5px; color: var(--s-mute, #b3a68e); }
+.cc-ctxmenu button:hover, .cc-ctxmenu button:focus-visible { background: color-mix(in srgb, var(--s-ink, #ece3cf) 10%, transparent); }
+.twod12.chat.cc .cc-adjrow.ondemand.open { display: block; }
+.twod12.chat.cc .cc-trow .cc-btn.cc-rbtn.hinted { box-shadow: 0 0 0 2px var(--s-stamp, #e8c25a); }
+/* v0.0.454 (Lucas, playtest 6, D1 "B for both windows, A for the chat message"): the Rally and Heal window in the table look (400 px): the count, one
+   sentence and its parts, the Rally Points' marks, the pools as the HUD's bars (the healed part hatched), the split behind its link, Cancel and Use */
+.application.twod12-healwin .window-content { padding: 0; background: var(--s-pg, #1f1c18); color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2 { font: 400 13.5px/1.35 "Source Sans 3", sans-serif; color: var(--s-ink, #ece3cf); font-variant-numeric: tabular-nums; }
+.twod12-healwin .hw2 .k { color: var(--s-mute, #b3a68e); font-weight: 600; font-size: 12.5px; }
+.twod12-healwin .hw2 .q { color: var(--s-mute, #b3a68e); font-size: 12.5px; }
+.twod12-healwin .hw2-count { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--s-hair, #4a4132); }
+.twod12-healwin .hw2-seg { display: inline-flex; }
+.twod12-healwin .hw2-seg button { all: unset; box-sizing: border-box; min-width: 28px; height: 24px; padding: 0 8px; text-align: center; border: 1px solid var(--s-rule, #7a683f); margin-left: -1px; font-weight: 600; cursor: pointer; color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-seg button.on { background: var(--s-ink, #ece3cf); color: var(--s-pg, #1f1c18); border-color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 10px 12px 8px; }
+.twod12-healwin .hw2-who { font-size: 17px; line-height: 1.25; } .twod12-healwin .hw2-who b.n { font-size: 20px; }
+.twod12-healwin .hw2-sum { display: block; font-size: 12.5px; color: var(--s-mute, #b3a68e); margin-top: 1px; }
+.twod12-healwin .hw2-rp { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 12.5px; white-space: nowrap; color: var(--s-mute, #b3a68e); }
+.twod12-healwin .hw2-rp b { color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-pips { display: inline-flex; gap: 3px; margin: 2px 0 1px; }
+.twod12-healwin .hw2-pips i { width: 9px; height: 9px; border-radius: 50%; box-sizing: border-box; border: 1.5px solid var(--s-faint, #8a7f6c); }
+.twod12-healwin .hw2-pips i.on { background: var(--s-good, #7fd49a); border-color: var(--s-good, #7fd49a); }
+.twod12-healwin .hw2-pips i.go { border-color: var(--s-gold, #d2a75a); border-style: dashed; }
+.twod12-healwin .hw2-rows { padding: 2px 12px 8px; }
+.twod12-healwin .hw2-bar { display: grid; grid-template-columns: 62px minmax(0, 1fr) 104px; align-items: center; gap: 0 8px; min-height: 30px; border-top: 1px solid var(--s-hair, #4a4132); }
+.twod12-healwin .hw2-bar .nm, .twod12-healwin .hw2-row .nm { font-weight: 700; }
+.twod12-healwin .v .nm, .twod12-healwin .nm.v { color: var(--s-vig, #ef8a96); } .twod12-healwin .r .nm, .twod12-healwin .nm.r { color: var(--s-res, #aec4f0); }
+.twod12-healwin .hw2-bar .tr { position: relative; display: flex; height: 10px; background: color-mix(in srgb, var(--s-ink, #ece3cf) 12%, transparent); }
+.twod12-healwin .hw2-bar .tr i { display: block; height: 100%; }
+.twod12-healwin .hw2-bar.v .tr .l { background: var(--s-vig, #ef8a96); } .twod12-healwin .hw2-bar.r .tr .l { background: var(--s-res, #aec4f0); }
+.twod12-healwin .hw2-bar .tr .h { box-sizing: border-box; border: 1px solid var(--s-good, #7fd49a); background: repeating-linear-gradient(135deg, var(--s-good, #7fd49a) 0 2px, transparent 2px 5px); }
+.twod12-healwin .hw2-bar .nn { text-align: right; color: var(--s-mute, #b3a68e); font-size: 13px; } .twod12-healwin .hw2-bar .nn b { color: var(--s-good, #7fd49a); font-size: 15px; }
+.twod12-healwin .hw2-link { display: flex; align-items: baseline; justify-content: space-between; border-top: 1px solid var(--s-hair, #4a4132); padding-top: 6px; font-size: 12.5px; color: var(--s-mute, #b3a68e); }
+.twod12-healwin .hw2-lk { all: unset; color: var(--s-gold, #d2a75a); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.twod12-healwin .hw2-split { border-top: 1px solid var(--s-hair, #4a4132); margin-top: 2px; }
+.twod12-healwin .hw2-row { display: grid; grid-template-columns: minmax(0, 1fr) 26px 18px 26px 46px 92px; align-items: center; gap: 0 4px; min-height: 32px; border-top: 1px solid var(--s-hair, #4a4132); }
+.twod12-healwin .hw2-split .hw2-row:first-child { border-top: 0; }
+.twod12-healwin .hw2-row .was { text-align: right; color: var(--s-mute, #b3a68e); } .twod12-healwin .hw2-row .ar { text-align: center; color: var(--s-faint, #8a7f6c); }
+.twod12-healwin .hw2-row > b { text-align: right; font-size: 16px; } .twod12-healwin .hw2-row > b.chg { color: var(--s-good, #7fd49a); }
+.twod12-healwin .hw2-row .of { color: var(--s-faint, #8a7f6c); font-size: 12.5px; padding-left: 3px; }
+.twod12-healwin .hw2-st { display: inline-flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.twod12-healwin .hw2-st button { all: unset; box-sizing: border-box; width: 22px; height: 22px; text-align: center; line-height: 20px; border: 1px solid var(--s-rule, #7a683f); cursor: pointer; color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-st button:disabled { opacity: .35; cursor: default; } .twod12-healwin .hw2-st b { min-width: 16px; text-align: center; }
+.twod12-healwin .hw2-none { padding: 8px 0; color: var(--s-mute, #b3a68e); border-top: 1px solid var(--s-hair, #4a4132); }
+.twod12-healwin .hw2-foot { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--s-hair, #4a4132); background: var(--s-pg-2, #262219); }
+.twod12-healwin .hw2-foot .m { flex: 1; min-width: 0; font-size: 12.5px; color: var(--s-mute, #b3a68e); }
+.twod12-healwin .hw2-b { all: unset; box-sizing: border-box; height: 28px; padding: 0 12px; border: 1px solid var(--s-rule, #7a683f); font-weight: 600; cursor: pointer; color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-b.go { background: var(--s-ink, #ece3cf); color: var(--s-pg, #1f1c18); border-color: var(--s-ink, #ece3cf); }
+/* the heal message (D1): one line a fact under the bold first one */
+.twod12.healmsg .hl-l { display: block; } .twod12.healmsg .hl-l.q { color: var(--s-mute, #b3a68e); font-size: .92em; }

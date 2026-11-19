@@ -12,6 +12,8 @@ real there are two options, A and B, with the one recommended and why.
 - Creatures: Durgan (D1, D2, D5's HUD), Aveline and Sylwen (D4), the Goblin Sneak (D2, D5), the Orc Warrior and the Ogre Chieftain (D2, D3).
   Kaela is in `actors.json` but no part needed her.
 
+**Lucas's answers (2026-11-19) and the build (v0.0.454):** D1 window B for both windows, the message A written in lines; D2 B; D3 all proposed but no symbols on the Attributes, AD the shield with a dot, WD the talisman; D4 A, a Use button short of AP stays in place struck and faded (no "no AP left"); D5 A. `built.html` (`built.mjs`) draws D1 and D2 as built. **`index.html` no longer runs:** its "today" pictures used `healwin.mjs healModel`, removed in v0.0.454; its screenshots stay as the record.
+
 ## What each part proposes
 
 **D1. The Rally window and its chat message.**

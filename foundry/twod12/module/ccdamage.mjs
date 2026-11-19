@@ -68,7 +68,11 @@ export function creatureDamageLines(a) {
 
 /** The preview of one row (what changes the damage for that creature) and its choice, from the creature as it is now. */
 export function rowPreview(comps, actor) {
-  const dm = modsOf(actor), mods = CC.dmgModsFor(comps, dm), a = CC.afterResist(comps, dm), g = Math.min(guardOf(actor), a.B + a.M);
+  const dm = modsOf(actor), mods = CC.dmgModsFor(comps, dm), a = CC.afterResist(comps, dm);
+  // v0.0.454 (Lucas, playtest 6, D2: "2 Pi − 3 Guard = 0" read as Guard): a waiting reduction (Shield of Faith) is its own step, named, before the Guard
+  const redAll = Math.max(0, Number(actor?.system?.reduceNext) || 0), red = Math.min(redAll, a.B + a.M);   // spent whole: its full value is shown
+  if (redAll > 0) mods.push({ v: -redAll, label: String(actor?.system?.reduceFrom || "") || "Reduction", kind: "reduce" });
+  const g = Math.min((Number(actor?.system?.guard) || 0) + (Number(actor?.system?.apGuard) || 0), a.B + a.M - red);
   if (g > 0) mods.push({ v: -g, label: "Guard", kind: "guard" });
   return { mods, choice: CC.choiceOf(comps, dm, guardOf(actor)) };
 }

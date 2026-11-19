@@ -34,7 +34,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "unarmored"), ward: int(0, 0),
       guard: int(0, 0),   // v0.0.181: Guard N (book, Chapter 4): takes damage before the Health, the higher value kept, 0 at the end of the encounter (guard.mjs)
       dmgMods: str(""),   // v0.0.283 (pack chat-cards): "Resist 5 Fire, Weak 2 Holy, Immune Cold" (book, Chapter 1), read by the damage message
-      reduceNext: int(0, 0),   // v0.0.254 (cards 4, Shield of Faith): the next damage this creature takes is reduced by this much, then it is 0
+      reduceNext: int(0, 0), reduceFrom: new StringField({ initial: "", blank: true }),   // v0.0.454 (D2): what gave the reduction (Shield of Faith), for the breakdown
+        // v0.0.254 (cards 4, Shield of Faith): the next damage this creature takes is reduced by this much, then it is 0
       apGuard: int(0, 0),   // v0.0.243 (pack R): the Guard of the AP kept at the end of the turn (2 / 3 / 4 each by Stage): taken first, 0 when the AP are regained
       escalation: int(1, 0),   // v0.0.243 (pack R): a level, never spent (1 to 6 since v0.0.407): 1 + the party's Momentum at the start of an encounter, +1 a round, +1 on a Critical and on the class hook once an encounter (escalation.mjs)
       // v0.0.243 (pack R; book, Health Pool): the class's high Health value goes to Vigor or to Resolve (the player's choice, Vigor by default); a species that lets

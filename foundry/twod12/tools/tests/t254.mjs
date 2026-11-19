@@ -79,13 +79,13 @@ console.log("the granted uses under the hands:", g6.indexOf('class="hb-sb"') < g
 console.log("--- v0.0.397 (Lucas: \"Go, build it\")");
 const P7 = await import(ROOTURL + "module/pickbar.mjs"), rd7 = src("module/rolldlg.mjs"), ac7 = src("module/actions.mjs"), rw7 = src("module/rollwindow.mjs"), th7 = src("styles/theme.css");
 console.log("the roll dialog's card part:", rd7.includes("function cardHtml(inp, st, v)") && rd7.includes('<div class="rd-body rd-cardbody">${cardHtml(inp, st, v)}'), "| the ladder one line:", rd7.includes('<div class="rd-ladder one'),
-  "| a square with its picture:", P7.pickBarHtml({ options: [{ id: "0", label: "Ogre", img: "o.png" }] }).includes('class="lb-opt sq" data-id="0" aria-label="Ogre"><img src="o.png"'));
+  "| a square with its picture:", P7.pickBarHtml({ options: [{ id: "0", label: "Ogre", img: "o.png" }] }).includes('class="lb-opt sq" data-id="0" aria-label="Ogre" data-tooltip="Ogre"><img src="o.png"'));
 console.log("the question in the HUD's side panel:", hud.includes('root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask")') && th7.includes(".twod12-hud .hb-ask .twod12-linebar.in-side"),
   "| the area after the dialog:", ac7.includes("const deferArea = ") && rw7.includes("return this._finish({ restart: true, place: true, rollAfter: true, state: this.st });") && ac7.includes("rollAfterPlace: !!rdData.rollAfter"),
   "| Momentum: the party's number (v0.0.407, it isn't used up):", src("module/carousel.mjs").includes("mom = momentumNow();"));
 console.log("--- v0.0.398 (Lucas, on the multi-target mockup and v0.0.397)");
 const cc8 = src("module/chatcards.mjs"), rd8 = src("module/rolldlg.mjs"), th8 = src("styles/theme.css");
-console.log("a group a Tier, each creature once:", cc8.includes('<div class="cc-card cc-attack many v398">') && cc8.includes('data-twod12="ccApplyAll" data-group="${gi}"'), "| the Guard in the on-demand row:", cc8.includes('}${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${nlTag}</div>` : "";'),
+console.log("a group a Tier, each creature once:", cc8.includes('<div class="cc-card cc-attack many v398">') && cc8.includes('data-twod12="ccApplyAll" data-group="${gi}"'), "| the Guard in the on-demand ledger (v0.0.454):", cc8.includes('ledgerHtml(ledgerModel(') && cc8.includes('x.kind === "reduce" || x.kind === "guard"'),
   "| a Tier's Apply all:", src("module/ccdamage.mjs").includes("CC.applyAllRows(s.rows).filter(inGroup)"));
 console.log("the creature on one line with Target:", rd8.includes('<div class="rd-cbox one"><div class="rd-c1">') && rd8.includes("${targetBtn(inp)}</div>"), "| the dialog not live:", src("module/actions.mjs").includes("live: false,") && src("module/rollwindow.mjs").includes('else if (a === "targetmode") return this._finish({ restart: true, state: this.st });'),
   "| the hotbar at the bottom with the party strip:", th8.includes(".twod12-hud.is-strip.with-hot .hud-hot { position: static !important;"));

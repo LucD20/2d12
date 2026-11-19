@@ -379,6 +379,23 @@ const NAMES_ITEM = new Set(["Effect", "Use"]);
 Hooks.once("ready", async () => {
   // v0.0.418 (playtest 5, C12): a right-click on a chip opens its rule (a movement, Heal, Guard...) or the item it names
   // v0.0.421 (the audit): caught on the way down and stopped, so Foundry's own chat-message menu (or a sheet row's) doesn't open over the rule
+  // v0.0.454 (Lucas, playtest 6, D2: "Rightclick on apply"): a right-click on a damage row's Apply (or Undo, once applied) opens a small menu,
+  // Apply full / half / double, inside the card so its buttons go through the click handler below (ccApply / ccAdjust with their factor)
+  document.addEventListener("contextmenu", ev => {
+    const b = ev.target.closest?.("[data-ctx][data-row]");
+    if (!b || !b.closest(".cc-card")) return;
+    ev.preventDefault(); ev.stopPropagation();
+    document.querySelectorAll(".cc-ctxmenu").forEach(x => x.remove());
+    const kind = b.dataset.ctx === "adjust" ? "ccAdjust" : "ccApply", row = b.dataset.row;
+    const menu = document.createElement("div");
+    menu.className = "cc-ctxmenu"; menu.setAttribute("role", "menu");
+    menu.innerHTML = [["1", "Apply full"], ["0.5", "Apply half", "rounded up"], ["2", "Apply double"]].map(([f, l, note]) => `<button type="button" role="menuitem" data-twod12="${kind}" data-row="${row}" data-factor="${f}">${l}${note ? ` <small>${note}</small>` : ""}</button>`).join("");
+    const host = b.closest(".cc-trow") ?? b.parentElement;
+    host.append(menu);
+    const r = b.getBoundingClientRect(), h = host.getBoundingClientRect();
+    menu.style.top = `${Math.round(r.bottom - h.top + 2)}px`; menu.style.right = `${Math.max(0, Math.round(h.right - r.right))}px`;
+    setTimeout(() => document.addEventListener("pointerdown", function away(e) { if (!menu.contains(e.target)) { menu.remove(); document.removeEventListener("pointerdown", away, true); } }, true), 0);
+  }, true);
   document.addEventListener("contextmenu", async ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");
     if (!inl || ["Book", "Pause"].includes(inl.dataset.twod12Inline)) return;

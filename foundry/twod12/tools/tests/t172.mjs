@@ -38,7 +38,7 @@ console.log("an Action-only Talent shows its Action:", pv.includes("export const
 console.log("a choice picked in the class window:", cw.includes("_choiceBlock(") && gr.includes("grantChoices(actor, parent, copy, preset = null)"));
 console.log("Armor Training on the Loadout:", sheet.includes('class="lo-train"'));
 console.log("new tokens: bars always, no rotation:", tw.includes('"prototypeToken.displayBars": bars') && tw.includes('"prototypeToken.lockRotation": true'), "| core rotation off once:", tw.includes("tokenDefaultsV215"));
-console.log("Rally card:", rally.includes('sysCard({ title: "Rally"'));
+console.log("Rally line (v0.0.454: sysLine, the heart):", rally.includes('sysLine("fa-heart-pulse", healLinesHtml('));
 console.log("shortcuts Shift+L and Shift+H:", tw.includes('"lineOfEffect", {') && tw.includes('"coverHeight", {') && loe.includes("export function loeShortcut") && loe.includes("export function heightShortcut"));
 console.log("the diamond: no hover since v0.0.420 (Lucas: the hover cards removed); what is by hand stays on the item (automationNote):", !cf.includes("By hand: ${String(note).trim()}") && data.includes("automationNote: str()"), "| notes:", (content.match(/^  "[^"]+": "/gm) ?? []).length >= 10);
 console.log("Rally the Tribe:", (await import(ROOTURL + "tools/content.mjs")).actors.find(a => a.name === "Ogre Chieftain").items.some(i => i.name === "Rally the Tribe" && i.system.versions[0].effects.includes("gain 1 Support Boon on their next [Weapon] Action.")));

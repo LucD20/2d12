@@ -484,10 +484,10 @@ export async function useAction(actor, item, opts = {}) {
     if (modes.length) {
       let mode = modes.includes(opts.mode) ? opts.mode : null;
       if (!mode) {
-        const { pickOne } = await import("./pickwindow.mjs");
-        const tip = m => { const v = item.system.versions.find(x => x.mode === m); return String(v?.effects || v?.x2 || "").replace(/@\w+\[[^\]]*\]\{([^}]*)\}/g, "$1").replace(/@\w+\[([^\]|]*)[^\]]*\]/g, "$1").replace(/<[^>]+>/g, ""); };
-        mode = await pickOne({ title: item.name, name: item.name, sub: "choose a Mode", icon: "fa-shapes", text: "Each time you use an Art, you choose one of its Modes.", options: modes.map(m => ({ k: m, l: m, tip: tip(m) })) });
-        if (!mode) return;
+        // v0.0.454 (Lucas, playtest 6, D4): the Art's card opens by what was clicked (artcard.mjs); a Mode's Use button uses it (was a pick window)
+        const { openArtCard } = await import("./artcard.mjs");
+        await openArtCard(actor, item, m => { if (modes.includes(m)) useAction(actor, item, { ...opts, mode: m }); });
+        return;
       }
       return useAction(actor, modeView(item, mode), { ...opts, splitMode: mode });
     }

@@ -11,6 +11,7 @@ registerInline();
 const AC = await import("../../twod12/module/actioncard.mjs");
 const SM = await import("../../twod12/module/sheetmodel.mjs");
 const CFG = await import("../../twod12/module/config.mjs");
+const SS = await import("../../twod12/module/statsyms.mjs");   // v0.0.454 (D3)
 const DL = await import("../../twod12/module/dmglines.mjs"), CD = await import("../../twod12/module/ccdamage.mjs");
 const { ICONS } = await import("../npc-hud-icons.mjs");
 const icons = html => html.replace(/<i class="fa-(?:solid|regular) fa-([a-z0-9-]+)([^"]*)"([^>]*)><\/i>/g, (m, n, rest, attrs) => (ICONS[n] ? `<i class="fa-x ${rest.trim()}" data-ic="${n}"${attrs}><svg class="ic" viewBox="${ICONS[n][0]}" aria-hidden="true"><path d="${ICONS[n][1]}"/></svg></i>` : m));
@@ -44,7 +45,7 @@ function built(a, pc, st) {
   for (const sec of pc.sections) if (["reaction", "granted", "apex"].includes(sec.key)) sec.rows.forEach(r => { r.showFq = true; });
   pc.head.senseWords = pc.strip.senses.map(x => x.label).join(", ");
   pc.head.round = `Round ${st.round ?? 1}`;
-  pc.dmgHtml = DL.damageBlockHtml(DL.damageBlockModel(pc.rwLines ?? [], { gm: true }), { line: true });
+  pc.dmgHtml = DL.damageBlockHtml(DL.damageBlockModel(pc.rwLines ?? [], { gm: true }), { line: true, syms: pc.npc ? { Immune: SS.statSym("immune"), Resist: SS.statSym("resist"), Weak: SS.statSym("weak") } : null });   // v0.0.454 (D3)
   return pc;
 }
 const win = (title, w, h, inner) => `<div class="mk-win" style="width:${w}px;height:${h}px"><div class="application sheet twod12 twod12-actor themed theme-${theme}" style="width:${w}px;height:${h}px"><header class="window-header"><span class="window-title">${esc(title)}</span><span class="mk-x">&times;</span></header><section class="window-content">${inner}</section></div></div>`;

@@ -62,7 +62,7 @@
   <div class="ps2-stats np">
     {{#with pc.health}}
     <div class="ps2-l split"><span><span class="k">Health</span> <b class="big">{{pool}}</b> <span class="ps2-q">&middot;</span> {{#if down.down}}<b class="big">{{damage}}</b> / {{pool}} damage{{else}}<b class="big">{{toDown}}</b> to Down{{/if}}
-      <a class="ps2-guard np-guardbtn{{#unless @root.pc.strip.guard.total}} zero{{/unless}}" role="button" aria-label="Guard: click +1, right-click −1"><span class="k">Guard</span> <b>{{@root.pc.strip.guard.total}}</b></a></span>
+      <a class="ps2-guard np-guardbtn{{#unless @root.pc.strip.guard.total}} zero{{/unless}}" role="button" aria-label="Guard: click +1, right-click −1"><span class="k">{{{@root.pc.guardSym}}}Guard</span> <b>{{@root.pc.strip.guard.total}}</b></a></span>
       {{#unless ../pc.npc}}<span class="ps2-q">Dominant Damage: <b class="dom-{{dominant}}">{{dominant}}</b>{{#if down.down}} &rarr; {{down.title}}{{/if}}</span>{{/unless}}</div>
     {{#if down.down}}
     <div class="ps-downbox">
@@ -79,7 +79,7 @@
     {{/if}}
     <div class="ps2-l two">{{#each bars}}<span class="ps2-gauge np-gauge {{#if (eq pool "body")}}v{{else}}r{{/if}}" data-pool="{{pool}}"><span class="k">{{name}}</span> <a class="hpnum" data-action="hpEdit" data-pool="{{pool}}" role="button"><b>{{value}}</b> / {{max}}</a>{{#if tag}} <span class="ps2-tag">{{tag}}</span>{{/if}}<span class="ps2-track" data-tooltip="{{tip}}"><i class="l" style="width:{{seg.lethal}}%"></i><i class="n" style="width:{{seg.nonlethal}}%"></i></span></span>{{/each}}</div>
     {{/with}}
-    <div class="ps2-l grid">{{#each pc.defs.main}}<span><span class="k">{{label}}</span> <b class="big {{cls}}">{{value}}</b></span>{{/each}}{{#each pc.move}}<span><span class="k">{{label}}</span> <b class="big {{cls}}">{{value}}</b></span>{{/each}}</div>
+    <div class="ps2-l grid">{{#each pc.defs.main}}<span><span class="k">{{{sym}}}{{label}}</span> <b class="big {{cls}}">{{value}}</b></span>{{/each}}{{#each pc.move}}<span><span class="k">{{{sym}}}{{label}}</span> <b class="big {{cls}}">{{value}}</b></span>{{/each}}</div>
     {{{pc.dmgHtml}}}
     {{#unless pc.npc}}<div class="ps2-l split"><span><span class="k">Rally</span> <span class="ps2-rpips">{{#each pc.rally.pips}}<i class="{{#if this}}on{{/if}}" data-action="setRally" data-n="{{@index}}" role="button" aria-label="Rally Point {{@index}}"></i>{{/each}}</span> <b>{{pc.rally.left}}</b> / {{pc.rally.max}} <span class="ps2-q">&middot; each heals {{pc.rally.heal}}</span></span>
       <span><span class="k">Wounds</span>{{#each pc.wounds}} {{check}} <input class="ps2-in" type="number" min="0" name="system.{{key}}Wounds" value="{{count}}" aria-label="{{label}}">{{/each}}</span></div>{{/unless}}

@@ -544,6 +544,38 @@ export function instancesOf(comps) {
   }
   return list;
 }
+/**
+ * v0.0.454 (Lucas, playtest 6, D2 "B": the breakdown as a ledger, one step a line): for one target, each pool's damage by type (its dice and
+ * Modifiers), then what the creature's Immune / Resist / Weak do to it, a reduction named by its source (Shield of Faith), Guard, and what the pool
+ * takes. Pure. mods: the row's (dmgModsFor's and rowPreview's: kind immune / resist / weak / reduce / guard); factor: Full 1, Half 0.5, Double 2;
+ * took: once applied, what each pool took ({ B, M }), which the "Takes" line shows.
+ */
+export function ledgerModel(comps, mods = [], { factor = 1, took = null } = {}) {
+  const insts = instancesOf(comps).map(x => ({ ...x, total: factor === 1 ? x.total : Math.ceil(x.total * factor) }));
+  const pools = { B: { lines: [], v: 0 }, M: { lines: [], v: 0 } }, bySub = {};
+  const sg = n => (n < 0 ? `\u2212${Math.abs(n)}` : `${n}`);
+  for (const x of insts) {
+    const p = x.pool === "M" ? "M" : "B", dice = x.dice.flatMap(d => d.results ?? []);
+    const bits = [dice.length ? `${String(x.formula ?? "").replace(/\s.*$/, "")}${x.formula ? ": " : ""}${dice.join(", ")}` : "", ...(dice.length ? x.mods.filter(m => m.label) : []).map(m => `${m.label} ${m.v < 0 ? "\u2212" : "+"}${Math.abs(m.v)}`)].filter(Boolean);   // a flat amount alone: just its type
+    pools[p].lines.push({ label: `${x.sub ? subName(x.sub) : "Damage"}${bits.length ? ` (${bits.join(", ")})` : ""}`, v: `${x.total}` });
+    pools[p].v += x.total; (bySub[x.sub] ??= { B: 0, M: 0 })[p] += x.total;
+  }
+  for (const m of mods ?? []) {
+    const t = bySub[m.sub] ?? { B: 0, M: 0 };
+    if (m.kind === "immune") { for (const p of ["B", "M"]) if (t[p]) { pools[p].lines.push({ label: m.label, v: sg(-t[p]) }); pools[p].v -= t[p]; t[p] = 0; } }
+    else if (m.kind === "resist") { let r = Math.abs(Number(m.v) || 0); const first = t.M > t.B ? "M" : "B"; for (const p of [first, first === "B" ? "M" : "B"]) { const n = Math.min(r, t[p]); if (n) { pools[p].lines.push({ label: m.label, v: sg(-n) }); pools[p].v -= n; t[p] -= n; r -= n; } } }
+    else if (m.kind === "weak") { const p = t.M > t.B ? "M" : "B", w = Number(m.v) || 0; pools[p].lines.push({ label: m.label, v: sg(w) }); pools[p].v += w; }
+  }
+  for (const m of (mods ?? []).filter(x => x.kind === "reduce" || x.kind === "guard")) {
+    let g = Math.abs(Number(m.v) || 0);
+    // a reduction is spent whole by this damage: its full value is written once (Lucas: "2 Pi − 3 Shield of Faith = 0"); Guard writes what it takes
+    if (m.kind === "reduce") { const p = ["B", "M"].find(k => pools[k].v > 0) ?? (pools.B.lines.length ? "B" : "M"); pools[p].lines.push({ label: m.label, v: sg(-g) }); for (const k of [p, p === "B" ? "M" : "B"]) { const n = Math.min(g, Math.max(0, pools[k].v)); pools[k].v -= n; g -= n; } continue; }
+    for (const p of ["B", "M"]) { const n = Math.min(g, Math.max(0, pools[p].v)); if (n) { pools[p].lines.push({ label: m.label, v: sg(-n) }); pools[p].v -= n; g -= n; } }
+  }
+  return ["B", "M"].filter(p => pools[p].lines.length).map(p => ({ pool: p, name: POOL[p], lines: pools[p].lines, takes: took ? (Number(took[p]) || 0) : Math.max(0, pools[p].v) }));
+}
+/** The ledger's HTML (pure): a block a pool, its steps, "Takes N" under a rule; foot: "Lethal · Full" or what was applied. */
+export const ledgerHtml = (blocks, foot = "") => `<div class="cc-ledger">${blocks.map(b => `<div class="cc-lg"><div class="cc-lgh">${poolIc(b.pool)} ${esc(b.name)}</div>${b.lines.map(l => `<div class="cc-lgl"><span>${esc(l.label)}</span><b>${esc(l.v)}</b></div>`).join("")}<div class="cc-lgl cc-lgt"><span>Takes</span><b>${b.takes}</b></div></div>`).join("") || '<div class="cc-lgl"><span>No damage.</span></div>'}${foot ? `<div class="cc-lgf">${foot}</div>` : ""}</div>`;
 /** The pool lines: "♥ Vigor · 6 Sl + 4 Fi" → 10 (the same subtype from several sources is one number). */
 export function poolBlock(comps) {
   // v0.0.345 (Lucas, playtest 4: "the +[Mod] before Pi, both are the same subtype"): each subtype lists its parts, then its code once ("7 + 2 Pi")
@@ -593,17 +625,18 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
     if (!r) return "";
     if (ht) return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span><span class="cc-rmods">${r.applied ? stateChip(r.applied.state) : ""}</span><span class="cc-muted">${r.applied ? "✓ Applied" : "Waiting for the GM"}</span></div>`;
     if (r.applied) {
-      const f = r.applied.factor ?? 1, adj = ["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${String(f) === k ? " on" : ""}" data-twod12="ccAdjust" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("");
-      // v0.0.285 (Lucas): the applied row as compact as a pending one: "Took …" under the name, Full / Half / Double on demand
-      // v0.0.321 (Lucas): Undo in Apply's place (the far right, the same width); the Lethal tag in the on-demand row
-      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}${nlTag}</div>` : ""}</div>`;
+      // v0.0.454 (Lucas, playtest 6, D2 "B"): the equals button opens the ledger of what happened; Full / Half / Double are a right-click on Undo
+      const f = r.applied.factor ?? 1, fw = { 1: "in full", 0.5: "halved", 2: "doubled" }[f] ?? "in full";
+      const led = ledgerHtml(ledgerModel((groups.find(g => (g.rows ?? []).includes(i)) ?? top).comps, r.applied.mods ?? [], { factor: f, took: r.applied.took ?? {} }), `Applied ${fw} \u00b7 ${m.nl ? "Nonlethal" : "Lethal"}`);
+      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}" data-ctx="adjust">✓ Undo</button><div class="cc-adjrow ondemand">${led}</div>` : ""}</div>`;
     }
     // v0.0.321 (Lucas): Resist / Weak / Immune show only once applied (an icon after "Took"); the Guard stays
     // v0.0.398 (Lucas: "remove the '− Guard' from all damages, this should only show in the damage breakdown when you click to see it"): in the
     // on-demand panel (the sliders button) beside Full / Half / Double
-    const mods = (r.mods ?? []).filter(x => x.kind === "guard").map(x => modTxt(x.v, x.label)).join(" ");
-    const adj = view.author ? `<div class="cc-adjrow ondemand">${["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${k === "1" ? " on" : ""}" data-twod12="ccApply" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("")}${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${nlTag}</div>` : "";
-    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1">Apply</button>` : ""}${adj}</div>`;
+    // v0.0.454 (Lucas, playtest 6, D2 "B"): the equals button opens the ledger (what will happen: by type, Immune / Resist / Weak, a reduction named
+    // by its source, Guard, what each pool takes); Full / Half / Double are a right-click on Apply (twod12.mjs ccMenu)
+    const led = view.author ? ledgerHtml(ledgerModel((groups.find(g => (g.rows ?? []).includes(i)) ?? top).comps, r.mods ?? []), `${m.nl ? "Nonlethal" : "Lethal"} \u00b7 Full`) : "";
+    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1" data-ctx="apply">Apply</button><div class="cc-adjrow ondemand">${led}</div>` : ""}</div>`;
   };
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {

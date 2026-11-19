@@ -4,6 +4,22 @@
    "name": "Characters and sheets",
    "items": [
     {
+     "id": "rally-window",
+     "v": "v0.0.454",
+     "title": "The Rally window and its line",
+     "do": "Give Durgan 9 Vigor, 2 Vigor Nonlethal and 6 Resolve damage; click his Rally (sheet or HUD); click \"Change the split\", move a point with − and +, Use. Then use Lay On Hands' \"up to N\" Rally Points on Aveline (an Action that lets her use several), pick 2 on the window's first line, Use; once more and Cancel.",
+     "expect": "A 400 px window in the dark table look: \"Durgan heals 9\" (with parts under it when there are bonuses), his Rally Points as marks with \"N of 7 left\", Vigor and Resolve as bars (the healed part hatched, \"12 → 18 / 23\"), \"Split evenly between the two.\" and \"Change the split\", which shows the rows with − and +. Nothing in the chat while the window is open or after Cancel. After Use, one line with the heart: \"Durgan heals 9 · 1 Rally Point, 6 left\", then \"9 Vigor …\", then the parts when there are several. With \"up to N\", the count is the window's first line (no separate \"How many?\" window).",
+     "rev": 1
+    },
+    {
+     "id": "npc-symbols",
+     "v": "v0.0.454",
+     "title": "The NPC sheet's symbols",
+     "do": "Open the Orc Warrior's and the Ogre Chieftain's sheets in the dark and the light interface; give the Orc a Resist and a Weak (its Builder).",
+     "expect": "A small line drawing in the word's color before AD (a shield with a dot), WD (a talisman), Speed (a boot), Reach (a spear), Size, Steady (an anchor), Guard (a buckler), Immune (a barred ring), Resist (a half-filled shield), Weak (a cracked shield); none on the Attribute tiles; nothing moves, the sheet keeps its height. A PC's sheet has none.",
+     "rev": 1
+    },
+    {
      "id": "g3-res",
      "v": "v0.0.452",
      "title": "The dark Resolve color",
@@ -16,6 +32,14 @@
   {
    "name": "The HUD",
    "items": [
+    {
+     "id": "art-card",
+     "v": "v0.0.454",
+     "title": "A click on an Art opens its card",
+     "do": "Aveline clicks Commandment's cost on her sheet, then on her HUD; then use Sylwen's Spotter with no AP left.",
+     "expect": "No \"choose a Mode\" window: the Art's card opens beside what was clicked, with a top line (\"Commandment\", \"Paladin Art · Once per round\", \"Choose a Mode\") and each Mode's \"Use · 1 AP\"; a click on one uses that Mode; Escape, the × or a click elsewhere closes it. With no AP left each Use button stays in place, struck and faded, with no reason written beside it; a click still opens the roll dialog, which warns.",
+     "rev": 1
+    },
     {
      "id": "hud-used",
      "v": "v0.0.453",
@@ -37,6 +61,14 @@
   {
    "name": "Starting a combat",
    "items": [
+    {
+     "id": "squad-pictures",
+     "v": "v0.0.454",
+     "title": "The Minions' picker with pictures",
+     "do": "Three Goblin Sneaks as one squad (merge them in the Initiative window) in a combat with Aveline; when their turn comes, look at the HUD's Situational tab; hover the squares; click one.",
+     "expect": "\"Goblin Sneak · 3 of the squad left\" and \"Which one goes now?\", then a square per Goblin with its token's picture and its number in a corner; a hover shows the name and lights its token on the map; a click (or a click on the token) picks it.",
+     "rev": 1
+    },
     {
      "id": "judge-start",
      "v": "v0.0.453",
@@ -119,6 +151,14 @@
   {
    "name": "Chat cards",
    "items": [
+    {
+     "id": "dmg-ledger",
+     "v": "v0.0.454",
+     "title": "The damage breakdown and Apply's right-click",
+     "do": "Durgan Smites the Orc Warrior (give it Resist 2 Slash and Weak 2 Holy in its Builder, and Guard 2); on the card click the equals button beside Apply; right-click Apply and choose Apply half; then right-click Undo and choose Apply double. Then a Goblin Sneak's Rusty Knife hits Sylwen while Durgan's Shield of Faith reduces it.",
+     "expect": "The equals button opens a ledger under the Orc's row: Vigor: Slash (its dice) 8, Resist Slash −2, Guard −2, Takes 4; Resolve: Holy (its dice) 7, Weak Holy +2, Takes 9; \"Lethal · Full\" under it. No Full / Half / Double buttons: the right-click on Apply opens \"Apply full / Apply half (rounded up) / Apply double\", and on Undo the same to change it. On Sylwen's row the ledger reads \"Shield of Faith −3\" (not \"Guard\"), and Takes 0.",
+     "rev": 1
+    },
     {
      "id": "save-fold",
      "v": "v0.0.440",

@@ -124,9 +124,9 @@ export async function buildActionCard(item, { actor = null, use = true, short = 
   const useBtn = v => {
     if (!canUse) return "";
     const b = offAt(v.ap), lab = `Use · ${costOf(v)}`;
-    return b.off
-      ? `<span class="ap-vwrap" data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn st-use no" aria-disabled="true" disabled aria-label="${esc(`${lab}: ${b.why}`)}">${esc(lab)}</button></span>`
-      : `<button type="button" class="ap-vbtn st-use" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""}>${esc(lab)}</button>`;
+    // v0.0.454 (Lucas, playtest 6, D4: "with no AP left, no need to move the button and write 'no ap left', just keep the button in place with a
+    // strike through and faded"; and "warn, don't block"): an off button stays in place, struck and faded, and still opens the roll dialog, which warns
+    return `<span class="ap-vwrap"${b.off ? ` data-tooltip="${esc(b.why)}"` : ""}><button type="button" class="ap-vbtn st-use${b.off ? " no" : ""}" data-action="useVersion" data-ap="${v.ap}"${v.mode && !MODE[v.mode] ? ` data-mode="${esc(v.mode)}"` : ""}${b.off ? ` aria-label="${esc(`${lab}: ${b.why}`)}"` : ""}>${esc(lab)}</button></span>`;
   };
   // Pack CARD-ONE step 2: what the card says, and in which order, is the card model (cardmodel.mjs); this face draws it (the creature's cells and buttons)
   const M0 = cardModel(item, { actor, weapon, fists: item.getFlag?.("twod12", "weaponUse") === "fists" }), M = short ? shortModel(M0) : M0;
@@ -159,10 +159,11 @@ export async function buildActionCard(item, { actor = null, use = true, short = 
   let body = "";
   if (M.versions.length === 1) body = await versionLines(M.versions[0]);
   else for (const vm of M.versions) {
-    const v = vm.source, b = offAt(v.ap), head = esc(vm.heading);
+    const v = vm.source, head = esc(vm.heading);
     const own = [vm.own.traits.length ? `<span class="st-btr">${traitWords(vm.own.traits)}</span>` : "", vm.own.distance ? `<span><b>Distance:</b> ${esc(vm.own.distance)}</span>` : "", vm.own.target ? `<span><b>Target:</b> ${highlightText(esc(vm.own.target))}</span>` : ""].filter(Boolean).join("");
     const vroll = vm.roll ? stLine(vm.roll.label, await fmt(vm.roll)) : "";
-    body += `<div class="st-b${b.off ? " off" : ""}"><div class="st-bh"><span>${head}</span>${b.off && b.why ? `<span class="st-why">${esc(b.why)}</span>` : ""}${useBtn(v)}</div>${own ? `<div class="st-grid">${own}</div>` : ""}${vroll}${await versionLines(vm)}</div>`;
+    // v0.0.454 (D4): the block isn't dimmed and says no reason; only its Use button is struck
+    body += `<div class="st-b"><div class="st-bh"><span>${head}</span>${useBtn(v)}</div>${own ? `<div class="st-grid">${own}</div>` : ""}${vroll}${await versionLines(vm)}</div>`;
   }
   // the card's Special (a Structure card's), or an old card's prose (the description)
   const special = M.special ? stLine(M.special.label, await fmt(M.special)) : (M.prose ? `<div class="st-prose">${await enrich(M.prose, item)}</div>` : "");

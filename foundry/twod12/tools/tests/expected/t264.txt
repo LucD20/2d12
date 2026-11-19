@@ -1,5 +1,5 @@
-hover texts left: 32
-  module/actioncard.mjs: data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn st-u
+hover texts left: 33
+  module/actioncard.mjs: data-tooltip="${esc(b.why)}"` : ""}><button type="button" class="ap-vb
   module/actions.mjs: data-tooltip="${esc(m.why ?? "")}"><i class="fa-solid ${esc(m.icon ?? 
   module/actions.mjs: data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? 
   module/carousel.mjs: data-tooltip="${esc(st.swapWhy)}"` : ` aria-label="${st.swapping ? "Cl
@@ -18,6 +18,7 @@ hover texts left: 32
   module/hudview.mjs: title="${esc(s.why || "")}">${esc(s.label)}</button>`
   module/initview.mjs: data-tooltip="From an effect: ${esc(by)}"` : ""}>${label}</button>`; 
   module/moment.mjs: data-tooltip="${b.back.start && b.back.steps < b.back.total ? `Move ${
+  module/pickbar.mjs: data-tooltip="${esc(x.label)}"><img src="${esc(x.img)}" alt="">${x.num
   module/pickbar.mjs: data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.label)}</button>`)).join("
   module/pickwindow.mjs: data-tooltip="${esc(o.tip)}"` : ""}${o.style ? ` style="${esc(o.style)
   module/rolldlg.mjs: data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${e

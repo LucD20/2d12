@@ -1,6 +1,7 @@
 // PACK SHEET (v0.0.289, Lucas's approved design: foundry/mockups/sheet-prototype.html): the data of the character sheet's new layout.
 // pcModel(sheet, ctx) reads the actor and the context the sheet already built (_sheetModel: granted tickets, conditions, effects, gear) and returns
 // the template's `pc` object. The pure rules (sections, Defenses, Save DCs, Down state...) are in sheetmodel.mjs (tests t212).
+import { statSym } from "./statsyms.mjs";   // v0.0.454 (playtest 6, D3): the NPC sheet's stat symbols
 import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip, npcRoleRow } from "./config.mjs";
 import { combatantOf, getAP, getRAP, slowedOf, apPerTurn, quickenedOf, baseAP } from "./combat.mjs";
 import { guardPerAP } from "./guard.mjs";
@@ -219,8 +220,8 @@ export async function pcModel(sheet, ctx) {
   const vs = vsDefenses(s.attributes, vsB);
   const defs = {
     main: [
-      { label: "AD", value: adNow, cls: cmp(adNow, adRef), tip: `Armor Defense: ${(s.armorParts ?? []).join(" ")}${adNow !== s.armorDC ? ` and bonuses (${adNow})` : ""}. Against Weapon Actions and Fists.` },
-      { label: "WD", value: wdNow, cls: cmp(wdNow, wdRef), tip: `Ward Defense: ${(s.wardParts ?? []).join(" ")}${wdNow !== s.wardDC ? ` and bonuses (${wdNow})` : ""}. Against Power Actions.` }
+      { label: "AD", sym: npc ? statSym("ad") : "", value: adNow, cls: cmp(adNow, adRef), tip: `Armor Defense: ${(s.armorParts ?? []).join(" ")}${adNow !== s.armorDC ? ` and bonuses (${adNow})` : ""}. Against Weapon Actions and Fists.` },
+      { label: "WD", sym: npc ? statSym("wd") : "", value: wdNow, cls: cmp(wdNow, wdRef), tip: `Ward Defense: ${(s.wardParts ?? []).join(" ")}${wdNow !== s.wardDC ? ` and bonuses (${wdNow})` : ""}. Against Power Actions.` }
     ],
     vs: [["body", "vs Body"], ["mind", "vs Mind"], ["appeal", "vs Appeal"], ["instinct", "vs Inst."]].map(([k, l]) => ({ label: l, value: vs[k], tip: `Vs. ${TWOD12.attributes[k]}: 12 + your ${TWOD12.attributes[k]} (${sg(s.attributes?.[k] ?? 0)})${vsB[k] ? ` ${sg(vsB[k])} bonus` : ""}.` }))
   };
@@ -228,10 +229,10 @@ export async function pcModel(sheet, ctx) {
   const speedNow = s.moveSpeed ?? s.speed ?? 0, speedRef = s.speed === undefined ? speedNow : applySpeedMods(a, s.speed, { baseOnly: true });
   const steady = steadinessOf(a).total;
   const move = [
-    { label: "Speed", value: speedNow, cls: cmp(speedNow, speedRef), tip: `Speed ${speedNow} (from your species and class${speedNow !== speedRef ? `; base ${speedRef}` : ""}${s.exhausted ? `; Exhausted −${s.exhausted}` : ""})` },
-    { label: "Reach", value: s.reach ?? 1, tip: "Reach: from your species" },
-    { label: "Size", value: s.size ?? 3, tip: `Size ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` },
-    { label: "Steady", value: steady, tip: `Steadiness ${steady}: reduces Forced Movement and Reposition against you (you can choose not to apply it)` }
+    { label: "Speed", sym: npc ? statSym("speed") : "", value: speedNow, cls: cmp(speedNow, speedRef), tip: `Speed ${speedNow} (from your species and class${speedNow !== speedRef ? `; base ${speedRef}` : ""}${s.exhausted ? `; Exhausted −${s.exhausted}` : ""})` },
+    { label: "Reach", sym: npc ? statSym("reach") : "", value: s.reach ?? 1, tip: "Reach: from your species" },
+    { label: "Size", sym: npc ? statSym("size") : "", value: s.size ?? 3, tip: `Size ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` },
+    { label: "Steady", sym: npc ? statSym("steady") : "", value: steady, tip: `Steadiness ${steady}: reduces Forced Movement and Reposition against you (you can choose not to apply it)` }
   ];
   const dcs = saveDCs({ weapon: s.weaponMod, power: s.powerMod, signature: s.signatureMod });
   const L = TWOD12.attributes;
@@ -517,10 +518,10 @@ export async function pcModel(sheet, ctx) {
     .map(([k, l, n]) => ({ k, l, n: n || 0 }));
   return {
     npc, builder: npc ? npcBuilderModel(a) : null, loot: npc ? lootRows(a) : null,
-    head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained,
+    head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained, guardSym: npc ? statSym("guard") : "",   // v0.0.454: D3
     effects: { conditions, effects }, weapons: weaponRows, armor: armorRows, build, mastery, upkeep, down,
     // v0.0.333 (PACK RWI): the Damage block under Defenses (Immune / Resist / Weak, every source; hidden with none, but a GM sees + Add)
-    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM }), { line: true }); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
+    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM }), { line: true, syms: npc ? { Immune: statSym("immune"), Resist: statSym("resist"), Weak: statSym("weak") } : null }); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
     modConflict: s.modConflict ? `Both Modifiers wanted the same Attribute: the ${csys?.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it.` : ""
   };
 }

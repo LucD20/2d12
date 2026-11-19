@@ -26,7 +26,7 @@ const html = CC.damageCardHtml(m, { author: true });
 const rows = html.split(/<div class="cc-trow(?: done)?">/).slice(1).map(r => text(r));
 console.log("waiting:", rows[0]);
 console.log("applied:", rows[1]);
-console.log("Apply and Undo share the class cc-rbtn:", (html.match(/cc-rbtn/g) ?? []).length === 2, "| the Lethal tag only in the rows:", (html.match(/cc-nl/g) ?? []).length === 2 && !/cc-applyall/.test(html));
+console.log("Apply and Undo share the class cc-rbtn:", (html.match(/cc-rbtn/g) ?? []).length === 2, "| Lethal in each row's ledger (v0.0.454):", (html.match(/class="cc-lgf">[^<]*Lethal/g) ?? []).length === 2 && !/cc-applyall/.test(html));
 const noTgt = CC.damageCardHtml({ ...m, rows: [], groups: [{ ...m.groups[0], rows: [] }] }, { author: true });
 console.log("a card with no target keeps the tag at the bottom:", /cc-applyall[^]*Lethal/.test(noTgt));
 
