@@ -175,3 +175,29 @@ The skill list, its numbers and the Skill Talents stay for the Skills session (D
 **Lucas's caution (record, decision 121): this piece decides the skeleton and leaves the meat to Talents.** "Are we jumping the gun and doing what should be the Talents job?" His three traps: Pathfinder 2e's skill feats (permission), the skill tax of D&D 3.5 and Pathfinder 1e, Savage Worlds' Edges (combat and social picks competing).
 
 **The plan from here (record, decision 122; Lucas: "Good, let's keep going with A"):** five skeleton decisions, then the Talents' structure. (a) What the Path and School words mean outside a fight. (b) How size and duration are bounded. (c) The price. (d) What a rank opens. (e) The policy for the scene-breaking families. Steps 9 and 10 of section 5 shrink to hooks for Talents; no spell list is written here.
+
+### Skeleton decision (a): what the two words mean outside a fight (Lucas: "A"; record, decision 123)
+
+**A Path works only on its own stuff.**
+
+| Path | It works on |
+|---|---|
+| Fire | Flame, heat, light |
+| Air | Wind, weather, sound, the sky |
+| Water | Water, ice, cold, what flows |
+| Earth | Stone, metal, the ground |
+| Astral | Magic itself, fate, distance, thought |
+| Death | The dead, decay, darkness |
+| Nature | Plants, beasts, living bodies, poison |
+| Glamour | Images, dreams, emotion, luck |
+
+| School | Outside a fight it... | Its edge |
+|---|---|---|
+| Evocation | Releases the Path in an instant: a blast, a flash, a gust | Nothing lasts. It breaks, moves or reveals, and it is loud |
+| Alteration | Changes a body or the ground for a time: breath underwater, a path of ice | It changes what can be attempted, never how well |
+| Enchantment | Lays a lasting effect on a place or a thing: warmth, a light, a mark | It never gives a number in a fight |
+| Conjuration | Brings a thing or a creature for a task: a bridge, a bearer, a messenger | What it brings can't fight, and is gone when the spell ends unless the spell says it stays |
+| Thaumaturgy | Works on a mind or the senses: speaking with, sensing, a door to being heard | It never decides for a mind |
+| Abjuration | Guards a place or a person against something it names: a ward, an alarm | It warns or bars. It never harms |
+
+Read together: Fire and Enchantment, a hearth that keeps a camp warm; Death and Thaumaturgy, speaking with the dead; Earth and Conjuration, a bridge of stone; Air and Abjuration, a ward that carries a sound to you.
