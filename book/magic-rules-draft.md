@@ -76,13 +76,13 @@ A card prints one of these only when the spell needs it. [77, 78, 85]
 
 ### While Engaged
 
-A [Spell] counts as [Ranged] while you are Engaged, unless it is [Melee]: its roll is Doomed. A [Melee, Spell] needs no weapon. [46, 77]
+A spell takes the ranged rules only if its card prints **[Ranged]**: Doomed while Engaged, range bands, a Prone target's Bane. A spell with neither [Ranged] nor [Melee] is cast freely while Engaged. A [Melee, Spell] needs no weapon. [108, 77]
 
 ### A Save spell
 
 - The targets roll the Save; Tier 1 is the worst for them (Chapter 1).
 - **Your Boons and Banes change the DC they save against:** each Boon you would have on the roll adds 1, each Bane subtracts 1. Working name for that number: the **Save DC**. [88; the name: A]
-- Where your roll would be Doomed, their Saves are Favored; where it would be Favored, theirs are Doomed. So a Save spell cast while Engaged gives the targets Favored Saves. [76, 88; the general case: A]
+- Where your roll would be Doomed, their Saves are Favored; where it would be Favored, theirs are Doomed. So a [Ranged] Save spell cast while Engaged gives the targets Favored Saves. What applies against one creature only changes the Save DC for that creature. **An [Area] ignores Senses;** a Save spell that picks a creature takes Sense penalties through its Save DC. [76, 88, 100, 109]
 
 ### Armor
 
@@ -115,11 +115,12 @@ A [Spell] counts as [Ranged] while you are Engaged, unless it is [Melee]: its ro
 
 ## 5. Overcast: stretching a spell
 
-- Overcast is its own line on a card. A step needs **one spare rank** in its axis and Surge: **1 for a step on a shared ladder; a spell's own steps print their price** ("+2 Surge: ..."). [26, 67, 104]
-- The Surge you spend on Overcast in one casting is at most **Escalation minus 1**. A spell's printed Surge cost doesn't count against that. [70, 104]
-- **Spare School level** climbs the ladders the card lists: **Reach** +2 squares, **Breadth** +1 creature, **Hold** +1 round. [43]
-- **Spare Path level** pays the spell's own step, written on the card. [26]
-- **An [Area] spell has no Breadth.** A bigger area is the next spell of the line. A Talent may open area growth later. [43, 61]
+- Overcast is its own line on a card. Each thing you buy on it is a **stretch**. [26, 110]
+- A stretch needs **one spare rank** in its axis, and Surge. [26, 67]
+- **Spare School rank** buys stretches on the three shared ladders, 1 Surge each; the card lists which it may use: **Carry** (+2 squares to its Distance), **Fork** (+1 creature), **Echo** (+1 round). [43, 111]
+- **Spare Path rank** buys the spell's own stretches, each written on the card with its price ("+2 Surge: the flames stay on the ground"). [26, 104]
+- The Surge you spend on Overcast in one casting is at most **Escalation minus 1**; outside an encounter, the Surge you hold is the only limit. A spell's printed Surge cost doesn't count against that. [70, 71, 104]
+- **An [Area] spell has no Fork.** A bigger area is the next spell of the line. A Talent may open area growth later. [43, 61]
 - **Merge is cut.** Two Paths meet only in spells written with two Paths. [91]
 
 ---
