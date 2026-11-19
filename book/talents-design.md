@@ -187,3 +187,35 @@ Steps 1 to 3 are the skeleton of Talents; steps 4 to 8 its structure; 9 to 12 it
 | T4 | **The size of a pick: one size, with up to three ranks.** Every Talent pick is the same size. A Talent card may hold up to two further ranks, each a new rule written on the same card; taking a rank is a pick, and rank II needs rank I. **Guards, from the research:** every rank is worth a pick on its own (never only a step to the next: 13th Age 2e removed forced order for that reason); no rank is a bigger number (T1). It fits the sequences already on file (the summoner's chain; the counterspell tree: recognize, weaken, cancel). The 2026-11-09 proposal's Minor and Major sizes are not taken. | "A" |
 | T5 | **How Talents are gated and found: named groups, gated only by Stage and by what they work on.** Talents sit in small groups named for a way of playing (examples: Archery, Diplomacy, Shadows, Faith), perhaps five to eight in each, so a player reads a short list for their idea. A Talent may require only a minimum Stage and the trait it works on (a Talent that changes your [Divine] cards needs you to have one). **No Talent requires another, except its own ranks** (T4 holds the sequences). A group is a place to look, not a cage: any character takes from any group (T3). Not taken: drawn trees, one sorted list. | "A is good." |
 | T6 | **The schedule: alternate, one pick a level.** A Skill Talent on odd levels and a Talent on even levels (the pattern levels 1 to 3 already have, continued); the Stage Talent at level 4 becomes an ordinary Talent, and reaching a Stage opens the Talents that require it. By level 15: eight Skill Talents and seven Talents, plus the class's upgrades (T3). A rank counts as a pick of its kind (T4). **Fallback:** both kinds every level (B), if playtests show the growth to be too little. **His standing aim, with it: "It is very important we try to make all talents appealing, so people just don't go for the 'Whirlwind' (likely high stage) to hit everyone or similar."** No Talent is to be the obvious pick of its Stage: the must-have test of `research/talents.md` section 6, held against every Talent. | "A with a chance of B in case play test proves it to be little." |
+
+---
+
+## 8. Review after T6 (2026-11-19; Lucas: "Just to make sure all is going well: review what we have done so far, see if you are taking all into consideration, including the magic brainstorm")
+
+Claude reread T1 to T6 against the magic record, `magic-out-of-combat.md`, `roleplay-skills.md`, `items-economy.md`, `expedition-loop.md`, the class charter and Chapter 5. No independent reader this time. **Nothing below is decided.**
+
+### Holds up
+
+- **T1 matches magic's own rule** (decision 18: a rank is never a number; 17: Talents never give ranks) and Chapter 5's "levels give options, Stages change the numbers".
+- **T2 matches the frame of play outside a fight** (113 to 118) and the bypass checklist (`research/bypass-and-repeat.md`).
+- **T3 fits magic's opening rule:** a Magic Talent opens a Path and a School (27) like any other Talent, for any class; a caster class starts with one open (21).
+- **T4's ranks hold the magic seeds that were described as trees** (the counterspell tree; the summoner's chain): they become one Talent with ranks, as T5 allows no Talent to require another.
+- **T5's trait gate is the one magic already needs** (a Talent on "[Fire] spells" requires a [Fire] spell).
+- **Paired spell picks (120) don't touch the Talent schedule:** opening magic gives two battle spells and two spells outside a fight.
+
+### Problems found
+
+1. **Skill numbers have no home (the largest).** T1 forbids a Talent to raise a number, so a Skill Talent can't raise a skill. But four of Lucas's five directions for skills use skill points, and the 2026-11-09 proposal let a Skill pick be "a skill rank or a Skill Talent". **If one slot offers either a skill point or a Skill Talent, it is 5e's feat against +2, the swap the research found the number always wins** (`research/talents.md`, section 2). So skill points need their own source, apart from the Skill Talent slots. For the Skills pass, but it bounds what a Skill Talent can be now.
+2. **Some magic seeds change a cost or a die:** a cheaper Sustain (29), a safer Overreach with a smaller die (30), lifting armor's Surge cost (80). Is a lower price a "bare number" under T1? Claude's reading: a cost changed is a rule changed, allowed; but each is a candidate must-have for every caster (T6's aim), so each needs the must-have test when written.
+3. **Two seeds sit near T2's wall:** Sudden Strike (an Appeal Check in a conversation to Surprise: `items-economy.md` Part 2, item 3) changes how a fight starts; haggling "sell for +X" (`items-economy.md` open list) is a number, Lucas's own fallback example. Sudden Strike reads as a combat Talent (it decides a fight's first round), haggling as the T1 fallback if ever needed.
+4. **"A skill's outcome by magic" (114, his lockpicking with the Power Modifier)** works outside a fight, so it belongs in the Skill Talent slot, not the Talent slot; otherwise a caster pays a combat pick for it.
+5. **The classes' Surge uses (68)** were assigned to "their next pass": T3's class upgrades by Stage are the natural home (a rider chosen at the moment of the hit), not Talents. Worth saying so.
+6. **A caster's sheet is the heaviest:** seven Talents and the class's upgrades, plus two spells at opening and a pair at each new rank in each Path and School (two battle, two outside). Step 8 (the memory budget) must count a caster, not only a martial.
+7. **Retraining has two answers on file** (any Rest, Chapter 5; one at a level-up, the 2026-11-09 proposal): step 7, next.
+8. **T6 and the high Stage.** T5 gates by Stage, and Lucas fears the high-Stage pick everyone takes ("Whirlwind to hit everyone"). The research's cause: later picks priced as "bigger", not "different". Pricing (step 11) must keep a high-Stage Talent sideways.
+9. **The set-aside chapter says Stage Talents at levels 5 and 8;** Chapter 5 says 4, 8, 12. Moot after T6, but the set-aside file should not be brought back as written.
+10. **The skeleton files still disagree on the skill count** (8 to 12 in `roleplay-skills.md`, 16 in MASTER-PLAN): for the Skills pass.
+
+### Housekeeping done with this review
+
+The Talents record is now named in HANDOFF and CLAUDE.md.
