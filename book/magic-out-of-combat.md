@@ -147,4 +147,6 @@ The skill list, its numbers and the Skill Talents stay for the Skills session (D
 
 ## 6. Decisions
 
-(None yet.)
+| # | Decided | Lucas's words | Record |
+|---|---|---|---|
+| 1 | **The stance: magic changes what is possible and never does what a skill does. When magic makes something attemptable, the Check that follows belongs to whoever is best suited, not automatically to the caster.** No bonus to a Check from magic. A Talent may open one skill's outcome to magic, as a Check with a roll | "C is the way to go"; "B falls into the lameness of 'just a bonus'"; "A Talent to roll to pick a lock with your Power modifier or something" | 114 |
