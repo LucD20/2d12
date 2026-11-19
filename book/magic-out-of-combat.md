@@ -160,3 +160,9 @@ The skill list, its numbers and the Skill Talents stay for the Skills session (D
 - **Holding the ladder.** It doesn't add to the climber's roll. It makes the climb an easier climb (a lower DC), or a possible one.
 - **Keeping the guard busy while a friend slips past.** That is its own Check, with its own result; if it works, the friend's task has changed (the guard isn't looking).
 - **A caster freezes a path across the river.** The magic made the crossing possible; the surest-footed PC makes the Check to lead the others over (decision 1).
+
+| # | Decided | Lucas's words | Record |
+|---|---|---|---|
+| 5 | **What skills cover: five kinds of outcome, as a guide and not a wall.** Getting past; swaying people; finding out; enduring and travelling; making and mending. **The test for any use of magic: does it open a way, or solve it right away?** Charm, domination, an alarm and the like are to exist, each written so that it opens a way | "Yeah magic should open ways, not solve them right away. So it is option A with a bit of C; we shouldn't lock behind too much otherwise there is no charm spells, dominate, alarm, etc" | 118 |
+
+**The frame is closed (decisions 113 to 118).** Next: step 3, the shape.
