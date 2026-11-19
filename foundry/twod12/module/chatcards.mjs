@@ -4,6 +4,7 @@
 // the enemy Defenses or the target details hidden by the GM; Designer mode (a client setting) adds the odds, the Ruler line and the Mithril mark.
 // The message's stored content is the GM's view without Designer mode (the fallback when the hook can't run).
 import { esc, vsKind, tierOfLabel } from "./util.mjs";
+import { TWOD12 } from "./config.mjs";   // v0.0.457: the damage types' colors
 import { mergeDiceLine, mergeInstances } from "./dicemerge.mjs";
 /** v0.0.314 (pack AU): an AD / WD (or an Attribute's) badge in its color: the Vs. line's colors (util.mjs VS_COLORS). */
 const vsk = label => { const k = vsKind(label); return k ? ` vsk-${k}` : ""; };
@@ -11,14 +12,12 @@ import { bbKey, BB_LIMIT, BB_NAMES } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ small pieces */
 /** The subtypes' names and the card's ink for them (brief section 3; the others keep the system's ink). */
-export const SUBS = {
-  Sl: ["Slash", "#4a443b"], Bl: ["Blunt", "#4a443b"], Pi: ["Pierce", "#4a443b"], Fi: ["Fire", "#a0521a"], Ho: ["Holy", "#7d5400"], Co: ["Cold", "#2c6f8f"],
-  Ac: ["Acid", "#3B6D11"], El: ["Electricity", "#7a5c00"], Fo: ["Force", "#7a24bf"], Ps: ["Psychic", "#993556"], Th: ["Thunder", "#0C447C"], Un: ["Unholy", "#4A1D63"]
-};
+export const SUBS = Object.fromEntries(Object.entries(TWOD12.subtypes).filter(([k]) => k).map(([k, n]) => [k, [n, TWOD12.subtypeInk[k]]]));   // v0.0.457: config.mjs's colors (one hue a type)
 const subInk = s => SUBS[s]?.[1] ?? "#4a443b";
+const subStyle = s => `color:${subInk(s)};--sc-d:${TWOD12.subtypeColors?.[s] ?? subInk(s)}`;
 export const subName = s => SUBS[s]?.[0] ?? (s || "Untyped");
 /** A subtype's code in its color ("Ho"). */
-export const subCode = s => (s ? `<span class="cc-sub" style="color:${subInk(s)}">${esc(s)}</span>` : "");
+export const subCode = s => (s ? `<span class="cc-sub" style="${subStyle(s)}">${esc(s)}</span>` : "");
 const POOL = { B: "Vigor", M: "Resolve", C: "Vigor or Resolve" };
 /** The pool's icon: a heart for Vigor, a brain for Resolve (both for a [C] choice). */
 export const poolIc = p => (p === "M" ? '<i class="fa-solid fa-brain cc-pr" aria-hidden="true"></i>'

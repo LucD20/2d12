@@ -78,6 +78,10 @@ Expect: Three Goblins start as two squads, 2 + 1 (four: 2 + 2; five: 2 + 2 + 1).
 Rev: 4
 ## The roll dialog
 
+### dtype-colors · v0.0.457 · Each damage type one color everywhere
+Do: In the dark theme, Durgan opens Smite's roll dialog and rolls it on the Orc Warrior; read the dialog's damage line, the chat card and the damage card; open Word of Radiance's card on his sheet. Switch Foundry to the light scheme and look again.
+Expect: Holy is the same amber everywhere (the dialog, the chat card's code, the damage card's row and its tint, the Action card's Tier lines; no type painted plain gold), a brighter amber on dark and a deeper one on light. Blunt on the Orc Warrior's sheet a warm grey, readable on dark.
+
 ### unfailing · v0.0.453 · Unfailing: Smite isn't spent on a Tier 1
 Do: In a combat, Aveline Smites the Orc Warrior until she gets a Tier 1 (the GM's force-Tier in the roll dialog helps); then Smite again; then get a Tier 2 and try a third time.
 Expect: Smite's traits read "… Unfailing …" (sheet, card, book). After the Tier 1 a chat line says "Unfailing: a Tier 1, so Smite isn't spent. Aveline can use it again."; Smite is not marked used and its Strike still counts (the strip). After the Tier 2 it is used as usual.

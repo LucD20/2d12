@@ -15,6 +15,7 @@
 //   removed: [uuid], rollMode, forceTier }
 import { EMPOWERED_DIE } from "./roundrules.mjs";   // v0.0.407
 import { esc, vsColored } from "./util.mjs";
+import { TWOD12 } from "./config.mjs";   // v0.0.457: the damage types' colors
 import { tierProbs, bbCount, bbFive, rollState, BB_NAMES, BB_LIMIT } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ chips */
@@ -323,7 +324,7 @@ export function result(inp, st) {
 }
 
 /* ------------------------------------------------------------------ HTML */
-const SUB_INK = { Fi: "#a0521a", Ho: "#7d5400", Co: "#2c6f8f" };
+const subStyle = k => `color:${TWOD12.subtypeInk?.[k] ?? "#4a443b"};--sc-d:${TWOD12.subtypeColors?.[k] ?? "#b3a68e"}`;   // v0.0.457: every type its color (was Fire, Holy, Cold only)
 const poolIcon = p => (p === "M" ? '<i class="fa-solid fa-brain rd-pr" aria-hidden="true"></i><span class="rd-sr">Resolve</span>' : '<i class="fa-solid fa-heart rd-pv" aria-hidden="true"></i><span class="rd-sr">Vigor</span>');
 const sgn = n => (n >= 0 ? `+ ${n}` : `− ${Math.abs(n)}`);
 /** v0.0.293 (Lucas): Favored and Doomed are a d12 (a pentagon face) in blue / red with its letter, not the Boon / Bane triangles. */
@@ -383,7 +384,7 @@ function tierTableHtml(inp, st, v) {
   const stats = tierStats(inp, st, v);
   const cell = n => {
     const lines = poolLines(v.tiers?.[n], tierTags(inp, st, n).map(c => ({ pool: c.pool, tag: c.tag })));
-    const dmg = lines.map(l => `<span class="rd-pool">${poolIcon(l.pool)} ${l.segs.map(s => `${esc(s.t)}${s.sub ? ` <b class="rd-sub" style="color:${SUB_INK[s.sub] ?? "#4a443b"}">${esc(s.sub)}</b>` : ""}`).join(" + ")}${l.tags.map(g => ` <span class="rd-ptag">${esc(g)}</span>`).join("")}</span>`).join('<span class="rd-dot" aria-hidden="true"> · </span>');
+    const dmg = lines.map(l => `<span class="rd-pool">${poolIcon(l.pool)} ${l.segs.map(s => `${esc(s.t)}${s.sub ? ` <b class="rd-sub" style="${subStyle(s.sub)}">${esc(s.sub)}</b>` : ""}`).join(" + ")}${l.tags.map(g => ` <span class="rd-ptag">${esc(g)}</span>`).join("")}</span>`).join('<span class="rd-dot" aria-hidden="true"> · </span>');
     const riders = (v.tiers?.[n]?.riders ?? []).map(r => `<div class="rd-rider">↳ ${r}</div>`).join("");
     return (dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;") + statLine(stats[n]);
   };

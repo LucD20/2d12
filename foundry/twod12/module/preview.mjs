@@ -99,7 +99,7 @@ export async function buildWeaponCard(item) {
   return `<div class="twod12 chat action rawcard weaponcard" style="${cardVars(TWOD12.cardColors.weapon)}">
     <div class="ahead"><b>${esc(item.name)}</b><span class="acat">Weapon</span></div>
     ${w.traits.size ? `<div class="traits">${traitChevrons(w.traits, { properties: true })}</div>` : ""}
-    <div class="trow"><span class="freq">${sub ? `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[w.subtype] ?? "#888"}"><i class="${TWOD12.subtypeIcons[w.subtype] ?? ""}"></i> ${esc(sub)}</span> damage` : "No damage type"}</span></div>
+    <div class="trow"><span class="freq">${sub ? `<span class="dmgword" style="--dc:${TWOD12.subtypeInk[w.subtype] ?? "#888"};--sc-d:${TWOD12.subtypeColors[w.subtype] ?? "#888"}"><i class="${TWOD12.subtypeIcons[w.subtype] ?? ""}"></i> ${esc(sub)}</span> damage` : "No damage type"}</span></div>
     ${w.range ? `<div class="vsrow"><b>Range</b> ${esc(w.range.split("/").join(" / "))}</div>` : ""}
     <div class="vsrow"><b>Weapon damage [W]</b></div>
     <table class="tiers">${[1, 2, 3].map(n => { const txt = weaponTierText(w.damage[`t${n}`]); return `<tr><th>Tier ${n}</th><td>${esc(txt || "0")}</td></tr>`; }).join("")}</table>

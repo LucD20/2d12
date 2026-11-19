@@ -59,19 +59,21 @@ export const TWOD12 = {
     })
   },
   // v0.0.369 (STYLE-1, Lucas, 2026-11-13): Slash steel, Blunt bronze, Pierce grey-green, in the place of one grey
+  // v0.0.457 (B3/E6, Lucas 2026-11-19: "each damage type one color everywhere"): one hue a type, this its dark-surface variant and
+  // subtypeInk its light one; the book's DTYPE (book/build_rules.py) is the same pair (t286)
   subtypeColors: {
-    Ac: "#7cb342",
+    Ac: "#8bc34a",
     Bl: "#b9a58c",
     Co: "#4fc3e8",
-    El: "#3d8bfd",
-    Fi: "#e8622a",
-    Fo: "#b06ad8",
-    Ho: "#d9b52e",
+    El: "#e3cf3b",
+    Fi: "#ef6a3a",
+    Fo: "#a77ce8",
+    Ho: "#e0a83a",
     Pi: "#a9b8a4",
-    Ps: "#8c68d6",
+    Ps: "#e07a9e",
     Sl: "#c3c9d1",
-    Th: "#5c7fa3",
-    Un: "#b0607f"
+    Th: "#6f95c8",
+    Un: "#c06ac0"
   },
   frequencies: { "": "Default", none: "None", atwill: "At-will", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" },
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute
@@ -95,18 +97,18 @@ export const TWOD12 = {
     Un: "fa-solid fa-skull"
   },
   subtypeInk: {
-    Ac: "#3B6D11",
+    Ac: "#3f7a12",
     Bl: "#5a4a36",
-    Co: "#185FA5",
-    El: "#9A7400",
-    Fi: "#993C1D",
-    Fo: "#8A2BD4",
-    Ho: "#854F0B",
+    Co: "#136f8f",
+    El: "#7d6a00",
+    Fi: "#a63a17",
+    Fo: "#6a35b8",
+    Ho: "#8a5a08",
     Pi: "#44513f",
-    Ps: "#993556",
+    Ps: "#a3335c",
     Sl: "#4a5058",
-    Th: "#0C447C",
-    Un: "#4A1D63"
+    Th: "#1f4f8a",
+    Un: "#6e2a6e"
   },
   defaultTags: [
     "Aberration",
@@ -503,7 +505,7 @@ function colorToken(m, g) {
   if (g.rally) return `<span class="kw-rally">${m}</span>`;
   if (g.attr) return `<span class="at-${m.toLowerCase()}">${m}</span>`;
   if (g.guard) return `<span class="kw-guard">${m}</span>`;
-  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}"${traitTip(TRAIT_WORDS[m])}>${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
+  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}"${traitTip(TRAIT_WORDS[m])}>${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeInk[DAMAGE_WORDS[m]]};--sc-d:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
 }
 // Never inside: links, buttons, headings, scripts, SVG, and chips or marks that already have their own look.
 const SKIP_TAG = /^(a|button|h[1-6]|script|style|svg|summary|code)$/i;

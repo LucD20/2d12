@@ -123,6 +123,14 @@
    "name": "The roll dialog",
    "items": [
     {
+     "id": "dtype-colors",
+     "v": "v0.0.457",
+     "title": "Each damage type one color everywhere",
+     "do": "In the dark theme, Durgan opens Smite's roll dialog and rolls it on the Orc Warrior; read the dialog's damage line, the chat card and the damage card; open Word of Radiance's card on his sheet. Switch Foundry to the light scheme and look again.",
+     "expect": "Holy is the same amber everywhere (the dialog, the chat card's code, the damage card's row and its tint, the Action card's Tier lines; no type painted plain gold), a brighter amber on dark and a deeper one on light. Blunt on the Orc Warrior's sheet a warm grey, readable on dark.",
+     "rev": 1
+    },
+    {
      "id": "unfailing",
      "v": "v0.0.453",
      "title": "Unfailing: Smite isn't spent on a Tier 1",

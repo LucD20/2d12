@@ -11,7 +11,7 @@ the picker's groups: Roll, Requires, Kind, Damage, Keywords | first options: App
 Make a <span class="at-body">Body</span> Check with <span class="kw-boon">2 Boons</span> and <span class="kw-bane">1 Bane</span>: <span class="kw-mv">Pushed 2</span>, then <span class="kw-mv">Evade 1</span> (<span class="kw-ap">1A</span>). The target is <span class="kw-neg">Vulnerable 1</span>, you are <span class="kw-pos">Favored</span>. Your <span class="mod-weapon">Weapon Modifier</span>, <span class="kw-rally">1 Rally Point</span>, <span class="kw-ap">2 AP</span>, <span class="kw-ap">1R</span>, <span class="kw-neg">Doomed</span>, <span class="kw-ht">[HT: Entering, Turn]</span>, <span class="pool-m">1d6 / 1d4 / 0 [M]</span>.
 not inside links, chips or headings: <a>Body</a> <span class="tchip">Mind</span> <h3>Appeal</h3> <span class="at-instinct">Instinct</span>
 --- damage in its pool's color, the type in its own
-<i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d4</span> <span class="dtype dt-ho" style="color:#854F0B;--sc-d:#d9b52e"><i class="fa-solid fa-sun"></i> Holy</span>
+<i class="fa-solid fa-heart dt-body"></i> <span class="pool-b">1[W] + [Mod]</span> + <i class="fa-solid fa-brain dt-mind"></i> <span class="pool-m">1d4</span> <span class="dtype dt-ho" style="color:#8a5a08;--sc-d:#e0a83a"><i class="fa-solid fa-sun"></i> Holy</span>
 --- the CSS
 the book's variables, light and dark: true | the chips tinted (16% fill, 50% outline): true | properties neutral: true | Body and Mind icons in their colors: true
 the trait picker is grouped on Action and Talent sheets: true | the generator: true | the builder: true

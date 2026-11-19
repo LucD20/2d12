@@ -93,7 +93,7 @@ export function dmgChips(list) {
   if (!list?.length) return "";
   const groups = new Map();
   for (const i of list) {
-    const pool = i.pool === "M" ? "M" : i.pool === "C" ? "C" : "B", ink = TWOD12.subtypeInk?.[i.subtype], sub = i.subtype ? ` <span class="as-sub"${ink ? ` style="color:${ink}"` : ""}>${esc(TWOD12.subtypes?.[i.subtype] ?? i.subtype)}</span>` : "";
+    const pool = i.pool === "M" ? "M" : i.pool === "C" ? "C" : "B", ink = TWOD12.subtypeInk?.[i.subtype], sub = i.subtype ? ` <span class="as-sub"${ink ? ` style="color:${ink};--sc-d:${TWOD12.subtypeColors?.[i.subtype] ?? ink}"` : ""}>${esc(TWOD12.subtypes?.[i.subtype] ?? i.subtype)}</span>` : "";
     const parts = groups.get(pool) ?? groups.set(pool, []).get(pool);
     if (i.useW) parts.push(`<b>${i.wCount || 1} × Weapon</b>`);
     if (i.dice) parts.push(`<b>${esc(i.dice)}</b>${sub}`);

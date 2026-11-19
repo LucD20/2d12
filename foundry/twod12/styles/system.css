@@ -305,16 +305,7 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 .twod12 .dmgreport td.c, .twod12 .dmgreport th { text-align: center; }
 .twod12 .dmgreport td:first-child { text-align: left; }
 /* two-letter damage subtypes */
-.twod12.chat .comp.sub-Bl, .twod12.chat .comp.sub-Pi, .twod12.chat .comp.sub-Sl { background: rgba(128,128,128,.18); }
-.twod12.chat .comp.sub-Ho { background: rgba(235,205,70,.18); }
-.twod12.chat .comp.sub-Ps { background: rgba(130,95,205,.15); }
-.twod12.chat .comp.sub-Co { background: rgba(79,195,232,.2); }
-.twod12.chat .comp.sub-Ac { background: rgba(124,179,66,.18); }
-.twod12.chat .comp.sub-El { background: rgba(61,139,253,.16); }
-.twod12.chat .comp.sub-Fi { background: rgba(232,98,42,.18); }
-.twod12.chat .comp.sub-Fo { background: rgba(176,106,216,.16); }
-.twod12.chat .comp.sub-Th { background: rgba(92,127,163,.18); }
-.twod12.chat .comp.sub-Un { background: rgba(122,59,82,.2); }
+.twod12.chat .comp[style*="--sc"] { background: color-mix(in srgb, var(--sc) 15%, transparent); }   /* v0.0.457: the row's type color (was ten fixed tints) */
 /* v0.0.42: costs are text badges */
 .twod12 .apmark, .twod12.chat .apmark { display: inline-block; margin-right: 3px; padding: 0 6px; border-radius: 4px; background: #5b6fd0; color: #fff; font: 700 11px/17px system-ui, sans-serif; letter-spacing: .02em; }
 .twod12 .rmark { margin-right: 3px; }
@@ -3430,7 +3421,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 table.ap-tt .dt-body { color: #9b2226; } .twod12.acard.d2 table.ap-tt .dt-mind { color: #2c4a9b; }
 .twod12.acard.d2 table.ap-tt i.dt-body, .twod12.acard.d2 table.ap-tt i.dt-mind { font-size: 12px; vertical-align: -1px; }
 .twod12.acard.d2 table.ap-tt .pool-b, .twod12.acard.d2 table.ap-tt .pool-m, .twod12.acard.d2 table.ap-tt .dtamt { color: inherit !important; font-weight: 600; }
-.twod12.acard.d2 table.ap-tt .dtype { color: #7d5400 !important; font-weight: 700; }
+.twod12.acard.d2 table.ap-tt .dtype { font-weight: 700; }   /* v0.0.457: its type's own color (was gold for every type) */
 .twod12.acard.d2 table.ap-tt td.dim .dtype { color: #8f8774 !important; }
 .twod12.acard.d2 table.ap-tt .dtype i, .twod12.acard.d2 table.ap-tt .dtype img { display: none; }
 /* a rider on its own line after ↳, in a dashed box; a condition of the Critical row in the same box */
@@ -5559,3 +5550,10 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv) { min-width: 0 !important; max-width: none !important; padding: 0 9px !important; }
 .twod12-hud .h3-sit .twod12-linebar.in-hud { display: flex !important; flex-wrap: wrap !important; align-items: center; gap: 4px 6px !important; padding: 3px 0 0 !important; }
 .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text { flex: 1 1 100% !important; }
+
+/* ==== v0.0.457 (B3/E6, Lucas 2026-11-19: "each damage type one color everywhere"): one hue a type (config.mjs subtypeInk on a light surface,
+   subtypeColors on a dark one, the --sc-d each colored span carries). The roll dialog's own types, the chat card's codes and words, the
+   damage card's rows and the Action card's tier table no longer have colors of their own (the tier table painted every type gold). ==== */
+.twod12 .dmgword[style*="--sc-d"] { color: var(--dc); }
+@scope (.theme-dark) to (.theme-light) { .cc-sub[style*="--sc-d"], .rd-sub[style*="--sc-d"], .dmgword[style*="--sc-d"], .as-sub[style*="--sc-d"] { color: var(--sc-d) !important; }
+  .twod12.chat.dmg .comp[style*="--sc-d"], .twod12.chat .comp[style*="--sc-d"] { --sc: var(--sc-d) !important; } }
