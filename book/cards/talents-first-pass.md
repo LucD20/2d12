@@ -2,34 +2,30 @@
 
 **2026-11-19.** The shape of a Talent card under decisions T1 to T10 of `book/talents-design.md`, and four Talents written to test it, in two groups. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Lucas's cards come a few at a time, with him (`book/cards/README.md`): these are drafts for him to correct, and each correction becomes a rule.
 
-**Audited** by an independent reader against the records and the rulebook before being shown; what changed is the last table.
+**Audited** by an independent reader against the records and the rulebook; this is the corrected version, and what changed is the last table. The first version is in the file's history.
 
 ---
 
 ## 1. The template
 
-A Talent is written on the card Structure (`book/cards/card-structure.md`), with three differences.
+A Talent is written on the card Structure (`book/cards/card-structure.md`), with these differences.
 
-**Its title bar** says what it is and where it sits: **Talent · its group · Stage N**. A Skill Talent says **Skill Talent**.
-
-**Requires** (only when needed), on its own line before anything else: the trait the Talent works on ("Requires: a [Projectile] weapon"). Never another Talent (T5).
-
-**Its body** is one of three things:
-- **an Action or a Reaction card** inside the Talent (cost, Frequency, traits, Interrupt or Trigger, Tiers), written as any card is;
-- **a rule** that adds to Actions by their traits ("Your [Projectile, Weapon] Actions..."), never naming a class card (T9);
-- **a lifted limit**: the base rule's sentence, and what this Talent lets you do instead.
-
-**Its ranks**, after the body, each on its own labeled line: **Rank II:** and **Rank III:**, each a new rule worth a pick on its own, never a bigger number (T1, T4). A rank may write its own minimum Stage.
-
-A **Flavor** line under the title, as on every card. Claude writes it.
+- **The title bar:** **Talent · its group · Stage N** (or **Skill Talent**).
+- **Prerequisite** (only when needed), its own line before anything else: what you must have **to take** the Talent: a trait one of your cards carries, or a Stage. Never another Talent (T5). It is not the Action's **Requirements** line (Chapter 2: checked each time you use it), nor the **Requires** trait group. A trait that already needs its kit (a [Projectile] Action needs a Projectile weapon: Chapter 7) is no prerequisite.
+- **The body**, one of three:
+  - **an Action or a Reaction card** inside the Talent, written whole by the Structure (its Attack line, Distance, Target, Modes as blocks);
+  - **a rule** that adds to Actions by their traits, never naming a class card (T9);
+  - **a lifted limit:** the base rule's sentence, and what this Talent lets you do instead.
+- **Ranks**, after the body: **Rank II:** and **Rank III:**, up to two, each a new rule worth a pick on its own, never a bigger number (T1, T4). **A rank says what it adds to:** "the Interrupt also...", "a new Mode:", "a new line:". A rank may write its own minimum Stage. A sheet shows only the ranks taken.
+- **Flavor** under the title, as on every card (Claude writes it). **`automation`** (Bronze, Silver, Gold) on the card, as every card has (CLAUDE.md).
 
 ```
 > **Name** · Talent · Group · Stage 0
 > *Flavor: one sentence of what is done and seen.*
-> **Requires:** a trait you have (only if needed)
-> (the body: an Action or Reaction card, a rule, or a lifted limit)
-> **Rank II:** a new rule.
-> **Rank III (Stage 1):** a new rule.
+> **Prerequisite:** a trait one of your cards carries (only if needed)
+> (the body: an Action or Reaction card; a rule; or a lifted limit)
+> **Rank II:** what it adds to, then the new rule.
+> **Rank III (Stage 1):** what it adds to, then the new rule.
 ```
 
 ---
@@ -38,29 +34,29 @@ A **Flavor** line under the title, as on every card. Claude writes it.
 
 ### Opportunity Attack
 
-*Lucas's own example (T9), written out. The card exists in `cards/basic-actions.json` but the book prints no Opportunity Attack, and Chapter 2 says no creature has a Reaction of its own: so as a Talent it gives what no one has.*
+*Lucas's own example (T9). The card exists in `cards/basic-actions.json` but the book prints no Opportunity Attack, and Chapter 2 says no creature has a Reaction of its own.*
 
 > **Opportunity Attack** · Talent · Sentinel · Stage 0
 > *You were waiting for them to look away.*
-> **Requires:** a [Melee] weapon
-> **Opportunity Attack** · 1R · At-will · [Strike]
-> **Interrupt:** An enemy adjacent to you would leave a square during a Move Action, or uses the Stand Action.
+> **Opportunity Attack** · 1R · At-will · [Melee, Strike, Weapon]
+> **Interrupt:** An enemy adjacent to you would leave a square during a Move Action, or would use the Stand Action.
 > **Target:** The triggering creature.
-> You make a Weapon Attack (1A) against the target with a [Melee] weapon.
-> **Rank II:** The Interrupt also happens when an enemy adjacent to you uses a [Spell] Action.
-> **Rank III (Stage 1):** When your Opportunity Attack against a [Spell] Action gets a Critical, that Action is disrupted (Chapter 2).
+> **Attack:** Weapon vs. Armor Defense
+> You make a Weapon Attack (1A) against the target.
+> **Rank II:** The Interrupt also happens when an enemy adjacent to you would use a [Spell] Action. (A [Subtle] casting isn't noticed: magic record, 97.)
+> **Rank III (Stage 1):** When the Weapon Attack of an Opportunity Attack triggered by a [Spell] Action gets a Critical, that [Spell] Action is disrupted (Chapter 2).
 
-The base rule it lifts: no creature has a Reaction unless something gives it one (Chapter 2). Rank II is a new trigger, Rank III a new specialty: the three of Lucas's examples. **Rank III lifts a magic limit:** nothing spoils an ordinary casting (magic record, 85); a Talent may break that on purpose.
+**No prerequisite:** every creature has Fists, a Melee weapon (Chapter 15). **Rank III** is a second way to stop a casting, beside the counterspell Talent decision 99 assigned (it acts before the casting begins, by an Interrupt: T9 names this specialty). **A question for Lucas:** the audit expects this to be the obvious Stage 0 pick of nearly every melee character (the only Reaction one can get without a class Reaction; At-will; its moment comes most rounds). The research's rule is "if everyone must take it, build it in" (`research/talents.md`, section 4).
 
 ### Shoulder Through
 
 > **Shoulder Through** · Talent · Sentinel · Stage 0
 > *You lower your shoulder and the line gives.*
-> Once during each of your Advances, you can move through one enemy's square as if it were an ordinary square. You can't end your movement there.
-> **Rank II:** If you moved through an enemy's square this way, the next [Melee, Strike] Action you make this turn can target that enemy from any square adjacent to it, even if you have moved away from it since.
-> **Rank III:** An enemy you move through this way makes a Body Save against your Weapon DC. **Tier 1:** Prone. **Tier 2 or 3:** no effect.
+> Once on your turn, during an Advance, you can move through one enemy's square as if it were an ordinary square (Chapter 7 makes it Difficult Terrain). You can't end your movement there; if your movement is disrupted while you are in that square, it ends in the last square you left.
+> **Rank II:** A new line: the enemy you moved through is Staggered (EoT).
+> **Rank III:** A new line: you can use it during a Charge, and the enemy's square doesn't break the Charge's line.
 
-The base rule it lifts: passing through an unwilling creature's squares is Difficult Terrain (Chapter 7, [Move]). Anyone can already push through; Rank I makes it faster (T2's permission test: better, never "you can").
+What it lifts: Chapter 7's "passing through the squares of an unwilling creature is Difficult Terrain". Anyone can push through; this makes it faster (T2's permission test: better, never "you can"). **Beside the Archer's Footwork (Weave mode)**, which already moves through unwilling creatures and ignores Difficult Terrain for 1 AP: this Talent is narrower (one enemy, once a turn) and free.
 
 ---
 
@@ -70,27 +66,31 @@ The base rule it lifts: passing through an unwilling creature's squares is Diffi
 
 > **Called Shot** · Talent · Archery · Stage 0
 > *You stop aiming at the man and start aiming at his hand.*
-> **Requires:** a [Projectile] weapon
-> **Called Shot** · 2 AP · Round · [Projectile, Strike, Weapon]
-> **Target:** One creature.
-> Before the roll, choose **the hand** or **the leg**.
-> **Tier 1:** 0.
-> **Tier 2:** [V] 1[W] + [Mod].
-> **Tier 3:** [V] 1[W] + [Mod]. **The hand:** the target drops one object it holds in one hand. **The leg:** Hindered (1 round).
-> **Rank II:** You can also choose **the eye:** on a Tier 3, the target is Half-Blinded (EoT).
-> **Rank III:** On a Tier 2, your choice also happens.
+> **Called Shot** · 2 AP · Round · [Projectile, Ranged, Strike, Weapon]
+> **Distance:** Weapon · **Target:** One creature
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod], and the Mode you chose.
+> **The hand:** the target drops one object it holds in one hand (its choice); an object held in two hands isn't dropped.
+> **The arm:** Pressed 1 (1 round).
+> **Rank II:** A new Mode. **The throat:** the target can't use [Incanted] Actions (EoT).
+> **Rank III:** A new Mode. **The eye:** Half-Blinded (EoT).
+
+Modes as blocks, as Trick Shots writes them. The leg (Hindered) is gone: it was Trick Shots' Pin.
 
 ### Overwatch
 
 > **Overwatch** · Talent · Archery · Stage 0
 > *You keep the arrow on the string and your eyes on the gap.*
-> **Requires:** a [Projectile] weapon
-> **Overwatch** · 1R · Round · [Projectile, Strike, Weapon]
-> **Trigger:** An enemy you can see ends a Move Action within your weapon's normal range, and you used no [Strike] Action on your last turn.
+> **Overwatch** · 1 AP · Round · [Projectile]
+> You hold a shot: until the start of your next turn, you have the Reaction **Held Shot**.
+> **Held Shot** · 0R · Round · [Projectile, Ranged, Strike, Weapon]
+> **Interrupt:** An enemy within your weapon's normal range would enter a square adjacent to you or to an ally.
 > **Target:** The triggering creature.
-> You make a Weapon Attack (1A) against the target with your [Projectile] weapon.
-> **Rank II:** The trigger also happens when the enemy ends the Move Action in a square where it has no Cover from you.
-> **Rank III:** The Trigger no longer needs you to have used no [Strike] Action on your last turn.
+> **Attack:** Weapon vs. Armor Defense
+> You make a Weapon Attack (1A) against the target.
+> **Rank II:** A new line on Held Shot: on a Tier 3, the enemy's movement is disrupted; it stops in the square it would have left.
+
+**Paid on your own turn (1 AP),** so it is a choice against a Strike, not an extra attack every round. Two ranks only. The moment is one Chapter 2 lists ("an enemy would enter a square adjacent to you or to an ally").
 
 ---
 
@@ -98,12 +98,22 @@ The base rule it lifts: passing through an unwilling creature's squares is Diffi
 
 | What the template must hold | Where |
 |---|---|
-| A Reaction inside a Talent, with ranks that add a trigger and a specialty | Opportunity Attack (Lucas's example) |
-| A rule on a Basic Action, keyed on what you do, not on a trait | Shoulder Through |
-| A new Action with a choice inside it, and a rank that widens it | Called Shot |
-| A Reaction whose ranks lift its own condition | Overwatch |
-| A Talent that lifts a magic limit | Opportunity Attack, Rank III |
+| A Reaction inside a Talent, ranks that add a trigger and a specialty | Opportunity Attack |
+| A rule on a Basic Action that lifts a base limit | Shoulder Through |
+| An Action with Modes; ranks that add a Mode | Called Shot |
+| An Action that grants a Reaction until your next turn (an inline Action) | Overwatch |
+| A Talent that reaches magic (a second way to stop a casting; a Mode against [Incanted]) | Opportunity Attack, Called Shot |
 
-## 5. The audit
+---
 
-(filled after the audit)
+## 5. The audit: what the independent reader changed
+
+| Talent | Finding | Now |
+|---|---|---|
+| **Overwatch** | **Its trigger ("ends a Move Action") is the very moment Chapter 2 forbids** ("'ends a Move Action' is not one"); "used no Strike on your last turn" is undefined and tracked across turns; Rank II only widened the range (a bigger number); the base was a step to a must-have Rank III (a free attack nearly every round) | A 1 AP Action that holds a shot until your next turn, with a moment Chapter 2 lists; two ranks; the attack costs a turn's AP |
+| **Shoulder Through** | Rank II had no origin for its Strike (unlimited melee reach); Rank III (Prone on a Save, every Advance, no AP) dominated Trip; overlap with Footwork's Weave; a disrupted movement could end in an enemy's square; "each of your Advances" unclear | Once a turn; the disrupted case written; Rank II Staggered; Rank III in a Charge |
+| **Opportunity Attack** | "Requires: a [Melee] weapon" gated nothing (everyone has Fists) and wrote a property as a trait; Rank II should say "would use" (Chapter 2's wording); [Subtle] not addressed; Rank III's Critical belongs to the Weapon Attack; the note cited decision 85 where 99 is meant; likely the obvious pick | Prerequisite removed; wording fixed; the must-have question put to Lucas |
+| **Called Shot** | No Attack or Distance line (the Structure: a Strike always writes its Defense); Modes not written as blocks; Rank III (the rider on Tier 2) was a better rate; the leg duplicated Trick Shots' Pin; "drops one object" unclear | Written whole; the leg replaced by the arm (Pressed); ranks add Modes (the throat, the eye) |
+| **The template** | "Requires" meant three things (a trait group, a Requirements line, a prerequisite); no way to write Modes; ranks didn't say what they add to; no `automation` | "Prerequisite"; Modes by the Structure; "a rank says what it adds to"; `automation` named |
+
+**Not yet checked:** the rulebook has no [Spell] trait in Chapter 7 yet (magic is not written), and [Incanted] is decided but not written.
