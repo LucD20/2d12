@@ -2,7 +2,7 @@
 
 Lucas's solo playtest of the Stage 0 build (Foundry v0.0.452, branch `pack-sheets-hud`), played to the end (4 rounds), with his bug list and two
 checklist reports (v0.0.452). **Nothing here is applied yet** (Lucas: "Review, dont do anything yet"; then "Still dont do anything yet ...
-organize it all ... so I can do one last review"). Decided so far: section 3. Open: section 7.
+organize it all ... so I can do one last review"). Decided: section 3 (two rounds of answers). Open: section 7.
 
 ## 1. The log (as Lucas wrote it)
 
@@ -70,14 +70,27 @@ see their use; the flavor is right.
 
 ## 3. Decided (Lucas, 2026-11-19)
 
-1. **Tier 1 on an Encounter Action: option (a), the use isn't spent** (4e's "Reliable"; `research/nova-burst.md`). **No SIM** (Lucas: the SIM
-   is outdated; the focus is hands-on playtests). A draft for the book, Claude's (to confirm with the wording questions in section 7):
-   > **Reliable.** An Encounter Action whose roll gets a Tier 1 against every target isn't spent: you can use it again this encounter. You
-   > still spend its AP. On a Save Action, a target's Tier 3 counts as a Tier 1 of yours (the target resisted).
+1. **Tier 1: a trait, not a frequency rule** (Lucas: "Instead of tying it to Encounter, maybe we can just make it a trait and apply to Actions
+   where it would make sense"; option (a)'s idea, 4e's "Reliable"; `research/nova-burst.md`). **No SIM** (Lucas: the SIM is outdated; the focus
+   is hands-on playtests). As a trait it needs no exceptions: it goes only on Actions where it makes sense, so a Save Action or an area never
+   gets it ("Saves likely won't ever get it"). **The name wants a better word than Reliable** (section 7). Claude's draft (a Keywords trait):
+   > **Persistent.** When this Action's roll gets a Tier 1, the Action isn't spent: you can use it again. You still spend its AP.
+
+   **Where it makes sense at Stage 0** (Claude's reading of every Encounter and Daily card with a roll): **Smite**, the case Lucas felt. Not
+   **Hit and Run** (its Advance still happens on a Tier 1, so the use isn't wasted), not **Volley** (an area, one roll against many), not
+   **Word of Radiance** or **Reckoning** (Saves). So for now, one card.
 2. **Health: no change yet.** Wait for more playtests (the solo-play doubt stays open).
 3. **Shield of Faith's message:** the line a Passive posts names that Passive as a link to its card, so you see what granted it (Armor of Faith
    gave Durgan Guard 3 for using a [Divine] Reaction: correct, only unclear).
 4. **This record** (Lucas: "Yes").
+5. **Minion squads: no rule, a recommendation** (Lucas: "B, but no rule. I want GMs to choose, but the RECOMMENDATION is: 3-4, 2 squads, 5-6,
+   3 squads, etc."). Chapter 14 keeps "up to 3 Minions" a squad and "the GM decides who goes together"; its "the fewest squads that hold them"
+   becomes the recommendation **one squad for every 2 Minions, rounded up** (1-2: one; 3-4: two; 5-6: three). Foundry's Initiative window starts
+   from that split and the GM changes it there (it needs a "new squad" choice: F6).
+6. **Warn, don't block (R3): nothing stays blocked** beyond true impossibilities (Lucas: "Not that I have noticed").
+7. **The chat card's Full / Half / Double move to a right-click on Apply** (Lucas); the sliders button opens the damage breakdown (D2).
+8. **Cover from creatures (R1): Claude's recommendation, keep the center line** (the research: `research/cover-from-creatures.md`), and make the map
+   show it (F7). Waiting for Lucas's word.
 
 ## 4. Rules questions and Claude's answers
 
@@ -95,8 +108,7 @@ ignore Low cover from allies?")**
 
 **R2. Minion squads (checklist minion-squad, FAIL: "I made 3 goblins, it put the three in one single group ... with 3 goblins, it should create
 1 with 2 goblins, 1 with 1").** **A conflict with the book:** Chapter 14 says "the fewest squads that hold them, of sizes as close as possible"
-with **up to 3** a squad, so three Minions are one squad of three, and Foundry did that. Lucas wants 2 + 1. The rule must change first: see
-section 7, question 3. Also the Initiative window can only move a Minion between the squads that exist: with one squad there is nowhere to move
+with **up to 3** a squad, so three Minions are one squad of three, and Foundry did that. Lucas wants 2 + 1. Lucas: no rule, a recommendation (section 3, item 5). Also the Initiative window can only move a Minion between the squads that exist: with one squad there is nowhere to move
 it. It needs a way to start a new squad.
 
 **R3. Warn, don't block (Lucas, twice: the token HUD on a used Action; checklist g2-darting: "dont prevent it. Shows a warning on the Roll
@@ -108,7 +120,7 @@ kinds:
 2. **True impossibilities that stay:** no token selected, no target at all, a missing item.
 3. **Information to drop or move into the chat.**
 
-Section 7, question 4, asks whether any blocks stay.
+Lucas: nothing else stays blocked (section 3, item 6).
 
 **R4. Charge ending on an ally's space:** against the rules (no creature ends a move in an occupied square). A bug: section 5.
 
@@ -145,15 +157,18 @@ line is affected.**
 - b. **chat-follow** (FAIL): after Damage, then Apply, on a plain Weapon Attack the card grew and the chat didn't scroll with it.
 - c. Shield of Faith: the Passive's line names its source (section 3, item 3).
 
-**F6. Minion squads:** the default split and a "new squad" in the Initiative window, once R2 is decided.
+**F6. Minion squads:** the recommended split by default (one squad for every 2 Minions, rounded up) and a "new squad" choice in the
+Initiative window (section 3, item 5).
+
+**F7. The cover lines on the map** (R1): draw the center line strong and mark a creature it crosses (that is the one that gives Low cover);
+the corner lines fainter, there only for walls and objects.
 
 ## 6. Foundry: redesigns (mockups first, by Fable)
 
 - **D1. The Rally window, a complete redesign** (Lucas: it has too much information), and **its chat message**. Today the message is a title
   "Rally", "Durgan ... uses 1 Rally Point", then "9 healing / Removes 9 Vigor. 6 Rally Points left.": the name twice, the healing twice.
 - **D2. The damage breakdown on the chat card's sliders button** (`cc-icon` "Full, Half or Double"; today it shows three oversized buttons). Its
-  new job: open the breakdown, for example "2 Pi − 3 Guard = 0 damage" when Shield of Faith gave Guard against that attack. Where Full / Half /
-  Double go is a question (section 7, question 5).
+  new job: open the breakdown, for example "2 Pi − 3 Guard = 0 damage" when Shield of Faith gave Guard against that attack. Full / Half / Double move to a right-click on Apply (section 3, item 7).
 - **D3. A small, serious symbol beside each stat of the NPC sheet** (AD, WD, Speed...): symbols are found faster than words.
 - **D4. Clicking an Art opens what the token HUD's right-click shows** (the compact view with all of its information). This is also the answer to
   "Arts may be underused": seeing one is one click.
@@ -161,27 +176,23 @@ line is affected.**
 
 ## 7. Open: questions for Lucas's last review
 
-1. **Reliable's wording (section 3, item 1):**
-   - Does it count "against every target" (an area that lands one Tier 2 is spent)?
-   - Does a Save Action count, with the target's Tier 3 as a Tier 1?
-   - Is the name "Reliable" all right?
-2. **Cover from creatures (R1):** keep the center line only (today, RAW), or any corner line?
-3. **Minion squads (R2):** which rule makes 3 into 2 + 1?
-   - (a) **squads of at most 2** (4 = 2 + 2, 5 = 2 + 2 + 1);
-   - (b) up to 3 a squad, but **at least two squads** when there are 3 or more (3 = 2 + 1, 4 = 2 + 2, 6 = 3 + 3);
-   - (c) the book stays (one squad of 3), and the GM splits them in the window.
+**Round 1 (answered 2026-11-19, section 3, items 1 and 5 to 8):** Reliable's wording, Cover, Minion squads, warn don't block, the sliders
+button. **Round 2:**
+1. **The trait's name.** Candidates (none is used in the book today):
+   - **Persistent** (Claude's lean: it keeps trying until it lands);
+   - **Unfailing**;
+   - **Patient** (it waits for its moment);
+   - **Steadfast**.
 
-   Claude's lean: (b). It keeps "up to 3" and gives the turn order its rhythm.
-4. **Warn, don't block (R3):** does anything still block, beyond true impossibilities (no token, no target)? For example, using an Encounter
-   Action already spent, or a 4th Strike.
-5. **The sliders button (D2):** where do Full / Half / Double go? Inside the breakdown window, or a right-click on Apply?
+   Reliable is 4e's.
+2. **Cover (R1, item 8):** keep the center line, with the map showing it better (F7)?
 
 ## 8. The order proposed
 
 1. **A fixes version:** F1 (the Tier 2 gate, first), F2, F3, F4 a-c, F5 a-c, and the Judge reminder (R5).
 2. **The warning audit (R3):** a list of the 174, sorted in its three kinds, for Lucas to answer by exception; then the change.
 3. **The mockups D1 to D5** (Fable), then building them.
-4. **The rules into the book:** Reliable and the Minion squads (Cover if it changes), then Foundry.
+4. **The rules into the book:** the Tier 1 trait (on Smite) and the Minion squads' recommendation, then Foundry.
 5. **Playtest 7**, then the Health question again.
 
 ## 9. The checklist report of v0.0.452 (for the running list)
