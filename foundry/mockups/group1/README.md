@@ -5,7 +5,9 @@ the part that changes, dark and light. The windows are 540 px wide.
 
 - `index.html` (`group1.mjs`, `group1.css`): open it through a local server from the repository's root
   (`/foundry/mockups/group1/index.html?theme=dark|light`; the links at the top switch).
-- Screenshots (2x): `group1-dark.jpg`, `group1-light.jpg`. `node foundry/mockups/group1/shoot.mjs` remakes them (Playwright).
+- **Round 2** (the combat line, after Lucas's answers): `round2.html` (`round2.mjs`, `round2.css`; it also loads `group1.css`). See "Round 2" below.
+- Screenshots (2x): `group1-dark.jpg`, `group1-light.jpg`, `round2-dark.jpg`, `round2-light.jpg`. `node foundry/mockups/group1/shoot.mjs` remakes
+  them (Playwright; `--only round2` or `--only group1` for one page).
 
 ## What each part proposes
 
@@ -97,3 +99,87 @@ Escalation 2, Bloodied; the Orc Warrior (a Standard).
 - **Not drawn:** the slowed AP mark (the HUD's dashed, struck square) and "Basic attack: next +1 Bane" under an NPC's marks (kept as they
   are); the out-of-combat line (unchanged); the HUD itself (unchanged). The hover text on a Basic Action that can't be used is the build's
   (allowed: the reason a button is off); the page strips every hover text, so none shows here. Not tried in Foundry.
+
+---
+
+# Round 2 (2026-11-19): the combat line
+
+Lucas approved round 1's parts 1, 2, 3 (Option A), 5 and 6. His answers change only **the combat line**; `round2.html` redraws it, each
+"As built (v0.0.442)" beside "Proposed", with round 1's approved marks and tiles already on the proposal. Round 1's page is unchanged.
+
+## What the page draws
+
+1. **Sylwen in combat** (3 of 4 AP, the Reaction AP, one Strike made, Escalation 4).
+2. **Aveline in combat** at Escalation 6 with both hooks left, and again with the Critical hook used.
+3. **The Ogre Chieftain (Elite)** at Elite Escalation 2, Bloodied; and its Basic attack's bar.
+4. **The Orc Warrior (Standard)** in combat.
+5. **Sylwen out of combat.**
+6. **The fit** (proposal only): four hooks and long names on Aveline (invented, to test that the line never grows).
+
+## What changed against v0.0.442
+
+- *Removed:* **the Hands** (a PC's two weapon tiles). The HUD's tiles and the coming Inventory tab hold them.
+- *Changed:* the left of the line is **two lists side by side**, the same on a PC and an Elite:
+  - **Hooks** (heading), one hook a line, bold. Today "Hooks left", in a row, each after a gold diamond. The diamond bullet is gone (the
+    diamond is the Reaction AP's).
+  - **Escalation** (heading), the ladder: 2, 4, 6, one rung a line, the number then its name; reached in ink, the others faint.
+- *Changed:* **the Esc. row's marks are the HUD's ticks** (`hudview.mjs escHtml`), filled in ink up to the level, then the number. Today gold
+  diamonds with ringed rungs. A click on a tick sets the Escalation (`data-action="setEscalation"`, `data-n`).
+- *An Elite:* the same line. Its hooks are its phases ("Bloodied +1", "Strained +1"); its ladder is `ELITE_RUNGS`; it gets the Esc. row.
+  Removed: the title "Elite Escalation 2" and its small diamonds, the names as buttons, the sentence "Phases: ...".
+- *A Standard NPC:* its AP marks moved to the right.
+- *The Basic attack's bar of an Elite:* "+1 Boon on its first attack this round" removed.
+- *Out of combat:* see the choices.
+
+## What changed against round 1
+
+- The Hands leave the line (round 1 kept them).
+- The Esc. row: ticks, not diamonds (round 1 kept the diamonds, and listed the clash with the Reaction AP's diamond under "For Lucas to look at").
+- Part 4's left cell: the heading "Phases" and the words "not yet" are gone; the ladder's names, one line under the phases in round 1, are
+  now a list beside the hooks. The same two lists are now on a PC's sheet too.
+- A Standard NPC's marks: at the right (round 1 kept them at the left).
+- The Elite's Basic attack: the Boon sentence removed (round 1 kept it and let its end be cut).
+- The line's height: 72 px (round 1: 66 px).
+
+## The choices (each can be reverted alone)
+
+- **The rungs on the ticks: a taller tick** (16 px against 11 px, standing on the same baseline), as the long marks of a ruler. Why not a gap
+  after it: a gap makes three pairs, which reads as "three things" before it reads as six steps, and it changes the row's width with the
+  ladder; a taller tick keeps six even steps, shows the rung filled or empty, and needs no second color or ring.
+- **The ticks' color: ink** (`--s-ink` filled, `--s-mute` outline), as on the HUD. Gold stays the AP's.
+- **Sizes:** a tick 8 px wide (the HUD: 7 x 10).
+- **A used hook stays, faint, with a check** ("Critical ✓"); v0.0.442 removes it ("Hooks left"). Why: the heading is now "Hooks", a list;
+  the list keeps its shape from the first round to the last; a player sees what is spent and what is left; and it is the same mark as an
+  Elite's phase that has happened (Lucas asked for ✓ there). Faint plus the check: never by color alone.
+- **Ink means "still to come" on both sheets:** an Elite's phase that has happened is faint with the check; the one not yet met is bold.
+- **The heading: "Hooks"** (Lucas wrote "Hook"): it heads a list, and a list of one still reads right. With no hooks: a faint "None".
+- **The ladder's heading: "Escalation".** Lucas asked for the list, not for a heading; it is there so the two lists start on the same line
+  and the 2 / 4 / 6 say what they count. The marks cell's "Esc." is the short form of the same word.
+- **The height: 72 px, fixed** (v0.0.442: 66 px). A heading (15 px) and three lines of 16 px, with 4 px above and below; 66 px would put the
+  ladder at about 12 px or drop its heading. The same on a PC and an Elite, in and out of combat.
+- **A Standard NPC: 44 px, fixed, its left empty.** One row of marks doesn't need 72 px. No faint word at the left: a Standard has no hooks
+  and no Escalation, and "None" would say it could have. (That empty cell is where "Basic attack: next +1 Bane" could go; not drawn.)
+- **The lists' widths:** the Hooks list is as wide as its longest hook (at least 118 px, at most half the cell); the ladder takes the rest.
+- **The fit** (Lucas: "That area should never grow"): each list shrinks its text by half pixels until no name is wider than its column and
+  the list is no taller than its place (hooks from 14 px, the ladder from 13 px). Never cut, never taller. Up to three hooks of a usual
+  length stay at 14 px; part 6's four hooks with a 29-letter name land near 9.5 px.
+- **Out of combat:** the line keeps its height and its two lists, quiet (no hook bold, no rung reached), and "Out of combat" is written where
+  the marks will be. Why: without the Hands the line would be 72 px holding two words; with the lists nothing jumps when combat begins, and
+  the ladder (the class's Passives) can be read at any time. An Elite follows the same rule; a Standard shows only "Out of combat" at the
+  right (neither NPC drawn out of combat).
+
+## What is real code and what is not (round 2)
+
+- **Real:** every "As built" window (the system's template and CSS, as in round 1); `ELITE_RUNGS` and the Elite's rungs reached
+  (`sheetmodel.mjs`); the as-built hooks' fit (`SM.fitHooks`).
+- **Not real:**
+  - `round2.mjs` `line()` rebuilds the combat line's DOM (the lists cell, the ticks, the empty cell, "Out of combat"); `basicSub()` rewrites
+    the Basic attack's subtitle; the fit at the end of the page.
+  - `round2.css`: every rule, under `.r2-line`.
+  - **The PCs' ladders are stand-ins** written in `round2.mjs` (`LADDER`: Sylwen 2 Lean and Loose, 4 Steady Draw, 6 Apex; Aveline 2 Roving
+    Judgment, 4 Weight of Judgment, 6 Apex); the build reads them from the class's Passives. **The hooks** are given by hand too (Sylwen:
+    Critical; Aveline: Critical, Kindled Wrath), and part 6's are invented.
+  - In the build: the template's combat line, `pcsheet.mjs` (the hooks with their used state, the ladder, the Elite's phases as hooks),
+    `sheetmodel.mjs` `fitHooks` rewritten for a list, `system.css`, and the Hands' markup and CSS removed from the sheet.
+- **Not drawn:** an NPC out of combat; a PC with no hooks ("None"; the rule is in the CSS); Momentum beside the Esc. number (kept after the
+  number, as built); the slowed AP mark and "Basic attack: next +1 Bane" (as in round 1). No hover texts. Not tried in Foundry.
