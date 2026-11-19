@@ -217,3 +217,26 @@ Read together: Fire and Enchantment, a hearth that keeps a camp warm; Death and 
 - **Every spell outside a fight takes 10 minutes to cast,** unless its card says otherwise. Magic is the slow way; under pressure the skilled character acts.
 - **A card prints a Surge cost from 0 to 3.** The narrow ones cost none (a caster still has magic after a Rest, when the pool is 0); the ones that open a large way cost Surge.
 - Where a result is uncertain, the card calls for a Check. The casting is always noticed, and a failed casting has still spent its Surge.
+
+### Skeleton decision (d): what a rank opens (Lucas: "A with C [...] but subtly"; record, decision 126)
+
+A rank opens the spells that ask for it. A card may also print a line that a higher rank unlocks, which can lower the price. Never a general rule; card by card.
+
+**Lucas's skeletal example, the model of a spell outside a fight:**
+
+> Camp alarm
+> Abjuration 2
+> Casting time: 1 hour
+> You make the alarm more clear, attempt a dc 13 skill (likely crafting for something). On a success, your alarm instead of warning everyone nearby, it send a mental message to you.
+> 1 surge: it sends to you and your other creatures
+> Abjuration 4: You make it in 10 minutes.
+
+| His line | The decision it uses |
+|---|---|
+| A written spell with a name | The shape: written spells (119) |
+| "Abjuration 2" | A School says what it does: Abjuration guards and warns (123); a minimum rank (5) |
+| "Casting time: 1 hour" | Time is the standing price; 10 minutes unless the card says otherwise (125) |
+| The alarm warns everyone nearby | It works with a printed limit that leaves the problem standing (115): the intruder hears it too |
+| "attempt a dc 13 skill [...] On a success" | Magic opens the way and a skill does the rest (114, 118); the Check is a skill's, not the caster's Power Modifier |
+| "1 surge: it sends to you and your other creatures" | A card prints its own stretch with its price (124) |
+| "Abjuration 4: You make it in 10 minutes" | A line a higher rank unlocks (126) |
