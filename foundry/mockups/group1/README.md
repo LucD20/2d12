@@ -6,8 +6,10 @@ the part that changes, dark and light. The windows are 540 px wide.
 - `index.html` (`group1.mjs`, `group1.css`): open it through a local server from the repository's root
   (`/foundry/mockups/group1/index.html?theme=dark|light`; the links at the top switch).
 - **Round 2** (the combat line, after Lucas's answers): `round2.html` (`round2.mjs`, `round2.css`; it also loads `group1.css`). See "Round 2" below.
-- Screenshots (2x): `group1-dark.jpg`, `group1-light.jpg`, `round2-dark.jpg`, `round2-light.jpg`. `node foundry/mockups/group1/shoot.mjs` remakes
-  them (Playwright; `--only round2` or `--only group1` for one page).
+- **Round 3** (a heraldic symbol on each Escalation rung): `round3.html` (`round3.mjs`, `round3.css`; it also loads `group1.css` and
+  `round2.css`). See "Round 3" at the end.
+- Screenshots (2x): `group1-dark.jpg`, `group1-light.jpg`, `round2-dark.jpg`, `round2-light.jpg`, `round3-dark.jpg`, `round3-light.jpg`.
+  `node foundry/mockups/group1/shoot.mjs` remakes them (Playwright; `--only group1`, `--only round2` or `--only round3` for one page).
 
 ## What each part proposes
 
@@ -183,3 +185,63 @@ Lucas approved round 1's parts 1, 2, 3 (Option A), 5 and 6. His answers change o
     `sheetmodel.mjs` `fitHooks` rewritten for a list, `system.css`, and the Hands' markup and CSS removed from the sheet.
 - **Not drawn:** an NPC out of combat; a PC with no hooks ("None"; the rule is in the CSS); Momentum beside the Esc. number (kept after the
   number, as built); the slowed AP mark and "Basic attack: next +1 Bane" (as in round 1). No hover texts. Not tried in Foundry.
+
+---
+
+# Round 3 (2026-11-19): a heraldic symbol on each Escalation rung
+
+Lucas on round 2: "Very good, but I think the hooks/critical can use some simple, 'serious' style like a Heraldry symbol next each
+Escalation, where 2 is a simpler, 4 is 2 but more 'enhanced', 6 follows suit." Round 2's combat line is approved and unchanged;
+`round3.html` adds only the symbols. Rounds 1 and 2's pages are unchanged.
+
+## What the page draws
+
+1. **Three families of symbols**, each a 2 / 4 / 6 triple: large (48 px tall), then as the ladder writes it (14 px beside 13 px text),
+   reached and not reached, on the dark and the light sheet's colors.
+   - **A, the escutcheon:** a plain shield; the shield with a chevron; the shield with a chevron under a chief (a filled band across its top).
+   - **B, marks of rank:** one chevron; two; three under a bar.
+   - **C, the keep:** a low embattled wall; a tower with its gate; the tower flying a banner. Drawn solid (its battlements are too fine for a line at 14 px).
+2. **The combat line with each family**: Aveline at Escalation 4 (2 and 4 reached, 6 not; both hooks left) and the Ogre Chieftain (the Elite
+   ladder 2 Pressing, 4 Relentless, 6 Second Wind; Elite Escalation 2, Bloodied).
+3. **The number beside the symbol**: round 2 (the number alone), the symbol and the number, the symbol alone.
+4. **One variant with a mark on each hook** (a roundel), beside the line without it.
+5. **The recommendation**, with Aveline's and the Ogre's line drawn at twice their size.
+
+## What changed against round 2
+
+- *Added:* a symbol before each rung's number in the Escalation list. Moved, removed: nothing.
+- The line's height is the same: 72 px, fixed. A symbol is 14 px tall in the 16 px row and is sized in em, so round 2's fit shrinks it with the text.
+- One color: the row's own (ink on a rung reached, faint on the others). No gold, no fill that means a state.
+
+## The recommendation
+
+- **Family A, the escutcheon.**
+  - It is the only family where 4 is literally 2 with more on it: the outline never changes, so the three rows are one column of the same
+    shape and the eye reads only what was added (nothing, a chevron, a chevron under a chief).
+  - A shield is no interface control's icon. B's upward chevrons are also the arrows that collapse or scroll up, and count 1, 2, 3 beside
+    the numbers 2, 4, 6. C's tower reads as a chess rook and, drawn solid, is the heaviest thing on the line.
+  - Its weak spot: at 14 px the chevron is about 5 px wide, so 2 and 4 differ by a small detail. They are never read alone (the number and
+    the name are beside them).
+- **The number stays.** The symbol says which rung (first, second, third); only the number says at which Escalation it is reached. The ticks
+  count, but matching a tall tick to a row is work, and with no hover texts nothing else would teach that the shield with a chevron means 4.
+  It costs about 14 px of width and no height.
+- **No mark on the hooks.** The roundel says nothing the bold name, the faint name and the check don't; it is a bullet, and a fifth kind of
+  mark on a line that has squares, a diamond, slashes and ticks. The ladder's symbols show a growth; a hook has nothing to grow.
+
+## The choices (each can be reverted alone)
+
+- **6's enrichment is a chief, not a crown.** A crown above the shield would shrink the shield to fit 14 px and break the column of equal outlines.
+- **The symbol is the rung's place on its ladder** (first, second, third), not its number: every ladder has three rungs, so a PC's Passives
+  and the Elite's ladder take the same three drawings.
+- **The order in a row:** the symbol, the number, the name.
+- **The hooks' mark in the variant is a roundel** (heraldry's plainest charge): solid while the hook is left, a ring once used. Not the plain
+  shield (it would say "a rung"), not a diamond (the Reaction AP's).
+- **Each symbol is one drawing** (viewBox 24 x 28, strokes of 2.5 units: about 1.25 px at the line's size), the same at 48 px and at 14 px.
+
+## What is real code and what is not (round 3)
+
+- **Real:** the sheet's template, CSS and model, as in round 2.
+- **Not real:** `round3.mjs` (the symbols, `FAMILIES`, as inline SVG; `lists()` and `line()` copied from round 2 with the symbol added; the
+  hooks and ladder names stand-ins as in round 2) and `round3.css` (the rules under `.r3`, `.r3-hooks`, and the page's plates).
+- In the build: three small SVGs (inline in the template or as CSS masks), one rule in `system.css`, and the ladder's rows in the template.
+- No hover texts (the symbols are `aria-hidden`: the number and the name beside them say everything). Not tried in Foundry.
