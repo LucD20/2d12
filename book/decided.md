@@ -6,11 +6,11 @@
 
 ## 1. Magic in a fight
 
-**What a spell is.** A Power Action with [Spell], one Path and one School, and a minimum rank in each ("Fire 2 • Evocation 1"); rarely two Paths, never three [5, 63, 100]. Eight Paths (Fire, Air, Water, Earth, Astral, Death, Nature, Glamour), each with a usual damage subtype and a usual condition that is only a writer's guide [23, 64, 91]. Astral's subtypes are Force and Psychic; Glamour deals **false damage** (Nonlethal Resolve damage, removed when its caster goes Down, the rest at the encounter's end; no subtype) [95, 105]. Six Schools, sorted in a fixed order: Conjuration, Abjuration, Enchantment, Evocation, then Alteration or Thaumaturgy [65]. The Paladin's Divine is not magic; magic and the Divine meet like any two effects [12, 94]. The spell cards written so far are placeholders [84].
+**What a spell is.** A Power Action with [Spell], one Path and one School, and a minimum rank in each ("Fire 2 • Evocation 1"); rarely two Paths, never three [5, 63, 100]. Eight Paths (Fire, Air, Water, Earth, Astral, Death, Nature, Glamour), each with a usual damage subtype and a usual condition that is only a writer's guide [23, 64, 91]. Astral's subtypes are Force and Psychic; Glamour deals **false damage** (Nonlethal Resolve damage, removed when its caster goes Down, the rest at the encounter's end; no subtype; **never made Lethal**) [95, 105; Lucas, 2026-11-19]. Six Schools, sorted in a fixed order: Conjuration, Abjuration, Enchantment, Evocation, then Alteration or Thaumaturgy [65]. The Paladin's Divine is not magic; magic and the Divine meet like any two effects [12, 94]. The spell cards written so far are placeholders [84].
 
 **Getting magic.** A Magic Talent or a class opens a Path and a School together, rank 1 each, with two spells [27]. Mastery: one point an encounter (won, normal or harder) into a single thing you used, a weapon, a Path or a School [75]. Ranks at 10, 20, 30, 45, 60 Mastery; **rank 6 is the cap** [27, 105]. A new spell at each new rank; **each spell pick is paired: one for fights, one for outside a fight** [120]. A rank is never a number on a roll or a DC; Talents never give ranks [17, 18].
 
-**Casting.** A card prints [Handle] (a free hand), [Incanted] (you must be able to speak) or [Focus] (concentration) when it needs one [77, 78, 85, 105]. A casting is always noticed, who and on whom, unless the spell is [Subtle] [97, 100]. You know a spell's Path, its School, or the spell itself if you meet its ranks in them [97, 98]. Nothing counters a casting: a counterspell is a Talent [99]. **A spell takes the ranged rules only if it prints [Ranged]** [108]. A Save spell: the caster's Boons and Banes change its **Save DC** (a set number in place of 2d12), including what applies to one creature; where the roll would be Doomed, the Saves are Favored [88, 100]. An [Area] ignores Senses [109]. A [Handle] Reaction spell can't be cast with full hands [103].
+**Casting.** A card prints [Handle] (a free hand), [Incanted] (you must be able to speak) or [Focus] (concentration) when it needs one [77, 78, 85, 105]. A casting is always noticed, who and on whom, unless the spell is [Subtle] [97, 100]. You know a spell's Path, its School, or the spell itself if you meet its ranks in them [97, 98]. Nothing counters a casting: a counterspell is a Talent [99]. **A spell takes the ranged rules only if it prints [Ranged]** [108]. A Save spell: the caster's Boons and Banes change its **Save DC** (a set number in place of 2d12), including what applies to one creature; **a target hidden from the caster lowers it for that target, unless the spell is an [Area]** (Chapter 1's "your Senses don't change a Save Action" goes); where the roll would be Doomed, the Saves are Favored [88, 100, 109; Lucas, 2026-11-19]. A [Handle] Reaction spell can't be cast with full hands [103].
 
 **Armor.** Medium: start an encounter with 1 less Surge. Heavy: the same, and your first spell each turn costs 1 more Surge. Only in fights; never below 0 at the start [80, 89, 100].
 
@@ -39,7 +39,7 @@
 
 ## 3. Play outside a fight (fixed with magic; the Skills pass inherits it)
 
-- **Routine:** if 11 + your total skill modifier is at least the task's DC, with no threat and no time pressure, you do it without rolling. The system has no "trained" tick [115].
+- **Routine:** if 11 + your total skill modifier **meets** the task's DC, with no threat and no time pressure, you do it without rolling; **a Tier 2 at most**. The system has no "trained" tick [115; Lucas, 2026-11-19].
 - **A failed Check:** Tier 1 no, or yes at a real cost; Tier 2 yes, but; Tier 3 yes, and more. A casting always spends its Surge and is always noticed [116].
 - **No help Action outside a fight:** the one best suited makes the Check; what the others do changes the task or is its own Check. **In a fight, a help Basic Action gives 1 Support Boon, no roll** [117].
 - **Five kinds of outcome belong to a Check,** as a guide: getting past, swaying people, finding out, enduring and travelling, making and mending [118].
@@ -61,13 +61,11 @@
 
 ## 5. Questions still to ask
 
-**Small, any time:**
-1. Routine: "at least" the DC (meets it) or beats it; does Routine give a Tier 2 only? [115]
-2. False damage can never be made Lethal? (assumed) [95]
-3. The Save DC: does a target hidden from the caster lower it, replacing Chapter 1's "your Senses don't change a Save Action"? [100]
-4. The retry rule: can another character make the same attempt? Is "the GM decides" a separate exit, or the judge of whether the situation changed?
-5. A Lingering that a card writes without a subtype today: which subtype does each get? [102, 105]
-6. Is a lower cost in a Talent (a cheaper Sustain, a smaller Overreach die) a changed rule, allowed by T1? (`talents-design.md` section 8, problem 2)
+**Answered 2026-11-19:** Routine meets the DC, a Tier 2 at most; false damage is never Lethal; a hidden target lowers a Save DC unless the spell is an [Area]; **a lower cost in a Talent is not allowed by T1** (Lucas: "Not really, no"): the seeds that only lower a cost (a cheaper Sustain, a smaller Overreach die, a lighter armor cost) are out as written.
+
+**Small, still open:**
+4. The retry rule: can another character make the same attempt? Lucas, 2026-11-19: "This requires extensive search". His points: a failed attempt must mean something and never stop the story; it needs a drawback where the task matters (the villain prepares, the noise alerts others, time is lost); a low-stakes task (a locked chest) has none, so anyone can just try again; group rolls don't fit a chest; "everyone rolls" is easy but dull; "Tier 1 means failure and nobody can try again" is decent; in a social scene a retry needs good faith and a changed situation. Research: `research/raw/2026-11-19-party-retries.md` (running). And: is "the GM decides" a separate exit, or the judge of whether the situation changed?
+5. The Lingerings written without a subtype, for Lucas to review: the Archer's **Wounding Shot** (`book/cards/stage0/gear.json`: "Lingering 1 / Lingering 2 (Bo/In) by Tier"); and the Bestiary's rider price table (Chapter 14: "Lingering 1", "Lingering 2", "Lingering 1d4", "Lingering 1d6", "Lingering 2d6"), which is a price list, not a card.
 
 **For the pieces still to design:**
 7. Retraining after Stage 0: its mechanic [T8].
