@@ -1,8 +1,31 @@
 # Talents, the first pass: the card template and four test Talents
 
-**2026-11-19.** The shape of a Talent card under decisions T1 to T10 of `book/talents-design.md`, and four Talents written to test it, in two groups. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Lucas's cards come a few at a time, with him (`book/cards/README.md`): these are drafts for him to correct, and each correction becomes a rule.
+**2026-11-19.** Four Talents written to test the shape decided in `book/talents-design.md` (T1 to T13), in two groups, each with its ranks drafted so the size can be seen. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Lucas's cards come a few at a time, with him: these are drafts for him to correct.
 
-**Audited** by an independent reader against the records and the rulebook; this is the corrected version, and what changed is the last table. The first version is in the file's history.
+**Audit status.** The first version of the four was audited and corrected (section 7). **The branching ranks in sections 3 and 4 are new and not yet audited.** Stage 2 is not written in the game, so every Stage on a rank is a placeholder.
+
+---
+
+## How to read this file
+
+Each Talent has the same five parts:
+
+1. **At a glance:** its group, what it does in one line, how big it is.
+2. **Rank I:** the card you get when you first take it.
+3. **The tree:** every rank and branch on one picture.
+4. **The branches:** a table, one row a branch, Rank II beside the Rank III that continues it.
+5. **Notes:** what it lifts, what it borders, open points.
+
+**Sizes at a glance:**
+
+| Talent | Group | Ranks | Branches at Rank II | Picks to take all of one path |
+|---|---|---|---|---|
+| Opportunity Attack | Sentinel | I, II, III | 3 | 3 |
+| Shoulder Through | Sentinel | I, II, III | 3 | 3 |
+| Called Shot | Archery | I, II | 3 | 2 |
+| Overwatch | Archery | I, II | 3 | 2 |
+
+Two Talents run three ranks deep, two stop at Rank II (T13: as many ranks as it has something worth a pick to add).
 
 ---
 
@@ -10,31 +33,19 @@
 
 A Talent is written on the card Structure (`book/cards/card-structure.md`), with these differences.
 
-- **The title bar:** **Talent · its group · Stage N** (or **Skill Talent**).
-- **Prerequisite** (only when needed), its own line before anything else: what you must have **to take** the Talent: a trait one of your cards carries, or a Stage. Never another Talent (T5). It is not the Action's **Requirements** line (Chapter 2: checked each time you use it), nor the **Requires** trait group. A trait that already needs its kit (a [Projectile] Action needs a Projectile weapon: Chapter 7) is no prerequisite.
-- **The body**, one of three:
-  - **an Action or a Reaction card** inside the Talent, written whole by the Structure (its Attack line, Distance, Target, Modes as blocks);
-  - **a rule** that adds to Actions by their traits, never naming a class card (T9);
-  - **a lifted limit:** the base rule's sentence, and what this Talent lets you do instead.
-- **Ranks**, after the body: **Rank II:** and **Rank III:**, up to two, each a new rule worth a pick on its own, never a bigger number (T1, T4). **A rank says what it adds to:** "the Interrupt also...", "a new Mode:", "a new line:". A rank may write its own minimum Stage. A sheet shows only the ranks taken.
-- **Flavor** under the title, as on every card (Claude writes it). **`automation`** (Bronze, Silver, Gold) on the card, as every card has (CLAUDE.md).
-
-```
-> **Name** · Talent · Group · Stage 0
-> *Flavor: one sentence of what is done and seen.*
-> **Prerequisite:** a trait one of your cards carries (only if needed)
-> (the body: an Action or Reaction card; a rule; or a lifted limit)
-> **Rank II:** what it adds to, then the new rule.
-> **Rank III (Stage 1):** what it adds to, then the new rule.
-```
+- **Title bar:** **Talent · its group · Stage N** (or **Skill Talent**).
+- **Prerequisite** (only when needed): what you must have to take it: a trait one of your cards carries, or a Stage. Never another Talent (T5). Not the Action's Requirements line, and not the Requires trait group.
+- **Body:** an Action or Reaction card written whole by the Structure; or a rule that adds to Actions by their traits (never naming a class card: T9); or a lifted limit.
+- **Ranks:** **Rank II** and **Rank III**, each a pick (T12), each worth a whole pick (T13), never a bigger number (T1, T4). **At a rank a card may offer up to three branches** (T11); the next rank continues the branch chosen. A rank says what it adds to ("the Interrupt also...", "a new Mode", "a new line"), and may write a minimum Stage. A sheet shows only the path taken.
+- **Flavor** under the title (Claude writes it); **`automation`** on the card.
 
 ---
 
-## 2. Group: Sentinel (holding ground in melee)
+## 2. Opportunity Attack
 
-### Opportunity Attack
+**At a glance.** Sentinel. A Reaction that punishes an enemy for leaving you. Three ranks, three branches: the mage-hunter, the line-holder, the bodyguard.
 
-*Lucas's own example (T9), rewritten after his answers: a Talent, made weaker so it competes (Round, not At-will), with branching ranks (T11). The card exists in `cards/basic-actions.json` but the book prints no Opportunity Attack, and Chapter 2 says no creature has a Reaction of its own.*
+**Rank I**
 
 > **Opportunity Attack** · Talent · Sentinel · Stage 0
 > *You were waiting for them to look away.*
@@ -43,60 +54,119 @@ A Talent is written on the card Structure (`book/cards/card-structure.md`), with
 > **Target:** The triggering creature.
 > **Attack:** Weapon vs. Armor Defense
 > You make a Weapon Attack (1A) against the target.
->
-> **Rank II (Stage 1), choose one branch:**
-> - **Spellwatch:** the Interrupt also happens when an enemy adjacent to you would use a [Spell] Action. (A [Subtle] casting isn't noticed: magic record, 97.)
-> - **Hamstring:** a new line: on a Tier 3, the triggering Move Action is disrupted; the target stays in the square it was leaving.
-> - **Bodyguard:** the Interrupt also happens when an enemy within your Reach would leave a square adjacent to one of your allies.
->
-> **Rank III (Stage 2), the next step of your branch:**
-> - **Spellbreaker** (after Spellwatch): when the Weapon Attack of an Opportunity Attack triggered by a [Spell] Action gets a Critical, that [Spell] Action is disrupted (Chapter 2).
-> - **Cripple** (after Hamstring): a new line: on a Tier 3, the target is also Prone.
-> - **Interpose** (after Bodyguard): a new line: after the Weapon Attack, you can Evade 1 toward the ally.
+
+**The tree**
 
 ```
- Rank I            [ Opportunity Attack ]   1R · Round
-                              │
-          ┌───────────────────┼───────────────────┐
- Rank II  ▼                   ▼                   ▼
-    [ Spellwatch ]       [ Hamstring ]       [ Bodyguard ]
-          │                   │                   │
- Rank III ▼                   ▼                   ▼
-    [ Spellbreaker ]     [ Cripple ]         [ Interpose ]
+ Rank I                 [ Opportunity Attack ]   1R · Round
+                                   │
+            ┌──────────────────────┼──────────────────────┐
+ Rank II    ▼                      ▼                      ▼
+ (Stage 1)  [ Spellwatch ]         [ Hamstring ]          [ Bodyguard ]
+            │                      │                      │
+ Rank III   ▼                      ▼                      ▼
+ (Stage 2)  [ Spellbreaker ]       [ Cripple ]            [ Interpose ]
 ```
 
-**No prerequisite:** every creature has Fists, a Melee weapon (Chapter 15). **Spellbreaker** is a second way to stop a casting, beside the counterspell Talent of decision 99 (it acts before the casting begins, by an Interrupt). **Stage 2 is not written in the game yet**; the Stages on the ranks are placeholders. **Lucas's earlier answer (2026-11-19, "C for sure"):** it stays a Talent, made weaker so it competes, rather than a Basic Action everyone has.
+**The branches**
 
-### Shoulder Through
+| Branch | Rank II | Rank III |
+|---|---|---|
+| **The mage-hunter** | **Spellwatch:** the Interrupt also happens when an enemy adjacent to you would use a [Spell] Action. A [Subtle] casting isn't noticed, so it escapes | **Spellbreaker:** when the Weapon Attack of an Opportunity Attack triggered by a [Spell] Action gets a Critical, that [Spell] Action is disrupted |
+| **The line-holder** | **Hamstring:** a new line: on a Tier 3, the triggering Move Action is disrupted; the target stays in the square it was leaving | **Cripple:** a new line: on a Tier 3, the target is also Prone |
+| **The bodyguard** | **Bodyguard:** the Interrupt also happens when an enemy within your Reach would leave a square adjacent to one of your allies | **Interpose:** a new line: after the Weapon Attack, you can Evade 1 toward that ally |
 
-> **Shoulder Through** · Talent · Sentinel · Stage 0
-> *You lower your shoulder and the line gives.*
-> Once on your turn, during an Advance, you can move through one enemy's square as if it were an ordinary square (Chapter 7 makes it Difficult Terrain). You can't end your movement there; if your movement is disrupted while you are in that square, it ends in the last square you left.
-> **Rank II:** A new line: the enemy you moved through is Staggered (EoT).
-> **Rank III:** A new line: you can use it during a Charge, and the enemy's square doesn't break the Charge's line.
-
-What it lifts: Chapter 7's "passing through the squares of an unwilling creature is Difficult Terrain". Anyone can push through; this makes it faster (T2's permission test: better, never "you can"). **Beside the Archer's Footwork (Weave mode)**, which already moves through unwilling creatures and ignores Difficult Terrain for 1 AP: this Talent is narrower (one enemy, once a turn) and free.
+**Notes**
+- **No prerequisite:** every creature has Fists, a Melee weapon (Chapter 15).
+- **Round, not At-will** (Lucas: made weaker so it competes, "C for sure").
+- **Spellbreaker** is a second way to stop a casting, beside the counterspell Talent of magic decision 99.
 
 ---
 
-## 3. Group: Archery (the bow and the sling)
+## 3. Shoulder Through
 
-### Called Shot
+**At a glance.** Sentinel. A faster way through the enemy's line during an Advance. Three ranks, three branches: the battering ram, the gap-maker, the charger. **The branches are new and not yet audited.**
+
+**Rank I**
+
+> **Shoulder Through** · Talent · Sentinel · Stage 0
+> *You lower your shoulder and the line gives.*
+> Once on your turn, during an Advance, you can move through one enemy's square as if it were an ordinary square. You can't end your movement there; if your movement is disrupted while you are in that square, it ends in the last square you left.
+
+**The tree**
+
+```
+ Rank I                 [ Shoulder Through ]   once a turn, in an Advance
+                                   │
+            ┌──────────────────────┼──────────────────────┐
+ Rank II    ▼                      ▼                      ▼
+ (Stage 1)  [ Bowl Over ]          [ Make a Gap ]         [ Break the Line ]
+            │                      │                      │
+ Rank III   ▼                      ▼                      ▼
+ (Stage 2)  [ Bull Rush ]          [ Hold the Gap ]       [ Breach ]
+```
+
+**The branches**
+
+| Branch | Rank II | Rank III |
+|---|---|---|
+| **The battering ram** | **Bowl Over:** a new line: the enemy you moved through is Staggered (EoT) | **Bull Rush:** a new line: as you leave its square, you can push it: Pushed 1, in the direction you are moving |
+| **The gap-maker** | **Make a Gap:** a new line: until the start of your next turn, your allies can move through that enemy's square as if it were an ordinary square | **Hold the Gap:** a new line: until the start of your next turn, that enemy can't use Reactions against an ally who moves through its square |
+| **The charger** | **Break the Line:** you can use it during a Charge, and the enemy's square doesn't break the Charge's line | **Breach:** a new line: the Charge's Weapon Attack can target the enemy you moved through |
+
+**Notes**
+- **What it lifts:** Chapter 7's "passing through the squares of an unwilling creature is Difficult Terrain". Anyone can push through; this makes it faster (T2's permission test: better, never "you can").
+- **Beside the Archer's Footwork (Weave),** which moves through unwilling creatures for 1 AP: this Talent is narrower (one enemy, once a turn) and free.
+- **Hold the Gap borders Staggered:** it is Staggered aimed at one kind of target; worth an audit question.
+
+---
+
+## 4. Called Shot
+
+**At a glance.** Archery. A slower shot aimed at a part of the body, each part its own effect. Two ranks; Rank II adds one of three new targets. **The branches are new and not yet audited.**
+
+**Rank I**
 
 > **Called Shot** · Talent · Archery · Stage 0
 > *You stop aiming at the man and start aiming at his hand.*
 > **Called Shot** · 2 AP · Round · [Projectile, Ranged, Strike, Weapon]
 > **Distance:** Weapon · **Target:** One creature
 > **Attack:** Weapon vs. Armor Defense
-> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod], and the Mode you chose.
+> Before the roll, choose a Mode.
+> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod], and the Mode's effect.
 > **The hand:** the target drops one object it holds in one hand (its choice); an object held in two hands isn't dropped.
 > **The arm:** Pressed 1 (1 round).
-> **Rank II:** A new Mode. **The throat:** the target can't use [Incanted] Actions (EoT).
-> **Rank III:** A new Mode. **The eye:** Half-Blinded (EoT).
 
-Modes as blocks, as Trick Shots writes them. The leg (Hindered) is gone: it was Trick Shots' Pin.
+**The tree**
 
-### Overwatch
+```
+ Rank I                 [ Called Shot ]   the hand · the arm
+                                   │
+            ┌──────────────────────┼──────────────────────┐
+ Rank II    ▼                      ▼                      ▼
+ (Stage 1)  [ The Throat ]         [ The Eye ]            [ The Heart ]
+```
+
+**The branches** (each adds a Mode)
+
+| Branch | Rank II: a new Mode |
+|---|---|
+| **The silencer** | **The throat:** the target can't use [Incanted] Actions (EoT) |
+| **The blinder** | **The eye:** Half-Blinded (EoT) |
+| **The finisher** | **The heart:** if the target is Bloodied, its Tier 3 deals [V] 2[W] + [Mod] in place of 1[W] |
+
+**Notes**
+- **No Rank III:** nothing more worth a whole pick (T13).
+- **The heart is a number** (more dice), which T1 and T4 forbid as a bare rank. It is drafted to show the line: **it should go or become a different effect.** A candidate in its place: **the knee:** the target can't Advance on its next turn (it can still Crawl, Stand, Evade).
+- The leg (Hindered) was taken out in the audit: it was Trick Shots' Pin.
+
+---
+
+## 5. Overwatch
+
+**At a glance.** Archery. Spend 1 AP on your turn to hold a shot for an enemy who comes too close. Two ranks; Rank II widens what you watch for. **The branches are new and not yet audited.**
+
+**Rank I**
 
 > **Overwatch** · Talent · Archery · Stage 0
 > *You keep the arrow on the string and your eyes on the gap.*
@@ -107,25 +177,47 @@ Modes as blocks, as Trick Shots writes them. The leg (Hindered) is gone: it was 
 > **Target:** The triggering creature.
 > **Attack:** Weapon vs. Armor Defense
 > You make a Weapon Attack (1A) against the target.
-> **Rank II:** A new line on Held Shot: on a Tier 3, the enemy's movement is disrupted; it stops in the square it would have left.
 
-**Paid on your own turn (1 AP),** so it is a choice against a Strike, not an extra attack every round. Two ranks only. The moment is one Chapter 2 lists ("an enemy would enter a square adjacent to you or to an ally").
+**The tree**
+
+```
+ Rank I                 [ Overwatch ]   1 AP: hold a shot until your next turn
+                                   │
+            ┌──────────────────────┼──────────────────────┐
+ Rank II    ▼                      ▼                      ▼
+ (Stage 1)  [ Pin Down ]           [ Return Fire ]        [ Silencing Shot ]
+```
+
+**The branches**
+
+| Branch | Rank II |
+|---|---|
+| **The warden** | **Pin Down:** a new line on Held Shot: on a Tier 3, the enemy's movement is disrupted; it stays in the square it was leaving |
+| **The duelist** | **Return Fire:** Held Shot's Interrupt also happens when an enemy within your weapon's normal range would make a [Ranged, Strike] Action against you or an ally |
+| **The mage-hunter** | **Silencing Shot:** Held Shot's Interrupt also happens when an enemy within your weapon's normal range would use a [Spell] Action |
+
+**Notes**
+- **Paid on your own turn (1 AP):** a choice against a Strike, never a free attack every round (the audit's must-have finding).
+- **Pin Down and Hamstring** (Opportunity Attack) are the same effect in two groups: one melee, one ranged. Fine, or a sign one should change.
+- **Silencing Shot and Spellwatch** give the mage-hunter a path in each group.
 
 ---
 
-## 4. What the four test
+## 6. What the four test
 
 | What the template must hold | Where |
 |---|---|
-| A Reaction inside a Talent, ranks that add a trigger and a specialty | Opportunity Attack |
-| A rule on a Basic Action that lifts a base limit | Shoulder Through |
-| An Action with Modes; ranks that add a Mode | Called Shot |
+| A Reaction with branching ranks three deep | Opportunity Attack |
+| A rule on a Basic Action that lifts a base limit, with branches | Shoulder Through |
+| An Action with Modes; ranks that add a Mode; a Talent with no Rank III | Called Shot |
 | An Action that grants a Reaction until your next turn (an inline Action) | Overwatch |
-| A Talent that reaches magic (a second way to stop a casting; a Mode against [Incanted]) | Opportunity Attack, Called Shot |
+| Talents that reach magic (stopping a casting; a Mode against [Incanted]) | Opportunity Attack, Called Shot, Overwatch |
+| **A branch that breaks a rule, drafted on purpose to show the line** | Called Shot, the heart |
 
 ---
 
-## 5. The audit: what the independent reader changed
+## 7. The audit of the first version: what the independent reader changed
+
 
 | Talent | Finding | Now |
 |---|---|---|
