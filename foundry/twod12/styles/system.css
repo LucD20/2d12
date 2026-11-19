@@ -5535,3 +5535,27 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-actor .twod12.sheet.pcs.ps2 .inv-where i { font-size: 9px; color: var(--s-mute); }
 .twod12-actor .twod12.sheet.pcs.ps2 .inv-qty button { all: unset; box-sizing: border-box; width: 18px; height: 18px; line-height: 16px; text-align: center; border: 1px solid var(--s-hair); border-radius: 2px; color: var(--s-mute); font-size: 13px; cursor: pointer; }
 .twod12-actor .twod12.sheet.pcs.ps2 .inv-qty button:hover { color: var(--s-ink); border-color: var(--s-rule); }
+/* v0.0.456 (pack SHEETS-HUD's leftover: "the Forced Movement bar and the pick bar inside the Situational section keep their own look"): a bar that
+   asks in the Situational section (the pick bar, a Forced Movement, a Setup's or a Charge's movement, End movement) takes the section's item look:
+   its words in the item's text (the bold lead a little larger), its buttons the HUD's outlined ones (the first filled on hover, Cancel quiet),
+   no icons in them, a thin line above it */
+.twod12-hud .h3-sit .twod12-linebar.in-hud { padding-top: 3px; font-size: .81rem; color: var(--hud-ink); }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text { color: var(--hud-ink); margin: 0 0 3px; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text > b:first-child { font-size: .88rem; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv) { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 4px; height: auto; margin: 0; padding: 0 9px; border: 1px solid var(--s-gold, #d2a75a); border-radius: 0; background: none; box-shadow: none; font: 600 .78rem/1.55 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; white-space: nowrap; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv):hover,
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-opt.hover:not(.sq), .lb-side button.on) { background: var(--s-gold, #d2a75a); color: var(--hud-bg); }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-give, [data-id="__cancel"]) { color: var(--hud-mute); border-color: var(--hud-line); }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-adv) i { display: none; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-side { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-lbl { color: var(--hud-mute); font-size: .75rem; align-self: center; }
+/* v0.0.456: the theme's scoped linebar rules (a frame, a shadow, filled buttons) beat these on proximity: the in-HUD look is decisive here */
+.twod12-hud .h3-sit .twod12-linebar.in-hud { border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv) { flex: none !important; width: auto !important; background: none !important; border: 1px solid var(--s-gold, #d2a75a) !important; border-radius: 0 !important; color: var(--hud-ink) !important; box-shadow: none !important; height: auto !important; line-height: 1.55 !important; font-size: .78rem !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv):hover, .twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-opt.hover:not(.sq), .lb-side button.on) { background: var(--s-gold, #d2a75a) !important; color: var(--hud-bg) !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-give, [data-id="__cancel"]) { color: var(--hud-mute) !important; border-color: var(--hud-line) !important; }
+.twod12-hud .h3-sit .hb-ask { padding: 0; border-bottom: 0; box-shadow: none; background: none; animation: none; }   /* v0.0.456: the section's own highlight is enough */
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-give.lb-give, .twod12-hud .h3-sit .twod12-linebar.in-hud [data-id="__cancel"][data-id="__cancel"] { color: var(--hud-mute) !important; border-color: var(--hud-line) !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv) { min-width: 0 !important; max-width: none !important; padding: 0 9px !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud { display: flex !important; flex-wrap: wrap !important; align-items: center; gap: 4px 6px !important; padding: 3px 0 0 !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text { flex: 1 1 100% !important; }

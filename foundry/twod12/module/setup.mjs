@@ -28,12 +28,17 @@ export async function setupBar(o) {
     const bar = document.createElement("div");
     bar.className = "twod12-linebar twod12-setupbar";
     const txt = String(o.text ?? "").trim();
-    bar.innerHTML = `<i class="fa-solid fa-person-running lb-ic"></i><span class="lb-text"><b>${esc(o.title ?? "Setup")}</b>${txt ? `: ${esc(txt)}` : ""} Move your token, then Continue.</span><button type="button" class="lb-go"><i class="fa-solid fa-dice"></i> Continue: the roll</button><button type="button" class="lb-give">Cancel the Action</button>`;
+    // v0.0.456 (pack SHEETS-HUD's leftover, the HUD mockup's A4: "4 of 6 squares left"): the squares the movement has left, kept up to date
+    const sq = o.squares ?? null, leftNow = () => { try { return Math.max(0, Math.round((Number(game.combat?.combatants?.get(sq.cid)?.getFlag("twod12", sq.key)) || 0) * 100) / 100); } catch (e) { return 0; } };
+    const leftHtml = () => (sq ? ` <span class="lb-left"><b>${leftNow()}</b> of ${sq.total} square${sq.total === 1 ? "" : "s"} left.</span>` : "");
+    bar.innerHTML = `<i class="fa-solid fa-person-running lb-ic"></i><span class="lb-text"><b>${esc(o.title ?? "Setup")}</b>${txt ? `: ${esc(txt)}` : ""} Move your token, then Continue.${leftHtml()}</span><button type="button" class="lb-go"><i class="fa-solid fa-dice"></i> Continue: the roll</button><button type="button" class="lb-give">Cancel the Action</button>`;
     // v0.0.441 (pack SHEETS-HUD, D7: "Strafe's Advance in the HUD's place, not the old floating bar"): in the HUD's Situational section when a
     // creature's bar is on screen, as the pick bar asks; at the bottom of the screen with no HUD
     const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
     if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
-    const done = v => { bar.remove(); if (slot) hud.hudAsking(false); window.removeEventListener("keydown", key, true); resolve(v); };
+    const watch = c => { if (sq && c.id === sq.cid) { const el = bar.querySelector(".lb-left b"); if (el) el.textContent = String(leftNow()); } };
+    if (sq) Hooks.on("updateCombatant", watch);
+    const done = v => { bar.remove(); if (slot) hud.hudAsking(false); if (sq) Hooks.off("updateCombatant", watch); window.removeEventListener("keydown", key, true); resolve(v); };
     const key = ev => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); done("cancel"); } if (ev.key === "Enter" && !/input|textarea/i.test(ev.target?.tagName ?? "")) { ev.preventDefault(); done("go"); } };
     bar.querySelector(".lb-go").addEventListener("click", ev => { ev.preventDefault(); done("go"); });
     bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); done("cancel"); });
@@ -65,8 +70,11 @@ export async function runSetup(actor, item, token, deps = {}) {
     try {
       granted = await handleMove(cfg, { actor, token });
       if (!granted) continue;   // it said why (not in combat, Immobilized...): the Action goes on without this movement
+      // v0.0.456: the squares this movement gives (the combatant's free or Evade squares, just granted), for the bar's "N of M squares left"
+      let squares = null;
+      try { const { combatantOf } = await import("./combat.mjs"), c = game.combat?.started ? combatantOf(actor, game.combat) : null, key = cfg.kind === "evade" ? "evadeMove" : "freeMove", total = Number(c?.getFlag?.("twod12", key)) || 0; if (c && total > 0) squares = { cid: c.id, key, total }; } catch (e) { squares = null; }
       pick = await ask({
-        title: item.name, text: plainSetup(text),
+        title: item.name, text: plainSetup(text), squares,
         window: { title: `${item.name}: Setup` },
         content: `<p>${esc(plainSetup(text))}</p><p>Move your token, then press <b>Continue</b> to make the roll.</p>`,
         buttons: [{ action: "go", label: "Continue", icon: "fa-solid fa-dice", default: true }, { action: "cancel", label: "Cancel the Action", icon: "fa-solid fa-xmark" }],

@@ -27,6 +27,10 @@ Expect: "Stage 0" big at the tab's top with "Levels 1 to 3 · Stage 1 at level 4
 Do: Open Sylwen's Inventory tab (was Items), dark and light, in a combat with 1 AP; click the Dagger's name, then its Where button ("On you"), draw it; click the Hunting Bow's Where ("Both hands"); give her a Rope and click − and +, type a number; right-click the Rope; click Browse compendium; click her Light Armor's Where.
 Expect: Coins and Weight on the first line with "Generate Weapon · Browse compendium · New Item"; Weapons (Damage, Mastery, Where), Armor (Defense, Where), Gear (Qty, Weight), each item one ruled line. A click on a name opens its detail under it (properties, range, damage type, the three Tiers, Mastery and the Technique; Send to chat · Edit · Remove), again closes it. The Where button opens the HUD hand tile's menu (with costs, struck when short of AP) for a weapon in hand, the draw / change / drop menu for one on you, the other two places for the armor; a row does what it says. − / + change the quantity; the number still takes typing. The right-click menu has Edit, Send to chat, Remove (no Drop on gear). Browse compendium opens the weapons pack.
 
+### size-short · v0.0.456 · The sheet's Size
+Do: Open Aveline's sheet (the one-page view).
+Expect: The Size reads "Med. (3)", not "Size 3".
+
 ### rally-window · v0.0.454 · The Rally window and its line
 Do: Give Durgan 9 Vigor, 2 Vigor Nonlethal and 6 Resolve damage; click his Rally (sheet or HUD); click "Change the split", move a point with − and +, Use. Then use Lay On Hands' "up to N" Rally Points on Aveline (an Action that lets her use several), pick 2 on the window's first line, Use; once more and Cancel.
 Expect: A 400 px window in the dark table look: "Durgan heals 9" (with parts under it when there are bonuses), his Rally Points as marks with "N of 7 left", Vigor and Resolve as bars (the healed part hatched, "12 → 18 / 23"), "Split evenly between the two." and "Change the split", which shows the rows with − and +. Nothing in the chat while the window is open or after Cancel. After Use, one line with the heart: "Durgan heals 9 · 1 Rally Point, 6 left", then "9 Vigor …", then the parts when there are several. With "up to N", the count is the window's first line (no separate "How many?" window).
@@ -41,6 +45,10 @@ Expect: "[R] 1d6!" in the chat card (the "!" with the dice) and "Ho" in Holy's g
 Rev: 5
 
 ## The HUD
+
+### setup-squares · v0.0.456 · A Setup's squares left, in the Situational section
+Do: In a combat, Sylwen uses Strafe (the Advance Setup): read the HUD's Situational section, move her token 2 squares, read it again; then Cancel. With Garrick, start a Charge and click another enemy.
+Expect: The section shows "Strafe: You Advance..." and "**6** of 6 squares left", then "**4** of 6 squares left" after the move. Its buttons sit in one wrapping row in the section's look (outlined, not two wide boxes), "Cancel the Action" muted. Charge's target bar and a Forced Movement's bar look the same way.
 
 ### art-card · v0.0.454 · A click on an Art opens its card
 Do: Aveline clicks Commandment's cost on her sheet, then on her HUD; then use Sylwen's Spotter with no AP left.

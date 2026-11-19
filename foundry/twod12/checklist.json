@@ -20,6 +20,14 @@
      "rev": 1
     },
     {
+     "id": "size-short",
+     "v": "v0.0.456",
+     "title": "The sheet's Size",
+     "do": "Open Aveline's sheet (the one-page view).",
+     "expect": "The Size reads \"Med. (3)\", not \"Size 3\".",
+     "rev": 1
+    },
+    {
      "id": "rally-window",
      "v": "v0.0.454",
      "title": "The Rally window and its line",
@@ -48,6 +56,14 @@
   {
    "name": "The HUD",
    "items": [
+    {
+     "id": "setup-squares",
+     "v": "v0.0.456",
+     "title": "A Setup's squares left, in the Situational section",
+     "do": "In a combat, Sylwen uses Strafe (the Advance Setup): read the HUD's Situational section, move her token 2 squares, read it again; then Cancel. With Garrick, start a Charge and click another enemy.",
+     "expect": "The section shows \"Strafe: You Advance...\" and \"**6** of 6 squares left\", then \"**4** of 6 squares left\" after the move. Its buttons sit in one wrapping row in the section's look (outlined, not two wide boxes), \"Cancel the Action\" muted. Charge's target bar and a Forced Movement's bar look the same way.",
+     "rev": 1
+    },
     {
      "id": "art-card",
      "v": "v0.0.454",

@@ -75,7 +75,7 @@ export function sheetModel(a, st = {}) {
   const defs = { main: [{ label: "AD", sym: npc ? statSym("ad") : "", value: s.armorDC, cls: "" }, { label: "WD", sym: npc ? statSym("wd") : "", value: s.wardDC, cls: "" }],
     vs: [["body", "vs Body"], ["mind", "vs Mind"], ["appeal", "vs Appeal"], ["instinct", "vs Inst."]].map(([k, l]) => ({ label: l, value: vs[k] })) };
   const attrs = Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, value: sg(s.attributes?.[key] ?? 0) }));
-  const move = [{ label: "Speed", sym: npc ? statSym("speed") : "", value: s.moveSpeed ?? s.speed, cls: "" }, { label: "Reach", sym: npc ? statSym("reach") : "", value: s.reach ?? 1 }, { label: "Size", sym: npc ? statSym("size") : "", value: s.size ?? 3 }, { label: "Steady", sym: npc ? statSym("steady") : "", value: s.steadiness ?? 0 }];
+  const move = [{ label: "Speed", sym: npc ? statSym("speed") : "", value: s.moveSpeed ?? s.speed, cls: "" }, { label: "Reach", sym: npc ? statSym("reach") : "", value: s.reach ?? 1 }, { label: "Size", sym: npc ? statSym("size") : "", value: `${["", "Tiny", "Small", "Med.", "Large", "Huge", "Garg.", "Titanic"][s.size ?? 3]} (${s.size ?? 3})` }, { label: "Steady", sym: npc ? statSym("steady") : "", value: s.steadiness ?? 0 }];
   const dcs = SM.saveDCs({ weapon: s.weaponMod, power: s.powerMod, signature: s.signatureMod });
   const usesPower = a.itemTypes.action.some(i => ["magic", "power"].some(t => i.system?.traits?.has?.(t)));
   const from = npc ? "Role" : "Class";

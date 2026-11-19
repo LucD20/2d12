@@ -232,7 +232,7 @@ export async function pcModel(sheet, ctx) {
   const move = [
     { label: "Speed", sym: npc ? statSym("speed") : "", value: speedNow, cls: cmp(speedNow, speedRef), tip: `Speed ${speedNow} (from your species and class${speedNow !== speedRef ? `; base ${speedRef}` : ""}${s.exhausted ? `; Exhausted −${s.exhausted}` : ""})` },
     { label: "Reach", sym: npc ? statSym("reach") : "", value: s.reach ?? 1, tip: "Reach: from your species" },
-    { label: "Size", sym: npc ? statSym("size") : "", value: s.size ?? 3, tip: `Size ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` },
+    { label: "Size", sym: npc ? statSym("size") : "", value: `${SIZE_SHORT[s.size ?? 3] ?? ""} (${s.size ?? 3})`.trim() /* v0.0.456 (pack SHEETS-HUD's leftover): "Med. (3)" */, tip: `Size ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` },
     { label: "Steady", sym: npc ? statSym("steady") : "", value: steady, tip: `Steadiness ${steady}: reduces Forced Movement and Reposition against you (you can choose not to apply it)` }
   ];
   const dcs = saveDCs({ weapon: s.weaponMod, power: s.powerMod, signature: s.signatureMod });
@@ -725,3 +725,5 @@ export function levelChangeText(a, from, to) {
   return `${out.join("<br>")}<br>The class window opens next, one level at a time, for its choices.`;
 }
 
+/** v0.0.456: a Size's short word for the sheet's stat line ("Size Med. (3)"). */
+export const SIZE_SHORT = ["", "Tiny", "Small", "Med.", "Large", "Huge", "Garg.", "Titanic"];
