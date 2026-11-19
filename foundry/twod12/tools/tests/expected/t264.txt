@@ -1,4 +1,4 @@
-hover texts left: 33
+hover texts left: 32
   module/actioncard.mjs: data-tooltip="${esc(b.why)}"` : ""}><button type="button" class="ap-vb
   module/actions.mjs: data-tooltip="${esc(m.why ?? "")}"><i class="fa-solid ${esc(m.icon ?? 
   module/actions.mjs: data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? 
@@ -30,5 +30,4 @@ hover texts left: 33
   templates/actor-sheet-pc.hbs: data-tooltip="{{down.collapseOff}}"{{/if}}>{{down.collapseWord}}</butt
   templates/actor-sheet-pc.hbs: data-tooltip="{{tip}}"><i class="l" style="width:{{seg.lethal}}%"></i>
   templates/actor-sheet-pc.hbs: data-tooltip="{{offWhy}} (click to use it anyway)"{{else}}{{#if weapon
-  templates/actor-sheet-pc.hbs: data-tooltip="Unloaded: Reload (1 AP)">Unloaded</a>{{/if}}{{#if warn}}
   templates/actor-sheet-pc.hbs: data-tooltip="{{off}}"{{/if}}>{{button}}</button>

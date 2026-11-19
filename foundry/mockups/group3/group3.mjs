@@ -9,6 +9,8 @@ document.body.classList.add(`theme-${theme}`);
 const { registerInline } = await import("../../twod12/module/inline.mjs");
 registerInline();
 const SM = await import("../../twod12/module/sheetmodel.mjs");
+globalThis.Combat ??= class {};
+const PS = await import("../../twod12/module/pcsheet.mjs");   // v0.0.455: stageBandModel
 const CFG = await import("../../twod12/module/config.mjs");
 const PW = await import("../../twod12/module/pickwindow.mjs");
 const DL = await import("../../twod12/module/dmglines.mjs"), CD = await import("../../twod12/module/ccdamage.mjs");
@@ -98,6 +100,11 @@ function model(a) {
   pc.strip.lists = SM.combatLists({ npc: false, elite: false, hookNames: [], used: {}, rungs: SM.escRungs(escN, {}, true, 6), bloodied: false, strained: false });
   pc.head.senseWords = pc.strip.senses.map(x => x.label).join(", ");
   pc.build = buildModel(a);
+  // v0.0.455: the build added these (pcsheet.mjs pcModel): the Stage band and the two entries; "today" pictures now show the build
+  { const b = pc.build, kv = (k, v, cls = "") => ({ k, v: String(v ?? ""), cls }), st = x => x.map(y => kv(y.l, y.v));
+    b.stageBand = PS.stageBandModel(Number(a.system.level) || 1);
+    b.origin = [...(b.sp ? [{ kind: "Species", name: b.sp.name, action: "openSpecies", lines: [[kv("Attributes", b.sp.attrs.join(", ") || "none"), kv("Vigor", b.sp.vigor, "v"), kv("Resolve", b.sp.resolve, "r")], st(b.sp.stats)], swap: null }] : []),
+      ...(b.cls ? [{ kind: "Class", name: b.cls.name, action: "openClass", lines: [[kv("Attributes", b.cls.attrs.join(", ") || "none"), kv("Vigor", b.cls.vigor, "v"), kv("Resolve", b.cls.resolve, "r")], st(b.cls.stats)], swap: b.swap }] : [])]; }
   pc.tabs.find(t => t.k === "build").n = pc.build.bad;
   return pc;
 }
@@ -164,8 +171,8 @@ function draw(a, pc, { prop = null, crop = "", cap = "", note = "" } = {}) {
   host.querySelectorAll("[data-tooltip]").forEach(x => x.removeAttribute("data-tooltip"));
   if (prop) {
     const stack = host.querySelector('.tab[data-tab="build"] .ps-stack'), lvbar = stack.querySelector(".ps-lvlbar"), cards = stack.querySelector(".ps-g2.wide"), lv = Number(a.system.level) || 1;
-    lvbar.outerHTML = (prop.stage === "B" ? stagePlaque : stageBand)(lv, pc.build, prop.level);
-    cards.outerHTML = (prop.origin === "B" ? originB : originA)(pc.build);
+    if (lvbar) lvbar.outerHTML = (prop.stage === "B" ? stagePlaque : stageBand)(lv, pc.build, prop.level);   // v0.0.455: the built tab has no Level bar
+    if (cards) cards.outerHTML = (prop.origin === "B" ? originB : originA)(pc.build);
     stack.classList.add("g3-stack");
   }
   const h = crop ? "auto" : "840px";

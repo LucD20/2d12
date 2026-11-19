@@ -1,0 +1,12 @@
+--- the Build tab
+level 5: 1 Levels 4 to 7 | Stage 2 at level 8 | ladder: Stage 0: 1(past) 2(past) 3(past) | Stage 1*: 4(past) 5(now) 6 7 | Stage 2: 8 9 10 11 | Stage 3: 12 13 14 15
+level 15: The last Stage | ranks: Escalation 4 and 6, the Apex: 4 6 7 = 7
+no Level field; Change level: true | the window: true
+Species and Class entries, no dark header: true | Swap on a Rest on the Class entry: true
+going down from 3 to 2: It removes what the levels above 2 gave: Reckoning .
+--- the Inventory
+Coins · Weight 2 Generate Weapon Browse compendium New Item Weapons Damage Mastery Where Dagger Pierce · Melee, Thrown 0 / 0 / 0 0 / 10 On you Melee · Light · Thrown Range 1 · Pierce damage · Group Daggers Weapon damage [W] Tier 1 0 Tier 2 0 Tier 3 0 Mastery 0 of 10: no Weapon Technique on this weapon yet. Send to chat Edit Remove Hunting Bow Pierce · 8 / 16 / 24 0 / 0 / 0 0 / 10 Both hands Ranged
+the Where words: On you, Both hands | the links: true | the open detail: true
+the Dagger's menu (on you, no AP): Stow the Hunting Bow, draw this [1 AP struck] || Drop []
+--- the Loot tab
+Browse compendium New Item An NPC's items are flavor and loot: they never change its Health, Defenses or damage. Loot Qty Coins 1 each &minus; + Give… Send to chat Edit Remove | Give asks How many: true

@@ -37,7 +37,7 @@ bars: {"lethal":39.1,"nonlethal":0} {"lethal":0,"nonlethal":41.7} {"lethal":87,"
 1 · Radiant Zeal (lit) | 2 · Searing Blows (lit) | 3 · Reckoning | 4 · — | 6 · Apex
 hooks: Critical · Kindled Wrath | crit used: Kindled Wrath | both used: []
 --- the Build tab: slots, the validator, the next levels
-labels: Feature | Hallmark Reaction | ranks: 1 3 4 0
+labels: Feature | Hallmark Reaction | ranks: 1 3 7 0
 fill no slot: Orphan · Old Section Pick · Dropped Feature · Shield of Faith · Bulwark of Faith
 Level 2 · 1 Talent | Level 3 · 1 Daily Pick · 1 Talent | Level 4 · 1 Talent | Level 5 · Stage 2: Stage Talent · Health +12 / +6 · Guard 3 per AP · Rally +1
 at level 6 (Stage 3 next, Modifiers +1): 7: — | 8: Stage 3: Stage Talent · Health +12 / +6 · Guard 4 per AP · Rally +1 · Modifiers +1
@@ -48,4 +48,4 @@ tabs in order: true | the favorites star first: true
 icon-only buttons have an aria-label: true | disabled buttons say why: true | focus visible: true
 no default windows in the new code: true
 --- v0.0.290 (Lucas tested v0.0.289)
-the whole Action row opens its card: true | Build rows expand (no hover card): true | the Level only on the Build tab: false
+the whole Action row opens its card: true | Build rows expand (no hover card): true | the Level only on the Build tab: true

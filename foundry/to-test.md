@@ -19,6 +19,14 @@ differ):
 
 ## Characters and sheets
 
+### build-tab · v0.0.455 · The Build tab: the Stage, Change level, Species and Class
+Do: Open Aveline's Build tab, dark and light; click Change level, raise it to 2 with +, read the window, Go to level 2 (answer the class window); then Change level back down to 1; with Durgan, raise to 4 to see the Stage change, then back down to 1. Look at a level 3 character's Escalation rows.
+Expect: "Stage 0" big at the tab's top with "Levels 1 to 3 · Stage 1 at level 4", the 15 levels' ladder under it (the current level ringed in bronze), the Level and "Change level" at the right; no number field. The window shows the − / + counter, "Level 1 → 2", the Stage, and what level 2 gives (or, going down, what it removes); Go to level N then opens the class window as before. Species and Class are two ruled entries (no thick dark header): the name, Choices (and Swap on a Rest on the Class), then two lines of what each gives, Vigor and Resolve in their colors. The Escalation 4 and 6 abilities read "Escalation 4" and "Escalation 6", not "Escalation 3".
+
+### inventory · v0.0.455 · The Inventory tab
+Do: Open Sylwen's Inventory tab (was Items), dark and light, in a combat with 1 AP; click the Dagger's name, then its Where button ("On you"), draw it; click the Hunting Bow's Where ("Both hands"); give her a Rope and click − and +, type a number; right-click the Rope; click Browse compendium; click her Light Armor's Where.
+Expect: Coins and Weight on the first line with "Generate Weapon · Browse compendium · New Item"; Weapons (Damage, Mastery, Where), Armor (Defense, Where), Gear (Qty, Weight), each item one ruled line. A click on a name opens its detail under it (properties, range, damage type, the three Tiers, Mastery and the Technique; Send to chat · Edit · Remove), again closes it. The Where button opens the HUD hand tile's menu (with costs, struck when short of AP) for a weapon in hand, the draw / change / drop menu for one on you, the other two places for the armor; a row does what it says. − / + change the quantity; the number still takes typing. The right-click menu has Edit, Send to chat, Remove (no Drop on gear). Browse compendium opens the weapons pack.
+
 ### rally-window · v0.0.454 · The Rally window and its line
 Do: Give Durgan 9 Vigor, 2 Vigor Nonlethal and 6 Resolve damage; click his Rally (sheet or HUD); click "Change the split", move a point with − and +, Use. Then use Lay On Hands' "up to N" Rally Points on Aveline (an Action that lets her use several), pick 2 on the window's first line, Use; once more and Cancel.
 Expect: A 400 px window in the dark table look: "Durgan heals 9" (with parts under it when there are bonuses), his Rally Points as marks with "N of 7 left", Vigor and Resolve as bars (the healed part hatched, "12 → 18 / 23"), "Split evenly between the two." and "Change the split", which shows the rows with − and +. Nothing in the chat while the window is open or after Cancel. After Use, one line with the heart: "Durgan heals 9 · 1 Rally Point, 6 left", then "9 Vigor …", then the parts when there are several. With "up to N", the count is the window's first line (no separate "How many?" window).
@@ -267,6 +275,10 @@ Do: Sylwen places Covering Fire; the GM moves an Orc into it (Advance), moves it
 Expect: One hit only (on entering); none for the second move or the end of the turn; it can be hit again from its next turn.
 
 ## Ending an encounter and resting
+
+### loot-tab · v0.0.455 · The NPC's Loot tab and Give
+Do: Give the Orc Warrior a stack of 14 Coins (gear) and a Bone Charm; open its Loot tab; click Give… on the Coins, set How many to 5, pick Sylwen; then Give… on the Bone Charm.
+Expect: The Inventory's lines (the name, a muted note, − n + on gear, Give… outlined), "Browse compendium · New Item" on top, the note in muted italics. Give… on the Coins asks How many first (− / +, the whole stack by default): 5 go to Sylwen, 9 stay, and the chat says "Sylwen takes 5 Coins from Orc Warrior (9 left)". A single item goes at one click on the PC.
 
 ### thrill-wrath · v0.0.411 · Thrill of the Kill and Kindled Wrath
 Do: An enemy Sylwen damaged goes Down; Durgan, an ally of Aveline, becomes Bloodied.

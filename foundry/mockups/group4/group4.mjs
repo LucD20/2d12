@@ -18,6 +18,7 @@ const PW = await import("../../twod12/module/pickwindow.mjs");
 const MSG = await import("../../twod12/module/sysmsg.mjs");
 const { weaponTierText } = await import("../../twod12/module/explode.mjs");
 const SS = await import("../../twod12/module/statsyms.mjs");
+const INV = await import("../../twod12/module/inventory.mjs");   // v0.0.455
 const DL = await import("../../twod12/module/dmglines.mjs"), CD = await import("../../twod12/module/ccdamage.mjs");
 const { ICONS } = await import("../npc-hud-icons.mjs");
 const ALIAS = { "hand-holding": "hand", "hands": "hand" };
@@ -81,6 +82,8 @@ function built(a, pc, st) {
   for (const sec of pc.sections) if (["reaction", "granted", "apex"].includes(sec.key)) sec.rows.forEach(r => { r.showFq = true; });
   pc.head.senseWords = pc.strip.senses.map(x => x.label).join(", ");
   pc.head.round = `Round ${st.round ?? 1}`;
+  pc.inventoryHtml = pc.npc ? "" : INV.inventoryHtml(a, { open: new Set(st.open ?? []) });   // v0.0.455: the build's tabs (inventory.mjs)
+  pc.lootHtml = pc.npc ? INV.lootHtml(a, { open: new Set(st.open ?? []) }) : "";
   pc.dmgHtml = DL.damageBlockHtml(DL.damageBlockModel(pc.rwLines ?? [], { gm: true }), { line: true, syms: pc.npc ? { Immune: SS.statSym("immune"), Resist: SS.statSym("resist"), Weak: SS.statSym("weak") } : null });
   return pc;
 }

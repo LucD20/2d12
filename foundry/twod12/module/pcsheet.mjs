@@ -1,8 +1,9 @@
 // PACK SHEET (v0.0.289, Lucas's approved design: foundry/mockups/sheet-prototype.html): the data of the character sheet's new layout.
 // pcModel(sheet, ctx) reads the actor and the context the sheet already built (_sheetModel: granted tickets, conditions, effects, gear) and returns
 // the template's `pc` object. The pure rules (sections, Defenses, Save DCs, Down state...) are in sheetmodel.mjs (tests t212).
+import { inventoryHtml, lootHtml } from "./inventory.mjs";   // v0.0.455 (group 4)
 import { statSym } from "./statsyms.mjs";   // v0.0.454 (playtest 6, D3): the NPC sheet's stat symbols
-import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip, npcRoleRow } from "./config.mjs";
+import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip, npcRoleRow, stageOf } from "./config.mjs";
 import { combatantOf, getAP, getRAP, slowedOf, apPerTurn, quickenedOf, baseAP } from "./combat.mjs";
 import { guardPerAP } from "./guard.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -20,7 +21,7 @@ import { firstTimeThisEncounter } from "./down.mjs";
 import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
-  healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers,
+  healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, ESC_APEX, slotless, nextLevels, plainEnrichers,
   rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, escMarks, combatLists, basicAttackLine, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
@@ -449,7 +450,7 @@ export async function pcModel(sheet, ctx) {
     for (const it of mine) {
       const sec = secInfo[it.getFlag(F, "classSection")], rank = escSectionRank(sec?.title);
       placed.add(it.id);
-      if (rank) escRows.push({ rank, row: await brow(it, rank === 4 ? "Apex" : `Escalation ${rank}`) });
+      if (rank) escRows.push({ rank, row: await brow(it, rank === ESC_APEX ? "Apex" : `Escalation ${rank}`) });
       else rows.push(await brow(it, slotLabel(sec?.title ?? (it.type === "talent" ? "Talent" : "Feature"))));
     }
     if (rows.length) levelBlocks.push({ title: `Level ${L2}`, rows });
@@ -487,6 +488,15 @@ export async function pcModel(sheet, ctx) {
     swap: cls && (a.getFlag?.(F, "restSwap") || globalThis.game?.user?.isGM) ? { tip: a.getFlag?.(F, "restSwap") ? "You completed a Rest: change the choices your class's level list gave you (the Modifier order too during Stage 0)" : "The GM: change this character's level-list choices (Swapping comes with a Rest)" } : null,
     emptySlots: (ctx.talentSlots ?? []).filter(x => !x.talent)
   };
+  // v0.0.455 (Lucas, group 3, the mockup foundry/mockups/group3: "Stage A, Level B, Species and Class A"): the Stage as the tab's title band with
+  // the 15 levels' ladder (Level changed only through Change level and its window), Species and Class as two ruled entries (no dark header bar)
+  build.stageBand = stageBandModel(lv);
+  const kv = (k, v, cls = "") => ({ k, v: String(v ?? ""), cls });
+  const statKv = st => st.map(x => kv(x.l, x.v));
+  build.origin = [
+    ...(sp ? [{ kind: "Species", name: sp.name, action: "openSpecies", lines: [[kv("Attributes", spChips.filter(c => !c.cls).map(c => c.t).join(", ") || "none"), kv("Vigor", sg(hl.bonusVigor ?? ssys.bodyMod ?? 0), "v"), kv("Resolve", sg(hl.bonusResolve ?? ssys.mindMod ?? 0), "r")], statKv(buildCards[0].stats)], swap: null }] : []),
+    ...(cls ? [{ kind: "Class", name: cls.name, action: "openClass", lines: [[kv("Attributes", chosen.map(k => `${L[k]} +1`).join(", ") || "none"), kv("Vigor", hl.classVigor ?? 0, "v"), kv("Resolve", hl.classResolve ?? 0, "r")], statKv(buildCards[sp ? 1 : 0].stats)], swap: build.swap }] : [])
+  ];
 
   // ---- Mastery tab
   const mastery = (masteryRows(a) ?? []).map(m => {
@@ -514,10 +524,12 @@ export async function pcModel(sheet, ctx) {
   };
 
   const tabs = (npc ? [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["builder", "Builder"], ["loot", "Loot"], ["notes", "GM notes"]]
-    : [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["items", "Items"], ["build", "Build", bad.length], ["mastery", "Mastery"], ["upkeep", "Upkeep"], ["notes", "Notes"]])
+    : [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["items", "Inventory"], ["build", "Build", bad.length], ["mastery", "Mastery"], ["upkeep", "Upkeep"], ["notes", "Notes"]])
     .map(([k, l, n]) => ({ k, l, n: n || 0 }));
   return {
     npc, builder: npc ? npcBuilderModel(a) : null, loot: npc ? lootRows(a) : null,
+    // v0.0.455 (Lucas, group 4): the Inventory tab (was Items) and the NPC's Loot tab, one look (inventory.mjs); the open details are the sheet's
+    inventoryHtml: npc ? "" : inventoryHtml(a, { weapons, open: sheet._invOpen ?? new Set() }), lootHtml: npc ? lootHtml(a, { open: sheet._invOpen ?? new Set() }) : "",
     head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained, guardSym: npc ? statSym("guard") : "",   // v0.0.454: D3
     effects: { conditions, effects }, weapons: weaponRows, armor: armorRows, build, mastery, upkeep, down,
     // v0.0.333 (PACK RWI): the Damage block under Defenses (Immune / Resist / Weak, every source; hidden with none, but a GM sees + Add)
@@ -684,3 +696,32 @@ export function statBlockHtml(a, sysCard) {
   return sysCard({ title: a.name, lead: `${esc(s.roleLabel ?? "")} \u00b7 CV ${esc(s.cv ?? "")} \u00b7 Stage ${esc(s.stage ?? 0)}`,
     text: [`Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt}) \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, ...(dl.length ? [esc(dl.map(damageLineName).join(" \u00b7 "))] : []), `Senses: ${esc(chips)}`, ...acts].join("<br>") });
 }
+
+/** Pure (v0.0.455, group 3): the Build tab's Stage band: the Stage, its levels, when the next one comes, the ladder of the 15 levels in their four
+ *  Stages (passed, now, to come) for the level given. */
+export function stageBandModel(level) {
+  const lv = Math.max(1, Math.min(15, Math.trunc(Number(level)) || 1)), n = stageOf(lv), st = TWOD12.stages.find(x => x.n === n), nx = TWOD12.stages.find(x => x.n === n + 1);
+  return { n, lv, levels: `Levels ${st.from} to ${st.to}`, next: nx ? `Stage ${nx.n} at level ${nx.from}` : "The last Stage",
+    ladder: TWOD12.stages.map(g => ({ n: g.n, on: g.n === n, label: `Stage ${g.n}`, first: g.n === 0, cells: Array.from({ length: g.to - g.from + 1 }, (_, k) => { const x = g.from + k; return { n: x, cls: x < lv ? "past" : x === lv ? "now" : "" }; }) })) };
+}
+
+/** v0.0.455 (group 3, Change level's window): what going from one level to another does, as HTML: up, each new level's line of the tab's "Next
+ *  levels" (sheetmodel.mjs nextLevels, with the Stage it reaches); down, what the levels above the new one gave (classwindow.mjs levelsDown's list). */
+export function levelChangeText(a, from, to) {
+  const esc0 = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const cls = a?.itemTypes?.class?.[0];
+  if (!cls) return "No class on this sheet: only the number changes.";
+  if (to < from) {
+    const gone = (a.items ?? []).filter(i => (Number(i.getFlag?.(F, "classLevel")) || 0) > to).map(i => i.name);
+    return gone.length ? `It removes what the levels above ${to} gave: <b>${esc0(gone.join(", "))}</b>.` : `Nothing that the levels above ${to} gave is on the sheet.`;
+  }
+  const levels = cls.system?.levels ?? [], out = [];
+  for (let L2 = from + 1; L2 <= to; L2++) {
+    const n = stageOf(L2), stNew = TWOD12.stages.find(x => x.n === n && x.from === L2);
+    const rows = nextLevels(L2 - 1, levels, stNew ? { at: L2, n, health: [cls.system[`stepHigh${n}`] ?? 0, cls.system[`stepLow${n}`] ?? 0], guard: TWOD12.guardPerAp[n], rally: TWOD12.rallyByStage[n] - TWOD12.rallyByStage[n - 1], modifiers: n === 1 ? "one" : (TWOD12.stageModStep[n] ?? 0) > 0 ? "both" : "" } : null);
+    const r = rows.find(x => x.level === L2);
+    out.push(`<b>Level ${L2}:</b> ${esc0(r?.text ?? "\u2014")}`);
+  }
+  return `${out.join("<br>")}<br>The class window opens next, one level at a time, for its choices.`;
+}
+

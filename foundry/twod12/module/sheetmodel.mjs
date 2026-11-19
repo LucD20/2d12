@@ -175,11 +175,14 @@ export function slotLabel(title) {
   return t;
 }
 /** An Escalation section of the class table: "Escalation N Passive" (N) or "Apex" (4); 0: not one. */
+export const ESC_APEX = 7;
 export function escSectionRank(title) {
   const t = String(title ?? "");
   const m = t.match(/^Escalation\s+(\d)/i);
-  if (m) return Math.min(3, Number(m[1]));
-  return /\bapex\b/i.test(t) ? 4 : 0;
+  // v0.0.455 (the group 3 mockup found it): Escalation runs 1 to 6 since Stage 0 (it was capped at 3, from the old scale): "Escalation 4" is 4;
+  // the Apex sorts after them (ESC_APEX)
+  if (m) return Math.min(6, Number(m[1]));
+  return /\bapex\b/i.test(t) ? ESC_APEX : 0;
 }
 
 /**

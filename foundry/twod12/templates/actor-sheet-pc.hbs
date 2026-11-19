@@ -184,57 +184,28 @@
         </div>
       </div>
 
+      {{!-- v0.0.455 (Lucas, group 4: "Where A, links A"): the Inventory (was Items): Weapons, Armor and Gear as ruled lines (inventory.mjs) --}}
       <div class="tab" data-tab="items">
-        <div class="ps-stack">
-          <div class="ps-ih"><span class="ps-h2">Weapons</span><span class="ps-ibtns"><button type="button" class="ps-btn2" data-action="generateWeapon"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Weapon</button><button type="button" class="ps-btn2" data-action="newGear"><i class="fa-solid fa-plus"></i> New Item</button></span></div>
-          <div class="olist ps-ilist" data-order-flag="itemOrder">
-          {{#each pc.weapons}}
-          <div class="lrow ps-irow w{{#if dropped}} dropped{{/if}}" data-item-id="{{id}}">
-            <div class="ps-imain"><span><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><a class="ps-iname" data-action="openItem">{{name}}</a>{{#if unloaded}} <a class="ps-warnchip" data-action="reloadWeapon" data-tooltip="Unloaded: Reload (1 AP)">Unloaded</a>{{/if}}{{#if warn}} <span class="ps-warnchip amber">1H</span>{{/if}}</span><span class="ps-isub">{{sub}}</span></div>
-            <div class="ps-tiers">{{#each tiers}}<span><small>{{l}}</small><b>{{v}}</b></span>{{/each}}</div>
-            <div class="ps-imast">Mastery <b>{{mastery}}</b><br><span class="ps-mut">Technique {{#if techOn}}unlocked{{else}}locked{{/if}}</span></div>
-            <div class="ps-seg" role="group" aria-label="Where {{name}} is">{{#each seg}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setWhere" data-where="{{v}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{l}}</button>{{/each}}</div>
-          </div>
-          {{else}}<div class="ps-empty">No weapons. Drag one here, or generate one.</div>{{/each}}
-          </div>
-          <span class="ps-h2">Armor</span>
-          <div class="olist ps-ilist" data-order-flag="itemOrder">
-          {{#each pc.armor}}
-          <div class="lrow ps-irow a{{#if dropped}} dropped{{/if}}" data-item-id="{{id}}">
-            <div class="ps-imain"><span><i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i><a class="ps-iname" data-action="openItem">{{name}}</a></span><span class="ps-isub {{#if trained}}ok{{else}}bad{{/if}}">{{trainText}}</span></div>
-            <div class="ps-aval">Armor value <b>{{value}}</b> &rarr; AD <b>{{ad}}</b> &middot; Ward <b>{{ward}}</b></div>
-            <div class="ps-seg" role="group" aria-label="Where {{name}} is">{{#each seg}}<button type="button" class="{{#if on}}on{{/if}}" data-action="setWhere" data-where="{{v}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}">{{l}}</button>{{/each}}</div>
-          </div>
-          {{else}}<div class="ps-empty">No armor: you are Unarmored (Armor 11). Drag an armor here.</div>{{/each}}
-          </div>
-          {{#if pc.untrained}}<div class="ps-warnbox">{{pc.untrained}}</div>{{/if}}
-          <div class="ps-ih"><span class="ps-h2">Gear and loot</span><span class="ps-mut"><label>Coins <input type="number" min="0" name="system.coins" value="{{system.coins}}" aria-label="Coins"></label> &middot; Weight {{gearWeight}}</span></div>
-          <div class="olist ps-glist" data-order-flag="itemOrder">
-            {{#each gear}}
-            <div class="grow ps-grow" data-item-id="{{id}}">
-              <i class="fa-solid fa-grip-vertical grip" aria-hidden="true"></i>
-              <span class="g-name"><img src="{{img}}" alt="" data-action="sendItem" aria-label="Send to chat"><a data-action="openItem">{{name}}</a></span>
-              <input class="gq" type="number" min="0" value="{{qty}}" data-item-id="{{id}}" aria-label="Quantity of {{name}}">
-              <span>{{weight}}</span><span>{{cost}}</span>
-              <span class="g-btns"><a data-action="openItem" aria-label="Edit {{name}}"><i class="fa-solid fa-pen-to-square"></i></a><a data-action="confirmDelete" aria-label="Remove {{name}}"><i class="fa-solid fa-trash"></i></a></span>
-            </div>
-            {{else}}<div class="ps-empty">Nothing yet. Drag gear here, or use New Item.</div>{{/each}}
-          </div>
-        </div>
+        <div class="ps-stack">{{{pc.inventoryHtml}}}</div>
       </div>
 
       <div class="tab" data-tab="build">
         <div class="ps-stack">
           {{#if pc.build.banner}}<div class="ps-banner"><b>{{pc.build.banner.count}} card{{#unless pc.build.banner.one}}s{{/unless}} fill no slot:</b><span>{{pc.build.banner.names}}</span><button type="button" data-action="reviewSlots">Review</button></div>{{/if}}
-          <div class="ps-lvlbar"><label class="ps-lvl">Level <input type="number" min="0" name="system.level" value="{{system.level}}" aria-label="Level"></label><span class="ps-mut">Stage {{system.stage}}</span>{{#if pc.build.swap}}<button type="button" class="ps-swap" data-action="swapRest" aria-label="{{pc.build.swap.tip}}"><i class="fa-solid fa-right-left"></i> Swap on a Rest</button>{{/if}}</div>
-          <div class="ps-g2 wide">
-            {{#each pc.build.cards}}
-            <div class="ps-bcard">
-              <div class="ps-bch"><span><small>{{kind}}</small> <b>{{name}}</b></span>{{#if choices}}<button type="button" data-action="{{choices}}">Choices</button>{{/if}}</div>
-              <div class="ps-bcb">
-                <div class="ps-chips">{{#each chips}}<span class="ps-mchip {{cls}}">{{this.t}}</span>{{/each}}</div>
-                <div class="ps-g4">{{#each stats}}<div class="ps-lbox"><b>{{v}}</b><span>{{l}}</span></div>{{/each}}</div>
-              </div>
+          {{!-- v0.0.455 (Lucas, group 3: "Stage A, Level B, Species and Class A"): the Stage as the tab's title band (its levels, when the next Stage
+                comes, the Level and Change level at the right, the 15 levels' ladder under); the Level changes only through Change level's window --}}
+          {{#with pc.build.stageBand}}
+          <div class="bt-stage"><div class="bt-st1"><div class="bt-stt"><span class="bt-stw">Stage</span> <span class="bt-stn">{{n}}</span></div>
+            <div class="bt-sts"><span>{{levels}}</span><span class="bt-q">{{next}}</span></div>
+            <span class="bt-lvc"><span class="bt-lvw">Level <b>{{lv}}</b></span><button type="button" class="bt-btn" data-action="changeLevel">Change level</button></span></div>
+            <div class="bt-ladder" role="img" aria-label="Level {{lv}} of 15">{{#each ladder}}<div class="bt-lg{{#if on}} on{{/if}}{{#if first}} first{{/if}}"><span class="bt-cells">{{#each cells}}<i class="{{cls}}">{{n}}</i>{{/each}}</span><small>{{label}}</small></div>{{/each}}</div>
+          </div>
+          {{/with}}
+          {{!-- Species and Class: two ruled entries (the kind at the left, the name, Choices at the right; two lines of what it gives) --}}
+          <div class="bt-origin">
+            {{#each pc.build.origin}}
+            <div class="bt-ent"><div class="bt-eh"><span class="bt-ek">{{kind}}</span><b class="bt-en">{{name}}</b><span class="bt-ebtns">{{#if swap}}<button type="button" class="bt-btn quiet" data-action="swapRest" aria-label="{{swap.tip}}"><i class="fa-solid fa-right-left"></i> Swap on a Rest</button>{{/if}}<button type="button" class="bt-btn quiet" data-action="{{action}}">Choices</button></span></div>
+              {{#each lines}}<div class="bt-el">{{#each this}}<span class="bt-kv"><span class="bt-k">{{k}}</span> <b class="{{cls}}">{{v}}</b></span>{{/each}}</div>{{/each}}
             </div>
             {{else}}<div class="ps-empty">Drop a Species and a Class on this sheet.</div>{{/each}}
           </div>
@@ -376,17 +347,9 @@
         {{/with}}
       </div>
 
+      {{!-- v0.0.455 (group 4: "the Loot tab proposed"): the Inventory's lines, Give… on each (inventory.mjs lootHtml) --}}
       <div class="tab" data-tab="loot">
-        <div class="ps-stack">
-          <span class="ps-mut">An NPC's items are flavor and loot: they never change its Health, Defenses or damage.</span>
-          <div class="ps-block"><div class="nb-lh"><span>Item</span><span>Qty</span><span></span></div>
-            <div class="olist" data-order-flag="itemOrder">
-            {{#each pc.loot}}<div class="nb-loot lrow" data-item-id="{{id}}"><span><a data-action="openItem" class="ps-nm">{{name}}</a> <small class="ps-mut">{{note}}</small></span><span>{{qty}}</span><button type="button" class="ps-btn2" data-action="giveLoot">Give to a PC</button></div>
-            {{else}}<div class="nb-loot none">No items.</div>{{/each}}
-            </div>
-          </div>
-          <div class="ps-drop">Drag items here</div>
-        </div>
+        <div class="ps-stack">{{{pc.lootHtml}}}</div>
       </div>
       {{/if}}
 
