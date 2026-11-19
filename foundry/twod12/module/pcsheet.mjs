@@ -87,6 +87,44 @@ export function handMenu(weapons, hand, inCombat) {
   return out;
 }
 
+/**
+ * v0.0.444 (group 2; Lucas, 2026-11-19: the HUD's hand tile opens a menu "above it, like a reversed dropdown"; the mockup foundry/mockups/group2;
+ * his rules: holding a one-handed weapon with both hands does nothing (so the grip row is a Two-handed weapon's), changing to a Two-handed weapon
+ * with the other hand full is "drop, then draw", stowing and swapping need no free hand). Pure: the menu of a hand tile.
+ * weapons: the creature's; hand: "main" | "off" | "both"; o: { inCombat, ap }. Returns { title, sub, warn, groups: [[{ key, label, act, cost, off, why }]] }.
+ */
+export function handMenuModel(weapons, hand, { inCombat = false, ap = 99 } = {}) {
+  const slots = handSlots(weapons), tile = slots.find(s => s.hand === hand) ?? slots.find(s => s.both), byId = id => weapons.find(x => x.id === id);
+  const w = tile?.id ? byId(tile.id) : null, other = slots.find(s => s !== tile), ow = other && !other.free ? byId(other.id) : null;
+  const has = (x, p) => !!x?.system?.traits?.has?.(p), two = x => has(x, "twohanded");
+  const price = n => (inCombat ? `${n} AP` : "free"), lack = n => (inCombat && ap < n ? (ap > 0 ? `Needs ${n} AP (${ap} left)` : "No AP left") : "");
+  const row = (key, label, act, n) => { const why = lack(n); return { key, label, act, cost: price(n), off: !!why, why }; };
+  const handWord = h => (h === "main" ? "main hand" : h === "off" ? "off hand" : "both hands");
+  const carried = weapons.filter(x => !has(x, "barehanded") && !x.system?.wielded && weaponWhere(x) !== "none");
+  const groups = [];
+  if (w) {
+    const grip = [];
+    if (tile.both) grip.push(row(`one:${w.id}`, "Hold with one hand", "Release", 0));
+    else {
+      if (two(w)) {
+        if (other?.free) grip.push(row(`two:${w.id}`, "Hold with both hands", "Regrip", 1));
+        else if (ow) { grip.push({ key: "", label: "Hold with both hands", act: "Regrip", cost: price(1), off: true, why: `Your ${handWord(other.hand)} holds the ${ow.name}` }); grip.push(row(`rel2:${ow.id}:${w.id}`, `Drop the ${ow.name}, then hold with both hands`, "Release, Regrip", 1)); }
+      }
+      if (other?.free) grip.push(row(`move:${w.id}`, `Move to your ${handWord(other.hand)}`, "Regrip", 1));
+      else if (ow) grip.push(row("swap", `Swap hands with the ${ow.name}`, "Regrip", 1));
+    }
+    groups.push(grip);
+    groups.push(carried.map(y => (two(y) && ow && !tile.both ? row(`dropdraw:${ow.id}:${y.id}:${w.id}`, `Drop the ${ow.name}, then change to the ${y.name}`, "Release, Interact", 1) : row(`chg:${w.id}:${y.id}:${hand}`, `Change to the ${y.name}`, "Interact", 1))));
+    groups.push([row(`stow:${w.id}`, "Stow", "Interact", 1), row(`drop:${w.id}`, "Drop", "Release", 0)]);
+    return { title: w.name, sub: handWord(tile.both ? "both" : hand), warn: two(w) && !tile.both ? "Two-handed, held in one hand: 3 Banes on its Strikes." : "", groups: groups.filter(g => g.length) };
+  }
+  // a free hand: what it can draw; and a Two-handed weapon in the other hand can be held with both
+  groups.push(carried.map(y => (two(y) && ow ? row(`dropdraw:${ow.id}:${y.id}:`, `Drop the ${ow.name}, then draw the ${y.name}`, "Release, Interact", 1) : row(`draw:${y.id}:${hand}`, `${weaponWhere(y) === "dropped" ? "Pick up" : "Draw"} the ${y.name}`, "Interact", 1))));
+  if (ow && two(ow)) groups.push([row(`two:${ow.id}`, `Hold the ${ow.name} with both hands`, "Regrip", 1)]);
+  if (!groups.some(g => g.length)) groups.push([{ key: "", label: "Nothing to draw: no weapon carried", act: "", cost: "", off: true, why: "" }]);
+  return { title: "Free hand", sub: handWord(hand), warn: "", groups: groups.filter(g => g.length) };
+}
+
 export async function pcModel(sheet, ctx) {
   const a = sheet.actor, s = a.system, d = s.damage ?? {}, npc = a.type === "npc";   // v0.0.291 (PACK NPC-SHEET): the NPC sheet uses this model too
   const role = npc ? (TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : null, elite = npc && (s.role === "elite" || !!s.useEscalation);
@@ -277,11 +315,11 @@ export async function pcModel(sheet, ctx) {
       bar: barOf(actionBar({ aps, reaction, frequency: fq, escalation: esc, dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "") : distanceShort(dist), vs: vsShort(vsText(it, { fists })), inCombat, ap, rap }), handBtns)
     };
   };
-  // v0.0.441: two weapons in hand that both fit the Action keep a small button each after the stamps (decision 3 of the sheets' mockup); with one,
-  // the stamps use it
+  // v0.0.441: with one fitting weapon in hand the stamps use it; v0.0.444 (group 2): with two, the roll dialog has a Roll button for each (the
+  // bar's small hand buttons are gone)
   function barOf(b, hb) {
     const on = (hb ?? []).filter(h => !h.off);
-    return { ...b, weaponId: on.length === 1 ? on[0].id : "", hands: (hb ?? []).length >= 2 ? hb : null };
+    return { ...b, weaponId: on.length === 1 ? on[0].id : "", hands: null };
   }
   const actions = a.itemTypes.action.filter(i => techniqueState(a, i) !== "locked");
   const secRows = Object.fromEntries(SECTION_ORDER.map(k => [k, []]));
@@ -490,6 +528,31 @@ export async function applyHandPick(actor, weapons, key, { spendAP, applyRegrip,
     const text = await applyRegrip(actor, weapons, key);
     if (text) await say("fa-hands", `<b>Regrip</b> (1 AP): ${esc(actor.name)} ${text}.`);
     return !!text;
+  }
+  // v0.0.444 (group 2): the hand menu's new rows. "rel2:other:w": drop the other weapon (Release), then hold w with both hands (Regrip, 1 AP)
+  if (kind === "rel2") {
+    const keep = actor.items.get(hand);
+    if (!keep) return false;
+    await applyRelease(actor, `drop:${id}`);
+    if (!(await spendAP(actor, 1, "Regrip"))) return false;
+    const text = await applyRegrip(actor, actor.itemTypes?.weapon ?? weapons, `two:${keep.id}`);
+    if (text) await say("fa-hands", `<b>Regrip</b> (1 AP): ${esc(actor.name)} ${text}.`);
+    return !!text;
+  }
+  // "chg:w:y:hand": stow w and draw y into that hand (Interact's swap, 1 AP; no free hand needed: Chapter 7, Handle)
+  // "dropdraw:other:y:w": drop the other hand's weapon (Release), stow w if any, then draw the Two-handed y with both hands (Interact, 1 AP)
+  if (kind === "chg" || kind === "dropdraw") {
+    const [, a, b, c] = String(key).split(":");
+    const cur = actor.items.get(kind === "chg" ? a : c), y = actor.items.get(b);
+    if (!y) return false;
+    if (kind === "dropdraw") await applyRelease(actor, `drop:${a}`);
+    if (!(await spendAP(actor, 1, "Interact", { kind: "interact" }))) return false;
+    if (cur) await cur.update(weaponMove("worn"));
+    const free = handSlots(actor.itemTypes?.weapon ?? weapons).filter(x => x.free).length;
+    const both = !!y.system?.traits?.has?.("twohanded") && free >= 2;
+    await y.update(weaponMove(both ? "2h" : "1h", both ? "" : (kind === "chg" && c === "off" ? "off" : "main")));
+    await say("fa-hand", `<b>Interact</b> (1 AP): ${esc(actor.name)} ${cur ? `stows <b>${esc(cur.name)}</b> and ` : ""}draws <b>${esc(y.name)}</b>${both ? " with both hands" : ""}.`);
+    return true;
   }
   if ((kind === "stow" || kind === "draw") && w) {
     if (!(await spendAP(actor, 1, "Interact", { kind: "interact" }))) return false;

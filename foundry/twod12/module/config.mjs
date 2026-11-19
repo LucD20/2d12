@@ -202,6 +202,8 @@ export const TWOD12 = {
   messageTo: { owners: "its owners (and the GM)", all: "everyone" },
   removableProps: { nonthreatening: "Non-threatening" },
   propWeapons: { fists: "Fists", all: "weapons" },
+  // v0.0.444 (Lucas, group 2: a card's requirement counts when choosing the weapon): the weapon property a [Weapon] Action needs (Darting Blade: Light)
+  weaponNeeds: { "": "Any weapon that fits", light: "A Light weapon", twohanded: "A Two-handed weapon", thrown: "A Thrown weapon", long: "A Long weapon" },
   weaponUses: { "": "Its weapon (any weapon it can use)", fists: "Only the Fists (needs a free hand)", kick: "The Fists, even with no free hand (a kick)" },
   ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you" },
   durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds", encounter: "This encounter" },   // v0.0.323: This encounter (Ends: Time)

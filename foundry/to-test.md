@@ -31,6 +31,10 @@ Expect: Out of combat the line keeps its lists, quiet, and says "Out of combat" 
 Do: Open Aveline's Actions tab, Basic Actions, in the dark and the light interface.
 Expect: Four columns; each box's left strip clearly visible in its Frequency's color (a Strike's second strip red beside it); the costs without "AP" ("1", "2/3", "1/2/3"); "Weapon Attack" and "Steel Yourself" whole, never cut.
 
+### g2-bars · v0.0.444 · No hand buttons on the Action bars
+Do: With Aveline's Longsword and Dagger in hand, look at her Actions tab.
+Expect: No small "1H" buttons after the stamps; each stamp opens the roll dialog (g2-dialog).
+
 ### g1-npc · v0.0.443 · An NPC's tiles and its Basic attack
 Do: Open the Orc Warrior's and the Ogre Chieftain's sheets.
 Expect: Their Attribute and Modifier tiles are the PC's size, the empty places left blank, the Modifier named "Weapon". The Cleaver's bar says "Basic attack · 1 + 1d4! / 3 + 1d4!", the Club's "Basic attack · 1 + 1d4! / 3 + 1d6!" (no "High", no "~", no "+1 Boon"); the name is never cut.
@@ -40,6 +44,14 @@ Do: In the dark interface, open the Orc Warrior's sheet and its Cleaver's short 
 Expect: Slash is an icon (a slash) in its color, like Blunt's hammer, on the sheet's card and in the chat's damage row; bright on the dark card, the darker ink on the light one. No black sword picture.
 Rev: 2
 ## The HUD
+
+### g2-handmenu · v0.0.444 · The HUD's hand menu
+Do: In a combat with 3 AP, Aveline holding the Longsword in one hand and a Dagger in the other, and an Arming Sword worn: click her main hand's tile on the HUD, then her off hand's; out of combat, click a free hand's tile; with no AP left, click the Longsword when held with both hands.
+Expect: A small menu opens just above the tile (not at the HUD's far left), inside the screen: the weapon and its hand, the warning "Two-handed, held in one hand: 3 Banes on its Strikes", then: Hold with both hands struck ("Your off hand holds the Dagger") and "Drop the Dagger, then hold with both hands"; Swap hands with the Dagger; Change to the Arming Sword; Stow; Drop; each with its Action and cost ("free" out of combat). A one-handed weapon has no "both hands" row. With no AP, the rows that cost AP are struck with "No AP left". Each row does what it says and posts its line in the chat.
+
+### g2-hotbar · v0.0.444 · The macro bar's look
+Do: Select Sylwen's token and look at the macro bar in the HUD's right column, in the dark and the light interface; drag a macro onto a slot and click it.
+Expect: Flat square slots with a thin line, the slot's number small at the top right, the icon a little muted; the macros still work.
 
 ### hud-identity · v0.0.441 · The HUD's identity column
 Do: In a combat, select Durgan's token; then Sylwen's with a changed Speed (give her Hindered).
@@ -70,6 +82,14 @@ Expect: Two squads of two by default (not three and one); a click moves that Gob
 Rev: 3
 
 ## The roll dialog
+
+### g2-dialog · v0.0.444 · Two weapons: a Roll button for each
+Do: Give Aveline a Dagger (Items tab) and hold her Longsword in her main hand and the Dagger in her off hand; target the Orc Warrior beside her and click Weapon Attack's stamp on her sheet, then on her HUD; then step 4 squares away and do it again.
+Expect: No "Which weapon?" window: the dialog opens with a column for each weapon (Longsword main hand, Dagger off hand: its Distance, Tiers 1 to 3, its roll and its Banes, every line on one line) and two buttons, "Roll · Longsword" and "Roll · Dagger". Each rolls with its weapon (the chat card says which). At 4 squares the Longsword's button is struck with "Orc Warrior is 4 squares away: its Range is 1" in its column, and the Dagger's reads "Roll · Dagger (thrown)". With only one weapon that fits (Sylwen's Quick Shots: only the bow) the dialog has its single Roll.
+
+### g2-darting · v0.0.444 · Darting Blade needs a Light weapon
+Do: Sylwen with her Hunting Bow in hand and her Dagger worn: use Darting Blade; then with the Dagger drawn; open Darting Blade's item sheet.
+Expect: Its Setup draws a Light weapon; only the Dagger can make the Strike (never the bow, no "Which weapon?"); the item sheet shows "Weapon needs: A Light weapon" beside "Weapon used".
 
 ### smite-dice · v0.0.440 · Smite's dice in the roll dialog
 Do: Aveline at Escalation 3: Judge the Orc Warrior, then Smite it; look at the roll dialog's Tiers, tick "Reaction AP: 1 more Smite die", look again. Then Smite a Goblin Sneak that isn't Judged.

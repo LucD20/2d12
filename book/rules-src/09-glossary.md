@@ -93,7 +93,7 @@
 | [[Imperiled\|**Imperiled**]] | Barely avoided a Deadly Hazard: all your Rolls are Doomed, Vulnerable 3, safe again at the start of your turn. |
 | [[End of Turn\|**Initiative slot**]] | A position in the turn order. |
 | [[Instances of Damage\|**Instance of damage**]] | One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance. |
-| [[Interact\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. Once during an Advance Action, without ending it. |
+| [[Interact\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. Once during an Advance Action, without ending it. Stowing or swapping needs no free hand ([[Handle]]). |
 | [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. |
 | [[Leaning\|**Leaning**]] | Until the end of your turn: cover is calculated from one of your corners, and your own cover is reduced by 1 level. |
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
@@ -191,7 +191,7 @@
 | [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. |
 | [[Taunted\|**Taunted**]] | By a creature: 1 Bane on your Actions against anyone else. |
 | [[Flanking\|**Threatens**]] | A creature threatens every enemy within the normal range of a Melee weapon, for as long as it qualifies to use that weapon's Weapon Attack (1A); a Non-threatening weapon doesn't (not adjacent ones with a Long weapon). |
-| [[Thrown\|**Thrown**]] | A weapon property: the weapon can be used in hand or thrown, with a Range for each. |
+| [[Thrown\|**Thrown**]] | A weapon property: the weapon can be used in hand or thrown, with a Range for each. A thrown weapon stays in your hand for the rules: the game doesn't track where it lands. |
 | [[Outcome Tiers\|**Tier**]] | The outcome of a roll: 1, 2 or 3. |
 | [[Reactions\|**Trigger**]] | A Reaction that happens after the Action that triggers it. |
 | [[A Reaction's Target\|**Triggering creature**]] | The creature whose Action sets a Reaction off. |

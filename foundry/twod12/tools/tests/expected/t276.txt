@@ -13,6 +13,6 @@ Weapon &middot; Projectile &middot; Ranged &middot; Strike Target: One enemy Int
 {"stamps":[{"ap":1,"label":"1R","off":true,"why":"Not enough AP: 0 left and 0 Reaction AP"}],"dist":"","vs":"","fq":"turn","fqWord":"Turn"}
 {"stamps":[{"ap":2,"label":"2 AP","off":false,"why":""}],"dist":"","vs":"","fq":"round","fqWord":"Escalation 6, Round"} | out of combat nothing is struck
 --- the wiring
-a bar's row opens the short card: true | the stamp is the Use button: true | two fitting weapons keep a hand button each: true
+a bar's row opens the short card: true | the stamp is the Use button: true | v0.0.444: no hand buttons (the roll dialog's Roll per weapon): true
 the gallery has the short face: true | no stat block face: true
 E6: a damage type's bright color for a dark surface: true

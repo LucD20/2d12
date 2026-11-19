@@ -119,7 +119,7 @@ export function rightHtml(s = {}) {
   if ((s.grants ?? []).length) items.push(`<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>`);
   if (s.prone) items.push(sitItemHtml(s.prone));
   if (s.notes) items.push(`<div class="h3-si"><div class="t">${esc(s.notes)}</div></div>`);
-  const hands = (s.tiles ?? []).length ? `<div class="h3-hands">${s.tiles.map(t => `<button type="button" class="h3-hand${t.free ? " free" : ""}${t.warn ? " warn" : ""}" data-hud="hands" aria-label="${esc(t.tip ?? t.name)}"><span>${esc(t.name)}</span><b>${esc(t.grip)}</b></button>`).join("")}</div>` : "";
+  const hands = (s.tiles ?? []).length ? `<div class="h3-hands">${s.tiles.map(t => `<button type="button" class="h3-hand${t.free ? " free" : ""}${t.warn ? " warn" : ""}" data-hud="hands" data-hand="${esc(t.hand ?? "")}" aria-label="${esc(t.tip ?? t.name)}"><span>${esc(t.name)}</span><b>${esc(t.grip)}</b></button>`).join("")}</div>` : "";
   // the pick bar, a Forced Movement, a Setup's movement and End movement ask in .hb-ask (pickbar.mjs, move.mjs, setup.mjs: hudAskSlot)
   return `<div class="h3-side"><div class="h3-sit${items.length ? " on" : ""}">${items.join("")}<div class="hb-ask"></div><span class="h3-none">Nothing waiting.</span></div>${hands}<div class="h3-hot"></div></div>`;
 }

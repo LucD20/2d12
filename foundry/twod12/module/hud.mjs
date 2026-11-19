@@ -406,7 +406,7 @@ if (typeof window !== "undefined") window.addEventListener?.("resize", () => { c
 
 /* ------------------------------------------------------------------ panels, the card, the menu */
 function closePop({ keepOpen = false } = {}) {
-  root?.querySelectorAll(".hud-pop, .hud-menu").forEach(x => x.remove()); st.card?.remove(); st.card = null;
+  root?.querySelectorAll(".hud-pop, .hud-menu, .hud-hmenu").forEach(x => x.remove()); st.card?.remove(); st.card = null;
   // v0.0.382 (Lucas: "the button is still colored, so I have to click twice"): a closed panel's category is not lit any more
   if (!keepOpen && st.open) { st.open = ""; root?.querySelectorAll(".cat.on").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); }); }
 }
@@ -446,6 +446,41 @@ async function showCardNow(actor, item, at) {
   const sameName = ev => !!ev.target.closest?.(`.ha[data-item-id="${item.id}"] [data-hud="card"], .hb-ln[data-item-id="${item.id}"]`);
   setTimeout(() => document.addEventListener("pointerdown", function away(ev) { if (sameName(ev)) return; if (!div.contains(ev.target)) { div.remove(); if (st.card === div) st.card = null; document.removeEventListener("pointerdown", away, true); } }, true), 0);
 }
+/**
+ * v0.0.444 (group 2; Lucas: "When clicking in the weapon in the token hud, open the window above it, like a 'reversed dropdown' menu, instead of
+ * all the way to the left. There it should show the weapons you can change it to or if you want to hold with 2h"): the hand tile's menu, opening
+ * upward from the tile and kept on the screen (pcsheet.mjs handMenuModel; a row that can't be done now is struck, its reason under it).
+ */
+async function handMenu(actor, tile) {
+  closePop({ keepOpen: true });
+  const P = await import("./pcsheet.mjs"), cb = await combatOf(actor);
+  const weapons = actor.itemTypes?.weapon ?? [];
+  const m = P.handMenuModel(weapons, tile.dataset.hand, { inCombat: !!cb, ap: cb ? cb.ap : 99 });
+  const { esc } = await import("./util.mjs");
+  const rowHtml = r => `<button type="button" class="hm-row${r.off ? " off" : ""}"${r.key && !r.off ? ` data-k="${esc(r.key)}"` : " disabled"}><span class="hm-l">${esc(r.label)}${r.off && r.why ? `<small>${esc(r.why)}</small>` : ""}</span><span class="hm-c">${esc(r.act)} <b>${esc(r.cost)}</b></span></button>`;
+  const div = document.createElement("div");
+  div.className = "hud-hmenu"; div.setAttribute("role", "menu");
+  div.innerHTML = `<div class="hm-h"><b>${esc(m.title)}</b> <small>${esc(m.sub)}</small>${m.warn ? `<span class="hm-w">${esc(m.warn)}</span>` : ""}</div>${m.groups.map(g => `<div class="hm-g">${g.map(rowHtml).join("")}</div>`).join("")}`;
+  root.append(div);
+  tile.classList.add("on");
+  const r = tile.getBoundingClientRect(), h = root.getBoundingClientRect();
+  div.style.bottom = `${Math.round(h.bottom - r.top + 4)}px`;
+  div.style.left = `${Math.round(Math.max(0, Math.min(r.left - h.left, h.width - div.offsetWidth)))}px`;
+  div.querySelector("button[data-k]")?.focus({ preventScroll: true });
+  const close = () => { div.remove(); tile.classList.remove("on"); document.removeEventListener("pointerdown", away, true); };
+  const away = e => { if (!div.contains(e.target) && e.target !== tile) close(); };
+  document.addEventListener("pointerdown", away, true);
+  div.addEventListener("keydown", e => { if (e.key === "Escape") { close(); tile.focus(); } });
+  div.addEventListener("click", async e => {
+    const k = e.target.closest("button[data-k]")?.dataset.k;
+    if (!k) return;
+    close();
+    if (!(actor.isOwner || game.user.isGM)) return;
+    const { spendAP } = await import("./combat.mjs"), L = await import("./hands.mjs"), { sysLine } = await import("./sysmsg.mjs");
+    await P.applyHandPick(actor, actor.itemTypes?.weapon ?? [], k, { spendAP, applyRegrip: L.applyRegrip, applyRelease: L.applyRelease, sysLine });
+  });
+}
+
 /** v0.0.381 (Lucas): right-click on a PC's Version stamp pins it to (or unpins it from) the Quick row, at once. */
 async function toggleQuick(actor, item, ap) {
   const k = `${item.id}:${ap}`, next = quickKeys(actor);
@@ -486,7 +521,7 @@ async function onClick(ev) {
   if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
   if (kind === "grantcancel") { const { cancelGrantOf } = await import("./freeuse.mjs"); return cancelGrantOf(actor, b.dataset.effect); }
   if (kind === "more") return openPanel("more", st.moreIds ?? []);
-  if (kind === "hands") return openPanel("hands");
+  if (kind === "hands") return b.dataset.hand ? handMenu(actor, b) : openPanel("hands");   // v0.0.444 (group 2): the menu above the tile
   if (kind === "steel") { const basic = actor.itemTypes.action.find(i => /steel yourself/i.test(i.name)); if (basic) return use(actor, basic, Math.min(...(basic.system.versions ?? [{ ap: 2 }]).map(v => Number(v.ap) || 0)), ev.shiftKey); return ui.notifications.info("No Steel Yourself on this sheet."); }
   if (kind === "card" && item) { if (st.card?.isConnected && st.cardId === item.id) return closePop({ keepOpen: true }); return showCard(actor, item, b); }
   if (kind === "cat") { const c = b.dataset.cat; if (actor.type !== "npc") { st.open = st.open === c ? "" : c; root.querySelectorAll(".cat").forEach(x => { x.classList.toggle("on", x.dataset.cat === st.open); x.setAttribute("aria-pressed", String(x.dataset.cat === st.open)); }); } return st.open || actor.type === "npc" ? openPanel(c) : closePop(); }

@@ -10,9 +10,9 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 14.3 | 256 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.6 | 45 |
-| 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 5.8 | 95 |
+| 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 6.0 | 95 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.8 | 118 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 29.8 | 216 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 30.0 | 216 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 4.8 | 137 |
 | 13-archer.md | Archer | archer |  | 5.3 | 140 |

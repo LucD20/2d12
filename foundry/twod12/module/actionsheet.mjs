@@ -55,7 +55,7 @@ function cardSec(m) {
   ];
   const extra = `<div class="as-more">${tog("system.marksTarget", s.marksTarget, "Marks the target")}${tog("system.basicAttack", s.basicAttack, "An NPC's Basic attack")}
     ${s.basicAttack ? `<span class="fr-m">rating</span> ${sel('name="system.basicRating"', s.basicRating ?? "medium", m.basicRatings ?? [], "Basic attack rating")}` : ""}${m.basicSuggest ? ` <span class="fr-m">suggested ${esc(m.basicSuggest)}</span>` : ""}
-    ${weapon ? `<span class="fr-m">Weapon used</span> ${sel('name="system.weaponUse"', s.weaponUse ?? "", Object.entries(TWOD12.weaponUses ?? {}), "Weapon used")}` : ""}
+    ${weapon ? `<span class="fr-m">Weapon used</span> ${sel('name="system.weaponUse"', s.weaponUse ?? "", Object.entries(TWOD12.weaponUses ?? {}), "Weapon used")} <span class="fr-m">Weapon needs</span> ${sel('name="system.weaponNeeds"', s.weaponNeeds ?? "", Object.entries(TWOD12.weaponNeeds ?? {}), "Weapon needs")}` : ""}
     ${more.map(([k, l]) => `<a class="as-link" data-as="show" data-v="${k}" role="button" tabindex="0">${l}</a>`).join("")}</div>`;
   return sec("card", "The card", "its lines, in the order players read them", grid(rows) + extra
     + help("Category and Level show at the right of the card's title (Level 0 hides the number). Distance: <code>reach</code>, <code>self</code>, <code>weapon</code> or any text. Marks the target: using it marks the targeted creature; rules \"against the marked one\" read the mark."));

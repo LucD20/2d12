@@ -5249,3 +5249,36 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.basicatk .ps2-bar .ps-nm { flex: none; }
 /* v0.0.443 (E6): the dice row's damage-type icon too (inline.mjs .dtic) */
 @scope (.theme-dark) to (.theme-light) { .dtic[style*="--sc-d"] { color: var(--sc-d) !important; } }
+
+/* ==================================================================== v0.0.444 (group 2; Lucas, 2026-11-19: foundry/mockups/group2, "Proposed") */
+/* the roll dialog with two weapons: a column each, every line on one line ("make sure to make all fill a single line") */
+.twod12.rolldlg .rd-dual { margin: 2px 0 4px; }
+.twod12.rolldlg .rdd-r { display: grid; grid-template-columns: 4.8rem repeat(var(--n, 2), minmax(0, 1fr)); gap: 0 .6rem; margin: 1px 0; align-items: baseline; }
+.twod12.rolldlg .rdd-r > * { min-width: 0; white-space: nowrap; overflow: hidden; }
+.twod12.rolldlg .rdd-r > b { font-weight: 700; } .twod12.rolldlg .rdd-h { border-bottom: 1px solid var(--s-hair); padding-bottom: 2px; margin-bottom: 2px; }
+.twod12.rolldlg .rdd-h small { color: var(--s-mute); font-weight: 400; }
+.twod12.rolldlg .rdd-r > b .rd-tforce { all: unset; font-weight: 700; cursor: pointer; } .twod12.rolldlg .rdd-r.forced { box-shadow: inset 2px 0 0 var(--s-gold); }
+.twod12.rolldlg .rdd-roll { border-top: 1px solid var(--s-hair); padding-top: 3px; margin-top: 3px; } .twod12.rolldlg .rdd-dice { font-weight: 700; }
+.twod12.rolldlg .rdd-notes > span { display: flex; flex-direction: column; } .twod12.rolldlg .rdd-notes i { font-style: normal; font-size: 12px; white-space: nowrap; }
+.twod12.rolldlg .rdd-bane { color: var(--s-bane); } .twod12.rolldlg .rdd-out { color: var(--s-mute); }
+.twod12.rolldlg .rd-go.rd-gow { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.twod12.rolldlg .rd-go.rd-gow.out { text-decoration: line-through; opacity: .6; }
+/* the HUD's hand menu: the HUD's flat surface and thin line, opening upward from the tile (hud.mjs handMenu) */
+.twod12-hud .hud-hmenu { position: absolute; z-index: 30; box-sizing: border-box; width: max-content; min-width: 220px; max-width: 340px; border: 1px solid var(--hud-line); background: var(--hud-bg); color: var(--hud-ink); box-shadow: 0 4px 16px rgba(0, 0, 0, .55); font: 400 13px/1.3 "Source Sans 3", sans-serif; }
+.twod12-hud .hud-hmenu .hm-h { padding: 5px 9px 4px; color: var(--hud-mute); } .twod12-hud .hud-hmenu .hm-h b { color: var(--hud-ink); font-weight: 700; font-size: 14px; }
+.twod12-hud .hud-hmenu .hm-w { display: block; padding-top: 2px; font-size: 12.5px; color: var(--s-bad); }
+.twod12-hud .hud-hmenu .hm-g { display: flex; flex-direction: column; padding: 3px 0; border-top: 1px solid var(--hud-hair); }
+.twod12-hud .hud-hmenu .hm-row { all: unset; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; align-items: baseline; padding: 3px 9px; font: 600 13px/1.3 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; }
+.twod12-hud .hud-hmenu .hm-row:hover, .twod12-hud .hud-hmenu .hm-row:focus-visible { background: color-mix(in srgb, var(--hud-ink) 9%, transparent); }
+.twod12-hud .hud-hmenu .hm-c { white-space: nowrap; font-weight: 400; color: var(--hud-mute); } .twod12-hud .hud-hmenu .hm-c b { color: var(--hud-ink); font-weight: 700; }
+.twod12-hud .hud-hmenu .hm-row.off { cursor: default; } .twod12-hud .hud-hmenu .hm-row.off:hover { background: none; }
+.twod12-hud .hud-hmenu .hm-row.off .hm-l, .twod12-hud .hud-hmenu .hm-row.off .hm-c { text-decoration: line-through; color: var(--hud-mute); font-weight: 400; }
+.twod12-hud .hud-hmenu .hm-l small { display: block; text-decoration: none; font-weight: 400; font-size: 12.5px; color: var(--hud-ink); }
+.twod12-hud .hud-hmenu .hm-row.off .hm-l small { text-decoration: none; display: block; }
+.twod12-hud .h3-hand.on { background: color-mix(in srgb, var(--hud-ink) 14%, transparent); border-color: var(--s-gold); }
+/* the macro bar (Lucas: "I like the macrobar of that mockup"): flat square slots with a thin line, the number small at the top right, the icon muted */
+.twod12-hud .h3-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar .slot { position: relative; box-sizing: border-box; border: 1px solid var(--s-hair) !important; border-radius: 0 !important; background: rgba(0, 0, 0, .28) !important; box-shadow: none !important; color: var(--s-mute); outline: none; }
+.theme-light .twod12-hud .h3-hot #hotbar .slot, .theme-light .twod12-hud .hud-hot #hotbar .slot { background: rgba(0, 0, 0, .06) !important; }
+.twod12-hud .h3-hot #hotbar .slot:hover, .twod12-hud .hud-hot #hotbar .slot:hover { border-color: var(--s-gold) !important; }
+.twod12-hud #hotbar .slot .key, .twod12-hud #hotbar .slot .slot-key, .twod12-hud #hotbar .slot [class*="key"] { position: absolute; right: 2px; top: 0; font-size: 8.5px; line-height: 10px; color: var(--s-faint); background: none; text-shadow: none; }
+.twod12-hud #hotbar .slot img, .twod12-hud #hotbar .slot .slot-icon { opacity: .85; border: 0; }

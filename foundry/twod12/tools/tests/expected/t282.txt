@@ -1,0 +1,17 @@
+--- the roll dialog's columns
+Longsword main hand Dagger off hand Distance 1 thrown 4/8/12 Tier 1 &mdash; &mdash; Tier 2 &mdash; &mdash; Tier 3 &mdash; &mdash; Your roll 2d12 + 1 ▲0 ▼3 2d12 + 1 ▲0 ▼1 ▼3 Two-handed weapon in one hand Orc Warrior is 4 squares away: its Range is 1 ▼1 Off hand (Light)
+a column a weapon: true | the Banes on lines of their own: true | the reason a weapon can't reach: true
+a Roll for each weapon: true | the thrown one says so: true | the one out of reach struck: true
+the current weapon's hand Banes leave the shared rows: true
+one weapon: one Roll: true | CSS: every line one line: true
+no Which weapon? window with two held: true | the other's Roll runs it again with that weapon at once: true
+--- the hand menu
+Longsword (main hand) [Two-handed, held in one hand: 3 Banes on its Strikes.]: Hold with both hands = Regrip 1 AP STRUCK (Your off hand holds the Dagger); Drop the Dagger, then hold with both hands = Release, Regrip 1 AP; Swap hands with the Dagger = Regrip 1 AP || Change to the Arming Sword = Interact 1 AP; Drop the Dagger, then change to the Greatsword = Release, Interact 1 AP || Stow = Interact 1 AP; Drop = Release 0 AP
+Dagger (off hand): Swap hands with the Longsword = Regrip free || Change to the Arming Sword = Interact free; Drop the Longsword, then change to the Greatsword = Release, Interact free || Stow = Interact free; Drop = Release free
+Free hand (off hand): Drop the Arming Sword, then draw the Greatsword = Release, Interact 1 AP STRUCK (No AP left)
+a one-handed weapon has no "both hands" row: true
+the HUD opens it above the tile: true | the macro bar's look: true
+--- the card's weapon requirement
+Darting Blade fits: Dagger | its card sets it: true | the Action sheet edits it: true
+--- the book
+Handle: stowing and swapping need no free hand: true | Thrown stays in hand: true

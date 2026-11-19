@@ -282,6 +282,24 @@ const parts = [
       scene(AV_TWO, { ap: 0 }, { cap: "Both hands on the Longsword, no AP left", menu: "main", crop: true })].join("")}</div>`)
 ];
 out.insertAdjacentHTML("beforeend", `<h1>Group 2: hands and dual wielding</h1><p class="g2-lead">A mockup: nothing in the system changed. Each part shows today's screen (the system's own code and CSS, v0.0.443) beside the proposal. Aveline's Dagger and Arming Sword are stand-ins put on her for these pictures.</p>`);
+// v0.0.444: ?built=1 draws the dialog AS BUILT (the system's rolldlg.mjs with inp.dual, as actions.mjs fills it) at 1 and at 4 squares
+if (q.get("built")) {
+  parts.length = 0;
+  parts.push(async () => {
+    const av = makeActor(AV_DATA, { items: AV_DUAL }), wa = av.itemTypes.action.find(i => i.name === "Weapon Attack");
+    const held = LO.handSlots(av.itemTypes.weapon).filter(s => s.id).map(s => av.items.get(s.id));
+    let html = "";
+    for (const sq of [1, 4]) {
+      const xs = []; for (const w of held) xs.push(await dlgInput(av, wa, w, { squares: sq }));
+      const all = av.itemTypes.weapon;
+      const cols = xs.map(x => ({ id: x.w.id, name: x.w.name, hand: (LO.HAND_LABEL[x.hand] ?? "").toLowerCase(), dist: x.inp.versions[0].meta.dist.replace(/^Weapon$/, "1"), thrown: x.thrown, out: x.blocked,
+        banes: x.own.map(c => ({ n: c.n, text: c.label })), tiers: { [x.inp.versions[0].ap]: x.inp.versions[0].tiers } }));
+      const inp = { ...xs[0].inp, dual: { current: xs[0].w.id, weapons: cols } };
+      html += `<div style="margin-bottom:24px">${win(`Roll · Weapon Attack (${sq} sq.)`, RD.dialogHtml(inp, RD.newState(inp)))}</div>`;
+    }
+    return `<section><h2>As built (v0.0.444)</h2>${html}</section>`;
+  });
+}
 for (const p of parts) { try { out.insertAdjacentHTML("beforeend", await p()); } catch (e) { console.error(e); out.insertAdjacentHTML("beforeend", `<pre class="mk-err">${esc(e.stack ?? e)}</pre>`); } }
 await document.fonts.ready;
 for (const hl of document.querySelectorAll(".ps2-hooks .ps2-hl")) SM.fitHooks(hl);

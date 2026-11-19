@@ -34,6 +34,6 @@ console.log(JSON.stringify(SM.actionBar({ aps: [2, 2], frequency: "round", escal
 console.log("--- the wiring");
 const sh = src("module/actor-sheets.mjs"), tpl = src("templates/actor-sheet-pc.hbs");
 console.log("a bar's row opens the short card:", sh.includes('short: row.classList.contains("ps2-oa")'), "| the stamp is the Use button:", tpl.includes('data-action="useStamp"') && sh.includes("static async useStamp(event, target)"),
-  "| two fitting weapons keep a hand button each:", tpl.includes('{{#if bar.hands}}') && tpl.includes('data-action="useWith" data-weapon-id="{{id}}"'));
+  "| v0.0.444: no hand buttons (the roll dialog's Roll per weapon):", !tpl.includes('{{#if bar.hands}}') && !tpl.includes("ps2-hb"));
 console.log("the gallery has the short face:", src("tools/gallery/shoot.mjs").includes('["short", ["bar"]]'), "| no stat block face:", !src("tools/gallery/shoot.mjs").includes('"statblock"'));
 console.log("E6: a damage type's bright color for a dark surface:", src("module/config.mjs").includes(";--sc-d:${TWOD12.subtypeColors?.[k]") && src("styles/system.css").includes('@scope (.theme-dark) to (.theme-light) { .dtype[style*="--sc-d"]'));

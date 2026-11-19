@@ -633,7 +633,9 @@ export async function useAction(actor, item, opts = {}) {
   const linkedW = item.getFlag("twod12", "weaponId");
   // A Weapon Action with the Melee or Ranged trait needs a weapon with that property.
   const needProp = it.traits.has("weapon") ? ["melee", "ranged"].find(p => it.traits.has(p)) : null;
-  const candidates = weaponsFor(actor, item).filter(w => !needProp || hasProp(w, needProp) || (needProp === "ranged" && hasProp(w, "thrown")));   // a Thrown weapon can be thrown for a [Ranged] Action
+  const candidates = weaponsFor(actor, item).filter(w => !needProp || hasProp(w, needProp) || (needProp === "ranged" && hasProp(w, "thrown")))   // a Thrown weapon can be thrown for a [Ranged] Action
+    .filter(w => !it.weaponNeeds || !it.traits.has("weapon") || hasProp(w, it.weaponNeeds));   // v0.0.444 (Lucas, group 2): the card's own requirement (Darting Blade: a Light weapon)
+  if (it.weaponNeeds && it.traits.has("weapon") && !linkedW && !candidates.length) return ui.notifications.warn(`${item.name} needs a ${TWOD12.weaponNeeds?.[it.weaponNeeds]?.replace(/^An? /, "") ?? it.weaponNeeds} in hand.`);
   if (needProp && !linkedW && !candidates.length) return ui.notifications.warn(`${item.name} needs a wielded ${needProp === "melee" ? "Melee" : "Ranged"} weapon.`);
   // A Shot Action needs a Projectile weapon (a bow, a crossbow).
   if (it.traits.has("shot") && it.traits.has("weapon")) { const shooters = candidates.filter(w => hasProp(w, "projectile")); if (!linkedW && !shooters.length) return ui.notifications.warn(`${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).`); candidates.splice(0, candidates.length, ...shooters); }
@@ -645,7 +647,9 @@ export async function useAction(actor, item, opts = {}) {
     const fit = it.traits.has("shot") ? candidates.filter(w => hasProp(w, "projectile")) : it.traits.has("gun") ? candidates.filter(w => hasProp(w, "firearm")) : candidates;
     const held = heldFirst(fit).filter(w => w.system?.wielded);
     if (held.length === 1) opts.weaponId = held[0].id;
-    else if (held.length > 1) { const w = await pickWeapon(actor, item, held, ""); if (w === null) return; if (w?.id) opts.weaponId = w.id; }   // null: Cancel
+    // v0.0.444 (Lucas, group 2: "instead of click -> choose weapon -> roll, it becomes click -> roll"): no "Which weapon?" window; the dialog
+    // opens on the main hand's weapon and shows a Roll button for each held weapon that fits (opts.dual; rolldlg.mjs dualHtml)
+    else if (held.length > 1) { const all = actor.itemTypes?.weapon ?? [], rank = w => ({ main: 0, both: 0, off: 1 }[handOf(all, w.id)] ?? 2); const ord = [...held].sort((a, b) => rank(a) - rank(b)); opts.weaponId = ord[0].id; opts.dual = ord.map(w => w.id); }
   }
   const previewWeapon = linkedW ? actor.items.get(linkedW) : (candidates.find(w => w.id === opts.weaponId) ?? heldFirst(candidates)[0] ?? null);   // v0.0.208: the hand button's weapon
   // A Weapon Action takes Melee or Ranged from its weapon and how it is used (a Thrown weapon thrown is Ranged), and the weapon's Range
@@ -831,17 +835,41 @@ export async function useAction(actor, item, opts = {}) {
   let rdData = null;
   if (rdUse) {
     const { rollDialogInput } = await import("./rollinput.mjs"), { askAction } = await import("./rollwindow.mjs");
-    const partsFor = async v => {
+    const partsFor = async (v, pw = previewWeapon) => {   // v0.0.444: pw, a weapon of the dual columns
       const fxNameOf = async k => Promise.all((v.fx?.[k] ?? []).map(async x => ({ name: (await fromUuid(x.uuid))?.name ?? "?" })));
       const fxn = { all: await fxNameOf("all"), t1: await fxNameOf("t1"), t2: await fxNameOf("t2"), t3: await fxNameOf("t3") };
       const fxNames = list => list.map(x => `<span class="fxname">${esc(x.name)}</span>`).join(", ");
-      const cardCtx = { item, weapon: previewWeapon, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0 };
+      const cardCtx = { item, weapon: pw, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0 };
       const ruleCtx = v.diceRule ? { escalation: Number(actor.system?.escalation) || 0, profane: !!(rollsAtOthers && targetToken && isProfaneFor(actor, targetToken)), more: false } : null;   // v0.0.440
-      const mk = await attackModelParts({ it, item, version: v, weapon: previewWeapon, cardCtx, fxn, fxNames, areaSize: v.areaSize || areaSet?.distance, chip: src.chip, ruleCtx });
+      const mk = await attackModelParts({ it, item, version: v, weapon: pw, cardCtx, fxn, fxNames, areaSize: v.areaSize || areaSet?.distance, chip: src.chip, ruleCtx });
       return { tiers: mk.outcomes, crit: v.critical ? await enrich(v.critical, item) : "", effects: mk.effectsHtml, setup: it.setup ? await enrich(setupFor(it.setup, setupDone), item) : "" };
     };
     const inp = await rollDialogInput({ actor, item, versions, src, useTraits, dlgTraits, previewWeapon, multi, perT, aimed, targetToken, rollsAtOthers, isSelf, areaSet, areaOutcome, extraMods, steps, bonusSeen, usesReload,
       saveAct, notices: [...extraNotices], opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
+    // v0.0.444 (group 2; Lucas: "it shows buttons for each weapon to use"): two held weapons fit: a column for each (its Distance, its Tiers, its
+    // hand's Banes) and a Roll button for each; the dialog is the main hand's, the other's Roll runs the Action again with that weapon at once
+    if ((opts.dual ?? []).length > 1 && it.traits.has("weapon") && !linkedW) {
+      try {
+        const all = actor.itemTypes?.weapon ?? [], ws = opts.dual.map(id => actor.items.get(id)).filter(Boolean);
+        const { weaponUse: wu, rangeEnds } = await import("./weaponrange.mjs");
+        const strike = useTraits.has("strike") || it.traits.has("strike");
+        const cols = [];
+        for (const w of ws) {
+          const u = wu(w, it.traits, s.reach ?? 1, wpnSquares), max = u.range ? rangeEnds(String(u.range)).max : 0;
+          const out = !u.mode ? `${w.name} can't make this Action` : Number.isFinite(wpnSquares) && rollsAtOthers && !isAreaAction && max && wpnSquares > max ? `${targetToken?.name ?? "The target"} is ${wpnSquares} squares away: its Range is ${u.range}` : "";
+          const banes = [];
+          if (strike) {
+            const hb = handBanes(all, w, isFists(w));
+            if (hb.banes) banes.push({ n: hb.banes, text: hb.banes === 3 ? "Strung, the other hand full" : hb.banes === 2 ? "Off hand" : "Off hand (Light)" });
+            if (hasProp(w, "twohanded") && (Number(w.system?.hands) || 1) < 2) banes.push({ n: 3, text: "Two-handed weapon in one hand" });
+          }
+          const tiers = {};
+          for (const v of versions) if (!v.noTiers) tiers[v.ap] = (await partsFor(v, w)).tiers;
+          cols.push({ id: w.id, name: w.name, hand: (HAND_LABEL[handOf(all, w.id)] ?? "").toLowerCase(), mode: u.mode, thrown: !!u.thrown, dist: u.range ? `${u.thrown ? "thrown " : ""}${u.range}` : "", out, banes, tiers });
+        }
+        if (cols.length > 1) inp.dual = { current: previewWeapon?.id ?? cols[0].id, weapons: cols };
+      } catch (e) { console.warn("twod12 | the dual columns", e); }
+    }
     // v0.0.398 (Lucas): live: false: the targets change only with the dialog's Target button
     rdData = await askAction({ inp, state: opts.rdState ?? null, live: false, card: () => item.sheet?.render(true), skip: (!!opts.skipDialog && !opts.restart) || !!opts.rollAfterPlace });   // v0.0.376: the HUD's Skip roll dialog; v0.0.397: Roll placed the area: roll at once
     if (!rdData) return;
@@ -849,11 +877,11 @@ export async function useAction(actor, item, opts = {}) {
     if (setupLater && (!rdData.restart || rdData.rollAfter)) {
       const st = await runSetups();
       if (!st.ok) return;
-      if (st.done) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, setupRan: true, setupDone: true, stanceRan: st.stance, noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: true });
+      if (st.done) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, setupRan: true, setupDone: true, stanceRan: st.stance, noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, rollAfterPlace: true });
     }
     // the targets changed on the map, or the area is placed again: the Action runs again with the same choices (no hands or turn question again;
     // v0.0.440: a Setup not made yet still comes when Roll is pressed)
-    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: opts.noSetup || opts.setupRan, setupRan: !!opts.setupRan || (setupLater && !!rdData.rollAfter), noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
+    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: opts.noSetup || opts.setupRan, setupRan: !!opts.setupRan || (setupLater && !!rdData.rollAfter), noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
   }
   const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : rdData ? rdData : await askRoll(actor, {   // v0.0.439: only the tests reach this (no ApplicationV2.render): the old dialog, now without its preview
     title: item.name,

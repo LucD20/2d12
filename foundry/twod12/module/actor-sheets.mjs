@@ -1302,7 +1302,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
    */
   static async useStamp(event, target) {
     event?.stopPropagation?.();
-    if (target.dataset.weaponId && !target.dataset.off) return CharacterSheet.useWith.call(this, event, target);
+    // v0.0.444 (group 2): the stamp goes to the roll dialog (it shows a Two-handed weapon's 3 Banes; Regrip is in the HUD's hand menu)
     const item = this._item(target);
     if (!item) return;
     const gk = target.dataset.grantEffect ? { grantKey: { effectId: target.dataset.grantEffect, index: Number(target.dataset.grantIndex) || 0 } } : {};

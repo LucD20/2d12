@@ -28,6 +28,14 @@
      "rev": 1
     },
     {
+     "id": "g2-bars",
+     "v": "v0.0.444",
+     "title": "No hand buttons on the Action bars",
+     "do": "With Aveline's Longsword and Dagger in hand, look at her Actions tab.",
+     "expect": "No small \"1H\" buttons after the stamps; each stamp opens the roll dialog (g2-dialog).",
+     "rev": 1
+    },
+    {
      "id": "g1-npc",
      "v": "v0.0.443",
      "title": "An NPC's tiles and its Basic attack",
@@ -48,6 +56,22 @@
   {
    "name": "The HUD",
    "items": [
+    {
+     "id": "g2-handmenu",
+     "v": "v0.0.444",
+     "title": "The HUD's hand menu",
+     "do": "In a combat with 3 AP, Aveline holding the Longsword in one hand and a Dagger in the other, and an Arming Sword worn: click her main hand's tile on the HUD, then her off hand's; out of combat, click a free hand's tile; with no AP left, click the Longsword when held with both hands.",
+     "expect": "A small menu opens just above the tile (not at the HUD's far left), inside the screen: the weapon and its hand, the warning \"Two-handed, held in one hand: 3 Banes on its Strikes\", then: Hold with both hands struck (\"Your off hand holds the Dagger\") and \"Drop the Dagger, then hold with both hands\"; Swap hands with the Dagger; Change to the Arming Sword; Stow; Drop; each with its Action and cost (\"free\" out of combat). A one-handed weapon has no \"both hands\" row. With no AP, the rows that cost AP are struck with \"No AP left\". Each row does what it says and posts its line in the chat.",
+     "rev": 1
+    },
+    {
+     "id": "g2-hotbar",
+     "v": "v0.0.444",
+     "title": "The macro bar's look",
+     "do": "Select Sylwen's token and look at the macro bar in the HUD's right column, in the dark and the light interface; drag a macro onto a slot and click it.",
+     "expect": "Flat square slots with a thin line, the slot's number small at the top right, the icon a little muted; the macros still work.",
+     "rev": 1
+    },
     {
      "id": "hud-identity",
      "v": "v0.0.441",
@@ -106,6 +130,22 @@
   {
    "name": "The roll dialog",
    "items": [
+    {
+     "id": "g2-dialog",
+     "v": "v0.0.444",
+     "title": "Two weapons: a Roll button for each",
+     "do": "Give Aveline a Dagger (Items tab) and hold her Longsword in her main hand and the Dagger in her off hand; target the Orc Warrior beside her and click Weapon Attack's stamp on her sheet, then on her HUD; then step 4 squares away and do it again.",
+     "expect": "No \"Which weapon?\" window: the dialog opens with a column for each weapon (Longsword main hand, Dagger off hand: its Distance, Tiers 1 to 3, its roll and its Banes, every line on one line) and two buttons, \"Roll · Longsword\" and \"Roll · Dagger\". Each rolls with its weapon (the chat card says which). At 4 squares the Longsword's button is struck with \"Orc Warrior is 4 squares away: its Range is 1\" in its column, and the Dagger's reads \"Roll · Dagger (thrown)\". With only one weapon that fits (Sylwen's Quick Shots: only the bow) the dialog has its single Roll.",
+     "rev": 1
+    },
+    {
+     "id": "g2-darting",
+     "v": "v0.0.444",
+     "title": "Darting Blade needs a Light weapon",
+     "do": "Sylwen with her Hunting Bow in hand and her Dagger worn: use Darting Blade; then with the Dagger drawn; open Darting Blade's item sheet.",
+     "expect": "Its Setup draws a Light weapon; only the Dagger can make the Strike (never the bow, no \"Which weapon?\"); the item sheet shows \"Weapon needs: A Light weapon\" beside \"Weapon used\".",
+     "rev": 1
+    },
     {
      "id": "smite-dice",
      "v": "v0.0.440",

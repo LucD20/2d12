@@ -1,4 +1,4 @@
-hover texts left: 33
+hover texts left: 32
   module/actioncard.mjs: data-tooltip="${esc(b.why)}"><button type="button" class="ap-vbtn st-u
   module/actions.mjs: data-tooltip="${esc(m.why ?? "")}"><i class="fa-solid ${esc(m.icon ?? 
   module/actions.mjs: data-tooltip="${esc(n.why ?? "")}"><i class="fa-solid ${esc(n.icon ?? 
@@ -25,7 +25,6 @@ hover texts left: 33
   module/rolldlg.mjs: data-tooltip="${esc(n.why)}"` : ""}>${esc(n.text)}</span>`).join("")}<
   templates/actor-sheet-pc.hbs: data-tooltip="Unloaded: Reload first (1 AP)" aria-label="{{name}}: unl
   templates/actor-sheet-pc.hbs: data-tooltip="{{#if ../off}}{{../offWhy}}{{else}}{{why}}{{/if}} (click
-  templates/actor-sheet-pc.hbs: data-tooltip="{{tip}}" aria-label="{{tip}}"><i class="fa-solid fa-khan
   templates/actor-sheet-pc.hbs: data-tooltip="{{down.keepOff}}"{{/if}}>Keep fighting</button>
   templates/actor-sheet-pc.hbs: data-tooltip="{{down.collapseOff}}"{{/if}}>{{down.collapseWord}}</butt
   templates/actor-sheet-pc.hbs: data-tooltip="{{tip}}"><i class="l" style="width:{{seg.lethal}}%"></i>

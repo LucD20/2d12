@@ -27,7 +27,7 @@ These Actions require concentration. This is not a mechanic by itself, but some 
 
 ### Handle
 
-To use an Action with the Handle trait, you must be able to use your hands (or similar appendages). You also need a **hand free** to make any Action with this trait. Releasing an object costs no AP (Release).
+To use an Action with the Handle trait, you must be able to use your hands (or similar appendages). You also need a **hand free** to make any Action with this trait. Releasing an object costs no AP (Release). **One exception:** stowing an object you hold, or swapping it for another you carry (Interact), needs no free hand: the hand that holds the object does it. With both hands full you can stow one weapon, or swap it for another.
 
 ### Melee
 

@@ -511,7 +511,8 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       marksTarget: bool(), markKind: str(),   // v0.0.409 (pack F2): "judge": the mark is Judged (Judge: it counts as Profane for its marker)
       basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
       basicRating: choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "medium"),   // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating (the Bestiary's suggested average; the dice stay the GM's)
-      weaponUse: choice(TWOD12.weaponUses, ""),   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
+      weaponUse: choice(TWOD12.weaponUses, ""),
+      weaponNeeds: choice(TWOD12.weaponNeeds, ""),   // v0.0.444: the property its weapon must have (Darting Blade: Light)   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
       automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
         // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
       // v0.0.355 (PACK ACTION-SHEET, the audit's D17): what its owner has by itself while it has the Action (the rules list of an Effect, a Feature or a Talent)
