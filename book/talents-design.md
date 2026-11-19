@@ -228,3 +228,5 @@ Claude reread T1 to T6 against the magic record, `magic-out-of-combat.md`, `role
 ### Housekeeping done with this review
 
 The Talents record is now named in HANDOFF and CLAUDE.md.
+
+**On the first pass (2026-11-19, `book/cards/talents-first-pass.md`):** the Opportunity Attack stays a Talent, made weaker so it competes on equal terms (Lucas: "C for sure"; not built in as a Basic Action).

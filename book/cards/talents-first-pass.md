@@ -46,7 +46,7 @@ A Talent is written on the card Structure (`book/cards/card-structure.md`), with
 > **Rank II:** The Interrupt also happens when an enemy adjacent to you would use a [Spell] Action. (A [Subtle] casting isn't noticed: magic record, 97.)
 > **Rank III (Stage 1):** When the Weapon Attack of an Opportunity Attack triggered by a [Spell] Action gets a Critical, that [Spell] Action is disrupted (Chapter 2).
 
-**No prerequisite:** every creature has Fists, a Melee weapon (Chapter 15). **Rank III** is a second way to stop a casting, beside the counterspell Talent decision 99 assigned (it acts before the casting begins, by an Interrupt: T9 names this specialty). **A question for Lucas:** the audit expects this to be the obvious Stage 0 pick of nearly every melee character (the only Reaction one can get without a class Reaction; At-will; its moment comes most rounds). The research's rule is "if everyone must take it, build it in" (`research/talents.md`, section 4).
+**No prerequisite:** every creature has Fists, a Melee weapon (Chapter 15). **Rank III** is a second way to stop a casting, beside the counterspell Talent decision 99 assigned (it acts before the casting begins, by an Interrupt: T9 names this specialty). **Answered (Lucas, 2026-11-19: "C for sure"): it stays a Talent, made weaker so it competes on equal terms** (to rewrite: Round, not At-will, as the starting point). The question was: the audit expects this to be the obvious Stage 0 pick of nearly every melee character (the only Reaction one can get without a class Reaction; At-will; its moment comes most rounds). The research's rule is "if everyone must take it, build it in" (`research/talents.md`, section 4).
 
 ### Shoulder Through
 
