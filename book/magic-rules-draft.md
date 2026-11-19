@@ -167,9 +167,8 @@ A [Spell] counts as [Ranged] while you are Engaged, unless it is [Melee]: its ro
 ## 10. The Limits of Magic
 
 1. Magic doesn't restore Health. It can give Guard. [36]
-2. Magic doesn't remove a Wound. [93; kept "for now": A]
-3. Magic doesn't take a whole turn from a PC or a major enemy. Charm is "you can't target that creature with a harmful Action"; control is one Action of the caster's choice; confusion is "its next Strike targets the nearest creature". Some spells are stronger against Minor enemies. [39]
-4. Magic that lasts needs a fight to feed it. [87]
+2. Magic doesn't take a whole turn from a PC or a major enemy. Charm is "you can't target that creature with a harmful Action"; control is one Action of the caster's choice; confusion is "its next Strike targets the nearest creature". Some spells are stronger against Minor enemies. [39]
+3. Magic that lasts needs a fight to feed it. [87]
 
 **Bringing back the dead is to exist,** with extreme limits and likely just once. Not designed. Research: `research/revival.md`. [93]
 
