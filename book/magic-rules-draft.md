@@ -1,6 +1,6 @@
 # Magic, as decided: a reading copy
 
-**2026-11-19.** The rules of magic as they stand after decision 99 of `book/magic-design.md`, put in reading order. **This is not rulebook text and nothing here is in the book.** It is Claude's wording of Lucas's decisions, written so that the whole can be read in one sitting. **The record is the authority:** where this page and the record differ, the record wins. A number in brackets is the decision it comes from.
+**2026-11-19.** The rules of magic as they stand after decision 99 (sections 9 and 13 touched up to 128) of `book/magic-design.md`, put in reading order. **This is not rulebook text and nothing here is in the book.** It is Claude's wording of Lucas's decisions, written so that the whole can be read in one sitting. **The record is the authority:** where this page and the record differ, the record wins. A number in brackets is the decision it comes from.
 
 **Words (decision 107).** A Path or a School has a **rank**; "level" is the character's. A spell is the card; a casting is one use. This page still says "level" in places.
 
@@ -160,10 +160,9 @@ A spell takes the ranged rules only if its card prints **[Ranged]**: Doomed whil
 
 ## 9. Outside a fight
 
-- **A spell with a duration is combat only.** Held magic, buffs and summons exist only in an encounter. [87]
-- **An instant spell can be cast outside,** paying its printed Surge cost and its Overcast steps; there the Surge you have is the only limit on steps. [71, 87]
-- **Surge outside a fight is a pool:** it refills to your party's Momentum whenever the party gains Momentum (any encounter overcome), and is cut down to Momentum when Momentum drops below what you hold. [71, 86]
-- **Lasting magic outside a fight is its own piece, [open]:** read from the same two words (the Path is what it is made of, the School what it does), wider with level, paid with that Surge. Its name and rules are not designed. Research: `research/out-of-combat-magic.md`. [87]
+- **A spell with a duration is combat only.** An instant battle spell can be cast outside for its Surge. [87]
+- **Surge outside a fight is a pool** equal to the party's Momentum; it refills whenever the party gains Momentum and is cut down when Momentum drops. [71, 86, 105]
+- **Magic outside a fight has its own spells,** decided in outline (the skeleton, 112 to 128): `book/magic-out-of-combat.md`, section 7, and `book/decided.md`, section 2.
 
 ---
 
@@ -206,6 +205,6 @@ Each is logged in `book/rules-backlog.md`; none is written, except the first.
 
 ## 13. Not designed yet
 
-Out-of-combat magic. Talents for magic (about eighteen seeds in the record's 5l, with the counterspell tree and the summoner's chain). A first caster class. Bringing back the dead. Blood. Every price. The Tags. A written spell list: **the cards in `book/cards/magic-*.md` are placeholders.** [84]
+The list of spells outside a fight and its small magic. Talents for magic (about eighteen seeds in the record's 5l, with the counterspell tree and the summoner's chain). A first caster class. Bringing back the dead. Blood. Every price. The Tags. A written spell list: **the cards in `book/cards/magic-*.md` are placeholders.** [84]
 
 The flavor (a sigil, a temperament for each Path, what Overreach looks like, why iron dulls magic, a named summon) is saved in the record's 5p for when the mechanics are done. [96]
