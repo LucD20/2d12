@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.458, 285 tests; READ THIS FIRST)
+## Where we are now (v0.0.459, 286 tests; READ THIS FIRST)
+- **2026-11-19 (v0.0.459; NOT tested by Lucas): a Blinded creature's squares are Difficult Terrain** (`light.mjs sightSenses`; found by the backlog audit). Open from the audit: Line of Effect for a chip that reaches a creature that isn't a target (foundry-backlog "Line of Effect for every effect").
 - **2026-11-19, the backlog audit:** foundry-backlog.md went from 261 open boxes to 22 (the history sections' old tests ticked; done or superseded items closed with their reason); rules-backlog.md from 136 to 44. A partly done item keeps a "backlog audit" note saying what is left. Chapter 8's "until a Save" duration removed (the 2026-11-15 decision).
 - **2026-11-19 (v0.0.458; NOT tested by Lucas): Dirty Trick's and Rally the Tribe's Boons are buttons** (`gen.mjs`; `next:roll` = `__roll`, spent by any roll) **and a Save Action's Nonlethal switch** (`rollinput.mjs` syn:nl on a Save; `actions.mjs` cfg.boon + 1, cfg.nonlethal). Minions sharing one slot: already built (the squads); asked Lucas whether he wants an off switch. Lucas's 2026-11-19 list is done.
 - **2026-11-19 (v0.0.457; NOT tested by Lucas): each damage type one color** (a light and a dark variant; `config.mjs subtypeInk` / `subtypeColors` = `book/build_rules.py DTYPE2`, t286; no surface has its own list).

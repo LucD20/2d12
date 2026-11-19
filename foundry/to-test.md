@@ -176,6 +176,10 @@ Expect: At the end of Kaela's turn Durgan takes half the Lingering's damage ("Ha
 
 ## Movement
 
+### blinded-difficult · v0.0.459 · A Blinded creature: every square Difficult Terrain
+Do: In a lit scene, put Blinded on Garrick and drag him 3 squares with the ruler; then Advance; then take Blinded off and do the same.
+Expect: Blinded, the ruler counts each square 2 (3 squares cost 6) and the Advance pays double; without Blinded, the normal cost.
+
 ### charge-new · v0.0.453 · Charge: another target, never on a creature, in the HUD
 Do: In a combat, Durgan targets the Goblin Sneak and uses Charge; while the Charge line is shown, click the Orc Warrior's token; then a Charge whose line would end on Aveline's space; then click "Weapon Attack (1A, 1 Boon)" on the Charge card, on its name.
 Expect: The Charge bar asks in the HUD's Situational tab (the tab opens by itself). The click on the Orc makes it the Charge's target (the line goes toward it; the bar names it); clicking an ally does nothing. A line that would end in a creature's space stops on the last free square before it. The chip's name uses the Weapon Attack (no item sheet).

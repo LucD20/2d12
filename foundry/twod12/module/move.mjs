@@ -1,5 +1,5 @@
 import { homePos, leanOf } from "./lean.mjs";
-import { tokenDistance, lightAt, seenLight, regionHasPoint, verticalSquares, withHeight } from "./light.mjs";
+import { tokenDistance, lightAt, seenLight, sightSenses, regionHasPoint, verticalSquares, withHeight } from "./light.mjs";
 // Movement: AP tracking for the creature whose turn it is (v0.0.414: an Advance is one piece, combat.mjs advanceAfterAction; free movement from @Move[walk]),
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
@@ -340,7 +340,7 @@ function hardStep(doc, to, step, cost, from = null) {
     // around it (it was taken as the top left: half the space was never checked)
     const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), c0 = squareOf(to), at = { i: c0.i - Math.floor(h / 2), j: c0.j - Math.floor(w / 2) };
     const cells = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) cells.push({ i: at.i + di, j: at.j + dj });
-    const senses = doc.actor.system?.senses ?? {};
+    const senses = sightSenses(doc.actor);   // v0.0.459: Blinded too
     let hard = cells.some(c => seenLight(lightAt(canvas.grid.getCenterPoint(c)), senses) === "dark");
     if (!hard) {
       const others = (canvas.tokens?.placeables ?? []).filter(t => t.document?.id !== doc.id && t.actor && !t.document?.hidden && (t.document.disposition ?? 0) !== (doc.disposition ?? 0));
@@ -1262,7 +1262,7 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
       if (hit) out.through.push(o.t.name);
     }
     // Darkness: the squares it enters (the one it ends in too) that its Sight sees as Darkness are Difficult Terrain for it (Dark Sight sees them as Bright).
-    const senses = doc.actor?.system?.senses ?? {}, darkCells = new Set();
+    const senses = sightSenses(doc.actor), darkCells = new Set();   // v0.0.459: Blinded too
     try {
       for (const key of new Set([...passed, ...[...end].filter(k => !start.has(k))])) {   // the squares it enters: not the ones it starts in
         const [i, j] = key.split(",").map(Number);
@@ -1305,7 +1305,7 @@ function chargeSquareProblem(doc, a, b, w = 1, h = 1) {
   const corner = a ? stepCorners(a, b, { w, h, solidAt: ownSolid(), creatureAt: c => unwillingIn(c, doc) }) : { kind: "" };
   if (corner.kind === "solid") return "the straight line cuts a solid corner";
   if (corner.kind === "creatures") return `the straight line passes diagonally between ${corner.creatures.map(t => t.name).join(" and ")} (Difficult Terrain)`;
-  try { if (foot.some(c => seenLight(lightAt(cellCenter(c.i, c.j)), doc.actor?.system?.senses ?? {}) === "dark")) return "the straight line crosses Darkness, which is Difficult Terrain for a creature that can't see in it"; } catch (e) { /* no light to read */ }
+  try { if (foot.some(c => seenLight(lightAt(cellCenter(c.i, c.j)), sightSenses(doc.actor)) === "dark")) return "the straight line crosses Darkness, which is Difficult Terrain for a creature that can't see in it"; } catch (e) { /* no light to read */ }
   return "";
 }
 
@@ -1548,7 +1548,7 @@ export function showRange(c, squares, dest = null, par = 0) {
     // v0.0.224: Difficult Terrain for this creature (Darkness it can't see in, a Difficult Terrain area, an unwilling creature's space): an Advance
     // pays 1 more to enter it, an Evade can't enter it (unless it ignores terrain, Cut Through).
     const evading = num(c.getFlag?.(F, "evadeMove")) > 0 || c.kind === "evade", ignoring = !!c.getFlag?.(F, "ignoreTerrain");
-    const senses = tok.actor?.system?.senses ?? {}, memo = new Map();
+    const senses = sightSenses(tok.actor), memo = new Map();
     let regions = [];
     try { regions = (canvas.regions?.placeables ?? []).filter(r => r.document.behaviors?.some(x => ["difficultTerrain", "modifyMovementCost"].includes(x.type) && !x.disabled)); } catch (e) { /* none */ }
     const own = new Set(cells.map(x => `${x.i},${x.j}`));

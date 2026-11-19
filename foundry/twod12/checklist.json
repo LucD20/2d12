@@ -314,6 +314,14 @@
    "name": "Movement",
    "items": [
     {
+     "id": "blinded-difficult",
+     "v": "v0.0.459",
+     "title": "A Blinded creature: every square Difficult Terrain",
+     "do": "In a lit scene, put Blinded on Garrick and drag him 3 squares with the ruler; then Advance; then take Blinded off and do the same.",
+     "expect": "Blinded, the ruler counts each square 2 (3 squares cost 6) and the Advance pays double; without Blinded, the normal cost.",
+     "rev": 1
+    },
+    {
      "id": "charge-new",
      "v": "v0.0.453",
      "title": "Charge: another target, never on a creature, in the HUD",
