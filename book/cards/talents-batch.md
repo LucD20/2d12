@@ -473,7 +473,7 @@ The whole file, against T1 to T14, the lessons, the rulebook and the class and g
 
 ## 12. Lucas's review of the batch (2026-11-20): recorded, NOT applied
 
-Lucas: "Dont apply changes. I am noticing we are running in a problem here, on how to balance. I dont know if its the system that is flawed or one of us is doing something wrong. You should review this." The review of the process is in the chat of 2026-11-20 and in `book/talents-design.md` (the note after the decisions table). His notes, numbered his way (**Talent.Branch.Rank**: the Talent is its section here, the branch its row in the table, the rank 1 for a branch's first rank and 2 for the next; 0 for the Talent's own Rank I):
+Lucas: "Dont apply changes. I am noticing we are running in a problem here, on how to balance. I dont know if its the system that is flawed or one of us is doing something wrong. You should review this." The review of the process is in the chat of 2026-11-20; it goes into `book/talents-design.md` once Lucas answers it. His notes, numbered his way (**Talent.Branch.Rank**: the Talent is its section here, the branch its row in the table, the rank 1 for a branch's first rank and 2 for the next; 0 for the Talent's own Rank I):
 
 | # | Card | Lucas's note |
 |---|---|---|
