@@ -7,7 +7,7 @@
 | 1 | Take Aim | Sylwen (Elf Archer, Quick Shots, Hunting Bow) | Lucas's shape (2026-11-20); priced below; **the anchor (T17): about +6 a turn net, a placeholder** |
 | 2 | Cold Domain (the god's blessing on the weapon; placeholder name) | Aveline (Human Paladin, Smite, Longsword) | written; priced at or above the anchor |
 | 3 | Shared Burden (defending allies; placeholder name) | Durgan (Dwarf Paladin, Lay On Hands, Arming Sword) | written; priced near the anchor |
-| 4 | Ricochet | Kaela (Human Archer, Strafe, Recurve Bow) | waiting |
+| 4 | Ricochet | Kaela (Human Archer, Strafe, Recurve Bow) | written; priced a little above the anchor |
 
 ---
 
@@ -128,3 +128,34 @@
 - **The trade it is about:** Durgan can't Lay On Hands himself (its target is "one willing ally"), so he becomes the one who falls. The Bound Ally must stand next to him: a melee ally (Aveline) or a back-liner he keeps beside him.
 - **Visible protection** (the research's warning about invisible defense): every hit on the Bound Ally shows a number moving to Durgan.
 - **Near, not the same:** Shield of Faith (reduces), Bulwark of Faith (Guard, then a Slide), Lay On Hands (the ally's Rally Points), Hold the Line's swap. None moves damage.
+
+---
+
+## 4. Ricochet (Kaela)
+
+**Lucas (2026-11-20):** "D, but I think 1 tier lower might be too weak? Maybe half damage? Or we do a fixed damage?" Then, on the computed options: half damage, 3 squares ("Yes").
+
+> **Ricochet** · Talent · Archery · Stage 0
+> **Ricochet** · 1 AP · Round · [Projectile, Ranged, Strike, Weapon]
+> *The arrow skips off one shield and finds the throat behind it.*
+> **Distance:** Weapon · **Target:** One creature
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]; a ricochet. **Tier 3:** [V] 1[W] + [Mod]; a ricochet.
+> **Ricochet:** The arrow bounces to a second creature within 3 squares of the target that the target has Line of Effect to. The second creature takes half the damage the target took (Chapter 1, Halving and splitting damage), and none of the riders. No roll is made against it.
+
+**The price (Kaela, Recurve Bow, Weapon Modifier +2, Defense 13; 300,000 rolls each):**
+
+| The second creature takes | Average | Points a use (a Weapon Attack = 25) | With a second creature in range about 70% of the time |
+|---|---:|---:|---:|
+| One Tier lower | 1.60 | +8.7 | about +6 |
+| **Half the damage (the card)** | 2.45 | +13.3 | **about +9** |
+| The Modifier on Tier 2 or 3 | 1.44 | +7.8 | about +5.5 |
+
+The 70% is [judgment]. **About +9 a turn: a little above the anchor (+6).** The first cut if it plays strong: 2 squares instead of 3.
+
+**Analysis**
+- **Half damage over one Tier lower** (Lucas's call, and the odds): one Tier lower does nothing on a Tier 2, the most common hit, so its worth sat on the Tier 3 (the rare-trigger lesson).
+- **One roll for two creatures:** the second creature's Defense doesn't matter; it is hit on the same Tier.
+- **Watch:** Kaela already deals the most damage at the table (14.5 a round in playtest 5).
+- **Near, not the same:** Cleave (the Modifier to adjacent creatures, Chapter 1), One More Arrow (1[W] more to each creature on a Tier), Volley and Covering Fire (areas). A Passive that adds to "each creature on that Tier" (One More Arrow) doesn't reach the second creature, which is on no Tier.
+- **A later branch:** the bank shot (off a wall, at a creature you have no Line of Effect to), once a rule for bouncing off walls is written.
