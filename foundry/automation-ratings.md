@@ -24,7 +24,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Regrip | Silver | the card is text; the regrip itself is on the hands buttons |
 | Release | Gold | |
 | Stand | Gold | |
-| Break Free | Bronze | the Check against the Immobilized DC (Lucas, 2026-11-20): Foundry still ends Immobilized without the roll |
+| Break Free | Gold | (v0.0.475: it rolls the Body or Instinct Check against the Action DC of what holds you) |
 | Leaning | Gold | |
 | Fists | Gold | |
 | Relocate | Gold | |
@@ -88,6 +88,17 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | One More Arrow (Feature) | Gold | |
 | Fleet (Feature) | Silver | an Evade entering Difficult Terrain |
 
+## The playtest Talents (7 cards; v0.0.475, pack TALENTS-PT; `book/cards/stage0/talents-pt.json`)
+| Card | Rating | What is by hand |
+|---|---|---|
+| Take Aim (Talent and Action) | Gold | |
+| Cold Domain (Talent) | Gold | (it gives Rime Strike) |
+| Rime Strike | Silver | the Ice Pillar's Tier 1 against a Save (the GM picks it), the damage a Collision deals it, an object other than the Ice Pillar as the target |
+| Shared Burden (Talent) | Gold | (it gives Oath of Burden and Bear the Blow) |
+| Oath of Burden | Gold | |
+| Bear the Blow | Gold | (a damage with no damage types, an old card's Apply, is split after the ally's Resistance) |
+| Ricochet (Talent and Action) | Gold | (the Setup's "a new square each step" is the player's drag) |
+
 ## Totals
 | | Gold | Silver | Bronze |
 |---|---|---|---|
@@ -95,7 +106,8 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Weapon Techniques (4) | 1 | 3 | 0 |
 | Paladin (19) | 12 | 6 | 1 |
 | Archer (19) | 12 | 5 | 2 |
-| **All (62)** | **39** | **18** | **5** |
+| Playtest Talents (7) | 6 | 1 | 0 |
+| **All (69)** | **45** | **19** | **5** |
 
 **The Bronze ones, the first to raise:** Hit and Run (one roll applied to every creature passed), Opening Shot (the ally's 1R Weapon Attack as a
 button on the line), Weight of Judgment (a Speed −2 effect on the Judged creature), Interact (the draw / stow / swap as its choices), Hide (waits

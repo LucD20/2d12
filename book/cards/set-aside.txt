@@ -68,3 +68,11 @@ Heartseeker
 # whose Techniques are in stage0/gear.json).
 Guarded Cut
 Reaping Sweep
+# 2026-11-20, pack TALENTS-PT: the four playtest Talents (book/cards/stage0/talents-pt.json; book/cards/talents-playtest.md): drafts for playtest 6, in
+# Foundry; no chapter shows them until Lucas places the Talents (Ricochet, above, is now the playtest card of that name).
+Take Aim
+Cold Domain
+Rime Strike
+Shared Burden
+Oath of Burden
+Bear the Blow

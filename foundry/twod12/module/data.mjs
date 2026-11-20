@@ -509,6 +509,9 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       // v0.0.411 (pack F2, the card's look): a Structure card (book/cards/stage0): its own labeled lines before the roll (Judged, Smite dice) and its
       // Special after it; the card draws them under their labels (an old card's prose stays the description)
       structure: bool(), lines: new ArrayField(new SchemaField({ label: str(), text: str() })), special: str(),
+      // pack TALENTS-PT: momentSplit "half":
+      // used for its moment, the held damage is split with its user, half (rounded up, each damage type on its own) to the user (share.mjs)
+      momentSplit: choice({ "": "None", half: "Half to you (rounded up)" }, ""),
       marksTarget: bool(), markKind: str(),   // v0.0.409 (pack F2): "judge": the mark is Judged (Judge: it counts as Profane for its marker)
       basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
       basicRating: choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "medium"),   // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating (the Bestiary's suggested average; the dice stay the GM's)

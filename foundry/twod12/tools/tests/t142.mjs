@@ -24,12 +24,12 @@ show("Slid 3, Line of Effect lost at the 2nd square", { loeAt: s => s.dj > -2 })
 show("Slid 3, a wall before the 2nd square", { wallBetween: (a, c) => c.dj === -2 });
 console.log("--- Immobilized");
 for (const [label, o] of [["no roll (a Setup, a Feature)", {}], ["rolled 15 vs DC 14", { rolls: true, total: 15, dc: 14 }], ["rolled 14 vs DC 14", { rolls: true, total: 14, dc: 14 }], ["rolled 12 vs DC 14", { rolls: true, total: 12, dc: 14 }], ["a Save Action, origin rolls 16 vs 15", { save: true, saveTotal: 16, dc: 15 }], ["a Save Action, origin rolls 9 vs 15", { save: true, saveTotal: 9, dc: 15 }]])
-  console.log(label.padEnd(38), JSON.stringify(mv.immobilizedOutcome(o)));
-const eff = (st, dc) => ({ statuses: new Set(st), getFlag: (s, k) => (k === "immobileDc" ? dc : undefined) });
-console.log("the Immobilized DC: two conditions 13 and 15:", mv.immobilizedDc({ effects: [eff(["immobilized"], 13), eff(["immobilized"], 15), eff(["prone"], 20)] }), "| one with no DC stored:", mv.immobilizedDc({ effects: [eff(["immobilized"], undefined)] }));
-console.log("stored when applied (11 + the origin's Modifier, 13 without):", src("module/effects.mjs").includes('immobileDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC'),
+  console.log(label.padEnd(38), JSON.stringify(mv.heldMoveOutcome(o)));
+const eff = (st, dc) => ({ statuses: new Set(st), getFlag: (s, k) => (k === "actionDc" ? dc : undefined) });
+console.log("the Immobilized DC: two conditions 13 and 15:", mv.heldDc({ effects: [eff(["immobilized"], 13), eff(["immobilized"], 15), eff(["prone"], 20)] }), "| one with no DC stored:", mv.heldDc({ effects: [eff(["immobilized"], undefined)] }));
+console.log("stored when applied (11 + the origin's Modifier, 13 without):", src("module/effects.mjs").includes('actionDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC'),
   "| the card keeps its result:", src("module/actions.mjs").includes("total: chk?.total ?? null,") && src("module/actions.mjs").includes("total: r.chk.total }))"),
-  "| checked before Steadiness:", src("module/move.mjs").indexOf("immobilizedOutcome({ rolls:") < src("module/move.mjs").indexOf("await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach"));
+  "| checked before Steadiness:", src("module/move.mjs").indexOf("heldMoveOutcome({ rolls:") < src("module/move.mjs").indexOf("await pushOne(origin, t, distanceFor(cfg, ctx, t, N), mode, { withinReach"));
 console.log("--- Steadiness with bonuses");
 const actor = (steady, feats = [], fx = []) => ({ system: { steadiness: steady }, itemTypes: { feature: feats.map(([name, bonus, attr = "steadiness"]) => ({ name, system: { defenses: [{ attr, bonus }] } })) }, effects: fx.map(([name, bonus, kind = "steadiness"]) => ({ name, getFlag: (s, k) => (k === "defenses" ? [{ kind, bonus }] : undefined) })), items: [] });
 for (const [label, a] of [["Dwarf 1", actor(1)], ["Dwarf 1 + a Feature +1", actor(1, [["Rooted", 1]])], ["0 + an effect +2 and a Feature +1 (the highest)", actor(0, [["Rooted", 1]], [["Stone Skin (EoT)", 2]])], ["1 + an effect -2 (never below 0)", actor(1, [], [["Slippery", -2]])], ["0 + a bonus to every Defense (doesn't count)", actor(0, [["Shield", 1, "all"]], [["Ward", 1, "all"]])]])

@@ -210,7 +210,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   const sys = actor.system, undo = { "system.damage.bodyLethal": sys.damage.bodyLethal, "system.damage.bodyNonlethal": sys.damage.bodyNonlethal, "system.damage.mindLethal": sys.damage.mindLethal, "system.damage.mindNonlethal": sys.damage.mindNonlethal, "system.guard": sys.guard ?? 0, "system.apGuard": sys.apGuard ?? 0, "system.reduceNext": sys.reduceNext ?? 0 };
   if (r.applied?.undo) Object.assign(undo, r.applied.undo);
   const report = {};   // v0.0.463: what the reductions and the Guard took (the breakdown after Apply)
-  if (a.B + a.M > 0) await D.applyToActor(actor, buckets, { announce: false, from: { uuid: s.originUuid ?? "", strike: !!s.strike }, guardFirst, report });
+  if (a.B + a.M > 0) await D.applyToActor(actor, buckets, { announce: false, from: { uuid: s.originUuid ?? "", strike: !!s.strike }, guardFirst, report, comps, factor, nl: !!s.nl });   // pack TALENTS-PT: the components (a split, share.mjs)
   const took = { B: buckets.B.l + buckets.B.n, M: buckets.M.l + buckets.M.n };
   const bd = (Number(undo["system.damage.bodyLethal"]) || 0) + (Number(undo["system.damage.bodyNonlethal"]) || 0) + took.B, md = (Number(undo["system.damage.mindLethal"]) || 0) + (Number(undo["system.damage.mindNonlethal"]) || 0) + took.M;
   const bl = sys.bdt > 0 && bd >= sys.bdt, st = sys.mdt > 0 && md >= sys.mdt;
@@ -252,7 +252,8 @@ async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the 
   for (const r of list) r.applied.chainDone = true;
   let actor = null; try { actor = s.originUuid ? await fromUuid(s.originUuid) : null; } catch (e) { actor = null; }
   const { runAfter } = await import("./inline.mjs");
-  await runAfter(s.after, { save: !!s.save, actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: list.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null, message: msg });
+  // pack TALENTS-PT: each target's damage as dealt (its group's components and the factor applied: Ricochet's half, bounce.mjs)
+  await runAfter(s.after, { save: !!s.save, actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: list.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null, message: msg });
 }
 async function lockSource(s) {
   const src = s.srcId ? game.messages.get(s.srcId) : null;

@@ -46,7 +46,7 @@ console.log("Rally's lines:", src("module/healwin.mjs").includes("export functio
 
 // v0.0.348 (Lucas on v0.0.347)
 const mk = src("module/mark.mjs");
-console.log("several marks on one token:", mk.includes("out.set(q.uuid, [...(out.get(q.uuid) ?? []), src])") && mk.includes('(marks.get(token.document?.uuid) ?? [""]).forEach((src, k) =>'));
+console.log("several marks on one token:", mk.includes("out.set(q.uuid, [...(out.get(q.uuid) ?? []), { src, color: markColor(q.kind) }])") && mk.includes('(marks.get(token.document?.uuid) ?? [{ src: "", color: markColor("") }]).forEach(({ src, color }, k) =>'));
 console.log("Doubles in gold:", C.stampHtml({ tier: 3, base: 2, doubles: true, total: 20, dc: 13 }).includes('class="cc-stamp t3 dbl"') && C.tierPill(2, false, false, true).includes(" dbl"), "| none without:", !C.stampHtml({ tier: 2, total: 15, dc: 13 }).includes("dbl"));
 console.log("grant order:", FR.grantTargetOrder([{ uuid: "a", name: "Ogre" }, { uuid: "b", name: "Thug" }], ["b"], 1).map(t => t?.name).join(", "), "| the bar targets:", src("module/freeuse.mjs").includes('await useGrantOf(t.actor, b.dataset.effectId, Number(b.dataset.index) || 0, b.dataset.target ?? "")'));
 console.log("reprint after the Reaction's damage:", M.dealsDamage({ system: { versions: [{ t1: [{ dice: "1d6" }] }] } }), M.dealsDamage({ system: { versions: [{ t1: [] }] } }), "| waits for the damage card applied:", mo.includes("if (!s?.rows?.length || !s.rows.every(r => r.applied)) return;") || src("module/moment.mjs").includes("if (!s?.rows?.length || !s.rows.every(r => r.applied)) return;"));

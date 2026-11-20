@@ -45,7 +45,8 @@ export const STRUCTURE_DIR = "stage0";
  * and the old file's other cards stay, but the ones listed in `drop` (the gear: the two bows' and the two swords' Techniques; the placeholder
  * weapons keep theirs).
  */
-export const FOUNDRY_OVERLAY = { "gear.json": { file: "gear.json", drop: ["Skirmish Shot", "Heartseeker", "Guarded Cut", "Reaping Sweep"] } };
+export const FOUNDRY_OVERLAY = { "gear.json": { file: "gear.json", drop: ["Skirmish Shot", "Heartseeker", "Guarded Cut", "Reaping Sweep"] },
+  "talents.json": { file: "talents-pt.json" } };   // pack TALENTS-PT (2026-11-20): the four playtest Talents (Ricochet takes the old Talent's place)
 /** The Structure files Foundry reads in the place of the old file's cards (the whole old file leaves Foundry). */
 export const FOUNDRY_STRUCTURE = { "paladin.json": "paladin.json", "archer.json": "archer.json" };   // v0.0.411 (pack F3): the Archer too
 const costAp = cost => { const m = String(cost ?? "").match(/(\d+)/); return m ? Number(m[1]) : 0; };
@@ -94,7 +95,7 @@ const tierCells = b => {
 export function fromStructure(c) {
   const top = readBody(c.body), passive = String(c.cost ?? "").trim() === "Passive";
   const out = { name: c.name, category: c.category, level: c.level, flavor: c.flavor, traits: c.traits ?? [], structure: 2, _file: c._file };
-  for (const k of ["frequency", "escalation", "distance", "area", "target", "foundry", "ruler", "book", "weapon", "mastery"]) if (c[k] !== undefined) out[k] = c[k];   // v0.0.412: a Technique's weapon
+  for (const k of ["frequency", "escalation", "distance", "area", "target", "foundry", "ruler", "book", "weapon", "mastery", "talent"]) if (c[k] !== undefined) out[k] = c[k];   // v0.0.412: a Technique's weapon
   for (const k of ["vs", "interrupt", "trigger", "setup", "requirements", "prerequisites"]) if (top[k] !== undefined) out[k] = top[k];
   if (top.rules.length) out.rules = top.rules.join(" ");
   if (top.lines?.length) out.lines = top.lines;   // v0.0.411: the card's own labeled lines before the roll (Judged, Smite dice)
@@ -133,7 +134,9 @@ export function fromStructure(c) {
     const merged = { ...b, ...(b.tiers.some(x => x != null) || b.or ? {} : shared), seq: [...top.effects, ...b.seq], foundry: bl.foundry, critical: b.critical ?? top.critical };
     const extra = {};
     if (!m) {
-      extra.mode = h;
+      // pack TALENTS-PT: a [Split] card's "Weapon mode" / "Power mode" is the Split Action's mode (split.mjs: "weapon" / "power"); any other heading an Art's Mode
+      const sm = h.match(/^(weapon|power) mode$/i);
+      extra.mode = sm && (c.traits ?? []).includes("split") ? sm[1].toLowerCase() : h;
       if (bl.traits?.length) extra.modeTraits = bl.traits;
       if (bl.distance) extra.modeDistance = bl.distance;
       if (bl.target) extra.modeTargets = bl.target;

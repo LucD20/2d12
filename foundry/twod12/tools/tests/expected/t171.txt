@@ -6,5 +6,6 @@ the GM's first load updates such NPCs: true | the NPC compendium: true
 a Charge (or a grant) that uses Weapon Attack uses an NPC's Basic attack: true
 Goblin Sneak: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Rusty Knife
 Grave Wisp: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Chilling Touch
+Ice Pillar: Weapon Attack false, Fists Action false, Fists weapon false, Basic attacks: 
 Ogre Chieftain: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Club
 Orc Warrior: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Cleaver

@@ -1,6 +1,6 @@
 Paladin: Repertoire Bulwark of Faith, Consecrated Ground, Word of Radiance | Passives Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil, Hallowed Stance | Actives Reckoning
 Archer: Repertoire Volley, Hit and Run, Covering Fire | Passives Lean and Loose, Blade and Bow, Clear Lines, Opening Shot, One More Arrow, Fleet | Actives 
-the book's Talents: 16
+the book's Talents: 15
   Challenge          ok combat 1
   Heavy Blows        ok combat 1 | Great Weapon | settings bonusdamage
   Whirlwind          ok combat 1 | needs talent:Heavy Blows | Great Weapon | grants Whirlwind
@@ -8,7 +8,6 @@ the book's Talents: 16
   Brawler            ok combat 1 | Unarmed | grants Pummel | settings weaponprop
   Kickboxer          ok combat 1 | needs talent:Brawler | Unarmed | grants Leg Sweep
   Aim                ok combat 1 | Marksman | grants Aim
-  Ricochet           ok combat 1 | needs talent:Aim | Marksman
   Long Draw          ok combat 1 | Marksman | settings ignore
   Steady Nerves      ok combat 1 | Marksman | settings ignore
   Battering Charge   ok mobility 1

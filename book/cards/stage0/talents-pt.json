@@ -1,0 +1,177 @@
+{
+ "structure": 2,
+ "_note": "Pack TALENTS-PT (2026-11-20): the four playtest Talents of book/cards/talents-playtest.md (sections 1 to 4 as revised by sections 5 and 6), in the card Structure. The book reads this file (cards.py load_book: Ricochet takes the old Talent's place); Foundry reads it laid over talents.json (load.mjs FOUNDRY_OVERLAY). Drafts for the playtest: no chapter places them yet.",
+ "cards": [
+  {
+   "name": "Take Aim",
+   "category": "Playtest Talent",
+   "level": 1,
+   "flavor": "You plant your feet, slow your breath, and let the world narrow to the arrowhead.",
+   "frequency": "Round",
+   "cost": "0 AP",
+   "traits": ["self"],
+   "body": [
+    { "label": "Requirement", "text": "You haven't left your square this turn." },
+    { "label": "Effect", "text": "Until the end of your turn (EoT), your [Ranged, Strike] Actions gain 1 Boon and take no Bane for the far range (Chapter 15). This ends when you leave your square." }
+   ],
+   "talent": { "group": "combat", "theme": "Archery", "description": "You gain the Action Take Aim." },
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Talents (playtest)",
+    "automation": "gold",
+    "automationNote": "the Requirement (a warning when you have left your square this turn), the effect on you until EoT (1 Boon and one range Bane less on your [Ranged, Strike] Actions), and its end when you leave your square (any movement of your token but a Setup's movement that says it doesn't count, Ricochet's).",
+    "version": { "fx": { "all": ["{{fx:Take Aim}}"] } }
+   }
+  },
+  {
+   "name": "Cold Domain",
+   "category": "Playtest Talent",
+   "level": 1,
+   "flavor": "Your god's blessing rests on your weapon as frost.",
+   "cost": "Passive",
+   "body": [
+    { "label": "Passive", "text": "You gain the Action [[Rime Strike]]." }
+   ],
+   "talent": { "group": "combat", "theme": "Faith" },
+   "foundry": {
+    "img": "icons/svg/frozen.svg",
+    "actions": ["Rime Strike"],
+    "automation": "gold",
+    "automationNote": "it gives the Action Rime Strike (its own rating)."
+   }
+  },
+  {
+   "name": "Rime Strike",
+   "category": "Playtest Talent",
+   "level": 1,
+   "flavor": "Frost runs down the edge, and the cold bites before the steel does; where it lands, the ice rises.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "traits": ["divine", "melee", "split", "strike"],
+   "target": "One creature or object",
+   "body": [
+    { "label": "Ice Pillar", "text": "A pillar of ice rises in a square adjacent to the target that holds no creature or object and that you have Line of Effect to (EoE). You have one Ice Pillar at a time: raising a new one melts the old one. It fills its square as a wall does: it blocks movement and Line of Effect through its square, its corners are solid (Chapter 3, Corners), and it gives Cover as a wall does. Its Defense is your Action DC for that Rime Strike (11 + the Modifier its mode used). Against a Save it gets Tier 1. An Area that covers its square hits it, whoever made the Area. It breaks when one Action deals it 5 or more damage; less does nothing and doesn't add up. A creature that collides with it (Chapter 3, Collision) deals it the damage the creature takes." }
+   ],
+   "blocks": [
+    {
+     "heading": "Weapon mode",
+     "distance": "Weapon",
+     "body": [
+      { "label": "Attack", "text": "Weapon vs. Armor Defense" },
+      { "label": "Tier 1", "text": "0." },
+      { "label": "Tier 2", "text": "[V] 1[W] + [Mod] Co; an Ice Pillar." },
+      { "label": "Tier 3", "text": "[V] 1[W] + [Mod] Co; an Ice Pillar." }
+     ],
+     "foundry": { "after": "@Place[{{npc:Ice Pillar}}|adjacent:yes|one:yes|eoe:yes|defense:action]{Ice Pillar}" }
+    },
+    {
+     "heading": "Power mode",
+     "distance": "Reach",
+     "body": [
+      { "label": "Attack", "text": "Power vs. Ward Defense" },
+      { "label": "Tier 1", "text": "0." },
+      { "label": "Tier 2", "text": "[V] 2d6! Co; an Ice Pillar." },
+      { "label": "Tier 3", "text": "[V] 2d8! + 1d4! Co; an Ice Pillar." }
+     ],
+     "foundry": { "after": "@Place[{{npc:Ice Pillar}}|adjacent:yes|one:yes|eoe:yes|defense:action]{Ice Pillar}" }
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/frozen.svg",
+    "folder": "Talents (playtest)",
+    "automation": "silver",
+    "automationNote": "the two modes (Weapon: 1[W] + Mod as Cold; Power: the exploding dice), then the Ice Pillar after the damage on a Tier 2 or 3: you click its square on the map (adjacent to the target, empty, in your Line of Effect; the GM's client places it), walls around it block movement and Line of Effect, its Defense is your Action DC, the old one melts, it melts when the encounter ends, and it breaks on 5 or more damage from one Action (less does nothing). By hand: its Tier 1 against a Save (the GM picks it), the damage a Collision deals it, and an object as Rime Strike's target (only a creature or the Ice Pillar can be targeted)."
+   }
+  },
+  {
+   "name": "Shared Burden",
+   "category": "Playtest Talent",
+   "level": 1,
+   "flavor": "You swear to carry what falls on them.",
+   "cost": "Passive",
+   "body": [
+    { "label": "Passive", "text": "You gain the Action [[Oath of Burden]] and the Reaction [[Bear the Blow]]." }
+   ],
+   "talent": { "group": "combat", "theme": "Guardian" },
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "actions": ["Oath of Burden", "Bear the Blow"],
+    "automation": "gold",
+    "automationNote": "it gives Oath of Burden and Bear the Blow (their own ratings)."
+   }
+  },
+  {
+   "name": "Oath of Burden",
+   "category": "Playtest Talent",
+   "level": 1,
+   "flavor": "You set your shoulder beside theirs: whatever comes for them comes through you.",
+   "frequency": "Round",
+   "cost": "0 AP",
+   "traits": ["focus"],
+   "target": "One ally you perceive",
+   "body": [
+    { "label": "Effect", "text": "The target is your **Bound Ally** (EoE). If another creature was your Bound Ally, it no longer is. While you have a Bound Ally, you have the Reaction [[Bear the Blow]]." }
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Talents (playtest)",
+    "marksTarget": true,
+    "markKind": "bound",
+    "automation": "gold",
+    "automationNote": "the target becomes your Bound Ally (a gold ring with your portrait on its token; one at a time; it ends when the encounter ends). Perceiving the target is the targeting's usual check."
+   }
+  },
+  {
+   "name": "Bear the Blow",
+   "category": "Playtest Talent",
+   "level": 1,
+   "flavor": "You take the blow on the shoulder they would have taken it on.",
+   "frequency": "Turn",
+   "cost": "0R",
+   "target": "Your Bound Ally",
+   "body": [
+    { "label": "Requirement", "text": "Your Bound Ally is adjacent to you." },
+    { "label": "Interrupt", "text": "An Action would damage your Bound Ally." },
+    { "label": "Effect", "text": "You gain 1 Guard. You take half of that damage (rounded up); your Bound Ally takes the rest (Chapter 1, Halving and splitting damage). The split is made before Guard: each of you then applies your own Weakness and Guard to your part; **your Resistance and Immunity don't reduce your part**, your Bound Ally's do reduce theirs." }
+   ],
+   "foundry": {
+    "img": "icons/svg/shield.svg",
+    "folder": "Talents (playtest)",
+    "moment": "boundDamage",
+    "momentRange": 1,
+    "momentSplit": "half",
+    "automation": "gold",
+    "automationNote": "offered by itself in the Reactions message when an Action's damage would land on your Bound Ally while it is adjacent to you (the damage waits); Use gives you 1 Guard, then the damage is split by subtype (yours rounded up): your part takes your Weakness and Guard but not your Resistance or Immunity, the rest goes to the ally with all of its own. Damage with no Action behind it (a Collision, Lingering) doesn't offer it.",
+    "version": { "after": "@Guard[1|self:yes]" }
+   }
+  },
+  {
+   "name": "Ricochet",
+   "category": "Playtest Talent",
+   "level": 1,
+   "flavor": "You dart wide for the angle, and the arrow skips off one shield into the throat behind it.",
+   "frequency": "Round",
+   "cost": "1 AP",
+   "traits": ["projectile", "ranged", "strike", "weapon"],
+   "distance": "Weapon",
+   "target": "One creature",
+   "body": [
+    { "label": "Setup", "text": "You must Advance 2. This Advance doesn't count as leaving your square for other cards." },
+    { "label": "Ricochet", "text": "The arrow can bounce to a second creature within 2 squares of the target that the target has Line of Effect to (you don't need Line of Effect to it). It takes half of the damage dealt to the target, before the target's Resistance, Weakness, Immunity and Guard (Chapter 1, Halving and splitting damage), then applies its own; none of the riders. No roll is made against it, and it isn't hit on a Tier: another card's Tier effects (Opening Shot, One More Arrow) don't apply to it." },
+    { "label": "Attack", "text": "Weapon vs. Armor Defense" },
+    { "label": "Tier 1", "text": "0." },
+    { "label": "Tier 2", "text": "[V] 1[W] + [Mod]; a ricochet." },
+    { "label": "Tier 3", "text": "[V] 1[W] + [Mod]; a ricochet." }
+   ],
+   "talent": { "group": "combat", "theme": "Archery", "description": "You gain the Action Ricochet." },
+   "foundry": {
+    "img": "icons/svg/thrust.svg",
+    "folder": "Talents (playtest)",
+    "setup": "You must @Move[advance|distance:2|must:yes|still:yes]{Advance 2}. This Advance doesn't count as leaving your square for other cards.",
+    "automation": "gold",
+    "automationNote": "the Setup's Advance 2 before the roll (a warning if you Continue with squares left; it doesn't end Take Aim), the shot, then on a Tier 2 or 3 after the damage the bounce: a pick of the creatures within 2 squares of the target that it has Line of Effect to, and half of each damage type the target was dealt (rounded up) as a plain damage card on the one you pick, which applies its own Resistance, Weakness, Immunity and Guard (no riders, no Tier).",
+    "version": { "after": "@Bounce[2|half]{Ricochet}" }
+   }
+  }
+ ]
+}

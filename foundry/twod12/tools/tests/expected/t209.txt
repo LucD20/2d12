@@ -1,5 +1,5 @@
 --- the moments are settings
-the moments: wouldDown, strikeDamage, strikeAgainst, enemyCloser, allyDamage, enemyMoves, enemyAway, enemyAdjacent | each has its rules: true
+the moments: wouldDown, strikeDamage, strikeAgainst, enemyCloser, allyDamage, enemyMoves, enemyAway, enemyAdjacent, boundDamage | each has its rules: true
 used on: subject, source | the data model: true
 the item sheet: Moment, Within, You too, Used on: true
 --- pure pieces
@@ -37,7 +37,7 @@ v0.0.274: the GM answers a player's row: pass | a player can't answer another's:
 a player can't Skip all others: pass,wait
 the GM can: pass,skip | nothing used: 0
 the damage moment's message: the base slab Strike → Krysta | 9 held | its face: Bandit | the Interrupt tag: true
-the held damage is halved: {"half":true,"halfBy":"Shot","id":"id5","gained":0,"never":false}
+the held damage is halved: {"half":true,"halfBy":"Shot","id":"id5","gained":0,"never":false,"split":null}
 --- v0.0.273: the order, the clock, Move back, the Action's link
 resolves: 2,1,0 | 0 sooner: true 2,0,1 | the first can't go sooner: false | the last can't go later: false
 who manages: true false true | time left paused: 41000 3000

@@ -1,0 +1,54 @@
+--- the cards in the compendium
+  talent Take Aim        ok Talent | gold
+  action Take Aim        ok Talents (playtest) | gold
+  talent Cold Domain     ok Talent | gold
+  action Rime Strike     ok Talents (playtest) | silver
+  talent Shared Burden   ok Talent | gold
+  action Oath of Burden  ok Talents (playtest) | gold
+  action Bear the Blow   ok Talents (playtest) | gold
+  talent Ricochet        ok Talent | gold
+  action Ricochet        ok Talents (playtest) | gold
+  effect Take Aim        ok Talents (playtest) | gold
+the old Talents still set aside: true | the old Ricochet replaced: true
+  Aveline (Human Paladin, Smite)                   Cold Domain | Rime Strike | as planned: true
+  Aveline (Human Paladin, Smite, level 1)          - | - | as planned: true
+  Durgan (Dwarf Paladin, Lay On Hands)             Shared Burden | Oath of Burden, Bear the Blow | as planned: true
+  Durgan (Dwarf Paladin, Lay On Hands, level 1)    - | - | as planned: true
+  Sylwen (Elf Archer, Quick Shots)                 Take Aim | Take Aim | as planned: true
+  Sylwen (Elf Archer, Quick Shots, level 1)        - | - | as planned: true
+  Kaela (Human Archer, Strafe)                     Ricochet | Ricochet | as planned: true
+  Kaela (Human Archer, Strafe, level 1)            - | - | as planned: true
+--- Take Aim
+self, EoT: true eot | ends on leaving the square: ["__leave"] | settings: boonbane 1 [ranged,strike]; ignore rangeBane [ranged,strike]
+its Ends read: Lasts until the end of their turn, or until they leave their square.
+the Requirement is the one Foundry checks (hooks.mjs needsStayed): true
+leaving the square ends it (hooks.mjs), not a still movement: true
+--- Rime Strike
+traits: divine,melee,split,strike | modes: weapon weapon T2 [["W","Co"],["Mod","Co"]] | power reach T2 [["2d6!","Co"]]
+the chain: @Place[Compendium.twod12.npcs.Actor.hjLV2tR1thpOOASR|adjacent:yes|one:yes|eoe:yes|defense:action]{Ice Pillar}
+[W] with a type: tokens 1WBCo,ModBCo | read back: [[true,"Co"]] | plain [W] keeps none: true
+the card's lines: Ice Pillar | # Weapon mode | Attack | Tier 1 | Tier 2 | Tier 3 | # Power mode | Attack | Tier 1 | Tier 2 | Tier 3 | rolls: Weapon vs. Armor Defense / Power vs. Ward Defense
+the Ice Pillar actor: {"solid":true,"breakAt":5,"saveTier":1} | token neutral: true
+its chip: {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"uuid":"Compendium.twod12.npcs.Actor.x","adjacent":true,"one":true,"eoe":true,"defense":"action"}
+the squares around a token: 8 | around a Large one: 12 | its walls: [[100,200,200,200],[200,200,200,300],[200,300,100,300],[100,300,100,200]]
+its Defense (the Action DC): Mod 3 -> 14 | unknown -> 13 | a hit of 5: breaks | of 4: nothing
+an object takes no damage, it breaks or holds (damage.mjs): true | melts at the end of the encounter (mark.mjs): true | its walls go with it: true
+a line to the object isn't blocked by its own walls (cover.mjs): true
+--- Shared Burden
+Oath of Burden marks: true bound | words: is the Bound Ally of | ring gold: d2a75a judge red: b3261e
+its own place: T1 | Judge's: Q
+Bear the Blow: true interrupt boundDamage 1 half | 0R: 0 | its chain: @Guard[1|self:yes] | the moment: {"who":"ally","damage":true,"mark":"bound"}
+split by type (9 Sl, 5 Ho, 1): [["B","Sl",5],["M","H",3],["B","",1]] [["B","Sl",4],["M","H",2]] | nothing made or lost: true
+with Half first: [3,2,1] | buckets: {"first":{"B":{"l":3,"n":0},"M":{"l":0,"n":2}},"rest":{"B":{"l":2,"n":0},"M":{"l":0,"n":1}}} | no Resistance or Immunity on yours: {"resist":{},"immune":[],"weak":{"Co":2}}
+buckets keep Nonlethal: {"B":{"l":4,"n":4},"M":{"l":0,"n":0}}
+the split is before the reduction and the Guard (damage.mjs): true | an Action's damage only: true | the card's components reach it: true
+--- Ricochet
+Setup: You must @Move[advance|distance:2|must:yes|still:yes]{Advance 2}. This Advance doesn't count as leaving your square for other cards. | chain: @Bounce[2|half]{Ricochet}
+the Setup's options: {"kind":"advance","must":true,"still":true,"distance":2} | squares left: 1 0
+the bounce chip: {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"range":2,"half":true} | half by type: [5]
+who it can reach (2 squares, Line of Effect from the target, not the user or an object): A,B
+--- the book's rules
+Break Free's Check: {"attr":"instinct","mod":3,"dc":15} | a tie is Body: body | an old Immobilized (immobileDc): 14 | none stored: 13
+it rolls (actions.mjs): true | Gold: gold | no Immobilized DC left in the code: true
+EoE: Lasts until the end of the encounter (EoE). | true | Kindle: true
+[Melee]'s text: These Actions target creatures in close combat. Normally uses your Reach as the Distance.

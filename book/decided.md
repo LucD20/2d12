@@ -115,14 +115,14 @@
 
 | Date | Chapter | The rule | Foundry |
 |---|---|---|---|
-| 2026-11-19 | 7 | [Melee]: "These Actions target creatures in close combat" (no longer asks for a weapon) | text only |
-| 2026-11-20 | 6, 8, 9 | **Break Free is always a Check:** Body or Instinct (the higher) against the Action DC of what holds you | the texts follow; **it doesn't roll yet** (Bronze; foundry-backlog "BREAK FREE ROLLS") |
-| 2026-11-20 | 1, 8, 9 | **The Action DC:** 11 + the Modifier the Action used; 13 with no Action behind it; it replaced the Immobilized DC | the texts and move.mjs's messages follow; the code's names don't |
-| 2026-11-20 | 2, 8, 9, 14 | **EoE**, the end of the encounter | not yet (foundry-backlog "EoE IN FOUNDRY") |
-| 2026-11-20 | 1 | **Halving and splitting damage:** each subtype on its own; a split never makes more damage | nothing needs it until Shared Burden and Ricochet |
-| 2026-11-20 | 3 | **A movement you must make:** the whole distance, a new square each step, unless "freely" | nothing needs it until Ricochet |
+| 2026-11-19 | 7 | [Melee]: "These Actions target creatures in close combat" (no longer asks for a weapon) | **v0.0.475:** the trait's tooltip |
+| 2026-11-20 | 6, 8, 9 | **Break Free is always a Check:** Body or Instinct (the higher) against the Action DC of what holds you | **v0.0.475:** it rolls (Gold) |
+| 2026-11-20 | 1, 8, 9 | **The Action DC:** 11 + the Modifier the Action used; 13 with no Action behind it; it replaced the Immobilized DC | **v0.0.475:** the code too (`heldDc`, the flag `actionDc`) |
+| 2026-11-20 | 2, 8, 9, 14 | **EoE**, the end of the encounter | **v0.0.475** |
+| 2026-11-20 | 1 | **Halving and splitting damage:** each subtype on its own; a split never makes more damage | **v0.0.475:** `share.mjs` (Bear the Blow, Ricochet) |
+| 2026-11-20 | 3 | **A movement you must make:** the whole distance, a new square each step, unless "freely" | **v0.0.475:** `@Move[...|must:yes]` (Ricochet's Setup warns) |
 
-The whole list for the Foundry pack: `foundry/foundry-backlog.md`, "BOOK CHANGES FROM THE MAGIC AND TALENTS BRANCH".
+The whole list for the Foundry pack: `foundry/foundry-backlog.md`, "BOOK CHANGES FROM THE MAGIC AND TALENTS BRANCH" (**built in v0.0.475, pack TALENTS-PT**, with the four playtest Talents: their cards are `cards/stage0/talents-pt.json`; what is left: foundry-backlog "v0.0.475 (pack TALENTS-PT): LEFT").
 
 ## 8. Which file is current
 

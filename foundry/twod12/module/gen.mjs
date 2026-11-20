@@ -33,7 +33,8 @@ function parseToken(tok) {
   if (s.startsWith('"')) return { text: convertEffects(s.replace(/^"|"$/g, "")) };
   const i = blank();
   let m;
-  if ((m = s.match(/^(\d*)\s*W\s*([BMC])?$/i))) { Object.assign(i, { useW: true, wCount: Math.max(1, Number(m[1]) || 1), pool: (m[2] || "B").toUpperCase() }); return { inst: i }; }
+  // pack TALENTS-PT: "1WBCo": a [W] with its own damage type (Rime Strike's Cold); without one it deals the weapon's
+  if ((m = s.match(new RegExp(`^(\\d*)\\s*W\\s*([BMC])?\\s*(${SUBCODES})?$`, "i")))) { Object.assign(i, { useW: true, wCount: Math.max(1, Number(m[1]) || 1), pool: (m[2] || "B").toUpperCase(), subtype: subtypeCode(m[3] || "") }); return { inst: i }; }
   if ((m = s.match(new RegExp(`^(?:1\\s*)?(?:Mod|At|Attribute|Modifier)\\s*([BMC])?\\s*(${SUBCODES}|[BCHMPS])?$`, "i")))) { Object.assign(i, { useAt: true, pool: (m[1] || "B").toUpperCase(), subtype: subtypeCode(m[2] || "") }); return { inst: i }; }
   if ((m = s.match(DICE))) {
     const pool = (m[2] || "").toUpperCase(), sub = subtypeCode(m[3] || "");
@@ -55,7 +56,7 @@ export function tierToText(insts, text = "") {
   const out = [];
   for (const i of insts) {
     const p = i.pool || "B", sub = i.subtype || "";
-    if (i.useW) out.push(`${i.wCount}W${p}`);
+    if (i.useW) out.push(`${i.wCount}W${p}${i.dice ? "" : sub}`);
     if (i.dice) out.push(`${i.dice}${p}${sub}`);
     if (i.useAt) out.push(`Mod${p}${sub}`);
   }

@@ -6,13 +6,13 @@ Sylwen: Elf Archer L4 stage 1 | attrs {"body":-1,"mind":2,"appeal":1,"instinct":
 Sylwen: Elf Archer L1 stage 0 | attrs {"body":-1,"mind":2,"appeal":1,"instinct":2} | Vigor 17 Resolve 12 Health 29 | Rally 6 (heal 8) | Speed 7 move 7 | Weapon +2 Power +1 Sig +2 | AD 12 (Light Armor) WD 12 | armor light | steadiness 0 reach 1
 Kaela: Human Archer L4 stage 1 | attrs {"body":1,"mind":0,"appeal":1,"instinct":2} | Vigor 19 Resolve 10 Health 29 | Rally 7 (heal 8) | Speed 6 move 6 | Weapon +3 Power +1 Sig +3 | AD 12 (Light Armor) WD 12 | armor light | steadiness 0 reach 1
 Kaela: Human Archer L1 stage 0 | attrs {"body":1,"mind":0,"appeal":1,"instinct":2} | Vigor 19 Resolve 10 Health 29 | Rally 6 (heal 8) | Speed 6 move 6 | Weapon +2 Power +1 Sig +2 | AD 12 (Light Armor) WD 12 | armor light | steadiness 0 reach 1
+Aveline: systems/twod12/art/pcs/aveline.png | Longsword (Mastery 0: Technique locked) | Talents: Cold Domain
 Aveline: systems/twod12/art/pcs/aveline.png | Longsword (Mastery 0: Technique locked) | Talents: 
-Aveline: systems/twod12/art/pcs/aveline.png | Longsword (Mastery 0: Technique locked) | Talents: 
+Durgan: systems/twod12/art/pcs/durgan.png | Arming Sword (Mastery 0: Technique locked) | Talents: Shared Burden
 Durgan: systems/twod12/art/pcs/durgan.png | Arming Sword (Mastery 0: Technique locked) | Talents: 
-Durgan: systems/twod12/art/pcs/durgan.png | Arming Sword (Mastery 0: Technique locked) | Talents: 
+Sylwen: systems/twod12/art/pcs/sylwen.webp | Dagger (Mastery 5: Technique open) | Talents: Take Aim
 Sylwen: systems/twod12/art/pcs/sylwen.webp | Dagger (Mastery 5: Technique open) | Talents: 
-Sylwen: systems/twod12/art/pcs/sylwen.webp | Dagger (Mastery 5: Technique open) | Talents: 
-Kaela: systems/twod12/art/pcs/kaela.webp | Dagger (Mastery 5: Technique open) | Talents: 
+Kaela: systems/twod12/art/pcs/kaela.webp | Dagger (Mastery 5: Technique open) | Talents: Ricochet
 Kaela: systems/twod12/art/pcs/kaela.webp | Dagger (Mastery 5: Technique open) | Talents: 
 level 1 versions: Aveline (Human Paladin, Smite, level 1): ; Daily: none; Longsword | Durgan (Dwarf Paladin, Lay On Hands, level 1): ; Daily: none; Arming Sword | Sylwen (Elf Archer, Quick Shots, level 1): ; Daily: none; Dagger | Kaela (Human Archer, Strafe, level 1): ; Daily: none; Dagger
 Aveline and Durgan share: Judge, Smite, Commandment

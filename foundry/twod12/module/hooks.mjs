@@ -92,7 +92,14 @@ export function registerStrikeState() {
     try {
       if (!game.user.isActiveGM) return;
       const actor = doc?.actor;
-      if (!actor || actor.type !== "character") return;   // v0.0.412: every character (Wounding Shot's Requirement reads it too)
+      if (!actor) return;
+      // pack TALENTS-PT (book, Chapter 3: a movement you must make; Ricochet's Setup "doesn't count as leaving your square"): a movement made while
+      // the actor carries the flag stillMove (setup.mjs, a @Move with still:yes) leaves nothing behind; any other movement, by itself or forced by
+      // another creature, ends its effects that last until it leaves its square (Take Aim: expireOn "__leave")
+      if (actor.getFlag(F, "stillMove")) return;
+      const gone = [...actor.effects].filter(e => (e.getFlag?.(F, "expireOn") ?? []).includes("__leave")).map(e => e.id);
+      if (gone.length) { const names = [...new Set(gone.map(id => actor.effects.get(id)?.name).filter(Boolean))]; await actor.deleteEmbeddedDocuments("ActiveEffect", gone); try { const { sysLine } = await import("./sysmsg.mjs"); await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-person-walking", `<b>${actor.name.replace(/</g, "&lt;")}</b> leaves its square: ${names.map(n => `<b>${n.replace(/</g, "&lt;")}</b>`).join(", ")} ends.`, "fxm") }); } catch (e) { /* no line */ } }
+      if (actor.type !== "character") return;   // v0.0.412: every character (Wounding Shot's Requirement reads it too)
       const key = await turnOf(actor); if (!key) return;
       const st = stateNow(actor.getFlag(F, "strikeState"), key);
       if (!st.moved || !st.left) await actor.setFlag(F, "strikeState", { ...st, moved: true, left: true });

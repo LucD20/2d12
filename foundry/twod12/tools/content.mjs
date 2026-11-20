@@ -325,7 +325,7 @@ FX("Consecrated Ground", "icons/svg/sun.svg", { description: "<p>The consecrated
   ends: { time: { on: true, mode: "rounds", rounds: 3 } } });
 // v0.0.409 (pack F2): the effects of the Paladin's Arts (Lantern of Faith: Kindle, Reveal; Hold the Line: Brace; Commandment: Courage)
 const lantern = n => ({ type: "light", bright: n, dim: 2 * n, color: "#ffd27a", lightAlpha: 0.2, lightAnim: "sunburst", lightSpeed: 2, lightIntensity: 3 });
-FX("Kindle (Bright light 3)", "icons/svg/light.svg", { selfApplied: true, duration: dur("encounter"), description: "<p>You shed Bright light 3 (Dim light 3 more) until the encounter ends (Lantern of Faith, Kindle).</p>", settings: [lantern(3)] });
+FX("Kindle (Bright light 3)", "icons/svg/light.svg", { selfApplied: true, duration: dur("encounter"), description: "<p>You shed Bright light 3 (Dim light 3 more) until the end of the encounter, EoE (Lantern of Faith, Kindle).</p>", settings: [lantern(3)] });
 FX("Reveal (Bright light 1)", "icons/svg/light.svg", { duration: dur("rounds"), description: "<p>The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).</p>", settings: [lantern(1)] });
 FX("Brace", "icons/svg/statue.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). Foundry draws it as an Aura 1 that follows you: if you move, the squares stay where they were (by hand).</p>",
   settings: [{ type: "aura", auraSize: 1, auraWho: "enemies", auraSelf: false, auraOutline: "#9aa3ad", auraFill: "#9aa3ad", areaRows: { carry: { on: false, who: "enemies", self: false }, diff: { on: true, who: "enemies" } } }] });
@@ -397,12 +397,25 @@ add("features", "feature", "Patient Hunter", "icons/svg/target.svg", { category:
 add("effects", "effect", "Harried", "icons/svg/downgrade.svg", { duration: dur("eot"), description: "<p>1 Bane on [Strike] Actions (Harrying Shots, EoT).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, ...P(["strike"]) }] }, "Archer");
 add("effects", "effect", "Killer's Focus", "icons/svg/target.svg", { selfApplied: true, duration: dur(""), minEscalation: 2, expireOn: ["shot", "strike", "weapon"], expireAll: true, description: "<p>Your next [Shot, Strike, Weapon] Action deals an extra [V] 1d6 Pi (Killer's Focus, while your Escalation is 2 or more). Given again at the start of each of your turns.</p>", settings: [sBonus("1d6", "B", "Pi", P(["shot", "strike", "weapon"]))] }, "Archer");
 
+// pack TALENTS-PT (2026-11-20; book/cards/talents-playtest.md): Take Aim's effect: until EoT, 1 Boon and one range Bane less (the far range's) on your
+// [Ranged, Strike] Actions; it ends when you leave your square (expireOn "__leave": stillness.mjs)
+add("effects", "effect", "Take Aim", "icons/svg/target.svg", { selfApplied: true, duration: dur("eot"), expireOn: ["__leave"], description: "<p>Until the end of your turn (EoT), your [Ranged, Strike] Actions gain 1 Boon and take no Bane for the far range. It ends when you leave your square (Take Aim).</p>",
+  settings: [sBoon(1, P(["ranged", "strike"])), sIgnore("rangeBane", P(["ranged", "strike"]))] }, "Talents (playtest)");
+
+// pack TALENTS-PT (Rime Strike's Ice Pillar): a placed object, not a creature. Its settings are flags anyone can edit on the actor: object.solid (walls
+// around its square block movement and Line of Effect: pillar.mjs), object.breakAt (one Action's damage of at least this breaks it; less does nothing:
+// damage.mjs), object.saveTier (its Tier against a Save; by hand for now). Its Defenses are set to the Action DC when it is placed.
+actors.push({ name: "Ice Pillar", img: "icons/svg/frozen.svg", tokenExtra: { disposition: 0, displayBars: 0 }, flags: { twod12: { object: { solid: true, breakAt: 5, saveTier: 1 } } },
+  system: { level: 1, size: 3, role: "minion", npcRole: "", speed: 0, weaponAttribute: "body", powerAttribute: "mind", modLead: "weapon", reachBase: 1,
+    ratings: { body: "custom", mind: "custom", appeal: "custom", instinct: "custom", bodyHm: "custom", mindHm: "custom", ad: "custom", wd: "custom", damage: "low", speed: "custom" },
+    custom: { body: 0, mind: 0, appeal: 0, instinct: 0, bodyHealth: 5, mindHealth: 5 }, armorDef: 13, wardDef: 13, useEscalation: false }, items: [] });
+
 /* ------------------------------------------------------------------ the cards of book/cards/*.json (pack CS, 2026-11-03): one source for the book, Foundry and the ruler.
    A card with Versions is an Action item, one without is a Feature; {{fx:Name}} and {{action:Name}} in a card are the compendium uuids. The Basic Actions
    come through module/basic-data.mjs (tools/gen-basic.mjs); the Techniques (weapon) and the NPC Actions (npc) follow in CS-3. The format: book/cards/README.md. */
 const { loadCards, cardSystem, featureSystem, talentSystem, isAction, inlineCards } = await import("./cardgen.mjs");
 // v0.0.246: {{link:Name|label}} (a book link to a card) is Foundry's link to the compendium item, which opens it to read (an Action, else a Feature or Talent).
-export const resolveRefs = s => s.replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n))
+export const resolveRefs = s => s.replace(/\{\{npc:([^}]+)\}\}/g, (m, n) => `Compendium.${SYSTEM}.npcs.Actor.${idOf("Actor", n)}`).replace(/\{\{fx:([^}]+)\}\}/g, (m, n) => uuidOf("effects", n)).replace(/\{\{action:([^}]+)\}\}/g, (m, n) => uuidOf("actions", n))
   .replace(/\{\{link:([^}|]+)\|([^}]+)\}\}/g, (m, n, label) => { const c = CARDS.find(x => x.name === n) ?? CARDS.flatMap(x => inlineCards(x)).find(x => x.name === n); return `@UUID[${uuidOf(c && isAction(c) ? "actions" : "features", n)}]{${label}}`; });   // v0.0.254: an inline Action links to its item too
 export const CARDS = loadCards();
 for (const c of CARDS) {
@@ -461,7 +474,7 @@ const pcs = [];
 // v0.0.185: built as the class window would: the class copy records the choices of level 1 (flags classPicks / classAttrs, chosenAttrs) and
 // every item the class gave carries classLevel and classSection (a Talent also its slot), so levelling and re-dropping the class work on them.
 // v0.0.189 (Lucas: "too similar"): picks by level ({ 1: {...}, 2: {...}, 3: {...} }), so a PC can be built at level 3 as the class window would.
-const pc = ({ name, token = "", img, species, chosen, cls, attrs, picks, level = 1, lead = "weapon", weapon, armor = "", extras = [], health = "", start = "", choices = {} }) => {
+const pc = ({ name, token = "", img, species, chosen, cls, attrs, picks, level = 1, lead = "weapon", weapon, armor = "", extras = [], health = "", start = "", choices = {}, talents = [] }) => {
   const c = docOf("class", cls), lv1 = c.system.levels[0].sections, attrSec = lv1.find(x => x.kind === "attr");
   const byLevel0 = typeof Object.values(picks)[0] === "string" ? { 1: picks } : picks;
   // v0.0.407 (Stage 0 in Foundry; book, Chapter 5): no Daily Pick in Stage 0 and the Talents set aside: the builds keep their other picks
@@ -485,6 +498,9 @@ const pc = ({ name, token = "", img, species, chosen, cls, attrs, picks, level =
     for (const [id, n] of Object.entries(byLevel[L] ?? {})) { const sec = secs.find(x => x.id === id); if (!sec) throw new Error(`${cls} level ${L}: no section ${id}`); give(n, id, sec.kind, L); }
   }
   for (const [type, n] of extras) items.push(copyDoc(name, type, n, {}));
+  // pack TALENTS-PT (book/cards/talents-playtest.md): the playtest Talent, outside the class's slots (the sheet's "Extra" row: the Talents are set
+  // aside in the class window), and the Actions it gives
+  for (const n of talents) { const it = copyDoc(name, "talent", n, { playtest: true }); items.push(it); for (const u of (it.system.actions ?? [])) { const a = byUuid(u); if (a) items.push(copyDoc(name, "action", a.name, { talentId: it._id })); } }
   const w = copyDoc(name, "weapon", weapon, {}, { wielded: true });
   items.push(w);
   for (const u of (w.system.actions ?? [])) { const a = byUuid(u); if (a) items.push(copyDoc(name, "action", a.name, { weaponId: w._id })); }
@@ -508,26 +524,26 @@ function lv1Type(n) { const d = ["talent", "feature", "action"].map(t => docs.fi
 const ART = n => `systems/twod12/art/pcs/${n}`;
 // v0.0.332 (Lucas: "make level 1 versions, at least one using a shortbow and another a greatsword"): each build at level 4 and at level 1
 // (its level 1 picks only: the first Talent, no Daily Pick), named "..., level 1)"; Aveline's Greatsword and Kaela's Shortbow are among them.
-const pcBoth = o => { pc(o); pc({ ...o, name: o.name.replace(/\)$/, ", level 1)"), level: 1, picks: { 1: o.picks[1] } }); };
+const pcBoth = o => { pc(o); pc({ ...o, name: o.name.replace(/\)$/, ", level 1)"), level: 1, picks: { 1: o.picks[1] }, talents: [] }); };   // pack TALENTS-PT: the playtest Talent only at level 4
 // The judging Paladin: Binding Light and the Greatsword, Rebuke, Commandment, Roving Judgment, Word of Radiance, Weight of Judgment, Lantern of
 // Faith and Reckoning (v0.0.409, pack F2: the redesigned Paladin; Smite and Judge come with every Paladin)
 pcBoth({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("aveline.png"), species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
   picks: { 1: { pal1hall: "Binding Light", pal1react: "Rebuke", pal1art: "Commandment", pal1esc2: "Roving Judgment" },
-    2: { pal2enc: "Word of Radiance", pal2esc4: "Weight of Judgment" }, 3: { pal3art: "Lantern of Faith", pal3esc6: "Reckoning" } }, weapon: "Longsword", armor: "Heavy Armor" });
+    2: { pal2enc: "Word of Radiance", pal2esc4: "Weight of Judgment" }, 3: { pal3art: "Lantern of Faith", pal3esc6: "Reckoning" } }, weapon: "Longsword", armor: "Heavy Armor", talents: ["Cold Domain"] });
 // The shield Paladin: Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Bulwark of Faith, Tireless Vigil (two [Divine] Reactions a round),
 // Commandment and Hallowed Stance (v0.0.409, pack F2: the redesigned Paladin)
 pcBoth({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
   picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1art: "Hold the Line", pal1esc2: "Armor of Faith" },
-    2: { pal2enc: "Bulwark of Faith", pal2esc4: "Tireless Vigil" }, 3: { pal3art: "Commandment", pal3esc6: "Hallowed Stance" } }, weapon: "Arming Sword", armor: "Heavy Armor" });
+    2: { pal2enc: "Bulwark of Faith", pal2esc4: "Tireless Vigil" }, 3: { pal3art: "Commandment", pal3esc6: "Hallowed Stance" } }, weapon: "Arming Sword", armor: "Heavy Armor", talents: ["Shared Burden"] });
 // v0.0.411 (pack F3, the redesigned Archer; no Starting Mastery Feature: the book's Starting Mastery comes with the weapons pass):
 // the far Archer: Quick Shots, Snap Shot, Spotter, Lean and Loose, Volley, Clear Lines, Trick Shots, One More Arrow; the Longbow and a Dagger.
 pcBoth({ name: "Sylwen (Elf Archer, Quick Shots)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Shifting Aim",
   picks: { 1: { arc1hall: "Quick Shots", arc1react: "Snap Shot", arc1art: "Spotter", arc1esc2: "Lean and Loose" },
-    2: { arc2enc: "Volley", arc2esc4: "Clear Lines" }, 3: { arc3art: "Trick Shots", arc3esc6: "One More Arrow" } }, extras: [["weapon", "Dagger"]], weapon: "Hunting Bow", armor: "Light Armor" });
+    2: { arc2enc: "Volley", arc2esc4: "Clear Lines" }, 3: { arc3art: "Trick Shots", arc3esc6: "One More Arrow" } }, extras: [["weapon", "Dagger"]], weapon: "Hunting Bow", armor: "Light Armor", talents: ["Take Aim"] });
 // the close Archer: Strafe, Slip Away, Footwork, Blade and Bow, Hit and Run, Opening Shot, Spotter, Fleet; the Shortbow and a Dagger.
 pcBoth({ name: "Kaela (Human Archer, Strafe)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Shifting Aim",
   picks: { 1: { arc1hall: "Strafe", arc1react: "Slip Away", arc1art: "Footwork", arc1esc2: "Blade and Bow" },
-    2: { arc2enc: "Hit and Run", arc2esc4: "Opening Shot" }, 3: { arc3art: "Spotter", arc3esc6: "Fleet" } }, extras: [["weapon", "Dagger"]], weapon: "Recurve Bow", armor: "Light Armor" });
+    2: { arc2enc: "Hit and Run", arc2esc4: "Opening Shot" }, 3: { arc3art: "Spotter", arc3esc6: "Fleet" } }, extras: [["weapon", "Dagger"]], weapon: "Recurve Bow", armor: "Light Armor", talents: ["Ricochet"] });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;
@@ -638,7 +654,9 @@ export const DEPRECATED = {
   names: ["Divine Connection", "Hindered (until Move)", "Handaxe", "Greataxe", "Mace", "Maul", "Spear", "Pike", "Knuckle Dagger", "Hand Crossbow", "Crossbow", "Pistol", "Musket"],
   actors: ["Bandit Thug"]
 };
-const isDeprecated = d => DEPRECATED.folders.includes(d.folder) || DEPRECATED.types.includes(d.type) || DEPRECATED.names.includes(d.name);
+// pack TALENTS-PT: the playtest Talents (book/cards/stage0/talents-pt.json) stay; every other Talent is still set aside
+const PT_TALENTS = new Set(CARDS.filter(c => c._file === "stage0/talents-pt.json").map(c => c.name));
+const isDeprecated = d => DEPRECATED.folders.includes(d.folder) || (DEPRECATED.types.includes(d.type) && !PT_TALENTS.has(d.name)) || DEPRECATED.names.includes(d.name);
 export const deprecatedDocs = docs.filter(isDeprecated);
 export const deprecatedActors = actors.filter(a => DEPRECATED.actors.includes(a.name));
 for (let i = docs.length - 1; i >= 0; i--) if (isDeprecated(docs[i])) docs.splice(i, 1);

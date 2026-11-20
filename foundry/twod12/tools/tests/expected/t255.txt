@@ -1,6 +1,6 @@
 --- the Structure for Foundry (load.mjs)
 readBody: {"vs":"Appeal Save","tiers":["[R] 1d6 Ho.",null,null],"or":{"tiers":[1,2],"text":"Prone."},"seq":["A.","Special: B."],"rules":["**Judged:** C."]}
-the Structure files: archer.json, gear.json, paladin.json | Foundry reads: {"paladin.json":"paladin.json","archer.json":"archer.json"}
+the Structure files: archer.json, gear.json, paladin.json, talents-pt.json | Foundry reads: {"paladin.json":"paladin.json","archer.json":"archer.json"}
 Foundry's cards: no card of the old paladin.json: true | the ruler still reads it: true | every stage0 Paladin card: true
 Judge (two blocks, Special first): [[0,"The target is Judged by you (EoE)."],[1,"The target is Judged by you (EoE). If an"]]
 Rebuke (Save, Tier 1 or 2, Effect): {"ap":1,"tiers":["Its Move Action is disrupted.","Its Move Action is disrupted.","No effect."],"effects":"The target is Hindered (EoT).","orTiers":"12","tiersWritten":"12","effectFirst":true,"foundry":{"after":"@Condition[hindered|eot]"}} Appeal Save The target moves away from you.

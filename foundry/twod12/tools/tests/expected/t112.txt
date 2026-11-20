@@ -1,5 +1,5 @@
-documents: 116
-references: 79 | broken: none
+documents: 127
+references: 89 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): false | its id is the old one: undefined
 Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Judge, Smite | Hallmark Action (items, choice, pick 1): Binding Light, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Art (items, choice, pick 1): Lantern of Faith, Hold the Line, Commandment | Escalation 2 Ability (items, choice, pick 1): Armor of Faith, Roving Judgment | Skill Talent (talent, pick 1)
 Level 2: Escalation Hook (items, granted): Kindled Wrath | Encounter Pick (items, choice, pick 1): Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation 4 Ability (items, choice, pick 1): Weight of Judgment, Tireless Vigil | Talent (talent, pick 1)
@@ -28,18 +28,19 @@ Roving Judgment: Paladin Escalation Passive, escalation passive true | The 1 AP 
 Weight of Judgment: Paladin Escalation Passive, escalation passive true | A creature Judged by you has its Speed reduced by 2 (to a minimum of 1). | hooks [] | settings 
 Tireless Vigil: Paladin Escalation Passive, escalation passive true | You gain 1 more Reaction AP when you regain AP. It pays only for [Divine] Reactions. | hooks [{"kind":"rapMore","n":1}] | settings 
 Hallowed Stance: Paladin Escalation Passive, escalation passive true | Once on your turn, a [Divine] Action you use gains "Setup: You Advance 3." | hooks [{"kind":"setupAdvance","traits":["divine"],"n":3}] | settings 
-Kindle (Bright light 3): encounter | light | You shed Bright light 3 (Dim light 3 more) until the encounter ends (Lantern of Faith, Kindle).
+Kindle (Bright light 3): encounter | light | You shed Bright light 3 (Dim light 3 more) until the end of the encounter, EoE (Lantern of Faith, Kindle).
 Reveal (Bright light 1): rounds | light | The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).
 Brace: rounds | aura | For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). Foundry draws it as an Aura 1 that follows you: if you move, the squares stay where they were (by hand).
 Courage: rounds | note | For 1 round, an Aura 3 around you: you and your allies in it ignore the Frightened condition (Commandment, Courage).
 the old cards out of Foundry: all gone | old cards kept in their folder:  | in no level: true
-Aveline (Human Paladin, Smite): Judge, Smite, Binding Light, Rebuke, Commandment, Roving Judgment, Kindled Wrath, Word of Radiance, Weight of Judgment, Lantern of Faith, Reckoning, Thwart Cut | ids unique: true
-Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Kindled Wrath, Bulwark of Faith, Tireless Vigil, Commandment, Hallowed Stance, Seizing Cut | ids unique: true
-Sylwen (Elf Archer, Quick Shots): Shifting Aim, Darting Blade, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow, Wounding Shot | ids unique: true
-Kaela (Human Archer, Strafe): Shifting Aim, Darting Blade, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet, Circling Shot | ids unique: true
+Aveline (Human Paladin, Smite): Judge, Smite, Binding Light, Rebuke, Commandment, Roving Judgment, Kindled Wrath, Word of Radiance, Weight of Judgment, Lantern of Faith, Reckoning, Cold Domain, Rime Strike, Thwart Cut | ids unique: true
+Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Kindled Wrath, Bulwark of Faith, Tireless Vigil, Commandment, Hallowed Stance, Shared Burden, Oath of Burden, Bear the Blow, Seizing Cut | ids unique: true
+Sylwen (Elf Archer, Quick Shots): Shifting Aim, Darting Blade, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow, Take Aim, Take Aim, Wounding Shot | ids unique: true
+Kaela (Human Archer, Strafe): Shifting Aim, Darting Blade, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet, Ricochet, Ricochet, Circling Shot | ids unique: true
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Grave Wisp (standard, speed 5): Chilling Touch atwill, Dread Whisper round
+Ice Pillar (minion, speed 0): 
 Ogre Chieftain (elite, speed 4): Club atwill, Overhead Smash round, Ground Slam encounter, Rally the Tribe round
 Orc Warrior (standard, speed 5): Cleaver atwill, Brutal Swing round, Avenge Kin round reaction
 keys unique in each pack (embedded Items too): yes
-NPC Speed as a rating: Goblin Sneak 7, Grave Wisp 5, Ogre Chieftain 4, Orc Warrior 5
+NPC Speed as a rating: Goblin Sneak 7, Grave Wisp 5, Ice Pillar custom, Ogre Chieftain 4, Orc Warrior 5

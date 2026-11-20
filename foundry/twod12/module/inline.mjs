@@ -91,6 +91,13 @@ export function parseInline(kind, inner) {
     return cfg;
   }
   if (kind === "Mark") { cfg.kind = String(segs[0] ?? "").trim().toLowerCase(); return cfg; }   // v0.0.418: @Mark[judge]
+  // pack TALENTS-PT: @Place[<actor uuid>|adjacent:yes|one:yes|eoe:yes|defense:action] places an object (the Ice Pillar: objects.mjs);
+  // @Bounce[2|half] sends half of the damage dealt to the target to a creature within 2 squares of it (Ricochet: bounce.mjs)
+  if (kind === "Place" || kind === "Bounce") {
+    if (kind === "Place") cfg.uuid = String(segs[0] ?? "").trim(); else cfg.range = Math.max(1, Number(segs[0]) || 2);
+    for (const sg of segs.slice(1)) { const [k, v = "yes"] = sg.split(":").map(x => x.trim()); if (k === "label") cfg.label = v; else if (k) cfg[k.toLowerCase()] = /^(yes|true|1)$/i.test(v) ? true : v; }
+    return cfg;
+  }
   if (kind === "Condition") {
     cfg.cond = segs[0].trim().toLowerCase();
     for (const s of segs.slice(1)) {
@@ -184,6 +191,8 @@ export function parseInline(kind, inner) {
     else if (key === "extra") cfg.extra = val.toLowerCase().replace(/\s+/g, "");
     else if (key === "bb") cfg.bb = ({ field: "field", pressure: "pressure", support: "support" })[val.toLowerCase()] ?? "";   // v0.0.301 (PACK BB): @Boon[-1|bb:pressure] = 1 Pressure Bane
     else if (key === "next") cfg.next = val.toLowerCase();   // v0.0.458: @Boon[-1|bb:pressure|next:roll]: spent by the next roll of any kind
+    else if (key === "must") cfg.must = yes(val);   // pack TALENTS-PT (book, Chapter 3: a movement you must make): the Setup warns when squares are left
+    else if (key === "still") cfg.still = yes(val);   // pack TALENTS-PT: this movement doesn't count as leaving your square (Ricochet's Setup)
     else if (key === "near") cfg.near = Math.max(0, Number(val) || 0);   // v0.0.254: the candidates within N squares of you (a Reaction's "an ally within 5 squares")
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
@@ -285,7 +294,7 @@ export function registerInline() {
   if (!list) return console.warn("twod12 | text enrichers are not available");
   list.push({
     id: "twod12-inline",
-    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause|Swap|ShakeOff|Mark)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
+    pattern: /@(Check|Damage|Save|Template|Move|Rally|Guard|Effect|Condition|Use|Cleave|Reload|Release|Regrip|Boon|Book|Heal|EndEffect|Reduce|Pause|Swap|ShakeOff|Mark|Place|Bounce)\[((?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*)\](?:\{([^}]+)\})?/g,
     enricher: async (match, options) => {
       const kind = match[1];
       const cfg = parseInline(kind, match[2]);
@@ -301,7 +310,9 @@ export function registerInline() {
       if (kind === "Pause") return inlineEl("Pause", cfg, cfg.label || "After the damage", "fa-pause");
       if (kind === "Swap") return inlineEl("Swap", cfg, match[3] ?? "Swap squares", "fa-right-left");   // v0.0.410 (Hold the Line, Trade Places)
       if (kind === "ShakeOff") return inlineEl("ShakeOff", cfg, match[3] ?? "Shake Off: the Save", "fa-droplet-slash");   // v0.0.414 (book, Shake Off)
-      if (kind === "Mark") return inlineEl("Mark", cfg, match[3] ?? "Apply Effect", "fa-crosshairs");   // v0.0.418 (playtest 5, G4: Judge with no target)
+      if (kind === "Mark") return inlineEl("Mark", cfg, match[3] ?? "Apply Effect", "fa-crosshairs");
+      if (kind === "Place") return inlineEl("Place", cfg, cfg.label ?? match[3] ?? "Place it", "fa-cube");   // pack TALENTS-PT (the Ice Pillar)
+      if (kind === "Bounce") return inlineEl("Bounce", cfg, cfg.label ?? match[3] ?? "Bounce", "fa-share");   // pack TALENTS-PT (Ricochet)   // v0.0.418 (playtest 5, G4: Judge with no target)
       if (kind === "EndEffect") return inlineEl("EndEffect", cfg, cfg.label ?? match[3] ?? (cfg.which === "any" ? "End one effect" : "End one effect (EoT or 1 round left)"), "fa-wand-magic-sparkles");
       if (kind === "Book") {
         const el = mkEl("Book", cfg, cfg.label ?? match[3] ?? cfg.ref, "fa-book-open");
@@ -856,6 +867,8 @@ export async function handleInline(kind, cfg0, ctx = {}) {
   if (kind === "EndEffect") return handleEndEffect(cfg, ctx);
   if (kind === "ShakeOff") return handleShakeOff(cfg, ctx);
   if (kind === "Mark") return handleMark(cfg, ctx);
+  if (kind === "Place") return (await import("./objects.mjs")).handlePlace(cfg, ctx);   // pack TALENTS-PT
+  if (kind === "Bounce") return (await import("./bounce.mjs")).handleBounce(cfg, ctx);   // pack TALENTS-PT
   if (kind === "Guard") return handleGuard(cfg, ctx);
   if (kind === "Effect") return handleEffect(cfg, ctx);
   if (kind === "Move") return handleMove(cfg, ctx);

@@ -236,18 +236,30 @@ export function pathStepProblem(path, next, N) {
 
 /**
  * Immobilized (book, Conditions): an Action that doesn't roll can't move an Immobilized creature; one that rolls needs a result of at least the
- * Immobilized DC; a Save Action has the origin roll 2d12 + its Modifier once (saveTotal). Returns { moved, why }.
+ * Action DC of what holds it (Chapter 1, Action DC; pack TALENTS-PT: was the Immobilized DC); a Save Action has the origin roll 2d12 + its Modifier once (saveTotal). Returns { moved, why }.
  */
-export function immobilizedOutcome({ rolls = false, total = null, save = false, saveTotal = null, dc = 13 } = {}) {
+export function heldMoveOutcome({ rolls = false, total = null, save = false, saveTotal = null, dc = 13 } = {}) {
   if (save) return Number.isFinite(saveTotal) && saveTotal >= dc ? { moved: true, why: `the origin's roll ${saveTotal} beats the Action DC ${dc}` } : { moved: false, why: `the origin's roll ${saveTotal ?? "?"} is below the Action DC ${dc}` };
   if (!rolls || !Number.isFinite(total)) return { moved: false, why: "it is Immobilized, and this movement doesn't come from a roll" };
   return total >= dc ? { moved: true, why: `the roll ${total} beats the Action DC ${dc}` } : { moved: false, why: `the roll ${total} is below the Action DC ${dc}` };
 }
 
-/** The Immobilized DC of a creature: the highest stored on its Immobilized conditions (11 + the Modifier its origin used), 13 when none says. */
-export function immobilizedDc(actor) {
-  const dcs = (actor?.effects ?? []).filter(e => e.statuses?.has?.("immobilized")).map(e => Number(e.getFlag?.(F, "immobileDc") ?? e.flags?.[F]?.immobileDc)).filter(Number.isFinite);
+/**
+ * The Action DC of what holds a creature (book, Chapter 1, Action DC: 11 + the Modifier the Action used; 13 with no Action behind it): the highest
+ * stored on its Immobilized conditions. pack TALENTS-PT: the flag is actionDc (an Immobilized of an older version stored immobileDc: still read).
+ */
+export function heldDc(actor) {
+  const read = e => e.getFlag?.(F, "actionDc") ?? e.flags?.[F]?.actionDc ?? e.getFlag?.(F, "immobileDc") ?? e.flags?.[F]?.immobileDc;
+  const dcs = (actor?.effects ?? []).filter(e => e.statuses?.has?.("immobilized")).map(e => Number(read(e))).filter(Number.isFinite);
   return dcs.length ? Math.max(...dcs) : TWOD12.baseDC;
+}
+/**
+ * Pure (pack TALENTS-PT; book, Break Free): the Check Break Free rolls: Body or Instinct, the higher (Body on a tie), against the Action DC of what
+ * holds the creature. Returns { attr, mod, dc }.
+ */
+export function breakFreeCheck(actor) {
+  const at = actor?.system?.attributes ?? {}, b = Number(at.body) || 0, i = Number(at.instinct) || 0;
+  return i > b ? { attr: "instinct", mod: i, dc: heldDc(actor) } : { attr: "body", mod: b, dc: heldDc(actor) };
 }
 
 /* ------------------------------------------------------------------ */
@@ -1137,14 +1149,14 @@ async function pushFlow(cfg, ctx, mode = "push") {
   let saveTotal = null;
   for (const t of targets) {
     if (t.actor?.statuses?.has?.("immobilized")) {
-      const dc = immobilizedDc(t.actor), save = !!f?.traits?.includes?.("save");
+      const dc = heldDc(t.actor), save = !!f?.traits?.includes?.("save");
       if (save && saveTotal === null) {
         const roll = await new Roll(`2d12 + ${num(f.attrVal)}`).evaluate();
         await roll.toMessage({ flavor: `${esc(origin.name)}: ${MOVE_LABEL[mode]} against an Immobilized creature (the Save Action's Modifier)` });
         saveTotal = roll.total;
       }
       const res = f?.results?.find?.(r => r.uuid === (t.document?.uuid ?? t.uuid));
-      const out = immobilizedOutcome({ rolls: !!f && (Number.isFinite(f.total) || Number.isFinite(res?.total)), total: res?.total ?? f?.total, save, saveTotal, dc });
+      const out = heldMoveOutcome({ rolls: !!f && (Number.isFinite(f.total) || Number.isFinite(res?.total)), total: res?.total ?? f?.total, save, saveTotal, dc });
       if (!out.moved) { await post(`<b>${esc(t.name)}</b> is Immobilized and isn't moved: ${out.why}.`); continue; }
       await post(`<b>${esc(t.name)}</b> is Immobilized, but ${out.why}: it can be moved.`);
     }

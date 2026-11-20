@@ -14,7 +14,7 @@ averages: 1d4 2.5 | 2d6 + 1 8 | 1d4 + @origin.pow null
 2 / 3 Emanation. Enemies inside gain Consecrated Ground (1 Bane). Allies inside heal 1d4 at the start of each of their turns. Lasts 3 rounds.
 2 Burst | Line 4 | (equal to the origin's Power Modifier) Emanation
 Lasts until removed.
-Lasts until the encounter ends.
+Lasts until the end of the encounter (EoE).
 Lasts until Nari goes Down.
 Lasts until Nari ends it with an Action (1 AP).
 Lasts until Nari (or a creature within Reach of it) ends it with an Action (2 AP).

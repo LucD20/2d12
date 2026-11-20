@@ -275,9 +275,9 @@
       "frequency": "At-will",
       "requirements": "You are Immobilized.",
       "versions": [
-        { "ap": 1, "effects": "Make a Body or Instinct Check (the higher) against the Action DC of the Action that holds you (Chapter 1, Action DC). If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized." }
+        { "ap": 1, "effects": "Make a Body or Instinct Check (the higher) against the Action DC of the Action that holds you (Chapter 1, Action DC). If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized.", "foundry": { "text": "Make a Check, Body or Instinct (the higher), against the Action DC of the Action that holds you (Chapter 1, Action DC): it is rolled when you use Break Free. If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized." } }
       ],
-      "foundry": { "basic": "breakFree", "automation": "bronze", "automationNote": "Lucas, 2026-11-20: Break Free is always a Body or Instinct Check against the Action DC of the Action that holds you; Foundry still ends Immobilized without the roll, so the Check is by hand until Foundry rolls it (foundry-backlog.md).", "img": "icons/svg/net.svg" }
+      "foundry": { "basic": "breakFree", "automation": "gold", "automationNote": "pack TALENTS-PT (v0.0.475): using it rolls the Body or Instinct Check (the higher) against the Action DC of what holds you (the highest on your Immobilized conditions; 13 with no Action behind it); meeting it ends Immobilized and Grabbed, below it you stay Immobilized.", "img": "icons/svg/net.svg" }
     }
   ]
 }

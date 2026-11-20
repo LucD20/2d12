@@ -29,7 +29,7 @@ Nari used Bulwark: Shield of Faith passed with it: Shield of Faith:pass, Bulwark
 all answered, two on the stack: waits for the GM: true | the drag (a player's refused): 2,1 | the GM's: 1,2
 first to resolve: bof on Krysta
 then: cs on Bandit
-the moment's answer: {"half":false,"halfBy":"","id":true,"gained":0,"never":false}
+the moment's answer: {"half":false,"halfBy":"","id":true,"gained":0,"never":false,"split":null}
 edited in place, no new message: true true | no overlay for it any more (done): true
 the collapsed line: BA KR · NA LA 9 4 | faces in resolve order: Bandit, Krysta, Nari, Lana | icons (Font Awesome, v0.0.276): fa-check fa-burst fa-shield-halved fa-crosshairs fa-chevron-down | no <svg> in the content: true
 the result chip: struck held, final: <s>9</s> 4
@@ -87,6 +87,6 @@ a Reaction that posted its card counts as used: true
 the timer is off by default: false
 the GM's Cancel in the header: true | a player can't cancel: false
 confirmed, before Resolve: true | the Cancel still there: true
-the GM cancels: nothing resolved: 0 | the damage goes on as if nobody reacted: {"half":false,"halfBy":"","id":"","gained":0,"never":false} | the message: BA KR · cancelled 9
+the GM cancels: nothing resolved: 0 | the damage goes on as if nobody reacted: {"half":false,"halfBy":"","id":"","gained":0,"never":false,"split":null} | the message: BA KR · cancelled 9
 a click after it does nothing: 0
-its message deleted: the moment is cancelled, no timer left to resolve it: {"half":false,"halfBy":"","id":"","gained":0,"never":false} | wired to the delete hook: true
+its message deleted: the moment is cancelled, no timer left to resolve it: {"half":false,"halfBy":"","id":"","gained":0,"never":false,"split":null} | wired to the delete hook: true

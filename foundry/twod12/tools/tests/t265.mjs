@@ -27,7 +27,7 @@ const MV = await import(ROOTURL + "module/move.mjs");
 const tok = d => ({ document: { disposition: d } });
 console.log("Steadiness: two neutral creatures aren't allies:", MV.asksSteadiness(tok(0), tok(0)), "| asked on the moved creature's player's screen:", mv.includes("const choice = await askOwner(target.actor,"));
 console.log("off its turn only a Reaction's squares of this turn:", MV.turnStamp({ round: 2, turn: 3 }), mv.includes('if (combat?.combatant?.id !== c.id) await c.setFlag(F, "offTurnAt", turnStamp(combat));'),
-  "| the Setup's name never left set:", src("module/setup.mjs").includes('} finally { setLog(""); }'));
+  "| the Setup's name never left set:", src("module/setup.mjs").includes('} finally { setLog(""); if (cfg.still)'));
 
 console.log("--- the chat and the sheets");
 console.log("the right-click caught first, Foundry's menu stopped:", tw.includes("ev.preventDefault(); ev.stopPropagation();") && /addEventListener\("contextmenu"[\s\S]*?\}, true\);/.test(tw),

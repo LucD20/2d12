@@ -63,7 +63,10 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   const costOf = v => (it.reaction ? `${v.ap}R` : `${v.ap} AP`);
   const vs = vsText(it, { src: actor?.system?.attributes ? rollSource(actor.system, it) : null, fists });
   const rl = rollLine(it, vs);
-  const modes = versions.some(v => v.modeVs || v.modeTraits?.length);
+  // pack TALENTS-PT (Rime Strike): a [Split] Action writes its roll in each mode's block ("Attack: Weapon vs. Armor Defense" / "Power vs. Ward Defense")
+  const split = !!it.traits?.has?.("split") && versions.some(v => v.mode === "weapon" || v.mode === "power");
+  const modes = split || versions.some(v => v.modeVs || v.modeTraits?.length);
+  const splitRoll = v => (v.mode === "weapon" ? L("Attack", "Weapon vs. Armor Defense", "esc") : v.mode === "power" ? L("Attack", "Power vs. Ward Defense", "esc") : null);
   const top = [];
   if (it.requirements) top.push(L("Requirement", it.requirements, "hl"));
   if (it.prerequisites) top.push(L("Prerequisite", it.prerequisites, "esc"));
@@ -83,8 +86,8 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
     if (String(v.effects ?? "").trim()) lines.push(L(it.structure || v.noTiers ? "Effect" : save ? "Tier 1 or 2" : "Tier 2 or 3", v.effects, "rich"));
     return {
       ap: v.ap, cost: costOf(v), mode: v.mode ?? "", heading: v.mode ? (MODE_NAME[v.mode] ?? v.mode) : costOf(v),
-      own: { traits: v.modeTraits ?? [], distance: v.modeDistance ? distanceShort(v.modeDistance) : "", target: v.modeTargets ?? "" },
-      roll: v.modeVs ? L("Save", TWOD12.attributes[v.modeVs] ?? v.modeVs, "esc") : null, lines, source: v
+      own: { traits: v.modeTraits ?? [], distance: v.modeDistance ? distanceShort(({ weapon: "Weapon", reach: "Reach", self: "Self" })[v.modeDistance] ?? v.modeDistance) : "",   /* pack TALENTS-PT: a mode's "weapon" / "reach" key as the book writes it */ target: v.modeTargets ?? "" },
+      roll: v.modeVs ? L("Save", TWOD12.attributes[v.modeVs] ?? v.modeVs, "esc") : split && !v.noTiers ? splitRoll(v) : null, lines, source: v
     };
   };
   const vms = versions.map(versionModel);

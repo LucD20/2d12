@@ -16,6 +16,9 @@ const SOCKET = "system.twod12";
 export async function applyToActor(actor, a, opts = {}) {
   const { announce = true, from = null } = opts;
   if (!actor) return 0;
+  // pack TALENTS-PT (Rime Strike's Ice Pillar): a placed object with a break threshold (its actor's flag object.breakAt) takes no damage: one
+  // Action's damage of at least the threshold breaks it, less does nothing and doesn't add up (objects.mjs)
+  if (Number(actor.getFlag?.("twod12", "object")?.breakAt) > 0) { try { await (await import("./objects.mjs")).objectHit(actor, a.B.l + a.B.n + a.M.l + a.M.n); } catch (e) { console.warn("twod12 | a placed object", e); } for (const p of ["B", "M"]) for (const k of ["l", "n"]) a[p][k] = 0; return 0; }
   let M = null;
   try { M = await import("./moment.mjs"); } catch (e) { M = null; }
   // v0.0.272 (pack RX): before anything lands, the Interrupts of "a Strike would damage an ally" (from: a Strike's damage card) and "an ally takes
@@ -26,10 +29,12 @@ export async function applyToActor(actor, a, opts = {}) {
   let rxGained = 0;
   if (M && a.B.l + a.B.n + a.M.l + a.M.n > 0) {
     try {
-      const r = await M.damageMoment(actor, a, from, reachesHealth(actor, a));
+      const r = await M.damageMoment(actor, a, from, reachesHealth(actor, a), { shared: !!opts.shared });
       rxIds[0] = r.id || ""; rxGained = r.gained || 0;
       // v0.0.275 (the book, Chapter 2: an invalid target): the attacker dropped before its Strike landed: the held damage never lands
       if (r.never) { for (const p of ["B", "M"]) for (const k of ["l", "n"]) a[p][k] = 0; await M.noteLanded(rxIds, { never: true, final: 0 }); return 0; }
+      // pack TALENTS-PT (Bear the Blow): the split is made before the reduction and the Guard (share.mjs): a keeps the subject's part
+      if (r.split) { try { await (await import("./share.mjs")).applySplit(actor, a, r.split, opts); } catch (e) { console.warn("twod12 | the split", e); } }
       if (r.half) { const off = M.halveHeld(a); if (off) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b> takes <b>half</b> of the damage${r.halfBy ? ` (${esc(r.halfBy)})` : ""}: <b>${off}</b> turned away.`, "fxm") }); }
     } catch (e) { console.warn("twod12 | moment", e); }
   }
@@ -111,6 +116,7 @@ export function registerSocket() {
       if (data.type === "endEffectPrompt") return H.endEffectHere(actor, data.which, { source: data.source });
     }
     if (!game.user.isActiveGM) return;
+    if (data?.type === "placeObject" || data?.type === "breakObject") return (await import("./objects.mjs")).onObjectSocket(data);   // pack TALENTS-PT: the Ice Pillar
     if (data?.type === "followUp") return (await import("./followup.mjs")).onFollowSocket(data);   // v0.0.347: a line into another user's card
     if (data?.type === "shakeOff") { const e = await fromUuid(data.effectUuid); if (e) await (data.what === "ends" ? e.delete() : e.setFlag("twod12", "shakeHalf", true)); return; }   // v0.0.426: Shake Off on a creature its user doesn't own
     if (data?.type === "deleteMessage") { const m = game.messages?.get(data.messageId); if (m) await m.delete(); return; }   // v0.0.343: a given-up Charge's card

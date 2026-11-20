@@ -148,7 +148,7 @@ export const TWOD12 = {
     weapon:
       "Requires a weapon. Rolls your Weapon Modifier. On a Tier 2 or 3, your Weapon Attribute is added to the weapon's damage.",
     handle: "You must be able to use your hands and have a hand free. Releasing an object costs no AP (Release).",
-    melee: "Requires a Melee weapon. Normally uses your Reach as the Distance.",
+    melee: "These Actions target creatures in close combat. Normally uses your Reach as the Distance.",   // pack TALENTS-PT (book, Chapter 7, 2026-11-19): [Melee] no longer asks for a weapon (the [Weapon] trait does)
     ranged: "Requires a Ranged weapon. The weapon defines the Distance.",
     barehanded: "Can't be disarmed and uses no hand, but you need a free hand to use it.",
     nonthreatening: "Doesn't threaten: you can't flank with it, unless a feature says otherwise (Fists have it; Brawler removes it).",
@@ -156,7 +156,7 @@ export const TWOD12 = {
   },
   // v0.0.261 (Lucas, Divine Intervention): the moment a Reaction watches for by itself ("would go Down": asked before the damage lands)
   // v0.0.272 (pack RX, Lucas): the first set of moments. "Within N" is measured to the creature the moment is about (the ally, the enemy who moves).
-  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up", enemyAway: "An enemy within N moves away from you", enemyAdjacent: "An enemy within N would enter a square adjacent to you" },
+  moments: { "": "None", wouldDown: "A creature would go Down", strikeDamage: "A Strike would damage an ally within N", strikeAgainst: "A Strike is made against an ally within N", enemyCloser: "An enemy within N moves closer (to you or an ally)", allyDamage: "An ally within N takes damage", enemyMoves: "An enemy within N moves or stands up", enemyAway: "An enemy within N moves away from you", enemyAdjacent: "An enemy within N would enter a square adjacent to you", boundDamage: "An Action would damage the creature you marked (your Bound Ally) within N" },   // pack TALENTS-PT: Bear the Blow
   // v0.0.272: whom the Reaction is used on when its moment comes ("the triggering creature" of the card)
   momentTargets: { subject: "The creature of the moment (the ally, the enemy who moves)", source: "The creature that caused it (the attacker)" },
   // v0.0.264 (Lucas): a Grant's "On [a result], [what happens]": the result, and what happens (the target's next damage halved, or a line on the card)

@@ -2,7 +2,7 @@
 Paladin: level 1 7, level 2 3, level 3 3 | Archer: level 1 7, level 2 3, level 3 3
 Attribute increases (Details tab): Body or Appeal +1, Mind or Instinct +1 | Body or Instinct +1, Mind or Appeal +1
 --- the Paladin's level 1
-nothing chosen: 0 of 6 made, complete false | Attribute increases [Choose 2] | Features [Granted] | Hallmark Action [0 / 1] Binding Light/Lay On Hands | Hallmark Reaction [0 / 1] Shield of Faith/Rebuke | Art [0 / 1] Lantern of Faith/Hold the Line/Commandment | Escalation 2 Ability [0 / 1] Armor of Faith/Roving Judgment | Skill Talent [Complete] -
+nothing chosen: 0 of 7 made, complete false | Attribute increases [Choose 2] | Features [Granted] | Hallmark Action [0 / 1] Binding Light/Lay On Hands | Hallmark Reaction [0 / 1] Shield of Faith/Rebuke | Art [0 / 1] Lantern of Faith/Hold the Line/Commandment | Escalation 2 Ability [0 / 1] Armor of Faith/Roving Judgment | Skill Talent [0 / 1] Ricochet/Take Aim/Cold Domain/Shared Burden
 Armor of Faith is an Escalation 2 pick: true | offers: Armor of Faith, Roving Judgment | Art: Lantern of Faith, Hold the Line, Commandment
 Pick 1: choosing Lay On Hands after Binding Light replaces it: Lay On Hands
 choosing it again puts it back: []
@@ -11,8 +11,8 @@ Distinct Choices: Appeal for pair 1: ["appeal"]
 Body, then Mind: ["body","mind"] | list: body, mind
 the book's example (Body or Appeal, Appeal or Instinct): Appeal moves to the second pair and the first must be chosen again: [null,"appeal"]
 an Attribute chosen at an earlier level can't be chosen: {}
-all but the Talent: 6 of 6 made, complete true | Attribute increases [Chosen] | Features [Granted] | Hallmark Action [Chosen] Binding Light/Lay On Hands | Hallmark Reaction [Chosen] Shield of Faith/Rebuke | Art [Chosen] Lantern of Faith/Hold the Line/Commandment | Escalation 2 Ability [Chosen] Armor of Faith/Roving Judgment | Skill Talent [Complete] -
-with the Skill Talent: complete true (6 of 6)
+all but the Talent: 6 of 7 made, complete false | Attribute increases [Chosen] | Features [Granted] | Hallmark Action [Chosen] Binding Light/Lay On Hands | Hallmark Reaction [Chosen] Shield of Faith/Rebuke | Art [Chosen] Lantern of Faith/Hold the Line/Commandment | Escalation 2 Ability [Chosen] Armor of Faith/Roving Judgment | Skill Talent [0 / 1] Ricochet/Take Aim/Cold Domain/Shared Burden
+with the Skill Talent: complete false (6 of 7)
 what confirm gives: Judge (Features), Smite (Features), Binding Light (Hallmark Action), Shield of Faith (Hallmark Reaction), Hold the Line (Art), Armor of Faith (Escalation 2 Ability)
 --- the same item in two sections
 Hallowed Stance chosen in First: 1 of 2 made, complete false | First [Chosen] Hallowed Stance/Tireless Vigil | Second [0 / 1] Tireless Vigil
@@ -20,10 +20,10 @@ also in (Levels window): Second
 Tireless Vigil chosen in Second: 2 of 2 made, complete true | First [Chosen] Hallowed Stance | Second [Chosen] Tireless Vigil
 both owned from before: 0 of 0 made, complete true | First [Complete] - | Second [Complete] -
 --- level up: only that level's sections; what the character owns leaves the choices
-Paladin level 2: 0 of 2 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground | Escalation 4 Ability [0 / 1] Weight of Judgment/Tireless Vigil | Talent [Complete] -
-the level 2 Talent doesn't offer Heavy Blows (owned): true | 0 Talents offered
+Paladin level 2: 0 of 3 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground | Escalation 4 Ability [0 / 1] Weight of Judgment/Tireless Vigil | Talent [0 / 1] Ricochet/Take Aim/Cold Domain/Shared Burden
+the level 2 Talent doesn't offer Heavy Blows (owned): true | 4 Talents offered
 Paladin level 3: 0 of 2 made, complete false | Second Art [0 / 1] Lantern of Faith/Commandment | Escalation 6 Ability [0 / 1] Reckoning/Hallowed Stance | Skill Talent [Complete] -
-Archer level 2: 0 of 2 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Volley/Hit and Run/Covering Fire | Escalation 4 Ability [0 / 1] Clear Lines/Opening Shot | Talent [Complete] -
+Archer level 2: 0 of 3 made, complete false | Escalation Hook [Granted] | Encounter Pick [0 / 1] Volley/Hit and Run/Covering Fire | Escalation 4 Ability [0 / 1] Clear Lines/Opening Shot | Talent [0 / 1] Ricochet/Take Aim/Cold Domain/Shared Burden
 Repertoire filter: Any Bulwark of Faith, Consecrated Ground, Word of Radiance | Turn  | Passive 0
 a Feature in the Repertoire is Passive: Tireless Vigil | and in Any: true
 a Repertoire pick excludes what this level grants: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Bulwark of Faith/Consecrated Ground

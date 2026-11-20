@@ -35,7 +35,7 @@ export function zoneTipLines(z, nameOf = () => null, origin = null) {
     if (rows.guard?.on) lines.push(`${WHO[rows.guard.who] ?? "Inside"}${rows.guard.self ? " and you" : ""}: Guard ${origin ? worked(rows.guard.formula, origin) : `equal to ${worked(rows.guard.formula, null)}`} at the start of their turns`);
   }
   const t = z?.ends?.time;
-  if (t?.on) lines.push(t.mode === "encounter" ? "Until the encounter ends" : `${Number(z.remaining ?? t.rounds) || t.rounds} round${(Number(z.remaining ?? t.rounds) || t.rounds) === 1 ? "" : "s"}`);
+  if (t?.on) lines.push(t.mode === "encounter" ? "Until the end of the encounter (EoE)" : `${Number(z.remaining ?? t.rounds) || t.rounds} round${(Number(z.remaining ?? t.rounds) || t.rounds) === 1 ? "" : "s"}`);
   return lines;
 }
 /** Pure (v0.0.467, Lucas: "It should say in sections ... Enemies: Difficult Terrain; Allies/Origin: Guard (origin included)"): the lines grouped by

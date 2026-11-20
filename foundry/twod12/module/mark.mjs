@@ -5,10 +5,25 @@
 import { postMessages } from "./automation.mjs";
 const F = "twod12";
 export const quarryOf = actor => actor?.getFlag?.(F, "quarry") ?? null;
+/**
+ * Pack TALENTS-PT (Oath of Burden: "The target is your Bound Ally (EoE)"): a mark of another kind than "" or "judge" lives in its own place
+ * (flags.twod12.marks.<kind>), so a creature can have a Bound Ally and a Judged creature at once. One of each kind; it ends when the encounter ends.
+ */
+export const SHARED_KINDS = ["", "judge"];
+export const markOf = (actor, kind = "") => (SHARED_KINDS.includes(String(kind ?? "")) ? quarryOf(actor) : (actor?.getFlag?.(F, "marks")?.[kind] ?? null));
+/** Pure: the chat line's words for a mark ("is Judged by", "is the Bound Ally of", "is marked by"). */
+export const markWords = kind => (kind === "judge" ? "is Judged by" : kind === "bound" ? "is the Bound Ally of" : "is marked by");
+/** Pure: the ring's color of a mark (red for a foe's mark, gold for an ally's bond). */
+export const markColor = kind => (SHARED_KINDS.includes(String(kind ?? "")) ? 0xb3261e : 0xd2a75a);
 const uuidOfToken = t => t?.document?.uuid ?? t?.uuid ?? "";
 
 /** Mark a creature (a token) as this creature's marked target, or clear it (token null). */
 export async function setQuarry(actor, token, kind = "") {
+  if (!SHARED_KINDS.includes(String(kind ?? ""))) {   // pack TALENTS-PT: its own kind (the Bound Ally)
+    if (!token) { if (markOf(actor, kind)) await actor.unsetFlag(F, `marks.${kind}`); return; }
+    await actor.setFlag(F, `marks.${kind}`, { uuid: uuidOfToken(token), name: token.name, kind: String(kind) });
+    return;
+  }
   if (!token) { if (quarryOf(actor)) await actor.unsetFlag(F, "quarry"); return; }
   await actor.setFlag(F, "quarry", { uuid: uuidOfToken(token), name: token.name, kind: String(kind ?? "") });   // v0.0.409: kind "judge" (Judge: the creature is Judged)
   // v0.0.343 (Lucas, playtest 4): no "X marks Y" line: the Action's card says it, and the mark shows on the map (its icon on the token)
@@ -29,9 +44,10 @@ function quarryMarks() {
 function readQuarryMarks() {
   const out = new Map();
   for (const a of markers().filter(x => game.user.isGM || x.isOwner)) {
-    const q = quarryOf(a);
+    const src = (a.isToken ? a.token?.texture?.src : a.getActiveTokens?.()[0]?.document?.texture?.src) || a.prototypeToken?.texture?.src || a.img || "";
     // v0.0.348 (Lucas: "multiple marks on the same target need to show all icons, like two Archers marking the same Quarry"): a list per token
-    if (q?.uuid) { const src = (a.isToken ? a.token?.texture?.src : a.getActiveTokens?.()[0]?.document?.texture?.src) || a.prototypeToken?.texture?.src || a.img || ""; out.set(q.uuid, [...(out.get(q.uuid) ?? []), src]); }
+    // pack TALENTS-PT: the other kinds too (a Bound Ally's gold ring)
+    for (const q of [quarryOf(a), ...Object.values(a.getFlag?.(F, "marks") ?? {})]) if (q?.uuid) out.set(q.uuid, [...(out.get(q.uuid) ?? []), { src, color: markColor(q.kind) }]);
   }
   return out;
 }
@@ -43,7 +59,7 @@ function drawQuarryMark(token, marks = quarryMarks()) {
   const w = token.w ?? token.document.width * (canvas.grid?.size ?? 100), r = Math.max(10, w * 0.16);
   // v0.0.224 (Lucas, playtest 3): the marker's portrait in the red ring (who marked it), with the crosshair ticks around it.
   // v0.0.348: one per marker, down the token's right edge (the first at the top right)
-  (marks.get(token.document?.uuid) ?? [""]).forEach((src, k) => {
+  (marks.get(token.document?.uuid) ?? [{ src: "", color: markColor("") }]).forEach(({ src, color }, k) => {
     const box = new PIXI.Container();
     box.name = "twod12-quarry"; box.eventMode = "none"; box.position.set(w - r * 0.9, r * 0.9 + k * r * 2.3);
     const g = new PIXI.Graphics();
@@ -57,9 +73,9 @@ function drawQuarryMark(token, marks = quarryMarks()) {
       } catch (e) { /* no image: the plain mark */ }
     }
     const ring = new PIXI.Graphics();
-    ring.lineStyle(Math.max(2, r * 0.2), 0xb3261e, 1).drawCircle(0, 0, r);
+    ring.lineStyle(Math.max(2, r * 0.2), color, 1).drawCircle(0, 0, r);
     ring.moveTo(-r * 1.4, 0).lineTo(-r * 0.95, 0).moveTo(r * 0.95, 0).lineTo(r * 1.4, 0).moveTo(0, -r * 1.4).lineTo(0, -r * 0.95).moveTo(0, r * 0.95).lineTo(0, r * 1.4);
-    if (!src) ring.beginFill(0xb3261e, 1).drawCircle(0, 0, r * 0.25).endFill();
+    if (!src) ring.beginFill(color, 1).drawCircle(0, 0, r * 0.25).endFill();
     box.addChild(ring);
     token.addChild(box);
   });
@@ -74,7 +90,7 @@ export function registerMarkHooks() {
   for (const h of ["createToken", "deleteToken", "createActor", "deleteActor"]) Hooks.on(h, forgetQuarryMarks);
   Hooks.on("updateToken", (doc, ch) => { if (ch && ("texture" in ch || "actorLink" in ch || "actorId" in ch || "delta" in ch)) forgetQuarryMarks(); });
   Hooks.on("updateActor", (actor, ch) => { if (ch && ("ownership" in ch || "prototypeToken" in ch || "img" in ch)) forgetQuarryMarks(); });
-  Hooks.on("updateActor", (actor, change) => { const f = change?.flags?.twod12; if (f && ("quarry" in f || "-=quarry" in f)) redrawQuarryMarks(); });
+  Hooks.on("updateActor", (actor, change) => { const f = change?.flags?.twod12; if (f && ("quarry" in f || "-=quarry" in f || "marks" in f || "-=marks" in f)) redrawQuarryMarks(); });
   // The marked creature dies or goes Down: the mark ends, and the marker's "When the creature it marked goes Down" messages are posted (the active GM).
   Hooks.on("createActiveEffect", async effect => {
     if (!game.user.isActiveGM) return;
@@ -118,7 +134,8 @@ export function registerMarkHooks() {
   // v0.0.224 (Lucas: the mark stayed after the combat): the combat ends (deleted): every mark of its creatures ends.
   Hooks.on("deleteCombat", async combat => {
     if (!game.user.isActiveGM) return;
-    for (const c of combat.combatants) { const a = c.actor; if (a && quarryOf(a)) await a.unsetFlag(F, "quarry"); }
+    for (const c of combat.combatants) { const a = c.actor; if (a && quarryOf(a)) await a.unsetFlag(F, "quarry"); if (a?.getFlag?.(F, "marks")) await a.unsetFlag(F, "marks"); }   // pack TALENTS-PT: the Bound Ally (EoE)
+    try { await (await import("./objects.mjs")).endEncounterObjects(combat); } catch (e) { console.warn("twod12 | placed objects", e); }   // pack TALENTS-PT: the Ice Pillar (EoE)
     try { await (await import("./automation.mjs")).endEncounterEffects(combat); } catch (e) { console.warn("twod12 | encounter effects", e); }   // v0.0.323: "This encounter"
     redrawQuarryMarks();
   });
@@ -130,6 +147,7 @@ export function registerMarkHooks() {
       const a = c.actor;
       if (!a) continue;
       if (quarryOf(a)) await a.unsetFlag(F, "quarry");
+      if (a.getFlag?.(F, "marks")) await a.unsetFlag(F, "marks");   // pack TALENTS-PT: a Bound Ally from before the encounter
       try { await (await import("./automation.mjs")).applyEncounterStartEffects(a); } catch (e) { console.warn("twod12 | encounter effects", e); }   // v0.0.323
     }
     try { await (await import("./startstack.mjs")).postStartStack(combat); } catch (e) { console.warn("twod12 | start of the encounter", e); }

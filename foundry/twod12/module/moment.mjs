@@ -28,7 +28,10 @@ export const MOMENTS = {
   enemyMoves: { who: "enemy", move: true },
   enemyAway: { who: "enemy", move: true, away: true },
   enemyAdjacent: { who: "enemy", move: true, adjacent: true },   // v0.0.411 (pack F3, Slip Away, Snap Shot): it would enter a square adjacent to the owner   // v0.0.409 (pack F2, Rebuke): the mover ends a step farther from the Reaction's owner
-  allyDamage: { who: "ally", damage: true }
+  allyDamage: { who: "ally", damage: true },
+  // pack TALENTS-PT (Bear the Blow: "An Action would damage your Bound Ally"): an Action's damage would land on the creature this one marked with
+  // that kind (mark.mjs markOf: the Bound Ally), whether or not it reaches its Health
+  boundDamage: { who: "ally", damage: true, mark: "bound" }
 };
 
 /* ------------------------------------------------------------------ pure pieces (tests) */
@@ -343,8 +346,11 @@ export async function collectReactions(ev) {
       const thr = item.system.momentThreat ? threatProfile(actor) : null;
       if (thr && thr.max <= 0) continue;
       let hit = null;
+      let marked = null;
+      if (def.mark) { try { marked = (await import("./mark.mjs")).markOf(actor, def.mark)?.uuid ?? ""; } catch (e) { marked = ""; } if (!marked) continue; }
       for (const sj of ev.subjects ?? []) {
         if (!sj?.actor) continue;
+        if (marked !== null && ![sj.token?.document?.uuid, sj.token?.uuid, sj.actor?.uuid].includes(marked)) continue;   // pack TALENTS-PT: only the creature it marked
         const isSelf = sj.actor.uuid === actor.uuid;
         if (!sideOk(def.who, tk.document?.disposition, sj.token?.document?.disposition ?? sj.disposition, isSelf, item.system.momentSelf)) continue;
         const where = (def.move && ev.at?.[k]) || sj.at || sj.token;
@@ -896,15 +902,22 @@ export const protectionOf = actor => { const s = actor?.system ?? {}; return (Nu
  * it would reach the Health: the Guard and a reduction are counted). The Interrupts hold it; the answer may halve it (a Tier 3's half).
  * from: { uuid (the creature dealing it), strike }. Resolves to { half, halfBy, id, gained (what the Reactions added to the protection), never }.
  */
-export async function damageMoment(actor, a, from, reaches) {
-  const kinds = [...(from?.strike ? ["strikeDamage"] : []), ...(reaches ? ["allyDamage"] : [])];
+export async function damageMoment(actor, a, from, reaches, { shared = false } = {}) {
+  // pack TALENTS-PT: an Action's damage (it has a creature dealing it) brings "would damage your Bound Ally"; not a part already split off (shared)
+  const kinds = [...(from?.strike ? ["strikeDamage"] : []), ...(reaches ? ["allyDamage"] : []), ...(from?.uuid && !shared ? ["boundDamage"] : [])];
   if (!kinds.length) return {};
   const source = await sourceOf(from), subject = party(actor), before = protectionOf(actor);
   const plain = source ? `<b>${nameOf(source)}</b>'s ${from?.strike ? "Strike" : "damage"} would damage <b>${nameOf(subject)}</b>` : `<b>${nameOf(subject)}</b> would take damage`;
   const base = { kind: from?.strike ? "strike" : "damage", label: from?.strike ? "Strike" : "Damage", face: faceOf(source ?? subject), target: faceOf(subject), held: bTotal(a) };
   const res = await openMoment({ kinds, subjects: [subject], source, only: "interrupt", hold: true, plain, lead: plain, base });
   const half = (res.used ?? []).find(u => u.ok && u.half && (!source || !u.half.targetUuid || [source.actor.uuid, source.token?.document?.uuid].includes(u.half.targetUuid)));
-  return { half: !!half, halfBy: half?.half?.source ?? "", id: res.id ?? "", gained: res.id ? Math.max(0, protectionOf(actor) - before) : 0, never: !!res.never };
+  // pack TALENTS-PT: a Reaction used whose setting momentSplit is "half" (Bear the Blow) splits the held damage with its user (share.mjs)
+  let split = null;
+  for (const u of (res.used ?? []).filter(x => x.ok)) {
+    let it = null; try { const d = await fromUuid(u.actorUuid); it = (d?.documentName === "Actor" ? d : d?.actor)?.items?.get?.(u.itemId) ?? null; } catch (e) { it = null; }
+    if (it?.system?.momentSplit === "half") { split = { actorUuid: u.actorUuid, by: it.name, mode: "half" }; break; }
+  }
+  return { half: !!half, halfBy: half?.half?.source ?? "", id: res.id ?? "", gained: res.id ? Math.max(0, protectionOf(actor) - before) : 0, never: !!res.never, split };
 }
 /** The damage would take the creature to its Pool: the "would go Down" Interrupts. Resolves to { saved (one was used: the damage stops 1 under the Pool), id, never }. */
 export async function downMoment(actor, a, from) {

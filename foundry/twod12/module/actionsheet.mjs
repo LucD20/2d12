@@ -53,7 +53,7 @@ function cardSec(m) {
     s.setup || m.show.setup ? ["Setup", named("system.setup", s.setup, "What happens before the dice are rolled (buttons allowed)", "wide")] : (more.push(["setup", "+ Setup"]), null),
     s.prerequisites ? ["Prerequisites", `${named("system.prerequisites", s.prerequisites, "", "wide")}<span class="fr-m">an old Talent field: move it to Requirements</span>`] : null
   ];
-  const extra = `<div class="as-more">${tog("system.marksTarget", s.marksTarget, "Marks the target")}${tog("system.basicAttack", s.basicAttack, "An NPC's Basic attack")}
+  const extra = `<div class="as-more">${tog("system.marksTarget", s.marksTarget, "Marks the target")}${s.marksTarget ? ` <span class="fr-m">mark</span> ${sel('name="system.markKind"', s.markKind ?? "", [["", "Marked"], ["judge", "Judged"], ["bound", "Bound Ally"]], "Mark")}` : ""}${tog("system.basicAttack", s.basicAttack, "An NPC's Basic attack")}
     ${s.basicAttack ? `<span class="fr-m">rating</span> ${sel('name="system.basicRating"', s.basicRating ?? "medium", m.basicRatings ?? [], "Basic attack rating")}` : ""}${m.basicSuggest ? ` <span class="fr-m">suggested ${esc(m.basicSuggest)}</span>` : ""}
     ${weapon ? `<span class="fr-m">Weapon used</span> ${sel('name="system.weaponUse"', s.weaponUse ?? "", Object.entries(TWOD12.weaponUses ?? {}), "Weapon used")} <span class="fr-m">Weapon needs</span> ${sel('name="system.weaponNeeds"', s.weaponNeeds ?? "", Object.entries(TWOD12.weaponNeeds ?? {}), "Weapon needs")}` : ""}
     ${more.map(([k, l]) => `<a class="as-link" data-as="show" data-v="${k}" role="button" tabindex="0">${l}</a>`).join("")}</div>`;
@@ -71,6 +71,8 @@ function whenSec(m) {
     // v0.0.359 (Lucas): a number or a formula
     ["Within", `${field("@within", s.momentRangeExpr || String(s.momentRange ?? 0), "0", "amt")} <span class="fr-m">squares to the creature of the moment; a number or a formula (<code>pow+2</code>, <code>stage</code>, <code>speed/2</code>); 0: the Action's Distance${s.distance ? ` (${esc(s.distance)})` : ""}, or anywhere</span>`],
     ["Counts", tog("system.momentSelf", s.momentSelf, "You too (\"you or an ally\")")],
+    // pack TALENTS-PT (Bear the Blow): used, the held damage is split with you (share.mjs)
+    ["Damage", sel('name="system.momentSplit"', s.momentSplit ?? "", [["", "As it is"], ["half", "Split: half to you (rounded up; your Resistance and Immunity don't count)"]], "Damage")],
     ["Used on", seg("system.momentTarget", s.momentTarget ?? "subject", [["subject", "The creature of the moment"], ["source", "The one that caused it"]], "w")],
     ["Card line", named("system.trigger", s.trigger, "An enemy within 5 squares makes a [Strike] Action against an ally.", "wide")],
     s.momentThreat ? ["Old", tog("system.momentThreat", true, "Only a creature you threaten (turn it off: Opportunity Attack uses Within 1)")] : null

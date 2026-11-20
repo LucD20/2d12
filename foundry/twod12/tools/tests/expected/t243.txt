@@ -10,7 +10,7 @@ the unread line: something the reader doesn't know | the Flavor: Your weapon bla
 a block per Version: 1: B 1d4 Sl / B 1d8 Sl [@Condition[prone|tier:3]] | 2: - / B 2d8 Sl crit [@Condition[immobilized|eot|crit:yes]]
 an Area line: {"size":2,"shape":"emanation"} {"size":10,"shape":"line"} null | moments: wouldDown, strikeDamage, enemyCloser, allyDamage
 --- every Action of the compendium, written as text and read back
-41 of 48 the same | not: Hide (versions); Lantern of Faith (versions); Hold the Line (versions); Commandment (versions); Footwork (versions); Trick Shots (versions); Spotter (versions)
+45 of 53 the same | not: Hide (versions); Rime Strike (versions); Lantern of Faith (versions); Hold the Line (versions); Commandment (versions); Footwork (versions); Trick Shots (versions); Spotter (versions)
   (Divine Retribution is a Split Action: two Versions per cost; Hide has no Version and gets one; v0.0.409: an Art's Modes are not in the text format yet)
 --- filling an Action keeps what the text doesn't hold
 Lantern of Faith: its Effects kept: 1 | Bulwark of Faith's steps kept: true

@@ -54,6 +54,12 @@ export async function setupBar(o) {
   return pick;
 }
 
+/** Pure (pack TALENTS-PT): the squares a Setup's movement has left (the combatant's free or Evade squares). leftOf: (squares) => number, for the tests. */
+export function mustLeft(squares, leftOf = null) {
+  if (!squares) return 0;
+  if (leftOf) return Math.max(0, Number(leftOf(squares)) || 0);
+  try { return Math.max(0, Math.round((Number(game.combat?.combatants?.get(squares.cid)?.getFlag("twod12", squares.key)) || 0) * 100) / 100); } catch (e) { return 0; }
+}
 export async function runSetup(actor, item, token, deps = {}) {
   const text = item?.system?.setup;
   const parse = deps.parse ?? (await import("./inline.mjs")).parseInline;
@@ -73,6 +79,10 @@ export async function runSetup(actor, item, token, deps = {}) {
     const setLog = deps.setLog ?? (await import("./move.mjs")).setSetupLog;   // v0.0.418: the Encounter Log writes the movement inside the Action
     setLog(item.name);
     let granted = false, pick = null;
+    // pack TALENTS-PT (Ricochet: "This Advance doesn't count as leaving your square for other cards"): while it is made, the actor carries stillMove
+    // (hooks.mjs: no "left its square", no effect ended for leaving it); deps.still for the tests
+    const still = deps.still ?? (async on => { try { if (on) await actor.setFlag("twod12", "stillMove", true); else if (actor.getFlag?.("twod12", "stillMove")) await actor.unsetFlag("twod12", "stillMove"); } catch (e) { console.warn("twod12 | still movement", e); } });
+    if (cfg.still) await still(true);
     try {
       granted = await handleMove(cfg, { actor, token });
       if (!granted) continue;   // it said why (not in combat, Immobilized...): the Action goes on without this movement
@@ -86,8 +96,11 @@ export async function runSetup(actor, item, token, deps = {}) {
         buttons: [{ action: "go", label: "Continue", icon: "fa-solid fa-dice", default: true }, { action: "cancel", label: "Cancel the Action", icon: "fa-solid fa-xmark" }],
         rejectClose: false
       });
+      // pack TALENTS-PT (book, Chapter 3: a movement you must make: the whole distance): Continue with squares left warns (it doesn't stop: Lucas's
+      // "warn, don't block")
+      if (pick === "go" && cfg.must && squares) { const left = mustLeft(squares, deps.leftOf); if (left > 0) { const w = `${item.name}: the Setup's movement must be made in full (${left} of ${squares.total} square${squares.total === 1 ? "" : "s"} left). Used anyway.`; try { ui.notifications.warn(w); } catch (e) { /* no UI */ } } }
       await finish();
-    } finally { setLog(""); }   // v0.0.421 (the audit): never left set (an error, a movement not granted)
+    } finally { setLog(""); if (cfg.still) { try { await new Promise(r => setTimeout(r, 250)); } catch (e) { /* no timer */ } await still(false); } }   // v0.0.421 (the audit): never left set (an error, a movement not granted); the last drag's moveToken first
     if (pick !== "go") return { ok: false, done };
     done = true;
   }

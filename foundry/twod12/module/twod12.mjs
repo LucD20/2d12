@@ -13,6 +13,7 @@ import { renderFollow, renderDamageUsed, registerDamageUsed, addHealButton } fro
 import { registerChecklist, startChecklist } from "./checklist.mjs";   // v0.0.425
 import { registerZoneTip } from "./zonetip.mjs";   // v0.0.350   // v0.0.347
 import { registerMarkHooks } from "./mark.mjs";
+import { registerObjects } from "./objects.mjs";   // pack TALENTS-PT: a placed object's walls
 import { registerLoE } from "./loe.mjs";
 import { registerFlankOverlay } from "./flankoverlay.mjs";
 import { solidTiles, tileConfigSolid } from "./corners.mjs";
@@ -105,6 +106,7 @@ Hooks.once("init", () => {
   registerZoneTip();   // v0.0.350: hovering a placed area shows what it does
   try { registerChecklist(); } catch (e) { console.warn("twod12 | test checklist", e); }   // v0.0.425: the Test checklist (GM, a world setting)
   registerMarkHooks();
+  registerObjects();
   registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
   registerFlankOverlay();   // v0.0.302
   // Template parts used by more than one sheet (the settings of an Effect and of a passive).

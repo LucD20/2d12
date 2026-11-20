@@ -296,7 +296,7 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
       originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
       ...withOriginHover(withBleed(appliedFlags(s, item.toObject().system), over?.bleed), origin?.actorUuid), lightBackup, fromEscalation: !!origin?.escalation,
       // Immobilized (v0.0.174): its DC, 11 + the Modifier its origin used (13 without an origin or a Modifier). Forced Movement and Reposition read it.
-      ...(statuses.includes("immobilized") ? { immobileDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})
+      ...(statuses.includes("immobilized") ? { actionDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})   // pack TALENTS-PT: the Action DC (was immobileDc)
     } }
   }]))?.[0];
   if (made) await createLinked(actor, item, made, origin, d);

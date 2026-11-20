@@ -1,6 +1,6 @@
 import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll, techniqueState } from "./mastery.mjs";
-import { setQuarry } from "./mark.mjs";
+import { setQuarry, markWords } from "./mark.mjs";
 import { ignoredBy, markOnce, markSpent, coverIgnored } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL, artModes, modeView } from "./split.mjs";
 import { ruledDice, isProfaneFor } from "./judge.mjs";   // v0.0.409 (pack F2): Smite's dice, Profane
@@ -48,7 +48,7 @@ const modOnWeapon = (src, traits) => src?.kind === "weapon" || (src?.kind === "s
 /** Text form of a damage instance, e.g. "[V] 1[W] + 1d4 H" (v0.0.234: the pool B / M written [V] / [R]). */
 export function instanceText(i) {
   const parts = [];
-  if (i.useW) parts.push(`${i.wCount}[W]`);
+  if (i.useW) parts.push(`${i.wCount}[W]${i.subtype && !i.dice && !i.useAt ? ` ${i.subtype}` : ""}`);   // pack TALENTS-PT: a [W] with its own type (Rime Strike: "1[W] Co")
   const rest = [];
   if (i.dice) rest.push(i.dice);
   if (i.useAt) rest.push("[Mod]");
@@ -1276,7 +1276,7 @@ export async function useAction(actor, item, opts = {}) {
           ap: version.ap,
           apPaid: apCost,   // v0.0.219: what was really spent (a granted use: its own cost), for a Charge given up
           tier,
-          total: chk?.total ?? null,   // v0.0.174: the roll's result (Forced Movement against an Immobilized creature compares it with the Immobilized DC)
+          total: chk?.total ?? null,   // v0.0.174: the roll's result (Forced Movement against an Immobilized creature compares it with the Action DC of what holds it)
           results: mres ? mres.map(r => ({ uuid: r.uuid, name: r.label, tier: r.chk.tier, crit: r.chk.crit, bonuses: r.bonuses, total: r.chk.total })) : undefined,
           crit: !!chk?.crit, areaPoint: areaOutcome?.point ?? null,   // v0.0.249: the chain after the damage reads them (Prone on a Critical, a Push from the area's center)
           after: version.after ?? "", noTiers: !!version.noTiers,   // v0.0.250: a no-damage Version's chain runs from the card's Apply buttons
@@ -1394,7 +1394,7 @@ export async function useAction(actor, item, opts = {}) {
       const id = toks.length ? await pickBar({ icon: "fa-crosshairs", text: `<b>${esc(item.name)}</b>: which creature? Click its token.`, options: toks.map(t => ({ id: t.id, label: t.name, token: t })), cancel: "Later" }) : null;
       const tok = id && id !== "done" ? toks.find(t => t.id === id) : null;
       const { postFollow } = await import("./followup.mjs");
-      if (tok) { await setQuarry(actor, tok, it.markKind ?? ""); if (cmsg) await postFollow(cmsg, "fa-crosshairs", `<b>${esc(tok.name)}</b> ${it.markKind === "judge" ? "is Judged by" : "is marked by"} <b>${esc(actor.name)}</b>.`); }
+      if (tok) { await setQuarry(actor, tok, it.markKind ?? ""); if (cmsg) await postFollow(cmsg, "fa-crosshairs", `<b>${esc(tok.name)}</b> ${markWords(it.markKind)} <b>${esc(actor.name)}</b>.`); }
       else if (cmsg) await postFollow(cmsg, "fa-crosshairs", `No target: ${await enrich(`@Mark[${it.markKind ?? ""}]{Apply Effect}`, item)} (target the creature, then click).`);
     } catch (e) { console.warn("twod12 | marking with no target", e); }
   }
@@ -1407,7 +1407,7 @@ export async function useAction(actor, item, opts = {}) {
     const ridesOn = t => (version[`t${t}`] ?? []).some(i => i.useW || i.dice || i.useAt);
     const autoFor = (t, bon) => [...(t >= 2 ? (version.fx?.all ?? []) : []), ...(ridesOn(t) ? [] : (version.fx?.[`t${t}`] ?? [])), ...(bon ?? []).filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => x.mode === "auto").map(x => x.uuid);
-    const how = { ...originInfo(actor.uuid), escalation: escCost > 0, ...(src.kind ? { mod: Number(src.mod) || 0 } : {}) };   // mod: the Immobilized DC
+    const how = { ...originInfo(actor.uuid), escalation: escCost > 0, ...(src.kind ? { mod: Number(src.mod) || 0 } : {}) };   // mod: the Action DC (11 + mod) of what it applies
     if (mres) {
       for (const r of mres) { const u = autoFor(r.chk.tier, r.bonuses); if (u.length && r.chk.tier >= 1) await applyEffects(u, [isSelf ? actor.uuid : r.uuid], how); }
     } else if (tier >= 1) {
@@ -1449,10 +1449,17 @@ export async function useAction(actor, item, opts = {}) {
       logAction(selfToken ?? actor, item, { ap: version.ap, targets: tgs, save: saveAct ? (TWOD12.attributes[it.vs] ?? it.vs ?? "") : "", free: !!opts.free });
     } catch (e) { console.warn("twod12 | encounter log", e); }
   }
-  // v0.0.224: Break Free: no longer Immobilized.
+  // v0.0.224: Break Free. Pack TALENTS-PT (book, Break Free, 2026-11-20): it rolls a Body or Instinct Check (the higher) against the Action DC of
+  // what holds you; meeting it ends Immobilized (and Grabbed, linked to it: conditions.mjs); below it, you stay Immobilized
   if (basicKey === "breakFree") {
-    const held = [...actor.effects].filter(e => e.statuses?.has?.("immobilized")).map(e => e.id);
-    if (held.length) await actor.deleteEmbeddedDocuments("ActiveEffect", held);
+    const { breakFreeCheck } = await import("./move.mjs"), { rollCheck } = await import("./roll.mjs");
+    const bf = breakFreeCheck(actor), name = TWOD12.attributes[bf.attr];
+    const r = await rollCheck({ actor, label: `Break Free: ${name} Check`, mod: bf.mod, dc: bf.dc, chips: [`${name} ${sgn(bf.mod)}`] });
+    if (Number(r?.total) >= bf.dc) {
+      const held = [...actor.effects].filter(e => e.statuses?.has?.("immobilized")).map(e => e.id);
+      if (held.length) await actor.deleteEmbeddedDocuments("ActiveEffect", held);
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-link-slash", `<b>${esc(actor.name)}</b> breaks free: ${r.total} meets the Action DC ${bf.dc}. No longer Immobilized (nor Grabbed).`, "fxm") });
+    } else await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-link", `<b>${esc(actor.name)}</b> stays Immobilized: ${r?.total ?? "?"} is below the Action DC ${bf.dc}.`, "fxm") });
   }
   // Stand: no longer Prone.
   if (item.getFlag?.("twod12", "basic") === "stand") {

@@ -3,5 +3,5 @@ Tiers written: Circling Shot 23 | Knock Back 23 | Weapon Attack (all)
 Basic Actions' Specials: Weapon Attack ["Special"] | Steel Yourself special true
 the model places them: true
 the attack chat card draws such an Effect once: true
-t260's parity: 48 of 48
+t260's parity: 53 of 53
 a self-running Effect as words on the Save card: true

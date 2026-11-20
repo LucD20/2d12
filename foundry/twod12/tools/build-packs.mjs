@@ -37,7 +37,7 @@ for (const [pack, def] of Object.entries(PACKS)) {
       const isPc = pack === "pcs";
       const token = isPc
         ? { name: a.token || a.name, texture: { src: a.img }, disposition: 1, actorLink: true, sight: { enabled: true }, detectionModes: [{ id: "hearing", enabled: true, range: null }], displayBars: 50, lockRotation: true }
-        : { name: a.name, texture: { src: a.img }, disposition: -1, actorLink: false, displayBars: 50, lockRotation: true, ...((a.system?.size ?? 3) >= 4 ? { width: a.system.size - 2, height: a.system.size - 2 } : {}) };   // v0.0.435: a Large NPC is 2 x 2 (Chapter 3, Size)   // v0.0.346 (Lucas): bars always shown, to everyone
+        : { name: a.name, texture: { src: a.img }, disposition: -1, actorLink: false, displayBars: 50, lockRotation: true, ...(a.tokenExtra ?? {}), ...((a.system?.size ?? 3) >= 4 ? { width: a.system.size - 2, height: a.system.size - 2 } : {}) };   // v0.0.435: a Large NPC is 2 x 2 (Chapter 3, Size)   // v0.0.346 (Lucas): bars always shown, to everyone
       const doc = { _id, _key: `!actors!${_id}`, name: a.name, type: isPc ? "character" : "npc", img: a.img, folder: null, sort: (i + 1) * 100000, system: a.system, items, effects: [], flags: a.flags ?? {}, ownership: { default: 0 }, prototypeToken: token, _stats: stats };
       fs.writeFileSync(path.join(dir, `${slug(a.name)}.${isPc ? "pc" : "npc"}.json`), JSON.stringify(doc, null, 2));
     });

@@ -158,6 +158,34 @@
   "after": [],
   "passive": false
  },
+ "Bear the Blow": {
+  "name": "Bear the Blow",
+  "escalation": null,
+  "frequency": "Turn",
+  "flavor": "You take the blow on the shoulder they would have taken it on.",
+  "distance": null,
+  "area": null,
+  "target": "Your Bound Ally",
+  "traits": [],
+  "cost": "0R",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "Your Bound Ally is adjacent to you."
+   },
+   {
+    "label": "Interrupt",
+    "text": "An Action would damage your Bound Ally."
+   },
+   {
+    "label": "Effect",
+    "text": "You gain 1 Guard. You take half of that damage (rounded up); your Bound Ally takes the rest (Chapter 1, Halving and splitting damage). The split is made before Guard: each of you then applies your own Weakness and Guard to your part; **your Resistance and Immunity don't reduce your part**, your Bound Ally's do reduce theirs."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Binding Light": {
   "name": "Binding Light",
   "escalation": null,
@@ -618,6 +646,26 @@
   "blocks": [],
   "after": [],
   "passive": false
+ },
+ "Cold Domain": {
+  "name": "Cold Domain",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Your god's blessing rests on your weapon as frost.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "You gain the Action [[Rime Strike]]."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
  },
  "Commandment": {
   "name": "Commandment",
@@ -2694,6 +2742,28 @@
   "after": [],
   "passive": false
  },
+ "Oath of Burden": {
+  "name": "Oath of Burden",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You set your shoulder beside theirs: whatever comes for them comes through you.",
+  "distance": null,
+  "area": null,
+  "target": "One ally you perceive",
+  "traits": [
+   "focus"
+  ],
+  "cost": "0 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "The target is your **Bound Ally** (EoE). If another creature was your Bound Ally, it no longer is. While you have a Bound Ally, you have the Reaction [[Bear the Blow]]."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "One More Arrow": {
   "name": "One More Arrow",
   "escalation": 6,
@@ -3393,26 +3463,123 @@
  "Ricochet": {
   "name": "Ricochet",
   "escalation": null,
-  "frequency": null,
-  "flavor": "Walls, shields and stones are just more angles.",
-  "distance": null,
+  "frequency": "Round",
+  "flavor": "You dart wide for the angle, and the arrow skips off one shield into the throat behind it.",
+  "distance": "Weapon",
   "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
+  "target": "One creature",
+  "traits": [
+   "projectile",
+   "ranged",
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
   "body": [
    {
-    "label": "Prerequisite",
-    "text": "Aim."
+    "label": "Setup",
+    "text": "You must Advance 2. This Advance doesn't count as leaving your square for other cards."
    },
    {
-    "label": "Passive",
-    "text": "Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature to target them. A bounced shot takes 1 Bane."
+    "label": "Ricochet",
+    "text": "The arrow can bounce to a second creature within 2 squares of the target that the target has Line of Effect to (you don't need Line of Effect to it). It takes half of the damage dealt to the target, before the target's Resistance, Weakness, Immunity and Guard (Chapter 1, Halving and splitting damage), then applies its own; none of the riders. No roll is made against it, and it isn't hit on a Tier: another card's Tier effects (Opening Shot, One More Arrow) don't apply to it."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "0."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]; a ricochet."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + [Mod]; a ricochet."
    }
   ],
   "blocks": [],
   "after": [],
-  "passive": true
+  "passive": false
+ },
+ "Rime Strike": {
+  "name": "Rime Strike",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "Frost runs down the edge, and the cold bites before the steel does; where it lands, the ice rises.",
+  "distance": null,
+  "area": null,
+  "target": "One creature or object",
+  "traits": [
+   "divine",
+   "melee",
+   "split",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Ice Pillar",
+    "text": "A pillar of ice rises in a square adjacent to the target that holds no creature or object and that you have Line of Effect to (EoE). You have one Ice Pillar at a time: raising a new one melts the old one. It fills its square as a wall does: it blocks movement and Line of Effect through its square, its corners are solid (Chapter 3, Corners), and it gives Cover as a wall does. Its Defense is your Action DC for that Rime Strike (11 + the Modifier its mode used). Against a Save it gets Tier 1. An Area that covers its square hits it, whoever made the Area. It breaks when one Action deals it 5 or more damage; less does nothing and doesn't add up. A creature that collides with it (Chapter 3, Collision) deals it the damage the creature takes."
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "Weapon mode",
+    "distance": "Weapon",
+    "body": [
+     {
+      "label": "Attack",
+      "text": "Weapon vs. Armor Defense"
+     },
+     {
+      "label": "Tier 1",
+      "text": "0."
+     },
+     {
+      "label": "Tier 2",
+      "text": "[V] 1[W] + [Mod] Co; an Ice Pillar."
+     },
+     {
+      "label": "Tier 3",
+      "text": "[V] 1[W] + [Mod] Co; an Ice Pillar."
+     }
+    ],
+    "foundry": {
+     "after": "@Place[{{npc:Ice Pillar}}|adjacent:yes|one:yes|eoe:yes|defense:action]{Ice Pillar}"
+    }
+   },
+   {
+    "heading": "Power mode",
+    "distance": "Reach",
+    "body": [
+     {
+      "label": "Attack",
+      "text": "Power vs. Ward Defense"
+     },
+     {
+      "label": "Tier 1",
+      "text": "0."
+     },
+     {
+      "label": "Tier 2",
+      "text": "[V] 2d6! Co; an Ice Pillar."
+     },
+     {
+      "label": "Tier 3",
+      "text": "[V] 2d8! + 1d4! Co; an Ice Pillar."
+     }
+    ],
+    "foundry": {
+     "after": "@Place[{{npc:Ice Pillar}}|adjacent:yes|one:yes|eoe:yes|defense:action]{Ice Pillar}"
+    }
+   }
+  ],
+  "after": [],
+  "passive": false
  },
  "Rimebrand (Cold)": {
   "name": "Rimebrand (Cold)",
@@ -3701,6 +3868,26 @@
   "blocks": [],
   "after": [],
   "passive": false
+ },
+ "Shared Burden": {
+  "name": "Shared Burden",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "You swear to carry what falls on them.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "You gain the Action [[Oath of Burden]] and the Reaction [[Bear the Blow]]."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
  },
  "Sharpshooter": {
   "name": "Sharpshooter",
@@ -4300,6 +4487,32 @@
   "blocks": [],
   "after": [],
   "passive": true
+ },
+ "Take Aim": {
+  "name": "Take Aim",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You plant your feet, slow your breath, and let the world narrow to the arrowhead.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "self"
+  ],
+  "cost": "0 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "You haven't left your square this turn."
+   },
+   {
+    "label": "Effect",
+    "text": "Until the end of your turn (EoT), your [Ranged, Strike] Actions gain 1 Boon and take no Bane for the far range (Chapter 15). This ends when you leave your square."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
  },
  "Thrill of the Kill": {
   "name": "Thrill of the Kill",

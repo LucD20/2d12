@@ -69,7 +69,7 @@ export function tierTokens(dmg, weaponAction, tier) {
   for (const { p, pool: pl } of tokens) {
     let m;
     const sub = subOf[pl] ?? "";
-    if ((m = p.match(/^(\d*)\[W\]$/))) out.push({ k: "w", t: `${m[1] || 1}W${pl}` });
+    if ((m = p.match(/^(\d*)\[W\]$/))) out.push({ k: "w", t: `${m[1] || 1}W${pl}${sub}` });   // pack TALENTS-PT: "[V] 1[W] + [Mod] Co" (Rime Strike): the weapon's damage takes the written type
     else if (p === "[Mod]") { if (!(weaponAction && tier >= 2)) out.push({ k: "at", t: `Mod${pl}${sub}` }); }
     else if (/^\d+d\d+!?$/.test(p)) out.push({ k: "dice", t: `${p}${pl}${sub}` });   // v0.0.407: a die written with ! explodes
     else if (/^\d+$/.test(p)) flat = { n: p, pool: pl };
@@ -170,7 +170,7 @@ export function cardSystem(c, resolve = s => s) {
   if (isReaction(c)) { sys.reaction = true; sys.reactionKind = c.interrupt ? "interrupt" : "trigger"; sys.trigger = stripLinks(c.interrupt ?? c.trigger); }
   if (c.requirements) sys.requirements = stripLinks(c.requirements);
   if (c.prerequisites) sys.prerequisites = stripLinks(c.prerequisites);
-  if (c.setup) sys.setup = resolve(fxText(c.setup, c.foundry?.appendSetup));
+  if (c.setup) sys.setup = typeof c.foundry?.setup === "string" ? resolve(c.foundry.setup) : resolve(fxText(c.setup, c.foundry?.appendSetup));   // pack TALENTS-PT: a Setup's Foundry text written in full (Ricochet's must / still movement)
   const prose = [c.rules, c.notes, ...(c.placeholder ? [c.text] : [])].filter(Boolean).map(t => `<p>${boldHtml(foundryLinks(t))}</p>`).join("");
   if (prose) sys.description = resolve(prose);
   if (worthOf(c.name) && !c.structure) sys.worth = worthOf(c.name);   // v0.0.409: the ruler's worth is of the old card (not a Structure card)
@@ -183,7 +183,7 @@ export function cardSystem(c, resolve = s => s) {
   // the roll, Steel Yourself's at the end); its description keeps them for the other surfaces
   else if (c.category === "Basic Action") { if (c.rules) sys.lines = [{ label: "Special", text: resolve(fxText(c.rules)) }]; if (c.notes) sys.special = resolve(fxText(c.notes)); }
   if (c.foundry?.settings) sys.settings = JSON.parse(resolve(JSON.stringify(c.foundry.settings)));   // v0.0.360 (the audit's D17): an Action holds rules (Mark Quarry)
-  for (const k of ["weaponUse", "weaponNeeds", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
+  for (const k of ["weaponUse", "weaponNeeds", "automation", "automationNote", "marksTarget", "markKind", "basicAttack", "basicRating", "modifiers", "moment", "momentRange", "momentSelf", "momentTarget", "momentThreat", "momentSplit"]) if (c.foundry?.[k] !== undefined) sys[k] = c.foundry[k];   // pack TALENTS-PT: momentSplit (Bear the Blow); v0.0.261: moment, momentRange (Divine Intervention); v0.0.272: momentSelf, momentTarget
   return sys;
 }
 
