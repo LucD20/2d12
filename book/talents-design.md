@@ -294,3 +294,11 @@ The Talents record is now named in HANDOFF and CLAUDE.md.
 > Idea for Apex Action; Full Draw; Push your weapon beyond its limits, perform a ranged strike with increased damage, armour pen, knockback or knockdown
 
 **Research asked with it (2026-11-20, done):** Pillars of Eternity (1 and 2) and Divinity: Original Sin 2, their mechanics compared with 2d12: what players love, what fits a tabletop, what could fit 2d12 (`research/pillars-of-eternity.md`, `research/divinity-original-sin-2.md`). Divinity's ambient interaction (surfaces) is "a whole other topic".
+
+### Who the Talents are for (Lucas, 2026-11-20): "I am playtesting myself only, so we create for the four playtest PCs"
+
+The four PCs (Foundry's compendium, level 1 and level 4): **Aveline** (Human Paladin, Smite; Longsword), **Durgan** (Dwarf Paladin, Lay On Hands; Arming Sword), **Kaela** (Human Archer, Strafe; Recurve Bow and Dagger), **Sylwen** (Elf Archer, Quick Shots; Hunting Bow). Under T6 a level 4 PC has two Talent picks (levels 2 and 4).
+
+**The asks so far, numbered (Lucas, 2026-11-20):** 1 casting magic through music; 2 defending allies; 3 the ideas he sent (3.1 the god's blessings, 3.2 Ricochet, 3.3 ammunition, 3.4 Take Aim, 3.5 Overwatch, 3.6 Full Draw, 3.7 Multi-Nocking); 4 a strategist or planner; 5 an improvised weapon user; 6 pulling abilities; 7 dual wielding; 8 many shields, breaking and changing them; 9 flourished attacks.
+
+**Claude's proposal, which asks fit which PC (not decided):** Aveline 3.1 (the weapon blessing) and 6; Durgan 2 and 3.1 (the aura); Kaela 7 and 3.2; Sylwen 3.4 and 3.5. Waiting: 1 (no caster, magic not in the book), 8 (shields aren't written in Chapter 15), 4, 5, 3.3, 3.6, 3.7, 9 (alternatives).
