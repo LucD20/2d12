@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.470, 290 tests; READ THIS FIRST)
+## Where we are now (v0.0.471, 290 tests; READ THIS FIRST)
+- **2026-11-20 (v0.0.471; NOT tested by Lucas): his v0.0.470 report** (9 passed): a question in the HUD's middle docks into the Situational tab, the area hover's formulas worked out, the Encounter Log's damage table and numbered names. 3 tests left on the checklist.
 - **2026-11-20 (v0.0.470): a rule, Lucas: a creature as the origin of a push or a pull is measured from its square nearest the moved creature** (book Chapter 3, Forced Movement; Foundry `nearestOriginCell`).
 - **2026-11-20 (v0.0.469): the Reaction path's start fixed. Asked Lucas:** a Large origin's push cone (measure from its nearest square? rules-backlog).
 - **2026-11-20 (v0.0.468; NOT tested by Lucas): his v0.0.467 report and notes:** a Large token's steps read from the drag (top-left or center) for the ruler's Difficult Terrain, Empowered by hand on a Save Action, a push from a Large creature (no ring, short plate), the Reaction's triggering movement redrawn (path, arrow, the gold trigger square).

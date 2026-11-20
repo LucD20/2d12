@@ -1,8 +1,8 @@
 // v0.0.350 (Lucas, playtest 4: "hovering over an area should show a small tooltip of what it does, for example Covering Fire: '1 Bane on Strike
 // Actions / Allies +1 Defense'"): over a placed area (a Zone's region), a small card follows the mouse: its name, then one line per thing it does
 // (an Effect it gives to allies / enemies / everyone inside, a heal, a hazard, Difficult Terrain). Nothing is saved; it reads the region's flags.
-import { zoneRows } from "./fxrules.mjs";
-import { highlightText } from "./config.mjs";
+import { zoneRows, evalFormula, refValues } from "./fxrules.mjs";
+import { highlightText, TWOD12 } from "./config.mjs";
 const F = "twod12";
 const WHO = { allies: "Allies", enemies: "Enemies", all: "Everyone" };
 const strip = s => String(s ?? "").replace(/<[^>]+>/g, "").trim();
@@ -15,7 +15,11 @@ export function shortWords(name, summary = "") {
   return s && s.length <= 70 ? s : String(name ?? "");
 }
 /** Pure: the tooltip's lines for a zone flag. nameOf(uuid) -> { name, summary }. */
-export function zoneTipLines(z, nameOf = () => null) {
+// v0.0.471 (Lucas, checklist v0.0.470: the damage showed as a formula, "2 + @origin.wpn Pi", and Pi uncolored): a formula worked out with the
+// area's origin (origin: refValues, when known), a plain sum added up; the damage type written in full (the highlight colors it)
+const sumOf = t => (/^[\d\s+\-]+$/.test(t) ? String(t.replace(/\s+/g, "").split(/(?=[+-])/).reduce((a, x) => a + Number(x), 0)) : t);
+export const worked = (formula, origin) => { const f = String(formula ?? "").trim(); if (!origin || !/@/.test(f)) return f.replace(/@origin\.(pow|wpn|sig)/gi, (m, k) => ({ pow: "your Power Modifier", wpn: "your Weapon Modifier", sig: "your Signature Modifier" })[k.toLowerCase()]); const r = evalFormula(f, { origin }, { dice: true }); return r.ok ? sumOf(String(r.value)) : f; };
+export function zoneTipLines(z, nameOf = () => null, origin = null) {
   const lines = [];
   for (const r of z?.rules ?? []) {
     if (r.fxUuid) { const n = nameOf(r.fxUuid); lines.push(`${WHO[r.who] ?? "Inside"}: ${shortWords(n?.name ?? "an Effect", n?.summary)}`); }
@@ -24,11 +28,11 @@ export function zoneTipLines(z, nameOf = () => null) {
   if (z?.rows) {
     const rows = zoneRows(z);
     for (const c of [rows.carry, rows.carry2]) if (c?.on && c.fx && !(z.rules ?? []).some(r => r.fxUuid === c.fx)) { const n = nameOf(c.fx); lines.push(`${WHO[c.who] ?? "Inside"}: ${shortWords(n?.name ?? (z.names?.[c.fx] || "an Effect"), n?.summary)}`); }   // v0.0.351: both Carries rows
-    if (rows.heal?.on && !(z.rules ?? []).some(r => String(r.heal ?? "").trim())) lines.push(`${WHO[rows.heal.who] ?? "Inside"}: heal ${rows.heal.formula} at the start of their turns`);
-    if (rows.ht?.on) lines.push(`${WHO[rows.ht.who] ?? "Everyone"}: Hazardous Terrain, ${(rows.ht.list ?? []).map(d => `${d.dice}${d.sub ? ` ${d.sub}` : ""}`).join(" + ") || "damage"}`);   // v0.0.467: who first, as every line
+    if (rows.heal?.on && !(z.rules ?? []).some(r => String(r.heal ?? "").trim())) lines.push(`${WHO[rows.heal.who] ?? "Inside"}: heal ${worked(rows.heal.formula, origin)} at the start of their turns`);
+    if (rows.ht?.on) lines.push(`${WHO[rows.ht.who] ?? "Everyone"}: Hazardous Terrain, ${(rows.ht.list ?? []).map(d => `${worked(d.dice, origin)}${d.sub ? ` ${TWOD12.subtypes?.[d.sub] ?? d.sub}` : ""}`).join(" + ") || "damage"}`);   // v0.0.467: who first, as every line
     if (rows.diff?.on) lines.push(`${WHO[rows.diff.who] ?? "Everyone"}: Difficult Terrain`);
     // v0.0.463 (Lucas, checklist v0.0.462, area-hover: Consecrated Ground showed only the enemies' Difficult Terrain): the Guard row too
-    if (rows.guard?.on) lines.push(`${WHO[rows.guard.who] ?? "Inside"}${rows.guard.self ? " and you" : ""}: Guard equal to ${String(rows.guard.formula ?? "").replace(/@origin\.pow/gi, "your Power Modifier").replace(/@origin\./gi, "")} at the start of their turns`);
+    if (rows.guard?.on) lines.push(`${WHO[rows.guard.who] ?? "Inside"}${rows.guard.self ? " and you" : ""}: Guard ${origin ? worked(rows.guard.formula, origin) : `equal to ${worked(rows.guard.formula, null)}`} at the start of their turns`);
   }
   const t = z?.ends?.time;
   if (t?.on) lines.push(t.mode === "encounter" ? "Until the encounter ends" : `${Number(z.remaining ?? t.rounds) || t.rounds} round${(Number(z.remaining ?? t.rounds) || t.rounds) === 1 ? "" : "s"}`);
@@ -70,7 +74,7 @@ function show(ev) {
   // system's highlighting (Attributes, Boons and Banes, traits); v0.0.467: each area under its name, its lines in sections by who they affect
   const hl = t => { try { return highlightText(esc(t)); } catch (e) { return esc(t); } };
   const cls = w => (w.startsWith("Enemies") ? "enemies" : w.startsWith("Allies") ? "allies" : "everyone");
-  el.innerHTML = zones.map(z => { const { groups, foot } = zoneTipGroups(zoneTipLines(z, nameOf)); return `<div class="zt-zone"><b>${esc(z.name ?? "Area")}</b>${groups.map(g => `<div class="zt-sec"><span class="zt-who ${cls(g.who)}">${esc(g.who)}</span>${g.lines.map(l => `<div class="zt-l">${hl(l)}</div>`).join("")}</div>`).join("")}${foot.map(l => `<div class="zt-foot">${hl(l)}</div>`).join("")}</div>`; }).join("");
+  el.innerHTML = zones.map(z => { const { groups, foot } = zoneTipGroups(zoneTipLines(z, nameOf, (() => { try { const o = z.originUuid ? fromUuidSync(z.originUuid) : null, a = o?.documentName === "Actor" ? o : o?.actor; return a ? refValues(a) : null; } catch (e) { return null; } })())); return `<div class="zt-zone"><b>${esc(z.name ?? "Area")}</b>${groups.map(g => `<div class="zt-sec"><span class="zt-who ${cls(g.who)}">${esc(g.who)}</span>${g.lines.map(l => `<div class="zt-l">${hl(l)}</div>`).join("")}</div>`).join("")}${foot.map(l => `<div class="zt-foot">${hl(l)}</div>`).join("")}</div>`; }).join("");
   el.style.display = "block";
   el.style.left = `${ev.clientX + 16}px`; el.style.top = `${ev.clientY + 14}px`;
 }

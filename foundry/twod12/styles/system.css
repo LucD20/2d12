@@ -5610,3 +5610,9 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-zonetip .zt-sec .zt-who { display: block; font-weight: 700; }
 .twod12-zonetip .zt-sec .zt-l { padding-left: 8px; }
 .twod12-zonetip .zt-foot { margin-top: 3px; opacity: .8; font-size: 11.5px; }
+/* v0.0.471: the Encounter Log's damage table */
+.enclog .el-dmg { margin-top: 8px; border-top: 1px solid rgba(128, 128, 128, .35); padding-top: 4px; }
+.enclog .el-dmg summary { font-weight: 700; cursor: pointer; }
+.enclog .el-dmg table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.enclog .el-dmg th, .enclog .el-dmg td { padding: 2px 6px; text-align: left; border-bottom: 1px solid rgba(128, 128, 128, .2); }
+.enclog .el-dmg td.c { text-align: center; }

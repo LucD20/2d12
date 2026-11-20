@@ -27,72 +27,32 @@ differ):
 
 ## Chat cards
 
-### chat-follow · v0.0.466 · The chat follows a card grown by its dice
-Do: With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior and clicks Damage; then Apply. Then scroll up a little and click Damage on another card.
-Expect: After Damage (the dice landed) the card's last line is in sight; after Apply too. Scrolled up before clicking, it stays where you are.
-Rev: 5
-
 ## Conditions and their Tiers
 
 ## Movement
 
-### rx-move-path · v0.0.469 · The Reaction's movement path starts at the ghost's center
-Do: The Ogre Chieftain (Large) drags past Aveline (Rebuke can trigger) and stops.
-Expect: The pale path line starts at the center of the Ogre's faint picture (where it started), not at its corner; no stray diagonal.
-
-
-### push-large · v0.0.470 · A push from a Large creature: from its nearest square
-Do: The Ogre Chieftain (Large) pushes Aveline, who stands beside its top row, with Overhead Smash's Pushed 2.
-Expect: The squares offered go straight away from the Ogre's side: right, up-right and down-right (down-right was missing); no big ring around the Ogre; a short plate.
-Rev: 2
-
 ## Reactions and Judge
 
-### judge-gm-dock · v0.0.463 · Judge's question for the GM, and Line of Effect
-Do: As the GM with no token selected, the Judged Orc Warrior damages an ally near Durgan (Durgan an NPC-run Paladin, or the GM answering for him): click Durgan's token. Then a wall between Durgan and the ally.
-Expect: The question moves into Durgan's HUD, Situational tab (not a small floating bar). With the wall (no Line of Effect from Durgan to the ally) no question and no reduction.
-
-### armor-faith-source · v0.0.463 · Armor of Faith's names as text
-Do: Durgan at Escalation 2 uses Shield of Faith on Aveline when the Orc Warrior's Strike would damage her.
-Expect: The chat line reads "Armor of Faith (Durgan's Passive, for using Shield of Faith): Durgan gains Guard 3" with the two names in bold, a dotted underline, no box; a click opens each card.
-Rev: 2
-
-### two-judges · v0.0.463 · Two Paladins Judge the same Orc: the breakdown
-Do: Aveline and Durgan both Judge one Orc; it damages an ally near both; both reduce; apply, then open the row's breakdown (the equals button).
-Expect: Each Paladin is asked; the breakdown lists "Judge (Aveline) −N" and "Judge (Durgan) −N", then any Guard it took; no "Cannot read properties of null" in the console.
-Rev: 2
-
-### rescue-reach · v0.0.464 · Rescue stays within your Reach
-Do: Durgan uses Hold the Line's Rescue on an adjacent ally (Aveline): try to move her 2 squares away from him, then to another square next to him.
-Expect: Only the squares within Durgan's Reach are offered (the gold squares); a square farther away says "the target must remain within Durgan's Reach (1)"; a square next to him works.
+### judge-gm-dock · v0.0.471 · Judge's question for the GM: into the Situational tab
+Do: As the GM with no token selected, the Judged Orc Warrior damages an ally near Durgan; read where the question shows; then click Durgan's token.
+Expect: Once Durgan's HUD is up, the question moves into its Situational tab, in the tab's look (not the large bar across the HUD). With no creature selected it may first show in the HUD's middle.
 Rev: 2
 
 ## Areas, light and Cover
 
-### area-hover · v0.0.467 · The hover card: overlapping areas, in sections
-Do: Aveline's Consecrated Ground overlapping Sylwen's Covering Fire; hover a square in both.
-Expect: Both areas, each under its bold name, separated by a line; each one's lines in sections: "Enemies" (Difficult Terrain), "Allies and you" (Guard equal to your Power Modifier at the start of their turns), then its rounds.
-Rev: 3
-
-### covering-fire · v0.0.411 · Covering Fire, Volley, Spotter
-Do: Sylwen places Covering Fire and the GM walks an enemy in; she uses Volley on a 3 Burst; she Calls Out (Spotter) a creature in Dim light.
-Expect: The enemy takes [V] 2 + Weapon Modifier and pays double; Volley makes Prone on a Critical; your allies see the called-out creature Clear for 1 round.
-
-### clear-lines · v0.0.411 · Clear Lines and Opening Shot
-Do: Sylwen at Escalation 4 (Clear Lines) shoots past Aveline at an Orc Engaged with Durgan; then Kaela (Opening Shot) lands a Tier 3.
-Expect: No Cover from your ally and no Field Bane; the Tier 3 line names your allies who threaten the target.
-
-### ht-once · v0.0.431 · Hazardous Terrain once per turn-cycle
-Do: Sylwen places Covering Fire; the GM moves an Orc into it (Advance), moves it again inside it in the same turn, and ends its turn there.
-Expect: One hit only (on entering); none for the second move or the end of the turn; it can be hit again from its next turn.
+### area-hover · v0.0.471 · The hover card: worked-out damage
+Do: Hover an area with Hazardous Terrain whose damage uses its origin's Modifier (for example a hazard of 2 + Weapon Modifier Pierce), and Aveline's Consecrated Ground.
+Expect: The damage reads as a number and its type in full and in its color ("Hazardous Terrain, 5 Pierce"), not "2 + @origin.wpn Pi"; Consecrated Ground's Guard as a number ("Guard 2 at the start of their turns").
+Rev: 4
 
 ## Ending an encounter and resting
 
 ## The Encounter Log
 
-### log-allies · v0.0.421 · Damage to allies and numbered names
-Do: In a fight with two Goblin Sneaks, Sylwen's Volley hits Aveline and the Goblins; open the Encounter Log.
-Expect: The damage table has a "To allies" column (damage to itself counts there); the Goblins are "Goblin Sneak 1" and "Goblin Sneak 2" in the window and in the copied text.
+### log-allies · v0.0.471 · The Encounter Log: To allies and numbered names
+Do: In a fight with two Goblin Sneaks, Sylwen's Volley hits Aveline and both Goblins; open the Encounter Log.
+Expect: Under the log, a "Damage dealt" table with a "To allies" column (Sylwen's damage to Aveline there); the Goblins are "Goblin Sneak 1" and "Goblin Sneak 2" in the log's lines and in the copied text.
+Rev: 2
 
 ## Windows
 

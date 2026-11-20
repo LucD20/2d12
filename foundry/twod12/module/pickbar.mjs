@@ -66,17 +66,20 @@ export async function pickBar(o) {
     if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
     // v0.0.463 (Lucas: "As a GM, when the Judge is triggered, if I click on the Paladin's tokens, it shows a small Judge window, and not the hud with
     // the situational tab"): a question asked with no HUD on screen moves into the HUD's Situational section as soon as a token brings the HUD up
+    // v0.0.471 (Lucas, checklist v0.0.470: "It changed to a very large 'Judge' bar ... it covers the whole token hud area"): asked in the HUD's middle
+    // (no creature's bar on screen) it moves too, into the Situational tab once a creature's HUD comes up; tried again while the HUD draws
     let dockHook = null;
-    if (!slot) {
-      const dock = () => setTimeout(() => {
-        if (slot || !bar.isConnected) return;
+    if (!slot || !side) {
+      const tryDock = (n = 0) => {
+        if (!bar.isConnected || side) return;
         const h = globalThis.__twod12Hud ?? null, sl = h?.hudAskSlot?.() ?? null;
-        if (!sl) return;
-        hud = h; slot = sl; side = !!sl.classList?.contains("hb-ask");
-        bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); sl.append(bar); h.hudAsking(true, side);
+        if (!sl || !sl.classList?.contains("hb-ask")) { if (n < 10) setTimeout(() => tryDock(n + 1), 250); return; }
+        if (slot && hud) { try { hud.hudAsking(false); } catch (e) { /* gone */ } }
+        hud = h; slot = sl; side = true;
+        bar.classList.add("in-hud", "in-side"); sl.append(bar); h.hudAsking(true, true);
         try { Hooks.off("controlToken", dockHook); } catch (e) { /* gone */ } dockHook = null;
-      }, 150);
-      try { dockHook = Hooks.on("controlToken", dock); } catch (e) { dockHook = null; }
+      };
+      try { dockHook = Hooks.on("controlToken", () => setTimeout(() => tryDock(0), 150)); } catch (e) { dockHook = null; }
     }
     let gfx = null, down = null, move = null, prevInteractive = null, hovered = null, M = null;
     const cellsOf = x => x.cells ?? T.tokenCells(x.token);
