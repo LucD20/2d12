@@ -269,15 +269,15 @@
     {
       "name": "Break Free",
       "category": "Basic Action",
-      "_note": "v0.0.224 (Lucas, playtest 3): removing Immobilized costs 1 AP and is a Move Action (08-conditions.md, Immobilized). v0.0.431 (the book audit, Q9 and Q10): shown in Chapter 6; Prone allows it; a Grab can ask for a Check.",
+      "_note": "v0.0.224 (Lucas, playtest 3): removing Immobilized costs 1 AP and is a Move Action (08-conditions.md, Immobilized). v0.0.431 (the book audit, Q9 and Q10): shown in Chapter 6; Prone allows it; a Grab can ask for a Check. 2026-11-20 (Lucas): always a Body or Instinct Check against the Immobilized DC.",
       "flavor": "You tear loose from whatever holds you.",
       "traits": ["move", "self"],
       "frequency": "At-will",
       "requirements": "You are Immobilized.",
       "versions": [
-        { "ap": 1, "effects": "You are no longer Immobilized, and no longer Grabbed if you were, unless the card that Immobilized or Grabbed you notes otherwise." }
+        { "ap": 1, "effects": "Make a Body or Instinct Check (the higher) against the Immobilized DC of what holds you (Chapter 8, Immobilized). If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized." }
       ],
-      "foundry": { "basic": "breakFree", "automation": "gold", "img": "icons/svg/net.svg" }
+      "foundry": { "basic": "breakFree", "automation": "bronze", "automationNote": "Lucas, 2026-11-20: Break Free is always a Body or Instinct Check against the Immobilized DC; Foundry still ends Immobilized without the roll, so the Check is by hand until Foundry rolls it (foundry-backlog.md).", "img": "icons/svg/net.svg" }
     }
   ]
 }

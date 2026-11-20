@@ -48,14 +48,14 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 > | | Tier 1 | Tier 2 | Tier 3 |
 > |---|---|---|---|
 > | **1 AP** | No effect. | No effect. | Grabbed by you (1 round). |
-> | **2 AP** | No effect. | Grabbed by you (1 round). | Grabbed by you (1 round); its Break Free needs a Body or Instinct Check (the higher) against your Immobilized DC: below it, it stays Grabbed. |
+> | **2 AP** | No effect. | Grabbed by you (1 round). | [V] 1d8 Bl; Grabbed by you (1 round). |
 
 **Notes**
 - **Trip's shape:** a Round Action with a 1 AP and a 2 AP Version, the 1 AP one landing only on a Tier 3. **The 2 AP Version's Tier 2 stays** (Lucas, 2026-11-20: "Tier 2").
 - **The hold lasts 1 round** (Lucas, 2026-11-20), or less: Chapter 8's Grabbed already ends when it Breaks Free, when the holder lets go, when it leaves the holder's Reach, or when the holder goes Down. "(1 round)" is the only duration the card needs to write.
-- **Break Free ends every Grabbed unless the card notes otherwise** (Lucas, 2026-11-20; now Chapter 8 and the Break Free card): the old "when the card that grabbed you says so" is gone, so this Tier 3 writes its Check out in full. The earlier "its next Break Free" limit is gone too: with a 1-round hold, a boss loses at most a round's worth of failed attempts, and it can still act where it stands.
+- **Break Free is always a Check** (Lucas, 2026-11-20: "It should be always a body/instinct vs Immobilized DC"; now Chapter 8 and the Break Free card): a Body or Instinct Check (the higher) against the holder's Immobilized DC, 11 + the Modifier the Grab used. So the 2 AP Version's Tier 3 no longer needs a Check of its own: it takes Trip's Tier 3 shape, damage and the condition (`[V] 1d8 Bl`, a placeholder). With a 1-round hold, a boss loses at most a round's worth of failed attempts, and it can still act where it stands.
 - **Forced movement of a Grabbed creature** (Chapter 8, Grabbed and Immobilized): only the holder can Force Move or Reposition it, and the holder's own ignores Immobilized; a Push that takes it out of the holder's Reach ends Grabbed. Anyone else's Forced Movement or Reposition of it fails.
-- **Lesson 1 (bosses):** Grabbed costs a held boss 1 AP (Break Free), as Prone costs it the Stand Action, and it never lasts past 1 round.
+- **Lesson 1 (bosses):** Grabbed costs a held boss at least 1 AP (Break Free) and never lasts past 1 round.
 
 ---
 

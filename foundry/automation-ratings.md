@@ -24,7 +24,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Regrip | Silver | the card is text; the regrip itself is on the hands buttons |
 | Release | Gold | |
 | Stand | Gold | |
-| Break Free | Gold | |
+| Break Free | Bronze | the Check against the Immobilized DC (Lucas, 2026-11-20): Foundry still ends Immobilized without the roll |
 | Leaning | Gold | |
 | Fists | Gold | |
 | Relocate | Gold | |

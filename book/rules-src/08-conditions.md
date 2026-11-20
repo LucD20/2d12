@@ -43,7 +43,7 @@ Frightened is always **of** a source: a creature or an object. While you perceiv
 
 ### Grabbed
 
-A creature within its Reach holds you: you are [[Immobilized]], and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you (the holder's own Forced Movement or Reposition of you ignores your Immobilized). Grabbed ends when the holder lets go (no Action), when you are no longer within the holder's Reach, when the holder goes Down or is Unconscious, or when you end Immobilized with [[Break Free]] (1 AP [Move]). **Every Grabbed can be ended with Break Free, unless the card that grabbed you notes otherwise** (such as a Check against the holder's [[Immobilized]] DC). The holder can't use the hand or limb that holds you for anything else.
+A creature within its Reach holds you: you are [[Immobilized]], and only the holder can [[Forced Movement|Force Move]] or [[Reposition]] you (the holder's own Forced Movement or Reposition of you ignores your Immobilized). Grabbed ends when the holder lets go (no Action), when you are no longer within the holder's Reach, when the holder goes Down or is Unconscious, or when you end Immobilized with [[Break Free]] (1 AP [Move]: a Body or Instinct Check against the holder's [[Immobilized]] DC). The holder can't use the hand or limb that holds you for anything else.
 
 ### Half-Blinded
 
@@ -55,7 +55,7 @@ Your Speed is halved, rounded down. If you become Hindered while you are moving,
 
 ### Immobilized
 
-You can't use Move Actions or Evade. If you become Immobilized while you are moving, your movement ends. Unless otherwise specified, you can remove Immobilized with [[Break Free]] (1 AP [Move]): the one Move Action you can use while Immobilized.
+You can't use Move Actions or Evade. If you become Immobilized while you are moving, your movement ends. Unless otherwise specified, you can remove Immobilized with [[Break Free]] (1 AP [Move]: a Body or Instinct Check against the **Immobilized DC**, below): the one Move Action you can use while Immobilized.
 
 An Immobilized creature is also hard to move. An Action or effect that attempts to [[Forced Movement|Force Move]] or [[Reposition]] you and doesn't roll is automatically disrupted: you aren't moved.
 
