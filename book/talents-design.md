@@ -293,4 +293,4 @@ The Talents record is now named in HANDOFF and CLAUDE.md.
 > Idea for Encounter Action; Multi-Nocking; Load extra arrows/bolts to fire rapidly, perform a ranged strike targeting several enemies at once.
 > Idea for Apex Action; Full Draw; Push your weapon beyond its limits, perform a ranged strike with increased damage, armour pen, knockback or knockdown
 
-**Research asked with it (2026-11-20, running):** Pillars of Eternity (1 and 2) and Divinity: Original Sin 2, their mechanics compared with 2d12: what players love, what fits a tabletop, what could fit 2d12 (`research/pillars-of-eternity.md`, `research/divinity-original-sin-2.md` when done). Divinity's ambient interaction (surfaces) is "a whole other topic".
+**Research asked with it (2026-11-20, done):** Pillars of Eternity (1 and 2) and Divinity: Original Sin 2, their mechanics compared with 2d12: what players love, what fits a tabletop, what could fit 2d12 (`research/pillars-of-eternity.md`, `research/divinity-original-sin-2.md`). Divinity's ambient interaction (surfaces) is "a whole other topic".
