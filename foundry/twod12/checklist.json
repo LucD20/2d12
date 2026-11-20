@@ -5,24 +5,11 @@
    "items": [
     {
      "id": "judge-gm-dock",
-     "v": "v0.0.473",
-     "title": "Judge's question for the GM follows the selection",
-     "do": "As the GM, the Orc Warrior attacks Aveline next to Durgan (Judged Orc); when Judge's question comes, click the empty map, then Durgan's token; then deselect Durgan and select him again; answer it.",
-     "expect": "Each time Durgan is selected, his HUD opens with the question in its Situational tab (not the large bar); deselected, the question waits in the HUD's middle; the map click releases the Orc as usual.",
-     "rev": 4
-    }
-   ]
-  },
-  {
-   "name": "The Encounter Log",
-   "items": [
-    {
-     "id": "log-allies",
-     "v": "v0.0.472",
-     "title": "The Encounter Log: numbered names",
-     "do": "In a fight with two Goblin Sneaks where only one deals damage, and Sylwen's Volley hits Aveline; open the Encounter Log, copy it.",
-     "expect": "The legend reads \"GS2 - Goblin Sneak 2\" and \"GS1 - Goblin Sneak 1\"; the damage table and the copy read \"Goblin Sneak 2\" (not \"Goblin Sneak\") and \"Sylwen\" (not \"Sylwen (Elf Archer, Quick Shots)\"), with Sylwen's damage to Aveline as \"to allies\".",
-     "rev": 3
+     "v": "v0.0.474",
+     "title": "Judge's question for the GM: in Durgan's Situational tab",
+     "do": "As the GM, the Orc Warrior attacks Aveline next to Durgan (Judged Orc); when Judge's question comes, click the empty map, then Durgan's token; deselect him and select him again; answer it there.",
+     "expect": "Each time Durgan is selected, his HUD opens on the Situational tab with the question in it (Not now / Reduce by N), not an empty tab and not the large bar.",
+     "rev": 5
     }
    ]
   }

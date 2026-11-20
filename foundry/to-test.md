@@ -33,21 +33,16 @@ differ):
 
 ## Reactions and Judge
 
-### judge-gm-dock · v0.0.473 · Judge's question for the GM follows the selection
-Do: As the GM, the Orc Warrior attacks Aveline next to Durgan (Judged Orc); when Judge's question comes, click the empty map, then Durgan's token; then deselect Durgan and select him again; answer it.
-Expect: Each time Durgan is selected, his HUD opens with the question in its Situational tab (not the large bar); deselected, the question waits in the HUD's middle; the map click releases the Orc as usual.
-Rev: 4
+### judge-gm-dock · v0.0.474 · Judge's question for the GM: in Durgan's Situational tab
+Do: As the GM, the Orc Warrior attacks Aveline next to Durgan (Judged Orc); when Judge's question comes, click the empty map, then Durgan's token; deselect him and select him again; answer it there.
+Expect: Each time Durgan is selected, his HUD opens on the Situational tab with the question in it (Not now / Reduce by N), not an empty tab and not the large bar.
+Rev: 5
 
 ## Areas, light and Cover
 
 ## Ending an encounter and resting
 
 ## The Encounter Log
-
-### log-allies · v0.0.472 · The Encounter Log: numbered names
-Do: In a fight with two Goblin Sneaks where only one deals damage, and Sylwen's Volley hits Aveline; open the Encounter Log, copy it.
-Expect: The legend reads "GS2 - Goblin Sneak 2" and "GS1 - Goblin Sneak 1"; the damage table and the copy read "Goblin Sneak 2" (not "Goblin Sneak") and "Sylwen" (not "Sylwen (Elf Archer, Quick Shots)"), with Sylwen's damage to Aveline as "to allies".
-Rev: 3
 
 ## Windows
 

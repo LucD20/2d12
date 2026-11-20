@@ -382,11 +382,15 @@ async function drawHud() {
   }
   if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
-  const waiting = [...main.querySelectorAll(".hb-ask > .twod12-linebar")];   // v0.0.441: every question waiting (a Setup's movement and a pick bar can both be up)
+  // v0.0.441: every question waiting (a Setup's movement and a pick bar can both be up); v0.0.474 (Lucas, checklist v0.0.473: "the situational tab
+  // is empty"): one waiting in the HUD's middle (asked with no creature selected) comes along too, into this creature's Situational tab
+  const fromMiddle = [...(root.querySelectorAll(".hud-ask > .twod12-linebar") ?? [])];
+  const waiting = [...main.querySelectorAll(".hb-ask > .twod12-linebar"), ...fromMiddle];
   shape("is-bar", ...(m.npc ? ["is-npc"] : []), ...(m.folded ? ["is-folded"] : []));
   setMain(main, tokenBarHtml(m));
   const slot = main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
   for (const w of waiting) slot?.append(w);
+  if (fromMiddle.length && slot?.classList?.contains("hb-ask")) { for (const w of fromMiddle) w.classList.add("in-hud", "in-side"); hudAsking(true, true); }
   fitNames(main);
   syncSide();
   // v0.0.441 (D3): the hotbar is in the bar's right column (placeHotbar, from setMain); v0.0.446: its Macros tab

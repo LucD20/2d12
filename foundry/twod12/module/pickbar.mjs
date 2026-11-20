@@ -82,7 +82,8 @@ export async function pickBar(o) {
       bar.classList.add("in-hud"); bar.classList.toggle("in-side", sideNow); sl.append(bar); h.hudAsking(true, sideNow);
     };
     // a new selection: the HUD leaves its "asking" state first, so it can draw the creature's bar, then the question goes where it belongs
-    try { dockHook = Hooks.on("controlToken", () => { if (hud && slot) { try { hud.hudAsking(false); } catch (e) { /* gone */ } } setTimeout(() => place(0), 150); }); } catch (e) { dockHook = null; }
+    // (v0.0.474: the HUD's redraw carries a question from its middle into the creature's tab itself, hud.mjs; this places one the redraw missed)
+    try { dockHook = Hooks.on("controlToken", () => setTimeout(() => place(0), 150)); } catch (e) { dockHook = null; }
     let gfx = null, down = null, move = null, prevInteractive = null, hovered = null, M = null;
     const cellsOf = x => x.cells ?? T.tokenCells(x.token);
     // v0.0.249 (Lucas): feedback before the click: the candidate under the pointer (or whose button is hovered) lights up on the map and in the bar
