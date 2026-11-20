@@ -312,7 +312,7 @@
    },
    {
     "label": "Effect",
-    "text": "Make a Body or Instinct Check (the higher) against the Immobilized DC of what holds you (Chapter 8, Immobilized). If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized."
+    "text": "Make a Body or Instinct Check (the higher) against the Action DC of the Action that holds you (Chapter 1, Action DC). If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized."
    }
   ],
   "blocks": [],

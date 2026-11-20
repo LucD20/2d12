@@ -11,11 +11,11 @@ Slid 3, Line of Effect lost at the 2nd square        moves 1, block loe, unused 
 Slid 3, a wall before the 2nd square                 moves 1, block wall, unused 2, damage {"self":4,"other":0}
 --- Immobilized
 no roll (a Setup, a Feature)           {"moved":false,"why":"it is Immobilized, and this movement doesn't come from a roll"}
-rolled 15 vs DC 14                     {"moved":true,"why":"the roll 15 beats the Immobilized DC 14"}
-rolled 14 vs DC 14                     {"moved":true,"why":"the roll 14 beats the Immobilized DC 14"}
-rolled 12 vs DC 14                     {"moved":false,"why":"the roll 12 is below the Immobilized DC 14"}
-a Save Action, origin rolls 16 vs 15   {"moved":true,"why":"the origin's roll 16 beats the Immobilized DC 15"}
-a Save Action, origin rolls 9 vs 15    {"moved":false,"why":"the origin's roll 9 is below the Immobilized DC 15"}
+rolled 15 vs DC 14                     {"moved":true,"why":"the roll 15 beats the Action DC 14"}
+rolled 14 vs DC 14                     {"moved":true,"why":"the roll 14 beats the Action DC 14"}
+rolled 12 vs DC 14                     {"moved":false,"why":"the roll 12 is below the Action DC 14"}
+a Save Action, origin rolls 16 vs 15   {"moved":true,"why":"the origin's roll 16 beats the Action DC 15"}
+a Save Action, origin rolls 9 vs 15    {"moved":false,"why":"the origin's roll 9 is below the Action DC 15"}
 the Immobilized DC: two conditions 13 and 15: 15 | one with no DC stored: 13
 stored when applied (11 + the origin's Modifier, 13 without): true | the card keeps its result: true | checked before Steadiness: true
 --- Steadiness with bonuses

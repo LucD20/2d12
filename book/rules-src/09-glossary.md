@@ -9,6 +9,7 @@
 | [[Rules Language\|**[Trait]**]] | An Action with that trait: "a [Strike] Action". Several traits mean all of them: "[Ranged, Weapon] Actions". |
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP and can be used only on your turn. |
 | [[Reactions\|**0R**]] | A Reaction that costs no AP. |
+| [[Action DC\|**Action DC**]] | 11 + the Modifier an Action used (13 with no Action behind the effect): what a Check rolls against to beat what that Action did, such as Break Free. |
 | [[Action Points\|**Action Points (AP)**]] | You regain 4 at the start of your turn, and 1 Reaction AP. The AP you don't spend stay for Reactions and give you Guard. |
 | [[Advance\|**Advance**]] | Normal movement, up to the given distance, in one piece: the movement left is lost; one Interact can fit inside the Advance Action. |
 | [[Rules Language\|**Ally**]] | A creature on your side. You are never your own ally. |
@@ -76,7 +77,7 @@
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no Reactions from movement, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
 | [[Frightened\|**Frightened**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
-| [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free (a Check against the holder's Immobilized DC). |
+| [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free (a Check against the Action DC of the Action that grabbed you). |
 | [[Grunts\|**Grunt**]] | An NPC rank with CV 50 and 3 AP a turn: about 26 Health at Stage 0, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
 | [[Half-Blinded\|**Half-Blinded**]] | Your Sight perceives no creature better than Obscured. |
@@ -88,7 +89,7 @@
 | [[Senses\|**Hearing**]] | A sense every creature has: you perceive creatures that make noise within 10 squares as Hidden, even through walls. |
 | [[Senses\|**Hidden**]] | Your Actions against the creature are Doomed; its Actions against you are Favored when it perceives you better than you perceive it (two creatures Hidden to each other are both Doomed). |
 | [[Hindered\|**Hindered**]] | Your Speed is halved (after every other change to it). |
-| [[Immobilized\|**Immobilized**]] | No Move Actions or Evade, and a movement you are making ends; Break Free (1 AP [Move], a Body or Instinct Check against the Immobilized DC) ends it; Forced Movement without a roll fails on you. |
+| [[Immobilized\|**Immobilized**]] | No Move Actions or Evade, and a movement you are making ends; Break Free (1 AP [Move], a Body or Instinct Check against the Action DC of the Action that Immobilized you) ends it; Forced Movement without a roll fails on you. |
 | [[Resist, Weak and Immune\|**Immune**]] | Damage of that subtype is 0 for you. |
 | [[Imperiled\|**Imperiled**]] | Barely avoided a Deadly Hazard: all your Rolls are Doomed, Vulnerable 3, safe again at the start of your turn. |
 | [[End of Turn\|**Initiative slot**]] | A position in the turn order. |

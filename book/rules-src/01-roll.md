@@ -117,6 +117,10 @@ An effect on Actions names their **trait**: "1 Boon on [Weapon] Actions" helps e
 
 A **Check** is a roll of one Attribute Modifier against a DC, written "Body Check" or "Instinct Check". The default DC is 13 unless something says otherwise, like "DC 12 Body Check".
 
+### Action DC
+
+When a rule asks you to beat what an Action did to you (to [[Break Free]] of it, or to move a creature it Immobilized), the DC is that Action's **Action DC**: **11 + the Modifier the Action used** (the Weapon Modifier for a Weapon Action, the Power Modifier for a Power Action, the Attribute Modifier for an Attribute Action, and so on). With no Action behind the effect, it is 13; with several, the highest. A Save Action's own DC is written under [[Save Actions]].
+
 ## Saves
 
 Some effects make a creature roll a **Save**, written like "Appeal Save: [R] 1d6 / 1d4 / 0 Ho". The creature that must save rolls the named Attribute Modifier against the DC of the effect.

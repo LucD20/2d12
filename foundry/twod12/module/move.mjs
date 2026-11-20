@@ -226,9 +226,9 @@ export function pathStepProblem(path, next, N) {
  * Immobilized DC; a Save Action has the origin roll 2d12 + its Modifier once (saveTotal). Returns { moved, why }.
  */
 export function immobilizedOutcome({ rolls = false, total = null, save = false, saveTotal = null, dc = 13 } = {}) {
-  if (save) return Number.isFinite(saveTotal) && saveTotal >= dc ? { moved: true, why: `the origin's roll ${saveTotal} beats the Immobilized DC ${dc}` } : { moved: false, why: `the origin's roll ${saveTotal ?? "?"} is below the Immobilized DC ${dc}` };
+  if (save) return Number.isFinite(saveTotal) && saveTotal >= dc ? { moved: true, why: `the origin's roll ${saveTotal} beats the Action DC ${dc}` } : { moved: false, why: `the origin's roll ${saveTotal ?? "?"} is below the Action DC ${dc}` };
   if (!rolls || !Number.isFinite(total)) return { moved: false, why: "it is Immobilized, and this movement doesn't come from a roll" };
-  return total >= dc ? { moved: true, why: `the roll ${total} beats the Immobilized DC ${dc}` } : { moved: false, why: `the roll ${total} is below the Immobilized DC ${dc}` };
+  return total >= dc ? { moved: true, why: `the roll ${total} beats the Action DC ${dc}` } : { moved: false, why: `the roll ${total} is below the Action DC ${dc}` };
 }
 
 /** The Immobilized DC of a creature: the highest stored on its Immobilized conditions (11 + the Modifier its origin used), 13 when none says. */
