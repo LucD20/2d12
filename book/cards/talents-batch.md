@@ -1,8 +1,8 @@
 # Talents: the test batch (nine Talents and one Basic Action)
 
-**2026-11-20.** One file for every test Talent still standing: the seven of the second pass (the famous families of `research/famous-picks.md`; Lucas: "A") and the two survivors of the first pass (Called Shot, Overwatch), redone with his answers; and the **basic grapple** he moved to the Basic Actions. It replaces `talents-first-pass.md` and `talents-second-pass.md` for review (both kept as history, with their audits). Nine Talents under T1 to T14 of `book/talents-design.md` and the lessons of his first review. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Stage 2 is not written in the game: every Stage on a rank is a placeholder.
+**2026-11-20.** One file for every test Talent still standing: the seven of the second pass (the famous families of `research/famous-picks.md`; Lucas: "A") and the two survivors of the first pass (Called Shot, Overwatch, now Covering Shot), redone with his answers; and the **basic grapple** he moved to the Basic Actions. It replaces `talents-first-pass.md` and `talents-second-pass.md` for review (both kept as history, with their audits). Nine Talents under T1 to T14 of `book/talents-design.md` and the lessons of his first review. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Stage 2 is not written in the game: every Stage on a rank is a placeholder.
 
-**Audit status:** the seven of the second pass were audited and corrected (section 10). **The whole batch, as it now stands, is audited again in section 11.**
+**Audit status:** the seven of the second pass were audited and corrected (section 10). **The whole batch was then audited again and corrected (section 11).**
 
 ---
 
@@ -26,10 +26,10 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 | Arm's-Length Shot | The ranged package | I, II | 2 |
 | Parry | Defense, as a Reaction | I, II | 2 |
 | Break the Line | Mobility and the charge | I, II, III | 2 (one runs to Rank III) |
-| Grab Hold | Combat maneuvers (after the basic Grab) | I | 3 |
+| Grab Hold | Combat maneuvers (after the basic Grab) | I, II, III (one branch each) | 3 |
 | Reckless Blow | The damage trade, as an Action | I, II | 3 |
 | Called Shot | (first pass) | I, II | 2 |
-| Overwatch | (first pass) | I, II | 3 |
+| Covering Shot | (first pass's Overwatch) | I, II | 3 |
 
 ---
 
@@ -43,17 +43,18 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 > **Grab** · Round · [Body, Handle, Instinct, Strike]
 > **Requirements:** The target's SR is at most 1 higher than yours.
 > **Distance:** Reach · **Target:** One creature
-> **Attack:** Body or Instinct (the one used to roll) vs. Body
+> **Attack:** Body or Instinct vs. Body or Instinct (the one used to roll)
 >
 > | | Tier 1 | Tier 2 | Tier 3 |
 > |---|---|---|---|
 > | **1 AP** | No effect. | No effect. | Grabbed by you. |
-> | **2 AP** | No effect. | Grabbed by you. | Grabbed by you; its Break Free needs a Body or Instinct Check (the higher) against your Immobilized DC. |
+> | **2 AP** | No effect. | Grabbed by you. | Grabbed by you; its next Break Free needs a Body or Instinct Check (the higher) against your Immobilized DC. |
 
 **Notes**
 - **Trip's shape:** a Round Action with a 1 AP and a 2 AP Version, the 1 AP one landing only on a Tier 3.
 - **Break Free already reads a Grab's Check** ("When the card that Grabbed you says so, make a Body or Instinct Check... against the holder's Immobilized DC first": Chapter 6).
-- **Lesson 1 (bosses):** a held boss can Break Free for 1 AP; only the 2 AP Version's Tier 3 asks for a Check.
+- **Lesson 1 (bosses):** Grabbed costs a held boss 1 AP (Break Free), as Prone costs it the Stand Action: Trip's 2 AP Version also lands on a Tier 2, so this one does too. **The Check is for its next Break Free only** (the audit: Break Free is At-will, so a Check on every attempt could cost a boss its whole turn): a failure costs it 1 AP and keeps the hold, and the attempt after it is free. At most 2 AP, never a lockdown.
+- **The audit's point kept open for Lucas:** section 10 had moved the Talent's Grabbed to a Tier 3 only; as a Basic Action shaped like Trip it is back on the 2 AP Version's Tier 2 (Trip's own Tier 2 is Prone). Say if it should be Tier 3 only.
 
 ---
 
@@ -87,13 +88,16 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II | Rank III |
 |---|---|---|
-| **The mage-hunter** | **Spellwatch:** the Interrupt also happens when an enemy you threaten would use a [Spell] Action ([Subtle] castings escape). On a Critical of the Weapon Attack, that [Spell] Action is disrupted | **Spellbreaker:** on a Tier 3 of the Weapon Attack, a Minor enemy's [Spell] Action is disrupted; any other enemy's [Spell] Action takes 2 Banes, or its targets' Save DC is 2 lower |
-| **The line-holder** | **Hamstring:** on a Tier 2 or 3 of the Weapon Attack, the target is Hindered (EoT) | **Cripple:** on a Tier 3 of the Weapon Attack, a Minor enemy's Move Action is disrupted (it stays in the square it was leaving); any other enemy is Slowed 1 |
-| **The bodyguard** | **Bodyguard:** the Interrupt also happens when an enemy you threaten would make a [Strike] Action against one of your allies | **Interpose:** on a Tier 3 of the Weapon Attack, that Strike targets you instead, if you are a target it could have chosen (within its Distance, with Line of Effect) |
+| **The mage-hunter** | **Spellwatch:** the Interrupt also happens when an enemy you threaten would use a [Spell] Action ([Subtle] castings escape). On a Critical of the Weapon Attack, that [Spell] Action is disrupted | **Spellbreaker:** on a Tier 3 of the Weapon Attack, a Minor enemy's [Spell] Action is disrupted; any other creature's [Spell] Action takes 2 Pressure Banes (on a Save spell they lower its Save DC: magic, 88) |
+| **The line-holder** | **Hamstring:** on a Tier 2 or 3 of the Weapon Attack, the target is Hindered (EoT) | **Cripple:** on a Tier 3 of the Weapon Attack, a Minor enemy's triggering Action is disrupted (a Move Action leaves it in the square it was leaving; a Stand leaves it Prone); any other creature is Slowed 1 (1 round) |
+| **The bodyguard** | **Bodyguard:** the Interrupt also happens when an enemy you threaten would make a [Strike] Action against one of your allies | **Interpose:** on a Tier 3 of the Weapon Attack, if that Strike has one target and isn't an [Area] Action, it targets you instead, when you are a target it could have chosen (within its Distance, with Line of Effect) |
 
 **Notes**
 - **The audit's fixes:** the Weapon Attack is the Linked Action (its own Tiers), so the ranks name "the Weapon Attack"; each stopping rank now does something against any enemy, and stops only a Minor one (a Minion often dies to the hit anyway: Grunts are where it bites). **The review's fixes:** threatened squares, so a Long weapon works; Spellbreaker's Critical folded into Spellwatch, with the disruption that matters kept for Minor enemies; Hamstring no longer stops movement, Cripple does only against Minor enemies; Bodyguard now answers an attack on an ally (Chapter 2 lists "a creature makes a [Strike] Action"), and Interpose redirects it.
 - **Near** the Paladin's Shield of Faith (an ally's damage reduced), not the same: Bodyguard is a Weapon Attack, Shield of Faith a [Divine] reduction.
+- **Near the Paladin's Rebuke** (1R: an enemy within 3 that moves away is Hindered (EoT), and on a failed Appeal Save its Move Action is disrupted), not the same: Hamstring and Cripple ride a Weapon Attack against an enemy you threaten, and Cripple stops only a Minor one; Rebuke is a [Divine] Save at range against anyone.
+- **The name:** the Basic Action "Opportunity Attack" left the book on 2026-11-12 (Lucas: "Later as a talent"; rules-backlog.md). `cards/basic-actions.json` and Foundry still list it: the known mismatch, already in the backlog. This Talent is the one meant to replace it.
+- **Slowed 1 lasts 1 round** (the audit: a condition with no duration lasts the whole encounter, Chapter 8): one lost AP on its next turn, not a lockdown.
 
 ---
 
@@ -108,7 +112,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 > **Prerequisite:** a [Spell] Action
 > **Steel and Spell** · 2 AP · Round · [Strike, Weapon]
 > **Target:** As the Weapon Attack, then as the spell.
-> **Effect:** You make a Weapon Attack (1A), then use a 1 AP [Spell] Action. That spell can be a [Handle] one even with your weapon in the hand it needs. **The spell still counts toward its own Frequency** (it must be one you could use now) and pays its Surge cost (and Heavy armor's), unlike a Linked Action (Chapter 2).
+> **Effect:** You make a Weapon Attack (1A), then use a 1 AP [Spell] Action. That spell can be a [Handle] one even with your weapon in the hand it needs. **The spell still counts toward its own Frequency** (it must be one you could use now) and pays its Surge cost (and Heavy armor's), unlike a Linked Action (Chapter 2). The Weapon Attack is a Linked Action: Steel and Spell, a [Strike] Action, counts once toward the 3 Strikes of the turn and toward At-will Banes.
 
 **The tree**
 
@@ -124,8 +128,15 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II |
 |---|---|
-| **The spellsword** | **Close Casting:** the spell of Steel and Spell can cost 1 or 2 AP (Steel and Spell then costs 2 or 3 AP), and a [Ranged] spell cast with it isn't Doomed for being Engaged, nor are its targets' Saves Favored for it |
+| **The spellsword** | **Close Casting:** a second Version (below), and a [Ranged] spell cast with Steel and Spell isn't Doomed for being Engaged, nor are its targets' Saves Favored for it |
 | **The battle-mage** | **Unbroken Focus:** a [Woven] or [Sustained] spell cast with Steel and Spell doesn't end the next time you become Bloodied or Strained after casting it |
+
+**Close Casting's Versions** (Steel and Spell with this rank):
+
+> **2 AP** · **Effect:** You make a Weapon Attack (1A), then use a 1 AP [Spell] Action.
+> **3 AP** · **Effect:** You make a Weapon Attack (1A), then use a 1 or 2 AP [Spell] Action.
+>
+> Both: the spell can be a [Handle] one with your weapon in the hand it needs, counts toward its own Frequency and pays its Surge cost (and Heavy armor's).
 
 **Notes**
 - **D&D's War Caster in three parts,** each a lifted limit paid by this Action (T14): the free hand ([Handle]), the Engaged penalty, the held magic's break.
@@ -162,12 +173,13 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II |
 |---|---|
-| **The skirmisher** | **Step and Loose:** a new line: **Setup:** you Evade 1 |
-| **The brawling archer** | **Shove Off:** on the Tier 3 line: if the target is Engaged with you, it is also Pushed 1 |
+| **The skirmisher** | **Step and Loose:** a new line: **Setup:** you can Evade 2 |
+| **The brawling archer** | **Shove Off:** on the Tier 2 and Tier 3 lines: if the target is Engaged with you, it is also Pushed 1 (Tier 2) or Pushed 2 (Tier 3) |
 
 **Notes**
 - **Near the Archer, not overlapping:** Clear Lines removes Cover from allies and the Field Bane for a target Engaged with an ally; Snap Shot answers an enemy closing in; Footwork's Sidestep is Evade 3 for 1 AP. None makes a shot while you are Engaged.
-- **Step and Loose borders Footwork** (an Evade before a shot); kept small (Evade 1).
+- **Step and Loose borders Footwork** (an Evade before a shot) **and the Recurve Bow's Circling Shot** (Setup: Evade 1; a Technique of one bow at Mastery 10), not the same: any bow or crossbow, Evade 2, and the shot isn't Doomed while you are still Engaged.
+- **Both riders raised** (the audit: Evade 1 and a Push 1 on a Tier 3 only were the "rider too small" lesson, worth less than a pick under T13). The numbers stay placeholders.
 
 ---
 
@@ -205,6 +217,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 **Notes**
 - **Near the Paladin's Shield of Faith** (an ally's damage reduced by 1 + Power Modifier, and a Taunt): Parry guards only you and rolls your weapon.
 - **The weapon is a Requirement, not a prerequisite** (the audit: an item can't be a prerequisite under T5; a Requirement is checked each time). Fists are left out on purpose.
+- **Watch it as the obvious Stage 0 pick** (the audit, T6): it answers the most common event (a melee hit), and Deflect adds ranged hits. The playtest decides.
 
 ---
 
@@ -216,7 +229,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 > **Break the Line** · Talent · Vanguard · Stage 0 · Passive
 > *You don't go around them.*
-> **Passive:** When you Charge, your straight line can pass through the squares of enemies as if they were ordinary squares. You can't end your movement in one: if the square where the Charge would stop holds an enemy, it stops in the last unoccupied square before it; if your movement is disrupted, it ends in the last unoccupied square you left.
+> **Passive:** When you Charge, your straight line can pass through the squares of enemies, and diagonally between two of them (Chapter 3, Corners), as if they were ordinary squares. You can't end your movement in one: if the square where the Charge would stop holds an enemy, it stops in the last unoccupied square before it; if your movement is disrupted, it ends in the last unoccupied square you left.
 
 **The tree**
 
@@ -235,29 +248,30 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II | Rank III |
 |---|---|---|
-| **The battering ram** | **Bull Rush:** a new line: as you leave each enemy's square, it makes a Body Save against your Weapon DC. **Tier 1:** Pushed 1 away from you, to a square beside your line | **Trample:** a Minor enemy that gets a Tier 1 is also Prone |
-| **The skirmisher** | **Overrun:** a new line: if the Charge's Weapon Attack gets a Tier 2 or 3, you can go on along your straight line, up to 2 squares, through the target's square too | (none: nothing more worth a pick) |
+| **The battering ram** | **Bull Rush:** a new line: before you enter each enemy's square, it makes a Body Save against your Weapon DC. **Tier 1:** Pushed 1 by you, to a square off your line (you then go on through the square it left) | **Trample:** on Bull Rush's Tier 1, a Minor enemy is also Prone; any other creature is Pushed 2 instead of 1 |
+| **The breakthrough** | **Overrun:** a new line: if the Charge's Weapon Attack gets a Tier 2 or 3, you can Advance 2 more along the same straight line, through the target's square too (the Charge's rules for the line apply; it can trigger Reactions like any Advance, and counts toward your Speed) | (none: nothing more worth a pick) |
 
 **Notes**
 - **Near the Archer's Footwork (Weave)**, which moves through unwilling creatures in an Advance: Break the Line is the Charge's version. **Shoulder Through is gone:** in an Advance it was a subset of Weave (overlap, T14) and the rank Lucas called too weak.
-- **Trample against a Minor enemy only** (lesson 1); Trip stays the way to knock a major enemy Prone.
+- **Trample knocks only a Minor enemy Prone** (lesson 1), and pushes anyone else farther (the audit: a rank must do something against any enemy); Trip stays the way to knock a major enemy Prone.
+- **Bull Rush resolves before you enter the square** (the audit: while you share it, the Push's cone has no direction): it is in front of you on the line, so a Push 1 to a square off the line is always farther from you.
 
 ---
 
 ## 6. Grab Hold (combat maneuvers, after the basic Grab)
 
-**At a glance.** What a wrestler does with a creature Grabbed by them. One rank with three branches: you choose one when you take the Talent (Lucas: the branches "become its first rank").
+**At a glance.** What a wrestler does with a creature Grabbed by them. Up to three ranks, three branches: **each rank adds one branch** (Lucas: the branches "become its first rank"; T12: a rank is a pick). No prerequisite: anyone can Grab (section 0).
 
-**Rank I, choose one branch**
+**Ranks I to III: each adds one branch**
 
 > **Grab Hold** · Talent · Wrestling · Stage 0
 > *Once you have them, you decide where they go.*
-> **Prerequisite:** none (anyone can Grab: section 0).
+> **Rank I:** choose one branch. **Rank II, Rank III:** choose another.
 
 **The tree**
 
 ```
- Rank I   (choose one)
+ Ranks I-III   (each rank adds one)
      ┌────────────────┼────────────────┐
      ▼                ▼                ▼
  [ Throw ]     [ Human Shield ]     [ Choke ]
@@ -265,15 +279,22 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 **The branches**
 
-| Branch | Rank I |
+| Branch | The rank it adds |
 |---|---|
-| **The thrower** | **Throw:** a new Action. **Throw** · 1 AP · Round · [Body, Strike] · **Target:** a creature Grabbed by you · **Attack:** Body vs. Body · **Tier 1:** it is no longer Grabbed. **Tier 2:** Pushed 2; no longer Grabbed. **Tier 3:** Pushed 3; no longer Grabbed; a Minor enemy is also Prone |
-| **The bodyguard of one** | **Human Shield:** when a [Ranged, Strike] Action against you gets a Tier 1 while a creature is Grabbed by you, that creature takes the Strike's Tier 2 damage instead |
-| **The silencer** | **Choke:** while a Minor enemy is Grabbed by you, it can't use [Incanted] Actions |
+| **The thrower** | **Throw:** a new Action (below) |
+| **The hostage-taker** | **Human Shield:** **Passive:** when a [Ranged, Strike] Action against you gets a Tier 1 while a creature is Grabbed by you, that creature takes the Strike's Tier 2 damage instead |
+| **The strangler** | **Choke:** **Passive:** while a Minor enemy is Grabbed by you, it can't use [Incanted] Actions; any other creature Grabbed by you takes 2 Pressure Banes on its [Incanted] Actions |
+
+> **Throw** · 1 AP · Round · [Body, Strike]
+> *You turn their weight against them and let go at the top of the swing.*
+> **Distance:** Reach · **Target:** One creature Grabbed by you
+> **Attack:** Body vs. Body
+> **Tier 1:** It is no longer Grabbed. **Tier 2:** Pushed 2; it is no longer Grabbed. **Tier 3:** Pushed 3; it is no longer Grabbed; a Minor enemy is also Prone.
 
 **Notes**
-- **A Talent whose first pick is a choice** (T11 at Rank I). Could take a second branch as Rank II; left at one rank until the audit and Lucas say otherwise.
-- Human Shield was first Low cover from the held creature, which Chapter 3 already gives; Choke works only on a Minor enemy (lesson 1).
+- **Each rank a branch** (the audit: one rank with a choice was three Talents under one name, and nothing said whether it could be taken again). A rank is a pick (T12), so the three can be had in any order; Stage gates are placeholders.
+- **Throw may be the obvious first pick** (the audit: an Action against two Passives). Lucas to judge in the review.
+- Human Shield was first Low cover from the held creature, which Chapter 3 already gives. Choke stops [Incanted] Actions only on a Minor enemy (lesson 1); against anyone else it is 2 Pressure Banes while the hold lasts (the audit: a rank must do something against any enemy).
 
 ---
 
@@ -306,8 +327,8 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 | Branch | Rank II |
 |---|---|
 | **The reaper** | **Sweeping Blow:** on the Tier 3 line: you Cleave 1 (Chapter 1) |
-| **The breaker** | **Sunder:** a new line: on a Tier 3, the target's Armor Defense is 1 lower (1 round) |
-| **The executioner** | **Finishing Blow:** a new line: against a Bloodied target, the roll takes only 1 of this card's 2 Banes (its other Banes stay) |
+| **The breaker** | **Sunder:** on the Tier 3 line: the target's Armor Defense is 1 lower (1 round) |
+| **The executioner** | **Finishing Blow:** on the Special line: against a Bloodied target, the roll takes 1 Bane instead of 2 (its other Banes stay) |
 
 **Notes**
 - **The trade is inside the Action** (2 Banes for more dice), so it is a choice each turn, never a passive (T1, T14). Pathfinder 2e's Power Attack is the model (`research/famous-picks.md`).
@@ -329,9 +350,13 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 > **Distance:** Weapon · **Target:** One creature
 > **Special:** Before the roll, choose a Mode.
 > **Attack:** Weapon vs. Armor Defense
-> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod], and the Mode's effect.
-> **The arm:** Pressed 1 (1 round).
-> **The eye:** Half-Blinded (EoT).
+> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod]; the Mode's effect.
+>
+> **The arm**
+> **Tier 3 rider:** Pressed 1 (1 round).
+>
+> **The eye**
+> **Tier 3 rider:** Half-Blinded (EoT).
 
 **The tree**
 
@@ -347,25 +372,27 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II: a new Mode |
 |---|---|
-| **The disarmer** | **The hand:** a Minor enemy drops one object it holds in one hand (its choice; not one held in two hands); any other enemy is Pressed 1 (1 round) and drops it only on a Critical |
-| **The silencer** | **The throat:** a Minor enemy can't use [Incanted] Actions (EoT); any other enemy's [Incanted] Actions take 2 Banes (EoT) |
+| **The disarmer** | **The hand** · **Tier 3 rider:** a Minor enemy drops one object it holds in one hand (its choice; not one held in two hands); any other creature is Pressed 2 (EoT) |
+| **The silencer** | **The throat** · **Tier 3 rider:** a Minor enemy can't use [Incanted] Actions (EoT); any other creature's [Incanted] Actions take 2 Pressure Banes (EoT) |
 
 **Notes**
+- **Each Mode a block** under its name (card Structure, part 4: the audit); the riders follow a semicolon.
+- **The hand no longer rests on a Critical** (lesson 2: about 4%): against any creature but a Minor enemy it is Pressed 2 for its next turn, the arm's harder but shorter cousin.
 - The eye moved to Rank I; the heart (a bare number) is gone; the leg was the Archer's Trick Shots' Pin.
 - **Near Trick Shots** (Pin, Startle, Knock Back: 1 AP, Round), not the same: Called Shot costs 2 AP and deals [W].
 
 ---
 
-## 9. Overwatch (first pass, redone)
+## 9. Covering Shot (first pass's Overwatch, redone)
 
 **At a glance.** Spend 1 AP on your turn to hold a shot for an enemy who comes too close. Two ranks; Rank II widens what you watch for. **Redone with Lucas's review:** Pin Down under the boss rule.
 
 **Rank I**
 
-> **Overwatch** · Talent · Archery · Stage 0
+> **Covering Shot** · Talent · Archery · Stage 0
 > *You keep the arrow on the string and your eyes on the gap.*
-> **Overwatch** · 1 AP · Round · [Projectile]
-> **Effect:** You hold a shot: until the start of your next turn, you have the Reaction **Held Shot**.
+> **Covering Shot** · 1 AP · Round · [Projectile]
+> **Effect:** You hold a shot: you have the Reaction **Held Shot** (1 round).
 > **Held Shot** · 0R · Round · [Projectile, Ranged, Strike, Weapon]
 > **Interrupt:** An enemy within your weapon's normal range would enter a square adjacent to you or to an ally.
 > **Target:** The triggering creature.
@@ -374,7 +401,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 **The tree**
 
 ```
- Rank I            [ Overwatch ]   1 AP: hold a shot until your next turn
+ Rank I          [ Covering Shot ]   1 AP: hold a shot for 1 round
                          │
          ┌───────────────┼───────────────┐
  Rank II ▼               ▼               ▼
@@ -385,11 +412,12 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II |
 |---|---|
-| **The warden** | **Pin Down:** on a Tier 3 of the Weapon Attack, a Minor enemy's movement is disrupted (it stays in the square it was leaving); any other enemy is Hindered (EoT) |
-| **The duelist** | **Return Fire:** Held Shot's Interrupt also happens when an enemy within your weapon's normal range would make a [Ranged, Strike] Action against you or an ally |
-| **The mage-hunter** | **Silencing Shot:** Held Shot's Interrupt also happens when an enemy within your weapon's normal range would use a [Spell] Action |
+| **The warden** | **Pin Down:** on a Tier 3 of the Weapon Attack, a Minor enemy's Move Action is disrupted (it stays in the square it was leaving); any other creature is Hindered (EoT) |
+| **The counter-sniper** | **Return Fire:** Held Shot's Interrupt also happens when an enemy within your weapon's normal range would make a [Ranged, Strike] Action against you or an ally |
+| **The spell-watcher** | **Silencing Shot:** Held Shot's Interrupt also happens when an enemy within your weapon's normal range would use a [Spell] Action ([Subtle] castings escape) |
 
 **Notes**
+- **Renamed from Overwatch** (the audit: the old Archer's Overwatch is still in `cards/archer.json` and Foundry, a near twin of Held Shot with Pin Down). **The hold lasts 1 round** (Chapter 2: nothing lasts "until the start of your next turn").
 - **Paid on your own turn (1 AP):** a choice against a Strike, never a free attack every round.
 - **Near the Archer's Snap Shot** (a Reaction when the target enters a square adjacent to you): Held Shot guards your allies' squares too and is bought with 1 AP on your turn.
 
@@ -412,6 +440,23 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 ---
 
-## 11. The audit of the whole batch
+## 11. The audit of the whole batch (2026-11-20, an independent reader; Opus)
 
-(running)
+The whole file, against T1 to T14, the lessons, the rulebook and the class and gear cards. **Every finding was fixed** except the two marked "for Lucas".
+
+| Card | Finding | Now |
+|---|---|---|
+| **Overwatch** | "Until the start of your next turn" is forbidden (Chapter 2); the name clashes with the old Archer's Overwatch (still in `archer.json` and Foundry, a near twin); Pin Down said "movement is disrupted" (only an Action can be); Silencing Shot lacked the [Subtle] note | **Renamed Covering Shot**; Held Shot lasts 1 round; Pin Down disrupts the Move Action; the [Subtle] note added |
+| **Opportunity Attack** | Cripple's Slowed 1 had no duration, so it lasted the encounter (a boss lockdown on a Tier 3); the Stand trigger didn't fit "stays in the square"; Interpose undefined for an [Area] or many-target Strike; the Paladin's Rebuke not named as a neighbour; the name clashes with the Basic Action still in `basic-actions.json` | Slowed 1 (1 round); the triggering Action disrupted (Move or Stand); Interpose only for a single-target, non-[Area] Strike; Rebuke noted (near, not the same); the name is the known mismatch (the Basic Action left the book on 2026-11-12) |
+| **Grab** | A section 10 fix came back: the 2 AP Version grants Grabbed on a Tier 2; Break Free is At-will, so a Check on each attempt could eat a boss's turn; the Attack line put "the one used to roll" on the wrong side | The Check is for its next Break Free only (at most 2 AP); the Attack line is Trip's; **Tier 2 kept, as Trip's own Tier 2 is Prone: for Lucas** |
+| **Grab Hold** | One rank with a choice was three Talents under one name, with no word on taking it again; "Prerequisite: none" against the template; Human Shield and Choke had no Passive label; Choke did nothing against a non-Minor enemy; Throw had no Flavor or Distance | Each rank adds one branch (three ranks); the line gone; Passive labels; Choke gives 2 Pressure Banes to anyone else; Throw written as its own card; **whether Throw is the obvious first pick: for Lucas** |
+| **Called Shot** | The hand rested on a Critical (about 4%) against non-Minor enemies; the Modes were lines, not blocks (Structure part 4); the rider didn't follow a semicolon | The hand: Pressed 2 (EoT) against anyone else; each Mode a block; semicolon |
+| **The boss rule's wording** | Spellbreaker's "or its targets' Save DC is 2 lower" repeated magic decision 88 and read as a choice; Banes put on an enemy are Pressure Banes (README); "any other enemy" left out a non-enemy target | "2 Pressure Banes" everywhere; the Save DC clause made a reminder; "any other creature" |
+| **Break the Line** | Overrun's 2 squares were a movement of no kind; Bull Rush's Push from a shared square has no cone; Trample rested on a rare trigger and did nothing to others; passing diagonally between two enemies (Corners) not covered | Overrun is an Advance 2 on the same line; Bull Rush resolves before you enter the square; Trample also pushes anyone else 2; Corners covered |
+| **Reckless Blow** | Section 10 findings came back: Sunder was a new line, not on the Tier 3 line; Finishing Blow is about the roll, so a Special | Both moved |
+| **Steel and Spell** | Close Casting added a 3 AP cost without a Version block; the inner Weapon Attack's 3 Strikes and At-will Banes unwritten | A Version block; the card says Steel and Spell counts once |
+| **Arm's-Length Shot** | Step and Loose is the Recurve Bow's Circling Shot Setup; both riders too small (T13) | Noted as near; Evade 2; Shove Off pushes on Tier 2 and 3 |
+| **Parry** | No rules finding; the strongest candidate for the obvious Stage 0 pick (T6) | A watch note for the playtest |
+| **Across the batch** | Branch labels repeated (mage-hunter, silencer, skirmisher, duelist, bodyguard) | Renamed: the breakthrough, the hostage-taker, the strangler, the counter-sniper, the spell-watcher |
+
+**No finding** on bare numbers (T1), lifted penalties (T14) or the Skill wall. **Fable re-audits the whole batch with fresh eyes at step 12.**
