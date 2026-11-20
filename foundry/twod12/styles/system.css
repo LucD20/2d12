@@ -5604,3 +5604,9 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
    (Armor of Faith, for using Shield of Faith) reads as text: bold, a dotted underline, no box */
 .twod12.chat.sysline a.content-link, .twod12.chat.sysline.sysline a.content-link { display: inline; padding: 0; margin: 0; border: 0; border-radius: 0; background: none; box-shadow: none; font-weight: 700; color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; line-height: inherit; white-space: normal; }
 .twod12.chat.sysline a.content-link > i { display: none; }
+/* v0.0.467 (Lucas, checklist v0.0.466): the area hover: every area under the mouse, each under its name, its lines in sections by who they affect */
+.twod12-zonetip .zt-zone + .zt-zone { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .22); }
+.twod12-zonetip .zt-sec { margin-top: 3px; }
+.twod12-zonetip .zt-sec .zt-who { display: block; font-weight: 700; }
+.twod12-zonetip .zt-sec .zt-l { padding-left: 8px; }
+.twod12-zonetip .zt-foot { margin-top: 3px; opacity: .8; font-size: 11.5px; }

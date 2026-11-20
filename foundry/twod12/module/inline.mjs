@@ -16,7 +16,7 @@ import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack A
 import { dealDamageEx } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
 import { startTemplate, tokensInEmanation } from "./template.mjs";
-import { sysCard } from "./sysmsg.mjs";
+import { sysCard, sysLine } from "./sysmsg.mjs";
 import { handleMove, moveDistance } from "./move.mjs";
 import { handleRally } from "./rally.mjs";
 import { gainGuard } from "./guard.mjs";
@@ -405,7 +405,7 @@ export async function rollParts(list, nonlethalAll) {
  * Several Targets (v0.0.160): a Save card rolls each Tier's damage when it appears, once, and every creature that lands on a Tier takes that
  * Tier's roll. The dice are shown together. Returns { t1: comps, t2: comps, t3: comps } (a Tier with no damage is left out).
  */
-async function prerollTiers(cfg) {
+async function prerollTiers(cfg, targets = []) {
   const out = {}, all = [];
   let empFirst = null;
   // v0.0.407 (book, Chapter 8): the Save Action's user Empowered: its first damage on each of its turns adds 1d6! (once a turn; Enfeebled is gone)
@@ -425,6 +425,27 @@ async function prerollTiers(cfg) {
   if (empUser && empFirst) { const ec = await empoweredComponent(empFirst, all, { explode: !minorNpc(empUser) }); if (ec) out.emp = ec; }
   if (all.length) { try { await showDice(all); } catch (e) { /* no dice to show */ } }
   if (empUser && out.emp) await markEmpoweredUsed(empUser);
+  // v0.0.467 (Lucas, 2026-11-20: "For save Actions, you decide the Empowered die before the enemies roll their Saves"; book, Chapter 8): the
+  // creature that takes the die is chosen now, on the map bar (one creature: that one); if it then takes no damage, the die is lost
+  if (out.emp) {
+    const list = (targets ?? []).filter(t => t?.uuid);
+    let pickUuid = list[0]?.uuid ?? "";
+    if (list.length > 1 && typeof document !== "undefined") {
+      try {
+        const { pickBar } = await import("./pickbar.mjs");
+        const tokOf = u => { try { const d = fromUuidSync(u); return d?.object ?? d?.getActiveTokens?.()[0] ?? null; } catch (e) { return null; } };
+        const pick = await pickBar({ icon: "fa-burst", cancel: false, text: `<b>Empowered</b>: ${esc(empUser?.name ?? "")}'s ${esc(cfg.source || "Action")} damages several creatures. Which one takes the 1d6! (Chapter 8)? Choose before their Saves: click its token or its picture.`,
+          options: list.map((t, i) => { const tk = tokOf(t.uuid); return { id: String(i), label: t.name ?? tk?.name ?? "?", token: tk ?? undefined, img: tk?.document?.texture?.src || "" }; }) });
+        if (pick !== null && pick !== undefined && list[Number(pick)]) pickUuid = list[Number(pick)].uuid;
+      } catch (e) { console.warn("twod12 | Empowered pick", e); }
+    }
+    out.empFor = pickUuid;
+    const who = list.find(t => t.uuid === pickUuid)?.name ?? "";
+    if (who) { try { await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: empUser }), content: sysLine("fa-burst", `<b>${esc(empUser?.name ?? "")}</b>'s Empowered 1d6! goes to <b>${esc(who)}</b> (chosen before the Saves).`) }); } catch (e) { /* no chat */ } }
+  } else if (cfg.saveAction && cfg.actorUuid) {
+    // a diagnostic: Empowered on the user, but its die isn't rolled now (already used this turn, or not the user's turn)
+    try { const u = fromUuidSync(cfg.actorUuid); if (u && damageSteps(u, new Set([...(cfg.actionTraits ?? []), "__action"])).empowered.length) console.info(`twod12 | Empowered on a Save Action: ${u.name}'s die is not rolled now (${empoweredNow(u) ? "no damage on this Action's Tiers" : "already used this turn, or not its turn"})`); } catch (e) { /* none */ }
+  }
   return out;
 }
 /** A Tier's line on a Save card once its damage is rolled: the amounts, with the dice in the tooltip, then its texts and effects. */
@@ -1138,7 +1159,7 @@ export async function postSaveFor(cfg, targets, { point = null, source = "", not
   }
   const head = `<div class="twod12 chat"><b>${esc(source || cfg.source || "Save")}</b>: ${note ? `${note} ` : ""}${rows.length ? `${rows.map(r => esc(r.name)).join(", ")} roll${rows.length === 1 ? "s" : ""} a DC ${cfg.dc} ${esc(TWOD12.attributes[cfg.attr] ?? cfg.attr)} Save.` : "no creature is in the area."}</div>`;
   if (!rows.length) { const { sysLine } = await import("./sysmsg.mjs"); return ChatMessage.create({ content: sysLine("fa-shield-halved", head.replace(/^<div class="twod12 chat">|<\/div>$/g, "")) }); }   // v0.0.415: a sysLine
-  const st = { cfg, color: "", rows, tierDmg: await prerollTiers(cfg) };   // each Tier's damage rolled once, now
+  const st = { cfg, color: "", rows, tierDmg: await prerollTiers(cfg, rows) };   // each Tier's damage rolled once, now
   await ChatMessage.create({ content: await saveCardHtml(st), flags: { twod12: { saveCard: st } } });
 }
 
@@ -1148,7 +1169,7 @@ export async function postSaveCard(cfg, ctx = {}) {
   const targets = game.user.targets.size ? [...game.user.targets].map(t => ({ uuid: t.document.uuid, name: t.name })) : fromCard.map(t => ({ uuid: t.uuid, name: t.name }));
   if (!(cfg.attr in TWOD12.attributes)) return ui.notifications.warn(`Unknown attribute: ${cfg.attr}`);
   if (!targets.length) return ui.notifications.warn("Target at least one token first.");
-  const st = { cfg, color: ctx.message?.getFlag?.("twod12", "action")?.color ?? "", rows: targets.map(t => ({ uuid: t.uuid, name: t.name, result: null })), tierDmg: await prerollTiers(cfg) };
+  const st = { cfg, color: ctx.message?.getFlag?.("twod12", "action")?.color ?? "", rows: targets.map(t => ({ uuid: t.uuid, name: t.name, result: null })), tierDmg: await prerollTiers(cfg, targets) };
   await ChatMessage.create({ content: await saveCardHtml(st), flags: { twod12: { saveCard: st } } });
 }
 
@@ -1179,7 +1200,7 @@ export async function ccSaveOnCard(msg, cfg, targets, { model, point = null, cha
   targets = [].concat(targets);   // v0.0.286: one creature or several, a row each
   const rows = [];
   for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point, areaIds(targets, cfg.actorUuid)); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, favored: mods.favored, why: mods.why.join(", ") }); }
-  const st = { cfg, color: "", cc: true, rows, tierDmg: await prerollTiers(cfg), ...(chain ? { chain } : {}) };   // v0.0.426: a damage-free Save Action's use-time chain (retargetSave)
+  const st = { cfg, color: "", cc: true, rows, tierDmg: await prerollTiers(cfg, rows), ...(chain ? { chain } : {}) };   // v0.0.426: a damage-free Save Action's use-time chain (retargetSave)
   const m = { ...model, kind: "save", saveName: `${TWOD12.attributes[cfg.attr] ?? cfg.attr} Save`, dc: cfg.dc, tiers: await saveTierOutcomes(cfg), creatures: rows.map(r => ({ uuid: r.uuid, name: r.name, result: null, damageDone: false, hasDamage: false })) };
   m.tline = { ...m.tline, names: rows.map(r => r.name), retargetKind: "retargetSave" };
   await msg.update({ content: CC.cardContent(m), "flags.twod12.cc": m, "flags.twod12.saveCard": st });
@@ -1218,24 +1239,19 @@ export async function saveDamage(msg) {
   // v0.0.426 (the audit; book, Chapter 8, Empowered: one creature takes it): the die rolled with the Tiers goes to the first creature whose damage
   // is dealt (its own group, so the others on its Tier don't take it), once
   if (st.tierDmg?.emp && !st.empDone) {
-    // v0.0.466 (Lucas, checklist v0.0.465: "Empowered didnt work on Word of Radiance"; v0.0.460: "the creature should be allowed to choose who it
-    // applies to"): with two or more creatures taking damage, the map bar asks which one takes the die (closed: the first, as before)
-    const can = ready.map((x, i) => i).filter(i => (groups[gOf[i]]?.comps ?? []).length);
-    let k = can[0] ?? 0;
-    if (can.length > 1) {
-      try {
-        const { pickBar } = await import("./pickbar.mjs");
-        const tokOf = u => { try { const d = fromUuidSync(u); return d?.object ?? d?.getActiveTokens?.()[0] ?? null; } catch (e) { return null; } };
-        const pick = await pickBar({ icon: "fa-burst", cancel: false, text: `<b>Empowered</b>: ${esc(cfg.source || m?.name || "the Action")} damages several creatures. Which one takes the 1d6! (Chapter 8)? Click its token or its picture.`,
-          options: can.map(i => { const t = tokOf(ready[i].r.uuid); return { id: String(i), label: `${ready[i].r.name} (Tier ${ready[i].r.result.tier})`, token: t ?? undefined, img: t?.document?.texture?.src || "" }; }) });
-        if (pick !== null && pick !== undefined && can.includes(Number(pick))) k = Number(pick);
-      } catch (e) { console.warn("twod12 | Empowered pick", e); }
-    }
+    // v0.0.467 (book, Chapter 8: chosen before the Saves): the creature chosen when the card was posted (empFor); not among these Saves yet: it
+    // waits; it takes no damage: the die is lost. An older card with no choice: the first creature, as before
+    const want = st.tierDmg.empFor ?? "";
+    let k = want ? ready.findIndex(x => x.r.uuid === want) : 0;
+    if (want && k < 0) k = -1;
+    if (k >= 0 && !(groups[gOf[k]]?.comps ?? []).length) { st.empDone = true; k = -1; }
+    if (k >= 0) {
     const g0 = groups[gOf[k]], ec = { ...st.tierDmg.emp, kind: "E" };
     if (g0) {
       if (ready.filter(x => x.r.result.tier === ready[k].r.result.tier && gOf[ready.indexOf(x)] === gOf[k]).length === 1) g0.comps = [...g0.comps, ec];
       else { const at = groups.length; groups.push({ ...g0, comps: [...g0.comps, ec] }); gOf[k] = at; }
       st.empDone = true;
+    }
     }
   }
   // v0.0.463 (Lucas, checklist v0.0.462, consecrated: "it shows both 1d6 and 1d8, but apply only applies the 1d8"): a Tier's group left with no

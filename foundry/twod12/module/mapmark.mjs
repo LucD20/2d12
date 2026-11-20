@@ -103,3 +103,13 @@ export function dashLine(g, a, b, { dash = 8, gap = 6, color = INK, alpha = 0.85
   for (let k = 0; k < n; k++) { const s = (k * (dash + gap)) / len, e = Math.min(1, (k * (dash + gap) + dash) / len); if (s >= 1) break; g.moveTo(a.x + (b.x - a.x) * s, a.y + (b.y - a.y) * s); g.lineTo(a.x + (b.x - a.x) * e, a.y + (b.y - a.y) * e); }
   return g;
 }
+
+/** v0.0.467 (Lucas, checklist v0.0.466: Charge's overlay "is below tokens"): a map note goes on the interface layer above the tokens (as the
+ *  Reactions overlay, rxoverlay.mjs: z-index 9000 on a sortable host). Returns the object. */
+export function addOnTop(obj, z = 9000) {
+  const host = globalThis.canvas?.interface ?? globalThis.canvas?.stage;
+  if (!host || !obj) return obj;
+  try { host.sortableChildren = true; obj.zIndex = z; } catch (e) { /* an old canvas */ }
+  host.addChild(obj);
+  return obj;
+}

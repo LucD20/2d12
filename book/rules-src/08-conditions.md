@@ -14,7 +14,7 @@ Dazed always has a value, such as **Dazed 1**. When you become Dazed, you lose t
 
 ### Empowered
 
-The first time you deal damage on each of your turns, add **1d6!** to it (see [[Exploding Dice]]). The die deals the same kind of damage as the Action (its pool and its type). If the Action damages several creatures, you choose which one takes it. Empowered has no value: you are Empowered or you aren't, and being Empowered twice changes nothing.
+The first time you deal damage on each of your turns, add **1d6!** to it (see [[Exploding Dice]]). The die deals the same kind of damage as the Action (its pool and its type). If the Action damages several creatures, you choose which one takes it. For a [[Save Actions|Save Action]], you choose it before the creatures roll their Saves; if that creature then takes no damage, the die is lost. Empowered has no value: you are Empowered or you aren't, and being Empowered twice changes nothing.
 
 > [!tbd]
 > The die grows at later Stages (with those Stages' numbers).

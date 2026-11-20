@@ -105,8 +105,8 @@ export async function pickBar(o) {
     const hover = x => { if (x === hovered) return; hovered = x; draw(); if (gfx) canvas.app.view.style.cursor = x ? "pointer" : ""; };
     if (T) {
       gfx = new PIXI.Graphics();
-      (canvas.interface ?? canvas.stage).addChild(gfx);
-      try { M = MAPMARK; marks = new PIXI.Container(); marks.eventMode = "none"; (canvas.interface ?? canvas.stage).addChild(marks); } catch (e) { M = null; }
+      MAPMARK.addOnTop(gfx);
+      try { M = MAPMARK; marks = new PIXI.Container(); marks.eventMode = "none"; MAPMARK.addOnTop(marks); } catch (e) { M = null; }
       prevInteractive = canvas.tokens.interactiveChildren; canvas.tokens.interactiveChildren = false;
       const at = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage), c = T.cellAt(p); return toks.find(x => cellsOf(x).some(k => k.i === c.i && k.j === c.j)) ?? null; };
       move = ev => hover(at(ev));

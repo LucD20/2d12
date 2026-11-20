@@ -32,34 +32,34 @@ Do: With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior
 Expect: After Damage (the dice landed) the card's last line is in sight; after Apply too. Scrolled up before clicking, it stays where you are.
 Rev: 5
 
-### empowered-one · v0.0.466 · Empowered with several creatures: on the map, and on a Save Action
-Do: Give Sylwen Empowered; she uses Volley on three enemies, two or more hit; click Damage. Then give Durgan Empowered and, on his turn, use Word of Radiance on two enemies; both roll their Saves and he clicks the damage.
-Expect: Each time the HUD asks which creature takes the 1d6!, and every candidate wears the gold ring with its ripple at once (not only when hovered); the one clicked (token or picture) takes it, on its own line.
-Rev: 4
+### empowered-one · v0.0.467 · Empowered on a Save Action: chosen before the Saves
+Do: Give Durgan Empowered; on his turn he uses Word of Radiance on two enemies.
+Expect: Before anyone rolls, the HUD asks which creature takes the 1d6! (gold rings on both, their pictures); a chat line says "Durgan's Empowered 1d6! goes to X (chosen before the Saves)". After the Saves, X's damage has the die on its own line; if X takes no damage, the die is lost. If nothing is asked, look in the console for "twod12 | Empowered on a Save Action".
+Rev: 5
 
 ## Conditions and their Tiers
 
 ## Movement
 
-### charge-new · v0.0.466 · Charge: clear on the map
+### charge-new · v0.0.467 · Charge: above the tokens
 Do: In a combat with no target, Durgan uses Charge; then click the Goblin Sneak.
-Expect: The enemies it can Charge stand out: a gold tint on their squares, a thick gold ring with a clear ripple, a number; the limit a clear pale edge. With the Goblin: a thick pale line with dots, the square where he stops outlined in gold, the plate. If it still reads as faint or unclear, say what you looked for first.
-Rev: 4
+Expect: The rings, numbers, line, dots and plates are drawn over the tokens (not under them), clearly visible. Say what still reads as faint or unclear.
+Rev: 5
 
 ### rewind-refund · v0.0.462 · Move back gives back only the last movement
 Do: In a combat, the Ogre Chieftain drags 1 square, then drags again toward Kaela (Slip Away triggers on the second drag); on the Reactions card click Move back all the way (Shift-click). Then once a drag that buys an Advance (1 AP) and Move back all the way.
 Expect: The Ogre goes back to where the second drag started, and only the second drag's squares come back (the first square stays spent). A drag that bought its Advance: back where it started with its AP and squares as before that drag.
 Rev: 2
 
-### large-difficult · v0.0.460 · A Large creature passing a creature: each step pays
-Do: Move Durgan as a Large token (2 × 2) straight past the Goblin Sneak so his space slides along its square for two steps; watch the ruler's label while dragging, then drop.
-Expect: Each step in which his space covers the Goblin's square costs 1 more: two steps alongside read "(+2)" (4 squares for 2), not "(+1)"; an ally's square costs nothing extra.
-Rev: 2
+### large-difficult · v0.0.467 · A Large creature passing a creature: each step pays
+Do: Make Durgan Large (2 × 2); in a combat, drag him straight past the Goblin Sneak so his space slides along its square for two steps; drop; read the HUD's squares left.
+Expect: The move costs 2 more than its squares (each step alongside the Goblin pays 1 more): the squares left drop by the length + 2. (The ruler's own label shows only the length for a Large token.)
+Rev: 3
 
-### pushed-button · v0.0.462 · A Pushed button on a card (diagnostic)
-Do: With the console open (F12), the Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2, in the open; click the card's "Pushed 2".
-Expect: A bar in the HUD's Situational tab asks which creature to push; Durgan is pushed 2. If nothing happens, Fail it and paste the console line that starts "twod12 | pushed-button diagnostic" (it says what the card holds where you clicked).
-Rev: 2
+### pushed-button · v0.0.467 · The Pushed button on Overhead Smash
+Do: The Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2; on the card, click "Pushed 2" (or apply the damage).
+Expect: "Pushed 2" is a button; a click asks to push Durgan 2. Applying the damage also pushes him by itself (the button is for a push by hand).
+Rev: 3
 
 ## Reactions and Judge
 
@@ -89,15 +89,10 @@ Rev: 2
 
 ## Areas, light and Cover
 
-### area-hover · v0.0.463 · The hover card over an area
-Do: Hover Aveline's Consecrated Ground, then Sylwen's Covering Fire.
-Expect: Consecrated Ground: "Difficult Terrain (enemies)" and "Allies and you: Guard your Power Modifier at the start of their turns", and its rounds; Covering Fire its own lines.
-Rev: 2
-
-### consecrated · v0.0.463 · Word of Radiance on a Judged creature: one damage line
-Do: Aveline Judges the Orc Warrior and uses Word of Radiance on it and the Ogre Chieftain; both roll their Saves; open the damage.
-Expect: The Orc's Tier shows its d8 damage only (no extra d6 group with no one in it); Apply applies what is shown.
-Rev: 2
+### area-hover · v0.0.467 · The hover card: overlapping areas, in sections
+Do: Aveline's Consecrated Ground overlapping Sylwen's Covering Fire; hover a square in both.
+Expect: Both areas, each under its bold name, separated by a line; each one's lines in sections: "Enemies" (Difficult Terrain), "Allies and you" (Guard equal to your Power Modifier at the start of their turns), then its rounds.
+Rev: 3
 
 ### covering-fire · v0.0.411 · Covering Fire, Volley, Spotter
 Do: Sylwen places Covering Fire and the GM walks an enemy in; she uses Volley on a 3 Burst; she Calls Out (Spotter) a creature in Dim light.
@@ -106,10 +101,6 @@ Expect: The enemy takes [V] 2 + Weapon Modifier and pays double; Volley makes Pr
 ### clear-lines · v0.0.411 · Clear Lines and Opening Shot
 Do: Sylwen at Escalation 4 (Clear Lines) shoots past Aveline at an Orc Engaged with Durgan; then Kaela (Opening Shot) lands a Tier 3.
 Expect: No Cover from your ally and no Field Bane; the Tier 3 line names your allies who threaten the target.
-
-### spotter-self · v0.0.426 · Call Out helps the allies, not the caller
-Do: Sylwen Calls Out an Orc in Dim light; Sylwen attacks it; an ally attacks it.
-Expect: Sylwen still has the Obscured Field Bane; the ally doesn't.
 
 ### ht-once · v0.0.431 · Hazardous Terrain once per turn-cycle
 Do: Sylwen places Covering Fire; the GM moves an Orc into it (Advance), moves it again inside it in the same turn, and ends its turn there.

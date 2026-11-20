@@ -29,7 +29,7 @@ dark scene: 2 | 5-foot squares: 10 | given the document instead of the token: 2 
 --- unwilling creatures (the ruler counts them too)
 a square with an enemy: 2 (as an action: 2) | with a friend (willing): 1 | a hidden token: 1 | an empty square next to it: 1
 an enemy in the dark: counts double, not four times: 2
-a 2x2 creature whose new squares include the enemy's: 2 (its squares are at 0,1 and 0,2: the Orc is on 0,2) | one step away from it: 1
+a 2x2 creature (v0.0.467: not counted in Foundry's cost function, the path check pays it, t289): 1 (its squares are at 0,1 and 0,2: the Orc is on 0,2) | one step away from it: 1
 installing again does not wrap twice: ["actions.walk.getCostFunction","actions.fly.getCostFunction","actions.crawl.getCostFunction","TokenDocument#getMovementCostFunction"] | an enemy square still costs 2
 a base cost that is already double stays double: 2
 through a TokenDocument method: ["TokenDocument#getMovementCostFunction"] | a dark step costs 2

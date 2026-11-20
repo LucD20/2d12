@@ -13,11 +13,11 @@
     },
     {
      "id": "empowered-one",
-     "v": "v0.0.466",
-     "title": "Empowered with several creatures: on the map, and on a Save Action",
-     "do": "Give Sylwen Empowered; she uses Volley on three enemies, two or more hit; click Damage. Then give Durgan Empowered and, on his turn, use Word of Radiance on two enemies; both roll their Saves and he clicks the damage.",
-     "expect": "Each time the HUD asks which creature takes the 1d6!, and every candidate wears the gold ring with its ripple at once (not only when hovered); the one clicked (token or picture) takes it, on its own line.",
-     "rev": 4
+     "v": "v0.0.467",
+     "title": "Empowered on a Save Action: chosen before the Saves",
+     "do": "Give Durgan Empowered; on his turn he uses Word of Radiance on two enemies.",
+     "expect": "Before anyone rolls, the HUD asks which creature takes the 1d6! (gold rings on both, their pictures); a chat line says \"Durgan's Empowered 1d6! goes to X (chosen before the Saves)\". After the Saves, X's damage has the die on its own line; if X takes no damage, the die is lost. If nothing is asked, look in the console for \"twod12 | Empowered on a Save Action\".",
+     "rev": 5
     }
    ]
   },
@@ -26,11 +26,11 @@
    "items": [
     {
      "id": "charge-new",
-     "v": "v0.0.466",
-     "title": "Charge: clear on the map",
+     "v": "v0.0.467",
+     "title": "Charge: above the tokens",
      "do": "In a combat with no target, Durgan uses Charge; then click the Goblin Sneak.",
-     "expect": "The enemies it can Charge stand out: a gold tint on their squares, a thick gold ring with a clear ripple, a number; the limit a clear pale edge. With the Goblin: a thick pale line with dots, the square where he stops outlined in gold, the plate. If it still reads as faint or unclear, say what you looked for first.",
-     "rev": 4
+     "expect": "The rings, numbers, line, dots and plates are drawn over the tokens (not under them), clearly visible. Say what still reads as faint or unclear.",
+     "rev": 5
     },
     {
      "id": "rewind-refund",
@@ -42,19 +42,19 @@
     },
     {
      "id": "large-difficult",
-     "v": "v0.0.460",
+     "v": "v0.0.467",
      "title": "A Large creature passing a creature: each step pays",
-     "do": "Move Durgan as a Large token (2 × 2) straight past the Goblin Sneak so his space slides along its square for two steps; watch the ruler's label while dragging, then drop.",
-     "expect": "Each step in which his space covers the Goblin's square costs 1 more: two steps alongside read \"(+2)\" (4 squares for 2), not \"(+1)\"; an ally's square costs nothing extra.",
-     "rev": 2
+     "do": "Make Durgan Large (2 × 2); in a combat, drag him straight past the Goblin Sneak so his space slides along its square for two steps; drop; read the HUD's squares left.",
+     "expect": "The move costs 2 more than its squares (each step alongside the Goblin pays 1 more): the squares left drop by the length + 2. (The ruler's own label shows only the length for a Large token.)",
+     "rev": 3
     },
     {
      "id": "pushed-button",
-     "v": "v0.0.462",
-     "title": "A Pushed button on a card (diagnostic)",
-     "do": "With the console open (F12), the Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2, in the open; click the card's \"Pushed 2\".",
-     "expect": "A bar in the HUD's Situational tab asks which creature to push; Durgan is pushed 2. If nothing happens, Fail it and paste the console line that starts \"twod12 | pushed-button diagnostic\" (it says what the card holds where you clicked).",
-     "rev": 2
+     "v": "v0.0.467",
+     "title": "The Pushed button on Overhead Smash",
+     "do": "The Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2; on the card, click \"Pushed 2\" (or apply the damage).",
+     "expect": "\"Pushed 2\" is a button; a click asks to push Durgan 2. Applying the damage also pushes him by itself (the button is for a push by hand).",
+     "rev": 3
     }
    ]
   },
@@ -108,19 +108,11 @@
    "items": [
     {
      "id": "area-hover",
-     "v": "v0.0.463",
-     "title": "The hover card over an area",
-     "do": "Hover Aveline's Consecrated Ground, then Sylwen's Covering Fire.",
-     "expect": "Consecrated Ground: \"Difficult Terrain (enemies)\" and \"Allies and you: Guard your Power Modifier at the start of their turns\", and its rounds; Covering Fire its own lines.",
-     "rev": 2
-    },
-    {
-     "id": "consecrated",
-     "v": "v0.0.463",
-     "title": "Word of Radiance on a Judged creature: one damage line",
-     "do": "Aveline Judges the Orc Warrior and uses Word of Radiance on it and the Ogre Chieftain; both roll their Saves; open the damage.",
-     "expect": "The Orc's Tier shows its d8 damage only (no extra d6 group with no one in it); Apply applies what is shown.",
-     "rev": 2
+     "v": "v0.0.467",
+     "title": "The hover card: overlapping areas, in sections",
+     "do": "Aveline's Consecrated Ground overlapping Sylwen's Covering Fire; hover a square in both.",
+     "expect": "Both areas, each under its bold name, separated by a line; each one's lines in sections: \"Enemies\" (Difficult Terrain), \"Allies and you\" (Guard equal to your Power Modifier at the start of their turns), then its rounds.",
+     "rev": 3
     },
     {
      "id": "covering-fire",
@@ -136,14 +128,6 @@
      "title": "Clear Lines and Opening Shot",
      "do": "Sylwen at Escalation 4 (Clear Lines) shoots past Aveline at an Orc Engaged with Durgan; then Kaela (Opening Shot) lands a Tier 3.",
      "expect": "No Cover from your ally and no Field Bane; the Tier 3 line names your allies who threaten the target.",
-     "rev": 1
-    },
-    {
-     "id": "spotter-self",
-     "v": "v0.0.426",
-     "title": "Call Out helps the allies, not the caller",
-     "do": "Sylwen Calls Out an Orc in Dim light; Sylwen attacks it; an ally attacks it.",
-     "expect": "Sylwen still has the Obscured Field Bane; the ally doesn't.",
      "rev": 1
     },
     {

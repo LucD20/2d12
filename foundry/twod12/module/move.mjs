@@ -336,6 +336,10 @@ function hardStep(doc, to, step, cost, from = null) {
   try {
     if (!doc?.actor || !to) return cost;
     if (ignoresTerrain(doc)) return Number.isFinite(step) && step > 0 ? step : cost;   // (Cut Through) the terrain costs nothing extra
+    // v0.0.467 (Lucas, checklist v0.0.466, large-difficult: "it is not applying at all"): what square Foundry gives for a token bigger than one
+    // square can't be told for sure, so a Large (or bigger) token's Difficult Terrain is not counted here: the path check (creaturesOnPath, each
+    // step its whole space) adds it when the move is paid (bigOnPath below)
+    if (Math.max(Math.round(doc.width ?? 1), Math.round(doc.height ?? 1)) > 1) return cost;
     // v0.0.453 (Lucas, playtest 6: "Large tokens count difficult square for each square moving past someone. Foundry is calculating only when the
     // center passes through a token"): Foundry gives the cost function the square of the token's CENTER, so a Large token's space is the block
     // around it (it was taken as the top left: half the space was never checked)
@@ -802,7 +806,7 @@ function choosePush(origin, target, N, mode = "push") {
     const w = Math.max(1, Math.round(target.document.width ?? 1)), h = Math.max(1, Math.round(target.document.height ?? 1));
     const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [target]) });
     const gfx = new PIXI.Graphics();
-    (canvas.interface ?? canvas.stage).addChild(gfx);
+    MK.addOnTop(gfx);
     const tip = document.createElement("div");
     tip.className = "twod12-pushtip"; tip.style.display = "none"; document.body.append(tip);
     const prevInteractive = canvas.tokens.interactiveChildren;
@@ -819,7 +823,7 @@ function choosePush(origin, target, N, mode = "push") {
     };
     // v0.0.461 (the map notes' redesign, f; Lucas: one set of colors for every kind): the squares to click are gold (a choice for you), the
     // origin's pale ring, the path in pale ink with an arrow pointing away (Pushed) or toward (Pulled), red where it stops; the result on a plate
-    const plates = new PIXI.Container(); plates.eventMode = "none"; (canvas.interface ?? canvas.stage).addChild(plates);
+    const plates = new PIXI.Container(); plates.eventMode = "none"; MK.addOnTop(plates);
     const draw = () => {
       gfx.clear();
       for (const k of plates.removeChildren()) k.destroy?.({ children: true });
@@ -926,8 +930,8 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
       return "";
     };
     const gfx = new PIXI.Graphics();
-    (canvas.interface ?? canvas.stage).addChild(gfx);
-    const nums = new PIXI.Container(); nums.eventMode = "none"; (canvas.interface ?? canvas.stage).addChild(nums);
+    MK.addOnTop(gfx);
+    const nums = new PIXI.Container(); nums.eventMode = "none"; MK.addOnTop(nums);
     const tip = document.createElement("div");
     tip.className = "twod12-pushtip"; tip.style.display = "none"; document.body.append(tip);
     const prevInteractive = canvas.tokens.interactiveChildren;
@@ -1483,7 +1487,8 @@ export function registerMovement() {
         par = (p + d) % 2;
       }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
-      if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);
+      const bigOnPath = Math.max(Math.round(doc.width ?? 1), Math.round(doc.height ?? 1)) > 1;   // v0.0.467: a Large token's Difficult Terrain is the path check's
+      if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6, rulerCountsDifficult && !bigOnPath);
       // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)
       if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6) { warn(`${c.name} has ${offTurnFree(c)} free square${offTurnFree(c) === 1 ? "" : "s"} left (it isn't its turn). Choose a shorter path, or use End movement.`); return false; }
       mark(keyOf(doc, to.x, to.y));
@@ -1596,7 +1601,7 @@ export function showRange(c, squares, dest = null, par = 0) {
     const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : 0);
     const area = reachableCells(cells, squares, (a, b) => wallBetween(pt(a), pt(b)), par, enterCost);
     rangeGfx = new PIXI.Graphics();
-    (canvas.interface ?? canvas.stage).addChild(rangeGfx);
+    (canvas.interface ?? canvas.stage).addChild(rangeGfx);   // the movement area stays under the tokens (a large pale area)
     // v0.0.461 (the map notes' redesign, b and c): where it can stop in pale ink (blue had no meaning); an Evade's edge dashed (only an Evade is);
     // its Difficult Terrain hatched: inside an Advance's area (it costs 1 more), and for an Evade, the squares next to it that it can't enter, in red
     fillCells(rangeGfx, area, MK.INK, 0.08);
@@ -1668,7 +1673,7 @@ export function openChargePicker(c, token) {
   if (!doc || !ch || !canvas?.ready) return false;
   if (chargePick) chargePick.close(false);
   const gfx = new PIXI.Graphics();
-  (canvas.interface ?? canvas.stage).addChild(gfx);
+  MK.addOnTop(gfx);
   const prevInteractive = canvas.tokens.interactiveChildren;
   canvas.tokens.interactiveChildren = false;
   const a = cellAt({ x: homePos(doc).x + 2, y: homePos(doc).y + 2 });
@@ -1732,7 +1737,7 @@ export function openChargePicker(c, token) {
     return { t, n: n + 1, ok: need >= ch.min && need <= ch.max, why: need < ch.min ? `too close (needs ${ch.min})` : need > ch.max ? `too far (${need})` : "" };
   });
   cands.filter(x => x.ok).forEach((x, k) => { x.n = k + 1; });
-  const marks = new PIXI.Container(); marks.eventMode = "none"; (canvas.interface ?? canvas.stage).addChild(marks);
+  const marks = new PIXI.Container(); marks.eventMode = "none"; MK.addOnTop(marks);
   const gsz = () => canvas.grid?.size ?? 100;
   const boxOf = t => { const cs = tokenCells(t), gs = gsz(), i0 = Math.min(...cs.map(c => c.i)), j0 = Math.min(...cs.map(c => c.j)), i1 = Math.max(...cs.map(c => c.i)), j1 = Math.max(...cs.map(c => c.j)); const w = (j1 - j0 + 1) * gs, h = (i1 - i0 + 1) * gs; return { x: j0 * gs, y: i0 * gs, w, h, c: { x: j0 * gs + w / 2, y: i0 * gs + h / 2 } }; };
   const pickEl = bar.querySelector(".lb-cands");
