@@ -68,21 +68,21 @@ export async function pickBar(o) {
     if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
     // v0.0.463 (Lucas: "As a GM, when the Judge is triggered, if I click on the Paladin's tokens, it shows a small Judge window, and not the hud with
     // the situational tab"): a question asked with no HUD on screen moves into the HUD's Situational section as soon as a token brings the HUD up
-    // v0.0.471 (Lucas, checklist v0.0.470: "It changed to a very large 'Judge' bar ... it covers the whole token hud area"): asked in the HUD's middle
-    // (no creature's bar on screen) it moves too, into the Situational tab once a creature's HUD comes up; tried again while the HUD draws
+    // v0.0.471 (Lucas, checklist v0.0.470: "a very large 'Judge' bar"): asked in the HUD's middle it moves into the Situational tab once a creature's
+    // HUD comes up. v0.0.473 (checklist v0.0.472: "I unselected Durgan and selected again and it only expanded the Judge message again"): it keeps
+    // following the selection while it is open: a creature's HUD, its Situational tab; none, the HUD's middle (or the bottom with no HUD)
     let dockHook = null;
-    if (!slot || !side) {
-      const tryDock = (n = 0) => {
-        if (!bar.isConnected || side) return;
-        const h = globalThis.__twod12Hud ?? null, sl = h?.hudAskSlot?.() ?? null;
-        if (!sl || !sl.classList?.contains("hb-ask")) { if (n < 10) setTimeout(() => tryDock(n + 1), 250); return; }
-        if (slot && hud) { try { hud.hudAsking(false); } catch (e) { /* gone */ } }
-        hud = h; slot = sl; side = true;
-        bar.classList.add("in-hud", "in-side"); sl.append(bar); h.hudAsking(true, true);
-        try { Hooks.off("controlToken", dockHook); } catch (e) { /* gone */ } dockHook = null;
-      };
-      try { dockHook = Hooks.on("controlToken", () => setTimeout(() => tryDock(0), 150)); } catch (e) { dockHook = null; }
-    }
+    const place = (n = 0) => {
+      const h = globalThis.__twod12Hud ?? null, sl = h?.hudAskSlot?.() ?? null, sideNow = !!sl?.classList?.contains("hb-ask");
+      if (sl && sl.contains(bar)) return;
+      if (!sl) { if (n < 6) return setTimeout(() => place(n + 1), 250); if (!bar.isConnected) { bar.classList.remove("in-hud", "in-side"); document.body.append(bar); } return; }
+      if (!sideNow && n < 6) return setTimeout(() => place(n + 1), 250);   // the HUD may still be drawing a creature's bar
+      if (slot && hud && slot !== sl) { try { hud.hudAsking(false); } catch (e) { /* gone */ } }
+      hud = h; slot = sl; side = sideNow;
+      bar.classList.add("in-hud"); bar.classList.toggle("in-side", sideNow); sl.append(bar); h.hudAsking(true, sideNow);
+    };
+    // a new selection: the HUD leaves its "asking" state first, so it can draw the creature's bar, then the question goes where it belongs
+    try { dockHook = Hooks.on("controlToken", () => { if (hud && slot) { try { hud.hudAsking(false); } catch (e) { /* gone */ } } setTimeout(() => place(0), 150); }); } catch (e) { dockHook = null; }
     let gfx = null, down = null, move = null, prevInteractive = null, hovered = null, M = null;
     const cellsOf = x => x.cells ?? T.tokenCells(x.token);
     // v0.0.249 (Lucas): feedback before the click: the candidate under the pointer (or whose button is hovered) lights up on the map and in the bar

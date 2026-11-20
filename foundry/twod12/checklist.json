@@ -5,11 +5,11 @@
    "items": [
     {
      "id": "judge-gm-dock",
-     "v": "v0.0.472",
-     "title": "Judge's question for the GM: the selection stays yours",
-     "do": "As the GM, select the Orc Warrior and attack Aveline next to Durgan (Judged Orc); when Judge's question comes, click the empty map, then Durgan's token.",
-     "expect": "The click on the map releases the Orc Warrior as usual; clicking Durgan selects him alone, and the question moves into his HUD's Situational tab.",
-     "rev": 3
+     "v": "v0.0.473",
+     "title": "Judge's question for the GM follows the selection",
+     "do": "As the GM, the Orc Warrior attacks Aveline next to Durgan (Judged Orc); when Judge's question comes, click the empty map, then Durgan's token; then deselect Durgan and select him again; answer it.",
+     "expect": "Each time Durgan is selected, his HUD opens with the question in its Situational tab (not the large bar); deselected, the question waits in the HUD's middle; the map click releases the Orc as usual.",
+     "rev": 4
     }
    ]
   },
