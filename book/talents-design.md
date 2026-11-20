@@ -302,3 +302,7 @@ The four PCs (Foundry's compendium, level 1 and level 4): **Aveline** (Human Pal
 **The asks so far, numbered (Lucas, 2026-11-20):** 1 casting magic through music; 2 defending allies; 3 the ideas he sent (3.1 the god's blessings, 3.2 Ricochet, 3.3 ammunition, 3.4 Take Aim, 3.5 Overwatch, 3.6 Full Draw, 3.7 Multi-Nocking); 4 a strategist or planner; 5 an improvised weapon user; 6 pulling abilities; 7 dual wielding; 8 many shields, breaking and changing them; 9 flourished attacks.
 
 **Claude's proposal, which asks fit which PC (not decided):** Aveline 3.1 (the weapon blessing) and 6; Durgan 2 and 3.1 (the aura); Kaela 7 and 3.2; Sylwen 3.4 and 3.5. Waiting: 1 (no caster, magic not in the book), 8 (shields aren't written in Chapter 15), 4, 5, 3.3, 3.6, 3.7, 9 (alternatives).
+
+| # | Decided | Lucas's words |
+|---|---|---|
+| T16 | **The first four Talents, one for each playtest PC:** Aveline, the god's blessing on the weapon (3.1); Durgan, defending allies (2; "likely the harder one"); Kaela, Ricochet (3.2); Sylwen, Take Aim (3.4). Each is made for that PC's build, open to anyone (T3), priced on its build. **Take Aim goes first and sets the anchor** (Claude's proposal, 2026-11-20). | "Aveline: the god's blessing on the weapon / Durgan: defending allies (likely the harder one) / Kaela: Ricochet / Sylwen: Take Aim" |
