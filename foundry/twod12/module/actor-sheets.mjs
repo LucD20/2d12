@@ -765,7 +765,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     for (const gb of this.element.querySelectorAll(".np-guardbtn")) for (const [evName, sign] of [["click", 1], ["contextmenu", -1]]) gb.addEventListener(evName, async ev => {
       ev.preventDefault();
       if (!this.isEditable) return;
-      await this.actor.update({ "system.guard": Math.max(0, (Number(this.actor.system.guard) || 0) + (ev.ctrlKey || ev.metaKey ? 5 : 1) * sign) });
+      // v0.0.463 (Lucas: "If I save AP, it doesnt allow me to reduce Guard to 0"): the Guard shown is the creature's Guard plus the Guard of its kept
+      // AP (system.apGuard); a right-click takes from its own Guard first, then from the kept AP's, so the number can reach 0
+      const step = ev.ctrlKey || ev.metaKey ? 5 : 1, own = Number(this.actor.system.guard) || 0, kept = Number(this.actor.system.apGuard) || 0;
+      if (sign > 0) await this.actor.update({ "system.guard": own + step });
+      else { const fromOwn = Math.min(own, step), fromKept = Math.min(kept, step - fromOwn); await this.actor.update({ "system.guard": own - fromOwn, "system.apGuard": kept - fromKept }); }
     });
     const donut = this.element.querySelector(".np-donut");
     if (donut) {

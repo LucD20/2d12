@@ -548,7 +548,7 @@ function freeMoveBar(c, kind, text) {
   freeBar?.remove();
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-freebar";
-  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button><span class="lb-count"></span><span class="lb-keys"><kbd>Esc</kbd> End movement \u00b7 Right-click pans the map</span>`;
+  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button><span class="lb-count"></span><span class="lb-keys"><kbd>Esc</kbd> End movement</span>`;
   // v0.0.461 (the map notes' redesign, b / c / h): the squares left, big, kept up to date; Escape ends the movement (it did nothing)
   const count = () => { const cb = game.combat?.combatants.get(c.id), left = num(cb?.getFlag(F, "freeMove")) + num(cb?.getFlag(F, "evadeMove")), el = bar.querySelector(".lb-count"); if (el) el.innerHTML = `<b>${left}</b> square${left === 1 ? "" : "s"} left`; };
   count();
@@ -765,7 +765,7 @@ function forcedBar(mode, target, origin, N, onEnd) {
     + '<button type="button" class="lb-go lb-book"><i class="fa-solid fa-book-open"></i> Rules</button>'
     + (mode === "slid" || mode === "reposition" ? '<button type="button" class="lb-go lb-back"><i class="fa-solid fa-rotate-left"></i> Take back a step</button>' : "")
     + '<button type="button" class="lb-give lb-end">Don\'t move it</button>'
-    + `<span class="lb-keys">${mode === "slid" || mode === "reposition" ? "<kbd>Enter</kbd> Move \u00b7 <kbd>Backspace</kbd> Take back \u00b7 " : ""}<kbd>Esc</kbd> Don't move it \u00b7 Right-click pans the map</span>`;   // v0.0.461 (the map notes, f / h)
+    + `<span class="lb-keys">${mode === "slid" || mode === "reposition" ? "<kbd>Enter</kbd> Move \u00b7 <kbd>Backspace</kbd> Take back \u00b7 " : ""}<kbd>Esc</kbd> Don't move it</span>`;   // v0.0.461 (the map notes, f / h)
   // v0.0.404 (Lucas: "Put this in the HUD area as well, that area will become the area for stuff like this"): in the HUD's side panel when a
   // creature's bar is shown (else its middle), as the pick bar; at the bottom with no HUD
   let hud = null, side = false;
@@ -1758,7 +1758,7 @@ export function openChargePicker(c, token) {
         else { const pl = MK.plate([x.why], { fs: Math.round(fs * 0.85), color: 0xb3a68e }); pl.position.set(b.c.x, b.y - 4); marks.addChild(pl); }
       }
       go.hidden = true; give.classList.add("fill"); go.classList.remove("fill");
-      keys.innerHTML = "<kbd>Esc</kbd> Give up \u00b7 Right-click pans the map";
+      keys.innerHTML = "<kbd>Esc</kbd> Give up";
       return;
     }
     const tb = boxOf(target);
@@ -1784,7 +1784,7 @@ export function openChargePicker(c, token) {
     }
     go.hidden = short; go.textContent = blocked ? "Charge anyway" : "Charge";
     go.classList.toggle("fill", !blocked); give.classList.toggle("fill", blocked);
-    keys.innerHTML = short ? "<kbd>Esc</kbd> Give up \u00b7 another enemy: click it" : `<kbd>Enter</kbd> ${blocked ? "Charge anyway" : "Charge"} \u00b7 <kbd>Esc</kbd> Give up \u00b7 Right-click pans the map`;
+    keys.innerHTML = short ? "<kbd>Esc</kbd> Give up \u00b7 another enemy: click it" : `<kbd>Enter</kbd> ${blocked ? "Charge anyway" : "Charge"} \u00b7 <kbd>Esc</kbd> Give up`;
   };
   const setTarget = async t => { target = t; try { await c.setFlag(F, "charge", { ...ch, targetId: t.id }); ch.targetId = t.id; } catch (e) { /* the flag is only a record */ } cur = computeTarget(); draw(); };
   const flip = () => { side = side === "left" ? "right" : "left"; if (target) cur = computeTarget(); draw(); };

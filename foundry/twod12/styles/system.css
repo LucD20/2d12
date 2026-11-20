@@ -5600,3 +5600,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-left { display: block; margin-top: 2px; }
 .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-left b { font-size: 17px; }
 .twod12-hud.twod12-hud .h3-sit .twod12-linebar.twod12-linebar.in-hud button.fill, .twod12-linebar.twod12-linebar.twod12-linebar button.fill { color: var(--hud-bg, #1f1c18) !important; }
+/* v0.0.463 (Lucas, checklist v0.0.462, armor-faith-source: "The linked actions are too big in the chat card"): a name linked in a short chat line
+   (Armor of Faith, for using Shield of Faith) reads as text: bold, a dotted underline, no box */
+.twod12.chat.sysline a.content-link, .twod12.chat.sysline.sysline a.content-link { display: inline; padding: 0; margin: 0; border: 0; border-radius: 0; background: none; box-shadow: none; font-weight: 700; color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; line-height: inherit; white-space: normal; }
+.twod12.chat.sysline a.content-link > i { display: none; }

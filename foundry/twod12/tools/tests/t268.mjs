@@ -14,7 +14,7 @@ try { check = execFileSync(process.execPath, [ROOT + "tools/build-checklist.mjs"
 console.log("checklist.json follows foundry/to-test.md:", check.startsWith("checklist.json is up to date"));
 const list = JSON.parse(src("checklist.json")), all = C.flatItems(list);
 console.log("the first group is the bar's own test:", list.groups[0]?.name === "The test bar" && all[0]?.id === "bar-works");
-console.log("every test has an id, a version, Do and Expect:", all.length > 40 && all.every(x => /^[a-z0-9-]+$/.test(x.id) && /^v0\.0\.\d+$/.test(x.v) && x.do && x.expect));
+console.log("every test has an id, a version, Do and Expect:", all.length > 5 && /* v0.0.463: the list shrinks as Lucas passes tests */ all.every(x => /^[a-z0-9-]+$/.test(x.id) && /^v0\.0\.\d+$/.test(x.v) && x.do && x.expect));
 console.log("the release ships it (the zip takes the system folder but tools/tests):", src("../../.github/workflows/release.yml").includes("--exclude 'tools/tests'") && fs.existsSync(ROOT + "checklist.json"));
 
 console.log("--- the parser");

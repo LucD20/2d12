@@ -353,7 +353,7 @@ export async function startTemplate(cfg, ctx = {}) {
     // v0.0.251 (Lucas): the question is a bar at the bottom, in the system's style; "you too" follows the Action's Area setting (the item sheet: "Affect the creature it is around") and is a click away
     const { pickBar } = await import("./pickbar.mjs");
     const withMe = { id: "me", label: `Apply, ${escT(centerTok?.name ?? "you")} too` }, withoutMe = { id: "others", label: centerTok ? `Apply, not ${escT(centerTok.name)}` : "Apply" };
-    const res = await pickBar({ icon: "fa-vector-square", aside: false, text: `<b>${escT(actName || "the area")}</b>: apply the area shown on the map? Targets: <b>${names}</b>.${noLoE.length ? ` No Line of Effect: ${noLoE.map(escT).join(", ")}.` : ""}`,
+    const res = await pickBar({ icon: "fa-vector-square", aside: false, text: `<b>${escT(actName || cfg.source || cfg.name || "The area")}</b>: apply the area shown on the map? Targets: <b>${names}</b>.${noLoE.length ? ` No Line of Effect: ${noLoE.map(escT).join(", ")}.` : ""}`,
       options: centerTok ? (data.self ? [withMe, withoutMe] : [withoutMe, withMe]) : [withoutMe] });
     dropPreview();
     await back0();

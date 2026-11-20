@@ -1223,6 +1223,9 @@ export async function saveDamage(msg) {
       st.empDone = true;
     }
   }
+  // v0.0.463 (Lucas, checklist v0.0.462, consecrated: "it shows both 1d6 and 1d8, but apply only applies the 1d8"): a Tier's group left with no
+  // creature (its only one took its own d8 roll above) is not shown
+  { const used = [...new Set(gOf)].sort((x, y) => x - y), map = new Map(used.map((g, n) => [g, n])); if (used.length < groups.length) { const kept = used.map(g => groups[g]); groups.length = 0; groups.push(...kept); for (let j = 0; j < gOf.length; j++) gOf[j] = map.get(gOf[j]); } }
   const { postCcDamage } = await import("./ccdamage.mjs");
   await postCcDamage({ actor, title: cfg.source || m?.name || "Save", groups, targets: ready.map(({ r }, i) => ({ uuid: r.uuid, name: r.name, tier: r.result.tier, g: gOf[i] })), nl: !!cfg.nonlethal, originUuid: cfg.actorUuid ?? "", srcId: msg.id, into: msg, after: cfg.after ?? "", save: true });
   for (const { i } of ready) st.rows[i].damageDone = true;

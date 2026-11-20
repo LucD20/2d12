@@ -209,7 +209,8 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   const buckets = { B: split(a.B, "B"), M: split(a.M, "M") };
   const sys = actor.system, undo = { "system.damage.bodyLethal": sys.damage.bodyLethal, "system.damage.bodyNonlethal": sys.damage.bodyNonlethal, "system.damage.mindLethal": sys.damage.mindLethal, "system.damage.mindNonlethal": sys.damage.mindNonlethal, "system.guard": sys.guard ?? 0, "system.apGuard": sys.apGuard ?? 0, "system.reduceNext": sys.reduceNext ?? 0 };
   if (r.applied?.undo) Object.assign(undo, r.applied.undo);
-  if (a.B + a.M > 0) await D.applyToActor(actor, buckets, { announce: false, from: { uuid: s.originUuid ?? "", strike: !!s.strike }, guardFirst });
+  const report = {};   // v0.0.463: what the reductions and the Guard took (the breakdown after Apply)
+  if (a.B + a.M > 0) await D.applyToActor(actor, buckets, { announce: false, from: { uuid: s.originUuid ?? "", strike: !!s.strike }, guardFirst, report });
   const took = { B: buckets.B.l + buckets.B.n, M: buckets.M.l + buckets.M.n };
   const bd = (Number(undo["system.damage.bodyLethal"]) || 0) + (Number(undo["system.damage.bodyNonlethal"]) || 0) + took.B, md = (Number(undo["system.damage.mindLethal"]) || 0) + (Number(undo["system.damage.mindNonlethal"]) || 0) + took.M;
   const bl = sys.bdt > 0 && bd >= sys.bdt, st = sys.mdt > 0 && md >= sys.mdt;
@@ -240,7 +241,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
       try { await runTierMove(g.move, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: game.messages?.get?.(s.srcId) ?? null }); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
     }
   }
-  const rwi = CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, label: x.label, v: x.v }));   // v0.0.321: shown as icons after "Took"
+  const rwi = [...CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, label: x.label, v: x.v })), ...(report.mods ?? [])];   // v0.0.321: shown as icons after "Took"; v0.0.463: and the reductions and Guard (the breakdown)
   r.applied = { took, mods: rwi, state: bl && st ? "both" : bl ? "bloodied" : st ? "strained" : "", factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
   return true;
 }

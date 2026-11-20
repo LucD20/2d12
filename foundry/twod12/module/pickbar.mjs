@@ -60,10 +60,24 @@ export async function pickBar(o) {
     // v0.0.376 (PACK STYLE-2, the brief's 5c): with the HUD on screen the question is asked in its middle (it keeps its frame), else at the bottom
     let hud = null;
     try { hud = globalThis.__twod12Hud ?? null; } catch (e) { hud = null; }
-    const slot = hud?.hudAskSlot?.() ?? null;
+    let slot = hud?.hudAskSlot?.() ?? null;
     // v0.0.397 (Lucas: "This should also be in the same area as the granted action"): in the HUD's side panel when a creature's bar is shown
-    const side = !!slot?.classList?.contains("hb-ask");
+    let side = !!slot?.classList?.contains("hb-ask");
     if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
+    // v0.0.463 (Lucas: "As a GM, when the Judge is triggered, if I click on the Paladin's tokens, it shows a small Judge window, and not the hud with
+    // the situational tab"): a question asked with no HUD on screen moves into the HUD's Situational section as soon as a token brings the HUD up
+    let dockHook = null;
+    if (!slot) {
+      const dock = () => setTimeout(() => {
+        if (slot || !bar.isConnected) return;
+        const h = globalThis.__twod12Hud ?? null, sl = h?.hudAskSlot?.() ?? null;
+        if (!sl) return;
+        hud = h; slot = sl; side = !!sl.classList?.contains("hb-ask");
+        bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); sl.append(bar); h.hudAsking(true, side);
+        try { Hooks.off("controlToken", dockHook); } catch (e) { /* gone */ } dockHook = null;
+      }, 150);
+      try { dockHook = Hooks.on("controlToken", dock); } catch (e) { dockHook = null; }
+    }
     let gfx = null, down = null, move = null, prevInteractive = null, hovered = null, M = null;
     const cellsOf = x => x.cells ?? T.tokenCells(x.token);
     // v0.0.249 (Lucas): feedback before the click: the candidate under the pointer (or whose button is hovered) lights up on the map and in the bar
@@ -105,6 +119,7 @@ export async function pickBar(o) {
     bar.addEventListener("mouseleave", () => hover(null));
     const finish = v => {
       bar.remove(); window.removeEventListener("keydown", key, true);
+      if (dockHook !== null) { try { Hooks.off("controlToken", dockHook); } catch (e) { /* gone */ } }
       if (slot) hud.hudAsking(false);
       if (gfx) canvas.app.view.style.cursor = "";
       if (move) canvas.stage.off("pointermove", move);

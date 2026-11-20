@@ -568,6 +568,7 @@ export async function noteLanded(ids, info = {}) {
     const off = (Number(info.blocked) || 0) + (Number(info.cut) || 0);
     if (prot.length === 1 && off > 0) prot[0].out = { ...(prot[0].out ?? {}), blocked: off };
     for (const r of st.rows) if (r.state === "use" && r.role === "attack" && r.out && !r.out.spent && isDown(actorOf(docSync(r.targetUuid)))) r.out.down = true;
+    if (!F2.msg?.update) continue;   // v0.0.463 (Lucas's console: "Cannot read properties of null (reading 'update')"): its message is gone (deleted, or a Judge question with no card)
     try { await F2.msg.update({ content: rxCardHtml(st), [`flags.${F}.rx`]: st }); } catch (e) { console.warn("twod12 | Reactions message", e); }
   }
 }

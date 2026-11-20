@@ -4,6 +4,14 @@
    "name": "Characters and sheets",
    "items": [
     {
+     "id": "guard-zero",
+     "v": "v0.0.463",
+     "title": "Guard down to 0 with kept AP",
+     "do": "Aveline ends her turn with 1 AP kept (it gives Guard); on her sheet, right-click the Guard until it stops.",
+     "expect": "The number goes down to 0 (her own Guard first, then the kept AP's).",
+     "rev": 1
+    },
+    {
      "id": "pc-symbols",
      "v": "v0.0.460",
      "title": "The stat symbols on the PC sheet",
@@ -247,76 +255,36 @@
    "name": "Reactions and Judge",
    "items": [
     {
-     "id": "armor-faith-source",
-     "v": "v0.0.453",
-     "title": "Armor of Faith says what granted it",
-     "do": "Durgan at Escalation 2 uses Shield of Faith on Aveline when the Orc Warrior's Strike would damage her.",
-     "expect": "The chat line reads \"Armor of Faith (Durgan's Passive, for using Shield of Faith): Durgan gains Guard 3\", both names links that open their cards.",
+     "id": "judge-gm-dock",
+     "v": "v0.0.463",
+     "title": "Judge's question for the GM, and Line of Effect",
+     "do": "As the GM with no token selected, the Judged Orc Warrior damages an ally near Durgan (Durgan an NPC-run Paladin, or the GM answering for him): click Durgan's token. Then a wall between Durgan and the ally.",
+     "expect": "The question moves into Durgan's HUD, Situational tab (not a small floating bar). With the wall (no Line of Effect from Durgan to the ally) no question and no reduction.",
      "rev": 1
     },
     {
-     "id": "judge-in-hud",
-     "v": "v0.0.441",
-     "title": "Judge's question in the Situational section",
-     "do": "Durgan Judges the Orc Warrior; the Orc hits Sylwen within 5 squares of Durgan. As Durgan's player, look at his HUD.",
-     "expect": "The question \"Reduce that damage by 1?\" is in the Situational section with Not now and Reduce by 1 only (no third Cancel button); Escape still closes it.",
+     "id": "sit-order",
+     "v": "v0.0.463",
+     "title": "The Situational section's order and the area's question",
+     "do": "Sylwen is Prone; she uses an area Action (Volley) and places it.",
+     "expect": "The area's question (\"Volley: apply the area shown on the map? …\", capitalized) is above Prone's Stand / Crawl; no \"Right-click pans the map\" in any key line.",
      "rev": 1
+    },
+    {
+     "id": "armor-faith-source",
+     "v": "v0.0.463",
+     "title": "Armor of Faith's names as text",
+     "do": "Durgan at Escalation 2 uses Shield of Faith on Aveline when the Orc Warrior's Strike would damage her.",
+     "expect": "The chat line reads \"Armor of Faith (Durgan's Passive, for using Shield of Faith): Durgan gains Guard 3\" with the two names in bold, a dotted underline, no box; a click opens each card.",
+     "rev": 2
     },
     {
      "id": "two-judges",
-     "v": "v0.0.423",
-     "title": "Two Paladins Judge the same Orc",
-     "do": "Aveline and Durgan both Judge one Orc; it damages an ally near both.",
-     "expect": "Each Paladin is asked for their own reduction; Smite reads it as Profane for each.",
-     "rev": 1
-    },
-    {
-     "id": "judge-cycle",
-     "v": "v0.0.431",
-     "title": "Judge once per turn-cycle",
-     "do": "Put Aveline last in the order. The Orc she Judged damages Sylwen near her (reduce it); next round the Orc acts before Aveline and damages Sylwen again.",
-     "expect": "The second damage isn't offered a reduction (still the Paladin's turn-cycle); after the Paladin's turn starts, the next one is.",
-     "rev": 1
-    },
-    {
-     "id": "armor-faith-judge",
-     "v": "v0.0.431",
-     "title": "Armor of Faith and Judge's 0R",
-     "do": "Durgan at Escalation 2 or more (Armor of Faith): Judge again as a 0R when the creature he Judged goes Down; then use Shield of Faith.",
-     "expect": "No Guard from Judge's 0R; Shield of Faith gives the Guard (1 + Power Modifier).",
-     "rev": 1
-    },
-    {
-     "id": "shield-of-faith",
-     "v": "v0.0.409",
-     "title": "Shield of Faith and its target",
-     "do": "An Orc Strikes Sylwen within 5 squares of Durgan; Durgan uses Shield of Faith. Then try with Sylwen behind a wall from Durgan.",
-     "expect": "The damage is 1 + Pow less and the attacker is Taunted (1 round). Behind a wall: the Reactions message says it's blocked (\"no Line of Effect to ...\").",
-     "rev": 1
-    },
-    {
-     "id": "rebuke-move-back",
-     "v": "v0.0.409",
-     "title": "Rebuke and Snap Shot's Move back",
-     "do": "An Orc within 3 squares walks away from Aveline: she uses Rebuke. An Orc walks up to Sylwen: she uses Snap Shot; one walks up to Kaela: she uses Slip Away.",
-     "expect": "The Reactions message offers each; Move back puts the enemy on the square before.",
-     "rev": 1
-    },
-    {
-     "id": "shield-not-ally",
-     "v": "v0.0.426",
-     "title": "Shield of Faith not against an ally",
-     "do": "Sylwen's Volley hits Aveline, next to Durgan (with Shield of Faith).",
-     "expect": "Shield of Faith is not offered (it answers an enemy's Strike).",
-     "rev": 1
-    },
-    {
-     "id": "kindled-wrath",
-     "v": "v0.0.426",
-     "title": "Kindled Wrath",
-     "do": "Make Sylwen, an ally of Aveline, Strained (Resolve damage), then Bloodied.",
-     "expect": "Strained raises nothing; Bloodied raises her Escalation once, and the line names the ally.",
-     "rev": 1
+     "v": "v0.0.463",
+     "title": "Two Paladins Judge the same Orc: the breakdown",
+     "do": "Aveline and Durgan both Judge one Orc; it damages an ally near both; both reduce; apply, then open the row's breakdown (the equals button).",
+     "expect": "Each Paladin is asked; the breakdown lists \"Judge (Aveline) −N\" and \"Judge (Durgan) −N\", then any Guard it took; no \"Cannot read properties of null\" in the console.",
+     "rev": 2
     },
     {
      "id": "rescue-reach",
@@ -324,14 +292,6 @@
      "title": "Rescue moves the ally 2 squares",
      "do": "Durgan uses Hold the Line's Rescue on an adjacent ally (Aveline) and moves her 2 squares away from him.",
      "expect": "Allowed (a Reposition isn't held within your Reach); Relocate still is.",
-     "rev": 1
-    },
-    {
-     "id": "snap-shot-doom",
-     "v": "v0.0.428",
-     "title": "Snap Shot isn't Doomed by the mover",
-     "do": "An enemy walks up next to Sylwen; use Snap Shot from the Reactions message before clicking Move back.",
-     "expect": "The roll is not Doomed for being Engaged (the enemy hasn't entered yet); another enemy already adjacent still makes it Doomed.",
      "rev": 1
     }
    ]
@@ -341,19 +301,19 @@
    "items": [
     {
      "id": "area-hover",
-     "v": "v0.0.422",
+     "v": "v0.0.463",
      "title": "The hover card over an area",
-     "do": "Hover a placed area: Sylwen's Covering Fire, or Aveline's Consecrated Ground.",
-     "expect": "A small card follows the mouse: its name and what it does inside.",
-     "rev": 1
+     "do": "Hover Aveline's Consecrated Ground, then Sylwen's Covering Fire.",
+     "expect": "Consecrated Ground: \"Difficult Terrain (enemies)\" and \"Allies and you: Guard your Power Modifier at the start of their turns\", and its rounds; Covering Fire its own lines.",
+     "rev": 2
     },
     {
      "id": "consecrated",
-     "v": "v0.0.409",
-     "title": "Consecrated Ground and Word of Radiance",
-     "do": "Aveline places Consecrated Ground; walk an enemy in; start Durgan's turn inside. Aveline uses Word of Radiance on enemies with one Judged.",
-     "expect": "Enemies pay double in it; the ally gains Guard equal to your Power Modifier (a line). Word of Radiance: Appeal Saves, d8s against the Judged one, Pushes 3 / 2 / 1.",
-     "rev": 1
+     "v": "v0.0.463",
+     "title": "Word of Radiance on a Judged creature: one damage line",
+     "do": "Aveline Judges the Orc Warrior and uses Word of Radiance on it and the Ogre Chieftain; both roll their Saves; open the damage.",
+     "expect": "The Orc's Tier shows its d8 damage only (no extra d6 group with no one in it); Apply applies what is shown.",
+     "rev": 2
     },
     {
      "id": "covering-fire",

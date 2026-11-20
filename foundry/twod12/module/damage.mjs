@@ -37,17 +37,21 @@ export async function applyToActor(actor, a, opts = {}) {
   // v0.0.243 (pack R): the Guard of the kept AP (system.apGuard) is taken before the other Guard; both are one "Guard N" on the line.
   // v0.0.254 (Shield of Faith): a reduction waiting on the creature takes from this damage first, then it is spent whatever is left of it
   const red = Math.max(0, Math.floor(Number(actor.system.reduceNext) || 0));
-  if (red) { const r = absorbGuard(red, a, 0); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; early["system.reduceNext"] = 0; early["system.reduceFrom"] = ""; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
+  // v0.0.463 (Lucas, checklist v0.0.462, two-judges: the breakdown didn't show what took the damage): opts.report gets each reduction and the Guard
+  const rep = opts.report ? (opts.report.mods ??= []) : null;
+  if (red) { const r = absorbGuard(red, a, 0); if (rep && r.taken) rep.push({ kind: "reduce", label: String(actor.system.reduceFrom || "Reduction"), v: red }); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; early["system.reduceNext"] = 0; early["system.reduceFrom"] = ""; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
   // v0.0.409 (pack F2; book, the Paladin: Judge): the first time each round a Judged creature damages an ally within 5 squares of its judge, the
   // damage is reduced by the judge's Power Modifier (before the Guard, as a reduction)
   try {
     const J = await import("./judge.mjs");
     for (const r of await J.judgeReductions(actor, from)) {
       const x = absorbGuard(r.by, a, 0); a.B = x.a.B; a.M = x.a.M; a.reduced = (Number(a.reduced) || 0) + x.taken;
+      if (rep && x.taken) rep.push({ kind: "reduce", label: `Judge (${r.judge.name})`, v: r.by });
       if (x.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: r.judge }), content: sysLine("fa-scale-balanced", `<b>Judge</b>: the damage to <b>${esc(actor.name)}</b> is reduced by <b>${x.taken}</b> (${esc(r.judge.name)}'s Power Modifier; the Judged creature's first damage this round to an ally within 5 squares).`, "guardmsg") });
     }
   } catch (e) { console.warn("twod12 | Judge", e); }
   const g = absorbGuard(actor.system.guard, a, actor.system.apGuard, opts.guardFirst === "M" ? "M" : "B");   // v0.0.283: the creature's choice of pool
+  if (g.taken && rep) rep.push({ kind: "guard", label: "Guard", v: g.taken });
   if (g.taken) { a.B = g.a.B; a.M = g.a.M; early["system.guard"] = g.guard; early["system.apGuard"] = g.apGuard; a.guardLeft = g.guard + g.apGuard; }
   // v0.0.272: the Guard and the reduction this damage used are written first, so a Guard a "would go Down" Reaction gives is not overwritten
   if (Object.keys(early).length) await writeDamage(actor, early);

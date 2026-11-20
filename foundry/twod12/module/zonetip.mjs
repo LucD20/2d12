@@ -27,6 +27,8 @@ export function zoneTipLines(z, nameOf = () => null) {
     if (rows.heal?.on && !(z.rules ?? []).some(r => String(r.heal ?? "").trim())) lines.push(`${WHO[rows.heal.who] ?? "Inside"}: heal ${rows.heal.formula} at the start of their turns`);
     if (rows.ht?.on) lines.push(`Hazard: ${(rows.ht.list ?? []).map(d => `${d.dice}${d.sub ? ` ${d.sub}` : ""}`).join(" + ") || "damage"} (${WHO[rows.ht.who] ?? "everyone"})`);
     if (rows.diff?.on) lines.push(`Difficult Terrain (${(WHO[rows.diff.who] ?? "everyone").toLowerCase()})`);
+    // v0.0.463 (Lucas, checklist v0.0.462, area-hover: Consecrated Ground showed only the enemies' Difficult Terrain): the Guard row too
+    if (rows.guard?.on) lines.push(`${WHO[rows.guard.who] ?? "Inside"}${rows.guard.self ? " and you" : ""}: Guard ${String(rows.guard.formula ?? "").replace(/@origin\.pow/gi, "your Power Modifier").replace(/@origin\./gi, "")} at the start of their turns`);
   }
   const t = z?.ends?.time;
   if (t?.on) lines.push(t.mode === "encounter" ? "Until the encounter ends" : `${Number(z.remaining ?? t.rounds) || t.rounds} round${(Number(z.remaining ?? t.rounds) || t.rounds) === 1 ? "" : "s"}`);
