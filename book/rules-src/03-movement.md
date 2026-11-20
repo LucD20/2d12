@@ -173,7 +173,7 @@ A Reposition stops at an object or a creature without taking Collision damage.
 
 ## Reposition
 
-Reposition moves a creature of your choice along a path, but it isn't Forced Movement. Reposition has a value: up to that many squares of path. Your Reach and the creature's Size don't limit it. The path follows the rules of [[Slid]] (each square next to the previous one, each counting as 1 even when it is diagonal, and the origin must have Line of Effect to the creature at every square), with these rules:
+Reposition moves a creature of your choice along a path, but it isn't Forced Movement. Reposition has a value: up to that many squares of path. **You move the creature yourself, so it stays within your Reach the whole way:** every square of its path, and the square where it ends, is within your Reach. The creature's Size doesn't limit it. The path follows the rules of [[Slid]] (each square next to the previous one, each counting as 1 even when it is diagonal, and the origin must have Line of Effect to the creature at every square), with these rules:
 
 - It doesn't trigger Reactions from movement.
 - It ignores Difficult Terrain.
@@ -182,7 +182,7 @@ Reposition moves a creature of your choice along a path, but it isn't Forced Mov
 - It can't pass through creatures or objects: it stops in the last legal square before one, without Collision damage. It can never make a creature end its movement inside another creature or an object.
 
 > [!example]
-> Dave stands between you and a goblin, in a line, with an empty square between you and Dave. Reposition 2 can't move the goblin through Dave's square, but the path can go around him: 1 square diagonally over Dave, then 1 square diagonally down, into the empty square next to you.
+> You hold a weapon with Reach 2. Dave stands next to you and a goblin next to him, in a line. Reposition 2 can't move the goblin through Dave's square, but the path can go around him, staying within your Reach: 1 square diagonally over Dave, then 1 square to the side, into the square next to you.
 
 @@DIAGRAM:reposition@@
 

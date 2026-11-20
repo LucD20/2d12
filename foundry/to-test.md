@@ -180,9 +180,10 @@ Do: Aveline and Durgan both Judge one Orc; it damages an ally near both; both re
 Expect: Each Paladin is asked; the breakdown lists "Judge (Aveline) −N" and "Judge (Durgan) −N", then any Guard it took; no "Cannot read properties of null" in the console.
 Rev: 2
 
-### rescue-reach · v0.0.426 · Rescue moves the ally 2 squares
-Do: Durgan uses Hold the Line's Rescue on an adjacent ally (Aveline) and moves her 2 squares away from him.
-Expect: Allowed (a Reposition isn't held within your Reach); Relocate still is.
+### rescue-reach · v0.0.464 · Rescue stays within your Reach
+Do: Durgan uses Hold the Line's Rescue on an adjacent ally (Aveline): try to move her 2 squares away from him, then to another square next to him.
+Expect: Only the squares within Durgan's Reach are offered (the gold squares); a square farther away says "the target must remain within Durgan's Reach (1)"; a square next to him works.
+Rev: 2
 
 ## Areas, light and Cover
 

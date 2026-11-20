@@ -901,6 +901,9 @@ function loeTo(origin, target, sh) {
  */
 function choosePath(origin, target, N, mode = "slid", { withinReach = false } = {}) {
   const repo = mode === "reposition";
+  // v0.0.464 (Lucas, 2026-11-20: "it should limit by reach, its like you are moving the person"; book, Chapter 3, Reposition): every Reposition
+  // stays within the mover's Reach the whole way (it was Relocate's own rule); an origin that isn't a creature on the map (an area) keeps no limit
+  if (repo && globalThis.canvas?.tokens?.get?.(origin?.id)) withinReach = true;
   return new Promise(resolve => {
     const cells = tokenCells(target), tl = { i: Math.min(...cells.map(c => c.i)), j: Math.min(...cells.map(c => c.j)) };
     const oCells = tokenCells(origin), reach = Math.max(1, num(origin.actor?.system?.reach) || 1);

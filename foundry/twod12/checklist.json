@@ -288,11 +288,11 @@
     },
     {
      "id": "rescue-reach",
-     "v": "v0.0.426",
-     "title": "Rescue moves the ally 2 squares",
-     "do": "Durgan uses Hold the Line's Rescue on an adjacent ally (Aveline) and moves her 2 squares away from him.",
-     "expect": "Allowed (a Reposition isn't held within your Reach); Relocate still is.",
-     "rev": 1
+     "v": "v0.0.464",
+     "title": "Rescue stays within your Reach",
+     "do": "Durgan uses Hold the Line's Rescue on an adjacent ally (Aveline): try to move her 2 squares away from him, then to another square next to him.",
+     "expect": "Only the squares within Durgan's Reach are offered (the gold squares); a square farther away says \"the target must remain within Durgan's Reach (1)\"; a square next to him works.",
+     "rev": 2
     }
    ]
   },

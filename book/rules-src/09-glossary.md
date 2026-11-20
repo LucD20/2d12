@@ -145,7 +145,7 @@
 | [[Reload (property)\|**Reload**]] | A weapon property: a Reload Shot needs a reload afterwards. |
 | [[Reload (property)\|**Reload Shot**]] | A Favored and Empowered shot with a Reload weapon. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
-| [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value. Not Forced Movement: it never passes through creatures, never enters hazards, and needs Line of Effect. |
+| [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value, within your Reach the whole way. Not Forced Movement: it never passes through creatures, never enters hazards, and needs Line of Effect. |
 | [[Requirements\|**Requirements**]] | What you need to use an Action. |
 | [[Resist, Weak and Immune\|**Resist**]] | Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0). |
 | [[Health Pool\|**Resolve, Vigor**]] | The two thresholds of your Health Pool: your class's high and low Health values (you choose which is which), your species' bonuses, and the Stage steps. |
