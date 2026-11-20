@@ -1,0 +1,87 @@
+/* Group 3 (Lucas, 2026-11-19, the PC sheet's Build tab): the page, then the proposal's rules, each only under a .g3-* class.
+   Mockup only: nothing in the system changed. The colors are the system's tokens (--s-*, styles/theme.css), so dark and light both follow. */
+h1 { font: 600 28px "Source Serif 4", serif; margin: 0 0 6px; }
+.g3-lead { max-width: 1100px; margin: 0 0 28px; line-height: 1.45; opacity: .9; }
+.g3-sec { margin-bottom: 52px; } .g3-qt { margin: 0 0 8px; font-style: italic; opacity: .8; max-width: 1150px; }
+.g3-list { margin: 0 0 16px 18px; padding: 0; max-width: 1150px; line-height: 1.45; } .g3-list li { margin: 4px 0; }
+.g3-list code { font-size: 12.5px; }
+.g3-pair { display: flex; gap: 28px; align-items: flex-start; margin-bottom: 22px; flex-wrap: wrap; } .g3-shot h3 { margin: 0 0 6px; }
+.g3-sub { margin: 18px 0 8px !important; opacity: 1 !important; font-size: 15px !important; }
+.g3-note { font-size: 12.5px; opacity: .75; margin: 8px 0 0; max-width: 520px; line-height: 1.4; }
+.g3-minis { display: flex; flex-wrap: wrap; gap: 18px 24px; margin-bottom: 10px; } .g3-mini h4 { margin: 0 0 4px; opacity: .8; }
+.g3-strip { width: 524px; padding: 6px 8px; background: var(--s-pg); color: var(--s-ink); box-shadow: 0 0 0 1px #000; border-radius: 4px; font-family: "Source Sans 3", sans-serif; font-size: 13.5px; }
+
+/* the crops: an unscrolled window (the Build tab whole), or only the tab's top */
+.g3-crop .mk-win, .g3-crop .mk-win > .application { height: auto !important; }
+.g3-crop .window-content { flex: none !important; } .g3-crop .twod12.sheet.pcs.ps2 { position: static !important; flex: none !important; height: auto !important; min-height: 0 !important; }
+.g3-crop .ps-body { flex: none !important; height: auto !important; overflow: visible !important; } .g3-crop .ps-main { height: auto !important; overflow: visible !important; } .g3-crop .ps-scroll { flex: none !important; height: auto !important; overflow: visible !important; }
+.g3-crop .ps2-plate, .g3-crop .ps2-stats, .g3-crop .ps2-tiles, .g3-crop .ps2-combat, .g3-crop .ps2-note { display: none !important; }
+.g3-crop-top .ps-stack > :not(.g3-stage):not(.g3-origin):not(.ps-lvlbar):not(.ps-g2):not(.ps-banner),
+.g3-crop-cards .ps-stack > :not(.g3-stage):not(.g3-origin):not(.ps-lvlbar):not(.ps-g2):not(.ps-banner) { display: none !important; }
+
+/* ---------------------------------------------------------------- the proposal (inside the sheet, or a strip on the page) */
+.g3-stack { gap: 0 !important; }
+/* a button in the table look: outlined in the accent, the word in ink (STYLE-3's Use); quiet: outlined in the hairline; off: dashed and faded */
+.g3-btn { flex: none; height: 24px; padding: 0 9px; margin: 0; width: auto; border: 1px solid var(--s-gold); border-radius: 2px; background: transparent; color: var(--s-ink);
+  font: 600 12.5px "Source Sans 3", sans-serif; line-height: 22px; white-space: nowrap; cursor: pointer; box-shadow: none; }
+.g3-btn:hover { background: var(--s-stamp); color: var(--s-stamp-ink); }
+.g3-btn.quiet { border-color: var(--s-hair); font-weight: 400; }
+.g3-btn.no { border-style: dashed; color: var(--s-faint); }
+.g3-btn i.fa-x { font-size: 11px; vertical-align: -1px; }
+.g3-q { color: var(--s-mute); }
+
+/* the Level and its buttons */
+.g3-lvc { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
+.g3-lvw { margin-right: 4px; font-size: 13.5px; color: var(--s-mute); white-space: nowrap; } .g3-lvw b { color: var(--s-ink); font-size: 18px; font-weight: 700; margin-left: 2px; }
+
+/* Stage option A: the tab's title band */
+.g3-stage { padding: 2px 0 8px; border-bottom: 1px solid var(--s-rule); margin-bottom: 2px; }
+.g3-st1 { display: flex; align-items: center; gap: 12px; }
+.g3-stt { display: flex; align-items: baseline; gap: 6px; font-family: "Source Serif 4", serif; color: var(--s-ink); line-height: 1; }
+.g3-stw { font-size: 24px; font-weight: 600; } .g3-stn { font-size: 34px; font-weight: 700; }
+.g3-sts { display: flex; flex-direction: column; font-size: 12.5px; line-height: 1.3; color: var(--s-ink); }
+.g3-ladder { display: flex; gap: 10px; margin-top: 8px; }
+.g3-lg { flex: 4; display: flex; flex-direction: column; gap: 2px; } .g3-lg:first-child { flex: 3; }
+.g3-cells { display: flex; gap: 2px; padding-bottom: 3px; border-bottom: 1px solid var(--s-hair); }
+.g3-lg.on .g3-cells { border-bottom: 2px solid var(--s-gold); padding-bottom: 2px; }
+.g3-cells i { flex: 1; min-width: 0; height: 20px; display: inline-flex; align-items: center; justify-content: center; font: 400 11.5px "Source Sans 3", sans-serif; font-style: normal;
+  color: var(--s-faint); border: 1px solid var(--s-hair); }
+.g3-cells i.past { background: var(--s-band); color: var(--s-ink); border-color: var(--s-band); }
+.g3-cells i.now { background: var(--s-band); color: var(--s-ink); font-weight: 700; border: 2px solid var(--s-gold); }
+.g3-lg small { font-size: 11.5px; color: var(--s-faint); } .g3-lg.on small { color: var(--s-ink); font-weight: 700; }
+
+/* Stage option B: the plaque */
+.g3-stage.b { display: flex; gap: 12px; align-items: stretch; }
+.g3-plq { flex: none; width: 62px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid var(--s-rule); outline: 1px solid var(--s-hair); outline-offset: 2px;
+  margin: 3px; font-family: "Source Serif 4", serif; color: var(--s-ink); line-height: 1; padding: 5px 0 6px; }
+.g3-plq span { font-size: 14px; font-weight: 600; } .g3-plq b { font-size: 34px; font-weight: 700; }
+.g3-plr { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+.g3-stage.b .g3-lvc { margin-left: 0; }
+.g3-stage.b .g3-sts { flex-direction: row; gap: 10px; }
+
+/* Species and Class: the ruled lines of the sheet's top (.ps2-l: a grey word, a bold value) */
+.g3-kv { white-space: nowrap; } .g3-kv .g3-k { color: var(--s-mute); font-weight: 400; } .g3-kv b { font-weight: 700; color: var(--s-ink); }
+.g3-kv b.dom-Vigor { color: var(--s-vig); } .g3-kv b.dom-Resolve { color: var(--s-res); }
+.g3-origin { font-size: 13.5px; color: var(--s-ink); margin-bottom: 4px; }
+.g3-eh { display: flex; align-items: center; gap: 8px; min-height: 28px; }
+.g3-ek { color: var(--s-mute); } .g3-en { font-size: 15px; font-weight: 700; }
+.g3-ebtns { margin-left: auto; display: inline-flex; gap: 6px; justify-self: end; }
+.g3-el { display: flex; flex-wrap: wrap; gap: 2px 14px; padding: 3px 0; border-bottom: 1px solid var(--s-hair); }
+/* A: two entries, the kind in a column at the left, the lines under the name */
+.g3-origin.a .g3-ent { display: grid; grid-template-columns: 62px 1fr; border-bottom: 1px solid var(--s-rule); padding: 2px 0 4px; }
+.g3-origin.a .g3-eh { grid-column: 1 / 3; display: grid; grid-template-columns: 62px auto 1fr; }
+.g3-origin.a .g3-el { grid-column: 2; } .g3-origin.a .g3-el:last-child { border-bottom: 0; }
+/* B: side by side */
+.g3-origin.b { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; padding-bottom: 4px; border-bottom: 1px solid var(--s-rule); }
+.g3-origin.b .g3-eh { border-bottom: 1px solid var(--s-rule); }
+.g3-origin.b .g3-el:last-child { border-bottom: 0; } .g3-origin.b .g3-kv { white-space: normal; }
+.g3-origin.b .g3-el.g3-ex { justify-content: flex-end; padding-top: 5px; }
+
+/* the pick windows: the system's .classwin.pickwin markup, in a frame on the page */
+.g3-pw > .application { height: auto !important; }
+.g3-pw .window-content { flex: none !important; overflow: visible !important; }
+.g3-pwstep { padding: 4px 0 2px; }
+
+/* TODAY, a stand-in: the page has no Foundry CSS, so a button the system leaves unstyled (the Build tab's Swap on a Rest) would show the
+   browser's white default. Drawn here as Foundry's own button roughly is (a flat surface, a thin line). Not part of the proposal. */
+.ps-lvlbar .ps-swap { background: rgba(0,0,0,.12); border: 1px solid var(--s-hair); border-radius: 3px; color: var(--s-ink); }

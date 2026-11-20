@@ -2036,7 +2036,7 @@
   "body": [
    {
     "label": "Effect",
-    "text": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see [[Advance]])."
+    "text": "You do one of the following: draw an object you carry into a free hand; stow an object you hold (put it away on your person, such as sheathing a sword); swap two objects (stow the one you hold and draw another, in the same Action; stowing and swapping need no free hand); grab objects within Reach, as many as you have free hands; help a Prone creature within Reach stand up; help an Imperiled creature within Reach get to safety; wake an Unconscious creature within Reach; open a door, chest or something similar. This Action is broader than most: it can be used for similar things in the world. You can use it once during an Advance Action without ending the Advance (see [[Advance]])."
    }
   ],
   "blocks": [],
@@ -3922,7 +3922,8 @@
    "signature",
    "weapon",
    "strike",
-   "divine"
+   "divine",
+   "unfailing"
   ],
   "cost": "2 AP",
   "body": [

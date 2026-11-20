@@ -1,0 +1,7 @@
+--- the Escalation marks
+[{"n":1,"on":true,"rung":false},{"n":2,"on":true,"rung":true},{"n":3,"on":true,"rung":false},{"n":4,"on":true,"rung":true},{"n":5,"on":false,"rung":false},{"n":6,"on":false,"rung":true}]
+[{"n":1,"on":false,"rung":false},{"n":2,"on":false,"rung":false},{"n":3,"on":false,"rung":false},{"n":4,"on":false,"rung":false},{"n":5,"on":false,"rung":false},{"n":6,"on":false,"rung":false}] | a click sets it: true
+--- the rest
+a bar's Frequency only under Reactions, Granted, Escalation, Favorites: true
+Out of combat alone: false | the gauge is the click area (its numbers still edit): true
+the Build tab's cost in ink: true

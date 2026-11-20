@@ -38,10 +38,10 @@ console.log("an Action-only Talent shows its Action:", pv.includes("export const
 console.log("a choice picked in the class window:", cw.includes("_choiceBlock(") && gr.includes("grantChoices(actor, parent, copy, preset = null)"));
 console.log("Armor Training on the Loadout:", sheet.includes('class="lo-train"'));
 console.log("new tokens: bars always, no rotation:", tw.includes('"prototypeToken.displayBars": bars') && tw.includes('"prototypeToken.lockRotation": true'), "| core rotation off once:", tw.includes("tokenDefaultsV215"));
-console.log("Rally card:", rally.includes('sysCard({ title: "Rally"'));
+console.log("Rally line (v0.0.454: sysLine, the heart):", rally.includes('sysLine("fa-heart-pulse", healLinesHtml('));
 console.log("shortcuts Shift+L and Shift+H:", tw.includes('"lineOfEffect", {') && tw.includes('"coverHeight", {') && loe.includes("export function loeShortcut") && loe.includes("export function heightShortcut"));
 console.log("the diamond: no hover since v0.0.420 (Lucas: the hover cards removed); what is by hand stays on the item (automationNote):", !cf.includes("By hand: ${String(note).trim()}") && data.includes("automationNote: str()"), "| notes:", (content.match(/^  "[^"]+": "/gm) ?? []).length >= 10);
-console.log("Rally the Tribe:", (await import(ROOTURL + "tools/content.mjs")).actors.find(a => a.name === "Ogre Chieftain").items.some(i => i.name === "Rally the Tribe" && i.system.versions[0].effects.includes("gain 1 Support Boon on their next [Weapon] Action.")));
+console.log("Rally the Tribe (v0.0.458: the Boon a button):", (await import(ROOTURL + "tools/content.mjs")).actors.find(a => a.name === "Ogre Chieftain").items.some(i => i.name === "Rally the Tribe" && i.system.versions[0].effects.includes("gain @Boon[1|bb:support|traits:weapon]{1 Support Boon} on their next [Weapon] Action.")));
 console.log("an Emanation with no Distance is around you:", cf.includes('const onSelf = a.shape === "emanation" && !a.within && !c?.withinRange;'), "| asks about yourself:", tpl.includes("label: `Apply, ${escT(centerTok?.name ?? \"you\")} too`"));
 console.log("remove a target in the roll dialog:", acts.includes('class="ttx" data-rm=') && acts.includes('removed: fd.getAll("removed")'));
 console.log("Escalation Passive: description on click:", sheet.includes('data-action="toggleEscPass"') && esc.includes("desc:"));

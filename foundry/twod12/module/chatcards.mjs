@@ -4,6 +4,7 @@
 // the enemy Defenses or the target details hidden by the GM; Designer mode (a client setting) adds the odds, the Ruler line and the Mithril mark.
 // The message's stored content is the GM's view without Designer mode (the fallback when the hook can't run).
 import { esc, vsKind, tierOfLabel } from "./util.mjs";
+import { TWOD12 } from "./config.mjs";   // v0.0.457: the damage types' colors
 import { mergeDiceLine, mergeInstances } from "./dicemerge.mjs";
 /** v0.0.314 (pack AU): an AD / WD (or an Attribute's) badge in its color: the Vs. line's colors (util.mjs VS_COLORS). */
 const vsk = label => { const k = vsKind(label); return k ? ` vsk-${k}` : ""; };
@@ -11,14 +12,12 @@ import { bbKey, BB_LIMIT, BB_NAMES } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ small pieces */
 /** The subtypes' names and the card's ink for them (brief section 3; the others keep the system's ink). */
-export const SUBS = {
-  Sl: ["Slash", "#4a443b"], Bl: ["Blunt", "#4a443b"], Pi: ["Pierce", "#4a443b"], Fi: ["Fire", "#a0521a"], Ho: ["Holy", "#7d5400"], Co: ["Cold", "#2c6f8f"],
-  Ac: ["Acid", "#3B6D11"], El: ["Electricity", "#7a5c00"], Fo: ["Force", "#7a24bf"], Ps: ["Psychic", "#993556"], Th: ["Thunder", "#0C447C"], Un: ["Unholy", "#4A1D63"]
-};
+export const SUBS = Object.fromEntries(Object.entries(TWOD12.subtypes).filter(([k]) => k).map(([k, n]) => [k, [n, TWOD12.subtypeInk[k]]]));   // v0.0.457: config.mjs's colors (one hue a type)
 const subInk = s => SUBS[s]?.[1] ?? "#4a443b";
+const subStyle = s => `color:${subInk(s)};--sc-d:${TWOD12.subtypeColors?.[s] ?? subInk(s)}`;
 export const subName = s => SUBS[s]?.[0] ?? (s || "Untyped");
 /** A subtype's code in its color ("Ho"). */
-export const subCode = s => (s ? `<span class="cc-sub" style="color:${subInk(s)}">${esc(s)}</span>` : "");
+export const subCode = s => (s ? `<span class="cc-sub" style="${subStyle(s)}">${esc(s)}</span>` : "");
 const POOL = { B: "Vigor", M: "Resolve", C: "Vigor or Resolve" };
 /** The pool's icon: a heart for Vigor, a brain for Resolve (both for a [C] choice). */
 export const poolIc = p => (p === "M" ? '<i class="fa-solid fa-brain cc-pr" aria-hidden="true"></i>'
@@ -250,7 +249,9 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const btns = inMain ? dmgFootHtml(din, view) : footHtml(m, view, din ? { hasDamage: false, locked: true } : {});
   const dpart = din && !inMain ? din.part : "";
   // v0.0.429: an Effect the card writes above the roll is among its top lines (drawn once, there)
-  const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 2)) && !(m.card?.top ?? []).some(l => l.label === "Effect") ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
+  const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 1)) && !(m.card?.top ?? []).some(l => l.label === "Effect") ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
+  // v0.0.465 (Lucas, checklist v0.0.464: "the Special and Flavor entries should be above the rolls"): the card's Special and its Flavor come right
+  // after its lines, before the roll and the damage (they were under them)
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const pf = hide ? playerFoot("Player view · enemy Defenses hidden by the GM") : "";
@@ -258,7 +259,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   if (one) {
     const r = rows[0];
     const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(inMain ? { ...(m.outcomes?.[r.tier] ?? {}), parts: [] } : m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
-    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}${r.uuid ? "" : " notgt"}">${head}${body}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}${r.uuid ? "" : " notgt"}">${head}${flavor}${body}${dpart}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
@@ -312,9 +313,9 @@ export function attackCardHtml(m, view = FULL_VIEW) {
     // the pending rows in several Tiers: one Apply all for the card too, under the groups
     const pendAll = d.rows.filter(r => !r.applied), spread = d.groups.filter(g => (g.rows ?? []).some(i => d.rows[i] && !d.rows[i].applied)).length > 1;
     const allCard = view.author && !view.hideTgt && pendAll.length > 1 && spread ? `<div class="cc-applyall"><button type="button" class="cc-btn primary" data-twod12="ccApplyAll">Apply all</button>${pendAll.some(r => r.choice) ? '<span class="cc-muted">skips rows with a choice</span>' : ""}</div>` : "";
-    return `<div class="cc-card cc-attack many v398">${head}${shared}<div class="cc-groups2">${tgroups}</div>${allCard}${d.note}${effects}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+    return `<div class="cc-card cc-attack many v398">${head}${flavor}${shared}<div class="cc-groups2">${tgroups}</div>${allCard}${d.note}${effects}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
-  return `<div class="cc-card cc-attack many">${head}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+  return `<div class="cc-card cc-attack many">${head}${flavor}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${dpart}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Save card */
@@ -376,7 +377,7 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const lines = settled
     ? `${saveHead}<details class="cc-fold"><summary class="cc-foldsum">${cs.map(c => `<span class="cc-foldc">${tierPill(c.result.tier)} ${esc(c.name)}</span>`).join("")}</summary>${topLines}${trig}${body}${after}</details>`
     : `${topLines}${saveHead}${trig}${body}${after}`;
-  return `<div class="cc-card cc-save${one ? "" : " many"}${settled ? " settled" : ""}">${headHtml(m)}${settled ? "" : metaLineHtml(m)}${lines}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${settled ? "" : flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}${settled ? " settled" : ""}">${headHtml(m)}${settled ? "" : metaLineHtml(m)}${lines}${settled ? "" : flavor}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */
@@ -544,6 +545,38 @@ export function instancesOf(comps) {
   }
   return list;
 }
+/**
+ * v0.0.454 (Lucas, playtest 6, D2 "B": the breakdown as a ledger, one step a line): for one target, each pool's damage by type (its dice and
+ * Modifiers), then what the creature's Immune / Resist / Weak do to it, a reduction named by its source (Shield of Faith), Guard, and what the pool
+ * takes. Pure. mods: the row's (dmgModsFor's and rowPreview's: kind immune / resist / weak / reduce / guard); factor: Full 1, Half 0.5, Double 2;
+ * took: once applied, what each pool took ({ B, M }), which the "Takes" line shows.
+ */
+export function ledgerModel(comps, mods = [], { factor = 1, took = null } = {}) {
+  const insts = instancesOf(comps).map(x => ({ ...x, total: factor === 1 ? x.total : Math.ceil(x.total * factor) }));
+  const pools = { B: { lines: [], v: 0 }, M: { lines: [], v: 0 } }, bySub = {};
+  const sg = n => (n < 0 ? `\u2212${Math.abs(n)}` : `${n}`);
+  for (const x of insts) {
+    const p = x.pool === "M" ? "M" : "B", dice = x.dice.flatMap(d => d.results ?? []);
+    const bits = [dice.length ? `${String(x.formula ?? "").replace(/\s.*$/, "")}${x.formula ? ": " : ""}${dice.join(", ")}` : "", ...(dice.length ? x.mods.filter(m => m.label) : []).map(m => `${m.label} ${m.v < 0 ? "\u2212" : "+"}${Math.abs(m.v)}`)].filter(Boolean);   // a flat amount alone: just its type
+    pools[p].lines.push({ label: `${x.sub ? subName(x.sub) : "Damage"}${bits.length ? ` (${bits.join(", ")})` : ""}`, v: `${x.total}` });
+    pools[p].v += x.total; (bySub[x.sub] ??= { B: 0, M: 0 })[p] += x.total;
+  }
+  for (const m of mods ?? []) {
+    const t = bySub[m.sub] ?? { B: 0, M: 0 };
+    if (m.kind === "immune") { for (const p of ["B", "M"]) if (t[p]) { pools[p].lines.push({ label: m.label, v: sg(-t[p]) }); pools[p].v -= t[p]; t[p] = 0; } }
+    else if (m.kind === "resist") { let r = Math.abs(Number(m.v) || 0); const first = t.M > t.B ? "M" : "B"; for (const p of [first, first === "B" ? "M" : "B"]) { const n = Math.min(r, t[p]); if (n) { pools[p].lines.push({ label: m.label, v: sg(-n) }); pools[p].v -= n; t[p] -= n; r -= n; } } }
+    else if (m.kind === "weak") { const p = t.M > t.B ? "M" : "B", w = Number(m.v) || 0; pools[p].lines.push({ label: m.label, v: sg(w) }); pools[p].v += w; }
+  }
+  for (const m of (mods ?? []).filter(x => x.kind === "reduce" || x.kind === "guard")) {
+    let g = Math.abs(Number(m.v) || 0);
+    // a reduction is spent whole by this damage: its full value is written once (Lucas: "2 Pi − 3 Shield of Faith = 0"); Guard writes what it takes
+    if (m.kind === "reduce") { const p = ["B", "M"].find(k => pools[k].v > 0) ?? (pools.B.lines.length ? "B" : "M"); pools[p].lines.push({ label: m.label, v: sg(-g) }); for (const k of [p, p === "B" ? "M" : "B"]) { const n = Math.min(g, Math.max(0, pools[k].v)); pools[k].v -= n; g -= n; } continue; }
+    for (const p of ["B", "M"]) { const n = Math.min(g, Math.max(0, pools[p].v)); if (n) { pools[p].lines.push({ label: m.label, v: sg(-n) }); pools[p].v -= n; g -= n; } }
+  }
+  return ["B", "M"].filter(p => pools[p].lines.length).map(p => ({ pool: p, name: POOL[p], lines: pools[p].lines, takes: took ? (Number(took[p]) || 0) : Math.max(0, pools[p].v) }));
+}
+/** The ledger's HTML (pure): a block a pool, its steps, "Takes N" under a rule; foot: "Lethal · Full" or what was applied. */
+export const ledgerHtml = (blocks, foot = "") => `<div class="cc-ledger">${blocks.map(b => `<div class="cc-lg"><div class="cc-lgh">${poolIc(b.pool)} ${esc(b.name)}</div>${b.lines.map(l => `<div class="cc-lgl"><span>${esc(l.label)}</span><b>${esc(l.v)}</b></div>`).join("")}<div class="cc-lgl cc-lgt"><span>Takes</span><b>${b.takes}</b></div></div>`).join("") || '<div class="cc-lgl"><span>No damage.</span></div>'}${foot ? `<div class="cc-lgf">${foot}</div>` : ""}</div>`;
 /** The pool lines: "♥ Vigor · 6 Sl + 4 Fi" → 10 (the same subtype from several sources is one number). */
 export function poolBlock(comps) {
   // v0.0.345 (Lucas, playtest 4: "the +[Mod] before Pi, both are the same subtype"): each subtype lists its parts, then its code once ("7 + 2 Pi")
@@ -593,17 +626,18 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
     if (!r) return "";
     if (ht) return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span><span class="cc-rmods">${r.applied ? stateChip(r.applied.state) : ""}</span><span class="cc-muted">${r.applied ? "✓ Applied" : "Waiting for the GM"}</span></div>`;
     if (r.applied) {
-      const f = r.applied.factor ?? 1, adj = ["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${String(f) === k ? " on" : ""}" data-twod12="ccAdjust" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("");
-      // v0.0.285 (Lucas): the applied row as compact as a pending one: "Took …" under the name, Full / Half / Double on demand
-      // v0.0.321 (Lucas): Undo in Apply's place (the far right, the same width); the Lethal tag in the on-demand row
-      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Full, Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}">✓ Undo</button><div class="cc-adjrow ondemand">${adj}${nlTag}</div>` : ""}</div>`;
+      // v0.0.454 (Lucas, playtest 6, D2 "B"): the equals button opens the ledger of what happened; Full / Half / Double are a right-click on Undo
+      const f = r.applied.factor ?? 1, fw = { 1: "in full", 0.5: "halved", 2: "doubled" }[f] ?? "in full";
+      const led = ledgerHtml(ledgerModel((groups.find(g => (g.rows ?? []).includes(i)) ?? top).comps, r.applied.mods ?? [], { factor: f, took: r.applied.took ?? {} }), `Applied ${fw} \u00b7 ${m.nl ? "Nonlethal" : "Lethal"}`);
+      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}" data-ctx="adjust">✓ Undo</button><div class="cc-adjrow ondemand">${led}</div>` : ""}</div>`;
     }
     // v0.0.321 (Lucas): Resist / Weak / Immune show only once applied (an icon after "Took"); the Guard stays
     // v0.0.398 (Lucas: "remove the '− Guard' from all damages, this should only show in the damage breakdown when you click to see it"): in the
     // on-demand panel (the sliders button) beside Full / Half / Double
-    const mods = (r.mods ?? []).filter(x => x.kind === "guard").map(x => modTxt(x.v, x.label)).join(" ");
-    const adj = view.author ? `<div class="cc-adjrow ondemand">${["1", "0.5", "2"].map((k, j) => `<button type="button" class="cc-adj${k === "1" ? " on" : ""}" data-twod12="ccApply" data-row="${i}" data-factor="${k}">${["Full", "Half", "Double"][j]}</button>`).join("")}${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${nlTag}</div>` : "";
-    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small" data-cc-more="${i}" aria-expanded="false" aria-label="Half or Double"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1">Apply</button>` : ""}${adj}</div>`;
+    // v0.0.454 (Lucas, playtest 6, D2 "B"): the equals button opens the ledger (what will happen: by type, Immune / Resist / Weak, a reduction named
+    // by its source, Guard, what each pool takes); Full / Half / Double are a right-click on Apply (twod12.mjs ccMenu)
+    const led = view.author ? ledgerHtml(ledgerModel((groups.find(g => (g.rows ?? []).includes(i)) ?? top).comps, r.mods ?? []), `${m.nl ? "Nonlethal" : "Lethal"} \u00b7 Full`) : "";
+    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1" data-ctx="apply">Apply</button><div class="cc-adjrow ondemand">${led}</div>` : ""}</div>`;
   };
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {

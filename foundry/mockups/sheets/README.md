@@ -132,3 +132,34 @@ Blunt bronze `#b9a58c`, what the Resist / Weak chips already do with `--sc-l` / 
 ## Seen in today's sheets while drawing them (not part of this mockup)
 
 - The Reactions' pill "Round · 1R" wraps onto two lines in its column (the Orc's Avenge Kin).
+
+## Built (v0.0.441, pack SHEETS-HUD)
+
+The approved proposal is built into the system. `built.html` (`built.mjs`) draws the sheets **as built**: the system's own template and CSS on this mockup's model, with the open cards as the short card; `built-dark.jpg` / `built-light.jpg` are its screenshots. The proposal pages above stay as the record of what was approved.
+
+## The fixes mockup (Lucas on v0.0.441, 2026-11-18: "Dont remake it yet... Make the mockup of these changes")
+
+`fixes.html` (`fixes.mjs`, `fixes.css`; screenshots `fixes-dark.jpg`, `fixes-light.jpg`): the sheet as built beside the proposal (the same HTML
+with the mockup's changes; nothing in `foundry/twod12` changed). Aveline in combat at Escalation 6 (Roving Judgment, Weight of Judgment, Apex),
+Sylwen out of combat, Aveline's Build tab.
+1. The Frequency at a bar's right end goes under a Frequency's heading; under Reactions (Granted, Escalation) the word stays, muted, no square.
+2. Out of combat: only "Out of combat", centered, faded.
+3. The Vigor and Resolve gauges: the whole gauge is the click area (the track 18 px to the pointer, drawn 6 px); the numbers still open the edit.
+4. The Build tab: the cost an outlined stamp in ink, the Frequency a muted word (no colored pill).
+5. AP and Strikes: two aligned rows with their words, the Strikes the AP pips' size, no wrapping.
+6. Escalation: the title and its pips; the rungs one under the other (the number a column); the hooks one line ("Hooks left: ...").
+
+**Round 2 of 5 and 6 (Lucas: "Didnt like the Escalation and AP/R/Strike section, it is too large. Others are fine"):** at the top of the page,
+the build beside two compact options (`fixes-compact-dark.jpg`, `fixes-compact-light.jpg`), the combat line no taller than the two hand tiles.
+**A:** Escalation in three short lines (the title and six clickable pips; the Passives reached, by name, on one line; the hooks); the AP pips and
+the Reaction AP over the Strikes as the HUD's slashes. **B:** Escalation in two lines (the pips where a Passive or the Apex comes ringed; the
+hooks); AP, the Reaction AP and the Strikes on one line. In both the rungs' numbers leave the sheet (the Build tab lists each Passive).
+
+**Round 3 (Lucas: "I like C. But I need to see with two weapons, one on each hand"; "C" read as the third picture, Option B):** at the top of
+the page, Sylwen with her Hunting Bow in the main hand and her Dagger in the off hand: the build, Option B, Option A
+(`fixes-two-hands-dark.jpg`, `fixes-two-hands-light.jpg`). With B the combat line is the two hand tiles' height.
+
+**Round 4 (Lucas: "Put escalation (not the hooks) on the same section as AP/R/Strikes, and make the Hooks more pronunced"):** at the top of the
+page (`fixes-hooks-dark.jpg`, `fixes-hooks-light.jpg`): the marks cell has two rows, AP (pips, the Reaction AP, the Strikes' slashes) and Esc.
+(six pips, the rungs ringed, the number); the left cell holds only the hooks: "Hooks left", then each hook in bold at an Action name's size with
+the accent's small diamond, or "None this encounter", faded. Drawn with one hook (Sylwen, a weapon in each hand), two and none (Aveline).

@@ -93,7 +93,7 @@ export const rulerText = (worth, designer) => (designer && String(worth ?? "").t
 export function effectLines(versions = []) {
   const fxv = versions.filter(v => v.effects).filter((v, i, all) => all.findIndex(w => w.ap === v.ap && w.effects === v.effects) === i);
   if (!fxv.length) return { title: "", lines: [] };
-  const title = versions.every(v => v.noTiers) ? "Effects" : "Effects (Tier 2+)";
+  const title = "Effects";   // v0.0.453: an Effect happens whatever the roll (the book's Effect Timing)
   const once = fxv.length === versions.length && fxv.every(v => v.effects === fxv[0].effects);
   const multi = versions.length > 1;
   return { title, lines: once ? [{ ap: fxv[0].ap, text: fxv[0].effects, badge: false }] : fxv.map(v => ({ ap: v.ap, text: v.effects, badge: multi })) };

@@ -1,0 +1,9 @@
+--- the Boons as buttons
+  [V] 1d4 Pi; @Boon[-1|bb:pressure|next:roll]{1 Pressure Bane} on its next roll.
+  Allies within 5 squares gain @Boon[1|bb:support|traits:weapon]{1 Support Boon} on their next [Weapon] Action.
+  @Boon[2|bb:field|next:roll|self:yes]{2 Field Boons} on your next roll.
+  a Support Boon on the roll (no number: words)
+Dirty Trick, Tier 2: @Boon[-1|bb:pressure|next:roll]{1 Pressure Bane} on its next roll. | Rally the Tribe: Allies within 5 squares gain @Boon[1|bb:support|traits:weapon]{1 Support Boon} on their next [Weapon] Action.
+next:roll read: true | stored as __roll: true | spent only by a roll: true | a Save or Check spends it: true | an Action's roll: true | a Move doesn't: true
+--- the Save Action's Nonlethal switch
+the chip on a Save Action: true | no Bane on the user: true | the Save card's Boon and damage: true

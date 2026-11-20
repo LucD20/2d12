@@ -24,7 +24,7 @@ GROUPS = [("roll", "Roll", ["appeal", "body", "instinct", "mind", "power", "save
           ("requires", "Requires", ["gun", "handle", "melee", "ranged", "shot"]),   # the keys Foundry still has (test t146 compares the two lists); the book prints gun as Firearm and shot as Projectile (cards.py RENAMED) until the Foundry pass renames the keys
           ("kind", "Kind", ["area", "move", "self", "strike"]),
           ("damage", "Damage", ["nonlethal"]),
-          ("keywords", "Keywords", ["divine", "focus", "fear"])]
+          ("keywords", "Keywords", ["divine", "focus", "fear", "unfailing"])]
 def group_of(k):
     if k.startswith('ht:'): return 'kind'
     k = {'projectile': 'shot', 'firearm': 'gun'}.get(k, k)
@@ -32,18 +32,21 @@ def group_of(k):
 RULES = {"strike", "weapon", "power", "signature", "split"}
 LABEL = {"twohanded": "Two-handed"}
 TRAIT_WORDS = {"Strike": "strike", "Nonlethal": "nonlethal", "Divine": "divine", "Focus": "focus", "Handle": "handle", "Power": "power", "Signature": "signature", "Split": "split", "Melee": "melee", "Ranged": "ranged", "Self": "self", "Weapon": "weapon", "Save": "save"}
-DMG_WORDS = {"Blunt": "#8a8a8a", "Cold": "#2f9bc4", "Holy": "#b8921c", "Psychic": "#c9577f", "Pierce": "#8a8a8a", "Slash": "#8a8a8a"}
+
 ASSETS = 'rules-assets'
 ICONS = json.load(open(os.path.join(ASSETS, 'dtype-icons.json')))   # Font Awesome Free (CC BY 4.0), see rules-assets/FONTAWESOME-LICENSE.txt
-DTYPE = {"Acid": "#5d9b2b", "Blunt": "#8a8a8a", "Cold": "#2f9bc4", "Electricity": "#c99a00", "Fire": "#d0583a", "Force": "#a45ae0", "Holy": "#b8921c",
-         "Pierce": "#8a8a8a", "Psychic": "#c9577f", "Slash": "#8a8a8a", "Thunder": "#3b78c0", "Unholy": "#8f59b3"}
+# v0.0.457 (Lucas, 2026-11-19): one hue a damage type, (light, dark); Foundry's config.mjs subtypeInk / subtypeColors are the same (t286)
+DTYPE2 = {"Acid": ("#3f7a12", "#8bc34a"), "Blunt": ("#5a4a36", "#b9a58c"), "Cold": ("#136f8f", "#4fc3e8"), "Electricity": ("#7d6a00", "#e3cf3b"), "Fire": ("#a63a17", "#ef6a3a"), "Force": ("#6a35b8", "#a77ce8"), "Holy": ("#8a5a08", "#e0a83a"), "Pierce": ("#44513f", "#a9b8a4"), "Psychic": ("#a3335c", "#e07a9e"), "Slash": ("#4a5058", "#c3c9d1"), "Thunder": ("#1f4f8a", "#6f95c8"), "Unholy": ("#6e2a6e", "#c06ac0")}
+DTYPE = {k: v[0] for k, v in DTYPE2.items()}
+DMG_WORDS = {w: DTYPE[w] for w in ("Blunt", "Cold", "Holy", "Psychic", "Pierce", "Slash")}
+def _dvars(name): return f'--dc:{DTYPE2[name][0]};--dcd:{DTYPE2[name][1]}'
 def icon_svg(name):
     i = ICONS[name]
     return f'<svg class="ico" viewBox="0 0 {i["w"]} {i["h"]}" aria-hidden="true"><path fill="currentColor" d="{i["d"]}"/></svg>'
 DCODE = {"Ac": "Acid", "Bl": "Blunt", "Co": "Cold", "El": "Electricity", "Fi": "Fire", "Fo": "Force", "Ho": "Holy", "Pi": "Pierce", "Ps": "Psychic", "Sl": "Slash", "Th": "Thunder", "Un": "Unholy"}
-DCODE_RE = re.compile(r'(?<=[\d\]]) (' + '|'.join(DCODE) + r')\b')   # a code after a number or a [At]: "1d6 Ho", "[At] Bl"
-def dcode_html(code): return f'<span class="dcode" style="--dc:{DTYPE[DCODE[code]]}">{code}</span>'
-def dtype_html(name): return f'<span class="dtype" style="--dc:{DTYPE[name]}">{icon_svg(name)}{name}</span>'
+DCODE_RE = re.compile(r'(?<=[\d\]!]) (' + '|'.join(DCODE) + r')\b')   # a code after a number, a die's ! or a [At]: "1d6 Ho", "1d6! Ho", "[At] Bl"
+def dcode_html(code): return f'<span class="dcode" style="{_dvars(DCODE[code])}">{code}</span>'
+def dtype_html(name): return f'<span class="dtype" style="{_dvars(name)}">{icon_svg(name)}{name}</span>'
 def pool_html(k):
     k = {"V": "B", "R": "M"}.get(k, k)   # pack R-core: Vigor and Resolve use the Body and Mind icons
     name = {"B": "Body", "M": "Mind"}[k]
@@ -77,7 +80,7 @@ def hl(fragment):
                 if in_brackets or TRAIT_CTX.match(part, m.end()):
                     return f'<span class="trhl" style="--tc:{fam_color(TRAIT_WORDS[w])}">{w}</span>'
                 return w
-            return f'<span class="dmgword" style="--dc:{DMG_WORDS[w]}">{w}</span>'
+            return f'<span class="dmgword" style="{_dvars(w)}">{w}</span>'
         part = DCODE_RE.sub(lambda m: ' ' + dcode_html(m.group(1)), part)
         out.append(WORD_RE.sub(sub, part))
     return ''.join(out)

@@ -175,11 +175,14 @@ export function slotLabel(title) {
   return t;
 }
 /** An Escalation section of the class table: "Escalation N Passive" (N) or "Apex" (4); 0: not one. */
+export const ESC_APEX = 7;
 export function escSectionRank(title) {
   const t = String(title ?? "");
   const m = t.match(/^Escalation\s+(\d)/i);
-  if (m) return Math.min(3, Number(m[1]));
-  return /\bapex\b/i.test(t) ? 4 : 0;
+  // v0.0.455 (the group 3 mockup found it): Escalation runs 1 to 6 since Stage 0 (it was capped at 3, from the old scale): "Escalation 4" is 4;
+  // the Apex sorts after them (ESC_APEX)
+  if (m) return Math.min(6, Number(m[1]));
+  return /\bapex\b/i.test(t) ? ESC_APEX : 0;
 }
 
 /**
@@ -433,4 +436,99 @@ export function cleanLevel(v) {
   const list = Array.isArray(v) ? v : [v];
   for (const x of list) { if (x === "" || x === null || x === undefined) continue; const n = Number(x); if (Number.isFinite(n)) return Math.max(0, Math.trunc(n)); }
   return null;
+}
+
+/* ------------------------------------------------------------------ v0.0.441 (pack SHEETS-HUD): an Action's bar on the small sheets */
+// The approved sheets (foundry/mockups/sheets, "Option 1", Lucas 2026-11-18): each Action is one bar: its cost stamps (each the Use button),
+// the name, "Distance · Vs." in words, and the Frequency as a small square beside its word. A click on the bar opens the short card under it.
+const BAR_FREQ = { atwill: "At-will", round: "Round", encounter: "Encounter", turn: "Turn", daily: "Daily" };
+/**
+ * Pure: the bar of a row. o = { aps (each Version's AP), reaction, frequency, escalation, dist (the row's short Distance, "—" for none),
+ * vs (the row's short Vs.), inCombat, ap, rap }. Returns { stamps: [{ ap, label, off, why }] (one per cost: Versions of one cost, an Art's
+ * Modes, show one), dist, vs, fq (the Frequency key), fqWord ("Round", "Escalation 3, Encounter") }.
+ */
+export function actionBar({ aps = [], reaction = false, frequency = "", escalation = 0, dist = "", vs = "", inCombat = false, ap = 0, rap = 0 } = {}) {
+  const costs = [...new Set((aps ?? []).map(v => Math.max(0, Math.trunc(Number(v)) || 0)))];
+  const stamps = costs.map(n => {
+    const why = inCombat ? versionCant(n, ap, reaction ? rap : 0, reaction) : "";   // the one rule the card's Use buttons and the HUD read
+    return { ap: n, label: reaction ? `${n}R` : `${n} AP`, off: !!why, why };
+  });
+  const fq = BAR_FREQ[frequency] ? frequency : "atwill", esc = Math.max(0, Math.trunc(Number(escalation)) || 0);
+  return { stamps, dist: dist && dist !== "—" ? String(dist) : "", vs: String(vs ?? ""), fq, fqWord: `${esc ? `Escalation ${esc}, ` : ""}${BAR_FREQ[fq]}` };
+}
+
+/** v0.0.442 (Lucas, the fixes mockup round 4): the Escalation pips of the sheet's marks cell: [{ n, on, rung }], a rung (a Passive or the Apex
+ *  comes there) ringed. A click on pip n sets the Escalation to n (as the rungs' words did). */
+export function escMarks(level, max = 6, rungs = []) {
+  const at = new Set((rungs ?? []).map(Number).filter(n => n > 0)), lv = Math.max(0, Math.trunc(Number(level)) || 0);
+  return Array.from({ length: Math.max(1, Math.trunc(Number(max)) || 6) }, (_, k) => ({ n: k + 1, on: k < lv, rung: at.has(k + 1) }));
+}
+
+
+/* ------------------------------------------------------------------ v0.0.443 (group 1; Lucas, 2026-11-19, the mockup foundry/mockups/group1, rounds 1 to 3) */
+/** The rungs' heraldic symbols (round 3, family A, the escutcheon): one shield, the same outline on every rung, gaining a charge: the plain
+ *  shield (the 1st rung), with a chevron (the 2nd), with a chevron under a chief (the 3rd, the Apex). One color (currentColor): ink when reached. */
+const RS = 'fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="miter" stroke-linecap="butt"';
+const SHIELD = `<path ${RS} d="M3.25 3.25H20.75V14C20.75 19.6 17 23.6 12 26.2C7 23.6 3.25 19.6 3.25 14Z"/>`;
+export const RUNG_SYMBOLS = [SHIELD, `${SHIELD}<path ${RS} d="M6.6 17.6L12 11.6L17.4 17.6"/>`,
+  `${SHIELD}<path fill="currentColor" d="M3.25 3.25H20.75V10H3.25Z"/><path ${RS} d="M7 20.4L12 14.8L17 20.4"/>`];
+export const rungSymbol = k => `<svg class="ps2-sym" viewBox="0 0 24 28" aria-hidden="true">${RUNG_SYMBOLS[Math.max(0, Math.min(2, k))]}</svg>`;
+
+/**
+ * Pure: the combat line's left part (rounds 2 and 3): the hooks and the Escalation ladder, side by side. A PC: its hooks (Critical, then its
+ * other hooks; a used one stays, faint, with a check) and its Passives' rungs; an Elite: its phases as its hooks (Bloodied +1, Strained +1, a
+ * triggered one checked) and the Elite ladder; a Standard NPC: none (its line holds only the marks). rungs: escRungs' or ELITE_RUNGS' { n, label, lit }.
+ */
+export function combatLists({ npc = false, elite = false, hookNames = [], used = {}, rungs = [], bloodied = false, strained = false, info = {} } = {}) {
+  if (npc && !elite) return null;
+  // v0.0.447 (Lucas: "Click in a hook shows what it does. Same with escalation"): each carries what a click opens (sheet showInfo): a rule of the
+  // book ("rule:critical") or the cards that give it ("item:id,id")
+  const hooks = npc ? [{ name: "Bloodied +1", used: !!bloodied, info: "rule:bloodied" }, { name: "Strained +1", used: !!strained, info: "rule:strained" }]
+    : [{ name: "Critical", used: !!used.crit, info: "rule:critical" }, ...[...new Set(hookNames)].map(n => ({ name: n, used: !!used.hook, info: info.hooks?.[n] || "rule:hook" }))];
+  const ladder = (rungs ?? []).slice(0, 3).map((r, k) => { const [n, ...rest] = String(r.label ?? "").split(" · "); const name = rest.join(" · ").replace(/^—$/, ""), num = Number(n) || r.n;
+    return { n: num, name: name || "—", lit: !!r.lit, sym: rungSymbol(k), info: npc ? `rule:elite:${num}` : (info.rungs?.[num] || "rule:escalation") }; });
+  return { hooks, ladder };
+}
+/** v0.0.447: the book's words a hook or a rung click shows when no card gives it (Chapter 2, Escalation; Chapter 14, Elite Escalation). */
+export const ESC_RULES = {
+  critical: ["Critical", "Once an encounter, when you score a Critical on one of your Actions, your Escalation increases by 1. At Escalation 6 it does nothing, and it isn't used up for the encounter."],
+  hook: ["Your class's hook", "Your class names one more event that, once an encounter, increases your Escalation by 1 (the Paladin: an ally becomes Bloodied or goes Down; the Archer: an enemy you have damaged goes Down). You gain it at level 2."],
+  escalation: ["Escalation", "At each rung, 2, 4 and 6, your class gives you a Passive (and the Apex at 6), which works while your Escalation is that high or higher."],
+  bloodied: ["Bloodied +1", "When an Elite becomes Bloodied, its Escalation increases by 1 (once). The GM says so when it happens."],
+  strained: ["Strained +1", "When an Elite becomes Strained, its Escalation increases by 1 (once). The GM says so when it happens."]
+};
+/** Pure: the Basic attack's subtitle from its own Tier 2 / Tier 3 damage, the flat number first (Lucas: "the basic attack plus tiers like
+ *  'Basic attack - 2 + 1d6! / 5 + 1d6!'"): "Basic attack · 1 + 1d4! / 3 + 1d6!". v: the Action's Version. */
+export function basicAttackLine(v) {
+  const words = list => (list ?? []).map(d => {
+    const w = d.useW ? `${Math.max(1, Number(d.wCount) || 1)}[W]` : "", dice = String(d.dice ?? "").trim();
+    const m = /^(.+?)\s*([+\-−])\s*(\d+)$/.exec(dice), part = !dice ? "" : !m ? dice : m[2] === "+" ? `${m[3]} + ${m[1]}` : `${m[1]} − ${m[3]}`;
+    return [w, part].filter(Boolean).join(" + ");
+  }).filter(Boolean).join(" + ");
+  const t2 = words(v?.t2), t3 = words(v?.t3);
+  return t2 || t3 ? `Basic attack · ${t2 || "—"} / ${t3 || "—"}` : "Basic attack";
+}
+/**
+ * Needs a DOM: a list shrinks its text by half pixels until no line is wider than its column and it is no taller than its place (the combat
+ * line never grows: Lucas, 2026-11-18/19). Never cut, never taller; 7 px at the least. v0.0.447 (Lucas: "many elements of the sheet jumped"):
+ * it never resets to the full size first (it grows back step by step only while that still fits) and leaves a hidden element alone.
+ */
+export function fitList(l, min = 7) { fitBy(l, () => l.scrollWidth > l.clientWidth + 0.5 || l.scrollHeight > l.clientHeight + 0.5, min); }
+/** Needs a DOM: a Basic Action's name shrinks by half pixels to 9.5 px until it fits its box; below that, two lines. Never cut (option A). */
+export function fitName(n, min = 9.5) {
+  if (!n || !n.clientWidth) return;
+  const over = () => n.scrollWidth > n.clientWidth + 0.5;
+  if (n.classList.contains("wrap")) { n.classList.remove("wrap"); if (over()) { n.classList.add("wrap"); return; } }
+  fitBy(n, over, min);
+  if (over()) n.classList.add("wrap");
+}
+function fitBy(el, over, min) {
+  if (!el || !el.clientWidth) return;   // hidden (another tab): nothing to measure
+  const full = parseFloat(el.dataset.fitFull || "") || parseFloat(globalThis.getComputedStyle?.(el)?.fontSize) || 14;
+  el.dataset.fitFull = String(full);
+  let size = parseFloat(el.style.fontSize) || full;
+  while (over() && size > min) { size -= 0.5; el.style.fontSize = `${size}px`; }
+  // grow back (a wider window) only while it still fits
+  while (!over() && size < full) { const next = Math.min(full, size + 0.5); el.style.fontSize = `${next}px`; if (over()) { el.style.fontSize = `${size}px`; break; } size = next; }
+  if (size >= full) el.style.fontSize = "";
 }

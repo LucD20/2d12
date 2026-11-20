@@ -15,6 +15,7 @@
 //   removed: [uuid], rollMode, forceTier }
 import { EMPOWERED_DIE } from "./roundrules.mjs";   // v0.0.407
 import { esc, vsColored } from "./util.mjs";
+import { TWOD12 } from "./config.mjs";   // v0.0.457: the damage types' colors
 import { tierProbs, bbCount, bbFive, rollState, BB_NAMES, BB_LIMIT } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ chips */
@@ -22,7 +23,9 @@ import { tierProbs, bbCount, bbFive, rollState, BB_NAMES, BB_LIMIT } from "./cal
 export const ROWS = [["passives", "Passives"], ["boons", "Boons"], ["banes", "Banes"], ["flat", "Flat"], ["damage", "Damage"]];
 /** A chip's kind: a buff (green outline) or a debuff (red), and its pip. */
 const BUFF = new Set(["boon", "fav", "plus", "emp", "pass"]);
-export const isBuff = c => BUFF.has(c.kind) || (c.special === "reload");
+// v0.0.465 (Lucas, checklist v0.0.464, save-nonlethal: "it shows as something beneficial; it needs to be red outlines because it is bad for the caster"):
+// the Nonlethal switch is drawn as a cost, whatever it does to the targets' Saves
+export const isBuff = c => c.special !== "nl" && (BUFF.has(c.kind) || c.special === "reload");
 /** Where a manual chip goes and how it reads. */
 const MANUAL = {
   boon: { row: "boons", label: n => (n > 1 ? `Situational ×${n}` : "Situational") },
@@ -323,7 +326,7 @@ export function result(inp, st) {
 }
 
 /* ------------------------------------------------------------------ HTML */
-const SUB_INK = { Fi: "#a0521a", Ho: "#7d5400", Co: "#2c6f8f" };
+const subStyle = k => `color:${TWOD12.subtypeInk?.[k] ?? "#4a443b"};--sc-d:${TWOD12.subtypeColors?.[k] ?? "#b3a68e"}`;   // v0.0.457: every type its color (was Fire, Holy, Cold only)
 const poolIcon = p => (p === "M" ? '<i class="fa-solid fa-brain rd-pr" aria-hidden="true"></i><span class="rd-sr">Resolve</span>' : '<i class="fa-solid fa-heart rd-pv" aria-hidden="true"></i><span class="rd-sr">Vigor</span>');
 const sgn = n => (n >= 0 ? `+ ${n}` : `− ${Math.abs(n)}`);
 /** v0.0.293 (Lucas): Favored and Doomed are a d12 (a pentagon face) in blue / red with its letter, not the Boon / Bane triangles. */
@@ -383,7 +386,7 @@ function tierTableHtml(inp, st, v) {
   const stats = tierStats(inp, st, v);
   const cell = n => {
     const lines = poolLines(v.tiers?.[n], tierTags(inp, st, n).map(c => ({ pool: c.pool, tag: c.tag })));
-    const dmg = lines.map(l => `<span class="rd-pool">${poolIcon(l.pool)} ${l.segs.map(s => `${esc(s.t)}${s.sub ? ` <b class="rd-sub" style="color:${SUB_INK[s.sub] ?? "#4a443b"}">${esc(s.sub)}</b>` : ""}`).join(" + ")}${l.tags.map(g => ` <span class="rd-ptag">${esc(g)}</span>`).join("")}</span>`).join('<span class="rd-dot" aria-hidden="true"> · </span>');
+    const dmg = lines.map(l => `<span class="rd-pool">${poolIcon(l.pool)} ${l.segs.map(s => `${esc(s.t)}${s.sub ? ` <b class="rd-sub" style="${subStyle(s.sub)}">${esc(s.sub)}</b>` : ""}`).join(" + ")}${l.tags.map(g => ` <span class="rd-ptag">${esc(g)}</span>`).join("")}</span>`).join('<span class="rd-dot" aria-hidden="true"> · </span>');
     const riders = (v.tiers?.[n]?.riders ?? []).map(r => `<div class="rd-rider">↳ ${r}</div>`).join("");
     return (dmg || riders ? `${dmg ? `<div>${dmg}</div>` : ""}${riders}` : "&mdash;") + statLine(stats[n]);
   };
@@ -392,7 +395,7 @@ function tierTableHtml(inp, st, v) {
   const can = inp.canForce && !inp.save, rowAt = n => (can ? ` data-force="${n}"` : "");
   const rows = [1, 2, 3].map(n => `<tr class="t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(n)}>${th(n, `Tier ${n}`)}<td>${cell(n)}</td></tr>`);
   if (v.crit) rows.push(`<tr class="crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${rowAt(4)}>${th(4, "Critical")}<td>${v.crit}</td></tr>`);
-  if (v.effects) rows.push(`<tr class="rd-eff"><th scope="row">Effects<small>(T${v.effectsFrom ?? 2}+)</small></th><td>${v.effects}</td></tr>`);
+  if (v.effects) rows.push(`<tr class="rd-eff"><th scope="row">Effects${(v.effectsFrom ?? 1) > 1 ? `<small>(T${v.effectsFrom}+)</small>` : ""}</th><td>${v.effects}</td></tr>`);
   const net = stepNet(inp, st);
   return `<table class="rd-tiers">${rows.join("")}</table>${net.line ? `<div class="rd-step">${esc(net.line)}</div>` : ""}`;
 }
@@ -432,6 +435,9 @@ const targetBtn = inp => (inp.area || inp.self ? "" : '<button type="button" cla
 const cImg = c => (c.img ? `<img class="rd-cimg" src="${esc(c.img)}" alt="">` : "");
 function creaturesHtml(inp, st, v) {
   const live = liveCreatures(inp, st), crit = !!v?.crit, hide = !!inp.hideDef;
+  // v0.0.460 (Lucas, checklist v0.0.459: "When rolling for area effects, dont show the targets even if there are targets already selected; instead put
+  // a 'Place X Area', blinking where the targets normaly are"): until the area is placed, its button stands where the creatures go; Roll still places it
+  if (inp.area && !inp.area.placed) return `<button type="button" class="rd-placebig" data-act="place"><span aria-hidden="true">◇</span> Place ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label ?? "the area")}</button>`;
   // v0.0.293: a Save Action: each creature with your Save DC (they roll; nothing of theirs to switch here)
   if (inp.save) return live.filter(c => c.uuid !== "none" && c.uuid !== "self").map(c => `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-def">${esc(inp.save.label)} ${inp.save.dc}</span></div></div>`).join("") || `<div class="rd-none">No target. Target a creature on the map.</div>`;
   if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : `No target. Target a creature on the map, then press Target.${targetBtn(inp)}`}</div>`;
@@ -463,6 +469,29 @@ function creaturesHtml(inp, st, v) {
  * and the chat's stamp keep it); the bonuses keep theirs, with their source. The GM still clicks a Tier's name to force it.
  */
 const DEF_NAME = { AD: "Armor Defense", WD: "Ward Defense" };
+/**
+ * v0.0.444 (group 2; Lucas, 2026-11-19: "it shows buttons for each weapon to use"; "make sure to make all fill a single line"): two held weapons
+ * that fit the Action: what the weapon changes, a column each (its Distance, its Tiers, its roll with its hand's Banes), each line on one line.
+ * inp.dual = { current, weapons: [{ id, name, hand, dist, thrown, out, banes: [{ n, text }], tiers: { ap: outcomes } }] }
+ */
+export function dualHtml(inp, st, v, can = false) {
+  const ws = inp.dual?.weapons ?? [], cur = ws.find(w => w.id === inp.dual.current) ?? ws[0];
+  const dmg = (tiers, n) => { const lines = poolLines(tiers?.[n], []); const riders = (tiers?.[n]?.riders ?? []).map(r => ` <span class="rd-rider">${r}</span>`).join(""); const d = lines.map(l => `<span class="rdc-pv ${l.pool === "M" ? "r" : "v"}">${poolIcon(l.pool)} ${l.segs.map(x => `${esc(x.t)}${x.sub ? ` <b class="rd-sub">${esc(x.sub)}</b>` : ""}`).join(" + ")}</span>`).join(" "); return d || riders ? `${d}${riders}` : "&mdash;"; };
+  const head = `<div class="rdd-r rdd-h"><b></b>${ws.map(w => `<span><b>${esc(w.name)}</b> <small>${esc(w.hand)}</small></span>`).join("")}</div>`;
+  const dist = `<div class="rdd-r"><b>Distance</b>${ws.map(w => `<span>${esc(w.dist || "—")}</span>`).join("")}</div>`;
+  const fa = n => (can ? ` data-force="${n}"` : "");
+  const tiers = [1, 2, 3].map(n => `<div class="rdd-r t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(n)}><b>${can ? `<button type="button" class="rd-tforce" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">Tier ${n}</button>` : `Tier ${n}`}</b>${ws.map(w => `<span>${dmg(w.tiers?.[v?.ap] ?? v?.tiers, n)}</span>`).join("")}</div>`).join("");
+  // v0.0.449 (Lucas, g2-handmenu: "I mean in the roll dialog"): a weapon's hand Bane is a button: a click switches it off for this roll (the same
+  // chip as a one-weapon dialog's: st.toggled by its id, so the other weapon's Roll keeps the choice), again on
+  const on = b => st.toggled?.[b.id] !== false;
+  // the roll: the dialog's count without the current weapon's hand Banes that are on, plus each weapon's own that are on
+  const dl = diceLine(inp, st), base = (dl.banes ?? 0) - (cur?.banes ?? []).filter(on).reduce((t, b) => t + b.n, 0);
+  const roll = `<div class="rdd-r rdd-roll"><b>Your roll</b>${ws.map(w => { const n = base + w.banes.filter(on).reduce((t, b) => t + b.n, 0); return `<span><span class="rdd-dice">${esc(dl.dice)} ${sgn(dl.mod)}</span> ${counts(dl.boons, Math.max(0, n))}</span>`; }).join("")}</div>`;
+  // each Bane and the out-of-range reason on a line of its own, never wrapped
+  const notes = ws.some(w => w.banes.length || w.out) ? `<div class="rdd-r rdd-notes"><b></b>${ws.map(w => `<span>${w.banes.map(b => `<button type="button" class="rdd-bane${on(b) ? "" : " off"}" data-act="dualbane" data-id="${esc(b.id ?? "")}" aria-pressed="${on(b)}">▼${b.n} ${esc(b.text)}</button>`).join("")}${w.out ? `<i class="rdd-out">${esc(w.out)}</i>` : ""}</span>`).join("")}</div>` : "";
+  return `<div class="rd-dual" style="--n:${ws.length}">${head}${dist}${tiers}${roll}${notes}</div>`;
+}
+
 export function cardHtml(inp, st, v) {   // exported for the card gallery (pack CARD-ONE step 3)
   const m = v?.meta ?? {}, cost = [inp.freqLabel, v?.cost].filter(Boolean).join(" · ");
   const head = `<div class="rdc-head"><h1 class="rd-name">${esc(inp.name)}</h1>${cost ? `<span class="rdc-cost rd-freq" style="--fq:${esc(inp.freqColor ?? "#5F5E5A")}">${esc(cost)}</span>` : ""}</div>`;
@@ -470,7 +499,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
   const words = (v?.traits ?? []).map(t => `<span class="rd-trait tg-${esc(t.group)}">${esc(t.label)}</span>`);
   const traits = words.length ? `<div class="rdc-traits rd-traits">${words.join('<i aria-hidden="true">·</i>')}</div>` : "";
   const area = inp.area ? `<button type="button" class="rd-area" data-act="place" aria-label="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label)}</button>` : "";
-  const left = [m.dist && !/^self$/i.test(m.dist) ? `<span><b>Distance:</b> ${esc(m.dist)}</span>` : "", area ? `<span><b>Area:</b> ${area}</span>` : ""].filter(Boolean).join("");
+  const left = [m.dist && !/^self$/i.test(m.dist) && !inp.dual ? `<span><b>Distance:</b> ${esc(m.dist)}</span>` : "", area ? `<span><b>Area:</b> ${area}</span>` : ""].filter(Boolean).join("");
   const grid = left || m.targets ? `<div class="rdc-grid"><span class="rdc-gl">${left}</span>${m.targets ? `<span><b>Target:</b> ${esc(m.targets)}</span>` : ""}</div>` : "";
   const line = (label, html, cls = "") => `<div class="rdc-l${cls}"><b>${label}</b><span>${html}</span></div>`;
   const out = [];
@@ -503,7 +532,8 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
       };
       // v0.0.400 (Lucas: "Selecting a Tier in the roll dialog isn't causing that Tier"): the whole line is clickable (GM), as the table's rows were
       const fa = n => (can ? ` data-force="${n}"` : "");
-      for (const n of [1, 2, 3]) out.push(`<div class="rdc-l t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(n)}><b>${name(n, `Tier ${n}`)}</b><span>${tierText(n)}</span></div>`);
+      if (inp.dual) out.push(dualHtml(inp, st, v, can));   // v0.0.444 (group 2): a column for each weapon
+      else for (const n of [1, 2, 3]) out.push(`<div class="rdc-l t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(n)}><b>${name(n, `Tier ${n}`)}</b><span>${tierText(n)}</span></div>`);
     }
     const EFF = ["Effect", "Tier 2 or 3", "Tier 1 or 2"];
     for (const l of C.after) {
@@ -538,7 +568,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
     const fa = n => (can ? ` data-force="${n}"` : "");
     for (const n of [1, 2, 3]) out.push(`<div class="rdc-l t${n}${Number(st.forceTier) === n ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(n)}><b>${name(n, `Tier ${n}`)}</b><span>${tierText(n)}</span></div>`);
     if (v.crit) out.push(`<div class="rdc-l crit${Number(st.forceTier) === 4 ? " forced" : ""}${can ? " rd-forcable" : ""}"${fa(4)}><b>${name(4, "Critical")}</b><span>${v.crit}</span></div>`);
-    if (v.effects) out.push(line(`Effects <small>(T${v.effectsFrom ?? 2}+)</small>`, v.effects));
+    if (v.effects) out.push(line((v.effectsFrom ?? 1) > 1 ? `Effects <small>(T${v.effectsFrom}+)</small>` : "Effects", v.effects));
     const net = stepNet(inp, st);
     if (net.line) out.push(`<div class="rd-step">${esc(net.line)}</div>`);
   } else if (v?.effects) out.push(line("Effects", v.effects));
@@ -559,14 +589,20 @@ export function dialogHtml(inp, st) {
   const named = liveCreatures(inp, st).filter(c => !["self", "none"].includes(c.uuid));
   const panel = noRoll ? (named.length ? `<div class="rd-tline">→ ${esc(named.map(c => c.name).join(", "))}</div>` : "")
     : `<section class="rd-roll">${head}
-    <div class="rd-mhead"><span>${inp.multi && !inp.save ? "Modifiers · every target" : "Modifiers"}</span></div>${quick}${notices}${rowsHtml(chipsOf(inp, st, "shared"), st, "shared", inp.save ? ROWS.filter(r => ["passives", "damage"].includes(r[0])) : ROWS)}
+    <div class="rd-mhead"><span>${inp.multi && !inp.save ? "Modifiers · every target" : "Modifiers"}</span></div>${quick}${notices}${rowsHtml(chipsOf(inp, st, "shared").filter(c => !inp.dual || !["syn:hand", "syn:onehand"].includes(c.id)), st, "shared", inp.save ? ROWS.filter(r => ["passives", "damage"].includes(r[0])) : ROWS)}
     <div class="rd-creatures">${creaturesHtml(inp, st, v)}</div></section>`;
   // v0.0.397: the Flavor opens the card (cardHtml), as in the book
   const designer = inp.designer && v && !v.noTiers && !inp.save ? `<div class="rd-designer"><div>${inp.showOdds && !inp.hideDef ? "" : liveCreatures(inp, st).map(c => `<div>${cImg(c)}<b>${esc(c.name)}</b>: ${oddsLine(oddsOf(creatureCalc(inp, st, c.uuid), !!v.crit))}</div>`).join("")}</div><div class="rd-force" role="group" aria-label="Force a Tier">Force a Tier: ${[1, 2, 3].map(n => `<button type="button" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">T${n}</button>`).join("")}</div></div>` : "";
   const modes = (inp.rollModes ?? []).length ? `<select class="rd-mode" data-field="rollMode" aria-label="Roll mode">${inp.rollModes.map(([k, l]) => `<option value="${esc(k)}"${k === st.rollMode ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>` : "";
-  const bar = `<footer class="rd-bar">${modes}${vers}<button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button></footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
+  // v0.0.444 (group 2): two held weapons fit: a Roll button for each ("Roll · Longsword", "Roll · Dagger (thrown)"); one that can't reach is struck (it still rolls)
+  const goBtns = inp.dual && !noRoll && !inp.save ? inp.dual.weapons.map(w => `<button type="button" class="rd-go rd-gow${w.out ? " out" : ""}" data-act="roll" data-weapon="${esc(w.id)}"${why ? " disabled" : ""}>Roll \u00b7 ${esc(w.name)}${w.thrown ? " (thrown)" : ""}</button>`).join("")
+    : `<button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button>`;
+  const bar = `<footer class="rd-bar">${modes}${vers}${goBtns}</footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
   // v0.0.370 (Lucas): no yellow warning at the bottom (the struck Version and the reason on it say it); warnings() stays for the tests and callers
-  const warnHtml = "";
+  // v0.0.460 (Lucas, checklist v0.0.459: "It didnt show the warning"): what the Action breaks but may still do (inp.blocked: no Line of Effect, an
+  // unloaded weapon, a missing Light weapon, a Requirement) is written above the bar, one line each; a Version's AP stays on its struck button
+  const ws = [...(inp.blocked ?? []), ...liveCreatures(inp, st).filter(c => c.blocked).map(c => `${c.name}: ${c.blocked}`)];
+  const warnHtml = ws.length ? `<div class="rd-warns" role="status">${ws.map(w => `<div class="rd-warn"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>${esc(w)}</div>`).join("")}</div>` : "";
   // v0.0.349 (Lucas, playtest 4: "the AP Version buttons at the bottom next to Roll")
   // v0.0.397: the card part in the book's format (cardHtml); the old head, meta lines and Tier table (traitsHtml, metaHtml, tierTableHtml) stay for reference
   void traitsHtml; void metaHtml; void tierTableHtml;

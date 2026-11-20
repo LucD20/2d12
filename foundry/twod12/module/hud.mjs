@@ -8,7 +8,7 @@ import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, HUD_TABS_PC, HUD_TABS
 import { techniqueState } from "./mastery.mjs";   // v0.0.418 (D6)
 
 const F = "twod12";
-const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set() };
+const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set(), view: "main", rview: "main", sitWas: false };   // v0.0.446: the right column's tab
 let root = null, timer = null;
 const setting = (k, d) => { try { return game.settings.get(F, k); } catch (e) { return d; } };
 
@@ -22,7 +22,9 @@ export function registerHudSettings() {
   game.settings.register(F, "hudFolded", { name: "HUD folded", scope: "client", config: false, type: Boolean, default: false, onChange: redraw });
   game.settings.register(F, "rxChime", { name: "Reactions: a chime", hint: "A short soft chime when one of your creatures can react (it follows Foundry's interface volume).", scope: "client", config: true, type: Boolean, default: true });
   game.settings.register(F, "rxFloat", { name: "Reactions: the name on the map", hint: "The Reaction's name over your reacting token, with its ring, until it is used or passed.", scope: "client", config: true, type: Boolean, default: true });
-  game.settings.register(F, "rxHud", { name: "Reactions: the HUD", hint: "The HUD unfolds, opens its Reactions tab and names the trigger, with Use and Pass.", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
+  // v0.0.461 (the map notes' redesign): the attention ring's slow ripple (still when off, or with the browser's reduced motion)
+  game.settings.register(F, "mapMotion", { name: "Map: the attention ripple", hint: "A slow ripple around a token that needs you (a Reaction, a creature to pick). Off: the gold ring alone.", scope: "client", config: true, type: Boolean, default: true });
+  game.settings.register(F, "rxHud", { name: "Reactions: the HUD", hint: "The HUD unfolds and names the trigger in its Situational section, with Use and Pass (it stays on the tab you had open).", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
 }
 
 /* ------------------------------------------------------------------ the model */
@@ -69,7 +71,7 @@ async function actionsOf(actor) {
     const lock = Number(it.escalation) > 0 && escNow < Number(it.escalation);
     const btns = versionButtons(vs.map(v => effectiveAp(actor, i, v)), { reaction: !!it.reaction, inCombat: !!now, ap: now?.ap ?? 0, rap: now?.rap ?? 0 });   // v0.0.428: the cost a passive lowers
     const why = lock ? `Needs Escalation ${it.escalation}` : row?.offWhy ?? "";
-    const list = vs.map((v, k) => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: lock || !!row?.off || !!btns[k]?.off, used: /used|spent/i.test(why), why: why || btns[k]?.why || "", fav: quick.has(`${i.id}:${v.ap}`) }))
+    const list = vs.map((v, k) => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: lock || !!row?.off || !!btns[k]?.off, lock, used: /used|spent/i.test(why), why: why || btns[k]?.why || "", fav: quick.has(`${i.id}:${v.ap}`) }))
       .filter(v => !onlyAps || onlyAps.includes(Number(v.ap)));
     return { id: i.id, name: i.name, freq: freq || "none", fq: FREQ_COLORS[freq] ?? FREQ_COLORS.none, roll: rollLine(actor, i), dim: lock || (!!row?.off && list.every(v => v.off)), versions: list, pc: actor.type !== "npc",
       basic: !!i.getFlag(F, "basic"), bkey: i.getFlag(F, "basic") || "", basicAttack: !!it.basicAttack, reaction: !!it.reaction, escalation: Number(it.escalation) || 0, minAp: Math.min(99, ...vs.map(v => Number(v.ap) || 0)) };
@@ -81,7 +83,9 @@ async function actionsOf(actor) {
 const nn = v => Math.max(0, Math.trunc(Number(v)) || 0);
 async function combatOf(actor) {
   try {
-    if (!game.combat?.started) return null;
+    // v0.0.443 (Lucas: "Token HUD shows 'Out of combat' while combat is prepared but not started; it should mimic the sheet's behavior"): a
+    // creature in a combat shows its marks once it is a combatant, started or not, as the sheet does
+    if (!game.combat) return null;
     const C = await import("./combat.mjs"), U = await import("./usage.mjs");
     const c = C.combatantOf(actor, game.combat);
     return c ? { ap: C.getAP(c), max: C.apMax(c), slowed: C.slowedOf(actor), rap: C.getRAP(c), rapMax: C.rapMaxOf(c), strikes: U.strikesUsed(actor), c } : null;
@@ -104,7 +108,7 @@ async function escOf(actor) {
   return has ? { n: nn(s.escalation), max: nn(ESC_MAX) } : null;
 }
 function condsOf(actor, durationText) {
-  return [...(actor.effects ?? [])].filter(e => !e.disabled && !e.getFlag?.(F, "wound") && !e.getFlag?.(F, "grants")?.length).map(e => ({ id: e.id, name: String(e.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), dur: durationText(e) }));
+  return [...(actor.effects ?? [])].filter(e => !e.disabled && !e.getFlag?.(F, "wound") && !e.getFlag?.(F, "grants")?.length).map(e => ({ id: e.id, name: String(e.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), dur: durationText(e), img: e.img ?? e.icon ?? "" }));   // v0.0.441: its picture (D4)
 }
 /** A party card (and the cards of several selected tokens). */
 async function partyCard(actor, token = null) {
@@ -144,7 +148,9 @@ function colsOf(lines, { per = 3, maxCols = 6 } = {}) {
 const lineOf = a => ({
   id: a.id, name: a.name, freq: a.freq, fqColor: a.fq, sub: a.versions.every(v => v.off) && a.versions.some(v => v.used) ? (a.versions.find(v => v.why)?.why ?? "used") : a.roll,
   used: a.versions.length > 0 && a.versions.every(v => v.used),   // v0.0.393: "used" only when spent (not when short of AP)
-  stamps: a.versions.map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why }))
+  // v0.0.453 (Lucas, playtest 6: "Token hud shouldnt prevent clicking on used actions. Just give a warning, like using from the sheet"): only an
+  // Escalation lock blocks; a spent Frequency or too few AP open the roll dialog, which says so (rolldlg.mjs warnings)
+  stamps: a.versions.map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why, lock: !!v.lock }))
 });
 /** The bar's model for one creature. */
 async function barModel(actor, token = null) {
@@ -182,7 +188,8 @@ async function barModel(actor, token = null) {
   if (wait) rx.forEach(l => { if (l.id === wait.itemId) l.ready = true; });
   const tabs = (npc ? HUD_TABS_NPC : HUD_TABS_PC).map(([k, label]) => ({ k, label, count: k === "act" ? act.filter(usable).length : k === "rx" ? rx.filter(usable).length : k === "basic" ? basic.filter(usable).length : `${escLines.filter(l => l.state === "working").length} of ${escLines.filter(l => l.pass).length}` }));
   if (!tabs.some(t => t.k === st.tab)) st.tab = "act";
-  const tab = wait && setting("rxHud", true) ? "rx" : st.tab;
+  // v0.0.441 (the HUD mockup's decision 2, R4): a waiting Reaction no longer opens the Reactions tab: it shows in the Situational section
+  const tab = st.tab;
   if (grants.length && !st.tabChosen) st.tab = "act";
   const cols0 = tab === "rx" ? colsOf(rx) : tab === "basic" ? colsOf(basic, { maxCols: 4 }) : tab === "esc" ? colsOf(escLines.map(l => ({ ...l, freq: "none" })), { per: 3 }).map((c, i) => ({ ...c, label: i ? "" : "Escalation" })) : colsOf(act);
   const cols = cols0;
@@ -190,16 +197,42 @@ async function barModel(actor, token = null) {
   const sg = v => (Number(v) > 0 ? `+${Number(v)}` : Number(v) < 0 ? `−${-Number(v)}` : "0");
   const speed = nn(s.moveSpeed ?? s.speed), base = nn(s.speed);
   const defs = [
-    { label: "AD", value: nn(s.armorDC ?? 11), tip: "Armor Defense" }, { label: "WD", value: nn(s.wardDC ?? 11), tip: "Ward Defense" },
-    { label: "Spd", value: speed, tip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "Speed", chg: speed !== base },
+    { key: "ad", word: "AD", label: "AD", value: nn(s.armorDC ?? 11), tip: "Armor Defense" }, { key: "wd", word: "WD", label: "WD", value: nn(s.wardDC ?? 11), tip: "Ward Defense" },
+    { key: "speed", word: "Speed", label: "Spd", value: speed, tip: speed !== base ? `Speed ${speed} (base ${base}${s.exhausted ? `; Exhausted ${s.exhausted}` : ""})` : "Speed", chg: speed !== base },
     // v0.0.418 (Lucas, playtest 5, D2): both Modifiers ("Weapon +2 · Power +1"; it showed only the Weapon one)
-    { label: npc ? "Atk" : "Wpn", value: sg(s.weaponMod ?? 0), tip: "Weapon Modifier" }, { label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }, { gap: true },
-    ...HUD_SAVES.map(([key, label, short]) => ({ label: short, value: sg(s.attributes?.[key] ?? 0), tip: `${label}: click a Check, Shift-click a Save`, hud: "attr", data: { key } }))
+    { key: "weapon", word: "Weapon", label: npc ? "Atk" : "Wpn", value: sg(s.weaponMod ?? 0), tip: "Weapon Modifier" }, { key: "power", word: "Power", label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }, { gap: true },
+    ...HUD_SAVES.map(([key, label, short]) => ({ word: label, label: short, value: sg(s.attributes?.[key] ?? 0), tip: `${label}: click a Check, Shift-click a Save`, hud: "attr", data: { key } }))
   ];
   const hands = actor.itemTypes.weapon?.length ? await handsOf(actor) : null;
   const conds = condsOf(actor, durationText);
   const cls = actor.itemTypes.class?.[0], sp = actor.itemTypes.species?.[0];
+  // v0.0.441 (pack SHEETS-HUD, D1): the Basic tab as the sheet's four groups, every Basic Action shown (no "+N more")
+  const { TWOD12 } = await import("./config.mjs");
+  const strikeOf = id => !!actor.items.get(id)?.system?.traits?.has?.("strike");
+  const bLines = basic.map(l => ({ ...l, strike: strikeOf(l.id) })), placed = new Set();
+  const basicGroups = TWOD12.basicGroups.map(g => ({ label: g.label, lines: g.names.map(n => bLines.find(l => l.name === n)).filter(Boolean) })).filter(g => g.lines.length);
+  basicGroups.forEach(g => g.lines.forEach(l => placed.add(l.id)));
+  const restB = bLines.filter(l => !placed.has(l.id));
+  if (restB.length) (basicGroups.at(-1) ?? basicGroups[basicGroups.push({ label: "Other", lines: [] }) - 1]).lines.push(...restB);
+  // D3: Prone: Stand and Crawl in the Situational section (and Break Free when Immobilized too), each Version a button
+  const statuses = actor.statuses ?? new Set();
+  let prone = null;
+  if (statuses.has?.("prone")) {
+    const pick = k => list.find(a => a.bkey === k);
+    const btns = [];
+    for (const k of ["stand", "crawl", ...(statuses.has?.("immobilized") ? ["breakFree"] : [])]) {
+      const a = pick(k); if (!a) continue;
+      const it = actor.items.get(a.id)?.system ?? {};
+      a.versions.forEach((v, i) => { const sq = /distance:(\d+)/.exec(it.versions?.[i]?.effects ?? "")?.[1]; btns.push({ label: `${a.name}${k === "crawl" && sq ? ` ${sq}` : ""} \u00b7 ${v.label}`, hud: "use", data: { item: a.id, ap: v.ap }, off: v.off && !v.used ? true : v.used, why: v.why }); });
+    }
+    prone = { lead: "Prone", text: "Your only Move Actions: Stand, Crawl, Break Free.", btns };
+  }
+  let tiles = null;
+  try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
+  const rxWait = wait && setting("rxHud", true) ? wait : null;
   return {
+    h3: true, basicGroups, conds,
+    right: { rx: rxWait, grants, cancels, prone, tiles, view: st.view },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
@@ -296,11 +329,14 @@ function placeRoot() {
 }
 /** The hotbar into the HUD's right end (a setting), and back out when the setting is off (a reload puts it back exactly). */
 function placeHotbar() {
-  const hb = document.getElementById("hotbar"), slot = root?.querySelector(".hud-hot");
+  // v0.0.441 (D3): a creature's bar takes the macro bar at the bottom of its right column (one row of ten); the party strip at the HUD's end
+  const hb = document.getElementById("hotbar"), inBar = root?.querySelector(".hud-main .h3-hot"), slot = inBar ?? root?.querySelector(".hud-hot");
   if (!hb || !slot) return;
-  if (setting("hudHotbar", true)) { if (hb.parentElement !== slot) slot.append(hb); root.classList.add("with-hot"); }
-  else root.classList.remove("with-hot");
+  if (setting("hudHotbar", true)) { if (hb.parentElement !== slot) slot.append(hb); root.classList.add("with-hot"); root.classList.toggle("hot-in-bar", !!inBar); }
+  else root.classList.remove("with-hot", "hot-in-bar");
 }
+/** Before the HUD's middle is drawn again, the macro bar goes back to its own slot (else it would be thrown away with the old HTML). */
+function parkHotbar() { const hb = document.getElementById("hotbar"), park = root?.querySelector(".hud-hot"); if (hb && park && root?.querySelector(".hud-main")?.contains(hb)) park.append(hb); }
 /** v0.0.378 (Lucas: "the collapsed pill over the HUD"): Foundry's players list sits above the HUD's left end (collapsed as Foundry keeps it, its own
  *  arrow opens it), which also frees the left column, so the HUD gets that width. Off with the HUD. */
 function placePlayers() {
@@ -310,7 +346,7 @@ function placePlayers() {
 }
 let drawing = false, again = false;
 /** v0.0.406: the HUD's middle drawn only when its HTML changed (the same HTML again: no flash of the portrait and the lines). */
-function setMain(main, html) { if (main.__twod12Html === html && main.childElementCount) return false; main.innerHTML = html; main.__twod12Html = html; return true; }
+function setMain(main, html) { if (main.__twod12Html === html && main.childElementCount) return false; parkHotbar(); main.innerHTML = html; main.__twod12Html = html; placeHotbar(); return true; }
 export function renderHud() {
   if (typeof document === "undefined") return;
   clearTimeout(timer);
@@ -346,12 +382,18 @@ async function drawHud() {
   }
   if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
-  const waiting = main.querySelector(".hb-ask > .twod12-linebar");
+  // v0.0.441: every question waiting (a Setup's movement and a pick bar can both be up); v0.0.474 (Lucas, checklist v0.0.473: "the situational tab
+  // is empty"): one waiting in the HUD's middle (asked with no creature selected) comes along too, into this creature's Situational tab
+  const fromMiddle = [...(root.querySelectorAll(".hud-ask > .twod12-linebar") ?? [])];
+  const waiting = [...main.querySelectorAll(".hb-ask > .twod12-linebar"), ...fromMiddle];
   shape("is-bar", ...(m.npc ? ["is-npc"] : []), ...(m.folded ? ["is-folded"] : []));
   setMain(main, tokenBarHtml(m));
-  if (waiting) (main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask"))?.append(waiting);
+  const slot = main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
+  for (const w of waiting) slot?.append(w);
+  if (fromMiddle.length && slot?.classList?.contains("hb-ask")) { for (const w of fromMiddle) w.classList.add("in-hud", "in-side"); hudAsking(true, true); }
   fitNames(main);
-  // (v0.0.391, Lucas: "macro bar is broken"): the hotbar stays at the HUD's right end, where it worked before (placeHotbar)
+  syncSide();
+  // v0.0.441 (D3): the hotbar is in the bar's right column (placeHotbar, from setMain); v0.0.446: its Macros tab
 }
 
 /**
@@ -373,7 +415,7 @@ if (typeof window !== "undefined") window.addEventListener?.("resize", () => { c
 
 /* ------------------------------------------------------------------ panels, the card, the menu */
 function closePop({ keepOpen = false } = {}) {
-  root?.querySelectorAll(".hud-pop, .hud-menu").forEach(x => x.remove()); st.card?.remove(); st.card = null;
+  root?.querySelectorAll(".hud-pop, .hud-menu, .hud-hmenu").forEach(x => x.remove()); st.card?.remove(); st.card = null;
   // v0.0.382 (Lucas: "the button is still colored, so I have to click twice"): a closed panel's category is not lit any more
   if (!keepOpen && st.open) { st.open = ""; root?.querySelectorAll(".cat.on").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); }); }
 }
@@ -413,6 +455,41 @@ async function showCardNow(actor, item, at) {
   const sameName = ev => !!ev.target.closest?.(`.ha[data-item-id="${item.id}"] [data-hud="card"], .hb-ln[data-item-id="${item.id}"]`);
   setTimeout(() => document.addEventListener("pointerdown", function away(ev) { if (sameName(ev)) return; if (!div.contains(ev.target)) { div.remove(); if (st.card === div) st.card = null; document.removeEventListener("pointerdown", away, true); } }, true), 0);
 }
+/**
+ * v0.0.444 (group 2; Lucas: "When clicking in the weapon in the token hud, open the window above it, like a 'reversed dropdown' menu, instead of
+ * all the way to the left. There it should show the weapons you can change it to or if you want to hold with 2h"): the hand tile's menu, opening
+ * upward from the tile and kept on the screen (pcsheet.mjs handMenuModel; a row that can't be done now is struck, its reason under it).
+ */
+async function handMenu(actor, tile) {
+  closePop({ keepOpen: true });
+  const P = await import("./pcsheet.mjs"), cb = await combatOf(actor);
+  const weapons = actor.itemTypes?.weapon ?? [];
+  const m = P.handMenuModel(weapons, tile.dataset.hand, { inCombat: !!cb, ap: cb ? cb.ap : 99 });
+  const { esc } = await import("./util.mjs");
+  const rowHtml = r => `<button type="button" class="hm-row${r.off ? " off" : ""}"${r.key && !r.off ? ` data-k="${esc(r.key)}"` : " disabled"}><span class="hm-l">${esc(r.label)}${r.off && r.why ? `<small>${esc(r.why)}</small>` : ""}</span><span class="hm-c">${esc(r.act)} <b>${esc(r.cost)}</b></span></button>`;
+  const div = document.createElement("div");
+  div.className = "hud-hmenu"; div.setAttribute("role", "menu");
+  div.innerHTML = `<div class="hm-h"><b>${esc(m.title)}</b> <small>${esc(m.sub)}</small>${m.warn ? `<span class="hm-w">${esc(m.warn)}</span>` : ""}</div>${m.groups.map(g => `<div class="hm-g">${g.map(rowHtml).join("")}</div>`).join("")}`;
+  root.append(div);
+  tile.classList.add("on");
+  const r = tile.getBoundingClientRect(), h = root.getBoundingClientRect();
+  div.style.bottom = `${Math.round(h.bottom - r.top + 4)}px`;
+  div.style.left = `${Math.round(Math.max(0, Math.min(r.left - h.left, h.width - div.offsetWidth)))}px`;
+  div.querySelector("button[data-k]")?.focus({ preventScroll: true });
+  const close = () => { div.remove(); tile.classList.remove("on"); document.removeEventListener("pointerdown", away, true); };
+  const away = e => { if (!div.contains(e.target) && e.target !== tile) close(); };
+  document.addEventListener("pointerdown", away, true);
+  div.addEventListener("keydown", e => { if (e.key === "Escape") { close(); tile.focus(); } });
+  div.addEventListener("click", async e => {
+    const k = e.target.closest("button[data-k]")?.dataset.k;
+    if (!k) return;
+    close();
+    if (!(actor.isOwner || game.user.isGM)) return;
+    const { spendAP } = await import("./combat.mjs"), L = await import("./hands.mjs"), { sysLine } = await import("./sysmsg.mjs");
+    await P.applyHandPick(actor, actor.itemTypes?.weapon ?? [], k, { spendAP, applyRegrip: L.applyRegrip, applyRelease: L.applyRelease, sysLine });
+  });
+}
+
 /** v0.0.381 (Lucas): right-click on a PC's Version stamp pins it to (or unpins it from) the Quick row, at once. */
 async function toggleQuick(actor, item, ap) {
   const k = `${item.id}:${ap}`, next = quickKeys(actor);
@@ -443,17 +520,18 @@ async function onClick(ev) {
   // v0.0.390 (PACK HUD2)
   if (kind === "party") { const c = st.cards?.get(b.dataset.key); if (!c) return; if (ev.detail >= 2) return c.actor.sheet?.render(true); if (c.token) return c.token.control({ releaseOthers: true }); if (!game.user.isGM && c.actor.isOwner) return c.actor.sheet?.render(true); return; }
   if (kind === "fold") { await game.settings.set(F, "hudFolded", !setting("hudFolded", false)); return; }
+  if (kind === "rtab") { st.view = b.dataset.rtab === "sit" ? "sit" : "main"; st.rview = "main"; return syncSide(); }   // v0.0.446: the right column's tabs
   if (kind === "tab") { st.tab = b.dataset.tab; st.tabChosen = true; if (st.rx) st.rx = null; return renderHud(); }
   if (kind === "rx") { const msg = game.messages.get(b.dataset.msg); if (!msg) return; const { rxClick } = await import("./moment.mjs"); st.rx = null; await rxClick(msg, { dataset: { twod12: b.dataset.k, row: b.dataset.row }, tagName: "DIV" }); return renderHud(); }
   if (kind === "close") return closePop();
   if (!actor) return;
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
   if (kind === "use" && item) { closePop(); return use(actor, item, Number(b.dataset.ap) || 0, ev.shiftKey); }
-  if (kind === "line" && item && !ev.target.closest(".hb-st")) { const first = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions.find(v => !v.off); if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
+  if (kind === "line" && item && !ev.target.closest(".hb-st")) { const vs0 = (await actionsOf(actor)).list.find(x => x.id === item.id)?.versions ?? [], first = vs0.find(v => !v.off) ?? vs0.find(v => !v.lock); /* v0.0.453: a spent one too (the dialog warns) */ if (first) { closePop(); return use(actor, item, Number(first.ap) || 0, ev.shiftKey); } return; }
   if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
   if (kind === "grantcancel") { const { cancelGrantOf } = await import("./freeuse.mjs"); return cancelGrantOf(actor, b.dataset.effect); }
   if (kind === "more") return openPanel("more", st.moreIds ?? []);
-  if (kind === "hands") return openPanel("hands");
+  if (kind === "hands") return b.dataset.hand ? handMenu(actor, b) : openPanel("hands");   // v0.0.444 (group 2): the menu above the tile
   if (kind === "steel") { const basic = actor.itemTypes.action.find(i => /steel yourself/i.test(i.name)); if (basic) return use(actor, basic, Math.min(...(basic.system.versions ?? [{ ap: 2 }]).map(v => Number(v.ap) || 0)), ev.shiftKey); return ui.notifications.info("No Steel Yourself on this sheet."); }
   if (kind === "card" && item) { if (st.card?.isConnected && st.cardId === item.id) return closePop({ keepOpen: true }); return showCard(actor, item, b); }
   if (kind === "cat") { const c = b.dataset.cat; if (actor.type !== "npc") { st.open = st.open === c ? "" : c; root.querySelectorAll(".cat").forEach(x => { x.classList.toggle("on", x.dataset.cat === st.open); x.setAttribute("aria-pressed", String(x.dataset.cat === st.open)); }); } return st.open || actor.type === "npc" ? openPanel(c) : closePop(); }
@@ -510,7 +588,24 @@ export function hudAskSlot() {
   // v0.0.397 (Lucas: "in the same area as the granted action"): a creature's bar asks in its side panel; the party strip in the middle
   return root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
 }
-export const hudAsking = (on, side = false) => { root?.classList.toggle("asking", !!on && !side); root?.classList.toggle("asking-side", !!on && side); };
+export const hudAsking = (on, side = false) => { root?.classList.toggle("asking", !!on && !side); root?.classList.toggle("asking-side", !!on && side); syncSide(); };
+/**
+ * v0.0.446 (Lucas: "only show the 'Situational' tab when there is something happening. When it happens, change tabs to the situational
+ * automatically"): the right column's tab. Something waits (a Reaction, granted uses, Prone, a question or a movement in .hb-ask): the
+ * Situational tab shows, and the HUD switches to it when it starts waiting; when nothing waits any more, back to the tab chosen before.
+ */
+function syncSide() {
+  const side = root?.querySelector(".hud-main .h3-side");
+  if (!side) return;
+  const has = !!side.querySelector(".h3-sit > .h3-si, .h3-sit > .hb-gr, .hb-ask > *");
+  side.classList.toggle("has-sit", has);
+  if (has && !st.sitWas) st.view = "sit";
+  if (!has && st.view === "sit") st.view = st.rview;
+  st.sitWas = has;
+  const v = has && st.view === "sit" ? "sit" : "main";   // v0.0.449: Situational, or the Hands with the macro bar
+  side.dataset.rtab = v;
+  side.querySelectorAll(".h3-rt").forEach(b => b.setAttribute("aria-selected", String(b.dataset.rtab === v)));
+}
 
 /* ------------------------------------------------------------------ the Reaction alert (v0.0.390; Lucas: "it can pass unnoticed") */
 /** Pure: the waiting rows of a Reactions message this user answers: [{ row, actorUuid, itemId, name, cost, lead }]. */

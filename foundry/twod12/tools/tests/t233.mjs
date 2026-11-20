@@ -30,7 +30,7 @@ console.log("the countdown: one actor per uuid:", eff.includes("actors.set(c.act
 
 // 2. Forced movement (Lucas: a right-click cancelled it, then "Target the creature to move first" with a target set)
 const mv = src("module/move.mjs");
-console.log("a hand click: the targeted creatures when the selected one is the pusher:", mv.includes("if (!targets.length && !ctx?.targets) targets = [...game.user.targets].filter(t => t.id !== origin.id);"), "| a right-click takes a square back:", mv.includes("if (ev.button === 2) { if (path.length > 1) { path.pop(); draw(); } return; }"));
+console.log("a hand click: the targeted creatures when the selected one is the pusher:", mv.includes("if (!targets.length && !ctx?.targets) targets = [...game.user.targets].filter(t => t.id !== origin.id);"), "| a square taken back by Backspace or the button (v0.0.461: a right-click pans the map):", mv.includes('else if (ev.key === "Backspace") { ev.preventDefault(); takeBack(); }'));
 
 // 3. Mastery: at most 1 per Weapon Group in each encounter (book, Chapter 15)
 const M = await import(ROOTURL + "module/mastery.mjs");

@@ -151,12 +151,7 @@
       "0",
       "[V] 1 + 1d4! Sl; Pushed 1.",
       "[V] 3 + 1d4! Sl; Pushed 1."
-     ],
-     "foundry": {
-      "after": "@Move[pushed|distance:1|pick:yes]",
-      "x2": "Pushed 1.",
-      "x3": "Pushed 1."
-     }
+     ]
     }
    ],
    "foundry": {
@@ -321,12 +316,7 @@
       "0",
       "[V] 1 + 1d4! Bl; Pushed 1.",
       "[V] 3 + 1d6! Bl; Pushed 1."
-     ],
-     "foundry": {
-      "after": "@Move[pushed|distance:1|pick:yes]",
-      "x2": "Pushed 1.",
-      "x3": "Pushed 1."
-     }
+     ]
     }
    ],
    "foundry": {
@@ -359,12 +349,7 @@
       "0",
       "[V] 3 + 1d6 Bl; Pushed 2.",
       "[V] 7 + 1d6 Bl; Pushed 2."
-     ],
-     "foundry": {
-      "after": "@Move[pushed|distance:2|pick:yes]",
-      "x2": "Pushed 2.",
-      "x3": "Pushed 2."
-     }
+     ]
     }
    ],
    "foundry": {

@@ -55,7 +55,7 @@ function cardSec(m) {
   ];
   const extra = `<div class="as-more">${tog("system.marksTarget", s.marksTarget, "Marks the target")}${tog("system.basicAttack", s.basicAttack, "An NPC's Basic attack")}
     ${s.basicAttack ? `<span class="fr-m">rating</span> ${sel('name="system.basicRating"', s.basicRating ?? "medium", m.basicRatings ?? [], "Basic attack rating")}` : ""}${m.basicSuggest ? ` <span class="fr-m">suggested ${esc(m.basicSuggest)}</span>` : ""}
-    ${weapon ? `<span class="fr-m">Weapon used</span> ${sel('name="system.weaponUse"', s.weaponUse ?? "", Object.entries(TWOD12.weaponUses ?? {}), "Weapon used")}` : ""}
+    ${weapon ? `<span class="fr-m">Weapon used</span> ${sel('name="system.weaponUse"', s.weaponUse ?? "", Object.entries(TWOD12.weaponUses ?? {}), "Weapon used")} <span class="fr-m">Weapon needs</span> ${sel('name="system.weaponNeeds"', s.weaponNeeds ?? "", Object.entries(TWOD12.weaponNeeds ?? {}), "Weapon needs")}` : ""}
     ${more.map(([k, l]) => `<a class="as-link" data-as="show" data-v="${k}" role="button" tabindex="0">${l}</a>`).join("")}</div>`;
   return sec("card", "The card", "its lines, in the order players read them", grid(rows) + extra
     + help("Category and Level show at the right of the card's title (Level 0 hides the number). Distance: <code>reach</code>, <code>self</code>, <code>weapon</code> or any text. Marks the target: using it marks the targeted creature; rules \"against the marked one\" read the mark."));
@@ -93,7 +93,7 @@ export function dmgChips(list) {
   if (!list?.length) return "";
   const groups = new Map();
   for (const i of list) {
-    const pool = i.pool === "M" ? "M" : i.pool === "C" ? "C" : "B", ink = TWOD12.subtypeInk?.[i.subtype], sub = i.subtype ? ` <span class="as-sub"${ink ? ` style="color:${ink}"` : ""}>${esc(TWOD12.subtypes?.[i.subtype] ?? i.subtype)}</span>` : "";
+    const pool = i.pool === "M" ? "M" : i.pool === "C" ? "C" : "B", ink = TWOD12.subtypeInk?.[i.subtype], sub = i.subtype ? ` <span class="as-sub"${ink ? ` style="color:${ink};--sc-d:${TWOD12.subtypeColors?.[i.subtype] ?? ink}"` : ""}>${esc(TWOD12.subtypes?.[i.subtype] ?? i.subtype)}</span>` : "";
     const parts = groups.get(pool) ?? groups.set(pool, []).get(pool);
     if (i.useW) parts.push(`<b>${i.wCount || 1} × Weapon</b>`);
     if (i.dice) parts.push(`<b>${esc(i.dice)}</b>${sub}`);
@@ -164,7 +164,7 @@ function versionBody(v, vi, m) {
     ${tiers}
     ${grid([["Effects", `<textarea class="fr-ta" rows="3" data-as-in="v.effects" placeholder="The card's Effects line (the book's words)" aria-label="Effects">${esc(v.effects)}</textarea><a class="as-link" data-as="button" role="button" tabindex="0">+ a button in this text</a>`],
       areaOn ? ["Area", `<span class="fr-m">Size</span> ${step("v.@size", v.areaSize || a.size, 1, 30)}${a.keep ? ` <span class="fr-m">Rounds</span> ${step("v.@rounds", v.areaRounds || a.rounds || 0, 0, 20)} <span class="fr-m">0: until removed</span>` : ""}`] : null])}
-    <h4 class="as-h4" data-as-anchor="use">${v.noTiers ? "On use" : "On a Tier 2 or 3"} <small>${v.noTiers ? "Effects applied when the Action is used" : "Effects applied with the card's Effects line (Tier 2+)"}</small></h4>${fxBlock(v, m)}
+    <h4 class="as-h4" data-as-anchor="use">On use <small>${v.noTiers ? "Effects applied when the Action is used" : "Effects applied with the card's Effects line (whatever the roll)"}</small></h4>${fxBlock(v, m)}
     <h4 class="as-h4" data-as-anchor="after">After the damage <small>${A.parseAfter(v.after).filter(x => x.kind !== "text").length} step(s)</small></h4>${afterBlock(v, m)}`;
 }
 function versionsSec(m) {

@@ -120,7 +120,7 @@ if (dm?.error) console.log("rollDamage FAILED:", dm.error.stack.split("\n").slic
 const dcards = chat.filter(m => m.flags?.twod12?.ccDmg);
 const dc = dcards[0], st0 = dc.flags.twod12.ccDmg;
 console.log("damage messages posted:", dcards.length, "| groups (Tiers):", st0.groups.map(g => `Tier ${g.tier}: ${g.comps.reduce((x, c) => x + c.total, 0)}`).join(" | "), "| rows:", st0.rows.map(r => `${r.name} (group ${r.g})`).join(", "));
-console.log("Apply buttons:", (dc.content.match(/data-twod12="ccApply"[^>]*data-factor="1">Apply/g) || []).length, "| Apply all:", dc.content.includes("ccApplyAll"), "| no Lethal selector, no Block:", !dc.content.includes('class="kind"') && !dc.content.includes("Block"));
+console.log("Apply buttons:", (dc.content.match(/data-twod12="ccApply"[^>]*data-factor="1" data-ctx="apply">Apply/g) || []).length, "| Apply all:", dc.content.includes("ccApplyAll"), "| no Lethal selector, no Block:", !dc.content.includes('class="kind"') && !dc.content.includes("Block"));
 let current = { content: dc.content, flags: JSON.parse(JSON.stringify(dc.flags)) };
 const live = { id: "dm1", isAuthor: true, get content() { return current.content; }, getFlag: (s, k) => current.flags[s][k], setFlag: async () => {}, update: async d => { if (d.content) current.content = d.content; if (d["flags.twod12.ccDmg"]) current.flags.twod12.ccDmg = d["flags.twod12.ccDmg"]; } };
 const CD = await import(ROOTURL + "module/ccdamage.mjs");

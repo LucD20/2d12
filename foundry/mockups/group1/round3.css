@@ -1,0 +1,28 @@
+/* Group 1, round 3 (2026-11-19): a heraldic symbol on each Escalation rung. Mockup only: nothing in the system changed.
+   The line is round 2's (round2.css, under .r2-line); this file adds the symbol in a ladder's row (.r3), the hooks' mark of part 4's variant
+   (.r3-hooks), and the page's plates. */
+
+/* ---- the rung's symbol: 14 px tall in the 16 px row (sized in em, so round 2's fit shrinks it with the text); the row's color (ink / faint) */
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r3 .r2-ld > span { display: flex; align-items: center; height: 1.231em; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r3 .r2-ld .r3-sym, .r3-spec .r3-sym { flex: none; width: 0.923em; height: 1.077em; margin-right: 0.42em; overflow: visible; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r3 .r2-ld b { flex: none; }
+/* ---- part 4's variant: a roundel before each hook */
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r3-hooks .r2-hl > b { display: flex; align-items: center; height: 1.143em; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r3-hooks .r3-hm { flex: none; width: 0.6em; height: 0.6em; margin-right: 0.42em; }
+
+/* ---- the page: the combat line alone, twice its size (part 5) */
+.r3-crop-line .ps2-plate, .r3-crop-line .ps2-tiles, .r3-crop-line .window-header { display: none !important; }
+.r3-crop-line .mk-win { zoom: 2; }
+
+/* ---- the page: a family's plate (part 1). The panels take the sheet's own colors (--s-pg-2, --s-ink, --s-faint) for each theme */
+.r3-fams { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: 1700px; }
+.r3-fam h3 { margin: 0 0 4px; font-size: 15px; } .r3-idea { margin: 0 0 10px; line-height: 1.45; opacity: .9; min-height: 82px; }
+.r3-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.r3-panel { background: var(--s-pg-2); color: var(--s-ink); border: 1px solid var(--s-hair); padding: 10px 14px 14px; }
+.r3-pk { display: block; font-size: 12px; color: var(--s-mute); margin-bottom: 4px; }
+.r3-big { display: flex; gap: 22px; margin: 6px 0 14px; } .r3-big figure { margin: 0; text-align: center; }
+.r3-big-s { display: block; width: 41px; height: 48px; overflow: visible; } .r3-big figcaption { margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--s-mute); }
+.r3-small { display: grid; grid-template-columns: 1fr; gap: 10px; border-top: 1px solid var(--s-hair); padding-top: 8px; }
+.r3-spec { display: block; font-size: 13px; color: var(--s-faint); } .r3-spec.lit { color: var(--s-ink); font-weight: 600; }
+.r3-spec > span { display: flex; align-items: center; height: 16px; white-space: nowrap; }
+.r3-spec b { width: 1.1em; font-weight: 600; font-variant-numeric: tabular-nums; } .r3-spec.lit b { font-weight: 700; }

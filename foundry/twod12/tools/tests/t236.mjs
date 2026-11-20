@@ -42,7 +42,7 @@ console.log("the Damage button used:", src("module/followup.mjs").includes('b.cl
 
 // 8. Rally
 const ra = src("module/rally.mjs");
-console.log("Rally's lines:", ra.includes("} healing`].filter(Boolean)") && ra.includes("rallyCard(`${sub}<br>${result}`)"), "| a Heal button where Damage would be:", src("module/followup.mjs").includes("export function addHealButton(msg, html)"));
+console.log("Rally's lines:", src("module/healwin.mjs").includes("export function healLinesHtml(") && ra.includes("healLinesHtml(shortName(actor), plan, partsFor(used)"), "| a Heal button where Damage would be:", src("module/followup.mjs").includes("export function addHealButton(msg, html)"));
 
 // v0.0.348 (Lucas on v0.0.347)
 const mk = src("module/mark.mjs");

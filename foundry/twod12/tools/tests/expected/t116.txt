@@ -1,4 +1,4 @@
 Gear type: true Gear | data: true | registered: true | coins on creatures: true
 item sheet fields: true | the same gear dropped again adds to its quantity: true
 Items tab: toolbar false | loadout and lists false | Where buttons false
-armor: Training gone from the title true | NPC note false | gear list: Coins and weight on the line true | quantity typed in place true | drag to reorder (itemOrder) false
+armor: Training gone from the title true | NPC note false | gear list: Coins and weight on the line true | quantity typed in place (v0.0.455: the Inventory, with − and +) true | drag to reorder (itemOrder) false

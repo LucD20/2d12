@@ -28,7 +28,7 @@ console.log("Momentum at the strip's left (v0.0.407: the number, 0 too):", V.par
 console.log("--- the bar");
 const line = { id: "i1", name: "Judge", freq: "atwill", stamps: [{ ap: 0, label: "0 AP" }, { ap: 1, label: "1 AP", off: true, why: "Not enough AP" }], sub: "10 sq. · next: +1 Bane" };
 const ln = V.lineHtml(line);
-console.log("a line: a stamp a Version, the off one struck with its reason:", ln.includes('data-hud="use" data-ap="0"') && ln.includes('class="hb-st no" disabled title="Not enough AP"'), "| its roll under it:", ln.includes('<span class="r">10 sq. · next: +1 Bane</span>'));
+console.log("a line: a stamp a Version, the off one struck with its reason:", ln.includes('data-hud="use" data-ap="0"') && ln.includes('class="hb-st no" data-hud="use"'), "| its roll under it:", ln.includes('<span class="r">10 sq. · next: +1 Bane</span>'));
 const gr = V.lineHtml({ name: "Weapon Attack ×2", freq: "granted", grant: { effect: "e1", index: 0 }, stamps: [{ ap: 0, label: "0 AP" }] });
 console.log("a granted use (Lucas: things can grant you actions):", gr.includes('data-hud="grant" data-ap="0" data-effect="e1" data-index="0"'));
 console.log("columns by Frequency, the word with its square:", V.colsHtml([{ key: "atwill", label: "At-will", fq: "#6aa82e", lines: [line] }]).includes('<div class="hb-col" style="--fq:#6aa82e"><div class="hb-ch">At-will</div>'), "| the order:", V.FREQ_ORDER.join(" "));
@@ -48,7 +48,7 @@ const H = await import(ROOTURL + "module/hud.mjs").catch(() => null);
 console.log("waiting rows this user answers:", JSON.stringify(H?.waitingFor?.({ lead: "<b>Cleaver</b> on Durgan", rows: [{ i: 0, state: "wait", answerer: "u1", actorUuid: "A", itemId: "x", itemName: "Shield of Faith", ap: 1 }, { i: 1, state: "wait", answerer: "u2" }, { i: 2, state: "use", answerer: "u1" }] }, "u1")));
 console.log("the settings:", ["hudParty", "hudFolded", "rxChime", "rxFloat", "rxHud"].every(k => hud.includes(`"${k}"`)), "| the chime made by the browser at Foundry's interface volume:", hud.includes("createOscillator") && hud.includes('"globalInterfaceVolume"'),
   "| the name on the map, only for the one who answers:", ov.includes('if (showName && r.answerer === game.user.id)'), "| resources by right-click:", hud.includes("async function adjust(actor, res, d)"));
-console.log("the carousel: the HUD's marks, the health tag, Momentum, plain words:", car.includes("marksHtml(") && car.includes('<div class="tp-tag') && car.includes("tc-mom") && css.includes("#twod12-carousel .tp-band { font-variant: normal !important;"),
+console.log("the carousel: the HUD's marks, no health tag (v0.0.453), Momentum, plain words:", car.includes("marksHtml(") && car.includes('const htag = "";') && car.includes("tc-mom") && css.includes("#twod12-carousel .tp-band { font-variant: normal !important;"),
   "| the styles in rem:", css.includes(".twod12-hud .hb-ln > b { font-size: .81rem;"), "| the bar 150 px, folded 40:", css.includes(".twod12-hud.is-bar { height: 150px;") && css.includes(".twod12-hud.is-bar.is-folded { height: 40px;"));
 console.log("--- v0.0.392 (Lucas, testing v0.0.391)");
 const g2 = V.tokenBarHtml({ ...m, side: { grants: [{ name: "Weapon Attack → Ogre Chieftain", freq: "granted", grant: { effect: "e1", index: 0, target: "t1" }, stamps: [{ ap: 0, label: "0 AP" }], sub: "from Double Shot" }], cancels: [{ effect: "e1", source: "Double Shot" }] } });
@@ -79,13 +79,13 @@ console.log("the granted uses under the hands:", g6.indexOf('class="hb-sb"') < g
 console.log("--- v0.0.397 (Lucas: \"Go, build it\")");
 const P7 = await import(ROOTURL + "module/pickbar.mjs"), rd7 = src("module/rolldlg.mjs"), ac7 = src("module/actions.mjs"), rw7 = src("module/rollwindow.mjs"), th7 = src("styles/theme.css");
 console.log("the roll dialog's card part:", rd7.includes("function cardHtml(inp, st, v)") && rd7.includes('<div class="rd-body rd-cardbody">${cardHtml(inp, st, v)}'), "| the ladder one line:", rd7.includes('<div class="rd-ladder one'),
-  "| a square with its picture:", P7.pickBarHtml({ options: [{ id: "0", label: "Ogre", img: "o.png" }] }).includes('class="lb-opt sq" data-id="0" aria-label="Ogre"><img src="o.png"'));
+  "| a square with its picture:", P7.pickBarHtml({ options: [{ id: "0", label: "Ogre", img: "o.png" }] }).includes('class="lb-opt sq" data-id="0" aria-label="Ogre" data-tooltip="Ogre"><img src="o.png"'));
 console.log("the question in the HUD's side panel:", hud.includes('root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask")') && th7.includes(".twod12-hud .hb-ask .twod12-linebar.in-side"),
   "| the area after the dialog:", ac7.includes("const deferArea = ") && rw7.includes("return this._finish({ restart: true, place: true, rollAfter: true, state: this.st });") && ac7.includes("rollAfterPlace: !!rdData.rollAfter"),
   "| Momentum: the party's number (v0.0.407, it isn't used up):", src("module/carousel.mjs").includes("mom = momentumNow();"));
 console.log("--- v0.0.398 (Lucas, on the multi-target mockup and v0.0.397)");
 const cc8 = src("module/chatcards.mjs"), rd8 = src("module/rolldlg.mjs"), th8 = src("styles/theme.css");
-console.log("a group a Tier, each creature once:", cc8.includes('<div class="cc-card cc-attack many v398">') && cc8.includes('data-twod12="ccApplyAll" data-group="${gi}"'), "| the Guard in the on-demand row:", cc8.includes('}${mods ? `<span class="cc-rmods">${mods}</span>` : ""}${nlTag}</div>` : "";'),
+console.log("a group a Tier, each creature once:", cc8.includes('<div class="cc-card cc-attack many v398">') && cc8.includes('data-twod12="ccApplyAll" data-group="${gi}"'), "| the Guard in the on-demand ledger (v0.0.454):", cc8.includes('ledgerHtml(ledgerModel(') && cc8.includes('x.kind === "reduce" || x.kind === "guard"'),
   "| a Tier's Apply all:", src("module/ccdamage.mjs").includes("CC.applyAllRows(s.rows).filter(inGroup)"));
 console.log("the creature on one line with Target:", rd8.includes('<div class="rd-cbox one"><div class="rd-c1">') && rd8.includes("${targetBtn(inp)}</div>"), "| the dialog not live:", src("module/actions.mjs").includes("live: false,") && src("module/rollwindow.mjs").includes('else if (a === "targetmode") return this._finish({ restart: true, state: this.st });'),
   "| the hotbar at the bottom with the party strip:", th8.includes(".twod12-hud.is-strip.with-hot .hud-hot { position: static !important;"));

@@ -129,7 +129,7 @@ console.log("a lone cancelling pair is not 3d12:", JSON.stringify(RD.diceText(wo
 console.log("--- blocked Roll, and (v0.0.293) what is only a warning");
 console.log("no target:", RD.blockedReason({ ...smite, creatures: [] }, RD.newState(smite)));
 const spent = { ...smite, blocked: ["Used: available again at the start of your next turn"] }, far = { ...smite, creatures: [{ ...smite.creatures[0], blocked: "out of range (12 sq., the maximum is 10)" }] };
-console.log("Frequency spent (warning):", JSON.stringify(RD.blockedReason(spent, RD.newState(smite))), RD.warnings(spent, RD.newState(smite)).join(""), "| no yellow warning (v0.0.370, Lucas):", !RD.dialogHtml(spent, RD.newState(smite)).includes('class="rd-warn"'));
+console.log("Frequency spent (warning):", JSON.stringify(RD.blockedReason(spent, RD.newState(smite))), RD.warnings(spent, RD.newState(smite)).join(""), "| the warning written above the bar (v0.0.460, Lucas: it didn't show):", RD.dialogHtml(spent, RD.newState(smite)).includes('class="rd-warn"'));
 console.log("out of range (warning):", JSON.stringify(RD.blockedReason(far, RD.newState(smite))), RD.warnings(far, RD.newState(smite)).join(""));
 console.log("area not placed:", RD.blockedReason({ ...wor, area: { label: "3 Burst", placed: false } }, RD.newState(wor)));
 console.log("can roll:", JSON.stringify(RD.blockedReason(smite, RD.newState(smite))));

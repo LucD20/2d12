@@ -95,7 +95,7 @@ export function fillCells(g, cells, color, alpha) {
   for (const c of cells) { const tl = cTL(c.i, c.j); rect(g, tl.x, tl.y, s, s, color, alpha); }
 }
 /** An edge around the whole area (not around every square): a dark line under a bright one. */
-export function outlineCells(g, cells, { color = 0xffffff, width = 3, under = 0x000000 } = {}) {
+export function outlineCells(g, cells, { color = 0xffffff, width = 3, under = 0x000000, alpha = 1 } = {}) {   // v0.0.461: alpha (the Charge's faint limit)
   const s = size(), set = new Set(cells.map(key)), segs = [];
   for (const c of cells) {
     const tl = cTL(c.i, c.j);
@@ -104,7 +104,7 @@ export function outlineCells(g, cells, { color = 0xffffff, width = 3, under = 0x
     if (!set.has(key({ i: c.i, j: c.j - 1 }))) segs.push([{ x: tl.x, y: tl.y }, { x: tl.x, y: tl.y + s }]);
     if (!set.has(key({ i: c.i, j: c.j + 1 }))) segs.push([{ x: tl.x + s, y: tl.y }, { x: tl.x + s, y: tl.y + s }]);
   }
-  for (const [w, col, al] of [[width + 3, under, 0.6], [width, color, 1]]) for (const [a, b] of segs) line(g, a, b, col, w, al);
+  for (const [w, col, al] of [[width + 3, under, 0.6], [width, color, 1]]) for (const [a, b] of segs) line(g, a, b, col, w, al * alpha);
 }
 
 /** The name of an area: "Line 10" (the value after the word, like Aura, as the book writes it); "Burst 2", "Emanation 1" as before. */
@@ -353,7 +353,7 @@ export async function startTemplate(cfg, ctx = {}) {
     // v0.0.251 (Lucas): the question is a bar at the bottom, in the system's style; "you too" follows the Action's Area setting (the item sheet: "Affect the creature it is around") and is a click away
     const { pickBar } = await import("./pickbar.mjs");
     const withMe = { id: "me", label: `Apply, ${escT(centerTok?.name ?? "you")} too` }, withoutMe = { id: "others", label: centerTok ? `Apply, not ${escT(centerTok.name)}` : "Apply" };
-    const res = await pickBar({ icon: "fa-vector-square", aside: false, text: `<b>${escT(actName || "the area")}</b>: apply the area shown on the map? Targets: <b>${names}</b>.${noLoE.length ? ` No Line of Effect: ${noLoE.map(escT).join(", ")}.` : ""}`,
+    const res = await pickBar({ icon: "fa-vector-square", aside: false, text: `<b>${escT(actName || cfg.source || cfg.name || "The area")}</b>: apply the area shown on the map? Targets: <b>${names}</b>.${noLoE.length ? ` No Line of Effect: ${noLoE.map(escT).join(", ")}.` : ""}`,
       options: centerTok ? (data.self ? [withMe, withoutMe] : [withoutMe, withMe]) : [withoutMe] });
     dropPreview();
     await back0();

@@ -93,7 +93,7 @@
 | [[Imperiled\|**Imperiled**]] | Barely avoided a Deadly Hazard: all your Rolls are Doomed, Vulnerable 3, safe again at the start of your turn. |
 | [[End of Turn\|**Initiative slot**]] | A position in the turn order. |
 | [[Instances of Damage\|**Instance of damage**]] | One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance. |
-| [[Interact\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. Once during an Advance Action, without ending it. |
+| [[Interact\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. Once during an Advance Action, without ending it. Stowing or swapping needs no free hand ([[Handle]]). |
 | [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. |
 | [[Leaning\|**Leaning**]] | Until the end of your turn: cover is calculated from one of your corners, and your own cover is reduced by 1 level. |
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
@@ -106,7 +106,7 @@
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. [Strike, Weapon] Actions with a weapon in your off hand take 2 Banes (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none). |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks. |
-| [[Minions\|**Minion**]] | An NPC rank with CV 25: about 12 Health at Stage 0, 3 AP a turn, no Reactions. Up to 3 Minions act in the same turn slot (squads as even as possible; the GM picks who goes next). |
+| [[Minions\|**Minion**]] | An NPC rank with CV 25: about 12 Health at Stage 0, 3 AP a turn, no Reactions. Up to 3 Minions act in the same turn slot (the GM makes the squads: about one for every 2 Minions is recommended; the GM picks who goes next). |
 | [[Minor enemies\|**Minor enemies**]] | The Minion and Grunt ranks: 3 AP a turn, and their damage dice never explode. |
 | [[Reading an Action\|**Mode**]] | One of several things a card can do at the same cost; you choose one each time you use the card. |
 | [[Momentum\|**Momentum**]] | The party's number from 0 to 4: an encounter starts at Escalation 1 + Momentum. +1 for each encounter overcome; -1 when a PC goes Down and at each Sleep; lost on a retreat and at a Rest. |
@@ -145,7 +145,7 @@
 | [[Reload (property)\|**Reload**]] | A weapon property: a Reload Shot needs a reload afterwards. |
 | [[Reload (property)\|**Reload Shot**]] | A Favored and Empowered shot with a Reload weapon. |
 | [[Class Actions, Picks and the Repertoire\|**Repertoire**]] | Everything a class offers beyond its Class Actions, listed by Frequency: Passive, Turn, Round, Encounter, Daily. |
-| [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value. Not Forced Movement: it never passes through creatures, never enters hazards, and needs Line of Effect. |
+| [[Reposition\|**Reposition**]] | Moving a creature along a path you choose, up to its value, within your Reach the whole way. Not Forced Movement: it never passes through creatures, never enters hazards, and needs Line of Effect. |
 | [[Requirements\|**Requirements**]] | What you need to use an Action. |
 | [[Resist, Weak and Immune\|**Resist**]] | Resist N (subtype): each Action's damage of that subtype, both pools together, is reduced by N once (minimum 0). |
 | [[Health Pool\|**Resolve, Vigor**]] | The two thresholds of your Health Pool: your class's high and low Health values (you choose which is which), your species' bonuses, and the Stage steps. |
@@ -191,7 +191,7 @@
 | [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. |
 | [[Taunted\|**Taunted**]] | By a creature: 1 Bane on your Actions against anyone else. |
 | [[Flanking\|**Threatens**]] | A creature threatens every enemy within the normal range of a Melee weapon, for as long as it qualifies to use that weapon's Weapon Attack (1A); a Non-threatening weapon doesn't (not adjacent ones with a Long weapon). |
-| [[Thrown\|**Thrown**]] | A weapon property: the weapon can be used in hand or thrown, with a Range for each. |
+| [[Thrown\|**Thrown**]] | A weapon property: the weapon can be used in hand or thrown, with a Range for each. A thrown weapon stays in your hand for the rules: the game doesn't track where it lands. |
 | [[Outcome Tiers\|**Tier**]] | The outcome of a roll: 1, 2 or 3. |
 | [[Reactions\|**Trigger**]] | A Reaction that happens after the Action that triggers it. |
 | [[A Reaction's Target\|**Triggering creature**]] | The creature whose Action sets a Reaction off. |
@@ -200,6 +200,7 @@
 | [[Actions: the turn budget\|**Turn budget**]] | The points of an NPC's whole turn, by rank and damage rating (a Medium Standard: 100, 25 points an AP), spent on its Actions: damage, riders, help, a Reaction. |
 | [[Turns and Rounds\|**Turn-cycle**]] | From the start of a creature's turn to the start of its next turn. A Round Action is used once per turn-cycle. |
 | [[Unconscious\|**Unconscious**]] | You can't take Actions, you are Prone, and you drop everything you hold. |
+| [[Unfailing\|**Unfailing**]] | A trait: when its roll gets a Tier 1, that use doesn't count toward the Action's Frequency. You still spend its AP. |
 | [[Senses\|**Unsensed**]] | You can't target the creature; its Actions against you are Favored. |
 | [[Reading an Action\|**Version**]] | The same Action at another cost. |
 | [[Defenses\|**Vs.**]] | An entry that names an Attribute: the Action rolls against 12 + that Attribute of the target instead of Armor Defense or Ward Defense. |

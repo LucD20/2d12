@@ -6,7 +6,6 @@ import { groupColor } from "./config.mjs";
 import { esc, perFrame, logOnlyChange } from "./util.mjs";
 import { strikesUsed } from "./usage.mjs";
 import { marksHtml } from "./hudview.mjs";
-import { healthTags, downState } from "./sheetmodel.mjs";
 import { momentumNow, setMomentum } from "./escalation.mjs";
 const F = "twod12", ID = "twod12-carousel";
 
@@ -28,9 +27,7 @@ function card(combat, c, st) {
   const pips = `<div class="tp-marks ${pipKind}">${marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax: 1, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started })}</div>`;
   // v0.0.224 (Lucas, playtest 3): the 3 Strikes of this turn as three red diamonds; each Strike (not a Linked one) empties one.
   const strikes = "";   // v0.0.390: the Strikes are in the marks
-  // v0.0.390: Bloodied, Strained or the Down state under the name: every creature knows it of a creature it perceives (Chapter 4)
-  const hs = c.actor?.system ?? {}, dn = (() => { try { return downState(hs, c.actor?.statuses ?? new Set()); } catch (e) { return { down: false }; } })(), ht = (() => { try { return healthTags(hs); } catch (e) { return {}; } })();
-  const htag = dn.down ? `<div class="tp-tag down">${esc(dn.state)}</div>` : c.actor?.statuses?.has?.("unconscious") ? '<div class="tp-tag down">Unconscious</div>' : ht.bloodied || ht.strained ? `<div class="tp-tag">${[ht.bloodied ? "Bloodied" : "", ht.strained ? "Strained" : ""].filter(Boolean).join(", ")}</div>` : "";
+  const htag = "";   // v0.0.453 (Lucas, playtest 6: "Remove the 'Bloodied' 'Dying' from the combat strip"): no state tag under the name
   const img = c.token?.texture?.src ?? c.img ?? "icons/svg/mystery-man.svg";
   const noInit = c.initiative === null || c.initiative === undefined;
   const d = dispOf(c), band = current ? "Acting" : (DISP_LABEL[d] ?? "");

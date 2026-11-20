@@ -113,7 +113,7 @@ console.log("--- the damage message");
 const dm = { kind: "dmg", name: "Weapon Attack", nl: false, groups: [{ tier: 3, comps: [{ pool: "B", sub: "Sl", total: 9, formula: "2d6", dice: [{ faces: 6, results: [4, 5] }], src: "Greatsword" }, { pool: "B", sub: "Sl", total: 2, kind: "A", dice: [], label: "Weapon" }, { pool: "B", sub: "Sl", total: 2, dice: [], label: "Heavy Blows" }, { pool: "M", sub: "Ho", total: 3, formula: "1d6", dice: [{ faces: 6, results: [3] }], src: "Radiant Zeal" }], riders: ["Pushed 2"], rows: [0, 1] }],
   rows: [{ name: "Bandit Thug", mods: [{ v: -8, label: "Guard", kind: "guard" }], choice: "guard", applied: null }, { name: "Fire Imp", mods: [{ v: 2, label: "Weak Holy" }], applied: { took: { B: 5, M: 3 }, state: "bloodied", factor: 1 } }], designer: { avg: 14.5, atLeast: 38 } };
 const dh = CC.damageCardHtml(dm, CC.viewOf({ gm: true }));
-console.log("stamp:", txt(dh.match(/<button type="button" class="cc-stamp[\s\S]*?<\/button>/)[0]), "| the tag:", txt(dh.match(/class="cc-nl[^"]*">[^<]*/)[0].replace(/^class="[^"]*">/, "")), "| pools:", txt(dh.match(/<button type="button" class="cc-pools"[\s\S]*?<\/button>/)[0]));
+console.log("stamp:", txt(dh.match(/<button type="button" class="cc-stamp[\s\S]*?<\/button>/)[0]), "| the tag (v0.0.454: the ledger's foot):", txt(dh.match(/class="cc-lgf">([^<]*)/)[1]), "| pools:", txt(dh.match(/<button type="button" class="cc-pools"[\s\S]*?<\/button>/)[0]));
 console.log("the instance with its Weapon Modifier as a line:", txt(dh.match(/<div class="cc-inst">[\s\S]*?Total[\s\S]*?<\/b>/)[0]));
 console.log("rows:", [...dh.matchAll(/<div class="cc-trow[^"]*">[\s\S]*?(?=<div class="cc-trow|<\/div><\/div><\/div>)/g)].map(m => txt(m[0])).join(" || "));
 console.log("v0.0.288: the header is the title alone:", txt(dh.match(/<div class="cc-dhead">[\s\S]*?<\/div>/)[0]), "| the bottom row (one row left: no Apply all, the tag alone):", txt(dh.match(/<div class="cc-applyall">[\s\S]*?<\/div>/)?.[0]));
@@ -143,3 +143,10 @@ console.log("--- v0.0.287 (Lucas tested v0.0.286)");
 const twoT = CC.damageCardHtml({ kind: "dmg", name: "Word of Radiance", groups: [{ tier: 2, comps: [{ pool: "M", sub: "Ho", total: 16, formula: "2d10", dice: [{ faces: 10, results: [7, 9] }] }], rows: [0] }, { tier: 1, comps: [{ pool: "M", sub: "Ho", total: 7, formula: "2d6", dice: [{ faces: 6, results: [3, 4] }] }], rows: [1] }], rows: [{ name: "Grave Wisp", mods: [] }, { name: "Bandit Thug", mods: [] }] });
 console.log("the stamp holds every Tier:", [...twoT.matchAll(/class="cc-sband (t\d)"><b>(\d+)/g)].map(m => `${m[1]} ${m[2]}`).join(" | "));
 console.log("the Save card's target row at the bottom:", /cc-flavor[\s\S]*class="cc-foot"/.test(after) && !/cc-savehead[\s\S]*class="cc-tline">/.test(after), "| its Damage there:", /class="cc-foot">[\s\S]*ccSaveDamage/.test(after), "| the pills read T1:", /class="cc-pill t1">T1</.test(CC.tierPill(1)));
+// v0.0.454 (Lucas, playtest 6, D2 "B"): the ledger, one step a line
+const led = CC.ledgerModel([{ pool: "B", sub: "Pi", total: 2, formula: "1d4", dice: [{ faces: 4, results: [2] }] }], [{ v: -3, label: "Shield of Faith", kind: "reduce" }]);
+console.log("2 Pi with Shield of Faith 3:", JSON.stringify(led));
+const led2 = CC.ledgerModel([{ pool: "B", sub: "Sl", total: 7, formula: "1d8", dice: [{ faces: 8, results: [6] }] }, { pool: "B", sub: "Sl", total: 1, kind: "A", dice: [], label: "Weapon" }, { pool: "M", sub: "Ho", total: 7, formula: "2d6", dice: [{ faces: 6, results: [3, 4] }] }],
+  [{ v: -2, label: "Resist Slash", sub: "Sl", kind: "resist" }, { v: 2, label: "Weak Holy", sub: "Ho", kind: "weak" }, { v: -2, label: "Guard", kind: "guard" }]);
+console.log("Smite on the Orc:", led2.map(b => `${b.name}: ${b.lines.map(l => `${l.label} ${l.v}`).join("; ")} = ${b.takes}`).join(" || "));
+

@@ -21,7 +21,7 @@ escapes names: true
 Also applies Hindered · lasts until the end of its turn · ends early after an action that is Ranged and Strike.
 Does nothing yet.
 --- chip rows
-with all of: Melee var(--g-requires), Strike var(--g-kind) [35 to add] | but none of: Ranged var(--g-requires) [36 to add]
+with all of: Melee var(--g-requires), Strike var(--g-kind) [36 to add] | but none of: Ranged var(--g-requires) [37 to add]
 hidden: Any of, Saves against | once Any of is opened: all,any,none / from
 bonus damage has no Saves against: any,none
 --- the template

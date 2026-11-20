@@ -190,10 +190,17 @@ export function multiCheckHtml(title, dice, rows, chips = []) {
 
 export async function rollCheck({ actor, label, mod = 0, boons = 0, banes = 0, dc = 13, chips = null, sources = [], manualBoons = 0, manualBanes = 0, adj = 0, favored = false, doomed = false } = {}) {
   const r = await performCheck({ mod, boons, banes, dc, sources, manualBoons, manualBanes, adj, favored, doomed });
-  await ChatMessage.create({
-    speaker: ChatMessage.getSpeaker({ actor }), rolls: r.rolls,
-    content: `<div class="twod12 chat">${checkHtml(label, r, [...(chips ?? (mod ? [`Modifier ${sgn(mod)}`] : [])), `DC ${dc}`], { showTier: true })}</div>`
-  });
+  // v0.0.447 (Lucas's checklist, hud-identity: a Save from the HUD "sends a very old card style"): a Check or a Save is drawn as the chat card of
+  // an Action (chatcards.mjs: the stamp, the ladder against its DC, the breakdown), without the target line; the old block only if that fails
+  let content = "";
+  try {
+    const CC = await import("./chatcards.mjs"), { ccRowOf } = await import("./actions.mjs");
+    const row = { ...ccRowOf({ ...r, dcLabel: "DC" }, String(actor?.name ?? ""), "", String(chips?.[0] ?? "").replace(/\s*[+\u2212-]\s*\d+$/, "") || "Modifier") };
+    content = CC.cardContent({ kind: "attack", name: label, freq: "", cost: "", traitsHtml: "", flavor: "", hasDamage: false, outcomes: {}, rows: [row], locked: true })
+      .replace(/<hr class="cc-hr"><div class="cc-foot">[\s\S]*?<\/div>(?=(?:<div class="cc-des|<div class="cc-pfoot|<\/div>\s*$))/, "");
+  } catch (e) { console.warn("twod12 | the Check card", e); }
+  if (!content) content = `<div class="twod12 chat">${checkHtml(label, r, [...(chips ?? (mod ? [`Modifier ${sgn(mod)}`] : [])), `DC ${dc}`], { showTier: true })}</div>`;
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: r.rolls, content });
   return r;
 }
 

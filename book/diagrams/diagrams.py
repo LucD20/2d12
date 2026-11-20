@@ -441,13 +441,14 @@ def slid_diagram():
 
 # ------------------------------------------------------------------ Reposition (a path that goes around creatures: it can't pass through them)
 def reposition_diagram():
-    g = Svg(3, 5, 44, 'Reposition 2: G can\'t pass through Dave\'s square, so the path goes around him, 2 squares, to the empty square next to you')
-    path = [(0, 2), (1, 1)]   # (row, column) of each square of the path, in order
+    # 2026-11-20 (Lucas): a Reposition stays within your Reach the whole way; you hold a Reach 2 weapon here
+    g = Svg(3, 3, 44, 'Reposition 2 with Reach 2: G can\'t pass through Dave\'s square, so the path goes around him, within your Reach, to the square next to you')
+    path = [(0, 1), (0, 0)]   # (row, column) of each square of the path, in order
     for n, (i, j) in enumerate(path, 1): g.cell(i, j, 'greach'); g.text(i, j, n, 'gnum gbig', dy=5)
-    g.line((3.5, 1.5), (1.5, 1.5), 'glno ghalf')   # the straight way, through Dave: not allowed
-    g.token(1, 0, 'Y', 'ally'); g.token(1, 2, 'D', 'ally'); g.token(1, 3, 'G', 'enemy')
-    g.mark(3.0, 1.5, 'x')   # on the edge G would cross into Dave's square
-    g.arrow((3.5, 1.5), (2.5, 0.5)); g.arrow((2.5, 0.5), (1.6, 1.4))   # the path of G, around Dave
+    g.line((2.5, 1.5), (1.5, 1.5), 'glno ghalf')   # the straight way, through Dave: not allowed
+    g.token(1, 0, 'Y', 'ally'); g.token(1, 1, 'D', 'ally'); g.token(1, 2, 'G', 'enemy')
+    g.mark(2.0, 1.5, 'x')   # on the edge G would cross into Dave's square
+    g.arrow((2.5, 1.5), (1.5, 0.5)); g.arrow((1.5, 0.5), (0.6, 0.5))   # the path of G, around Dave
     return g.figure(), dict(path=path)
 
 # ------------------------------------------------------------------ Corners (anything solid that reaches the corner point makes it solid)

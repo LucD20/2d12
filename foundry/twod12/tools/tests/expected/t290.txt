@@ -1,0 +1,16 @@
+--- the attention ripple (B): grows from r to 1.45 r and fades over 2.4 s
+ t=0: radius 40.0, alpha 0.95
+ t=600: radius 44.5, alpha 0.53
+ t=1200: radius 49.0, alpha 0.24
+ t=1800: radius 53.5, alpha 0.06
+ t=2399: radius 58.0, alpha 0.00
+ t=2400: radius 40.0, alpha 0.95
+motion on by default: true | off with the client setting: true
+--- a Setup's text (Strafe read "You {Advance}.")
+  "You Advance."
+  "You Evade 1."
+  "Advance up to 5 then roll"
+--- one end button (the push list's Done and Stop did the same)
+Done: the rest stay: true | no Cancel: true
+--- the code
+Reaction ring: true | its plate: true | picks: true | Charge: enemies first: true | confirm only by the button, Enter or the target: true | Evade dashed: true | no pointer tip: true | Escape = Don't move it: true | Backspace: true | Vigor collisions: true | Escape in a free move: true | map text in Source Sans 3: true

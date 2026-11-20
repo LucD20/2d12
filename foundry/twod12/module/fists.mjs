@@ -46,6 +46,9 @@ export function weaponCandidates(actor, item) {
   let list = weaponsFor(actor, item).filter(w => !need || hasProp(w, need) || (need === "ranged" && hasProp(w, "thrown")));
   if (has("shot") && has("weapon")) list = list.filter(w => hasProp(w, "projectile"));
   if (has("gun") && has("weapon")) list = list.filter(w => hasProp(w, "firearm"));
+  // v0.0.444 (Lucas, group 2): the card's own requirement counts (Darting Blade: a Light weapon)
+  const needs = item?.system?.weaponNeeds;
+  if (needs && has("weapon")) { const ok = list.filter(w => hasProp(w, needs)); if (ok.length) list = ok; }   // v0.0.453: none in hand: the others (the dialog warns)
   return list;
 }
 /** v0.0.208 (W): a weapon in hand comes before the Fists: the Fists are a choice only when no held weapon fits (the Fists Action uses them). */

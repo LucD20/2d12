@@ -56,13 +56,16 @@ export function partyCardHtml(c) {
 export const partyStripHtml = ({ cards = [], momentum = "" } = {}) => `<div class="hb-strip">${momentum !== "" && momentum !== null ? `<div class="hb-mom" data-hud-mom="1">Momentum <b>${esc(momentum)}</b></div>` : ""}${cards.map(partyCardHtml).join("") || '<span class="hb-none">No characters yet.</span>'}</div>`;
 
 /** A line of a column: the Action's name, its cost stamps (each a Version; struck when it can't be used), the roll or what to know under it. */
+/** A cost stamp (a Version's Use button; struck when it can't be used, its reason the one hover text). l: its line; s: { ap, label, off, why } */
+// v0.0.453 (playtest 6): an off stamp is still clicked (struck: spent, or too few AP; the roll dialog warns); only an Escalation lock is disabled
+const stampHtml = (l, s) => (s.off && (s.lock || l.grant)
+  ? `<button type="button" class="hb-st no" disabled title="${esc(s.why || "")}">${esc(s.label)}</button>`
+  : `<button type="button" class="hb-st${s.off ? " no" : ""}" data-hud="${l.grant ? "grant" : "use"}" data-ap="${n0(s.ap)}"${l.grant ? ` data-effect="${esc(l.grant.effect)}" data-index="${n0(l.grant.index)}"${l.grant.target ? ` data-target="${esc(l.grant.target)}"` : ""}` : ""} aria-label="${esc(`Use ${l.name}, ${s.label}`)}">${esc(s.label)}</button>`);
 export function lineHtml(l) {
-  const stamp = s => (s.off
-    ? `<button type="button" class="hb-st no" disabled title="${esc(s.why || "")}">${esc(s.label)}</button>`
-    : `<button type="button" class="hb-st" data-hud="${l.grant ? "grant" : "use"}" data-ap="${n0(s.ap)}"${l.grant ? ` data-effect="${esc(l.grant.effect)}" data-index="${n0(l.grant.index)}"${l.grant.target ? ` data-target="${esc(l.grant.target)}"` : ""}` : ""} aria-label="${esc(`Use ${l.name}, ${s.label}`)}">${esc(s.label)}</button>`);
+  const stamp = s => stampHtml(l, s);
   const cls = ["hb-ln", l.used ? "used" : "", l.pass ? "pass" : "", l.ready ? "ready" : "", l.dim ? "dim" : ""].filter(Boolean).join(" ");
   // v0.0.393 (Lucas: "difficult to see what has been used"): a used Action shows the word, not struck stamps; its name is struck through
-  const stamps = l.pass ? `<span class="hb-pv">${esc(l.state ?? "")}</span>` : l.used ? '<span class="hb-pv used">used</span>' : (l.stamps ?? []).map(stamp).join("");
+  const stamps = l.pass ? `<span class="hb-pv">${esc(l.state ?? "")}</span>` : `${l.used ? '<span class="hb-pv used">used</span>' : ""}${(l.stamps ?? []).map(stamp).join("")}`;   // v0.0.453: a used one keeps its stamps (struck, clickable)
   return `<div class="${cls}" data-item-id="${esc(l.id ?? "")}"${l.pass ? "" : ` data-hud="line"`}><b>${esc(l.name)}</b><span class="hb-sts">${stamps}</span>${l.sub ? `<span class="r">${esc(l.sub)}</span>` : ""}</div>`;
 }
 /** The columns of a tab: one per Frequency that has something, its word with its small square on a rule. cols = [{ key, label, fq, lines, more }] */
@@ -85,11 +88,85 @@ export function sideHtml(s = {}) {
   return `<div class="hb-side">${top}<div class="hb-ask"></div>${gr}${rx}${gr && !rx ? "" : notes}</div>`;
 }
 
+/* ------------------------------------------------------------------ v0.0.441 (pack SHEETS-HUD): the HUD of the approved mockup
+   (foundry/mockups/hud3, Lucas 2026-11-18: "All recommended"): D2 the identity column in words, D4 the conditions as marks with their word
+   (up to three; the marks alone past three), D1 the Basic tab as the sheet's four groups, D3 / D7 the right column: the Situational section
+   (whatever asks for an answer now: a Reaction's trigger, granted uses, Prone's Stand and Crawl, a question of the map, a Setup's movement),
+   the Hands, the macro bar. */
+/** D4: the conditions under AP and Escalation (a row always there, so a condition never changes the HUD's height). c = [{ id, name, dur, img }] */
+export function condsHtml(conds = [], { max = 3 } = {}) {
+  const few = conds.length <= max;
+  return `<div class="h3-conds${few ? "" : " ic"}">${conds.map(c => `<button type="button" class="h3-c" data-hud="effect" data-effect="${esc(c.id)}" aria-label="${esc(`${c.name}${c.dur ? ` (${c.dur})` : ""}: open the Effect`)}"><i>${c.img ? `<img src="${esc(c.img)}" alt="">` : esc(String(c.name ?? "?").charAt(0))}</i>${few ? `<span>${esc(c.name)}${c.dur ? ` <small>${esc(c.dur)}</small>` : ""}</span>` : (c.dur ? `<small>${esc(c.dur)}</small>` : "")}</button>`).join("")}</div>`;
+}
+/** D1: the Basic tab: the sheet's four groups (config.mjs basicGroups) as columns, each Basic Action one line, its cost stamps its Use buttons;
+ *  what can't be used now stays in its place, dim, its stamps struck. groups = [{ label, lines: [line] }] (lineHtml's lines, with strike) */
+export function basicTabHtml(groups = []) {
+  const row = l => {
+    const off = !l.used && (l.stamps ?? []).length && l.stamps.every(x => x.off);
+    const stamps = `${l.used ? '<span class="hb-pv used">used</span>' : ""}${(l.stamps ?? []).map(x => stampHtml(l, x)).join("")}`;   // v0.0.453
+    return `<div class="h3-bl${off || l.used ? " off" : ""}${l.strike ? " strike" : ""}" data-item-id="${esc(l.id ?? "")}" data-hud="line" style="--fq:${esc(l.fqColor ?? "#b3a68e")}"><b>${esc(l.name)}</b><span class="hb-sts">${stamps}</span></div>`;
+  };
+  return groups.length ? `<div class="h3-basic">${groups.map(g => `<div class="h3-bg"><div class="h3-bh">${esc(g.label)}</div>${g.lines.map(row).join("")}</div>`).join("")}</div>` : '<div class="hb-cols"><span class="hb-none">Nothing here.</span></div>';
+}
+/** One thing waiting in the Situational section. it = { lead, tag, text (html), btns: [{ label, q (the quiet "no"), hud, data, off, why }] } */
+export function sitItemHtml(it) {
+  const btn = b => `<button type="button" class="hb-btn${b.q ? " q" : ""}"${b.hud ? ` data-hud="${esc(b.hud)}"` : ""}${Object.entries(b.data ?? {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join("")}${b.off ? ` disabled aria-label="${esc(`${b.label}: ${b.why ?? ""}`)}"` : ""}>${esc(b.label)}</button>`;
+  return `<div class="h3-si"><div class="h"><b>${esc(it.lead)}</b>${it.tag ? `<span class="tg">${esc(it.tag)}</span>` : ""}</div>${it.text ? `<div class="t">${it.text}</div>` : ""}${(it.btns ?? []).length ? `<div class="bs">${it.btns.map(btn).join("")}</div>` : ""}</div>`;
+}
+/**
+ * D3 / D7: the right column. s = { rx, grants, cancels, prone: sitItem | null, tiles: [hand tile] | null, view }
+ * v0.0.446 (Lucas: the Situational section was cut by the Hands and the macro bar: "Make each a tab, but only show the 'Situational' tab when
+ * there is something happening. When it happens, change tabs to the situational automatically"): three tabs, one pane shown (data-rtab on
+ * .h3-side, kept by hud.mjs syncSide): Situational (only while something waits: its tab is hidden otherwise), Hands, Macros.
+ */
+export function rightHtml(s = {}) {
+  const items = [];
+  if (s.rx) items.push(sitItemHtml({ lead: s.rx.name, tag: "Reaction", text: esc(s.rx.lead), btns: [{ label: `Use \u00b7 ${s.rx.cost}`, hud: "rx", data: { msg: s.rx.msg, row: n0(s.rx.row), k: "rxUse" } }, { label: "Pass", q: true, hud: "rx", data: { msg: s.rx.msg, row: n0(s.rx.row), k: "rxPass" } }] }));
+  if ((s.grants ?? []).length) items.push(`<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>`);
+  // v0.0.463 (Lucas: "prone should be low priority, moving under new situational effects"): Prone's Stand / Crawl goes after the asks (below)
+  const proneHtml = s.prone ? sitItemHtml(s.prone) : "";
+  if (s.notes) items.push(`<div class="h3-si"><div class="t">${esc(s.notes)}</div></div>`);
+  const tiles = s.tiles ?? [];
+  const hands = tiles.length ? `<div class="h3-hands">${tiles.map(t => `<button type="button" class="h3-hand${t.free ? " free" : ""}${t.warn ? " warn" : ""}" data-hud="hands" data-hand="${esc(t.hand ?? "")}" aria-label="${esc(t.tip ?? t.name)}"><span>${esc(t.name)}</span><b>${esc(t.grip)}</b></button>`).join("")}</div>` : "";
+  // v0.0.449 (Lucas, g2-hotbar: "Hands and macro should be in the same tab still, only the situational is new"): two panes, the Hands over the
+  // macro bar ("main") and Situational; the tabs show only while something waits
+  const has = items.length > 0 || !!proneHtml, view = has && (s.view === "sit" || !s.view) ? "sit" : "main";
+  const tab = (k, label) => `<button type="button" class="h3-rt h3-rt-${k}" role="tab" data-hud="rtab" data-rtab="${k}" aria-selected="${k === view}">${label}</button>`;
+  const tabs = `<div class="h3-rtabs" role="tablist">${tab("sit", "Situational")}${tab("main", hands ? "Hands" : "Macros")}</div>`;
+  // the pick bar, a Forced Movement, a Setup's movement and End movement ask in .hb-ask (pickbar.mjs, move.mjs, setup.mjs: hudAskSlot)
+  return `<div class="h3-side${has ? " has-sit" : ""}" data-rtab="${view}">${tabs}<div class="h3-pane h3-p-sit"><div class="h3-sit${has ? " on" : ""}">${items.join("")}<div class="hb-ask"></div>${proneHtml}</div></div>`
+    + `<div class="h3-pane h3-p-main">${hands}<div class="h3-hot"></div></div></div>`;
+}
+/** D2: the identity column. m: the bar's model (tokenBarHtml). */
+function idHtml(m) {
+  const pair = (k, v, cls = "", attrs = "") => `<span class="h3-p${cls ? ` ${cls}` : ""}"${attrs}><span class="k">${esc(k)}</span><b>${esc(v)}</b></span>`;
+  const d = Object.fromEntries((m.defs ?? []).filter(x => x.key).map(x => [x.key, x]));
+  const attr = x => `<button type="button" class="h3-p at" data-hud="attr" data-key="${esc(x.data?.key ?? "")}" aria-label="${esc(`${x.word}: click a Check, Shift-click a Save`)}"><span class="k">${esc(x.word)}</span><b>${esc(x.value)}</b></button>`;
+  const rally = m.rally ? `<span class="h3-p" data-hud="res" data-res="rally"><span class="k">Rally</span><b>${n0(m.rally.left)}/${n0(m.rally.max)}</b></span><button type="button" class="hb-btn" data-hud="steel">Steel Yourself</button>` : (m.tag ? tagHtml(m.tag) : "");
+  const escIn = m.escMax ? `<span class="h3-p" data-hud="res" data-res="esc"><span class="k">Esc.</span>${escHtml(m.escN, m.escMax)}<b>${n0(m.escN)}</b></span>` : "";
+  return `<div class="h3-id"><div class="nm"><b>${esc(m.name)}</b><small>${esc(m.sub ?? "")}</small></div>${barsHtml(m.bars)}`
+    + `<div class="h3-l">${pair("Guard", n0(m.guard))}${rally}${m.rally && m.tag ? tagHtml(m.tag) : ""}</div>`
+    + `<div class="h3-l">${m.marks ? `<span class="h3-p" data-hud="res" data-res="ap"><span class="k">AP</span>${m.marks}</span>` : '<span class="m">Out of combat</span>'}${escIn}</div>`
+    + condsHtml(m.conds ?? [])
+    + `<div class="h3-l rule">${["ad", "wd", "speed"].filter(k => d[k]).map(k => pair(d[k].word, d[k].value, d[k].chg ? "chg" : "")).join("")}<i class="sep"></i>${["weapon", "power"].filter(k => d[k]).map(k => pair(d[k].word, d[k].value)).join("")}</div>`
+    + `<div class="h3-l">${(m.defs ?? []).filter(x => x.hud === "attr").map(attr).join("")}</div></div>`;
+}
+
 /**
  * The bar. m = { npc, name, img, sub, bars, guard, rally: { left, max } | null, marks, escN, escMax (0: none), defs: [{ k, label, value, tip, chg, hud, data }],
  * tabs: [{ k, label, count }], tab, cols, side, folded, cond (folded: one line of conditions), rxAlert (the tab pulses) }
+ * v0.0.441: with m.h3 (every bar now) the approved layout: idHtml, the Basic tab's groups (m.basicGroups), rightHtml (m.right).
  */
 export function tokenBarHtml(m) {
+  if (m.h3 && !m.folded) {
+    const por = `<div class="hb-por">${m.img ? `<img src="${esc(m.img)}" alt="">` : `<span>${esc((m.name ?? "?").slice(0, 2).toUpperCase())}</span>`}<button type="button" class="hb-fold" data-hud="fold" aria-label="Fold the HUD">&#9662;</button></div>`;
+    const tabs = `<div class="hb-tabs" role="tablist">${(m.tabs ?? []).map(t => `<button type="button" class="hb-tab" role="tab" aria-selected="${t.k === m.tab}" data-hud="tab" data-tab="${esc(t.k)}">${esc(t.label)} <small>${esc(String(t.count ?? ""))}</small></button>`).join("")}</div>`;
+    return `<div class="hb-bar-wrap h3-wrap">${por}${idHtml(m)}<div class="hb-mid">${tabs}${m.tab === "basic" && m.basicGroups ? basicTabHtml(m.basicGroups) : colsHtml(m.cols ?? [])}</div>${rightHtml(m.right ?? {})}</div>`;
+  }
+  return oldBarHtml(m);
+}
+/** The bar as v0.0.390 drew it (the folded line still uses it). */
+function oldBarHtml(m) {
   const por = `<div class="hb-por">${m.img ? `<img src="${esc(m.img)}" alt="">` : `<span>${esc((m.name ?? "?").slice(0, 2).toUpperCase())}</span>`}<button type="button" class="hb-fold" data-hud="fold" aria-label="${m.folded ? "Unfold the HUD" : "Fold the HUD"}">${m.folded ? "&#9652;" : "&#9662;"}</button></div>`;
   const escIn = m.escMax ? `<span class="k">Esc.</span>${escHtml(m.escN, m.escMax)} <b>${n0(m.escN)}</b>` : "", esc6 = escIn ? `<span>${escIn}</span>` : "";
   if (m.folded) {

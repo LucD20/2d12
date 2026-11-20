@@ -1,7 +1,7 @@
 --- one target, one Tier: the damage beside the stamp, Apply in the footer
 before the damage: the Damage button: true | no damage part: true
 the Damage button gone: true | 'Damage 18' and the pools in the stamp's column: true | the dice behind it: true | before the Tier's outcome: true
-the footer holds the target's row: true | Apply: true | Full / Half / Double behind the sliders: true | Card: true | no retarget once rolled: true | the rider not repeated: true | one card, no damage stamp: true | the card marked: true
+the footer holds the target's row: true | Apply: true | the breakdown behind the equals button (v0.0.454; Full / Half / Double a right-click): true | Card: true | no retarget once rolled: true | the rider not repeated: true | one card, no damage stamp: true | the card marked: true
 applied: Took under the name, Undo: true
 no target: the damage's own target button: true
 a player with target details hidden: 'Waiting for the GM', no Apply: true

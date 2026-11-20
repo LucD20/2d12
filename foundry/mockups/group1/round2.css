@@ -1,0 +1,34 @@
+/* Group 1, round 2 (2026-11-19): the combat line. Every rule under .r2-line (the proposal's windows). Mockup only: nothing in the system changed.
+   Round 1's approved marks (.g1-marks), tiles (.g1-tiles) and subtitle (.g1-sub) come from group1.css. */
+
+/* ---- the line: the two lists, then the marks. 72 px, fixed (v0.0.442: 66 px with the Hands) */
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.r2 { grid-template-columns: minmax(0, 1fr) auto; height: 72px; min-height: 0; box-sizing: border-box; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.r2 > * { min-height: 0; overflow: hidden; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-lists { display: grid; grid-template-columns: fit-content(50%) minmax(0, 1fr); gap: 0 16px; padding: 4px 10px; align-items: stretch; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-col { display: flex; flex-direction: column; min-width: 0; min-height: 0; } .r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-col:first-child { min-width: 118px; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-col .ps2-hk { flex: none; line-height: 15px; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-l { flex: 1 1 0; min-height: 0; min-width: 0; overflow: hidden; display: block; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-l > * { display: block; white-space: nowrap; }
+/* Hooks: one a line, bold; one that gave its Escalation stays, faint, with a check */
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-hl { font-size: 14px; line-height: 1.143; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-hl b { font-size: 1em; font-weight: 700; color: var(--s-ink); }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-hl b.used { font-weight: 400; color: var(--s-faint); }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-hl b i { font-style: normal; margin-left: 5px; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-none { font-size: 13px; line-height: 16px; color: var(--s-faint); }
+/* the ladder: the number, then the name; reached in ink, the others faint */
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-ld { font-size: 13px; line-height: 1.231; color: var(--s-faint); }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-ld b { display: inline-block; width: 1.1em; font-size: 1em; font-weight: 600; color: inherit; font-variant-numeric: tabular-nums; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-ld .lit { color: var(--s-ink); font-weight: 600; } .r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-ld .lit b { font-weight: 700; }
+/* out of combat: the lists quiet, the words where the marks will be */
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-lists.idle .r2-hl b { font-weight: 400; color: var(--s-mute); }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-out { align-items: center; padding: 6px 18px; font-size: 13px; color: var(--s-mute); white-space: nowrap; }
+
+/* ---- the Esc. row: the HUD's upright ticks (system.css .twod12-hud .hm-esc: 7 x 10), a little bigger; a rung's tick taller */
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks { gap: 5px 8px; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-esc { display: inline-flex; align-items: flex-end; gap: 4px; height: 16px; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-esc a { width: 8px; height: 11px; box-sizing: border-box; border: 1.5px solid var(--s-mute); cursor: pointer; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-esc a.rg { height: 16px; }
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .r2-esc a.on { background: var(--s-ink); border-color: var(--s-ink); }
+
+/* ---- a Standard NPC: an empty left, its AP marks at the right, one row: 44 px, fixed */
+.r2-line .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.r2.r2-std { grid-template-columns: minmax(0, 1fr) auto; height: 44px; }

@@ -26,7 +26,7 @@ const rebuke = {
 console.log("--- before the roll");
 const b = CC.cardContent(rebuke, GM);
 console.log("the Tiers as the card writes them:", quietOf(b).join(" | "), "| no Tier 3 line:", !/<b>Tier 3:<\/b>/.test(b), "| no band, no rider box, no ranges:", !/cc-srow|cc-rider|cc-rchip|≤12/.test(b));
-console.log("in the card's order (Trigger, Effect, the Save, the Tiers, the Roll button, the Flavor, the target row):", ["<b>Trigger:</b>", "<b>Effect:</b>", "cc-savehead", "<b>Tier 1 or 2:</b>", 'data-twod12="saveRoll" data-idx="0"', "cc-flavor", "cc-foot"].map(k => b.indexOf(k)).every((p, i, a) => p >= 0 && (!i || p > a[i - 1])));
+console.log("in the card's order (Trigger, Effect, the Save, the Tiers, the Flavor, the Roll button, the target row; v0.0.465: the Flavor above the roll):", ["<b>Trigger:</b>", "<b>Effect:</b>", "cc-savehead", "<b>Tier 1 or 2:</b>", "cc-flavor", 'data-twod12="saveRoll" data-idx="0"', "cc-foot"].map(k => b.indexOf(k)).every((p, i, a) => p >= 0 && (!i || p > a[i - 1])));
 console.log("its owner's Roll button:", txt(b.match(/<button[^>]*data-twod12="saveRoll"[^>]*>[^<]*<\/button>/)?.[0]), "| the others wait:", txt(CC.cardContent(rebuke, PLAYER).match(/<div class="cc-muted cc-wait">[^<]*/)?.[0]), "| no stamp yet:", !b.includes("cc-stamp"), "| the retarget:", b.includes('data-twod12="retargetSave"'));
 // a Tier with damage keeps its damage line, then its rider as words (the book: "[R] 3d6 Ho; Pushed 3.")
 const wor = { ...rebuke, name: "Word of Radiance", card: { top: [], before: [], tiers: ["Tier 1", "Tier 2", "Tier 3"], after: [], special: { label: "Special", html: "Against a Profane creature, the damage dice are d8s." } },

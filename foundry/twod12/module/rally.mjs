@@ -1,29 +1,22 @@
 // Rally Points: each point heals ceil(Health Pool / 4). @Rally[N] buttons and Actions with "Use Rally Points" spend them.
-import { esc } from "./roll.mjs";
 import { rallyBonusFor } from "./automation.mjs";
-import { sysCard } from "./sysmsg.mjs";
+import { sysLine } from "./sysmsg.mjs";
 const warn = m => ui.notifications.warn(m);
 
-import { BUCKETS, planHealing, symmetricHealing, healWindow, thresholdsOf } from "./healwin.mjs";
+import { planHealing, symmetricHealing, healWindowFull, thresholdsOf, healLinesHtml } from "./healwin.mjs";
+export { healLinesHtml };
 export { planHealing };
 /** v0.0.250: the default split is the symmetrical one (healwin.mjs); kept under its old name for the callers and the tests. */
 export const defaultHealing = (damage, total, thresholds = null) => symmetricHealing(damage, thresholds ?? { vigor: 1, resolve: 1 }, total);
 
-/** v0.0.250 (Lucas): the Rally window (the system's style): the Rally Points left, the heal, the damage and its symmetrical split. */
-async function chooseHealing(actor, total, { n = 1, extraText = "" } = {}) {
-  const s = actor.system, d = s.damage;
-  const all = BUCKETS.reduce((a, [k]) => a + (d[k] ?? 0), 0);
-  const def = symmetricHealing(d, thresholdsOf(actor), total);
-  if (all <= 0) return def;
-  const plan = await healWindow({ name: actor.name, damage: d, thresholds: thresholdsOf(actor), total, totalText: `Remove up to ${total} damage${extraText ? ` (${extraText})` : ""}`, rally: { n, max: s.rallyMax, left: Math.max(0, s.rallyLeft - n) } });
-  return plan;   // null: cancelled
-}
+const shortName = a => String(a?.name ?? "").replace(/\s*\(.*$/, "").trim() || a?.name || "";
 
 /**
- * Spend n Rally Points of an actor and heal. The chat card comes first (unless the Action's own card is already
- * in the chat: announce = false), then the window to choose which damage to heal; the card is then completed.
+ * Spend n Rally Points of an actor and heal (v0.0.454, D1): the Rally window first (the count in it when an Action lets you use up to `top`), then
+ * one line in the chat once Use is pressed; nothing is posted while choosing or when cancelled. Lay On Hands' extra heal is rolled first and
+ * rides on that line.
  */
-export async function useRally(actor, n, why = "", { announce = true, extra = "", source = null } = {}) {
+export async function useRally(actor, n, why = "", { extra = "", source = null, top = 0 } = {}) {
   const s = actor?.system;
   // v0.0.340 (Lucas; book, Rally Points: NPCs): an NPC has no Rally Points; one an Action lets it use heals its Stage's amount and spends nothing
   const npc = actor?.type === "npc";
@@ -32,46 +25,24 @@ export async function useRally(actor, n, why = "", { announce = true, extra = ""
   if (!npc && s.rallyLeft < n) { warn(`${actor.name} has ${s.rallyLeft} Rally Point${s.rallyLeft === 1 ? "" : "s"} left and ${n} are needed.`); return false; }
   // v0.0.186: the "Rally Points" settings of the creature and of allies within their range (Font of Mercy: Power Modifier + 2, within 5); the highest counts.
   const fm = await rallyBonusFor(actor);
-  // v0.0.250 (Lucas, Lay On Hands): an extra heal ("1d6+pow": the card's creature's Power Modifier) is rolled now and shown on the card and in the window
-  let extraRoll = null, extraText = "";
+  // v0.0.250 (Lucas, Lay On Hands): an extra heal ("1d6+pow": the card's creature's Power Modifier) is rolled now and shown in the window and the line
+  let extraRoll = null, extraName = "";
   if (extra) {
     const f = String(extra).toLowerCase().replace(/\s+/g, "").replace(/\bpow\b/g, `(${Number(source?.system?.powerMod) || 0})`).replace(/\bmod\b/g, `(${Number(source?.system?.weaponMod) || 0})`).replace(/\brp\b/g, `(${Number(s.rallyHeal) || 0})`);
-    try { extraRoll = await new Roll(f).evaluate(); extraText = `${esc(String(extra).replace(/\bpow\b/gi, `Pow ${Number(source?.system?.powerMod) || 0}`))} = ${extraRoll.total}`; } catch (e) { ui.notifications.warn(`Invalid formula: ${extra}`); }
+    try { extraRoll = await new Roll(f).evaluate(); extraName = why && !/^rally$/i.test(why) ? why : String(extra).replace(/\bpow\b/gi, "Pow"); } catch (e) { ui.notifications.warn(`Invalid formula: ${extra}`); }
   }
-  const total = (s.rallyHeal + (fm?.bonus ?? 0)) * n + (extraRoll?.total ?? 0);
-  // v0.0.215 (Lucas, playtest 2): the system card look (sysmsg.mjs, as Swap Initiative): a title bar, a bold line, a plain line.
-  const lead = `${esc(actor.name)} uses ${n} Rally Point${n === 1 ? "" : "s"}`;
-  // v0.0.347 (Lucas, playtest 4: "Durgan uses 1 Rally Point / 9 + 3 [Font of Mercy] healing / Removes 10 Vigor. 5 Rally Points left."): each part
-  // of the heal with its source in brackets, on its own line; the result on the next
-  const sub = [why && !/^rally$/i.test(why) ? `${esc(why)}:` : "", `${s.rallyHeal * n}${fm?.bonus ? ` + ${fm.bonus * n} [${esc(fm.name)}]` : ""}${extraRoll ? ` + ${extraRoll.total} [${esc(String(extraText).split(" = ")[0])}]` : ""} healing`].filter(Boolean).join(" ");
-  const rallyCard = text => sysCard({ title: "Rally", lead, text, cls: "rallymsg" });
-  const card = announce || extraRoll ? await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}<br>Choosing the damage to remove…`), rolls: extraRoll ? [extraRoll] : [] }) : null;
-  const plan = await chooseHealing(actor, total, { n, extraText });
-  if (!plan) { if (card) { try { await card.update({ content: rallyCard(`${sub}<br>Cancelled: no Rally Point used.`) }); } catch (e) { /* not the author */ } } return false; }
-  const upd = npc ? {} : { "system.rallyUsed": s.rallyUsed + n };
+  const partsFor = k => [[s.rallyHeal * k, ""], ...(fm?.bonus ? [[fm.bonus * k, fm.name]] : []), ...(extraRoll ? [[extraRoll.total, extraName]] : [])];
+  const leftNow = npc ? Math.max(n, top || n) : s.rallyLeft;
+  const res = await healWindowFull({ title: `Rally: ${shortName(actor)}`, name: shortName(actor), damage: s.damage, thresholds: thresholdsOf(actor), partsFor,
+    rally: npc ? null : { max: s.rallyMax, left: leftNow, top: Math.min(top || n, leftNow) }, n });
+  if (!res) return false;
+  const used = res.n, plan = res.plan;
+  const upd = npc ? {} : { "system.rallyUsed": s.rallyUsed + used };
   for (const [k, v] of Object.entries(plan)) upd[`system.damage.${k}`] = s.damage[k] - v;
   await actor.update(upd);
-  const healed = Object.values(plan).reduce((a, b) => a + b, 0);
-  const parts = BUCKETS.filter(([k]) => plan[k]).map(([k, l]) => `${plan[k]} ${l}`).join(", ");
-  const leftN = s.rallyMax - s.rallyUsed - n;
-  const result = `Removes ${parts ? parts.replace(/(\d+)/g, "<b>$1</b>") : `<b>${healed}</b> damage`}. ${npc ? `An NPC: each Rally Point counts as ${s.rallyHeal} at Stage ${s.stage ?? 0} and spends nothing.` : `<b>${leftN}</b> Rally Point${leftN === 1 ? "" : "s"} left.`}`;
-  if (card) { try { await card.update({ content: rallyCard(`${sub}<br>${result}`) }); return true; } catch (e) { /* not the author */ } }
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: rallyCard(`${sub}<br>${result}`) });
+  const leftN = s.rallyMax - s.rallyUsed - used;
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-heart-pulse", healLinesHtml(shortName(actor), plan, partsFor(used), { rally: { n: used, left: leftN }, npc }), "healmsg rallymsg"), rolls: extraRoll ? [extraRoll] : [] });
   return true;
-}
-
-async function askHowMany(actor, max) {
-  const left = actor.type === "npc" ? max : actor.system.rallyLeft;   // v0.0.340: an NPC spends none
-  const top = Math.min(max, left);
-  if (top <= 1) return top;
-  if (!globalThis.foundry?.applications?.api?.ApplicationV2) return top;   // no windows (the tests)
-  // v0.0.250: a pick window (the system's style), not a Foundry dialog
-  const { pickWith } = await import("./pickwindow.mjs");
-  const st = { n: top };
-  const v = await pickWith({ title: "Rally Points", model: () => ({ name: "Rally Points", sub: actor.name, icon: "fa-heart-pulse", stats: [["Left", String(left)], ["Each heals", String(actor.system.rallyHeal)]],
-    sections: [{ title: "How many?", pill: String(st.n), done: true, rows: [{ key: "n", label: "", opts: Array.from({ length: top }, (_, i) => ({ k: String(i + 1), l: String(i + 1), on: st.n === i + 1 })) }] }], complete: true, message: `${st.n} Rally Point${st.n === 1 ? "" : "s"}: ${st.n * actor.system.rallyHeal} healing.`, confirm: "Use" }),
-    pick: (row, k) => { st.n = Math.min(top, Math.max(1, Number(k) || 1)); }, input: () => {}, result: () => st.n });
-  return v ? Math.min(top, Math.max(1, Math.floor(v))) : 0;
 }
 
 /** The @Rally[N] button (@Rally[N|upto] lets you pick 1 to N): the creature that clicks uses the points. v0.0.250: |extra:1d6+pow adds a heal rolled with the card's creature's Modifiers. */
@@ -79,9 +50,10 @@ export async function handleRally(cfg, ctx = {}) {
   const actor = canvas.tokens?.controlled[0]?.actor ?? game.user.character;
   if (!actor) return warn("Select your token (or assign a character) to use Rally Points.");
   const max = Math.max(1, Number(cfg.n) || 1);
-  const n = cfg.upto ? await askHowMany(actor, max) : max;
-  if (!n) return;
+  // v0.0.454 (D1): "up to N": the count is the Rally window's first line (it was a window of its own); it starts at the most that can be used
+  const left = actor.type === "npc" ? max : Number(actor.system?.rallyLeft) || 0, n = cfg.upto ? Math.min(max, left) : max;
+  if (!n) return warn(`${actor.name} has no Rally Point left.`);
   let source = ctx.actor ?? null;
   if (!source) { try { const u = ctx.message?.getFlag?.("twod12", "action")?.actorUuid; const a = u ? fromUuidSync(u) : null; source = a?.documentName === "Actor" ? a : (a?.actor ?? null); } catch (e) { source = null; } }
-  return useRally(actor, n, "Rally", { extra: cfg.extra ?? "", source });
+  return useRally(actor, n, "Rally", { extra: cfg.extra ?? "", source, top: cfg.upto ? n : 0 });
 }

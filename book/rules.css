@@ -97,7 +97,8 @@ sup.mk{align-self:center;display:inline-block;min-width:1.15em;height:1.15em;lin
 .acard.parch .ahead>b{font-family:"Cinzel","Palatino Linotype",Georgia,serif;font-weight:700;letter-spacing:.01em}
 .acard.parch .flavor{color:var(--pf);opacity:1}
 .dcode{color:var(--dc);font-weight:600}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dtype{filter:brightness(1.12)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.dtype,.dcode,.dmgword){color:var(--dcd,var(--dc))}}
+:root[data-theme="dark"] :is(.dtype,.dcode,.dmgword){color:var(--dcd,var(--dc))}
 
 
 

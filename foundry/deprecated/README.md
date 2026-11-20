@@ -29,3 +29,8 @@ Warrior, Grave Wisp, Ogre Chieftain), the eight pregenerated PCs.
 - **v0.0.415 (pack CL, the code cleanup):** `templates-actor-sheet.hbs` (the old actor sheet, unused since v0.0.291) and `styles-old-sheet.css` (its 552 rules, `.twod12.sheet.ns` / `.v44`, out of styles/system.css); `module/versions.mjs` and `templates-versions-editor.hbs` (the Versions editor: no button opened it since the Action sheet); `module/gen-openGenerator.mjs` (the old Action generator, replaced by genaction.mjs).
 
 Characters in an existing world keep any of these they already hold (nothing is deleted from a world); "Update from the compendium" skips them.
+
+## Retired with pack SHEETS-HUD (v0.0.441, 2026-11-18)
+- `module/statblock.mjs`: the one-page NPC sheet (`NpcStatBlockSheet`, v0.0.375) and its world setting "New NPCs open with". Lucas: "no need for
+  one-page sheet since the npc one is already better anyway". The small NPC sheet replaces it; an NPC that used it opens the NPC sheet (the GM's
+  client clears the flag at ready). Its CSS (`.twod12-sb`, system.css's v0.0.375 block) is left in place, unused, for the clean-up pack (CL).

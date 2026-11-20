@@ -1,0 +1,17 @@
+--- Unfailing
+a Keywords trait: true | on Smite in the book: true | the book's rule: true
+a Tier 1 keeps its Frequency, its Strike counts: true
+--- an Effect line whatever the roll
+the card's Effects and fx.all on a Tier 1: true | the chat card from Tier 1: true | the after-chain keeps its gate (Club's Push): true
+--- Minion squads
+sizes for 1 to 7: 1 | 2 | 2+1 | 2+2 | 2+2+1 | 2+2+2 | 2+2+2+1
+the GM's: all three in one: 3 | never four in one: 3+1
+three: a click moves the lone one into the first; one of the pair into a new squad: 1 2 | two can be split: 2
+a click fixes the others where they stand: {"m0":3,"m1":2,"m2":1}
+--- the rewind
+an Advance bought during the drag, 2 back: {"moveLeft":3} | free squares, 2 back: {"freeMove":3} | all the way: the AP too: true
+--- Charge, the HUD, the strip, the cover lines
+another enemy clicked becomes the target: true | never on a creature's space: true | in the Situational section: true | its Weapon Attack chip's name uses it: true
+a Large token's space (v0.0.468: read from a drag's first step, top-left or center): true | the Light weapon a warning: true
+the HUD's struck stamps are clicked: true | no state tag on the strip: true | the Reaction diamond gold: true
+Judge on the start-of-the-encounter card: true | Armor of Faith names its source: true | the chat's scroll box: true

@@ -33,40 +33,89 @@ export function planHealing(values, damage, total) {
   return out;
 }
 
-/** Pure: the window's model. st: { values }. o: { actor name, damage, thresholds, total, totalText, rally: { n, left, max } | null, source } */
-export function healModel(o, st) {
-  const d = o.damage, assigned = BUCKETS.reduce((s, [k]) => s + (Number(st.values[k]) || 0), 0), total = o.total;
-  const all = BUCKETS.reduce((s, [k]) => s + (d[k] ?? 0), 0);
-  // v0.0.251 (Lucas): each row shows the damage now and after the healing, with minus and plus buttons (the pick window's row clicks), in fixed columns; a line says what is left to give
-  const left = total - assigned;
-  const rows = `<div class="hw-head"><span>Damage</span><span>Now</span><span></span><span>After</span><span>Heal</span></div>` + BUCKETS.filter(([k]) => (d[k] ?? 0) > 0).map(([k, l]) => { const n = Number(st.values[k]) || 0, after = Math.max(0, d[k] - n); return `<div class="hw-row"><span class="hw-lbl ${k.startsWith("body") ? "hw-v" : "hw-r"}">${l}</span><span class="hw-now">${d[k]}</span><span class="hw-arrow">&rarr;</span><span class="hw-after${n ? " changed" : ""}">${after}</span><span class="hw-ctl"><button type="button" data-key="pick:${k}:-1" data-row="${k}" data-k="-1"${n <= 0 ? " disabled" : ""} aria-label="less">&minus;</button><span class="hw-n">${n}</span><button type="button" data-key="pick:${k}:+1" data-row="${k}" data-k="+1"${n >= d[k] || left <= 0 ? " disabled" : ""} aria-label="more">+</button></span></div>`; }).join("")
-    + `<div class="hw-left${left < 0 ? " over" : ""}">${left > 0 ? `${left} left to give` : left === 0 ? "All of it given" : `${-left} too many`}</div>`;
-  const stats = [["Heal", String(total)], ["Vigor", `${(d.bodyLethal ?? 0) + (d.bodyNonlethal ?? 0)} / ${o.thresholds?.vigor ?? "?"}`], ["Resolve", `${(d.mindLethal ?? 0) + (d.mindNonlethal ?? 0)} / ${o.thresholds?.resolve ?? "?"}`]];
-  if (o.rally) stats.push(["Rally Points", `${o.rally.left} of ${o.rally.max} left after`]);
-  const over = assigned > total, none = all === 0;
-  return {
-    name: o.rally ? "Rally" : "Heal", sub: o.name, icon: o.rally ? "fa-heart-pulse" : "fa-hand-holding-medical", stats,
-    sections: [{ title: o.totalText ?? `Remove up to ${total} damage`, pill: `${assigned} / ${total}`, done: !over && assigned > 0, sub: o.sub ?? "The split is symmetrical by default (each damage against its threshold); change it as you wish.", rows: [], html: none ? '<p class="cw-sub">No damage to remove.</p>' : rows }],
-    complete: !over, message: over ? `${assigned} is more than the ${total} healed.` : (none ? "Nothing to heal." : `Removes ${Math.min(assigned, total)} damage.`), confirm: o.rally ? `Use ${o.rally.n} Rally Point${o.rally.n === 1 ? "" : "s"}` : "Heal"
+/**
+ * v0.0.454 (Lucas, playtest 6, D1: "The rally window could use some reworking: it seems to have too much information. Let's do a complete redesign";
+ * the mockup foundry/mockups/pt6, his answer "B for both windows"): the Rally window and the Heal window, 400 px, in the table look. One sentence
+ * at the top ("Durgan heals 15", each part and its source under it), the Rally Points as the sheet's marks ("5 of 7 left"), the pools as the HUD's
+ * bars (what is left, the part healed lighter), the split behind "Change the split" (its rows, − and + each), Cancel and Use. When an Action lets
+ * you use up to N Rally Points, the count is the window's first line (it was a window of its own). Pure.
+ * o: { name, damage, thresholds, partsFor(n) → [[amount, source]], rally: { max, left (before), top } | null }; st: { n, values, split }.
+ */
+export function healWinHtml(o, st) {
+  const d = o.damage ?? {}, thr = o.thresholds ?? {}, parts = o.partsFor(st.n), total = parts.reduce((t, p) => t + (Number(p[0]) || 0), 0);
+  const given = BUCKETS.reduce((t, [k]) => t + (Number(st.values[k]) || 0), 0), all = BUCKETS.reduce((t, [k]) => t + (d[k] ?? 0), 0);
+  const keys = HW_ORDER.filter(k => (d[k] ?? 0) > 0), choice = keys.length > 1 && total < all;
+  const r = o.rally, leftAfter = r ? Math.max(0, r.left - st.n) : 0;
+  const pips = r ? `<span class="hw2-pips" role="img" aria-label="${leftAfter} of ${r.max} Rally Points left after">${Array.from({ length: r.max }, (_, k) => `<i class="${k < leftAfter ? "on" : k < leftAfter + st.n ? "go" : ""}"></i>`).join("")}</span>` : "";
+  const count = r && r.top > 1 ? `<div class="hw2-count"><span class="k">Rally Points to use</span><span class="hw2-seg">${Array.from({ length: r.top }, (_, k) => `<button type="button" data-hw="n" data-v="${k + 1}" class="${k + 1 === st.n ? "on" : ""}" aria-pressed="${k + 1 === st.n}">${k + 1}</button>`).join("")}</span><span class="q">each heals ${o.partsFor(1)[0]?.[0] ?? 0}</span></div>` : "";
+  const head = `<div class="hw2-head"><div class="hw2-who"><b>${esc(o.name)}</b> heals <b class="n">${total}</b>${parts.length > 1 ? `<span class="hw2-sum">${parts.map(p => `${p[0]}${p[1] ? ` ${esc(p[1])}` : ""}`).join(" + ")}</span>` : ""}</div>`
+    + (r ? `<div class="hw2-rp"><span class="k">Rally Points</span>${pips}<span><b>${leftAfter}</b> of ${r.max} left</span></div>` : "") + "</div>";
+  const bar = (pool, cls, name) => {
+    const max = Math.max(1, pool === "body" ? Number(thr.vigor) || 1 : Number(thr.resolve) || 1), dmg = (d[`${pool}Lethal`] ?? 0) + (d[`${pool}Nonlethal`] ?? 0), h = (Number(st.values[`${pool}Lethal`]) || 0) + (Number(st.values[`${pool}Nonlethal`]) || 0);
+    if (!dmg) return "";
+    const pct = n => `${Math.max(0, Math.min(100, (n / max) * 100))}%`;
+    return `<div class="hw2-bar ${cls}"><span class="nm">${name}</span><span class="tr"><i class="l" style="width:${pct(max - dmg)}"></i><i class="h" style="width:${pct(h)}"></i></span><span class="nn">${max - dmg} &rarr; <b>${max - dmg + h}</b> / ${max}</span></div>`;
   };
+  const step = (k, n) => `<span class="hw2-st"><button type="button" data-hw="step" data-k="${k}" data-d="-1" aria-label="Less ${HW_NAMES[k][0]}"${n <= 0 ? " disabled" : ""}>&minus;</button><b>${n}</b><button type="button" data-hw="step" data-k="${k}" data-d="1" aria-label="More ${HW_NAMES[k][0]}"${n >= (d[k] ?? 0) || given >= total ? " disabled" : ""}>+</button></span>`;
+  const rows = keys.map(k => { const n = Number(st.values[k]) || 0, of = k === "bodyLethal" ? thr.vigor : k === "mindLethal" ? thr.resolve : 0;
+    return `<div class="hw2-row"><span class="nm ${HW_NAMES[k][1]}">${HW_NAMES[k][0]}</span><span class="was">${d[k]}</span><span class="ar">&rarr;</span><b class="${n ? "chg" : ""}">${d[k] - n}</b><span class="of">${of ? `of ${of}` : ""}</span>${step(k, n)}</div>`; }).join("");
+  const body = all === 0 ? '<div class="hw2-none">No damage to remove.</div>'
+    : `${bar("body", "v", "Vigor")}${bar("mind", "r", "Resolve")}${choice ? (st.split ? `<div class="hw2-split">${rows}</div>` : `<div class="hw2-link"><span>Split evenly between the two.</span><button type="button" class="hw2-lk" data-hw="split">Change the split</button></div>`) : ""}`;
+  const msg = all > 0 && choice && st.split ? (given < total ? `${total - given} left to give` : "Split evenly by default.") : "";
+  const go = r ? `Use ${st.n} Rally Point${st.n === 1 ? "" : "s"}` : "Heal";
+  return `<div class="hw2">${count}${head}<div class="hw2-rows">${body}</div><div class="hw2-foot"><span class="m">${esc(msg)}</span><button type="button" class="hw2-b" data-hw="cancel">Cancel</button><button type="button" class="hw2-b go" data-hw="go">${go}</button></div></div>`;
 }
-
-/** The window: resolves to the plan ({ bucket: n }) or null (cancelled). */
+const HW_ORDER = ["bodyLethal", "bodyNonlethal", "mindLethal", "mindNonlethal"];
+const HW_NAMES = { bodyLethal: ["Vigor", "v"], bodyNonlethal: ["Vigor Nonlethal", "v"], mindLethal: ["Resolve", "r"], mindNonlethal: ["Resolve Nonlethal", "r"] };
+const AppV2 = globalThis.foundry?.applications?.api?.ApplicationV2;
+class HealWin extends (AppV2 ?? class {}) {
+  static DEFAULT_OPTIONS = { classes: ["twod12", "twod12-healwin"], window: { resizable: false }, position: { width: 400, height: "auto" } };
+  constructor(o) { super({ window: { title: o.title } }); this.o = o; this.st = o.st; this.done = false; }
+  async _renderHTML() { const div = document.createElement("div"); div.innerHTML = healWinHtml(this.o, this.st); return div; }
+  _replaceHTML(result, content) { content.replaceChildren(result); }
+  _onFirstRender(context, options) {
+    super._onFirstRender?.(context, options);
+    this.element.addEventListener("click", ev => {
+      const b = ev.target.closest("button[data-hw]");
+      if (!b || b.disabled) return;
+      const k = b.dataset.hw, st = this.st, o = this.o;
+      if (k === "cancel") return this.close();
+      if (k === "go") { this.done = true; o.resolve({ n: st.n, plan: planHealing(st.values, o.damage, o.partsFor(st.n).reduce((t, p) => t + (Number(p[0]) || 0), 0)) }); return this.close(); }
+      if (k === "split") st.split = true;
+      if (k === "n") { st.n = Math.max(1, Number(b.dataset.v) || 1); st.values = { ...symmetricHealing(o.damage, o.thresholds, o.partsFor(st.n).reduce((t, p) => t + (Number(p[0]) || 0), 0)) }; }
+      if (k === "step") { const key = b.dataset.k; st.values[key] = Math.max(0, Math.min(o.damage[key] ?? 0, (Number(st.values[key]) || 0) + (Number(b.dataset.d) || 0))); }
+      this.render();
+    });
+  }
+  async close(options) { if (!this.done) { this.done = true; this.o.resolve(null); } return super.close(options); }
+}
+/** The window: resolves to { n, plan } or null (cancelled). o as healWinHtml's, with title; n the Rally Points first shown. */
+export function healWindowFull(o) {
+  const n0 = Math.max(1, Number(o.n) || 1), total0 = o.partsFor(n0).reduce((t, p) => t + (Number(p[0]) || 0), 0);
+  const st = { n: n0, values: { ...symmetricHealing(o.damage, o.thresholds, total0) }, split: false };
+  if (!AppV2 || typeof document === "undefined") return Promise.resolve({ n: n0, plan: { ...st.values } });   // no windows (the tests): the default split
+  if (typeof globalThis.__twod12Pick === "function") return Promise.resolve({ n: n0, plan: { ...st.values } });
+  return new Promise(resolve => new HealWin({ ...o, st, resolve }).render({ force: true }));
+}
+/** The Heal window (@Heal) and the old callers: resolves to the plan or null. o: { name, damage, thresholds, total, sub, rally } */
 export async function healWindow(o) {
-  const def = symmetricHealing(o.damage, o.thresholds, o.total);
-  if (!globalThis.foundry?.applications?.api?.ApplicationV2) return def;   // no windows (the tests): the default split
-  const { pickWith } = await import("./pickwindow.mjs");
-  const st = { values: { ...def } };
-  const res = await pickWith({
-    title: o.rally ? `Rally: ${o.name}` : `Heal: ${o.name}`,
-    model: () => healModel(o, st),
-    pick: (row, k) => { if (row in st.values) { const n = st.values[row] + (Number(k) || 0); st.values[row] = Math.max(0, Math.min(o.damage[row] ?? 0, n)); } },
-    input: (field, value) => { if (field in st.values) st.values[field] = Math.max(0, Math.floor(Number(value) || 0)); },
-    result: () => planHealing(st.values, o.damage, o.total)
-  });
-  return res;
+  const res = await healWindowFull({ title: o.rally ? `Rally: ${o.name}` : `Heal: ${o.name}`, name: o.name, damage: o.damage, thresholds: o.thresholds, partsFor: () => (o.parts ?? [[o.total, o.source ?? ""]]), rally: o.rally ? { max: o.rally.max, left: o.rally.left + (o.rally.n ?? 1), top: 1 } : null, n: o.rally?.n ?? 1 });
+  return res ? res.plan : null;
 }
 
+/**
+ * v0.0.454 (Lucas, playtest 6, D1): the heal message, in the system's short line (sysLine, the heart), one fact a line: "Durgan heals 15", what it
+ * removed ("9 Vigor, 5 Resolve, 1 Vigor Nonlethal"), then its parts when it has more than one ("9 + 3 Font of Mercy + 4 Lay On Hands"). Pure.
+ * rally: the Rally Points it used and how many are left (a quiet note on the first line), npc: an NPC's heal spends none.
+ */
+export function healLinesHtml(name, plan, parts = [], { rally = null, npc = false } = {}) {
+  const healed = Object.values(plan ?? {}).reduce((a, b) => a + (Number(b) || 0), 0);
+  const what = HEAL_ORDER.filter(([k]) => plan?.[k]).map(([k, l]) => `${plan[k]} ${l}`).join(", ");
+  const note = rally ? ` <small>${npc ? "an NPC: no Rally Point spent" : `${rally.n} Rally Point${rally.n === 1 ? "" : "s"} \u00b7 ${rally.left} left`}</small>` : "";
+  const sum = (parts ?? []).filter(p => Number(p[0])).length > 1 ? `<span class="hl-l q">${parts.filter(p => Number(p[0])).map(p => `${p[0]}${p[1] ? ` ${esc(p[1])}` : ""}`).join(" + ")}</span>` : "";
+  return `<b>${esc(name)}</b> heals <b>${healed}</b>${note}${what ? `<span class="hl-l">${what}</span>` : '<span class="hl-l">no damage to remove</span>'}${sum}`;
+}
+const HEAL_ORDER = [["bodyLethal", "Vigor"], ["mindLethal", "Resolve"], ["bodyNonlethal", "Vigor Nonlethal"], ["mindNonlethal", "Resolve Nonlethal"]];
 /** Apply a plan to a creature (its owner, or the GM through the socket) and say it in the chat. Returns the amount removed. */
 export async function applyHealing(actor, plan, { lead = "", why = "" } = {}) {
   const s = actor.system, upd = {};
@@ -76,9 +125,11 @@ export async function applyHealing(actor, plan, { lead = "", why = "" } = {}) {
     if (actor.isOwner) await actor.update(upd);
     else game.socket.emit("system.twod12", { type: "applyDamage", actorUuid: actor.uuid, upd });
   }
-  const parts = BUCKETS.filter(([k]) => plan[k]).map(([k, l]) => `${plan[k]} ${l}`).join(", ");
   const { sysLine } = await import("./sysmsg.mjs");
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-medical", `${lead || `<b>${esc(actor.name)}</b> heals`} <b>${healed}</b>${parts ? ` (${parts})` : ""}${why ? ` <small>${why}</small>` : ""}.`, "healmsg") });
+  // v0.0.454 (D1): the same lines as a Rally's ("Durgan heals 9", what it removed, what gave it); a lead given by the caller keeps its words
+  const short = String(actor.name ?? "").replace(/\s*\(.*$/, "").trim() || actor.name;
+  const html = lead ? `${lead} <b>${healed}</b>${why ? ` <small>${esc(why)}</small>` : ""}` : `${healLinesHtml(short, plan, [])}${why ? `<span class="hl-l q">${esc(why)}</span>` : ""}`;
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand-holding-medical", html, "healmsg") });
   return healed;
 }
 
@@ -99,7 +150,7 @@ export async function promptHeal(actor, amount, { source = "", lead = "" } = {})
   await healHere(actor, amount, { source, lead });
 }
 export async function healHere(actor, amount, { source = "", lead = "" } = {}) {
-  const plan = await healWindow({ name: actor.name, damage: actor.system.damage, thresholds: thresholdsOf(actor), total: amount, sub: source ? `${esc(source)}: ${amount} healing.` : undefined, rally: null });
+  const plan = await healWindow({ name: String(actor.name ?? "").replace(/\s*\(.*$/, "").trim() || actor.name, damage: actor.system.damage, thresholds: thresholdsOf(actor), total: amount, source, rally: null });
   if (!plan) return;
   await applyHealing(actor, plan, { lead, why: source });
 }

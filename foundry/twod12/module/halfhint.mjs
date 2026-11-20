@@ -40,6 +40,8 @@ export function lightHalf(root, info) {
   if (!root?.querySelectorAll) return 0;
   let n = 0;
   for (const b of root.querySelectorAll('button[data-twod12="applyHalf"], button[data-factor="0.5"]')) { b.classList.add("hinted"); n++; }
+  // v0.0.454 (Lucas, playtest 6, D2): the row's Apply itself applies half and says so (Full / Half / Double are a right-click now)
+  for (const b of root.querySelectorAll('button[data-twod12="ccApply"][data-ctx="apply"]')) { b.dataset.factor = "0.5"; b.textContent = "Apply half"; b.classList.add("hinted"); n++; }
   if (n && !root.querySelector(".halfhint")) {
     const line = root.ownerDocument.createElement("div");
     line.className = "halfhint";

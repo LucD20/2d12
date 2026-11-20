@@ -23,6 +23,7 @@ const actionTraits = sortObj({
   signature: "Signature",
   split: "Split",
   strike: "Strike",
+  unfailing: "Unfailing",   // v0.0.453 (playtest 6; the book, Chapter 7): a Tier 1 doesn't spend its Frequency
   weapon: "Weapon"
 });
 const weaponTraits = sortObj({ barehanded: "Barehanded", firearm: "Firearm", light: "Light", long: "Long", melee: "Melee", strung: "Strung", nonthreatening: "Non-threatening", projectile: "Projectile", ranged: "Ranged", reload: "Reload", thrown: "Thrown", twohanded: "Two-handed" });
@@ -58,19 +59,21 @@ export const TWOD12 = {
     })
   },
   // v0.0.369 (STYLE-1, Lucas, 2026-11-13): Slash steel, Blunt bronze, Pierce grey-green, in the place of one grey
+  // v0.0.457 (B3/E6, Lucas 2026-11-19: "each damage type one color everywhere"): one hue a type, this its dark-surface variant and
+  // subtypeInk its light one; the book's DTYPE (book/build_rules.py) is the same pair (t286)
   subtypeColors: {
-    Ac: "#7cb342",
+    Ac: "#8bc34a",
     Bl: "#b9a58c",
     Co: "#4fc3e8",
-    El: "#3d8bfd",
-    Fi: "#e8622a",
-    Fo: "#b06ad8",
-    Ho: "#d9b52e",
+    El: "#e3cf3b",
+    Fi: "#ef6a3a",
+    Fo: "#a77ce8",
+    Ho: "#e0a83a",
     Pi: "#a9b8a4",
-    Ps: "#8c68d6",
+    Ps: "#e07a9e",
     Sl: "#c3c9d1",
-    Th: "#5c7fa3",
-    Un: "#b0607f"
+    Th: "#6f95c8",
+    Un: "#c06ac0"
   },
   frequencies: { "": "Default", none: "None", atwill: "At-will", turn: "Turn", round: "Round", encounter: "Encounter", daily: "Daily" },
   // The kind of a roll, for effects (Round 10): checks and saves are marked when they are rolled, and an Action that rolls an Attribute
@@ -94,18 +97,18 @@ export const TWOD12 = {
     Un: "fa-solid fa-skull"
   },
   subtypeInk: {
-    Ac: "#3B6D11",
+    Ac: "#3f7a12",
     Bl: "#5a4a36",
-    Co: "#185FA5",
-    El: "#9A7400",
-    Fi: "#993C1D",
-    Fo: "#8A2BD4",
-    Ho: "#854F0B",
+    Co: "#136f8f",
+    El: "#7d6a00",
+    Fi: "#a63a17",
+    Fo: "#6a35b8",
+    Ho: "#8a5a08",
     Pi: "#44513f",
-    Ps: "#993556",
+    Ps: "#a3335c",
     Sl: "#4a5058",
-    Th: "#0C447C",
-    Un: "#4A1D63"
+    Th: "#1f4f8a",
+    Un: "#6e2a6e"
   },
   defaultTags: [
     "Aberration",
@@ -140,6 +143,7 @@ export const TWOD12 = {
     signature: "Rolls your Signature Modifier (the higher of Weapon and Power). On every Tier, Tier 1 included, your Signature Attribute is added to the first damage instance. Never needs a weapon.",
     split: "Two modes, Weapon and Power: choose one each time you use it. In that mode it takes the mode's trait and is an Action of that mode for every rule (a Weapon Action needs a weapon; a Power Action doesn't). Frequency, target, trigger and Critical are shared; the damage and traits are the mode's.",
     fear: "No rules of its own: other features refer to it.",
+    unfailing: "When its roll gets a Tier 1, that use doesn't count toward its Frequency: you can use it again. You still spend its AP, and its Tier 1 still happens.",
     focus: "Requires concentration. This is not a mechanic by itself, but some features affect your ability to concentrate.",
     weapon:
       "Requires a weapon. Rolls your Weapon Modifier. On a Tier 2 or 3, your Weapon Attribute is added to the weapon's damage.",
@@ -202,6 +206,8 @@ export const TWOD12 = {
   messageTo: { owners: "its owners (and the GM)", all: "everyone" },
   removableProps: { nonthreatening: "Non-threatening" },
   propWeapons: { fists: "Fists", all: "weapons" },
+  // v0.0.444 (Lucas, group 2: a card's requirement counts when choosing the weapon): the weapon property a [Weapon] Action needs (Darting Blade: Light)
+  weaponNeeds: { "": "Any weapon that fits", light: "A Light weapon", twohanded: "A Two-handed weapon", thrown: "A Thrown weapon", long: "A Long weapon" },
   weaponUses: { "": "Its weapon (any weapon it can use)", fists: "Only the Fists (needs a free hand)", kick: "The Fists, even with no free hand (a kick)" },
   ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you" },
   durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds", encounter: "This encounter" },   // v0.0.323: This encounter (Ends: Time)
@@ -212,7 +218,7 @@ export const TWOD12 = {
     { key: "requires", label: "Requires", traits: ["gun", "handle", "melee", "ranged", "shot"] },
     { key: "kind", label: "Kind", traits: ["area", "move", "self", "strike"] },
     { key: "damage", label: "Damage", traits: ["nonlethal"] },
-    { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear"] }
+    { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear", "unfailing"] }
   ],
   // The Bestiary (book: bestiary.html; v0.0.163, refit by E3 in v0.0.181, re-fitted to pack R by R-bestiary in v0.0.240: book/ruler/bestiary-r.json): an NPC is a role plus a rating for each number.
   //   attr: the Medium Attribute; hb: the Health Base; defense: the Medium Defense; cv: the Combat Value at the party's Stage, one Stage below, two Stages below
@@ -365,22 +371,26 @@ export const poolIcon = pool => pool === "M" ? '<i class="fa-solid fa-brain dt-m
   : pool === "C" ? '<span class="dt-choose"><i class="fa-solid fa-heart dt-body"></i><i class="fa-solid fa-brain dt-mind"></i></span>'
   : '<i class="fa-solid fa-heart dt-body"></i>';
 /** A damage type's icon (on parchment cards, Slash uses Foundry's sword image). */
-export const dtypeIcon = k => (k === "Sl" ? '<img class="dt-img" src="icons/svg/sword.svg" alt="">' : `<i class="${TWOD12.subtypeIcons[k] ?? ""}"></i>`);
+// v0.0.443 (Lucas's checklist, e6-blunt: "The Icon from Slash on the NPCs sheet is black, and its different colored than Blunt"): Slash was
+// Foundry's sword picture, which can't take its type's color; every type is now its icon, in its color
+export const dtypeIcon = k => `<i class="${TWOD12.subtypeIcons[k] ?? ""}"></i>`;
 export const dtypeHtml = code => {
   const k = Object.keys(TWOD12.subtypeInk).find(x => x.toLowerCase() === String(code ?? "").toLowerCase());
-  return k ? `<span class="dtype dt-${k.toLowerCase()}" style="color:${TWOD12.subtypeInk[k]}">${dtypeIcon(k)} ${TWOD12.subtypes[k]}</span>` : "";
+  return k ? `<span class="dtype dt-${k.toLowerCase()}" style="color:${TWOD12.subtypeInk[k]};--sc-d:${TWOD12.subtypeColors?.[k] ?? TWOD12.subtypeInk[k]}">${dtypeIcon(k)} ${TWOD12.subtypes[k]}</span>` : "";
 };
 /** Turn "[B] 1[W] Sl" (already escaped) into the card's look: icons for [B]/[M]/[C], the damage type as a colored name. */
 /** The ink of a damage type ("Co" -> its color), for the amount written before it (v0.0.137: "1d8 Cold" is all in Cold's color). */
+/** v0.0.441 (E6): a damage type's bright color, for a dark surface (styles: the dark scope reads --sc-d over the parchment's inline ink). */
+export const brightOf = code => { const k = Object.keys(TWOD12.subtypeColors ?? {}).find(x => x.toLowerCase() === String(code ?? "").toLowerCase()); return k ? TWOD12.subtypeColors[k] : ""; };
 export const inkOf = code => { const k = Object.keys(TWOD12.subtypeInk ?? {}).find(x => x.toLowerCase() === String(code ?? "").toLowerCase()); return k ? TWOD12.subtypeInk[k] : ""; };
 // v0.0.179 (the book's look): a damage expression after [B] or [M] ("[B] 1[W] + [Mod]", "[M] 1d4") is in its pool's color, the damage type in its own;
 // an amount with no pool before it ("+1d6 Ho" from a bonus) keeps the type's ink as before.
 // Pack R-core: [V] Vigor and [R] Resolve damage are the B and M pools (both spellings read until R-Foundry).
 const POOL_CSS = { B: "b", V: "b", M: "m", R: "m" }, POOL_KEY = { B: "B", V: "B", M: "M", R: "M", C: "C" };
-const POOL_EXPR = /\[(B|M|V|R)\](\s*)((?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
+const POOL_EXPR = /\[(B|M|V|R)\](\s*)((?:\d+d\d+!?|\d*\[W\]|\[Mod\]|\[At\]|\d+)(?:\s*[+\-\u2212]\s*(?:\d+d\d+!?|\d*\[W\]|\[Mod\]|\[At\]|\d+))*)/g;
 export const prettyDamage = html => String(html ?? "")
   .replace(POOL_EXPR, (m, p, sp, expr) => `${poolIcon(POOL_KEY[p])}${sp}<span class="pool-${POOL_CSS[p]}">${expr}</span>`)
-  .replace(/(\d*\[W\]|\[At\]|\d+d\d+(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)}">${amt}</span>${sp}${code}` : m))
+  .replace(/(\d*\[W\]|\[At\]|\d+d\d+!?(?:[+-]\d+)?|\b\d+)(\s+)(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, (m, amt, sp, code) => (inkOf(code) ? `<span class="dtamt" style="color:${inkOf(code)};--sc-d:${brightOf(code) || inkOf(code)}">${amt}</span>${sp}${code}` : m))
   .replace(/\[(B|M|C|V|R)\]/g, (m, p) => poolIcon(POOL_KEY[p]))
   .replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, m => dtypeHtml(m));
 
@@ -457,10 +467,12 @@ const TRAIT_KEY_OF = Object.fromEntries([...Object.entries(TWOD12.traits).map(([
 const TRAIT_KEYS = [...new Set(Object.values(TWOD12.traits).map(String))].sort((a, b) => b.length - a.length).map(l => l.replace(/[.*+?^${}()|[\]\\-]/g, "\\$&")).join("|");
 
 /* ------------------------------------------------------------------ text colors (v0.0.179: the book's CLASS_TOKEN, book/build_rules.py) */
-const ATOM = String.raw`(?:\d+d\d+|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
+const ATOM = String.raw`(?:\d+d\d+!?|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
 const TOKEN_RE = new RegExp([
   String.raw`(?<slash>${ATOM}(?:\s*/\s*${ATOM})+\s*\[(?<sp>[BMVR])\])`,    // "1d6 / 1d4 / 0 [R]": tier values with the pool after them
   String.raw`(?<tag>\[(?<tp>[BMVR])\]\s*${EXPR})`,                           // "[B] 1[W] + [Mod]", "[M] 1d6+1"
+  // v0.0.451 (Lucas, g3-res: "the '!' and 'Ho' arent colored"): a damage code after a die, a number or a ] in its type's color, as the book does
+  String.raw`(?<dcode>(?<=[\d\]!]\s)(?:Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b)`,
   String.raw`(?<ht>\[HT(?::[^\]]*)?\])`,                                      // "[HT: Entering, Turn]"
   // v0.0.192: a bracketed list of traits, "[Ranged, Shot]" or "[Strike]", colored as one group (each trait in its group's color).
   String.raw`(?<tgrp>\[(?:${TRAIT_KEYS})(?:,\s*(?:${TRAIT_KEYS}))*\])`,
@@ -478,6 +490,7 @@ const traitTip = () => "";   // v0.0.420 (the tooltip review): no hover on a tra
 function colorToken(m, g) {
   if (g.slash) return `<span class="pool-${POOL_CSS[g.sp]}">${m}</span>`;
   if (g.tag) return `<span class="pool-${POOL_CSS[g.tp]}">${m}</span>`;
+  if (g.dcode) return inkOf(m) ? `<span class="dtamt dcode" style="color:${inkOf(m)};--sc-d:${brightOf(m) || inkOf(m)}">${m}</span>` : m;
   if (g.ht) return `<span class="kw-ht">${m}</span>`;
   // v0.0.261 (Lucas, Rolling Shot): a trait in a text carries its tooltip, like the chips of the Traits line
   if (g.tgrp) return `<span class="trgrp">[${m.slice(1, -1).split(/,\s*/).map(w => `<span class="trhl" style="--tc:${famColor(TRAIT_KEY_OF[w.toLowerCase()])}"${traitTip(TRAIT_KEY_OF[w.toLowerCase()])}>${w}</span>`).join(", ")}]</span>`;
@@ -492,7 +505,7 @@ function colorToken(m, g) {
   if (g.rally) return `<span class="kw-rally">${m}</span>`;
   if (g.attr) return `<span class="at-${m.toLowerCase()}">${m}</span>`;
   if (g.guard) return `<span class="kw-guard">${m}</span>`;
-  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}"${traitTip(TRAIT_WORDS[m])}>${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
+  return TRAIT_WORDS[m] ? `<span class="trhl" style="--tc:${famColor(TRAIT_WORDS[m])}"${traitTip(TRAIT_WORDS[m])}>${m}</span>` : `<span class="dmgword" style="--dc:${TWOD12.subtypeInk[DAMAGE_WORDS[m]]};--sc-d:${TWOD12.subtypeColors[DAMAGE_WORDS[m]]}">${m}</span>`;
 }
 // Never inside: links, buttons, headings, scripts, SVG, and chips or marks that already have their own look.
 const SKIP_TAG = /^(a|button|h[1-6]|script|style|svg|summary|code)$/i;

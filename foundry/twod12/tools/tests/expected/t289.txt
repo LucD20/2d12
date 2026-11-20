@@ -1,0 +1,4 @@
+2x2 past a 1x1 Goblin (0,0 -> 0,3): two steps beside it    extra 2 | through Goblin
+2x2 one step onto it (0,0 -> 0,1)                          extra 0 | through -
+1x1 straight through the Goblin (1,0 -> 1,4)               extra 1 | through Goblin
+1x1 beside it (0,0 -> 0,4)                                 extra 0 | through -

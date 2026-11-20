@@ -6,7 +6,7 @@ payReaction kept (combat.mjs re-exports it): {"fromRap":1,"fromAp":1} true
 --- labels, Effects lines, the ruler
 Tier labels in full: Tier 1 | Tier 2 | Tier 3 | Critical | Tiers 1–3
 ruler: Designer on: "2 AP 1.40× · 3 AP 1.45×." | off: "" | no worth: ""
-Effects: three Versions: ["1*","2*","3*"] | the same text twice: {"title":"Effects (Tier 2+)","lines":[{"ap":2,"text":"A","badge":false}]} | no Tiers: Effects
+Effects: three Versions: ["1*","2*","3*"] | the same text twice: {"title":"Effects","lines":[{"ap":2,"text":"A","badge":false}]} | no Tiers: Effects
 Modifier: Signature +2 | Power −1 | the strip: Smite true a Save Action false no Tiers false
 reasons: Not this Action: not a Strike | Not now: already used this round | cleanLabel: Flanking
 --- Your roll (the roll dialog's own sources, about you only)
@@ -16,7 +16,7 @@ a target's chip is left out: true
 --- the card
 no title bar, no Place Area button, no old badge: true
 the new look: true | the Flavor first: true
-trait words: Signature · Weapon · Strike · Divine Gold
+trait words: Signature · Weapon · Strike · Divine · Unfailing Gold
 the grid: Distance: Weapon Target: One creature
 labels: Smite dice, Attack, Tier 1, Tier 2, Tier 3, Special, Your roll
 Use buttons: 1 live, 0 struck | at the end of Your roll: true | a button uses its Version: true

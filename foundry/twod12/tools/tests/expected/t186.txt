@@ -6,5 +6,5 @@ the who picker and the Push picker use the bar, not DialogV2: true true
 schema fields: lightAlpha true, lightAnim true, lightSpeed true, lightIntensity true | applied and restored: true | editable: true | a new setting starts at Foundry's defaults: true
 Smite's lights: 
 --- the Push line and the icons
-the line names who pushes, away from whom: true | from:target passes the user: true
+the line names who pushes (v0.0.404: "X was Pushed Y by Z"; v0.0.461: the unused "away from" text removed): true | from:target passes the user: true
 icon files: emanation true, burst true, line true | masked in the CSS: true

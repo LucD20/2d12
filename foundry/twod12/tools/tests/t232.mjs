@@ -10,7 +10,7 @@ const inp = { name: "Word of Radiance", versions: [v], ap: 2, chips: [], creatur
 const st = RD.newState(inp);
 console.log("an area not placed, no creature: blocked?", JSON.stringify(RD.blockedReason(inp, st)), "| the DC:", RD.liveCreatures(inp, st)[0].dc);
 st.noTargetDc = "15";
-console.log("a typed DC:", RD.liveCreatures(inp, st)[0].dc, "| the field in the window:", /data-field="noTargetDc" value="15"/.test(RD.dialogHtml(inp, st)));
+console.log("a typed DC:", RD.liveCreatures(inp, st)[0].dc, "| the field in the window (once placed; v0.0.460: before, the Place button stands there):", /data-field="noTargetDc" value="15"/.test(RD.dialogHtml({ ...inp, area: { ...inp.area, placed: true } }, st)), "| not placed, the Place button:", RD.dialogHtml(inp, st).includes('class="rd-placebig"'));
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("the roll's input gives an area the No target row (DC 13):", src("module/rollinput.mjs").includes('name: c.areaOutcome?.ok ? "No creature in the area" : "No target", def: "DC", dc: c.opts.noTargetDc ?? 13'));
 const deep = () => new Proxy(function () {}, { get: (t, k) => (k in t ? t[k] : k === "then" ? undefined : deep()), construct: () => deep(), apply: () => deep() });
@@ -18,6 +18,6 @@ globalThis.foundry = deep(); Object.assign(globalThis.foundry, { utils: { deepCl
 for (const n of ["Combat", "Combatant", "Actor", "Item", "ChatMessage", "TokenDocument", "Token", "Roll", "ActiveEffect", "Region", "JournalEntry", "Scene", "Application", "TextEditor"]) globalThis[n] ??= class { static create() {} };
 globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = { Canvas: {} }; globalThis.game = { settings: { get: () => false }, user: { isGM: true } };
 const { TWOD12 } = await import(ROOTURL + "module/config.mjs");
-console.log("an NPC's Rally Point by Stage:", TWOD12.npcRallyHeal.join(" / "), "| the data model sets it:", src("module/data.mjs").includes("this.rallyHeal = TWOD12.npcRallyHeal?.["), "| it spends nothing:", src("module/rally.mjs").includes('const upd = npc ? {} : { "system.rallyUsed": s.rallyUsed + n };'));
+console.log("an NPC's Rally Point by Stage:", TWOD12.npcRallyHeal.join(" / "), "| the data model sets it:", src("module/data.mjs").includes("this.rallyHeal = TWOD12.npcRallyHeal?.["), "| it spends nothing:", src("module/rally.mjs").includes('const upd = npc ? {} : { "system.rallyUsed": s.rallyUsed + used };'));
 console.log("the book says it:", fs.readFileSync(ROOT + "../../book/rules-src/04-health.md", "utf8").includes("one of its Rally Points removes **9** damage at Stage 0, and it spends nothing"));   // Stage 0 into the book (2026-11-12): the book writes only Stage 0's number (9, the system's first); the later ones come with their Stages
 console.log("an Action sent to the chat is the new card:", src("module/preview.mjs").includes('item.type === "weapon" ? await buildWeaponCard(item) : await (await import("./actioncard.mjs")).buildSoloCard(item, { actor })'));
