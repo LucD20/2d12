@@ -468,3 +468,25 @@ The whole file, against T1 to T14, the lessons, the rulebook and the class and g
 | **Across the batch** | Branch labels repeated (mage-hunter, silencer, skirmisher, duelist, bodyguard) | Renamed: the breakthrough, the hostage-taker, the strangler, the counter-sniper, the spell-watcher |
 
 **No finding** on bare numbers (T1), lifted penalties (T14) or the Skill wall. **Fable re-audits the whole batch with fresh eyes at step 12.**
+
+---
+
+## 12. Lucas's review of the batch (2026-11-20): recorded, NOT applied
+
+Lucas: "Dont apply changes. I am noticing we are running in a problem here, on how to balance. I dont know if its the system that is flawed or one of us is doing something wrong. You should review this." The review of the process is in the chat of 2026-11-20 and in `book/talents-design.md` (the note after the decisions table). His notes, numbered his way (**Talent.Branch.Rank**: the Talent is its section here, the branch its row in the table, the rank 1 for a branch's first rank and 2 for the next; 0 for the Talent's own Rank I):
+
+| # | Card | Lucas's note |
+|---|---|---|
+| 1.2.1 | Hamstring | "I think 1 round is best" (Hindered (1 round), not EoT) |
+| 1.2.2 | Cripple | "being slowed is more detrimental than having an action interrupted. Maybe Dazed 1?" |
+| 2.0 | Steel and Spell | remove "The Weapon Attack is a Linked Action: ... counts once ..."; "unlike a Linked Action" becomes "unlike a normal Linked Action" (it still is one) |
+| 3.1 | Step and Loose | "extremely weak": it removes the use of Arm's-Length Shot, and Evade 2 never competes with other Talents |
+| 3.2 | Shove Off | "Also weak": could gain a bonus to the hit, a shove on a Tier 1, something like that |
+| 4.0 | Parry | Fists are never held and aren't a weapon held in hand; give it the [Self] trait and remove "Target: You" |
+| 4.1 | Riposte (the duelist) | add a Boon to its attack |
+| 5.2 | Overrun | remove "(the Charge's rules for the line apply; it can trigger Reactions like any Advance, and counts toward your Speed)": a Linked Action's Advance doesn't matter for Speed |
+| 6.1 | Throw | too weak, almost a Push: raise both Pushes by 1 or 2 |
+| 7.1 | Sweeping Blow (the reaper) | "a terrible one": Cleave isn't that good; more Cleave, or on Tier 2 too and raised |
+| 7.2 | Sunder (the breaker) | write "1 Bane to AD" (AD 1 lower), so that "1 Support Boon to AD" can exist; and should Boons and Banes become bonuses and penalties? |
+| 8.1 | The hand | an object held in two hands: it lets go with one hand |
+| (all) | numbering | number the cards, branches and ranks so they can be referenced |
