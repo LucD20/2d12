@@ -157,5 +157,5 @@ The 70% is [judgment]. **About +9 a turn: a little above the anchor (+6).** The 
 - **Half damage over one Tier lower** (Lucas's call, and the odds): one Tier lower does nothing on a Tier 2, the most common hit, so its worth sat on the Tier 3 (the rare-trigger lesson).
 - **One roll for two creatures:** the second creature's Defense doesn't matter; it is hit on the same Tier.
 - **Watch:** Kaela already deals the most damage at the table (14.5 a round in playtest 5).
-- **Near, not the same:** Cleave (the Modifier to adjacent creatures, Chapter 1), One More Arrow (1[W] more to each creature on a Tier), Volley and Covering Fire (areas). A Passive that adds to "each creature on that Tier" (One More Arrow) doesn't reach the second creature, which is on no Tier.
+- **Near, not the same:** Cleave (the Modifier to adjacent creatures, Chapter 1), One More Arrow (1[W] more to each creature on a Tier), Volley and Covering Fire (areas). A Passive that adds to "each creature on that Tier" (One More Arrow) adds nothing to the second creature, which is on no Tier, except through the half of the target's damage it takes.
 - **A later branch:** the bank shot (off a wall, at a creature you have no Line of Effect to), once a rule for bouncing off walls is written.
