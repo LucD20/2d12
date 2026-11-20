@@ -1,5 +1,7 @@
 # Talents, the second pass: seven famous families
 
+> **Superseded for review on 2026-11-20 by `talents-batch.md`,** which holds every Talent still standing. This file is kept as history with its audit.
+
 **2026-11-20.** Lucas: "A" (the families of `research/famous-picks.md` that already fit, plus the damage trade as an Action). Seven Talents under T1 to T14 of `book/talents-design.md` and the lessons of his first review. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Stage 2 is not written in the game: every Stage on a rank is a placeholder.
 
 **Audit status:** audited by an independent reader and corrected; what changed is the last section. **Two questions for Lucas** came out of it, both answered on 2026-11-20 (the grapple becomes a Basic Action; Finishing Blow weakened).
