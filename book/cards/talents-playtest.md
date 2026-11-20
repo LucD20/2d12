@@ -6,7 +6,7 @@
 |---|---|---|---|
 | 1 | Take Aim | Sylwen (Elf Archer, Quick Shots, Hunting Bow) | Lucas's shape (2026-11-20); priced below; **the anchor (T17): about +6 a turn net, a placeholder** |
 | 2 | Cold Domain (the god's blessing on the weapon; placeholder name) | Aveline (Human Paladin, Smite, Longsword) | written; priced at or above the anchor |
-| 3 | Defending allies | Durgan (Dwarf Paladin, Lay On Hands, Arming Sword) | waiting |
+| 3 | Shared Burden (defending allies; placeholder name) | Durgan (Dwarf Paladin, Lay On Hands, Arming Sword) | written; priced near the anchor |
 | 4 | Ricochet | Kaela (Human Archer, Strafe, Recurve Bow) | waiting |
 
 ---
@@ -89,3 +89,42 @@
 - **Near, not the same:** Smite (an Encounter nova of Holy dice), Binding Light (Holy and Immobilized), Consecrated Ground and Covering Fire (terrain, never solid).
 - **The boss rule holds:** the pillar never stops a creature; a boss walks around it or breaks it with one blow of 5.
 - **New rules it needed:** EoE (in the book), and two object rules it writes for itself until the objects pass (Tier 1 on a Save, Collision damage to an object).
+
+---
+
+## 3. Shared Burden (Durgan): defending allies
+
+**Lucas (2026-11-20):** chose the shared burden (5e's Warding Bond, Lancer's Bonded; `research/frontline-protection.md`) among ten families, then wrote it: "0AP - Round [focus] Designate an ally you can Sense, it is your Bound Ally (EoE). You gain the following Action: 1R - Turn - Requirements: Your Bound Ally is adjacent to you; Interrupt: The Bound Ally would take damage; You take half the damage and the Bound Ally take the other half the damage." With two notes: halving halves each subtype on its own (now Chapter 1), and a creature with a big Resistance could abuse it. "Yes to all" on Claude's five points: the Reaction has no [Divine] trait; the rounding; the order; Resistance and Immunity don't reduce Durgan's half; one Bound Ally at a time, and every source of damage counts.
+
+> **Shared Burden** · Talent · Guardian · Stage 0 *(placeholder name)*
+> **Oath of Burden** · 0 AP · Round · [Focus]
+> *You set your shoulder beside theirs: whatever comes for them comes through you.*
+> **Target:** One ally you can sense
+> **Effect:** The target is your **Bound Ally** (EoE). If another creature was your Bound Ally, it no longer is. While you have a Bound Ally, you have the Reaction **Bear the Blow**.
+>
+> **Bear the Blow** · 1R · Turn
+> *You take the blow on the shoulder they would have taken it on.*
+> **Requirements:** Your Bound Ally is adjacent to you.
+> **Interrupt:** Your Bound Ally would take damage.
+> **Target:** Your Bound Ally.
+> **Effect:** You take half of that damage (rounded up); your Bound Ally takes the rest (Chapter 1, Halving and splitting damage). Each of you then applies your own Weakness and Guard to your part; **your Resistance and Immunity don't reduce your part**, your Bound Ally's do reduce theirs.
+
+**Notes**
+- **Every source of damage counts** (an Area, Lingering, a fall, Collision). When Shield of Faith and Bear the Blow answer the same hit, Durgan chooses the order (Chapter 2): Shield of Faith shrinks it, then Bear the Blow splits what is left.
+- **Durgan's two Reaction AP:** Shield of Faith ([Divine, Focus]) is paid by Tireless Vigil's; Bear the Blow (no trait) by his own. Both can happen every round.
+- **Why Resistance and Immunity don't count on his part** (Lucas's warning): armor will give Resistance by subtype (Chapter 15's plan: padded, mail, plate), so the bond would erase damage instead of moving it.
+
+**The price (Durgan; the anchor is +6 a turn, T17):**
+
+| Line | Points a turn | Tag |
+|---|---:|---|
+| Oath of Burden: 0 AP | 0 | |
+| Bear the Blow's cost: his own Reaction AP, otherwise idle (Shield of Faith is paid by Tireless Vigil's) | about 0 | [judgment] |
+| About half of a Standard's hit moved from the ally to Durgan (about 6 of 12, once a round; more with kept AP) | | [SIM: a Standard deals a Paladin 11.9 a turn, `stage0.md`] |
+| Its worth: the party's total damage is the same; who goes Down changes (Durgan has more Health, Heavy armor, and Guard from Armor of Faith each time he uses Shield of Faith) | +4 to +8 | [judgment; the SIM can't price moving damage without new code] |
+| **Total** | **about +4 to +8** | near the anchor |
+
+**Analysis**
+- **The trade it is about:** Durgan can't Lay On Hands himself (its target is "one willing ally"), so he becomes the one who falls. The Bound Ally must stand next to him: a melee ally (Aveline) or a back-liner he keeps beside him.
+- **Visible protection** (the research's warning about invisible defense): every hit on the Bound Ally shows a number moving to Durgan.
+- **Near, not the same:** Shield of Faith (reduces), Bulwark of Faith (Guard, then a Slide), Lay On Hands (the ally's Rally Points), Hold the Line's swap. None moves damage.
