@@ -20,7 +20,7 @@
 > *You plant your feet, slow your breath, and let the world narrow to the arrowhead.*
 > [Self]
 > **Requirement:** You haven't left your square this turn.
-> **Effect:** Your [Ranged, Strike] Actions gain 1 Boon until the end of your turn (EoT). This ends when you leave your square.
+> **Effect:** Until the end of your turn (EoT), your [Ranged, Strike] Actions gain 1 Boon and take no Bane for the far range (Chapter 15). This ends when you leave your square.
 
 **The price (Sylwen at level 4; Weapon Modifier +2 assumed; Defense 13; 400,000 rolls each):**
 
@@ -67,7 +67,7 @@
 >
 > **Weapon mode** · **Distance:** Weapon
 > **Attack:** Weapon vs. Armor Defense
-> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]; an Ice Pillar. **Tier 3:** [V] 1[W] + [Mod]; an Ice Pillar.
+> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod] Co; an Ice Pillar. **Tier 3:** [V] 1[W] + [Mod] Co; an Ice Pillar.
 >
 > **Power mode** · **Distance:** Reach
 > **Attack:** Power vs. Ward Defense
@@ -193,3 +193,5 @@ The 70% is [judgment]. **About +9 a turn: a little above the anchor (+6).** The 
 | 5 | Ice Pillar | **combat only** | Lucas's own rule (`items-economy.md` Part 2, item 5, 2026-11-06; not in rules-src yet): "Outside an encounter, effects with a duration in turns or rounds (EoT included), or that last until the end of the encounter, don't work." |
 
 **The anchor (T17) stays +6, a placeholder;** its reading now comes from Take Aim as revised (about +7), not from the 5 AP turn.
+
+**Lucas on the feel check (2026-11-20): B "Ok", C "Ok"** (applied above: Take Aim also lifts the far range's Bane; Rime Strike's Weapon mode deals Cold), **D "Good"** (held: its price, below), **A** answered with his own shape (below).
