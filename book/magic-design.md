@@ -257,6 +257,8 @@ Read for this record on 2026-11-18: the class charter (all of it), the set-aside
 
 ## 5b. The Paths: definitions, subtypes and riders (DECIDED 2026-11-18: decision 23)
 
+> **Since decision 91 (Merge cut), the rider column is a writer's guide, not a rule:** a Path's usual condition, as its subtype is its usual damage, not its only one; any spell may use any condition its fiction calls for (64).
+
 From `dominions-paths.md` (section 2 and 3.5), with the borders of decision 15. **The rider is the one condition a Path adds** when a spell has a rider, and what a second Path lends in a merge. Each is a word Chapter 8 or Chapter 3 already defines, and no two Paths share one.
 
 | Path | It is | Damage subtype | Rider on an enemy | Why this one | The runner-up |
