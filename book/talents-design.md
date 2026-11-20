@@ -310,3 +310,5 @@ The four PCs (Foundry's compendium, level 1 and level 4): **Aveline** (Human Pal
 | # | Decided | Lucas's words |
 |---|---|---|
 | T17 | **The anchor, a placeholder: one Talent pick is worth about +6 points a turn over the best other use of the same AP, in the situation it is built for** (a Weapon Attack = 25; `ruler/pc-budget.md`). Read from Take Aim on Sylwen (`cards/talents-playtest.md` 1: about +18 gross, −12 for the Guard it replaces). Every Talent of the restart is priced against it; the playtest can move it. | "As a placeholder yes." |
+
+**Lucas's direction (2026-11-20, on Cold Domain's special rule):** "I mean special effects outside of rules, similar to spells. Talents I feel can do similar to spells, and be more innovative, bend rules, be unique." A Talent's special rule may do what a spell does (shape the field, bend a rule, do something no card does), not only add a condition rider. Each new thing it does still gets its rule written (the least ambiguity), and the boss rule and T1 still hold.
