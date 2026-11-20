@@ -2,7 +2,7 @@
 
 **2026-11-20.** One file for every test Talent still standing: the seven of the second pass (the famous families of `research/famous-picks.md`; Lucas: "A") and the two survivors of the first pass (Called Shot, Overwatch), redone with his answers; and the **basic grapple** he moved to the Basic Actions. It replaces `talents-first-pass.md` and `talents-second-pass.md` for review (both kept as history, with their audits). Nine Talents under T1 to T14 of `book/talents-design.md` and the lessons of his first review. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Stage 2 is not written in the game: every Stage on a rank is a placeholder.
 
-**Audit status:** the seven of the second pass were audited and corrected (section 11). **The whole batch, as it now stands, is audited again in section 12.**
+**Audit status:** the seven of the second pass were audited and corrected (section 10). **The whole batch, as it now stands, is audited again in section 11.**
 
 ---
 
@@ -395,7 +395,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 ---
 
-## 11. The second pass's audit: what the independent reader changed
+## 10. The second pass's audit: what the independent reader changed
 
 | Talent | Finding | Now |
 |---|---|---|
@@ -412,6 +412,6 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 ---
 
-## 12. The audit of the whole batch
+## 11. The audit of the whole batch
 
 (running)
