@@ -41,10 +41,10 @@ Do: The Ogre Chieftain (Large) drags past Aveline (Rebuke can trigger) and stops
 Expect: The pale path line starts at the center of the Ogre's faint picture (where it started), not at its corner; no stray diagonal.
 
 
-### push-large · v0.0.468 · A push from a Large creature
-Do: The Ogre Chieftain (Large) pushes Durgan with Overhead Smash's Pushed 2; hover the squares, then one into a wall.
-Expect: No big white circle around the Ogre; the squares to click in gold, Durgan's path with an arrow above the tokens; a short plate "Pushed 2" (into the wall: "Collision after 1: 2 Vigor").
-
+### push-large · v0.0.470 · A push from a Large creature: from its nearest square
+Do: The Ogre Chieftain (Large) pushes Aveline, who stands beside its top row, with Overhead Smash's Pushed 2.
+Expect: The squares offered go straight away from the Ogre's side: right, up-right and down-right (down-right was missing); no big ring around the Ogre; a short plate.
+Rev: 2
 
 ## Reactions and Judge
 

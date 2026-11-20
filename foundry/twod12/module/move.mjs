@@ -84,7 +84,19 @@ export function awayDirs(cells, originCells, coneDeg) {
  * away from the origin (inside the cone) and ending farther from it than the one before.
  * Returns Map key -> { di, dj, steps, parent }.
  */
+/**
+ * Pure (v0.0.470, Lucas, 2026-11-20; book, Chapter 3, Forced Movement: "A creature as the origin is measured from its square nearest the creature it
+ * moves"): the origin's square a push or a pull is measured from: the nearest to the moved creature's squares; a tie, the one whose center is
+ * nearest the creature's center. A one-square origin is itself.
+ */
+export function nearestOriginCell(originCells, cells) {
+  if ((originCells ?? []).length <= 1) return originCells ?? [];
+  const t = centerOfCells(cells), cheb = q => Math.min(...cells.map(c => Math.max(Math.abs(c.i - q.i), Math.abs(c.j - q.j))));
+  const best = [...originCells].sort((a, b) => cheb(a) - cheb(b) || Math.hypot(a.j + 0.5 - t.x, a.i + 0.5 - t.y) - Math.hypot(b.j + 0.5 - t.x, b.i + 0.5 - t.y))[0];
+  return [best];
+}
 export function pushShifts(cells, originCells, N, coneDeg = TWOD12.pushCone) {
+  originCells = nearestOriginCell(originCells, cells);   // v0.0.470: measured from the origin's nearest square
   const o = centerOfCells(originCells), t = centerOfCells(cells);
   const dist = s => Math.hypot(t.x + s.dj - o.x, t.y + s.di - o.y);
   const dirs = awayDirs(cells, originCells, coneDeg);
@@ -113,7 +125,7 @@ export function pushShifts(cells, originCells, N, coneDeg = TWOD12.pushCone) {
  * stops there (it is not pulled any closer). Returns Map key -> { di, dj, steps, parent }, like pushShifts.
  */
 export function pullShifts(cells, originCells, N) {
-  const o = centerOfCells(originCells), t = centerOfCells(cells);
+  const o = centerOfCells(nearestOriginCell(originCells, cells)), t = centerOfCells(cells);   // v0.0.470: measured from the origin's nearest square
   const dist = s => Math.hypot(t.x + s.dj - o.x, t.y + s.di - o.y);
   const bearing = Math.atan2(o.y - t.y, o.x - t.x), lim = Math.PI / 4 - 1e-9;
   const inCone = s => { let d = Math.atan2(s.di, s.dj) - bearing; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return Math.abs(d) < lim; };

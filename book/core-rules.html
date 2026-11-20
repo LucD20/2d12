@@ -1181,6 +1181,7 @@ section.chapter>details>summary h1::before{background:none!important;height:auto
 <li>It doesn't use the creature's Speed, and each square counts as 1, even when it is diagonal.</li>
 <li>Its value is reduced by the creature's <a class="xref" href="#steadiness">Steadiness</a>.</li>
 <li>The <strong>origin</strong> of Forced Movement is the creature using the Action, unless the effect names another creature or a point as its origin ("<span class="kw-mv">Pushed 1</span>, away from the target", "<span class="kw-mv">Pushed 2</span> from the Burst's center"): the direction is then taken from there, and the creature using the Action still chooses the destinations.</li>
+<li><strong>A creature as the origin is measured from its square nearest the creature it moves.</strong> For Pushed and Pulled, the distances and the cone are taken from that square, not from the center of a larger creature's space: a Large creature pushes straight away from the side it touches. When several of its squares are equally near, use the one whose center is nearest the moved creature's center.</li>
 <li>Its value is a maximum: you can always move the creature less, down to 0. Moving a creature 0 squares is no movement and no Forced Movement on it: nothing that happens when a creature is moved, enters or leaves a square happens. It can never make a creature end its movement inside another creature or an object: this is <a class="xref" href="#collision">Collision</a>, and it only happens when the destination you chose is blocked.</li>
 </ul>
 <h3 id="pushed">Pushed</h3>

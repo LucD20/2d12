@@ -26,11 +26,11 @@
     },
     {
      "id": "push-large",
-     "v": "v0.0.468",
-     "title": "A push from a Large creature",
-     "do": "The Ogre Chieftain (Large) pushes Durgan with Overhead Smash's Pushed 2; hover the squares, then one into a wall.",
-     "expect": "No big white circle around the Ogre; the squares to click in gold, Durgan's path with an arrow above the tokens; a short plate \"Pushed 2\" (into the wall: \"Collision after 1: 2 Vigor\").",
-     "rev": 1
+     "v": "v0.0.470",
+     "title": "A push from a Large creature: from its nearest square",
+     "do": "The Ogre Chieftain (Large) pushes Aveline, who stands beside its top row, with Overhead Smash's Pushed 2.",
+     "expect": "The squares offered go straight away from the Ogre's side: right, up-right and down-right (down-right was missing); no big ring around the Ogre; a short plate.",
+     "rev": 2
     }
    ]
   },

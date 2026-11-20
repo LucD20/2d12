@@ -116,6 +116,7 @@ Forced Movement is movement you impose on another creature, choosing where it go
 - It doesn't use the creature's Speed, and each square counts as 1, even when it is diagonal.
 - Its value is reduced by the creature's [[Steadiness]].
 - The **origin** of Forced Movement is the creature using the Action, unless the effect names another creature or a point as its origin ("Pushed 1, away from the target", "Pushed 2 from the Burst's center"): the direction is then taken from there, and the creature using the Action still chooses the destinations.
+- **A creature as the origin is measured from its square nearest the creature it moves.** For Pushed and Pulled, the distances and the cone are taken from that square, not from the center of a larger creature's space: a Large creature pushes straight away from the side it touches. When several of its squares are equally near, use the one whose center is nearest the moved creature's center.
 - Its value is a maximum: you can always move the creature less, down to 0. Moving a creature 0 squares is no movement and no Forced Movement on it: nothing that happens when a creature is moved, enters or leaves a square happens. It can never make a creature end its movement inside another creature or an object: this is [[Collision]], and it only happens when the destination you chose is blocked.
 
 ### Pushed
