@@ -3,6 +3,7 @@
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
 ## Where we are now (v0.0.474, 290 tests; READ THIS FIRST)
+- **2026-11-20: pack-sheets-hud MERGED into main** (v0.0.441 to v0.0.474; Lucas's checklist empty). Checked against the magic and Talents branch (`claude/loving-heisenberg-8jmq1z`): it merges into main with small text conflicts only (MASTER-PLAN item 7b, Chapter 8's first paragraph: keep its "EoE" and this branch's "EoT or a number of rounds", without "until a Save"; the built HTML and INDEX.md rebuild); the book builds and its tests match the magic branch's own (its t171, t173, t204 outputs to update there).
 - **2026-11-20 (v0.0.474; NOT tested by Lucas):** the HUD's redraw carries a question from its middle into the creature's Situational tab (hud.mjs). One test left on the checklist (judge-gm-dock).
 - **2026-11-20 (v0.0.473; NOT tested by Lucas):** a waiting question follows the selection (pickbar.mjs place).
 - **2026-11-20 (v0.0.472; NOT tested by Lucas): his v0.0.471 report:** a buttons-only question no longer holds the selection; the Encounter Log's numbered and short names. 2 tests left on the checklist.
