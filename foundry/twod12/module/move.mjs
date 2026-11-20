@@ -1745,7 +1745,7 @@ export function openChargePicker(c, token) {
     for (const ch2 of marks.removeChildren()) ch2.destroy?.({ children: true });
     const gs = gsz(), fs = Math.max(13, Math.round(gs * 0.18));
     // the limit: a faint pale edge (gold is for a choice)
-    outlineCells(gfx, limit, { color: MK.INK, width: 1, alpha: 0.35 });
+    outlineCells(gfx, limit, { color: MK.INK, width: 2, alpha: 0.7 });   // v0.0.466 (Lucas: "very very faint"): stronger
     bar.querySelector(".lb-text").innerHTML = text();   // v0.0.421 (the audit): no title (the tooltip review)
     drawCands();
     const keys = bar.querySelector(".lb-keys");
@@ -1757,7 +1757,7 @@ export function openChargePicker(c, token) {
     if (!target) {
       for (const x of cands) {
         const b = boxOf(x.t);
-        if (x.ok) { MK.attentionRing(marks, b.c, Math.max(b.w, b.h) * 0.62); const pin = MK.numberPin(x.n, { fs: Math.max(12, Math.round(gs * 0.16)) }); pin.position.set(b.c.x + Math.max(b.w, b.h) * 0.46, b.c.y - Math.max(b.w, b.h) * 0.46); marks.addChild(pin); }
+        if (x.ok) { fillCells(gfx, tokenCells(x.t), MK.GOLD, 0.22); MK.attentionRing(marks, b.c, Math.max(b.w, b.h) * 0.62); const pin = MK.numberPin(x.n, { fs: Math.max(12, Math.round(gs * 0.16)) }); pin.position.set(b.c.x + Math.max(b.w, b.h) * 0.46, b.c.y - Math.max(b.w, b.h) * 0.46); marks.addChild(pin); }
         else { const pl = MK.plate([x.why], { fs: Math.round(fs * 0.85), color: 0xb3a68e }); pl.position.set(b.c.x, b.y - 4); marks.addChild(pl); }
       }
       go.hidden = true; give.classList.add("fill"); go.classList.remove("fill");
@@ -1771,15 +1771,16 @@ export function openChargePicker(c, token) {
     const ctr = c => { const t = r.tl(c); return { x: t.x + (Math.max(1, Math.round(doc.width)) * gs) / 2, y: t.y + (Math.max(1, Math.round(doc.height)) * gs) / 2 }; };
     const legal = r.bad >= 0 ? r.cells.slice(0, r.bad) : r.cells, illegal = r.bad >= 0 ? r.cells.slice(r.bad) : [];
     // the straight line in pale ink, a dot a square; past the stop, faint red; a red cross where it is blocked
-    gfx.lineStyle(3, MK.INK, short ? 0.35 : 0.9);
+    gfx.lineStyle(5, MK.INK, short ? 0.45 : 1);
     legal.forEach((c, k) => { const p = ctr(c); if (k) gfx.lineTo(p.x, p.y); else gfx.moveTo(p.x, p.y); });
-    gfx.lineStyle(0); legal.slice(1).forEach(c => { const p = ctr(c); gfx.beginFill(MK.INK, short ? 0.35 : 0.9).drawCircle(p.x, p.y, Math.max(3, gs * 0.05)).endFill(); });
+    gfx.lineStyle(0); legal.slice(1).forEach(c => { const p = ctr(c); gfx.beginFill(MK.INK, short ? 0.45 : 1).drawCircle(p.x, p.y, Math.max(4, gs * 0.07)).endFill(); });
     if (illegal.length) {
       gfx.lineStyle(2, MK.RED, 0.45); const p0 = ctr(legal.at(-1) ?? r.cells[0]); gfx.moveTo(p0.x, p0.y); for (const c of illegal) { const p = ctr(c); gfx.lineTo(p.x, p.y); }
       const x0 = ctr(illegal[0]), k = gs * 0.18; gfx.lineStyle(4, MK.RED, 1).moveTo(x0.x - k, x0.y - k).lineTo(x0.x + k, x0.y + k).moveTo(x0.x + k, x0.y - k).lineTo(x0.x - k, x0.y + k);
     }
     // the faint portrait where it stops
     try { const src = doc.texture?.src; if (src && cur.stop && !short) { const sp = PIXI.Sprite.from(src), t = r.tl(cur.stop); sp.alpha = 0.35; sp.width = Math.max(1, Math.round(doc.width)) * gs; sp.height = Math.max(1, Math.round(doc.height)) * gs; sp.position.set(t.x, t.y); marks.addChildAt(sp, 0); } } catch (e) { /* no picture */ }
+    if (cur.stop && !short) { const t = r.tl(cur.stop); gfx.lineStyle(3, MK.GOLD, 1); gfx.drawRect(t.x + 2, t.y + 2, Math.max(1, Math.round(doc.width)) * gs - 4, Math.max(1, Math.round(doc.height)) * gs - 4); }   // v0.0.466: where it stops, outlined in gold
     if (cur.stop) {
       const p = ctr(cur.stop), who = cur.inReach.some(t => t.id === target.id);
       const lines = short ? ["Too close", `a Charge moves at least ${ch.min}`] : blocked ? [`Stops after ${cur.stopSq}`, who ? `${target.name} in Reach` : `${target.name} not in Reach: disrupted`] : [`${r.sq} squares \u00b7 in Reach`, `then Weapon Attack (1A) on ${target.name}`];

@@ -22,7 +22,7 @@ export function motionOn() {
 /** Pure: a ripple's radius and alpha at time t (ms): it grows from r to 1.45 r and fades out over 2.4 s, then starts again. */
 export function rippleAt(t, r) {
   const k = ((t % RIPPLE_MS) + RIPPLE_MS) % RIPPLE_MS / RIPPLE_MS;
-  return { radius: r * (1 + 0.45 * k), alpha: 0.7 * (1 - k) * (1 - k) };
+  return { radius: r * (1 + 0.45 * k), alpha: 0.95 * (1 - k) * (1 - k) };   // v0.0.466: stronger (was 0.7)
 }
 
 function tick() {
@@ -30,7 +30,7 @@ function tick() {
   for (const rp of ripples) {
     if (rp.g.destroyed) { ripples.delete(rp); continue; }
     const { radius, alpha } = rippleAt(now - rp.t0, rp.r);
-    rp.g.clear(); rp.g.lineStyle(Math.max(2, rp.r * 0.06), rp.color, alpha).drawCircle(rp.x, rp.y, radius);
+    rp.g.clear(); rp.g.lineStyle(Math.max(3, rp.r * 0.08), rp.color, alpha).drawCircle(rp.x, rp.y, radius);
   }
   if (!ripples.size) stopTicker();
 }
@@ -41,7 +41,7 @@ function stopTicker() { if (!tickerOn) return; try { globalThis.canvas?.app?.tic
  * The attention mark around a token: the steady ring and the slow ripple (B). parent: a PIXI container; c: the center; r: the ring's radius
  * (about 0.62 of the token's width). Returns { ring, ripple }; destroying the parent stops the ripple.
  */
-export function attentionRing(parent, c, r, { color = GOLD, width = 3, hot = false } = {}) {
+export function attentionRing(parent, c, r, { color = GOLD, width = 4, hot = false } = {}) {   // v0.0.466 (Lucas: "very very faint"): 4 px (was 3)
   const P = globalThis.PIXI;
   if (!P || !parent) return null;
   const ring = new P.Graphics();

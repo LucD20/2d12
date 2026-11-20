@@ -83,12 +83,12 @@ export async function pickBar(o) {
     // v0.0.249 (Lucas): feedback before the click: the candidate under the pointer (or whose button is hovered) lights up on the map and in the bar
     // v0.0.461 (the map notes' redesign, Lucas's B): a creature to pick wears the attention mark (the gold ring and its slow ripple) and its number
     // (the same as its picture in the HUD), brighter while hovered; a set of squares (Move back's) keeps the gold fill
-    let marks = null, marked = "";
+    let marks = null, marked = null;   // v0.0.466 (Lucas: "the glowing rings only show when hovering"): null, so the first draw (nothing hovered, key "") draws them
     const draw = () => {
       if (!gfx) return;
       gfx.clear();
       const key = `${hovered?.id ?? ""}`;
-      if (marks && marked !== key) { for (const c of marks.removeChildren()) c.destroy?.({ children: true }); marked = ""; }
+      if (marks && marked !== key) { for (const c of marks.removeChildren()) c.destroy?.({ children: true }); marked = null; }
       const gs = canvas.grid?.size ?? 100;
       toks.forEach((x, n) => {
         const cells = cellsOf(x), on = x === hovered;

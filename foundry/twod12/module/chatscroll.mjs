@@ -55,6 +55,15 @@ export function pinChatLog(log) {
 export function registerChatScroll() {
   const find = root => (root instanceof HTMLElement ? root : root?.[0] ?? document)?.querySelectorAll?.(".chat-log") ?? [];
   const pinAll = root => { for (const log of find(root)) pinChatLog(log); };
+  // v0.0.466 (Lucas, checklist v0.0.465: "Still didnt move down on damage"): a second way, by the documents: before a message is created or
+  // updated, each visible chat log notes whether it is at its bottom; after it is drawn, a log that was there is scrolled down (now, and again
+  // as its dice and pictures land)
+  const boxes = () => [...document.querySelectorAll(".chat-log")].filter(l => l.isConnected && l.offsetParent !== null).map(scrollBoxOf);
+  let wasDown = [];
+  const before = () => { try { wasDown = boxes().filter(b => atBottom(b)); } catch (e) { wasDown = []; } };
+  const after = () => { const list = wasDown; for (const ms of [0, 60, 250, 900, 2000, 3500]) setTimeout(() => { for (const b of list) if (b.isConnected) b.scrollTop = b.scrollHeight; }, ms); };
+  Hooks.on("preCreateChatMessage", before); Hooks.on("preUpdateChatMessage", before);
+  Hooks.on("createChatMessage", after); Hooks.on("updateChatMessage", after);
   Hooks.on("renderChatLog", (app, html) => { try { pinAll(html); } catch (e) { console.warn("twod12 | chat scroll", e); } });
   Hooks.once("ready", () => { try { pinAll(document); } catch (e) { console.warn("twod12 | chat scroll", e); } });
 }

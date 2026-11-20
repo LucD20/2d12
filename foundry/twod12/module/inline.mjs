@@ -1218,10 +1218,23 @@ export async function saveDamage(msg) {
   // v0.0.426 (the audit; book, Chapter 8, Empowered: one creature takes it): the die rolled with the Tiers goes to the first creature whose damage
   // is dealt (its own group, so the others on its Tier don't take it), once
   if (st.tierDmg?.emp && !st.empDone) {
-    const g0 = groups[gOf[0]], ec = { ...st.tierDmg.emp, kind: "E" };
+    // v0.0.466 (Lucas, checklist v0.0.465: "Empowered didnt work on Word of Radiance"; v0.0.460: "the creature should be allowed to choose who it
+    // applies to"): with two or more creatures taking damage, the map bar asks which one takes the die (closed: the first, as before)
+    const can = ready.map((x, i) => i).filter(i => (groups[gOf[i]]?.comps ?? []).length);
+    let k = can[0] ?? 0;
+    if (can.length > 1) {
+      try {
+        const { pickBar } = await import("./pickbar.mjs");
+        const tokOf = u => { try { const d = fromUuidSync(u); return d?.object ?? d?.getActiveTokens?.()[0] ?? null; } catch (e) { return null; } };
+        const pick = await pickBar({ icon: "fa-burst", cancel: false, text: `<b>Empowered</b>: ${esc(cfg.source || m?.name || "the Action")} damages several creatures. Which one takes the 1d6! (Chapter 8)? Click its token or its picture.`,
+          options: can.map(i => { const t = tokOf(ready[i].r.uuid); return { id: String(i), label: `${ready[i].r.name} (Tier ${ready[i].r.result.tier})`, token: t ?? undefined, img: t?.document?.texture?.src || "" }; }) });
+        if (pick !== null && pick !== undefined && can.includes(Number(pick))) k = Number(pick);
+      } catch (e) { console.warn("twod12 | Empowered pick", e); }
+    }
+    const g0 = groups[gOf[k]], ec = { ...st.tierDmg.emp, kind: "E" };
     if (g0) {
-      if (ready.filter(x => x.r.result.tier === ready[0].r.result.tier).length === 1) g0.comps = [...g0.comps, ec];
-      else { const at = gOf[0] + 1; groups.splice(at, 0, { ...g0, comps: [...g0.comps, ec] }); for (let j = 0; j < gOf.length; j++) gOf[j] = j === 0 ? at : gOf[j] >= at ? gOf[j] + 1 : gOf[j]; }
+      if (ready.filter(x => x.r.result.tier === ready[k].r.result.tier && gOf[ready.indexOf(x)] === gOf[k]).length === 1) g0.comps = [...g0.comps, ec];
+      else { const at = groups.length; groups.push({ ...g0, comps: [...g0.comps, ec] }); gOf[k] = at; }
       st.empDone = true;
     }
   }

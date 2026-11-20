@@ -21,59 +21,30 @@ differ):
 
 ## The HUD
 
-### art-card · v0.0.465 · The Art's card: where it opens, a second click
-Do: Aveline clicks Commandment on her HUD; click Commandment again; open it again and right-click Commandment; open it from her sheet.
-Expect: The card opens beside the Art clicked (to its right, its bottom level with it), not high up the window. A second click on the Art closes it (it doesn't reopen); a right-click on it closes it too.
-Rev: 3
-
 ## Starting a combat
 
 ## The roll dialog
 
-### warn-dialog · v0.0.460 · Rules broken: warnings in the roll dialog
-Do: As a player (not the GM): Sylwen targets the Orc Warrior behind a wall (all four corners blocked) and uses a Weapon Attack; then a target the GM marked Unsensed; then Quick Shots' second shot at the creature of the first; give her bow Reload and shoot it unloaded.
-Expect: None of them stops the Action: the roll dialog opens with its warning written above the bottom bar, one ruled line with a small red warning icon ("No Line of Effect to Orc Warrior: all four corners are blocked", "… is Unsensed: it can't be targeted (the roll is Doomed)", "… was already a target: the card asks for a different creature", "… is unloaded: Reload it before using it again"), and Roll works.
-Rev: 2
-
 ## Chat cards
 
-### save-nonlethal · v0.0.465 · A Save Action's Nonlethal switch looks like a cost
-Do: Durgan uses Word of Radiance on two goblins; look at the roll dialog's Damage row; turn the switch on.
-Expect: "Nonlethal: +1 Boon on each Save" has a red outline and a minus mark (a cost, like a Bane), on and off.
-Rev: 3
+### chat-follow · v0.0.466 · The chat follows a card grown by its dice
+Do: With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior and clicks Damage; then Apply. Then scroll up a little and click Damage on another card.
+Expect: After Damage (the dice landed) the card's last line is in sight; after Apply too. Scrolled up before clicking, it stays where you are.
+Rev: 5
 
-### chat-follow · v0.0.465 · The chat follows a card grown by its dice
-Do: With the chat at its bottom (and Dice So Nice on, if you use it), Sylwen makes a Weapon Attack on the Orc Warrior and clicks Damage; then Apply.
-Expect: After the dice land, the card's last line is in sight; after Apply too. The card reads: its lines, its Special and Flavor, then the roll and the damage.
+### empowered-one · v0.0.466 · Empowered with several creatures: on the map, and on a Save Action
+Do: Give Sylwen Empowered; she uses Volley on three enemies, two or more hit; click Damage. Then give Durgan Empowered and, on his turn, use Word of Radiance on two enemies; both roll their Saves and he clicks the damage.
+Expect: Each time the HUD asks which creature takes the 1d6!, and every candidate wears the gold ring with its ripple at once (not only when hovered); the one clicked (token or picture) takes it, on its own line.
 Rev: 4
-
-### empowered-one · v0.0.465 · Empowered with several creatures: chosen on the map
-Do: Give Sylwen Empowered; she uses Volley on three enemies, two or more hit; click Damage; click one of the hit enemies' tokens on the map.
-Expect: The HUD's Situational tab asks which creature takes the 1d6! (their pictures, and the gold rings on the map); the one clicked takes it, on its own line.
-Rev: 3
 
 ## Conditions and their Tiers
 
-### shake-off-other · v0.0.465 · Shake Off's Save in the system's look
-Do: On Kaela's turn, she uses Shake Off on Durgan's Lingering (another player's creature).
-Expect: One card titled "Shake Off": "Durgan: Body Save 15 vs DC 13: Tier 2" (his Attribute), then what happens to the Lingering; no old roll card.
-Rev: 2
-
 ## Movement
 
-### forced-move · v0.0.461 · A Forced Movement: one look, Escape, Backspace
-Do: Durgan's Rebuke pushes the Orc Warrior: hover squares, then press Escape. Push it again and click a square into a wall. Then a Slid 3 (any card): click two squares, press Backspace, then right-click and drag the map, then Enter.
-Expect: The squares to click in gold, the Orc's path in pale ink with an arrow, Durgan's pale ring, the result on a dark plate near the end and in the HUD; no text following the pointer, no Foundry notification. Escape: the Orc stays and the card says "Orc Warrior was Pushed 0 by Durgan". Into the wall: red where it stops, "N Vigor" damage (not "Body"). Slid: the steps numbered, Backspace takes the last back (the HUD's Take back a step too), a right-click only pans, Enter moves it.
-
-### push-list · v0.0.461 · Picking whom to push
-Do: Durgan uses an Action that pushes the creatures around its target (three goblins); push one, then press the end button.
-Expect: One end button, "Done: the rest stay" (no Stop); after the first push the text says "1 of 3 moved"; the ones moved leave the list.
-
-
-### charge-new · v0.0.461 · Charge: pick the enemy, then confirm
-Do: In a combat with no target, Durgan uses Charge; read the map and the HUD; click an empty square; click the Goblin Sneak (or its picture in the HUD); click an empty square again; press Enter. Then a Charge whose line Aveline blocks; then press Escape on one.
-Expect: Before a target: the enemies it can Charge wear the gold ring with its slow ripple and a number, their pictures are in the HUD ("Pick the enemy to Charge"), the others a quiet plate ("too close (needs 3)", "too far (11)"); the limit a faint pale edge; an empty square does nothing. With the Goblin: a pale line with a dot a square, his faint portrait where he stops, a plate "5 squares · in Reach / then Weapon Attack (1A) on Goblin Sneak"; Charge filled, Give up · 2 AP back quiet, and a key line. An empty square still does nothing; Enter, the Charge button or a click on the Goblin charges. Blocked: a red cross before Aveline, the plate in red, Give up filled and Charge anyway. Escape gives up (AP back); a right-click only pans.
-Rev: 3
+### charge-new · v0.0.466 · Charge: clear on the map
+Do: In a combat with no target, Durgan uses Charge; then click the Goblin Sneak.
+Expect: The enemies it can Charge stand out: a gold tint on their squares, a thick gold ring with a clear ripple, a number; the limit a clear pale edge. With the Goblin: a thick pale line with dots, the square where he stops outlined in gold, the plate. If it still reads as faint or unclear, say what you looked for first.
+Rev: 4
 
 ### rewind-refund · v0.0.462 · Move back gives back only the last movement
 Do: In a combat, the Ogre Chieftain drags 1 square, then drags again toward Kaela (Slip Away triggers on the second drag); on the Reactions card click Move back all the way (Shift-click). Then once a drag that buys an Advance (1 AP) and Move back all the way.
