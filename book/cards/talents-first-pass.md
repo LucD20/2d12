@@ -228,3 +228,37 @@ A Talent is written on the card Structure (`book/cards/card-structure.md`), with
 | **The template** | "Requires" meant three things (a trait group, a Requirements line, a prerequisite); no way to write Modes; ranks didn't say what they add to; no `automation` | "Prerequisite"; Modes by the Structure; "a rank says what it adds to"; `automation` named |
 
 **Not yet checked:** the rulebook has no [Spell] trait in Chapter 7 yet (magic is not written), and [Incanted] is decided but not written.
+
+---
+
+## 8. Lucas's review of the branches (2026-11-20)
+
+**Opportunity Attack**
+- "Shouldn't it be in Threatened squares, not adjacent, so Long weapons can work well?" (Chapter 3: a creature threatens every enemy within the normal range of a Melee weapon.)
+- **Spellbreaker:** "A Disrupt is a big deal, but a crit only triggers what, 4% of the time? This Rank is far below any other pick I would say. It needs to be inside another Rank." (Measured: a Critical is about 3 to 5% of attacks at Modifier +1 to +3 against Defense 13 to 15.)
+- **Hamstring:** "How often does a Tier 3 trigger again? We don't want a Disruptive Stance (Pf2e) situation. I have run into this problem so many times, of people shutting down enemy bosses." (Measured: a Tier 3 is about 17 to 32% of attacks at those numbers.)
+- **Bodyguard:** "This trigger does almost nothing." **Interpose:** "way too weak."
+
+**Shoulder Through**
+- "By itself, it's too weak. Ignoring a single difficult terrain by creatures isn't a huge deal, especially if it only applies to Advance."
+- **Bowl Over:** "Too strong. You stop all Reactions of a creature just by moving."
+- **Break the Line:** "I think this should be the main Talent." **Bull Rush:** "Interesting concept." **Hold the Gap:** "Too situational." **Breach:** "Confusing. You make two attacks? If not, what is the point of this rank?"
+
+**Called Shot**
+- "Interesting but can be problematic: Disarm on a T3 early on is too strong I feel like." "The branches are good."
+
+**Overwatch**
+- **Pin Down:** "It can be strong, need playtesting. How often is a T3?" "Others seem good."
+
+**His next step:** "Make a quick research of the most used feats, talents, etc used in other systems [...] From there, we can build some of the most famous ones, the ones we can expect people to look at first." Research: `research/raw/2026-11-20-famous-picks.md` (running).
+
+**How often each result comes up** (Claude's computation, a Weapon Attack, 2d12 exploding, Doubles counted):
+
+| Modifier | Against | Success | Tier 3 | Critical |
+|---|---|---|---|---|
+| +1 | 13 | 65% | 23% | 3.4% |
+| +2 | 13 | 72% | 27% | 4.5% |
+| +3 | 13 | 78% | 32% | 5.0% |
+| +1 | 15 | 51% | 17% | 2.1% |
+| +2 | 15 | 58% | 19% | 3.0% |
+| +3 | 15 | 65% | 23% | 3.4% |
