@@ -13,11 +13,11 @@
     },
     {
      "id": "empowered-one",
-     "v": "v0.0.467",
-     "title": "Empowered on a Save Action: chosen before the Saves",
-     "do": "Give Durgan Empowered; on his turn he uses Word of Radiance on two enemies.",
-     "expect": "Before anyone rolls, the HUD asks which creature takes the 1d6! (gold rings on both, their pictures); a chat line says \"Durgan's Empowered 1d6! goes to X (chosen before the Saves)\". After the Saves, X's damage has the die on its own line; if X takes no damage, the die is lost. If nothing is asked, look in the console for \"twod12 | Empowered on a Save Action\".",
-     "rev": 5
+     "v": "v0.0.468",
+     "title": "Empowered on a Save Action: by hand in the dialog too",
+     "do": "Durgan without the Empowered condition, on his turn, uses Word of Radiance on two enemies and turns on Empowered in the roll dialog by hand (the Damage row's Empowered); then once with the condition but its chip switched off.",
+     "expect": "By hand: before the Saves the HUD asks which creature takes the 1d6!, and a chat line says who. With its chip switched off: nothing is asked and no die is added.",
+     "rev": 6
     }
    ]
   },
@@ -25,12 +25,20 @@
    "name": "Movement",
    "items": [
     {
-     "id": "charge-new",
-     "v": "v0.0.467",
-     "title": "Charge: above the tokens",
-     "do": "In a combat with no target, Durgan uses Charge; then click the Goblin Sneak.",
-     "expect": "The rings, numbers, line, dots and plates are drawn over the tokens (not under them), clearly visible. Say what still reads as faint or unclear.",
-     "rev": 5
+     "id": "rx-move-path",
+     "v": "v0.0.468",
+     "title": "The movement that triggers a Reaction, on the map",
+     "do": "The Orc Warrior drags 3 squares past Aveline (Rebuke can trigger) and stops.",
+     "expect": "The Orc's exact path is a pale line through each square, a dot on each, an arrow where it ended, its faint picture where it started; the square where Rebuke can come is outlined in gold with a plate \"Reaction here / Rebuke\"; no dashed squares.",
+     "rev": 1
+    },
+    {
+     "id": "push-large",
+     "v": "v0.0.468",
+     "title": "A push from a Large creature",
+     "do": "The Ogre Chieftain (Large) pushes Durgan with Overhead Smash's Pushed 2; hover the squares, then one into a wall.",
+     "expect": "No big white circle around the Ogre; the squares to click in gold, Durgan's path with an arrow above the tokens; a short plate \"Pushed 2\" (into the wall: \"Collision after 1: 2 Vigor\").",
+     "rev": 1
     },
     {
      "id": "rewind-refund",
@@ -42,19 +50,11 @@
     },
     {
      "id": "large-difficult",
-     "v": "v0.0.467",
-     "title": "A Large creature passing a creature: each step pays",
-     "do": "Make Durgan Large (2 × 2); in a combat, drag him straight past the Goblin Sneak so his space slides along its square for two steps; drop; read the HUD's squares left.",
-     "expect": "The move costs 2 more than its squares (each step alongside the Goblin pays 1 more): the squares left drop by the length + 2. (The ruler's own label shows only the length for a Large token.)",
-     "rev": 3
-    },
-    {
-     "id": "pushed-button",
-     "v": "v0.0.467",
-     "title": "The Pushed button on Overhead Smash",
-     "do": "The Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2; on the card, click \"Pushed 2\" (or apply the damage).",
-     "expect": "\"Pushed 2\" is a button; a click asks to push Durgan 2. Applying the damage also pushes him by itself (the button is for a push by hand).",
-     "rev": 3
+     "v": "v0.0.468",
+     "title": "A Large creature passing a creature: the ruler counts it",
+     "do": "Make Durgan Large (2 × 2); in a combat, drag him straight past the Goblin Sneak so his space slides along its square for two steps; watch the ruler while dragging; drop; read the HUD's squares left. Then a drag where only one step overlaps.",
+     "expect": "The ruler's label reads \"(+2)\" for the two steps alongside (\"(+1)\" for one), and the squares spent match it. If it still doesn't, send the ruler's screenshot as before.",
+     "rev": 4
     }
    ]
   },

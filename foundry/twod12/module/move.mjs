@@ -332,18 +332,24 @@ const limitSquares = (cell, tok) => { const sq = squareOf(cell), p = canvas.grid
  * A step into a square that is Difficult Terrain for the token (Darkness its Sight can't see in, or an unwilling creature's square) costs double.
  * Difficult Terrain does not stack: a square that already costs double stays at double.
  */
+const bigMode = new Map();   // v0.0.468: a token id -> how Foundry gives a big token's steps ("tl" or "center"), read from a drag's first step
 function hardStep(doc, to, step, cost, from = null) {
   try {
     if (!doc?.actor || !to) return cost;
     if (ignoresTerrain(doc)) return Number.isFinite(step) && step > 0 ? step : cost;   // (Cut Through) the terrain costs nothing extra
-    // v0.0.467 (Lucas, checklist v0.0.466, large-difficult: "it is not applying at all"): what square Foundry gives for a token bigger than one
-    // square can't be told for sure, so a Large (or bigger) token's Difficult Terrain is not counted here: the path check (creaturesOnPath, each
-    // step its whole space) adds it when the move is paid (bigOnPath below)
-    if (Math.max(Math.round(doc.width ?? 1), Math.round(doc.height ?? 1)) > 1) return cost;
-    // v0.0.453 (Lucas, playtest 6: "Large tokens count difficult square for each square moving past someone. Foundry is calculating only when the
-    // center passes through a token"): Foundry gives the cost function the square of the token's CENTER, so a Large token's space is the block
-    // around it (it was taken as the top left: half the space was never checked)
-    const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), c0 = squareOf(to), at = { i: c0.i - Math.floor(h / 2), j: c0.j - Math.floor(w / 2) };
+    // v0.0.453 assumed Foundry gives the square of the token's CENTER; v0.0.468 (Lucas, checklist v0.0.467: a Large token still paid nothing on the
+    // ruler) reads it from the drag itself: its first step starts where the token stands, at its top-left square or at its center square, and that
+    // tells how every step of this drag is given (remembered for the token; until then, the center)
+    const w = Math.max(1, Math.round(doc.width ?? 1)), h = Math.max(1, Math.round(doc.height ?? 1)), c0 = squareOf(to);
+    let mode = "center";
+    if (w > 1 || h > 1) {
+      const tl0 = cellAt({ x: (doc.x ?? 0) + 2, y: (doc.y ?? 0) + 2 }), ce0 = { i: tl0.i + Math.floor(h / 2), j: tl0.j + Math.floor(w / 2) }, f = from ? squareOf(from) : null;
+      if (f && f.i === tl0.i && f.j === tl0.j) bigMode.set(doc.id, "tl");
+      else if (f && f.i === ce0.i && f.j === ce0.j) bigMode.set(doc.id, "center");
+      mode = bigMode.get(doc.id) ?? "center";
+    }
+    const shift = sq => (mode === "tl" ? { i: sq.i, j: sq.j } : { i: sq.i - Math.floor(h / 2), j: sq.j - Math.floor(w / 2) });
+    const at = shift(c0);
     const cells = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) cells.push({ i: at.i + di, j: at.j + dj });
     const senses = sightSenses(doc.actor);   // v0.0.459: Blinded too
     let hard = cells.some(c => seenLight(lightAt(canvas.grid.getCenterPoint(c)), senses) === "dark");
@@ -352,7 +358,7 @@ function hardStep(doc, to, step, cost, from = null) {
       hard = others.some(t => tokenCells(t).some(c => cells.some(m => m.i === c.i && m.j === c.j)));
     }
     // v0.0.171: a diagonal between two creatures is Difficult Terrain too, so the movement label shows it while dragging.
-    const f0 = from ? squareOf(from) : null, fromTl = f0 ? { i: f0.i - Math.floor(h / 2), j: f0.j - Math.floor(w / 2) } : null;
+    const f0 = from ? squareOf(from) : null, fromTl = f0 ? shift(f0) : null;
     if (!hard && fromTl) hard = stepCorners(fromTl, at, { w, h, creatureAt: c => unwillingIn(c, doc) }).kind === "creatures";
     // v0.0.345 (book, Frightened): a step that brings it closer to the source of a "Difficult Terrain" Movement limit costs double
     if (!hard && from) hard = moveLimitsOf(doc).some(l => l.how === "difficult" && moveLimitBreaks(l.dir, limitSquares(fromTl, l.token), limitSquares(at, l.token)));
@@ -828,7 +834,7 @@ function choosePush(origin, target, N, mode = "push") {
       gfx.clear();
       for (const k of plates.removeChildren()) k.destroy?.({ children: true });
       originMark();
-      if (!ghostOrigin) { const op = oCells.map(c => cellCenter(c.i, c.j)); MK.originRing(gfx, { x: op.reduce((a, p) => a + p.x, 0) / op.length, y: op.reduce((a, p) => a + p.y, 0) / op.length }, canvas.grid.size * 0.55 * Math.max(1, Math.sqrt(oCells.length))); }
+      // v0.0.468 (Lucas: "Push from large creature looks weird"): no ring around a creature that pushes (its token shows where it comes from); an area's center keeps its mark (originMark)
       fillCells(gfx, covered, MK.GOLD, 0.16);
       outlineCells(gfx, covered, { color: MK.GOLD, width: 2 });
       if (pull) fillCells(gfx, oCells, 0xdd3333, 0.18);   // aiming at the origin's own square: a Collision
@@ -837,7 +843,9 @@ function choosePush(origin, target, N, mode = "push") {
       gfxLine(gfx, good, MK.INK, 4, 0.95);
       if (good.length > 1) { const a = good[good.length - 2], z = good[good.length - 1], ang = Math.atan2(z.y - a.y, z.x - a.x), k = canvas.grid.size * 0.2; gfxLine(gfx, [{ x: z.x - k * Math.cos(ang - 0.5), y: z.y - k * Math.sin(ang - 0.5) }, z, { x: z.x - k * Math.cos(ang + 0.5), y: z.y - k * Math.sin(ang + 0.5) }], MK.INK, 4, 0.95); }
       const endP = pts[current.result.done] ?? pts[0];
-      const pl = MK.plate([text(current.result)], { fs: Math.max(13, Math.round(canvas.grid.size * 0.17)), warn: !!current.result.block }); pl.position.set(endP.x, endP.y - canvas.grid.size * 0.55); plates.addChild(pl);
+      // v0.0.468: the plate short (the HUD says the rest): "Pushed 2", or the Collision and its damage
+      const R = current.result, short = !R.block ? `${repo ? "Repositioned" : MOVE_LABEL[mode]} ${R.done}` : R.block.type === "loe" ? `Stops after ${R.done}: no Line of Effect` : repo ? `Stops after ${R.done}` : `Collision after ${R.done}: ${R.damage.self} Vigor${R.block.type === "creature" ? " each" : ""}`;
+      const pl = MK.plate([short], { fs: Math.max(13, Math.round(canvas.grid.size * 0.17)), warn: !!R.block }); pl.position.set(endP.x, endP.y - canvas.grid.size * 0.55); plates.addChild(pl);
       if (current.result.block) {
         const bad = pts.slice(current.result.done, current.result.done + 2);
         gfxLine(gfx, bad, 0xdd3333, 5, 0.95);
@@ -1487,8 +1495,7 @@ export function registerMovement() {
         par = (p + d) % 2;
       }
       // An Advance through an unwilling creature's squares pays for Difficult Terrain (unless Foundry already counted it).
-      const bigOnPath = Math.max(Math.round(doc.width ?? 1), Math.round(doc.height ?? 1)) > 1;   // v0.0.467: a Large token's Difficult Terrain is the path check's
-      if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6, rulerCountsDifficult && !bigOnPath);
+      if (!ch && !evading && !ignoring) squares += extraCost(way, cost > dist + 1e-6);   // v0.0.468: a Large token's too, through Foundry's cost (hardStep reads how its steps come)
       // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)
       if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6) { warn(`${c.name} has ${offTurnFree(c)} free square${offTurnFree(c) === 1 ? "" : "s"} left (it isn't its turn). Choose a shorter path, or use End movement.`); return false; }
       mark(keyOf(doc, to.x, to.y));

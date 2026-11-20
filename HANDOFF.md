@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.467, 289 tests; READ THIS FIRST)
+## Where we are now (v0.0.468, 289 tests; READ THIS FIRST)
+- **2026-11-20 (v0.0.468; NOT tested by Lucas): his v0.0.467 report and notes:** a Large token's steps read from the drag (top-left or center) for the ruler's Difficult Terrain, Empowered by hand on a Save Action, a push from a Large creature (no ring, short plate), the Reaction's triggering movement redrawn (path, arrow, the gold trigger square).
 - **2026-11-20 (v0.0.467; NOT tested by Lucas): a rule (Empowered on a Save Action chosen before the Saves; book Chapter 8) and his v0.0.466 report:** the Pushed button on the bestiary's Pushes, the area hover in sections and all areas, the map marks above the tokens, a Large creature's Difficult Terrain paid by the path check.
 - **2026-11-20 (v0.0.466; NOT tested by Lucas): his v0.0.465 report** (6 passed, deleted): the pick bar's rings drawn at once (a skipped first draw), stronger map marks and Charge overlay, Empowered asked on a Save Action, a second chat-follow by the message hooks.
 - **2026-11-20 (v0.0.465; NOT tested by Lucas): his v0.0.464 report** (15 passed, deleted): the Art card toggles and opens beside its Art, the Save Action's Nonlethal switch as a cost, the chat follows after the dice, the chat card's Special and Flavor above the roll, Empowered picked on the map, Shake Off's Save as a sysCard.

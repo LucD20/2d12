@@ -32,34 +32,33 @@ Do: With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior
 Expect: After Damage (the dice landed) the card's last line is in sight; after Apply too. Scrolled up before clicking, it stays where you are.
 Rev: 5
 
-### empowered-one · v0.0.467 · Empowered on a Save Action: chosen before the Saves
-Do: Give Durgan Empowered; on his turn he uses Word of Radiance on two enemies.
-Expect: Before anyone rolls, the HUD asks which creature takes the 1d6! (gold rings on both, their pictures); a chat line says "Durgan's Empowered 1d6! goes to X (chosen before the Saves)". After the Saves, X's damage has the die on its own line; if X takes no damage, the die is lost. If nothing is asked, look in the console for "twod12 | Empowered on a Save Action".
-Rev: 5
+### empowered-one · v0.0.468 · Empowered on a Save Action: by hand in the dialog too
+Do: Durgan without the Empowered condition, on his turn, uses Word of Radiance on two enemies and turns on Empowered in the roll dialog by hand (the Damage row's Empowered); then once with the condition but its chip switched off.
+Expect: By hand: before the Saves the HUD asks which creature takes the 1d6!, and a chat line says who. With its chip switched off: nothing is asked and no die is added.
+Rev: 6
 
 ## Conditions and their Tiers
 
 ## Movement
 
-### charge-new · v0.0.467 · Charge: above the tokens
-Do: In a combat with no target, Durgan uses Charge; then click the Goblin Sneak.
-Expect: The rings, numbers, line, dots and plates are drawn over the tokens (not under them), clearly visible. Say what still reads as faint or unclear.
-Rev: 5
+### rx-move-path · v0.0.468 · The movement that triggers a Reaction, on the map
+Do: The Orc Warrior drags 3 squares past Aveline (Rebuke can trigger) and stops.
+Expect: The Orc's exact path is a pale line through each square, a dot on each, an arrow where it ended, its faint picture where it started; the square where Rebuke can come is outlined in gold with a plate "Reaction here / Rebuke"; no dashed squares.
+
+### push-large · v0.0.468 · A push from a Large creature
+Do: The Ogre Chieftain (Large) pushes Durgan with Overhead Smash's Pushed 2; hover the squares, then one into a wall.
+Expect: No big white circle around the Ogre; the squares to click in gold, Durgan's path with an arrow above the tokens; a short plate "Pushed 2" (into the wall: "Collision after 1: 2 Vigor").
+
 
 ### rewind-refund · v0.0.462 · Move back gives back only the last movement
 Do: In a combat, the Ogre Chieftain drags 1 square, then drags again toward Kaela (Slip Away triggers on the second drag); on the Reactions card click Move back all the way (Shift-click). Then once a drag that buys an Advance (1 AP) and Move back all the way.
 Expect: The Ogre goes back to where the second drag started, and only the second drag's squares come back (the first square stays spent). A drag that bought its Advance: back where it started with its AP and squares as before that drag.
 Rev: 2
 
-### large-difficult · v0.0.467 · A Large creature passing a creature: each step pays
-Do: Make Durgan Large (2 × 2); in a combat, drag him straight past the Goblin Sneak so his space slides along its square for two steps; drop; read the HUD's squares left.
-Expect: The move costs 2 more than its squares (each step alongside the Goblin pays 1 more): the squares left drop by the length + 2. (The ruler's own label shows only the length for a Large token.)
-Rev: 3
-
-### pushed-button · v0.0.467 · The Pushed button on Overhead Smash
-Do: The Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2; on the card, click "Pushed 2" (or apply the damage).
-Expect: "Pushed 2" is a button; a click asks to push Durgan 2. Applying the damage also pushes him by itself (the button is for a push by hand).
-Rev: 3
+### large-difficult · v0.0.468 · A Large creature passing a creature: the ruler counts it
+Do: Make Durgan Large (2 × 2); in a combat, drag him straight past the Goblin Sneak so his space slides along its square for two steps; watch the ruler while dragging; drop; read the HUD's squares left. Then a drag where only one step overlaps.
+Expect: The ruler's label reads "(+2)" for the two steps alongside ("(+1)" for one), and the squares spent match it. If it still doesn't, send the ruler's screenshot as before.
+Rev: 4
 
 ## Reactions and Judge
 

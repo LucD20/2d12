@@ -4,7 +4,7 @@
 // (gone once it passes), a solid line in its slab's color from every Reaction used to its target (with the Reaction's name), the hovered,
 // unused option as a dashed line, and once every row is answered a numbered green pin on each line (its place in the stack; a drag in the
 // chat renumbers them live). A client setting turns it off. The data comes from the message's flags (moment.mjs); nothing here is saved.
-import { attentionRing, plate } from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
+import { attentionRing, plate, INK, GOLD } from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
 const F = "twod12";
 export const PALETTE = ["#f0b54a", "#5fc4c0", "#b48ce0", "#7fc97f"];
 const RED = 0xe0553b, AMBER = 0xf0b54a, BEIGE = 0xecdcae, PIN = 0x2f6b3a, NAVY = 0x1d2738, PARCH = 0xf4eddc;
@@ -105,10 +105,22 @@ function drawOne(st, gs, fs) {
   const hov = local.hover?.id === st.id ? local.hover.row : null;
   // the triggering Action
   if (b.kind === "move" || b.kind === "stand") {
-    g.lineStyle(2, BEIGE, 0.8);
-    for (const sq of b.path ?? []) { const a = { x: sq.x, y: sq.y }; const w = sq.w ?? gs, h = sq.h ?? gs; dashLine(g, a, { x: a.x + w, y: a.y }, 8, 6); dashLine(g, { x: a.x + w, y: a.y }, { x: a.x + w, y: a.y + h }, 8, 6); dashLine(g, { x: a.x + w, y: a.y + h }, { x: a.x, y: a.y + h }, 8, 6); dashLine(g, { x: a.x, y: a.y + h }, a, 8, 6); }
-    // v0.0.279: the square Move back goes to (the last one where a Reaction could come), outlined in amber
-    if (b.backAt) { g.lineStyle(4, AMBER, 1).beginFill(AMBER, 0.18).drawRect(b.backAt.x + 2, b.backAt.y + 2, (b.backAt.w ?? gs) - 4, (b.backAt.h ?? gs) - 4).endFill(); }
+    // v0.0.468 (Lucas: "the movement triggering overlay (the dashed squares) could use some work for intuitiveness. Where the reactions trigger?
+    // What is the exact movement the token took?"): the map notes' language: the exact path as a pale line through each square's center, a dot on
+    // each, an arrow where it ended; the square where the Reaction can come outlined in gold, with a plate naming it
+    const ctr = sq => ({ x: sq.x + (sq.w ?? gs) / 2, y: sq.y + (sq.h ?? gs) / 2 });
+    const pts = [...(b.start ? [ctr(b.start)] : []), ...(b.path ?? []).map(ctr)].filter((p, i, a) => !i || Math.hypot(p.x - a[i - 1].x, p.y - a[i - 1].y) > 1);
+    if (pts.length > 1) {
+      g.lineStyle(5, 0x1f1c18, 0.55); pts.forEach((p, i) => (i ? g.lineTo(p.x, p.y) : g.moveTo(p.x, p.y)));
+      g.lineStyle(3, INK, 0.95); pts.forEach((p, i) => (i ? g.lineTo(p.x, p.y) : g.moveTo(p.x, p.y)));
+      g.lineStyle(0); for (const p of pts.slice(1, -1)) g.beginFill(INK, 0.95).drawCircle(p.x, p.y, Math.max(3, gs * 0.06)).endFill();
+      arrowHead(g, pts[pts.length - 2], pts[pts.length - 1], INK, fs);
+    }
+    if (b.backAt) {
+      g.lineStyle(4, GOLD, 1).drawRect(b.backAt.x + 2, b.backAt.y + 2, (b.backAt.w ?? gs) - 4, (b.backAt.h ?? gs) - 4);
+      const names = [...new Set((st.rows ?? []).filter(r => r.state === "wait" || r.state === "use").map(r => r.itemName).filter(Boolean))];
+      const pl = plate(["Reaction here", names.join(", ")], { fs: Math.round(fs * 0.95) }); pl.position.set(b.backAt.x + (b.backAt.w ?? gs) / 2, b.backAt.y - 4); labels.addChild(pl);
+    }
     if (b.start && b.face?.img) {
       try { const sp = PIXI.Sprite.from(b.face.img); sp.alpha = 0.35; sp.width = (b.start.w ?? 1) * gs; sp.height = (b.start.h ?? 1) * gs; sp.position.set(b.start.x, b.start.y); layer.addChildAt(sp, 0); } catch (e) { /* no image */ }
     }

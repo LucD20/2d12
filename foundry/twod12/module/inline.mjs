@@ -412,7 +412,9 @@ async function prerollTiers(cfg, targets = []) {
   let empUser = null;
   try {
     const user = cfg.saveAction && cfg.actorUuid ? fromUuidSync(cfg.actorUuid) : null;
-    if (user && damageSteps(user, new Set([...(cfg.actionTraits ?? []), "__action"])).empowered.length && empoweredNow(user)) empUser = user;
+    // v0.0.468: the roll dialog's Empowered when the Save Action came through it (cfg.empOn: on by the condition or by hand, off if switched off)
+    const wants = typeof cfg.empOn === "boolean" ? cfg.empOn : !!damageSteps(user, new Set([...(cfg.actionTraits ?? []), "__action"])).empowered.length;
+    if (user && wants && empoweredNow(user)) empUser = user;
   } catch (e) { console.warn("twod12 | Empowered on a Save", e); }
   for (let n = 1; n <= 3; n++) {
     const parts = parseParts(cfg.tiers?.[`t${n}`]);

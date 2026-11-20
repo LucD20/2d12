@@ -1318,6 +1318,7 @@ export async function useAction(actor, item, opts = {}) {
     try {
       const { postSaveFor, saveActionCfg } = await import("./inline.mjs");
       const cfg = saveActionCfg(actor, item, version, src);
+      cfg.empOn = stepOf(data.empowered) > 0;   // v0.0.468 (Lucas, checklist v0.0.467: "if I click on empowered on the roll dialog, it doesnt ask"): the dialog's Empowered (the condition's chip or one added by hand)
       cfg.nonlethal = dealsNl;   // v0.0.458: its damage Nonlethal when it has the trait or was switched to it
       if (nlSwitched) { cfg.boon = (Number(cfg.boon) || 0) + 1; cfg.nlSwitched = true; }   // the switch: every creature gains 1 Boon on its Save (book, Chapter 4)
       const point = areaOutcome?.point ?? null;
