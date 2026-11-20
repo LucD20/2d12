@@ -44,4 +44,4 @@
 - **A real choice each turn:** accuracy or Guard, and Quick Shots' Evade (safety) or the Boons.
 - **Sylwen's default turn from now on; a dead pick for Kaela** (she moves every turn, and Shifting Aim rewards it): a style split, not one best button for everyone.
 - **The range of the first idea is left out** (simpler; the far range's Bane stays).
-- **Rules:** 2 unnamed Boons are allowed ("1, rarely 2": Chapter 1); with Field and Support Boons she can reach 5 and be Favored. "Leave your square" includes being moved by someone else.
+- **Rules:** 2 unnamed Boons are allowed (`cards/README.md`: an unnamed Boon is "1, rarely 2"); with Field and Support Boons she can reach 5 and be Favored. "Leave your square" includes being moved by someone else.
