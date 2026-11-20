@@ -1,17 +1,3 @@
 {
- "groups": [
-  {
-   "name": "Reactions and Judge",
-   "items": [
-    {
-     "id": "judge-gm-dock",
-     "v": "v0.0.474",
-     "title": "Judge's question for the GM: in Durgan's Situational tab",
-     "do": "As the GM, the Orc Warrior attacks Aveline next to Durgan (Judged Orc); when Judge's question comes, click the empty map, then Durgan's token; deselect him and select him again; answer it there.",
-     "expect": "Each time Durgan is selected, his HUD opens on the Situational tab with the question in it (Not now / Reduce by N), not an empty tab and not the large bar.",
-     "rev": 5
-    }
-   ]
-  }
- ]
+ "groups": []
 }
