@@ -4,6 +4,7 @@
 // (gone once it passes), a solid line in its slab's color from every Reaction used to its target (with the Reaction's name), the hovered,
 // unused option as a dashed line, and once every row is answered a numbered green pin on each line (its place in the stack; a drag in the
 // chat renumbers them live). A client setting turns it off. The data comes from the message's flags (moment.mjs); nothing here is saved.
+import { attentionRing, plate } from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
 const F = "twod12";
 export const PALETTE = ["#f0b54a", "#5fc4c0", "#b48ce0", "#7fc97f"];
 const RED = 0xe0553b, AMBER = 0xf0b54a, BEIGE = 0xecdcae, PIN = 0x2f6b3a, NAVY = 0x1d2738, PARCH = 0xf4eddc;
@@ -62,7 +63,6 @@ function dashLine(g, a, b, dash, gap) {
   if (!len) return;
   for (let s = 0; s < len; s += dash + gap) { const e = Math.min(len, s + dash); g.moveTo(a.x + dx * s / len, a.y + dy * s / len).lineTo(a.x + dx * e / len, a.y + dy * e / len); }
 }
-function dashCircle(g, c, r, n = 16) { for (let k = 0; k < n; k++) { const a0 = (k / n) * Math.PI * 2, a1 = a0 + Math.PI / n; g.moveTo(c.x + r * Math.cos(a0), c.y + r * Math.sin(a0)); g.arc(c.x, c.y, r, a0, a1); } }
 function arrowHead(g, from, to, color, size) {
   const ang = Math.atan2(to.y - from.y, to.x - from.x);
   g.lineStyle(0).beginFill(color, 1).moveTo(to.x, to.y).lineTo(to.x - size * Math.cos(ang - 0.45), to.y - size * Math.sin(ang - 0.45)).lineTo(to.x - size * Math.cos(ang + 0.45), to.y - size * Math.sin(ang + 0.45)).closePath().endFill();
@@ -71,7 +71,7 @@ function arrowHead(g, from, to, color, size) {
 const shortOf = (a, b, by) => { const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1; return { x: b.x - dx / l * by, y: b.y - dy / l * by }; };
 function tag(text, color, fg, size) {
   const PT = globalThis.foundry?.canvas?.containers?.PreciseText ?? globalThis.PreciseText ?? PIXI.Text;
-  const box = new PIXI.Container(), t = new PT(String(text), { fontFamily: "Signika, sans-serif", fontSize: size, fontWeight: "700", fill: fg });
+  const box = new PIXI.Container(), t = new PT(String(text), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: size, fontWeight: "700", fill: fg });
   t.anchor?.set?.(0.5);
   const w = t.width + size * 0.9, h = t.height + size * 0.3, bg = new PIXI.Graphics();
   bg.lineStyle(2, PARCH, 1).beginFill(hex(color), 1).drawRoundedRect(-w / 2, -h / 2, w, h, size * 0.35).endFill();
@@ -84,7 +84,7 @@ function pin(n, size, color = PIN) {
   g.lineStyle(2, NAVY, 1).beginFill(hex(color), 1).drawCircle(0, 0, n ? r : r * 0.6).endFill();
   box.addChild(g);
   if (n) {
-    const PT = globalThis.foundry?.canvas?.containers?.PreciseText ?? globalThis.PreciseText ?? PIXI.Text, t = new PT(String(n), { fontFamily: "Signika, sans-serif", fontSize: size, fontWeight: "700", fill: NAVY });
+    const PT = globalThis.foundry?.canvas?.containers?.PreciseText ?? globalThis.PreciseText ?? PIXI.Text, t = new PT(String(n), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: size, fontWeight: "700", fill: NAVY });
     t.anchor?.set?.(0.5);
     box.addChild(t);
   }
@@ -130,11 +130,11 @@ function drawOne(st, gs, fs) {
     if (!me) continue;
     if (r.state === "wait") {
       if (!ringed.has(r.actorUuid)) {
-        ringed.add(r.actorUuid); g.lineStyle(3, AMBER, 0.95); dashCircle(g, centerOf(me), me.w * 0.62);
+        ringed.add(r.actorUuid); attentionRing(labels, centerOf(me), me.w * 0.62);   // v0.0.461 (the map notes, Lucas's B): the steady gold ring and its slow ripple (was a dashed amber ring)
         // v0.0.390 (Lucas: "it can pass unnoticed"): the Reaction's name over the token, only for the one who answers it (a player never sees an
         // NPC's options), until it is used or passed; a client setting turns it off
         let showName = true; try { showName = game.settings.get(F, "rxFloat") !== false; } catch (e) { showName = true; }
-        if (showName && r.answerer === game.user.id) { const names = st.rows.filter(x => x.actorUuid === r.actorUuid && x.state === "wait").map(x => x.itemName); const lb = tag(`${[...new Set(names)].join(" or ")}?`, "#1f1c18", 0xfff3d6, fs * 1.1); lb.position.set(centerOf(me).x, me.y - fs * 1.4); labels.addChild(lb); }
+        if (showName && r.answerer === game.user.id) { const names = st.rows.filter(x => x.actorUuid === r.actorUuid && x.state === "wait").map(x => x.itemName); const lb = plate([`${[...new Set(names)].join(" or ")}?`, "Use or Pass in the HUD"], { fs: Math.round(fs * 1.05) }); lb.position.set(centerOf(me).x, me.y - me.h * 0.12); labels.addChild(lb); }   // v0.0.461: the plate
       }
       if (hov === r.i) { const t = tokenAt(r.targetUuid); if (t && t !== me) { const col = hex(PALETTE[st.rows.filter(x => x.state === "use").length % PALETTE.length]); g.lineStyle(4, col, 0.9); const a = centerOf(me), z = shortOf(a, centerOf(t), t.w * 0.45); dashLine(g, a, z, 14, 9); arrowHead(g, a, z, col, fs); } }
       continue;

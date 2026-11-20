@@ -5581,3 +5581,22 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opts { display: flex !important; flex-wrap: wrap !important; gap: 4px !important; grid-template-columns: none !important; flex: 1 1 100% !important; }
 .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opt.sq { width: 34px !important; height: 34px !important; min-width: 0 !important; max-width: 34px !important; flex: none !important; padding: 0 !important; }
 .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opt.sq img { width: 100% !important; height: 100% !important; max-width: none; object-fit: cover; }
+/* ==== v0.0.461 (the map notes' redesign, foundry/mockups/mapnotes; Lucas's answers 2026-11-20): every Situational ask ends the same way: the
+   main button filled, the way out quiet and last, one line naming the keys; the count of squares big; a warning in the Bane's ink ==== */
+.twod12-linebar .lb-keys { flex: 1 1 100%; display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.4; color: var(--hud-mute, #b3a68e); white-space: normal; }
+.twod12-linebar .lb-keys kbd { display: inline-block; padding: 0 4px; margin-right: 3px; border: 1px solid var(--hud-hair, #4a4132); border-radius: 2px; font: 600 10.5px/1.5 "Source Sans 3", sans-serif; color: var(--hud-ink, #ece3cf); background: none; box-shadow: none; }
+.twod12-linebar .lb-count { flex: 1 1 100%; display: block; font-size: 13px; color: var(--hud-ink, #ece3cf); }
+.twod12-linebar .lb-count b { font-size: 17px; font-weight: 700; margin-right: 2px; }
+.twod12-linebar .lb-warn { color: var(--c-bane, #ff6a4d); }
+.twod12-linebar .lb-tag { margin-left: 4px; font-weight: 400; color: var(--hud-mute, #b3a68e); }
+.twod12-linebar .lb-cands { display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 100%; }
+.twod12-linebar .lb-cands:empty { display: none; }
+.twod12-linebar .lb-cands .lb-opt.sq { all: unset; position: relative; box-sizing: border-box; width: 34px; height: 34px; flex: none; border: 1px solid var(--s-gold, #d2a75a); cursor: pointer; }
+.twod12-linebar .lb-cands .lb-opt.sq img { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
+.twod12-linebar .lb-cands .lb-opt.sq .lb-num { position: absolute; right: -1px; bottom: -1px; min-width: 13px; height: 13px; padding: 0 2px; box-sizing: border-box; background: var(--s-gold, #d2a75a); color: #1f1c18; font: 700 10px/13px "Source Sans 3", sans-serif; text-align: center; }
+.twod12-linebar.twod12-linebar button.fill, .twod12-hud .h3-sit .twod12-linebar.in-hud button.fill { background: var(--s-gold, #d2a75a) !important; border-color: var(--s-gold, #d2a75a) !important; color: #1f1c18 !important; }
+.twod12-linebar .lb-give.fill { opacity: 1 !important; }
+.twod12-hud.twod12-hud .h3-sit .twod12-linebar.twod12-linebar.in-hud button.fill { background: var(--s-gold, #d2a75a) !important; border-color: var(--s-gold, #d2a75a) !important; color: #1f1c18 !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-left { display: block; margin-top: 2px; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-left b { font-size: 17px; }
+.twod12-hud.twod12-hud .h3-sit .twod12-linebar.twod12-linebar.in-hud button.fill, .twod12-linebar.twod12-linebar.twod12-linebar button.fill { color: var(--hud-bg, #1f1c18) !important; }

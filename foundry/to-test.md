@@ -43,9 +43,10 @@ Rev: 5
 Do: Start a combat with three Goblin Sneaks set as one squad (Initiative window); when the squad's turn comes, read the HUD's Situational section.
 Expect: The goblins' pictures are small squares (about 34 px) in one wrapping row; the section doesn't fill or need scrolling for them. If what covered the section was something else, send a screenshot.
 
-### setup-squares · v0.0.456 · A Setup's squares left, in the Situational section
-Do: In a combat, Sylwen uses Strafe (the Advance Setup): read the HUD's Situational section, move her token 2 squares, read it again; then Cancel. With Garrick, start a Charge and click another enemy.
-Expect: The section shows "Strafe: You Advance..." and "**6** of 6 squares left", then "**4** of 6 squares left" after the move. Its buttons sit in one wrapping row in the section's look (outlined, not two wide boxes), "Cancel the Action" muted. Charge's target bar and a Forced Movement's bar look the same way.
+### setup-squares · v0.0.461 · A Setup's squares left, in the Situational section
+Do: In a combat, Sylwen uses Strafe (the Advance Setup): read the HUD's Situational section, move her token 2 squares, read it again; then Cancel.
+Expect: "Strafe: You Advance. Move your token, then Continue." (no braces), "4 of 6 squares left" on its own line with the number big, updated as she moves; Continue: the roll filled, Cancel the Action quiet, and the key line "Enter Continue · Esc Cancel the Action · Right-click pans the map".
+Rev: 2
 
 ### art-card · v0.0.460 · The Art's card: moved, and a Mode used at once
 Do: Aveline clicks Commandment on her HUD; drag the card by its top line; click outside it; click a Mode's "Use · 1 AP"; open it again and Shift-click a Mode's Use.
@@ -147,10 +148,27 @@ Expect: At the end of Kaela's turn Durgan takes half the Lingering's damage ("Ha
 
 ## Movement
 
-### charge-new · v0.0.460 · Charge: a right-click doesn't cancel
-Do: In a combat, Durgan targets the Goblin Sneak and uses Charge; while the Charge line is shown, right-click and drag the map; then press Escape.
-Expect: The right-click only pans the map: the Charge stays. Escape (or the HUD's Cancel) ends it. (The Charge's map feedback waits for the map notes' redesign.)
-Rev: 2
+### map-attention · v0.0.461 · A token that needs you: the ring and its ripple
+Do: The Orc Warrior moves away from Aveline (she can Rebuke); then Durgan uses Rebuke's Pushed on two goblins (the push list); in Configure Settings turn "Map: the attention ripple" off and repeat.
+Expect: Aveline wears a steady gold ring with a slow ripple growing out of it and fading (about every 2.4 s), and a dark plate "Rebuke? / Use or Pass in the HUD". The goblins to pick wear the same ring and ripple with a number (as their pictures in the HUD); the hovered one brighter. With the setting off (or the system's reduced motion): the ring alone, no ripple. The serious look: no glow, no flashing.
+
+### move-range · v0.0.461 · Advance and Evade on the map
+Do: Sylwen Advances (a card's free Advance) in a scene with a Difficult Terrain region and an enemy near; then an Evade (Slip Away); press Escape during each.
+Expect: Where she can stop in pale ink (no blue); Difficult Terrain inside the Advance's area hatched; the Evade's edge dashed, the squares next to it she can't enter hatched red. The HUD's bar shows "N squares left" big, updated as she moves, and a key line; Escape ends the movement (as End movement).
+
+### forced-move · v0.0.461 · A Forced Movement: one look, Escape, Backspace
+Do: Durgan's Rebuke pushes the Orc Warrior: hover squares, then press Escape. Push it again and click a square into a wall. Then a Slid 3 (any card): click two squares, press Backspace, then right-click and drag the map, then Enter.
+Expect: The squares to click in gold, the Orc's path in pale ink with an arrow, Durgan's pale ring, the result on a dark plate near the end and in the HUD; no text following the pointer, no Foundry notification. Escape: the Orc stays and the card says "Orc Warrior was Pushed 0 by Durgan". Into the wall: red where it stops, "N Vigor" damage (not "Body"). Slid: the steps numbered, Backspace takes the last back (the HUD's Take back a step too), a right-click only pans, Enter moves it.
+
+### push-list · v0.0.461 · Picking whom to push
+Do: Durgan uses an Action that pushes the creatures around its target (three goblins); push one, then press the end button.
+Expect: One end button, "Done: the rest stay" (no Stop); after the first push the text says "1 of 3 moved"; the ones moved leave the list.
+
+
+### charge-new · v0.0.461 · Charge: pick the enemy, then confirm
+Do: In a combat with no target, Durgan uses Charge; read the map and the HUD; click an empty square; click the Goblin Sneak (or its picture in the HUD); click an empty square again; press Enter. Then a Charge whose line Aveline blocks; then press Escape on one.
+Expect: Before a target: the enemies it can Charge wear the gold ring with its slow ripple and a number, their pictures are in the HUD ("Pick the enemy to Charge"), the others a quiet plate ("too close (needs 3)", "too far (11)"); the limit a faint pale edge; an empty square does nothing. With the Goblin: a pale line with a dot a square, his faint portrait where he stops, a plate "5 squares · in Reach / then Weapon Attack (1A) on Goblin Sneak"; Charge filled, Give up · 2 AP back quiet, and a key line. An empty square still does nothing; Enter, the Charge button or a click on the Goblin charges. Blocked: a red cross before Aveline, the plate in red, Give up filled and Charge anyway. Escape gives up (AP back); a right-click only pans.
+Rev: 3
 
 ### rewind-refund · v0.0.453 · Move back refunds the movement
 Do: In a combat, the Orc Warrior drags its token (no Advance first: the drag buys an Advance, 1 AP) toward Kaela, who has Slip Away; on the Reactions card click Move back, once all the way (Shift-click), once part of the way (pick a square).

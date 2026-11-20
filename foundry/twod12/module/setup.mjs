@@ -9,7 +9,13 @@ export const setupFor = (text, done) => (done
   : String(text ?? ""));
 
 /** The text of a Setup without its buttons, for a dialog. */
-const plainSetup = text => String(text ?? "").replace(/\s*\(\s*@\w+\[[^\]]*\]\s*\)/g, "").replace(/@\w+\[[^\]]*\]/g, "").replace(/[ \t]{2,}/g, " ").trim();
+// v0.0.461 (found by the map notes' mockup: Strafe's bar read "You {Advance}."): a tag's label stays as its words ("@Move[...]{Advance}" -> "Advance");
+// a movement tag with no label reads as its kind and distance ("@Move[evade|distance:1]" -> "Evade 1"); any other tag goes
+const MOVE_WORD = { advance: "Advance", walk: "Advance", evade: "Evade", charge: "Charge", pushed: "Pushed", pulled: "Pulled", slid: "Slid", reposition: "Reposition" };
+export const plainSetup = text => String(text ?? "").replace(/\s*\(\s*@\w+\[[^\]]*\](?:\{[^}]*\})?\s*\)/g, "")
+  .replace(/@\w+\[[^\]]*\]\{([^}]*)\}/g, "$1")
+  .replace(/@Move\[([^\]|]*)(?:\|([^\]]*))?\]/g, (m, k, rest) => { const w = MOVE_WORD[String(k).trim().toLowerCase()] ?? ""; const d = /distance:([^|\]]+)/i.exec(rest ?? "")?.[1]?.trim(); return w ? `${w}${d && /^\d+$/.test(d) ? ` ${d}` : ""}` : ""; })
+  .replace(/\s*\(\s*@\w+\[[^\]]*\]\s*\)/g, "").replace(/@\w+\[[^\]]*\]/g, "").replace(/[ \t]{2,}/g, " ").trim();
 
 /**
  * Before the roll: make the movement of the Action's Setup. For each @Move (Advance or Evade) tag the movement is granted (its area is shown on the map), the player moves the token
@@ -31,7 +37,7 @@ export async function setupBar(o) {
     // v0.0.456 (pack SHEETS-HUD's leftover, the HUD mockup's A4: "4 of 6 squares left"): the squares the movement has left, kept up to date
     const sq = o.squares ?? null, leftNow = () => { try { return Math.max(0, Math.round((Number(game.combat?.combatants?.get(sq.cid)?.getFlag("twod12", sq.key)) || 0) * 100) / 100); } catch (e) { return 0; } };
     const leftHtml = () => (sq ? ` <span class="lb-left"><b>${leftNow()}</b> of ${sq.total} square${sq.total === 1 ? "" : "s"} left.</span>` : "");
-    bar.innerHTML = `<i class="fa-solid fa-person-running lb-ic"></i><span class="lb-text"><b>${esc(o.title ?? "Setup")}</b>${txt ? `: ${esc(txt)}` : ""} Move your token, then Continue.${leftHtml()}</span><button type="button" class="lb-go"><i class="fa-solid fa-dice"></i> Continue: the roll</button><button type="button" class="lb-give">Cancel the Action</button>`;
+    bar.innerHTML = `<i class="fa-solid fa-person-running lb-ic"></i><span class="lb-text"><b>${esc(o.title ?? "Setup")}</b>${txt ? `: ${esc(txt)}` : ""} Move your token, then Continue.${leftHtml()}</span><button type="button" class="lb-go fill"><i class="fa-solid fa-dice"></i> Continue: the roll</button><button type="button" class="lb-give">Cancel the Action</button><span class="lb-keys"><kbd>Enter</kbd> Continue \u00b7 <kbd>Esc</kbd> Cancel the Action \u00b7 Right-click pans the map</span>`;   // v0.0.461 (the map notes, d / h): the filled one first, the key line
     // v0.0.441 (pack SHEETS-HUD, D7: "Strafe's Advance in the HUD's place, not the old floating bar"): in the HUD's Situational section when a
     // creature's bar is on screen, as the pick bar asks; at the bottom of the screen with no HUD
     const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");

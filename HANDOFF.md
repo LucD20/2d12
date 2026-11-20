@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.460, 287 tests; READ THIS FIRST)
+## Where we are now (v0.0.461, 288 tests; READ THIS FIRST)
+- **2026-11-20 (v0.0.461; NOT tested by Lucas): the map notes' redesign built** (`module/mapmark.mjs`: the gold ring and its slow ripple, plates, number pins; rxoverlay, pickbar, the Charge picker, the movement range, the Forced Movement pickers, the push list, the Situational key lines). Not built: a plate beside Foundry's ruler while dragging.
 - **2026-11-20 (v0.0.460; NOT tested by Lucas): his checklist report on v0.0.459** (23 passed, deleted from to-test.md; 13 failed, all fixed or narrowed, Rev + 1) and his notes: the roll dialog's warnings drawn (they were collected but never shown), Darting Blade draws its Light weapon, the Save Action's Nonlethal switch in the Damage row, the PC sheet's symbols, Apply's menu floating, the chat scroll box found each time, Empowered's pick, an NPC's Fists, the menus' second click, the Art card moved and used at once, an area Action's Place button and the HUD's order, a Large creature's steps. **Next: the map notes' redesign** (foundry-backlog, a mockup first; Fable limited until 2026-11-25).
 - **2026-11-19 (v0.0.459; NOT tested by Lucas): a Blinded creature's squares are Difficult Terrain** (`light.mjs sightSenses`; found by the backlog audit). Open from the audit: Line of Effect for a chip that reaches a creature that isn't a target (foundry-backlog "Line of Effect for every effect").
 - **2026-11-19, the backlog audit:** foundry-backlog.md went from 261 open boxes to 22 (the history sections' old tests ticked; done or superseded items closed with their reason); rules-backlog.md from 136 to 44. A partly done item keeps a "backlog audit" note saying what is left. Chapter 8's "until a Save" duration removed (the 2026-11-15 decision).

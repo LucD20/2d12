@@ -6,6 +6,7 @@ import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
 import { logMove, logPush, voidLastAction } from "./enclog.mjs";   // v0.0.223: the Encounter Log
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells, tokensInEmanation } from "./template.mjs";
+import * as MK from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
 import { tierDistance } from "./inline.mjs";
 import { TWOD12 } from "./config.mjs";
 import { applyToActor } from "./damage.mjs";
@@ -547,13 +548,18 @@ function freeMoveBar(c, kind, text) {
   freeBar?.remove();
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-freebar";
-  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button>`;
+  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button><span class="lb-count"></span><span class="lb-keys"><kbd>Esc</kbd> End movement \u00b7 Right-click pans the map</span>`;
+  // v0.0.461 (the map notes' redesign, b / c / h): the squares left, big, kept up to date; Escape ends the movement (it did nothing)
+  const count = () => { const cb = game.combat?.combatants.get(c.id), left = num(cb?.getFlag(F, "freeMove")) + num(cb?.getFlag(F, "evadeMove")), el = bar.querySelector(".lb-count"); if (el) el.innerHTML = `<b>${left}</b> square${left === 1 ? "" : "s"} left`; };
+  count();
   // v0.0.441 (D7): End movement asks in the HUD's Situational section too (the floating bar only with no HUD)
   const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
   if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
   const turn = `${game.combat?.round}:${game.combat?.turn}`;
-  const close = () => { bar.remove(); if (slot) hud.hudAsking(false); if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); };
-  const watch = cb => { if (cb.id !== c.id) return; if (num(cb.getFlag(F, "freeMove")) + num(cb.getFlag(F, "evadeMove")) <= 0) close(); };
+  const close = () => { bar.remove(); if (slot) hud.hudAsking(false); if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); window.removeEventListener("keydown", esc_, true); };
+  const watch = cb => { if (cb.id !== c.id) return; if (num(cb.getFlag(F, "freeMove")) + num(cb.getFlag(F, "evadeMove")) <= 0) close(); else count(); };
+  const esc_ = ev => { if (ev.key !== "Escape" || !bar.isConnected || /input|textarea|select/i.test(ev.target?.tagName ?? "")) return; ev.preventDefault(); ev.stopImmediatePropagation(); close(); endMovement(c.id).catch(() => {}); };
+  window.addEventListener("keydown", esc_, true);
   const watchTurn = cb => { if (`${cb.round}:${cb.turn}` !== turn) close(); };
   Hooks.on("updateCombatant", watch); Hooks.on("updateCombat", watchTurn);
   bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); close(); endMovement(c.id).catch(() => {}); });
@@ -757,7 +763,9 @@ function forcedBar(mode, target, origin, N, onEnd) {
   bar.className = "twod12-linebar twod12-setupbar twod12-forcedbar";
   bar.innerHTML = `<i class="fa-solid ${mode === "pull" ? "fa-hand-back-fist" : "fa-hand"} lb-ic"></i><span class="lb-text"><b>${esc(target.name)}</b> is ${label} up to ${N} square${N === 1 ? "" : "s"} ${how}. <small>Forced Movement ignores Difficult Terrain and triggers no Reactions; a wall or a creature in the way stops it (a Collision).</small><span class="lb-now"></span></span>`
     + '<button type="button" class="lb-go lb-book"><i class="fa-solid fa-book-open"></i> Rules</button>'
-    + '<button type="button" class="lb-go lb-end"><i class="fa-solid fa-flag-checkered"></i> End movement</button>';
+    + (mode === "slid" || mode === "reposition" ? '<button type="button" class="lb-go lb-back"><i class="fa-solid fa-rotate-left"></i> Take back a step</button>' : "")
+    + '<button type="button" class="lb-give lb-end">Don\'t move it</button>'
+    + `<span class="lb-keys">${mode === "slid" || mode === "reposition" ? "<kbd>Enter</kbd> Move \u00b7 <kbd>Backspace</kbd> Take back \u00b7 " : ""}<kbd>Esc</kbd> Don't move it \u00b7 Right-click pans the map</span>`;   // v0.0.461 (the map notes, f / h)
   // v0.0.404 (Lucas: "Put this in the HUD area as well, that area will become the area for stuff like this"): in the HUD's side panel when a
   // creature's bar is shown (else its middle), as the pick bar; at the bottom with no HUD
   let hud = null, side = false;
@@ -767,7 +775,7 @@ function forcedBar(mode, target, origin, N, onEnd) {
   bar.querySelector(".lb-book").addEventListener("click", ev => { ev.preventDefault(); import("./inline.mjs").then(m => m.openBook({ ref: mode === "pull" ? "Pulled" : mode === "slid" ? "Slid" : mode === "push" ? "Pushed" : "Forced Movement", doc: "Chapter 3, Forced Movement" })).catch(() => {}); });
   bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); onEnd?.(); });
   const now = bar.querySelector(".lb-now");
-  return { set: t => { if (now) now.innerHTML = t ? ` <b class="lb-res">${esc(t)}</b>` : ""; }, close: () => { bar.remove(); if (slot) hud.hudAsking(false); } };
+  return { set: t => { if (now) now.innerHTML = t ? ` <b class="lb-res">${esc(t)}</b>` : ""; }, close: () => { bar.remove(); if (slot) hud.hudAsking(false); }, onBack: f => bar.querySelector(".lb-back")?.addEventListener("click", ev => { ev.preventDefault(); f(); }) };
 }
 
 /**
@@ -809,15 +817,23 @@ function choosePush(origin, target, N, mode = "push") {
       const pts = oCells.map(c => cellCenter(c.i, c.j)), cx = pts.reduce((a, p) => a + p.x, 0) / pts.length, cy = pts.reduce((a, p) => a + p.y, 0) / pts.length, r = canvas.grid.size * 0.22;
       gfxLine(gfx, [{ x: cx, y: cy - r }, { x: cx + r, y: cy }, { x: cx, y: cy + r }, { x: cx - r, y: cy }, { x: cx, y: cy - r }], 0xf1c84b, 4, 0.95);
     };
+    // v0.0.461 (the map notes' redesign, f; Lucas: one set of colors for every kind): the squares to click are gold (a choice for you), the
+    // origin's pale ring, the path in pale ink with an arrow pointing away (Pushed) or toward (Pulled), red where it stops; the result on a plate
+    const plates = new PIXI.Container(); plates.eventMode = "none"; (canvas.interface ?? canvas.stage).addChild(plates);
     const draw = () => {
       gfx.clear();
+      for (const k of plates.removeChildren()) k.destroy?.({ children: true });
       originMark();
-      fillCells(gfx, covered, 0xffffff, 0.22);
-      outlineCells(gfx, covered, { color: 0xffffff, width: 3 });
+      if (!ghostOrigin) { const op = oCells.map(c => cellCenter(c.i, c.j)); MK.originRing(gfx, { x: op.reduce((a, p) => a + p.x, 0) / op.length, y: op.reduce((a, p) => a + p.y, 0) / op.length }, canvas.grid.size * 0.55 * Math.max(1, Math.sqrt(oCells.length))); }
+      fillCells(gfx, covered, MK.GOLD, 0.16);
+      outlineCells(gfx, covered, { color: MK.GOLD, width: 2 });
       if (pull) fillCells(gfx, oCells, 0xdd3333, 0.18);   // aiming at the origin's own square: a Collision
       if (!current) return;
       const pts = current.path.map(s => pt(s)), good = pts.slice(0, current.result.done + 1);
-      gfxLine(gfx, good, 0x44cc77, 5, 0.95);
+      gfxLine(gfx, good, MK.INK, 4, 0.95);
+      if (good.length > 1) { const a = good[good.length - 2], z = good[good.length - 1], ang = Math.atan2(z.y - a.y, z.x - a.x), k = canvas.grid.size * 0.2; gfxLine(gfx, [{ x: z.x - k * Math.cos(ang - 0.5), y: z.y - k * Math.sin(ang - 0.5) }, z, { x: z.x - k * Math.cos(ang + 0.5), y: z.y - k * Math.sin(ang + 0.5) }], MK.INK, 4, 0.95); }
+      const endP = pts[current.result.done] ?? pts[0];
+      const pl = MK.plate([text(current.result)], { fs: Math.max(13, Math.round(canvas.grid.size * 0.17)), warn: !!current.result.block }); pl.position.set(endP.x, endP.y - canvas.grid.size * 0.55); plates.addChild(pl);
       if (current.result.block) {
         const bad = pts.slice(current.result.done, current.result.done + 2);
         gfxLine(gfx, bad, 0xdd3333, 5, 0.95);
@@ -833,26 +849,24 @@ function choosePush(origin, target, N, mode = "push") {
       const d = r.damage;
       return r.block.type === "wall"
         ? `${r.block.corner ? "Solid corner" : "Wall"}: ${r.unused} unused, ${d.self} Vigor damage (${steps})`
-        : `${r.block.token.name}${r.block.corner ? " (between two creatures)" : ""}: ${r.unused} unused, ${d.self} Body to each (${steps})`;
+        : `${r.block.token.name}${r.block.corner ? " (between two creatures)" : ""}: ${r.unused} unused, ${d.self} Vigor to each (${steps})`;   // v0.0.461: Vigor (Body was the pool's old name)
     };
     const hover = ev => {
       const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage);
       const o = canvas.grid.getOffset(p), key = shiftKey({ di: o.i - tl.i, dj: o.j - tl.j });
       const node = map.get(key) ?? (pull ? pullIntoOrigin(cells, oCells, { i: o.i, j: o.j }, N) : null);
-      if (!node || !node.steps) { current = null; tip.style.display = "none"; return draw(); }
+      if (!node || !node.steps) { current = null; return draw(); }
       const path = repo || node.intoOrigin ? lineShifts(node) : pathTo(map, key);
       const result = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt });
       current = { path, result };
-      tip.textContent = text(result); tip.style.display = "block"; fbar.set(text(result));
-      const n = ev.nativeEvent ?? ev.data?.originalEvent;
-      if (n) { tip.style.left = `${n.clientX + 14}px`; tip.style.top = `${n.clientY + 14}px`; }
+      fbar.set(text(result));   // v0.0.461: no pointer tip (the plate and the HUD say it)
       draw();
     };
     const done = v => {
       canvas.stage.off("pointermove", hover); canvas.stage.off("pointerdown", down);
       window.removeEventListener("keydown", esc_);
       canvas.tokens.interactiveChildren = prevInteractive;
-      gfx.destroy(); tip.remove(); fbar.close();
+      gfx.destroy(); tip.remove(); plates.destroy({ children: true }); fbar.close();
       resolve(v);
     };
     const down = ev => {
@@ -860,7 +874,7 @@ function choosePush(origin, target, N, mode = "push") {
       hover(ev);
       if (current) done(current);
     };
-    const esc_ = ev => { if (ev.key === "Escape") done(null); };
+    const esc_ = ev => { if (ev.key === "Escape") done({ ended: true }); };   // v0.0.461 (choice 5A): Escape is "Don't move it": it moves 0, and the line says so
     canvas.stage.on("pointermove", hover); canvas.stage.on("pointerdown", down);
     window.addEventListener("keydown", esc_);
     // v0.0.335: the bottom bar says it (no notification)
@@ -910,6 +924,7 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     };
     const gfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(gfx);
+    const nums = new PIXI.Container(); nums.eventMode = "none"; (canvas.interface ?? canvas.stage).addChild(nums);
     const tip = document.createElement("div");
     tip.className = "twod12-pushtip"; tip.style.display = "none"; document.body.append(tip);
     const prevInteractive = canvas.tokens.interactiveChildren;
@@ -917,10 +932,10 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     const pt = sh => { const ps = foot(sh).map(c => cellCenter(c.i, c.j)); return { x: ps.reduce((a, p) => a + p.x, 0) / ps.length, y: ps.reduce((a, p) => a + p.y, 0) / ps.length }; };
     const text = r => {
       const steps = `${path.length - 1} of ${N}`;
-      if (!r.block) return `${MOVE_LABEL[mode]} ${r.done} (path ${steps}). Click the last square again or press Enter to move; right-click takes a square back.`;
+      if (!r.block) return `${MOVE_LABEL[mode]} ${r.done} (path ${steps}). Click the last square again or press Enter to move.`;
       if (r.block.type === "loe") return `${origin.name} loses Line of Effect: it stops after ${r.done} (no damage).`;
       const what = r.block.type === "wall" ? (r.block.corner ? "A solid corner" : "A wall") : r.block.token.name;
-      return repo ? `${what} is in the way: it stops after ${r.done} (no damage).` : `${what}: Collision after ${r.done}, ${r.unused} unused, ${r.damage.self} Body${r.block.type === "creature" ? " to each" : ""}.`;
+      return repo ? `${what} is in the way: it stops after ${r.done} (no damage).` : `${what}: Collision after ${r.done}, ${r.unused} unused, ${r.damage.self} Vigor${r.block.type === "creature" ? " to each" : ""}.`;
     };
     // v0.0.175: the squares the path can still reach (like the area Pushed and Pulled show): within the steps left from the last square,
     // not into Hazardous Terrain (Reposition), and within the origin's Reach (Relocate).
@@ -937,39 +952,43 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     const draw = () => {
       gfx.clear();
       const r = analyze(path), area = reachable();
-      if (area.length) { fillCells(gfx, area, 0xffffff, 0.22); outlineCells(gfx, area, { color: 0xffffff, width: 3 }); }
-      fillCells(gfx, path.slice(1).flatMap(foot), 0x66ccff, 0.25);
+      // v0.0.461 (the map notes, f): the squares it can go to in gold (a choice), the path in pale ink with its steps numbered, red where it stops
+      if (area.length) { fillCells(gfx, area, MK.GOLD, 0.16); outlineCells(gfx, area, { color: MK.GOLD, width: 2 }); }
+      fillCells(gfx, path.slice(1).flatMap(foot), MK.INK, 0.12);
       const pts = path.map(pt);
-      gfxLine(gfx, pts.slice(0, r.done + 1), 0x44cc77, 5, 0.95);
+      gfxLine(gfx, pts.slice(0, r.done + 1), MK.INK, 4, 0.95);
+      for (const k of nums.removeChildren()) k.destroy?.({ children: true });
+      pts.slice(1).forEach((p, k) => { const t = new PIXI.Text(String(k + 1), { fontFamily: MK.FONT, fontSize: Math.max(12, Math.round(canvas.grid.size * 0.2)), fontWeight: "700", fill: MK.INK, stroke: 0x1f1c18, strokeThickness: 3 }); t.anchor?.set?.(0.5, 0.5); t.position.set(p.x, p.y); nums.addChild(t); });
       if (r.block) gfxLine(gfx, pts.slice(r.done, r.done + 2), 0xdd3333, 5, 0.95);
       if (hover) { const bad = why(hover); fillCells(gfx, foot(hover), bad ? 0xdd3333 : 0xffffff, bad ? 0.25 : 0.35); }
       return r;
     };
     const posOf = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage); const o = canvas.grid.getOffset(p); return { di: o.i - tl.i, dj: o.j - tl.j }; };
-    const showTip = (ev, msg) => { tip.textContent = msg; tip.style.display = "block"; fbar?.set(msg); const n = ev?.nativeEvent ?? ev?.data?.originalEvent; if (n) { tip.style.left = `${n.clientX + 14}px`; tip.style.top = `${n.clientY + 14}px`; } };
+    const showTip = (ev, msg) => { fbar?.set(msg); };   // v0.0.461 (choice 8A): no pointer tip: the HUD's readout says it
     const move = ev => { hover = posOf(ev); const r = draw(); const bad = why(hover), last = path[path.length - 1]; showTip(ev, hover.di === last.di && hover.dj === last.dj && path.length > 1 ? text(r) : (bad ? `Not here: ${bad}.` : text(analyze([...path, hover])))); };
     const fbar = forcedBar(mode, target, origin, N, () => finish({ ended: true }));   // v0.0.335: the bottom bar
     const finish = v => {
       canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
       window.removeEventListener("keydown", keys);
       canvas.tokens.interactiveChildren = prevInteractive;
-      gfx.destroy(); tip.remove(); fbar.close();
+      gfx.destroy(); tip.remove(); nums.destroy({ children: true }); fbar.close();
       resolve(v);
     };
-    const confirm = () => (path.length > 1 ? finish({ path: [...path], result: analyze(path) }) : finish(null));
+    const confirm = () => (path.length > 1 ? finish({ path: [...path], result: analyze(path) }) : finish({ ended: true }));
+    const takeBack = () => { if (path.length > 1) { path.pop(); draw(); fbar?.set(text(analyze(path))); } };   // v0.0.461 (choice 6A): Backspace and the button
     const down = ev => {
-      if (ev.button === 2) { if (path.length > 1) { path.pop(); draw(); } return; }   // v0.0.343: a right-click takes a square back, never cancels
-      if (ev.button !== 0) return;
+      if (ev.button !== 0) return;   // v0.0.461 (choice 6A): a right-click is Foundry's (it pans the map); Backspace takes a square back
       const sh = posOf(ev), last = path[path.length - 1];
       if (sh.di === last.di && sh.dj === last.dj) return confirm();
       const bad = why(sh);
-      if (bad) return warn(`${MOVE_LABEL[mode]}: ${bad}.`);
+      if (bad) return fbar?.set(`Not here: ${bad}.`);   // v0.0.461: in the HUD, not a notification
       path.push(sh); move(ev);
     };
-    const keys = ev => { if (ev.key === "Escape") finish(null); else if (ev.key === "Enter") confirm(); };
+    const keys = ev => { if (/input|textarea|select/i.test(ev.target?.tagName ?? "")) return; if (ev.key === "Escape") finish({ ended: true }); else if (ev.key === "Enter") confirm(); else if (ev.key === "Backspace") { ev.preventDefault(); takeBack(); } };   // v0.0.461: Escape is "Don't move it" (5A)
+    fbar.onBack?.(takeBack);
     canvas.stage.on("pointermove", move); canvas.stage.on("pointerdown", down);
     window.addEventListener("keydown", keys);
-    ui.notifications.info(`${MOVE_LABEL[mode]} ${N}: click the squares of ${target.name}'s path one by one, then click the last one again (or Enter). Right-click takes a square back; Esc cancels.`);
+    // v0.0.461: no notification (the HUD's bar and its key line say it)
     draw();
   });
 }
@@ -1044,25 +1063,23 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   if (N <= 0) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> was not ${mode === "reposition" ? "Repositioned" : label} (Steadiness ${st.steady}).`, { cls: "pushmsg" }); return; }
   const pathTool = mode === "slid" || mode === "reposition";
   const pick = pathTool ? await choosePath(origin, target, N, mode, opts) : await choosePush(origin, target, N, mode);
-  if (!pick) return;
-  if (pick.ended) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> was ${mode === "reposition" ? "Repositioned" : label} 0 by <b>${byName}</b>.`, { cls: "pushmsg" }); return; }
+  // v0.0.461 (choice 5A): Escape or "Don't move it": it moves 0 and the line says so (Escape was silent)
+  if (!pick || pick.ended) { await postFollow(opts.msg, "fa-hand", `<b>${esc(target.name)}</b> was ${mode === "reposition" ? "Repositioned" : label} 0 by <b>${byName}</b>.`, { cls: "pushmsg" }); return; }
   const { result } = pick, f = result.final;
   if (pathTool) await moveAlong(target.document, pick.path.slice(0, result.done + 1));   // one movement along the path (v0.0.175)
   else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
   // v0.0.247 (Lucas): when the origin is another creature (a Push away from the target), the line names who pushes and whom it is away from
-  const who = opts.by && opts.by.id !== origin.id ? `<b>${esc(opts.by.name)}</b>, away from <b>${esc(origin.name)}</b>,` : `<b>${esc(origin.name)}</b>`;
-  void who;
   const lines = [`<b>${esc(target.name)}</b> was ${mode === "reposition" ? "Repositioned" : label} ${result.done} by <b>${byName}</b>.`];
   if (result.block?.type === "loe") lines.push(`It stops: <b>${esc(origin.name)}</b> would lose Line of Effect to it (no damage).`);
   else if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? (result.block.corner ? "a solid corner" : "a wall") : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
   else if (result.block) {
     const d = result.damage;
     if (result.block.type === "wall") {
-      lines.push(`It hits ${result.block.corner ? "a solid corner" : "a wall"} with ${result.unused} unused: <b>${d.self} Body</b> damage.`);
+      lines.push(`It hits ${result.block.corner ? "a solid corner" : "a wall"} with ${result.unused} unused: <b>${d.self} Vigor</b> damage.`);
       if (target.actor && d.self) await applyToActor(target.actor, bodyDamage(d.self));
     } else {
       const o = result.block.token;
-      lines.push(`It hits <b>${esc(o.name)}</b>${result.block.corner ? " (it can't pass diagonally between two creatures)" : ""} with ${result.unused} unused: both take <b>${d.self} Body</b> damage.`);
+      lines.push(`It hits <b>${esc(o.name)}</b>${result.block.corner ? " (it can't pass diagonally between two creatures)" : ""} with ${result.unused} unused: both take <b>${d.self} Vigor</b> damage.`);
       if (target.actor && d.self) await applyToActor(target.actor, bodyDamage(d.self));
       if (o.actor && d.other) await applyToActor(o.actor, bodyDamage(d.other));
     }
@@ -1144,8 +1161,9 @@ async function pushPicker(cfg, ctx, mode, origin, N) {
   const giveBack = () => { for (const id of heldIds) { const t = canvas.tokens?.get?.(id); if (t && !t.destroyed && !t.controlled) t.control?.({ releaseOthers: false }); } };
   try {
   while (list.length) {
-    const pick = await pickBar({ icon: "fa-hand", done: "Done", cancel: "Stop",
-      text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature (here or its token) to move it.${moved.length ? ` <small>Moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
+    // v0.0.461 (the map notes, g): one end button ("Done: the rest stay"; Done and Stop did the same); how many are moved
+    const pick = await pickBar({ icon: "fa-hand", done: "Done: the rest stay", cancel: false,
+      text: `<b>${label} ${N}</b>${by ? ` away from <b>${esc(origin.name)}</b>` : ""}: click a creature (here or its token) to move it.${moved.length ? ` <small>${moved.length} of ${moved.length + list.length} moved: ${moved.map(esc).join(", ")}.</small>` : ""}`,
       options: list.map((t, n) => { const d = distanceFor(cfg, ctx, t, N); return { id: String(n), label: d === N ? t.name : `${t.name} (${label} ${d})`, token: t, img: t.document?.texture?.src || t.actor?.img || "" }; }) });   // v0.0.397: a square with its picture   // v0.0.248: its token on the map can be clicked too; v0.0.249: its own distance by Tier
     if (pick == null || pick === "done") break;
     const t = list[Number(pick)];
@@ -1383,7 +1401,7 @@ function drawDragPreview(preview) {
   if (r.block && cells[r.done + 1]) fillCells(g, foot(cells[r.done + 1]), 0xe07a6a, 0.55);
   dragGfx.addChild(g);
   const txt = `Forced: ${r.done} sq.${r.block ? ` · hits ${r.block.type === "wall" ? "a wall" : r.block.token?.name ?? "a creature"}: ${r.damage.self} Body${r.block.type === "creature" ? " each" : ""}` : ""}`;
-  const t = new PIXI.Text(txt, { fontFamily: "Signika, sans-serif", fontSize: Math.round(canvas.grid.size * 0.22), fontWeight: "700", fill: r.block ? "#ffb3ad" : "#c8f5d2", stroke: "#111111", strokeThickness: 4 });
+  const t = new PIXI.Text(txt, { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: Math.round(canvas.grid.size * 0.22), fontWeight: "700", fill: r.block ? "#ffb3ad" : "#c8f5d2", stroke: "#111111", strokeThickness: 4 });
   const at = canvas.grid.getTopLeftPoint({ i: cells[r.done].i, j: cells[r.done].j });
   t.anchor.set(0.5, 1); t.position.set(at.x + (w * canvas.grid.size) / 2, at.y - 6);
   dragGfx.addChild(t);
@@ -1576,8 +1594,20 @@ export function showRange(c, squares, dest = null, par = 0) {
     const area = reachableCells(cells, squares, (a, b) => wallBetween(pt(a), pt(b)), par, enterCost);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);
-    fillCells(rangeGfx, area, 0x66ccff, 0.2);
-    outlineCells(rangeGfx, area, { color: 0x8fdcff, width: 3 });
+    // v0.0.461 (the map notes' redesign, b and c): where it can stop in pale ink (blue had no meaning); an Evade's edge dashed (only an Evade is);
+    // its Difficult Terrain hatched: inside an Advance's area (it costs 1 more), and for an Evade, the squares next to it that it can't enter, in red
+    fillCells(rangeGfx, area, MK.INK, 0.08);
+    const set = new Set(area.map(x => `${x.i},${x.j}`)), gs = canvas.grid.size, segs = [];
+    for (const x of area) { const t = canvas.grid.getTopLeftPoint({ i: x.i, j: x.j });
+      if (!set.has(`${x.i - 1},${x.j}`)) segs.push([t.x, t.y, t.x + gs, t.y]); if (!set.has(`${x.i + 1},${x.j}`)) segs.push([t.x, t.y + gs, t.x + gs, t.y + gs]);
+      if (!set.has(`${x.i},${x.j - 1}`)) segs.push([t.x, t.y, t.x, t.y + gs]); if (!set.has(`${x.i},${x.j + 1}`)) segs.push([t.x + gs, t.y, t.x + gs, t.y + gs]); }
+    for (const [x0, y0, x1, y1] of segs) { if (evading) MK.dashLine(rangeGfx, { x: x0, y: y0 }, { x: x1, y: y1 }, { color: MK.INK, alpha: 0.85, width: 2 }); else { rangeGfx.lineStyle(2, MK.INK, 0.75); rangeGfx.moveTo(x0, y0); rangeGfx.lineTo(x1, y1); } }
+    const hatch = (cell, color, alpha) => { const t = canvas.grid.getTopLeftPoint({ i: cell.i, j: cell.j }), n = 4; rangeGfx.lineStyle(1.5, color, alpha); for (let k = 1; k <= n * 2 - 1; k++) { const d = (k / (n * 2)) * 2 * gs; const ax = t.x + Math.max(0, d - gs), ay = t.y + Math.min(d, gs), bx = t.x + Math.min(d, gs), by = t.y + Math.max(0, d - gs); rangeGfx.moveTo(ax, ay); rangeGfx.lineTo(bx, by); } };
+    if (!ignoring) {
+      if (!evading) { for (const x of area) if (!own.has(`${x.i},${x.j}`) && difficult(x)) hatch(x, MK.INK, 0.35); }
+      else { const near = new Set(); for (const x of area) for (let di = -1; di <= 1; di++) for (let dj = -1; dj <= 1; dj++) { const k = `${x.i + di},${x.j + dj}`; if (!set.has(k) && !own.has(k)) near.add(k); }
+        for (const k of near) { const [i, j] = k.split(",").map(Number); if (difficult({ i, j })) hatch({ i, j }, MK.RED, 0.55); } }
+    }
   } catch (e) { console.warn("twod12 | could not draw the movement area", e); }
 }
 
@@ -1642,32 +1672,26 @@ export function openChargePicker(c, token) {
   const reach = Math.max(1, num(c.actor?.system?.reach) || 1);
   // v0.0.219 (Lucas): the limit is outlined (every square within its maximum, counted from your space), so nobody has to guess how far it goes.
   const limit = emanationCells(tokenCells(doc), Math.max(0, Math.floor(num(ch.max))));
-  let side = "left", pos = null, cur = null, armed = "";
+  let side = "left", pos = null, cur = null;
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-chargebar";
-  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-side"><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-go">Charge!</button><button type="button" class="lb-give">Give up</button>`;
+  // v0.0.461 (the map notes' redesign, e): before a target the bar lists the enemies it can Charge as pictures (as the map marks them); with one,
+  // the two real choices; a last line names the keys. Give up says what it gives back.
+  const back = Math.max(0, num(ch.refund));
+  bar.innerHTML = `<i class="fa-solid fa-person-running-fast lb-ic"></i><span class="lb-text"></span><span class="lb-opts lb-cands"></span><span class="lb-side"><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-go">Charge</button><button type="button" class="lb-give">Give up${back ? ` \u00b7 ${back} AP back` : ""}</button><span class="lb-keys"></span>`;
   // v0.0.453 (Lucas, playtest 6: "Charge should show in the situational section of the hud"): it asks there, as End movement and a Setup do
   const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, inSide = !!slot?.classList?.contains("hb-ask");
   if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", inSide); slot.append(bar); hud.hudAsking(true, inSide); } else document.body.append(bar);
+  // v0.0.461 (e, choices 3A and 4A): a Charge always picks an enemy first (the book's Charge); only the Charge button, Enter or a click on the target confirms
   const text = () => {
-    if (cur?.target) {
-      const r = cur.path, who = cur.inReach.some(t => t.id === target.id);
-      if (cur.tooFar) return `${target.name} is out of reach: a Charge goes up to ${ch.max} squares. Give up, or click to Charge anyway (it would be disrupted).`;
-      if (r.bad < 0 && r.sq + 1e-6 < ch.min) return `Too close: a Charge moves at least ${ch.min} squares (${target.name} is in Reach after ${r.sq}).`;
-      if (r.bad >= 0) return `${r.problem}: the Charge stops after ${cur.stopSq} squares${who ? "" : `, ${target.name} not in Reach: it would be disrupted`}. ${armed === cur.key ? "Click again to Charge anyway." : "Click to choose it, then again to confirm."}`;
-      return `Charge ${r.sq} squares toward ${target.name}: in Reach at the end. Click to Charge, or click another enemy to Charge it.`;
-    }
-    if (!cur) return `Charge: at least ${ch.min}, up to ${ch.max} squares (the gold outline). Click the destination, or an enemy to Charge it.`;
-    const r = cur.path, last = r.bad >= 0 ? r.cells[r.bad - 1] : r.cells.at(-1);
-    if (r.cells.length < 2) return "Click a square outside your space.";
-    if (r.sq + 1e-6 < ch.min) return `Too short: a Charge moves at least ${ch.min} squares (this is ${r.sq}).`;
-    if (r.sq > ch.max + 1e-6) return `Too far: up to ${ch.max} squares (this is ${r.sq}).`;
-    const who = cur.inReach.map(t => t.name).join(", ");
-    const end = who ? `${who} in Reach at the end` : "no one in Reach at the end: it would be disrupted";
-    if (r.bad >= 0) return `${r.problem}: the Charge stops at ${sqName(last)} (${cur.stopSq} squares), ${end}. ${armed === cur.key ? "Click again to Charge anyway." : "Click to choose it, then again to confirm."}`;
-    return `Charge ${r.sq} squares to ${sqName(last)}: ${end}. Click to Charge.`;
+    if (!target) return `<b>Pick the enemy to Charge</b>, on the map or here. You run straight at it (at least ${ch.min}, up to ${ch.max} squares), then make a Weapon Attack (1A).${cands.filter(x => !x.ok).length ? ` <span class="lb-tag">${cands.filter(x => !x.ok).map(x => `${esc(x.t.name)}: ${esc(x.why)}`).join(" \u00b7 ")}</span>` : ""}`;
+    const r = cur?.path; if (!r) return "";
+    const who = cur.inReach.some(t => t.id === target.id);
+    if (cur.tooFar) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too far</span> A Charge goes up to ${ch.max} squares: you stop after ${cur.stopSq}, out of Reach, and the Charge is disrupted.`;
+    if (r.bad < 0 && r.sq + 1e-6 < ch.min) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too close</span> A Charge moves at least ${ch.min} squares (in Reach after ${r.sq}). Pick another enemy, or give up.`;
+    if (r.bad >= 0) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">blocked</span> <span class="lb-warn">${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}.</span> You stop after ${cur.stopSq} squares${who ? `, ${esc(target.name)} in Reach` : `, out of Reach: the Charge is disrupted (its AP stay spent)`}.`;
+    return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">${r.sq} squares</span> In Reach at the end. Then: Weapon Attack (1A). Another enemy: click it.`;
   };
-  const sqName = cell => `${String.fromCharCode(65 + ((cell.j % 26) + 26) % 26)}${cell.i + 1}`;
   // v0.0.224 (Lucas, playtest 3): with a target, the line goes toward it (to the square of its space nearest to you) and stops on the first
   // square from which it is within Reach; the mouse only confirms. A blocked line stops earlier (a second click confirms it).
   let target = ch.targetId ? canvas.tokens?.get?.(ch.targetId) : null;   // v0.0.453 (playtest 6): a click on another creature changes it
@@ -1696,78 +1720,110 @@ export function openChargePicker(c, token) {
     const path = { cells, ties: full.ties, bad: blocked ? end : -1, problem: blocked ? full.problem : "", sq: stopSq, tl: tl0 };
     return { key: `T|${side}|${target.id}`, path, stop, stopTl, stopSq, inReach: creaturesInReach(virtAt(stop), reach), target: true, reachAt, tooFar };
   };
-  const compute = p => {
-    if (target) return computeTarget();
-    // v0.0.221: a larger creature aims with the center of its space (the space is centered on the mouse), not its top-left square.
-    const gs = canvas.grid.size, b = cellAt({ x: p.x - ((Math.max(1, Math.round(doc.width ?? 1)) - 1) * gs) / 2, y: p.y - ((Math.max(1, Math.round(doc.height ?? 1)) - 1) * gs) / 2 });
-    const path = chargePath(doc, a, b, side);
-    if (path.bad < 0 && path.cells.length > 1) { const n = freeBack(path.cells, path.cells.length - 1); if (n < path.cells.length - 1) path.cells = path.cells.slice(0, n + 1); }   // v0.0.453: not on a creature
-    const stop = path.bad >= 0 ? path.cells[path.bad - 1] : path.cells.at(-1), stopTl = path.tl(stop);
-    const stopSq = measureSquares(path.tl(a), stopTl);
-    const virt = { id: doc.id, document: { id: doc.id, x: stopTl.x, y: stopTl.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } };
-    return { key: `${b.i},${b.j}|${side}`, path, stop, stopTl, stopSq, inReach: creaturesInReach(virt, reach) };
+  // v0.0.461 (choice 3A): no destination square any more (compute(p) went): a Charge always has a target
+  // v0.0.461 (e): the enemies it can Charge (in Reach after at least min and at most max squares) and the others, with their reason
+  const me = doc.object ?? token;
+  const cands = (canvas.tokens?.placeables ?? []).filter(t => t.id !== doc.id && t.actor && !t.document?.hidden && t.visible !== false && Number(t.document?.disposition) !== Number(doc.disposition)).map((t, n) => {
+    let d = 0; try { d = Math.round(tokenDistance(me, t)); } catch (e) { d = 0; }
+    const need = Math.max(0, d - reach);
+    return { t, n: n + 1, ok: need >= ch.min && need <= ch.max, why: need < ch.min ? `too close (needs ${ch.min})` : need > ch.max ? `too far (${need})` : "" };
+  });
+  cands.filter(x => x.ok).forEach((x, k) => { x.n = k + 1; });
+  const marks = new PIXI.Container(); marks.eventMode = "none"; (canvas.interface ?? canvas.stage).addChild(marks);
+  const gsz = () => canvas.grid?.size ?? 100;
+  const boxOf = t => { const cs = tokenCells(t), gs = gsz(), i0 = Math.min(...cs.map(c => c.i)), j0 = Math.min(...cs.map(c => c.j)), i1 = Math.max(...cs.map(c => c.i)), j1 = Math.max(...cs.map(c => c.j)); const w = (j1 - j0 + 1) * gs, h = (i1 - i0 + 1) * gs; return { x: j0 * gs, y: i0 * gs, w, h, c: { x: j0 * gs + w / 2, y: i0 * gs + h / 2 } }; };
+  const pickEl = bar.querySelector(".lb-cands");
+  const drawCands = () => {
+    pickEl.innerHTML = target ? "" : cands.filter(x => x.ok).map(x => `<button type="button" class="lb-opt sq" data-cand="${esc(x.t.id)}" aria-label="${esc(x.t.name)}"><img src="${esc(x.t.document?.texture?.src ?? "")}" alt=""><b class="lb-num">${x.n}</b></button>`).join("");
   };
+  pickEl.addEventListener("click", async ev => { const b = ev.target.closest("[data-cand]"); if (!b) return; ev.preventDefault(); ev.stopPropagation(); const t = canvas.tokens?.get?.(b.dataset.cand); if (t) await setTarget(t); });
   const draw = () => {
     gfx.clear();
-    outlineCells(gfx, limit, { color: 0xf1c84b, width: 2 });
-    const t = text(); bar.querySelector(".lb-text").textContent = t;   // v0.0.421 (the audit): no title (the tooltip review)
+    for (const ch2 of marks.removeChildren()) ch2.destroy?.({ children: true });
+    const gs = gsz(), fs = Math.max(13, Math.round(gs * 0.18));
+    // the limit: a faint pale edge (gold is for a choice)
+    outlineCells(gfx, limit, { color: MK.INK, width: 1, alpha: 0.35 });
+    bar.querySelector(".lb-text").innerHTML = text();   // v0.0.421 (the audit): no title (the tooltip review)
+    drawCands();
+    const keys = bar.querySelector(".lb-keys");
     // v0.0.219 (Lucas): the bar keeps one size; the Ties buttons keep their place (hidden, not removed) so Give up never moves.
-    const sb = bar.querySelector(".lb-side"), tie = !!cur?.path.ties;
+    const sb = bar.querySelector(".lb-side"), tie = !!cur?.path?.ties;
     sb.hidden = false; sb.style.visibility = tie ? "visible" : "hidden";
     sb.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
+    const go = bar.querySelector(".lb-go"), give = bar.querySelector(".lb-give");
+    if (!target) {
+      for (const x of cands) {
+        const b = boxOf(x.t);
+        if (x.ok) { MK.attentionRing(marks, b.c, Math.max(b.w, b.h) * 0.62); const pin = MK.numberPin(x.n, { fs: Math.max(12, Math.round(gs * 0.16)) }); pin.position.set(b.c.x + Math.max(b.w, b.h) * 0.46, b.c.y - Math.max(b.w, b.h) * 0.46); marks.addChild(pin); }
+        else { const pl = MK.plate([x.why], { fs: Math.round(fs * 0.85), color: 0xb3a68e }); pl.position.set(b.c.x, b.y - 4); marks.addChild(pl); }
+      }
+      go.hidden = true; give.classList.add("fill"); go.classList.remove("fill");
+      keys.innerHTML = "<kbd>Esc</kbd> Give up \u00b7 Right-click pans the map";
+      return;
+    }
+    const tb = boxOf(target);
+    MK.attentionRing(marks, tb.c, Math.max(tb.w, tb.h) * 0.62, { hot: true });
     if (!cur) return;
-    const r = cur.path, okLen = cur.target ? (r.bad >= 0 || cur.tooFar || r.sq + 1e-6 >= ch.min) : r.sq + 1e-6 >= ch.min && r.sq <= ch.max + 1e-6;
-    const legal = r.bad >= 0 ? r.cells.slice(1, r.bad) : r.cells.slice(1), illegal = r.bad >= 0 ? r.cells.slice(r.bad) : [];
-    const foot = c => { const out = []; for (let di = 0; di < Math.max(1, Math.round(doc.height)); di++) for (let dj = 0; dj < Math.max(1, Math.round(doc.width)); dj++) out.push({ i: c.i + di, j: c.j + dj }); return out; };
-    if (!okLen) { fillCells(gfx, r.cells.slice(1).flatMap(foot), 0xe07a6a, 0.45); return; }
-    fillCells(gfx, legal.slice(0, -1).flatMap(foot), 0x6fa8dc, 0.5);      // blue: the squares passed
-    if (legal.length) fillCells(gfx, foot(legal.at(-1)), 0x5fbf86, 0.65);  // green: where it ends
-    fillCells(gfx, illegal.flatMap(foot), 0xe07a6a, 0.5);                 // red: not legal
-    if (legal.length) outlineCells(gfx, foot(legal.at(-1)), { color: 0xd8ffe6 });
+    const r = cur.path, blocked = r.bad >= 0 || cur.tooFar, short = r.bad < 0 && !cur.tooFar && r.sq + 1e-6 < ch.min;
+    const ctr = c => { const t = r.tl(c); return { x: t.x + (Math.max(1, Math.round(doc.width)) * gs) / 2, y: t.y + (Math.max(1, Math.round(doc.height)) * gs) / 2 }; };
+    const legal = r.bad >= 0 ? r.cells.slice(0, r.bad) : r.cells, illegal = r.bad >= 0 ? r.cells.slice(r.bad) : [];
+    // the straight line in pale ink, a dot a square; past the stop, faint red; a red cross where it is blocked
+    gfx.lineStyle(3, MK.INK, short ? 0.35 : 0.9);
+    legal.forEach((c, k) => { const p = ctr(c); if (k) gfx.lineTo(p.x, p.y); else gfx.moveTo(p.x, p.y); });
+    gfx.lineStyle(0); legal.slice(1).forEach(c => { const p = ctr(c); gfx.beginFill(MK.INK, short ? 0.35 : 0.9).drawCircle(p.x, p.y, Math.max(3, gs * 0.05)).endFill(); });
+    if (illegal.length) {
+      gfx.lineStyle(2, MK.RED, 0.45); const p0 = ctr(legal.at(-1) ?? r.cells[0]); gfx.moveTo(p0.x, p0.y); for (const c of illegal) { const p = ctr(c); gfx.lineTo(p.x, p.y); }
+      const x0 = ctr(illegal[0]), k = gs * 0.18; gfx.lineStyle(4, MK.RED, 1).moveTo(x0.x - k, x0.y - k).lineTo(x0.x + k, x0.y + k).moveTo(x0.x + k, x0.y - k).lineTo(x0.x - k, x0.y + k);
+    }
+    // the faint portrait where it stops
+    try { const src = doc.texture?.src; if (src && cur.stop && !short) { const sp = PIXI.Sprite.from(src), t = r.tl(cur.stop); sp.alpha = 0.35; sp.width = Math.max(1, Math.round(doc.width)) * gs; sp.height = Math.max(1, Math.round(doc.height)) * gs; sp.position.set(t.x, t.y); marks.addChildAt(sp, 0); } } catch (e) { /* no picture */ }
+    if (cur.stop) {
+      const p = ctr(cur.stop), who = cur.inReach.some(t => t.id === target.id);
+      const lines = short ? ["Too close", `a Charge moves at least ${ch.min}`] : blocked ? [`Stops after ${cur.stopSq}`, who ? `${target.name} in Reach` : `${target.name} not in Reach: disrupted`] : [`${r.sq} squares \u00b7 in Reach`, `then Weapon Attack (1A) on ${target.name}`];
+      const pl = MK.plate(lines, { fs, warn: blocked || short }); pl.position.set(p.x, p.y - (Math.max(1, Math.round(doc.height)) * gs) / 2 - 4); marks.addChild(pl);
+    }
+    go.hidden = short; go.textContent = blocked ? "Charge anyway" : "Charge";
+    go.classList.toggle("fill", !blocked); give.classList.toggle("fill", blocked);
+    keys.innerHTML = short ? "<kbd>Esc</kbd> Give up \u00b7 another enemy: click it" : `<kbd>Enter</kbd> ${blocked ? "Charge anyway" : "Charge"} \u00b7 <kbd>Esc</kbd> Give up \u00b7 Right-click pans the map`;
   };
-  const flip = () => { side = side === "left" ? "right" : "left"; armed = ""; if (target) cur = computeTarget(); else if (pos) cur = compute(pos); draw(); };
+  const setTarget = async t => { target = t; try { await c.setFlag(F, "charge", { ...ch, targetId: t.id }); ch.targetId = t.id; } catch (e) { /* the flag is only a record */ } cur = computeTarget(); draw(); };
+  const flip = () => { side = side === "left" ? "right" : "left"; if (target) cur = computeTarget(); draw(); };
   bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
   bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); close(true); });
   // v0.0.343 (Lucas, playtest 4): "Charge!" next to Give up: the line shown (toward the target, or the last square pointed at) goes, as a confirmed click
-  bar.querySelector(".lb-go").addEventListener("click", async ev => {
-    ev.preventDefault(); ev.stopPropagation();
-    if (!cur) return ui.notifications.info("Point at the destination on the map first.");
-    const r = cur.path;
-    if (r.cells.length < 2 || (r.bad < 0 && !cur.tooFar && r.sq + 1e-6 < ch.min) || (!cur.target && r.sq > ch.max + 1e-6)) return ui.notifications.info("That Charge isn't possible: see the bar.");
-    const go = cur;
-    close(false);
-    await runCharge(c, doc, go, reach);
-  });
+  bar.querySelector(".lb-go").addEventListener("click", async ev => { ev.preventDefault(); ev.stopPropagation(); await confirm(); });   // v0.0.461: Charge (or Charge anyway)
   const local = ev => (ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage));
-  const move = ev => { pos = local(ev); const n = compute(pos); if (n.key !== cur?.key) armed = ""; cur = n; draw(); };
+  // v0.0.461 (choice 3A): no destination square: the pointer only shows which enemy a click would pick
+  const move = ev => { pos = local(ev); const hit = tokenAtPoint(pos); canvas.app.view.style.cursor = hit && (target ? true : cands.some(x => x.ok && x.t.id === hit.id)) ? "pointer" : ""; };
   const down = async ev => {
     if (ev.button !== 0) return;   // v0.0.460 (Lucas, checklist v0.0.459: "right clicking cancels it"): a right-click is Foundry's (panning the map); Escape or Cancel ends it
     pos = local(ev);
-    // v0.0.453 (Lucas, playtest 6: "it should allow changing targets while the 'Charge X square' is shown"): a click on another creature makes it the target
+    // v0.0.453 (Lucas, playtest 6): a click on another enemy makes it the target; v0.0.461 (choice 4A): a click on the target confirms; a click
+    // anywhere else does nothing (it launched the Charge)
     const other = tokenAtPoint(pos);
-    if (other && other.id !== target?.id) { target = other; armed = ""; try { await c.setFlag(F, "charge", { ...ch, targetId: other.id }); ch.targetId = other.id; } catch (e) { /* the flag is only a record */ } cur = computeTarget(); draw(); return; }
-    cur = compute(pos);
+    if (!other) return;
+    if (other.id !== target?.id) { if (target || cands.some(x => x.ok && x.t.id === other.id)) await setTarget(other); return; }
+    await confirm();
+  };
+  const confirm = async () => {
+    if (!target || !cur) return;
     const r = cur.path;
-    if (cur.target) {
-      if (r.cells.length < 2 || (r.bad < 0 && !cur.tooFar && r.sq + 1e-6 < ch.min)) { draw(); return; }
-      if ((r.bad >= 0 || cur.tooFar) && armed !== cur.key) { armed = cur.key; draw(); return; }
-    } else {
-      if (r.cells.length < 2 || r.sq + 1e-6 < ch.min || r.sq > ch.max + 1e-6) { draw(); return; }
-      if (r.bad >= 0 && armed !== cur.key) { armed = cur.key; draw(); return; }   // a blocked line: a second click confirms
-    }
+    if (r.cells.length < 2 || (r.bad < 0 && !cur.tooFar && r.sq + 1e-6 < ch.min)) return;
     const go = cur;
     close(false);
     await runCharge(c, doc, go, reach);
   };
   const key_ = ev => {
     if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); close(true); }
+    if (ev.key === "Enter" && !/input|textarea/i.test(ev.target?.tagName ?? "")) { ev.preventDefault(); ev.stopImmediatePropagation(); confirm(); }   // v0.0.461: Enter confirms
     if (ev.key === "Tab") { ev.preventDefault(); ev.stopImmediatePropagation(); if (cur?.path.ties) flip(); }
   };
   const close = giveUp => {
     canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
     window.removeEventListener("keydown", key_, true);
     canvas.tokens.interactiveChildren = prevInteractive;
-    try { gfx.destroy(); } catch (e) { /* gone */ }
+    try { gfx.destroy(); marks.destroy({ children: true }); } catch (e) { /* gone */ }
+    try { canvas.app.view.style.cursor = ""; } catch (e) { /* gone */ }
     bar.remove();
     if (slot) hud.hudAsking(false);
     chargePick = null;

@@ -25,7 +25,7 @@ function dashed(g, x1, y1, x2, y2, dash = 10, gap = 7) {
 // v0.0.303 (Lucas: "a bit too small"): the text scales with the grid, on a dark pill like the Reactions overlay's labels
 const fsz = k => Math.round((canvas?.grid?.size ?? 100) * k);
 function label(txt, fill, size = fsz(0.18), bgColor = 0x1b2433, edge = 0xd9c9a3) {   // v0.0.353 (Lucas: "a bit smaller in general"): 0.24 -> 0.18
-  const box = new PIXI.Container(), t = new PIXI.Text(txt, { fontFamily: "Signika, sans-serif", fontSize: size, fontWeight: "700", fill, stroke: "#111111", strokeThickness: 3, align: "center" });
+  const box = new PIXI.Container(), t = new PIXI.Text(txt, { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: size, fontWeight: "700", fill, stroke: "#111111", strokeThickness: 3, align: "center" });
   t.anchor.set(0.5);
   const w = t.width + size * 0.8, h = t.height + size * 0.25, bg = new PIXI.Graphics();
   bg.lineStyle(2, edge, 0.9).beginFill(bgColor, 0.85).drawRoundedRect(-w / 2, -h / 2, w, h, size * 0.35).endFill();

@@ -54,7 +54,7 @@ function draw() {
     }
     g.lineStyle(2, 0x1e2430, 1).beginFill(0xffffff, 1).drawCircle(c.origin.x, c.origin.y, 6).endFill();
     box.addChild(g);
-    const text = new PIXI.Text(loeLabel(c), { fontFamily: "Signika, sans-serif", fontSize: 18, fontWeight: "600", fill: c.noLoE ? "#ffb3ad" : (c.level ? "#ffe3a3" : "#c8f5d2"), stroke: "#111111", strokeThickness: 4 });
+    const text = new PIXI.Text(loeLabel(c), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: 18, fontWeight: "600", fill: c.noLoE ? "#ffb3ad" : (c.level ? "#ffe3a3" : "#c8f5d2"), stroke: "#111111", strokeThickness: 4 });
     text.anchor.set(0.5, 1);
     text.position.set(t.center?.x ?? (t.x + t.w / 2), (t.y ?? 0) - 6);
     box.addChild(text);

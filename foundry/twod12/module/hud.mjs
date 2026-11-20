@@ -22,6 +22,8 @@ export function registerHudSettings() {
   game.settings.register(F, "hudFolded", { name: "HUD folded", scope: "client", config: false, type: Boolean, default: false, onChange: redraw });
   game.settings.register(F, "rxChime", { name: "Reactions: a chime", hint: "A short soft chime when one of your creatures can react (it follows Foundry's interface volume).", scope: "client", config: true, type: Boolean, default: true });
   game.settings.register(F, "rxFloat", { name: "Reactions: the name on the map", hint: "The Reaction's name over your reacting token, with its ring, until it is used or passed.", scope: "client", config: true, type: Boolean, default: true });
+  // v0.0.461 (the map notes' redesign): the attention ring's slow ripple (still when off, or with the browser's reduced motion)
+  game.settings.register(F, "mapMotion", { name: "Map: the attention ripple", hint: "A slow ripple around a token that needs you (a Reaction, a creature to pick). Off: the gold ring alone.", scope: "client", config: true, type: Boolean, default: true });
   game.settings.register(F, "rxHud", { name: "Reactions: the HUD", hint: "The HUD unfolds and names the trigger in its Situational section, with Use and Pass (it stays on the tab you had open).", scope: "client", config: true, type: Boolean, default: true, onChange: redraw });
 }
 
