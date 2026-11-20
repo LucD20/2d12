@@ -4,7 +4,7 @@
 
 | # | Talent | For | State |
 |---|---|---|---|
-| 1 | Take Aim | Sylwen (Elf Archer, Quick Shots, Hunting Bow) | Lucas's shape (2026-11-20); priced below; sets the anchor |
+| 1 | Take Aim | Sylwen (Elf Archer, Quick Shots, Hunting Bow) | Lucas's shape (2026-11-20); priced below; **the anchor (T17): about +6 a turn net, a placeholder** |
 | 2 | The god's blessing on the weapon | Aveline (Human Paladin, Smite, Longsword) | waiting |
 | 3 | Defending allies | Durgan (Dwarf Paladin, Lay On Hands, Arming Sword) | waiting |
 | 4 | Ricochet | Kaela (Human Archer, Strafe, Recurve Bow) | waiting |

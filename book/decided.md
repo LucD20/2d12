@@ -64,6 +64,7 @@
 - **T13** Every rank is worth a whole pick (checked against an average Rank I); a Talent has as many ranks as it needs, none to two.
 - **T14** A penalty is lifted, or a cost lowered, by an Action you spend (AP and a Frequency), never by a passive; passive lifted limits that change how an Action works stay allowed; an attack Talent is a Strike; the rarer the Frequency, the more it may be worth; near a class card is fine, overlap is not.
 - **T15** Talents restart for the two current classes (Paladin, Archer); the range grows from playtests and players' asks. The test batch is reference only. Every rank is priced against an anchor (one rank = N points of the 100-point turn, N set by Lucas), with floors as well as ceilings. Lists are numbered Talent.Branch.Rank.
+- **T16, T17** The first four Talents, one for each playtest PC (Aveline: the god's blessing on the weapon; Durgan: defending allies; Kaela: Ricochet; Sylwen: Take Aim). The anchor (placeholder): one pick is worth about +6 points a turn over the best other use of the same AP (a Weapon Attack = 25), read from Take Aim (`cards/talents-playtest.md`).
 
 ## 5. Questions still to ask
 

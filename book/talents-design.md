@@ -306,3 +306,7 @@ The four PCs (Foundry's compendium, level 1 and level 4): **Aveline** (Human Pal
 | # | Decided | Lucas's words |
 |---|---|---|
 | T16 | **The first four Talents, one for each playtest PC:** Aveline, the god's blessing on the weapon (3.1); Durgan, defending allies (2; "likely the harder one"); Kaela, Ricochet (3.2); Sylwen, Take Aim (3.4). Each is made for that PC's build, open to anyone (T3), priced on its build. **Take Aim goes first and sets the anchor** (Claude's proposal, 2026-11-20). | "Aveline: the god's blessing on the weapon / Durgan: defending allies (likely the harder one) / Kaela: Ricochet / Sylwen: Take Aim" |
+
+| # | Decided | Lucas's words |
+|---|---|---|
+| T17 | **The anchor, a placeholder: one Talent pick is worth about +6 points a turn over the best other use of the same AP, in the situation it is built for** (a Weapon Attack = 25; `ruler/pc-budget.md`). Read from Take Aim on Sylwen (`cards/talents-playtest.md` 1: about +18 gross, −12 for the Guard it replaces). Every Talent of the restart is priced against it; the playtest can move it. | "As a placeholder yes." |
