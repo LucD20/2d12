@@ -2,7 +2,7 @@
 
 **2026-11-20.** Lucas: "A" (the families of `research/famous-picks.md` that already fit, plus the damage trade as an Action). Seven Talents under T1 to T14 of `book/talents-design.md` and the lessons of his first review. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Stage 2 is not written in the game: every Stage on a rank is a placeholder.
 
-**Audit status:** see the last section.
+**Audit status:** audited by an independent reader and corrected; what changed is the last section. **Two questions for Lucas** came out of it (Grab Hold's permission; Finishing Blow), marked in place.
 
 ---
 
@@ -23,9 +23,9 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 |---|---|---|---|
 | Opportunity Attack | The attack of opportunity | I, II, III | 3 |
 | Steel and Spell | Casting under fire | I, II | 2 |
-| Point Blank Shot | The ranged package | I, II | 2 |
+| Arm's-Length Shot | The ranged package | I, II | 2 |
 | Parry | Defense, as a Reaction | I, II | 2 |
-| Break the Line | Mobility and the charge | I, II, III | 2 |
+| Break the Line | Mobility and the charge | I, II, III | 2 (one runs to Rank III) |
 | Grab Hold | Combat maneuvers | I, II | 3 |
 | Reckless Blow | The damage trade, as an Action | I, II | 3 |
 
@@ -42,8 +42,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 > **Opportunity Attack** · 1R · Round · [Melee, Strike, Weapon]
 > **Interrupt:** An enemy you threaten would leave a square during a Move Action, or would use the Stand Action.
 > **Target:** The triggering creature.
-> **Attack:** Weapon vs. Armor Defense
-> You make a Weapon Attack (1A) against the target.
+> **Effect:** You make a Weapon Attack (1A) against the target with a Melee weapon you threaten it with.
 
 **The tree**
 
@@ -62,12 +61,12 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II | Rank III |
 |---|---|---|
-| **The mage-hunter** | **Spellwatch:** the Interrupt also happens when an enemy you threaten would use a [Spell] Action ([Subtle] castings escape). On a Critical, that [Spell] Action is disrupted | **Spellbreaker:** a Tier 3 against a Minor enemy also disrupts it |
-| **The line-holder** | **Hamstring:** on a Tier 2 or 3, the target is Hindered (EoT) | **Cripple:** on a Tier 3 against a Minor enemy, its Move Action is disrupted; it stays in the square it was leaving |
-| **The bodyguard** | **Bodyguard:** the Interrupt also happens when an enemy you threaten would make a [Strike] Action against one of your allies | **Interpose:** on a Tier 3 against that enemy, its Strike targets you instead, if you are within its reach |
+| **The mage-hunter** | **Spellwatch:** the Interrupt also happens when an enemy you threaten would use a [Spell] Action ([Subtle] castings escape). On a Critical of the Weapon Attack, that [Spell] Action is disrupted | **Spellbreaker:** on a Tier 3 of the Weapon Attack, a Minor enemy's [Spell] Action is disrupted; any other enemy's [Spell] Action takes 2 Banes, or its targets' Save DC is 2 lower |
+| **The line-holder** | **Hamstring:** on a Tier 2 or 3 of the Weapon Attack, the target is Hindered (EoT) | **Cripple:** on a Tier 3 of the Weapon Attack, a Minor enemy's Move Action is disrupted (it stays in the square it was leaving); any other enemy is Slowed 1 |
+| **The bodyguard** | **Bodyguard:** the Interrupt also happens when an enemy you threaten would make a [Strike] Action against one of your allies | **Interpose:** on a Tier 3 of the Weapon Attack, that Strike targets you instead, if you are a target it could have chosen (within its Distance, with Line of Effect) |
 
 **Notes**
-- **The review's fixes:** threatened squares, so a Long weapon works; Spellbreaker's Critical folded into Spellwatch, with the disruption that matters kept for Minor enemies; Hamstring no longer stops movement, Cripple does only against Minor enemies; Bodyguard now answers an attack on an ally (Chapter 2 lists "a creature makes a [Strike] Action"), and Interpose redirects it.
+- **The audit's fixes:** the Weapon Attack is the Linked Action (its own Tiers), so the ranks name "the Weapon Attack"; each stopping rank now does something against any enemy, and stops only a Minor one (a Minion often dies to the hit anyway: Grunts are where it bites). **The review's fixes:** threatened squares, so a Long weapon works; Spellbreaker's Critical folded into Spellwatch, with the disruption that matters kept for Minor enemies; Hamstring no longer stops movement, Cripple does only against Minor enemies; Bodyguard now answers an attack on an ally (Chapter 2 lists "a creature makes a [Strike] Action"), and Interpose redirects it.
 - **Near** the Paladin's Shield of Faith (an ally's damage reduced), not the same: Bodyguard is a Weapon Attack, Shield of Faith a [Divine] reduction.
 
 ---
@@ -82,7 +81,8 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 > *The blade finishes its arc and your free fingers are already shaping the word.*
 > **Prerequisite:** a [Spell] Action
 > **Steel and Spell** · 2 AP · Round · [Strike, Weapon]
-> You make a Weapon Attack (1A), then use a 1 AP [Spell] Action. That spell can be a [Handle] one even with your weapon in the hand it needs.
+> **Target:** As the Weapon Attack, then as the spell.
+> **Effect:** You make a Weapon Attack (1A), then use a 1 AP [Spell] Action. That spell can be a [Handle] one even with your weapon in the hand it needs. **The spell still counts toward its own Frequency** (it must be one you could use now) and pays its Surge cost (and Heavy armor's), unlike a Linked Action (Chapter 2).
 
 **The tree**
 
@@ -98,33 +98,34 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II |
 |---|---|
-| **The spellsword** | **Close Casting:** the spell of Steel and Spell isn't Doomed for being Engaged, and its targets' Saves aren't Favored for it |
-| **The battle-mage** | **Unbroken Focus:** a [Woven] or [Sustained] spell cast with Steel and Spell doesn't end the first time you become Bloodied or Strained this encounter |
+| **The spellsword** | **Close Casting:** the spell of Steel and Spell can cost 1 or 2 AP (Steel and Spell then costs 2 or 3 AP), and a [Ranged] spell cast with it isn't Doomed for being Engaged, nor are its targets' Saves Favored for it |
+| **The battle-mage** | **Unbroken Focus:** a [Woven] or [Sustained] spell cast with Steel and Spell doesn't end the next time you become Bloodied or Strained after casting it |
 
 **Notes**
 - **D&D's War Caster in three parts,** each a lifted limit paid by this Action (T14): the free hand ([Handle]), the Engaged penalty, the held magic's break.
+- **The audit's fixes:** a Linked Action doesn't count toward its own Frequency (Chapter 2), so the spell's Frequency and Surge are written to count; Close Casting widened (it only touched [Ranged] spells: magic 108); "the first time" made "the next time after casting it".
 - **Unbroken Focus** lifts a limit the magic record left to Talents (5l: "a held spell that survives one break").
 
 ---
 
-## 3. Point Blank Shot (the ranged package)
+## 3. Arm's-Length Shot (the ranged package)
 
-**At a glance.** Lucas's own draft: a shot while Engaged that isn't Doomed. Two ranks, two branches.
+**At a glance.** Lucas's own draft ("Point Blank Shot", renamed: the Pistol's placeholder Technique is already called Point Blank): a shot while Engaged that isn't Doomed. Two ranks, two branches.
 
 **Rank I**
 
-> **Point Blank Shot** · Talent · Archery · Stage 0
+> **Arm's-Length Shot** · Talent · Archery · Stage 0
 > *They are close enough to touch, and you shoot anyway.*
-> **Point Blank Shot** · 1 AP · Round · [Projectile, Ranged, Strike, Weapon]
+> **Arm's-Length Shot** · 1 AP · Round · [Projectile, Ranged, Strike, Weapon]
 > **Distance:** Weapon · **Target:** One creature
+> **Special:** This roll isn't Doomed for your being Engaged.
 > **Attack:** Weapon vs. Armor Defense
-> This roll isn't Doomed for your being Engaged.
-> **Tier 1:** 0. **Tier 2 or 3:** [V] 1[W] + [Mod].
+> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod].
 
 **The tree**
 
 ```
- Rank I        [ Point Blank Shot ]   1 AP: a shot while Engaged, not Doomed
+ Rank I        [ Arm's-Length Shot ]   1 AP: a shot while Engaged, not Doomed
                         │
             ┌───────────┴───────────┐
  Rank II    ▼                       ▼
@@ -136,7 +137,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 | Branch | Rank II |
 |---|---|
 | **The skirmisher** | **Step and Loose:** a new line: **Setup:** you Evade 1 |
-| **The brawling archer** | **Shove Off:** a new line: on a Tier 3, if the target is Engaged with you, it is Pushed 1 |
+| **The brawling archer** | **Shove Off:** on the Tier 3 line: if the target is Engaged with you, it is also Pushed 1 |
 
 **Notes**
 - **Near the Archer, not overlapping:** Clear Lines removes Cover from allies and the Field Bane for a target Engaged with an ally; Snap Shot answers an enemy closing in; Footwork's Sidestep is Evade 3 for 1 AP. None makes a shot while you are Engaged.
@@ -146,16 +147,17 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 ## 4. Parry (defense, as a Reaction)
 
-**At a glance.** Turn a blow aside with your weapon. Two ranks, two branches. **Prerequisite: a [Melee] weapon other than Fists.**
+**At a glance.** Turn a blow aside with your weapon. Two ranks, two branches.
 
 **Rank I**
 
 > **Parry** · Talent · Guard · Stage 0
 > *Steel meets steel an inch from your face.*
-> **Prerequisite:** a Melee weapon other than Fists
 > **Parry** · 1R · Round · [Weapon]
+> **Requirements:** You hold a Melee weapon other than Fists.
 > **Interrupt:** An enemy's [Melee, Strike] Action would damage you.
-> That damage is reduced by 1[W] + your Weapon Modifier, rolled with the weapon you parry with.
+> **Target:** You.
+> **Effect:** That damage is reduced by 1[W] + your Weapon Modifier, rolled with the weapon you parry with.
 
 **The tree**
 
@@ -171,12 +173,12 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II |
 |---|---|
-| **The duelist** | **Riposte:** a new line: if the damage is reduced to 0, you make a Weapon Attack (1A) against the attacker |
+| **The duelist** | **Riposte:** a new line: if Parry alone reduces the damage to 0, you make a Weapon Attack (1A) against the attacker |
 | **The bulwark** | **Deflect:** the Interrupt also happens against a [Ranged, Strike] Action |
 
 **Notes**
 - **Near the Paladin's Shield of Faith** (an ally's damage reduced by 1 + Power Modifier, and a Taunt): Parry guards only you and rolls your weapon.
-- **The prerequisite is a property, not a trait** (the audit's lesson: weapons have properties). Fists are left out on purpose.
+- **The weapon is a Requirement, not a prerequisite** (the audit: an item can't be a prerequisite under T5; a Requirement is checked each time). Fists are left out on purpose.
 
 ---
 
@@ -186,9 +188,9 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 **Rank I**
 
-> **Break the Line** · Talent · Vanguard · Stage 0
+> **Break the Line** · Talent · Vanguard · Stage 0 · Passive
 > *You don't go around them.*
-> When you Charge, your straight line can pass through the squares of enemies as if they were ordinary squares. You can't end your movement in one; if your movement is disrupted while you are in one, it ends in the last square you left.
+> **Passive:** When you Charge, your straight line can pass through the squares of enemies as if they were ordinary squares. You can't end your movement in one: if the square where the Charge would stop holds an enemy, it stops in the last unoccupied square before it; if your movement is disrupted, it ends in the last unoccupied square you left.
 
 **The tree**
 
@@ -197,42 +199,43 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
                          │
             ┌────────────┴────────────┐
  Rank II    ▼                         ▼
-     [ Bull Rush ]             [ Shoulder Through ]
-            │                         │
- Rank III   ▼                         ▼
-     [ Trample ]               [ Through and Past ]
+     [ Bull Rush ]                [ Overrun ]
+            │
+ Rank III   ▼
+     [ Trample ]
 ```
 
 **The branches**
 
 | Branch | Rank II | Rank III |
 |---|---|---|
-| **The battering ram** | **Bull Rush:** a new line: each enemy whose square you pass through makes a Body Save against your Weapon DC. **Tier 1:** Pushed 1, away from your line | **Trample:** a Minor enemy that gets a Tier 1 is also Prone |
-| **The skirmisher** | **Shoulder Through:** you can also do it once on your turn during an Advance, through one enemy | **Through and Past:** a new line: after a Charge that passed through an enemy, you can Evade 1 |
+| **The battering ram** | **Bull Rush:** a new line: as you leave each enemy's square, it makes a Body Save against your Weapon DC. **Tier 1:** Pushed 1 away from you, to a square beside your line | **Trample:** a Minor enemy that gets a Tier 1 is also Prone |
+| **The skirmisher** | **Overrun:** a new line: if the Charge's Weapon Attack gets a Tier 2 or 3, you can go on along your straight line, up to 2 squares, through the target's square too | (none: nothing more worth a pick) |
 
 **Notes**
-- **Near the Archer's Footwork (Weave)**, which moves through unwilling creatures in an Advance: Break the Line is the Charge's version, and Shoulder Through is narrower (one enemy, once a turn).
+- **Near the Archer's Footwork (Weave)**, which moves through unwilling creatures in an Advance: Break the Line is the Charge's version. **Shoulder Through is gone:** in an Advance it was a subset of Weave (overlap, T14) and the rank Lucas called too weak.
 - **Trample against a Minor enemy only** (lesson 1); Trip stays the way to knock a major enemy Prone.
 
 ---
 
 ## 6. Grab Hold (combat maneuvers)
 
-**At a glance.** A grapple: take hold of a creature, then do something with it. Two ranks, three branches.
+**At a glance.** A grapple: take hold of a creature, then do something with it. Two ranks, three branches. **A question for Lucas, from the audit:** a grapple is something anyone should be able to try (the permission trap): should the plain grapple be a Basic Action, and this Talent what comes after it?
 
 **Rank I**
 
 > **Grab Hold** · Talent · Wrestling · Stage 0
 > *You stop trying to hit them and simply take hold.*
 > **Grab Hold** · 1 AP · Round · [Body, Handle, Strike]
-> **Distance:** Reach · **Target:** One creature whose SR is at most 1 higher than yours
+> **Requirements:** The target's SR is at most 1 higher than yours.
+> **Distance:** Reach · **Target:** One creature
 > **Attack:** Body vs. Body
-> **Tier 1:** No effect. **Tier 2:** Grabbed. **Tier 3:** Grabbed, and Staggered (EoT).
+> **Tier 1:** No effect. **Tier 2:** Hindered (EoT). **Tier 3:** Grabbed by you.
 
 **The tree**
 
 ```
- Rank I              [ Grab Hold ]   1 AP: Body vs Body, Grabbed
+ Rank I              [ Grab Hold ]   1 AP: Body vs Body, Grabbed on a Tier 3
                            │
           ┌────────────────┼────────────────┐
  Rank II  ▼                ▼                ▼
@@ -243,13 +246,13 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 | Branch | Rank II |
 |---|---|
-| **The thrower** | **Throw:** a new Action, **Throw** · 1 AP · Round · [Body, Strike], against a creature you hold: it is Pushed 2 and no longer Grabbed; on a Tier 3 against a Minor enemy, also Prone |
-| **The bodyguard of one** | **Human Shield:** while you hold a creature, it gives you Low cover against [Ranged] Actions whose line passes through its square |
-| **The silencer** | **Choke:** while you hold a creature, it can't use [Incanted] Actions |
+| **The thrower** | **Throw:** a new Action. **Throw** · 1 AP · Round · [Body, Strike] · **Target:** a creature Grabbed by you · **Attack:** Body vs. Body · **Tier 1:** it is no longer Grabbed. **Tier 2:** Pushed 2; no longer Grabbed. **Tier 3:** Pushed 3; no longer Grabbed; a Minor enemy is also Prone |
+| **The bodyguard of one** | **Human Shield:** when a [Ranged, Strike] Action against you gets a Tier 1 while a creature is Grabbed by you, that creature takes the Strike's Tier 2 damage instead |
+| **The silencer** | **Choke:** while a Minor enemy is Grabbed by you, it can't use [Incanted] Actions |
 
 **Notes**
 - **Grabbed is already in the rules** (Chapter 8), and the Arming Sword's Technique grabs after a Slid: Grab Hold is the plain grapple the base rules don't have (near a weapon card, not a class card).
-- **A boss held is a boss Immobilized** (Grabbed makes it Immobilized). Break Free ends it, and Grab Hold is a Round Action; a question for the audit (lesson 1).
+- **The audit's fix for lesson 1:** Grabbed came on any success against any creature up to SR + 1 (a boss included); now only on a Tier 3, as the Arming Sword's Seizing Cut. Choke only against a Minor enemy. **Human Shield was nothing new:** Chapter 3 already gives Low cover for a creature in the way.
 
 ---
 
@@ -263,7 +266,8 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 > *You stop guarding and swing to end it.*
 > **Reckless Blow** · 2 AP · Round · [Melee, Strike, Weapon]
 > **Distance:** Weapon · **Target:** One creature
-> **Attack:** Weapon vs. Armor Defense, with 2 Banes
+> **Special:** This roll takes 2 Banes.
+> **Attack:** Weapon vs. Armor Defense
 > **Tier 1:** 0. **Tier 2:** [V] 2[W] + [Mod]. **Tier 3:** [V] 3[W] + [Mod].
 
 **The tree**
@@ -273,23 +277,35 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
                            │
           ┌────────────────┼────────────────┐
  Rank II  ▼                ▼                ▼
-      [ Cleave ]      [ Sunder ]      [ Finishing Blow ]
+   [ Sweeping Blow ]   [ Sunder ]      [ Finishing Blow ]
 ```
 
 **The branches**
 
 | Branch | Rank II |
 |---|---|
-| **The reaper** | **Cleave:** a new line: on a Tier 3, one other enemy you threaten takes [V] 1[W] |
+| **The reaper** | **Sweeping Blow:** on the Tier 3 line: you Cleave 1 (Chapter 1) |
 | **The breaker** | **Sunder:** a new line: on a Tier 3, the target's Armor Defense is 1 lower (1 round) |
-| **The executioner** | **Finishing Blow:** a new line: against a Bloodied target, the roll takes no Banes |
+| **The executioner** | **Finishing Blow:** a new line: against a Bloodied target, the roll doesn't take the 2 Banes of this card (its other Banes stay) |
 
 **Notes**
 - **The trade is inside the Action** (2 Banes for more dice), so it is a choice each turn, never a passive (T1, T14). Pathfinder 2e's Power Attack is the model (`research/famous-picks.md`).
+- **A question for Lucas, from the audit:** Finishing Blow improves every Tier against half a fight's targets, while Sweeping Blow and Sunder ride a Tier 3 that the card's own Banes cut to about 12 to 23%: likely the obvious branch. Keep, or weaken?
+- **Cleave is already a rules term** (Chapter 1, Cleave N): the branch now uses it.
 - **Near the Archer's Quick Shots** (2 AP, more [W] for a bow): Reckless Blow is melee and pays with Banes.
 
 ---
 
-## 8. The audit
+## 8. The audit: what the independent reader changed
 
-(filled after the audit)
+| Talent | Finding | Now |
+|---|---|---|
+| **Grab Hold** | **Broke the draft's own boss rule:** Grabbed (Immobilized, no duration) on any success against any creature up to SR + 1; Choke made it a lockdown for casters; Human Shield gave what Chapter 3 already gives (Low cover from a creature in the way); Throw had no Attack or Tiers; the SR limit belongs under Requirements; the plain grapple may be a permission trap | Grabbed on a Tier 3 only; Choke against Minor enemies; Human Shield redirects a miss; Throw written whole; **the permission question put to Lucas** |
+| **Steel and Spell** | **A Frequency bypass:** a Linked Action doesn't count toward its own Frequency (Chapter 2), so an Encounter spell could be cast every round; Surge and armor not addressed; Close Casting worth little (only [Ranged] spells); "the first time" unclear; no Target or Effect line | The spell's Frequency and Surge written to count; Close Casting widened; wording fixed |
+| **Break the Line** | Shoulder Through repeated a rank Lucas called too weak and was a subset of the Archer's Weave (overlap); the Charge's stop square could be an enemy's; the disrupted case could land in an enemy's square; Bull Rush's push had no origin and no timing; Through and Past too situational; no Passive label | Shoulder Through and Through and Past gone; Overrun added; the stop and disrupted cases written; Bull Rush timed and given an origin |
+| **Reckless Blow** | "Cleave" already a rules term; Finishing Blow removed every Bane and is likely the obvious branch; the Banes belong in a Special | Sweeping Blow uses Cleave 1; Finishing Blow limited to this card's Banes; **the dominance question put to Lucas** |
+| **Opportunity Attack** | Spellbreaker and Cripple rest on a rare trigger (a Tier 3 against a Minor enemy, who often dies to the hit anyway); "within its reach" the wrong word; no Effect label; ranks pointed at Tiers the card doesn't show | Each stopping rank now does something against any enemy too; Interpose uses Distance and Line of Effect; the Weapon Attack named as the Linked Action |
+| **Parry** | No Target line; a weapon can't be a prerequisite (T5); "reduced to 0" unclear beside other reductions (Chapter 4) | Target and Requirements lines; Riposte counts Parry alone |
+| **Point Blank Shot** | The Engaged rule must be a Special; Shove Off belongs on the Tier 3 line; the name clashes with the Pistol's placeholder Technique | Renamed Arm's-Length Shot; restructured |
+
+**No finding** on bare numbers (T1), the Skill wall (T2) or class cards (T9, T10). **Not re-audited after these fixes.**
