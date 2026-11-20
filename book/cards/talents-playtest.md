@@ -16,9 +16,10 @@
 **Lucas (2026-11-20):** "1 ap, you havent left your square; you gain 2 boons on ranged attacks until you leave your square (EoT)."
 
 > **Take Aim** · Talent · Archery · Stage 0
+> **Take Aim** · Round · 1 AP
 > *You plant your feet, slow your breath, and let the world narrow to the arrowhead.*
-> **Take Aim** · 1 AP · Round · [Self]
-> **Requirements:** You haven't left your square this turn.
+> [Self]
+> **Requirement:** You haven't left your square this turn.
 > **Effect:** Your [Ranged, Strike] Actions gain 2 Boons until the end of your turn (EoT). This ends when you leave your square.
 
 **The price (Sylwen at level 4; Weapon Modifier +2 assumed; Defense 13; 400,000 rolls each):**
@@ -55,22 +56,22 @@
 **Lucas (2026-11-20), the special rule:** "I mean special effects outside of rules, similar to spells. Talents I feel can do similar to spells, and be more innovative, bend rules, be unique." Then, on the Ice Pillar: "Lasts a minute, it breaks if it takes 5 damage at once (chip damage doesnt break it). DC to hit it is Action DC. Deals damage, looks cool, has niche utility, I think it is in a good spot"; and on Claude's five points: EoE (introduced in the book the same day), one pillar at a time ("Yes, good"), Forced Movement breaks it too, an Area hits it and objects get Tier 1 on Saves (a rule for the objects pass, `rules-backlog.md`), and a creature or an object as the target ("Do it").
 
 > **Cold Domain** · Talent · Faith · Stage 0 *(placeholder name)*
-> **Rime Strike** · 1 AP · Round · [Divine, Melee, Strike]
+> **Rime Strike** · Round · 1 AP
 > *Frost runs down the edge, and the cold bites before the steel does; where it lands, the ice rises.*
+> [Divine, Melee, Split, Strike]
 > **Target:** One creature or object
+> **Ice Pillar:** A pillar of ice rises in a square adjacent to the target that holds no creature or object and that you have Line of Effect to (EoE; outside a fight, about a minute). You have one Ice Pillar at a time: raising a new one melts the old one.
+> - It fills its square as a wall does: it blocks movement and Line of Effect through its square, its corners are solid (Chapter 3, Corners), and it gives Cover as a wall does.
+> - Its Defense is your Action DC for that Rime Strike (11 + the Modifier its mode used). Against a Save it gets Tier 1. An Area that covers its square hits it, whoever made the Area.
+> - It breaks when one Action deals it 5 or more damage; less does nothing and doesn't add up. A creature that collides with it (Chapter 3, Collision) deals it the damage the creature takes.
 >
-> **Weapon** · [Weapon] · **Distance:** Weapon
+> **Weapon mode** · **Distance:** Weapon
 > **Attack:** Weapon vs. Armor Defense
 > **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]; an Ice Pillar. **Tier 3:** [V] 1[W] + [Mod]; an Ice Pillar.
 >
-> **Power** · [Power] · **Distance:** Reach
+> **Power mode** · **Distance:** Reach
 > **Attack:** Power vs. Ward Defense
 > **Tier 1:** 0. **Tier 2:** [V] 2d6! + 1d4! Co; an Ice Pillar. **Tier 3:** [V] 3d8! Co; an Ice Pillar.
->
-> **Ice Pillar:** A pillar of ice rises in an empty square adjacent to the target that you have Line of Effect to (EoE; outside a fight, about a minute). You have one Ice Pillar at a time: raising a new one melts the old one.
-> - It fills its square: it blocks movement and Line of Effect, its corners are solid (Chapter 3, Corners), and it gives Cover as a wall does.
-> - Its Defense is your Action DC for that Rime Strike (11 + the Modifier its Mode used). Against a Save it gets Tier 1. An Area hits it.
-> - It breaks when one Action deals it 5 or more damage; less does nothing and doesn't add up. A creature that collides with it (Chapter 3, Collision) deals it the damage the creature takes.
 
 **The averages** (200,000 rolls each): the Longsword at Weapon Modifier +2 is 11.0 on Tier 2 and 15.0 on Tier 3; the Power Mode's 2d6! + 1d4! is 11.0 and 3d8! is 15.0. (The Arming Sword at +2 is 8.0 and 10.0: with a one-handed weapon the Power Mode is the bigger one.)
 
@@ -85,7 +86,9 @@
 
 **Analysis**
 - **At or a little above the anchor:** higher on narrow maps, lower on open ones. If it is strong at the table, the first cut is the Tier 2 Ice Pillar (Tier 3 only).
-- **The [Divine] trait** reaches the Paladin's [Divine] class cards (Hallowed Stance's Advance, for one), and gives a character who isn't a Paladin a [Divine] Action (`decided.md`'s open "way into [Divine]").
+- **The [Divine] trait** gives a character who isn't a Paladin a [Divine] Action (`decided.md`'s open "way into [Divine]"). None of Aveline's cards key on [Divine] Actions; Hallowed Stance does (Durgan's), and T10 is to make it [Paladin, Divine], which a Talent's [Divine] won't reach.
+- **[Split]** (Chapter 7): the book's own trait for a Weapon mode and a Power mode, used instead of Modes.
+- **The pillar can give the target Cover against Sylwen and Kaela** (Clear Lines removes allies' Cover, not an object's): an unpriced cost.
 - **Near, not the same:** Smite (an Encounter nova of Holy dice), Binding Light (Holy and Immobilized), Consecrated Ground and Covering Fire (terrain, never solid).
 - **The boss rule holds:** the pillar never stops a creature; a boss walks around it or breaks it with one blow of 5.
 - **New rules it needed:** EoE (in the book), and two object rules it writes for itself until the objects pass (Tier 1 on a Save, Collision damage to an object).
@@ -97,20 +100,21 @@
 **Lucas (2026-11-20):** chose the shared burden (5e's Warding Bond, Lancer's Bonded; `research/frontline-protection.md`) among ten families, then wrote it: "0AP - Round [focus] Designate an ally you can Sense, it is your Bound Ally (EoE). You gain the following Action: 1R - Turn - Requirements: Your Bound Ally is adjacent to you; Interrupt: The Bound Ally would take damage; You take half the damage and the Bound Ally take the other half the damage." With two notes: halving halves each subtype on its own (now Chapter 1), and a creature with a big Resistance could abuse it. "Yes to all" on Claude's five points: the Reaction has no [Divine] trait; the rounding; the order; Resistance and Immunity don't reduce Durgan's half; one Bound Ally at a time, and every source of damage counts.
 
 > **Shared Burden** · Talent · Guardian · Stage 0 *(placeholder name)*
-> **Oath of Burden** · 0 AP · Round · [Focus]
+> **Oath of Burden** · Round · 0 AP
 > *You set your shoulder beside theirs: whatever comes for them comes through you.*
-> **Target:** One ally you can sense
+> [Focus]
+> **Target:** One ally you perceive
 > **Effect:** The target is your **Bound Ally** (EoE). If another creature was your Bound Ally, it no longer is. While you have a Bound Ally, you have the Reaction **Bear the Blow**.
 >
-> **Bear the Blow** · 1R · Turn
+> **Bear the Blow** · Turn · 1R
 > *You take the blow on the shoulder they would have taken it on.*
-> **Requirements:** Your Bound Ally is adjacent to you.
-> **Interrupt:** Your Bound Ally would take damage.
+> **Requirement:** Your Bound Ally is adjacent to you.
+> **Interrupt:** An Action would damage your Bound Ally.
 > **Target:** Your Bound Ally.
-> **Effect:** You take half of that damage (rounded up); your Bound Ally takes the rest (Chapter 1, Halving and splitting damage). Each of you then applies your own Weakness and Guard to your part; **your Resistance and Immunity don't reduce your part**, your Bound Ally's do reduce theirs.
+> **Effect:** You take half of that damage (rounded up); your Bound Ally takes the rest (Chapter 1, Halving and splitting damage). The split is made before Guard: each of you then applies your own Weakness and Guard to your part; **your Resistance and Immunity don't reduce your part**, your Bound Ally's do reduce theirs.
 
 **Notes**
-- **Every source of damage counts** (an Area, Lingering, a fall, Collision). When Shield of Faith and Bear the Blow answer the same hit, Durgan chooses the order (Chapter 2): Shield of Faith shrinks it, then Bear the Blow splits what is left.
+- **An Action's damage only** (the listed moment, "would damage someone"): Lingering, a fall and a hazard have no triggering Action. **Shield of Faith and Bear the Blow can't both answer one Action** (Chapter 2: "You can react only once to the same Action"): Durgan chooses one.
 - **Durgan's two Reaction AP:** Shield of Faith ([Divine, Focus]) is paid by Tireless Vigil's; Bear the Blow (no trait) by his own. Both can happen every round.
 - **Why Resistance and Immunity don't count on his part** (Lucas's warning): armor will give Resistance by subtype (Chapter 15's plan: padded, mail, plate), so the bond would erase damage instead of moving it.
 
@@ -136,12 +140,13 @@
 **Lucas (2026-11-20):** "D, but I think 1 tier lower might be too weak? Maybe half damage? Or we do a fixed damage?" Then, on the computed options: half damage, 3 squares ("Yes").
 
 > **Ricochet** · Talent · Archery · Stage 0
-> **Ricochet** · 1 AP · Round · [Projectile, Ranged, Strike, Weapon]
+> **Ricochet** · Round · 1 AP
 > *The arrow skips off one shield and finds the throat behind it.*
+> [Projectile, Ranged, Strike, Weapon]
 > **Distance:** Weapon · **Target:** One creature
+> **Ricochet:** The arrow can bounce to a second creature within 3 squares of the target that the target has Line of Effect to (you don't need Line of Effect to it). It takes half of the damage dealt to the target, before the target's Resistance, Weakness, Immunity and Guard (Chapter 1, Halving and splitting damage), then applies its own; none of the riders. No roll is made against it, and it isn't hit on a Tier: another card's Tier effects (Opening Shot, One More Arrow) don't apply to it.
 > **Attack:** Weapon vs. Armor Defense
 > **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]; a ricochet. **Tier 3:** [V] 1[W] + [Mod]; a ricochet.
-> **Ricochet:** The arrow bounces to a second creature within 3 squares of the target that the target has Line of Effect to. The second creature takes half the damage the target took (Chapter 1, Halving and splitting damage), and none of the riders. No roll is made against it.
 
 **The price (Kaela, Recurve Bow, Weapon Modifier +2, Defense 13; 300,000 rolls each):**
 
@@ -155,7 +160,20 @@ The 70% is [judgment]. **About +9 a turn: a little above the anchor (+6).** The 
 
 **Analysis**
 - **Half damage over one Tier lower** (Lucas's call, and the odds): one Tier lower does nothing on a Tier 2, the most common hit, so its worth sat on the Tier 3 (the rare-trigger lesson).
-- **One roll for two creatures:** the second creature's Defense doesn't matter; it is hit on the same Tier.
+- **One roll for two creatures:** the second creature's Defense doesn't matter, and it isn't on a Tier.
 - **Watch:** Kaela already deals the most damage at the table (14.5 a round in playtest 5).
-- **Near, not the same:** Cleave (the Modifier to adjacent creatures, Chapter 1), One More Arrow (1[W] more to each creature on a Tier), Volley and Covering Fire (areas). A Passive that adds to "each creature on that Tier" (One More Arrow) adds nothing to the second creature, which is on no Tier, except through the half of the target's damage it takes.
+- **Near, not the same:** Cleave (the Modifier to adjacent creatures, Chapter 1), One More Arrow (1[W] more to each creature on a Tier: it reaches the second creature only through the half of the target's damage), Volley and Covering Fire (areas).
 - **A later branch:** the bank shot (off a wall, at a creature you have no Line of Effect to), once a rule for bouncing off walls is written.
+
+---
+
+## 5. The audit of the four (2026-11-20, an independent reader; Opus)
+
+**Fixed (wording and structure; no decision changed):** every bar reads Frequency · Cost, the traits on their own line, the label "Requirement"; Rime Strike uses the book's [Split] trait and its Ice Pillar sits above the modes; "a square that holds no creature or object"; the pillar blocks Line of Effect through its square; an Area that covers it hits it, whoever made it; Bear the Blow's moment is "An Action would damage your Bound Ally" (Lingering, falls and hazards have no triggering Action); the split comes before Guard; "perceive" for "sense"; Shield of Faith and Bear the Blow can't both answer one Action (Chapter 2); the ricochet is optional, needs no Line of Effect from Kaela, takes half of the damage dealt before the target's Resistance, Weakness, Immunity and Guard, and isn't on a Tier; the Hallowed Stance note corrected (Aveline doesn't have it).
+
+**For Lucas (the prices were wrong):**
+1. **Take Aim and the anchor (T17):** Quick Shots gives 1 AP only on a **Critical**, so Sylwen's turn has no spare AP: Take Aim pushes out a Strike. At her real Weapon Modifier (+3 at level 4): her plain turn (Quick Shots, Wounding Shot, a Weapon Attack) deals about 23.0; with Take Aim (2 Boons on Quick Shots and one shot) about 19.6: **about −15 points a turn**, never worth it. The +6 anchor was read from that wrong turn. As a 0 AP Action: 1 Boon on her three shots is about **+7**, 2 Boons about **+13**.
+2. **Rime Strike at Aveline's real Modifiers** (Weapon +1, Power +3 at level 4): the Weapon mode averages 7.5 a use, the Power mode 9.9 (+32%): she would always use Power. Power dice of **2d6! on Tier 2 and 2d8! + 1d4! on Tier 3** give 7.9, within 5% of the Weapon mode.
+3. **Shared Burden is below the anchor:** Tireless Vigil works only from Escalation 4, so before that Bear the Blow takes Shield of Faith's Reaction AP; one Action's hit is about 4 to 13 (a Standard's 11.9 is a whole turn), so it moves 2 to 4 a use. **About 0 early in a fight, +2 to +4 late.**
+4. **Ricochet** (about +9 for no condition) is the better pick for Sylwen too (T6: the obvious pick for every bow user).
+5. **Ice Pillar outside a fight:** "about a minute" can be repeated without limit (strike the door again each minute).
