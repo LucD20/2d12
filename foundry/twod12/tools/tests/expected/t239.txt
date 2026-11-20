@@ -1,4 +1,4 @@
-the center line red-orange and thicker when a creature is in the way: true
+the center line solid, red-orange and thicker when a creature is in the way; the corner lines dashed (v0.0.453): true
 the flanked creature's name on top: true
 Covering Fire's two settings: ["enemies","E.bane","allies","E.def"]
 its sentences: Enemies inside gain Covering Fire (1 Bane). Allies inside gain Covering Fire (+1 Defense).

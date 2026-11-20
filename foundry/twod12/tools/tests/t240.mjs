@@ -7,7 +7,7 @@ const ROOTURL = new URL("../../", import.meta.url).href, ROOT = fileURLToPath(RO
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("flanking labels keep their screen size:", src("module/flankoverlay.mjs").includes("box.scale.set(Math.max(0.35, Math.min(2.5, 1 / z)));") && src("module/flankoverlay.mjs").includes('Hooks.on("canvasPan", redraw);'));
 const zt = src("module/zonetip.mjs"), css = src("styles/system.css");
-console.log("the tooltip's sides colored, the words highlighted:", zt.includes('<span class="zt-who ${m[1].toLowerCase()}">') && zt.includes("highlightText(esc(t))") && css.includes(".twod12-zonetip .zt-who.enemies { color: #ff6a4d; }") && css.includes(".twod12-zonetip .zt-who.allies { color: #4cc3ff; }"));
+console.log("the tooltip's sides colored, the words highlighted:", zt.includes('<span class="zt-who ${cls(g.who)}">') /* v0.0.467: in sections */ && zt.includes("highlightText(esc(t))") && css.includes(".twod12-zonetip .zt-who.enemies { color: #ff6a4d; }") && css.includes(".twod12-zonetip .zt-who.allies { color: #4cc3ff; }"));
 const inl = src("module/inline.mjs"), main = src("module/twod12.mjs");
 console.log("a chip's name is its own span:", inl.includes('<span class="ti-name">${esc(label)}</span>'), "| the name opens, the icon uses:", main.includes('!ev.target.closest?.("i, img, svg, .ti-use")') && main.includes("await openChip("));
 console.log("what the name opens:", inl.includes('if (kind === "Condition" && cfg.cond) { const it = await conditionItem(cfg.cond);') && inl.includes('const ref = kind === "Move" ? MOVE_REF[cfg.kind] : RULE_REF[kind];'), "| Pushed:", /pushed: "Pushed"/.test(inl), "| Guard:", /Guard: "Guard"/.test(inl));

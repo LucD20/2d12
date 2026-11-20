@@ -68,7 +68,8 @@ console.log("\n--- the cost function (the ruler)");
   console.log("a square with an enemy:", step({ i: 0, j: 2 }), "(as an action:", fromAction({ i: 0, j: 2 }) + ")", "| with a friend (willing):", step({ i: 0, j: 3 }), "| a hidden token:", step({ i: 0, j: 4 }), "| an empty square next to it:", step({ i: 0, j: 1 }));
   canvas.environment.darknessLevel = 1; console.log("an enemy in the dark: counts double, not four times:", step({ i: 0, j: 2 }));
   canvas.environment.darknessLevel = 0;
-  const big = mk("Ogre", 0, 6, 1, {}, 2); console.log("a 2x2 creature whose new squares include the enemy's:", step({ i: 0, j: 1 }, big, 1), "(its squares are at 0,1 and 0,2: the Orc is on 0,2)", "| one step away from it:", step({ i: 0, j: 5 }, big, 1));
+  // v0.0.453 (Lucas, playtest 6): Foundry gives the square of the token's center (1,2 for a 2x2 whose top left is 0,1)
+  const big = mk("Ogre", 0, 6, 1, {}, 2); console.log("a 2x2 creature (v0.0.468: its steps read as Foundry gives them, the center until a drag's first step says):", step({ i: 1, j: 2 }, big, 1), "(its squares are at 0,1 and 0,2: the Orc is on 0,2)", "| one step away from it:", step({ i: 1, j: 6 }, big, 1));
   const again = M.installDarknessCost(); console.log("installing again does not wrap twice:", JSON.stringify(again.installed), "| an enemy square still costs", step({ i: 0, j: 2 }));
   console.log("a base cost that is already double stays double:", (CONFIG.Token.movement.actions.walk.getCostFunction = Object.assign(() => (f, t, s) => 2 * s, {}), M.installDarknessCost(), step({ i: 0, j: 2 })));
   // the other place: a Token or TokenDocument method that ends in CostFunction

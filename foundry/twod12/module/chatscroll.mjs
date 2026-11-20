@@ -11,29 +11,59 @@ export const scrollPinned = (was, bottom, byUser) => (bottom ? true : byUser ? f
 const watched = new WeakSet(), logs = new Set();
 /** v0.0.421 (the audit): a scroll the system makes on purpose (the damage stamp scrolls to its roll card) unpins the logs, as the user's own does. */
 export function releaseChatLogs() { for (const log of logs) log.dispatchEvent(new CustomEvent("twod12-release")); }
+/** v0.0.453 (Lucas, playtest 6: "after clicking damage, then apply, it scrolls a bit and the chat didn't scroll"): the box that scrolls is the log
+ *  itself, or (Foundry V13 on) the .chat-scroll around it: the first of the log and its parents whose overflow scrolls. */
+export function scrollBoxOf(log) {
+  for (let el = log; el && el !== document.body; el = el.parentElement) {
+    let oy = ""; try { oy = getComputedStyle(el).overflowY; } catch (e) { oy = ""; }
+    if (oy === "auto" || oy === "scroll") return el;
+  }
+  return log;
+}
 /** Keeps one chat log pinned to its bottom while it was there. */
 export function pinChatLog(log) {
   if (!log || watched.has(log) || typeof ResizeObserver === "undefined") return;
   watched.add(log); logs.add(log);
-  let pinned = atBottom(log), userAt = 0;
-  // v0.0.418 (Lucas, playtest 5, C1: after Damage the card grew and the chat didn't follow): a card redrawn is removed and put back, and the scroll
-  // the browser makes then (the log clamped) unpinned it. Only the user's own scrolling (the wheel, a touch, a key, the scrollbar) unpins it now;
-  // reaching the bottom pins it again.
+  // v0.0.460 (Lucas, checklist v0.0.459: "Still didnt do it after applying most damages and rolling damage dice"): the scroll box was found once,
+  // when the log was drawn, and a log not yet in the page has no scrolling parent: it fell back to the log, which never scrolls. Now it is found
+  // each time it is needed (cached once the log is in the page), and the listeners sit on the document, so a box found later is still heard.
+  let cached = null;
+  const boxNow = () => { if (cached && cached.isConnected && cached.contains(log)) return cached; const b = scrollBoxOf(log); if (log.isConnected && b !== log) cached = b; return b; };
+  let pinned = true, userAt = 0;
+  // v0.0.418 (Lucas, playtest 5, C1): a card redrawn is removed and put back, and the scroll the browser makes then (the log clamped) unpinned it.
+  // Only the user's own scrolling (the wheel, a touch, a key, the scrollbar) unpins it now; reaching the bottom pins it again.
   const mark = () => { userAt = Date.now(); };
-  for (const ev of ["wheel", "touchmove", "keydown"]) log.addEventListener(ev, mark, { passive: true });
-  log.addEventListener("pointerdown", ev => { if (ev.target === log) mark(); }, { passive: true });
+  const opts = { capture: true, passive: true };
+  for (const ev of ["wheel", "touchmove", "keydown"]) document.addEventListener(ev, e => { if (log.isConnected && boxNow().contains(e.target)) mark(); }, opts);
+  document.addEventListener("pointerdown", e => { if (log.isConnected && e.target === boxNow()) mark(); }, opts);
   log.addEventListener("twod12-release", () => { mark(); pinned = false; });
-  log.addEventListener("scroll", () => { pinned = scrollPinned(pinned, atBottom(log), Date.now() - userAt < 600); }, { passive: true });
-  const stick = () => { if (pinned && !atBottom(log)) log.scrollTop = log.scrollHeight; };
-  const ro = new ResizeObserver(stick);
+  document.addEventListener("scroll", e => { if (!log.isConnected) return; const box = boxNow(); if (e.target !== box) return; pinned = scrollPinned(pinned, atBottom(box), Date.now() - userAt < 600); }, opts);
+  // v0.0.453: twice, the second after the browser has laid out what a card's update added (its images, its enriched text); v0.0.460: and once more
+  // a little later (dice and enriched links that load after the frame)
+  const stick = () => { if (!log.isConnected) return; const box = boxNow(); if (pinned && !atBottom(box)) box.scrollTop = box.scrollHeight; };
+  // v0.0.465 (Lucas, checklist v0.0.464: "It works when applying damage, but when rolling damage not yet"): the dice's animation (Dice So Nice)
+  // holds the card back and it grows after it: checked again later, and when the dice are done
+  const stickSoon = () => { stick(); globalThis.requestAnimationFrame?.(() => stick()); for (const ms of [250, 900, 2000, 3500]) setTimeout(stick, ms); };
+  try { globalThis.Hooks?.on?.("diceSoNiceRollComplete", () => stickSoon()); } catch (e) { /* no Dice So Nice */ }
+  const ro = new ResizeObserver(stickSoon);
   const watchKids = () => { for (const li of log.children) ro.observe(li); };
   watchKids();
-  new MutationObserver(() => { watchKids(); stick(); }).observe(log, { childList: true });
+  ro.observe(log);
+  new MutationObserver(() => { watchKids(); stickSoon(); }).observe(log, { childList: true, subtree: true });
 }
 
 export function registerChatScroll() {
   const find = root => (root instanceof HTMLElement ? root : root?.[0] ?? document)?.querySelectorAll?.(".chat-log") ?? [];
   const pinAll = root => { for (const log of find(root)) pinChatLog(log); };
+  // v0.0.466 (Lucas, checklist v0.0.465: "Still didnt move down on damage"): a second way, by the documents: before a message is created or
+  // updated, each visible chat log notes whether it is at its bottom; after it is drawn, a log that was there is scrolled down (now, and again
+  // as its dice and pictures land)
+  const boxes = () => [...document.querySelectorAll(".chat-log")].filter(l => l.isConnected && l.offsetParent !== null).map(scrollBoxOf);
+  let wasDown = [];
+  const before = () => { try { wasDown = boxes().filter(b => atBottom(b)); } catch (e) { wasDown = []; } };
+  const after = () => { const list = wasDown; for (const ms of [0, 60, 250, 900, 2000, 3500]) setTimeout(() => { for (const b of list) if (b.isConnected) b.scrollTop = b.scrollHeight; }, ms); };
+  Hooks.on("preCreateChatMessage", before); Hooks.on("preUpdateChatMessage", before);
+  Hooks.on("createChatMessage", after); Hooks.on("updateChatMessage", after);
   Hooks.on("renderChatLog", (app, html) => { try { pinAll(html); } catch (e) { console.warn("twod12 | chat scroll", e); } });
   Hooks.once("ready", () => { try { pinAll(document); } catch (e) { console.warn("twod12 | chat scroll", e); } });
 }

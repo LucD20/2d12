@@ -34,7 +34,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
       armor: choice(Object.fromEntries(Object.entries(TWOD12.armors).map(([k, v]) => [k, v.label])), "unarmored"), ward: int(0, 0),
       guard: int(0, 0),   // v0.0.181: Guard N (book, Chapter 4): takes damage before the Health, the higher value kept, 0 at the end of the encounter (guard.mjs)
       dmgMods: str(""),   // v0.0.283 (pack chat-cards): "Resist 5 Fire, Weak 2 Holy, Immune Cold" (book, Chapter 1), read by the damage message
-      reduceNext: int(0, 0),   // v0.0.254 (cards 4, Shield of Faith): the next damage this creature takes is reduced by this much, then it is 0
+      reduceNext: int(0, 0), reduceFrom: new StringField({ initial: "", blank: true }),   // v0.0.454 (D2): what gave the reduction (Shield of Faith), for the breakdown
+        // v0.0.254 (cards 4, Shield of Faith): the next damage this creature takes is reduced by this much, then it is 0
       apGuard: int(0, 0),   // v0.0.243 (pack R): the Guard of the AP kept at the end of the turn (2 / 3 / 4 each by Stage): taken first, 0 when the AP are regained
       escalation: int(1, 0),   // v0.0.243 (pack R): a level, never spent (1 to 6 since v0.0.407): 1 + the party's Momentum at the start of an encounter, +1 a round, +1 on a Critical and on the class hook once an encounter (escalation.mjs)
       // v0.0.243 (pack R; book, Health Pool): the class's high Health value goes to Vigor or to Resolve (the player's choice, Vigor by default); a species that lets
@@ -511,7 +512,8 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       marksTarget: bool(), markKind: str(),   // v0.0.409 (pack F2): "judge": the mark is Judged (Judge: it counts as Profane for its marker)
       basicAttack: bool(),   // v0.0.216 (Lucas): an NPC's Basic attack: used when an Action calls for a Weapon Attack (NPCs have none)
       basicRating: choice({ terrible: "Terrible", low: "Low", medium: "Medium", high: "High", extreme: "Extreme" }, "medium"),   // v0.0.291 (PACK NPC-SHEET): the Basic attack's rating (the Bestiary's suggested average; the dice stay the GM's)
-      weaponUse: choice(TWOD12.weaponUses, ""),   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
+      weaponUse: choice(TWOD12.weaponUses, ""),
+      weaponNeeds: choice(TWOD12.weaponNeeds, ""),   // v0.0.444: the property its weapon must have (Darting Blade: Light)   // v0.0.207: which weapon a Weapon Action uses (Pummel: only the Fists; Leg Sweep: a kick)
       automation: choice(TWOD12.automationRanks, ""), automationNote: str(),   // v0.0.215: what is done by hand (the diamond tooltip)
         // v0.0.189   // v0.0.186: using it marks the targeted creature (Mark Quarry); settings "only against my marked target" read the mark
       // v0.0.355 (PACK ACTION-SHEET, the audit's D17): what its owner has by itself while it has the Action (the rules list of an Effect, a Feature or a Talent)

@@ -5,7 +5,7 @@
 //   the Attribute called is the combat flag twod12.initCall ({ attr }), so a player's client reads them and its roll uses them.
 //   The players' window: opened on each player who owns a creature (the socket, "initOpen"), read-only: their creatures' cards with a Roll button.
 //   Rolls go through performCheck like any Check: the creature's effects (Boons, Banes, Favored, Doomed, Exhausted) are in it.
-import { gmModel, playerModel, applyClick, rollOf, whoOf, goesLast, isRolled, attrOf, sideOf, sideDisp } from "./initmodel.mjs";
+import { gmModel, playerModel, applyClick, squadMove, rollOf, whoOf, goesLast, isRolled, attrOf, sideOf, sideDisp } from "./initmodel.mjs";
 import { gmHtml, playerHtml } from "./initview.mjs";
 import { performCheck, combineRolls } from "./roll.mjs";
 import { modifierList, resolveModifiers } from "./effects.mjs";
@@ -13,7 +13,7 @@ import { unconsciousDoom, doomStatus } from "./config.mjs";
 import { initCardData, initCardHtml } from "./initcard.mjs";
 import { cleanName } from "./moment.mjs";
 import { logOnlyChange } from "./util.mjs";
-import { minionSquads } from "./roundrules.mjs";   // v0.0.407: Minions share a roll
+import { minionSquads, minionGroupOf } from "./roundrules.mjs";   // v0.0.407: Minions share a roll
 const F = "twod12", SOCKET = "system.twod12";
 const { ApplicationV2 } = foundry.applications?.api ?? {};
 
@@ -201,6 +201,13 @@ export class InitWindow extends BaseInitWindow {
     if (act === "gmAll") return this._save(applyClick(creaturesOf(this.combat), call, "gmAll"));
     if (act === "reroll") return this.combat.updateEmbeddedDocuments("Combatant", this._members(b).map(c => ({ _id: c.id, initiative: null, [`flags.${F}.init.who`]: "gm", [`flags.${F}.init.by`]: "", [`flags.${F}.init.rolledAttr`]: "" })));
     const ms = this._members(b);
+    // v0.0.453 (playtest 6): a squad click fixes the kind's squads as the window shows them, then moves this Minion (a new squad after the last)
+    if (act === "squad" && ms.length === 1) {
+      const all = creaturesOf(this.combat), me = ms[0];
+      const kind = all.filter(c => c.minion && c.minion === me.minion && !isRolled(c));
+      const sq = minionGroupOf(kind.map(c => ({ id: c.id, kind: c.minion, group: c.set?.group ?? 0 })))[me.id];
+      if (sq) return this._save(squadMove(kind, me.id, b.dataset.v, sq.groups));
+    }
     if (ms.length) return this._save(applyClick(ms, call, act, b.dataset.v));
   }
   async _change(ev) {

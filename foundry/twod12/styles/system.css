@@ -305,16 +305,7 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 .twod12 .dmgreport td.c, .twod12 .dmgreport th { text-align: center; }
 .twod12 .dmgreport td:first-child { text-align: left; }
 /* two-letter damage subtypes */
-.twod12.chat .comp.sub-Bl, .twod12.chat .comp.sub-Pi, .twod12.chat .comp.sub-Sl { background: rgba(128,128,128,.18); }
-.twod12.chat .comp.sub-Ho { background: rgba(235,205,70,.18); }
-.twod12.chat .comp.sub-Ps { background: rgba(130,95,205,.15); }
-.twod12.chat .comp.sub-Co { background: rgba(79,195,232,.2); }
-.twod12.chat .comp.sub-Ac { background: rgba(124,179,66,.18); }
-.twod12.chat .comp.sub-El { background: rgba(61,139,253,.16); }
-.twod12.chat .comp.sub-Fi { background: rgba(232,98,42,.18); }
-.twod12.chat .comp.sub-Fo { background: rgba(176,106,216,.16); }
-.twod12.chat .comp.sub-Th { background: rgba(92,127,163,.18); }
-.twod12.chat .comp.sub-Un { background: rgba(122,59,82,.2); }
+.twod12.chat .comp[style*="--sc"] { background: color-mix(in srgb, var(--sc) 15%, transparent); }   /* v0.0.457: the row's type color (was ten fixed tints) */
 /* v0.0.42: costs are text badges */
 .twod12 .apmark, .twod12.chat .apmark { display: inline-block; margin-right: 3px; padding: 0 6px; border-radius: 4px; background: #5b6fd0; color: #fff; font: 700 11px/17px system-ui, sans-serif; letter-spacing: .02em; }
 .twod12 .rmark { margin-right: 3px; }
@@ -1497,12 +1488,14 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
   --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }
 .application.twod12.twod12-actor, .application.twod12.twod12-actor .twod12 {
   --g-roll: #5fd3c8; --g-requires: #7db1f5; --g-kind: #f29272; --g-damage: #e8c25a; --g-keywords: #aeb0b5;
-  --c-body: #ef8a96; --c-mind: #8db3ff; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
+  --c-body: #ef8a96; --c-mind: #aec4f0; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
   --c-bane: #ff6a4d; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a; }
 /* v0.0.438 (CARD-ONE step 5): a card carries its own color tokens wherever it is drawn (the sheet, the chat, a tooltip, the HUD): they were set
    only for a card inside the actor sheet, so a card in the chat, a tooltip or the HUD took the page's values (dark ink on the dark card). */
+/* v0.0.450 (Lucas, g3-res: "Still very dark blue" in the chat log): a chat card in the sidebar carries the tokens too (it took :root's);
+   v0.0.452 ("on the roll dialog is still looking with the dark blue"): the roll dialog too */
 .twod12.acard, .application.twod12.twod12-actor .acard, .application.twod12.twod12-actor .twod12.chat, .twod12.acard .twod12, .application.twod12.twod12-actor .acard .twod12, .application.twod12.twod12-actor .twod12.chat .twod12,
-.application.twod12.twod12-actor .nb {
+.application.twod12.twod12-actor .nb, .twod12.chat, .twod12.chat .twod12, .twod12.rolldlg, .twod12.rolldlg .twod12 {
   --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55;
   --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00; --c-wmod: #9a4a00; --c-pmod: #5b3a9e; --c-smod: #455566;
   --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }
@@ -3428,7 +3421,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.acard.d2 table.ap-tt .dt-body { color: #9b2226; } .twod12.acard.d2 table.ap-tt .dt-mind { color: #2c4a9b; }
 .twod12.acard.d2 table.ap-tt i.dt-body, .twod12.acard.d2 table.ap-tt i.dt-mind { font-size: 12px; vertical-align: -1px; }
 .twod12.acard.d2 table.ap-tt .pool-b, .twod12.acard.d2 table.ap-tt .pool-m, .twod12.acard.d2 table.ap-tt .dtamt { color: inherit !important; font-weight: 600; }
-.twod12.acard.d2 table.ap-tt .dtype { color: #7d5400 !important; font-weight: 700; }
+.twod12.acard.d2 table.ap-tt .dtype { font-weight: 700; }   /* v0.0.457: its type's own color (was gold for every type) */
 .twod12.acard.d2 table.ap-tt td.dim .dtype { color: #8f8774 !important; }
 .twod12.acard.d2 table.ap-tt .dtype i, .twod12.acard.d2 table.ap-tt .dtype img { display: none; }
 /* a rider on its own line after ↳, in a dashed box; a condition of the Critical row in the same box */
@@ -4133,7 +4126,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat .tline.grantrow.grantlist .cc-gbtn.gl-cancel { background: transparent; color: #8a2f22; border: 1px solid #c9a080; justify-content: center; font-size: 11.5px; min-height: 20px; }
 .twod12.chat .tline.grantrow.grantlist .gl-cancelled { color: #6b5a3a; }
 /* v0.0.352 (Lucas): the area tooltip's sides in their colors, the system's word colors in their light (dark background) variants */
-.twod12.twod12-zonetip { --c-body: #ef8a96; --c-mind: #8db3ff; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
+.twod12.twod12-zonetip { --c-body: #ef8a96; --c-mind: #aec4f0; --c-instinct: #7fd49a; --c-appeal: #e6bd5a; --c-wmod: #f4a259; --c-pmod: #b794f6; --c-smod: #cfd8e3;
   --c-bane: #ff6a4d; --c-boon: #4cc3ff; --c-rally: #3fd8c4; --c-ap: #9aa7ff; --c-mv: #b9dc6a;
   --g-roll: #5fd3c8; --g-requires: #7db1f5; --g-kind: #f29272; --g-damage: #e8c25a; --g-keywords: #aeb0b5; }
 .twod12-zonetip .zt-who { font-weight: 700; }
@@ -4565,6 +4558,8 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .ha { display: inline-flex; align-items: center; gap: 5px; flex: none; padding: 1px 3px 1px 7px; border: 1px solid var(--hud-hair); border-left: 3px solid var(--fq, #5F5E5A); border-radius: 2px; background: rgba(255, 255, 255, .02); }
 .twod12-hud .ha > b { font-weight: 600; cursor: context-menu; } .twod12-hud .ha.dim > b { opacity: .5; } .twod12-hud .ha[hidden] { display: none; }
 .twod12-hud :is(.hud-main, .hud-pop, .hud-menu) button { width: auto; min-height: 0; margin: 0; line-height: 1.2; box-shadow: none; font-family: "Source Sans 3", sans-serif; }
+/* v0.0.450 (Lucas, g2-hotbar: the macro bar's buttons "have no icons"): an icon button (Foundry's fa-* classes) keeps the icon font */
+.twod12-hud :is(.hud-main, .hud-pop, .hud-menu) button[class*="fa-"], .twod12-hud #hotbar [class*="fa-"]::before { font-family: var(--font-awesome, "Font Awesome 6 Pro"), "Font Awesome 6 Pro", "Font Awesome 6 Free" !important; }
 .twod12-hud .hv { height: 20px; padding: 0 6px; border: 0; border-radius: 2px; background: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); font-weight: 700; font-size: 11.5px; cursor: pointer; }
 .twod12-hud .hv:hover { background: var(--s-stamp-hover, #fff8e8); } .twod12-hud .hv.fav { box-shadow: inset 0 -2px 0 var(--s-gold, #d4a548); }
 .twod12-hud .hv.no { background: transparent; border: 1px dashed var(--s-faint, #8a7f6b); color: var(--s-faint, #8a7f6b); cursor: default; } .twod12-hud .hv.used { text-decoration: line-through; }
@@ -4957,3 +4952,667 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.chat.cc .cc-fold > summary.cc-foldsum::after { content: "\25B8"; margin-left: auto; color: var(--cc-mute); }
 .twod12.chat.cc .cc-fold[open] > summary.cc-foldsum::after { content: "\25BE"; }
 .twod12.chat.cc .cc-foldc { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
+
+/* ==================================================================== v0.0.441 (pack SHEETS-HUD): THE SMALL SHEETS
+   Lucas, 2026-11-18: the approved sheets (foundry/mockups/sheets, "Option 1"; the PC 540 x 840, the NPC 540 x 760), in STYLE-3's look: Source Serif 4
+   for the one big title (the name), Source Sans 3 for everything read, color only for a meaning (the pools, the Frequency's square, the rank's
+   plate, the bronze accent). Only the shared --s-* colors (no hex: the dark and light sets are the variables'), scoped under .twod12-actor so
+   they win over the older .pcs rules and their generated theme. */
+.twod12-actor .twod12.sheet.pcs.ps2 { --rk: var(--s-band); background: var(--s-pg); color: var(--s-ink); font: 400 13.5px/1.35 "Source Sans 3", sans-serif; }
+.twod12-actor .twod12.sheet.pcs.ps2 .k { font-weight: 700; white-space: nowrap; color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-q { color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 b.big { font-size: 15px; }
+.twod12-actor .twod12.sheet.pcs.ps2 b.up { color: var(--s-good); } .twod12-actor .twod12.sheet.pcs.ps2 b.down { color: var(--s-bad); }
+/* the plate: the portrait, the name (the serif, its own case; an input, so it can be renamed), the line under it; an NPC's in its rank's color */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate { flex: none; display: flex; align-items: center; gap: 10px; padding: 5px 10px; background: var(--rk); color: rgba(248, 238, 216, 1); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-pc { --rk: var(--s-band); color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-minion { --rk: var(--s-rk-minion); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-grunt { --rk: var(--s-rk-grunt); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-standard { --rk: var(--s-rk-standard); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-plate.rk-elite { --rk: var(--s-rk-elite); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-port { width: 40px; height: 40px; flex: none; border-radius: 50%; border: 1px solid currentColor; object-fit: cover; cursor: pointer; opacity: .95; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-id { flex: 1; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-name { display: block; width: 100%; height: auto; margin: 0; padding: 0; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; color: inherit; box-shadow: none;
+  font: 600 20px/1.2 "Source Serif 4", serif; font-variant: normal; letter-spacing: 0; text-transform: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-name:hover, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-name:focus { border-bottom-color: currentColor; outline: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l1 { font-size: 12.5px; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l1 a { color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-who { display: flex; flex-direction: column; align-items: flex-end; font-size: 12.5px; white-space: nowrap; opacity: .9; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-who b { font-size: 14px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tools { display: flex; gap: 10px; font-size: 14px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tools a { color: inherit; opacity: .8; cursor: pointer; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tools a:hover { opacity: 1; }
+/* the stat lines */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-stats { flex: none; padding: 2px 10px 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 14px; padding: 3px 0; border-bottom: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l.split { justify-content: space-between; flex-wrap: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l.two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; align-items: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-l.grid { display: grid; grid-template-columns: repeat(6, auto); justify-content: space-between; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-guard { margin-left: 12px; padding: 0 6px; border-left: 1px solid var(--s-hair); color: inherit; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-guard.zero b { color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .dom-Vigor { color: var(--s-vig); } .twod12-actor .twod12.sheet.pcs.ps2 .dom-Resolve { color: var(--s-res); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge { display: grid; grid-template-columns: auto auto 1fr; align-items: baseline; column-gap: 6px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .hpnum { color: inherit; cursor: pointer; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tag { justify-self: start; font-size: 11.5px; font-weight: 700; color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-track { grid-column: 1 / -1; display: flex; height: 6px; margin: 2px 0 1px; background: var(--s-pg-2); box-shadow: inset 0 0 0 1px var(--s-hair); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.v { --c: var(--s-vig); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.r { --c: var(--s-res); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-track i.l { background: var(--c); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-track i.n { background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 6px); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw { gap: 2px 10px; align-items: center; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rwk { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl { height: auto; padding: 0 5px; font-size: 12.5px; line-height: 1.5; background: transparent; border: 1px solid var(--s-hair); border-radius: 2px; color: var(--sc-d, var(--s-ink)); }
+.theme-light .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl, .twod12-actor.theme-light .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl { color: var(--sc-l, var(--s-ink)); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl i { margin-right: 3px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dladd { margin-left: auto; height: auto; padding: 0 8px; font-size: 12px; line-height: 1.5; background: transparent; border: 1px solid var(--s-hair); border-radius: 2px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rpips { display: inline-flex; gap: 3px; vertical-align: 1px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rpips i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--s-good); box-sizing: border-box; cursor: pointer; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rpips i.on { background: var(--s-good); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-in { width: 30px; height: 18px; margin: 0 4px 0 2px; padding: 0 2px; border: 0; border-bottom: 1px solid var(--s-rule); border-radius: 0; background: transparent; color: var(--s-ink); text-align: center; font: 700 13px "Source Sans 3", sans-serif; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-downbox { margin: 4px 0; }
+/* the Attribute and Modifier tiles (in ink: no colored tops); the Vs. Defense and the Save DC under each */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles { flex: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) 6px repeat(3, minmax(0, 1fr)); gap: 4px; padding: 6px 10px 8px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m2 { grid-template-columns: repeat(4, minmax(0, 1fr)) 6px repeat(2, minmax(0, 1fr)); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m1 { grid-template-columns: repeat(4, minmax(0, 1fr)) 6px minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile { all: unset; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; padding: 2px 2px 3px; border: 1px solid var(--s-hair); color: var(--s-ink); line-height: 1.2; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 button.ps2-tile { cursor: pointer; } .twod12-actor .twod12.sheet.pcs.ps2 button.ps2-tile:hover { border-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile.gap { grid-column-start: 6; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile span { font-size: 12.5px; font-weight: 600; color: var(--s-mute); white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile b { font-size: 17px; font-weight: 700; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tile small { font-size: 11.5px; color: var(--s-mute); white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-note { flex: none; padding: 0 10px 6px; font-size: 12px; color: var(--s-mute); }
+/* the combat line: Escalation | the Hands (one above the other, no word "Hands") | AP */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat { flex: none; display: grid; grid-template-columns: minmax(0, 1fr) 176px auto; border-top: 1px solid var(--s-rule); border-bottom: 1px solid var(--s-rule); background: var(--s-pg-2); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.npc { grid-template-columns: minmax(0, 1fr) auto; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.one { grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.out { grid-template-columns: minmax(0, 1fr) 176px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.out.npc { grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-cell { display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 6px 10px; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat > * + * { border-left: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-esc .ps2-q { font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs { display: flex; flex-wrap: wrap; gap: 0 12px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs .rung { color: var(--s-faint); cursor: pointer; white-space: nowrap; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs .rung.lit { color: var(--s-ink); font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hands { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 6px 8px; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 4px 8px; border: 1px solid var(--s-rule); border-radius: 2px; font: 400 12px/1.35 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand b { color: var(--s-mute); font-size: 11px; font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand.free { border-style: dashed; border-color: var(--s-hair); color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand.warn { border-color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hand:hover { border-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ap { align-items: flex-start; gap: 6px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips { display: inline-flex; gap: 5px; align-items: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip { display: inline-block; width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid var(--s-gold); box-sizing: border-box; background: transparent; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.on { background: var(--s-gold); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.spent { border-color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.slowed { width: auto; height: auto; border: 0; color: var(--s-bad); font-weight: 700; cursor: default; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip-sep { width: 1px; height: 14px; background: var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap { border-radius: 0; transform: rotate(45deg); width: 11px; height: 11px; margin-left: 2px; border-color: var(--s-fq-turn); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap.on { background: var(--s-fq-turn); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-strk { display: inline-flex; gap: 5px; padding-left: 26px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-strk i { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid rgb(217, 119, 58); box-sizing: border-box; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-strk i.on { background: rgb(217, 119, 58); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.one .ps2-ap { flex-direction: row; align-items: center; gap: 4px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.one .ps2-strk { padding-left: 12px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-q.bane { font-size: 12px; }
+/* the tabs and the pane under them */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-body { display: flex; flex: 1; min-height: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-main { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; background: var(--s-pg); color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-tabs { display: flex; gap: 2px; padding: 4px 8px 0; border-bottom: 1px solid var(--s-rule); background: none; flex-wrap: nowrap; overflow: hidden; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-tabs .tabbtn { padding: 5px 8px 6px; color: var(--s-mute); font: 400 13.5px "Source Sans 3", sans-serif; border-bottom: 2px solid transparent; white-space: nowrap; background: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-tabs .tabbtn.active { color: var(--s-ink); font-weight: 700; border-bottom-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-tabs .tabcount { padding: 0; border-radius: 0; background: none; color: var(--s-gold); font-size: 12px; font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-scroll > .tab { padding: 6px 8px 10px; }
+/* each Action one bar; the short card under it */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sec { margin-top: 8px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps-stack { gap: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band { display: flex; align-items: center; gap: 7px; padding: 4px 2px 2px; border-bottom: 1px solid var(--s-rule); color: var(--s-ink); font-size: 14px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band b { font-weight: 700; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bsub { color: var(--s-mute); font-size: 12px; font-style: italic; margin-left: auto; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band .ps-upd { margin-left: auto; color: var(--s-mute); font-size: 12px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sq, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-fq i { display: inline-block; width: 8px; height: 8px; flex: none; background: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .fq-atwill { background: var(--s-fq-atwill); } .twod12-actor .twod12.sheet.pcs.ps2 .fq-round { background: var(--s-fq-round); }
+.twod12-actor .twod12.sheet.pcs.ps2 .fq-turn, .twod12-actor .twod12.sheet.pcs.ps2 .fq-reaction { background: var(--s-fq-turn); } .twod12-actor .twod12.sheet.pcs.ps2 .fq-encounter { background: var(--s-fq-encounter); }
+.twod12-actor .twod12.sheet.pcs.ps2 .fq-daily { background: var(--s-fq-daily); } .twod12-actor .twod12.sheet.pcs.ps2 .fq-apex { background: var(--s-gold); } .twod12-actor .twod12.sheet.pcs.ps2 .fq-granted { background: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa { border-bottom: 1px solid var(--s-hair); background: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.off .ps2-bar > :not(.ps2-sts) { opacity: .55; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bar { display: flex; align-items: center; gap: 8px; padding: 4px 6px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.open > .ps2-bar { background: var(--s-band); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sts { display: inline-flex; gap: 3px; flex: none; align-items: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-st { min-width: 40px; height: auto; padding: 2px 6px; border: 1px solid var(--s-stamp); border-radius: 2px; background: var(--s-stamp); color: var(--s-stamp-ink); font: 700 12.5px/1.25 "Source Sans 3", sans-serif; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-st:hover { background: var(--s-stamp-hover); border-color: var(--s-stamp-hover); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-st.no { background: transparent; color: var(--s-faint); border: 1px dashed var(--s-faint); text-decoration: line-through; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hb { display: inline-flex; gap: 2px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hbtn { height: auto; padding: 1px 4px; border: 1px solid var(--s-rule); border-radius: 2px; background: transparent; color: var(--s-ink); font-size: 11px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hbtn small { margin-left: 2px; font-size: 10px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hbtn.no { border-style: dashed; color: var(--s-faint); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hbtn.warn { border-color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bar .ps-nm { font-weight: 700; font-size: 14.5px; color: var(--s-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 0 1 auto; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bar .autodia { font-size: 9px; margin-left: -4px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bar .ps-fav { font-size: 9px; color: var(--s-gold); margin-left: -4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sub { font-style: italic; color: var(--s-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 0 1 auto; font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-dv { margin-left: auto; white-space: nowrap; font-size: 13.5px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-dv b { font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-fq { display: inline-flex; align-items: center; gap: 6px; min-width: 84px; margin-left: 6px; font-size: 13.5px; white-space: nowrap; flex: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa > .ar-card { display: none; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.open > .ar-card { display: block; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa > .ar-card > .acard.st { margin: 0; padding: 6px 10px 8px; border: 0; border-bottom: 1px solid var(--s-gold); background: var(--s-pg-2); }
+/* the NPC's tools as a line of links */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-links { display: flex; justify-content: flex-end; gap: 16px; font-size: 12.5px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-links a { color: var(--s-mute); cursor: pointer; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-links a:hover { color: var(--s-ink); }
+/* the Basic Actions: the four columns, each Action one line with its muted strips */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-basic { margin-top: 10px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 8px; align-items: start; padding-top: 2px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bgh { display: block; padding: 2px 0; font-weight: 600; font-size: 12.5px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx { margin-bottom: 3px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn { all: unset; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; gap: 6px; width: 100%; min-height: 25px; padding: 2px 6px;
+  border-left: 3px solid color-mix(in srgb, var(--lnf) 55%, var(--s-pg-2)); background: var(--s-pg-2); font: 400 13px/1.25 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn.strike { box-shadow: inset 2px 0 0 color-mix(in srgb, var(--s-bad) 55%, var(--s-pg-2)); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn:hover { background: var(--s-band); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxl { min-width: 0; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxn { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn small { display: block; font-size: 10.5px; font-style: italic; color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxbtn b { font-size: 12px; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx.off .ps2-bxbtn { color: var(--s-faint); background: none; border-left-style: dashed; }
+/* the other tabs in 540 px: two-column grids become one, the Builder's columns stack */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-g2.wide, .twod12-actor .twod12.sheet.pcs.ps2 .ps-g3 { grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .nb-cols { flex-direction: column; grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-irow { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs .rung { all: unset; color: var(--s-faint); cursor: pointer; white-space: nowrap; font-size: 13px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rungs .rung.lit { color: var(--s-ink); font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-cl { display: flex; align-items: center; gap: 6px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-epips { display: inline-flex; gap: 2px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-epips i { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid var(--s-gold); box-sizing: border-box; margin: 0 1px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-epips i.on { background: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge { grid-template-columns: auto auto minmax(40px, 1fr) auto; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-track { grid-column: 3; grid-row: 1; align-self: center; margin: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-tag { grid-column: 4; grid-row: 1; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.v > .k { color: var(--s-vig); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.r > .k { color: var(--s-res); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band { font-variant: small-caps; letter-spacing: .02em; }
+/* v0.0.441 (E6, playtest 5: Blunt too close to the dark sheet's background): on a dark surface a damage type's word and its flat amount take its bright
+   color (config.mjs subtypeColors, as the Resist / Weak chips do); the parchment's ink stays inline for a light one */
+@scope (.theme-dark) to (.theme-light) { .dtype[style*="--sc-d"], .dtamt[style*="--sc-d"] { color: var(--sc-d) !important; } }
+/* v0.0.441 (STYLE-3, flagged by the sheets' mockup): a trait word in a card's text ("[Strike]" in a Trigger) in ink, no tinted box (the trait chips' fills went in v0.0.387) */
+.twod12-type .twod12.acard.st .trhl, .twod12.acard.st .trhl { background: none; border: 0; padding: 0; color: inherit; font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-band .ps-upd { font-variant: normal; letter-spacing: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .nb-top { flex-wrap: wrap; row-gap: 4px; }
+
+/* ==================================================================== v0.0.441 (pack SHEETS-HUD): THE HUD OF THE APPROVED MOCKUP
+   foundry/mockups/hud3 (Lucas, 2026-11-18: "All recommended"): portrait 84 | identity 300 | the tabs | one right column 312 (the Situational section
+   over the Hands over the macro bar). The bar keeps its height. Only the HUD's own variables (--hud-*) and the shared --s-* colors. */
+.twod12-hud .hb-bar-wrap.h3-wrap { grid-template-columns: 84px 300px minmax(0, 1fr) 312px; grid-template-rows: minmax(0, 1fr); }
+.twod12-hud .hb-bar-wrap.h3-wrap > * { min-height: 0; overflow: hidden; }
+.twod12-hud.hot-in-bar .hud-hot { display: none; }
+/* D2: the identity column, every label readable (600, the muted ink), every number bold */
+.twod12-hud .h3-id { box-sizing: border-box; padding: 3px 10px 2px; border-right: 1px solid var(--hud-hair); display: flex; flex-direction: column; gap: 1px; font-size: .81rem; min-width: 0; }
+.twod12-hud .h3-id .nm { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; line-height: 1.15; } .twod12-hud .h3-id .nm b { font-size: .97rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .twod12-hud .h3-id .nm small { color: var(--hud-mute); font-size: .78rem; white-space: nowrap; }
+.twod12-hud .h3-l { display: flex; justify-content: space-between; align-items: center; gap: 8px; white-space: nowrap; height: 18.5px; flex: none; }
+.twod12-hud .h3-id .hb-bars { flex: none; gap: 1px; }
+.twod12-hud .h3-l.rule { border-top: 1px solid var(--hud-hair); padding-top: 1px; }
+.twod12-hud .h3-p { all: unset; display: inline-flex; align-items: center; gap: 4px; } .twod12-hud .h3-p b { font-weight: 700; font-size: .88rem; }
+.twod12-hud .h3-id .k { color: var(--hud-mute); font-size: .78rem; font-weight: 600; margin: 0; }
+.twod12-hud .h3-p.at { cursor: pointer; } .twod12-hud .h3-p.at:hover b { color: var(--s-gold); }
+.twod12-hud .h3-p.chg b { text-decoration: underline dotted var(--s-bad); text-underline-offset: 2px; }
+.twod12-hud .h3-l .sep { width: 1px; height: 13px; background: var(--hud-line); }
+.twod12-hud .h3-id .hb-btn { font-size: .78rem; line-height: 1.3; }
+/* D4: the conditions, a row always there (19 px) */
+.twod12-hud .h3-conds { display: flex; gap: 10px; align-items: center; height: 19px; flex: none; overflow: hidden; }
+.twod12-hud .h3-c { all: unset; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; white-space: nowrap; font-size: .78rem; font-weight: 600; color: var(--hud-ink); }
+.twod12-hud .h3-c i { box-sizing: border-box; width: 18px; height: 18px; border: 1px solid var(--hud-line); display: inline-flex; align-items: center; justify-content: center; flex: none; font-style: normal; font-size: .7rem; }
+.twod12-hud .h3-c i img { width: 14px; height: 14px; border: 0; object-fit: contain; }
+.twod12-hud .h3-c small { color: var(--hud-mute); font-weight: 400; font-size: .72rem; } .twod12-hud .h3-c:hover i { border-color: var(--s-gold); }
+.twod12-hud .h3-conds.ic { gap: 5px; } .twod12-hud .h3-conds.ic .h3-c { gap: 2px; }
+/* D1: the Basic tab, the four groups */
+.twod12-hud .h3-wrap .hb-mid { position: relative; }
+.twod12-hud .h3-basic { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 14px; padding: 3px 10px 0; overflow: hidden; align-content: start; }
+.twod12-hud .h3-bh { font-size: .75rem; font-weight: 700; color: var(--hud-mute); border-bottom: 1px solid var(--hud-line); line-height: 1.25; margin-bottom: 1px; }
+.twod12-hud .h3-bl { display: flex; justify-content: space-between; align-items: center; gap: 6px; height: 15.5px; padding-left: 6px; border-left: 3px solid color-mix(in srgb, var(--fq) 60%, var(--hud-bg)); border-bottom: 1px solid var(--hud-hair); cursor: pointer; }
+.twod12-hud .h3-bl.strike { box-shadow: inset 2px 0 0 color-mix(in srgb, var(--s-bad) 70%, var(--hud-bg)); }
+.twod12-hud .h3-bl > b { font-size: .78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; } .twod12-hud .h3-bl:hover > b { color: var(--s-gold); }
+.twod12-hud .h3-bl .hb-st { line-height: 11.5px; font-size: .66rem; } .twod12-hud .h3-bl.off > b { color: var(--s-faint); font-weight: 400; } .twod12-hud .h3-bl.off { cursor: default; border-left-style: dotted; }
+/* D3 / D7: the right column */
+.twod12-hud .h3-side { border-left: 1px solid var(--hud-hair); display: grid; grid-template-rows: minmax(0, 1fr) auto auto; min-width: 0; font-size: .81rem; }
+.twod12-hud .h3-sit { padding: 4px 9px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
+.twod12-hud .h3-sit.on, .twod12-hud .h3-sit:has(.hb-ask > *) { box-shadow: inset 0 2px 0 var(--s-gold); background: color-mix(in srgb, var(--s-gold) 9%, transparent); }
+.twod12-hud .h3-none { color: var(--s-faint); font-size: .78rem; } .twod12-hud .h3-sit.on .h3-none, .twod12-hud .h3-sit:has(.hb-ask > *) .h3-none { display: none; }
+.twod12-hud .h3-sit .hb-ask:empty { display: none; }
+.twod12-hud .h3-si .h { display: flex; align-items: baseline; gap: 7px; } .twod12-hud .h3-si .h b { font-size: .88rem; } .twod12-hud .h3-si .tg { color: var(--hud-mute); font-size: .75rem; }
+.twod12-hud .h3-si .t { line-height: 1.25; margin: 1px 0 4px; color: var(--hud-ink); } .twod12-hud .h3-si .bs { display: flex; gap: 6px; flex-wrap: wrap; }
+.twod12-hud .h3-si .hb-btn { font-size: .78rem; line-height: 1.55; padding: 0 9px; } .twod12-hud .h3-si .hb-btn.q { color: var(--hud-mute); }
+.twod12-hud .h3-sit .hb-gr { margin: 0; border: 0; background: none; box-shadow: none; padding: 0; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud { position: static; transform: none; margin: 0; width: auto; max-width: none; flex-wrap: wrap; gap: 4px 6px; padding: 0; border: 0; background: none; box-shadow: none; font-size: .8rem; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-ic { display: none; } .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text { flex: 1 1 100%; white-space: normal; line-height: 1.25; }
+.twod12-hud .h3-hands { display: flex; gap: 5px; padding: 4px 9px; border-top: 1px solid var(--hud-hair); }
+.twod12-hud .h3-hand { all: unset; box-sizing: border-box; flex: 1 1 0; min-width: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 1px 7px; border: 1px solid var(--hud-line); font: 600 .78rem/1.4 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; }
+.twod12-hud .h3-hand span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .twod12-hud .h3-hand b { color: var(--hud-mute); font-weight: 400; font-size: .72rem; }
+.twod12-hud .h3-hand.free { border-style: dashed; border-color: var(--hud-hair); color: var(--hud-mute); font-weight: 400; } .twod12-hud .h3-hand.warn { border-color: var(--s-bad); } .twod12-hud .h3-hand:hover { border-color: var(--s-gold); }
+.twod12-hud .h3-hot { padding: 3px 9px 4px; border-top: 1px solid var(--hud-hair); }
+.twod12-hud .h3-hot:empty { display: none; }
+.twod12-hud .h3-hot #hotbar { position: static; inset: auto; margin: 0; width: auto; height: auto; transform: none; display: flex; align-items: center; gap: 3px; }
+.twod12-hud .h3-hot #hotbar #action-bar, .twod12-hud .h3-hot #hotbar .action-bar, .twod12-hud .h3-hot #hotbar ol { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); grid-auto-rows: 24px; gap: 2px; flex: 1; margin: 0; padding: 0; width: auto; height: auto; list-style: none; }
+.twod12-hud .h3-hot #hotbar .slot { width: auto; height: 24px; min-width: 0; flex: none; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+.twod12-hud .h3-hot #hotbar .slot > img { width: 100%; height: 100%; object-fit: cover; margin: 0; }
+.twod12-hud .h3-hot #hotbar button { width: 18px; min-width: 0; height: 24px; padding: 0; font-size: 10px; }
+/* a smaller screen: the identity and the right column narrow (container queries on the HUD's width, as v0.0.391) */
+@container (max-width: 1250px) { .twod12-hud .hb-bar-wrap.h3-wrap { grid-template-columns: 64px 280px minmax(0, 1fr) 260px; } }
+@container (max-width: 1020px) { .twod12-hud .hb-bar-wrap.h3-wrap { grid-template-columns: 26px 270px minmax(0, 1fr) 220px; } .twod12-hud .h3-basic { gap: 0 8px; } }
+@container (max-width: 820px) { .twod12-hud .hb-bar-wrap.h3-wrap { grid-template-columns: 26px 260px minmax(0, 1fr) 200px; } }
+
+/* ==================================================================== v0.0.442 (Lucas on v0.0.441; the fixes mockup, foundry/mockups/sheets/fixes.html) */
+/* 1. a bar's Frequency only where its heading doesn't say it (Reactions, Granted, Escalation, Favorites): a muted word, no square */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-fq { min-width: 0; color: var(--s-mute); }
+/* 2. out of combat: the words alone, centered, faded */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-outc { display: block; text-align: center; color: var(--s-faint); }
+/* 3. the gauges: the whole gauge is the click area; the track 18 px to the pointer, drawn 6 px */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge { cursor: pointer; padding: 3px 0; margin: -3px 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-track { position: relative; height: 18px; margin: -6px 0; background: none; box-shadow: none; align-items: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-track::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 6px; background: var(--s-pg-2); box-shadow: inset 0 0 0 1px var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-track i { position: relative; height: 6px; }
+/* 4. the Build tab: the cost in ink (an outlined stamp, not filled), the Frequency a muted word */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-brow .ps-pill.ps2-ink { background: none; color: var(--s-ink); border: 1px solid var(--s-rule); border-radius: 2px; font-weight: 700; box-shadow: none; min-width: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps-brow .ps-pill.ps2-ink::before { display: none; } .twod12-actor .twod12.sheet.pcs.ps2 .ps-brow .ps-bfreq { color: var(--s-mute); }
+/* 5 and 6 (round 4): the combat line never grows: the hooks alone at its left (shrunk to fit), the hands, the marks (AP and Esc.) at its right */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat { grid-template-columns: minmax(0, 1fr) 150px auto; height: 66px; box-sizing: border-box; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.npc { grid-template-columns: minmax(0, 1fr) auto; height: auto; min-height: 44px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.one { grid-template-columns: minmax(0, 1fr); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.out { grid-template-columns: minmax(0, 1fr) 150px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.out.npc { grid-template-columns: minmax(0, 1fr); height: auto; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat > * { min-height: 0; overflow: hidden; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hooks { gap: 3px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hk { font-size: 12px; font-weight: 600; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hl { display: flex; flex-wrap: nowrap; gap: 0 10px; overflow: hidden; font-size: 14px; min-width: 0; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hl.wrap { flex-wrap: wrap; row-gap: 1px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hl b { display: inline-flex; align-items: center; gap: 5px; font-size: 1em; font-weight: 700; color: var(--s-ink); white-space: nowrap; line-height: 1.2; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hl b i { width: 7px; height: 7px; transform: rotate(45deg); background: var(--s-gold); flex: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-none { font-size: 13px; color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks { display: grid; grid-template-columns: auto auto; align-items: center; align-content: center; justify-content: start; gap: 6px 8px; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-mrow { display: inline-flex; align-items: center; gap: 6px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-pips { gap: 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sep { display: inline-block; width: 1px; height: 14px; background: var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk { display: inline-flex; gap: 4px; padding: 0; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk i { width: 4px; height: 13px; transform: skewX(-20deg); border: 1.5px solid rgb(217, 119, 58); box-sizing: border-box; margin: 0 1px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk i.on { background: rgb(217, 119, 58); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-epips { display: inline-flex; gap: 6px; align-items: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-epips a { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid var(--s-gold); box-sizing: border-box; margin: 0 1px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-epips a.on { background: var(--s-gold); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-epips a.rg { outline: 1px solid var(--s-gold); outline-offset: 1.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-en { font-size: 13.5px; margin-left: 2px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .bane { grid-column: 1 / -1; font-size: 12px; }
+
+/* ==================================================================== v0.0.443 (group 1; Lucas, 2026-11-19: foundry/mockups/group1, rounds 1 to 3) */
+/* the strikes' red, a meaning (a Strike): the HUD's on dark, a darker one on parchment */
+.theme-dark, :root { --ps-strike: #c0675c; } .theme-light { --ps-strike: #a8433a; }
+/* the combat line: the two lists (hooks, the ladder), then the marks. Fixed: 72 px (a Standard NPC 44 px); the lists shrink to fit (fitList) */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.out { grid-template-columns: minmax(0, 1fr) auto; height: 72px; min-height: 0; box-sizing: border-box; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.std { height: 44px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat > * { min-height: 0; overflow: hidden; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-lists { display: grid; grid-template-columns: fit-content(50%) minmax(0, 1fr); gap: 0 16px; padding: 4px 10px; align-items: stretch; justify-content: stretch; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-col { display: flex; flex-direction: column; min-width: 0; min-height: 0; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-col:first-child { min-width: 118px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-col .ps2-hk { flex: none; line-height: 15px; font-size: 12px; font-weight: 600; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ls { flex: 1 1 0; min-height: 0; min-width: 0; overflow: hidden; display: block; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ls > * { display: block; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks { font-size: 14px; line-height: 1.143; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b { font-size: 1em; font-weight: 700; color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b.used { font-weight: 400; color: var(--s-faint); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b i { font-style: normal; margin-left: 5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ls.ps2-none { font-size: 13px; line-height: 16px; color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld { font-size: 13px; line-height: 1.231; color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span { display: flex; align-items: center; height: 1.231em; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld b { flex: none; display: inline-block; width: 1.1em; font-size: 1em; font-weight: 600; color: inherit; font-variant-numeric: tabular-nums; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld .lit { color: var(--s-ink); font-weight: 600; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld .lit b { font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-sym { flex: none; width: 0.923em; height: 1.077em; margin-right: 0.42em; overflow: visible; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-lists.idle .ps2-hks b { font-weight: 400; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-lists.idle .ps2-ld .lit { color: var(--s-faint); font-weight: 400; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-outw { align-items: center; padding: 6px 18px; font-size: 13px; color: var(--s-mute); white-space: nowrap; }
+/* the marks, as the HUD draws them (.twod12-hud .hm-ap / .hm-r / .hm-sk), a little bigger: AP squares, the Reaction AP a gold diamond, Strike slashes */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks { gap: 5px 8px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-pips { gap: 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip { width: 12px; height: 12px; border-radius: 0; border: 1.5px solid var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.spent { border-color: var(--s-gold); background: transparent; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap { width: 10px; height: 10px; margin: 0 2px; border-color: var(--s-gold); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip.rap.on { background: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-pips .pip-sep { margin: 0 3px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-sep { margin: 0 1px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk i { width: 5px; height: 13px; transform: skewX(-22deg); border: 1.5px solid var(--ps-strike); opacity: .45; background: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-marks .ps2-strk i.on { background: var(--ps-strike); opacity: 1; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-combat.std .ps2-marks { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+/* the Esc. row: the HUD's upright ticks, a rung's taller (a ruler's long marks); a click sets the Escalation */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ticks { display: inline-flex; align-items: flex-end; gap: 4px; height: 16px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ticks a { width: 8px; height: 11px; box-sizing: border-box; border: 1.5px solid var(--s-mute); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-ticks a.rg { height: 16px; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ticks a.on { background: var(--s-ink); border-color: var(--s-ink); }
+/* the Basic Actions: the strips at nearly full color (4 px; a Strike's 3 px in its red), the name fitted, never cut */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx:not(.off) .ps2-bxbtn { border-left: 4px solid color-mix(in srgb, var(--lnf) 88%, var(--s-pg-2)); gap: 4px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bx:not(.off) .ps2-bxbtn.strike { box-shadow: inset 1px 0 0 var(--s-pg-2), inset 4px 0 0 var(--ps-strike); padding-left: 7px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxl { flex: 1 1 auto; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxn { text-overflow: clip; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-bxn.wrap { white-space: normal; }
+/* an NPC's tiles in the PC's grid (the places it doesn't use stay empty) */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m1, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tiles.m2 { grid-template-columns: repeat(4, minmax(0, 1fr)) 6px repeat(3, minmax(0, 1fr)); }
+/* the Basic attack's bar: the name is never the part that is cut; the subtitle gives way */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-oa.basicatk .ps2-bar .ps-nm { flex: none; }
+/* v0.0.443 (E6): the dice row's damage-type icon too (inline.mjs .dtic) */
+@scope (.theme-dark) to (.theme-light) { .dtic[style*="--sc-d"] { color: var(--sc-d) !important; } }
+
+/* ==================================================================== v0.0.444 (group 2; Lucas, 2026-11-19: foundry/mockups/group2, "Proposed") */
+/* the roll dialog with two weapons: a column each, every line on one line ("make sure to make all fill a single line") */
+.twod12.rolldlg .rd-dual { margin: 2px 0 4px; }
+.twod12.rolldlg .rdd-r { display: grid; grid-template-columns: 4.8rem repeat(var(--n, 2), minmax(0, 1fr)); gap: 0 .6rem; margin: 1px 0; align-items: baseline; }
+.twod12.rolldlg .rdd-r > * { min-width: 0; white-space: nowrap; overflow: hidden; }
+.twod12.rolldlg .rdd-r > b { font-weight: 700; } .twod12.rolldlg .rdd-h { border-bottom: 1px solid var(--s-hair); padding-bottom: 2px; margin-bottom: 2px; }
+.twod12.rolldlg .rdd-h small { color: var(--s-mute); font-weight: 400; }
+.twod12.rolldlg .rdd-r > b .rd-tforce { all: unset; font-weight: 700; cursor: pointer; } .twod12.rolldlg .rdd-r.forced { box-shadow: inset 2px 0 0 var(--s-gold); }
+.twod12.rolldlg .rdd-roll { border-top: 1px solid var(--s-hair); padding-top: 3px; margin-top: 3px; } .twod12.rolldlg .rdd-dice { font-weight: 700; }
+.twod12.rolldlg .rdd-notes > span { display: flex; flex-direction: column; } .twod12.rolldlg .rdd-notes i { font-style: normal; font-size: 12px; white-space: nowrap; }
+.twod12.rolldlg .rdd-bane { color: var(--s-bane); } .twod12.rolldlg .rdd-out { color: var(--s-mute); }
+.twod12.rolldlg .rd-go.rd-gow { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.twod12.rolldlg .rd-go.rd-gow.out { text-decoration: line-through; opacity: .6; }
+/* the HUD's hand menu: the HUD's flat surface and thin line, opening upward from the tile (hud.mjs handMenu) */
+.twod12-hud .hud-hmenu { position: absolute; z-index: 30; box-sizing: border-box; width: max-content; min-width: 220px; max-width: 340px; border: 1px solid var(--hud-line); background: var(--hud-bg); color: var(--hud-ink); box-shadow: 0 4px 16px rgba(0, 0, 0, .55); font: 400 13px/1.3 "Source Sans 3", sans-serif; }
+.twod12-hud .hud-hmenu .hm-h { padding: 5px 9px 4px; color: var(--hud-mute); } .twod12-hud .hud-hmenu .hm-h b { color: var(--hud-ink); font-weight: 700; font-size: 14px; }
+.twod12-hud .hud-hmenu .hm-w { display: block; padding-top: 2px; font-size: 12.5px; color: var(--s-bad); }
+.twod12-hud .hud-hmenu .hm-g { display: flex; flex-direction: column; padding: 3px 0; border-top: 1px solid var(--hud-hair); }
+.twod12-hud .hud-hmenu .hm-row { all: unset; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; align-items: baseline; padding: 3px 9px; font: 600 13px/1.3 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; }
+.twod12-hud .hud-hmenu .hm-row:hover, .twod12-hud .hud-hmenu .hm-row:focus-visible { background: color-mix(in srgb, var(--hud-ink) 9%, transparent); }
+.twod12-hud .hud-hmenu .hm-c { white-space: nowrap; font-weight: 400; color: var(--hud-mute); } .twod12-hud .hud-hmenu .hm-c b { color: var(--hud-ink); font-weight: 700; }
+.twod12-hud .hud-hmenu .hm-row.off { cursor: default; } .twod12-hud .hud-hmenu .hm-row.off:hover { background: none; }
+.twod12-hud .hud-hmenu .hm-row.off .hm-l, .twod12-hud .hud-hmenu .hm-row.off .hm-c { text-decoration: line-through; color: var(--hud-mute); font-weight: 400; }
+.twod12-hud .hud-hmenu .hm-l small { display: block; text-decoration: none; font-weight: 400; font-size: 12.5px; color: var(--hud-ink); }
+.twod12-hud .hud-hmenu .hm-row.off .hm-l small { text-decoration: none; display: block; }
+.twod12-hud .h3-hand.on { background: color-mix(in srgb, var(--hud-ink) 14%, transparent); border-color: var(--s-gold); }
+/* the macro bar (Lucas: "I like the macrobar of that mockup"): flat square slots with a thin line, the number small at the top right, the icon muted */
+.twod12-hud .h3-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar .slot { position: relative; box-sizing: border-box; border: 1px solid var(--s-hair) !important; border-radius: 0 !important; background: rgba(0, 0, 0, .28) !important; box-shadow: none !important; color: var(--s-mute); outline: none; }
+.theme-light .twod12-hud .h3-hot #hotbar .slot, .theme-light .twod12-hud .hud-hot #hotbar .slot { background: rgba(0, 0, 0, .06) !important; }
+.twod12-hud .h3-hot #hotbar .slot:hover, .twod12-hud .hud-hot #hotbar .slot:hover { border-color: var(--s-gold) !important; }
+.twod12-hud #hotbar .slot .key, .twod12-hud #hotbar .slot .slot-key, .twod12-hud #hotbar .slot [class*="key"] { position: absolute; right: 2px; top: 0; font-size: 8.5px; line-height: 10px; color: var(--s-faint); background: none; text-shadow: none; }
+.twod12-hud #hotbar .slot img, .twod12-hud #hotbar .slot .slot-icon { opacity: .85; border: 0; }
+/* v0.0.445 (Lucas on v0.0.444: "The hotbar and buttons can fit better"): in the HUD's right column the macro bar's own controls (Foundry's lock and
+   clear at its left, the page arrows and number at its right) are small and flat, two stacked in a slot's height; the ten slots take the rest */
+.twod12-hud .h3-hot #hotbar { display: flex !important; flex-wrap: nowrap; align-items: center; gap: 4px; width: 100% !important; height: auto !important; }
+.twod12-hud .h3-hot #hotbar > #action-bar, .twod12-hud .h3-hot #hotbar > ol { flex: 1 1 auto !important; min-width: 0; width: auto !important; grid-auto-rows: 26px; gap: 3px; }
+.twod12-hud .h3-hot #hotbar .slot { height: 26px !important; width: auto !important; min-width: 0 !important; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) { flex: none !important; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 1px; width: 14px !important; min-width: 0 !important; height: auto !important; max-height: 30px; margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a { flex: none !important; display: inline-flex !important; align-items: center; justify-content: center; width: 14px !important; min-width: 0 !important; height: 10px !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; border: 1px solid var(--s-hair) !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; color: var(--s-mute) !important; font-size: 8px !important; line-height: 1 !important; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button:hover, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a:hover { color: var(--s-ink) !important; border-color: var(--s-gold) !important; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) i { font-size: 8px !important; margin: 0 !important; }
+.twod12-hud .h3-hot #hotbar .page-number, .twod12-hud .h3-hot #hotbar [class*="page-number"] { font-size: 9px !important; line-height: 1 !important; color: var(--s-faint) !important; width: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
+
+/* ==================================================================== v0.0.446 (Lucas: "Make each a tab, but only show the 'Situational' tab when there
+   is something happening. When it happens, change tabs to the situational automatically"): the HUD's right column as three tabs */
+.twod12-hud .h3-side { grid-template-rows: auto minmax(0, 1fr); }
+.twod12-hud .h3-rtabs { display: flex; border-bottom: 1px solid var(--hud-hair); }
+.twod12-hud .h3-rt { all: unset; box-sizing: border-box; flex: 1 1 0; text-align: center; padding: 3px 6px 4px; font: 600 .78rem/1.3 "Source Sans 3", sans-serif; color: var(--hud-mute); border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; }
+.twod12-hud .h3-rt:hover { color: var(--hud-ink); } .twod12-hud .h3-rt[aria-selected="true"] { color: var(--hud-ink); border-bottom-color: var(--s-gold); }
+.twod12-hud .h3-side:not(.has-sit) .h3-rt-sit { display: none; }
+.twod12-hud .h3-side.has-sit .h3-rt-sit { color: var(--s-gold); }
+.twod12-hud .h3-pane { display: none; min-height: 0; overflow: hidden; }
+.twod12-hud .h3-side[data-rtab="sit"] .h3-p-sit, .twod12-hud .h3-side[data-rtab="hands"] .h3-p-hands, .twod12-hud .h3-side[data-rtab="macros"] .h3-p-macros { display: flex; flex-direction: column; }
+.twod12-hud .h3-p-sit .h3-sit { flex: 1; min-height: 0; overflow-y: auto; }
+.twod12-hud .h3-p-hands { justify-content: center; } .twod12-hud .h3-p-hands .h3-hands { border-top: 0; padding: 6px 9px; }
+.twod12-hud .h3-p-hands .h3-hand { padding: 4px 8px; font-size: .82rem; }
+.twod12-hud .h3-p-macros { justify-content: center; } .twod12-hud .h3-p-macros .h3-hot { border-top: 0; padding: 4px 9px; }
+/* v0.0.447: a hook or a rung opens what it does (no underline: Lucas); the hand menu's text centered in its rows (Lucas's checklist, g2-handmenu) */
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b[data-action], .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span[data-action] { cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b[data-action]:focus-visible, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span[data-action]:focus-visible { outline: 1px solid var(--s-gold); outline-offset: 1px; }
+.twod12-hud .hud-hmenu .hm-row { align-items: center; } .twod12-hud .hud-hmenu .hm-c { text-align: right; }
+.application.pickwin .pw-info h4.pw-ih { margin: 8px 0 2px; font: 700 14px "Source Sans 3", sans-serif; }
+/* v0.0.449 (Lucas: "I mean in the roll dialog"): a weapon column's hand Bane is a button: off, it is struck and muted */
+.twod12.rolldlg .rdd-notes button.rdd-bane { all: unset; display: block; font-size: 12px; white-space: nowrap; color: var(--s-bane); cursor: pointer; }
+.twod12.rolldlg .rdd-notes button.rdd-bane:hover, .twod12.rolldlg .rdd-notes button.rdd-bane:focus-visible { text-decoration: underline; }
+.twod12.rolldlg .rdd-notes button.rdd-bane.off { color: var(--s-faint); text-decoration: line-through; }
+/* v0.0.449 (Lucas, g2-hotbar): the Hands over the macro bar in one pane; the tabs only while something waits; Foundry's macro bar buttons
+   (mute, menu, lock, clear, page arrows) visible: their icon in ink, a slight fill */
+.twod12-hud .h3-side:not(.has-sit) .h3-rtabs { display: none; }
+.twod12-hud .h3-side[data-rtab="main"] .h3-p-main { display: flex; flex-direction: column; justify-content: flex-end; }
+.twod12-hud .h3-p-main .h3-hands { border-top: 0; padding: 4px 9px; }
+.twod12-hud .h3-p-main .h3-hot { border-top: 1px solid var(--hud-hair); padding: 4px 9px 5px; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) { display: grid !important; grid-template-rows: repeat(2, 12px); grid-auto-flow: column; grid-auto-columns: 16px; gap: 2px; width: auto !important; height: 26px !important; max-height: none; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a { width: 16px !important; height: 12px !important; background: color-mix(in srgb, var(--hud-ink) 10%, transparent) !important; color: var(--hud-ink) !important; border-color: var(--hud-line) !important; font-size: 9px !important; }
+.twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) button::before, .twod12-hud .h3-hot #hotbar > :not(#action-bar):not(ol) a::before { font-size: 8px !important; line-height: 1 !important; color: var(--hud-ink) !important; margin: 0 !important; }
+.twod12-hud .h3-hot #hotbar .page-number, .twod12-hud .h3-hot #hotbar [class*="page-number"] { display: flex !important; align-items: center; justify-content: center; font-size: 9px !important; color: var(--hud-ink) !important; }
+/* v0.0.451 (Lucas, g2-hotbar: "The three on the right still are cluttered together and weird"): built on Foundry V14's own markup
+   (templates/ui/hotbar.hbs: left mute and menu; right a page column ▲ number ▼ and a column of lock and clear). Each group a column of its own:
+   the left and the lock/clear columns two flat boxed buttons; the page column bare arrows around the number. */
+.twod12-hud .h3-hot #hotbar > div#hotbar-controls-left, .twod12-hud .h3-hot #hotbar > div#hotbar-controls-right > div.flexcol { display: flex !important; flex-direction: column; justify-content: space-between; gap: 2px; width: 16px !important; height: 26px !important; max-height: none; flex: none !important; margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; }
+.twod12-hud .h3-hot #hotbar > div#hotbar-controls-right { display: flex !important; flex-direction: row; align-items: stretch; gap: 3px; width: auto !important; height: 26px !important; max-height: none; flex: none !important; }
+.twod12-hud .h3-hot #hotbar #hotbar-controls-left > button, .twod12-hud .h3-hot #hotbar #hotbar-controls-right > div.flexcol > button { width: 16px !important; height: 12px !important; flex: none !important; }
+.twod12-hud .h3-hot #hotbar > div#hotbar-controls-right > nav#hotbar-page-controls { display: flex !important; flex-direction: column; align-items: center; justify-content: space-between; width: 12px !important; height: 26px !important; margin: 0 !important; padding: 0 !important; gap: 0; background: none !important; border: 0 !important; }
+.twod12-hud .h3-hot #hotbar #hotbar-controls-right #hotbar-page-controls > button { width: 12px !important; height: 8px !important; border: 0 !important; background: none !important; color: var(--hud-mute) !important; }
+.twod12-hud .h3-hot #hotbar #hotbar-controls-right #hotbar-page-controls > button:hover { color: var(--s-gold) !important; }
+.twod12-hud .h3-hot #hotbar #hotbar-controls-right #hotbar-page-controls > button::before { font-size: 8px !important; color: inherit !important; }
+.twod12-hud .h3-hot #hotbar #hotbar-controls-right #hotbar-page-controls > button.page-prev::before { display: inline-block; transform: scaleX(.75) scaleY(-1); }
+.twod12-hud .h3-hot #hotbar #hotbar-page-controls > .hotbar-page-number { display: block !important; position: static !important; text-align: center; width: auto !important; height: 10px !important; margin: 0 !important; padding: 0 !important; font-size: 10px !important; line-height: 10px !important; font-weight: 600; color: var(--hud-ink) !important; background: none !important; border: 0 !important; }
+/* v0.0.453 (Lucas, playtest 6: "Token hud shouldnt prevent clicking on used actions. Just give a warning"): a struck stamp that isn't locked can
+   be clicked (the roll dialog warns); a used line keeps its word and its struck stamps */
+.twod12-hud .hb-st.no:not(:disabled) { cursor: pointer; }
+.twod12-hud .hb-st.no:not(:disabled):hover { border-color: var(--s-gold, #d2a75a); color: var(--hud-ink); }
+.twod12-hud .hb-pv.used + .hb-st { margin-left: 4px; }
+/* v0.0.454 (Lucas, playtest 6, D5 "Proposed A"): a picture option of the pick bar is a 40 px square with its token's picture, its number in a corner;
+   the Minions' question in the Situational section's format (the lead, a quiet tag, the question on its line, the squares) */
+.twod12-pickbar .lb-opt.sq { all: unset; position: relative; box-sizing: border-box; width: 40px; height: 40px; flex: none; border: 1px solid var(--s-gold, #d2a75a); background: rgba(0, 0, 0, .25); cursor: pointer; }
+.twod12-pickbar .lb-opt.sq img { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
+.twod12-pickbar .lb-opt.sq .lb-num { position: absolute; right: -1px; bottom: -1px; min-width: 14px; height: 14px; box-sizing: border-box; padding: 0 3px; background: var(--hud-bg, #1f1c18); border: 1px solid var(--s-gold, #d2a75a); font: 700 11px/12px "Source Sans 3", sans-serif; text-align: center; color: var(--hud-ink, #ece3cf); }
+.twod12-pickbar .lb-opt.sq:hover, .twod12-pickbar .lb-opt.sq.hover, .twod12-pickbar .lb-opt.sq:focus-visible { background: rgba(0, 0, 0, .25); outline: 2px solid var(--s-stamp, #e8c25a); outline-offset: 0; border-color: var(--s-stamp, #e8c25a); }
+.twod12-pickbar.squadpick .lb-text .lb-tag { margin-left: 6px; font-weight: 400; color: var(--hud-mute, #b3a68e); }
+.twod12-pickbar.squadpick .lb-text .lb-q { display: block; }
+.twod12-pickbar.squadpick .lb-opts { gap: 6px; }
+/* v0.0.454 (Lucas, playtest 6, D3): a stat's symbol on the NPC sheet, 14 px, in the word's color, before the word; nothing moves */
+.twod12 .stat-sym { width: 14px; height: 14px; flex: none; display: inline-block; vertical-align: -2px; margin-right: 3px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.twod12 .stat-sym .f { fill: currentColor; stroke: none; }
+/* v0.0.454 (Lucas, playtest 6, D4): a struck Use button can still be clicked (the roll dialog warns): faded, struck, the hand pointer */
+.twod12.acard.d2 .ap-vbtn.no { pointer-events: auto; cursor: pointer; opacity: .6; text-decoration: line-through; }
+.twod12.acard.d2 .ap-vbtn.no:hover { opacity: 1; }
+/* v0.0.454 (Lucas, playtest 6, D4): an Art's card opened by a click: its top line (the name, its kind and Frequency, "Choose a Mode") */
+.twod12-artcard .ac-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 0 10px; padding: 7px 30px 6px 10px; background: var(--s-pg, #1f1c18); color: var(--s-ink, #ece3cf); border-bottom: 1px solid var(--s-rule, #7a683f); font: 400 13px/1.3 "Source Sans 3", sans-serif; }
+.twod12-artcard .ac-top .ac-name { font: 600 18px/1.2 "Source Serif 4", serif; }
+.twod12-artcard .ac-top .ac-kind { color: var(--s-mute, #b3a68e); white-space: nowrap; }
+.twod12-artcard .ac-top .ac-ask { grid-column: 1 / -1; font-weight: 600; color: var(--s-gold, #d2a75a); }
+/* v0.0.454 (Lucas, playtest 6, D2 "B"): the damage breakdown under a target's row, a ledger (one step a line, the numbers in a column), opened by
+   the equals button; Full / Half / Double in a small menu on a right-click of Apply or Undo */
+.twod12.chat.cc .cc-adjrow.ondemand .cc-ledger { flex: 1 1 100%; box-sizing: border-box; margin: 2px 0 0; padding: 5px 7px; background: var(--cc-panel); border-left: 2px solid var(--s-rule, #7a683f); font-size: 12.5px; line-height: 1.4; color: var(--cc-ink); font-variant-numeric: tabular-nums; }
+.twod12.chat.cc .cc-ledger .cc-lg { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; padding: 1px 0 3px; }
+.twod12.chat.cc .cc-ledger .cc-lg + .cc-lg { border-top: 1px solid color-mix(in srgb, var(--cc-ink) 18%, transparent); padding-top: 3px; }
+.twod12.chat.cc .cc-ledger .cc-lgh { grid-column: 1 / -1; font-weight: 700; }
+.twod12.chat.cc .cc-ledger .cc-lgl { display: contents; }
+.twod12.chat.cc .cc-ledger .cc-lgl > span { padding-left: 16px; color: var(--cc-mute); }
+.twod12.chat.cc .cc-ledger .cc-lgl > b { text-align: right; font-weight: 400; }
+.twod12.chat.cc .cc-ledger .cc-lgt > span { color: var(--cc-ink); font-weight: 700; }
+.twod12.chat.cc .cc-ledger .cc-lgt > b { font-weight: 700; font-size: 14px; border-top: 1px solid var(--cc-ink); }
+.twod12.chat.cc .cc-ledger .cc-lgf { margin-top: 3px; padding-top: 3px; border-top: 1px solid color-mix(in srgb, var(--cc-ink) 18%, transparent); font-size: 11.5px; color: var(--cc-mute); }
+.twod12.chat.cc .cc-trow { position: relative; }
+.cc-ctxmenu { position: absolute; z-index: 20; display: flex; flex-direction: column; min-width: 150px; padding: 3px 0; background: var(--s-pg, #1f1c18); border: 1px solid var(--s-rule, #7a683f); box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
+.cc-ctxmenu button { all: unset; box-sizing: border-box; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 3px 10px; font: 600 13px/1.4 "Source Sans 3", sans-serif; color: var(--s-ink, #ece3cf); cursor: pointer; }
+.cc-ctxmenu button small { font-weight: 400; font-size: 11.5px; color: var(--s-mute, #b3a68e); }
+.cc-ctxmenu button:hover, .cc-ctxmenu button:focus-visible { background: color-mix(in srgb, var(--s-ink, #ece3cf) 10%, transparent); }
+.twod12.chat.cc .cc-adjrow.ondemand.open { display: block; }
+.twod12.chat.cc .cc-trow .cc-btn.cc-rbtn.hinted { box-shadow: 0 0 0 2px var(--s-stamp, #e8c25a); }
+/* v0.0.454 (Lucas, playtest 6, D1 "B for both windows, A for the chat message"): the Rally and Heal window in the table look (400 px): the count, one
+   sentence and its parts, the Rally Points' marks, the pools as the HUD's bars (the healed part hatched), the split behind its link, Cancel and Use */
+.application.twod12-healwin .window-content { padding: 0; background: var(--s-pg, #1f1c18); color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2 { font: 400 13.5px/1.35 "Source Sans 3", sans-serif; color: var(--s-ink, #ece3cf); font-variant-numeric: tabular-nums; }
+.twod12-healwin .hw2 .k { color: var(--s-mute, #b3a68e); font-weight: 600; font-size: 12.5px; }
+.twod12-healwin .hw2 .q { color: var(--s-mute, #b3a68e); font-size: 12.5px; }
+.twod12-healwin .hw2-count { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--s-hair, #4a4132); }
+.twod12-healwin .hw2-seg { display: inline-flex; }
+.twod12-healwin .hw2-seg button { all: unset; box-sizing: border-box; min-width: 28px; height: 24px; padding: 0 8px; text-align: center; border: 1px solid var(--s-rule, #7a683f); margin-left: -1px; font-weight: 600; cursor: pointer; color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-seg button.on { background: var(--s-ink, #ece3cf); color: var(--s-pg, #1f1c18); border-color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 10px 12px 8px; }
+.twod12-healwin .hw2-who { font-size: 17px; line-height: 1.25; } .twod12-healwin .hw2-who b.n { font-size: 20px; }
+.twod12-healwin .hw2-sum { display: block; font-size: 12.5px; color: var(--s-mute, #b3a68e); margin-top: 1px; }
+.twod12-healwin .hw2-rp { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 12.5px; white-space: nowrap; color: var(--s-mute, #b3a68e); }
+.twod12-healwin .hw2-rp b { color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-pips { display: inline-flex; gap: 3px; margin: 2px 0 1px; }
+.twod12-healwin .hw2-pips i { width: 9px; height: 9px; border-radius: 50%; box-sizing: border-box; border: 1.5px solid var(--s-faint, #8a7f6c); }
+.twod12-healwin .hw2-pips i.on { background: var(--s-good, #7fd49a); border-color: var(--s-good, #7fd49a); }
+.twod12-healwin .hw2-pips i.go { border-color: var(--s-gold, #d2a75a); border-style: dashed; }
+.twod12-healwin .hw2-rows { padding: 2px 12px 8px; }
+.twod12-healwin .hw2-bar { display: grid; grid-template-columns: 62px minmax(0, 1fr) 104px; align-items: center; gap: 0 8px; min-height: 30px; border-top: 1px solid var(--s-hair, #4a4132); }
+.twod12-healwin .hw2-bar .nm, .twod12-healwin .hw2-row .nm { font-weight: 700; }
+.twod12-healwin .v .nm, .twod12-healwin .nm.v { color: var(--s-vig, #ef8a96); } .twod12-healwin .r .nm, .twod12-healwin .nm.r { color: var(--s-res, #aec4f0); }
+.twod12-healwin .hw2-bar .tr { position: relative; display: flex; height: 10px; background: color-mix(in srgb, var(--s-ink, #ece3cf) 12%, transparent); }
+.twod12-healwin .hw2-bar .tr i { display: block; height: 100%; }
+.twod12-healwin .hw2-bar.v .tr .l { background: var(--s-vig, #ef8a96); } .twod12-healwin .hw2-bar.r .tr .l { background: var(--s-res, #aec4f0); }
+.twod12-healwin .hw2-bar .tr .h { box-sizing: border-box; border: 1px solid var(--s-good, #7fd49a); background: repeating-linear-gradient(135deg, var(--s-good, #7fd49a) 0 2px, transparent 2px 5px); }
+.twod12-healwin .hw2-bar .nn { text-align: right; color: var(--s-mute, #b3a68e); font-size: 13px; } .twod12-healwin .hw2-bar .nn b { color: var(--s-good, #7fd49a); font-size: 15px; }
+.twod12-healwin .hw2-link { display: flex; align-items: baseline; justify-content: space-between; border-top: 1px solid var(--s-hair, #4a4132); padding-top: 6px; font-size: 12.5px; color: var(--s-mute, #b3a68e); }
+.twod12-healwin .hw2-lk { all: unset; color: var(--s-gold, #d2a75a); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.twod12-healwin .hw2-split { border-top: 1px solid var(--s-hair, #4a4132); margin-top: 2px; }
+.twod12-healwin .hw2-row { display: grid; grid-template-columns: minmax(0, 1fr) 26px 18px 26px 46px 92px; align-items: center; gap: 0 4px; min-height: 32px; border-top: 1px solid var(--s-hair, #4a4132); }
+.twod12-healwin .hw2-split .hw2-row:first-child { border-top: 0; }
+.twod12-healwin .hw2-row .was { text-align: right; color: var(--s-mute, #b3a68e); } .twod12-healwin .hw2-row .ar { text-align: center; color: var(--s-faint, #8a7f6c); }
+.twod12-healwin .hw2-row > b { text-align: right; font-size: 16px; } .twod12-healwin .hw2-row > b.chg { color: var(--s-good, #7fd49a); }
+.twod12-healwin .hw2-row .of { color: var(--s-faint, #8a7f6c); font-size: 12.5px; padding-left: 3px; }
+.twod12-healwin .hw2-st { display: inline-flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.twod12-healwin .hw2-st button { all: unset; box-sizing: border-box; width: 22px; height: 22px; text-align: center; line-height: 20px; border: 1px solid var(--s-rule, #7a683f); cursor: pointer; color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-st button:disabled { opacity: .35; cursor: default; } .twod12-healwin .hw2-st b { min-width: 16px; text-align: center; }
+.twod12-healwin .hw2-none { padding: 8px 0; color: var(--s-mute, #b3a68e); border-top: 1px solid var(--s-hair, #4a4132); }
+.twod12-healwin .hw2-foot { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--s-hair, #4a4132); background: var(--s-pg-2, #262219); }
+.twod12-healwin .hw2-foot .m { flex: 1; min-width: 0; font-size: 12.5px; color: var(--s-mute, #b3a68e); }
+.twod12-healwin .hw2-b { all: unset; box-sizing: border-box; height: 28px; padding: 0 12px; border: 1px solid var(--s-rule, #7a683f); font-weight: 600; cursor: pointer; color: var(--s-ink, #ece3cf); }
+.twod12-healwin .hw2-b.go { background: var(--s-ink, #ece3cf); color: var(--s-pg, #1f1c18); border-color: var(--s-ink, #ece3cf); }
+/* the heal message (D1): one line a fact under the bold first one */
+.twod12.healmsg .hl-l { display: block; } .twod12.healmsg .hl-l.q { color: var(--s-mute, #b3a68e); font-size: .92em; }
+/* v0.0.455 (Lucas, group 3: "Stage A, Level B, Species and Class A"; foundry/mockups/group3): the Build tab's top. The Stage as the tab's title band
+   (the big serif, its levels, the next Stage; the Level and Change level at the right; the 15 levels' ladder under), Species and Class as two ruled
+   entries in the sheet's stat-line look (a grey word, a bold value), no dark header bar, no pills. */
+.twod12 .bt-btn { flex: none; height: 24px; padding: 0 9px; margin: 0; width: auto; border: 1px solid var(--s-gold, #d2a75a); border-radius: 2px; background: transparent; color: var(--s-ink, #ece3cf); font: 600 12.5px "Source Sans 3", sans-serif; line-height: 22px; white-space: nowrap; cursor: pointer; box-shadow: none; }
+.twod12 .bt-btn:hover { background: var(--s-stamp, #e8c25a); color: var(--s-stamp-ink, #1b1f28); }
+.twod12 .bt-btn.quiet { border-color: var(--s-hair, #4a4132); font-weight: 400; }
+.twod12 .bt-q { color: var(--s-mute, #b3a68e); }
+.twod12 .bt-stage { padding: 2px 0 8px; border-bottom: 1px solid var(--s-rule, #7a683f); margin-bottom: 2px; }
+.twod12 .bt-st1 { display: flex; align-items: center; gap: 12px; }
+.twod12 .bt-stt { display: flex; align-items: baseline; gap: 6px; font-family: "Source Serif 4", serif; color: var(--s-ink, #ece3cf); line-height: 1; }
+.twod12 .bt-stw { font-size: 24px; font-weight: 600; } .twod12 .bt-stn { font-size: 34px; font-weight: 700; }
+.twod12 .bt-sts { display: flex; flex-direction: column; font-size: 12.5px; line-height: 1.3; color: var(--s-ink, #ece3cf); }
+.twod12 .bt-lvc { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
+.twod12 .bt-lvw { margin-right: 4px; font-size: 13.5px; color: var(--s-mute, #b3a68e); white-space: nowrap; } .twod12 .bt-lvw b { color: var(--s-ink, #ece3cf); font-size: 18px; font-weight: 700; margin-left: 2px; }
+.twod12 .bt-ladder { display: flex; gap: 10px; margin-top: 8px; }
+.twod12 .bt-lg { flex: 4; display: flex; flex-direction: column; gap: 2px; } .twod12 .bt-lg.first { flex: 3; }
+.twod12 .bt-cells { display: flex; gap: 2px; padding-bottom: 3px; border-bottom: 1px solid var(--s-hair, #4a4132); }
+.twod12 .bt-lg.on .bt-cells { border-bottom: 2px solid var(--s-gold, #d2a75a); padding-bottom: 2px; }
+.twod12 .bt-cells i { flex: 1; min-width: 0; height: 20px; display: inline-flex; align-items: center; justify-content: center; font: 400 11.5px "Source Sans 3", sans-serif; font-style: normal; color: var(--s-faint, #8a7f6c); border: 1px solid var(--s-hair, #4a4132); }
+.twod12 .bt-cells i.past { background: var(--s-band, #332c22); color: var(--s-ink, #ece3cf); border-color: var(--s-band, #332c22); }
+.twod12 .bt-cells i.now { background: var(--s-band, #332c22); color: var(--s-ink, #ece3cf); font-weight: 700; border: 2px solid var(--s-gold, #d2a75a); }
+.twod12 .bt-lg small { font-size: 11.5px; color: var(--s-faint, #8a7f6c); } .twod12 .bt-lg.on small { color: var(--s-ink, #ece3cf); font-weight: 700; }
+.twod12 .bt-origin { font-size: 13.5px; color: var(--s-ink, #ece3cf); margin-bottom: 4px; }
+.twod12 .bt-ent { display: grid; grid-template-columns: 62px 1fr; border-bottom: 1px solid var(--s-rule, #7a683f); padding: 2px 0 4px; }
+.twod12 .bt-eh { grid-column: 1 / 3; display: grid; grid-template-columns: 62px auto 1fr; align-items: center; gap: 8px; min-height: 28px; }
+.twod12 .bt-ek { color: var(--s-mute, #b3a68e); } .twod12 .bt-en { font-size: 15px; font-weight: 700; }
+.twod12 .bt-ebtns { margin-left: auto; display: inline-flex; gap: 6px; justify-self: end; }
+.twod12 .bt-el { grid-column: 2; display: flex; flex-wrap: wrap; gap: 2px 14px; padding: 3px 0; border-bottom: 1px solid var(--s-hair, #4a4132); }
+.twod12 .bt-el:last-child { border-bottom: 0; }
+.twod12 .bt-kv { white-space: nowrap; } .twod12 .bt-kv .bt-k { color: var(--s-mute, #b3a68e); font-weight: 400; } .twod12 .bt-kv b { font-weight: 700; color: var(--s-ink, #ece3cf); }
+.twod12 .bt-kv b.v { color: var(--s-vig, #ef8a96); } .twod12 .bt-kv b.r { color: var(--s-res, #aec4f0); }
+.twod12 .bt-pwstep { padding: 4px 0 2px; }
+/* v0.0.455 (Lucas, group 4: "Where A, links A, the Loot tab proposed"; foundry/mockups/group4): the Inventory and the Loot tab (inventory.mjs): the
+   section heading on a rule with its column words, one ruled line an item, its detail under it when opened, the Where button and its menu, − n +. */
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-inv { display: flex; flex-direction: column; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 2px 3px; font-size: 13px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-top .ps2-links { gap: 14px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-top i, .twod12-actor .twod12.sheet.pcs.ps2 .inv-dl > i, .twod12-actor .twod12.sheet.pcs.ps2 .inv-traits > i { font-style: normal; color: var(--s-faint); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-coins { white-space: nowrap; color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-coins label, .twod12-actor .twod12.sheet.pcs.ps2 .inv-coins label input { flex: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-coins label { display: inline-flex; flex-direction: row; align-items: baseline; gap: 4px; margin: 0; font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-coins input { width: 3.4em; height: 20px; padding: 0 2px; border: 0; border-bottom: 1px solid var(--s-hair); border-radius: 0; background: transparent; color: var(--s-ink); font: 700 13.5px "Source Sans 3", sans-serif; text-align: center; -moz-appearance: textfield; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-coins input::-webkit-inner-spin-button { display: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-note { padding: 1px 2px 2px; color: var(--s-mute); font-size: 12.5px; font-style: italic; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-flagl { padding: 0 4px 4px 2px; margin-top: -3px; font-size: 12.5px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-sec { margin-top: 6px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-band { display: grid; grid-template-columns: minmax(0, 1fr) 128px 46px 104px; gap: 0 10px; align-items: baseline; padding: 4px 4px 2px 2px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-band.g, .twod12-actor .twod12.sheet.pcs.ps2 .inv-row.g { grid-template-columns: minmax(0, 1fr) 84px 50px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-band.l, .twod12-actor .twod12.sheet.pcs.ps2 .inv-row.l { grid-template-columns: minmax(0, 1fr) 84px 64px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-band .inv-c { font-variant: normal; letter-spacing: 0; font-size: 12px; font-weight: 400; color: var(--s-mute); text-align: right; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-band.w .inv-c:last-child, .twod12-actor .twod12.sheet.pcs.ps2 .inv-band.a .inv-c:last-child { text-align: left; padding-left: 1px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-band.g .inv-c:nth-of-type(1) { text-align: center; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-r { position: relative; border-bottom: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-row { display: grid; grid-template-columns: minmax(0, 1fr) 128px 46px 104px; gap: 0 10px; align-items: center; min-height: 29px; padding: 1px 4px 1px 2px; background: none; border: 0; border-radius: 0; color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-r.open > .inv-row { background: var(--s-band); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-r.dropped > .inv-row > :not(.inv-wc) { opacity: .55; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-n { display: flex; align-items: baseline; gap: 7px; min-width: 0; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-nm { flex: none; font-weight: 700; font-size: 14.5px; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-row.g .inv-nm, .twod12-actor .twod12.sheet.pcs.ps2 .inv-row.l .inv-nm { font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-sub { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-style: italic; font-size: 12.5px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-sub.bad { color: var(--s-bad); font-style: normal; font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-dt { color: var(--s-mute); }
+@scope (.theme-dark) to (.theme-light) { .twod12-actor .twod12.sheet.pcs.ps2 .inv-detail .inv-dt { color: var(--sc-d); } }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-warn { color: var(--s-bad); font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-lnk, .twod12-actor .twod12.sheet.pcs.ps2 .inv-dlinks a { color: var(--s-ink); text-decoration: underline; text-decoration-color: var(--s-rule); text-underline-offset: 2px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-dmg { text-align: right; white-space: nowrap; font-size: 13px; font-variant-numeric: tabular-nums; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-mst { text-align: right; white-space: nowrap; font-weight: 700; font-size: 13.5px; } .twod12-actor .twod12.sheet.pcs.ps2 .inv-mst small { font-weight: 400; font-size: 12px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-wt { text-align: right; font-size: 13px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-wc { position: relative; min-width: 0; display: flex; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-where { all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; height: 22px; padding: 0 6px 0 7px; border: 1px solid var(--s-rule); border-radius: 2px; font: 600 12.5px "Source Sans 3", sans-serif; color: var(--s-ink); white-space: nowrap; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-where .fa-x { font-size: 9px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-where:hover, .twod12-actor .twod12.sheet.pcs.ps2 .inv-where.on { background: var(--s-band); border-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-where.warn { border-color: var(--s-bad); color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-qty { display: inline-flex; align-items: center; justify-content: center; gap: 2px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-lq { display: flex; justify-content: center; } .twod12-actor .twod12.sheet.pcs.ps2 .inv-q1 { font-size: 13.5px; font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-give { all: unset; box-sizing: border-box; height: 22px; padding: 0 8px; border: 1px solid var(--s-rule); border-radius: 2px; text-align: center; font: 600 12.5px "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-give:hover, .twod12-actor .twod12.sheet.pcs.ps2 .inv-give.on { background: var(--s-band); border-color: var(--s-gold); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-detail { padding: 5px 10px 6px; background: var(--s-pg-2); border-top: 1px solid var(--s-hair); border-bottom: 1px solid var(--s-gold); margin-bottom: -1px; font-size: 13px; line-height: 1.4; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-traits { padding-bottom: 3px; margin-bottom: 3px; border-bottom: 1px solid var(--s-rule); font-size: 13.5px; } .twod12-actor .twod12.sheet.pcs.ps2 .inv-traits b { font-weight: 600; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-dl { padding: 1px 0; } .twod12-actor .twod12.sheet.pcs.ps2 .inv-dl b { font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-tiers { display: flex; gap: 18px; } .twod12-actor .twod12.sheet.pcs.ps2 .inv-desc { color: var(--s-ink); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-dlinks { display: flex; justify-content: flex-end; gap: 16px; padding-top: 3px; margin-top: 3px; border-top: 1px solid var(--s-hair); font-size: 12.5px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-dlinks a { color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-empty { padding: 6px 2px; border-bottom: 1px solid var(--s-hair); font-size: 13px; font-style: italic; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-warnl { padding: 4px 2px; border-bottom: 1px solid var(--s-hair); font-size: 12.5px; color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu { position: absolute; z-index: 30; box-sizing: border-box; width: max-content; min-width: 230px; max-width: 330px; border: 1px solid var(--s-rule); background: var(--s-pg); color: var(--s-ink); box-shadow: 0 4px 16px rgba(0, 0, 0, .45); font: 400 13px/1.3 "Source Sans 3", sans-serif; text-align: left; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-h { padding: 5px 9px 4px; color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-h b { color: var(--s-ink); font-weight: 700; font-size: 14px; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-w { display: block; padding-top: 2px; font-size: 12.5px; color: var(--s-bad); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-g { display: flex; flex-direction: column; padding: 3px 0; border-top: 1px solid var(--s-hair); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-row { all: unset; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; align-items: baseline; padding: 3px 9px; font: 600 13px/1.3 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-row:first-child:hover, .twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-g:nth-child(2) .hm-row:first-child { background: color-mix(in srgb, var(--s-ink) 9%, transparent); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-c { white-space: nowrap; font-weight: 400; color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-c b { color: var(--s-ink); font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-row.off .hm-l, .twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-row.off .hm-c { text-decoration: line-through; color: var(--s-mute); font-weight: 400; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-menu .hm-l small { display: block; text-decoration: none; font-weight: 400; font-size: 12.5px; }
+.inv-pwn { display: flex; align-items: center; gap: 10px; padding: 2px 0 6px; } .inv-pwn > span:last-child { opacity: .75; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-tiers span { color: var(--s-mute); } .twod12-actor .twod12.sheet.pcs.ps2 .inv-tiers span b { color: var(--s-ink); font-weight: 700; }
+.twod12-actor .twod12.sheet.pcs.ps2 { position: relative; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-detail { display: none; } .twod12-actor .twod12.sheet.pcs.ps2 .inv-r.open > .inv-detail { display: block; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-qty input.inv-qn { width: 28px; height: 18px; padding: 0; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: transparent; color: var(--s-ink); text-align: center; font: 400 13.5px "Source Sans 3", sans-serif; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-qty input.inv-qn:focus { border-bottom-color: var(--s-rule); outline: none; } .twod12-actor .twod12.sheet.pcs.ps2 .inv-qty input.inv-qn::-webkit-inner-spin-button { display: none; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-where i { font-size: 9px; color: var(--s-mute); }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-qty button { all: unset; box-sizing: border-box; width: 18px; height: 18px; line-height: 16px; text-align: center; border: 1px solid var(--s-hair); border-radius: 2px; color: var(--s-mute); font-size: 13px; cursor: pointer; }
+.twod12-actor .twod12.sheet.pcs.ps2 .inv-qty button:hover { color: var(--s-ink); border-color: var(--s-rule); }
+/* v0.0.456 (pack SHEETS-HUD's leftover: "the Forced Movement bar and the pick bar inside the Situational section keep their own look"): a bar that
+   asks in the Situational section (the pick bar, a Forced Movement, a Setup's or a Charge's movement, End movement) takes the section's item look:
+   its words in the item's text (the bold lead a little larger), its buttons the HUD's outlined ones (the first filled on hover, Cancel quiet),
+   no icons in them, a thin line above it */
+.twod12-hud .h3-sit .twod12-linebar.in-hud { padding-top: 3px; font-size: .81rem; color: var(--hud-ink); }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text { color: var(--hud-ink); margin: 0 0 3px; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text > b:first-child { font-size: .88rem; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv) { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 4px; height: auto; margin: 0; padding: 0 9px; border: 1px solid var(--s-gold, #d2a75a); border-radius: 0; background: none; box-shadow: none; font: 600 .78rem/1.55 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; white-space: nowrap; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv):hover,
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-opt.hover:not(.sq), .lb-side button.on) { background: var(--s-gold, #d2a75a); color: var(--hud-bg); }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-give, [data-id="__cancel"]) { color: var(--hud-mute); border-color: var(--hud-line); }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-adv) i { display: none; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-side { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-lbl { color: var(--hud-mute); font-size: .75rem; align-self: center; }
+/* v0.0.456: the theme's scoped linebar rules (a frame, a shadow, filled buttons) beat these on proximity: the in-HUD look is decisive here */
+.twod12-hud .h3-sit .twod12-linebar.in-hud { border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv) { flex: none !important; width: auto !important; background: none !important; border: 1px solid var(--s-gold, #d2a75a) !important; border-radius: 0 !important; color: var(--hud-ink) !important; box-shadow: none !important; height: auto !important; line-height: 1.55 !important; font-size: .78rem !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv):hover, .twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-opt.hover:not(.sq), .lb-side button.on) { background: var(--s-gold, #d2a75a) !important; color: var(--hud-bg) !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-give, [data-id="__cancel"]) { color: var(--hud-mute) !important; border-color: var(--hud-line) !important; }
+.twod12-hud .h3-sit .hb-ask { padding: 0; border-bottom: 0; box-shadow: none; background: none; animation: none; }   /* v0.0.456: the section's own highlight is enough */
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-give.lb-give, .twod12-hud .h3-sit .twod12-linebar.in-hud [data-id="__cancel"][data-id="__cancel"] { color: var(--hud-mute) !important; border-color: var(--hud-line) !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud :is(.lb-go, .lb-give, .lb-opt:not(.sq), .lb-side button, .lb-adv) { min-width: 0 !important; max-width: none !important; padding: 0 9px !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud { display: flex !important; flex-wrap: wrap !important; align-items: center; gap: 4px 6px !important; padding: 3px 0 0 !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-text { flex: 1 1 100% !important; }
+
+/* ==== v0.0.457 (B3/E6, Lucas 2026-11-19: "each damage type one color everywhere"): one hue a type (config.mjs subtypeInk on a light surface,
+   subtypeColors on a dark one, the --sc-d each colored span carries). The roll dialog's own types, the chat card's codes and words, the
+   damage card's rows and the Action card's tier table no longer have colors of their own (the tier table painted every type gold). ==== */
+.twod12 .dmgword[style*="--sc-d"] { color: var(--dc); }
+@scope (.theme-dark) to (.theme-light) { .cc-sub[style*="--sc-d"], .rd-sub[style*="--sc-d"], .dmgword[style*="--sc-d"], .as-sub[style*="--sc-d"] { color: var(--sc-d) !important; }
+  .twod12.chat.dmg .comp[style*="--sc-d"], .twod12.chat .comp[style*="--sc-d"] { --sc: var(--sc-d) !important; } }
+
+/* ==== v0.0.460 (Lucas, checklist v0.0.459): the roll dialog's warnings, above the bar: a ruled line each, the icon in the Bane's ink ==== */
+.twod12.rolldlg .rd-warns { margin: 4px 14px 0; border-top: 1px solid var(--cc-btn2, rgba(128,128,128,.4)); padding-top: 4px; }
+.twod12.rolldlg .rd-warn { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; line-height: 1.4; padding: 1px 0; }
+.twod12.rolldlg .rd-warn > i { color: var(--c-bane); font-size: 11px; flex: 0 0 auto; }
+/* v0.0.460 (Lucas, checklist v0.0.459, reload-chip: "Its red until I click away from it"): Foundry's own button:focus glow (red) on a clicked chip; only
+   the keyboard's focus outline stays */
+.twod12.rolldlg.rolldlg button:focus:not(:focus-visible) { box-shadow: none !important; outline: none !important; }
+.twod12.rolldlg.rolldlg .rd-chip:focus-within:not(:has(:focus-visible)) { box-shadow: none !important; }
+/* v0.0.460: Apply's right-click menu floats over the page (it was inside the card, under the chat's input) */
+.cc-ctxmenu.floating { position: fixed; z-index: 1000; }
+/* v0.0.460: the Art's card moves by its top line */
+.twod12-artcard .ac-top { cursor: move; user-select: none; }
+/* v0.0.460 (Lucas, checklist v0.0.459): an area's "Place …" button where the creatures go, until it is placed; a slow bronze pulse on its
+   outline (no glow, no color fill: STYLE-3's serious tone) */
+.twod12.rolldlg .rd-placebig { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 40px; margin: 2px 0; padding: 0 12px; background: transparent; border: 1px solid var(--tw-accent, #b08a4a); border-radius: 2px; color: inherit; font: 600 14px/1.2 "Source Sans 3", sans-serif; cursor: pointer; animation: twod12-placepulse 1.6s ease-in-out infinite; }
+.twod12.rolldlg .rd-placebig:hover { background: color-mix(in srgb, var(--tw-accent, #b08a4a) 12%, transparent); }
+@keyframes twod12-placepulse { 0%, 100% { border-color: var(--tw-accent, #b08a4a); box-shadow: inset 0 0 0 0 transparent; } 50% { border-color: color-mix(in srgb, var(--tw-accent, #b08a4a) 35%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tw-accent, #b08a4a) 45%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .twod12.rolldlg .rd-placebig { animation: none; } }
+/* v0.0.460 (Lucas, checklist v0.0.459: "Tokens cover all the Situational area, covering all of it, having to scroll"): a pick of pictures (the
+   Minions' squad) inside the Situational section: small squares in a wrapping row, never the section's width each */
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opts { display: flex !important; flex-wrap: wrap !important; gap: 4px !important; grid-template-columns: none !important; flex: 1 1 100% !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opt.sq { width: 34px !important; height: 34px !important; min-width: 0 !important; max-width: 34px !important; flex: none !important; padding: 0 !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opt.sq img { width: 100% !important; height: 100% !important; max-width: none; object-fit: cover; }
+/* ==== v0.0.461 (the map notes' redesign, foundry/mockups/mapnotes; Lucas's answers 2026-11-20): every Situational ask ends the same way: the
+   main button filled, the way out quiet and last, one line naming the keys; the count of squares big; a warning in the Bane's ink ==== */
+.twod12-linebar .lb-keys { flex: 1 1 100%; display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.4; color: var(--hud-mute, #b3a68e); white-space: normal; }
+.twod12-linebar .lb-keys kbd { display: inline-block; padding: 0 4px; margin-right: 3px; border: 1px solid var(--hud-hair, #4a4132); border-radius: 2px; font: 600 10.5px/1.5 "Source Sans 3", sans-serif; color: var(--hud-ink, #ece3cf); background: none; box-shadow: none; }
+.twod12-linebar .lb-count { flex: 1 1 100%; display: block; font-size: 13px; color: var(--hud-ink, #ece3cf); }
+.twod12-linebar .lb-count b { font-size: 17px; font-weight: 700; margin-right: 2px; }
+.twod12-linebar .lb-warn { color: var(--c-bane, #ff6a4d); }
+.twod12-linebar .lb-tag { margin-left: 4px; font-weight: 400; color: var(--hud-mute, #b3a68e); }
+.twod12-linebar .lb-cands { display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 100%; }
+.twod12-linebar .lb-cands:empty { display: none; }
+.twod12-linebar .lb-cands .lb-opt.sq { all: unset; position: relative; box-sizing: border-box; width: 34px; height: 34px; flex: none; border: 1px solid var(--s-gold, #d2a75a); cursor: pointer; }
+.twod12-linebar .lb-cands .lb-opt.sq img { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
+.twod12-linebar .lb-cands .lb-opt.sq .lb-num { position: absolute; right: -1px; bottom: -1px; min-width: 13px; height: 13px; padding: 0 2px; box-sizing: border-box; background: var(--s-gold, #d2a75a); color: #1f1c18; font: 700 10px/13px "Source Sans 3", sans-serif; text-align: center; }
+.twod12-linebar.twod12-linebar button.fill, .twod12-hud .h3-sit .twod12-linebar.in-hud button.fill { background: var(--s-gold, #d2a75a) !important; border-color: var(--s-gold, #d2a75a) !important; color: #1f1c18 !important; }
+.twod12-linebar .lb-give.fill { opacity: 1 !important; }
+.twod12-hud.twod12-hud .h3-sit .twod12-linebar.twod12-linebar.in-hud button.fill { background: var(--s-gold, #d2a75a) !important; border-color: var(--s-gold, #d2a75a) !important; color: #1f1c18 !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-left { display: block; margin-top: 2px; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-left b { font-size: 17px; }
+.twod12-hud.twod12-hud .h3-sit .twod12-linebar.twod12-linebar.in-hud button.fill, .twod12-linebar.twod12-linebar.twod12-linebar button.fill { color: var(--hud-bg, #1f1c18) !important; }
+/* v0.0.463 (Lucas, checklist v0.0.462, armor-faith-source: "The linked actions are too big in the chat card"): a name linked in a short chat line
+   (Armor of Faith, for using Shield of Faith) reads as text: bold, a dotted underline, no box */
+.twod12.chat.sysline a.content-link, .twod12.chat.sysline.sysline a.content-link { display: inline; padding: 0; margin: 0; border: 0; border-radius: 0; background: none; box-shadow: none; font-weight: 700; color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; line-height: inherit; white-space: normal; }
+.twod12.chat.sysline a.content-link > i { display: none; }
+/* v0.0.467 (Lucas, checklist v0.0.466): the area hover: every area under the mouse, each under its name, its lines in sections by who they affect */
+.twod12-zonetip .zt-zone + .zt-zone { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .22); }
+.twod12-zonetip .zt-sec { margin-top: 3px; }
+.twod12-zonetip .zt-sec .zt-who { display: block; font-weight: 700; }
+.twod12-zonetip .zt-sec .zt-l { padding-left: 8px; }
+.twod12-zonetip .zt-foot { margin-top: 3px; opacity: .8; font-size: 11.5px; }
+/* v0.0.471: the Encounter Log's damage table */
+.enclog .el-dmg { margin-top: 8px; border-top: 1px solid rgba(128, 128, 128, .35); padding-top: 4px; }
+.enclog .el-dmg summary { font-weight: 700; cursor: pointer; }
+.enclog .el-dmg table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.enclog .el-dmg th, .enclog .el-dmg td { padding: 2px 6px; text-align: left; border-bottom: 1px solid rgba(128, 128, 128, .2); }
+.enclog .el-dmg td.c { text-align: center; }

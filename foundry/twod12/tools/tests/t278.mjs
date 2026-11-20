@@ -44,7 +44,7 @@ console.log("the Save card folds once its damage is applied:", !save(false).incl
 console.log("--- the looks");
 console.log("a pill keeps one line:", CSS.includes(".twod12.sheet.pcs .ps-pill { width: auto; min-width: 64px;"), "| the header wraps:", CSS.includes(".twod12.sheet.pcs .ps-head { flex-wrap: wrap;"));
 console.log("trait chips are plain words everywhere:", THEME.includes(".twod12-type.twod12-type .twod12 .tg .tgc .tchip, .twod12-type.twod12-type .twod12 .tprops .tchip.prop { background: none !important;"));
-console.log("the dark Resolve blue lighter:", THEME.includes("--s-res: #8fb0f5"), "| the HUD's 10 defense cells:", CSS.includes(".twod12-hud .hb-defs { display: grid; grid-template-columns: repeat(5, 1fr) 6px repeat(4, 1fr);"), "| a full AP pip gold in dark:", THEME.includes(".twod12-type.twod12-type .twod12-hud .hm-ap i.on"));
+console.log("the dark Resolve blue lighter (v0.0.447: lighter again, less saturated):", THEME.includes("--s-res: #aec4f0"), "| the HUD's 10 defense cells:", CSS.includes(".twod12-hud .hb-defs { display: grid; grid-template-columns: repeat(5, 1fr) 6px repeat(4, 1fr);"), "| a full AP pip gold in dark:", THEME.includes(".twod12-type.twod12-type .twod12-hud .hm-ap i.on"));
 
 console.log("--- Minion squads (book: as even as possible; the GM picks the groups and who goes next)");
 const R = await import(ROOTURL + "module/roundrules.mjs");
@@ -55,4 +55,4 @@ const C = await import(ROOTURL + "module/combat.mjs");
 const cm = (name, init, disp, squad, ord) => ({ id: name, name, initiative: init, token: { disposition: disp }, flags: { twod12: { init: { squad: squad ?? "", ...(ord != null ? { sqOrder: ord } : {}) } } } });
 const t = C.zipper([cm("M1", 15, -1, "", 2), cm("M2", 15, -1, "M1", 0), cm("M3", 15, -1, "M1", 1), cm("P1", 14, 1)]);
 console.log("a squad in the GM's order:", t.map(c => c.name).join(" "), "| still to act after M2:", C.squadRun(t, 1).map(c => c.id).join(", "), "| M1 picked next:", C.squadOrderAfter(t, 1, "M1").join(", "));
-console.log("the book:", fs.readFileSync(ROOT + "../../book/rules-src/14-bestiary.md", "utf8").includes("**Keep the squads as even as you can:**"));
+console.log("the book:", fs.readFileSync(ROOT + "../../book/rules-src/14-bestiary.md", "utf8").includes("**The recommendation:** one squad for every 2 Minions, rounded up"));

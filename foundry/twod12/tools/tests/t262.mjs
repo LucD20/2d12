@@ -78,7 +78,7 @@ if (AS.cleanLevel) {
   const cl = new Set(), el = { classList: { contains: k => cl.has(k), add: (...k) => k.forEach(x => cl.add(x)) } };
   console.log("E5 a window with no scheme takes the Applications one:", AS.ensureWindowTheme(el, "light"), [...cl].join(" "), "| one with its own is left:", AS.ensureWindowTheme(el, "dark"));
 } else console.log("(actor-sheets.mjs:", AS.err, ")");
-console.log("D2 both Modifiers, no Vigor / Resolve words on the bars:", hud.includes('{ label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }') && !hv.includes("<span><b>${esc(b.name)}</b>"),
+console.log("D2 both Modifiers, no Vigor / Resolve words on the bars:", hud.includes('{ key: "power", word: "Power", label: "Pow", value: sg(s.powerMod ?? 0), tip: "Power Modifier" }') && !hv.includes("<span><b>${esc(b.name)}</b>"),
   "| D5 no jump (v0.0.421: the classes switch with the new content, after the data):", hud.includes('shape("is-bar", ...(m.npc ? ["is-npc"] : []), ...(m.folded ? ["is-folded"] : []));') && !hud.includes("minHeight"), "| F2 Bloodied / Strained off the strip:", hud.includes('tag: h.tag?.cls === "hurt" ? null : h.tag'));
 console.log("F1 a full AP pip solid gold, an empty one dark:", theme.includes(".twod12-type.twod12-type .twod12-hud .hm-ap i.on, .twod12-type.twod12-type #twod12-carousel .tp-marks .hm-ap i.on { background: #d2a75a; border-color: #d2a75a; }"), "| D8 the HUD's icons centered:", css.includes(".twod12-hud .hud-hot #hotbar .slot, .twod12-hud .hud-hot #hotbar button { display: inline-flex; align-items: center; justify-content: center;"));
 

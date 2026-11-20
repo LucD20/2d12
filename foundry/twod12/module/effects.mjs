@@ -91,7 +91,7 @@ export async function applyBoonEffect(actor, cfg, origin) {
       description: "", notes: [], bonuses: [], grants: [],
       modifiers: [{ against: false, boons: n > 0 ? n : 0, banes: n < 0 ? -n : 0, bb, empowered: 0, enfeebled: 0, all: traits, any: [], none: [], from: [] }],
       // "the next ...": it is used up by the next roll with all those traits (with no traits it lasts its duration)
-      expireOn: traits, expireAll: true
+      expireOn: cfg.next === "roll" && !traits.length ? ["__roll"] : traits, expireAll: true   // v0.0.458: "on its next roll": any roll spends it (bonus.mjs expireOnUse)
     } }
   }]);
 }

@@ -18,7 +18,9 @@ export function logOf(combat) {
   return b.length ? [...a, ...b.sort((x, y) => (x.s ?? 0) - (y.s ?? 0))] : a;
 }
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const idOf = uuid => String(uuid ?? "").split(".").filter(Boolean).pop() ?? "";
+// v0.0.471 (Lucas, checklist v0.0.470, log-allies: the Goblins weren't numbered): a token's actor ("Scene.S.Token.T.Actor.A") is its token T, as the
+// combat's list (numbered by token); it took the actor's id, which matched nothing
+const idOf = uuid => { const p = String(uuid ?? "").split(".").filter(Boolean), k = p.lastIndexOf("Token"); return k >= 0 && p[k + 1] ? p[k + 1] : (p.pop() ?? ""); };
 
 /* ------------------------------------------------------------------ pure: names, abbreviations, lines, the export */
 const SMALL = new Set(["of", "on", "the", "and", "a", "an", "to", "in", "&"]);
@@ -116,7 +118,7 @@ export function turnText(turn, nm, an, { details = false } = {}) {
 /** The whole log in the playtest format, by Round, with the abbreviations used (a legend) first. */
 export function exportText(log, { abbr = {}, short = true, details = false, full = {} } = {}) {
   const used = new Map(), usedAct = new Map();
-  const nm = r => { if (!r) return "?"; const s = short ? (abbr[r.id] ?? r.name) : (full[r.id] ?? r.name); if (short && s !== r.name) used.set(s, r.name); return s; };
+  const nm = r => { if (!r) return "?"; const s = short ? (abbr[r.id] ?? r.name) : (full[r.id] ?? r.name); if (short && s !== r.name) used.set(s, full[r.id] ?? r.name); return s; };   // v0.0.472: the legend names a numbered creature by its number ("GS2 - Goblin Sneak 2")
   // An Action's short name that is also a creature's (Ground Slam and the Goblin Sneaks: GS) stays whole.
   const taken = new Set(Object.values(abbr).flatMap(a => [a, String(a).replace(/\d+$/, "")]));
   const an = n => { let s = short ? actionAbbr(n) || n : n; if (taken.has(s)) s = n; if (short && s !== n) usedAct.set(s, n); return s; };
@@ -241,12 +243,19 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
       }).join("");
       rows.push(`<div class="el-turn" data-r="${turn.r}" data-t="${turn.t}"><div class="el-own"><b>${nm(turn.own)}</b> <span class="el-ab">(${esc(ab[turn.own?.id] ?? "")})</span><a data-el="note" aria-label="Add a note to this turn"><i class="fa-solid fa-plus"></i> note</a></div>${lines || '<div class="el-line empty">(nothing)</div>'}</div>`);
     }
+    // v0.0.471 (Lucas, checklist v0.0.470, log-allies: "It didnt show 'To allies'"): the damage table under the log (it was only in the Damage
+    // window and the copied text): each creature's damage to enemies, and to its own side apart, the names numbered
+    let dmgTable = "";
+    try {
+      const { reportRows } = await import("./damagelog.mjs"); const dr = reportRows(combat);
+      if (dr.length) dmgTable = `<details class="el-dmg" open><summary>Damage dealt</summary><table><thead><tr><th>Creature</th><th>Total</th><th>This round</th><th>To allies</th></tr></thead><tbody>${dr.map(r => `<tr><td>${esc(r.name)}</td><td class="c"><b>${r.total}</b></td><td class="c">${r.round}</td><td class="c">${r.allies || "\u2014"}</td></tr>`).join("")}</tbody></table></details>`;
+    } catch (e) { console.warn("twod12 | damage table", e); }
     div.innerHTML = `<div class="el-bar"><button type="button" data-el="copy"><i class="fa-solid fa-copy"></i> Copy log</button>
         <label><input type="checkbox" data-opt="short" ${this.short === false ? "" : "checked"}> Short names</label>
         <label><input type="checkbox" data-opt="details" ${this.details ? "checked" : ""}> Damage and conditions in the copy</label>
         <span class="el-sp"></span><label><input type="checkbox" data-show="dmg" ${this.show.dmg ? "checked" : ""}> Damage</label><label><input type="checkbox" data-show="cond" ${this.show.cond ? "checked" : ""}> Conditions</label><label><input type="checkbox" data-show="off" ${this.show.off ? "checked" : ""}> Removed</label></div>
       <details class="el-abbr"><summary>Short names</summary>${list.map(c => `<label>${esc(c.name)} <input type="text" data-abbr="${esc(c.id)}" value="${esc(ab[c.id])}"></label>`).join("")}</details>
-      <div class="el-body">${rows.join("") || "<p class=\"hint\">Nothing logged yet. Actions, movement, damage, healing and conditions in this combat appear here.</p>"}</div>`;
+      <div class="el-body">${rows.join("") || "<p class=\"hint\">Nothing logged yet. Actions, movement, damage, healing and conditions in this combat appear here.</p>"}</div>${dmgTable}`;
     return div;
   }
   _replaceHTML(result, content) {

@@ -81,6 +81,7 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     if (a === "ver") st.ap = Number(b.dataset.ap);
     else if (a === "quick") RD.addManual(st, b.dataset.scope, b.dataset.k);
     else if (a === "chip") RD.toggleChip(st, this._chip(b.dataset.id));
+    else if (a === "dualbane" && b.dataset.id) st.toggled[b.dataset.id] = st.toggled[b.dataset.id] === false;   // v0.0.449: a weapon column's hand Bane, off or on again
     else if (a === "rm") { const [, scope, kind] = /^man:(.*):([a-z]+)$/.exec(b.dataset.id) ?? []; if (kind) RD.removeManual(st, scope, kind); }
     else if (a === "fold") st.fold[b.dataset.key] = !st.fold[b.dataset.key];
     else if (a === "open") st.open[b.dataset.uuid] = !st.open[b.dataset.uuid];
@@ -91,12 +92,14 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     else if (a === "place") return this._finish({ restart: true, place: true, state: this.st });
     // v0.0.400 (Lucas: "Target button doesn't work to retarget"; its handler sat in the right-click listener): the creatures targeted now (none: no target)
     else if (a === "targetmode") return this._finish({ restart: true, state: this.st });
-    else if (a === "roll") return this._roll();
+    else if (a === "roll") return this._roll(b.dataset.weapon);
     else return;
     this.render();
   }
 
-  _roll() {
+  _roll(weaponId = "") {
+    // v0.0.444 (group 2): the other weapon's Roll: the Action runs again with that weapon and these choices, and rolls at once
+    if (!this.done && weaponId && this.inp.dual && weaponId !== this.inp.dual.current && !RD.blockedReason(this.inp, this.st)) return this._finish({ restart: true, rollAfter: true, weaponId, state: this.st });
     // v0.0.397 (Lucas): an Area Action's Roll places the area first (the dialog's choices kept), then rolls
     if (!this.done && this.inp.area && !this.inp.area.placed && !this.inp.area.noPlace) return this._finish({ restart: true, place: true, rollAfter: true, state: this.st });
     if (this.done || RD.blockedReason(this.inp, this.st)) return;

@@ -98,6 +98,10 @@ export function convertEffects(text) {
   s = s.replace(new RegExp(`\\b(${ATTRS})\\s+Check\\b(?![\\w\\[])`, "g"), (m, a) => `@Check[${a.toLowerCase()}]`);
   const REF = "(?:\\d+|speed|walk|move|body|mind|appeal|instinct|level|weapon|hp|rally)";
   const EXPR = `${REF}(?:\\s*[/*+\\-]\\s*${REF})*`;
+  // v0.0.458 (Lucas, 2026-11-19): a named Boon or Bane on "its next roll" (Dirty Trick) or "their next [Weapon] Action" (Rally the Tribe) is a Boon
+  // button: only the Boon or Bane is the button, the rest stays words; "next roll" is spent by the creature's next roll of any kind (next:roll)
+  s = s.replace(/\b(\d+)\s+(Pressure|Support|Field)\s+(Bane|Boon)(s?)\s+on\s+(its|their|your)\s+next\s+(roll|\[(\w+)\]\s+Action)\b/g,
+    (m, n, k, bb, pl, who, what, trait) => `@Boon[${bb === "Bane" ? "-" : ""}${n}|bb:${k.toLowerCase()}${trait ? `|traits:${trait.toLowerCase()}` : "|next:roll"}${who === "your" ? "|self:yes" : ""}]{${n} ${k} ${bb}${pl}} on ${who} next ${what}`);
   // v0.0.410 (pack F2, Trade Places; book, Swapping Places): "You and the target swap squares." is a Swap chip
   s = s.replace(/\bYou and the target swap squares\b/g, "You and the target @Swap[]{swap squares}");
   // v0.0.409 (pack F2, the Paladin's Setups): "Advance up to 5 squares in a straight line toward the target" (Lay On Hands), "You Advance." (Reckoning)

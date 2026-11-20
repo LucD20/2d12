@@ -12,7 +12,7 @@ import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
 import { perceptionOf, perceive, youGain } from "./senses.mjs";
 import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, areaConfigOf, autoChip } from "./config.mjs";
 import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
-import { handOf, HAND_LABEL, handBanes } from "./loadout.mjs";
+import { handOf, HAND_LABEL, handBanes, weaponWhere, weaponMove } from "./loadout.mjs";
 import { isFists } from "./fists.mjs";   // v0.0.412: the hands' Banes
 import { isEngaged, engagedWith, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
@@ -280,8 +280,9 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
       ? `<span class="bbgroup">${stepChip("empowered", "Empowered", "up", "boon", defaults.empowerN ? 1 : 0)}</span>`
       : "",
     // v0.0.283 (pack chat-cards; book Ch. 4): switching a Lethal Action to Nonlethal (or back) costs a Bane on the roll; the damage message shows the tag
+    // v0.0.458 (Lucas, 2026-11-19; book Ch. 4): a Save Action doesn't roll, so its switch gives every creature 1 Boon on its Save instead
     withDamage && defaults.nlKnown
-      ? `<label class="fxchip bane"><input type="checkbox" name="switchNl"><i class="fa-solid fa-hand-fist"></i><span>${defaults.nonlethal ? "Lethal" : "Nonlethal"} (1 Bane)</span></label>`
+      ? `<label class="fxchip ${defaults.nlSave ? "boon" : "bane"}"><input type="checkbox" name="switchNl"><i class="fa-solid fa-hand-fist"></i><span>${defaults.nonlethal ? "Lethal" : "Nonlethal"} (${defaults.nlSave ? "+1 Boon on each Save" : "1 Bane"})</span></label>`
       : ""
   ]
     .filter(Boolean)
@@ -453,7 +454,10 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.440 (Lucas, checklist: Wounding Shot "only warning, never prevent these unless very necessary"): a Requirement, a Frequency-like rule or a
   // locked Technique warns and the Action goes on; only what can't happen at all (a movement while Immobilized or Prone, a Technique without its
   // weapon in hand) still stops it
-  const warnOnly = msg => { ui.notifications.warn(`${msg} Used anyway.`); return false; };
+  // v0.0.460 (Lucas, checklist v0.0.459, warn-only: "remember we are adding them to the Roll Dialog now"): written in the roll dialog's
+  // warnings (dlgWarns), not a Foundry notification; a use that skips the dialog still gets the notification (below)
+  const earlyWarns = opts._earlyWarns ?? [];
+  const warnOnly = msg => { earlyWarns.push(`${msg} Used anyway.`); return false; };
   // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction AP waits until Staggered ends)
   if (item.system?.reaction && reactionsOff(actor) && warnOnly(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
   // v0.0.412 (book, Wounding Shot): "You haven't left your square this turn": its Requirement, checked on its turn in a combat (hooks.mjs leftThisTurn)
@@ -475,7 +479,7 @@ export async function useAction(actor, item, opts = {}) {
         if (pick !== true && pick !== false) return;
         mode = pick ? "weapon" : "power";
       }
-      return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode });
+      return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode, _earlyWarns: earlyWarns });
     }
   }
   // v0.0.409 (pack F2; book, Reading an Action): an Art has three Modes: the player picks one each time (the pick window), then it is used as that Mode
@@ -484,12 +488,12 @@ export async function useAction(actor, item, opts = {}) {
     if (modes.length) {
       let mode = modes.includes(opts.mode) ? opts.mode : null;
       if (!mode) {
-        const { pickOne } = await import("./pickwindow.mjs");
-        const tip = m => { const v = item.system.versions.find(x => x.mode === m); return String(v?.effects || v?.x2 || "").replace(/@\w+\[[^\]]*\]\{([^}]*)\}/g, "$1").replace(/@\w+\[([^\]|]*)[^\]]*\]/g, "$1").replace(/<[^>]+>/g, ""); };
-        mode = await pickOne({ title: item.name, name: item.name, sub: "choose a Mode", icon: "fa-shapes", text: "Each time you use an Art, you choose one of its Modes.", options: modes.map(m => ({ k: m, l: m, tip: tip(m) })) });
-        if (!mode) return;
+        // v0.0.454 (Lucas, playtest 6, D4): the Art's card opens by what was clicked (artcard.mjs); a Mode's Use button uses it (was a pick window)
+        const { openArtCard } = await import("./artcard.mjs");
+        await openArtCard(actor, item, (m, ap, o = {}) => { if (modes.includes(m)) useAction(actor, item, { ...opts, mode: m, skipDialog: !o.dialog }); });   // v0.0.460: straight to the chat; Shift, the roll dialog
+        return;
       }
-      return useAction(actor, modeView(item, mode), { ...opts, splitMode: mode });
+      return useAction(actor, modeView(item, mode), { ...opts, splitMode: mode, _earlyWarns: earlyWarns });
     }
   }
   const s = actor.system, it = item.system;
@@ -586,7 +590,9 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.397 (Lucas: "When using an area action, only ask to place the area after the action has been confirmed in the roll dialog"; the roll dialog
   // brief of 2026-11-07: the Version buttons and the Place Area button are the dialog's): the dialog opens first, its Version buttons choose the
   // size; Roll places the area, then rolls with the dialog's choices (rollwindow.mjs). The HUD's "Skip roll dialog" and a shortcut keep the old order.
-  const deferArea = !!areaSet && !opts.rdState && !opts.skipDialog && opts.quickAp == null && typeof globalThis.__twod12RollDialog !== "function"
+  // v0.0.460 (Lucas, checklist v0.0.459: "Clicking on word of radiance on the token hud places it, then opens the roll dialog"): the HUD passes its
+  // Version as rdState ({ ap }), which turned this off; only a run again after the dialog (restart: the area placed) skips it now
+  const deferArea = !!areaSet && !opts.restart && !opts.skipDialog && opts.quickAp == null && typeof globalThis.__twod12RollDialog !== "function"
     && typeof foundry.applications?.api?.ApplicationV2?.prototype?.render === "function";
   if (!deferArea && areaSet && canvas.ready && canvas.grid?.isSquare && new Set(versions.map(v => `${v.areaSize || areaSet.distance}|${v.areaRounds || areaSet.rounds}`)).size > 1) {
     const { pickBar } = await import("./pickbar.mjs");
@@ -633,7 +639,20 @@ export async function useAction(actor, item, opts = {}) {
   const linkedW = item.getFlag("twod12", "weaponId");
   // A Weapon Action with the Melee or Ranged trait needs a weapon with that property.
   const needProp = it.traits.has("weapon") ? ["melee", "ranged"].find(p => it.traits.has(p)) : null;
-  const candidates = weaponsFor(actor, item).filter(w => !needProp || hasProp(w, needProp) || (needProp === "ranged" && hasProp(w, "thrown")));   // a Thrown weapon can be thrown for a [Ranged] Action
+  const fitting = weaponsFor(actor, item).filter(w => !needProp || hasProp(w, needProp) || (needProp === "ranged" && hasProp(w, "thrown")));   // a Thrown weapon can be thrown for a [Ranged] Action
+  // v0.0.444 (Lucas, group 2): the card's own requirement (Darting Blade: a Light weapon). v0.0.453 (Lucas, playtest 6: "dont prevent it. Shows a
+  // warning on the Roll dialog"): with no such weapon in hand, the weapons that fit otherwise stay, and the dialog warns
+  let needsOk = fitting.filter(w => !it.weaponNeeds || !it.traits.has("weapon") || hasProp(w, it.weaponNeeds));
+  // v0.0.460 (Lucas, checklist v0.0.459, g2-darting: "makes the attack with fists"; Darting Blade, Setup: "You draw a Light weapon"): with none
+  // in hand, a fitting one carried on you is the Strike's weapon, drawn when Roll is pressed (setupDraw, below)
+  let setupDraw = null;
+  if (it.weaponNeeds && it.traits.has("weapon") && !linkedW && !needsOk.length) {
+    setupDraw = (actor.itemTypes?.weapon ?? []).find(w => weaponWhere(w) === "worn" && hasProp(w, it.weaponNeeds) && (!needProp || hasProp(w, needProp) || (needProp === "ranged" && hasProp(w, "thrown")))) ?? null;
+    if (setupDraw) needsOk = [setupDraw];
+  }
+  const dlgWarns = [...earlyWarns];   // v0.0.460: the Requirement, Staggered and locked-Technique warnings too
+  if (it.weaponNeeds && it.traits.has("weapon") && !linkedW && !needsOk.length && fitting.length) dlgWarns.push(`${item.name} needs ${(TWOD12.weaponNeeds?.[it.weaponNeeds] ?? it.weaponNeeds).toLowerCase()} in hand`);
+  const candidates = needsOk.length ? needsOk : fitting;
   if (needProp && !linkedW && !candidates.length) return ui.notifications.warn(`${item.name} needs a wielded ${needProp === "melee" ? "Melee" : "Ranged"} weapon.`);
   // A Shot Action needs a Projectile weapon (a bow, a crossbow).
   if (it.traits.has("shot") && it.traits.has("weapon")) { const shooters = candidates.filter(w => hasProp(w, "projectile")); if (!linkedW && !shooters.length) return ui.notifications.warn(`${item.name} is a Shot: it needs a wielded Projectile weapon (a bow or a crossbow).`); candidates.splice(0, candidates.length, ...shooters); }
@@ -645,7 +664,9 @@ export async function useAction(actor, item, opts = {}) {
     const fit = it.traits.has("shot") ? candidates.filter(w => hasProp(w, "projectile")) : it.traits.has("gun") ? candidates.filter(w => hasProp(w, "firearm")) : candidates;
     const held = heldFirst(fit).filter(w => w.system?.wielded);
     if (held.length === 1) opts.weaponId = held[0].id;
-    else if (held.length > 1) { const w = await pickWeapon(actor, item, held, ""); if (w === null) return; if (w?.id) opts.weaponId = w.id; }   // null: Cancel
+    // v0.0.444 (Lucas, group 2: "instead of click -> choose weapon -> roll, it becomes click -> roll"): no "Which weapon?" window; the dialog
+    // opens on the main hand's weapon and shows a Roll button for each held weapon that fits (opts.dual; rolldlg.mjs dualHtml)
+    else if (held.length > 1) { const all = actor.itemTypes?.weapon ?? [], rank = w => ({ main: 0, both: 0, off: 1 }[handOf(all, w.id)] ?? 2); const ord = [...held].sort((a, b) => rank(a) - rank(b)); opts.weaponId = ord[0].id; opts.dual = ord.map(w => w.id); }
   }
   const previewWeapon = linkedW ? actor.items.get(linkedW) : (candidates.find(w => w.id === opts.weaponId) ?? heldFirst(candidates)[0] ?? null);   // v0.0.208: the hand button's weapon
   // A Weapon Action takes Melee or Ranged from its weapon and how it is used (a Thrown weapon thrown is Ranged), and the weapon's Range
@@ -674,7 +695,8 @@ export async function useAction(actor, item, opts = {}) {
   const lessRange = ignoredBy(actor, "rangeBane", useTraits), noEngagedTarget = [...ignoredBy(actor, "engagedTarget", useTraits), ...(useTraits.has("ranged") ? activeHooks(actor, "clearLines").map(h => h.item.name) : [])];
   const rw = previewWeapon?.system;
   const usesReload = it.traits.has("weapon") && rw?.traits?.has?.("reload") && basicKey !== "reload";   // Reload itself is what loads it (v0.0.221)
-  if (usesReload && rw.unloaded) return ui.notifications.warn(`${previewWeapon.name} is unloaded: Reload it before using it again.`);
+  // v0.0.453 (Lucas, playtest 6: "dont prevent it. Shows a warning on the Roll dialog"; the warning audit, R3): a rule broken is a warning there
+  if (usesReload && rw.unloaded) dlgWarns.push(`${previewWeapon.name} is unloaded: Reload it before using it again`);
   // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
   const atWill = opts.free && !opts.countAtWill ? 0 : atWillUses(actor, item);   // v0.0.224: a Charge's Weapon Attack counts
   if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `${atWill + 1}x At-will use`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane" });
@@ -739,9 +761,7 @@ export async function useAction(actor, item, opts = {}) {
   if (!multi && rollsAtOthers && targetToken && selfToken && String(it.targets ?? "").trim()) {
     const cov = areaOutcome?.cover?.[targetToken?.id] ?? coverBetween(selfToken, targetToken);
     if (cov?.noLoE) {
-      if (!game.user.isGM) return ui.notifications.warn(`No Line of Effect to ${targetToken.name}: all four corners are blocked.`);
-      const { pickConfirm } = await import("./pickwindow.mjs");   // v0.0.410: the system's window (was a DialogV2)
-      if (!(await pickConfirm({ title: item.name, name: item.name, sub: "no Line of Effect", icon: "fa-eye-slash", confirm: "Use anyway", text: `No Line of Effect to <b>${esc(targetToken.name)}</b>: all four corners are blocked. Use ${esc(item.name)} anyway?` }))) return;
+      dlgWarns.push(`No Line of Effect to ${targetToken.name}: all four corners are blocked`);   // v0.0.453 (R3): a warning in the dialog (it was a stop, or the GM's window)
     } else if (cov?.banes) {
       const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null);   // v0.0.266 (Aim); v0.0.270: a grant's own use only
       if (covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane` });
@@ -752,11 +772,7 @@ export async function useAction(actor, item, opts = {}) {
     if (!it.area) { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }); seen = pv.level === "clear" ? "" : pv.level; seenWhy = pv.why; }
     else { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }), lv = pv.level === "clear" ? "" : pv.level;   // v0.0.292: an Area ignores Senses (n/a)
       if (lv && lv !== "clear") extraMods.push({ id: `syn:${lv === "obscured" ? "obscured" : "hidden"}-na`, name: lv === "hidden" ? "Hidden" : lv === "unsensed" ? "Unsensed" : "Obscured", boons: 0, banes: 1, ...(lv === "obscured" ? { bb: "field" } : {}), match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${targetToken.name} as ${lv}` }); }
-    if (seen === "unsensed") {
-      if (!game.user.isGM) return ui.notifications.warn(`${targetToken.name} is Unsensed: you can't target it.`);
-      const { pickConfirm } = await import("./pickwindow.mjs");   // v0.0.410: the system's window (was a DialogV2)
-      if (!(await pickConfirm({ title: item.name, name: item.name, sub: "Unsensed", icon: "fa-eye-slash", confirm: "Use anyway", text: `<b>${esc(targetToken.name)}</b> is Unsensed: it can't be targeted. Use ${esc(item.name)} anyway (the roll is Doomed)?` }))) return;
-    }
+    if (seen === "unsensed") dlgWarns.push(`${targetToken.name} is Unsensed: it can't be targeted (the roll is Doomed)`);   // v0.0.453 (R3)
     if (seen === "obscured") extraMods.push({ id: "syn:obscured", name: "Target is Obscured (1 Field Bane)", full: true, boons: 0, banes: 1, bb: "field", match: true, predicate: `You perceive the target as Obscured: ${seenWhy}` });
   }
   // How your target perceives you: Obscured gives 1 boon; Hidden or Unsensed make the Action Empowered.
@@ -798,7 +814,7 @@ export async function useAction(actor, item, opts = {}) {
       });
   }
   if (opts.boons || opts.banes) extraMods.push({ id: "syn:granted", name: opts.label ?? "Granted use", boons: opts.boons ?? 0, banes: opts.banes ?? 0, match: true, predicate: "From the Action that allowed this use" });
-  if (opts.excludeTargets?.length && targetToken && opts.excludeTargets.includes(targetToken.document?.uuid)) return ui.notifications.warn(`${targetToken.name} was already a target: choose a different creature.`);
+  if (opts.excludeTargets?.length && targetToken && opts.excludeTargets.includes(targetToken.document?.uuid)) dlgWarns.push(`${targetToken.name} was already a target: the card asks for a different creature`);   // v0.0.453 (R3)
   // What makes the roll Doomed or Empowered, shown on the option itself ("Target is Hidden (Doomed)") (the tests' old dialog)
   const doomReason = doomStatus(actor) || (seen === "hidden" ? "Target is Hidden" : seen === "unsensed" ? "Target is Unsensed" : "");
   // Empowered and Enfeebled: what gives them, and the one value that counts (the highest of each; the Enfeebled value is taken from the Empowered one).
@@ -829,19 +845,45 @@ export async function useAction(actor, item, opts = {}) {
   const rdUse = !quick
     && (typeof globalThis.__twod12RollDialog === "function" || typeof foundry.applications?.api?.ApplicationV2?.prototype?.render === "function");   // (the tests answer it through __twod12RollDialog)
   let rdData = null;
+  // v0.0.460: with no dialog to show them (a quick 0-cost use, the HUD's Skip roll dialog), the warnings are Foundry's notifications as before
+  if ((!rdUse || (!!opts.skipDialog && !opts.restart)) && dlgWarns.length && !opts.restart) for (const w of dlgWarns) ui.notifications.warn(w);
   if (rdUse) {
     const { rollDialogInput } = await import("./rollinput.mjs"), { askAction } = await import("./rollwindow.mjs");
-    const partsFor = async v => {
+    const partsFor = async (v, pw = previewWeapon) => {   // v0.0.444: pw, a weapon of the dual columns
       const fxNameOf = async k => Promise.all((v.fx?.[k] ?? []).map(async x => ({ name: (await fromUuid(x.uuid))?.name ?? "?" })));
       const fxn = { all: await fxNameOf("all"), t1: await fxNameOf("t1"), t2: await fxNameOf("t2"), t3: await fxNameOf("t3") };
       const fxNames = list => list.map(x => `<span class="fxname">${esc(x.name)}</span>`).join(", ");
-      const cardCtx = { item, weapon: previewWeapon, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0 };
+      const cardCtx = { item, weapon: pw, isWeapon: modOnWeapon(src, useTraits), attrMode: src.attrMode, attrVal: src.kind ? (Number(src.mod) || 0) : 0 };
       const ruleCtx = v.diceRule ? { escalation: Number(actor.system?.escalation) || 0, profane: !!(rollsAtOthers && targetToken && isProfaneFor(actor, targetToken)), more: false } : null;   // v0.0.440
-      const mk = await attackModelParts({ it, item, version: v, weapon: previewWeapon, cardCtx, fxn, fxNames, areaSize: v.areaSize || areaSet?.distance, chip: src.chip, ruleCtx });
+      const mk = await attackModelParts({ it, item, version: v, weapon: pw, cardCtx, fxn, fxNames, areaSize: v.areaSize || areaSet?.distance, chip: src.chip, ruleCtx });
       return { tiers: mk.outcomes, crit: v.critical ? await enrich(v.critical, item) : "", effects: mk.effectsHtml, setup: it.setup ? await enrich(setupFor(it.setup, setupDone), item) : "" };
     };
     const inp = await rollDialogInput({ actor, item, versions, src, useTraits, dlgTraits, previewWeapon, multi, perT, aimed, targetToken, rollsAtOthers, isSelf, areaSet, areaOutcome, extraMods, steps, bonusSeen, usesReload,
-      saveAct, notices: [...extraNotices], opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
+      saveAct, notices: [...extraNotices], warns: dlgWarns, opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
+    // v0.0.444 (group 2; Lucas: "it shows buttons for each weapon to use"): two held weapons fit: a column for each (its Distance, its Tiers, its
+    // hand's Banes) and a Roll button for each; the dialog is the main hand's, the other's Roll runs the Action again with that weapon at once
+    if ((opts.dual ?? []).length > 1 && it.traits.has("weapon") && !linkedW) {
+      try {
+        const all = actor.itemTypes?.weapon ?? [], ws = opts.dual.map(id => actor.items.get(id)).filter(Boolean);
+        const { weaponUse: wu, rangeEnds } = await import("./weaponrange.mjs");
+        const strike = useTraits.has("strike") || it.traits.has("strike");
+        const cols = [];
+        for (const w of ws) {
+          const u = wu(w, it.traits, s.reach ?? 1, wpnSquares), max = u.range ? rangeEnds(String(u.range)).max : 0;
+          const out = !u.mode ? `${w.name} can't make this Action` : Number.isFinite(wpnSquares) && rollsAtOthers && !isAreaAction && max && wpnSquares > max ? `${targetToken?.name ?? "The target"} is ${wpnSquares} squares away: its Range is ${u.range}` : "";
+          const banes = [];
+          if (strike) {
+            const hb = handBanes(all, w, isFists(w));
+            if (hb.banes) banes.push({ id: "syn:hand", n: hb.banes, text: hb.banes === 3 ? "Strung, the other hand full" : hb.banes === 2 ? "Off hand" : "Off hand (Light)" });
+            if (hasProp(w, "twohanded") && (Number(w.system?.hands) || 1) < 2) banes.push({ id: "syn:onehand", n: 3, text: "Two-handed weapon in one hand" });
+          }
+          const tiers = {};
+          for (const v of versions) if (!v.noTiers) tiers[v.ap] = (await partsFor(v, w)).tiers;
+          cols.push({ id: w.id, name: w.name, hand: (HAND_LABEL[handOf(all, w.id)] ?? "").toLowerCase(), mode: u.mode, thrown: !!u.thrown, dist: u.range ? `${u.thrown ? "thrown " : ""}${u.range}` : "", out, banes, tiers });
+        }
+        if (cols.length > 1) inp.dual = { current: previewWeapon?.id ?? cols[0].id, weapons: cols };
+      } catch (e) { console.warn("twod12 | the dual columns", e); }
+    }
     // v0.0.398 (Lucas): live: false: the targets change only with the dialog's Target button
     rdData = await askAction({ inp, state: opts.rdState ?? null, live: false, card: () => item.sheet?.render(true), skip: (!!opts.skipDialog && !opts.restart) || !!opts.rollAfterPlace });   // v0.0.376: the HUD's Skip roll dialog; v0.0.397: Roll placed the area: roll at once
     if (!rdData) return;
@@ -849,11 +891,11 @@ export async function useAction(actor, item, opts = {}) {
     if (setupLater && (!rdData.restart || rdData.rollAfter)) {
       const st = await runSetups();
       if (!st.ok) return;
-      if (st.done) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, setupRan: true, setupDone: true, stanceRan: st.stance, noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: true });
+      if (st.done) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: true, setupRan: true, setupDone: true, stanceRan: st.stance, noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, rollAfterPlace: true });
     }
     // the targets changed on the map, or the area is placed again: the Action runs again with the same choices (no hands or turn question again;
     // v0.0.440: a Setup not made yet still comes when Roll is pressed)
-    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: opts.noSetup || opts.setupRan, setupRan: !!opts.setupRan || (setupLater && !!rdData.rollAfter), noHandle: true, weaponId: previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
+    if (rdData.restart) return useAction(actor, item, { ...opts, rdState: rdData.state, restart: true, noSetup: opts.noSetup || opts.setupRan, setupRan: !!opts.setupRan || (setupLater && !!rdData.rollAfter), noHandle: true, weaponId: rdData.weaponId ?? previewWeapon?.id ?? opts.weaponId, rollAfterPlace: !!rdData.rollAfter });
   }
   const data = quick ? { ap: String(opts.quickAp), fx: [], bonusOn: [], boons: 0, banes: 0, mod: 0, dc: 13, empowered: 0, enfeebled: 0 } : rdData ? rdData : await askRoll(actor, {   // v0.0.439: only the tests reach this (no ApplicationV2.render): the old dialog, now without its preview
     title: item.name,
@@ -866,7 +908,7 @@ export async function useAction(actor, item, opts = {}) {
       enfeebleN: topStep(steps.enfeebled),
       dc: opts.noTargetDc ?? dcInfo.dc,
       reaction: it.reaction,
-      nlKnown: !saveAct, nonlethal: it.traits.has("nonlethal"),
+      nlKnown: true, nlSave: saveAct, nonlethal: it.traits.has("nonlethal"),   // v0.0.458: a Save Action has the switch too
       favored: unseenYou || untrainedTarget,
       favoredLabel: unseenYou ? `${mine === "hidden" ? "Hidden" : "Unsensed"} (Favored)` : (untrainedTarget ? "Target's untrained armor (Favored)" : undefined),
       empowerWhy: stepSources.join(", "),
@@ -906,7 +948,7 @@ export async function useAction(actor, item, opts = {}) {
   let version = applyTalentMods(versions.find(v => v.ap === Number(data.ap)), talentMods);
   // v0.0.264 (Lucas): a Grant's "On [a result], the card says [line]" goes on the granted use's card rows (freeuse.mjs withGrantLine)
   if (opts.grant?.grant) version = withGrantLine(version, opts.grant.grant);
-  if (basicKey === "crawl" && version.ap >= 2 && Number(s.moveSpeed ?? s.speed ?? 0) < 5) return ui.notifications.warn(`${actor.name}'s Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version).`);
+  if (basicKey === "crawl" && version.ap >= 2 && Number(s.moveSpeed ?? s.speed ?? 0) < 5) ui.notifications.warn(`${actor.name}'s Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version).`);
   // v0.0.409 (pack F2, Roving Judgment: hooks.mjs apCost): an Action of a mark kind at this AP costs less while the passive works
   // v0.0.411 (Lean and Loose): or a Basic Action by its key (Leaning)
   const costHook = opts.free ? null : activeHooks(actor, "apCost").find(h => (h.hook.markKind || h.hook.basic) && (!h.hook.markKind || h.hook.markKind === it.markKind) && (!h.hook.basic || h.hook.basic === item.getFlag?.("twod12", "basic")) && Number(h.hook.ap) === Number(version.ap));
@@ -935,6 +977,20 @@ export async function useAction(actor, item, opts = {}) {
 
   let attrKey = null, mod = null, weapon = null, title = "", chip = "";
   if (isWeapon) weapon = await pickWeapon(actor, item, candidates, opts.weaponId);
+  // v0.0.460: the Setup's draw (Darting Blade): the carried Light weapon goes to a free hand; a two-handed grip shifts to one hand to free it
+  if (isWeapon && setupDraw && weapon?.id === setupDraw.id && !setupDraw.system.wielded) {
+    try {
+      const held = (actor.itemTypes?.weapon ?? []).filter(w => w.system.wielded && !isFists(w) && w.id !== setupDraw.id);
+      const used = held.reduce((n, w) => n + ((Number(w.system.hands) || 1) >= 2 ? 2 : 1), 0);
+      const both = held.find(w => (Number(w.system.hands) || 1) >= 2);
+      if (used >= 2 && both) await both.update(weaponMove("1h", "main"));
+      if (used < 2 || both) {
+        const mainTaken = held.some(w => (w.system.hand || "main") === "main");
+        await setupDraw.update(weaponMove("1h", mainTaken || both ? "off" : "main"));
+        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand", `<b>${esc(actor.name)}</b> draws ${esc(setupDraw.name)}${both && used >= 2 ? `, ${esc(both.name)} in one hand` : ""} (${esc(item.name)}'s Setup).`) });
+      }
+    } catch (e) { console.warn("twod12 | Setup draw", e); }
+  }
   if (src.kind) {
     attrKey = src.attrKey; mod = src.mod; title = src.label; chip = `${src.chip} ${sgn(mod)}`;
     if (!attrKey && src.kind !== "attribute" && !["class", "role"].includes(actor.system?.modSource)) ui.notifications.warn(`No ${src.chip}: add a Class to this character.`);
@@ -943,7 +999,7 @@ export async function useAction(actor, item, opts = {}) {
   if (title && it.vs) title += ` vs. ${it.vs === "roll" ? (TWOD12.attributes[attrKey] ?? "") : TWOD12.attributes[it.vs]}`;
   // v0.0.283: Lethal switched to Nonlethal (or back) in the dialog: a Bane on the roll, and the damage follows the choice
   const nlSwitched = data.switchNl === "on", dealsNl = it.traits.has("nonlethal") !== nlSwitched;
-  if (nlSwitched) { extraMods.push({ id: "syn:nlswitch", name: dealsNl ? "Nonlethal instead" : "Lethal instead", boons: 0, banes: 1, match: true, predicate: "Book, Chapter 4: changing Lethal and Nonlethal costs a Bane" }); data.fx = [...(data.fx ?? []), "syn:nlswitch"]; }
+  if (nlSwitched && !saveAct) { extraMods.push({ id: "syn:nlswitch", name: dealsNl ? "Nonlethal instead" : "Lethal instead", boons: 0, banes: 1, match: true, predicate: "Book, Chapter 4: changing Lethal and Nonlethal costs a Bane" }); data.fx = [...(data.fx ?? []), "syn:nlswitch"]; }
   let chk = null;
   // v0.0.426 (the audit: Shifting Aim's and Blade and Bow's Boons were shown but never rolled): their chips carry the id syn:hook:N, read here from
   // the same hook data the dialog drew them from (rollinput.mjs)
@@ -1027,7 +1083,7 @@ export async function useAction(actor, item, opts = {}) {
   if (chk || mres) { try { await useOnceModifiers(actor, rt, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], null, data.fx); } catch (e) { console.warn("twod12 | once per round", e); } }
   // An effect whose Bonus Damage was unticked stays (it wasn't used).
   { const kept = new Set(); for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, rt, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) if (bonusOff.has(bonusKey(b))) kept.add(b.effectId);
-    await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept); }
+    await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept, { rolled: !!(chk || mres) }); }
   const targets = (multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed)).map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name, disposition: t.document?.disposition ?? t.disposition }));   // v0.0.250: the side, for the Apply buttons
   // v0.0.243 (pack R; book, Chapter 1): once an encounter, a Critical on one of the creature's Actions raises its Escalation by 1 (at 3: nothing, not used up).
   if (game.combat?.started && (chk?.crit || mres?.some(r => r.chk?.crit))) { try { await raiseEscalation(actor, "crit"); } catch (e) { console.warn("twod12 | Escalation on a Critical", e); } }
@@ -1082,10 +1138,9 @@ export async function useAction(actor, item, opts = {}) {
   }
   const rows = rowParts.join("");
   const critHtml = "";
-  // General Effects happen on a Tier 2 or 3 result (or always, for an Action with no roll).
-  const effectsOff = mres ? mres.every(r => r.chk.tier === 1) : tier === 1;
-  const effWho = mres && !effectsOff && mres.some(r => r.chk.tier === 1) ? ` \u2014 ${collapseNames(mres.filter(r => r.chk.tier >= 2).map(r => r.name))}` : "";
-  const effLabel = version.noTiers || saveAct ? "Effects" : `Effects (Tier 2+)${effWho}`;
+  // v0.0.453 (playtest 6, Darting Blade: the book's Effect Timing): an Effect line happens whatever the roll (it waited for a Tier 2 or 3)
+  const effectsOff = false;
+  const effLabel = "Effects";
   const effectsHtml = version.effects ? `<div class="effects${effectsOff ? " off" : ""}${rowParts.length || bonuses.length ? " sep" : ""}"><div class="eh">${effLabel}</div><div class="et">${await enrich(version.effects, item)}</div></div>` : "";
   // v0.0.189: the name opens the item it comes from (a Talent, a Feature, an Effect), for everyone who reads the card.
   const bonusRows = bonuses.map(b => `<div class="bonusrow"><i class="fa-solid fa-sparkle"></i> <b>${srcLink(b.effect, b.srcUuid)}</b>: ${b.dmg ? `+${esc(b.dmg)}${b.sub ? ` ${esc(TWOD12.subtypes[b.sub === "W" ? previewWeapon?.system?.subtype ?? "" : b.sub] ?? "")}` : ""}` : ""}${b.text ? ` ${esc(b.text)}` : ""}</div>`).join("");
@@ -1128,7 +1183,7 @@ export async function useAction(actor, item, opts = {}) {
     ccModel = {
       v: 1, kind: "attack", name: item.name, auto: autoChip(it.automation, it.automationNote), freq: effectiveFrequency(it), cost: it.reaction ? `${version.ap}R` : `${version.ap} AP`, traitsHtml: useTraits.size ? traitsHtml(useTraits) : "",
       tline: { targets: it.targets ?? "", dist: mk.dist, area: mk.areaHtml, names: targets.map(t => t.name) },
-      rows: rowsM, outcomes: mk.outcomes, effectsHtml: mk.effectsHtml, effectsFrom: 2, critHtml: version.critical ? await enrich(version.critical, item) : "", flavor: it.flavor ?? "",
+      rows: rowsM, outcomes: mk.outcomes, effectsHtml: mk.effectsHtml, effectsFrom: 1, critHtml: version.critical ? await enrich(version.critical, item) : "", flavor: it.flavor ?? "",
       setupHtml: setupRow, hasDamage: !!btn, card: cardLines,
       shared: mres ? { d: multiRoll.dice.d.map(x => x.faces), mod: mod + (Number(data.mod) || 0) } : null,
       designer: { odds: (mres ? mres.map(r => ({ name: r.label ?? r.name, text: oddsText(r.chk).text })) : [{ name: "", text: oddsText(chk).text }]), ruler: it.worth ?? "", mithril: it.automation ? `${TWOD12.automationRanks[it.automation] ?? it.automation}${it.automationNote ? ` (by hand: ${it.automationNote})` : ""}` : "" },
@@ -1263,6 +1318,9 @@ export async function useAction(actor, item, opts = {}) {
     try {
       const { postSaveFor, saveActionCfg } = await import("./inline.mjs");
       const cfg = saveActionCfg(actor, item, version, src);
+      cfg.empOn = stepOf(data.empowered) > 0;   // v0.0.468 (Lucas, checklist v0.0.467: "if I click on empowered on the roll dialog, it doesnt ask"): the dialog's Empowered (the condition's chip or one added by hand)
+      cfg.nonlethal = dealsNl;   // v0.0.458: its damage Nonlethal when it has the trait or was switched to it
+      if (nlSwitched) { cfg.boon = (Number(cfg.boon) || 0) + 1; cfg.nlSwitched = true; }   // the switch: every creature gains 1 Boon on its Save (book, Chapter 4)
       const point = areaOutcome?.point ?? null;
       // v0.0.283 (pack chat-cards): this card becomes the Save card (v0.0.286: several targets too, a row each; an [HT] area's repeat keeps the old card)
       // v0.0.317 (Lucas: "without a target (setting the DC) it uses the old card"): no target is the new card too, empty, with its target button
@@ -1300,7 +1358,7 @@ export async function useAction(actor, item, opts = {}) {
       try {
         const f = String(h.hook.formula ?? "1+pow").replace(/\bpow\b/g, `(${Number(actor.system?.powerMod) || 0})`), r = await bookRoll(f).evaluate(), now = Number(actor.system?.guard) || 0, next = Math.max(now, r.total);
         if (next !== now) await actor.update({ "system.guard": next });
-        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-heart", `<b>${esc(h.item.name)}</b>: <b>${esc(actor.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${r.total})`}.`, "fxm") });
+        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-heart", `<b>${srcLink(h.item.name, h.item.uuid)}</b> (${esc(actor.name)}'s Passive, for using ${srcLink(item.name, item.uuid)}): <b>${esc(actor.name)}</b> ${next > now ? `gains <b>Guard ${next}</b>` : `keeps Guard ${now} (the higher; the new Guard was ${r.total})`}.`, "fxm") });   // v0.0.453 (playtest 6): the Passive named as a link, and what it answered
       } catch (e) { console.warn("twod12 | Armor of Faith", e); }
     }
   }
@@ -1378,7 +1436,10 @@ export async function useAction(actor, item, opts = {}) {
     else await moveNow(tier, targets.map(t => ({ uuid: t.uuid, name: t.name })));
   }
   // Actions used because of another Action do not count toward Frequency or the Strike limit.
-  if (!opts.free) await markUsed(actor, item);
+  // v0.0.453 (playtest 6; the book, Chapter 7): an Unfailing Action that gets a Tier 1 (every target) keeps its Frequency; its Strike still counts
+  const unfailed = useTraits.has("unfailing") && !!(mres ? mres.length && mres.every(r => r.chk.tier === 1) : chk && tier === 1);
+  if (!opts.free) await markUsed(actor, item, { keepFrequency: unfailed });
+  if (unfailed && !opts.free) { try { await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-rotate-left", `<b>Unfailing</b>: a Tier 1, so ${srcLink(item.name, item.uuid)} isn't spent. ${esc(actor.name)} can use it again.`, "fxm") }); } catch (e) { console.warn("twod12 | Unfailing", e); } }
   else if (opts.countAtWill) { const { markAtWill } = await import("./usage.mjs"); await markAtWill(actor, item); }
   // v0.0.223: the Encounter Log (enclog.mjs): the Action, its AP, each target with its tier (a Save: who saves). A movement-only Action logs its movement instead.
   if (!bannerMove) {
@@ -1500,7 +1561,7 @@ export async function rollDamage(message, { again = false } = {}) {
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
     const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW, moreWName) : version[`t${tier}`]), ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
     const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
-    const fx = [...[...(tier >= 2 ? (version.fx?.all ?? []) : []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
+    const fx = [...[...(version.fx?.all ?? []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => !f.fxOnUse || x.mode !== "auto"), ...riders];   // cards from v0.0.144 on applied their automatic effects when the Action was used (v0.0.283: riders wait for the damage)
     const rolls = [];
     const ctx = { weapon, tier: tier, attrVal: f.attrVal, rolls, empowered: stepOf(f.empowered), thrown: !!f.thrown };
@@ -1561,7 +1622,20 @@ export async function rollDamage(message, { again = false } = {}) {
       // v0.0.426 (the audit; book, Chapter 8, Empowered: "If the Action damages several creatures, you choose which one takes it"): one die, for one
       // creature: the first one hit (its own group, so the others on its Tier don't take it)
       if (empOn && (!again || hadEmp)) {
-        const k = rows.findIndex((r, i) => groups[gOf[i]].comps.some(c => c.kind === "W" || c.kind === "D"));
+        // v0.0.460 (Lucas, checklist v0.0.459: "the creature should be allowed to choose who it applies to"): with two or more creatures hit, a
+        // pick window asks which one takes it (closed: the first hit, as before)
+        const can = rows.map((r, i) => i).filter(i => groups[gOf[i]].comps.some(c => c.kind === "W" || c.kind === "D"));
+        let k = can[0] ?? -1;
+        if (can.length > 1) {
+          try {
+            // v0.0.465 (Lucas, checklist v0.0.464: "allow selecting on the map"): the map bar (its token or its picture), in the HUD
+            const { pickBar } = await import("./pickbar.mjs");
+            const tokOf = u => { try { const d = fromUuidSync(u); return d?.object ?? d?.getActiveTokens?.()[0] ?? null; } catch (e) { return null; } };
+            const pick = await pickBar({ icon: "fa-burst", cancel: false, text: `<b>Empowered</b>: ${esc(item.name)} damages several creatures. Which one takes the 1d6! (Chapter 8)? Click its token or its picture.`,
+              options: can.map(i => { const t = tokOf(rows[i].uuid); return { id: String(i), label: `${rows[i].name} (Tier ${rows[i].tier})`, token: t ?? undefined, img: t?.document?.texture?.src || "" }; }) });
+            if (pick !== null && pick !== undefined && can.includes(Number(pick))) k = Number(pick);
+          } catch (e) { console.warn("twod12 | Empowered pick", e); }
+        }
         const g0 = k >= 0 ? groups[gOf[k]] : null, ec = g0 ? await empoweredComponent(g0.comps.find(c => c.kind === "W" || c.kind === "D"), all, { explode: !minorNpc(actor) }) : null;
         if (ec) {
           if (rows.filter(r => r.tier === rows[k].tier).length === 1) g0.comps = [...g0.comps, ec];
@@ -1575,7 +1649,7 @@ export async function rollDamage(message, { again = false } = {}) {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "", !!f.crit);
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
-    await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds, move: d.move }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
+    await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds, move: d.move }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "",   /* the after-chain holds Tier 2-3 riders (Club's Push): it keeps its gate */ areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
   if (empUsed && !hadEmp && !f.reloadShot) await markEmpoweredUsed(actor);
   // (the card is no longer collapsed: v0.0.388, the damage is on it)

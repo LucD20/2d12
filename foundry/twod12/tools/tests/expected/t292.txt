@@ -1,0 +1,4 @@
+the square measured from: [{"i":0,"j":1}] | a one-square origin: [{"i":5,"j":5}]
+Pushed 1, Aveline beside the Ogre's top row, its first steps (di,dj): -1,1 0,1 1,1 (down-right 1,1 now allowed; was up-right and right only)
+beside its bottom row: -1,1 0,1 1,1
+Pulled 2 toward the Ogre from 2 squares right of its top row, first steps: 0,-1

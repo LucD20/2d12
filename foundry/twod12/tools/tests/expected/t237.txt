@@ -1,4 +1,4 @@
-the strip's order (Escalation, Hands, AP; v0.0.373: no On you): true | the Strike pips under the AP: true | no AP text: true | no Guard cell: true | no Senses cell: true
+the strip's order (the lists, AP, Esc.): true | the Strike pips under the AP: true | no AP text: true | no Guard cell: true | no Senses cell: true
 Senses under the name (both): true | Guard's shield in the Health header: true | no On you anywhere (v0.0.373): true
 the Versions in the bottom bar: true | not in the header: true
 quick buttons tight, +1 / −1 without a sign icon: true | no Doubles tooltip on the ladder: true

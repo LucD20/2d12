@@ -1,4 +1,4 @@
-the rows: now, after, minus and plus, what is left: true | plus disabled at the damage: true | over: true
+the rows: now, after, minus and plus, what is left: true | Heal, no Rally Points: true
 the area is placed for an Action with no roll (no src.kind gate): true | the version pick is a bar: true
 the confirm is a bar, you-too from the setting first, the windows aside: true
 a retarget rebuilds the Apply rows with the targets' side: true

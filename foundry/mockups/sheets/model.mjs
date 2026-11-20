@@ -2,6 +2,7 @@
 // actor); the Action rows, the strip and the side panel are built here with the sheet's pure pieces (sheetmodel.mjs, config.mjs, loadout.mjs,
 // pcsheet.mjs handTiles), in the shape pcsheet.mjs pcModel gives the template (pcModel itself needs a live Foundry actor and combat).
 import { asItem, enrichHTML } from "./stubs.mjs";
+import { statSym } from "../../twod12/module/statsyms.mjs";   // v0.0.454 (D3): as pcsheet.mjs
 
 const CFG = await import("../../twod12/module/config.mjs");
 const SM = await import("../../twod12/module/sheetmodel.mjs");
@@ -71,10 +72,10 @@ export function sheetModel(a, st = {}) {
     ] };
   const rally = { left: s.rallyLeft, max: s.rallyMax, heal: s.rallyHeal, pips: Array.from({ length: s.rallyMax }, (_, k) => k < s.rallyLeft) };
   const vs = SM.vsDefenses(s.attributes, {});
-  const defs = { main: [{ label: "AD", value: s.armorDC, cls: "" }, { label: "WD", value: s.wardDC, cls: "" }],
+  const defs = { main: [{ label: "AD", sym: npc ? statSym("ad") : "", value: s.armorDC, cls: "" }, { label: "WD", sym: npc ? statSym("wd") : "", value: s.wardDC, cls: "" }],
     vs: [["body", "vs Body"], ["mind", "vs Mind"], ["appeal", "vs Appeal"], ["instinct", "vs Inst."]].map(([k, l]) => ({ label: l, value: vs[k] })) };
   const attrs = Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, value: sg(s.attributes?.[key] ?? 0) }));
-  const move = [{ label: "Speed", value: s.moveSpeed ?? s.speed, cls: "" }, { label: "Reach", value: s.reach ?? 1 }, { label: "Size", value: s.size ?? 3 }, { label: "Steady", value: s.steadiness ?? 0 }];
+  const move = [{ label: "Speed", sym: npc ? statSym("speed") : "", value: s.moveSpeed ?? s.speed, cls: "" }, { label: "Reach", sym: npc ? statSym("reach") : "", value: s.reach ?? 1 }, { label: "Size", sym: npc ? statSym("size") : "", value: `${["", "Tiny", "Small", "Med.", "Large", "Huge", "Garg.", "Titanic"][s.size ?? 3]} (${s.size ?? 3})` }, { label: "Steady", sym: npc ? statSym("steady") : "", value: s.steadiness ?? 0 }];
   const dcs = SM.saveDCs({ weapon: s.weaponMod, power: s.powerMod, signature: s.signatureMod });
   const usesPower = a.itemTypes.action.some(i => ["magic", "power"].some(t => i.system?.traits?.has?.(t)));
   const from = npc ? "Role" : "Class";
@@ -139,10 +140,10 @@ export function sheetModel(a, st = {}) {
   try {
     const DL = st.dl, CD = st.cd;
     rwLines = CD.creatureDamageLines(a);
-    dmgHtml = DL.damageBlockHtml(DL.damageBlockModel(rwLines, { gm: true }));
+    dmgHtml = DL.damageBlockHtml(DL.damageBlockModel(rwLines, { gm: true }), { line: true, syms: npc ? { Immune: statSym("immune"), Resist: statSym("resist"), Weak: statSym("weak") } : null });
   } catch (e) { console.warn("damage block", e); }
   let builder = null;
   if (npc) { try { builder = PCS.npcBuilderModel(a); } catch (e) { console.warn("builder", e); } }
-  return { npc, builder, loot: npc ? [] : null, head, strip, hands, chips: [], health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows: [], tabs, untrained: "",
+  return { npc, guardSym: npc ? statSym("guard") : "", builder, loot: npc ? [] : null, head, strip, hands, chips: [], health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows: [], tabs, untrained: "",
     effects: { conditions: [], effects: [] }, weapons: [], armor: [], build: { cards: [], levels: [], esc: [], other: [], next: [], emptySlots: [] }, mastery: [], upkeep: { cards: [] }, down: { down: false }, dmgHtml, rwLines, modConflict: "" };
 }

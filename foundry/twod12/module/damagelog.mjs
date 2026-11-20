@@ -74,14 +74,22 @@ export function reportRows(combat) {
   return numberSameNames([...rows.values()], combat).sort((a, b) => b.total - a.total || b.allies - a.allies);
 }
 /** v0.0.418 (Lucas, playtest 5: two "Goblin Sneak" rows): creatures of the same name are numbered (1, 2...) in the combat's order. */
+// v0.0.472 (Lucas, checklist v0.0.471, log-allies: "Goblin Sneak: 2 / 1"; "Sylwen (Elf Archer, Quick Shots)"): names as the log writes them: the
+// sheet's parenthesis dropped, and numbered by the combat's creatures (two Goblin Sneaks in the fight: "Goblin Sneak 2" even when only one dealt damage)
+const baseName = n => String(n ?? "").replace(/\s*\([^()]*\)\s*$/, "").replace(/\s+\d+$/, "").trim();
 export function numberSameNames(rows, combat) {
-  const count = new Map(); for (const r of rows) count.set(r.name, (count.get(r.name) ?? 0) + 1);
-  const order = r => { const i = combat?.turns?.findIndex?.(t => t.actor?.uuid === r.key || t.actorId === r.key) ?? -1; return i < 0 ? 999 : i; };
-  const seen = new Map();
-  for (const r of [...rows].sort((a, b) => order(a) - order(b))) {
-    if ((count.get(r.name) ?? 0) < 2) continue;
-    const n = (seen.get(r.name) ?? 0) + 1; seen.set(r.name, n);
-    r.name = `${r.name} ${n}`;
+  const turns = combat?.turns ?? [...(combat?.combatants ?? [])];
+  const count = new Map(); for (const t of turns) { const b = baseName(t.token?.name ?? t.name); if (b) count.set(b, (count.get(b) ?? 0) + 1); }
+  const seen = new Map(), numbered = new Map();
+  for (const t of turns) { const b = baseName(t.token?.name ?? t.name); if (!b || (count.get(b) ?? 0) < 2) continue; const n = (seen.get(b) ?? 0) + 1; seen.set(b, n); for (const k of [t.actor?.uuid, t.actorId, t.token?.actor?.uuid].filter(Boolean)) numbered.set(k, `${b} ${n}`); }
+  // rows without a combatant to match (the tests' lists): numbered among themselves, as before
+  const left = rows.filter(r => !numbered.has(r.key)), cnt = new Map(); for (const r of left) cnt.set(baseName(r.name), (cnt.get(baseName(r.name)) ?? 0) + 1);
+  const seen2 = new Map();
+  for (const r of rows) {
+    if (numbered.has(r.key)) { r.name = numbered.get(r.key); continue; }
+    const b = baseName(r.name);
+    if ((cnt.get(b) ?? 0) < 2) { r.name = b; continue; }
+    const n = (seen2.get(b) ?? 0) + 1; seen2.set(b, n); r.name = `${b} ${n}`;
   }
   return rows;
 }

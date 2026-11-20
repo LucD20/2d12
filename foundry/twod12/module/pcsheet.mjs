@@ -1,7 +1,9 @@
 // PACK SHEET (v0.0.289, Lucas's approved design: foundry/mockups/sheet-prototype.html): the data of the character sheet's new layout.
 // pcModel(sheet, ctx) reads the actor and the context the sheet already built (_sheetModel: granted tickets, conditions, effects, gear) and returns
 // the template's `pc` object. The pure rules (sections, Defenses, Save DCs, Down state...) are in sheetmodel.mjs (tests t212).
-import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip, npcRoleRow } from "./config.mjs";
+import { inventoryHtml, lootHtml } from "./inventory.mjs";   // v0.0.455 (group 4)
+import { statSym } from "./statsyms.mjs";   // v0.0.454 (playtest 6, D3): the NPC sheet's stat symbols
+import { TWOD12, SIZE_NAMES, effectiveFrequency, distanceText, distanceNote, areaText, vsText, isTalentAction, autoChip, npcRoleRow, stageOf } from "./config.mjs";
 import { combatantOf, getAP, getRAP, slowedOf, apPerTurn, quickenedOf, baseAP } from "./combat.mjs";
 import { guardPerAP } from "./guard.mjs";
 import { defenseBonus, steadinessOf } from "./defense.mjs";
@@ -19,8 +21,8 @@ import { firstTimeThisEncounter } from "./down.mjs";
 import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
-  healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, slotless, nextLevels, plainEnrichers,
-  rowLines, senseChips, strikePips, ELITE_RUNGS, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
+  healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, ESC_APEX, slotless, nextLevels, plainEnrichers,
+  rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, escMarks, combatLists, basicAttackLine, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
 import { creatureDamageLines } from "./ccdamage.mjs";
@@ -87,6 +89,44 @@ export function handMenu(weapons, hand, inCombat) {
   return out;
 }
 
+/**
+ * v0.0.444 (group 2; Lucas, 2026-11-19: the HUD's hand tile opens a menu "above it, like a reversed dropdown"; the mockup foundry/mockups/group2;
+ * his rules: holding a one-handed weapon with both hands does nothing (so the grip row is a Two-handed weapon's), changing to a Two-handed weapon
+ * with the other hand full is "drop, then draw", stowing and swapping need no free hand). Pure: the menu of a hand tile.
+ * weapons: the creature's; hand: "main" | "off" | "both"; o: { inCombat, ap }. Returns { title, sub, warn, groups: [[{ key, label, act, cost, off, why }]] }.
+ */
+export function handMenuModel(weapons, hand, { inCombat = false, ap = 99 } = {}) {
+  const slots = handSlots(weapons), tile = slots.find(s => s.hand === hand) ?? slots.find(s => s.both), byId = id => weapons.find(x => x.id === id);
+  const w = tile?.id ? byId(tile.id) : null, other = slots.find(s => s !== tile), ow = other && !other.free ? byId(other.id) : null;
+  const has = (x, p) => !!x?.system?.traits?.has?.(p), two = x => has(x, "twohanded");
+  const price = n => (inCombat ? `${n} AP` : "free"), lack = n => (inCombat && ap < n ? (ap > 0 ? `Needs ${n} AP (${ap} left)` : "No AP left") : "");
+  const row = (key, label, act, n) => { const why = lack(n); return { key, label, act, cost: price(n), off: !!why, why }; };
+  const handWord = h => (h === "main" ? "main hand" : h === "off" ? "off hand" : "both hands");
+  const carried = weapons.filter(x => !has(x, "barehanded") && !x.system?.wielded && weaponWhere(x) !== "none");
+  const groups = [];
+  if (w) {
+    const grip = [];
+    if (tile.both) grip.push(row(`one:${w.id}`, "Hold with one hand", "Release", 0));
+    else {
+      if (two(w)) {
+        if (other?.free) grip.push(row(`two:${w.id}`, "Hold with both hands", "Regrip", 1));
+        else if (ow) { grip.push({ key: "", label: "Hold with both hands", act: "Regrip", cost: price(1), off: true, why: `Your ${handWord(other.hand)} holds the ${ow.name}` }); grip.push(row(`rel2:${ow.id}:${w.id}`, `Drop the ${ow.name}, then hold with both hands`, "Release, Regrip", 1)); }
+      }
+      if (other?.free) grip.push(row(`move:${w.id}`, `Move to your ${handWord(other.hand)}`, "Regrip", 1));
+      else if (ow) grip.push(row("swap", `Swap hands with the ${ow.name}`, "Regrip", 1));
+    }
+    groups.push(grip);
+    groups.push(carried.map(y => (two(y) && ow && !tile.both ? row(`dropdraw:${ow.id}:${y.id}:${w.id}`, `Drop the ${ow.name}, then change to the ${y.name}`, "Release, Interact", 1) : row(`chg:${w.id}:${y.id}:${hand}`, `Change to the ${y.name}`, "Interact", 1))));
+    groups.push([row(`stow:${w.id}`, "Stow", "Interact", 1), row(`drop:${w.id}`, "Drop", "Release", 0)]);
+    return { title: w.name, sub: handWord(tile.both ? "both" : hand), warn: two(w) && !tile.both ? "Two-handed, held in one hand: 3 Banes on its Strikes." : "", groups: groups.filter(g => g.length) };
+  }
+  // a free hand: what it can draw; and a Two-handed weapon in the other hand can be held with both
+  groups.push(carried.map(y => (two(y) && ow ? row(`dropdraw:${ow.id}:${y.id}:`, `Drop the ${ow.name}, then draw the ${y.name}`, "Release, Interact", 1) : row(`draw:${y.id}:${hand}`, `${weaponWhere(y) === "dropped" ? "Pick up" : "Draw"} the ${y.name}`, "Interact", 1))));
+  if (ow && two(ow)) groups.push([row(`two:${ow.id}`, `Hold the ${ow.name} with both hands`, "Regrip", 1)]);
+  if (!groups.some(g => g.length)) groups.push([{ key: "", label: "Nothing to draw: no weapon carried", act: "", cost: "", off: true, why: "" }]);
+  return { title: "Free hand", sub: handWord(hand), warn: "", groups: groups.filter(g => g.length) };
+}
+
 export async function pcModel(sheet, ctx) {
   const a = sheet.actor, s = a.system, d = s.damage ?? {}, npc = a.type === "npc";   // v0.0.291 (PACK NPC-SHEET): the NPC sheet uses this model too
   const role = npc ? (TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : null, elite = npc && (s.role === "elite" || !!s.useEscalation);
@@ -103,6 +143,8 @@ export async function pcModel(sheet, ctx) {
   const head = {
     npc, role: role?.label ?? "", roleKey: s.role ?? "", cv: npc ? (s.cv ?? role.cv[0]) : "", isGM: !!game.user?.isGM,
     species: sp ? { id: sp.id, name: sp.name } : null, cls: cls ? { id: cls.id, name: cls.name } : null, size: SIZE_NAMES[s.size ?? 3] ?? "",
+    senseWords: senseChips(s.senses ?? {}).map(x => x.label).join(", "),   // v0.0.441: the Senses as words in the plate's line
+    round: combat?.started ? `Round ${combat.round}` : "Not started",
     combat: !combat ? { mode: "none" } : (!cbt || cbt.initiative === null || cbt.initiative === undefined) ? { mode: "roll" } : { mode: "status", text: combat.started ? `In combat · Round ${combat.round}` : "In combat · not started" }
   };
 
@@ -122,13 +164,26 @@ export async function pcModel(sheet, ctx) {
       tip: `${ap} AP left of the ${regained} this turn gave (${baseAP(a)}${quickenedOf(a) ? ` + Quickened ${quickenedOf(a)}` : ""}${slowed ? ` − Slowed ${slowed}` : ""}). Click a pip to correct the AP (the chat says so).` },
     guard: { total: (Number(s.guard) || 0) + (Number(s.apGuard) || 0), per: guardPerAP(s.stage),
       tip: `Guard ${Number(s.guard) || 0}${s.apGuard ? ` + ${s.apGuard} from the AP your last turn kept (taken first, 1 round)` : ""}. It takes damage before your Health, can't be healed and ends with the encounter. Click +1, right-click −1, Ctrl: 5.` },
-    esc: { n: escNow, rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
+    esc: { n: escNow, pips: Array.from({ length: Math.max(1, Number(TWOD12.escalation?.max) || 6) }, (_, k) => k < escNow), rungs: escRungs(escNow, rungNames, apex, apexAt), hooks: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }).join(" · "),
+      // v0.0.442 (Lucas on the fixes mockup, round 4): the hooks as a list (their own cell), the Escalation pips with the rungs ringed (the marks cell)
+      hookList: hooksLeft(hookNames, { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id }),
+      marks: escMarks(escNow, Math.max(1, Number(TWOD12.escalation?.max) || 6), npc ? ELITE_RUNGS.map(r => r.n) : escRungs(escNow, rungNames, apex, apexAt).map(r => Number(r.n))),
       momentum: Number(combat?.getFlag?.(F, "momentumStart")) || 0 },   // v0.0.407: the Momentum the encounter started with (0 to 4)
     strikes: strikesLine(strikesUsed(a)),
     // v0.0.291: the Senses cell (both sheets), the NPC's Strikes diamonds and next Bane, the Elite's ladder
     senses: senseChips(s.senses ?? {}), strikePips: strikePips(strikesUsed(a)), strikesLeft: Math.max(0, 3 - strikesUsed(a)),
     nextBane: basicAtk && combat?.started ? nextBanes(atWillUses(a, basicAtk)).replace(/^next: /, "Basic attack: next +") : "",
     elite, eliteRungs: ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n, tip: `${r.tip}${s.eliteLadder !== false ? " Automated (the Builder's Default ladder)." : " By hand: the Builder's Default ladder is off (its entry says otherwise)."}` })),   // v0.0.320
+    // v0.0.443 (group 1): the combat line's two lists (hooks, the ladder with its shields); none for a Standard NPC
+    lists: combatLists({ npc, elite, hookNames, used: { crit: !!combat && used.crit === combat.id, hook: !!combat && used.hook === combat.id },
+      rungs: npc ? ELITE_RUNGS.map(r => ({ ...r, lit: escNow >= r.n })) : escRungs(escNow, rungNames, apex, apexAt), bloodied: s.bloodied, strained: s.strained,
+      info: (() => {   // v0.0.447: the cards a hook or a rung click shows
+        const rungs = {};
+        for (const p of passives) { const r = Number(passiveRung(p, cls)) || 0; if (r > 0) (rungs[r] ??= []).push(p.id); }
+        for (const i of a.itemTypes.action) { const e = Number(i.system?.escalation) || 0; if (e > 0) (rungs[e] ??= []).push(i.id); }
+        const hooks = Object.fromEntries(hookNames.map(n => { const it = a.items.find(i => i.name === n); return [n, it ? `item:${it.id}` : ""]; }));
+        return { hooks, rungs: Object.fromEntries(Object.entries(rungs).map(([k, v]) => [k, `item:${v.join(",")}`])) };
+      })() }),
     phases: `Phases: Bloodied +1 ${s.bloodied ? "\u2713" : "not yet"} \u00b7 Strained +1 ${s.strained ? "\u2713" : "not yet"}`
   };
   const hands = { tiles: handTiles(weapons, inCombat) };
@@ -166,19 +221,19 @@ export async function pcModel(sheet, ctx) {
   const vs = vsDefenses(s.attributes, vsB);
   const defs = {
     main: [
-      { label: "AD", value: adNow, cls: cmp(adNow, adRef), tip: `Armor Defense: ${(s.armorParts ?? []).join(" ")}${adNow !== s.armorDC ? ` and bonuses (${adNow})` : ""}. Against Weapon Actions and Fists.` },
-      { label: "WD", value: wdNow, cls: cmp(wdNow, wdRef), tip: `Ward Defense: ${(s.wardParts ?? []).join(" ")}${wdNow !== s.wardDC ? ` and bonuses (${wdNow})` : ""}. Against Power Actions.` }
+      { label: "AD", sym: statSym("ad"), value: adNow, cls: cmp(adNow, adRef), tip: `Armor Defense: ${(s.armorParts ?? []).join(" ")}${adNow !== s.armorDC ? ` and bonuses (${adNow})` : ""}. Against Weapon Actions and Fists.` },
+      { label: "WD", sym: statSym("wd"), value: wdNow, cls: cmp(wdNow, wdRef), tip: `Ward Defense: ${(s.wardParts ?? []).join(" ")}${wdNow !== s.wardDC ? ` and bonuses (${wdNow})` : ""}. Against Power Actions.` }
     ],
     vs: [["body", "vs Body"], ["mind", "vs Mind"], ["appeal", "vs Appeal"], ["instinct", "vs Inst."]].map(([k, l]) => ({ label: l, value: vs[k], tip: `Vs. ${TWOD12.attributes[k]}: 12 + your ${TWOD12.attributes[k]} (${sg(s.attributes?.[k] ?? 0)})${vsB[k] ? ` ${sg(vsB[k])} bonus` : ""}.` }))
   };
-  const attrs = Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, value: sg(s.attributes?.[key] ?? 0) }));
+  const attrs = Object.entries(TWOD12.attributes).map(([key, label]) => ({ key, label, value: sg(s.attributes?.[key] ?? 0), vs: vs[key] }));   // v0.0.441: the tile's "Vs. N"
   const speedNow = s.moveSpeed ?? s.speed ?? 0, speedRef = s.speed === undefined ? speedNow : applySpeedMods(a, s.speed, { baseOnly: true });
   const steady = steadinessOf(a).total;
   const move = [
-    { label: "Speed", value: speedNow, cls: cmp(speedNow, speedRef), tip: `Speed ${speedNow} (from your species and class${speedNow !== speedRef ? `; base ${speedRef}` : ""}${s.exhausted ? `; Exhausted −${s.exhausted}` : ""})` },
-    { label: "Reach", value: s.reach ?? 1, tip: "Reach: from your species" },
-    { label: "Size", value: s.size ?? 3, tip: `Size ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` },
-    { label: "Steady", value: steady, tip: `Steadiness ${steady}: reduces Forced Movement and Reposition against you (you can choose not to apply it)` }
+    { label: "Speed", sym: statSym("speed"), value: speedNow, cls: cmp(speedNow, speedRef), tip: `Speed ${speedNow} (from your species and class${speedNow !== speedRef ? `; base ${speedRef}` : ""}${s.exhausted ? `; Exhausted −${s.exhausted}` : ""})` },
+    { label: "Reach", sym: statSym("reach"), value: s.reach ?? 1, tip: "Reach: from your species" },
+    { label: "Size", sym: statSym("size"), value: `${SIZE_SHORT[s.size ?? 3] ?? ""} (${s.size ?? 3})`.trim() /* v0.0.456 (pack SHEETS-HUD's leftover): "Med. (3)" */, tip: `Size ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` },
+    { label: "Steady", sym: statSym("steady"), value: steady, tip: `Steadiness ${steady}: reduces Forced Movement and Reposition against you (you can choose not to apply it)` }
   ];
   const dcs = saveDCs({ weapon: s.weaponMod, power: s.powerMod, signature: s.signatureMod });
   const L = TWOD12.attributes;
@@ -197,6 +252,7 @@ export async function pcModel(sheet, ctx) {
     { label: "Signature", attr: s.signatureFrom === "power" ? "Power" : "Weapon", value: has(s.signatureAttribute) ? sg(s.signatureMod) : "—", dc: `DC ${dcs.signature}`, tip: `Signature Modifier: the higher of your Weapon and Power Modifiers (${s.signatureFrom === "power" ? "Power" : "Weapon"}). Save DC 11 + it (@signature.dc)` }
   ];
 
+  for (const m of mods) m.tile = m.label;   // v0.0.443 (group 1): an NPC's tiles named as a PC's ("Weapon"), in the PC's grid   // v0.0.441: the tile's label (a PC's three Modifiers have no room for "Mod.")
   // ---- Wounds (a named Wound is an effect with the flag twod12.wound: "body" or "mind")
   const namedW = k => [...a.effects].filter(e => e.getFlag?.(F, "wound") === k).map(e => ({ id: e.id, name: clean(e.name) }));
   const wounds = [
@@ -242,7 +298,8 @@ export async function pcModel(sheet, ctx) {
     const sec = extra.section ?? actionSection({ basic: !!i.getFlag(F, "basic"), basicKey: i.getFlag(F, "basic"), reaction, escalation: esc, frequency: effectiveFrequency(it) });
     const fists = it.weaponUse === "fists" || i.getFlag(F, "basic") === "fists";
     const subs = [];
-    if (npc && it.basicAttack) { const rr = it.basicRating || "medium"; subs.push(`Basic attack \u00b7 ${TWOD12.npcRatings[rr]?.label ?? rr} \u00b7 ~${(Number(s.stage) || 0) === 0 ? npcSuggest({ rank: TWOD12.npcRoles[s.role] ? s.role : "standard", rating: rr, basic: true }).t2 + " / " + npcSuggest({ rank: TWOD12.npcRoles[s.role] ? s.role : "standard", rating: rr, basic: true }).t3 : npcRow(role, TWOD12.npcRatings, rr, s.stage).basic.join(" / ")}`); if (elite && atk && escNow >= ELITE_RUNGS[0].n) subs.push("+1 Boon on its first attack this round"); }
+    // v0.0.443 (group 1; Lucas: "Remove '- high...' from basic attack, just put the basic attack plus tiers"; "+1 Boon on its first attack this round": "Remove it"): its own Tier 2 / Tier 3 damage
+    if (npc && it.basicAttack) subs.push(basicAttackLine((it.versions ?? [])[0]));
     if (npc && i.getFlag(F, "basic") === "opportunityAttack" && basicAtk) subs.push(`with ${basicAtk.name}`);
     // v0.0.303 (Lucas): no "back once at Escalation 3" on the row (the Elite Escalation strip says it)
     if (area) subs.push(`Area: ${area}`);
@@ -262,9 +319,17 @@ export async function pcModel(sheet, ctx) {
       basicAtk: !!(npc && it.basicAttack),
       auto: autoChip(it.automation, it.automationNote),   // v0.0.303 (Lucas): the automation diamond beside the name
       // v0.0.370 (Lucas): every row carries its Frequency line (and a dim tint of it), also inside "Once per round"
-      freqLine: rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" })
+      freqLine: rowLines({ frequency: effectiveFrequency(it), strike: !!it.traits?.has?.("strike") || i.getFlag(F, "basic") === "opportunityAttack" }),
+      // v0.0.441 (pack SHEETS-HUD): the bar (the stamps are the Use buttons; "Distance · Vs."; the Frequency's square and word)
+      bar: barOf(actionBar({ aps, reaction, frequency: fq, escalation: esc, dist: area ? (String(it.areaDistance ?? "").trim() ? distanceShort(dist) : "") : distanceShort(dist), vs: vsShort(vsText(it, { fists })), inCombat, ap, rap }), handBtns)
     };
   };
+  // v0.0.441: with one fitting weapon in hand the stamps use it; v0.0.444 (group 2): with two, the roll dialog has a Roll button for each (the
+  // bar's small hand buttons are gone)
+  function barOf(b, hb) {
+    const on = (hb ?? []).filter(h => !h.off);
+    return { ...b, weaponId: on.length === 1 ? on[0].id : "", hands: null };
+  }
   const actions = a.itemTypes.action.filter(i => techniqueState(a, i) !== "locked");
   const secRows = Object.fromEntries(SECTION_ORDER.map(k => [k, []]));
   for (const i of actions) {
@@ -281,7 +346,8 @@ export async function pcModel(sheet, ctx) {
     secRows.granted.push({ ...base, sub: `from ${g.source || "an effect"}${g.dur ? ` · ${g.dur}` : ""}${g.inline ? "" : ` · ${g.left} of ${g.count} left`}`,
       cost: g.inline ? String(g.cost ?? "").replace(/\s*AP$/, "") : (g.free ? "0" : String(g.cost).replace(/\s*AP$/, "")), outline: true, fc: "#1b2433",
       off: base.off && !/used|Round|turn/i.test(base.offWhy ?? "") ? base.off : false, handBtns: null,
-      grant: { tip: g.tip, effectId: g.effectId ?? "", index: g.grantIndex ?? 0 } });
+      grant: { tip: g.tip, effectId: g.effectId ?? "", index: g.grantIndex ?? 0 },
+      bar: { ...(base.bar ?? actionBar({})), stamps: [{ ap: 0, label: g.inline ? String(g.cost ?? "") || "Use" : (g.free ? "0 AP" : `${String(g.cost).replace(/\s*AP$/, "")} AP`), off: false, why: "" }], weaponId: "", hands: null } });
   }
   const SEC_META = {
     granted: { title: "Granted", sub: "from other effects · gone when spent or expired", dot: "#4a5a78", cls: "granted" },
@@ -295,6 +361,8 @@ export async function pcModel(sheet, ctx) {
   // so they can be built and edited; a PC's stay in combat only (its Build tab lists them)
   // v0.0.336 (Lucas: "nothing showing the granted actions"): Granted shows out of combat too (v0.0.337: this comment had cut the line's .map off)
   const sections = SECTION_ORDER.filter(k => secRows[k].length && (inCombat || npc || k !== "apex")).map(k => ({ key: k, ...SEC_META[k], rows: secRows[k] }));
+  // v0.0.442 (Lucas on v0.0.441): a bar writes its Frequency only where its section's heading doesn't (Reactions, Granted, Escalation; the Favorites)
+  for (const k of ["reaction", "granted", "apex"]) for (const r of secRows[k] ?? []) r.showFq = true;
 
   // Basic Actions: the four columns (config basicGroups), each button with its reason when it can't be used.
   const held = weapons.filter(w => w.system?.wielded && !w.system?.traits?.has?.("barehanded"));
@@ -307,20 +375,21 @@ export async function pcModel(sheet, ctx) {
     const r = sheet._actionRow(i), key = i.getFlag(F, "basic"), f = effectiveFrequency(i.system);
     const why = basicUnavailable(key, bctx) || (unconscious ? "Unconscious" : "") || r.fadedWhy || r.noApWhy || (r.strikeCap ? "Three Strikes this turn" : "");
     const one = r.hands?.filter(h => !h.off) ?? [];
-    const c = costPill((i.system.versions ?? []).map(v => v.ap));
-    return { id: i.id, name: i.name, cost: c, fc: f === "round" ? SHEET_FREQ.round.color : SHEET_FREQ.atwill.color, lines: rowLines({ frequency: f, strike: !!i.system?.traits?.has?.("strike"), off: !!why }),
+    const c = costPill((i.system.versions ?? []).map(v => v.ap)).replace(/\s*AP$/, "");   // v0.0.443 (option A): every number in that place is AP
+    return { id: i.id, name: i.name, cost: c, fq: f === "round" ? "round" : "atwill", fc: f === "round" ? SHEET_FREQ.round.color : SHEET_FREQ.atwill.color, lines: rowLines({ frequency: f, strike: !!i.system?.traits?.has?.("strike"), off: !!why }),
       off: !!why, offWhy: why, next: key === "basicWeaponAttack" && atk ? nextBanes(atWillUses(a, i)) : "", open: r.open,
       weaponId: one.length === 1 ? one[0].id : (r.solo?.id ?? ""), tip: `${i.name}: ${r.useTip || "use it"}` };
   };
   const used2 = new Set();
   // v0.0.291: an NPC has no Weapon Attack, Fists, Reload, Regrip or Release (its Basic attack is its weapon); Charge alone under Attack
-  const NPC_HIDE = new Set(["basicWeaponAttack", "fists", "reload", "regrip", "release"]);
+  // v0.0.460 (Lucas, checklist v0.0.459, npc-fists: "They have fists on the token hud but not in the sheet"): the Fists show, as on the HUD
+  const NPC_HIDE = new Set(["basicWeaponAttack", "reload", "regrip", "release"]);
   if (npc) for (let k = basics.length - 1; k >= 0; k--) if (NPC_HIDE.has(basics[k].getFlag(F, "basic"))) basics.splice(k, 1);
   const basic = TWOD12.basicGroups.map(g => ({ key: g.key, label: g.label, rows: g.names.map(n => basics.find(i => i.name === n)).filter(Boolean).map(i => { used2.add(i.id); return bRow(i); }) })).filter(g => g.rows.length);
   const restB = basics.filter(i => !used2.has(i.id)).map(bRow);
   if (restB.length) basic.push({ key: "other", label: "Other", rows: restB });
 
-  const favRows = favs.map(id => a.items.get(id)).filter(i => i?.type === "action").map(i => rowOf(i));
+  const favRows = favs.map(id => a.items.get(id)).filter(i => i?.type === "action").map(i => ({ ...rowOf(i), showFq: true }));
 
   // ---- Effects tab
   const conditions = [], ctexts = await conditionTexts();
@@ -382,7 +451,7 @@ export async function pcModel(sheet, ctx) {
     for (const it of mine) {
       const sec = secInfo[it.getFlag(F, "classSection")], rank = escSectionRank(sec?.title);
       placed.add(it.id);
-      if (rank) escRows.push({ rank, row: await brow(it, rank === 4 ? "Apex" : `Escalation ${rank}`) });
+      if (rank) escRows.push({ rank, row: await brow(it, rank === ESC_APEX ? "Apex" : `Escalation ${rank}`) });
       else rows.push(await brow(it, slotLabel(sec?.title ?? (it.type === "talent" ? "Talent" : "Feature"))));
     }
     if (rows.length) levelBlocks.push({ title: `Level ${L2}`, rows });
@@ -420,6 +489,15 @@ export async function pcModel(sheet, ctx) {
     swap: cls && (a.getFlag?.(F, "restSwap") || globalThis.game?.user?.isGM) ? { tip: a.getFlag?.(F, "restSwap") ? "You completed a Rest: change the choices your class's level list gave you (the Modifier order too during Stage 0)" : "The GM: change this character's level-list choices (Swapping comes with a Rest)" } : null,
     emptySlots: (ctx.talentSlots ?? []).filter(x => !x.talent)
   };
+  // v0.0.455 (Lucas, group 3, the mockup foundry/mockups/group3: "Stage A, Level B, Species and Class A"): the Stage as the tab's title band with
+  // the 15 levels' ladder (Level changed only through Change level and its window), Species and Class as two ruled entries (no dark header bar)
+  build.stageBand = stageBandModel(lv);
+  const kv = (k, v, cls = "") => ({ k, v: String(v ?? ""), cls });
+  const statKv = st => st.map(x => kv(x.l, x.v));
+  build.origin = [
+    ...(sp ? [{ kind: "Species", name: sp.name, action: "openSpecies", lines: [[kv("Attributes", spChips.filter(c => !c.cls).map(c => c.t).join(", ") || "none"), kv("Vigor", sg(hl.bonusVigor ?? ssys.bodyMod ?? 0), "v"), kv("Resolve", sg(hl.bonusResolve ?? ssys.mindMod ?? 0), "r")], statKv(buildCards[0].stats)], swap: null }] : []),
+    ...(cls ? [{ kind: "Class", name: cls.name, action: "openClass", lines: [[kv("Attributes", chosen.map(k => `${L[k]} +1`).join(", ") || "none"), kv("Vigor", hl.classVigor ?? 0, "v"), kv("Resolve", hl.classResolve ?? 0, "r")], statKv(buildCards[sp ? 1 : 0].stats)], swap: build.swap }] : [])
+  ];
 
   // ---- Mastery tab
   const mastery = (masteryRows(a) ?? []).map(m => {
@@ -447,14 +525,16 @@ export async function pcModel(sheet, ctx) {
   };
 
   const tabs = (npc ? [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["builder", "Builder"], ["loot", "Loot"], ["notes", "GM notes"]]
-    : [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["items", "Items"], ["build", "Build", bad.length], ["mastery", "Mastery"], ["upkeep", "Upkeep"], ["notes", "Notes"]])
+    : [["actions", "Actions"], ["effects", "Effects", conditions.length + effects.length], ["items", "Inventory"], ["build", "Build", bad.length], ["mastery", "Mastery"], ["upkeep", "Upkeep"], ["notes", "Notes"]])
     .map(([k, l, n]) => ({ k, l, n: n || 0 }));
   return {
     npc, builder: npc ? npcBuilderModel(a) : null, loot: npc ? lootRows(a) : null,
-    head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained,
+    // v0.0.455 (Lucas, group 4): the Inventory tab (was Items) and the NPC's Loot tab, one look (inventory.mjs); the open details are the sheet's
+    inventoryHtml: npc ? "" : inventoryHtml(a, { weapons, open: sheet._invOpen ?? new Set() }), lootHtml: npc ? lootHtml(a, { open: sheet._invOpen ?? new Set() }) : "",
+    head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained, guardSym: statSym("guard"),   /* v0.0.460 (Lucas, checklist v0.0.459: "Icons should be in the PCs sheet as well") */   // v0.0.454: D3
     effects: { conditions, effects }, weapons: weaponRows, armor: armorRows, build, mastery, upkeep, down,
     // v0.0.333 (PACK RWI): the Damage block under Defenses (Immune / Resist / Weak, every source; hidden with none, but a GM sees + Add)
-    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM })); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
+    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM }), { line: true, syms: { Immune: statSym("immune"), Resist: statSym("resist"), Weak: statSym("weak") } }); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
     modConflict: s.modConflict ? `Both Modifiers wanted the same Attribute: the ${csys?.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it.` : ""
   };
 }
@@ -469,6 +549,31 @@ export async function applyHandPick(actor, weapons, key, { spendAP, applyRegrip,
     const text = await applyRegrip(actor, weapons, key);
     if (text) await say("fa-hands", `<b>Regrip</b> (1 AP): ${esc(actor.name)} ${text}.`);
     return !!text;
+  }
+  // v0.0.444 (group 2): the hand menu's new rows. "rel2:other:w": drop the other weapon (Release), then hold w with both hands (Regrip, 1 AP)
+  if (kind === "rel2") {
+    const keep = actor.items.get(hand);
+    if (!keep) return false;
+    await applyRelease(actor, `drop:${id}`);
+    if (!(await spendAP(actor, 1, "Regrip"))) return false;
+    const text = await applyRegrip(actor, actor.itemTypes?.weapon ?? weapons, `two:${keep.id}`);
+    if (text) await say("fa-hands", `<b>Regrip</b> (1 AP): ${esc(actor.name)} ${text}.`);
+    return !!text;
+  }
+  // "chg:w:y:hand": stow w and draw y into that hand (Interact's swap, 1 AP; no free hand needed: Chapter 7, Handle)
+  // "dropdraw:other:y:w": drop the other hand's weapon (Release), stow w if any, then draw the Two-handed y with both hands (Interact, 1 AP)
+  if (kind === "chg" || kind === "dropdraw") {
+    const [, a, b, c] = String(key).split(":");
+    const cur = actor.items.get(kind === "chg" ? a : c), y = actor.items.get(b);
+    if (!y) return false;
+    if (kind === "dropdraw") await applyRelease(actor, `drop:${a}`);
+    if (!(await spendAP(actor, 1, "Interact", { kind: "interact" }))) return false;
+    if (cur) await cur.update(weaponMove("worn"));
+    const free = handSlots(actor.itemTypes?.weapon ?? weapons).filter(x => x.free).length;
+    const both = !!y.system?.traits?.has?.("twohanded") && free >= 2;
+    await y.update(weaponMove(both ? "2h" : "1h", both ? "" : (kind === "chg" && c === "off" ? "off" : "main")));
+    await say("fa-hand", `<b>Interact</b> (1 AP): ${esc(actor.name)} ${cur ? `stows <b>${esc(cur.name)}</b> and ` : ""}draws <b>${esc(y.name)}</b>${both ? " with both hands" : ""}.`);
+    return true;
   }
   if ((kind === "stow" || kind === "draw") && w) {
     if (!(await spendAP(actor, 1, "Interact", { kind: "interact" }))) return false;
@@ -592,3 +697,34 @@ export function statBlockHtml(a, sysCard) {
   return sysCard({ title: a.name, lead: `${esc(s.roleLabel ?? "")} \u00b7 CV ${esc(s.cv ?? "")} \u00b7 Stage ${esc(s.stage ?? 0)}`,
     text: [`Health ${s.pool} (Vigor ${s.bdt}, Resolve ${s.mdt}) \u00b7 AD ${s.armorDC} \u00b7 WD ${s.wardDC} \u00b7 Speed ${s.moveSpeed ?? s.speed}`, ...(dl.length ? [esc(dl.map(damageLineName).join(" \u00b7 "))] : []), `Senses: ${esc(chips)}`, ...acts].join("<br>") });
 }
+
+/** Pure (v0.0.455, group 3): the Build tab's Stage band: the Stage, its levels, when the next one comes, the ladder of the 15 levels in their four
+ *  Stages (passed, now, to come) for the level given. */
+export function stageBandModel(level) {
+  const lv = Math.max(1, Math.min(15, Math.trunc(Number(level)) || 1)), n = stageOf(lv), st = TWOD12.stages.find(x => x.n === n), nx = TWOD12.stages.find(x => x.n === n + 1);
+  return { n, lv, levels: `Levels ${st.from} to ${st.to}`, next: nx ? `Stage ${nx.n} at level ${nx.from}` : "The last Stage",
+    ladder: TWOD12.stages.map(g => ({ n: g.n, on: g.n === n, label: `Stage ${g.n}`, first: g.n === 0, cells: Array.from({ length: g.to - g.from + 1 }, (_, k) => { const x = g.from + k; return { n: x, cls: x < lv ? "past" : x === lv ? "now" : "" }; }) })) };
+}
+
+/** v0.0.455 (group 3, Change level's window): what going from one level to another does, as HTML: up, each new level's line of the tab's "Next
+ *  levels" (sheetmodel.mjs nextLevels, with the Stage it reaches); down, what the levels above the new one gave (classwindow.mjs levelsDown's list). */
+export function levelChangeText(a, from, to) {
+  const esc0 = t => String(t ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const cls = a?.itemTypes?.class?.[0];
+  if (!cls) return "No class on this sheet: only the number changes.";
+  if (to < from) {
+    const gone = (a.items ?? []).filter(i => (Number(i.getFlag?.(F, "classLevel")) || 0) > to).map(i => i.name);
+    return gone.length ? `It removes what the levels above ${to} gave: <b>${esc0(gone.join(", "))}</b>.` : `Nothing that the levels above ${to} gave is on the sheet.`;
+  }
+  const levels = cls.system?.levels ?? [], out = [];
+  for (let L2 = from + 1; L2 <= to; L2++) {
+    const n = stageOf(L2), stNew = TWOD12.stages.find(x => x.n === n && x.from === L2);
+    const rows = nextLevels(L2 - 1, levels, stNew ? { at: L2, n, health: [cls.system[`stepHigh${n}`] ?? 0, cls.system[`stepLow${n}`] ?? 0], guard: TWOD12.guardPerAp[n], rally: TWOD12.rallyByStage[n] - TWOD12.rallyByStage[n - 1], modifiers: n === 1 ? "one" : (TWOD12.stageModStep[n] ?? 0) > 0 ? "both" : "" } : null);
+    const r = rows.find(x => x.level === L2);
+    out.push(`<b>Level ${L2}:</b> ${esc0(r?.text ?? "\u2014")}`);
+  }
+  return `${out.join("<br>")}<br>The class window opens next, one level at a time, for its choices.`;
+}
+
+/** v0.0.456: a Size's short word for the sheet's stat line ("Size Med. (3)"). */
+export const SIZE_SHORT = ["", "Tiny", "Small", "Med.", "Large", "Huge", "Garg.", "Titanic"];

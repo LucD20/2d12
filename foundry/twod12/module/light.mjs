@@ -122,8 +122,10 @@ export function tokenLight(token) {
   return tokenSquares(token).length ? best : sceneLight();
 }
 
-/** How light looks to a creature, after its Sight Senses (Dim-light Sight, Dark Sight). */
+/** How light looks to a creature, after its Sight Senses (Dim-light Sight, Dark Sight); Blinded (senses.blind, sightSenses) sees Darkness everywhere. */
+export const sightSenses = actor => ({ ...(actor?.system?.senses ?? {}), blind: !!actor?.statuses?.has?.("blinded") });
 export function seenLight(light, senses = {}) {
+  if (senses.blind) return "dark";   // v0.0.459 (book, Blinded: "Every square is Difficult Terrain for you, as Darkness is"): everything is Darkness to it
   if (senses.darksight) return "bright";
   if (senses.dimlight && light === "dim") return "bright";
   return light;

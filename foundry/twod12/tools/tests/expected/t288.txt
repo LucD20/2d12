@@ -1,0 +1,2 @@
+bright light, Blinded: dark | Dark Sight, not Blinded, in darkness: bright | no senses: dim
+every movement check reads sightSenses: 4 | none left on raw senses: true

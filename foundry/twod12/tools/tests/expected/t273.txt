@@ -1,6 +1,6 @@
 --- before the roll
 the Tiers as the card writes them: Tier 1 or 2: Its Move Action is disrupted. | no Tier 3 line: true | no band, no rider box, no ranges: true
-in the card's order (Trigger, Effect, the Save, the Tiers, the Roll button, the Flavor, the target row): true
+in the card's order (Trigger, Effect, the Save, the Tiers, the Flavor, the Roll button, the target row; v0.0.465: the Flavor above the roll): true
 its owner's Roll button: Roll Appeal Save | the others wait: Waiting for Orc Warrior's Appeal Save… | no stamp yet: true | the retarget: true
 a Tier with damage: Tier 1: Resolve 3d6 Ho ; Pushed 3 | Tier 2: Resolve 2d6 Ho ; Pushed 2 | Tier 3: Resolve 1d6 Ho ; Pushed 1 | its damage line: 3 | two riders read as words: Tier 1 or 2: Pushed 2; Frightened of you (1 round)
 no target yet: No target yet: target the creatures, then press the target button below.

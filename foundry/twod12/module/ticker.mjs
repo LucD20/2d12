@@ -50,6 +50,8 @@ export const stamp = line => { const c = globalThis.game?.combat; return c ? { .
  * of the chat shows the log live (turndock.mjs), so no ticker message is posted any more; a turn's end posts one "End of X's Turn" line.
  * Writing needs an owner of the combatant. lines: the Turn Log already written with the event's own update (setAP's patch).
  */
+// v0.0.462 (Lucas's console, checklist v0.0.459: "The Combat ... does not exist" from the turn log): every writer skips a combat already deleted
+const combatGone = c => !!(c?.parent?.id && globalThis.game?.combats?.has && !game.combats.has(c.parent.id));
 export async function logEvent(c, line, { lines: written = null } = {}) {
   if (!c) return null;
   // v0.0.277 (Lucas: "The Combat ... does not exist" when an encounter ended mid-movement): a combat already deleted gets no line
@@ -61,7 +63,7 @@ export async function logEvent(c, line, { lines: written = null } = {}) {
 
 /** v0.0.362: a movement starts: its line goes into the Turn Log at once, marked live (g: the squares it may move), so the dock counts it up. */
 export async function logLive(c, line, granted) {
-  if (!c?.isOwner) return;
+  if (!c?.isOwner || combatGone(c)) return;
   try { await c.setFlag(F, "turnLog", [...(c.getFlag?.(F, "turnLog") ?? []), { ...stamp(line), live: true, g: Number(granted) || 0 }]); } catch (e) { console.warn("twod12 | turn log", e); }
 }
 /** Pure: the Turn Log with its last live line replaced by the finished one (or the finished one added). */
@@ -73,7 +75,7 @@ export function finishLive(lines, done) {
 }
 /** The movement ended (or another Action comes first): its live line becomes the finished one, with the squares moved. */
 export async function logMoveDone(c, line) {
-  if (!c?.isOwner) return null;
+  if (!c?.isOwner || combatGone(c)) return null;
   const lines = finishLive(c.getFlag?.(F, "turnLog") ?? [], stamp(line));
   try { await c.setFlag(F, "turnLog", lines); } catch (e) { console.warn("twod12 | turn log", e); }
   return lines;

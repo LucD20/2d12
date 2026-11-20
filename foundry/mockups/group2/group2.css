@@ -1,0 +1,68 @@
+/* Group 2 (Lucas on v0.0.442, 2026-11-19): hands and dual wielding. The page, then the proposals' rules, each under a .g2-* class.
+   Mockup only: nothing in the system changed. */
+h1 { font: 600 28px "Source Serif 4", serif; margin: 0 0 6px; }
+#page { width: 1500px; }
+.g2-lead { max-width: 1100px; margin: 0 0 28px; line-height: 1.45; opacity: .9; }
+.g2-sec { margin-bottom: 56px; } .g2-q { margin: 0 0 8px; font-style: italic; opacity: .8; max-width: 1100px; }
+.g2-list { margin: 0 0 16px 18px; padding: 0; max-width: 1100px; line-height: 1.45; } .g2-list li { margin: 3px 0; }
+.g2-pair { display: flex; gap: 32px; align-items: flex-start; margin-bottom: 26px; } .g2-shot h3 { margin: 0 0 6px; }
+.g2-col { display: flex; flex-direction: column; gap: 18px; }
+.g2-note { max-width: 580px; margin: 8px 0 0; font-size: 12.5px; line-height: 1.4; opacity: .78; }
+/* a window on the page: as tall as what it holds */
+.mk-win > .application.rolldlg > .window-content, .mk-win > .application.pickwin > .window-content { display: block; overflow: visible; }
+.mk-win > .application.rolldlg > .window-content > .rd-body { overflow: visible; }
+
+/* ---- 1. the roll dialog: one column for each weapon ------------------------------------------------------------------------------- */
+/* the card's lines the weapon changes: the card's own label column (4.8rem and the .6rem gap), then one column a weapon */
+.twod12.rolldlg .g2-cmp { margin: 3px 0 0; border-top: 1px solid var(--s-rule); }
+.twod12.rolldlg .g2-cr { display: grid; grid-template-columns: 4.8rem repeat(2, minmax(0, 1fr)); gap: 0 .6rem; align-items: baseline; margin: 1px 0; }
+.twod12.rolldlg .g2-cr > b { font-weight: 700; }
+.twod12.rolldlg .g2-cr > span { min-width: 0; padding-left: .6rem; border-left: 1px solid var(--s-hair); }
+.twod12.rolldlg .g2-ch { margin-top: 3px; } .twod12.rolldlg .g2-ch > span { color: var(--s-mute); } .twod12.rolldlg .g2-ch > span b { color: var(--s-ink); font-weight: 700; }
+.twod12.rolldlg .g2-ch > span:first-child, .twod12.rolldlg .g2-cr > span:first-child { border-left: 0; }
+.twod12-type.twod12-type .twod12.rolldlg .g2-cmp .rd-trait { display: inline !important; padding: 0 !important; border: 0 !important; background: none !important; color: var(--s-ink) !important; font: 600 14px/1.5 "Source Sans 3", sans-serif !important; text-transform: none !important; letter-spacing: 0 !important; }
+/* the roll line, one a weapon: the same columns, measured from the panel's own edge (the panel starts 2 px left of the card's text) */
+.twod12.rolldlg .g2-rolls { border-top: 0; margin: 0 0 4px; }
+.twod12.rolldlg .g2-rolls .g2-cr { grid-template-columns: calc(4.8rem + 2px) repeat(2, minmax(0, 1fr)); margin-right: 2px; }
+.twod12.rolldlg .g2-rolls .g2-cr > b { font-size: 11.5px; color: var(--cc-mute); }
+.twod12.rolldlg .g2-rolls .g2-cr > span { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.twod12.rolldlg .g2-rolls .rd-dice { display: block; } .twod12.rolldlg .g2-rolls .rd-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.twod12.rolldlg .g2-why { font-size: 12.5px; line-height: 1.3; color: var(--s-bad); }
+/* the bar: the Roll mode in the label column, a Roll button under each weapon's column */
+.twod12.rolldlg .rd-bar.g2-bar { display: grid; grid-template-columns: calc(4.8rem + 12px) repeat(2, minmax(0, 1fr)); gap: 0 .6rem; padding-right: 26px; }
+.twod12.rolldlg .rd-bar.g2-bar .rd-mode { width: 100%; min-width: 0; }
+.twod12.rolldlg .rd-bar.g2-bar .rd-go { min-width: 0; padding: 0 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.twod12.rolldlg .rd-go.g2-cant { background: transparent; border: 1px dashed var(--s-faint); color: var(--s-mute); text-decoration: line-through; }
+/* option B: two buttons of two lines */
+.twod12.rolldlg .rd-bar.g2-barb .rd-go.g2-two { display: flex; flex-direction: column; align-items: center; gap: 0; padding: 3px 8px 4px; min-width: 0; line-height: 1.2; }
+.twod12.rolldlg .rd-go.g2-two small { font: 400 12px/1.2 "Source Sans 3", sans-serif; opacity: .85; }
+.twod12.rolldlg .g2-shows { margin-top: 3px; font-size: 12.5px; color: var(--s-mute); }
+
+/* ---- 2. the sheet: only the Actions' bars (../group1/group1.css, the crop) -------------------------------------------------------- */
+.g2-clip .mk-win, .g2-clip .mk-win > .application { height: auto !important; }
+.g2-clip .window-content { flex: none !important; } .g2-clip .twod12.sheet.pcs.ps2 { position: static !important; flex: none !important; height: auto !important; min-height: 0 !important; }
+.g2-clip .ps-body { flex: none !important; height: auto !important; overflow: visible !important; } .g2-clip .ps-main { height: auto !important; overflow: visible !important; } .g2-clip .ps-scroll { flex: none !important; height: auto !important; overflow: visible !important; }
+.g2-crop-acts .ps2-plate, .g2-crop-acts .ps2-stats, .g2-crop-acts .ps2-tiles, .g2-crop-acts .ps2-combat, .g2-crop-acts .ps2-basic, .g2-crop-acts .ps2-basic ~ * { display: none !important; }
+
+/* ---- 3. the HUD (../hud3/built.css: a strip of the screen's bottom, the map behind, the HUD on it) -------------------------------- */
+.mk-scene { position: relative; width: 1500px; padding: 250px 0 6px; box-sizing: border-box; background-color: #54604a; background-image: linear-gradient(rgba(0,0,0,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.16) 1px, transparent 1px); background-size: 50px 50px; }
+.mk-scene .twod12-hud { position: relative; width: 100%; margin: 0; }
+.mk-scene #hotbar ol { list-style: none; } .mk-scene #hotbar .slot { position: relative; box-sizing: border-box; border: 1px solid var(--s-hair); background: rgba(0, 0, 0, .28); color: var(--s-mute); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; }
+.theme-light .mk-scene #hotbar .slot { background: rgba(0, 0, 0, .06); }
+.mk-scene #hotbar .slot .key { position: absolute; right: 2px; top: 0; font-size: 8.5px; line-height: 10px; color: var(--s-faint); }
+/* the right end of the screen only */
+.g2-crops { gap: 18px; } .g2-hcrop { width: 360px; overflow: hidden; } .g2-hcrop .mk-scene { margin-left: -1140px; }
+/* the tile clicked: the one filled button */
+.twod12-hud .h3-hand.g2-on { background: var(--s-stamp, #eadfc8); border-color: var(--s-stamp, #eadfc8); color: var(--s-stamp-ink, #221d16); } .twod12-hud .h3-hand.g2-on b { color: inherit; opacity: .75; }
+/* the menu: the HUD's flat surface and thin line, opening upward from the tile */
+.twod12-hud .g2-hm { position: absolute; z-index: 3; box-sizing: border-box; width: max-content; max-width: 340px; border: 1px solid var(--hud-line); background: var(--hud-bg); color: var(--hud-ink); box-shadow: 0 4px 16px rgba(0, 0, 0, .55); font: 400 13px/1.3 "Source Sans 3", sans-serif; }
+.twod12-hud .g2-hmh { padding: 5px 9px 4px; color: var(--hud-mute); } .twod12-hud .g2-hmh b { color: var(--hud-ink); font-weight: 700; font-size: 14px; }
+.twod12-hud .g2-hmw { padding: 0 9px 5px; font-size: 12.5px; color: var(--s-bad); }
+.twod12-hud .g2-hmg { display: flex; flex-direction: column; padding: 3px 0; border-top: 1px solid var(--hud-hair); }
+.twod12-hud .g2-hm .g2-hmr { all: unset; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; align-items: baseline; padding: 3px 9px; font: 600 13px/1.3 "Source Sans 3", sans-serif; color: var(--hud-ink); cursor: pointer; }
+.twod12-hud .g2-hm .g2-hmr:hover { background: color-mix(in srgb, var(--hud-ink) 9%, transparent); }
+.twod12-hud .g2-hmr .c { white-space: nowrap; font-weight: 400; } .twod12-hud .g2-hmr .c small { font-size: 12px; color: var(--hud-mute); } .twod12-hud .g2-hmr .c b { font-weight: 700; }
+.twod12-hud .g2-hm .g2-hmr.off { cursor: default; } .twod12-hud .g2-hm .g2-hmr.off:hover { background: none; }
+.twod12-hud .g2-hmr.off .l, .twod12-hud .g2-hmr.off .c { text-decoration: line-through; color: var(--hud-mute); font-weight: 400; } .twod12-hud .g2-hmr.off .c b { font-weight: 400; }
+.twod12-hud .g2-hmr .y { grid-column: 1 / -1; font-weight: 400; font-size: 12.5px; color: var(--hud-ink); }
+.twod12-hud .g2-hmn { padding: 3px 9px; color: var(--hud-mute); }

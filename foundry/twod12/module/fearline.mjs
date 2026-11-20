@@ -45,7 +45,7 @@ function draw() {
       const r = Math.max(f.token.w, f.token.h) / 2 + 6;
       g.lineStyle(4, PURPLE, alpha).drawCircle(b.x, b.y, r);
       box.addChild(g);
-      const text = new PIXI.Text(fearLabel(f), { fontFamily: "Signika, sans-serif", fontSize: 17, fontWeight: "600", fill: f.seen ? "#ecd6fb" : "#bfb3c8", stroke: "#111111", strokeThickness: 4 });
+      const text = new PIXI.Text(fearLabel(f), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: 17, fontWeight: "600", fill: f.seen ? "#ecd6fb" : "#bfb3c8", stroke: "#111111", strokeThickness: 4 });
       text.anchor.set(0.5, 1); text.alpha = f.seen ? 1 : 0.8;
       text.position.set(a.x, (tok.y ?? a.y) - 6);
       box.addChild(text);

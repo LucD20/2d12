@@ -1,4 +1,4 @@
-button flow: CARD > HEAL > CARD UPDATED | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.
-action flow (card already posted): HEAL > CARD | RallyPaladin uses 1 Rally Point9 healingRemoves 9 Vigor. 2 Rally Points left.
-up to 2, asked: CARD > HEAL > CARD UPDATED
+button flow: HEAL > CARD | Paladin heals 9 1 Rally Point · 2 left9 Vigor
+action flow (card already posted): HEAL > CARD | Paladin heals 9 1 Rally Point · 2 left9 Vigor
+up to 2, asked: HEAL > CARD
 windows opened for 3 clicks: 1

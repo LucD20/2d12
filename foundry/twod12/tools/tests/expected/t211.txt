@@ -52,9 +52,9 @@ a rider happens whatever damage is dealt (v0.0.432; 0 after Resist, then 3): tru
 Enfeebled 2 on 1, 3, 6: each die at least 1: -4 | Empowered 1 on 2d6: 2
 the Save's damage per die too (inline.mjs no longer adds the step to the total): true
 --- the damage message
-stamp: DAMAGE 16 Tier 3 ↗ | the tag: Lethal | pools: Vigor · 13 Sl 13 Resolve · 3 Ho 3
+stamp: DAMAGE 16 Tier 3 ↗ | the tag (v0.0.454: the ledger's foot): Lethal · Full | pools: Vigor · 13 Sl 13 Resolve · 3 Ho 3
 the instance with its Weapon Modifier as a line: Vigor · Slash (Greatsword) Dice 4 5 Modifiers +2 Weapon +2 Heavy Blows Total 13
-rows:  || Bandit Thug Apply Full Half Double −8 Guard Lethal || Fire Imp Took 5 · 3 Bloodied ✓ Undo Full Half Double Lethal
+rows:  || Bandit Thug Apply Vigor Slash (2d6: 4, 5, Weapon +2, Heavy Blows +2) 13 Guard −8 Takes 5 Resolve Holy (1d6: 3) 3 Takes 3 Lethal · Full || Fire Imp Took 5 · 3 Bloodied ✓ Undo Vigor Slash (2d6: 4, 5, Weapon +2, Heavy Blows +2) 13 Takes 5 Resolve Holy (1d6: 3) 3 Takes 3 Applied in full · Lethal
 v0.0.288: the header is the title alone: Weapon Attack | the bottom row (one row left: no Apply all, the tag alone): 
 removed: no Avg line, Lethal selector, Block, None: true | Designer mode adds the average: Avg 14.5 · this total or more: 38%
 target details hidden: no Guard / Weak / Took: true | names and state kept: Bandit Thug Waiting for the GM Fire Imp Bloodied ✓ Applied | Bloodied stays: true | footer: Player view · target details hidden by the GM
@@ -73,3 +73,5 @@ Save Actions use the new card with several targets (actions.mjs): true | and wit
 --- v0.0.287 (Lucas tested v0.0.286)
 the stamp holds every Tier: t2 16 | t1 7
 the Save card's target row at the bottom: true | its Damage there: true | the pills read T1: true
+2 Pi with Shield of Faith 3: [{"pool":"B","name":"Vigor","lines":[{"label":"Pierce (1d4: 2)","v":"2"},{"label":"Shield of Faith","v":"−3"}],"takes":0}]
+Smite on the Orc: Vigor: Slash (1d8: 6, Flat +1, Weapon +1) 8; Resist Slash −2; Guard −2 = 4 || Resolve: Holy (2d6: 3, 4) 7; Weak Holy 2 = 9

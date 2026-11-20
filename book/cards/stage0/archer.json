@@ -85,7 +85,8 @@
    "foundry": {
     "img": "icons/svg/sword.svg",
     "folder": "Archer",
-    "automationNote": "the Strike, Staggered (EoT) on a Tier 3, then the Evade 2 (the button); drawing and stowing the Light weapon by hand (the hands buttons).",
+    "automationNote": "the Strike, Staggered (EoT) on a Tier 3, then the Evade 2 (the button); only a Light weapon can make it (its Weapon needs setting); drawing and stowing the Light weapon by hand (the HUD's hand menu).",
+    "weaponNeeds": "light",
     "automation": "silver"
    }
   },

@@ -1,7 +1,7 @@
 // The old card builders' last pieces (pack CARD-ONE step 7, v0.0.439: buildPreviews, buildRawCard and buildInfoCard retired; every card is
 // drawn from the card model now): the tier text helpers, the odds of the Checks' and Saves' dialog, the weapon's card, Send to chat.
 import { attrFromTier } from "./rollsource.mjs";
-import { TWOD12, cardVars, traitChevrons, highlightText, poolIcon, dtypeHtml, inkOf } from "./config.mjs";
+import { TWOD12, cardVars, traitChevrons, highlightText, poolIcon, dtypeHtml, inkOf, brightOf } from "./config.mjs";
 import { weaponTierText } from "./explode.mjs";   // v0.0.407: "3 + 1d4!" (the book's way)
 import { esc } from "./roll.mjs";
 import { tierProbs, critProb } from "./calc.mjs";
@@ -25,7 +25,7 @@ export async function tierLines(insts, tier, ctx, effectText = "") {
     if (i.useAt) parts.push(`${ctx.attrVal} <small>${esc(ctx.attrLabel)}</small>`);
     let t = parts.join(" + ");
     // The amount takes the color of its damage type, like the type's name (v0.0.137).
-    if (t && i.subtype && inkOf(i.subtype)) t = `<span class="dtamt" style="color:${inkOf(i.subtype)}">${t}</span>`;
+    if (t && i.subtype && inkOf(i.subtype)) t = `<span class="dtamt" style="color:${inkOf(i.subtype)};--sc-d:${brightOf(i.subtype) || inkOf(i.subtype)}">${t}</span>`;
     if (t) t = `${poolIcon(i.pool || "B")} ${t}${i.subtype ? ` ${dtypeHtml(i.subtype) || esc(TWOD12.subtypes[i.subtype])}` : ""}`;
     if (t) lines.push(t);
   }
@@ -99,7 +99,7 @@ export async function buildWeaponCard(item) {
   return `<div class="twod12 chat action rawcard weaponcard" style="${cardVars(TWOD12.cardColors.weapon)}">
     <div class="ahead"><b>${esc(item.name)}</b><span class="acat">Weapon</span></div>
     ${w.traits.size ? `<div class="traits">${traitChevrons(w.traits, { properties: true })}</div>` : ""}
-    <div class="trow"><span class="freq">${sub ? `<span class="dmgword" style="--dc:${TWOD12.subtypeColors[w.subtype] ?? "#888"}"><i class="${TWOD12.subtypeIcons[w.subtype] ?? ""}"></i> ${esc(sub)}</span> damage` : "No damage type"}</span></div>
+    <div class="trow"><span class="freq">${sub ? `<span class="dmgword" style="--dc:${TWOD12.subtypeInk[w.subtype] ?? "#888"};--sc-d:${TWOD12.subtypeColors[w.subtype] ?? "#888"}"><i class="${TWOD12.subtypeIcons[w.subtype] ?? ""}"></i> ${esc(sub)}</span> damage` : "No damage type"}</span></div>
     ${w.range ? `<div class="vsrow"><b>Range</b> ${esc(w.range.split("/").join(" / "))}</div>` : ""}
     <div class="vsrow"><b>Weapon damage [W]</b></div>
     <table class="tiers">${[1, 2, 3].map(n => { const txt = weaponTierText(w.damage[`t${n}`]); return `<tr><th>Tier ${n}</th><td>${esc(txt || "0")}</td></tr>`; }).join("")}</table>

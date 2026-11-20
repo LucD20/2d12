@@ -255,8 +255,10 @@ export class TwoD12Combat extends Combat {
     const run = squadRun(this.turns ?? [], i);
     if (run.length < 2) return;
     const { pickBar } = await import("./pickbar.mjs");
-    const pick = await pickBar({ icon: "fa-people-group", text: `<b>${esc(run[0].name.replace(/\s*\d+$/, ""))}</b>: which one goes now? (${run.length} of the squad left)`,
-      options: run.map(c => ({ id: c.id, label: c.name, token: c.token?.object ?? null })) });
+    // v0.0.454 (Lucas, playtest 6, D5 "Proposed A"): the token pictures, each with its number; the name on a hover
+    const kinds = new Set(run.map(c => c.name.replace(/\s*\d+$/, "")));
+    const pick = await pickBar({ icon: "fa-people-group", cls: "squadpick", text: `<b>${esc(kinds.size === 1 ? [...kinds][0] : "Minions")}</b> <span class="lb-tag">${run.length} of the squad left</span><span class="lb-q">Which one goes now?</span>`,
+      options: run.map(c => ({ id: c.id, label: c.name, token: c.token?.object ?? null, img: c.token?.texture?.src || c.img || c.actor?.img || "icons/svg/mystery-man.svg", num: /(\d+)\s*$/.exec(c.name)?.[1] ?? "" })) });
     if (!pick || pick === run[0].id) return;
     const order = squadOrderAfter(this.turns, i, pick);
     await this.updateEmbeddedDocuments("Combatant", order.map((id, k) => ({ _id: id, [`flags.${F}.init.sqOrder`]: k })));

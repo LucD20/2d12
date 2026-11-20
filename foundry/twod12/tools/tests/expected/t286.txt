@@ -1,0 +1,17 @@
+12 types, both variants: 12 true
+the book's pair equals Foundry's: true
+  Ac Acid light #3f7a12 dark #8bc34a
+  Bl Blunt light #5a4a36 dark #b9a58c
+  Co Cold light #136f8f dark #4fc3e8
+  El Electricity light #7d6a00 dark #e3cf3b
+  Fi Fire light #a63a17 dark #ef6a3a
+  Fo Force light #6a35b8 dark #a77ce8
+  Ho Holy light #8a5a08 dark #e0a83a
+  Pi Pierce light #44513f dark #a9b8a4
+  Ps Psychic light #a3335c dark #e07a9e
+  Sl Slash light #4a5058 dark #c3c9d1
+  Th Thunder light #1f4f8a dark #6f95c8
+  Un Unholy light #6e2a6e dark #c06ac0
+the chat card's codes read config: true | Fi: <span class="cc-sub" style="color:#a63a17;--sc-d:#ef6a3a">Fi</span> | no empty key: true
+no own palette left: true true true true
+a damage word carries both: true

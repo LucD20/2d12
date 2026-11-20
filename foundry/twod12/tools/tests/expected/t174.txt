@@ -1,7 +1,7 @@
 a system line colors its words: <div class="twod12 chat sysline"><i class="fa-solid fa-shoe-prints"></i><span><b>Nari</b> gains <span class="kw-boon">1 Boon</span> and uses <span class="kw-rally">2 Rally Points</span>; <span class="kw-bane">1 Bane</span>, <span class="kw-ap">2 AP</span>.</span></div>
 Charge given up: the use is taken back on the actor it was used from and on the combatant's: true | the combatant's copy even with no actor record: true
 movement messages are system lines: true
-a larger creature's Charge is centered on the mouse: true
+a larger creature's Charge: no destination square since v0.0.461 (a Charge always picks an enemy): true
 Reload: yours or an ally's within Reach (the GM relays): true | Reload isn't refused for its own unloaded weapon: true
 shortcuts: true | Shift+A, W, R, Q: true | Favorites Alt+1..9: true | an NPC's Weapon Attack key uses its Basic attack: true
 (next version) the Fists never show Unloaded; a non-Ranged Weapon Action with a free hand isn't blocked: true

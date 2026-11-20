@@ -1,0 +1,107 @@
+/* Playtest 6, section 6 (D1-D5): the page, then each proposal's rules under a .p6-* class. A mockup: the system doesn't load this file.
+   Colors are the theme's (--s-*, styles/theme.css); the chat card's own (--cc-*) inside a chat card; the HUD's (--hud-*) inside the HUD. */
+#page { width: 1560px; }
+h1 { font: 600 28px "Source Serif 4", serif; margin: 0 0 6px; }
+.p6-lead { max-width: 1100px; margin: 0 0 30px; line-height: 1.45; opacity: .9; }
+.p6-sec { margin-bottom: 72px; padding-top: 6px; border-top: 1px solid var(--s-hair); } .p6-sec > h2 { margin-top: 10px; }
+.p6-q { margin: 0 0 12px; font-style: italic; opacity: .8; max-width: 1200px; line-height: 1.4; }
+.p6-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; max-width: 1500px; margin: 0 0 22px; }
+.p6-list > b { font-size: 13.5px; } .p6-list ul { margin: 4px 0 0 18px; padding: 0; line-height: 1.42; font-size: 13.5px; } .p6-list li { margin: 3px 0; } .p6-list code { font-size: 12px; }
+.p6-h { margin: 18px 0 10px; font: 600 17px "Source Serif 4", serif; }
+.p6-pair { display: flex; gap: 32px; align-items: flex-start; margin-bottom: 34px; flex-wrap: wrap; }
+.p6-shot { min-width: 0; width: fit-content; } .p6-shot > h3 { margin: 0 0 7px; width: 0; min-width: 100%; line-height: 1.3; min-height: 2.6em; display: flex; align-items: flex-end; }
+.p6-note { width: 0; min-width: 100%; box-sizing: border-box; margin: 8px 0 0; font-size: 12.5px; line-height: 1.4; opacity: .78; }
+.p6-stack { display: flex; flex-direction: column; gap: 14px; }
+/* a window on the page: as tall as what it holds */
+.p6-win, .p6-win > .application { height: auto !important; } .p6-win > .application > .window-content { display: block; overflow: visible; }
+/* the chat: a strip of the sidebar (Foundry's frame is a stand-in) */
+.p6-chat { list-style: none; margin: 0; padding: 6px; width: 300px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; }
+.theme-dark .p6-chat { background: #1a1815; } .theme-light .p6-chat { background: #cfc6b4; }
+.p6-msg { position: relative; padding: 4px 6px 6px; border: 1px solid; border-radius: 5px; font-size: 13px; }
+.theme-dark .p6-msg { background: #24211d; border-color: #3b362e; color: #e6e3dc; } .theme-light .p6-msg { background: #f1ece0; border-color: #b9ae97; color: #26241f; }
+.p6-msg .message-header { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; margin: 0 0 4px; line-height: 18px; } .p6-msg .message-sender { margin: 0; font: 600 12.5px "Source Sans 3", sans-serif; } .p6-msg time { font-size: 11px; opacity: .6; }
+.p6-msg.bare { padding: 0; border: 0; background: none; }
+.p6-msg .sysline small { display: block; opacity: .75; font-size: 11.5px; }
+
+/* the proposals' shared pieces: a window in the table look (flat surface, thin lines, one filled button) */
+.application.p6-app { background: var(--s-pg); color: var(--s-ink); font: 400 14px/1.35 "Source Sans 3", sans-serif; }
+.p6-b { all: unset; box-sizing: border-box; height: 28px; padding: 0 12px; border: 1px solid var(--s-rule); font: 600 13px/26px "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; white-space: nowrap; }
+.p6-b.go { background: var(--s-stamp); border-color: var(--s-stamp); color: var(--s-stamp-ink); font-weight: 700; }
+.p6-rf { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--s-hair); background: var(--s-pg-2); } .p6-rf .m { flex: 1; min-width: 0; font-size: 12.5px; color: var(--s-mute); }
+svg.p6-fa { width: 1em; height: 1em; fill: currentColor; vertical-align: -0.125em; }
+svg.p6-g { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; flex: none; } svg.p6-g .f { fill: currentColor; stroke: none; }
+
+/* ---- D1. the Rally window ------------------------------------------------------------------------------------------------------- */
+.p6-rw .k { color: var(--s-mute); font-weight: 600; font-size: 12.5px; } .p6-rw .q { color: var(--s-mute); font-size: 12.5px; }
+.p6-rh { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 10px 12px 8px; }
+.p6-rwho { font-size: 17px; line-height: 1.25; } .p6-rwho b { font-weight: 700; } .p6-rwho b.n { font-size: 20px; }
+.p6-rsum { display: block; font-size: 12.5px; color: var(--s-mute); margin-top: 1px; }
+.p6-rpts { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 12.5px; white-space: nowrap; color: var(--s-mute); } .p6-rpts b { color: var(--s-ink); }
+.p6-rp { display: inline-flex; gap: 3px; margin: 2px 0 1px; } .p6-rp i { width: 9px; height: 9px; border-radius: 50%; box-sizing: border-box; border: 1.5px solid var(--s-faint); } .p6-rp i.on { background: var(--s-good); border-color: var(--s-good); } .p6-rp i.go { border-color: var(--s-gold); border-style: dashed; }
+.p6-rcount { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--s-hair); }
+.p6-seg { display: inline-flex; } .p6-seg button { all: unset; box-sizing: border-box; width: 34px; height: 26px; text-align: center; border: 1px solid var(--s-rule); margin-left: -1px; font: 600 13.5px/24px "Source Sans 3", sans-serif; cursor: pointer; } .p6-seg button.on { background: var(--s-stamp); border-color: var(--s-stamp); color: var(--s-stamp-ink); font-weight: 700; position: relative; }
+.p6-rrows { padding: 0 12px 8px; }
+.p6-rr { display: grid; grid-template-columns: minmax(0, 1fr) 26px 18px 26px 46px 92px; align-items: center; gap: 0 4px; min-height: 32px; border-top: 1px solid var(--s-hair); font-variant-numeric: tabular-nums; }
+.p6-rr .nm, .p6-rb .nm { font-weight: 700; } .p6-rw .nm.v { color: var(--s-vig); } .p6-rw .nm.r { color: var(--s-res); }
+.p6-rr .was { text-align: right; color: var(--s-mute); } .p6-rr .ar { text-align: center; color: var(--s-faint); } .p6-rr > b { text-align: right; font-size: 16px; } .p6-rr > b.chg { color: var(--s-good); }
+.p6-rr .of { color: var(--s-faint); font-size: 12.5px; padding-left: 3px; } .p6-rr .hl { text-align: right; color: var(--s-good); font-weight: 600; }
+.p6-st { display: inline-grid; grid-template-columns: 26px 1fr 26px; align-items: center; justify-self: end; width: 86px; } .p6-st b { text-align: center; font-size: 14.5px; }
+.p6-st button { all: unset; box-sizing: border-box; width: 26px; height: 24px; text-align: center; border: 1px solid var(--s-rule); font: 700 15px/22px "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; } .p6-st button:disabled { border-color: var(--s-hair); color: var(--s-faint); cursor: default; }
+.p6-rrows.bars { padding-top: 2px; }
+.p6-rb { display: grid; grid-template-columns: 62px minmax(0, 1fr) 104px; align-items: center; gap: 0 8px; min-height: 30px; border-top: 1px solid var(--s-hair); font-variant-numeric: tabular-nums; }
+.p6-rb .tr { position: relative; display: flex; height: 10px; background: color-mix(in srgb, var(--s-ink) 12%, transparent); } .p6-rb .tr i { display: block; height: 100%; }
+.p6-rb.v .tr .l { background: var(--s-vig); } .p6-rb.r .tr .l { background: var(--s-res); } .p6-rb .tr .h { box-sizing: border-box; border: 1px solid var(--s-good); background: repeating-linear-gradient(135deg, var(--s-good) 0 2px, transparent 2px 5px); }
+.p6-rb .nn { text-align: right; color: var(--s-mute); font-size: 13px; } .p6-rb .nn b { color: var(--s-good); font-size: 15px; }
+.p6-rlink { display: flex; align-items: baseline; justify-content: space-between; border-top: 1px solid var(--s-hair); padding-top: 6px; font-size: 12.5px; color: var(--s-mute); }
+.p6-link { all: unset; color: var(--s-gold); font: 600 12.5px "Source Sans 3", sans-serif; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+
+/* ---- D2. the chat card's breakdown ------------------------------------------------------------------------------------------------ */
+.twod12.chat.cc .cc-icon.p6-eq svg { width: 15px; height: 15px; stroke-width: 2.2; } .twod12.chat.cc .cc-icon.p6-eq.on { background: var(--cc-panel); border-color: var(--cc-ink); }
+.twod12.chat.cc .p6-bd { flex: 1 1 100%; box-sizing: border-box; margin: 2px 0 0; padding: 5px 7px; background: var(--cc-panel); border-radius: 0; border-left: 2px solid var(--s-rule); font-size: 12.5px; line-height: 1.4; color: var(--cc-ink); font-variant-numeric: tabular-nums; }
+.twod12.chat.cc .p6-bd .f { margin-top: 3px; padding-top: 3px; border-top: 1px solid color-mix(in srgb, var(--cc-ink) 18%, transparent); font-size: 11.5px; color: var(--cc-mute); } .twod12.chat.cc .p6-bd .f b { color: var(--cc-ink); }
+.p6-bd svg.p6-pool { font-size: 12px; margin-right: 2px; } .p6-bd svg.p6-pool.v { color: var(--s-vig); } .p6-bd svg.p6-pool.r { color: var(--s-res); }
+.p6-bd.a .l { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 5px; padding: 1px 0; } .p6-bd.a .l svg { align-self: center; }
+.p6-bd.a .s { display: inline-flex; flex-wrap: wrap; gap: 0 5px; } .p6-bd.a .e { margin-left: auto; white-space: nowrap; } .p6-bd.a .e b { font-size: 14px; }
+.p6-bd .t { white-space: nowrap; } .p6-bd .minus, .p6-bd .plus { color: var(--cc-ink); }
+.p6-bd.b .g { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; padding: 1px 0 3px; } .p6-bd.b .g + .g { border-top: 1px solid color-mix(in srgb, var(--cc-ink) 18%, transparent); padding-top: 3px; }
+.p6-bd.b .p { grid-column: 1 / -1; font-weight: 700; } .p6-bd.b .k { padding-left: 16px; color: var(--cc-mute); } .p6-bd.b .v { text-align: right; } .p6-bd.b .tot { color: var(--cc-ink); font-weight: 700; } .p6-bd.b .v.tot { border-top: 1px solid var(--cc-ink); font-size: 14px; }
+/* the right-click menu: the table look, small */
+/* on the page it sits in the row (the card clips what floats); in the build it floats over the card, under the pointer */
+.p6-menu { flex: 0 0 176px; white-space: nowrap; margin: 0 0 4px auto; display: flex; flex-direction: column; min-width: 150px; padding: 3px 0; background: var(--s-pg); border: 1px solid var(--s-rule); box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
+.p6-menu button { all: unset; box-sizing: border-box; display: grid; grid-template-columns: 16px 1fr auto; align-items: baseline; gap: 0 4px; padding: 3px 10px 3px 6px; font: 600 13px/1.4 "Source Sans 3", sans-serif; color: var(--s-ink); cursor: pointer; }
+.p6-menu button i { font-style: normal; font-size: 11px; } .p6-menu button small { font-weight: 400; font-size: 11.5px; color: var(--s-mute); } .p6-menu button.on { font-weight: 700; } .p6-menu button:nth-child(2) { background: color-mix(in srgb, var(--s-ink) 10%, transparent); }
+.twod12.chat.cc .cc-trow .cc-rbtn.p6-hint { flex-basis: auto; padding: 0 8px; box-shadow: 0 0 0 2px var(--s-good); }
+.twod12.chat.cc .p6-hintl { flex: 1 1 100%; font-size: 11.5px; color: var(--cc-mute); }
+
+/* ---- D3. the symbols ---------------------------------------------------------------------------------------------------------------- */
+.p6-crop-top .mk-win { overflow: hidden; }
+.p6-sym .p6-k svg.p6-g { font-size: 14px; margin-right: 3px; color: var(--s-mute); } .p6-sym .ps2-tile > span.p6-k svg.p6-g { font-size: 12.5px; margin-right: 2px; }
+.p6-plate { margin: 0 0 26px; padding: 12px 14px; max-width: 1180px; background: var(--s-pg); color: var(--s-ink); border-top: 2px solid var(--s-rule); border-bottom: 1px solid var(--s-rule); }
+.p6-plate h3 { margin: 0 0 10px; opacity: 1; color: var(--s-mute); }
+.p6-plate .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 22px; } .p6-plate .grid.two { grid-template-columns: 1fr 1fr; }
+.p6-plate .c { display: flex; align-items: center; gap: 12px; min-width: 0; } .p6-plate .big svg { font-size: 44px; stroke-width: 1.3; }
+.p6-plate .at { display: flex; flex-direction: column; min-width: 0; } .p6-plate .ln { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; } .p6-plate .ln svg { color: var(--s-mute); } .p6-plate small { font-size: 12px; color: var(--s-mute); line-height: 1.35; }
+.p6-plate.alt .c { align-items: baseline; gap: 16px; flex-wrap: wrap; } .p6-plate.alt .ln { font-size: 14px; } .p6-plate.alt small { flex: 1 1 100%; font-size: 12.5px; } .p6-plate.alt small b { color: var(--s-ink); }
+
+/* ---- D4. an Art's card -------------------------------------------------------------------------------------------------------------- */
+.twod12-hudcard.p6-hudcard { position: relative !important; left: auto; bottom: auto; max-height: none; z-index: 0; }
+.p6-ah { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 0 10px; padding: 7px 30px 6px 10px; background: var(--s-pg); color: var(--s-ink); border-bottom: 1px solid var(--s-rule); font: 400 13px/1.3 "Source Sans 3", sans-serif; }
+.p6-ah b { font: 600 18px/1.2 "Source Serif 4", serif; } .p6-ah span { color: var(--s-mute); white-space: nowrap; } .p6-ah em { grid-column: 1 / -1; font-style: normal; font-weight: 600; color: var(--s-gold); }
+.p6-why { margin-left: 6px; font: 400 12px "Source Sans 3", sans-serif; color: var(--s-bad); white-space: nowrap; }
+.p6-artwin .st-b.p6-pick { cursor: pointer; padding-left: 8px; padding-right: 6px; } .p6-artwin { padding-top: 2px; } .p6-artwin .st-b.p6-pick.on { box-shadow: inset 3px 0 0 var(--s-gold); background: color-mix(in srgb, var(--s-gold) 9%, transparent); }
+.p6-radio { display: inline-flex; align-items: center; gap: 6px; font: 600 12.5px "Source Sans 3", sans-serif; color: var(--s-ink); } .p6-radio i { width: 11px; height: 11px; border-radius: 50%; box-sizing: border-box; border: 1.5px solid var(--s-mute); } .p6-radio[aria-checked="true"] i { border-color: var(--s-gold); background: radial-gradient(var(--s-gold) 0 3px, transparent 3.5px); }
+
+/* ---- D5. the Minions' picker (the HUD's right end; ../hud3/built.css's scene) ------------------------------------------------------ */
+.mk-scene { position: relative; width: 1500px; padding: 150px 0 6px; box-sizing: border-box; background-color: #54604a; background-image: linear-gradient(rgba(0,0,0,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.16) 1px, transparent 1px); background-size: 50px 50px; }
+.mk-scene .twod12-hud { position: relative; width: 100%; margin: 0; }
+.mk-scene #hotbar .slot { position: relative; box-sizing: border-box; border: 1px solid var(--s-hair); background: rgba(0, 0, 0, .28); color: var(--s-mute); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; }
+.p6-hcrop { width: 480px; overflow: hidden; } .p6-hcrop .mk-scene { margin-left: -1020px; }
+.p6-map { position: absolute; inset: 0 0 auto 0; height: 150px; } .p6-map .tok { position: absolute; width: 48px; height: 48px; box-sizing: border-box; border: 3px solid #c9a24a; background: rgba(201, 162, 74, .22); }
+.p6-map .tok img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; } .p6-map .tok em { position: absolute; left: 50%; top: 100%; transform: translateX(-50%); margin-top: 3px; font: 600 11px "Source Sans 3", sans-serif; font-style: normal; color: #fff; text-shadow: 0 0 3px #000, 0 0 3px #000; white-space: nowrap; }
+.p6-map .tok.lit { border-color: #fff; border-width: 4px; background: rgba(255, 240, 176, .45); }
+.twod12-hud .p6-mp .ts { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 6px; }
+.twod12-hud .p6-tk { all: unset; position: relative; box-sizing: border-box; width: 40px; height: 40px; border: 1px solid var(--s-gold); background: rgba(0, 0, 0, .25); cursor: pointer; }
+.twod12-hud .p6-tk img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.twod12-hud .p6-tk b { position: absolute; right: -1px; bottom: -1px; min-width: 14px; height: 14px; box-sizing: border-box; padding: 0 3px; background: var(--hud-bg); border: 1px solid var(--s-gold); font: 700 11px/12px "Source Sans 3", sans-serif; text-align: center; color: var(--hud-ink); }
+.twod12-hud .p6-tk.hover { outline: 2px solid var(--s-stamp); outline-offset: 0; border-color: var(--s-stamp); }
+.twod12-hud .p6-tip { position: absolute; left: 50%; bottom: calc(100% + 7px); transform: translateX(-50%); padding: 2px 7px; background: #0b0a09; border: 1px solid var(--s-hair); color: #ece3cf; font: 600 12px/1.4 "Source Sans 3", sans-serif; white-space: nowrap; z-index: 4; }

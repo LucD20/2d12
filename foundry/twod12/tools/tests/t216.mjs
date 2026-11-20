@@ -74,7 +74,7 @@ const o = await buildActionCard(oa, { actor });
 console.log("Opportunity Attack:", [...o.matchAll(/<div class="st-l"><b>([^<]*)<\/b>/g)].map(m => m[1]).join(", "), "| no Tier lines:", !/<b>Tier/.test(o), "| its Use alone:", /st-live st-only/.test(o));
 const jd = asItem(load("actions/judge.action.json"));
 const j0 = await buildActionCard(jd, { actor });
-console.log("Judge (two blocks): headers", [...j0.matchAll(/<div class="st-bh"><span>([^<]*)<\/span>/g)].map(m => m[1]).join(", "), "| a Use button in each header:", (j0.match(/<div class="st-bh"><span>[^<]*<\/span><button/g) ?? []).length, "| Special before Effect:", at(j0, "<b>Special</b>") < at(j0, "<b>Effect</b>"));
+console.log("Judge (two blocks): headers", [...j0.matchAll(/<div class="st-bh"><span>([^<]*)<\/span>/g)].map(m => m[1]).join(", "), "| a Use button in each header:", (j0.match(/<div class="st-bh"><span>[^<]*<\/span><span class="ap-vwrap"><button/g) ?? []).length, "| Special before Effect:", at(j0, "<b>Special</b>") < at(j0, "<b>Effect</b>"));
 cbt.flags.twod12.ap = 1;
 const s1 = await buildActionCard(smite, { actor });
 console.log("Smite with 1 AP left: its button struck with the reason:", /data-tooltip="([^"]*)"><button type="button" class="ap-vbtn st-use no"/.exec(s1)?.[1]);

@@ -48,7 +48,7 @@ export async function rollDialogInput(c) {
     // Pack CARD-ONE step 3: the card's lines of this Version, from the card model, in its order (the dialog places its Tier rows among them)
     let card = null;
     try { card = await versionCardLines(item, v0, { actor, weapon: c.previewWeapon ?? null, fists: item.getFlag?.("twod12", "weaponUse") === "fists", setupHtml: parts.setup || null }); } catch (e) { console.warn("twod12 | the card's lines", e); }
-    versions.push({ ap: v.ap, cost: vb.cost, disabled: vb.off, why: vb.why, traits, meta: { ...meta, setup: parts.setup ?? "" }, tiers: parts.tiers, crit: parts.crit, effects: parts.effects, effectsFrom: 2, noTiers: !!v.noTiers, card });
+    versions.push({ ap: v.ap, cost: vb.cost, disabled: vb.off, why: vb.why, traits, meta: { ...meta, setup: parts.setup ?? "" }, tiers: parts.tiers, crit: parts.crit, effects: parts.effects, effectsFrom: 1, noTiers: !!v.noTiers, card });
   }
   // the creatures (several: each its own Defense; one: the target, or the DC of an Action with no target)
   let creatures;
@@ -106,6 +106,8 @@ export async function rollDialogInput(c) {
   c.steps.empowered.forEach((x, k) => chips.push({ id: `syn:emp:${k}`, scope: "shared", row: "damage", kind: "emp", n: 1, inc: false, ...(x.spend ? { spend: x.spend } : {}), label: "Empowered", srcName: x.name, start: "on", tip: `${x.name}: Empowered, the first damage you deal on each of your turns adds 1d6! of the Action's pool and type (Ch. 8)` }));
   // Nonlethal (Ch. 4): switching costs 1 Bane; an Action with the Nonlethal trait switches to Lethal
   if (!c.saveAct) { const nl = it.traits.has("nonlethal"); chips.push({ id: "syn:nl", scope: "shared", row: "banes", kind: "bane", n: 1, special: "nl", label: nl ? "Lethal" : "Nonlethal", start: "off", tip: `Deal ${nl ? "Lethal" : "Nonlethal"} damage instead: 1 Bane on this roll (Ch. 4)` }); }
+  // v0.0.458 (Lucas, 2026-11-19; book Ch. 4): a Save Action doesn't roll, so switching it gives every creature 1 Boon on its Save (actions.mjs adds it to the Save card)
+  else { const nl = it.traits.has("nonlethal"); chips.push({ id: "syn:nl", scope: "shared", row: "damage", kind: "boon", n: 1, special: "nl", label: `${nl ? "Lethal" : "Nonlethal"}: +1 Boon on each Save`, start: "off", tip: `Deal ${nl ? "Lethal" : "Nonlethal"} damage instead: every creature gains 1 Boon on its Save (Ch. 4)` }); }
   // v0.0.411 (pack F3): Shifting Aim's Field Boon, Blade and Bow's Boon (hooks.mjs: what the creature did this turn)
   try { const { strikeHookChipsFor } = await import("./hooks.mjs"); for (const [k, h] of (await strikeHookChipsFor(actor, c.useTraits)).entries()) chips.push({ id: `syn:hook:${k}`, fx: `syn:hook:${k}`, scope: "shared", row: "boons", kind: "boon", n: h.boons, bb: h.field ? "field" : "", label: h.name, start: "on", tip: `${h.name}: ${h.why}` }); } catch (e) { console.warn("twod12 | hook chips", e); }
   // v0.0.409 (pack F2; book, Smite): "you can spend your Reaction AP to roll 1 more Smite die" (off until ticked; paid when the Action is used)
@@ -128,6 +130,7 @@ export async function rollDialogInput(c) {
   const blocked = [];
   const fd = c.opts.free ? null : isFaded(actor, item);
   if (fd?.faded) blocked.push(fd.why);
+  blocked.push(...(c.warns ?? []));   // v0.0.453: what the Action breaks but may still do (a weapon the card doesn't name): a warning, never a stop
   let hideDef = false, designer = false, stats = "all";
   try { hideDef = !game.user.isGM && game.settings.get("twod12", "hideEnemyDefenses") === true; designer = game.settings.get("twod12", "designerMode") === true; stats = game.settings.get("twod12", "rollDialogStats") ?? "all"; } catch (e) { /* settings not ready */ }
   const showStats = stats === "all" || (stats === "gm" && !!game.user?.isGM);

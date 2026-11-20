@@ -1,0 +1,67 @@
+/* The fixes mockup (Lucas on v0.0.441, 2026-11-18): the page, then the proposal's rules, only under .fx-new (nothing in the system changed). */
+.fx-sec { margin-bottom: 40px; } .fx-sec > p { max-width: 1100px; margin: 0 0 12px; line-height: 1.45; opacity: .9; }
+.fx-pair { display: flex; gap: 28px; align-items: flex-start; } .fx-pair h3 { margin: 0 0 6px; }
+.fx-clip { overflow: hidden; } .fx-clip .mk-win { height: auto !important; } .fx-clip .mk-win > .application { height: var(--h) !important; }
+.fx-list { margin: 0 0 12px 18px; padding: 0; max-width: 1100px; line-height: 1.45; } .fx-list li { margin: 2px 0; }
+
+/* 1. The Frequency at a bar's right end: gone under a Frequency's heading (the heading says it); under Reactions, Granted and Escalation the word stays, in ink, no square */
+.fx-new .twod12.sheet.pcs.ps2 .ps2-fq { min-width: 0; color: var(--s-mute); } .fx-new .twod12.sheet.pcs.ps2 .ps2-fq i { display: none; }
+/* 2. Out of combat: the words alone, centered, faded */
+.fx-new .twod12.sheet.pcs.ps2 .ps2-combat.out .fx-out { display: block; text-align: center; color: var(--s-faint); }
+/* 3. The Vigor and Resolve gauges: the click area is the whole gauge (the word, the track and the room around it; the numbers still open the edit),
+      the track 18 px tall to the pointer, drawn 6 px as today */
+.fx-new .twod12.sheet.pcs.ps2 .ps2-gauge { cursor: pointer; padding: 3px 0; margin: -3px 0; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-track { position: relative; height: 18px; margin: -6px 0; background: none; box-shadow: none; align-items: center; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-track::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 6px; background: var(--s-pg-2); box-shadow: inset 0 0 0 1px var(--s-hair); }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-gauge .ps2-track i { position: relative; height: 6px; }
+.fx-hit .ps2-gauge { outline: 1px dashed var(--s-gold); outline-offset: 0; } .fx-hit .ps2-gauge .hpnum { outline: 1px dotted var(--s-mute); }
+/* 4. The Build tab: the cost in ink (an outlined stamp, not filled: it is not a button there), the Frequency a word in ink */
+.fx-new .twod12.sheet.pcs.ps2 .ps-brow .ps-pill { background: none !important; color: var(--s-ink) !important; border: 1px solid var(--s-rule); border-radius: 2px; font-weight: 700; box-shadow: none; min-width: 0; }
+.fx-new .twod12.sheet.pcs.ps2 .ps-brow .ps-pill::before { display: none; } .fx-new .twod12.sheet.pcs.ps2 .ps-brow .ps-bfreq { color: var(--s-mute); }
+/* 5. AP and Strikes: two aligned rows of the same marks (13 px), each with its word; one line each, never wrapping */
+.fx-new .twod12.sheet.pcs.ps2 .ps2-ap { display: grid; grid-template-columns: auto auto; align-items: center; justify-content: start; gap: 5px 8px; white-space: nowrap; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-ap .ps2-pips > .k { display: none; } .fx-new .twod12.sheet.pcs.ps2 .ps2-ap .fx-k { font-weight: 700; color: var(--s-ink); }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-strk { padding: 0 0 0 2px; gap: 8px; } .fx-new .twod12.sheet.pcs.ps2 .ps2-strk i { width: 10px; height: 10px; margin: 2px 0; transform: rotate(45deg); border: 1.5px solid rgb(217, 119, 58); box-sizing: border-box; }
+/* 6. Escalation: the title and its six pips; the rungs one under the other, the number a column; the hooks one line */
+.fx-new .twod12.sheet.pcs.ps2 .ps2-esc { gap: 1px; } .fx-new .twod12.sheet.pcs.ps2 .ps2-rungs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 6px; margin-top: 2px; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-rungs .rung { display: contents; } .fx-new .twod12.sheet.pcs.ps2 .ps2-rungs .rung b, .fx-new .twod12.sheet.pcs.ps2 .ps2-rungs .rung span { font-size: 12.5px; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-rungs .rung b { text-align: right; } .fx-new .twod12.sheet.pcs.ps2 .ps2-rungs .rung:not(.lit) b, .fx-new .twod12.sheet.pcs.ps2 .ps2-rungs .rung:not(.lit) span { color: var(--s-faint); font-weight: 400; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-rungs .rung.lit span { font-weight: 600; color: var(--s-ink); }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-esc > .ps2-q { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-combat { grid-template-columns: minmax(0, 1fr) 168px auto; }
+
+/* ---- round 2 of fixes 5 and 6: compact (Option A, Option B) */
+.fx-new .twod12.sheet.pcs.ps2 .ps2-esc .fx-l1 { display: flex; align-items: center; gap: 8px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-ep { display: inline-flex; gap: 3px; align-items: center; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-ep a { width: 8px; height: 8px; transform: rotate(45deg); border: 1.5px solid var(--s-gold); box-sizing: border-box; margin: 0 1px; cursor: pointer; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-ep a.on { background: var(--s-gold); }
+.fx-new .twod12.sheet.pcs.ps2 .fx-ep a.rg { outline: 1px solid var(--s-gold); outline-offset: 2px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-lit { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-esc .ps2-q { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-ap.fx-apa, .fx-new .twod12.sheet.pcs.ps2 .ps2-ap.fx-apb { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 5px; white-space: nowrap; }
+/* the Strikes as the HUD draws them: slashes, the AP pips' height */
+.fx-new .twod12.sheet.pcs.ps2 .fx-apa .ps2-strk, .fx-new .twod12.sheet.pcs.ps2 .fx-apb .ps2-strk { display: inline-flex; gap: 4px; padding: 0; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apa .ps2-strk i, .fx-new .twod12.sheet.pcs.ps2 .fx-apb .ps2-strk i { width: 4px; height: 13px; transform: skewX(-20deg); border: 1.5px solid rgb(217, 119, 58); box-sizing: border-box; margin: 0 1px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apa .ps2-strk i.on, .fx-new .twod12.sheet.pcs.ps2 .fx-apb .ps2-strk i.on { background: rgb(217, 119, 58); }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apa .ps2-strk { padding-left: 1px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apb .fx-row { display: inline-flex; align-items: center; gap: 6px; } .fx-new .twod12.sheet.pcs.ps2 .fx-apb .ps2-pips { gap: 4px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-sep { display: inline-block; width: 1px; height: 14px; background: var(--s-hair); }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-combat:has(.fx-apa), .fx-new .twod12.sheet.pcs.ps2 .ps2-combat:has(.fx-apb) { grid-template-columns: minmax(0, 1fr) 160px auto; }
+
+/* ---- round 4: the hooks pronounced; Escalation a row of the marks cell */
+.fx-new .twod12.sheet.pcs.ps2 .ps2-combat:has(.fx-apc) { grid-template-columns: minmax(0, 1fr) 160px auto; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-hooks { gap: 3px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-hk { font-size: 12px; font-weight: 600; color: var(--s-mute); }
+.fx-new .twod12.sheet.pcs.ps2 .fx-hl { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-hl b { display: inline-flex; align-items: center; gap: 6px; font-size: 14.5px; font-weight: 700; color: var(--s-ink); white-space: nowrap; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-hl b i { width: 7px; height: 7px; transform: rotate(45deg); background: var(--s-gold); flex: none; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-none { font-size: 13px; color: var(--s-faint); }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-ap.fx-apc { display: grid; grid-template-columns: auto auto; align-items: center; justify-content: start; gap: 6px 8px; white-space: nowrap; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apc .fx-row { display: inline-flex; align-items: center; gap: 6px; } .fx-new .twod12.sheet.pcs.ps2 .fx-apc .ps2-pips { gap: 4px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apc .ps2-strk { display: inline-flex; gap: 4px; padding: 0; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apc .ps2-strk i { width: 4px; height: 13px; transform: skewX(-20deg); border: 1.5px solid rgb(217, 119, 58); box-sizing: border-box; margin: 0 1px; } .fx-new .twod12.sheet.pcs.ps2 .fx-apc .ps2-strk i.on { background: rgb(217, 119, 58); }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apc .fx-n { font-size: 13.5px; margin-left: 2px; } .fx-new .twod12.sheet.pcs.ps2 .fx-apc .fx-ep { gap: 4px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apc .bane { grid-column: 1 / -1; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-hl { flex-wrap: nowrap; gap: 0 10px; overflow: hidden; } .fx-new .twod12.sheet.pcs.ps2 .fx-hl b { font-size: 14px; gap: 5px; }
+.fx-new .twod12.sheet.pcs.ps2 .fx-apc .fx-ep { gap: 6px; } .fx-new .twod12.sheet.pcs.ps2 .fx-apc .fx-ep a.rg { outline-offset: 1.5px; }
+.fx-new .twod12.sheet.pcs.ps2 .ps2-combat:has(.fx-apc) { grid-template-columns: minmax(0, 1fr) 150px auto; }

@@ -40,7 +40,7 @@ import { registerHealthBar } from "./healthbar.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards)
 import { registerInline, handleInline, saveRoll, retargetSave, registerInlineSocket } from "./inline.mjs";
 import { openBuilder } from "./builder.mjs";
-import { CharacterSheet, NpcSheet, NpcStatBlockSheet, TwoD12ItemSheet, registerSheetHooks } from "./sheets.mjs";
+import { CharacterSheet, NpcSheet, TwoD12ItemSheet, registerSheetHooks } from "./sheets.mjs";
 import { registerHandSetting } from "./hands.mjs";
 import { grantClassFeatures } from "./grants.mjs";
 import { classLevelChange } from "./classwindow.mjs";
@@ -215,15 +215,14 @@ Hooks.once("init", () => {
   const { DocumentSheetConfig } = foundry.applications.apps;
   DocumentSheetConfig.registerSheet(Actor, "twod12", CharacterSheet, { types: ["character"], makeDefault: true, label: "2d12 Sheet" });
   DocumentSheetConfig.registerSheet(Actor, "twod12", NpcSheet, { types: ["npc"], makeDefault: true, label: "2d12 NPC Sheet" });
-  // v0.0.375 (PACK STYLE-2): the one-page NPC sheet (a stat block), for experienced GMs; the full sheet stays the default. A world setting picks
-  // which one new NPCs open with; each NPC can switch in Foundry's sheet settings.
-  DocumentSheetConfig.registerSheet(Actor, "twod12", NpcStatBlockSheet, { types: ["npc"], makeDefault: false, label: "2d12 NPC Stat Block (one page)" });
-  game.settings.register("twod12", "npcSheetDefault", { name: "New NPCs open with", hint: "The sheet a new NPC gets: the full NPC sheet, or the one-page stat block (for experienced GMs). Each NPC can switch in its sheet settings.", scope: "world", config: true, type: String, choices: { full: "The full NPC sheet", statblock: "The one-page stat block" }, default: "full" });
-  Hooks.on("preCreateActor", (actor, data) => {
-    try {
-      if (actor.type !== "npc" || data?.flags?.core?.sheetClass || game.settings.get("twod12", "npcSheetDefault") !== "statblock") return;
-      actor.updateSource({ "flags.core.sheetClass": "twod12.NpcStatBlockSheet" });
-    } catch (e) { /* cosmetic */ }
+  // v0.0.441 (pack SHEETS-HUD): the one-page NPC sheet (v0.0.375) and its world setting "New NPCs open with" are retired: the small NPC sheet
+  // replaces it. An NPC still set to it opens the NPC sheet (the GM's client clears the flag once, at ready).
+  Hooks.once("ready", async () => {
+    if (!game.user?.isGM) return;
+    for (const a of game.actors?.contents ?? []) {
+      if (a.getFlag?.("core", "sheetClass") !== "twod12.NpcStatBlockSheet") continue;
+      try { await a.unsetFlag("core", "sheetClass"); } catch (e) { console.warn("twod12 | the retired one-page sheet", a.name, e); }
+    }
   });
   DocumentSheetConfig.registerSheet(Item, "twod12", TwoD12ItemSheet, { types: ["species", "class", "feature", "action", "weapon", "armor", "gear", "effect", "talent"], makeDefault: true, label: "2d12 Item Sheet" });
 
@@ -380,6 +379,29 @@ const NAMES_ITEM = new Set(["Effect", "Use"]);
 Hooks.once("ready", async () => {
   // v0.0.418 (playtest 5, C12): a right-click on a chip opens its rule (a movement, Heal, Guard...) or the item it names
   // v0.0.421 (the audit): caught on the way down and stopped, so Foundry's own chat-message menu (or a sheet row's) doesn't open over the rule
+  // v0.0.454 (Lucas, playtest 6, D2: "Rightclick on apply"): a right-click on a damage row's Apply (or Undo, once applied) opens a small menu,
+  // Apply full / half / double, inside the card so its buttons go through the click handler below (ccApply / ccAdjust with their factor)
+  document.addEventListener("contextmenu", ev => {
+    const b = ev.target.closest?.("[data-ctx][data-row]");
+    if (!b || !b.closest(".cc-card")) return;
+    ev.preventDefault(); ev.stopPropagation();
+    document.querySelectorAll(".cc-ctxmenu").forEach(x => x.remove());
+    const kind = b.dataset.ctx === "adjust" ? "ccAdjust" : "ccApply", row = b.dataset.row;
+    const menu = document.createElement("div");
+    menu.className = "cc-ctxmenu"; menu.setAttribute("role", "menu");
+    menu.innerHTML = [["1", "Apply full"], ["0.5", "Apply half", "rounded up"], ["2", "Apply double"]].map(([f, l, note]) => `<button type="button" role="menuitem" data-twod12="${kind}" data-row="${row}" data-factor="${f}">${l}${note ? ` <small>${note}</small>` : ""}</button>`).join("");
+    // v0.0.460 (Lucas, checklist v0.0.459: "opens ... all the way down and cant be clicked, since its covered by the chat"): the menu floats over
+    // the page at the button (above it when there is no room below); it carries the message's id so its buttons still reach the click handler
+    menu.dataset.messageId = b.closest("[data-message-id]")?.dataset.messageId ?? "";
+    menu.classList.add("floating");
+    document.body.append(menu);
+    menu.addEventListener("click", () => setTimeout(() => menu.remove(), 0));   // a pick closes it (the click handler below has read it)
+    const r = b.getBoundingClientRect(), mh = menu.offsetHeight, mw = menu.offsetWidth;
+    const below = r.bottom + 2 + mh <= window.innerHeight - 8;
+    menu.style.top = `${Math.round(below ? r.bottom + 2 : Math.max(8, r.top - 2 - mh))}px`;
+    menu.style.left = `${Math.round(Math.max(8, Math.min(r.right - mw, window.innerWidth - mw - 8)))}px`;
+    setTimeout(() => document.addEventListener("pointerdown", function away(e) { if (!menu.contains(e.target)) { menu.remove(); document.removeEventListener("pointerdown", away, true); } }, true), 0);
+  }, true);
   document.addEventListener("contextmenu", async ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");
     if (!inl || ["Book", "Pause"].includes(inl.dataset.twod12Inline)) return;
@@ -402,6 +424,9 @@ Hooks.once("ready", async () => {
   });
   document.addEventListener("click", async ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");
+    // v0.0.462 (Lucas, checklist v0.0.459, pushed-button: "Button is not clickable in the chat card"): a diagnostic: a click on a card's Tier line
+    // or rider that holds no button says so in the console, with what is there
+    if (!inl) { const rd = ev.target.closest?.(".cc-rider, .cc-srow, .cc-tier, .cc-out"); if (rd && /Pushed|Pulled|Slid|Reposition/.test(rd.textContent ?? "")) console.warn(`twod12 | pushed-button diagnostic: a click on "${(rd.textContent ?? "").trim().slice(0, 80)}" found no button; its HTML:`, rd.innerHTML.slice(0, 400)); }
     if (inl) {
       ev.preventDefault();
       // v0.0.352 (Lucas, Step 6): the icon uses the chip, the name opens what it names. v0.0.418 (Lucas, playtest 5, C12: "Clicking Heal ... is

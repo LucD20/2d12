@@ -2,7 +2,7 @@
 Vigor 10/20, Resolve 2/10, heal 6: {"bodyLethal":6,"mindLethal":0,"bodyNonlethal":0,"mindNonlethal":0}
 Vigor 4/20, Resolve 6/10, heal 5: {"bodyLethal":1,"mindLethal":4,"bodyNonlethal":0,"mindNonlethal":0}
 more heal than damage: {"bodyLethal":3,"mindLethal":0,"bodyNonlethal":0,"mindNonlethal":1} | nothing to heal: {"bodyLethal":0,"mindLethal":0,"bodyNonlethal":0,"mindNonlethal":0}
-the Rally window's model: Rally | Heal 6, Vigor 8 / 20, Resolve 2 / 10, Rally Points 2 of 3 left after | 6 / 6 Removes 6 damage. | Use 1 Rally Point | over the heal is refused: true
+the Rally window: Krysta heals 6 Rally Points 2 of 3 left Vigor 12 &rarr; 17 / 20 Resolve 8 &rarr; 9 / 10 Split evenly between the two. Change the split Cancel Use 1 Rally Point | two bars: 2 | the split behind its link: true
 the plan caps each bucket and the total: {"bodyLethal":6}
 the effects that can be ended: ["Prone EoT","Harried 1 round"] | any: 1
 --- the chips

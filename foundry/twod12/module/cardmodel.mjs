@@ -102,6 +102,19 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   };
 }
 
+/**
+ * v0.0.441 (pack SHEETS-HUD; Lucas, 2026-11-18, the sheets' "Option 1"): the SHORT card, opened under an Action's bar on a sheet. The bar already
+ * says the cost (its stamps are the Use buttons), the name with its automation diamond, Distance · Vs. and the Frequency, so the short card leaves
+ * out what it would repeat. Pure: what a face drops from the full card (the model decides; actioncard.mjs buildActionCard({ short }) draws it).
+ * A Mode's own Distance and Save stay (the bar shows only the Action's).
+ */
+export const SHORT_CARD = { flavor: false, rankWord: false, distance: false, rollLine: false, yourRoll: false, ruler: false, useButtons: false };
+/** Pure: a card model with the short card's lines left out (the top's Attack / Save line; the grid's Distance). */
+export function shortModel(m) {
+  // the roll line is the only "Attack" / "Save" line written escaped (a card's own lines are enriched)
+  return { ...m, flavor: "", grid: { ...m.grid, distance: "" }, top: m.top.filter(l => !((l.label === "Attack" || l.label === "Save") && l.fmt === "esc")), short: true };
+}
+
 /** Pure: the model's labeled lines in order, one Version's after the top or each block's under its heading ("# 2 AP"): for tests and parity. */
 export function modelLabels(m) {
   const out = m.top.map(l => l.label);

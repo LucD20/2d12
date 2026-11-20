@@ -78,6 +78,9 @@ export async function judgeReductions(actor, from) {
     if (!j || j.uuid === actor.uuid || !isJudgedBy(j, src)) continue;
     if (Number(t.document.disposition) !== Number(me.document.disposition)) continue;   // the judge's ally
     if (tokenDistance(t, me) > 5) continue;
+    // v0.0.463 (Lucas: "Judge damage reduction doesnt respect line of effect"; the book: Line of Effect for every effect): no line from the judge to
+    // the ally, no reduction (and no question)
+    try { const { coverBetween } = await import("./cover.mjs"); if (coverBetween(t, me)?.noLoE) continue; } catch (e) { /* no walls to read: as before */ }
     const seen = j.getFlag?.(F, "judgeRound") ?? "";
     if (key && usedThisCycle(game.combat, j, seen)) continue;   // the first time each round (per the judge's turn-cycle: v0.0.431)
     const by = Math.max(0, Number(j.system?.powerMod) || 0);
