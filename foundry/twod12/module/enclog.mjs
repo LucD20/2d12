@@ -118,7 +118,7 @@ export function turnText(turn, nm, an, { details = false } = {}) {
 /** The whole log in the playtest format, by Round, with the abbreviations used (a legend) first. */
 export function exportText(log, { abbr = {}, short = true, details = false, full = {} } = {}) {
   const used = new Map(), usedAct = new Map();
-  const nm = r => { if (!r) return "?"; const s = short ? (abbr[r.id] ?? r.name) : (full[r.id] ?? r.name); if (short && s !== r.name) used.set(s, r.name); return s; };
+  const nm = r => { if (!r) return "?"; const s = short ? (abbr[r.id] ?? r.name) : (full[r.id] ?? r.name); if (short && s !== r.name) used.set(s, full[r.id] ?? r.name); return s; };   // v0.0.472: the legend names a numbered creature by its number ("GS2 - Goblin Sneak 2")
   // An Action's short name that is also a creature's (Ground Slam and the Goblin Sneaks: GS) stays whole.
   const taken = new Set(Object.values(abbr).flatMap(a => [a, String(a).replace(/\d+$/, "")]));
   const an = n => { let s = short ? actionAbbr(n) || n : n; if (taken.has(s)) s = n; if (short && s !== n) usedAct.set(s, n); return s; };

@@ -33,7 +33,9 @@ export async function pickBar(o) {
   // v0.0.402 (Lucas: "Token isn't selected after the push"): held by id, the token looked up fresh (a placeable has no .scene: the old check
   // was always false), selected again when released, after a pick, when the bar closes, and a moment later (Foundry's own release comes last)
   let held = [];
-  try { held = (globalThis.canvas?.tokens?.controlled ?? []).map(t => t.id); } catch (e) { held = []; }
+  // v0.0.472 (Lucas, checklist v0.0.471: "my selection locked on orc warrior, clicking on the map didnt remove it"): the selection is held only for a
+  // pick made on the map (a token or squares to click); a question with buttons only (Judge's "reduce that damage?") leaves Foundry's selection alone
+  try { held = toks.length ? (globalThis.canvas?.tokens?.controlled ?? []).map(t => t.id) : []; } catch (e) { held = []; }
   const reselect = () => { try { for (const id of held) { const t = canvas.tokens?.get?.(id); if (t && !t.destroyed && !t.controlled) t.control?.({ releaseOthers: false }); } } catch (e) { /* gone */ } };
   // v0.0.401 (Lucas: "Don't deselect the token after push"; in target mode he can't select it again): Foundry releases the tokens on the map
   // click's pointer-up, after the pick: while the bar is up (and a moment after) a held token that is released is controlled again at once

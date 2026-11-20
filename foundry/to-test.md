@@ -33,26 +33,21 @@ differ):
 
 ## Reactions and Judge
 
-### judge-gm-dock · v0.0.471 · Judge's question for the GM: into the Situational tab
-Do: As the GM with no token selected, the Judged Orc Warrior damages an ally near Durgan; read where the question shows; then click Durgan's token.
-Expect: Once Durgan's HUD is up, the question moves into its Situational tab, in the tab's look (not the large bar across the HUD). With no creature selected it may first show in the HUD's middle.
-Rev: 2
+### judge-gm-dock · v0.0.472 · Judge's question for the GM: the selection stays yours
+Do: As the GM, select the Orc Warrior and attack Aveline next to Durgan (Judged Orc); when Judge's question comes, click the empty map, then Durgan's token.
+Expect: The click on the map releases the Orc Warrior as usual; clicking Durgan selects him alone, and the question moves into his HUD's Situational tab.
+Rev: 3
 
 ## Areas, light and Cover
-
-### area-hover · v0.0.471 · The hover card: worked-out damage
-Do: Hover an area with Hazardous Terrain whose damage uses its origin's Modifier (for example a hazard of 2 + Weapon Modifier Pierce), and Aveline's Consecrated Ground.
-Expect: The damage reads as a number and its type in full and in its color ("Hazardous Terrain, 5 Pierce"), not "2 + @origin.wpn Pi"; Consecrated Ground's Guard as a number ("Guard 2 at the start of their turns").
-Rev: 4
 
 ## Ending an encounter and resting
 
 ## The Encounter Log
 
-### log-allies · v0.0.471 · The Encounter Log: To allies and numbered names
-Do: In a fight with two Goblin Sneaks, Sylwen's Volley hits Aveline and both Goblins; open the Encounter Log.
-Expect: Under the log, a "Damage dealt" table with a "To allies" column (Sylwen's damage to Aveline there); the Goblins are "Goblin Sneak 1" and "Goblin Sneak 2" in the log's lines and in the copied text.
-Rev: 2
+### log-allies · v0.0.472 · The Encounter Log: numbered names
+Do: In a fight with two Goblin Sneaks where only one deals damage, and Sylwen's Volley hits Aveline; open the Encounter Log, copy it.
+Expect: The legend reads "GS2 - Goblin Sneak 2" and "GS1 - Goblin Sneak 1"; the damage table and the copy read "Goblin Sneak 2" (not "Goblin Sneak") and "Sylwen" (not "Sylwen (Elf Archer, Quick Shots)"), with Sylwen's damage to Aveline as "to allies".
+Rev: 3
 
 ## Windows
 
