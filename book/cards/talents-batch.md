@@ -47,14 +47,14 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 >
 > | | Tier 1 | Tier 2 | Tier 3 |
 > |---|---|---|---|
-> | **1 AP** | No effect. | No effect. | Grabbed by you. |
-> | **2 AP** | No effect. | Grabbed by you. | Grabbed by you; its next Break Free needs a Body or Instinct Check (the higher) against your Immobilized DC. |
+> | **1 AP** | No effect. | No effect. | Grabbed by you (1 round). |
+> | **2 AP** | No effect. | Grabbed by you (1 round). | Grabbed by you (1 round); its Break Free needs the Check. |
 
 **Notes**
-- **Trip's shape:** a Round Action with a 1 AP and a 2 AP Version, the 1 AP one landing only on a Tier 3.
-- **Break Free already reads a Grab's Check** ("When the card that Grabbed you says so, make a Body or Instinct Check... against the holder's Immobilized DC first": Chapter 6).
-- **Lesson 1 (bosses):** Grabbed costs a held boss 1 AP (Break Free), as Prone costs it the Stand Action: Trip's 2 AP Version also lands on a Tier 2, so this one does too. **The Check is for its next Break Free only** (the audit: Break Free is At-will, so a Check on every attempt could cost a boss its whole turn): a failure costs it 1 AP and keeps the hold, and the attempt after it is free. At most 2 AP, never a lockdown.
-- **The audit's point kept open for Lucas:** section 10 had moved the Talent's Grabbed to a Tier 3 only; as a Basic Action shaped like Trip it is back on the 2 AP Version's Tier 2 (Trip's own Tier 2 is Prone). Say if it should be Tier 3 only.
+- **Trip's shape:** a Round Action with a 1 AP and a 2 AP Version, the 1 AP one landing only on a Tier 3. **The 2 AP Version's Tier 2 stays** (Lucas, 2026-11-20: "Tier 2").
+- **The hold lasts 1 round** (Lucas, 2026-11-20), or less: Chapter 8's Grabbed already ends when it Breaks Free, when the holder lets go, when it leaves the holder's Reach, or when the holder goes Down. "(1 round)" is the only duration the card needs to write.
+- **"Needs the Check"** is the card saying so: Chapter 8 (Grabbed) and Chapter 6 (Break Free) make Break Free a Body or Instinct Check (the higher) against the holder's Immobilized DC only "when the card that grabbed you says so". The earlier "its next Break Free" limit is gone: with a 1-round hold, a boss can lose at most a round's worth of failed attempts, and it can still act where it stands.
+- **Lesson 1 (bosses):** Grabbed costs a held boss 1 AP (Break Free), as Prone costs it the Stand Action, and it never lasts past 1 round.
 
 ---
 
@@ -448,7 +448,7 @@ The whole file, against T1 to T14, the lessons, the rulebook and the class and g
 |---|---|---|
 | **Overwatch** | "Until the start of your next turn" is forbidden (Chapter 2); the name clashes with the old Archer's Overwatch (still in `archer.json` and Foundry, a near twin); Pin Down said "movement is disrupted" (only an Action can be); Silencing Shot lacked the [Subtle] note | **Renamed Covering Shot**; Held Shot lasts 1 round; Pin Down disrupts the Move Action; the [Subtle] note added |
 | **Opportunity Attack** | Cripple's Slowed 1 had no duration, so it lasted the encounter (a boss lockdown on a Tier 3); the Stand trigger didn't fit "stays in the square"; Interpose undefined for an [Area] or many-target Strike; the Paladin's Rebuke not named as a neighbour; the name clashes with the Basic Action still in `basic-actions.json` | Slowed 1 (1 round); the triggering Action disrupted (Move or Stand); Interpose only for a single-target, non-[Area] Strike; Rebuke noted (near, not the same); the name is the known mismatch (the Basic Action left the book on 2026-11-12) |
-| **Grab** | A section 10 fix came back: the 2 AP Version grants Grabbed on a Tier 2; Break Free is At-will, so a Check on each attempt could eat a boss's turn; the Attack line put "the one used to roll" on the wrong side | The Check is for its next Break Free only (at most 2 AP); the Attack line is Trip's; **Tier 2 kept, as Trip's own Tier 2 is Prone: for Lucas** |
+| **Grab** | A section 10 fix came back: the 2 AP Version grants Grabbed on a Tier 2; Break Free is At-will, so a Check on each attempt could eat a boss's turn; the Attack line put "the one used to roll" on the wrong side | The Attack line is Trip's; **Lucas (2026-11-20): Tier 2 kept; the hold lasts 1 round, which replaced the "next Break Free" limit** |
 | **Grab Hold** | One rank with a choice was three Talents under one name, with no word on taking it again; "Prerequisite: none" against the template; Human Shield and Choke had no Passive label; Choke did nothing against a non-Minor enemy; Throw had no Flavor or Distance | Each rank adds one branch (three ranks); the line gone; Passive labels; Choke gives 2 Pressure Banes to anyone else; Throw written as its own card; **whether Throw is the obvious first pick: for Lucas** |
 | **Called Shot** | The hand rested on a Critical (about 4%) against non-Minor enemies; the Modes were lines, not blocks (Structure part 4); the rider didn't follow a semicolon | The hand: Pressed 2 (EoT) against anyone else; each Mode a block; semicolon |
 | **The boss rule's wording** | Spellbreaker's "or its targets' Save DC is 2 lower" repeated magic decision 88 and read as a choice; Banes put on an enemy are Pressure Banes (README); "any other enemy" left out a non-enemy target | "2 Pressure Banes" everywhere; the Save DC clause made a reminder; "any other creature" |
