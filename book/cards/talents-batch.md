@@ -48,12 +48,13 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 > | | Tier 1 | Tier 2 | Tier 3 |
 > |---|---|---|---|
 > | **1 AP** | No effect. | No effect. | Grabbed by you (1 round). |
-> | **2 AP** | No effect. | Grabbed by you (1 round). | Grabbed by you (1 round); its Break Free needs the Check. |
+> | **2 AP** | No effect. | Grabbed by you (1 round). | Grabbed by you (1 round); its Break Free needs a Body or Instinct Check (the higher) against your Immobilized DC: below it, it stays Grabbed. |
 
 **Notes**
 - **Trip's shape:** a Round Action with a 1 AP and a 2 AP Version, the 1 AP one landing only on a Tier 3. **The 2 AP Version's Tier 2 stays** (Lucas, 2026-11-20: "Tier 2").
 - **The hold lasts 1 round** (Lucas, 2026-11-20), or less: Chapter 8's Grabbed already ends when it Breaks Free, when the holder lets go, when it leaves the holder's Reach, or when the holder goes Down. "(1 round)" is the only duration the card needs to write.
-- **"Needs the Check"** is the card saying so: Chapter 8 (Grabbed) and Chapter 6 (Break Free) make Break Free a Body or Instinct Check (the higher) against the holder's Immobilized DC only "when the card that grabbed you says so". The earlier "its next Break Free" limit is gone: with a 1-round hold, a boss can lose at most a round's worth of failed attempts, and it can still act where it stands.
+- **Break Free ends every Grabbed unless the card notes otherwise** (Lucas, 2026-11-20; now Chapter 8 and the Break Free card): the old "when the card that grabbed you says so" is gone, so this Tier 3 writes its Check out in full. The earlier "its next Break Free" limit is gone too: with a 1-round hold, a boss loses at most a round's worth of failed attempts, and it can still act where it stands.
+- **Forced movement of a Grabbed creature** (Chapter 8, Grabbed and Immobilized): only the holder can Force Move or Reposition it, and the holder's own ignores Immobilized; a Push that takes it out of the holder's Reach ends Grabbed. Anyone else's Forced Movement or Reposition of it fails.
 - **Lesson 1 (bosses):** Grabbed costs a held boss 1 AP (Break Free), as Prone costs it the Stand Action, and it never lasts past 1 round.
 
 ---
@@ -282,8 +283,15 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 | Branch | The rank it adds |
 |---|---|
 | **The thrower** | **Throw:** a new Action (below) |
-| **The hostage-taker** | **Human Shield:** **Passive:** when a [Ranged, Strike] Action against you gets a Tier 1 while a creature is Grabbed by you, that creature takes the Strike's Tier 2 damage instead |
+| **The hostage-taker** | **Human Shield:** a new Reaction (below) |
 | **The strangler** | **Choke:** **Passive:** while a Minor enemy is Grabbed by you, it can't use [Incanted] Actions; any other creature Grabbed by you takes 2 Pressure Banes on its [Incanted] Actions |
+
+> **Human Shield** · 1R · Round
+> *You haul them into the blow's path.*
+> **Requirements:** A creature is Grabbed by you, and it isn't a target of the triggering Action.
+> **Interrupt:** A creature would damage you with Blunt, Pierce or Slash damage.
+> **Target:** The creature Grabbed by you.
+> **Effect:** You put it in front of the attack: you and it each take half of that damage (rounded up). Only you suffer the triggering Action's other effects.
 
 > **Throw** · 1 AP · Round · [Body, Strike]
 > *You turn their weight against them and let go at the top of the swing.*
@@ -293,7 +301,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 **Notes**
 - **Each rank a branch** (the audit: one rank with a choice was three Talents under one name, and nothing said whether it could be taken again). A rank is a pick (T12), so the three can be had in any order; Stage gates are placeholders.
-- **Throw may be the obvious first pick** (the audit: an Action against two Passives). Lucas to judge in the review.
+- **Human Shield is a Reaction** (Lucas, 2026-11-20: the passive was "too strong, and weirdly worded"): it halves a Blunt, Pierce or Slash hit, melee or ranged, and the held creature takes the other half. Each applies its own Resistance and Weakness to its half; a hit of another subtype (Fire, Psychic) stays whole on you. That also answers the audit's worry that Throw, the only Action, was the obvious first pick.
 - Human Shield was first Low cover from the held creature, which Chapter 3 already gives. Choke stops [Incanted] Actions only on a Minor enemy (lesson 1); against anyone else it is 2 Pressure Banes while the hold lasts (the audit: a rank must do something against any enemy).
 
 ---
@@ -449,7 +457,7 @@ The whole file, against T1 to T14, the lessons, the rulebook and the class and g
 | **Overwatch** | "Until the start of your next turn" is forbidden (Chapter 2); the name clashes with the old Archer's Overwatch (still in `archer.json` and Foundry, a near twin); Pin Down said "movement is disrupted" (only an Action can be); Silencing Shot lacked the [Subtle] note | **Renamed Covering Shot**; Held Shot lasts 1 round; Pin Down disrupts the Move Action; the [Subtle] note added |
 | **Opportunity Attack** | Cripple's Slowed 1 had no duration, so it lasted the encounter (a boss lockdown on a Tier 3); the Stand trigger didn't fit "stays in the square"; Interpose undefined for an [Area] or many-target Strike; the Paladin's Rebuke not named as a neighbour; the name clashes with the Basic Action still in `basic-actions.json` | Slowed 1 (1 round); the triggering Action disrupted (Move or Stand); Interpose only for a single-target, non-[Area] Strike; Rebuke noted (near, not the same); the name is the known mismatch (the Basic Action left the book on 2026-11-12) |
 | **Grab** | A section 10 fix came back: the 2 AP Version grants Grabbed on a Tier 2; Break Free is At-will, so a Check on each attempt could eat a boss's turn; the Attack line put "the one used to roll" on the wrong side | The Attack line is Trip's; **Lucas (2026-11-20): Tier 2 kept; the hold lasts 1 round, which replaced the "next Break Free" limit** |
-| **Grab Hold** | One rank with a choice was three Talents under one name, with no word on taking it again; "Prerequisite: none" against the template; Human Shield and Choke had no Passive label; Choke did nothing against a non-Minor enemy; Throw had no Flavor or Distance | Each rank adds one branch (three ranks); the line gone; Passive labels; Choke gives 2 Pressure Banes to anyone else; Throw written as its own card; **whether Throw is the obvious first pick: for Lucas** |
+| **Grab Hold** | One rank with a choice was three Talents under one name, with no word on taking it again; "Prerequisite: none" against the template; Human Shield and Choke had no Passive label; Choke did nothing against a non-Minor enemy; Throw had no Flavor or Distance | Each rank adds one branch (three ranks); the line gone; Passive labels; Choke gives 2 Pressure Banes to anyone else; Throw written as its own card; **Lucas (2026-11-20): Human Shield redone as a 1R Reaction (half the damage each)** |
 | **Called Shot** | The hand rested on a Critical (about 4%) against non-Minor enemies; the Modes were lines, not blocks (Structure part 4); the rider didn't follow a semicolon | The hand: Pressed 2 (EoT) against anyone else; each Mode a block; semicolon |
 | **The boss rule's wording** | Spellbreaker's "or its targets' Save DC is 2 lower" repeated magic decision 88 and read as a choice; Banes put on an enemy are Pressure Banes (README); "any other enemy" left out a non-enemy target | "2 Pressure Banes" everywhere; the Save DC clause made a reminder; "any other creature" |
 | **Break the Line** | Overrun's 2 squares were a movement of no kind; Bull Rush's Push from a shared square has no cone; Trample rested on a rare trigger and did nothing to others; passing diagonally between two enemies (Corners) not covered | Overrun is an Advance 2 on the same line; Bull Rush resolves before you enter the square; Trample also pushes anyone else 2; Corners covered |

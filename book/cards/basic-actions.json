@@ -275,7 +275,7 @@
       "frequency": "At-will",
       "requirements": "You are Immobilized.",
       "versions": [
-        { "ap": 1, "effects": "You are no longer Immobilized, and no longer Grabbed if you were. When the card that Grabbed you says so, make a Body or Instinct Check (the higher) against the holder's Immobilized DC first: below it, you stay Grabbed." }
+        { "ap": 1, "effects": "You are no longer Immobilized, and no longer Grabbed if you were, unless the card that Immobilized or Grabbed you notes otherwise." }
       ],
       "foundry": { "basic": "breakFree", "automation": "gold", "img": "icons/svg/net.svg" }
     }
