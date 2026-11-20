@@ -41,7 +41,10 @@ export function pinChatLog(log) {
   // v0.0.453: twice, the second after the browser has laid out what a card's update added (its images, its enriched text); v0.0.460: and once more
   // a little later (dice and enriched links that load after the frame)
   const stick = () => { if (!log.isConnected) return; const box = boxNow(); if (pinned && !atBottom(box)) box.scrollTop = box.scrollHeight; };
-  const stickSoon = () => { stick(); globalThis.requestAnimationFrame?.(() => stick()); setTimeout(stick, 250); };
+  // v0.0.465 (Lucas, checklist v0.0.464: "It works when applying damage, but when rolling damage not yet"): the dice's animation (Dice So Nice)
+  // holds the card back and it grows after it: checked again later, and when the dice are done
+  const stickSoon = () => { stick(); globalThis.requestAnimationFrame?.(() => stick()); for (const ms of [250, 900, 2000, 3500]) setTimeout(stick, ms); };
+  try { globalThis.Hooks?.on?.("diceSoNiceRollComplete", () => stickSoon()); } catch (e) { /* no Dice So Nice */ }
   const ro = new ResizeObserver(stickSoon);
   const watchKids = () => { for (const li of log.children) ro.observe(li); };
   watchKids();

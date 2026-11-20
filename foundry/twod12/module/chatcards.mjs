@@ -250,6 +250,8 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const dpart = din && !inMain ? din.part : "";
   // v0.0.429: an Effect the card writes above the roll is among its top lines (drawn once, there)
   const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 1)) && !(m.card?.top ?? []).some(l => l.label === "Effect") ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
+  // v0.0.465 (Lucas, checklist v0.0.464: "the Special and Flavor entries should be above the rolls"): the card's Special and its Flavor come right
+  // after its lines, before the roll and the damage (they were under them)
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const pf = hide ? playerFoot("Player view · enemy Defenses hidden by the GM") : "";
@@ -257,7 +259,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   if (one) {
     const r = rows[0];
     const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(inMain ? { ...(m.outcomes?.[r.tier] ?? {}), parts: [] } : m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
-    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}${r.uuid ? "" : " notgt"}">${head}${body}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}${r.uuid ? "" : " notgt"}">${head}${flavor}${body}${dpart}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
@@ -311,9 +313,9 @@ export function attackCardHtml(m, view = FULL_VIEW) {
     // the pending rows in several Tiers: one Apply all for the card too, under the groups
     const pendAll = d.rows.filter(r => !r.applied), spread = d.groups.filter(g => (g.rows ?? []).some(i => d.rows[i] && !d.rows[i].applied)).length > 1;
     const allCard = view.author && !view.hideTgt && pendAll.length > 1 && spread ? `<div class="cc-applyall"><button type="button" class="cc-btn primary" data-twod12="ccApplyAll">Apply all</button>${pendAll.some(r => r.choice) ? '<span class="cc-muted">skips rows with a choice</span>' : ""}</div>` : "";
-    return `<div class="cc-card cc-attack many v398">${head}${shared}<div class="cc-groups2">${tgroups}</div>${allCard}${d.note}${effects}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+    return `<div class="cc-card cc-attack many v398">${head}${flavor}${shared}<div class="cc-groups2">${tgroups}</div>${allCard}${d.note}${effects}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
-  return `<div class="cc-card cc-attack many">${head}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${dpart}${flavor}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+  return `<div class="cc-card cc-attack many">${head}${flavor}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${dpart}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Save card */
@@ -375,7 +377,7 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const lines = settled
     ? `${saveHead}<details class="cc-fold"><summary class="cc-foldsum">${cs.map(c => `<span class="cc-foldc">${tierPill(c.result.tier)} ${esc(c.name)}</span>`).join("")}</summary>${topLines}${trig}${body}${after}</details>`
     : `${topLines}${saveHead}${trig}${body}${after}`;
-  return `<div class="cc-card cc-save${one ? "" : " many"}${settled ? " settled" : ""}">${headHtml(m)}${settled ? "" : metaLineHtml(m)}${lines}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${settled ? "" : flavor}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
+  return `<div class="cc-card cc-save${one ? "" : " many"}${settled ? " settled" : ""}">${headHtml(m)}${settled ? "" : metaLineHtml(m)}${lines}${settled ? "" : flavor}${action}${m.dmg ? dmgAsPart(m.dmg, view) : ""}${footHtml(m, view, { damage: "ccSaveDamage", hasDamage: saveDmg, locked: anyRolled })}${des}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Trigger line, the non-roll card (brief sections 12 and 13) */

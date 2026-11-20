@@ -23,7 +23,9 @@ import { tierProbs, bbCount, bbFive, rollState, BB_NAMES, BB_LIMIT } from "./cal
 export const ROWS = [["passives", "Passives"], ["boons", "Boons"], ["banes", "Banes"], ["flat", "Flat"], ["damage", "Damage"]];
 /** A chip's kind: a buff (green outline) or a debuff (red), and its pip. */
 const BUFF = new Set(["boon", "fav", "plus", "emp", "pass"]);
-export const isBuff = c => BUFF.has(c.kind) || (c.special === "reload");
+// v0.0.465 (Lucas, checklist v0.0.464, save-nonlethal: "it shows as something beneficial; it needs to be red outlines because it is bad for the caster"):
+// the Nonlethal switch is drawn as a cost, whatever it does to the targets' Saves
+export const isBuff = c => c.special !== "nl" && (BUFF.has(c.kind) || c.special === "reload");
 /** Where a manual chip goes and how it reads. */
 const MANUAL = {
   boon: { row: "boons", label: n => (n > 1 ? `Situational ×${n}` : "Situational") },

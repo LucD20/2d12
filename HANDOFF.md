@@ -2,7 +2,8 @@
 
 A homebrew tabletop RPG (the "2d12 system") and its Foundry VTT V14 system. Read this file first, then **MASTER-PLAN.md** (the order of all open work).
 
-## Where we are now (v0.0.464, 289 tests; READ THIS FIRST)
+## Where we are now (v0.0.465, 289 tests; READ THIS FIRST)
+- **2026-11-20 (v0.0.465; NOT tested by Lucas): his v0.0.464 report** (15 passed, deleted): the Art card toggles and opens beside its Art, the Save Action's Nonlethal switch as a cost, the chat follows after the dice, the chat card's Special and Flavor above the roll, Empowered picked on the map, Shake Off's Save as a sysCard.
 - **2026-11-20 (v0.0.464): a rule, Lucas: every Reposition stays within the mover's Reach** (book Chapter 3 and the Glossary, the example and its diagram redrawn; Foundry `move.mjs choosePath`).
 - **2026-11-20 (v0.0.463; NOT tested by Lucas): his v0.0.462 report and notes** (Guard to 0 with kept AP, no "Right-click pans", a floating question docks in the HUD, Judge needs Line of Effect, Prone under the asks, chat links as text, the breakdown's reductions and Guard, the zone hover's Guard, Word of Radiance's empty d6 group). Rescue's Reposition: answered and applied in v0.0.464.
 - **2026-11-20 (v0.0.462; NOT tested by Lucas): his v0.0.459 report's new results:** Judge's start-of-encounter row once, the turn log skips a deleted combat, Shake Off finds the targeted Lingering creature, Move back refunds only the last drag, a diagnostic for the Pushed button (unexplained: waits for his console line).

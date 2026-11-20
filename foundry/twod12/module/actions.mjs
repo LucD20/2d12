@@ -1627,9 +1627,11 @@ export async function rollDamage(message, { again = false } = {}) {
         let k = can[0] ?? -1;
         if (can.length > 1) {
           try {
-            const { pickOne } = await import("./pickwindow.mjs");
-            const pick = await pickOne({ title: `${item.name}: Empowered`, name: "Empowered", sub: actor.name, icon: "fa-burst",
-              text: "The Action damages several creatures: choose the one that takes the Empowered 1d6! (Chapter 8).", options: can.map(i => ({ k: String(i), l: `${rows[i].name} (Tier ${rows[i].tier})` })) });
+            // v0.0.465 (Lucas, checklist v0.0.464: "allow selecting on the map"): the map bar (its token or its picture), in the HUD
+            const { pickBar } = await import("./pickbar.mjs");
+            const tokOf = u => { try { const d = fromUuidSync(u); return d?.object ?? d?.getActiveTokens?.()[0] ?? null; } catch (e) { return null; } };
+            const pick = await pickBar({ icon: "fa-burst", cancel: false, text: `<b>Empowered</b>: ${esc(item.name)} damages several creatures. Which one takes the 1d6! (Chapter 8)? Click its token or its picture.`,
+              options: can.map(i => { const t = tokOf(rows[i].uuid); return { id: String(i), label: `${rows[i].name} (Tier ${rows[i].tier})`, token: t ?? undefined, img: t?.document?.texture?.src || "" }; }) });
             if (pick !== null && pick !== undefined && can.includes(Number(pick))) k = Number(pick);
           } catch (e) { console.warn("twod12 | Empowered pick", e); }
         }

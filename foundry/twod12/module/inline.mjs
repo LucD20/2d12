@@ -16,7 +16,7 @@ import { parseAttrs, needsOrigin } from "./condrules.mjs";   // v0.0.314 (pack A
 import { dealDamageEx } from "./damage.mjs";
 import { postDamageCard } from "./dmgcard.mjs";
 import { startTemplate, tokensInEmanation } from "./template.mjs";
-import { sysLine } from "./sysmsg.mjs";
+import { sysCard } from "./sysmsg.mjs";
 import { handleMove, moveDistance } from "./move.mjs";
 import { handleRally } from "./rally.mjs";
 import { gainGuard } from "./guard.mjs";
@@ -766,7 +766,6 @@ async function handleShakeOff(cfg, ctx) {
       const fxm = resolveModifiers(actor, data.fx), manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dcUsed = Number(data.dc) || dc;
       const chk = await performCheck({ mod: actor.system.attributes?.[key] ?? 0, boons: fxm.boons + manB, banes: fxm.banes + manN, dc: dcUsed, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
       expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: chk.rolls, content: `<div class="twod12 chat">${checkHtml(label, chk, [`DC ${dcUsed}`], { showTier: true })}</div>` });
       const what = shakeOffResult(chk.tier);
       // v0.0.426 (the audit: Shake Off on another player's creature failed for lack of permission): the GM ends or flags it when you don't own it
       if (what !== "none") {
@@ -774,7 +773,10 @@ async function handleShakeOff(cfg, ctx) {
         else if (game.users?.activeGM) game.socket.emit("system.twod12", { type: "shakeOff", effectUuid: e.uuid, what });
         else ui.notifications.warn("A GM must be connected to end another player's Lingering.");
       }
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-droplet-slash", `<b>${esc(actor.name)}</b>: ${esc(bleedText(b))} ${what === "ends" ? "ends." : what === "half" ? "takes half its damage at the end of the current turn, then it ends." : "goes on (no effect)."}`) });
+      // v0.0.465 (Lucas, checklist v0.0.464, shake-off-other: "the save on the chat is using a very old style"): one card in the system's look: the Save
+      // and its result as the lead, what happens to the Lingering under it (was the old roll card, then a line)
+      const tierWord = ["", "Tier 1", "Tier 2", "Tier 3"][chk.tier] ?? "";
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), rolls: chk.rolls, content: sysCard({ title: "Shake Off", lead: `<b>${esc(actor.name)}</b>: ${esc(TWOD12.attributes[key])} Save <b>${chk.total}</b> vs DC ${dcUsed}: <b>${tierWord}</b>`, text: `<b>${esc(actor.name)}</b>: ${esc(bleedText(b))} ${what === "ends" ? "ends." : what === "half" ? "takes half its damage at the end of the current turn, then it ends." : "goes on (no effect)."}`, cls: "shakeoff" }) });
     }
   }
 }

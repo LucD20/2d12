@@ -19,116 +19,47 @@ differ):
 
 ## Characters and sheets
 
-### guard-zero · v0.0.463 · Guard down to 0 with kept AP
-Do: Aveline ends her turn with 1 AP kept (it gives Guard); on her sheet, right-click the Guard until it stops.
-Expect: The number goes down to 0 (her own Guard first, then the kept AP's).
-
-
-### pc-symbols · v0.0.460 · The stat symbols on the PC sheet
-Do: Open Aveline's sheet (dark and light).
-Expect: AD, WD, Speed, Reach, Size, Steady and Guard have the same small symbols as the NPC sheet (AD a shield with a dot, WD the talisman); Immune / Resist / Weak theirs; the Attributes none.
-
-### inventory · v0.0.460 · The Inventory's menus close on a second click
-Do: Open Sylwen's Inventory; click the Dagger's Where button, then click it again; same with the Hunting Bow's Where; on her Overview, click a hand tile twice.
-Expect: The second click closes the menu (it no longer flicks open again).
-Rev: 2
-
 ## The HUD
 
-### sit-pictures · v0.0.460 · Pictures in the Situational section
-Do: Start a combat with three Goblin Sneaks set as one squad (Initiative window); when the squad's turn comes, read the HUD's Situational section.
-Expect: The goblins' pictures are small squares (about 34 px) in one wrapping row; the section doesn't fill or need scrolling for them. If what covered the section was something else, send a screenshot.
-
-### setup-squares · v0.0.461 · A Setup's squares left, in the Situational section
-Do: In a combat, Sylwen uses Strafe (the Advance Setup): read the HUD's Situational section, move her token 2 squares, read it again; then Cancel.
-Expect: "Strafe: You Advance. Move your token, then Continue." (no braces), "4 of 6 squares left" on its own line with the number big, updated as she moves; Continue: the roll filled, Cancel the Action quiet, and the key line "Enter Continue · Esc Cancel the Action · Right-click pans the map".
-Rev: 2
-
-### art-card · v0.0.460 · The Art's card: moved, and a Mode used at once
-Do: Aveline clicks Commandment on her HUD; drag the card by its top line; click outside it; click a Mode's "Use · 1 AP"; open it again and Shift-click a Mode's Use.
-Expect: The card moves with the drag and, once moved, stays open on an outside click (the ×, Escape or a Use close it). A plain click uses the Mode straight to the chat (no roll dialog, unless something blocks it, such as no target); Shift-click opens the roll dialog.
-Rev: 2
+### art-card · v0.0.465 · The Art's card: where it opens, a second click
+Do: Aveline clicks Commandment on her HUD; click Commandment again; open it again and right-click Commandment; open it from her sheet.
+Expect: The card opens beside the Art clicked (to its right, its bottom level with it), not high up the window. A second click on the Art closes it (it doesn't reopen); a right-click on it closes it too.
+Rev: 3
 
 ## Starting a combat
 
-### judge-start · v0.0.462 · Judge on the Start of the Encounter card, once
-Do: Put Aveline, Durgan and the Ogre Chieftain in a combat, roll Initiative and start it; Resolve the card.
-Expect: One Judge row for each Paladin (not two), each with its Judge button; Resolve asks each for its target once. No "The Combat … does not exist" error in the console when a combat is deleted mid-movement.
-Rev: 2
-
 ## The roll dialog
-
-### area-place · v0.0.460 · An area Action: Place before the targets
-Do: With the Orc Warrior targeted, Durgan uses Word of Radiance from his HUD (not the sheet): read the dialog; click "Place 2 Emanation" and place it; then use it again and press Roll without placing.
-Expect: From the HUD as from the sheet, the dialog opens first (no area asked before it). No creature rows until the area is placed: a "Place 2 Emanation" button stands where they go, its outline pulsing slowly in bronze. Placed, the creatures in it show. Roll without placing asks to place it, then rolls.
 
 ### warn-dialog · v0.0.460 · Rules broken: warnings in the roll dialog
 Do: As a player (not the GM): Sylwen targets the Orc Warrior behind a wall (all four corners blocked) and uses a Weapon Attack; then a target the GM marked Unsensed; then Quick Shots' second shot at the creature of the first; give her bow Reload and shoot it unloaded.
 Expect: None of them stops the Action: the roll dialog opens with its warning written above the bottom bar, one ruled line with a small red warning icon ("No Line of Effect to Orc Warrior: all four corners are blocked", "… is Unsensed: it can't be targeted (the roll is Doomed)", "… was already a target: the card asks for a different creature", "… is unloaded: Reload it before using it again"), and Roll works.
 Rev: 2
 
-### g2-darting · v0.0.460 · Darting Blade draws its Light weapon
-Do: Sylwen with her Hunting Bow in both hands and her Dagger on her (Inventory: "On you"), no off-hand weapon: use Darting Blade on the Orc Warrior and Roll. Then put the Dagger in her pack (no Light weapon at all) and use it again.
-Expect: With the Dagger on her: the dialog shows the Dagger's Strike (not Fists); on Roll a chat line says "Sylwen draws Dagger, Hunting Bow in one hand (Darting Blade's Setup)", the Dagger is in her off hand and the bow in one hand. With no Light weapon: the roll dialog opens with the warning "Darting Blade needs a light weapon in hand" above its bar (it then rolls with what she holds), and Roll still works.
-Rev: 3
-
-### reload-chip · v0.0.460 · The Reload shot's chip
-Do: Give Sylwen's bow the Reload property (its sheet) and open a Weapon Attack's roll dialog with it; click the "Reload shot" chip on, then off, without clicking anywhere else.
-Expect: No red outline after a click: green when on, dashed and struck through when off. (Pressing Tab still shows a blue focus outline.)
-Rev: 2
-
-### warn-only · v0.0.460 · A Requirement warns in the roll dialog
-Do: On Sylwen's turn, move a square, then use Wounding Shot.
-Expect: No Foundry popup: the roll dialog opens with "Wounding Shot: Sylwen has left its square this turn (its Requirement). Used anyway." written above its bar, and Roll works. (With the HUD's Skip roll dialog on, the popup comes instead.)
-Rev: 2
-
 ## Chat cards
 
-### save-nonlethal · v0.0.460 · A Save Action switched to Nonlethal
-Do: Durgan uses Word of Radiance on two goblins; in the roll dialog's Damage row, turn on "Nonlethal: +1 Boon on each Save", Use; each goblin rolls its Save; apply the damage.
-Expect: The switch is in the Damage row (next to Empowered). No Bane on Durgan. Each goblin's Save dialog starts with 1 Boon more. The damage card says Nonlethal and the damage is applied as Nonlethal.
-Rev: 2
-
-### dmg-ledger · v0.0.460 · Apply's right-click menu
-Do: Durgan Smites the Orc Warrior with the chat scrolled to the bottom (the card the last message); right-click Apply; then, once applied, right-click Undo.
-Expect: The menu (Apply full / Apply half, rounded up / Apply double) floats over the page by the button, above it when there is no room below, never under the chat's input; a click on a line applies it and closes the menu.
-Rev: 2
-
-### chat-follow · v0.0.460 · The chat follows a growing card
-Do: With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior: click Damage, then Apply; then Durgan Smites it (Damage, Apply). Then scroll up a little and click a damage stamp's link to its roll card.
-Expect: At the bottom, the chat follows the card each time it grows (after Damage, after Apply, after the dice): its last line stays in sight. Scrolled up, or after the jump to the roll card, it stays where you are.
+### save-nonlethal · v0.0.465 · A Save Action's Nonlethal switch looks like a cost
+Do: Durgan uses Word of Radiance on two goblins; look at the roll dialog's Damage row; turn the switch on.
+Expect: "Nonlethal: +1 Boon on each Save" has a red outline and a minus mark (a cost, like a Bane), on and off.
 Rev: 3
 
-### empowered-one · v0.0.460 · Empowered with several creatures: you choose
-Do: Give Sylwen Empowered; she uses Volley on three enemies and two or more are hit; click Damage.
-Expect: A window "Empowered" asks which creature takes the Empowered 1d6! (each listed with its Tier); the one picked has its own line on the damage card with the die, the others don't. Closing the window gives it to the first one hit.
-Rev: 2
+### chat-follow · v0.0.465 · The chat follows a card grown by its dice
+Do: With the chat at its bottom (and Dice So Nice on, if you use it), Sylwen makes a Weapon Attack on the Orc Warrior and clicks Damage; then Apply.
+Expect: After the dice land, the card's last line is in sight; after Apply too. The card reads: its lines, its Special and Flavor, then the roll and the damage.
+Rev: 4
+
+### empowered-one · v0.0.465 · Empowered with several creatures: chosen on the map
+Do: Give Sylwen Empowered; she uses Volley on three enemies, two or more hit; click Damage; click one of the hit enemies' tokens on the map.
+Expect: The HUD's Situational tab asks which creature takes the 1d6! (their pictures, and the gold rings on the map); the one clicked takes it, on its own line.
+Rev: 3
 
 ## Conditions and their Tiers
 
-### npc-fists · v0.0.460 · An NPC's Fists on its sheet
-Do: Open the Orc Warrior's sheet, Basic Actions; use its Fists on Aveline.
-Expect: Fists is in the sheet's Basic Actions, as on its HUD; it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. (Weapon Attack, Reload, Regrip and Release stay hidden on an NPC's sheet.)
-Rev: 4
-
-### shake-off-other · v0.0.426 · Shake Off on another player's creature
-Do: As Sylwen's player (not the GM), with the GM connected, use Shake Off on Kaela (another player's character) while she is Lingering, and get a Tier 3.
-Expect: The Lingering ends (no permission error in the console).
-
-### shake-off-ally · v0.0.462 · Shake Off by an ally: it finds the Lingering creature
-Do: On Kaela's turn, with Kaela's token selected and Durgan (Lingering) targeted, she uses Shake Off; get a Tier 2. Then once with nothing targeted, on Kaela herself with a Lingering.
-Expect: Durgan rolls the Save (not "Kaela has no Lingering"); at the end of Kaela's turn he takes half the Lingering's damage ("Halved (Shake Off, Tier 2)"), then it ends; nothing at the end of Durgan's own turn. With nothing targeted, Kaela's own Lingering.
+### shake-off-other · v0.0.465 · Shake Off's Save in the system's look
+Do: On Kaela's turn, she uses Shake Off on Durgan's Lingering (another player's creature).
+Expect: One card titled "Shake Off": "Durgan: Body Save 15 vs DC 13: Tier 2" (his Attribute), then what happens to the Lingering; no old roll card.
 Rev: 2
 
 ## Movement
-
-### map-attention · v0.0.461 · A token that needs you: the ring and its ripple
-Do: The Orc Warrior moves away from Aveline (she can Rebuke); then Durgan uses Rebuke's Pushed on two goblins (the push list); in Configure Settings turn "Map: the attention ripple" off and repeat.
-Expect: Aveline wears a steady gold ring with a slow ripple growing out of it and fading (about every 2.4 s), and a dark plate "Rebuke? / Use or Pass in the HUD". The goblins to pick wear the same ring and ripple with a number (as their pictures in the HUD); the hovered one brighter. With the setting off (or the system's reduced motion): the ring alone, no ripple. The serious look: no glow, no flashing.
-
-### move-range · v0.0.461 · Advance and Evade on the map
-Do: Sylwen Advances (a card's free Advance) in a scene with a Difficult Terrain region and an enemy near; then an Evade (Slip Away); press Escape during each.
-Expect: Where she can stop in pale ink (no blue); Difficult Terrain inside the Advance's area hatched; the Evade's edge dashed, the squares next to it she can't enter hatched red. The HUD's bar shows "N squares left" big, updated as she moves, and a key line; Escape ends the movement (as End movement).
 
 ### forced-move · v0.0.461 · A Forced Movement: one look, Escape, Backspace
 Do: Durgan's Rebuke pushes the Orc Warrior: hover squares, then press Escape. Push it again and click a square into a wall. Then a Slid 3 (any card): click two squares, press Backspace, then right-click and drag the map, then Enter.

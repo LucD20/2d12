@@ -13,8 +13,12 @@ const ONCE = { atwill: "At-will", turn: "Once per turn", round: "Once per round"
 export const artHeadHtml = (name, freq, kind = "Art") => `<div class="ac-top"><b class="ac-name">${esc(name)}</b><span class="ac-kind">${esc(kind || "Art")}${ONCE[freq] ? ` · ${ONCE[freq]}` : ""}</span><span class="ac-ask">Choose a Mode</span></div>`;
 
 /** Opens the Art's card; a Mode's Use button calls pick(mode, ap, { dialog }) (dialog: Shift was held). Returns the card element (or null with no DOM). */
+// v0.0.465 (Lucas, checklist v0.0.464: "clicking it again should close it (right click too)"): the press on what opened it closes it, and that
+// click doesn't open it again; a right-click there closes it too (its menu doesn't open)
+let closedFrom = { item: "", t: 0 };
 export async function openArtCard(actor, item, pick, at = lastEl) {
   if (typeof document === "undefined") return null;
+  if (closedFrom.item && closedFrom.item === item?.uuid && Date.now() - closedFrom.t < 600) { closedFrom = { item: "", t: 0 }; return null; }
   open?.remove();
   const { buildActionCard } = await import("./actioncard.mjs");
   const { effectiveFrequency } = await import("./config.mjs");
@@ -22,17 +26,23 @@ export async function openArtCard(actor, item, pick, at = lastEl) {
   div.className = "twod12-hudcard twod12-artcard";
   div.innerHTML = `<button type="button" class="hc-x" aria-label="Close the card">&times;</button>${artHeadHtml(item.name, effectiveFrequency(item.system), item.system?.category)}${await buildActionCard(item, { actor })}`;
   document.body.append(div);
-  const r = at?.isConnected ? at.getBoundingClientRect() : { left: window.innerWidth / 2 - 180, top: window.innerHeight / 2, right: window.innerWidth / 2 + 180 };
+  const r = at?.isConnected ? at.getBoundingClientRect() : { left: window.innerWidth / 2 - 180, top: window.innerHeight / 2, right: window.innerWidth / 2 + 180, bottom: window.innerHeight / 2 };
   const w = div.offsetWidth, h = div.offsetHeight;
-  // above what was clicked when it fits (the HUD's way), else beside it; always on the screen
-  const above = r.top - h - 8 >= 8;
-  div.style.left = `${Math.max(8, Math.min(above ? r.left : r.right + 8, window.innerWidth - w - 8))}px`;
-  div.style.top = `${Math.max(8, Math.min(above ? r.top - h - 8 : r.top - 20, window.innerHeight - h - 8))}px`;
+  // v0.0.465 (Lucas: "it should first appear next to the action, not all the way up the window"): beside what was clicked (its right, else its
+  // left), its bottom level with it so it grows upward from there; always on the screen
+  const right = r.right + 8 + w <= window.innerWidth - 8;
+  div.style.left = `${Math.max(8, right ? r.right + 8 : r.left - 8 - w)}px`;
+  div.style.top = `${Math.max(8, Math.min((r.bottom ?? r.top) - h, window.innerHeight - h - 8))}px`;
   open = div;
   const close = () => { div.remove(); if (open === div) open = null; document.removeEventListener("pointerdown", away, true); document.removeEventListener("keydown", key, true); };
   // v0.0.460 (Lucas, checklist v0.0.459: "Allow moving that window"): dragged by its top line; once moved it stays until the ×, Escape or a Use
   let moved = false;
-  const away = ev => { if (!moved && !div.contains(ev.target)) close(); };
+  const away = ev => {
+    if (div.contains(ev.target)) return;
+    const onOpener = !!at && (at === ev.target || at.contains?.(ev.target));
+    if (onOpener) { closedFrom = { item: item?.uuid ?? "", t: Date.now() }; if (ev.button === 2) document.addEventListener("contextmenu", e => { e.preventDefault(); e.stopImmediatePropagation(); }, { capture: true, once: true }); return close(); }
+    if (!moved) close();
+  };
   const top = div.querySelector(".ac-top");
   top?.addEventListener("pointerdown", ev => {
     if (ev.button !== 0) return;
