@@ -4,10 +4,10 @@
 
 | # | Talent | For | State |
 |---|---|---|---|
-| 1 | Take Aim | Sylwen (Elf Archer, Quick Shots, Hunting Bow) | Lucas's shape (2026-11-20); priced below; **the anchor (T17): about +6 a turn net, a placeholder** |
-| 2 | Cold Domain (the god's blessing on the weapon; placeholder name) | Aveline (Human Paladin, Smite, Longsword) | written; priced at or above the anchor |
-| 3 | Shared Burden (defending allies; placeholder name) | Durgan (Dwarf Paladin, Lay On Hands, Arming Sword) | written; priced near the anchor |
-| 4 | Ricochet | Kaela (Human Archer, Strafe, Recurve Bow) | written; priced a little above the anchor |
+| 1 | Take Aim | Sylwen (Elf Archer, Quick Shots, Hunting Bow) | revised after the audit: 0 AP, 1 Boon; about +7 a turn (section 6) |
+| 2 | Cold Domain (the god's blessing on the weapon; placeholder name) | Aveline (Human Paladin, Smite, Longsword) | revised after the audit: the Power dice at her real Modifiers; combat only (section 6) |
+| 3 | Shared Burden (defending allies; placeholder name) | Durgan (Dwarf Paladin, Lay On Hands, Arming Sword) | revised after the audit: Bear the Blow 0R (section 6) |
+| 4 | Ricochet | Kaela (Human Archer, Strafe, Recurve Bow) | revised after the audit: 2 squares (section 6) |
 
 ---
 
@@ -16,11 +16,11 @@
 **Lucas (2026-11-20):** "1 ap, you havent left your square; you gain 2 boons on ranged attacks until you leave your square (EoT)."
 
 > **Take Aim** · Talent · Archery · Stage 0
-> **Take Aim** · Round · 1 AP
+> **Take Aim** · Round · 0 AP
 > *You plant your feet, slow your breath, and let the world narrow to the arrowhead.*
 > [Self]
 > **Requirement:** You haven't left your square this turn.
-> **Effect:** Your [Ranged, Strike] Actions gain 2 Boons until the end of your turn (EoT). This ends when you leave your square.
+> **Effect:** Your [Ranged, Strike] Actions gain 1 Boon until the end of your turn (EoT). This ends when you leave your square.
 
 **The price (Sylwen at level 4; Weapon Modifier +2 assumed; Defense 13; 400,000 rolls each):**
 
@@ -60,7 +60,7 @@
 > *Frost runs down the edge, and the cold bites before the steel does; where it lands, the ice rises.*
 > [Divine, Melee, Split, Strike]
 > **Target:** One creature or object
-> **Ice Pillar:** A pillar of ice rises in a square adjacent to the target that holds no creature or object and that you have Line of Effect to (EoE; outside a fight, about a minute). You have one Ice Pillar at a time: raising a new one melts the old one.
+> **Ice Pillar:** A pillar of ice rises in a square adjacent to the target that holds no creature or object and that you have Line of Effect to (EoE). You have one Ice Pillar at a time: raising a new one melts the old one.
 > - It fills its square as a wall does: it blocks movement and Line of Effect through its square, its corners are solid (Chapter 3, Corners), and it gives Cover as a wall does.
 > - Its Defense is your Action DC for that Rime Strike (11 + the Modifier its mode used). Against a Save it gets Tier 1. An Area that covers its square hits it, whoever made the Area.
 > - It breaks when one Action deals it 5 or more damage; less does nothing and doesn't add up. A creature that collides with it (Chapter 3, Collision) deals it the damage the creature takes.
@@ -71,7 +71,7 @@
 >
 > **Power mode** · **Distance:** Reach
 > **Attack:** Power vs. Ward Defense
-> **Tier 1:** 0. **Tier 2:** [V] 2d6! + 1d4! Co; an Ice Pillar. **Tier 3:** [V] 3d8! Co; an Ice Pillar.
+> **Tier 1:** 0. **Tier 2:** [V] 2d6! Co; an Ice Pillar. **Tier 3:** [V] 2d8! + 1d4! Co; an Ice Pillar.
 
 **The averages** (200,000 rolls each): the Longsword at Weapon Modifier +2 is 11.0 on Tier 2 and 15.0 on Tier 3; the Power Mode's 2d6! + 1d4! is 11.0 and 3d8! is 15.0. (The Arming Sword at +2 is 8.0 and 10.0: with a one-handed weapon the Power Mode is the bigger one.)
 
@@ -106,7 +106,7 @@
 > **Target:** One ally you perceive
 > **Effect:** The target is your **Bound Ally** (EoE). If another creature was your Bound Ally, it no longer is. While you have a Bound Ally, you have the Reaction **Bear the Blow**.
 >
-> **Bear the Blow** · Turn · 1R
+> **Bear the Blow** · Turn · 0R
 > *You take the blow on the shoulder they would have taken it on.*
 > **Requirement:** Your Bound Ally is adjacent to you.
 > **Interrupt:** An Action would damage your Bound Ally.
@@ -144,7 +144,7 @@
 > *The arrow skips off one shield and finds the throat behind it.*
 > [Projectile, Ranged, Strike, Weapon]
 > **Distance:** Weapon · **Target:** One creature
-> **Ricochet:** The arrow can bounce to a second creature within 3 squares of the target that the target has Line of Effect to (you don't need Line of Effect to it). It takes half of the damage dealt to the target, before the target's Resistance, Weakness, Immunity and Guard (Chapter 1, Halving and splitting damage), then applies its own; none of the riders. No roll is made against it, and it isn't hit on a Tier: another card's Tier effects (Opening Shot, One More Arrow) don't apply to it.
+> **Ricochet:** The arrow can bounce to a second creature within 2 squares of the target that the target has Line of Effect to (you don't need Line of Effect to it). It takes half of the damage dealt to the target, before the target's Resistance, Weakness, Immunity and Guard (Chapter 1, Halving and splitting damage), then applies its own; none of the riders. No roll is made against it, and it isn't hit on a Tier: another card's Tier effects (Opening Shot, One More Arrow) don't apply to it.
 > **Attack:** Weapon vs. Armor Defense
 > **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]; a ricochet. **Tier 3:** [V] 1[W] + [Mod]; a ricochet.
 
@@ -177,3 +177,19 @@ The 70% is [judgment]. **About +9 a turn: a little above the anchor (+6).** The 
 3. **Shared Burden is below the anchor:** Tireless Vigil works only from Escalation 4, so before that Bear the Blow takes Shield of Faith's Reaction AP; one Action's hit is about 4 to 13 (a Standard's 11.9 is a whole turn), so it moves 2 to 4 a use. **About 0 early in a fight, +2 to +4 late.**
 4. **Ricochet** (about +9 for no condition) is the better pick for Sylwen too (T6: the obvious pick for every bow user).
 5. **Ice Pillar outside a fight:** "about a minute" can be repeated without limit (strike the door again each minute).
+
+---
+
+## 6. Lucas's answers to the audit (2026-11-20), applied to the cards above
+
+"1. A. ... 2. Ok. 3. Ok. 4. Ok. 5. You cant use Actions out of combat right? Isnt that in the rules?"
+
+| # | Card | Now | Price (real level 4 Modifiers: Sylwen Weapon +3, Aveline Weapon +1 / Power +3) |
+|---|---|---|---|
+| 1 | Take Aim | **0 AP, 1 Boon** on her [Ranged, Strike] Actions (EoT), if she hasn't left her square | Her plain turn (Quick Shots, Wounding Shot, a Weapon Attack) deals about 23.0; with 1 Boon about 24.7: **about +7 a turn** (about 7% of a plain turn; over the SIM's normal fight of 3.5 rounds about +25 points, one Weapon Attack a fight) |
+| 2 | Rime Strike | **Power mode: 2d6! Co on Tier 2, 2d8! + 1d4! Co on Tier 3** | Weapon mode (+1, the Longsword) 7.5 a use; Power mode (+3) 7.9: within 5% |
+| 3 | Bear the Blow | **0R** (still Turn) | Its cost is now only not using Shield of Faith on that same Action: **about +3 to +6** [judgment] |
+| 4 | Ricochet | **2 squares** | **about +7** [judgment: fewer second creatures in range] |
+| 5 | Ice Pillar | **combat only** | Lucas's own rule (`items-economy.md` Part 2, item 5, 2026-11-06; not in rules-src yet): "Outside an encounter, effects with a duration in turns or rounds (EoT included), or that last until the end of the encounter, don't work." |
+
+**The anchor (T17) stays +6, a placeholder;** its reading now comes from Take Aim as revised (about +7), not from the 5 AP turn.
