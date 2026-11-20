@@ -19,7 +19,7 @@ for (const m of ["weapon", "power"]) {
 }
 console.log("the original is untouched:", [...ret.system.traits].join(","), ret.system.versions.length, ret.system.distance);
 const acts = fs.readFileSync(ROOT + "module/actions.mjs", "utf8");
-console.log("useAction asks the mode first, then uses the view:", acts.includes('if (item.system.traits?.has?.("split") && !opts.splitMode)') && acts.includes("return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode });"), "| the damage card remembers the mode:", acts.includes('mode: opts.splitMode ?? ""') && acts.includes("(!f.mode || v.mode === f.mode)"), "| the versions editor has a Mode, and a version can cost 0:", "retired in v0.0.415 (pack CL: the Versions editor; the Action sheet edits the Versions)");
+console.log("useAction asks the mode first, then uses the view:", acts.includes('if (item.system.traits?.has?.("split") && !opts.splitMode)') && acts.includes("return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode, _earlyWarns: earlyWarns });"), "| the damage card remembers the mode:", acts.includes('mode: opts.splitMode ?? ""') && acts.includes("(!f.mode || v.mode === f.mode)"), "| the versions editor has a Mode, and a version can cost 0:", "retired in v0.0.415 (pack CL: the Versions editor; the Action sheet edits the Versions)");
 console.log("--- Auras");
 const A = await import(ROOTURL + "module/aura.mjs");
 const tk = (id, x, disposition) => ({ id, x, document: { disposition } });

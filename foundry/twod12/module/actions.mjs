@@ -12,7 +12,7 @@ import { rollSource, rollTraits, saveDcOf } from "./rollsource.mjs";
 import { perceptionOf, perceive, youGain } from "./senses.mjs";
 import { parseArea, TWOD12, poolTag, expandAsText, areaButton, isTalentAction, areaConfigOf, autoChip } from "./config.mjs";
 import { weaponsFor, hasProp, heldFirst } from "./fists.mjs";
-import { handOf, HAND_LABEL, handBanes } from "./loadout.mjs";
+import { handOf, HAND_LABEL, handBanes, weaponWhere, weaponMove } from "./loadout.mjs";
 import { isFists } from "./fists.mjs";   // v0.0.412: the hands' Banes
 import { isEngaged, engagedWith, engagedWithOther } from "./engaged.mjs";
 import { flankingMod } from "./flanking.mjs";
@@ -454,7 +454,10 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.440 (Lucas, checklist: Wounding Shot "only warning, never prevent these unless very necessary"): a Requirement, a Frequency-like rule or a
   // locked Technique warns and the Action goes on; only what can't happen at all (a movement while Immobilized or Prone, a Technique without its
   // weapon in hand) still stops it
-  const warnOnly = msg => { ui.notifications.warn(`${msg} Used anyway.`); return false; };
+  // v0.0.460 (Lucas, checklist v0.0.459, warn-only: "remember we are adding them to the Roll Dialog now"): written in the roll dialog's
+  // warnings (dlgWarns), not a Foundry notification; a use that skips the dialog still gets the notification (below)
+  const earlyWarns = opts._earlyWarns ?? [];
+  const warnOnly = msg => { earlyWarns.push(`${msg} Used anyway.`); return false; };
   // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction AP waits until Staggered ends)
   if (item.system?.reaction && reactionsOff(actor) && warnOnly(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
   // v0.0.412 (book, Wounding Shot): "You haven't left your square this turn": its Requirement, checked on its turn in a combat (hooks.mjs leftThisTurn)
@@ -476,7 +479,7 @@ export async function useAction(actor, item, opts = {}) {
         if (pick !== true && pick !== false) return;
         mode = pick ? "weapon" : "power";
       }
-      return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode });
+      return useAction(actor, splitView(item, mode), { ...opts, splitMode: mode, _earlyWarns: earlyWarns });
     }
   }
   // v0.0.409 (pack F2; book, Reading an Action): an Art has three Modes: the player picks one each time (the pick window), then it is used as that Mode
@@ -487,10 +490,10 @@ export async function useAction(actor, item, opts = {}) {
       if (!mode) {
         // v0.0.454 (Lucas, playtest 6, D4): the Art's card opens by what was clicked (artcard.mjs); a Mode's Use button uses it (was a pick window)
         const { openArtCard } = await import("./artcard.mjs");
-        await openArtCard(actor, item, m => { if (modes.includes(m)) useAction(actor, item, { ...opts, mode: m }); });
+        await openArtCard(actor, item, (m, ap, o = {}) => { if (modes.includes(m)) useAction(actor, item, { ...opts, mode: m, skipDialog: !o.dialog }); });   // v0.0.460: straight to the chat; Shift, the roll dialog
         return;
       }
-      return useAction(actor, modeView(item, mode), { ...opts, splitMode: mode });
+      return useAction(actor, modeView(item, mode), { ...opts, splitMode: mode, _earlyWarns: earlyWarns });
     }
   }
   const s = actor.system, it = item.system;
@@ -587,7 +590,9 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.397 (Lucas: "When using an area action, only ask to place the area after the action has been confirmed in the roll dialog"; the roll dialog
   // brief of 2026-11-07: the Version buttons and the Place Area button are the dialog's): the dialog opens first, its Version buttons choose the
   // size; Roll places the area, then rolls with the dialog's choices (rollwindow.mjs). The HUD's "Skip roll dialog" and a shortcut keep the old order.
-  const deferArea = !!areaSet && !opts.rdState && !opts.skipDialog && opts.quickAp == null && typeof globalThis.__twod12RollDialog !== "function"
+  // v0.0.460 (Lucas, checklist v0.0.459: "Clicking on word of radiance on the token hud places it, then opens the roll dialog"): the HUD passes its
+  // Version as rdState ({ ap }), which turned this off; only a run again after the dialog (restart: the area placed) skips it now
+  const deferArea = !!areaSet && !opts.restart && !opts.skipDialog && opts.quickAp == null && typeof globalThis.__twod12RollDialog !== "function"
     && typeof foundry.applications?.api?.ApplicationV2?.prototype?.render === "function";
   if (!deferArea && areaSet && canvas.ready && canvas.grid?.isSquare && new Set(versions.map(v => `${v.areaSize || areaSet.distance}|${v.areaRounds || areaSet.rounds}`)).size > 1) {
     const { pickBar } = await import("./pickbar.mjs");
@@ -637,8 +642,15 @@ export async function useAction(actor, item, opts = {}) {
   const fitting = weaponsFor(actor, item).filter(w => !needProp || hasProp(w, needProp) || (needProp === "ranged" && hasProp(w, "thrown")));   // a Thrown weapon can be thrown for a [Ranged] Action
   // v0.0.444 (Lucas, group 2): the card's own requirement (Darting Blade: a Light weapon). v0.0.453 (Lucas, playtest 6: "dont prevent it. Shows a
   // warning on the Roll dialog"): with no such weapon in hand, the weapons that fit otherwise stay, and the dialog warns
-  const needsOk = fitting.filter(w => !it.weaponNeeds || !it.traits.has("weapon") || hasProp(w, it.weaponNeeds));
-  const dlgWarns = [];
+  let needsOk = fitting.filter(w => !it.weaponNeeds || !it.traits.has("weapon") || hasProp(w, it.weaponNeeds));
+  // v0.0.460 (Lucas, checklist v0.0.459, g2-darting: "makes the attack with fists"; Darting Blade, Setup: "You draw a Light weapon"): with none
+  // in hand, a fitting one carried on you is the Strike's weapon, drawn when Roll is pressed (setupDraw, below)
+  let setupDraw = null;
+  if (it.weaponNeeds && it.traits.has("weapon") && !linkedW && !needsOk.length) {
+    setupDraw = (actor.itemTypes?.weapon ?? []).find(w => weaponWhere(w) === "worn" && hasProp(w, it.weaponNeeds) && (!needProp || hasProp(w, needProp) || (needProp === "ranged" && hasProp(w, "thrown")))) ?? null;
+    if (setupDraw) needsOk = [setupDraw];
+  }
+  const dlgWarns = [...earlyWarns];   // v0.0.460: the Requirement, Staggered and locked-Technique warnings too
   if (it.weaponNeeds && it.traits.has("weapon") && !linkedW && !needsOk.length && fitting.length) dlgWarns.push(`${item.name} needs ${(TWOD12.weaponNeeds?.[it.weaponNeeds] ?? it.weaponNeeds).toLowerCase()} in hand`);
   const candidates = needsOk.length ? needsOk : fitting;
   if (needProp && !linkedW && !candidates.length) return ui.notifications.warn(`${item.name} needs a wielded ${needProp === "melee" ? "Melee" : "Ranged"} weapon.`);
@@ -833,6 +845,8 @@ export async function useAction(actor, item, opts = {}) {
   const rdUse = !quick
     && (typeof globalThis.__twod12RollDialog === "function" || typeof foundry.applications?.api?.ApplicationV2?.prototype?.render === "function");   // (the tests answer it through __twod12RollDialog)
   let rdData = null;
+  // v0.0.460: with no dialog to show them (a quick 0-cost use, the HUD's Skip roll dialog), the warnings are Foundry's notifications as before
+  if ((!rdUse || (!!opts.skipDialog && !opts.restart)) && dlgWarns.length && !opts.restart) for (const w of dlgWarns) ui.notifications.warn(w);
   if (rdUse) {
     const { rollDialogInput } = await import("./rollinput.mjs"), { askAction } = await import("./rollwindow.mjs");
     const partsFor = async (v, pw = previewWeapon) => {   // v0.0.444: pw, a weapon of the dual columns
@@ -963,6 +977,20 @@ export async function useAction(actor, item, opts = {}) {
 
   let attrKey = null, mod = null, weapon = null, title = "", chip = "";
   if (isWeapon) weapon = await pickWeapon(actor, item, candidates, opts.weaponId);
+  // v0.0.460: the Setup's draw (Darting Blade): the carried Light weapon goes to a free hand; a two-handed grip shifts to one hand to free it
+  if (isWeapon && setupDraw && weapon?.id === setupDraw.id && !setupDraw.system.wielded) {
+    try {
+      const held = (actor.itemTypes?.weapon ?? []).filter(w => w.system.wielded && !isFists(w) && w.id !== setupDraw.id);
+      const used = held.reduce((n, w) => n + ((Number(w.system.hands) || 1) >= 2 ? 2 : 1), 0);
+      const both = held.find(w => (Number(w.system.hands) || 1) >= 2);
+      if (used >= 2 && both) await both.update(weaponMove("1h", "main"));
+      if (used < 2 || both) {
+        const mainTaken = held.some(w => (w.system.hand || "main") === "main");
+        await setupDraw.update(weaponMove("1h", mainTaken || both ? "off" : "main"));
+        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand", `<b>${esc(actor.name)}</b> draws ${esc(setupDraw.name)}${both && used >= 2 ? `, ${esc(both.name)} in one hand` : ""} (${esc(item.name)}'s Setup).`) });
+      }
+    } catch (e) { console.warn("twod12 | Setup draw", e); }
+  }
   if (src.kind) {
     attrKey = src.attrKey; mod = src.mod; title = src.label; chip = `${src.chip} ${sgn(mod)}`;
     if (!attrKey && src.kind !== "attribute" && !["class", "role"].includes(actor.system?.modSource)) ui.notifications.warn(`No ${src.chip}: add a Class to this character.`);
@@ -1593,7 +1621,18 @@ export async function rollDamage(message, { again = false } = {}) {
       // v0.0.426 (the audit; book, Chapter 8, Empowered: "If the Action damages several creatures, you choose which one takes it"): one die, for one
       // creature: the first one hit (its own group, so the others on its Tier don't take it)
       if (empOn && (!again || hadEmp)) {
-        const k = rows.findIndex((r, i) => groups[gOf[i]].comps.some(c => c.kind === "W" || c.kind === "D"));
+        // v0.0.460 (Lucas, checklist v0.0.459: "the creature should be allowed to choose who it applies to"): with two or more creatures hit, a
+        // pick window asks which one takes it (closed: the first hit, as before)
+        const can = rows.map((r, i) => i).filter(i => groups[gOf[i]].comps.some(c => c.kind === "W" || c.kind === "D"));
+        let k = can[0] ?? -1;
+        if (can.length > 1) {
+          try {
+            const { pickOne } = await import("./pickwindow.mjs");
+            const pick = await pickOne({ title: `${item.name}: Empowered`, name: "Empowered", sub: actor.name, icon: "fa-burst",
+              text: "The Action damages several creatures: choose the one that takes the Empowered 1d6! (Chapter 8).", options: can.map(i => ({ k: String(i), l: `${rows[i].name} (Tier ${rows[i].tier})` })) });
+            if (pick !== null && pick !== undefined && can.includes(Number(pick))) k = Number(pick);
+          } catch (e) { console.warn("twod12 | Empowered pick", e); }
+        }
         const g0 = k >= 0 ? groups[gOf[k]] : null, ec = g0 ? await empoweredComponent(g0.comps.find(c => c.kind === "W" || c.kind === "D"), all, { explode: !minorNpc(actor) }) : null;
         if (ec) {
           if (rows.filter(r => r.tier === rows[k].tier).length === 1) g0.comps = [...g0.comps, ec];

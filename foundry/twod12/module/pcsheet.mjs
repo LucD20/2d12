@@ -221,8 +221,8 @@ export async function pcModel(sheet, ctx) {
   const vs = vsDefenses(s.attributes, vsB);
   const defs = {
     main: [
-      { label: "AD", sym: npc ? statSym("ad") : "", value: adNow, cls: cmp(adNow, adRef), tip: `Armor Defense: ${(s.armorParts ?? []).join(" ")}${adNow !== s.armorDC ? ` and bonuses (${adNow})` : ""}. Against Weapon Actions and Fists.` },
-      { label: "WD", sym: npc ? statSym("wd") : "", value: wdNow, cls: cmp(wdNow, wdRef), tip: `Ward Defense: ${(s.wardParts ?? []).join(" ")}${wdNow !== s.wardDC ? ` and bonuses (${wdNow})` : ""}. Against Power Actions.` }
+      { label: "AD", sym: statSym("ad"), value: adNow, cls: cmp(adNow, adRef), tip: `Armor Defense: ${(s.armorParts ?? []).join(" ")}${adNow !== s.armorDC ? ` and bonuses (${adNow})` : ""}. Against Weapon Actions and Fists.` },
+      { label: "WD", sym: statSym("wd"), value: wdNow, cls: cmp(wdNow, wdRef), tip: `Ward Defense: ${(s.wardParts ?? []).join(" ")}${wdNow !== s.wardDC ? ` and bonuses (${wdNow})` : ""}. Against Power Actions.` }
     ],
     vs: [["body", "vs Body"], ["mind", "vs Mind"], ["appeal", "vs Appeal"], ["instinct", "vs Inst."]].map(([k, l]) => ({ label: l, value: vs[k], tip: `Vs. ${TWOD12.attributes[k]}: 12 + your ${TWOD12.attributes[k]} (${sg(s.attributes?.[k] ?? 0)})${vsB[k] ? ` ${sg(vsB[k])} bonus` : ""}.` }))
   };
@@ -230,10 +230,10 @@ export async function pcModel(sheet, ctx) {
   const speedNow = s.moveSpeed ?? s.speed ?? 0, speedRef = s.speed === undefined ? speedNow : applySpeedMods(a, s.speed, { baseOnly: true });
   const steady = steadinessOf(a).total;
   const move = [
-    { label: "Speed", sym: npc ? statSym("speed") : "", value: speedNow, cls: cmp(speedNow, speedRef), tip: `Speed ${speedNow} (from your species and class${speedNow !== speedRef ? `; base ${speedRef}` : ""}${s.exhausted ? `; Exhausted −${s.exhausted}` : ""})` },
-    { label: "Reach", sym: npc ? statSym("reach") : "", value: s.reach ?? 1, tip: "Reach: from your species" },
-    { label: "Size", sym: npc ? statSym("size") : "", value: `${SIZE_SHORT[s.size ?? 3] ?? ""} (${s.size ?? 3})`.trim() /* v0.0.456 (pack SHEETS-HUD's leftover): "Med. (3)" */, tip: `Size ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` },
-    { label: "Steady", sym: npc ? statSym("steady") : "", value: steady, tip: `Steadiness ${steady}: reduces Forced Movement and Reposition against you (you can choose not to apply it)` }
+    { label: "Speed", sym: statSym("speed"), value: speedNow, cls: cmp(speedNow, speedRef), tip: `Speed ${speedNow} (from your species and class${speedNow !== speedRef ? `; base ${speedRef}` : ""}${s.exhausted ? `; Exhausted −${s.exhausted}` : ""})` },
+    { label: "Reach", sym: statSym("reach"), value: s.reach ?? 1, tip: "Reach: from your species" },
+    { label: "Size", sym: statSym("size"), value: `${SIZE_SHORT[s.size ?? 3] ?? ""} (${s.size ?? 3})`.trim() /* v0.0.456 (pack SHEETS-HUD's leftover): "Med. (3)" */, tip: `Size ${s.size ?? 3}: ${SIZE_NAMES[s.size ?? 3] ?? ""}` },
+    { label: "Steady", sym: statSym("steady"), value: steady, tip: `Steadiness ${steady}: reduces Forced Movement and Reposition against you (you can choose not to apply it)` }
   ];
   const dcs = saveDCs({ weapon: s.weaponMod, power: s.powerMod, signature: s.signatureMod });
   const L = TWOD12.attributes;
@@ -382,7 +382,8 @@ export async function pcModel(sheet, ctx) {
   };
   const used2 = new Set();
   // v0.0.291: an NPC has no Weapon Attack, Fists, Reload, Regrip or Release (its Basic attack is its weapon); Charge alone under Attack
-  const NPC_HIDE = new Set(["basicWeaponAttack", "fists", "reload", "regrip", "release"]);
+  // v0.0.460 (Lucas, checklist v0.0.459, npc-fists: "They have fists on the token hud but not in the sheet"): the Fists show, as on the HUD
+  const NPC_HIDE = new Set(["basicWeaponAttack", "reload", "regrip", "release"]);
   if (npc) for (let k = basics.length - 1; k >= 0; k--) if (NPC_HIDE.has(basics[k].getFlag(F, "basic"))) basics.splice(k, 1);
   const basic = TWOD12.basicGroups.map(g => ({ key: g.key, label: g.label, rows: g.names.map(n => basics.find(i => i.name === n)).filter(Boolean).map(i => { used2.add(i.id); return bRow(i); }) })).filter(g => g.rows.length);
   const restB = basics.filter(i => !used2.has(i.id)).map(bRow);
@@ -530,10 +531,10 @@ export async function pcModel(sheet, ctx) {
     npc, builder: npc ? npcBuilderModel(a) : null, loot: npc ? lootRows(a) : null,
     // v0.0.455 (Lucas, group 4): the Inventory tab (was Items) and the NPC's Loot tab, one look (inventory.mjs); the open details are the sheet's
     inventoryHtml: npc ? "" : inventoryHtml(a, { weapons, open: sheet._invOpen ?? new Set() }), lootHtml: npc ? lootHtml(a, { open: sheet._invOpen ?? new Set() }) : "",
-    head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained, guardSym: npc ? statSym("guard") : "",   // v0.0.454: D3
+    head, strip, hands, chips, health, rally, defs, attrs, move, mods, wounds, sections, basic, favRows, tabs, untrained, guardSym: statSym("guard"),   /* v0.0.460 (Lucas, checklist v0.0.459: "Icons should be in the PCs sheet as well") */   // v0.0.454: D3
     effects: { conditions, effects }, weapons: weaponRows, armor: armorRows, build, mastery, upkeep, down,
     // v0.0.333 (PACK RWI): the Damage block under Defenses (Immune / Resist / Weak, every source; hidden with none, but a GM sees + Add)
-    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM }), { line: true, syms: npc ? { Immune: statSym("immune"), Resist: statSym("resist"), Weak: statSym("weak") } : null }); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
+    dmgHtml: (() => { try { return damageBlockHtml(damageBlockModel(creatureDamageLines(a), { gm: !!game.user?.isGM }), { line: true, syms: { Immune: statSym("immune"), Resist: statSym("resist"), Weak: statSym("weak") } }); } catch (e) { console.warn("twod12 | Damage block", e); return ""; } })(),
     modConflict: s.modConflict ? `Both Modifiers wanted the same Attribute: the ${csys?.modPriority === "power" ? "Power" : "Weapon"} Modifier kept it.` : ""
   };
 }

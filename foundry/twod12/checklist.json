@@ -4,28 +4,20 @@
    "name": "Characters and sheets",
    "items": [
     {
-     "id": "build-tab",
-     "v": "v0.0.455",
-     "title": "The Build tab: the Stage, Change level, Species and Class",
-     "do": "Open Aveline's Build tab, dark and light; click Change level, raise it to 2 with +, read the window, Go to level 2 (answer the class window); then Change level back down to 1; with Durgan, raise to 4 to see the Stage change, then back down to 1. Look at a level 3 character's Escalation rows.",
-     "expect": "\"Stage 0\" big at the tab's top with \"Levels 1 to 3 · Stage 1 at level 4\", the 15 levels' ladder under it (the current level ringed in bronze), the Level and \"Change level\" at the right; no number field. The window shows the − / + counter, \"Level 1 → 2\", the Stage, and what level 2 gives (or, going down, what it removes); Go to level N then opens the class window as before. Species and Class are two ruled entries (no thick dark header): the name, Choices (and Swap on a Rest on the Class), then two lines of what each gives, Vigor and Resolve in their colors. The Escalation 4 and 6 abilities read \"Escalation 4\" and \"Escalation 6\", not \"Escalation 3\".",
+     "id": "pc-symbols",
+     "v": "v0.0.460",
+     "title": "The stat symbols on the PC sheet",
+     "do": "Open Aveline's sheet (dark and light).",
+     "expect": "AD, WD, Speed, Reach, Size, Steady and Guard have the same small symbols as the NPC sheet (AD a shield with a dot, WD the talisman); Immune / Resist / Weak theirs; the Attributes none.",
      "rev": 1
     },
     {
      "id": "inventory",
-     "v": "v0.0.455",
-     "title": "The Inventory tab",
-     "do": "Open Sylwen's Inventory tab (was Items), dark and light, in a combat with 1 AP; click the Dagger's name, then its Where button (\"On you\"), draw it; click the Hunting Bow's Where (\"Both hands\"); give her a Rope and click − and +, type a number; right-click the Rope; click Browse compendium; click her Light Armor's Where.",
-     "expect": "Coins and Weight on the first line with \"Generate Weapon · Browse compendium · New Item\"; Weapons (Damage, Mastery, Where), Armor (Defense, Where), Gear (Qty, Weight), each item one ruled line. A click on a name opens its detail under it (properties, range, damage type, the three Tiers, Mastery and the Technique; Send to chat · Edit · Remove), again closes it. The Where button opens the HUD hand tile's menu (with costs, struck when short of AP) for a weapon in hand, the draw / change / drop menu for one on you, the other two places for the armor; a row does what it says. − / + change the quantity; the number still takes typing. The right-click menu has Edit, Send to chat, Remove (no Drop on gear). Browse compendium opens the weapons pack.",
-     "rev": 1
-    },
-    {
-     "id": "size-short",
-     "v": "v0.0.456",
-     "title": "The sheet's Size",
-     "do": "Open Aveline's sheet (the one-page view).",
-     "expect": "The Size reads \"Med. (3)\", not \"Size 3\".",
-     "rev": 1
+     "v": "v0.0.460",
+     "title": "The Inventory's menus close on a second click",
+     "do": "Open Sylwen's Inventory; click the Dagger's Where button, then click it again; same with the Hunting Bow's Where; on her Overview, click a hand tile twice.",
+     "expect": "The second click closes the menu (it no longer flicks open again).",
+     "rev": 2
     },
     {
      "id": "rally-window",
@@ -33,14 +25,6 @@
      "title": "The Rally window and its line",
      "do": "Give Durgan 9 Vigor, 2 Vigor Nonlethal and 6 Resolve damage; click his Rally (sheet or HUD); click \"Change the split\", move a point with − and +, Use. Then use Lay On Hands' \"up to N\" Rally Points on Aveline (an Action that lets her use several), pick 2 on the window's first line, Use; once more and Cancel.",
      "expect": "A 400 px window in the dark table look: \"Durgan heals 9\" (with parts under it when there are bonuses), his Rally Points as marks with \"N of 7 left\", Vigor and Resolve as bars (the healed part hatched, \"12 → 18 / 23\"), \"Split evenly between the two.\" and \"Change the split\", which shows the rows with − and +. Nothing in the chat while the window is open or after Cancel. After Use, one line with the heart: \"Durgan heals 9 · 1 Rally Point, 6 left\", then \"9 Vigor …\", then the parts when there are several. With \"up to N\", the count is the window's first line (no separate \"How many?\" window).",
-     "rev": 1
-    },
-    {
-     "id": "npc-symbols",
-     "v": "v0.0.454",
-     "title": "The NPC sheet's symbols",
-     "do": "Open the Orc Warrior's and the Ogre Chieftain's sheets in the dark and the light interface; give the Orc a Resist and a Weak (its Builder).",
-     "expect": "A small line drawing in the word's color before AD (a shield with a dot), WD (a talisman), Speed (a boot), Reach (a spear), Size, Steady (an anchor), Guard (a buckler), Immune (a barred ring), Resist (a half-filled shield), Weak (a cracked shield); none on the Attribute tiles; nothing moves, the sheet keeps its height. A PC's sheet has none.",
      "rev": 1
     },
     {
@@ -57,6 +41,14 @@
    "name": "The HUD",
    "items": [
     {
+     "id": "sit-pictures",
+     "v": "v0.0.460",
+     "title": "Pictures in the Situational section",
+     "do": "Start a combat with three Goblin Sneaks set as one squad (Initiative window); when the squad's turn comes, read the HUD's Situational section.",
+     "expect": "The goblins' pictures are small squares (about 34 px) in one wrapping row; the section doesn't fill or need scrolling for them. If what covered the section was something else, send a screenshot.",
+     "rev": 1
+    },
+    {
      "id": "setup-squares",
      "v": "v0.0.456",
      "title": "A Setup's squares left, in the Situational section",
@@ -66,11 +58,11 @@
     },
     {
      "id": "art-card",
-     "v": "v0.0.454",
-     "title": "A click on an Art opens its card",
-     "do": "Aveline clicks Commandment's cost on her sheet, then on her HUD; then use Sylwen's Spotter with no AP left.",
-     "expect": "No \"choose a Mode\" window: the Art's card opens beside what was clicked, with a top line (\"Commandment\", \"Paladin Art · Once per round\", \"Choose a Mode\") and each Mode's \"Use · 1 AP\"; a click on one uses that Mode; Escape, the × or a click elsewhere closes it. With no AP left each Use button stays in place, struck and faded, with no reason written beside it; a click still opens the roll dialog, which warns.",
-     "rev": 1
+     "v": "v0.0.460",
+     "title": "The Art's card: moved, and a Mode used at once",
+     "do": "Aveline clicks Commandment on her HUD; drag the card by its top line; click outside it; click a Mode's \"Use · 1 AP\"; open it again and Shift-click a Mode's Use.",
+     "expect": "The card moves with the drag and, once moved, stays open on an outside click (the ×, Escape or a Use close it). A plain click uses the Mode straight to the chat (no roll dialog, unless something blocks it, such as no target); Shift-click opens the roll dialog.",
+     "rev": 2
     },
     {
      "id": "hud-used",
@@ -123,6 +115,14 @@
    "name": "The roll dialog",
    "items": [
     {
+     "id": "area-place",
+     "v": "v0.0.460",
+     "title": "An area Action: Place before the targets",
+     "do": "With the Orc Warrior targeted, Durgan uses Word of Radiance from his HUD (not the sheet): read the dialog; click \"Place 2 Emanation\" and place it; then use it again and press Roll without placing.",
+     "expect": "From the HUD as from the sheet, the dialog opens first (no area asked before it). No creature rows until the area is placed: a \"Place 2 Emanation\" button stands where they go, its outline pulsing slowly in bronze. Placed, the creatures in it show. Roll without placing asks to place it, then rolls.",
+     "rev": 1
+    },
+    {
      "id": "dtype-colors",
      "v": "v0.0.457",
      "title": "Each damage type one color everywhere",
@@ -139,52 +139,36 @@
      "rev": 1
     },
     {
-     "id": "effects-tier1",
-     "v": "v0.0.453",
-     "title": "An Effect line happens on a Tier 1 too",
-     "do": "Sylwen uses Quick Shots on the Orc Warrior and gets a Tier 1 (force it); then Darting Blade with the Dagger, a Tier 1.",
-     "expect": "Each chat card shows its Effect line (not dimmed, no \"Tier 2+\") with its Evade 2 button, and Sylwen can Evade 2. The roll dialog writes \"Effects\" with no \"(T2+)\". The Orc's Club and Overhead Smash still Push only on a Tier 2 or 3.",
-     "rev": 1
-    },
-    {
      "id": "warn-dialog",
-     "v": "v0.0.453",
+     "v": "v0.0.460",
      "title": "Rules broken: warnings in the roll dialog",
      "do": "As a player (not the GM): Sylwen targets the Orc Warrior behind a wall (all four corners blocked) and uses a Weapon Attack; then a target the GM marked Unsensed; then Quick Shots' second shot at the creature of the first; give her bow Reload and shoot it unloaded.",
-     "expect": "None of them stops the Action: each opens the roll dialog with its warning above the bar (\"No Line of Effect to Orc Warrior: all four corners are blocked\", \"… is Unsensed: it can't be targeted (the roll is Doomed)\", \"… was already a target: the card asks for a different creature\", \"… is unloaded: Reload it before using it again\"), and Roll works.",
-     "rev": 1
-    },
-    {
-     "id": "g2-darting",
-     "v": "v0.0.453",
-     "title": "Darting Blade without a Light weapon: a warning",
-     "do": "Sylwen with her Hunting Bow in hand and her Dagger worn: use Darting Blade; then with the Dagger drawn; then put the Dagger in her pack (no Light weapon at all) and use it again; open Darting Blade's item sheet.",
-     "expect": "Its Setup draws a Light weapon; with the Dagger in hand only the Dagger makes the Strike. With no Light weapon the Action is not stopped: the roll dialog opens with the warning \"Darting Blade needs a light weapon in hand\" above its bar, and Roll still works. The item sheet shows \"Weapon needs: A Light weapon\".",
+     "expect": "None of them stops the Action: the roll dialog opens with its warning written above the bottom bar, one ruled line with a small red warning icon (\"No Line of Effect to Orc Warrior: all four corners are blocked\", \"… is Unsensed: it can't be targeted (the roll is Doomed)\", \"… was already a target: the card asks for a different creature\", \"… is unloaded: Reload it before using it again\"), and Roll works.",
      "rev": 2
     },
     {
-     "id": "dice-sources",
-     "v": "v0.0.440",
-     "title": "Where a die comes from",
-     "do": "Sylwen at Escalation 6 uses Quick Shots (her turn's first Strike) and lands a Tier 2; open the damage breakdown. Then give Sylwen Empowered and make a damaging Action; open its breakdown.",
-     "expect": "The roll dialog has the note \"One More Arrow: +1[W] on a Tier that deals [W]\". The breakdown lists a part \"(One More Arrow)\" with its own die, and a part \"(Empowered)\" with its 1d6! (no \"−4 Flat +4 Empowered\").",
-     "rev": 1
+     "id": "g2-darting",
+     "v": "v0.0.460",
+     "title": "Darting Blade draws its Light weapon",
+     "do": "Sylwen with her Hunting Bow in both hands and her Dagger on her (Inventory: \"On you\"), no off-hand weapon: use Darting Blade on the Orc Warrior and Roll. Then put the Dagger in her pack (no Light weapon at all) and use it again.",
+     "expect": "With the Dagger on her: the dialog shows the Dagger's Strike (not Fists); on Roll a chat line says \"Sylwen draws Dagger, Hunting Bow in one hand (Darting Blade's Setup)\", the Dagger is in her off hand and the bow in one hand. With no Light weapon: the roll dialog opens with the warning \"Darting Blade needs a light weapon in hand\" above its bar (it then rolls with what she holds), and Roll still works.",
+     "rev": 3
     },
     {
      "id": "reload-chip",
-     "v": "v0.0.440",
+     "v": "v0.0.460",
      "title": "The Reload shot's chip",
-     "do": "Give Sylwen's bow the Reload property (its sheet) and open a Weapon Attack's roll dialog with it.",
-     "expect": "The \"Reload shot\" chip shows in the Boons row while off (dashed, struck through), green when on. If its outline is still red, send a screenshot.",
-     "rev": 1
+     "do": "Give Sylwen's bow the Reload property (its sheet) and open a Weapon Attack's roll dialog with it; click the \"Reload shot\" chip on, then off, without clicking anywhere else.",
+     "expect": "No red outline after a click: green when on, dashed and struck through when off. (Pressing Tab still shows a blue focus outline.)",
+     "rev": 2
     },
     {
      "id": "warn-only",
-     "v": "v0.0.440",
-     "title": "A Requirement only warns",
+     "v": "v0.0.460",
+     "title": "A Requirement warns in the roll dialog",
      "do": "On Sylwen's turn, move a square, then use Wounding Shot.",
-     "expect": "A warning (\"has left its square this turn (its Requirement). Used anyway.\"), and the Action goes on.",
-     "rev": 1
+     "expect": "No Foundry popup: the roll dialog opens with \"Wounding Shot: Sylwen has left its square this turn (its Requirement). Used anyway.\" written above its bar, and Roll works. (With the HUD's Skip roll dialog on, the popup comes instead.)",
+     "rev": 2
     }
    ]
   },
@@ -192,60 +176,36 @@
    "name": "Chat cards",
    "items": [
     {
-     "id": "dirty-trick-boon",
-     "v": "v0.0.458",
-     "title": "Dirty Trick's Bane and Rally the Tribe's Boon as buttons",
-     "do": "In a combat, the Goblin Sneak uses Dirty Trick on Sylwen and rolls Tier 2 or 3; click \"1 Pressure Bane\" on the card. Then Sylwen moves 2 squares, then rolls Snap Shot. Then the Ogre Chieftain (Escalation 4) targets the Orc Warrior and uses Rally the Tribe; click \"1 Support Boon\"; the Orc Warrior uses a Weapon Attack.",
-     "expect": "Sylwen gets \"1 Pressure Bane on the next Roll\"; moving keeps it; Snap Shot's dialog has the Pressure Bane, and after the roll it is gone (a Save or a Check would spend it too). The Orc Warrior gets \"1 Support Boon on the next Weapon\", it is in its Weapon Attack's dialog, and gone after.",
-     "rev": 1
-    },
-    {
      "id": "save-nonlethal",
-     "v": "v0.0.458",
+     "v": "v0.0.460",
      "title": "A Save Action switched to Nonlethal",
-     "do": "Durgan uses Word of Radiance on two goblins; in the roll dialog, turn on \"Nonlethal: +1 Boon on each Save\", Use; each goblin rolls its Save; apply the damage.",
-     "expect": "No Bane on Durgan. Each goblin's Save dialog starts with 1 Boon more. The damage card says Nonlethal and the damage is applied as Nonlethal.",
-     "rev": 1
-    },
-    {
-     "id": "dmg-ledger",
-     "v": "v0.0.454",
-     "title": "The damage breakdown and Apply's right-click",
-     "do": "Durgan Smites the Orc Warrior (give it Resist 2 Slash and Weak 2 Holy in its Builder, and Guard 2); on the card click the equals button beside Apply; right-click Apply and choose Apply half; then right-click Undo and choose Apply double. Then a Goblin Sneak's Rusty Knife hits Sylwen while Durgan's Shield of Faith reduces it.",
-     "expect": "The equals button opens a ledger under the Orc's row: Vigor: Slash (its dice) 8, Resist Slash −2, Guard −2, Takes 4; Resolve: Holy (its dice) 7, Weak Holy +2, Takes 9; \"Lethal · Full\" under it. No Full / Half / Double buttons: the right-click on Apply opens \"Apply full / Apply half (rounded up) / Apply double\", and on Undo the same to change it. On Sylwen's row the ledger reads \"Shield of Faith −3\" (not \"Guard\"), and Takes 0.",
-     "rev": 1
-    },
-    {
-     "id": "save-fold",
-     "v": "v0.0.440",
-     "title": "The Save card folds after its damage",
-     "do": "Aveline uses Word of Radiance on two enemies; each rolls its Save; apply the damage to both.",
-     "expect": "Once both are applied, the Save's lines fold under one line (each creature's Tier and name, an arrow); a click opens them again. The damage part stays.",
-     "rev": 1
-    },
-    {
-     "id": "chat-follow",
-     "v": "v0.0.453",
-     "title": "The chat follows a growing card",
-     "do": "With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior: click Damage, then Apply. Then scroll up a little and click a damage stamp's link to its roll card.",
-     "expect": "At the bottom, the chat follows the card each time it grows (after Damage, after Apply): its last line stays in sight. Scrolled up, or after the jump to the roll card, it stays where you are.",
+     "do": "Durgan uses Word of Radiance on two goblins; in the roll dialog's Damage row, turn on \"Nonlethal: +1 Boon on each Save\", Use; each goblin rolls its Save; apply the damage.",
+     "expect": "The switch is in the Damage row (next to Empowered). No Bane on Durgan. Each goblin's Save dialog starts with 1 Boon more. The damage card says Nonlethal and the damage is applied as Nonlethal.",
      "rev": 2
     },
     {
-     "id": "empowered-one",
-     "v": "v0.0.426",
-     "title": "Empowered with several creatures",
-     "do": "Give Sylwen Empowered; she uses Volley on three enemies (two on the same Tier).",
-     "expect": "One Empowered 1d6! is rolled, and only one creature (the first hit) takes it: it has its own line on the card.",
-     "rev": 1
+     "id": "dmg-ledger",
+     "v": "v0.0.460",
+     "title": "Apply's right-click menu",
+     "do": "Durgan Smites the Orc Warrior with the chat scrolled to the bottom (the card the last message); right-click Apply; then, once applied, right-click Undo.",
+     "expect": "The menu (Apply full / Apply half, rounded up / Apply double) floats over the page by the button, above it when there is no room below, never under the chat's input; a click on a line applies it and closes the menu.",
+     "rev": 2
     },
     {
-     "id": "save-effect-words",
-     "v": "v0.0.430",
-     "title": "A self-running Effect on the Save card",
-     "do": "Aveline (level 3, Escalation 6) uses Reckoning on two enemies.",
-     "expect": "They are pushed once on use; the Save card's \"Effect: Each target is Pushed 2.\" is words (no button to push again).",
-     "rev": 1
+     "id": "chat-follow",
+     "v": "v0.0.460",
+     "title": "The chat follows a growing card",
+     "do": "With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior: click Damage, then Apply; then Durgan Smites it (Damage, Apply). Then scroll up a little and click a damage stamp's link to its roll card.",
+     "expect": "At the bottom, the chat follows the card each time it grows (after Damage, after Apply, after the dice): its last line stays in sight. Scrolled up, or after the jump to the roll card, it stays where you are.",
+     "rev": 3
+    },
+    {
+     "id": "empowered-one",
+     "v": "v0.0.460",
+     "title": "Empowered with several creatures: you choose",
+     "do": "Give Sylwen Empowered; she uses Volley on three enemies and two or more are hit; click Damage.",
+     "expect": "A window \"Empowered\" asks which creature takes the Empowered 1d6! (each listed with its Tier); the one picked has its own line on the damage card with the die, the others don't. Closing the window gives it to the first one hit.",
+     "rev": 2
     }
    ]
   },
@@ -253,44 +213,12 @@
    "name": "Conditions and their Tiers",
    "items": [
     {
-     "id": "reckoning",
-     "v": "v0.0.440",
-     "title": "Reckoning",
-     "do": "Aveline (level 3, Escalation 6) uses Reckoning on several enemies.",
-     "expect": "Its Save card is in the chat first (the new look, the Roll buttons), then each enemy is pushed (Push 2, one at a time); only those who roll Tier 1 or 2 are Frightened (none before its Save).",
-     "rev": 2
-    },
-    {
-     "id": "seizing-cut",
-     "v": "v0.0.440",
-     "title": "Seizing Cut's Slide, then Grabbed",
-     "do": "Durgan (Arming Sword, one hand free) uses Seizing Cut on the Orc Warrior; land a Tier 3 (the GM can click Tier 3 in the roll dialog), then click Apply on the damage. Then land a Tier 1. Then left-click a condition on any card, and right-click it.",
-     "expect": "Tier 3: when the damage is applied, the Slide 1 starts by itself (place the Orc), then the Orc is Grabbed. Tier 1: the Reposition 1 starts on use. A left click on a condition applies it to the targeted or selected token; a right-click opens its rule.",
-     "rev": 2
-    },
-    {
-     "id": "shake-off",
-     "v": "v0.0.440",
-     "title": "Shake Off",
-     "do": "Sylwen lands Wounding Shot on the Orc (Lingering); the GM uses the Orc's Shake Off; get each Tier once, one of them on a Lingering whose damage rolls 1.",
-     "expect": "A Save card. Tier 3: it ends. Tier 2: the next end-of-turn card is halved, rounded up (1 stays 1, 7 becomes 4; \"Halved (Shake Off, Tier 2)\"), then it ends. Tier 1: a line says it goes on.",
-     "rev": 2
-    },
-    {
-     "id": "species-class-card",
-     "v": "v0.0.439",
-     "title": "Species and Class cards",
-     "do": "Make a new character and open the class window: look at the Paladin and a Species; on Aveline's sheet expand the Class and Species rows; send the Paladin class to the chat.",
-     "expect": "The same card look as a Feature: the name with \"Class\" (or \"Species\") on the right, the Flavor, the text as plain prose; nothing broken or empty that showed before. Using an Action still opens the roll dialog with its card (nothing changed there).",
-     "rev": 1
-    },
-    {
      "id": "npc-fists",
-     "v": "v0.0.441",
-     "title": "An NPC's Fists",
-     "do": "Open the Orc Warrior's HUD, Basic tab, and its sheet's Basic Actions; use its Fists on Aveline.",
-     "expect": "Fists is in the Basic tab's Attack column (every Basic Action shows, in four groups); it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. The GM uses it only when the Orc has lost its cleaver.",
-     "rev": 3
+     "v": "v0.0.460",
+     "title": "An NPC's Fists on its sheet",
+     "do": "Open the Orc Warrior's sheet, Basic Actions; use its Fists on Aveline.",
+     "expect": "Fists is in the sheet's Basic Actions, as on its HUD; it rolls the Orc's Weapon Modifier and deals 1[W] (the Fists' die) plus its Weapon Modifier on Tiers 2 and 3. (Weapon Attack, Reload, Regrip and Release stay hidden on an NPC's sheet.)",
+     "rev": 4
     },
     {
      "id": "shake-off-other",
@@ -314,20 +242,12 @@
    "name": "Movement",
    "items": [
     {
-     "id": "blinded-difficult",
-     "v": "v0.0.459",
-     "title": "A Blinded creature: every square Difficult Terrain",
-     "do": "In a lit scene, put Blinded on Garrick and drag him 3 squares with the ruler; then Advance; then take Blinded off and do the same.",
-     "expect": "Blinded, the ruler counts each square 2 (3 squares cost 6) and the Advance pays double; without Blinded, the normal cost.",
-     "rev": 1
-    },
-    {
      "id": "charge-new",
-     "v": "v0.0.453",
-     "title": "Charge: another target, never on a creature, in the HUD",
-     "do": "In a combat, Durgan targets the Goblin Sneak and uses Charge; while the Charge line is shown, click the Orc Warrior's token; then a Charge whose line would end on Aveline's space; then click \"Weapon Attack (1A, 1 Boon)\" on the Charge card, on its name.",
-     "expect": "The Charge bar asks in the HUD's Situational tab (the tab opens by itself). The click on the Orc makes it the Charge's target (the line goes toward it; the bar names it); clicking an ally does nothing. A line that would end in a creature's space stops on the last free square before it. The chip's name uses the Weapon Attack (no item sheet).",
-     "rev": 1
+     "v": "v0.0.460",
+     "title": "Charge: a right-click doesn't cancel",
+     "do": "In a combat, Durgan targets the Goblin Sneak and uses Charge; while the Charge line is shown, right-click and drag the map; then press Escape.",
+     "expect": "The right-click only pans the map: the Charge stays. Escape (or the HUD's Cancel) ends it. (The Charge's map feedback waits for the map notes' redesign.)",
+     "rev": 2
     },
     {
      "id": "rewind-refund",
@@ -339,11 +259,11 @@
     },
     {
      "id": "large-difficult",
-     "v": "v0.0.453",
-     "title": "A Large creature passing creatures pays Difficult Terrain",
-     "do": "Move the Ogre Chieftain (Large) past the Orc Warrior so that only the edge of its space crosses the Orc's square (not its center), with an enemy of the Ogre there; watch the ruler while dragging.",
-     "expect": "Every square of the Ogre's movement in which its space overlaps an unwilling creature's square costs double (the ruler's number), not only when its center crosses it; an ally's square costs nothing extra.",
-     "rev": 1
+     "v": "v0.0.460",
+     "title": "A Large creature passing a creature: each step pays",
+     "do": "Move Durgan as a Large token (2 × 2) straight past the Goblin Sneak so his space slides along its square for two steps; watch the ruler's label while dragging, then drop.",
+     "expect": "Each step in which his space covers the Goblin's square costs 1 more: two steps alongside read \"(+2)\" (4 squares for 2), not \"(+1)\"; an ally's square costs nothing extra.",
+     "rev": 2
     },
     {
      "id": "pushed-button",
@@ -372,22 +292,6 @@
      "title": "Judge's question in the Situational section",
      "do": "Durgan Judges the Orc Warrior; the Orc hits Sylwen within 5 squares of Durgan. As Durgan's player, look at his HUD.",
      "expect": "The question \"Reduce that damage by 1?\" is in the Situational section with Not now and Reduce by 1 only (no third Cancel button); Escape still closes it.",
-     "rev": 1
-    },
-    {
-     "id": "avenge-kin",
-     "v": "v0.0.440",
-     "title": "Avenge Kin offers itself",
-     "do": "Delete the Orcs on the scene and drag two fresh Orc Warriors from the compendium, next to each other. Aveline hits one of them with a Strike that deals damage (apply it).",
-     "expect": "The Reactions message offers the other Orc's Avenge Kin (its trigger: an ally within 2 squares takes damage from a [Strike] Action), aimed at Aveline (the attacker).",
-     "rev": 2
-    },
-    {
-     "id": "judge-question",
-     "v": "v0.0.421",
-     "title": "Judge's reduction is a question",
-     "do": "Aveline Judges the Orc Warrior; the Orc damages Sylwen within 5 squares of Aveline. Answer \"Not now\"; then it hits Sylwen again the same round: answer \"Reduce by N\".",
-     "expect": "The Paladin's player is asked on the bottom bar. \"Not now\" reduces nothing and keeps the round's use; the second hit asks again and is reduced. Unanswered for 2 minutes counts as \"Not now\".",
      "rev": 1
     },
     {
@@ -431,22 +335,6 @@
      "rev": 1
     },
     {
-     "id": "passives",
-     "v": "v0.0.409",
-     "title": "The Paladin's passives",
-     "do": "Durgan at Escalation 2 uses a [Divine] Reaction (Armor of Faith: Shield of Faith); Aveline at Escalation 2 uses Judge's 1 AP (Roving Judgment); Durgan reaches Escalation 4 and 6.",
-     "expect": "Guard 1 + Pow, or Judge's 1 AP costs 0; at 4, two Reaction AP (Tireless Vigil); at 6, a [Divine] Action's card shows \"Setup: You Advance 3\" (Hallowed Stance).",
-     "rev": 1
-    },
-    {
-     "id": "rebuke-far",
-     "v": "v0.0.426",
-     "title": "Rebuke when the enemy runs far",
-     "do": "An Orc adjacent to Aveline (with Rebuke) Advances 6 squares away from her.",
-     "expect": "The Reactions message offers Rebuke (it is measured on the squares it left, not where it stopped).",
-     "rev": 1
-    },
-    {
      "id": "shield-not-ally",
      "v": "v0.0.426",
      "title": "Shield of Faith not against an ally",
@@ -484,14 +372,6 @@
    "name": "Areas, light and Cover",
    "items": [
     {
-     "id": "cover-lines",
-     "v": "v0.0.453",
-     "title": "The cover lines as they count",
-     "do": "Turn on Sylwen's Line of Effect button and target the Orc Warrior with Kaela standing so that one corner line crosses her square but the center line doesn't; then move Kaela onto the center line; then put a wall on two corners.",
-     "expect": "The four corner lines are thin and dashed (faint green when clear, red when a wall blocks them); the center line is solid and stronger (pale when clear; red-orange with a ring around Kaela when she is on it). The label reads \"No cover: walls block 0 of 4 corners, no creature on the center line\", then \"Low cover: … Kaela on the center line\", then \"Medium cover: walls block 2 of 4 corners …\".",
-     "rev": 1
-    },
-    {
      "id": "area-hover",
      "v": "v0.0.422",
      "title": "The hover card over an area",
@@ -516,14 +396,6 @@
      "rev": 1
     },
     {
-     "id": "senses-light",
-     "v": "v0.0.410",
-     "title": "Dim and Bright light on a roll",
-     "do": "Sylwen attacks with her and the enemy both in Dim light; her in Bright and the enemy in Dim; the enemy in Bright and her in Dim.",
-     "expect": "Both Dim: 1 Field Bane, no Boon. You Bright, it Dim: 1 Field Bane, no Boon. It Bright, you Dim: 1 Field Boon.",
-     "rev": 1
-    },
-    {
      "id": "clear-lines",
      "v": "v0.0.411",
      "title": "Clear Lines and Opening Shot",
@@ -540,14 +412,6 @@
      "rev": 1
     },
     {
-     "id": "volley-range",
-     "v": "v0.0.427",
-     "title": "Volley's Burst within the bow's normal range",
-     "do": "Sylwen places Volley's and Covering Fire's Burst beyond her bow's normal range.",
-     "expect": "The placement is limited to the weapon's normal range (the cards read \"Distance: Weapon (Normal range)\").",
-     "rev": 2
-    },
-    {
      "id": "ht-once",
      "v": "v0.0.431",
      "title": "Hazardous Terrain once per turn-cycle",
@@ -560,14 +424,6 @@
   {
    "name": "Ending an encounter and resting",
    "items": [
-    {
-     "id": "loot-tab",
-     "v": "v0.0.455",
-     "title": "The NPC's Loot tab and Give",
-     "do": "Give the Orc Warrior a stack of 14 Coins (gear) and a Bone Charm; open its Loot tab; click Give… on the Coins, set How many to 5, pick Sylwen; then Give… on the Bone Charm.",
-     "expect": "The Inventory's lines (the name, a muted note, − n + on gear, Give… outlined), \"Browse compendium · New Item\" on top, the note in muted italics. Give… on the Coins asks How many first (− / +, the whole stack by default): 5 go to Sylwen, 9 stay, and the chat says \"Sylwen takes 5 Coins from Orc Warrior (9 left)\". A single item goes at one click on the PC.",
-     "rev": 1
-    },
     {
      "id": "thrill-wrath",
      "v": "v0.0.411",
@@ -595,27 +451,6 @@
      "title": "Damage to allies and numbered names",
      "do": "In a fight with two Goblin Sneaks, Sylwen's Volley hits Aveline and the Goblins; open the Encounter Log.",
      "expect": "The damage table has a \"To allies\" column (damage to itself counts there); the Goblins are \"Goblin Sneak 1\" and \"Goblin Sneak 2\" in the window and in the copied text.",
-     "rev": 1
-    },
-    {
-     "id": "log-struck",
-     "v": "v0.0.421",
-     "title": "A struck line's reason",
-     "do": "Hover a struck line in the Encounter Log.",
-     "expect": "Its reason shows (one of the few hovers left).",
-     "rev": 1
-    }
-   ]
-  },
-  {
-   "name": "Windows",
-   "items": [
-    {
-     "id": "pick-windows",
-     "v": "v0.0.415",
-     "title": "Every question is a pick window",
-     "do": "With Aveline and Sylwen, meet a few of these: a Split Action's mode, a Strike out of your turn, a fourth Strike, Shift+E, the GM's \"movement left\", swap initiative, not enough AP, End Combat with a creature Dying, an Action with both hands full, Regrip, Reload, waking an Unconscious creature.",
-     "expect": "Each opens in the class window's style (no Foundry dialog) and Cancel closes it doing nothing.",
      "rev": 1
     }
    ]

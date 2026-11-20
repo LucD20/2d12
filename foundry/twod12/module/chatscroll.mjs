@@ -24,19 +24,24 @@ export function scrollBoxOf(log) {
 export function pinChatLog(log) {
   if (!log || watched.has(log) || typeof ResizeObserver === "undefined") return;
   watched.add(log); logs.add(log);
-  const box = scrollBoxOf(log);
-  let pinned = atBottom(box), userAt = 0;
-  // v0.0.418 (Lucas, playtest 5, C1: after Damage the card grew and the chat didn't follow): a card redrawn is removed and put back, and the scroll
-  // the browser makes then (the log clamped) unpinned it. Only the user's own scrolling (the wheel, a touch, a key, the scrollbar) unpins it now;
-  // reaching the bottom pins it again.
+  // v0.0.460 (Lucas, checklist v0.0.459: "Still didnt do it after applying most damages and rolling damage dice"): the scroll box was found once,
+  // when the log was drawn, and a log not yet in the page has no scrolling parent: it fell back to the log, which never scrolls. Now it is found
+  // each time it is needed (cached once the log is in the page), and the listeners sit on the document, so a box found later is still heard.
+  let cached = null;
+  const boxNow = () => { if (cached && cached.isConnected && cached.contains(log)) return cached; const b = scrollBoxOf(log); if (log.isConnected && b !== log) cached = b; return b; };
+  let pinned = true, userAt = 0;
+  // v0.0.418 (Lucas, playtest 5, C1): a card redrawn is removed and put back, and the scroll the browser makes then (the log clamped) unpinned it.
+  // Only the user's own scrolling (the wheel, a touch, a key, the scrollbar) unpins it now; reaching the bottom pins it again.
   const mark = () => { userAt = Date.now(); };
-  for (const ev of ["wheel", "touchmove", "keydown"]) box.addEventListener(ev, mark, { passive: true });
-  box.addEventListener("pointerdown", ev => { if (ev.target === box) mark(); }, { passive: true });
+  const opts = { capture: true, passive: true };
+  for (const ev of ["wheel", "touchmove", "keydown"]) document.addEventListener(ev, e => { if (log.isConnected && boxNow().contains(e.target)) mark(); }, opts);
+  document.addEventListener("pointerdown", e => { if (log.isConnected && e.target === boxNow()) mark(); }, opts);
   log.addEventListener("twod12-release", () => { mark(); pinned = false; });
-  box.addEventListener("scroll", () => { pinned = scrollPinned(pinned, atBottom(box), Date.now() - userAt < 600); }, { passive: true });
-  // v0.0.453: twice, the second after the browser has laid out what a card's update added (its images, its enriched text)
-  const stick = () => { if (pinned && !atBottom(box)) box.scrollTop = box.scrollHeight; };
-  const stickSoon = () => { stick(); globalThis.requestAnimationFrame?.(() => stick()); };
+  document.addEventListener("scroll", e => { if (!log.isConnected) return; const box = boxNow(); if (e.target !== box) return; pinned = scrollPinned(pinned, atBottom(box), Date.now() - userAt < 600); }, opts);
+  // v0.0.453: twice, the second after the browser has laid out what a card's update added (its images, its enriched text); v0.0.460: and once more
+  // a little later (dice and enriched links that load after the frame)
+  const stick = () => { if (!log.isConnected) return; const box = boxNow(); if (pinned && !atBottom(box)) box.scrollTop = box.scrollHeight; };
+  const stickSoon = () => { stick(); globalThis.requestAnimationFrame?.(() => stick()); setTimeout(stick, 250); };
   const ro = new ResizeObserver(stickSoon);
   const watchKids = () => { for (const li of log.children) ro.observe(li); };
   watchKids();

@@ -46,7 +46,7 @@ only Favored on one, Doomed on another, Thug cancels: anyThree true
 a lone cancelling pair is not 3d12: {"dice":"2d12","note":""}
 --- blocked Roll, and (v0.0.293) what is only a warning
 no target: No target: target a creature
-Frequency spent (warning): "" Used: available again at the start of your next turn | no yellow warning (v0.0.370, Lucas): true
+Frequency spent (warning): "" Used: available again at the start of your next turn | the warning written above the bar (v0.0.460, Lucas: it didn't show): true
 out of range (warning): "" Bandit Thug: out of range (12 sq., the maximum is 10)
 area not placed: Place the area first
 can roll: ""

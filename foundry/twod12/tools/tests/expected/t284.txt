@@ -8,7 +8,7 @@ nothing posted before Use: true
 the reduction remembers its source: true | named in the row: true
 the right-click menu: true | a Reaction's half makes Apply 'Apply half': true
 --- D3
-symbols: ad, wd, speed, reach, size, steady, guard, immune, resist, weak | none on the Attributes: true | only on an NPC: true
+symbols: ad, wd, speed, reach, size, steady, guard, immune, resist, weak | none on the Attributes: true | on both sheets (v0.0.460, Lucas): true
 --- D4
 the top line: Commandment Paladin Art · Once per round Choose a Mode | the click opens it (no pick window): true
 a Use button with too few AP stays, struck, and is clicked: true | no reason written: true

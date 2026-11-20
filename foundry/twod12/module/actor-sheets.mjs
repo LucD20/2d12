@@ -960,6 +960,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       ev.preventDefault(); ev.stopPropagation();
       root.querySelector(".ps-menu")?.remove();
       if (!this.isEditable) return;
+      if (Date.now() - (Number(tile.dataset.closedAt) || 0) < 500) return;   // v0.0.460: the press that closed it doesn't reopen it
       const inCombat = !!combatantOf(this.actor), items = handMenu(this._weaponsInOrder(), tile.dataset.handTile, inCombat);
       const menu = document.createElement("div");
       menu.className = "ps-menu"; menu.setAttribute("role", "menu");
@@ -969,7 +970,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       box.appendChild(menu);
       menu.querySelector("button:not([disabled])")?.focus();
       const close = () => { menu.remove(); document.removeEventListener("pointerdown", away, true); };
-      const away = e => { if (!menu.contains(e.target)) close(); };
+      const away = e => { if (!menu.contains(e.target)) { if (tile.contains(e.target)) tile.dataset.closedAt = String(Date.now()); close(); } };   // v0.0.460: a press on the tile closes it
       document.addEventListener("pointerdown", away, true);
       menu.addEventListener("keydown", e => { if (e.key === "Escape") { close(); tile.focus(); } });
       menu.addEventListener("click", async e => {
@@ -1260,6 +1261,8 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async whereMenu(event, target) {
     const item = this._item(target);
     if (!item || !this.isEditable) return;
+    // v0.0.460 (Lucas, checklist v0.0.459: "clicking on the menu after it is already opened should close it"): the press that closed it doesn't reopen it
+    if (Date.now() - (Number(target.dataset.closedAt) || 0) < 500) return;
     const box = this.element.querySelector(".twod12.sheet") ?? this.element;
     box.querySelector(".inv-menu")?.remove();
     const { placeMenuModel, armorMenuModel, whereMenuHtml } = await import("./inventory.mjs");
@@ -1277,7 +1280,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     target.setAttribute("aria-expanded", "true");
     menu.querySelector("button[data-k]")?.focus();
     const close = () => { menu.remove(); target.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", away, true); };
-    const away = e => { if (!menu.contains(e.target)) close(); };
+    const away = e => { if (!menu.contains(e.target)) { if (target.contains(e.target)) target.dataset.closedAt = String(Date.now()); close(); } };
     setTimeout(() => document.addEventListener("pointerdown", away, true), 0);
     menu.addEventListener("keydown", e => { if (e.key === "Escape") { close(); target.focus(); } });
     menu.addEventListener("click", async e => {

@@ -1240,10 +1240,11 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
     const foot = c => { const s = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) s.push(`${c.i + di},${c.j + dj}`); return s; };
     const cellOf = p => cellAt({ x: p.x + 2, y: p.y + 2 });
     const start = new Set(foot(cellOf(pts[0]))), end = new Set(foot(cellOf(pts.at(-1))));
-    const passed = new Set();
+    const passed = new Set(), steps = [];   // v0.0.460: steps, each step's footprint after it (a Large token's every step counts, not each square once)
     for (let k = 0; k < pts.length - 1; k++) {
       const line = cellLine(cellOf(pts[k]), cellOf(pts[k + 1]));
       for (const c of line) for (const key of foot(c)) if (!start.has(key) && !end.has(key)) passed.add(key);
+      for (let n = 1; n < line.length; n++) steps.push(foot(line[n]));
       for (let n = 1; n < line.length; n++) {
         const st = stepCorners(line[n - 1], line[n], { w, h, solidAt: ownSolid(), creatureAt: c => unwillingIn(c, doc) });
         if (st.kind === "solid") out.solidCorner = true;
@@ -1269,8 +1270,15 @@ export function creaturesOnPath(doc, points, { ignoring = false } = {}) {
         if (seenLight(lightAt(canvas.grid.getCenterPoint({ i, j })), senses) === "dark") darkCells.add(key);
       }
     } catch (e) { darkCells.clear(); console.warn("twod12 | darkness on the path", e); }
-    out.dark = Math.ceil(darkCells.size / Math.min(w, h));
-    out.extra = Math.ceil(new Set([...enemyCells, ...darkCells]).size / Math.min(w, h));   // a square that is both is Difficult Terrain once
+    // v0.0.460 (Lucas, checklist v0.0.459, large-difficult: "a 2x2 token moving through a 1x1 token ... should take two movements to completely
+    // move around them and this would be 4 squares ... Instead of 2"): a step costs 1 more when the squares the token covers after it hold an
+    // unwilling creature's square or Darkness it can't see in (not one it started in): two steps alongside the creature cost 2 more, not 1
+    const enemyAll = new Set(); for (const o of occ) if ((o.t.document.disposition ?? 0) !== (doc.disposition ?? 0)) for (const k of o.cells) if (!start.has(k)) enemyAll.add(k);
+    const isDark = k => darkCells.has(k);
+    try { for (const st of steps) for (const k of st) if (!start.has(k) && !darkCells.has(k)) { const [i, j] = k.split(",").map(Number); if (seenLight(lightAt(canvas.grid.getCenterPoint({ i, j })), senses) === "dark") darkCells.add(k); } } catch (e) { /* no light on the path */ }
+    const hardSteps = steps.filter(st => st.some(k => !start.has(k) && ((enemyAll.has(k) && !end.has(k)) || isDark(k))));   // ending on a creature is endIn, not a cost (as before)
+    out.dark = steps.filter(st => st.some(k => !start.has(k) && isDark(k))).length;
+    out.extra = hardSteps.length;   // (Cut Through: the caller ignores it, as before)
   } catch (e) { console.warn("twod12 | creatures on the path", e); }
   return out;
 }
@@ -1733,8 +1741,7 @@ export function openChargePicker(c, token) {
   const local = ev => (ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage));
   const move = ev => { pos = local(ev); const n = compute(pos); if (n.key !== cur?.key) armed = ""; cur = n; draw(); };
   const down = async ev => {
-    if (ev.button === 2) return close(true);
-    if (ev.button !== 0) return;
+    if (ev.button !== 0) return;   // v0.0.460 (Lucas, checklist v0.0.459: "right clicking cancels it"): a right-click is Foundry's (panning the map); Escape or Cancel ends it
     pos = local(ev);
     // v0.0.453 (Lucas, playtest 6: "it should allow changing targets while the 'Charge X square' is shown"): a click on another creature makes it the target
     const other = tokenAtPoint(pos);

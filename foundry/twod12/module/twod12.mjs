@@ -390,10 +390,16 @@ Hooks.once("ready", async () => {
     const menu = document.createElement("div");
     menu.className = "cc-ctxmenu"; menu.setAttribute("role", "menu");
     menu.innerHTML = [["1", "Apply full"], ["0.5", "Apply half", "rounded up"], ["2", "Apply double"]].map(([f, l, note]) => `<button type="button" role="menuitem" data-twod12="${kind}" data-row="${row}" data-factor="${f}">${l}${note ? ` <small>${note}</small>` : ""}</button>`).join("");
-    const host = b.closest(".cc-trow") ?? b.parentElement;
-    host.append(menu);
-    const r = b.getBoundingClientRect(), h = host.getBoundingClientRect();
-    menu.style.top = `${Math.round(r.bottom - h.top + 2)}px`; menu.style.right = `${Math.max(0, Math.round(h.right - r.right))}px`;
+    // v0.0.460 (Lucas, checklist v0.0.459: "opens ... all the way down and cant be clicked, since its covered by the chat"): the menu floats over
+    // the page at the button (above it when there is no room below); it carries the message's id so its buttons still reach the click handler
+    menu.dataset.messageId = b.closest("[data-message-id]")?.dataset.messageId ?? "";
+    menu.classList.add("floating");
+    document.body.append(menu);
+    menu.addEventListener("click", () => setTimeout(() => menu.remove(), 0));   // a pick closes it (the click handler below has read it)
+    const r = b.getBoundingClientRect(), mh = menu.offsetHeight, mw = menu.offsetWidth;
+    const below = r.bottom + 2 + mh <= window.innerHeight - 8;
+    menu.style.top = `${Math.round(below ? r.bottom + 2 : Math.max(8, r.top - 2 - mh))}px`;
+    menu.style.left = `${Math.round(Math.max(8, Math.min(r.right - mw, window.innerWidth - mw - 8)))}px`;
     setTimeout(() => document.addEventListener("pointerdown", function away(e) { if (!menu.contains(e.target)) { menu.remove(); document.removeEventListener("pointerdown", away, true); } }, true), 0);
   }, true);
   document.addEventListener("contextmenu", async ev => {

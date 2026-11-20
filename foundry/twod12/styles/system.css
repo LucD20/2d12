@@ -5557,3 +5557,27 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12 .dmgword[style*="--sc-d"] { color: var(--dc); }
 @scope (.theme-dark) to (.theme-light) { .cc-sub[style*="--sc-d"], .rd-sub[style*="--sc-d"], .dmgword[style*="--sc-d"], .as-sub[style*="--sc-d"] { color: var(--sc-d) !important; }
   .twod12.chat.dmg .comp[style*="--sc-d"], .twod12.chat .comp[style*="--sc-d"] { --sc: var(--sc-d) !important; } }
+
+/* ==== v0.0.460 (Lucas, checklist v0.0.459): the roll dialog's warnings, above the bar: a ruled line each, the icon in the Bane's ink ==== */
+.twod12.rolldlg .rd-warns { margin: 4px 14px 0; border-top: 1px solid var(--cc-btn2, rgba(128,128,128,.4)); padding-top: 4px; }
+.twod12.rolldlg .rd-warn { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; line-height: 1.4; padding: 1px 0; }
+.twod12.rolldlg .rd-warn > i { color: var(--c-bane); font-size: 11px; flex: 0 0 auto; }
+/* v0.0.460 (Lucas, checklist v0.0.459, reload-chip: "Its red until I click away from it"): Foundry's own button:focus glow (red) on a clicked chip; only
+   the keyboard's focus outline stays */
+.twod12.rolldlg.rolldlg button:focus:not(:focus-visible) { box-shadow: none !important; outline: none !important; }
+.twod12.rolldlg.rolldlg .rd-chip:focus-within:not(:has(:focus-visible)) { box-shadow: none !important; }
+/* v0.0.460: Apply's right-click menu floats over the page (it was inside the card, under the chat's input) */
+.cc-ctxmenu.floating { position: fixed; z-index: 1000; }
+/* v0.0.460: the Art's card moves by its top line */
+.twod12-artcard .ac-top { cursor: move; user-select: none; }
+/* v0.0.460 (Lucas, checklist v0.0.459): an area's "Place …" button where the creatures go, until it is placed; a slow bronze pulse on its
+   outline (no glow, no color fill: STYLE-3's serious tone) */
+.twod12.rolldlg .rd-placebig { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 40px; margin: 2px 0; padding: 0 12px; background: transparent; border: 1px solid var(--tw-accent, #b08a4a); border-radius: 2px; color: inherit; font: 600 14px/1.2 "Source Sans 3", sans-serif; cursor: pointer; animation: twod12-placepulse 1.6s ease-in-out infinite; }
+.twod12.rolldlg .rd-placebig:hover { background: color-mix(in srgb, var(--tw-accent, #b08a4a) 12%, transparent); }
+@keyframes twod12-placepulse { 0%, 100% { border-color: var(--tw-accent, #b08a4a); box-shadow: inset 0 0 0 0 transparent; } 50% { border-color: color-mix(in srgb, var(--tw-accent, #b08a4a) 35%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tw-accent, #b08a4a) 45%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .twod12.rolldlg .rd-placebig { animation: none; } }
+/* v0.0.460 (Lucas, checklist v0.0.459: "Tokens cover all the Situational area, covering all of it, having to scroll"): a pick of pictures (the
+   Minions' squad) inside the Situational section: small squares in a wrapping row, never the section's width each */
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opts { display: flex !important; flex-wrap: wrap !important; gap: 4px !important; grid-template-columns: none !important; flex: 1 1 100% !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opt.sq { width: 34px !important; height: 34px !important; min-width: 0 !important; max-width: 34px !important; flex: none !important; padding: 0 !important; }
+.twod12-hud .h3-sit .twod12-linebar.in-hud .lb-opt.sq img { width: 100% !important; height: 100% !important; max-width: none; object-fit: cover; }

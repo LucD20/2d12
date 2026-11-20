@@ -12,7 +12,7 @@ const ONCE = { atwill: "At-will", turn: "Once per turn", round: "Once per round"
 /** The card's top line (pure). */
 export const artHeadHtml = (name, freq, kind = "Art") => `<div class="ac-top"><b class="ac-name">${esc(name)}</b><span class="ac-kind">${esc(kind || "Art")}${ONCE[freq] ? ` · ${ONCE[freq]}` : ""}</span><span class="ac-ask">Choose a Mode</span></div>`;
 
-/** Opens the Art's card; a Mode's Use button calls pick(mode, ap). Returns the card element (or null with no DOM). */
+/** Opens the Art's card; a Mode's Use button calls pick(mode, ap, { dialog }) (dialog: Shift was held). Returns the card element (or null with no DOM). */
 export async function openArtCard(actor, item, pick, at = lastEl) {
   if (typeof document === "undefined") return null;
   open?.remove();
@@ -30,7 +30,18 @@ export async function openArtCard(actor, item, pick, at = lastEl) {
   div.style.top = `${Math.max(8, Math.min(above ? r.top - h - 8 : r.top - 20, window.innerHeight - h - 8))}px`;
   open = div;
   const close = () => { div.remove(); if (open === div) open = null; document.removeEventListener("pointerdown", away, true); document.removeEventListener("keydown", key, true); };
-  const away = ev => { if (!div.contains(ev.target)) close(); };
+  // v0.0.460 (Lucas, checklist v0.0.459: "Allow moving that window"): dragged by its top line; once moved it stays until the ×, Escape or a Use
+  let moved = false;
+  const away = ev => { if (!moved && !div.contains(ev.target)) close(); };
+  const top = div.querySelector(".ac-top");
+  top?.addEventListener("pointerdown", ev => {
+    if (ev.button !== 0) return;
+    ev.preventDefault();
+    const sx = ev.clientX, sy = ev.clientY, l0 = div.offsetLeft, t0 = div.offsetTop;
+    const mv = e => { moved = true; div.style.left = `${Math.max(0, Math.min(l0 + e.clientX - sx, window.innerWidth - 40))}px`; div.style.top = `${Math.max(0, Math.min(t0 + e.clientY - sy, window.innerHeight - 30))}px`; };
+    const up = () => { document.removeEventListener("pointermove", mv); document.removeEventListener("pointerup", up); };
+    document.addEventListener("pointermove", mv); document.addEventListener("pointerup", up);
+  });
   const key = ev => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); close(); } };
   setTimeout(() => { document.addEventListener("pointerdown", away, true); document.addEventListener("keydown", key, true); }, 0);
   div.addEventListener("click", ev => {
@@ -39,7 +50,8 @@ export async function openArtCard(actor, item, pick, at = lastEl) {
     if (!b) return;
     ev.preventDefault(); ev.stopPropagation();
     close();
-    pick(b.dataset.mode ?? "", Number(b.dataset.ap) || 0);
+    // v0.0.460 (Lucas: "clicking on the ap sends directly to the chat ... (holding shift opens the roll dialog). These are faster actions")
+    pick(b.dataset.mode ?? "", Number(b.dataset.ap) || 0, { dialog: !!ev.shiftKey });
   });
   return div;
 }

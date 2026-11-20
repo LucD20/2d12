@@ -10,7 +10,7 @@ const inp = { name: "Word of Radiance", versions: [v], ap: 2, chips: [], creatur
 const st = RD.newState(inp);
 console.log("an area not placed, no creature: blocked?", JSON.stringify(RD.blockedReason(inp, st)), "| the DC:", RD.liveCreatures(inp, st)[0].dc);
 st.noTargetDc = "15";
-console.log("a typed DC:", RD.liveCreatures(inp, st)[0].dc, "| the field in the window:", /data-field="noTargetDc" value="15"/.test(RD.dialogHtml(inp, st)));
+console.log("a typed DC:", RD.liveCreatures(inp, st)[0].dc, "| the field in the window (once placed; v0.0.460: before, the Place button stands there):", /data-field="noTargetDc" value="15"/.test(RD.dialogHtml({ ...inp, area: { ...inp.area, placed: true } }, st)), "| not placed, the Place button:", RD.dialogHtml(inp, st).includes('class="rd-placebig"'));
 const src = n => fs.readFileSync(ROOT + n, "utf8");
 console.log("the roll's input gives an area the No target row (DC 13):", src("module/rollinput.mjs").includes('name: c.areaOutcome?.ok ? "No creature in the area" : "No target", def: "DC", dc: c.opts.noTargetDc ?? 13'));
 const deep = () => new Proxy(function () {}, { get: (t, k) => (k in t ? t[k] : k === "then" ? undefined : deep()), construct: () => deep(), apply: () => deep() });

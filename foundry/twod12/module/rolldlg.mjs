@@ -433,6 +433,9 @@ const targetBtn = inp => (inp.area || inp.self ? "" : '<button type="button" cla
 const cImg = c => (c.img ? `<img class="rd-cimg" src="${esc(c.img)}" alt="">` : "");
 function creaturesHtml(inp, st, v) {
   const live = liveCreatures(inp, st), crit = !!v?.crit, hide = !!inp.hideDef;
+  // v0.0.460 (Lucas, checklist v0.0.459: "When rolling for area effects, dont show the targets even if there are targets already selected; instead put
+  // a 'Place X Area', blinking where the targets normaly are"): until the area is placed, its button stands where the creatures go; Roll still places it
+  if (inp.area && !inp.area.placed) return `<button type="button" class="rd-placebig" data-act="place"><span aria-hidden="true">◇</span> Place ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label ?? "the area")}</button>`;
   // v0.0.293: a Save Action: each creature with your Save DC (they roll; nothing of theirs to switch here)
   if (inp.save) return live.filter(c => c.uuid !== "none" && c.uuid !== "self").map(c => `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-def">${esc(inp.save.label)} ${inp.save.dc}</span></div></div>`).join("") || `<div class="rd-none">No target. Target a creature on the map.</div>`;
   if (!live.length) return `<div class="rd-none">${inp.area && !inp.area.placed ? "Place the area to choose the creatures." : `No target. Target a creature on the map, then press Target.${targetBtn(inp)}`}</div>`;
@@ -594,7 +597,10 @@ export function dialogHtml(inp, st) {
     : `<button type="button" class="rd-go" data-act="roll"${why ? " disabled" : ""}>${noRoll || inp.save ? "Use" : "Roll"}</button>`;
   const bar = `<footer class="rd-bar">${modes}${vers}${goBtns}</footer>${why ? `<div class="rd-why" role="status">${esc(why)}</div>` : ""}${inp.hideDef ? '<div class="rd-pview">Player view · enemy Defenses hidden by the GM</div>' : ""}`;
   // v0.0.370 (Lucas): no yellow warning at the bottom (the struck Version and the reason on it say it); warnings() stays for the tests and callers
-  const warnHtml = "";
+  // v0.0.460 (Lucas, checklist v0.0.459: "It didnt show the warning"): what the Action breaks but may still do (inp.blocked: no Line of Effect, an
+  // unloaded weapon, a missing Light weapon, a Requirement) is written above the bar, one line each; a Version's AP stays on its struck button
+  const ws = [...(inp.blocked ?? []), ...liveCreatures(inp, st).filter(c => c.blocked).map(c => `${c.name}: ${c.blocked}`)];
+  const warnHtml = ws.length ? `<div class="rd-warns" role="status">${ws.map(w => `<div class="rd-warn"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>${esc(w)}</div>`).join("")}</div>` : "";
   // v0.0.349 (Lucas, playtest 4: "the AP Version buttons at the bottom next to Roll")
   // v0.0.397: the card part in the book's format (cardHtml); the old head, meta lines and Tier table (traitsHtml, metaHtml, tierTableHtml) stay for reference
   void traitsHtml; void metaHtml; void tierTableHtml;
