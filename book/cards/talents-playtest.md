@@ -111,7 +111,7 @@
 > **Requirement:** Your Bound Ally is adjacent to you.
 > **Interrupt:** An Action would damage your Bound Ally.
 > **Target:** Your Bound Ally.
-> **Effect:** You take half of that damage (rounded up); your Bound Ally takes the rest (Chapter 1, Halving and splitting damage). The split is made before Guard: each of you then applies your own Weakness and Guard to your part; **your Resistance and Immunity don't reduce your part**, your Bound Ally's do reduce theirs.
+> **Effect:** You gain 1 Guard. You take half of that damage (rounded up); your Bound Ally takes the rest (Chapter 1, Halving and splitting damage). The split is made before Guard: each of you then applies your own Weakness and Guard to your part; **your Resistance and Immunity don't reduce your part**, your Bound Ally's do reduce theirs.
 
 **Notes**
 - **An Action's damage only** (the listed moment, "would damage someone"): Lingering, a fall and a hazard have no triggering Action. **Shield of Faith and Bear the Blow can't both answer one Action** (Chapter 2: "You can react only once to the same Action"): Durgan chooses one.
@@ -141,9 +141,10 @@
 
 > **Ricochet** · Talent · Archery · Stage 0
 > **Ricochet** · Round · 1 AP
-> *The arrow skips off one shield and finds the throat behind it.*
+> *You dart wide for the angle, and the arrow skips off one shield into the throat behind it.*
 > [Projectile, Ranged, Strike, Weapon]
 > **Distance:** Weapon · **Target:** One creature
+> **Setup:** You must Advance 2. This Advance doesn't count as leaving your square for other cards.
 > **Ricochet:** The arrow can bounce to a second creature within 2 squares of the target that the target has Line of Effect to (you don't need Line of Effect to it). It takes half of the damage dealt to the target, before the target's Resistance, Weakness, Immunity and Guard (Chapter 1, Halving and splitting damage), then applies its own; none of the riders. No roll is made against it, and it isn't hit on a Tier: another card's Tier effects (Opening Shot, One More Arrow) don't apply to it.
 > **Attack:** Weapon vs. Armor Defense
 > **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]; a ricochet. **Tier 3:** [V] 1[W] + [Mod]; a ricochet.
@@ -195,3 +196,6 @@ The 70% is [judgment]. **About +9 a turn: a little above the anchor (+6).** The 
 **The anchor (T17) stays +6, a placeholder;** its reading now comes from Take Aim as revised (about +7), not from the 5 AP turn.
 
 **Lucas on the feel check (2026-11-20): B "Ok", C "Ok"** (applied above: Take Aim also lifts the far range's Bane; Rime Strike's Weapon mode deals Cold), **D "Good"** (held: its price, below), **A** answered with his own shape (below).
+
+**Then (2026-11-20): "D2. A - Remove the boon from ricochet. Keep the setup. Rule: Yes."** Applied: Bear the Blow gives Durgan 1 Guard before his part (about +5 to +8 a turn); Ricochet's Setup is "You must Advance 2", and that Advance doesn't count as leaving your square, so Shifting Aim gives the shot no Field Boon for it (about +10 to +12 a turn: the bounce, about +7, and 2 free squares, about +3 to +5; above the anchor and near Strafe, accepted by Lucas); the rule for a movement you must make is in Chapter 3.
+

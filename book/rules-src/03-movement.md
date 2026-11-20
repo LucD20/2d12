@@ -45,6 +45,8 @@ Forced Movement and Reposition never squeeze a creature: they stop in the last s
 
 An Action that lets you move gives a distance, written "Advance 5" or "Evade 2". You can always move less than the specified amount: "Advance 5" means up to 5 squares, not exactly 5. But each time you move with an Action, you can't move more than your current Speed, unless an ability says otherwise: with Speed 2, an Action that lets you Evade 3 lets you Evade only 2. Forced Movement and Reposition don't use your Speed.
 
+**A movement you must make** ("You must Advance 2") moves you the whole distance, and each square you enter must be one you haven't entered during that movement. A card that says **freely** ("You must Advance 5 freely") lets you enter a square again. If you can't make the whole movement, the Action is disrupted (see [[Linked Actions]]).
+
 **No movement ends in another creature's square:** an Advance, an Evade, a Forced Movement or a Reposition (passing through one is covered under [[Move]] and [[Difficult Terrain]]).
 
 **Changes to your Speed.** Apply every other change first, then halve it: with Speed 6, Weight of Judgment's −2 and Hindered, your Speed is (6 − 2) halved = 2. Halving rounds down.
