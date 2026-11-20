@@ -5,7 +5,7 @@
 | # | Talent | For | State |
 |---|---|---|---|
 | 1 | Take Aim | Sylwen (Elf Archer, Quick Shots, Hunting Bow) | Lucas's shape (2026-11-20); priced below; **the anchor (T17): about +6 a turn net, a placeholder** |
-| 2 | The god's blessing on the weapon | Aveline (Human Paladin, Smite, Longsword) | waiting |
+| 2 | Cold Domain (the god's blessing on the weapon; placeholder name) | Aveline (Human Paladin, Smite, Longsword) | written; priced at or above the anchor |
 | 3 | Defending allies | Durgan (Dwarf Paladin, Lay On Hands, Arming Sword) | waiting |
 | 4 | Ricochet | Kaela (Human Archer, Strafe, Recurve Bow) | waiting |
 
@@ -52,21 +52,40 @@
 
 **Lucas (2026-11-20):** "B is the good direction. Cold themed, so a 'Cold domain' (placeholder name). I think a plain attack is lame; lets do an attack (like with Mode, one for weapon another for power) with a special rule, something related to cold, ice, divine. Weapon deals [W], power always just dice, no flat. Same average (or at least very similar)."
 
-**Draft (decision 2, the special rule, open):**
+**Lucas (2026-11-20), the special rule:** "I mean special effects outside of rules, similar to spells. Talents I feel can do similar to spells, and be more innovative, bend rules, be unique." Then, on the Ice Pillar: "Lasts a minute, it breaks if it takes 5 damage at once (chip damage doesnt break it). DC to hit it is Action DC. Deals damage, looks cool, has niche utility, I think it is in a good spot"; and on Claude's five points: EoE (introduced in the book the same day), one pillar at a time ("Yes, good"), Forced Movement breaks it too, an Area hits it and objects get Tier 1 on Saves (a rule for the objects pass, `rules-backlog.md`), and a creature or an object as the target ("Do it").
 
-> **Cold Domain** · Talent · Faith · Stage 0
-> **Rime Strike** · 1 AP · Round · [Divine, Strike]
-> *Frost runs down the edge, and the cold bites before the steel does.*
-> **Target:** One creature
+> **Cold Domain** · Talent · Faith · Stage 0 *(placeholder name)*
+> **Rime Strike** · 1 AP · Round · [Divine, Melee, Strike]
+> *Frost runs down the edge, and the cold bites before the steel does; where it lands, the ice rises.*
+> **Target:** One creature or object
 >
-> **Weapon** · [Melee, Weapon] · **Distance:** Weapon
+> **Weapon** · [Weapon] · **Distance:** Weapon
 > **Attack:** Weapon vs. Armor Defense
-> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod].
+> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]; an Ice Pillar. **Tier 3:** [V] 1[W] + [Mod]; an Ice Pillar.
 >
 > **Power** · [Power] · **Distance:** Reach
 > **Attack:** Power vs. Ward Defense
-> **Tier 1:** 0. **Tier 2:** [V] 2d6! + 1d4! Co. **Tier 3:** [V] 3d8! Co.
+> **Tier 1:** 0. **Tier 2:** [V] 2d6! + 1d4! Co; an Ice Pillar. **Tier 3:** [V] 3d8! Co; an Ice Pillar.
 >
-> **Special rule:** (decision 2)
+> **Ice Pillar:** A pillar of ice rises in an empty square adjacent to the target that you have Line of Effect to (EoE; outside a fight, about a minute). You have one Ice Pillar at a time: raising a new one melts the old one.
+> - It fills its square: it blocks movement and Line of Effect, its corners are solid (Chapter 3, Corners), and it gives Cover as a wall does.
+> - Its Defense is your Action DC for that Rime Strike (11 + the Modifier its Mode used). Against a Save it gets Tier 1. An Area hits it.
+> - It breaks when one Action deals it 5 or more damage; less does nothing and doesn't add up. A creature that collides with it (Chapter 3, Collision) deals it the damage the creature takes.
 
-**The averages** (200,000 rolls each): the Longsword at Weapon Modifier +2 is 11.0 on Tier 2 and 15.0 on Tier 3; the Power Mode's 2d6! + 1d4! is 11.0 and 3d8! is 15.0. (The Arming Sword at +2 is 8.0 and 10.0: a one-handed weapon makes the Power Mode the bigger one.)
+**The averages** (200,000 rolls each): the Longsword at Weapon Modifier +2 is 11.0 on Tier 2 and 15.0 on Tier 3; the Power Mode's 2d6! + 1d4! is 11.0 and 3d8! is 15.0. (The Arming Sword at +2 is 8.0 and 10.0: with a one-handed weapon the Power Mode is the bigger one.)
+
+**The price (Aveline; the anchor is +6 a turn, T17):**
+
+| Line | Points a turn | Tag |
+|---|---:|---|
+| Its damage equals a Weapon Attack's (it takes one's place in her turn) | 0 | [judgment, from the averages] |
+| Two Modes: she strikes the lower of Armor and Ward Defense (2 lower is worth about 2 Boons: +17% damage on that hit) | +2 to +4 | [judgment, from the odds] |
+| The Ice Pillar (72% of uses; one at a time, EoE): blocks a path, cuts Line of Effect, gives Cover | +4 to +8 | [judgment; depends on the map] |
+| **Total** | **about +6 to +12** | at or above the anchor |
+
+**Analysis**
+- **At or a little above the anchor:** higher on narrow maps, lower on open ones. If it is strong at the table, the first cut is the Tier 2 Ice Pillar (Tier 3 only).
+- **The [Divine] trait** reaches the Paladin's [Divine] class cards (Hallowed Stance's Advance, for one), and gives a character who isn't a Paladin a [Divine] Action (`decided.md`'s open "way into [Divine]").
+- **Near, not the same:** Smite (an Encounter nova of Holy dice), Binding Light (Holy and Immobilized), Consecrated Ground and Covering Fire (terrain, never solid).
+- **The boss rule holds:** the pillar never stops a creature; a boss walks around it or breaks it with one blow of 5.
+- **New rules it needed:** EoE (in the book), and two object rules it writes for itself until the objects pass (Tier 1 on a Save, Collision damage to an object).

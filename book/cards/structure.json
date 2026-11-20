@@ -2071,7 +2071,7 @@
      },
      {
       "label": "Effect",
-      "text": "The target is Judged by you until the encounter ends."
+      "text": "The target is Judged by you (EoE)."
      }
     ]
    },
@@ -2080,7 +2080,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "The target is Judged by you until the encounter ends. If another creature was Judged by you, it no longer is."
+      "text": "The target is Judged by you (EoE). If another creature was Judged by you, it no longer is."
      }
     ]
    }
@@ -2207,7 +2207,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "You shed [[Bright|Bright light]] 3 until the encounter ends."
+      "text": "You shed [[Bright|Bright light]] 3 (EoE)."
      }
     ],
     "foundry": {

@@ -301,7 +301,7 @@ When an effect gives **another creature** its next roll or its next Action ("its
 
 A **round** is one full cycle of turns. It starts with the first creature's turn and ends when the last creature ends their turn.
 
-An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". A duration is one of these: [[End of Turn|EoT]]; a number of rounds; "until the encounter ends"; until a Save ends it; or a condition's own end (Prone lasts until you Stand). Nothing lasts "until the start of your next turn".
+An effect that lasts a number of rounds counts down by 1 at the end of the initiative slot in which it was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn), starting with that slot's next turn: the end of the turn in which it was applied doesn't count. An effect that lasts 2 rounds is written "for 2 rounds", or with the rounds in parentheses after it: "Taunted by you (1 round)". A duration is one of these: [[End of Turn|EoT]]; a number of rounds; [[End of Encounter|EoE]] (until the encounter ends); until a Save ends it; or a condition's own end (Prone lasts until you Stand). Nothing lasts "until the start of your next turn".
 
 > [!example]
 > On the first round of combat, Victor (the first creature in the turn order) causes an effect on Wes that lasts 2 rounds. The effect ends at the end of Victor's turn on the third round.
@@ -311,6 +311,10 @@ An effect that lasts a number of rounds counts down by 1 at the end of the initi
 When an effect lasts until the end of the turn of the affected creature, it is marked **EoT**.
 
 An EoT effect on yourself still ends at the end of the current turn. A duration in rounds is different: it does not count down at the end of the turn in which the effect was created, because it has to last a whole round.
+
+### End of Encounter
+
+When an effect lasts until the encounter ends, it is marked **EoE**.
 
 Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature. If a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied, and a duration in rounds counts down at the end of the slot in which the effect was applied (the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn).
 

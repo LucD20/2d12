@@ -188,7 +188,7 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | **Extreme** | 18 | Slowed 2; Dazed 2; Lingering 2; Lingering 1d4 |
 | **Beyond** | +6 a size | Lingering 1d6 (24); Lingering 2d6 (40) |
 
-A condition in the table written with no duration is priced for EoT: write (EoT) on the card, since a condition written with no duration lasts until the end of the encounter (see [[Chapter 8: Conditions|Conditions]]). Prone, Grabbed, Dazed and Lingering have their own end.
+A condition in the table written with no duration is priced for EoT: write (EoT) on the card, since a condition written with no duration lasts until the encounter ends (EoE; see [[Chapter 8: Conditions|Conditions]]). Prone, Grabbed, Dazed and Lingering have their own end.
 
 The prices are for a rider that **one creature in the encounter has**. **When four or more creatures in the encounter carry the same rider** (a pack of Grunts, a swarm of Minions), **price it one size less:** most of its landings are wasted on a PC that already has it. **AP are the strongest thing to take** (Prone, Dazed, Slowed), **a Lingering is damage that keeps coming** (it lasts until the PC Shakes it Off, 1 AP and a Save, or the encounter ends), and conditions that only make a PC's next roll or its movement worse are mild: a PC shakes them off at the end of its turn, and its allies don't care. A condition that lasts longer than EoT is one size more, unless the table already lists that duration.
 
