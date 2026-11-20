@@ -32,44 +32,25 @@ Do: With the chat at its bottom, Sylwen makes a Weapon Attack on the Orc Warrior
 Expect: After Damage (the dice landed) the card's last line is in sight; after Apply too. Scrolled up before clicking, it stays where you are.
 Rev: 5
 
-### empowered-one · v0.0.468 · Empowered on a Save Action: by hand in the dialog too
-Do: Durgan without the Empowered condition, on his turn, uses Word of Radiance on two enemies and turns on Empowered in the roll dialog by hand (the Damage row's Empowered); then once with the condition but its chip switched off.
-Expect: By hand: before the Saves the HUD asks which creature takes the 1d6!, and a chat line says who. With its chip switched off: nothing is asked and no die is added.
-Rev: 6
-
 ## Conditions and their Tiers
 
 ## Movement
 
-### rx-move-path · v0.0.468 · The movement that triggers a Reaction, on the map
-Do: The Orc Warrior drags 3 squares past Aveline (Rebuke can trigger) and stops.
-Expect: The Orc's exact path is a pale line through each square, a dot on each, an arrow where it ended, its faint picture where it started; the square where Rebuke can come is outlined in gold with a plate "Reaction here / Rebuke"; no dashed squares.
+### rx-move-path · v0.0.469 · The Reaction's movement path starts at the ghost's center
+Do: The Ogre Chieftain (Large) drags past Aveline (Rebuke can trigger) and stops.
+Expect: The pale path line starts at the center of the Ogre's faint picture (where it started), not at its corner; no stray diagonal.
+
 
 ### push-large · v0.0.468 · A push from a Large creature
 Do: The Ogre Chieftain (Large) pushes Durgan with Overhead Smash's Pushed 2; hover the squares, then one into a wall.
 Expect: No big white circle around the Ogre; the squares to click in gold, Durgan's path with an arrow above the tokens; a short plate "Pushed 2" (into the wall: "Collision after 1: 2 Vigor").
 
 
-### rewind-refund · v0.0.462 · Move back gives back only the last movement
-Do: In a combat, the Ogre Chieftain drags 1 square, then drags again toward Kaela (Slip Away triggers on the second drag); on the Reactions card click Move back all the way (Shift-click). Then once a drag that buys an Advance (1 AP) and Move back all the way.
-Expect: The Ogre goes back to where the second drag started, and only the second drag's squares come back (the first square stays spent). A drag that bought its Advance: back where it started with its AP and squares as before that drag.
-Rev: 2
-
-### large-difficult · v0.0.468 · A Large creature passing a creature: the ruler counts it
-Do: Make Durgan Large (2 × 2); in a combat, drag him straight past the Goblin Sneak so his space slides along its square for two steps; watch the ruler while dragging; drop; read the HUD's squares left. Then a drag where only one step overlaps.
-Expect: The ruler's label reads "(+2)" for the two steps alongside ("(+1)" for one), and the squares spent match it. If it still doesn't, send the ruler's screenshot as before.
-Rev: 4
-
 ## Reactions and Judge
 
 ### judge-gm-dock · v0.0.463 · Judge's question for the GM, and Line of Effect
 Do: As the GM with no token selected, the Judged Orc Warrior damages an ally near Durgan (Durgan an NPC-run Paladin, or the GM answering for him): click Durgan's token. Then a wall between Durgan and the ally.
 Expect: The question moves into Durgan's HUD, Situational tab (not a small floating bar). With the wall (no Line of Effect from Durgan to the ally) no question and no reduction.
-
-### sit-order · v0.0.463 · The Situational section's order and the area's question
-Do: Sylwen is Prone; she uses an area Action (Volley) and places it.
-Expect: The area's question ("Volley: apply the area shown on the map? …", capitalized) is above Prone's Stand / Crawl; no "Right-click pans the map" in any key line.
-
 
 ### armor-faith-source · v0.0.463 · Armor of Faith's names as text
 Do: Durgan at Escalation 2 uses Shield of Faith on Aveline when the Orc Warrior's Strike would damage her.
@@ -106,14 +87,6 @@ Do: Sylwen places Covering Fire; the GM moves an Orc into it (Advance), moves it
 Expect: One hit only (on entering); none for the second move or the end of the turn; it can be hit again from its next turn.
 
 ## Ending an encounter and resting
-
-### thrill-wrath · v0.0.411 · Thrill of the Kill and Kindled Wrath
-Do: An enemy Sylwen damaged goes Down; Durgan, an ally of Aveline, becomes Bloodied.
-Expect: The Archer's Escalation +1; the Paladin's Escalation +1 (once).
-
-### thrill-kill · v0.0.426 · Thrill of the Kill on a first hit
-Do: Sylwen's first damage on an Orc brings it Down; later, Aveline, whom Sylwen hit with a Volley, goes Down.
-Expect: The kill raises her Escalation; the ally's Down doesn't.
 
 ## The Encounter Log
 

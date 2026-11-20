@@ -109,7 +109,9 @@ function drawOne(st, gs, fs) {
     // What is the exact movement the token took?"): the map notes' language: the exact path as a pale line through each square's center, a dot on
     // each, an arrow where it ended; the square where the Reaction can come outlined in gold, with a plate naming it
     const ctr = sq => ({ x: sq.x + (sq.w ?? gs) / 2, y: sq.y + (sq.h ?? gs) / 2 });
-    const pts = [...(b.start ? [ctr(b.start)] : []), ...(b.path ?? []).map(ctr)].filter((p, i, a) => !i || Math.hypot(p.x - a[i - 1].x, p.y - a[i - 1].y) > 1);
+    // v0.0.469 (Lucas: "Weird bug on the arrow"): the start's size is in squares (the ghost's), the path squares' in pixels: the line began at the ghost's corner
+    const startC = b.start ? { x: b.start.x + ((b.start.w ?? 1) * gs) / 2, y: b.start.y + ((b.start.h ?? 1) * gs) / 2 } : null;
+    const pts = [...(startC ? [startC] : []), ...(b.path ?? []).map(ctr)].filter((p, i, a) => !i || Math.hypot(p.x - a[i - 1].x, p.y - a[i - 1].y) > 1);
     if (pts.length > 1) {
       g.lineStyle(5, 0x1f1c18, 0.55); pts.forEach((p, i) => (i ? g.lineTo(p.x, p.y) : g.moveTo(p.x, p.y)));
       g.lineStyle(3, INK, 0.95); pts.forEach((p, i) => (i ? g.lineTo(p.x, p.y) : g.moveTo(p.x, p.y)));
