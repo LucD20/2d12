@@ -62,10 +62,11 @@
 - **T11** Ranks branch, as the expected shape ("almost a requirement"): at a rank a card offers up to three branches, each a new rule, drawn as a small tree on the card.
 - **T12** A rank is a pick, never a gift of the Stage; a rank may write a minimum Stage as a gate. Deepen or widen at each Talent level.
 - **T13** Every rank is worth a whole pick (checked against an average Rank I); a Talent has as many ranks as it needs, none to two.
+- **T14** A penalty is lifted, or a cost lowered, by an Action you spend (AP and a Frequency), never by a passive; passive lifted limits that change how an Action works stay allowed; an attack Talent is a Strike; the rarer the Frequency, the more it may be worth; near a class card is fine, overlap is not.
 
 ## 5. Questions still to ask
 
-**Answered 2026-11-19:** Routine meets the DC, a Tier 2 at most; false damage is never Lethal; a hidden target lowers a Save DC unless the spell is an [Area]; **a lower cost in a Talent is not allowed by T1** (Lucas: "Not really, no"): the seeds that only lower a cost (a cheaper Sustain, a smaller Overreach die, a lighter armor cost) are out as written.
+**Answered 2026-11-19:** Routine meets the DC, a Tier 2 at most; false damage is never Lethal; a hidden target lowers a Save DC unless the spell is an [Area]; **a lower cost in a Talent is not allowed as a passive** (Lucas: "Not really, no"; revised by T14 on 2026-11-20: allowed as an Action with its own price).
 
 **Small, still open:**
 4. The retry rule: can another character make the same attempt? Lucas, 2026-11-19: "This requires extensive search". His points: a failed attempt must mean something and never stop the story; it needs a drawback where the task matters (the villain prepares, the noise alerts others, time is lost); a low-stakes task (a locked chest) has none, so anyone can just try again; group rolls don't fit a chest; "everyone rolls" is easy but dull; "Tier 1 means failure and nobody can try again" is decent; in a social scene a retry needs good faith and a changed situation. Research: `research/party-retries.md`. And: is "the GM decides" a separate exit, or the judge of whether the situation changed?
