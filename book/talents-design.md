@@ -250,3 +250,47 @@ The Talents record is now named in HANDOFF and CLAUDE.md.
 | T14 | **A penalty is lifted, or a cost lowered, by an Action you spend, never by a passive.** It revises the answer of 2026-11-19 ("a lower cost in a Talent is not allowed"): a cost may be lowered when the Talent is an Action with its own price (AP and a Frequency), never as a passive. The magic seeds marked out (a cheaper Sustain, a smaller Overreach die, a lighter armor cost) may come back in that form. **Passive lifted limits are still allowed** (Shoulder Through, Break the Line). **Such an Action is a Strike when it is an attack** (Point Blank Shot carries [Strike] and counts toward the three a turn). **Talents are Actions of many Frequencies;** the more the lifted limit is worth, the rarer the Frequency. **Near a class card is fine; overlap is not:** a Talent never does what a class card already does, even as an Action. | 1. "Technically yeah." 2. "Yes, it is still allowed." 3. "It was just a draft but yes." 4. "Yes, talents will be actions that have different frequencies." 5. "Near is fine, overlap no." |
 
 **On the second pass (2026-11-20, `cards/talents-second-pass.md`):** the plain grapple is a Basic Action anyone can try, and the Talent is what comes after it (the permission trap avoided); Finishing Blow weakened (1 of its 2 Banes against a Bloodied target).
+
+---
+
+## 9. The restart (2026-11-20)
+
+**Lucas, after the review of the test batch (`cards/talents-batch.md` section 12):** "Yeah, I think we should restart the Talent making, but making talents for the current Classes only. This is a system made by us only, it technically dont need a wide range yet. This appears as I playtest with other players and what they ask for."
+
+| # | Decided | Lucas's words |
+|---|---|---|
+| T15 | **Talents restart, for the two current classes only (the Paladin and the Archer).** No wide catalogue yet: the range grows from the playtests and what the players ask for. The test batch (`cards/talents-batch.md`) is set aside as reference, with its audits, his review and its notes; nothing in it is decided. T1 to T14 and the lessons stand. **T3 still holds** (no Talent written for one class; a Talent keyed on a trait reaches the class cards that carry it): "for the current classes" means aimed at what their players ask for and priced on their builds, not locked to them. *(Claude's reading; to confirm.)* | "making talents for the current Classes only" |
+
+**Why the batch kept failing (the review Lucas agreed with, "Yeah"):**
+1. **Nothing was priced.** The yardsticks exist (`ruler/pc-budget.md`: a turn of three Weapon Attacks = 100 points; Chapter 14's rider prices: Mild 3, Moderate 8, Severe 12, Extreme 18; `ruler/catalogue/talents.txt`), and the CLAUDE.md analysis format asks for them, but every number was "[not priced]" and the audits were told not to judge numbers. Power was judged only by Lucas, by feel, each round.
+2. **Every lesson was a ceiling, none a floor** (the boss rule, no rare triggers, T14, no overlap), so each fix landed weaker: most of his notes were "too weak".
+3. **Discounts stacked:** a trigger that comes rarely, a Tier 3 (about 27%), and Minor enemies only.
+4. **The wrong comparison:** a rank was checked against its own Rank I and the class cards for overlap, never against what else the pick could buy (a weapon Technique already gives Evade 1 with a shot).
+5. **Too many at once:** nine Talents in nine families, all revised every round, so none became a reference.
+
+**The way it goes now (Claude's proposal, agreed in outline):** an anchor first (one rank = N points of the 100-point turn, in the situation it is built for; measured in the SIM, N set by Lucas); every rank priced in the analysis format (Chapter 14's prices × the Tier odds × how often its trigger comes); floors in the lessons as well as ceilings; one Talent calibrated first and used as the reference; the audits judge value too.
+
+**Numbering (Lucas, 2026-11-20):** every list of cards and branches is numbered **Talent.Branch.Rank** so he can reference it (0 for a Talent's own Rank I).
+
+### The players' ideas (Lucas's playtesters, 2026-11-20; his words, "thrown around ideas"; most already went into the classes, "but we can still get something out of it")
+
+**The Paladin (a player):**
+> ok, so i was thinking instead of something like smite that every ttrpg has make it more body enhancement. With it being a 3 tier system you get 3 blessings (if i understand 3 tier system correctly)
+> Based on the domain of the god the abilities change
+> Lets say you have the God Kelsia, God of Winter
+> First blessing is something like you can add x amount of cold/frost/ice (whatever your system has) to a melee attack. Lore wise, this is basic and simple.
+> Second Blessing is something like you can project an aura of cold around you (effects vary, with cold maybe a slight slow, fire damage is lessened, things like that) and a buff to your first blessing. Lore wise this is your learning to project the power of your god
+> Third and final blessing is being able to project your Aura inward giving you a boost to your stats. Lore wise this is your learning to imbue yourself with the power of your god.
+> 1. Like what if your a paladin of a god of the hunt so it could: First blessing increase accuracy; Second blessing use your aura to help obscure yourself and allies; Third blessing jump higher run faster things like that
+> 2. Basically a paladin doesn't have to be a heavy armored holy warrior but a warrior of a chosen God
+> I know Pillars of Eternity has something a tiny bit similar, where the paladin order you pick modifies your smite and lay on hands
+
+**The Archer (players):**
+> 1. Pin and Ricochet come to mind from Original Sin. That thing fantasy archers do where they shoot straight up and a hail of arrows land on their target. Plenty of ammo options, Green Arrow style, I'm talking explosive, incendiary, net, shotbolt.
+>
+> 2 Ideas for Class Identity Actions; Take Aim - Sacrifice your movement to increase ranged weapon range and gain a boon on the next ranged attack. Pin - Aim low, hampering the movement of an enemy. Either reducing movement or pinning them entirely.
+> Idea for Class Identity Reaction; Overwatch - If an enemy moves to the adjacent space of an ally in range make a ranged attack at them.
+> Idea for Encounter Action; Multi-Nocking; Load extra arrows/bolts to fire rapidly, perform a ranged strike targeting several enemies at once.
+> Idea for Apex Action; Full Draw; Push your weapon beyond its limits, perform a ranged strike with increased damage, armour pen, knockback or knockdown
+
+**Research asked with it (2026-11-20, running):** Pillars of Eternity (1 and 2) and Divinity: Original Sin 2, their mechanics compared with 2d12: what players love, what fits a tabletop, what could fit 2d12 (`research/pillars-of-eternity.md`, `research/divinity-original-sin-2.md` when done). Divinity's ambient interaction (surfaces) is "a whole other topic".

@@ -63,6 +63,7 @@
 - **T12** A rank is a pick, never a gift of the Stage; a rank may write a minimum Stage as a gate. Deepen or widen at each Talent level.
 - **T13** Every rank is worth a whole pick (checked against an average Rank I); a Talent has as many ranks as it needs, none to two.
 - **T14** A penalty is lifted, or a cost lowered, by an Action you spend (AP and a Frequency), never by a passive; passive lifted limits that change how an Action works stay allowed; an attack Talent is a Strike; the rarer the Frequency, the more it may be worth; near a class card is fine, overlap is not.
+- **T15** Talents restart for the two current classes (Paladin, Archer); the range grows from playtests and players' asks. The test batch is reference only. Every rank is priced against an anchor (one rank = N points of the 100-point turn, N set by Lucas), with floors as well as ceilings. Lists are numbered Talent.Branch.Rank.
 
 ## 5. Questions still to ask
 
