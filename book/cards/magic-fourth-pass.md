@@ -1,5 +1,7 @@
 # Magic, the fourth pass: Surge, the eight summons, two-Path spells
 
+> **Status (2026-11-20): PLACEHOLDER spell cards (Lucas, 2026-11-19: reference only, "they aren't set in any shape or form"). Never argue from one as settled.**
+
 **2026-11-18.** A small batch that puts the day's decisions on paper (`book/magic-design.md`, decisions 55 to 70): Surge as the price of an Overcast step and of a stronger spell, Overreach as a line on some spells, one Summon spell for each Path, spells written with two Paths, areas that don't grow, the sorting order.
 
 **A test, not a spell list. Nothing here is in the book. Every number is a placeholder** [not priced: the SIM has no caster]. Read with the header of `magic-second-pass.md` (the bar, the riders in full) and `magic-third-pass.md`.

@@ -1,5 +1,7 @@
 # Talents, the second pass: seven famous families
 
+> **Status (2026-11-20): HISTORY (superseded by `talents-batch.md`, then set aside by T15). Kept for its audit.**
+
 > **Superseded for review on 2026-11-20 by `talents-batch.md`,** which holds every Talent still standing. This file is kept as history with its audit.
 
 **2026-11-20.** Lucas: "A" (the families of `research/famous-picks.md` that already fit, plus the damage trade as an Action). Seven Talents under T1 to T14 of `book/talents-design.md` and the lessons of his first review. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Stage 2 is not written in the game: every Stage on a rank is a placeholder.

@@ -1,6 +1,8 @@
 # Magic outside a fight: the working file
 
-**Opened 2026-11-19.** The piece decision 87 of `book/magic-design.md` left to design. **Nothing here is decided and nothing is in the book.** This file is to this piece what the magic record is to magic: Lucas's words, what is already fixed, the problems to design against, the steps, then each decision as it is taken. The magic record stays the authority for everything else; a decision taken here is also entered there.
+> **Status (2026-11-20): CURRENT, the working file for magic outside a fight. **Its skeleton is closed** (decisions 112 to 128, section 7); left: the spell list, the small magic's eight lines, its name, the six test scenes.**
+
+**Opened 2026-11-19.** The piece decision 87 of `book/magic-design.md` left to design. **Nothing here is in the book** (its decisions are the record's 112 to 128). This file is to this piece what the magic record is to magic: Lucas's words, what is already fixed, the problems to design against, the steps, then each decision as it is taken. The magic record stays the authority for everything else; a decision taken here is also entered there.
 
 ---
 

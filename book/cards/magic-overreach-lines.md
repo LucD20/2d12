@@ -1,5 +1,7 @@
 # Magic: first Overreach lines (six drafts)
 
+> **Status (2026-11-20): PLACEHOLDER spell cards (Lucas, 2026-11-19: reference only, "they aren't set in any shape or form"). Never argue from one as settled.**
+
 **2026-11-18.** Decisions 57 and 58 of `book/magic-design.md`: Overreach is a line only some spells print; the line gives what it buys and the whole price. Shared by every line: once a casting, chosen when you cast and before any roll; paid even if the spell misses or is resisted; the usual price is Nonlethal Resolve damage that Guard doesn't take and nothing reduces.
 
 **A test. Nothing is decided, nothing is in the book. Every number is a placeholder** [not priced: the SIM has no caster]. The six spells are from `magic-third-pass.md`; only the new line is shown.

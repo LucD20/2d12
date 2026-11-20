@@ -1,5 +1,7 @@
 # Talents, the first pass: the card template and four test Talents
 
+> **Status (2026-11-20): HISTORY (superseded by `talents-batch.md`, then set aside by T15). Kept for its audit and Lucas's review (section 8).**
+
 > **Superseded for review on 2026-11-20 by `talents-batch.md`,** which holds every Talent still standing. This file is kept as history with its audit.
 
 **2026-11-19.** Four Talents written to test the shape decided in `book/talents-design.md` (T1 to T13), in two groups, each with its ranks drafted so the size can be seen. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Lucas's cards come a few at a time, with him: these are drafts for him to correct.

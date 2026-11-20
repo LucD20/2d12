@@ -1,4 +1,6 @@
-# Roleplay and Skills (proposals, from 2026-11-07; nothing decided, nothing in rules-src)
+# Roleplay and Skills (proposals from 2026-11-07; part decided since, see the status line; nothing in rules-src)
+
+> **Status (2026-11-20): CURRENT for Skills, as proposals. **Part of it is now decided** (Routine, the failed-Check guide, no help outside a fight, the five outcome kinds, the retry rule, the Lead Check, T7: `decided.md` section 3); the list, the numbers and the Skill Talents wait for the D3 Skills session.**
 
 Lucas (2026-11-07): "it is a Roleplaying game, so this is a big part of the system." Skills aren't written yet; they will be raised mainly by Talents. His dislikes: 4e's reputation for no roleplay, Draw Steel's over-the-top out-of-combat features (Resist the Unnatural, Gum Up the Works), PF2e's skill feats. **Everything below is a proposal (Claude, from the research) for him to review in depth later.**
 

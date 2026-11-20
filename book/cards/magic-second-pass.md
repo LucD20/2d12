@@ -1,5 +1,7 @@
 # Magic, the second pass: twenty-six spells against the basics as they now stand
 
+> **Status (2026-11-20): PLACEHOLDER spell cards (Lucas, 2026-11-19: reference only, "they aren't set in any shape or form"). Never argue from one as settled.**
+
 **2026-11-18, asked by Lucas:** "Do A. Do a double pass to make sure you haven't forgotten anything." A is: revise the seventeen cards of `magic-first-pass.md` with everything decided since (decisions 36 to 44 of `book/magic-design.md`) and add the ones the first pass couldn't draw.
 
 **A test of the basics, not a spell list. Nothing here is decided, nothing is in the book. Every number is a placeholder** [not priced: the SIM has no caster], set by eye against the Stage 0 cards (a Longsword's 1[W] + [Mod] is about 10 on a Tier 2 and 14 on a Tier 3).

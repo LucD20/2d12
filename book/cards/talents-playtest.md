@@ -1,5 +1,7 @@
 # Talents for the playtest PCs (the restart, T15 and T16)
 
+> **Status (2026-11-20): CURRENT: the four playtest Talents (Take Aim, Cold Domain, Shared Burden, Ricochet), audited and revised; next, the Foundry pack.**
+
 **2026-11-20.** One Talent for each playtest PC (`talents-design.md` section 9, T16), made one at a time with Lucas, priced on its PC's build. Numbering: Talent.Branch.Rank. **Drafts: nothing here is in the book.**
 
 | # | Talent | For | State |

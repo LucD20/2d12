@@ -1,5 +1,7 @@
 # Magic, as decided: a reading copy
 
+> **Status (2026-11-20): READING COPY of magic as decided after decision 99 (sections 9 and 13 to 128). Not the authority: `magic-design.md` is.**
+
 **2026-11-19.** The rules of magic as they stand after decision 99 (sections 9 and 13 touched up to 128) of `book/magic-design.md`, put in reading order. **This is not rulebook text and nothing here is in the book.** It is Claude's wording of Lucas's decisions, written so that the whole can be read in one sitting. **The record is the authority:** where this page and the record differ, the record wins. A number in brackets is the decision it comes from.
 
 **Words (decision 107).** A Path or a School has a **rank**; "level" is the character's. A spell is the card; a casting is one use. This page still says "level" in places.

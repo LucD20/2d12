@@ -1,5 +1,7 @@
 # Magic: the design record
 
+> **Status (2026-11-20): CURRENT, the magic record (decisions 1 to 128, the authority for magic). Its summary is `decided.md`; magic outside a fight is designed in `magic-out-of-combat.md`.**
+
 **Started 2026-11-18** (the Magic brainstorm; MASTER-PLAN's D4, taken before D3 Skills). **Status: brainstorm. Nothing here is in the book.** This file is the record of the magic design, the way `book/cards/paladin-redesign.md` is the Paladin's: Lucas's words, every decision in order, what the rules already fix, and what is open. **Read it before any work on magic, and update it with every decision.** The day-by-day log stays in `rules-backlog.md`; the research is in `book/research/` (`dominions-magic.md`, `dominions-paths.md`, `dominions-rules.md`, `ars-magica.md`, `magic-schools.md`, `caster-class-shape.md`).
 
 ---
@@ -601,9 +603,9 @@ Corrected: decision 70's "Surge is never above Escalation"; 5g's header and its 
 - **`research/crucible.md`:** read from its source; composing covers what is a number, a written card covers what needs a sentence; a substance's condition only on a Critical; out-of-fight magic written by substance.
 - **`book/magic-rules-draft.md`:** the rules of magic as decided, in reading order, with every assumption marked. A reading copy: this record stays the authority.
 
-### The question that was on the table (not answered)
+### The question that was on the table (ANSWERED: A, then Talents)
 
-**Which piece next:** (A) out-of-combat magic, the piece of decision 87 (Claude's pick); (B) bringing back the dead (93: research first); (C) a playtest kit, one page of rules and one test caster, to try Surge; (D) Talents (where about eighteen seeds wait, and the Talents' structure is still set aside).
+**Answered 2026-11-19:** A, out-of-combat magic (its skeleton closed with decisions 112 to 128), then Talents (decision 121: "Talents are the meat"; `talents-design.md`). **Which piece next:** (A) out-of-combat magic, the piece of decision 87 (Claude's pick); (B) bringing back the dead (93: research first); (C) a playtest kit, one page of rules and one test caster, to try Surge; (D) Talents (where about eighteen seeds wait, and the Talents' structure is still set aside).
 
 ### What is decided, in one paragraph
 

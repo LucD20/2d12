@@ -1,5 +1,7 @@
 # Talents: the design record
 
+> **Status (2026-11-20): CURRENT, the Talents record (T1 to T17 and the lessons; section 9 is the restart for the playtest PCs). Its summary is `decided.md` section 4; the current cards are `cards/talents-playtest.md`.**
+
 **Opened 2026-11-19.** Lucas: "Talents are the meat and likely the most important part. Research has to be thorough [...] Let's prepare as well as we can. Start." **Status: preparation. Nothing here is decided and nothing is in the book.** This file is the record of the Talents' design, the way `book/magic-design.md` is magic's: his words, what is already fixed, everything that waits on Talents, the research, the problems, the steps, then each decision as it is taken.
 
 ---
@@ -259,7 +261,7 @@ The Talents record is now named in HANDOFF and CLAUDE.md.
 
 | # | Decided | Lucas's words |
 |---|---|---|
-| T15 | **Talents restart, for the two current classes only (the Paladin and the Archer).** No wide catalogue yet: the range grows from the playtests and what the players ask for. The test batch (`cards/talents-batch.md`) is set aside as reference, with its audits, his review and its notes; nothing in it is decided. T1 to T14 and the lessons stand. **T3 still holds** (no Talent written for one class; a Talent keyed on a trait reaches the class cards that carry it): "for the current classes" means aimed at what their players ask for and priced on their builds, not locked to them. *(Claude's reading; to confirm.)* | "making talents for the current Classes only" |
+| T15 | **Talents restart, for the two current classes only (the Paladin and the Archer).** No wide catalogue yet: the range grows from the playtests and what the players ask for. The test batch (`cards/talents-batch.md`) is set aside as reference, with its audits, his review and its notes; nothing in it is decided. T1 to T14 and the lessons stand. **T3 still holds** (no Talent written for one class; a Talent keyed on a trait reaches the class cards that carry it): "for the current classes" means aimed at what their players ask for and priced on their builds, not locked to them. **Confirmed (Lucas, 2026-11-20: "Talents that anyone can take").** | "making talents for the current Classes only" |
 
 **Why the batch kept failing (the review Lucas agreed with, "Yeah"):**
 1. **Nothing was priced.** The yardsticks exist (`ruler/pc-budget.md`: a turn of three Weapon Attacks = 100 points; Chapter 14's rider prices: Mild 3, Moderate 8, Severe 12, Extreme 18; `ruler/catalogue/talents.txt`), and the CLAUDE.md analysis format asks for them, but every number was "[not priced]" and the audits were told not to judge numbers. Power was judged only by Lucas, by feel, each round.

@@ -1,5 +1,7 @@
 # Magic, the first pass: seventeen Dominions spells as 2d12 cards
 
+> **Status (2026-11-20): PLACEHOLDER spell cards (Lucas, 2026-11-19: reference only, "they aren't set in any shape or form"). Never argue from one as settled.**
+
 **2026-11-18, asked by Lucas:** "You can get spells from Dominions, simple ones and more complex ones, and see how they hold up." **A test of the basics, not a spell list: nothing here is decided, nothing is in the book.** The basics tested are section 5g of `book/magic-design.md` with decisions 32 to 34 (Overcast capped at one step a ladder; buffs mainly in rounds; a spell can carry its own rules).
 
 **How to read a card here.** The bar: name, then what it needs (its Path and School minimums), its Frequency and cost. Then the Flavor, the traits, the grid (Distance, Area, Target), the body in the Structure's labels (Effect, Attack or Save, Tiers, Special), and the new line, **Overcast**: the form ladders it may climb (School levels) and its own step (Path levels). Merge and Overreach are on every spell and are not repeated.

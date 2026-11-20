@@ -1,6 +1,8 @@
-# What is decided: magic and Talents (2026-11-18 and 19)
+# What is decided: magic, play outside a fight, Talents (2026-11-18 to 20)
 
-**The one page to read.** Everything Lucas decided in the magic brainstorm and the Talents design, in short, with nothing that is only an assumption or still open; those are in section 5. **Nothing here is in the rulebook,** except one sentence of Chapter 7. The full reasons and his words: `book/magic-design.md` (decisions 1 to 128), `book/magic-out-of-combat.md`, `book/talents-design.md` (T1 to T10). The rules of magic in reading order: `book/magic-rules-draft.md`. A number in brackets is the record's decision.
+> **Status (2026-11-20): CURRENT, the one map: what is decided (magic, play outside a fight, Talents), what the book already has, what Foundry still has to follow, what is open, and which file is current for each topic (section 7).**
+
+**The one page to read.** Everything Lucas decided in the magic brainstorm, play outside a fight and the Talents design, in short, with nothing that is only an assumption or still open; those are in section 5. **Most of it is not in the rulebook:** what is (applied 2026-11-19 and 20) is listed in section 7, with what Foundry still has to follow; which file is current for each topic is section 8. The full reasons and his words: `book/magic-design.md` (decisions 1 to 128), `book/magic-out-of-combat.md`, `book/talents-design.md` (T1 to T17). The rules of magic in reading order: `book/magic-rules-draft.md`. A number in brackets is the record's decision.
 
 ---
 
@@ -64,6 +66,9 @@
 - **T13** Every rank is worth a whole pick (checked against an average Rank I); a Talent has as many ranks as it needs, none to two.
 - **T14** A penalty is lifted, or a cost lowered, by an Action you spend (AP and a Frequency), never by a passive; passive lifted limits that change how an Action works stay allowed; an attack Talent is a Strike; the rarer the Frequency, the more it may be worth; near a class card is fine, overlap is not.
 - **T15** Talents restart for the two current classes (Paladin, Archer); the range grows from playtests and players' asks. The test batch is reference only. Every rank is priced against an anchor (one rank = N points of the 100-point turn, N set by Lucas), with floors as well as ceilings. Lists are numbered Talent.Branch.Rank.
+- **The four playtest Talents** (T16; `cards/talents-playtest.md`, audited and revised 2026-11-20): Take Aim (Sylwen), Cold Domain's Rime Strike and Ice Pillar (Aveline), Shared Burden's Oath of Burden and Bear the Blow (Durgan), Ricochet (Kaela). Next: the Foundry pack, then playtest 6.
+- **A Talent may do what a spell does** (Lucas, 2026-11-20): shape the field, bend a rule, do something no card does; each new thing gets its rule written.
+- **Kept from the set-aside batch:** Human Shield, Lucas's shape (1R · Round; Requirement: a creature is Grabbed by you and isn't a target of the triggering Action; Interrupt: a creature would damage you with Blunt, Pierce or Slash damage; you and it each take half; only you suffer the Action's other effects), for when Grab Hold returns.
 - **T16, T17** The first four Talents, one for each playtest PC (Aveline: the god's blessing on the weapon; Durgan: defending allies; Kaela: Ricochet; Sylwen: Take Aim). The anchor (placeholder): one pick is worth about +6 points a turn over the best other use of the same AP (a Weapon Attack = 25), read from Take Aim (`cards/talents-playtest.md`).
 
 ## 5. Questions still to ask
@@ -71,8 +76,16 @@
 **Answered 2026-11-19:** Routine meets the DC, a Tier 2 at most; false damage is never Lethal; a hidden target lowers a Save DC unless the spell is an [Area]; **a lower cost in a Talent is not allowed as a passive** (Lucas: "Not really, no"; revised by T14 on 2026-11-20: allowed as an Action with its own price).
 
 **Small, still open:**
-4. The retry rule: can another character make the same attempt? Lucas, 2026-11-19: "This requires extensive search". His points: a failed attempt must mean something and never stop the story; it needs a drawback where the task matters (the villain prepares, the noise alerts others, time is lost); a low-stakes task (a locked chest) has none, so anyone can just try again; group rolls don't fit a chest; "everyone rolls" is easy but dull; "Tier 1 means failure and nobody can try again" is decent; in a social scene a retry needs good faith and a changed situation. Research: `research/party-retries.md`. And: is "the GM decides" a separate exit, or the judge of whether the situation changed?
+4. **Answered (Lucas, 2026-11-19: the Lead Check and "the attempt belongs to the party": section 3).** The question was: can another character make the same attempt? Lucas, 2026-11-19: "This requires extensive search". His points: a failed attempt must mean something and never stop the story; it needs a drawback where the task matters (the villain prepares, the noise alerts others, time is lost); a low-stakes task (a locked chest) has none, so anyone can just try again; group rolls don't fit a chest; "everyone rolls" is easy but dull; "Tier 1 means failure and nobody can try again" is decent; in a social scene a retry needs good faith and a changed situation. Research: `research/party-retries.md`. And: is "the GM decides" a separate exit, or the judge of whether the situation changed?
 5. **Answered (Lucas, 2026-11-19): a Lingering may have no subtype after all** (it replaces decision 105's "every Lingering writes its subtype"). An untyped Lingering is the default "bleed", and the rule says what it is for any body: "this can mean bleeding for a living creature with blood, the sap of a plant, the parts of an elemental creature... What matters is that it affects any creature that doesn't have Immune Lingering" (his words; the cure for Pathfinder 2e's "how does an ooze bleed?"). It counts as its own kind for one-Lingering-a-subtype (82) and works like any damage. **Resist, Weak and Immune can name Lingering** ("Resist Lingering 5") and then cover every Lingering; **when two Resists cover the same Lingering, the highest applies, one only** (his example: Resist Lingering 5 and Resist Fire 10 against an 8 Fire Lingering: Fire 10 applies). Claude's reading, to confirm: the same for two Weaks; a Resist and a Weak that both cover it each apply once. Wounding Shot (the Archer's) keeps its untyped Lingering. **How Resist, Weak and Immune are written (Lucas, 2026-11-19): the word first, then each subtype with its number,** the same for one or several: **Weakness Fire 2**; **Weakness Fire 2, Holy 3**; on a stat block one line each (**Resistance** Fire 5, Cold 2 · **Weakness** Holy 5 · **Immunity** Poison, Lingering); in a rule, "You gain Resistance Fire 2, Holy 5"; a rule that names the kind with no number reads "a creature with Fire Weakness". Replaces Chapter 1's "Resist 2 Fire, Weak 5 Holy, Immune Fire".
+
+**Open, from 2026-11-20:**
+15. Boons and Banes on a Defense or a DC ("1 Bane to AD", Lucas's question on Sunder; Claude's proposal: each changes it by 1 and the names' limits apply; magic's Save DC already takes Boons and Banes [88]). Not answered.
+16. Luck (rerolls) and dual wielding (fewer Banes): rulings under T1.
+17. The objects pass (`rules-backlog.md`, "OBJECTS"): immunities, Collision damage to an object, Health and Defense; decided so far: an object gets Tier 1 on a Save and an Area hits it.
+18. **"Actions Out of Combat" into the book** (`items-economy.md` Part 2, decided by Lucas on 2026-11-06): the playtest Talents lean on its item 5 (no durations outside an encounter).
+19. The basic Grab's 2 AP Tier 3 (`rules-backlog.md`, "THE BASIC GRAB": Claude's assumption).
+20. Magic's twelve assumptions waiting for Lucas's word (`magic-design.md`, "Assumptions of Claude's waiting for Lucas's word").
 
 **For the pieces still to design:**
 7. Retraining after Stage 0: its mechanic [T8].
@@ -91,8 +104,35 @@
 | 1 | The Save DC: a Save Action's DC takes the user's Boons and Banes; a hidden target lowers it unless the spell is an [Area]; Resistance, Weakness and Immunity written word first ("Weakness Fire 2, Holy 3"), may name Lingering, and the highest of two that cover one Lingering applies |
 | 2 | Surge; an Interrupt on "would gain a condition"; the order of a turn's start; the help Basic Action (1 Support Boon) |
 | 4 | Nonlethal damage leaves on a Sleep; **the Breather is deleted** (still printed); false damage; the Poison subtype |
+| 6 | The basic Grab, a Basic Action shaped like Trip (`rules-backlog.md`, "THE BASIC GRAB") |
 | 7 | [Melee] no longer asks for a weapon (**written**); [Spell], the Paths and Schools, [Woven], [Sustained], [Incanted], [Subtle]; a class trait on each class's cards |
 | 8 | One Lingering for each damage subtype, an untyped Lingering its own kind (the default, described for any body); one Shake Off ends one, your choice; Charmed, Confused |
 | 12 | Hallowed Stance keys on [Paladin, Divine] |
 | 15 | Mastery: one point for a single thing |
 | Play outside a fight | Routine; the failed-Check guide; no help outside a fight; the retry rule; the Lead Check (the attempt belongs to the party; the highest modifier rolls) |
+
+## 7. Applied to the book on this branch (`claude/loving-heisenberg-8jmq1z`), and what Foundry must still follow
+
+| Date | Chapter | The rule | Foundry |
+|---|---|---|---|
+| 2026-11-19 | 7 | [Melee]: "These Actions target creatures in close combat" (no longer asks for a weapon) | text only |
+| 2026-11-20 | 6, 8, 9 | **Break Free is always a Check:** Body or Instinct (the higher) against the Action DC of what holds you | the texts follow; **it doesn't roll yet** (Bronze; foundry-backlog "BREAK FREE ROLLS") |
+| 2026-11-20 | 1, 8, 9 | **The Action DC:** 11 + the Modifier the Action used; 13 with no Action behind it; it replaced the Immobilized DC | the texts and move.mjs's messages follow; the code's names don't |
+| 2026-11-20 | 2, 8, 9, 14 | **EoE**, the end of the encounter | not yet (foundry-backlog "EoE IN FOUNDRY") |
+| 2026-11-20 | 1 | **Halving and splitting damage:** each subtype on its own; a split never makes more damage | nothing needs it until Shared Burden and Ricochet |
+| 2026-11-20 | 3 | **A movement you must make:** the whole distance, a new square each step, unless "freely" | nothing needs it until Ricochet |
+
+The whole list for the Foundry pack: `foundry/foundry-backlog.md`, "BOOK CHANGES FROM THE MAGIC AND TALENTS BRANCH".
+
+## 8. Which file is current
+
+| Topic | Current | Reading copy, history or placeholder |
+|---|---|---|
+| Everything decided (this page) | `decided.md` | |
+| Magic in a fight | `magic-design.md` (the record, decisions 1 to 128) | `magic-rules-draft.md` (reading copy); `cards/magic-*-pass.md`, `cards/magic-overreach-lines.md` (placeholders) |
+| Magic outside a fight | `magic-out-of-combat.md` (skeleton closed) | |
+| Skills and play outside a fight | `roleplay-skills.md` (proposals) and section 3 here (decided) | `items-economy.md` Part 2 (decided, not in the book) |
+| Talents | `talents-design.md` (the record) and `cards/talents-playtest.md` (the four playtest Talents) | `cards/talents-batch.md`, `talents-first-pass.md`, `talents-second-pass.md` (history) |
+| Research | `research/README.md` (the index) | `research/raw/` (the full reports) |
+| The guard on all of these | `magic-files.sha256`, built and checked by `bash book/tools/guard.sh` | |
+
