@@ -2,7 +2,7 @@
 
 **2026-11-20.** Lucas: "A" (the families of `research/famous-picks.md` that already fit, plus the damage trade as an Action). Seven Talents under T1 to T14 of `book/talents-design.md` and the lessons of his first review. **A test, not a Talent list. Nothing here is decided and nothing is in the book. Every number is a placeholder** [not priced]. Stage 2 is not written in the game: every Stage on a rank is a placeholder.
 
-**Audit status:** audited by an independent reader and corrected; what changed is the last section. **Two questions for Lucas** came out of it (Grab Hold's permission; Finishing Blow), marked in place.
+**Audit status:** audited by an independent reader and corrected; what changed is the last section. **Two questions for Lucas** came out of it, both answered on 2026-11-20 (the grapple becomes a Basic Action; Finishing Blow weakened).
 
 ---
 
@@ -220,7 +220,7 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 
 ## 6. Grab Hold (combat maneuvers)
 
-**At a glance.** A grapple: take hold of a creature, then do something with it. Two ranks, three branches. **A question for Lucas, from the audit:** a grapple is something anyone should be able to try (the permission trap): should the plain grapple be a Basic Action, and this Talent what comes after it?
+**At a glance.** A grapple: take hold of a creature, then do something with it. Two ranks, three branches. **Answered (Lucas, 2026-11-20: "A"): the plain grapple joins the Basic Actions** (everyone can grab on a Tier 3, as Trip and Shove are for everyone), **and this Talent becomes what comes after it:** its branches (Throw, Human Shield, Choke) are its first rank. To redraft; the Basic Action goes in the backlog.
 
 **Rank I**
 
@@ -286,11 +286,11 @@ Each Talent: **at a glance** (its famous family, what it does, its size), **Rank
 |---|---|
 | **The reaper** | **Sweeping Blow:** on the Tier 3 line: you Cleave 1 (Chapter 1) |
 | **The breaker** | **Sunder:** a new line: on a Tier 3, the target's Armor Defense is 1 lower (1 round) |
-| **The executioner** | **Finishing Blow:** a new line: against a Bloodied target, the roll doesn't take the 2 Banes of this card (its other Banes stay) |
+| **The executioner** | **Finishing Blow:** a new line: against a Bloodied target, the roll takes only 1 of this card's 2 Banes (its other Banes stay) |
 
 **Notes**
 - **The trade is inside the Action** (2 Banes for more dice), so it is a choice each turn, never a passive (T1, T14). Pathfinder 2e's Power Attack is the model (`research/famous-picks.md`).
-- **A question for Lucas, from the audit:** Finishing Blow improves every Tier against half a fight's targets, while Sweeping Blow and Sunder ride a Tier 3 that the card's own Banes cut to about 12 to 23%: likely the obvious branch. Keep, or weaken?
+- **Finishing Blow weakened (Lucas, 2026-11-20: "A"):** against a Bloodied target the roll takes 1 of the card's 2 Banes, not none. The audit's reason: removing both improved every Tier against half a fight's targets, while the other branches ride a rare Tier 3.
 - **Cleave is already a rules term** (Chapter 1, Cleave N): the branch now uses it.
 - **Near the Archer's Quick Shots** (2 AP, more [W] for a bow): Reckless Blow is melee and pays with Banes.
 
