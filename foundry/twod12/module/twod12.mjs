@@ -424,6 +424,9 @@ Hooks.once("ready", async () => {
   });
   document.addEventListener("click", async ev => {
     const inl = ev.target.closest?.("[data-twod12-inline]");
+    // v0.0.462 (Lucas, checklist v0.0.459, pushed-button: "Button is not clickable in the chat card"): a diagnostic: a click on a card's Tier line
+    // or rider that holds no button says so in the console, with what is there
+    if (!inl) { const rd = ev.target.closest?.(".cc-rider, .cc-srow, .cc-tier, .cc-out"); if (rd && /Pushed|Pulled|Slid|Reposition/.test(rd.textContent ?? "")) console.warn(`twod12 | pushed-button diagnostic: a click on "${(rd.textContent ?? "").trim().slice(0, 80)}" found no button; its HTML:`, rd.innerHTML.slice(0, 400)); }
     if (inl) {
       ev.preventDefault();
       // v0.0.352 (Lucas, Step 6): the icon uses the chip, the name opens what it names. v0.0.418 (Lucas, playtest 5, C12: "Clicking Heal ... is

@@ -18,22 +18,6 @@
      "do": "Open Sylwen's Inventory; click the Dagger's Where button, then click it again; same with the Hunting Bow's Where; on her Overview, click a hand tile twice.",
      "expect": "The second click closes the menu (it no longer flicks open again).",
      "rev": 2
-    },
-    {
-     "id": "rally-window",
-     "v": "v0.0.454",
-     "title": "The Rally window and its line",
-     "do": "Give Durgan 9 Vigor, 2 Vigor Nonlethal and 6 Resolve damage; click his Rally (sheet or HUD); click \"Change the split\", move a point with − and +, Use. Then use Lay On Hands' \"up to N\" Rally Points on Aveline (an Action that lets her use several), pick 2 on the window's first line, Use; once more and Cancel.",
-     "expect": "A 400 px window in the dark table look: \"Durgan heals 9\" (with parts under it when there are bonuses), his Rally Points as marks with \"N of 7 left\", Vigor and Resolve as bars (the healed part hatched, \"12 → 18 / 23\"), \"Split evenly between the two.\" and \"Change the split\", which shows the rows with − and +. Nothing in the chat while the window is open or after Cancel. After Use, one line with the heart: \"Durgan heals 9 · 1 Rally Point, 6 left\", then \"9 Vigor …\", then the parts when there are several. With \"up to N\", the count is the window's first line (no separate \"How many?\" window).",
-     "rev": 1
-    },
-    {
-     "id": "g3-res",
-     "v": "v0.0.452",
-     "title": "The dark Resolve color",
-     "do": "In the dark interface, have Aveline Smite the Orc Warrior and read the chat card's line \"Smite dice: [R] 1d6! Ho…\"; open Smite on her sheet and in the roll dialog, and Durgan's Word of Radiance.",
-     "expect": "\"[R] 1d6!\" in the chat card (the \"!\" with the dice) and \"Ho\" in Holy's gold, and every Resolve damage on the sheet and in the dialog read in the same pale blue, easy to read on the dark card (the chat card no longer darker than the rest); the other colors in chat cards (Attributes, Boons, Banes) readable too; Vigor's red unchanged. The roll dialog too: its Smite dice line and Tiers in the same pale blue, not the dark blue.",
-     "rev": 5
     }
    ]
   },
@@ -63,22 +47,6 @@
      "do": "Aveline clicks Commandment on her HUD; drag the card by its top line; click outside it; click a Mode's \"Use · 1 AP\"; open it again and Shift-click a Mode's Use.",
      "expect": "The card moves with the drag and, once moved, stays open on an outside click (the ×, Escape or a Use close it). A plain click uses the Mode straight to the chat (no roll dialog, unless something blocks it, such as no target); Shift-click opens the roll dialog.",
      "rev": 2
-    },
-    {
-     "id": "hud-used",
-     "v": "v0.0.453",
-     "title": "A used Action from the HUD: a warning, not a stop",
-     "do": "In a combat, Sylwen uses Quick Shots, then clicks it again on her HUD (its line reads \"used\", its stamp struck); then with 1 AP left click a 2 AP stamp. Ask for an Escalation 2 Passive's or the Apex's line before her Escalation reaches it.",
-     "expect": "The used Action and the 2 AP stamp still open the roll dialog, which says why it isn't allowed (\"used this round\", \"Not enough AP\") and lets you Roll. A struck stamp shows the hand pointer and lights on hover. Only an Escalation lock stays unclickable.",
-     "rev": 1
-    },
-    {
-     "id": "strip-marks",
-     "v": "v0.0.453",
-     "title": "The combat strip: the Reaction diamond, no state words",
-     "do": "In the dark interface, start a combat with Durgan and the Orc Warrior; let the Orc become Bloodied, then put Durgan Down.",
-     "expect": "Each creature's Reaction AP diamond on the strip is filled in the same gold as a full AP square (empty: the outline). No \"Bloodied\", \"Strained\", \"Dying\" or \"Down\" word under the names.",
-     "rev": 1
     }
    ]
   },
@@ -86,28 +54,12 @@
    "name": "Starting a combat",
    "items": [
     {
-     "id": "squad-pictures",
-     "v": "v0.0.454",
-     "title": "The Minions' picker with pictures",
-     "do": "Three Goblin Sneaks as one squad (merge them in the Initiative window) in a combat with Aveline; when their turn comes, look at the HUD's Situational tab; hover the squares; click one.",
-     "expect": "\"Goblin Sneak · 3 of the squad left\" and \"Which one goes now?\", then a square per Goblin with its token's picture and its number in a corner; a hover shows the name and lights its token on the map; a click (or a click on the token) picks it.",
-     "rev": 1
-    },
-    {
      "id": "judge-start",
-     "v": "v0.0.453",
-     "title": "Judge on the Start of the Encounter card",
-     "do": "Put Aveline, Durgan and the Ogre Chieftain in a combat, roll Initiative and start it.",
-     "expect": "The \"Start of the Encounter\" card has a row for each Paladin: \"Aveline can Judge a creature (0 AP, at the start of the encounter)\" with its Judge button; Resolve runs them in order (each asks for its target), as the other rows.",
-     "rev": 1
-    },
-    {
-     "id": "minion-squad",
-     "v": "v0.0.453",
-     "title": "Minion squads: the recommendation, the GM's groups and order",
-     "do": "Make the Goblin Sneak a Minion (its sheet's rank), put three Goblin Sneaks, Aveline and Sylwen in a combat and open the Initiative window. Click the label of the Goblin that is alone in its squad, then the label of one of the pair; then add a fourth and a fifth Goblin. Roll. Start the combat; when a Goblin squad's turn comes, and at the end of that Goblin's turn, answer the bar.",
-     "expect": "Three Goblins start as two squads, 2 + 1 (four: 2 + 2; five: 2 + 2 + 1). The lone one's click puts it with the others (one squad of three); a click on one of a pair after the last squad makes a new squad; a squad never holds more than three; two Goblins can be split. One roll per squad, each Goblin its own turn, no PC's turn inside a squad; before a squad's turn the bar asks which Goblin goes now, and again at the end of each turn while two or more are left.",
-     "rev": 4
+     "v": "v0.0.462",
+     "title": "Judge on the Start of the Encounter card, once",
+     "do": "Put Aveline, Durgan and the Ogre Chieftain in a combat, roll Initiative and start it; Resolve the card.",
+     "expect": "One Judge row for each Paladin (not two), each with its Judge button; Resolve asks each for its target once. No \"The Combat … does not exist\" error in the console when a combat is deleted mid-movement.",
+     "rev": 2
     }
    ]
   },
@@ -120,22 +72,6 @@
      "title": "An area Action: Place before the targets",
      "do": "With the Orc Warrior targeted, Durgan uses Word of Radiance from his HUD (not the sheet): read the dialog; click \"Place 2 Emanation\" and place it; then use it again and press Roll without placing.",
      "expect": "From the HUD as from the sheet, the dialog opens first (no area asked before it). No creature rows until the area is placed: a \"Place 2 Emanation\" button stands where they go, its outline pulsing slowly in bronze. Placed, the creatures in it show. Roll without placing asks to place it, then rolls.",
-     "rev": 1
-    },
-    {
-     "id": "dtype-colors",
-     "v": "v0.0.457",
-     "title": "Each damage type one color everywhere",
-     "do": "In the dark theme, Durgan opens Smite's roll dialog and rolls it on the Orc Warrior; read the dialog's damage line, the chat card and the damage card; open Word of Radiance's card on his sheet. Switch Foundry to the light scheme and look again.",
-     "expect": "Holy is the same amber everywhere (the dialog, the chat card's code, the damage card's row and its tint, the Action card's Tier lines; no type painted plain gold), a brighter amber on dark and a deeper one on light. Blunt on the Orc Warrior's sheet a warm grey, readable on dark.",
-     "rev": 1
-    },
-    {
-     "id": "unfailing",
-     "v": "v0.0.453",
-     "title": "Unfailing: Smite isn't spent on a Tier 1",
-     "do": "In a combat, Aveline Smites the Orc Warrior until she gets a Tier 1 (the GM's force-Tier in the roll dialog helps); then Smite again; then get a Tier 2 and try a third time.",
-     "expect": "Smite's traits read \"… Unfailing …\" (sheet, card, book). After the Tier 1 a chat line says \"Unfailing: a Tier 1, so Smite isn't spent. Aveline can use it again.\"; Smite is not marked used and its Strike still counts (the strip). After the Tier 2 it is used as usual.",
      "rev": 1
     },
     {
@@ -230,11 +166,11 @@
     },
     {
      "id": "shake-off-ally",
-     "v": "v0.0.427",
-     "title": "Shake Off by an ally: the current turn",
-     "do": "On Kaela's turn, she uses Shake Off on Durgan's Lingering and gets a Tier 2.",
-     "expect": "At the end of Kaela's turn Durgan takes half the Lingering's damage (\"Halved (Shake Off, Tier 2)\"), then it ends; nothing at the end of Durgan's own turn.",
-     "rev": 1
+     "v": "v0.0.462",
+     "title": "Shake Off by an ally: it finds the Lingering creature",
+     "do": "On Kaela's turn, with Kaela's token selected and Durgan (Lingering) targeted, she uses Shake Off; get a Tier 2. Then once with nothing targeted, on Kaela herself with a Lingering.",
+     "expect": "Durgan rolls the Save (not \"Kaela has no Lingering\"); at the end of Kaela's turn he takes half the Lingering's damage (\"Halved (Shake Off, Tier 2)\"), then it ends; nothing at the end of Durgan's own turn. With nothing targeted, Kaela's own Lingering.",
+     "rev": 2
     }
    ]
   },
@@ -283,11 +219,11 @@
     },
     {
      "id": "rewind-refund",
-     "v": "v0.0.453",
-     "title": "Move back refunds the movement",
-     "do": "In a combat, the Orc Warrior drags its token (no Advance first: the drag buys an Advance, 1 AP) toward Kaela, who has Slip Away; on the Reactions card click Move back, once all the way (Shift-click), once part of the way (pick a square).",
-     "expect": "All the way: the Orc is back where it started with its AP and free squares as before the drag (its AP pips). Part of the way: the squares gone back return as movement left (the strip and the movement bar), its AP stay spent.",
-     "rev": 1
+     "v": "v0.0.462",
+     "title": "Move back gives back only the last movement",
+     "do": "In a combat, the Ogre Chieftain drags 1 square, then drags again toward Kaela (Slip Away triggers on the second drag); on the Reactions card click Move back all the way (Shift-click). Then once a drag that buys an Advance (1 AP) and Move back all the way.",
+     "expect": "The Ogre goes back to where the second drag started, and only the second drag's squares come back (the first square stays spent). A drag that bought its Advance: back where it started with its AP and squares as before that drag.",
+     "rev": 2
     },
     {
      "id": "large-difficult",
@@ -299,11 +235,11 @@
     },
     {
      "id": "pushed-button",
-     "v": "v0.0.453",
+     "v": "v0.0.462",
      "title": "A Pushed button on a card (diagnostic)",
-     "do": "With the console open (F12), the Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2, in the open; click the card's \"Pushed 2\" button.",
-     "expect": "A bar (in the HUD's Situational tab when the HUD is up) asks which creature to push; Durgan is pushed 2. If nothing happens, Fail it with the console's errors and say where the HUD was (which token selected, folded or not).",
-     "rev": 1
+     "do": "With the console open (F12), the Ogre Chieftain uses Overhead Smash on Durgan with a Tier 2, in the open; click the card's \"Pushed 2\".",
+     "expect": "A bar in the HUD's Situational tab asks which creature to push; Durgan is pushed 2. If nothing happens, Fail it and paste the console line that starts \"twod12 | pushed-button diagnostic\" (it says what the card holds where you clicked).",
+     "rev": 2
     }
    ]
   },

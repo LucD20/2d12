@@ -745,12 +745,15 @@ async function handleEndEffect(cfg, ctx) {
  */
 async function handleShakeOff(cfg, ctx) {
   const origin = originActor(ctx);
-  let actors = [];
-  const targets = ctx.targets?.length ? ctx.targets : handTargetTokens(ctx).map(t => ({ uuid: t.document.uuid }));
-  for (const t of targets) { try { const d = await fromUuid(t.uuid); const a = d?.documentName === "Actor" ? d : d?.actor; if (a) actors.push(a); } catch (e) { /* gone */ } }
-  if (!actors.length && origin) actors = [origin];
-  if (!actors.length) return ui.notifications.warn("Target the Lingering creature (or none, for yourself).");
   const { bleedOf, bleedText } = await import("./condrules.mjs");
+  // v0.0.462 (Lucas, checklist v0.0.459: "When I use shake off, it doesnt roll against the target, it says I dont have Lingering"): the lookup took
+  // the selected token (Kaela) before the targeted one (Durgan). The candidates now come in order: the card's targets, your targets, the selected
+  // tokens, yourself; the first group with a Lingering is the one (none has one: the first group, to say so)
+  const lingering = a => [...(a?.effects ?? [])].some(e => !e.disabled && bleedOf(e));
+  const toActors = async list => { const out = []; for (const t of list) { try { const d = t.actor ? t : await fromUuid(t.uuid ?? t.document?.uuid); const a = d?.documentName === "Actor" ? d : d?.actor; if (a && !out.includes(a)) out.push(a); } catch (e) { /* gone */ } } return out; };
+  const groups = [await toActors(ctx.targets ?? []), await toActors([...(game.user?.targets ?? [])].map(t => t.actor).filter(Boolean)), await toActors((canvas?.tokens?.controlled ?? []).map(t => t.actor).filter(Boolean)), origin ? [origin] : []].filter(g => g.length);
+  let actors = groups.find(g => g.some(lingering))?.filter(lingering) ?? groups[0] ?? [];
+  if (!actors.length) return ui.notifications.warn("Target the Lingering creature (or none, for yourself).");
   for (const actor of actors) {
     const list = [...(actor.effects ?? [])].filter(e => !e.disabled).map(e => [e, bleedOf(e)]).filter(([, b]) => b);
     if (!list.length) { ui.notifications.info(`${actor.name} has no Lingering.`); continue; }

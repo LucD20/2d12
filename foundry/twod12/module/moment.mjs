@@ -768,7 +768,9 @@ async function moveBack(msg, st, toStart = false) {
     // v0.0.453 (Lucas, playtest 6: "Rewinding movement in the Reactions chat card doesn't refund movement"): a move that bought an Advance (1 AP)
     // during the drag had more free squares after it than before, so nothing came back. All the way back: the AP and the squares as before; part
     // of the way: the squares gone back return as free movement (the AP stay spent)
-    const flags = whole ? b.flags : backRefund(b.flags, now, steps);
+    // v0.0.462 (Lucas, checklist v0.0.459: "If I move twice ... 'back to where it started' refund all the movement, not only the last"): all the way
+    // back restores the movement as before only when this drag bought its Advance (its AP); otherwise it gives back this drag's squares alone
+    const flags = whole && (Number(now.ap) || 0) < (Number(b.flags.ap) || 0) ? b.flags : backRefund(b.flags, now, whole ? (b.total || steps) : steps);
     try { await c.update(Object.fromEntries(Object.entries(flags).map(([k, v]) => [`flags.${F}.${k}`, v]))); } catch (e) { console.warn("twod12 | movement refund", e); }
   }
   await markBack(msg.id);
@@ -1028,7 +1030,9 @@ export function backChoices(back) {
  *  during the drag or left from one; else the free squares; else an Evade's), the AP stay spent. */
 export function backRefund(before, now, steps) {
   const b = k => Number(before?.[k]) || 0, n = k => Number(now?.[k]) || 0, back = Math.max(0, Number(steps) || 0);
-  if (n("ap") < b("ap") || n("moveLeft") !== b("moveLeft")) return { moveLeft: Math.round((n("moveLeft") + back) * 100) / 100 };
+  if (n("ap") < b("ap")) return { moveLeft: Math.round((n("moveLeft") + back) * 100) / 100 };   // an Advance bought in this drag: its squares come back, the AP stay spent
+  // v0.0.462: never more than it had before this drag (a refund of an earlier drag's squares was possible)
+  if (n("moveLeft") !== b("moveLeft")) return { moveLeft: Math.round(Math.min(b("moveLeft"), n("moveLeft") + back) * 100) / 100 };
   if (b("freeMove") > n("freeMove")) return { freeMove: Math.min(b("freeMove"), n("freeMove") + back) };
   if (b("evadeMove") > n("evadeMove")) return { evadeMove: Math.min(b("evadeMove"), n("evadeMove") + back) };
   return {};
