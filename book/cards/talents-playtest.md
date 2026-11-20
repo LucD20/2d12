@@ -45,3 +45,28 @@
 - **Sylwen's default turn from now on; a dead pick for Kaela** (she moves every turn, and Shifting Aim rewards it): a style split, not one best button for everyone.
 - **The range of the first idea is left out** (simpler; the far range's Bane stays).
 - **Rules:** 2 unnamed Boons are allowed (`cards/README.md`: an unnamed Boon is "1, rarely 2"); with Field and Support Boons she can reach 5 and be Favored. "Leave your square" includes being moved by someone else.
+
+---
+
+## 2. The god's blessing on the weapon (Aveline): "Cold domain" (a placeholder name)
+
+**Lucas (2026-11-20):** "B is the good direction. Cold themed, so a 'Cold domain' (placeholder name). I think a plain attack is lame; lets do an attack (like with Mode, one for weapon another for power) with a special rule, something related to cold, ice, divine. Weapon deals [W], power always just dice, no flat. Same average (or at least very similar)."
+
+**Draft (decision 2, the special rule, open):**
+
+> **Cold Domain** · Talent · Faith · Stage 0
+> **Rime Strike** · 1 AP · Round · [Divine, Strike]
+> *Frost runs down the edge, and the cold bites before the steel does.*
+> **Target:** One creature
+>
+> **Weapon** · [Melee, Weapon] · **Distance:** Weapon
+> **Attack:** Weapon vs. Armor Defense
+> **Tier 1:** 0. **Tier 2:** [V] 1[W] + [Mod]. **Tier 3:** [V] 1[W] + [Mod].
+>
+> **Power** · [Power] · **Distance:** Reach
+> **Attack:** Power vs. Ward Defense
+> **Tier 1:** 0. **Tier 2:** [V] 2d6! + 1d4! Co. **Tier 3:** [V] 3d8! Co.
+>
+> **Special rule:** (decision 2)
+
+**The averages** (200,000 rolls each): the Longsword at Weapon Modifier +2 is 11.0 on Tier 2 and 15.0 on Tier 3; the Power Mode's 2d6! + 1d4! is 11.0 and 3d8! is 15.0. (The Arming Sword at +2 is 8.0 and 10.0: a one-handed weapon makes the Power Mode the bigger one.)
