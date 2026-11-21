@@ -178,18 +178,18 @@ Lucas, 2026-11-21: "All playtests have been level 0." The playtest 7 log uses on
 All 32 answered (A3 and A7 with a question; Claude's replies in the chat of 2026-11-21). What each changes:
 
 - **A2 (decided): the Critical adds 1d10!** ("Crits are allowed to be strong, but I will keep a close watch"). **Its damage type and subtype are chosen before the damage is rolled, from the ones the Action deals:** an Action dealing only [V] Piercing crits [V] Piercing; one dealing [V] Piercing and [R] Holy, the player picks one before rolling.
-- **A3:** asked what the problem is (explained in the chat; still to decide).
+- **A3 (decided, after Claude's explanation):** a Favored or Doomed source counts as 5 Boons or 5 Banes before cancelling; 5 or more left makes the roll Favored or Doomed (so a 5th Bane never helps, a 5th Boon never hurts).
 - **A4 (decided):** Save Actions feel the user's Banes (each Bane on the user gives every target 1 Boon on its Save).
 - **A6 (decided):** range Banes stay unnamed; one line says a range Bane is not a Field Bane.
-- **A7 (decided direction): one formula for every DC, named by what sets it: Body DC, Instinct DC, Mind DC, Appeal DC, Action DC.** Shove: Body vs. Body DC; Relocate: Body or Instinct vs. the same Attribute's DC. Today's "Vs. an Attribute" (12 + the Attribute: Chapter 2's Defenses table, the Glossary, Chapter 14) and the Attribute-based Save DC (11 + ⌈Attribute ÷ 2⌉ + 1: Chapter 1) are still in the book. **Open: 11 + X or 12 + X** (Claude: 11, the Action DC's number; it makes Shove and Trip 1 easier, which B7 wants anyway).
+- **A7 (decided direction): one formula for every DC, named by what sets it: Body DC, Instinct DC, Mind DC, Appeal DC, Action DC.** Shove: Body vs. Body DC; Relocate: Body or Instinct vs. the same Attribute's DC. Today's "Vs. an Attribute" (12 + the Attribute: Chapter 2's Defenses table, the Glossary, Chapter 14) and the Attribute-based Save DC (11 + ⌈Attribute ÷ 2⌉ + 1: Chapter 1) are still in the book. **Decided: 11 + X everywhere** (the Action DC's number; Shove and Trip get 1 easier, as B7 wants).
 - **B1 (corrected):** Basic attacks are made by class (B4), so the Tier 1 [Mod] can differ per class.
-- **B2:** decided with B4. **B4 (decided): each class carries its own Basic attacks, a Weapon one and a Power one.** **K8 (corrected): the shared Weapon Attack will stop existing.**
+- **B2:** decided with B4. **B4 (decided): each class carries its own Basic attacks, a Weapon one and a Power one.** **K8 (corrected): the shared Weapon Attack will stop existing.** **"Basic attack" becomes the default word for PCs and NPCs alike, covering a class's Weapon and Power Basic attacks** (Lucas: "much better design"); the rules that call for "a Weapon Attack" (Charge's attack, Chapter 14's swap rule, Fists) are reworded in batch 3.
 - **B6 (decided):** the map is the starting point; batch 3 goes Action by Action.
 - **B11 (decided):** Claude's three notes on Break Free (a Check line, Doubles free you, no Self trait).
 - **C4 (changed): where the line sits decides when it applies.** A Bloodied: / Strained: line **before the Tiers** applies only if the target is already Bloodied / Strained; a line **after the Tiers** applies if the target becomes so during this Action.
 - **C5 (corrected): a "would damage" Reaction can trigger on Collision damage.** The creature that moves the target causes the Collision, so it is that creature's damage; a Reaction that reduces damage picks one: the Action's damage or the Collision ("you deal 2 + Pushed 2 against a wall: react on the 2 or on the Pushed"; the Pushed is a gamble, the origin may not even move the target). What stays: one reduction doesn't reduce both.
 - **C6 (decided):** try the half floor in batch 4, checked against the Paladin's protection cards. **C7:** Wounds later.
-- **D3 (asked): should an ally's square be Difficult Terrain?** (Claude's answer in the chat: yes, D&D 5e does it; open.)
+- **D3 (decided): an ally's square is Difficult Terrain** (D&D 5e does it). The ladder: open ground; an ally's square, Difficult Terrain; an enemy's square, blocked (Tumble to pass). In batch 4 with blocking.
 - **D6 (corrected):** "on the line" needs a diagram.
 - **D7 (decided): a creature pushed into a wall it touches takes the Collision; the push still counts as leaving its square and as being moved by Forced Movement, even with 0 squares moved.**
 - **E3, E4, E5, F2, G2, G11, H1, H8 (decided as Claude proposed).** H1: the Paladin chooses his Modifier order.
