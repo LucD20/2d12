@@ -4,6 +4,19 @@ The book is built from `rules-src/` with `build_rules.py` (assets in `rules-asse
 
 ## Open for the book
 
+- [ ] **THE CORE REVIEW, LUCAS'S SECOND ROUND (2026-11-21): DECIDED OR LEANING, NOT APPLIED** (what he didn't mention stands from the first round unless it conflicts):
+  - **The Paladin's Modifiers:** a fixed Weapon +1 "defeats the purpose of the system, of allowing people to go both ways": find a remedy. **Binding Light gets [Signature]** (an oversight).
+  - **The Critical keeps an exploding die:** 1d6!, 1d8! or 1d10! (open; Claude: 1d8!, average 5, above Empowered's 1d6!).
+  - **Minion ticks:** a Tier removes that many ticks (Tier 1: 1, Tier 2: 2, Tier 3: 3; most Minions 2). **One tick reduction per Action** (the damage and the Forced Movement damage of the same Action don't tick twice; Lingering is apart). **No overflow** (Draw Steel's becomes mechanical: "whatever, kill that one").
+  - **Flanking:** the generous opposite (three squares), a flat 1, the cancel kept: "needs careful ruling".
+  - **Tumble** (pass through an enemy's square); **Mind and Appeal need their own things** (debuffs on Mind and Appeal; Tumble maybe on Mind), or Body and Instinct become kings.
+  - **A Heal for allies** (a Down creature can't Steel Yourself): for the playtest, **Heal · At-will · 1 AP; Mind or Appeal vs DC 13; Tier 1 no effect, Tier 2 the ally can use 1 Rally Point, Tier 3 2.**
+  - **Expedition pace:** the Rest is the tick; a session between Rests is about **2 easy, 2 moderate and 1 hard fight** (4 to 6 fights), a rough guide.
+  - **Escalation:** martials' Actions grow stronger with it or open new uses (as Smite); casters spend it as Surge; the Escalation Passives may go.
+  - **Bloodied and Strained as labeled lines on Actions** ("Bloodied: the target is Pushed 1", "Strained: Tier 3 gains Dazed 1"), as Attack and Special are.
+  - **Strained: the creature doesn't gain its free Reaction AP** (it must keep AP for Reactions). **Bloodied: something of equal weight, different** (Pressed rejected). Rejected: a Minion or Grunt fleeing at Strained (Bloodied and Strained should be even: Bloodied usually comes from flat numbers, Strained from dice); the cheapest debuff ("a Weapon Attack can deal [R]").
+  - **Research read:** the Dungeon Crawler Carl RPG core book (Lucas's private module, not quoted here): a Health Bar of 10 slots, each worth the creature's CON Mod; damage removes slots by threshold; Minor and Major Injury debuffs; abilities keyed on a % of the bar.
+
 - [ ] **THE CORE REVIEW (2026-11-21, seven reviewers; the report in the chat, not in the repository): LUCAS'S ANSWERS, NOT APPLIED.** Focus: make the mechanics solid first; the NPC tables' numbers wait.
   - **Root 2 (the filler):** PCs' Weapon Attack deals [Mod] on Tier 1 (agreed); its Tier 3 adds the weapon's die again (interesting); **the At-will Bane stays**; instead, **new Basic Actions open to all**: a debuff on enemies, a help for allies (PF2e's Demoralize and Aid as the model), a Mind-damage basic attack; idea: **each class carries its own Basic attacks, a Weapon one and a Power one** (a class with no Power, the Archer, still has a small themed one); **Trip and Shove are subpar**: lose the Strike trait or get better; "attacking the same thing isn't the best way: sometimes the mind is" (look at Crucible); **taking damage should matter more** (Bloodied / Strained used by more Actions, or a core mechanic). The Paladin's fixed Weapon +1 / Power +2 (decided 2026-11-14, paladin-redesign.md:35: "isn't a consistent damage dealer", one build): Lucas asks why; open. **The Critical gets something every time** (agreed).
   - **Root 3:** Minions die to hits; Lucas's idea: **Minions have ticks, not Health** (a Tier 1 removes 1, a Tier 2 2, a Tier 3 3; most Minions 2 ticks).
