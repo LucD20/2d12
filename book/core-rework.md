@@ -76,7 +76,7 @@ What came out of playtest 7 and the core review (seven reviewers; three rounds o
 | # | Item | Status | Detail |
 |---|---|---|---|
 | F1 | **The Escalation Passives may go**; martials' Actions grow stronger with Escalation or open new uses (as Smite); casters spend it as **Surge** | Decided (direction) | Surge already exists in the magic record (decisions 66 to 90: gained when Escalation rises and each round, spent by spells; decision 68: "the classes at their next pass"). No conflict: the martial side is the class passes' work. |
-| F2 | The ladder's pace: fights of 3 to 3½ rounds reach Escalation 4 to 5; the 6 rung is a round-4-or-Momentum event | Open | Compress the rungs (2 / 3 / 4) or accept 6 for long fights; decide with F1 at the class pass. |
+| F2 | The ladder's pace: fights of 3 to 3½ rounds reach Escalation 4 to 5; the 6 rung is a round-4-or-Momentum event | Later | A level 2+ question (a level 1 PC has only its Escalation 2 ability; section N); decide with F1 at the class pass. |
 
 ## G. The Bestiary (mechanics first, numbers after)
 
@@ -105,7 +105,7 @@ What came out of playtest 7 and the core review (seven reviewers; three rounds o
 | H4 | **A Talent can be just an Action** (Rime Strike as the Talent; Oath of Burden with Bear the Blow inline) | Decided | |
 | H5 | Quick Shots' Critical AP is not dead (movement, help) | Decided (no change) | |
 | H6 | Ranged damage stays low for now; watch the Field Bane on a target Engaged with another creature | Decided (watch) | |
-| H7 | The four playtest Talents were left out of playtest 7 on purpose | Noted | |
+| H7 | The four playtest Talents were left out of playtest 7 on purpose | Noted | It was played at level 1, where the pregens have no Talent (section N). |
 | H8 | **The Talents' anchor (+6 a turn) and `ruler/pc-budget.md` go stale** with B1/B2 | Stands | Re-anchor after the Weapon Attack; Talents (T15 onward) wait for it. |
 | H9 | "No shutting down a boss" is a Talents rule (talents-design.md) but not a class-card rule | Stands (to settle) | With the Boss (G2). |
 
@@ -150,15 +150,37 @@ The targeting habit line; the At-will Bane from the third use; Minion overflow; 
 - **The Heal's 2 AP At-will** for 0 / 1 / 2 Rally Points is weaker than Steel Yourself for a standing ally (right: its job is a Down ally) and the At-will Bane taxes a second one.
 - **Three reversals of earlier decisions** need Lucas's eye in their sessions: A4 (Save Actions and the user's Banes), H1 (the Paladin's fixed Modifiers), C1 (Bloodied's "no effect by itself").
 
+## N. Correction: every playtest was played at level 1 (Stage 0)
+
+Lucas, 2026-11-21: "All playtests have been level 0." The playtest 7 log uses only level 1 picks (Commandment, Spotter, Strafe, Hold the Line, Roving Judgment); "the level 4 pregens" in the backlog came from pack TALENTS-PT (the Talents are on the level 4 builds) and was wrong. Level 4 (Stage 1 in Chapter 5) has never been played. **What the core review said that changes:**
+
+- **"The rest was bad luck" is much weaker.** The review's replay of playtest 7 used level 4 Modifiers (the Archers +3 instead of +2, Durgan's Power +3). At level 1: the party's expected damage is **64 a round, not 73** (real: 57, so 11% below expected, not 22%); the party's Tier 1s, **20 against 16 expected** (a result that bad or worse 21% of the time, not 7%); Sylwen's 9 Tier 1s in 17, against 5 expected (3%, not 0.7%). **So "PCs missing more than they should" is mostly the system's designed rate at level 1, not dice:** it strengthens Root 2 (B1, B2, A2, H1). At expected dice playtest 7 would have lasted about 4½ rounds, not 3.8.
+- **Root 5 (option overload) is smaller than stated.** "12 of 39 class options used (31%)" counted the level 4 build; at level 1 a PC has 5 to 6 class options. The Encounter Picks, Weight of Judgment, Opening Shot, Lantern of Faith and Trick Shots weren't on the sheets. What still holds at level 1: **Arts used 3 times in 20 PC turns, Footwork (Kaela's Art) and Lay On Hands (Durgan's Hallmark) never used, Quick Shots' free Evade skipped**: the unprompted options still vanish (H3 stands).
+- **The Escalation ladder's pace (F2) is a level 2+ question:** a level 1 PC has only its Escalation 2 ability. Moved to Later.
+- **The Bestiary's anchor holds:** about 13 to 14 a PC-turn is the level 1 table output (57 a round measured), which is what Stage 0 must be built on. The review's "about 57 a round at level 4" was this same level 1 fight.
+- **Unchanged:** the Paladins strike at +1 at level 1 (H1), the Minion and rank findings (Root 3), the structural findings (Root 4), the Weapon Attack's Tier 1 and Tier 3 (Root 2).
+- **The Talents' anchor (H8)** was priced on the level 4 builds, at the table never: it stays "re-anchor after the Weapon Attack".
+
+## O. Lucas's answers to the general questions (2026-11-21)
+
+1. **NPC parity: case by case.** Parity is the default; each NPC-only rule (Minions' and Grunts' 3 AP, no Guard from unspent AP, Minions' no Reactions, the Basic attack) is kept or dropped in the Bestiary session, with a reason (K7).
+2. **One Foundry version per batch**, right after its book changes, each with its checklist.
+3. **The class cards may change freely**: the rework can rewrite any Stage 0 Paladin or Archer card it touches (Bloodied / Strained lines included).
+4. **Playtest rules go into the book with a playtest note** (Heal, B9).
+5. **Playtest 8: level 1 (Stage 0)**, the level every playtest has used (section N).
+6. **Solo again.**
+7. **The SIM is frozen** until a decision needs a whole-fight comparison; rules still go into `roundrules.mjs` first for Foundry (its `spec.mjs --check` and reports are not kept in step meanwhile).
+
 ## M. The order of work
+
 
 1. **Batch 1: the settled fixes and Foundry's measurement** (small, no dependencies). Book: A3, A4, A5, A6, D4 (with its diagram), D5, D6, D7, E1, E2, E4, C5, B10, B11, B12, H2. Foundry, in the same version: I1 (the Encounter Log), I2, I3, H3's prompts. Playtest 8 needs the log, so it comes first.
 2. **Batch 2: damage that matters.** A2 (the Critical's die), C1 + C2 (Bloodied, negative Steadiness), C3 (Strained), C4 (the labeled lines: the card Structure, then the gallery). Everything after uses these words.
-3. **Batch 3: the Basic layer.** B4 first (per-class Basic attacks or not), then B1 / B2, H1 (the Paladin), B6 (the Attribute map), B5, B7, B8, B9, E3 (Prone given too liberally: the cards). Then H8 (re-anchor the Talents and `pc-budget.md`).
+3. **Batch 3: the Basic layer** (the class cards may change freely: answer 3). B4 first (per-class Basic attacks or not), then B1 / B2, H1 (the Paladin), B6 (the Attribute map), B5, B7, B8, B9, E3 (Prone given too liberally: the cards). Then H8 (re-anchor the Talents and `pc-budget.md`).
 4. **Batch 4: the front line.** D1, D2, D3 (with B8 Tumble), C6 (the protection floor).
 5. **Batch 5: the Bestiary's mechanics.** G2 (the Boss and the Elite's shape, K6), G3 (ticks, K1, K2), G4 (parity, K7), G5, G6, D8, G8, H9.
 6. **Batch 6: the Bestiary's numbers.** G9 targets with C8's pace, G11 pricing, G12 the examples (with a Grunt), against the PC side of batches 2 to 4.
-7. **Playtest 8**: playtest 7's line-up rebuilt plus two Grunts, measured by the new log; ideally with other players.
+7. **Playtest 8**: the level 1 pregens (Stage 0) against playtest 7's line-up rebuilt plus two Grunts, measured by the new log; solo.
 8. **Later:** F1 / F2 (Escalation for martials) and H3's Modes at the class passes; C7 (Wounds); the Talents' restart (T15) on the new anchor; magic's playtest kit; progression past Stage 0.
 
 Each batch: one decision at a time with Lucas, then the book (rules-src first), then one Foundry version (tests, the checklist naming the PC or NPC, the gallery for card changes), the backlogs, HANDOFF.

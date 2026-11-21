@@ -29,7 +29,7 @@ The book is built from `rules-src/` with `build_rules.py` (assets in `rules-asse
   - **Section 6:** Escalation: **thinking of dropping the Escalation Passives** and making Escalation a number abilities and spells key on or spend (Surge), afraid it turns lame; asked whether the Weapon Attack fixes cause Health bloat; progression after combat.
   - **Section 7:** the Encounter Log upgrade: yes. **To research:** the Health system (thresholds, threshold + HP as in Dungeon Crawler Carl), Crucible, PF2e's tactical Basic Actions (an agent running, 2026-11-21).
 
-- [ ] **PLAYTEST 7 (2026-11-21, played on v0.0.475, the level 4 pregens; `book/playtest-6.md` is the 2026-11-19 fight; Lucas's log, notes and questions; Claude's review in the chat of 2026-11-21): DECIDED, NOT APPLIED ("Don't add anything yet").** Lucas's answers:
+- [ ] **PLAYTEST 7 (2026-11-21, played on v0.0.475, the level 1 pregens (Stage 0; corrected 2026-11-21: the entry first said level 4, see `core-rework.md` section N); `book/playtest-6.md` is the 2026-11-19 fight; Lucas's log, notes and questions; Claude's review in the chat of 2026-11-21): DECIDED, NOT APPLIED ("Don't add anything yet").** Lucas's answers:
   - **The four playtest Talents were left out of the fight on purpose** (not a finding about them).
   - **Frightened is renamed Daunted** (Lucas: "Daunted is good"; heroes are "undaunted"; Commandment's Courage reads "ignore Daunted"; checked: no other word in the rules or cards collides, Shaken would have collided with Shake Off).
   - **No targeting "habit" line on NPCs** (Claude's proposal against the focus-fire pressure: rejected).
