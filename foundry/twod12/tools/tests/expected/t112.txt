@@ -28,7 +28,7 @@ Roving Judgment: Paladin Escalation Passive, escalation passive true | The 1 AP 
 Weight of Judgment: Paladin Escalation Passive, escalation passive true | A creature Judged by you has its Speed reduced by 2 (to a minimum of 1). | hooks [] | settings 
 Tireless Vigil: Paladin Escalation Passive, escalation passive true | You gain 1 more Reaction AP when you regain AP. It pays only for [Divine] Reactions. | hooks [{"kind":"rapMore","n":1}] | settings 
 Hallowed Stance: Paladin Escalation Passive, escalation passive true | Once on your turn, a [Divine] Action you use gains "Setup: You Advance 3." | hooks [{"kind":"setupAdvance","traits":["divine"],"n":3}] | settings 
-Kindle (Bright light 3): encounter | light | You shed Bright light 3 (Dim light 3 more) until the end of the encounter, EoE (Lantern of Faith, Kindle).
+Kindle (Bright light 3): encounter | light | You shed Bright light 3 (Dim light 3 more), EoE (Lantern of Faith, Kindle).
 Reveal (Bright light 1): rounds | light | The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).
 Brace: rounds | aura | For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). Foundry draws it as an Aura 1 that follows you: if you move, the squares stay where they were (by hand).
 Courage: rounds | note | For 1 round, an Aura 3 around you: you and your allies in it ignore the Frightened condition (Commandment, Courage).

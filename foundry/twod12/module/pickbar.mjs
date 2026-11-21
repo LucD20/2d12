@@ -5,10 +5,11 @@ import * as MAPMARK from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign
 
 /** v0.0.441 (the HUD mockup, R5): a question that already has a "no" answer (Judge's "Not now") shows no third button "Cancel" (Escape still cancels). */
 export const hasNo = o => (o.options ?? []).some(x => /^no$/i.test(String(x.id ?? "")) || /^(no|not now)$/i.test(String(x.label ?? "").trim()));
-/** Pure: the bar's HTML. o: { icon, text, options: [{ id, label, tip, cls }], done (the label of the Done button, or "" for none), cancel (label, default "Cancel") }. */
+/** Pure: the bar's HTML. o: { icon, text, options: [{ id, label, tip, cls, mapOnly }], done (the label of the Done button, or "" for none), cancel (label, default "Cancel") }. */
 export function pickBarHtml(o) {
   // v0.0.397 (Lucas: "token images only, side by side in squares, like Draw Steel; hover over shows the name"): an option with a picture is a square
-  const opts = (o.options ?? []).map(x => (x.img
+  // v0.0.476 (Lucas, checklist v0.0.475: the Ice Pillar's bar showed "Here" eight times): an option with mapOnly is picked on the map only (no button)
+  const opts = (o.options ?? []).filter(x => !x.mapOnly).map(x => (x.img
     // v0.0.454 (Lucas, playtest 6, D5 "Proposed A"): its token's number in a corner, the name on a hover (asked by Lucas: t264's list)
     ? `<button type="button" class="lb-opt sq${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}" aria-label="${esc(x.label)}" data-tooltip="${esc(x.label)}"><img src="${esc(x.img)}" alt="">${x.num ? `<b class="lb-num">${esc(x.num)}</b>` : ""}</button>`
     : `<button type="button" class="lb-opt${x.cls ? ` ${esc(x.cls)}` : ""}" data-id="${esc(x.id)}"${x.tip && x.off ? ` data-tooltip="${esc(x.tip)}"` : ""}>${esc(x.label)}</button>`)).join("");
@@ -137,7 +138,7 @@ export async function pickBar(o) {
     };
     const key = ev => {
       if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); finish(null); }
-      if (ev.key === "Enter" && !/input|textarea/i.test(ev.target?.tagName ?? "")) { ev.preventDefault(); finish(o.done ? "done" : (o.options?.[0]?.id ?? null)); }
+      if (ev.key === "Enter" && !/input|textarea/i.test(ev.target?.tagName ?? "")) { ev.preventDefault(); finish(o.done ? "done" : (o.options?.find?.(x => !x.mapOnly)?.id ?? null)); }   // v0.0.476: never a map-only square
     };
     bar.addEventListener("click", ev => {
       const b = ev.target.closest("button[data-id]");

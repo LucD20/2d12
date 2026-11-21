@@ -10,6 +10,17 @@ const WAY_INSET = 0.03;   // v0.0.350: a creature in the way: its square less a 
 
 /** Do walls that block sight or movement lie between two points? A line that only touches the end of a wall isn't blocked. */
 export function wallBlocks(a, b) {
+  // v0.0.476 (Lucas, checklist v0.0.475: "the pillar cant be targeted since it is surrounded by walls"): a placed solid object (the Ice Pillar,
+  // objects.mjs) has walls for movement only; it blocks Line of Effect here, as its square: a line through it is blocked, a line that ends in it
+  // (to the object itself, or from it) is not
+  try {
+    for (const t of canvas?.tokens?.placeables ?? []) {
+      if (!solidPlaced(t)) continue;
+      const r = inset(rectOf(t), 0.01);
+      if (inRect(a, r) || inRect(b, r)) continue;
+      if (segmentHitsRect(a, b, r)) return true;
+    }
+  } catch (e) { /* no map */ }
   for (const type of ["sight", "move"]) {
     try {
       const back = CONFIG.Canvas?.polygonBackends?.[type];
@@ -52,28 +63,13 @@ export function segmentHitsRect(a, b, r) {
 let hooksMod = null;
 import("./hooks.mjs").then(m => { hooksMod = m; }).catch(() => {});
 const clearLinesOf = tok => { try { return !!hooksMod && hooksMod.activeHooks(tok?.actor, "clearLines").length > 0; } catch (e) { return false; } };
-/**
- * Pack TALENTS-PT (the Ice Pillar): a placed solid object (objects.mjs) is walled on its own edges; a line to the object itself isn't blocked by
- * them: a wall crossing that ends on (or inside) the object's square doesn't count. Pure but for the wall test (Foundry's collision, mode "all").
- */
-export function wallBlocksOutside(rect, pad = 2) {
-  const inside = p => p.x >= rect.x - pad && p.x <= rect.x + rect.w + pad && p.y >= rect.y - pad && p.y <= rect.y + rect.h + pad;
-  return (a, b) => {
-    for (const type of ["sight", "move"]) {
-      try {
-        const back = CONFIG.Canvas?.polygonBackends?.[type];
-        const hits = back?.testCollision ? back.testCollision(a, b, { type, mode: "all" }) : null;
-        if (Array.isArray(hits) && hits.some(p => !inside(p))) return true;
-      } catch (e) { /* try the next type */ }
-    }
-    return false;
-  };
-}
+// pack TALENTS-PT: a placed solid object (objects.mjs)
 const solidPlaced = t => !!(t?.document?.flags?.twod12?.placed && t?.actor?.getFlag?.("twod12", "object")?.solid);
+const inRect = (p, r) => p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h;
 export function coverBetween(attacker, target, { blockedFn: bf = wallBlocks, others = null } = {}) {
   if (!attacker || !target || !canvas?.grid?.isSquare) return null;
   const ar = rectOf(attacker), tr = rectOf(target);
-  const blockedFn = bf === wallBlocks && solidPlaced(target) ? wallBlocksOutside(tr) : bf;
+  const blockedFn = bf;
   const targetCorners = cornersOf(inset(tr, INSET));
   // Leaning: you calculate cover from your corner instead of the center of your square. v0.0.166: from the SAME point vision uses (lean.mjs pickPeek:
   // just past the corner, or nudged inside the square when walls don't allow it), so a wall that ends at the corner doesn't block every line.
@@ -111,7 +107,7 @@ export function coverBetween(attacker, target, { blockedFn: bf = wallBlocks, oth
 export function coverFromPoint(point, target, { blockedFn: bf = wallBlocks, others = null, exclude = [] } = {}) {
   if (!point || !target || !canvas?.grid?.isSquare) return null;
   const tr = rectOf(target);
-  const blockedFn = bf === wallBlocks && solidPlaced(target) ? wallBlocksOutside(tr) : bf;   // pack TALENTS-PT: an Area reaches the Ice Pillar
+  const blockedFn = bf;
   const blocked = cornersOf(inset(tr, INSET)).filter(c => blockedFn(point, c)).length;
   const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== target.id && !exclude.includes(t.id) && !t.document.hidden);
   const inWay = blocked < 4 && crowd.some(t => segmentHitsRect(point, centerOf(tr), inset(rectOf(t), WAY_INSET)));   // v0.0.350

@@ -237,7 +237,7 @@ function endsHtml(e, m) {
   if (m.zoneMode) return zoneEndsHtml(e, m);
   const sm = R.endsSummaries(e, m), p = (k, on, title, body) => `<div class="fr-part${on ? "" : " off"}"><header>${tog(`ends.${k}.on`, on, title)}<span class="fr-psum">${esc(sm[k])}</span></header><div class="fr-pb">${body}</div></div>`;
   return `<div class="fr-endlist">
-    ${p("time", e.time.on, "Time", grid([["Lasts", seg("ends.time.mode", e.time.mode, [["eot", "EoT"], ["rounds", "Rounds"], ["encounter", "This encounter"]], "w")], e.time.mode === "rounds" ? ["Rounds", step("ends.time.rounds", e.time.rounds, 1, 20)] : null]) + help("Rounds count down at the end of the origin's turn. EoT ends at the end of the affected creature's turn."))}
+    ${p("time", e.time.on, "Time", grid([["Lasts", seg("ends.time.mode", e.time.mode, [["eot", "EoT"], ["rounds", "Rounds"], ["encounter", "EoE"]], "w")], e.time.mode === "rounds" ? ["Rounds", step("ends.time.rounds", e.time.rounds, 1, 20)] : null]) + help("Rounds count down at the end of the origin's turn. EoT ends at the end of the affected creature's turn."))}
     ${p("save", e.save.on, "A Save", grid([["Save", sel("ends.save.attr", e.save.attr, ATTR_OPTS, "Save")], ["DC", `${seg("ends.save.dc", e.save.dc, [["13", "13"], ["origin", "The origin's"], ["set", "Set"]], "w")}${e.save.dc === "set" ? step("ends.save.dcValue", e.save.dcValue, 5, 30) : ""}`],
       ["Rolled", seg("ends.save.when", e.save.when, [["eot", "End of their turn"], ["interact", "With Interact (1 AP)"]], "w")], ["Tier 2", seg("ends.save.t2", e.save.t2, [["none", "Nothing"], ["eot", "Ends at EoT"], ["ends", "Ends"]], "w")]]) + help("Tier 1: nothing. Tier 3: it ends."))}
     ${p("down", e.down.on, "Origin goes Down", grid([["Origin", originChip(m, "@origin")]]) + help("Unconscious or leaving the scene count too."))}
@@ -252,7 +252,7 @@ function zoneEndsHtml(e, m) {
   const dis = (title, why) => `<div class="fr-part off dis"><header><span class="fr-tog" aria-disabled="true"><span class="box"></span>${title}</span><span class="fr-psum">${why}</span></header></div>`;
   const tm = e.time.mode === "eot" ? "rounds" : e.time.mode;
   return `<div class="fr-endlist">
-    ${p("time", e.time.on, "Time", tm === "encounter" ? "This encounter" : `${e.time.rounds} round${e.time.rounds === 1 ? "" : "s"}`, grid([["Lasts", seg("ends.time.mode", tm, [["rounds", "Rounds"], ["encounter", "This encounter"]], "w")], tm === "rounds" ? ["Rounds", step("ends.time.rounds", e.time.rounds, 1, 20)] : null]) + help("Counts down at the end of the slot in which it was placed (Chapter 2). No EoT: a placed area has no turn of its own. An Action that sets its own rounds (its Version) keeps them."))}
+    ${p("time", e.time.on, "Time", tm === "encounter" ? "EoE" : `${e.time.rounds} round${e.time.rounds === 1 ? "" : "s"}`, grid([["Lasts", seg("ends.time.mode", tm, [["rounds", "Rounds"], ["encounter", "EoE"]], "w")], tm === "rounds" ? ["Rounds", step("ends.time.rounds", e.time.rounds, 1, 20)] : null]) + help("Counts down at the end of the slot in which it was placed (Chapter 2). No EoT: a placed area has no turn of its own. An Action that sets its own rounds (its Version) keeps them."))}
     ${dis("A Save", "not for a Zone")}
     ${p("down", e.down.on, "Origin goes Down", o, grid([["Origin", originChip(m, "@origin")]]) + help("Unconscious or leaving the scene count too."))}
     ${dis("They use an Action", "not for a Zone")}

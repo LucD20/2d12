@@ -34,7 +34,7 @@ While they see Ogre Chieftain: 1 Bane on their Rolls and they can't willingly mo
 While they see Ogre Chieftain: 1 Bane on their Rolls and they can't willingly move closer to it. Sheds Bright light in a 1 Emanation and Dim light 2 squares further. Lasts until removed. (the empty rule is left out)
 Lasts until removed. | {"time":"off","save":"off","down":"off","action":"off"}
 Lasts until the end of their turn. | {"time":"EoT","save":"off","down":"off","action":"off"}
-Lasts until the end of the encounter (EoE). | {"time":"This encounter","save":"off","down":"off","action":"off"}
+Lasts until EoE. | {"time":"EoE","save":"off","down":"off","action":"off"}
 Lasts until an Instinct Save (DC 15) with Interact (1 AP) ends it. | {"time":"off","save":"Instinct, DC 15, Interact","down":"off","action":"off"}
 Lasts until a Save with the better of Mind / Appeal (the origin's DC) at the end of their turn ends it. | {"time":"off","save":"Mind / Appeal, the origin's DC, end of turn","down":"off","action":"off"}
 Lasts until they use a [Strike] Action. | {"time":"off","save":"off","down":"off","action":"a [Strike] Action"}

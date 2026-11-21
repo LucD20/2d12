@@ -226,6 +226,12 @@ async function barModel(actor, token = null) {
       a.versions.forEach((v, i) => { const sq = /distance:(\d+)/.exec(it.versions?.[i]?.effects ?? "")?.[1]; btns.push({ label: `${a.name}${k === "crawl" && sq ? ` ${sq}` : ""} \u00b7 ${v.label}`, hud: "use", data: { item: a.id, ap: v.ap }, off: v.off && !v.used ? true : v.used, why: v.why }); });
     }
     prone = { lead: "Prone", text: "Your only Move Actions: Stand, Crawl, Break Free.", btns };
+  } else if (statuses.has?.("immobilized") || statuses.has?.("grabbed")) {
+    // v0.0.476 (Lucas, checklist v0.0.475, break-free: "like Prone, add to situational tab when you are immobilized or Grabbed"): Break Free's button
+    const a = list.find(x => x.bkey === "breakFree"), btns = [];
+    if (a) a.versions.forEach(v => btns.push({ label: `${a.name} · ${v.label}`, hud: "use", data: { item: a.id, ap: v.ap }, off: v.off && !v.used ? true : v.used, why: v.why }));
+    const grabbed = statuses.has?.("grabbed");
+    prone = { lead: grabbed ? "Grabbed" : "Immobilized", text: `You can't move: Break Free rolls Body or Instinct against the Action DC of what holds you${grabbed ? " (it ends Grabbed too)" : ""}.`, btns };
   }
   let tiles = null;
   try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }

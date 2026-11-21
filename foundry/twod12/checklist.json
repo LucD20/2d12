@@ -1,75 +1,15 @@
 {
  "groups": [
   {
-   "name": "Characters and sheets",
-   "items": [
-    {
-     "id": "talents-pcs",
-     "v": "v0.0.475",
-     "title": "The four playtest Talents on the level 4 PCs",
-     "do": "Update Foundry, then take Sylwen, Aveline, Durgan and Kaela (level 4) from the PCs compendium again (the Talents are new items) and open each one's Talents tab, then the Actions tab.",
-     "expect": "an \"Extra\" row with Take Aim (Sylwen), Cold Domain (Aveline), Shared Burden (Durgan), Ricochet (Kaela); their Actions on the Actions tab (Take Aim; Rime Strike; Oath of Burden and Bear the Blow; Ricochet), each card in the book's order. The level 1 copies have none.",
-     "rev": 1
-    }
-   ]
-  },
-  {
-   "name": "Chat cards",
-   "items": [
-    {
-     "id": "ricochet-bounce",
-     "v": "v0.0.475",
-     "title": "Ricochet's bounce: half of the damage to a second creature",
-     "do": "Kaela: Ricochet a Goblin Sneak that has an Orc Warrior within 2 squares of it; on a Tier 2 or 3, Apply the damage.",
-     "expect": "a bar \"the arrow bounces off Goblin Sneak\" with the Orc Warrior to click (and No ricochet); a damage card \"Ricochet: the ricochet\" with half of each damage type the Goblin was dealt (rounded up) and no riders; its Apply takes the Orc's own Resistance and Guard. With no creature in reach, one line says there is no ricochet.",
-     "rev": 1
-    }
-   ]
-  },
-  {
    "name": "Conditions and their Tiers",
    "items": [
     {
      "id": "break-free",
-     "v": "v0.0.475",
-     "title": "Break Free rolls its Check",
-     "do": "any PC (Kaela): Aveline hits her with Binding Light on a Tier 2 (Immobilized, its Action DC 11 + Aveline's Weapon Modifier), or drop Immobilized on her by hand (DC 13); on Kaela's turn use Break Free (1 AP).",
-     "expect": "a Check card \"Break Free: Instinct Check\" (her higher of Body and Instinct) against that DC; meeting it posts \"Kaela breaks free\" and ends Immobilized (and Grabbed); below it, \"Kaela stays Immobilized\". Forced Movement against an Immobilized creature still says \"Action DC\".",
-     "rev": 1
-    }
-   ]
-  },
-  {
-   "name": "Movement",
-   "items": [
-    {
-     "id": "take-aim",
-     "v": "v0.0.475",
-     "title": "Take Aim: the Boon, the far range, leaving the square",
-     "do": "Sylwen, in combat on her turn: use Take Aim (0 AP), then a Weapon Attack with the Hunting Bow at a creature at its far range. Then drag her token one square, and use Take Aim again.",
-     "expect": "the roll dialog counts 1 Boon from Take Aim and no far-range Bane. The drag posts \"Sylwen leaves its square: Take Aim ends\" and the effect is gone. The second Take Aim warns about its Requirement (she has left her square this turn) and is used anyway.",
-     "rev": 1
-    },
-    {
-     "id": "ricochet-setup",
-     "v": "v0.0.475",
-     "title": "Ricochet's Setup: a movement you must make",
-     "do": "Kaela, in combat on her turn: use Ricochet; in the Setup bar move 1 square, then Continue.",
-     "expect": "a warning \"the Setup's movement must be made in full (1 of 2 squares left). Used anyway.\" and the roll goes on. Moving the full 2 squares gives no warning, and Shifting Aim counts no movement for that shot (she hasn't left her square).",
-     "rev": 1
-    }
-   ]
-  },
-  {
-   "name": "Reactions and Judge",
-   "items": [
-    {
-     "id": "bound-ally",
-     "v": "v0.0.475",
-     "title": "Shared Burden: the Bound Ally and Bear the Blow",
-     "do": "Durgan, in combat: target Aveline and use Oath of Burden (0 AP); keep him adjacent to her; the GM has the Orc Warrior hit Aveline. Then move Durgan away and hit her again.",
-     "expect": "a gold ring with Durgan's portrait on Aveline's token (beside a Judge mark if he Judged a foe). The first hit's Reactions message offers Bear the Blow (with Shield of Faith); Use: Durgan gains Guard 1, a line \"Bear the Blow: Durgan takes X of the damage (half, rounded up...), Aveline the other Y\", and each part lands with its own Guard. Not offered when he isn't adjacent; the ring goes when the combat ends.",
-     "rev": 1
+     "v": "v0.0.476",
+     "title": "Break Free: its Check, and its button in the Situational tab",
+     "do": "Kaela: drop Immobilized on her (DC 13), select her token and look at the HUD's Situational tab; use Break Free from there. Then Aveline's Binding Light on a Tier 2 on her instead and Break Free again.",
+     "expect": "the Situational tab shows \"Immobilized\" with a Break Free button (Grabbed shows \"Grabbed\"); the button rolls her Instinct Check against the Action DC (13, then 11 + Aveline's Weapon Modifier); meeting it ends Immobilized (and Grabbed) and the button goes.",
+     "rev": 2
     }
    ]
   },
@@ -78,27 +18,27 @@
    "items": [
     {
      "id": "ice-pillar",
-     "v": "v0.0.475",
-     "title": "Rime Strike's Ice Pillar",
-     "do": "Aveline: Rime Strike (choose Power mode) on an Orc Warrior; on a Tier 2 or 3 Apply the damage; click a square in the bar. Then drag the Orc toward the pillar, use the Line of Effect button through it, and use Rime Strike again for a second pillar.",
-     "expect": "the damage is Cold; the bar offers only the empty squares next to the Orc that Aveline has Line of Effect to; an Ice Pillar token rises there with walls on its edges (chat: its Defense = 11 + her Power Modifier). The Orc can't move through it; it blocks Line of Effect behind it but can itself be targeted. The second pillar melts the first.",
-     "rev": 1
+     "v": "v0.0.476",
+     "title": "Rime Strike's Ice Pillar: its square clicked on the map",
+     "do": "Aveline: Rime Strike (Power mode) on an Orc Warrior; on a Tier 2 or 3 Apply the damage; look at the bar (and the HUD's Situational tab), then click one of the outlined squares. Try a second Rime Strike, and once press Cancel instead.",
+     "expect": "the bar has no \"Here\" buttons, only its text and Cancel; the squares next to the Orc are outlined on the map and a click places the pillar there (its Defense = 11 + her Power Modifier); Cancel places none. The other pick bars (Pushes, Charge, Move back) keep their buttons.",
+     "rev": 2
     },
     {
      "id": "ice-pillar-break",
-     "v": "v0.0.475",
-     "title": "The Ice Pillar breaks on 5 from one Action",
-     "do": "Sylwen shoots the Ice Pillar twice: one hit dealing 4 or less, one dealing 5 or more. Then end the combat with a pillar standing.",
-     "expect": "\"Ice Pillar holds: ... does nothing (and doesn't add up)\", then \"Ice Pillar breaks\" and its token and walls go. Ending the combat melts every pillar left (EoE). Its Tier 1 against a Save and a Collision's damage to it are by hand.",
-     "rev": 1
+     "v": "v0.0.476",
+     "title": "The Ice Pillar can be targeted, and breaks on 5 from one Action",
+     "do": "Sylwen targets the Ice Pillar and shoots it twice: one hit dealing 4 or less, one dealing 5 or more. Also check a creature standing behind the pillar: her Line of Effect button to it, and whether she can target it. Then end the combat with a pillar standing.",
+     "expect": "the pillar is visible and can be targeted (no Cover from its own square); \"Ice Pillar holds: ... does nothing\", then \"Ice Pillar breaks\" and its token and walls go. A creature right behind it has no Line of Effect (or Cover from the blocked corners). Tokens still can't be dragged through its square. Ending the combat melts every pillar left.",
+     "rev": 2
     },
     {
      "id": "eoe-text",
-     "v": "v0.0.475",
-     "title": "EoE in Foundry's own texts",
-     "do": "Aveline: Lantern of Faith, Kindle; open the effect on her (its Details) and hover it.",
-     "expect": "its Ends and hover read \"until the end of the encounter (EoE)\"; Kindle's description says EoE.",
-     "rev": 1
+     "v": "v0.0.476",
+     "title": "EoE alone in Foundry's texts",
+     "do": "Aveline: Lantern of Faith, Kindle; open the effect on her (its Details: Ends) and hover it.",
+     "expect": "the Ends' button and summary read \"EoE\", the hover \"Lasts until EoE.\", Kindle's description \"…, EoE (Lantern of Faith, Kindle)\"; \"end of the encounter\" isn't written beside it.",
+     "rev": 2
     }
    ]
   }

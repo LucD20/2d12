@@ -568,12 +568,12 @@ const an = w => (/^[AEIOU]/i.test(String(w).replace(/^\[/, "")) ? "an" : "a");
 /** "a [Strike] Action", "an [Area] Action that is ...", "any Action". */
 const leaves = f => (f?.all ?? []).length === 1 && f.all[0] === "__leave" && !(f.any ?? []).length;   // pack TALENTS-PT: "it ends when you leave your square" (Take Aim)
 const actionOne = f => { if (leaves(f)) return "leaving its square"; const t = filterText(f); return t ? `${an(t)} ${t.replace(/ Actions\b/, " Action").replace(/^Actions that are/, "Action that is").replace(/^Actions, not/, "Action, not")}` : "any Action"; };
-/** Each Ends row's summary: "1 round" / "EoT" / "This encounter"; "Appeal, DC 13, end of turn"; the origin's name; "a [Strike] Action". */
+/** Each Ends row's summary: "1 round" / "EoT" / "EoE"; "Appeal, DC 13, end of turn"; the origin's name; "a [Strike] Action". */
 export function endsSummaries(eIn, ctx = {}) {
   const e = normEnds(eIn);
   const dc = e.save.dc === "13" ? "DC 13" : e.save.dc === "origin" ? "the origin's DC" : `DC ${e.save.dcValue}`;
   return {
-    time: e.time.on ? (e.time.mode === "eot" ? "EoT" : e.time.mode === "encounter" ? "This encounter" : plural(e.time.rounds, "round")) : "off",
+    time: e.time.on ? (e.time.mode === "eot" ? "EoT" : e.time.mode === "encounter" ? "EoE" : plural(e.time.rounds, "round")) : "off",   // v0.0.476 (Lucas: "EoE", never spelled out beside it)
     save: e.save.on ? `${SAVE_ATTR[e.save.attr]}, ${dc}, ${e.save.when === "eot" ? "end of turn" : "Interact"}` : "off",
     down: e.down.on ? ORIGIN(ctx) : "off",
     action: e.action.on ? actionOne(e.action.filter) : "off"
@@ -582,7 +582,7 @@ export function endsSummaries(eIn, ctx = {}) {
 /** "Lasts 1 round, or until an Appeal Save (DC 13) at the end of their turn ends it, or until Ogre Chieftain goes Down." Nothing ticked: "Lasts until removed." */
 export function endsSentence(eIn, ctx = {}) {
   const e = normEnds(eIn), x = [];
-  if (e.time.on) x.push(e.time.mode === "eot" ? "until the end of their turn" : e.time.mode === "encounter" ? "until the end of the encounter (EoE)" : plural(e.time.rounds, "round"));
+  if (e.time.on) x.push(e.time.mode === "eot" ? "until the end of their turn" : e.time.mode === "encounter" ? "until EoE" : plural(e.time.rounds, "round"));
   if (e.save.on) {
     const dc = e.save.dc === "13" ? "DC 13" : e.save.dc === "origin" ? "the origin's DC" : `DC ${e.save.dcValue}`;
     const save = e.save.attr.length > 8 ? `a Save with the better of ${SAVE_ATTR[e.save.attr]}` : `${an(SAVE_ATTR[e.save.attr])} ${SAVE_ATTR[e.save.attr]} Save`;
@@ -711,7 +711,7 @@ export function zoneSentence(zIn, ctx = {}) {
 /** A Zone's Ends: Time (Rounds or This encounter, no EoT), Origin goes Down, Someone uses an Action ({ on, who: "origin" | "reach", ap }); no Save, no bearer's Action. */
 export function zoneEndsSentence(eIn, ctx = {}) {
   const e = normEnds(eIn), x = [], o = ORIGIN(ctx);
-  if (e.time.on) x.push(e.time.mode === "encounter" ? "until the end of the encounter (EoE)" : plural(e.time.rounds, "round"));
+  if (e.time.on) x.push(e.time.mode === "encounter" ? "until EoE" : plural(e.time.rounds, "round"));
   if (e.down.on) x.push(`until ${o} goes Down`);
   if (e.someone.on) x.push(`until ${o}${e.someone.who === "reach" ? " (or a creature within Reach of it)" : ""} ends it with an Action (${e.someone.ap} AP)`);
   return x.length ? `Lasts ${x.join(", or ")}.` : "Lasts until removed.";

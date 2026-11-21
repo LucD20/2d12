@@ -44,7 +44,7 @@ console.log("its chip:", JSON.stringify(parseInline("Place", "Compendium.twod12.
 console.log("the squares around a token:", OB.ringCells([{ i: 5, j: 5 }]).length, "| around a Large one:", OB.ringCells([{ i: 5, j: 5 }, { i: 5, j: 6 }, { i: 6, j: 5 }, { i: 6, j: 6 }]).length, "| its walls:", JSON.stringify(OB.squareWalls(100, 200, 100)));
 console.log("its Defense (the Action DC): Mod 3 ->", OB.actionDcOf(3), "| unknown ->", OB.actionDcOf(null), "| a hit of 5:", OB.hitOutcome(5, 5), "| of 4:", OB.hitOutcome(4, 5));
 console.log("an object takes no damage, it breaks or holds (damage.mjs):", src("module/damage.mjs").includes('objectHit(actor, a.B.l + a.B.n + a.M.l + a.M.n)'), "| melts at the end of the encounter (mark.mjs):", src("module/mark.mjs").includes("endEncounterObjects(combat)"), "| its walls go with it:", src("module/objects.mjs").includes("solidOf === doc.id"));
-console.log("a line to the object isn't blocked by its own walls (cover.mjs):", src("module/cover.mjs").includes("wallBlocksOutside(tr)"));
+console.log("its square blocks Line of Effect, its walls only movement; a line to it isn't blocked (cover.mjs):", src("module/cover.mjs").includes("if (inRect(a, r) || inRect(b, r)) continue;") && src("module/objects.mjs").includes("sight: W.NONE ?? 0"));
 
 console.log("--- Shared Burden");
 const ob = doc("action", "Oath of Burden").system, bb = doc("action", "Bear the Blow").system;
@@ -71,5 +71,12 @@ console.log("--- the book's rules");
 const hold = (dc, prior) => ({ effects: [{ statuses: new Set(["immobilized"]), getFlag: (s, k) => (k === "actionDc" ? dc : k === "immobileDc" ? prior : undefined) }], system: { attributes: { body: 2, instinct: 3 } } });
 console.log("Break Free's Check:", JSON.stringify(mv.breakFreeCheck(hold(15))), "| a tie is Body:", mv.breakFreeCheck({ effects: [], system: { attributes: { body: 1, instinct: 1 } } }).attr, "| an old Immobilized (immobileDc):", mv.heldDc(hold(undefined, 14)), "| none stored:", mv.heldDc(hold(undefined)));
 console.log("it rolls (actions.mjs):", src("module/actions.mjs").includes("const bf = breakFreeCheck(actor)") && src("module/actions.mjs").includes("if (Number(r?.total) >= bf.dc)"), "| Gold:", (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS.breakFree.automation, "| no Immobilized DC left in the code:", !/immobilizedDc|immobilizedOutcome/.test(["module/move.mjs", "module/actions.mjs", "module/effects.mjs"].map(src).join("")));
-console.log("EoE:", R.endsSentence({ time: { on: true, mode: "encounter" } }), "|", src("module/zonetip.mjs").includes("Until the end of the encounter (EoE)"), "| Kindle:", C.docs.find(d => d.name === "Kindle (Bright light 3)").system.description.includes("EoE"));
+console.log("EoE:", R.endsSentence({ time: { on: true, mode: "encounter" } }), "|", src("module/zonetip.mjs").includes('"EoE"'), "| Kindle:", C.docs.find(d => d.name === "Kindle (Bright light 3)").system.description.includes("EoE"));
 console.log("[Melee]'s text:", src("module/config.mjs").match(/melee: "(These[^"]*)"/)?.[1] ?? "not found");
+
+console.log("--- v0.0.476 (Lucas's checklist on v0.0.475)");
+const { pickBarHtml } = await import(ROOTURL + "module/pickbar.mjs");
+const pbh = pickBarHtml({ text: "Ice Pillar", options: [{ id: "1,1", label: "Here", cells: [{ i: 1, j: 1 }], mapOnly: true }, { id: "2,2", label: "Here", cells: [{ i: 2, j: 2 }], mapOnly: true }], cancel: "Cancel" });
+console.log("the squares are clicked on the map, no button each:", !pbh.includes(">Here<"), "| one Cancel:", (pbh.match(/lb-give/g) ?? []).length, "| Enter never picks a square:", src("module/pickbar.mjs").includes("o.options?.find?.(x => !x.mapOnly)?.id"));
+console.log("Break Free in the Situational tab when Immobilized or Grabbed:", src("module/hud.mjs").includes('} else if (statuses.has?.("immobilized") || statuses.has?.("grabbed")) {') && src("module/hud.mjs").includes('list.find(x => x.bkey === "breakFree")'));
+console.log("the Ends' EoE:", JSON.stringify(R.endsSummaries({ time: { on: true, mode: "encounter" } }).time), "| the Ends buttons:", src("module/fxsheet.mjs").includes('["encounter", "EoE"]'));

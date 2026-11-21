@@ -210,7 +210,7 @@ export const TWOD12 = {
   weaponNeeds: { "": "Any weapon that fits", light: "A Light weapon", twohanded: "A Two-handed weapon", thrown: "A Thrown weapon", long: "A Long weapon" },
   weaponUses: { "": "Its weapon (any weapon it can use)", fists: "Only the Fists (needs a free hand)", kick: "The Fists, even with no free hand (a kick)" },
   ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you" },
-  durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds", encounter: "This encounter" },   // v0.0.323: This encounter (Ends: Time)
+  durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds", encounter: "End of Encounter (EoE)" },   // v0.0.323: This encounter (Ends: Time)
   // Trait groups (v0.0.179, the book's GROUPS in book/build_rules.py): listed in this order, a trait with no group of its own is a Keyword.
   // Their colors are CSS variables (--g-roll...), light on parchment and dark on the dark sheets (system.css). Weapon properties have no group and no color.
   traitGroups: [

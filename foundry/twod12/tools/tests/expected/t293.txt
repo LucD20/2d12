@@ -33,7 +33,7 @@ its chip: {"dc":13,"adj":0,"boon":0,"bane":0,"traits":[],"tiers":{},"uuid":"Comp
 the squares around a token: 8 | around a Large one: 12 | its walls: [[100,200,200,200],[200,200,200,300],[200,300,100,300],[100,300,100,200]]
 its Defense (the Action DC): Mod 3 -> 14 | unknown -> 13 | a hit of 5: breaks | of 4: nothing
 an object takes no damage, it breaks or holds (damage.mjs): true | melts at the end of the encounter (mark.mjs): true | its walls go with it: true
-a line to the object isn't blocked by its own walls (cover.mjs): true
+its square blocks Line of Effect, its walls only movement; a line to it isn't blocked (cover.mjs): true
 --- Shared Burden
 Oath of Burden marks: true bound | words: is the Bound Ally of | ring gold: d2a75a judge red: b3261e
 its own place: T1 | Judge's: Q
@@ -50,5 +50,9 @@ who it can reach (2 squares, Line of Effect from the target, not the user or an 
 --- the book's rules
 Break Free's Check: {"attr":"instinct","mod":3,"dc":15} | a tie is Body: body | an old Immobilized (immobileDc): 14 | none stored: 13
 it rolls (actions.mjs): true | Gold: gold | no Immobilized DC left in the code: true
-EoE: Lasts until the end of the encounter (EoE). | true | Kindle: true
+EoE: Lasts until EoE. | true | Kindle: true
 [Melee]'s text: These Actions target creatures in close combat. Normally uses your Reach as the Distance.
+--- v0.0.476 (Lucas's checklist on v0.0.475)
+the squares are clicked on the map, no button each: true | one Cancel: 1 | Enter never picks a square: true
+Break Free in the Situational tab when Immobilized or Grabbed: true
+the Ends' EoE: "EoE" | the Ends buttons: true

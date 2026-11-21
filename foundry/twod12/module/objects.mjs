@@ -2,7 +2,8 @@
 // uuid>|adjacent:yes|one:yes|eoe:yes|defense:action] asks for a square on the map (the pick bar: a square adjacent to the card's target that holds
 // no creature or object and that the user has Line of Effect to) and the active GM's client places a token of that actor there. What the object
 // does is read from its actor's flag `object` (settings anyone can edit, no card named here): solid (four walls on its square's edges block
-// movement and Line of Effect; cover.mjs ignores them for a line to the object itself), breakAt (one Action's damage of at least this breaks it,
+// movement; v0.0.476: they no longer block sight, so the object can be seen and targeted: cover.mjs wallBlocks treats its square as solid for Line
+// of Effect, a line ending in it excepted), breakAt (one Action's damage of at least this breaks it,
 // less does nothing: damage.mjs), saveTier (its Tier against a Save: by hand for now). one:yes: one at a time per user (a new one melts the old);
 // eoe:yes: it melts when the encounter ends; defense:action: its Armor and Ward Defense are the Action DC (11 + the Modifier the Action used).
 import { sysLine } from "./sysmsg.mjs";
@@ -44,7 +45,7 @@ export async function handlePlace(cfg, ctx = {}) {
   const cells = (cfg.adjacent ? ringCells(T.tokenCells(target)) : []).filter(c => !occupied.has(`${c.i},${c.j}`) && !wallBlocks(from, T.cellCenter(c.i, c.j)));
   if (!cells.length) return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: user }), content: sysLine("fa-cube", `<b>${esc(src.name)}</b>: no empty square next to <b>${esc(target?.name)}</b> in ${esc(user.name)}'s Line of Effect.`, "fxm") });
   const { pickBar } = await import("./pickbar.mjs");
-  const id = await pickBar({ icon: "fa-cube", text: `<b>${esc(src.name)}</b>: click its square (next to ${esc(target?.name ?? "the target")}).`, options: [...cells.map(c => ({ id: `${c.i},${c.j}`, label: "Here", cells: [c] })), { id: "no", label: "Not now" }], cancel: "" });
+  const id = await pickBar({ icon: "fa-cube", text: `<b>${esc(src.name)}</b>: click its square (next to ${esc(target?.name ?? "the target")}).`, options: cells.map(c => ({ id: `${c.i},${c.j}`, label: "Here", cells: [c], mapOnly: true })), cancel: "Cancel" });   // v0.0.476: the squares are clicked on the map, one Cancel button
   if (!id || id === "no" || id === "done") return;
   const [i, j] = id.split(",").map(Number), tl = canvas.grid.getTopLeftPoint({ i, j });
   const data = { type: "placeObject", uuid: cfg.uuid, sceneId: canvas.scene.id, x: tl.x, y: tl.y, by: user.uuid, byName: user.name, one: !!cfg.one, eoe: !!cfg.eoe, dc: cfg.defense === "action" ? actionDcOf(ctx.attrVal) : null };
@@ -74,7 +75,7 @@ export async function placeHere(d) {
   const [made] = await scene.createEmbeddedDocuments("Token", [tok]);
   if (made && o.solid) {
     const s = scene.grid?.size ?? canvas.grid.size, W = CONST.WALL_SENSE_TYPES ?? {}, MV = CONST.WALL_MOVEMENT_TYPES ?? {};
-    await scene.createEmbeddedDocuments("Wall", squareWalls(d.x, d.y, s).map(c => ({ c, move: MV.NORMAL ?? 20, sight: W.NORMAL ?? 20, light: W.NORMAL ?? 20, sound: W.NONE ?? 0, flags: { [F]: { solidOf: made.id } } })));
+    await scene.createEmbeddedDocuments("Wall", squareWalls(d.x, d.y, s).map(c => ({ c, move: MV.NORMAL ?? 20, sight: W.NONE ?? 0, light: W.NONE ?? 0, sound: W.NONE ?? 0, flags: { [F]: { solidOf: made.id } } })));
   }
   await ChatMessage.create({ content: sysLine("fa-cube", `<b>${esc(actor.name)}</b> rises for <b>${esc(d.byName)}</b>${Number.isFinite(d.dc) ? ` (its Defense ${d.dc})` : ""}${o.breakAt ? `: one Action's ${o.breakAt} damage breaks it` : ""}${o.saveTier ? `; against a Save it gets Tier ${o.saveTier}` : ""}${d.eoe ? " (EoE)" : ""}.`, "fxm") });
 }

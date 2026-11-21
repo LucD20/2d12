@@ -325,7 +325,7 @@ FX("Consecrated Ground", "icons/svg/sun.svg", { description: "<p>The consecrated
   ends: { time: { on: true, mode: "rounds", rounds: 3 } } });
 // v0.0.409 (pack F2): the effects of the Paladin's Arts (Lantern of Faith: Kindle, Reveal; Hold the Line: Brace; Commandment: Courage)
 const lantern = n => ({ type: "light", bright: n, dim: 2 * n, color: "#ffd27a", lightAlpha: 0.2, lightAnim: "sunburst", lightSpeed: 2, lightIntensity: 3 });
-FX("Kindle (Bright light 3)", "icons/svg/light.svg", { selfApplied: true, duration: dur("encounter"), description: "<p>You shed Bright light 3 (Dim light 3 more) until the end of the encounter, EoE (Lantern of Faith, Kindle).</p>", settings: [lantern(3)] });
+FX("Kindle (Bright light 3)", "icons/svg/light.svg", { selfApplied: true, duration: dur("encounter"), description: "<p>You shed Bright light 3 (Dim light 3 more), EoE (Lantern of Faith, Kindle).</p>", settings: [lantern(3)] });
 FX("Reveal (Bright light 1)", "icons/svg/light.svg", { duration: dur("rounds"), description: "<p>The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).</p>", settings: [lantern(1)] });
 FX("Brace", "icons/svg/statue.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). Foundry draws it as an Aura 1 that follows you: if you move, the squares stay where they were (by hand).</p>",
   settings: [{ type: "aura", auraSize: 1, auraWho: "enemies", auraSelf: false, auraOutline: "#9aa3ad", auraFill: "#9aa3ad", areaRows: { carry: { on: false, who: "enemies", self: false }, diff: { on: true, who: "enemies" } } }] });
