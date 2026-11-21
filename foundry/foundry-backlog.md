@@ -806,7 +806,8 @@ World Clock and the quick time bar (the date can be set since v0.0.94); Exhauste
 - [ ] **Bear the Blow on a damage with no types** (an old card's plain Apply, a Save card's damage written before v0.0.388) is split after the ally's Resistance (the buckets have no types): the cards of today all carry their components.
 - [ ] **The Talents outside the class's slots:** each PC has its playtest Talent as an "Extra" Talent (the class window still offers none: Talents set aside); when the Talents come back, they move into a slot.
 
-## PLAYTEST 6 (2026-11-21, on v0.0.475): FOUND WHILE PLAYING, NOT BUILT (Lucas: "Don't add anything yet")
+## PLAYTEST 7 (2026-11-21, on v0.0.475): FOUND WHILE PLAYING, NOT BUILT (Lucas: "Don't add anything yet")
+- [ ] **Two numberings of same-name creatures:** `damagelog.mjs numberSameNames` numbers them by initiative order, `enclog.mjs creatureAbbrs / fullNames` by creation order, so the damage report's "Goblin Sneak 3" is the log's GS2 (found by the core review, 2026-11-21).
 - [ ] **Prone + Break Free:** the book allows Break Free while Prone (Chapter 8, Prone, since v0.0.431); `actions.mjs` (the Prone check, about line 547) still allows only Crawl and Stand, and the HUD shows a Break Free button that is then refused.
 - [ ] **Charge's Weapon Attack isn't in the HUD's Situational tab** (it is a chip on the card, not a granted use).
 - [ ] **Charge, then deselecting and reselecting the token, loses the HUD** (as Judge did; the Charge picker likely isn't the pick bar that follows the selection, v0.0.473).
