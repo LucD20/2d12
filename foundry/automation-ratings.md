@@ -24,8 +24,8 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Regrip | Silver | the card is text; the regrip itself is on the hands buttons |
 | Release | Gold | |
 | Stand | Gold | |
-| Break Free | Gold | (v0.0.475: it rolls the Body or Instinct Check against the Action DC of what holds you) |
-| Leaning | Gold | |
+| Break Free | Gold | (v0.0.477: its card rolls the Check against the Action DC of what holds you; Tier 2 or 3 frees) |
+| Lean | Gold | (v0.0.477: Leaning ends when the creature leaves its square) |
 | Fists | Gold | |
 | Relocate | Gold | |
 | Trip | Gold | |
@@ -53,7 +53,7 @@ on the card shows it; editable on the item). Not checked in Foundry itself: Luca
 | Rebuke | Gold | |
 | Lantern of Faith | Gold | |
 | Hold the Line | Silver | Brace's squares stay where you used it if you move (Foundry's Aura follows you); Trade Places between different Sizes is refused (v0.0.431) |
-| Commandment | Silver | Courage (an Aura 3: ignore Frightened) is only a reminder |
+| Commandment | Silver | Courage (an Aura 3: ignore Daunted) is only a reminder |
 | Bulwark of Faith | Gold | |
 | Consecrated Ground | Gold | |
 | Word of Radiance | Gold | |

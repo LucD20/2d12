@@ -23,8 +23,11 @@ export function rollLine(it, vs) {
   if (has("save")) return { label: "Save", text: String(vs || "").replace(/\s*Save$/, "") || "the target's choice" };
   // a [Signature] Action rolls the Signature Modifier, whatever else it is (the book: "Signature vs. Armor Defense")
   const words = (has("signature") ? ["signature"] : ROLL_WORDS.filter(has)).map(k => (k === "magic" ? "Power" : TWOD12.traits[k] ?? TWOD12.attributes[k] ?? k));
-  const def = DEF[vs] ?? vs;
-  return def ? { label: "Attack", text: `${words.length ? `${words.join(" or ")} ` : ""}vs. ${def}` } : null;
+  // the core rework A7 (book, Chapter 1, Attribute DCs): an Attribute is rolled against the target's DC of that Attribute ("Body vs. Body DC");
+  // "Body or Instinct" (the one used to roll) against "the same Attribute's DC"; Break Free's Check against the Action DC
+  const ATTR = /^(Body|Mind|Appeal|Instinct)$/;
+  const def = DEF[vs] ?? (ATTR.test(vs) ? `${vs} DC` : / or /.test(vs ?? "") && it.vs === "roll" ? "the same Attribute's DC" : vs);
+  return def ? { label: it.vs === "action" ? "Check" : "Attack", text: `${words.length ? `${words.join(" or ")} ` : ""}vs. ${def}` } : null;
 }
 /** Pure: how a Version's three Tier texts are written: one line ("Tier 1 or 2" / "Tier 2 or 3" / "Tiers 1–3") or three. cells: [t1, t2, t3]. */
 export function tierLines(cells, save, noDamage, orTiers = "", written = "") {

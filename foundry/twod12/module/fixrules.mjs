@@ -5,7 +5,7 @@
 //   Marked Quarry: its Tier 1 [Mod] is of the weapon's subtype ("W").
 // Nothing else on those items changes. Also game.twod12.fixRulesV346().
 const F = "twod12";
-const isFrightened = n => /^frightened\b/i.test(String(n ?? "").trim());
+const isFrightened = n => /^(frightened|daunted)\b/i.test(String(n ?? "").trim());   // the core rework E1: Daunted is its new name
 const isQuarry = n => String(n ?? "").trim().toLowerCase() === "marked quarry";
 
 /** Pure: an item's system data with the v0.0.345 rules, or null when nothing changes. */
@@ -75,5 +75,37 @@ export async function fixZonesV351() {
     n++;
   }
   if (n) console.log(`twod12 | v0.0.351: ${n} Zone Effects got their second carried Effect`);
+  return n;
+}
+
+/**
+ * The core rework E1 (Lucas, 2026-11-21; book, Chapter 8): Frightened is renamed Daunted. Once per world (the active GM): every applied Frightened
+ * (on world actors and on the tokens of every scene) and every world item named Frightened takes the new name and the status id "daunted".
+ * Pure helper: what an effect's data becomes, or null when it isn't a Frightened.
+ */
+export function dauntedUpdate(fx) {
+  const name = String(fx?.name ?? ""), st = [...(fx?.statuses ?? [])], base = fx?.flags?.twod12?.baseName;
+  const hit = /^frightened\b/i.test(name) || st.includes("frightened") || /^frightened\b/i.test(String(base ?? ""));
+  if (!hit) return null;
+  const up = { name: name.replace(/^frightened\b/i, "Daunted"), statuses: [...new Set(st.map(s => (s === "frightened" ? "daunted" : s)))] };
+  if (base) up["flags.twod12.baseName"] = String(base).replace(/^frightened\b/i, "Daunted");
+  return up;
+}
+export async function migrateDaunted() {
+  let n = 0;
+  const fix = async parent => {
+    const ups = [];
+    for (const e of parent?.effects ?? []) { const u = dauntedUpdate(e); if (u) ups.push({ _id: e.id, ...u }); }
+    if (ups.length) { await parent.updateEmbeddedDocuments("ActiveEffect", ups); n += ups.length; }
+  };
+  for (const a of game.actors ?? []) await fix(a);
+  for (const sc of game.scenes ?? []) for (const t of sc.tokens ?? []) if (!t.actorLink && t.actor) await fix(t.actor);
+  for (const it of game.items ?? []) {
+    if (/^frightened\b/i.test(it.name)) { await it.update({ name: it.name.replace(/^frightened\b/i, "Daunted") }); n++; }
+    // the core rework E2: a world copy of Daunted or Taunted ends when its source goes Down, as the compendium's does
+    if (it.type === "effect" && /^(frightened|daunted|taunted)$/i.test(String(it.name).trim()) && !it.system?.endsWithOrigin) await it.update({ "system.endsWithOrigin": true });
+    await fix(it);
+  }
+  if (n) console.log(`twod12 | the core rework E1: ${n} Frightened renamed Daunted`);
   return n;
 }

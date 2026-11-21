@@ -349,7 +349,7 @@ export async function dropInfo(doc) {
     return { name: doc.name, type: "action", cost: aps.length ? `${aps.join("/")}${s.reaction ? "R" : " AP"}` : "", freq: TWOD12.frequencies?.[s.frequency] ?? "", line };
   }
   if (doc.type === "effect") {
-    const src = s.isCondition && (s.whileSeen || s.endsWithOrigin || s.originFromUser) ? (/^frightened/i.test(doc.name) ? "of" : "by") : "";
+    const src = s.isCondition && (s.whileSeen || s.endsWithOrigin || s.originFromUser) ? (/^(frightened|daunted)/i.test(doc.name) ? "of" : "by") : "";
     return { name: doc.name, type: "effect", valued: !!s.valued, src };
   }
   return null;

@@ -7,7 +7,7 @@ dice in the message: 2
 shared dice shown: boon dice - | bane dice -
 --- three DCs (13, 17, 23), dice 9 and 11: boon dice -, bane dice -
 the outcome grouped by Tier, who landed where: Tier 3 Nari Vigor 2 Sl + 1d6 Tier 2 Lonny Vigor 2 Sl Tier 1 Goblin Vigor 2
-each creature's own Defense on its row: Nari: Bo 12 1 Boon | Lonny: Bo 20 2 Banes | Goblin: Bo 32
+each creature's own Defense on its row: Nari: Bo 11 1 Boon | Lonny: Bo 19 2 Banes | Goblin: Bo 31
 DC ranges in the tier column are generic when the DCs differ: true
 flags: ["Nari T3","Lonny T2","Goblin T1"] | highest tier on the card: 3
 --- Favored for all: 3d12 (4, 12→8, 6) keeps the two highest: boon dice -, bane dice -

@@ -1,5 +1,5 @@
 import { esc } from "./util.mjs";
-import { bbFive, rollState, keepThree, tierOf } from "./calc.mjs";
+import { bbResolve, keepThree, tierOf } from "./calc.mjs";
 export { esc };
 export const TIER_NAMES = ["", "Failure", "Marginal Success", "Full Success"];
 export const sgn = n => (n >= 0 ? "+" : "-") + Math.abs(n);
@@ -58,8 +58,9 @@ export async function showDice(rolls) {
  * (calc.mjs bbCount); they cancel, and 5 or more left make the roll Favored / Doomed instead. { state, five, bo, ba, net }.
  */
 export function bbRoll(boons = 0, banes = 0, favored = false, doomed = false) {
-  const f = bbFive(boons, banes);
-  return { state: rollState(favored, doomed, f.five), five: f.five, bo: f.five ? 0 : Math.max(0, Number(boons) || 0), ba: f.five ? 0 : Math.max(0, Number(banes) || 0), net: f.net };
+  // the core rework A3: a Favored / Doomed source counts as 5 Boons / 5 Banes before cancelling
+  const r = bbResolve(boons, banes, favored, doomed), bo = Math.max(0, Number(boons) || 0) + (favored ? 5 : 0), ba = Math.max(0, Number(banes) || 0) + (doomed ? 5 : 0);
+  return { state: r.state, five: r.five, bo: r.state ? 0 : bo, ba: r.state ? 0 : ba, net: r.net };
 }
 
 /** 2d12 + mod + boons - banes vs DC. Does not post anything. */

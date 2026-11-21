@@ -108,6 +108,9 @@ export function derivedMods(actor) {
   const out = [];
   // A two-handed weapon held with one hand: 3 banes on [Strike, Weapon] Actions with that weapon (v0.0.212, Lucas: not the other hand's weapon or Fists).
   if ((actor?.itemTypes?.weapon ?? []).some(w => w.system.wielded && w.system.traits?.has?.("twohanded") && (w.system.hands ?? 1) < 2)) out.push({ id: "syn:onehand", name: "Two-handed weapon in one hand", boons: 0, banes: 3, all: ["strike", "weapon", "__twohanded"], any: [], none: [] });
+  // the core rework A5 (Lucas, 2026-11-21; book, Chapter 8, Exhausted): Exhausted N gives N Banes (no name) on all your Rolls (it was a penalty of N)
+  const exh = Math.max(0, Math.trunc(Number(actor?.system?.exhausted ?? 0)) || 0);
+  if (exh) out.push({ id: "syn:exh", name: `Exhausted ${exh}`, boons: 0, banes: exh, all: [], any: [], none: [] });
   return out;
 }
 
@@ -623,7 +626,7 @@ export function setupPanel() {
  */
 /** The Effect item (the world's, or the system's compendium) with a condition's name, or null. */
 export async function conditionItem(cond) {
-  const id0 = String(cond).trim().toLowerCase(), id = COND_NAME[id0] ?? id0;   // v0.0.414: the status bleed is the condition Lingering
+  const id00 = String(cond).trim().toLowerCase(), id0 = COND_ALIAS[id00] ?? id00, id = COND_NAME[id0] ?? id0;   // v0.0.414: the status bleed is the condition Lingering
   let item = game.items.find(i => i.type === "effect" && shortName(i.name).trim().toLowerCase() === id);
   if (!item) {   // the system's Conditions compendium, then its Effects
     for (const key of ["twod12.conditions", "twod12.effects"]) {
@@ -638,6 +641,8 @@ export async function conditionItem(cond) {
 
 /** v0.0.414: a status id whose condition item has another name (Bleed is Lingering in the book). */
 export const COND_NAME = { bleed: "lingering" };
+/** The core rework E1 (2026-11-21): an old card's or chip's Frightened finds Daunted. */
+export const COND_ALIAS = { frightened: "daunted" };
 
 /** A condition with a value on a creature (Empowered 2): the value is kept on its effect. */
 export const isValued = fx => !!fx && fx.getFlag?.(F, "value") != null && !isExhaustedFx(fx);

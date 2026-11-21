@@ -1,7 +1,7 @@
 import { TWOD12, migrateTags, npcHm, npcCv, stageOf, stageMod, rallyPointsOf } from "./config.mjs";
 import { evalExpr } from "./refs.mjs";
 import { migrateSettings, migrateRules, migrateZone } from "./settingsmigrate.mjs";
-import { classModifiers, modOf, classTrack } from "./modifiers.mjs";
+import { classModifiers, classTrack } from "./modifiers.mjs";
 
 import { applySpeedMods } from "./speedmods.mjs";
 import { s0Health, npcDefenseOf, rankAp, rankReactionAp, cvSteps, cvWithSteps, ROLE_PRESETS } from "./npcbudget.mjs";   // v0.0.407: the Bestiary's Stage 0 numbers
@@ -166,10 +166,10 @@ export function deriveDefenses(m, training) {   // exported for the tests (t135)
     m.armorUntrained = need > 0 && need > have;
   }
   // The DCs of the Saves this creature makes others roll (Saves in the rules): 11 + the Weapon, Power or Signature Modifier,
-  // or 11 + (half the Attribute, rounded up, + 1). Cards write them as @Save[body|dc:@weapon.dc].
+  // or 11 + the Attribute (the core rework A7: the Attribute DC; was 11 + half the Attribute, rounded up, + 1). Cards write them as @Save[body|dc:@weapon.dc].
   const at = m.attributes ?? {};
   m.saveDC = { weapon: 11 + (Number(m.weaponMod) || 0), power: 11 + (Number(m.powerMod) || 0), signature: 11 + (Number(m.signatureMod) || 0),
-    body: 11 + modOf(at.body), mind: 11 + modOf(at.mind), appeal: 11 + modOf(at.appeal), instinct: 11 + modOf(at.instinct) };
+    body: 11 + (Number(at.body) || 0), mind: 11 + (Number(at.mind) || 0), appeal: 11 + (Number(at.appeal) || 0), instinct: 11 + (Number(at.instinct) || 0) };
 }
 
 /**

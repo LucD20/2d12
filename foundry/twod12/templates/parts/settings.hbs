@@ -95,7 +95,7 @@
         {{/if}}
         {{#if isDefense}}
         <div class="fxd-s">Give <input type="number" class="fxd-f n" data-sfield="{{i}}" data-field="defValue" data-signed value="{{defValue}}"> to <select class="fxd-f" data-sfield="{{i}}" data-field="defKind">{{selectOptions defKinds selected=defKind}}</select>.</div>
-        <p class="fxd-help">"Every Defense" raises Armor, Ward and every Vs. Attribute. A negative number lowers it. Bonuses don't add up: the creature uses the highest bonus and the highest penalty for each Defense (from Features and effects). Armor and Ward are 11 + their value; Vs. an Attribute is 13 + half the Attribute.</p>
+        <p class="fxd-help">"Every Defense" raises Armor, Ward and every Attribute DC. A negative number lowers it. Bonuses don't add up: the creature uses the highest bonus and the highest penalty for each Defense (from Features and effects). Armor and Ward are 11 + their value; Vs. an Attribute is 13 + half the Attribute.</p>
         {{/if}}
         {{#if isSpeed}}
         <div class="fxd-s"><select class="fxd-f" data-sfield="{{i}}" data-field="speedMode">{{selectOptions speedModes selected=speedMode}}</select> <input type="text" class="fxd-f w" data-sfield="{{i}}" data-field="speedFormula" value="{{speedFormula}}" placeholder="2  or  floor(speed/2)"></div>

@@ -6,7 +6,7 @@ import { homePos, leanOf, pickPeek, CORNERS, CORNER_LABEL } from "./lean.mjs";
 
 export const COVER_LABELS = ["No cover", "Low cover", "Medium cover", "High cover", "Total cover"];
 const INSET = 0.04;
-const WAY_INSET = 0.03;   // v0.0.350: a creature in the way: its square less a sliver (was 0.12: a line through a quarter of the square didn't count)   // corners are pulled slightly inward, so a wall running along the target's edge doesn't block its own corner
+const WAY_INSET = -0.002;   // the core rework D6 (Lucas, 2026-11-21; book, Chapter 3: the line touching a creature's space, even at a corner, counts): its square and a hair more (v0.0.350: less a sliver, 0.03)   // corners are pulled slightly inward, so a wall running along the target's edge doesn't block its own corner
 
 /** Do walls that block sight or movement lie between two points? A line that only touches the end of a wall isn't blocked. */
 export function wallBlocks(a, b) {
@@ -32,6 +32,8 @@ export function wallBlocks(a, b) {
 
 const rectOf = t => { const s = canvas.grid.size, d = t.document, h = homePos(d); return { x: h.x, y: h.y, w: d.width * s, h: d.height * s }; };   // a Leaning token is nudged: its own square counts (lean.mjs)
 const centerOf = r => ({ x: r.x + r.w / 2, y: r.y + r.h / 2 });
+/** The core rework D5 (book, Chapter 3): a Prone or dead creature gives no cover (it lies too low to be in the way). */
+export const liesLow = t => { const st = t?.actor?.statuses; return !!(st?.has?.("prone") || st?.has?.("dead") || t?.document?.hasStatusEffect?.("dead")); };
 const inset = (r, f) => { const e = f * canvas.grid.size; return { x: r.x + e, y: r.y + e, w: Math.max(1, r.w - 2 * e), h: Math.max(1, r.h - 2 * e) }; };
 const cornersOf = r => [{ x: r.x, y: r.y }, { x: r.x + r.w, y: r.y }, { x: r.x + r.w, y: r.y + r.h }, { x: r.x, y: r.y + r.h }];
 
@@ -85,9 +87,9 @@ export function coverBetween(attacker, target, { blockedFn: bf = wallBlocks, oth
   const tc = centerOf(tr);
   // v0.0.411 (pack F3, Clear Lines: hooks.mjs clearLines): the attacker's allies give its targets no Cover
   const clear = clearLinesOf(attacker), mine = Number(attacker.document?.disposition ?? 0);
-  const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== attacker.id && t.id !== target.id && !t.document.hidden && !(clear && mine && Number(t.document.disposition) === mine));
+  const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== attacker.id && t.id !== target.id && !t.document.hidden && !liesLow(t) && !(clear && mine && Number(t.document.disposition) === mine));
   // v0.0.350 (Lucas, playtest 4: "show center-to-center cover too; I think it isn't calculating it correctly"): a creature whose square the center
-  // line crosses is in the way (book: "on the line"); only a sliver is left out so a line along an edge or through a corner point doesn't count
+  // line crosses is in the way (book: "on the line"); since the core rework D6 a line along an edge or through a corner point counts too
   const blockers = best.blocked < 4 ? crowd.filter(t => segmentHitsRect(best.origin, tc, inset(rectOf(t), WAY_INSET))) : [];
   const inWay = blockers.length > 0;
   let level = Math.min(4, Math.max(best.blocked, inWay ? 1 : 0));
@@ -109,7 +111,7 @@ export function coverFromPoint(point, target, { blockedFn: bf = wallBlocks, othe
   const tr = rectOf(target);
   const blockedFn = bf;
   const blocked = cornersOf(inset(tr, INSET)).filter(c => blockedFn(point, c)).length;
-  const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== target.id && !exclude.includes(t.id) && !t.document.hidden);
+  const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== target.id && !exclude.includes(t.id) && !t.document.hidden && !liesLow(t));
   const inWay = blocked < 4 && crowd.some(t => segmentHitsRect(point, centerOf(tr), inset(rectOf(t), WAY_INSET)));   // v0.0.350
   let level = Math.min(4, Math.max(blocked, inWay ? 1 : 0));
   const exposed = !!target.actor?.statuses?.has?.("leaning") && level >= 1;   // Total cover becomes High: a creature Leaning out of it can be targeted

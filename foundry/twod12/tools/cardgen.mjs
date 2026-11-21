@@ -45,6 +45,7 @@ export function distanceKey(c) {
 export function vsKey(vs) {
   const t = String(vs ?? "").trim();
   if (!t || /^(AD|WD)$/i.test(t) || /^DC\s*\d+$/i.test(t)) return "";
+  if (/^Action DC$/i.test(t)) return "action";   // the core rework B11: Break Free's Check
   if (/\(the one used to roll\)/i.test(t) || /\bor\b/i.test(t)) return "roll";
   const m = t.match(/^(\w+)(?:\s+Save)?$/);
   if (m && ATTRS.includes(m[1].toLowerCase())) return m[1].toLowerCase();
@@ -100,6 +101,11 @@ export function versionData(c, v, resolve = s => s) {
   for (const [a, b] of v.foundry?.sub ?? []) out.effects = out.effects.split(a).join(b);
   // v0.0.254 (Lucas): a card's inline Actions are written on its last Version's Foundry text (a link to the item and its line), so the sheet's preview shows them after "you gain the following Action:"
   if (c.inline?.length && v === (c.versions ?? [])[(c.versions ?? []).length - 1]) out.effects += " " + c.inline.map(a => resolve(`{{link:${a.name}|${a.name}}} \u2014 ${[a.cost, a.frequency, a.traits?.length ? `[${a.traits.join(", ")}]` : "", a.interrupt ? `Interrupt: ${a.interrupt}` : "", a.trigger ? `Trigger: ${a.trigger}` : "", a.target ? `Target: ${a.target}` : "", a.effects ? `Effects: ${convertEffects(stripBold(foundryLinks(a.effects)))}` : ""].filter(Boolean).join(" | ")}`)).join(" ");
+  // the core rework B11 (Break Free): a book Version with only its Tier 1 and an Effects cell is "Tier 1" + "Tier 2 or 3" (cards.py's label): three tiers here
+  if (v.tiers?.length === 1 && v.effects) {
+    v = { ...v, tiers: [v.tiers[0], v.effects, v.effects], orTiers: "23" };
+    out.effects = ""; out.orTiers = "23";
+  }
   if (v.tiers) {
     if (v.tiers.length !== 3) throw new Error(`${c.name}: a Version needs three tiers`);
     v.tiers.forEach((cell, i) => {

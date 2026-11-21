@@ -86,19 +86,32 @@ export async function takeMoreW(actor) {
   try { if (actor.isOwner) await actor.setFlag(F, "strikeState", { ...st, moreW: true }); } catch (e) { /* not kept */ }
   return true;
 }
+/**
+ * The creature has left its square (the active GM): its effects that last until it leaves its square end (Take Aim: expireOn "__leave"), and so
+ * does Leaning (the core rework B12). Also called for a creature pushed into a wall right behind it, which counts as leaving its square though it
+ * moved 0 squares (the core rework D7; move.mjs pushOne).
+ */
+export async function endLeaveEffects(actor) {
+  if (!actor) return;
+  // the core rework B12 (book, Chapter 3, Leaning): Leaning ends too when the creature leaves its square
+  const gone = [...actor.effects].filter(e => (e.getFlag?.(F, "expireOn") ?? []).includes("__leave") || e.statuses?.has?.("leaning")).map(e => e.id);
+  if (gone.length) { const names = [...new Set(gone.map(id => actor.effects.get(id)?.name).filter(Boolean))]; await actor.deleteEmbeddedDocuments("ActiveEffect", gone); try { const { sysLine } = await import("./sysmsg.mjs"); await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-person-walking", `<b>${actor.name.replace(/</g, "&lt;")}</b> leaves its square: ${names.map(n => `<b>${n.replace(/</g, "&lt;")}</b>`).join(", ")} ends.`, "fxm") }); } catch (e) { /* no line */ } }
+}
+
 /** The token moved (the active GM): its creature has left its square this turn (Shifting Aim). */
 export function registerStrikeState() {
-  Hooks.on("moveToken", async doc => {
+  Hooks.on("moveToken", async (doc, movement, operation) => {
     try {
       if (!game.user.isActiveGM) return;
       const actor = doc?.actor;
       if (!actor) return;
+      // the core rework B12: Leaning's nudge toward a corner (lean.mjs) is not a move: it leaves nothing behind
+      try { const { isLeanMove } = await import("./lean.mjs"); if (isLeanMove(movement, operation)) return; } catch (e) { /* no lean module */ }
       // pack TALENTS-PT (book, Chapter 3: a movement you must make; Ricochet's Setup "doesn't count as leaving your square"): a movement made while
       // the actor carries the flag stillMove (setup.mjs, a @Move with still:yes) leaves nothing behind; any other movement, by itself or forced by
       // another creature, ends its effects that last until it leaves its square (Take Aim: expireOn "__leave")
       if (actor.getFlag(F, "stillMove")) return;
-      const gone = [...actor.effects].filter(e => (e.getFlag?.(F, "expireOn") ?? []).includes("__leave")).map(e => e.id);
-      if (gone.length) { const names = [...new Set(gone.map(id => actor.effects.get(id)?.name).filter(Boolean))]; await actor.deleteEmbeddedDocuments("ActiveEffect", gone); try { const { sysLine } = await import("./sysmsg.mjs"); await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-person-walking", `<b>${actor.name.replace(/</g, "&lt;")}</b> leaves its square: ${names.map(n => `<b>${n.replace(/</g, "&lt;")}</b>`).join(", ")} ends.`, "fxm") }); } catch (e) { /* no line */ } }
+      await endLeaveEffects(actor);
       if (actor.type !== "character") return;   // v0.0.412: every character (Wounding Shot's Requirement reads it too)
       const key = await turnOf(actor); if (!key) return;
       const st = stateNow(actor.getFlag(F, "strikeState"), key);

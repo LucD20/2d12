@@ -73,7 +73,7 @@ async function actionsOf(actor) {
     const why = lock ? `Needs Escalation ${it.escalation}` : row?.offWhy ?? "";
     const list = vs.map((v, k) => ({ ap: v.ap, label: it.reaction ? `${v.ap}R` : `${v.ap} AP`, off: lock || !!row?.off || !!btns[k]?.off, lock, used: /used|spent/i.test(why), why: why || btns[k]?.why || "", fav: quick.has(`${i.id}:${v.ap}`) }))
       .filter(v => !onlyAps || onlyAps.includes(Number(v.ap)));
-    return { id: i.id, name: i.name, freq: freq || "none", fq: FREQ_COLORS[freq] ?? FREQ_COLORS.none, roll: rollLine(actor, i), dim: lock || (!!row?.off && list.every(v => v.off)), versions: list, pc: actor.type !== "npc",
+    return { id: i.id, name: i.name, freq: freq || "none", fq: FREQ_COLORS[freq] ?? FREQ_COLORS.none, roll: rollLine(actor, i), dim: lock || (list.length > 0 && list.every(v => v.off)),   /* playtest 7 (Quick Shots at 1 AP wasn't faded): faded when no Version can be paid, as when it is spent */ versions: list, pc: actor.type !== "npc",
       basic: !!i.getFlag(F, "basic"), bkey: i.getFlag(F, "basic") || "", basicAttack: !!it.basicAttack, reaction: !!it.reaction, escalation: Number(it.escalation) || 0, minAp: Math.min(99, ...vs.map(v => Number(v.ap) || 0)) };
   };
   // v0.0.418 (playtest 5, D6: Seizing Cut showed though Durgan lacked the Mastery): a Technique not unlocked is left out, as on the sheet

@@ -1,7 +1,7 @@
 // Run with: node tools/tests/run.mjs (or node tools/tests/t220.mjs)
-// v0.0.314 PACK AU, part 1 (R-Foundry 2's list): the conditions as items (Frightened first), the Elite's Bloodied / Strained phases, Vs. WD and the
+// (the core rework E1, 2026-11-21: Frightened is Daunted) v0.0.314 PACK AU, part 1 (R-Foundry 2's list): the conditions as items (Daunted first), the Elite's Bloodied / Strained phases, Vs. WD and the
 // AD / WD coloring. The pure rules (module/condrules.mjs), what the items' settings become on a creature (appliedflags.mjs), the roll's Boons and
-// Banes from them (effects.mjs modifierList: Frightened, Taunted, Sickened), the card text that becomes their buttons (gen.mjs convertEffects),
+// Banes from them (effects.mjs modifierList: Daunted, Taunted, Sickened), the card text that becomes their buttons (gen.mjs convertEffects),
 // the Elite's rungs and phases (escalation.mjs) and the Vs. colors (util.mjs vsKind, chatcards.mjs badges).
 import { fileURLToPath } from "node:url";
 const ROOTURL = new URL("../../", import.meta.url).href;
@@ -21,7 +21,7 @@ const { docs } = await import(ROOTURL + "tools/content.mjs").catch(() => ({ docs
 
 console.log("--- the conditions pass's eight, as items (tools/content.mjs, the conditions pack)");
 const conds = (docs ?? []).filter(d => d.pack === "conditions" || d.system?.isCondition);
-const want = ["Lingering", "Blinded", "Dazed", "Frightened", "Grabbed", "Sickened", "Staggered", "Taunted"];
+const want = ["Lingering", "Blinded", "Dazed", "Daunted", "Grabbed", "Sickened", "Staggered", "Taunted"];
 for (const n of want) {
   const d = conds.find(x => x.name === n), s = d?.system ?? {};
   const rules = ["whileSeen", "noReactions", "loseAp", "endsWithOrigin"].filter(k => s[k]);
@@ -31,7 +31,7 @@ for (const n of want) {
 console.log("--- what the settings become on the creature (appliedFlags)");
 const item = n => { const d = conds.find(x => x.name === n); return { ...d.system, settings: d.system.settings.map(x => ({ attrs: [], all: [], any: [], none: [], from: [], tiers: [], ...x })), expireOn: [] }; };
 const flagsOf = n => appliedFlags(item(n), {});
-for (const n of ["Frightened", "Taunted", "Sickened", "Staggered", "Dazed", "Grabbed", "Lingering"]) {
+for (const n of ["Daunted", "Taunted", "Sickened", "Staggered", "Dazed", "Grabbed", "Lingering"]) {
   const f = flagsOf(n);
   console.log(`${n.padEnd(11)} whileSeen ${f.whileSeen} noReactions ${f.noReactions} loseAp ${f.loseAp} endsWithOrigin ${f.endsWithOrigin} | modifiers ${JSON.stringify(f.modifiers.map(m => ({ banes: m.banes, all: m.all, attrs: m.attrs, vsOrigin: m.vsOrigin, byValue: m.byValue })))} | bleeds ${JSON.stringify(f.bleeds)}`);
 }
@@ -42,8 +42,8 @@ const applied = (id, name, f, origin = "Actor.Ogre", value = null) => ({ id, nam
 const creature = (name, effects = []) => ({ name, uuid: `Actor.${name}`, effects, statuses: new Set(), system: {}, itemTypes: { weapon: [] }, items: [] });
 const ogre = creature("Ogre"), goblin = creature("Goblin");
 const banes = (me, traits, targets) => E.modifierList(me, new Set(traits), targets).filter(m => m.match).map(m => `${m.name} ${m.banes}`).join(", ") || "none";
-const kai = creature("Kai", [applied("f1", "Frightened", flagsOf("Frightened"))]);
-console.log("Frightened of the Ogre, an attack on the Goblin:", banes(kai, ["strike", "melee"], [goblin]), "| a Body Save:", banes(kai, ["body", "__save"], []));
+const kai = creature("Kai", [applied("f1", "Daunted", flagsOf("Daunted"))]);
+console.log("Daunted of the Ogre, an attack on the Goblin:", banes(kai, ["strike", "melee"], [goblin]), "| a Body Save:", banes(kai, ["body", "__save"], []));
 ESC.setSeenGate(() => false);
 console.log("the Ogre out of Kai's Sight (a wall): the Bane stops:", banes(kai, ["strike"], [goblin]));
 ESC.setSeenGate(() => true);
@@ -65,8 +65,8 @@ const bl = applied("b1", "Bleed", { bleeds: flagsOf("Lingering").bleeds, bleed: 
 console.log("a card's Bleed over the condition's:", JSON.stringify(R.bleedOf(bl)), "->", R.bleedText(R.bleedOf(bl)), "| the bare condition:", R.bleedText(R.bleedOf(applied("b2", "Bleed", { bleeds: flagsOf("Lingering").bleeds }))), "| DC 15:", R.bleedText({ dmg: "2", attrs: ["body", "instinct"], dc: 15 }));
 
 console.log("--- card text that becomes the buttons (gen.mjs convertEffects)");
-for (const t of ["[R] 1d8 Ho; Pushed 2, and Frightened of you for 1 round.", "Frightened of the Grave Wisp (EoT).", "A Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap).", "Bleed 2 (Bo/In; DC 15).",
-  "they are Dazed 1 and Hindered (EoT).", "The target is Blinded (EoT).", "The target is Blinded for 1 round.", "Sickened 2.", "Taunted by you (EoT).", "Staggered (EoT).", "Grabbed.", "a Frightened creature flees; no longer Staggered."]) console.log(JSON.stringify(t), "->", G.convertEffects(t));
+for (const t of ["[R] 1d8 Ho; Pushed 2, and Daunted of you for 1 round.", "Daunted of the Grave Wisp (EoT).", "A Strained target also gains Bleed [R] 1d6 Ho (Mi/Ap).", "Bleed 2 (Bo/In; DC 15).",
+  "they are Dazed 1 and Hindered (EoT).", "The target is Blinded (EoT).", "The target is Blinded for 1 round.", "Sickened 2.", "Taunted by you (EoT).", "Staggered (EoT).", "Grabbed.", "a Daunted creature flees; no longer Staggered."]) console.log(JSON.stringify(t), "->", G.convertEffects(t));
 const parsed = (await import(ROOTURL + "module/inline.mjs")).parseInline("Condition", "bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap|dc:15");
 console.log("@Condition[bleed|...] parsed:", JSON.stringify(parsed.bleed), "| the cond:", parsed.cond);
 
@@ -110,12 +110,12 @@ const tk = (id, st = []) => ({ id, actor: { statuses: new Set(st), system: { sen
 console.log("a Blinded observer sees no creature by sight (Hearing is another mode):", SG.canSeeByRules ? SG.canSeeByRules(tk("a", ["blinded"]), tk("b")) : SG.err);
 
 console.log("--- v0.0.317 (Lucas on v0.0.316)");
-console.log("a rider with buttons flows after the arrow:", CC.riderHtml('<a data-twod12-inline="Move">Pushed 2</a>, and <a data-twod12-inline="Condition">Frightened</a> of you for 1 round.').replace(/<a[^>]*>([^<]*)<\/a>/g, "[$1]"), "| plain words keep the chip:", CC.riderHtml("Pushed 2"));
+console.log("a rider with buttons flows after the arrow:", CC.riderHtml('<a data-twod12-inline="Move">Pushed 2</a>, and <a data-twod12-inline="Condition">Daunted</a> of you for 1 round.').replace(/<a[^>]*>([^<]*)<\/a>/g, "[$1]"), "| plain words keep the chip:", CC.riderHtml("Pushed 2"));
 const empty = CC.saveCardHtml({ kind: "save", name: "Rebuke", saveName: "Appeal Save", dc: 15, creatures: [], tiers: { 1: { parts: [], riders: [] }, 2: { parts: [], riders: [] }, 3: { parts: [], riders: [] } }, tline: { names: [] } }, { ...CC.FULL_VIEW, owns: () => false });
 console.log("a Save card with no target says so:", (empty.match(/cc-wait">([^<]*)</) ?? [])[1]);
 globalThis.fromUuidSync = u => (u === "Actor.Ogre" ? { name: "Ogre" } : null);
-const fr = conds.find(x => x.name === "Frightened").system;
-console.log("the name with its origin:", E.withOriginName("Frightened", fr, "Actor.Ogre", { uuid: "Actor.Kai" }), "| no origin:", E.withOriginName("Frightened", fr, "", null), "| its own:", E.withOriginName("Frightened", fr, "Actor.Ogre", { uuid: "Actor.Ogre" }), "| Prone (needs none):", E.withOriginName("Prone", { settings: [] }, "Actor.Ogre", null));
+const fr = conds.find(x => x.name === "Daunted").system;
+console.log("the name with its origin:", E.withOriginName("Daunted", fr, "Actor.Ogre", { uuid: "Actor.Kai" }), "| no origin:", E.withOriginName("Daunted", fr, "", null), "| its own:", E.withOriginName("Daunted", fr, "Actor.Ogre", { uuid: "Actor.Ogre" }), "| Prone (needs none):", E.withOriginName("Prone", { settings: [] }, "Actor.Ogre", null));
 
 console.log("--- v0.0.319 (Lucas: the Blinded Grave Wisp still had no Hearing mode)");
 const MD = await import(ROOTURL + "module/modes.mjs");

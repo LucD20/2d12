@@ -70,7 +70,7 @@ const tierDmg = (val, pool, sub) => (val === "0" || (!pool && !sub) ? val : `${v
 export function convertEffects(text) {
   let s = String(text ?? "");
   // v0.0.412 (the Structure's links, pack F3): a book link on a word the converter makes a button is that word ("[[Bleed]] 1 (Bo/In)" is Bleed's button)
-  s = s.replace(/@Book\[(Bleed|Lingering|Pressed|Reposition|Slid|Pushed|Pulled|Grabbed|Hindered|Immobilized|Prone|Frightened|Taunted|Dazed|Staggered|Blinded|Sickened|Vulnerable)\]\{\1\}/g, "$1");
+  s = s.replace(/@Book\[(Bleed|Lingering|Pressed|Reposition|Slid|Pushed|Pulled|Grabbed|Hindered|Immobilized|Prone|Daunted|Frightened|Taunted|Dazed|Staggered|Blinded|Sickened|Vulnerable)\]\{\1\}/g, "$1");
   s = s.replace(/\b(uses?)\s+up\s+to\s+(\d+)\s+Rally\s+Points?\b/gi, "$1 up to @Rally[$2|upto:yes]");
   // v0.0.250 (cards 3, Lay On Hands): "use 1 Rally Point, healing 1d6 + your Power Modifier more" -> the chip rolls the extra too (Pow: the card's creature's Power Modifier)
   const POW = "(?:your\\s+)?Power\\s+Modifier";
@@ -127,7 +127,7 @@ export function convertEffects(text) {
     const durOf = (n, p) => (n ? `|rounds:${n}` : (p ? (/eot/i.test(p) ? "|eot" : `|rounds:${parseInt(p, 10)}`) : ""));
     const NOT = "(?<!\\b(?:no longer|not|a|an|the|any|every|while|being)\\s)";
     const END = "(?=\\s*(?:[.;,()]|and\\b|$))";
-    s = s.replace(new RegExp(`${NOT}\\b(Frightened|Taunted)((?:\\s+(?:of|by)\\s+(?:you|it|them|the\\s+[A-Z][\\w'-]*(?:\\s+[A-Z][\\w'-]*)*|[A-Z][\\w'-]*(?:\\s+[A-Z][\\w'-]*)*))?)${DUR}${END}`, "g"),
+    s = s.replace(new RegExp(`${NOT}\\b(Daunted|Frightened|Taunted)((?:\\s+(?:of|by)\\s+(?:you|it|them|the\\s+[A-Z][\\w'-]*(?:\\s+[A-Z][\\w'-]*)*|[A-Z][\\w'-]*(?:\\s+[A-Z][\\w'-]*)*))?)${DUR}${END}`, "g"),
       (m, c, src, n, p) => `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${c}}${m.slice(c.length)}`);
     // v0.0.336 (Lucas, Marksman's Shot: "Blinded (EoT) fully as a button, as Vulnerable does"): a duration in parentheses is part of the button
     // v0.0.409 (pack F2, Glare): Half-Blinded (a condition of its own, Chapter 8), before Blinded

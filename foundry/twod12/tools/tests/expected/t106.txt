@@ -10,13 +10,13 @@ Interact                 null
 --- DCs against a Goblin in medium armor with Ward 1
 Weapon             13 | AD (Goblin): 11 + 2 (Medium) = 13
 Power              12 | WD (Goblin): 11 + 1 (Ward value) = 12
-Vs. Body           14 | Vs. Body (Goblin): 12 + 2 (Body) = 14
+Vs. Body           13 | Body DC (Goblin): 11 + 2 (Body) = 13
 Attribute, no Vs.  13 | (DC 13)
 armor table: Unarmored 11, Light 12, Medium 13, Heavy 14 | no target: AD: no target, using DC 13
 --- bonuses don't add up: the highest bonus and the highest penalty
 Armor: AD (Goblin): 11 + 3 (Heavy) + 2 Shield of Faith − 2 Cracked = 14
 Ward:  WD (Goblin): 11 + 0 (Ward value) + 2 Shield of Faith − 2 Cracked = 11
-Vs. Body: Vs. Body (Goblin): 12 + 2 (Body) + 2 Shield of Faith − 2 Cracked = 14
+Vs. Body: Body DC (Goblin): 11 + 2 (Body) + 2 Shield of Faith − 2 Cracked = 13
 +1 Armor and +1 Defense: 1 (not 2)
 a Feature's tag still counts (+1 vs Push): 1 0
 --- Armor Training

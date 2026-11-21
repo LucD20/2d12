@@ -279,7 +279,7 @@
       "rollLabel": "Check",
       "vs": "Action DC",
       "versions": [
-        { "ap": 1, "tiers": ["No effect: you stay Immobilized."], "effects": "You are no longer Immobilized, and no longer Grabbed if you were." }
+        { "ap": 1, "tiers": ["No effect: you stay Immobilized."], "effects": "You are no longer Immobilized, and no longer Grabbed if you were.", "foundry": { "x1": "No effect: you stay Immobilized." } }
       ],
       "foundry": { "basic": "breakFree", "automation": "gold", "automationNote": "the core rework B11: using it rolls the Body or Instinct Check (the higher) against the Action DC of what holds you (the highest on your Immobilized conditions; 13 with no Action behind it); a Tier 2 or 3 (Doubles count) ends Immobilized and Grabbed.", "img": "icons/svg/net.svg" }
     }

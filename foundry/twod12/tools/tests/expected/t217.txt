@@ -24,7 +24,7 @@ Favored for initiative (no Doubles) 5, 5, 7: keeps 0+2 total 12 tier 1
 --- a roll (roll.mjs performCheck, resolveShared)
 6 + 7 + 2, 3 Boons 1 Bane: 17 | bo / ba 3 1 | faces [1,1,1] [1] | state "" | d12 rolled 2
 6 Boons 1 Bane: five left, Favored, 3 d12: favored favored | bo 0 | total 15 (6 + 7 + 2) | d12 rolled 3
-5 Boons on a Doomed roll: normal, 2 d12: "" favored | total 15
+5 Boons on a Doomed roll: normal, 2 d12: ""  | total 15
 several targets, dice 4 4 9: Favored 13 tier 3 Doubles | 1 Boon (first two) 9 tier 2 Doubles | 5 Boons: Favored favored 13 tier 3
 the old card shows counts, not dice: true Weapon Attack 6 + 7 + 2 + Boons 3 &minus; Banes 1 15 DC 13
 --- the sources' names (effects.mjs resolveModifiers)

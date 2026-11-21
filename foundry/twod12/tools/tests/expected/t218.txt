@@ -30,7 +30,7 @@ Grunt: +0 / +1 / +2 / +3 / +4 | defaults: {"weapon":"medium","power":"low"} | le
 Standard: +0 / +1 / +2 / +3 / +4 | defaults: {"weapon":"medium","power":"medium"} | leading with Power: {"weapon":"medium","power":"medium"}
 Elite: +1 / +2 / +3 / +4 / +4 | defaults: {"weapon":"medium","power":"low"} | leading with Power: {"weapon":"low","power":"medium"}
 a rating set by the GM wins: {"weapon":"high","power":"terrible"}
---- v0.0.307: Vs. an Attribute = 12 + the Attribute: -1 -> 11, 0 -> 12, 1 -> 13, 2 -> 14, 3 -> 15, 4 -> 16 | with a +1 bonus: 15
+--- v0.0.307: Vs. an Attribute = 12 + the Attribute: -1 -> 10, 0 -> 11, 1 -> 12, 2 -> 13, 3 -> 14, 4 -> 15 | with a +1 bonus: 14
 Goblin Sneak: role minion, leads with weapon
 Orc Warrior: role standard, leads with weapon
 Grave Wisp: role standard, leads with power

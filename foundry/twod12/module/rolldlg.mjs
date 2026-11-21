@@ -16,7 +16,7 @@
 import { EMPOWERED_DIE } from "./roundrules.mjs";   // v0.0.407
 import { esc, vsColored } from "./util.mjs";
 import { TWOD12 } from "./config.mjs";   // v0.0.457: the damage types' colors
-import { tierProbs, bbCount, bbFive, rollState, BB_NAMES, BB_LIMIT } from "./calc.mjs";
+import { tierProbs, bbCount, bbResolve, BB_NAMES, BB_LIMIT } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ chips */
 /** The rows of the Modifiers panel, in their order, with their labels (the brief: Passives, Boons, Banes, Flat, Damage). */
@@ -126,8 +126,8 @@ export const liveCreatures = (inp, st) => (inp.creatures ?? []).filter(c => !(st
   .map(c => (c.uuid === "none" && Number(st.noTargetDc) > 0 ? { ...c, dc: Math.trunc(Number(st.noTargetDc)) } : c));   // v0.0.340: the DC typed for "No target"
 /** v0.0.301 (PACK BB): a tally's state and what its Boons and Banes add: 5 or more left make it Favored / Doomed instead (Ch. 1). */
 export function bbState(t) {
-  const f = bbFive(t.boons, t.banes), fav = t.fav || f.five === "favored", doom = t.doom || f.five === "doomed";
-  return { state: rollState(t.fav, t.doom, f.five), five: f.five, add: f.add, cancel: fav && doom };
+  const r = bbResolve(t.boons, t.banes, !!t.fav, !!t.doom);   // the core rework A3: a Favored / Doomed source counts as 5
+  return { state: r.state, five: r.five, add: r.add, cancel: r.cancel && !r.state };
 }
 /** One creature's numbers: its Defense, its Boons and Banes (shared + its own, named ones up to 2), its Flat, Favored / Doomed (and the five), the dice it keeps. */
 export function creatureCalc(inp, st, uuid) {

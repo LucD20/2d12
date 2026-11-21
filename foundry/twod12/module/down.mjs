@@ -9,7 +9,7 @@
 //   End of each turn while Dying or Shattered -> a Body (Dying) or Mind (Shattered) Check: Tier 1, roll on the Table; collapsed and Tier 3,
 //   roll on the Table and stabilize (no longer Dying or Shattered, still Unconscious). Fighting: then you may collapse.
 // The choice (fighting or collapsed) is the actor flag twod12.downChoice; the Table already rolled this encounter: twod12.downTableCombat.
-import { performCheck, checkHtml, rollTable, showDice } from "./roll.mjs";
+import { rollCheck, rollTable } from "./roll.mjs";
 import { sysLine } from "./sysmsg.mjs";
 import { esc } from "./util.mjs";
 const F = "twod12";
@@ -92,9 +92,9 @@ async function chooseFight(actor, kind) {
 
 /** A Body or Mind Check (never Doomed: these are the checks the rules exempt), posted to the chat. Returns the Tier. */
 async function downCheck(actor, attr, title) {
-  const r = await performCheck({ mod: Number(actor.system.attributes?.[attr]) || 0, dc: 13 });
-  await showDice(r.rolls);
-  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<div class="twod12 chat">${checkHtml(title, r, [], { showTier: true })}</div>` });
+  // playtest 7 (Lucas: "the Dying save uses the old check card"): the Check card of an Action (roll.mjs rollCheck), as the HUD's Checks and Saves
+  const mod = Number(actor.system.attributes?.[attr]) || 0, name = CONFIG.TWOD12?.attributes?.[attr] ?? (attr === "mind" ? "Mind" : "Body");
+  const r = await rollCheck({ actor, label: title, mod, dc: 13, chips: [`${name} ${mod >= 0 ? "+" : "\u2212"}${Math.abs(mod)}`] });   // its message carries the dice
   return r.tier;
 }
 

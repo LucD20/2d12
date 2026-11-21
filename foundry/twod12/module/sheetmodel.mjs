@@ -29,8 +29,8 @@ export function actionSection(a = {}) {
   return ["round", "turn", "encounter", "daily"].includes(f) ? f : "atwill";
 }
 
-/** Book, Chapter 2: the Vs. an Attribute Defenses: 12 + the Attribute (+ the creature's bonus for that Defense). */
-export const vsAttribute = (value, bonus = 0) => 12 + (Math.trunc(Number(value)) || 0) + (Number(bonus) || 0);   // v0.0.307 (Lucas): 12 + the Attribute (was 13 + half, rounded up)
+/** Book, Chapter 1, Attribute DCs: a creature's Body DC (Mind, Appeal, Instinct) is 11 + the Attribute (+ the creature's bonus for that Defense). */
+export const vsAttribute = (value, bonus = 0) => 11 + (Math.trunc(Number(value)) || 0) + (Number(bonus) || 0);   // the core rework A7 (Lucas, 2026-11-21): 11 + the Attribute (v0.0.307: 12 +)
 export function vsDefenses(attrs = {}, bonus = {}) {
   return Object.fromEntries(["body", "mind", "appeal", "instinct"].map(k => [k, vsAttribute(attrs[k], bonus[k])]));
 }

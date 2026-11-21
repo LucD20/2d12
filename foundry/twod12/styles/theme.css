@@ -1257,8 +1257,8 @@
 :where(.twod12-type) #twod12-carousel .tp-marks .hm-r i { border: 1px solid #d2a75a; }
 :where(.twod12-type) #twod12-carousel .tp-marks .hm-r i.on { background: #66512c; }
 :where(.twod12-type) #twod12-carousel .tp-marks .hm-sep { background: #7a683f; }
-:where(.twod12-type) #twod12-carousel .tp-marks .hm-sk i { border: 1px solid #c0675c; }
-:where(.twod12-type) #twod12-carousel .tp-marks .hm-sk i.on { background: #643a35; }
+:where(.twod12-type) #twod12-carousel .tp-marks .hm-sk i { border: 1px solid var(--ps-strike, #c0675c); }
+:where(.twod12-type) #twod12-carousel .tp-marks .hm-sk i.on { background: var(--ps-strike, #643a35); }
 :where(.twod12-type) #twod12-carousel .tp-tag { border: 1px solid #d0564f; color: #ece3cf; }
 :where(.twod12-type) #twod12-carousel .tp-tag.down { background: color-mix(in srgb, #6a302d 30%, transparent); }
 :where(.twod12-type) #twod12-carousel .tc-mom { color: #b3a68e; }

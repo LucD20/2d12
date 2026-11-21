@@ -16,4 +16,4 @@ Wounding Shot's Tiers: ["@Condition[bleed|dmg:1|attrs:bo/in]{Lingering} 1 (Bo/In
 Shake Off | handle | reach | You, or one Lingering creature within your Reach | AP 1 | its chip: true
 the Tiers: 1: none | 2: half | 3: ends
 the chip: a Save with the better Attribute against its DC, then ends or halves: true | the turn's damage halved, then it ends: true
-on the Actions tab (Utility): "[\"Steel Yourself\", \"Interact\", \"Shake Off\", \"Regrip\", \"Release\", \"Leaning\"]"
+on the Actions tab (Utility): "[\"Steel Yourself\", \"Interact\", \"Shake Off\", \"Regrip\", \"Release\", \"Lean\", \"Leaning\"]"

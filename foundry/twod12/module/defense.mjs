@@ -1,7 +1,7 @@
 // Defenses. An Action against a creature rolls against one of them:
 //   Armor Defense, AD (Weapon Actions, and Fists): 11 + Armor value + bonuses;  Ward Defense, WD (Power Actions): 11 + Power Modifier + Ward value + bonuses;
 //   an NPC's AD and WD are typed values (the Bestiary).
-//   Vs. an Attribute (an Action with a Vs. entry, which replaces Armor and Ward): 12 + the Attribute (v0.0.307, Lucas; was 13 + half, rounded up).
+//   An Attribute DC (an Action with a Vs. entry, which replaces Armor and Ward): 11 + the Attribute (the core rework A7, 2026-11-21; v0.0.307: 12 +).
 // A Signature Action uses Armor or Ward by the Modifier it rolls. An Action that faces none of these has DC 13.
 // Defense bonuses (Features and effects) don't add up: for each Defense, the highest bonus and the highest penalty count.
 import { allEffects, isBaseSource } from "./passives.mjs";
@@ -82,6 +82,7 @@ export function steadinessOf(actor) {
 
 /** Which Defense an Action faces: { type: "vs", key } | { type: "armor" } | { type: "ward" } | null. src: rollSource() of the user. */
 export function defenseOf(item, src = null, rolledAttr = "") {
+  if (item.system.vs === "action") return null;   // the core rework B11: Break Free rolls against the Action DC of what holds it (actions.mjs sets it)
   const vs = item.system.vs === "roll" ? (rolledAttr || "body") : item.system.vs;
   if (vs) return { type: "vs", key: vs };
   if (!src) return null;
@@ -104,12 +105,12 @@ const sign = n => `${n >= 0 ? "+" : "\u2212"} ${Math.abs(n)}`;
 export function computeDC(item, targetActor, rolledAttr = "", src = null) {
   const base = TWOD12.baseDC, def = defenseOf(item, src, rolledAttr);
   if (!def) return { dc: base, vs: "", defense: "", note: "" };
-  const label = def.type === "vs" ? `Vs. ${TWOD12.attributes[def.key]}` : def.type === "armor" ? "AD" : "WD";
+  const label = def.type === "vs" ? `${TWOD12.attributes[def.key]} DC` : def.type === "armor" ? "AD" : "WD";   // the core rework A7: "Body DC" (was "Vs. Body")
   if (!targetActor) return { dc: base, vs: def.type === "vs" ? def.key : "", defense: def.type, note: `${label}: no target, using DC ${base}` };
   const t = targetActor.system ?? {}, tags = actionTags(item);
   let dc, bits;
   if (def.type === "vs") {
-    const attr = Math.trunc(Number(t.attributes?.[def.key]) || 0), vb = TWOD12.vsBase;   // v0.0.307 (Lucas; book, Chapter 2, Defenses): 12 + the Attribute
+    const attr = Math.trunc(Number(t.attributes?.[def.key]) || 0), vb = TWOD12.vsBase;   // book, Chapter 1, Attribute DCs: 11 + the Attribute
     dc = vb + attr; bits = [`${vb}`, `${sign(attr)} (${TWOD12.attributes[def.key]})`];
   } else {
     const derived = def.type === "armor" ? t.armorDC : t.wardDC;

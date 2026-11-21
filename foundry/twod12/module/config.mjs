@@ -184,7 +184,7 @@ export const TWOD12 = {
     { key: "attack", label: "Attack", names: ["Weapon Attack", "Charge", "Fists", "Reload"] },
     { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
     { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate"] },
-    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Shake Off", "Regrip", "Release", "Leaning"] }
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Shake Off", "Regrip", "Release", "Lean", "Leaning"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"
@@ -301,7 +301,7 @@ export const TWOD12 = {
   // Rally Points (book, Chapter 5, Stages): the class's Rally value + 1 / 2 / 3 / 4 by Stage.
   rallyByStage: [1, 2, 3, 4],
   // modBy (v0.0.307, Lucas; the Bestiary, Attributes and Modifiers): an NPC's Weapon or Power Modifier by rating (Terrible to Extreme; a Minion has no Extreme).
-  vsBase: 12,   // v0.0.307 (Lucas; book, Chapter 2, Defenses): Vs. an Attribute = 12 + the Attribute
+  vsBase: 11,   // the core rework A7 (Lucas, 2026-11-21; book, Chapter 1, Attribute DCs): an Attribute DC = 11 + the Attribute (v0.0.307: 12 + it)
   // Pack R (v0.0.243; book, Chapter 2): 4 AP a turn and 1 Reaction AP (the Reaction AP pays only for Reactions; Slowed and Quickened change the 4 only);
   // each AP kept at the end of the turn is Guard 2 / 2 / 3 / 4 by Stage (0 to 3) until the AP are regained (guard.mjs).
   apPerTurn: 4, reactionAp: 1, guardPerAp: [2, 2, 3, 4],
@@ -315,18 +315,18 @@ export const TWOD12 = {
   pcDamageVsDefense: { 11: 27.0, 12: 25.2, 13: 23.3, 14: 21.3, 15: 19.2, 16: 17.3 },
   cardColors: { weapon: "#d6b53f", self: "Always targets you, the origin of the Action. An [Area] Action with Self is centered on you.", default: "#9c9c9c" },
   movementActions: { walk: "Walk", fly: "Fly", swim: "Swim", climb: "Climb", crawl: "Crawl", burrow: "Burrow" },
-  vsChoices: { "": "None (DC 13)", roll: "The attribute rolled (Body or Instinct...)", body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct" },
+  vsChoices: { "": "None (DC 13)", action: "The Action DC of what holds you (Break Free)", roll: "The attribute rolled (Body or Instinct...)", body: "Body", mind: "Mind", appeal: "Appeal", instinct: "Instinct" },
   // Collision when Pushed: unused squares of the push x damage per square (Body). A wall hurts the pushed creature; a creature hurts both.
   collision: { wall: 2, creature: 1 },
   baseDC: 13,
-  // Defenses (Round 11/12): Armor and Ward are 11 + their value; Vs. an Attribute is vsBase (12) + the Attribute (v0.0.307).
+  // Defenses (Round 11/12): Armor and Ward are 11 + their value; an Attribute DC is vsBase (11) + the Attribute (the core rework A7).
   defenseBase: 11,
   // The default colors of an Aura on the map by who it affects (each Aura can set its own outline and squares colors).
   auraColors: { allies: "#4a90d9", enemies: "#d94a4a", all: "#9b59b6" },
   armors: { unarmored: { label: "Unarmored", value: 0, rank: 0 }, light: { label: "Light", value: 1, rank: 1 }, medium: { label: "Medium", value: 2, rank: 2 }, heavy: { label: "Heavy", value: 3, rank: 3 } },
   armorTrainings: { light: "Light", medium: "Medium", heavy: "Heavy" },
   // What a Defense bonus (a Feature's or an effect's) raises: every Defense, Armor, Ward, or one Vs. Attribute.
-  defenseKinds: { all: "every Defense", armor: "Armor Defense (AD)", ward: "Ward Defense (WD)", body: "Vs. Body", mind: "Vs. Mind", appeal: "Vs. Appeal", instinct: "Vs. Instinct", steadiness: "Steadiness (being moved)" },   // steadiness (v0.0.174): not a Defense; "every Defense" never adds to it
+  defenseKinds: { all: "every Defense", armor: "Armor Defense (AD)", ward: "Ward Defense (WD)", body: "Body DC", mind: "Mind DC", appeal: "Appeal DC", instinct: "Instinct DC", steadiness: "Steadiness (being moved)" },   // steadiness (v0.0.174): not a Defense; "every Defense" never adds to it
   basicCategory: "Basic Action",
   pushSpeed: 20, // squares per second when a token is pushed (normal movement is slower)
   // Pushed: the creature can only end in a cone (degrees either side of the line straight away from the origin).
@@ -674,6 +674,7 @@ export const checkAttr = (d, attrs = null) => {
 /** The Defense of an Action as text: "Body", or "Body or Instinct" when it is the attribute that was rolled. */
 export function vsText(d, { src = null, fists = false, rolls = null } = {}) {
   if (d?.traits?.has?.("save") && d?.vs && d.vs !== "roll") return `${TWOD12.attributes[d.vs] ?? d.vs} Save`;   // a Save Action: "Instinct Save"
+  if (d?.vs === "action") return "Action DC";   // the core rework B11: Break Free's Check
   if (d?.vs === "roll") return ATTR_KEYS.filter(k => d.traits?.has?.(k)).map(k => TWOD12.attributes[k]).join(" or ") || "the attribute rolled";
   if (d?.vs) return TWOD12.attributes[d.vs] ?? "";
   // Every Action that rolls has a Vs. entry (Versus): AD for Weapon Actions and Fists, WD for Power Actions,

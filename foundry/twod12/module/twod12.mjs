@@ -257,6 +257,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "unlockPacks", { name: "Unlock the system compendiums", hint: "Keep the 2d12 compendiums unlocked, so their items can be opened and edited without unlocking them first (only the GM and Assistants can edit; a system update rebuilds them, so edits there are lost).", scope: "world", config: true, type: Boolean, default: true, onChange: () => import("./basic.mjs").then(m => m.unlockSystemPacks()) });   // v0.0.191
   game.settings.register("twod12", "worldPassV351", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.351: Zones' second carried Effect
   game.settings.register("twod12", "worldPassV346", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.346: bars, Frightened, Marked Quarry
+  game.settings.register("twod12", "worldPassDaunted", { scope: "world", config: false, type: Boolean, default: false });   // the core rework E1
   game.settings.register("twod12", "hearingAllV319", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.318/319: Hearing on every creature's token, once
   game.settings.register("twod12", "tokenDefaultsV215", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.215: core token rotation off, once
   game.settings.register("twod12", "settingsV207", { scope: "world", config: false, type: Boolean, default: false });   // v0.0.207: the editability sweep's settings and fields (automation.mjs)
@@ -298,7 +299,7 @@ Hooks.once("init", () => {
     ["called-out", "icons/svg/eye.svg"],   // v0.0.411 (pack F3, Spotter): its enemies perceive it one step better   // v0.0.409 (pack F2, Glare; book, Chapter 8): its Sight perceives no creature better than Obscured
     ["dazed", "icons/svg/daze.svg"],
     ["pressed", "icons/svg/sword.svg"],   // v0.0.412 (Thwart Cut)
-    ["frightened", "icons/svg/terror.svg"],
+    ["daunted", "icons/svg/terror.svg"],   // the core rework E1 (Lucas, 2026-11-21): Frightened is Daunted (fixrules.mjs migrates the world)
     ["grabbed", "icons/svg/padlock.svg"],
     ["sickened", "icons/svg/poison.svg"],
     ["staggered", "icons/svg/paralysis.svg"],
@@ -645,6 +646,15 @@ Hooks.once("ready", async () => {
     await (await import("./fixrules.mjs")).fixRulesV346();
     await game.settings.set("twod12", "worldPassV346", true);
   } catch (e) { console.warn("twod12 | v0.0.346 world pass", e); }
+});
+
+// the core rework E1 (Lucas, 2026-11-21): once per world, every applied Frightened becomes Daunted (fixrules.mjs migrateDaunted)
+Hooks.once("ready", async () => {
+  try {
+    if (!game.user.isActiveGM || game.settings.get("twod12", "worldPassDaunted")) return;
+    await (await import("./fixrules.mjs")).migrateDaunted();
+    await game.settings.set("twod12", "worldPassDaunted", true);
+  } catch (e) { console.warn("twod12 | the Daunted world pass", e); }
 });
 
 // v0.0.351: once per world, Zone Effects (Covering Fire) get their second carried Effect from the compendium (fixrules.mjs fixZonesV351)

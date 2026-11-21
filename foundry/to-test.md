@@ -21,26 +21,104 @@ differ):
 
 ## The HUD
 
+### hud-faded-ap · v0.0.477 · An Action you can't pay is faded
+Do: Sylwen in combat: spend AP until 1 is left; look at Quick Shots (2 AP) in the HUD.
+Expect: Quick Shots is faded (still clickable: the roll dialog warns).
+Rev: 1
+
+### strip-strike-pips · v0.0.477 · The combat strip's Strike marks use the sheet's color
+Do: Kaela in combat, light and dark Foundry themes: make a Strike; compare the combat strip's Strike marks with her sheet's.
+Expect: the same red in both, and the light theme's darker red on the strip too.
+Rev: 1
+
 ## Starting a combat
 
 ## The roll dialog
 
+### attribute-dc · v0.0.477 · Attribute DCs: 11 + the Attribute, named "Body DC"
+Do: Durgan: Shove a Goblin Sneak; Kaela: Trip the Orc Warrior with Instinct. Open Durgan's sheet (the Defenses).
+Expect: the cards read "Body vs. Body DC" and "Body or Instinct vs. the same Attribute's DC"; the DC is 11 + the target's Attribute (1 lower
+than before), shown as "Body DC (Goblin Sneak): 11 + ..."; the sheet's tiles read "Body DC", "Mind DC", "Appeal DC", "Inst. DC".
+Rev: 1
+
+### doomed-counts-five · v0.0.477 · A Doomed roll counts as 5 Banes
+Do: Sylwen: shoot an enemy adjacent to her (Engaged: Doomed), once as it is, once with 2 Boons added by hand in the dialog.
+Expect: alone, the roll is Doomed (3d12, the two lowest) and extra Banes subtract nothing; with 2 Boons it is a normal roll at −3
+(5 − 2 Banes): the dialog's dice line says so.
+Rev: 1
+
+### save-user-banes · v0.0.477 · A Save Action: the user's Banes become the targets' Boons
+Do: Aveline: be Taunted by the Ogre Chieftain, then use Commandment's Kneel on an Orc Warrior (an Appeal Save).
+Expect: her dialog shows her Taunted Bane; the Orc's Save row starts with 1 Boon; with no Bane on her, it starts with none.
+Rev: 1
+
 ## Chat cards
+
+### binding-light-signature · v0.0.477 · Binding Light rolls Signature
+Do: Aveline: Binding Light on an Orc Warrior.
+Expect: its card reads "Signature vs. Armor Defense" and the roll uses her Signature Modifier (the higher of the two).
+Rev: 1
+
+### dying-card · v0.0.477 · The Dying check uses the Action card
+Do: Durgan: take him to Dying (damage past his Health) and keep fighting; roll the Dying check when it comes.
+Expect: the check is drawn as the Action card (the stamp, the DC ladder), not the old block.
+Rev: 1
 
 ## Conditions and their Tiers
 
-### break-free · v0.0.476 · Break Free: its Check, and its button in the Situational tab
-Do: Kaela: drop Immobilized on her (DC 13), select her token and look at the HUD's Situational tab; use Break Free from there. Then Aveline's
-Binding Light on a Tier 2 on her instead and Break Free again.
-Expect: the Situational tab shows "Immobilized" with a Break Free button (Grabbed shows "Grabbed"); the button rolls her Instinct Check
-against the Action DC (13, then 11 + Aveline's Weapon Modifier); meeting it ends Immobilized (and Grabbed) and the button goes.
-Rev: 2
+### daunted · v0.0.477 · Frightened is Daunted, and it ends when its source goes Down
+Do: Grave Wisp: Chilling Touch on Durgan (a Tier 2), and Aveline: Commandment's Challenge on the Orc Warrior (Taunted). Bring the Grave Wisp
+to 0 (Down), then the Orc. In a world that had a Frightened on someone before this version, look at that creature too.
+Expect: the condition is named "Daunted (Grave Wisp)" everywhere (card, HUD, sheet, the token's icon); when the Wisp goes Down a line says
+Durgan's Daunted ends; when the Orc goes Down its Taunted ends the same way. An old Frightened was renamed Daunted when the world loaded.
+Rev: 1
+
+### exhausted-banes · v0.0.477 · Exhausted is Banes, not a penalty
+Do: Durgan: give him Exhausted 2 (the sheet's + button), then open a Weapon Attack's roll dialog and a Body Check from the HUD.
+Expect: "Exhausted 2" is a Bane chip worth 2 in the dialog (it cancels with Boons and counts toward 5); the Modifier is no longer lowered.
+Rev: 1
+
+### break-free · v0.0.477 · Break Free: a Check with Tiers, also while Prone
+Do: Kaela: drop Immobilized and Prone on her, select her and use Break Free from the HUD's Situational tab (twice or more, to see a Tier 1
+and a Tier 2 or 3). Then Aveline's Binding Light on a Tier 2 on her instead and Break Free again.
+Expect: Break Free is allowed while Prone; it opens the roll dialog like any Action, its card reads "Check: Body or Instinct vs. Action DC",
+Tier 1 "No effect", "Tier 2 or 3" frees; the DC is the Action DC (13 for the hand-dropped one, then 11 + Aveline's Signature Modifier);
+a Tier 2 or 3 (Doubles below the DC count) ends Immobilized and Grabbed with a line saying the Tier; a Tier 1 says she stays Immobilized.
+Rev: 3
 
 ## Movement
+
+### lean-ends · v0.0.477 · Lean: the Action's new name, and Leaning ends when you leave your square
+Do: Sylwen: use Lean (Utility), click a corner; then Evade 1. Lean again, and have the Ogre push her while her back is to a wall.
+Expect: the Action reads "Lean", the condition "Leaning"; the corner nudge doesn't end it; the Evade ends it (a line says so); the push into
+the wall right behind her ends it too.
+Rev: 1
+
+### push-wall-0 · v0.0.477 · Pushed into a wall right behind you: Collision, and it counts as moved
+Do: Durgan stands with his back to a wall; the Ogre Chieftain's Overhead Smash on a Tier 2 (Pushed 2) aimed through the wall.
+Expect: the line reads "was Pushed by Ogre Chieftain but stopped at once (0 squares; it still counts as moved)" and "hits a wall with 2
+unused: 4 Vigor damage"; a Lean or Take Aim on him ends.
+Rev: 1
+
+### immobile-drag · v0.0.477 · An Immobilized creature's token can't be dragged
+Do: Ogre Chieftain: Immobilized by Aveline's Binding Light; in combat, drag its token one square; then Alt-drag it (GM).
+Expect: the drag is refused with "Immobilized and can't move: Break Free (1 AP) first"; the Alt-drag moves it as Forced Movement.
+Rev: 1
+
+### steel-yourself-cost · v0.0.477 · Steel Yourself costs 1 or 2 AP
+Do: Durgan in combat with damage: open Steel Yourself.
+Expect: its Versions are 1 AP (1 Rally Point) and 2 AP (2 Rally Points); a Round Action.
+Rev: 1
 
 ## Reactions and Judge
 
 ## Areas, light and Cover
+
+### cover-touch · v0.0.477 · A creature the center line only touches gives Low cover; a Prone or dead one gives none
+Do: Sylwen shoots the Orc Warrior on an exact diagonal with a Goblin Sneak beside the line, its corner touching it (Show cover on). Then
+make that Goblin Prone, then mark a Goblin on the line dead.
+Expect: the corner-touching Goblin gives Low cover (1 Field Bane); Prone or dead, it gives none.
+Rev: 1
 
 ### ice-pillar · v0.0.476 · Rime Strike's Ice Pillar: its square clicked on the map
 Do: Aveline: Rime Strike (Power mode) on an Orc Warrior; on a Tier 2 or 3 Apply the damage; look at the bar (and the HUD's Situational tab),

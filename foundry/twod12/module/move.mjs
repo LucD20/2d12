@@ -1108,7 +1108,11 @@ async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   if (pathTool) await moveAlong(target.document, pick.path.slice(0, result.done + 1));   // one movement along the path (v0.0.175)
   else if (f.di || f.dj) await moveToken(target.document, f.dj, f.di);
   // v0.0.247 (Lucas): when the origin is another creature (a Push away from the target), the line names who pushes and whom it is away from
-  const lines = [`<b>${esc(target.name)}</b> was ${mode === "reposition" ? "Repositioned" : label} ${result.done} by <b>${byName}</b>.`];
+  // the core rework D7 (Lucas, 2026-11-21; book, Chapter 3, Collision, "Stopped at once"): aimed farther but stopped before its first square (a wall or
+  // a creature right behind it), it moves 0 squares, takes the Collision for every square, and still counts as moved and as leaving its square
+  const stoppedAtOnce = mode !== "reposition" && result.done === 0 && result.block && result.block.type !== "loe";
+  if (stoppedAtOnce && target.actor && (game.user.isGM || target.actor.isOwner)) { try { const { endLeaveEffects } = await import("./hooks.mjs"); await endLeaveEffects(target.actor); } catch (e) { console.warn("twod12 | stopped at once", e); } }
+  const lines = [stoppedAtOnce ? `<b>${esc(target.name)}</b> was ${label} by <b>${byName}</b> but stopped at once (0 squares; it still counts as moved).` : `<b>${esc(target.name)}</b> was ${mode === "reposition" ? "Repositioned" : label} ${result.done} by <b>${byName}</b>.`];
   if (result.block?.type === "loe") lines.push(`It stops: <b>${esc(origin.name)}</b> would lose Line of Effect to it (no damage).`);
   else if (result.block && mode === "reposition") lines.push(`It stops short: ${result.block.type === "wall" ? (result.block.corner ? "a solid corner" : "a wall") : `<b>${esc(result.block.token.name)}</b>`} is in the way.`);
   else if (result.block) {
@@ -1483,6 +1487,9 @@ export function registerMovement() {
       if (ignoring && num(movement?.pending?.distance)) squares = num(movement.pending.distance);
       squares = squares ? squares / gridUnit() : measureSquares(origin, to);
       if (squares <= 0) return;
+      // the core rework I2 (Lucas, 2026-11-21: "some, not all"; playtest 7: the Immobilized Ogre Advanced): an Immobilized creature can't move by
+      // itself, so its token isn't dragged in combat (Forced Movement, the GM's Alt-drag, still moves it; Break Free first)
+      if (doc.actor?.statuses?.has?.("immobilized")) { warn(`${doc.name} is Immobilized and can't move: Break Free (1 AP) first. (Alt-drag moves it as Forced Movement.)`); return false; }
       // v0.0.323 (PACK EFFECT-SHEET): a Movement limit refuses a willing move that ends nearer to (or farther from) its origin (Forced Movement is not willing)
       for (const l of readMoveLimits(doc)) {   // v0.0.361: read fresh (the cache is for the drag's measuring)
         if (l.how === "difficult") continue;   // v0.0.345: Difficult Terrain instead (hardStep)

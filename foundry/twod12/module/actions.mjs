@@ -26,7 +26,7 @@ import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo,
 import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";   // (markAtWill: imported where used)
-import { tierProbs, topStep, bbCount } from "./calc.mjs";
+import { tierProbs, topStep, bbCount, bbResolve } from "./calc.mjs";
 import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged
 import { weaponDiceFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die
 import { squaresBetween, rangeBand } from "./move.mjs";
@@ -239,9 +239,7 @@ export const adjLabelOf = data => (data?.adjLabel && Number(data.mod) === Number
 export async function askRoll(actor, { title, attrKey, traits = new Set(), from = null, versions = null, defaults = {}, preview = null, dcNote = "", targetActors = [], targetTiles = [], extraMods = [], withDamage = false, withReload = false, notices = [], bonusChips = [] }) {
   // Armor beyond the creature's training: all its Rolls are Doomed (unless something else already made them Doomed, which keeps its label).
   if (actor?.system?.armorUntrained && !defaults.doomed) defaults = { ...defaults, doomed: true, doomedLabel: "Untrained armor (Doomed)", doomedWhy: "Your armor is beyond your Armor Training: all your Rolls are Doomed" };
-  // Exhausted: its value as a penalty on all Rolls, in the Modifier, named on the card (unless the Modifier is changed).
-  const exh = Number(actor?.system?.exhausted ?? 0);
-  if (exh > 0) defaults = { ...defaults, mod: (Number(defaults.mod) || 0) - exh, adjLabel: `Exhausted ${exh}`, adjDefault: (Number(defaults.mod) || 0) - exh };
+  // the core rework A5: Exhausted is N Banes on all Rolls, a modifier of its own (effects.mjs derivedMods "syn:exh"), no longer a penalty in the Modifier
   const notes = attrKey ? notesFor(actor, attrKey) : [];
   // Notices for one creature (a trigger on that target) go in its tile when several are targeted; the others stay in the Use row.
   const perCreature = targetTiles.length > 1;
@@ -544,7 +542,8 @@ export async function useAction(actor, item, opts = {}) {
   // Prone: you can't Evade, and the only Move Actions you can use are Crawl and Stand.
   if (actor.statuses?.has?.("prone")) {
     if ((basicKey === "safeMovement") && refuse(`${actor.name} is Prone and can't Evade.`)) return;
-    if ((it.traits.has("move") && !["crawl", "stand"].includes(basicKey)) && refuse(`${actor.name} is Prone: the only Move Actions it can use are Crawl and Stand.`)) return;
+    // playtest 7 (Prone + Break Free; book, Chapter 8, Prone since v0.0.431): Break Free is allowed too
+    if ((it.traits.has("move") && !["crawl", "stand", "breakFree"].includes(basicKey)) && refuse(`${actor.name} is Prone: the only Move Actions it can use are Crawl, Stand and Break Free.`)) return;
   }
   if ((basicKey === "rally" && (s.atZero || actor.statuses?.has?.("unconscious"))) && refuse(`${actor.name} can't use Steel Yourself while Down or Unconscious.`)) return;
   if (basicKey === "interact") await offerWake(actor, [...game.user.targets]);   // v0.0.176: waking an Unconscious creature (not one that is Down)
@@ -632,7 +631,9 @@ export async function useAction(actor, item, opts = {}) {
   const rollsAtOthers = !isSelf || !!String(it.area ?? "").trim();
   const aimed = rollsAtOthers ? [...game.user.targets] : [];
   const targetToken = rollsAtOthers ? (aimed[0] ?? null) : selfToken;
-  const dcInfo = computeDC(item, rollsAtOthers ? (targetToken?.actor ?? null) : actor, preAttr, src);
+  let dcInfo = computeDC(item, rollsAtOthers ? (targetToken?.actor ?? null) : actor, preAttr, src);
+  // the core rework B11 (book, Chapter 6, Break Free): its Check rolls against the Action DC of what holds the creature (the highest; 13 with none)
+  if (basicKey === "breakFree") { const { breakFreeCheck } = await import("./move.mjs"); const bf = breakFreeCheck(actor); dcInfo = { dc: bf.dc, vs: "", defense: "", note: `Action DC of what holds you: ${bf.dc}` }; }
   const previewMod = src.mod;
   // Several targets: one roll for all of them, each calculated on its own (see "Several Targets" in the rules).
   const multi = aimed.length > 1 && previewMod !== null;
@@ -1321,6 +1322,10 @@ export async function useAction(actor, item, opts = {}) {
       cfg.empOn = stepOf(data.empowered) > 0;   // v0.0.468 (Lucas, checklist v0.0.467: "if I click on empowered on the roll dialog, it doesnt ask"): the dialog's Empowered (the condition's chip or one added by hand)
       cfg.nonlethal = dealsNl;   // v0.0.458: its damage Nonlethal when it has the trait or was switched to it
       if (nlSwitched) { cfg.boon = (Number(cfg.boon) || 0) + 1; cfg.nlSwitched = true; }   // the switch: every creature gains 1 Boon on its Save (book, Chapter 4)
+      // the core rework A4 (Lucas, 2026-11-21; book, Chapter 1, Save Actions): the user's own Boons don't apply, its Banes do, turned around: after
+      // cancelling the user's Boons and Banes, each Bane left gives every target 1 Boon on its Save (Doomed: 5, their Saves Favored)
+      { const own = bbResolve(fxm.boons + manB, fxm.banes + manN, !!fxm.favored, !!fxm.doomed), ub = own.state === "doomed" ? 5 : Math.max(0, -own.net);
+        if (ub) { cfg.boon = (Number(cfg.boon) || 0) + ub; cfg.userBanes = ub; } }
       const point = areaOutcome?.point ?? null;
       // v0.0.283 (pack chat-cards): this card becomes the Save card (v0.0.286: several targets too, a row each; an [HT] area's repeat keeps the old card)
       // v0.0.317 (Lucas: "without a target (setting the DC) it uses the old card"): no target is the new card too, empty, with its target button
@@ -1452,14 +1457,16 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.224: Break Free. Pack TALENTS-PT (book, Break Free, 2026-11-20): it rolls a Body or Instinct Check (the higher) against the Action DC of
   // what holds you; meeting it ends Immobilized (and Grabbed, linked to it: conditions.mjs); below it, you stay Immobilized
   if (basicKey === "breakFree") {
+    // the core rework B11: the card rolls its Check (the roll dialog: Doubles, Boons and Banes, Exhausted); a Tier 2 or 3 frees the creature.
+    // Without a roll of the card (a shortcut that skipped it), the Check is rolled here as before.
     const { breakFreeCheck } = await import("./move.mjs"), { rollCheck } = await import("./roll.mjs");
     const bf = breakFreeCheck(actor), name = TWOD12.attributes[bf.attr];
-    const r = await rollCheck({ actor, label: `Break Free: ${name} Check`, mod: bf.mod, dc: bf.dc, chips: [`${name} ${sgn(bf.mod)}`] });
-    if (Number(r?.total) >= bf.dc) {
+    const r = chk ?? await rollCheck({ actor, label: `Break Free: ${name} Check`, mod: bf.mod, dc: bf.dc, chips: [`${name} ${sgn(bf.mod)}`] });
+    if ((Number(r?.tier) || 0) >= 2) {
       const held = [...actor.effects].filter(e => e.statuses?.has?.("immobilized")).map(e => e.id);
       if (held.length) await actor.deleteEmbeddedDocuments("ActiveEffect", held);
-      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-link-slash", `<b>${esc(actor.name)}</b> breaks free: ${r.total} meets the Action DC ${bf.dc}. No longer Immobilized (nor Grabbed).`, "fxm") });
-    } else await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-link", `<b>${esc(actor.name)}</b> stays Immobilized: ${r?.total ?? "?"} is below the Action DC ${bf.dc}.`, "fxm") });
+      await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-link-slash", `<b>${esc(actor.name)}</b> breaks free: Tier ${r.tier}${r.doubles ? " (Doubles)" : ""} against the Action DC ${bf.dc}. No longer Immobilized (nor Grabbed).`, "fxm") });
+    } else await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-link", `<b>${esc(actor.name)}</b> stays Immobilized: Tier 1 (${r?.total ?? "?"} against the Action DC ${bf.dc}).`, "fxm") });
   }
   // Stand: no longer Prone.
   if (item.getFlag?.("twod12", "basic") === "stand") {

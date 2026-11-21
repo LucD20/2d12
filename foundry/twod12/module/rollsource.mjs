@@ -5,7 +5,6 @@
 //   Otherwise, an Attribute Action: the Attribute Modifier of its Body, Mind, Appeal or Instinct trait (or its check), nothing added.
 // [Mod] on a card is always the Modifier used on the roll (src.mod).
 import { TWOD12, checkAttr } from "./config.mjs";
-import { modOf } from "./modifiers.mjs";
 
 /** s: the actor's system; it: the Action's system. { kind, attrKey, mod, label, attrMode: "all" | "t2" | "none" } (kind null: no roll). */
 export function rollSource(s, it) {
@@ -47,6 +46,6 @@ export function rollTraits(useTraits, src, name = "") {
  *  11 + (half the Attribute, rounded up, + 1) for an Attribute Action, and 13 for an Action that rolls nothing. src: rollSource(). */
 export function saveDcOf(src, attrs = null) {
   if (!src?.kind) return 13;
-  if (src.kind === "attribute") return 11 + modOf(attrs?.[src.attrKey] ?? src.mod ?? 0);
+  if (src.kind === "attribute") return 11 + (Number(attrs?.[src.attrKey] ?? src.mod) || 0);   // the core rework A7: the Attribute DC, 11 + the Attribute
   return 11 + (Number(src.mod) || 0);
 }

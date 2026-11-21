@@ -33,7 +33,7 @@ before Favored / Doomed: {"dice":"2d12","note":""}
 dice line: {"dice":"3d12","note":"3d12: a target is Favored or Doomed","mod":2,"names":["Power"],"boons":0,"banes":1,"bbNotes":[]}
 Bandit Thug     first 2 d12      +2 ▲0 ▼1  WD 13  odds T1 35% · T2 42% · T3 20% · Crit 3%
 Grave Wisp      3d12, two highest +2 ▲1 ▼1  WD 13  odds T1 7% · T2 41% · T3 39% · Crit 13%
-Ogre Chieftain  3d12, lowest 2   +2 ▲0 ▼2  WD 14  odds T1 78% · T2 20% · T3 2% · Crit 0%
+Ogre Chieftain  3d12, lowest 2   +2 ▲0 ▼2  WD 14  odds T1 65% · T2 31% · T3 4% · Crit 0%
 Ogre's ladder: Tier 1 · ≤13 | Tier 2 · 14–20 | Tier 3 · 21–33 | Crit · 34+
 ladder DC 13 with a Critical row: Tier 1 · ≤12 | Tier 2 · 13–19 | Tier 3 · 20–32 | Crit · 33+
 Ogre's Banes: Cover (Low), Doomed | n/a folded: Hidden
@@ -76,7 +76,7 @@ lines under the Tiers: avg 11 | avg 19 | avg 27.5
 setting off: no lines: true | player with hidden Defenses: averages only: avg 11 | avg 19 | avg 27.5
 Smite's ladder with its chances: T1 ≤ 10 22% T2 11–17 46% T3 18+ 32% | the ≤ in its own span: true
 no chances in the ladder when the setting hides them: true
-Word of Radiance, the expanded creatures' ladders: Tier 1 · ≤ 12 · 7% Tier 2 · 13–19 · 41% Tier 3 · 20–32 · 39% Crit · 33+ · 13% || Tier 1 · ≤ 13 · 78% Tier 2 · 14–20 · 20% Tier 3 · 21–33 · 2% Crit · 34+ · 0%
+Word of Radiance, the expanded creatures' ladders: Tier 1 · ≤ 12 · 7% Tier 2 · 13–19 · 41% Tier 3 · 20–32 · 39% Crit · 33+ · 13% || Tier 1 · ≤ 13 · 65% Tier 2 · 14–20 · 31% Tier 3 · 21–33 · 4% Crit · 34+ · 0%
 Word of Radiance, under each Tier: avg 7 | avg 11 | avg 13.5
 --- v0.0.293: Favored / Doomed as a d12, right-click a hand-added chip
 Favored chip: d12 F: true | Doomed: d12 D: true | Boon keeps the triangle: true | quick buttons too: true

@@ -4839,8 +4839,8 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 #twod12-carousel .tp-marks .hm-r i { width: 7px; height: 7px; transform: rotate(45deg); border: 1px solid #d2a75a; display: inline-block; background: none; border-radius: 0; }
 #twod12-carousel .tp-marks .hm-r i.on { background: #d2a75a; }
 #twod12-carousel .tp-marks .hm-sep { display: inline-block; width: 1px; height: 11px; background: #7a683f; margin: 0 3px; }
-#twod12-carousel .tp-marks .hm-sk i { width: 3px; height: 10px; transform: skewX(-22deg); border: 1px solid #c0675c; display: inline-block; opacity: .45; border-radius: 0; background: none; }
-#twod12-carousel .tp-marks .hm-sk i.on { background: #c0675c; opacity: 1; }
+#twod12-carousel .tp-marks .hm-sk i { width: 3px; height: 10px; transform: skewX(-22deg); border: 1px solid var(--ps-strike, #c0675c); display: inline-block; opacity: .45; border-radius: 0; background: none; }   /* playtest 7: the sheet's Strike color (group 1, v0.0.443) */
+#twod12-carousel .tp-marks .hm-sk i.on { background: var(--ps-strike, #c0675c); opacity: 1; }
 #twod12-carousel .tp-band { font-variant: normal !important; text-transform: none !important; letter-spacing: 0 !important; }
 #twod12-carousel .tp-tag { margin: 2px auto 0; width: fit-content; font-size: .69rem; font-weight: 700; padding: 0 4px; border: 1px solid #d0564f; color: #ece3cf; }
 #twod12-carousel .tp-tag.down { background: color-mix(in srgb, #d0564f 30%, transparent); }

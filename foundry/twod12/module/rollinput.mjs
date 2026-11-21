@@ -74,7 +74,8 @@ export async function rollDialogInput(c) {
   const chips = [];
   const targetActors = c.multi ? c.perT.map(p => p.actor) : c.rollsAtOthers && c.targetToken?.actor ? [c.targetToken.actor] : [];
   // Boons and Banes: your effects, the effects on the targets, and what the map gives (Flanking, Cover, range, Engaged, Obscured...)
-  for (const m of c.saveAct ? [] : [...modifierList(actor, c.dlgTraits, targetActors, null), ...c.extraMods]) {
+  // the core rework A4: a Save Action shows the user's Boons and Banes too: its Banes left after cancelling give every target 1 Boon on its Save
+  for (const m of [...modifierList(actor, c.dlgTraits, targetActors, null), ...c.extraMods]) {
     // v0.0.301 (PACK BB): a source that makes the roll Doomed or Favored (High cover: Doomed, and no Field Banes)
     if (!m.info && (m.doomed || m.favored) && !(m.boons || m.banes)) {
       const scope = scopeOf(m.id), label = cleanLabel(m.name, scope !== "shared" ? tgtName(scope) : "");
@@ -98,9 +99,7 @@ export async function rollDialogInput(c) {
   }
   if (c.multi && !c.saveAct) for (const p of c.perT) (p.note ?? []).forEach((nt, k) => chips.push({ id: `syn:pnote|${p.actorUuid}|${k}`, scope: p.actorUuid, row: nt.cls === "boon" ? "boons" : "banes", kind: nt.cls === "boon" ? "fav" : "doom", n: 1, label: nt.text, start: "on",
     tip: nt.cls === "boon" ? `${nt.text}: Favored against ${p.name}` : `${nt.text}: Doomed against ${p.name}` }));
-  // Flat: Exhausted N is a penalty of N on all your Rolls (Ch. 8), not a Bane
-  const exh = Number(actor?.system?.exhausted ?? 0);
-  if (exh > 0 && !c.saveAct) chips.push({ id: "syn:exh", scope: "shared", row: "flat", kind: "minus", n: exh, label: `Exhausted ${exh} −${exh}`, srcName: `Exhausted ${exh}`, start: "on", tip: `Exhausted ${exh}: −${exh} on all your Rolls (Ch. 8)` });
+  // the core rework A5: Exhausted N is N Banes on all your Rolls (Ch. 8): a modifier of its own (effects.mjs derivedMods), drawn with the others above
   // Damage: each Empowered source by name. v0.0.407 (book, Chapter 8; Lucas, 2026-11-13): Empowered has no value (the first damage on each of your
   // turns adds 1d6!), and Enfeebled is gone (an old effect's Enfeebled is no longer offered)
   c.steps.empowered.forEach((x, k) => chips.push({ id: `syn:emp:${k}`, scope: "shared", row: "damage", kind: "emp", n: 1, inc: false, ...(x.spend ? { spend: x.spend } : {}), label: "Empowered", srcName: x.name, start: "on", tip: `${x.name}: Empowered, the first damage you deal on each of your turns adds 1d6! of the Action's pool and type (Ch. 8)` }));

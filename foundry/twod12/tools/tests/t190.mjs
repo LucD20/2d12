@@ -20,5 +20,5 @@ console.log("a chain's Condition goes to the chain's targets before the card's S
 console.log(convertEffects("Each enemy in the Area is Pushed 2 away from you, is Enfeebled 1 and sheds Bright light in a 1 Emanation for 1 round. Vulnerable 2 (EoT) and Hindered."));
 // v0.0.409 (pack F2): Hallowed Dawn left with pack R's Paladin; Reckoning is the Emanation around you now
 const rk = G.loadCards().find(c => c.name === "Reckoning");
-console.log("Reckoning: around you (centered):", rk.foundry.areaCfg.center === true, "| enemies only:", rk.foundry.areaCfg.targets === "enemies", "| Frightened in the chain:", G.cardSystem(rk).versions[0].after.includes("@Condition[frightened|rounds:1]"), "| its Setup's Advance:", G.cardSystem(rk).setup);
+console.log("Reckoning: around you (centered):", rk.foundry.areaCfg.center === true, "| enemies only:", rk.foundry.areaCfg.targets === "enemies", "| Daunted in the chain:", G.cardSystem(rk).versions[0].after.includes("@Condition[daunted|rounds:1]"), "| its Setup's Advance:", G.cardSystem(rk).setup);
 console.log("the Mithril sheen:", src("styles/system.css").includes(".autodia.auto-mithril { background: linear-gradient(135deg, #5ad7ff"), "| the Apply rows styled:", src("styles/system.css").includes(".twod12.chat .applyrow button"));

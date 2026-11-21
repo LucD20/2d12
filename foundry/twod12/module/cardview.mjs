@@ -60,7 +60,7 @@ export function rollStripChips({ mods = [], doom = "", exhausted = 0, steps = {}
   }
   if (doom) out.push({ kind: "doom", label: doom, applies: true, why: `${doom}: all your Rolls are Doomed` });
   const exh = Math.max(0, Math.trunc(Number(exhausted)) || 0);
-  if (exh) out.push({ kind: "flat", label: `Exhausted ${exh}`, applies: true, why: `Exhausted ${exh}: −${exh} on all your Rolls` });
+  if (exh) out.push({ kind: "bane", label: `Exhausted ${exh}`, applies: true, why: `Exhausted ${exh}: ${exh} Bane${exh === 1 ? "" : "s"} on all your Rolls` });   // the core rework A5: Banes, not a penalty
   // v0.0.407 (book, Chapter 8): Empowered has no value; Enfeebled is gone
   for (const x of (steps.empowered ?? []).slice(0, 1)) out.push({ kind: "emp", label: "Empowered", applies: true, why: `${x.name}: +1d6! on the first damage of each of your turns` });
   const seen = new Set();

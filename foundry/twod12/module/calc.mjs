@@ -58,7 +58,18 @@ export function bbFive(boons = 0, banes = 0) {
   if (net <= -5) return { net, add: 0, five: "doomed" };
   return { net, add: net, five: "" };
 }
-/** The roll's state from its own Favored / Doomed and the five b/b: Favored and Doomed together are a normal roll; never Favored (or Doomed) twice. */
+/**
+ * The core rework A3 (Lucas, 2026-11-21; book, Chapter 1, Five Boons or Banes): an effect that makes the roll Favored or Doomed counts as 5 Boons or
+ * 5 Banes (once, however many) before cancelling; 5 or more left make the roll Favored or Doomed. So a 5th Bane never helps, a 5th Boon never hurts.
+ * boons / banes: counts after the limits of their names (bbCount). { net, add, state, five (the state when the Boons or Banes themselves reached it,
+ * not a Favored / Doomed source), cancel (both sources) }.
+ */
+export function bbResolve(boons = 0, banes = 0, favored = false, doomed = false) {
+  const net = (Number(boons) || 0) - (Number(banes) || 0) + (favored ? 5 : 0) - (doomed ? 5 : 0);
+  const state = net >= 5 ? "favored" : net <= -5 ? "doomed" : "";
+  return { net, add: state ? 0 : net, state, five: state && !(state === "favored" ? favored : doomed) ? state : "", cancel: !!favored && !!doomed };
+}
+/** The roll's state from its own Favored / Doomed and the five b/b (before the core rework; the frozen SIM still uses it): Favored and Doomed together are a normal roll; never Favored (or Doomed) twice. */
 export function rollState(favored = false, doomed = false, five = "") {
   const f = !!favored || five === "favored", d = !!doomed || five === "doomed";
   return f && d ? "" : f ? "favored" : d ? "doomed" : "";
@@ -95,7 +106,7 @@ export function tierProbs(mod, dc = 13, boons = 0, banes = 0, state = "", wantCr
   const key = `${mod}|${dc}|${boons}|${banes}|${state}|${wantCrit}`;
   if (CACHE.has(key)) return CACHE.get(key);
   const c = chain();
-  const five = bbFive(boons, banes), st = mergeState(state, five.five), adj = five.add;
+  const r5 = bbResolve(boons, banes, state === "favored", state === "doomed"), st = r5.state, adj = r5.add;   // the core rework A3
   const res = [0, 0, 0];
   if (!st) {
     for (const a of c) for (const b of c) {
