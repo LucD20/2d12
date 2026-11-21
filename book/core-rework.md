@@ -171,7 +171,7 @@ Lucas, 2026-11-21: "All playtests have been level 0." The playtest 7 log uses on
 6. **Solo again.**
 7. **The SIM is frozen** until a decision needs a whole-fight comparison; rules still go into `roundrules.mjs` first for Foundry (its `spec.mjs --check` and reports are not kept in step meanwhile).
 
-## M. The order of work
+## P. The order of work
 
 
 1. **Batch 1: the settled fixes and Foundry's measurement** (small, no dependencies). Book: A3, A4, A5, A6, D4 (with its diagram), D5, D6, D7, E1, E2, E4, C5, B10, B11, B12, H2. Foundry, in the same version: I1 (the Encounter Log), I2, I3, H3's prompts. Playtest 8 needs the log, so it comes first.
