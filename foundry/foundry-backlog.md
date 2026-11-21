@@ -805,3 +805,16 @@ World Clock and the quick time bar (the date can be set since v0.0.94); Exhauste
 - [ ] **Not tried in Foundry (no Foundry here):** (v0.0.476: the pillar's walls block movement only, so Foundry's own vision sees past it; the system's Line of Effect, Cover and the Reactions' sight treat its square as solid, `cover.mjs wallBlocks`) a player's Place through the GM's socket, the Bound Ally's gold ring, the order of the moveToken hook and the Setup's stillMove flag (unset 250 ms after the Setup ends).
 - [ ] **Bear the Blow on a damage with no types** (an old card's plain Apply, a Save card's damage written before v0.0.388) is split after the ally's Resistance (the buckets have no types): the cards of today all carry their components.
 - [ ] **The Talents outside the class's slots:** each PC has its playtest Talent as an "Extra" Talent (the class window still offers none: Talents set aside); when the Talents come back, they move into a slot.
+
+## PLAYTEST 6 (2026-11-21, on v0.0.475): FOUND WHILE PLAYING, NOT BUILT (Lucas: "Don't add anything yet")
+- [ ] **Prone + Break Free:** the book allows Break Free while Prone (Chapter 8, Prone, since v0.0.431); `actions.mjs` (the Prone check, about line 547) still allows only Crawl and Stand, and the HUD shows a Break Free button that is then refused.
+- [ ] **Charge's Weapon Attack isn't in the HUD's Situational tab** (it is a chip on the card, not a granted use).
+- [ ] **Charge, then deselecting and reselecting the token, loses the HUD** (as Judge did; the Charge picker likely isn't the pick bar that follows the selection, v0.0.473).
+- [ ] **Quick Shots' Evade 2 and Slip Away's Evade 1 then Advance 2 should run by themselves** (today: buttons).
+- [ ] **Darting Blade: after its Evade, ask whether to stow the Light weapon** (the pick bar: Stow / Keep).
+- [ ] **The combat strip's Strike pips use the old colors** (the HUD's and the sheet's marks since group 1, v0.0.443).
+- [ ] **Sylwen, round 3: with 1 AP left, Quick Shots (2 AP) wasn't faded in the token bar** (`sheetmodel.mjs versionCant` exists; the bar likely doesn't call it).
+- [ ] **Frightened (Daunted) doesn't end when its source dies** (waits for the rule; the flag `endsWithOrigin` exists: Grabbed uses it).
+- [ ] **Dead tokens give Low cover** (waits for the rule: a dead or Prone creature gives no Cover; `cover.mjs` crowd filter).
+- [ ] **The Dying save uses the old check card** (`down.mjs` line 97; also `rest.mjs` the Wounds roll and the inline Check chip in `inline.mjs`).
+- [ ] **Design asks:** hover tips on the effect icons beside the token and on the effects in the roll dialog (Lucas asked: allowed under the tooltip rule; t264's list); + / - AP buttons on the combat strip; the current turn more visible in the combat strip (a Fable mockup first).
