@@ -2,6 +2,8 @@
 
 What came out of playtest 7 and the core review (seven reviewers; three rounds of Lucas's answers, 2026-11-21). **Nothing here is applied yet.** Each item is worked on in its own session, one decision at a time; this file is the list, the conflicts and the order. The backlog entries it gathers: `rules-backlog.md` (PLAYTEST 7; THE CORE REVIEW; its SECOND ROUND, with the third round inside it). The research: `research/wounded-states.md`, `research/crucible.md`, the core review's report (in the chat of 2026-11-21, not in the repository).
 
+**Lucas answers on the reading page "Core Rework Desk"** (https://claude.ai/artifact/48RJN9Zuss5riaVLbTxd2F, private): every item that needs him, one click each; Claude reads the answers from the page's store (collection `answers`, one document per item id).
+
 **Status words.** **Decided**: Lucas said yes. **Leaning**: his direction, a detail open. **Open**: still to choose. **Stands**: a proposal of the review he didn't mention; by his rule ("the things I haven't mentioned … is either because I agree or they have conflicts with the new ones") it is agreed unless a conflict below says otherwise. **Rejected**. **Later**: after this rework.
 
 ---
