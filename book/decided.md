@@ -129,6 +129,7 @@ The whole list for the Foundry pack: `foundry/foundry-backlog.md`, "BOOK CHANGES
 | Topic | Current | Reading copy, history or placeholder |
 |---|---|---|
 | Everything decided (this page) | `decided.md` | |
+| The combat core's rework (playtest 7 and the core review, 2026-11-21: decisions, conflicts, the order of work) | `core-rework.md` | `rules-backlog.md` (PLAYTEST 7; THE CORE REVIEW, its rounds) |
 | Magic in a fight | `magic-design.md` (the record, decisions 1 to 128) | `magic-rules-draft.md` (reading copy); `cards/magic-*-pass.md`, `cards/magic-overreach-lines.md` (placeholders) |
 | Magic outside a fight | `magic-out-of-combat.md` (skeleton closed) | |
 | Skills and play outside a fight | `roleplay-skills.md` (proposals) and section 3 here (decided) | `items-economy.md` Part 2 (decided, not in the book) |
