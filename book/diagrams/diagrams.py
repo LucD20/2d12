@@ -345,6 +345,39 @@ def straight_diagrams():
 
 charge_diagrams = straight_diagrams   # the old name (build_diagrams_draft.py)
 
+def straight_large_diagram():
+    """A Large creature's straight line (the core rework D4, 2026-11-21): the line joins the centers of its start and end spaces, and the
+    whole 2 x 2 space moves together, each step the same as a Medium creature's from its top-left square."""
+    rows, cols, S = 6, 9, 30; start, aim = (0, 0), (3, 6)
+    steps = line_steps(start, aim, 'right'); path = [start] + [c for c, _, _ in steps]
+    assert [sq(c) for c in path] == ['A1', 'B2', 'C2', 'D3', 'E3', 'F4', 'G4']
+    foot = lambda c: [(c[0] + di, c[1] + dj) for di in (0, 1) for dj in (0, 1)]
+    g = Svg(rows + 1, cols + 1, S)
+    passed = {x for c in path[1:-1] for x in foot(c)} - set(foot(aim)) - set(foot(start))
+    for c in passed: g.cell(c[0], c[1], 'gpass')
+    for c in foot(aim): g.cell(c[0], c[1], 'gstop')
+    g.outline(foot(aim))
+    g.line((start[1] + 1, start[0] + 1), (aim[1] + 1, aim[0] + 1), 'gcenter')
+    g.token_big(start[0], start[1], 2, 'Y', 'ally')
+    g.caption = ('A Large creature (Y, in A1 to B2) moves in a straight line to the space G4 to H5. The line joins the centers of the two spaces, and the whole space '
+                 'moves together, one step at a time, ties to the right as for a Medium creature; the blue squares are every square its space passes through')
+    return g, dict(path=[sq(c) for c in path], passed=len(passed))
+
+def on_the_line_diagram():
+    """"On the line" (the core rework D6, 2026-11-21): a creature whose space the center line touches, even only at a corner, gives Low cover."""
+    rows, cols, S = 5, 6, 32; att, tgt, x = (4, 0), (0, 4), (2, 1)
+    a, t = center(att), center(tgt)
+    g = Svg(rows, cols, S)
+    g.line(a, t, 'gcenter')
+    corner = (2, 3)   # x = 2, y = 3: on the segment from (0.5, 4.5) to (4.5, 0.5), and the bottom-right corner of X's square (B3)
+    assert abs((corner[0] - a[0]) * (t[1] - a[1]) - (corner[1] - a[1]) * (t[0] - a[0])) < 1e-9
+    g.outline([x])
+    g.token(x[0], x[1], 'X', 'neutral'); g.token(att[0], att[1], 'Y', 'ally'); g.token(tgt[0], tgt[1], 'T', 'enemy')
+    g.over.append(f'<circle cx="{corner[0] * S}" cy="{corner[1] * S}" r="5" class="glean"/>')
+    g.caption = 'The line from the center of your square (Y, A5) to the center of the target\'s (T, E1) only touches the corner of X\'s square (B3, the green dot): X is on the line, so T has Low cover (1 Field Bane). A Prone or dead X would give none'
+    return g, dict(corner=corner)
+
+
 def difficult_diagram():
     g = Svg(1, 7, 44, 'Advance 5 squares across 2 Difficult Terrain squares (brown): each of those counts double. The numbers are the squares used so far')
     dtc = [(0, 2), (0, 3)]; g.cells(dtc, 'gdt')
@@ -572,6 +605,10 @@ def book_diagram(name):
         fig, _ = light_diagram(); return wrap([fig], 'Bright squares: strong color. Dim squares: pale. The torch is the dot in the middle.')
     if name == 'burst':
         figs, _ = burst_diagrams(); return wrap(figs, 'The dot is the corner the Burst is centered on.')
+    if name == 'straight-large':
+        fig, _ = straight_large_diagram(); return wrap([fig.figure()])
+    if name == 'on-the-line':
+        fig, _ = on_the_line_diagram(); return wrap([fig.figure()])
     if name in ('straight', 'charge'):
         figs, _ = straight_diagrams(); return wrap(figs)
     if name in ('line1', 'line2', 'line3'):

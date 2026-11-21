@@ -195,6 +195,7 @@
   "area": null,
   "target": "One creature",
   "traits": [
+   "signature",
    "weapon",
    "strike",
    "divine"
@@ -203,7 +204,7 @@
   "body": [
    {
     "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
+    "text": "Signature vs. Armor Defense"
    },
    {
     "label": "Tier 1",
@@ -325,12 +326,13 @@
   "escalation": null,
   "frequency": "At-will",
   "flavor": "You tear loose from whatever holds you.",
-  "distance": null,
+  "distance": "Self",
   "area": null,
   "target": null,
   "traits": [
-   "move",
-   "self"
+   "body",
+   "instinct",
+   "move"
   ],
   "cost": "1 AP",
   "body": [
@@ -339,8 +341,16 @@
     "text": "You are Immobilized."
    },
    {
-    "label": "Effect",
-    "text": "Make a Body or Instinct Check (the higher) against the Action DC of the Action that holds you (Chapter 1, Action DC). If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized."
+    "label": "Check",
+    "text": "Body or Instinct vs. Action DC"
+   },
+   {
+    "label": "Tier 1",
+    "text": "No effect: you stay Immobilized."
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "You are no longer Immobilized, and no longer Grabbed if you were."
    }
   ],
   "blocks": [],
@@ -483,11 +493,11 @@
    },
    {
     "label": "Tier 2",
-    "text": "[R] 1 + 1d4! Co; Frightened of the Grave Wisp (EoT)."
+    "text": "[R] 1 + 1d4! Co; Daunted of the Grave Wisp (EoT)."
    },
    {
     "label": "Tier 3",
-    "text": "[R] 2 + 1d4! Co; Frightened of the Grave Wisp (EoT)."
+    "text": "[R] 2 + 1d4! Co; Daunted of the Grave Wisp (EoT)."
    }
   ],
   "blocks": [],
@@ -700,7 +710,7 @@
     "body": [
      {
       "label": "Effect",
-      "text": "An [[Aura]] 3 around you (1 round): you and your allies in it ignore the Frightened condition."
+      "text": "An [[Aura]] 3 around you (1 round): you and your allies in it ignore the Daunted condition."
      }
     ],
     "foundry": {
@@ -1692,7 +1702,7 @@
    },
    {
     "label": "Attack",
-    "text": "Appeal or Body vs. the target's same Attribute"
+    "text": "Appeal or Body vs. the same Attribute's DC"
    }
   ],
   "blocks": [
@@ -2349,28 +2359,8 @@
   "after": [],
   "passive": false
  },
- "Lean and Loose": {
-  "name": "Lean and Loose",
-  "escalation": 2,
-  "frequency": null,
-  "flavor": "A wall is a quiver's best friend: you are out, the arrow is gone, and you are back.",
-  "distance": null,
-  "area": null,
-  "target": null,
-  "traits": [],
-  "cost": "Passive",
-  "body": [
-   {
-    "label": "Passive",
-    "text": "The [[Leaning]] Action costs you 0 AP."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": true
- },
- "Leaning": {
-  "name": "Leaning",
+ "Lean": {
+  "name": "Lean",
   "escalation": null,
   "frequency": "At-will",
   "flavor": "You lean out from cover, just enough to see.",
@@ -2384,12 +2374,32 @@
   "body": [
    {
     "label": "Effect",
-    "text": "Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost."
+    "text": "Until the end of your turn, or until you leave your square, you are Leaning: you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost."
    }
   ],
   "blocks": [],
   "after": [],
   "passive": false
+ },
+ "Lean and Loose": {
+  "name": "Lean and Loose",
+  "escalation": 2,
+  "frequency": null,
+  "flavor": "A wall is a quiver's best friend: you are out, the arrow is gone, and you are back.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "The [[Lean]] Action costs you 0 AP."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
  },
  "Leg Sweep": {
   "name": "Leg Sweep",
@@ -3253,7 +3263,7 @@
    },
    {
     "label": "Tier 1 or 2",
-    "text": "Frightened of you (1 round)."
+    "text": "Daunted of you (1 round)."
    }
   ],
   "blocks": [],
@@ -3365,7 +3375,7 @@
    },
    {
     "label": "Attack",
-    "text": "Body or Instinct vs. the target's same Attribute"
+    "text": "Body or Instinct vs. the same Attribute's DC"
    }
   ],
   "blocks": [
@@ -3977,7 +3987,7 @@
    },
    {
     "label": "Attack",
-    "text": "Body vs. Body"
+    "text": "Body vs. Body DC"
    }
   ],
   "blocks": [
@@ -4324,11 +4334,11 @@
   "traits": [
    "self"
   ],
-  "cost": "2 or 3 AP",
+  "cost": "1 or 2 AP",
   "body": [],
   "blocks": [
    {
-    "heading": "2 AP",
+    "heading": "1 AP",
     "body": [
      {
       "label": "Effect",
@@ -4337,7 +4347,7 @@
     ]
    },
    {
-    "heading": "3 AP",
+    "heading": "2 AP",
     "body": [
      {
       "label": "Effect",
@@ -4710,7 +4720,7 @@
    },
    {
     "label": "Attack",
-    "text": "Body or Instinct vs. the target's same Attribute"
+    "text": "Body or Instinct vs. the same Attribute's DC"
    }
   ],
   "blocks": [

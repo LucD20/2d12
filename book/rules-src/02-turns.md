@@ -213,11 +213,11 @@ A **Buff** is an effect that modifies another Action, such as One More Arrow's 1
 - A Buff that only applies from Tier 2 onward is written with a 0 on Tier 1: "+[R] 0/1d6/1d8 Co".
 - On an Action with several targets, a Buff or a Debuff is rolled once per Tier, not per creature (see [[Several Targets]]).
 
-**Raising Defenses.** "+1 Defense" raises **every** Defense of the creature: Armor Defense, Ward Defense and every Vs. Attribute. "+1 AD", "+1 WD" or "+1 Defense vs Body" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see [[Stacking]]).
+**Raising Defenses.** "+1 Defense" raises **every** Defense of the creature: Armor Defense, Ward Defense and every Attribute DC. "+1 AD", "+1 WD" or "+1 Body DC" raises only that one. A feature can narrow it further, such as "+1 Defense vs Actions that Push". These bonuses don't add up with each other (see [[Stacking]]).
 
 #### Stacking
 
-Unless a card says otherwise, the same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2. A condition with a source, such as Frightened of a creature, comes from one source at a time (see [[Chapter 8: Conditions]]).
+Unless a card says otherwise, the same effect never stacks with itself, and bonuses from different effects don't add up either: for each value (Vulnerable, Slowed, a Defense, [[Guard]]...), a creature uses only the **highest bonus** and the **highest penalty** that apply. If a creature gets the same effect again, it keeps the higher value and the longer duration: two effects that make it Vulnerable 1 do not make it Vulnerable 2. A condition with a source, such as Daunted of a creature, comes from one source at a time (see [[Chapter 8: Conditions]]).
 
 Five things do add up:
 
@@ -268,7 +268,7 @@ A **Daily** Action can be used once, and again only after you complete a [[Sleep
 
 ## Versus
 
-An Action that rolls uses a **Modifier** and, if it targets a creature, rolls against a **Defense** or DC. The Modifier is your Weapon, Power, Signature or Attribute Modifier (see [[Weapon, Power and Signature Modifiers|Chapter 5]]). Every Action that rolls says so on its **Attack** line, which names the Modifier and the Defense: "Attack: Weapon vs. Armor Defense". The Defense is Armor Defense (AD), Ward Defense (WD), an Attribute ("vs. Body") or a specific DC.
+An Action that rolls uses a **Modifier** and, if it targets a creature, rolls against a **Defense** or DC. The Modifier is your Weapon, Power, Signature or Attribute Modifier (see [[Weapon, Power and Signature Modifiers|Chapter 5]]). Every Action that rolls says so on its **Attack** line, which names the Modifier and the Defense: "Attack: Weapon vs. Armor Defense". The Defense is Armor Defense (AD), Ward Defense (WD), an Attribute DC of the target ("vs. Body DC") or a specific DC.
 
 ### Defenses
 
@@ -278,7 +278,7 @@ An Action against a creature rolls against one of its **Defenses**. A creature h
 |---|---|
 | **Armor Defense (AD)** | the creature's Armor Defense |
 | **Ward Defense (WD)** | the creature's Ward Defense |
-| **Vs. an Attribute** | 12 + the target's Attribute |
+| **An Attribute DC** | 11 + the target's Attribute: its Body DC, Mind DC, Appeal DC or Instinct DC (see [[Attribute DCs]]) |
 | **Vs. DC** | A set DC, such as "Vs. DC 13": some Actions have a set DC, and others target something that has no Defenses, such as a stationary object. |
 
 - **Armor value** is the value provided by the [[Armor|armor]] a creature wears. **Armor Defense** is 11 + Armor value + other items + bonuses − penalties.

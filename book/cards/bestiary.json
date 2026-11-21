@@ -251,8 +251,8 @@
      "ap": 1,
      "tiers": [
       "0",
-      "[R] 1 + 1d4! Co; Frightened of the Grave Wisp (EoT).",
-      "[R] 2 + 1d4! Co; Frightened of the Grave Wisp (EoT)."
+      "[R] 1 + 1d4! Co; Daunted of the Grave Wisp (EoT).",
+      "[R] 2 + 1d4! Co; Daunted of the Grave Wisp (EoT)."
      ]
     }
    ],
@@ -260,7 +260,7 @@
     "img": "icons/svg/frozen.svg"
    },
    "ruler": false,
-   "_note": "25 points, Frightened (EoT) a Mild rider 3."
+   "_note": "25 points, Daunted (EoT) a Mild rider 3."
   },
   {
    "name": "Dread Whisper",

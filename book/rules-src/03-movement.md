@@ -102,6 +102,10 @@ Creatures aren't solid corners: you can move diagonally between two creatures. I
 
 When an Action, effect or rule moves a creature (yourself included) in a straight line, like the Charge Action, draw a line from the center of the creature's square to the center of the destination square. The creature moves along the same squares as a [[Line]]: one square per step along the line's longer direction, at each step the square whose center is nearest to the line, ending in the destination. Where the line passes exactly between two squares, choose a side once, left or right (looking toward the destination), for the whole movement: every tie takes that side. The creature that moves chooses for its own movement; the origin chooses for a Forced Movement. If a square on the line isn't a legal move (for Charge: Difficult Terrain, a creature in the way, or a solid corner), the movement stops in the last legal square before it.
 
+**A creature larger than one square** draws the line from the center of its space to the center of the space it ends in, and its whole space moves together: at each step every one of its squares moves the same way, so its shape never changes. The line's squares are found as for a Medium creature (one step along the longer direction, the left or right tie chosen once), and each step must be legal for every square the creature enters.
+
+@@DIAGRAM:straight-large@@
+
 **Toward a creature.** When a rule moves you in a straight line **toward a creature**, the line goes to the center of that creature's space. You can stop in any square on the line, and you can't enter the creature's space: the movement brings you closer to it, never around it.
 
 In the figures, Y is you. Blue squares are the squares the token passes, the green square is where it ends, and red squares are not legal. The line is what counts: the path of the token on the grid does not have to be exactly straight, because a token moves from square to square.
@@ -119,7 +123,7 @@ Forced Movement is movement you impose on another creature, choosing where it go
 - Its value is reduced by the creature's [[Steadiness]].
 - The **origin** of Forced Movement is the creature using the Action, unless the effect names another creature or a point as its origin ("Pushed 1, away from the target", "Pushed 2 from the Burst's center"): the direction is then taken from there, and the creature using the Action still chooses the destinations.
 - **A creature as the origin is measured from its square nearest the creature it moves.** For Pushed and Pulled, the distances and the cone are taken from that square, not from the center of a larger creature's space: a Large creature pushes straight away from the side it touches. When several of its squares are equally near, use the one whose center is nearest the moved creature's center.
-- Its value is a maximum: you can always move the creature less, down to 0. Moving a creature 0 squares is no movement and no Forced Movement on it: nothing that happens when a creature is moved, enters or leaves a square happens. It can never make a creature end its movement inside another creature or an object: this is [[Collision]], and it only happens when the destination you chose is blocked.
+- Its value is a maximum: you can always move the creature less, down to 0. **Choosing** to move a creature 0 squares is no movement and no Forced Movement on it: nothing that happens when a creature is moved, enters or leaves a square happens. A creature aimed farther but stopped before its first square (a wall right behind it) is different: see [[Collision]]. It can never make a creature end its movement inside another creature or an object: this is [[Collision]], and it only happens when the destination you chose is blocked.
 
 ### Pushed
 
@@ -168,6 +172,8 @@ A creature that stops short takes Lethal Blunt Vigor damage for its **unused squ
 - **Another creature, or the origin:** **1 damage** for each unused square, to each of the two creatures.
 
 The origin decides how far to aim. If it chooses a destination the creature can reach, there is no Collision and no damage: moving a creature less than the value never hurts it.
+
+**Stopped at once.** A creature aimed at a square it can't enter from where it stands (a wall or a creature right next to it, on the way) moves 0 squares and takes the Collision for every square. It still **counts as moved by Forced Movement and as leaving its square**, for every rule that cares (Leaning ends, for example). A Forced Movement reduced to 0 by [[Steadiness]] is not this: it moves the creature nowhere, and nothing happens.
 
 > [!example]
 > Pushed 4 aimed at a destination 4 squares away, with a wall right behind you, deals 8 damage. Aimed through a creature after 1 square, it deals 3 damage to each. Pushed 1 square, with nothing in the way, deals no damage.
@@ -335,14 +341,16 @@ A line that only touches the end of a wall isn't blocked.
 | 3 | High | **Doomed** (and no Field Banes from the Cover) |
 | 4 | Total | No Line of Effect: you can't target them |
 
-- **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). Against an area, the creatures inside it never give cover ([[Cover against an area]]). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
+- **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). The line counts as on a creature's space when it **touches** it, even only at a corner or along an edge. **A Prone or dead creature gives no cover**: it lies too low to be in the way. Against an area, the creatures inside it never give cover ([[Cover against an area]]). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
 - **Cover and the rest.** Cover applies to melee and ranged Actions alike. Its Field Banes count with your other Field Banes. High cover gives no Field Banes, only Doomed; your other Field Banes still apply (Prone, Obscured). A target that is Hidden and behind High cover is still only Doomed once.
 
 @@DIAGRAM:cover@@
 
+@@DIAGRAM:on-the-line@@
+
 ### Leaning
 
-A creature behind a wall can lean out to attack. While you are **Leaning**, you calculate cover from one of **your corners** instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level (Total → High → Medium → Low → none). A creature leaning out of Total cover becomes High cover (still targetable). Leaning lasts until the end of your turn, so Reactions can use it. You can stop Leaning at any time on your turn, at no cost. See the Leaning Basic Action.
+A creature behind a wall can lean out to attack. While you are **Leaning**, you calculate cover from one of **your corners** instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level (Total → High → Medium → Low → none). A creature leaning out of Total cover becomes High cover (still targetable). Leaning lasts until the end of your turn, so Reactions can use it, and ends early when you **leave your square** (any movement: an Advance, an Evade, a Forced Movement). You can stop Leaning at any time on your turn, at no cost. You start it with the [[Lean]] Basic Action.
 
 ## Areas
 

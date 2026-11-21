@@ -97,13 +97,14 @@
       "foundry": { "basic": "interact", "automation": "bronze", "img": "icons/svg/book.svg" }
     },
     {
-      "name": "Leaning",
+      "name": "Lean",
+      "_note": "2026-11-21 (Lucas, playtest 7; the core rework B12): the Action is Lean, the state stays Leaning; it ends when you leave your square.",
       "category": "Basic Action",
       "flavor": "You lean out from cover, just enough to see.",
       "traits": ["self"],
       "frequency": "At-will",
       "versions": [
-        { "ap": 1, "effects": "Until the end of your turn, you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost.",
+        { "ap": 1, "effects": "Until the end of your turn, or until you leave your square, you are Leaning: you calculate cover from one of your corners instead of the center of your square, and your own cover against other creatures' Actions is reduced by 1 level. You can stop Leaning at any time on your turn, at no cost.",
           "foundry": { "append": "Click a corner of your square on the map to choose which one you lean toward: your token peeks out a little past it (so you can see around a wall that ends there, and you are more exposed too), unless a wall is in the way. Click it again to go back to the center. @Condition[leaning|eot]" } }
       ],
       "foundry": { "basic": "leaning", "automation": "gold", "img": "icons/svg/eye.svg" }
@@ -229,8 +230,8 @@
       "traits": ["self"],
       "frequency": "Round",
       "versions": [
-        { "ap": 2, "effects": "You use 1 Rally Point.", "ruler": "heal 1 self" },
-        { "ap": 3, "effects": "You use 2 Rally Points.", "ruler": "heal 2 self" }
+        { "ap": 1, "effects": "You use 1 Rally Point.", "ruler": "heal 1 self" },
+        { "ap": 2, "effects": "You use 2 Rally Points.", "ruler": "heal 2 self" }
       ],
       "notes": "You can't use this Action while Down (Desperate, Dying or Shattered) or Unconscious.",
       "foundry": { "basic": "rally", "automation": "gold", "img": "icons/svg/regen.svg" }
@@ -269,15 +270,18 @@
     {
       "name": "Break Free",
       "category": "Basic Action",
-      "_note": "v0.0.224 (Lucas, playtest 3): removing Immobilized costs 1 AP and is a Move Action (08-conditions.md, Immobilized). v0.0.431 (the book audit, Q9 and Q10): shown in Chapter 6; Prone allows it; a Grab can ask for a Check. 2026-11-20 (Lucas): always a Body or Instinct Check against the Immobilized DC; the same day the Immobilized DC became the Action DC (Chapter 1).",
+      "_note": "v0.0.224 (Lucas, playtest 3): removing Immobilized costs 1 AP and is a Move Action (08-conditions.md, Immobilized). v0.0.431 (the book audit, Q9 and Q10): shown in Chapter 6; Prone allows it; a Grab can ask for a Check. 2026-11-20 (Lucas): always a Body or Instinct Check against the Immobilized DC; the same day the Immobilized DC became the Action DC (Chapter 1). 2026-11-21 (Lucas, playtest 7; the core rework B11): written in Tiers with a Check line; Doubles raise the Tier as on any roll; Self is its Distance, not a trait.",
       "flavor": "You tear loose from whatever holds you.",
-      "traits": ["move", "self"],
+      "traits": ["body", "instinct", "move"],
       "frequency": "At-will",
+      "distance": "Self",
       "requirements": "You are Immobilized.",
+      "rollLabel": "Check",
+      "vs": "Action DC",
       "versions": [
-        { "ap": 1, "effects": "Make a Body or Instinct Check (the higher) against the Action DC of the Action that holds you (Chapter 1, Action DC). If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized.", "foundry": { "text": "Make a Check, Body or Instinct (the higher), against the Action DC of the Action that holds you (Chapter 1, Action DC): it is rolled when you use Break Free. If you meet it, you are no longer Immobilized, and no longer Grabbed if you were. Below it, you stay Immobilized." } }
+        { "ap": 1, "tiers": ["No effect: you stay Immobilized."], "effects": "You are no longer Immobilized, and no longer Grabbed if you were." }
       ],
-      "foundry": { "basic": "breakFree", "automation": "gold", "automationNote": "pack TALENTS-PT (v0.0.475): using it rolls the Body or Instinct Check (the higher) against the Action DC of what holds you (the highest on your Immobilized conditions; 13 with no Action behind it); meeting it ends Immobilized and Grabbed, below it you stay Immobilized.", "img": "icons/svg/net.svg" }
+      "foundry": { "basic": "breakFree", "automation": "gold", "automationNote": "the core rework B11: using it rolls the Body or Instinct Check (the higher) against the Action DC of what holds you (the highest on your Immobilized conditions; 13 with no Action behind it); a Tier 2 or 3 (Doubles count) ends Immobilized and Grabbed.", "img": "icons/svg/net.svg" }
     }
   ]
 }

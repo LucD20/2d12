@@ -20,6 +20,7 @@
 | [[Class Actions, Picks and the Repertoire\|**Art**]] | A small class Action with three Modes; you take one at level 1 and a second at level 3. |
 | [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn. |
 | [[Rolls\|**Attribute Action**]] | An Action that rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait (not a Weapon, Power or Signature roll). |
+| [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
@@ -43,9 +44,10 @@
 | [[Critical\|**Critical**]] | Doubles on a result that is already Tier 3, a total 20 or more above the DC, or three matching dice on a Favored roll. Only Actions with a Critical row use it; once an encounter, it also raises your Escalation by 1. |
 | [[Daily\|**Daily**]] | Once per Sleep. |
 | [[Sight Senses\|**Dark Sight**]] | A Sight Sense: Dim light and Darkness count as Bright for you. |
+| [[Daunted\|**Daunted**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
 | [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away (never the Reaction AP); the rest, if any, from your next turn's AP. |
 | [[Deadly Hazards\|**Deadly Hazard**]] | A hazard that kills Minor enemies at once and leaves anyone else Imperiled. |
-| [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or a Vs. Attribute (12 + the Attribute). "+1 Defense" raises all of them. |
+| [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or an Attribute DC (11 + the Attribute). "+1 Defense" raises all of them. |
 | [[Desperate\|**Desperate**]] | You are Down and still fighting (some Nonlethal damage, and a Nonlethal blow took you Down): Slowed 1, or your Slowed value + 1 (at most 3). |
 | [[Difficult Terrain\|**Difficult Terrain**]] | Each square counts double. |
 | [[Sight Senses\|**Dim-light Sight**]] | A Sight Sense: Dim light counts as Bright for you. |
@@ -68,7 +70,7 @@
 | [[Escalation\|**Escalation**]] | A PC's adrenaline, a level from 1 to 6, never spent: 1 + the party's Momentum at the start of an encounter, +1 at the start of every round after the first, +1 once an encounter on a Critical and on your class's hook. Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough. |
 | [[Escalation\|**Escalation hook**]] | Your class's event that, once an encounter, raises your Escalation by 1 (the Paladin: an ally becomes Bloodied or goes Down; the Archer: an enemy you damaged goes Down). |
 | [[Evade\|**Evade**]] | Movement that doesn't trigger reactions, in one piece. |
-| [[Exhausted\|**Exhausted**]] | A condition with a value: less Speed, a penalty on all Rolls, a lower Resolve. |
+| [[Exhausted\|**Exhausted**]] | A condition with a value: less Speed, Banes on all Rolls, a lower Resolve. |
 | [[Exploding Dice\|**Exploding**]] | A die that shows its highest face and is rolled again: a d12 of a Roll counts the 12 as 11; a damage die written with ! (1d6!) counts its highest face as one less; every weapon's die is one. |
 | [[Favored and Doomed Rolls\|**Favored**]] | A roll of 3d12, keeping the two highest; any pair among the three is Doubles, three of a kind a Critical. |
 | [[Named Boons and Banes\|**Field**]] | A named Boon or Bane from position and sight: Cover, Flanking, Prone, Obscured, Long, shooting into a melee. Up to 2. |
@@ -77,7 +79,6 @@
 | [[Flanking\|**Flanking**]] | Creatures that threaten the same enemy: each gets 1 Field Boon on [Melee] Actions against it for each other flanker, minus 1 for each ally of the enemy that threatens it. |
 | [[Forced Movement\|**Forced Movement**]] | Movement you impose on another creature (Pushed, Pulled or Slid): no Reactions from movement, ignores Difficult Terrain, each square counts 1. |
 | [[Frequency\|**Frequency**]] | How often an Action can be used. |
-| [[Frightened\|**Frightened**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
 | [[Grabbed\|**Grabbed**]] | Held by a creature within its Reach: Immobilized, and only the holder can move you; it ends when the holder lets go or you Break Free (a Check against the Action DC of the Action that grabbed you). |
 | [[Grunts\|**Grunt**]] | An NPC rank with CV 50 and 3 AP a turn: about 26 Health at Stage 0, dies to about 1 PC turn. |
 | [[Guard\|**Guard**]] | A buffer written Guard N: it takes damage before your Health, doesn't stack (keep the higher) and ends with the encounter. Damage it takes isn't damage you take. The Guard of unspent AP adds to it and lasts 1 round. |
@@ -97,7 +98,7 @@
 | [[Instances of Damage\|**Instance of damage**]] | One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance. |
 | [[Interact\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. Once during an Advance Action, without ending it. Stowing or swapping needs no free hand ([[Handle]]). |
 | [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. |
-| [[Leaning\|**Leaning**]] | Until the end of your turn: cover is calculated from one of your corners, and your own cover is reduced by 1 level. |
+| [[Leaning\|**Leaning**]] | Until the end of your turn, or until you leave your square: cover is calculated from one of your corners, and your own cover is reduced by 1 level. You start it with the Lean Basic Action. |
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
 | [[Lethal and Nonlethal\|**Lethal, Nonlethal**]] | The two kinds of damage. Damage is Lethal unless stated. |
 | [[Light (property)\|**Light**]] | A weapon property: a small one-handed melee weapon (a Dagger, a Handaxe); 1 Bane in your off hand instead of 2. |
@@ -205,7 +206,7 @@
 | [[Unfailing\|**Unfailing**]] | A trait: when its roll gets a Tier 1, that use doesn't count toward the Action's Frequency. You still spend its AP. |
 | [[Senses\|**Unsensed**]] | You can't target the creature; its Actions against you are Favored. |
 | [[Reading an Action\|**Version**]] | The same Action at another cost. |
-| [[Defenses\|**Vs.**]] | An entry that names an Attribute: the Action rolls against 12 + that Attribute of the target instead of Armor Defense or Ward Defense. |
+| [[Defenses\|**Vs.**]] | What an Action rolls against: a Defense (Armor Defense, Ward Defense), an Attribute DC of the target ("Body vs. Body DC") or a set DC. |
 | [[Vulnerable\|**Vulnerable**]] | A condition with a value: Actions against you gain that many Boons. |
 | [[Defenses\|**Ward**]] | Ward Defense (WD) — 11 + Power Modifier + Ward value + other items + bonuses − penalties. The Defense against Power Actions. |
 | [[Resist, Weak and Immune\|**Weak**]] | Weak N (subtype): each Action's damage of that subtype, both pools together, is increased by N once. |

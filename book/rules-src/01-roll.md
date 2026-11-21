@@ -59,9 +59,16 @@ Some Boons and Banes have a **name**: **Field**, **Pressure** or **Support**. Th
 
 Apply the limit to each side first, then cancel: 3 Field Banes and 1 Field Boon are 2 Banes and 1 Boon, so 1 Bane.
 
+**Range Banes have no name.** The Banes of a weapon's far range (1) and maximum range (2) are not Field Banes: they add up with Field Banes beyond the limit of 2.
+
 ### Five Boons or Banes
 
 After the limits and the cancelling, if you still have **5 or more Boons**, you don't add them: the roll is **Favored** instead. With **5 or more Banes**, the roll is **Doomed** instead. 8 Boons and 3 Banes leave 5 Boons: the roll is Favored. 6 Boons and 2 Banes leave 4 Boons: add 4.
+
+**An effect that makes a roll Favored or Doomed** (a condition, a feature) counts as **5 Boons** or **5 Banes**, with no name: put them in with the others before cancelling. Several such effects still count as 5 once: a roll can't be Favored or Doomed twice. So more Banes never help a roll, and more Boons never hurt it.
+
+> [!example]
+> Lana is Doomed by a condition and has 2 Banes from Cover: 7 Banes, still Doomed. A 1 Support Boon and 2 Field Boons from allies bring it to 4 Banes: she rolls normally and subtracts 4.
 
 ## Favored and Doomed Rolls
 
@@ -69,7 +76,7 @@ When a roll is **Favored**, you roll **3d12** and keep the **two highest**. If *
 
 When a roll is **Doomed**, you roll **3d12** and keep the **two lowest**. A Doomed roll can't produce Doubles.
 
-A roll that is both Favored and Doomed is a normal roll, and nothing is added to it: 5 Boons that make a Doomed roll Favored leave a normal roll, not a roll with 5 Boons. A roll can't be Favored or Doomed twice.
+A roll that is both Favored and Doomed is a normal roll, and nothing is added to it: the 5 Boons and the 5 Banes cancel (see [[Five Boons or Banes]]).
 
 Roll three dice, then see if there are any explosions, calculated per die.
 
@@ -121,21 +128,25 @@ A **Check** is a roll of one Attribute Modifier against a DC, written "Body Chec
 
 When a rule asks you to beat what an Action did to you (to [[Break Free]] of it, or to move a creature it Immobilized), the DC is that Action's **Action DC**: **11 + the Modifier the Action used** (the Weapon Modifier for a Weapon Action, the Power Modifier for a Power Action, the Attribute Modifier for an Attribute Action, and so on). With no Action behind the effect, it is 13; with several, the highest. A Save Action's own DC is written under [[Save Actions]].
 
+### Attribute DCs
+
+Every DC is **11 + the number that sets it**, and is named by it. A creature's **Body DC** is 11 + its Body, and so are its **Mind DC**, **Appeal DC** and **Instinct DC**. An Action that rolls an Attribute against a creature rolls against that creature's DC of the same Attribute: [[Shove]] is Body against the target's Body DC; an Action that lets you roll Body or Instinct rolls against the target's DC of the Attribute you rolled (see [[Defenses]]).
+
 ## Saves
 
 Some effects make a creature roll a **Save**, written like "Appeal Save: [R] 1d6 / 1d4 / 0 Ho". The creature that must save rolls the named Attribute Modifier against the DC of the effect.
 
-The DC is usually 11 + the Weapon, Power or Signature Modifier that sets it (or 11 + ⌈Attribute ÷ 2⌉ + 1 for an Attribute-based Save); if no DC is listed, it is usually 13.
+The DC is usually 11 + the Weapon, Power or Signature Modifier that sets it, or 11 + the Attribute for a Save set by an Attribute (its [[Attribute DCs|Attribute DC]]); if no DC is listed, it is usually 13.
 
 The three values are what happens on its Tier 1 / Tier 2 / Tier 3 result: here 1d6 Holy Resolve damage on a Tier 1, 1d4 on a Tier 2 and nothing on a Tier 3. Boons, Banes, Doubles, Favored and Doomed work on Saves like on any roll.
 
 ### Save Actions
 
-An Action with the **Save** trait doesn't roll: each target rolls the Save the card names (its roll line says, for example, **Save: Instinct**). The DC comes from the Action's other traits: **11 + your Weapon Modifier** for a [Save, Weapon] Action, **11 + your Power Modifier** for a [Power, Save] Action, **11 + your Signature Modifier** for a [Save, Signature] Action, and for a Save Action that rolls an Attribute (such as [Body, Save]), **11 + ⌈Attribute ÷ 2⌉ + 1**. These are your **Power DC**, your **Weapon DC**, your **Signature DC** and the DC of an Attribute (your **Body DC**): a rule or a card can name one ("an Appeal Save against your Power DC").
+An Action with the **Save** trait doesn't roll: each target rolls the Save the card names (its roll line says, for example, **Save: Instinct**). The DC comes from the Action's other traits: **11 + your Weapon Modifier** for a [Save, Weapon] Action, **11 + your Power Modifier** for a [Power, Save] Action, **11 + your Signature Modifier** for a [Save, Signature] Action, and for a Save Action that rolls an Attribute (such as [Body, Save]), **11 + that Attribute**. These are your **Power DC**, your **Weapon DC**, your **Signature DC** and the DC of an Attribute (your **Body DC**): a rule or a card can name one ("an Appeal Save against your Power DC").
 
 The tiers are the target's result: **Tier 1 is the worst for them**. So everything that follows your result on an attack follows theirs here, reversed: a [Save, Weapon] Action deals its [Mod] on **Tier 1 and 2**, and a line for two Tiers is written **Tier 1 or 2**.
 
-A Save Action has no Critical. Boons and Banes on your own rolls don't apply to it; effects on the target's Saves do. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target (from your square when the Action has no area). Your [[Senses]] don't change a Save Action: the target rolls, so a target that is Obscured or Hidden to you adds no Bane to its Save.
+A Save Action has no Critical. Your own Boons don't apply to it, but **your own Banes do, turned around**: after cancelling your Boons and Banes as for a roll, each Bane you have left gives every target **1 Boon** on its Save (no name; if you would be Doomed, that is 5 Boons: their Saves are Favored). Effects on the target's Saves apply as well. **Vulnerable** gives the target that many Banes on the Save. **Cover** gives it Field Boons (1 for Low cover, 2 for Medium), and **High cover makes its Save Favored**, counted from the center of the area's Point of Origin to the target (from your square when the Action has no area). Your [[Senses]] don't change a Save Action: the target rolls, so a target that is Obscured or Hidden to you adds no Bane to its Save.
 
 ## Roll Effects
 
@@ -289,7 +300,7 @@ The numbers on the two cards below are the numbers of the list. The first card n
 | [[Critical\|**Critical**]] | An extra effect on Doubles with a result that is already Tier 3, or a total 20 or more above the DC. |
 | [[Evade\|**Evade 2**]], [[Advance\|**Advance 2**]], [[Pushed\|**Pushed 2**]], [[Pulled\|**Pulled 2**]], [[Slid\|**Slid 2**]], [[Reposition\|**Reposition 2**]] | Movement of up to that many squares. |
 | [[Rounds\|**for 2 rounds**]] | How long an effect lasts. |
-| [[Versus\|**Attack: Body vs. Body**]] | The Modifier you roll, and the Defense of the target. |
+| [[Versus\|**Attack: Body vs. Body DC**]] | The Modifier you roll, and the Defense of the target (here its [[Attribute DCs\|Body DC]]). |
 | [[Save Actions\|**Save: Instinct**]] | The Save each target rolls. |
 | [[Rounds\|**(1 round)**]] | After a condition or an effect: it lasts 1 round. |
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP. You can use it only on your turn. |
@@ -323,7 +334,7 @@ When a rule names a trait before the word "Action," it means an Action with that
 
 1. Roll **2d12** and add the relevant Modifier.
 2. Any **12** counts as 11 and is rolled again, adding the result.
-3. Add **1 for each Boon** and subtract **1 for each Bane**. Named ones (Field, Pressure, Support) count up to 2 of each name. If 5 or more Boons are left after cancelling, the roll is Favored instead; 5 or more Banes, Doomed.
+3. Add **1 for each Boon** and subtract **1 for each Bane**. Named ones (Field, Pressure, Support) count up to 2 of each name; an effect that makes the roll Favored or Doomed counts as 5 Boons or 5 Banes. If 5 or more Boons are left after cancelling, the roll is Favored instead; 5 or more Banes, Doomed.
 4. Compare to the **DC**: below it is a Failure, from the DC up to DC + 6 is a Marginal Success, and DC + 7 or more is a Full Success.
 5. If both d12s match, move the result **up one tier**.
 6. A **Favored** roll is 3d12: keep the two highest, and any pair among the three is Doubles. A **Doomed** roll is 3d12: keep the two lowest, with no Doubles.

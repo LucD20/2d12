@@ -73,7 +73,7 @@ The damage tables are the same whatever the three are: a PC's Ward Defense is 12
 
 ## Attributes and Modifiers
 
-Assign the Attributes to **Body, Mind, Appeal and Instinct**. Its Vs. Attributes are 12 + the Attribute, as for anyone.
+Assign the Attributes to **Body, Mind, Appeal and Instinct**. Its Attribute DCs are 11 + the Attribute, as for anyone.
 
 An NPC's **Weapon Modifier** and **Power Modifier** are each a rating of its rank's table. They don't come from its Attributes and don't grow with its Stage (its Health and damage tables do). **An NPC's Modifiers are for its rolls and its DCs only: its damage is written whole in the tables, with nothing to add.** By default the Weapon Modifier is **Medium** and the Power Modifier **Low** (a Standard's is Medium too); a creature that attacks Ward Defense usually swaps them. A Modifier is never above +4.
 
@@ -182,7 +182,7 @@ A **rider** is an effect an Action adds to its damage: a condition, a Forced Mov
 | Rider | Price | Examples |
 |---|---:|---|
 | **Forced Movement 1** | 2 | Pushed, Pulled or Slid 1 |
-| **Mild** | 3 | Hindered (EoT); Taunted (1 round); Staggered (EoT); Frightened (EoT); 1 Pressure Bane on its next roll; Doomed on its next roll; Sickened 1; Bright light on it (it can't hide) |
+| **Mild** | 3 | Hindered (EoT); Taunted (1 round); Staggered (EoT); Daunted (EoT); 1 Pressure Bane on its next roll; Doomed on its next roll; Sickened 1; Bright light on it (it can't hide) |
 | **Moderate** | 8 | Slowed 1; Dazed 1; Blinded (EoT); Vulnerable 1 or 2 (EoT); Immobilized (EoT) or until it escapes; Grabbed; **Forced Movement 2** |
 | **Severe** | 12 | Prone; Lingering 1; **Forced Movement 3 or more** |
 | **Extreme** | 18 | Slowed 2; Dazed 2; Lingering 2; Lingering 1d4 |
@@ -464,7 +464,7 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 - *Avenge Kin* (Reaction, 1R, Round, Trigger: an ally within 2 squares takes damage from a [Strike] Action; 28): it makes an attack against the attacker if it can reach it: [V] 1 + 1d4 / 3 + 1d6 Sl.
 
 **Grave Wisp** (Standard, CV 100; 25 points an AP, turn budget 100): Mind High (+2), Appeal Medium (+1), Instinct Medium (+1), Body Low (0). Power Modifier Medium (+2), Weapon Modifier Medium (+2); it attacks only Ward Defense. Vigor Terrible (17), Resolve High (36): Health 53. Armor Defense Low (11), Ward Defense High (15). Speed 5, flies (it hovers just above the ground: see [[Flying]]; a fast creature: its Vigor is Terrible).
-- *Chilling Touch* (Basic attack, 1 AP, At-will, Reach (1), Vs. WD, [Fear]; 25, Frightened 3): [R] 1 + 1d4! / 2 + 1d4! Co, and Frightened of it (EoT).
+- *Chilling Touch* (Basic attack, 1 AP, At-will, Reach (1), Vs. WD, [Fear]; 25, Daunted 3): [R] 1 + 1d4! / 2 + 1d4! Co, and Daunted of it (EoT).
 - *Dread Whisper* (2 AP, Round, Reach (1), Vs. WD, [Fear]; 55, Dazed 1 8): [R] 3 + 1d6 / 7 + 1d6 Ps, and Dazed 1.
 
 **Ogre Chieftain** (Elite, Large (4), CV 200; 33 points an AP, turn budget 132): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation: the default ladder (Pressing, Relentless, Second Wind).

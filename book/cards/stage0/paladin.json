@@ -138,7 +138,7 @@
    "body": [
     {
      "label": "Attack",
-     "text": "Weapon vs. Armor Defense"
+     "text": "Signature vs. Armor Defense"
     },
     {
      "label": "Tier 1",
@@ -154,6 +154,7 @@
     }
    ],
    "traits": [
+    "signature",
     "weapon",
     "strike",
     "divine"
@@ -454,7 +455,7 @@
      "body": [
       {
        "label": "Effect",
-       "text": "An [[Aura]] 3 around you (1 round): you and your allies in it ignore the Frightened condition."
+       "text": "An [[Aura]] 3 around you (1 round): you and your allies in it ignore the Daunted condition."
       }
      ],
      "foundry": {
@@ -489,7 +490,7 @@
     "img": "icons/svg/sound.svg",
     "folder": "Paladin",
     "automation": "silver",
-    "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save and Prone; Courage: an effect on you as a reminder (an Aura 3: you and allies in it ignore Frightened: by hand)."
+    "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save and Prone; Courage: an effect on you as a reminder (an Aura 3: you and allies in it ignore Daunted: by hand)."
    }
   },
   {
@@ -764,7 +765,7 @@
     },
     {
      "label": "Tier 1 or 2",
-     "text": "Frightened of you (1 round)."
+     "text": "Daunted of you (1 round)."
     }
    ],
    "traits": [
@@ -784,9 +785,9 @@
      "targets": "enemies",
      "center": true
     },
-    "automationNote": "the Setup's Advance (the button), then the Emanation around you, the Pushes one by one and the Appeal Save: Frightened of you (1 round) on a Tier 1 or 2.",
+    "automationNote": "the Setup's Advance (the button), then the Emanation around you, the Pushes one by one and the Appeal Save: Daunted of you (1 round) on a Tier 1 or 2.",
     "version": {
-     "after": "@Move[pushed|distance:2|pick:yes|from:area] @Condition[frightened|rounds:1]"
+     "after": "@Move[pushed|distance:2|pick:yes|from:area] @Condition[daunted|rounds:1]"
     }
    }
   },

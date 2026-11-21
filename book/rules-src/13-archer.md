@@ -81,7 +81,7 @@ Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's
 
 **Choose one.** *Quick build: Blade and Bow.* Your Escalation rises from 1 to 6 as the fight goes on and is never spent (see [[Escalation]]); this ability works while it is at least 2.
 
-- **Lean and Loose:** leaning out from cover costs you nothing.
+- **Lean and Loose:** leaning out from cover ([[Lean]]) costs you nothing.
 - **Blade and Bow:** changing between the bow and the knife gives a Boon.
 
 @@CARD:Lean and Loose@@

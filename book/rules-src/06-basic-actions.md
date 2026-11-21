@@ -21,7 +21,7 @@ Every creature can use these Actions, except that an NPC has no Weapon Attack (i
 
 @@CARD:Interact@@
 
-@@CARD:Leaning@@
+@@CARD:Lean@@
 
 @@CARD:Regrip@@
 

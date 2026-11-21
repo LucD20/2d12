@@ -1,11 +1,15 @@
 <!-- part: Part III: Reference -->
 # Chapter 8: Conditions
 
-These conditions are in alphabetical order. Unless a card says otherwise, a creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). **A condition with a source**, such as Frightened of a creature, Taunted by one or Grabbed by one, comes from one source at a time: if you gain it from a different source, the new one replaces the old one, with its own duration. The effect that gives a condition says how long it lasts (EoT or a number of rounds: see [[Effect Timing]]); a condition written with no duration lasts until the encounter ends (EoE). **Ignoring a condition.** A creature that ignores a condition keeps it, but the condition does nothing to it; its duration still runs, and it works again when the creature stops ignoring it. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
+These conditions are in alphabetical order. Unless a card says otherwise, a creature can't have the same condition twice: if they would gain a condition they already have, keep the longer duration, and for a condition with a value, such as Vulnerable 3, the highest value (see [[Stacking]]). **A condition with a source**, such as Daunted of a creature, Taunted by one or Grabbed by one, comes from one source at a time: if you gain it from a different source, the new one replaces the old one, with its own duration. **It ends when its source goes Down or is Unconscious** (an object that is a source: when it is destroyed). The effect that gives a condition says how long it lasts (EoT or a number of rounds: see [[Effect Timing]]); a condition written with no duration lasts until the encounter ends (EoE). **Ignoring a condition.** A creature that ignores a condition keeps it, but the condition does nothing to it; its duration still runs, and it works again when the creature stops ignoring it. The conditions that come from damage (Bloodied, Strained, Desperate, Dying, Shattered and Unconscious) are in [[Health States]].
 
 ### Blinded
 
 You can't see: for your Sight, everything is Darkness (see [[Senses]]). Creatures you only hear are Hidden to you, so your Actions against them are Doomed, and you can't target a creature you don't perceive. Any other Roll that needs sight is Doomed. Actions with the Area trait still affect the creatures in their area. Every square is [[Difficult Terrain]] for you, as Darkness is for a creature that can't see in it: you move by feel.
+
+### Daunted
+
+Daunted is always **of** a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see [[Senses]]), all your [[Rolls]] take **1 Bane**, and every square that brings you closer to the source is [[Difficult Terrain]] for you (Forced Movement ignores it). Put a wall between you and the source, or let the source stand in Darkness, and it is out of your Sight: the Bane and the Difficult Terrain stop until you see it again.
 
 ### Dazed
 
@@ -24,7 +28,7 @@ The first time you deal damage on each of your turns, add **1d6!** to it (see [[
 Exhausted always has a value, such as **Exhausted 2**. While you are Exhausted:
 
 - Your Speed is reduced by the value (to a minimum of 1).
-- All your [[Rolls]] take a penalty equal to the value.
+- All your [[Rolls]] take as many **Banes** as the value.
 - Your Resolve is reduced by 4 times the value.
 
 A lower Resolve lowers your Health Pool, but not your Rally Points: they use your Health Pool as if you weren't Exhausted. The [[Health Pool|floor]] of a third doesn't apply to it.
@@ -36,10 +40,6 @@ If your Resolve reaches 0, you must make a **Mind Save** (DC 13). Resolve cannot
 | **Tier 1** | You fall Unconscious and start a [[Sleep]]. You can't wake up while your Resolve is 0. |
 | **Tier 2** | Your Exhausted value increases by 1, and you must make this Save again in 12 hours. |
 | **Tier 3** | You must make this Save again in 12 hours. |
-
-### Frightened
-
-Frightened is always **of** a source: a creature or an object. While you perceive the source with your Sight (it is Clear or Obscured to you: see [[Senses]]), all your [[Rolls]] take **1 Bane**, the Save that would end Frightened included, and every square that brings you closer to the source is [[Difficult Terrain]] for you (Forced Movement ignores it). Put a wall between you and the source, or let the source stand in Darkness, and it is out of your Sight: the Bane and the Difficult Terrain stop until you see it again.
 
 ### Grabbed
 
