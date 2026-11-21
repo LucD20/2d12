@@ -173,16 +173,54 @@ Lucas, 2026-11-21: "All playtests have been level 0." The playtest 7 log uses on
 6. **Solo again.**
 7. **The SIM is frozen** until a decision needs a whole-fight comparison; rules still go into `roundrules.mjs` first for Foundry (its `spec.mjs --check` and reports are not kept in step meanwhile).
 
+## Q. Lucas's answers on the desk (2026-11-21)
+
+All 32 answered (A3 and A7 with a question; Claude's replies in the chat of 2026-11-21). What each changes:
+
+- **A2 (decided): the Critical adds 1d10!** ("Crits are allowed to be strong, but I will keep a close watch"). **Its damage type and subtype are chosen before the damage is rolled, from the ones the Action deals:** an Action dealing only [V] Piercing crits [V] Piercing; one dealing [V] Piercing and [R] Holy, the player picks one before rolling.
+- **A3:** asked what the problem is (explained in the chat; still to decide).
+- **A4 (decided):** Save Actions feel the user's Banes (each Bane on the user gives every target 1 Boon on its Save).
+- **A6 (decided):** range Banes stay unnamed; one line says a range Bane is not a Field Bane.
+- **A7 (decided direction): one formula for every DC, named by what sets it: Body DC, Instinct DC, Mind DC, Appeal DC, Action DC.** Shove: Body vs. Body DC; Relocate: Body or Instinct vs. the same Attribute's DC. Today's "Vs. an Attribute" (12 + the Attribute: Chapter 2's Defenses table, the Glossary, Chapter 14) and the Attribute-based Save DC (11 + ⌈Attribute ÷ 2⌉ + 1: Chapter 1) are still in the book. **Open: 11 + X or 12 + X** (Claude: 11, the Action DC's number; it makes Shove and Trip 1 easier, which B7 wants anyway).
+- **B1 (corrected):** Basic attacks are made by class (B4), so the Tier 1 [Mod] can differ per class.
+- **B2:** decided with B4. **B4 (decided): each class carries its own Basic attacks, a Weapon one and a Power one.** **K8 (corrected): the shared Weapon Attack will stop existing.**
+- **B6 (decided):** the map is the starting point; batch 3 goes Action by Action.
+- **B11 (decided):** Claude's three notes on Break Free (a Check line, Doubles free you, no Self trait).
+- **C4 (changed): where the line sits decides when it applies.** A Bloodied: / Strained: line **before the Tiers** applies only if the target is already Bloodied / Strained; a line **after the Tiers** applies if the target becomes so during this Action.
+- **C5 (corrected): a "would damage" Reaction can trigger on Collision damage.** The creature that moves the target causes the Collision, so it is that creature's damage; a Reaction that reduces damage picks one: the Action's damage or the Collision ("you deal 2 + Pushed 2 against a wall: react on the 2 or on the Pushed"; the Pushed is a gamble, the origin may not even move the target). What stays: one reduction doesn't reduce both.
+- **C6 (decided):** try the half floor in batch 4, checked against the Paladin's protection cards. **C7:** Wounds later.
+- **D3 (asked): should an ally's square be Difficult Terrain?** (Claude's answer in the chat: yes, D&D 5e does it; open.)
+- **D6 (corrected):** "on the line" needs a diagram.
+- **D7 (decided): a creature pushed into a wall it touches takes the Collision; the push still counts as leaving its square and as being moved by Forced Movement, even with 0 squares moved.**
+- **E3, E4, E5, F2, G2, G11, H1, H8 (decided as Claude proposed).** H1: the Paladin chooses his Modifier order.
+- **G8 (changed): for the playtest, NPCs get one number for each stat: a "Default Standard" and a "Default Elite"; the roles' variations come after.** (The Defenses-by-role spread waits.)
+- **H3 (corrected): no Foundry prompts yet;** they come later, chapter by chapter.
+- **H9 (decided): classes have a better chance of "shutting down" than Talents, but never shut a boss down.**
+- **I2 (corrected): Foundry blocks some things, not all;** using an Action without enough AP is allowed, with a warning.
+- **K1 (changed): a Minion with 1 tick left counts as Bloodied or Strained, by the damage that caused it** ([V] Bloodied, [R] Strained); if both, the one who dealt it decides.
+- **K2 to K6 (decided as proposed).** K3: Strained's gap on NPCs is accepted for playtest 8.
+- **N1 (decided):** "level 0" meant the level 1 pregens (Stage 0).
+- **P1 (changed): the Encounter Log comes last, just before playtest 8;** meanwhile every batch adds to a list of what the log must track (`core-rework.md`, section R).
+
+## R. What the Encounter Log must track (added as we go)
+
+The review's section 7 is the start (per roll, per turn, Reactions offered and used, per creature per round, a summary, one numbering for same-name creatures). Each batch adds here what its rules need watched.
+
+- Critical: the 1d10! rolled and the type chosen (A2).
+- Bloodied and Strained: when each starts, by which damage; the lines they turned on (C1, C3, C4); a Minion's last tick counted as which (K1).
+- Reactions on Collision damage (C5); Pushed 0 against a wall (D7).
+- The protection floor when it applies (C6).
+
 ## P. The order of work
 
 
-1. **Batch 1: the settled fixes and Foundry's measurement** (small, no dependencies). Book: A3, A4, A5, A6, D4 (with its diagram), D5, D6, D7, E1, E2, E4, C5, B10, B11, B12, H2. Foundry, in the same version: I1 (the Encounter Log), I2, I3, H3's prompts. Playtest 8 needs the log, so it comes first.
+1. **Batch 1: the settled fixes** (small, no dependencies; the Encounter Log moved to the end, P1). Book: A3, A4, A5, A6, A7 (one DC formula), D4 and D6 (with their diagrams), D5, D7, E1, E2, E4, C5, B10, B11, B12, H2. Foundry, in the same version: I2 (some blocks, warnings for the rest), I3.
 2. **Batch 2: damage that matters.** A2 (the Critical's die), C1 + C2 (Bloodied, negative Steadiness), C3 (Strained), C4 (the labeled lines: the card Structure, then the gallery). Everything after uses these words.
-3. **Batch 3: the Basic layer** (the class cards may change freely: answer 3). B4 first (per-class Basic attacks or not), then B1 / B2, H1 (the Paladin), B6 (the Attribute map), B5, B7, B8, B9, E3 (Prone given too liberally: the cards). Then H8 (re-anchor the Talents and `pc-budget.md`).
+3. **Batch 3: the Basic layer** (the class cards may change freely: answer 3). B4 first (each class's Weapon and Power Basic attacks: decided), then B1 / B2 as their template, H1 (the Paladin), B6 (the Attribute map), B5, B7, B8, B9, E3 (Prone given too liberally: the cards). Then H8 (re-anchor the Talents and `pc-budget.md`).
 4. **Batch 4: the front line.** D1, D2, D3 (with B8 Tumble), C6 (the protection floor).
 5. **Batch 5: the Bestiary's mechanics.** G2 (the Boss and the Elite's shape, K6), G3 (ticks, K1, K2), G4 (parity, K7), G5, G6, D8, G8, H9.
 6. **Batch 6: the Bestiary's numbers.** G9 targets with C8's pace, G11 pricing, G12 the examples (with a Grunt), against the PC side of batches 2 to 4.
-7. **Playtest 8**: the level 1 pregens (Stage 0) against playtest 7's line-up rebuilt plus two Grunts, measured by the new log; solo.
+7. **The Encounter Log** (I1, with section R's list), then **playtest 8**: the level 1 pregens (Stage 0) against playtest 7's line-up rebuilt plus two Grunts, measured by the new log; solo.
 8. **Later:** F1 / F2 (Escalation for martials) and H3's Modes at the class passes; C7 (Wounds); the Talents' restart (T15) on the new anchor; magic's playtest kit; progression past Stage 0.
 
 Each batch: one decision at a time with Lucas, then the book (rules-src first), then one Foundry version (tests, the checklist naming the PC or NPC, the gallery for card changes), the backlogs, HANDOFF.

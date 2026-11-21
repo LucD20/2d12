@@ -4,6 +4,7 @@ The book is built from `rules-src/` with `build_rules.py` (assets in `rules-asse
 
 ## Open for the book
 
+- [ ] **THE CORE REWORK: LUCAS'S ANSWERS ON THE DESK (2026-11-21): `book/core-rework.md` section Q** (all 32; the Critical is 1d10!, its type chosen before rolling; one DC formula named by Attribute (Body DC...); each class carries its own Weapon and Power Basic attacks, the shared Weapon Attack goes; the Bloodied / Strained line's place decides when it applies; a "would damage" Reaction can take the Collision instead; Pushed 0 against a wall Collides and counts as moved; Default Standard / Default Elite for the playtest; the Encounter Log last, its list grows per batch (section R)).
 - [ ] **THE CORE REWORK: ALL DECISIONS ORGANIZED (2026-11-21): `book/core-rework.md`** (the register by topic, the conflicts checked, a quick review, the order of work in six batches). **Bloodied decided (Lucas): Speed −2 (minimum 1) and Steadiness −1; Steadiness can be negative, and a negative Steadiness adds to Forced Movement.** The entries below are its sources.
 - [ ] **THE CORE REVIEW, LUCAS'S SECOND ROUND (2026-11-21): DECIDED OR LEANING, NOT APPLIED** (what he didn't mention stands from the first round unless it conflicts):
   - **The Paladin's Modifiers:** a fixed Weapon +1 "defeats the purpose of the system, of allowing people to go both ways": find a remedy. **Binding Light gets [Signature]** (an oversight).
