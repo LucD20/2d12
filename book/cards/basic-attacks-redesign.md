@@ -38,6 +38,17 @@ His Archer draft puts the damage-changing Bloodied line above the roll: the rule
 
 Riders: Daunted, the Pulls and the Slide [not priced].
 
+## Draft 3 (Lucas, 2026-11-22: "give paladin t3 2[w]"; "I think we are commiting a mistake by making the V damage attack get more things. So if it is weapon dealing V, we make the extra on Strained."; "Increase archer's pow, not a lot damage"; "Yes, it is all exploding"; "Change paladin to sli 1")
+
+**The principle (Lucas): a card's Bloodied / Strained line keys on the other pool.** A Weapon Basic attack (it deals [V], it makes targets Bloodied) has its extra on **Strained**; a Power Basic attack (it deals [R], it makes targets Strained) has its extra on **Bloodied**. So each attack rewards the other, and a mixed turn pays.
+
+- **Archer, Weapon** (At-will, 1 AP, [Strike, Weapon], Distance: Weapon): *Strained (above the roll):* a Tier 3 deals 1d4! more (the weapon's type) · [V] [Mod] / 1[W] + [Mod] / 2[W] + [Mod].
+- **Archer, Power** (At-will, 1 AP, [Power, Strike], Distance: 10 sq.): [R] 1d4! / 1d8! / 1d12! Ps · *Bloodied:* on a Tier 3, the target is Daunted of you (EoT). (Claude's step up: 1d6! to 1d8!, 1d10! to 1d12!.)
+- **Paladin, Weapon** (At-will, 1 AP, [Strike, Weapon], Distance: Weapon): [V] [Mod] / 1[W] + [Mod] / 2[W] + [Mod] · *Strained:* you can Slide it 1.
+- **Paladin, Power** (At-will, 1 AP, [Divine, Power, Strike], Distance: 5 sq.): [R] 1d4! Ho / 1d8! Ho; Pulled 1 / 2d6! Ho; Pulled 2 · *Bloodied:* you can Slide it instead.
+
+**Expected damage a use, vs 12 / 13 / 14** [calc]: Archer Weapon (Hunting Bow) 7.7 / 7.1 / 6.5 (8.8 / 8.0 / 7.3 against a Strained target); Archer Power 5.4 / 5.2 / 4.9; Paladin Weapon (Longsword, +1) 12.6 / 11.3 / 9.9, (Arming Sword) 8.5 / 7.7 / 6.8; Paladin Power 6.1 / 5.8 / 5.5. Old Weapon Attack: Archer 4.8, Paladin (Longsword) 7.6, vs 13.
+
 ## Open, next
 - A rule the examples need: a Bloodied / Strained line that changes **this Action's own damage** can't wait for that damage (it would be circular): it reads the target as it was before the roll.
 - The Archer's Power Basic attack: its flavor.
