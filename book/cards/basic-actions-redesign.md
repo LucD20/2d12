@@ -49,5 +49,14 @@ What a setup is worth on the next Strike (+2 vs 13) [calc]: Basic Attack with a 
 
 Lucas's: the Speed 4 Requirement, half Speed for 1 AP (an Advance: it can trigger Reactions) or Evade 2 for 2 AP (no Reactions), At-will, one Check against the highest DC with 1 Bane per creature beyond the first, Appeal and Instinct. Claude's: no Difficult Terrain on Tier 2 (half of Speed 5 is 2 squares: a Difficult enemy square plus the step out would never fit). Noted: a Bloodied creature with Speed 5 (3 while Bloodied) can't Tumble.
 
-## Trip and Shove (in progress)
-Claude proposed one 1 AP Version each without [Strike] (about 6 to 7 a use against a Basic Attack's 6.6: Shove nothing / Pushed 2 / Pushed 3, Critical Prone; Trip nothing / Prone / [V] 1d6! Bl, Prone, Critical [V] 1d6! Bl). **Lucas, 2026-11-22: "I think we should do 2 AP as well, variable actions need a place in 2d12."** So the charter's rule 10 ("a second Version only when it does a different thing, never a bigger one") has an exception for Basic Actions that scale with AP; Claude's 2 AP Versions buy reliability (a Tier 1 that does something) as well as size. Drafts in the chat, to confirm.
+## Trip and Shove: decided (Lucas, 2026-11-22: "I think we should do 2 AP as well, variable actions need a place in 2d12"; "Are they too strong? If not, move on")
+
+> **Shove** · Round · 1 or 2 AP · [Body, Handle] · Distance: Reach · Target: One creature · Requirement: The target's Size is at most 1 larger than yours. · Attack: Body vs. Body DC
+> 1 AP: No effect / Pushed 2 / Pushed 3. · 2 AP: Pushed 1 / Pushed 3 / Pushed 5. · Critical: Prone.
+
+> **Trip** · Round · 1 or 2 AP · [Body, Handle, Instinct] · Distance: Reach · Target: One creature · Requirement: The target's Size is at most 1 larger than yours. · Attack: Body or Instinct vs. the same Attribute's DC
+> 1 AP: No effect / Prone / [V] 1d6! Bl; Prone. · 2 AP: Hindered (EoT) / [V] 1d6! Bl; Prone / [V] 2d6! Bl; Prone. · Critical: [V] 1d6! Bl.
+
+No [Strike] (they no longer use one of the 3 Strikes); two Versions each (the charter's rule 10 has an exception for Basic Actions that scale with AP: Lucas); the 2 AP Version buys a Tier 1 that does something. About 7.5 / 11.7 (Shove) and 6.8 / 10.7 (Trip) a use against a Basic Attack's 6.6 [judgment, the Bestiary's rider prices]. **Not too strong (Claude), with one watch:** four PCs can each Trip a single Boss once a round, so it spends its AP standing: the Boss rank (batch 5) needs its answer to Prone (H9: "never shut a boss down").
+
+## Next: Heal (decided: written up when the batch is applied), then E3 (Prone from Kneel)
