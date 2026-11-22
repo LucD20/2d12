@@ -469,6 +469,6 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 
 **Ogre Chieftain** (Elite, Large (4), CV 200; 33 points an AP, turn budget 132): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation: the default ladder (Pressing, Relentless, Second Wind).
 - *Club* (Basic attack, 1 AP, At-will, High, Reach (1); 40, Push 1 2, then Ground Slam's pay-back, a quarter): [V] 1 + 1d4! / 3 + 1d6! Bl, and Pushed 1.
-- *Overhead Smash* (2 AP, Round, Reach (1); 73, Push 2 8, the pay-back): [V] 3 + 1d6 / 7 + 1d6 Bl, and Pushed 2. **Bloodied:** the target is Pushed 1 more (a placeholder, to try the line).
+- *Overhead Smash* (2 AP, Round, Reach (1); 73, Push 2 8, the pay-back): [V] 3 + 1d6 / 7 + 1d6 Bl, and Pushed 2. **Bloodied:** on a Tier 2 or 3, the target is Pushed 1 more (a placeholder, to try the line).
 - *Ground Slam* (2 AP, Encounter, Area 2 Emanation, a Save Action: Body Save, DC 14; 145, Prone 12, half to each): [V] 10 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it can be used once more.
 - *Rally the Tribe* (Escalation 4, 1 AP, Round): allies within 5 squares gain 1 Support Boon on their next [Weapon] Action.

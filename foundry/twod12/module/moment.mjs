@@ -283,7 +283,7 @@ export async function blockedWhy(actor, item) {
   const f = isFaded(actor, item);
   if (f?.faded) return f.why || "spent";
   if (isDown(actor)) return "Down";
-  if (reactionsOff(actor)) return "Staggered: no Reactions";   // v0.0.314 (pack AU; book, Ch. 8): the Reaction AP waits
+  if (reactionsOff(actor)) return "Staggered: no Reactions";   // v0.0.314 (pack AU; book, Ch. 8): the Reaction Point waits
   try {
     const C = await import("./combat.mjs"), c = game.combat?.started ? C.combatantOf(actor, game.combat) : null;
     if (c) {

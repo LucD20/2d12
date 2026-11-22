@@ -226,7 +226,7 @@ function legacyPane(r, m) {
     return grid([["Damage", `${text("setting.dmg", b.dmg ?? "1", "1d6", "dice")}${sel("setting.dmgPool", b.dmgPool ?? "", [["", "by the Attributes"], ["B", "[V]"], ["M", "[R]"]], "Pool")}${sel("setting.dmgSub", b.dmgSub ?? "", SUBS(), "Subtype")}`], ["DC", step("setting.bleedDc", b.bleedDc ?? 13, 5, 30)]])
       + help("Lingering (Chapter 8; the key bleed) keeps its own setting: a damage card at the end of each of the creature's turns; Shake Off and a Save end it. A card's chip can set its own values.");
   }
-  if (r.kind === "builtin") return help(r.which === "noReactions" ? "Staggered's own rule: the creature can't use Reactions (its Reaction AP waits)." : "Dazed's own rule: its value in AP is lost now, the rest from its next turn's AP; then it ends.") + `<p class="fr-m">This condition's own rule.</p>`;
+  if (r.kind === "builtin") return help(r.which === "noReactions" ? "Staggered's own rule: the creature can't use Reactions (its Reaction Point waits)." : "Dazed's own rule: its value in AP is lost now, the rest from its next turn's AP; then it ends.") + `<p class="fr-m">This condition's own rule.</p>`;
   return `<p class="fr-m">An older setting (${esc(r.setting?.type ?? "?")}) kept as it was; it still works. Edit it in the JSON tab, or remove it.</p>`;
 }
 const PANES = { act: actPane, value: valuePane, grant: grantPane, weap: weapPane, esc: escPane, uses: usesPane, aura: auraPane, light: lightPane, move: movePane, zone: legacyPane, bleed: legacyPane, builtin: legacyPane, raw: legacyPane };

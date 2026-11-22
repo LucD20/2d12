@@ -109,11 +109,11 @@ export async function rollDialogInput(c) {
   else { const nl = it.traits.has("nonlethal"); chips.push({ id: "syn:nl", scope: "shared", row: "damage", kind: "boon", n: 1, special: "nl", label: `${nl ? "Lethal" : "Nonlethal"}: +1 Boon on each Save`, start: "off", tip: `Deal ${nl ? "Lethal" : "Nonlethal"} damage instead: every creature gains 1 Boon on its Save (Ch. 4)` }); }
   // v0.0.411 (pack F3): Shifting Aim's Field Boon, Blade and Bow's Boon (hooks.mjs: what the creature did this turn)
   try { const { strikeHookChipsFor } = await import("./hooks.mjs"); for (const [k, h] of (await strikeHookChipsFor(actor, c.useTraits)).entries()) chips.push({ id: `syn:hook:${k}`, fx: `syn:hook:${k}`, scope: "shared", row: "boons", kind: "boon", n: h.boons, bb: h.field ? "field" : "", label: h.name, start: "on", tip: `${h.name}: ${h.why}` }); } catch (e) { console.warn("twod12 | hook chips", e); }
-  // v0.0.409 (pack F2; book, Smite): "you can spend your Reaction AP to roll 1 more Smite die" (off until ticked; paid when the Action is used)
-  // v0.0.440 (Lucas, checklist: "the Reaction AP toggle is hidden"; the dice "need to grow"): always shown (pinned), and on, its die joins the Tiers
+  // v0.0.409 (pack F2; book, Smite): "you can spend your Reaction Point to roll 1 more Smite die" (off until ticked; paid when the Action is used)
+  // v0.0.440 (Lucas, checklist: "the Reaction Point toggle is hidden"; the dice "need to grow"): always shown (pinned), and on, its die joins the Tiers
   if ([...(it.versions ?? [])].some(v => v.diceRule === "smite")) {
     let prof = false; try { const { isProfaneFor } = await import("./judge.mjs"); prof = !!(c.rollsAtOthers && c.targetToken && isProfaneFor(actor, c.targetToken)); } catch (e) { prof = false; }
-    chips.push({ id: "syn:smite", scope: "shared", row: "damage", kind: "pass", n: 0, special: "smite", pinned: true, label: "Reaction AP: 1 more Smite die", tag: `+1d${prof ? 8 : 6}! Ho`, pool: "M", tiers: [1, 2, 3], start: "off", tip: "Spend your Reaction AP to roll 1 more Smite die (it doesn't count toward the 4)." });
+    chips.push({ id: "syn:smite", scope: "shared", row: "damage", kind: "pass", n: 0, special: "smite", pinned: true, label: "Reaction Point: 1 more Smite die", tag: `+1d${prof ? 8 : 6}! Ho`, pool: "M", tiers: [1, 2, 3], start: "off", tip: "Spend your Reaction Point to roll 1 more Smite die (it doesn't count toward the 4)." });
   }
   if (c.usesReload) chips.push({ id: "syn:reload", scope: "shared", row: "boons", kind: "fav", n: 1, special: "reload", pinned: true, label: "Reload shot", start: "off", tip: "A powerful shot: Favored and Empowered. Afterwards the weapon must be reloaded before it is used again." });
   // Passives: the Bonus Damage of your Features, Talents and effects, shown in the Tiers they add to (Radiant Zeal "+1d6 Ho" on T1-T3, Heavy Blows "+2" on T3)

@@ -2,7 +2,7 @@
 // Escalation passive from its rung (escblock.mjs passiveThreshold: the class section "Escalation 2 / 4 / 6 Ability"), any other always.
 //   reactionGuard (Armor of Faith): after a Reaction with these traits is used, its user gains Guard (formula: N + pow)   actions.mjs
 //   apCost (Roving Judgment): an Action of this mark kind (Judge) at this AP costs `cost` AP instead                       actions.mjs
-//   rapMore (Tireless Vigil): n more Reaction AP (the book: it pays only for [Divine] Reactions: by hand)                  combat.mjs rapMaxOf
+//   rapMore (Tireless Vigil): n more Reaction Point (the book: it pays only for [Divine] Reactions: by hand)                  combat.mjs rapMaxOf
 //   setupAdvance (Hallowed Stance): once on your turn, an Action with these traits gains "Setup: You Advance N"            actions.mjs
 import { passiveThreshold } from "./escblock.mjs";
 import { escalationOf } from "./escalation.mjs";

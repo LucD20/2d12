@@ -50,7 +50,7 @@ export function dockModel({ who = "", round = 0, lines = [], reacts = [], live =
 
 const badge = (txt, cls = "rd") => (txt ? `<span class="td-badge ${cls}">${esc(txt)}</span>` : "");
 const unspent = () => `<a class="td-link" data-twod12-book="${UNSPENT_AP_LINK}">unused AP</a>`;
-/** Pure: the header's pips (AP left, then the Reaction AP). */
+/** Pure: the header's pips (AP left, then the Reaction Point). */
 export function headPips(ap, rap, max) {
   if (ap === null || ap === undefined) return "";
   const m = Math.max(1, num(max), num(ap));

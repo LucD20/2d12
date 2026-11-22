@@ -19,10 +19,10 @@ function card(combat, c, st) {
   const ap = getAP(c), rap = combat.started ? getRAP(c) : 0;
   const frozen = !!c.getFlag(F, "frozen");
   // v0.0.201 (Lucas): three kinds of pips, by shape as well as color: its turn (discs), out of turn (diamonds: AP for Reactions), frozen (dashed rings).
-  // v0.0.243 (pack R): the Reaction AP is the last pip (a diamond with an R); out of its turn the kept AP are Guard (the tooltip says how much).
+  // v0.0.243 (pack R): the Reaction Point is the last pip (a diamond with an R); out of its turn the kept AP are Guard (the tooltip says how much).
   const pipKind = frozen ? "frozen" : (current ? "turn" : "react");
   // v0.0.390 (PACK HUD2, Lucas: "All your picks"): the HUD's marks, the same shapes on every turn (book/research/ui-marks-and-state.md): AP squares,
-  // the Reaction AP a diamond, the Strikes left as slashes, a hairline between them; frozen keeps its dashed look (CSS) and its tooltip
+  // the Reaction Point a diamond, the Strikes left as slashes, a hairline between them; frozen keeps its dashed look (CSS) and its tooltip
   const slowed = (() => { try { return slowedOf(c.actor); } catch (e) { return 0; } })();
   const pips = `<div class="tp-marks ${pipKind}">${marksHtml({ ap, max: Math.max(apMax(c), 1), slowed, rap, rapMax: 1, strikes: combat.started ? strikesUsed(c.actor) : 0, showStrikes: combat.started })}</div>`;
   // v0.0.224 (Lucas, playtest 3): the 3 Strikes of this turn as three red diamonds; each Strike (not a Linked one) empties one.

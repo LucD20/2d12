@@ -10,7 +10,7 @@ Smite: no Flavor true (full has one: true) | no rank word true | no Distance tru
 Weapon &middot; Projectile &middot; Ranged &middot; Strike Target: One enemy Interrupt The target would enter a square adjacent to you. Tier 1 [Mod] Tier 2 1[W] + [Mod] ↳ @Condition[hindered|eot] Tier 3 1[W] + [Mod] ↳ @Condition[immobilized|eot]
 --- the bar
 {"stamps":[{"ap":1,"label":"1 AP","off":false,"why":""},{"ap":2,"label":"2 AP","off":false,"why":""},{"ap":3,"label":"3 AP","off":true,"why":"Not enough AP: 2 left"}],"dist":"8/16","vs":"AD","fq":"encounter","fqWord":"Encounter"}
-{"stamps":[{"ap":1,"label":"1R","off":true,"why":"Not enough AP: 0 left and 0 Reaction AP"}],"dist":"","vs":"","fq":"turn","fqWord":"Turn"}
+{"stamps":[{"ap":1,"label":"1R","off":true,"why":"Not enough AP: 0 left and 0 Reaction Point"}],"dist":"","vs":"","fq":"turn","fqWord":"Turn"}
 {"stamps":[{"ap":2,"label":"2 AP","off":false,"why":""}],"dist":"","vs":"","fq":"round","fqWord":"Escalation 6, Round"} | out of combat nothing is struck
 --- the wiring
 a bar's row opens the short card: true | the stamp is the Use button: true | v0.0.444: no hand buttons (the roll dialog's Roll per weapon): true

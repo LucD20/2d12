@@ -27,7 +27,41 @@ differ):
 
 ## Chat cards
 
+### crit-basic · v0.0.479 · A Basic attack's Critical: 1d10! of a type you choose, or none
+Do: Kaela: Weapon Attack on a Goblin Sneak until a Critical (force it: the roll dialog's Tier "Critical", if you use it); roll the damage.
+Then Aveline's Weapon Attack with a Critical, and once press "Don't apply".
+Expect: before the damage, the bar asks "a Critical! Its 1d10!: choose the damage type" with one button per type the Action deals ("[V]
+1d10! Pi") and "Don't apply"; the chosen die is added to the damage card (exploding); "Don't apply" deals a plain Tier 3. A Critical on a
+non-Basic Action with no Critical row (Smite) asks nothing.
+Rev: 1
+
+### crit-rows · v0.0.479 · Trip's and Shove's Critical rows
+Do: Durgan: Shove a Goblin Sneak with a Critical; Trip it (1 AP, then 2 AP) with a Critical.
+Expect: the cards show a "Critical" row under Tier 3 (Shove: Prone; Trip: [V] 1d6! Bl). On the Critical the bar asks "Apply: Prone" /
+"Apply: [V] 1d6! Bl." or "Don't apply"; Shove's Prone lands with the push; Trip 1 AP's 1d6! comes as a small damage card ("Trip: Critical")
+to Apply; Trip 2 AP adds it to its Tier 3 damage.
+Rev: 1
+
 ## Conditions and their Tiers
+
+### bloodied-effects · v0.0.479 · Bloodied: Speed −2 and Steadiness −1 (below 0)
+Do: Orc Warrior: deal it damage until it is Bloodied (its Vigor). Look at its Speed (sheet, Advance); then Durgan Shoves it (Pushed 1).
+Then heal it above the threshold.
+Expect: Bloodied, its Speed is 2 lower (a Hindered one: lowered first, then halved); Durgan's Shove 1 moves it 2 (Steadiness −1; no
+question asked); healed, Speed and pushes are back to normal.
+Rev: 1
+
+### strained-rp · v0.0.479 · Strained: no Reaction Point at the start of the turn
+Do: Aveline: Resolve damage until she is Strained, with her Reaction Point spent; let her next turn start. Then once with it unspent.
+Expect: spent, it stays spent at the start of her turn (the gold diamond empty); unspent, she keeps it; kept AP still pay Reactions; healed
+below the threshold, she regains it from her next turn. The texts say "Reaction Point" (sheet, HUD, roll dialog).
+Rev: 1
+
+### bloodied-line · v0.0.479 · A card's Bloodied line (the Ogre's placeholder)
+Do: Ogre Chieftain: Overhead Smash on Durgan, once when Durgan is far from Bloodied, once when this hit makes him Bloodied (Tier 2 or 3).
+Expect: the card shows "Bloodied: On a Tier 2 or 3, the target is Pushed 1 more." under the Tiers; the first time only Pushed 2; the
+second, after the damage lands and the Push 2, a Push 1 more runs.
+Rev: 1
 
 ## Movement
 

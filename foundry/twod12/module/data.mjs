@@ -94,6 +94,8 @@ export class CharacterData extends foundry.abstract.TypeDataModel {
     }
     this.mdt = Math.max(0, mdtFull - 4 * (this.exhausted ?? 0));   // Exhausted: - 4 x value
     deriveHealth(this);
+    // the core rework batch 2 (book, Chapter 4, Bloodied): Speed −2 (minimum 1, with Exhausted's, before halving); Steadiness −1 (it can go below 0: defense.mjs steadinessOf)
+    this.moveSpeed = applySpeedMods(this.parent, this.speed, { minus: (this.exhausted > 0 ? this.exhausted : 0) + (this.bloodied ? 2 : 0) });
 
     this.rallyHeal = Math.ceil((this.bdt + mdtFull) / 4);   // Rally Points use the Health Pool before Exhausted lowers Resolve
     // v0.0.243 (pack R; book, Rally Points): the class's Rally value + 1 / 2 / 3 / 4 by Stage (v0.0.407: Stages 0 to 3).
@@ -300,12 +302,12 @@ export class NpcData extends CharacterData {
   }
 
   prepareDerivedData() {
-    // The Bestiary: Attributes, Health and Defenses come from the role and the ratings (npcBuild). AP a turn: 3 for a Minion, 4 for the others (pack R), and the Reaction AP for every NPC.
+    // The Bestiary: Attributes, Health and Defenses come from the role and the ratings (npcBuild). AP a turn: 3 for a Minion, 4 for the others (pack R), and the Reaction Point for every NPC.
     const nb = npcBuild(this);
     Object.assign(this.attributes, nb.attributes);
     this.bdt = Math.max(0, nb.bdt); this.mdt = Math.max(0, nb.mdt); this.armorDef = nb.armorDef; this.wardDef = nb.wardDef; this.speed = nb.speed;
     this.bodyHm = nb.bodyHm; this.mindHm = nb.mindHm; this.roleLabel = nb.role.label; this.stage = stageOf(this.level);
-    // v0.0.407 (the Bestiary): a Minion's and a Grunt's 3 AP, a Minion's no Reaction AP; the CV moves with its ratings (npcbudget.mjs cvSteps)
+    // v0.0.407 (the Bestiary): a Minion's and a Grunt's 3 AP, a Minion's no Reaction Point; the CV moves with its ratings (npcbudget.mjs cvSteps)
     const rank = TWOD12.npcRoles[this.role] ? this.role : "standard";
     this.apPerTurn = rankAp(rank); this.reactionApMax = rankReactionAp(rank);
     this.cvBase = npcCv(this.role, this.level); this.cvSteps = cvSteps(rank, this.ratings ?? {}, npcModRatings(this)); this.cv = cvWithSteps(rank, this.cvBase, this.cvSteps);
@@ -314,7 +316,7 @@ export class NpcData extends CharacterData {
     this.wounds = 0;
     this.reach = Math.max(1, Number(this.reachBase) || 1);   // the stat block's Reach (edited in the sidebar)
     this.steadiness = Math.max(0, Number(this.steadiness) || 0);
-    this.moveSpeed = applySpeedMods(this.parent, this.speed);
+    this.moveSpeed = applySpeedMods(this.parent, this.speed, { minus: this.bloodied ? 2 : 0 });   // the core rework batch 2: Bloodied, Speed −2 (minimum 1)
     // NPCs do not use the Dying and Shattered tables: at 0 HP they die with more lethal damage, or fall unconscious with more nonlethal.
     if (this.atZero) this.zeroState = this.lethal > this.nonlethal ? "Dead (more Lethal damage)" : (this.nonlethal > this.lethal ? "Unconscious (more Nonlethal damage)" : "Dead or Unconscious (the GM chooses)");
     // v0.0.340 (Lucas; book, Rally Points: NPCs): no Rally Points, but one an Action lets it use (or measures with: Guard RP) is its Stage's amount
@@ -504,6 +506,9 @@ export class ActionData extends foundry.abstract.TypeDataModel {
       prerequisites: str(),
       modifiers: modifiersField(),
       vs: choice(TWOD12.vsChoices),
+      // the core rework batch 2 (book, Chapter 2, Effect Timing): the card's Bloodied and Strained lines: after the Tiers (this Action's damage counts)
+      // or above the roll ("Before": the target must already be so); their buttons run after the damage lands on a target in that state (ccdamage.mjs)
+      stateLines: new SchemaField({ bloodied: str(), strained: str(), bloodiedBefore: str(), strainedBefore: str() }),
       frequency: choice(TWOD12.frequencies),
       escalation: int(0, 0),   // the Escalation it costs on top of its AP (an Escalation Action); 0: none
       // v0.0.411 (pack F2, the card's look): a Structure card (book/cards/stage0): its own labeled lines before the roll (Judged, Smite dice) and its

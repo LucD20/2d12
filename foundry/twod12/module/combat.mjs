@@ -15,7 +15,7 @@ import { activeHooks } from "./hooks.mjs";
 const F = "twod12";
 const warn = m => ui.notifications.warn(m);
 
-// v0.0.243 (pack R; book, Chapter 2): 4 AP a turn and 1 Reaction AP (the combatant flag "rap"), which pays only for Reactions and lasts until the AP
+// v0.0.243 (pack R; book, Chapter 2): 4 AP a turn and 1 Reaction Point (the combatant flag "rap"), which pays only for Reactions and lasts until the AP
 // are regained; losing or gaining AP, Slowed and Quickened touch the 4 only. v0.0.274: the AP a turn left unused become Guard for 1 round when
 // the next turn starts (system.apGuard, guard.mjs).
 export const AP_PER_TURN = TWOD12.apPerTurn, REACTION_AP = TWOD12.reactionAp;
@@ -34,7 +34,7 @@ export function slowedOf(actor) {
 /** Quickened N raises the most AP the creature can have and what it regains at the start of its turn. */
 export const quickenedOf = actor => conditionValue(actor, "quickened");
 /** The most AP a creature can have: 4 + Quickened - Slowed (Slowed also lowers the most AP, so Quickened 1 and Slowed 2 make it 3). */
-/** A creature's AP a turn before conditions: 4, or its own (a Minion has 3: the Bestiary). The Reaction AP is apart. */
+/** A creature's AP a turn before conditions: 4, or its own (a Minion has 3: the Bestiary). The Reaction Point is apart. */
 export const baseAP = actor => Number(actor?.system?.apPerTurn) || AP_PER_TURN;
 export const apMax = combatant => turnAP(baseAP(combatant?.actor), { quickened: quickenedOf(combatant?.actor), slowed: slowedOf(combatant?.actor) });   // v0.0.365: roundrules.mjs turnAP
 /** AP regained at the start of a creature's turn: 4 + Quickened - Slowed (they cancel out without changing each other). */
@@ -42,13 +42,16 @@ export const apPerTurn = combatant => {
   const a = combatant?.actor;
   return Math.max(0, baseAP(a) + quickenedOf(a) - slowedOf(a));
 };
-/** The Reaction AP a creature has (0 or 1): regained with its AP, spent only on Reactions. */
-/** v0.0.407 (the Bestiary): a creature's Reaction AP (1; a Minion none: its data's reactionApMax). */
+/** The Reaction Point a creature has (0 or 1): regained with its AP, spent only on Reactions. */
+/** v0.0.407 (the Bestiary): a creature's Reaction Point (1; a Minion none: its data's reactionApMax). */
 const rapMaxBase = c => { const v = c?.actor?.system?.reactionApMax; return v === undefined || v === null || !Number.isFinite(Number(v)) ? REACTION_AP : Math.max(0, Number(v)); };
-// v0.0.409 (pack F2, Tireless Vigil: hooks.mjs rapMore): more Reaction AP while the passive works (the book: only for [Divine] Reactions, by hand)
+// v0.0.409 (pack F2, Tireless Vigil: hooks.mjs rapMore): more Reaction Point while the passive works (the book: only for [Divine] Reactions, by hand)
 export const rapMaxOf = c => rapMaxBase(c) + activeHooks(c?.actor, "rapMore").reduce((n, h) => n + Math.max(0, Math.trunc(Number(h.hook.n) || 1)), 0);
 export const getRAP = c => Math.max(0, Math.min(rapMaxOf(c), Math.trunc(Number(c?.getFlag(F, "rap"))) || 0));
-/** Pure: how a Reaction's cost is paid: the Reaction AP first, then AP (kept from the turn, or the turn's own). { fromRap, fromAp } */
+/** The core rework batch 2 (book, Chapter 4, Strained): the Reaction Point a creature has after regaining AP: its maximum, or, while Strained, only
+ *  the one it still has (it doesn't regain it). */
+export const rapAtRegain = c => (c?.actor?.system?.strained ? getRAP(c) : rapMaxOf(c));
+/** Pure: how a Reaction's cost is paid: the Reaction Point first, then AP (kept from the turn, or the turn's own). { fromRap, fromAp } */
 export { payReaction };   // v0.0.297: the one AP rule lives in sheetmodel.mjs (pure), with versionCant
 /** The Stage of a combatant's creature (for the Guard an unspent AP gives). */
 const stageOfC = c => Math.max(0, Math.min(3, Number(c?.actor?.system?.stage) || 0));   // v0.0.407: Stages 0 to 3
@@ -89,7 +92,7 @@ export async function setAP(c, value, why = "", { quiet = false, reaction = fals
   const want = Math.max(0, Math.round(Number(value) || 0));
   const from = getAP(c), to = why === "edited" ? want : Math.min(want, Math.max(apMax(c), from));
   if (from === to && why === "edited") return;
-  const rapLine = rap ?? { b: getRAP(c), a: getRAP(c) };   // the Reaction AP on the line's pips (v0.0.243)
+  const rapLine = rap ?? { b: getRAP(c), a: getRAP(c) };   // the Reaction Point on the line's pips (v0.0.243)
   // v0.0.200 (Lucas, design M1 + L3): a ticker with the Turn Log instead of "AP 5 → 4 (…)". A movement posts its own line when it ends
   // (move.mjs); an edit in the tracker or the strip posts nothing.
   const start = /^(start of turn|swapped in)/i.test(why);
@@ -108,7 +111,7 @@ export async function setAP(c, value, why = "", { quiet = false, reaction = fals
   if (line) await logEvent(c, line);
 }
 
-/** The Reaction AP: set it (1 at the start of the turn, 0 when spent) without a line of its own. */
+/** The Reaction Point: set it (1 at the start of the turn, 0 when spent) without a line of its own. */
 export const setRAP = (c, n) => c.setFlag(F, "rap", Math.max(0, Math.min(rapMaxOf(c), Math.trunc(Number(n)) || 0)));
 
 /**
@@ -146,14 +149,14 @@ export function advanceAfterAction(st, kind = "") {
 export async function spendAP(actor, cost, label = "", { quiet = false, reaction = false, force = false, kind = "" } = {}) {   // force (v0.0.293): no "Not enough AP" question (the roll dialog warned); kind (v0.0.414): the Basic Action's key
   const c = combatantOf(actor);
   if (!c || !game.combat?.started) return true;
-  // v0.0.243 (book, Reactions): a Reaction is paid with the Reaction AP first, then with AP (kept from the turn, or the turn's own on its own turn).
+  // v0.0.243 (book, Reactions): a Reaction is paid with the Reaction Point first, then with AP (kept from the turn, or the turn's own on its own turn).
   const have = getAP(c), rap = reaction ? getRAP(c) : 0, pay = payReaction(cost, have, rap);
   if (c.getFlag(F, "frozen") && pay.fromAp > 0) {
     const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "Frozen", name: "Frozen", sub: label, icon: "fa-snowflake", confirm: "Use it anyway", text: `<b>${esc(c.name)}</b> swapped initiative, so its remaining actions are frozen until its turn.` });   // v0.0.415 (pack CL): was a DialogV2
     if (!ok) return false;
   }
   if (have < pay.fromAp && !force) {
-    const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "Not enough AP", name: "Not enough AP", sub: label, icon: "fa-bolt", confirm: "Use it anyway", text: `<b>${esc(c.name)}</b> has ${have} AP${reaction ? ` and ${rap} Reaction AP` : ""} and ${esc(label)} costs ${cost}${reaction ? "R" : ""}.` });   // v0.0.415 (pack CL): was a DialogV2
+    const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "Not enough AP", name: "Not enough AP", sub: label, icon: "fa-bolt", confirm: "Use it anyway", text: `<b>${esc(c.name)}</b> has ${have} AP${reaction ? ` and ${rap} Reaction Point` : ""} and ${esc(label)} costs ${cost}${reaction ? "R" : ""}.` });   // v0.0.415 (pack CL): was a DialogV2
     if (!ok) return false;
   }
   await c.setFlag(F, "acted", true);
@@ -318,8 +321,9 @@ async function startTurn(combat) {
     await c.update({ ...fresh, [`flags.${F}.frozen`]: false, [`flags.${F}.thawed`]: key });   // v0.0.205: a thawed turn can't swap again
     await ChatMessage.create({ content: thawLineHtml(c.name, getAP(c)) });
   } else {
-    // v0.0.243: the Reaction AP comes back with the AP; v0.0.361 (PACK PERF): one update for the fresh flags, the AP and the Turn Log
-    await setAP(c, apPerTurn(c), "start of turn", { rap: { b: 0, a: rapMaxOf(c) }, patch: { ...fresh, [`flags.${F}.rap`]: rapMaxOf(c) } });
+    // v0.0.243: the Reaction Point comes back with the AP; v0.0.361 (PACK PERF): one update for the fresh flags, the AP and the Turn Log
+    const rapNow = rapAtRegain(c);   // the core rework batch 2: Strained regains no Reaction Point
+    await setAP(c, apPerTurn(c), "start of turn", { rap: { b: 0, a: rapNow }, patch: { ...fresh, [`flags.${F}.rap`]: rapNow } });
     await setUnusedApGuard(c, hadTurn, apLeft);   // v0.0.274: its unused AP are Guard for 1 round (the one before ends)
     try { const { dazeAtTurnStart } = await import("./conditions.mjs"); await dazeAtTurnStart(c); } catch (e) { console.warn("twod12 | Dazed", e); }   // v0.0.314: the rest of a Dazed
     await climbUp(c);
@@ -439,8 +443,8 @@ export async function performSwap(combat, aId, bId, userId = null) {
   await A.update({ [`flags.${F}.frozen`]: true });
   await setAP(A, left - 1, `swap with ${B.name}`, { kind: "act" });   // its own turn, though the turn has already moved to B
   const bHad = !!B.getFlag(F, "apTurn"), bLeft = getAP(B);   // v0.0.274: B's unused AP from its last turn
-  await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`), [`flags.${F}.rap`]: rapMaxOf(B) });
-  await setAP(B, apPerTurn(B), "swapped in: start of turn", { rap: { b: 0, a: rapMaxOf(B) } });
+  await B.update({ [`flags.${F}.apTurn`]: `${combat.round}:${B.id}`, [`flags.${F}.acted`]: false, [`flags.${F}.frozen`]: false, [`flags.${F}.moveLeft`]: 0, [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.ignoreTerrain`), [`flags.${F}.rap`]: rapAtRegain(B) });
+  await setAP(B, apPerTurn(B), "swapped in: start of turn", { rap: { b: 0, a: rapAtRegain(B) } });
   await setUnusedApGuard(B, bHad, bLeft);
   await climbUp(B);
   // v0.0.203: the system card (sysmsg.mjs); the slot is where A acts now (B's old place), counted from 1.
@@ -496,7 +500,7 @@ export function registerCombatHooks() {
       box.className = "twod12-ap";
       box.setAttribute("aria-label", "Action Points");
       const canSwap = combat.started && combat.combatant?.id === c.id && c.isOwner && !c.getFlag(F, "acted") && getAP(c) >= 1;
-      box.innerHTML = `<span>AP</span><input type="number" min="0" value="${getAP(c)}" ${c.isOwner ? "" : "disabled"}><span class="hsep"></span><a class="twod12-rap${getRAP(c) ? " on" : ""}" aria-label="Reaction AP: ${getRAP(c) ? "ready (pays only for Reactions; click to spend it by hand)" : "spent (back at the start of its turn; click to give it back)"}"></a>${canSwap ? '<button type="button" class="twod12-swap" aria-label="Swap initiative with an ally (1 AP)"><i class="fa-solid fa-right-left"></i></button>' : ""}`;
+      box.innerHTML = `<span>AP</span><input type="number" min="0" value="${getAP(c)}" ${c.isOwner ? "" : "disabled"}><span class="hsep"></span><a class="twod12-rap${getRAP(c) ? " on" : ""}" aria-label="Reaction Point: ${getRAP(c) ? "ready (pays only for Reactions; click to spend it by hand)" : "spent (back at the start of its turn; click to give it back)"}"></a>${canSwap ? '<button type="button" class="twod12-swap" aria-label="Swap initiative with an ally (1 AP)"><i class="fa-solid fa-right-left"></i></button>' : ""}`;
       box.querySelector(".twod12-swap")?.addEventListener("click", () => requestSwap(combat, c));
       box.querySelector(".twod12-rap")?.addEventListener("click", () => { if (c.isOwner) setRAP(c, getRAP(c) ? 0 : rapMaxOf(c)); });
       if (c.getFlag(F, "frozen")) box.classList.add("frozen");

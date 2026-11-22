@@ -176,6 +176,8 @@ export function cardSystem(c, resolve = s => s) {
   if (isReaction(c)) { sys.reaction = true; sys.reactionKind = c.interrupt ? "interrupt" : "trigger"; sys.trigger = stripLinks(c.interrupt ?? c.trigger); }
   if (c.requirements) sys.requirements = stripLinks(c.requirements);
   if (c.prerequisites) sys.prerequisites = stripLinks(c.prerequisites);
+  // the core rework batch 2: the Bloodied and Strained lines (their words become buttons, as an Effect's)
+  for (const k of ["bloodied", "strained", "bloodiedBefore", "strainedBefore"]) if (c[k]) { sys.stateLines ??= {}; sys.stateLines[k] = resolve(fxText(c[k])); }
   if (c.setup) sys.setup = typeof c.foundry?.setup === "string" ? resolve(c.foundry.setup) : resolve(fxText(c.setup, c.foundry?.appendSetup));   // pack TALENTS-PT: a Setup's Foundry text written in full (Ricochet's must / still movement)
   const prose = [c.rules, c.notes, ...(c.placeholder ? [c.text] : [])].filter(Boolean).map(t => `<p>${boldHtml(foundryLinks(t))}</p>`).join("");
   if (prose) sys.description = resolve(prose);

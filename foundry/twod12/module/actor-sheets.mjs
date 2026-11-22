@@ -568,12 +568,12 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       head: (() => {
         const c = combatantOf(a), ap = c ? getAP(c) : 0, rap = c ? getRAP(c) : 0;
         const tags = [...(s.tags ?? [])].map(t => tagChoices()[t] ?? t).join(", ");
-        // v0.0.243 (pack R): 4 AP and the Reaction AP (the last pip, a diamond with an R: it pays only for Reactions); out of its turn the kept AP are Guard.
+        // v0.0.243 (pack R): 4 AP and the Reaction Point (the last pip, a diamond with an R: it pays only for Reactions); out of its turn the kept AP are Guard.
         return {
           size: SIZE_NAMES[s.size ?? 3] ?? "", tags, role: s.roleLabel ?? "", cv: s.cv ?? "",
           cvTip: a.type === "npc" ? cvTip(TWOD12.npcRoles[s.role] ?? TWOD12.npcRoles.standard) : "",
           ap: { inCombat: !!c, pips: Array.from({ length: Math.max(Number(s.apPerTurn) || TWOD12.apPerTurn, ap) }, (_, k) => ({ n: k + 1, on: k < ap })), rap: !!rap,
-            tip: c ? `${ap} AP${s.apGuard ? ` (Guard ${s.apGuard} from the AP its last turn left unused, 1 round)` : ""}, Reaction AP ${rap ? "ready" : "spent"}. Click a pip to correct the AP (it is said in the chat); click the R to spend or give back the Reaction AP.` : `Not in combat: ${Number(s.apPerTurn) || TWOD12.apPerTurn} AP and 1 Reaction AP are regained at the start of each turn in combat.` }
+            tip: c ? `${ap} AP${s.apGuard ? ` (Guard ${s.apGuard} from the AP its last turn left unused, 1 round)` : ""}, Reaction Point ${rap ? "ready" : "spent"}. Click a pip to correct the AP (it is said in the chat); click the R to spend or give back the Reaction Point.` : `Not in combat: ${Number(s.apPerTurn) || TWOD12.apPerTurn} AP and 1 Reaction Point are regained at the start of each turn in combat.` }
         };
       })(),
       health: {
@@ -601,7 +601,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const chips = out ? [{ text: "Unloaded", cls: "down", why: `${out.name} must be reloaded first (Reload, 1 AP)` }] : [];
     // v0.0.224 (Lucas, playtest 3): three limits, three looks: a used Frequency greys the row; too few AP dims its cost and dice; 3 Strikes made
     // this turn put a red diamond before its name.
-    const cbt = game.combat?.started ? combatantOf(a, game.combat) : null, apNow = cbt ? getAP(cbt) + (it.reaction ? getRAP(cbt) : 0) : null;   // v0.0.243: a Reaction can use the Reaction AP
+    const cbt = game.combat?.started ? combatantOf(a, game.combat) : null, apNow = cbt ? getAP(cbt) + (it.reaction ? getRAP(cbt) : 0) : null;   // v0.0.243: a Reaction can use the Reaction Point
     const minCost = Math.min(...(it.versions ?? []).map(v => effectiveAp(a, i, v)), 99);   // v0.0.428: the cost a passive lowers
     const noAp = apNow !== null && minCost < 99 && !!versionCant(minCost, getAP(cbt), it.reaction ? getRAP(cbt) : 0, !!it.reaction), strikeCap = !!f.strikeCap;   // v0.0.297: the card's Version buttons use the same check
     // v0.0.182: a granted use waiting (Double Shot's Weapon Attacks): the use button turns blue and uses it.
@@ -623,7 +623,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       range: ((r => (/^\d+$/.test(r) ? `${r} sq.` : r))((areaText(it) || distanceText(it, weapon) || "\u2014"))),
       escText: Number(it.escalation) > 0 ? `Esc. ${Number(it.escalation)}+` : "", chips,   // v0.0.289: a requirement, never a cost
       faded: f.faded || !!out, fadedWhy: out ? `Unloaded: ${out.name} must be reloaded first` : (f.faded ? f.why : ""), unloaded: !!out,
-      noAp, noApWhy: noAp ? `Not enough AP: it costs ${minCost}${it.reaction ? "R" : ""}, ${apNow} left${it.reaction ? " (the Reaction AP and the kept AP)" : ""}` : "", strikeCap, strikeWhy: strikeCap ? "3 Strikes made this turn: no more Strikes until the next turn" : "",
+      noAp, noApWhy: noAp ? `Not enough AP: it costs ${minCost}${it.reaction ? "R" : ""}, ${apNow} left${it.reaction ? " (the Reaction Point and the kept AP)" : ""}` : "", strikeCap, strikeWhy: strikeCap ? "3 Strikes made this turn: no more Strikes until the next turn" : "",
       open: !!this._open?.has(i.id), minAp: aps.length ? Math.min(...aps) : 0, source: this._groupOf(i),
       strike: !!(it.traits?.has?.("strike") ?? (Array.isArray(it.traits) && it.traits.includes("strike"))),   // v0.0.165: a red line at the start of the row
       search: [i.name, ...[...(it.traits ?? [])].map(t => TWOD12.traits[t] ?? t)].join(" ").toLowerCase()
@@ -1095,7 +1095,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   /** v0.0.244: the Species window (specieswindow.mjs): the species' choices (two Attributes, the side of the bigger Health bonus) and what it grants. */
   static async openSpecies() { const { editSpecies } = await import("./specieswindow.mjs"); await editSpecies(this.actor); }
-  /** The Reaction AP by hand (spent on a Reaction done outside the system, or given back). */
+  /** The Reaction Point by hand (spent on a Reaction done outside the system, or given back). */
   static async toggleRap() {
     const c = combatantOf(this.actor);
     if (!c?.isOwner || !game.combat?.started) return;
@@ -1730,7 +1730,7 @@ export function registerSheetHooks() {
   // v0.0.361 (PACK PERF, D27): one redraw per sheet for a burst of changes (a turn start wrote 6 to 8 of them), and none for a log line
   const redraw = c => { const sh = c?.actor?.sheet; if (sh?.rendered) renderSoon(sh); };
   const onlyTurnLog = ch => Object.keys(ch ?? {}).every(k => k === "_id" || k === "_stats" || k === "flags") && Object.keys(ch?.flags?.twod12 ?? {}).every(k => k === "turnLog");   // the sheet doesn't show it
-  Hooks.on("updateCombatant", (c, ch) => { if (onlyTurnLog(ch)) return; if (foundry.utils.hasProperty(ch ?? {}, "flags.twod12") || "initiative" in (ch ?? {})) redraw(c); });   // v0.0.289: AP, the Reaction AP, the Initiative
+  Hooks.on("updateCombatant", (c, ch) => { if (onlyTurnLog(ch)) return; if (foundry.utils.hasProperty(ch ?? {}, "flags.twod12") || "initiative" in (ch ?? {})) redraw(c); });   // v0.0.289: AP, the Reaction Point, the Initiative
   // v0.0.289 (PACK SHEET): the strip, the Granted and Escalation 3 sections and the header follow the round and the turn
   Hooks.on("updateCombat", (combat, ch) => { if (logOnlyChange(ch)) return; if (["round", "turn", "started", "active"].some(k => k in (ch ?? {})) || foundry.utils.hasProperty(ch ?? {}, "flags.twod12")) combat.combatants.forEach(redraw); });
   // D40: only the open windows are asked (it built a sheet object for every world actor)

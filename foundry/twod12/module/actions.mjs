@@ -456,7 +456,7 @@ export async function useAction(actor, item, opts = {}) {
   // warnings (dlgWarns), not a Foundry notification; a use that skips the dialog still gets the notification (below)
   const earlyWarns = opts._earlyWarns ?? [];
   const warnOnly = msg => { earlyWarns.push(`${msg} Used anyway.`); return false; };
-  // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction AP waits until Staggered ends)
+  // v0.0.314 (pack AU; book, Ch. 8): a Staggered creature can't use Reactions (its Reaction Point waits until Staggered ends)
   if (item.system?.reaction && reactionsOff(actor) && warnOnly(`${actor.name} is Staggered: no Reactions until it ends.`)) return;
   // v0.0.412 (book, Wounding Shot): "You haven't left your square this turn": its Requirement, checked on its turn in a combat (hooks.mjs leftThisTurn)
   const H0 = await import("./hooks.mjs");
@@ -970,10 +970,10 @@ export async function useAction(actor, item, opts = {}) {
     }
   }
   if (apCost > 0 && !(await spendAP(actor, apCost, item.name, { quiet: moveQuiet, reaction: !!it.reaction, force: !!rdData, kind: basicKey ?? "" }))) return;   // v0.0.293: the roll dialog already warned about the AP
-  // v0.0.409 (pack F2; book, Smite): the Reaction AP spent for 1 more Smite die (the roll dialog's chip); without one, no extra die
+  // v0.0.409 (pack F2; book, Smite): the Reaction Point spent for 1 more Smite die (the roll dialog's chip); without one, no extra die
   let smiteMore = false;
   if (data.smiteMore === "on") {
-    try { const C = await import("./combat.mjs"); const cb = C.combatantOf(actor); if (!cb || !game.combat?.started) smiteMore = true; else if (C.getRAP(cb) > 0) { await C.setRAP(cb, C.getRAP(cb) - 1); smiteMore = true; } else ui.notifications.warn(`${actor.name} has no Reaction AP left: no extra Smite die.`); } catch (e) { console.warn("twod12 | Smite", e); }
+    try { const C = await import("./combat.mjs"); const cb = C.combatantOf(actor); if (!cb || !game.combat?.started) smiteMore = true; else if (C.getRAP(cb) > 0) { await C.setRAP(cb, C.getRAP(cb) - 1); smiteMore = true; } else ui.notifications.warn(`${actor.name} has no Reaction Point left: no extra Smite die.`); } catch (e) { console.warn("twod12 | Smite", e); }
   }
   const isWeapon = it.traits.has("weapon");
 
@@ -1286,7 +1286,7 @@ export async function useAction(actor, item, opts = {}) {
           thrown: !!wUse?.thrown,   // v0.0.407 (book, Chapter 15, Thrown): thrown, its [W] deals 1 less on Tiers 2 and 3
           mode: opts.splitMode ?? "",
           triggerUuid: opts.triggerUuid ?? "",   // v0.0.409: a Reaction's triggering creature (@Condition[...|to:trigger])
-          smiteMore,   // v0.0.409 (Smite): the Reaction AP spent for 1 more Smite die
+          smiteMore,   // v0.0.409 (Smite): the Reaction Point spent for 1 more Smite die
           attrVal: src.kind ? (Number(src.mod) || 0) : 0,   // [Mod]: the Modifier used on the roll (also Cleave's damage)
           isWeapon: modOnWeapon(src, useTraits),
           escalation: escCost > 0,   // the effects it applies end with the encounter (escalation.mjs)
@@ -1425,7 +1425,25 @@ export async function useAction(actor, item, opts = {}) {
     const { tierConditionChips } = await import("./inline.mjs");
     const tierConds = t => (ridesOn(t) ? [] : tierConditionChips(expandAsText(version[`x${t}`], item.system.versions, version, t)));
     const giveConds = async (t, uuids, crit) => {
-      const chips = t >= 1 ? tierConds(t) : [];
+      const chips = t >= 1 ? [...tierConds(t)] : [];
+      // the core rework batch 2: a Critical on a Tier with no damage (Shove's Prone, Trip's 1 AP [V] 1d6! Bl): its row is asked here (optional); its
+      // conditions apply with the Tier's, its dice come as a damage card of their own
+      if (crit && t === 3 && !ridesOn(t) && String(version.critical ?? "").trim() && uuids.length) {
+        try {
+          const C = await import("./critical.mjs"), rowText = String(version.critical).trim();
+          const ans = await C.askCritical({ actor, item, basic: false, rowText });
+          if (ans.apply) {
+            chips.push(...tierConditionChips(rowText));
+            const dice = C.critRowDice(rowText);
+            if (dice.length) {
+              const rolls = [], comps = [];
+              for (const d of dice) comps.push(await C.critComponent(d, rolls));
+              const { postCcDamage } = await import("./ccdamage.mjs");
+              await postCcDamage({ actor, title: `${item.name}: Critical`, groups: [{ tier: 3, crit: true, comps, fx: [], riders: [] }], targets: uuids.map(u => ({ uuid: u, name: targets.find(x => x.uuid === u)?.name ?? "", tier: 3, g: 0 })), rolls, originUuid: actor.uuid, strike: !!item.system.traits?.has?.("strike"), note: "The Critical row's damage." });
+            }
+          }
+        } catch (e) { console.warn("twod12 | the Critical row", e); }
+      }
       if (!chips.length || !uuids.length) return;
       const { applyConditionChip } = await import("./inline.mjs");
       for (const chip of chips) { try { await applyConditionChip(chip, { targets: uuids.map(u => ({ uuid: u, crit: !!crit })), actor, message: cmsg }); } catch (e) { console.warn("twod12 | a Tier's condition", chip, e); } }
@@ -1580,7 +1598,7 @@ export async function rollDamage(message, { again = false } = {}) {
       .filter(x => !f.fxOnUse || x.mode !== "auto"), ...riders];   // cards from v0.0.144 on applied their automatic effects when the Action was used (v0.0.283: riders wait for the damage)
     const rolls = [];
     const ctx = { weapon, tier: tier, attrVal: f.attrVal, rolls, empowered: stepOf(f.empowered), thrown: !!f.thrown };
-    // v0.0.409 (pack F2): Smite's dice (the Escalation, 1 more with the Reaction AP spent) and d8s against a Profane creature (Judged, or the Tag)
+    // v0.0.409 (pack F2): Smite's dice (the Escalation, 1 more with the Reaction Point spent) and d8s against a Profane creature (Judged, or the Tag)
     if (version.diceRule) {
       let tDoc = null; try { tDoc = targets?.[0]?.uuid ? await fromUuid(targets[0].uuid) : null; } catch (e) { tDoc = null; }
       ctx.diceRule = version.diceRule;
@@ -1604,6 +1622,18 @@ export async function rollDamage(message, { again = false } = {}) {
     }
     // v0.0.407 (Stage 0 in Foundry; book, Chapter 8, Empowered): the first damage the creature deals on each of its turns adds 1d6! of the Action's pool and type
     if (empOn && (!again || hadEmp) && !empLater && !empUsed) { const first = comps.find(c => c.kind === "W" || c.kind === "D"); const ec = first ? await empoweredComponent(first, rolls, { explode: !minorNpc(actor) }) : null; if (ec) { comps.push(ec); empUsed = true; } }
+    // the core rework batch 2 (book, Chapter 1, Critical; critical.mjs): a Basic attack's 1d10! of a type it deals, or the card's own Critical row
+    // (its dice rolled here, its conditions applied with the Tier's); always optional: the pick bar asks before the die is rolled
+    let critConds = [], critApplied = false;
+    if (crit && !again) {
+      try {
+        const C = await import("./critical.mjs"), rowText = String(version.critical ?? "").trim();
+        const ans = await C.askCritical({ actor, item, comps, basic: C.isBasicAttack(item.system, item.getFlag?.("twod12", "basic")), rowText });
+        if (ans.apply && ans.kind) comps.push(await C.critComponent({ ...ans.kind }, rolls));
+        if (ans.apply && ans.row) { for (const d of C.critRowDice(rowText)) comps.push(await C.critComponent(d, rolls)); critConds = (await import("./inline.mjs")).tierConditionChips(rowText); }
+        critApplied = !!ans.apply;
+      } catch (e) { console.warn("twod12 | the Critical", e); }
+    }
     // v0.0.283: the Tier's riders as the card shows them (its text after the damage, its effects' names)
     const riderHtml = [];
     const xt = expandAsText(version[`x${tier}`], item.system.versions, version, tier);
@@ -1611,10 +1641,10 @@ export async function rollDamage(message, { again = false } = {}) {
     for (const b of bonus) if (b.text) riderHtml.push(esc(b.text));
     for (const x of version.fx?.[`t${tier}`] ?? []) { try { const e = await fromUuid(x.uuid); if (e) riderHtml.push(`<span class="fxname">${esc(e.name)}</span>`); } catch (e) { /* gone */ } }
     // v0.0.338 (Lucas: "the Critical should show on the damage chat card too"): a Critical's line under the Tier's
-    if (crit && String(version.critical ?? "").trim()) riderHtml.push(`<b class="cc-critl">Critical:</b> ${await enrich(String(version.critical).trim(), item)}`);
+    if (crit && critApplied && String(version.critical ?? "").trim()) riderHtml.push(`<b class="cc-critl">Critical:</b> ${await enrich(String(version.critical).trim(), item)}`);
     // v0.0.418 (Lucas, playtest 5, G1-G3): the conditions written in the Tier's text are applied when its damage lands (a rule of the system,
     // read from the card's text, so a homebrew card gets it too): the chips, kept for the damage card (ccdamage.mjs applyRow)
-    const conds = (await import("./inline.mjs")).tierConditionChips(xt);   // v0.0.421: not one written after a movement
+    const conds = [...(await import("./inline.mjs")).tierConditionChips(xt), ...critConds];   // v0.0.421: not one written after a movement; the core rework: a Critical row's
     // v0.0.440 (Seizing Cut): a forced movement in the Tier runs when its damage lands, then the conditions written after it (ccdamage.mjs)
     const move = (await import("./inline.mjs")).tierMoveThen(xt) ? String(xt) : "";
     return { comps, fx, chip, rolls, riders: riderHtml, conds, move };
@@ -1658,13 +1688,13 @@ export async function rollDamage(message, { again = false } = {}) {
           empUsed = true;
         }
       }
-      await postCcDamage({ actor, title: item.name, groups, targets: rows.map((r, i) => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: gOf[i] })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });
+      await postCcDamage({ actor, title: item.name, lines: item.system.stateLines ?? null, groups, targets: rows.map((r, i) => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: gOf[i] })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });
     }
   } else {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "", !!f.crit);
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
-    await postCcDamage({ actor, title: item.name, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds, move: d.move }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "",   /* the after-chain holds Tier 2-3 riders (Club's Push): it keeps its gate */ areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
+    await postCcDamage({ actor, title: item.name, lines: item.system.stateLines ?? null, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds, move: d.move }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "",   /* the after-chain holds Tier 2-3 riders (Club's Push): it keeps its gate */ areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
   if (empUsed && !hadEmp && !f.reloadShot) await markEmpoweredUsed(actor);
   // (the card is no longer collapsed: v0.0.388, the damage is on it)

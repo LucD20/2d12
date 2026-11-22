@@ -23,7 +23,7 @@ const mvSrc = src("module/move.mjs");
 console.log("the push preview uses the chosen destination:", mvSrc.includes("analyzePath(path, path.length - 1, {"), "| the old value-based call is gone:", !mvSrc.includes("repo ? path.length - 1 : N"));
 console.log("--- Steadiness reduces the value (never below 0)");
 console.log([[3, 1], [1, 1], [2, 4], [5, 0], [3, -2]].map(([n, s]) => `Pushed ${n} vs Steadiness ${s} = ${mv.reducedValue(n, s)}`).join(" | "));
-console.log("Pushed and Reposition ask whether to apply it:", mvSrc.includes("Apply Steadiness (") && mvSrc.includes("applySteadiness(target, N0, label, opts.by?.document ? opts.by : origin)"));
+console.log("Pushed and Reposition ask whether to apply it:", mvSrc.includes("Apply Steadiness (") && mvSrc.includes("applySteadiness(target, N0, label, opts.by?.document ? opts.by : origin, mode)"));
 const mk = sys => { const m = Object.create(NpcData.prototype); Object.assign(m, { level: 1, damage: { bodyLethal: 0, bodyNonlethal: 0, mindLethal: 0, mindNonlethal: 0 }, attributes: { body: 0, mind: 0, appeal: 0, instinct: 0 }, custom: { body: 0, mind: 0, appeal: 0, instinct: 0, bodyHealth: 10, mindHealth: 10 }, armorDef: 13, wardDef: 13,
   weaponAttribute: "body", powerAttribute: "mind", speed: 5, reachBase: 1, armor: "medium", bodyWounds: 0, mindWounds: 0, role: "standard", ratings: {}, steadiness: 0, parent: { type: "npc", items: [], itemTypes: { armor: [] } }, ...sys }); m.prepareDerivedData(); return m; };
 console.log("an NPC's Steadiness:", [0, 1, 3, -1].map(v => `${v} -> ${mk({ steadiness: v }).steadiness}`).join(", "));

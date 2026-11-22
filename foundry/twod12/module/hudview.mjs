@@ -2,8 +2,8 @@
 // the HUD remade after Lucas's 4e module. Pure: the HTML from a model (test t254); module/hud.mjs builds the models and handles the clicks.
 //   Nothing selected: the party strip (a small card per PC, Momentum at its left). One token: its bar (the portrait, the identity column, tabs by
 //   kind over columns by Frequency, the side panel), or folded to one line. Several tokens: their cards.
-//   The marks (book/research/ui-marks-and-state.md): AP squares, the Reaction AP a diamond, Strikes slashes, a hairline between them, the same shapes
-//   on every turn (the carousel's out-of-turn diamonds of v0.0.201 are gone); a filled mark is one still there. AP above the maximum (an effect that grants AP) and a second Reaction AP add marks of the same kind.
+//   The marks (book/research/ui-marks-and-state.md): AP squares, the Reaction Point a diamond, Strikes slashes, a hairline between them, the same shapes
+//   on every turn (the carousel's out-of-turn diamonds of v0.0.201 are gone); a filled mark is one still there. AP above the maximum (an effect that grants AP) and a second Reaction Point add marks of the same kind.
 import { esc } from "./util.mjs";
 
 export const HUD_TABS_PC = [["act", "Actions"], ["rx", "Reactions"], ["basic", "Basic"], ["esc", "Escalation"]];
@@ -14,7 +14,7 @@ const n0 = v => Math.max(0, Math.trunc(Number(v)) || 0);
 
 /**
  * The marks. m = { ap, max (the AP regained this turn, Quickened and Slowed counted), slowed, rap, rapMax, strikes, strikeMax, showStrikes }.
- * Squares: max + slowed of them, the last `slowed` struck; AP above that (granted) add filled squares. Diamonds: one per Reaction AP the creature can
+ * Squares: max + slowed of them, the last `slowed` struck; AP above that (granted) add filled squares. Diamonds: one per Reaction Point the creature can
  * have (2 with a second one). Slashes: the turn's Strikes.
  */
 export function apSquares({ ap = 0, max = 4, slowed = 0 } = {}) {
@@ -23,7 +23,7 @@ export function apSquares({ ap = 0, max = 4, slowed = 0 } = {}) {
   return Array.from({ length: n }, (_, k) => (k >= n - slowed ? "x" : k < ap ? "on" : ""));
 }
 export function marksHtml(m = {}) {
-  // a filled mark is one still there: an AP, the Reaction AP, a Strike left this turn (as the carousel always drew them)
+  // a filled mark is one still there: an AP, the Reaction Point, a Strike left this turn (as the carousel always drew them)
   const sq = apSquares(m), rapMax = Math.max(1, n0(m.rapMax ?? 1), n0(m.rap)), sMax = n0(m.strikeMax ?? 3) || 3, left = Math.max(0, sMax - n0(m.strikes));
   const squares = `<span class="hm-ap">${sq.map(c => `<i${c ? ` class="${c}"` : ""}></i>`).join("")}</span>`;
   const diamonds = `<span class="hm-r">${Array.from({ length: rapMax }, (_, k) => `<i${k < n0(m.rap) ? ' class="on"' : ""}></i>`).join("")}</span>`;

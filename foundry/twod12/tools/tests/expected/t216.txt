@@ -1,7 +1,7 @@
 --- the Version buttons (one AP check with the row and the roll dialog: sheetmodel.mjs versionCant)
 Smite, 2 AP left: Use · 1 AP | Use · 2 AP | Use · 3 AP [struck: Not enough AP: 2 left]
 Smite, out of combat: Use · 1 AP | Use · 2 AP | Use · 3 AP | a free use: Use · 3 AP
-a 1R Reaction, 0 AP and 1 Reaction AP: Use · 1R | 2R: Use · 2R [struck: Not enough AP: 0 left and 1 Reaction AP]
+a 1R Reaction, 0 AP and 1 Reaction AP: Use · 1R | 2R: Use · 2R [struck: Not enough AP: 0 left and 1 Reaction Point]
 payReaction kept (combat.mjs re-exports it): {"fromRap":1,"fromAp":1} true
 --- labels, Effects lines, the ruler
 Tier labels in full: Tier 1 | Tier 2 | Tier 3 | Critical | Tiers 1–3

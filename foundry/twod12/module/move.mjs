@@ -1072,6 +1072,9 @@ const bodyDamage = n => ({ B: { l: n, n: 0 }, M: { l: 0, n: 0 } });
  */
 /** The value of a Forced Movement or Reposition against a creature with this Steadiness (never below 0; a negative Steadiness counts as 0). */
 export const reducedValue = (N, steady) => Math.max(0, num(N) - Math.max(0, num(steady)));
+/** Pure (the core rework batch 2; book, Chapter 3, Steadiness, "Below 0"): the value after Steadiness for a movement of this mode: a positive one
+ *  reduces it (Forced Movement and Reposition); a negative one adds to a Forced Movement only (never a Reposition) and always applies. */
+export const steadyValue = (N, steady, mode = "push") => (num(steady) < 0 ? (mode === "reposition" ? num(N) : num(N) - num(steady)) : reducedValue(N, steady));
 
 /** Pure (v0.0.418, playtest 5, H1): is the Steadiness question asked? Only when the creature moving it is its ally (a willing creature can choose
  *  not to apply it); against an enemy it simply applies. */
@@ -1079,9 +1082,11 @@ export const asksSteadiness = (origin, target) => {
   const d = t => t?.document?.disposition ?? t?.disposition;
   return !!origin && !!target && origin !== target && d(origin) !== undefined && d(origin) !== 0 && d(origin) === d(target);   // v0.0.421: a neutral is nobody's ally
 };
-async function applySteadiness(target, N, label, origin = null) {
+async function applySteadiness(target, N, label, origin = null, mode = "push") {
   const st = steadinessOf(target.actor), steady = st.total;   // v0.0.174: with the bonuses of Features, Talents and effects
   if (!steady) return { N, steady: 0, applied: false };
+  // the core rework batch 2: a negative Steadiness (Bloodied) adds to a Forced Movement, never to a Reposition, and is never asked
+  if (steady < 0) return { N: steadyValue(N, steady, mode), steady, applied: mode !== "reposition" };
   const eff = reducedValue(N, steady);
   if (!asksSteadiness(origin, target)) return { N: eff, steady, applied: true };
   const from = st.parts.length ? ` (${st.base} + ${st.parts.map(p => `${p.name} ${p.bonus >= 0 ? "+" : "\u2212"}${Math.abs(p.bonus)}`).join(", ")})` : "";
@@ -1095,7 +1100,7 @@ async function applySteadiness(target, N, label, origin = null) {
 
 async function pushOne(origin, target, N0, mode = "push", opts = {}) {
   const label = MOVE_LABEL[mode];
-  const st = await applySteadiness(target, N0, label, opts.by?.document ? opts.by : origin), N = st.N;
+  const st = await applySteadiness(target, N0, label, opts.by?.document ? opts.by : origin, mode), N = st.N;
   const { postFollow } = await import("./followup.mjs");   // v0.0.347 (Step 3): the lines go into the card that moved it (opts.msg)
   // v0.0.404 (Lucas: "just say 'X was Pushed Y by Z', one line, done, and merge with the Action that caused it"): one line into the card (opts.msg)
   const byName = esc((opts.by ?? origin)?.name ?? "");

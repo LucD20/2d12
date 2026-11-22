@@ -66,7 +66,7 @@ export const s0Col = (rank, rating) => { const i = RATINGS.indexOf(rating); retu
 export const s0Health = (rank, rating) => (TWOD12.npcStage0[rank] ?? TWOD12.npcStage0.standard).health[s0Col(rank, rating)];
 /** An NPC's Armor or Ward Defense by rating (every Stage): config.mjs npcDefense. */
 export const npcDefenseOf = (rank, rating) => (TWOD12.npcDefense[rank] ?? TWOD12.npcDefense.standard)[s0Col(rank, rating)];
-/** A rank's AP a turn (the Bestiary: Minions and Grunts 3, the others 4) and its Reaction AP (Minions none). */
+/** A rank's AP a turn (the Bestiary: Minions and Grunts 3, the others 4) and its Reaction Point (Minions none). */
 export const rankAp = rank => TWOD12.npcBudget.turnAp[rank] ?? 4;
 export const rankReactionAp = rank => (rank === "minion" ? (TWOD12.npcStage0.minion.reactionAp ?? 0) : TWOD12.reactionAp);
 

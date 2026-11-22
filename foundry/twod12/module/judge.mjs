@@ -25,11 +25,11 @@ export function isProfaneFor(source, target) {
   return hasProfaneTag(target, labels) || isJudgedBy(source, target);
 }
 
-/** Pure: Smite's dice (book, Smite): 1 a point of Escalation, up to 4, plus the extra ones (Tier 3's, the Reaction AP's); d8s against a Profane creature. */
+/** Pure: Smite's dice (book, Smite): 1 a point of Escalation, up to 4, plus the extra ones (Tier 3's, the Reaction Point's); d8s against a Profane creature. */
 export const smiteDice = (escalation, extra = 0, profane = false) => `${Math.min(4, Math.max(0, Math.trunc(Number(escalation) || 0))) + Math.max(0, Math.trunc(Number(extra) || 0))}d${profane ? 8 : 6}!`;
 /**
  * Pure: a Version's dice under its dice rule (data.mjs diceRule). "smite": a written "Nd6!" is Smite's dice with N - 1 extra (Tier 1 and 2 write
- * 1d6!, Tier 3 2d6!), plus 1 with the Reaction AP spent; "profane": its d6s are d8s against a Profane creature (Word of Radiance). Other dice stay.
+ * 1d6!, Tier 3 2d6!), plus 1 with the Reaction Point spent; "profane": its d6s are d8s against a Profane creature (Word of Radiance). Other dice stay.
  */
 export function ruledDice(dice, rule, { escalation = 0, profane = false, more = false } = {}) {
   const d = String(dice ?? "");

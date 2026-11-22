@@ -8,13 +8,13 @@ import { apGuardOf } from "./guard.mjs";
 
 /* ---- Action Points (Ch. 2, Action Points) ---- */
 export const AP_PER_TURN = TWOD12.apPerTurn, REACTION_AP = TWOD12.reactionAp;
-/** The AP a creature regains at the start of its turn: its base (4; a Minion 3), more with Quickened, fewer with Slowed, never under 0. The Reaction AP is apart. */
+/** The AP a creature regains at the start of its turn: its base (4; a Minion 3), more with Quickened, fewer with Slowed, never under 0. The Reaction Point is apart. */
 export const turnAP = (base = AP_PER_TURN, { slowed = 0, quickened = 0 } = {}) => Math.max(0, (Number(base) || 0) + (Number(quickened) || 0) - (Number(slowed) || 0));
-/** The Reaction AP a creature has: it is gained when it regains AP at the start of its turn, so none before its first turn of the encounter. */
+/** The Reaction Point a creature has: it is gained when it regains AP at the start of its turn, so none before its first turn of the encounter. */
 export const reactionAPAt = hadTurn => (hadTurn ? REACTION_AP : 0);
-/** Paying a Reaction (cost N R): the Reaction AP first, then AP kept from the turn. { fromRap, fromAp } (fromAp can be more than the AP there are: the caller checks). */
+/** Paying a Reaction (cost N R): the Reaction Point first, then AP kept from the turn. { fromRap, fromAp } (fromAp can be more than the AP there are: the caller checks). */
 export const payReaction = (cost, ap, rap) => { const fromRap = Math.min(Math.max(0, rap), Math.max(0, cost)); return { fromRap, fromAp: Math.max(0, cost - fromRap) }; };
-/** Can it pay a Reaction of this cost with these AP and this Reaction AP? */
+/** Can it pay a Reaction of this cost with these AP and this Reaction Point? */
 export const canPayReaction = (cost, ap, rap) => payReaction(cost, ap, rap).fromAp <= Math.max(0, Number(ap) || 0);
 /** Unspent AP (Ch. 2): when the next turn starts, each AP still unused gives Guard for 1 round (2 / 3 / 4 by Stage); the first turn of an encounter has none. { unused, guard }. */
 export const unusedApGuard = (hadTurn, apLeft, stage) => { const unused = hadTurn ? Math.max(0, Math.trunc(Number(apLeft)) || 0) : 0; return { unused, guard: apGuardOf(unused, stage) }; };

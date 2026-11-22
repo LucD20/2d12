@@ -77,7 +77,10 @@ export function steadinessOf(actor) {
   }
   const best = found.filter(x => x.bonus > 0).sort((a, b) => b.bonus - a.bonus)[0], worst = found.filter(x => x.bonus < 0).sort((a, b) => a.bonus - b.bonus)[0];
   const parts = [best, worst].filter(Boolean);
-  return { base, total: Math.max(0, base + parts.reduce((s, p) => s + p.bonus, 0)), parts };
+  // the core rework batch 2 (book, Chapter 3, Steadiness; Chapter 4, Bloodied): Bloodied lowers it by 1, and it can go below 0 (a negative one adds to a Forced Movement)
+  if (actor?.system?.bloodied) parts.push({ name: "Bloodied", bonus: -1 });
+  const sum = base + parts.reduce((s, p) => s + p.bonus, 0);
+  return { base, total: actor?.system?.bloodied ? sum : Math.max(0, sum), parts };
 }
 
 /** Which Defense an Action faces: { type: "vs", key } | { type: "armor" } | { type: "ward" } | null. src: rollSource() of the user. */

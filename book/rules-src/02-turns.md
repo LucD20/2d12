@@ -199,7 +199,7 @@ Every line of a card says when it happens (see [[Reading an Action]]):
 - A **Tier** line happens only on that Tier. A line for two Tiers says so: "Tier 1 or 2". A Tier that isn't written does nothing.
 - An **Effect** line happens whenever the card is used, whatever the roll. Before the roll's line, it happens before the roll; after the Tiers, after them.
 - Actions with no roll have no Tiers: their Effect simply happens.
-- A **Bloodied** or **Strained** line happens only against a target that is [[Bloodied]] or [[Strained]]. **Where it is written decides when it counts:** above the Tiers, the target must already be Bloodied (Strained) when the Action is used; after the Tiers, it counts too if this Action's damage makes the target Bloodied (Strained).
+- A **Bloodied** or **Strained** line happens only against a target that is [[Bloodied]] or [[Strained]]. **Where it is written decides when it counts:** above the Tiers, the target must already be Bloodied (Strained) when the Action is used; after the Tiers, it counts too if this Action's damage makes the target Bloodied (Strained). Like an Effect line, it happens whatever the roll unless it names the Tiers it needs ("on a Tier 2 or 3, ...").
 - A **Critical** line happens on a [[Critical]] (written under Tier 3).
 
 Inside a Tier's line, the damage is written first and applied first; what follows the semicolon happens after the damage is applied ("[V] 1[W] + [Mod]; Prone").

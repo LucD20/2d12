@@ -3,6 +3,7 @@
 // Ch. 1 a Resist split across both pools), asked of its owner. The card itself is drawn by chatcards.mjs.
 // Order per creature: the damage per subtype, then Resist / Weak / Immune (once per subtype per Action), then Guard, then Health.
 // A rider (a Tier's own effects, the "After the damage" chain) lands only if the damage did: more than 0 after Resist and Immune (Ch. 1 Riders).
+import { stateLinesFor } from "./statelines.mjs";   // the core rework batch 2
 import * as CC from "./chatcards.mjs";
 import { esc } from "./util.mjs";
 import { damageOdds } from "./calc.mjs";
@@ -89,14 +90,16 @@ export function dmgModel(s) {
  * Post a damage message. groups: [{ tier, crit, comps, fx, riders (HTML) }]; targets: [{ uuid, name, tier, crit, g (its group) }].
  * comps: [{ pool, sub, nl, total, formula, dice, kind, src, emp, label }]. The old flags (dmgCard / damage) stay for the modules that read them.
  */
-export async function postCcDamage({ actor = null, title, groups, targets = [], nl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false, srcId = "", rolls = [], escalation = false, note = "", noNl = false, save = false, into = null, replace = false }) {   // v0.0.315: note (a short line, no ↳ box: Bleed's Save), noNl (no Lethal tag)
+export async function postCcDamage({ actor = null, title, groups, targets = [], nl = false, originUuid = "", originMod = null, after = "", areaPoint = null, strike = false, srcId = "", rolls = [], escalation = false, note = "", noNl = false, save = false, into = null, replace = false, lines = null }) {   // v0.0.315: note (a short line, no ↳ box: Bleed's Save), noNl (no Lethal tag)
   const rows = targets.map(t => {
     const g = Number.isInteger(t.g) ? t.g : Math.max(0, groups.findIndex(x => x.tier === t.tier));
     const p = rowPreview(groups[g]?.comps ?? [], actorOf(t.uuid));
-    return { uuid: t.uuid, name: t.name, tier: t.tier ?? groups[g]?.tier ?? 0, crit: !!t.crit, g, mods: p.mods, choice: p.choice, applied: null };
+    // the core rework batch 2: the target's Bloodied / Strained before this Action's damage (a card's "Bloodied" line written above the roll reads it)
+    const ta = actorOf(t.uuid), pre = { b: !!ta?.system?.bloodied, s: !!ta?.system?.strained };
+    return { uuid: t.uuid, name: t.name, tier: t.tier ?? groups[g]?.tier ?? 0, crit: !!t.crit, g, mods: p.mods, choice: p.choice, applied: null, pre };
   });
   const gs = groups.map((g, i) => ({ conds: g.conds ?? [], move: g.move ?? "", tier: g.tier ?? 0, crit: !!g.crit, comps: g.comps.map(c => ({ pool: c.pool || "B", sub: c.sub ?? "", nl: c.nl, total: Number(c.total) || 0, formula: c.formula ?? "", dice: c.dice ?? [], kind: c.kind ?? "", src: c.src ?? "", emp: c.emp ?? 0, label: c.label ?? "" })), fx: g.fx ?? [], riders: g.riders ?? [], rows: rows.map((r, k) => (r.g === i ? k : -1)).filter(k => k >= 0) }));
-  const state = { name: title, nl: !!nl, groups: gs, rows, originUuid, originMod, after, areaPoint, strike: !!strike, srcId, escalation: !!escalation, note, noNl: !!noNl, save: !!save };   // v0.0.334: save: from a Save Action (its chain runs on the Tiers the damage landed: 1 and 2)
+  const state = { name: title, nl: !!nl, groups: gs, rows, originUuid, originMod, after, areaPoint, strike: !!strike, srcId, escalation: !!escalation, note, noNl: !!noNl, save: !!save, lines: lines && Object.values(lines).some(x => String(x ?? "").trim()) ? { ...lines } : null };   // v0.0.334: save: from a Save Action (its chain runs on the Tiers the damage landed: 1 and 2)
   const first = gs[0];
   // v0.0.388: into a card that draws its damage (an attack or Save card); an old card (no card model) still gets a damage message
   if (into && ["attack", "save"].includes(into.getFlag?.(F, "cc")?.kind) && typeof into.update === "function") return writeInto(into, state, rolls, { replace });
@@ -248,10 +251,22 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
 /** The "After the damage" chain, once, for the rows just applied whose damage landed on a Tier 2 or 3 (Ch. 1 Riders). */
 async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the chain's lines go into it)
   const list = idx.map(i => s.rows[i]).filter(r => r?.applied?.landed && !r.applied.chainDone && (s.save || (r.tier ?? 0) >= 2));
-  if (!s.after || !list.length) return;
+  if ((!s.after && !s.lines) || !list.length) return;
   for (const r of list) r.applied.chainDone = true;
   let actor = null; try { actor = s.originUuid ? await fromUuid(s.originUuid) : null; } catch (e) { actor = null; }
   const { runAfter } = await import("./inline.mjs");
+  // the core rework batch 2: each target's Bloodied / Strained lines, after its damage landed (its state now, and the one before: r.pre)
+  if (s.lines) {
+    const user = actor?.documentName === "Actor" ? actor : (actor?.actor ?? null);
+    for (const r of list) {
+      const a = actorOf(r.uuid), texts = stateLinesFor(s.lines, r.pre ?? {}, { b: !!a?.system?.bloodied, s: !!a?.system?.strained });
+      for (const t of texts) {
+        try { await runAfter(t, { save: !!s.save, actor: user, targets: [{ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 }], attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: msg }); }
+        catch (e) { console.warn("twod12 | a Bloodied / Strained line", e); }
+      }
+    }
+  }
+  if (!s.after) return;
   // pack TALENTS-PT: each target's damage as dealt (its group's components and the factor applied: Ricochet's half, bounce.mjs)
   await runAfter(s.after, { save: !!s.save, actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: list.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null, message: msg });
 }

@@ -14,14 +14,14 @@ export function makeLine(kind, name, before, after, max, rap = null) {
   const b = Math.max(0, Math.round(Number(before) || 0)), a = Math.max(0, Math.round(Number(after) || 0));
   const m = Math.max(1, Math.round(Number(max) || 0), b, a);
   const spent = Math.max(0, b - a);
-  // v0.0.243 (pack R): the Reaction AP on the line (rb / ra: before and after); a Reaction's cost counts what the Reaction AP paid too.
+  // v0.0.243 (pack R): the Reaction Point on the line (rb / ra: before and after); a Reaction's cost counts what the Reaction Point paid too.
   const rb = rap ? Math.max(0, Math.round(Number(rap.b) || 0)) : undefined, ra = rap ? Math.max(0, Math.round(Number(rap.a) || 0)) : undefined;
   const rSpent = rap ? Math.max(0, rb - ra) : 0;
   const cost = kind === "start" ? `+${Math.max(0, a - b)}${rap && ra > rb ? " +R" : ""}` : (kind === "react" ? `−${spent + rSpent}R` : `−${spent} AP`);
   return { k: kind, n: String(name ?? ""), c: cost, b, a, s: kind === "start" ? 0 : spent, m, ...(rap ? { rb, ra } : {}) };
 }
 
-/** Pure: the pips of a line: filled = AP left after it, a red ring = spent on this line, grey = spent before it (or not there); then the Reaction AP as a diamond. */
+/** Pure: the pips of a line: filled = AP left after it, a red ring = spent on this line, grey = spent before it (or not there); then the Reaction Point as a diamond. */
 export function pipsHtml(line, small = false) {
   const out = [];
   for (let i = 0; i < line.m; i++) out.push(i < line.a ? '<i class="on"></i>' : (i < line.a + line.s ? '<i class="spent"></i>' : "<i></i>"));

@@ -18,7 +18,7 @@ console.log("only a chip naming an item opens it on its name:", tw.includes('con
 
 console.log("--- V1.2 a Tier's condition applies when the Tier lands (G1-G3)");
 const IN = await import(ROOTURL + "module/inline.mjs");
-console.log("the chip read from the Tier's text:", JSON.stringify(IN.parseInline("Condition", "hindered|eot")), "| the Tier's group carries them:", act.includes('const conds = (await import("./inline.mjs")).tierConditionChips(xt);'),
+console.log("the chip read from the Tier's text:", JSON.stringify(IN.parseInline("Condition", "hindered|eot")), "| the Tier's group carries them:", act.includes('const conds = [...(await import("./inline.mjs")).tierConditionChips(xt), ...critConds];'),
   "| both damage cards pass them:", (act.match(/conds: byTier\.get\(t\)\.conds|conds: d\.conds/g) ?? []).length === 2);
 console.log("an attack's row applies them when its damage landed:", ccd.includes("if (landed && (g.conds ?? []).length)") && ccd.includes("applyConditionChip(chip, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null })"),
   "| a Save's Tier (the old card, the new card's Damage button, a Tier with no damage):", inl.includes("if (!dealt || dealt.landed) for (const chip of tierConditionChips(cfg.tiers[`t${tier}`]))") && inl.includes("conds: tierConditionChips(cfg.tiers[`t${t}`])") && inl.includes("if (!comps.length) for (const chip of tierConditionChips(cfg.tiers[`t${chk.tier}`]))"));

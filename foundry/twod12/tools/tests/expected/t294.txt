@@ -1,0 +1,30 @@
+--- A3: a Favored / Doomed source counts as 5 Boons / 5 Banes (bbResolve)
+0 Boons, 0 Banes, Doomed: {"net":-5,"add":0,"state":"doomed","five":"","cancel":false}
+0 Boons, 2 Banes, Doomed: {"net":-7,"add":0,"state":"doomed","five":"","cancel":false}
+1 Boons, 0 Banes, Doomed: {"net":-4,"add":-4,"state":"","five":"","cancel":false}
+2 Boons, 0 Banes, Doomed: {"net":-3,"add":-3,"state":"","five":"","cancel":false}
+0 Boons, 4 Banes: {"net":-4,"add":-4,"state":"","five":"","cancel":false}
+0 Boons, 5 Banes: {"net":-5,"add":0,"state":"doomed","five":"doomed","cancel":false}
+3 Boons, 0 Banes, Favored: {"net":8,"add":0,"state":"favored","five":"","cancel":false}
+0 Boons, 0 Banes, Favored, Doomed: {"net":0,"add":0,"state":"","five":"","cancel":true}
+5 Boons, 0 Banes, Doomed: {"net":0,"add":0,"state":"","five":"","cancel":false}
+the odds follow it: Doomed + 2 Banes = Doomed: true | Doomed + 1 Boon = a normal roll at -4: true
+--- the Critical (critical.mjs)
+Basic attacks: true true true | not: false false
+the types it can choose: [V] 1d10! Pi | [R] 1d10! Ho
+a Critical row's dice: [{"pool":"B","formula":"1d6!","sub":"Bl"}] | none: []
+Trip's Critical: [V] 1d6! Bl. | [V] 1d6! Bl. || Shove's: @Condition[prone] | @Condition[prone] | @Condition[prone]
+wired: asked before the damage roll, a Tier with no damage too: true
+--- Bloodied: Steadiness below 0 (move.mjs steadyValue), Speed −2 (data.mjs)
+Pushed 2 vs Steadiness 1: 1 | vs -1: 3 | a Reposition 2 vs -1: 2 | Pushed 1 vs 2: 0
+Speed −2 with Exhausted's, before halving: true | Steadiness −1 below 0: true
+Strained: no Reaction Point at the start of the turn: true
+--- the Bloodied / Strained lines (statelines.mjs stateLinesFor)
+before {} now {}: []
+before {} now {"b":true}: ["after-B"]
+before {"b":true} now {"b":true}: ["before-B","after-B"]
+before {"s":true} now {"s":true}: ["after-S"]
+before {"b":true} now {}: ["before-B"]
+the Ogre's Overhead Smash carries its placeholder line: {"bloodied":"On a Tier 2 or 3, the target is @Move[pushed|distance:1] more."}
+--- batch 1's cards: Break Free, Lean, Steel Yourself
+Break Free: action 23 | Lean: Lean | Steel Yourself: 1/2

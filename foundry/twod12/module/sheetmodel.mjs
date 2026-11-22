@@ -137,16 +137,16 @@ export function apPips(ap, regained, slowed = 0) {
   return [...Array.from({ length: a }, () => ({ k: "on" })), ...Array.from({ length: r - a }, () => ({ k: "spent" })), ...Array.from({ length: s }, () => ({ k: "slowed" }))];
 }
 
-/** How a Reaction's cost is paid: the Reaction AP first, the rest from the AP (moved here from combat.mjs in v0.0.297; combat.mjs re-exports it). */
+/** How a Reaction's cost is paid: the Reaction Point first, the rest from the AP (moved here from combat.mjs in v0.0.297; combat.mjs re-exports it). */
 import { payReaction } from "./roundrules.mjs";   // v0.0.365 (SIM-1): the rule itself is in roundrules.mjs (pure, shared with the automated playtest environment)
 export { payReaction };
 /**
  * v0.0.297 (PACK ACTION-PREVIEW): why a cost can't be paid now ("" = it can): the one AP check of the sheet's rows, the card's Version buttons
- * and the roll dialog. ap: the AP left; rap: the Reaction AP (a Reaction only).
+ * and the roll dialog. ap: the AP left; rap: the Reaction Point (a Reaction only).
  */
 export function versionCant(cost, ap, rap = 0, reaction = false) {
   const have = Math.max(0, Number(ap) || 0), r = reaction ? Math.max(0, Number(rap) || 0) : 0;
-  return payReaction(Math.max(0, Number(cost) || 0), have, r).fromAp > have ? `Not enough AP: ${have} left${reaction ? ` and ${r} Reaction AP` : ""}` : "";
+  return payReaction(Math.max(0, Number(cost) || 0), have, r).fromAp > have ? `Not enough AP: ${have} left${reaction ? ` and ${r} Reaction Point` : ""}` : "";
 }
 
 /** The Escalation rungs: "1 · <passive>","2 · <passive>", "3 · <passive> + Apex"; lit up to the level. names: { 1: [...], 2: [...], 3: [...] }. */

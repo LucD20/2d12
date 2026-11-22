@@ -77,6 +77,9 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   if (it.setup) top.push(L("Setup", it.setup, "rich"));
   const effectAt = top.length;   // v0.0.429: where an Effect written above the roll goes (before the card's own lines and the roll)
   for (const l of it.lines ?? []) top.push(L(l.label || "Note", l.text, "rich"));
+  // the core rework batch 2 (book, Chapter 2, Effect Timing): a Bloodied / Strained line written above the roll (the target must already be so)
+  const SL = it.stateLines ?? {};
+  for (const [k, label] of [["bloodiedBefore", "Bloodied"], ["strainedBefore", "Strained"]]) if (String(SL[k] ?? "").trim()) top.push(L(label, SL[k], "rich"));
   if (rl && !modes) top.push(L(rl.label, rl.text, "esc"));
   const versionModel = v => {
     const lines = [];
@@ -87,6 +90,8 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
       if (v.critical) lines.push(L("Critical", v.critical, "rich"));
     }
     if (String(v.effects ?? "").trim()) lines.push(L(it.structure || v.noTiers ? "Effect" : save ? "Tier 1 or 2" : "Tier 2 or 3", v.effects, "rich"));
+    // the core rework batch 2: a Bloodied / Strained line after the Tiers (this Action's damage counts); on the last Version's block when there are several
+    if (v === versions[versions.length - 1]) for (const [k, label] of [["bloodied", "Bloodied"], ["strained", "Strained"]]) if (String(SL[k] ?? "").trim()) lines.push(L(label, SL[k], "rich"));
     return {
       ap: v.ap, cost: costOf(v), mode: v.mode ?? "", heading: v.mode ? (MODE_NAME[v.mode] ?? v.mode) : costOf(v),
       own: { traits: v.modeTraits ?? [], distance: v.modeDistance ? distanceShort(({ weapon: "Weapon", reach: "Reach", self: "Self" })[v.modeDistance] ?? v.modeDistance) : "",   /* pack TALENTS-PT: a mode's "weapon" / "reach" key as the book writes it */ target: v.modeTargets ?? "" },

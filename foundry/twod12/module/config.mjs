@@ -243,7 +243,7 @@ export const TWOD12 = {
   // book/ruler/stage0.md): ready numbers, exactly the book's tables. health: an NPC's Vigor or Resolve by rating (each has its own rating; the Health Pool
   // is the two added; no Attribute, no multiplier). basic / s1 / s2 / s3: the damage as written (Tier 2, Tier 3), a flat part plus at most one small die,
   // the Modifier already in it, for the Basic attack and the 1 AP, 2 AP and 3 AP Specials. v0.0.433 (the Bestiary audit): read by npcbudget.mjs and the
-  // ruler; its damage rows are the old damage-only yardstick (the book now builds damage from the turn budget). Lucas, 2026-11-12 (after the first fit): a Minion has no Reaction AP and up to 3 Minions can share a turn slot (squad); it has 6 + 6 Health
+  // ruler; its damage rows are the old damage-only yardstick (the book now builds damage from the turn budget). Lucas, 2026-11-12 (after the first fit): a Minion has no Reaction Point and up to 3 Minions can share a turn slot (squad); it has 6 + 6 Health
   // (one hit to kill was tried and dropped: it was worth half its CV); a Grunt has 3 AP a turn (ap), as a Minion; a Standard's Medium 2 AP Special is half a step up (4 + 1d6 on Tier 2); the automated playtest environment reads it (book/ruler/sim/core.mjs npcS0).
   // A ranged NPC attack pays for its range with this many steps of damage rating (the Bestiary, Ranged attacks; measured: four ranged Standards at full damage are a hard fight).
   npcRangedStep: 1,
@@ -302,7 +302,7 @@ export const TWOD12 = {
   rallyByStage: [1, 2, 3, 4],
   // modBy (v0.0.307, Lucas; the Bestiary, Attributes and Modifiers): an NPC's Weapon or Power Modifier by rating (Terrible to Extreme; a Minion has no Extreme).
   vsBase: 11,   // the core rework A7 (Lucas, 2026-11-21; book, Chapter 1, Attribute DCs): an Attribute DC = 11 + the Attribute (v0.0.307: 12 + it)
-  // Pack R (v0.0.243; book, Chapter 2): 4 AP a turn and 1 Reaction AP (the Reaction AP pays only for Reactions; Slowed and Quickened change the 4 only);
+  // Pack R (v0.0.243; book, Chapter 2): 4 AP a turn and 1 Reaction Point (the Reaction Point pays only for Reactions; Slowed and Quickened change the 4 only);
   // each AP kept at the end of the turn is Guard 2 / 2 / 3 / 4 by Stage (0 to 3) until the AP are regained (guard.mjs).
   apPerTurn: 4, reactionAp: 1, guardPerAp: [2, 2, 3, 4],
   // Escalation (book, Chapter 2; v0.0.407): a level from 1 to 6, never spent; 1 + the party's Momentum (0 to 4) at the start of an encounter, +1 a round,
