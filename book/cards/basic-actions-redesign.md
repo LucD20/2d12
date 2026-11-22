@@ -26,4 +26,15 @@ Lucas's idea (Vulnerable 1 on Tier 2, Daunted added on Tier 3); Claude's change 
 
 Shape (A), handing an AP over (Claude's pick: Boons are too small for 1 AP, and rolling to help has a poor record, `research/helping.md`); Lucas added the Focus and Instinct traits and the Check against Daunted's Action DC (Chapter 1, Action DC), made only when the ally is Daunted.
 
-## Feint (next)
+## Feint: decided (Lucas, 2026-11-22: "A but Tier 3 I think it should be a critical. Leave t2 and t3 equal"; "reach is fine")
+
+> **Feint** · Round · 1 AP · [Focus, Mind]
+> *You show one blow and land another.*
+> Distance: Reach · Target: One creature
+> Attack: Mind vs. Mind DC
+> Tier 1: No effect. · Tier 2 or 3: Your next [Strike] Action against the target this turn is Favored.
+> Critical: The target can't use Reactions against you until the end of your turn.
+
+What a setup is worth on the next Strike (+2 vs 13) [calc]: Basic Attack with a bow 6.6 plain, 9.1 Favored; with a Longsword 11.2 plain, 15.7 Favored. Asked by Lucas ("curiosity"): raising the next Strike's Tier by one would be 9.7 (bow) and 17.4 (Longsword): a little more than Favored, because a Tier 1 becomes a hit every time.
+
+## Tumble (next)
