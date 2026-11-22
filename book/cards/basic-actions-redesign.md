@@ -16,4 +16,5 @@ Every creature's Basic Actions, reworked one at a time with Lucas (`book/core-re
 
 Lucas's idea (Vulnerable 1 on Tier 2, Daunted added on Tier 3); Claude's change he accepted: Vulnerable for 1 round, not EoT (the target's EoT often comes right after your turn: only your own attacks would use it; for 1 round every ally's do). About 5 points a use against a Basic Attack's 6.6 [judgment, the Bestiary's rider prices]. Not [Strike]. PF2e's Demoralize was the model (Frightened 1: worse checks and DCs).
 
-## Aid (next)
+## Aid (in progress)
+Shape (A), handing an AP over: Round, 1 AP, the target ally Quickened 1 on its next turn (Claude's pick; Lucas, 2026-11-22: "Make it focus and instinct too. And I think we should do Attribute vs Action DC of Daunted to remove it, not automatically"). Traits [Appeal, Focus, Instinct]; ending Daunted is a Check, Appeal or Instinct, against the Action DC of the Action that Daunted the ally (Chapter 1, Action DC; as Break Free), made only when the ally is Daunted. Card drawn in the chat, to confirm.
