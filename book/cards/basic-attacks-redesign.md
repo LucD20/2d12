@@ -53,6 +53,14 @@ Riders: Daunted, the Pulls and the Slide [not priced].
 
 The four cards as drawn in the chat (names and Flavor Claude's): **Loose** and **Harrying Shot** (Archer), **Oathblade** and **Drawing Light** (Paladin). The Longsword's Tier 3 at 2[W] (about 27) accepted. **Traits (Lucas):** "Harrying Shot also gets the Weapon trait" (with [Ranged]: it is an arrow from her bow, Doomed while Engaged); "Loose has to be Ranged and Projectile" (fixed traits: it needs a bow; it no longer takes Melee from the weapon). Drawing Light has no [Ranged] (light, not a missile). Oathblade takes Melee or Ranged from the weapon, as the Weapon Attack did.
 
+## The traits withdrawn (Lucas, 2026-11-22: "Lets remove the traits for now then, too many small problems")
+
+Harrying Shot is [Power, Strike] again (no Weapon, no Ranged: no Weapon-and-Power roll question); Loose takes Melee or Ranged from the weapon, as Oathblade does (an Archer with a Dagger still has it). Drawing Light [Divine, Power, Strike].
+
+## Asked next (Lucas): the Paladin's damage lower ("removing the [Mod]?"); if every class chooses its Modifier order, the two Basic attacks must be level
+
+Numbers vs 13 at +2 (the Modifier first) and +1 (second) [calc]: Oathblade Longsword as drafted 13.6 / 11.3; without [Mod] on Tiers 2-3 12.1 / 10.6; with Tier 3 "1[W] + [Mod] + the weapon's die again" 11.2 / 9.2; Oathblade Arming Sword 9.5 / 7.7; Loose (Hunting Bow) 7.1 / 5.5. Power, as drafted: Harrying Shot 5.4 / 5.2, Drawing Light 5.8 / 5.5; "[Mod] / 1d8! + [Mod] / 2d8! + [Mod]" 7.4 / 5.8; with 1d6! 6.4 / 4.9; with 1d10! 8.3 / 6.6.
+
 ## Open, next
 - A rule the examples need: a Bloodied / Strained line that changes **this Action's own damage** can't wait for that damage (it would be circular): it reads the target as it was before the roll.
 - The Archer's Power Basic attack: its flavor.
