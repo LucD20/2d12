@@ -806,6 +806,9 @@ World Clock and the quick time bar (the date can be set since v0.0.94); Exhauste
 - [ ] **Bear the Blow on a damage with no types** (an old card's plain Apply, a Save card's damage written before v0.0.388) is split after the ally's Resistance (the buckets have no types): the cards of today all carry their components.
 - [ ] **The Talents outside the class's slots:** each PC has its playtest Talent as an "Extra" Talent (the class window still offers none: Talents set aside); when the Talents come back, they move into a slot.
 
+## FOUND ON v0.0.479 (Lucas, 2026-11-22: "don't make a new push just for this"; fix with the next version)
+- [ ] **A Large token can end partly inside a wall.** Foundry checks a drag's walls along the token's center only, so a 2 x 2 Ogre Chieftain moved beside a wall polygon ends with one column of its squares inside the rock (his screenshots). Fix: in the move hook (`move.mjs`, preMoveToken), refuse a willing move whose destination space has a wall between the token's center and the center of any of its squares (as the Charge's footprint check does: `chargeSquareProblem`); the GM's Alt-drag (Forced Movement) stops on the last legal space too.
+
 ## DESIGN LIST (Lucas's asks for a redesign; each a Fable mockup first, nothing built)
 - [ ] **The Save Action's roll dialog is "extremely bare"** (Lucas, checklist v0.0.477, save-user-banes): it shows the user's Boons and Banes and "Their roll", little else.
 - [ ] **The mode choice of a [Split] Action** (Rime Strike's Weapon mode / Power mode) **and the hands prompt** ("drop one weapon or hold it with one hand") (Lucas, checklist v0.0.477, ice-pillar: "could use a redesign").
