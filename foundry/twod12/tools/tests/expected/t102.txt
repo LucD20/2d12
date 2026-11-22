@@ -18,7 +18,7 @@ only one corner blocked                                affected: Ally | no Line 
 a creature on the line gives Low cover                 affected: Behind it | no Line of Effect: - | cover: Behind it Low cover
 ... Nari herself never stands in the way (she is the origin) affected: In the way | no Line of Effect: - | cover: In the way No cover
 an empty square as the origin: the creature there counts affected: Behind it | no Line of Effect: - | cover: Behind it Low cover
-a Burst at a corner                                    affected: Behind it, In the way | no Line of Effect: - | cover: Behind it No cover, In the way Low cover
+a Burst at a corner                                    affected: Behind it, In the way | no Line of Effect: - | cover: Behind it No cover, In the way No cover
 the origin is inside the creature's own space          affected: On the origin | no Line of Effect: - | cover: On the origin Medium cover
 a creature behind another, then Leaning (exposed: cover reduced by 1): Low cover -> No cover | exposed: true
 on a grid that isn't square nobody is excluded and no cover is worked out: 1 affected, 0 covers

@@ -150,7 +150,9 @@ const lineOf = a => ({
   used: a.versions.length > 0 && a.versions.every(v => v.used),   // v0.0.393: "used" only when spent (not when short of AP)
   // v0.0.453 (Lucas, playtest 6: "Token hud shouldnt prevent clicking on used actions. Just give a warning, like using from the sheet"): only an
   // Escalation lock blocks; a spent Frequency or too few AP open the roll dialog, which says so (rolldlg.mjs warnings)
-  stamps: a.versions.map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why, lock: !!v.lock }))
+  // v0.0.478 (Lucas's checklist, ice-pillar: Rime Strike showed "1 AP" "1 AP", its two modes): one stamp for each cost (the mode is chosen after)
+  stamps: a.versions.filter((v, k, all) => all.findIndex(x => x.label === v.label) === k).map(v => ({ ap: v.ap, label: v.label, off: v.off, why: v.why, lock: !!v.lock })),
+  dim: !!a.dim   // v0.0.478 (Lucas's checklist, hud-faded-ap: Quick Shots at 1 AP wasn't faded): the line carries actionsOf's dim (v0.0.477 set it, the line dropped it)
 });
 /** The bar's model for one creature. */
 async function barModel(actor, token = null) {

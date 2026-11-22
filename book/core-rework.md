@@ -59,7 +59,7 @@ What came out of playtest 7 and the core review (seven reviewers; three rounds o
 | D3 | **An unwilling creature's square blocks movement** (allies pass); Tumble (B8) is the way through | Decided | Footwork's Weave becomes the exception it reads as. |
 | D4 | **A Large creature's straight line (Charge)**: the line between the centers of its start and destination; every square moves the same steps; the left / right tie as today; **with a diagram** | Decided | |
 | D5 | **A dead or Prone creature gives no Cover** | Decided | Chapter 3 "Creatures in the way"; `cover.mjs`. |
-| D6 | **Grazing the center line counts** ("on the line") | Decided | |
+| D6 | ~~Grazing the center line counts~~ **Reversed (Lucas, 2026-11-22): a line that only touches a creature's space doesn't count** ("on the line") | Decided | Applied in the book and Foundry v0.0.478. |
 | D7 | "Pushed 0" | Decided (a Foundry glitch) | The book still says both "0 squares is no Forced Movement" (03:122) and "Collision at 0 against a wall" (03:173): settle the sentence. |
 | D8 | Every NPC has an **answer to the back line** | Decided | Ranged or thrown options, Evades, movement Reactions, "Setup: Advance 2". |
 

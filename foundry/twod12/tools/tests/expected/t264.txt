@@ -15,7 +15,7 @@ hover texts left: 32
   module/enclog.mjs: data-tooltip="${esc(e.why)}"` : ""}><i class="fa-solid ${ICON[e.k] ?? 
   module/hudmodel.mjs: data-tooltip="${esc(x.why || "")}" aria-label="${esc(`${a.name}, ${x.l
   module/hudview.mjs: title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} N
-  module/hudview.mjs: title="${esc(s.why || "")}">${esc(s.label)}</button>`
+  module/hudview.mjs: title="${esc(s.why || "")}">${esc(shortLabel(l, s))}</button>`
   module/initview.mjs: data-tooltip="From an effect: ${esc(by)}"` : ""}>${label}</button>`; 
   module/moment.mjs: data-tooltip="${b.back.start && b.back.steps < b.back.total ? `Move ${
   module/pickbar.mjs: data-tooltip="${esc(x.label)}"><img src="${esc(x.img)}" alt="">${x.num

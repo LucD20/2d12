@@ -1478,6 +1478,12 @@ export function registerMovement() {
   Hooks.on("preMoveToken", (doc, movement, operation) => {
     try {
       if (operation?.twod12Forced || operation?.twod12Lean || movement?.method === "undo") return;
+      // the core rework I2 (Lucas, 2026-11-21: "some, not all"; playtest 7: the Immobilized Ogre Advanced): an Immobilized creature can't move by
+      // itself, so its token isn't dragged during a combat, on its turn or not (v0.0.478: v0.0.477 checked only on its turn); Forced Movement and
+      // the GM's Alt-drag still move it; Break Free first
+      if (game.combat?.started && doc.actor?.statuses?.has?.("immobilized") && game.combat.combatants.some(x => x.tokenId === doc.id)) {
+        warn(`${doc.name} is Immobilized and can't move: Break Free (1 AP) first. (Alt-drag moves it as Forced Movement.)`); return false;
+      }
       const c = currentCombatantFor(doc);
       if (!c) return;
       const ignoring = !!c.getFlag(F, "ignoreTerrain");   // Cut Through: through creatures, and terrain costs nothing extra
@@ -1487,9 +1493,6 @@ export function registerMovement() {
       if (ignoring && num(movement?.pending?.distance)) squares = num(movement.pending.distance);
       squares = squares ? squares / gridUnit() : measureSquares(origin, to);
       if (squares <= 0) return;
-      // the core rework I2 (Lucas, 2026-11-21: "some, not all"; playtest 7: the Immobilized Ogre Advanced): an Immobilized creature can't move by
-      // itself, so its token isn't dragged in combat (Forced Movement, the GM's Alt-drag, still moves it; Break Free first)
-      if (doc.actor?.statuses?.has?.("immobilized")) { warn(`${doc.name} is Immobilized and can't move: Break Free (1 AP) first. (Alt-drag moves it as Forced Movement.)`); return false; }
       // v0.0.323 (PACK EFFECT-SHEET): a Movement limit refuses a willing move that ends nearer to (or farther from) its origin (Forced Movement is not willing)
       for (const l of readMoveLimits(doc)) {   // v0.0.361: read fresh (the cache is for the drag's measuring)
         if (l.how === "difficult") continue;   // v0.0.345: Difficult Terrain instead (hardStep)

@@ -341,7 +341,7 @@ A line that only touches the end of a wall isn't blocked.
 | 3 | High | **Doomed** (and no Field Banes from the Cover) |
 | 4 | Total | No Line of Effect: you can't target them |
 
-- **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). The line counts as on a creature's space when it **touches** it, even only at a corner or along an edge. **A Prone or dead creature gives no cover**: it lies too low to be in the way. Against an area, the creatures inside it never give cover ([[Cover against an area]]). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
+- **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). The line must pass **through** the creature's space: a line that only touches it, at a corner or along an edge, doesn't count. **A Prone or dead creature gives no cover**: it lies too low to be in the way. Against an area, the creatures inside it never give cover ([[Cover against an area]]). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
 - **Cover and the rest.** Cover applies to melee and ranged Actions alike. Its Field Banes count with your other Field Banes. High cover gives no Field Banes, only Doomed; your other Field Banes still apply (Prone, Obscured). A target that is Hidden and behind High cover is still only Doomed once.
 
 @@DIAGRAM:cover@@

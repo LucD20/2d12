@@ -19,6 +19,13 @@ import { TWOD12 } from "./config.mjs";   // v0.0.457: the damage types' colors
 import { tierProbs, bbCount, bbResolve, BB_NAMES, BB_LIMIT } from "./calc.mjs";
 
 /* ------------------------------------------------------------------ chips */
+/** v0.0.478 (Lucas's checklist, attribute-dc: the dialog read "Body +2 vs Body"; book, Chapter 1, Attribute DCs): an Attribute is rolled against
+ *  the target's DC of that Attribute: "Body" -> "Body DC"; "Body or Instinct" (the one rolled) -> "the same Attribute's DC". */
+export const attrDcWords = v => { const t = String(v ?? "").trim(), A = "(?:Body|Mind|Appeal|Instinct)";
+  if (new RegExp(`^${A}$`).test(t)) return `${t} DC`;
+  if (new RegExp(`^${A}(?: or ${A})+$`).test(t)) return "the same Attribute's DC";
+  return t; };
+
 /** The rows of the Modifiers panel, in their order, with their labels (the brief: Passives, Boons, Banes, Flat, Damage). */
 export const ROWS = [["passives", "Passives"], ["boons", "Boons"], ["banes", "Banes"], ["flat", "Flat"], ["damage", "Damage"]];
 /** A chip's kind: a buff (green outline) or a debuff (red), and its pip. */
@@ -405,7 +412,7 @@ function metaHtml(inp, v) {
   // v0.0.294 (Lucas): the book's format (Ch. 1, Reading an Action): Targets (✦ the Area) on one line, "Distance: X ✦ Vs. X" on the next, the
   // Trigger / Interrupt after the meta lines (the chat cards' order too, brief section 12)
   const l1 = [m.targets ? `<b>Targets:</b> ${esc(m.targets)}` : "", inp.area ? `<button type="button" class="rd-area" data-act="place" aria-label="${inp.area.placed ? "Place the area again" : "Place the area"}"><span aria-hidden="true">◇</span> ${esc(inp.area.labels?.[v?.ap] ?? inp.area.label)}</button>` : ""].filter(Boolean);
-  const l2 = [m.dist && !/^self$/i.test(m.dist) ? `<b>Distance:</b> ${esc(m.dist)}` : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "<b>Vs.</b> "}${vsColored(m.vs)}` : ""].filter(Boolean);
+  const l2 = [m.dist && !/^self$/i.test(m.dist) ? `<b>Distance:</b> ${esc(m.dist)}` : "", m.vs ? `${/save$/i.test(m.vs) ? "" : "<b>Vs.</b> "}${vsColored(/save$/i.test(m.vs) ? m.vs : attrDcWords(m.vs))}` : ""].filter(Boolean);
   const out = [];
   if (Number(m.escalation) > 0) out.push(`<div class="rd-meta">${Number(m.escalation)} Escalation</div>`);
   if (l1.length) out.push(`<div class="rd-meta">${l1.join(sep)}</div>`);
@@ -514,7 +521,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
     // v0.0.418 (playtest 5, B1: Judge showed "Attack: ... vs. DC 13"): the roll line only where the card has one
     if (m.vs && C.roll) {
       const save = /save$/i.test(m.vs);
-      const vsTxt = save ? esc(m.vs) : `${esc(inp.roll?.name ?? "Modifier")} ${sgn(Number(inp.roll?.mod) || 0)} vs. ${esc(String(m.vs).replace(/\b(AD|WD)\b/g, d => DEF_NAME[d]))}`;
+      const vsTxt = save ? esc(m.vs) : `${esc(inp.roll?.name ?? "Modifier")} ${sgn(Number(inp.roll?.mod) || 0)} vs. ${esc(attrDcWords(String(m.vs)).replace(/\b(AD|WD)\b/g, d => DEF_NAME[d]))}`;
       out.push(line(C.roll?.label ?? (save ? "Save" : "Attack"), vsTxt));
     }
     for (const l of C.before) out.push(line(esc(l.label), l.html));
@@ -549,7 +556,7 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
   if (m.trigger) out.push(line(m.triggerKind === "interrupt" ? "Interrupt" : "Trigger", m.triggerHtml ?? esc(m.trigger)));
   if (m.vs) {
     const save = /save$/i.test(m.vs);
-    const vsTxt = save ? esc(m.vs) : `${esc(inp.roll?.name ?? "Modifier")} ${sgn(Number(inp.roll?.mod) || 0)} vs. ${esc(String(m.vs).replace(/\b(AD|WD)\b/g, d => DEF_NAME[d]))}`;
+    const vsTxt = save ? esc(m.vs) : `${esc(inp.roll?.name ?? "Modifier")} ${sgn(Number(inp.roll?.mod) || 0)} vs. ${esc(attrDcWords(String(m.vs)).replace(/\b(AD|WD)\b/g, d => DEF_NAME[d]))}`;
     out.push(line(save ? "Save" : "Attack", vsTxt));
   }
   if (v && !v.noTiers) {

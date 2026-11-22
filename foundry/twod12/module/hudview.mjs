@@ -58,9 +58,12 @@ export const partyStripHtml = ({ cards = [], momentum = "" } = {}) => `<div clas
 /** A line of a column: the Action's name, its cost stamps (each a Version; struck when it can't be used), the roll or what to know under it. */
 /** A cost stamp (a Version's Use button; struck when it can't be used, its reason the one hover text). l: its line; s: { ap, label, off, why } */
 // v0.0.453 (playtest 6): an off stamp is still clicked (struck: spent, or too few AP; the roll dialog warns); only an Escalation lock is disabled
+// v0.0.478 (Lucas's checklist, hud-faded-ap: on a smaller screen Shove's and Relocate's names were squished by "1 AP" "2 AP" "3 AP"): a line with several
+// costs writes only the number on each stamp and "AP" (or "R") once, on the last ("1" "2" "3 AP"); the button's aria-label keeps the whole cost
+const shortLabel = (l, s) => { const st = l.stamps ?? []; if (st.length < 2 || s === st[st.length - 1]) return s.label; return String(s.label).replace(/\s*(AP|R)$/, ""); };
 const stampHtml = (l, s) => (s.off && (s.lock || l.grant)
-  ? `<button type="button" class="hb-st no" disabled title="${esc(s.why || "")}">${esc(s.label)}</button>`
-  : `<button type="button" class="hb-st${s.off ? " no" : ""}" data-hud="${l.grant ? "grant" : "use"}" data-ap="${n0(s.ap)}"${l.grant ? ` data-effect="${esc(l.grant.effect)}" data-index="${n0(l.grant.index)}"${l.grant.target ? ` data-target="${esc(l.grant.target)}"` : ""}` : ""} aria-label="${esc(`Use ${l.name}, ${s.label}`)}">${esc(s.label)}</button>`);
+  ? `<button type="button" class="hb-st no" disabled title="${esc(s.why || "")}">${esc(shortLabel(l, s))}</button>`
+  : `<button type="button" class="hb-st${s.off ? " no" : ""}" data-hud="${l.grant ? "grant" : "use"}" data-ap="${n0(s.ap)}"${l.grant ? ` data-effect="${esc(l.grant.effect)}" data-index="${n0(l.grant.index)}"${l.grant.target ? ` data-target="${esc(l.grant.target)}"` : ""}` : ""} aria-label="${esc(`Use ${l.name}, ${s.label}`)}">${esc(shortLabel(l, s))}</button>`);
 export function lineHtml(l) {
   const stamp = s => stampHtml(l, s);
   const cls = ["hb-ln", l.used ? "used" : "", l.pass ? "pass" : "", l.ready ? "ready" : "", l.dim ? "dim" : ""].filter(Boolean).join(" ");

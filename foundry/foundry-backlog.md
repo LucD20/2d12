@@ -806,6 +806,11 @@ World Clock and the quick time bar (the date can be set since v0.0.94); Exhauste
 - [ ] **Bear the Blow on a damage with no types** (an old card's plain Apply, a Save card's damage written before v0.0.388) is split after the ally's Resistance (the buckets have no types): the cards of today all carry their components.
 - [ ] **The Talents outside the class's slots:** each PC has its playtest Talent as an "Extra" Talent (the class window still offers none: Talents set aside); when the Talents come back, they move into a slot.
 
+## DESIGN LIST (Lucas's asks for a redesign; each a Fable mockup first, nothing built)
+- [ ] **The Save Action's roll dialog is "extremely bare"** (Lucas, checklist v0.0.477, save-user-banes): it shows the user's Boons and Banes and "Their roll", little else.
+- [ ] **The mode choice of a [Split] Action** (Rime Strike's Weapon mode / Power mode) **and the hands prompt** ("drop one weapon or hold it with one hand") (Lucas, checklist v0.0.477, ice-pillar: "could use a redesign").
+- [ ] **From playtest 7:** hover tips on the effect icons beside the token and in the roll dialog; + / − AP buttons on the combat strip; the current turn more visible on the combat strip.
+
 ## THE CORE REWORK, BATCH 1 (v0.0.477, 2026-11-21): LEFT BY HAND OR FOR LATER
 - [ ] **A reduction (Judge, Shield of Faith) used on Collision damage instead of the Action's own** (book, Chapter 4, since the core rework C5): Foundry applies Collision directly (`move.mjs pushOne`), with no moment and no reduction: by hand.
 - [ ] **Daunted / Taunted already on a creature before v0.0.477** don't carry `endsWithOrigin` (only new ones and the world's items do): they end by their duration.

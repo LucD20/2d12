@@ -364,7 +364,8 @@ def straight_large_diagram():
     return g, dict(path=[sq(c) for c in path], passed=len(passed))
 
 def on_the_line_diagram():
-    """"On the line" (the core rework D6, 2026-11-21): a creature whose space the center line touches, even only at a corner, gives Low cover."""
+    """"On the line" (the core rework D6, 2026-11-21; reversed 2026-11-22, Lucas: "it shouldnt count"): a creature whose space the center line only
+    touches at a corner gives no cover; the line must pass through its space."""
     rows, cols, S = 5, 6, 32; att, tgt, x = (4, 0), (0, 4), (2, 1)
     a, t = center(att), center(tgt)
     g = Svg(rows, cols, S)
@@ -374,7 +375,7 @@ def on_the_line_diagram():
     g.outline([x])
     g.token(x[0], x[1], 'X', 'neutral'); g.token(att[0], att[1], 'Y', 'ally'); g.token(tgt[0], tgt[1], 'T', 'enemy')
     g.over.append(f'<circle cx="{corner[0] * S}" cy="{corner[1] * S}" r="5" class="glean"/>')
-    g.caption = 'The line from the center of your square (Y, A5) to the center of the target\'s (T, E1) only touches the corner of X\'s square (B3, the green dot): X is on the line, so T has Low cover (1 Field Bane). A Prone or dead X would give none'
+    g.caption = 'The line from the center of your square (Y, A5) to the center of the target\'s (T, E1) only touches the corner of X\'s square (B3, the dot): it doesn\'t pass through it, so X gives no cover. Had the line crossed X\'s square, T would have Low cover (1 Field Bane), unless X were Prone or dead'
     return g, dict(corner=corner)
 
 

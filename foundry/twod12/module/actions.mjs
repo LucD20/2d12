@@ -743,7 +743,7 @@ export async function useAction(actor, item, opts = {}) {
       if (useTraits.has("weapon") && useTraits.has("ranged") && !noEngagedTarget.length && engagedWithOther(tk, selfToken))
         extraMods.push({
           id: `syn:engaged-target|${a.uuid}`,
-          name: `Engaged (${tk.name}, 1 Field Bane)`,
+          name: `Engaged with ${engagedWith(tk).filter(t => (t.document?.id ?? t.id) !== (selfToken.document?.id ?? selfToken.id)).map(t => t.name).join(", ") || "another"} (${tk.name}, 1 Field Bane)`,
           boons: 0,
           banes: 1,
           bb: "field",
@@ -806,7 +806,8 @@ export async function useAction(actor, item, opts = {}) {
     if (!multi && rollsAtOthers && targetToken && !noEngagedTarget.length && engagedWithOther(targetToken, selfToken))   // "Ignore a Bane" (Sharpshooter: [Shot] Actions)
       extraMods.push({
         id: "syn:engaged-target",
-        name: "Target is Engaged (1 Field Bane)",
+        // v0.0.478 (Lucas's checklist, doomed-counts-five: it read as a second "Engaged" beside "You are Engaged"): it names whom the target is Engaged with
+        name: `Engaged with ${engagedWith(targetToken).filter(t => (t.document?.id ?? t.id) !== (selfToken.document?.id ?? selfToken.id)).map(t => t.name).join(", ") || "another"} (1 Field Bane)`,
         boons: 0,
         banes: 1,
         bb: "field",

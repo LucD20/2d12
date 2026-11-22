@@ -6,7 +6,7 @@ import { homePos, leanOf, pickPeek, CORNERS, CORNER_LABEL } from "./lean.mjs";
 
 export const COVER_LABELS = ["No cover", "Low cover", "Medium cover", "High cover", "Total cover"];
 const INSET = 0.04;
-const WAY_INSET = -0.002;   // the core rework D6 (Lucas, 2026-11-21; book, Chapter 3: the line touching a creature's space, even at a corner, counts): its square and a hair more (v0.0.350: less a sliver, 0.03)   // corners are pulled slightly inward, so a wall running along the target's edge doesn't block its own corner
+const WAY_INSET = 0.03;   // v0.0.350: a creature in the way: its square less a sliver, so a line that only touches it (an edge, a corner) doesn't count (book, Chapter 3; v0.0.477 counted a touch, v0.0.478 reverses it: Lucas, 2026-11-22)   // corners are pulled slightly inward, so a wall running along the target's edge doesn't block its own corner
 
 /** Do walls that block sight or movement lie between two points? A line that only touches the end of a wall isn't blocked. */
 export function wallBlocks(a, b) {
@@ -89,7 +89,7 @@ export function coverBetween(attacker, target, { blockedFn: bf = wallBlocks, oth
   const clear = clearLinesOf(attacker), mine = Number(attacker.document?.disposition ?? 0);
   const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== attacker.id && t.id !== target.id && !t.document.hidden && !liesLow(t) && !(clear && mine && Number(t.document.disposition) === mine));
   // v0.0.350 (Lucas, playtest 4: "show center-to-center cover too; I think it isn't calculating it correctly"): a creature whose square the center
-  // line crosses is in the way (book: "on the line"); since the core rework D6 a line along an edge or through a corner point counts too
+  // line crosses is in the way (book: "on the line"); a line along an edge or through a corner point doesn't count (only a sliver is left out)
   const blockers = best.blocked < 4 ? crowd.filter(t => segmentHitsRect(best.origin, tc, inset(rectOf(t), WAY_INSET))) : [];
   const inWay = blockers.length > 0;
   let level = Math.min(4, Math.max(best.blocked, inWay ? 1 : 0));
