@@ -206,9 +206,9 @@
       "vs": "Body",
       "requirements": "The target's SR is at most 1 higher than yours.",
       "versions": [
-        { "ap": 1, "tiers": ["No effect.", "Pushed 1.", "Pushed 2."] },
-        { "ap": 2, "tiers": ["No effect.", "Pushed 2.", "Pushed 4."] },
-        { "ap": 3, "tiers": ["Pushed 1.", "Pushed 3.", "Pushed 5."] }
+        { "ap": 1, "tiers": ["No effect.", "Pushed 1.", "Pushed 2."], "critical": "Prone." },
+        { "ap": 2, "tiers": ["No effect.", "Pushed 2.", "Pushed 4."], "critical": "Prone." },
+        { "ap": 3, "tiers": ["Pushed 1.", "Pushed 3.", "Pushed 5."], "critical": "Prone." }
       ],
       "foundry": { "basic": "shove", "automation": "gold", "img": "icons/svg/up.svg" }
     },
@@ -247,8 +247,8 @@
       "vs": "Body or Instinct (the one used to roll)",
       "requirements": "The target's SR is at most 1 higher than yours.",
       "versions": [
-        { "ap": 1, "tiers": ["No effect.", "No effect.", "Prone."] },
-        { "ap": 2, "tiers": ["No effect.", "Prone.", "[V] 1d8 Bl; Prone."] }
+        { "ap": 1, "tiers": ["No effect.", "No effect.", "Prone."], "critical": "[V] 1d6! Bl." },
+        { "ap": 2, "tiers": ["No effect.", "Prone.", "[V] 1d8 Bl; Prone."], "critical": "[V] 1d6! Bl." }
       ],
       "foundry": { "basic": "trip", "automation": "gold", "img": "icons/svg/falling.svg" }
     },

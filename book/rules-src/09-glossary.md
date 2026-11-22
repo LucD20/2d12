@@ -10,7 +10,7 @@
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP and can be used only on your turn. |
 | [[Reactions\|**0R**]] | A Reaction that costs no AP. |
 | [[Action DC\|**Action DC**]] | 11 + the Modifier an Action used (13 with no Action behind the effect): what a Check rolls against to beat what that Action did, such as Break Free. |
-| [[Action Points\|**Action Points (AP)**]] | You regain 4 at the start of your turn, and 1 Reaction AP. The AP you don't spend stay for Reactions and give you Guard. |
+| [[Action Points\|**Action Points (AP)**]] | You regain 4 at the start of your turn, and 1 Reaction Point. The AP you don't spend stay for Reactions and give you Guard. |
 | [[Advance\|**Advance**]] | Normal movement, up to the given distance, in one piece: the movement left is lost; one Interact can fit inside the Advance Action. |
 | [[Rules Language\|**Ally**]] | A creature on your side. You are never your own ally. |
 | [[Escalation\|**Apex**]] | A class's big Encounter Action that needs Escalation 6; you choose one at level 4. |
@@ -45,7 +45,7 @@
 | [[Daily\|**Daily**]] | Once per Sleep. |
 | [[Sight Senses\|**Dark Sight**]] | A Sight Sense: Dim light and Darkness count as Bright for you. |
 | [[Daunted\|**Daunted**]] | Of a source: 1 Bane on all your Rolls, and moving closer to it is Difficult Terrain, while you see it. |
-| [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away (never the Reaction AP); the rest, if any, from your next turn's AP. |
+| [[Dazed\|**Dazed**]] | A condition with a value: you lose that many AP right away (never the Reaction Point); the rest, if any, from your next turn's AP. |
 | [[Deadly Hazards\|**Deadly Hazard**]] | A hazard that kills Minor enemies at once and leaves anyone else Imperiled. |
 | [[Defenses\|**Defense**]] | Armor Defense (11 + Armor value + items + bonuses − penalties), Ward Defense (11 + Power Modifier + Ward value + items + bonuses − penalties), or an Attribute DC (11 + the Attribute). "+1 Defense" raises all of them. |
 | [[Desperate\|**Desperate**]] | You are Down and still fighting (some Nonlethal damage, and a Nonlethal blow took you Down): Slowed 1, or your Slowed value + 1 (at most 3). |
@@ -133,7 +133,7 @@
 | [[Properties\|**Properties**]] | The properties of a weapon (Actions have traits, creatures have Tags): Melee, Ranged, Light, Long, Projectile, Firearm, Strung, Thrown, Reload, Two-handed, Barehanded, Non-threatening. |
 | [[Pulled\|**Pulled**]] | Forced Movement toward the origin, up to its value, inside a 45° cone. |
 | [[Pushed\|**Pushed**]] | Forced Movement away from the origin, up to its value, inside a 45° cone. |
-| [[Quickened\|**Quickened**]] | A condition with a value: you regain (and can hold) that many more AP at the start of your turn; never more Reaction AP. |
+| [[Quickened\|**Quickened**]] | A condition with a value: you regain (and can hold) that many more AP at the start of your turn; never more Reaction Points. |
 | [[Rally Points\|**Rally Point**]] | Removes damage equal to a quarter of your Health Pool. Steel Yourself can't be used while Down or Unconscious. |
 | [[Weapon Range\|**Range**]] | How far a weapon reaches, melee weapons included: normal / far (1 Bane) / maximum (2 Banes). |
 | [[Ranged Combat While Engaged\|**Ranged Combat While Engaged**]] | Using a [Ranged] Action while Engaged: the roll is Doomed. Against a creature Engaged with someone else: 1 Field Bane. |
@@ -141,7 +141,7 @@
 | [[Ratings\|**Rating**]] | How strong one of an NPC's numbers is for its rank: Terrible, Low, Medium, High or Extreme (Minions have no Extreme). A GM can pick a number between two ratings. |
 | [[Reach\|**Reach**]] | How far your body reaches: 1 square for every Species. Weapons have a Range instead. |
 | [[Reactions\|**Reaction**]] | An Action used in response to an Interrupt or a Trigger, with a cost like 1R (0R costs no AP). No creature has one by default. |
-| [[Action Points\|**Reaction AP**]] | The 1 AP you gain at the start of your turn that pays only for Reactions. It never becomes Guard. |
+| [[Action Points\|**Reaction Point (RP)**]] | The 1 point you gain at the start of your turn that pays only for Reactions (alone, or with AP you kept). It never becomes Guard. While Strained you don't regain it. |
 | [[Recovery\|**Recovery**]] | The three ways to recover: a Breather, a Sleep and a Rest. |
 | [[Regrip\|**Regrip**]] | The Basic Action (1 AP, no Handle) to hold a weapon with both hands again, move it to the other hand or swap the weapons in your hands. |
 | [[Release\|**Release**]] | 0 AP: drop an object, or let go of it with one hand. |
@@ -170,7 +170,7 @@
 | [[Size\|**Size**]] | A creature's rank from 1 to 7, and how many squares it occupies. |
 | [[Sleep\|**Sleep**]] | 8 hours of non-strenuous activity, at most once every 16 hours; it renews Daily Actions. |
 | [[Slid\|**Slid**]] | Forced Movement along a path the origin chooses (it can curve); the origin needs Line of Effect. |
-| [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction AP doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
+| [[Slowed\|**Slowed**]] | A condition with a value: you regain that many fewer AP at the start of your turn, and your maximum AP is that much lower; your Reaction Point doesn't change. Desperate, Dying and Shattered give Slowed 1 (or 1 more, to at most 3). |
 | [[Reading an Action\|**Special**]] | A card's line that is a rule about the card itself. |
 | [[Actions: the turn budget\|**Special Action**]] | An NPC Action beyond its Basic attack: any AP cost and any Frequency, bought with the points of its rank's turn budget. |
 | [[Rules Language\|**Specific beats general**]] | A card or feature that says something different from a general rule wins for that case. |
@@ -181,7 +181,7 @@
 | [[Stacking\|**Stacking**]] | Bonuses don't add up: for each value (Guard included) use the highest bonus and the highest penalty. "Increase by N", Boons and Banes (up to the limit of their name), named bonuses (Field, Pressure, Support: different names add, the same name keeps the highest), Slowed increases and the Guard of unspent AP do add up. |
 | [[Stages\|**Stage**]] | A group of levels: Stage 0 is levels 1-3, Stage 1 levels 4-7, Stage 2 levels 8-11, Stage 3 levels 12-15. Your numbers change only at a new Stage (Modifiers, Health, Guard per unspent AP, Rally Points; never your Attributes), and it sets the Bestiary's tables. |
 | [[Stages\|**Stage Talent**]] | The Talent of levels 4, 8 and 12, the first level of Stages 1, 2 and 3. |
-| [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction AP waits. |
+| [[Staggered\|**Staggered**]] | You can't use Reactions; your Reaction Point waits. |
 | [[Standards\|**Standard**]] | An NPC rank with CV 100: about 60 Health at Stage 0, dies to about 2 to 3 PC turns. |
 | [[The Start of the Encounter\|**Start of the encounter**]] | After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |

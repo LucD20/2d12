@@ -153,16 +153,21 @@ When you complete a Rest, you remove all the damage you took and you regain all 
 
 ### Bloodied
 
-You are Bloodied while your Vigor damage is equal to or more than your Vigor. It has **no effect by itself**: Actions and features use it, such as "when an ally becomes Bloodied" or "against a Bloodied target".
+You are Bloodied while your Vigor damage is equal to or more than your Vigor. While you are Bloodied, your body falters:
+
+- Your **Speed** is lowered by 2 (to a minimum of 1).
+- Your **[[Steadiness]]** is lowered by 1 (it can go below 0: a Forced Movement then moves you farther).
 
 ### Strained
 
-You are Strained while your Resolve damage is equal to or more than your Resolve. Like Bloodied, it has **no effect by itself**: Actions and features use it.
+You are Strained while your Resolve damage is equal to or more than your Resolve. While you are Strained, your mind frays: **at the start of your turn, you don't regain your [[Action Points|Reaction Point]]** (you keep one you still have; you can still pay a Reaction with AP you kept).
+
+Bloodied and Strained end as soon as healing brings that damage below the threshold: your Speed and Steadiness come back at once, and you regain your Reaction Point again from your next turn. Actions and features use them too: a card's **Bloodied** and **Strained** lines (see [[Effect Timing]]), or "when an ally becomes Bloodied".
 
 Every creature knows whether a creature it perceives is Bloodied or Strained: the GM says so when an NPC becomes either.
 
 > [!tip]
-> A feature that cares about an **enemy** being Bloodied or Strained usually says **"when it becomes"**: an enemy is Bloodied for about a round before it goes Down, so "while" rarely matters. A rider on your own Action can say "while" ("if the target is Strained, heal 2 more").
+> A card's Bloodied line written **after** the Tiers rewards the blow that bloodies: the Action's own damage counts. Written **above** them, it rewards finding a target already hurt.
 
 ### Desperate
 

@@ -330,6 +330,8 @@
   {
    "name": "Overhead Smash",
    "category": "Special Action",
+   "_bloodiedNote": "2026-11-21 (the core rework, batch 2): a placeholder Bloodied line to try the format in Foundry (Lucas: \"Ok\"); the real lines come with the Bestiary's rebuild.",
+   "bloodied": "The target is Pushed 1 more.",
    "book": false,
    "npc": "Ogre Chieftain",
    "flavor": "Both hands on the club, and the floor cracks under it.",

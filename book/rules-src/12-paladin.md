@@ -51,7 +51,7 @@ Every Paladin has these two. **Judge** names the foe your god's attention is on:
 
 ### Level 1: Hallmark Reaction
 
-**Choose one.** *Quick build: Shield of Faith.* Both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
+**Choose one.** *Quick build: Shield of Faith.* Both are paid with your Reaction Point or with AP you kept from your turn (see [[Reactions]]).
 
 - **Shield of Faith** (Turn, 1R): when a foe would damage an ally, you take some of it off and draw the foe to you.
 - **Rebuke** (Turn, 1R): when a foe moves away from you, it slows and may stop.
@@ -112,7 +112,7 @@ You gain Kindled Wrath: it raises your Escalation when an ally becomes Bloodied 
 **Choose one.** *Quick build: Weight of Judgment.*
 
 - **Weight of Judgment:** the foe you Judged moves slower.
-- **Tireless Vigil:** a second Reaction AP each round, for [Divine] Reactions.
+- **Tireless Vigil:** a second Reaction Point each round, for [Divine] Reactions.
 
 @@CARD:Weight of Judgment@@
 

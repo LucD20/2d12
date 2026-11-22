@@ -217,7 +217,9 @@ Only two creatures of the same Size can swap squares. Steadiness doesn't stop a 
 
 ## Steadiness
 
-Some creatures are harder to move than others. Every creature has a **Steadiness**: normally 0, and never negative. When you are moved by Forced Movement or Reposition, reduce its value by your Steadiness: a Pushed 3 against Steadiness 1 is a Pushed 2, and a value of 0 or less moves you nowhere. The value is reduced before the origin chooses the destination, so a creature with Steadiness also takes less damage from Collision (the origin can aim less far). You can choose not to apply your Steadiness, for example when an ally helps you.
+Some creatures are harder to move than others. Every creature has a **Steadiness**: normally 0. When you are moved by Forced Movement or Reposition, reduce its value by your Steadiness: a Pushed 3 against Steadiness 1 is a Pushed 2, and a value of 0 or less moves you nowhere. The value is reduced before the origin chooses the destination, so a creature with Steadiness also takes less damage from Collision (the origin can aim less far). You can choose not to apply your Steadiness, for example when an ally helps you.
+
+**Below 0.** Steadiness can go below 0 (being [[Bloodied]] lowers it by 1). A negative Steadiness adds to a **Forced Movement** (a Pushed 2 against Steadiness −1 is a Pushed 3), never to a Reposition, and it always applies: you can't choose to ignore it.
 
 ## Difficult Terrain
 

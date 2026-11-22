@@ -102,6 +102,10 @@ def structure(c):
         # Chapter 1, Attribute DCs (2026-11-21, the core rework A7): an Attribute is rolled against the target's DC of that Attribute
         dfn = "the same Attribute's DC" if vs.endswith('(the one used to roll)') else DEFENSE.get(vs, vs + ' DC' if vs in ('Body', 'Mind', 'Appeal', 'Instinct') else vs)
         B.append(_line(c.get('rollLabel', 'Attack'), (roll + ' ' if roll else '') + 'vs. ' + dfn))   # 'Check' on Break Free (2026-11-21)
+    # the core rework batch 2 (book, Chapter 2, Effect Timing): a Bloodied / Strained line above the roll (bloodiedBefore / strainedBefore: the
+    # target must already be so) or after the Tiers (bloodied / strained: this Action's damage counts)
+    for key, label in (('bloodiedBefore', 'Bloodied'), ('strainedBefore', 'Strained')):
+        if c.get(key): B.append(_line(label, c[key]))
     versions = c.get('versions', [])
     if len(versions) == 1: B += _version_lines(c, versions[0])
     else:
@@ -110,7 +114,8 @@ def structure(c):
             s['blocks'].append({'heading': heading, 'body': _version_lines(c, v)})
     if c.get('text'):
         B.append(_line('' if c.get('placeholder') else 'Passive' if s['passive'] else 'Effect', c['text']))
-    after = [_line('Special', c['notes'])] if c.get('notes') else []
+    after = [_line(label, c[key]) for key, label in (('bloodied', 'Bloodied'), ('strained', 'Strained')) if c.get(key)]
+    after += [_line('Special', c['notes'])] if c.get('notes') else []
     # an inline Action, one line in Lucas's format: Name — cost | Frequency | [traits] | Interrupt: ... | Effects: ...
     for a in c.get('inline', []):
         parts = [a.get('cost', ''), a.get('frequency', '')]

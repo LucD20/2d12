@@ -40,7 +40,13 @@ A **Doomed** roll can't produce Doubles. On a **Favored** roll, any two of the t
 
 A result is a **Critical** when you roll **Doubles on a result that is already Tier 3**, when your total is **20 or more above the DC** (33 or more against DC 13), or when a **Favored** roll shows **the same number on all three dice**. Doubles that raise a Tier 2 to Tier 3 are not a Critical.
 
-A Critical matters for the few Actions that have a **Critical** row, written under Tier 3 and above the Effects. On a Critical, you get the Tier 3 result and the Critical effect as well. For any other Action, a Critical is simply a Tier 3. Once an encounter, a Critical on one of your Actions also raises your Escalation by 1 (see [[Escalation]]).
+On a Critical you get the Tier 3 result, and:
+
+- **A Basic attack** (the [[Weapon Attack]], [[Fists]], an NPC's [[The Basic attack|Basic attack]]) deals **1d10!** more damage. Before you roll it, choose one of the damage types the Action deals, with its pool and subtype: an Action that deals only [V] Piercing adds [V] 1d10! Pi; one that deals [V] Piercing and [R] Holy adds either, your choice.
+- **An Action with a Critical row** (written under Tier 3 and above the Effects, such as [[Trip]] and [[Shove]]) gets that effect instead. A Basic attack with a Critical row of its own uses the row, not the 1d10!.
+- **Any other Action:** a Critical is simply a Tier 3.
+
+**A Critical is always optional:** the creature that rolled it chooses whether to apply its extra (the die or the row); the result is a Tier 3 either way. Once an encounter, a Critical on one of your Actions also raises your Escalation by 1 (see [[Escalation]]), whether or not you apply its extra.
 
 ## Boons and Banes
 

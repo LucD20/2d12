@@ -36,7 +36,7 @@ Sources: the 19 cards of the Paladin redesign (`paladin-redesign.md`, "The whole
 | 21 | **Traits on a Mode** | "Glare [Power, Save]": traits only that Mode has | Glare, Kneel |
 | 22 | **A named value** | "Smite dice: ..." defined once, used on the Tiers | Smite |
 | 23 | **A line that changes the dice** | "Against a Profane creature, the damage dice are d8s." | Smite, Word of Radiance |
-| 24 | **An extra cost inside the card** | "you can spend your Reaction AP to roll 1 more Smite die" | Smite |
+| 24 | **An extra cost inside the card** | "you can spend your Reaction Point to roll 1 more Smite die" | Smite |
 | 25 | **A use outside the turn inside an Action** | Judge's 0 AP line: "or as a 0R when the creature you Judged goes Down" | Judge |
 | 26 | **A Passive's condition** | "While your Escalation is 2 or more, ..." in the sentence itself | 5 Passives |
 | 27 | **A card that changes another card** | Roving Judgment (Judge's cost), Hallowed Stance (gives a Setup) | 2 |
@@ -154,6 +154,7 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 3. **The traits:** on their own line, by group.
 4. **The grid:** "Distance: ..." and "Area: ..." at the left, "Target: ..." at the right. A fact the card doesn't have is not printed.
 5. **The body, in play order, every line labeled:** Requirement · Interrupt or Trigger · Setup · a defined word ("Smite dice", "Judged") · Effect · a Special that says how the roll is made · Attack or Save · Tier 1 / 2 / 3 (or "Tier 1 or 2") · Critical · Effect · Special.
+   **Bloodied and Strained lines (Lucas, 2026-11-21, the core rework C4):** labeled "Bloodied:" / "Strained:", like Attack and Special. **Where the line sits decides when it counts:** above the Attack or Save line, the target must already be Bloodied (Strained) when the Action is used; after the Tiers (and the Critical), this Action's own damage counts. Book, Chapter 2, Effect Timing. **A Critical row (C1, 2026-11-21):** only Basic attacks get the 1d10! by rule; any other Action gets something on a Critical only through its own Critical row (Trip: [V] 1d6! Bl; Shove: Prone), which replaces the die on a Basic attack.
    **A Special about the roll goes above the Attack or Save line (Lucas, 2026-11-17, playtest 5, A1):** what changes how the roll is made (which weapon makes it, a Doomed or Favored condition) is read before the roll; a Special about the damage, the Tiers or a duration stays at the end (Darting Blade's "You make this Strike with a Light weapon you hold" above; Hit and Run's "The bow's hit is Doomed if you are Engaged" above, its "[W] is the weapon that hit" below).
 6. **Effect, Special, Passive:** Effect: what happens when the card is used, with no roll. Special: a rule about the card itself. Passive: what a card with no cost does.
 7. **The roll line:** "Attack: Weapon vs. Armor Defense" or "Save: Appeal", right above the Tiers. A Strike always writes its Defense.
@@ -194,7 +195,7 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 > **Tier 1:** Your Smite dice.
 > **Tier 2:** [V] 1[W] + [Mod] + your Smite dice.
 > **Tier 3:** [V] 1[W] + [Mod] + your Smite dice + 1 more Smite die.
-> **Special:** When you use Smite, you can spend your Reaction AP to roll 1 more Smite die. Neither extra die counts toward the 4.
+> **Special:** When you use Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4.
 
 ### Level 1: a Hallmark Action (1 of 2)
 
@@ -323,7 +324,7 @@ Also from the research: a grid with no labels is hard on a first reading (said o
 
 > **Tireless Vigil** · Escalation 4 · Passive
 > *The longer the fight lasts, the less escapes you: your guard is on two allies at once.*
-> **Passive:** You gain 1 more Reaction AP when you regain AP. It pays only for [Divine] Reactions.
+> **Passive:** You gain 1 more Reaction Point when you regain AP. It pays only for [Divine] Reactions.
 
 ### Level 3: the Escalation 6 ability (1 of 2), and a second Art
 

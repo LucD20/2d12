@@ -45,7 +45,7 @@ A **turn-cycle** is the period from the start of a creature's turn to the start 
 
 ## Action Points
 
-At the start of your turn in combat, you **regain AP**: you lose any AP you didn't use and gain **4 Action Points (AP)** and **1 Reaction AP**. You spend AP to do things on your turn. The Reaction AP pays only for [[Reactions]], on your turn or another creature's.
+At the start of your turn in combat, you **regain AP**: you lose any AP you didn't use and gain **4 Action Points (AP)** and **1 Reaction Point (RP)**. You spend AP to do things on your turn. The Reaction Point pays only for [[Reactions]], on your turn or another creature's.
 
 ### Unspent AP
 
@@ -53,7 +53,7 @@ If you end your turn without spending all your AP, you keep the rest until your 
 
 - This Guard **adds** to any Guard you already have (an exception to [[Stacking]]), and what is left of it ends 1 round later, when you regain AP again. Damage takes it before your other Guard.
 - A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no Guard.
-- Your Reaction AP never becomes Guard, and your first turn of an encounter has no unused AP.
+- Your Reaction Point never becomes Guard, and your first turn of an encounter has no unused AP.
 
 > [!example]
 > Drak (Stage 0) has Guard 5 from a card and ends his turn with 1 AP left: nothing changes until his next turn (he could still spend that AP on a Reaction). When his next turn starts, he regains his AP and gains Guard 2 for 1 round, on top of his Guard 5: Guard 7. A goblin then hits him for 3: his Guard from AP takes 2 and his other Guard 1, so he has Guard 4 left.
@@ -62,14 +62,14 @@ If you end your turn without spending all your AP, you keep the rest until your 
 
 When something gives or takes Action Points, it says whether it happens **now** or **when you regain AP**.
 
-- **Now.** "The target loses 1 AP" means they lose 1 AP they have right now; if they have none, it has no effect. "The target gains 1 AP" means they gain 1 AP right now. Unless otherwise stated, you can't have more than 4 AP, and losing or gaining AP never changes your Reaction AP.
-- **When you regain AP.** Changes to the AP you regain at the start of your turn are the [[Slowed]] and [[Quickened]] conditions: Slowed 1 means you regain 1 AP less, Quickened 1 means you regain 1 AP more. Neither changes your Reaction AP.
+- **Now.** "The target loses 1 AP" means they lose 1 AP they have right now; if they have none, it has no effect. "The target gains 1 AP" means they gain 1 AP right now. Unless otherwise stated, you can't have more than 4 AP, and losing or gaining AP never changes your Reaction Point.
+- **When you regain AP.** Changes to the AP you regain at the start of your turn are the [[Slowed]] and [[Quickened]] conditions: Slowed 1 means you regain 1 AP less, Quickened 1 means you regain 1 AP more. Neither changes your Reaction Point.
 
 ## Reactions
 
 A **Reaction** is an Action you use in response to something another creature does. Its card has an **Interrupt** or a **Trigger** line that says what it responds to, and which of the two it is decides when it happens. Its cost is written with an R, such as **1R**: it uses that many Action Points, but only as a response. A **0R** Reaction uses no AP; its Frequency still limits it.
 
-- **Paying:** A Reaction is paid with your **Reaction AP**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction AP and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction AP lasts until you regain AP at the start of your next turn. A feature can give you a second Reaction AP: it follows the same rules, and the feature says what it can pay for.
+- **Paying:** A Reaction is paid with your **Reaction Point**, with AP you kept from your turn (see [[Unspent AP]]), or with both: a 2R Reaction can use your Reaction Point and one kept AP. On your own turn, your turn's AP can pay for it too. Your Reaction Point lasts until you regain AP at the start of your next turn. A feature can give you a second Reaction Point: it follows the same rules, and the feature says what it can pay for.
 - **No Reaction by default:** No creature has a Reaction of its own: every Reaction comes from a class, an item or a creature's entry. Moving away from an enemy doesn't let it attack you, unless it has a Reaction that says so.
 - **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it. An Interrupt on a creature that **would damage** someone happens once the triggering Action's roll is made and its damage is known, before that damage is dealt: the Reaction can't change that roll.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
@@ -199,6 +199,8 @@ Every line of a card says when it happens (see [[Reading an Action]]):
 - A **Tier** line happens only on that Tier. A line for two Tiers says so: "Tier 1 or 2". A Tier that isn't written does nothing.
 - An **Effect** line happens whenever the card is used, whatever the roll. Before the roll's line, it happens before the roll; after the Tiers, after them.
 - Actions with no roll have no Tiers: their Effect simply happens.
+- A **Bloodied** or **Strained** line happens only against a target that is [[Bloodied]] or [[Strained]]. **Where it is written decides when it counts:** above the Tiers, the target must already be Bloodied (Strained) when the Action is used; after the Tiers, it counts too if this Action's damage makes the target Bloodied (Strained).
+- A **Critical** line happens on a [[Critical]] (written under Tier 3).
 
 Inside a Tier's line, the damage is written first and applied first; what follows the semicolon happens after the damage is applied ("[V] 1[W] + [Mod]; Prone").
 

@@ -16,7 +16,7 @@ Each rank has a **Combat Value (CV)**: what one NPC of the rank counts for in an
 
 "Deals about" is a whole turn: the Basic attack and the Special Actions it can fit after moving, against an average Defense, before anything the PCs do about it (Guard, blocks, damage reduction take about half of it away). A turn in which it doesn't need to move deals about a third more. It is what you check a new NPC's Actions against.
 
-**Minions and Grunts have 3 AP a turn**, not 4: simple creatures that move and strike. Every NPC also gains the Reaction AP, as a PC does (see [[Action Points]]), **except Minions, which have no Reactions**. **An NPC gains no Guard from unspent AP:** an AP it keeps only pays for a Reaction (see [[Unspent AP]]).
+**Minions and Grunts have 3 AP a turn**, not 4: simple creatures that move and strike. Every NPC also gains the Reaction Point, as a PC does (see [[Action Points]]), **except Minions, which have no Reactions**. **An NPC gains no Guard from unspent AP:** an AP it keeps only pays for a Reaction (see [[Unspent AP]]).
 
 **Minions share turns.** Up to **3 Minions** can act in the same turn slot, one after another: the GM rolls one Initiative for the squad, and it takes one place in their side's turn order (see [[Initiative]]). **The GM decides who goes together** when Initiative is rolled. **The recommendation:** one squad for every 2 Minions, rounded up, as even as possible (one or two Minions are one squad; three or four are two squads, 2 + 1 or 2 + 2; five or six are three), so the Minions' turns come often and each is short. The GM also decides **the order inside a squad**: who goes first, and, at the end of each turn, which of the ones left goes next. Each still has its own turn (its own AP, its own start and end of turn), and takes it whole before the next one starts. A Minion's EoT effects end at the end of its own turn; durations in rounds count down at the end of the slot, after the last of them.
 
@@ -230,7 +230,7 @@ A help is cheap because one Boon or a few Health matter little in a fight of thr
 
 ### NPC Reactions
 
-- **No NPC has a Reaction by default**: an NPC has the Reactions its entry gives it (see [[Reactions]]), **written like any Action, with its Frequency** (At-will, Turn, Round or Encounter). It pays for one as a PC does: with its Reaction AP or an AP it kept from its turn. **Minions have no Reactions** (and no Reaction AP); a Grunt's Reaction is priced as anyone's.
+- **No NPC has a Reaction by default**: an NPC has the Reactions its entry gives it (see [[Reactions]]), **written like any Action, with its Frequency** (At-will, Turn, Round or Encounter). It pays for one as a PC does: with its Reaction Point or an AP it kept from its turn. **Minions have no Reactions** (and no Reaction Point); a Grunt's Reaction is priced as anyone's.
 - **A Reaction's attack has the points of an Action of its cost and its Frequency:** a 1R Round Reaction a 1 AP Round Action's (28 for a Medium Standard), a 2R Round Reaction a 2 AP Round Action's (55), an Encounter Reaction an Encounter Action's. A Turn or At-will Reaction is priced as a Round one: the AP it needs is its limit.
 - **It is paid from the turn:**
 
@@ -272,7 +272,7 @@ An **Elite** has Escalation; no other NPC does. It follows the same ladder as a 
 
 | Escalation | Common steps (pick one) |
 |---|---|
-| **2** | **Pressing:** 1 Boon on its first [Strike] Action each turn-cycle. **Unmoved:** its Steadiness increases by 1, and its Saves have 1 Boon. **Watchful:** it has a second Reaction AP, for its own Reactions (an Elite with a Reaction). |
+| **2** | **Pressing:** 1 Boon on its first [Strike] Action each turn-cycle. **Unmoved:** its Steadiness increases by 1, and its Saves have 1 Boon. **Watchful:** it has a second Reaction Point, for its own Reactions (an Elite with a Reaction). |
 | **4** | **Relentless:** it can use each of its Round Special Actions (not its Reactions) twice per turn-cycle; using the same Action again doesn't add to its effect on a creature that still has it. **Shrugs It Off:** at the start of each of its turns, before it regains AP, it ends one condition of [[Chapter 8: Conditions|Chapter 8]] on itself (not Bloodied, Strained, Desperate, Dying, Shattered or Unconscious). **Swift:** its Speed increases by 2, and the ground's Difficult Terrain (rubble, snow, undergrowth) is normal terrain for it. |
 | **6** | **Second Wind:** each of its Encounter Special Actions can be used once more this encounter, used or not. **Fury:** it is [[Empowered]]. **Last Stand:** it is [[Quickened]] 1. |
 
@@ -469,6 +469,6 @@ Each is built on its turn budget (see [[Actions: the turn budget]]); the points 
 
 **Ogre Chieftain** (Elite, Large (4), CV 200; 33 points an AP, turn budget 132): Body High (+3), Instinct Medium (+2), Mind Medium (+2), Appeal Low (+1). Weapon Modifier Medium (+3), Power Modifier Low (+2). Vigor Medium (65), Resolve Medium (65): Health 130. Armor Defense Medium (14), Ward Defense Low (12). Speed 4 (slow: its Club is High, 40 points an AP). Elite Escalation: the default ladder (Pressing, Relentless, Second Wind).
 - *Club* (Basic attack, 1 AP, At-will, High, Reach (1); 40, Push 1 2, then Ground Slam's pay-back, a quarter): [V] 1 + 1d4! / 3 + 1d6! Bl, and Pushed 1.
-- *Overhead Smash* (2 AP, Round, Reach (1); 73, Push 2 8, the pay-back): [V] 3 + 1d6 / 7 + 1d6 Bl, and Pushed 2.
+- *Overhead Smash* (2 AP, Round, Reach (1); 73, Push 2 8, the pay-back): [V] 3 + 1d6 / 7 + 1d6 Bl, and Pushed 2. **Bloodied:** the target is Pushed 1 more (a placeholder, to try the line).
 - *Ground Slam* (2 AP, Encounter, Area 2 Emanation, a Save Action: Body Save, DC 14; 145, Prone 12, half to each): [V] 10 + 1d8 / 6 + 1d6 / 0 Bl (Tier 1 is the worst for them), and Prone on Tier 1 and Tier 2. At Escalation 6 it can be used once more.
 - *Rally the Tribe* (Escalation 4, 1 AP, Round): allies within 5 squares gain 1 Support Boon on their next [Weapon] Action.

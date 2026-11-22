@@ -54,7 +54,7 @@ Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's
 
 ### Level 1: Hallmark Reaction
 
-**Choose one.** *Quick build: Snap Shot.* Both answer a foe that is about to reach you, and both are paid with your Reaction AP or with AP you kept from your turn (see [[Reactions]]).
+**Choose one.** *Quick build: Snap Shot.* Both answer a foe that is about to reach you, and both are paid with your Reaction Point or with AP you kept from your turn (see [[Reactions]]).
 
 - **Slip Away** (Turn, 1R): you are gone before the foe arrives.
 - **Snap Shot** (Turn, 1R): you shoot the foe as it comes, and slow or stop it.
