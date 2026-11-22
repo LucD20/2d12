@@ -19,7 +19,7 @@ The Fear trait has no rules of its own. Other rules, Talents and Tags refer to i
 
 ### Firearm
 
-Firearm Actions need a weapon with the Firearm property (see [[Properties]]), such as a pistol or a musket, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Weapon Attack with a musket is a Firearm Action). The trait and the property have one name, as Melee and Ranged do. A Firearm is not a Projectile weapon: Projectile Actions can't use it.
+Firearm Actions need a weapon with the Firearm property (see [[Properties]]), such as a pistol or a musket, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Basic Attack with a musket is a Firearm Action). The trait and the property have one name, as Melee and Ranged do. A Firearm is not a Projectile weapon: Projectile Actions can't use it.
 
 ### Focus
 
@@ -51,7 +51,7 @@ These Actions roll your **Power Modifier**.
 
 ### Projectile
 
-Projectile Actions need a weapon with the Projectile property (see [[Properties]]), such as a bow or a crossbow, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Weapon Attack with a crossbow is a Projectile Action). The trait and the property have one name, as Melee and Ranged do.
+Projectile Actions need a weapon with the Projectile property (see [[Properties]]), such as a bow or a crossbow, and use its Range as their Distance. A Weapon Action without this trait gets it when you use such a weapon (so a Basic Attack with a crossbow is a Projectile Action). The trait and the property have one name, as Melee and Ranged do.
 
 ### Ranged
 

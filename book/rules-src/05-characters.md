@@ -6,7 +6,7 @@
 1. **Attributes.** All four Attributes (Body, Mind, Appeal, Instinct) start at **0**.
 2. **Species.** Apply your species' Attribute changes (the species are in the [[Species]] document). It also gives you a **Vigor** and a **Resolve** bonus, a **Speed**, your **Reach** (1), your **Steadiness** and your **Size** (all current species are Medium (3)).
 3. **Class.** Apply your class' Attribute increases. It also gives you a **high** and a **low Health value** (and the steps they grow by at each Stage), a **Rally** value, a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**. Your Speed is your species' Speed plus your class' Speed Modifier.
-4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). If your class lets you, choose which of its two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]).
+4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). Choose which of your class's two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]).
 5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.
 6. **[[Rally Points]]** = your class' Rally value + 1 (it grows with your [[Stages|Stage]]).
 7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each), an **Art**, and your **Escalation 2** ability (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
@@ -15,7 +15,7 @@
 
 Your class gives you Attribute increases, a **high** and a **low Health value** with their Stage steps (used for your Health Pool), a **Rally** value (used for Rally Points), a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**, an **[[Armor Training]]**, and a list of **Escalation** abilities.
 
-When you pick your class, you choose its Attribute increases when they say "or", and the order of its Modifiers if it lets you. The Attribute choices can't be changed later; the rest can, for a while (see [[Swapping on a Rest]]).
+When you pick your class, you choose its Attribute increases when they say "or", and the order of its Modifiers. The Attribute choices can't be changed later; the rest can, for a while (see [[Swapping on a Rest]]).
 
 Each class is written in its own document: [[Paladin]] and [[Archer]].
 
@@ -58,7 +58,7 @@ A **Talent** is a feature any character can take, apart from their class. The le
 
 When you complete a [[Rest]], you can change any of the choices your class's level list gave you: your Hallmark Action, your Hallmark Reaction, your Arts, your Picks, your Escalation abilities and your Talents. Each new choice must be one you could have made at that level.
 
-During Stage 0 you can also swap the order of your Modifiers on a Rest, if your class lets you choose it. From Stage 1 on, that order and the Modifier you raise at Stage 1 are permanent.
+During Stage 0 you can also swap the order of your Modifiers on a Rest. From Stage 1 on, that order and the Modifier you raise at Stage 1 are permanent.
 
 **Optional rule.** If the GM allows it, on a Rest you can also change your class's Attribute choices and which of its two Health values is your Vigor.
 
@@ -85,7 +85,7 @@ When your class gives you a choice between two Attributes, you can't pick an Att
 
 ### Weapon, Power and Signature Modifiers
 
-Your class gives you two **Modifier values**: **+2 and +1** at level 1. One is your **Weapon Modifier**, which [[Weapon]] Actions roll; the other is your **Power Modifier**, which [[Power]] Actions roll and which sets your [[Defenses|Ward Defense]]. Your class says which is which, or lets you choose. They don't come from your Attributes, and your Attributes don't change them.
+Your class gives you two **Modifier values**: **+2 and +1** at level 1. One is your **Weapon Modifier**, which [[Weapon]] Actions roll; the other is your **Power Modifier**, which [[Power]] Actions roll and which sets your [[Defenses|Ward Defense]]. You choose which is which (every class lets you: a Paladin can strike first or pray first, an Archer shoot first or harry first). They don't come from your Attributes, and your Attributes don't change them.
 
 They grow with your [[Stages|Stage]]: at **Stage 1** (level 4) add +1 to the one you choose, at **Stage 3** (level 12) +1 to both. A Modifier is never above +4.
 

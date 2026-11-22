@@ -129,6 +129,77 @@
    }
   },
   {
+   "name": "Sworn Blade",
+   "category": "Paladin Feature",
+   "level": 1,
+   "_note": "2026-11-22 (Lucas, the core rework batch 3, `cards/basic-attacks-redesign.md`): the Paladin's line on the shared Basic Attack.",
+   "flavor": "Each blow you swear by turns a shaken foe where you want it.",
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Your [[Basic Attack]] gains: **Strained:** You can Slide the target 1."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/sword.svg",
+    "folder": "Paladin",
+    "automation": "gold",
+    "hooks": [
+     {
+      "kind": "basicLine",
+      "strained": "You can @Move[slid|distance:1]{Slide the target 1}."
+     }
+    ],
+    "automationNote": "on your Basic Attack, after its damage lands on a Strained target, the Slide 1 runs (you can decline it)."
+   }
+  },
+  {
+   "name": "Drawing Light",
+   "category": "Paladin Feature",
+   "level": 1,
+   "_note": "2026-11-22 (Lucas, the core rework batch 3, `cards/basic-attacks-redesign.md`): the Paladin's Power Basic attack (no [Mod] in its damage, Lucas).",
+   "flavor": "A cord of light catches them and hauls them toward you.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Power vs. Ward Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[R] 1d4! Ho."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1d8! Ho; Pulled 1."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[R] 2d6! Ho; Pulled 2."
+    },
+    {
+     "label": "Bloodied",
+     "text": "You can Slide the target instead."
+    }
+   ],
+   "traits": [
+    "divine",
+    "power",
+    "strike"
+   ],
+   "distance": "5 sq.",
+   "target": "One creature",
+   "foundry": {
+    "img": "icons/svg/light.svg",
+    "folder": "Paladin",
+    "automation": "silver",
+    "basicAttack": true,
+    "automationNote": "the damage and the Pull; a Critical's 1d10! (a Basic attack); the Bloodied line's Slide instead of the Pull: by hand."
+   }
+  },
+  {
    "name": "Binding Light",
    "category": "Paladin Hallmark Action",
    "level": 1,
@@ -478,8 +549,12 @@
        "text": "Appeal"
       },
       {
-       "label": "Tier 1 or 2",
+       "label": "Tier 1",
        "text": "Prone."
+      },
+      {
+       "label": "Tier 2",
+       "text": "Hindered (EoT)."
       }
      ],
      "distance": "5 sq.",
@@ -491,7 +566,8 @@
     "folder": "Paladin",
     "automation": "silver",
     "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save and Prone; Courage: an effect on you as a reminder (an Aura 3: you and allies in it ignore Daunted: by hand)."
-   }
+   },
+   "_note": "2026-11-22 (Lucas, the core rework batch 3, `cards/basic-attacks-redesign.md`): Kneel's Prone only on a Tier 1 (it landed 77 to 81%), Hindered (EoT) on a Tier 2."
   },
   {
    "name": "Armor of Faith",

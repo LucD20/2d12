@@ -6,13 +6,15 @@
 Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Groups|Weapon Group]] and has its own **Weapon Technique**, which you unlock with [[Mastery]]. A Weapon Technique can only be used with the weapon it belongs to, while you wield it: its Weapon Actions use that weapon, never another one.
 
 > [!example]
-> A Paladin with a Weapon Modifier of +1 deals [V] 6 + 1d4! + 1 Sl on a Tier 2 with a Longsword Weapon Attack: 8 to 10, and more when the die explodes.
+> A Paladin with a Weapon Modifier of +1 deals [V] 6 + 1d4! + 1 Sl on a Tier 2 with a Longsword Basic Attack: 8 to 10, and more when the die explodes.
 
 ### Weapon Damage [W]
 
 **[W]** is the damage of your weapon: on each Tier, **a flat number plus at most one small die**. **A weapon's die explodes**, so it is written with **!** (see [[Exploding Dice]]): on its highest face, count it as one less and roll it again. An Action that deals 1[W] adds one instance of the weapon's damage. 2[W] is two instances: the flat number twice and two dice. A weapon's damage has its own type, written in its table ([V] for every weapon so far): 1[W] deals that type, whatever the rest of the Action deals. Later weapons, such as wands and staves, may deal Resolve damage or both.
 
 *Example:* an Action that deals 2[W] deals [V] 0 / 12 + 2d4! / 18 + 2d6! with a Longsword, and [V] 0 / 4 + 2d4! / 8 + 2d4! with a Crossbow.
+
+**[D]** is your weapon's **die** on that Tier, without its flat number: written beside [W], it means you roll that die once more. A Longsword's Tier 3 is 9 + 1d6!, so "1[W] + 1[D]" deals 9 + 2d6!; with a Hunting Bow (2 + 1d4!) it deals 2 + 2d4!. A weapon whose Tier has no die adds nothing.
 
 ### Reading the Weapon Tables
 
@@ -112,7 +114,7 @@ You have two hands: your **main hand** and your **off hand**. You choose which i
 **[Strike, Weapon] Actions with a weapon you hold in your off hand take 2 Banes.** A weapon you hold with both hands doesn't take them, and a [[Light (property)|Light]] weapon takes only 1. Your [[Fists (the weapon)|Fists]] use a free hand: with only your off hand free, they take 1 Bane.
 
 > [!example]
-> Steven holds an Arming Sword in his main hand and a Dagger in his off hand. A Weapon Attack with the Arming Sword has no Bane for his hands; one with the Dagger takes 1 Bane, as a Light weapon in the off hand. With the two weapons the other way around, the Arming Sword in his off hand would take 2 Banes.
+> Steven holds an Arming Sword in his main hand and a Dagger in his off hand. A Basic Attack with the Arming Sword has no Bane for his hands; one with the Dagger takes 1 Bane, as a Light weapon in the off hand. With the two weapons the other way around, the Arming Sword in his off hand would take 2 Banes.
 
  A weapon with the **Two-handed** property must be held with both hands: holding it with one hand gives **3 Banes on [Strike, Weapon] Actions with that weapon**. A weapon or your Fists in the other hand don't take them.
 

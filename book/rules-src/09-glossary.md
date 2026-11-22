@@ -5,6 +5,7 @@
 |---|---|
 | [[Modifier Damage\|**[Mod]**]] | Damage equal to the Modifier used on the roll: your Weapon Modifier on a Weapon roll, your Power Modifier on a Power roll, your Signature Modifier on a Signature roll, or your Attribute Modifier on an Attribute Action. |
 | [[Weapon Damage\|**[W]**]] | The damage of your weapon, with the weapon's damage type. |
+| [[Weapon Damage\|**[D]**]] | Your weapon's die on that Tier, rolled once more ("1[W] + 1[D]"). |
 | [[Damage Types\|**[V], [R], [C]**]] | Vigor damage, Resolve damage, or the one the origin chooses. Vigor and Resolve are the thresholds of your Health Pool, not the Body and Mind Attributes. |
 | [[Rules Language\|**[Trait]**]] | An Action with that trait: "a [Strike] Action". Several traits mean all of them: "[Ranged, Weapon] Actions". |
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP and can be used only on your turn. |
@@ -23,6 +24,7 @@
 | [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
 | [[Boons and Banes\|**Bane, Boon**]] | Subtract or add 1 to a roll; they cancel each other. Named ones count up to 2 of each name. 5 or more left make the roll Favored (Boons) or Doomed (Banes) instead. |
+| [[Basic Attack\|**Basic Attack**]] | The Basic Action every PC has: a Strike with the weapon you wield ([V] [Mod] / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]). Your class adds a line to it and gives you a Power Basic attack; an NPC has its own Basic attack. A Basic attack's Critical deals 1d10! more. |
 | [[Barehanded\|**Barehanded**]] | A weapon property: it can't be disarmed and uses no hand, but needs a free hand. |
 | [[The Basic attack\|**Basic attack**]] | An NPC's main attack: 1 AP, At-will, Vs. AD or WD, with its rank's points an AP (see Points into damage: a flat number plus at most one small die, nothing added). |
 | [[Blinded\|**Blinded**]] | You can't see: heard creatures are Hidden to you (Doomed against them), sight Rolls are Doomed. |
@@ -31,7 +33,7 @@
 | [[Take a Breather\|**Breather**]] | 10 minutes of rest that removes all Nonlethal damage. |
 | [[Buffs\|**Buff**]] | An effect that modifies another Action, such as One More Arrow's 1[W] more on one of your [Strike] Actions. |
 | [[Areas\|**Burst**]] | An area centered on a corner, where four squares meet: a 2 Burst affects every square whose center is within 2 squares of that corner. |
-| [[Charge\|**Charge**]] | A Basic Action (2 AP, Round): Advance in a straight line at least 3 squares toward a creature, then make a Weapon Attack against it. |
+| [[Charge\|**Charge**]] | A Basic Action (2 AP, Round): Advance in a straight line at least 3 squares toward a creature, then make a Basic Attack against it. |
 | [[Checks\|**Check**]] | A roll of one Attribute Modifier against a DC (13 unless stated). |
 | [[Class Actions, Picks and the Repertoire\|**Class Actions**]] | The Actions your class gives you at level 1 (or a Hallmark Action: a choice of two). |
 | [[Senses\|**Clear**]] | You perceive the creature well: no penalty either way. |
@@ -105,7 +107,7 @@
 | [[Line\|**Line**]] | An area that starts from your square, aimed at any square, written like Line 10: one square per step, the nearest to the segment; ties take one side, chosen before rolling. |
 | [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the creature's space that nothing blocks. Needed to target a creature, and for anything a card or a feature does to a creature. |
 | [[Lingering\|**Lingering**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Shake Off (1 AP) and a Save against DC 13 end it; healing doesn't. Any damage type can linger. |
-| [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Weapon Attack (1A). It costs no AP. |
+| [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Basic Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. [Strike, Weapon] Actions with a weapon in your off hand take 2 Banes (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none). |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks. |
@@ -193,7 +195,7 @@
 | [[Swapping Places\|**Swap squares**]] | Two creatures each enter the square the other left; a Reposition for each. |
 | [[Tags\|**Tag**]] | A word on a creature (not an Action) that other rules refer to, such as Profane. |
 | [[Taunted\|**Taunted**]] | By a creature: 1 Bane on your Actions against anyone else. |
-| [[Flanking\|**Threatens**]] | A creature threatens every enemy within the normal range of a Melee weapon, for as long as it qualifies to use that weapon's Weapon Attack (1A); a Non-threatening weapon doesn't (not adjacent ones with a Long weapon). |
+| [[Flanking\|**Threatens**]] | A creature threatens every enemy within the normal range of a Melee weapon, for as long as it qualifies to use that weapon's Basic Attack (1A); a Non-threatening weapon doesn't (not adjacent ones with a Long weapon). |
 | [[Thrown\|**Thrown**]] | A weapon property: the weapon can be used in hand or thrown, with a Range for each. A thrown weapon stays in your hand for the rules: the game doesn't track where it lands. |
 | [[Outcome Tiers\|**Tier**]] | The outcome of a roll: 1, 2 or 3. |
 | [[Reactions\|**Trigger**]] | A Reaction that happens after the Action that triggers it. |

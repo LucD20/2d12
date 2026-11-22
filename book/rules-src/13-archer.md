@@ -10,7 +10,7 @@
 <div class="sbr"><span class="lbl">Health</span><span>high 16, low 8 (the Stage steps come with the later levels)</span></div>
 <div class="sbr"><span class="lbl">Rally</span><span>5</span></div>
 <div class="sbr"><span class="lbl">Speed Modifier</span><span>+1</span></div>
-<div class="sbr"><span class="lbl">Modifiers</span><span>Weapon Modifier +2, Power Modifier +1</span></div>
+<div class="sbr"><span class="lbl">Modifiers</span><span>+2 and +1: you choose which is your Weapon Modifier and which your Power Modifier</span></div>
 <div class="sbr"><span class="lbl">Armor Training</span><span>Light</span></div>
 <div class="sbr"><span class="lbl">Starting Mastery</span><span>5 with one Projectile weapon of your choice (see [[Mastery]])</span></div>
 <div class="sbr"><span class="lbl">Escalation hook</span><span>An enemy you have damaged goes Down (Thrill of the Kill, level 2)</span></div>
@@ -23,7 +23,7 @@
 
 | Level | You gain | You choose |
 |---|---|---|
-| 1 | Shifting Aim, Darting Blade | a Hallmark Action, a Hallmark Reaction, an Art, an Escalation 2 ability, a Skill Talent |
+| 1 | Shifting Aim, Darting Blade, Steady Draw, Harrying Shot | a Hallmark Action, a Hallmark Reaction, an Art, an Escalation 2 ability, a Skill Talent |
 | 2 | Thrill of the Kill, your Escalation hook | an Encounter Pick, an Escalation 4 ability, a Talent |
 | 3 | | a second Art, an Escalation 6 ability, a Skill Talent |
 
@@ -33,13 +33,19 @@ Level 4 brings the Apex and the numbers of Stage 1 (see [[Stages]]); it is not w
 
 ### Level 1: Features
 
-Every Archer has these two. **Shifting Aim** pays you for never shooting twice from the same square. **Darting Blade** is the knife for when a foe is next to you, where a bow is [[Ranged Combat While Engaged|Doomed]]: a quick stab, and you are out of reach again.
+Every Archer has these four. **Shifting Aim** pays you for never shooting twice from the same square. **Darting Blade** is the knife for when a foe is next to you, where a bow is [[Ranged Combat While Engaged|Doomed]]: a quick stab, and you are out of reach again.
 
 Many of your Strikes deal more hits the better you roll: "2[W]" is your weapon's damage twice, and "3[W]" three times (see [[Weapon Damage]]). Even on a Tier 1 they deal your Weapon Modifier: an arrow of yours always finds something.
 
 @@CARD:Shifting Aim@@
 
 @@CARD:Darting Blade@@
+
+**Your Basic attacks.** Every character has the [[Basic Attack]]; your **Steady Draw** adds a line to it, and **Harrying Shot** is your own Power Basic attack: a shot meant to rattle. A Weapon Basic attack (Vigor damage) pays off against a Strained foe, a Power one (Resolve damage) against a Bloodied foe, so the two feed each other.
+
+@@CARD:Steady Draw@@
+
+@@CARD:Harrying Shot@@
 
 ### Level 1: Hallmark Action
 

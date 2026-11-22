@@ -73,7 +73,9 @@ def _line(label, text): return {'label': label, 'text': text}
 
 def _version_lines(c, v):
     """An old Version's lines: the Tiers, the Critical, then the old Effects cell under the label that says when it happened."""
-    L = [_line('Tier %d' % (k + 1), t) for k, t in enumerate(v.get('tiers', []))]
+    T = v.get('tiers', [])
+    if v.get('orTiers') == '23' and len(T) == 3 and T[1] == T[2]: L = [_line('Tier 1', T[0]), _line('Tier 2 or 3', T[1])]   # Feint (2026-11-22)
+    else: L = [_line('Tier %d' % (k + 1), t) for k, t in enumerate(T)]
     if v.get('critical'): L.append(_line('Critical', v['critical']))
     if v.get('effects'):
         # general Effects happened on a Tier 2 or 3; on a Save Action the Tiers are the target's result, so on its Tier 1 or 2 (Chapter 1, Save Actions)

@@ -22,6 +22,34 @@
   "after": [],
   "passive": false
  },
+ "Aid": {
+  "name": "Aid",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You call the opening, and a friend takes it.",
+  "distance": "5 sq.",
+  "area": null,
+  "target": "One ally that can hear you",
+  "traits": [
+   "appeal",
+   "focus",
+   "instinct"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Effect",
+    "text": "The target is Quickened 1 on its next turn."
+   },
+   {
+    "label": "Special",
+    "text": "If the target is Daunted, you also make an Appeal or Instinct Check against the Action DC of the Action that Daunted it: on a Tier 2 or 3, the target is no longer Daunted."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Aim": {
   "name": "Aim",
   "escalation": null,
@@ -104,6 +132,45 @@
    {
     "label": "Tier 2 or 3",
     "text": "It attacks the attacker, if it can reach it."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
+ "Basic Attack": {
+  "name": "Basic Attack",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You strike with the weapon in your hands.",
+  "distance": "Weapon",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "strike",
+   "weapon"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Special",
+    "text": "You attack with the weapon you are wielding. Basic Attack takes the Melee or Ranged trait of that weapon, and its Range."
+   },
+   {
+    "label": "Attack",
+    "text": "Weapon vs. Armor Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[V] [Mod]"
+   },
+   {
+    "label": "Tier 2",
+    "text": "[V] 1[W] + [Mod]"
+   },
+   {
+    "label": "Tier 3",
+    "text": "[V] 1[W] + 1[D] + [Mod]"
    }
   ],
   "blocks": [],
@@ -460,7 +527,7 @@
    },
    {
     "label": "Effect",
-    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target. That Weapon Attack counts toward At-will Banes."
+    "text": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes."
    }
   ],
   "blocks": [],
@@ -733,8 +800,12 @@
       "text": "Appeal"
      },
      {
-      "label": "Tier 1 or 2",
+      "label": "Tier 1",
       "text": "Prone."
+     },
+     {
+      "label": "Tier 2",
+      "text": "Hindered (EoT)."
      }
     ],
     "distance": "5 sq.",
@@ -1072,6 +1143,40 @@
   "after": [],
   "passive": false
  },
+ "Demoralize": {
+  "name": "Demoralize",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You fix them with a look and a promise, and their guard slips.",
+  "distance": "5 sq.",
+  "area": null,
+  "target": "One creature that can see or hear you",
+  "traits": [
+   "appeal"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Appeal vs. Appeal DC"
+   },
+   {
+    "label": "Tier 1",
+    "text": "No effect."
+   },
+   {
+    "label": "Tier 2",
+    "text": "Vulnerable 1 (1 round)."
+   },
+   {
+    "label": "Tier 3",
+    "text": "Vulnerable 1 (1 round), and Daunted of you (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Dirty Trick": {
   "name": "Dirty Trick",
   "escalation": null,
@@ -1211,6 +1316,46 @@
   "after": [],
   "passive": false
  },
+ "Drawing Light": {
+  "name": "Drawing Light",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "A cord of light catches them and hauls them toward you.",
+  "distance": "5 sq.",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "divine",
+   "power",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[R] 1d4! Ho."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1d8! Ho; Pulled 1."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 2d6! Ho; Pulled 2."
+   },
+   {
+    "label": "Bloodied",
+    "text": "You can Slide the target instead."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Dread Whisper": {
   "name": "Dread Whisper",
   "escalation": null,
@@ -1281,6 +1426,41 @@
     ]
    }
   ],
+  "after": [],
+  "passive": false
+ },
+ "Feint": {
+  "name": "Feint",
+  "escalation": null,
+  "frequency": "Round",
+  "flavor": "You show one blow and land another.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "focus",
+   "mind"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Mind vs. Mind DC"
+   },
+   {
+    "label": "Tier 1",
+    "text": "No effect."
+   },
+   {
+    "label": "Tier 2 or 3",
+    "text": "Your next [Strike] Action against the target this turn is Favored."
+   },
+   {
+    "label": "Critical",
+    "text": "The target can't use Reactions against you until the end of your turn."
+   }
+  ],
+  "blocks": [],
   "after": [],
   "passive": false
  },
@@ -1372,7 +1552,7 @@
    },
    {
     "label": "Tier 1",
-    "text": "0"
+    "text": "[V] [Mod]"
    },
    {
     "label": "Tier 2",
@@ -1380,7 +1560,7 @@
    },
    {
     "label": "Tier 3",
-    "text": "[V] 1[W] + [Mod]"
+    "text": "[V] 1[W] + 1[D] + [Mod]"
    }
   ],
   "blocks": [],
@@ -1660,6 +1840,45 @@
   "after": [],
   "passive": false
  },
+ "Harrying Shot": {
+  "name": "Harrying Shot",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You loose a shot meant to rattle, close enough that they flinch.",
+  "distance": "10 sq.",
+  "area": null,
+  "target": "One creature",
+  "traits": [
+   "power",
+   "strike"
+  ],
+  "cost": "1 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Power vs. Ward Defense"
+   },
+   {
+    "label": "Tier 1",
+    "text": "[R] 1d4! Ps."
+   },
+   {
+    "label": "Tier 2",
+    "text": "[R] 1d8! Ps."
+   },
+   {
+    "label": "Tier 3",
+    "text": "[R] 1d12! Ps."
+   },
+   {
+    "label": "Bloodied",
+    "text": "On a Tier 3, the target is Daunted of you (EoT)."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": false
+ },
  "Harrying Shots": {
   "name": "Harrying Shots",
   "escalation": 1,
@@ -1689,7 +1908,6 @@
   "area": null,
   "target": "One creature",
   "traits": [
-   "appeal",
    "body",
    "handle",
    "strike"
@@ -1702,7 +1920,7 @@
    },
    {
     "label": "Attack",
-    "text": "Appeal or Body vs. the same Attribute's DC"
+    "text": "Body vs. Body DC"
    }
   ],
   "blocks": [
@@ -1758,6 +1976,42 @@
     ]
    }
   ],
+  "after": [],
+  "passive": false
+ },
+ "Heal": {
+  "name": "Heal",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You press, bind and talk them back to their feet.",
+  "distance": "Reach",
+  "area": null,
+  "target": "One ally (a Down one too)",
+  "traits": [
+   "appeal",
+   "handle",
+   "mind"
+  ],
+  "cost": "2 AP",
+  "body": [
+   {
+    "label": "Attack",
+    "text": "Appeal or Mind vs. DC 13"
+   },
+   {
+    "label": "Tier 1",
+    "text": "No effect."
+   },
+   {
+    "label": "Tier 2",
+    "text": "The target can use 1 Rally Point."
+   },
+   {
+    "label": "Tier 3",
+    "text": "The target can use 2 Rally Points."
+   }
+  ],
+  "blocks": [],
   "after": [],
   "passive": false
  },
@@ -2833,7 +3087,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Weapon Attack (1A) against it."
+    "text": "Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Basic Attack (1A) against it."
    }
   ],
   "blocks": [],
@@ -3980,14 +4234,13 @@
   "target": "One creature",
   "traits": [
    "body",
-   "handle",
-   "strike"
+   "handle"
   ],
-  "cost": "1, 2 or 3 AP",
+  "cost": "1 or 2 AP",
   "body": [
    {
     "label": "Requirement",
-    "text": "The target's SR is at most 1 higher than yours."
+    "text": "The target's Size is at most 1 larger than yours."
    },
    {
     "label": "Attack",
@@ -4004,11 +4257,11 @@
      },
      {
       "label": "Tier 2",
-      "text": "Pushed 1."
+      "text": "Pushed 2."
      },
      {
       "label": "Tier 3",
-      "text": "Pushed 2."
+      "text": "Pushed 3."
      },
      {
       "label": "Critical",
@@ -4018,27 +4271,6 @@
    },
    {
     "heading": "2 AP",
-    "body": [
-     {
-      "label": "Tier 1",
-      "text": "No effect."
-     },
-     {
-      "label": "Tier 2",
-      "text": "Pushed 2."
-     },
-     {
-      "label": "Tier 3",
-      "text": "Pushed 4."
-     },
-     {
-      "label": "Critical",
-      "text": "Prone."
-     }
-    ]
-   },
-   {
-    "heading": "3 AP",
     "body": [
      {
       "label": "Tier 1",
@@ -4319,6 +4551,26 @@
   "after": [],
   "passive": false
  },
+ "Steady Draw": {
+  "name": "Steady Draw",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "A rattled foe holds still for a heartbeat, and your second arrow follows the first.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** A Tier 3 deals 1[D] more."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
  "Steady Nerves": {
   "name": "Steady Nerves",
   "escalation": null,
@@ -4508,6 +4760,26 @@
    {
     "label": "Passive",
     "text": "While your Escalation is 2 or more, once a round, when you deal damage to your Marked Quarry with a [Projectile] Action, you can Evade 1."
+   }
+  ],
+  "blocks": [],
+  "after": [],
+  "passive": true
+ },
+ "Sworn Blade": {
+  "name": "Sworn Blade",
+  "escalation": null,
+  "frequency": null,
+  "flavor": "Each blow you swear by turns a shaken foe where you want it.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [],
+  "cost": "Passive",
+  "body": [
+   {
+    "label": "Passive",
+    "text": "Your [[Basic Attack]] gains: **Strained:** You can Slide the target 1."
    }
   ],
   "blocks": [],
@@ -4725,14 +4997,13 @@
   "traits": [
    "body",
    "handle",
-   "instinct",
-   "strike"
+   "instinct"
   ],
   "cost": "1 or 2 AP",
   "body": [
    {
     "label": "Requirement",
-    "text": "The target's SR is at most 1 higher than yours."
+    "text": "The target's Size is at most 1 larger than yours."
    },
    {
     "label": "Attack",
@@ -4749,11 +5020,11 @@
      },
      {
       "label": "Tier 2",
-      "text": "No effect."
+      "text": "Prone."
      },
      {
       "label": "Tier 3",
-      "text": "Prone."
+      "text": "[V] 1d6! Bl; Prone."
      },
      {
       "label": "Critical",
@@ -4766,19 +5037,66 @@
     "body": [
      {
       "label": "Tier 1",
-      "text": "No effect."
+      "text": "Hindered (EoT)."
      },
      {
       "label": "Tier 2",
-      "text": "Prone."
+      "text": "[V] 1d6! Bl; Prone."
      },
      {
       "label": "Tier 3",
-      "text": "[V] 1d8 Bl; Prone."
+      "text": "[V] 2d6! Bl; Prone."
      },
      {
       "label": "Critical",
       "text": "[V] 1d6! Bl."
+     }
+    ]
+   }
+  ],
+  "after": [],
+  "passive": false
+ },
+ "Tumble": {
+  "name": "Tumble",
+  "escalation": null,
+  "frequency": "At-will",
+  "flavor": "You duck, roll and slip past them.",
+  "distance": null,
+  "area": null,
+  "target": null,
+  "traits": [
+   "appeal",
+   "instinct",
+   "move"
+  ],
+  "cost": "1 or 2 AP",
+  "body": [
+   {
+    "label": "Requirement",
+    "text": "Your Speed is at least 4."
+   },
+   {
+    "label": "Special",
+    "text": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space; on a Tier 2 or 3 you pass."
+   }
+  ],
+  "blocks": [
+   {
+    "heading": "1 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Advance half your Speed (rounded down)."
+     }
+    ]
+   },
+   {
+    "heading": "2 AP",
+    "body": [
+     {
+      "label": "Effect",
+      "text": "Evade 2."
      }
     ]
    }
@@ -4871,45 +5189,6 @@
    {
     "label": "Effect",
     "text": "You Evade 2."
-   }
-  ],
-  "blocks": [],
-  "after": [],
-  "passive": false
- },
- "Weapon Attack": {
-  "name": "Weapon Attack",
-  "escalation": null,
-  "frequency": "At-will",
-  "flavor": "You strike with the weapon in your hands.",
-  "distance": "Weapon",
-  "area": null,
-  "target": "One creature",
-  "traits": [
-   "strike",
-   "weapon"
-  ],
-  "cost": "1 AP",
-  "body": [
-   {
-    "label": "Special",
-    "text": "You attack with the weapon you are wielding. Weapon Attack takes the Melee or Ranged trait of that weapon, and its Range."
-   },
-   {
-    "label": "Attack",
-    "text": "Weapon vs. Armor Defense"
-   },
-   {
-    "label": "Tier 1",
-    "text": "0"
-   },
-   {
-    "label": "Tier 2",
-    "text": "[V] 1[W] + [Mod]"
-   },
-   {
-    "label": "Tier 3",
-    "text": "[V] 1[W] + [Mod]"
    }
   ],
   "blocks": [],

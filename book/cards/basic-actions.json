@@ -17,16 +17,27 @@
       "name": "Charge",
       "category": "Basic Action",
       "flavor": "You close the distance in one straight, reckless line.",
-      "traits": ["move", "strike"],
+      "traits": [
+        "move",
+        "strike"
+      ],
       "frequency": "Round",
       "target": "One creature",
       "requirements": "You have at least Speed 3.",
       "versions": [
-        { "ap": 2,
-          "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Weapon Attack (1A) with 1 Boon against the target. That Weapon Attack counts toward At-will Banes.",
-          "foundry": { "append": "@Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] @Use[Weapon Attack|boons:1|empowered:has(Battering Charge)|atwill:yes|label:Weapon Attack (1A, 1 Boon)]" } }
+        {
+          "ap": 2,
+          "effects": "Advance in a [[Straight Line|straight line]] toward the target, at least 3 squares and up to your Speed, and stop on the first square from which the target is within your Reach. You can't Charge through Difficult Terrain (an unwilling creature's space is Difficult Terrain), even if you have movement left: the Charge ends in the last **empty** square where the line is legal. At the end of your movement, make a Basic Attack (1A) with 1 Boon against the target. That Basic Attack counts toward At-will Banes.",
+          "foundry": {
+            "append": "@Move[charge|distance:speed+2*has(Battering Charge)|min:3|uncapped:yes|label:Charge] @Use[Basic Attack|boons:1|empowered:has(Battering Charge)|atwill:yes|label:Basic Attack (1A, 1 Boon)]"
+          }
+        }
       ],
-      "foundry": { "basic": "charge", "automation": "gold", "img": "icons/svg/thrust.svg" }
+      "foundry": {
+        "basic": "charge",
+        "automation": "gold",
+        "img": "icons/svg/thrust.svg"
+      }
     },
     {
       "name": "Crawl",
@@ -56,33 +67,79 @@
       "name": "Fists",
       "category": "Basic Action",
       "flavor": "When there is nothing else in your hands, there are always your hands.",
-      "traits": ["strike", "weapon"],
+      "traits": [
+        "strike",
+        "weapon"
+      ],
       "frequency": "At-will",
       "target": "One creature",
       "distance": "Weapon",
       "vs": "AD",
       "requirements": "You have a free hand.",
       "versions": [
-        { "ap": 1, "tiers": ["0", "[V] 1[W] + [Mod]", "[V] 1[W] + [Mod]"] }
+        {
+          "ap": 1,
+          "tiers": [
+            "[V] [Mod]",
+            "[V] 1[W] + [Mod]",
+            "[V] 1[W] + 1[D] + [Mod]"
+          ]
+        }
       ],
-      "foundry": { "basic": "fists", "automation": "gold", "img": "icons/svg/combat.svg", "weaponUse": "fists" }
+      "foundry": {
+        "basic": "fists",
+        "automation": "gold",
+        "img": "icons/svg/combat.svg",
+        "weaponUse": "fists"
+      },
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): Fists follow the Basic Attack's Tiers (Tier 1 [Mod], Tier 3 + 1[D])."
     },
     {
       "name": "Haul",
       "category": "Basic Action",
       "flavor": "You snag them and drag them in.",
-      "traits": ["appeal", "body", "handle", "strike"],
+      "traits": [
+        "body",
+        "handle",
+        "strike"
+      ],
       "frequency": "Round",
       "target": "One creature",
       "distance": "Reach",
-      "vs": "Appeal or Body (the one used to roll)",
+      "vs": "Body",
       "requirements": "Your Reach is 2 or more. The target's SR is at most 1 higher than yours and is at least 2 squares away. The target must remain within your Reach throughout the whole movement.",
       "versions": [
-        { "ap": 1, "tiers": ["No effect.", "Pulled 1.", "Pulled 2."] },
-        { "ap": 2, "tiers": ["No effect.", "Pulled 2.", "Pulled 4."] },
-        { "ap": 3, "tiers": ["Pulled 1.", "Pulled 3.", "Pulled 5."] }
+        {
+          "ap": 1,
+          "tiers": [
+            "No effect.",
+            "Pulled 1.",
+            "Pulled 2."
+          ]
+        },
+        {
+          "ap": 2,
+          "tiers": [
+            "No effect.",
+            "Pulled 2.",
+            "Pulled 4."
+          ]
+        },
+        {
+          "ap": 3,
+          "tiers": [
+            "Pulled 1.",
+            "Pulled 3.",
+            "Pulled 5."
+          ]
+        }
       ],
-      "foundry": { "basic": "haul", "automation": "gold", "img": "icons/svg/down.svg" }
+      "foundry": {
+        "basic": "haul",
+        "automation": "gold",
+        "img": "icons/svg/down.svg"
+      },
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): Body only (was Appeal or Body)."
     },
     {
       "name": "Interact",
@@ -199,18 +256,41 @@
       "name": "Shove",
       "category": "Basic Action",
       "flavor": "You put your weight behind it and drive them back.",
-      "traits": ["body", "handle", "strike"],
+      "traits": [
+        "body",
+        "handle"
+      ],
       "frequency": "Round",
       "target": "One creature",
       "distance": "Reach",
       "vs": "Body",
-      "requirements": "The target's SR is at most 1 higher than yours.",
+      "requirements": "The target's Size is at most 1 larger than yours.",
       "versions": [
-        { "ap": 1, "tiers": ["No effect.", "Pushed 1.", "Pushed 2."], "critical": "Prone." },
-        { "ap": 2, "tiers": ["No effect.", "Pushed 2.", "Pushed 4."], "critical": "Prone." },
-        { "ap": 3, "tiers": ["Pushed 1.", "Pushed 3.", "Pushed 5."], "critical": "Prone." }
+        {
+          "ap": 1,
+          "tiers": [
+            "No effect.",
+            "Pushed 2.",
+            "Pushed 3."
+          ],
+          "critical": "Prone."
+        },
+        {
+          "ap": 2,
+          "tiers": [
+            "Pushed 1.",
+            "Pushed 3.",
+            "Pushed 5."
+          ],
+          "critical": "Prone."
+        }
       ],
-      "foundry": { "basic": "shove", "automation": "gold", "img": "icons/svg/up.svg" }
+      "foundry": {
+        "basic": "shove",
+        "automation": "gold",
+        "img": "icons/svg/up.svg"
+      },
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): no [Strike]; two Versions (the 2 AP one buys a Tier 1); Pushed 2 / 3 at 1 AP."
     },
     {
       "name": "Stand",
@@ -240,32 +320,72 @@
       "name": "Trip",
       "category": "Basic Action",
       "flavor": "A hooked foot, a twist, and they hit the ground.",
-      "traits": ["body", "handle", "instinct", "strike"],
+      "traits": [
+        "body",
+        "handle",
+        "instinct"
+      ],
       "frequency": "Round",
       "target": "One creature",
       "distance": "Reach",
       "vs": "Body or Instinct (the one used to roll)",
-      "requirements": "The target's SR is at most 1 higher than yours.",
+      "requirements": "The target's Size is at most 1 larger than yours.",
       "versions": [
-        { "ap": 1, "tiers": ["No effect.", "No effect.", "Prone."], "critical": "[V] 1d6! Bl." },
-        { "ap": 2, "tiers": ["No effect.", "Prone.", "[V] 1d8 Bl; Prone."], "critical": "[V] 1d6! Bl." }
+        {
+          "ap": 1,
+          "tiers": [
+            "No effect.",
+            "Prone.",
+            "[V] 1d6! Bl; Prone."
+          ],
+          "critical": "[V] 1d6! Bl."
+        },
+        {
+          "ap": 2,
+          "tiers": [
+            "Hindered (EoT).",
+            "[V] 1d6! Bl; Prone.",
+            "[V] 2d6! Bl; Prone."
+          ],
+          "critical": "[V] 1d6! Bl."
+        }
       ],
-      "foundry": { "basic": "trip", "automation": "gold", "img": "icons/svg/falling.svg" }
+      "foundry": {
+        "basic": "trip",
+        "automation": "gold",
+        "img": "icons/svg/falling.svg"
+      },
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): no [Strike]; Prone on a Tier 2 at 1 AP; the 2 AP Version buys a Tier 1 (Hindered)."
     },
     {
-      "name": "Weapon Attack",
+      "name": "Basic Attack",
       "category": "Basic Action",
       "flavor": "You strike with the weapon in your hands.",
-      "traits": ["strike", "weapon"],
+      "traits": [
+        "strike",
+        "weapon"
+      ],
       "frequency": "At-will",
       "target": "One creature",
       "distance": "Weapon",
       "vs": "AD",
-      "rules": "You attack with the weapon you are wielding. Weapon Attack takes the Melee or Ranged trait of that weapon, and its Range.",
+      "rules": "You attack with the weapon you are wielding. Basic Attack takes the Melee or Ranged trait of that weapon, and its Range.",
       "versions": [
-        { "ap": 1, "tiers": ["0", "[V] 1[W] + [Mod]", "[V] 1[W] + [Mod]"] }
+        {
+          "ap": 1,
+          "tiers": [
+            "[V] [Mod]",
+            "[V] 1[W] + [Mod]",
+            "[V] 1[W] + 1[D] + [Mod]"
+          ]
+        }
       ],
-      "foundry": { "basic": "basicWeaponAttack", "automation": "gold", "img": "icons/svg/sword.svg" }
+      "foundry": {
+        "basic": "basicWeaponAttack",
+        "automation": "gold",
+        "img": "icons/svg/sword.svg"
+      },
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): the Weapon Attack renamed Basic Attack (shared by every PC; each class adds a line to it); Tier 1 [Mod], Tier 3 1[W] + 1[D] + [Mod]."
     },
     {
       "name": "Break Free",
@@ -282,6 +402,154 @@
         { "ap": 1, "tiers": ["No effect: you stay Immobilized."], "effects": "You are no longer Immobilized, and no longer Grabbed if you were.", "foundry": { "x1": "No effect: you stay Immobilized." } }
       ],
       "foundry": { "basic": "breakFree", "automation": "gold", "automationNote": "the core rework B11: using it rolls the Body or Instinct Check (the higher) against the Action DC of what holds you (the highest on your Immobilized conditions; 13 with no Action behind it); a Tier 2 or 3 (Doubles count) ends Immobilized and Grabbed.", "img": "icons/svg/net.svg" }
+    },
+    {
+      "name": "Aid",
+      "category": "Basic Action",
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): the AP handed over (Quickened 1); Lucas added Focus, Instinct and the Check against Daunted's Action DC.",
+      "flavor": "You call the opening, and a friend takes it.",
+      "traits": [
+        "appeal",
+        "focus",
+        "instinct"
+      ],
+      "frequency": "Round",
+      "target": "One ally that can hear you",
+      "distance": "5 sq.",
+      "versions": [
+        {
+          "ap": 1,
+          "effects": "The target is Quickened 1 on its next turn."
+        }
+      ],
+      "notes": "If the target is Daunted, you also make an Appeal or Instinct Check against the Action DC of the Action that Daunted it: on a Tier 2 or 3, the target is no longer Daunted.",
+      "foundry": {
+        "basic": "aid",
+        "automation": "silver",
+        "automationNote": "Quickened 1 on the target (its next turn's AP); the Check against Daunted: by hand.",
+        "img": "icons/svg/regen.svg"
+      }
+    },
+    {
+      "name": "Demoralize",
+      "category": "Basic Action",
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): Lucas's Tiers (Vulnerable 1, then Daunted too); Vulnerable lasts 1 round (Claude).",
+      "flavor": "You fix them with a look and a promise, and their guard slips.",
+      "traits": [
+        "appeal"
+      ],
+      "frequency": "Round",
+      "target": "One creature that can see or hear you",
+      "distance": "5 sq.",
+      "vs": "Appeal",
+      "versions": [
+        {
+          "ap": 1,
+          "tiers": [
+            "No effect.",
+            "Vulnerable 1 (1 round).",
+            "Vulnerable 1 (1 round), and Daunted of you (EoT)."
+          ]
+        }
+      ],
+      "foundry": {
+        "basic": "demoralize",
+        "automation": "gold",
+        "img": "icons/svg/terror.svg"
+      }
+    },
+    {
+      "name": "Feint",
+      "category": "Basic Action",
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): Favored on your next Strike against the target this turn; the Critical stops its Reactions against you.",
+      "flavor": "You show one blow and land another.",
+      "traits": [
+        "focus",
+        "mind"
+      ],
+      "frequency": "Round",
+      "target": "One creature",
+      "distance": "Reach",
+      "vs": "Mind",
+      "versions": [
+        {
+          "ap": 1,
+          "tiers": [
+            "No effect.",
+            "Your next [Strike] Action against the target this turn is Favored.",
+            "Your next [Strike] Action against the target this turn is Favored."
+          ],
+          "orTiers": "23",
+          "critical": "The target can't use Reactions against you until the end of your turn."
+        }
+      ],
+      "foundry": {
+        "basic": "feint",
+        "automation": "silver",
+        "automationNote": "Favored on your next [Strike] Action against the target this turn: by hand (the roll dialog's Favored); the Critical's Reactions: by hand.",
+        "img": "icons/svg/daze.svg"
+      }
+    },
+    {
+      "name": "Heal",
+      "category": "Basic Action",
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): the playtest version (Lucas, 2026-11-21: 2 AP; Mind or Appeal vs DC 13; the Medicine skill when Skills exist).",
+      "flavor": "You press, bind and talk them back to their feet.",
+      "traits": [
+        "appeal",
+        "handle",
+        "mind"
+      ],
+      "frequency": "At-will",
+      "target": "One ally (a Down one too)",
+      "distance": "Reach",
+      "vs": "DC 13",
+      "versions": [
+        {
+          "ap": 2,
+          "tiers": [
+            "No effect.",
+            "The target can use 1 Rally Point.",
+            "The target can use 2 Rally Points."
+          ]
+        }
+      ],
+      "foundry": {
+        "basic": "heal",
+        "automation": "silver",
+        "automationNote": "the Check against DC 13; the Rally Points used by hand (the target's sheet).",
+        "img": "icons/svg/heal.svg"
+      }
+    },
+    {
+      "name": "Tumble",
+      "category": "Basic Action",
+      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): Lucas's shape; Appeal or Instinct; no Difficult Terrain on a Tier 2 (Claude).",
+      "flavor": "You duck, roll and slip past them.",
+      "traits": [
+        "appeal",
+        "instinct",
+        "move"
+      ],
+      "frequency": "At-will",
+      "requirements": "Your Speed is at least 4.",
+      "rules": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space; on a Tier 2 or 3 you pass.",
+      "versions": [
+        {
+          "ap": 1,
+          "effects": "Advance half your Speed (rounded down)."
+        },
+        {
+          "ap": 2,
+          "effects": "Evade 2."
+        }
+      ],
+      "foundry": {
+        "basic": "tumble",
+        "automation": "bronze",
+        "automationNote": "the movement (the Advance or the Evade); passing through enemies and the Check: by hand.",
+        "img": "icons/svg/wingfoot.svg"
+      }
     }
   ]
 }

@@ -91,6 +91,76 @@
    }
   },
   {
+   "name": "Steady Draw",
+   "category": "Archer Feature",
+   "level": 1,
+   "_note": "2026-11-22 (Lucas, the core rework batch 3, `cards/basic-attacks-redesign.md`): the Archer's line on the shared Basic Attack (above the roll: it changes the damage).",
+   "flavor": "A rattled foe holds still for a heartbeat, and your second arrow follows the first.",
+   "cost": "Passive",
+   "body": [
+    {
+     "label": "Passive",
+     "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** A Tier 3 deals 1[D] more."
+    }
+   ],
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "gold",
+    "hooks": [
+     {
+      "kind": "basicLine",
+      "strainedBeforeD": 1
+     }
+    ],
+    "automationNote": "on your Basic Attack's Tier 3 against a target already Strained when you roll, its damage rolls 1[D] more."
+   }
+  },
+  {
+   "name": "Harrying Shot",
+   "category": "Archer Feature",
+   "level": 1,
+   "_note": "2026-11-22 (Lucas, the core rework batch 3, `cards/basic-attacks-redesign.md`): the Archer's Power Basic attack (no [Mod] in its damage, Lucas).",
+   "flavor": "You loose a shot meant to rattle, close enough that they flinch.",
+   "frequency": "At-will",
+   "cost": "1 AP",
+   "body": [
+    {
+     "label": "Attack",
+     "text": "Power vs. Ward Defense"
+    },
+    {
+     "label": "Tier 1",
+     "text": "[R] 1d4! Ps."
+    },
+    {
+     "label": "Tier 2",
+     "text": "[R] 1d8! Ps."
+    },
+    {
+     "label": "Tier 3",
+     "text": "[R] 1d12! Ps."
+    },
+    {
+     "label": "Bloodied",
+     "text": "On a Tier 3, the target is Daunted of you (EoT)."
+    }
+   ],
+   "traits": [
+    "power",
+    "strike"
+   ],
+   "distance": "10 sq.",
+   "target": "One creature",
+   "foundry": {
+    "img": "icons/svg/target.svg",
+    "folder": "Archer",
+    "automation": "gold",
+    "basicAttack": true,
+    "automationNote": "the damage; a Critical's 1d10! (a Basic attack); the Bloodied line's Daunted after the damage lands on a Bloodied target on a Tier 3."
+   }
+  },
+  {
    "name": "Quick Shots",
    "category": "Archer Hallmark Action",
    "level": 1,
@@ -696,7 +766,7 @@
    "body": [
     {
      "label": "Passive",
-     "text": "Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Weapon Attack (1A) against it."
+     "text": "Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Basic Attack (1A) against it."
     }
    ],
    "foundry": {
@@ -706,7 +776,7 @@
       "kind": "openingShot"
      }
     ],
-    "automationNote": "on a Tier 3 of a [Ranged, Strike] Action, a line on the card names the allies who threaten the target; the ally's Weapon Attack (1R) by hand, once a round.",
+    "automationNote": "on a Tier 3 of a [Ranged, Strike] Action, a line on the card names the allies who threaten the target; the ally's Basic Attack (1R) by hand, once a round.",
     "automation": "bronze"
    }
   },

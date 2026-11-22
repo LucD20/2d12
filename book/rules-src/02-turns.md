@@ -114,7 +114,7 @@ An Interrupt disrupts the Action before it happens. For example, a Reaction with
 
 A Trigger that names a Move Action fires at any point during the Move Action (after the first square it moves), but it is a single trigger: you can use the Reaction only once per Move Action, even with AP to spare. If the Action does something before moving (Stand, then Advance), the Stand happens first; the Trigger fires during the Advance.
 
-When the disrupted Action is only a Linked Action, the Action stops only if that part is necessary for it. What already happened stays, and a disrupted movement ends in the square the creature was in. For example, a Charge disrupted before the creature has moved the 3 squares it needs is cancelled, and they make no Weapon Attack. If it is disrupted after those 3 squares, the Charge ends there, and they make the Weapon Attack if there is a valid target.
+When the disrupted Action is only a Linked Action, the Action stops only if that part is necessary for it. What already happened stays, and a disrupted movement ends in the square the creature was in. For example, a Charge disrupted before the creature has moved the 3 squares it needs is cancelled, and they make no Basic Attack. If it is disrupted after those 3 squares, the Charge ends there, and they make the Basic Attack if there is a valid target.
 
 ### Moving Closer
 
@@ -170,19 +170,19 @@ A **0 AP** Action costs no AP, but it is still an Action: you can use it only on
 
 ### Linked Actions
 
-An Action that another Action lets you use as part of it is a **Linked Action**. It is written with the AP of the Version you use, such as "Weapon Attack (1A)", or "(1A/2A)" when you choose between two Versions.
+An Action that another Action lets you use as part of it is a **Linked Action**. It is written with the AP of the Version you use, such as "Basic Attack (1A)", or "(1A/2A)" when you choose between two Versions.
 
 - It is part of the original Action, so it **costs no AP**.
 - It keeps its traits and requirements, unless the Action says otherwise: you must still be able to use it. If an Action lets you Evade (a Linked Action) while you are Immobilized, you can't.
 - It affects the target of the original Action, unless it says otherwise. If the original Action doesn't list a target, you can choose the target per Linked Action.
-- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes, unless the Action says otherwise (a Charge's Weapon Attack counts toward At-will Banes).
-- If it isn't optional and you can't make it, the whole Action is **[[Disrupting Actions|disrupted]]**, except for a movement (below). A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Weapon Attack (1A) and Advance 5 again").
+- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes, unless the Action says otherwise (a Charge's Basic Attack counts toward At-will Banes).
+- If it isn't optional and you can't make it, the whole Action is **[[Disrupting Actions|disrupted]]**, except for a movement (below). A Linked Action is optional when the Action says you **can** make it ("you can Evade 2"), and required when it says you **do** it ("you Advance 5, make a Basic Attack (1A) and Advance 5 again").
 - **A movement you can't make.** When an Action has you move ("You Evade 2") and you can't (you are Immobilized or Prone, or no square is open to you), you move 0 squares and the rest of the Action happens. If the Action says you **must** move ("you must Evade 2 first"), the movement is necessary: the whole Action is disrupted.
 
 If a Linked Action has no valid target, the rest of the Action is disrupted (that Linked Action and anything after it don't happen); what already happened stays. By default, you can't change the target of a Linked Action. For example, if a player asks to change the target from a creature to an object so they can continue the Action, the GM should probably accept it only if it makes sense, such as attacking a door on the way, and not "attacking the ground".
 
 > [!example]
-> The Archer's Opening Shot lets an ally make a Weapon Attack (1A). On that ally's own turn they can still use Weapon Attack as its own Action, and that first use has no At-will Bane.
+> The Archer's Opening Shot lets an ally make a Basic Attack (1A). On that ally's own turn they can still use Basic Attack as its own Action, and that first use has no At-will Bane.
 
 ### Targets of Effects
 
@@ -246,7 +246,7 @@ Some traits can change the Frequency or expand the Frequency rules, such as the 
 
 #### At-will
 
-An **At-will** Action can be used any number of times, but each use after the first in a turn adds **1 Bane** to the roll. For example, if you use Weapon Attack three times in one turn, the first roll is normal, the second has 1 Bane, and the third has 2 Banes. This doesn't apply to Linked Actions.
+An **At-will** Action can be used any number of times, but each use after the first in a turn adds **1 Bane** to the roll. For example, if you use Basic Attack three times in one turn, the first roll is normal, the second has 1 Bane, and the third has 2 Banes. This doesn't apply to Linked Actions.
 
 Each use after the first in a turn adds 1 Bane per specific At-will Action. Different At-will Actions each have their own first-use count.
 

@@ -42,7 +42,7 @@ A result is a **Critical** when you roll **Doubles on a result that is already T
 
 On a Critical you get the Tier 3 result, and:
 
-- **A Basic attack** (the [[Weapon Attack]], [[Fists]], an NPC's [[The Basic attack|Basic attack]]) deals **1d10!** more damage. Before you roll it, choose one of the damage types the Action deals, with its pool and subtype: an Action that deals only [V] Piercing adds [V] 1d10! Pi; one that deals [V] Piercing and [R] Holy adds either, your choice.
+- **A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[The Basic attack|Basic attack]]) deals **1d10!** more damage. Before you roll it, choose one of the damage types the Action deals, with its pool and subtype: an Action that deals only [V] Piercing adds [V] 1d10! Pi; one that deals [V] Piercing and [R] Holy adds either, your choice.
 - **An Action with a Critical row** (written under Tier 3 and above the Effects, such as [[Trip]] and [[Shove]]) gets that effect instead. A Basic attack with a Critical row of its own uses the row, not the 1d10!.
 - **Any other Action:** a Critical is simply a Tier 3.
 
@@ -278,14 +278,14 @@ The numbers on the two cards below are the numbers of the list. The first card n
 - **"As Tier N"** means the result in the same column on Tier N. So a Tier 2 effect that says "As Tier 1" uses the same effect as the Tier 1 effect of this exact Version.
 
 > [!example]
-> **Weapon Attack** | At-will · 1 AP  
+> **Basic Attack** | At-will · 1 AP  
 > *You strike with the weapon in your hands.*  
 > *Weapon · Strike*  
 > **Distance: Weapon ✦ Target: One creature**  
 > **Attack:** Weapon vs. Armor Defense  
-> **Tier 1:** 0  
+> **Tier 1:** [V] [Mod]  
 > **Tier 2:** [V] 1[W] + [Mod]  
-> **Tier 3:** [V] 1[W] + [Mod]
+> **Tier 3:** [V] 1[W] + 1[D] + [Mod]
 
 **Values written with slashes.** Some cards write an entry under the traits once for all their Versions, with one value per Version, in the order of the costs, separated by slashes: **One / one / two creatures**, **5 / 10 sq.**, **Aura 2 / 3 / 3**. Target counts are spelled out in words; distances, areas and other mechanical values use numerals. A distance in squares is written with "sq." (**Distance: 5 sq.**).
 
@@ -295,6 +295,7 @@ The numbers on the two cards below are the numbers of the list. The first card n
 |---|---|
 | [[Damage Types\|**[V]**, **[R]**, **[C]**]] | Vigor damage, Resolve damage, or the one the origin chooses. On cards in Foundry, a heart {{pool:V}} stands for Vigor and a brain {{pool:R}} for Resolve. |
 | [[Weapon Damage\|**[W]**]] | The damage of your weapon. |
+| [[Weapon Damage\|**[D]**]] | Your weapon's die on that Tier, rolled once more. |
 | [[Rules Language\|**[Trait]**]] | An Action with that trait: "a [Strike] Action", "[Melee] Actions". Several traits in one pair of brackets mean an Action with all of them: "[Ranged, Weapon] Actions". |
 | [[Modifier Damage\|**[Mod]**]] | Damage equal to the Modifier used on the roll: your Weapon Modifier on a Weapon roll, your Power Modifier on a Power roll, your Signature Modifier on a Signature roll, or your Attribute Modifier on an Attribute Action. |
 | [[Hazardous Terrain\|**[HT: …]**]] | Hazardous Terrain: written in the text of an effect that creates an area, with its patterns (Entering, Turn, Movement). |
@@ -310,7 +311,7 @@ The numbers on the two cards below are the numbers of the list. The first card n
 | [[Save Actions\|**Save: Instinct**]] | The Save each target rolls. |
 | [[Rounds\|**(1 round)**]] | After a condition or an effect: it lasts 1 round. |
 | [[0 AP Actions\|**0 AP**]] | An Action that costs no AP. You can use it only on your turn. |
-| [[Linked Actions\|**Weapon Attack (1A)**, **(1A/2A)**]] | A Linked Action and the Version you use (or a choice of two). |
+| [[Linked Actions\|**Basic Attack (1A)**, **(1A/2A)**]] | A Linked Action and the Version you use (or a choice of two). |
 | [[Reactions\|**1R**, **0R**]] | A Reaction that uses 1 AP, or none (which AP can pay: see [[Reactions]]). |
 | [[Escalation\|**Escalation 4**]] | The Escalation an Action needs: you can use it only while your Escalation is at least that number. Nothing is spent. |
 
@@ -330,7 +331,7 @@ A single creature is referred to as **they**: "the creature is Hindered until th
 
 When a rule names a trait before the word "Action," it means an Action with that trait. For example, a **Divine Action** is an Action with the Divine trait. The same goes for a Weapon Action, a Power Action or a Nonlethal Action.
 
-- Traits inside one pair of square brackets, such as **[Ranged, Strike, Weapon] Action**, mean an Action with **all** of those traits: [Trait A, Trait B] is Trait A **and** Trait B. It doesn't mean *only*, it just must include the trait: a [Melee] Weapon Attack (1A) is the Weapon Attack Action that uses 1 AP and has the Melee trait, so it doesn't apply to a [Ranged] Weapon Attack (1A).
+- Traits inside one pair of square brackets, such as **[Ranged, Strike, Weapon] Action**, mean an Action with **all** of those traits: [Trait A, Trait B] is Trait A **and** Trait B. It doesn't mean *only*, it just must include the trait: a [Melee] Basic Attack (1A) is the Basic Attack Action that uses 1 AP and has the Melee trait, so it doesn't apply to a [Ranged] Basic Attack (1A).
 - Separate brackets joined by "and" mean **either**: "[Strike] and [Weapon] Actions" are Actions with the Strike trait, the Weapon trait, or both. Alternatives can also be written with "or" inside the brackets: [Melee or Ranged].
 - A **Body Action** is an Action with the Body trait, and so on; an Action can be more than one (Trip is both a Body and an Instinct Action).
 
