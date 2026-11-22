@@ -49,4 +49,5 @@ What a setup is worth on the next Strike (+2 vs 13) [calc]: Basic Attack with a 
 
 Lucas's: the Speed 4 Requirement, half Speed for 1 AP (an Advance: it can trigger Reactions) or Evade 2 for 2 AP (no Reactions), At-will, one Check against the highest DC with 1 Bane per creature beyond the first, Appeal and Instinct. Claude's: no Difficult Terrain on Tier 2 (half of Speed 5 is 2 squares: a Difficult enemy square plus the step out would never fit). Noted: a Bloodied creature with Speed 5 (3 while Bloodied) can't Tumble.
 
-## Trip and Shove (next)
+## Trip and Shove (in progress)
+Claude proposed one 1 AP Version each without [Strike] (about 6 to 7 a use against a Basic Attack's 6.6: Shove nothing / Pushed 2 / Pushed 3, Critical Prone; Trip nothing / Prone / [V] 1d6! Bl, Prone, Critical [V] 1d6! Bl). **Lucas, 2026-11-22: "I think we should do 2 AP as well, variable actions need a place in 2d12."** So the charter's rule 10 ("a second Version only when it does a different thing, never a bigger one") has an exception for Basic Actions that scale with AP; Claude's 2 AP Versions buy reliability (a Tier 1 that does something) as well as size. Drafts in the chat, to confirm.
