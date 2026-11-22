@@ -49,6 +49,10 @@ Riders: Daunted, the Pulls and the Slide [not priced].
 
 **Expected damage a use, vs 12 / 13 / 14** [calc]: Archer Weapon (Hunting Bow) 7.7 / 7.1 / 6.5 (8.8 / 8.0 / 7.3 against a Strained target); Archer Power 5.4 / 5.2 / 4.9; Paladin Weapon (Longsword, +1) 12.6 / 11.3 / 9.9, (Arming Sword) 8.5 / 7.7 / 6.8; Paladin Power 6.1 / 5.8 / 5.5. Old Weapon Attack: Archer 4.8, Paladin (Longsword) 7.6, vs 13.
 
+## Draft 3 settled (Lucas, 2026-11-22)
+
+The four cards as drawn in the chat (names and Flavor Claude's): **Loose** and **Harrying Shot** (Archer), **Oathblade** and **Drawing Light** (Paladin). The Longsword's Tier 3 at 2[W] (about 27) accepted. **Traits (Lucas):** "Harrying Shot also gets the Weapon trait" (with [Ranged]: it is an arrow from her bow, Doomed while Engaged); "Loose has to be Ranged and Projectile" (fixed traits: it needs a bow; it no longer takes Melee from the weapon). Drawing Light has no [Ranged] (light, not a missile). Oathblade takes Melee or Ranged from the weapon, as the Weapon Attack did.
+
 ## Open, next
 - A rule the examples need: a Bloodied / Strained line that changes **this Action's own damage** can't wait for that damage (it would be circular): it reads the target as it was before the roll.
 - The Archer's Power Basic attack: its flavor.
