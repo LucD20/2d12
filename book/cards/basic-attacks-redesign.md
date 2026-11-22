@@ -61,6 +61,15 @@ Harrying Shot is [Power, Strike] again (no Weapon, no Ranged: no Weapon-and-Powe
 
 Numbers vs 13 at +2 (the Modifier first) and +1 (second) [calc]: Oathblade Longsword as drafted 13.6 / 11.3; without [Mod] on Tiers 2-3 12.1 / 10.6; with Tier 3 "1[W] + [Mod] + the weapon's die again" 11.2 / 9.2; Oathblade Arming Sword 9.5 / 7.7; Loose (Hunting Bow) 7.1 / 5.5. Power, as drafted: Harrying Shot 5.4 / 5.2, Drawing Light 5.8 / 5.5; "[Mod] / 1d8! + [Mod] / 2d8! + [Mod]" 7.4 / 5.8; with 1d6! 6.4 / 4.9; with 1d10! 8.3 / 6.6.
 
+## Decided (Lucas, 2026-11-22: "Yes, and power should break the format, which is why I want no Mod on it")
+
+1. **Back to one shared Weapon Basic attack** (it replaces the Weapon Attack): **[V] [Mod] / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]**. **[D] is new: the weapon's damage die on that Tier** (a Longsword's Tier 3: 1d6!); written apart from [W], you roll that die once more. [W] keeps its meaning (the whole weapon damage). This revises decision 1 (b): the Weapon attack is shared, the Power attacks are each class's.
+2. **Each class's line on it:** Paladin: "Your Basic Attack gains: **Strained:** you can Slide the target 1." Archer: "Your Basic Attack gains: **Strained** (above the roll): a Tier 3 deals 1[D] more."
+3. **The Power attacks are each class's and break the format: no [Mod] in their damage** (dice only, their own riders): Harrying Shot [R] 1d4! / 1d8! / 1d12! Ps, Bloodied: on a Tier 3 Daunted of you (EoT); Drawing Light [R] 1d4! Ho / 1d8! Ho, Pulled 1 / 2d6! Ho, Pulled 2, Bloodied: Slide instead.
+4. **Every class chooses its Modifier order** (H1; Chapter 5's "if your class lets you" goes).
+
+Expected damage vs 13 (Modifier first / second) [calc]: Basic Attack: Hunting Bow 6.6 / 5.0, Recurve Bow 6.8 / 5.2, Arming Sword 8.5 / 6.8, Longsword 11.2 / 9.2 (its Tier 3 about 19); Harrying Shot 5.4 / 5.2; Drawing Light 5.8 / 5.5 (and its Pull).
+
 ## Open, next
 - A rule the examples need: a Bloodied / Strained line that changes **this Action's own damage** can't wait for that damage (it would be circular): it reads the target as it was before the roll.
 - The Archer's Power Basic attack: its flavor.
