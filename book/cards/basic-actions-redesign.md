@@ -37,4 +37,16 @@ Shape (A), handing an AP over (Claude's pick: Boons are too small for 1 AP, and 
 
 What a setup is worth on the next Strike (+2 vs 13) [calc]: Basic Attack with a bow 6.6 plain, 9.1 Favored; with a Longsword 11.2 plain, 15.7 Favored. Asked by Lucas ("curiosity"): raising the next Strike's Tier by one would be 9.7 (bow) and 17.4 (Longsword): a little more than Favored, because a Tier 1 becomes a hit every time.
 
-## Tumble (next)
+## Tumble: decided (Lucas, 2026-11-22: his shape, "I think it should lose Mind to Appeal")
+
+> **Tumble** · At-will · 1 or 2 AP · [Appeal, Instinct, Move]
+> *You duck, roll and slip past them.*
+> Requirement: Your Speed is at least 4.
+> 1 AP: Advance half your Speed (rounded down). · 2 AP: Evade 2.
+> Special: You can move through enemies' spaces (never ending in one). Before you move, make the Check against the creatures whose spaces your path crosses: 1 Bane for each creature beyond the first.
+> Check: Appeal or Instinct vs. the same Attribute's DC (the highest among them)
+> Tier 1: You stop in the last square before the first enemy's space. · Tier 2 or 3: You pass.
+
+Lucas's: the Speed 4 Requirement, half Speed for 1 AP (an Advance: it can trigger Reactions) or Evade 2 for 2 AP (no Reactions), At-will, one Check against the highest DC with 1 Bane per creature beyond the first, Appeal and Instinct. Claude's: no Difficult Terrain on Tier 2 (half of Speed 5 is 2 squares: a Difficult enemy square plus the step out would never fit). Noted: a Bloodied creature with Speed 5 (3 while Bloodied) can't Tumble.
+
+## Trip and Shove (next)
