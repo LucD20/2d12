@@ -8,29 +8,8 @@
      "v": "v0.0.482",
      "title": "HUD condition polarity pills and +N overflow popover",
      "do": "On Aveline, apply at least 4 active conditions/effects (mix buffs like Empowered / Shield of Faith and debuffs like Prone, Daunted, Hindered), then select Aveline's token and click the +N button on the HUD conditions row.",
-     "expect": "Debuffs (including Daunted) show downward debuff styling, buffs show upward buff styling, and past 3 items a +N ▾ button opens a clean popover grouped into Debuffs, Buffs, and Other (clickable to open the Effect).",
-     "rev": 1
-    },
-    {
-     "id": "ui-hud-sit-urgent",
-     "v": "v0.0.482",
-     "title": "HUD Situational tab count badge and Urgent vs. Available split",
-     "do": "Make Aveline Prone (Available situational item), then trigger a Reaction or map prompt (e.g. Judge damage reduction or Snap Shot on Sylwen) while viewing Hands/Macros.",
-     "expect": "The Situational tab shows a count badge, auto-switches cleanly when an urgent Reaction or prompt arrives (highlighting gold), and places urgent prompts above passive options (Prone / Granted) separated by a hairline.",
-     "rev": 1
-    }
-   ]
-  },
-  {
-   "name": "The roll dialog",
-   "items": [
-    {
-     "id": "ui-rolldlg-net-cap",
-     "v": "v0.0.482",
-     "title": "Roll dialog Net Boons/Banes badge, cap, and Favored/Doomed cancel",
-     "do": "With Sylwen targeting the Orc Warrior, open Basic Attack. Add 3 Field Boons (or 2+ named Boons of the same name), add a Bane to inspect the Net badge, then toggle both Favored and Doomed on at the same time.",
-     "expect": "The header shows a colored Net +N / Net −N / Net 0 badge (hiding at ±5 when Favored/Doomed takes over). Any named Boon/Bane past the 2-cap shows a dashed strikethrough and a small \"cap\" badge. Active Favored and Doomed together both show dashed strikethrough as cancelled.",
-     "rev": 1
+     "expect": "Debuffs (including Daunted) and buffs render cleanly with full top and bottom borders (no clipped outline), and past 3 items a +N ▾ button opens a popover grouped into Debuffs, Buffs, and Other.",
+     "rev": 2
     }
    ]
   },
@@ -38,11 +17,11 @@
    "name": "Chat cards",
    "items": [
     {
-     "id": "ui-chat-modbar-tags",
-     "v": "v0.0.482",
-     "title": "Chat card damage modifier strip, post-Apply tags, and dark theme polish",
-     "do": "With Aveline (Longsword) targeting an Orc Warrior (give it Resist Slash 2 or Empowered), roll Basic Attack (Tier 2 or 3, and try a Critical) and apply damage. Check both light and Foundry dark theme.",
-     "expect": "Under the rolled damage pool, a compact modifier strip lists contributing modifiers (Weapon / Flat / Empowered). After Apply, Resist / Weak / Immune show as compact readable tags after \"Took\". Critical boxes/labels and 5-Boon/5-Bane tags look crisp in both light and dark themes.",
+     "id": "ui-chat-down-foot",
+     "v": "v0.0.483",
+     "title": "Chat card Down chip and single-row footer with Card button",
+     "do": "With Aveline (Longsword), apply damage to an Orc Warrior that puts it Down (both Bloodied and Strained, or total damage at/past its Health Pool), and also apply damage to an Orc Warrior with Resist Slash 2.",
+     "expect": "A Down creature shows a single \"Down\" badge instead of \"Bloodied Strained\". The post-Apply Resist tag stays compact (\"Slash −2\" with shield icon) on the same line as \"Took\", and the \"Card\" button stays on the right of the footer instead of wrapping underneath.",
      "rev": 1
     }
    ]

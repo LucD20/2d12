@@ -216,7 +216,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   if (a.B + a.M > 0) await D.applyToActor(actor, buckets, { announce: false, from: { uuid: s.originUuid ?? "", strike: !!s.strike }, guardFirst, report, comps, factor, nl: !!s.nl });   // pack TALENTS-PT: the components (a split, share.mjs)
   const took = { B: buckets.B.l + buckets.B.n, M: buckets.M.l + buckets.M.n };
   const bd = (Number(undo["system.damage.bodyLethal"]) || 0) + (Number(undo["system.damage.bodyNonlethal"]) || 0) + took.B, md = (Number(undo["system.damage.mindLethal"]) || 0) + (Number(undo["system.damage.mindNonlethal"]) || 0) + took.M;
-  const bl = sys.bdt > 0 && bd >= sys.bdt, st = sys.mdt > 0 && md >= sys.mdt;
+  const bl = sys.bdt > 0 && bd >= sys.bdt, st = sys.mdt > 0 && md >= sys.mdt, down = sys.pool > 0 && (bd + md) >= sys.pool;
   const landed = CC.riderLands(a.B + a.M);
   const firstTime = !r.applied?.ridersDone;
   const origin = { ...(await import("./effects.mjs")).originInfo(s.originUuid), escalation: !!s.escalation, ...(Number.isFinite(s.originMod) ? { mod: s.originMod } : {}) };
@@ -255,7 +255,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
     }
   }
   const rwi = [...CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, label: x.label, v: x.v })), ...(report.mods ?? [])];   // v0.0.321: shown as icons after "Took"; v0.0.463: and the reductions and Guard (the breakdown)
-  r.applied = { took, mods: rwi, state: bl && st ? "both" : bl ? "bloodied" : st ? "strained" : "", factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
+  r.applied = { took, mods: rwi, state: (down || (bl && st)) ? "down" : bl ? "bloodied" : st ? "strained" : "", factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
   return true;
 }
 /** The "After the damage" chain, once, for the rows just applied whose damage landed (s.lines on any landed Tier, gated by stateLinesFor; s.after on Tier 2+ or Saves). */

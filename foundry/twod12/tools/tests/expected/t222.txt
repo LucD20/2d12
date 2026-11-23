@@ -1,9 +1,9 @@
 --- the icons after "Took" (one per kind, the numbers in the tooltip)
-Weak Holy +2 Resist Fire −3 Immune Cold
+Holy +2 Fire −3 Cold
 none: ""
 --- a damage message: one row waiting, one applied
 waiting: Ogre Apply Vigor Fire 5 Guard −2 Takes 3 Lethal · Full
-applied: Imp Took 2 Resist Fire −3 ✓ Undo Vigor Fire 5 Takes 2 Applied in full · Lethal
+applied: Imp Took 2 Fire −3 ✓ Undo Vigor Fire 5 Takes 2 Applied in full · Lethal
 Apply and Undo share the class cc-rbtn: true | Lethal in each row's ledger (v0.0.454): true
 a card with no target keeps the tag at the bottom: true
 --- a written [Mod] in a [W] term takes the weapon's subtype (Smite: [V] 1[W] + [Mod])

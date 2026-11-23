@@ -621,12 +621,13 @@ const RWI = { weak: ["fa-fire-flame-curved", "Weak"], resist: ["fa-shield-halved
 export const rwIcons = (mods = []) => Object.entries(RWI).map(([k, [ic, word]]) => {
   const list = (mods ?? []).filter(x => x?.kind === k);
   if (!list.length) return "";
-  const txt = list.map(x => (k === "immune" ? x.label : `${x.label} ${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)}`)).join(", ");
+  const short = l => String(l ?? "").replace(/^(?:Resist(?:ance)?|Weak(?:ness)?|Immun(?:e|ity))\s+/i, "");
+  const txt = list.map(x => (k === "immune" ? short(x.label) : `${short(x.label)} ${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)}`)).join(", ");
   const tip = list.map(x => (k === "immune" ? x.label : `${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)} ${x.label}`)).join(", ");
   return `<span class="cc-dtag ${k}" aria-label="${esc(`${word}: ${tip}`)}"><i class="fa-solid ${ic}" aria-hidden="true"></i>${esc(txt)}</span>`;
 }).join("");
 const tookTxt = (t, mods = []) => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return `${bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"}${rwIcons(mods)}`; };
-const stateChip = s => (s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : s === "both" ? '<span class="cc-state bloodied">Bloodied</span><span class="cc-state strained">Strained</span>' : "");
+const stateChip = s => (s === "down" || s === "both" ? '<span class="cc-state down">Down</span>' : s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : "");
 /** A dice summary for a Tier's group: "3d8 Ho". */
 export const diceSummary = comps => [...new Set((comps ?? []).map(c => `${c.formula ?? ""}`.replace(/\s.*$/, "")).filter(Boolean))].join(" + ");
 /**

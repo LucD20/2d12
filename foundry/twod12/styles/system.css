@@ -2612,6 +2612,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-took { font-size: 12px; }
 .twod12.chat.cc .cc-state { font-size: 10.5px; font-weight: 700; color: #fff; border-radius: 3px; padding: 1px 5px; }
 .twod12.chat.cc .cc-state.bloodied { background: #a8261c; } .twod12.chat.cc .cc-state.strained { background: #1d5a9e; }
+.twod12.chat.cc .cc-state.down { background: #3b1c1a; border: 1px solid #a8261c; }
 .twod12.chat.cc .cc-adjrow { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; width: 100%; }
 .twod12.chat.cc .cc-adjrow.ondemand { display: none; }
 .twod12.chat.cc .cc-adjrow.ondemand.open, .twod12.chat.cc .cc-adjrow.ondemand:has(.hinted) { display: grid; }
@@ -4722,9 +4723,10 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.chat.cc .cc-dlab b { font-size: 15px; line-height: 1; }
 .twod12.chat.cc .cc-attack .cc-main .cc-pools { margin-top: 2px; padding: 2px 6px; }
 .twod12.chat.cc .cc-dpart { margin-top: 6px; }
-.twod12.chat.cc .cc-foot.cc-dfoot { flex-wrap: wrap; }
-.twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow { flex: 1 1 auto; min-width: 0; border-top: 0; padding: 0; }
+.twod12.chat.cc .cc-foot.cc-dfoot { flex-wrap: nowrap; align-items: flex-start; gap: 4px; }
+.twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow { flex: 1 1 0; min-width: 0; border-top: 0; padding: 0; }
 .twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow .cc-adjrow { flex-basis: 100%; }
+.twod12.chat.cc .cc-foot.cc-dfoot > .cc-btn { flex: 0 0 auto; }
 .twod12.chat.cc .cc-pools { color: var(--cc-ink); }
 /* v0.0.389 (Lucas: "without a target looks weird"): the stamp keeps its own height beside the damage (it stretched down the whole card) */
 /* v0.0.418 (Lucas, playtest 5, C7: "the box doesn't grow with the card when damage is rolled"): with a target it stretches to its row again; only
@@ -5646,8 +5648,8 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hm-sep { margin: 0 2px; }
 @container (max-width: 1020px) { .twod12-hud .hm-esc i { width: 4px; } .twod12-hud .hm-ap, .twod12-hud .hm-r, .twod12-hud .hm-sk { gap: 2px; } }
 /* HUD Buff / Debuff conditions + overflow popover */
-.twod12-hud .h3-conds { gap: 4px; }
-.twod12-hud .h3-c { padding: 0 5px 0 2px; height: 18px; border: 1px solid var(--hud-line); background: color-mix(in srgb, var(--hud-ink) 5%, transparent); min-width: 0; max-width: 132px; overflow: hidden; }
+.twod12-hud .h3-conds { gap: 4px; height: 20px; }
+.twod12-hud .h3-c { box-sizing: border-box; padding: 0 5px 0 2px; height: 18px; border: 1px solid var(--hud-line); background: color-mix(in srgb, var(--hud-ink) 5%, transparent); min-width: 0; max-width: 132px; overflow: hidden; }
 .twod12-hud .h3-c > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .twod12-hud .h3-c i { width: 14px; height: 14px; border: 0; }
 .twod12-hud .h3-c i img { width: 13px; height: 13px; }
