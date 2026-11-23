@@ -4,11 +4,11 @@
 // right-click opens the Action card (a PC's menu also pins the Version to the Quick row). The hotbar becomes a row inside it (a setting), and the
 // pick bar (pickbar.mjs) asks its question in the HUD's middle while a choice waits. Client settings: Show the HUD, Skip roll dialog, Hotbar in the HUD.
 import { emptyHudHtml, hudPanelHtml, HUD_SAVES } from "./hudmodel.mjs";
-import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, HUD_TABS_PC, HUD_TABS_NPC, FREQ_ORDER, FREQ_LABEL } from "./hudview.mjs";
+import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, condPopHtml, condPolarity, HUD_TABS_PC, HUD_TABS_NPC, FREQ_ORDER, FREQ_LABEL } from "./hudview.mjs";
 import { techniqueState } from "./mastery.mjs";   // v0.0.418 (D6)
 
 const F = "twod12";
-const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set(), view: "main", rview: "main", sitWas: false };   // v0.0.446: the right column's tab
+const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set(), view: "main", rview: "main", sitWas: false, sitKey: "" };   // v0.0.446: the right column's tab
 let root = null, timer = null;
 const setting = (k, d) => { try { return game.settings.get(F, k); } catch (e) { return d; } };
 
@@ -107,8 +107,24 @@ async function escOf(actor) {
   const s = actor.system ?? {}, has = actor.type !== "npc" || s.role === "elite" || !!s.useEscalation;
   return has ? { n: nn(s.escalation), max: nn(ESC_MAX) } : null;
 }
+function effectPolarity(e, name) {
+  const byName = condPolarity({ name });
+  if (byName !== "neutral") return byName;
+  const mods = e.getFlag?.(F, "mods") ?? [];
+  let pos = 0, neg = 0;
+  for (const m of mods) {
+    if (m?.boons > 0 || m?.favored || m?.empowered || m?.guard > 0 || m?.dmgBonus > 0 || m?.flat > 0) pos++;
+    if (m?.banes > 0 || m?.doomed || m?.enfeebled || m?.flat < 0) neg++;
+  }
+  if (neg && !pos) return "debuff";
+  if (pos && !neg) return "buff";
+  return "neutral";
+}
 function condsOf(actor, durationText) {
-  return [...(actor.effects ?? [])].filter(e => !e.disabled && !e.getFlag?.(F, "wound") && !e.getFlag?.(F, "grants")?.length).map(e => ({ id: e.id, name: String(e.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), dur: durationText(e), img: e.img ?? e.icon ?? "" }));   // v0.0.441: its picture (D4)
+  return [...(actor.effects ?? [])].filter(e => !e.disabled && !e.getFlag?.(F, "wound") && !e.getFlag?.(F, "grants")?.length).map(e => {
+    const name = String(e.name ?? "").replace(/\s*\([^)]*\)\s*$/, "");
+    return { id: e.id, name, dur: durationText(e), img: e.img ?? e.icon ?? "", pol: effectPolarity(e, name) };   // v0.0.441: its picture (D4)
+  });
 }
 /** A party card (and the cards of several selected tokens). */
 async function partyCard(actor, token = null) {
@@ -380,7 +396,7 @@ async function drawHud() {
     st.cards = new Map(pairs.map(([a, t], k) => [cards[k].key, { actor: a, token: t }]));
     return;
   }
-  if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.actorUuid = cur.actor.uuid; }
+  if (cur.actor.uuid !== st.actorUuid) { st.open = ""; st.tab = "act"; st.tabChosen = false; st.sitWas = false; st.sitKey = ""; st.view = "main"; st.actorUuid = cur.actor.uuid; }
   const m = await barModel(cur.actor, cur.token);
   // v0.0.441: every question waiting (a Setup's movement and a pick bar can both be up); v0.0.474 (Lucas, checklist v0.0.473: "the situational tab
   // is empty"): one waiting in the HUD's middle (asked with no creature selected) comes along too, into this creature's Situational tab
@@ -415,7 +431,9 @@ if (typeof window !== "undefined") window.addEventListener?.("resize", () => { c
 
 /* ------------------------------------------------------------------ panels, the card, the menu */
 function closePop({ keepOpen = false } = {}) {
-  root?.querySelectorAll(".hud-pop, .hud-menu, .hud-hmenu").forEach(x => x.remove()); st.card?.remove(); st.card = null;
+  root?.querySelectorAll(".hud-pop, .hud-menu, .hud-hmenu, .h3-condpop").forEach(x => x.remove());
+  root?.querySelectorAll(".h3-cmore[aria-expanded='true']").forEach(x => x.setAttribute("aria-expanded", "false"));
+  st.card?.remove(); st.card = null;
   // v0.0.382 (Lucas: "the button is still colored, so I have to click twice"): a closed panel's category is not lit any more
   if (!keepOpen && st.open) { st.open = ""; root?.querySelectorAll(".cat.on").forEach(x => { x.classList.remove("on"); x.setAttribute("aria-pressed", "false"); }); }
 }
@@ -490,6 +508,28 @@ async function handMenu(actor, tile) {
   });
 }
 
+/** Open the active conditions & effects popover upward from the +N button in the HUD identity column. */
+async function openCondPop(actor, btn) {
+  const already = btn.getAttribute("aria-expanded") === "true";
+  closePop({ keepOpen: true });
+  if (already) return;
+  const { durationText } = await import("./sheet-common.mjs");
+  const conds = condsOf(actor, durationText);
+  if (!conds.length) return;
+  const wrap = document.createElement("div");
+  wrap.innerHTML = condPopHtml(conds);
+  const pop = wrap.firstElementChild;
+  root.append(pop);
+  btn.setAttribute("aria-expanded", "true");
+  const r = btn.getBoundingClientRect(), h = root.getBoundingClientRect();
+  pop.style.bottom = `${Math.round(h.bottom - r.top + 4)}px`;
+  pop.style.left = `${Math.round(Math.max(4, Math.min(r.left - h.left, h.width - pop.offsetWidth - 4)))}px`;
+  const close = () => { pop.remove(); btn.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", away, true); };
+  const away = e => { if (!pop.contains(e.target) && e.target !== btn) close(); };
+  document.addEventListener("pointerdown", away, true);
+  pop.addEventListener("keydown", e => { if (e.key === "Escape") { close(); btn.focus(); } });
+}
+
 /** v0.0.381 (Lucas): right-click on a PC's Version stamp pins it to (or unpins it from) the Quick row, at once. */
 async function toggleQuick(actor, item, ap) {
   const k = `${item.id}:${ap}`, next = quickKeys(actor);
@@ -521,7 +561,7 @@ async function onClick(ev) {
   if (kind === "party") { const c = st.cards?.get(b.dataset.key); if (!c) return; if (ev.detail >= 2) return c.actor.sheet?.render(true); if (c.token) return c.token.control({ releaseOthers: true }); if (!game.user.isGM && c.actor.isOwner) return c.actor.sheet?.render(true); return; }
   if (kind === "fold") { await game.settings.set(F, "hudFolded", !setting("hudFolded", false)); return; }
   if (kind === "rtab") { st.view = b.dataset.rtab === "sit" ? "sit" : "main"; st.rview = "main"; return syncSide(); }   // v0.0.446: the right column's tabs
-  if (kind === "tab") { st.tab = b.dataset.tab; st.tabChosen = true; if (st.rx) st.rx = null; return renderHud(); }
+  if (kind === "tab") { st.tab = b.dataset.tab; st.tabChosen = true; return renderHud(); }
   if (kind === "rx") { const msg = game.messages.get(b.dataset.msg); if (!msg) return; const { rxClick } = await import("./moment.mjs"); st.rx = null; await rxClick(msg, { dataset: { twod12: b.dataset.k, row: b.dataset.row }, tagName: "DIV" }); return renderHud(); }
   if (kind === "close") return closePop();
   if (!actor) return;
@@ -531,6 +571,7 @@ async function onClick(ev) {
   if (kind === "grant") { const { useGrantOf } = await import("./freeuse.mjs"); return useGrantOf(actor, b.dataset.effect, Number(b.dataset.index) || 0, b.dataset.target || ""); }
   if (kind === "grantcancel") { const { cancelGrantOf } = await import("./freeuse.mjs"); return cancelGrantOf(actor, b.dataset.effect); }
   if (kind === "more") return openPanel("more", st.moreIds ?? []);
+  if (kind === "condpop") return openCondPop(actor, b);
   if (kind === "hands") return b.dataset.hand ? handMenu(actor, b) : openPanel("hands");   // v0.0.444 (group 2): the menu above the tile
   if (kind === "steel") { const basic = actor.itemTypes.action.find(i => /steel yourself/i.test(i.name)); if (basic) return use(actor, basic, Math.min(...(basic.system.versions ?? [{ ap: 2 }]).map(v => Number(v.ap) || 0)), ev.shiftKey); return ui.notifications.info("No Steel Yourself on this sheet."); }
   if (kind === "card" && item) { if (st.card?.isConnected && st.cardId === item.id) return closePop({ keepOpen: true }); return showCard(actor, item, b); }
@@ -591,17 +632,26 @@ export function hudAskSlot() {
 export const hudAsking = (on, side = false) => { root?.classList.toggle("asking", !!on && !side); root?.classList.toggle("asking-side", !!on && side); syncSide(); };
 /**
  * v0.0.446 (Lucas: "only show the 'Situational' tab when there is something happening. When it happens, change tabs to the situational
- * automatically"): the right column's tab. Something waits (a Reaction, granted uses, Prone, a question or a movement in .hb-ask): the
- * Situational tab shows, and the HUD switches to it when it starts waiting; when nothing waits any more, back to the tab chosen before.
+ * automatically"): the right column's tab. Urgent items (a Reaction, a question or movement in .hb-ask) always switch the tab when a new one
+ * arrives (even if Prone/Granted were already present); when nothing waits any more, back to the tab chosen before.
  */
 function syncSide() {
   const side = root?.querySelector(".hud-main .h3-side");
   if (!side) return;
-  const has = !!side.querySelector(".h3-sit > .h3-si, .h3-sit > .hb-gr, .hb-ask > *");
+  const urgEls = [...side.querySelectorAll(".h3-sit-urg > .h3-si, .hb-ask > *")];
+  const availEls = [...side.querySelectorAll(".h3-sit-avail > .h3-si, .h3-sit-avail > .hb-gr")];
+  const total = urgEls.length + availEls.length, has = total > 0, urg = urgEls.length > 0;
+  const urgKey = urgEls.map(el => (el.textContent ?? "").trim().slice(0, 60)).join("|");
   side.classList.toggle("has-sit", has);
-  if (has && !st.sitWas) st.view = "sit";
+  side.classList.toggle("has-urg", urg);
+  const sit = side.querySelector(".h3-sit");
+  if (sit) { sit.classList.toggle("on", has); sit.classList.toggle("urg", urg); }
+  const cnt = side.querySelector(".h3-rcnt");
+  if (cnt) cnt.textContent = total ? String(total) : "";
+  if ((has && !st.sitWas) || (urg && urgKey !== st.sitKey)) st.view = "sit";
   if (!has && st.view === "sit") st.view = st.rview;
   st.sitWas = has;
+  st.sitKey = urgKey;
   const v = has && st.view === "sit" ? "sit" : "main";   // v0.0.449: Situational, or the Hands with the macro bar
   side.dataset.rtab = v;
   side.querySelectorAll(".h3-rt").forEach(b => b.setAttribute("aria-selected", String(b.dataset.rtab === v)));

@@ -97,16 +97,21 @@ export const tierPill = (tier, crit = false, word = false, dbl = false) => `<spa
  * r: { boonFaces, baneFaces (a 1 for each that counts), sources: [{ name, boons, banes, bb }], five }.
  */
 export function boonBaneLines(r) {
-  const out = [];
+  const raw = [];
   for (const [kind, key, faces, sign] of [["boon", "boons", r.boonFaces, 1], ["bane", "banes", r.baneFaces, -1]]) {
     const used = {};
     let kept = 0;
     for (const s of r.sources ?? []) for (let i = 0; i < (Number(s[key]) || 0); i++) {
       const k = bbKey(s.bb), over = !!k && (used[k] = (used[k] ?? 0) + 1) > BB_LIMIT;
-      out.push({ kind, val: over || r.five ? 0 : sign, name: String(s.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), bb: k ? BB_NAMES[k] : "", over });
+      raw.push({ kind, val: over || r.five ? 0 : sign, name: String(s.name ?? "").replace(/\s*\([^)]*\)\s*$/, ""), bb: k ? BB_NAMES[k] : "", over, count: 1 });
       if (!over) kept++;
     }
-    if (!r.five) for (let i = kept; i < (faces ?? []).length; i++) out.push({ kind, val: sign, name: "", bb: "", over: false });
+    if (!r.five) for (let i = kept; i < (faces ?? []).length; i++) raw.push({ kind, val: sign, name: "", bb: "", over: false, count: 1 });
+  }
+  const out = [];
+  for (const x of raw) {
+    const prev = out.find(y => y.kind === x.kind && y.name === x.name && y.bb === x.bb && y.over === x.over);
+    if (prev) { prev.val += x.val; prev.count += 1; } else out.push(x);
   }
   return out;
 }
@@ -122,7 +127,7 @@ export function resultChips(r, { save = false, hide = false } = {}) {
   return `<span class="cc-pill word ${tierCls(r.tier, false)}">Tier ${r.tier}${r.forced ? " (forced)" : ""}</span>`;
 }
 /**
- * The breakdown panel: 2d12 (the dice as rolled, explosions grouped, the Doubles pair framed), Boon · Bane (one line per die), Modifiers, Total.
+ * The breakdown panel: 2d12 (the dice as rolled, explosions grouped, the Doubles pair framed), Boon · Bane (one line per source), Modifiers, Total.
  * r: a check ({ d1, d2, dropped, doubles, crit, base, tier, total, dc, dcLabel, boonFaces, baneFaces, sources, mods: [{ v, label }] }).
  */
 export function breakdownHtml(r, { hide = false, save = false, id = "", open = false, applied = [] } = {}) {
@@ -137,7 +142,7 @@ export function breakdownHtml(r, { hide = false, save = false, id = "", open = f
   // v0.0.301 (PACK BB): +1 / -1 each (no dice); over a name's limit: +0; 5 or more left: the roll is Favored / Doomed instead
   const five = r.five ? `<span class="cc-bbl five"><span class="cc-tag ${r.five === "favored" ? "up" : "down"}">5 or more ${r.five === "favored" ? "Boons" : "Banes"} left: ${r.five === "favored" ? "Favored" : "Doomed"} instead</span></span>` : "";
   // v0.0.347 (Lucas, playtest 4: "+1 Marked Quarry / −1 Situational, smaller, on the right, no Boon / Bane words, no triangle")
-  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv cc-bbv">${bb.map(x => `<span class="cc-bbl ${x.kind}${x.over ? " over" : ""}">${modTxt(x.val, "")} <span>${esc(x.name || (x.kind === "boon" ? "Boon" : "Bane"))}</span>${x.bb ? ` <small class="cc-bbn">${esc(x.bb)}</small>` : ""}${x.over ? ' <small class="cc-muted">over the limit</small>' : ""}</span>`).join("")}${five}</span>`);
+  if (bb.length) rows.push(`<span class="cc-bl">Boon · Bane</span><span class="cc-bv cc-bbv">${bb.map(x => `<span class="cc-bbl ${x.kind}${x.over ? " over" : ""}">${modTxt(x.val, "")} <span>${esc(x.name || (x.kind === "boon" ? "Boon" : "Bane"))}${x.count > 1 && x.val === 0 ? ` ×${x.count}` : ""}</span>${x.bb ? ` <small class="cc-bbn">${esc(x.bb)}</small>` : ""}${x.over ? ' <small class="cc-muted">over the limit</small>' : ""}</span>`).join("")}${five}</span>`);
   const mods = (r.mods ?? []).filter(m => m && Number(m.v));
   if (mods.length) rows.push(`<span class="cc-bl">Modifiers</span><span class="cc-bv">${mods.map(m => modTxt(Number(m.v), m.label)).join(" ")}</span>`);
   // v0.0.347: "Applied": the effects this roll's damage takes something from (Killer's Focus), each a link that opens it
@@ -539,7 +544,7 @@ export function instancesOf(comps) {
     // v0.0.440 (Lucas, checklist: "where is the die coming from?"): Empowered's own 1d6! (kind E) is its dice, named, not a step on top of them
     const emp = c.kind === "E" ? 0 : Number(c.emp) || 0, flat = (Number(c.total) || 0) - dice.reduce((a, b) => a + b, 0) - emp;
     const mods = [];
-    if (flat) mods.push({ v: flat, label: c.flatLabel || (dice.length ? "Flat" : c.label || c.src || (c.kind === "A" ? "Modifier" : "")) });   // v0.0.326 (Lucas: "+3 Empowered +2" read as +5 from Empowered): the dice's own flat part is named
+    if (flat) mods.push({ v: flat, label: c.flatLabel || (dice.length ? (c.kind === "W" ? "Base" : "Flat") : c.label || c.src || (c.kind === "A" ? "Modifier" : "")) });   // v0.0.326 (Lucas: "+3 Empowered +2" read as +5 from Empowered): the dice's own flat part is named
     if (emp) mods.push({ v: emp, label: emp > 0 ? "Empowered" : "Enfeebled" });
     list.push({ pool: c.pool || "B", sub: c.sub || "", src: c.src || c.weapon || (c.kind === "E" ? "Empowered" : ""), dice: c.dice ?? [], mods, total: Number(c.total) || 0, formula: c.formula ?? "" });
   }
@@ -557,7 +562,7 @@ export function ledgerModel(comps, mods = [], { factor = 1, took = null } = {}) 
   const sg = n => (n < 0 ? `\u2212${Math.abs(n)}` : `${n}`);
   for (const x of insts) {
     const p = x.pool === "M" ? "M" : "B", dice = x.dice.flatMap(d => d.results ?? []);
-    const bits = [dice.length ? `${String(x.formula ?? "").replace(/\s.*$/, "")}${x.formula ? ": " : ""}${dice.join(", ")}` : "", ...(dice.length ? x.mods.filter(m => m.label) : []).map(m => `${m.label} ${m.v < 0 ? "\u2212" : "+"}${Math.abs(m.v)}`)].filter(Boolean);   // a flat amount alone: just its type
+    const bits = [dice.length ? `${String(x.formula ?? "").replace(/\s.*$/, "")}${x.formula ? ": " : ""}${dice.join(", ")}` : "", ...x.mods.filter(m => m.label).map(m => `${m.label} ${m.v < 0 ? "\u2212" : "+"}${Math.abs(m.v)}`)].filter(Boolean);
     pools[p].lines.push({ label: `${x.sub ? subName(x.sub) : "Damage"}${bits.length ? ` (${bits.join(", ")})` : ""}`, v: `${x.total}` });
     pools[p].v += x.total; (bySub[x.sub] ??= { B: 0, M: 0 })[p] += x.total;
   }
@@ -589,21 +594,31 @@ export function poolBlock(comps) {
     return `<span class="cc-poolrow">${poolIc(p)}<span>${POOL[p]} · ${subs.map(([s, ns]) => `${ns.reduce((x, y) => x + y, 0)}${s ? ` ${subCode(s)}` : ""}`).join(" + ")}</span><b class="cc-ptot">${tot}</b></span>`;
   }).join("");
 }
-const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b style="color:${subInk(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`
+const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b class="cc-sub" style="${subStyle(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`
   // v0.0.284 (Lucas): no "Dice: none" for a flat amount, and a Total only for a dice expression
   + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.map(d => (d.results ?? []).map((v, k) => (d.ex?.[k] ? `<span class="cc-ddie ex">${v}!</span>` : `<span class="cc-ddie">${v}</span>`)).join("")).join("")}</span>` : "")
   + (x.mods.length ? `<span class="cc-bl">Modifiers</span><span class="cc-bv">${x.mods.map(m => modTxt(m.v, m.label)).join(" ")}</span>` : "")
   + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Total</span><span class="cc-bv"><b>${x.total}</b></span>` : "") + "</div>";
+/** Compact modifier strip shown under .cc-pools only when bonuses, flat modifiers, or Empowered contributed to the roll. */
+export function modBarHtml(insts) {
+  const bits = [];
+  for (const x of insts ?? []) {
+    for (const m of x.mods ?? []) if (m?.label && Number(m.v)) bits.push(modTxt(Number(m.v), m.label));
+    if (x.src === "Empowered" && Number(x.total) && !(x.mods ?? []).some(m => m.label === "Empowered")) bits.push(modTxt(Number(x.total), "Empowered"));
+  }
+  return bits.length ? `<div class="cc-modbar">${bits.join('<span class="cc-dot" aria-hidden="true"> · </span>')}</div>` : "";
+}
 /**
- * v0.0.321 (Lucas: Resist / Weak / Immune only after Apply, and not loud): a small icon per kind after "Took …", what it did in its tooltip.
+ * v0.0.321 (Lucas: Resist / Weak / Immune only after Apply, and not loud): compact readable post-Apply tags after "Took …".
  * mods: [{ kind: "resist" | "weak" | "immune", label, v }].
  */
 const RWI = { weak: ["fa-fire-flame-curved", "Weak"], resist: ["fa-shield-halved", "Resist"], immune: ["fa-ban", "Immune"] };
 export const rwIcons = (mods = []) => Object.entries(RWI).map(([k, [ic, word]]) => {
   const list = (mods ?? []).filter(x => x?.kind === k);
   if (!list.length) return "";
+  const txt = list.map(x => (k === "immune" ? x.label : `${x.label} ${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)}`)).join(", ");
   const tip = list.map(x => (k === "immune" ? x.label : `${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)} ${x.label}`)).join(", ");
-  return `<i class="fa-solid ${ic} cc-rwi ${k}" aria-label="${esc(`${word}: ${tip}`)}"></i>`;
+  return `<span class="cc-dtag ${k}" aria-label="${esc(`${word}: ${tip}`)}"><i class="fa-solid ${ic}" aria-hidden="true"></i>${esc(txt)}</span>`;
 }).join("");
 const tookTxt = (t, mods = []) => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return `${bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"}${rwIcons(mods)}`; };
 const stateChip = s => (s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : s === "both" ? '<span class="cc-state bloodied">Bloodied</span><span class="cc-state strained">Strained</span>' : "");
@@ -631,7 +646,7 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
       const led = ledgerHtml(ledgerModel((groups.find(g => (g.rows ?? []).includes(i)) ?? top).comps, r.applied.mods ?? [], { factor: f, took: r.applied.took ?? {} }), `Applied ${fw} \u00b7 ${m.nl ? "Nonlethal" : "Lethal"}`);
       return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}" data-ctx="adjust">✓ Undo</button><div class="cc-adjrow ondemand">${led}</div>` : ""}</div>`;
     }
-    // v0.0.321 (Lucas): Resist / Weak / Immune show only once applied (an icon after "Took"); the Guard stays
+    // v0.0.321 (Lucas): Resist / Weak / Immune show only once applied (tags after "Took"); the Guard stays
     // v0.0.398 (Lucas: "remove the '− Guard' from all damages, this should only show in the damage breakdown when you click to see it"): in the
     // on-demand panel (the sliders button) beside Full / Half / Double
     // v0.0.454 (Lucas, playtest 6, D2 "B"): the equals button opens the ledger (what will happen: by type, Immune / Resist / Weak, a reduction named
@@ -642,7 +657,7 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {
     const insts = mergeInstances(instancesOf(g.comps)), id = `${idp}${gi}`;   // v0.0.373 (Lucas): one block per pool and damage type
-    const pools = `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button><div class="cc-break dmg" data-cc-panel="${id}">${insts.map(instBlock).join("")}</div>`;
+    const pools = `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button>${modBarHtml(insts)}<div class="cc-break dmg" data-cc-panel="${id}">${insts.map(instBlock).join("")}</div>`;
     const head = many ? `<div class="cc-ghead">${tierPill(g.tier, g.crit, true)}<span>${poolLinesSummary(g.comps)}</span><b>${sum(g.comps)}</b></div>` : "";
     const rid = riders ? (g.riders ?? []).filter(Boolean).map(riderHtml).join("") : "";
     return `<div class="cc-dgroup">${head}${pools}${rid}<div class="cc-trows">${(g.rows ?? []).map(i => rowHtml(i)).join("")}</div></div>`;
@@ -653,7 +668,7 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
   const tagHere = rows.length ? "" : nlTag;
   const all = allBtn || tagHere ? `<div class="cc-applyall">${allBtn}${tagHere}</div>` : "";
   const note = m.note ? `<div class="cc-dnote">${m.note}</div>` : "";   // v0.0.315 (Lucas, Bleed's card): a short line, no ↳ box
-  const poolsOf = gi => { const g = groups[gi] ?? { comps: [] }, id = `${idp}${gi}`; return `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button><div class="cc-break dmg" data-cc-panel="${id}">${mergeInstances(instancesOf(g.comps)).map(instBlock).join("")}</div>`; };
+  const poolsOf = gi => { const g = groups[gi] ?? { comps: [] }, id = `${idp}${gi}`, insts = mergeInstances(instancesOf(g.comps)); return `<button type="button" class="cc-pools" data-cc-toggle="${id}" aria-expanded="false" aria-label="Show the damage dice">${poolBlock(g.comps) || '<span class="cc-muted">No damage.</span>'}</button>${modBarHtml(insts)}<div class="cc-break dmg" data-cc-panel="${id}">${insts.map(instBlock).join("")}</div>`; };
   return { groups, rows, top, sum, rowHtml, body, all, noTgt, note, poolsOf, nlTag };
 }
 export function damageCardHtml(m, view = FULL_VIEW) {

@@ -79,6 +79,8 @@ function auto(kind, hexc, warm = false) {
 }
 const kindOf = prop => (/^(color|--c|--n|fill)$/.test(prop) ? "text" : /^(background|background-color|--bg)$/.test(prop) ? "bg" : /^(border|outline|box-shadow|text-decoration)/.test(prop) ? "line" : "text");
 const HEX = /#[0-9a-fA-F]{3,8}\b/g;
+const VAR_THEME = /var\(\s*--(?:s|hud)-[^)]+\)/g;
+const HEX_OR_THEMEVAR = /(var\(\s*--(?:s|hud)-[^)]+\))|(#[0-9a-fA-F]{3,8}\b)/g;
 const autoUsed = {};
 function darkSet(name, rules, scope = ".twod12-dark") {
   autoUsed[name] = new Set();
@@ -88,11 +90,11 @@ function darkSet(name, rules, scope = ".twod12-dark") {
     if (/\.autodia\b/.test(sel)) return "";
     // v0.0.370: a near-white background (rgba white, .35 and more) is a faint light tint on the dark page (a die, a rider's chip on a Tier row)
     const WHITE = /rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*0?\.(?:3[5-9]|[4-9])\d*\s*\)/g;
-    const decls = body.split(";").map(d => d.trim()).filter(d => (/#[0-9a-fA-F]{3,8}\b/.test(d) || (/^background(-color)?\s*:/.test(d) && new RegExp(WHITE.source).test(d))) && !/^--cc-|^--rd-|^--cw-|^--ps-|^--sk-|^--fr-|^--tp-/.test(d));
+    const decls = body.split(";").map(d => d.trim()).filter(d => (/#[0-9a-fA-F]{3,8}\b/.test(d.replace(VAR_THEME, "")) || (/^background(-color)?\s*:/.test(d) && new RegExp(WHITE.source).test(d))) && !/^--cc-|^--rd-|^--cw-|^--ps-|^--sk-|^--fr-|^--tp-/.test(d));
     if (!decls.length) return "";
     // a "background" shorthand resets background-clip: keep the rule's own clip after it (gradient text)
     if (decls.some(d => /^background\s*:/.test(d))) decls.push(...body.split(";").map(d => d.trim()).filter(d => /^(-webkit-)?background-clip\s*:/.test(d)));
-    const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(WHITE, "rgba(255, 255, 255, .07)").replace(HEX, c => { const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc, name === "pcs"); })}`; });
+    const out = decls.map(d => { const i = d.indexOf(":"), prop = d.slice(0, i).trim(), k = kindOf(prop); return `${prop}:${d.slice(i + 1).replace(WHITE, "rgba(255, 255, 255, .07)").replace(HEX_OR_THEMEVAR, (m, tv, c) => { if (tv) return tv; const lc = c.toLowerCase(), v = MAP[k][lc] ?? MAP.any[lc]; if (v) return v; autoUsed[name].add(lc); return auto(k, lc, name === "pcs"); })}`; });
     // :where() keeps each rule's own weight, so the system's cascade holds (a rule that colors with a variable, as "the lit pip is the row's color",
     // still beats the plain rule before it); the set only has to come after the system's rules.
     return `${topSplit(sel).map(s => `:where(${scope}) ${s.trim()}`).join(", ")} { ${out.join("; ")}; }`;
@@ -711,6 +713,12 @@ const STYLE3 = `
 .twod12-type .twod12.chat.cc .cc-seg.s3:not(.lit) { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; }
 .twod12-type .twod12.chat.cc .cc-czone:not(.solid) { background: var(--s-ta-cp) !important; color: var(--s-ink) !important; }
 .twod12-type .twod12.chat.cc .cc-dbl, .twod12-type .twod12.chat.cc .cc-dbl.crit { border-color: var(--s-ta-c) !important; box-shadow: none !important; }
+.twod12-type .twod12.chat.cc .cc-critbox { background: var(--s-ta-cp) !important; border: 1px solid var(--s-ta-cr) !important; border-radius: 0 !important; color: var(--s-ink) !important; }
+.twod12-type .twod12.chat.cc .cc-critline { background: var(--s-ta-cp) !important; border: 1px dashed var(--s-ta-cr) !important; border-radius: 0 !important; color: var(--s-ink) !important; }
+.twod12-type .twod12.chat.cc .cc-critlbl { color: var(--s-ta-ct) !important; border-color: var(--s-ta-cr) !important; background: var(--s-pg) !important; border-radius: 0 !important; }
+.twod12-type .twod12.chat.cc .cc-critlbl.on { background: var(--s-ta-c) !important; color: var(--s-ta-ci) !important; border-color: var(--s-ta-cr) !important; }
+.twod12-type .twod12.chat.cc .cc-bbl.five .cc-tag.up { background: var(--s-ta-3) !important; color: #fff !important; }
+.twod12-type .twod12.chat.cc .cc-bbl.five .cc-tag.down { background: var(--s-ta-1) !important; color: #fff !important; }
 .twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t1 th { background: var(--s-ta-1p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-1) !important; }
 .twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t2 th { background: var(--s-ta-2p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-2) !important; }
 .twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t3 th { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-3) !important; }
@@ -736,6 +744,17 @@ const STYLE3 = `
 .twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.t3 th { background: var(--s-ta-3p) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-3) !important; }
 .twod12-type.twod12-type .twod12.rolldlg .rd-tiers tr.crit th { background: var(--s-ta-cp) !important; color: var(--s-ink) !important; box-shadow: inset 4px 0 0 var(--s-ta-c) !important; }
 .twod12-type .twod12.rolldlg .rd-qb, .twod12-type .twod12.rolldlg .rd-chips > * { border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+.twod12-type .twod12.rolldlg .rd-chips > .rd-chip.buff.on { background: color-mix(in srgb, var(--s-good) 13%, transparent) !important; }
+.twod12-type .twod12.rolldlg .rd-chips > .rd-chip.debuff.on { background: color-mix(in srgb, var(--s-bad) 13%, transparent) !important; }
+.twod12-type .twod12.rolldlg .rd-chips > .rd-chip.capped { border-style: dashed !important; opacity: .72; background: transparent !important; }
+.twod12-type .twod12.rolldlg .rd-chips > .rd-chip.capped .rd-clabel { text-decoration: line-through; }
+.twod12-type .twod12.rolldlg .rd-chips > .rd-chip.cancelled { border-style: dashed !important; opacity: .75; }
+.twod12-type .twod12.rolldlg .rd-chips > .rd-chip.cancelled .rd-clabel { text-decoration: line-through; }
+.twod12-type .twod12.rolldlg .rd-cap { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--s-gold); border: 1px solid var(--s-hair); padding: 0 3px; margin-left: 3px; line-height: 1.25; }
+.twod12-type .twod12.rolldlg .rd-net { display: inline-flex; align-items: center; padding: 0 5px; font: 700 11px/1.45 "Source Sans 3", sans-serif; border: 1px solid var(--s-hair); margin-left: 2px; }
+.twod12-type .twod12.rolldlg .rd-net.up { color: var(--s-boon); border-color: color-mix(in srgb, var(--s-boon) 45%, var(--s-hair)); background: color-mix(in srgb, var(--s-boon) 12%, transparent); }
+.twod12-type .twod12.rolldlg .rd-net.down { color: var(--s-bane); border-color: color-mix(in srgb, var(--s-bane) 45%, var(--s-hair)); background: color-mix(in srgb, var(--s-bane) 12%, transparent); }
+.twod12-type .twod12.rolldlg .rd-net.zero { color: var(--s-mute); }
 /* ==== v0.0.393 (Lucas: "granted actions card is still old format"): the granted uses on the chat card, outlined, no icons, a used one as plain text ==== */
 .twod12-type .twod12.chat .tline.grantrow, .twod12-type .twod12.chat.cc .tline.grantrow { background: none !important; border: 0 !important; border-top: 1px solid var(--s-hair) !important; border-radius: 0 !important; padding: 5px 0 0 !important; margin: 6px 0 0 !important; }
 .twod12-type .twod12.chat .tline.grantrow .cc-gbtn { flex: 1 1 100% !important; min-width: 0 !important; min-height: 0 !important; height: auto !important; padding: 1px 8px !important; border-radius: 0 !important; background: transparent !important; border: 1px solid var(--s-gold) !important; color: var(--s-ink) !important; justify-content: flex-start !important; font: 600 .78rem "Source Sans 3", sans-serif !important; box-shadow: none !important; }
@@ -975,8 +994,8 @@ const STYLE3 = `
 .twod12-type .twod12.acard.d2.st .st-roll > .ap-vbtn, .twod12-type .twod12.acard.d2.st .st-roll > .ap-vwrap { margin-left: auto; }
 .twod12-type .twod12.acard.d2.st .ap-vbtn.st-use { font: 600 12.5px/1 "Source Sans 3", sans-serif !important; color: var(--s-ink) !important; background: transparent !important; border: 1px solid var(--s-gold) !important; border-radius: 0 !important; padding: 5px 9px !important; box-shadow: none !important; white-space: nowrap; cursor: pointer; }
 .twod12-type .twod12.acard.d2.st .ap-vbtn.st-use:hover, .twod12-type .twod12.acard.d2.st .ap-vbtn.st-use:focus-visible { background: var(--s-gold) !important; color: var(--s-pg) !important; outline: 0; }
-.twod12-type .twod12.acard.d2.st .ap-vbtn.st-use.no { border-style: dashed !important; color: var(--s-mute) !important; text-decoration: line-through; cursor: not-allowed; }
-.twod12-type .twod12.acard.d2.st .ap-vbtn.st-use.no:hover { background: transparent !important; color: var(--s-mute) !important; }
+.twod12-type .twod12.acard.d2.st .ap-vbtn.st-use.no { border-style: dashed !important; color: var(--s-mute) !important; text-decoration: line-through; cursor: pointer; }
+.twod12-type .twod12.acard.d2.st .ap-vbtn.st-use.no:hover { background: color-mix(in srgb, var(--s-gold) 12%, transparent) !important; color: var(--s-ink) !important; }
 .twod12-type .twod12.acard.d2.st .chg { font-size: 13px; font-weight: 600; white-space: nowrap; } .twod12-type .twod12.acard.d2.st .chg.up { color: var(--s-good) !important; } .twod12-type .twod12.acard.d2.st .chg.down { color: var(--s-bad) !important; }
 .twod12-type .twod12.acard.d2.st .st-ruler { font-size: 12px; color: var(--s-mute); margin-top: 4px; }
 .twod12-type .twod12.acard.d2.st .ap-grant { margin: 3px 0 6px 10px; }
