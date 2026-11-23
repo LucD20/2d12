@@ -40,7 +40,7 @@ Lasts until a Save with the better of Mind / Appeal (the origin's DC) at the end
 Lasts until they use a [Strike] Action. | {"time":"off","save":"off","down":"off","action":"a [Strike] Action"}
 Lasts until Ogre Chieftain goes Down, or until they use any Action. | {"time":"off","save":"off","down":"Ogre Chieftain","action":"any Action"}
 --- migration: every Effect, Feature and Talent of the packs, old settings -> rules -> settings, read the same (appliedFlags)
-25 items migrated; differ: none; notes: none
+26 items migrated; differ: none; notes: none
 one per old block: 
   Boons and Banes vs marked, first each round: act[bb]
   Empowered and Enfeebled: act[emp]

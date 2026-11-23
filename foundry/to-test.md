@@ -21,10 +21,9 @@ differ):
 
 ## The HUD
 
-### ui-hud-conds-popover · v0.0.482 · HUD condition polarity pills and +N overflow popover
-Rev: 2
-Do: On Aveline, apply at least 4 active conditions/effects (mix buffs like Empowered / Shield of Faith and debuffs like Prone, Daunted, Hindered), then select Aveline's token and click the +N button on the HUD conditions row.
-Expect: Debuffs (including Daunted) and buffs render cleanly with full top and bottom borders (no clipped outline), and past 3 items a +N ▾ button opens a popover grouped into Debuffs, Buffs, and Other.
+### ui-canvas-polish · v0.0.484 · Canvas overlays, Area placement bar, and compact Situational cards
+Do: Put Aveline Prone or Grabbed (or unload a weapon on Kaela), check the HUD Situational tab, then use Ogre Chieftain's Ground Slam or a Burst/Line Area Action to preview placement on the map.
+Expect: Situational cards are compact (Prone shows Stand/Crawl, Grabbed/Immobilized shows Break Free, unloaded weapon shows Reload); Area placement shows a HUD bar with enemy/ally/blocked counts, gold target rings, and No Line of Effect plates on blocked tokens.
 
 ## Starting a combat
 
@@ -32,15 +31,28 @@ Expect: Debuffs (including Daunted) and buffs render cleanly with full top and b
 
 ## Chat cards
 
-### ui-chat-down-foot · v0.0.483 · Chat card Down chip and single-row footer with Card button
-Do: With Aveline (Longsword), apply damage to an Orc Warrior that puts it Down (both Bloodied and Strained, or total damage at/past its Health Pool), and also apply damage to an Orc Warrior with Resist Slash 2.
-Expect: A Down creature shows a single "Down" badge instead of "Bloodied Strained". The post-Apply Resist tag stays compact ("Slash −2" with shield icon) on the same line as "Took", and the "Card" button stays on the right of the footer instead of wrapping underneath.
+### ui-chat-down-foot · v0.0.484 · Clean Took line (state badges only) and Resist/Weak/Immune in breakdown
+Rev: 2
+Do: With Aveline (Longsword), apply Slash damage to an Orc Warrior that has Resist Slash 2 (making it Bloodied), and apply lethal damage that puts a target Down (both Bloodied and Strained, or damage at/past its Health Pool).
+Expect: The post-Apply Took line shows only "Took ♥ N" plus Bloodied, Strained, or Down (never Resist/Weak/Immune pills), Undo and Card sit cleanly on one row without wrapping, and clicking "=" opens the breakdown ledger showing Resist Slash −2 cleanly.
 
 ## Conditions and their Tiers
 
+### l1-paladin-auto · v0.0.484 · Aveline & Durgan L1 automations (Courage, Thwart Cut, Brace, Seizing Cut)
+Do: With Aveline, use Commandment (Courage) while Daunted (from Grave Wisp) and check rolls/movement toward Grave Wisp; use Thwart Cut to apply Pressed then move Aveline out of Reach. With Durgan, use Hold the Line (Brace) then move Durgan; use Seizing Cut Tier 3 to Grab an enemy and check hands / Release (0 AP).
+Expect: Courage Aura 3 lets Aveline and allies inside ignore Daunted's Bane and movement restriction; Thwart Cut's Pressed ends automatically when Aveline stops threatening; Brace leaves a fixed 1-round Difficult Terrain Zone on the original adjacent squares even after Durgan moves; Grabbing occupies Durgan's free hand and Release (0 AP) offers "Let go of <target>".
+
 ## Movement
 
+### l1-archer-auto · v0.0.484 · Sylwen & Kaela L1 automations (Quick Shots, Darting Blade, Spotter, Footwork, Circling Shot)
+Do: With Sylwen, score a Critical on Quick Shots; use Darting Blade with a Dagger worn (not in hand) and finish Evade 2; use Spotter (Find the Gap, then shoot a target in Cover; and Keep Low while in Cover). With Kaela, use Footwork (Hands Busy) and Circling Shot Tier 3.
+Expect: Quick Shots Critical grants +1 AP when applied; Darting Blade draws the Dagger with Setup and prompts to stow it when Evade 2 ends; Find the Gap lowers target Cover 1 level (Total stays Total) and Keep Low raises Sylwen's Cover 1 level up to High; Footwork Hands Busy offers free Interact and Reload buttons; Circling Shot Tier 3 auto-starts Evade 1 that refuses squares farther from the target.
+
 ## Reactions and Judge
+
+### l1-npc-auto · v0.0.484 · Playtest NPC automations (Dirty Trick, Overhead Smash, Rally the Tribe)
+Do: With Goblin Sneak, land Dirty Trick Tier 2 or 3 on Aveline. With Ogre Chieftain, land Overhead Smash Tier 2 or 3 on a Bloodied target, and at Escalation 4+ use Rally the Tribe near an Orc Warrior and Goblin Sneak.
+Expect: Dirty Trick automatically applies 1 Pressure Bane on Aveline's next roll; Overhead Smash folds Bloodied's +1 Push into a single Push 3; Rally the Tribe shows a 5 Emanation targeting allies and automatically applies 1 Support Boon on their next [Weapon] Action.
 
 ## Areas, light and Cover
 

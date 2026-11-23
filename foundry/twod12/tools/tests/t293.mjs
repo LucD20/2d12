@@ -78,5 +78,5 @@ console.log("--- v0.0.476 (Lucas's checklist on v0.0.475)");
 const { pickBarHtml } = await import(ROOTURL + "module/pickbar.mjs");
 const pbh = pickBarHtml({ text: "Ice Pillar", options: [{ id: "1,1", label: "Here", cells: [{ i: 1, j: 1 }], mapOnly: true }, { id: "2,2", label: "Here", cells: [{ i: 2, j: 2 }], mapOnly: true }], cancel: "Cancel" });
 console.log("the squares are clicked on the map, no button each:", !pbh.includes(">Here<"), "| one Cancel:", (pbh.match(/lb-give/g) ?? []).length, "| Enter never picks a square:", src("module/pickbar.mjs").includes("o.options?.find?.(x => !x.mapOnly)?.id"));
-console.log("Break Free in the Situational tab when Immobilized or Grabbed:", src("module/hud.mjs").includes('} else if (statuses.has?.("immobilized") || statuses.has?.("grabbed")) {') && src("module/hud.mjs").includes('list.find(x => x.bkey === "breakFree")'));
+console.log("Break Free in the Situational tab when Immobilized or Grabbed:", src("module/hud.mjs").includes('if (!prone && (statuses.has?.("grabbed") || statuses.has?.("immobilized"))) {') && src("module/hud.mjs").includes('basicBtns(["breakFree"])'));
 console.log("the Ends' EoE:", JSON.stringify(R.endsSummaries({ time: { on: true, mode: "encounter" } }).time), "| the Ends buttons:", src("module/fxsheet.mjs").includes('["encounter", "EoE"]'));

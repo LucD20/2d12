@@ -145,7 +145,7 @@ add("effects", "effect", "Find the Gap", "icons/svg/target.svg", { selfApplied: 
   settings: [{ type: "ignore", ignoreRule: "rangeBane", rangeAll: true, all: ["ranged", "strike"], any: [], none: [] }, { type: "ignore", ignoreRule: "coverLower", all: ["ranged", "strike"], any: [], none: [] }] }, "Archer");
 add("effects", "effect", "Keep Low", "icons/svg/shield.svg", { selfApplied: true, duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, against each creature you have Cover from, your Cover is one level higher, up to High (Spotter, Keep Low).</p>",
   settings: [{ type: "ignore", ignoreRule: "coverHigher", all: [], any: [], none: [] }] }, "Archer");
-add("effects", "effect", "Rally the Tribe (1 Support Boon)", "icons/svg/aura.svg", { duration: { type: "encounter", rounds: 1 }, expireOn: ["weapon"], expireAll: true, description: "<p>1 Support Boon on your next [Weapon] Action (Rally the Tribe).</p>",
+add("effects", "effect", "Rally the Tribe (1 Support Boon)", "icons/svg/aura.svg", { duration: { type: "encounter", rounds: 1 }, expireOn: ["weapon"], expireAll: false, description: "<p>1 Support Boon on your next [Weapon] Action (Rally the Tribe).</p>",
   settings: [{ type: "boonbane", boons: 1, banes: 0, bbName: "support", all: ["weapon"], any: [], none: [] }] }, "Bestiary");
 const wa = "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]";
 add("actions", "action", "Precise Aim", "icons/svg/eye.svg", {

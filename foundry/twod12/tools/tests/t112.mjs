@@ -40,7 +40,7 @@ console.log("Consecrated Ground:", txt(act("Consecrated Ground").versions[0].eff
 console.log("--- the passives and effects");
 const feat = n => byName("features", n).system, fx = n => byName("effects", n).system;
 for (const n of ["Kindled Wrath", "Armor of Faith", "Roving Judgment", "Weight of Judgment", "Tireless Vigil", "Hallowed Stance"]) console.log(`${n}: ${feat(n).category}, escalation passive ${!!feat(n).escalationPassive} | ${txt(feat(n).description)} | hooks ${JSON.stringify(feat(n).hooks ?? [])} | settings ${(feat(n).settings ?? []).map(x => x.type).join(",")}`);
-for (const n of ["Kindle (Bright light 3)", "Reveal (Bright light 1)", "Brace", "Courage"]) console.log(`${n}: ${fx(n).duration.type} | ${(fx(n).settings ?? []).map(x => x.type).join(",")} | ${txt(fx(n).description)}`);
+for (const n of ["Kindle (Bright light 3)", "Reveal (Bright light 1)", "Brace", "Courage"]) console.log(`${n}: ${fx(n).duration?.type ?? fx(n).ends?.time?.mode} | ${(fx(n).settings ?? []).map(x => x.type).join(",") || fx(n).where} | ${txt(fx(n).description)}`);
 console.log("the old cards out of Foundry:", ["Divine Power", "Holy Wrath", "Beacon", "Final Verdict", "Hallowed Dawn", "Radiant Zeal", "Font of Mercy", "Miraculous Recovery", "Divine Intervention"].filter(n => docs.some(d => d.name === n && ["actions", "features"].includes(d.pack))).join(", ") || "all gone",
   "| old cards kept in their folder:", docs.filter(d => d.name === "Vow of Enmity").map(d => d.name).join(", "), "| in no level:", !paladin.levels.some(l => l.sections.some(x => x.items.map(nameOf).some(n => ["Vow of Enmity", "Call to Arms"].includes(n)))));
 // v0.0.183: the four builds of the ruler, and one NPC per role (the Bestiary's examples)
