@@ -330,8 +330,8 @@ FX("Consecrated Ground", "icons/svg/sun.svg", { description: "<p>The consecrated
 const lantern = n => ({ type: "light", bright: n, dim: 2 * n, color: "#ffd27a", lightAlpha: 0.2, lightAnim: "sunburst", lightSpeed: 2, lightIntensity: 3 });
 FX("Kindle (Bright light 3)", "icons/svg/light.svg", { selfApplied: true, duration: dur("encounter"), description: "<p>You shed Bright light 3 (Dim light 3 more), EoE (Lantern of Faith, Kindle).</p>", settings: [lantern(3)] });
 FX("Reveal (Bright light 1)", "icons/svg/light.svg", { duration: dur("rounds"), description: "<p>The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).</p>", settings: [lantern(1)] });
-FX("Brace", "icons/svg/statue.svg", { description: "<p>For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). They stay where they are if you move.</p>",
-  where: "map", zone: { src: "here", shape: "emanation", size: "1", ring: true, inside: { carry: { on: false }, diff: { on: true, who: "enemies" } }, show: true, outline: "#9aa3ad", fill: "#9aa3ad" },
+FX("Brace", "icons/svg/statue.svg", { description: "<p>For 1 round, the squares in a 1 Emanation around where you stood are Difficult Terrain for enemies (Hold the Line, Brace). They stay where they are if you move.</p>",
+  where: "map", zone: { src: "here", shape: "emanation", size: "1", inside: { carry: { on: false }, diff: { on: true, who: "enemies" } }, show: true, outline: "#9aa3ad", fill: "#9aa3ad" },
   ends: { time: { on: true, mode: "rounds", rounds: 1 } } });
 FX("Courage (ignore Daunted)", "icons/svg/aura.svg", { duration: dur(""), description: "<p>You ignore the Daunted condition while inside Courage's Aura.</p>", settings: [{ type: "ignore", ignoreRule: "daunted", all: [], any: [], none: [] }] });
 FX("Courage", "icons/svg/aura.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>For 1 round, an Aura 3 around you: you and your allies in it ignore the Daunted condition (Commandment, Courage).</p>",

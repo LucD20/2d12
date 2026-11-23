@@ -1,7 +1,7 @@
 --- movement-only Actions (the banner) and the others (their card)
 Advance: "advance|distance:speed"
 Evade: "evade|distance:1" | "evade|distance:floor(speed/2)"
-Crawl: "advance|distance:1|label:Crawl 1" | "advance|distance:3|label:Crawl 3"
+Crawl: "advance|distance:1|label:move 1 square" | "advance|distance:3|label:move 3 squares"
 Stand: null
 Charge: null
 Relocate: null | null | null

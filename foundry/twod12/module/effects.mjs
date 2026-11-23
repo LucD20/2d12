@@ -441,7 +441,7 @@ export function registerEffectHooks() {
     try {
       if (userId !== game.user?.id || !fx.parent?.effects) return;
       const ids = fx.parent.effects.filter(x => x.getFlag?.(F, "linkedTo") === fx.id).map(x => x.id);
-      if (ids.length) fx.parent.deleteEmbeddedDocuments("ActiveEffect", ids).catch(() => {});
+      if (ids.length) fx.parent.deleteEmbeddedDocuments("ActiveEffect", ids, { twod12Cascade: true }).catch(() => {});
       // v0.0.249: its inline Actions leave with it
       const acts = (fx.parent.items ?? []).filter(i => i.getFlag?.(F, "inlineOf") === fx.id).map(i => i.id);
       if (acts.length) fx.parent.deleteEmbeddedDocuments("Item", acts).catch(() => {});

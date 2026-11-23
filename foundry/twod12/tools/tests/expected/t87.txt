@@ -95,7 +95,7 @@ not Prone, Evade: no Prone warning: true
 not Prone, Charge: no Prone warning: true
 
 --- Crawl
-the card: 1 AP: You move 1 square. @Move[advance|distance:1|label:Crawl 1] || 2 AP: Requirements: Your Speed is 5 or higher. You move 3 squares. @Move[advance|distance:3|label:Crawl 3] | traits: move/self
+the card: 1 AP: You @Move[advance|distance:1|label:move 1 square]. || 2 AP: Requirements: Your Speed is 5 or higher. You @Move[advance|distance:3|label:move 3 squares]. | traits: move/self
 Speed 3, 2 AP version: warn: Kai's Speed is under 5: Crawl moves 3 squares only with Speed 5 or higher (use the 1 AP version). | card posted: true
 Speed 5, 2 AP version: (allowed) | card posted: true
 

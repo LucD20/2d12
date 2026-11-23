@@ -3,18 +3,33 @@
 import { esc } from "./util.mjs";
 const TAG = /@Move\[([^\]]*)\]/g;
 
-/** The Setup text for a card: once its movement has been made before the roll, the movement button is taken out (the creature already moved). */
+const MOVE_WORD = { advance: "Advance", walk: "Advance", evade: "Evade", charge: "Charge", pushed: "Pushed", pulled: "Pulled", slid: "Slid", reposition: "Reposition" };
+const movePlain = (k, rest, braced) => {
+  if (braced) return braced;
+  const lbl = /label:([^|\]]+)/i.exec(rest ?? "")?.[1]?.trim();
+  if (lbl) return lbl;
+  const w = MOVE_WORD[String(k).trim().toLowerCase()] ?? "";
+  const d = /distance:([^|\]]+)/i.exec(rest ?? "")?.[1]?.trim();
+  return w ? `${w}${d && /^\d+$/.test(d) ? ` ${d}` : ""}` : "";
+};
+/** The Setup text for a card: once its movement has been made before the roll, the movement button becomes plain text (or is dropped when parenthetical / repeating the preceding verb). */
 export const setupFor = (text, done) => (done
-  ? String(text ?? "").replace(/\s*\(\s*@Move\[[^\]]*\]\s*\)/g, "").replace(/@Move\[[^\]]*\]/g, "").replace(/[ \t]{2,}/g, " ").trim()
+  ? String(text ?? "")
+      .replace(/\s*\(\s*@Move\[[^\]]*\](?:\{[^}]*\})?\s*\)/g, "")
+      .replace(/(\b[A-Za-z]+\s+)?@Move\[([^\]|]*)(?:\|([^\]]*))?\](?:\{([^}]*)\})?/g, (m, prev, k, rest, braced) => {
+        const w = MOVE_WORD[String(k).trim().toLowerCase()] ?? "";
+        if (prev && w && prev.trim().toLowerCase() === w.toLowerCase()) return prev;
+        return `${prev ?? ""}${movePlain(k, rest, braced)}`;
+      })
+      .replace(/[ \t]{2,}/g, " ").trim()
   : String(text ?? ""));
 
 /** The text of a Setup without its buttons, for a dialog. */
 // v0.0.461 (found by the map notes' mockup: Strafe's bar read "You {Advance}."): a tag's label stays as its words ("@Move[...]{Advance}" -> "Advance");
 // a movement tag with no label reads as its kind and distance ("@Move[evade|distance:1]" -> "Evade 1"); any other tag goes
-const MOVE_WORD = { advance: "Advance", walk: "Advance", evade: "Evade", charge: "Charge", pushed: "Pushed", pulled: "Pulled", slid: "Slid", reposition: "Reposition" };
 export const plainSetup = text => String(text ?? "").replace(/\s*\(\s*@\w+\[[^\]]*\](?:\{[^}]*\})?\s*\)/g, "")
   .replace(/@\w+\[[^\]]*\]\{([^}]*)\}/g, "$1")
-  .replace(/@Move\[([^\]|]*)(?:\|([^\]]*))?\]/g, (m, k, rest) => { const w = MOVE_WORD[String(k).trim().toLowerCase()] ?? ""; const d = /distance:([^|\]]+)/i.exec(rest ?? "")?.[1]?.trim(); return w ? `${w}${d && /^\d+$/.test(d) ? ` ${d}` : ""}` : ""; })
+  .replace(/@Move\[([^\]|]*)(?:\|([^\]]*))?\]/g, (m, k, rest) => movePlain(k, rest, ""))
   .replace(/\s*\(\s*@\w+\[[^\]]*\]\s*\)/g, "").replace(/@\w+\[[^\]]*\]/g, "").replace(/[ \t]{2,}/g, " ").trim();
 
 /**

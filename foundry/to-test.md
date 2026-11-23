@@ -19,40 +19,41 @@ differ):
 
 ## Characters and sheets
 
-## The HUD
+### ui-inline-card-btns · v0.0.485 · Inline buttons inside card prose (no tacked-on end buttons)
+Do: Open Kaela's Footwork (Hands Busy) card and Basic Actions (Charge, Reload, Crawl, Lean, Regrip, Release, Shake Off) on Aveline's sheet or chat.
+Expect: Buttons sit inline inside the book description ("You [Evade 1], and before or after it you use the [Interact] or [Reload] Action (1A)") with no extra buttons tacked onto the end.
 
-### ui-canvas-polish · v0.0.484 · Canvas overlays, Area placement bar, and compact Situational cards
-Do: Put Aveline Prone or Grabbed (or unload a weapon on Kaela), check the HUD Situational tab, then use Ogre Chieftain's Ground Slam or a Burst/Line Area Action to preview placement on the map.
-Expect: Situational cards are compact (Prone shows Stand/Crawl, Grabbed/Immobilized shows Break Free, unloaded weapon shows Reload); Area placement shows a HUD bar with enemy/ally/blocked counts, gold target rings, and No Line of Effect plates on blocked tokens.
+## The HUD
 
 ## Starting a combat
 
 ## The roll dialog
 
+### ui-rolldlg-cover-notices · v0.0.485 · Clear buff & debuff Cover notices (Find the Gap, Keep Low)
+Do: With Sylwen, use Spotter (Keep Low), then open an Orc Warrior's Basic Attack roll dialog targeting Sylwen both with NO Cover and WITH Low Cover. Then use Spotter (Find the Gap) on Sylwen and open Sylwen's Basic Attack targeting an Orc Warrior in Low Cover and with No Cover.
+Expect: Clear solid-border buff/debuff pills appear when Cover shifts ("Keep Low (Sylwen): Low cover → Medium cover" in red; "Find the Gap: Low cover → No cover" in green) and clear dashed pills explain when it cannot shift ("Keep Low (Sylwen): no Cover to raise", "Find the Gap: no Cover to lower").
+
 ## Chat cards
 
-### ui-chat-down-foot · v0.0.484 · Clean Took line (state badges only) and Resist/Weak/Immune in breakdown
-Rev: 2
-Do: With Aveline (Longsword), apply Slash damage to an Orc Warrior that has Resist Slash 2 (making it Bloodied), and apply lethal damage that puts a target Down (both Bloodied and Strained, or damage at/past its Health Pool).
-Expect: The post-Apply Took line shows only "Took ♥ N" plus Bloodied, Strained, or Down (never Resist/Weak/Immune pills), Undo and Card sit cleanly on one row without wrapping, and clicking "=" opens the breakdown ledger showing Resist Slash −2 cleanly.
+### ui-chat-card-align · v0.0.485 · Single-target footer Card button alignment & full-width breakdown
+Do: With Aveline (Longsword), roll Basic Attack + Damage against an Orc Warrior, Apply damage, and click "=" to open the damage breakdown ledger.
+Expect: "=", "✓ Undo" (or "Apply"), and "Card" sit horizontally aligned on the same row, and the expanded "=" breakdown box spans the full width of the chat card underneath them.
 
 ## Conditions and their Tiers
 
-### l1-paladin-auto · v0.0.484 · Aveline & Durgan L1 automations (Courage, Thwart Cut, Brace, Seizing Cut)
-Do: With Aveline, use Commandment (Courage) while Daunted (from Grave Wisp) and check rolls/movement toward Grave Wisp; use Thwart Cut to apply Pressed then move Aveline out of Reach. With Durgan, use Hold the Line (Brace) then move Durgan; use Seizing Cut Tier 3 to Grab an enemy and check hands / Release (0 AP).
-Expect: Courage Aura 3 lets Aveline and allies inside ignore Daunted's Bane and movement restriction; Thwart Cut's Pressed ends automatically when Aveline stops threatening; Brace leaves a fixed 1-round Difficult Terrain Zone on the original adjacent squares even after Durgan moves; Grabbing occupies Durgan's free hand and Release (0 AP) offers "Let go of <target>".
+### l1-paladin-auto · v0.0.485 · Aveline & Durgan L1 automations (Thwart Cut both-sides move, Brace caster square, Grabbed release)
+Rev: 2
+Do: With Aveline, land Thwart Cut on an Orc Warrior to apply Pressed, then move the Orc Warrior out of Reach (and in a second use, move Aveline out of Reach). With Durgan, use Hold the Line (Brace) and check Durgan's own square plus the 8 adjacent squares; then land Seizing Cut Tier 3 to Grab an Orc Warrior and let go via Release (0 AP).
+Expect: Thwart Cut's Pressed ends automatically whether the NPC moves away OR Aveline moves away; Brace's fixed 1-round Difficult Terrain Zone includes Durgan's own square (full 3×3 1 Emanation); Releasing the Grabbed target ends Grabbed + Immobilized with zero console errors.
 
 ## Movement
 
-### l1-archer-auto · v0.0.484 · Sylwen & Kaela L1 automations (Quick Shots, Darting Blade, Spotter, Footwork, Circling Shot)
-Do: With Sylwen, score a Critical on Quick Shots; use Darting Blade with a Dagger worn (not in hand) and finish Evade 2; use Spotter (Find the Gap, then shoot a target in Cover; and Keep Low while in Cover). With Kaela, use Footwork (Hands Busy) and Circling Shot Tier 3.
-Expect: Quick Shots Critical grants +1 AP when applied; Darting Blade draws the Dagger with Setup and prompts to stow it when Evade 2 ends; Find the Gap lowers target Cover 1 level (Total stays Total) and Keep Low raises Sylwen's Cover 1 level up to High; Footwork Hands Busy offers free Interact and Reload buttons; Circling Shot Tier 3 auto-starts Evade 1 that refuses squares farther from the target.
+### l1-archer-auto · v0.0.485 · Sylwen & Kaela L1 automations (Circling Shot Setup text & force Tier 3, Footwork inline buttons)
+Rev: 2
+Do: With Kaela, open Circling Shot targeting an Orc Warrior, click Tier 3 in the roll dialog to force Tier 3, click Roll, complete the Setup Evade 1, and inspect the chat card and post-hit Evade 1. Also use Footwork (Hands Busy).
+Expect: Circling Shot preserves the forced Tier 3 across the Setup Evade 1, displays "Setup: You Evade 1." cleanly on the chat card (not "You ."), and auto-starts the Tier 3 no-farther Evade 1; Footwork (Hands Busy) shows inline Evade 1, Interact, and Reload buttons inside its sentence.
 
 ## Reactions and Judge
-
-### l1-npc-auto · v0.0.484 · Playtest NPC automations (Dirty Trick, Overhead Smash, Rally the Tribe)
-Do: With Goblin Sneak, land Dirty Trick Tier 2 or 3 on Aveline. With Ogre Chieftain, land Overhead Smash Tier 2 or 3 on a Bloodied target, and at Escalation 4+ use Rally the Tribe near an Orc Warrior and Goblin Sneak.
-Expect: Dirty Trick automatically applies 1 Pressure Bane on Aveline's next roll; Overhead Smash folds Bloodied's +1 Push into a single Push 3; Rally the Tribe shows a 5 Emanation targeting allies and automatically applies 1 Support Boon on their next [Weapon] Action.
 
 ## Areas, light and Cover
 

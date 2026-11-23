@@ -712,6 +712,23 @@ export async function useAction(actor, item, opts = {}) {
   // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
   const atWill = opts.free && !opts.countAtWill ? 0 : atWillUses(actor, item);   // v0.0.224: a Charge's Weapon Attack counts
   if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `${atWill + 1}x At-will use`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane" });
+  // Helper: Roll Dialog notices for Cover-changing effects on attacker (coverLower, buff) and target (coverHigher, debuff) — active when Cover changes, muted/explained when it can't (e.g., no Cover to raise/lower).
+  const pushCoverChanges = (cov0, cov, covLow, covHi, tkName = "", forUuid = "") => {
+    const tag = tkName ? ` (${tkName})` : "", extra = forUuid ? { for: forUuid, showInDialog: true } : {};
+    if (covLow.length) {
+      const who = covLow.join(", ");
+      if (cov0?.banes && cov.banes < cov0.banes) coverNotices.push({ text: `${who}: ${cov0.label} \u2192 ${cov.label}${tag}`, icon: "fa-shield-halved", active: true, tone: "boon", why: `${who}: ${tkName ? `${tkName}'s ` : ""}Cover counts one level lower`, ...extra });
+      else if (cov0?.banes && covHi.length) coverNotices.push({ text: `${who}: \u22121 Cover level${tag}`, icon: "fa-shield-halved", active: true, tone: "boon", why: `${who} lowers Cover by 1 level (offset by ${covHi.join(", ")})`, ...extra });
+      else if (!cov0?.banes) coverNotices.push({ text: `${who}: no Cover to lower${tag}`, icon: "fa-shield-halved", active: false, tone: "boon", why: `${who} lowers each target's Cover by 1 level, but ${tkName || "the target"} has no Cover`, ...extra });
+    }
+    if (covHi.length) {
+      const who = covHi.join(", ");
+      if (cov0?.banes && cov.banes > cov0.banes) coverNotices.push({ text: `${who}${tag}: ${cov0.label} \u2192 ${cov.label}`, icon: "fa-shield-halved", active: true, tone: "bane", why: `${who}: ${tkName || "the target"}'s Cover counts one level higher, up to High`, ...extra });
+      else if (cov0?.banes && cov0.banes < 3 && covLow.length) coverNotices.push({ text: `${who}${tag}: +1 Cover level`, icon: "fa-shield-halved", active: true, tone: "bane", why: `${who} raises ${tkName || "the target"}'s Cover by 1 level (offset by ${covLow.join(", ")})`, ...extra });
+      else if (!cov0?.banes) coverNotices.push({ text: `${who}${tag}: no Cover to raise`, icon: "fa-shield-halved", active: false, tone: "bane", why: `${who} raises ${tkName || "the target"}'s Cover by 1 level only when ${tkName || "it"} already has Cover`, ...extra });
+      else if (cov0?.banes >= 3) coverNotices.push({ text: `${who}${tag}: already High cover`, icon: "fa-shield-halved", active: false, tone: "bane", why: `${who} raises Cover up to High`, ...extra });
+    }
+  };
   // Several targets: for each creature, its DC, its cover, how you perceive it and it perceives you, and the range to it.
   const perT = [];
   if (multi) {
@@ -725,9 +742,9 @@ export async function useAction(actor, item, opts = {}) {
       if (cov0?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
       const covLow = ignoredBy(actor, "coverLower", useTraits), covHi = ignoredBy(a, "coverHigher", new Set());
       const cov = adjustCover(cov0, { lower: covLow.length, higher: covHi.length });
-      if (cov0?.banes && covLow.length && cov.banes < cov0.banes) coverNotices.push({ text: `${cov0.label} \u2192 ${cov.label}`, icon: "fa-shield-halved", why: `${covLow.join(", ")}: ${tk.name}'s Cover counts one level lower`, for: a.uuid });
+      pushCoverChanges(cov0, cov, covLow, covHi, tk.name, a.uuid);
       const covIgn = cov?.banes ? coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null) : [];   // v0.0.266 (Aim): a cover level the Action ignores; v0.0.270: a grant's own use only
-      if (cov?.banes && covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane against ${tk.name}`, for: a.uuid });
+      if (cov?.banes && covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", active: true, tone: "boon", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane against ${tk.name}`, for: a.uuid, showInDialog: true });
       // v0.0.301 (PACK BB; Ch. 3 Cover): Low 1 and Medium 2 Field Banes; High cover makes the roll Doomed (and gives no Field Banes)
       else if (cov?.banes >= 3) { row.doomed = true; row.note.push({ text: "High cover", cls: "bane" }); }
       else if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}${covHi.length && cov.banes > (cov0?.banes ?? 0) ? ` (${covHi.join(", ")})` : ""}` });
@@ -780,10 +797,10 @@ export async function useAction(actor, item, opts = {}) {
     if (cov?.noLoE) {
       dlgWarns.push(`No Line of Effect to ${targetToken.name}: all four corners are blocked`);   // v0.0.453 (R3): a warning in the dialog (it was a stop, or the GM's window)
     } else {
-      if (cov0?.banes && covLow.length && cov.banes < cov0.banes) coverNotices.push({ text: `${cov0.label} \u2192 ${cov.label}`, icon: "fa-shield-halved", why: `${covLow.join(", ")}: Cover counts one level lower` });
+      pushCoverChanges(cov0, cov, covLow, covHi, targetToken.name);
       if (cov?.banes) {
         const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null);   // v0.0.266 (Aim); v0.0.270: a grant's own use only
-        if (covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane` });
+        if (covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", active: true, tone: "boon", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane` });
         // v0.0.301 (PACK BB): High cover is Doomed and no Field Banes; Low 1, Medium 2 Field Banes
         else if (cov.banes >= 3) extraMods.push({ id: "syn:cover", name: "High cover (Doomed)", boons: 0, banes: 0, doomed: true, bb: "field", match: true, predicate: `${coverWhy(cov)}${covHi.length && cov.banes > (cov0?.banes ?? 0) ? ` (${covHi.join(", ")})` : ""}: High cover makes the roll Doomed (and gives no Field Banes)` });
         else extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: `${coverWhy(cov)}${covHi.length && cov.banes > (cov0?.banes ?? 0) ? ` (${covHi.join(", ")})` : ""}` });
@@ -852,7 +869,7 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.440 (Lucas, checklist: "the roll dialog doesn't show where the die comes from"): One More Arrow's 1[W] more, when this Strike would take it
   try {
     const mw = useTraits.has("strike") && versions.some(v => [1, 2, 3].some(t => (v[`t${t}`] ?? []).some(i => i.useW))) ? activeHooks(actor, "moreW")[0] : null;
-    if (mw && await (await import("./hooks.mjs")).moreWReady(actor)) setupNotices.push({ text: `${mw.item?.name ?? "1[W] more"}: +${Math.max(1, Number(mw.hook.n) || 1)}[W] on a Tier that deals [W]`, icon: "fa-plus", why: "Once on each of your turns, your first [Strike] that deals [W] deals 1[W] more (it is spent when this damage is rolled)." });
+    if (mw && await (await import("./hooks.mjs")).moreWReady(actor)) setupNotices.push({ text: `${mw.item?.name ?? "1[W] more"}: +${Math.max(1, Number(mw.hook.n) || 1)}[W] on a Tier that deals [W]`, icon: "fa-plus", active: true, tone: "boon", why: "Once on each of your turns, your first [Strike] that deals [W] deals 1[W] more (it is spent when this damage is rolled)." });
   } catch (e) { console.warn("twod12 | One More Arrow note", e); }
   // core rework batch 3: class lines on Basic Attack (Sworn Blade, Steady Draw)
   const basicLineHooks = item.getFlag?.("twod12", "basic") === "basicWeaponAttack" ? activeHooks(actor, "basicLine") : [];
@@ -860,10 +877,10 @@ export async function useAction(actor, item, opts = {}) {
   const steadyPreview = aimedStrained ? basicLineHooks.filter(h => Number(h.hook?.strainedBeforeD) > 0).map(h => ({ pool: "B", useW: false, wCount: 1, useD: true, dCount: Math.max(1, Number(h.hook.strainedBeforeD) || 1), dice: "", useAt: false, subtype: "", source: h.item?.name || "1[D] more" })) : [];
   for (const h of basicLineHooks) {
     if (h.hook.strainedBeforeD && aimedStrained) {
-      setupNotices.push({ text: `${h.item.name}: +${Math.max(1, Number(h.hook.strainedBeforeD) || 1)}[D] on a Tier 3 (target is Strained)`, icon: "fa-bullseye", active: true, why: "Against a target already Strained when you roll, your Basic Attack deals extra [D] on a Tier 3." });
+      setupNotices.push({ text: `${h.item.name}: +${Math.max(1, Number(h.hook.strainedBeforeD) || 1)}[D] on a Tier 3 (target is Strained)`, icon: "fa-bullseye", active: true, tone: "boon", why: "Against a target already Strained when you roll, your Basic Attack deals extra [D] on a Tier 3." });
     }
     if (h.hook.strained) {
-      setupNotices.push({ text: `${h.item.name}: Strained — you can Slide the target 1`, icon: "fa-arrows-left-right", active: aimedStrained, why: "When your Basic Attack damages a Strained target, you can Slide it 1." });
+      setupNotices.push({ text: `${h.item.name}: Strained — you can Slide the target 1`, icon: "fa-arrows-left-right", active: aimedStrained, tone: "boon", why: "When your Basic Attack damages a Strained target, you can Slide it 1." });
     }
   }
   const extraNotices = [...setupNotices,

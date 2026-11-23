@@ -103,7 +103,7 @@ export class RollWindow extends (ApplicationV2 ?? class {}) {
     // v0.0.397 (Lucas): an Area Action's Roll places the area first (the dialog's choices kept), then rolls
     if (!this.done && this.inp.area && !this.inp.area.placed && !this.inp.area.noPlace) return this._finish({ restart: true, place: true, rollAfter: true, state: this.st });
     if (this.done || RD.blockedReason(this.inp, this.st)) return;
-    this._finish(RD.result(this.inp, this.st));
+    this._finish({ ...RD.result(this.inp, this.st), state: this.st });
   }
 
   _finish(value) { if (this.done) return; this.done = true; this.o.resolve(value); this.close(); }

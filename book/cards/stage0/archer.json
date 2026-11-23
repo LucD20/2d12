@@ -381,7 +381,16 @@
       }
      ],
      "foundry": {
-      "append": "@Use[Interact|ap:0|label:Interact (free)] @Use[Reload|ap:0|label:Reload (free)]"
+      "sub": [
+       [
+        "Interact",
+        "@Use[Interact|ap:0|label:Interact]"
+       ],
+       [
+        "Reload",
+        "@Use[Reload|ap:0|label:Reload]"
+       ]
+      ]
      }
     }
    ],

@@ -3204,8 +3204,11 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-addhere { border-style: dashed; }
 .twod12.rolldlg .rd-qb:hover, .twod12.rolldlg .rd-addhere:hover { background: var(--rd-box); }
 .twod12.rolldlg .rd-notes { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0 4px; }
-.twod12.rolldlg .rd-note { font-size: 11.5px; color: var(--cc-mute); border: 1px dotted var(--cc-btn2); border-radius: 3px; padding: 1px 5px; }
-.twod12.rolldlg .rd-note.active { color: var(--cc-ink); border-style: solid; border-color: var(--rd-buff); background: var(--rd-box); font-weight: 600; }
+.twod12.rolldlg .rd-note { font-size: 11.5px; color: #5b5245; border: 1px dashed var(--cc-btn2); border-radius: 4px; padding: 2px 7px; background: rgba(255,255,255,.35); }
+.twod12.rolldlg .rd-note.na.boon { border-color: rgba(43,90,47,.45); color: #3d5840; }
+.twod12.rolldlg .rd-note.na.bane { border-color: rgba(168,38,28,.45); color: #7a3e38; }
+.twod12.rolldlg .rd-note.active { color: var(--cc-ink); border-style: solid; border-color: var(--rd-buff); background: #eef5e8; font-weight: 600; }
+.twod12.rolldlg .rd-note.active.bane { color: #7b1e16; border-color: var(--rd-debuff); background: #faecea; }
 .twod12.rolldlg .rd-row { display: flex; align-items: flex-start; gap: 6px; margin: 3px 0; }
 .twod12.rolldlg .rd-rlabel { flex: 0 0 68px; font-size: 11.5px; font-weight: 700; color: var(--cc-mute); padding-top: 6px; }
 .twod12.rolldlg .rd-chips { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; min-width: 0; }
@@ -4723,9 +4726,9 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.chat.cc .cc-dlab b { font-size: 15px; line-height: 1; }
 .twod12.chat.cc .cc-attack .cc-main .cc-pools { margin-top: 2px; padding: 2px 6px; }
 .twod12.chat.cc .cc-dpart { margin-top: 6px; }
-.twod12.chat.cc .cc-foot.cc-dfoot { flex-wrap: nowrap; align-items: flex-start; gap: 4px; }
-.twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow { flex: 1 1 0; min-width: 0; border-top: 0; padding: 0; }
-.twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow .cc-adjrow { flex-basis: 100%; }
+.twod12.chat.cc .cc-foot.cc-dfoot { flex-wrap: nowrap; align-items: center; gap: 4px; }
+.twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow { flex: 1 1 100%; min-width: 0; border-top: 0; padding: 0; }
+.twod12.chat.cc .cc-foot.cc-dfoot > .cc-trow .cc-adjrow { flex-basis: 100%; width: 100%; }
 .twod12.chat.cc .cc-foot.cc-dfoot > .cc-btn { flex: 0 0 auto; }
 .twod12.chat.cc .cc-pools { color: var(--cc-ink); }
 /* v0.0.389 (Lucas: "without a target looks weird"): the stamp keeps its own height beside the damage (it stretched down the whole card) */

@@ -147,7 +147,7 @@ export async function rollDialogInput(c) {
     nonlethalAction: it.traits.has("nonlethal"), chips, creatures, hideDef, designer, canForce: !!game.user?.isGM, blocked, rollMode: rm.cur, rollModes: rm.list, showAvg: showStats, showOdds: showStats,
     // v0.0.293: a Save Action: the targets roll the Save named on its Vs. line against your DC (11 + your Modifier)
     save: c.saveAct ? { label: vsText(it, { src, rolls: true }) || "Save", dc: saveDcOf(src, actor.system?.attributes) } : null,
-    notices: (c.notices ?? []).filter(n => !n.for).map(n => ({ text: n.text, why: n.why ?? "" }))
+    notices: (c.notices ?? []).filter(n => !n.for || n.showInDialog).map(n => ({ text: n.text, why: n.why ?? "", active: !!n.active, tone: n.tone ?? "" }))
   };
 }
 export { esc };

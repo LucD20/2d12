@@ -1,0 +1,17 @@
+--- 1. Single-target damage footer: Card button inside .cc-trow before .cc-adjrow
+hasCard: true | Undo < Card < adjrow: true | single Card button: 1
+--- 2. Roll Dialog notices: active/na and boon/bane classes
+active bane: true | na bane: true | active boon: true
+pushCoverChanges wired: true | rollinput preserves active & tone: true
+--- 3. Inline buttons in Footwork (Hands Busy) and Basic Actions
+Hands Busy inline: true | no (free) tail: true
+--- 4. Setup plain text after Setup movement finishes
+Circling Shot: "You Evade 1."
+Strafe: "You Advance."
+Ricochet: "You must Advance 2."
+Labeled: "You Evade 1."
+--- 5. RollWindow state preserved for setupLater (forceTier), moveToken unthreatened, Grabbed cascade, Brace full 1 Emanation
+rollwindow returns state: true
+moveToken unthreatened hook: true
+Grabbed cascade guard: true
+Brace includes caster square (no ring): true

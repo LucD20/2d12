@@ -30,7 +30,7 @@ Tireless Vigil: Paladin Escalation Passive, escalation passive true | You gain 1
 Hallowed Stance: Paladin Escalation Passive, escalation passive true | Once on your turn, a [Divine] Action you use gains "Setup: You Advance 3." | hooks [{"kind":"setupAdvance","traits":["divine"],"n":3}] | settings 
 Kindle (Bright light 3): encounter | light | You shed Bright light 3 (Dim light 3 more), EoE (Lantern of Faith, Kindle).
 Reveal (Bright light 1): rounds | light | The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).
-Brace: rounds | map | For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). They stay where they are if you move.
+Brace: rounds | map | For 1 round, the squares in a 1 Emanation around where you stood are Difficult Terrain for enemies (Hold the Line, Brace). They stay where they are if you move.
 Courage: rounds | aura | For 1 round, an Aura 3 around you: you and your allies in it ignore the Daunted condition (Commandment, Courage).
 the old cards out of Foundry: all gone | old cards kept in their folder:  | in no level: true
 Aveline (Human Paladin, Smite): Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Commandment, Roving Judgment, Kindled Wrath, Word of Radiance, Weight of Judgment, Lantern of Faith, Reckoning, Cold Domain, Rime Strike, Thwart Cut | ids unique: true

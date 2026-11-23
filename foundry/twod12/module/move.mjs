@@ -1582,12 +1582,18 @@ function drawDragPreview(preview) {
 export const stillThreatens = (profile, dist, originDown = false) => !originDown && (profile?.max ?? 0) > 0 && dist >= (profile?.min ?? 1) && dist <= profile.max;
 
 /** Active GM: end any effect flagged endWhenUnthreatened whose origin no longer threatens its bearer (e.g., Pressed that ends if you stop threatening). */
-async function checkUnthreatenedEffects() {
+async function checkUnthreatenedEffects(overrides = null, removedIds = null) {
   if (!game.user?.isActiveGM || !canvas?.tokens) return;
   const { threatProfile } = await import("./flanking.mjs");
-  const toks = canvas.tokens.placeables ?? [];
+  const toks = (canvas.tokens.placeables ?? []).filter(t => !removedIds?.has?.(t.document?.id ?? t.id));
+  const at = t => {
+    const id = t?.document?.id ?? t?.id, ov = id ? overrides?.get?.(id) : null;
+    if (!ov) return t;
+    const d = t.document ?? t;
+    return { document: { x: ov.x ?? d.x, y: ov.y ?? d.y, width: d.width ?? 1, height: d.height ?? 1, elevation: ov.elevation ?? d.elevation ?? 0 } };
+  };
   const byActor = new Map();
-  for (const t of toks) if (t.actor) byActor.set(t.actor.uuid, t);
+  for (const t of toks) if (t.actor) { byActor.set(t.actor.uuid, t); if (t.actor.id && !byActor.has(`Actor.${t.actor.id}`)) byActor.set(`Actor.${t.actor.id}`, t); }
   for (const t of toks) {
     const a = t.actor;
     if (!a) continue;
@@ -1598,7 +1604,7 @@ async function checkUnthreatenedEffects() {
       const ot = byActor.get(origUuid) ?? toks.find(x => x.document?.uuid === origUuid) ?? null;
       const oa = ot?.actor ?? null;
       const down = !oa || !!oa.system?.atZero || oa.statuses?.has?.("unconscious") || oa.statuses?.has?.("dead");
-      const ok = ot && stillThreatens(threatProfile(oa), tokenDistance(ot, t), down);
+      const ok = ot && stillThreatens(threatProfile(oa), tokenDistance(at(ot), at(t)), down);
       if (!ok) {
         const ename = String(e.name ?? "Effect"), oname = ot?.name ?? oa?.name ?? "its source";
         await e.delete();
@@ -1631,11 +1637,24 @@ export function registerMovement() {
   // The movement area never outlives its use: it goes when the combat ends, when the scene changes, and (outside combat) when its token moves.
   Hooks.on("deleteCombat", () => clearLooseMove());
   Hooks.on("canvasReady", () => clearLooseMove());
+  // Foundry V13+/V14: token drags come through moveToken with movement.destination before doc.x/y settle; hook both moveToken and updateToken
+  Hooks.on("moveToken", (doc, movement, operation) => {
+    if (operation?.twod12Lean) return;
+    const d = movement?.destination;
+    const ov = d && Number.isFinite(d.x) && Number.isFinite(d.y) ? new Map([[doc.id, d]]) : null;
+    checkUnthreatenedEffects(ov).catch(e => console.warn("twod12 | unthreatened check", e));
+  });
   Hooks.on("updateToken", (doc, changes, options) => {
     if (!options?.twod12Lean && looseId && doc.id === looseId && ("x" in changes || "y" in changes)) clearLooseMove();
-    if (!options?.twod12Lean && ("x" in changes || "y" in changes)) checkUnthreatenedEffects().catch(e => console.warn("twod12 | unthreatened check", e));
+    if (!options?.twod12Lean && ("x" in changes || "y" in changes || "elevation" in changes)) {
+      const ov = new Map([[doc.id, { x: changes.x ?? doc.x, y: changes.y ?? doc.y, elevation: changes.elevation ?? doc.elevation ?? 0 }]]);
+      checkUnthreatenedEffects(ov).catch(e => console.warn("twod12 | unthreatened check", e));
+    }
   });
-  Hooks.on("deleteToken", () => { checkUnthreatenedEffects().catch(e => console.warn("twod12 | unthreatened check", e)); });
+  Hooks.on("deleteToken", doc => { checkUnthreatenedEffects(null, new Set([doc.id])).catch(e => console.warn("twod12 | unthreatened check", e)); });
+  Hooks.on("createActiveEffect", fx => {
+    if (fx?.statuses?.has?.("unconscious") || fx?.statuses?.has?.("dead")) checkUnthreatenedEffects().catch(e => console.warn("twod12 | unthreatened check", e));
+  });
   Hooks.on("preMoveToken", (doc, movement, operation) => {
     try {
       if (operation?.twod12Forced || operation?.twod12Lean || movement?.method === "undo") return;

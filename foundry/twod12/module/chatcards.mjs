@@ -227,7 +227,7 @@ export function footHtml(m, view = FULL_VIEW, { damage = "rollDamage", hasDamage
 // v0.0.389 (Lucas: "without a target looks weird"): no target yet: the bottom row reads as before the damage ("→ No target"), the crosshair targets the
 // selected tokens for the damage (the damage card's "Target the selected tokens"); no Lethal tag or wide button under the card.
 const noTargetFoot = view => `${view.author ? '<button type="button" class="cc-icon" data-twod12="ccDmgTarget" aria-label="Target the selected tokens"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>' : ""}<span class="cc-ftgt"><span aria-hidden="true">\u2192</span> <span class="cc-muted">No target</span></span>`;
-export const dmgFootHtml = (din, view = FULL_VIEW) => `<hr class="cc-hr"><div class="cc-foot cc-dfoot">${din.row || noTargetFoot(view)}<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button></div>${din.extra ?? ""}`;
+export const dmgFootHtml = (din, view = FULL_VIEW) => `<hr class="cc-hr"><div class="cc-foot cc-dfoot">${din.row || noTargetFoot(view)}${din.hasCard ? "" : '<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button>'}</div>${din.extra ?? ""}`;
 const designerFoot = (lines, view) => (view.designer && lines.filter(Boolean).length ? `<div class="cc-designer">${lines.filter(Boolean).join("<br>")}</div>` : "");
 const playerFoot = txt => `<div class="cc-pfoot">${esc(txt)}</div>`;
 
@@ -643,15 +643,15 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
   // v0.0.288: the Lethal / Nonlethal tag (none on a Bleed's card, v0.0.315); v0.0.321 (Lucas: it made the card taller): in each row's on-demand
   // row (the sliders button), and at the bottom only on a card with no target yet
   const nlTag = m.noNl ? "" : `<span class="cc-nl${m.nl ? " on" : ""}">${m.nl ? "Nonlethal" : "Lethal"}</span>`;
-  const rowHtml = (i, nameHtml = null) => {
+  const rowHtml = (i, nameHtml = null, afterBtn = "") => {
     const r = rows[i];
     if (!r) return "";
-    if (ht) return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span><span class="cc-rmods">${r.applied ? stateChip(r.applied.state) : ""}</span><span class="cc-muted">${r.applied ? "✓ Applied" : "Waiting for the GM"}</span></div>`;
+    if (ht) return `<div class="cc-trow"><span class="cc-cname">${esc(r.name)}</span><span class="cc-rmods">${r.applied ? stateChip(r.applied.state) : ""}</span><span class="cc-muted">${r.applied ? "✓ Applied" : "Waiting for the GM"}</span>${afterBtn}</div>`;
     if (r.applied) {
       // v0.0.454 (Lucas, playtest 6, D2 "B"): the equals button opens the ledger of what happened; Full / Half / Double are a right-click on Undo
       const f = r.applied.factor ?? 1, fw = { 1: "in full", 0.5: "halved", 2: "doubled" }[f] ?? "in full";
       const led = ledgerHtml(ledgerModel((groups.find(g => (g.rows ?? []).includes(i)) ?? top).comps, r.applied.mods ?? [], { factor: f, took: r.applied.took ?? {} }), `Applied ${fw} \u00b7 ${m.nl ? "Nonlethal" : "Lethal"}`);
-      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}" data-ctx="adjust">✓ Undo</button><div class="cc-adjrow ondemand">${led}</div>` : ""}</div>`;
+      return `<div class="cc-trow done"><span class="cc-nblk">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}<span class="cc-took">${tookTxt(r.applied.took ?? {}, r.applied.mods)} ${stateChip(r.applied.state)}</span></span>${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small cc-rbtn" data-twod12="ccUndo" data-row="${i}" data-ctx="adjust">✓ Undo</button>${afterBtn}<div class="cc-adjrow ondemand">${led}</div>` : afterBtn}</div>`;
     }
     // v0.0.321 (Lucas): Resist / Weak / Immune show only once applied (tags after "Took"); the Guard stays
     // v0.0.398 (Lucas: "remove the '− Guard' from all damages, this should only show in the damage breakdown when you click to see it"): in the
@@ -659,7 +659,7 @@ function dmgParts(m, view = FULL_VIEW, { riders = true, idp = "g" } = {}) {
     // v0.0.454 (Lucas, playtest 6, D2 "B"): the equals button opens the ledger (what will happen: by type, Immune / Resist / Weak, a reduction named
     // by its source, Guard, what each pool takes); Full / Half / Double are a right-click on Apply (twod12.mjs ccMenu)
     const led = view.author ? ledgerHtml(ledgerModel((groups.find(g => (g.rows ?? []).includes(i)) ?? top).comps, r.mods ?? []), `${m.nl ? "Nonlethal" : "Lethal"} \u00b7 Full`) : "";
-    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1" data-ctx="apply">Apply</button><div class="cc-adjrow ondemand">${led}</div>` : ""}</div>`;
+    return `<div class="cc-trow">${nameHtml ?? `<span class="cc-cname">${esc(r.name)}</span>`}${view.author ? `<button type="button" class="cc-icon small cc-eq" data-cc-more="${i}" aria-expanded="false" aria-label="Damage breakdown"><i class="fa-solid fa-equals" aria-hidden="true"></i></button><button type="button" class="cc-btn small primary cc-rbtn" data-twod12="ccApply" data-row="${i}" data-factor="1" data-ctx="apply">Apply</button>${afterBtn}<div class="cc-adjrow ondemand">${led}</div>` : afterBtn}</div>`;
   };
   const many = groups.length > 1 || rows.length > 1;
   const body = groups.map((g, gi) => {
@@ -706,7 +706,8 @@ export function damageInHtml(d, view = FULL_VIEW) {
   const total = p.groups.reduce((a, g) => a + p.sum(g.comps), 0);
   const lab = `<div class="cc-dlab"><span>Damage</span><b>${total}</b></div>`;
   // (the Tier's damage line is not repeated under it: the rolled damage stands in its place; v0.0.389)
-  if (compact) return { compact, main: `${lab}${p.poolsOf(0)}`, row: p.rows.length ? p.rowHtml(0) : "", extra: p.note };
+  const cardBtn = '<button type="button" class="cc-btn small" data-twod12="ccCard">Card</button>';
+  if (compact) return { compact, main: `${lab}${p.poolsOf(0)}`, row: p.rows.length ? p.rowHtml(0, null, cardBtn) : "", hasCard: p.rows.length > 0, extra: p.note };
   return { compact, part: `<div class="cc-dpart">${lab}${p.body}${p.note}${p.all}${p.noTgt}</div>` };
 }
 const poolLinesSummary = comps => {

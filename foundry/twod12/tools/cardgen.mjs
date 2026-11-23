@@ -162,7 +162,7 @@ export function areaOf(c) {
 }
 /** The item's system data of a card (an Action). `resolve` turns {{fx:Name}} into the Effect's uuid (content.mjs). */
 /** A costed card with no table ("1R" and prose: Opportunity Attack) reads as one Version whose text is the card's text. */
-export const versionsOf = c => (hasVersions(c) ? c.versions : c.cost ? [{ ap: Number(String(c.cost).match(/\d+/)?.[0] ?? 0), effects: c.text ?? "", foundry: c.foundry?.append ? { append: c.foundry.append } : undefined, ruler: c.ruler?.line }] : []);
+export const versionsOf = c => (hasVersions(c) ? c.versions : c.cost ? [{ ap: Number(String(c.cost).match(/\d+/)?.[0] ?? 0), effects: c.text ?? "", foundry: (c.foundry?.append || c.foundry?.sub) ? { ...(c.foundry?.append ? { append: c.foundry.append } : {}), ...(c.foundry?.sub ? { sub: c.foundry.sub } : {}) } : undefined, ruler: c.ruler?.line }] : []);
 /** v0.0.246: a placeholder card (`placeholder: true`: an Action the book hasn't written yet, Hide) is an Action item with no Versions, so links to it open something to read. */
 export const isAction = c => hasVersions(c) || Boolean(c.cost) || Boolean(c.placeholder);
 export function cardSystem(c, resolve = s => s) {

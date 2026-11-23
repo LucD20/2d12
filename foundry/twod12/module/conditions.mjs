@@ -151,14 +151,15 @@ export function registerConditionRules() {
     } catch (e) { console.warn("twod12 | conditions", e); }
   });
   // Grabbed ends when its creature ends the Immobilized it brought (Break Free): the linked condition goes, the holder's grip goes with it
-  Hooks.on("deleteActiveEffect", async effect => {
-    if (!game.user.isActiveGM) return;
+  Hooks.on("deleteActiveEffect", async (effect, options) => {
+    if (!game.user.isActiveGM || options?.twod12Cascade) return;
     const pid = effect.getFlag?.(F, "linkedTo"), parent = pid ? effect.parent?.effects?.get?.(pid) : null;
     if (parent?.getFlag?.(F, "endsWithOrigin") && effect.statuses?.has?.("immobilized")) {
+      if (!effect.parent?.effects?.has?.(pid)) return;
       try {
         await parent.delete();
         await ChatMessage.create({ content: sysLine("fa-hand", `<b>${esc(effect.parent.name)}</b> is no longer Immobilized: ${esc(parent.name)} ends.`) });
-      } catch (e) { console.warn("twod12 | Grabbed", e); }
+      } catch (e) { if (!/does not exist/i.test(String(e?.message ?? e))) console.warn("twod12 | Grabbed", e); }
     }
   });
   Hooks.on("combatTurnChange", async (combat, prior) => {
