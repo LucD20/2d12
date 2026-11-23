@@ -37,7 +37,7 @@ export function onRows(effects, system = {}) {
  * live: a movement under way { sq } (squares moved so far) or null; ticks: [{ name, on, step: "tick" | "end", rem }];
  * on: onRows(); apGuard: the Guard of its unused AP.
  */
-export function dockModel({ who = "", round = 0, lines = [], reacts = [], live = null, ticks = [], on = [], apGuard = 0, ap = null, rap = null, max = 4 }) {
+export function dockModel({ who = "", round = 0, lines = [], reacts = [], live = null, ticks = [], on = [], apGuard = 0, ap = null, rap = null, max = 4, rapMax = 1 }) {
   const rows = [];
   for (const l of lines ?? []) {
     rows.push({ kind: l.k, name: l.n + (l.k === "move" && (l.sq ?? null) !== null ? ` ${l.sq}` : ""), live: !!l.live, line: l, sq: l.sq });
@@ -45,17 +45,21 @@ export function dockModel({ who = "", round = 0, lines = [], reacts = [], live =
   }
   if (live) { const r = [...rows].reverse().find(x => x.live); if (r) r.name = `${r.line.n} ${Math.round(num(live.sq) * 100) / 100}`; }
   for (const { who: w, line } of reacts ?? []) rows.push({ kind: "react", name: `${w}: ${line.n}`, line, other: true });
-  return { who, round, rows, ticks: ticks ?? [], on: on ?? [], ap, rap, max };
+  return { who, round, rows, ticks: ticks ?? [], on: on ?? [], ap, rap, max, rapMax };
 }
 
 const badge = (txt, cls = "rd") => (txt ? `<span class="td-badge ${cls}">${esc(txt)}</span>` : "");
 const unspent = () => `<a class="td-link" data-twod12-book="${UNSPENT_AP_LINK}">unused AP</a>`;
 /** Pure: the header's pips (AP left, then the Reaction AP). */
-export function headPips(ap, rap, max) {
+export function headPips(ap, rap, max, rapMax = 1) {
   if (ap === null || ap === undefined) return "";
   const m = Math.max(1, num(max), num(ap));
   const out = []; for (let i = 0; i < m; i++) out.push(`<i class="${i < num(ap) ? "on" : ""}"></i>`);
-  if (rap !== null && rap !== undefined) out.push(`<b class="hsep"></b><i class="r${num(rap) ? " on" : ""}"></i>`);   // v0.0.394: a hairline, as the HUD
+  if (rap !== null && rap !== undefined) {
+    const rm = Math.max(1, num(rapMax), num(rap));
+    out.push(`<b class="hsep"></b><i class="r${num(rap) >= 1 ? " on" : ""}"></i>`);   // v0.0.394: a hairline, as the HUD
+    for (let i = 1; i < rm; i++) out.push(`<i class="r${i < num(rap) ? " on" : ""}"></i>`);
+  }
   return `<span class="td-pips">${out.join("")}</span>`;
 }
 const tickBadge = t => (t.step === "end" ? badge(t.done ? "ended" : "ends", "end") : badge(t.done ? `${t.rem} rd left` : `${t.rem + 1} → ${t.rem}`, "tick"));
@@ -77,14 +81,14 @@ export function bodyHtml(m, { done = false } = {}) {
 
 /** Pure: the dock. open: unfolded on this client. */
 export function dockHtml(m, open = false) {
-  return `<div class="twod12 twod12-dock${open ? " open" : ""}"><div class="td-hd" data-twod12-dock="fold"><span class="td-ttl">Turn</span><span class="td-who">${esc(m.who)}</span><span class="td-rd">Round ${esc(String(m.round))}</span><span class="td-sp">${headPips(m.ap, m.rap, m.max)}<span class="td-chev">▲</span></span></div><div class="td-body">${bodyHtml(m)}</div></div>`;
+  return `<div class="twod12 twod12-dock${open ? " open" : ""}"><div class="td-hd" data-twod12-dock="fold"><span class="td-ttl">Turn</span><span class="td-who">${esc(m.who)}</span><span class="td-rd">Round ${esc(String(m.round))}</span><span class="td-sp">${headPips(m.ap, m.rap, m.max, m.rapMax)}<span class="td-chev">▲</span></span></div><div class="td-body">${bodyHtml(m)}</div></div>`;
 }
 
 /** Pure: the chat line posted when a turn ends: one line that unfolds into the turn's breakdown. */
 export function endCardHtml(m) {
   const ended = m.ticks.filter(t => t.step === "end").length, ticked = m.ticks.length - ended;
   const tail = [ticked ? `${ticked} ticked` : "", ended ? `${ended} ended` : ""].filter(Boolean).join(" · ");
-  return `<details class="twod12 chat turnend"><summary><span class="td-ttl">End of ${esc(m.who)}'s Turn</span>${tail ? `<span class="td-rd">${esc(tail)}</span>` : ""}<span class="td-sp">${headPips(m.ap, m.rap, m.max)}<span class="td-chev">▶</span></span></summary>${bodyHtml(m, { done: true })}</details>`;
+  return `<details class="twod12 chat turnend"><summary><span class="td-ttl">End of ${esc(m.who)}'s Turn</span>${tail ? `<span class="td-rd">${esc(tail)}</span>` : ""}<span class="td-sp">${headPips(m.ap, m.rap, m.max, m.rapMax)}<span class="td-chev">▶</span></span></summary>${bodyHtml(m, { done: true })}</details>`;
 }
 
 /* ------------------------------------------------------------------ reading the world */
@@ -112,8 +116,12 @@ export function modelFor(combat, c, { ticks = null, key = null, round = null } =
   let live = null;
   if (lines.some(l => l.live)) { const L = lines.findLast(l => l.live); const left = num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove")) + num(c.getFlag(F, "moveLeft")); live = { sq: Math.max(0, num(L.g) - left) }; }
   const fx = [...(a?.effects ?? [])].map(e => ({ name: e.name, disabled: e.disabled, flags: e.flags?.[F] ?? {} }));
+  const role = String(a?.system?.role ?? "");
+  const baseMax = role === "minion" ? 2 : role === "boss" ? 6 : 4;
+  const maxAp = Math.max(1, num(c?.getFlag?.(F, "apMax")) || baseMax, num(c?.getFlag?.(F, "ap")));
+  const rapMax = Math.max(1, num(c?.getFlag?.(F, "rapMax")) || (role === "boss" ? 2 : 1), num(c?.getFlag?.(F, "rap")));
   return dockModel({ who: firstName(c?.name ?? ""), round: round ?? combat?.round ?? 0, lines, reacts, live, ticks: ticks ?? ticksAt(combat, c), on: onRows(fx, a?.system ?? {}), apGuard: a?.system?.apGuard ?? 0,
-    ap: c?.getFlag?.(F, "ap") ?? null, rap: c?.getFlag?.(F, "rap") ?? null, max: Math.max(4, num(c?.getFlag?.(F, "ap"))) });
+    ap: c?.getFlag?.(F, "ap") ?? null, rap: c?.getFlag?.(F, "rap") ?? null, max: maxAp, rapMax });
 }
 const firstName = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
 

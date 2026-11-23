@@ -15,6 +15,7 @@ import { registerZoneTip } from "./zonetip.mjs";   // v0.0.350   // v0.0.347
 import { registerMarkHooks } from "./mark.mjs";
 import { registerLoE } from "./loe.mjs";
 import { registerFlankOverlay } from "./flankoverlay.mjs";
+import { registerRangeOverlay } from "./rangeoverlay.mjs";
 import { solidTiles, tileConfigSolid } from "./corners.mjs";
 import { registerLightRadius } from "./lightradius.mjs";
 import { registerRegionSnap } from "./regionshape.mjs";
@@ -107,6 +108,7 @@ Hooks.once("init", () => {
   registerMarkHooks();
   registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
   registerFlankOverlay();   // v0.0.302
+  registerRangeOverlay();
   // Template parts used by more than one sheet (the settings of an Effect and of a passive).
   (foundry.applications?.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.(["systems/twod12/templates/parts/settings.hbs", "systems/twod12/templates/parts/preds.hbs"]);
   game.settings.register("twod12", "sheetHelp", { name: "Action and Talent sheets: show help", hint: "The grey explanations on the Details tab of Action and Talent sheets. Also switched with the Show help box on the tab.", scope: "client", config: false, type: Boolean, default: true });

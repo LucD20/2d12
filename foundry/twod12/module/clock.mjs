@@ -142,8 +142,7 @@ function clockHtml() {
       <p class="hint">Setting a date moves the clock, and Exhaustion counts the hours since each character's last Sleep. Turn off "Count Exhaustion" first to jump without it.</p>
     </details>
     <button type="button" class="clock-wide" data-act="sleep"><i class="fa-solid fa-bed"></i> Everyone sleeps (8 hours)</button>
-    <label class="clock-track"><input type="checkbox" name="track" ${trackingExhaustion() ? "checked" : ""}> Count Exhaustion from the time awake</label>
-    </div>`)}
+    <label class="clock-track"><input type="checkbox" name="track" ${trackingExhaustion() ? "checked" : ""}> Count Exhaustion from the time awake</label>`)}
   </div>`;
 }
 

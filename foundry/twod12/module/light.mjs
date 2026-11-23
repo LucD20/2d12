@@ -79,12 +79,12 @@ const inside = (src, p) => {
   } catch (e) { return false; }
 };
 
-/** Bright, Dim or Darkness at a point on the canvas (pixels). */
-export function lightAt(p) {
+/** Bright, Dim or Darkness at a point on the canvas (pixels), respecting elevation-bounded Darkness Regions. */
+export function lightAt(p, elevation = 0) {
   try {
     for (const src of canvas.effects?.darknessSources ?? []) if (src?.active && inside(src, p)) return "dark";
   } catch (e) { /* no darkness sources */ }
-  let best = levelFromDarkness(darknessAt(p));   // the scene's Darkness, adjusted by the regions that adjust it
+  let best = levelFromDarkness(darknessAt(p, elevation));   // the scene's Darkness, adjusted by the regions that adjust it
   if (best === "bright") return best;
   try {
     const global = canvas.environment?.globalLightSource;
@@ -111,11 +111,12 @@ export function tokenSquares(token) {
   return out;
 }
 
-/** The light a creature is in: the brightest of its squares. */
+/** The light a creature is in: the brightest of its squares, at its elevation. */
 export function tokenLight(token) {
   let best = "dark";
+  const elev = Number((token?.document ?? token)?.elevation) || 0;
   for (const p of tokenSquares(token)) {
-    const l = lightAt(p);
+    const l = lightAt(p, elev);
     if (LIGHT[l] > LIGHT[best]) best = l;
     if (best === "bright") break;
   }

@@ -95,17 +95,18 @@ export function numberSameNames(rows, combat) {
 }
 
 export class DamageReport extends (ApplicationV2 ?? class {}) {
-  static DEFAULT_OPTIONS = { id: "twod12-damage-report", window: { title: "Damage Report", resizable: true }, position: { width: 520, height: "auto" }, classes: ["twod12"] };
+  static DEFAULT_OPTIONS = { id: "twod12-damage-report", window: { title: "Damage Report", resizable: true }, position: { width: 540, height: "auto" }, classes: ["twod12", "dmgreport-win"] };
   async _renderHTML() {
     const combat = game.combat;
     const div = document.createElement("div");
     div.className = "dmgreport";
     if (!combat) { div.innerHTML = "<p>No combat.</p>"; return div; }
     const rows = reportRows(combat);
+    const maxTot = Math.max(1, ...rows.map(r => r.total));
     const n = x => (Math.round(x * 10) / 10).toString();
     div.innerHTML = `<p class="hint">Round ${combat.round}. Damage dealt to enemies (after Half or Block), from the damage cards; damage to its own side (its allies, itself) is counted apart.</p>
       <table><thead><tr><th>Creature</th><th>This turn</th><th>This round</th><th>Total</th><th>Per turn</th><th>Per round</th><th>To allies</th></tr></thead>
-      <tbody>${rows.map(r => `<tr><td>${foundry.utils.escapeHTML?.(r.name) ?? r.name}</td><td class="c">${r.turn}</td><td class="c">${r.round}</td><td class="c"><b>${r.total}</b></td><td class="c">${n(r.perTurn)}</td><td class="c">${n(r.perRound)}</td><td class="c">${r.allies || "\u2014"}</td></tr>`).join("") || '<tr><td colspan="7"><i>Nothing yet.</i></td></tr>'}</tbody></table>`;
+      <tbody>${rows.map(r => `<tr><td>${foundry.utils.escapeHTML?.(r.name) ?? r.name}</td><td class="c">${r.turn}</td><td class="c">${r.round}</td><td class="c dr-tot"><span class="dr-bar" style="width:${Math.round((r.total / maxTot) * 100)}%"></span><b>${r.total}</b></td><td class="c">${n(r.perTurn)}</td><td class="c">${n(r.perRound)}</td><td class="c${r.allies ? " dr-ally" : ""}">${r.allies || "\u2014"}</td></tr>`).join("") || '<tr><td colspan="7"><i>Nothing yet.</i></td></tr>'}</tbody></table>`;
     return div;
   }
   _replaceHTML(result, content) { content.replaceChildren(result); }

@@ -496,11 +496,13 @@ async function doCheck(kind, cfg, ctx = {}) {
     const mod = actor.system.attributes[key] ?? 0;
     // v0.0.176 (book 2026-10-25): only the light where the TARGET is matters, so the light where you stand no longer changes a Check
     // (the "requires sight" penalties of Dim light and Darkness are gone; |sight:yes is still read and does nothing).
+    const tierPreview = kind === "Save" && cfg.tiers ? { t1: cfg.tiers.t1 ?? "", t2: cfg.tiers.t2 ?? "", t3: cfg.tiers.t3 ?? "" } : null;
     const data = await askRoll(actor, {
       title: `${label}: ${actor.name}`,
       attrKey: key,
       traits: new Set([...(cfg.traits ?? []), key, kind === "Save" ? "__save" : "__check"]),
       from: fromList.length ? new Set(fromList) : null,
+      tiers: tierPreview,
       defaults: {
         dc: cfg.dc,
         mod: cfg.adj,
@@ -784,7 +786,18 @@ async function handleShakeOff(cfg, ctx) {
       const keys = (b.attrs?.length ? b.attrs : ["body", "instinct"]).filter(k => k in TWOD12.attributes);
       const key = keys.reduce((best, k) => ((actor.system.attributes?.[k] ?? 0) > (actor.system.attributes?.[best] ?? -99) ? k : best), keys[0] ?? "body");
       const dc = Number(b.dc) || 13, label = `Shake Off: ${TWOD12.attributes[key]} Save`;
-      const data = await askRoll(actor, { title: `${label}: ${actor.name}`, attrKey: key, traits: new Set([key, "__save"]), defaults: { dc } });
+      const data = await askRoll(actor, {
+        title: `${label}: ${actor.name}`,
+        attrKey: key,
+        traits: new Set([key, "__save"]),
+        tiers: { t1: "No effect (Lingering continues).", t2: "Half damage at end of turn, then ends.", t3: "Lingering ends immediately." },
+        defaults: {
+          dc,
+          doomed: unconsciousDoom(actor, key, "Save"),
+          doomedWhy: `${doomStatus(actor) || "Unconscious"}: all your Rolls are Doomed`,
+          doomedLabel: `${doomStatus(actor) || "Unconscious"} (Doomed)`
+        }
+      });
       if (!data) continue;
       const fxm = resolveModifiers(actor, data.fx), manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dcUsed = Number(data.dc) || dc;
       const chk = await performCheck({ mod: actor.system.attributes?.[key] ?? 0, boons: fxm.boons + manB, banes: fxm.banes + manN, dc: dcUsed, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
@@ -1309,7 +1322,24 @@ export async function saveRoll(msg, idx) {
   if (!actor?.isOwner) return ui.notifications.warn("Only the owner of that token can roll its save.");
   const cfg = st.cfg, key = cfg.attr, mod = actor.system.attributes[key] ?? 0;
   // A Save Action's row carries its target's own banes and boons (Vulnerable, Cover from the area): they start in the dialog (v0.0.159).
-  const data = await askRoll(actor, { title: `${TWOD12.attributes[key]} Save: ${actor.name}${row.why ? ` (${row.why})` : ""}`, attrKey: key, traits: new Set([...(cfg.traits ?? []), key, "__save"]), defaults: { dc: cfg.dc, mod: cfg.adj, boons: (cfg.boon || 0) + (row.boon || 0), banes: (cfg.bane || 0) + (row.bane || 0), ...(row.favored ? { favored: true, favoredLabel: "High cover (Favored)" } : {}) } });
+  const fromList = msg.getFlag?.("twod12", "action")?.traits ?? cfg.fromTraits ?? [];
+  const tierPreview = cfg.tiers ? { t1: cfg.tiers.t1 ?? "", t2: cfg.tiers.t2 ?? "", t3: cfg.tiers.t3 ?? "" } : null;
+  const doomed = unconsciousDoom(actor, key, "Save");
+  const data = await askRoll(actor, {
+    title: `${TWOD12.attributes[key]} Save: ${actor.name}${row.why ? ` (${row.why})` : ""}`,
+    attrKey: key,
+    traits: new Set([...(cfg.traits ?? []), key, "__save"]),
+    from: fromList.length ? new Set(fromList) : null,
+    tiers: tierPreview,
+    defaults: {
+      dc: cfg.dc,
+      mod: cfg.adj,
+      boons: (cfg.boon || 0) + (row.boon || 0),
+      banes: (cfg.bane || 0) + (row.bane || 0),
+      ...(row.favored ? { favored: true, favoredLabel: "High cover (Favored)" } : {}),
+      ...(doomed ? { doomed: true, doomedWhy: `${doomStatus(actor) || "Unconscious"}: all your Rolls are Doomed`, doomedLabel: `${doomStatus(actor) || "Unconscious"} (Doomed)` } : {})
+    }
+  });
   if (!data) return;
   const fxm = resolveModifiers(actor, data.fx);
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dc = Number(data.dc) || cfg.dc;

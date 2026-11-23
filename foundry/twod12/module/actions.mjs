@@ -236,7 +236,7 @@ export const tileNumber = name => (/(\d+)\s*$/.exec(String(name ?? "")) ?? [])[1
 /** The Modifier's name for the card: "Exhausted 2" when it still has the value Exhausted put there. */
 export const adjLabelOf = data => (data?.adjLabel && Number(data.mod) === Number(data.adjDefault) ? data.adjLabel : "");
 
-export async function askRoll(actor, { title, attrKey, traits = new Set(), from = null, versions = null, defaults = {}, preview = null, dcNote = "", targetActors = [], targetTiles = [], extraMods = [], withDamage = false, withReload = false, notices = [], bonusChips = [] }) {
+export async function askRoll(actor, { title, attrKey, traits = new Set(), from = null, versions = null, defaults = {}, preview = null, dcNote = "", targetActors = [], targetTiles = [], extraMods = [], withDamage = false, withReload = false, notices = [], bonusChips = [], tiers = null }) {
   // Armor beyond the creature's training: all its Rolls are Doomed (unless something else already made them Doomed, which keeps its label).
   if (actor?.system?.armorUntrained && !defaults.doomed) defaults = { ...defaults, doomed: true, doomedLabel: "Untrained armor (Doomed)", doomedWhy: "Your armor is beyond your Armor Training: all your Rolls are Doomed" };
   // Exhausted: its value as a penalty on all Rolls, in the Modifier, named on the card (unless the Modifier is changed).
@@ -248,6 +248,32 @@ export async function askRoll(actor, { title, attrKey, traits = new Set(), from 
   const infoMods = notices.filter(n => n.for && perCreature).map((n, k) => ({ id: `syn:info|${n.for}|${k}`, info: true, ...n }));
   const generalNotices = notices.filter(n => !(n.for && perCreature));
   const mods = [...modifierList(actor, traits, targetActors, from), ...extraMods, ...infoMods];
+  if (typeof document !== "undefined" && !versions && !targetTiles.length && !preview && !withDamage && !withReload && globalThis.foundry?.applications?.api?.ApplicationV2?.prototype?.render) {
+    const { openCheckRoll } = await import("./checkwindow.mjs");
+    return openCheckRoll({
+      title,
+      actorName: actor?.name ?? "",
+      actorImg: actor?.img ?? "",
+      attrKey,
+      baseMod: Number(actor?.system?.attributes?.[attrKey]) || 0,
+      dc: Number(defaults.dc) || 13,
+      adj: Number(defaults.mod) || 0,
+      adjLabel: defaults.adjLabel ?? "",
+      adjDefault: defaults.adjDefault ?? 0,
+      dcNote,
+      boons: Number(defaults.boons) || 0,
+      banes: Number(defaults.banes) || 0,
+      favored: !!defaults.favored,
+      favoredLabel: defaults.favoredLabel ?? "",
+      doomed: !!defaults.doomed,
+      doomedLabel: defaults.doomedLabel ?? "",
+      mods,
+      fxOn: new Set(mods.filter(m => !m.info && m.match).map(m => m.id)),
+      notices: generalNotices,
+      notes,
+      tiers
+    });
+  }
   const notesHtml = notes.length ? `<aside class="usenotes"><div class="unhead">Effects</div><ul>${notes.map(n => `<li><b>${esc(n.title)}</b>${n.title !== n.name ? ` <small>(${esc(n.name)})</small>` : ""}${n.text ? `<div>${esc(n.text)}</div>` : ""}</li>`).join("")}</ul></aside>` : "";
   const ap = versions ? `<div class="apbtns">${versions.map((v, i) => `<label class="apbtn"><input type="radio" name="ap" value="${v.ap}" ${i === 0 ? "checked" : ""}><span>${apIcon(v.ap, defaults.reaction)}</span></label>`).join("")}</div>` : "";
   const chipOf = m => m.info ? `<span class="rnotice" data-tooltip="${esc(m.why ?? "")}"><i class="fa-solid ${esc(m.icon ?? "fa-circle-info")}"></i> ${esc(m.text)}</span>` :

@@ -72,7 +72,12 @@ class HealWin extends (AppV2 ?? class {}) {
   static DEFAULT_OPTIONS = { classes: ["twod12", "twod12-healwin"], window: { resizable: false }, position: { width: 400, height: "auto" } };
   constructor(o) { super({ window: { title: o.title } }); this.o = o; this.st = o.st; this.done = false; }
   async _renderHTML() { const div = document.createElement("div"); div.innerHTML = healWinHtml(this.o, this.st); return div; }
-  _replaceHTML(result, content) { content.replaceChildren(result); }
+  _replaceHTML(result, content) {
+    const f = content.querySelector(":focus");
+    const sel = f?.dataset?.hw ? `[data-hw="${CSS.escape(f.dataset.hw)}"]${f.dataset.k ? `[data-k="${CSS.escape(f.dataset.k)}"]` : ""}${f.dataset.d ? `[data-d="${CSS.escape(f.dataset.d)}"]` : ""}${f.dataset.v ? `[data-v="${CSS.escape(f.dataset.v)}"]` : ""}` : null;
+    content.replaceChildren(result);
+    if (sel) content.querySelector(sel)?.focus({ preventScroll: true });
+  }
   _onFirstRender(context, options) {
     super._onFirstRender?.(context, options);
     this.element.addEventListener("click", ev => {
@@ -85,6 +90,13 @@ class HealWin extends (AppV2 ?? class {}) {
       if (k === "n") { st.n = Math.max(1, Number(b.dataset.v) || 1); st.values = { ...symmetricHealing(o.damage, o.thresholds, o.partsFor(st.n).reduce((t, p) => t + (Number(p[0]) || 0), 0)) }; }
       if (k === "step") { const key = b.dataset.k; st.values[key] = Math.max(0, Math.min(o.damage[key] ?? 0, (Number(st.values[key]) || 0) + (Number(b.dataset.d) || 0))); }
       this.render();
+    });
+    this.element.addEventListener("keydown", ev => {
+      if (ev.key === "Escape") { ev.preventDefault(); return this.close(); }
+      if (ev.key === "Enter" && !ev.target.closest?.("button")) {
+        ev.preventDefault();
+        this.element.querySelector('button[data-hw="go"]')?.click();
+      }
     });
   }
   async close(options) { if (!this.done) { this.done = true; this.o.resolve(null); } return super.close(options); }

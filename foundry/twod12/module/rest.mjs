@@ -45,11 +45,17 @@ export async function chooseRecovery(actor) {
   let setTo = exh;
   const { pickWith, pwStepHtml } = await import("./pickwindow.mjs");
   const pick = await pickWith({
-    title: `Recovery: ${actor.name}`, instant: true,
+    title: `Recovery: ${actor.name}`, instant: true, compact: true,
     model: () => ({ name: "Recovery", sub: actor.name, icon: "fa-campground", stats: [["Last Sleep", last == null ? "not recorded yet" : `${hoursText(game.time.worldTime - last)} ago`], ["Now", clockText()]],
-      sections: [{ title: "", html: `<div class="cw-attr">${pwStepHtml("exhausted", setTo, "Exhausted")}</div>` },
-        { title: "", sub: "Take a Breather (10 minutes): remove all Nonlethal damage. Sleep (8 hours, at most once every 16 hours): renews Daily Actions and reduces Exhausted by 2. Rest (24 hours in a safe place): remove all damage, regain all Rally Points, roll to remove Wounds; a Rest includes a Sleep.",
-          rows: [{ key: "how", label: "", opts: [["breather", "Breather"], ["sleep", "Sleep"], ["rest", "Rest"], ["none", "Only update Exhausted"]].map(([k, l]) => ({ k, l, on: false })) }] }],
+      sections: [
+        { title: "", html: `<div class="cw-attr">${pwStepHtml("exhausted", setTo, "Exhausted")}</div>` },
+        { title: "", choiceKey: "how", choices: [
+          { k: "breather", l: "Take a Breather", sub: "Remove all Nonlethal damage", tag: "10 min", icon: "fa-mug-hot" },
+          { k: "sleep", l: "Sleep", sub: "Renew Daily Actions · Exhausted −2 (max once per 16h)", tag: "8 hours", icon: "fa-moon" },
+          { k: "rest", l: "Rest", sub: "Clear all damage, restore Rally Points, roll Wounds (includes Sleep)", tag: "24 hours", icon: "fa-campground" },
+          { k: "none", l: "Only update Exhausted", sub: "Apply the Exhausted value above without resting", tag: "Save", icon: "fa-check" }
+        ] }
+      ],
       message: "", confirm: false }),
     step: (f, d) => { if (f === "exhausted") setTo = Math.max(0, setTo + d); },
     pick: (r, k) => { st.k = k; },

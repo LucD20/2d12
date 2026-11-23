@@ -225,9 +225,16 @@ async function bleedWindow(item, actor) {
   const { pickWith } = await import("./pickwindow.mjs");
   return pickWith({
     title: `Lingering: ${actor?.name ?? ""}`,
+    compact: true,
     model: () => bleedModel(st, actor?.name ?? ""),
     pick: (row, k) => { if (row === "attrs") st.attrs = k === "mi/ap" ? ["mind", "appeal"] : ["body", "instinct"]; if (row === "pool") st.pool = k; },
     input: (field, value) => { if (field === "dmg") st.dmg = String(value).trim(); if (field === "sub") st.sub = value; if (field === "dc") st.dc = Math.max(1, Math.trunc(Number(value)) || 13); },
+    live: (field, value, el) => {
+      const ok = !!String(st.dmg ?? "").trim();
+      const msg = el?.querySelector?.(".cw-msg"), btn = el?.querySelector?.("[data-confirm]");
+      if (msg) msg.textContent = ok ? bleedText(st) : "Write the damage.";
+      if (btn) btn.disabled = !ok;
+    },
     result: () => ({ ...st })
   });
 }
