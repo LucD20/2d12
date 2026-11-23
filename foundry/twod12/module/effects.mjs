@@ -8,7 +8,7 @@ import { fxTipHtml, hoverOf, perFrame } from "./util.mjs";   // v0.0.254: the HU
 import { effectWhat } from "./fxdetails.mjs";   // v0.0.267
 import { TWOD12 } from "./config.mjs";
 import { combatantOf } from "./combat.mjs";
-import { onceKey, onceBlocked, isMarked } from "./automation.mjs";
+import { onceKey, onceBlocked, isMarked, ignoredBy } from "./automation.mjs";
 import { bbCount, bbKey } from "./calc.mjs";
 import { originOk, attrsOk, bleedOf, bleedText, needsOrigin, hasBleed } from "./condrules.mjs";   // v0.0.314 (pack AU)
 import { diceAvg } from "./fxrules.mjs";   // v0.0.426: Lingering keeps the higher average
@@ -134,8 +134,10 @@ const vulnerableOf = e => {
 export function modifierList(actor, traits, targetActors = [], from = null) {
   const out = [];
   for (const m of derivedMods(actor)) out.push({ id: m.id, name: m.name, boons: m.boons, banes: m.banes, bb: bbKey(m.bb), match: matches(m, traits, from), predicate: predText(m) });
+  const ignoreDaunted = ignoredBy(actor, "daunted", traits).length > 0;
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
+    if (ignoreDaunted && (e.statuses?.has?.("daunted") || /^daunted\b/i.test(shortName(e.getFlag?.(F, "baseName") ?? e.name)))) continue;
     (e.getFlag(F, "modifiers") ?? []).forEach((m, i) => {
       if (m.against || !(m.boons || m.banes)) return;
       // v0.0.186: once per round (used: not offered) and only against the marked target (one chip for that target).
@@ -298,6 +300,7 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
       slotInit, originSlot: origin?.slot ?? null,
       originCombatantId: origin?.combatantId ?? "", anchorSlot: origin?.anchorSlot ?? null, anchorCombatantId: origin?.anchorCombatantId ?? "", appliedRound: origin?.round ?? null, appliedTurn: origin?.turn ?? null,
       ...withOriginHover(withBleed(appliedFlags(s, item.toObject().system), over?.bleed), origin?.actorUuid), lightBackup, fromEscalation: !!origin?.escalation,
+      ...(over?.endWhenUnthreatened ? { endWhenUnthreatened: true } : {}),
       // Immobilized (v0.0.174): its DC, 11 + the Modifier its origin used (13 without an origin or a Modifier). Forced Movement and Reposition read it.
       ...(statuses.includes("immobilized") ? { actionDc: origin?.actorUuid && Number.isFinite(origin?.mod) ? 11 + origin.mod : TWOD12.baseDC } : {})   // pack TALENTS-PT: the Action DC (was immobileDc)
     } }
@@ -675,12 +678,12 @@ export function valuedHud(app, html) {
   return n;
 }
 
-export async function applyCondition(cond, actors, dur, origin, value = null, extra = {}) {   // extra (v0.0.314): { bleed } (a card's Bleed values)
+export async function applyCondition(cond, actors, dur, origin, value = null, extra = {}) {   // extra (v0.0.314): { bleed } (a card's Bleed values), { endWhenUnthreatened }
   const id = String(cond).trim().toLowerCase();
   const item = await conditionItem(id);
   for (const actor of actors) {
     if (item) {
-      await applyEffects([item.uuid], [actor.uuid], origin, dur || value || extra?.bleed ? { ...(dur ? { duration: dur } : {}), ...(value ? { value } : {}), ...(extra?.bleed ? { bleed: extra.bleed } : {}) } : null);   // v0.0.250: a value (Enfeebled 1)
+      await applyEffects([item.uuid], [actor.uuid], origin, dur || value || extra?.bleed || extra?.endWhenUnthreatened ? { ...(dur ? { duration: dur } : {}), ...(value ? { value } : {}), ...(extra?.bleed ? { bleed: extra.bleed } : {}), ...(extra?.endWhenUnthreatened ? { endWhenUnthreatened: true } : {}) } : null);   // v0.0.250: a value (Enfeebled 1)
     } else if (actor.isOwner) {
       await actor.toggleStatusEffect(id, { active: true });
     } else {

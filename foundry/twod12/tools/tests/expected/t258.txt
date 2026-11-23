@@ -15,9 +15,9 @@ Strung in the off hand, the other free: {"banes":0,"why":""}
 Fists, main hand free: {"banes":0,"why":""} | only the off hand free: {"banes":1,"why":"Fists with only your off hand free: 1 Bane"}
 used on every [Strike, Weapon] roll: true
 Wounding Shot | Weapon Technique | gold | requires: You haven't left your square this turn.
-Circling Shot | Weapon Technique | silver | requires: -
-Seizing Cut | Weapon Technique | silver | requires: You have at least one hand free.
-Thwart Cut | Weapon Technique | silver | requires: -
+Circling Shot | Weapon Technique | gold | requires: -
+Seizing Cut | Weapon Technique | gold | requires: You have at least one hand free.
+Thwart Cut | Weapon Technique | gold | requires: -
 dropped: none
 weapons point to them: Arming Sword: Seizing Cut | Longsword: Thwart Cut | Hunting Bow: Wounding Shot | Recurve Bow: Circling Shot
 Pressed: effect | valued true | [{"type":"boonbane","boons":0,"banes":1,"all":["strike"],"any":[],"none":[],"byValue":true,"bbName":"pressure"}]

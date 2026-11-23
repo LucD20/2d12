@@ -23,6 +23,7 @@ import { gainGuard } from "./guard.mjs";
 import { handleUse } from "./freeuse.mjs";
 import { squaresBetween } from "./move.mjs";
 import { evalExpr } from "./refs.mjs";
+import { ignoredBy, adjustCover } from "./automation.mjs";
 
 /** Split on a separator that is not inside brackets, parentheses, braces or quotes. */
 export function splitTop(str, sep) {
@@ -113,6 +114,7 @@ export function parseInline(kind, inner) {
       else if (/^value\s*:/i.test(s)) cfg.value = Math.max(1, Math.trunc(Number(s.replace(/^value\s*:\s*/i, ""))) || 1);   // v0.0.250: Enfeebled 1, Vulnerable 2
       else if (/^side\s*:/i.test(s)) cfg.side = s.replace(/^side\s*:\s*/i, "").toLowerCase();
       else if (/^quiet\s*:/i.test(s)) cfg.quiet = yes(s.replace(/^quiet\s*:\s*/i, ""));
+      else if (/^threaten\s*:/i.test(s)) cfg.threaten = yes(s.replace(/^threaten\s*:\s*/i, ""));
       // v0.0.314 (pack AU): Bleed's own values, @Condition[bleed|dmg:1d6|pool:R|sub:Ho|attrs:mi/ap|dc:15] (the condition's setting fills the rest)
       else if (/^(dmg|pool|sub|attrs|dc)\s*:/i.test(s)) {
         const [k, ...v] = s.split(":"), key = k.trim().toLowerCase(), val = v.join(":").trim();
@@ -193,6 +195,8 @@ export function parseInline(kind, inner) {
     else if (key === "next") cfg.next = val.toLowerCase();   // v0.0.458: @Boon[-1|bb:pressure|next:roll]: spent by the next roll of any kind
     else if (key === "must") cfg.must = yes(val);   // pack TALENTS-PT (book, Chapter 3: a movement you must make): the Setup warns when squares are left
     else if (key === "still") cfg.still = yes(val);   // pack TALENTS-PT: this movement doesn't count as leaving your square (Ricochet's Setup)
+    else if (key === "stow") cfg.stow = val.toLowerCase();   // Darting Blade: prompt to stow the Setup-drawn weapon after Evade
+    else if (key === "nofarther") cfg.noFarther = val.toLowerCase();   // Circling Shot: Evade must end no farther from the target
     else if (key === "near") cfg.near = Math.max(0, Number(val) || 0);   // v0.0.254: the candidates within N squares of you (a Reaction's "an ally within 5 squares")
   }
   // A button always has the traits of what it is: Advance and Charge are Move. (Evade and Pushed have none.) A Save has its Attribute.
@@ -1010,15 +1014,15 @@ export async function dropChip(kind, cfg, tokenDoc, message = null) {
 }
 /** Pure (v0.0.421, the audit): the conditions a Tier's text gives by itself: its @Condition chips, but not one written after a movement ("Slid 1,
  *  then Grabbed": it waits for that movement, a button to click after it, or the movement would meet the condition's Immobilized). */
-export const tierConditionChips = text => { const s = String(text ?? ""), mi = s.search(/@Move\[/); return (mi < 0 ? s : s.slice(0, mi)).match(/@Condition\[[^\]]*\]/g) ?? []; };
-/** Pure (v0.0.440, Lucas, checklist: Seizing Cut "didn't slide automatically"): a Tier's forced movement (Pushed, Pulled, Slid, Repositioned) and
- *  the conditions written after it ("Slid 1, then Grabbed"), which run by themselves, in that order, when the Tier lands. null: none. */
+export const tierConditionChips = text => { const s = String(text ?? ""), mi = s.search(/@Move\[/); return (mi < 0 ? s : s.slice(0, mi)).match(/@(?:Condition|Boon)\[[^\]]*\]/g) ?? []; };
+/** Pure (v0.0.440, Lucas, checklist: Seizing Cut "didn't slide automatically"): a Tier's movement (Pushed, Pulled, Slid, Repositioned, Evade) and
+ *  the conditions/boons written after it ("Slid 1, then Grabbed"), which run by themselves, in that order, when the Tier lands. null: none. */
 export const tierMoveThen = text => {
-  const s = String(text ?? ""), m = s.match(/@Move\[((?:pushed|pulled|slid|reposition)\b[^\]]*)\]/);
+  const s = String(text ?? ""), m = s.match(/@Move\[((?:pushed|pulled|slid|reposition)\b[^\]]*|evade\b[^\]]*\b(?:nofarther|auto):[^\]]*)\]/);
   if (!m) return null;
-  return { move: m[1], conds: s.slice(m.index + m[0].length).match(/@Condition\[[^\]]*\]/g) ?? [] };
+  return { move: m[1], conds: s.slice(m.index + m[0].length).match(/@(?:Condition|Boon)\[[^\]]*\]/g) ?? [] };
 };
-/** v0.0.440: runs a Tier's forced movement on its creatures, one at a time, then the conditions written after it. ctx: { targets, actor, message, attrVal }. */
+/** v0.0.440: runs a Tier's movement on its creatures, one at a time, then the conditions/boons written after it. ctx: { targets, actor, message, attrVal }. */
 export async function runTierMove(text, ctx = {}) {
   const mt = tierMoveThen(text);
   if (!mt || !(ctx.targets ?? []).length) return false;
@@ -1027,6 +1031,8 @@ export async function runTierMove(text, ctx = {}) {
   return true;
 }
 export async function applyConditionChip(chip, ctx = {}) {
+  const b = String(chip).match(/^@Boon\[([^\]]*)\]/);
+  if (b) return handleInline("Boon", parseInline("Boon", b[1]), ctx);
   const m = String(chip).match(/^@Condition\[([^\]]*)\]/);
   if (!m) return;
   return handleInline("Condition", parseInline("Condition", m[1]), ctx);   // v0.0.421: with its formula options worked out
@@ -1069,7 +1075,8 @@ async function handleCondition(cfg, ctx = {}) {
     }
   }
   const dur = cfg.dur === "eot" ? { type: "eot" } : (cfg.dur === "rounds" ? { type: "rounds", rounds: cfg.rounds } : null);
-  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(ctx.attrVal) ? { mod: ctx.attrVal } : Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) }, cfg.value ?? null, cfg.bleed ? { bleed: cfg.bleed } : {});
+  const extra = { ...(cfg.bleed ? { bleed: cfg.bleed } : {}), ...(cfg.threaten ? { endWhenUnthreatened: true } : {}) };
+  const found = await applyCondition(cfg.cond, actors, dur, { ...originInfo(src?.uuid ?? ""), ...(Number.isFinite(ctx.attrVal) ? { mod: ctx.attrVal } : Number.isFinite(f?.attrVal ?? f?.originMod) ? { mod: f.attrVal ?? f.originMod } : {}) }, cfg.value ?? null, extra);
   ui.notifications.info(`${cfg.cond.charAt(0).toUpperCase() + cfg.cond.slice(1)}${cfg.value ? ` ${cfg.value}` : ""} applied to ${actors.map(a => a.name).join(", ")}${found ? "" : " (as a status: there is no Effect item with that name)"}.`);
 }
 
@@ -1156,7 +1163,8 @@ function saveRowMods(tokenDoc, point, exclude = []) {
   try {
     if (point && tokenDoc?.object && canvas?.grid) {
       // v0.0.419 (book, Chapter 3, Cover against an area): the creatures inside the area (the Save's creatures) never give Cover against it
-      const c = coverFromPoint(point, tokenDoc.object, { exclude });   // counted from the center of the area (its Point of Origin)
+      const c0 = coverFromPoint(point, tokenDoc.object, { exclude });   // counted from the center of the area (its Point of Origin)
+      const c = adjustCover(c0, { higher: a ? ignoredBy(a, "coverHigher", new Set()).length : 0 });
       if (c?.level >= 3 && !c.noLoE) { out.favored = true; out.why.push(`${c.label} (Favored)`); }
       else if (c?.level > 0 && !c.noLoE) { const n = Math.min(2, c.level); out.boon += n; out.why.push(`${c.label} (${n} Field Boon${n === 1 ? "" : "s"})`); }
     }
@@ -1371,13 +1379,14 @@ export async function saveRoll(msg, idx) {
 /** @Boon: put boons or banes on the next matching roll of the card's targets (or of the user, with self:yes). */
 async function boonFlow(cfg, ctx = {}) {
   const f = ctx.message?.getFlag?.("twod12", "action");
-  let src = null;
-  try { src = f?.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { /* not loaded */ }
+  let src = ctx.actor ?? null;
+  if (!src) try { src = f?.actorUuid ? await fromUuid(f.actorUuid) : null; } catch (e) { /* not loaded */ }
   src ??= canvas.tokens?.controlled[0]?.actor ?? game.user.character ?? null;
   let actors;
   if (cfg.self) actors = src ? [src] : [];
   else {
-    const fromCard = (f?.targets ?? []).map(t => { try { return fromUuidSync(t.uuid)?.actor ?? null; } catch (e) { return null; } }).filter(Boolean);
+    const list = ctx.targets?.length ? ctx.targets : (f?.targets ?? []);
+    const fromCard = list.map(t => { try { const d = fromUuidSync(t.uuid); return d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { return null; } }).filter(Boolean);
     actors = fromCard.length ? fromCard : [...game.user.targets].map(t => t.actor).filter(Boolean);
   }
   if (!actors.length) return ui.notifications.warn(cfg.self ? "Select your token first." : "Target a creature first.");

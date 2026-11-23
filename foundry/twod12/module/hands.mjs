@@ -1,24 +1,35 @@
 // Free hands (v0.0.138): an Action that needs a free hand (the Handle trait, or "free hand" in its Requirements, such as Reload)
 // asks to use Release first when both hands are full. With the world setting "Enforce hand requirement" off, it only warns.
-import { handsUsed } from "./config.mjs";
+import { handsUsed, grabbedBy } from "./config.mjs";
 import { handSlots } from "./loadout.mjs";
 import { esc } from "./util.mjs";
 
 /** Does this Action need a free hand? */
 export const needsFreeHand = item => !!(item?.system?.traits?.has?.("handle") || /free hand|hand free/i.test(String(item?.system?.requirements ?? "")));   // v0.0.412: "at least one hand free" (Seizing Cut)
 
-/** What Release can do with the weapons in hand: a two-handed grip becomes one hand, or the weapon is dropped. */
+/** What Release can do with the weapons in hand: a two-handed grip becomes one hand, a weapon is dropped, or a Grabbed creature is let go. */
 export function releaseOptions(actor) {
   const held = (actor?.itemTypes?.weapon ?? []).filter(w => w.system.wielded && !w.system.traits?.has?.("barehanded"));
-  return held.flatMap(w => [
+  const grabs = grabbedBy(actor).map(g => ({ action: `ungrab:${g.token.id}:${g.effect.id}`, label: `Let go of ${g.token.name} (ends Grabbed)`, icon: "fa-solid fa-hand" }));
+  return [...held.flatMap(w => [
     ...(w.system.hands >= 2 ? [{ action: `one:${w.id}`, label: `Hold ${w.name} with one hand`, icon: "fa-solid fa-hand" }] : []),
     { action: `drop:${w.id}`, label: `Drop ${w.name}`, icon: "fa-solid fa-arrow-down" }
-  ]);
+  ]), ...grabs];
 }
 
-/** Apply a Release choice ("one:<id>" or "drop:<id>") and say it in the chat. */
+/** Apply a Release choice ("one:<id>", "drop:<id>", or "ungrab:<tokenId>:<effectId>") and say it in the chat. */
 export async function applyRelease(actor, pick) {
-  const [kind, id] = String(pick).split(":"), w = actor.items.get(id);
+  const [kind, id, fxId] = String(pick).split(":");
+  if (kind === "ungrab") {
+    const g = grabbedBy(actor).find(x => x.token.id === id && (!fxId || x.effect.id === fxId));
+    if (!g) return false;
+    if (g.actor.isOwner) await g.effect.delete();
+    else game.socket?.emit("system.twod12", { type: "deleteEffect", actorUuid: g.actor.uuid, effectId: g.effect.id });
+    const { sysLine } = await import("./sysmsg.mjs");
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand", `<b>Release</b> (0 AP): ${esc(actor.name)} lets go of <b>${esc(g.token.name)}</b> (Grabbed ends).`) });
+    return true;
+  }
+  const w = actor.items.get(id);
   if (!w) return false;
   if (kind === "one") await w.update({ "system.hands": 1 }); else await w.update({ "system.wielded": false, "system.dropped": true });   // dropped on the ground (v0.0.139)
   const text = kind === "one" ? `holds <b>${esc(w.name)}</b> with one hand` : `drops <b>${esc(w.name)}</b>`;
@@ -49,14 +60,14 @@ export async function pickButtons(o) {
 
 export async function ensureHandsFor(actor, weapon, need) {
   const others = (actor?.itemTypes?.weapon ?? []).filter(w => w.id !== weapon.id && w.system.wielded && !w.system.traits?.has?.("barehanded"));
-  const used = others.reduce((n, w) => n + ((Number(w.system.hands) || 1) >= 2 ? 2 : 1), 0);
+  const used = others.reduce((n, w) => n + ((Number(w.system.hands) || 1) >= 2 ? 2 : 1), 0) + grabbedBy(actor).length;
   if (used + need <= 2) return true;
   if (!enforce()) { ui.notifications.warn(`${actor.name} has no free hand for ${weapon.name} (the hand requirement isn't enforced: it is taken anyway).`); return true; }
   const pick = await pickButtons({ title: `${weapon.name}: no free hand`, name: "No free hand", sub: weapon.name, icon: "fa-hand",
-    text: `${actor.name} needs ${need === 2 ? "both hands" : "a free hand"} for ${weapon.name}. Use the Release Action first (0 AP)? Pick what to let go of:`, buttons: releaseOptions({ itemTypes: { weapon: others } }) });
+    text: `${actor.name} needs ${need === 2 ? "both hands" : "a free hand"} for ${weapon.name}. Use the Release Action first (0 AP)? Pick what to let go of:`, buttons: releaseOptions({ uuid: actor.uuid, itemTypes: { weapon: others } }) });
   if (!pick || pick === "cancel") return false;
   await applyRelease(actor, pick);
-  const after = (actor.itemTypes.weapon ?? []).filter(w => w.id !== weapon.id && w.system.wielded && !w.system.traits?.has?.("barehanded")).reduce((n, w) => n + ((Number(w.system.hands) || 1) >= 2 ? 2 : 1), 0);
+  const after = (actor.itemTypes?.weapon ?? []).filter(w => w.id !== weapon.id && w.system.wielded && !w.system.traits?.has?.("barehanded")).reduce((n, w) => n + ((Number(w.system.hands) || 1) >= 2 ? 2 : 1), 0) + grabbedBy(actor).length;
   if (after + need > 2) { ui.notifications.warn(`${actor.name} still has no room for ${weapon.name}.`); return false; }
   return true;
 }

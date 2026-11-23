@@ -36,6 +36,12 @@ export function critRowDice(text) {
   return out;
 }
 
+/** Pure: AP gained from a Critical row ("You gain 1 AP." -> 1, else 0). */
+export function critRowAp(text) {
+  const m = String(text ?? "").match(/\b(?:re)?gain\s+(\d+)\s*AP\b/i);
+  return m ? Math.max(0, Number(m[1]) || 0) : 0;
+}
+
 /**
  * Ask (the pick bar, never a dialog) whether to apply the Critical's extra, and for a Basic attack which type its 1d10! is. Returns
  * { apply: false } or { apply: true, kind } (kind for the die) / { apply: true, row: true }.

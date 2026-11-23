@@ -1,7 +1,7 @@
 import { triggerNotices } from "./triggers.mjs";
 import { techniqueLock, TECHNIQUE_AT, masteryAfterRoll, techniqueState } from "./mastery.mjs";
 import { setQuarry, markWords } from "./mark.mjs";
-import { ignoredBy, markOnce, markSpent, coverIgnored } from "./automation.mjs";
+import { ignoredBy, markOnce, markSpent, coverIgnored, adjustCover } from "./automation.mjs";
 import { splitModes, splitView, SPLIT_LABEL, artModes, modeView } from "./split.mjs";
 import { ruledDice, isProfaneFor } from "./judge.mjs";   // v0.0.409 (pack F2): Smite's dice, Profane
 import { activeHooks, hasTraits, effectiveAp } from "./hooks.mjs";   // v0.0.409 (pack F2): the Paladin's passives
@@ -721,13 +721,16 @@ export async function useAction(actor, item, opts = {}) {
       if (!a || tk.id === selfToken?.id && !areaSet?.self) continue;
       const row = { token: tk, uuid: tk.document?.uuid ?? tk.uuid, name: tk.name, actor: a, actorUuid: a.uuid, dcInfo: computeDC(item, a, preAttr, src), favored: false, doomed: false, note: [] };
       if (row.dcInfo.untrained) { row.favored = true; row.note.push({ text: "Untrained armor", cls: "boon" }); }   // its armor is beyond its training: Actions against its Armor or Ward are Favored
-      const cov = areaOutcome?.cover?.[tk.id] ?? (selfToken && String(it.targets ?? "").trim() ? coverBetween(selfToken, tk) : null);   // an area: cover from its Point of Origin
-      if (cov?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
+      const cov0 = areaOutcome?.cover?.[tk.id] ?? (selfToken && String(it.targets ?? "").trim() ? coverBetween(selfToken, tk) : null);   // an area: cover from its Point of Origin
+      if (cov0?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
+      const covLow = ignoredBy(actor, "coverLower", useTraits), covHi = ignoredBy(a, "coverHigher", new Set());
+      const cov = adjustCover(cov0, { lower: covLow.length, higher: covHi.length });
+      if (cov0?.banes && covLow.length && cov.banes < cov0.banes) coverNotices.push({ text: `${cov0.label} \u2192 ${cov.label}`, icon: "fa-shield-halved", why: `${covLow.join(", ")}: ${tk.name}'s Cover counts one level lower`, for: a.uuid });
       const covIgn = cov?.banes ? coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null) : [];   // v0.0.266 (Aim): a cover level the Action ignores; v0.0.270: a grant's own use only
       if (cov?.banes && covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane against ${tk.name}`, for: a.uuid });
       // v0.0.301 (PACK BB; Ch. 3 Cover): Low 1 and Medium 2 Field Banes; High cover makes the roll Doomed (and gives no Field Banes)
       else if (cov?.banes >= 3) { row.doomed = true; row.note.push({ text: "High cover", cls: "bane" }); }
-      else if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}` });
+      else if (cov?.banes) extraMods.push({ id: `syn:cover|${a.uuid}`, name: `${cov.label} (${tk.name})`, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: `Against ${tk.name}: ${coverWhy(cov)}${covHi.length && cov.banes > (cov0?.banes ?? 0) ? ` (${covHi.join(", ")})` : ""}` });
       if (it.area && selfToken) {   // v0.0.292 (PACK ROLL-DIALOG): an Area ignores Senses (Ch. 7): Hidden and Obscured show as n/a
         const pv = perceive(selfToken, tk, { loe: !cov?.noLoE }), lv = pv.level === "clear" ? "" : pv.level;
         if (lv === "hidden" || lv === "unsensed") extraMods.push({ id: `syn:hidden-na|${a.uuid}`, name: lv === "hidden" ? "Hidden" : "Unsensed", boons: 0, banes: 1, match: false, naWhy: "an Area ignores Senses", predicate: `You perceive ${tk.name} as ${lv === "hidden" ? "Hidden" : "Unsensed"}` });
@@ -771,15 +774,20 @@ export async function useAction(actor, item, opts = {}) {
   // Line of Effect and Cover: lines from the center of your square to the four corners of the target's space.
   let seen = "", seenWhy = "", outOfRange = "";   // how you perceive the target (the GM's Obscured / Hidden / Unsensed statuses); [Area] Actions ignore Senses
   if (!multi && rollsAtOthers && targetToken && selfToken && String(it.targets ?? "").trim()) {
-    const cov = areaOutcome?.cover?.[targetToken?.id] ?? coverBetween(selfToken, targetToken);
+    const cov0 = areaOutcome?.cover?.[targetToken?.id] ?? coverBetween(selfToken, targetToken);
+    const covLow = ignoredBy(actor, "coverLower", useTraits), covHi = targetToken.actor ? ignoredBy(targetToken.actor, "coverHigher", new Set()) : [];
+    const cov = adjustCover(cov0, { lower: covLow.length, higher: covHi.length });
     if (cov?.noLoE) {
       dlgWarns.push(`No Line of Effect to ${targetToken.name}: all four corners are blocked`);   // v0.0.453 (R3): a warning in the dialog (it was a stop, or the GM's window)
-    } else if (cov?.banes) {
-      const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null);   // v0.0.266 (Aim); v0.0.270: a grant's own use only
-      if (covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane` });
-      // v0.0.301 (PACK BB): High cover is Doomed and no Field Banes; Low 1, Medium 2 Field Banes
-      else if (cov.banes >= 3) extraMods.push({ id: "syn:cover", name: "High cover (Doomed)", boons: 0, banes: 0, doomed: true, bb: "field", match: true, predicate: `${coverWhy(cov)}: High cover makes the roll Doomed (and gives no Field Banes)` });
-      else extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: coverWhy(cov) });
+    } else {
+      if (cov0?.banes && covLow.length && cov.banes < cov0.banes) coverNotices.push({ text: `${cov0.label} \u2192 ${cov.label}`, icon: "fa-shield-halved", why: `${covLow.join(", ")}: Cover counts one level lower` });
+      if (cov?.banes) {
+        const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null);   // v0.0.266 (Aim); v0.0.270: a grant's own use only
+        if (covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane` });
+        // v0.0.301 (PACK BB): High cover is Doomed and no Field Banes; Low 1, Medium 2 Field Banes
+        else if (cov.banes >= 3) extraMods.push({ id: "syn:cover", name: "High cover (Doomed)", boons: 0, banes: 0, doomed: true, bb: "field", match: true, predicate: `${coverWhy(cov)}${covHi.length && cov.banes > (cov0?.banes ?? 0) ? ` (${covHi.join(", ")})` : ""}: High cover makes the roll Doomed (and gives no Field Banes)` });
+        else extraMods.push({ id: "syn:cover", name: cov.label, boons: 0, banes: cov.banes, bb: "field", match: true, predicate: `${coverWhy(cov)}${covHi.length && cov.banes > (cov0?.banes ?? 0) ? ` (${covHi.join(", ")})` : ""}` });
+      }
     }
     if (!it.area) { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }); seen = pv.level === "clear" ? "" : pv.level; seenWhy = pv.why; }
     else { const pv = perceive(selfToken, targetToken, { loe: !cov?.noLoE }), lv = pv.level === "clear" ? "" : pv.level;   // v0.0.292: an Area ignores Senses (n/a)
@@ -1000,7 +1008,7 @@ export async function useAction(actor, item, opts = {}) {
   }
   const isWeapon = it.traits.has("weapon");
 
-  let attrKey = null, mod = null, weapon = null, title = "", chip = "";
+  let attrKey = null, mod = null, weapon = null, title = "", chip = "", drawnWeaponId = "";
   if (isWeapon) weapon = await pickWeapon(actor, item, candidates, opts.weaponId);
   // v0.0.460: the Setup's draw (Darting Blade): the carried Light weapon goes to a free hand; a two-handed grip shifts to one hand to free it
   if (isWeapon && setupDraw && weapon?.id === setupDraw.id && !setupDraw.system.wielded) {
@@ -1012,6 +1020,7 @@ export async function useAction(actor, item, opts = {}) {
       if (used < 2 || both) {
         const mainTaken = held.some(w => (w.system.hand || "main") === "main");
         await setupDraw.update(weaponMove("1h", mainTaken || both ? "off" : "main"));
+        drawnWeaponId = setupDraw.id;
         await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-hand", `<b>${esc(actor.name)}</b> draws ${esc(setupDraw.name)}${both && used >= 2 ? `, ${esc(both.name)} in one hand` : ""} (${esc(item.name)}'s Setup).`) });
       }
     } catch (e) { console.warn("twod12 | Setup draw", e); }
@@ -1310,6 +1319,7 @@ export async function useAction(actor, item, opts = {}) {
           crit: !!chk?.crit, areaPoint: areaOutcome?.point ?? null,   // v0.0.249: the chain after the damage reads them (Prone on a Critical, a Push from the area's center)
           after: version.after ?? "", noTiers: !!version.noTiers,   // v0.0.250: a no-damage Version's chain runs from the card's Apply buttons
           weaponId: weapon?.id ?? "",
+          drawnWeaponId,
           thrown: !!wUse?.thrown,   // v0.0.407 (book, Chapter 15, Thrown): thrown, its [W] deals 1 less on Tiers 2 and 3
           mode: opts.splitMode ?? "",
           triggerUuid: opts.triggerUuid ?? "",   // v0.0.409: a Reaction's triggering creature (@Condition[...|to:trigger])
@@ -1330,7 +1340,21 @@ export async function useAction(actor, item, opts = {}) {
     }
   });
   // A version with no roll has no Damage button: its automatic effects are applied now (to the targets, or to you for Self Actions).
+  // A map Zone Effect on a non-Area Version (e.g. a Mode that creates fixed Difficult Terrain around you) is placed automatically on the map.
   if (version.noTiers && (version.fx?.all ?? []).length) {
+    if (!areaSet) {
+      const zn = await zoneOf([version]);
+      if (zn) {
+        for (const u of zn.uuids) zoneSkip.add(u);
+        if (selfToken && canvas?.ready && canvas.grid?.isSquare) {
+          try {
+            const { startTemplate } = await import("./template.mjs");
+            const t = zn.zone.ends?.time, rounds = t?.on && t.mode === "rounds" ? t.rounds : 0;
+            await startTemplate({ shape: zn.zone.shape || "emanation", distance: Math.max(1, Number(zn.zone.size) || 1), at: "self", quick: true, auto: true, ring: !!zn.zone.ring, places: true, rounds, zone: zn.zone, source: item.name }, { token: selfToken });
+          } catch (e) { console.warn("twod12 | self Zone", e); }
+        }
+      }
+    }
     const auto = version.fx.all.filter(x => x.mode === "auto" && !zoneSkip.has(x.uuid)).map(x => x.uuid);
     if (auto.length) await applyEffects(auto, isSelf ? [actor.uuid] : targets.map(t => t.uuid), { ...originInfo(actor.uuid), escalation: escCost > 0, ...(src.kind ? { mod: Number(src.mod) || 0 } : {}) });
     // v0.0.260 (Lucas, Double Shot): the granted uses an applied effect brings are buttons on the card, one per use (freeuse.mjs)
@@ -1462,6 +1486,16 @@ export async function useAction(actor, item, opts = {}) {
           const ans = await C.askCritical({ actor, item, basic: false, rowText });
           if (ans.apply) {
             chips.push(...tierConditionChips(rowText));
+            const gainAp = C.critRowAp(rowText);
+            if (gainAp > 0 && game.combat?.started) {
+              try {
+                const CB = await import("./combat.mjs"), cb = CB.combatantOf(actor);
+                if (cb) {
+                  await CB.setAP(cb, CB.getAP(cb) + gainAp, `${item.name} (Critical)`, { quiet: true });
+                  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-star", `<b>${esc(item.name)}</b> (Critical): <b>${esc(actor.name)}</b> gains <b>${gainAp} AP</b>.`, "fxm") });
+                }
+              } catch (e) { console.warn("twod12 | Critical AP", e); }
+            }
             const dice = C.critRowDice(rowText);
             if (dice.length) {
               const rolls = [], comps = [];
@@ -1681,7 +1715,20 @@ export async function rollDamage(message, { again = false } = {}) {
         const C = await import("./critical.mjs"), rowText = String(version.critical ?? "").trim();
         const ans = await C.askCritical({ actor, item, comps, basic: C.isBasicAttack(item.system, item.getFlag?.("twod12", "basic")), rowText });
         if (ans.apply && ans.kind) comps.push(await C.critComponent({ ...ans.kind }, rolls));
-        if (ans.apply && ans.row) { for (const d of C.critRowDice(rowText)) comps.push(await C.critComponent(d, rolls)); critConds = (await import("./inline.mjs")).tierConditionChips(rowText); }
+        if (ans.apply && ans.row) {
+          for (const d of C.critRowDice(rowText)) comps.push(await C.critComponent(d, rolls));
+          critConds = (await import("./inline.mjs")).tierConditionChips(rowText);
+          const gainAp = C.critRowAp(rowText);
+          if (gainAp > 0 && game.combat?.started) {
+            try {
+              const CB = await import("./combat.mjs"), cb = CB.combatantOf(actor);
+              if (cb) {
+                await CB.setAP(cb, CB.getAP(cb) + gainAp, `${item.name} (Critical)`, { quiet: true });
+                await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-star", `<b>${esc(item.name)}</b> (Critical): <b>${esc(actor.name)}</b> gains <b>${gainAp} AP</b>.`, "fxm") });
+              }
+            } catch (e) { console.warn("twod12 | Critical AP", e); }
+          }
+        }
         critApplied = !!ans.apply;
       } catch (e) { console.warn("twod12 | the Critical", e); }
     }

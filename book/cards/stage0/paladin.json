@@ -266,7 +266,10 @@
        "label": "Effect",
        "text": "The target gains Guard equal to 2 + your Power Modifier."
       }
-     ]
+     ],
+     "foundry": {
+      "after": "@Guard[2+pow]"
+     }
     },
     {
      "heading": "2 AP",
@@ -275,14 +278,17 @@
        "label": "Effect",
        "text": "The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point."
       }
-     ]
+     ],
+     "foundry": {
+      "after": "@Guard[2+pow]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/regen.svg",
     "folder": "Paladin",
     "automation": "silver",
-    "automationNote": "the Setup's Advance (the button; the straight line toward the target by hand), the Guard (2 + Pow) and, at 2 AP, the Rally Point (the chips, on the target)."
+    "automationNote": "the Setup's Advance 5 (straight line toward the target by hand), Guard (2 + Pow) step button, and at 2 AP the optional Rally Point chip."
    }
   },
   {
@@ -492,8 +498,8 @@
    "foundry": {
     "img": "icons/svg/statue.svg",
     "folder": "Paladin",
-    "automation": "silver",
-    "automationNote": "the Mode's pick; Brace (an Aura 1 around you, Difficult Terrain for enemies, 1 round; the book fixes the squares when you use it: if you move, by hand); Trade Places (the Swap button: both tokens move at once, no Reactions; different Sizes refused); Rescue's Reposition 2 (the button)."
+    "automation": "gold",
+    "automationNote": "the Mode's pick; Brace places a fixed 1-round Zone on the adjacent squares (Difficult Terrain for enemies; stays put if you move); Trade Places (Swap button, Size checked); Rescue's Reposition 2."
    }
   },
   {
@@ -564,8 +570,8 @@
    "foundry": {
     "img": "icons/svg/sound.svg",
     "folder": "Paladin",
-    "automation": "silver",
-    "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save and Prone; Courage: an effect on you as a reminder (an Aura 3: you and allies in it ignore Daunted: by hand)."
+    "automation": "gold",
+    "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save (Prone on Tier 1, Hindered on Tier 2); Courage Aura 3 (1 round) ignoring Daunted's Banes and movement limit."
    },
    "_note": "2026-11-22 (Lucas, the core rework batch 3, `cards/basic-attacks-redesign.md`): Kneel's Prone only on a Tier 1 (it landed 77 to 81%), Hindered (EoT) on a Tier 2."
   },

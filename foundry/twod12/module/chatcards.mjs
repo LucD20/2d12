@@ -572,7 +572,8 @@ export function ledgerModel(comps, mods = [], { factor = 1, took = null } = {}) 
     pools[p].v += x.total; (bySub[x.sub] ??= { B: 0, M: 0 })[p] += x.total;
   }
   for (const m of mods ?? []) {
-    const t = bySub[m.sub] ?? { B: 0, M: 0 };
+    const sk = m.sub ?? Object.keys(bySub).find(k => k && String(m.label ?? "").toLowerCase().includes(subName(k).toLowerCase()));
+    const t = bySub[sk] ?? { B: 0, M: 0 };
     if (m.kind === "immune") { for (const p of ["B", "M"]) if (t[p]) { pools[p].lines.push({ label: m.label, v: sg(-t[p]) }); pools[p].v -= t[p]; t[p] = 0; } }
     else if (m.kind === "resist") { let r = Math.abs(Number(m.v) || 0); const first = t.M > t.B ? "M" : "B"; for (const p of [first, first === "B" ? "M" : "B"]) { const n = Math.min(r, t[p]); if (n) { pools[p].lines.push({ label: m.label, v: sg(-n) }); pools[p].v -= n; t[p] -= n; r -= n; } } }
     else if (m.kind === "weak") { const p = t.M > t.B ? "M" : "B", w = Number(m.v) || 0; pools[p].lines.push({ label: m.label, v: sg(w) }); pools[p].v += w; }
@@ -626,7 +627,7 @@ export const rwIcons = (mods = []) => Object.entries(RWI).map(([k, [ic, word]]) 
   const tip = list.map(x => (k === "immune" ? x.label : `${x.v > 0 ? "+" : "\u2212"}${Math.abs(Number(x.v) || 0)} ${x.label}`)).join(", ");
   return `<span class="cc-dtag ${k}" aria-label="${esc(`${word}: ${tip}`)}"><i class="fa-solid ${ic}" aria-hidden="true"></i>${esc(txt)}</span>`;
 }).join("");
-const tookTxt = (t, mods = []) => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return `${bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"}${rwIcons(mods)}`; };
+const tookTxt = t => { const bits = [t.B ? `${poolIc("B")} ${t.B}` : "", t.M ? `${poolIc("M")} ${t.M}` : ""].filter(Boolean); return bits.length ? `Took ${bits.join(" · ")}` : "Took <b>No damage</b>"; };
 const stateChip = s => (s === "down" || s === "both" ? '<span class="cc-state down">Down</span>' : s === "bloodied" ? '<span class="cc-state bloodied">Bloodied</span>' : s === "strained" ? '<span class="cc-state strained">Strained</span>' : "");
 /** A dice summary for a Tier's group: "3d8 Ho". */
 export const diceSummary = comps => [...new Set((comps ?? []).map(c => `${c.formula ?? ""}`.replace(/\s.*$/, "")).filter(Boolean))].join(" + ");

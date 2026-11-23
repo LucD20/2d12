@@ -85,9 +85,17 @@
    "foundry": {
     "img": "icons/svg/sword.svg",
     "folder": "Archer",
-    "automationNote": "the Strike, Staggered (EoT) on a Tier 3, then the Evade 2 (the button); only a Light weapon can make it (its Weapon needs setting); drawing and stowing the Light weapon by hand (the HUD's hand menu).",
+    "automationNote": "draws a carried Light weapon with Setup, makes the Strike (only a Light weapon fits), applies Staggered (EoT) on Tier 3, runs Evade 2, and prompts to stow the drawn weapon afterward.",
     "weaponNeeds": "light",
-    "automation": "silver"
+    "automation": "gold",
+    "version": {
+     "sub": [
+      [
+       "@Move[evade|distance:2]",
+       "@Move[evade|distance:2|stow:drawn]"
+      ]
+     ]
+    }
    }
   },
   {
@@ -204,8 +212,8 @@
    "foundry": {
     "img": "icons/svg/target.svg",
     "folder": "Archer",
-    "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (the button); a Critical's 1 AP back by hand.",
-    "automation": "silver"
+    "automationNote": "2[W] / 3[W] by Tier, the Evade 2 (the button), and +1 AP on a Critical (when applied).",
+    "automation": "gold"
    }
   },
   {
@@ -371,14 +379,17 @@
        "label": "Effect",
        "text": "You Evade 1, and before or after it you use the Interact or Reload Action (1A)."
       }
-     ]
+     ],
+     "foundry": {
+      "append": "@Use[Interact|ap:0|label:Interact (free)] @Use[Reload|ap:0|label:Reload (free)]"
+     }
     }
    ],
    "foundry": {
     "img": "icons/svg/wing.svg",
     "folder": "Archer",
-    "automation": "silver",
-    "automationNote": "the Mode's pick; Sidestep's Evade 3 and Hands Busy's Evade 1 (the buttons; the Interact or Reload by hand); Weave's Advance ignores Difficult Terrain (the button; through unwilling creatures by hand)."
+    "automation": "gold",
+    "automationNote": "the Mode's pick; Sidestep's Evade 3; Weave's Advance ignores Difficult Terrain and moves through unwilling creatures; Hands Busy's Evade 1 plus free Interact or Reload buttons."
    }
   },
   {
@@ -504,8 +515,8 @@
    "foundry": {
     "img": "icons/svg/eye.svg",
     "folder": "Archer",
-    "automation": "silver",
-    "automationNote": "the Mode's pick; Call Out: the target is Called Out (1 round: its enemies perceive it one step better); Find the Gap: an effect on you (no far or maximum range Bane on your next [Ranged, Strike] this turn; its Cover one level lower by hand); Keep Low: an effect as a reminder (by hand)."
+    "automation": "gold",
+    "automationNote": "the Mode's pick; Call Out (enemies perceive target one step better, 1 round); Find the Gap (ignores far/max range Banes and lowers Cover 1 level, Total stays Total); Keep Low (raises your Cover 1 level up to High, 1 round)."
    }
   },
   {

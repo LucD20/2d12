@@ -89,6 +89,18 @@ export function coverIgnored(actor, level, traits, grantEffectId = null) {
   return out;
 }
 
+const COV_LABEL = ["No cover", "Low cover", "Medium cover", "High cover"];
+/** Pure: shift a target's Cover up (Keep Low: only when it already has Cover, capped at High = 3) and/or down (Find the Gap: floored at 0). Total Cover (noLoE) never changes. */
+export function adjustCover(cov, { lower = 0, higher = 0 } = {}) {
+  if (!cov || cov.noLoE) return cov;
+  const base = Number(cov.banes ?? cov.level ?? 0) || 0;
+  if (base <= 0) return cov;
+  const raised = Math.min(3, base + Math.max(0, Number(higher) || 0));
+  const next = Math.max(0, raised - Math.max(0, Number(lower) || 0));
+  if (next === base) return cov;
+  return { ...cov, level: next, banes: next, label: COV_LABEL[next] ?? "" };
+}
+
 /* ------------------------------------------------------------------ Rally Points */
 /** A number from a formula with the creature's Modifiers: "power + 2", "signature", "ceil(level/2)". null when it can't be read. */
 export function evalStat(formula, actor) {

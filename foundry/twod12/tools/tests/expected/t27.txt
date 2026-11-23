@@ -1,3 +1,3 @@
 after moving 4 of 5 free: {"ap":5,"freeMove":1,"moveLeft":0,"evadeMove":0} | 
-after End movement: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0,"-=charge":null,"-=ignoreTerrain":null} | 
+after End movement: {"ap":5,"freeMove":0,"moveLeft":0,"evadeMove":0,"-=charge":null,"-=ignoreTerrain":null,"-=noFarther":null} | 
 again: 

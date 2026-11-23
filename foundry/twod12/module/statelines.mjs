@@ -27,3 +27,19 @@ export function moveAltFor(lines, pre = {}, now = {}, tier = 0, moveKind = "") {
   }
   return "";
 }
+/** Pure: does a Bloodied / Strained line only add distance to an existing forced move ("...Pushed 1 more.")? */
+export const isMoveAddLine = text => /@Move\[(pushed|pulled|slid|reposition)\|distance:(\d+)[^\]]*\](?:\{[^}]*\})?\s*more\b/i.test(String(text ?? ""))
+  || /\b(?:pushed|pulled|slid|repositioned?)\s+(\d+)\s+more\b/i.test(String(text ?? ""));
+/** Pure: extra squares added to a Tier's forced movement of `moveKind` by active Bloodied / Strained lines ("Pushed 1 more" -> 1). */
+export function moveAddFor(lines, pre = {}, now = {}, tier = 0, moveKind = "") {
+  if (!moveKind) return 0;
+  let extra = 0;
+  const word = moveKind === "reposition" ? "reposition(?:ed)?" : moveKind;
+  const chipRe = new RegExp(`@Move\\[${moveKind}\\|distance:(\\d+)[^\\]]*\\](?:\\{[^}]*\\})?\\s*more\\b`, "i");
+  const plainRe = new RegExp(`\\b${word}\\s+(\\d+)\\s+more\\b`, "i");
+  for (const t of stateLinesFor(lines, pre, now, tier)) {
+    const m = chipRe.exec(t) ?? plainRe.exec(t);
+    if (m) extra += Math.max(0, Number(m[1]) || 0);
+  }
+  return extra;
+}

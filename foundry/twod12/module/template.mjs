@@ -288,14 +288,17 @@ export async function startTemplate(cfg, ctx = {}) {
   let back0 = async () => {};
   if (cfg.at === "self") {
     if (!user) return ui.notifications.warn("Select your token first.");
-    back0 = await stepAside();   // v0.0.251 (Lucas): the windows step aside while the area is shown, as when one is placed
-    const base = tokenCells(user);
-    placed = { cells: emanationCells(base, n), origin: user, baseCells: base, point: spaceCenter(user) };
+    if (!cfg.auto) back0 = await stepAside();   // v0.0.251 (Lucas): the windows step aside while the area is shown, as when one is placed
+    const base = tokenCells(user), all = emanationCells(base, n), baseKeys = new Set(base.map(key));
+    const cells = cfg.ring ? all.filter(c => !baseKeys.has(key(c))) : all;
+    placed = { cells, origin: user, baseCells: base, point: spaceCenter(user) };
     // Show it on the map before applying, so everyone sees what it covers.
-    preview = new PIXI.Graphics();
-    (canvas.interface ?? canvas.stage).addChild(preview);
-    fillCells(preview, placed.cells, COLOR, 0.5);
-    outlineCells(preview, placed.cells, { color: 0xf3c9ee });
+    if (!cfg.auto) {
+      preview = new PIXI.Graphics();
+      (canvas.interface ?? canvas.stage).addChild(preview);
+      fillCells(preview, placed.cells, COLOR, 0.5);
+      outlineCells(preview, placed.cells, { color: 0xf3c9ee });
+    }
   } else {
     const back = await stepAside();   // the sheets and dialogs get out of the way of the map, and come back after
     if (shape === "line" && !user) { await back(); return ui.notifications.warn("Select your token first: a Line starts from your square."); }
@@ -360,9 +363,11 @@ export async function startTemplate(cfg, ctx = {}) {
     if (res == null) return;
     if (centerTok) tokens = res === "me" ? [...new Set([...tokens, centerTok])] : tokens.filter(t => t.id !== centerTok.id);
   }
-  // Restart the targeting: release every current target, then target the tokens in the area.
-  for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false, groupSelection: true });
-  for (const t of tokens) t.setTarget(true, { releaseOthers: false, groupSelection: true });
+  // Restart the targeting: release every current target, then target the tokens in the area (unless cfg.auto places a fixed self-zone silently).
+  if (!cfg.auto) {
+    for (const t of [...game.user.targets]) t.setTarget(false, { releaseOthers: false, groupSelection: true });
+    for (const t of tokens) t.setTarget(true, { releaseOthers: false, groupSelection: true });
+  }
   if (ctx?.outcome) { ctx.outcome.ok = true; ctx.outcome.count = tokens.length; ctx.outcome.point = placed.point ?? null; }   // the caller knows it was placed and applied
   // The Action's card lists the creatures in the area as its targets.
   if (tokens.length && ctx?.message?.getFlag?.("twod12", "action")) { try { const { retargetAction } = await import("./actions.mjs"); await retargetAction(ctx.message); } catch (e) { console.warn("twod12 | card targets", e); } }

@@ -28,7 +28,9 @@
    ],
    "foundry": {
     "img": "icons/svg/dagger.svg",
-    "npcWeapon": "Rusty Knife"
+    "npcWeapon": "Rusty Knife",
+    "automation": "gold",
+    "automationNote": "Basic attack (no exploding dice on a Minion)."
    },
    "ruler": false,
    "_note": "18 points (a Medium Minion's AP); a Minion's dice never explode."
@@ -60,7 +62,9 @@
    ],
    "foundry": {
     "img": "icons/svg/combat.svg",
-    "npcWeapon": "Rusty Knife"
+    "npcWeapon": "Rusty Knife",
+    "automation": "gold",
+    "automationNote": "the Strike and 1 Pressure Bane on its next roll applied automatically when Tier 2 or 3 lands."
    },
    "ruler": false,
    "_note": "20 points (1 AP Round), a Mild rider 3."
@@ -156,7 +160,9 @@
    ],
    "foundry": {
     "img": "icons/svg/sword.svg",
-    "npcWeapon": "Cleaver"
+    "npcWeapon": "Cleaver",
+    "automation": "gold",
+    "automationNote": "Basic attack (exploding die, Critical 1d10!) and Push 1 when Tier 2 or 3 lands."
    },
    "ruler": false,
    "_note": "25 points, Push 1 (2)."
@@ -188,7 +194,9 @@
    ],
    "foundry": {
     "img": "icons/svg/combat.svg",
-    "npcWeapon": "Cleaver"
+    "npcWeapon": "Cleaver",
+    "automation": "gold",
+    "automationNote": "the Strike and Prone applied automatically when Tier 2 or 3 lands."
    },
    "ruler": false,
    "_note": "55 points, Prone (12), Avenge Kin's share (7)."
@@ -225,7 +233,9 @@
     "npcWeapon": "Cleaver",
     "moment": "strikeDamage",
     "momentRange": 2,
-    "momentTarget": "source"
+    "momentTarget": "source",
+    "automation": "gold",
+    "automationNote": "offered automatically in the Reactions message when an ally within 2 squares takes Strike damage; Use attacks the attacker."
    },
    "ruler": false,
    "_note": "1R: a 1 AP Round Action's 28 points; a quarter (7) comes off the turn."
@@ -257,7 +267,9 @@
     }
    ],
    "foundry": {
-    "img": "icons/svg/frozen.svg"
+    "img": "icons/svg/frozen.svg",
+    "automation": "gold",
+    "automationNote": "Basic attack (exploding die, Critical 1d10!) and Daunted of the Grave Wisp (EoT) when Tier 2 or 3 lands."
    },
    "ruler": false,
    "_note": "25 points, Daunted (EoT) a Mild rider 3."
@@ -289,7 +301,9 @@
     }
    ],
    "foundry": {
-    "img": "icons/svg/terror.svg"
+    "img": "icons/svg/terror.svg",
+    "automation": "gold",
+    "automationNote": "the Strike and Dazed 1 applied automatically when Tier 2 or 3 lands."
    },
    "ruler": false,
    "_note": "55 points, Dazed 1 a Moderate rider 8."
@@ -322,7 +336,9 @@
    "foundry": {
     "img": "icons/svg/hammer.svg",
     "npcWeapon": "Great Club",
-    "basicRating": "high"
+    "basicRating": "high",
+    "automation": "gold",
+    "automationNote": "Basic attack (exploding die, Critical 1d10!) and Push 1 when Tier 2 or 3 lands."
    },
    "ruler": false,
    "_note": "High (40 points an AP: a slow creature), Push 1 (2), then Ground Slam's pay-back (a quarter)."
@@ -356,7 +372,9 @@
    ],
    "foundry": {
     "img": "icons/svg/combat.svg",
-    "npcWeapon": "Great Club"
+    "npcWeapon": "Great Club",
+    "automation": "gold",
+    "automationNote": "the Strike and Push 2 when Tier 2 or 3 lands, folded into a single Push 3 when the target is Bloodied."
    },
    "ruler": false,
    "_note": "73 points (2 AP Round, an Elite's), Push 2 (8), Ground Slam's pay-back."
@@ -390,7 +408,9 @@
     "img": "icons/svg/explosion.svg",
     "areaCfg": {
      "center": true
-    }
+    },
+    "automation": "gold",
+    "automationNote": "2 Emanation Body Save around the Ogre, damage and Prone on Tier 1 or 2."
    },
    "ruler": false,
    "_note": "145 points (2 AP Encounter), Prone (12), half to each creature. At Escalation 6 it comes back once (the Elite ladder)."
@@ -405,15 +425,28 @@
    "escalation": 4,
    "frequency": "Round",
    "target": "Allies within 5 squares",
-   "distance": "5 sq.",
+   "area": "5 Emanation",
    "versions": [
     {
      "ap": 1,
-     "effects": "Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action."
+     "effects": "Allies within 5 squares gain 1 Support Boon on their next [Weapon] Action.",
+     "foundry": {
+      "fx": {
+       "all": [
+        "{{fx:Rally the Tribe (1 Support Boon)}}"
+       ]
+      }
+     }
     }
    ],
    "foundry": {
-    "img": "icons/svg/aura.svg"
+    "img": "icons/svg/aura.svg",
+    "areaCfg": {
+     "targets": "allies",
+     "center": false
+    },
+    "automation": "gold",
+    "automationNote": "5 Emanation around the Ogre targeting allies and applying 1 Support Boon on their next [Weapon] Action."
    },
    "ruler": false,
    "_note": "Escalation 4 since Stage 0 (Lucas, 2026-11-12)."

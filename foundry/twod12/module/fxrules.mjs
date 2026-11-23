@@ -133,7 +133,7 @@ const dmgEntry = (o = {}) => ({ dice: "1d4", pool: "B", sub: "", tiers: [1, 2, 3
 const DEFAULTS = {
   act: () => ({ dir: "by", filter: { all: [], any: [], not: [] }, attrs: [], from: [], vs: "any", uses: "every", sees: false, origin: "",
     bb: { on: false, boons: 0, banes: 0, name: "", byValue: false }, emp: { on: false, mode: "set", emp: 0, enf: 0 },
-    dmg: { on: false, list: [dmgEntry()] }, ign: { on: false, low: false, medium: false, high: false, range: "none", engaged: false, engagedTarget: false },
+    dmg: { on: false, list: [dmgEntry()] }, ign: { on: false, low: false, medium: false, high: false, range: "none", engaged: false, engagedTarget: false, coverLower: false, coverHigher: false, daunted: false },
     note: { on: false, title: "", text: "" } }),
   value: () => ({ stat: "defense", which: "all", val: "1", stype: "all", mode: "bonus", name: "", vs: "any", sees: false, origin: "", rally: "@origin.pow + 2", rallyRange: 0, rw: "resist", rwSub: "", rwVal: 1 }),
   grant: () => ({ item: "", itemName: "", itemType: "", valued: false, src: "", val: 1, valMode: "set", origin: "", when: "lasts", amode: "has", uses: 1, ap: 0, bbn: 0, bbk: "boons", distinct: false,
@@ -210,7 +210,7 @@ export function normEnds(e = {}) {
 /* ------------------------------------------------------------------ migrate: old settings -> rules */
 const tierNums = t => tiersOf([...(t ?? [])].map(k => Number(String(k).replace(/^t/, ""))));
 const filterOf = x => normFilter({ all: [...(x.all ?? []), ...(x.predicate ? [x.predicate] : [])], any: [...(x.any ?? [])], not: [...(x.none ?? [])] });
-const IGN = { rangeBane: { range: "one" }, engagedSelf: { engaged: true }, engagedTarget: { engagedTarget: true } };
+const IGN = { rangeBane: { range: "one" }, engagedSelf: { engaged: true }, engagedTarget: { engagedTarget: true }, coverLower: { coverLower: true }, coverHigher: { coverHigher: true }, daunted: { daunted: true } };
 /** Old "On [t3]" choices -> tiers. */
 const onTiers = on => ({ t1: [1, 2, 3], t2: [2, 3], t3: [3], all: [1, 2, 3], crit: [] }[on] ?? []);
 /**
@@ -238,7 +238,7 @@ export function migrate(sys, host = "effect") {
       case "bonusdamage":
         add("act", { ...base, dir: x.against ? "against" : "by", filter: filterOf(x), vs, uses: x.oncePerRound ? "round" : "every", sees: seen, dmg: { on: true, list: [dmgEntry({ dice: x.dmg ?? "", pool: x.dmgPool === "M" ? "M" : "B", sub: x.dmgSub || "", tiers: tierNums(x.tiers).length ? tierNums(x.tiers) : [1, 2, 3], fx: x.fxUuid || "", text: x.text || "" })] } });
         break;
-      case "ignore": add("act", { ...base, filter: filterOf(x), ign: { on: true, ...(IGN[x.ignoreRule] ?? { range: "one" }) } }); break;
+      case "ignore": add("act", { ...base, filter: filterOf(x), ign: { on: true, ...(x.ignoreRule === "rangeBane" && x.rangeAll ? { range: "all" } : (IGN[x.ignoreRule] ?? { range: "one" })) } }); break;
       case "cover": { const lv = new Set(x.coverLevels ?? []); add("act", { ...base, filter: filterOf(x), ign: { on: true, low: lv.has("low"), medium: lv.has("medium"), high: lv.has("high") } }); break; }
       case "note": { const a = [...(x.attrs ?? [])]; add("act", { ...base, filter: { all: a.length === 1 ? a : [], any: a.length > 1 ? a : [], not: [] }, note: { on: true, title: x.title || "", text: x.text || "" } }); break; }
       case "defense": add("value", { ...base, stat: "defense", which: x.defKind || "all", val: x.valFormula || String(Math.trunc(Number(x.defValue)) || 0), mode: "bonus", name: x.defName || "", sees: seen }); break;
@@ -321,6 +321,9 @@ export function compile(rulesIn, endsIn, host = "effect") {
             if (r.ign.range !== "none") S(r, "ignore", { ...f, ignoreRule: "rangeBane", rangeAll: r.ign.range === "all" });
             if (r.ign.engaged) S(r, "ignore", { ...f, ignoreRule: "engagedSelf" });
             if (r.ign.engagedTarget) S(r, "ignore", { ...f, ignoreRule: "engagedTarget" });
+            if (r.ign.coverLower) S(r, "ignore", { ...f, ignoreRule: "coverLower" });
+            if (r.ign.coverHigher) S(r, "ignore", { ...f, ignoreRule: "coverHigher" });
+            if (r.ign.daunted) S(r, "ignore", { ...f, ignoreRule: "daunted" });
           }
         }
         if (r.note.on && (r.note.title || r.note.text)) S(r, "note", { attrs: [...new Set([...r.filter.all, ...r.filter.any, ...r.attrs].filter(k => k in T().attributes))], all: f.all, any: f.any, none: f.none, title: r.note.title, text: r.note.text });
@@ -409,7 +412,10 @@ function payload(r, withDmg = true) {
     if (r.ign.range !== "none") x.push(r.ign.range === "one" ? "one range Bane" : "all range Banes");
     if (r.ign.engaged) x.push("the Engaged Bane");
     if (r.ign.engagedTarget) x.push("the Bane for a target Engaged with someone else");
+    if (r.ign.coverLower) x.push("one level of each target's Cover");
+    if (r.ign.daunted) x.push("the Daunted condition");
     if (x.length) p.push(`ignore ${andJoin(x)}`);
+    if (r.ign.coverHigher) p.push("raise your Cover by one level, up to High");
   }
   if (r.note.on && r.note.title) p.push(`show the note ⟦a:${r.note.title}⟧`);
   if (withDmg && r.dmg.on && r.dmg.list.some(d => String(d.dice).trim())) p.push(`an extra ${andJoin(r.dmg.list.map(dmgPhrase).filter(Boolean))}`);

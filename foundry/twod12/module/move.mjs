@@ -25,6 +25,7 @@ import { allEffects } from "./passives.mjs";
 
 import { moveLimitBreaks } from "./fxrules.mjs";
 import { areaDifficult } from "./areafx.mjs";
+import { ignoredBy } from "./automation.mjs";
 /** The Movement limits of a creature that work now, each with its origin's token: [{ dir, name, token }] (Frightened: can't move closer to its source). */
 // v0.0.361 (PACK PERF, D34): a drag measures many steps in a row, each asking for the mover's limits (8 of its 8.4 µs a step went to allEffects):
 // they are read once and kept 200 ms. The source's token is kept, not its square, so a source that moves is still measured where it stands.
@@ -39,8 +40,10 @@ function moveLimitsOf(doc) {
 function readMoveLimits(doc) {
   const actor = doc?.actor, out = [];
   if (!actor) return out;
+  const ignDaunted = ignoredBy(actor, "daunted", new Set()).length > 0;
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
+    if (ignDaunted && (e.statuses?.has?.("daunted") || /^daunted\b/i.test(String(e.name ?? "")))) continue;
     for (const l of e.getFlag?.("twod12", "moveLimits") ?? []) {
       if (l.seen && !seesOrigin(actor, e)) continue;
       const o = e.origin ?? "", tok = (canvas?.tokens?.placeables ?? []).find(t => t.document?.uuid === o || (t.actor && t.actor.uuid === o));
@@ -284,7 +287,9 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
     else { while (need > left + 1e-9) { left += walk; spent++; } left -= need; }
   }
   if (spent && !useEvade) newMoveAction(c.id);   // v0.0.274: a drag that spends AP is a new Advance (a new Move Action for the Reactions); before any await
-  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {}), ...(useEvade > 0 && evade <= 0 ? { ...unset(`flags.${F}.ignoreTerrain`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
+  const evadeEnded = useEvade > 0 && evade <= 0;
+  await c.update({ [`flags.${F}.evadeMove`]: evade, [`flags.${F}.freeMove`]: free, [`flags.${F}.moveLeft`]: Math.round(left * 100) / 100, ...(spent && !useEvade ? { [`flags.${F}.advOwn`]: true, [`flags.${F}.advInteract`]: false } : {}), ...(evadeEnded ? { ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.noFarther`) } : {}), ...(useEvade > 0 ? { [`flags.${F}.diagPar`]: evade > 0 ? par : 0 } : {}) });
+  if (evadeEnded) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});
@@ -527,6 +532,21 @@ async function looseMove(token, n, kind, cfg) {
 /** Take the movement area off the canvas. */
 export function clearLooseMove() { clearRange(); looseId = null; }
 
+/** Offer to stow the weapon drawn by the Action's Setup once its Evade finishes (or End movement is clicked). */
+async function promptStowAfter(c) {
+  const stow = c?.getFlag?.(F, "stowAfter");
+  if (!stow?.weaponId || !c?.actor) return;
+  try { await c.unsetFlag(F, "stowAfter"); } catch (e) { /* already gone */ }
+  const w = c.actor.items?.get?.(stow.weaponId);
+  if (!w || !w.system?.wielded) return;
+  const { pickBar } = await import("./pickbar.mjs");
+  const pick = await pickBar({ icon: "fa-hand", text: `Stow <b>${esc(w.name)}</b> (drawn with Setup)?`, options: [{ id: "stow", label: `Stow ${w.name}` }, { id: "keep", label: "Keep in hand" }], cancel: "" });
+  if (pick !== "stow") return;
+  const { weaponMove } = await import("./loadout.mjs");
+  await w.update(weaponMove("worn"));
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: c.actor }), content: sysLine("fa-hand", `<b>${esc(c.actor.name)}</b> stows ${esc(w.name)}.`) });
+}
+
 async function grantFreeMove(cfg, ctx, kind = "walk") {
   const token = moverToken(ctx, cfg);
   const actor = token?.actor ?? contextActor(ctx), combat = game.combat;
@@ -549,9 +569,23 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   if (combat?.combatant?.id !== c.id) await c.setFlag(F, "offTurnAt", turnStamp(combat));   // v0.0.421: granted off its turn (a Reaction): tracked during this turn only
   if (kind === "evade") await c.setFlag(F, "diagPar", 0);   // v0.0.183: a new Evade starts its diagonals from 0
   if (cfg.ignoreTerrain) await c.setFlag(F, "ignoreTerrain", true);
+  const fAct = ctx?.message?.getFlag?.(F, "action");
+  if (cfg.stow && fAct?.drawnWeaponId) await c.setFlag(F, "stowAfter", { weaponId: fAct.drawnWeaponId });
+  let nfNote = "";
+  if (cfg.noFarther === "target" && token) {
+    const tRef = (ctx?.targets ?? fAct?.targets ?? [])[0];
+    let tgtTok = null;
+    try { const d = tRef?.uuid ? fromUuidSync(tRef.uuid) : null; tgtTok = d?.object ?? d?.getActiveTokens?.()[0] ?? null; } catch (e) { tgtTok = null; }
+    tgtTok ??= [...(game.user.targets ?? [])].find(t => t.id !== token.id) ?? null;
+    if (tgtTok) {
+      const maxDist = Math.round(tokenDistance(token, tgtTok));
+      await c.setFlag(F, "noFarther", { targetId: tgtTok.id, targetName: tgtTok.name, maxDist });
+      nfNote = `; ending no farther from ${tgtTok.name} (${maxDist} sq.)`;
+    }
+  }
   if (kind === "charge") {
     // v0.0.219 (Lucas): giving up a Charge before it moves refunds the AP its Action cost (from its card).
-    const f = ctx?.message?.getFlag?.(F, "action");
+    const f = fAct;
     // v0.0.224 (Lucas, playtest 3): a Charge targets a creature (the card's target, else the one targeted now): its line goes toward it.
     const tUuid = f?.targets?.[0]?.uuid ?? "", targetId = String(tUuid).split(".").pop() || ([...game.user.targets].find(t => t.id !== token?.id)?.id ?? "");
     await c.setFlag(F, "charge", { min: cfg.min || 3, max: n, refund: Math.max(0, num(f?.apPaid ?? f?.ap)), itemId: f?.itemId ?? "", actorUuid: f?.actorUuid ?? "", targetId, messageId: ctx?.message?.id ?? "" });   // v0.0.343: its card (deleted when given up)
@@ -567,8 +601,8 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
   }
   // v0.0.225 (Lucas: "End movement" and "Advance instead" were still chat buttons): a bottom bar, as a Setup's movement (Cut Through).
   const what = kind === "evade"
-    ? `Evade up to ${sq}: no reactions; ${cfg.ignoreTerrain ? "through any creature's space (not ending in one), ignoring Difficult Terrain" : "not into or through Difficult Terrain"}. Drag your token.`
-    : `Advance up to ${sq} without spending AP. Drag your token.`;
+    ? `Evade up to ${sq}: no reactions; ${cfg.ignoreTerrain ? "through any creature's space (not ending in one), ignoring Difficult Terrain" : "not into or through Difficult Terrain"}${nfNote}. Drag your token.`
+    : `Advance up to ${sq} without spending AP${nfNote}. Drag your token.`;
   freeMoveBar(c, kind, what);
   showRange(c, n);
   return true;   // granted: the area is on the map
@@ -701,8 +735,10 @@ export async function endMoveFor(combatantId) {
   if (moveBar?.c?.id === combatantId) return moveBar.finish(true);
   if (c.getFlag(F, "charge")) return endMovement(combatantId);
   if (!c.isOwner) return warn("Only the owner can end this movement.");
-  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, ...unset(`flags.${F}.ignoreTerrain`) });
+  const hadStow = !!c.getFlag(F, "stowAfter");
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, [`flags.${F}.moveLeft`]: 0, ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.noFarther`) });
   clearRange();
+  if (hadStow) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
 }
 /** v0.0.198: the strip's Advance instead (an Evade becomes an Advance; the movement's line says Advanced). */
 export async function evadeToAdvance(combatantId) {
@@ -717,9 +753,10 @@ export async function endMovement(combatantId) {
   const c = game.combat?.combatants.get(combatantId);
   if (!c) return warn("That combatant is no longer in the combat.");
   if (!c.isOwner) return warn("Only the owner can end this movement.");
-  const charging = c.getFlag(F, "charge");
-  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.charge`), ...unset(`flags.${F}.ignoreTerrain`) });
+  const charging = c.getFlag(F, "charge"), hadStow = !!c.getFlag(F, "stowAfter");
+  await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...unset(`flags.${F}.charge`), ...unset(`flags.${F}.ignoreTerrain`), ...unset(`flags.${F}.noFarther`) });
   clearRange();
+  if (hadStow) promptStowAfter(c).catch(e => console.warn("twod12 | stow after Evade", e));
   // v0.0.219 (Lucas): giving up a Charge before it moves takes it back: its AP are refunded.
   if (charging) {
     const back = num(charging.refund);
@@ -1456,6 +1493,36 @@ function drawDragPreview(preview) {
   (canvas.controls ?? canvas.interface)?.addChild(dragGfx);
 }
 
+/** Pure check: given an origin token's threat profile and distance to target, does it still threaten? */
+export const stillThreatens = (profile, dist, originDown = false) => !originDown && (profile?.max ?? 0) > 0 && dist >= (profile?.min ?? 1) && dist <= profile.max;
+
+/** Active GM: end any effect flagged endWhenUnthreatened whose origin no longer threatens its bearer (e.g., Pressed that ends if you stop threatening). */
+async function checkUnthreatenedEffects() {
+  if (!game.user?.isActiveGM || !canvas?.tokens) return;
+  const { threatProfile } = await import("./flanking.mjs");
+  const toks = canvas.tokens.placeables ?? [];
+  const byActor = new Map();
+  for (const t of toks) if (t.actor) byActor.set(t.actor.uuid, t);
+  for (const t of toks) {
+    const a = t.actor;
+    if (!a) continue;
+    for (const e of [...(a.effects ?? [])]) {
+      if (e.disabled || !e.getFlag?.(F, "endWhenUnthreatened")) continue;
+      const origUuid = String(e.origin ?? "");
+      if (!origUuid) continue;
+      const ot = byActor.get(origUuid) ?? toks.find(x => x.document?.uuid === origUuid) ?? null;
+      const oa = ot?.actor ?? null;
+      const down = !oa || !!oa.system?.atZero || oa.statuses?.has?.("unconscious") || oa.statuses?.has?.("dead");
+      const ok = ot && stillThreatens(threatProfile(oa), tokenDistance(ot, t), down);
+      if (!ok) {
+        const ename = String(e.name ?? "Effect"), oname = ot?.name ?? oa?.name ?? "its source";
+        await e.delete();
+        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-shield-halved", `<b>${esc(ename)}</b> ends on <b>${esc(t.name)}</b> (${esc(oname)} no longer threatens it).`, "fxm") });
+      }
+    }
+  }
+}
+
 export function registerMovement() {
   // v0.0.351: the Alt-drag preview follows the dragged token's preview; it goes when Alt is released or the drag ends
   Hooks.on("refreshToken", token => {
@@ -1479,7 +1546,11 @@ export function registerMovement() {
   // The movement area never outlives its use: it goes when the combat ends, when the scene changes, and (outside combat) when its token moves.
   Hooks.on("deleteCombat", () => clearLooseMove());
   Hooks.on("canvasReady", () => clearLooseMove());
-  Hooks.on("updateToken", (doc, changes, options) => { if (!options?.twod12Lean && looseId && doc.id === looseId && ("x" in changes || "y" in changes)) clearLooseMove(); });
+  Hooks.on("updateToken", (doc, changes, options) => {
+    if (!options?.twod12Lean && looseId && doc.id === looseId && ("x" in changes || "y" in changes)) clearLooseMove();
+    if (!options?.twod12Lean && ("x" in changes || "y" in changes)) checkUnthreatenedEffects().catch(e => console.warn("twod12 | unthreatened check", e));
+  });
+  Hooks.on("deleteToken", () => { checkUnthreatenedEffects().catch(e => console.warn("twod12 | unthreatened check", e)); });
   Hooks.on("preMoveToken", (doc, movement, operation) => {
     try {
       if (operation?.twod12Forced || operation?.twod12Lean || movement?.method === "undo") return;
@@ -1503,6 +1574,16 @@ export function registerMovement() {
         if (l.how === "difficult") continue;   // v0.0.345: Difficult Terrain instead (hardStep)
         const op = { x: l.token.document.x, y: l.token.document.y };
         if (moveLimitBreaks(l.dir, measureSquares(origin, op), measureSquares(to, op))) { warn(`${l.name}: ${doc.name} can't willingly move ${l.dir === "away" ? "away from" : "closer to"} ${l.token.name}.`); return false; }
+      }
+      // noFarther: an Evade/move that must end no farther from its target
+      const nf = c.getFlag(F, "noFarther");
+      if (nf?.targetId && (num(c.getFlag(F, "evadeMove")) > 0 || num(c.getFlag(F, "freeMove")) > 0)) {
+        const tgt = canvas.tokens?.get?.(nf.targetId);
+        if (tgt) {
+          const virt = { document: { x: to.x, y: to.y, width: doc.width, height: doc.height, elevation: doc.elevation ?? 0 } };
+          const nextD = Math.round(tokenDistance(virt, tgt));
+          if (nextD > Number(nf.maxDist) + 1e-6) { warn(`${doc.name} must end no farther from ${nf.targetName} (${nf.maxDist} sq.; that square is ${nextD} sq. away).`); return false; }
+        }
       }
       // Creatures in the way: no move ends inside another creature's space, and an unwilling creature's squares are Difficult Terrain.
       const way = creaturesOnPath(doc, [origin, ...(movement?.pending?.waypoints ?? []), to], { ignoring });

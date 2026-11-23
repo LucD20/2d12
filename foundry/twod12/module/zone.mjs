@@ -62,7 +62,7 @@ export async function placeZoneItem(item) {
 export function zoneFromItem(item) {
   const s = item?.system ?? {}, z = normZone(s.zone), names = {};
   for (const r of [z.inside.carry, z.inside.carry2, z.inside.ht.gives]) if (r?.fx) { try { names[r.fx] = fromUuidSync(r.fx)?.name ?? r.fxName ?? ""; } catch (e) { names[r.fx] = r.fxName ?? ""; } }
-  return { name: String(item?.name ?? "Zone").replace(/\s*\(.*\)\s*$/, ""), rows: z.inside, ends: normEnds(s.ends), show: z.show, outline: z.outline, fill: z.fill, names, effectUuid: item?.uuid ?? "" };
+  return { name: String(item?.name ?? "Zone").replace(/\s*\(.*\)\s*$/, ""), shape: z.shape, size: z.size, ring: !!z.ring, rows: z.inside, ends: normEnds(s.ends), show: z.show, outline: z.outline, fill: z.fill, names, effectUuid: item?.uuid ?? "" };
 }
 /** The Zone a Version's effects describe (an Effect placed on the map; an older one's "zone" settings are read the same, settingsmigrate.mjs migrateZone), for the
  *  area about to be placed: { zone, uuids } or null. Those effects are not applied to creatures: the area is them. */

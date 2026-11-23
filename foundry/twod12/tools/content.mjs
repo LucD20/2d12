@@ -141,9 +141,12 @@ add("effects", "effect", "Covering Fire", "icons/svg/target.svg", { description:
   ends: { time: { on: true, mode: "rounds", rounds: 2 } } }, "Archer");
 // v0.0.411 (pack F3): the effects of Spotter's Modes
 add("effects", "effect", "Called-Out", "icons/svg/eye.svg", { duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, this creature's enemies perceive it one step better: Hidden as Obscured, Obscured as Clear (Spotter, Call Out).</p>", settings: [] }, "Archer");
-add("effects", "effect", "Find the Gap", "icons/svg/target.svg", { selfApplied: true, duration: { type: "eot", rounds: 1 }, expireOn: ["ranged", "strike"], expireAll: true, description: "<p>Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower (Spotter, Find the Gap; the Cover by hand).</p>",
-  settings: [{ type: "ignore", ignoreRule: "rangeBane", rangeAll: true, all: ["ranged", "strike"], any: [], none: [] }, { type: "note", title: "Find the Gap", text: "Each target's Cover counts one level lower (by hand)." }] }, "Archer");
-add("effects", "effect", "Keep Low", "icons/svg/shield.svg", { selfApplied: true, duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, against each creature you have Cover from, your Cover is one level higher, up to High (Spotter, Keep Low; by hand).</p>", settings: [{ type: "note", title: "Keep Low", text: "Your Cover one level higher, up to High (1 round): by hand." }] }, "Archer");
+add("effects", "effect", "Find the Gap", "icons/svg/target.svg", { selfApplied: true, duration: { type: "eot", rounds: 1 }, expireOn: ["ranged", "strike"], expireAll: true, description: "<p>Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower, Total stays Total (Spotter, Find the Gap).</p>",
+  settings: [{ type: "ignore", ignoreRule: "rangeBane", rangeAll: true, all: ["ranged", "strike"], any: [], none: [] }, { type: "ignore", ignoreRule: "coverLower", all: ["ranged", "strike"], any: [], none: [] }] }, "Archer");
+add("effects", "effect", "Keep Low", "icons/svg/shield.svg", { selfApplied: true, duration: { type: "rounds", rounds: 1 }, description: "<p>For 1 round, against each creature you have Cover from, your Cover is one level higher, up to High (Spotter, Keep Low).</p>",
+  settings: [{ type: "ignore", ignoreRule: "coverHigher", all: [], any: [], none: [] }] }, "Archer");
+add("effects", "effect", "Rally the Tribe (1 Support Boon)", "icons/svg/aura.svg", { duration: { type: "encounter", rounds: 1 }, expireOn: ["weapon"], expireAll: true, description: "<p>1 Support Boon on your next [Weapon] Action (Rally the Tribe).</p>",
+  settings: [{ type: "boonbane", boons: 1, banes: 0, bbName: "support", all: ["weapon"], any: [], none: [] }] }, "Bestiary");
 const wa = "@Use[Weapon Attack|label:[Ranged, Shot] Weapon Attack (1A)]";
 add("actions", "action", "Precise Aim", "icons/svg/eye.svg", {
   category: "Sharpshooter", level: 1, traits: ["focus", "self"], frequency: "round", distance: "self",
@@ -327,9 +330,12 @@ FX("Consecrated Ground", "icons/svg/sun.svg", { description: "<p>The consecrated
 const lantern = n => ({ type: "light", bright: n, dim: 2 * n, color: "#ffd27a", lightAlpha: 0.2, lightAnim: "sunburst", lightSpeed: 2, lightIntensity: 3 });
 FX("Kindle (Bright light 3)", "icons/svg/light.svg", { selfApplied: true, duration: dur("encounter"), description: "<p>You shed Bright light 3 (Dim light 3 more), EoE (Lantern of Faith, Kindle).</p>", settings: [lantern(3)] });
 FX("Reveal (Bright light 1)", "icons/svg/light.svg", { duration: dur("rounds"), description: "<p>The creature sheds Bright light 1 (Dim light 1 more) for 1 round (Lantern of Faith, Reveal).</p>", settings: [lantern(1)] });
-FX("Brace", "icons/svg/statue.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). Foundry draws it as an Aura 1 that follows you: if you move, the squares stay where they were (by hand).</p>",
-  settings: [{ type: "aura", auraSize: 1, auraWho: "enemies", auraSelf: false, auraOutline: "#9aa3ad", auraFill: "#9aa3ad", areaRows: { carry: { on: false, who: "enemies", self: false }, diff: { on: true, who: "enemies" } } }] });
-FX("Courage", "icons/svg/aura.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>For 1 round, an Aura 3 around you: you and your allies in it ignore the Daunted condition (Commandment, Courage).</p>", settings: [{ type: "note", title: "Courage", text: "Aura 3 (1 round): you and your allies in it ignore Frightened (they keep it; it does nothing): by hand." }] });
+FX("Brace", "icons/svg/statue.svg", { description: "<p>For 1 round, the squares adjacent to you when you used it are Difficult Terrain for enemies (Hold the Line, Brace). They stay where they are if you move.</p>",
+  where: "map", zone: { src: "here", shape: "emanation", size: "1", ring: true, inside: { carry: { on: false }, diff: { on: true, who: "enemies" } }, show: true, outline: "#9aa3ad", fill: "#9aa3ad" },
+  ends: { time: { on: true, mode: "rounds", rounds: 1 } } });
+FX("Courage (ignore Daunted)", "icons/svg/aura.svg", { duration: dur(""), description: "<p>You ignore the Daunted condition while inside Courage's Aura.</p>", settings: [{ type: "ignore", ignoreRule: "daunted", all: [], any: [], none: [] }] });
+FX("Courage", "icons/svg/aura.svg", { selfApplied: true, duration: dur("rounds"), description: "<p>For 1 round, an Aura 3 around you: you and your allies in it ignore the Daunted condition (Commandment, Courage).</p>",
+  settings: [{ type: "aura", auraSize: 3, auraWho: "allies", auraSelf: true, auraOutline: "#d4a62a", auraFill: "#d4a62a", fxUuid: uuidOf("effects", "Courage (ignore Daunted)") }] });
 
 // Effects the Paladin's cards apply
 FX("Divine Power (1 Bane)", "icons/svg/degen.svg", { duration: dur("eot"), description: "<p>1 Bane on [Strike] Actions (EoT).</p>", settings: [{ type: "boonbane", boons: 0, banes: 1, all: ["strike"], any: [], none: [] }] });   // Lucas, 2026-11-13: Enfeebled left the game; Divine Power gives 1 Bane on its Strikes

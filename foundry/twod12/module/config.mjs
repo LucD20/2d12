@@ -209,7 +209,7 @@ export const TWOD12 = {
   // v0.0.444 (Lucas, group 2: a card's requirement counts when choosing the weapon): the weapon property a [Weapon] Action needs (Darting Blade: Light)
   weaponNeeds: { "": "Any weapon that fits", light: "A Light weapon", twohanded: "A Two-handed weapon", thrown: "A Thrown weapon", long: "A Long weapon" },
   weaponUses: { "": "Its weapon (any weapon it can use)", fists: "Only the Fists (needs a free hand)", kick: "The Fists, even with no free hand (a kick)" },
-  ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you" },
+  ignoreRules: { rangeBane: "one of their range Banes (far range none, maximum range 1)", engagedSelf: "the Banes for a [Ranged] Action while you are Engaged", engagedTarget: "the Bane for targeting a creature Engaged with a creature other than you", coverLower: "one level of each target's Cover (Total stays Total)", coverHigher: "raises your Cover against others by one level, up to High (when you have Cover)", daunted: "the Daunted condition" },
   durationTypes: { "": "None", eot: "End of Turn (EoT)", rounds: "Rounds", encounter: "End of Encounter (EoE)" },   // v0.0.323: This encounter (Ends: Time)
   // Trait groups (v0.0.179, the book's GROUPS in book/build_rules.py): listed in this order, a trait with no group of its own is a Keyword.
   // Their colors are CSS variables (--g-roll...), light on parchment and dark on the dark sheets (system.css). Weapon properties have no group and no color.
@@ -591,8 +591,22 @@ export const targetsRowHtml = (tokens, { retarget = false, side = "" } = {}) => 
 };
 
 /** "Speed 3" in Requirements: the creature needs at least that Speed. Returns a reason it can't, or "". */
-/** Hands in use: every wielded weapon uses its hands, except Barehanded weapons (they use no hand). */
-export const handsUsed = actor => (actor?.itemTypes?.weapon ?? []).filter(w => w.system.wielded && !w.system.traits?.has?.("barehanded")).reduce((n, w) => n + (w.system.hands ?? 1), 0);
+/** Active Grabbed effects on the scene whose origin is this actor: [{ token, actor, effect }] (each takes one free hand). */
+export function grabbedBy(actor) {
+  const uuid = actor?.uuid ?? "";
+  if (!uuid) return [];
+  const out = [], seen = new Set();
+  for (const t of globalThis.canvas?.tokens?.placeables ?? []) {
+    const a = t?.actor;
+    if (!a || seen.has(a.uuid)) continue;
+    for (const e of a.effects ?? []) {
+      if (!e.disabled && e.statuses?.has?.("grabbed") && String(e.origin ?? "") === uuid) { out.push({ token: t, actor: a, effect: e }); seen.add(a.uuid); break; }
+    }
+  }
+  return out;
+}
+/** Hands in use: every wielded weapon uses its hands, except Barehanded weapons (they use no hand), plus one hand per creature currently Grabbed by this actor. */
+export const handsUsed = actor => (actor?.itemTypes?.weapon ?? []).filter(w => w.system.wielded && !w.system.traits?.has?.("barehanded")).reduce((n, w) => n + (w.system.hands ?? 1), 0) + grabbedBy(actor).length;
 
 /** Requirements are checked before the Action is used. Understood: "Speed 3", "free hand", "SR is at most N higher than yours" (and the old "Size is at most N higher"). */
 export function requirementProblem(d, actor, target = null, opts = {}) {

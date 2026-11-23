@@ -1659,7 +1659,10 @@
       "label": "Effect",
       "text": "You Evade 1, and before or after it you use the Interact or Reload Action (1A)."
      }
-    ]
+    ],
+    "foundry": {
+     "append": "@Use[Interact|ap:0|label:Interact (free)] @Use[Reload|ap:0|label:Reload (free)]"
+    }
    }
   ],
   "after": [],
@@ -2601,7 +2604,10 @@
       "label": "Effect",
       "text": "The target gains Guard equal to 2 + your Power Modifier."
      }
-    ]
+    ],
+    "foundry": {
+     "after": "@Guard[2+pow]"
+    }
    },
    {
     "heading": "2 AP",
@@ -2610,7 +2616,10 @@
       "label": "Effect",
       "text": "The target gains Guard equal to 2 + your Power Modifier and can use 1 Rally Point."
      }
-    ]
+    ],
+    "foundry": {
+     "after": "@Guard[2+pow]"
+    }
    }
   ],
   "after": [],
@@ -3406,8 +3415,8 @@
   "escalation": 4,
   "frequency": "Round",
   "flavor": "One bellow, and the whole tribe fights harder.",
-  "distance": "5 sq.",
-  "area": null,
+  "distance": null,
+  "area": "5 Emanation",
   "target": "Allies within 5 squares",
   "traits": [],
   "cost": "1 AP",

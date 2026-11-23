@@ -82,8 +82,16 @@
    ],
    "foundry": {
     "img": "icons/svg/target.svg",
-    "automation": "silver",
-    "automationNote": "the Setup's Evade 1 (the button), the shot; the Tier 3's Evade 1 (the button) to a square no farther from the target: by hand."
+    "automation": "gold",
+    "automationNote": "the Setup's Evade 1, the shot, and on Tier 3 an automatic Evade 1 constrained to end no farther from the target.",
+    "version": {
+     "sub": [
+      [
+       "@Move[evade|distance:1]",
+       "@Move[evade|distance:1|nofarther:target]"
+      ]
+     ]
+    }
    }
   },
   {
@@ -125,8 +133,8 @@
    ],
    "foundry": {
     "img": "icons/svg/sword.svg",
-    "automation": "silver",
-    "automationNote": "its Requirement (a free hand: Release offered, as Handle Actions); the Reposition 1 (Tiers 1 and 2) and the Slide 1 then Grabbed (Tier 3) run by themselves when the Tier lands; the holding hand marked busy by hand."
+    "automation": "gold",
+    "automationNote": "its Requirement (a free hand: Release offered, including letting go of a Grabbed creature); Reposition 1 (Tiers 1 and 2) and Slide 1 then Grabbed (Tier 3) run automatically, and the grabbed creature occupies one hand."
    }
   },
   {
@@ -168,8 +176,20 @@
    ],
    "foundry": {
     "img": "icons/svg/sword.svg",
-    "automation": "silver",
-    "automationNote": "Pressed 1 / 1 / 2 (EoT) by Tier (a condition: Pressure Banes on its [Strike] rolls); it ends when you stop threatening the target: by hand."
+    "automation": "gold",
+    "automationNote": "Pressed 1 / 1 / 2 (EoT) by Tier, ending automatically if you stop threatening the target.",
+    "version": {
+     "sub": [
+      [
+       "@Condition[pressed|value:1|eot]",
+       "@Condition[pressed|value:1|eot|threaten:yes]"
+      ],
+      [
+       "@Condition[pressed|value:2|eot]",
+       "@Condition[pressed|value:2|eot|threaten:yes]"
+      ]
+     ]
+    }
    }
   }
  ]

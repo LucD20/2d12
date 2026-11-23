@@ -1,0 +1,22 @@
+--- 1. Chat card Took line (only state chips; RWI in breakdown only)
+took lines (no Resist/Weak tag): Took 10 Bloodied | Took 10 Down | Resist still in breakdown: true
+--- 2. Dirty Trick @Boon tier rider + Circling Shot / Thwart Cut / Darting Blade inline parsing
+tierConditionChips @Boon: ["@Boon[-1|bb:pressure|next:roll]"]
+parseInline threaten: true | stow: drawn | nofarther: target
+tierMoveThen Circling Shot: {"move":"evade|distance:1|nofarther:target","conds":[]}
+--- 3. Overhead Smash Bloodied additive push (moveAddFor)
+T1 bloodied: 0 | T2 unbloodied: 0 | T2 bloodied: 1 | isMoveAddLine: true
+--- 4. Quick Shots Critical AP gain (critRowAp)
+gain 1 AP: 1 | Prone: 0
+--- 5. Spotter Find the Gap & Keep Low (adjustCover)
+lower: 0/1/2 | lower Total stays noLoE: true | higher: 0/2/3/3 | both on Med: 2
+--- 6. fxrules migrate/compile for coverLower, coverHigher, daunted, rangeAll
+round-trip ignoreRules: rangeBane:all, coverLower, coverHigher, daunted
+--- 7. Courage ignores Daunted modifier + Thwart Cut stillThreatens + Seizing Cut grabbed hand
+Daunted banes without/with Courage: 1 / 0
+stillThreatens reach 1 at dist 1/2/down: true false false
+handsUsed with 1H sword + 1 Grabbed: 2
+--- 8. Compendium & NPC cards check
+Brace zone: map true enemies | Courage aura: aura 3 | Rally fx: support ["weapon"]
+playtest NPC actions: Rusty Knife:gold, Dirty Trick:gold, Cleaver:gold, Brutal Swing:gold, Avenge Kin:gold, Chilling Touch:gold, Dread Whisper:gold, Club:gold, Overhead Smash:gold, Ground Slam:gold, Rally the Tribe:gold
+upgraded L1 PC cards: Darting Blade:gold, Quick Shots:gold, Footwork:gold, Spotter:gold, Hold the Line:gold, Commandment:gold, Circling Shot:gold, Seizing Cut:gold, Thwart Cut:gold

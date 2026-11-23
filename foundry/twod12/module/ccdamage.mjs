@@ -3,7 +3,7 @@
 // Ch. 1 a Resist split across both pools), asked of its owner. The card itself is drawn by chatcards.mjs.
 // Order per creature: the damage per subtype, then Resist / Weak / Immune (once per subtype per Action), then Guard, then Health.
 // A rider (a Tier's own effects, the "After the damage" chain) lands only if the damage did: more than 0 after Resist and Immune (Ch. 1 Riders).
-import { stateLinesFor, moveAltFor } from "./statelines.mjs";   // the core rework batch 2 & 3
+import { stateLinesFor, moveAltFor, moveAddFor, isMoveAddLine } from "./statelines.mjs";   // the core rework batch 2 & 3
 import * as CC from "./chatcards.mjs";
 import { esc } from "./util.mjs";
 import { damageOdds } from "./calc.mjs";
@@ -243,18 +243,21 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
       let user = null; try { const d = s.originUuid ? await fromUuid(s.originUuid) : null; user = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { user = null; }
       let moveText = g.move;
       const mt = tierMoveThen(g.move), cfg = mt ? parseInline("Move", mt.move) : null;
+      const addDist = cfg ? moveAddFor(s.lines, r.pre ?? {}, { b: bl, s: st }, r.tier ?? 0, cfg.kind) : 0;
+      const dist = (Number(cfg?.distance) || 1) + addDist;
+      if (addDist > 0 && cfg) moveText = moveText.replace(new RegExp(`(@Move\\[${cfg.kind}[^\\]]*?\\bdistance:)\\d+`), `$1${dist}`);
       const alt = cfg ? moveAltFor(s.lines, r.pre ?? {}, { b: bl, s: st }, r.tier ?? 0, cfg.kind) : "";
       if (alt === "slid" && cfg) {
-        const dist = Number(cfg.distance) || 1, origWord = cfg.kind === "pushed" ? "Push" : "Pull", why = bl ? "Bloodied" : "Strained";
+        const origWord = cfg.kind === "pushed" ? "Push" : "Pull", why = bl ? "Bloodied" : "Strained";
         const { pickBar } = await import("./pickbar.mjs");
         const pick = await pickBar({ icon: "fa-route", text: `<b>${esc(r.name)}</b> is ${why} (<b>${esc(s.name)}</b>): Slide ${dist} instead of ${origWord.toLowerCase()}ing?`, options: [{ id: "slid", label: `Slide ${dist}` }, { id: cfg.kind, label: `${origWord} ${dist}` }] });
         if (!pick) moveText = "";
-        else if (pick === "slid") moveText = g.move.replace(new RegExp(`@Move\\[${cfg.kind}\\b`), "@Move[slid");
+        else if (pick === "slid") moveText = moveText.replace(new RegExp(`@Move\\[${cfg.kind}\\b`), "@Move[slid");
       }
       if (moveText) try { await runTierMove(moveText, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: game.messages?.get?.(s.srcId) ?? null }); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
     }
   }
-  const rwi = [...CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, label: x.label, v: x.v })), ...(report.mods ?? [])];   // v0.0.321: shown as icons after "Took"; v0.0.463: and the reductions and Guard (the breakdown)
+  const rwi = [...CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, sub: x.sub, label: x.label, v: x.v })), ...(report.mods ?? [])];   // v0.0.484: keep sub so Resist/Weak/Immune show in the post-Apply breakdown ledger
   r.applied = { took, mods: rwi, state: (down || (bl && st)) ? "down" : bl ? "bloodied" : st ? "strained" : "", factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
   return true;
 }
@@ -272,6 +275,7 @@ async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the 
     for (const r of landed) {
       const a = actorOf(r.uuid), texts = stateLinesFor(s.lines, r.pre ?? {}, { b: !!a?.system?.bloodied, s: !!a?.system?.strained }, r.tier ?? 0);
       for (const t of texts) {
+        if (isMoveAddLine(t)) continue;   // already folded into the Tier's single forced movement in applyRow
         try { await runAfter(t, { save: !!s.save, actor: user, targets: [{ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 }], attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: msg }); }
         catch (e) { console.warn("twod12 | a Bloodied / Strained line", e); }
       }
