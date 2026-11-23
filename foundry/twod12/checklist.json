@@ -1,14 +1,22 @@
 {
  "groups": [
   {
-   "name": "Characters and sheets",
+   "name": "The HUD",
    "items": [
     {
-     "id": "b3-basic-as-action",
-     "v": "v0.0.481",
-     "title": "Basic Attack as a normal At-will Action on PCs",
-     "do": "Open Aveline's Actions tab and select Aveline's token to open the HUD.",
-     "expect": "Basic Attack sits in the main At-will Actions section on Aveline's sheet (beside Drawing Light) and in the main Actions tab of the HUD, not in the Basic Actions grid/tab. Fists stays in Basic Actions.",
+     "id": "ui-hud-conds-popover",
+     "v": "v0.0.482",
+     "title": "HUD condition polarity pills and +N overflow popover",
+     "do": "On Aveline, apply at least 4 active conditions/effects (mix buffs like Empowered / Shield of Faith and debuffs like Prone, Daunted, Hindered), then select Aveline's token and click the +N button on the HUD conditions row.",
+     "expect": "Debuffs (including Daunted) show downward debuff styling, buffs show upward buff styling, and past 3 items a +N ▾ button opens a clean popover grouped into Debuffs, Buffs, and Other (clickable to open the Effect).",
+     "rev": 1
+    },
+    {
+     "id": "ui-hud-sit-urgent",
+     "v": "v0.0.482",
+     "title": "HUD Situational tab count badge and Urgent vs. Available split",
+     "do": "Make Aveline Prone (Available situational item), then trigger a Reaction or map prompt (e.g. Judge damage reduction or Snap Shot on Sylwen) while viewing Hands/Macros.",
+     "expect": "The Situational tab shows a count badge, auto-switches cleanly when an urgent Reaction or prompt arrives (highlighting gold), and places urgent prompts above passive options (Prone / Granted) separated by a hairline.",
      "rev": 1
     }
    ]
@@ -17,11 +25,11 @@
    "name": "The roll dialog",
    "items": [
     {
-     "id": "b3-basic-t1-explode",
-     "v": "v0.0.481",
-     "title": "Basic Attack Tier 1 1d4! and ! on weapon dice in roll dialog",
-     "do": "With Aveline (Longsword) targeting the Orc Warrior, open Basic Attack. Check the roll dialog Tiers, force a Tier 1, and roll damage.",
-     "expect": "Roll dialog Tiers show ! on all weapon dice (1d4! Slash on Tier 1, 1d4!+6 + 2 Slash on Tier 2, 1d6!+9 + 1d6! + 2 Slash on Tier 3). Tier 1 rolls an exploding 1d4! Slash.",
+     "id": "ui-rolldlg-net-cap",
+     "v": "v0.0.482",
+     "title": "Roll dialog Net Boons/Banes badge, cap, and Favored/Doomed cancel",
+     "do": "With Sylwen targeting the Orc Warrior, open Basic Attack. Add 3 Field Boons (or 2+ named Boons of the same name), add a Bane to inspect the Net badge, then toggle both Favored and Doomed on at the same time.",
+     "expect": "The header shows a colored Net +N / Net −N / Net 0 badge (hiding at ±5 when Favored/Doomed takes over). Any named Boon/Bane past the 2-cap shows a dashed strikethrough and a small \"cap\" badge. Active Favored and Doomed together both show dashed strikethrough as cancelled.",
      "rev": 1
     }
    ]
@@ -30,20 +38,12 @@
    "name": "Chat cards",
    "items": [
     {
-     "id": "b3-sworn-blade",
-     "v": "v0.0.480",
-     "title": "Sworn Blade slides a Strained target on Basic Attack",
-     "do": "Make the Orc Warrior Strained, then have Aveline use Basic Attack against it (try Tier 1 as well as Tier 2/3) and apply damage. Also test Aveline's Drawing Light (Tier 2 or 3) against a Bloodied Orc Warrior.",
-     "expect": "Both chat cards show their Strained/Bloodied line on the attack card itself. Sworn Blade triggers on any landed Tier (including Tier 1) and offers Slide 1. Drawing Light against a Bloodied target prompts Slide vs. Pull (or Esc to skip).",
-     "rev": 2
-    },
-    {
-     "id": "b3-steady-draw",
-     "v": "v0.0.480",
-     "title": "Steady Draw adds +1[D] on Tier 3 against a pre-Strained target",
-     "do": "Make the Orc Warrior Strained before rolling, then have Sylwen (Hunting Bow) target it with Basic Attack. Check the roll dialog notice and Tier 3 preview, force Tier 3, roll damage, and open both the dice breakdown and the = ledger. Repeat against a non-Strained Orc Warrior (and on Tier 2).",
-     "expect": "The Steady Draw notice in the roll dialog is crisp/active (not faded) and Tier 3 preview includes the extra 1d4! Pierce. The attack card lists Steady Draw under Applied, the damage roll includes the extra 1d4! labeled Steady Draw in both the dice breakdown and the = ledger (with no bogus Flat -1 on exploded dice), and no extra [D] is added on Tier 2 or against a non-Strained target.",
-     "rev": 2
+     "id": "ui-chat-modbar-tags",
+     "v": "v0.0.482",
+     "title": "Chat card damage modifier strip, post-Apply tags, and dark theme polish",
+     "do": "With Aveline (Longsword) targeting an Orc Warrior (give it Resist Slash 2 or Empowered), roll Basic Attack (Tier 2 or 3, and try a Critical) and apply damage. Check both light and Foundry dark theme.",
+     "expect": "Under the rolled damage pool, a compact modifier strip lists contributing modifiers (Weapon / Flat / Empowered). After Apply, Resist / Weak / Immune show as compact readable tags after \"Took\". Critical boxes/labels and 5-Boon/5-Bane tags look crisp in both light and dark themes.",
+     "rev": 1
     }
    ]
   }

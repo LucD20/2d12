@@ -92,14 +92,40 @@ export function sideHtml(s = {}) {
 }
 
 /* ------------------------------------------------------------------ v0.0.441 (pack SHEETS-HUD): the HUD of the approved mockup
-   (foundry/mockups/hud3, Lucas 2026-11-18: "All recommended"): D2 the identity column in words, D4 the conditions as marks with their word
-   (up to three; the marks alone past three), D1 the Basic tab as the sheet's four groups, D3 / D7 the right column: the Situational section
-   (whatever asks for an answer now: a Reaction's trigger, granted uses, Prone's Stand and Crawl, a question of the map, a Setup's movement),
-   the Hands, the macro bar. */
-/** D4: the conditions under AP and Escalation (a row always there, so a condition never changes the HUD's height). c = [{ id, name, dur, img }] */
+   (foundry/mockups/hud3, Lucas 2026-11-18: "All recommended"): D2 the identity column in words, D4 the conditions with Buff/Debuff polarity
+   and a +N popover past max, D1 the Basic tab as the sheet's four groups, D3 / D7 the right column: the Situational section
+   (urgent prompts separated above passive options like Prone/Granted), the Hands, the macro bar. */
+const BUFF_RE = /^(?:empowered|quickened|favored|shield of faith|blessed|inspired|warded|hasted|hidden|invisible|protected|bolstered|vanguard|consecrated|aegis|aura|focused|stance|emboldened|resilient|regenerating|guard\b|bulwark)/i;
+const DEBUFF_RE = /^(?:prone|slowed|daunted|frightened|vulnerable|immobilized|blinded|dazed|exhausted|grabbed|half-blinded|hindered|imperiled|lingering|pressed|sickened|staggered|taunted|doomed|judged|enfeebled|bleed(?:ing)?|burning|poisoned|restrained|unconscious|dying|shattered|weakened|marked|silenced|confused|deafened|cursed|shaken|exposed|bloodied|strained|incapacitated|unaware|dazzled|stunn?ed)/i;
+/** Classify an active condition/effect for HUD pill color: "debuff" | "buff" | "neutral". */
+export function condPolarity(c) {
+  if (c?.pol === "buff" || c?.pol === "debuff" || c?.pol === "neutral") return c.pol;
+  const n = String(c?.name ?? "").trim();
+  if (DEBUFF_RE.test(n)) return "debuff";
+  if (BUFF_RE.test(n)) return "buff";
+  return "neutral";
+}
+const POL_ORD = { debuff: 0, buff: 1, neutral: 2 };
+const sortConds = list => [...(list ?? [])].map(c => ({ ...c, pol: condPolarity(c) })).sort((a, b) => POL_ORD[a.pol] - POL_ORD[b.pol]);
+const condPillHtml = c => {
+  const mk = c.pol === "buff" ? '<span class="h3-cmk" aria-hidden="true">▲</span>' : c.pol === "debuff" ? '<span class="h3-cmk" aria-hidden="true">▼</span>' : "";
+  return `<button type="button" class="h3-c ${c.pol}" data-hud="effect" data-effect="${esc(c.id)}" aria-label="${esc(`${c.name}${c.dur ? ` (${c.dur})` : ""}: open the Effect`)}"><i>${c.img ? `<img src="${esc(c.img)}" alt="">` : esc(String(c.name ?? "?").charAt(0))}</i>${mk}<span>${esc(c.name)}${c.dur ? ` <small>${esc(c.dur)}</small>` : ""}</span></button>`;
+};
+/** D4: the conditions under AP and Escalation (a row always there, so a condition never changes the HUD's height). c = [{ id, name, dur, img, pol? }] */
 export function condsHtml(conds = [], { max = 3 } = {}) {
-  const few = conds.length <= max;
-  return `<div class="h3-conds${few ? "" : " ic"}">${conds.map(c => `<button type="button" class="h3-c" data-hud="effect" data-effect="${esc(c.id)}" aria-label="${esc(`${c.name}${c.dur ? ` (${c.dur})` : ""}: open the Effect`)}"><i>${c.img ? `<img src="${esc(c.img)}" alt="">` : esc(String(c.name ?? "?").charAt(0))}</i>${few ? `<span>${esc(c.name)}${c.dur ? ` <small>${esc(c.dur)}</small>` : ""}</span>` : (c.dur ? `<small>${esc(c.dur)}</small>` : "")}</button>`).join("")}</div>`;
+  if (!conds.length) return '<div class="h3-conds"></div>';
+  const sorted = sortConds(conds);
+  const overflow = sorted.length > max;
+  const shown = overflow ? sorted.slice(0, Math.max(1, max - 1)) : sorted;
+  const rest = sorted.length - shown.length;
+  const more = rest > 0 ? `<button type="button" class="h3-cmore" data-hud="condpop" aria-expanded="false" aria-label="${esc(`Show all ${sorted.length} conditions and effects`)}">+${rest} ▾</button>` : "";
+  return `<div class="h3-conds${overflow ? " more" : ""}">${shown.map(condPillHtml).join("")}${more}</div>`;
+}
+/** Popover listing all active conditions & effects grouped by Debuffs, Buffs, and Other. */
+export function condPopHtml(conds = []) {
+  const sorted = sortConds(conds);
+  const groups = [["debuff", "Debuffs"], ["buff", "Buffs"], ["neutral", "Other"]].map(([k, label]) => ({ k, label, list: sorted.filter(c => c.pol === k) })).filter(g => g.list.length);
+  return `<div class="h3-condpop" role="dialog" aria-label="Active conditions and effects">${groups.map(g => `<div class="h3-cpg ${g.k}"><div class="h3-cpgh">${esc(g.label)} <small>${g.list.length}</small></div><div class="h3-cpgl">${g.list.map(condPillHtml).join("")}</div></div>`).join("")}</div>`;
 }
 /** D1: the Basic tab: the sheet's four groups (config.mjs basicGroups) as columns, each Basic Action one line, its cost stamps its Use buttons;
  *  what can't be used now stays in its place, dim, its stamps struck. groups = [{ label, lines: [line] }] (lineHtml's lines, with strike) */
@@ -119,25 +145,28 @@ export function sitItemHtml(it) {
 /**
  * D3 / D7: the right column. s = { rx, grants, cancels, prone: sitItem | null, tiles: [hand tile] | null, view }
  * v0.0.446 (Lucas: the Situational section was cut by the Hands and the macro bar: "Make each a tab, but only show the 'Situational' tab when
- * there is something happening. When it happens, change tabs to the situational automatically"): three tabs, one pane shown (data-rtab on
- * .h3-side, kept by hud.mjs syncSide): Situational (only while something waits: its tab is hidden otherwise), Hands, Macros.
+ * there is something happening. When it happens, change tabs to the situational automatically"): two panes, Situational (urgent prompts above
+ * passive options like Granted / Prone) and Hands / Macros.
  */
 export function rightHtml(s = {}) {
-  const items = [];
-  if (s.rx) items.push(sitItemHtml({ lead: s.rx.name, tag: "Reaction", text: esc(s.rx.lead), btns: [{ label: `Use \u00b7 ${s.rx.cost}`, hud: "rx", data: { msg: s.rx.msg, row: n0(s.rx.row), k: "rxUse" } }, { label: "Pass", q: true, hud: "rx", data: { msg: s.rx.msg, row: n0(s.rx.row), k: "rxPass" } }] }));
-  if ((s.grants ?? []).length) items.push(`<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>`);
+  const rxHtml = s.rx ? sitItemHtml({ lead: s.rx.name, tag: "Reaction", text: esc(s.rx.lead), btns: [{ label: `Use \u00b7 ${s.rx.cost}`, hud: "rx", data: { msg: s.rx.msg, row: n0(s.rx.row), k: "rxUse" } }, { label: "Pass", q: true, hud: "rx", data: { msg: s.rx.msg, row: n0(s.rx.row), k: "rxPass" } }] }) : "";
+  const avail = [];
+  if ((s.grants ?? []).length) avail.push(`<div class="hb-gr"><div class="hb-grh">Granted${(s.cancels ?? []).length ? ` by ${esc(s.cancels.map(x => x.source).join(", "))}` : ""}${(s.cancels ?? []).map(x => `<button type="button" class="hb-btn q" data-hud="grantcancel" data-effect="${esc(x.effect)}">Cancel</button>`).join("")}</div>${s.grants.map(lineHtml).join("")}</div>`);
   // v0.0.463 (Lucas: "prone should be low priority, moving under new situational effects"): Prone's Stand / Crawl goes after the asks (below)
-  const proneHtml = s.prone ? sitItemHtml(s.prone) : "";
-  if (s.notes) items.push(`<div class="h3-si"><div class="t">${esc(s.notes)}</div></div>`);
+  if (s.prone) avail.push(sitItemHtml(s.prone));
+  if (s.notes) avail.push(`<div class="h3-si"><div class="t">${esc(s.notes)}</div></div>`);
   const tiles = s.tiles ?? [];
   const hands = tiles.length ? `<div class="h3-hands">${tiles.map(t => `<button type="button" class="h3-hand${t.free ? " free" : ""}${t.warn ? " warn" : ""}" data-hud="hands" data-hand="${esc(t.hand ?? "")}" aria-label="${esc(t.tip ?? t.name)}"><span>${esc(t.name)}</span><b>${esc(t.grip)}</b></button>`).join("")}</div>` : "";
   // v0.0.449 (Lucas, g2-hotbar: "Hands and macro should be in the same tab still, only the situational is new"): two panes, the Hands over the
   // macro bar ("main") and Situational; the tabs show only while something waits
-  const has = items.length > 0 || !!proneHtml, view = has && (s.view === "sit" || !s.view) ? "sit" : "main";
+  const urg = !!rxHtml, count = (urg ? 1 : 0) + avail.length;
+  const has = count > 0, view = has && (s.view === "sit" || !s.view) ? "sit" : "main";
   const tab = (k, label) => `<button type="button" class="h3-rt h3-rt-${k}" role="tab" data-hud="rtab" data-rtab="${k}" aria-selected="${k === view}">${label}</button>`;
-  const tabs = `<div class="h3-rtabs" role="tablist">${tab("sit", "Situational")}${tab("main", hands ? "Hands" : "Macros")}</div>`;
+  const sitLbl = `Situational<span class="h3-rcnt">${count || ""}</span>`;
+  const tabs = `<div class="h3-rtabs" role="tablist">${tab("sit", sitLbl)}${tab("main", hands ? "Hands" : "Macros")}</div>`;
   // the pick bar, a Forced Movement, a Setup's movement and End movement ask in .hb-ask (pickbar.mjs, move.mjs, setup.mjs: hudAskSlot)
-  return `<div class="h3-side${has ? " has-sit" : ""}" data-rtab="${view}">${tabs}<div class="h3-pane h3-p-sit"><div class="h3-sit${has ? " on" : ""}">${items.join("")}<div class="hb-ask"></div>${proneHtml}</div></div>`
+  const availHtml = avail.length ? `<div class="h3-sit-avail">${avail.join("")}</div>` : "";
+  return `<div class="h3-side${has ? " has-sit" : ""}${urg ? " has-urg" : ""}" data-rtab="${view}">${tabs}<div class="h3-pane h3-p-sit"><div class="h3-sit${has ? " on" : ""}${urg ? " urg" : ""}"><div class="h3-sit-urg">${rxHtml}<div class="hb-ask"></div></div>${availHtml}</div></div>`
     + `<div class="h3-pane h3-p-main">${hands}<div class="h3-hot"></div></div></div>`;
 }
 /** D2: the identity column. m: the bar's model (tokenBarHtml). */

@@ -345,24 +345,43 @@ const pip = c => {
   if (c.kind === "bane") return '<span class="rd-pip down" aria-hidden="true"></span>';
   return `<span class="rd-pip sq ${isBuff(c) ? "plus" : "minus"}" aria-hidden="true">${isBuff(c) ? "+" : "−"}</span>`;
 };
+/** Identify over-cap named Boon/Bane chips (past BB_LIMIT) and cancelled Favored/Doomed chips in the given chip list. */
+export function chipMeta(chips, st) {
+  const capped = new Set(), used = { boon: {}, bane: {} };
+  let fav = false, doom = false;
+  for (const c of chips ?? []) {
+    if (!chipOn(c, st)) continue;
+    if (c.kind === "fav") fav = true;
+    else if (c.kind === "doom") doom = true;
+    else if ((c.kind === "boon" || c.kind === "bane") && c.bb && BB_NAMES[c.bb]) {
+      const k = c.bb, cur = used[c.kind][k] ?? 0;
+      if (cur >= BB_LIMIT) capped.add(c.id);
+      used[c.kind][k] = cur + (Number(c.n) || 1);
+    }
+  }
+  return { capped, cancelled: fav && doom };
+}
 /** One chip: [pip] Label | × | i. */
-export function chipHtml(c, st) {
+export function chipHtml(c, st, meta = null) {
   const on = chipOn(c, st), na = c.start === "na";
-  const cls = `rd-chip ${isBuff(c) ? "buff" : "debuff"}${na ? " na" : on ? " on" : " off"}`;
+  const capped = on && !!meta?.capped?.has(c.id);
+  const cancelled = on && !!meta?.cancelled && (c.kind === "fav" || c.kind === "doom");
+  const cls = `rd-chip ${isBuff(c) ? "buff" : "debuff"}${na ? " na" : on ? " on" : " off"}${capped ? " capped" : ""}${cancelled ? " cancelled" : ""}`;
   const tip = na ? `Not this time: ${c.why || "it doesn't apply"}` : [c.tip ?? "", c.manual ? "Right-click: one less" : ""].filter(Boolean).join(". ");
-  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${na ? ` data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span>${c.bb && BB_NAMES[c.bb] ? `<small class="rd-bbn">${esc(BB_NAMES[c.bb])}</small>` : ""}</button>`;
+  const body = `<button type="button" class="rd-cbody" data-act="chip" data-id="${esc(c.id)}"${na ? ' aria-disabled="true"' : ` aria-pressed="${on}"`}${na ? ` data-tooltip="${esc(tip)}"` : ""}>${pip(c)}<span class="rd-clabel">${esc(c.label)}</span>${c.bb && BB_NAMES[c.bb] ? `<small class="rd-bbn">${esc(BB_NAMES[c.bb])}</small>` : ""}${capped ? '<small class="rd-cap">cap</small>' : ""}</button>`;
   const x = c.manual ? `<button type="button" class="rd-cx" data-act="rm" data-id="${esc(c.id)}" aria-label="Remove ${esc(c.label)}">×</button>` : "";
   const i = c.rule?.uuid ? `<button type="button" class="rd-ci" data-act="rule" data-uuid="${esc(c.rule.uuid)}" aria-label="Open the rule: ${esc(c.rule.label ?? c.label)}">i</button>` : "";
   return `<span class="${cls}"${c.manual ? ` data-manual="${esc(c.id)}"` : ""}>${body}${x}${i}</span>`;
 }
 /** A panel's rows (the shared panel, or one creature's). */
-export function rowsHtml(chips, st, scope, rows = ROWS) {
+export function rowsHtml(chips, st, scope, rows = ROWS, ctxChips = null) {
+  const meta = chipMeta(ctxChips ?? chips, st);
   return rows.map(([key, label]) => {
     const f = foldRow(chips, st, scope, key);
     if (!f.shown.length && !f.off.length && !f.na.length) return "";
     const offBtn = f.off.length || f.offOpen ? `<button type="button" class="rd-fold off" data-act="fold" data-key="${esc(`${scope}|${key}|off`)}" aria-expanded="${f.offOpen}">${f.offOpen ? "hide off" : `+${f.off.length} off`}</button>` : "";
     const naBtn = f.na.length || f.naOpen ? `<button type="button" class="rd-fold na" data-act="fold" data-key="${esc(`${scope}|${key}|na`)}" aria-expanded="${f.naOpen}">${f.naOpen ? "hide n/a" : `${f.na.length} n/a`}</button>` : "";
-    return `<div class="rd-row"><span class="rd-rlabel">${esc(label)}</span><span class="rd-chips">${f.shown.map(c => chipHtml(c, st)).join("")}${offBtn}${naBtn}</span></div>`;
+    return `<div class="rd-row"><span class="rd-rlabel">${esc(label)}</span><span class="rd-chips">${f.shown.map(c => chipHtml(c, st, meta)).join("")}${offBtn}${naBtn}</span></div>`;
   }).join("");
 }
 /** v0.0.294 (Lucas): the ladder carries the creature's chance of each Tier (when the setting shows them); the "≤" in a font that draws it well. */
@@ -451,21 +470,21 @@ function creaturesHtml(inp, st, v) {
   // v0.0.343: several creatures for an Action that rolls nothing (Double Shot): each one named, nothing to roll against
   if (!inp.multi && live.length > 1) return live.map(c => `<div class="rd-cbox"><div class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</div></div>`).join("");
   if (!inp.multi) {
-    const c = live[0], own = chipsOf(inp, st, c.uuid);
+    const c = live[0], shared = chipsOf(inp, st, "shared"), own = chipsOf(inp, st, c.uuid);
     // v0.0.340: "No target" (an area with no creature, an Action rolled without one): its DC typed here (13 by default)
     // v0.0.398 (Lucas: "maybe even do just one line, with: Name | Tiers | DC"): the creature, its ladder, its DC (typed for "No target") and the Target
     // button on one line; its own Boons and Banes under it
     const dcIn = c.uuid === "none" ? `<label class="rd-dcin">DC <input type="number" min="1" max="40" data-field="noTargetDc" value="${Number(c.dc) || 13}" aria-label="The DC to roll against"></label>` : defBadge(c, hide);
-    return `<div class="rd-cbox one"><div class="rd-c1"><span class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</span>${hide ? '<span class="rd-c1sp"></span>' : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit), true)}${dcIn}${targetBtn(inp)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}</div>`;
+    return `<div class="rd-cbox one"><div class="rd-c1"><span class="rd-cname">${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}</span>${hide ? '<span class="rd-c1sp"></span>' : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit), true)}${dcIn}${targetBtn(inp)}</div>${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"), [...shared, ...own])}</div>`;
   }
-  const three = anyThree(inp, st);
+  const three = anyThree(inp, st), shared = chipsOf(inp, st, "shared");
   const tgtRow = targetBtn(inp) ? `<div class="rd-tgtrow"><span>${live.length} targets</span>${targetBtn(inp)}</div>` : "";
   return tgtRow + live.map(c => {
     const k = creatureCalc(inp, st, c.uuid), open = !!st.open?.[c.uuid], own = chipsOf(inp, st, c.uuid);
     const head = `<div class="rd-cline"><button type="button" class="rd-copen" data-act="open" data-uuid="${esc(c.uuid)}" aria-expanded="${open}"><span class="rd-chev" aria-hidden="true">${open ? "▾" : "▸"}</span>${cImg(c)}<b>${esc(c.name)}</b>${c.size ? ` <small>${esc(c.size)}</small>` : ""}<span class="rd-cdice">${esc(creatureDice(k, three))}</span><span class="rd-cmod">${k.mod >= 0 ? "+" : "−"}${Math.abs(k.mod)}</span>${counts(k.boons, k.banes)}${bbNotes(k).length ? `<span class="rd-dnote rd-bbcap">${esc(bbNotes(k).join(" · "))}</span>` : ""}</button>${defBadge(c, hide)}<button type="button" class="rd-cx rm" data-act="untarget" data-uuid="${esc(c.uuid)}" aria-label="Remove ${esc(c.name)}">×</button></div>`;
     if (!open) return `<div class="rd-cbox multi" data-uuid="${esc(c.uuid)}">${head}</div>`;
     const add = `<div class="rd-row"><span class="rd-rlabel">Add here:</span><span class="rd-chips">${["boon", "bane", "fav", "doom"].map(kd => `<button type="button" class="rd-addhere" data-act="quick" data-scope="${esc(c.uuid)}" data-k="${kd}">${pip({ kind: kd })}${QUICK_LABEL[kd]}</button>`).join("")}</span></div>`;
-    return `<div class="rd-cbox multi open" data-uuid="${esc(c.uuid)}">${head}${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"))}${add}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
+    return `<div class="rd-cbox multi open" data-uuid="${esc(c.uuid)}">${head}${rowsHtml(own, st, c.uuid, ROWS.filter(r => r[0] !== "passives" && r[0] !== "damage"), [...shared, ...own])}${add}${hide ? "" : ladderHtml(c.dc, crit, ladderOdds(inp, st, c, crit))}</div>`;
   }).join("");
 }
 
@@ -582,6 +601,14 @@ export function cardHtml(inp, st, v) {   // exported for the card gallery (pack 
   return `<div class="rd-card">${head}${flavor}${traits}${grid}${out.join("")}</div>`;
 }
 
+const netBadgeHtml = dl => {
+  if (!dl.boons && !dl.banes) return "";
+  const d = (dl.boons ?? 0) - (dl.banes ?? 0);
+  if (Math.abs(d) >= 5) return "";
+  if (d > 0) return ` <span class="rd-net up">Net +${d}</span>`;
+  if (d < 0) return ` <span class="rd-net down">Net −${Math.abs(d)}</span>`;
+  return ' <span class="rd-net zero">Net 0</span>';
+};
 /** The whole dialog's inner HTML: header (fixed), body (scrolls), Designer footer, bottom bar (fixed). */
 export function dialogHtml(inp, st) {
   const v = versionOf(inp, st), dl = diceLine(inp, st), why = blockedReason(inp, st), noRoll = !!v?.noTiers;
@@ -591,12 +618,14 @@ export function dialogHtml(inp, st) {
   const quick = `<div class="rd-quick tight">${(inp.save ? ["emp"] : quickKinds(inp.multi)).map(k => `<button type="button" class="rd-qb" data-act="quick" data-scope="shared" data-k="${k}">${["plus", "minus"].includes(k) ? "" : pip({ kind: k })}${QUICK_LABEL[k]}</button>`).join("")}</div>`;
   const notices = (inp.notices ?? []).length ? `<div class="rd-notes">${inp.notices.map(n => `<span class="rd-note${n.active ? " active" : ""}"${n.why ? ` data-tooltip="${esc(n.why)}"` : ""}>${esc(n.text)}</span>`).join("")}</div>` : "";
   const head = inp.save ? `<div class="rd-dice"><b class="rd-dtxt">Their roll</b> <i class="rd-dnames">${esc(inp.save.label)} vs DC ${inp.save.dc}</i> <span class="rd-dnote">· each target rolls; the Tiers are their result</span></div>`
-    : `<div class="rd-dice"><b class="rd-dtxt">${esc(dl.dice)}</b> <b>${sgn(dl.mod)}</b> <i class="rd-dnames">${esc(dl.names.join(", "))}</i> ${counts(dl.boons, dl.banes)}${dl.note ? ` <span class="rd-dnote">· ${esc(dl.note)}</span>` : ""}${(dl.bbNotes ?? []).map(x => ` <span class="rd-dnote rd-bbcap">· ${esc(x)}</span>`).join("")}</div>`;
+    : `<div class="rd-dice"><b class="rd-dtxt">${esc(dl.dice)}</b> <b>${sgn(dl.mod)}</b> <i class="rd-dnames">${esc(dl.names.join(", "))}</i> ${counts(dl.boons, dl.banes)}${netBadgeHtml(dl)}${dl.note ? ` <span class="rd-dnote">· ${esc(dl.note)}</span>` : ""}${(dl.bbNotes ?? []).map(x => ` <span class="rd-dnote rd-bbcap">· ${esc(x)}</span>`).join("")}</div>`;
   // v0.0.293 (Lucas: Reactions and Opportunity Attack still had the old window): a Version with no roll shows the card and its targets; Use
-  const named = liveCreatures(inp, st).filter(c => !["self", "none"].includes(c.uuid));
+  const live = liveCreatures(inp, st), named = live.filter(c => !["self", "none"].includes(c.uuid));
+  const sharedChips = chipsOf(inp, st, "shared").filter(c => !inp.dual || !["syn:hand", "syn:onehand"].includes(c.id));
+  const ctxChips = !inp.multi && live.length === 1 ? [...sharedChips, ...chipsOf(inp, st, live[0].uuid)] : sharedChips;
   const panel = noRoll ? (named.length ? `<div class="rd-tline">→ ${esc(named.map(c => c.name).join(", "))}</div>` : "")
     : `<section class="rd-roll">${head}
-    <div class="rd-mhead"><span>${inp.multi && !inp.save ? "Modifiers · every target" : "Modifiers"}</span></div>${quick}${notices}${rowsHtml(chipsOf(inp, st, "shared").filter(c => !inp.dual || !["syn:hand", "syn:onehand"].includes(c.id)), st, "shared", inp.save ? ROWS.filter(r => ["passives", "damage"].includes(r[0])) : ROWS)}
+    <div class="rd-mhead"><span>${inp.multi && !inp.save ? "Modifiers · every target" : "Modifiers"}</span></div>${quick}${notices}${rowsHtml(sharedChips, st, "shared", inp.save ? ROWS.filter(r => ["passives", "damage"].includes(r[0])) : ROWS, ctxChips)}
     <div class="rd-creatures">${creaturesHtml(inp, st, v)}</div></section>`;
   // v0.0.397: the Flavor opens the card (cardHtml), as in the book
   const designer = inp.designer && v && !v.noTiers && !inp.save ? `<div class="rd-designer"><div>${inp.showOdds && !inp.hideDef ? "" : liveCreatures(inp, st).map(c => `<div>${cImg(c)}<b>${esc(c.name)}</b>: ${oddsLine(oddsOf(creatureCalc(inp, st, c.uuid), !!v.crit))}</div>`).join("")}</div><div class="rd-force" role="group" aria-label="Force a Tier">Force a Tier: ${[1, 2, 3].map(n => `<button type="button" data-act="force" data-t="${n}" aria-pressed="${Number(st.forceTier) === n}">T${n}</button>`).join("")}</div></div>` : "";

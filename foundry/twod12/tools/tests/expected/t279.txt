@@ -1,17 +1,17 @@
 --- D4: the conditions
-two: Prone H Hindered EoT | their words: true | a click opens the Effect: true | its picture: true
-four: the marks alone: true | H EoT D L 2 | none: the row stays: true
+two: ▼ Prone H ▼ Hindered EoT | their words: true | a click opens the Effect: true | its picture: true
+four: overflow button + popover: true | ▼ Prone H ▼ Hindered EoT +2 ▾ | none: the row stays: true
 --- D1: the Basic tab
 Attack Weapon Attack 1 AP Charge 2 AP Movement Stand 1 AP | groups: 2 | Charge dim in its place: true | its stamp struck, still clicked (v0.0.453): true | a Strike's strip: true
 --- D3: the right column
 empty: Situational Hands Hunting Bow Main Free (Fists) Off | the ask slot is in the Situational section: true | the macro bar's slot last: true
-a Reaction: Situational Macros Snap Shot Reaction The Goblin Sneak would enter a square adjacent to you. Use · 1R Pass | Use and Pass answer it: true | lit: true
-Prone: Situational Macros Prone Your only Move Actions: Stand, Crawl, Break Free. Stand · 1 AP Crawl 3 · 2 AP | Stand uses it: true | Crawl 3 off: true
+a Reaction: Situational 1 Macros Snap Shot Reaction The Goblin Sneak would enter a square adjacent to you. Use · 1R Pass | Use and Pass answer it: true | lit: true
+Prone: Situational 1 Macros Prone Your only Move Actions: Stand, Crawl, Break Free. Stand · 1 AP Crawl 3 · 2 AP | Stand uses it: true | Crawl 3 off: true
 --- the right column's tabs
 nothing waiting: the Hands and the macro bar shown, no tabs: true | something waiting: Situational shown: true | the Hands tab chosen while something waits: true
 without hands the tab reads Macros: true | the HUD switches to it when something starts waiting, and back after: true | a question, a Setup or a movement in the ask slot counts: true
 --- D2: the bar
-Sylwen Elf Archer 1 11/17 Guard 0 Rally 6/6 Steel Yourself AP Esc. 2 Prone H Hindered EoT AD 12 WD 12 Speed 3 Weapon +2 Power +1 Body −1 Instinct +2
+Sylwen Elf Archer 1 11/17 Guard 0 Rally 6/6 Steel Yourself AP Esc. 2 ▼ Prone H ▼ Hindered EoT AD 12 WD 12 Speed 3 Weapon +2 Power +1 Body −1 Instinct +2
 the words, not Wpn / Pow / Bo / In: true | Instinct rolls: true | a changed Speed marked: true | the Basic tab drawn: true | folded keeps the old line: true
 --- the wiring
 decision 2, no jump to the Reactions tab: true

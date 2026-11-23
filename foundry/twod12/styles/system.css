@@ -5298,11 +5298,8 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-side:not(.has-sit) .h3-rt-sit { display: none; }
 .twod12-hud .h3-side.has-sit .h3-rt-sit { color: var(--s-gold); }
 .twod12-hud .h3-pane { display: none; min-height: 0; overflow: hidden; }
-.twod12-hud .h3-side[data-rtab="sit"] .h3-p-sit, .twod12-hud .h3-side[data-rtab="hands"] .h3-p-hands, .twod12-hud .h3-side[data-rtab="macros"] .h3-p-macros { display: flex; flex-direction: column; }
+.twod12-hud .h3-side[data-rtab="sit"] .h3-p-sit { display: flex; flex-direction: column; }
 .twod12-hud .h3-p-sit .h3-sit { flex: 1; min-height: 0; overflow-y: auto; }
-.twod12-hud .h3-p-hands { justify-content: center; } .twod12-hud .h3-p-hands .h3-hands { border-top: 0; padding: 6px 9px; }
-.twod12-hud .h3-p-hands .h3-hand { padding: 4px 8px; font-size: .82rem; }
-.twod12-hud .h3-p-macros { justify-content: center; } .twod12-hud .h3-p-macros .h3-hot { border-top: 0; padding: 4px 9px; }
 /* v0.0.447: a hook or a rung opens what it does (no underline: Lucas); the hand menu's text centered in its rows (Lucas's checklist, g2-handmenu) */
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b[data-action], .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span[data-action] { cursor: pointer; }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-hks b[data-action]:focus-visible, .twod12-actor .twod12.sheet.pcs.ps2 .ps2-ld > span[data-action]:focus-visible { outline: 1px solid var(--s-gold); outline-offset: 1px; }
@@ -5595,9 +5592,9 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-linebar .lb-cands .lb-opt.sq { all: unset; position: relative; box-sizing: border-box; width: 34px; height: 34px; flex: none; border: 1px solid var(--s-gold, #d2a75a); cursor: pointer; }
 .twod12-linebar .lb-cands .lb-opt.sq img { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; }
 .twod12-linebar .lb-cands .lb-opt.sq .lb-num { position: absolute; right: -1px; bottom: -1px; min-width: 13px; height: 13px; padding: 0 2px; box-sizing: border-box; background: var(--s-gold, #d2a75a); color: #1f1c18; font: 700 10px/13px "Source Sans 3", sans-serif; text-align: center; }
-.twod12-linebar.twod12-linebar button.fill, .twod12-hud .h3-sit .twod12-linebar.in-hud button.fill { background: var(--s-gold, #d2a75a) !important; border-color: var(--s-gold, #d2a75a) !important; color: #1f1c18 !important; }
+.twod12-linebar.twod12-linebar button.fill, .twod12-hud .h3-sit .twod12-linebar.in-hud button.fill { background: var(--s-gold, #d2a75a) !important; border-color: var(--s-gold, #d2a75a) !important; color: var(--hud-bg, #1f1c18) !important; }
 .twod12-linebar .lb-give.fill { opacity: 1 !important; }
-.twod12-hud.twod12-hud .h3-sit .twod12-linebar.twod12-linebar.in-hud button.fill { background: var(--s-gold, #d2a75a) !important; border-color: var(--s-gold, #d2a75a) !important; color: #1f1c18 !important; }
+.twod12-hud.twod12-hud .h3-sit .twod12-linebar.twod12-linebar.in-hud button.fill { background: var(--s-gold, #d2a75a) !important; border-color: var(--s-gold, #d2a75a) !important; color: var(--hud-bg, #1f1c18) !important; }
 .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-left { display: block; margin-top: 2px; }
 .twod12-hud .h3-sit .twod12-linebar.in-hud .lb-left b { font-size: 17px; }
 .twod12-hud.twod12-hud .h3-sit .twod12-linebar.twod12-linebar.in-hud button.fill, .twod12-linebar.twod12-linebar.twod12-linebar button.fill { color: var(--hud-bg, #1f1c18) !important; }
@@ -5617,3 +5614,68 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .enclog .el-dmg table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
 .enclog .el-dmg th, .enclog .el-dmg td { padding: 2px 6px; text-align: left; border-bottom: 1px solid rgba(128, 128, 128, .2); }
 .enclog .el-dmg td.c { text-align: center; }
+
+/* ==== ui-chat-hud-polish: tabular numerals, damage card clarity, Save caret, HUD conditions & Situational hierarchy ==== */
+.twod12, .twod12-hud { font-variant-numeric: lining-nums tabular-nums; }
+/* exploding damage die: inverted Palette A gold badge matching .cc-die.boom */
+.twod12.chat.cc .cc-ddie.ex { background: var(--s-ta-c); border-color: var(--s-ta-cr); color: var(--s-ta-ci); font-weight: 800; }
+/* clickable damage pools caret + conditional modifier summary bar */
+.twod12.chat.cc .cc-pools { position: relative; padding-right: 18px; }
+.twod12.chat.cc .cc-pools::after { content: "▸"; position: absolute; right: 5px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--s-mute); transition: transform .15s ease, color .15s ease; }
+.twod12.chat.cc .cc-pools:hover::after, .twod12.chat.cc .cc-pools[aria-expanded="true"]::after { color: var(--s-gold); }
+.twod12.chat.cc .cc-pools[aria-expanded="true"]::after { transform: translateY(-50%) rotate(90deg); }
+.twod12.chat.cc .cc-tg2d .cc-pools { padding-right: 0; align-items: center; }
+.twod12.chat.cc .cc-tg2d .cc-pools::after { position: static; transform: none; margin-left: 5px; }
+.twod12.chat.cc .cc-tg2d .cc-pools[aria-expanded="true"]::after { transform: rotate(90deg); }
+.twod12.chat.cc .cc-modbar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1px 4px; margin-top: 2px; padding: 1px 6px; font-size: 11px; line-height: 1.35; color: var(--s-mute); border-left: 2px solid var(--s-hair); }
+.twod12.chat.cc .cc-tg2d .cc-modbar { margin-top: 2px; padding: 0 0 0 6px; }
+/* post-Apply defense tags (Resist / Weak / Immune) */
+.twod12.chat.cc .cc-rwi { cursor: default; }
+.twod12.chat.cc .cc-dtag { display: inline-flex; align-items: center; gap: 3px; padding: 0 4px; font-size: 10.5px; font-weight: 600; line-height: 1.45; border: 1px solid var(--s-hair); color: var(--s-mute); white-space: nowrap; }
+.twod12.chat.cc .cc-dtag i { font-size: 9.5px; }
+.twod12.chat.cc .cc-dtag.resist { color: var(--s-boon); border-color: color-mix(in srgb, var(--s-boon) 45%, var(--s-hair)); background: color-mix(in srgb, var(--s-boon) 12%, transparent); }
+.twod12.chat.cc .cc-dtag.weak { color: var(--s-bane); border-color: color-mix(in srgb, var(--s-bane) 45%, var(--s-hair)); background: color-mix(in srgb, var(--s-bane) 12%, transparent); }
+.twod12.chat.cc .cc-dtag.immune { color: var(--s-gold); border-color: color-mix(in srgb, var(--s-gold) 45%, var(--s-hair)); background: color-mix(in srgb, var(--s-gold) 12%, transparent); }
+/* Save card multi-target expand caret */
+.twod12.chat.cc .cc-card .cc-sres::after { content: "▸"; font-size: 10px; color: var(--s-mute); transition: transform .15s ease, color .15s ease; }
+.twod12.chat.cc .cc-card .cc-sres:hover::after, .twod12.chat.cc .cc-card .cc-sres[aria-expanded="true"]::after { color: var(--s-gold); }
+.twod12.chat.cc .cc-card .cc-sres[aria-expanded="true"]::after { transform: rotate(90deg); }
+/* HUD Identity marks: prevent clipping at 260-270px with AP + Slowed + R + Strikes + 6 Escalation ticks */
+.twod12-hud .hm-esc { gap: 2px; }
+.twod12-hud .hm-esc i { width: 5px; height: 10px; }
+.twod12-hud .hm-sep { margin: 0 2px; }
+@container (max-width: 1020px) { .twod12-hud .hm-esc i { width: 4px; } .twod12-hud .hm-ap, .twod12-hud .hm-r, .twod12-hud .hm-sk { gap: 2px; } }
+/* HUD Buff / Debuff conditions + overflow popover */
+.twod12-hud .h3-conds { gap: 4px; }
+.twod12-hud .h3-c { padding: 0 5px 0 2px; height: 18px; border: 1px solid var(--hud-line); background: color-mix(in srgb, var(--hud-ink) 5%, transparent); min-width: 0; max-width: 132px; overflow: hidden; }
+.twod12-hud .h3-c > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.twod12-hud .h3-c i { width: 14px; height: 14px; border: 0; }
+.twod12-hud .h3-c i img { width: 13px; height: 13px; }
+.twod12-hud .h3-c .h3-cmk { font-size: 8px; line-height: 1; flex: none; }
+.twod12-hud .h3-c.buff { border-color: color-mix(in srgb, var(--s-good) 55%, var(--hud-line)); background: color-mix(in srgb, var(--s-good) 14%, transparent); }
+.twod12-hud .h3-c.buff .h3-cmk { color: var(--s-good); }
+.twod12-hud .h3-c.debuff { border-color: color-mix(in srgb, var(--s-bad) 55%, var(--hud-line)); background: color-mix(in srgb, var(--s-bad) 14%, transparent); }
+.twod12-hud .h3-c.debuff .h3-cmk { color: var(--s-bad); }
+.twod12-hud .h3-c:hover { border-color: var(--s-gold); }
+.twod12-hud .h3-cmore { all: unset; box-sizing: border-box; flex: none; height: 18px; padding: 0 5px; border: 1px solid var(--hud-line); background: color-mix(in srgb, var(--s-gold) 12%, transparent); color: var(--s-gold); font: 700 .72rem/16px "Source Sans 3", sans-serif; cursor: pointer; white-space: nowrap; }
+.twod12-hud .h3-cmore:hover, .twod12-hud .h3-cmore[aria-expanded="true"] { border-color: var(--s-gold); background: var(--s-gold); color: var(--hud-bg); }
+.twod12-hud .h3-condpop { position: absolute; z-index: 30; min-width: 240px; max-width: 340px; max-height: 240px; overflow-y: auto; background: var(--hud-bg); border: 1px solid var(--s-gold); padding: 7px 9px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 4px 16px rgba(0, 0, 0, .55); }
+.twod12-hud .h3-cpg { display: flex; flex-direction: column; gap: 4px; }
+.twod12-hud .h3-cpgh { font: 700 .72rem/1.2 "Source Sans 3", sans-serif; text-transform: uppercase; letter-spacing: .05em; color: var(--hud-mute); border-bottom: 1px solid var(--hud-hair); padding-bottom: 2px; display: flex; align-items: baseline; gap: 4px; }
+.twod12-hud .h3-cpg.debuff .h3-cpgh { color: var(--s-bad); }
+.twod12-hud .h3-cpg.buff .h3-cpgh { color: var(--s-good); }
+.twod12-hud .h3-cpgl { display: flex; flex-wrap: wrap; gap: 4px; }
+.twod12-hud .h3-condpop .h3-c { max-width: none; height: 20px; }
+/* HUD Situational: urgent vs passive hierarchy and live count badge */
+.twod12-hud .h3-sit.on:not(.urg):not(:has(.hb-ask > *)) { box-shadow: none; background: transparent; }
+.twod12-hud .h3-sit.urg, .twod12-hud .h3-sit:has(.hb-ask > *) { box-shadow: inset 0 2px 0 var(--s-gold); background: color-mix(in srgb, var(--s-gold) 9%, transparent); }
+.twod12-hud .h3-sit-urg { display: flex; flex-direction: column; gap: 5px; }
+.twod12-hud .h3-sit-urg:not(:has(.h3-si, .hb-ask > *)) { display: none; }
+.twod12-hud .h3-sit-avail { display: flex; flex-direction: column; gap: 5px; }
+.twod12-hud .h3-sit-urg:has(.h3-si, .hb-ask > *) + .h3-sit-avail { border-top: 1px solid var(--hud-hair); padding-top: 5px; }
+.twod12-hud .h3-rt-sit { display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.twod12-hud .h3-rcnt:empty { display: none; }
+.twod12-hud .h3-rcnt { display: inline-flex; align-items: center; justify-content: center; min-width: 15px; height: 15px; padding: 0 4px; font-size: .68rem; font-weight: 700; line-height: 1; border: 1px solid var(--hud-line); color: var(--hud-mute); }
+.twod12-hud .h3-side.has-urg .h3-rcnt { background: var(--s-gold); border-color: var(--s-gold); color: var(--hud-bg); }
+.twod12-hud .h3-side.has-sit:not(.has-urg) .h3-rt-sit { color: var(--hud-ink); }
+

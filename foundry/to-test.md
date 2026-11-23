@@ -19,31 +19,29 @@ differ):
 
 ## Characters and sheets
 
-### b3-basic-as-action · v0.0.481 · Basic Attack as a normal At-will Action on PCs
-Do: Open Aveline's Actions tab and select Aveline's token to open the HUD.
-Expect: Basic Attack sits in the main At-will Actions section on Aveline's sheet (beside Drawing Light) and in the main Actions tab of the HUD, not in the Basic Actions grid/tab. Fists stays in Basic Actions.
-
 ## The HUD
+
+### ui-hud-conds-popover · v0.0.482 · HUD condition polarity pills and +N overflow popover
+Do: On Aveline, apply at least 4 active conditions/effects (mix buffs like Empowered / Shield of Faith and debuffs like Prone, Daunted, Hindered), then select Aveline's token and click the +N button on the HUD conditions row.
+Expect: Debuffs (including Daunted) show downward debuff styling, buffs show upward buff styling, and past 3 items a +N ▾ button opens a clean popover grouped into Debuffs, Buffs, and Other (clickable to open the Effect).
+
+### ui-hud-sit-urgent · v0.0.482 · HUD Situational tab count badge and Urgent vs. Available split
+Do: Make Aveline Prone (Available situational item), then trigger a Reaction or map prompt (e.g. Judge damage reduction or Snap Shot on Sylwen) while viewing Hands/Macros.
+Expect: The Situational tab shows a count badge, auto-switches cleanly when an urgent Reaction or prompt arrives (highlighting gold), and places urgent prompts above passive options (Prone / Granted) separated by a hairline.
 
 ## Starting a combat
 
 ## The roll dialog
 
-### b3-basic-t1-explode · v0.0.481 · Basic Attack Tier 1 1d4! and ! on weapon dice in roll dialog
-Do: With Aveline (Longsword) targeting the Orc Warrior, open Basic Attack. Check the roll dialog Tiers, force a Tier 1, and roll damage.
-Expect: Roll dialog Tiers show ! on all weapon dice (1d4! Slash on Tier 1, 1d4!+6 + 2 Slash on Tier 2, 1d6!+9 + 1d6! + 2 Slash on Tier 3). Tier 1 rolls an exploding 1d4! Slash.
+### ui-rolldlg-net-cap · v0.0.482 · Roll dialog Net Boons/Banes badge, cap, and Favored/Doomed cancel
+Do: With Sylwen targeting the Orc Warrior, open Basic Attack. Add 3 Field Boons (or 2+ named Boons of the same name), add a Bane to inspect the Net badge, then toggle both Favored and Doomed on at the same time.
+Expect: The header shows a colored Net +N / Net −N / Net 0 badge (hiding at ±5 when Favored/Doomed takes over). Any named Boon/Bane past the 2-cap shows a dashed strikethrough and a small "cap" badge. Active Favored and Doomed together both show dashed strikethrough as cancelled.
 
 ## Chat cards
 
-### b3-sworn-blade · v0.0.480 · Sworn Blade slides a Strained target on Basic Attack
-Rev: 2
-Do: Make the Orc Warrior Strained, then have Aveline use Basic Attack against it (try Tier 1 as well as Tier 2/3) and apply damage. Also test Aveline's Drawing Light (Tier 2 or 3) against a Bloodied Orc Warrior.
-Expect: Both chat cards show their Strained/Bloodied line on the attack card itself. Sworn Blade triggers on any landed Tier (including Tier 1) and offers Slide 1. Drawing Light against a Bloodied target prompts Slide vs. Pull (or Esc to skip).
-
-### b3-steady-draw · v0.0.480 · Steady Draw adds +1[D] on Tier 3 against a pre-Strained target
-Rev: 2
-Do: Make the Orc Warrior Strained before rolling, then have Sylwen (Hunting Bow) target it with Basic Attack. Check the roll dialog notice and Tier 3 preview, force Tier 3, roll damage, and open both the dice breakdown and the = ledger. Repeat against a non-Strained Orc Warrior (and on Tier 2).
-Expect: The Steady Draw notice in the roll dialog is crisp/active (not faded) and Tier 3 preview includes the extra 1d4! Pierce. The attack card lists Steady Draw under Applied, the damage roll includes the extra 1d4! labeled Steady Draw in both the dice breakdown and the = ledger (with no bogus Flat -1 on exploded dice), and no extra [D] is added on Tier 2 or against a non-Strained target.
+### ui-chat-modbar-tags · v0.0.482 · Chat card damage modifier strip, post-Apply tags, and dark theme polish
+Do: With Aveline (Longsword) targeting an Orc Warrior (give it Resist Slash 2 or Empowered), roll Basic Attack (Tier 2 or 3, and try a Critical) and apply damage. Check both light and Foundry dark theme.
+Expect: Under the rolled damage pool, a compact modifier strip lists contributing modifiers (Weapon / Flat / Empowered). After Apply, Resist / Weak / Immune show as compact readable tags after "Took". Critical boxes/labels and 5-Boon/5-Bane tags look crisp in both light and dark themes.
 
 ## Conditions and their Tiers
 
