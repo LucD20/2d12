@@ -223,6 +223,8 @@ export function parseSpec(text, file = "spec") {
   // The catch-up: every creature has the Opportunity Attack Reaction (Chapter 2, Reactions; the Basic Action's card): a build gets it without a line
   // (`basic`: used only while RULES.oaAll; a file's own `reaction ...: opportunity` line is the pre-R Talent and always counts).
   if (!b.noOa && !b.reactions.some(r => r.kind === "opportunity") && b.weapon) b.reactions.push({ name: "Opportunity Attack", kind: "opportunity", action: "Weapon Attack", basic: true });
+  // core rework batch 3: Weapon Attack was renamed Basic Attack; keep "weapon attack" as an alias for older spec files and set-aside cards.
+  if (b.actions["basic attack"] && !b.actions["weapon attack"]) b.actions["weapon attack"] = b.actions["basic attack"];
   // Pack CS: a build keeps the card Actions its turns, reactions and Linked Actions name (with their other Versions, for the lower-Version fallback) and drops the rest,
   // so a build has only its own cards (the day model and the fallbacks look at a build's whole action list).
   const named = new Set();

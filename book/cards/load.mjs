@@ -29,7 +29,7 @@ export const hasVersions = c => Array.isArray(c.versions) && c.versions.length >
 export const splitTier = t => { const i = t.indexOf(";"); return i < 0 ? [t.trim(), ""] : [t.slice(0, i).trim(), t.slice(i + 1).trim()]; };
 /** Does this text read as damage the book writes ("0", "[B] 1[W] + [Mod] + [M] 1d6 Ho", "[B] [Mod] Pi")? */
 // v0.0.407 (pack "Stage 0 in Foundry"): a die can be written with ! (1d4!: it explodes)
-export const isDamage = t => /^(0|-|(\[(B|M|V|R)\]\s*)?(\d*\[W\]|\[Mod\]|\d+d\d+!?|\d+)(\s*\+\s*((\[(B|M|V|R)\]\s*)?(\d*\[W\]|\[Mod\]|\d+d\d+!?|\d+)))*(\s+(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un))?)$/.test(t.trim());
+export const isDamage = t => /^(0|-|(\[(B|M|V|R)\]\s*)?(\d*\[[WD]\]|\[Mod\]|\d+d\d+!?|\d+)(\s*\+\s*((\[(B|M|V|R)\]\s*)?(\d*\[[WD]\]|\[Mod\]|\d+d\d+!?|\d+)))*(\s+(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un))?)$/.test(t.trim());
 /** The book's [[links]] to their label (Foundry and the ruler have no links). */
 export const stripLinks = s => String(s ?? "").replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, "$2").replace(/\[\[([^\]]+)\]\]/g, "$1");
 /** The book's **bold** to plain text. */
@@ -67,6 +67,8 @@ export function readBody(lines = []) {
     else if ((m = l.match(/^Tier ([123])$/))) o.tiers[Number(m[1]) - 1] = t;
     else if ((m = l.match(/^Tier ([123]) or ([123])$/))) o.or = { tiers: [Number(m[1]), Number(m[2])], text: t };
     else if (l === "Critical") o.critical = t;   // v0.0.411 (Quick Shots, Volley): the Version's Critical
+    else if (l === "Bloodied") o[rollAt >= 0 && i < rollAt ? "bloodiedBefore" : "bloodied"] = t;   // core rework batch 3: Structure cards' Bloodied / Strained lines
+    else if (l === "Strained") o[rollAt >= 0 && i < rollAt ? "strainedBefore" : "strained"] = t;
     else if (l === "Effect") { o.effects.push(t); o.seq.push(t); }
     else if (l === "Interrupt") o.interrupt = t;
     else if (l === "Trigger") o.trigger = t;
@@ -96,7 +98,7 @@ export function fromStructure(c) {
   const top = readBody(c.body), passive = String(c.cost ?? "").trim() === "Passive";
   const out = { name: c.name, category: c.category, level: c.level, flavor: c.flavor, traits: c.traits ?? [], structure: 2, _file: c._file };
   for (const k of ["frequency", "escalation", "distance", "area", "target", "foundry", "ruler", "book", "weapon", "mastery", "talent"]) if (c[k] !== undefined) out[k] = c[k];   // v0.0.412: a Technique's weapon
-  for (const k of ["vs", "interrupt", "trigger", "setup", "requirements", "prerequisites"]) if (top[k] !== undefined) out[k] = top[k];
+  for (const k of ["vs", "interrupt", "trigger", "setup", "requirements", "prerequisites", "bloodied", "strained", "bloodiedBefore", "strainedBefore"]) if (top[k] !== undefined) out[k] = top[k];
   if (top.rules.length) out.rules = top.rules.join(" ");
   if (top.lines?.length) out.lines = top.lines;   // v0.0.411: the card's own labeled lines before the roll (Judged, Smite dice)
   if (top.notes.length) out.notes = top.notes.join(" ");

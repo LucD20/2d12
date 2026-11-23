@@ -181,7 +181,7 @@
     },
     {
      "label": "Bloodied",
-     "text": "You can Slide the target instead."
+     "text": "You can Slide the target that distance instead of pulling it."
     }
    ],
    "traits": [

@@ -120,7 +120,7 @@ export const pick = (R, probs) => pickU(R(), probs);
  */
 export function parseDamage(text) {
   // Pack R prep: the pool of each part is kept (mind: the share of the expression that is Mind damage, [M]; the rest is Body) for the Bloodied / Strained counts.
-  const out = { w: 0, mod: 0, dice: [], flat: 0, mind: { w: 0, mod: 0, dice: [], flat: 0 } };
+  const out = { w: 0, d: 0, mod: 0, dice: [], flat: 0, mind: { w: 0, d: 0, mod: 0, dice: [], flat: 0 } };
   const t = String(text ?? "").replace(/\[(B|C|V)\]/g, " [B] ").replace(/\[(M|R)\]/g, " [M] ").replace(/\b(Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un)\b/g, " ").trim();
   if (!t || t === "-" || t === "0" || t === "[B]" || t === "[M]") return out;
   let pool = "B";
@@ -131,8 +131,9 @@ export function parseDamage(text) {
     if ((m = p.match(/^\[(B|M)\]\s*(.*)$/))) { pool = m[1]; p = m[2].trim(); if (!p) continue; }
     const into = pool === "M" ? out.mind : out;
     if ((m = p.match(/^(\d*)\[W\]$/))) { out.w += Number(m[1] || 1); if (pool === "M") into.w += Number(m[1] || 1); }
+    else if ((m = p.match(/^(\d*)\[D\]$/))) { out.d += Number(m[1] || 1); if (pool === "M") into.d += Number(m[1] || 1); }
     else if (p === "[Mod]") { out.mod += 1; if (pool === "M") into.mod += 1; }
-    else if ((m = p.match(/^(\d+)d(\d+)$/))) { out.dice.push([Number(m[1]), Number(m[2])]); if (pool === "M") into.dice.push([Number(m[1]), Number(m[2])]); }
+    else if ((m = p.match(/^(\d+)d(\d+)(!)?$/))) { const entry = m[3] ? [Number(m[1]), Number(m[2]), true] : [Number(m[1]), Number(m[2])]; out.dice.push(entry); if (pool === "M") into.dice.push(entry); }
     else if ((m = p.match(/^-?\d+$/))) { out.flat += Number(p); if (pool === "M") into.flat += Number(p); }
     else throw new Error(`can't read the damage "${text}" (the part "${p}")`);
   }
@@ -155,8 +156,9 @@ export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered
   // again. For a PC only the weapon's die ([W]); for an NPC the Action's die when the caller says so (`explode`: its Basic attack, or an Action with the trait).
   const face = (sides, ex) => (ex ? RR.explodingDie(s2 => die(R, s2), sides) : die(R, sides));   // the system's rule (roundrules.mjs)
   const roll = (count, sides, ex = false) => { for (let k = 0; k < count; k++) { const v = Math.max(1, face(sides, ex) + empowered); total += v; n++; rolled.push([sides, v]); } };
-  for (const [c, s] of dmg.dice) roll(c, s, explode);
+  for (const [c, s, ex] of dmg.dice) roll(c, s, !!ex || explode);
   for (let k = 0; k < dmg.w; k++) { const wt = weaponTier(weapon, tier); total += wt.flat; for (const [c, s] of wt.dice) roll(c, s, !!RULES.explode && RULES.explode !== "npc"); }
+  for (let k = 0; k < (dmg.d || 0); k++) { const wt = weaponTier(weapon, tier); for (const [c, s] of wt.dice) roll(c, s, !!RULES.explode && RULES.explode !== "npc"); }
   // Keep the best (pack LV, proposed): roll keepBest extra dice of the largest size rolled, then drop as many of the lowest dice of that size.
   if (keepBest && rolled.length) {
     const big = Math.max(...rolled.map(x => x[0])), pool = rolled.filter(x => x[0] === big).map(x => x[1]);
@@ -169,11 +171,11 @@ export function rollDamage(R, dmg, { weapon = null, tier = 2, mod = 0, empowered
 
 /** The average of a damage expression on a tier (Empowered per die; the extras only when the tier deals damage). */
 export function avgDamage(dmg, weapon, tier, mod, emp = 0, extra = []) {
-  const wt = weaponTier(weapon, tier), dice = d => d.reduce((s, [c, n]) => s + c * ((n + 1) / 2 + emp), 0);
-  const deals = dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && (wt.dice.length || wt.flat));
+  const wt = weaponTier(weapon, tier), dice = d => d.reduce((s, [c, n, ex]) => s + c * ((n + 1) / 2 + emp + (ex && n > 1 ? 0.5 : 0)), 0);
+  const deals = dmg.dice.length || dmg.flat || dmg.mod || (dmg.w && (wt.dice.length || wt.flat)) || ((dmg.d || 0) && wt.dice.length);
   if (!deals) return 0;
   const ex = RULES.explode && RULES.explode !== "npc" ? wt.dice.reduce((s2, [c, n]) => s2 + (n > 1 ? c * 0.5 : 0), 0) : 0;   // a weapon's die explodes -1: +0.5 a die on average
-  return dmg.flat + dmg.mod * mod + dice(dmg.dice) + dmg.w * (wt.flat + dice(wt.dice) + ex) + extra.reduce((s, x) => s + x.flat + x.mod * mod + dice(x.dice), 0);
+  return dmg.flat + dmg.mod * mod + dice(dmg.dice) + dmg.w * (wt.flat + dice(wt.dice) + ex) + (dmg.d || 0) * (dice(wt.dice) + ex) + extra.reduce((s, x) => s + x.flat + x.mod * mod + dice(x.dice), 0);
 }
 
 /* ------------------------------------------------------------------ NPCs from the Bestiary */

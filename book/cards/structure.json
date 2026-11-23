@@ -1349,7 +1349,7 @@
    },
    {
     "label": "Bloodied",
-    "text": "You can Slide the target instead."
+    "text": "You can Slide the target that distance instead of pulling it."
    }
   ],
   "blocks": [],
@@ -1452,7 +1452,11 @@
     "text": "No effect."
    },
    {
-    "label": "Tier 2 or 3",
+    "label": "Tier 2",
+    "text": "You gain 2 Boons on your next [Strike] Action against the target this turn."
+   },
+   {
+    "label": "Tier 3",
     "text": "Your next [Strike] Action against the target this turn is Favored."
    },
    {
@@ -1552,15 +1556,15 @@
    },
    {
     "label": "Tier 1",
-    "text": "[V] [Mod]"
+    "text": "[V] 1 Bl"
    },
    {
     "label": "Tier 2",
-    "text": "[V] 1[W] + [Mod]"
+    "text": "[V] 2 + [Mod] Bl"
    },
    {
     "label": "Tier 3",
-    "text": "[V] 1[W] + 1[D] + [Mod]"
+    "text": "[V] 1d6! + [Mod] Bl"
    }
   ],
   "blocks": [],
@@ -1909,8 +1913,7 @@
   "target": "One creature",
   "traits": [
    "body",
-   "handle",
-   "strike"
+   "handle"
   ],
   "cost": "1, 2 or 3 AP",
   "body": [
@@ -4564,7 +4567,7 @@
   "body": [
    {
     "label": "Passive",
-    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** A Tier 3 deals 1[D] more."
+    "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** Against a Strained target, a Tier 3 deals 1[D] more."
    }
   ],
   "blocks": [],
@@ -5078,7 +5081,7 @@
    },
    {
     "label": "Special",
-    "text": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space; on a Tier 2 or 3 you pass."
+    "text": "You can move through enemies' spaces (never ending in one). Before you move, make an Appeal or Instinct Check against the same Attribute's DC of the creatures whose spaces your path crosses (the highest), with 1 Bane for each creature beyond the first: on a Tier 1 you stop in the last square before the first enemy's space and your movement ends; on a Tier 2 or 3 you pass."
    }
   ],
   "blocks": [

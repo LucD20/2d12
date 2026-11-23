@@ -199,7 +199,7 @@ Every creature counts as having **Fists**. They are a weapon like any other, wit
 
 | Name | Group | Properties | Type | Range | Damage | Rung |
 |---|---|---|---|---|---|---|
-| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [V] 0 / 2 / 1 + 1d4! | - |
+| Fists | Unarmed | Barehanded, Melee, Non-threatening | Blunt | 1 | [V] 0 / 2 / 1d6! | - |
 
 Fists are used with the [[Chapter 6: Basic Actions|Fists Basic Action]], or with any Weapon Action.
 

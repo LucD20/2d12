@@ -100,7 +100,7 @@
    "body": [
     {
      "label": "Passive",
-     "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** A Tier 3 deals 1[D] more."
+     "text": "Your [[Basic Attack]] gains, above its Attack line: **Strained:** Against a Strained target, a Tier 3 deals 1[D] more."
     }
    ],
    "foundry": {
