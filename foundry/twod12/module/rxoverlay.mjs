@@ -4,10 +4,10 @@
 // (gone once it passes), a solid line in its slab's color from every Reaction used to its target (with the Reaction's name), the hovered,
 // unused option as a dashed line, and once every row is answered a numbered green pin on each line (its place in the stack; a drag in the
 // chat renumbers them live). A client setting turns it off. The data comes from the message's flags (moment.mjs); nothing here is saved.
-import { attentionRing, plate, INK, GOLD } from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
+import { attentionRing, plate, numberPin, zoomScale, INK, GOLD, PLATE_BG } from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
 const F = "twod12";
 export const PALETTE = ["#f0b54a", "#5fc4c0", "#b48ce0", "#7fc97f"];
-const RED = 0xe0553b, AMBER = 0xf0b54a, BEIGE = 0xecdcae, PIN = 0x2f6b3a, NAVY = 0x1d2738, PARCH = 0xf4eddc;
+const RED = 0xe0553b, AMBER = 0xf0b54a, BEIGE = 0xecdcae, PIN = 0x2f6b3a;
 const hex = c => (typeof c === "number" ? c : parseInt(String(c ?? "#f0b54a").replace("#", ""), 16) || AMBER);
 
 const shown = new Map();   // moment id -> its state (the message's flags)
@@ -43,6 +43,7 @@ export function registerOverlayHooks() {
   Hooks.on("canvasTearDown", () => { layer = null; });
   Hooks.on("canvasReady", () => { layer = null; shown.clear(); for (const m of game.messages?.contents?.slice(-40) ?? []) { const st = m.getFlag?.(F, "rx"); if (st?.v === 2 && !st.done) shown.set(st.id, st); } queue(); });
   for (const h of ["refreshToken", "updateToken", "deleteToken"]) Hooks.on(h, () => { if (shown.size) queue(); });
+  Hooks.on("canvasPan", () => { if (shown.size || replays.size) queue(); });
   Hooks.on("deleteChatMessage", m => { const st = m.getFlag?.(F, "rx"); if (st?.id) dropOverlay(st.id); });
   // hovering a token lights its slab (and its line)
   Hooks.on("hoverToken", (tk, on) => {
@@ -70,24 +71,16 @@ function arrowHead(g, from, to, color, size) {
 /** A point short of the token's edge (lines end at the ring, not at the center). */
 const shortOf = (a, b, by) => { const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1; return { x: b.x - dx / l * by, y: b.y - dy / l * by }; };
 function tag(text, color, fg, size) {
-  const PT = globalThis.foundry?.canvas?.containers?.PreciseText ?? globalThis.PreciseText ?? PIXI.Text;
-  const box = new PIXI.Container(), t = new PT(String(text), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: size, fontWeight: "700", fill: fg });
-  t.anchor?.set?.(0.5);
-  const w = t.width + size * 0.9, h = t.height + size * 0.3, bg = new PIXI.Graphics();
-  bg.lineStyle(2, PARCH, 1).beginFill(hex(color), 1).drawRoundedRect(-w / 2, -h / 2, w, h, size * 0.35).endFill();
-  box.addChild(bg, t);
-  return box;
+  return plate([String(text)], { fs: Math.round(size * 0.9), color: fg === 0xffffff ? INK : hex(color), warn: color === "#b8432f" });
 }
-/** A pin: a circle in the slab's color (v0.0.281) with its place in the stack, or a plain dot before the order is known. */
+/** A STYLE-3 square pin in the slab's color with its place in the stack, or a small square before the order is known. */
 function pin(n, size, color = PIN) {
-  const box = new PIXI.Container(), g = new PIXI.Graphics(), r = size * 0.8;
-  g.lineStyle(2, NAVY, 1).beginFill(hex(color), 1).drawCircle(0, 0, n ? r : r * 0.6).endFill();
+  if (n) return numberPin(n, { fs: size, color: hex(color) });
+  const box = new PIXI.Container(), g = new PIXI.Graphics(), s = Math.round(size * 0.75);
+  g.lineStyle(1.5, PLATE_BG, 1).beginFill(hex(color), 1).drawRect(-s / 2, -s / 2, s, s).endFill();
   box.addChild(g);
-  if (n) {
-    const PT = globalThis.foundry?.canvas?.containers?.PreciseText ?? globalThis.PreciseText ?? PIXI.Text, t = new PT(String(n), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: size, fontWeight: "700", fill: NAVY });
-    t.anchor?.set?.(0.5);
-    box.addChild(t);
-  }
+  const sc = zoomScale();
+  if (sc !== 1) box.scale?.set?.(sc);
   return box;
 }
 export function draw() {
@@ -119,9 +112,14 @@ function drawOne(st, gs, fs) {
       arrowHead(g, pts[pts.length - 2], pts[pts.length - 1], INK, fs);
     }
     if (b.backAt) {
-      g.lineStyle(4, GOLD, 1).drawRect(b.backAt.x + 2, b.backAt.y + 2, (b.backAt.w ?? gs) - 4, (b.backAt.h ?? gs) - 4);
+      const bw = b.backAt.w ?? gs, bh = b.backAt.h ?? gs;
+      g.lineStyle(4, GOLD, 1).drawRect(b.backAt.x + 2, b.backAt.y + 2, bw - 4, bh - 4);
       const names = [...new Set((st.rows ?? []).filter(r => r.state === "wait" || r.state === "use").map(r => r.itemName).filter(Boolean))];
-      const pl = plate(["Reaction here", names.join(", ")], { fs: Math.round(fs * 0.95) }); pl.position.set(b.backAt.x + (b.backAt.w ?? gs) / 2, b.backAt.y - 4); labels.addChild(pl);
+      const pl = plate(["Reaction here", names.join(", ")], { fs: Math.round(fs * 0.95) });
+      // Avoid overlapping a waiting reactor's plate sitting right above this square
+      const reactorAbove = (st.rows ?? []).some(r => { if (r.state !== "wait") return false; const tk = tokenAt(r.tokenUuid); return tk && Math.abs(centerOf(tk).x - (b.backAt.x + bw / 2)) < gs * 1.4 && tk.y <= b.backAt.y && tk.y >= b.backAt.y - gs * 1.6; });
+      pl.position.set(b.backAt.x + bw / 2, reactorAbove ? b.backAt.y + bh + (pl.height || 36) + 6 : b.backAt.y - 4);
+      labels.addChild(pl);
     }
     if (b.start && b.face?.img) {
       try { const sp = PIXI.Sprite.from(b.face.img); sp.alpha = 0.35; sp.width = (b.start.w ?? 1) * gs; sp.height = (b.start.h ?? 1) * gs; sp.position.set(b.start.x, b.start.y); layer.addChildAt(sp, 0); } catch (e) { /* no image */ }
@@ -135,7 +133,7 @@ function drawOne(st, gs, fs) {
       g.lineStyle(hov === "base" ? 8 : 5, RED, 1).moveTo(a.x, a.y).quadraticCurveTo(ctrl.x, ctrl.y, end.x, end.y);
       arrowHead(g, ctrl, end, RED, fs * 1.1);
     }
-    if (t && st.hold && b.held) { const bub = tag(`${b.held} held`, "#b8432f", 0xffffff, fs); const c = centerOf(t); bub.position.set(c.x, t.y - fs); labels.addChild(bub); }
+    if (t && st.hold && b.held) { const bub = tag(`${b.held} held`, "#b8432f", 0xffffff, fs); const c = centerOf(t); bub.position.set(c.x, t.y - 4); labels.addChild(bub); }
   }
   // the rings, the lines, the pins
   const pins = st.ready ? pinNumbers(st, local.order.get(st.id)) : null, ringed = new Set();
@@ -145,10 +143,12 @@ function drawOne(st, gs, fs) {
     if (r.state === "wait") {
       if (!ringed.has(r.actorUuid)) {
         ringed.add(r.actorUuid); attentionRing(labels, centerOf(me), me.w * 0.62);   // v0.0.461 (the map notes, Lucas's B): the steady gold ring and its slow ripple (was a dashed amber ring)
-        // v0.0.390 (Lucas: "it can pass unnoticed"): the Reaction's name over the token, only for the one who answers it (a player never sees an
-        // NPC's options), until it is used or passed; a client setting turns it off
+        // v0.0.390 (Lucas: "it can pass unnoticed"): the Reaction's name over the token, only for the one who answers it (including GM-owned NPCs
+        // whose answerer is blank, matching hud.mjs waitingFor), until it is used or passed; a client setting turns it off
         let showName = true; try { showName = game.settings.get(F, "rxFloat") !== false; } catch (e) { showName = true; }
-        if (showName && r.answerer === game.user.id) { const names = st.rows.filter(x => x.actorUuid === r.actorUuid && x.state === "wait").map(x => x.itemName); const lb = plate([`${[...new Set(names)].join(" or ")}?`, "Use or Pass in the HUD"], { fs: Math.round(fs * 1.05) }); lb.position.set(centerOf(me).x, me.y - me.h * 0.12); labels.addChild(lb); }   // v0.0.461: the plate
+        const drawWaitPlate = () => { const names = st.rows.filter(x => x.actorUuid === r.actorUuid && x.state === "wait").map(x => x.itemName); const lb = plate([`${[...new Set(names)].join(" or ")}?`, "Use or Pass in the HUD"], { fs: Math.round(fs * 1.05) }); lb.position.set(centerOf(me).x, me.y - me.h * 0.12); labels.addChild(lb); };
+        if (showName && r.answerer === game.user.id) drawWaitPlate();
+        else if (showName && game.user.isGM && !r.answerer) drawWaitPlate();   // v0.0.461: the plate (GM NPCs too)
       }
       if (hov === r.i) { const t = tokenAt(r.targetUuid); if (t && t !== me) { const col = hex(PALETTE[st.rows.filter(x => x.state === "use").length % PALETTE.length]); g.lineStyle(4, col, 0.9); const a = centerOf(me), z = shortOf(a, centerOf(t), t.w * 0.45); dashLine(g, a, z, 14, 9); arrowHead(g, a, z, col, fs); } }
       continue;
@@ -162,7 +162,7 @@ function drawOne(st, gs, fs) {
     const p = pin(pins?.get(r.i) ?? "", Math.round(fs * 0.85), r.color);
     p.position.set(me.x + me.w * 0.92, me.y + me.h * 0.08);
     labels.addChild(p);
-    if (on) { const lb = tag(r.itemName, r.color, NAVY, Math.round(fs * 0.85)); lb.position.set(a.x, me.y + me.h + fs * 0.7); labels.addChild(lb); }
+    if (on) { const lb = tag(r.itemName, r.color, 0, Math.round(fs * 0.9)); lb.position.set(a.x, me.y + me.h + (lb.height || 24) + 6); labels.addChild(lb); }
     if (!t || t === me) continue;
     const c = centerOf(t), s0 = shortOf(c, a, me.w * 0.55), z = shortOf(a, c, t.w * 0.5);
     g.lineStyle(on ? 7 : 4, col, 1).moveTo(s0.x, s0.y).lineTo(z.x, z.y);

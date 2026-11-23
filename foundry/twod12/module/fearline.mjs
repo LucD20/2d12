@@ -4,6 +4,7 @@
 // Nothing is saved: it is drawn from the effects of the controlled tokens.
 import { allEffects } from "./passives.mjs";
 import { effectOff, seesOrigin } from "./escalation.mjs";
+import * as MK from "./mapmark.mjs";
 const F = "twod12", NAME = "twod12-fearline", PURPLE = 0xb06ad8;
 
 /** Pure: the label for one limit. how: "difficult" | "cant"; dir: "closer" | "away". */
@@ -16,11 +17,14 @@ export function fearLabel({ name, source, how, dir, seen }) {
 export function fearSources(tok) {
   const actor = tok?.actor, out = [];
   if (!actor) return out;
+  const gm = !!globalThis.game?.user?.isGM;
   for (const e of allEffects(actor)) {
     if (effectOff(actor, e)) continue;
     for (const l of e.getFlag?.(F, "moveLimits") ?? []) {
       const o = e.origin ?? "", src = (canvas?.tokens?.placeables ?? []).find(t => t.document?.uuid === o || (t.actor && t.actor.uuid === o));
       if (!src || src.id === tok.id) continue;
+      // Never leak a GM-hidden or non-visible token's coordinates to a player
+      if (!gm && (src.document?.hidden || src.visible === false)) continue;
       let seen = true; if (l.seen) { try { seen = seesOrigin(actor, e); } catch (err) { seen = true; } }
       out.push({ name: String(e.name ?? "").replace(/\s*\(.*\)\s*$/, ""), source: src.name, token: src, how: l.how === "difficult" ? "difficult" : "cant", dir: l.dir === "away" ? "away" : "closer", seen });
     }
@@ -28,16 +32,19 @@ export function fearSources(tok) {
   return out;
 }
 
-const layer = () => canvas?.controls ?? canvas?.interface ?? null;
-function clear() { const l = layer(); for (const c of [...(l?.children ?? [])].filter(x => x.name === NAME)) { l.removeChild(c); c.destroy({ children: true }); } }
+const host = () => canvas?.interface ?? canvas?.stage ?? null;
+function clear() { const l = host(); for (const c of [...(l?.children ?? [])].filter(x => x.name === NAME)) { l.removeChild(c); c.destroy({ children: true }); } }
 const center = t => t.center ?? { x: t.x + t.w / 2, y: t.y + t.h / 2 };
 function draw() {
   queued = false;
   clear();
   if (!canvas?.ready) return;
   const box = new PIXI.Container(); box.name = NAME; box.eventMode = "none";
+  const fs = Math.max(12, Math.round((canvas.grid?.size ?? 100) * 0.16));
   for (const tok of canvas.tokens?.controlled ?? []) {
-    for (const f of fearSources(tok)) {
+    const list = fearSources(tok);
+    let topY = (tok.y ?? center(tok).y) - 6;
+    for (const f of list) {
       const a = center(tok), b = center(f.token), alpha = f.seen ? 0.95 : 0.4;
       const g = new PIXI.Graphics(), dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy) || 1, dash = 14, gap = 9;
       g.lineStyle(4, PURPLE, alpha);
@@ -45,17 +52,19 @@ function draw() {
       const r = Math.max(f.token.w, f.token.h) / 2 + 6;
       g.lineStyle(4, PURPLE, alpha).drawCircle(b.x, b.y, r);
       box.addChild(g);
-      const text = new PIXI.Text(fearLabel(f), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: 17, fontWeight: "600", fill: f.seen ? "#ecd6fb" : "#bfb3c8", stroke: "#111111", strokeThickness: 4 });
-      text.anchor.set(0.5, 1); text.alpha = f.seen ? 1 : 0.8;
-      text.position.set(a.x, (tok.y ?? a.y) - 6);
-      box.addChild(text);
+      const what = f.how === "difficult" ? `Moving ${f.dir === "away" ? "away" : "closer"} is Difficult Terrain` : `Can't move ${f.dir === "away" ? "away" : "closer"}`;
+      const pl = MK.plate([`${f.name} of ${f.source}`, f.seen ? what : "Not seen (no effect now)"], { fs, color: f.seen ? 0xecd6fb : 0xbfb3c8 });
+      pl.position.set(a.x, topY);
+      topY -= (pl.height || 36) + 4;
+      box.addChild(pl);
     }
   }
-  if (box.children.length) layer()?.addChild(box); else box.destroy();
+  if (box.children.length) MK.addOnTop(box, 8900); else box.destroy();
 }
 let queued = false;
 const redraw = () => { if (queued) return; queued = true; requestAnimationFrame(() => { try { draw(); } catch (e) { console.warn("twod12 | Frightened line", e); } }); };
 
 export function registerFearLine() {
-  for (const h of ["controlToken", "refreshToken", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect", "canvasReady"]) Hooks.on(h, redraw);
+  for (const h of ["controlToken", "refreshToken", "updateToken", "sightRefresh", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect", "canvasReady", "canvasPan"]) Hooks.on(h, redraw);
+  Hooks.on("canvasTearDown", () => { queued = false; clear(); });
 }

@@ -883,8 +883,8 @@ const STYLE3 = `
 .twod12-hud .hb-ask .in-side .lb-opt.sq:hover, .twod12-hud .hb-ask .in-side .lb-opt.sq.hover { border-color: var(--s-gold, #d2a75a); box-shadow: 0 0 0 1px var(--s-gold, #d2a75a); background: var(--hud-bg, #1f1c18); }
 /* while it asks: the side panel shows in a narrow window too, the granted uses and the notes step aside, the HUD's edge lit */
 .twod12-hud.asking-side { box-shadow: 0 0 0 1px var(--s-gold, #d2a75a), 0 0 14px rgba(212, 165, 72, .35); }
-.twod12-hud.asking-side .hb-gr, .twod12-hud.asking-side .hb-info { display: none; }
-@container (max-width: 820px) { .twod12-hud.asking-side .hb-bar-wrap { grid-template-columns: 26px 210px minmax(0, 1fr) 190px; } .twod12-hud.asking-side .hb-bar-wrap .hb-side { display: grid; } }
+.twod12-hud.asking-side .hb-side .hb-gr, .twod12-hud.asking-side .hb-side .hb-info { display: none; }
+@container (max-width: 820px) { .twod12-hud.asking-side .hb-bar-wrap:not(.h3-wrap) { grid-template-columns: 26px 210px minmax(0, 1fr) 190px; } .twod12-hud.asking-side .hb-bar-wrap:not(.h3-wrap) .hb-side { display: grid; } }
 /* the bottom bar's squares too (no HUD on screen) */
 .twod12-linebar .lb-opt.sq { width: 34px; height: 34px; padding: 0; overflow: hidden; } .twod12-linebar .lb-opt.sq img { width: 100%; height: 100%; object-fit: cover; border: 0; }
 /* ==== v0.0.398 (Lucas, on foundry/mockups/multi-damage.html: "Looks good"): a card on several creatures, a group a Tier, each creature once ==== */

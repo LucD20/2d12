@@ -11,6 +11,7 @@ import { coverFromPoint, wallBlocks } from "./cover.mjs";
 import { lineFromSpace, cutLine, inLineHeight } from "./linearea.mjs";
 import { solidTile } from "./corners.mjs";
 import { shapesForCells } from "./regionshape.mjs";
+import * as MK from "./mapmark.mjs";
 
 /** The center of a token's whole space. */
 const spaceCenter = tk => { const s = canvas.grid.size, d = tk.document, h = homePos(d); return { x: h.x + (d.width ?? 1) * s / 2, y: h.y + (d.height ?? 1) * s / 2 }; };
@@ -205,49 +206,80 @@ export async function stepAside() {
 function place(shape, n, { within = 0, user = null } = {}) {
   return new Promise(resolve => {
     const gfx = new PIXI.Graphics();
-    (canvas.interface ?? canvas.stage).addChild(gfx);
+    MK.addOnTop(gfx, 8500);
+    const marks = new PIXI.Container();
+    marks.eventMode = "none";
+    MK.addOnTop(marks, 9000);
     const prevInteractive = canvas.tokens.interactiveChildren;
     canvas.tokens.interactiveChildren = false;
     let current = null, side = "left", lastPos = null;
-    const isLine = shape === "line";
-    // v0.0.214: a Line's tie side (left or right, from you toward the target), chosen before placing and locked when placed: Tab or the button.
-    const bar = isLine ? document.createElement("div") : null;
-    if (bar) {
-      // v0.0.216 (Lucas: the bar looked poor and the button text overflowed): the target-picking banner's look; Left and Right are two buttons.
-      bar.className = "twod12-linebar";
-      bar.innerHTML = `<i class="fa-solid fa-arrow-right-long lb-ic"></i><span class="lb-text">Line ${n}: aim with the mouse, click to place, Esc to cancel.</span><span class="lb-side" hidden><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span>`;
-      document.body.append(bar);
-      bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
-    }
+    const isLine = shape === "line", shapeName = isLine ? `Line ${n}` : `${n} ${shape === "burst" ? "Burst" : "Emanation"}`;
+    const bar = document.createElement("div");
+    bar.className = "twod12-linebar twod12-areabar";
+    bar.innerHTML = `<i class="fa-solid ${isLine ? "fa-arrow-right-long" : "fa-burst"} lb-ic"></i><span class="lb-text"></span><span class="lb-side" hidden><span class="lb-lbl">Ties</span><button type="button" data-side="left">Left</button><button type="button" data-side="right">Right</button><kbd>Tab</kbd></span><button type="button" class="lb-give">Cancel</button><span class="lb-keys">${isLine ? "<kbd>Tab</kbd> Flip ties \u00b7 " : ""}<kbd>Esc</kbd> Cancel</span>`;
+    const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, inSide = !!slot?.classList?.contains("hb-ask");
+    if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", inSide); slot.append(bar); hud.hudAsking(true, inSide); } else document.body.append(bar);
+    bar.querySelectorAll(".lb-side button").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); if (b.dataset.side !== side) flip(); }));
+    bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); ev.stopPropagation(); done(null); });
     const flip = () => { side = side === "left" ? "right" : "left"; if (lastPos) current = compute(shape, n, lastPos, { user, side }); draw(); };
-    const showBar = () => {
-      if (!bar) return;
-      const b = bar.querySelector(".lb-side"), tie = !!current?.hasTie;
-      b.hidden = !tie; b.style.display = tie ? "" : "none";
-      b.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
-      bar.querySelector(".lb-text").textContent = !current ? `Line ${n}: aim with the mouse at any square.` : `Line ${n}: ${current.cells.length} square${current.cells.length === 1 ? "" : "s"}${current.cut ? ", stopped by a wall" : ""}. Click to place.`;
-    };
     // "Within N sq.": the Point of Origin can be at most that far from the creature using the Action (a spot that is too far is shown in red).
     const tooFar = c => !!(within && user && c && placementDistance(user, c) > within);
     const limit = within && user ? emanationCells(tokenCells(user), within) : [];   // v0.0.249 (Lucas): the reach of the placement, outlined in gold like a Charge's
+    const previewHits = () => {
+      if (!current?.cells?.length) return { affected: [], blocked: [] };
+      const gm = !!game.user?.isGM;
+      const cand = tokensIn(current.cells).filter(t => !outOfFight(t) && (gm || (!t.document?.hidden && t.visible !== false)) && (!isLine || t.id !== user?.id));
+      if (!cand.length) return { affected: [], blocked: [] };
+      const placed = { ...current, noCover: [user?.id, ...cand.map(t => t.id)].filter(Boolean) };
+      return areaReach(placed, cand);
+    };
+    const showBar = (far, hits) => {
+      const b = bar.querySelector(".lb-side"), tie = isLine && !!current?.hasTie;
+      b.hidden = !tie; b.style.display = tie ? "" : "none";
+      b.querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.side === side));
+      const tx = bar.querySelector(".lb-text");
+      if (!current) { tx.innerHTML = `<b>Place ${shapeName}</b>${within ? ` <span class="lb-tag">within ${within} sq.</span>` : ""} Click on the map to place.`; return; }
+      if (far) { tx.innerHTML = `<b>Place ${shapeName}</b> <span class="lb-warn">Too far (${placementDistance(user, current)} sq., max ${within}).</span>`; return; }
+      const od = user?.document?.disposition ?? 1;
+      const en = hits.affected.filter(t => t.document?.disposition !== 0 && t.document?.disposition !== od).length;
+      const al = hits.affected.filter(t => t.document?.disposition === od).length;
+      const parts = [en ? `${en} enem${en === 1 ? "y" : "ies"}` : "", al ? `${al} all${al === 1 ? "y" : "ies"}` : "", hits.blocked.length ? `${hits.blocked.length} blocked (No LoE)` : ""].filter(Boolean);
+      const count = parts.length ? parts.join(", ") : `${current.cells.length} square${current.cells.length === 1 ? "" : "s"}`;
+      tx.innerHTML = `<b>Place ${shapeName}</b> <span class="lb-tag">${count}${current.cut ? " · cut by wall" : ""}</span> Click to place.`;
+    };
     const draw = () => {
       gfx.clear();
-      showBar();
-      if (limit.length) outlineCells(gfx, limit, { color: 0xf1c84b, width: 2 });
+      for (const k of marks.removeChildren()) k.destroy?.({ children: true });
+      if (limit.length) outlineCells(gfx, limit, { color: MK.GOLD, width: 2 });
+      const far = tooFar(current), hits = current && !far ? previewHits() : { affected: [], blocked: [] };
+      showBar(far, hits);
+      try { canvas.app.view.style.cursor = far ? "not-allowed" : "crosshair"; } catch (e) { /* no view */ }
       if (!current) return;
-      const far = tooFar(current);
-      fillCells(gfx, current.cells, far ? 0xc0392b : COLOR, far ? 0.35 : 0.5);
-      outlineCells(gfx, current.cells, { color: far ? 0xe74c3c : 0xf3c9ee });
+      fillCells(gfx, current.cells, far ? MK.RED : COLOR, far ? 0.35 : 0.45);
+      outlineCells(gfx, current.cells, { color: far ? MK.RED : 0xf3c9ee });
       if (current.passed?.length) dashedCells(gfx, current.passed);
       if (isLine && current.line) { const t = current.line.target; line(gfx, current.point, cellCenter(t.y, t.x), 0xffffff, 1.5, 0.7); }
+      if (!far) {
+        const gs = size(), fs = Math.max(12, Math.round(gs * 0.16));
+        for (const t of hits.affected) {
+          const c = spaceCenter(t), r = Math.max(t.w ?? gs, t.h ?? gs) * 0.56;
+          const rg = new PIXI.Graphics(); rg.lineStyle(3, MK.GOLD, 0.95).drawCircle(c.x, c.y, r); marks.addChild(rg);
+        }
+        for (const t of hits.blocked) {
+          const c = spaceCenter(t), pl = MK.plate(["No Line of Effect"], { fs, warn: true });
+          pl.position.set(c.x, (t.y ?? c.y) - 4); marks.addChild(pl);
+        }
+      }
     };
     const move = ev => { lastPos = localPos(ev); current = compute(shape, n, lastPos, { user, side }); draw(); };
     const done = result => {
-      bar?.remove();
+      bar.remove();
+      try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ }
+      try { canvas.app.view.style.cursor = ""; } catch (e) { /* no view */ }
       canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
       window.removeEventListener("keydown", key_, true);
       canvas.tokens.interactiveChildren = prevInteractive;
-      gfx.destroy();
+      gfx.destroy(); marks.destroy({ children: true });
       resolve(result);
     };
     const down = ev => {
@@ -260,14 +292,13 @@ function place(shape, n, { within = 0, user = null } = {}) {
       done(current);
     };
     const key_ = ev => {
-      if (ev.key === "Escape") done(null);
+      if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); done(null); }
       if (isLine && ev.key === "Tab") { ev.preventDefault(); ev.stopImmediatePropagation(); if (current?.hasTie) flip(); }   // before Foundry's own Tab
     };
     canvas.stage.on("pointermove", move);
     canvas.stage.on("pointerdown", down);
     window.addEventListener("keydown", key_, true);
-    if (!isLine) ui.notifications.info(`${n} ${shape === "burst" ? "Burst" : "Emanation"}${within ? ` (within ${within} sq.)` : ""}: click to place, Esc to cancel.`);   // v0.0.246: the book's order (a 2 Emanation)
-    else showBar();
+    draw();
   });
 }
 
