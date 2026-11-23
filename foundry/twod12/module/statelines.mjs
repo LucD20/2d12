@@ -18,3 +18,12 @@ export function stateLinesFor(lines, pre = {}, now = {}, tier = 0) {
   if (now.s) add("strained");
   return out;
 }
+/** Pure (core rework batch 3, Drawing Light): if an active Bloodied / Strained line offers Sliding instead of Pulling (or Pushing), return "slid", else "". */
+export function moveAltFor(lines, pre = {}, now = {}, tier = 0, moveKind = "") {
+  if (!moveKind) return "";
+  for (const t of stateLinesFor(lines, pre, now, tier)) {
+    if (moveKind === "pulled" && /\bslide\b[\s\S]*\binstead of pull/i.test(t)) return "slid";
+    if (moveKind === "pushed" && /\bslide\b[\s\S]*\binstead of push/i.test(t)) return "slid";
+  }
+  return "";
+}

@@ -1,9 +1,9 @@
 --- [D] (weapon die alone): formula, preview, average, parser
 weaponDieOnlyFormula: 1d6! | 2x: 2d6! | bow T3: 1d4! | flat: null
-weaponDieText: 1d6 | bow T3: 1d4 | flat: 0
+weaponDieText: 1d6! | bow T3: 1d4! | flat: 0
 weaponDieAvg: 3.5 | bow T3: 2.5 | flat: 0
 tierTokens 1[W]+1[D]+[Mod]: 1WB,1DB | parsed: [{"w":true,"d":false,"dc":1},{"w":false,"d":true,"dc":1}]
-Basic Attack rawTierLine: [V] [Mod] / [V] 1[W] + [Mod] / [V] 1[W] + 1[D] + [Mod]
+Basic Attack rawTierLine: [V] 1d4! / [V] 1[W] + [Mod] / [V] 1[W] + 1[D] + [Mod]
 --- Fists (Option B exploding 1d6!) and weapon table
 Fists weapon table: {"t1":{"count":0,"die":"","mod":0},"t2":{"count":0,"die":"","mod":2},"t3":{"count":1,"die":"d6","mod":0}}
 Fists card tiers: [V] 1 Bl / [V] 2 + [Mod] Bl / [V] 1d6! + [Mod] Bl
@@ -32,3 +32,8 @@ Trip: body,handle,instinct | AP: 1/2
 Shove: body,handle | AP: 1/2
 Haul: body,handle | vs: body
 Kneel: T1: @Condition[prone] | T2: @Condition[hindered|eot] | T3: No effect.
+--- v0.0.481 fixes: Drawing Light Bloodied Slide choice, attack card state lines, Steady Draw ledger & exploded flat, PC Basic Attack section
+Drawing Light gold & moveAltFor: gold | Bloodied T2 pull-> slid | not bloodied-> ""
+attackCardHtml renders after-tier Strained line: true
+exploded die has no bogus Flat -1: true | ledger names source: Pierce · Steady Draw (1d4!: 4, 1)
+weaponText with !: 1d4!+6 | T3: 1d6!+9 | PC Basic Attack section: atwill

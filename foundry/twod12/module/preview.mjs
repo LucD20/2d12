@@ -6,18 +6,18 @@ import { weaponTierText } from "./explode.mjs";   // v0.0.407: "3 + 1d4!" (the b
 import { esc } from "./roll.mjs";
 import { tierProbs, critProb } from "./calc.mjs";
 const enrich = async (txt, doc = null) => highlightText(await foundry.applications.ux.TextEditor.implementation.enrichHTML(txt ?? "", doc ? { relativeTo: doc } : {}));
-/** Weapon damage for a tier as dice text ("1d8", "2d6+1"). */
+/** Weapon damage for a tier as dice text ("1d8!", "2d6!+1"). Every weapon die explodes (Chapter 15). */
 export function weaponText(weapon, tier, n = 1) {
   const d = weapon?.system?.damage?.[`t${tier}`];
   if (!d) return "";
-  const dice = d.die ? `${d.count * n}${d.die}` : "";
+  const dice = d.die ? `${d.count * n}${d.die}!` : "";
   const mod = d.mod * n;
   return dice + (mod ? `${dice && mod > 0 ? "+" : ""}${mod}` : "") || "0";
 }
-/** Core rework batch 3 ([D]): the weapon's die on this Tier, n times, with no flat part ("1d6", "2d4", or "0"). */
+/** Core rework batch 3 ([D]): the weapon's exploding die on this Tier, n times, with no flat part ("1d6!", "2d4!", or "0"). */
 export function weaponDieText(weapon, tier, n = 1) {
   const d = weapon?.system?.damage?.[`t${tier}`];
-  return d?.die && Number(d.count) ? `${d.count * n}${d.die}` : "0";
+  return d?.die && Number(d.count) ? `${d.count * n}${d.die}!` : "0";
 }
 
 /** The lines of one tier with the weapon's real dice and the [Mod] value (the roll dialog's preview and the chat card). */

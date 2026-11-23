@@ -194,9 +194,9 @@
    "foundry": {
     "img": "icons/svg/light.svg",
     "folder": "Paladin",
-    "automation": "silver",
+    "automation": "gold",
     "basicAttack": true,
-    "automationNote": "the damage and the Pull; a Critical's 1d10! (a Basic attack); the Bloodied line's Slide instead of the Pull: by hand."
+    "automationNote": "the damage, the Pull, and the Bloodied Pull-or-Slide choice; a Critical's 1d10! (a Basic attack)."
    }
   },
   {

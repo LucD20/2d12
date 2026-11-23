@@ -72,3 +72,13 @@ console.log("Haul:", BASIC_ACTIONS.haul.traits.join(","), "| vs:", BASIC_ACTIONS
 const cmd = docOf("action", "Commandment");
 const kneel = cmd.system.versions.find(v => v.mode === "Kneel");
 console.log("Kneel:", "T1:", kneel?.x1, "| T2:", kneel?.x2, "| T3:", kneel?.x3);
+
+console.log("--- v0.0.481 fixes: Drawing Light Bloodied Slide choice, attack card state lines, Steady Draw ledger & exploded flat, PC Basic Attack section");
+const CC = await import(ROOTURL + "module/chatcards.mjs");
+const SM = await import(ROOTURL + "module/sheetmodel.mjs");
+console.log("Drawing Light gold & moveAltFor:", dl.system.automation, "| Bloodied T2 pull->", SL.moveAltFor(dl.system.stateLines, {}, { b: true }, 2, "pulled"), "| not bloodied->", JSON.stringify(SL.moveAltFor(dl.system.stateLines, {}, { b: false }, 2, "pulled")));
+const atkHtml = CC.attackCardHtml({ kind: "attack", name: "Basic Attack", rows: [{ name: "Orc", tier: 1, total: 10, dc: 13 }], outcomes: { 1: { parts: [{ pool: "B", t: "1d4!", sub: "Sl" }], riders: [] } }, card: { top: [], before: [], after: [{ label: "Strained", html: "You can Slide the target 1." }] } });
+console.log("attackCardHtml renders after-tier Strained line:", atkHtml.includes("Strained") && atkHtml.includes("Slide the target 1"));
+const exInst = CC.instancesOf([{ pool: "B", sub: "Pi", kind: "D", total: 4, formula: "1d4!", src: "Steady Draw", dice: [{ faces: 4, results: [4, 1], ex: [true, false] }] }]);
+console.log("exploded die has no bogus Flat -1:", exInst[0].mods.length === 0, "| ledger names source:", CC.ledgerModel([{ pool: "B", sub: "Pi", kind: "D", total: 4, formula: "1d4!", src: "Steady Draw", dice: [{ faces: 4, results: [4, 1], ex: [true, false] }] }])[0].lines[0].label);
+console.log("weaponText with !:", PR.weaponText(longsword, 2), "| T3:", PR.weaponText(longsword, 3), "| PC Basic Attack section:", SM.actionSection({ basic: true, basicKey: "basicWeaponAttack", frequency: "atwill" }));

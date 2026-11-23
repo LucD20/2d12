@@ -3204,6 +3204,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.rolldlg .rd-qb:hover, .twod12.rolldlg .rd-addhere:hover { background: var(--rd-box); }
 .twod12.rolldlg .rd-notes { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0 4px; }
 .twod12.rolldlg .rd-note { font-size: 11.5px; color: var(--cc-mute); border: 1px dotted var(--cc-btn2); border-radius: 3px; padding: 1px 5px; }
+.twod12.rolldlg .rd-note.active { color: var(--cc-ink); border-style: solid; border-color: var(--rd-buff); background: var(--rd-box); font-weight: 600; }
 .twod12.rolldlg .rd-row { display: flex; align-items: flex-start; gap: 6px; margin: 3px 0; }
 .twod12.rolldlg .rd-rlabel { flex: 0 0 68px; font-size: 11.5px; font-weight: 700; color: var(--cc-mute); padding-top: 6px; }
 .twod12.rolldlg .rd-chips { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; min-width: 0; }

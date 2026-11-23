@@ -14,5 +14,5 @@ not enough AP: {"ap":1,"freeMove":0,"moveLeft":0,"evadeMove":0} |  | warns: [
 ]
 basic: Basic Attack [strike/weapon] check=- AP 1 | Advance [move/self] check=- AP 1 | Evade [self] check=- AP 1/2 | Reload [handle/weapon] check=- AP 1 | Interact [handle] check=- AP 1 | Steel Yourself [self] check=- AP 1/2 | Crawl [move/self] check=- AP 1/2 | Regrip [self] check=- AP 1 | Release [self] check=- AP 0 | Stand [move/self] check=- AP 1 | Break Free [body/instinct/move] check=- AP 1 | Charge [move/strike] check=- AP 2 | Lean [self] check=- AP 1 | Fists [strike/weapon] check=- AP 1 | Relocate [body/handle/instinct/strike] check=- AP 1/2/3 | Trip [body/handle/instinct] check=- AP 1/2 | Shove [body/handle] check=- AP 1/2 | Haul [body/handle] check=- AP 1/2/3 | Shake Off [handle] check=- AP 1 | Aid [appeal/focus/instinct] check=- AP 1 | Demoralize [appeal] check=- AP 1 | Feint [focus/mind] check=- AP 1 | Heal [appeal/handle/mind] check=- AP 2 | Tumble [appeal/instinct/move] check=- AP 1/2
 Shove is a pushed action: true
-Basic Weapon Attack exp: 7.79 (5.36)
+Basic Weapon Attack exp: 8.07 (5.36)
 Trip 2 AP exp: 3.96

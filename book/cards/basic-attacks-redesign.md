@@ -74,3 +74,6 @@ Expected damage vs 13 (Modifier first / second) [calc]: Basic Attack: Hunting Bo
 - A rule the examples need: a Bloodied / Strained line that changes **this Action's own damage** can't wait for that damage (it would be circular): it reads the target as it was before the roll.
 - The Archer's Power Basic attack: its flavor.
 - Each card, one at a time, priced in the analysis format (`paladin-analyses.md`).
+
+## Revised (Lucas, 2026-11-22)
+- **Basic Attack Tier 1** changes from `[V] [Mod]` to **`[V] 1d4!`** (the weapon's damage type), matching the Power Basic attacks (`1d4!`) so every Basic attack rolls an exploding die on Tier 1 without needing a special Tier 1 `[D]` ruling (weapons stay `0` on Tier 1).

@@ -22,6 +22,7 @@ export const SECTION_ORDER = ["granted", "apex", "round", "turn", "encounter", "
 export function actionSection(a = {}) {
   if (a.granted) return "granted";
   if (a.basicKey === "opportunityAttack") return "reaction";
+  if (a.basicKey === "basicWeaponAttack") return "atwill";
   if (a.basic) return "basic";
   if (a.reaction) return "reaction";
   if (Number(a.escalation) > 0) return "apex";

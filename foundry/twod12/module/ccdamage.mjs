@@ -3,7 +3,7 @@
 // Ch. 1 a Resist split across both pools), asked of its owner. The card itself is drawn by chatcards.mjs.
 // Order per creature: the damage per subtype, then Resist / Weak / Immune (once per subtype per Action), then Guard, then Health.
 // A rider (a Tier's own effects, the "After the damage" chain) lands only if the damage did: more than 0 after Resist and Immune (Ch. 1 Riders).
-import { stateLinesFor } from "./statelines.mjs";   // the core rework batch 2
+import { stateLinesFor, moveAltFor } from "./statelines.mjs";   // the core rework batch 2 & 3
 import * as CC from "./chatcards.mjs";
 import { esc } from "./util.mjs";
 import { damageOdds } from "./calc.mjs";
@@ -239,26 +239,37 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
     }
     // v0.0.440 (Lucas, checklist: Seizing Cut "didn't slide automatically"): the Tier's forced movement, then the conditions written after it
     if (landed && g.move) {
-      const { runTierMove } = await import("./inline.mjs");
+      const { runTierMove, tierMoveThen, parseInline } = await import("./inline.mjs");
       let user = null; try { const d = s.originUuid ? await fromUuid(s.originUuid) : null; user = d?.documentName === "Actor" ? d : d?.actor ?? null; } catch (e) { user = null; }
-      try { await runTierMove(g.move, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: game.messages?.get?.(s.srcId) ?? null }); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
+      let moveText = g.move;
+      const mt = tierMoveThen(g.move), cfg = mt ? parseInline("Move", mt.move) : null;
+      const alt = cfg ? moveAltFor(s.lines, r.pre ?? {}, { b: bl, s: st }, r.tier ?? 0, cfg.kind) : "";
+      if (alt === "slid" && cfg) {
+        const dist = Number(cfg.distance) || 1, origWord = cfg.kind === "pushed" ? "Push" : "Pull", why = bl ? "Bloodied" : "Strained";
+        const { pickBar } = await import("./pickbar.mjs");
+        const pick = await pickBar({ icon: "fa-route", text: `<b>${esc(r.name)}</b> is ${why} (<b>${esc(s.name)}</b>): Slide ${dist} instead of ${origWord.toLowerCase()}ing?`, options: [{ id: "slid", label: `Slide ${dist}` }, { id: cfg.kind, label: `${origWord} ${dist}` }] });
+        if (!pick) moveText = "";
+        else if (pick === "slid") moveText = g.move.replace(new RegExp(`@Move\\[${cfg.kind}\\b`), "@Move[slid");
+      }
+      if (moveText) try { await runTierMove(moveText, { targets: [{ uuid: r.uuid, name: r.name, crit: !!r.crit }], actor: user, attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: game.messages?.get?.(s.srcId) ?? null }); } catch (e) { console.warn("twod12 | a Tier's movement", e); }
     }
   }
   const rwi = [...CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, label: x.label, v: x.v })), ...(report.mods ?? [])];   // v0.0.321: shown as icons after "Took"; v0.0.463: and the reductions and Guard (the breakdown)
   r.applied = { took, mods: rwi, state: bl && st ? "both" : bl ? "bloodied" : st ? "strained" : "", factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
   return true;
 }
-/** The "After the damage" chain, once, for the rows just applied whose damage landed on a Tier 2 or 3 (Ch. 1 Riders). */
+/** The "After the damage" chain, once, for the rows just applied whose damage landed (s.lines on any landed Tier, gated by stateLinesFor; s.after on Tier 2+ or Saves). */
 async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the chain's lines go into it)
-  const list = idx.map(i => s.rows[i]).filter(r => r?.applied?.landed && !r.applied.chainDone && (s.save || (r.tier ?? 0) >= 2));
-  if ((!s.after && !s.lines) || !list.length) return;
-  for (const r of list) r.applied.chainDone = true;
+  const landed = idx.map(i => s.rows[i]).filter(r => r?.applied?.landed && !r.applied.chainDone);
+  const afterList = landed.filter(r => (s.save || (r.tier ?? 0) >= 2));
+  if ((!s.lines || !landed.length) && (!s.after || !afterList.length)) return;
+  for (const r of landed) r.applied.chainDone = true;
   let actor = null; try { actor = s.originUuid ? await fromUuid(s.originUuid) : null; } catch (e) { actor = null; }
   const { runAfter } = await import("./inline.mjs");
-  // the core rework batch 2: each target's Bloodied / Strained lines, after its damage landed (its state now, and the one before: r.pre)
-  if (s.lines) {
+  // the core rework batch 2 & 3: each target's Bloodied / Strained lines, after its damage landed (any Tier unless the line itself names a Tier)
+  if (s.lines && landed.length) {
     const user = actor?.documentName === "Actor" ? actor : (actor?.actor ?? null);
-    for (const r of list) {
+    for (const r of landed) {
       const a = actorOf(r.uuid), texts = stateLinesFor(s.lines, r.pre ?? {}, { b: !!a?.system?.bloodied, s: !!a?.system?.strained }, r.tier ?? 0);
       for (const t of texts) {
         try { await runAfter(t, { save: !!s.save, actor: user, targets: [{ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 }], attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: msg }); }
@@ -266,9 +277,9 @@ async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the 
       }
     }
   }
-  if (!s.after) return;
+  if (!s.after || !afterList.length) return;
   // pack TALENTS-PT: each target's damage as dealt (its group's components and the factor applied: Ricochet's half, bounce.mjs)
-  await runAfter(s.after, { save: !!s.save, actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: list.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null, message: msg });
+  await runAfter(s.after, { save: !!s.save, actor: actor?.documentName === "Actor" ? actor : (actor?.actor ?? null), targets: afterList.map(r => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 })), attrVal: Number.isFinite(s.originMod) ? s.originMod : null, areaPoint: s.areaPoint ?? null, message: msg });
 }
 async function lockSource(s) {
   const src = s.srcId ? game.messages.get(s.srcId) : null;

@@ -54,7 +54,7 @@ the Save's damage per die too (inline.mjs no longer adds the step to the total):
 --- the damage message
 stamp: DAMAGE 16 Tier 3 ↗ | the tag (v0.0.454: the ledger's foot): Lethal · Full | pools: Vigor · 13 Sl 13 Resolve · 3 Ho 3
 the instance with its Weapon Modifier as a line: Vigor · Slash (Greatsword) Dice 4 5 Modifiers +2 Weapon +2 Heavy Blows Total 13
-rows:  || Bandit Thug Apply Vigor Slash (2d6: 4, 5, Weapon +2, Heavy Blows +2) 13 Guard −8 Takes 5 Resolve Holy (1d6: 3) 3 Takes 3 Lethal · Full || Fire Imp Took 5 · 3 Bloodied ✓ Undo Vigor Slash (2d6: 4, 5, Weapon +2, Heavy Blows +2) 13 Takes 5 Resolve Holy (1d6: 3) 3 Takes 3 Applied in full · Lethal
+rows:  || Bandit Thug Apply Vigor Slash · Greatsword (2d6: 4, 5, Weapon +2, Heavy Blows +2) 13 Guard −8 Takes 5 Resolve Holy · Radiant Zeal (1d6: 3) 3 Takes 3 Lethal · Full || Fire Imp Took 5 · 3 Bloodied ✓ Undo Vigor Slash · Greatsword (2d6: 4, 5, Weapon +2, Heavy Blows +2) 13 Takes 5 Resolve Holy · Radiant Zeal (1d6: 3) 3 Takes 3 Applied in full · Lethal
 v0.0.288: the header is the title alone: Weapon Attack | the bottom row (one row left: no Apply all, the tag alone): 
 removed: no Avg line, Lethal selector, Block, None: true | Designer mode adds the average: Avg 14.5 · this total or more: 38%
 target details hidden: no Guard / Weak / Took: true | names and state kept: Bandit Thug Waiting for the GM Fire Imp Bloodied ✓ Applied | Bloodied stays: true | footer: Player view · target details hidden by the GM

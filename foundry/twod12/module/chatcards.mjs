@@ -250,6 +250,8 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const dpart = din && !inMain ? din.part : "";
   // v0.0.429: an Effect the card writes above the roll is among its top lines (drawn once, there)
   const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 1)) && !(m.card?.top ?? []).some(l => l.label === "Effect") ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
+  // v0.0.481 (Lucas, checklist b3-sworn-blade): Bloodied / Strained lines written after Tiers appear on attack chat cards too
+  const stateAfter = m.card ? cardLinesHtml((m.card.after ?? []).filter(l => l.label === "Bloodied" || l.label === "Strained")) : "";
   // v0.0.465 (Lucas, checklist v0.0.464: "the Special and Flavor entries should be above the rolls"): the card's Special and its Flavor come right
   // after its lines, before the roll and the damage (they were under them)
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
@@ -259,7 +261,7 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   if (one) {
     const r = rows[0];
     const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(inMain ? { ...(m.outcomes?.[r.tier] ?? {}), parts: [] } : m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
-    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}${r.uuid ? "" : " notgt"}">${head}${flavor}${body}${dpart}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+    return `<div class="cc-card cc-attack${inMain ? " withdmg" : ""}${r.uuid ? "" : " notgt"}">${head}${flavor}${body}${stateAfter}${dpart}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
   // several targets: one shared roll, a row per creature, the outcome grouped by Tier
   const sh = m.shared ?? {};
@@ -313,9 +315,9 @@ export function attackCardHtml(m, view = FULL_VIEW) {
     // the pending rows in several Tiers: one Apply all for the card too, under the groups
     const pendAll = d.rows.filter(r => !r.applied), spread = d.groups.filter(g => (g.rows ?? []).some(i => d.rows[i] && !d.rows[i].applied)).length > 1;
     const allCard = view.author && !view.hideTgt && pendAll.length > 1 && spread ? `<div class="cc-applyall"><button type="button" class="cc-btn primary" data-twod12="ccApplyAll">Apply all</button>${pendAll.some(r => r.choice) ? '<span class="cc-muted">skips rows with a choice</span>' : ""}</div>` : "";
-    return `<div class="cc-card cc-attack many v398">${head}${flavor}${shared}<div class="cc-groups2">${tgroups}</div>${allCard}${d.note}${effects}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+    return `<div class="cc-card cc-attack many v398">${head}${flavor}${shared}<div class="cc-groups2">${tgroups}</div>${stateAfter}${allCard}${d.note}${effects}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
   }
-  return `<div class="cc-card cc-attack many">${head}${flavor}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${effects}${dpart}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
+  return `<div class="cc-card cc-attack many">${head}${flavor}${shared}<div class="cc-crows">${crows}</div><div class="cc-groups">${groups}</div>${stateAfter}${effects}${dpart}${m.extraHtml ?? ""}${btns}${des}${pf}</div>`;
 }
 
 /* ------------------------------------------------------------------ the Save card */
@@ -537,7 +539,9 @@ export function instancesOf(comps) {
       if (host) { host.mods.push({ v: Number(c.total) || 0, label: c.label || c.src || (c.kind === "A" ? "Modifier" : "Flat") }); host.total += Number(c.total) || 0; continue; }
     }
     // v0.0.440 (Lucas, checklist: "where is the die coming from?"): Empowered's own 1d6! (kind E) is its dice, named, not a step on top of them
-    const emp = c.kind === "E" ? 0 : Number(c.emp) || 0, flat = (Number(c.total) || 0) - dice.reduce((a, b) => a + b, 0) - emp;
+    // v0.0.481: an exploded face counts one less (explode.mjs), so subtract exploded steps before deriving flat
+    const diceSum = (c.dice ?? []).reduce((t, d) => t + (d.results ?? []).reduce((a, v, idx) => a + v - (d.ex?.[idx] ? 1 : 0), 0), 0);
+    const emp = c.kind === "E" ? 0 : Number(c.emp) || 0, flat = (Number(c.total) || 0) - diceSum - emp;
     const mods = [];
     if (flat) mods.push({ v: flat, label: c.flatLabel || (dice.length ? "Flat" : c.label || c.src || (c.kind === "A" ? "Modifier" : "")) });   // v0.0.326 (Lucas: "+3 Empowered +2" read as +5 from Empowered): the dice's own flat part is named
     if (emp) mods.push({ v: emp, label: emp > 0 ? "Empowered" : "Enfeebled" });
@@ -558,7 +562,8 @@ export function ledgerModel(comps, mods = [], { factor = 1, took = null } = {}) 
   for (const x of insts) {
     const p = x.pool === "M" ? "M" : "B", dice = x.dice.flatMap(d => d.results ?? []);
     const bits = [dice.length ? `${String(x.formula ?? "").replace(/\s.*$/, "")}${x.formula ? ": " : ""}${dice.join(", ")}` : "", ...(dice.length ? x.mods.filter(m => m.label) : []).map(m => `${m.label} ${m.v < 0 ? "\u2212" : "+"}${Math.abs(m.v)}`)].filter(Boolean);   // a flat amount alone: just its type
-    pools[p].lines.push({ label: `${x.sub ? subName(x.sub) : "Damage"}${bits.length ? ` (${bits.join(", ")})` : ""}`, v: `${x.total}` });
+    const head = `${x.sub ? subName(x.sub) : "Damage"}${x.src ? ` \u00b7 ${x.src}` : ""}`;
+    pools[p].lines.push({ label: `${head}${bits.length ? ` (${bits.join(", ")})` : ""}`, v: `${x.total}` });
     pools[p].v += x.total; (bySub[x.sub] ??= { B: 0, M: 0 })[p] += x.total;
   }
   for (const m of mods ?? []) {

@@ -180,9 +180,10 @@ async function barModel(actor, token = null) {
       if (!cancels.some(x => x.effect === ef.id)) cancels.push({ effect: ef.id, source });
     });
   }
-  const act = list.filter(a => !a.basic && !a.reaction && !a.escalation).map(lineOf);
+  const inBasicTab = a => a.basic && a.bkey !== "basicWeaponAttack";
+  const act = list.filter(a => !inBasicTab(a) && !a.reaction && !a.escalation).map(lineOf);
   const rx = list.filter(a => a.reaction && !a.escalation).map(lineOf);
-  const basic = basicOrder(list.filter(a => a.basic && !a.reaction)).map(lineOf);
+  const basic = basicOrder(list.filter(a => inBasicTab(a) && !a.reaction)).map(lineOf);
   const escLines = [...actor.itemTypes.feature.filter(f => Number(f.system?.escalation) > 0).map(f => ({ id: f.id, name: f.name, freq: "none", fqColor: FREQ_COLORS.none, pass: true, state: (e?.n ?? 0) >= Number(f.system.escalation) ? "working" : `at ${f.system.escalation}`, sub: `Escalation ${f.system.escalation}` })),
     ...list.filter(a => a.escalation).map(a => ({ ...lineOf(a), sub: `Escalation ${a.escalation}${a.roll ? ` · ${a.roll}` : ""}` }))];
   // the rx alert: a waiting Reaction of this creature that this user answers
@@ -262,8 +263,9 @@ async function handsOf(actor) {
 async function panelRows(actor, cat) {
   const { list } = await actionsOf(actor);
   const act = a => ({ action: a });
-  if (cat === "actions") return list.filter(a => !a.basic && !a.reaction && !a.escalation).sort((a, b) => a.minAp - b.minAp).map(act);
-  if (cat === "basic") return basicOrder(list.filter(a => a.basic && !a.reaction)).map(act);
+  const inBasic = a => a.basic && a.bkey !== "basicWeaponAttack";
+  if (cat === "actions") return list.filter(a => !inBasic(a) && !a.reaction && !a.escalation).sort((a, b) => a.minAp - b.minAp).map(act);
+  if (cat === "basic") return basicOrder(list.filter(a => inBasic(a) && !a.reaction)).map(act);
   if (cat === "react") return list.filter(a => a.reaction && !a.escalation).map(act);
   if (cat === "esc") {
     const passives = actor.itemTypes.feature.filter(f => Number(f.system?.escalation) > 0).map(f => ({ text: f.name, sub: `Passive, Escalation ${f.system.escalation}${(Number(actor.system?.escalation) || 0) >= Number(f.system.escalation) ? "" : " (not yet)"}` }));

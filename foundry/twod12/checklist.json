@@ -4,19 +4,11 @@
    "name": "Characters and sheets",
    "items": [
     {
-     "id": "b3-mod-order",
-     "v": "v0.0.480",
-     "title": "Paladin and Archer choose their Modifier order",
-     "do": "Update sheets from the compendium when prompted, then open Aveline's and Sylwen's Build tab and Class details / Swap choices.",
-     "expect": "Both Paladin and Archer allow choosing Weapon +2 / Power +1 or Power +2 / Weapon +1. Aveline and Durgan carry Sworn Blade and Drawing Light at level 1; Sylwen and Kaela carry Steady Draw and Harrying Shot at level 1.",
-     "rev": 1
-    },
-    {
-     "id": "b3-basic-grid",
-     "v": "v0.0.480",
-     "title": "The 24 Basic Actions in the sheet grid and HUD",
-     "do": "Open Aveline's Actions tab (Basic section) and select Aveline's token to open the HUD Basic tab.",
-     "expect": "Basic Attack replaces Weapon Attack (Attack); Tumble is in Movement; Demoralize and Feint are in Control; Heal and Aid are in Utility. Trip, Shove, and Haul no longer show the Strike trait. Everything fits cleanly without clipping.",
+     "id": "b3-basic-as-action",
+     "v": "v0.0.481",
+     "title": "Basic Attack as a normal At-will Action on PCs",
+     "do": "Open Aveline's Actions tab and select Aveline's token to open the HUD.",
+     "expect": "Basic Attack sits in the main At-will Actions section on Aveline's sheet (beside Drawing Light) and in the main Actions tab of the HUD, not in the Basic Actions grid/tab. Fists stays in Basic Actions.",
      "rev": 1
     }
    ]
@@ -25,19 +17,11 @@
    "name": "The roll dialog",
    "items": [
     {
-     "id": "b3-basic-attack-d",
-     "v": "v0.0.480",
-     "title": "Basic Attack [Mod] on Tier 1 and 1[W] + 1[D] + [Mod] on Tier 3",
-     "do": "With Aveline (Longsword) targeting the Orc Warrior, open Basic Attack. Check the card preview, force a Tier 1, then a Tier 3, and roll damage.",
-     "expect": "Tier 1 deals [V] [Mod] Slash, Tier 2 deals [V] 1[W] + [Mod], Tier 3 deals [V] 1[W] + 1[D] + [Mod] (two exploding d6s + 9 + Mod). On Aveline's Basic Attack card, Sworn Blade's Strained line shows under Tier 3.",
-     "rev": 1
-    },
-    {
-     "id": "b3-fists-explode",
-     "v": "v0.0.480",
-     "title": "Fists fixed tiers and exploding 1d6!",
-     "do": "With Durgan (free hand) targeting the Orc Warrior, open Fists. Check all three tiers and force a Tier 3 damage roll.",
-     "expect": "Tiers show [V] 1 Bl / [V] 2 + [Mod] Bl / [V] 1d6! + [Mod] Bl. Tier 3 rolls an exploding 1d6! + Mod Blunt, and Durgan's Fists weapon item shows 0 / 2 / 1d6!.",
+     "id": "b3-basic-t1-explode",
+     "v": "v0.0.481",
+     "title": "Basic Attack Tier 1 1d4! and ! on weapon dice in roll dialog",
+     "do": "With Aveline (Longsword) targeting the Orc Warrior, open Basic Attack. Check the roll dialog Tiers, force a Tier 1, and roll damage.",
+     "expect": "Roll dialog Tiers show ! on all weapon dice (1d4! Slash on Tier 1, 1d4!+6 + 2 Slash on Tier 2, 1d6!+9 + 1d6! + 2 Slash on Tier 3). Tier 1 rolls an exploding 1d4! Slash.",
      "rev": 1
     }
    ]
@@ -49,33 +33,17 @@
      "id": "b3-sworn-blade",
      "v": "v0.0.480",
      "title": "Sworn Blade slides a Strained target on Basic Attack",
-     "do": "Make the Orc Warrior Strained, then have Aveline use Basic Attack against it and apply damage.",
-     "expect": "When damage lands on the Strained Orc Warrior, Sworn Blade's Strained line triggers and offers Slide the target 1 (can be declined).",
-     "rev": 1
+     "do": "Make the Orc Warrior Strained, then have Aveline use Basic Attack against it (try Tier 1 as well as Tier 2/3) and apply damage. Also test Aveline's Drawing Light (Tier 2 or 3) against a Bloodied Orc Warrior.",
+     "expect": "Both chat cards show their Strained/Bloodied line on the attack card itself. Sworn Blade triggers on any landed Tier (including Tier 1) and offers Slide 1. Drawing Light against a Bloodied target prompts Slide vs. Pull (or Esc to skip).",
+     "rev": 2
     },
     {
      "id": "b3-steady-draw",
      "v": "v0.0.480",
      "title": "Steady Draw adds +1[D] on Tier 3 against a pre-Strained target",
-     "do": "Make the Orc Warrior Strained before rolling, then have Sylwen (Hunting Bow) target it with Basic Attack. Check the card and roll dialog notice, force Tier 3, and roll damage. Repeat against a non-Strained Orc Warrior (and on Tier 2).",
-     "expect": "Sylwen's Basic Attack card shows Steady Draw's Strained line above Attack, the roll dialog shows the Steady Draw notice, and Tier 3 adds an extra 1d4! labeled Steady Draw. No extra [D] is added on Tier 2 or against a non-Strained target.",
-     "rev": 1
-    },
-    {
-     "id": "b3-power-basics",
-     "v": "v0.0.480",
-     "title": "Drawing Light and Harrying Shot (Power Basic attacks & Critical 1d10!)",
-     "do": "Have Aveline use Drawing Light against a Bloodied Orc Warrior (force Tier 3 Critical) and have Sylwen use Harrying Shot against a Bloodied Orc Warrior (force Tier 2, then Tier 3 Critical).",
-     "expect": "Both deal Resolve damage with no [Mod] added and offer the Basic attack 1d10! Critical pick on Doubles + Tier 3. Drawing Light's Bloodied line appears on Tier 2 and Tier 3; Harrying Shot's Bloodied Daunted line triggers only on Tier 3 (not Tier 2).",
-     "rev": 1
-    },
-    {
-     "id": "b3-new-basics",
-     "v": "v0.0.480",
-     "title": "Aid, Demoralize, Feint, Heal, Tumble, Trip, Shove, Kneel",
-     "do": "Have Sylwen use Aid on Kaela, Demoralize on the Orc Warrior (Tier 3), Feint on the Orc Warrior (Tier 2 and Tier 3), and Heal on a hurt Aveline (Tier 2). Have Durgan use Trip (1 AP and 2 AP) and Shove (1 AP and 2 AP) on the Orc Warrior, and Aveline use Commandment (Kneel) on the Orc Warrior (force Tier 1 and Tier 2 Save).",
-     "expect": "Aid shows a clickable Quickened 1 chip; Demoralize rolls Appeal vs. Appeal DC and applies Vulnerable 1 (1 round) and Daunted (EoT) on Tier 3; Feint differentiates Tier 2 (2 Boons), Tier 3 (Favored), and Critical (no Reactions); Heal rolls Appeal or Mind vs. DC 13 with Rally buttons; Trip and Shove each have 2 Versions with no Strike trait; Kneel applies Prone only on a Tier 1 Save and Hindered (EoT) on a Tier 2 Save.",
-     "rev": 1
+     "do": "Make the Orc Warrior Strained before rolling, then have Sylwen (Hunting Bow) target it with Basic Attack. Check the roll dialog notice and Tier 3 preview, force Tier 3, roll damage, and open both the dice breakdown and the = ledger. Repeat against a non-Strained Orc Warrior (and on Tier 2).",
+     "expect": "The Steady Draw notice in the roll dialog is crisp/active (not faded) and Tier 3 preview includes the extra 1d4! Pierce. The attack card lists Steady Draw under Applied, the damage roll includes the extra 1d4! labeled Steady Draw in both the dice breakdown and the = ledger (with no bogus Flat -1 on exploded dice), and no extra [D] is added on Tier 2 or against a non-Strained target.",
+     "rev": 2
     }
    ]
   }

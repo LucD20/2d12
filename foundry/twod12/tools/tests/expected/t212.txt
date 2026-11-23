@@ -1,7 +1,7 @@
 --- the section of an Action (frequency, Reaction, Apex, Granted, Basic)
 Smite (Round): round | Holy Wrath (Encounter): encounter | a Daily Pick: daily | a Turn Action: turn
 Rebuke (Reaction, Turn): reaction | Final Verdict (Escalation 3, Encounter): apex | a Technique (At-will): atwill | no Frequency: atwill
-Opportunity Attack (a Basic Action): reaction | Weapon Attack: basic | a granted use: granted
+Opportunity Attack (a Basic Action): reaction | Weapon Attack: atwill | a granted use: granted
 the order: granted > apex > round > turn > encounter > daily > atwill > reaction | Daily color: #5B3FA6
 --- Vs. an Attribute (13 + half, rounded up) and Save DCs (11 + the Modifier)
 Body +2 Mind +1 Appeal +1 Instinct +0: {"body":13,"mind":12,"appeal":12,"instinct":11} | -1 / 3 / -2: 10 14 9 | a +1 bonus on Body: 14

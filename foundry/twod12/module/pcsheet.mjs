@@ -334,7 +334,7 @@ export async function pcModel(sheet, ctx) {
   const secRows = Object.fromEntries(SECTION_ORDER.map(k => [k, []]));
   for (const i of actions) {
     if (i.getFlag(F, "inlineOf")) continue;   // in the Granted section
-    if (i.getFlag(F, "basic") && i.getFlag(F, "basic") !== "opportunityAttack") continue;
+    if (i.getFlag(F, "basic") && !["opportunityAttack", "basicWeaponAttack"].includes(i.getFlag(F, "basic"))) continue;
     const row = rowOf(i);
     secRows[row.section]?.push(row);
   }
@@ -370,7 +370,7 @@ export async function pcModel(sheet, ctx) {
     freeHand: handSlots(weapons).some(x => x.free), reloadWeapon: held.some(w => w.system?.traits?.has?.("reload")), prone: statuses.has("prone"), immobilized: statuses.has("immobilized"),
     speed: speedNow, reach: s.reach ?? 1, down: down.down || unconscious, rallyLeft: s.rallyLeft, npc
   };
-  const basics = actions.filter(i => i.getFlag(F, "basic") && i.getFlag(F, "basic") !== "opportunityAttack");
+  const basics = actions.filter(i => i.getFlag(F, "basic") && !["opportunityAttack", "basicWeaponAttack"].includes(i.getFlag(F, "basic")));
   const bRow = i => {
     const r = sheet._actionRow(i), key = i.getFlag(F, "basic"), f = effectiveFrequency(i.system);
     const why = basicUnavailable(key, bctx) || (unconscious ? "Unconscious" : "") || r.fadedWhy || r.noApWhy || (r.strikeCap ? "Three Strikes this turn" : "");
