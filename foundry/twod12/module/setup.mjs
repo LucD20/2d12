@@ -44,7 +44,7 @@ export async function setupBar(o) {
     if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
     const watch = c => { if (sq && c.id === sq.cid) { const el = bar.querySelector(".lb-left b"); if (el) el.textContent = String(leftNow()); } };
     if (sq) Hooks.on("updateCombatant", watch);
-    const done = v => { bar.remove(); if (slot) hud.hudAsking(false); if (sq) Hooks.off("updateCombatant", watch); window.removeEventListener("keydown", key, true); resolve(v); };
+    const done = v => { bar.remove(); try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ } if (sq) Hooks.off("updateCombatant", watch); window.removeEventListener("keydown", key, true); resolve(v); };
     const key = ev => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopImmediatePropagation(); done("cancel"); } if (ev.key === "Enter" && !/input|textarea/i.test(ev.target?.tagName ?? "")) { ev.preventDefault(); done("go"); } };
     bar.querySelector(".lb-go").addEventListener("click", ev => { ev.preventDefault(); done("go"); });
     bar.querySelector(".lb-give").addEventListener("click", ev => { ev.preventDefault(); done("cancel"); });

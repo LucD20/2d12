@@ -52,7 +52,7 @@ export function zoneTipGroups(lines) {
   return { groups, foot };
 }
 
-let el = null, queued = false, last = null;
+let el = null, queued = false, last = null, stageMove = null;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 function hide() { if (el) el.style.display = "none"; }
 /** v0.0.359 (Lucas: "still showing over windows"): the map's pointermove also fires while the mouse is over a window (PIXI listens on the document):
@@ -64,9 +64,9 @@ function show(ev) {
   if (!canvas?.ready || !canvas.grid?.isSquare || !last) return hide();
   const p = last, off = canvas.grid.getOffset?.({ x: p.x, y: p.y });
   if (!off) return hide();
-  const k = `${off.i},${off.j}`;
-  // v0.0.467 (Lucas, checklist v0.0.466: "If two overlap, it should still show both, separated by name"): every area under the mouse
-  const zones = (canvas.scene?.regions ?? []).map(r => r.getFlag?.(F, "zone")).filter(z => z && (z.cells ?? []).some(c => `${c.i},${c.j}` === k || c === k));
+  const k = `${off.i},${off.j}`, gm = !!globalThis.game?.user?.isGM;
+  // v0.0.467 (Lucas, checklist v0.0.466: "If two overlap, it should still show both, separated by name"): every visible area under the mouse
+  const zones = (canvas.scene?.regions ?? []).filter(r => gm || !r.hidden).map(r => r.getFlag?.(F, "zone")).filter(z => z && (z.cells ?? []).some(c => `${c.i},${c.j}` === k || c === k));
   if (!zones.length) return hide();
   const nameOf = u => { try { const d = fromUuidSync(u); if (!d) return null; return { name: d.name, summary: d.system?.autoHover ?? d.system?.hover ?? "" }; } catch (e) { return null; } };
   if (!el) { el = document.createElement("div"); el.className = "twod12 twod12-zonetip"; document.body.append(el); }
@@ -76,20 +76,31 @@ function show(ev) {
   const cls = w => (w.startsWith("Enemies") ? "enemies" : w.startsWith("Allies") ? "allies" : "everyone");
   el.innerHTML = zones.map(z => { const { groups, foot } = zoneTipGroups(zoneTipLines(z, nameOf, (() => { try { const o = z.originUuid ? fromUuidSync(z.originUuid) : null, a = o?.documentName === "Actor" ? o : o?.actor; return a ? refValues(a) : null; } catch (e) { return null; } })())); return `<div class="zt-zone"><b>${esc(z.name ?? "Area")}</b>${groups.map(g => `<div class="zt-sec"><span class="zt-who ${cls(g.who)}">${esc(g.who)}</span>${g.lines.map(l => `<div class="zt-l">${hl(l)}</div>`).join("")}</div>`).join("")}${foot.map(l => `<div class="zt-foot">${hl(l)}</div>`).join("")}</div>`; }).join("");
   el.style.display = "block";
-  el.style.left = `${ev.clientX + 16}px`; el.style.top = `${ev.clientY + 14}px`;
+  // Clamp inside the viewport (and flip left/up near the right sidebar or bottom HUD)
+  const sb = document.getElementById("sidebar")?.getBoundingClientRect?.();
+  const hud = document.getElementById("twod12-hud")?.getBoundingClientRect?.();
+  const maxX = Math.min(window.innerWidth - 8, sb && sb.width > 0 && sb.left > window.innerWidth * 0.4 ? sb.left - 8 : window.innerWidth - 8);
+  const maxY = Math.min(window.innerHeight - 8, hud && hud.height > 0 ? hud.top - 8 : window.innerHeight - 8);
+  const w = el.offsetWidth || 220, h = el.offsetHeight || 80;
+  let lx = ev.clientX + 16, ly = ev.clientY + 14;
+  if (lx + w > maxX) lx = Math.max(8, ev.clientX - w - 14);
+  if (ly + h > maxY) ly = Math.max(8, ev.clientY - h - 10);
+  el.style.left = `${Math.round(lx)}px`; el.style.top = `${Math.round(ly)}px`;
 }
 export function registerZoneTip() {
   Hooks.on("canvasReady", () => {
-    canvas.stage?.on?.("pointermove", ev => {
+    if (stageMove) { try { canvas.stage?.off?.("pointermove", stageMove); canvas.stage?.off?.("pointerleave", hide); } catch (e) { /* gone */ } }
+    stageMove = ev => {
       if (ev.buttons) return hide();   // dragging: no tooltip
       try { last = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data?.getLocalPosition?.(canvas.stage); } catch (e) { last = null; }
       const n = ev.nativeEvent ?? ev.data?.originalEvent ?? ev;
       if (queued) return; queued = true;
       requestAnimationFrame(() => { try { show(n); } catch (e) { hide(); } });
-    });
+    };
+    canvas.stage?.on?.("pointermove", stageMove);
     canvas.stage?.on?.("pointerleave", hide);
   });
-  Hooks.on("canvasTearDown", hide);
+  Hooks.on("canvasTearDown", () => { hide(); stageMove = null; });
   // v0.0.358 (Lucas: the tooltip showed over the windows): the map's own pointer events don't say when the mouse goes onto a window or the sidebar
   document.addEventListener("pointermove", ev => { if (el && el.style.display !== "none" && ev.target !== canvas?.app?.view && ev.target?.id !== "board") hide(); }, { passive: true });
 }

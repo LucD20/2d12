@@ -25,10 +25,16 @@ export function rippleAt(t, r) {
   return { radius: r * (1 + 0.45 * k), alpha: 0.95 * (1 - k) * (1 - k) };   // v0.0.466: stronger (was 0.7)
 }
 
+/** Clamped inverse canvas zoom scale so map plates and pins remain legible at any zoom level. */
+export function zoomScale() {
+  const z = Number(globalThis.canvas?.stage?.scale?.x) || 1;
+  return Math.max(0.6, Math.min(1.5, 1 / z));
+}
+
 function tick() {
   const now = Date.now();
   for (const rp of ripples) {
-    if (rp.g.destroyed) { ripples.delete(rp); continue; }
+    if (rp.g.destroyed || !rp.g.parent) { ripples.delete(rp); continue; }
     const { radius, alpha } = rippleAt(now - rp.t0, rp.r);
     rp.g.clear(); rp.g.lineStyle(Math.max(3, rp.r * 0.08), rp.color, alpha).drawCircle(rp.x, rp.y, radius);
   }
@@ -66,22 +72,26 @@ export function plate(lines, { fs = 14, color = INK, mute = 0xb3a68e, warn = fal
   const padX = Math.round(fs * 0.55), padY = Math.round(fs * 0.3), gap = Math.round(fs * 0.12);
   const w = Math.max(...texts.map(t => t.width), fs) + padX * 2, h = texts.reduce((a, t) => a + t.height, 0) + gap * Math.max(0, texts.length - 1) + padY * 2;
   const bg = new P.Graphics();
-  bg.lineStyle(1, PLATE_LINE, 1).beginFill(PLATE_BG, 0.94).drawRect(-w / 2, -h, w, h).endFill();
+  bg.lineStyle(1, warn ? RED : PLATE_LINE, 1).beginFill(PLATE_BG, 0.94).drawRect(-w / 2, -h, w, h).endFill();
   box.addChild(bg);
   let y = -h + padY;
   for (const t of texts) { t.position.set(-w / 2 + padX, y); box.addChild(t); y += t.height + gap; }
+  const sc = zoomScale();
+  if (sc !== 1) box.scale?.set?.(sc);
   return box;
 }
 
 /** A small gold square with a number (a pickable creature's number, the same as its picture in the HUD). */
-export function numberPin(n, { fs = 13 } = {}) {
+export function numberPin(n, { fs = 13, color = GOLD } = {}) {
   const P = globalThis.PIXI;
   const box = new P.Container(), s = Math.round(fs * 1.3);
   const bg = new P.Graphics();
-  bg.lineStyle(1, PLATE_BG, 1).beginFill(GOLD, 1).drawRect(-s / 2, -s / 2, s, s).endFill();
+  bg.lineStyle(1, PLATE_BG, 1).beginFill(color, 1).drawRect(-s / 2, -s / 2, s, s).endFill();
   const t = new P.Text(String(n), { fontFamily: FONT, fontSize: Math.round(fs * 0.9), fontWeight: "700", fill: PLATE_BG });
   t.anchor?.set?.(0.5, 0.5);
   box.addChild(bg, t);
+  const sc = zoomScale();
+  if (sc !== 1) box.scale?.set?.(sc);
   return box;
 }
 

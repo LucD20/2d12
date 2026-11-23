@@ -8,7 +8,7 @@ import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, condPopHtml, condPola
 import { techniqueState } from "./mastery.mjs";   // v0.0.418 (D6)
 
 const F = "twod12";
-const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, chimed: new Set(), view: "main", rview: "main", sitWas: false, sitKey: "" };   // v0.0.446: the right column's tab
+const st = { open: "", actorUuid: "", pop: null, card: null, cardId: "", tab: "act", rx: null, rxs: new Map(), chimed: new Set(), view: "main", rview: "main", sitWas: false, sitKey: "" };   // v0.0.446: the right column's tab
 let root = null, timer = null;
 const setting = (k, d) => { try { return game.settings.get(F, k); } catch (e) { return d; } };
 
@@ -199,9 +199,16 @@ async function barModel(actor, token = null) {
   const basic = basicOrder(list.filter(a => a.basic && !a.reaction)).map(lineOf);
   const escLines = [...actor.itemTypes.feature.filter(f => Number(f.system?.escalation) > 0).map(f => ({ id: f.id, name: f.name, freq: "none", fqColor: FREQ_COLORS.none, pass: true, state: (e?.n ?? 0) >= Number(f.system.escalation) ? "working" : `at ${f.system.escalation}`, sub: `Escalation ${f.system.escalation}` })),
     ...list.filter(a => a.escalation).map(a => ({ ...lineOf(a), sub: `Escalation ${a.escalation}${a.roll ? ` · ${a.roll}` : ""}` }))];
-  // the rx alert: a waiting Reaction of this creature that this user answers
-  const wait = st.rx && st.rx.actorUuid === actor.uuid ? st.rx : null;
-  if (wait) rx.forEach(l => { if (l.id === wait.itemId) l.ready = true; });
+  // the rx alert: all waiting Reactions this user answers (selected creature + jump strip for others)
+  const allRx = setting("rxHud", true) ? (st.rxs.size ? [...st.rxs.values()].flat() : (st.rx ? [st.rx] : [])) : [];
+  const myRxs = allRx.filter(x => x.actorUuid === actor.uuid);
+  const otherRx = allRx.filter(x => x.actorUuid !== actor.uuid).map(x => {
+    let who = "";
+    try { const d = fromUuidSync(x.actorUuid); who = d?.name ?? d?.actor?.name ?? ""; } catch (e) { /* gone */ }
+    return { ...x, who: who || "Other" };
+  });
+  const wait = myRxs[0] ?? null;
+  for (const w of myRxs) rx.forEach(l => { if (l.id === w.itemId) l.ready = true; });
   const tabs = (npc ? HUD_TABS_NPC : HUD_TABS_PC).map(([k, label]) => ({ k, label, count: k === "act" ? act.filter(usable).length : k === "rx" ? rx.filter(usable).length : k === "basic" ? basic.filter(usable).length : `${escLines.filter(l => l.state === "working").length} of ${escLines.filter(l => l.pass).length}` }));
   if (!tabs.some(t => t.k === st.tab)) st.tab = "act";
   // v0.0.441 (the HUD mockup's decision 2, R4): a waiting Reaction no longer opens the Reactions tab: it shows in the Situational section
@@ -230,31 +237,49 @@ async function barModel(actor, token = null) {
   basicGroups.forEach(g => g.lines.forEach(l => placed.add(l.id)));
   const restB = bLines.filter(l => !placed.has(l.id));
   if (restB.length) (basicGroups.at(-1) ?? basicGroups[basicGroups.push({ label: "Other", lines: [] }) - 1]).lines.push(...restB);
-  // D3: Prone: Stand and Crawl in the Situational section (and Break Free when Immobilized too), each Version a button
+  // D3: Prone (compact), Grabbed/Immobilized Break Free, and Unloaded held weapon Reload in Situational
   const statuses = actor.statuses ?? new Set();
-  let prone = null;
-  if (statuses.has?.("prone")) {
-    const pick = k => list.find(a => a.bkey === k);
+  const pickBasic = k => list.find(a => a.bkey === k);
+  const basicBtns = keys => {
     const btns = [];
-    for (const k of ["stand", "crawl", ...(statuses.has?.("immobilized") ? ["breakFree"] : [])]) {
-      const a = pick(k); if (!a) continue;
+    for (const k of keys) {
+      const a = pickBasic(k); if (!a) continue;
       const it = actor.items.get(a.id)?.system ?? {};
       a.versions.forEach((v, i) => { const sq = /distance:(\d+)/.exec(it.versions?.[i]?.effects ?? "")?.[1]; btns.push({ label: `${a.name}${k === "crawl" && sq ? ` ${sq}` : ""} \u00b7 ${v.label}`, hud: "use", data: { item: a.id, ap: v.ap }, off: v.off && !v.used ? true : v.used, why: v.why }); });
     }
-    prone = { lead: "Prone", text: "Your only Move Actions: Stand, Crawl, Break Free.", btns };
+    return btns;
+  };
+  let prone = null;
+  if (statuses.has?.("prone")) {
+    const btns = basicBtns(["stand", "crawl", ...(statuses.has?.("immobilized") || statuses.has?.("grabbed") ? ["breakFree"] : [])]);
+    prone = { lead: "Prone", tag: "Move", text: "", btns };
   }
+  const extras = [];
+  if (!prone && (statuses.has?.("grabbed") || statuses.has?.("immobilized"))) {
+    const btns = basicBtns(["breakFree"]);
+    if (btns.length) extras.push({ lead: statuses.has?.("grabbed") ? "Grabbed" : "Immobilized", tag: "Move", text: "", btns });
+  }
+  try {
+    if (actor.itemTypes.weapon?.length) {
+      const { weaponWhere } = await import("./loadout.mjs");
+      const unloaded = actor.itemTypes.weapon.filter(w => { const at = weaponWhere(w); return (at === "1h" || at === "2h") && !!w.system?.unloaded; });
+      if (unloaded.length) {
+        const btns = basicBtns(["reload"]);
+        if (btns.length) extras.push({ lead: `Unloaded \u00b7 ${unloaded.map(w => w.name).join(", ")}`, tag: "Weapon", text: "", btns });
+      }
+    }
+  } catch (e) { /* no loadout */ }
   let tiles = null;
   try { if (!npc && actor.itemTypes.weapon?.length) { const { handTiles } = await import("./pcsheet.mjs"); tiles = handTiles(actor.itemTypes.weapon, !!cb); } } catch (e) { tiles = null; }
-  const rxWait = wait && setting("rxHud", true) ? wait : null;
   return {
     h3: true, basicGroups, conds,
-    right: { rx: rxWait, grants, cancels, prone, tiles, view: st.view },
+    right: { rx: wait, rxs: myRxs, otherRx, grants, cancels, prone, extras, tiles, view: st.view },
     npc, name: token?.name ?? actor.name, img: token?.document?.texture?.src || actor.prototypeToken?.texture?.src || actor.img,
     sub: npc ? `${rankLabel(actor)}${s.cv ? ` · CV ${s.cv}` : ""}` : [sp?.name, cls?.name, s.level ?? 1].filter(Boolean).join(" "),
     bars: h.bars, guard: h.guard, tag: h.tag, rally: npc ? null : { left: nn(s.rallyLeft), max: nn(s.rallyMax) },
     marks: cb ? marksHtml(cb) : "", escN: e?.n ?? 0, escMax: e?.max ?? 0, defs, tabs, tab, cols, rxAlert: !!wait,
-    side: { hands, conds, condLabel: npc ? "On it" : "On you", rx: wait && setting("rxHud", true) ? wait : null, grants, cancels },
-    folded: !wait && !!setting("hudFolded", false), cond: conds.map(c => `${c.name}${c.dur ? ` (${c.dur})` : ""}`).join(" · ")
+    side: { hands, conds, condLabel: npc ? "On it" : "On you", rx: wait, grants, cancels },
+    folded: !myRxs.length && !!setting("hudFolded", false), cond: conds.map(c => `${c.name}${c.dur ? ` (${c.dur})` : ""}`).join(" · ")
   };
 }
 async function handsOf(actor) {
@@ -312,6 +337,13 @@ function ensureRoot() {
   root.classList.add("floating");
   (document.getElementById("interface") ?? document.body).append(root);
   root.addEventListener("click", onClick);
+  root.addEventListener("keydown", ev => {
+    if (ev.key !== "Enter" && ev.key !== " ") return;
+    const card = ev.target.closest?.('[data-hud="party"]');
+    if (!card) return;
+    ev.preventDefault();
+    card.click();
+  });
   // v0.0.382: a click anywhere outside the HUD (and its card) closes its panel and unlights its category
   document.addEventListener("pointerdown", ev => { if (root?.isConnected && !root.contains(ev.target) && !st.card?.contains(ev.target)) closePop(); }, true);
   root.addEventListener("contextmenu", onContext);
@@ -383,16 +415,25 @@ async function drawHud() {
   // v0.0.390: several tokens selected, or nothing (the party strip): small cards
   if (cur.list || !cur.actor) {
     st.actorUuid = "";
-    if (!cur.list && !setting("hudParty", true)) { shape(); setMain(main, emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token.")); return; }
+    const waiting = [...main.querySelectorAll(".hb-ask > .twod12-linebar")];
+    const mid = root.querySelector(".hud-ask");
+    if (!cur.list && !setting("hudParty", true)) {
+      shape();
+      setMain(main, emptyHudHtml(game.user.isGM ? "No token selected." : "No character: select your token."));
+      for (const w of waiting) { mid?.append(w); w.classList.add("in-hud"); w.classList.remove("in-side"); }
+      hudAsking();
+      return;
+    }
     const pairs = cur.list ? cur.list.filter(t => t.actor).map(t => [t.actor, t]) : partyActors().map(a => [a, (globalThis.canvas?.tokens?.placeables ?? []).find(t => t.actor?.id === a.id) ?? null]);
     const cards = await Promise.all(pairs.map(([a, t]) => partyCard(a, t)));
     // v0.0.407 (Stage 0 in Foundry; Lucas: "Momentum still doesn't show in the strip"): the party's number, 0 to 4, always at the strip's left
     let momentum = "";
     try { const { momentumNow } = await import("./escalation.mjs"); momentum = !cur.list ? String(momentumNow()) : ""; } catch (e) { momentum = ""; }
-    const waiting = main.querySelector(".hb-ask > .twod12-linebar");
+    const waitingNow = [...new Set([...waiting, ...main.querySelectorAll(".hb-ask > .twod12-linebar")])];
     shape("is-strip");
     setMain(main, partyStripHtml({ cards, momentum }));
-    if (waiting) { root.querySelector(".hud-ask")?.append(waiting); waiting.classList.remove("in-side"); hudAsking(true, false); }
+    for (const w of waitingNow) { mid?.append(w); w.classList.add("in-hud"); w.classList.remove("in-side"); }
+    hudAsking();
     st.cards = new Map(pairs.map(([a, t], k) => [cards[k].key, { actor: a, token: t }]));
     return;
   }
@@ -405,10 +446,10 @@ async function drawHud() {
   shape("is-bar", ...(m.npc ? ["is-npc"] : []), ...(m.folded ? ["is-folded"] : []));
   setMain(main, tokenBarHtml(m));
   const slot = main.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
-  for (const w of waiting) slot?.append(w);
-  if (fromMiddle.length && slot?.classList?.contains("hb-ask")) { for (const w of fromMiddle) w.classList.add("in-hud", "in-side"); hudAsking(true, true); }
+  const inSide = !!slot?.classList?.contains("hb-ask");
+  for (const w of waiting) { slot?.append(w); w.classList.add("in-hud"); w.classList.toggle("in-side", inSide); }
   fitNames(main);
-  syncSide();
+  hudAsking();
   // v0.0.441 (D3): the hotbar is in the bar's right column (placeHotbar, from setMain); v0.0.446: its Macros tab
 }
 
@@ -470,8 +511,8 @@ async function showCardNow(actor, item, at) {
     if (b && !b.disabled) { ev.preventDefault(); closePop(); use(actor, item, Number(b.dataset.ap), ev.shiftKey, b.dataset.mode); }   // v0.0.409: an Art's Mode button
   });
   // v0.0.385 (Lucas: "clicking the action again should close the card, not blink it"): a press on this Action's name is left to the click, which closes it
-  const sameName = ev => !!ev.target.closest?.(`.ha[data-item-id="${item.id}"] [data-hud="card"], .hb-ln[data-item-id="${item.id}"]`);
-  setTimeout(() => document.addEventListener("pointerdown", function away(ev) { if (sameName(ev)) return; if (!div.contains(ev.target)) { div.remove(); if (st.card === div) st.card = null; document.removeEventListener("pointerdown", away, true); } }, true), 0);
+  const sameName = ev => !!ev.target.closest?.(`.ha[data-item-id="${item.id}"] [data-hud="card"], .hb-ln[data-item-id="${item.id}"], .h3-bl[data-item-id="${item.id}"]`);
+  setTimeout(() => document.addEventListener("pointerdown", function away(ev) { if (!div.isConnected) { document.removeEventListener("pointerdown", away, true); return; } if (sameName(ev)) return; if (!div.contains(ev.target)) { div.remove(); if (st.card === div) st.card = null; document.removeEventListener("pointerdown", away, true); } }, true), 0);
 }
 /**
  * v0.0.444 (group 2; Lucas: "When clicking in the weapon in the token hud, open the window above it, like a 'reversed dropdown' menu, instead of
@@ -495,7 +536,7 @@ async function handMenu(actor, tile) {
   div.style.left = `${Math.round(Math.max(0, Math.min(r.left - h.left, h.width - div.offsetWidth)))}px`;
   div.querySelector("button[data-k]")?.focus({ preventScroll: true });
   const close = () => { div.remove(); tile.classList.remove("on"); document.removeEventListener("pointerdown", away, true); };
-  const away = e => { if (!div.contains(e.target) && e.target !== tile) close(); };
+  const away = e => { if (!div.isConnected) { tile.classList.remove("on"); document.removeEventListener("pointerdown", away, true); return; } if (!div.contains(e.target) && e.target !== tile) close(); };
   document.addEventListener("pointerdown", away, true);
   div.addEventListener("keydown", e => { if (e.key === "Escape") { close(); tile.focus(); } });
   div.addEventListener("click", async e => {
@@ -525,7 +566,7 @@ async function openCondPop(actor, btn) {
   pop.style.bottom = `${Math.round(h.bottom - r.top + 4)}px`;
   pop.style.left = `${Math.round(Math.max(4, Math.min(r.left - h.left, h.width - pop.offsetWidth - 4)))}px`;
   const close = () => { pop.remove(); btn.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", away, true); };
-  const away = e => { if (!pop.contains(e.target) && e.target !== btn) close(); };
+  const away = e => { if (!pop.isConnected) { btn.setAttribute("aria-expanded", "false"); document.removeEventListener("pointerdown", away, true); return; } if (!pop.contains(e.target) && e.target !== btn) close(); };
   document.addEventListener("pointerdown", away, true);
   pop.addEventListener("keydown", e => { if (e.key === "Escape") { close(); btn.focus(); } });
 }
@@ -557,12 +598,27 @@ async function onClick(ev) {
   if (!b || b.disabled) return;
   const cur = current(), actor = cur.actor, kind = b.dataset.hud;
   if (kind === "pick") { const t = canvas.tokens.get(b.dataset.token); t?.control({ releaseOthers: true }); return; }
+  if (kind === "pickactor") {
+    const uuid = b.dataset.actor;
+    const t = (canvas.tokens?.placeables ?? []).find(x => x.actor?.uuid === uuid || x.document?.uuid === uuid);
+    if (t) { t.control({ releaseOthers: true }); try { canvas.animatePan?.({ x: t.center.x, y: t.center.y, duration: 220 }); } catch (e) { /* no pan */ } }
+    return;
+  }
   // v0.0.390 (PACK HUD2)
   if (kind === "party") { const c = st.cards?.get(b.dataset.key); if (!c) return; if (ev.detail >= 2) return c.actor.sheet?.render(true); if (c.token) return c.token.control({ releaseOthers: true }); if (!game.user.isGM && c.actor.isOwner) return c.actor.sheet?.render(true); return; }
   if (kind === "fold") { await game.settings.set(F, "hudFolded", !setting("hudFolded", false)); return; }
   if (kind === "rtab") { st.view = b.dataset.rtab === "sit" ? "sit" : "main"; st.rview = "main"; return syncSide(); }   // v0.0.446: the right column's tabs
   if (kind === "tab") { st.tab = b.dataset.tab; st.tabChosen = true; return renderHud(); }
-  if (kind === "rx") { const msg = game.messages.get(b.dataset.msg); if (!msg) return; const { rxClick } = await import("./moment.mjs"); st.rx = null; await rxClick(msg, { dataset: { twod12: b.dataset.k, row: b.dataset.row }, tagName: "DIV" }); return renderHud(); }
+  if (kind === "rx") {
+    const msg = game.messages.get(b.dataset.msg); if (!msg) return;
+    const row = Number(b.dataset.row);
+    const list = st.rxs.get(msg.id)?.filter(x => x.row !== row) ?? [];
+    if (list.length) st.rxs.set(msg.id, list); else st.rxs.delete(msg.id);
+    syncRxHead();
+    const { rxClick } = await import("./moment.mjs");
+    await rxClick(msg, { dataset: { twod12: b.dataset.k, row: b.dataset.row }, tagName: "DIV" });
+    return renderHud();
+  }
   if (kind === "close") return closePop();
   if (!actor) return;
   const item = actor.items.get(b.closest("[data-item-id]")?.dataset.itemId ?? b.dataset.item ?? "");
@@ -592,7 +648,7 @@ function onContext(ev) {
   // v0.0.390 (PACK HUD2): right-click on AP, Rally or Escalation adjusts it (-1; Shift: +1), for the owner and the GM
   const res = ev.target.closest('[data-hud="res"]');
   if (res) { ev.preventDefault(); return adjust(current().actor, res.dataset.res, ev.shiftKey ? 1 : -1); }
-  const ln = ev.target.closest(".hb-ln[data-item-id]");
+  const ln = ev.target.closest(".hb-ln[data-item-id], .h3-bl[data-item-id]");
   if (ln && ln.dataset.itemId) { ev.preventDefault(); const actor = current().actor, item = actor?.items.get(ln.dataset.itemId); if (!item) return; if (st.card?.isConnected && st.cardId === item.id) return closePop({ keepOpen: true }); return showCard(actor, item, ln); }
   // v0.0.381 (Lucas): right-click on an Action opens its card at once; on a PC's Version stamp it pins or unpins that Version (Quick)
   const ha = ev.target.closest(".ha[data-item-id]");
@@ -629,7 +685,16 @@ export function hudAskSlot() {
   // v0.0.397 (Lucas: "in the same area as the granted action"): a creature's bar asks in its side panel; the party strip in the middle
   return root.querySelector(".hb-bar-wrap:not(.folded) .hb-ask") ?? root.querySelector(".hud-ask");
 }
-export const hudAsking = (on, side = false) => { root?.classList.toggle("asking", !!on && !side); root?.classList.toggle("asking-side", !!on && side); syncSide(); };
+export const hudAsking = (on, side = false) => {
+  if (!root?.isConnected) return;
+  const inSide = !!root.querySelector(".hb-ask > .twod12-linebar");
+  const inMid = !!root.querySelector(".hud-ask > .twod12-linebar");
+  const sideOn = inSide || (!!on && !!side && !inMid);
+  const midOn = inMid && !sideOn;
+  root.classList.toggle("asking", midOn);
+  root.classList.toggle("asking-side", sideOn);
+  syncSide();
+};
 /**
  * v0.0.446 (Lucas: "only show the 'Situational' tab when there is something happening. When it happens, change tabs to the situational
  * automatically"): the right column's tab. Urgent items (a Reaction, a question or movement in .hb-ask) always switch the tab when a new one
@@ -639,9 +704,11 @@ function syncSide() {
   const side = root?.querySelector(".hud-main .h3-side");
   if (!side) return;
   const urgEls = [...side.querySelectorAll(".h3-sit-urg > .h3-si, .hb-ask > *")];
+  const jumpEls = [...side.querySelectorAll(".h3-sit-urg > .h3-rxjump")];
   const availEls = [...side.querySelectorAll(".h3-sit-avail > .h3-si, .h3-sit-avail > .hb-gr")];
-  const total = urgEls.length + availEls.length, has = total > 0, urg = urgEls.length > 0;
-  const urgKey = urgEls.map(el => (el.textContent ?? "").trim().slice(0, 60)).join("|");
+  const allUrg = [...urgEls, ...jumpEls];
+  const total = allUrg.length + availEls.length, has = total > 0, urg = allUrg.length > 0;
+  const urgKey = allUrg.map(el => (el.textContent ?? "").trim().slice(0, 60)).join("|");
   side.classList.toggle("has-sit", has);
   side.classList.toggle("has-urg", urg);
   const sit = side.querySelector(".h3-sit");
@@ -681,29 +748,34 @@ export function chime() {
     setTimeout(() => ctx.close?.(), 3200);
   } catch (e) { /* no sound */ }
 }
+function syncRxHead() {
+  const all = [...st.rxs.values()].flat();
+  st.rx = all[0] ?? null;
+}
 function onRxMessage(msg) {
   const stx = msg?.getFlag?.(F, "rx");
   if (!stx) return;
   const w = waitingFor(stx, game.user.id, game.user.isGM);
-  const mine = w[0];
   const fresh = w.filter(x => !st.chimed.has(`${msg.id}:${x.row}`));
   fresh.forEach(x => st.chimed.add(`${msg.id}:${x.row}`));
   if (fresh.length && setting("rxChime", true)) chime();
-  // a player: the HUD shows the reacting creature on its Reactions tab; the GM: the alert shows when that creature's bar is open
-  st.rx = mine ? { ...mine, msg: msg.id } : (st.rx?.msg === msg.id ? null : st.rx);
+  // Keep every waiting Reaction across all active messages (for multiple PCs or GM NPCs)
+  if (w.length) st.rxs.set(msg.id, w.map(x => ({ ...x, msg: msg.id })));
+  else st.rxs.delete(msg.id);
+  syncRxHead();
   renderHud();
 }
 
 export function registerHud() {
   Hooks.once("ready", () => renderHud());
   Hooks.on("createChatMessage", onRxMessage); Hooks.on("updateChatMessage", onRxMessage);
-  Hooks.on("deleteChatMessage", msg => { if (st.rx?.msg === msg.id) { st.rx = null; renderHud(); } });
+  Hooks.on("deleteChatMessage", msg => { if (st.rxs.delete(msg.id) || st.rx?.msg === msg.id) { syncRxHead(); renderHud(); } });
   for (const h of ["controlToken", "canvasReady", "updateCombat", "combatTurn", "combatRound", "deleteCombat", "createActiveEffect", "deleteActiveEffect", "updateActiveEffect"]) Hooks.on(h, () => renderHud());
   const mine = a => a && (a.uuid === st.actorUuid || (globalThis.canvas?.tokens?.controlled ?? []).some(t => t.actor === a));
   Hooks.on("updateActor", a => { if (mine(a)) renderHud(); });
   for (const h of ["createItem", "updateItem", "deleteItem"]) Hooks.on(h, i => { if (mine(i.parent)) renderHud(); });
   Hooks.on("renderHotbar", () => { if (root) placeHotbar(); });
-  for (const h of ["collapseSidebar", "changeSidebarTab", "renderSceneControls", "renderChatLog", "renderSidebar"]) Hooks.on(h, () => { placeRoot(); setTimeout(placeRoot, 450); });
+  for (const h of ["collapseSidebar", "changeSidebarTab", "renderSceneControls", "renderChatLog", "renderSidebar"]) Hooks.on(h, () => { placeRoot(); fitNames(); setTimeout(() => { placeRoot(); fitNames(); }, 450); });
   for (const h of ["renderPlayers", "renderPlayerList"]) Hooks.on(h, () => { if (root && !root.hidden) placePlayers(); });
   Hooks.on("updateUser", (u, ch) => { if (u.isSelf && "character" in (ch ?? {})) renderHud(); });
 }

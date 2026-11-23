@@ -5132,7 +5132,7 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-bl { display: flex; justify-content: space-between; align-items: center; gap: 6px; height: 15.5px; padding-left: 6px; border-left: 3px solid color-mix(in srgb, var(--fq) 60%, var(--hud-bg)); border-bottom: 1px solid var(--hud-hair); cursor: pointer; }
 .twod12-hud .h3-bl.strike { box-shadow: inset 2px 0 0 color-mix(in srgb, var(--s-bad) 70%, var(--hud-bg)); }
 .twod12-hud .h3-bl > b { font-size: .78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; } .twod12-hud .h3-bl:hover > b { color: var(--s-gold); }
-.twod12-hud .h3-bl .hb-st { line-height: 11.5px; font-size: .66rem; } .twod12-hud .h3-bl.off > b { color: var(--s-faint); font-weight: 400; } .twod12-hud .h3-bl.off { cursor: default; border-left-style: dotted; }
+.twod12-hud .h3-bl .hb-st { line-height: 11.5px; font-size: .66rem; } .twod12-hud .h3-bl.off > b { color: var(--s-faint); font-weight: 400; } .twod12-hud .h3-bl.off { cursor: pointer; border-left-style: dotted; } .twod12-hud .h3-bl.off:hover > b { color: var(--hud-ink); }
 /* D3 / D7: the right column */
 .twod12-hud .h3-side { border-left: 1px solid var(--hud-hair); display: grid; grid-template-rows: minmax(0, 1fr) auto auto; min-width: 0; font-size: .81rem; }
 .twod12-hud .h3-sit { padding: 4px 9px; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 5px; min-height: 0; }
@@ -5665,16 +5665,21 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .h3-cpg.buff .h3-cpgh { color: var(--s-good); }
 .twod12-hud .h3-cpgl { display: flex; flex-wrap: wrap; gap: 4px; }
 .twod12-hud .h3-condpop .h3-c { max-width: none; height: 20px; }
-/* HUD Situational: urgent vs passive hierarchy and live count badge */
+/* HUD Situational: urgent vs passive hierarchy, cross-actor Reaction jump strip, Charge text unwrap, and folded ask bar */
 .twod12-hud .h3-sit.on:not(.urg):not(:has(.hb-ask > *)) { box-shadow: none; background: transparent; }
 .twod12-hud .h3-sit.urg, .twod12-hud .h3-sit:has(.hb-ask > *) { box-shadow: inset 0 2px 0 var(--s-gold); background: color-mix(in srgb, var(--s-gold) 9%, transparent); }
 .twod12-hud .h3-sit-urg { display: flex; flex-direction: column; gap: 5px; }
-.twod12-hud .h3-sit-urg:not(:has(.h3-si, .hb-ask > *)) { display: none; }
+.twod12-hud .h3-sit-urg:not(:has(.h3-si, .h3-rxjump, .hb-ask > *)) { display: none; }
 .twod12-hud .h3-sit-avail { display: flex; flex-direction: column; gap: 5px; }
-.twod12-hud .h3-sit-urg:has(.h3-si, .hb-ask > *) + .h3-sit-avail { border-top: 1px solid var(--hud-hair); padding-top: 5px; }
+.twod12-hud .h3-sit-urg:has(.h3-si, .h3-rxjump, .hb-ask > *) + .h3-sit-avail { border-top: 1px solid var(--hud-hair); padding-top: 5px; }
+.twod12-hud .h3-rxjump { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 3px 6px; border: 1px solid color-mix(in srgb, var(--s-gold) 55%, var(--hud-hair)); background: color-mix(in srgb, var(--s-gold) 12%, var(--hud-bg)); font-size: .76rem; line-height: 1.25; }
+.twod12-hud .h3-rxjump .rj-txt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--hud-ink); }
+.twod12-hud .h3-rxjump .rj-txt b { color: var(--s-gold); font-weight: 700; }
+.twod12-hud .h3-rxjump .hb-btn { flex: none; padding: 0 7px; font-size: .72rem; line-height: 1.45; }
+.twod12-hud .h3-sit .twod12-chargebar .lb-text { height: auto; -webkit-line-clamp: unset; overflow: visible; display: block; }
+.twod12-hud.is-folded.asking .hud-ask { background: color-mix(in srgb, var(--hud-bg) 95%, transparent); border: 1px solid var(--s-gold, #d2a75a); padding: 6px 10px; }
 .twod12-hud .h3-rt-sit { display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
 .twod12-hud .h3-rcnt:empty { display: none; }
 .twod12-hud .h3-rcnt { display: inline-flex; align-items: center; justify-content: center; min-width: 15px; height: 15px; padding: 0 4px; font-size: .68rem; font-weight: 700; line-height: 1; border: 1px solid var(--hud-line); color: var(--hud-mute); }
 .twod12-hud .h3-side.has-urg .h3-rcnt { background: var(--s-gold); border-color: var(--s-gold); color: var(--hud-bg); }
 .twod12-hud .h3-side.has-sit:not(.has-urg) .h3-rt-sit { color: var(--hud-ink); }
-

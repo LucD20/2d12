@@ -578,7 +578,7 @@ function freeMoveBar(c, kind, text) {
   const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
   if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
   const turn = `${game.combat?.round}:${game.combat?.turn}`;
-  const close = () => { bar.remove(); if (slot) hud.hudAsking(false); if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); window.removeEventListener("keydown", esc_, true); };
+  const close = () => { bar.remove(); try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ } if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); window.removeEventListener("keydown", esc_, true); };
   const watch = cb => { if (cb.id !== c.id) return; if (num(cb.getFlag(F, "freeMove")) + num(cb.getFlag(F, "evadeMove")) <= 0) close(); else count(); };
   const esc_ = ev => { if (ev.key !== "Escape" || !bar.isConnected || /input|textarea|select/i.test(ev.target?.tagName ?? "")) return; ev.preventDefault(); ev.stopImmediatePropagation(); close(); endMovement(c.id).catch(() => {}); };
   window.addEventListener("keydown", esc_, true);
@@ -797,7 +797,7 @@ function forcedBar(mode, target, origin, N, onEnd) {
   bar.querySelector(".lb-book").addEventListener("click", ev => { ev.preventDefault(); import("./inline.mjs").then(m => m.openBook({ ref: mode === "pull" ? "Pulled" : mode === "slid" ? "Slid" : mode === "push" ? "Pushed" : "Forced Movement", doc: "Chapter 3, Forced Movement" })).catch(() => {}); });
   bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); onEnd?.(); });
   const now = bar.querySelector(".lb-now");
-  return { set: t => { if (now) now.innerHTML = t ? ` <b class="lb-res">${esc(t)}</b>` : ""; }, close: () => { bar.remove(); if (slot) hud.hudAsking(false); }, onBack: f => bar.querySelector(".lb-back")?.addEventListener("click", ev => { ev.preventDefault(); f(); }) };
+  return { set: t => { if (now) now.innerHTML = t ? ` <b class="lb-res">${esc(t)}</b>` : ""; }, close: () => { bar.remove(); try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ } }, onBack: f => bar.querySelector(".lb-back")?.addEventListener("click", ev => { ev.preventDefault(); f(); }) };
 }
 
 /**
@@ -825,8 +825,6 @@ function choosePush(origin, target, N, mode = "push") {
     const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [target]) });
     const gfx = new PIXI.Graphics();
     MK.addOnTop(gfx);
-    const tip = document.createElement("div");
-    tip.className = "twod12-pushtip"; tip.style.display = "none"; document.body.append(tip);
     const prevInteractive = canvas.tokens.interactiveChildren;
     canvas.tokens.interactiveChildren = false;
     let current = null;
@@ -851,17 +849,23 @@ function choosePush(origin, target, N, mode = "push") {
       outlineCells(gfx, covered, { color: MK.GOLD, width: 2 });
       if (pull) fillCells(gfx, oCells, 0xdd3333, 0.18);   // aiming at the origin's own square: a Collision
       if (!current) return;
-      const pts = current.path.map(s => pt(s)), good = pts.slice(0, current.result.done + 1);
+      const gs = canvas.grid.size, pts = current.path.map(s => pt(s)), good = pts.slice(0, current.result.done + 1);
       gfxLine(gfx, good, MK.INK, 4, 0.95);
-      if (good.length > 1) { const a = good[good.length - 2], z = good[good.length - 1], ang = Math.atan2(z.y - a.y, z.x - a.x), k = canvas.grid.size * 0.2; gfxLine(gfx, [{ x: z.x - k * Math.cos(ang - 0.5), y: z.y - k * Math.sin(ang - 0.5) }, z, { x: z.x - k * Math.cos(ang + 0.5), y: z.y - k * Math.sin(ang + 0.5) }], MK.INK, 4, 0.95); }
-      const endP = pts[current.result.done] ?? pts[0];
+      if (good.length > 1) { const a = good[good.length - 2], z = good[good.length - 1], ang = Math.atan2(z.y - a.y, z.x - a.x), k = gs * 0.2; gfxLine(gfx, [{ x: z.x - k * Math.cos(ang - 0.5), y: z.y - k * Math.sin(ang - 0.5) }, z, { x: z.x - k * Math.cos(ang + 0.5), y: z.y - k * Math.sin(ang + 0.5) }], MK.INK, 4, 0.95); }
+      const endSh = current.path[current.result.done] ?? current.path[0], endP = pts[current.result.done] ?? pts[0];
+      // Ghost token preview + gold landing border (matching Charge) so Large creatures' exact landing footprint is obvious
+      if (current.result.done > 0) {
+        const landTl = canvas.grid.getTopLeftPoint({ i: tl.i + endSh.di, j: tl.j + endSh.dj });
+        try { const src = target.document?.texture?.src; if (src) { const sp = PIXI.Sprite.from(src); sp.alpha = 0.35; sp.width = w * gs; sp.height = h * gs; sp.position.set(landTl.x, landTl.y); plates.addChildAt(sp, 0); } } catch (e) { /* no picture */ }
+        gfx.lineStyle(3, MK.GOLD, 1).drawRect(landTl.x + 2, landTl.y + 2, w * gs - 4, h * gs - 4);
+      }
       // v0.0.468: the plate short (the HUD says the rest): "Pushed 2", or the Collision and its damage
       const R = current.result, short = !R.block ? `${repo ? "Repositioned" : MOVE_LABEL[mode]} ${R.done}` : R.block.type === "loe" ? `Stops after ${R.done}: no Line of Effect` : repo ? `Stops after ${R.done}` : `Collision after ${R.done}: ${R.damage.self} Vigor${R.block.type === "creature" ? " each" : ""}`;
-      const pl = MK.plate([short], { fs: Math.max(13, Math.round(canvas.grid.size * 0.17)), warn: !!R.block }); pl.position.set(endP.x, endP.y - canvas.grid.size * 0.55); plates.addChild(pl);
+      const pl = MK.plate([short], { fs: Math.max(13, Math.round(gs * 0.17)), warn: !!R.block }); pl.position.set(endP.x, endP.y - (h * gs) / 2 - 4); plates.addChild(pl);
       if (current.result.block) {
         const bad = pts.slice(current.result.done, current.result.done + 2);
         gfxLine(gfx, bad, 0xdd3333, 5, 0.95);
-        const e = bad[bad.length - 1], r = canvas.grid.size * 0.18;
+        const e = bad[bad.length - 1], r = gs * 0.18;
         gfxLine(gfx, [{ x: e.x - r, y: e.y - r }, { x: e.x + r, y: e.y + r }], 0xdd3333, 6);
         gfxLine(gfx, [{ x: e.x - r, y: e.y + r }, { x: e.x + r, y: e.y - r }], 0xdd3333, 6);
       }
@@ -879,18 +883,20 @@ function choosePush(origin, target, N, mode = "push") {
       const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage);
       const o = canvas.grid.getOffset(p), key = shiftKey({ di: o.i - tl.i, dj: o.j - tl.j });
       const node = map.get(key) ?? (pull ? pullIntoOrigin(cells, oCells, { i: o.i, j: o.j }, N) : null);
-      if (!node || !node.steps) { current = null; return draw(); }
+      if (!node || !node.steps) { current = null; fbar.set(""); try { canvas.app.view.style.cursor = ""; } catch (e) { /* no view */ } return draw(); }
       const path = repo || node.intoOrigin ? lineShifts(node) : pathTo(map, key);
       const result = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt });
       current = { path, result };
       fbar.set(text(result));   // v0.0.461: no pointer tip (the plate and the HUD say it)
+      try { canvas.app.view.style.cursor = "pointer"; } catch (e) { /* no view */ }
       draw();
     };
     const done = v => {
       canvas.stage.off("pointermove", hover); canvas.stage.off("pointerdown", down);
       window.removeEventListener("keydown", esc_);
       canvas.tokens.interactiveChildren = prevInteractive;
-      gfx.destroy(); tip.remove(); plates.destroy({ children: true }); fbar.close();
+      try { canvas.app.view.style.cursor = ""; } catch (e) { /* no view */ }
+      gfx.destroy(); plates.destroy({ children: true }); fbar.close();
       resolve(v);
     };
     const down = ev => {
@@ -939,6 +945,7 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     const cornerAt = (a, b) => stepCorners({ i: tl.i + a.di, j: tl.j + a.dj }, { i: tl.i + b.di, j: tl.j + b.dj }, { w, h, solidAt: solidCorner, creatureAt: c => creatureIn(c, [target]) });
     const loeAt = sh => loeTo(origin, target, sh);
     const inReach = sh => foot(sh).some(c => oCells.some(o => Math.max(Math.abs(c.i - o.i), Math.abs(c.j - o.j)) <= reach));
+    const reachOutline = withinReach ? emanationCells(oCells, reach) : [];
     const path = [{ di: 0, dj: 0 }];
     let hover = null;
     const analyze = p => analyzePath(p, p.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt, loeAt, damageless: repo });
@@ -952,8 +959,6 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     const gfx = new PIXI.Graphics();
     MK.addOnTop(gfx);
     const nums = new PIXI.Container(); nums.eventMode = "none"; MK.addOnTop(nums);
-    const tip = document.createElement("div");
-    tip.className = "twod12-pushtip"; tip.style.display = "none"; document.body.append(tip);
     const prevInteractive = canvas.tokens.interactiveChildren;
     canvas.tokens.interactiveChildren = false;
     const pt = sh => { const ps = foot(sh).map(c => cellCenter(c.i, c.j)); return { x: ps.reduce((a, p) => a + p.x, 0) / ps.length, y: ps.reduce((a, p) => a + p.y, 0) / ps.length }; };
@@ -963,6 +968,11 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
       if (r.block.type === "loe") return `${origin.name} loses Line of Effect: it stops after ${r.done} (no damage).`;
       const what = r.block.type === "wall" ? (r.block.corner ? "A solid corner" : "A wall") : r.block.token.name;
       return repo ? `${what} is in the way: it stops after ${r.done} (no damage).` : `${what}: Collision after ${r.done}, ${r.unused} unused, ${r.damage.self} Vigor${r.block.type === "creature" ? " to each" : ""}.`;
+    };
+    const shortPlate = (r, stepsCount) => {
+      if (!r.block) return `${repo ? "Reposition" : MOVE_LABEL[mode]} ${r.done}${stepsCount > 0 ? " · Click again / Enter" : ""}`;
+      if (r.block.type === "loe") return `Stops after ${r.done}: no Line of Effect`;
+      return repo ? `Stops after ${r.done}` : `Collision after ${r.done}: ${r.damage.self} Vigor${r.block.type === "creature" ? " each" : ""}`;
     };
     // v0.0.175: the squares the path can still reach (like the area Pushed and Pulled show): within the steps left from the last square,
     // not into Hazardous Terrain (Reposition), and within the origin's Reach (Relocate).
@@ -978,27 +988,80 @@ function choosePath(origin, target, N, mode = "slid", { withinReach = false } = 
     };
     const draw = () => {
       gfx.clear();
+      const gs = canvas.grid.size;
       const r = analyze(path), area = reachable();
+      // Reposition: faint pale dashed Reach boundary so the limit is visible before hovering invalid squares
+      if (reachOutline.length) {
+        const rset = new Set(reachOutline.map(x => `${x.i},${x.j}`));
+        for (const x of reachOutline) {
+          const t = canvas.grid.getTopLeftPoint({ i: x.i, j: x.j });
+          if (!rset.has(`${x.i - 1},${x.j}`)) MK.dashLine(gfx, { x: t.x, y: t.y }, { x: t.x + gs, y: t.y }, { color: MK.INK, alpha: 0.45, width: 1.5 });
+          if (!rset.has(`${x.i + 1},${x.j}`)) MK.dashLine(gfx, { x: t.x, y: t.y + gs }, { x: t.x + gs, y: t.y + gs }, { color: MK.INK, alpha: 0.45, width: 1.5 });
+          if (!rset.has(`${x.i},${x.j - 1}`)) MK.dashLine(gfx, { x: t.x, y: t.y }, { x: t.x, y: t.y + gs }, { color: MK.INK, alpha: 0.45, width: 1.5 });
+          if (!rset.has(`${x.i},${x.j + 1}`)) MK.dashLine(gfx, { x: t.x + gs, y: t.y }, { x: t.x + gs, y: t.y + gs }, { color: MK.INK, alpha: 0.45, width: 1.5 });
+        }
+      }
       // v0.0.461 (the map notes, f): the squares it can go to in gold (a choice), the path in pale ink with its steps numbered, red where it stops
       if (area.length) { fillCells(gfx, area, MK.GOLD, 0.16); outlineCells(gfx, area, { color: MK.GOLD, width: 2 }); }
       fillCells(gfx, path.slice(1).flatMap(foot), MK.INK, 0.12);
       const pts = path.map(pt);
       gfxLine(gfx, pts.slice(0, r.done + 1), MK.INK, 4, 0.95);
       for (const k of nums.removeChildren()) k.destroy?.({ children: true });
-      pts.slice(1).forEach((p, k) => { const t = new PIXI.Text(String(k + 1), { fontFamily: MK.FONT, fontSize: Math.max(12, Math.round(canvas.grid.size * 0.2)), fontWeight: "700", fill: MK.INK, stroke: 0x1f1c18, strokeThickness: 3 }); t.anchor?.set?.(0.5, 0.5); t.position.set(p.x, p.y); nums.addChild(t); });
-      if (r.block) gfxLine(gfx, pts.slice(r.done, r.done + 2), 0xdd3333, 5, 0.95);
-      if (hover) { const bad = why(hover); fillCells(gfx, foot(hover), bad ? 0xdd3333 : 0xffffff, bad ? 0.25 : 0.35); }
+      pts.slice(1).forEach((p, k) => { const t = new PIXI.Text(String(k + 1), { fontFamily: MK.FONT, fontSize: Math.max(12, Math.round(gs * 0.2)), fontWeight: "700", fill: MK.INK, stroke: 0x1f1c18, strokeThickness: 3 }); t.anchor?.set?.(0.5, 0.5); t.position.set(p.x, p.y); nums.addChild(t); });
+      if (r.block) {
+        const bad = pts.slice(r.done, r.done + 2);
+        gfxLine(gfx, bad, 0xdd3333, 5, 0.95);
+        const e = bad[bad.length - 1], xr = gs * 0.18;
+        gfxLine(gfx, [{ x: e.x - xr, y: e.y - xr }, { x: e.x + xr, y: e.y + xr }], 0xdd3333, 6);
+        gfxLine(gfx, [{ x: e.x - xr, y: e.y + xr }, { x: e.x + xr, y: e.y - xr }], 0xdd3333, 6);
+      }
+      const endSh = path[r.done] ?? path[0];
+      const showGhost = sh => {
+        const landTl = canvas.grid.getTopLeftPoint({ i: tl.i + sh.di, j: tl.j + sh.dj });
+        try { const src = target.document?.texture?.src; if (src) { const sp = PIXI.Sprite.from(src); sp.alpha = 0.35; sp.width = w * gs; sp.height = h * gs; sp.position.set(landTl.x, landTl.y); nums.addChildAt(sp, 0); } } catch (e) { /* no picture */ }
+        gfx.lineStyle(3, MK.GOLD, 1).drawRect(landTl.x + 2, landTl.y + 2, w * gs - 4, h * gs - 4);
+      };
+      const fs = Math.max(12, Math.round(gs * 0.16));
+      if (hover) {
+        const last = path[path.length - 1], sameLast = hover.di === last.di && hover.dj === last.dj && path.length > 1;
+        const bad = sameLast ? "" : why(hover);
+        fillCells(gfx, foot(hover), bad ? 0xdd3333 : 0xffffff, bad ? 0.25 : 0.3);
+        const hp = pt(hover);
+        if (sameLast) {
+          showGhost(endSh);
+          const pl = MK.plate([shortPlate(r, path.length - 1)], { fs, warn: !!r.block });
+          pl.position.set(hp.x, hp.y - (h * gs) / 2 - 4); nums.addChild(pl);
+        } else if (bad) {
+          const pl = MK.plate([bad], { fs, warn: true });
+          pl.position.set(hp.x, hp.y - (h * gs) / 2 - 4); nums.addChild(pl);
+        } else {
+          const rNext = analyze([...path, hover]);
+          showGhost(rNext.block ? path[rNext.done] ?? hover : hover);
+          if (rNext.block) { const xr = gs * 0.18; gfxLine(gfx, [{ x: hp.x - xr, y: hp.y - xr }, { x: hp.x + xr, y: hp.y + xr }], 0xdd3333, 6); gfxLine(gfx, [{ x: hp.x - xr, y: hp.y + xr }, { x: hp.x + xr, y: hp.y - xr }], 0xdd3333, 6); }
+          const pl = MK.plate([rNext.block ? shortPlate(rNext, path.length) : `Step ${path.length} · Click to add`], { fs, warn: !!rNext.block });
+          pl.position.set(hp.x, hp.y - (h * gs) / 2 - 4); nums.addChild(pl);
+        }
+      } else if (path.length > 1) {
+        showGhost(endSh);
+        const ep = pt(endSh), pl = MK.plate([shortPlate(r, path.length - 1)], { fs, warn: !!r.block });
+        pl.position.set(ep.x, ep.y - (h * gs) / 2 - 4); nums.addChild(pl);
+      }
       return r;
     };
     const posOf = ev => { const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage); const o = canvas.grid.getOffset(p); return { di: o.i - tl.i, dj: o.j - tl.j }; };
     const showTip = (ev, msg) => { fbar?.set(msg); };   // v0.0.461 (choice 8A): no pointer tip: the HUD's readout says it
-    const move = ev => { hover = posOf(ev); const r = draw(); const bad = why(hover), last = path[path.length - 1]; showTip(ev, hover.di === last.di && hover.dj === last.dj && path.length > 1 ? text(r) : (bad ? `Not here: ${bad}.` : text(analyze([...path, hover])))); };
+    const move = ev => {
+      hover = posOf(ev); const r = draw(); const last = path[path.length - 1], sameLast = hover.di === last.di && hover.dj === last.dj && path.length > 1, bad = sameLast ? "" : why(hover);
+      try { canvas.app.view.style.cursor = bad ? "not-allowed" : "pointer"; } catch (e) { /* no view */ }
+      showTip(ev, sameLast ? text(r) : (bad ? `Not here: ${bad}.` : text(analyze([...path, hover]))));
+    };
     const fbar = forcedBar(mode, target, origin, N, () => finish({ ended: true }));   // v0.0.335: the bottom bar
     const finish = v => {
       canvas.stage.off("pointermove", move); canvas.stage.off("pointerdown", down);
       window.removeEventListener("keydown", keys);
       canvas.tokens.interactiveChildren = prevInteractive;
-      gfx.destroy(); tip.remove(); nums.destroy({ children: true }); fbar.close();
+      try { canvas.app.view.style.cursor = ""; } catch (e) { /* no view */ }
+      gfx.destroy(); nums.destroy({ children: true }); fbar.close();
       resolve(v);
     };
     const confirm = () => (path.length > 1 ? finish({ path: [...path], result: analyze(path) }) : finish({ ended: true }));
@@ -1405,14 +1468,14 @@ async function forcedDrag(doc, dest) {
   clearDragPreview();
   if (r.done > 0) await doc.update({ x: end.x, y: end.y }, { twod12Forced: true, animate: true, animation: { movementSpeed: TWOD12.pushSpeed, easing: "easeOutCubic" } });
   const lines = [`<b>${esc(doc.name)}</b> is Force Moved ${r.done} square${r.done === 1 ? "" : "s"} (GM, Alt-drag).`];
-  if (r.block?.type === "wall") { lines.push(`It hits a wall with ${r.unused} unused: <b>${r.damage.self} Body</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); }
-  else if (r.block) { lines.push(`It hits <b>${esc(r.block.token.name)}</b> with ${r.unused} unused: both take <b>${r.damage.self} Body</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); if (r.block.token.actor && r.damage.other) await applyToActor(r.block.token.actor, bodyDamage(r.damage.other)); }
+  if (r.block?.type === "wall") { lines.push(`It hits a wall with ${r.unused} unused: <b>${r.damage.self} Vigor</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); }
+  else if (r.block) { lines.push(`It hits <b>${esc(r.block.token.name)}</b> with ${r.unused} unused: both take <b>${r.damage.self} Vigor</b> damage.`); if (doc.actor && r.damage.self) await applyToActor(doc.actor, bodyDamage(r.damage.self)); if (r.block.token.actor && r.damage.other) await applyToActor(r.block.token.actor, bodyDamage(r.damage.other)); }
   await ChatMessage.create({ content: sysLine("fa-hand", lines.join(" "), "pushmsg") });
 }
 
 /**
  * v0.0.351 (Lucas: "show the preview of where the token will stop plus the damage it will take while holding Alt"): while the GM drags a token
- * with Alt held, its path to the drop square is drawn: the squares it passes (blue), where it stops (green), the square it hits (red), and a label.
+ * with Alt held, its path to the drop square is drawn in STYLE-3 (ink path, 35% ghost + gold landing border, red X on collision, dark plate).
  */
 let dragGfx = null;
 function clearDragPreview() { try { dragGfx?.destroy({ children: true }); } catch (e) { /* gone */ } dragGfx = null; }
@@ -1422,17 +1485,39 @@ function drawDragPreview(preview) {
   const { r, cells, w, h } = forcedDragPlan(orig.document, { x: preview.document.x, y: preview.document.y });
   clearDragPreview();
   dragGfx = new PIXI.Container(); dragGfx.eventMode = "none";
-  const g = new PIXI.Graphics(), foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push({ i: c.i + di, j: c.j + dj }); return out; };
-  fillCells(g, cells.slice(1, r.done).flatMap(foot), 0x6fa8dc, 0.4);
-  if (r.done > 0) fillCells(g, foot(cells[r.done]), 0x5fbf86, 0.6);
-  if (r.block && cells[r.done + 1]) fillCells(g, foot(cells[r.done + 1]), 0xe07a6a, 0.55);
-  dragGfx.addChild(g);
-  const txt = `Forced: ${r.done} sq.${r.block ? ` · hits ${r.block.type === "wall" ? "a wall" : r.block.token?.name ?? "a creature"}: ${r.damage.self} Body${r.block.type === "creature" ? " each" : ""}` : ""}`;
-  const t = new PIXI.Text(txt, { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: Math.round(canvas.grid.size * 0.22), fontWeight: "700", fill: r.block ? "#ffb3ad" : "#c8f5d2", stroke: "#111111", strokeThickness: 4 });
+  const g = new PIXI.Graphics(), gs = canvas.grid.size;
+  const foot = c => { const out = []; for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) out.push({ i: c.i + di, j: c.j + dj }); return out; };
+  const ctr = c => { const t = canvas.grid.getTopLeftPoint({ i: c.i, j: c.j }); return { x: t.x + (w * gs) / 2, y: t.y + (h * gs) / 2 }; };
+  // Path squares in subtle pale ink + centerline dots
+  if (r.done > 1) fillCells(g, cells.slice(1, r.done).flatMap(foot), MK.INK, 0.14);
+  if (r.done > 0) {
+    g.lineStyle(4, MK.INK, 0.9);
+    for (let k = 0; k <= r.done; k++) { const p = ctr(cells[k]); if (k) g.lineTo(p.x, p.y); else g.moveTo(p.x, p.y); }
+    g.lineStyle(0);
+    for (let k = 1; k <= r.done; k++) { const p = ctr(cells[k]); g.beginFill(MK.INK, 0.9).drawCircle(p.x, p.y, Math.max(4, gs * 0.06)).endFill(); }
+  }
   const at = canvas.grid.getTopLeftPoint({ i: cells[r.done].i, j: cells[r.done].j });
-  t.anchor.set(0.5, 1); t.position.set(at.x + (w * canvas.grid.size) / 2, at.y - 6);
-  dragGfx.addChild(t);
-  (canvas.controls ?? canvas.interface)?.addChild(dragGfx);
+  if (r.done > 0) {
+    fillCells(g, foot(cells[r.done]), MK.GOLD, 0.22);
+    g.lineStyle(3, MK.GOLD, 1).drawRect(at.x + 2, at.y + 2, w * gs - 4, h * gs - 4);
+  }
+  if (r.block && cells[r.done + 1]) {
+    fillCells(g, foot(cells[r.done + 1]), MK.RED, 0.35);
+    const x0 = ctr(cells[r.done + 1]), k = gs * 0.2;
+    g.lineStyle(4, MK.RED, 1).moveTo(x0.x - k, x0.y - k).lineTo(x0.x + k, x0.y + k).moveTo(x0.x + k, x0.y - k).lineTo(x0.x - k, x0.y + k);
+  }
+  dragGfx.addChild(g);
+  if (r.done > 0) {
+    try {
+      const src = orig.document?.texture?.src;
+      if (src) { const sp = PIXI.Sprite.from(src); sp.alpha = 0.35; sp.width = w * gs; sp.height = h * gs; sp.position.set(at.x, at.y); dragGfx.addChild(sp); }
+    } catch (e) { /* no picture */ }
+  }
+  const txt = `Forced: ${r.done} sq.${r.block ? ` · hits ${r.block.type === "wall" ? "a wall" : r.block.token?.name ?? "a creature"}: ${r.damage.self} Vigor${r.block.type === "creature" ? " each" : ""}` : ""}`;
+  const pl = MK.plate([txt], { fs: Math.max(13, Math.round(gs * 0.19)), warn: !!r.block });
+  pl.position.set(at.x + (w * gs) / 2, at.y - 6);
+  dragGfx.addChild(pl);
+  MK.addOnTop(dragGfx, 9000);
 }
 
 export function registerMovement() {
@@ -1605,6 +1690,10 @@ export function showRange(c, squares, dest = null, par = 0) {
     let regions = [];
     try { regions = (canvas.regions?.placeables ?? []).filter(r => r.document.behaviors?.some(x => ["difficultTerrain", "modifyMovementCost"].includes(x.type) && !x.disabled)); } catch (e) { /* none */ }
     const own = new Set(cells.map(x => `${x.i},${x.j}`));
+    const limits = readMoveLimits(tok.document).map(l => ({ ...l, d0: limitSquares(o, l.token) }));
+    const cantLimits = limits.filter(l => l.how !== "difficult");
+    const diffLimits = limits.filter(l => l.how === "difficult");
+    const cantCell = cell => cantLimits.some(l => moveLimitBreaks(l.dir, l.d0, limitSquares(cell, l.token)));
     const difficult = cell => {
       const k = `${cell.i},${cell.j}`;
       if (memo.has(k)) return memo.get(k);
@@ -1612,17 +1701,20 @@ export function showRange(c, squares, dest = null, par = 0) {
       try {
         const p = pt(cell);
         d = seenLight(lightAt(p), senses) === "dark" || regions.some(r => regionHasPoint(r.document, p, tok.document.elevation ?? 0))
-          || (!own.has(k) && !!(() => { const o = creatureIn(cell, [tok.id]); return o && (o.document.disposition ?? 0) !== (tok.document.disposition ?? 0); })());
+          || areaDifficult(tok.document, [cell])
+          || diffLimits.some(l => moveLimitBreaks(l.dir, l.d0, limitSquares(cell, l.token)))
+          || (!own.has(k) && !!(() => { const o2 = creatureIn(cell, [tok.id]); return o2 && (o2.document.disposition ?? 0) !== (tok.document.disposition ?? 0); })());
       } catch (e) { d = false; }
       memo.set(k, d);
       return d;
     };
     const enterCost = cell => (ignoring ? 0 : difficult(cell) ? (evading ? Infinity : 1) : 0);
-    const area = reachableCells(cells, squares, (a, b) => wallBetween(pt(a), pt(b)), par, enterCost);
+    const blocked = (a, b) => wallBetween(pt(a), pt(b)) || (!own.has(`${b.i},${b.j}`) && cantCell(b));
+    const area = reachableCells(cells, squares, blocked, par, enterCost);
     rangeGfx = new PIXI.Graphics();
     (canvas.interface ?? canvas.stage).addChild(rangeGfx);   // the movement area stays under the tokens (a large pale area)
     // v0.0.461 (the map notes' redesign, b and c): where it can stop in pale ink (blue had no meaning); an Evade's edge dashed (only an Evade is);
-    // its Difficult Terrain hatched: inside an Advance's area (it costs 1 more), and for an Evade, the squares next to it that it can't enter, in red
+    // its Difficult Terrain hatched: inside an Advance's area (it costs 1 more), and for an Evade (or Movement limit), adjacent blocked squares in red
     fillCells(rangeGfx, area, MK.INK, 0.08);
     const set = new Set(area.map(x => `${x.i},${x.j}`)), gs = canvas.grid.size, segs = [];
     for (const x of area) { const t = canvas.grid.getTopLeftPoint({ i: x.i, j: x.j });
@@ -1630,10 +1722,17 @@ export function showRange(c, squares, dest = null, par = 0) {
       if (!set.has(`${x.i},${x.j - 1}`)) segs.push([t.x, t.y, t.x, t.y + gs]); if (!set.has(`${x.i},${x.j + 1}`)) segs.push([t.x + gs, t.y, t.x + gs, t.y + gs]); }
     for (const [x0, y0, x1, y1] of segs) { if (evading) MK.dashLine(rangeGfx, { x: x0, y: y0 }, { x: x1, y: y1 }, { color: MK.INK, alpha: 0.85, width: 2 }); else { rangeGfx.lineStyle(2, MK.INK, 0.75); rangeGfx.moveTo(x0, y0); rangeGfx.lineTo(x1, y1); } }
     const hatch = (cell, color, alpha) => { const t = canvas.grid.getTopLeftPoint({ i: cell.i, j: cell.j }), n = 4; rangeGfx.lineStyle(1.5, color, alpha); for (let k = 1; k <= n * 2 - 1; k++) { const d = (k / (n * 2)) * 2 * gs; const ax = t.x + Math.max(0, d - gs), ay = t.y + Math.min(d, gs), bx = t.x + Math.min(d, gs), by = t.y + Math.max(0, d - gs); rangeGfx.moveTo(ax, ay); rangeGfx.lineTo(bx, by); } };
+    const nearBlocked = () => {
+      const near = new Set();
+      for (const x of area) for (let di = -1; di <= 1; di++) for (let dj = -1; dj <= 1; dj++) { const k = `${x.i + di},${x.j + dj}`; if (!set.has(k) && !own.has(k)) near.add(k); }
+      return near;
+    };
     if (!ignoring) {
       if (!evading) { for (const x of area) if (!own.has(`${x.i},${x.j}`) && difficult(x)) hatch(x, MK.INK, 0.35); }
-      else { const near = new Set(); for (const x of area) for (let di = -1; di <= 1; di++) for (let dj = -1; dj <= 1; dj++) { const k = `${x.i + di},${x.j + dj}`; if (!set.has(k) && !own.has(k)) near.add(k); }
-        for (const k of near) { const [i, j] = k.split(",").map(Number); if (difficult({ i, j })) hatch({ i, j }, MK.RED, 0.55); } }
+      else { for (const k of nearBlocked()) { const [i, j] = k.split(",").map(Number); if (difficult({ i, j })) hatch({ i, j }, MK.RED, 0.55); } }
+    }
+    if (cantLimits.length) {
+      for (const k of nearBlocked()) { const [i, j] = k.split(",").map(Number); if (cantCell({ i, j })) hatch({ i, j }, MK.RED, 0.55); }
     }
   } catch (e) { console.warn("twod12 | could not draw the movement area", e); }
 }
@@ -1853,7 +1952,7 @@ export function openChargePicker(c, token) {
     try { gfx.destroy(); marks.destroy({ children: true }); } catch (e) { /* gone */ }
     try { canvas.app.view.style.cursor = ""; } catch (e) { /* gone */ }
     bar.remove();
-    if (slot) hud.hudAsking(false);
+    try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ }
     chargePick = null;
     if (giveUp) endMovement(c.id).catch(() => {});
   };
