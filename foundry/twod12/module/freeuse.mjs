@@ -46,11 +46,14 @@ export async function handleUse(cfg, ctx = {}) {
   const total = cfg.count ?? 1, left = total - (uses[key] ?? 0);
   if (left <= 0) return ui.notifications.warn("No uses left.");
   let list = actionsFor(actor, cfg.target);
-  // v0.0.214: NPCs have no Weapon Attack: a use of it (the attack at the end of a Charge, a grant) is their Basic attack.
-  // v0.0.216: the Action with the "NPC's Basic attack" box first (Lucas), else the category "Basic attack" (older NPCs).
-  if (!list.length && actor.type === "npc" && /^weapon attack$/i.test(String(cfg.target ?? "").trim())) {
-    const ticked = actor.itemTypes.action.filter(i => i.system?.basicAttack);
-    list = ticked.length ? ticked : actionsFor(actor, "category:Basic attack");
+  // v0.0.214 / core rework batch 3: NPCs have no Basic Attack item (their own Basic attack takes its place); legacy @Use[Weapon Attack] on a PC maps to Basic Attack.
+  if (!list.length && /^(?:weapon|basic) attack$/i.test(String(cfg.target ?? "").trim())) {
+    if (actor.type === "npc") {
+      const ticked = actor.itemTypes.action.filter(i => i.system?.basicAttack);
+      list = ticked.length ? ticked : actionsFor(actor, "category:Basic attack");
+    } else {
+      list = actor.itemTypes.action.filter(i => i.getFlag?.(F, "basic") === "basicWeaponAttack");
+    }
   }
   if (!list.length) return ui.notifications.warn(`${actor.name} has no Action called "${cfg.target}".`);
   const item = await chooseAction(list, cfg.target);

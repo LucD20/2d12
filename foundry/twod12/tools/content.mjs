@@ -203,7 +203,7 @@ sp("Elf", { body: -1, mind: 1, appeal: 1, instinct: 1 }, false, 1, 4, 6);
 // v0.0.185 (pack C2): the classes' levels as sections (module/classlevels.mjs), from the book's "by Level" tables; the class window reads them.
 // v0.0.409 (pack F2): the Paladin's Stage 0 Features (book/cards/stage0/paladin.json); Reckoning is an Action now (its Escalation 6 Action)
 // v0.0.411 (pack F3): the Archer's Stage 0 Features (book/cards/stage0/archer.json)
-const U = names => names.map(n => uuidOf(/^(Kindled Wrath|Armor of Faith|Roving Judgment|Weight of Judgment|Tireless Vigil|Hallowed Stance|Shifting Aim|Thrill of the Kill|Lean and Loose|Blade and Bow|Clear Lines|Opening Shot|One More Arrow|Fleet)$/.test(n) ? "features" : "actions", n));
+const U = names => names.map(n => uuidOf(/^(Sworn Blade|Steady Draw|Kindled Wrath|Armor of Faith|Roving Judgment|Weight of Judgment|Tireless Vigil|Hallowed Stance|Shifting Aim|Thrill of the Kill|Lean and Loose|Blade and Bow|Clear Lines|Opening Shot|One More Arrow|Fleet)$/.test(n) ? "features" : "actions", n));
 const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "choice", pick: o.pick ?? 1, items: o.items ?? [], pairs: (o.pairs ?? []).map(([a, b]) => ({ a, b })), freq: o.freq ?? "any", category: o.category ?? "" });
 // OT (book 2026-10-30): the Repertoire and Escalation lists with their options.
 // Pack R-classes (book 2026-11-04): the Paladin rebuilt for pack R: a Hallmark Reaction (Shield of Faith or Bulwark of Faith), an Encounter Pick, one Escalation Passive per
@@ -220,11 +220,11 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>You stand in front so the others can stand back. A holy warrior who judges a foe before their god, shields the allies near them, and, when the fight has built long enough, brings all of it down in one blow.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
   // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10; v0.0.408: the Stage steps 0 until the book writes them; Rally 6 (+ 1 / 2 / 3 / 4 by Stage).
   choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
-  // v0.0.409 (book, the Paladin at a glance, 2026-11-14): Weapon Modifier +1, Power Modifier +2, fixed (the Power Modifier first).
-  modHigh: 2, modLow: 1, modOrder: "power", armorTraining: "heavy", features: [],
+  // core rework batch 3 (H1, book, Chapter 5): every class chooses its Modifier order (+2 / +1 either way).
+  modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "heavy", features: [],
   repertoire: U(PAL_ENC), escPassives: U(["Armor of Faith", "Roving Judgment", "Weight of Judgment", "Tireless Vigil", "Hallowed Stance"]), escActives: U(["Reckoning"]),
   levels: [
-    { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Features", "items", { mode: "granted", items: U(["Judge", "Smite"]) }),
+    { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Features", "items", { mode: "granted", items: U(["Judge", "Smite", "Sworn Blade", "Drawing Light"]) }),
       sec("pal1hall", "Hallmark Action", "items", { items: U(["Binding Light", "Lay On Hands"]) }), sec("pal1react", "Hallmark Reaction", "items", { items: U(["Shield of Faith", "Rebuke"]) }),
       sec("pal1art", "Art", "items", { items: U(PAL_ARTS) }), sec("pal1esc2", "Escalation 2 Ability", "items", { items: U(PAL_E2) }), sec("pal1skill", "Skill Talent", "talent")] },
     { sections: [sec("pal2hook", "Escalation Hook", "items", { mode: "granted", items: U(["Kindled Wrath"]) }), sec("pal2enc", "Encounter Pick", "items", { items: U(PAL_ENC) }),
@@ -242,11 +242,11 @@ add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance and never stands still: many small hits, a knife for the foe who gets close, and gone again.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
   // Pack R (v0.0.243): high 16 / low 8; v0.0.408: the Stage steps 0 until the book writes them; Rally 5 (+ 1 / 2 / 3 / 4 by Stage).
   choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 5,
-  // v0.0.305 (pack MOD; book, the Archer's stat box): Weapon +2, Power +1, fixed. v0.0.411: Light Armor Training.
-  modHigh: 2, modLow: 1, modOrder: "weapon", armorTraining: "light", speedMod: 1, features: [],
+  // core rework batch 3 (H1, book, Chapter 5): every class chooses its Modifier order (+2 / +1 either way). v0.0.411: Light Armor Training.
+  modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "light", speedMod: 1, features: [],
   repertoire: U(ARC_ENC), escPassives: U(["Lean and Loose", "Blade and Bow", "Clear Lines", "Opening Shot", "One More Arrow", "Fleet"]), escActives: [],
   levels: [
-    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Shifting Aim", "Darting Blade"]) }),
+    { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Shifting Aim", "Darting Blade", "Steady Draw", "Harrying Shot"]) }),
       sec("arc1hall", "Hallmark Action", "items", { items: U(["Quick Shots", "Strafe"]) }), sec("arc1react", "Hallmark Reaction", "items", { items: U(["Slip Away", "Snap Shot"]) }),
       sec("arc1art", "Art", "items", { items: U(ARC_ARTS) }), sec("arc1esc2", "Escalation 2 Ability", "items", { items: U(["Lean and Loose", "Blade and Bow"]) }), sec("arc1skill", "Skill Talent", "talent")] },
     { sections: [sec("arc2hook", "Escalation Hook", "items", { mode: "granted", items: U(["Thrill of the Kill"]) }), sec("arc2enc", "Encounter Pick", "items", { items: U(ARC_ENC) }),

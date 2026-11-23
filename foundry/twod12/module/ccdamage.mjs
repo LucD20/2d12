@@ -259,7 +259,7 @@ async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the 
   if (s.lines) {
     const user = actor?.documentName === "Actor" ? actor : (actor?.actor ?? null);
     for (const r of list) {
-      const a = actorOf(r.uuid), texts = stateLinesFor(s.lines, r.pre ?? {}, { b: !!a?.system?.bloodied, s: !!a?.system?.strained });
+      const a = actorOf(r.uuid), texts = stateLinesFor(s.lines, r.pre ?? {}, { b: !!a?.system?.bloodied, s: !!a?.system?.strained }, r.tier ?? 0);
       for (const t of texts) {
         try { await runAfter(t, { save: !!s.save, actor: user, targets: [{ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 }], attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: msg }); }
         catch (e) { console.warn("twod12 | a Bloodied / Strained line", e); }

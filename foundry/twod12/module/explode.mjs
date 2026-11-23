@@ -19,6 +19,11 @@ export function weaponDiceFormula(d, n = 1) {
   if (dice > 0) return `${dice}${d.die}!` + (mod ? `${mod > 0 ? "+" : ""}${mod}` : "");
   return mod ? String(mod) : null;
 }
+/** Pure (core rework batch 3, [D]): the weapon's exploding die on this Tier, rolled n times, with no flat part ("1d6!", "2d4!", or null). */
+export function weaponDieOnlyFormula(d, n = 1) {
+  const dice = d?.die ? (Number(d.count) || 0) * n : 0;
+  return dice > 0 ? `${dice}${d.die}!` : null;
+}
 /** Pure: a weapon's Tier as the book writes it: "0", "3", "1d4!", "3 + 1d4!" (the flat part first, then the die). */
 export function weaponTierText(d) {
   const dice = d?.die && Number(d.count) ? `${d.count}${d.die}!` : "", mod = Number(d?.mod) || 0;

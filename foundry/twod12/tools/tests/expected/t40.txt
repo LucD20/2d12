@@ -1,6 +1,6 @@
-NPC basic actions: Advance, Evade, Reload, Interact, Crawl, Regrip, Release, Stand, Break Free, Charge, Lean, Fists, Relocate, Trip, Shove, Haul, Shake Off, Fists
-Character basic actions: Weapon Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Regrip, Release, Stand, Break Free, Charge, Lean, Fists, Relocate, Trip, Shove, Haul, Shake Off, Fists
+NPC basic actions: Advance, Evade, Reload, Interact, Crawl, Regrip, Release, Stand, Break Free, Charge, Lean, Fists, Relocate, Trip, Shove, Haul, Shake Off, Aid, Demoralize, Feint, Heal, Tumble, Fists
+Character basic actions: Basic Attack, Advance, Evade, Reload, Interact, Steel Yourself, Crawl, Regrip, Release, Stand, Break Free, Charge, Lean, Fists, Relocate, Trip, Shove, Haul, Shake Off, Aid, Demoralize, Feint, Heal, Tumble, Fists
 missing for NPC with all but Rally: false
-Shove 1AP tier text: No effect. | @Move[pushed|distance:1] | @Move[pushed|distance:2] | instances: 0
-Trip 2AP: No effect. | @Condition[prone] | ["1d8Bl"] @Condition[prone]
+Shove 1AP tier text: No effect. | @Move[pushed|distance:2] | @Move[pushed|distance:3] | instances: 0
+Trip 2AP: @Condition[hindered|eot] | @Condition[prone] | ["2d6!Bl"] @Condition[prone]
 damage.mjs loads: function

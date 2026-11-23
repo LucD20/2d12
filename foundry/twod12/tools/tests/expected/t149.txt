@@ -13,7 +13,7 @@ the book's example (Body or Appeal, Appeal or Instinct): Appeal moves to the sec
 an Attribute chosen at an earlier level can't be chosen: {}
 all but the Talent: 6 of 7 made, complete false | Attribute increases [Chosen] | Features [Granted] | Hallmark Action [Chosen] Binding Light/Lay On Hands | Hallmark Reaction [Chosen] Shield of Faith/Rebuke | Art [Chosen] Lantern of Faith/Hold the Line/Commandment | Escalation 2 Ability [Chosen] Armor of Faith/Roving Judgment | Skill Talent [0 / 1] Ricochet/Take Aim/Cold Domain/Shared Burden
 with the Skill Talent: complete false (6 of 7)
-what confirm gives: Judge (Features), Smite (Features), Binding Light (Hallmark Action), Shield of Faith (Hallmark Reaction), Hold the Line (Art), Armor of Faith (Escalation 2 Ability)
+what confirm gives: Judge (Features), Smite (Features), Sworn Blade (Features), Drawing Light (Features), Binding Light (Hallmark Action), Shield of Faith (Hallmark Reaction), Hold the Line (Art), Armor of Faith (Escalation 2 Ability)
 --- the same item in two sections
 Hallowed Stance chosen in First: 1 of 2 made, complete false | First [Chosen] Hallowed Stance/Tireless Vigil | Second [0 / 1] Tireless Vigil
 also in (Levels window): Second
@@ -30,7 +30,7 @@ a Repertoire pick excludes what this level grants: 0 of 1 made, complete false |
 and what the character owns: 0 of 1 made, complete false | Core [Granted] | Encounter Pick [0 / 1] Consecrated Ground
 --- the Levels window's lines
 Attribute increases: {"text":"Body or Appeal +1 · Mind or Instinct +1","warn":false}
-Features: {"text":"Granted: Judge, Smite","warn":false}
+Features: {"text":"Granted: Judge, Smite, Sworn Blade, Drawing Light","warn":false}
 Hallmark Action: {"text":"Choose 1 of 2","warn":false}
 Hallmark Reaction: {"text":"Choose 1 of 2","warn":false}
 Art: {"text":"Choose 1 of 3","warn":false}

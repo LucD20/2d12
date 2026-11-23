@@ -35,7 +35,7 @@ Charge picker A1 to G4, ties left: A1 B1 C2 D2 E3 F3 G4 | ties 3 | first not leg
 Charge picker A1 to G4, ties right: A1 B2 C2 D3 E3 F4 G4 | ties 3 | first not legal: D3 (the straight line passes through Orc (an unwilling creature's space is Difficult Terrain))
 Charge checks the chosen line square by square: true
 --- Haul
-Haul 1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | appeal/body/handle/strike | vs roll | distance reach | round: true
+Haul 1AP: 0/1/2 | 2AP: 0/2/4 | 3AP: 1/3/5 | body/handle | vs body | distance reach | round: true
 Reach 1: needs a Reach of 2 or more | Reach 2, target 2 away: ok | target next to you: needs a target at least 2 squares away (it is 1) | SR 5: needs a target whose SR is at most 1 higher than yours
 the Haul card's flavor: You snag them and drag them in.
 --- @Move[pulled]

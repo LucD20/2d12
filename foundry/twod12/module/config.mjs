@@ -180,11 +180,11 @@ export const TWOD12 = {
   // v0.0.198 (Lucas, 2026-10-30): the Basic Actions section of the Actions tab, 4 groups in a 2x2 grid (row 1 Attack | Control, row 2
   // Movement | Utility), each in this order. By name: the Kind traits don't separate them. The items and the compendium don't change.
   basicGroups: [
-    // v0.0.289 (PACK SHEET, Lucas's design): four columns, Attack | Movement | Control | Utility; Opportunity Attack is in the Reactions section
-    { key: "attack", label: "Attack", names: ["Weapon Attack", "Charge", "Fists", "Reload"] },
-    { key: "movement", label: "Movement", names: ["Advance", "Evade", "Crawl", "Stand", "Break Free"] },
-    { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate"] },
-    { key: "utility", label: "Utility", names: ["Steel Yourself", "Interact", "Shake Off", "Regrip", "Release", "Lean", "Leaning"] }
+    // v0.0.289 (PACK SHEET, Lucas's design): four columns, Attack | Movement | Control | Utility; core rework batch 3: Basic Attack + Aid, Demoralize, Feint, Heal, Tumble
+    { key: "attack", label: "Attack", names: ["Basic Attack", "Weapon Attack", "Charge", "Fists", "Reload"] },
+    { key: "movement", label: "Movement", names: ["Advance", "Evade", "Tumble", "Crawl", "Stand", "Break Free"] },
+    { key: "control", label: "Control", names: ["Shove", "Trip", "Haul", "Relocate", "Demoralize", "Feint"] },
+    { key: "utility", label: "Utility", names: ["Steel Yourself", "Heal", "Aid", "Interact", "Shake Off", "Regrip", "Release", "Lean", "Leaning"] }
   ],
   // v0.0.189 (Lucas, after Draw Steel's Codex): how much of a card Foundry does for you, as a chip on the card. "" shows nothing.
   // v0.0.355 (PACK ACTION-SHEET; the audit's D21, D22): the highest Escalation, read by the Action sheet's Escalation field and a rule's "Works"
@@ -467,7 +467,7 @@ const TRAIT_KEY_OF = Object.fromEntries([...Object.entries(TWOD12.traits).map(([
 const TRAIT_KEYS = [...new Set(Object.values(TWOD12.traits).map(String))].sort((a, b) => b.length - a.length).map(l => l.replace(/[.*+?^${}()|[\]\\-]/g, "\\$&")).join("|");
 
 /* ------------------------------------------------------------------ text colors (v0.0.179: the book's CLASS_TOKEN, book/build_rules.py) */
-const ATOM = String.raw`(?:\d+d\d+!?|\d+\[W\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
+const ATOM = String.raw`(?:\d+d\d+!?|\d+\[[WD]\]|\[Mod\]|\d+)`, EXPR = String.raw`${ATOM}(?:\s*[+\-\u2212/]\s*${ATOM})*`;
 const TOKEN_RE = new RegExp([
   String.raw`(?<slash>${ATOM}(?:\s*/\s*${ATOM})+\s*\[(?<sp>[BMVR])\])`,    // "1d6 / 1d4 / 0 [R]": tier values with the pool after them
   String.raw`(?<tag>\[(?<tp>[BMVR])\]\s*${EXPR})`,                           // "[B] 1[W] + [Mod]", "[M] 1d6+1"

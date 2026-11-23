@@ -89,7 +89,7 @@ Prone uses Evade                                 no card | chips: (none) | bane 
 Prone uses Charge                                no card | chips: (none) | bane dice - | total null | warn: Kai is Prone: the only Move Actions it can use are Crawl, Stand and Break Free.
 Prone uses Crawl                                 card | chips: (none) | bane dice - | total undefined
 Prone uses Stand                                 card | chips: (none) | bane dice - | total undefined
-Prone uses Weapon Attack                         card | chips: (none) | bane dice - | total 15
+Prone uses Basic Attack                          card | chips: (none) | bane dice - | total 15
 not Prone, Advance: no Prone warning: true
 not Prone, Evade: no Prone warning: true
 not Prone, Charge: no Prone warning: true

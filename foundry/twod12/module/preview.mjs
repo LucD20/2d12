@@ -14,6 +14,11 @@ export function weaponText(weapon, tier, n = 1) {
   const mod = d.mod * n;
   return dice + (mod ? `${dice && mod > 0 ? "+" : ""}${mod}` : "") || "0";
 }
+/** Core rework batch 3 ([D]): the weapon's die on this Tier, n times, with no flat part ("1d6", "2d4", or "0"). */
+export function weaponDieText(weapon, tier, n = 1) {
+  const d = weapon?.system?.damage?.[`t${tier}`];
+  return d?.die && Number(d.count) ? `${d.count * n}${d.die}` : "0";
+}
 
 /** The lines of one tier with the weapon's real dice and the [Mod] value (the roll dialog's preview and the chat card). */
 export async function tierLines(insts, tier, ctx, effectText = "") {
@@ -21,6 +26,7 @@ export async function tierLines(insts, tier, ctx, effectText = "") {
   for (const i of insts) {
     const parts = [];
     if (i.useW) parts.push(ctx.weapon ? `${weaponText(ctx.weapon, tier, i.wCount)} <small>${esc(ctx.weapon.name)}</small>` : `${i.wCount}[W] <small>(no weapon)</small>`);
+    if (i.useD) parts.push(ctx.weapon ? `${weaponDieText(ctx.weapon, tier, i.dCount)} <small>${esc(ctx.weapon.name)}</small>` : `${i.dCount}[D] <small>(no weapon)</small>`);
     if (i.dice) parts.push(esc(i.dice));
     if (i.useAt) parts.push(`${ctx.attrVal} <small>${esc(ctx.attrLabel)}</small>`);
     let t = parts.join(" + ");
@@ -66,15 +72,22 @@ export function rawTierLine(insts, effectText = "", addMod = false) {
   for (const i of insts) {
     const parts = [];
     if (i.useW) parts.push(`${i.wCount}[W]`);
+    if (i.useD) parts.push(`${i.dCount}[D]`);
     if (i.dice) parts.push(`${i.dice}${i.subtype ? ` ${i.subtype}` : ""}`);
     if (i.useAt) parts.push(`[Mod]${i.subtype ? ` ${i.subtype}` : ""}`);
     if (parts.length) { const k = i.pool || "B"; (groups.get(k) ?? groups.set(k, []).get(k)).push(...parts); }
   }
-  // A Weapon Action adds [Mod] to the weapon's damage on Tiers 2 and 3 (the caller says when): written as the book does, "1[W] + [Mod]".
+  // A Weapon Action adds [Mod] to the weapon's damage on Tiers 2 and 3 (the caller says when): written as the book does, "1[W] + [Mod]" or "1[W] + 1[D] + [Mod]".
   if (addMod && groups.size && !insts.some(i => i.useAt)) {
-    const k = insts.find(i => i.useW)?.pool || [...groups.keys()][0], list = groups.get(k) ?? groups.get([...groups.keys()][0]);
-    const w = list.findIndex(x => x.includes("[W]"));
-    list.splice(w >= 0 ? w + 1 : list.length, 0, "[Mod]");
+    const k = insts.find(i => i.useW || i.useD)?.pool || [...groups.keys()][0], list = groups.get(k) ?? groups.get([...groups.keys()][0]);
+    const wd = list.reduce((a, x, idx) => (x.includes("[W]") || x.includes("[D]") ? idx : a), -1);
+    if (wd >= 0) list.splice(wd + 1, 0, "[Mod]");
+    else {
+      // Fixed-damage weapon actions like Fists ("[V] 2 + [Mod] Bl", "[V] 1d6! + [Mod] Bl"): keep the subtype at the end
+      const last = list.length - 1, sm = last >= 0 ? list[last].match(/^(.*?)(\s+(?:Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un))$/) : null;
+      if (sm) list[last] = `${sm[1]} + [Mod]${sm[2]}`;
+      else list.push("[Mod]");
+    }
   }
   if (effectText) effects.push(effectText);
   return { dmg: [...groups].map(([pool, parts]) => `[${({ B: "V", M: "R" })[pool] ?? pool}] ${parts.join(" + ")}`).join(" + "), effects };

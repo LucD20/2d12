@@ -6,7 +6,7 @@ import { TWOD12, subtypeCode } from "./config.mjs";
 import { parseTierFull, convertEffects } from "./gen.mjs";
 import { rawTierLine } from "./preview.mjs";
 
-const blank = () => ({ pool: "B", useW: false, wCount: 1, dice: "", useAt: false, subtype: "" });
+const blank = () => ({ pool: "B", useW: false, wCount: 1, useD: false, dCount: 1, dice: "", useAt: false, subtype: "" });
 
 /** Split at a separator outside brackets, parentheses and quotes. */
 function splitTop(str, sep) {
@@ -21,7 +21,7 @@ function splitTop(str, sep) {
   return out.filter(Boolean);
 }
 
-const PART = /^(?:\[([BMCVR])\]\s*)?(?:(\d*)\s*\[W\]|\[(?:At|Mod)\]|(\d+d\d+!?(?:[+-]\d+)?|\d+))(?:\s+([A-Za-z]+))?$/i;   // v0.0.409: a die written with ! (Smite's 1d6!)
+const PART = /^(?:\[([BMCVR])\]\s*)?(?:(\d*)\s*\[[WD]\]|\[(?:At|Mod)\]|(\d+d\d+!?(?:[+-]\d+)?|\d+))(?:\s+([A-Za-z]+))?$/i;   // v0.0.409: a die written with ! (Smite's 1d6!); core rework batch 3: [D]
 
 /** One damage piece written like the card ("[B] 1[W] Sl + [M] 1d6 Ho"): its Instances, or null if it isn't damage. */
 function cardDamage(piece) {
@@ -35,6 +35,7 @@ function cardDamage(piece) {
     if (m[4] && !sub) return null;   // a word that is no damage type: not damage
     const i = { ...blank(), pool, subtype: sub };
     if (m[2] !== undefined && /\[W\]/i.test(raw)) Object.assign(i, { useW: true, wCount: Math.max(1, Number(m[2]) || 1) });
+    else if (m[2] !== undefined && /\[D\]/i.test(raw)) Object.assign(i, { useD: true, dCount: Math.max(1, Number(m[2]) || 1) });
     else if (/\[(?:At|Mod)\]/i.test(raw)) i.useAt = true;
     else i.dice = m[3].replace(/\s+/g, "");
     insts.push(i);
@@ -101,7 +102,7 @@ export function understood(sys) {
     const tiers = [1, 2, 3].filter(n => v[`t${n}`].length || v[`x${n}`]);
     const kinds = new Set(), texts = new Map();
     for (const n of [1, 2, 3]) {
-      for (const i of v[`t${n}`]) kinds.add(`${i.useW ? "weapon " : i.useAt ? "Attribute " : ""}${i.subtype ? `${TWOD12.subtypes[i.subtype] ?? i.subtype} ` : ""}damage to ${{ B: "Vigor", M: "Resolve", C: "Vigor or Resolve" }[i.pool] ?? "Vigor"}`);
+      for (const i of v[`t${n}`]) kinds.add(`${i.useW || i.useD ? "weapon " : i.useAt ? "Attribute " : ""}${i.subtype ? `${TWOD12.subtypes[i.subtype] ?? i.subtype} ` : ""}damage to ${{ B: "Vigor", M: "Resolve", C: "Vigor or Resolve" }[i.pool] ?? "Vigor"}`);
       if (v[`x${n}`]) texts.set(v[`x${n}`], [...(texts.get(v[`x${n}`]) ?? []), n]);
     }
     const tierWord = ns => (ns.length === 3 ? "every Tier" : `Tier${ns.length > 1 ? "s" : ""} ${ns.join(" and ")}`);

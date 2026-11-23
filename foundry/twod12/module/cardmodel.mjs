@@ -11,6 +11,7 @@ import { distanceShort } from "./sheetmodel.mjs";
 import { rollSource } from "./rollsource.mjs";
 import { tierLabel } from "./cardview.mjs";
 import { tierOfLabel } from "./util.mjs";
+import { activeHooks } from "./hooks.mjs";
 
 export const MODE_NAME = { weapon: "Weapon mode", power: "Power mode" };
 const ROLL_WORDS = ["signature", "weapon", "magic", "body", "mind", "appeal", "instinct"];
@@ -77,8 +78,14 @@ export function cardModel(item, { actor = null, weapon = null, fists = false } =
   if (it.setup) top.push(L("Setup", it.setup, "rich"));
   const effectAt = top.length;   // v0.0.429: where an Effect written above the roll goes (before the card's own lines and the roll)
   for (const l of it.lines ?? []) top.push(L(l.label || "Note", l.text, "rich"));
-  // the core rework batch 2 (book, Chapter 2, Effect Timing): a Bloodied / Strained line written above the roll (the target must already be so)
-  const SL = it.stateLines ?? {};
+  // the core rework batch 2 & 3 (book, Chapter 2, Effect Timing): a Bloodied / Strained line written above the roll (plus class basicLine hooks on Basic Attack)
+  const SL = { ...(it.stateLines ?? {}) };
+  if (actor && (item.getFlag?.("twod12", "basic") ?? item.flags?.twod12?.basic) === "basicWeaponAttack") {
+    for (const h of activeHooks(actor, "basicLine")) {
+      for (const k of ["bloodied", "strained", "bloodiedBefore", "strainedBefore"]) if (h.hook[k]) SL[k] = SL[k] ? `${SL[k]} ${h.hook[k]}` : h.hook[k];
+      if (Number(h.hook.strainedBeforeD) > 0) { const txt = `Against a Strained target, a Tier 3 deals ${Math.max(1, Number(h.hook.strainedBeforeD) || 1)}[D] more.`; SL.strainedBefore = SL.strainedBefore ? `${SL.strainedBefore} ${txt}` : txt; }
+    }
+  }
   for (const [k, label] of [["bloodiedBefore", "Bloodied"], ["strainedBefore", "Strained"]]) if (String(SL[k] ?? "").trim()) top.push(L(label, SL[k], "rich"));
   if (rl && !modes) top.push(L(rl.label, rl.text, "esc"));
   const versionModel = v => {

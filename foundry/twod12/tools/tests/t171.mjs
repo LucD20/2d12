@@ -22,7 +22,7 @@ await b.addBasicActions(old);
 console.log("adding the Basic Actions removes them:", old.log.deleted.join(", "), "| creates:", old.log.created.join(", ") || "nothing", "| left over:", b.unwantedBasics(old).length);
 const pc = mk("character", Object.keys(b.BASIC_ACTIONS));
 await b.addBasicActions(pc);
-console.log("a character keeps them:", pc.log.deleted.length === 0, "| it still has Weapon Attack:", pc.items.some(i => i.name === "Weapon Attack"));
+console.log("a character keeps them:", pc.log.deleted.length === 0, "| it still has Basic Attack:", pc.items.some(i => i.name === "Basic Attack"));
 const bas = src("module/basic.mjs"), fu = src("module/freeuse.mjs"), content = src("tools/content.mjs");
 console.log("the GM's first load updates such NPCs:", bas.includes("oldRelocate || unwantedBasics(actor).length > 0"), "| the NPC compendium:", content.includes("filter(k => wanted({ type: \"npc\" }, k))"));
 console.log("a Charge (or a grant) that uses Weapon Attack uses an NPC's Basic attack:", fu.includes('actionsFor(actor, "category:Basic attack")'));

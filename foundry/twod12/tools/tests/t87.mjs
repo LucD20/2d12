@@ -224,7 +224,7 @@ const mkBasic = key => { const d = basicItemData(key); return { id: "b_" + key, 
 const basics = ["advance", "safeMovement", "charge", "crawl", "stand", "basicWeaponAttack"].map(mkBasic);
 kai.items = { get: id => [...allItems, ...basics].find(i => i.id === id), find: f => [...allItems, ...basics].find(f), filter: f => [...allItems, ...basics].filter(f), [Symbol.iterator]: function* () { yield* allItems; yield* basics; } };
 kai.statuses = new Set(["prone"]); kai.system.moveSpeed = 5; kai.system.speed = 5;
-for (const b of basics) { const c = await act(`Prone uses ${b.name}`, b, [], b.name === "Weapon Attack" ? [6, 7] : []); if (b.name !== "Weapon Attack" && !c && !notes.length) console.log("   (nothing posted and no warning)"); }
+for (const b of basics) { const c = await act(`Prone uses ${b.name}`, b, [], b.name === "Basic Attack" ? [6, 7] : []); if (b.name !== "Basic Attack" && !c && !notes.length) console.log("   (nothing posted and no warning)"); }
 kai.statuses = new Set();
 for (const b of ["advance", "safeMovement", "charge"]) { const it = basics.find(x => x.getFlag("twod12", "basic") === b); chat.length = 0; notes.length = 0; await A.useAction(kai, it).catch(() => {}); console.log(`not Prone, ${it.name}: no Prone warning:`, !notes.some(n => /Prone/.test(n))); }
 // ------------------------------------------------------------------------------------------------ Crawl

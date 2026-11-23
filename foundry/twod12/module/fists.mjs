@@ -65,7 +65,7 @@ export const FISTS_TRAITS = ["barehanded", "melee", "nonthreatening"];
 export const fistsItemData = () => ({
   name: "Fists", type: "weapon", img: "icons/svg/combat.svg",
   system: { traits: [...FISTS_TRAITS], hands: 1, wielded: false, subtype: "Bl", range: "1", reach: 0,
-    // v0.0.407 (Stage 0 in Foundry; book, Chapter 15; Lucas, 2026-11-12): Fists 0 / 2 / 1 + 1d4! (a weapon's die explodes)
-    damage: { t1: { count: 0, die: "", mod: 0 }, t2: { count: 0, die: "", mod: 2 }, t3: { count: 1, die: "d4", mod: 1 } } },
+    // core rework batch 3 (Lucas, 2026-11-22; book, Chapter 15): Fists 0 / 2 / 1d6! (a weapon's die explodes)
+    damage: { t1: { count: 0, die: "", mod: 0 }, t2: { count: 0, die: "", mod: 2 }, t3: { count: 1, die: "d6", mod: 0 } } },
   flags: { [F]: { fists: true } }
 });

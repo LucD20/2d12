@@ -13,7 +13,7 @@ the odds follow it: Doomed + 2 Banes = Doomed: true | Doomed + 1 Boon = a normal
 Basic attacks: true true true | not: false false
 the types it can choose: [V] 1d10! Pi | [R] 1d10! Ho
 a Critical row's dice: [{"pool":"B","formula":"1d6!","sub":"Bl"}] | none: []
-Trip's Critical: [V] 1d6! Bl. | [V] 1d6! Bl. || Shove's: @Condition[prone] | @Condition[prone] | @Condition[prone]
+Trip's Critical: [V] 1d6! Bl. | [V] 1d6! Bl. || Shove's: @Condition[prone] | @Condition[prone]
 wired: asked before the damage roll, a Tier with no damage too: true
 --- Bloodied: Steadiness below 0 (move.mjs steadyValue), Speed −2 (data.mjs)
 Pushed 2 vs Steadiness 1: 1 | vs -1: 3 | a Reposition 2 vs -1: 2 | Pushed 1 vs 2: 0

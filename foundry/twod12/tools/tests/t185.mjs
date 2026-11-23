@@ -46,7 +46,7 @@ const smite = G.loadCards().find(c => c.name === "Smite"), sys = G.cardSystem(sm
 for (const v of sys.versions) console.log(`${v.ap} AP: dice rule ${v.diceRule} | tiers ${["t1", "t2", "t3"].map(t => v[t].map(x => (x.useW ? "[W]" : "") + (x.dice ? ` ${x.dice} ${x.pool}${x.subtype}` : "")).join("+")).join(" / ")}`);
 console.log("the Structure card's tiers say 'your Smite dice'; Foundry rolls them:", smite.structure === 2, "|", sys.frequency, sys.traits.join(","));
 console.log("automation:", sys.automation, "|", sys.automationNote);
-console.log("the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16):", src("../../book/cards.py").includes("def structure("), "| the built book links Bright light on a card:", /sheds <a class="xref" href="[^"]*#bright">Bright light<\/a>/.test(src("../../book/paladin.html")), "| every card an anchor:", src("../../book/core-rules.html").includes('id="card-weapon-attack"'));
+console.log("the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16):", src("../../book/cards.py").includes("def structure("), "| the built book links Bright light on a card:", /sheds <a class="xref" href="[^"]*#bright">Bright light<\/a>/.test(src("../../book/paladin.html")), "| every card an anchor:", src("../../book/core-rules.html").includes('id="card-basic-attack"'));
 
 console.log("--- the placeholder card (Hide) and the Smite light effects");
 const hide = G.loadCards().find(c => c.name === "Hide"), hs = G.cardSystem(hide);

@@ -130,7 +130,7 @@ const partyActors = () => (game.actors?.contents ?? []).filter(a => a.type === "
 /** The Action lines of a tab, grouped in columns by Frequency (three lines a column; Basic: "+N more" past four columns). */
 /** v0.0.440 (Lucas, checklist: "I don't see the Fists" on the Orc): the Basic Actions in the sheet's fixed order (the attacks first), so the ones
  *  past the tab's last column ("+N more") are the movements and the rest, never an NPC's Fists added after its other items. */
-export const BASIC_ORDER = ["basicWeaponAttack", "fists", "rally", "charge", "shove", "haul", "relocate", "trip", "advance", "safeMovement", "stand", "leaning", "interact", "reload"];
+export const BASIC_ORDER = ["basicWeaponAttack", "fists", "rally", "heal", "aid", "charge", "shove", "haul", "relocate", "trip", "demoralize", "feint", "advance", "safeMovement", "tumble", "stand", "leaning", "interact", "reload"];
 export const basicOrder = list => [...list].sort((x, y) => { const p = k => { const n = BASIC_ORDER.indexOf(k); return n < 0 ? 99 : n; }; return p(x.bkey) - p(y.bkey) || String(x.name).localeCompare(String(y.name)); });
 function colsOf(lines, { per = 3, maxCols = 6 } = {}) {
   const cols = [];

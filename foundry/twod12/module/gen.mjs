@@ -9,7 +9,7 @@ import { weaponTierText } from "./explode.mjs";
 const POOL = { B: "body", M: "mind", C: "choice" };
 const SUBCODES = "Ac|Bl|Co|El|Fi|Fo|Ho|Pi|Ps|Sl|Th|Un";
 const SUB_WORDS = { acid: "acid", blunt: "blunt", cold: "cold", electricity: "electricity", fire: "fire", force: "force", holy: "holy", pierce: "pierce", psychic: "psychic", mental: "psychic", slash: "slash", thunder: "thunder", unholy: "unholy" };
-const blank = () => ({ pool: "B", useW: false, wCount: 1, dice: "", useAt: false, subtype: "" });
+const blank = () => ({ pool: "B", useW: false, wCount: 1, useD: false, dCount: 1, dice: "", useAt: false, subtype: "" });
 
 function splitComma(str) {
   const out = []; let cur = "", q = false, depth = 0;
@@ -35,6 +35,8 @@ function parseToken(tok) {
   let m;
   // pack TALENTS-PT: "1WBCo": a [W] with its own damage type (Rime Strike's Cold); without one it deals the weapon's
   if ((m = s.match(new RegExp(`^(\\d*)\\s*W\\s*([BMC])?\\s*(${SUBCODES})?$`, "i")))) { Object.assign(i, { useW: true, wCount: Math.max(1, Number(m[1]) || 1), pool: (m[2] || "B").toUpperCase(), subtype: subtypeCode(m[3] || "") }); return { inst: i }; }
+  // core rework batch 3: "1DB": [D], the weapon's die on that Tier
+  if ((m = s.match(new RegExp(`^(\\d*)\\s*D\\s*([BMC])?\\s*(${SUBCODES})?$`, "i")))) { Object.assign(i, { useD: true, dCount: Math.max(1, Number(m[1]) || 1), pool: (m[2] || "B").toUpperCase(), subtype: subtypeCode(m[3] || "") }); return { inst: i }; }
   if ((m = s.match(new RegExp(`^(?:1\\s*)?(?:Mod|At|Attribute|Modifier)\\s*([BMC])?\\s*(${SUBCODES}|[BCHMPS])?$`, "i")))) { Object.assign(i, { useAt: true, pool: (m[1] || "B").toUpperCase(), subtype: subtypeCode(m[2] || "") }); return { inst: i }; }
   if ((m = s.match(DICE))) {
     const pool = (m[2] || "").toUpperCase(), sub = subtypeCode(m[3] || "");
@@ -57,6 +59,7 @@ export function tierToText(insts, text = "") {
   for (const i of insts) {
     const p = i.pool || "B", sub = i.subtype || "";
     if (i.useW) out.push(`${i.wCount}W${p}${i.dice ? "" : sub}`);
+    if (i.useD) out.push(`${i.dCount}D${p}${i.dice ? "" : sub}`);
     if (i.dice) out.push(`${i.dice}${p}${sub}`);
     if (i.useAt) out.push(`Mod${p}${sub}`);
   }
@@ -70,7 +73,7 @@ const tierDmg = (val, pool, sub) => (val === "0" || (!pool && !sub) ? val : `${v
 export function convertEffects(text) {
   let s = String(text ?? "");
   // v0.0.412 (the Structure's links, pack F3): a book link on a word the converter makes a button is that word ("[[Bleed]] 1 (Bo/In)" is Bleed's button)
-  s = s.replace(/@Book\[(Bleed|Lingering|Pressed|Reposition|Slid|Pushed|Pulled|Grabbed|Hindered|Immobilized|Prone|Daunted|Frightened|Taunted|Dazed|Staggered|Blinded|Sickened|Vulnerable)\]\{\1\}/g, "$1");
+  s = s.replace(/@Book\[(Bleed|Lingering|Pressed|Reposition|Slid|Pushed|Pulled|Grabbed|Hindered|Immobilized|Prone|Daunted|Frightened|Taunted|Dazed|Staggered|Blinded|Sickened|Vulnerable|Quickened)\]\{\1\}/g, "$1");
   s = s.replace(/\b(uses?)\s+up\s+to\s+(\d+)\s+Rally\s+Points?\b/gi, "$1 up to @Rally[$2|upto:yes]");
   // v0.0.250 (cards 3, Lay On Hands): "use 1 Rally Point, healing 1d6 + your Power Modifier more" -> the chip rolls the extra too (Pow: the card's creature's Power Modifier)
   const POW = "(?:your\\s+)?Power\\s+Modifier";
@@ -133,8 +136,10 @@ export function convertEffects(text) {
     // v0.0.409 (pack F2, Glare): Half-Blinded (a condition of its own, Chapter 8), before Blinded
     s = s.replace(new RegExp(`(?:@Book\\[Half-Blinded\\]\\{Half-Blinded\\}|\\{\\{link:Half-Blinded\\|Half-Blinded\\}\\}|\\bHalf-Blinded)${DUR}${END}`, "g"), (m, n, p) => `@Condition[half-blinded${durOf(n, p)}]{Half-Blinded${p ? ` (${p})` : ""}}`);
     s = s.replace(new RegExp(`${NOT}(?<!Half-)\\b(Blinded|Staggered|Grabbed)${DUR}${END}`, "g"), (m, c, n, p) => { const lab = p ? m.match(/^\w+\s*\([^)]*\)/)[0] : c; return `@Condition[${c.toLowerCase()}${durOf(n, p)}]{${lab}}${m.slice(lab.length)}`; });
-    // v0.0.412: Pressed N (Thwart Cut) is a valued condition button too
-    s = s.replace(new RegExp(`${NOT}\\b(Dazed|Sickened|Pressed)\\s+(\\d+)${DUR}${END}`, "g"), (m, c, v, n, p) => { const nm = m.match(/^\w+\s+\d+/)[0]; return `@Condition[${c.toLowerCase()}|value:${v}${durOf(n, p)}]{${nm}}${m.slice(nm.length)}`; });
+    // core rework batch 3 (Aid): "Quickened 1 on its next turn" applies Quickened 1 (EoT) to the ally
+    s = s.replace(new RegExp(`${NOT}\\bQuickened\\s+(\\d+)\\s+on\\s+its\\s+next\\s+turn${END}`, "g"), (m, v) => `@Condition[quickened|value:${v}|eot]{Quickened ${v}} on its next turn`);
+    // v0.0.412: Pressed N (Thwart Cut) is a valued condition button too; core rework batch 3: Quickened N
+    s = s.replace(new RegExp(`${NOT}\\b(Dazed|Sickened|Pressed|Quickened)\\s+(\\d+)${DUR}${END}`, "g"), (m, c, v, n, p) => { const nm = m.match(/^\w+\s+\d+/)[0]; return `@Condition[${c.toLowerCase()}|value:${v}${durOf(n, p)}]{${nm}}${m.slice(nm.length)}`; });
     // "Bleed [R] 1d6 Ho (Mi/Ap)", "Bleed 2 (Bo/In; DC 15)": the card's own dice, pool, type, Attributes and DC
     // v0.0.414: the book writes Lingering (Bleed is still read); the key stays bleed
     s = s.replace(/\b(Bleed|Lingering)\s+(?:\[([VRBM])\]\s*)?(\d+d\d+(?:[+-]\d+)?|\d+)(?:\s+([A-Z][a-z]))?\s*\(((?:Bo|Mi|Ap|In)(?:\/(?:Bo|Mi|Ap|In))*)(?:;\s*DC\s*(\d+))?\)/g,

@@ -1,7 +1,7 @@
-an NPC doesn't get: Steel Yourself, Weapon Attack | a character gets all: true
-an NPC made before v0.0.214 has Weapon Attack: Weapon Attack | missing anything: false
-adding the Basic Actions removes them: Weapon Attack | creates: nothing | left over: 0
-a character keeps them: true | it still has Weapon Attack: true
+an NPC doesn't get: Steel Yourself, Basic Attack | a character gets all: true
+an NPC made before v0.0.214 has Weapon Attack: Basic Attack | missing anything: false
+adding the Basic Actions removes them: Basic Attack | creates: nothing | left over: 0
+a character keeps them: true | it still has Basic Attack: true
 the GM's first load updates such NPCs: true | the NPC compendium: true
 a Charge (or a grant) that uses Weapon Attack uses an NPC's Basic attack: true
 Goblin Sneak: Weapon Attack false, Fists Action true, Fists weapon true, Basic attacks: Rusty Knife

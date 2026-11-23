@@ -4,7 +4,7 @@
 export function avgFormula(f) {
   const s = String(f ?? "").replace(/\s+/g, "");
   if (!s) return 0;
-  const expr = s.replace(/(\d*)d(\d+)/gi, (m, n, d) => `(${(Number(n || 1) * (Number(d) + 1)) / 2})`);
+  const expr = s.replace(/(\d*)d(\d+)(!)?/gi, (m, n, d, ex) => `(${Number(n || 1) * ((Number(d) + 1) / 2 + (ex && Number(d) > 1 ? 0.5 : 0))})`);
   if (!/^[0-9+\-*/().]+$/.test(expr)) return null;
   try { const v = Function(`"use strict";return (${expr})`)(); return Number.isFinite(v) ? v : null; } catch { return null; }
 }
@@ -136,6 +136,12 @@ export function weaponAvg(weapon, tier, n = 1) {
   return dice + d.mod * n;
 }
 
+/** Average of the weapon's die alone ([D]) for a tier, n instances. */
+export function weaponDieAvg(weapon, tier, n = 1) {
+  const d = weapon?.system?.damage?.[`t${tier}`];
+  return d?.die ? d.count * n * (dieSides(d.die) + 1) / 2 : 0;
+}
+
 /** Average damage of one tier of a version. */
 export function tierAvg(insts, tier, { weapon = null, attrVal = 0, isWeapon = false, attrMode = "" } = {}) {
   const dmg = insts;
@@ -143,6 +149,7 @@ export function tierAvg(insts, tier, { weapon = null, attrVal = 0, isWeapon = fa
   let total = 0;
   for (const i of dmg) {
     if (i.useW) total += weaponAvg(weapon, tier, i.wCount);
+    if (i.useD) total += weaponDieAvg(weapon, tier, i.dCount);
     if (i.dice) total += avgFormula(i.dice) ?? 0;
     if (i.useAt) total += attrVal;
   }

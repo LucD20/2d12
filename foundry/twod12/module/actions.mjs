@@ -28,7 +28,7 @@ import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";   // (markAtWill: imported where used)
 import { tierProbs, topStep, bbCount, bbResolve } from "./calc.mjs";
 import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged
-import { weaponDiceFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die
+import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
 import { squaresBetween, rangeBand } from "./move.mjs";
 import { setupFor } from "./setup.mjs";
 import { coverBetween, coverWhy } from "./cover.mjs";
@@ -49,6 +49,7 @@ const modOnWeapon = (src, traits) => src?.kind === "weapon" || (src?.kind === "s
 export function instanceText(i) {
   const parts = [];
   if (i.useW) parts.push(`${i.wCount}[W]${i.subtype && !i.dice && !i.useAt ? ` ${i.subtype}` : ""}`);   // pack TALENTS-PT: a [W] with its own type (Rime Strike: "1[W] Co")
+  if (i.useD) parts.push(`${i.dCount}[D]${i.subtype && !i.dice && !i.useAt ? ` ${i.subtype}` : ""}`);   // core rework batch 3: [D]
   const rest = [];
   if (i.dice) rest.push(i.dice);
   if (i.useAt) rest.push("[Mod]");
@@ -89,6 +90,12 @@ export async function resolveInstance(inst, ctx) {
     const res = await evalFormula(f, ctx.rolls, ctx.empowered);
     comps.push({ kind: "W", formula: f ? res.shown : "0", total: res.total, dice: res.dice, emp: res.emp ?? 0, src: ctx.weapon.name, sub: ctx.weapon.system.subtype ?? "" });
   }
+  if (inst.useD && ctx.weapon) {
+    const d0 = ctx.weapon.system.damage[`t${ctx.tier}`];
+    const f = d0 ? weaponDieOnlyFormula(d0, inst.dCount) : null;
+    const res = await evalFormula(f, ctx.rolls, ctx.empowered);
+    comps.push({ kind: "D", formula: f ? res.shown : "0", total: res.total, dice: res.dice, emp: res.emp ?? 0, src: ctx.weapon.name, sub: ctx.weapon.system.subtype ?? "" });
+  }
   if (inst.dice || inst.useAt) {
     // v0.0.409 (pack F2): a Version's dice rule (Smite's dice by Escalation, d8s against a Profane creature: judge.mjs ruledDice); not a bonus's dice
     const dice = ctx.diceRule && inst.dice && !inst.source ? ruledDice(inst.dice, ctx.diceRule, ctx.ruleCtx ?? {}) : inst.dice;
@@ -96,7 +103,7 @@ export async function resolveInstance(inst, ctx) {
     const res = await evalFormula(f, ctx.rolls, ctx.empowered);
     // v0.0.321 (Lucas: Smite's "[W] + 2 Sl" didn't count as Slash): a written [Mod] (or dice) in a [W] term with no subtype of its own is the
     // weapon's damage, so it has the weapon's subtype (Ch. 1: the subtype written covers the whole expression), as the card shows it
-    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, emp: res.emp ?? 0, sub: inst.subtype || (inst.useW || (inst.useAt && !inst.dice) ? (ctx.weapon?.system?.subtype ?? "") : ""),   /* v0.0.426: a written [Mod] takes the weapon's type (Chapter 1), as the added one did */ ...(!inst.dice && inst.useAt ? { label: "Modifier" } : {}) });   // v0.0.326: a written [Mod] is named on the card
+    comps.push({ kind: "D", formula: res.shown, total: res.total, dice: res.dice, emp: res.emp ?? 0, sub: inst.subtype || (inst.useW || inst.useD || (inst.useAt && !inst.dice) ? (ctx.weapon?.system?.subtype ?? "") : ""),   /* v0.0.426: a written [Mod] takes the weapon's type (Chapter 1), as the added one did */ ...(!inst.dice && inst.useAt ? { label: "Modifier" } : {}) });   // v0.0.326: a written [Mod] is named on the card
   }
   return { inst, comps };
 }
@@ -157,7 +164,7 @@ export function pureMove(it, version, basicKey = "") {
 /** v0.0.189: the name of what a bonus comes from, as a link that opens it (Foundry's content links); plain text when it has no item. */
 export const srcLink = (name, uuid) => (uuid ? `<a class="content-link" draggable="true" data-link data-uuid="${esc(uuid)}">${esc(name)}</a>` : esc(name));
 /** Does this tier need a Damage button? attrFrom: the lowest Tier on which the Attribute is added (0: never; true: Weapon, from Tier 2). */
-const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === true ? 2 : Number(attrFrom) || 0; return tier > 0 && (insts.some(i => i.useW || i.dice || i.useAt) || (from > 0 && tier >= from) || fx.length > 0); };
+const needsDamage = (attrFrom, tier, insts, fx) => { const from = attrFrom === true ? 2 : Number(attrFrom) || 0; return tier > 0 && (insts.some(i => i.useW || i.useD || i.dice || i.useAt) || (from > 0 && tier >= from) || fx.length > 0); };
 
 /* ---- v0.0.283 (pack chat-cards): the pieces of the new attack card's model (chatcards.mjs draws it) ---- */
 /** The modifiers kept for a retarget (the same for every target): the dialog's own effects, the Engaged banes on you, a granted use's. */
@@ -176,21 +183,25 @@ export function ccRowOf(c, name, uuid, chip = "") {
 }
 /** The outcome lines of each Tier, the effect text, the target line's distance and area. */
 export async function attackModelParts({ it, item, version, weapon, cardCtx, fxn, fxNames, areaSize, chip, ruleCtx = null }) {
-  const { weaponText } = await import("./preview.mjs");
+  const { weaponText, weaponDieText } = await import("./preview.mjs");
   const wsub = weapon?.system?.subtype ?? "";
   const outcomeFor = (n, bon = []) => {
     const insts = version[`t${n}`] ?? [], parts = [];
     for (const i of insts) {
-      if (i.useW) parts.push({ pool: i.pool || "B", t: weapon ? weaponText(weapon, n, i.wCount) : `${i.wCount}[W]`, sub: wsub });
+      if (i.useW) parts.push({ pool: i.pool || "B", t: weapon ? weaponText(weapon, n, i.wCount) : `${i.wCount}[W]`, sub: wsub, _w: true });
+      if (i.useD) parts.push({ pool: i.pool || "B", t: weapon ? weaponDieText(weapon, n, i.dCount) : `${i.dCount}[D]`, sub: wsub, _w: true });
       // v0.0.440 (Lucas, checklist: Smite's roll dialog "only shows 1d6 / 2d6"): the dice under the Version's dice rule, as the roll will make them
       if (i.dice) parts.push({ pool: i.pool || "B", t: ruleCtx && version.diceRule && !i.source ? ruledDice(i.dice, version.diceRule, ruleCtx) : i.dice, sub: i.subtype ?? "" });
       if (i.useAt) parts.push({ pool: i.pool || "B", t: String(cardCtx.attrVal), sub: i.subtype ?? "" });
     }
     // [Mod] on the Tiers that add it (a Weapon Action from Tier 2), with the weapon's damage and subtype (Ch. 1)
     if (n >= attrFromTier(cardCtx) && insts.length && !insts.some(i => i.useAt)) {
-      const w = insts.find(i => i.useW) ?? insts[0], at = parts.findIndex(p => p.pool === (w.pool || "B")) + 1;
-      parts.splice(at > 0 ? at : parts.length, 0, { pool: w.pool || "B", t: String(cardCtx.attrVal), sub: w.useW ? wsub : (w.subtype ?? "") });
+      const w = insts.find(i => i.useW || i.useD) ?? insts[0], wp = w.pool || "B";
+      const lastW = parts.reduce((acc, p, idx) => (p._w && p.pool === wp ? idx + 1 : acc), 0);
+      const at = lastW || (parts.findIndex(p => p.pool === wp) + 1);
+      parts.splice(at > 0 ? at : parts.length, 0, { pool: wp, t: String(cardCtx.attrVal), sub: w.useW || w.useD ? wsub : (w.subtype ?? "") });
     }
+    for (const p of parts) delete p._w;
     for (const b of bon) if (b.dmg) parts.push({ pool: b.pool || "B", t: b.dmg, sub: b.sub === "W" ? wsub : (b.sub ?? "") });   // v0.0.345: "W" = the weapon's subtype (Marked Quarry)
     const riders = [];
     const x = expandAsText(version[`x${n}`], item.system.versions, version, n);
@@ -827,7 +838,7 @@ export async function useAction(actor, item, opts = {}) {
   const dlgTraits = rollTraits(rollUse, src, item.name), bonusSeen = new Map();
   for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, dlgTraits, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) { const bk = `${b.effect}|${b.dmg}|${b.sub}|${b.text}`; if (!bonusSeen.has(bk)) bonusSeen.set(bk, { b, tiers: [] }); bonusSeen.get(bk).tiers.push(t); }
   const dmgSubs = new Set();
-  for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if (inst.useW && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
+  for (const v of versions) for (const tk of ["t1", "t2", "t3"]) for (const inst of v[tk] ?? []) { if ((inst.useW || inst.useD) && previewWeapon?.system?.subtype) dmgSubs.add(previewWeapon.system.subtype); if (inst.subtype) dmgSubs.add(inst.subtype); }
   for (const { b } of bonusSeen.values()) if (b.sub && b.sub !== "W") dmgSubs.add(b.sub);
   const bonusChips = [...bonusSeen.entries()].map(([key, { b, tiers }]) => ({ key, text: `${b.effect}: ${b.dmg ? `+${b.dmg}${b.sub ? ` ${TWOD12.subtypes[b.sub === "W" ? previewWeapon?.system?.subtype ?? "" : b.sub] ?? ""}` : ""}` : b.text}${tiers.length < 3 ? ` (Tier ${tiers.join(", ")})` : ""}`, why: `${b.hover || "This effect adds to the damage of this roll."} Untick it to leave it out (its effect isn't used up).` }));
   // v0.0.440 (Lucas, checklist: "the roll dialog doesn't show where the die comes from"): One More Arrow's 1[W] more, when this Strike would take it
@@ -835,6 +846,17 @@ export async function useAction(actor, item, opts = {}) {
     const mw = useTraits.has("strike") && versions.some(v => [1, 2, 3].some(t => (v[`t${t}`] ?? []).some(i => i.useW))) ? activeHooks(actor, "moreW")[0] : null;
     if (mw && await (await import("./hooks.mjs")).moreWReady(actor)) setupNotices.push({ text: `${mw.item?.name ?? "1[W] more"}: +${Math.max(1, Number(mw.hook.n) || 1)}[W] on a Tier that deals [W]`, icon: "fa-plus", why: "Once on each of your turns, your first [Strike] that deals [W] deals 1[W] more (it is spent when this damage is rolled)." });
   } catch (e) { console.warn("twod12 | One More Arrow note", e); }
+  // core rework batch 3: class lines on Basic Attack (Sworn Blade, Steady Draw)
+  if (item.getFlag?.("twod12", "basic") === "basicWeaponAttack") {
+    for (const h of activeHooks(actor, "basicLine")) {
+      if (h.hook.strainedBeforeD && aimed.some(t => t.actor?.system?.strained)) {
+        setupNotices.push({ text: `${h.item.name}: +${Math.max(1, Number(h.hook.strainedBeforeD) || 1)}[D] on a Tier 3 (target is Strained)`, icon: "fa-bullseye", why: "Against a target already Strained when you roll, your Basic Attack deals extra [D] on a Tier 3." });
+      }
+      if (h.hook.strained) {
+        setupNotices.push({ text: `${h.item.name}: Strained — you can Slide the target 1`, icon: "fa-arrows-left-right", why: "When your Basic Attack damages a Strained target, you can Slide it 1." });
+      }
+    }
+  }
   const extraNotices = [...setupNotices,
     ...triggerNotices(actor, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], dmgSubs),
     ...coverNotices
@@ -1295,6 +1317,7 @@ export async function useAction(actor, item, opts = {}) {
           attrMode: src.attrMode,
           nl: dealsNl,
           targets,
+          preStrained: targets.filter(t => { try { const d = fromUuidSync(t.uuid); return !!(d?.actor ?? d)?.system?.strained; } catch (e) { return false; } }).map(t => t.uuid),   // core rework batch 3 (Steady Draw): targets already Strained when rolled
           attrLabel: src.kind === "attribute" ? (TWOD12.attributes[attrKey] ?? "") : (src.chip ?? ""),
           saveDc: saveDcOf(src, s.attributes)
         }
@@ -1385,7 +1408,7 @@ export async function useAction(actor, item, opts = {}) {
         }
         if (lines.length) {
           if (key && actor.isOwner) await actor.setFlag("twod12", "openingRound", key);
-          await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-crosshairs", `<b>${esc(openHook.item.name)}</b>: one ally who threatens the creature can spend 1R to make a Weapon Attack (1A) against it. ${lines.join("; ")}.`, "fxm") });
+          await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-crosshairs", `<b>${esc(openHook.item.name)}</b>: one ally who threatens the creature can spend 1R to make a Basic Attack (1A) against it. ${lines.join("; ")}.`, "fxm") });
         }
       }
     } catch (e) { console.warn("twod12 | Opening Shot", e); }
@@ -1410,7 +1433,7 @@ export async function useAction(actor, item, opts = {}) {
   // on Tier 2 or 3, and the effects your bonuses add (Rimebrand's Hindered). Conditional ones stay on the damage card's Effects button.
   if (!version.noTiers) {
     // v0.0.283 (Ch. 1 Riders): a Tier's own effects ride on its damage: on a Tier that deals damage they wait for the damage message (applied if it lands)
-    const ridesOn = t => (version[`t${t}`] ?? []).some(i => i.useW || i.dice || i.useAt);
+    const ridesOn = t => (version[`t${t}`] ?? []).some(i => i.useW || i.useD || i.dice || i.useAt);
     const autoFor = (t, bon) => [...(t >= 2 ? (version.fx?.all ?? []) : []), ...(ridesOn(t) ? [] : (version.fx?.[`t${t}`] ?? [])), ...(bon ?? []).filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => x.mode === "auto").map(x => x.uuid);
     const how = { ...originInfo(actor.uuid), escalation: escCost > 0, ...(src.kind ? { mod: Number(src.mod) || 0 } : {}) };   // mod: the Action DC (11 + mod) of what it applies
@@ -1568,6 +1591,24 @@ export async function applyAfter(msg, side = "", step = 0) {
 /** v0.0.411: a Tier's instances with n more [W] on its first [W] (One More Arrow).
  *  v0.0.440 (Lucas, checklist: "where is the die coming from?"): the n [W] are a part of their own, named after the card that gives them. */
 export const withMoreW = (insts, n, name = "1[W] more") => { const first = (insts ?? []).find(i => i.useW); return first ? [...insts, { ...first, wCount: n, useAt: false, dice: "", source: name }] : (insts ?? []); };
+/** Pure (core rework batch 3): merge a Basic Attack's own stateLines with active basicLine hooks (Sworn Blade: Strained Slide 1). */
+export function mergeBasicStateLines(base, hooks = []) {
+  const out = base ? { ...base } : {};
+  for (const h of hooks ?? []) {
+    for (const k of ["bloodied", "strained", "bloodiedBefore", "strainedBefore"]) {
+      if (h?.hook?.[k]) out[k] = out[k] ? `${out[k]} ${h.hook[k]}` : h.hook[k];
+    }
+  }
+  return Object.values(out).some(v => String(v ?? "").trim()) ? out : null;
+}
+/** Pure (core rework batch 3, Steady Draw): extra [D] instances on Tier 3 when a target was already Strained before the roll. */
+export function strainedExtraD(hooks = [], tier = 0, targets = [], preStrained = []) {
+  if (tier !== 3 || !(hooks ?? []).length) return [];
+  const pre = preStrained instanceof Set ? preStrained : new Set(preStrained ?? []);
+  if (!(targets ?? []).some(t => pre.has(t?.uuid ?? t))) return [];
+  return hooks.filter(h => Number(h?.hook?.strainedBeforeD) > 0).map(h => ({ pool: "B", useW: false, wCount: 1, useD: true, dCount: Math.max(1, Number(h.hook.strainedBeforeD) || 1), dice: "", useAt: false, subtype: "", source: h.item?.name || "1[D] more" }));
+}
+
 /** Roll the damage for the tier rolled on an action card; v0.0.388 (pack ONE): written into that card (again: the GM's "Roll the damage again"). */
 export async function rollDamage(message, { again = false } = {}) {
   const f = message.getFlag("twod12", "action");
@@ -1589,11 +1630,16 @@ export async function rollDamage(message, { again = false } = {}) {
     const mw = activeHooks(actor, "moreW");
     if (mw.length && await (await import("./hooks.mjs")).takeMoreW(actor)) { moreW = Math.max(1, Number(mw[0].hook.n) || 1); moreWName = mw[0].item?.name || "1[W] more"; }
   }
+  // core rework batch 3: class lines on Basic Attack (Sworn Blade: Strained Slide 1; Steady Draw: pre-roll Strained +1[D] on Tier 3)
+  const basicLines = item.getFlag?.("twod12", "basic") === "basicWeaponAttack" ? activeHooks(actor, "basicLine") : [];
+  const mergedStateLines = mergeBasicStateLines(item.system.stateLines, basicLines);
+  const preStrained = new Set(f.preStrained ?? []);
   let empUsed = false, empLater = false;   // v0.0.426: with several targets the Empowered die is rolled once, after the Tiers, for one creature
   // One creature's damage: its tier, its bonuses, and only that creature as the target of the damage and its effects.
   const rollFor = async (tier, bonus, targets, who, crit = false) => {
-    const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW, moreWName) : version[`t${tier}`]), ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
-    const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
+    const extraD = strainedExtraD(basicLines, tier, targets, preStrained);
+    const insts = [...(moreW ? withMoreW(version[`t${tier}`], moreW, moreWName) : version[`t${tier}`]), ...extraD, ...bonus.filter(b => b.dmg).map(b => ({ pool: b.pool, useW: false, wCount: 1, dice: b.dmg, useAt: false, subtype: b.sub === "W" ? (weapon?.system?.subtype ?? "") : b.sub, source: b.effect, srcUuid: b.srcUuid ?? "" }))];
+    const riders = f.ridersOnDamage && version[`t${tier}`]?.some(i => i.useW || i.useD || i.dice || i.useAt) ? (version.fx?.[`t${tier}`] ?? []).filter(x => x.mode === "auto").map(x => ({ ...x, rider: true })) : [];
     const fx = [...[...(version.fx?.all ?? []), ...(version.fx?.[`t${tier}`] ?? []), ...bonus.filter(b => b.fxUuid).map(b => ({ uuid: b.fxUuid, mode: "auto" }))]
       .filter(x => !f.fxOnUse || x.mode !== "auto"), ...riders];   // cards from v0.0.144 on applied their automatic effects when the Action was used (v0.0.283: riders wait for the damage)
     const rolls = [];
@@ -1612,11 +1658,11 @@ export async function rollDamage(message, { again = false } = {}) {
     const dmgRes = resolved;
     // [Mod]: the Weapon Modifier on Tiers 2 and 3 (to the weapon's damage), the Signature Modifier for a [Signature, Weapon] Action (v0.0.181); nothing for Power, Signature and Attribute Actions. Old cards: isWeapon / attrMode "all".
     // v0.0.407 (the Bestiary, Attributes and Modifiers): an NPC's damage is written whole: its Modifier is for its rolls only (nothing added; a [Mod] written in a Tier still counts)
-    const attrFrom = actor.type === "npc" ? Infinity : f.attrMode === "all" ? 1 : f.attrMode === "t2" ? 2 : f.attrMode === "none" ? Infinity : (f.isWeapon ? 2 : Infinity);
+    const attrFrom = actor.type === "npc" && item.getFlag?.("twod12", "basic") !== "fists" ? Infinity : f.attrMode === "all" ? 1 : f.attrMode === "t2" ? 2 : f.attrMode === "none" ? Infinity : (f.isWeapon ? 2 : Infinity);
     if (tier >= attrFrom && !insts.some(i => i.useAt) && dmgRes.length) {
-      const wInst = (f.attrMode === "all" ? null : dmgRes.find(r => r.inst.useW)) ?? dmgRes.find(r => r.comps.length) ?? dmgRes[0];
+      const wInst = (f.attrMode === "all" ? null : dmgRes.find(r => r.inst.useW || r.inst.useD)) ?? dmgRes.find(r => r.comps.length) ?? dmgRes[0];
       const pool = wInst.inst.pool || "B";
-      const sub = wInst.inst.useW ? (weapon?.system?.subtype ?? "") : (wInst.inst.subtype ?? "");   // v0.0.284: the Modifier keeps the damage's subtype (Ch. 1), whatever its attrMode
+      const sub = wInst.inst.useW || wInst.inst.useD ? (weapon?.system?.subtype ?? "") : (wInst.inst.subtype ?? "");   // v0.0.284: the Modifier keeps the damage's subtype (Ch. 1), whatever its attrMode
       comps.push({ pool, sub, kind: "A", formula: "", total: f.attrVal, dice: [], hidden: true, label: String(f.attrLabel || "Modifier").replace(/\s*Modifier$/i, "") || "Modifier" });   // v0.0.283: a visible line of the damage breakdown
       chip = `<div class="chips"><span class="chip">${esc(f.attrLabel || "Modifier")} +${f.attrVal}</span></div>`;
     }
@@ -1651,19 +1697,22 @@ export async function rollDamage(message, { again = false } = {}) {
   };
   if (f.results?.length) {
     // Several targets: the damage is rolled once per Tier and dealt to every creature on that Tier (Several Targets), posted in one card.
-    const rows = [], all = [], byTier = new Map();
+    const rows = [], all = [], byTier = new Map(), byExtra = new Map();
     empLater = true;
     for (const r of f.results) {
       if (!(r.tier >= 1)) continue;
-      if (!byTier.has(r.tier)) { const d = await rollFor(r.tier, r.bonuses ?? [], [{ uuid: r.uuid, name: r.name }], r.name, r.tier === 3 && f.results.filter(x => x.tier === 3).every(x => x.crit)); byTier.set(r.tier, d); all.push(...d.rolls); }
-      const d = byTier.get(r.tier);
-      rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: d.comps.map(c => ({ ...c })), fx: d.fx });
+      const hasExtra = strainedExtraD(basicLines, r.tier, [r], preStrained).length > 0;
+      const map = hasExtra ? byExtra : byTier;
+      if (!map.has(r.tier)) { const d = await rollFor(r.tier, r.bonuses ?? [], [{ uuid: r.uuid, name: r.name }], r.name, r.tier === 3 && f.results.filter(x => x.tier === 3).every(x => x.crit)); if (hasExtra) byExtra.set(r.tier, d); else byTier.set(r.tier, d); all.push(...d.rolls); }
+      const d = map.get(r.tier);
+      rows.push({ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: d.comps.map(c => ({ ...c })), fx: d.fx, tk: hasExtra ? `${r.tier}:s` : String(r.tier) });
     }
     if (rows.length) {
       const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283: one group per Tier (damage rolled once per Tier), the rider written once under it
-      const tiers = [...byTier.keys()].sort((a, b) => b - a);
-      const groups = tiers.map(t => ({ tier: t, crit: false, comps: byTier.get(t).comps, fx: byTier.get(t).fx, riders: byTier.get(t).riders, conds: byTier.get(t).conds, move: byTier.get(t).move }));
-      const gOf = rows.map(r => tiers.indexOf(r.tier));
+      const entries = [...[...byTier.entries()].map(([t, d]) => [String(t), t, d]), ...[...byExtra.entries()].map(([t, d]) => [`${t}:s`, t, d])].sort((a, b) => b[1] - a[1]);
+      const keys = entries.map(e => e[0]);
+      const groups = entries.map(([, t, d]) => ({ tier: t, crit: false, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds, move: d.move }));
+      const gOf = rows.map(r => keys.indexOf(r.tk));
       // v0.0.426 (the audit; book, Chapter 8, Empowered: "If the Action damages several creatures, you choose which one takes it"): one die, for one
       // creature: the first one hit (its own group, so the others on its Tier don't take it)
       if (empOn && (!again || hadEmp)) {
@@ -1688,13 +1737,13 @@ export async function rollDamage(message, { again = false } = {}) {
           empUsed = true;
         }
       }
-      await postCcDamage({ actor, title: item.name, lines: item.system.stateLines ?? null, groups, targets: rows.map((r, i) => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: gOf[i] })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });
+      await postCcDamage({ actor, title: item.name, lines: mergedStateLines, groups, targets: rows.map((r, i) => ({ uuid: r.uuid, name: r.name, tier: r.tier, crit: r.crit, g: gOf[i] })), rolls: all, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: rows.some(r => r.tier >= 2) ? chainOf(f, version) : "", areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });
     }
   } else {
     const d = await rollFor(f.tier, f.bonuses ?? [], f.targets ?? [], "", !!f.crit);
     // v0.0.246: the Version's "After the damage" chips run once the damage is applied (an Effects row: on Tier 2 or 3)
     const { postCcDamage } = await import("./ccdamage.mjs");   // v0.0.283 (pack chat-cards): the new damage message
-    await postCcDamage({ actor, title: item.name, lines: item.system.stateLines ?? null, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds, move: d.move }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "",   /* the after-chain holds Tier 2-3 riders (Club's Push): it keeps its gate */ areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
+    await postCcDamage({ actor, title: item.name, lines: mergedStateLines, groups: [{ tier: f.tier, crit: !!f.crit, comps: d.comps, fx: d.fx, riders: d.riders, conds: d.conds, move: d.move }], targets: (f.targets ?? []).map(t => ({ ...t, tier: f.tier, crit: !!f.crit, g: 0 })), rolls: d.rolls, nl: !!f.nl, originUuid: f.actorUuid, originMod: f.attrVal, after: f.tier >= 2 ? chainOf(f, version) : "",   /* the after-chain holds Tier 2-3 riders (Club's Push): it keeps its gate */ areaPoint: f.areaPoint ?? null, strike: (f.traits ?? []).includes("strike"), srcId: message.id, into: message, replace: again, escalation: !!f.escalation });   // v0.0.272: a Strike's damage (the "would damage an ally" moment)
   }
   if (empUsed && !hadEmp && !f.reloadShot) await markEmpoweredUsed(actor);
   // (the card is no longer collapsed: v0.0.388, the damage is on it)
@@ -1797,7 +1846,7 @@ export async function quickBasic(key, ap = null) {
   let item = actor.items.find(i => i.type === "action" && i.getFlag("twod12", "basic") === key);
   // v0.0.221: Weapon Attack's key on an NPC uses its Basic attack (NPCs have no Weapon Attack).
   if (!item && key === "basicWeaponAttack" && actor.type === "npc") item = actor.itemTypes.action.find(i => i.system?.basicAttack) ?? actor.itemTypes.action.find(i => /^basic attack$/i.test(String(i.system?.category ?? "")));
-  if (!item) { ui.notifications.warn(`${actor.name} has no ${{ safeMovement: "Evade", basicWeaponAttack: "Weapon Attack", rally: "Steel Yourself", advance: "Advance" }[key] ?? key} Action.`); return false; }
+  if (!item) { ui.notifications.warn(`${actor.name} has no ${{ safeMovement: "Evade", basicWeaponAttack: "Basic Attack", rally: "Steel Yourself", advance: "Advance" }[key] ?? key} Action.`); return false; }
   // v0.0.197 (Lucas): which version, when there are several (Evade: 1 AP, Evade 1; 2 AP, Evade half your Speed).
   const vs = [...item.system.versions].sort((a, b) => a.ap - b.ap);
   if (ap === null && vs.length > 1) {

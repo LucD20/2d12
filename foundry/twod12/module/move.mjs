@@ -1271,7 +1271,7 @@ function chargeFollowUp(c, doc, reach, to = null) {
   // 600 ms later (a long Charge was still moving, so nobody seemed to be within Reach).
   const at = to ? { id: doc.id, document: { id: doc.id, x: to.x, y: to.y, width: doc.width, height: doc.height, elevation: doc.elevation, disposition: doc.disposition } } : token;
   if (creaturesInReach(at, reach).length) return;
-  postCard("Charge", `${esc(c.name)}'s Charge is disrupted`, "No creature within Reach for its Weapon Attack (1A). The AP stay spent.", "chargemsg").catch(() => {});
+  postCard("Charge", `${esc(c.name)}'s Charge is disrupted`, "No creature within Reach for its Basic Attack (1A). The AP stay spent.", "chargemsg").catch(() => {});
 }
 
 /** Squares of a path between two cells (Bresenham). The rules' straight line (Charge) is straightCells in corners.mjs, with its ties. */
@@ -1738,13 +1738,13 @@ export function openChargePicker(c, token) {
   if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", inSide); slot.append(bar); hud.hudAsking(true, inSide); } else document.body.append(bar);
   // v0.0.461 (e, choices 3A and 4A): a Charge always picks an enemy first (the book's Charge); only the Charge button, Enter or a click on the target confirms
   const text = () => {
-    if (!target) return `<b>Pick the enemy to Charge</b>, on the map or here. You run straight at it (at least ${ch.min}, up to ${ch.max} squares), then make a Weapon Attack (1A).${cands.filter(x => !x.ok).length ? ` <span class="lb-tag">${cands.filter(x => !x.ok).map(x => `${esc(x.t.name)}: ${esc(x.why)}`).join(" \u00b7 ")}</span>` : ""}`;
+    if (!target) return `<b>Pick the enemy to Charge</b>, on the map or here. You run straight at it (at least ${ch.min}, up to ${ch.max} squares), then make a Basic Attack (1A).${cands.filter(x => !x.ok).length ? ` <span class="lb-tag">${cands.filter(x => !x.ok).map(x => `${esc(x.t.name)}: ${esc(x.why)}`).join(" \u00b7 ")}</span>` : ""}`;
     const r = cur?.path; if (!r) return "";
     const who = cur.inReach.some(t => t.id === target.id);
     if (cur.tooFar) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too far</span> A Charge goes up to ${ch.max} squares: you stop after ${cur.stopSq}, out of Reach, and the Charge is disrupted.`;
     if (r.bad < 0 && r.sq + 1e-6 < ch.min) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">too close</span> A Charge moves at least ${ch.min} squares (in Reach after ${r.sq}). Pick another enemy, or give up.`;
     if (r.bad >= 0) return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">blocked</span> <span class="lb-warn">${esc(r.problem[0].toUpperCase() + r.problem.slice(1))}.</span> You stop after ${cur.stopSq} squares${who ? `, ${esc(target.name)} in Reach` : `, out of Reach: the Charge is disrupted (its AP stay spent)`}.`;
-    return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">${r.sq} squares</span> In Reach at the end. Then: Weapon Attack (1A). Another enemy: click it.`;
+    return `<b>Charge \u2192 ${esc(target.name)}</b> <span class="lb-tag">${r.sq} squares</span> In Reach at the end. Then: Basic Attack (1A). Another enemy: click it.`;
   };
   // v0.0.224 (Lucas, playtest 3): with a target, the line goes toward it (to the square of its space nearest to you) and stops on the first
   // square from which it is within Reach; the mouse only confirms. A blocked line stops earlier (a second click confirms it).
@@ -1834,7 +1834,7 @@ export function openChargePicker(c, token) {
     if (cur.stop && !short) { const t = r.tl(cur.stop); gfx.lineStyle(3, MK.GOLD, 1); gfx.drawRect(t.x + 2, t.y + 2, Math.max(1, Math.round(doc.width)) * gs - 4, Math.max(1, Math.round(doc.height)) * gs - 4); }   // v0.0.466: where it stops, outlined in gold
     if (cur.stop) {
       const p = ctr(cur.stop), who = cur.inReach.some(t => t.id === target.id);
-      const lines = short ? ["Too close", `a Charge moves at least ${ch.min}`] : blocked ? [`Stops after ${cur.stopSq}`, who ? `${target.name} in Reach` : `${target.name} not in Reach: disrupted`] : [`${r.sq} squares \u00b7 in Reach`, `then Weapon Attack (1A) on ${target.name}`];
+      const lines = short ? ["Too close", `a Charge moves at least ${ch.min}`] : blocked ? [`Stops after ${cur.stopSq}`, who ? `${target.name} in Reach` : `${target.name} not in Reach: disrupted`] : [`${r.sq} squares \u00b7 in Reach`, `then Basic Attack (1A) on ${target.name}`];
       const pl = MK.plate(lines, { fs, warn: blocked || short }); pl.position.set(p.x, p.y - (Math.max(1, Math.round(doc.height)) * gs) / 2 - 4); marks.addChild(pl);
     }
     go.hidden = short; go.textContent = blocked ? "Charge anyway" : "Charge";

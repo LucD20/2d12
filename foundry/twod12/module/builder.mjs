@@ -21,6 +21,7 @@ function instsToChip(insts) {
   const out = [], skipped = [];
   for (const i of insts ?? []) {
     if (i.useW) skipped.push(`${i.wCount || 1}[W]`);
+    if (i.useD) skipped.push(`${i.dCount || 1}[D]`);
     if (i.useAt && !i.dice) skipped.push("[Mod]");
     if (!i.dice) continue;
     const tags = [POOLTAG[i.pool] ?? "vigor", subWord(i.subtype)].filter(Boolean);

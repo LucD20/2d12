@@ -11,18 +11,18 @@ globalThis.fromUuidSync = () => null;
 const C = await import(ROOTURL + "tools/content.mjs");
 const all = [...C.docs, ...C.actors.flatMap(a => a.items ?? []), ...C.pcs.flatMap(a => a.items ?? [])];
 const card = n => all.find(x => x.name === n && x.type === "action");
-const tiers = (n, k = 0) => { const v = card(n).system.versions[k]; return [1, 2, 3].map(t => (v[`t${t}`] ?? []).map(i => (i.useW ? `${i.wCount}W` : "") + (i.dice || "") + (i.useAt ? "Mod" : "") + (i.subtype ? ` ${i.subtype}` : "")).join(" + ") || "-").join(" / "); };
+const tiers = (n, k = 0) => { const v = card(n).system.versions[k]; return [1, 2, 3].map(t => (v[`t${t}`] ?? []).map(i => (i.useW ? `${i.wCount}W` : "") + (i.useD ? `${i.dCount}D` : "") + (i.dice || "") + (i.useAt ? "Mod" : "") + (i.subtype ? ` ${i.subtype}` : "")).join(" + ") || "-").join(" / "); };
 
 console.log("--- [Mod] as the card writes it (a Structure card), none added by the roll; none shown for an NPC");
 console.log("Smite:", tiers("Smite"), "| Trick Shots (Pin):", tiers("Trick Shots"), "| Seizing Cut:", tiers("Seizing Cut"), "| Quick Shots:", tiers("Quick Shots"));
-console.log("the Basic Weapon Attack keeps the old way (added from Tier 2):", tiers("Weapon Attack"));
+console.log("the Basic Attack writes its own [Mod] on all three Tiers (core rework batch 3):", tiers("Basic Attack"));
 const { rollSource } = await import(ROOTURL + "module/rollsource.mjs");
 const pc = { weaponMod: 2, signatureMod: 3, attributes: {} }, npc = { ...pc, modSource: "role" };
 const st = new Set(["weapon", "strike"]);
 console.log("attrMode: a Structure card", rollSource(pc, { traits: st, structure: true }).attrMode, "| an old card", rollSource(pc, { traits: st }).attrMode, "| an NPC's", rollSource(npc, { traits: st }).attrMode);
 const { tierTokens } = await import(ROOTURL + "tools/cardgen.mjs");
 console.log("a subtype is its pool's ([V] 1[W] + [Mod] + [R] 1d6! Ho):", tierTokens("[V] 1[W] + [Mod] + [R] 1d6! Ho", false, 2));
-console.log("a written [Mod] takes the weapon's type:", src("module/actions.mjs").includes("(inst.useW || (inst.useAt && !inst.dice) ? (ctx.weapon?.system?.subtype"));
+console.log("a written [Mod] takes the weapon's type:", src("module/actions.mjs").includes("(inst.useW || inst.useD || (inst.useAt && !inst.dice) ? (ctx.weapon?.system?.subtype"));
 
 console.log("--- the card's own \"Tier 2 or 3\" / \"Tier 1 or 2\"");
 const { tierLines } = await import(ROOTURL + "module/cardmodel.mjs");

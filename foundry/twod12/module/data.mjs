@@ -432,7 +432,7 @@ export class FeatureData extends foundry.abstract.TypeDataModel {
 }
 
 const instance = () => new SchemaField({
-  pool: choice(TWOD12.pools, "B"), useW: bool(), wCount: int(1, 1), dice: str(),
+  pool: choice(TWOD12.pools, "B"), useW: bool(), wCount: int(1, 1), useD: bool(), dCount: int(1, 1), dice: str(),
   useAt: bool(), subtype: choice(TWOD12.subtypes)
 });
 const tier = () => new ArrayField(instance());

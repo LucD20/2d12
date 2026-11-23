@@ -71,6 +71,7 @@ export function tierTokens(dmg, weaponAction, tier) {
     let m;
     const sub = subOf[pl] ?? "";
     if ((m = p.match(/^(\d*)\[W\]$/))) out.push({ k: "w", t: `${m[1] || 1}W${pl}${sub}` });   // pack TALENTS-PT: "[V] 1[W] + [Mod] Co" (Rime Strike): the weapon's damage takes the written type
+    else if ((m = p.match(/^(\d*)\[D\]$/))) out.push({ k: "d", t: `${m[1] || 1}D${pl}${sub}` });   // core rework batch 3: [D], the weapon's die on that Tier
     else if (p === "[Mod]") { if (!(weaponAction && tier >= 2)) out.push({ k: "at", t: `Mod${pl}${sub}` }); }
     else if (/^\d+d\d+!?$/.test(p)) out.push({ k: "dice", t: `${p}${pl}${sub}` });   // v0.0.407: a die written with ! explodes
     else if (/^\d+$/.test(p)) flat = { n: p, pool: pl };

@@ -12,7 +12,7 @@ const { BASIC_ACTIONS } = await import(ROOTURL + "module/basic.mjs");
 const { basicGroupsOf } = await import(ROOTURL + "module/actor-sheets.mjs");
 const names = Object.values(BASIC_ACTIONS).map(a => a.name);
 const mapped = TWOD12.basicGroups.flatMap(g => g.names);
-console.log("16 mapped:", mapped.length, "| every one is a Basic Action:", mapped.filter(n => n !== "Leaning").every(n => names.includes(n))   /* the core rework B12: "Leaning" stays mapped for old actors' items */, "| Basic Actions not in a group:", JSON.stringify(names.filter(n => !mapped.includes(n))));
+console.log("16 mapped:", mapped.length, "| every one is a Basic Action:", mapped.filter(n => n !== "Leaning" && n !== "Weapon Attack").every(n => names.includes(n))   /* the core rework B12 & batch 3: old Basic Action names stay mapped for existing actors' items */, "| Basic Actions not in a group:", JSON.stringify(names.filter(n => !mapped.includes(n))));
 const rows = names.map(name => ({ name })).reverse();   // any order in: the groups' order out
 console.log(basicGroupsOf(rows).map(g => `${g.label}: ${g.rows.map(r => r.name).join(", ")}`).join(" | "));
 console.log("an NPC without Steel Yourself, and a homebrew one:", basicGroupsOf([...rows.filter(r => r.name !== "Steel Yourself"), { name: "Grapple" }]).map(g => `${g.label} ${g.rows.length}`).join(", "));

@@ -51,7 +51,7 @@ async function cell(item, v, n, ch) {
   let html = line ? prettyDamage(esc(line)) : "";
   if (riders.length) html += dmg ? riders.map(r => `<span class="ap-rid"><span class="arr">↳</span> <span class="ap-mv">${r}</span></span>`).join("") : riders.join("; ");
   const extra = [];
-  if (ch && insts.some(i => i.useW || i.dice)) {
+  if (ch && insts.some(i => i.useW || i.useD || i.dice)) {
     if (ch.net > 0) extra.push(`<span class="chg up">+1d6!</span>`);   // v0.0.407: no value; Enfeebled is gone
   }
   if (plain.length) extra.push(`<span class="chg up">+ ${esc(namesWithCount(plain.map(b => b.source)))}</span>`);
