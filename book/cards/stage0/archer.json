@@ -44,7 +44,7 @@
    "level": 1,
    "flavor": "You shift the bow to one hand, open a foe with the knife, and are gone before it turns.",
    "frequency": "Round",
-   "cost": "1 AP",
+   "cost": "2 AP",
    "body": [
     {
      "label": "Setup",
@@ -156,6 +156,7 @@
    ],
    "traits": [
     "power",
+    "ranged",
     "strike"
    ],
    "distance": "10 sq.",

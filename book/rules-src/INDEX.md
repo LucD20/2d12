@@ -5,14 +5,14 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | File | Chapter | Document | Part | KB | Lines |
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 29.3 | 348 |
-| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.7 | 360 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 44.8 | 495 |
+| 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.9 | 361 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 45.0 | 495 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 15.1 | 261 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.9 | 58 |
-| 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 6.3 | 99 |
+| 07-traits.md | Chapter 7: Traits | core | Part III: Reference | 6.6 | 103 |
 | 08-conditions.md | Chapter 8: Conditions | core | Part III: Reference | 9.9 | 118 |
-| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 31.3 | 222 |
+| 09-glossary.md | Chapter 9: Glossary | core | Part III: Reference | 31.7 | 223 |
 | 11-species.md | Species | species |  | 0.8 | 32 |
 | 12-paladin.md | Paladin | paladin |  | 5.3 | 143 |
 | 13-archer.md | Archer | archer |  | 5.8 | 146 |
@@ -61,38 +61,38 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 50:   ### Unspent AP
 - 61:   ### Losing and Gaining Action Points
 - 68: ## Reactions
-- 81:   ### What a Reaction Responds To
-- 90:   ### A Reaction's Target
-- 109:   ### Disrupting Actions
-- 119:   ### Moving Closer
-- 123:   ### Moving Away
-- 137: ## Actions
-- 145:   ### Setup
-- 155:   ### Targets
-- 159:   ### Willing and Unwilling
-- 163:   ### Requirements
-- 167:   ### 0 AP Actions
-- 171:   ### Linked Actions
-- 187:   ### Targets of Effects
-- 195:   ### Effect Timing
-- 209:   ### Buffs
-- 220:     #### Stacking
-- 241:   ### Frequency
-- 247:     #### At-will
-- 255:     #### Turn
-- 259:     #### Round
-- 263:     #### Encounter
-- 267:     #### Daily
-- 271: ## Versus
-- 275:   ### Defenses
-- 290: ## Rounds and Durations
-- 292:   ### Until
-- 296:   ### Your Next Action
-- 302:   ### Rounds
-- 311:   ### End of Turn
-- 317:   ### End of Encounter
-- 323: ## Escalation
-- 346:   ### Momentum
+- 82:   ### What a Reaction Responds To
+- 91:   ### A Reaction's Target
+- 110:   ### Disrupting Actions
+- 120:   ### Moving Closer
+- 124:   ### Moving Away
+- 138: ## Actions
+- 146:   ### Setup
+- 156:   ### Targets
+- 160:   ### Willing and Unwilling
+- 164:   ### Requirements
+- 168:   ### 0 AP Actions
+- 172:   ### Linked Actions
+- 188:   ### Targets of Effects
+- 196:   ### Effect Timing
+- 210:   ### Buffs
+- 221:     #### Stacking
+- 242:   ### Frequency
+- 248:     #### At-will
+- 256:     #### Turn
+- 260:     #### Round
+- 264:     #### Encounter
+- 268:     #### Daily
+- 272: ## Versus
+- 276:   ### Defenses
+- 291: ## Rounds and Durations
+- 293:   ### Until
+- 297:   ### Your Next Action
+- 303:   ### Rounds
+- 312:   ### End of Turn
+- 318:   ### End of Encounter
+- 324: ## Escalation
+- 347:   ### Momentum
 
 ## 03-movement.md: Chapter 3: Movement and the Environment
 
@@ -200,22 +200,23 @@ Open (to be decided) boxes: 30: "Heal is a playtest version (2026-11-21): it rol
 - 20:   ### Firearm
 - 24:   ### Focus
 - 28:   ### Handle
-- 32:   ### Melee
-- 36:   ### Move
-- 44:   ### Nonlethal
-- 48:   ### Power
-- 52:   ### Projectile
-- 56:   ### Ranged
-- 60:   ### Save
-- 64:   ### Self
-- 68:   ### Signature
-- 72:   ### Split
-- 76:   ### Strike
-- 80:   ### Unfailing
-- 84:   ### Weapon
-- 92:   ### Tags
+- 32:   ### Magical
+- 36:   ### Melee
+- 40:   ### Move
+- 48:   ### Nonlethal
+- 52:   ### Power
+- 56:   ### Projectile
+- 60:   ### Ranged
+- 64:   ### Save
+- 68:   ### Self
+- 72:   ### Signature
+- 76:   ### Split
+- 80:   ### Strike
+- 84:   ### Unfailing
+- 88:   ### Weapon
+- 96:   ### Tags
 
-Open (to be decided) boxes: 96: "The list of Tags (Profane, Beast, Undead...) and what each one covers "
+Open (to be decided) boxes: 100: "The list of Tags (Profane, Beast, Undead...) and what each one covers "
 
 ## 08-conditions.md: Chapter 8: Conditions
 
@@ -244,7 +245,7 @@ Open (to be decided) boxes: 23: "The die grows at later Stages (with those Stage
 ## 09-glossary.md: Chapter 9: Glossary
 
 
-Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [D]; 9: [V], [R], [C]; 10: [Trait]; 11: 0 AP; 12: 0R; 13: Action DC; 14: Action Points (AP); 15: Advance; 16: Ally; 17: Apex; 18: Area; 19: Armor; 20: Armor Training; 21: Art; 22: At-will; 23: Attribute Action; 24: Attribute DC; 25: Aura; 26: Bane, Boon; 27: Basic Attack; 28: Barehanded; 29: Basic attack; 30: Blinded; 31: Bloodied, Strained; 32: Body Action, Mind Action; 33: Breather; 34: Buff; 35: Burst; 36: Charge; 37: Check; 38: Class Actions; 39: Clear; 40: Cleave; 41: Collision; 42: Combat Value (CV); 43: Corners; 44: Cover; 45: Crawl; 46: Critical; 47: Daily; 48: Dark Sight; 49: Daunted; 50: Dazed; 51: Deadly Hazard; 52: Defense; 53: Desperate; 54: Difficult Terrain; 55: Dim-light Sight; 56: Disrupted; 57: Distinct Choices; 58: Dominant Damage; 59: Doomed; 60: Doubles; 61: Down; 62: Dying; 63: Effect; 64: Elevation; 65: Elite; 66: Emanation; 67: Empowered; 68: Encounter; 69: Engaged; 70: EoE; 71: EoT; 72: Escalation; 73: Escalation hook; 74: Evade; 75: Exhausted; 76: Exploding; 77: Favored; 78: Field; 79: Firearm; 80: Fists; 81: Flanking; 82: Forced Movement; 83: Frequency; 84: Grabbed; 85: Grunt; 86: Guard; 87: Half-Blinded; 88: Hallmark Action; 89: Hallmark Reaction; 90: Hands; 91: Hazardous Terrain [HT]; 92: Heal; 93: Hearing; 94: Hidden; 95: Hindered; 96: Immobilized; 97: Immune; 98: Imperiled; 99: Initiative slot; 100: Instance of damage; 101: Interact; 102: Interrupt; 103: Leaning; 104: Left your square; 105: Lethal, Nonlethal; 106: Light; 107: Line; 108: Line of Effect; 109: Lingering; 110: Linked Action; 111: Long; 112: Main hand, off hand; 113: Mastery; 114: Minion; 115: Minor enemies; 116: Mode; 117: Momentum; 118: Move; 119: Moved; 120: Moves closer; 121: Moving away; 122: Named Boons and Banes; 123: Next Action; 124: Non-threatening; 125: Obscured; 126: Origin; 127: Pick; 128: Point of Origin; 129: Power Modifier; 130: Power roll; 131: Pressed; 132: Pressure; 133: Projectile; 134: Prone; 135: Properties; 136: Pulled; 137: Pushed; 138: Quickened; 139: Rally Point; 140: Range; 141: Ranged Combat While Engaged; 142: Rank; 143: Rating; 144: Reach; 145: Reaction; 146: Reaction Point (RP); 147: Recovery; 148: Regrip; 149: Release; 150: Reload; 151: Reload Shot; 152: Repertoire; 153: Reposition; 154: Requirements; 155: Resist; 156: Resolve, Vigor; 157: Rest; 158: Rider; 159: Role; 160: Roll; 161: Round; 162: Save; 163: Save Action; 164: Sense; 165: Setup; 166: Several Targets; 167: Shake Off; 168: Shattered; 169: Sickened; 170: Signature Modifier; 171: Signature roll; 172: Size; 173: Sleep; 174: Slid; 175: Slowed; 176: Special; 177: Special Action; 178: Specific beats general; 179: Speed; 180: Split; 181: Squeezing; 182: SR; 183: Stacking; 184: Stage; 185: Stage Talent; 186: Staggered; 187: Standard; 188: Start of the encounter; 189: Steadiness; 190: Steel Yourself; 191: Strike; 192: Strung; 193: Success; 194: Support; 195: Swap squares; 196: Tag; 197: Taunted; 198: Threatens; 199: Thrown; 200: Tier; 201: Trigger; 202: Triggering creature; 203: Turn; 204: Turn; 205: Turn budget; 206: Turn-cycle; 207: Unconscious; 208: Unfailing; 209: Unsensed; 210: Version; 211: Vs.; 212: Vulnerable; 213: Ward; 214: Weak; 215: Weapon DC, Power DC; 216: Weapon Group; 217: Weapon Modifier; 218: Weapon roll; 219: Weapon Technique; 220: Willing, Unwilling; 221: Wound
+Glossary entries (line: term): 6: [Mod]; 7: [W]; 8: [D]; 9: [V], [R], [C]; 10: [Trait]; 11: 0 AP; 12: 0R; 13: Action DC; 14: Action Points (AP); 15: Advance; 16: Ally; 17: Apex; 18: Area; 19: Armor; 20: Armor Training; 21: Art; 22: At-will; 23: Attribute Action; 24: Attribute DC; 25: Aura; 26: Bane, Boon; 27: Basic Attack; 28: Barehanded; 29: Basic attack; 30: Blinded; 31: Bloodied, Strained; 32: Body Action, Mind Action; 33: Breather; 34: Buff; 35: Burst; 36: Charge; 37: Check; 38: Class Actions; 39: Clear; 40: Cleave; 41: Collision; 42: Combat Value (CV); 43: Corners; 44: Cover; 45: Crawl; 46: Critical; 47: Daily; 48: Dark Sight; 49: Daunted; 50: Dazed; 51: Deadly Hazard; 52: Defense; 53: Desperate; 54: Difficult Terrain; 55: Dim-light Sight; 56: Disrupted; 57: Distinct Choices; 58: Dominant Damage; 59: Doomed; 60: Doubles; 61: Down; 62: Dying; 63: Effect; 64: Elevation; 65: Elite; 66: Emanation; 67: Empowered; 68: Encounter; 69: Engaged; 70: EoE; 71: EoT; 72: Escalation; 73: Escalation hook; 74: Evade; 75: Exhausted; 76: Exploding; 77: Favored; 78: Field; 79: Firearm; 80: Fists; 81: Flanking; 82: Forced Movement; 83: Frequency; 84: Grabbed; 85: Grunt; 86: Guard; 87: Half-Blinded; 88: Hallmark Action; 89: Hallmark Reaction; 90: Hands; 91: Hazardous Terrain [HT]; 92: Heal; 93: Hearing; 94: Hidden; 95: Hindered; 96: Immobilized; 97: Immune; 98: Imperiled; 99: Initiative slot; 100: Instance of damage; 101: Interact; 102: Interrupt; 103: Leaning; 104: Left your square; 105: Lethal, Nonlethal; 106: Light; 107: Line; 108: Line of Effect; 109: Lingering; 110: Linked Action; 111: Long; 112: Magical; 113: Main hand, off hand; 114: Mastery; 115: Minion; 116: Minor enemies; 117: Mode; 118: Momentum; 119: Move; 120: Moved; 121: Moves closer; 122: Moving away; 123: Named Boons and Banes; 124: Next Action; 125: Non-threatening; 126: Obscured; 127: Origin; 128: Pick; 129: Point of Origin; 130: Power Modifier; 131: Power roll; 132: Pressed; 133: Pressure; 134: Projectile; 135: Prone; 136: Properties; 137: Pulled; 138: Pushed; 139: Quickened; 140: Rally Point; 141: Range; 142: Ranged Combat While Engaged; 143: Rank; 144: Rating; 145: Reach; 146: Reaction; 147: Reaction Point (RP); 148: Recovery; 149: Regrip; 150: Release; 151: Reload; 152: Reload Shot; 153: Repertoire; 154: Reposition; 155: Requirements; 156: Resist; 157: Resolve, Vigor; 158: Rest; 159: Rider; 160: Role; 161: Roll; 162: Round; 163: Save; 164: Save Action; 165: Sense; 166: Setup; 167: Several Targets; 168: Shake Off; 169: Shattered; 170: Sickened; 171: Signature Modifier; 172: Signature roll; 173: Size; 174: Sleep; 175: Slid; 176: Slowed; 177: Special; 178: Special Action; 179: Specific beats general; 180: Speed; 181: Split; 182: Squeezing; 183: SR; 184: Stacking; 185: Stage; 186: Stage Talent; 187: Staggered; 188: Standard; 189: Start of the encounter; 190: Steadiness; 191: Steel Yourself; 192: Strike; 193: Strung; 194: Success; 195: Support; 196: Swap squares; 197: Tag; 198: Taunted; 199: Threatens; 200: Thrown; 201: Tier; 202: Trigger; 203: Triggering creature; 204: Turn; 205: Turn; 206: Turn budget; 207: Turn-cycle; 208: Unconscious; 209: Unfailing; 210: Unsensed; 211: Version; 212: Vs.; 213: Vulnerable; 214: Ward; 215: Weak; 216: Weapon DC, Power DC; 217: Weapon Group; 218: Weapon Modifier; 219: Weapon roll; 220: Weapon Technique; 221: Willing, Unwilling; 222: Wound
 
 ## 11-species.md: Species
 

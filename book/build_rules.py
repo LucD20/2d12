@@ -24,14 +24,14 @@ GROUPS = [("roll", "Roll", ["appeal", "body", "instinct", "mind", "power", "save
           ("requires", "Requires", ["gun", "handle", "melee", "ranged", "shot"]),   # the keys Foundry still has (test t146 compares the two lists); the book prints gun as Firearm and shot as Projectile (cards.py RENAMED) until the Foundry pass renames the keys
           ("kind", "Kind", ["area", "move", "self", "strike"]),
           ("damage", "Damage", ["nonlethal"]),
-          ("keywords", "Keywords", ["divine", "focus", "fear", "unfailing"])]
+          ("keywords", "Keywords", ["divine", "focus", "fear", "magical", "unfailing"])]
 def group_of(k):
     if k.startswith('ht:'): return 'kind'
     k = {'projectile': 'shot', 'firearm': 'gun'}.get(k, k)
     return next((g for g, _, ks in GROUPS if k in ks), 'keywords')
 RULES = {"strike", "weapon", "power", "signature", "split"}
 LABEL = {"twohanded": "Two-handed"}
-TRAIT_WORDS = {"Strike": "strike", "Nonlethal": "nonlethal", "Divine": "divine", "Focus": "focus", "Handle": "handle", "Power": "power", "Signature": "signature", "Split": "split", "Melee": "melee", "Ranged": "ranged", "Self": "self", "Weapon": "weapon", "Save": "save"}
+TRAIT_WORDS = {"Strike": "strike", "Nonlethal": "nonlethal", "Divine": "divine", "Focus": "focus", "Handle": "handle", "Magical": "magical", "Power": "power", "Signature": "signature", "Split": "split", "Melee": "melee", "Ranged": "ranged", "Self": "self", "Weapon": "weapon", "Save": "save"}
 
 ASSETS = 'rules-assets'
 ICONS = json.load(open(os.path.join(ASSETS, 'dtype-icons.json')))   # Font Awesome Free (CC BY 4.0), see rules-assets/FONTAWESOME-LICENSE.txt

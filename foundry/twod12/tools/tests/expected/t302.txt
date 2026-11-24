@@ -1,0 +1,21 @@
+Magical trait: Magical | group: keywords
+Drawing Light traits: divine,magic,magical,ranged,strike
+Harrying Shot traits: magic,ranged,strike
+Darting Blade AP: 2
+After Basic Attack -> Drawing Light Banes: 1 | Basic Attack Banes: 1 | Heal Banes: 0
+After Drawing Light -> 3rd Strike Banes: 2 | Strikes: 2
+After unmarkUsed(Drawing Light) -> Banes: 1 | Strikes: 1
+After markAtWill(Charge Basic) -> Drawing Light Banes: 2
+Non-Strike At-wills separate -> Heal: 1 | Break Free: 0
+Heal: appeal,handle,mind | AP: 2 | T1: The target can use @Rally[1]. | T2: The target can use @Rally[2]. | T3: The target can use @Rally[2], and if it is Prone it can Stand.
+Demoralize: appeal | T1: No effect. | T2: @Condition[vulnerable|value:1|eot] | T3: @Condition[vulnerable|value:1|rounds:1] | Special: The target is immune to your Demoralize until the end of the encounter (EoE).
+Demoralize EoE before: false
+Demoralize EoE after: true | other target: false
+Demoralize EoE new combat: false
+Demoralize dialog warning & mark wired: true
+coverBanesApply Strike/Area/Demoralize/Shove/Kneel: true true false false false
+Large target in doorway (coverBetween): No cover | blocked: 0 | banes: 0 | chosen center: {"x":450,"y":250}
+Large target in doorway (coverFromPoint): No cover | blocked: 0 | banes: 0
+Large target fully walled: Total cover | noLoE: true
+Large target with blocker on 1 square only: No cover | inWay: false | chosen center: {"x":450,"y":150}
+Book rules synced: true

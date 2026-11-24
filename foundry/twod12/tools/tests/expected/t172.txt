@@ -1,6 +1,6 @@
 --- At-will: a first use each turn has no Bane (Club, then Weapon Attack)
-turn 1, after Club and Weapon Attack: Club 1 | Weapon Attack 1
-turn 2, Club used once: Club 1 | Weapon Attack (not used this turn) 0 (was 1 before v0.0.215: last turn's count stayed in the merged flag)
+turn 1, after Club and Weapon Attack: Club 2 | Weapon Attack 2
+turn 2, Club used once: Club 1 | Weapon Attack (not used this turn) 1 (was 1 before v0.0.215: last turn's count stayed in the merged flag)
 --- Encounter: greyed after its use
 Ground Slam: {"faded":true,"why":"Used this encounter"}
 --- the rest (source checks)

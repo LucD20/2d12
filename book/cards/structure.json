@@ -1022,7 +1022,7 @@
    "melee",
    "strike"
   ],
-  "cost": "1 AP",
+  "cost": "2 AP",
   "body": [
    {
     "label": "Setup",
@@ -1166,11 +1166,15 @@
    },
    {
     "label": "Tier 2",
-    "text": "Vulnerable 1 (1 round)."
+    "text": "Vulnerable 1 (EoT)."
    },
    {
     "label": "Tier 3",
-    "text": "Vulnerable 1 (1 round), and Daunted of you (EoT)."
+    "text": "Vulnerable 1 (1 round)."
+   },
+   {
+    "label": "Special",
+    "text": "The target is immune to your Demoralize until the end of the encounter (EoE)."
    }
   ],
   "blocks": [],
@@ -1326,7 +1330,9 @@
   "target": "One creature",
   "traits": [
    "divine",
+   "magical",
    "power",
+   "ranged",
    "strike"
   ],
   "cost": "1 AP",
@@ -1866,6 +1872,7 @@
   "target": "One creature",
   "traits": [
    "power",
+   "ranged",
    "strike"
   ],
   "cost": "1 AP",
@@ -2015,15 +2022,15 @@
    },
    {
     "label": "Tier 1",
-    "text": "No effect."
-   },
-   {
-    "label": "Tier 2",
     "text": "The target can use 1 Rally Point."
    },
    {
-    "label": "Tier 3",
+    "label": "Tier 2",
     "text": "The target can use 2 Rally Points."
+   },
+   {
+    "label": "Tier 3",
+    "text": "The target can use 2 Rally Points, and if it is Prone it can Stand."
    }
   ],
   "blocks": [],

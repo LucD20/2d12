@@ -29,6 +29,10 @@ These Actions require concentration. This is not a mechanic by itself, but some 
 
 To use an Action with the Handle trait, you must be able to use your hands (or similar appendages). You also need a **hand free** to make any Action with this trait. Releasing an object costs no AP (Release). **One exception:** stowing an object you hold, or swapping it for another you carry (Interact), needs no free hand: the hand that holds the object does it. With both hands full you can stow one weapon, or swap it for another.
 
+### Magical
+
+A Magical Action is a magical effect or attack. The Magical trait has no rules of its own yet; other rules, spells and features refer to it.
+
 ### Melee
 
 These Actions target creatures in close combat. A Weapon Action without this trait gets it when you use a melee weapon in hand (see [[Weapon Actions and Your Weapon]]).
@@ -75,7 +79,7 @@ A Split Action has two modes, **Weapon** and **Power**, and you choose one each 
 
 ### Strike
 
-Strike is any Action that tries to hit a creature, such as an attack with a weapon or a spell. You can make at most 3 Strikes per turn.
+Strike is any Action that tries to hit a creature, such as an attack with a weapon or a spell. You can make at most 3 Strikes per turn. All At-will [Strike] Actions share one At-will count: your second At-will [Strike] in a turn takes 1 Bane, and your third takes 2 Banes, even if they are different Actions.
 
 ### Unfailing
 

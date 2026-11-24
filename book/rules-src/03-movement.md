@@ -324,7 +324,7 @@ To target a creature with an Action, or to do anything to a creature with a card
 
 An area effect checks Line of Effect from its **[[Areas|Point of Origin]]** to each creature in the area (from the center of the space, when the Point of Origin is a creature's space).
 
-A Large creature (2x2 squares or bigger) uses the four corners of its whole space. A Large creature that is the one targeting picks any square it occupies as its starting square.
+A creature larger than one square (Large, 2 × 2 squares or bigger) that is targeting picks any square it occupies as its starting square. When it is the target, check each square it occupies and use the one with the least cover (if any square has Line of Effect, it can be targeted).
 
 A line that only touches the end of a wall isn't blocked.
 
@@ -344,7 +344,7 @@ A line that only touches the end of a wall isn't blocked.
 | 4 | Total | No Line of Effect: you can't target them |
 
 - **Creatures in the way.** If another creature is on the line from the center of your square to the center of the target's space, the target has **Low cover** (1 Field Bane). The line must pass **through** the creature's space: a line that only touches it, at a corner or along an edge, doesn't count. **A Prone or dead creature gives no cover**: it lies too low to be in the way. Against an area, the creatures inside it never give cover ([[Cover against an area]]). Creatures never count as blocked corners, and cover doesn't add up: you take the highest cover that applies.
-- **Cover and the rest.** Cover applies to melee and ranged Actions alike. Its Field Banes count with your other Field Banes. High cover gives no Field Banes, only Doomed; your other Field Banes still apply (Prone, Obscured). A target that is Hidden and behind High cover is still only Doomed once.
+- **Cover and the rest.** Cover Banes apply to [Strike] and [Area] Actions, melee and ranged alike (Line of Effect still applies to every Action). Its Field Banes count with your other Field Banes. High cover gives no Field Banes, only Doomed; your other Field Banes still apply (Prone, Obscured). A target that is Hidden and behind High cover is still only Doomed once.
 
 @@DIAGRAM:cover@@
 

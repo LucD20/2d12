@@ -435,7 +435,7 @@
     {
       "name": "Demoralize",
       "category": "Basic Action",
-      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): Lucas's Tiers (Vulnerable 1, then Daunted too); Vulnerable lasts 1 round (Claude).",
+      "_note": "2026-11-24 (Lucas, Playtest 8 Pass 1): T2 Vulnerable 1 (EoT), T3 Vulnerable 1 (1 round), target immune to your Demoralize (EoE).",
       "flavor": "You fix them with a look and a promise, and their guard slips.",
       "traits": [
         "appeal"
@@ -449,14 +449,16 @@
           "ap": 1,
           "tiers": [
             "No effect.",
-            "Vulnerable 1 (1 round).",
-            "Vulnerable 1 (1 round), and Daunted of you (EoT)."
+            "Vulnerable 1 (EoT).",
+            "Vulnerable 1 (1 round)."
           ]
         }
       ],
+      "notes": "The target is immune to your Demoralize until the end of the encounter (EoE).",
       "foundry": {
         "basic": "demoralize",
         "automation": "gold",
+        "automationNote": "Vulnerable 1 (EoT on Tier 2, 1 round on Tier 3); warns in the roll dialog if you target a creature already immune to your Demoralize this encounter.",
         "img": "icons/svg/terror.svg"
       }
     },
@@ -494,7 +496,7 @@
     {
       "name": "Heal",
       "category": "Basic Action",
-      "_note": "2026-11-22 (Lucas, the core rework batch 3; cards/basic-actions-redesign.md): the playtest version (Lucas, 2026-11-21: 2 AP; Mind or Appeal vs DC 13; the Medicine skill when Skills exist).",
+      "_note": "2026-11-24 (Lucas, Playtest 8 Pass 1): 2 AP, Handle kept, Mind or Appeal vs DC 13; T1 1 RP, T2 2 RP, T3 2 RP + can Stand if Prone.",
       "flavor": "You press, bind and talk them back to their feet.",
       "traits": [
         "appeal",
@@ -509,16 +511,16 @@
         {
           "ap": 2,
           "tiers": [
-            "No effect.",
             "The target can use 1 Rally Point.",
-            "The target can use 2 Rally Points."
+            "The target can use 2 Rally Points.",
+            "The target can use 2 Rally Points, and if it is Prone it can Stand."
           ]
         }
       ],
       "foundry": {
         "basic": "heal",
         "automation": "silver",
-        "automationNote": "the Check against DC 13; the Rally Points used by hand (the target's sheet).",
+        "automationNote": "the Check against DC 13 and the Rally Point button on the card; standing from Prone on Tier 3 by hand.",
         "img": "icons/svg/heal.svg"
       }
     },

@@ -19,7 +19,7 @@
 | [[Defenses\|**Armor**]] | Armor Defense (AD) — 11 + Armor value + other items + bonuses − penalties. The Defense against Weapon Actions. |
 | [[Armor Training\|**Armor Training**]] | The heaviest armor a class can wear (it includes the lighter ones). Untrained: your Rolls are Doomed, Actions against your Armor or Ward are Favored. |
 | [[Class Actions, Picks and the Repertoire\|**Art**]] | A small class Action with three Modes; you take one at level 1 and a second at level 3. |
-| [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn. |
+| [[At-will\|**At-will**]] | A Frequency: any number of uses, 1 Bane for each use after the first in a turn (At-will [Strike] Actions share one count). |
 | [[Rolls\|**Attribute Action**]] | An Action that rolls the Attribute Modifier named by its Body, Mind, Appeal or Instinct trait (not a Weapon, Power or Signature roll). |
 | [[Attribute DCs\|**Attribute DC**]] | 11 + an Attribute, named by it: Body DC, Mind DC, Appeal DC, Instinct DC. What an Attribute Action rolls against, and the DC of a Save set by an Attribute. |
 | [[Areas\|**Aura**]] | An area that follows its origin, written like Aura 2. You gain its effect when you enter it. |
@@ -41,7 +41,7 @@
 | [[Collision\|**Collision**]] | Where a Forced Movement stops when something blocks the destination the origin chose; the unused squares hurt. |
 | [[The targets\|**Combat Value (CV)**]] | What an NPC counts for in an encounter: Minion 25, Grunt 50, Standard 100, Elite 200; less for an NPC of an earlier Stage than the party. CV 100 per PC is a normal fight. |
 | [[Corners\|**Corners**]] | You can't cut a solid corner: anything solid, such as a wall, a pillar or an object that fills a square, that reaches the corner point where four squares meet. |
-| [[Cover\|**Cover**]] | How well a target is protected: count the blocked corners of its space. 1 Field Bane for one, 2 for two; three make the roll Doomed. |
+| [[Cover\|**Cover**]] | How well a target is protected: count the blocked corners of its space (for a larger creature, its least-covered square). 1 Field Bane for one, 2 for two; three make the roll Doomed. Cover Banes apply to [Strike] and [Area] Actions. |
 | [[Crawl\|**Crawl**]] | A Move Action: you move 1 square (1 AP), or 3 squares (2 AP) when your Speed is 5 or higher. The movement a Prone creature can use. |
 | [[Critical\|**Critical**]] | Doubles on a result that is already Tier 3, a total 20 or more above the DC, or three matching dice on a Favored roll. Only Actions with a Critical row use it; once an encounter, it also raises your Escalation by 1. |
 | [[Daily\|**Daily**]] | Once per Sleep. |
@@ -99,16 +99,17 @@
 | [[End of Turn\|**Initiative slot**]] | A position in the turn order. |
 | [[Instances of Damage\|**Instance of damage**]] | One part of an Action's damage with its own pool and damage type; each [W] and each extra damage from another effect is its own instance. |
 | [[Interact\|**Interact**]] | The Handle Action for objects and for helping others: draw, stow, swap, grab, open; help a creature stand up, get to safety or wake up. Once during an Advance Action, without ending it. Stowing or swapping needs no free hand ([[Handle]]). |
-| [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. |
+| [[Reactions\|**Interrupt**]] | A Reaction that happens before the Action that triggers it. Every Interrupt resolves before any Trigger on the same Action. |
 | [[Leaning\|**Leaning**]] | Until the end of your turn, or until you leave your square: cover is calculated from one of your corners, and your own cover is reduced by 1 level. You start it with the Lean Basic Action. |
 | [[Moving and Leaving Your Square\|**Left your square**]] | Any change of your position, Forced Movement and Reposition included. |
 | [[Lethal and Nonlethal\|**Lethal, Nonlethal**]] | The two kinds of damage. Damage is Lethal unless stated. |
 | [[Light (property)\|**Light**]] | A weapon property: a small one-handed melee weapon (a Dagger, a Handaxe); 1 Bane in your off hand instead of 2. |
 | [[Line\|**Line**]] | An area that starts from your square, aimed at any square, written like Line 10: one square per step, the nearest to the segment; ties take one side, chosen before rolling. |
-| [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the creature's space that nothing blocks. Needed to target a creature, and for anything a card or a feature does to a creature. |
+| [[Line of Effect\|**Line of Effect**]] | A straight line from the center of your square to any corner of the creature's space that nothing blocks (for a larger creature, check each square it occupies). Needed to target a creature, and for anything a card or a feature does to a creature. |
 | [[Lingering\|**Lingering**]] | Damage that comes back at the end of each of your turns (Vigor for Bo/In, Resolve for Mi/Ap); Shake Off (1 AP) and a Save against DC 13 end it; healing doesn't. Any damage type can linger. |
 | [[Linked Actions\|**Linked Action**]] | An Action another Action lets you use as part of it, written like Basic Attack (1A). It costs no AP. |
 | [[Long\|**Long**]] | A weapon property: 1 Field Bane against adjacent creatures, and it doesn't threaten them. |
+| [[Magical\|**Magical**]] | A trait: marks a magical Action or attack for other rules and features. |
 | [[Hands\|**Main hand, off hand**]] | Your two hands. [Strike, Weapon] Actions with a weapon in your off hand take 2 Banes (a Light weapon or your Fists: 1; a weapon held with both hands or a Strung weapon: none). |
 | [[Mastery\|**Mastery**]] | How well you know a kind of weapon: +1 with one weapon when your side wins an encounter that was normal or harder. Never lower than half your best in its group. 10 unlocks its Weapon Technique; 20, 30, 45 and 60 its later unlocks. |
 | [[Minions\|**Minion**]] | An NPC rank with CV 25: about 12 Health at Stage 0, 3 AP a turn, no Reactions. Up to 3 Minions act in the same turn slot (the GM makes the squads: about one for every 2 Minions is recommended; the GM picks who goes next). |
@@ -188,7 +189,7 @@
 | [[The Start of the Encounter\|**Start of the encounter**]] | After Initiative and before the first turn: abilities that happen then resolve one at a time, in turn order, which the GM can change. |
 | [[Steadiness\|**Steadiness**]] | A creature's resistance to being moved: it reduces the value of Forced Movement and Reposition. Normally 0. |
 | [[Steel Yourself\|**Steel Yourself**]] | The Basic Action that uses your Rally Points. |
-| [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn. |
+| [[Strike\|**Strike**]] | An Action that tries to hit a creature. At most 3 per turn; At-will [Strike] Actions share one At-will count. |
 | [[Strung\|**Strung**]] | A weapon property of bows: held in one hand and drawn with the other; 3 Banes on its Strikes while your other hand holds something. |
 | [[Outcome Tiers\|**Success**]] | A Tier 2 or 3 result. |
 | [[Named Boons and Banes\|**Support**]] | A named Boon an effect gives several allies at once. Up to 2. |

@@ -10,7 +10,7 @@ globalThis.CONFIG = { statusEffects: [], TextEditor: { enrichers: [] }, time: {}
 const R = await import(ROOTURL + "module/roundrules.mjs"), IM = await import(ROOTURL + "module/initmodel.mjs"), M = await import(ROOTURL + "module/moment.mjs");
 const act = src("module/actions.mjs"), use = src("module/usage.mjs");
 console.log("--- Unfailing");
-console.log("a Keywords trait:", src("module/config.mjs").includes('traits: ["divine", "focus", "fear", "unfailing"]'), "| on Smite in the book:", JSON.parse(src("../../book/cards/stage0/paladin.json")).cards?.find?.(c => c.name === "Smite")?.traits?.includes("unfailing") ?? src("../../book/cards/stage0/paladin.json").includes('"unfailing"'),
+console.log("a Keywords trait:", /key: "keywords"[^\n]*"unfailing"/.test(src("module/config.mjs")), "| on Smite in the book:", JSON.parse(src("../../book/cards/stage0/paladin.json")).cards?.find?.(c => c.name === "Smite")?.traits?.includes("unfailing") ?? src("../../book/cards/stage0/paladin.json").includes('"unfailing"'),
   "| the book's rule:", src("../../book/rules-src/07-traits.md").includes("### Unfailing"));
 console.log("a Tier 1 keeps its Frequency, its Strike counts:", act.includes('const unfailed = useTraits.has("unfailing")') && act.includes("await markUsed(actor, item, { keepFrequency: unfailed });") && use.includes('const f = keepFrequency ? "" : effectiveFrequency(item.system);') && use.includes('if (item.system.traits.has("strike")) {'));
 console.log("--- an Effect line whatever the roll");

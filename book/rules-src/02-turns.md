@@ -73,6 +73,7 @@ A **Reaction** is an Action you use in response to something another creature do
 - **No Reaction by default:** No creature has a Reaction of its own: every Reaction comes from a class, an item or a creature's entry. Moving away from an enemy doesn't let it attack you, unless it has a Reaction that says so.
 - **Interrupt:** An Interrupt happens **before** the Action that triggers it. "Interrupt: A creature would Advance" means the Reaction happens before the creature uses the Advance Action. An Interrupt can say that part of its effect happens after the triggering Action ("after the damage, they are Slid 1"): that part waits for it. An Interrupt on a creature that **would damage** someone happens once the triggering Action's roll is made and its damage is known, before that damage is dealt: the Reaction can't change that roll.
 - **Trigger:** A Trigger happens **after** the Action that triggers it. "Trigger: A creature deals damage to you" happens after you take the triggering damage.
+- **Interrupts before Triggers:** When an Interrupt and a Trigger respond to the same Action, every Interrupt resolves before any Trigger.
 - **Once per triggering Action:** You can react only once to the same Action, but several creatures can react to it. Some Actions, mainly Move Actions, can happen throughout different squares. It is still a single Action, and you decide when you take the Reaction: for instance, you can wait for the creature to move into a more advantageous position before taking your Reaction, instead of taking it as soon as the creature moves.
 - **Multiple creatures reacting to the same trigger, at the same time:** You must decide to react before making the rolls: when a creature triggers a Reaction from several creatures, they all decide whether they will react before making any rolls. The creatures taking the Reactions decide the order; if they are opposed, the GM decides or asks for a simple Check to decide who goes first, similar to how Initiative is rolled. If the triggering creature becomes an invalid target after a creature reacts (such as being killed), the remaining creatures still lose the AP as if they had used the Reaction.
 - **On any turn:** A Reaction can happen during any turn, including your own: if another creature's Action moves them away from you during your turn, you can react to that.
@@ -248,7 +249,7 @@ Some traits can change the Frequency or expand the Frequency rules, such as the 
 
 An **At-will** Action can be used any number of times, but each use after the first in a turn adds **1 Bane** to the roll. For example, if you use Basic Attack three times in one turn, the first roll is normal, the second has 1 Bane, and the third has 2 Banes. This doesn't apply to Linked Actions.
 
-Each use after the first in a turn adds 1 Bane per specific At-will Action. Different At-will Actions each have their own first-use count.
+Each use after the first in a turn adds 1 Bane per specific At-will Action. Different At-will Actions each have their own first-use count, except At-will [Strike] Actions, which share one count (see [[Strike]]).
 
 On an Action with no roll, At-will has no mechanical effect: it is a stylistic default for Actions that can be used freely on your turn.
 

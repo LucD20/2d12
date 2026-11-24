@@ -30,9 +30,13 @@ Expect: Checkboxes have crisp high-contrast borders and checking them puts "Grou
 
 ## The roll dialog
 
-### fix-demoralize-cover · v0.0.493 · Demoralize ignores Cover Banes
-Do: Place Orc Warrior behind Low or Medium cover (e.g. an ally or corner) and have Sylwen or Grave Wisp use Demoralize on a target behind cover.
-Expect: No Cover Bane or High Cover Doomed is added to Demoralize (normal Strike / Ranged actions still take Cover Banes).
+### pass1-cover-demoralize · v0.0.494 · Cover only on [Strike]/[Area], Large target doorway Cover, and Demoralize EoE
+Do: (1) Put Ogre Chieftain in a 1-square doorway (with 1 of its 4 squares cleanly exposed in the doorway) and shoot it with Sylwen's Basic Attack; (2) Use Demoralize (Sylwen or Durgan) and Shove (Durgan) against a target behind cover; (3) Use Demoralize twice on the same enemy in one encounter, and check Tier 2 / Tier 3 durations.
+Expect: (1) Ogre Chieftain has No cover (0 Banes) and Line of Effect draws to its exposed square; (2) Demoralize and Shove take no Cover Banes (Strikes & Areas still do); (3) Demoralize applies Vulnerable 1 (EoT) on T2, Vulnerable 1 (1 round) on T3, and warns in the roll dialog if you target a creature already Demoralized by you this encounter.
+
+### pass1-strikes-cards · v0.0.494 · Shared At-will [Strike] Banes, Magical/Ranged traits, Darting Blade 2 AP, Heal T1-T3
+Do: (1) On Durgan's turn, use Basic Attack then Drawing Light (or Sylwen's Basic Attack then Harrying Shot); check Drawing Light's & Harrying Shot's traits (and Engaged penalties on both); (2) Check Kaela's Darting Blade cost; (3) Use Heal (Durgan) on a wounded/Prone ally.
+Expect: (1) Second At-will [Strike] in the same turn takes 1 Bane even when switching between Basic Attack and Drawing Light / Harrying Shot; Drawing Light shows [Divine, Magical, Power, Ranged, Strike] and Harrying Shot shows [Power, Ranged, Strike]; (2) Darting Blade costs 2 AP; (3) Heal costs 2 AP ([Handle]) and offers 1 RP on T1, 2 RP on T2, and 2 RP + Stand if Prone on T3.
 
 ## Chat cards
 

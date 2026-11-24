@@ -44,6 +44,14 @@ export function squareCenters(r) {
   return out;
 }
 
+/** v0.0.494 (Playtest 8 Pass 1; book, Chapter 3 Line of Effect): the 1×1 square rectangles a token occupies (1 for Medium/Small, 4 for 2×2 Large, etc.). */
+export function squareRects(r) {
+  const s = canvas.grid.size, out = [];
+  const cols = Math.max(1, Math.round(r.w / s)), rows = Math.max(1, Math.round(r.h / s));
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) out.push({ x: r.x + i * s, y: r.y + j * s, w: s, h: s });
+  return out;
+}
+
 /** Does the segment a-b cross the rectangle? (Liang-Barsky) */
 export function segmentHitsRect(a, b, r) {
   let t0 = 0, t1 = 1;
@@ -72,51 +80,65 @@ export function coverBetween(attacker, target, { blockedFn: bf = wallBlocks, oth
   if (!attacker || !target || !canvas?.grid?.isSquare) return null;
   const ar = rectOf(attacker), tr = rectOf(target);
   const blockedFn = bf;
-  const targetCorners = cornersOf(inset(tr, INSET));
+  // v0.0.494 (Playtest 8 Pass 1; book, Chapter 3): a creature larger than 1 square checks each square it occupies and uses the one with the least cover.
+  const targetSquares = squareRects(tr);
   // Leaning: you calculate cover from your corner instead of the center of your square. v0.0.166: from the SAME point vision uses (lean.mjs pickPeek:
   // just past the corner, or nudged inside the square when walls don't allow it), so a wall that ends at the corner doesn't block every line.
   const leaning = !!attacker.actor?.statuses?.has?.("leaning");
   const chosen = leaning ? (leanOf(attacker.document)?.corner ?? "") : "";   // the corner picked on the map, if any
   const peek = k => { const p = pickPeek(ar, k, canvas.grid.size, blockedFn); return { x: p.x + ar.w / 2, y: p.y + ar.h / 2 }; };
   const origins = leaning ? (chosen ? [peek(chosen)] : Object.keys(CORNERS).map(peek)) : squareCenters(ar);
-  let best = null;
-  for (const origin of origins) {
-    const blocked = targetCorners.filter(c => blockedFn(origin, c)).length;
-    if (!best || blocked < best.blocked) best = { blocked, origin };
-  }
-  const tc = centerOf(tr);
   // v0.0.411 (pack F3, Clear Lines: hooks.mjs clearLines): the attacker's allies give its targets no Cover
   const clear = clearLinesOf(attacker), mine = Number(attacker.document?.disposition ?? 0);
   const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== attacker.id && t.id !== target.id && !t.document.hidden && !liesLow(t) && !(clear && mine && Number(t.document.disposition) === mine));
-  // v0.0.350 (Lucas, playtest 4: "show center-to-center cover too; I think it isn't calculating it correctly"): a creature whose square the center
-  // line crosses is in the way (book: "on the line"); a line along an edge or through a corner point doesn't count (only a sliver is left out)
-  const blockers = best.blocked < 4 ? crowd.filter(t => segmentHitsRect(best.origin, tc, inset(rectOf(t), WAY_INSET))) : [];
-  const inWay = blockers.length > 0;
-  let level = Math.min(4, Math.max(best.blocked, inWay ? 1 : 0));
+  let best = null;
+  for (const origin of origins) {
+    for (const sq of targetSquares) {
+      const sqCorners = cornersOf(inset(sq, INSET));
+      const blocked = sqCorners.filter(c => blockedFn(origin, c)).length;
+      const tc = centerOf(sq);
+      // v0.0.350: a creature whose square the center line crosses is in the way; a line along an edge or through a corner point doesn't count
+      const blockers = blocked < 4 ? crowd.filter(t => segmentHitsRect(origin, tc, inset(rectOf(t), WAY_INSET))) : [];
+      const inWay = blockers.length > 0;
+      const rawLevel = Math.min(4, Math.max(blocked, inWay ? 1 : 0));
+      if (!best || rawLevel < best.rawLevel || (rawLevel === best.rawLevel && blocked < best.blocked)) {
+        best = { rawLevel, blocked, origin, sqCorners, tc, blockers, inWay };
+      }
+    }
+  }
+  let level = best.rawLevel;
   // A target that is Leaning is exposed: its cover is reduced by 1 level (Total -> High -> Medium -> Low -> none).
   const exposed = !!target.actor?.statuses?.has?.("leaning") && level >= 1;   // Total cover becomes High: a creature Leaning out of it can be targeted
   if (exposed) level -= 1;
   // origin and corners: the lines the cover was counted with (the Line of Effect button draws them, v0.0.165).
-  const corners = targetCorners.map(c => ({ x: c.x, y: c.y, blocked: !!blockedFn(best.origin, c) }));
-  return { blocked: best.blocked, level, banes: level >= 4 ? 0 : level, noLoE: level >= 4, inWay, leaning, leanCorner: chosen, exposed, label: COVER_LABELS[level], origin: best.origin, corners, center: tc, blockers: blockers.map(t => ({ id: t.id, name: t.name })) };
+  const corners = best.sqCorners.map(c => ({ x: c.x, y: c.y, blocked: !!blockedFn(best.origin, c) }));
+  return { blocked: best.blocked, level, banes: level >= 4 ? 0 : level, noLoE: level >= 4, inWay: best.inWay, leaning, leanCorner: chosen, exposed, label: COVER_LABELS[level], origin: best.origin, corners, center: best.tc, blockers: best.blockers.map(t => ({ id: t.id, name: t.name })) };
 }
 
 /**
- * Cover of `target` from a Point of Origin (an area effect): a straight line from the point to each corner of the target's space, as for an attacker, but from a point:
- * the center of a creature's space, a square's center or a grid corner. `exclude`: ids of creatures that never stand in the way (the creature whose space is the origin).
+ * Cover of `target` from a Point of Origin (an area effect): a straight line from the point to each corner of the target's space (for a larger creature,
+ * its least-covered square), as for an attacker, but from a point: the center of a creature's space, a square's center or a grid corner.
+ * `exclude`: ids of creatures that never stand in the way (the creature whose space is the origin).
  * Returns { blocked, level, banes, noLoE, inWay, exposed, label }, or null on a grid that isn't square. `blockedFn(a, b)` can replace the wall test (used by the tests).
  */
 export function coverFromPoint(point, target, { blockedFn: bf = wallBlocks, others = null, exclude = [] } = {}) {
   if (!point || !target || !canvas?.grid?.isSquare) return null;
   const tr = rectOf(target);
   const blockedFn = bf;
-  const blocked = cornersOf(inset(tr, INSET)).filter(c => blockedFn(point, c)).length;
   const crowd = others ?? (canvas.tokens?.placeables ?? []).filter(t => t.id !== target.id && !exclude.includes(t.id) && !t.document.hidden && !liesLow(t));
-  const inWay = blocked < 4 && crowd.some(t => segmentHitsRect(point, centerOf(tr), inset(rectOf(t), WAY_INSET)));   // v0.0.350
-  let level = Math.min(4, Math.max(blocked, inWay ? 1 : 0));
+  let best = null;
+  for (const sq of squareRects(tr)) {
+    const blocked = cornersOf(inset(sq, INSET)).filter(c => blockedFn(point, c)).length;
+    const inWay = blocked < 4 && crowd.some(t => segmentHitsRect(point, centerOf(sq), inset(rectOf(t), WAY_INSET)));   // v0.0.350
+    const rawLevel = Math.min(4, Math.max(blocked, inWay ? 1 : 0));
+    if (!best || rawLevel < best.rawLevel || (rawLevel === best.rawLevel && blocked < best.blocked)) {
+      best = { rawLevel, blocked, inWay };
+    }
+  }
+  let level = best.rawLevel;
   const exposed = !!target.actor?.statuses?.has?.("leaning") && level >= 1;   // Total cover becomes High: a creature Leaning out of it can be targeted
   if (exposed) level -= 1;
-  return { blocked, level, banes: level >= 4 ? 0 : level, noLoE: level >= 4, inWay, leaning: false, exposed, label: COVER_LABELS[level] };
+  return { blocked: best.blocked, level, banes: level >= 4 ? 0 : level, noLoE: level >= 4, inWay: best.inWay, leaning: false, exposed, label: COVER_LABELS[level] };
 }
 
 /** A line for the roll dialog: why the cover is what it is. */

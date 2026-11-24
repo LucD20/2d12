@@ -12,6 +12,7 @@ const actionTraits = sortObj({
   handle: "Handle",
   instinct: "Instinct",
   magic: "Power",   // the key stays "magic" (saved worlds and content use it); the trait is called Power since v0.0.117
+  magical: "Magical",   // v0.0.494 (Playtest 8 Pass 1): Keyword trait marking a magical Action/attack
   melee: "Melee",
   mind: "Mind",
   move: "Move",
@@ -131,7 +132,7 @@ export const TWOD12 = {
   poolNames: { B: "Vigor [V]", M: "Resolve [R]", C: "Choice [C]", "": "Damage" },
   traitHelp: {
     area: "These Actions target every creature in their area that they affect, ignoring Senses (no penalty against Obscured, Hidden or Unsensed creatures, and light doesn't change the roll). You need Line of Effect to the Point of Origin to place the area; Line of Effect and Cover are checked from the Point of Origin to each creature.",
-    strike: "Extra rules: you can make at most three Strikes per turn.",
+    strike: "Extra rules: you can make at most three Strikes per turn. All At-will [Strike] Actions share one At-will count.",
     light: "A small melee weapon held in one hand: in your off hand it takes 1 Bane instead of 2 (Hands). Some Actions need one (Darting Blade).",
     strung: "Held in one hand and drawn with the other: [Strike, Weapon] Actions with it take 3 Banes while your other hand holds something. Never the off-hand Banes.",
     nonlethal: "Deals Nonlethal damage by default. Taking a Bane makes it deal Lethal damage instead.",
@@ -140,6 +141,7 @@ export const TWOD12 = {
     appeal: "Rolls Appeal.",
     instinct: "Rolls Instinct.",
     magic: "Power: rolls your Power Modifier. Its damage is the dice on the card: no Attribute is added, on any Tier. Needs no weapon.",
+    magical: "Marks a magical Action or attack for other rules and features.",
     signature: "Rolls your Signature Modifier (the higher of Weapon and Power). On every Tier, Tier 1 included, your Signature Attribute is added to the first damage instance. Never needs a weapon.",
     split: "Two modes, Weapon and Power: choose one each time you use it. In that mode it takes the mode's trait and is an Action of that mode for every rule (a Weapon Action needs a weapon; a Power Action doesn't). Frequency, target, trigger and Critical are shared; the damage and traits are the mode's.",
     fear: "No rules of its own: other features refer to it.",
@@ -218,7 +220,7 @@ export const TWOD12 = {
     { key: "requires", label: "Requires", traits: ["gun", "handle", "melee", "ranged", "shot"] },
     { key: "kind", label: "Kind", traits: ["area", "move", "self", "strike"] },
     { key: "damage", label: "Damage", traits: ["nonlethal"] },
-    { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear", "unfailing"] }
+    { key: "keywords", label: "Keywords", traits: ["divine", "focus", "fear", "magical", "unfailing"] }
   ],
   // The Bestiary (book: bestiary.html; v0.0.163, refit by E3 in v0.0.181, re-fitted to pack R by R-bestiary in v0.0.240: book/ruler/bestiary-r.json): an NPC is a role plus a rating for each number.
   //   attr: the Medium Attribute; hb: the Health Base; defense: the Medium Defense; cv: the Combat Value at the party's Stage, one Stage below, two Stages below
@@ -459,7 +461,7 @@ export const categoryText = d => {
 export const FREQ_COLORS = { atwill: "#3B6D11", turn: "#0F6E6E", round: "#185FA5", encounter: "#A32D2D", daily: "#5B3FA6", "": "#5F5E5A", none: "#5F5E5A" };
 export const cardColorFor = d => FREQ_COLORS[effectiveFrequency(d ?? {})] ?? FREQ_COLORS[""];
 
-const TRAIT_WORDS = { Strike: "strike", Nonlethal: "nonlethal", Divine: "divine", Focus: "focus", Handle: "handle", Power: "magic", Signature: "signature", Melee: "melee", Ranged: "ranged", Self: "self", Weapon: "weapon", Reload: "reload", "Two-handed": "twohanded" };
+const TRAIT_WORDS = { Strike: "strike", Nonlethal: "nonlethal", Divine: "divine", Focus: "focus", Handle: "handle", Magical: "magical", Power: "magic", Signature: "signature", Melee: "melee", Ranged: "ranged", Self: "self", Weapon: "weapon", Reload: "reload", "Two-handed": "twohanded" };
 const DAMAGE_WORDS = { Acid: "Ac", Blunt: "Bl", Cold: "Co", Electricity: "El", Fire: "Fi", Force: "Fo", Holy: "Ho", Pierce: "Pi", Psychic: "Ps", Slash: "Sl", Thunder: "Th", Unholy: "Un" };
 const famColor = key => traitColor(key);
 // v0.0.192: every trait name (as the book writes them in brackets) → its key, for "[Ranged, Shot]".

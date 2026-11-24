@@ -25,7 +25,7 @@ import { collectBonuses, expireOnUse } from "./bonus.mjs";
 import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
 import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
-import { markUsed, activeGrants, atWillUses, grantMatches } from "./usage.mjs";   // (markAtWill: imported where used)
+import { markUsed, activeGrants, atWillUses, grantMatches, demoralizedTarget, markDemoralized } from "./usage.mjs";   // (markAtWill: imported where used)
 import { tierProbs, topStep, bbCount, bbResolve } from "./calc.mjs";
 import { ENGAGED_RANGED_DOOMED, ENGAGED_RANGED_BANES, THROWN_LESS } from "./roundrules.mjs";   // v0.0.407: the Doomed shot while Engaged
 import { weaponDiceFormula, weaponDieOnlyFormula, bookRoll, diceOfRoll, empoweredNow, markEmpoweredUsed, empoweredComponent, minorNpc } from "./explode.mjs";   // v0.0.407: exploding dice, the Empowered die; core rework batch 3: [D]
@@ -45,13 +45,10 @@ import { attrFromTier } from "./rollsource.mjs";
 /** v0.0.181 (P1, Smite): a Weapon Action adds the Modifier it rolls to its damage on Tier 2 or 3: a Weapon roll, or a [Signature, Weapon] Action's Signature roll. */
 const modOnWeapon = (src, traits) => src?.kind === "weapon" || (src?.kind === "signature" && !!traits?.has?.("weapon"));
 
-/** Pure (v0.0.493): whether Cover Banes / High Cover Doomed apply to this Action. Demoralize and non-attack sensory/social Actions ("can see or hear you") skip Cover Banes. */
+/** Pure (v0.0.494, Playtest 8 Pass 1; book, Chapter 3 Cover): Cover Banes / High Cover Doomed apply to [Strike] and [Area] Actions only (Line of Effect still applies to every Action). */
 export function coverBanesApply(item, useTraits = new Set()) {
-  const basic = item?.getFlag?.("twod12", "basic") ?? item?.flags?.twod12?.basic ?? "";
-  if (basic === "demoralize") return false;
-  const has = t => !!(useTraits?.has?.(t) || (Array.isArray(useTraits) && useTraits.includes(t)));
-  if (!has("strike") && !has("weapon") && !has("area") && !has("ranged") && !has("melee") && !has("handle") && /\bhear\b/i.test(String(item?.system?.targets ?? ""))) return false;
-  return true;
+  const has = t => !!(useTraits?.has?.(t) || (Array.isArray(useTraits) && useTraits.includes(t)) || item?.system?.traits?.has?.(t) || (Array.isArray(item?.system?.traits) && item.system.traits.includes(t)));
+  return has("strike") || has("area");
 }
 
 /** Text form of a damage instance, e.g. "[V] 1[W] + 1d4 H" (v0.0.234: the pool B / M written [V] / [R]). */
@@ -745,8 +742,8 @@ export async function useAction(actor, item, opts = {}) {
   // v0.0.453 (Lucas, playtest 6: "dont prevent it. Shows a warning on the Roll dialog"; the warning audit, R3): a rule broken is a warning there
   if (usesReload && rw.unloaded) dlgWarns.push(`${previewWeapon.name} is unloaded: Reload it before using it again`);
   // At-will: each use after the first in a turn has 1 more bane (uses from another Action don't count).
-  const atWill = opts.free && !opts.countAtWill ? 0 : atWillUses(actor, item);   // v0.0.224: a Charge's Weapon Attack counts
-  if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `${atWill + 1}x At-will use`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane" });
+  const atWill = opts.free && !opts.countAtWill ? 0 : atWillUses(actor, item);   // v0.0.224: a Charge's Weapon Attack counts; v0.0.494: At-will [Strike] Actions share one count
+  if (atWill > 0) extraMods.push({ id: "syn:atwill", name: `${atWill + 1}x At-will use`, boons: 0, banes: atWill, match: true, predicate: "Each use of an At-will Action after the first in a turn adds 1 bane (At-will [Strike] Actions share one count)" });
   // Helper: Roll Dialog notices for Cover-changing effects on attacker (coverLower, buff) and target (coverHigher, debuff) — active when Cover changes, muted/explained when it can't (e.g., no Cover to raise/lower).
   const pushCoverChanges = (cov0, cov, covLow, covHi, tkName = "", forUuid = "") => {
     const tag = tkName ? ` (${tkName})` : "", extra = forUuid ? { for: forUuid, showInDialog: true } : {};
@@ -890,6 +887,13 @@ export async function useAction(actor, item, opts = {}) {
   }
   if (opts.boons || opts.banes) extraMods.push({ id: "syn:granted", name: opts.label ?? "Granted use", boons: opts.boons ?? 0, banes: opts.banes ?? 0, match: true, predicate: "From the Action that allowed this use" });
   if (opts.excludeTargets?.length && targetToken && opts.excludeTargets.includes(targetToken.document?.uuid)) dlgWarns.push(`${targetToken.name} was already a target: the card asks for a different creature`);   // v0.0.453 (R3)
+  // v0.0.494 (Playtest 8 Pass 1): Demoralize makes the target immune to your Demoralize until the end of the encounter (EoE).
+  if (basicKey === "demoralize") {
+    for (const tk of aimed) {
+      const tu = tk?.document?.uuid ?? tk?.uuid ?? "";
+      if (tu && demoralizedTarget(actor, tu)) dlgWarns.push(`${tk.name} is already immune to your Demoralize this encounter (EoE)`);
+    }
+  }
   // What makes the roll Doomed or Empowered, shown on the option itself ("Target is Hidden (Doomed)") (the tests' old dialog)
   const doomReason = doomStatus(actor) || (seen === "hidden" ? "Target is Hidden" : seen === "unsensed" ? "Target is Unsensed" : "");
   // Empowered and Enfeebled: what gives them, and the one value that counts (the highest of each; the Enfeebled value is taken from the Empowered one).
@@ -1582,6 +1586,11 @@ export async function useAction(actor, item, opts = {}) {
   if (!opts.free) await markUsed(actor, item, { keepFrequency: unfailed });
   if (unfailed && !opts.free) { try { await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-rotate-left", `<b>Unfailing</b>: a Tier 1, so ${srcLink(item.name, item.uuid)} isn't spent. ${esc(actor.name)} can use it again.`, "fxm") }); } catch (e) { console.warn("twod12 | Unfailing", e); } }
   else if (opts.countAtWill) { const { markAtWill } = await import("./usage.mjs"); await markAtWill(actor, item); }
+  // v0.0.494 (Playtest 8 Pass 1): target becomes immune to your Demoralize (EoE)
+  if (basicKey === "demoralize" && !opts.free) {
+    const dTargets = (mres ? mres.map(r => r.uuid) : targets.map(t => t.uuid)).filter(Boolean);
+    if (dTargets.length) await markDemoralized(actor, dTargets);
+  }
   // v0.0.223: the Encounter Log (enclog.mjs): the Action, its AP, each target with its tier (a Save: who saves). A movement-only Action logs its movement instead.
   if (!bannerMove) {
     try {

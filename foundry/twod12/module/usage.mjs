@@ -50,12 +50,18 @@ const state = actor => {
     // v0.0.320: the use before the last one of a Round Action (a second use in one turn-cycle) and the Encounter Actions used a second time
     roundPrev: { ...(bm ? (b.roundPrev ?? {}) : {}), ...(mine ? (u.roundPrev ?? {}) : {}) },
     encounter2: [...new Set([...(mine ? (u.encounter2 ?? []) : []), ...(bm ? (b.encounter2 ?? []) : [])])],
+    // v0.0.494 (Playtest 8 Pass 1): targets already Demoralized by this actor this encounter (immune to your Demoralize, EoE)
+    demoralized: [...new Set([...(mine ? (u.demoralized ?? []) : []), ...(bm ? (b.demoralized ?? []) : [])])],
     strikes: mine && u.turnKey === `${combat.round}:${combat.turn}` ? (u.strikes ?? 0) : 0,
     // v0.0.215 (Lucas, playtest 2): a list, not an object. setFlag merges objects, so last turn's counts (an object keyed by item id) stayed in
     // the flag and a first use this turn got "At-will use 2". A list is replaced whole.
     atwill: mine && u.atwillKey === `${combat.round}:${combat.turn}` ? Object.fromEntries(u.atwillList ?? []) : {}
   };
 };
+
+const hasTrait = (item, t) => !!(item?.system?.traits?.has?.(t) || (Array.isArray(item?.system?.traits) && item.system.traits.includes(t)));
+/** v0.0.494 (Playtest 8 Pass 1; book, Chapter 7 Strike): all At-will [Strike] Actions share one At-will count. */
+export const atWillKeyOf = item => (hasTrait(item, "strike") ? "__strike" : item?.id);
 
 /**
  * v0.0.320 (pack AU part 2; book, Bestiary, Elite Escalation): the extra uses this creature's settings give right now ("More uses of a Frequency":
@@ -113,10 +119,33 @@ export function turnCycleBlocked(round, turn, own, at) {
 /** v0.0.224: the Strikes this creature made in the current turn (any creature's turn: up to 3 in each). */
 export function strikesUsed(actor) { if (typeof actor?.getFlag !== "function") return 0; const s = actor?.type ? state(actor) : null; return s ? s.strikes : 0; }
 
-/** At-will: how many times this Action was used this turn. Each use after the first adds 1 bane (so the next use has this many banes). */
+/** At-will: how many times this Action (or any At-will [Strike], which share one count) was used this turn. Each use after the first adds 1 bane. */
 export function atWillUses(actor, item) {
   const s = actor?.type ? state(actor) : null;
-  return effectiveFrequency(item.system) === "atwill" && s ? (s.atwill[item.id] ?? 0) : 0;
+  return effectiveFrequency(item.system) === "atwill" && s ? (s.atwill[atWillKeyOf(item)] ?? 0) : 0;
+}
+
+/** v0.0.494 (Playtest 8 Pass 1; Demoralize): has `actor` already used Demoralize on `targetUuid` this encounter? */
+export function demoralizedTarget(actor, targetUuid) {
+  if (!actor?.type || !targetUuid) return false;
+  const s = state(actor);
+  return !!(s && s.demoralized.includes(targetUuid));
+}
+
+/** v0.0.494: remember that `actor` used Demoralize on `targetUuids` this encounter (target is immune to your Demoralize, EoE). */
+export async function markDemoralized(actor, targetUuids = []) {
+  const combat = game.combat;
+  const ids = [...new Set((targetUuids ?? []).filter(Boolean))];
+  if (!combat?.started || !actor?.isOwner || !ids.length) return;
+  const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
+  if (u.combatId !== combat.id) Object.assign(u, { combatId: combat.id, round: combat.round, roundUsed: [], encounter: [], turnKey: "", strikes: 0, demoralized: [] });
+  u.demoralized = [...new Set([...(u.demoralized ?? []), ...ids])];
+  await actor.setFlag(F, "usage", u);
+  try {
+    const c = combatantOf(combat, actor);
+    const old = c?.getFlag?.(F, "usedHere"), same = old?.combatId === combat.id;
+    if (c?.isOwner) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: same ? (old.encounter ?? []) : [], roundAt: same ? (old.roundAt ?? {}) : {}, roundPrev: same ? (old.roundPrev ?? {}) : {}, encounter2: same ? (old.encounter2 ?? []) : [], demoralized: [...new Set([...(same ? old.demoralized ?? [] : []), ...u.demoralized])] });
+  } catch (e) { console.warn("twod12 | keeping demoralized targets on the combatant", e); }
 }
 
 /** Remember that an Action was used (in combat). */
@@ -129,7 +158,7 @@ export async function markUsed(actor, item, { keepFrequency = false } = {}) {   
   const combat = game.combat;
   if (!combat?.started || !actor?.isOwner) return;
   const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
-  if (u.combatId !== combat.id) Object.assign(u, { combatId: combat.id, round: combat.round, roundUsed: [], encounter: [], turnKey: "", strikes: 0 });
+  if (u.combatId !== combat.id) Object.assign(u, { combatId: combat.id, round: combat.round, roundUsed: [], encounter: [], turnKey: "", strikes: 0, demoralized: [] });
   if (u.round !== combat.round) { u.round = combat.round; u.roundUsed = []; }
   const f = keepFrequency ? "" : effectiveFrequency(item.system);
   if (f === "turn") {
@@ -140,10 +169,10 @@ export async function markUsed(actor, item, { keepFrequency = false } = {}) {   
   if (f === "round") { if (u.roundAt?.[item.id]) (u.roundPrev ??= {})[item.id] = u.roundAt[item.id]; (u.roundAt ??= {})[item.id] = [combat.round, combat.turn]; }   // v0.0.320: the use before is kept (twice a round)
   if (f === "encounter") { if (!(u.encounter ??= []).includes(item.id)) u.encounter.push(item.id); else if (!(u.encounter2 ??= []).includes(item.id)) u.encounter2.push(item.id); }
   if (f === "atwill") {
-    const k = `${combat.round}:${combat.turn}`;
+    const k = `${combat.round}:${combat.turn}`, ak = atWillKeyOf(item);
     const counts = u.atwillKey === k ? Object.fromEntries(u.atwillList ?? []) : {};
     u.atwillKey = k;
-    counts[item.id] = (counts[item.id] ?? 0) + 1;
+    counts[ak] = (counts[ak] ?? 0) + 1;
     u.atwillList = Object.entries(counts);
     delete u.atwill;
   }
@@ -157,8 +186,9 @@ export async function markUsed(actor, item, { keepFrequency = false } = {}) {   
     try {
       const c = combatantOf(combat, actor);
       const old = c?.getFlag?.(F, "usedHere"), same = old?.combatId === combat.id;
+      const dem = [...new Set([...(same ? old.demoralized ?? [] : []), ...(u.demoralized ?? [])])];
       if (c?.isOwner) await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: [...new Set([...(same ? old.encounter ?? [] : []), ...(u.encounter ?? [])])], roundAt: { ...(same ? old.roundAt ?? {} : {}), ...(u.roundAt ?? {}) },
-        roundPrev: { ...(same ? old.roundPrev ?? {} : {}), ...(u.roundPrev ?? {}) }, encounter2: [...new Set([...(same ? old.encounter2 ?? [] : []), ...(u.encounter2 ?? [])])] });   // v0.0.320
+        roundPrev: { ...(same ? old.roundPrev ?? {} : {}), ...(u.roundPrev ?? {}) }, encounter2: [...new Set([...(same ? old.encounter2 ?? [] : []), ...(u.encounter2 ?? [])])], ...(dem.length ? { demoralized: dem } : {}) });   // v0.0.320
     } catch (e) { console.warn("twod12 | keeping the uses on the combatant", e); }
   }
 }
@@ -168,10 +198,10 @@ export async function markAtWill(actor, item) {
   const combat = game.combat;
   if (!combat?.started || !actor?.isOwner || effectiveFrequency(item.system) !== "atwill") return;
   const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
-  if (u.combatId !== combat.id) Object.assign(u, { combatId: combat.id, round: combat.round, roundUsed: [], encounter: [], turnKey: "", strikes: 0 });
-  const k = `${combat.round}:${combat.turn}`;
+  if (u.combatId !== combat.id) Object.assign(u, { combatId: combat.id, round: combat.round, roundUsed: [], encounter: [], turnKey: "", strikes: 0, demoralized: [] });
+  const k = `${combat.round}:${combat.turn}`, ak = atWillKeyOf(item);
   const counts = u.atwillKey === k ? Object.fromEntries(u.atwillList ?? []) : {};
-  u.atwillKey = k; counts[item.id] = (counts[item.id] ?? 0) + 1; u.atwillList = Object.entries(counts);
+  u.atwillKey = k; counts[ak] = (counts[ak] ?? 0) + 1; u.atwillList = Object.entries(counts);
   await actor.setFlag(F, "usage", u);
 }
 
@@ -180,7 +210,7 @@ export async function unmarkUsed(actor, item) {
   const combat = game.combat;
   if (!combat?.started || !actor?.isOwner || !item) return;
   const u = foundry.utils.deepClone(actor.getFlag(F, "usage") ?? {});
-  const id = item.id;
+  const id = item.id, ak = atWillKeyOf(item);
   if (u.combatId === combat.id) {
     // an object merges: overwrite the entry rather than delete it; v0.0.320: a second use taken back leaves the first one
     if (u.roundAt?.[id]) { u.roundAt[id] = u.roundPrev?.[id] ?? [-1, -1]; if (u.roundPrev?.[id]) u.roundPrev[id] = [-1, -1]; }
@@ -188,8 +218,8 @@ export async function unmarkUsed(actor, item) {
     if ((u.encounter2 ?? []).includes(id)) u.encounter2 = u.encounter2.filter(x => x !== id);
     else u.encounter = (u.encounter ?? []).filter(x => x !== id);
     u.roundUsed = (u.roundUsed ?? []).filter(x => x !== id);
-    if (u.atwillKey === `${combat.round}:${combat.turn}`) u.atwillList = (u.atwillList ?? []).map(([k, n]) => [k, k === id ? Math.max(0, n - 1) : n]);
-    if (item.system?.traits?.has?.("strike") && u.turnKey === `${combat.round}:${combat.turn}`) u.strikes = Math.max(0, (u.strikes ?? 0) - 1);
+    if (u.atwillKey === `${combat.round}:${combat.turn}`) u.atwillList = (u.atwillList ?? []).map(([k, n]) => [k, k === ak ? Math.max(0, n - 1) : n]);
+    if (hasTrait(item, "strike") && u.turnKey === `${combat.round}:${combat.turn}`) u.strikes = Math.max(0, (u.strikes ?? 0) - 1);
     await actor.setFlag(F, "usage", u);
   }
   try {   // the combatant's copy too, even when the actor had no record (v0.0.221)
@@ -197,7 +227,8 @@ export async function unmarkUsed(actor, item) {
     if (c?.isOwner && old?.combatId === combat.id) {
       const second = (old.encounter2 ?? []).includes(id);   // v0.0.320: a second use taken back leaves the first one
       await c.setFlag(F, "usedHere", { combatId: combat.id, encounter: second ? (old.encounter ?? []) : (old.encounter ?? []).filter(x => x !== id), encounter2: (old.encounter2 ?? []).filter(x => x !== id),
-        roundAt: { ...(old.roundAt ?? {}), ...(old.roundAt?.[id] ? { [id]: old.roundPrev?.[id] ?? [-1, -1] } : {}) }, roundPrev: { ...(old.roundPrev ?? {}), ...(old.roundPrev?.[id] ? { [id]: [-1, -1] } : {}) } });
+        roundAt: { ...(old.roundAt ?? {}), ...(old.roundAt?.[id] ? { [id]: old.roundPrev?.[id] ?? [-1, -1] } : {}) }, roundPrev: { ...(old.roundPrev ?? {}), ...(old.roundPrev?.[id] ? { [id]: [-1, -1] } : {}) },
+        ...(old.demoralized?.length ? { demoralized: old.demoralized } : {}) });
     }
   } catch (e) { /* the combatant's copy stays */ }
 }

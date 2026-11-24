@@ -1,5 +1,5 @@
 --- the groups are the book's
-Roll: appeal body instinct mind power save signature split weapon | Requires: gun handle melee ranged shot | Kind: area move self strike | Damage: nonlethal | Keywords: divine fear focus unfailing
+Roll: appeal body instinct mind power save signature split weapon | Requires: gun handle melee ranged shot | Kind: area move self strike | Damage: nonlethal | Keywords: divine fear focus magical unfailing
 the same as the book's GROUPS: true
 a trait with no group is a Keyword: keywords | Move is Kind: kind | Shot: requires | Save: roll
 --- chips in the book's order

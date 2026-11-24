@@ -186,7 +186,9 @@
    ],
    "traits": [
     "divine",
+    "magical",
     "power",
+    "ranged",
     "strike"
    ],
    "distance": "5 sq.",

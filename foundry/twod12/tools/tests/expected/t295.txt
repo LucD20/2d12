@@ -24,9 +24,9 @@ Paladin modOrder: either | Archer modOrder: either
 Paladin L1 granted: 4 | Archer L1 granted: 4
 --- New & reworked Basic Actions + Kneel
 Aid: appeal,focus,instinct | The target is @Condition[quickened|value:1|eot]{Quickened 1} on its next turn.
-Demoralize: appeal | vs: appeal | T2: @Condition[vulnerable|value:1|rounds:1] | T3: @Condition[vulnerable|value:1|rounds:1], and @Condition[daunted|eot]{Daunted} of you (EoT).
+Demoralize: appeal | vs: appeal | T2: @Condition[vulnerable|value:1|eot] | T3: @Condition[vulnerable|value:1|rounds:1]
 Feint: focus,mind | vs: mind | orTiers: none | T2: You gain 2 Boons on your next [Strike] Action against the target this turn. | T3: Your next [Strike] Action against the target this turn is Favored. | Crit: The target can't use Reactions against you until the end of your turn.
-Heal: appeal,handle,mind | AP: 2 | T2: The target can use @Rally[1]. | T3: The target can use @Rally[2].
+Heal: appeal,handle,mind | AP: 2 | T2: The target can use @Rally[2]. | T3: The target can use @Rally[2], and if it is Prone it can Stand.
 Tumble: appeal,instinct,move | AP: 1/2 | special ends: true
 Trip: body,handle,instinct | AP: 1/2
 Shove: body,handle | AP: 1/2
