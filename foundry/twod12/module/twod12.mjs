@@ -50,7 +50,7 @@ import { rollDamage, retargetAction } from "./actions.mjs";
 import { damageButton, registerSocket } from "./damage.mjs";
 import { TWOD12 } from "./config.mjs";
 import { TwoD12Combat, registerCombatHooks } from "./combat.mjs";
-import { registerMovement, endMovement, evadeAsAdvance, clearLooseMove, rulerInfo } from "./move.mjs";
+import { registerMovement, endMovement, evadeAsAdvance, clearLooseMove, rulerInfo, undoMoveShortcut, undoLastMove } from "./move.mjs";
 import { registerBasicHooks, refreshAllBasics } from "./basic.mjs";
 import { catalog } from "./catalog.mjs";
 import { registerSenses, giveHearing, addHearing, hearingOnPrepare } from "./senses.mjs";
@@ -148,6 +148,14 @@ Hooks.once("init", () => {
     onDown: () => { import("./loe.mjs").then(m => m.loeShortcut()); return true; } });
   game.keybindings.register("twod12", "coverHeight", { name: "Cover height calculation", hint: "Opens the side view of your selected token and its first target (the token controls' button; v0.0.302).", editable: [{ key: "KeyH", modifiers: ["Shift"] }],
     onDown: () => { import("./loe.mjs").then(m => m.heightShortcut()); return true; } });
+  // v0.0.496 (Lucas): Ctrl+Z undoes the last combat movement (refunding 2d12 movement/AP & Foundry's movementHistory), falling through to Foundry's default Ctrl+Z otherwise.
+  game.keybindings.register("twod12", "undoMovement", {
+    name: "Undo movement",
+    hint: "Undoes the last combat movement of your selected (or active) token, refunding both 2d12 movement/AP and Foundry's movement history.",
+    editable: [{ key: "KeyZ", modifiers: ["Control"] }],
+    precedence: globalThis.CONST?.KEYBINDING_PRECEDENCE?.PRIORITY ?? 1,
+    onDown: () => undoMoveShortcut()
+  });
   CONFIG.Combat.documentClass = TwoD12Combat;
   game.twod12 = {
     dockInfo: () => import("./turndock.mjs").then(m => m.dockInfo()),   // v0.0.363: where the Turn Breakdown and its button went
@@ -172,6 +180,7 @@ Hooks.once("init", () => {
     migrateR: () => import("./migrater.mjs").then(m => m.migrateR()),   // v0.0.243: the pack R migration again (Health line, Escalation 1, the cards refreshed)   // v0.0.243: the GM's valve: every PC in the combat +1 Escalation (or the given creatures)
     shadowedEffects,
     rulerInfo,
+    undoMove: () => undoLastMove(),
     solidTiles: (on = true) => solidTiles(on),
     time: s => moveClock(Number(s) || 0),
     exhausted: (delta = 1, actor = canvas.tokens?.controlled[0]?.actor ?? game.user.character) => bumpExhausted(actor, Number(delta) || 0)

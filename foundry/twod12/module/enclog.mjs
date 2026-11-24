@@ -485,7 +485,7 @@ export function logAction(actor, item, { ap = 0, targets = [], save = "", free =
   if (cardLines?.length) payload.cardLines = cardLines;
   logLine("act", refOf(actor), payload);
 }
-export const logMove = (actor, mode, n, setup = "") => { if (n > 0) logLine("move", refOf(actor), { mode, n: Math.round(n * 100) / 100, ...(setup ? { setup } : {}) }); };
+export const logMove = (actor, mode, n, setup = "") => { if (!(n > 0)) return ""; const id = newId(); logLine("move", refOf(actor), { mode, n: Math.round(n * 100) / 100, ...(setup ? { setup } : {}) }, id); return id; };
 export const logPush = (origin, target, mode, n, note = "") => logLine("push", refOf(origin), { target: refOf(target), mode, n, note });
 export const voidTurn = (combat, r, t, why) => send({ type: "voidTurn", r, t, why }, combat);
 export const voidLastAction = (actor, name, why) => { const c = game.combat; if (c?.started) send({ type: "voidLast", r: c.round, t: c.turn, who: refOf(actor).id, name, why }, c); };

@@ -11,7 +11,7 @@ globalThis.foundry = deep(); Object.assign(globalThis.foundry, { utils: { deepCl
 for (const n of ["Combat", "Combatant", "Actor", "Item", "ChatMessage", "TokenDocument", "Token", "Roll", "ActiveEffect", "Region", "JournalEntry", "Scene", "Application", "TextEditor"]) globalThis[n] ??= class { static create() {} };
 globalThis.Hooks = { on() {}, once() {} }; globalThis.CONFIG = { Canvas: {} }; globalThis.game = { settings: { get: () => false }, user: { isGM: true } };
 
-console.log("the center line solid, red-orange and thicker when a creature is in the way; the corner lines dashed (v0.0.453):", src("module/loe.mjs").includes("AMBER = 0xff5a1f") && src("module/loe.mjs").includes("g.lineStyle(c.inWay ? 5 : 3.5, col, 1).moveTo(a.x, a.y).lineTo(z.x, z.y);") && src("module/loe.mjs").includes("dashed(c.origin, k, k.blocked ? RED : GREEN"));
+console.log("the center line solid, red-orange and thicker when a creature is in the way; the corner lines dashed (v0.0.453):", src("module/loe.mjs").includes("AMBER = 0xff6b2b") && src("module/loe.mjs").includes("g.lineStyle(c.inWay ? 4 : 2.6, col, 0.92).moveTo(a.x, a.y).lineTo(z.x, z.y);") && src("module/loe.mjs").includes("dashed(c.origin, k, k.blocked ? RED : GREEN"));
 console.log("the flanked creature's name on top:", src("module/flankoverlay.mjs").includes('const nm = label(firstName(row.target.name), "#f0c040", fsz(0.15), 0x1b2433, 0xf0c040);') /* v0.0.353: on its ring */);
 
 // The Zone's second carried Effect

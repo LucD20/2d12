@@ -29,8 +29,8 @@ console.log("testChecklist default true:", chk.includes('game.settings.register(
 // 2. sightgate cornerInLos (Image 3: 2x2 Ogre with only bottom-left corner inside sight polygon)
 const SG = await import(ROOTURL + "module/sightgate.mjs");
 const ogre = { id: "ogre", name: "Ogre", document: { x: 300, y: 100, width: 2, height: 2, hidden: false }, actor: { name: "Ogre", statuses: new Set(), system: {} } };
-// Only bottom-left corner of Ogre's (300..400, 200..300) square around (304, 296) is inside los polygon:
-const peekPoly = { contains: (x, y) => x <= 310 && y >= 290 };
+// Bottom-left quarter of Ogre's (300..400, 200..300) square around (325, 275) is inside los polygon:
+const peekPoly = { contains: (x, y) => x <= 330 && y >= 270 };
 const blockedPoly = { contains: () => false };
 const vsPeek = { x: 550, y: 450, los: peekPoly, shape: peekPoly, object: { id: "syl", actor: { statuses: new Set(), system: { senses: {} } } } };
 const vsBlocked = { x: 550, y: 450, los: blockedPoly, shape: blockedPoly, object: vsPeek.object };

@@ -14,9 +14,10 @@ export function canSeeByRules(observer, target) {
 }
 
 /**
- * v0.0.495 (Lucas playtest Image 3): Foundry's default testVisibility checks only points near a token's center, hiding Large (2×2) or
- * peeking tokens even when a corner is cleanly inside Line of Sight (2d12 High/Medium/Low cover). Test the 4 inset corners of each
- * 1×1 square the target occupies against the vision polygon and mode range so token visibility matches 2d12 Line of Effect.
+ * v0.0.495 (Lucas playtest Image 3), tuned v0.0.496 (Lucas: 0.04*gs leaked through thin wall slivers):
+ * Foundry's default testVisibility checks only ±0.25*gs around a token's overall center, leaving a 75% blind rim on Large (2×2) tokens.
+ * Testing Foundry's same 0.25*gs tolerance (center + 4 quarter-inset corners) for each occupied 1×1 square keeps Large tokens visible
+ * whenever at least a quarter of any occupied square peeks into sight, without revealing tokens through razor-thin wall slivers.
  */
 export function cornerInLos(visionSource, mode, target, modeId = "") {
   const poly = modeId === "basicSight" && typeof visionSource?.shape?.contains === "function" ? visionSource.shape : visionSource?.los;
@@ -29,15 +30,17 @@ export function cornerInLos(visionSource, mode, target, modeId = "") {
     if (!(Number(rangeUnits) > 0)) return false;
     rangePx = Number(rangeUnits) * (gs / distUnit) + 4;
   }
-  const d = target.document, e = 0.04 * gs;
+  const d = target.document, e = 0.25 * gs;
   const cols = Math.max(1, Math.round(Number(d.width) || 1));
   const rows = Math.max(1, Math.round(Number(d.height) || 1));
   const ox = Number(visionSource.x), oy = Number(visionSource.y);
   for (let j = 0; j < rows; j++) {
     for (let i = 0; i < cols; i++) {
-      const x0 = Number(d.x) + i * gs + e, y0 = Number(d.y) + j * gs + e;
-      const x1 = Number(d.x) + (i + 1) * gs - e, y1 = Number(d.y) + (j + 1) * gs - e;
-      for (const [cx, cy] of [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]) {
+      const bx = Number(d.x) + i * gs, by = Number(d.y) + j * gs;
+      const mx = bx + 0.5 * gs, my = by + 0.5 * gs;
+      const x0 = bx + e, y0 = by + e;
+      const x1 = bx + gs - e, y1 = by + gs - e;
+      for (const [cx, cy] of [[mx, my], [x0, y0], [x1, y0], [x1, y1], [x0, y1]]) {
         if (Number.isFinite(rangePx) && Number.isFinite(ox) && Number.isFinite(oy) && Math.hypot(cx - ox, cy - oy) > rangePx) continue;
         if (poly.contains(cx, cy)) return true;
       }

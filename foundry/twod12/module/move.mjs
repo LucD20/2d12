@@ -4,7 +4,7 @@ import { tokenDistance, lightAt, seenLight, sightSenses, regionHasPoint, vertica
 // and Pushed and Pulled with collision: @Move[pushed|distance:N] (@Move[pulled|distance:N]) lets the clicking player drag the target away from (toward) the origin.
 import { esc } from "./roll.mjs";
 import { sysCard, sysLine, apText } from "./sysmsg.mjs";
-import { logMove, logPush, voidLastAction } from "./enclog.mjs";   // v0.0.223: the Encounter Log
+import { logMove, logPush, voidLastAction, patchLine } from "./enclog.mjs";   // v0.0.223: the Encounter Log
 import { tokenCells, fillCells, outlineCells, cellCenter, cellAt, emanationCells, tokensInEmanation } from "./template.mjs";
 import * as MK from "./mapmark.mjs";   // v0.0.461 (the map notes' redesign)
 import { tierDistance } from "./inline.mjs";
@@ -272,14 +272,17 @@ export function breakFreeCheck(actor) {
 let setupLogName = "";
 export const setSetupLog = name => { setupLogName = String(name ?? ""); };
 /** Charge a move of `cost` squares: free movement first, then Walk allotments (1 AP each: a drag that pays AP is an Advance Action, v0.0.414). */
-export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = "" } = {}) {
+export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = "", undoCtx = null } = {}) {
+  const snap = undoCtx ? snapshotMoveUndo(c, undoCtx, cost) : null;
   const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
   let evade = num(c.getFlag(F, "evadeMove")), free = num(c.getFlag(F, "freeMove")), left = num(c.getFlag(F, "moveLeft"));
   let need = cost;
   // v0.0.182: an Evade goes on square by square (its area stays shown) until the creature uses another Action or ends the movement:
   // it can't be split around other Actions (spendAP in combat.mjs clears what is left), but one Evade can take several drags.
   const useEvade = Math.min(evade, need); need -= useEvade; evade -= useEvade;
-  try { logMove(c.token?.object ?? c.actor, logMode || (useEvade ? "Evade" : "Advance"), cost, setupLogName); } catch (e) { /* no log */ }   // v0.0.223: the Encounter Log
+  let enclogId = "";
+  try { enclogId = logMove(c.token?.object ?? c.actor, logMode || (useEvade ? "Evade" : "Advance"), cost, setupLogName) || ""; } catch (e) { /* no log */ }   // v0.0.223: the Encounter Log
+  if (snap) snap.enclogId = enclogId;
   const useFree = Math.min(free, need); free -= useFree; need -= useFree;
   let spent = 0;
   if (need > 0) {
@@ -293,7 +296,8 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   clearRange();
   // "Until it uses a Move Action": the effect lasts through this move and ends once it is resolved (an Evade is not a Move Action).
   if (!useEvade) await expireOnUse(c.actor, new Set(["move"])).catch(() => {});
-  if (free + evade > 0 && dest) showRange(c, free + evade, dest, evade > 0 ? par : 0);
+  const rem = free + evade + Math.round(left * 100) / 100;
+  if (rem > 0 && dest) showRange(c, rem, dest, evade > 0 ? par : 0);
   const ap = getAP(c);
   const sq = Math.round(cost * 100) / 100;
   const what = useEvade ? `Evade ${sq} sq, no reactions` : `Advance ${sq} sq`;
@@ -301,6 +305,11 @@ export async function chargeMovement(c, cost, dest = null, { par = 0, logMode = 
   // v0.0.196 (Lucas): while the movement banner is up it says what is left, so the drags post nothing; a drag that spends AP (moving the
   // token without using Advance first) is an Advance: it opens the banner, and its Speed left counts there.
   if (spent && !useEvade && walk > 0) { if (bannerOn(c) && moveBar && !moveBar.logged()) moveBar.add(walk * spent, spent); else moveBanner(c, "walk", walk * spent, "Advance", { drag: true, ap: spent }); }
+  if (snap) {
+    snap.spentAp = spent;
+    snap.openedBanner = !snap.bannerBefore && spent > 0 && !useEvade && walk > 0;
+    recordMoveUndo(snap);
+  }
   // v0.0.418 (Lucas, playtest 5, C6): no chat line for a drag of free movement ("Advance 2 sq. 4 sq left"): the movement bar and the strip say it
   if (spent && ap < spent) warn(`${c.name} did not have enough AP for that movement.`);
 }
@@ -617,14 +626,15 @@ function freeMoveBar(c, kind, text) {
   freeBar?.remove();
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-freebar";
-  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button><span class="lb-count"></span><span class="lb-keys"><kbd>Esc</kbd> End movement</span>`;
-  // v0.0.461 (the map notes' redesign, b / c / h): the squares left, big, kept up to date; Escape ends the movement (it did nothing)
-  const leftOf = cb => num(cb?.getFlag(F, "freeMove")) + num(cb?.getFlag(F, "evadeMove")) + (barOpts.drag ? num(cb?.getFlag(F, "moveLeft")) : 0);
-  const count = () => { const cb = game.combat?.combatants.get(c.id), left = leftOf(cb), el = bar.querySelector(".lb-count"); if (el) el.innerHTML = `<b>${left}</b> square${left === 1 ? "" : "s"} left`; };
-  count();
+  bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-go lb-undo" style="display:none"><i class="fa-solid fa-rotate-left"></i> Undo move</button><button type="button" class="lb-give lb-end">End movement</button><span class="lb-count"></span><span class="lb-keys"><kbd>Ctrl+Z</kbd> Undo · <kbd>Esc</kbd> End movement</span>`;
   // v0.0.441 (D7): End movement asks in the HUD's Situational section too (the floating bar only with no HUD)
   const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
   if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
+  // v0.0.461 (the map notes' redesign, b / c / h): the squares left, big, kept up to date; Escape ends the movement (it did nothing)
+  const leftOf = cb => num(cb?.getFlag(F, "freeMove")) + num(cb?.getFlag(F, "evadeMove")) + (barOpts.drag ? num(cb?.getFlag(F, "moveLeft")) : 0);
+  const refreshUndo = () => { const ub = bar.querySelector(".lb-undo"); if (ub) ub.style.display = canUndoMove(c.tokenId) ? "" : "none"; };
+  const count = () => { const cb = game.combat?.combatants.get(c.id), left = leftOf(cb), el = bar.querySelector(".lb-count"); if (el) el.innerHTML = `<b>${left}</b> square${left === 1 ? "" : "s"} left`; refreshUndo(); };
+  count();
   const turn = `${game.combat?.round}:${game.combat?.turn}`;
   const close = () => { bar.remove(); try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ } if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); window.removeEventListener("keydown", esc_, true); };
   const doEnd = () => { close(); (barOpts.onEnd ? barOpts.onEnd() : endMovement(c.id)).catch?.(() => {}); };
@@ -634,6 +644,7 @@ function freeMoveBar(c, kind, text) {
   const watchTurn = cb => { if (`${cb.round}:${cb.turn}` !== turn) close(); };
   Hooks.on("updateCombatant", watch); Hooks.on("updateCombat", watchTurn);
   bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); doEnd(); });
+  bar.querySelector(".lb-undo")?.addEventListener("click", ev => { ev.preventDefault(); undoLastMove(c.tokenId).catch?.(e => console.warn("twod12 | undo move", e)); });
   // v0.0.226 (Lucas): after Advance instead, Evade instead turns it back (only for a movement that was an Evade).
   const swap = toAdvance => {
     const b = bar.querySelector(".lb-adv"), t = bar.querySelector(".lb-text");
@@ -652,6 +663,7 @@ function freeMoveBar(c, kind, text) {
   };
   bar.querySelector(".lb-adv")?.addEventListener("click", ev => { ev.preventDefault(); swap(bar.dataset.mode !== "advance"); });
   bar._closeFreeBar = close;
+  bar._refreshUndo = refreshUndo;
   freeBar = bar;
   return close;
 }
@@ -696,7 +708,7 @@ export const moveLine = (who, mode, name, ap, granted, moved = null) => {
  * ONE chat line: "Kai uses Advance (1 AP: up to 7 squares)", changed to "Kai Advanced 4 of 7 squares (1 AP)" when it ends (used up, End,
  * or the turn changes). This keeps that line and the end of the movement, on the client of whoever moved.
  */
-export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}) {
+export function moveBanner(c, kind, granted, name, { drag = false, ap = 0, skipLive = false } = {}) {
   moveBar?.finish(false);
   // drag: started by moving the token (an Advance paid by the drag): the Speed left of that Advance (moveLeft) counts too.
   const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove")) + (drag ? num(c.getFlag(F, "moveLeft")) : 0);
@@ -711,19 +723,30 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
   };
   const hooks = [];
   const on = (h, fn) => hooks.push([h, Hooks.on(h, fn)]);
-  const finish = async (drop = true) => {
-    if (!moveBar || moveBar.c !== c) return;
+  const teardown = () => {
+    if (!moveBar || moveBar.c !== c) return false;
     moveBar = null;
-    lastBar = { id: c.id, until: Date.now() + 2500 };
     for (const [h, id] of hooks) Hooks.off(h, id);
     try { closeSit?.(); } catch (e) { /* gone */ }
     closeSit = null;
+    return true;
+  };
+  const finish = async (drop = true) => {
+    if (!teardown()) return;
+    lastBar = { id: c.id, until: Date.now() + 2500 };
     const l = left();
     if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), ...unset(`flags.${F}.ignoreTerrain`) });
     clearRange();
     await writeLine();
   };
-  moveBar = { c, finish, writeLine, logged: () => logged, toAdvance: () => { name = name === "Evade" ? "Advance" : name; }, add: (n, moreAp = 0) => { granted += n; ap += moreAp; after = getAP(c); } };
+  const cancel = () => { if (!teardown()) return; lastBar = { id: "", until: 0 }; clearRange(); };
+  moveBar = {
+    c, finish, cancel, writeLine, logged: () => logged,
+    toAdvance: () => { name = name === "Evade" ? "Advance" : name; },
+    add: (n, moreAp = 0) => { granted += n; ap += moreAp; after = getAP(c); },
+    info: () => ({ kind, granted, name, drag, ap, after }),
+    restore: st => { if (!st) return; granted = st.granted; ap = st.ap; name = st.name; after = st.after; }
+  };
   // v0.0.495 (Lucas): Basic Actions Advance / Evade / Crawl also surface "End movement" (and "Advance instead") in the HUD Situational tab
   if (left() > 0) {
     const sq = `${granted} square${granted === 1 ? "" : "s"}`;
@@ -734,13 +757,14 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
   }
   on("updateCombatant", cb => { if (cb.id !== c.id || moveBar?.c !== c) return; if (left() <= 0) finish(false); });
   // v0.0.362: the movement shows in the Turn Breakdown as soon as it starts (live: the dock counts its squares)
-  import("./ticker.mjs").then(T => T.logLive(c, T.makeLine("move", name, after + ap, after, Math.max(apMax(c), after + ap)), granted)).catch(() => {});
+  if (!skipLive) import("./ticker.mjs").then(T => T.logLive(c, T.makeLine("move", name, after + ap, after, Math.max(apMax(c), after + ap)), granted)).catch(() => {});
   on("combatTurnChange", () => finish(false));
   on("deleteCombat", () => finish(false));
 }
 
 /** v0.0.200: another Action is about to be used: a movement under way writes its Turn Log line first (it goes on tracking its squares). */
 export async function closeMoveLine(c) {
+  if (c?.tokenId) clearMoveUndo(c.tokenId);
   if (moveBar?.c?.id === c?.id) await moveBar.writeLine();
 }
 
@@ -1638,6 +1662,196 @@ async function checkUnthreatenedEffects(overrides = null, removedIds = null) {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* v0.0.496 (Lucas): Drag-to-Advance range preview & Undo Movement (Ctrl+Z) */
+/* ------------------------------------------------------------------ */
+let dragRangeId = "";
+const clearDragRange = () => { if (!dragRangeId) return; dragRangeId = ""; clearRange(); };
+
+/** Pure (v0.0.496): how many squares a token can move on a drag right now (for the live drag movement-limit preview). */
+export function dragRangeSquares(c, combat = globalThis.game?.combat) {
+  if (!c || !combat?.started) return { squares: 0, par: 0, kind: "walk" };
+  if (c.actor?.statuses?.has?.("immobilized")) return { squares: 0, par: 0, kind: "walk" };
+  const ev = num(c.getFlag?.(F, "evadeMove"));
+  if (ev > 0) return { squares: ev, par: num(c.getFlag?.(F, "diagPar")) % 2, kind: "evade" };
+  const fr = num(c.getFlag?.(F, "freeMove")), ml = num(c.getFlag?.(F, "moveLeft"));
+  if (fr + ml > 0) return { squares: Math.round((fr + ml) * 100) / 100, par: 0, kind: "walk" };
+  if (combat.combatant?.id !== c.id) return { squares: 0, par: 0, kind: "walk" };
+  const walk = num(c.actor?.system?.moveSpeed ?? c.actor?.system?.speed);
+  if (getAP(c) >= 1 && walk > 0) return { squares: walk, par: 0, kind: "walk" };
+  return { squares: 0, par: 0, kind: "walk" };
+}
+
+const moveUndoStack = [];
+const undoingTokens = new Set();
+const cloneVal = v => { try { return globalThis.foundry?.utils?.deepClone ? foundry.utils.deepClone(v) : JSON.parse(JSON.stringify(v ?? null)); } catch (e) { return v; } };
+
+/** Snapshot a combatant's movement state immediately before chargeMovement mutates it. */
+export function snapshotMoveUndo(c, undoCtx, cost) {
+  const combat = globalThis.game?.combat;
+  return {
+    combatId: combat?.id ?? "",
+    turnKey: turnStamp(combat),
+    tokenId: undoCtx.doc?.id ?? c?.tokenId ?? "",
+    tokenUuid: undoCtx.doc?.uuid ?? c?.token?.uuid ?? "",
+    combatantId: c?.id ?? "",
+    name: c?.name ?? undoCtx.doc?.name ?? "Creature",
+    from: { x: Number(undoCtx.from?.x) || 0, y: Number(undoCtx.from?.y) || 0, elevation: Number.isFinite(undoCtx.from?.elevation) ? undoCtx.from.elevation : (undoCtx.doc?.elevation ?? 0) },
+    to: { x: Number(undoCtx.to?.x) || 0, y: Number(undoCtx.to?.y) || 0, elevation: Number.isFinite(undoCtx.to?.elevation) ? undoCtx.to.elevation : (undoCtx.doc?.elevation ?? 0) },
+    histLen: Number(undoCtx.histLen) || 0,
+    squares: Math.round((Number(cost) || 0) * 100) / 100,
+    spentAp: 0,
+    enclogId: "",
+    openedBanner: false,
+    bannerBefore: moveBar?.c?.id === c?.id ? moveBar.info() : null,
+    flags: {
+      ap: getAP(c),
+      evadeMove: num(c?.getFlag?.(F, "evadeMove")),
+      freeMove: num(c?.getFlag?.(F, "freeMove")),
+      moveLeft: num(c?.getFlag?.(F, "moveLeft")),
+      diagPar: num(c?.getFlag?.(F, "diagPar")),
+      advOwn: !!c?.getFlag?.(F, "advOwn"),
+      advInteract: !!c?.getFlag?.(F, "advInteract"),
+      ignoreTerrain: c?.getFlag?.(F, "ignoreTerrain") ?? null,
+      noFarther: cloneVal(c?.getFlag?.(F, "noFarther") ?? null)
+    },
+    turnLog: cloneVal(c?.getFlag?.(F, "turnLog") ?? [])
+  };
+}
+
+const isUndoCurrent = e => !!e && e.combatId === (globalThis.game?.combat?.id ?? "") && e.turnKey === turnStamp(globalThis.game?.combat);
+const pruneMoveUndo = () => { for (let i = moveUndoStack.length - 1; i >= 0; i--) if (!isUndoCurrent(moveUndoStack[i])) moveUndoStack.splice(i, 1); };
+export function recordMoveUndo(entry) {
+  if (!entry?.tokenId) return;
+  pruneMoveUndo();
+  moveUndoStack.push(entry);
+  if (moveUndoStack.length > 30) moveUndoStack.shift();
+  try { freeBar?._refreshUndo?.(); } catch (e) { /* ignore */ }
+}
+export function clearMoveUndo(tokenId = null) {
+  if (!tokenId) moveUndoStack.length = 0;
+  else for (let i = moveUndoStack.length - 1; i >= 0; i--) if (moveUndoStack[i].tokenId === tokenId) moveUndoStack.splice(i, 1);
+  try { freeBar?._refreshUndo?.(); } catch (e) { /* ignore */ }
+}
+export function peekMoveUndo(tokenId = null) {
+  pruneMoveUndo();
+  for (let i = moveUndoStack.length - 1; i >= 0; i--) if (!tokenId || moveUndoStack[i].tokenId === tokenId) return moveUndoStack[i];
+  return null;
+}
+export const canUndoMove = (tokenId = null) => !!peekMoveUndo(tokenId);
+
+function popMoveUndo(tokenId = null) {
+  pruneMoveUndo();
+  for (let i = moveUndoStack.length - 1; i >= 0; i--) {
+    if (!tokenId || moveUndoStack[i].tokenId === tokenId) return moveUndoStack.splice(i, 1)[0];
+  }
+  return null;
+}
+
+/** Pick which token's combat movement Ctrl+Z should undo (selected token, or active combatant if none selected). */
+export function pickUndoTokenId() {
+  pruneMoveUndo();
+  if (!moveUndoStack.length || !globalThis.game?.combat?.started) return "";
+  const controlled = (globalThis.canvas?.tokens?.controlled ?? []).filter(t => t?.isOwner || globalThis.game?.user?.isGM);
+  if (controlled.length === 1) return canUndoMove(controlled[0].id) ? controlled[0].id : "";
+  if (controlled.length > 1) {
+    const ids = new Set(controlled.map(t => t.id));
+    for (let i = moveUndoStack.length - 1; i >= 0; i--) if (ids.has(moveUndoStack[i].tokenId)) return moveUndoStack[i].tokenId;
+    return "";
+  }
+  const active = globalThis.game.combat.combatant;
+  if (active?.tokenId && (active.isOwner || globalThis.game.user?.isGM) && canUndoMove(active.tokenId)) return active.tokenId;
+  return "";
+}
+
+/**
+ * v0.0.496 (Lucas): Undo the last combat movement for `target` (Token, TokenDocument, tokenId, or auto-picked).
+ * Reverts both 2d12 movement/AP/banner/range/logs AND Foundry V14's built-in movementHistory/ruler via revertRecordedMovement().
+ */
+export async function undoLastMove(target = null, { alreadyMoved = false } = {}) {
+  const tokenId = typeof target === "string"
+    ? target
+    : (target?.document?.id ?? target?.id ?? pickUndoTokenId());
+  if (!tokenId) return false;
+  const entry = popMoveUndo(tokenId);
+  if (!entry) return false;
+  const c = globalThis.game?.combat?.combatants?.get?.(entry.combatantId) ?? null;
+  const doc = (typeof target === "object" && target ? (target.document ?? (target.x !== undefined ? target : null)) : null)
+    ?? globalThis.canvas?.tokens?.get?.(entry.tokenId)?.document
+    ?? c?.token
+    ?? null;
+  if ((doc && !doc.isOwner && !globalThis.game?.user?.isGM) || (c && !c.isOwner && !globalThis.game?.user?.isGM)) return false;
+
+  undoingTokens.add(entry.tokenId);
+  try {
+    clearDragRange();
+    if (!alreadyMoved && doc) {
+      mark(keyOf(doc, entry.from.x, entry.from.y));
+      let reverted = false;
+      // Use Foundry V13/V14's native revertRecordedMovement() first so Foundry's movementHistory & ruler step back cleanly too.
+      if (typeof doc.revertRecordedMovement === "function" && (!Array.isArray(doc.movementHistory) || doc.movementHistory.length > entry.histLen)) {
+        try {
+          await doc.revertRecordedMovement();
+          reverted = Math.hypot((Number(doc.x) || 0) - entry.from.x, (Number(doc.y) || 0) - entry.from.y) <= 2;
+        } catch (e) { reverted = false; }
+      }
+      if (!reverted) {
+        const pos = { x: entry.from.x, y: entry.from.y, ...(Number.isFinite(entry.from.elevation) ? { elevation: entry.from.elevation } : {}) };
+        await doc.update(pos, { twod12Forced: true, twod12Undo: true, animate: true });
+        if (entry.histLen === 0 && typeof doc.clearMovementHistory === "function") {
+          try { await doc.clearMovementHistory(); } catch (e) { /* ignore */ }
+        }
+      }
+    }
+
+    if (entry.openedBanner && moveBar?.c?.id === c?.id) moveBar.cancel();
+    if (c && globalThis.game?.combat?.combatants?.has?.(c.id)) {
+      const f = entry.flags;
+      const patch = {
+        [`flags.${F}.ap`]: f.ap,
+        [`flags.${F}.evadeMove`]: f.evadeMove,
+        [`flags.${F}.freeMove`]: f.freeMove,
+        [`flags.${F}.moveLeft`]: f.moveLeft,
+        [`flags.${F}.diagPar`]: f.diagPar,
+        [`flags.${F}.advOwn`]: f.advOwn,
+        [`flags.${F}.advInteract`]: f.advInteract,
+        [`flags.${F}.turnLog`]: entry.turnLog,
+        ...(f.ignoreTerrain ? { [`flags.${F}.ignoreTerrain`]: f.ignoreTerrain } : unset(`flags.${F}.ignoreTerrain`)),
+        ...(f.noFarther ? { [`flags.${F}.noFarther`]: f.noFarther } : unset(`flags.${F}.noFarther`))
+      };
+      await c.update(patch);
+      if (entry.bannerBefore) {
+        if (moveBar?.c?.id === c.id) moveBar.restore(entry.bannerBefore);
+        else {
+          const bLeft = f.evadeMove + f.freeMove + (entry.bannerBefore.drag ? f.moveLeft : 0);
+          if (bLeft > 0) moveBanner(c, entry.bannerBefore.kind, entry.bannerBefore.granted, entry.bannerBefore.name, { drag: entry.bannerBefore.drag, ap: entry.bannerBefore.ap, skipLive: true });
+        }
+      }
+      const rem = f.evadeMove + f.freeMove + f.moveLeft;
+      if (rem > 0) showRange(c, rem, entry.from, f.evadeMove > 0 ? (f.diagPar % 2) : 0);
+      else clearRange();
+    }
+    if (entry.enclogId) { try { patchLine(entry.enclogId, { off: true, why: "Undone" }); } catch (e) { /* no log */ } }
+    try { freeBar?._refreshUndo?.(); } catch (e) { /* ignore */ }
+    const apNote = entry.spentAp > 0 ? `, +${entry.spentAp} AP` : "";
+    globalThis.ui?.notifications?.info?.(`Undid ${entry.name}'s movement (${entry.squares} sq${apNote}).`);
+    return true;
+  } finally {
+    undoingTokens.delete(entry.tokenId);
+  }
+}
+
+/** Synchronous keybinding entry point for Ctrl+Z: returns true ONLY when a 2d12 combat move is undone (otherwise lets Foundry's default Ctrl+Z run). */
+export function undoMoveShortcut() {
+  const el = globalThis.document?.activeElement;
+  if (el && (/^(INPUT|TEXTAREA|SELECT)$/i.test(el.tagName) || el.isContentEditable)) return false;
+  if (globalThis.canvas?.activeLayer && globalThis.canvas?.tokens && canvas.activeLayer !== canvas.tokens) return false;
+  const tid = pickUndoTokenId();
+  if (!tid) return false;
+  undoLastMove(tid).catch(e => console.warn("twod12 | undo movement", e));
+  return true;
+}
+
 export function registerMovement() {
   // v0.0.351: the Alt-drag preview follows the dragged token's preview; it goes when Alt is released or the drag ends
   Hooks.on("refreshToken", token => {
@@ -1647,6 +1861,29 @@ export function registerMovement() {
       else if (dragGfx && !(canvas.tokens?.preview?.children ?? []).length) clearDragPreview();
     } catch (e) { clearDragPreview(); }
   });
+  // v0.0.496 (Lucas): dragging a token in combat shows its movement limit on the map (just like clicking Advance), for both GM and players.
+  Hooks.on("refreshToken", token => {
+    try {
+      if (!canvas?.grid?.isSquare || !game.combat?.started) { clearDragRange(); return; }
+      if (token.isPreview) {
+        if (game.user?.isGM && game.keyboard?.isModifierActive?.("Alt")) { clearDragRange(); return; }
+        const orig = token._original?.document ?? canvas.tokens?.get?.(token.id)?.document ?? token.document;
+        const c = orig ? currentCombatantFor(orig) : null;
+        if (!c || !c.isOwner) { clearDragRange(); return; }
+        if (rangeGfx && !dragRangeId) return;
+        if (dragRangeId !== orig.id) {
+          const info = dragRangeSquares(c, game.combat);
+          if (info.squares > 0) { showRange(c, info.squares, homePos(orig), info.par); dragRangeId = orig.id; }
+          else clearDragRange();
+        }
+      } else if (dragRangeId && !(canvas.tokens?.preview?.children ?? []).length) {
+        clearDragRange();
+      }
+    } catch (e) { clearDragRange(); }
+  });
+  const checkDragRangeGone = () => setTimeout(() => { if (dragRangeId && !(canvas?.tokens?.preview?.children ?? []).length) clearDragRange(); }, 80);
+  globalThis.window?.addEventListener?.("pointerup", checkDragRangeGone);
+  globalThis.window?.addEventListener?.("keydown", ev => { if (ev.key === "Escape") checkDragRangeGone(); });
   globalThis.window?.addEventListener?.("keyup", ev => { if (ev.key === "Alt") clearDragPreview(); });
   try { installDarknessCost(); } catch (e) { console.warn("twod12 | Darkness cost", e); }   // (this runs when Foundry is ready: the Token class is final)
   // v0.0.350: the GM's Alt-drag is Forced Movement (forcedDrag); Foundry's own move is cancelled
@@ -1659,8 +1896,9 @@ export function registerMovement() {
     } catch (e) { return; }
   });
   // The movement area never outlives its use: it goes when the combat ends, when the scene changes, and (outside combat) when its token moves.
-  Hooks.on("deleteCombat", () => clearLooseMove());
-  Hooks.on("canvasReady", () => clearLooseMove());
+  Hooks.on("combatTurnChange", () => { clearDragRange(); clearMoveUndo(); });
+  Hooks.on("deleteCombat", () => { clearLooseMove(); clearMoveUndo(); });
+  Hooks.on("canvasReady", () => { clearLooseMove(); clearMoveUndo(); });
   // Foundry V13+/V14: token drags come through moveToken with movement.destination before doc.x/y settle; hook both moveToken and updateToken
   Hooks.on("moveToken", (doc, movement, operation) => {
     if (operation?.twod12Lean) return;
@@ -1681,7 +1919,18 @@ export function registerMovement() {
   });
   Hooks.on("preMoveToken", (doc, movement, operation) => {
     try {
-      if (operation?.twod12Forced || operation?.twod12Lean || movement?.method === "undo") return;
+      if (movement?.method === "undo") {
+        // Never let the 300ms preUpdateToken fallback charge an undo as new movement; and if Foundry's own undo triggered it, refund 2d12 state too.
+        if (movement?.destination) mark(keyOf(doc, movement.destination.x, movement.destination.y));
+        if (!undoingTokens.has(doc.id)) {
+          const top = peekMoveUndo(doc.id);
+          if (top && movement?.destination && Math.hypot(movement.destination.x - top.from.x, movement.destination.y - top.from.y) <= 2) {
+            undoLastMove(doc, { alreadyMoved: true }).catch(e => console.warn("twod12 | undo movement refund", e));
+          }
+        }
+        return;
+      }
+      if (operation?.twod12Forced || operation?.twod12Lean || operation?.twod12Undo) return;
       // the core rework I2 (Lucas, 2026-11-21: "some, not all"; playtest 7: the Immobilized Ogre Advanced): an Immobilized creature can't move by
       // itself, so its token isn't dragged during a combat, on its turn or not (v0.0.478: v0.0.477 checked only on its turn); Forced Movement and
       // the GM's Alt-drag still move it; Break Free first
@@ -1747,24 +1996,27 @@ export function registerMovement() {
       // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)
       if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6) { warn(`${c.name} has ${offTurnFree(c)} free square${offTurnFree(c) === 1 ? "" : "s"} left (it isn't its turn). Choose a shorter path, or use End movement.`); return false; }
       mark(keyOf(doc, to.x, to.y));
-      chargeMovement(c, squares, to, { par }).catch(e => console.error("twod12 | could not charge movement", e));
+      const undoCtx = { doc, from: { x: origin.x, y: origin.y, elevation: doc.elevation ?? 0 }, to: { x: to.x, y: to.y, elevation: to.elevation ?? doc.elevation ?? 0 }, histLen: Array.isArray(doc.movementHistory) ? doc.movementHistory.length : 0 };
+      chargeMovement(c, squares, to, { par, undoCtx }).catch(e => console.error("twod12 | could not charge movement", e));
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
   });
   // Fallback when preMoveToken does not report the move: the plain update of the position.
   Hooks.on("preUpdateToken", (doc, changes, options, userId) => {
     try {
-      if (userId !== game.user.id || options?.twod12Forced || options?.twod12Lean || !("x" in changes || "y" in changes)) return;
+      if (userId !== game.user.id || options?.twod12Forced || options?.twod12Lean || options?.twod12Undo || undoingTokens.has(doc.id) || !("x" in changes || "y" in changes)) return;
       const c = currentCombatantFor(doc);
       if (!c) return;
       const from = homePos(doc), to = { x: changes.x ?? doc.x, y: changes.y ?? doc.y };
       if (from.x === to.x && from.y === to.y) return;
       const k = keyOf(doc, to.x, to.y);
+      const histLen = Array.isArray(doc.movementHistory) ? doc.movementHistory.length : 0;
       setTimeout(() => {
-        if (seen(k)) return;
+        if (seen(k) || undoingTokens.has(doc.id)) return;
         const squares = measureSquares(from, to);
         if (squares <= 0) return;
         mark(k);
-        chargeMovement(c, squares, to).catch(e => console.error("twod12 | could not charge movement", e));
+        const undoCtx = { doc, from: { x: from.x, y: from.y, elevation: doc.elevation ?? 0 }, to: { x: to.x, y: to.y, elevation: changes.elevation ?? doc.elevation ?? 0 }, histLen };
+        chargeMovement(c, squares, to, { undoCtx }).catch(e => console.error("twod12 | could not charge movement", e));
       }, 300);
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
   });
@@ -1782,7 +2034,7 @@ export function registerMovement() {
 /* The area a token can still move: shown after a @Move button, gone after the move  */
 /* ------------------------------------------------------------------ */
 let rangeGfx = null;
-export function clearRange() { try { rangeGfx?.destroy(); } catch (e) { /* already gone */ } rangeGfx = null; }
+export function clearRange() { dragRangeId = ""; try { rangeGfx?.destroy(); } catch (e) { /* already gone */ } rangeGfx = null; }
 
 const NEIGH = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 /** The diagonal steps of a path of positions (token top-left points): each leg moves min(|di|, |dj|) squares diagonally (v0.0.183). */

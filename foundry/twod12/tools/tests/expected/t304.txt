@@ -1,0 +1,8 @@
+loe Option B colors & casing & blocked X: true
+cornerInLos sliver hidden / quarter visible / square-center visible: false true true
+dragRangeSquares own turn (AP 4, speed 6): {"squares":6,"par":0,"kind":"walk"} | remaining moveLeft 4: {"squares":4,"par":0,"kind":"walk"} | evading 3 par 1: {"squares":3,"par":1,"kind":"evade"} | 0 AP: {"squares":0,"par":0,"kind":"walk"} | immobilized: {"squares":0,"par":0,"kind":"walk"} | off turn no free: {"squares":0,"par":0,"kind":"walk"}
+Ctrl+Z returns false when stack empty: false
+canUndoMove after drag: true | pickUndoTokenId: t1
+undoLastMove ok: true | revertRecordedMovement called: 1 | doc back at (100,100): 100,100 | movementHistory cleared: true | AP restored to 4: 4 | moveLeft restored to 0: 0 | stack empty now: true | notification: Undid Sylwen's movement (2 sq, +1 AP).
+fallback undo ok: true | doc.update called: {"x":200,"y":200,"elevation":0} | clearMovementHistory called: 1 | freeMove restored to 4: 4
+wired: Ctrl+Z keybinding & Situational Undo button & preMoveToken undo guard: true

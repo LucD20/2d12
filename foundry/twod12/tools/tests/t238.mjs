@@ -19,7 +19,7 @@ const kaela = tok("k", 0, 400, "Kaela"), orc = tok("o", 600, 0, "Orc Warrior"), 
 const c = CV.coverBetween(kaela, orc, { blockedFn: () => false, others: [durgan] });
 console.log("a creature on the center line:", c.inWay, c.label, "| who:", c.blockers.map(b => b.name).join(", "), "| the center:", JSON.stringify(c.center));
 const L = await import(ROOTURL + "module/loe.mjs");
-console.log("the label:", L.loeLabel(c), "| the line drawn:", src("module/loe.mjs").includes("g.lineStyle(c.inWay ? 5 : 3.5, col, 1).moveTo(a.x, a.y).lineTo(z.x, z.y);"));
+console.log("the label:", L.loeLabel(c), "| the line drawn:", src("module/loe.mjs").includes("g.lineStyle(c.inWay ? 4 : 2.6, col, 0.92).moveTo(a.x, a.y).lineTo(z.x, z.y);"));
 
 // 2. Flanking
 const FO = await import(ROOTURL + "module/flankoverlay.mjs");

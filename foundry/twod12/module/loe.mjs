@@ -11,7 +11,7 @@ import * as MK from "./mapmark.mjs";
 // your selected token), Cover height calculation (a button) and Show flanking (a toggle, flankoverlay.mjs). The shortcuts (Shift+L, Shift+H) stay.
 
 const NAME = "twod12-loe";
-const GREEN = 0x2fa84f, RED = 0xd23b2f, AMBER = 0xff5a1f;   // v0.0.350: the center line through a creature; v0.0.351 (Lucas: "red / brighter orange when blocked"): bright red-orange
+const GREEN = 0x34d399, RED = 0xf0473a, AMBER = 0xff6b2b, CASE = 0x111315, RING = 0x141210;   // v0.0.496 (Lucas: Option B): high-contrast emerald/crimson dashed rays with dark casing, ringed dots & X on blocked corners
 let state = null;   // { tokenId } while the lines are on for one token (the shortcut), { follow: true } for the toolbar's toggle (your selected token)
 let queued = false;
 
@@ -46,15 +46,20 @@ function draw() {
     const c = coverBetween(src, t);
     if (!c?.origin) continue;
     const g = new PIXI.Graphics();
-    const dashed = (a, z, col, w, alpha, on = 8, off = 7) => { const dx = z.x - a.x, dy = z.y - a.y, len = Math.hypot(dx, dy) || 1; g.lineStyle(w, col, alpha); for (let s0 = 0; s0 < len; s0 += on + off) { const e = Math.min(len, s0 + on); g.moveTo(a.x + (dx * s0) / len, a.y + (dy * s0) / len).lineTo(a.x + (dx * e) / len, a.y + (dy * e) / len); } };
+    const dashed = (a, z, col, w, alpha, on = 9, off = 6) => { const dx = z.x - a.x, dy = z.y - a.y, len = Math.hypot(dx, dy) || 1; g.lineStyle(w, col, alpha); for (let s0 = 0; s0 < len; s0 += on + off) { const e = Math.min(len, s0 + on); g.moveTo(a.x + (dx * s0) / len, a.y + (dy * s0) / len).lineTo(a.x + (dx * e) / len, a.y + (dy * e) / len); } };
     for (const k of c.corners) {
-      dashed(c.origin, k, k.blocked ? RED : GREEN, k.blocked ? 2.5 : 1.5, k.blocked ? 0.95 : 0.5);
-      g.lineStyle(0).beginFill(k.blocked ? RED : GREEN, k.blocked ? 1 : 0.7).drawCircle(k.x, k.y, k.blocked ? 5 : 3.5).endFill();
+      dashed(c.origin, k, CASE, 4.8, 0.55);
+      dashed(c.origin, k, k.blocked ? RED : GREEN, 2.6, 0.96);
+      g.lineStyle(1.5, RING, 0.95).beginFill(k.blocked ? RED : GREEN, 1).drawCircle(k.x, k.y, k.blocked ? 5.5 : 4.5).endFill();
+      if (k.blocked) {
+        g.lineStyle(1.6, 0xffffff, 1).moveTo(k.x - 3, k.y - 3).lineTo(k.x + 3, k.y + 3).moveTo(k.x + 3, k.y - 3).lineTo(k.x - 3, k.y + 3);
+      }
     }
     if (c.center) {
-      const a = c.origin, z = c.center, col = c.inWay ? AMBER : 0xe8e2d0;
-      g.lineStyle(c.inWay ? 5 : 3.5, col, 1).moveTo(a.x, a.y).lineTo(z.x, z.y);
-      g.lineStyle(0).beginFill(col, 1).drawCircle(z.x, z.y, 5).endFill();
+      const a = c.origin, z = c.center, col = c.inWay ? AMBER : 0xefe7d3;
+      g.lineStyle(c.inWay ? 6.5 : 4.5, RING, 0.5).moveTo(a.x, a.y).lineTo(z.x, z.y);
+      g.lineStyle(c.inWay ? 4 : 2.6, col, 0.92).moveTo(a.x, a.y).lineTo(z.x, z.y);
+      g.lineStyle(1.5, RING, 0.95).beginFill(col, 1).drawCircle(z.x, z.y, 4.5).endFill();
       for (const b of c.blockers ?? []) { const bt = canvas.tokens?.get(b.id); if (bt) g.lineStyle(3, AMBER, 0.95).drawCircle(bt.center.x, bt.center.y, Math.max(bt.w, bt.h) / 2 + 3); }
     }
     g.lineStyle(2, 0x1e2430, 1).beginFill(0xffffff, 1).drawCircle(c.origin.x, c.origin.y, 6).endFill();
