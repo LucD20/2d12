@@ -46,37 +46,137 @@ function readQuarryMarks() {
   for (const a of markers().filter(x => game.user.isGM || x.isOwner)) {
     const src = (a.isToken ? a.token?.texture?.src : a.getActiveTokens?.()[0]?.document?.texture?.src) || a.prototypeToken?.texture?.src || a.img || "";
     // v0.0.348 (Lucas: "multiple marks on the same target need to show all icons, like two Archers marking the same Quarry"): a list per token
-    // pack TALENTS-PT: the other kinds too (a Bound Ally's gold ring)
-    for (const q of [quarryOf(a), ...Object.values(a.getFlag?.(F, "marks") ?? {})]) if (q?.uuid) out.set(q.uuid, [...(out.get(q.uuid) ?? []), { src, color: markColor(q.kind) }]);
+    // pack TALENTS-PT: the other kinds too (a Bound Ally's gold ring); ui-token-bars-conditions: Heraldic Portrait Seals
+    for (const q of [quarryOf(a), ...Object.values(a.getFlag?.(F, "marks") ?? {})]) {
+      if (q?.uuid) out.set(q.uuid, [...(out.get(q.uuid) ?? []), { src, kind: String(q.kind || "quarry").toLowerCase(), color: markColor(q.kind) }]);
+    }
   }
   return out;
 }
-/** Draws (or removes) the crosshair mark at the top right of a token. */
+
+/** Pure layout helper for right-edge Heraldic Portrait Seals so multiple marks never collide. */
+export function markSealLayout(count, tokenW = 100) {
+  const r = Math.max(11, Math.min(18, tokenW * 0.145));
+  const step = Math.round(r * 2.85);
+  const x = tokenW - r * 0.45;
+  return Array.from({ length: Math.max(0, count) }, (_, k) => ({ x, y: r * 0.85 + k * step, r, step }));
+}
+
+function mPoly(g, pts, fillCol, strokeW, strokeCol, fillAlpha = 1) {
+  if (typeof g.beginFill === "function") {
+    if (strokeW > 0) g.lineStyle(strokeW, strokeCol, 1);
+    g.beginFill(fillCol, fillAlpha);
+    g.drawPolygon(pts);
+    g.endFill();
+    g.lineStyle(0);
+  } else {
+    g.poly(pts);
+    g.fill({ color: fillCol, alpha: fillAlpha });
+    if (strokeW > 0) { g.poly(pts); g.stroke({ width: strokeW, color: strokeCol, alpha: 1 }); }
+  }
+}
+
+function mCircle(g, cx, cy, r, fillCol, strokeW = 0, strokeCol = 0, fillAlpha = 1) {
+  if (typeof g.beginFill === "function") {
+    if (strokeW > 0) g.lineStyle(strokeW, strokeCol, 1);
+    if (fillCol !== null) g.beginFill(fillCol, fillAlpha);
+    g.drawCircle(cx, cy, r);
+    if (fillCol !== null) g.endFill();
+    g.lineStyle(0);
+  } else {
+    g.circle(cx, cy, r);
+    if (fillCol !== null) g.fill({ color: fillCol, alpha: fillAlpha });
+    if (strokeW > 0) { g.circle(cx, cy, r); g.stroke({ width: strokeW, color: strokeCol, alpha: 1 }); }
+  }
+}
+
+function mLine(g, x1, y1, x2, y2, width, color) {
+  if (typeof g.lineStyle === "function") { g.lineStyle(width, color, 1); g.moveTo(x1, y1).lineTo(x2, y2); g.lineStyle(0); }
+  else { g.moveTo(x1, y1).lineTo(x2, y2); g.stroke({ width, color, alpha: 1 }); }
+}
+
+/** Draws (or removes) Heraldic Portrait Seal marks down the right edge of a token. */
 function drawQuarryMark(token, marks = quarryMarks()) {
   if (!token || token.destroyed) return;
-  token.children?.filter(c => c.name === "twod12-quarry").forEach(c => { token.removeChild(c); c.destroy(); });
+  token.children?.filter(c => c.name === "twod12-quarry").forEach(c => { token.removeChild(c); c.destroy({ children: true }); });
   if (!marks.has(token.document?.uuid)) return;
-  const w = token.w ?? token.document.width * (canvas.grid?.size ?? 100), r = Math.max(10, w * 0.16);
-  // v0.0.224 (Lucas, playtest 3): the marker's portrait in the red ring (who marked it), with the crosshair ticks around it.
-  // v0.0.348: one per marker, down the token's right edge (the first at the top right)
-  (marks.get(token.document?.uuid) ?? [{ src: "", color: markColor("") }]).forEach(({ src, color }, k) => {
+  const w = token.w ?? token.document.width * (canvas.grid?.size ?? 100);
+  const list = marks.get(token.document?.uuid) ?? [];
+  const slots = markSealLayout(list.length, w);
+
+  list.forEach((entry, k) => {
+    const src = typeof entry === "string" ? entry : (entry?.src ?? "");
+    const kind = typeof entry === "object" ? String(entry?.kind || "quarry") : "quarry";
+    const isJudge = kind === "judge";
+    const isBound = kind === "bound";
+    const { x, y, r } = slots[k];
+
     const box = new PIXI.Container();
-    box.name = "twod12-quarry"; box.eventMode = "none"; box.position.set(w - r * 0.9, r * 0.9 + k * r * 2.3);
-    const g = new PIXI.Graphics();
-    g.beginFill(0xffffff, 0.9).drawCircle(0, 0, r).endFill();
-    box.addChild(g);
+    box.name = "twod12-quarry";
+    box.eventMode = "none";
+    box.position.set(x, y);
+
+    const back = new PIXI.Graphics();
+    if (isJudge) {
+      // Gilded 8-point radiant starburst behind the portrait
+      const pts = [];
+      const outerR = r * 1.44, innerR = r * 0.98;
+      for (let i = 0; i < 16; i++) {
+        const a = (i * Math.PI) / 8 - Math.PI / 2;
+        const rad = i % 2 === 0 ? outerR : innerR;
+        pts.push(Math.cos(a) * rad, Math.sin(a) * rad);
+      }
+      mPoly(back, pts, 0x241c11, Math.max(1.5, r * 0.11), 0xe6be5a, 0.96);
+    } else if (isBound) {
+      // Bound Ally: gilded bronze medallion
+      mCircle(back, 0, 0, r * 1.15, 0x241c11, Math.max(1.5, r * 0.11), 0xd2a75a, 0.96);
+    } else {
+      // Dark-iron medallion + 4 diagonal crimson broadhead barbs pointing inward
+      mCircle(back, 0, 0, r * 1.15, 0x1f1412, Math.max(1.4, r * 0.1), 0x8f2920, 0.96);
+      for (const deg of [45, 135, 225, 315]) {
+        const a = (deg * Math.PI) / 180;
+        const tipX = Math.cos(a) * (r * 1.38), tipY = Math.sin(a) * (r * 1.38);
+        const lA = a - 0.36, rA = a + 0.36;
+        const baseR = r * 0.88;
+        mPoly(back, [tipX, tipY, Math.cos(lA) * baseR, Math.sin(lA) * baseR, Math.cos(rA) * baseR, Math.sin(rA) * baseR], 0xe05a4d, 1, 0x1a110f, 1);
+      }
+    }
+    // Portrait backing disc
+    mCircle(back, 0, 0, r * 0.96, isJudge || isBound ? 0x3a2f22 : 0x221a18, 0, 0, 1);
+    box.addChild(back);
+
     if (src) {
       try {
-        const sp = PIXI.Sprite.from(src); sp.anchor.set(0.5); sp.width = sp.height = r * 2;
-        const mask = new PIXI.Graphics().beginFill(0xffffff).drawCircle(0, 0, r - 1).endFill();
-        sp.mask = mask; box.addChild(mask, sp);
-      } catch (e) { /* no image: the plain mark */ }
+        const sp = PIXI.Sprite.from(src);
+        sp.anchor.set(0.5);
+        sp.width = sp.height = r * 1.92;
+        const mask = new PIXI.Graphics();
+        mCircle(mask, 0, 0, r * 0.94, 0xffffff, 0, 0, 1);
+        sp.mask = mask;
+        box.addChild(mask, sp);
+      } catch (e) { /* no image: fallback disc */ }
     }
-    const ring = new PIXI.Graphics();
-    ring.lineStyle(Math.max(2, r * 0.2), color, 1).drawCircle(0, 0, r);
-    ring.moveTo(-r * 1.4, 0).lineTo(-r * 0.95, 0).moveTo(r * 0.95, 0).lineTo(r * 1.4, 0).moveTo(0, -r * 1.4).lineTo(0, -r * 0.95).moveTo(0, r * 0.95).lineTo(0, r * 1.4);
-    if (!src) ring.beginFill(color, 1).drawCircle(0, 0, r * 0.25).endFill();
-    box.addChild(ring);
+
+    const front = new PIXI.Graphics();
+    if (isJudge) {
+      mCircle(front, 0, 0, r * 0.98, null, Math.max(2, r * 0.15), 0xf5dc93, 1);
+      // Bottom-right gilded cross diamond badge
+      const bx = r * 0.74, by = r * 0.74, br = r * 0.42;
+      mPoly(front, [bx, by - br, bx + br, by, bx, by + br, bx - br, by], 0x1c150c, Math.max(1.2, r * 0.09), 0xf5dc93, 1);
+      const cw = Math.max(1.3, r * 0.1), cs = br * 0.56;
+      mLine(front, bx, by - cs, bx, by + cs, cw, 0xf5dc93);
+      mLine(front, bx - cs * 0.85, by, bx + cs * 0.85, by, cw, 0xf5dc93);
+    } else if (isBound) {
+      mCircle(front, 0, 0, r * 0.98, null, Math.max(2, r * 0.15), 0xd2a75a, 1);
+    } else {
+      mCircle(front, 0, 0, r * 0.96, null, Math.max(2, r * 0.14), 0xe86858, 1);
+      // Bottom-right dark-iron arrowhead badge
+      const bx = r * 0.74, by = r * 0.74, br = r * 0.42;
+      mCircle(front, bx, by, br, 0x1d1210, Math.max(1.2, r * 0.09), 0xe86858, 1);
+      const s = br * 0.62;
+      mPoly(front, [bx + s, by - s, bx + s * 0.1, by + s, bx - s * 0.15, by + s * 0.15, bx - s, by - s * 0.1], 0xffd9cc, 0, 0, 1);
+    }
+    box.addChild(front);
     token.addChild(box);
   });
 }

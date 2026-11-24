@@ -1,0 +1,17 @@
+--- Concept A planHealthBar
+Full+Guard: 10 20 30 vZone: 40 vFill: 40 rFill: 80 guardW: 24 overlay: null
+Mixed NL: 3 12 vNlW: 16 rNlW: 24 frame: normal
+Bloodied (0V): 0 20 frame: bloodied overlay: BLOODIED
+Strained (0R): 10 0 frame: strained overlay: STRAINED
+Overflow (-20V, Dying): -20 20 hpLeft: 0 vFill: 0 rFill: 0 vSpillW: 80 overlay: DYING
+Unconscious NL 50%+: UNCONSCIOUS overlay: UNCONSCIOUS
+Dead: true frame: dead overlay: DEAD fills: 0 0 0
+--- Count-down Sheet & HUD bars
+sheet remaining (10 max): {"lethal":100,"nonlethal":0,"left":10} {"lethal":50,"nonlethal":20,"left":5} {"lethal":0,"nonlethal":0,"left":0} {"lethal":0,"nonlethal":0,"left":-20}
+HUD negative overflow: true true true
+--- Heraldic Portrait Seal Marks
+3 seals on 100px token: true step >= 2.8*r (no overlap): true judge + quarry in mark.mjs: true
+--- 32 Condition SVG Icons & Status Cleanup
+SVG count: 32 all valid SVGs: true | frightened removed from statusEffects: true | called-out uses default eye: true | daunted registered: true | dead uses custom overlay (not giant skull): true
+--- System Gap Audit saved for later
+audit exists: true

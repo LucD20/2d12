@@ -105,7 +105,7 @@ console.log("the builder offers Pulled:", src("module/builder.mjs").includes('["
 
 console.log("--- Squeezing");
 const content = src("tools/content.mjs");
-console.log("a condition with Vulnerable = half the level:", /cond\("Squeezing"[^\n]*mode: "halfLevel"/.test(content), "| the effect sets it:", src("module/effects.mjs").includes('r.mode === "halfLevel" ? Math.max(1, Math.ceil((Number(actor.system?.level) || 1) / 2))'), "| a status:", src("module/twod12.mjs").includes('["squeezing", "icons/svg/net.svg"]'));
+console.log("a condition with Vulnerable = half the level:", /cond\("Squeezing"[^\n]*mode: "halfLevel"/.test(content), "| the effect sets it:", src("module/effects.mjs").includes('r.mode === "halfLevel" ? Math.max(1, Math.ceil((Number(actor.system?.level) || 1) / 2))'), "| a status:", src("module/twod12.mjs").includes('["squeezing", CI("squeezing")]'));
 const st = (...ids) => ({ statuses: new Set(ids) });
 console.log("Doomed:", cf.unconsciousDoom(st("squeezing"), "body"), cf.doomStatus(st("squeezing")), "| levels 1-5:", [1, 2, 3, 4, 5].map(l => Math.max(1, Math.ceil(l / 2))).join(" "), "| nothing:", JSON.stringify(cf.doomStatus(st())));
 console.log("--- v0.0.171: the movement label counts a diagonal between two creatures");

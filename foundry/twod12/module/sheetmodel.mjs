@@ -129,6 +129,18 @@ export function barSegments(lethal, nonlethal, max) {
   return { lethal: Math.round(lw * 10) / 10, nonlethal: Math.round(nw * 10) / 10 };
 }
 
+/** Count-down sheet health bar: remaining solid fill + recoverable Nonlethal hatch beside it (% of max threshold). */
+export function barRemainingSegments(lethal, nonlethal, max) {
+  const m = Math.max(1, Number(max) || 0), l = Math.max(0, Number(lethal) || 0), n = Math.max(0, Number(nonlethal) || 0);
+  const rem = Math.max(0, m - (l + n));
+  const nl = Math.min(m - rem, n);
+  return {
+    lethal: Math.round((rem / m) * 1000) / 10,
+    nonlethal: Math.round((nl / m) * 1000) / 10,
+    left: (Number(max) || 0) - (l + n)
+  };
+}
+
 /**
  * The AP pips of the combat strip. ap: AP now; regained: the AP this turn gave (4 + Quickened - Slowed); slowed: the Slowed value.
  * [{ k: "on" | "spent" | "slowed" }]: the available ones, then the spent ones, then one crossed pip per AP Slowed took this turn.

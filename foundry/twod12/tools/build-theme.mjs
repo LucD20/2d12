@@ -1470,6 +1470,9 @@ const STYLE3 = `
 .twod12-type .twod12-areaheight .ah-tag.out { color: var(--s-mute); }
 .twod12-type .twod12-areaheight .ah-foot { padding: 7px 10px; border-top: 1px solid var(--s-hair); background: var(--s-band); font-size: 11.5px; color: var(--s-mute); }
 .twod12-type .twod12-areaheight .ah-foot b { color: var(--s-gold); }
+/* Flat matte type-colored Nonlethal hatches on sheet bars (prevent dark-mode auto-inversion) */
+.twod12-type .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.v .ps2-track i.n { background: repeating-linear-gradient(-50deg, #e8965d 0 3px, #6e261d 3px 6px); }
+.twod12-type .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.r .ps2-track i.n { background: repeating-linear-gradient(-50deg, #74dbe2 0 3px, #203c66 3px 6px); }
 `;
 
 /** The theme's CSS from system.css's text (pure: the test calls it). */

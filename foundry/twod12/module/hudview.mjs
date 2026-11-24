@@ -33,11 +33,13 @@ export function marksHtml(m = {}) {
 /** Escalation ticks (max from the system's config: 3 today, 6 once Foundry follows the book). */
 export const escHtml = (n, max) => `<span class="hm-esc">${Array.from({ length: n0(max) }, (_, k) => `<i${k < n0(n) ? ' class="on"' : ""}></i>`).join("")}</span>`;
 
-/** One threshold's bar: what is left of it (Vigor 18/23), its Nonlethal damage hatched beside the fill. b = { name, cls ("v" | "r"), left, max, nl } */
+/** One threshold's bar: what is left of it (Vigor 18/23, or -20/10 on overflow), its Nonlethal damage hatched beside the fill. b = { name, cls ("v" | "r"), left, max, nl } */
 export function barHtml(b) {
-  const max = Math.max(1, n0(b.max)), left = Math.min(max, n0(b.left)), nl = Math.min(max - left, n0(b.nl));
+  const max = Math.max(1, n0(b.max)), left = Math.trunc(Number(b.left)) || 0;
+  const fill = Math.max(0, Math.min(max, left)), nl = Math.min(max - fill, n0(b.nl));
   const pct = x => Math.round((x / max) * 1000) / 10;
-  return `<div class="hb-bar ${esc(b.cls)}" title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} Nonlethal damage)` : ""}`)}"><i style="width:${pct(left)}%"></i>${nl ? `<u style="left:${pct(left)}%;width:${pct(nl)}%"></u>` : ""}<span><b>${left}/${n0(b.max)}</b></span></div>`;
+  const negCls = left < 0 ? " neg" : "";
+  return `<div class="hb-bar ${esc(b.cls)}${negCls}" title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} Nonlethal damage)` : ""}`)}"><i style="width:${pct(fill)}%"></i>${nl ? `<u style="left:${pct(fill)}%;width:${pct(nl)}%"></u>` : ""}<span><b>${left}/${n0(b.max)}</b></span></div>`;
 }
 const barsHtml = bars => `<div class="hb-bars">${(bars ?? []).map(barHtml).join("")}</div>`;
 /** A state tag: Bloodied, Strained, or the Down state (one word, never only a tint). */
@@ -96,7 +98,7 @@ export function sideHtml(s = {}) {
    and a +N popover past max, D1 the Basic tab as the sheet's four groups, D3 / D7 the right column: the Situational section
    (urgent prompts separated above passive options like Prone/Granted), the Hands, the macro bar. */
 const BUFF_RE = /^(?:empowered|quickened|favored|shield of faith|blessed|inspired|warded|hasted|hidden|invisible|protected|bolstered|vanguard|consecrated|aegis|aura|focused|stance|emboldened|resilient|regenerating|guard\b|bulwark)/i;
-const DEBUFF_RE = /^(?:prone|slowed|daunted|frightened|vulnerable|immobilized|blinded|dazed|exhausted|grabbed|half-blinded|hindered|imperiled|lingering|pressed|sickened|staggered|taunted|doomed|judged|enfeebled|bleed(?:ing)?|burning|poisoned|restrained|unconscious|dying|shattered|weakened|marked|silenced|confused|deafened|cursed|shaken|exposed|bloodied|strained|incapacitated|unaware|dazzled|stunn?ed)/i;
+const DEBUFF_RE = /^(?:prone|slowed|daunted|frightened|vulnerable|immobilized|blinded|dazed|desperate|squeezing|exhausted|grabbed|half-blinded|hindered|imperiled|lingering|pressed|sickened|staggered|taunted|doomed|judged|enfeebled|bleed(?:ing)?|burning|poisoned|restrained|unconscious|dying|shattered|weakened|marked|silenced|confused|deafened|cursed|shaken|exposed|bloodied|strained|incapacitated|unaware|dazzled|stunn?ed)/i;
 /** Classify an active condition/effect for HUD pill color: "debuff" | "buff" | "neutral". */
 export function condPolarity(c) {
   if (c?.pol === "buff" || c?.pol === "debuff" || c?.pol === "neutral") return c.pol;

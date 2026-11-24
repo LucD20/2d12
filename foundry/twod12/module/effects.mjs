@@ -347,13 +347,15 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   const sid0 = shortName(item.name).trim().toLowerCase(), sid = Object.keys(COND_NAME).find(k => COND_NAME[k] === sid0) ?? sid0;   // v0.0.414: Lingering is the status bleed
   const baseId = sid.replace(/\s*\(.*\)\s*$/, "");   // "Hindered (until Move)" is the Hindered status
   const statuses = (CONFIG.statusEffects ?? []).some(e => e.id === sid) ? [sid] : ((CONFIG.statusEffects ?? []).some(e => e.id === baseId) ? [baseId] : []);
+  const statusIcon = statuses.length ? (CONFIG.statusEffects ?? []).find(e => e.id === statuses[0])?.img : "";
+  const effectImg = (statusIcon?.startsWith("systems/twod12/icons/conditions/") && (!item.img || String(item.img).startsWith("icons/svg/"))) ? statusIcon : item.img;
   const light = s.settings.find(x => x.type === "light");
   const lightBackup = light ? await applyLight(actor, light) : null;
   // The "slot" is the initiative count: EoT and Rounds end at the end of that count even if the creature swaps initiative later.
   const own = combatantOf(actor);
   const slotInit = own?.initiative ?? null;
   const made = (await actor.createEmbeddedDocuments("ActiveEffect", [{
-    name: value !== undefined ? `${item.name} ${value}` : (over?.bleed ? bleedText(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over.bleed } } })) : withOriginName(item.name, s, origin?.actorUuid, actor)), img: item.img, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
+    name: value !== undefined ? `${item.name} ${value}` : (over?.bleed ? bleedText(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over.bleed } } })) : withOriginName(item.name, s, origin?.actorUuid, actor)), img: effectImg, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
     flags: { [F]: {
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,
@@ -771,6 +773,7 @@ export function wrapConditions(proto, deps = {}) {
   const find = deps.find ?? conditionItem, apply = deps.apply ?? applyEffects;
   const wrapped = async function (statusId, options = {}) {
     if (statusId === "exhausted" || options?.twod12Raw) return inner.call(this, statusId, options);
+    if (statusId === "dead" && options?.overlay) return inner.call(this, statusId, { ...options, overlay: false });
     // A condition with a value that is already on (Empowered 2): a click is +1 (Shift: settings, Ctrl: remove) and a right-click (Foundry passes overlay: true) is -1, whatever `active` says.
     const valued = this.effects?.find?.(x => x.statuses?.has?.(statusId) && isValued(x));
     if (valued) {

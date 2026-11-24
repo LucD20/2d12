@@ -21,7 +21,7 @@ import { firstTimeThisEncounter } from "./down.mjs";
 import { hoursText } from "./sleep.mjs";
 import {
   SHEET_FREQ, SECTION_ORDER, actionSection, vsDefenses, saveDCs, strikesLine, costPill, vsShort, distanceShort, basicUnavailable, nextBanes,
-  healthTags, toDown, downState, dominantPool, barSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, ESC_APEX, slotless, nextLevels, plainEnrichers,
+  healthTags, toDown, downState, dominantPool, barSegments, barRemainingSegments, apPips, escRungs, hooksLeft, slotLabel, escSectionRank, ESC_APEX, slotless, nextLevels, plainEnrichers,
   rowLines, senseChips, strikePips, ELITE_RUNGS, actionBar, escMarks, combatLists, basicAttackLine, ratingKeys, npcRow, specialAvg, ratingsAverage, downIn, diceFor, dmgModChips, dmgModLines, dmgModPalette
 } from "./sheetmodel.mjs";
 import { parseDmgMods, SUBS } from "./chatcards.mjs";
@@ -200,15 +200,16 @@ export async function pcModel(sheet, ctx) {
     down.collapseOff = unconscious ? "Already Unconscious" : "";
   }
   const dom = dominantPool(s.bodyDamage, s.mindDamage);
-  // v0.0.334 (Lucas): the bar's tooltip as a list: Lethal, Nonlethal, then the clicks
-  const barTip = (name, l, n, max, note) => `<b>${name}</b> ${l + n} / ${max} · ${note}<br>Lethal: ${l}<br>Nonlethal: ${n}<br>Left click: +1 damage; Ctrl + click: +5 damage<br>Shift + click: nonlethal<br>Right click: remove damage`;
+  // Count-down health model: starts at max Vigor/Resolve, drops to 0 (Bloodied/Strained) and negative on overflow.
+  const vLeft = (s.bdt ?? 0) - (s.bodyDamage ?? 0), rLeft = (s.mdt ?? 0) - (s.mindDamage ?? 0);
+  const barTip = (name, l, n, max, note) => `<b>${name}</b> ${max - (l + n)} / ${max} · ${note}<br>Damage taken: ${l + n} (Lethal ${l}, Nonlethal ${n})<br>Left click: −1 (take damage); Ctrl + click: −5<br>Shift + click: nonlethal<br>Right click: +1 (heal)`;
   const health = {
     pool: s.pool, toDown: toDown(s.pool, s.totalDamage), damage: s.totalDamage, down, dominant: dom, domColor: dom === "Resolve" ? "#8fb3ee" : dom === "Vigor" ? "#ef8a80" : "#c9cfda",
     bars: [
-      { name: "Vigor", label: "#ef8a80", pool: "body", value: s.bodyDamage, max: s.bdt, tag: tags.bloodied ? "BLOODIED" : "", bg: "#c4453c", solid: "#c4453c", dark: "#7f2a24",
-        seg: barSegments(d.bodyLethal, d.bodyNonlethal, s.bdt), tip: barTip("Vigor", d.bodyLethal, d.bodyNonlethal, s.bdt, "Bloodied when full") },
-      { name: "Resolve", label: "#8fb3ee", pool: "mind", value: s.mindDamage, max: s.mdt, tag: tags.strained ? "STRAINED" : "", bg: "#3a6fc4", solid: "#5b8ad6", dark: "#3a5f99",
-        seg: barSegments(d.mindLethal, d.mindNonlethal, s.mdt), tip: barTip("Resolve", d.mindLethal, d.mindNonlethal, s.mdt, `Strained when full${s.exhausted ? ` (Exhausted ${s.exhausted}: −${4 * s.exhausted})` : ""}`) }
+      { name: "Vigor", label: "#ef8a80", pool: "body", value: vLeft, max: s.bdt, neg: vLeft < 0, tag: tags.bloodied ? "BLOODIED" : "", bg: "#c23b32", solid: "#c23b32", dark: "#6e261d",
+        seg: barRemainingSegments(d.bodyLethal, d.bodyNonlethal, s.bdt), tip: barTip("Vigor", d.bodyLethal, d.bodyNonlethal, s.bdt, "Bloodied at 0") },
+      { name: "Resolve", label: "#8fb3ee", pool: "mind", value: rLeft, max: s.mdt, neg: rLeft < 0, tag: tags.strained ? "STRAINED" : "", bg: "#3f73c9", solid: "#3f73c9", dark: "#203c66",
+        seg: barRemainingSegments(d.mindLethal, d.mindNonlethal, s.mdt), tip: barTip("Resolve", d.mindLethal, d.mindNonlethal, s.mdt, `Strained at 0${s.exhausted ? ` (Exhausted ${s.exhausted}: −${4 * s.exhausted})` : ""}`) }
     ]
   };
   const rally = { left: s.rallyLeft, max: s.rallyMax, heal: s.rallyHeal, pips: Array.from({ length: s.rallyMax }, (_, k) => k < s.rallyLeft) };

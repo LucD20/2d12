@@ -213,6 +213,8 @@ function deriveHealth(m) {
   m.lethal = d.bodyLethal + d.mindLethal;
   m.nonlethal = d.bodyNonlethal + d.mindNonlethal;
   m.totalDamage = m.lethal + m.nonlethal;
+  m.vigorLeft = m.bdt - m.bodyDamage;
+  m.resolveLeft = m.mdt - m.mindDamage;
   m.hpLeft = m.pool - m.totalDamage;
   m.health = { value: Math.max(0, m.hpLeft), max: m.pool };
   m.bloodied = m.bdt > 0 && m.bodyDamage >= m.bdt;   // equal or more than the threshold
