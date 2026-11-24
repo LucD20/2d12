@@ -228,6 +228,9 @@ export function squadRun(turns, i) {
   for (let j = i; j < turns.length && squadKeyOf(turns[j], turns) === k; j++) out.push(turns[j]);
   return out;
 }
+export const isDefeatedC = c => !!(c?.isDefeated || c?.defeated || c?.actor?.system?.atZero || c?.actor?.statuses?.has?.("dead"));
+/** Pure (v0.0.493): the living members remaining in the squad run starting at turns[i]. */
+export const aliveSquadRun = (turns, i) => squadRun(turns, i).filter(c => !isDefeatedC(c));
 /** Pure (v0.0.440): the squad's new order (its members' ids) when `pick` goes next at turns[i]: those already gone, the pick, the rest. */
 export function squadOrderAfter(turns, i, pick) {
   const run = squadRun(turns, i), k = run.length ? squadKeyOf(run[0], turns) : "";
@@ -252,16 +255,24 @@ export class TwoD12Combat extends Combat {
    * v0.0.440 (Lucas, the checklist: "The GM decides the order each minion goes ... when ending the turn, you get to select who of the next two left
    * is next"): before a turn goes to a Minions' squad with two or more still to act (at the start of the combat and of each round too), the GM picks
    * on the bottom bar which of them goes now; the others follow, and the next pick comes at the end of that turn.
+   * v0.0.493: dead/defeated squad members are excluded; if fewer than 2 living members remain, skip the pick dialog.
    */
   async _squadPick(i) {
     if (!game.user?.isGM) return;
     const run = squadRun(this.turns ?? [], i);
-    if (run.length < 2) return;
+    const alive = run.filter(c => !isDefeatedC(c));
+    if (alive.length < 2) {
+      if (alive.length === 1 && run.length > 1 && alive[0].id !== run[0].id) {
+        const order = squadOrderAfter(this.turns, i, alive[0].id);
+        await this.updateEmbeddedDocuments("Combatant", order.map((id, k) => ({ _id: id, [`flags.${F}.init.sqOrder`]: k })));
+      }
+      return;
+    }
     const { pickBar } = await import("./pickbar.mjs");
     // v0.0.454 (Lucas, playtest 6, D5 "Proposed A"): the token pictures, each with its number; the name on a hover
-    const kinds = new Set(run.map(c => c.name.replace(/\s*\d+$/, "")));
-    const pick = await pickBar({ icon: "fa-people-group", cls: "squadpick", text: `<b>${esc(kinds.size === 1 ? [...kinds][0] : "Minions")}</b> <span class="lb-tag">${run.length} of the squad left</span><span class="lb-q">Which one goes now?</span>`,
-      options: run.map(c => ({ id: c.id, label: c.name, token: c.token?.object ?? null, img: c.token?.texture?.src || c.img || c.actor?.img || "icons/svg/mystery-man.svg", num: /(\d+)\s*$/.exec(c.name)?.[1] ?? "" })) });
+    const kinds = new Set(alive.map(c => c.name.replace(/\s*\d+$/, "")));
+    const pick = await pickBar({ icon: "fa-people-group", cls: "squadpick", text: `<b>${esc(kinds.size === 1 ? [...kinds][0] : "Minions")}</b> <span class="lb-tag">${alive.length} of the squad left</span><span class="lb-q">Which one goes now?</span>`,
+      options: alive.map(c => ({ id: c.id, label: c.name, token: c.token?.object ?? null, img: c.token?.texture?.src || c.img || c.actor?.img || "icons/svg/mystery-man.svg", num: /(\d+)\s*$/.exec(c.name)?.[1] ?? "" })) });
     if (!pick || pick === run[0].id) return;
     const order = squadOrderAfter(this.turns, i, pick);
     await this.updateEmbeddedDocuments("Combatant", order.map((id, k) => ({ _id: id, [`flags.${F}.init.sqOrder`]: k })));
@@ -281,7 +292,19 @@ export class TwoD12Combat extends Combat {
         logTurnEnd(this, curC, { apSpent: spent, apMax: max, apKept: left, guard, strikes });
       } catch (e) { /* no log */ }
     }
-    try { if (this.started) await this._squadPick((this.turn ?? -1) + 1 < (this.turns?.length ?? 0) ? (this.turn ?? -1) + 1 : 0); } catch (e) { console.warn("twod12 | the squad's order", e); }
+    try {
+      if (this.started && (this.turns?.length ?? 0) > 0) {
+        const len = this.turns.length, skip = !!this.settings?.skipDefeated;
+        let next = ((this.turn ?? -1) + 1) % len;
+        if (skip) {
+          for (let step = 0; step < len; step++) {
+            const idx = ((this.turn ?? -1) + 1 + step) % len;
+            if (!isDefeatedC(this.turns[idx])) { next = idx; break; }
+          }
+        }
+        await this._squadPick(next);
+      }
+    } catch (e) { console.warn("twod12 | the squad's order", e); }
     return super.nextTurn();
   }
 

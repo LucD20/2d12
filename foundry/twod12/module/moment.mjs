@@ -64,8 +64,10 @@ export function sideOk(who, ownerDisp, subjectDisp, isSelf, self) {
 }
 /** Pure: a Reaction's Distance in squares ("5"), or 0 (Weapon, Reach, none: not checked here). */
 export const squaresOf = d => (/^\d+$/.test(String(d ?? "").trim()) ? Number(d) : 0);
-/** Pure: the order the used rows resolve in: last in, first out. */
-export const stackOrder = rows => rows.filter(r => r.state === "use").sort((x, y) => y.order - x.order);
+/** Pure: Interrupts always resolve before Triggers (0 vs 1). */
+const kindRank = r => (r?.kind === "interrupt" ? 0 : 1);
+/** Pure: the order the used rows resolve in: Interrupts before Triggers, then last in, first out. */
+export const stackOrder = rows => rows.filter(r => r.state === "use").sort((x, y) => (kindRank(x) - kindRank(y)) || (y.order - x.order));
 /** Pure: every row is answered (used, passed or skipped). */
 export const allAnswered = rows => rows.every(r => r.state !== "wait");
 /** Pure: "9:41" for the time left. */
@@ -82,10 +84,11 @@ export function answerRow(rows, i, choice) {
   return true;
 }
 
-/** v0.0.273 (Lucas): pure: a used row resolves one place earlier ("up") or later ("down"): it swaps its stack number with its neighbour's. */
+/** v0.0.273 (Lucas): pure: a used row resolves one place earlier ("up") or later ("down"): it swaps its stack number with its neighbour's. Interrupts stay ahead of Triggers. */
 export function moveInStack(rows, i, dir) {
   const stack = stackOrder(rows), k = stack.findIndex(r => r.i === i), j = k + (dir === "up" ? -1 : 1);
   if (k < 0 || j < 0 || j >= stack.length) return false;
+  if (kindRank(stack[k]) !== kindRank(stack[j])) return false;
   [stack[k].order, stack[j].order] = [stack[j].order, stack[k].order];
   return true;
 }
@@ -140,11 +143,17 @@ export function answerGroup(rows, i, choice) {
   } else for (const m of mates) m.state = "pass";
   return true;
 }
-/** Pure: the GM dragged the slabs: ids are the used rows from the top (resolves first) down. false when the list isn't the stack. */
+/** Pure: the GM dragged the slabs: ids are the used rows from the top (resolves first) down. false when the list isn't the stack or puts a Trigger ahead of an Interrupt. */
 export function setStackOrder(rows, ids) {
   const used = rows.filter(r => r.state === "use");
   if (!Array.isArray(ids) || ids.length !== used.length || new Set(ids).size !== ids.length || !ids.every(i => used.some(r => r.i === i))) return false;
-  ids.forEach((i, k) => { rows.find(r => r.i === i).order = ids.length - k; });
+  const byId = new Map(used.map(r => [r.i, r]));
+  let seenTrigger = false;
+  for (const id of ids) {
+    if (kindRank(byId.get(id)) === 1) seenTrigger = true;
+    else if (seenTrigger) return false;
+  }
+  ids.forEach((i, k) => { byId.get(i).order = ids.length - k; });
   return true;
 }
 /** Pure: the rows still waiting, a group per creature (in the order they came). */
@@ -328,7 +337,7 @@ export async function collectReactions(ev) {
   const rows = [], blocked = [];
   for (const tk of globalThis.canvas?.tokens?.placeables ?? []) {
     const actor = tk.actor;
-    if (!actor) continue;   // v0.0.343 (Lucas, playtest 4): a token the GM hid on the map reacts too (hidden is only what the players see)
+    if (!actor || isDown(actor) || tk.combatant?.isDefeated || tk.combatant?.defeated) continue;   // v0.0.493: defeated/down tokens never trigger Reactions; v0.0.343: a token the GM hid on the map reacts too
     if (ev.source?.actor && actor.uuid === ev.source.actor.uuid) continue;   // never a Reaction to your own Strike or move
     for (const item of actor.itemTypes?.action ?? []) {
       const k = item.system?.moment, def = MOMENTS[k];
@@ -375,7 +384,7 @@ export async function collectReactions(ev) {
       if (why) blocked.push({ ...row, why }); else rows.push(row);
     }
   }
-  rows.sort((x, y) => x.dist - y.dist);
+  rows.sort((x, y) => (kindRank(x) - kindRank(y)) || (x.dist - y.dist));
   return { rows, blocked };
 }
 

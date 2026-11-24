@@ -1212,9 +1212,10 @@ const STYLE3 = `
 .twod12-type .twod12.chat.cc .cc-btn,
 .twod12-type .twod12.chat.cc .cc-icon,
 .twod12-type .twod12.chat.cc .cc-dtag { display: inline-flex; align-items: center; justify-content: center; gap: 4px; line-height: 1.15; }
+.twod12-type .twod12.chat.cc .cc-icon { padding: 0 !important; gap: 0 !important; min-width: 0; flex: 0 0 auto; }
 .twod12-type .twod12.chat.cc .cc-btn i,
 .twod12-type .twod12.chat.cc .cc-icon i,
-.twod12-type .twod12.chat.cc .cc-dtag i { margin: 0; line-height: 1; display: inline-flex; align-items: center; }
+.twod12-type .twod12.chat.cc .cc-dtag i { margin: 0 !important; line-height: 1; display: inline-flex; align-items: center; justify-content: center; }
 
 /* ==== World Clock & Above-Chat Time Bar (Image 1 STYLE-3 format, centered controls) ==== */
 .twod12-type .twod12.clockwin .window-content { padding: 0; background: var(--s-pg); color: var(--s-ink); font-family: "Source Sans 3", sans-serif; }

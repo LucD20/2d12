@@ -1,0 +1,16 @@
+Interrupt before Trigger in stackOrder: Slip Away -> Rebuke
+moveInStack refuses Trigger over Interrupt: false | Interrupt below Trigger: false
+setStackOrder refuses Trigger before Interrupt: false | allows Interrupt before Trigger: true
+rxoverlay pinNumbers keeps Interrupt #1: [[1,1],[0,2]]
+collectReactions skips defeated/down & sorts Interrupt first: true
+targetsOther: true true false false false
+rallyPrompt socket wired: true
+coverBanesApply: false false true
+EoT shifted slotInit (own non-frozen turn): end | frozen swap stays: null
+combatTurnChange fallbacks: true
+carousel clears stripHovered: true
+cc-icon zero padding & icon margin: true
+clean reducedNote: Aveline takes 5 Vigor (raw 7, Judge (Durgan) −2)
+aliveSquadRun skips dead g1: g2,g3
+aliveSquadRun with 1 alive: g2
+skipDefeated default wired: true

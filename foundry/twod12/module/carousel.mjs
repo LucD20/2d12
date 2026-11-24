@@ -8,6 +8,12 @@ import { strikesUsed } from "./usage.mjs";
 import { marksHtml } from "./hudview.mjs";
 import { momentumNow, setMomentum } from "./escalation.mjs";
 const F = "twod12", ID = "twod12-carousel";
+let stripHovered = null;
+const clearStripHover = () => {
+  const tok = stripHovered;
+  stripHovered = null;
+  if (tok && tok._hover) try { tok._onHoverOut?.({ currentTarget: tok }); } catch (e) { /* gone */ }
+};
 
 /** v0.0.199 (Lucas, mockup "D2. Plates, condensed"): a creature's plate: the band (FOE / ALLY, or ACTING), the round portrait with the
  * initiative seal, the name and the AP pips; the active one also has its movement left and Swap. */
@@ -124,6 +130,7 @@ export function renderCarousel() {
   let show = true;
   try { show = game.settings.get("twod12", "carousel"); } catch (e) { /* not registered yet */ }
   if (!combat || !show) {
+    clearStripHover();
     el?.remove();
     swapping = null;
     lastActId = null;
@@ -181,8 +188,10 @@ export function renderCarousel() {
     gm ? `<span class="tc-sep"></span>${btn("end", "fa-power-off", "End", "End the encounter")}` : ""
   ].join("");
   const head = `${left ? `<div class="tc-side left">${left}</div>` : ""}${middle}${right ? `<div class="tc-side right">${right}</div>` : ""}`;
+  clearStripHover();
   const oldScroll = el.querySelector(".tp-list")?.scrollLeft ?? 0;
   el.innerHTML = `<div class="tc-head tc-bar">${head}</div><div class="tp-wrap"><button type="button" class="tc-nav prev" aria-label="Scroll left" hidden><i class="fa-solid fa-chevron-left"></i></button><div class="tc-list tp-list">${list.map((c, idx) => card(combat, c, { ...baseSt, idx, squadPos: squadPosAt(idx) })).join("")}</div><button type="button" class="tc-nav next" aria-label="Scroll right" hidden><i class="fa-solid fa-chevron-right"></i></button></div>`;
+  el.onmouseleave = () => { clearStripHover(); if (gm) hideApButtons(); };
   el.querySelectorAll(".tp").forEach(div => {
     div.addEventListener("click", async ev => {
       if (ev.target.closest("[data-tc]")) return;
@@ -207,13 +216,20 @@ export function renderCarousel() {
     div.addEventListener("mouseenter", () => {
       const c = combat.combatants.get(div.dataset.combatantId);
       const tok = c?.token?.object;
-      if (tok && !tok._hover && (gm || tok.visible)) tok._onHoverIn?.({ currentTarget: tok }, { hoverOutOthers: false });
+      if (stripHovered && stripHovered !== tok) clearStripHover();
+      if (tok && !tok._hover && (gm || tok.visible)) {
+        tok._onHoverIn?.({ currentTarget: tok }, { hoverOutOthers: true });
+        stripHovered = tok;
+      }
       if (gm && started && c && !c.isDefeated) showApButtons(div, combat);
     });
     div.addEventListener("mouseleave", () => {
       const c = combat.combatants.get(div.dataset.combatantId);
       const tok = c?.token?.object;
-      if (tok?._hover) tok._onHoverOut?.({ currentTarget: tok });
+      if (tok && (tok._hover || tok === stripHovered)) {
+        tok._onHoverOut?.({ currentTarget: tok });
+        if (tok === stripHovered) stripHovered = null;
+      }
       if (gm) hideApButtons();
     });
   });

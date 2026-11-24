@@ -45,6 +45,15 @@ import { attrFromTier } from "./rollsource.mjs";
 /** v0.0.181 (P1, Smite): a Weapon Action adds the Modifier it rolls to its damage on Tier 2 or 3: a Weapon roll, or a [Signature, Weapon] Action's Signature roll. */
 const modOnWeapon = (src, traits) => src?.kind === "weapon" || (src?.kind === "signature" && !!traits?.has?.("weapon"));
 
+/** Pure (v0.0.493): whether Cover Banes / High Cover Doomed apply to this Action. Demoralize and non-attack sensory/social Actions ("can see or hear you") skip Cover Banes. */
+export function coverBanesApply(item, useTraits = new Set()) {
+  const basic = item?.getFlag?.("twod12", "basic") ?? item?.flags?.twod12?.basic ?? "";
+  if (basic === "demoralize") return false;
+  const has = t => !!(useTraits?.has?.(t) || (Array.isArray(useTraits) && useTraits.includes(t)));
+  if (!has("strike") && !has("weapon") && !has("area") && !has("ranged") && !has("melee") && !has("handle") && /\bhear\b/i.test(String(item?.system?.targets ?? ""))) return false;
+  return true;
+}
+
 /** Text form of a damage instance, e.g. "[V] 1[W] + 1d4 H" (v0.0.234: the pool B / M written [V] / [R]). */
 export function instanceText(i) {
   const parts = [];
@@ -755,6 +764,8 @@ export async function useAction(actor, item, opts = {}) {
       else if (cov0?.banes >= 3) coverNotices.push({ text: `${who}${tag}: already High cover`, icon: "fa-shield-halved", active: false, tone: "bane", why: `${who} raises Cover up to High`, ...extra });
     }
   };
+  // v0.0.493 (Lucas playtest): Demoralize and pure sensory/social Actions ("can see or hear you", no Strike/Weapon/Area/Ranged/Melee/Handle) do not take Cover Banes.
+  const covBanesOn = coverBanesApply(item, useTraits);
   // Several targets: for each creature, its DC, its cover, how you perceive it and it perceives you, and the range to it.
   const perT = [];
   if (multi) {
@@ -767,8 +778,8 @@ export async function useAction(actor, item, opts = {}) {
       const cov0 = areaOutcome?.cover?.[tk.id] ?? (selfToken && String(it.targets ?? "").trim() ? coverBetween(selfToken, tk) : null);   // an area: cover from its Point of Origin
       if (cov0?.noLoE) { skipped.push(`${tk.name}: no Line of Effect`); continue; }
       const covLow = ignoredBy(actor, "coverLower", useTraits), covHi = ignoredBy(a, "coverHigher", new Set());
-      const cov = adjustCover(cov0, { lower: covLow.length, higher: covHi.length });
-      pushCoverChanges(cov0, cov, covLow, covHi, tk.name, a.uuid);
+      const cov = covBanesOn ? adjustCover(cov0, { lower: covLow.length, higher: covHi.length }) : { ...(cov0 ?? {}), banes: 0 };
+      if (covBanesOn) pushCoverChanges(cov0, cov, covLow, covHi, tk.name, a.uuid);
       const covIgn = cov?.banes ? coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null) : [];   // v0.0.266 (Aim): a cover level the Action ignores; v0.0.270: a grant's own use only
       if (cov?.banes && covIgn.length) coverNotices.push({ text: `${cov.label} ignored`, icon: "fa-shield-halved", active: true, tone: "boon", why: `${covIgn.join(", ")}: ${cov.label} gives no Bane against ${tk.name}`, for: a.uuid, showInDialog: true });
       // v0.0.301 (PACK BB; Ch. 3 Cover): Low 1 and Medium 2 Field Banes; High cover makes the roll Doomed (and gives no Field Banes)
@@ -819,10 +830,10 @@ export async function useAction(actor, item, opts = {}) {
   if (!multi && rollsAtOthers && targetToken && selfToken && String(it.targets ?? "").trim()) {
     const cov0 = areaOutcome?.cover?.[targetToken?.id] ?? coverBetween(selfToken, targetToken);
     const covLow = ignoredBy(actor, "coverLower", useTraits), covHi = targetToken.actor ? ignoredBy(targetToken.actor, "coverHigher", new Set()) : [];
-    const cov = adjustCover(cov0, { lower: covLow.length, higher: covHi.length });
+    const cov = covBanesOn ? adjustCover(cov0, { lower: covLow.length, higher: covHi.length }) : { ...(cov0 ?? {}), banes: 0 };
     if (cov?.noLoE) {
       dlgWarns.push(`No Line of Effect to ${targetToken.name}: all four corners are blocked`);   // v0.0.453 (R3): a warning in the dialog (it was a stop, or the GM's window)
-    } else {
+    } else if (covBanesOn) {
       pushCoverChanges(cov0, cov, covLow, covHi, targetToken.name);
       if (cov?.banes) {
         const covIgn = coverIgnored(actor, ["", "low", "medium", "high"][cov.banes] ?? "", useTraits, opts.grant?.effect?.id ?? null);   // v0.0.266 (Aim); v0.0.270: a grant's own use only

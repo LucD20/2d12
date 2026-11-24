@@ -30,13 +30,29 @@ Expect: Checkboxes have crisp high-contrast borders and checking them puts "Grou
 
 ## The roll dialog
 
+### fix-demoralize-cover · v0.0.493 · Demoralize ignores Cover Banes
+Do: Place Orc Warrior behind Low or Medium cover (e.g. an ally or corner) and have Sylwen or Grave Wisp use Demoralize on a target behind cover.
+Expect: No Cover Bane or High Cover Doomed is added to Demoralize (normal Strike / Ranged actions still take Cover Banes).
+
 ## Chat cards
 
+### fix-layonhands-eq · v0.0.493 · Lay On Hands @Rally target & damage card = icon
+Do: Have Durgan use Lay On Hands (2 AP) targeting Aveline and click the Rally Point button on the card while Durgan's token is still selected; also deal damage to Durgan and inspect the "=" breakdown button next to Undo.
+Expect: Clicking Lay On Hands' Rally Point opens "Rally: Aveline" (never Durgan) and heals Aveline; the "=" icon inside the breakdown button is dead-center inside its square border.
+
 ## Conditions and their Tiers
+
+### fix-daunted-eot · v0.0.493 · Daunted (EoT) expires at end of target's turn
+Do: Have Grave Wisp hit Durgan with Chilling Touch (applying Daunted EoT), then advance through Durgan's turn (including when Durgan is last in the round) into the next round.
+Expect: Daunted (Grave Wisp) (EoT) clears automatically at the end of Durgan's turn on both Round 1 and Round 2+.
 
 ## Movement
 
 ## Reactions and Judge
+
+### fix-rx-order-dead · v0.0.493 · Interrupt before Trigger & defeated tokens skip Reactions
+Do: Kill/defeat an enemy with a Reaction (e.g. Orc Warrior) and trigger its moment near its body; also trigger Slip Away (Kaela, Interrupt) and Rebuke (Aveline, Trigger) on the same enemy movement, and try reordering the stack.
+Expect: Defeated/Down tokens never trigger Reactions or post No-Reactions lines; Interrupt (Slip Away) is always listed and resolved before Trigger (Rebuke), and Rebuke cannot be moved above Slip Away. Also verify Skip Defeated is ON by default in Combat Tracker settings, dead squad Minions no longer trigger the Minion pick bar, and hovering across Combat Strip portraits never leaves stuck token highlights on the canvas.
 
 ## Areas, light and Cover
 

@@ -420,7 +420,12 @@ export function durationStep(flags, ended, prior, me) {
   if (dur.type === "eot") {
     const mine = (me?.combatantId && ended.id === me.combatantId) || (me?.tokenId && ended.tokenId === me.tokenId) || (me?.uuid && ended.actorUuid === me.uuid) || (!!me?.ref && ended.ref === me.ref);
     // v0.0.433 (the Bestiary: "A Minion's EoT effects end at the end of its own turn"): in a slot several creatures share (a squad, a tie), its own turn
-    if (has(flags.slotInit)) return Number(ended.initiative) === Number(flags.slotInit) && ended.initiative !== null && (!ended.shared || mine) ? "end" : null;
+    if (has(flags.slotInit)) {
+      if (ended.initiative !== null && Number(ended.initiative) === Number(flags.slotInit) && (!ended.shared || mine)) return "end";
+      // v0.0.493: if the creature's own non-frozen turn ended (e.g. initiative changed or slot shifted), never orphan its EoT effect
+      if (mine && !ended.frozen) return "end";
+      return null;
+    }
     return mine ? "end" : null;
   }
   if (dur.type !== "rounds") return null;
@@ -467,7 +472,9 @@ export function registerEffectHooks() {
   // EoT ends with the affected creature's turn; Rounds count down at the end of the origin's turn.
   Hooks.on("combatTurnChange", async (combat, prior) => {
     if (!game.user.isActiveGM) return;
-    const ended = combat.combatants.get(prior?.combatantId);
+    const ended = combat.combatants.get(prior?.combatantId)
+      ?? (prior?.tokenId ? combat.combatants.find(c => c.tokenId === prior.tokenId) : null)
+      ?? (Number.isInteger(prior?.turn) ? combat.turns?.[prior.turn] : null);
     const done = [];
     // v0.0.343 (Lucas, playtest 4: Frightened (1 round) and Vulnerable (EoT) didn't end): each effect is done on its own (one error no longer stops
     // the others), and the creature is matched by its combatant, token or uuid, not by object identity (durationStep, tested in t233)
@@ -501,7 +508,7 @@ export function pendingSteps(combat, ended, prior) {
   // combatant after this one in the turn order has it (the slot ends with its last creature)
   const turns = combat.turns ?? [], at = turns.findIndex(c => c.id === ended.id), same = c => c.initiative !== null && c.initiative !== undefined && c.initiative === ended.initiative;
   const endInfo = { id: ended.id, initiative: ended.initiative ?? null, tokenId: ended.tokenId ?? "", actorUuid: ended.actor?.uuid ?? "", ref: ended.actor ?? null,
-    shared: turns.some(c => c.id !== ended.id && same(c)), lastOfSlot: at < 0 || !turns.slice(at + 1).some(same) };
+    shared: turns.some(c => c.id !== ended.id && same(c)), lastOfSlot: at < 0 || !turns.slice(at + 1).some(same), frozen: !!ended.getFlag?.(F, "frozen") };
   const short = n => String(n ?? "").replace(/\s*\(.*\)\s*$/, "");
   for (const actor of actors.values()) {
     for (const e of [...actor.effects]) {

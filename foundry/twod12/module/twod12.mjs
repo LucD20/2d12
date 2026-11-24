@@ -214,6 +214,7 @@ Hooks.once("init", () => {
   game.settings.register("twod12", "rollDialogStats", { name: "Roll dialog: averages and chances", hint: "Under each Tier of the roll dialog: the average damage (with every bonus and penalty that is on) and each target's chance of that Tier. Everyone, the GM only, or no one. With \"Hide enemy Defenses\" on, players see the averages but not the chances.", scope: "world", config: true, type: String, choices: { all: "Everyone", gm: "GM only", none: "Hidden" }, default: "all" });
   game.settings.register("twod12", "hideTargetDetails", { name: "Hide target details from players", hint: "On damage messages, players see only each target's name and whether it was applied (no Weak, Resist, Immune, Guard or what it took). Bloodied and Strained stay visible: they are public.", scope: "world", config: true, type: Boolean, default: false });
   game.settings.register("twod12", "highlightTraits", { name: "Highlight traits and damage types in rules text", hint: "The book's text colors on cards (Attributes, Modifiers, Banes and Boons, Rally Points, costs, movement, damage), a light background behind trait names (Strike, Divine...) and colored damage types (Cold, Holy...).", scope: "client", config: true, type: Boolean, default: true });
+  game.settings.register("twod12", "skipDefeatedDefaulted", { scope: "world", config: false, type: Boolean, default: false });
   CONFIG.Actor.dataModels = { character: CharacterData, npc: NpcData };
   CONFIG.Item.dataModels = { species: SpeciesData, class: ClassData, feature: FeatureData, action: ActionData, weapon: WeaponData, armor: ArmorData, gear: GearData, effect: EffectData, talent: TalentData };
 
@@ -228,6 +229,14 @@ Hooks.once("init", () => {
       if (a.getFlag?.("core", "sheetClass") !== "twod12.NpcStatBlockSheet") continue;
       try { await a.unsetFlag("core", "sheetClass"); } catch (e) { console.warn("twod12 | the retired one-page sheet", a.name, e); }
     }
+    // v0.0.493 (Lucas playtest): enable Foundry's Combat Tracker "Skip Defeated" by default once per world (a GM who turns it off later keeps their choice).
+    try {
+      if (!game.settings.get("twod12", "skipDefeatedDefaulted")) {
+        const cfg = game.settings.get("core", "combatTrackerConfig") ?? {};
+        if (!cfg.skipDefeated) await game.settings.set("core", "combatTrackerConfig", { ...cfg, skipDefeated: true });
+        await game.settings.set("twod12", "skipDefeatedDefaulted", true);
+      }
+    } catch (e) { console.warn("twod12 | Skip Defeated default", e); }
   });
   DocumentSheetConfig.registerSheet(Item, "twod12", TwoD12ItemSheet, { types: ["species", "class", "feature", "action", "weapon", "armor", "gear", "effect", "talent"], makeDefault: true, label: "2d12 Item Sheet" });
 

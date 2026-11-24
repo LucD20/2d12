@@ -3,7 +3,7 @@ import { rallyBonusFor } from "./automation.mjs";
 import { sysLine } from "./sysmsg.mjs";
 const warn = m => ui.notifications.warn(m);
 
-import { planHealing, symmetricHealing, healWindowFull, thresholdsOf, healLinesHtml } from "./healwin.mjs";
+import { planHealing, symmetricHealing, healWindowFull, thresholdsOf, healLinesHtml, answererFor } from "./healwin.mjs";
 export { healLinesHtml };
 export { planHealing };
 /** v0.0.250: the default split is the symmetrical one (healwin.mjs); kept under its old name for the callers and the tests. */
@@ -45,15 +45,85 @@ export async function useRally(actor, n, why = "", { extra = "", source = null, 
   return true;
 }
 
-/** The @Rally[N] button (@Rally[N|upto] lets you pick 1 to N): the creature that clicks uses the points. v0.0.250: |extra:1d6+pow adds a heal rolled with the card's creature's Modifiers. */
+/** Pure: whether an Action's Targets line names another creature rather than Self. */
+export const targetsOther = t => {
+  const s = String(t ?? "").trim().toLowerCase();
+  return !!s && !/^(self|you)\b/.test(s);
+};
+
+/** Resolve an Actor from a token/actor UUID. */
+async function actorFromUuid(u) {
+  if (!u) return null;
+  try { const d = await fromUuid(u); return d?.documentName === "Actor" ? d : (d?.actor ?? null); } catch (e) { return null; }
+}
+
+/** Prompt the creature's owner to use Rally Points (local if owned/answerer, via socket otherwise). */
+export async function promptRally(actor, n, why = "Rally", { extra = "", source = null, top = 0 } = {}) {
+  const who = answererFor(actor);
+  if (who?.id && who.id !== game.user?.id && !actor.isOwner) {
+    game.socket.emit("system.twod12", { type: "rallyPrompt", userId: who.id, actorUuid: actor.uuid, n, why, extra, sourceUuid: source?.uuid ?? "", top });
+    return true;
+  }
+  return useRally(actor, n, why, { extra, source, top });
+}
+
+/** The @Rally[N] button (@Rally[N|upto] lets you pick 1 to N): targets the Action's target (e.g. Lay On Hands / Heal), prompting when needed. v0.0.250: |extra:1d6+pow adds a heal rolled with the card's creature's Modifiers. */
 export async function handleRally(cfg, ctx = {}) {
-  const actor = canvas.tokens?.controlled[0]?.actor ?? game.user.character;
-  if (!actor) return warn("Select your token (or assign a character) to use Rally Points.");
+  const actFlag = ctx.message?.getFlag?.("twod12", "action") ?? null;
+  let source = ctx.actor ?? null;
+  if (!source && actFlag?.actorUuid) source = await actorFromUuid(actFlag.actorUuid);
+  const srcItem = source && actFlag?.itemId ? source.items?.get?.(actFlag.itemId) : null;
+  const needOther = !cfg.self && targetsOther(srcItem?.system?.targets ?? "");
+
+  let actors = [];
+  const rawTargets = ctx.targets?.length ? ctx.targets : (actFlag?.targets?.length ? actFlag.targets : []);
+  if (!cfg.self && rawTargets.length) {
+    actors = (await Promise.all(rawTargets.map(t => actorFromUuid(t.uuid ?? t)))).filter(Boolean);
+  }
+  if (!actors.length && !cfg.self && game.user?.targets?.size) {
+    actors = [...game.user.targets].map(t => t.actor).filter(Boolean);
+  }
+  if (!actors.length && needOther) {
+    const srcTok = source?.getActiveTokens?.(true, true)?.[0] ?? canvas.tokens?.controlled?.[0] ?? null;
+    const disp = srcTok?.document?.disposition ?? 1;
+    const allies = (canvas.tokens?.placeables ?? []).filter(t => t.actor && Number(t.document?.disposition ?? 0) === disp && t.actor.uuid !== source?.uuid);
+    const cands = [...allies.map(t => ({ actor: t.actor, tok: t })), ...(source ? [{ actor: source, tok: srcTok }] : [])];
+    if (cands.length > 1) {
+      const { pickBar } = await import("./pickbar.mjs");
+      const pick = await pickBar({
+        icon: "fa-heart-pulse",
+        text: `<b>${shortName(srcItem) || "Rally"}</b>: Who uses a Rally Point? (click here or the token)`,
+        options: cands.map((c, i) => ({ id: String(i), label: c.actor === source ? `You (${shortName(c.actor)})` : shortName(c.actor), cls: c.actor === source ? "you" : "", token: c.tok ?? undefined }))
+      });
+      if (pick == null || pick === "done") return false;
+      const chosen = cands[Number(pick)]?.actor;
+      if (chosen) actors = [chosen];
+    } else if (cands.length === 1) {
+      actors = [cands[0].actor];
+    }
+  }
+  if (!actors.length) {
+    const fallback = (cfg.self ? source : null) ?? canvas.tokens?.controlled[0]?.actor ?? game.user.character;
+    if (fallback) actors = [fallback];
+  }
+  if (!actors.length) return warn("Select or target a creature to use Rally Points.");
+
+  let actor = actors[0];
+  if (actors.length > 1) {
+    const { pickBar } = await import("./pickbar.mjs");
+    const pick = await pickBar({
+      icon: "fa-heart-pulse",
+      text: `<b>${shortName(srcItem) || "Rally"}</b>: Who uses a Rally Point?`,
+      options: actors.map((a, i) => ({ id: String(i), label: shortName(a), token: a.getActiveTokens?.(true, true)?.[0] ?? undefined }))
+    });
+    if (pick == null || pick === "done") return false;
+    actor = actors[Number(pick)];
+    if (!actor) return false;
+  }
+
   const max = Math.max(1, Number(cfg.n) || 1);
   // v0.0.454 (D1): "up to N": the count is the Rally window's first line (it was a window of its own); it starts at the most that can be used
   const left = actor.type === "npc" ? max : Number(actor.system?.rallyLeft) || 0, n = cfg.upto ? Math.min(max, left) : max;
   if (!n) return warn(`${actor.name} has no Rally Point left.`);
-  let source = ctx.actor ?? null;
-  if (!source) { try { const u = ctx.message?.getFlag?.("twod12", "action")?.actorUuid; const a = u ? fromUuidSync(u) : null; source = a?.documentName === "Actor" ? a : (a?.actor ?? null); } catch (e) { source = null; } }
-  return useRally(actor, n, "Rally", { extra: cfg.extra ?? "", source, top: cfg.upto ? n : 0 });
+  return promptRally(actor, n, srcItem?.name || "Rally", { extra: cfg.extra ?? "", source, top: cfg.upto ? n : 0 });
 }

@@ -51,8 +51,9 @@ export async function applyToActor(actor, a, opts = {}) {
     const J = await import("./judge.mjs");
     for (const r of await J.judgeReductions(actor, from)) {
       const x = absorbGuard(r.by, a, 0); a.B = x.a.B; a.M = x.a.M; a.reduced = (Number(a.reduced) || 0) + x.taken;
+      const judgeShort = String(r.judge.name ?? "").replace(/\s*\([^()]*\)\s*$/, "").trim() || r.judge.name;
       if (rep && x.taken) rep.push({ kind: "reduce", label: `Judge (${r.judge.name})`, v: r.by, byUuid: r.judge.uuid ?? "" });
-      if (x.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: r.judge }), content: sysLine("fa-scale-balanced", `<b>Judge</b>: the damage to <b>${esc(actor.name)}</b> is reduced by <b>${x.taken}</b> (${esc(r.judge.name)}'s Power Modifier; the Judged creature's first damage this round to an ally within 5 squares).`, "guardmsg") });
+      if (x.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: r.judge }), content: sysLine("fa-scale-balanced", `<b>Judge</b>: the damage to <b>${esc(actor.name)}</b> is reduced by <b>${x.taken}</b> (${esc(judgeShort)}'s Power Modifier; the Judged creature's first damage this round to an ally within 5 squares).`, "guardmsg") });
     }
   } catch (e) { console.warn("twod12 | Judge", e); }
   const g = absorbGuard(actor.system.guard, a, actor.system.apGuard, opts.guardFirst === "M" ? "M" : "B");   // v0.0.283: the creature's choice of pool
@@ -114,6 +115,10 @@ export function registerSocket() {
       if (!actor) return;
       if (data.type === "healPrompt") return H.healHere(actor, data.amount, { source: data.source, lead: data.lead });
       if (data.type === "endEffectPrompt") return H.endEffectHere(actor, data.which, { source: data.source });
+      if (data.type === "rallyPrompt") {
+        let src = null; if (data.sourceUuid) { try { const sd = await fromUuid(data.sourceUuid); src = sd?.documentName === "Actor" ? sd : (sd?.actor ?? null); } catch (e) { src = null; } }
+        return (await import("./rally.mjs")).useRally(actor, data.n, data.why || "Rally", { extra: data.extra ?? "", source: src, top: data.top ?? 0 });
+      }
     }
     if (!game.user.isActiveGM) return;
     if (data?.type === "placeObject" || data?.type === "breakObject") return (await import("./objects.mjs")).onObjectSocket(data);   // pack TALENTS-PT: the Ice Pillar

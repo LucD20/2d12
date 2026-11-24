@@ -12,6 +12,58 @@
      "rev": 4
     }
    ]
+  },
+  {
+   "name": "The roll dialog",
+   "items": [
+    {
+     "id": "fix-demoralize-cover",
+     "v": "v0.0.493",
+     "title": "Demoralize ignores Cover Banes",
+     "do": "Place Orc Warrior behind Low or Medium cover (e.g. an ally or corner) and have Sylwen or Grave Wisp use Demoralize on a target behind cover.",
+     "expect": "No Cover Bane or High Cover Doomed is added to Demoralize (normal Strike / Ranged actions still take Cover Banes).",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Chat cards",
+   "items": [
+    {
+     "id": "fix-layonhands-eq",
+     "v": "v0.0.493",
+     "title": "Lay On Hands @Rally target & damage card = icon",
+     "do": "Have Durgan use Lay On Hands (2 AP) targeting Aveline and click the Rally Point button on the card while Durgan's token is still selected; also deal damage to Durgan and inspect the \"=\" breakdown button next to Undo.",
+     "expect": "Clicking Lay On Hands' Rally Point opens \"Rally: Aveline\" (never Durgan) and heals Aveline; the \"=\" icon inside the breakdown button is dead-center inside its square border.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Conditions and their Tiers",
+   "items": [
+    {
+     "id": "fix-daunted-eot",
+     "v": "v0.0.493",
+     "title": "Daunted (EoT) expires at end of target's turn",
+     "do": "Have Grave Wisp hit Durgan with Chilling Touch (applying Daunted EoT), then advance through Durgan's turn (including when Durgan is last in the round) into the next round.",
+     "expect": "Daunted (Grave Wisp) (EoT) clears automatically at the end of Durgan's turn on both Round 1 and Round 2+.",
+     "rev": 1
+    }
+   ]
+  },
+  {
+   "name": "Reactions and Judge",
+   "items": [
+    {
+     "id": "fix-rx-order-dead",
+     "v": "v0.0.493",
+     "title": "Interrupt before Trigger & defeated tokens skip Reactions",
+     "do": "Kill/defeat an enemy with a Reaction (e.g. Orc Warrior) and trigger its moment near its body; also trigger Slip Away (Kaela, Interrupt) and Rebuke (Aveline, Trigger) on the same enemy movement, and try reordering the stack.",
+     "expect": "Defeated/Down tokens never trigger Reactions or post No-Reactions lines; Interrupt (Slip Away) is always listed and resolved before Trigger (Rebuke), and Rebuke cannot be moved above Slip Away. Also verify Skip Defeated is ON by default in Combat Tracker settings, dead squad Minions no longer trigger the Minion pick bar, and hovering across Combat Strip portraits never leaves stuck token highlights on the canvas.",
+     "rev": 1
+    }
+   ]
   }
  ]
 }

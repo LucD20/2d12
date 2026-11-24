@@ -107,7 +107,7 @@ export function lineText(e, nm = r => r?.name ?? "?", an = n => n) {
     case "push": return `${nm(d.target)} ${d.mode} ${d.n}${d.note ? ` (${d.note})` : ""}`;
     case "dmg": {
       const tgt = d.target ? nm(d.target) : nm(e.who);
-      const red = d.reducedBy ? ` (raw ${d.raw ?? (Number(d.n) + Number(d.reducedBy))}${d.reducedNote ? `, ${d.reducedNote}` : `, −${d.reducedBy}`})` : "";
+      const red = d.reducedBy ? ` (raw ${d.raw ?? (Number(d.n) + Number(d.reducedBy))}${d.reducedNote ? `, ${cleanEffectName(d.reducedNote)}` : `, −${d.reducedBy}`})` : "";
       return `${tgt} takes ${d.text}${red}${d.ally ? " (ally)" : ""}`;
     }
     case "heal": return `${nm(d.target ?? e.who)} heals ${d.n}${d.rp ? ` (${d.rp} RP)` : ""}`;

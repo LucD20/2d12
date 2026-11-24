@@ -31,9 +31,10 @@ export function setHover(id, row) { const h = id ? { id, row } : null; if (JSON.
 export function previewOrder(id, ids) { if (ids) local.order.set(id, ids); else local.order.delete(id); queue(); }
 export const hasOverlay = () => shown.size > 0;
 
+const kindRank = r => (r?.kind === "interrupt" ? 0 : 1);
 /** Pure: the place of each used row in the stack (1 = resolves first), with a local drag order when there is one. */
 export function pinNumbers(st, ids = null) {
-  const used = st.rows.filter(r => r.state === "use").sort((x, y) => y.order - x.order).map(r => r.i);
+  const used = st.rows.filter(r => r.state === "use").sort((x, y) => (kindRank(x) - kindRank(y)) || (y.order - x.order)).map(r => r.i);
   const list = ids && ids.length === used.length && ids.every(i => used.includes(i)) ? ids : used;
   return new Map(list.map((i, k) => [i, k + 1]));
 }
@@ -191,7 +192,7 @@ function drawReplay(R, gs, fs) {
   const ring = (p, color, w = 3) => { if (p) g.lineStyle(w, hex(color), 1).drawCircle(p.x, p.y, rad); };
   if (b.kind === "move") { const s = at("start"), z = at(b.face?.uuid); if (s && z) { g.lineStyle(3, BEIGE, 0.9); dashLine(g, s, z, 10, 7); g.lineStyle(2, BEIGE, 0.9).beginFill(BEIGE, 0.2).drawCircle(s.x, s.y, rad * 0.9).endFill(); } ring(z, "#ecdcae"); }
   else { const s = at(b.face?.uuid), z = at(b.target?.uuid); if (s && z) { g.lineStyle(5, RED, b.never ? 0.45 : 1).moveTo(s.x, s.y).lineTo(shortOf(s, z, rad).x, shortOf(s, z, rad).y); arrowHead(g, s, shortOf(s, z, rad), RED, fs * 1.1); } ring(s, "#e0553b"); }
-  const used = st.rows.filter(r => r.state === "use").sort((x, y) => y.order - x.order);
+  const used = st.rows.filter(r => r.state === "use").sort((x, y) => (kindRank(x) - kindRank(y)) || (y.order - x.order));
   used.forEach((r, k) => {
     const a = at(r.tokenUuid), z = at(r.targetUuid);
     if (!a) return;
