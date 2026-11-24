@@ -23,10 +23,10 @@ differ):
 
 ## Starting a combat
 
-### ui-init-squads · v0.0.490 · Intuitive Initiative Squads & alignment
-Rev: 2
-Do: Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Try Ungroup All then Auto-Squad Minions, "+ Squad" / "+ Add" popovers (including on the bottom row), checkbox multi-select + "Group Selected into Squad", dragging one enemy onto another or into a squad, toggling Goes last, clicking "×" on a member pill, and rolling Initiative.
-Expect: Minions auto-group into visual brass-bordered Squad Cards ("×2 · 1 roll") and Auto-Squad Minions re-groups cleanly after Ungroup All; "+ Squad" / "+ Add" popovers open cleanly over neighboring rows without clipping; checkboxes have crisp borders; Goes last rows don't clip their badge or show "+ Squad"; all buttons, pills, dropdowns, and icons sit centered.
+### ui-init-squads · v0.0.491 · Intuitive Initiative Squads & alignment
+Rev: 3
+Do: Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Click enemy checkboxes, click "+ Squad" / "+ Add" (including on the bottom row), test Ungroup All → Auto-Squad Minions, and roll Initiative.
+Expect: Checkboxes have crisp high-contrast borders and checking them puts "Group Selected (N)" in the Enemies header with zero vertical layout shift; "+ Squad" / "+ Add" popovers float cleanly over the window without growing or pushing the bottom footer down; Orc Warrior's sub-line stays on one tidy row without wrapping "GM".
 
 ## The roll dialog
 
@@ -43,10 +43,6 @@ Expect: Minions auto-group into visual brass-bordered Squad Cards ("×2 · 1 rol
 ## Ending an encounter and resting
 
 ## The Encounter Log
-
-### enclog-v489-fixes · v0.0.489 · Encounter Log HP Bar header, Undo voiding & clean turn log
-Do: In combat with Durgan, Sylwen, Orc Warrior, and Ogre Chieftain: apply damage to Ogre Chieftain then click Undo; have Durgan use Judge (0 AP) and Shield of Faith (Reaction) during Orc Warrior's turn (applying Taunted), then open Encounter Log and click Copy for Analysis.
-Expect: The summary column header reads "HP Bar" (not "Pressure"); undone damage is voided so Net matches Max HP − Current; the Turn-by-Turn log prefixes off-turn actions ("Durgan Judge 0A vs OW"), writes "Taunted (Durgan)" without nested build text, and shows "Durgan Rx Shield of Faith vs Sylwen" once without duplication.
 
 ## Windows
 

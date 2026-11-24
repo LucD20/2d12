@@ -2620,12 +2620,10 @@
 .twod12-type .twod12.iwin .iw-sqbtn.sub:hover:not([disabled]) { background: var(--s-band); border-color: var(--s-hair); color: var(--s-ink); }
 .twod12-type .twod12.iwin .iw-sqbtn[disabled] { opacity: .45; cursor: default; }
 .twod12-type .twod12.iwin .iw-sqbtn i { margin: 0; font-size: 10.5px; line-height: 1; display: inline-flex; align-items: center; }
-.twod12-type .twod12.iwin .iw-bulkbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 10px; background: color-mix(in srgb, var(--s-gold) 16%, var(--s-pg)); border-top: 1px solid var(--s-hair); border-bottom: 1px solid var(--s-rule); font-size: 12px; color: var(--s-ink); }
-.twod12-type .twod12.iwin .iw-bulkbtns { display: inline-flex; align-items: center; gap: 6px; }
+.twod12-type .twod12.iwin .iw-selnote { font-size: 11.5px; font-weight: 700; color: var(--s-gold); white-space: nowrap; }
 .twod12-type .twod12.iwin .iw-sqbox { position: relative; margin: 6px 8px; border: 1px solid color-mix(in srgb, var(--s-gold) 52%, var(--s-rule)); border-left: 3px solid var(--s-gold); background: color-mix(in srgb, var(--s-gold) 8%, var(--s-pg-2)); transition: box-shadow .12s, background .12s; }
 .twod12-type .twod12.iwin .iw-sqbox .iw-sqrow { border-top: 0; background: transparent; padding: 6px 8px; }
 .twod12-type .twod12.iwin .iw-row.has-pop, .twod12-type .twod12.iwin .iw-sqbox.has-pop { position: relative; z-index: 45; }
-.twod12-type .twod12.iwin .iw-body.has-pop { padding-bottom: 180px; }
 .twod12-type .twod12.iwin .iw-sqbox.iw-drag-over, .twod12-type .twod12.iwin .iw-row.iw-drag-over { outline: 2px dashed var(--s-gold); outline-offset: -2px; background: color-mix(in srgb, var(--s-gold) 18%, var(--s-pg-2)); }
 .twod12-type .twod12.iwin .iw-sqpics { display: inline-flex; align-items: center; flex: none; padding-right: 2px; }
 .twod12-type .twod12.iwin .iw-sqpics .iw-pic { margin-left: -10px; border-color: var(--s-pg-2); box-shadow: 0 0 0 1px var(--s-rule); }
@@ -2638,12 +2636,12 @@
 .twod12-type .twod12.iwin .iw-mpill:active { cursor: grabbing; }
 .twod12-type .twod12.iwin .iw-mx { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; min-height: 0; padding: 0; margin: 0; border: 0; background: transparent; color: var(--s-mute); font-size: 13px; font-weight: 700; line-height: 1; cursor: pointer; }
 .twod12-type .twod12.iwin .iw-mx:hover { background: var(--s-band); color: var(--s-bad); }
-.twod12-type .twod12.iwin .iw-sqchk { appearance: none; -webkit-appearance: none; flex: none; width: 15px; height: 15px; margin: 0; padding: 0; border: 1.5px solid var(--s-rule); border-radius: 0; background: var(--s-pg); cursor: pointer; align-self: center; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
-.twod12-type .twod12.iwin .iw-sqchk:hover { border-color: var(--s-gold); }
-.twod12-type .twod12.iwin .iw-sqchk:checked { background: var(--s-gold); border-color: var(--s-gold); }
-.twod12-type .twod12.iwin .iw-sqchk:checked::after { content: "✓"; font-size: 11px; font-weight: 900; line-height: 1; color: var(--s-stamp-ink); }
+.twod12-type .twod12.iwin .iw-sqchk { flex: none; width: 16px; height: 16px; min-height: 0; margin: 0; padding: 0; border: 1.5px solid color-mix(in srgb, var(--s-gold) 70%, var(--s-mute)); border-radius: 0; background: var(--s-pg); color: var(--s-stamp-ink); cursor: pointer; align-self: center; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; line-height: 1; }
+.twod12-type .twod12.iwin .iw-sqchk:hover { border-color: var(--s-gold); background: color-mix(in srgb, var(--s-gold) 18%, var(--s-pg)); }
+.twod12-type .twod12.iwin .iw-sqchk.on { background: var(--s-gold); border-color: var(--s-gold); color: var(--s-stamp-ink); }
+.twod12-type .twod12.iwin .iw-sqchk i { margin: 0; font-size: 10px; line-height: 1; }
 .twod12-type .twod12.iwin .iw-popwrap { position: relative; display: inline-flex; align-items: center; }
-.twod12-type .twod12.iwin .iw-pop { position: absolute; top: calc(100% + 4px); left: 0; z-index: 80; min-width: 225px; max-height: 240px; overflow-y: auto; padding: 5px; background: var(--s-pg-2); border: 1px solid var(--s-rule); box-shadow: 0 10px 26px rgba(0,0,0,.6); display: flex; flex-direction: column; gap: 3px; }
+.twod12-type .twod12.iwin .iw-pop { position: absolute; top: calc(100% + 4px); left: 0; z-index: 120; min-width: 225px; max-height: 240px; overflow-y: auto; padding: 5px; background: var(--s-pg-2); border: 1px solid var(--s-rule); box-shadow: 0 10px 26px rgba(0,0,0,.65); display: flex; flex-direction: column; gap: 3px; }
 .twod12-type .twod12.iwin .iw-pop-ttl { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--s-mute); padding: 3px 6px; border-bottom: 1px solid var(--s-hair); }
 .twod12-type .twod12.iwin .iw-pop-it { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; height: auto; min-height: 26px; padding: 4px 7px; margin: 0; border: 1px solid transparent; border-radius: 0; background: transparent; color: var(--s-ink); font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; box-sizing: border-box; }
 .twod12-type .twod12.iwin .iw-pop-it:hover { background: var(--s-band); border-color: var(--s-hair); color: var(--s-gold); }

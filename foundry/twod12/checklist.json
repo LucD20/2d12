@@ -5,24 +5,11 @@
    "items": [
     {
      "id": "ui-init-squads",
-     "v": "v0.0.490",
+     "v": "v0.0.491",
      "title": "Intuitive Initiative Squads & alignment",
-     "do": "Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Try Ungroup All then Auto-Squad Minions, \"+ Squad\" / \"+ Add\" popovers (including on the bottom row), checkbox multi-select + \"Group Selected into Squad\", dragging one enemy onto another or into a squad, toggling Goes last, clicking \"×\" on a member pill, and rolling Initiative.",
-     "expect": "Minions auto-group into visual brass-bordered Squad Cards (\"×2 · 1 roll\") and Auto-Squad Minions re-groups cleanly after Ungroup All; \"+ Squad\" / \"+ Add\" popovers open cleanly over neighboring rows without clipping; checkboxes have crisp borders; Goes last rows don't clip their badge or show \"+ Squad\"; all buttons, pills, dropdowns, and icons sit centered.",
-     "rev": 2
-    }
-   ]
-  },
-  {
-   "name": "The Encounter Log",
-   "items": [
-    {
-     "id": "enclog-v489-fixes",
-     "v": "v0.0.489",
-     "title": "Encounter Log HP Bar header, Undo voiding & clean turn log",
-     "do": "In combat with Durgan, Sylwen, Orc Warrior, and Ogre Chieftain: apply damage to Ogre Chieftain then click Undo; have Durgan use Judge (0 AP) and Shield of Faith (Reaction) during Orc Warrior's turn (applying Taunted), then open Encounter Log and click Copy for Analysis.",
-     "expect": "The summary column header reads \"HP Bar\" (not \"Pressure\"); undone damage is voided so Net matches Max HP − Current; the Turn-by-Turn log prefixes off-turn actions (\"Durgan Judge 0A vs OW\"), writes \"Taunted (Durgan)\" without nested build text, and shows \"Durgan Rx Shield of Faith vs Sylwen\" once without duplication.",
-     "rev": 1
+     "do": "Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Click enemy checkboxes, click \"+ Squad\" / \"+ Add\" (including on the bottom row), test Ungroup All → Auto-Squad Minions, and roll Initiative.",
+     "expect": "Checkboxes have crisp high-contrast borders and checking them puts \"Group Selected (N)\" in the Enemies header with zero vertical layout shift; \"+ Squad\" / \"+ Add\" popovers float cleanly over the window without growing or pushing the bottom footer down; Orc Warrior's sub-line stays on one tidy row without wrapping \"GM\".",
+     "rev": 3
     }
    ]
   }

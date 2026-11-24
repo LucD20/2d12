@@ -65,7 +65,7 @@ const listWithLast = listCustom.map(c => (c.id === "g4" ? { ...c, set: { ...(c.s
 const mPop = IM.gmModel(listWithLast, call, { open: { "hostile|G": true }, sel: { g1: true, g2: true }, pop: `solo:g1` });
 const htmlPop = IV.gmHtml(mPop);
 const g4Row = mPop.sides.find(s => s.key === "hostile").rows.find(r => r.id === "g4");
-console.log("5. Squad HTML pieces:", htmlPop.includes("iw-sqbox") && htmlPop.includes("iw-mpill") && htmlPop.includes("iw-bulkbar") && htmlPop.includes("iw-pop") && htmlPop.includes("iw-body has-pop") && htmlPop.includes("has-pop") && !g4Row.canSquad);
+console.log("5. Squad HTML pieces:", htmlPop.includes("iw-sqbox") && htmlPop.includes("iw-mpill") && htmlPop.includes("Group Selected (2)") && !htmlPop.includes("iw-bulkbar") && htmlPop.includes('role="checkbox"') && htmlPop.includes("iw-pop") && !htmlPop.includes("iw-body has-pop") && !g4Row.canSquad);
 
 // 2. Conditional Bloodied / Strained on chat damage cards
 const baseAtk = {
@@ -94,7 +94,7 @@ console.log("7. Polyhedral SVG dice:",
   "| d12Pent=" + (d12.includes("cc-die d12 boom") && d12.includes('points="14,1.5 26,10.2 21.4,24.5 6.6,24.5 2,10.2"')));
 console.log("8. Card breakdowns use SVG dice:", hPostS.includes("cc-die d12") && hPostS.includes("cc-ddie d8"));
 
-// 4. Encounter Log fixes (cleanEffectName, off-turn prefix, Rx dedup, HP Bar header, ccUndo voiding wiring)
+// 4. Encounter Log fixes (cleanEffectName, off-turn prefix, Rx dedup across token/actor IDs, HP Bar header, ccUndo voiding wiring)
 console.log("9. cleanEffectName:", EL.cleanEffectName("Taunted (Durgan (Dwarf Paladin, Lay On Hands))"), "| with EoT:", EL.cleanEffectName("Taunted (Durgan (Dwarf Paladin, Lay On Hands)) (EoT)"));
 const crs = [
   { id: "t_du", fullName: "Durgan", abbr: "Durgan", side: "pc", maxHp: 35, startHp: 35, currentHp: 35 },
@@ -105,7 +105,7 @@ const log = [
   { id: "e1", r: 1, t: 0, own: { id: "t_ow", name: "Orc Warrior" }, k: "act", who: { id: "t_du", name: "Durgan" }, d: { name: "Judge", ap: 0, multiAp: true, tg: [{ id: "t_ow", name: "Orc Warrior" }] } },
   { id: "e2", r: 1, t: 0, own: { id: "t_ow", name: "Orc Warrior" }, k: "cond", who: { id: "t_ow", name: "Orc Warrior" }, d: { name: "Taunted (Durgan (Dwarf Paladin, Lay On Hands))" } },
   { id: "e3", r: 1, t: 0, own: { id: "t_ow", name: "Orc Warrior" }, k: "act", who: { id: "t_du", name: "Durgan" }, d: { name: "Shield of Faith", ap: 1, react: true, tg: [{ id: "t_sy", name: "Sylwen" }] } },
-  { id: "e4", r: 1, t: 0, own: { id: "t_ow", name: "Orc Warrior" }, k: "rx", who: { id: "t_du", name: "Durgan" }, d: { action: "Shield of Faith", outcome: "used" } },
+  { id: "e4", r: 1, t: 0, own: { id: "t_ow", name: "Orc Warrior" }, k: "rx", who: { id: "actor_du_diff", name: "Durgan" }, d: { action: "Shield of Faith", outcome: "used" } },
   { id: "e5", r: 1, t: 0, own: { id: "t_ow", name: "Orc Warrior" }, k: "rx", who: { id: "t_du", name: "Durgan" }, d: { action: "Bulwark of Faith", outcome: "passed" } }
 ];
 const md = EL.exportAnalysis(log, crs, { title: "Test" });

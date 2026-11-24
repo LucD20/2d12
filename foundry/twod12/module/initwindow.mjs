@@ -216,6 +216,26 @@ export class InitWindow extends BaseInitWindow {
       else if (zone) { ev.preventDefault(); this.ui.pop = ""; await this._save(squadRemove(all, [id])); }
     });
   }
+  _replaceHTML(result, content) {
+    super._replaceHTML(result, content);
+    const pop = content.querySelector(".iw-pop");
+    const btn = pop?.closest(".iw-popwrap")?.querySelector('[data-act="sqPop"]');
+    if (pop && btn) {
+      const r = btn.getBoundingClientRect();
+      pop.style.position = "fixed";
+      pop.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - 240))}px`;
+      const spaceBelow = window.innerHeight - r.bottom - 12;
+      if (spaceBelow < 160 && r.top > spaceBelow) {
+        pop.style.top = "auto";
+        pop.style.bottom = `${Math.max(8, window.innerHeight - r.top + 4)}px`;
+      } else {
+        pop.style.bottom = "auto";
+        pop.style.top = `${r.bottom + 4}px`;
+      }
+      const body = content.querySelector(".iw-body");
+      body?.addEventListener("scroll", () => { if (this.ui.pop) { this.ui.pop = ""; this.render(); } }, { once: true });
+    }
+  }
   _model() { return gmModel(creaturesOf(this.combat), callOf(this.combat), this.ui, { playersOpen: setting("initPlayersOpen", true) }); }
   _html() { return gmHtml(this._model()); }
   _members(el) { const ids = new Set(String(el.dataset.ids ?? "").split(",").filter(Boolean)); return creaturesOf(this.combat).filter(c => ids.has(c.id)); }
@@ -231,6 +251,12 @@ export class InitWindow extends BaseInitWindow {
     const act = b.dataset.act, call = callOf(this.combat);
     if (act === "sqPop") { ev.stopPropagation(); this.ui.pop = this.ui.pop === b.dataset.v ? "" : (b.dataset.v || ""); return this.render(); }
     this.ui.pop = "";
+    if (act === "sqSel") {
+      const id = b.dataset.id;
+      if (this.ui.sel[id]) delete this.ui.sel[id];
+      else this.ui.sel[id] = true;
+      return this.render();
+    }
     if (act === "call") return this.combat.setFlag(F, "initCall", { attr: b.dataset.v });
     if (act === "fold") { this.ui.closed[b.dataset.key] = !this.ui.closed[b.dataset.key]; return this.render(); }
     if (act === "stack") { this.ui.open[b.dataset.key] = !this.ui.open[b.dataset.key]; return this.render(); }
@@ -266,12 +292,6 @@ export class InitWindow extends BaseInitWindow {
     if (ms.length) return this._save(applyClick(ms, call, act, b.dataset.v));
   }
   async _change(ev) {
-    const chk = ev.target.closest('input[type="checkbox"][data-act="sqSel"]');
-    if (chk) {
-      if (chk.checked) this.ui.sel[chk.dataset.id] = true;
-      else delete this.ui.sel[chk.dataset.id];
-      return this.render();
-    }
     const s = ev.target.closest("select[data-act]");
     if (!s) return;
     const ms = this._members(s);

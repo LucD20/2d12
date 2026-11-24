@@ -367,7 +367,14 @@ export function exportAnalysis(log, creatures = [], { title = "Encounter", outco
   for (const turn of turnsOf(log)) {
     if (turn.r !== lastR) { lastR = turn.r; lines.push("", `### Round ${turn.r}`); }
     const turnMeta = turn.items.find(x => x.k === "turn")?.d;
-    const rxActKeys = new Set(turn.items.filter(x => x.k === "act" && x.d?.react).map(x => `${x.who?.id ?? ""}|${String(x.d?.name ?? "").toLowerCase()}`));
+    const rxActKeys = new Set();
+    for (const x of turn.items) {
+      if (x.k === "act" && x.d?.react) {
+        const aname = String(x.d?.name ?? "").toLowerCase();
+        if (x.who?.id) rxActKeys.add(`${x.who.id}|${aname}`);
+        rxActKeys.add(`${nm(x.who).toLowerCase()}|${aname}`);
+      }
+    }
     const parts = [];
     for (const e of turn.items) {
       if (e.k === "turn") continue;
@@ -381,9 +388,10 @@ export function exportAnalysis(log, creatures = [], { title = "Encounter", outco
         if (d.cardLines?.length) s += ` {${d.cardLines.join("; ")}}`;
         parts.push(s);
       } else if (e.k === "rx") {
-        const key = `${e.who?.id ?? ""}|${String(d.action ?? "").toLowerCase()}`;
+        const aname = String(d.action ?? "").toLowerCase();
+        const dup = (e.who?.id && rxActKeys.has(`${e.who.id}|${aname}`)) || rxActKeys.has(`${nm(e.who).toLowerCase()}|${aname}`);
         if (d.outcome === "used") {
-          if (!rxActKeys.has(key)) parts.push(`${nm(e.who)} Rx ${d.action}${d.detail ? ` (${d.detail})` : ""}`);
+          if (!dup) parts.push(`${nm(e.who)} Rx ${d.action}${d.detail ? ` (${d.detail})` : ""}`);
         } else if (includePassedRx) parts.push(`[Rx ${d.outcome}: ${nm(e.who)} ${d.action}]`);
       } else if (e.k === "move" && offTurn) {
         parts.push(`${nm(e.who)} ${lineText(e, nm, n => n)}`);
