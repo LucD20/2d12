@@ -1,0 +1,8 @@
+1. Unified numbering: Aveline(Aveline), Durgan(Durgan), Goblin Sneak 1(GS1), Goblin Sneak 2(GS2), Ogre Chieftain(OC) | DL matches: Goblin Sneak 1, Goblin Sneak 2
+2. Health Pressure %: Av raw=18 red=6 net=12/38 taken=32% att=47% | Du prevented: 6 | Party: 15% taken / 23% att (Trivial (<20%))
+3. Section R watchlist: crits=1 states=1 rxCol=1 push0=1
+4. voidLast fix: true
+5. Analysis export: true
+6. Archive serialized & outcome preserved: true
+7. World Clock & Time Bar: true
+8. CSS health: undef=0 | darkWarnRed: true | timebarBtn: true | enclogCss: true | iconCenterFix: true

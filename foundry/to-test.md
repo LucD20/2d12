@@ -23,10 +23,6 @@ differ):
 
 ## Starting a combat
 
-### ui-init-dark · v0.0.487 · Initiative window in dark theme
-Do: With Foundry's Interface theme on Dark, start a combat with Aveline, Durgan, Orc Warrior, and Goblin Sneak and open the Initiative window.
-Expect: The Initiative window body, side headers (Heroes / Enemies), rows, attribute buttons, and steppers all render in dark theme with crisp, readable text and no cream/pastel bleed-through.
-
 ## The roll dialog
 
 ## Chat cards
@@ -39,20 +35,21 @@ Expect: The Initiative window body, side headers (Heroes / Enemies), rows, attri
 
 ## Areas, light and Cover
 
-### ui-toolbox-drawer · v0.0.487 · Consolidated 2d12 Tools drawer in Token Controls
-Do: Look at Foundry's Token Controls bar with Aveline or Sylwen selected, then click the single 2d12 Tools button to toggle Line of Effect, Weapon Range & Reach, Show Flanking, and Light Levels Overlay, and launch Cover Height, Area Height, World Clock, and (as GM) Encounter Log / Damage Report / Create Chat Button.
-Expect: Token Controls only shows ONE 2d12 button (no toolbar clutter); clicking it opens the floating 2d12 Tools drawer grouped into Map Overlays (with live ON/OFF pills and active count badge), 3D & Rules Tools, and GM Tools.
-
-### ui-areaheight-dead · v0.0.487 · 3D Area Height Calculator ignores dead tokens
-Do: Mark an Orc Warrior or Goblin Sneak Dead (or defeated in combat) on a scene with live Aveline and Durgan, then open Area Height (3D) from the 2d12 Tools drawer.
-Expect: Only living tokens appear in the Area Height top-down grid, side cross-section, and creature list; dead/defeated tokens are excluded.
-
 ## Ending an encounter and resting
 
-### ui-pickwin-layout · v0.0.487 · Compact Pick dialogs sizing & Encounter End order
-Do: End an encounter with Aveline and Durgan (to open "The encounter ends") and try Shove with Aveline holding a two-handed weapon (to open "Shove: no free hand").
-Expect: Choice buttons expand cleanly around their title, subtitle, and right tag with zero text overflow or overlap; in "The encounter ends", Party Momentum and "How did the encounter end for the party?" appear ABOVE Overcome / Retreat / Neither.
+### ui-end-warn-copy · v0.0.488 · Dark red warning button & End Combat Copy Log
+Do: With Durgan Dying or Shattered, try to end combat (opens "End the encounter?" warning), then actually end a combat with Aveline, Durgan, and Goblin Sneak (opens "The encounter ends").
+Expect: "End it anyway" is deep crimson with crisp light text (not pastel pink); "The encounter ends" includes a "Copy Encounter Log (archived)" button that copies the report without closing the dialog, and the finished fight stays accessible in Encounter Log's Archive dropdown.
 
 ## The Encounter Log
 
+### enclog-v488 · v0.0.488 · Upgraded Encounter Log (Health Pressure %, Unified IDs, Archive)
+Do: Run a round or two of combat with Aveline, Durgan, Sylwen, Kaela against Ogre Chieftain, Orc Warrior, and two Goblin Sneaks (including a Shield of Faith or Judge reduction, a Critical or Bloodied hit, a passed Reaction, and an Undo on a damage card), then open Encounter Log from 2d12 Tools.
+Expect: Summary & Health % tab shows Raw, Reduced, Net ([V]/[R]), Max HP, Heal (RP), Current, Taken %, Attempted %, Party Total with G9 difficulty band, Prevented credit for Durgan/Aveline, and identical Goblin Sneak 1/2 numbering across Encounter Log and Damage Report; Undo does not log as a Heal; Copy for Analysis copies the full Markdown report cleanly.
+
 ## Windows
+
+### ui-clock-align · v0.0.488 · Image-1 World Clock, Above-Chat Time Bar & button centering
+Do: Open World Clock from 2d12 Tools and check the quick time bar above chat (with Aveline on the scene); also glance at button/icon centering in Initiative, Pick dialogs, and 2d12 Tools.
+Expect: World Clock shows stacked uppercase date over bold gold HH:MM:SS with centered "+ 1 Round / + 1 Min / + 10 Min" and labeled Dawn/Noon/Dusk/Night buttons; the above-chat time bar uses dark STYLE-3 buttons (no white buttons) with stacked day/time readout; buttons and icons across dialogs sit dead-center.
+

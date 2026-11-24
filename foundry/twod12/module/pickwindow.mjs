@@ -106,6 +106,7 @@ export class PickWindow extends (ApplicationV2 ?? class {}) {
   _click(ev) {
     const b = ev.target.closest("button");
     if (!b || b.disabled) return;
+    if (b.dataset.pwact) return this.o.action?.(b.dataset.pwact, b);
     if (b.dataset.pwstep) { this.o.step?.(b.dataset.pwstep, Number(b.dataset.d) || 0); return this.render(); }   // v0.0.377: a − / + stepper in a section's html
     if (b.dataset.row) {
       this.o.pick?.(b.dataset.row, b.dataset.k);
@@ -165,6 +166,7 @@ export function pickOne(o) {
       message: o.message ?? "", confirm: false, cancel: o.cancel
     }),
     pick: (row, k) => { chosen = k; },
+    action: o.action,
     result: () => chosen
   });
 }

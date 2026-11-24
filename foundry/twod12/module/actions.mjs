@@ -1574,8 +1574,22 @@ export async function useAction(actor, item, opts = {}) {
   if (!bannerMove) {
     try {
       const { logAction } = await import("./enclog.mjs");
-      const tgs = isSelf && !String(it.area ?? "").trim() ? [] : mres ? mres.map(r => ({ uuid: r.uuid, name: r.label ?? r.name, tier: r.chk.tier })) : targets.map(t => ({ ...t, tier: version.noTiers ? null : tier }));
-      logAction(selfToken ?? actor, item, { ap: version.ap, targets: tgs, save: saveAct ? (TWOD12.attributes[it.vs] ?? it.vs ?? "") : "", free: !!opts.free });
+      const tgs = isSelf && !String(it.area ?? "").trim() ? [] : mres ? mres.map(r => ({ uuid: r.uuid, name: r.label ?? r.name, tier: r.chk.tier, crit: !!r.chk.crit })) : targets.map(t => ({ ...t, tier: version.noTiers ? null : tier, crit: !!chk?.crit }));
+      const r0 = mres?.[0]?.chk ?? chk ?? null;
+      const roll = r0 ? {
+        dice: [...(r0.d1 ?? []), ...(r0.d2 ?? [])].slice(0, 3),
+        mod: Number(r0.mod) || 0,
+        boons: Number(r0.bo) || 0,
+        banes: Number(r0.ba) || 0,
+        netBB: r0.state ? r0.state[0].toUpperCase() + r0.state.slice(1) : ((Number(r0.bo) || 0) - (Number(r0.ba) || 0) ? `${(Number(r0.bo) || 0) - (Number(r0.ba) || 0) > 0 ? "+" : ""}${(Number(r0.bo) || 0) - (Number(r0.ba) || 0)} B/B` : ""),
+        state: r0.state ?? "",
+        total: Number(r0.total) || 0,
+        dc: Number(r0.dc) || 0,
+        def: it.vs === "armor" ? "AD" : it.vs === "ward" ? "WD" : (TWOD12.attributes[it.vs] ?? ""),
+        doubles: !!r0.doubles,
+        crit: !!r0.crit
+      } : null;
+      logAction(selfToken ?? actor, item, { ap: version.ap, targets: tgs, save: saveAct ? (TWOD12.attributes[it.vs] ?? it.vs ?? "") : "", free: !!opts.free, roll });
     } catch (e) { console.warn("twod12 | encounter log", e); }
   }
   // v0.0.224: Break Free. Pack TALENTS-PT (book, Break Free, 2026-11-20): it rolls a Body or Instinct Check (the higher) against the Action DC of

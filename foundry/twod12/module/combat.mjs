@@ -271,6 +271,16 @@ export class TwoD12Combat extends Combat {
     return super.startCombat();
   }
   async nextTurn() {
+    if (this.started && this.combatant) {
+      try {
+        const curC = this.combatant, max = apPerTurn(curC), left = getAP(curC), spent = Math.max(0, max - left);
+        const guard = curC.actor?.type === "npc" ? 0 : unusedApGuard(true, left, stageOfC(curC)).guard;
+        const { strikesUsed } = await import("./usage.mjs");
+        const strikes = strikesUsed(curC.actor);
+        const { logTurnEnd } = await import("./enclog.mjs");
+        logTurnEnd(this, curC, { apSpent: spent, apMax: max, apKept: left, guard, strikes });
+      } catch (e) { /* no log */ }
+    }
     try { if (this.started) await this._squadPick((this.turn ?? -1) + 1 < (this.turns?.length ?? 0) ? (this.turn ?? -1) + 1 : 0); } catch (e) { console.warn("twod12 | the squad's order", e); }
     return super.nextTurn();
   }

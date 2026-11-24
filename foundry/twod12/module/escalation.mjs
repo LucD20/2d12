@@ -204,6 +204,8 @@ export async function startAtOne(combat, { momentum = momentumNow() } = {}) {
 export async function askEncounterEnd(combat) {
   if (!game.user?.isActiveGM || !combat?.started) return null;
   if (![...(combat.combatants ?? [])].some(c => c.actor?.type === "character")) return null;
+  let archived = null;
+  try { const EL = await import("./enclog.mjs"); archived = await EL.archiveCombat(combat); } catch (e) { console.warn("twod12 | archive encounter", e); }
   const now = momentumNow();
   const { pickOne } = await import("./pickwindow.mjs");
   const nextUp = momentumAfter(now, { overcome: 1 });
@@ -212,12 +214,20 @@ export async function askEncounterEnd(combat) {
     title: "The encounter ends", name: "The encounter ends", sub: `Momentum ${now} / 4`, icon: "fa-fire", compact: true,
     leadHtml: `<div class="pw-mombar"><span>Party Momentum</span><span class="pw-mpips">${pips}</span><b>${now} / 4</b></div>`,
     text: "How did the encounter end for the party?",
+    html: archived ? '<div class="pw-logbar"><button type="button" class="pw-logbtn" data-pwact="copylog"><i class="fa-solid fa-copy" aria-hidden="true"></i> Copy Encounter Log (archived)</button></div>' : "",
+    action: async act => {
+      if (act === "copylog" && archived) {
+        try { await (await import("./enclog.mjs")).copyEncounterReport(archived, { fmt: "analysis" }); } catch (e) { console.warn("twod12 | copy archive", e); }
+      }
+    },
     options: [
       { k: "overcome", l: "Overcome", sub: `Winning a fight, negotiation, sneak, or Challenge → Momentum ${nextUp}`, tag: nextUp > now ? "+1" : "Max 4", icon: "fa-trophy", cls: "good" },
       { k: "retreat", l: "Retreat", sub: "The party withdraws and loses all its Momentum", tag: "→ 0", icon: "fa-person-running", cls: "warn" },
       { k: "none", l: "Neither", sub: "No change — a test, or the encounter pauses for later", tag: `Stay ${now}`, icon: "fa-pause" }
     ]
   });
+  const outLabel = k === "overcome" ? "Overcome" : k === "retreat" ? "Retreat" : k === "none" ? "Neither" : "";
+  if (archived && outLabel) { try { await (await import("./enclog.mjs")).updateArchiveOutcome(archived.id, outLabel); } catch (e) { /* ok */ } }
   if (k === "overcome") { await momentumEvent({ overcome: 1 }, "the encounter was overcome"); try { await (await import("./mastery.mjs")).masteryAtEncounterEnd(combat); } catch (e) { console.warn("twod12 | Mastery", e); } }   // v0.0.412: Mastery after a won encounter
   else if (k === "retreat") await momentumEvent({ retreat: true }, "the party retreated");
   return k;

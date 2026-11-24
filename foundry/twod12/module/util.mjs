@@ -83,7 +83,7 @@ export function shortNames(html, names) {
 
 /* ---- v0.0.361 (PACK PERF): fewer redraws ---- */
 /** The Combat flags that are only logs or the undo snapshot: a change of these alone redraws no sheet, strip or Zone (D27, D28, D30, D40). */
-export const LOG_FLAG_KEYS = new Set(["encl", "dmgl", "enclog", "dmglog", "snapshot", "enclogAbbr"]);
+export const LOG_FLAG_KEYS = new Set(["encl", "dmgl", "enclog", "dmglog", "snapshot", "enclogAbbr", "encSnap"]);
 /** Pure: is this update's diff only log lines (or the old snapshot)? `ch` is what the update hook receives. */
 export function logOnlyChange(ch) {
   if (!ch || typeof ch !== "object") return false;

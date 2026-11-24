@@ -44,14 +44,14 @@ export async function applyToActor(actor, a, opts = {}) {
   const red = Math.max(0, Math.floor(Number(actor.system.reduceNext) || 0));
   // v0.0.463 (Lucas, checklist v0.0.462, two-judges: the breakdown didn't show what took the damage): opts.report gets each reduction and the Guard
   const rep = opts.report ? (opts.report.mods ??= []) : null;
-  if (red) { const r = absorbGuard(red, a, 0); if (rep && r.taken) rep.push({ kind: "reduce", label: String(actor.system.reduceFrom || "Reduction"), v: red }); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; early["system.reduceNext"] = 0; early["system.reduceFrom"] = ""; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
+  if (red) { const byUuid = actor.getFlag?.("twod12", "reduceByUuid") ?? ""; const r = absorbGuard(red, a, 0); if (rep && r.taken) rep.push({ kind: "reduce", label: String(actor.system.reduceFrom || "Reduction"), v: red, ...(byUuid ? { byUuid } : {}) }); a.B = r.a.B; a.M = r.a.M; a.reduced = r.taken; a.reduceLeft = 0; early["system.reduceNext"] = 0; early["system.reduceFrom"] = ""; early["flags.twod12.reduceByUuid"] = ""; if (r.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-shield-halved", `<b>${esc(actor.name)}</b>'s damage is reduced by <b>${r.taken}</b>${red > r.taken ? ` (of ${red}; the rest is spent)` : ""}.`, "guardmsg") }); }
   // v0.0.409 (pack F2; book, the Paladin: Judge): the first time each round a Judged creature damages an ally within 5 squares of its judge, the
   // damage is reduced by the judge's Power Modifier (before the Guard, as a reduction)
   try {
     const J = await import("./judge.mjs");
     for (const r of await J.judgeReductions(actor, from)) {
       const x = absorbGuard(r.by, a, 0); a.B = x.a.B; a.M = x.a.M; a.reduced = (Number(a.reduced) || 0) + x.taken;
-      if (rep && x.taken) rep.push({ kind: "reduce", label: `Judge (${r.judge.name})`, v: r.by });
+      if (rep && x.taken) rep.push({ kind: "reduce", label: `Judge (${r.judge.name})`, v: r.by, byUuid: r.judge.uuid ?? "" });
       if (x.taken && announce) ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: r.judge }), content: sysLine("fa-scale-balanced", `<b>Judge</b>: the damage to <b>${esc(actor.name)}</b> is reduced by <b>${x.taken}</b> (${esc(r.judge.name)}'s Power Modifier; the Judged creature's first damage this round to an ally within 5 squares).`, "guardmsg") });
     }
   } catch (e) { console.warn("twod12 | Judge", e); }
@@ -85,9 +85,9 @@ export async function applyToActor(actor, a, opts = {}) {
   return g.taken;
 }
 /** The actor's update, through the GM when this user doesn't own it. */
-export async function writeDamage(actor, upd) {
-  if (actor.isOwner) await actor.update(upd);
-  else game.socket.emit(SOCKET, { type: "applyDamage", actorUuid: actor.uuid, upd });
+export async function writeDamage(actor, upd, updateOpts = { twod12CardDmg: true }) {
+  if (actor.isOwner) await actor.update(upd, updateOpts);
+  else game.socket.emit(SOCKET, { type: "applyDamage", actorUuid: actor.uuid, upd, updateOpts });
 }
 /** Pure: would some of this damage reach the Health (after a waiting reduction and the Guard)? */
 export function reachesHealth(actor, a) {
@@ -133,8 +133,8 @@ export function registerSocket() {
     if (data?.type === "applyApGuard") { const a = await fromUuid(data.actorUuid); if (a) await a.update({ "system.apGuard": Math.max(0, Number(data.value) || 0) }); return; }   // v0.0.243: a kept AP paid a Reaction
     if (data?.type !== "applyDamage") return;
     const actor = await fromUuid(data.actorUuid);
-    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard" || k === "system.apGuard" || k === "system.reduceNext" || k === "system.reduceFrom"));
-    if (actor && Object.keys(upd).length) await actor.update(upd);
+    const upd = Object.fromEntries(Object.entries(data.upd).filter(([k]) => k.startsWith("system.damage.") || k === "system.guard" || k === "system.apGuard" || k === "system.reduceNext" || k === "system.reduceFrom" || k === "flags.twod12.reduceByUuid"));
+    if (actor && Object.keys(upd).length) await actor.update(upd, data.updateOpts ?? {});
   });
 }
 
@@ -212,6 +212,13 @@ async function apply(msg, button, factor) {
         lines.push(`${esc(t.name)} takes ${guardBefore(before, taken, mine.reduced)}<b>${summaryText(mine) || "no damage"}</b>${guardAfter(taken, mine.guardLeft, mine.reduced, mine.reduceLeft)}`);
         const src = f.originUuid ? await fromUuid(f.originUuid) : null;
         await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: t.name, targetUuid: t.uuid ?? "", amount: dealt });
+        try {
+          const { logDamageCard } = await import("./enclog.mjs");
+          const redParts = [];
+          if (mine.reduced) redParts.push(`Reduction −${mine.reduced}`);
+          if (taken) redParts.push(`Guard −${taken}`);
+          logDamageCard({ origin: src, target: actor, v: mine.B.l + mine.B.n, r: mine.M.l + mine.M.n, raw: before, reducedBy: Math.max(0, before - dealt), reducedNote: redParts.join(", "), collision: /collision/i.test(String(f.name ?? "")) });
+        } catch (e) { /* no log */ }
         clearHalfHint(f.originUuid);   // v0.0.261 (Covering Shot): the lit Half was for this damage
         await applyDownEffects(f, actor, t.uuid);   // v0.0.266 (Deathmark): the effects that come when the target goes Down
         if (dealt > 0) await runDamageTriggers(src, actor, t.uuid, f.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)
@@ -278,6 +285,13 @@ async function applyRow(f, row, factor, selNl) {
   if (dealt > 0) {
     const src = f.originUuid ? await fromUuid(f.originUuid) : null;
     await logDamage({ originUuid: f.originUuid ?? "", originName: src?.name ?? f.name ?? "", targetName: row.name, targetUuid: row.uuid ?? "", amount: dealt });
+    try {
+      const { logDamageCard } = await import("./enclog.mjs");
+      const redParts = [];
+      if (a.reduced) redParts.push(`Reduction −${a.reduced}`);
+      if (taken) redParts.push(`Guard −${taken}`);
+      logDamageCard({ origin: src, target: actor, v: a.B.l + a.B.n, r: a.M.l + a.M.n, raw: before, reducedBy: Math.max(0, before - dealt), reducedNote: redParts.join(", "), collision: /collision/i.test(String(f.name ?? "")) });
+    } catch (e) { /* no log */ }
     clearHalfHint(f.originUuid);   // v0.0.261 (Covering Shot)
     await applyDownEffects({ ...f, fx: row.fx }, actor, row.uuid);   // v0.0.266 (Deathmark)
     await runDamageTriggers(src, actor, row.uuid, row.comps ?? []);   // "When you deal Holy damage to a Profane creature..." (triggers.mjs)

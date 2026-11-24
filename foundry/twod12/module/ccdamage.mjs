@@ -221,12 +221,28 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   const firstTime = !r.applied?.ridersDone;
   const origin = { ...(await import("./effects.mjs")).originInfo(s.originUuid), escalation: !!s.escalation, ...(Number.isFinite(s.originMod) ? { mod: s.originMod } : {}) };
   const E = await import("./effects.mjs");
-  if (took.B + took.M > 0) {
+  const rawPre = comps.reduce((sum, c) => sum + Math.ceil((Number(c.total) || 0) * factor), 0);
+  if (took.B + took.M > 0 || rawPre > 0) {
     let src = null; try { src = s.originUuid ? await fromUuid(s.originUuid) : null; } catch (e) { src = null; }
-    try { await (await import("./damagelog.mjs")).logDamage({ originUuid: s.originUuid ?? "", originName: src?.name ?? s.name ?? "", targetName: r.name, targetUuid: r.uuid ?? "", amount: took.B + took.M }); } catch (e) { console.warn("twod12 | damage log", e); }
-    try { (await import("./halfhint.mjs")).clearHalfHint(s.originUuid); } catch (e) { /* none */ }
-    try { await D.applyDownEffects({ ...s, fx: g.fx }, actor, r.uuid); } catch (e) { console.warn("twod12 | Down effects", e); }
-    try { await (await import("./triggers.mjs")).runDamageTriggers(src, actor, r.uuid, comps); } catch (e) { console.warn("twod12 | triggers", e); }
+    const netTot = took.B + took.M;
+    const redBy = Math.max(0, rawPre - netTot);
+    const redParts = (report.mods ?? []).map(m => `${m.label} −${m.v}`);
+    if (a.B + a.M < rawPre) redParts.unshift(`Resist −${rawPre - (a.B + a.M)}`);
+    const protMod = (report.mods ?? []).find(m => m.byUuid) ?? (report.mods ?? []).find(m => /^Judge \((.+)\)$/.test(m.label));
+    let protActor = null;
+    if (protMod?.byUuid) { try { const d = await fromUuid(protMod.byUuid); protActor = d?.actor ?? d ?? null; } catch (e) { protActor = null; } }
+    else if (protMod) { const m = /^Judge \((.+)\)$/.exec(protMod.label); protActor = m ? (game.actors?.find?.(x => x.name === m[1]) ?? null) : null; }
+    const sameSideCheck = (await import("./damagelog.mjs")).sameSide;
+    const srcTok = src?.documentName === "Token" ? src : src?.token ?? src?.getActiveTokens?.()[0]?.document ?? src?.prototypeToken ?? null;
+    const tgtTok = actor?.token ?? actor?.getActiveTokens?.()[0]?.document ?? actor?.prototypeToken ?? null;
+    const isAlly = !!src && ((src?.actor ?? src)?.uuid === actor.uuid || sameSideCheck(srcTok?.disposition, tgtTok?.disposition));
+    try { await (await import("./enclog.mjs")).logDamageCard({ origin: src, target: actor, v: took.B, r: took.M, raw: rawPre, reducedBy: redBy, reducedSource: protActor, reducedNote: redParts.join(", "), ally: isAlly, note: g.crit ? "Critical" : "" }); } catch (e) { console.warn("twod12 | encounter dmg log", e); }
+    if (netTot > 0) {
+      try { await (await import("./damagelog.mjs")).logDamage({ originUuid: s.originUuid ?? "", originName: src?.name ?? s.name ?? "", targetName: r.name, targetUuid: r.uuid ?? "", amount: netTot }); } catch (e) { console.warn("twod12 | damage log", e); }
+      try { (await import("./halfhint.mjs")).clearHalfHint(s.originUuid); } catch (e) { /* none */ }
+      try { await D.applyDownEffects({ ...s, fx: g.fx }, actor, r.uuid); } catch (e) { console.warn("twod12 | Down effects", e); }
+      try { await (await import("./triggers.mjs")).runDamageTriggers(src, actor, r.uuid, comps); } catch (e) { console.warn("twod12 | triggers", e); }
+    }
   }
   if (firstTime) {
     const auto = (g.fx ?? []).filter(x => x.mode === "auto" && (!x.rider || landed)).map(x => x.uuid);
@@ -275,6 +291,7 @@ async function runChain(s, idx, msg = null) {   // v0.0.404: msg, the card (the 
     for (const r of landed) {
       const a = actorOf(r.uuid), texts = stateLinesFor(s.lines, r.pre ?? {}, { b: !!a?.system?.bloodied, s: !!a?.system?.strained }, r.tier ?? 0);
       for (const t of texts) {
+        try { (await import("./enclog.mjs")).logStateChange(a, a?.system?.bloodied ? "Bloodied" : "Strained", { cardLine: `${s.name}: ${String(t).replace(/@\w+\[[^\]]*\](\{([^}]*)\})?/g, (_, __, l) => l ?? "").trim()}` }); } catch (e) { /* no log */ }
         if (isMoveAddLine(t)) continue;   // already folded into the Tier's single forced movement in applyRow
         try { await runAfter(t, { save: !!s.save, actor: user, targets: [{ uuid: r.uuid, name: r.name, tier: r.tier, crit: !!r.crit, comps: s.groups?.[r.g]?.comps ?? [], factor: Number(r.applied?.factor) || 1 }], attrVal: Number.isFinite(s.originMod) ? s.originMod : null, message: msg }); }
         catch (e) { console.warn("twod12 | a Bloodied / Strained line", e); }
@@ -317,7 +334,7 @@ export async function ccDamageClick(kind, button, msg) {
       const r = s.rows[i];
       if (!r?.applied) return;
       const actor = actorOf(r.uuid);
-      if (actor) await (await import("./damage.mjs")).writeDamage(actor, r.applied.undo);
+      if (actor) await (await import("./damage.mjs")).writeDamage(actor, r.applied.undo, { twod12Reset: true });
       if (kind === "ccUndo") { r.applied = null; await save(msg, s); }
       else if (await applyRow(s, i, f, { rerun: true })) await save(msg, s);
     }

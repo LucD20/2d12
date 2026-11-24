@@ -81,7 +81,7 @@ export function numberSameNames(rows, combat) {
   const turns = combat?.turns ?? [...(combat?.combatants ?? [])];
   const count = new Map(); for (const t of turns) { const b = baseName(t.token?.name ?? t.name); if (b) count.set(b, (count.get(b) ?? 0) + 1); }
   const seen = new Map(), numbered = new Map();
-  for (const t of turns) { const b = baseName(t.token?.name ?? t.name); if (!b || (count.get(b) ?? 0) < 2) continue; const n = (seen.get(b) ?? 0) + 1; seen.set(b, n); for (const k of [t.actor?.uuid, t.actorId, t.token?.actor?.uuid].filter(Boolean)) numbered.set(k, `${b} ${n}`); }
+  for (const t of turns) { const b = baseName(t.token?.name ?? t.name); if (!b || (count.get(b) ?? 0) < 2) continue; const n = (seen.get(b) ?? 0) + 1; seen.set(b, n); for (const k of [t.actor?.uuid, t.actorId, t.tokenId, t.token?.actor?.uuid].filter(Boolean)) numbered.set(k, `${b} ${n}`); }
   // rows without a combatant to match (the tests' lists): numbered among themselves, as before
   const left = rows.filter(r => !numbered.has(r.key)), cnt = new Map(); for (const r of left) cnt.set(baseName(r.name), (cnt.get(baseName(r.name)) ?? 0) + 1);
   const seen2 = new Map();

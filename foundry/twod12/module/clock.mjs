@@ -110,18 +110,23 @@ export async function everyoneSleeps() {
 /* ------------------------------------------------------------------ the window */
 const gmOnly = html => (game.user?.isGM ? html : "");
 const STEP = (s, label) => `<button type="button" data-s="${s}">${label}</button>`;
-const TO = (k, icon, tip) => `<button type="button" data-to="${k}" aria-label="${tip}"><i class="fa-solid ${icon}"></i></button>`;
+const TO = (k, icon, label, tip) => `<button type="button" data-to="${k}" aria-label="${tip}"><i class="fa-solid ${icon}" aria-hidden="true"></i><span>${label}</span></button>`;
 
-function clockHtml() {
+export function clockHtml() {
+  const { date, time } = clockParts();
   return `<div class="clockbody">
-    <div class="clock-date">${esc(clockTitle())}</div>
+    <div class="clock-now">
+      <div class="clock-date">${esc(date)}</div>
+      <div class="clock-time">${esc(time)}</div>
+    </div>
     ${gmOnly(`
+    <div class="clock-pad">
     <div class="clock-grid">
-      ${STEP(10, "+ 1 Round")}${STEP(60, "+ 1 Minute")}${STEP(600, "+ 10 Minutes")}
+      ${STEP(10, "+ 1 Round")}${STEP(60, "+ 1 Min")}${STEP(600, "+ 10 Min")}
       ${STEP(3600, "+ 1 Hour")}${STEP(86400, "+ 1 Day")}${STEP(7 * 86400, "+ 1 Week")}
     </div>
     <div class="clock-grid four">
-      ${TO("dawn", "fa-cloud-sun", "Advance to dawn (06:00)")}${TO("noon", "fa-sun", "Advance to noon (12:00)")}${TO("dusk", "fa-cloud-moon", "Advance to dusk (18:00)")}${TO("midnight", "fa-moon", "Advance to midnight (00:00)")}
+      ${TO("dawn", "fa-cloud-sun", "Dawn", "Advance to dawn (06:00)")}${TO("noon", "fa-sun", "Noon", "Advance to noon (12:00)")}${TO("dusk", "fa-cloud-moon", "Dusk", "Advance to dusk (18:00)")}${TO("midnight", "fa-moon", "Night", "Advance to midnight (00:00)")}
     </div>
     <div class="clock-custom">
       <input type="number" name="amount" min="0" step="any" placeholder="Number">
@@ -141,8 +146,9 @@ function clockHtml() {
       </div>
       <p class="hint">Setting a date moves the clock, and Exhaustion counts the hours since each character's last Sleep. Turn off "Count Exhaustion" first to jump without it.</p>
     </details>
-    <button type="button" class="clock-wide" data-act="sleep"><i class="fa-solid fa-bed"></i> Everyone sleeps (8 hours)</button>
-    <label class="clock-track"><input type="checkbox" name="track" ${trackingExhaustion() ? "checked" : ""}> Count Exhaustion from the time awake</label>`)}
+    <button type="button" class="clock-wide" data-act="sleep"><i class="fa-solid fa-bed" aria-hidden="true"></i><span>Everyone sleeps (8 hours)</span></button>
+    <label class="clock-track"><input type="checkbox" name="track" ${trackingExhaustion() ? "checked" : ""}> Count Exhaustion from the time awake</label>
+    </div>`)}
   </div>`;
 }
 
@@ -188,9 +194,11 @@ export class WorldClock extends ApplicationV2 {
     content.innerHTML = result; bindClock(content); fillDateFields(content);
     content.querySelector(".clock-set")?.addEventListener("toggle", ev => { if (ev.target.open) fillDateFields(content); });
   }
-  /** Only the date line changes: nothing is redrawn. */
+  /** Only the date and time lines change: nothing is redrawn. */
   refresh() {
-    const el = this.element?.querySelector?.(".clock-date"); if (el) el.textContent = clockTitle();
+    const { date, time } = clockParts();
+    const d = this.element?.querySelector?.(".clock-date"); if (d) d.textContent = date;
+    const tm = this.element?.querySelector?.(".clock-time"); if (tm) tm.textContent = time;
     const set = this.element?.querySelector?.(".clock-set"); if (set && !set.open) fillDateFields(this.element);   // an open section is being edited: leave it alone
   }
 }
@@ -200,9 +208,10 @@ const BAR = [[-3600, "fa-backward-fast", "Back 1 hour"], [-600, "fa-angles-left"
   [10, "fa-chevron-right", "Forward 1 round (10 seconds)"], [600, "fa-angles-right", "Forward 10 minutes"], [3600, "fa-forward-fast", "Forward 1 hour"]];
 
 export function barHtml() {
-  const { time } = clockParts();
-  const btn = ([s, icon, tip]) => `<button type="button" data-s="${s}" aria-label="${tip}"><i class="fa-solid ${icon}"></i></button>`;
-  return `${BAR.slice(0, 3).map(btn).join("")}<span class="tb-time" data-open="1">${esc(time)}</span>${BAR.slice(3).map(btn).join("")}`;
+  const { date, time } = clockParts();
+  const shortDate = date.replace(/^[A-Za-z]+,\s*/, "").replace(/,\s*\d+$/, "");
+  const btn = ([s, icon, tip]) => `<button type="button" data-s="${s}" aria-label="${tip}"><i class="fa-solid ${icon}" aria-hidden="true"></i></button>`;
+  return `${BAR.slice(0, 3).map(btn).join("")}<span class="tb-readout" data-open="1"><span class="tb-day">${esc(shortDate)}</span><span class="tb-time">${esc(time)}</span></span>${BAR.slice(3).map(btn).join("")}`;
 }
 
 /** A click anywhere on the page: if it is on one of the bar's buttons, move the clock. (Whole-page, so it works however the chat is redrawn.) */
@@ -256,7 +265,9 @@ export function registerClock() {
   Hooks.on("updateWorldTime", () => {
     WorldClock.instance?.refresh?.();
     if (typeof document === "undefined") return;
-    const { time } = clockParts();
+    const { date, time } = clockParts();
+    const shortDate = date.replace(/^[A-Za-z]+,\s*/, "").replace(/,\s*\d+$/, "");
+    document.querySelectorAll(".twod12-timebar .tb-day").forEach(el => { el.textContent = shortDate; });
     document.querySelectorAll(".twod12-timebar .tb-time").forEach(el => { el.textContent = time; });
   });
 }

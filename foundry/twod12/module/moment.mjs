@@ -539,6 +539,7 @@ async function resolveStack(L) {
   freezePositions(st);
   // v0.0.392 (Lucas: "When no reaction is taken, just remove the reaction chat message to unclutter the chat")
   if (!st.rows.some(r => r.state === "use")) {
+    try { (await import("./enclog.mjs")).logReactionMoment(st); } catch (e) { /* no log */ }
     try { await L.msg?.delete(); } catch (e) { console.warn("twod12 | Reactions message", e); }
     live.delete(st.id); finished.set(st.id, { st, msg: null });
     if (finished.size > 20) finished.delete(finished.keys().next().value);
@@ -548,6 +549,7 @@ async function resolveStack(L) {
   // v0.0.278 (Lucas: "after its resolve, put the chat message at the bottom"): the resolved line is posted again under the Reactions' cards
   // and the live message is removed (still one message for the moment)
   L.msg = await toBottom(L.msg, st);
+  try { (await import("./enclog.mjs")).logReactionMoment(st); } catch (e) { /* no log */ }
   // v0.0.347: the triggering card reprinted under the chain; v0.0.348 (Lucas: "only after the Reaction is resolved: Club -> Rebuke, Appeal
   // Save, damage, apply -> Club's card"): a Reaction that deals damage waits for its damage to be applied (reprintAfter)
   if (["against", "landed"].includes(st.base?.kind) && st.base?.msgId && !st.base?.never) { try { await reprintAfter(st.base.msgId, st.rows.filter(r => r.state === "use" && r.result === "done")); } catch (e) { console.warn("twod12 | reprint", e); } }
