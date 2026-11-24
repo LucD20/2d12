@@ -19,7 +19,15 @@ differ):
 
 ## Characters and sheets
 
+### ui-token-bars-hp · v0.0.499 · Concept A flat token HP bars, overlays & count-down HP on sheets/HUD
+Do: Open Aveline and Orc Warrior on the canvas and sheets. Deal Vigor Lethal, Vigor Nonlethal, Resolve damage, Guard, overflow past Vigor threshold (Bloodied), Strained, Down, and Dead (0 HP).
+Expect: Token bars show flat matte converging Vigor (crimson, left) & Resolve (cobalt, right) with brass center pin, type-colored Nonlethal hatches, directional overflow hatches across the pin, Guard crown bar above, and crisp rim vignettes + micro-ribbons (Bloodied, Strained, Dying/Shattered/Unconscious, faded Dead — no giant Foundry skull overlay). PC/NPC sheets and HUD count down from max (0 = Bloodied/Strained, negative on overflow).
+
 ## The HUD
+
+### ui-cond-icons-marks · v0.0.499 · 32 custom tactical condition SVG icons & Heraldic Portrait Seal marks
+Do: Apply several conditions on Orc Warrior via the Token HUD or Actions (e.g. Vulnerable, Daunted, Prone, Empowered, Slowed, Exhausted, Grabbed, Lingering). Have Aveline use Judge and Sylwen use Mark Quarry on the same Orc Warrior.
+Expect: All 32 conditions display crisp custom tactical SVG icons across the Token HUD, sheets, and HUD condition pills (with Frightened removed). Judge shows a gilded 8-point starburst Portrait Seal and Mark Quarry shows a crimson broadhead Portrait Seal stacked cleanly along the token's right edge without overlapping.
 
 ## Starting a combat
 
