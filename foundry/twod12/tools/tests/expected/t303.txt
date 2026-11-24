@@ -1,0 +1,7 @@
+testChecklist default true: true
+cornerInLos peeking 2x2 Ogre: true | fully behind wall: false | out of range (1 sq): false | zero range basicSight: false
+cornerInLos skips GM-hidden token: false
+isInertMover alive/dead/defeated/dyingPC/unconsciousPC: false true true false true
+moveMoment checks isInertMover & dragSlabs guards kindRank: true
+moveBanner mounts freeMoveBar: true
+calc inline buttons keep full size: true | tp-tgt icon centered: true

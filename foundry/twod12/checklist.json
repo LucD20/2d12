@@ -1,61 +1,27 @@
 {
  "groups": [
   {
-   "name": "Starting a combat",
+   "name": "Characters and sheets",
    "items": [
     {
-     "id": "ui-init-squads",
-     "v": "v0.0.492",
-     "title": "Intuitive Initiative Squads & alignment",
-     "do": "Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Click enemy checkboxes, click \"+ Squad\" / \"+ Add\" (including on the bottom row), test Ungroup All → Auto-Squad Minions, and roll Initiative.",
-     "expect": "Checkboxes have crisp high-contrast borders and checking them puts \"Group Selected (N)\" in the Enemies header with zero vertical layout shift; \"+ Squad\" / \"+ Add\" popovers open directly under their clicked button (floating cleanly over the window/footer without shifting position or growing the window); Orc Warrior's sub-line stays on one tidy row.",
-     "rev": 4
-    }
-   ]
-  },
-  {
-   "name": "The roll dialog",
-   "items": [
-    {
-     "id": "pass1-cover-demoralize",
-     "v": "v0.0.494",
-     "title": "Cover only on [Strike]/[Area], Large target doorway Cover, and Demoralize EoE",
-     "do": "(1) Put Ogre Chieftain in a 1-square doorway (with 1 of its 4 squares cleanly exposed in the doorway) and shoot it with Sylwen's Basic Attack; (2) Use Demoralize (Sylwen or Durgan) and Shove (Durgan) against a target behind cover; (3) Use Demoralize twice on the same enemy in one encounter, and check Tier 2 / Tier 3 durations.",
-     "expect": "(1) Ogre Chieftain has No cover (0 Banes) and Line of Effect draws to its exposed square; (2) Demoralize and Shove take no Cover Banes (Strikes & Areas still do); (3) Demoralize applies Vulnerable 1 (EoT) on T2, Vulnerable 1 (1 round) on T3, and warns in the roll dialog if you target a creature already Demoralized by you this encounter.",
-     "rev": 1
-    },
-    {
-     "id": "pass1-strikes-cards",
-     "v": "v0.0.494",
-     "title": "Shared At-will [Strike] Banes, Magical/Ranged traits, Darting Blade 2 AP, Heal T1-T3",
-     "do": "(1) On Durgan's turn, use Basic Attack then Drawing Light (or Sylwen's Basic Attack then Harrying Shot); check Drawing Light's & Harrying Shot's traits (and Engaged penalties on both); (2) Check Kaela's Darting Blade cost; (3) Use Heal (Durgan) on a wounded/Prone ally.",
-     "expect": "(1) Second At-will [Strike] in the same turn takes 1 Bane even when switching between Basic Attack and Drawing Light / Harrying Shot; Drawing Light shows [Divine, Magical, Power, Ranged, Strike] and Harrying Shot shows [Power, Ranged, Strike]; (2) Darting Blade costs 2 AP; (3) Heal costs 2 AP ([Handle]) and offers 1 RP on T1, 2 RP on T2, and 2 RP + Stand if Prone on T3.",
+     "id": "fix-calc-btn-size",
+     "v": "v0.0.495",
+     "title": "Calculated inline buttons match normal button size & Combat Strip target badge centered",
+     "do": "Open Sylwen's Evade Basic Action card (1 AP \"Evade 1\" vs 2 AP \"Evade 3\" with calculator icon) and target Ogre Chieftain in the Combat Strip.",
+     "expect": "Both \"Evade 1\" and \"Evade 3 🧮\" buttons are the exact same font size and crispness (calculated button keeps its blue color, no longer shrunken/faded); the red target crosshair badge on Ogre Chieftain's Combat Strip portrait sits dead-center. Also verify \"Test checklist\" world setting defaults ON in a fresh world.",
      "rev": 1
     }
    ]
   },
   {
-   "name": "Chat cards",
+   "name": "The HUD",
    "items": [
     {
-     "id": "fix-layonhands-eq",
-     "v": "v0.0.493",
-     "title": "Lay On Hands @Rally target & damage card = icon",
-     "do": "Have Durgan use Lay On Hands (2 AP) targeting Aveline and click the Rally Point button on the card while Durgan's token is still selected; also deal damage to Durgan and inspect the \"=\" breakdown button next to Undo.",
-     "expect": "Clicking Lay On Hands' Rally Point opens \"Rally: Aveline\" (never Durgan) and heals Aveline; the \"=\" icon inside the breakdown button is dead-center inside its square border.",
-     "rev": 1
-    }
-   ]
-  },
-  {
-   "name": "Conditions and their Tiers",
-   "items": [
-    {
-     "id": "fix-daunted-eot",
-     "v": "v0.0.493",
-     "title": "Daunted (EoT) expires at end of target's turn",
-     "do": "Have Grave Wisp hit Durgan with Chilling Touch (applying Daunted EoT), then advance through Durgan's turn (including when Durgan is last in the round) into the next round.",
-     "expect": "Daunted (Grave Wisp) (EoT) clears automatically at the end of Durgan's turn on both Round 1 and Round 2+.",
+     "id": "fix-move-end-sit",
+     "v": "v0.0.495",
+     "title": "Advance and Evade Basic Actions show End movement in Situational tab",
+     "do": "On Sylwen's or Durgan's turn in combat, click Basic Actions → Evade (1 AP or 2 AP) and Advance (1 AP), then check the HUD Situational tab.",
+     "expect": "The Situational tab immediately surfaces the movement card with live squares remaining, \"End movement\" (and \"Advance instead\" for Evade), and clicking \"End movement\" or pressing Esc ends the movement cleanly.",
      "rev": 1
     }
    ]
@@ -65,10 +31,23 @@
    "items": [
     {
      "id": "fix-rx-order-dead",
-     "v": "v0.0.493",
-     "title": "Interrupt before Trigger & defeated tokens skip Reactions",
-     "do": "Kill/defeat an enemy with a Reaction (e.g. Orc Warrior) and trigger its moment near its body; also trigger Slip Away (Kaela, Interrupt) and Rebuke (Aveline, Trigger) on the same enemy movement, and try reordering the stack.",
-     "expect": "Defeated/Down tokens never trigger Reactions or post No-Reactions lines; Interrupt (Slip Away) is always listed and resolved before Trigger (Rebuke), and Rebuke cannot be moved above Slip Away. Also verify Skip Defeated is ON by default in Combat Tracker settings, dead squad Minions no longer trigger the Minion pick bar, and hovering across Combat Strip portraits never leaves stuck token highlights on the canvas.",
+     "v": "v0.0.495",
+     "title": "Dead movers skip Reactions & Trigger cannot be dragged above Interrupt",
+     "do": "(1) Drag a dead/defeated Grave Wisp toward Sylwen (with Snap Shot); (2) Trigger both Snap Shot (Interrupt) and Rebuke (Trigger) on the same live enemy movement, then try dragging Rebuke above Snap Shot in the Reactions stack.",
+     "expect": "(1) Moving a dead/defeated token never triggers Snap Shot or any Reaction; (2) Rebuke cannot be dragged above Snap Shot (even visually while dragging — it stays locked below Interrupts).",
+     "rev": 2
+    }
+   ]
+  },
+  {
+   "name": "Areas, light and Cover",
+   "items": [
+    {
+     "id": "fix-peek-visibility",
+     "v": "v0.0.495",
+     "title": "Large/peeking token stays visible when any corner has Line of Effect",
+     "do": "Place Ogre Chieftain (2×2) behind a wall with Line of Effect (Shift+L) on Sylwen and move Sylwen right until only 1 corner of the Ogre peeks past the wall (High cover, 3/4 walls blocked), then move 1 more square right until all 4 corners are blocked (No Line of Effect).",
+     "expect": "Ogre Chieftain stays visible on the canvas whenever at least 1 corner is inside Sylwen's Line of Sight (High cover), and disappears only once all corners are behind the wall.",
      "rev": 1
     }
    ]

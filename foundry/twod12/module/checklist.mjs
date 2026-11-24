@@ -138,7 +138,7 @@ const setStrip = patch => game.settings.set(F, "testStrip", { ...stripState(), .
 /** init: the settings and the shortcut. */
 export function registerChecklist() {
   installErrorCapture();
-  game.settings.register(F, "testChecklist", { name: "Test checklist", hint: "For testing a new version: shows the GM the version's list of things to try, one at a time in a small bar (Shift+K shows or hides it), with Pass / Fail / Skip. A Fail asks what happened and keeps the console's errors; the List's Copy report gives a text to paste to Claude.", scope: "world", config: true, type: Boolean, default: false, onChange: v => (v ? startChecklist() : removeStrip()) });
+  game.settings.register(F, "testChecklist", { name: "Test checklist", hint: "For testing a new version: shows the GM the version's list of things to try, one at a time in a small bar (Shift+K shows or hides it), with Pass / Fail / Skip. A Fail asks what happened and keeps the console's errors; the List's Copy report gives a text to paste to Claude.", scope: "world", config: true, type: Boolean, default: true, onChange: v => (v ? startChecklist() : removeStrip()) });
   game.settings.register(F, "testResults", { scope: "world", config: false, type: Object, default: {} });
   game.settings.register(F, "testStrip", { scope: "client", config: false, type: Object, default: {} });
   game.keybindings.register(F, "testChecklist", { name: "Test checklist: show or hide", hint: "Shows or hides the test bar (the world setting Test checklist must be on; GM only).", editable: [{ key: "KeyK", modifiers: ["Shift"] }],

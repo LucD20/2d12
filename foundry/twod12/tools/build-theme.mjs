@@ -1029,10 +1029,11 @@ const STYLE3 = `
 .twod12-type.twod12-type #twod12-carousel .tp-swap.on { background: ${T.stamp}; color: ${T.stampInk}; border-top-color: ${T.stamp}; font-weight: 700; }
 .twod12-type.twod12-type #twod12-carousel .tp.swapok { outline: 0; }
 .twod12-type.twod12-type #twod12-carousel .tp.swapok .tp-por img { border-color: ${T.gold}; box-shadow: 0 0 0 2px rgba(210,167,90,.55); }
-.twod12-type.twod12-type #twod12-carousel .tp-hid, .twod12-type.twod12-type #twod12-carousel .tp-rxw, .twod12-type.twod12-type #twod12-carousel .tp-tgt { position: absolute; z-index: 3; display: inline-flex; align-items: center; justify-content: center; font: 800 9.5px/1 "Source Sans 3", sans-serif; border: 1px solid #1a1612; }
+.twod12-type.twod12-type #twod12-carousel .tp-hid, .twod12-type.twod12-type #twod12-carousel .tp-rxw, .twod12-type.twod12-type #twod12-carousel .tp-tgt { position: absolute; z-index: 3; display: inline-flex; align-items: center; justify-content: center; padding: 0; font: 800 9.5px/1 "Source Sans 3", sans-serif; border: 1px solid #1a1612; }
 .twod12-type.twod12-type #twod12-carousel .tp-hid { left: -4px; top: -2px; width: 16px; height: 16px; background: #2d2820; color: ${T.mute}; }
 .twod12-type.twod12-type #twod12-carousel .tp-rxw { right: -6px; top: -3px; padding: 2px 4px; background: ${T.stamp}; color: ${T.stampInk}; }
 .twod12-type.twod12-type #twod12-carousel .tp-tgt { left: -5px; bottom: 0; width: 16px; height: 16px; background: #c0453b; color: #fff; }
+.twod12-type.twod12-type #twod12-carousel .tp-tgt i, .twod12-type.twod12-type #twod12-carousel .tp-hid i { margin: 0 !important; font-size: 10px; line-height: 1; display: block; }
 .twod12-type.twod12-type #twod12-carousel .tp.sq-start, .twod12-type.twod12-type #twod12-carousel .tp.sq-mid, .twod12-type.twod12-type #twod12-carousel .tp.sq-end { border-bottom: 2px solid ${T.gold}; padding-bottom: 2px; }
 .twod12-type.twod12-type #twod12-carousel .tp.sq-start { border-left: 2px solid ${T.gold}; }
 .twod12-type.twod12-type #twod12-carousel .tp.sq-end { border-right: 2px solid ${T.gold}; }

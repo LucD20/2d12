@@ -13,6 +13,39 @@ export function canSeeByRules(observer, target) {
   return seenLight(tokenLight(target), observer.actor.system?.senses ?? {}) !== "dark";
 }
 
+/**
+ * v0.0.495 (Lucas playtest Image 3): Foundry's default testVisibility checks only points near a token's center, hiding Large (2×2) or
+ * peeking tokens even when a corner is cleanly inside Line of Sight (2d12 High/Medium/Low cover). Test the 4 inset corners of each
+ * 1×1 square the target occupies against the vision polygon and mode range so token visibility matches 2d12 Line of Effect.
+ */
+export function cornerInLos(visionSource, mode, target, modeId = "") {
+  const poly = modeId === "basicSight" && typeof visionSource?.shape?.contains === "function" ? visionSource.shape : visionSource?.los;
+  if (typeof poly?.contains !== "function" || !target?.document || target.document.hidden) return false;
+  const gs = globalThis.canvas?.grid?.size || 100;
+  const distUnit = globalThis.canvas?.grid?.distance || 1;
+  const rangeUnits = mode?.range;
+  let rangePx = Infinity;
+  if (rangeUnits !== null && rangeUnits !== undefined && rangeUnits !== Infinity) {
+    if (!(Number(rangeUnits) > 0)) return false;
+    rangePx = Number(rangeUnits) * (gs / distUnit) + 4;
+  }
+  const d = target.document, e = 0.04 * gs;
+  const cols = Math.max(1, Math.round(Number(d.width) || 1));
+  const rows = Math.max(1, Math.round(Number(d.height) || 1));
+  const ox = Number(visionSource.x), oy = Number(visionSource.y);
+  for (let j = 0; j < rows; j++) {
+    for (let i = 0; i < cols; i++) {
+      const x0 = Number(d.x) + i * gs + e, y0 = Number(d.y) + j * gs + e;
+      const x1 = Number(d.x) + (i + 1) * gs - e, y1 = Number(d.y) + (j + 1) * gs - e;
+      for (const [cx, cy] of [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]) {
+        if (Number.isFinite(rangePx) && Number.isFinite(ox) && Number.isFinite(oy) && Math.hypot(cx - ox, cy - oy) > rangePx) continue;
+        if (poly.contains(cx, cy)) return true;
+      }
+    }
+  }
+  return false;
+}
+
 // The modes of Foundry's sight that can make a token visible: Basic Sight (what the creature's vision reaches), Light Perception (anything in a lit area: this is the one
 // Global Illumination feeds) and See Invisibility. All of them must also be allowed by the rules.
 const SIGHT_MODES = ["basicSight", "lightPerception", "seeInvisibility"];
@@ -29,8 +62,15 @@ export function registerSightGate() {
       const orig = mode.testVisibility;
       const gated = function (visionSource, m, config) {
         const seen = orig.call(this, visionSource, m, config);
-        if (!seen) return seen;
-        try { const target = config?.object; return target?.actor ? canSeeByRules(visionSource?.object, target) : seen; } catch (e) { return seen; }
+        const target = config?.object;
+        if (!seen) {
+          if (id === "seeInvisibility" || !target?.actor || !visionSource?.object) return seen;
+          try {
+            if (typeof this?._canDetect === "function" && !this._canDetect(visionSource, target)) return false;
+            return canSeeByRules(visionSource.object, target) && cornerInLos(visionSource, m, target, id);
+          } catch (e) { return seen; }
+        }
+        try { return target?.actor ? canSeeByRules(visionSource?.object, target) : seen; } catch (e) { return seen; }
       };
       gated.twod12Gate = true;
       mode.testVisibility = gated;

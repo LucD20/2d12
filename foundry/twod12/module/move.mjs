@@ -613,41 +613,47 @@ async function grantFreeMove(cfg, ctx, kind = "walk") {
 let freeBar = null;
 function freeMoveBar(c, kind, text) {
   if (typeof document === "undefined") return;   // the tests
+  const barOpts = arguments[3] ?? {};
   freeBar?.remove();
   const bar = document.createElement("div");
   bar.className = "twod12-linebar twod12-setupbar twod12-freebar";
   bar.innerHTML = `<i class="fa-solid ${kind === "evade" ? "fa-wind" : "fa-person-running"} lb-ic"></i><span class="lb-text"><b>${esc(c.name)}</b>: ${esc(text)}</span>${kind === "evade" ? '<button type="button" class="lb-go lb-adv"><i class="fa-solid fa-person-running"></i> Advance instead</button>' : ""}<button type="button" class="lb-give lb-end">End movement</button><span class="lb-count"></span><span class="lb-keys"><kbd>Esc</kbd> End movement</span>`;
   // v0.0.461 (the map notes' redesign, b / c / h): the squares left, big, kept up to date; Escape ends the movement (it did nothing)
-  const count = () => { const cb = game.combat?.combatants.get(c.id), left = num(cb?.getFlag(F, "freeMove")) + num(cb?.getFlag(F, "evadeMove")), el = bar.querySelector(".lb-count"); if (el) el.innerHTML = `<b>${left}</b> square${left === 1 ? "" : "s"} left`; };
+  const leftOf = cb => num(cb?.getFlag(F, "freeMove")) + num(cb?.getFlag(F, "evadeMove")) + (barOpts.drag ? num(cb?.getFlag(F, "moveLeft")) : 0);
+  const count = () => { const cb = game.combat?.combatants.get(c.id), left = leftOf(cb), el = bar.querySelector(".lb-count"); if (el) el.innerHTML = `<b>${left}</b> square${left === 1 ? "" : "s"} left`; };
   count();
   // v0.0.441 (D7): End movement asks in the HUD's Situational section too (the floating bar only with no HUD)
   const hud = globalThis.__twod12Hud ?? null, slot = hud?.hudAskSlot?.() ?? null, side = !!slot?.classList?.contains("hb-ask");
   if (slot) { bar.classList.add("in-hud"); bar.classList.toggle("in-side", side); slot.append(bar); hud.hudAsking(true, side); } else document.body.append(bar);
   const turn = `${game.combat?.round}:${game.combat?.turn}`;
   const close = () => { bar.remove(); try { (globalThis.__twod12Hud ?? hud)?.hudAsking?.(false); } catch (e) { /* gone */ } if (freeBar === bar) freeBar = null; Hooks.off("updateCombatant", watch); Hooks.off("updateCombat", watchTurn); window.removeEventListener("keydown", esc_, true); };
-  const watch = cb => { if (cb.id !== c.id) return; if (num(cb.getFlag(F, "freeMove")) + num(cb.getFlag(F, "evadeMove")) <= 0) close(); else count(); };
-  const esc_ = ev => { if (ev.key !== "Escape" || !bar.isConnected || /input|textarea|select/i.test(ev.target?.tagName ?? "")) return; ev.preventDefault(); ev.stopImmediatePropagation(); close(); endMovement(c.id).catch(() => {}); };
+  const doEnd = () => { close(); (barOpts.onEnd ? barOpts.onEnd() : endMovement(c.id)).catch?.(() => {}); };
+  const watch = cb => { if (cb.id !== c.id) return; if (leftOf(cb) <= 0) close(); else count(); };
+  const esc_ = ev => { if (ev.key !== "Escape" || !bar.isConnected || /input|textarea|select/i.test(ev.target?.tagName ?? "")) return; ev.preventDefault(); ev.stopImmediatePropagation(); doEnd(); };
   window.addEventListener("keydown", esc_, true);
   const watchTurn = cb => { if (`${cb.round}:${cb.turn}` !== turn) close(); };
   Hooks.on("updateCombatant", watch); Hooks.on("updateCombat", watchTurn);
-  bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); close(); endMovement(c.id).catch(() => {}); });
+  bar.querySelector(".lb-end").addEventListener("click", ev => { ev.preventDefault(); doEnd(); });
   // v0.0.226 (Lucas): after Advance instead, Evade instead turns it back (only for a movement that was an Evade).
   const swap = toAdvance => {
     const b = bar.querySelector(".lb-adv"), t = bar.querySelector(".lb-text");
     if (toAdvance) {
       bar.dataset.evadeN = String(num(game.combat?.combatants.get(c.id)?.getFlag(F, "evadeMove")));
-      evadeAsAdvance(c.id).catch(() => {});
+      (barOpts.onSwap ? barOpts.onSwap(true) : evadeAsAdvance(c.id)).catch?.(() => {});
       if (b) b.innerHTML = '<i class="fa-solid fa-wind"></i> Evade instead';
       if (t) t.innerHTML = `<b>${esc(c.name)}</b>: the movement is an Advance now (it triggers reactions). Drag your token.`;
     } else {
-      advanceAsEvade(c.id, num(bar.dataset.evadeN)).catch(() => {});
+      const n = num(bar.dataset.evadeN);
+      (barOpts.onSwap ? barOpts.onSwap(false, n) : advanceAsEvade(c.id, n)).catch?.(() => {});
       if (b) b.innerHTML = '<i class="fa-solid fa-person-running"></i> Advance instead';
       if (t) t.innerHTML = `<b>${esc(c.name)}</b>: ${esc(text)}`;
     }
     bar.dataset.mode = toAdvance ? "advance" : "evade";
   };
   bar.querySelector(".lb-adv")?.addEventListener("click", ev => { ev.preventDefault(); swap(bar.dataset.mode !== "advance"); });
+  bar._closeFreeBar = close;
   freeBar = bar;
+  return close;
 }
 
 /** The Evade becomes an Advance: it can then be used on a move that does trigger reactions (or by a creature that can not Evade). */
@@ -694,7 +700,7 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
   moveBar?.finish(false);
   // drag: started by moving the token (an Advance paid by the drag): the Speed left of that Advance (moveLeft) counts too.
   const left = () => num(c.getFlag(F, "freeMove")) + num(c.getFlag(F, "evadeMove")) + (drag ? num(c.getFlag(F, "moveLeft")) : 0);
-  let after = getAP(c), logged = false;
+  let after = getAP(c), logged = false, closeSit = null;
   // v0.0.200 (Lucas): the movement's line goes to the Turn Log ONCE, when it ends (or when another Action comes first): its name and cost.
   const writeLine = async () => {
     if (logged) return;
@@ -710,12 +716,22 @@ export function moveBanner(c, kind, granted, name, { drag = false, ap = 0 } = {}
     moveBar = null;
     lastBar = { id: c.id, until: Date.now() + 2500 };
     for (const [h, id] of hooks) Hooks.off(h, id);
+    try { closeSit?.(); } catch (e) { /* gone */ }
+    closeSit = null;
     const l = left();
     if (drop && l > 0 && c.isOwner && game.combat?.combatants?.has?.(c.id)) await c.update({ [`flags.${F}.freeMove`]: 0, [`flags.${F}.evadeMove`]: 0, ...(drag ? { [`flags.${F}.moveLeft`]: 0 } : {}), ...unset(`flags.${F}.ignoreTerrain`) });
     clearRange();
     await writeLine();
   };
   moveBar = { c, finish, writeLine, logged: () => logged, toAdvance: () => { name = name === "Evade" ? "Advance" : name; }, add: (n, moreAp = 0) => { granted += n; ap += moreAp; after = getAP(c); } };
+  // v0.0.495 (Lucas): Basic Actions Advance / Evade / Crawl also surface "End movement" (and "Advance instead") in the HUD Situational tab
+  if (left() > 0) {
+    const sq = `${granted} square${granted === 1 ? "" : "s"}`;
+    const what = kind === "evade"
+      ? `${name} up to ${sq}: no reactions; not into or through Difficult Terrain. Drag your token.`
+      : `${name} up to ${sq}. Drag your token.`;
+    closeSit = freeMoveBar(c, kind, what, { drag, onEnd: () => finish(true), onSwap: (toAdv, n) => (toAdv ? evadeToAdvance(c.id) : advanceAsEvade(c.id, n)) }) ?? null;
+  }
   on("updateCombatant", cb => { if (cb.id !== c.id || moveBar?.c !== c) return; if (left() <= 0) finish(false); });
   // v0.0.362: the movement shows in the Turn Breakdown as soon as it starts (live: the dock counts its squares)
   import("./ticker.mjs").then(T => T.logLive(c, T.makeLine("move", name, after + ap, after, Math.max(apMax(c), after + ap)), granted)).catch(() => {});

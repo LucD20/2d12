@@ -849,15 +849,31 @@ function dragSlabs(st, el) {
   if (!box) return;
   const slabs = () => [...box.querySelectorAll(".rx-it[data-row]")];
   const ids = () => slabs().map(s => Number(s.dataset.row));
+  const rowOf = s => st.rows?.find?.(r => r.i === Number(s?.dataset?.row)) ?? null;
+  const validOrder = list => {
+    let seenTrigger = false;
+    for (const id of list) {
+      if (kindRank(st.rows?.find?.(r => r.i === id)) === 1) seenTrigger = true;
+      else if (seenTrigger) return false;
+    }
+    return true;
+  };
   const renumber = () => slabs().forEach((s, k) => { const n = s.querySelector(".rx-num"); if (n) n.textContent = String(k + 1); s.classList.toggle("top", k === 0); });
-  let dragged = null, start = "";
+  let dragged = null, start = "", snapshot = [];
   for (const s of slabs()) {
     s.draggable = true;
-    s.addEventListener("dragstart", e => { e.stopPropagation(); dragged = s; start = ids().join(","); s.classList.add("rx-drag"); try { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", "twod12-rx"); } catch (x) { /* */ } });
+    s.addEventListener("dragstart", e => { e.stopPropagation(); dragged = s; snapshot = slabs(); start = ids().join(","); s.classList.add("rx-drag"); try { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", "twod12-rx"); } catch (x) { /* */ } });
     s.addEventListener("dragend", e => {
       e.stopPropagation(); s.classList.remove("rx-drag");
       const now = ids();
       dragged = null; O.previewOrder(st.id, null);
+      // v0.0.495: if DOM order somehow violates Interrupt-before-Trigger, snap back to starting DOM order instead of leaving a stale illegal visual state
+      if (!validOrder(now)) {
+        const base = box.querySelector(".rx-base");
+        for (const node of snapshot) box.insertBefore(node, base ?? null);
+        renumber();
+        return;
+      }
       if (now.join(",") !== start) send(st, "order", -1, { ids: now });
     });
   }
@@ -866,6 +882,8 @@ function dragSlabs(st, el) {
     e.preventDefault(); e.stopPropagation();
     const over = e.target.closest?.(".rx-it[data-row]");
     if (!over || over === dragged) return;
+    // v0.0.495 (Lucas fix-rx-order-dead): Triggers can never be dragged above Interrupts (nor Interrupts below Triggers)
+    if (kindRank(rowOf(dragged)) !== kindRank(rowOf(over))) return;
     const r = over.getBoundingClientRect(), after = e.clientY > r.top + r.height / 2;
     box.insertBefore(dragged, after ? over.nextSibling : over);
     renumber(); O.previewOrder(st.id, ids());
@@ -1070,15 +1088,18 @@ export function partialRefund(before, now, part) {
 const offered = new Set();   // a Reaction that couldn't answer (blocked) is noted once per Move Action
 const usedOn = new Set();    // v0.0.279: once per triggering Action means once USED: a Pass offers it again on the next square of the same Move Action
 const pendingOn = new Set(); // v0.0.279: a Reaction already waiting on an open message isn't offered twice   // once per Move Action: a Reaction is offered once for each Move Action of the same mover
+/** Pure (v0.0.495, fix-rx-order-dead): is this creature dead, defeated, or Unconscious (moving its body should not trigger combat Reactions)? */
+export const isInertMover = (actor, cbt = null, doc = null) => !!(cbt?.isDefeated || cbt?.defeated || actor?.statuses?.has?.("dead") || actor?.statuses?.has?.("unconscious") || doc?.hasStatusEffect?.("dead") || (actor?.type === "npc" && isDown(actor)));
 /** A creature moved (not an Evade, not a Forced Movement): "an enemy moves closer" and "an enemy moves (or stands up)". */
 export function moveMoment(doc, origin, dest, { stand = false, before = null, waypoints = null } = {}) {
   (async () => {
     const actor = doc?.actor;
     if (!actor || !game.combat?.started) return;
+    const cbt = game.combat.combatants?.find?.(x => x.tokenId === doc.id);
+    if (isInertMover(actor, cbt, doc)) return;   // v0.0.495: moving a dead/defeated/unconscious token never triggers Reactions
     const size = { width: doc.width, height: doc.height, elevation: doc.elevation };
     const fromAt = { ...size, x: origin?.x ?? doc.x, y: origin?.y ?? doc.y }, toAt = { ...size, x: dest?.x ?? doc.x, y: dest?.y ?? doc.y };
     // v0.0.274 (Lucas; the book: "You can react only once to the same Action"): once per Reaction for each Move Action (a new Advance offers again)
-    const cbt = game.combat.combatants?.find?.(x => x.tokenId === doc.id);
     const turn = `${doc.id}|${game.combat.round}|${game.combat.turn}|${moveActionOf(cbt?.id)}`;
     const sideToks = disp => (canvas.tokens?.placeables ?? []).filter(t => t.actor && Number(t.document.disposition ?? 0) === Number(disp ?? 0) && t.document.id !== doc.id);
     // v0.0.277 (Lucas: the trigger "didn't happen" when the mover walked past and away): the squares it left (Opportunity Attack: "would leave a

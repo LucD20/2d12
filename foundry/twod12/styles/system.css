@@ -186,7 +186,7 @@ a.twod12-inline.chatbtn i { font-size: 9px; }
 .twod12.chat .irow .dice { margin: 0; }
 .twod12 .gen .genprev { margin: 6px 0; padding: 6px 8px; border: 1px solid rgba(128,128,128,.5); border-radius: 4px; font-size: 12px; background: rgba(128,128,128,.12); }
 .twod12 .gen input[type=text] { width: 100%; }
-.twod12 .calc { font-size: 11px; opacity: .8; white-space: nowrap; }
+.twod12 .calc:not(.twod12-inline) { font-size: 11px; opacity: .8; white-space: nowrap; }
 .twod12-ap .twod12-swap { width: 22px; height: 20px; min-height: 0; padding: 0; line-height: 1; font-size: 10px; }
 .twod12-ap.frozen input { background: rgba(80,130,240,.35); }
 /* v0.0.22: roll dialog preview, vs notes, push tip */
