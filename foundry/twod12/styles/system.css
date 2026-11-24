@@ -2523,14 +2523,18 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-btot small { color: var(--cc-mute); }
 .twod12.chat.cc .cc-badge { font-family: var(--cc-title); font-weight: 700; font-size: 11.5px; border: 1.5px solid var(--cc-ink); border-radius: 4px; padding: 0 5px; white-space: nowrap; }
 .twod12.chat.cc .cc-chips { margin-left: auto; display: flex; flex-wrap: wrap; gap: 3px; }
-.twod12.chat.cc .cc-dicerow { gap: 4px; }
-.twod12.chat.cc .cc-dg { display: inline-flex; gap: 6px; padding: 0 3px; }
-.twod12.chat.cc .cc-die { display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center; transform: rotate(45deg); border: 1.3px solid var(--cc-ink); background: #fff; margin: 4px 3px; flex: none; }
-.twod12.chat.cc .cc-die b { transform: rotate(-45deg); font-size: 11px; font-weight: 700; color: var(--cc-ink); }
-.twod12.chat.cc .cc-die.boom { background: var(--cc-ink); } .twod12.chat.cc .cc-die.boom b { color: #f4ede0; }
-.twod12.chat.cc .cc-dbl { display: inline-flex; gap: 2px; border: 1.5px solid var(--cc-t3); border-radius: 4px; padding: 0 1px; }
+.twod12.chat.cc .cc-dicerow { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.twod12.chat.cc .cc-dg { display: inline-flex; align-items: center; gap: 3px; padding: 0 2px; }
+.twod12.chat.cc .cc-die { display: inline-flex; width: 25px; height: 25px; align-items: center; justify-content: center; margin: 1px 0; flex: none; vertical-align: middle; }
+.twod12.chat.cc :is(.cc-die, .cc-ddie) > svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.twod12.chat.cc :is(.cc-die, .cc-ddie) :is(polygon, rect) { fill: #fff; stroke: var(--cc-ink); stroke-width: 1.7; stroke-linejoin: round; }
+.twod12.chat.cc :is(.cc-die, .cc-ddie) text { font-family: inherit; font-size: 11px; font-weight: 800; fill: var(--cc-ink); }
+.twod12.chat.cc :is(.cc-die.boom, .cc-ddie.ex) :is(polygon, rect) { fill: var(--cc-ink); stroke: var(--cc-gold); stroke-width: 2; }
+.twod12.chat.cc :is(.cc-die.boom, .cc-ddie.ex) text { fill: #f4ede0; }
+.twod12.chat.cc .cc-dbl { display: inline-flex; align-items: center; gap: 2px; border: 1.5px solid var(--cc-t3); border-radius: 4px; padding: 1px 3px; }
 .twod12.chat.cc .cc-dbl.crit { border-color: var(--cc-crit); }
-.twod12.chat.cc .cc-dropped { opacity: .45; }
+.twod12.chat.cc .cc-dropped { opacity: .5; }
+.twod12.chat.cc .cc-dropped :is(polygon, rect) { stroke-dasharray: 2.5 2; }
 .twod12.chat.cc .cc-tag { font-size: 10px; font-weight: 700; color: #fff; background: var(--cc-t3); border-radius: 3px; padding: 1px 5px; }
 .twod12.chat.cc .cc-tag.crit { background: var(--cc-crit); }
 .twod12.chat.cc .cc-bbl { display: flex; align-items: center; gap: 5px; width: 100%; }
@@ -2602,7 +2606,7 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.chat.cc .cc-inst { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 2px 6px; align-items: center; }
 .twod12.chat.cc .cc-inst + .cc-inst { border-top: 1px solid var(--cc-line); padding-top: 4px; }
 .twod12.chat.cc .cc-ititle { grid-column: 1 / -1; font-size: 11.5px; }
-.twod12.chat.cc .cc-ddie { display: inline-flex; min-width: 17px; height: 17px; align-items: center; justify-content: center; border: 1.3px solid var(--cc-ink); border-radius: 3px; background: #fff; font-size: 10.5px; font-weight: 700; margin-right: 2px; }
+.twod12.chat.cc .cc-ddie { display: inline-flex; width: 25px; height: 25px; align-items: center; justify-content: center; flex: none; vertical-align: middle; }
 .twod12.chat.cc .cc-ghead { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px; align-items: center; margin-top: 6px; }
 .twod12.chat.cc .cc-ghead b { font-family: var(--cc-title); font-size: 14px; }
 .twod12.chat.cc .cc-trows { margin-top: 3px; }
@@ -3613,8 +3617,8 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.iwin .iw-body { overflow-y: auto; min-height: 0; flex: 1; padding-bottom: 4px; }
 .twod12.iwin .iw-cols, .twod12.iwin .iw-row { display: grid; grid-template-columns: minmax(0, 1fr) 168px 136px 128px 96px 96px; gap: 8px; align-items: center; }
 .twod12.iwin .iw-cols { padding: 8px 26px 2px; font-size: 11px; font-weight: 600; color: #5f5244; text-transform: uppercase; letter-spacing: 0.6px; }
-.twod12.iwin .iw-sec { margin: 6px 12px 10px; border: 1px solid #cdbfa5; border-radius: 5px; background: #f7f1e5; overflow: hidden; }
-.twod12.iwin .iw-sh { display: flex; align-items: baseline; gap: 10px; width: 100%; text-align: left; padding: 8px 10px; border: 0; border-radius: 0; height: auto; color: #4a4038; font-size: 12px; }
+.twod12.iwin .iw-sec { margin: 6px 12px 10px; border: 1px solid #cdbfa5; border-radius: 5px; background: #f7f1e5; overflow: visible; }
+.twod12.iwin .iw-sh { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 8px 10px; border: 0; border-radius: 0; height: auto; color: #4a4038; font-size: 12px; }
 .twod12.iwin .iw-sh.iw-s-friendly { background: #dfe7f1; }
 .twod12.iwin .iw-sh.iw-s-hostile { background: #f1dfdb; }
 .twod12.iwin .iw-sh.iw-s-neutral { background: #e9e4d3; }

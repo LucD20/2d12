@@ -1,0 +1,12 @@
+1. Auto-squad 4 Minions: Goblin Sneak · Squad 1(×2) + Goblin Sneak · Squad 2(×2) | rollN: 4 | rollLabel: Roll 4 · 1 player pending
+2. Mixed/over-cap squad: Mixed Squad 1 | warns: 4 in squad (book: ≤3), mixed creatures, non-Minion | leftover dissolved to solo: true
+3. Remove Sq1 member dissolves Sq1: true
+4. Ungroup & Auto-Squad: 6 -> 4
+5. Squad HTML pieces: true
+6. Conditional S/B lines: healthyHidesBoth=true | preBloodiedShowsBOnly=true | postStrainedShowsSOnly=true
+7. Polyhedral SVG dice: d4Tri=true | d6SqEx=true | d8Dia=true | d10Kite=true | d12Pent=true
+8. Card breakdowns use SVG dice: true
+9. cleanEffectName: Taunted (Durgan) | with EoT: Taunted (Durgan) (EoT)
+10. Export turn line: - OW: Durgan Judge 0A vs OW; OW: Taunted (Durgan); Durgan Rx Shield of Faith vs Sylwen; [Rx passed: Durgan Bulwark of Faith].
+11. EncLog HP Bar & ccUndo void: true
+12. CSS health: undef=0 | squadCss=true | diceCss=true

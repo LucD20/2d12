@@ -87,6 +87,13 @@ export function unifiedCreatures(combat, overrides = null) {
 }
 
 /* ------------------------------------------------------------------ pure: lines, turns, classic export */
+/** Strip nested parenthetical actor build subtitles from condition labels ("Taunted (Durgan (Dwarf Paladin, Lay On Hands))" -> "Taunted (Durgan)"). */
+export function cleanEffectName(name) {
+  let s = String(name ?? "").trim(), prev;
+  do { prev = s; s = s.replace(/\(([^()]*?)\s*\([^()]*\)\s*\)/g, "($1)"); } while (s !== prev);
+  return s.replace(/\s{2,}/g, " ").trim();
+}
+
 export function lineText(e, nm = r => r?.name ?? "?", an = n => n) {
   if (e.txt) return e.txt;
   const d = e.d ?? {};
@@ -104,7 +111,7 @@ export function lineText(e, nm = r => r?.name ?? "?", an = n => n) {
       return `${tgt} takes ${d.text}${red}${d.ally ? " (ally)" : ""}`;
     }
     case "heal": return `${nm(d.target ?? e.who)} heals ${d.n}${d.rp ? ` (${d.rp} RP)` : ""}`;
-    case "cond": return `${nm(e.who)}: ${d.name}`;
+    case "cond": return `${nm(e.who)}: ${cleanEffectName(d.name)}`;
     case "state": return `${nm(e.who)} becomes ${d.state}${d.by ? ` (${d.by})` : ""}${d.cardLine ? ` · ${d.cardLine}` : ""}`;
     case "rx": return `${nm(e.who)} ${d.outcome === "used" ? "uses" : d.outcome === "skipped" ? "skipped" : "passed"} ${an(d.action)}${d.trigger ? ` on ${d.trigger}` : ""}${d.detail ? ` (${d.detail})` : ""}`;
     case "turn": return `End of turn: AP ${d.apSpent ?? 0}/${d.apMax ?? 4}${d.apKept ? ` · kept ${d.apKept}${d.guard ? ` (+${d.guard} Guard)` : ""}` : ""}`;
@@ -360,18 +367,26 @@ export function exportAnalysis(log, creatures = [], { title = "Encounter", outco
   for (const turn of turnsOf(log)) {
     if (turn.r !== lastR) { lastR = turn.r; lines.push("", `### Round ${turn.r}`); }
     const turnMeta = turn.items.find(x => x.k === "turn")?.d;
+    const rxActKeys = new Set(turn.items.filter(x => x.k === "act" && x.d?.react).map(x => `${x.who?.id ?? ""}|${String(x.d?.name ?? "").toLowerCase()}`));
     const parts = [];
     for (const e of turn.items) {
       if (e.k === "turn") continue;
       const d = e.d ?? {};
+      const offTurn = !!(e.who?.id && turn.own?.id && e.who.id !== turn.own.id);
       if (e.k === "act") {
         let s = lineText(e, nm, n => n);
+        if (d.react) s = `${nm(e.who)} Rx ${s}`;
+        else if (offTurn) s = `${nm(e.who)} ${s}`;
         if (d.roll?.dice?.length) s += ` [${d.roll.dice.join(",")}${d.roll.mod >= 0 ? `+${d.roll.mod}` : d.roll.mod}${d.roll.netBB ? ` ${d.roll.netBB}` : ""} = ${d.roll.total}/${d.roll.dc}${d.roll.critDie ? `; Crit ${d.roll.critDie} ${d.roll.critType ?? ""}` : ""}]`;
         if (d.cardLines?.length) s += ` {${d.cardLines.join("; ")}}`;
         parts.push(s);
       } else if (e.k === "rx") {
-        if (d.outcome === "used") parts.push(`${nm(e.who)} Rx ${d.action}${d.detail ? ` (${d.detail})` : ""}`);
-        else if (includePassedRx) parts.push(`[Rx ${d.outcome}: ${nm(e.who)} ${d.action}]`);
+        const key = `${e.who?.id ?? ""}|${String(d.action ?? "").toLowerCase()}`;
+        if (d.outcome === "used") {
+          if (!rxActKeys.has(key)) parts.push(`${nm(e.who)} Rx ${d.action}${d.detail ? ` (${d.detail})` : ""}`);
+        } else if (includePassedRx) parts.push(`[Rx ${d.outcome}: ${nm(e.who)} ${d.action}]`);
+      } else if (e.k === "move" && offTurn) {
+        parts.push(`${nm(e.who)} ${lineText(e, nm, n => n)}`);
       } else {
         parts.push(lineText(e, nm, n => n));
       }
@@ -442,11 +457,11 @@ export const refOf = (actorOrToken, name = null) => {
   return { id: tok?.id ?? a?.id ?? "", actorUuid: a?.uuid ?? "", name: name ?? cleanCreatureName(tok?.name ?? a?.name ?? "?") };
 };
 
-export function logLine(k, who, d = {}) {
+export function logLine(k, who, d = {}, id = null) {
   const combat = game.combat;
   if (!combat?.started) return;
   const cur = combat.combatant;
-  const entry = { id: newId(), r: combat.round, t: combat.turn, own: { id: cur?.tokenId ?? cur?.actorId ?? "", name: cleanCreatureName(cur?.token?.name ?? cur?.name ?? "") }, k, who, d };
+  const entry = { id: id || newId(), r: combat.round, t: combat.turn, own: { id: cur?.tokenId ?? cur?.actorId ?? "", name: cleanCreatureName(cur?.token?.name ?? cur?.name ?? "") }, k, who, d };
   return send({ type: "add", entry }, combat);
 }
 
@@ -474,17 +489,19 @@ export function noteCardDamageApplied(actorUuid) {
   if (actorUuid) recentCardDmg.set(actorUuid, Date.now());
 }
 
-/** v0.0.488: rich card-damage entry (raw, net Vigor/Resolve, reducedBy, protector source, ally flag, collision). */
-export function logDamageCard({ origin = null, target = null, v = 0, r = 0, raw = null, reducedBy = 0, reducedSource = null, reducedNote = "", ally = false, collision = false, note = "" } = {}) {
+/** v0.0.488: rich card-damage entry (raw, net Vigor/Resolve, reducedBy, protector source, ally flag, collision). Returns the entry id for Undo voiding. */
+export async function logDamageCard({ origin = null, target = null, v = 0, r = 0, raw = null, reducedBy = 0, reducedSource = null, reducedNote = "", ally = false, collision = false, note = "" } = {}) {
   const n = (Number(v) || 0) + (Number(r) || 0);
-  if (n <= 0 && !(Number(raw) > 0)) return;
+  if (n <= 0 && !(Number(raw) > 0)) return "";
   const tgtRef = refOf(target);
   if (tgtRef.actorUuid) noteCardDamageApplied(tgtRef.actorUuid);
   const parts = [];
   if (v > 0) parts.push(`${v} Vigor`);
   if (r > 0) parts.push(`${r} Resolve`);
   const text = parts.join(", ") || "0 damage";
-  logLine("dmg", tgtRef, {
+  if (!game.combat?.started) return "";
+  const id = newId();
+  await logLine("dmg", tgtRef, {
     n, v: Number(v) || 0, r: Number(r) || 0,
     pool: r > 0 && !v ? "R" : "V",
     text,
@@ -496,7 +513,8 @@ export function logDamageCard({ origin = null, target = null, v = 0, r = 0, raw 
     ...(ally ? { ally: true } : {}),
     ...(collision ? { collision: true } : {}),
     ...(note ? { note } : {})
-  });
+  }, id);
+  return id;
 }
 
 /** v0.0.488: log every offered Reaction row (used, passed, or skipped) when a Reactions stack finishes. */
@@ -650,7 +668,7 @@ export function registerEncLogHooks() {
       const actor = effect.parent;
       if (userId !== game.user.id || !game.combat?.started || actor?.documentName !== "Actor" || effect.getFlag?.(F, "rider") || options?.twod12Reset) return;
       const dur = effect.getFlag?.(F, "duration")?.type === "eot" ? " (EoT)" : "";
-      logLine("cond", refOf(actor), { name: `${effect.name}${dur}` });
+      logLine("cond", refOf(actor), { name: `${cleanEffectName(effect.name)}${dur}` });
     } catch (e) { console.warn("twod12 | encounter log (effect)", e); }
   });
 }
@@ -764,7 +782,7 @@ export class EncounterLog extends (ApplicationV2 ?? class {}) {
         <div class="el-tblwrap"><table class="el-tbl"><thead><tr>
           <th>Creature</th><th class="c">Raw</th><th class="c">Reduced</th><th class="c">Self/Ally</th><th class="c">Adjust</th>
           <th class="c">Net ([V]/[R])</th><th class="c">Max HP</th><th class="c">Heal (RP)</th><th class="c">Current</th>
-          <th class="c">Taken %</th><th class="c">Attempted %</th><th>Pressure</th>
+          <th class="c">Taken %</th><th class="c">Attempted %</th><th>HP Bar</th>
         </tr></thead><tbody>
           ${st.pcs.map(hRow).join("")}${st.pcs.length ? subRow("Party Total", st.party) : ""}
           ${st.npcs.map(hRow).join("")}${st.npcs.length ? subRow("Enemies Total", st.enemies) : ""}

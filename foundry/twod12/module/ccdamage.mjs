@@ -222,6 +222,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
   const origin = { ...(await import("./effects.mjs")).originInfo(s.originUuid), escalation: !!s.escalation, ...(Number.isFinite(s.originMod) ? { mod: s.originMod } : {}) };
   const E = await import("./effects.mjs");
   const rawPre = comps.reduce((sum, c) => sum + Math.ceil((Number(c.total) || 0) * factor), 0);
+  let dmgLogId = "";
   if (took.B + took.M > 0 || rawPre > 0) {
     let src = null; try { src = s.originUuid ? await fromUuid(s.originUuid) : null; } catch (e) { src = null; }
     const netTot = took.B + took.M;
@@ -236,7 +237,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
     const srcTok = src?.documentName === "Token" ? src : src?.token ?? src?.getActiveTokens?.()[0]?.document ?? src?.prototypeToken ?? null;
     const tgtTok = actor?.token ?? actor?.getActiveTokens?.()[0]?.document ?? actor?.prototypeToken ?? null;
     const isAlly = !!src && ((src?.actor ?? src)?.uuid === actor.uuid || sameSideCheck(srcTok?.disposition, tgtTok?.disposition));
-    try { await (await import("./enclog.mjs")).logDamageCard({ origin: src, target: actor, v: took.B, r: took.M, raw: rawPre, reducedBy: redBy, reducedSource: protActor, reducedNote: redParts.join(", "), ally: isAlly, note: g.crit ? "Critical" : "" }); } catch (e) { console.warn("twod12 | encounter dmg log", e); }
+    try { dmgLogId = (await (await import("./enclog.mjs")).logDamageCard({ origin: src, target: actor, v: took.B, r: took.M, raw: rawPre, reducedBy: redBy, reducedSource: protActor, reducedNote: redParts.join(", "), ally: isAlly, note: g.crit ? "Critical" : "" })) || ""; } catch (e) { console.warn("twod12 | encounter dmg log", e); }
     if (netTot > 0) {
       try { await (await import("./damagelog.mjs")).logDamage({ originUuid: s.originUuid ?? "", originName: src?.name ?? s.name ?? "", targetName: r.name, targetUuid: r.uuid ?? "", amount: netTot }); } catch (e) { console.warn("twod12 | damage log", e); }
       try { (await import("./halfhint.mjs")).clearHalfHint(s.originUuid); } catch (e) { /* none */ }
@@ -274,7 +275,7 @@ async function applyRow(s, i, factor = 1, { ask = true, rerun = false } = {}) {
     }
   }
   const rwi = [...CC.dmgModsFor(comps, dm).map(x => ({ kind: x.kind, sub: x.sub, label: x.label, v: x.v })), ...(report.mods ?? [])];   // v0.0.484: keep sub so Resist/Weak/Immune show in the post-Apply breakdown ledger
-  r.applied = { took, mods: rwi, state: (down || (bl && st)) ? "down" : bl ? "bloodied" : st ? "strained" : "", factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
+  r.applied = { took, mods: rwi, state: (down || (bl && st)) ? "down" : bl ? "bloodied" : st ? "strained" : "", post: { b: bl, s: st }, logId: dmgLogId, factor, undo, landed, ridersDone: true, chainDone: r.applied?.chainDone ?? false };
   return true;
 }
 /** The "After the damage" chain, once, for the rows just applied whose damage landed (s.lines on any landed Tier, gated by stateLinesFor; s.after on Tier 2+ or Saves). */
@@ -334,6 +335,7 @@ export async function ccDamageClick(kind, button, msg) {
       const r = s.rows[i];
       if (!r?.applied) return;
       const actor = actorOf(r.uuid);
+      if (r.applied.logId) { try { await (await import("./enclog.mjs")).patchLine(r.applied.logId, { off: true, why: kind === "ccUndo" ? "undone" : "adjusted" }); } catch (e) { /* no log */ } }
       if (actor) await (await import("./damage.mjs")).writeDamage(actor, r.applied.undo, { twod12Reset: true });
       if (kind === "ccUndo") { r.applied = null; await save(msg, s); }
       else if (await applyRow(s, i, f, { rerun: true })) await save(msg, s);

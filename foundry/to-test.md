@@ -23,9 +23,17 @@ differ):
 
 ## Starting a combat
 
+### ui-init-squads · v0.0.489 · Intuitive Initiative Squads & alignment
+Do: Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Try Auto-Squad Minions, Ungroup All, "+ Squad" / "+ Add" popovers, checkbox multi-select + "Group Selected into Squad", dragging one enemy onto another or into a squad, clicking "×" on a member pill, and rolling Initiative.
+Expect: Minions auto-group into visual brass-bordered Squad Cards ("×2 · 1 roll") sharing one row of Check/Roll/Boons/Banes controls; popovers aren't clipped; rolling rolls once per squad while each member keeps its own turn; all buttons, pills, checkboxes, and icons sit cleanly centered.
+
 ## The roll dialog
 
 ## Chat cards
+
+### ui-chat-poly-sb · v0.0.489 · Polyhedral SVG dice & conditional Bloodied/Strained entry
+Do: With Aveline (Sworn Blade) or Durgan (Drawing Light), attack a healthy Orc Warrior and expand both the 2d12 roll breakdown and the damage dice breakdown; then apply enough damage to make the target Bloodied or Strained (and try Undo).
+Expect: Expanded dice render as true tabletop shapes (d4 triangle, d6 square, d8 diamond, d10 kite, d12 pentagon) with centered numbers and gold exploded "!" glow; the Bloodied/Strained line stays hidden while the target is healthy and appears only when the target actually is Bloodied/Strained (hiding again on Undo).
 
 ## Conditions and their Tiers
 
@@ -37,19 +45,11 @@ differ):
 
 ## Ending an encounter and resting
 
-### ui-end-warn-copy · v0.0.488 · Dark red warning button & End Combat Copy Log
-Do: With Durgan Dying or Shattered, try to end combat (opens "End the encounter?" warning), then actually end a combat with Aveline, Durgan, and Goblin Sneak (opens "The encounter ends").
-Expect: "End it anyway" is deep crimson with crisp light text (not pastel pink); "The encounter ends" includes a "Copy Encounter Log (archived)" button that copies the report without closing the dialog, and the finished fight stays accessible in Encounter Log's Archive dropdown.
-
 ## The Encounter Log
 
-### enclog-v488 · v0.0.488 · Upgraded Encounter Log (Health Pressure %, Unified IDs, Archive)
-Do: Run a round or two of combat with Aveline, Durgan, Sylwen, Kaela against Ogre Chieftain, Orc Warrior, and two Goblin Sneaks (including a Shield of Faith or Judge reduction, a Critical or Bloodied hit, a passed Reaction, and an Undo on a damage card), then open Encounter Log from 2d12 Tools.
-Expect: Summary & Health % tab shows Raw, Reduced, Net ([V]/[R]), Max HP, Heal (RP), Current, Taken %, Attempted %, Party Total with G9 difficulty band, Prevented credit for Durgan/Aveline, and identical Goblin Sneak 1/2 numbering across Encounter Log and Damage Report; Undo does not log as a Heal; Copy for Analysis copies the full Markdown report cleanly.
+### enclog-v489-fixes · v0.0.489 · Encounter Log HP Bar header, Undo voiding & clean turn log
+Do: In combat with Durgan, Sylwen, Orc Warrior, and Ogre Chieftain: apply damage to Ogre Chieftain then click Undo; have Durgan use Judge (0 AP) and Shield of Faith (Reaction) during Orc Warrior's turn (applying Taunted), then open Encounter Log and click Copy for Analysis.
+Expect: The summary column header reads "HP Bar" (not "Pressure"); undone damage is voided so Net matches Max HP − Current; the Turn-by-Turn log prefixes off-turn actions ("Durgan Judge 0A vs OW"), writes "Taunted (Durgan)" without nested build text, and shows "Durgan Rx Shield of Faith vs Sylwen" once without duplication.
 
 ## Windows
-
-### ui-clock-align · v0.0.488 · Image-1 World Clock, Above-Chat Time Bar & button centering
-Do: Open World Clock from 2d12 Tools and check the quick time bar above chat (with Aveline on the scene); also glance at button/icon centering in Initiative, Pick dialogs, and 2d12 Tools.
-Expect: World Clock shows stacked uppercase date over bold gold HH:MM:SS with centered "+ 1 Round / + 1 Min / + 10 Min" and labeled Dawn/Noon/Dusk/Night buttons; the above-chat time bar uses dark STYLE-3 buttons (no white buttons) with stacked day/time readout; buttons and icons across dialogs sit dead-center.
 

@@ -33,7 +33,19 @@ export const divider = (n = 1) => `<div class="cc-div" aria-hidden="true"><span>
 const tierCls = (tier, crit) => (crit ? "crit" : `t${tier}`);
 /** The values of one d12 group: a 12 counts 11 and is rolled again. */
 export const dieValue = faces => (faces ?? []).reduce((a, f) => a + (f === 12 ? 11 : f), 0);
-const die = (f, chain = false) => `<span class="cc-die${f === 12 ? " boom" : ""}${chain ? " chain" : ""}"><b>${f}</b></span>`;
+/** v0.0.489 (Lucas): polyhedral SVG silhouettes for expanded chat dice (d4 triangle, d6 square, d8 diamond, d10 kite, d12 pentagon). */
+export function polyDieHtml(faces, val, { cls = "cc-ddie", boom = false, chain = false, ex = false } = {}) {
+  const f = Number(faces) || 6;
+  const shape = f === 4 ? '<polygon points="14,2 26,24 2,24"/>'
+    : f === 8 ? '<polygon points="14,1.5 26.5,14 14,26.5 1.5,14"/>'
+      : f === 10 ? '<polygon points="14,1.5 25,11.5 14,26.5 3,11.5"/>'
+        : f === 12 ? '<polygon points="14,1.5 26,10.2 21.4,24.5 6.6,24.5 2,10.2"/>'
+          : '<rect x="3" y="3" width="22" height="22" rx="3.5"/>';
+  const ty = f === 4 ? 18 : f === 10 ? 13 : 14.5;
+  const txt = `${val}${ex ? "!" : ""}`;
+  return `<span class="${cls} d${f}${boom ? " boom" : ""}${chain ? " chain" : ""}${ex ? " ex" : ""}"><svg viewBox="0 0 28 28" aria-hidden="true">${shape}<text x="14" y="${ty}" text-anchor="middle" dominant-baseline="central">${txt}</text></svg></span>`;
+}
+const die = (f, chain = false) => polyDieHtml(12, f, { cls: "cc-die", boom: f === 12, chain });
 const dieGroup = faces => `<span class="cc-dg">${(faces ?? []).map((f, i) => die(f, i > 0)).join("")}</span>`;
 
 /** The view a user gets: view({ gm, hideDef, hideTgt, designer, author, owner }). */
@@ -247,6 +259,16 @@ const critLine = (m, rows, hide) => {
   if (any) return `<div class="cc-critbox"><span class="cc-critlbl on">Critical</span><span class="cc-crittxt">${m.critHtml}</span></div>`;
   return "";   // v0.0.342 (Lucas: "the Critical should only show if it has been rolled"); was: the Critical's line with how to get one ("Doubles, or 33+")
 };
+/** Pure (v0.0.489, Lucas): show Bloodied / Strained lines on targeted cards only when a target is actually Bloodied / Strained (before roll or after Apply). */
+export function showStateLine(m, label) {
+  if (label !== "Bloodied" && label !== "Strained") return true;
+  const rows = m?.rows ?? [], drows = m?.dmg?.rows ?? [];
+  const tracked = rows.some(r => r && ("preB" in r || "preS" in r)) || drows.length > 0;
+  if (!tracked) return true;
+  if (label === "Bloodied") return rows.some(r => !!r?.preB) || drows.some(d => !!d?.pre?.b || !!d?.applied?.post?.b || ["bloodied", "both", "down"].includes(d?.applied?.state));
+  return rows.some(r => !!r?.preS) || drows.some(d => !!d?.pre?.s || !!d?.applied?.post?.s || ["strained", "both", "down"].includes(d?.applied?.state));
+}
+
 export function attackCardHtml(m, view = FULL_VIEW) {
   const hide = view.hideDef, rows = m.rows ?? [], one = rows.length <= 1;
   // v0.0.388 (pack ONE): the damage, once rolled, is drawn on this card (m.dmg); the Damage button goes
@@ -255,14 +277,15 @@ export function attackCardHtml(m, view = FULL_VIEW) {
   const dpart = din && !inMain ? din.part : "";
   // v0.0.429: an Effect the card writes above the roll is among its top lines (drawn once, there)
   const effects = m.effectsHtml && rows.some(r => r.tier >= (m.effectsFrom ?? 1)) && !(m.card?.top ?? []).some(l => l.label === "Effect") ? `${divider(1)}<div class="cc-effect">${m.effectsHtml}</div>` : "";
-  // v0.0.481 (Lucas, checklist b3-sworn-blade): Bloodied / Strained lines written after Tiers appear on attack chat cards too
-  const stateAfter = m.card ? cardLinesHtml((m.card.after ?? []).filter(l => l.label === "Bloodied" || l.label === "Strained")) : "";
+  // v0.0.481 & v0.0.489 (Lucas): Bloodied / Strained lines only appear when a target actually is Bloodied / Strained
+  const beforeLines = m.card ? (m.card.before ?? []).filter(l => showStateLine(m, l.label)) : [];
+  const stateAfter = m.card ? cardLinesHtml((m.card.after ?? []).filter(l => (l.label === "Bloodied" || l.label === "Strained") && showStateLine(m, l.label))) : "";
   // v0.0.465 (Lucas, checklist v0.0.464: "the Special and Flavor entries should be above the rolls"): the card's Special and its Flavor come right
   // after its lines, before the roll and the damage (they were under them)
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([...(m.designer?.odds ?? []).map(o => `Odds${o.name ? ` (${esc(o.name)})` : ""}: ${esc(o.text)}`), m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   const pf = hide ? playerFoot("Player view · enemy Defenses hidden by the GM") : "";
-  const head = `${headHtml(m)}${metaLineHtml(m)}${m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(m.card.before) : m.setupHtml ?? ""}`;
+  const head = `${headHtml(m)}${metaLineHtml(m)}${m.card ? cardLinesHtml(m.card.top) + cardLinesHtml(beforeLines) : m.setupHtml ?? ""}`;
   if (one) {
     const r = rows[0];
     const body = `<div class="cc-body">${stampHtml(r, { hide })}<div class="cc-main">${ladderHtml(r, { hide, id: "r0" })}${breakdownHtml(r, { hide, id: "r0", applied: m.applied ?? [] })}${inMain ? din.main : ""}<div class="cc-outcome">${outcomeHtml(inMain ? { ...(m.outcomes?.[r.tier] ?? {}), parts: [] } : m.outcomes?.[r.tier])}</div>${critLine(m, rows, hide)}${effects}</div></div>`;
@@ -374,13 +397,13 @@ export function saveCardHtml(m, view = FULL_VIEW) {
   const action = !cs.length ? '<div class="cc-muted cc-wait">No target yet: target the creatures, then press the target button below.</div>' : one && !r ? (view.owns(cs[0]?.uuid) ? `<div class="cc-btns">${rollBtn(0)}</div>` : `<div class="cc-muted cc-wait">Waiting for ${esc(cs[0]?.name ?? "the target")}'s ${esc(m.saveName)}…</div>`) : "";
   // CARD-ONE step 3: the card's lines in its order: the top ones (the Trigger, an Effect written above the roll) above the Save, the Version's Special
   // between it and the Tiers, the lines after the Tiers (its Effect) under them; a card posted before CARD-ONE keeps its Trigger line
-  const topLines = m.card ? cardLinesHtml(m.card.top) : "", trig = m.card ? cardLinesHtml(m.card.before) : triggerLineHtml(m);
+  const topLines = m.card ? cardLinesHtml(m.card.top) : "", trig = m.card ? cardLinesHtml((m.card.before ?? []).filter(l => showStateLine(m, l.label))) : triggerLineHtml(m);
   const flavor = cardSpecial(m) + (m.flavor ? `${divider(3)}<div class="cc-flavor">${esc(m.flavor)}</div>` : "");   // CARD-ONE: the card's Special before the Flavor
   const des = designerFoot([m.designer?.ruler ? `Ruler: ${esc(m.designer.ruler)}` : "", m.designer?.mithril ? `Automation: ${esc(m.designer.mithril)}` : ""], view);
   // v0.0.440 (Lucas, checklist: "the message becomes huge. After applying damage, it should collapse"): every creature rolled and every damage
   // row applied: the Save's lines fold under one line (each creature's Tier and name; a click opens them again), the damage part stays
   const settled = cs.length > 0 && cs.every(c => c.result) && (m.dmg?.rows ?? []).length > 0 && m.dmg.rows.every(x => x.applied);
-  const saveHead = `<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>`, after = m.card ? cardLinesHtml(m.card.after) : "";
+  const saveHead = `<div class="cc-savehead"><b>${esc(m.saveName)}</b><span class="cc-rule" aria-hidden="true"></span><span class="cc-badge">DC ${m.dc}</span></div>`, after = m.card ? cardLinesHtml((m.card.after ?? []).filter(l => showStateLine(m, l.label))) : "";
   const lines = settled
     ? `${saveHead}<details class="cc-fold"><summary class="cc-foldsum">${cs.map(c => `<span class="cc-foldc">${tierPill(c.result.tier)} ${esc(c.name)}</span>`).join("")}</summary>${topLines}${trig}${body}${after}</details>`
     : `${topLines}${saveHead}${trig}${body}${after}`;
@@ -601,8 +624,8 @@ export function poolBlock(comps) {
   }).join("");
 }
 const instBlock = x => `<div class="cc-inst"><div class="cc-ititle">${poolIc(x.pool)} ${POOL[x.pool] ?? "Vigor"} · <b class="cc-sub" style="${subStyle(x.sub)}">${esc(subName(x.sub))}</b>${x.src ? ` (${esc(x.src)})` : ""}</div>`
-  // v0.0.284 (Lucas): no "Dice: none" for a flat amount, and a Total only for a dice expression
-  + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv">${x.dice.map(d => (d.results ?? []).map((v, k) => (d.ex?.[k] ? `<span class="cc-ddie ex">${v}!</span>` : `<span class="cc-ddie">${v}</span>`)).join("")).join("")}</span>` : "")
+  // v0.0.284 (Lucas): no "Dice: none" for a flat amount, and a Total only for a dice expression; v0.0.489: polyhedral dice shapes
+  + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Dice</span><span class="cc-bv cc-dicerow">${x.dice.map(d => (d.results ?? []).map((v, k) => polyDieHtml(d.faces, v, { cls: "cc-ddie", ex: !!d.ex?.[k] })).join("")).join("")}</span>` : "")
   + (x.mods.length ? `<span class="cc-bl">Modifiers</span><span class="cc-bv">${x.mods.map(m => modTxt(m.v, m.label)).join(" ")}</span>` : "")
   + (x.dice.some(d => (d.results ?? []).length) ? `<span class="cc-bl">Total</span><span class="cc-bv"><b>${x.total}</b></span>` : "") + "</div>";
 /** Compact modifier strip shown under .cc-pools only when bonuses, flat modifiers, or Empowered contributed to the roll. */

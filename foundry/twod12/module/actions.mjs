@@ -1256,7 +1256,8 @@ export async function useAction(actor, item, opts = {}) {
   if ((chk || mres) && !version.noTiers && !saveAct) {
     const steadyCardExtra = preStrained.length ? basicLineHooks.filter(h => Number(h.hook?.strainedBeforeD) > 0).map(h => ({ pool: "B", useW: false, wCount: 1, useD: true, dCount: Math.max(1, Number(h.hook.strainedBeforeD) || 1), dice: "", useAt: false, subtype: "", source: h.item?.name || "1[D] more" })) : [];
     const mk = await attackModelParts({ it, item, version, weapon: weapon ?? previewWeapon ?? null, cardCtx, fxn, fxNames, bonuses, mres, areaSize: areaSet?.distance, chip: src.chip, ruleCtx: version.diceRule ? { escalation: Number(actor.system?.escalation) || 0, profane: !!(rollsAtOthers && targetToken && isProfaneFor(actor, targetToken)), more: smiteMore } : null, extraT3: steadyCardExtra });   // v0.0.440
-    const rowOf = (c, name, uuid) => ccRowOf(c, name, uuid, src.chip);
+    const stateOfUuid = u => { if (!u) return null; try { const d = fromUuidSync(u), a = d?.actor ?? d; return a?.system ? { preB: !!a.system.bloodied, preS: !!a.system.strained } : null; } catch (e) { return null; } };
+    const rowOf = (c, name, uuid) => ({ ...ccRowOf(c, name, uuid, src.chip), ...(stateOfUuid(uuid) ?? {}) });
     const rowsM = mres ? mres.map(r => rowOf(r.chk, r.label ?? r.name, r.uuid)) : [rowOf(chk, targets[0]?.name ?? (isSelf ? actor.name : ""), targets[0]?.uuid ?? "")];
     if (mres) for (const r of mres) mk.outcomes[r.chk.tier] = mk.outcomeFor(r.chk.tier, r.bonuses ?? []);
     else if (tier) mk.outcomes[tier] = mk.outcomeFor(tier, bonuses);
@@ -1924,7 +1925,8 @@ async function retargetCc(msg, toks) {
   const { resolveShared } = await import("./roll.mjs");
   const res = CC.recheckRows(roll, specs, resolveShared);
   const old = foundry.utils.deepClone(model);
-  model.rows = res.map(r => ccRowOf(r.chk, r.name, r.uuid, roll.chip));
+  const tokState = new Map(toks.map(t => [t.document.uuid, { preB: !!t.actor?.system?.bloodied, preS: !!t.actor?.system?.strained }]));
+  model.rows = res.map(r => ({ ...ccRowOf(r.chk, r.name, r.uuid, roll.chip), ...(tokState.get(r.uuid) ?? {}) }));
   model.tline.names = res.map(r => r.name);
   model.shared = res.length > 1 ? { d: roll.dice.d.map(x => x.faces), mod: roll.mod + roll.adj } : null;
   const targets = toks.map(t => ({ uuid: t.document.uuid, name: t.name, disposition: t.document.disposition }));

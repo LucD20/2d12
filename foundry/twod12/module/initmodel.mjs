@@ -68,9 +68,98 @@ export function lastOrder(list, call) {
   return [...(list ?? [])].sort((a, b) => ((Number(b.mods?.[attrOf(b, call)]) || 0) - (Number(a.mods?.[attrOf(a, call)]) || 0)) || (sideDisp(sideOf(b)) - sideDisp(sideOf(a))));
 }
 
+/** Role display label for NPCs. */
+const ROLE_LABELS = { minion: "Minion", grunt: "Grunt", standard: "Standard", elite: "Elite" };
+const shortMemberName = (name, base) => {
+  const s = String(name ?? "").trim(), b = String(base ?? "").trim();
+  if (b && s.startsWith(b) && s.length > b.length) {
+    const tail = s.slice(b.length).trim();
+    if (/^\d+$/.test(tail)) return `#${tail}`;
+    if (tail) return tail;
+  }
+  return s;
+};
+
+/**
+ * Pure (v0.0.489): resolve Initiative squads across all creatures.
+ * - Explicit `set.sqId === "solo"`: always solo (even Minions).
+ * - Explicit `set.sqId` (non-empty, not "solo"): grouped by `side|sqId` (kept as squad if >= 2 members).
+ * - Rolled legacy squad (`set.squad` = leaderId): grouped with leader if >= 2 members.
+ * - Default (no `sqId`, unrolled, `c.minion`): auto-grouped via `minionGroupOf` (book's even split, kept as squad if >= 2 members).
+ */
+export function resolveSquads(list) {
+  const arr = list ?? [], byKey = new Map(), ofId = new Map();
+  const add = (key, cr) => { if (!byKey.has(key)) byKey.set(key, []); byKey.get(key).push(cr); };
+  const explicitIds = new Set();
+
+  // 1. Explicit sqId (non-solo)
+  for (const c of arr) {
+    const sqId = String(c?.set?.sqId ?? "");
+    if (!sqId) continue;
+    explicitIds.add(c.id);
+    if (sqId === "solo") continue;
+    add(`${sideOf(c)}|${sqId}`, c);
+  }
+
+  // 2. Already-rolled legacy squads (followers carry set.squad = leaderId)
+  const byId = new Map(arr.map(c => [c.id, c]));
+  const rolledFollow = new Map();
+  for (const c of arr) {
+    if (explicitIds.has(c.id) || !isRolled(c)) continue;
+    const lid = String(c?.set?.squad ?? "");
+    if (lid && byId.has(lid) && !explicitIds.has(lid)) {
+      if (!rolledFollow.has(lid)) rolledFollow.set(lid, [byId.get(lid)]);
+      rolledFollow.get(lid).push(c);
+    }
+  }
+  for (const [lid, ms] of rolledFollow) {
+    if (ms.length >= 2) {
+      const key = `${sideOf(ms[0])}|rolled:${lid}`;
+      for (const m of ms) { explicitIds.add(m.id); add(key, m); }
+    }
+  }
+
+  // 3. Default Minion auto-squads (unrolled Minions without explicit sqId)
+  const autoMinions = arr.filter(c => !explicitIds.has(c.id) && !isRolled(c) && c.minion);
+  if (autoMinions.length) {
+    const mg = minionGroupOf(autoMinions.map(c => ({ id: c.id, kind: `${sideOf(c)}|${c.minion}`, group: c.set?.group ?? 0 })));
+    for (const c of autoMinions) {
+      const g = mg[c.id];
+      if (g) add(`${sideOf(c)}|auto:${c.minion}:${g.n}`, c);
+    }
+  }
+
+  // Only groups with >= 2 members are actual squads
+  for (const [key, ms] of [...byKey.entries()]) {
+    if (ms.length < 2) byKey.delete(key);
+    else for (const m of ms) ofId.set(m.id, key);
+  }
+  return { byKey, ofId };
+}
+
+/** Pure (v0.0.489): squads for `rollCreatures`: { leaderId: [memberIds...] }. Honors custom squads, "solo", and Minion auto-squads. */
+export function squadGroupsForRoll(list) {
+  const { byKey } = resolveSquads(list);
+  const out = {};
+  for (const ms of byKey.values()) if (ms.length >= 2) out[ms[0].id] = ms.map(x => x.id);
+  return out;
+}
+
+/** Pure: describe a squad (title + soft book-rule warnings if >3, mixed creatures, or non-Minions). */
+export function squadMeta(ms, index) {
+  const bases = [...new Set(ms.map(baseName))];
+  const allMinions = ms.every(m => !!m.minion || m.role === "minion");
+  const title = bases.length === 1 ? `${bases[0]} · Squad ${index}` : `Mixed Squad ${index}`;
+  const warns = [];
+  if (ms.length > 3) warns.push(`${ms.length} in squad (book: ≤3)`);
+  if (bases.length > 1) warns.push("mixed creatures");
+  if (!allMinions) warns.push("non-Minion");
+  return { title, bases, allMinions, warns };
+}
+
 /* ---------------------------------------------------------------- the GM window */
 
-/** One row: a creature, a stack (several members, opts.stack) or a stack member (opts.member). */
+/** One row: a creature, a stack (several members, opts.stack), a squad card (opts.isSquad), or a stack member (opts.member). */
 export function rowView(ms, call, opts = {}) {
   const r = ms[0], same = f => ms.every(x => f(x) === f(r));
   const rolled = ms.every(isRolled), last = ms.every(goesLast);
@@ -84,11 +173,13 @@ export function rowView(ms, call, opts = {}) {
   const manB = ms.some(x => (Number(x.set?.boons) || 0) > 0), manN = ms.some(x => (Number(x.set?.banes) || 0) > 0);
   const changed = !rolled && ms.some(x => changedOf(x, call));
   const chips = [];
-  for (const x of ms) for (const t of [...(x.fx?.chips ?? []), ...(x.dying ? [x.dying] : [])]) { const s = opts.stack ? `${t} (${String(x.name).match(/(\d+)$/)?.[1] ?? x.name})` : t; if (!chips.includes(s)) chips.push(s); }
+  for (const x of ms) for (const t of [...(x.fx?.chips ?? []), ...(x.dying ? [x.dying] : [])]) { const s = opts.stack || opts.isSquad ? `${t} (${String(x.name).match(/(\d+)$/)?.[1] ?? x.name})` : t; if (!chips.includes(s)) chips.push(s); }
   const ownerTxt = r.pc ? `Player: ${r.owner || "?"}` : (r.ally ? "GM · ally" : "GM");
   const waiting = !rolled && who === "wait";
   return {
-    ids: ms.map(x => x.id), id: opts.stack ? `stack:${opts.stack}` : r.id, name: opts.stack ? baseName(r) : r.name, img: r.img, pc: !!r.pc,
+    ids: ms.map(x => x.id), id: opts.isSquad ? `sq:${opts.sqKey}` : opts.stack ? `stack:${opts.stack}` : r.id,
+    name: opts.isSquad ? opts.sqTitle : opts.stack ? baseName(r) : r.name, img: r.img, pc: !!r.pc,
+    roleLabel: !opts.isSquad && !opts.stack && r.role ? (ROLE_LABELS[r.role] ?? "") : "",
     member: !!opts.member, stack: opts.stack || "", stackN: ms.length, expanded: !!opts.expanded, stackLabel: `×${ms.length} ${opts.expanded ? "▴ hide each" : "▾ show each"}`,
     owner: ownerTxt, chips, last, moving: !!opts.moving, side: sideOf(r),
     rolled, result: rolled ? r.rolled : null, rolledWith: `with ${ATTR_NAMES[r.rolledAttr] ?? ATTR_NAMES[attrOf(r, call)]}`, rolledBy: r.rolledBy && r.rolledBy !== "GM" ? `by ${r.rolledBy}` : "",
@@ -96,7 +187,11 @@ export function rowView(ms, call, opts = {}) {
     attr, attrMixed: !attr, overridden, mods: Object.fromEntries(ATTRS.map(a => [a, sgn(Number(r.mods?.[a]) || 0)])),
     fav, doom, favFx, doomFx, both: fav && doom, favBy: (r.fx?.favBy ?? []).join(", "), doomBy: (r.fx?.doomBy ?? []).join(", "),
     boons, banes, boonsOn: boons !== 0, banesOn: banes !== 0, manB, manN,
-    squad: !rolled && opts.squad ? { n: opts.squad.n, of: opts.squad.of, next: opts.squad.next ?? ((opts.squad.n % opts.squad.of) + 1), ids: Object.keys(opts.squad.groups ?? {}) } : null,   // v0.0.440: a Minion's squad (a click: the next one)
+    squad: !rolled && opts.squad ? { n: opts.squad.n, of: opts.squad.of, next: opts.squad.next ?? ((opts.squad.n % opts.squad.of) + 1), ids: Object.keys(opts.squad.groups ?? {}) } : null,
+    // v0.0.489: Squad Card & solo squad-picker metadata
+    isSquad: !!opts.isSquad, sqKey: opts.sqKey || "", sqIndex: opts.sqIndex || 0, sqWarns: opts.sqWarns ?? [],
+    sqMembers: opts.sqMembers ?? [], sqExpanded: !!opts.sqExpanded, sqAddable: opts.sqAddable ?? [], sqPopOpen: !!opts.sqPopOpen,
+    canSquad: !!opts.canSquad, checked: !!opts.checked, sqJoinTargets: opts.sqJoinTargets ?? [], sqPairTargets: opts.sqPairTargets ?? [],
     tint: changed ? "changed" : (rolled || waiting ? "quiet" : "plain")
   };
 }
@@ -105,27 +200,91 @@ export function rowView(ms, call, opts = {}) {
 export function gmModel(list, call, ui = {}, opts = {}) {
   list = list ?? []; call = { attr: ATTRS.includes(call?.attr) ? call.attr : "instinct" };
   const st = stacking(list), closed = ui.closed ?? {}, open = ui.open ?? {}, moving = ui.moving ?? {};
-  // v0.0.440 (Lucas: "The GM decides who goes together when initiative is rolled"): each Minion not rolled yet shows its squad (even by default)
-  const sq = minionGroupOf(list.filter(c => !isRolled(c)).map(c => ({ id: c.id, kind: c.minion ?? "", group: c.set?.group ?? 0 })));
+  const sqOpen = ui.sqOpen ?? {}, sel = ui.sel ?? {}, pop = String(ui.pop ?? "");
+  const sqRes = resolveSquads(list);
+  const sqTitles = new Map();
+
   const sides = SIDES.map(def => {
     const inSide = list.filter(c => sideOf(c) === def.key), rows = [], done = new Set();
+    const isEnemySide = def.key !== "friendly";
+    // Collect squads on this side (in order of first member appearance)
+    const sideSqKeys = [], seenSq = new Set();
     for (const c of inSide) {
+      const sk = sqRes.ofId.get(c.id);
+      if (sk && !seenSq.has(sk)) { seenSq.add(sk); sideSqKeys.push(sk); }
+    }
+    const sideSquads = sideSqKeys.map((sk, i) => {
+      const ms = sqRes.byKey.get(sk);
+      const meta = squadMeta(ms, i + 1);
+      sqTitles.set(sk, meta.title);
+      return { sk, index: i + 1, ms, meta };
+    });
+    const soloUnrolled = inSide.filter(c => !isRolled(c) && !sqRes.ofId.has(c.id));
+    const unrolledSquads = sideSquads.filter(x => !x.ms.every(isRolled));
+
+    // 1. Squad Cards first (if any)
+    for (const { sk, index, ms, meta } of sideSquads) {
+      const sqMembers = ms.map((m, idx) => ({
+        id: m.id, name: m.name, shortName: shortMemberName(m.name, meta.bases.length === 1 ? meta.bases[0] : baseName(m)),
+        img: m.img, roleLabel: m.role ? (ROLE_LABELS[m.role] ?? "") : "", leader: idx === 0,
+        chips: [...(m.fx?.chips ?? []), ...(m.dying ? [m.dying] : [])]
+      }));
+      const sqAddable = soloUnrolled.map(c => ({ id: c.id, name: c.name, roleLabel: c.role ? (ROLE_LABELS[c.role] ?? "") : "" }));
+      rows.push(rowView(ms, call, {
+        isSquad: true, sqKey: sk, sqTitle: meta.title, sqIndex: index, sqWarns: meta.warns,
+        sqMembers, sqExpanded: !!sqOpen[sk], sqAddable, sqPopOpen: pop === `add:${sk}`,
+        moving: !!moving[`sq:${sk}`]
+      }));
+    }
+
+    // 2. Remaining creatures (stacks or solo rows)
+    const nonSquad = inSide.filter(c => !sqRes.ofId.has(c.id));
+    for (const c of nonSquad) {
       const k = stackKeyOf(c, list);
       if (k) {
         if (done.has(k)) continue;
         done.add(k);
-        const ms = inSide.filter(x => stackKeyOf(x, list) === k), ex = !!open[k];
+        const ms = nonSquad.filter(x => stackKeyOf(x, list) === k), ex = !!open[k];
         rows.push(rowView(ms, call, { stack: k, expanded: ex, moving: !!moving[`stack:${k}`] }));
-        if (ex) ms.forEach(m => rows.push(rowView([m], call, { member: true, moving: !!moving[m.id], squad: sq[m.id] })));
-      } else rows.push(rowView([c], call, { moving: !!moving[c.id], squad: sq[c.id] }));
+        if (ex) ms.forEach(m => rows.push(rowView([m], call, {
+          member: true, moving: !!moving[m.id],
+          canSquad: isEnemySide && !isRolled(m), checked: !!sel[m.id], sqPopOpen: pop === `solo:${m.id}`,
+          sqJoinTargets: unrolledSquads.map(x => ({ sk: x.sk, index: x.index, n: x.ms.length, label: x.meta.title })),
+          sqPairTargets: soloUnrolled.filter(o => o.id !== m.id).map(o => ({ id: o.id, name: o.name }))
+        })));
+      } else {
+        rows.push(rowView([c], call, {
+          moving: !!moving[c.id],
+          canSquad: isEnemySide && !isRolled(c), checked: !!sel[c.id], sqPopOpen: pop === `solo:${c.id}`,
+          sqJoinTargets: unrolledSquads.map(x => ({ sk: x.sk, index: x.index, n: x.ms.length, label: x.meta.title })),
+          sqPairTargets: soloUnrolled.filter(o => o.id !== c.id).map(o => ({ id: o.id, name: o.name }))
+        }));
+      }
     }
-    return { ...def, open: !closed[def.key], caret: closed[def.key] ? "▸" : "▾", count: plural(inSide.length, "creature"), rows };
+
+    const selectedIds = isEnemySide ? soloUnrolled.filter(c => sel[c.id]).map(c => c.id) : [];
+    const hasSquadTools = isEnemySide && inSide.some(c => !isRolled(c)) && (sideSquads.length > 0 || soloUnrolled.length >= 2);
+    return {
+      ...def, open: !closed[def.key], caret: closed[def.key] ? "▸" : "▾",
+      count: sideSquads.length ? `${plural(inSide.length, "creature")} · ${plural(sideSquads.length, "squad")}` : plural(inSide.length, "creature"),
+      hasSquadTools, squadCount: sideSquads.length, hasMinions: inSide.some(c => c.minion && !isRolled(c)),
+      selectedIds, rows
+    };
   }).filter(s => s.rows.length);
+
   // The footer
   const nameOf = c => `${c.name}${ATTRS.includes(c.set?.attr) && c.set.attr !== call.attr ? ` (${ATTR_NAMES[c.set.attr]})` : ""}`;
   const listOf = xs => {
     const out = [], seen = new Set();
     for (const c of xs) {
+      const sk = sqRes.ofId.get(c.id);
+      if (sk) {
+        if (seen.has(`sq:${sk}`)) continue;
+        seen.add(`sq:${sk}`);
+        const n = xs.filter(x => sqRes.ofId.get(x.id) === sk).length;
+        out.push(`${sqTitles.get(sk) ?? baseName(c)} (×${n})`);
+        continue;
+      }
       const k = stackKeyOf(c, list);
       if (k) { if (seen.has(k)) continue; seen.add(k); out.push(`${baseName(c)} ×${xs.filter(x => stackKeyOf(x, list) === k).length}`); }
       else out.push(nameOf(c));
@@ -134,18 +293,29 @@ export function gmModel(list, call, ui = {}, opts = {}) {
   };
   const pend = list.filter(c => !isRolled(c) && !goesLast(c));
   const rolling = pend.filter(c => whoOf(c) === "gm"), playerWait = pend.filter(c => whoOf(c) === "wait" && c.pc), npcWait = pend.filter(c => whoOf(c) === "wait" && !c.pc);
+  // Count actual rolls: each squad rolls once!
+  const rollUnits = (() => {
+    let n = 0; const seen = new Set();
+    for (const c of rolling) {
+      const sk = sqRes.ofId.get(c.id);
+      if (sk) { if (seen.has(sk)) continue; seen.add(sk); }
+      n++;
+    }
+    return n;
+  })();
   const players = [...new Set(list.filter(c => c.pc).map(c => c.owner || "?"))];
   const pState = p => { const mine = list.filter(c => c.pc && (c.owner || "?") === p); return mine.every(c => isRolled(c) || goesLast(c)) ? "rolled" : mine.some(c => !isRolled(c) && !goesLast(c) && whoOf(c) === "wait") ? "waiting" : "GM rolls"; };
   const pending = new Set(playerWait.map(c => c.owner || "?")).size;
+  const totalSquads = sqRes.byKey.size;
   return {
-    attr: call.attr, sub: `${ATTR_NAMES[call.attr]} Check · ${plural(list.length, "creature")} · ${plural(sides.length, "side")} · ties: higher Modifier, then Friendly`,
+    attr: call.attr, sub: `${ATTR_NAMES[call.attr]} Check · ${plural(list.length, "creature")} · ${totalSquads ? `${plural(totalSquads, "squad")} · ` : ""}${plural(sides.length, "side")} · ties: higher Modifier, then Friendly`,
     attrBtns: ATTRS.map(a => ({ key: a, label: ATTR_NAMES[a], on: a === call.attr, color: ATTR_COLORS[a] })),
     playersLine: `${opts.playersOpen === false ? "Not opened for the players (setting): they roll from their portraits" : "Open for the players too"}${players.length ? `: ${players.map(p => `${p} (${pState(p)})`).join(" · ")}` : ": no player creatures"} · ${st ? "stacks on: more than 5 enemies" : "no stacks: 5 enemies or fewer"}`,
     stacking: st, sides,
     sumRoll: listOf(rolling), sumPlayer: listOf(playerWait), sumWait: listOf(npcWait),
     sumKept: list.filter(isRolled).map(c => `${c.name} ${c.rolled}`).join(", ") || "nobody", sumLast: list.filter(goesLast).map(c => c.name).join(", ") || "nobody",
-    rollIds: rolling.map(c => c.id), rollN: rolling.length, pending,
-    rollLabel: `Roll ${rolling.length}${pending ? ` · ${plural(pending, "player")} pending` : ""}`
+    rollIds: rolling.map(c => c.id), rollN: rollUnits, pending,
+    rollLabel: `Roll ${rollUnits}${pending ? ` · ${plural(pending, "player")} pending` : ""}`
   };
 }
 
@@ -162,21 +332,135 @@ export function applyClick(ms, call, act, value) {
     else if (act === "doom") put(x, { doom: !allDoom });
     else if (act === "boons+" || act === "banes+") { const k = act.slice(0, 5); put(x, { [k]: (Number(s[k]) || 0) + 1 }); }
     else if (act === "boons-" || act === "banes-") { const k = act.slice(0, 5); put(x, { [k]: Math.max(0, (Number(s[k]) || 0) - 1) }); }
-    else if (act === "side") put(x, { side: SIDE_BY[value] ? value : "" });
+    else if (act === "side") put(x, { side: SIDE_BY[value] ? value : "", ...(s.sqId && s.sqId !== "solo" ? { sqId: "solo" } : {}) });
     else if (act === "last") put(x, { last: !ms.every(goesLast) });
     else if (act === "gmAll") { if (!isRolled(x)) put(x, { who: "gm" }); }
-    else if (act === "squad") put(x, { group: Math.max(1, Math.trunc(Number(value)) || 1) });   // v0.0.440: the Minion's squad (the GM's choice)
+    else if (act === "squad") put(x, { group: Math.max(1, Math.trunc(Number(value)) || 1) });   // v0.0.440: legacy Minion squad click
   }
   return out;
 }
 
-/** v0.0.453 (playtest 6): a squad click fixes every Minion of that kind where it stands now (the window's squads), then moves this one: so the
- *  squads stay as the GM sees them, and one click makes a new squad or joins another. `all`: the window's creatures; `groups`: { id: squad }. */
+/** v0.0.453 (playtest 6): legacy helper kept for tests (t283). */
 export function squadMove(all, id, value, groups = {}) {
   const out = {};
   for (const x of all ?? []) {
     if (!(x.id in groups)) continue;
     out[x.id] = { ...(x.set ?? {}), group: x.id === id ? Math.max(1, Math.trunc(Number(value)) || 1) : groups[x.id] };
+  }
+  return out;
+}
+
+/* ---- v0.0.489: intuitive Squad mutations (pure, return { id: nextSet }) ---- */
+const copyRollCfg = (set, leader) => ({
+  ...set,
+  ...(leader?.set?.who ? { who: leader.set.who } : {}),
+  ...(leader?.set?.attr !== undefined ? { attr: leader.set.attr } : {}),
+  ...(leader?.set?.fav !== undefined ? { fav: leader.set.fav } : {}),
+  ...(leader?.set?.doom !== undefined ? { doom: leader.set.doom } : {}),
+  ...(leader?.set?.boons !== undefined ? { boons: leader.set.boons } : {}),
+  ...(leader?.set?.banes !== undefined ? { banes: leader.set.banes } : {})
+});
+
+/** Snapshot current resolved squads on `side` into explicit `sqId`s so edits never scramble untouched auto-squads, then normalize singletons to "solo". */
+function mutateSideSquads(all, side, mutate) {
+  const inSide = (all ?? []).filter(c => sideOf(c) === side && !isRolled(c));
+  const res = resolveSquads(inSide);
+  const sqMap = new Map(); // id -> explicit sqId ("solo" or "s1", "s2"...)
+  const keyToId = new Map();
+  let nextN = 1;
+  for (const c of inSide) {
+    const k = res.ofId.get(c.id);
+    if (!k) { sqMap.set(c.id, "solo"); continue; }
+    if (!keyToId.has(k)) keyToId.set(k, `s${nextN++}`);
+    sqMap.set(c.id, keyToId.get(k));
+  }
+  const leaderBySq = new Map();
+  for (const [k, ms] of res.byKey) leaderBySq.set(keyToId.get(k), ms[0]);
+
+  const targetSq = mutate({ sqMap, keyToId, nextId: () => `s${nextN++}`, leaderBySq, inSide });
+
+  // Clean up any squad that dropped below 2 members
+  const counts = new Map();
+  for (const v of sqMap.values()) if (v && v !== "solo") counts.set(v, (counts.get(v) ?? 0) + 1);
+  for (const [id, v] of sqMap) if (v !== "solo" && (counts.get(v) ?? 0) < 2) sqMap.set(id, "solo");
+
+  const out = {};
+  for (const c of inSide) {
+    const v = sqMap.get(c.id) ?? "solo";
+    let next = { ...(c.set ?? {}), sqId: v };
+    if (targetSq && v === targetSq.id && targetSq.leader && targetSq.moved.has(c.id)) next = copyRollCfg(next, targetSq.leader);
+    out[c.id] = next;
+  }
+  return out;
+}
+
+/** Add `ids` into an existing resolved squad key (`sqKey`). */
+export function squadJoin(all, ids, sqKey) {
+  const idSet = new Set(ids ?? []);
+  const first = (all ?? []).find(c => idSet.has(c.id));
+  if (!first) return {};
+  return mutateSideSquads(all, sideOf(first), ({ sqMap, keyToId, leaderBySq }) => {
+    const dest = keyToId.get(sqKey);
+    if (!dest) return null;
+    for (const id of idSet) if (sqMap.has(id)) sqMap.set(id, dest);
+    return { id: dest, leader: leaderBySq.get(dest), moved: idSet };
+  });
+}
+
+/** Create a new squad containing `ids` (all on the same side as `ids[0]`). */
+export function squadCreate(all, ids) {
+  const list = [...new Set(ids ?? [])];
+  if (list.length < 2) return {};
+  const first = (all ?? []).find(c => c.id === list[0]);
+  if (!first) return {};
+  const idSet = new Set(list);
+  return mutateSideSquads(all, sideOf(first), ({ sqMap, nextId }) => {
+    const dest = nextId();
+    for (const id of idSet) if (sqMap.has(id)) sqMap.set(id, dest);
+    return { id: dest, leader: first, moved: idSet };
+  });
+}
+
+/** Remove `ids` from whatever squad they belong to (set them Solo). */
+export function squadRemove(all, ids) {
+  const idSet = new Set(ids ?? []);
+  const first = (all ?? []).find(c => idSet.has(c.id));
+  if (!first) return {};
+  return mutateSideSquads(all, sideOf(first), ({ sqMap }) => {
+    for (const id of idSet) if (sqMap.has(id)) sqMap.set(id, "solo");
+    return null;
+  });
+}
+
+/** Dissolve an entire resolved squad (`sqKey`) back to Solo. */
+export function squadDissolve(all, sqKey) {
+  const side = String(sqKey ?? "").split("|")[0];
+  if (!side) return {};
+  return mutateSideSquads(all, side, ({ sqMap, keyToId }) => {
+    const dest = keyToId.get(sqKey);
+    if (!dest) return null;
+    for (const [id, v] of sqMap) if (v === dest) sqMap.set(id, "solo");
+    return null;
+  });
+}
+
+/** Reset `side` to automatic Minion squads (clears explicit sqId/group on unrolled creatures). */
+export function squadAutoMinions(all, side) {
+  const out = {};
+  for (const c of (all ?? []).filter(x => sideOf(x) === side && !isRolled(x))) {
+    const next = { ...(c.set ?? {}) };
+    delete next.sqId;
+    delete next.group;
+    out[c.id] = next;
+  }
+  return out;
+}
+
+/** Ungroup all unrolled creatures on `side` to Solo. */
+export function squadUngroupSide(all, side) {
+  const out = {};
+  for (const c of (all ?? []).filter(x => sideOf(x) === side && !isRolled(x))) {
+    out[c.id] = { ...(c.set ?? {}), sqId: "solo" };
   }
   return out;
 }

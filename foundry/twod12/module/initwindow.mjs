@@ -5,7 +5,7 @@
 //   the Attribute called is the combat flag twod12.initCall ({ attr }), so a player's client reads them and its roll uses them.
 //   The players' window: opened on each player who owns a creature (the socket, "initOpen"), read-only: their creatures' cards with a Roll button.
 //   Rolls go through performCheck like any Check: the creature's effects (Boons, Banes, Favored, Doomed, Exhausted) are in it.
-import { gmModel, playerModel, applyClick, squadMove, rollOf, whoOf, goesLast, isRolled, attrOf, sideOf, sideDisp } from "./initmodel.mjs";
+import { gmModel, playerModel, applyClick, squadMove, squadGroupsForRoll, squadJoin, squadCreate, squadRemove, squadDissolve, squadAutoMinions, squadUngroupSide, rollOf, whoOf, goesLast, isRolled, attrOf, sideOf, sideDisp } from "./initmodel.mjs";
 import { gmHtml, playerHtml } from "./initview.mjs";
 import { performCheck, combineRolls } from "./roll.mjs";
 import { modifierList, resolveModifiers } from "./effects.mjs";
@@ -13,7 +13,7 @@ import { unconsciousDoom, doomStatus } from "./config.mjs";
 import { initCardData, initCardHtml } from "./initcard.mjs";
 import { cleanName } from "./moment.mjs";
 import { logOnlyChange } from "./util.mjs";
-import { minionSquads, minionGroupOf } from "./roundrules.mjs";   // v0.0.407: Minions share a roll
+import { minionGroupOf } from "./roundrules.mjs";   // v0.0.440: legacy Minion squad click
 const F = "twod12", SOCKET = "system.twod12";
 const { ApplicationV2 } = foundry.applications?.api ?? {};
 
@@ -71,7 +71,7 @@ export function creatureOf(c, call) {
   const pc = a?.type === "character" && !!c.hasPlayerOwner, npc = a?.type === "npc";
   const st = k => !!a?.statuses?.has?.(k);
   const cr = { id: c.id, name: cleanName(c.name), base: cleanName(game.actors?.get(c.actorId)?.name ?? a?.name ?? c.name), img: c.img || a?.img, actorId: c.actorId,
-    pc, npc, ally: npc && disp === 1, minion: npc && a?.system?.role === "minion" ? `${c.actorId}|${a.name}` : "" /* v0.0.440: its kind, for the squads */, owner: pc ? ownerName(a) : "", disp, hidden: !!(c.hidden || c.token?.hidden), mine: !game.user?.isGM && !!c.isOwner && !!a,
+    pc, npc, role: npc ? String(a?.system?.role ?? "") : "", ally: npc && disp === 1, minion: npc && a?.system?.role === "minion" ? `${c.actorId}|${a.name}` : "" /* v0.0.440: its kind, for the squads */, owner: pc ? ownerName(a) : "", disp, hidden: !!(c.hidden || c.token?.hidden), mine: !game.user?.isGM && !!c.isOwner && !!a,
     mods: { ...(a?.system?.attributes ?? {}) }, rolled: c.initiative ?? null, rolledAttr: set.rolledAttr || "", rolledBy: set.by || "",
     dying: st("dying") ? "Dying" : st("shattered") ? "Shattered" : "", set };
   cr.fx = fxFor(a, attrOf(cr, call));
@@ -85,10 +85,10 @@ export const creaturesOf = combat => [...(combat?.combatants ?? [])].filter(c =>
 export async function rollCreatures(combat, ids, by = "GM") {
   const call = callOf(combat), rows = [], rolls = [], updates = [];
   const curId = combat.started ? combat.combatant?.id : null;
-  // v0.0.407 (the Bestiary, Minions): up to 3 Minions of the same creature share one Initiative roll (roundrules.mjs minionSquads); each keeps its own turn
+  // v0.0.489: honor GM Squad Cards (custom squads, "solo" ungroups, and Minion auto-squads); each member still keeps its own turn
   const todo = ids.map(id => combat.combatants.get(id)).filter(c => c?.actor && c.isOwner && !isRolled(creatureOf(c, call)) && !goesLast(creatureOf(c, call)));
-  // v0.0.440 (Lucas: "as even as possible ... The GM decides who goes together"): even squads, each Minion's squad as the GM set it in the window
-  const squads = minionSquads(todo.map(c => ({ id: c.id, kind: c.actor?.type === "npc" && c.actor.system?.role === "minion" ? `${c.actorId}|${c.actor.name}` : "", group: c.getFlag?.(F, "init")?.group ?? 0 })));
+  const todoCrs = todo.map(c => creatureOf(c, call));
+  const squads = squadGroupsForRoll(todoCrs);
   const follows = new Set(Object.values(squads).flatMap(m => m.slice(1)));
   for (const id of ids) {
     const c = combat.combatants.get(id);
@@ -99,9 +99,10 @@ export async function rollCreatures(combat, ids, by = "GM") {
     const r = await performCheck({ mod: ro.mod, boons: ro.boons, banes: ro.banes, manualBoons: ro.manualBoons, manualBanes: ro.manualBanes, favored: ro.favored, doomed: ro.doomed,
       adj: ro.adj, adjLabel: ro.adjLabel, sources: cr.fx.sources, noDoubles: true });
     rolls.push(...r.rolls);
+    const sqMembers = squads[c.id] ?? [];
     updates.push({ _id: c.id, initiative: r.total, [`flags.${F}.initAttr`]: ro.mod, [`flags.${F}.init.by`]: by, [`flags.${F}.init.rolledAttr`]: ro.attr });
-    rows.push({ id: c.id, name: (squads[c.id]?.length ?? 0) > 1 ? `${cr.name} ×${squads[c.id].length}` : cr.name, side: sideDisp(sideOf(cr)), attr: ro.attr, mod: ro.mod, r });
-    for (const m of (squads[c.id] ?? []).slice(1)) updates.push({ _id: m, initiative: r.total, [`flags.${F}.initAttr`]: ro.mod, [`flags.${F}.init.by`]: by, [`flags.${F}.init.rolledAttr`]: ro.attr, [`flags.${F}.init.squad`]: c.id });   // its squad takes the leader's roll
+    rows.push({ id: c.id, name: sqMembers.length > 1 ? `${cr.base || cr.name} ×${sqMembers.length}` : cr.name, side: sideDisp(sideOf(cr)), attr: ro.attr, mod: ro.mod, r });
+    for (const m of sqMembers.slice(1)) updates.push({ _id: m, initiative: r.total, [`flags.${F}.initAttr`]: ro.mod, [`flags.${F}.init.by`]: by, [`flags.${F}.init.rolledAttr`]: ro.attr, [`flags.${F}.init.squad`]: c.id });   // its squad takes the leader's roll
   }
   if (!updates.length) return 0;
   await combat.updateEmbeddedDocuments("Combatant", updates);
@@ -179,7 +180,41 @@ export class InitWindow extends BaseInitWindow {
     if (open) { open.combat = combat; open.render({ force: true }); open.bringToFront?.(); return open; }
     return new InitWindow(combat).render({ force: true });
   }
-  constructor(combat) { super(combat); this.ui = { closed: {}, open: {}, moving: {} }; }
+  constructor(combat) { super(combat); this.ui = { closed: {}, open: {}, moving: {}, sqOpen: {}, sel: {}, pop: "" }; this._dragId = ""; }
+  _onFirstRender(context, options) {
+    super._onFirstRender(context, options);
+    this.element.addEventListener("dragstart", ev => {
+      const el = ev.target.closest("[data-drag-id]");
+      if (!el) return;
+      this._dragId = el.dataset.dragId || "";
+      try { ev.dataTransfer.effectAllowed = "move"; ev.dataTransfer.setData("text/plain", this._dragId); } catch (e) { /* synthetic */ }
+    });
+    this.element.addEventListener("dragover", ev => {
+      if (!this._dragId) return;
+      const box = ev.target.closest("[data-drop-squad]"), solo = !box ? ev.target.closest("[data-drop-solo]") : null, zone = !box && !solo ? ev.target.closest("[data-drop-zone]") : null;
+      if (solo && solo.dataset.dropSolo === this._dragId) return;
+      if (box || solo || zone) {
+        ev.preventDefault();
+        this.element.querySelectorAll(".iw-drag-over").forEach(x => { if (x !== (box || solo)) x.classList.remove("iw-drag-over"); });
+        if (box || solo) (box || solo).classList.add("iw-drag-over");
+      }
+    });
+    this.element.addEventListener("dragleave", ev => {
+      const t = ev.target.closest?.(".iw-drag-over");
+      if (t && !t.contains(ev.relatedTarget)) t.classList.remove("iw-drag-over");
+    });
+    this.element.addEventListener("drop", async ev => {
+      const id = this._dragId;
+      this._dragId = "";
+      this.element.querySelectorAll(".iw-drag-over").forEach(x => x.classList.remove("iw-drag-over"));
+      if (!id) return;
+      const box = ev.target.closest("[data-drop-squad]"), solo = !box ? ev.target.closest("[data-drop-solo]") : null, zone = !box && !solo ? ev.target.closest("[data-drop-zone]") : null;
+      const all = creaturesOf(this.combat);
+      if (box) { ev.preventDefault(); this.ui.pop = ""; delete this.ui.sel[id]; await this._save(squadJoin(all, [id], box.dataset.dropSquad)); }
+      else if (solo && solo.dataset.dropSolo !== id) { ev.preventDefault(); this.ui.pop = ""; delete this.ui.sel[id]; delete this.ui.sel[solo.dataset.dropSolo]; await this._save(squadCreate(all, [solo.dataset.dropSolo, id])); }
+      else if (zone) { ev.preventDefault(); this.ui.pop = ""; await this._save(squadRemove(all, [id])); }
+    });
+  }
   _model() { return gmModel(creaturesOf(this.combat), callOf(this.combat), this.ui, { playersOpen: setting("initPlayersOpen", true) }); }
   _html() { return gmHtml(this._model()); }
   _members(el) { const ids = new Set(String(el.dataset.ids ?? "").split(",").filter(Boolean)); return creaturesOf(this.combat).filter(c => ids.has(c.id)); }
@@ -188,20 +223,39 @@ export class InitWindow extends BaseInitWindow {
     if (ups.length) await this.combat.updateEmbeddedDocuments("Combatant", ups);
   }
   async _click(ev) {
+    if (this.ui.pop && !ev.target.closest(".iw-popwrap")) { this.ui.pop = ""; this.render(); }
     const b = ev.target.closest("button[data-act]");
     if (!b || b.disabled) return;
     ev.preventDefault();
     const act = b.dataset.act, call = callOf(this.combat);
+    if (act === "sqPop") { ev.stopPropagation(); this.ui.pop = this.ui.pop === b.dataset.v ? "" : (b.dataset.v || ""); return this.render(); }
+    this.ui.pop = "";
     if (act === "call") return this.combat.setFlag(F, "initCall", { attr: b.dataset.v });
     if (act === "fold") { this.ui.closed[b.dataset.key] = !this.ui.closed[b.dataset.key]; return this.render(); }
     if (act === "stack") { this.ui.open[b.dataset.key] = !this.ui.open[b.dataset.key]; return this.render(); }
+    if (act === "sqExpand") { this.ui.sqOpen[b.dataset.sq] = !this.ui.sqOpen[b.dataset.sq]; return this.render(); }
     if (act === "move") { this.ui.moving[b.dataset.row] = !this.ui.moving[b.dataset.row]; return this.render(); }
     if (act === "cancel") return this.close();
     if (act === "roll") return this._roll();
     if (act === "gmAll") return this._save(applyClick(creaturesOf(this.combat), call, "gmAll"));
-    if (act === "reroll") return this.combat.updateEmbeddedDocuments("Combatant", this._members(b).map(c => ({ _id: c.id, initiative: null, [`flags.${F}.init.who`]: "gm", [`flags.${F}.init.by`]: "", [`flags.${F}.init.rolledAttr`]: "" })));
+    if (act === "reroll") return this.combat.updateEmbeddedDocuments("Combatant", this._members(b).map(c => ({ _id: c.id, initiative: null, [`flags.${F}.init.who`]: "gm", [`flags.${F}.init.by`]: "", [`flags.${F}.init.rolledAttr`]: "", [`flags.${F}.init.squad`]: "" })));
+    if (act === "sqJoin") { delete this.ui.sel[b.dataset.id]; return this._save(squadJoin(creaturesOf(this.combat), [b.dataset.id], b.dataset.sq)); }
+    if (act === "sqNew") { delete this.ui.sel[b.dataset.a]; delete this.ui.sel[b.dataset.b]; return this._save(squadCreate(creaturesOf(this.combat), [b.dataset.a, b.dataset.b])); }
+    if (act === "sqRemove") return this._save(squadRemove(creaturesOf(this.combat), [b.dataset.id]));
+    if (act === "sqDissolve") return this._save(squadDissolve(creaturesOf(this.combat), b.dataset.sq));
+    if (act === "sqAuto") { this.ui.sel = {}; return this._save(squadAutoMinions(creaturesOf(this.combat), b.dataset.key)); }
+    if (act === "sqUngroup") { this.ui.sel = {}; return this._save(squadUngroupSide(creaturesOf(this.combat), b.dataset.key)); }
+    if (act === "sqGroupSel") {
+      const all = creaturesOf(this.combat), ids = all.filter(c => sideOf(c) === b.dataset.key && this.ui.sel[c.id] && !isRolled(c)).map(c => c.id);
+      for (const id of ids) delete this.ui.sel[id];
+      return this._save(squadCreate(all, ids));
+    }
+    if (act === "sqClearSel") {
+      for (const c of creaturesOf(this.combat)) if (sideOf(c) === b.dataset.key) delete this.ui.sel[c.id];
+      return this.render();
+    }
     const ms = this._members(b);
-    // v0.0.453 (playtest 6): a squad click fixes the kind's squads as the window shows them, then moves this Minion (a new squad after the last)
+    // v0.0.453 (playtest 6): legacy squad click fallback
     if (act === "squad" && ms.length === 1) {
       const all = creaturesOf(this.combat), me = ms[0];
       const kind = all.filter(c => c.minion && c.minion === me.minion && !isRolled(c));
@@ -211,6 +265,12 @@ export class InitWindow extends BaseInitWindow {
     if (ms.length) return this._save(applyClick(ms, call, act, b.dataset.v));
   }
   async _change(ev) {
+    const chk = ev.target.closest('input[type="checkbox"][data-act="sqSel"]');
+    if (chk) {
+      if (chk.checked) this.ui.sel[chk.dataset.id] = true;
+      else delete this.ui.sel[chk.dataset.id];
+      return this.render();
+    }
     const s = ev.target.closest("select[data-act]");
     if (!s) return;
     const ms = this._members(s);
@@ -218,6 +278,7 @@ export class InitWindow extends BaseInitWindow {
     if (ms.length) await this._save(applyClick(ms, callOf(this.combat), s.dataset.act, s.value));
   }
   _key(ev) {
+    if (ev.key === "Escape" && this.ui.pop) { ev.preventDefault(); ev.stopPropagation(); this.ui.pop = ""; this.render(); return; }
     if (ev.key === "Enter" && !ev.target.closest("select, textarea, input")) { ev.preventDefault(); this._roll(); return; }
     super._key(ev);
   }
