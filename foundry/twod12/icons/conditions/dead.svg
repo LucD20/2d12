@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#202022"/><stop offset="100%" stop-color="#111113"/></linearGradient></defs>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="10" fill="url(#bg)" stroke="#75736e" stroke-width="3.2"/>
+  <g transform="translate(2.5,2.5) scale(0.92)"><path d="M16 16 L48 48 M48 16 L16 48" stroke="#8f8d88" stroke-width="7" stroke-linecap="round"/><rect x="8" y="25" width="48" height="14" rx="3" fill="#111113" stroke="#75736e" stroke-width="2.5"/><text x="32" y="35.5" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="10.5" letter-spacing="1.4" fill="#cfcdc8">DEAD</text></g>
+</svg>

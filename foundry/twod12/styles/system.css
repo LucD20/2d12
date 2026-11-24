@@ -4756,10 +4756,13 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-hud .hm-esc i.on { background: var(--hud-ink); border-color: var(--hud-ink); }
 /* bars and tags */
 .twod12-hud .hb-bars { display: grid; gap: 2px; }
-.twod12-hud .hb-bar { position: relative; height: 12px; background: rgba(0, 0, 0, .45); border: 1px solid rgba(0, 0, 0, .6); }
+.twod12-hud .hb-bar { position: relative; height: 12px; background: #14110e; border: 1px solid rgba(125, 104, 68, .75); }
 .twod12-hud .hb-bar i { position: absolute; left: 0; top: 0; bottom: 0; }
-.twod12-hud .hb-bar.v i { background: var(--s-vig, #d0564f); } .twod12-hud .hb-bar.r i { background: var(--s-res, #8fb0f5); }
-.twod12-hud .hb-bar u { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, rgba(255, 255, 255, .55) 0 2px, transparent 2px 5px); }
+.twod12-hud .hb-bar.v i { background: #c23b32; } .twod12-hud .hb-bar.r i { background: #3f73c9; }
+.twod12-hud .hb-bar u { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(-50deg, rgba(255, 255, 255, .55) 0 3px, transparent 3px 6px); }
+.twod12-hud .hb-bar.v u { background: repeating-linear-gradient(-50deg, #e8965d 0 3px, #6e261d 3px 6px); }
+.twod12-hud .hb-bar.r u { background: repeating-linear-gradient(-50deg, #74dbe2 0 3px, #203c66 3px 6px); }
+.twod12-hud .hb-bar.neg { border-color: #df5b50; } .twod12-hud .hb-bar.neg span b { color: #ffada6; }
 .twod12-hud .hb-bar span { position: absolute; left: 4px; right: 4px; top: -2px; display: flex; justify-content: center; font-size: .66rem; font-weight: 700; color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000; }
 .twod12-hud .hb-tag { font-size: .69rem; font-weight: 700; padding: 0 4px; border: 1px solid var(--hud-hair); white-space: nowrap; }
 .twod12-hud .hb-tag.hurt { border-color: var(--s-vig, #d0564f); } .twod12-hud .hb-tag.down { border-color: var(--s-vig, #d0564f); background: color-mix(in srgb, var(--s-vig, #d0564f) 30%, transparent); }
@@ -4988,10 +4991,13 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12-actor .twod12.sheet.pcs.ps2 .dom-Vigor { color: var(--s-vig); } .twod12-actor .twod12.sheet.pcs.ps2 .dom-Resolve { color: var(--s-res); }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge { display: grid; grid-template-columns: auto auto 1fr; align-items: baseline; column-gap: 6px; }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .hpnum { color: inherit; cursor: pointer; white-space: nowrap; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge .hpnum.neg b { color: var(--s-bad, #df5b50); }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-tag { justify-self: start; font-size: 11.5px; font-weight: 700; color: var(--s-bad); }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-track { grid-column: 1 / -1; display: flex; height: 6px; margin: 2px 0 1px; background: var(--s-pg-2); box-shadow: inset 0 0 0 1px var(--s-hair); cursor: pointer; }
-.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.v { --c: var(--s-vig); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.r { --c: var(--s-res); }
-.twod12-actor .twod12.sheet.pcs.ps2 .ps2-track i.l { background: var(--c); } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-track i.n { background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 6px); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.v { --c: #c23b32; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.r { --c: #3f73c9; }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-track i.l { background: var(--c); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.v .ps2-track i.n { background: repeating-linear-gradient(-50deg, #e8965d 0 3px, #6e261d 3px 6px); }
+.twod12-actor .twod12.sheet.pcs.ps2 .ps2-gauge.r .ps2-track i.n { background: repeating-linear-gradient(-50deg, #74dbe2 0 3px, #203c66 3px 6px); }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw { gap: 2px 10px; align-items: center; } .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rwk { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 3px 4px; }
 .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl { height: auto; padding: 0 5px; font-size: 12.5px; line-height: 1.5; background: transparent; border: 1px solid var(--s-hair); border-radius: 2px; color: var(--sc-d, var(--s-ink)); }
 .theme-light .twod12-actor .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl, .twod12-actor.theme-light .twod12.sheet.pcs.ps2 .ps2-rw .ps-dl { color: var(--sc-l, var(--s-ink)); }

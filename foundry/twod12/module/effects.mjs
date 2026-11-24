@@ -283,13 +283,15 @@ export async function createEffect(actor, item, origin, over = null, extra = {})
   const sid0 = shortName(item.name).trim().toLowerCase(), sid = Object.keys(COND_NAME).find(k => COND_NAME[k] === sid0) ?? sid0;   // v0.0.414: Lingering is the status bleed
   const baseId = sid.replace(/\s*\(.*\)\s*$/, "");   // "Hindered (until Move)" is the Hindered status
   const statuses = (CONFIG.statusEffects ?? []).some(e => e.id === sid) ? [sid] : ((CONFIG.statusEffects ?? []).some(e => e.id === baseId) ? [baseId] : []);
+  const statusIcon = statuses.length ? (CONFIG.statusEffects ?? []).find(e => e.id === statuses[0])?.img : "";
+  const effectImg = (statusIcon?.startsWith("systems/twod12/icons/conditions/") && (!item.img || String(item.img).startsWith("icons/svg/"))) ? statusIcon : item.img;
   const light = s.settings.find(x => x.type === "light");
   const lightBackup = light ? await applyLight(actor, light) : null;
   // The "slot" is the initiative count: EoT and Rounds end at the end of that count even if the creature swaps initiative later.
   const own = combatantOf(actor);
   const slotInit = own?.initiative ?? null;
   const made = (await actor.createEmbeddedDocuments("ActiveEffect", [{
-    name: value !== undefined ? `${item.name} ${value}` : (over?.bleed ? bleedText(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over.bleed } } })) : withOriginName(item.name, s, origin?.actorUuid, actor)), img: item.img, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
+    name: value !== undefined ? `${item.name} ${value}` : (over?.bleed ? bleedText(bleedOf({ flags: { [F]: { bleeds: appliedFlags(s, {}).bleeds, bleed: over.bleed } } })) : withOriginName(item.name, s, origin?.actorUuid, actor)), img: effectImg, origin: origin?.actorUuid ?? null, showIcon: 2, statuses,
     flags: { [F]: {
       ...extra, effectUuid: item.uuid, duration: d, remaining: d.rounds, ...(value !== undefined ? { value, baseName: item.name } : {}),
       slotInit, originSlot: origin?.slot ?? null,

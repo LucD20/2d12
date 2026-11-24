@@ -33,11 +33,13 @@ export function marksHtml(m = {}) {
 /** Escalation ticks (max from the system's config: 3 today, 6 once Foundry follows the book). */
 export const escHtml = (n, max) => `<span class="hm-esc">${Array.from({ length: n0(max) }, (_, k) => `<i${k < n0(n) ? ' class="on"' : ""}></i>`).join("")}</span>`;
 
-/** One threshold's bar: what is left of it (Vigor 18/23), its Nonlethal damage hatched beside the fill. b = { name, cls ("v" | "r"), left, max, nl } */
+/** One threshold's bar: what is left of it (Vigor 18/23, or -20/10 on overflow), its Nonlethal damage hatched beside the fill. b = { name, cls ("v" | "r"), left, max, nl } */
 export function barHtml(b) {
-  const max = Math.max(1, n0(b.max)), left = Math.min(max, n0(b.left)), nl = Math.min(max - left, n0(b.nl));
+  const max = Math.max(1, n0(b.max)), left = Math.trunc(Number(b.left)) || 0;
+  const fill = Math.max(0, Math.min(max, left)), nl = Math.min(max - fill, n0(b.nl));
   const pct = x => Math.round((x / max) * 1000) / 10;
-  return `<div class="hb-bar ${esc(b.cls)}" title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} Nonlethal damage)` : ""}`)}"><i style="width:${pct(left)}%"></i>${nl ? `<u style="left:${pct(left)}%;width:${pct(nl)}%"></u>` : ""}<span><b>${left}/${n0(b.max)}</b></span></div>`;
+  const negCls = left < 0 ? " neg" : "";
+  return `<div class="hb-bar ${esc(b.cls)}${negCls}" title="${esc(`${b.name}: ${left} of ${n0(b.max)} left${nl ? ` (${nl} Nonlethal damage)` : ""}`)}"><i style="width:${pct(fill)}%"></i>${nl ? `<u style="left:${pct(fill)}%;width:${pct(nl)}%"></u>` : ""}<span><b>${left}/${n0(b.max)}</b></span></div>`;
 }
 const barsHtml = bars => `<div class="hb-bars">${(bars ?? []).map(barHtml).join("")}</div>`;
 /** A state tag: Bloodied, Strained, or the Down state (one word, never only a tint). */

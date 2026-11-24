@@ -270,40 +270,41 @@ Hooks.once("init", () => {
   CONFIG.Combat.initiative = { formula: "1d12 + @attributes.instinct", decimals: 0 };
 
   const STATUS_NAME = { bleed: "Lingering" };   // v0.0.414 (book, Chapter 8): a status whose name isn't its id
+  const CI = id => `systems/twod12/icons/conditions/${id}.svg`;
   CONFIG.statusEffects = [
-    ["bloodied", "icons/svg/blood.svg"],
-    ["strained", "icons/svg/daze.svg"],
-    ["desperate", "icons/svg/aura.svg"],
-    ["dying", "icons/svg/skull.svg"],
-    ["shattered", "icons/svg/terror.svg"],
-    ["unconscious", "icons/svg/unconscious.svg"],
-    ["prone", "icons/svg/falling.svg"],
-    ["hindered", "icons/svg/downgrade.svg"],
-    ["immobilized", "icons/svg/net.svg"],
-    ["leaning", "icons/svg/eye.svg"],
-    ["obscured", "icons/svg/blind.svg"],
-    ["hidden", "icons/svg/sound.svg"],
-    ["unsensed", "icons/svg/invisible.svg"],
-    ["vulnerable", "icons/svg/hazard.svg"],
-    ["empowered", "icons/svg/upgrade.svg"],   // v0.0.407: no value; Enfeebled is gone (book, Chapter 8)
-    ["exhausted", "icons/svg/sleep.svg"],
-    ["imperiled", "icons/svg/hazard.svg"],
-    ["squeezing", "icons/svg/net.svg"],
-    ["slowed", "icons/svg/stoned.svg"],
-    ["quickened", "icons/svg/lightning.svg"],
+    ["bloodied", CI("bloodied")],
+    ["strained", CI("strained")],
+    ["desperate", CI("desperate")],
+    ["dying", CI("dying")],
+    ["shattered", CI("shattered")],
+    ["unconscious", CI("unconscious")],
+    ["prone", CI("prone")],
+    ["hindered", CI("hindered")],
+    ["immobilized", CI("immobilized")],
+    ["leaning", CI("leaning")],
+    ["obscured", CI("obscured")],
+    ["hidden", CI("hidden")],
+    ["unsensed", CI("unsensed")],
+    ["vulnerable", CI("vulnerable")],
+    ["empowered", CI("empowered")],   // v0.0.407: no value; Enfeebled is gone (book, Chapter 8)
+    ["exhausted", CI("exhausted")],
+    ["imperiled", CI("imperiled")],
+    ["squeezing", CI("squeezing")],
+    ["slowed", CI("slowed")],
+    ["quickened", CI("quickened")],
     // v0.0.314 (pack AU, the conditions as items): the conditions pass's eight (book, Chapter 8); the HUD applies their Effect items (wrapConditions)
-    ["bleed", "icons/svg/blood.svg"],   // v0.0.414: named Lingering (the book's word; the id stays bleed: no migration)
-    ["blinded", "icons/svg/blind.svg"],
-    ["half-blinded", "icons/svg/blind.svg"],
-    ["called-out", "icons/svg/eye.svg"],   // v0.0.411 (pack F3, Spotter): its enemies perceive it one step better   // v0.0.409 (pack F2, Glare; book, Chapter 8): its Sight perceives no creature better than Obscured
-    ["dazed", "icons/svg/daze.svg"],
-    ["pressed", "icons/svg/sword.svg"],   // v0.0.412 (Thwart Cut)
-    ["frightened", "icons/svg/terror.svg"],
-    ["grabbed", "icons/svg/padlock.svg"],
-    ["sickened", "icons/svg/poison.svg"],
-    ["staggered", "icons/svg/paralysis.svg"],
-    ["taunted", "icons/svg/target.svg"],
-    ["dead", "icons/svg/skull.svg"]
+    ["bleed", CI("bleed")],   // v0.0.414: named Lingering (the book's word; the id stays bleed: no migration)
+    ["blinded", CI("blinded")],
+    ["half-blinded", CI("half-blinded")],
+    ["called-out", "icons/svg/eye.svg"],   // v0.0.411 (pack F3, Spotter): its enemies perceive it one step better; no custom icon needed
+    ["daunted", CI("daunted")],
+    ["dazed", CI("dazed")],
+    ["pressed", CI("pressed")],   // v0.0.412 (Thwart Cut)
+    ["grabbed", CI("grabbed")],
+    ["sickened", CI("sickened")],
+    ["staggered", CI("staggered")],
+    ["taunted", CI("taunted")],
+    ["dead", CI("dead")]
   ].map(([id, img]) => ({ id, name: STATUS_NAME[id] ?? id.split("-").map(w => w[0].toUpperCase() + w.slice(1)).join("-"), img }));
   // v0.0.314: Blinded took Foundry's blind status; v0.0.316 (Lucas: the Hearing ripple went with it): it is the system's own status, and the sight
   // gate (sightgate.mjs) and the Senses (senses.mjs perceive) read it, so only Sight is gone
@@ -580,7 +581,7 @@ async function checkDead(actor) {
     }
   }
   const hasDead = !!actor.statuses?.has("dead");
-  if ((want === "dead") !== hasDead) await actor.toggleStatusEffect("dead", { active: want === "dead", overlay: want === "dead" });
+  if ((want === "dead") !== hasDead) await actor.toggleStatusEffect("dead", { active: want === "dead", overlay: false });
   if (want === "unconscious" && !actor.statuses?.has("unconscious")) await actor.toggleStatusEffect("unconscious", { active: true });
 }
 function registerDeadHooks() {

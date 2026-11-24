@@ -1148,12 +1148,13 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
   /** Clicking a Body or Mind number lets you type its Lethal and Nonlethal damage. */
   static async hpEdit(event, target) {
-    const pool = target.dataset.pool, d = this.actor.system.damage;
+    const pool = target.dataset.pool, s = this.actor.system, d = s.damage;
     const L = pool === "body" ? "bodyLethal" : "mindLethal", N = pool === "body" ? "bodyNonlethal" : "mindNonlethal";
+    const max = pool === "body" ? (s.bdt ?? 0) : (s.mdt ?? 0);
     // v0.0.289 (PACK SHEET): the system's window (no DialogV2)
     const { pickWith } = await import("./pickwindow.mjs"), label = pool === "body" ? "Vigor" : "Resolve", v = { l: d[L], n: d[N] };
-    const res = await pickWith({ title: `${label} damage: ${this.actor.name}`, input: (f, val) => { v[f] = Math.max(0, Math.trunc(Number(val)) || 0); }, result: () => v,
-      model: () => ({ name: `${label} damage`, sub: this.actor.name, icon: "fa-heart-crack", confirm: "Save",
+    const res = await pickWith({ title: `${label}: ${this.actor.name}`, input: (f, val) => { v[f] = Math.max(0, Math.trunc(Number(val)) || 0); }, result: () => v,
+      model: () => ({ name: `${label} (${max - (v.l + v.n)} / ${max})`, sub: `${this.actor.name} · Damage taken`, icon: "fa-heart-crack", confirm: "Save",
         sections: [{ title: "", html: `<div class="pw-nums"><label>Lethal <input type="number" min="0" data-field="l" value="${v.l}"></label><label>Nonlethal <input type="number" min="0" data-field="n" value="${v.n}"></label></div>` }] }) });
     if (res) await this.actor.update({ [`system.damage.${L}`]: Math.max(0, res.l), [`system.damage.${N}`]: Math.max(0, res.n) });
   }
