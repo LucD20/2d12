@@ -699,6 +699,7 @@ export function wrapConditions(proto, deps = {}) {
   const find = deps.find ?? conditionItem, apply = deps.apply ?? applyEffects;
   const wrapped = async function (statusId, options = {}) {
     if (statusId === "exhausted" || options?.twod12Raw) return inner.call(this, statusId, options);
+    if (statusId === "dead" && options?.overlay) return inner.call(this, statusId, { ...options, overlay: false });
     // A condition with a value that is already on (Empowered 2): a click is +1 (Shift: settings, Ctrl: remove) and a right-click (Foundry passes overlay: true) is -1, whatever `active` says.
     const valued = this.effects?.find?.(x => x.statuses?.has?.(statusId) && isValued(x));
     if (valued) {

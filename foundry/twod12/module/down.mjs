@@ -162,8 +162,12 @@ export async function syncDownSlowed(actor) {
   for (const e of actor.effects) if (e !== rider && !e.disabled && e.statuses?.has?.("slowed")) base = Math.max(base, Math.max(1, Math.trunc(Number(e.getFlag(F, "value"))) || 1));
   const want = Math.min(3, base + 1), why = ["Desperate", "Dying", "Shattered"].find(w => has(actor, w.toLowerCase()));
   const data = { name: `Slowed ${want} (${why})`, "flags.twod12.value": want };
-  if (rider) { if (Number(rider.getFlag(F, "value")) !== want || rider.name !== data.name) await rider.update(data); return; }
-  await actor.createEmbeddedDocuments("ActiveEffect", [{ name: data.name, img: "icons/svg/stoned.svg", statuses: ["slowed"], flags: { twod12: { value: want, rider: "down" } } }]);
+  if (rider) {
+    if (rider.img === "icons/svg/stoned.svg") data.img = "systems/twod12/icons/conditions/slowed.svg";
+    if (Number(rider.getFlag(F, "value")) !== want || rider.name !== data.name || data.img) await rider.update(data);
+    return;
+  }
+  await actor.createEmbeddedDocuments("ActiveEffect", [{ name: data.name, img: "systems/twod12/icons/conditions/slowed.svg", statuses: ["slowed"], flags: { twod12: { value: want, rider: "down" } } }]);
 }
 
 export function registerDownHooks() {

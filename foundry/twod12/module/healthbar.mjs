@@ -203,8 +203,9 @@ function draw(token, number, bar) {
   const h = Math.max(canvas.dimensions.size / 11, 9) * (token.document.height >= 2 ? 1.5 : 1);
   const p = planHealthBar(s, token.actor.statuses, w);
   const hasGuard = p.guardW > 0;
+  const ext = Math.max(2, Math.min(3, h * 0.24));
   const gh = hasGuard ? Math.max(3.5, Math.round(h * 0.36)) : 0;
-  const gap = hasGuard ? 2 : 0;
+  const gap = hasGuard ? Math.ceil(ext) + 2 : 0;
   const barY = gh + gap;
   const total = barY + h;
 
@@ -244,10 +245,9 @@ function draw(token, number, bar) {
     if (p.rSpillW > 0) drawHatch(bar, p.rSpillStart, barY, p.rSpillW, h, COLORS.spillRBg, COLORS.spillRStripe, { step: 6, sw: 2.5, dir: -1, stripeAlpha: 0.68 });
   }
 
-  // Forged Brass Pin V/R threshold divider (extends ±2.5px above & below main bar)
+  // Forged Brass Pin V/R threshold divider (extends ±ext above & below main bar, clear of Guard crown)
   if (p.bdt > 0 && p.mdt > 0) {
     const pinW = Math.max(3.5, Math.min(5, w * 0.036));
-    const ext = Math.max(2, Math.min(3, h * 0.24));
     const px0 = p.vZone - pinW / 2;
     roundRectFill(bar, px0 - 1, barY - ext - 1, pinW + 2, h + (ext + 1) * 2, 1.5, COLORS.pinEdge, 0.95 * barAlpha);
     roundRectFill(bar, px0, barY - ext, pinW, h + ext * 2, 1, COLORS.pin, barAlpha);
@@ -317,9 +317,9 @@ function drawStateOverlay(token) {
     circleStroke(g, cx, cy, r * 0.95, Math.max(2, r * 0.1), 0xb85c9c, 0.54);
   }
 
-  // Micro-ribbon pill positioned cleanly inside lower token area (above HP bar)
+  // Micro-ribbon pill positioned cleanly inside lower token area (clear of Guard-crowned HP bar)
   const st = RIBBON_STYLE[p.overlay.kind] ?? RIBBON_STYLE.bloodied;
-  const fontSize = Math.max(7.5, Math.min(10.5, w * (p.overlay.kind === "both" ? 0.068 : 0.082)));
+  const fontSize = Math.max(8, Math.min(18, w * (p.overlay.kind === "both" ? 0.072 : 0.088)));
   const PT = globalThis.foundry?.canvas?.containers?.PreciseText ?? globalThis.PreciseText ?? globalThis.PIXI.Text;
   const txt = new PT(p.overlay.label, {
     fontFamily: "Signika, system-ui, sans-serif",
@@ -333,7 +333,7 @@ function drawStateOverlay(token) {
   const padX = Math.max(5, w * 0.055), padY = Math.max(2, h * 0.018);
   const pillW = Math.min(w * 0.96, txt.width + padX * 2);
   const pillH = txt.height + padY * 2;
-  const pillY = h * (p.down || p.dead ? 0.72 : 0.77);
+  const pillY = h * (p.down || p.dead ? 0.68 : 0.72);
 
   roundRectFill(g, cx - pillW / 2, pillY - pillH / 2, pillW, pillH, 3, st.bg, 0.92);
   roundRectStroke(g, cx - pillW / 2, pillY - pillH / 2, pillW, pillH, 3, 1.2, st.border, 0.9);

@@ -95,7 +95,7 @@ export function sideHtml(s = {}) {
    and a +N popover past max, D1 the Basic tab as the sheet's four groups, D3 / D7 the right column: the Situational section
    (urgent prompts separated above passive options like Prone/Granted), the Hands, the macro bar. */
 const BUFF_RE = /^(?:empowered|quickened|favored|shield of faith|blessed|inspired|warded|hasted|hidden|invisible|protected|bolstered|vanguard|consecrated|aegis|aura|focused|stance|emboldened|resilient|regenerating|guard\b|bulwark)/i;
-const DEBUFF_RE = /^(?:prone|slowed|frightened|vulnerable|immobilized|blinded|dazed|exhausted|grabbed|half-blinded|hindered|imperiled|lingering|pressed|sickened|staggered|taunted|doomed|judged|enfeebled|bleed(?:ing)?|burning|poisoned|restrained|unconscious|dying|weakened|marked|silenced|confused|deafened|cursed|shaken|exposed|bloodied|strained|incapacitated|unaware|dazzled|stunn?ed)/i;
+const DEBUFF_RE = /^(?:prone|slowed|frightened|vulnerable|immobilized|blinded|dazed|daunted|desperate|shattered|squeezing|exhausted|grabbed|half-blinded|hindered|imperiled|lingering|pressed|sickened|staggered|taunted|doomed|judged|enfeebled|bleed(?:ing)?|burning|poisoned|restrained|unconscious|dying|weakened|marked|silenced|confused|deafened|cursed|shaken|exposed|bloodied|strained|incapacitated|unaware|dazzled|stunn?ed)/i;
 /** Classify an active condition/effect for HUD pill color: "debuff" | "buff" | "neutral". */
 export function condPolarity(c) {
   if (c?.pol === "buff" || c?.pol === "debuff" || c?.pol === "neutral") return c.pol;

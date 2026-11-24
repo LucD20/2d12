@@ -33,12 +33,13 @@ export async function setExhausted(actor, n) {
     const ch = {};
     if (fx.name !== `Exhausted ${n}`) ch.name = `Exhausted ${n}`;
     if (fx.showIcon !== 2) ch.showIcon = 2;
+    if (fx.img === "icons/svg/sleep.svg") ch.img = "systems/twod12/icons/conditions/exhausted.svg";
     if (Object.keys(ch).length) await fx.update(ch);
   } else
     await actor.createEmbeddedDocuments("ActiveEffect", [
       {
         name: `Exhausted ${n}`,
-        img: "icons/svg/sleep.svg",
+        img: "systems/twod12/icons/conditions/exhausted.svg",
         statuses: ["exhausted"],
         showIcon: 2,
         flags: { [F]: { counter: "exhausted" } },
