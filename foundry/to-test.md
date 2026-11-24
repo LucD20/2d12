@@ -23,10 +23,10 @@ differ):
 
 ## Starting a combat
 
-### ui-init-squads · v0.0.491 · Intuitive Initiative Squads & alignment
-Rev: 3
+### ui-init-squads · v0.0.492 · Intuitive Initiative Squads & alignment
+Rev: 4
 Do: Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Click enemy checkboxes, click "+ Squad" / "+ Add" (including on the bottom row), test Ungroup All → Auto-Squad Minions, and roll Initiative.
-Expect: Checkboxes have crisp high-contrast borders and checking them puts "Group Selected (N)" in the Enemies header with zero vertical layout shift; "+ Squad" / "+ Add" popovers float cleanly over the window without growing or pushing the bottom footer down; Orc Warrior's sub-line stays on one tidy row without wrapping "GM".
+Expect: Checkboxes have crisp high-contrast borders and checking them puts "Group Selected (N)" in the Enemies header with zero vertical layout shift; "+ Squad" / "+ Add" popovers open directly under their clicked button (floating cleanly over the window/footer without shifting position or growing the window); Orc Warrior's sub-line stays on one tidy row.
 
 ## The roll dialog
 

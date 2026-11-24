@@ -1183,6 +1183,8 @@ const STYLE3 = `
 .twod12-type .twod12.iwin .iw-sqchk.on { background: var(--s-gold); border-color: var(--s-gold); color: var(--s-stamp-ink); }
 .twod12-type .twod12.iwin .iw-sqchk i { margin: 0; font-size: 10px; line-height: 1; }
 .twod12-type .twod12.iwin .iw-popwrap { position: relative; display: inline-flex; align-items: center; }
+.twod12-type .twod12.iwin-pop-portal { position: fixed; inset: 0; pointer-events: none; z-index: 10000; font-family: "Source Sans 3", sans-serif; }
+.twod12-type .twod12.iwin-pop-portal .iw-pop { pointer-events: auto; z-index: 10001; max-width: min(300px, calc(100vw - 16px)); }
 .twod12-type .twod12.iwin .iw-pop { position: absolute; top: calc(100% + 4px); left: 0; z-index: 120; min-width: 225px; max-height: 240px; overflow-y: auto; padding: 5px; background: var(--s-pg-2); border: 1px solid var(--s-rule); box-shadow: 0 10px 26px rgba(0,0,0,.65); display: flex; flex-direction: column; gap: 3px; }
 .twod12-type .twod12.iwin .iw-pop-ttl { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--s-mute); padding: 3px 6px; border-bottom: 1px solid var(--s-hair); }
 .twod12-type .twod12.iwin .iw-pop-it { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; height: auto; min-height: 26px; padding: 4px 7px; margin: 0; border: 1px solid transparent; border-radius: 0; background: transparent; color: var(--s-ink); font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; box-sizing: border-box; }

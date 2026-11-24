@@ -216,24 +216,52 @@ export class InitWindow extends BaseInitWindow {
       else if (zone) { ev.preventDefault(); this.ui.pop = ""; await this._save(squadRemove(all, [id])); }
     });
   }
+  _clearPop() {
+    this._popEl?.remove();
+    this._popEl = null;
+    if (this._popOutside) { window.removeEventListener("pointerdown", this._popOutside, true); this._popOutside = null; }
+    if (this._popKey) { window.removeEventListener("keydown", this._popKey, true); this._popKey = null; }
+  }
+  async _onClose(options) { this._clearPop(); return super._onClose?.(options); }
   _replaceHTML(result, content) {
+    this._clearPop();
     super._replaceHTML(result, content);
     const pop = content.querySelector(".iw-pop");
     const btn = pop?.closest(".iw-popwrap")?.querySelector('[data-act="sqPop"]');
-    if (pop && btn) {
+    if (pop && btn && typeof document !== "undefined" && document.body) {
       const r = btn.getBoundingClientRect();
+      const host = document.createElement("div");
+      const themeCls = this.element?.classList?.contains("theme-light") ? " theme-light" : this.element?.classList?.contains("theme-dark") ? " theme-dark" : "";
+      host.className = `twod12 iwin iwin-pop-portal${themeCls}`;
       pop.style.position = "fixed";
-      pop.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - 240))}px`;
-      const spaceBelow = window.innerHeight - r.bottom - 12;
-      if (spaceBelow < 160 && r.top > spaceBelow) {
-        pop.style.top = "auto";
-        pop.style.bottom = `${Math.max(8, window.innerHeight - r.top + 4)}px`;
-      } else {
-        pop.style.bottom = "auto";
-        pop.style.top = `${r.bottom + 4}px`;
-      }
+      pop.style.right = "auto";
+      pop.style.bottom = "auto";
+      pop.style.left = `${Math.max(8, r.left)}px`;
+      pop.style.top = `${r.bottom + 4}px`;
+      host.appendChild(pop);
+      document.body.appendChild(host);
+      const pr = pop.getBoundingClientRect();
+      const left = Math.max(8, Math.min(r.left, window.innerWidth - pr.width - 8));
+      const fitsBelow = r.bottom + 4 + pr.height <= window.innerHeight - 10;
+      const top = fitsBelow ? (r.bottom + 4) : Math.max(8, r.top - pr.height - 4);
+      pop.style.left = `${left}px`;
+      pop.style.top = `${top}px`;
+      host.addEventListener("click", ev => this._click(ev));
+      this._popEl = host;
+      this._popOutside = ev => {
+        if (host.contains(ev.target) || ev.target.closest?.(".iw-popwrap")) return;
+        this.ui.pop = "";
+        this._clearPop();
+      };
+      this._popKey = ev => {
+        if (ev.key !== "Escape") return;
+        this.ui.pop = "";
+        this._clearPop();
+      };
+      window.addEventListener("pointerdown", this._popOutside, true);
+      window.addEventListener("keydown", this._popKey, true);
       const body = content.querySelector(".iw-body");
-      body?.addEventListener("scroll", () => { if (this.ui.pop) { this.ui.pop = ""; this.render(); } }, { once: true });
+      body?.addEventListener("scroll", () => { if (this.ui.pop) { this.ui.pop = ""; this._clearPop(); } }, { once: true });
     }
   }
   _model() { return gmModel(creaturesOf(this.combat), callOf(this.combat), this.ui, { playersOpen: setting("initPlayersOpen", true) }); }
@@ -244,13 +272,14 @@ export class InitWindow extends BaseInitWindow {
     if (ups.length) { await this.combat.updateEmbeddedDocuments("Combatant", ups); if (this.rendered) this.render(); }
   }
   async _click(ev) {
-    if (this.ui.pop && !ev.target.closest(".iw-popwrap")) { this.ui.pop = ""; this.render(); }
+    if (this.ui.pop && !ev.target.closest(".iw-popwrap") && !ev.target.closest(".iwin-pop-portal")) { this.ui.pop = ""; this._clearPop(); }
     const b = ev.target.closest("button[data-act]");
     if (!b || b.disabled) return;
     ev.preventDefault();
     const act = b.dataset.act, call = callOf(this.combat);
     if (act === "sqPop") { ev.stopPropagation(); this.ui.pop = this.ui.pop === b.dataset.v ? "" : (b.dataset.v || ""); return this.render(); }
     this.ui.pop = "";
+    this._clearPop();
     if (act === "sqSel") {
       const id = b.dataset.id;
       if (this.ui.sel[id]) delete this.ui.sel[id];
