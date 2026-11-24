@@ -890,6 +890,48 @@ function forcedBar(mode, target, origin, N, onEnd) {
 }
 
 /**
+ * Pure (v0.0.498, Pass 3): map a hovered grid cell to a Push/Pull/Reposition shift node.
+ * For 1x1 targets, uses exact top-left offset. For Large+ (2x2, 3x3) targets, measures directional
+ * offset from the target's nearest outer edge so hovering any side/diagonal square aims cleanly,
+ * with a footprint-coverage fallback for edge cells.
+ */
+export function pushNodeForCell(map, cells, hovered) {
+  if (!map || !cells?.length || !hovered) return null;
+  if (cells.length === 1) return map.get(shiftKey({ di: hovered.i - cells[0].i, dj: hovered.j - cells[0].j })) ?? null;
+  let minI = Infinity, maxI = -Infinity, minJ = Infinity, maxJ = -Infinity;
+  for (const c of cells) {
+    if (c.i < minI) minI = c.i;
+    if (c.i > maxI) maxI = c.i;
+    if (c.j < minJ) minJ = c.j;
+    if (c.j > maxJ) maxJ = c.j;
+  }
+  const di = hovered.i < minI ? hovered.i - minI : hovered.i > maxI ? hovered.i - maxI : 0;
+  const dj = hovered.j < minJ ? hovered.j - minJ : hovered.j > maxJ ? hovered.j - maxJ : 0;
+  if (di === 0 && dj === 0) return null;
+  const direct = map.get(shiftKey({ di, dj }));
+  if (direct && direct.steps) return direct;
+  const ci = (minI + maxI) / 2, cj = (minJ + maxJ) / 2;
+  let best = null, bestDist = Infinity;
+  for (const n of map.values()) {
+    if (!n.steps) continue;
+    if (!cells.some(c => c.i + n.di === hovered.i && c.j + n.dj === hovered.j)) continue;
+    const d = Math.hypot(ci + n.di - hovered.i, cj + n.dj - hovered.j);
+    if (d < bestDist - 1e-6 || (Math.abs(d - bestDist) <= 1e-6 && n.steps > (best?.steps ?? 0))) { best = n; bestDist = d; }
+  }
+  return best;
+}
+
+/**
+ * Pure (v0.0.498, Pass 3): when a Push/Pull hits a wall or creature (not LoE, not Reposition) along a shorter
+ * aimed path (e.g. hovering 1 square into an adjacent wall or at map edge), extend the collision budget to full N
+ * so unused squares deal full collision damage; open-space short pushes keep their aimed distance.
+ */
+export function pushCollisionResult(r0, path, N, opts, repo = false) {
+  if (!repo && r0?.block && r0.block.type !== "loe" && path.length - 1 < N) return analyzePath(path, N, opts);
+  return r0;
+}
+
+/**
  * Drag the target to a square: only the squares the movement allows (Pushed: away from the origin; Pulled: toward it, or the origin's own square
  * for a Collision; Reposition: the old square in an Emanation) within N steps. Resolves to { path, result } or null.
  */
@@ -970,11 +1012,12 @@ function choosePush(origin, target, N, mode = "push") {
     };
     const hover = ev => {
       const p = ev.getLocalPosition ? ev.getLocalPosition(canvas.stage) : ev.data.getLocalPosition(canvas.stage);
-      const o = canvas.grid.getOffset(p), key = shiftKey({ di: o.i - tl.i, dj: o.j - tl.j });
-      const node = map.get(key) ?? (pull ? pullIntoOrigin(cells, oCells, { i: o.i, j: o.j }, N) : null);
+      const o = canvas.grid.getOffset(p);
+      const node = pushNodeForCell(map, cells, o) ?? (pull ? pullIntoOrigin(cells, oCells, { i: o.i, j: o.j }, N) : null);
       if (!node || !node.steps) { current = null; fbar.set(""); try { canvas.app.view.style.cursor = ""; } catch (e) { /* no view */ } return draw(); }
-      const path = repo || node.intoOrigin ? lineShifts(node) : pathTo(map, key);
-      const result = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt });
+      const path = repo || node.intoOrigin ? lineShifts(node) : pathTo(map, shiftKey(node));
+      const r0 = analyzePath(path, path.length - 1, { wallBetween: wallsOn, creatureAt, cornerAt });
+      const result = pushCollisionResult(r0, path, N, { wallBetween: wallsOn, creatureAt, cornerAt }, repo);
       current = { path, result };
       fbar.set(text(result));   // v0.0.461: no pointer tip (the plate and the HUD say it)
       try { canvas.app.view.style.cursor = "pointer"; } catch (e) { /* no view */ }

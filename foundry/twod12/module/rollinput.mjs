@@ -79,7 +79,7 @@ export async function rollDialogInput(c) {
     // v0.0.301 (PACK BB): a source that makes the roll Doomed or Favored (High cover: Doomed, and no Field Banes)
     if (!m.info && (m.doomed || m.favored) && !(m.boons || m.banes)) {
       const scope = scopeOf(m.id), label = cleanLabel(m.name, scope !== "shared" ? tgtName(scope) : "");
-      chips.push({ id: m.id, scope, row: m.doomed ? "banes" : "boons", kind: m.doomed ? "doom" : "fav", n: 1, label, start: m.match ? "on" : "na", why: m.naWhy || m.predicate || "", tip: m.predicate ?? "", rule: m.rule ?? null });
+      chips.push({ id: m.id, fx: m.id, scope, row: m.doomed ? "banes" : "boons", kind: m.doomed ? "doom" : "fav", n: 1, label, start: m.match ? "on" : "na", why: m.naWhy || m.predicate || "", tip: m.predicate ?? "", rule: m.rule ?? null });
       continue;
     }
     if (m.info || !(m.boons || m.banes)) continue;
@@ -147,6 +147,7 @@ export async function rollDialogInput(c) {
     nonlethalAction: it.traits.has("nonlethal"), chips, creatures, hideDef, designer, canForce: !!game.user?.isGM, blocked, rollMode: rm.cur, rollModes: rm.list, showAvg: showStats, showOdds: showStats,
     // v0.0.293: a Save Action: the targets roll the Save named on its Vs. line against your DC (11 + your Modifier)
     save: c.saveAct ? { label: vsText(it, { src, rolls: true }) || "Save", dc: saveDcOf(src, actor.system?.attributes) } : null,
+    setupPending: !!c.setupPending,
     notices: (c.notices ?? []).filter(n => !n.for || n.showInDialog).map(n => ({ text: n.text, why: n.why ?? "", active: !!n.active, tone: n.tone ?? "" }))
   };
 }

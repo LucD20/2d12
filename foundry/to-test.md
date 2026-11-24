@@ -25,16 +25,31 @@ differ):
 
 ## The roll dialog
 
+### pass3-save-breakdown · v0.0.498 · Save Roll Dialog named chips & live Modifier Breakdown
+Do: Put Vulnerable 1 on Orc Warrior, have Aveline use Word of Radiance (or switch it to Nonlethal, or cast while Daunted/Bane) so Orc Warrior is inside with Low or High Cover, then click Orc Warrior's Save button on the chat card.
+Expect: Vulnerable 1, Cover (Low/Medium/High), Nonlethal Save, and Caster's Banes appear as named toggleable chips (not anonymous Boon/Bane counters), and a live Modifier Breakdown line appears directly under the roll formula updating as you toggle chips or manual modifiers.
+
+### pass3-setup-reminder · v0.0.498 · Setup-move Actions show "Modifiers before Setup" reminder
+Do: On Kaela's turn, open Strafe's Roll Dialog (or Charge on Aveline); compare with opening Basic Attack's Roll Dialog.
+Expect: Strafe / Charge shows a subtle bronze-bordered note above the Roll button ("Setup movement runs after Roll: set any manual modifiers now — range, Cover, and Flanking update automatically after you move."); Basic Attack does not show it.
+
 ## Chat cards
 
 ## Conditions and their Tiers
 
+### pass3-feint-auto · v0.0.498 · Feint T2 (+2 Boons), T3 (Favored) & Critical (no Reactions vs. you)
+Do: On Sylwen's turn (GM Force Tier), use Feint on Orc Warrior (target A) with a second enemy (target B) nearby: (1) Force T2 — open Basic Attack vs target B, then vs target A and roll; (2) Force T3 — check Basic Attack vs target A; (3) Force Critical (accept Critical row) — move Sylwen away from Orc Warrior (Opportunity Attack) vs moving Kaela away.
+Expect: (1) T2 gives +2 Boons vs target A only and is NOT consumed by striking target B, then expires after striking target A; (2) T3 makes next Strike vs target A Favored; (3) Critical blocks Orc Warrior's Opportunity Attack against Sylwen ("Feinted: no Reactions vs. Sylwen") until EoT, while Kaela still triggers it normally.
+
 ## Movement
 
-### undo-move-ctrlz · v0.0.497 · Undo movement (Ctrl+Z & Undo move button) steps straight back without jumping to start
-Rev: 2
-Do: On Sylwen's turn in combat, drag 2 squares (A → B, spends 1 AP, 4 sq left), drag 2 more squares (B → C, 2 sq left), then press Ctrl+Z twice (or use the "Undo move" button in the Situational tab).
-Expect: First Ctrl+Z moves Sylwen directly from C to B (no jump back to A and no weird slide!), leaves 4 sq left with range redrawn, and drops Foundry's drag ruler by 2 sq; second Ctrl+Z moves Sylwen directly from B to A, refunds the 1 AP, closes the Advance banner, removes the movement from Turn Breakdown & Encounter Log, and resets Foundry's movement history to 0.
+### pass3-auto-evade · v0.0.498 · Quick Shots & Darting Blade auto-start Evade 2 after rolling
+Do: On Sylwen's turn in combat, roll Quick Shots (and try Darting Blade too) against an enemy.
+Expect: Immediately after rolling, Evade 2 starts automatically with the movement range and HUD Evade banner (no extra click on the chat card Evade button); Roll Damage works normally; Darting Blade still prompts to stow its Light weapon once Evade ends.
+
+### pass3-moveback-push · v0.0.498 · Reaction "Move back" ruler reset + Large Push aiming & wall slam damage
+Do: (a) Trigger an enemy Opportunity Attack by dragging Sylwen away in combat, then click "Move back" on the Reaction card. (b) Use Shove / Push 3 on Large (2×2) Ogre Chieftain — hover squares directly off its right/bottom outer edge and diagonally off its corners; also push a creature standing right next to a wall or another creature by hovering just 1 square into the wall/creature (and compare hovering 1–2 squares in open space).
+Expect: (a) Move back refunds 2d12 movement AND resets Foundry's movement ruler/history cleanly; (b) Large 2×2 Push aims smoothly from every outer edge & diagonal (hovering inside the Ogre's own squares does not aim Push 1, and the farthest gold squares are reachable); aiming into an adjacent wall/creature automatically computes full N-square collision damage (while clicking 1–2 squares in open space still allows a short push).
 
 ## Reactions and Judge
 

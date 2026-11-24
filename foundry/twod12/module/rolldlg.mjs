@@ -639,8 +639,10 @@ export function dialogHtml(inp, st) {
   // unloaded weapon, a missing Light weapon, a Requirement) is written above the bar, one line each; a Version's AP stays on its struck button
   const ws = [...(inp.blocked ?? []), ...liveCreatures(inp, st).filter(c => c.blocked).map(c => `${c.name}: ${c.blocked}`)];
   const warnHtml = ws.length ? `<div class="rd-warns" role="status">${ws.map(w => `<div class="rd-warn"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>${esc(w)}</div>`).join("")}</div>` : "";
+  // v0.0.498 (Pass 3): remind players on Setup-move Actions to set manual modifiers now before clicking Roll (position modifiers update after Setup)
+  const setupNote = inp.setupPending && !noRoll ? '<div class="rd-setup-note" role="note"><i class="fa-solid fa-shoe-prints" aria-hidden="true"></i><span><b>Setup movement runs after Roll:</b> set any manual modifiers now — range, Cover, and Flanking update automatically after you move.</span></div>' : "";
   // v0.0.349 (Lucas, playtest 4: "the AP Version buttons at the bottom next to Roll")
   // v0.0.397: the card part in the book's format (cardHtml); the old head, meta lines and Tier table (traitsHtml, metaHtml, tierTableHtml) stay for reference
   void traitsHtml; void metaHtml; void tierTableHtml;
-  return `<div class="rd-body rd-cardbody">${cardHtml(inp, st, v)}${panel}</div>${designer}${warnHtml}${bar}`;
+  return `<div class="rd-body rd-cardbody">${cardHtml(inp, st, v)}${panel}</div>${designer}${setupNote}${warnHtml}${bar}`;
 }

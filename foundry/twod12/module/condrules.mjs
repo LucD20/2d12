@@ -33,6 +33,12 @@ export function reactionsOff(actor) {
   const list = typeof actor?.effects?.filter === "function" ? actor.effects.filter(() => true) : [];
   return list.some(e => !e?.disabled && (flagOf(e, "noReactions") || e?.statuses?.has?.("staggered")));
 }
+/** v0.0.498 (Pass 3, Feint Critical): is this creature blocked from using Reactions against `targetUuid` (until EoT)? */
+export function reactionsOffVs(actor, targetUuid) {
+  if (!targetUuid) return false;
+  const list = typeof actor?.effects?.filter === "function" ? actor.effects.filter(() => true) : [...(actor?.effects ?? [])];
+  return list.some(e => !e?.disabled && flagOf(e, "noReactionsVs") === targetUuid);
+}
 
 /** Bleed's pool: the one it writes, else Vigor for Body / Instinct and Resolve for Mind / Appeal (both kinds: Vigor). */
 export function bleedPool(pool, attrs = []) {

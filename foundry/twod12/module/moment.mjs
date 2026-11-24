@@ -8,7 +8,7 @@
 // The moments are settings of each Reaction (Moment, Within, You too, Used on): no code here names a card.
 // v0.0.275 (pack RX-2, Lucas's design): the message is a stack card (faces, "pick one" groups, slabs in their map colors), a map overlay shows
 // it while it is open (rxoverlay.mjs), and once resolved the same message is edited in place into one line that unfolds (a snapshot, the frozen stack).
-import { reactionsOff } from "./condrules.mjs";   // v0.0.314 (pack AU): Staggered
+import { reactionsOff, reactionsOffVs } from "./condrules.mjs";   // v0.0.314 (pack AU): Staggered; v0.0.498: Feint Critical
 import { tokenDistance } from "./light.mjs";
 import { threatProfile } from "./flanking.mjs";   // v0.0.303: "a creature you threaten" (Opportunity Attack)
 import { isFaded } from "./usage.mjs";
@@ -379,8 +379,10 @@ export async function collectReactions(ev) {
       const tDist = def.move && target === hit.sj ? hit.dist : (target.token ? tokenDistance(tk, target.token) : 0);
       if (sq && target.token && target.token !== tk && tDist > sq) continue;
       const row = { actor, token: tk, item, kind, moment: k, subject: hit.sj, target, dist: hit.dist, role: roleOf(item, def) };
+      // v0.0.498 (Pass 3): Feint Critical blocks the target from using Reactions against the feinter until end of feinter's turn
+      const feintBy = [ev.source?.actor, target?.actor, hit.sj?.actor].find(a => a?.uuid && reactionsOffVs(actor, a.uuid));
       // v0.0.410 (book, A Reaction's Target): Line of Effect to the target, and the target and the triggering creature perceived (Hidden is enough)
-      const why = (await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item);
+      const why = (feintBy ? `Feinted: no Reactions vs. ${cleanName(feintBy.name)}` : "") || (await reactionSight(tk, target.token ?? null, ev.source?.token ?? null)) || await blockedWhy(actor, item);
       if (why) blocked.push({ ...row, why }); else rows.push(row);
     }
   }
@@ -779,7 +781,20 @@ async function moveBack(msg, st, toStart = false) {
   const chosen = toStart ? choices.at(-1) : (pick ?? null);
   const steps = chosen ? chosen.steps : b.steps, whole = toStart || !b.start || !b.total || steps >= b.total;
   const to = whole ? (b.start ?? { x: b.x, y: b.y }) : (chosen ? { x: chosen.x, y: chosen.y } : { x: b.x, y: b.y });
-  await doc.update({ x: to.x, y: to.y }, { twod12Forced: true, animate: true });
+  // v0.0.498 (Pass 3): reset Foundry V14's movement ruler/history for this drag and clear Ctrl+Z undo stack
+  try { const { clearMoveUndo } = await import("./move.mjs"); clearMoveUndo(doc.id); } catch (e) { /* no move module */ }
+  let reverted = false;
+  const moveId = String(b.movementId ?? "");
+  const hist = Array.isArray(doc.movementHistory) ? doc.movementHistory : [];
+  if (typeof doc.revertRecordedMovement === "function" && hist.length > (Number(b.histLen) || 0) && (moveId || (Number(b.histLen) || 0) === 0)) {
+    try {
+      const res = await doc.revertRecordedMovement(moveId || undefined);
+      reverted = res !== false;
+    } catch (e) { console.warn("twod12 | revertRecordedMovement (Move back)", e); }
+  }
+  if (!whole || !reverted || Math.abs((doc.x ?? 0) - to.x) > 1 || Math.abs((doc.y ?? 0) - to.y) > 1) {
+    await doc.update({ x: to.x, y: to.y }, { twod12Forced: true, twod12Undo: true, animate: !reverted });
+  }
   const c = game.combat?.combatants?.get?.(b.combatantId);
   if (c && b.flags) {
     const now = Object.fromEntries(Object.keys(b.flags).map(k => [k, Number(c.getFlag(F, k)) || 0]));
@@ -1128,7 +1143,7 @@ export function moveMoment(doc, origin, dest, { stand = false, before = null, wa
     const idxs = stand || sqs.length < 2 ? [] : backSquareIndices(sqs, open.map(r => { const t = r.item.system.momentThreat ? threatProfile(r.actor) : null; return { moment: r.moment, range: t ? t.max : (Number(r.item.system.momentRange) || 0), min: t ? t.min : 0, token: r.token }; }), (r, sq) => tokenDistance(r.token, sq), nearer);
     const idx = idxs[0] ?? 0;
     const at = sqs[idx] ?? fromAt, steps = Math.max(0, sqs.length - 1 - idx), total = Math.max(1, sqs.length - 1);
-    const back = !stand && origin ? { tokenUuid: doc.uuid, x: at.x, y: at.y, start: { x: fromAt.x, y: fromAt.y }, steps, total, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, squares: idx ? steps : tokenDistance(fromAt, toAt), squaresAt: idxs.slice(0, 12).map(i => ({ idx: i, x: sqs[i].x, y: sqs[i].y })), name: cleanName(doc.name ?? actor.name), used: false } : null;
+    const back = !stand && origin ? { tokenUuid: doc.uuid, x: at.x, y: at.y, start: { x: fromAt.x, y: fromAt.y }, steps, total, combatantId: before?.combatantId ?? "", flags: before?.flags ?? null, movementId: before?.movementId ?? "", histLen: Number(before?.histLen) || 0, squares: idx ? steps : tokenDistance(fromAt, toAt), squaresAt: idxs.slice(0, 12).map(i => ({ idx: i, x: sqs[i].x, y: sqs[i].y })), name: cleanName(doc.name ?? actor.name), used: false } : null;
     // v0.0.275: the base slab ("Moves N sq.", Move back on it) and the path for the map overlay (the squares, the ghost where it started)
     const gs = globalThis.canvas?.grid?.size ?? 100, face = faceOf({ actor, token: doc.object ?? tokenOf(actor) }) ?? {};
     const base = stand ? { kind: "stand", face } : { kind: "move", face: { ...face, uuid: doc.uuid }, squares: tokenDistance(fromAt, toAt), path: pathSquares(waypoints?.length ? waypoints : [fromAt, toAt], gs, doc.width || 1, doc.height || 1), start: { x: fromAt.x, y: fromAt.y, w: doc.width || 1, h: doc.height || 1 } };
@@ -1150,7 +1165,8 @@ export function registerMomentHooks() {
       const c = game.combat?.combatants?.find?.(x => x.tokenId === doc.id);
       // v0.0.273: the movement it has before this move (Move back refunds it)
       const flags = c ? { freeMove: Number(c.getFlag(F, "freeMove")) || 0, evadeMove: Number(c.getFlag(F, "evadeMove")) || 0, moveLeft: Number(c.getFlag(F, "moveLeft")) || 0, ap: Number(c.getFlag(F, "ap")) || 0 } : null;   // v0.0.453: its AP too (a drag that bought an Advance)
-      moving.set(doc.id, { forced: !!operation?.twod12Forced, evading: Number(c?.getFlag?.(F, "evadeMove")) > 0, before: c ? { combatantId: c.id, flags } : null });
+      const histLen = Array.isArray(doc.movementHistory) ? doc.movementHistory.length : 0;
+      moving.set(doc.id, { forced: !!operation?.twod12Forced, evading: Number(c?.getFlag?.(F, "evadeMove")) > 0, before: { combatantId: c?.id ?? "", flags, histLen, movementId: movement?.id ?? "" } });
     } catch (e) { /* not tracked */ }
   });
   Hooks.on("moveToken", (doc, movement) => {
@@ -1160,6 +1176,7 @@ export function registerMomentHooks() {
     if (!movement?.pending?.waypoints?.length) moving.delete(doc.id);
     if (m.forced || m.evading || !movement?.origin || !movement?.destination) return;
     const wp = movement.passed?.waypoints ?? null;
-    moveMoment(doc, movement.origin, movement.destination, { before: m.before, waypoints: wp?.length ? [movement.origin, ...wp] : null });
+    const before = m.before ? { ...m.before, movementId: movement?.id || m.before.movementId || "" } : null;
+    moveMoment(doc, movement.origin, movement.destination, { before, waypoints: wp?.length ? [movement.origin, ...wp] : null });
   });
 }

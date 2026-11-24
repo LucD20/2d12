@@ -96,6 +96,59 @@ export async function applyBoonEffect(actor, cfg, origin) {
   }]);
 }
 
+/**
+ * v0.0.498 (Pass 3): Feint Tier 2 / Tier 3 automation — grants 2 Boons (T2) or Favored (T3) on the caster's next [Strike] Action
+ * against `targetActor` this turn (expires on that Strike or at EoT).
+ */
+export async function applyFeintEffect(actor, targetActor, tier, origin = null) {
+  if (!actor || !targetActor || tier < 2) return false;
+  if (!actor.isOwner) return false;
+  const fav = tier >= 3;
+  const own = combatantOf(actor);
+  const o = origin ?? originInfo(actor.uuid);
+  const name = `Feint (${targetActor.name})`;
+  await actor.createEmbeddedDocuments("ActiveEffect", [{
+    name, img: "icons/svg/daze.svg", origin: o?.actorUuid ?? actor.uuid, showIcon: 2,
+    flags: { [F]: {
+      duration: { type: "eot", rounds: 1 }, remaining: 1, slotInit: own?.initiative ?? null,
+      originSlot: o?.slot ?? null, originCombatantId: o?.combatantId ?? "",
+      anchorSlot: o?.anchorSlot ?? own?.initiative ?? null, anchorCombatantId: o?.anchorCombatantId ?? own?.id ?? "",
+      appliedRound: o?.round ?? null, appliedTurn: o?.turn ?? null,
+      description: fav ? `Your next [Strike] Action against ${targetActor.name} this turn is Favored.` : `You gain 2 Boons on your next [Strike] Action against ${targetActor.name} this turn.`,
+      notes: [], bonuses: [], grants: [],
+      modifiers: [{ against: false, boons: fav ? 0 : 2, banes: 0, ...(fav ? { favored: true } : {}), bb: "", empowered: 0, enfeebled: 0, all: ["strike"], any: [], none: [], from: [], targetUuid: targetActor.uuid }],
+      expireOn: ["strike"], expireAll: true, expireTargetUuid: targetActor.uuid
+    } }
+  }]);
+  return true;
+}
+
+/**
+ * v0.0.498 (Pass 3): Feint Critical automation — prevents `targetActor` from using Reactions against `feinter` until the end of `feinter`'s turn.
+ */
+export async function applyFeintNoReactions(targetActor, feinter, origin = null) {
+  if (!targetActor || !feinter) return false;
+  const o = origin ?? originInfo(feinter.uuid);
+  if (!targetActor.isOwner) {
+    game.socket?.emit?.(SOCKET, { type: "applyFeintNoRx", targetUuid: targetActor.uuid, feinterUuid: feinter.uuid, feinterName: feinter.name, origin: o });
+    return true;
+  }
+  const own = combatantOf(feinter);
+  await targetActor.createEmbeddedDocuments("ActiveEffect", [{
+    name: `Feinted (no Reactions vs. ${feinter.name})`, img: "icons/svg/daze.svg", origin: feinter.uuid, showIcon: 2,
+    flags: { [F]: {
+      duration: { type: "eot", rounds: 1 }, remaining: 1, slotInit: own?.initiative ?? null,
+      originSlot: o?.slot ?? null, originCombatantId: o?.combatantId ?? own?.id ?? "",
+      anchorSlot: o?.anchorSlot ?? own?.initiative ?? null, anchorCombatantId: o?.anchorCombatantId ?? own?.id ?? "",
+      appliedRound: o?.round ?? null, appliedTurn: o?.turn ?? null,
+      description: `Can't use Reactions against ${feinter.name} until the end of ${feinter.name}'s turn.`,
+      notes: [], bonuses: [], grants: [], modifiers: [],
+      noReactionsVs: feinter.uuid
+    } }
+  }]);
+  return true;
+}
+
 /** Every boon/bane modifier on the actor's effects, with whether it matches these traits. */
 /** Effects are often named "Effect: Name" in the world; cards and dialogs show just "Name". */
 export const shortName = n => String(n ?? "").replace(/^\s*Effect:\s*/i, "");
@@ -139,13 +192,17 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
     if (effectOff(actor, e)) continue;
     if (ignoreDaunted && (e.statuses?.has?.("daunted") || /^daunted\b/i.test(shortName(e.getFlag?.(F, "baseName") ?? e.name)))) continue;
     (e.getFlag(F, "modifiers") ?? []).forEach((m, i) => {
-      if (m.against || !(m.boons || m.banes)) return;
+      if (m.against || !(m.boons || m.banes || m.favored || m.doomed)) return;
       // v0.0.186: once per round (used: not offered) and only against the marked target (one chip for that target).
       const once = m.oncePerRound ? onceKey(e, "m", i) : "";
       if (once && onceBlocked(actor, once)) return;
       if (m.vsOrigin && !originOk(m, e.origin ?? "", targetActors.map(t => t?.uuid))) return;   // v0.0.314 (pack AU): Taunted, against a creature other than its origin
       if ((m.seen && !seesOrigin(actor, e)) || isSpent(e, m)) return;   // v0.0.323 (PACK EFFECT-SHEET): its own "While they see the origin"; "Next one only" used
-      const base = { name: shortName(e.name), boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m) + bbText(m, e), ...(once ? { once, onceActor: actor.uuid } : {}), ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}`, spendActor: actor.uuid } : {}) };
+      const base = { name: shortName(e.name), boons: (Number(m.boons) || 0) * kOf(m, e), banes: (Number(m.banes) || 0) * kOf(m, e), ...(m.favored ? { favored: true } : {}), ...(m.doomed ? { doomed: true } : {}), bb: bbOf(m, e), match: matches(m, traits, from), predicate: predText(m) + onceText(m) + bbText(m, e), ...(once ? { once, onceActor: actor.uuid } : {}), ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}`, spendActor: actor.uuid } : {}) };
+      if (m.targetUuid) {
+        for (const t of targetActors) if (t?.uuid === m.targetUuid) out.push({ ...base, id: `${t.uuid}|${e.id}:${i}`, name: base.name.includes(`(${t.name})`) ? base.name : `${base.name} (${t.name})`, predicate: `Against ${t.name}: ${base.predicate}` });
+        return;
+      }
       if (!m.vsMarked) return out.push({ id: `${e.id}:${i}`, ...base });
       for (const t of targetActors) if (isMarked(actor, t)) out.push({ ...base, id: `${t.uuid}|${e.id}:${i}`, name: `${base.name} (${t.name})`, predicate: `Against your marked target, ${t.name}: ${base.predicate}` });
     });
@@ -160,11 +217,11 @@ export function modifierList(actor, traits, targetActors = [], from = null) {
       const vo = vulnerableOf(e);
       if (vo) { if (vo < vul || vulSeen) continue; vulSeen = true; }
       (e.getFlag(F, "modifiers") ?? []).forEach((m, i) => {
-        if (!m.against || !(m.boons || m.banes)) return;
+        if (!m.against || !(m.boons || m.banes || m.favored || m.doomed)) return;
         const once = m.oncePerRound ? onceKey(e, "m", i) : "";   // v0.0.186: the first matching Action against it each round (Elusive)
         if (once && onceBlocked(t, once)) return;
         if ((m.seen && !seesOrigin(t, e)) || isSpent(e, m)) return;   // v0.0.323
-        out.push({ ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}`, spendActor: t.uuid } : {}), id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: m.boons * kOf(m, e), banes: m.banes * kOf(m, e), bb: bbOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}${bbText(m, e)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
+        out.push({ ...(m.spend && m.ruleId ? { spend: `${e.id}|${m.ruleId}`, spendActor: t.uuid } : {}), id: `${t.uuid}|${e.id}:${i}`, name: `${shortName(e.name)} (${t.name})`, boons: (Number(m.boons) || 0) * kOf(m, e), banes: (Number(m.banes) || 0) * kOf(m, e), ...(m.favored ? { favored: true } : {}), ...(m.doomed ? { doomed: true } : {}), bb: bbOf(m, e), match: matches(m, traits), predicate: `Against ${t.name}: ${predText(m)}${onceText(m)}${bbText(m, e)}`, ...(once ? { once, onceActor: t.uuid } : {}) });
       });
     }
   }
@@ -207,7 +264,7 @@ export function resolveModifiers(actor, ids, extra = []) {
     }
     const [owner, rest] = id.includes("|") ? id.split("|") : [null, id];
     const [eid, idx] = rest.split(":");
-    const holder = owner ? fromUuidSync(owner) : actor;
+    const holder = owner ? (typeof fromUuidSync === "function" ? fromUuidSync(owner) : null) : actor;
     // v0.0.320 (two fixes): a Feature's or Talent's passive (id "passive-...") is not in the creature's effects: look among its passives too; and a
     // modifier "only against the creature it marked" is the roller's own, with the target's uuid in front of its id: look in the roller's own too.
     const findIn = a => a?.effects?.get?.(eid) ?? (String(eid).startsWith("passive-") ? allEffects(a).find(x => x.id === eid) : null);
@@ -215,7 +272,9 @@ export function resolveModifiers(actor, ids, extra = []) {
     const m = e?.getFlag(F, "modifiers")?.[Number(idx)];
     if (!m) continue;
     const k = kOf(m, e);
-    sources.push({ name: shortName(e.name), boons: m.boons * k, banes: m.banes * k, bb: bbOf(m, e) });
+    sources.push({ name: shortName(e.name), boons: (Number(m.boons) || 0) * k, banes: (Number(m.banes) || 0) * k, bb: bbOf(m, e) });
+    if (m.favored) { favored = true; favBy.push(shortName(e.name)); }
+    if (m.doomed) { doomed = true; doomBy.push(shortName(e.name)); }
   }
   const n = bbCount(sources);
   return { boons: n.boons, banes: n.banes, sources, groups: n.groups, favored, doomed, favBy, doomBy };

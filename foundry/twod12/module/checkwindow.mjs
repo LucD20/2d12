@@ -20,13 +20,18 @@ export function checkRollHtml(st) {
   const baseMod = Number(st.baseMod) || 0;
   const adj = Number(st.adj) || 0;
   const dc = Math.max(1, Math.trunc(Number(st.dc) || 13));
-  let fxBoons = 0, fxBanes = 0;
+  let fxBoons = 0, fxBanes = 0, fxFav = false, fxDoom = false;
   for (const m of st.mods) {
-    if (!m.info && st.fxOn.has(m.id)) { fxBoons += Number(m.boons) || 0; fxBanes += Number(m.banes) || 0; }
+    if (!m.info && st.fxOn.has(m.id)) {
+      fxBoons += Number(m.boons) || 0;
+      fxBanes += Number(m.banes) || 0;
+      if (m.favored) fxFav = true;
+      if (m.doomed) fxDoom = true;
+    }
   }
   const totBoons = fxBoons + (Number(st.boons) || 0);
   const totBanes = fxBanes + (Number(st.banes) || 0);
-  const b = bbState({ boons: totBoons, banes: totBanes, fav: !!st.favored, doom: !!st.doomed });
+  const b = bbState({ boons: totBoons, banes: totBanes, fav: !!st.favored || fxFav, doom: !!st.doomed || fxDoom });
   const effMod = baseMod + adj + b.add;
   const dice = b.state === "favored" ? "3d12kh2" : b.state === "doomed" ? "3d12kl2" : "2d12";
   const stateTag = b.cancel ? "Favored + Doomed cancel"
@@ -34,6 +39,26 @@ export function checkRollHtml(st) {
     : b.state === "doomed" ? (b.five === "doomed" ? "Doomed (5+ Banes)" : "Doomed")
     : "";
   const formula = `${dice} ${effMod >= 0 ? "+" : "\u2212"} ${Math.abs(effMod)} vs DC ${dc}`;
+  // v0.0.498 (Pass 3): live Modifier Breakdown summarizing every active source feeding the roll
+  const bdParts = [];
+  if (attrName) bdParts.push(`${attrName} ${sgn(baseMod)}`);
+  if (adj) bdParts.push(`${st.adjLabel && adj === Number(st.adjDefault) ? st.adjLabel : "Manual"} ${sgn(adj)}`);
+  for (const m of st.mods) {
+    if (m.info || !st.fxOn.has(m.id)) continue;
+    const isFav = !!m.favored && !m.doomed && !(m.boons || m.banes);
+    const isDoom = !!m.doomed && !m.favored && !(m.boons || m.banes);
+    if (isFav) bdParts.push(`${m.name} (Favored)`);
+    else if (isDoom) bdParts.push(`${m.name} (Doomed)`);
+    else {
+      const d = `${m.boons ? `+${m.boons}` : ""}${m.boons && m.banes ? "/" : ""}${m.banes ? `\u2212${m.banes}` : ""}`;
+      bdParts.push(d ? `${m.name} ${d}` : m.name);
+    }
+  }
+  if (Number(st.boons) > 0) bdParts.push(`Manual +${Number(st.boons)} Boon${Number(st.boons) === 1 ? "" : "s"}`);
+  if (Number(st.banes) > 0) bdParts.push(`Manual \u2212${Number(st.banes)} Bane${Number(st.banes) === 1 ? "" : "s"}`);
+  if (st.favored) bdParts.push(st.favoredLabel || "Favored");
+  if (st.doomed) bdParts.push(st.doomedLabel || "Doomed");
+  const breakdownHtml = bdParts.length ? `<div class="ck-breakdown">${esc(bdParts.join(" \u00b7 "))}</div>` : "";
   const lad = ladder(dc, false);
   const odds = showOddsEnabled() ? oddsOf({ mod: baseMod + adj, dc, bbAdd: b.add, state: b.state }, false) : null;
   const tiers = st.tiers ?? null;
@@ -45,9 +70,12 @@ export function checkRollHtml(st) {
 
   const effectChips = st.mods.filter(m => !m.info).map(m => {
     const on = st.fxOn.has(m.id);
-    const kind = m.banes && !m.boons ? "bane" : "boon";
-    const delta = `${m.boons ? `+${m.boons}` : ""}${m.boons && m.banes ? "/" : ""}${m.banes ? `\u2212${m.banes}` : ""}`;
-    return `<button type="button" class="ck-chip ${kind}${on ? " on" : ""}" data-ck-fx="${esc(m.id)}" aria-pressed="${on}"><i class="fa-solid fa-chevron-${kind === "bane" ? "down" : "up"}" aria-hidden="true"></i><span>${esc(m.name)}</span>${delta && !m.full ? `<small>${delta}</small>` : ""}</button>`;
+    const isFav = !!m.favored && !m.doomed && !(m.boons || m.banes);
+    const isDoom = !!m.doomed && !m.favored && !(m.boons || m.banes);
+    const kind = isDoom || (m.banes && !m.boons) ? "bane" : "boon";
+    const icon = isFav ? "angles-up" : isDoom ? "angles-down" : (kind === "bane" ? "chevron-down" : "chevron-up");
+    const delta = isFav ? "Favored" : isDoom ? "Doomed" : `${m.boons ? `+${m.boons}` : ""}${m.boons && m.banes ? "/" : ""}${m.banes ? `\u2212${m.banes}` : ""}`;
+    return `<button type="button" class="ck-chip ${kind}${on ? " on" : ""}" data-ck-fx="${esc(m.id)}" aria-pressed="${on}"><i class="fa-solid fa-${icon}" aria-hidden="true"></i><span>${esc(m.name)}</span>${delta && !m.full ? `<small>${delta}</small>` : ""}</button>`;
   }).join("");
 
   const noticeChips = [...st.notices, ...st.mods.filter(m => m.info)].map(n =>
@@ -70,8 +98,11 @@ export function checkRollHtml(st) {
     </header>
     <div class="cw-body ck-body">
       <div class="ck-hero">
-        <div class="ck-formula">${esc(formula)}</div>
-        ${stateTag ? `<span class="ck-state ${b.state || "cancel"}">${esc(stateTag)}</span>` : ""}
+        <div class="ck-hero-top">
+          <div class="ck-formula">${esc(formula)}</div>
+          ${stateTag ? `<span class="ck-state ${b.state || "cancel"}">${esc(stateTag)}</span>` : ""}
+        </div>
+        ${breakdownHtml}
       </div>
       <div class="ck-steppers">
         <div class="ck-field"><span>DC</span><span class="pw-step"><button type="button" data-ck-step="dc" data-d="-1" aria-label="Lower DC">&minus;</button><input type="number" data-ck-in="dc" value="${dc}"><button type="button" data-ck-step="dc" data-d="1" aria-label="Raise DC">+</button></span></div>

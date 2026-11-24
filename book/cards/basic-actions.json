@@ -488,8 +488,8 @@
       ],
       "foundry": {
         "basic": "feint",
-        "automation": "silver",
-        "automationNote": "2 Boons (Tier 2) or Favored (Tier 3) on your next [Strike] Action against the target this turn: by hand (the roll dialog); the Critical's Reactions: by hand.",
+        "automation": "gold",
+        "automationNote": "applies 2 Boons (Tier 2) or Favored (Tier 3) on your next [Strike] Action against the target this turn, and blocks its Reactions against you until EoT on a Critical.",
         "img": "icons/svg/daze.svg"
       }
     },

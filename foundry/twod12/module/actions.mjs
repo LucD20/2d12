@@ -22,7 +22,7 @@ import { fxTipHtml, hoverOf, tipAttrs } from "./util.mjs";   // v0.0.253: the ef
 import { effectWhat } from "./fxdetails.mjs";   // v0.0.267: the hover card says what the effect does (its settings)
 import { cardVars, cardHead, flavorHtml, apIcon, traitChevrons, categoryText, highlightText, metaRowHtml, effectiveFrequency, distanceText, distanceNote, areaText, cardColorFor, vsText, targetsRowHtml, targetEntries, requirementProblem, doomStatus } from "./config.mjs";
 import { collectBonuses, expireOnUse } from "./bonus.mjs";
-import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList } from "./effects.mjs";
+import { notesFor, useOnceModifiers, resolveModifiers, applyEffects, originInfo, damageSteps, modifierList, applyFeintEffect, applyFeintNoReactions } from "./effects.mjs";
 import { spendAP, combatantOf } from "./combat.mjs";
 import { computeDC } from "./defense.mjs";
 import { markUsed, activeGrants, atWillUses, grantMatches, demoralizedTarget, markDemoralized } from "./usage.mjs";   // (markAtWill: imported where used)
@@ -49,6 +49,13 @@ const modOnWeapon = (src, traits) => src?.kind === "weapon" || (src?.kind === "s
 export function coverBanesApply(item, useTraits = new Set()) {
   const has = t => !!(useTraits?.has?.(t) || (Array.isArray(useTraits) && useTraits.includes(t)) || item?.system?.traits?.has?.(t) || (Array.isArray(item?.system?.traits) && item.system.traits.includes(t)));
   return has("strike") || has("area");
+}
+
+/** Pure (v0.0.498, Pass 3): when an Attack Action's Effects line grants you an Evade (`You @Move[evade|...]`, e.g. Quick Shots, Darting Blade, Volley), return the tag payload to start it automatically right after the roll. */
+export function autoEffectEvadeTag(version) {
+  if (!version || version.noTiers) return "";
+  const m = String(version.effects ?? "").match(/(?:^|[.;,]\s*)You\s+@Move\[(evade\|[^\]]*)\]/i);
+  return m ? m[1] : "";
 }
 
 /** Text form of a damage instance, e.g. "[V] 1[W] + 1d4 H" (v0.0.234: the pool B / M written [V] / [R]). */
@@ -615,6 +622,9 @@ export async function useAction(actor, item, opts = {}) {
   };
   const dialogWillShow = opts.quickAp == null && !(opts.skipDialog && !opts.restart) && !opts.rollAfterPlace
     && (typeof globalThis.__twod12RollDialog === "function" || typeof foundry.applications?.api?.ApplicationV2?.prototype?.render === "function");
+  const hasSetupMove = String(it.setup ?? "").includes("@Move")
+    || (!it.reaction && !!game.combat?.started && game.combat.combatant?.tokenId === (actor.token?.id ?? actor.getActiveTokens?.()[0]?.document?.id)
+      && !!activeHooks(actor, "setupAdvance").find(h => hasTraits(it.traits, h.hook.traits)));
   const setupLater = !opts.noSetup && !opts.setupRan && dialogWillShow;
   if (!opts.noSetup && !opts.setupRan && !setupLater) {
     const st = await runSetups();
@@ -950,7 +960,7 @@ export async function useAction(actor, item, opts = {}) {
       return { tiers: mk.outcomes, crit: v.critical ? await enrich(v.critical, item) : "", effects: mk.effectsHtml, setup: it.setup ? await enrich(setupFor(it.setup, setupDone), item) : "" };
     };
     const inp = await rollDialogInput({ actor, item, versions, src, useTraits, dlgTraits, previewWeapon, multi, perT, aimed, targetToken, rollsAtOthers, isSelf, areaSet, areaOutcome, extraMods, steps, bonusSeen, usesReload,
-      saveAct, notices: [...extraNotices], warns: dlgWarns, opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
+      saveAct, setupPending: setupLater && hasSetupMove, notices: [...extraNotices], warns: dlgWarns, opts, dcInfo, seen, seenWhy, mine, unseenYou, untrainedTarget, outOfRange, talentMods: talentModsFor(actor, item), partsFor });
     // v0.0.444 (group 2; Lucas: "it shows buttons for each weapon to use"): two held weapons fit: a column for each (its Distance, its Tiers, its
     // hand's Banes) and a Roll button for each; the dialog is the main hand's, the other's Roll runs the Action again with that weapon at once
     if ((opts.dual ?? []).length > 1 && it.traits.has("weapon") && !linkedW) {
@@ -1173,10 +1183,11 @@ export async function useAction(actor, item, opts = {}) {
   if (chk || mres) { const sp = [...bonuses.filter(b => b.spend).map(b => b.spend), ...[...steps.empowered, ...steps.enfeebled].filter(x => x.spend).map(x => x.spend)]; if (sp.length) { try { await markSpent(actor, sp); } catch (e) { console.warn("twod12 | spent", e); } } }
   // The "once per round" Boons and Banes that were in the roll (Elusive on the target) are used too.
   if (chk || mres) { try { await useOnceModifiers(actor, rt, multi ? perT.map(p => p.actor) : rollsAtOthers && targetToken?.actor ? [targetToken.actor] : [], null, data.fx); } catch (e) { console.warn("twod12 | once per round", e); } }
+  const targetObjs = multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed);
+  const targetActorUuids = targetObjs.map(t => t?.actor?.uuid ?? t?.document?.actor?.uuid ?? "").filter(Boolean);
   // An effect whose Bonus Damage was unticked stays (it wasn't used).
   { const kept = new Set(); for (const t of [1, 2, 3]) for (const b of collectBonuses(actor, rt, t, { target: rollsAtOthers ? (aimed[0]?.actor ?? null) : null, mod: src.mod })) if (bonusOff.has(bonusKey(b))) kept.add(b.effectId);
-    await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept, { rolled: !!(chk || mres) }); }
-  const targetObjs = multi ? perT.map(p => p.token) : (!rollsAtOthers ? (selfToken ? [selfToken] : []) : aimed);
+    await expireOnUse(actor, rollTraits(rollUse, src, item.name), kept, { rolled: !!(chk || mres), targetUuids: targetActorUuids }); }
   const targets = targetObjs.map(t => ({ uuid: t.document?.uuid ?? t.uuid, name: t.name, disposition: t.document?.disposition ?? t.disposition }));   // v0.0.250: the side, for the Apply buttons
   const preStrained = targetObjs.filter(t => { if (t?.actor?.system?.strained) return true; try { const d = fromUuidSync(t.document?.uuid ?? t.uuid); return !!(d?.actor ?? d)?.system?.strained; } catch (e) { return false; } }).map(t => t.document?.uuid ?? t.uuid);   // core rework batch 3 (Steady Draw): targets already Strained when rolled
   // v0.0.243 (pack R; book, Chapter 1): once an encounter, a Critical on one of the creature's Actions raises its Escalation by 1 (at 3: nothing, not used up).
@@ -1562,6 +1573,16 @@ export async function useAction(actor, item, opts = {}) {
               const { postCcDamage } = await import("./ccdamage.mjs");
               await postCcDamage({ actor, title: `${item.name}: Critical`, groups: [{ tier: 3, crit: true, comps, fx: [], riders: [] }], targets: uuids.map(u => ({ uuid: u, name: targets.find(x => x.uuid === u)?.name ?? "", tier: 3, g: 0 })), rolls, originUuid: actor.uuid, strike: !!item.system.traits?.has?.("strike"), note: "The Critical row's damage." });
             }
+            if (basicKey === "feint") {
+              for (const u of uuids) {
+                try {
+                  const d = await fromUuid(u), ta = d?.actor ?? (d?.documentName === "Actor" ? d : null);
+                  if (ta) await applyFeintNoReactions(ta, actor, how);
+                } catch (e) { console.warn("twod12 | Feint Critical", e); }
+              }
+              const names = uuids.map(u => targets.find(x => x.uuid === u)?.name ?? "").filter(Boolean).join(", ");
+              if (names) await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-star", `<b>Feint</b> (Critical): <b>${esc(names)}</b> can't use Reactions against <b>${esc(actor.name)}</b> until the end of your turn.`, "fxm") });
+            }
           }
         } catch (e) { console.warn("twod12 | the Critical row", e); }
       }
@@ -1590,6 +1611,19 @@ export async function useAction(actor, item, opts = {}) {
   if (basicKey === "demoralize" && !opts.free) {
     const dTargets = (mres ? mres.map(r => r.uuid) : targets.map(t => t.uuid)).filter(Boolean);
     if (dTargets.length) await markDemoralized(actor, dTargets);
+  }
+  // v0.0.498 (Pass 3): Feint T2 (+2 Boons on next Strike vs target this turn) / T3 (next Strike vs target this turn is Favored)
+  if (basicKey === "feint" && !version.noTiers) {
+    const hits = mres ? mres.filter(r => r.chk.tier >= 2).map(r => ({ uuid: r.uuid, name: r.name, tier: r.chk.tier })) : (tier >= 2 ? targets.map(t => ({ uuid: t.uuid, name: t.name, tier })) : []);
+    for (const h of hits) {
+      try {
+        const d = await fromUuid(h.uuid), ta = d?.actor ?? (d?.documentName === "Actor" ? d : null);
+        if (!ta) continue;
+        await applyFeintEffect(actor, ta, h.tier, originInfo(actor.uuid));
+        const what = h.tier >= 3 ? `next <b>[Strike]</b> against <b>${esc(h.name)}</b> this turn is <b>Favored</b>` : `<b>+2 Boons</b> on next <b>[Strike]</b> against <b>${esc(h.name)}</b> this turn`;
+        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: sysLine("fa-masks-theater", `<b>Feint</b> (Tier ${h.tier}): <b>${esc(actor.name)}</b> — ${what}.`, "fxm") });
+      } catch (e) { console.warn("twod12 | Feint", e); }
+    }
   }
   // v0.0.223: the Encounter Log (enclog.mjs): the Action, its AP, each target with its tier (a Save: who saves). A movement-only Action logs its movement instead.
   if (!bannerMove) {
@@ -1644,6 +1678,16 @@ export async function useAction(actor, item, opts = {}) {
     if (useTraits.has("strike") && targets.length && rollsAtOthers) M.strikeMoment(actor, targets);
     if (basicKey === "stand" && selfToken?.document) M.moveMoment(selfToken.document, null, null, { stand: true });
   } catch (e) { console.warn("twod12 | Reactions", e); }
+  // v0.0.498 (Pass 3): Quick Shots / Darting Blade / Volley — start the Effects row's Evade automatically after rolling
+  const autoEvade = autoEffectEvadeTag(version);
+  if (autoEvade && !saveAct && !bannerMove && selfToken && game.combat?.started && !actor.statuses?.has?.("prone")) {
+    try {
+      const { parseInline } = await import("./inline.mjs"), { handleMove } = await import("./move.mjs");
+      const mcfg = parseInline("Move", autoEvade);
+      mcfg.traits = [...new Set([...(mcfg.traits ?? []), "self"])];
+      handleMove(mcfg, { actor, token: selfToken, message: cmsg }).catch(e => console.warn("twod12 | auto-Evade", e));
+    } catch (e) { console.warn("twod12 | auto-Evade", e); }
+  }
   return true;
 }
 

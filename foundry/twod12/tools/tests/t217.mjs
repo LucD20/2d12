@@ -105,7 +105,7 @@ console.log("--- the sources in the code");
 const act = src("module/actions.mjs"), inl = src("module/inline.mjs"), fl = src("module/flanking.mjs"), cont = src("tools/content.mjs");
 console.log("High cover: Doomed, no Field Banes:", act.includes('else if (cov.banes >= 3) extraMods.push({ id: "syn:cover", name: "High cover (Doomed)", boons: 0, banes: 0, doomed: true'), "| several targets:", act.includes('else if (cov?.banes >= 3) { row.doomed = true; row.note.push({ text: "High cover", cls: "bane" }); }'));
 console.log("Low / Medium cover, Obscured, Long, the Engaged target are Field:", (act.match(/bb: "field"/g) ?? []).length >= 10, "| range unnamed, Engaged (you) Doomed since v0.0.407:", /id: "syn:engaged", name: "You are Engaged \(Doomed\)", boons: 0, banes: 0, doomed: true, match/.test(act));
-console.log("Saves: Cover gives Field Boons up to 2, High cover Favored:", inl.includes("const n = Math.min(2, c.level)") && inl.includes('favoredLabel: "High cover (Favored)"'));
+console.log("Saves: Cover gives Field Boons up to 2, High cover Favored:", inl.includes("const n = Math.min(2, c.level)") && inl.includes('id: "syn:save:cover", name: c.label, boons: 0, banes: 0, favored: true'));
 console.log("Flanking: the cancels first, then 2:", fl.includes("flankBoons(others.length, cancelledBy.length)") && src("module/roundrules.mjs").includes("boons: Math.min(BB_LIMIT, raw)"));   // v0.0.365 (SIM-1): the rule moved to roundrules.mjs
 console.log("Prone's are Field in the compendium:", cont.includes('against(1, 0, ["melee"], "field"), against(0, 1, ["ranged"], "field")'));
 const I = await import(ROOTURL + "module/inline.mjs");

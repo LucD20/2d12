@@ -1080,8 +1080,10 @@ const STYLE3 = `
 .twod12-type .application.ckwin .ck-attr { flex: none; padding: 3px 8px; border: 1px solid var(--ac, var(--s-gold)); background: color-mix(in srgb, var(--ac, var(--s-gold)) 14%, var(--s-pg)); color: var(--s-ink); font-size: 12px; font-weight: 600; white-space: nowrap; }
 .twod12-type .application.ckwin .ck-attr b { color: var(--ac, var(--s-gold)); font-weight: 800; margin-left: 2px; }
 .twod12-type .application.ckwin .ck-body { display: flex; flex-direction: column; gap: 9px; padding: 10px 12px; }
-.twod12-type .application.ckwin .ck-hero { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 10px; border: 1px solid var(--s-rule); background: var(--s-pg-2); }
+.twod12-type .application.ckwin .ck-hero { display: flex; flex-direction: column; gap: 4px; padding: 7px 10px; border: 1px solid var(--s-rule); background: var(--s-pg-2); }
+.twod12-type .application.ckwin .ck-hero-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .twod12-type .application.ckwin .ck-formula { font: 700 15px/1.2 "Source Sans 3", sans-serif; color: var(--s-ink); font-variant-numeric: lining-nums tabular-nums; }
+.twod12-type .application.ckwin .ck-breakdown { font-size: 11.5px; line-height: 1.35; color: var(--s-mute); font-variant-numeric: lining-nums tabular-nums; }
 .twod12-type .application.ckwin .ck-state { font-size: 11px; font-weight: 700; padding: 2px 6px; border: 1px solid var(--s-hair); white-space: nowrap; }
 .twod12-type .application.ckwin .ck-state.favored { color: var(--s-good); border-color: var(--s-good); }
 .twod12-type .application.ckwin .ck-state.doomed { color: var(--s-bad); border-color: var(--s-bad); }

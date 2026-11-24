@@ -1168,18 +1168,18 @@ const areaIds = (targets, actorUuid = "") => {
  * Medium 2), and High cover makes the Save Favored (v0.0.301, PACK BB; book Ch. 1, Saves).
  */
 function saveRowMods(tokenDoc, point, exclude = []) {
-  const out = { boon: 0, bane: 0, favored: false, why: [] };
+  const out = { boon: 0, bane: 0, favored: false, why: [], mods: [] };
   const a = tokenDoc?.actor;
   let v = 0;
   for (const e of a?.effects ?? []) if (!e.disabled && e.statuses?.has?.("vulnerable")) v = Math.max(v, Math.max(1, Math.trunc(Number(e.getFlag?.("twod12", "value"))) || 1));
-  if (v) { out.bane += v; out.why.push(`Vulnerable ${v}`); }
+  if (v) { out.bane += v; out.why.push(`Vulnerable ${v}`); out.mods.push({ id: "syn:save:vul", name: `Vulnerable ${v}`, boons: 0, banes: v, match: true }); }
   try {
     if (point && tokenDoc?.object && canvas?.grid) {
       // v0.0.419 (book, Chapter 3, Cover against an area): the creatures inside the area (the Save's creatures) never give Cover against it
       const c0 = coverFromPoint(point, tokenDoc.object, { exclude });   // counted from the center of the area (its Point of Origin)
       const c = adjustCover(c0, { higher: a ? ignoredBy(a, "coverHigher", new Set()).length : 0 });
-      if (c?.level >= 3 && !c.noLoE) { out.favored = true; out.why.push(`${c.label} (Favored)`); }
-      else if (c?.level > 0 && !c.noLoE) { const n = Math.min(2, c.level); out.boon += n; out.why.push(`${c.label} (${n} Field Boon${n === 1 ? "" : "s"})`); }
+      if (c?.level >= 3 && !c.noLoE) { out.favored = true; out.why.push(`${c.label} (Favored)`); out.mods.push({ id: "syn:save:cover", name: c.label, boons: 0, banes: 0, favored: true, match: true }); }
+      else if (c?.level > 0 && !c.noLoE) { const n = Math.min(2, c.level); out.boon += n; out.why.push(`${c.label} (${n} Field Boon${n === 1 ? "" : "s"})`); out.mods.push({ id: "syn:save:cover", name: c.label, boons: n, banes: 0, bb: "field", match: true }); }
     }
   } catch (e) { console.warn("twod12 | cover from the area", e); }
   return out;
@@ -1191,7 +1191,7 @@ export async function postSaveFor(cfg, targets, { point = null, source = "", not
   for (const t of targets) {
     const doc = await fromUuid(t.uuid).catch(() => null);
     const m = saveRowMods(doc, point, areaIds(targets, cfg.actorUuid));
-    rows.push({ uuid: t.uuid, name: t.name, result: null, boon: m.boon, bane: m.bane, favored: m.favored, why: m.why.join(", ") });
+    rows.push({ uuid: t.uuid, name: t.name, result: null, boon: m.boon, bane: m.bane, favored: m.favored, why: m.why.join(", "), mods: m.mods });
   }
   const head = `<div class="twod12 chat"><b>${esc(source || cfg.source || "Save")}</b>: ${note ? `${note} ` : ""}${rows.length ? `${rows.map(r => esc(r.name)).join(", ")} roll${rows.length === 1 ? "s" : ""} a DC ${cfg.dc} ${esc(TWOD12.attributes[cfg.attr] ?? cfg.attr)} Save.` : "no creature is in the area."}</div>`;
   if (!rows.length) { const { sysLine } = await import("./sysmsg.mjs"); return ChatMessage.create({ content: sysLine("fa-shield-halved", head.replace(/^<div class="twod12 chat">|<\/div>$/g, "")) }); }   // v0.0.415: a sysLine
@@ -1235,7 +1235,7 @@ export async function saveTierOutcomes(cfg) {
 export async function ccSaveOnCard(msg, cfg, targets, { model, point = null, chain = null }) {
   targets = [].concat(targets);   // v0.0.286: one creature or several, a row each
   const rows = [];
-  for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point, areaIds(targets, cfg.actorUuid)); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, favored: mods.favored, why: mods.why.join(", ") }); }
+  for (const t of targets) { const doc = await fromUuid(t.uuid).catch(() => null), mods = saveRowMods(doc, point, areaIds(targets, cfg.actorUuid)); rows.push({ uuid: t.uuid, name: t.name, result: null, boon: mods.boon, bane: mods.bane, favored: mods.favored, why: mods.why.join(", "), mods: mods.mods }); }
   const st = { cfg, color: "", cc: true, rows, tierDmg: await prerollTiers(cfg, rows), ...(chain ? { chain } : {}) };   // v0.0.426: a damage-free Save Action's use-time chain (retargetSave)
   const m = { ...model, kind: "save", saveName: `${TWOD12.attributes[cfg.attr] ?? cfg.attr} Save`, dc: cfg.dc, tiers: await saveTierOutcomes(cfg), creatures: rows.map(r => ({ uuid: r.uuid, name: r.name, result: null, damageDone: false, hasDamage: false })) };
   m.tline = { ...m.tline, names: rows.map(r => r.name), retargetKind: "retargetSave" };
@@ -1335,6 +1335,33 @@ export function registerInlineSocket() {
   });
 }
 
+/** Pure (v0.0.498, Pass 3): convert a Save card's cfg + row modifiers into named toggleable chips for the Save Roll Dialog instead of anonymous counters. */
+export function saveExtraMods(cfg = {}, row = {}) {
+  const out = [];
+  let usedBoon = 0, usedBane = 0;
+  if (cfg.nlSwitched) {
+    usedBoon += 1;
+    out.push({ id: "syn:save:nl", name: cfg.nonlethal ? "Nonlethal Save" : "Lethal Save", boons: 1, banes: 0, match: true });
+  }
+  const ub = Number(cfg.userBanes) || 0;
+  if (ub > 0) {
+    usedBoon += ub;
+    out.push({ id: "syn:save:ub", name: ub >= 5 ? "Caster Doomed" : "Caster's Banes", boons: ub, banes: 0, match: true });
+  }
+  const remBoon = Math.max(0, (Number(cfg.boon) || 0) - usedBoon);
+  const remBane = Math.max(0, (Number(cfg.bane) || 0) - usedBane);
+  if (remBoon) out.push({ id: "syn:save:cfgb", name: cfg.source || "Action bonus", boons: remBoon, banes: 0, match: true });
+  if (remBane) out.push({ id: "syn:save:cfgn", name: cfg.source || "Action penalty", boons: 0, banes: remBane, match: true });
+  if (Array.isArray(row?.mods) && row.mods.length) {
+    for (const m of row.mods) out.push({ ...m, match: m.match !== false });
+  } else {
+    if (Number(row?.boon) > 0) out.push({ id: "syn:save:rowb", name: row.why || "Save bonus", boons: Number(row.boon), banes: 0, match: true });
+    if (Number(row?.bane) > 0) out.push({ id: "syn:save:rown", name: row.why || "Save penalty", boons: 0, banes: Number(row.bane), match: true });
+    if (row?.favored) out.push({ id: "syn:save:rowf", name: "High cover", boons: 0, banes: 0, favored: true, match: true });
+  }
+  return out;
+}
+
 export async function saveRoll(msg, idx) {
   const st = msg.getFlag("twod12", "saveCard");
   const row = st?.rows[idx];
@@ -1342,29 +1369,30 @@ export async function saveRoll(msg, idx) {
   const actor = (await fromUuid(row.uuid))?.actor;
   if (!actor?.isOwner) return ui.notifications.warn("Only the owner of that token can roll its save.");
   const cfg = st.cfg, key = cfg.attr, mod = actor.system.attributes[key] ?? 0;
-  // A Save Action's row carries its target's own banes and boons (Vulnerable, Cover from the area): they start in the dialog (v0.0.159).
+  // v0.0.498 (Pass 3): Save modifiers (Vulnerable, Cover, Nonlethal, Caster's Banes) appear as named toggleable chips with live breakdown.
   const fromList = msg.getFlag?.("twod12", "action")?.traits ?? cfg.fromTraits ?? [];
   const tierPreview = cfg.tiers ? { t1: cfg.tiers.t1 ?? "", t2: cfg.tiers.t2 ?? "", t3: cfg.tiers.t3 ?? "" } : null;
   const doomed = unconsciousDoom(actor, key, "Save");
+  const extraMods = saveExtraMods(cfg, row);
   const data = await askRoll(actor, {
     title: `${TWOD12.attributes[key]} Save: ${actor.name}${row.why ? ` (${row.why})` : ""}`,
     attrKey: key,
     traits: new Set([...(cfg.traits ?? []), key, "__save"]),
     from: fromList.length ? new Set(fromList) : null,
     tiers: tierPreview,
+    extraMods,
     defaults: {
       dc: cfg.dc,
       mod: cfg.adj,
-      boons: (cfg.boon || 0) + (row.boon || 0),
-      banes: (cfg.bane || 0) + (row.bane || 0),
-      ...(row.favored ? { favored: true, favoredLabel: "High cover (Favored)" } : {}),
+      boons: 0,
+      banes: 0,
       ...(doomed ? { doomed: true, doomedWhy: `${doomStatus(actor) || "Unconscious"}: all your Rolls are Doomed`, doomedLabel: `${doomStatus(actor) || "Unconscious"} (Doomed)` } : {})
     }
   });
   if (!data) return;
-  const fxm = resolveModifiers(actor, data.fx);
+  const fxm = resolveModifiers(actor, data.fx, extraMods);
   const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0, dc = Number(data.dc) || cfg.dc;
-  const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on", doomed: data.doomed === "on", sources: fxm.sources, manualBoons: manB, manualBanes: manN });
+  const chk = await performCheck({ mod, boons: fxm.boons + manB, banes: fxm.banes + manN, dc, adj: Number(data.mod) || 0, adjLabel: adjLabelOf(data), favored: data.favored === "on" || fxm.favored, doomed: data.doomed === "on" || fxm.doomed, sources: fxm.sources, manualBoons: manB, manualBanes: manN });
   expireOnUse(actor, new Set(), new Set(), { rolled: true }).catch(() => {});   // v0.0.458: a Bane "on its next roll" (Dirty Trick) is spent by a Save or a Check too
   // The damage of the tier rolled is calculated right away and every die (check and damage) is thrown at once.
   const parts = parseParts(cfg.tiers[`t${chk.tier}`]);

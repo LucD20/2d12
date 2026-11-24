@@ -15,7 +15,7 @@ console.log("Dirty Trick, Tier 2:", act("Goblin Sneak", "Dirty Trick").x2, "| Ra
 const inl = src("module/inline.mjs"), bon = src("module/bonus.mjs"), eff = src("module/effects.mjs");
 console.log("next:roll read:", inl.includes('key === "next") cfg.next'), "| stored as __roll:", eff.includes('cfg.next === "roll" && !traits.length ? ["__roll"]'),
   "| spent only by a roll:", bon.includes('(rolled && list.includes("__roll"))'), "| a Save or Check spends it:", (inl.match(/expireOnUse\(actor, new Set\(\), new Set\(\), \{ rolled: true \}\)/g) ?? []).length === 3,
-  "| an Action's roll:", src("module/actions.mjs").includes("kept, { rolled: !!(chk || mres) })"), "| a Move doesn't:", src("module/move.mjs").includes('expireOnUse(c.actor, new Set(["move"])).catch'));
+  "| an Action's roll:", src("module/actions.mjs").includes("kept, { rolled: !!(chk || mres), targetUuids: targetActorUuids })"), "| a Move doesn't:", src("module/move.mjs").includes('expireOnUse(c.actor, new Set(["move"])).catch'));
 console.log("--- the Save Action's Nonlethal switch");
 const ri = src("module/rollinput.mjs"), ac = src("module/actions.mjs");
 console.log("the chip on a Save Action:", ri.includes('label: `${nl ? "Lethal" : "Nonlethal"}: +1 Boon on each Save`'), "| no Bane on the user:", ac.includes("if (nlSwitched && !saveAct) { extraMods.push("),

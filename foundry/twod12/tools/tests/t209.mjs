@@ -139,7 +139,7 @@ const bk = M.rxCardHtml({ v: 2, rows: [], deadline: 0, base: { kind: "move", squ
 console.log("Move back (v0.0.275: on the base slab):", bk.match(/data-twod12="rxBack" data-tooltip="([^"]*)"/)?.[1], "| used:", bkUsed.match(/rx-backed" aria-label="([^"]*)"/)?.[1]);
 console.log("the Action's name opens it:", html.includes('data-twod12="rxOpen" data-row="2"'), "| the item sheet's section:", hbs.includes('"A Reaction"'));
 const mo2 = src("module/moment.mjs");
-console.log("the move's movement kept before it (refunded on Move back):", mo2.includes("const flags = c ? { freeMove: Number(c.getFlag(F, \"freeMove\")) || 0") && mo2.includes("await doc.update({ x: to.x, y: to.y }, { twod12Forced: true, animate: true });"));
+console.log("the move's movement kept before it (refunded on Move back):", mo2.includes("const flags = c ? { freeMove: Number(c.getFlag(F, \"freeMove\")) || 0") && mo2.includes("await doc.update({ x: to.x, y: to.y }, { twod12Forced: true, twod12Undo: true, animate: !reverted });"));
 const cb = src("module/combat.mjs"), car = src("module/carousel.mjs");
 console.log("v0.0.310: the Initiative button: the GM opens the Initiative window, a player rolls their own:", car.includes('if (k === "init") return rollPendingInitiative(combat);') && cb.includes("btn.addEventListener(\"click\", () => rollPendingInitiative(combat));") && cb.includes("return openInitiative(combat);") && cb.includes("return combat.rollInitiative(ids);"), "| no chip on the strip any more:", !car.includes('data-tc="initskip"'));
 const MS = await import(ROOTURL + "module/moveseq.mjs");

@@ -5569,6 +5569,8 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 .twod12.rolldlg .rd-warns { margin: 4px 14px 0; border-top: 1px solid var(--cc-btn2, rgba(128,128,128,.4)); padding-top: 4px; }
 .twod12.rolldlg .rd-warn { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; line-height: 1.4; padding: 1px 0; }
 .twod12.rolldlg .rd-warn > i { color: var(--c-bane); font-size: 11px; flex: 0 0 auto; }
+.twod12.rolldlg .rd-setup-note { display: flex; align-items: baseline; gap: 7px; margin: 4px 14px 0; padding: 5px 9px; border-left: 3px solid var(--tw-accent, #b08a4a); background: color-mix(in srgb, var(--tw-accent, #b08a4a) 10%, transparent); font-size: 12px; line-height: 1.38; }
+.twod12.rolldlg .rd-setup-note > i { color: var(--tw-accent, #b08a4a); font-size: 11px; flex: 0 0 auto; }
 /* v0.0.460 (Lucas, checklist v0.0.459, reload-chip: "Its red until I click away from it"): Foundry's own button:focus glow (red) on a clicked chip; only
    the keyboard's focus outline stays */
 .twod12.rolldlg.rolldlg button:focus:not(:focus-visible) { box-shadow: none !important; outline: none !important; }
