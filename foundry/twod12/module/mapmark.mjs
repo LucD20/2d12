@@ -114,9 +114,54 @@ export function dashLine(g, a, b, { dash = 8, gap = 6, color = INK, alpha = 0.85
   return g;
 }
 
+/** Unified Z-order tiers on canvas.interface so overlays stack cleanly and never fight each other. */
+export const Z = {
+  FLOOR: 10,       // Light-level tint
+  RINGS: 20,       // Weapon Range / Threat Rings floor perimeters
+  FLANK: 8200,     // Flanking lines & STYLE-3 plates
+  LOE: 8400,       // Line of Effect rays & 3D distance plates
+  AREA: 8500,      // Active Area template shapes
+  RANGE_TAGS: 8600,// Range target badges (placed below target tokens)
+  ACTIVE: 9000     // Active Move / Charge / Reaction overlays
+};
+
+const plateSpots = new Map();
+/** Clear all claimed label rectangles for an overlay group (e.g. "flank", "loe", "range"). */
+export function clearPlateSpots(group) { plateSpots.delete(group); }
+/**
+ * Claim a non-overlapping center position (x, y) for a label of size w×h in `group`,
+ * checking against ALL active overlay groups while keeping the label near its anchor.
+ * prefer: "up" (default, above token) or "down" (below token).
+ */
+export function claimPlateSpot(group, x, y, w, h, { prefer = "up", pad = 4 } = {}) {
+  const all = [];
+  for (const list of plateSpots.values()) all.push(...list);
+  const hits = (cx, cy) => all.some(p => Math.abs(p.x - cx) < (p.w + w) / 2 + pad && Math.abs(p.y - cy) < (p.h + h) / 2 + pad);
+  const step = h + pad;
+  const dir = prefer === "down" ? 1 : -1;
+  let chosen = { x, y };
+  if (hits(x, y)) {
+    let found = false;
+    for (let k = 1; k <= 8; k++) {
+      const cy = y + dir * k * step;
+      if (!hits(x, cy)) { chosen = { x, y: cy }; found = true; break; }
+    }
+    if (!found) {
+      for (let k = 1; k <= 6; k++) {
+        const cy = y - dir * k * step;
+        if (!hits(x, cy)) { chosen = { x, y: cy }; break; }
+      }
+    }
+  }
+  const box = { x: chosen.x, y: chosen.y, w, h };
+  if (!plateSpots.has(group)) plateSpots.set(group, []);
+  plateSpots.get(group).push(box);
+  return chosen;
+}
+
 /** v0.0.467 (Lucas, checklist v0.0.466: Charge's overlay "is below tokens"): a map note goes on the interface layer above the tokens (as the
  *  Reactions overlay, rxoverlay.mjs: z-index 9000 on a sortable host). Returns the object. */
-export function addOnTop(obj, z = 9000) {
+export function addOnTop(obj, z = Z.ACTIVE) {
   const host = globalThis.canvas?.interface ?? globalThis.canvas?.stage;
   if (!host || !obj) return obj;
   try { host.sortableChildren = true; obj.zIndex = z; } catch (e) { /* an old canvas */ }

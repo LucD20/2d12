@@ -2,6 +2,7 @@
 // (Bright left clear, yellow Dim, red Darkness). Only for the user who turns it on; it redraws when lights,
 // tokens or the scene change. Players only see it on squares they can currently see.
 import { lightAt } from "./light.mjs";
+import { Z } from "./mapmark.mjs";
 
 let gfx = null, on = false;
 const COLORS = { dim: [0xd8b02a, 0.3], dark: [0xc0392b, 0.3] };
@@ -42,7 +43,9 @@ export function draw() {
   if (!gfx || gfx.destroyed) {
     gfx = new PIXI.Graphics();
     gfx.eventMode = "none";
-    (canvas.interface ?? canvas.stage).addChild(gfx);
+    const host = canvas.interface ?? canvas.stage;
+    try { host.sortableChildren = true; gfx.zIndex = Z.FLOOR; } catch (e) { /* old canvas */ }
+    host.addChild(gfx);
   }
   gfx.clear();
   const gs = canvas.grid.size, r = canvas.dimensions.sceneRect;

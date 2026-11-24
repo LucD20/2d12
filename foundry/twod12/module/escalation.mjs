@@ -206,9 +206,17 @@ export async function askEncounterEnd(combat) {
   if (![...(combat.combatants ?? [])].some(c => c.actor?.type === "character")) return null;
   const now = momentumNow();
   const { pickOne } = await import("./pickwindow.mjs");
-  const k = await pickOne({ title: "The encounter ends", name: "The encounter ends", sub: `Momentum ${now}`, icon: "fa-fire",
-    text: "How did it end for the party? Overcoming it (winning a fight, a negotiation, a sneak, a Challenge) gives +1 Momentum; a retreat loses all of it.",
-    options: [{ k: "overcome", l: `Overcome (Momentum ${momentumAfter(now, { overcome: 1 })})`, tip: "+1 Momentum, at most 4" }, { k: "retreat", l: "Retreat (Momentum 0)", tip: "The party loses all its Momentum" }, { k: "none", l: `Neither (Momentum ${now})`, tip: "No change: a test, or the encounter goes on later" }] });
+  const nextUp = momentumAfter(now, { overcome: 1 });
+  const pips = Array.from({ length: 4 }, (_, i) => `<i class="pw-mpip${i < now ? " on" : ""}"></i>`).join("");
+  const k = await pickOne({
+    title: "The encounter ends", name: "The encounter ends", sub: `Momentum ${now} / 4`, icon: "fa-fire", compact: true,
+    html: `<div class="pw-mombar"><span>Party Momentum</span><span class="pw-mpips">${pips}</span><b>${now} / 4</b></div><p class="cw-sub">How did the encounter end for the party?</p>`,
+    options: [
+      { k: "overcome", l: "Overcome", sub: `Winning a fight, negotiation, sneak, or Challenge → Momentum ${nextUp}`, tag: nextUp > now ? "+1" : "Max 4", icon: "fa-trophy", cls: "good" },
+      { k: "retreat", l: "Retreat", sub: "The party withdraws and loses all its Momentum", tag: "→ 0", icon: "fa-person-running", cls: "warn" },
+      { k: "none", l: "Neither", sub: "No change — a test, or the encounter pauses for later", tag: `Stay ${now}`, icon: "fa-pause" }
+    ]
+  });
   if (k === "overcome") { await momentumEvent({ overcome: 1 }, "the encounter was overcome"); try { await (await import("./mastery.mjs")).masteryAtEncounterEnd(combat); } catch (e) { console.warn("twod12 | Mastery", e); } }   // v0.0.412: Mastery after a won encounter
   else if (k === "retreat") await momentumEvent({ retreat: true }, "the party retreated");
   return k;

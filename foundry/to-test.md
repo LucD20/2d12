@@ -19,48 +19,42 @@ differ):
 
 ## Characters and sheets
 
-### ui-inline-card-btns · v0.0.485 · Inline buttons inside card prose (no tacked-on end buttons)
-Do: Open Kaela's Footwork (Hands Busy) card and Basic Actions (Charge, Reload, Crawl, Lean, Regrip, Release, Shake Off) on Aveline's sheet or chat.
-Expect: Buttons sit inline inside the book description ("You [Evade 1], and before or after it you use the [Interact] or [Reload] Action (1A)") with no extra buttons tacked onto the end.
-
 ## The HUD
 
 ## Starting a combat
 
+### ui-strip-polish · v0.0.486 · Combat Strip & Turn Dock polish
+Do: Start combat with Aveline, Durgan, Sylwen, Kaela, Orc Warrior, and Ogre Chieftain; inspect the top Combat Strip and Turn Dock during a turn, with Reactions pending, and after an initiative swap (Frozen).
+Expect: Combat Strip cards clearly distinguish Acting, waiting-for-Reaction, Frozen, and disposition bands, AP/Reaction/Strike pips stay crisp even at high AP/Reaction counts, and the Turn Dock matches cleanly.
+
 ## The roll dialog
 
-### ui-rolldlg-cover-notices · v0.0.485 · Clear buff & debuff Cover notices (Find the Gap, Keep Low)
-Do: With Sylwen, use Spotter (Keep Low), then open an Orc Warrior's Basic Attack roll dialog targeting Sylwen both with NO Cover and WITH Low Cover. Then use Spotter (Find the Gap) on Sylwen and open Sylwen's Basic Attack targeting an Orc Warrior in Low Cover and with No Cover.
-Expect: Clear solid-border buff/debuff pills appear when Cover shifts ("Keep Low (Sylwen): Low cover → Medium cover" in red; "Find the Gap: Low cover → No cover" in green) and clear dashed pills explain when it cannot shift ("Keep Low (Sylwen): no Cover to raise", "Find the Gap: no Cover to lower").
+### ui-check-save-dlg · v0.0.486 · STYLE-3 Save, Check, and Shake Off Roll Dialog
+Do: On Aveline's sheet, click an Attribute for a Check, Shift-click for a Save, roll a Save from a Save Action card (e.g., Grave Wisp's Dread Whisper on Aveline), and roll Shake Off on a Lingering creature.
+Expect: All Checks, Saves, and Shake Off open the new compact STYLE-3 Roll Dialog (not the old Foundry DialogV2) with the 3-Tier ladder, 5 Boons/Banes cliff, Boons/Banes/Flat controls, and Tier preview where applicable.
 
 ## Chat cards
 
-### ui-chat-card-align · v0.0.485 · Single-target footer Card button alignment & full-width breakdown
-Do: With Aveline (Longsword), roll Basic Attack + Damage against an Orc Warrior, Apply damage, and click "=" to open the damage breakdown ledger.
-Expect: "=", "✓ Undo" (or "Apply"), and "Card" sit horizontally aligned on the same row, and the expanded "=" breakdown box spans the full width of the chat card underneath them.
-
 ## Conditions and their Tiers
 
-### l1-paladin-auto · v0.0.485 · Aveline & Durgan L1 automations (Thwart Cut both-sides move, Brace caster square, Grabbed release)
-Rev: 2
-Do: With Aveline, land Thwart Cut on an Orc Warrior to apply Pressed, then move the Orc Warrior out of Reach (and in a second use, move Aveline out of Reach). With Durgan, use Hold the Line (Brace) and check Durgan's own square plus the 8 adjacent squares; then land Seizing Cut Tier 3 to Grab an Orc Warrior and let go via Release (0 AP).
-Expect: Thwart Cut's Pressed ends automatically whether the NPC moves away OR Aveline moves away; Brace's fixed 1-round Difficult Terrain Zone includes Durgan's own square (full 3×3 1 Emanation); Releasing the Grabbed target ends Grabbed + Immobilized with zero console errors.
-
 ## Movement
-
-### l1-archer-auto · v0.0.485 · Sylwen & Kaela L1 automations (Circling Shot Setup text & force Tier 3, Footwork inline buttons)
-Rev: 2
-Do: With Kaela, open Circling Shot targeting an Orc Warrior, click Tier 3 in the roll dialog to force Tier 3, click Roll, complete the Setup Evade 1, and inspect the chat card and post-hit Evade 1. Also use Footwork (Hands Busy).
-Expect: Circling Shot preserves the forced Tier 3 across the Setup Evade 1, displays "Setup: You Evade 1." cleanly on the chat card (not "You ."), and auto-starts the Tier 3 no-farther Evade 1; Footwork (Hands Busy) shows inline Evade 1, Interact, and Reload buttons inside its sentence.
 
 ## Reactions and Judge
 
 ## Areas, light and Cover
+
+### ui-overlays-3d · v0.0.486 · Weapon Range Rings, Z-ordered overlays, and 3D Cover / Area Height tools
+Do: Select Sylwen (Longbow) or Aveline (Longsword) and toggle the new Range & Reach overlay in Token Controls alongside Line of Effect and Show Flanking; also open the Cover Height and 3D Area Height tools from Token Controls.
+Expect: Range & Reach draws Normal/Far/Max weapon bands and Melee Threat Reach below tokens without overlapping LoE plates; overlays layer cleanly in Z-order; Cover Height and 3D Area Height tools open and calculate linked 3D Burst/Emanation/Line geometry cleanly.
 
 ## Ending an encounter and resting
 
 ## The Encounter Log
 
 ## Windows
+
+### ui-pick-util-wins · v0.0.486 · Compact Pick/Confirm dialogs and utility windows
+Do: Trigger a Release/hands prompt on Durgan (e.g., two-handed weapon in one hand, or Release after Seizing Cut Grab), click Collapse/Breather/Heal on Aveline, and open Escalation / Damage Report windows.
+Expect: Pick and confirm dialogs use the new compact card layout with clear subtitles/tags (including "Ends Grabbed · frees your hand" / "0 AP" for Grabbed targets) and warning tones where appropriate; utility windows render cleanly in both light and dark themes.
 
 

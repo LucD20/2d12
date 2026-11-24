@@ -1581,6 +1581,7 @@ function drawDragPreview(preview) {
 /** Pure check: given an origin token's threat profile and distance to target, does it still threaten? */
 export const stillThreatens = (profile, dist, originDown = false) => !originDown && (profile?.max ?? 0) > 0 && dist >= (profile?.min ?? 1) && dist <= profile.max;
 
+const endingUnthreatened = new Set();
 /** Active GM: end any effect flagged endWhenUnthreatened whose origin no longer threatens its bearer (e.g., Pressed that ends if you stop threatening). */
 async function checkUnthreatenedEffects(overrides = null, removedIds = null) {
   if (!game.user?.isActiveGM || !canvas?.tokens) return;
@@ -1606,9 +1607,16 @@ async function checkUnthreatenedEffects(overrides = null, removedIds = null) {
       const down = !oa || !!oa.system?.atZero || oa.statuses?.has?.("unconscious") || oa.statuses?.has?.("dead");
       const ok = ot && stillThreatens(threatProfile(oa), tokenDistance(at(ot), at(t)), down);
       if (!ok) {
-        const ename = String(e.name ?? "Effect"), oname = ot?.name ?? oa?.name ?? "its source";
-        await e.delete();
-        await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-shield-halved", `<b>${esc(ename)}</b> ends on <b>${esc(t.name)}</b> (${esc(oname)} no longer threatens it).`, "fxm") });
+        const key = e.uuid || `${a.uuid}|${e.id}`;
+        if (endingUnthreatened.has(key) || !a.effects?.has?.(e.id)) continue;
+        endingUnthreatened.add(key);
+        try {
+          const ename = String(e.name ?? "Effect"), oname = ot?.name ?? oa?.name ?? "its source";
+          await e.delete();
+          await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: a }), content: sysLine("fa-shield-halved", `<b>${esc(ename)}</b> ends on <b>${esc(t.name)}</b> (${esc(oname)} no longer threatens it).`, "fxm") });
+        } catch (err) {
+          if (!/does not exist/i.test(String(err?.message ?? err))) console.warn("twod12 | unthreatened check", err);
+        } finally { endingUnthreatened.delete(key); }
       }
     }
   }

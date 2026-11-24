@@ -26,7 +26,12 @@ const setStatus = (actor, s, on) => (has(actor, s) === on ? null : actor.toggleS
 // v0.0.289 (PACK SHEET, the standing rule: no Foundry default windows): the choice in the system's pick window. Closed: the last option.
 async function ask(actor, text, buttons) {
   const { pickOne } = await import("./pickwindow.mjs");
-  const k = await pickOne({ title: actor.name, name: actor.name, sub: "Going Down", icon: "fa-heart-crack", text: String(text).replace(/<[^>]+>/g, ""), options: buttons.map(([k, l]) => ({ k, l })) });
+  const iconOf = k => (k === "fight" ? "fa-hand-fist" : k === "collapse" ? "fa-bed" : k === "dying" ? "fa-heart-crack" : k === "shattered" ? "fa-brain" : "fa-circle-dot");
+  const k = await pickOne({
+    title: actor.name, name: actor.name, sub: "Going Down", icon: "fa-heart-crack", compact: true, tone: "warn", cancel: false,
+    html: `<div class="cw-sub pw-text">${text}</div>`,
+    options: buttons.map(([key, label]) => ({ k: key, l: label, icon: iconOf(key) }))
+  });
   return k ?? buttons[buttons.length - 1][0];
 }
 
@@ -41,7 +46,7 @@ export async function setDownChoice(actor, choice) {
   }
   const { pickConfirm } = await import("./pickwindow.mjs");
   const word = kind === "dying" ? "Collapse" : "Give up";
-  const ok = await pickConfirm({ title: `${word}: ${actor.name}`, name: word, sub: kind === "dying" ? "Dying" : "Shattered", icon: "fa-bed", confirm: word,
+  const ok = await pickConfirm({ title: `${word}: ${actor.name}`, name: word, sub: kind === "dying" ? "Dying" : "Shattered", icon: "fa-bed", tone: "warn", confirm: word,
     text: `${esc(actor.name)} falls <b>Unconscious</b>. While ${kind === "dying" ? "Dying" : "Shattered"} you can't wake up; at the end of each of your turns you make a ${kind === "dying" ? "Body" : "Mind"} Check (Tier 3: stabilize).` });
   if (!ok) return;
   await actor.setFlag(F, "downChoice", "collapsed");

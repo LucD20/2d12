@@ -1163,7 +1163,7 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     const key = target.dataset.key, kind = event?.shiftKey ? "Save" : "Check";   // v0.0.289 (PACK SHEET): Shift-click rolls the Save
     const mod = this.actor.system.attributes[key];
     const doomed = unconsciousDoom(this.actor, key);
-    const data = await askRoll(this.actor, { title: `${TWOD12.attributes[key]} ${kind}`, attrKey: key, defaults: { doomed, doomedWhy: `${doomStatus(this.actor) || "Unconscious"}: all your Rolls are Doomed`, doomedLabel: `${doomStatus(this.actor) || "Unconscious"} (Doomed)` } });
+    const data = await askRoll(this.actor, { title: `${TWOD12.attributes[key]} ${kind}`, attrKey: key, traits: new Set([key, kind === "Save" ? "__save" : "__check"]), defaults: { doomed, doomedWhy: `${doomStatus(this.actor) || "Unconscious"}: all your Rolls are Doomed`, doomedLabel: `${doomStatus(this.actor) || "Unconscious"} (Doomed)` } });
     if (!data) return;
     const fxm = resolveModifiers(this.actor, data.fx);
     const manB = Number(data.boons) || 0, manN = Number(data.banes) || 0;
@@ -1415,11 +1415,11 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       const weapons = this._weaponsInOrder(), others = weapons.filter(x => x.id !== w.id);
       const otherFull = handSlots(weapons).some(s => !s.free && s.id !== w.id);
       const buttons = otherFull
-        ? releaseOptions({ itemTypes: { weapon: others } }).filter(o => o.action.startsWith("drop:")).map(o => ({ action: `rel|${o.action}`, label: `${o.label} (Release, 0 AP), then Regrip (1 AP)`, icon: "fa-solid fa-hands" }))
-        : [{ action: "regrip", label: `Regrip (1 AP): ${w.name} in both hands`, icon: "fa-solid fa-hands" }];
-      buttons.push({ action: "anyway", label: "Use it in one hand (3 Banes)", icon: "fa-solid fa-hand" }, { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" });
+        ? releaseOptions({ itemTypes: { weapon: others } }).filter(o => o.action.startsWith("drop:")).map(o => ({ action: `rel|${o.action}`, label: `${o.label}, then Regrip`, sub: "Release (0 AP) drops weapon, then hold in both hands", tag: "1 AP", icon: "fa-solid fa-hands" }))
+        : [{ action: "regrip", label: `Regrip ${w.name} in both hands`, sub: "Shift grip before attacking (0 Banes)", tag: "1 AP", icon: "fa-solid fa-hands" }];
+      buttons.push({ action: "anyway", label: "Use in one hand anyway", sub: "Two-handed weapon in one hand", tag: "3 Banes", icon: "fa-solid fa-hand", cls: "warn" }, { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" });
       const { pickOne } = await import("./pickwindow.mjs");   // v0.0.289: the system's window (no DialogV2)
-      const pick = await pickOne({ title: `${w.name}: one hand`, name: w.name, sub: "one hand", icon: "fa-hand", text: `${w.name} is Two-handed and held in one hand: 3 Banes on [Strike, Weapon] Actions.`, options: buttons.filter(b => b.action !== "cancel").map(b => ({ k: b.action, l: b.label })), confirm: "Go" });
+      const pick = await pickOne({ title: `${w.name}: one hand`, name: w.name, sub: "Held in one hand", icon: "fa-hand", compact: true, text: `${w.name} is Two-handed and held in one hand: 3 Banes on [Strike, Weapon] Actions.`, options: buttons.filter(b => b.action !== "cancel").map(b => ({ k: b.action, l: b.label, sub: b.sub ?? "", tag: b.tag ?? "", icon: b.icon ?? "", cls: b.cls ?? "" })), confirm: "Go" });
       if (!pick || pick === "cancel") return;
       if (pick !== "anyway") {
         if (pick.startsWith("rel|")) await applyRelease(this.actor, pick.slice(4));
@@ -1434,9 +1434,9 @@ export class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async handBlocked(event, target) {
     const item = this._item(target), fistsUse = item?.system?.weaponUse === "fists" || item?.getFlag?.("twod12", "basic") === "fists";
     if (!fistsUse) return ui.notifications.info(target.dataset.tooltip || "That hand's weapon can't be used for this Action.");
-    const buttons = [...releaseOptions(this.actor).map(o => ({ ...o, label: `${o.label} (Release, 0 AP)` })), { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }];
+    const buttons = [...releaseOptions(this.actor).map(o => ({ ...o, sub: o.action.startsWith("one:") ? "Keep in one hand · free the other" : o.action.startsWith("ungrab:") ? "Ends Grabbed · frees your hand" : "Drops to the ground in your square", tag: "0 AP" })), { action: "cancel", label: "Cancel", icon: "fa-solid fa-xmark" }];
     const { pickOne } = await import("./pickwindow.mjs");   // v0.0.289: the system's window (no DialogV2)
-    const pick = await pickOne({ title: `${item.name}: no free hand`, name: item.name, sub: "no free hand", icon: "fa-hand", text: `${this.actor.name} needs a free hand for ${item.name}. Release one first (0 AP)?`, options: buttons.filter(b => b.action !== "cancel").map(b => ({ k: b.action, l: b.label })), confirm: "Release" });
+    const pick = await pickOne({ title: `${item.name}: no free hand`, name: item.name, sub: "No free hand", icon: "fa-hand", compact: true, text: `${this.actor.name} needs a free hand for ${item.name}. Release one first (0 AP)?`, options: buttons.filter(b => b.action !== "cancel").map(b => ({ k: b.action, l: b.label, sub: b.sub ?? "", tag: b.tag ?? "", icon: b.icon ?? "" })), confirm: "Release" });
     if (!pick || pick === "cancel") return;
     await applyRelease(this.actor, pick);
   }

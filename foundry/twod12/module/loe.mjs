@@ -3,8 +3,12 @@
 // At the target: the cover and how many corners are blocked ("Medium cover: 2 blocked"). The lines stay until you click the button again, follow the
 // tokens and your targets, and only you see them. Same test as the roll's cover (cover.mjs coverBetween).
 import { coverBetween } from "./cover.mjs";
-import { HeightCover } from "./heightcover.mjs";
+import { HeightCover, flatSquares } from "./heightcover.mjs";
+import { AreaHeightWindow } from "./areaheight.mjs";
 import { toggleFlanking, flankingShown } from "./flankoverlay.mjs";
+import { toggleRangeRings, rangeRingsShown, describeRangeBand, setLoEActiveCheck, redrawRangeRings } from "./rangeoverlay.mjs";
+import { tokenDistance, verticalSquares } from "./light.mjs";
+import * as MK from "./mapmark.mjs";
 // v0.0.302 (Lucas tested v0.0.301): the buttons moved from the token HUD to the token controls (the left toolbar): Line of Effect (a toggle that follows
 // your selected token), Cover height calculation (a button) and Show flanking (a toggle, flankoverlay.mjs). The shortcuts (Shift+L, Shift+H) stay.
 
@@ -21,8 +25,12 @@ export function loeLabel(c) {
   return `${c.label}: ${why}`;
 }
 
-function layer() { return canvas?.controls ?? canvas?.interface ?? null; }
-function clear() { const l = layer(); for (const c of [...(l?.children ?? [])].filter(x => x.name === NAME)) { l.removeChild(c); c.destroy({ children: true }); } }
+function clear() {
+  MK.clearPlateSpots("loe");
+  for (const l of [canvas?.interface, canvas?.controls, canvas?.stage].filter(Boolean)) {
+    for (const c of [...(l.children ?? [])].filter(x => x.name === NAME)) { l.removeChild(c); c.destroy({ children: true }); }
+  }
+}
 
 function draw() {
   queued = false;
@@ -33,14 +41,13 @@ function draw() {
   if (!src) { if (!state.follow) state = null; return; }
   const box = new PIXI.Container();
   box.name = NAME; box.eventMode = "none";
+  const gs = canvas.grid.size || 100;
+  const fs = Math.max(13, Math.round(gs * 0.16));
   for (const t of game.user.targets) {
     if (t.id === src.id || t.document?.parent !== canvas.scene) continue;
     const c = coverBetween(src, t);
     if (!c?.origin) continue;
     const g = new PIXI.Graphics();
-    // v0.0.453 (Lucas, playtest 6: "Change the display to be more intuitive": a corner line crossing Kaela looked like it should give cover): the
-    // corner lines only count walls, so they are thin and dashed, faint when clear and red when a wall blocks them; the center line is the one
-    // creatures count on, so it is solid and strong: pale when clear, amber with a ring on the creature in the way (Low cover)
     const dashed = (a, z, col, w, alpha, on = 8, off = 7) => { const dx = z.x - a.x, dy = z.y - a.y, len = Math.hypot(dx, dy) || 1; g.lineStyle(w, col, alpha); for (let s0 = 0; s0 < len; s0 += on + off) { const e = Math.min(len, s0 + on); g.moveTo(a.x + (dx * s0) / len, a.y + (dy * s0) / len).lineTo(a.x + (dx * e) / len, a.y + (dy * e) / len); } };
     for (const k of c.corners) {
       dashed(c.origin, k, k.blocked ? RED : GREEN, k.blocked ? 2.5 : 1.5, k.blocked ? 0.95 : 0.5);
@@ -54,26 +61,47 @@ function draw() {
     }
     g.lineStyle(2, 0x1e2430, 1).beginFill(0xffffff, 1).drawCircle(c.origin.x, c.origin.y, 6).endFill();
     box.addChild(g);
-    const text = new PIXI.Text(loeLabel(c), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: 18, fontWeight: "600", fill: c.noLoE ? "#ffb3ad" : (c.level ? "#ffe3a3" : "#c8f5d2"), stroke: "#111111", strokeThickness: 4 });
-    text.anchor.set(0.5, 1);
-    text.position.set(t.center?.x ?? (t.x + t.w / 2), (t.y ?? 0) - 6);
-    box.addChild(text);
+
+    const dist = tokenDistance(src, t), up = verticalSquares(src, t);
+    const flat = up > 0 ? flatSquares(src, t, gs) : dist;
+    const distStr = up > 0 ? `${dist} sq (${flat} flat, +${up} up)` : `${dist} sq`;
+    const band = src.actor ? describeRangeBand(src.actor, dist) : null;
+    const line1 = `${c.noLoE ? "No Line of Effect" : c.label} · ${distStr}`;
+    const whyBits = [
+      c.blocked ? `walls ${c.blocked}/4` : "",
+      c.inWay ? `${(c.blockers ?? []).map(b => String(b.name ?? "").replace(/\s*\(.*\)\s*$/, "").split(/\s+/)[0]).filter(Boolean).join(", ") || "creature"} in way` : "",
+      c.exposed ? "Leaning (−1)" : "",
+      band ? band.label : ""
+    ].filter(Boolean);
+    const line2 = whyBits.join(" · ") || "Clear shot";
+    const accent = c.noLoE ? MK.RED : c.level ? MK.GOLD : 0x7ec48a;
+    const pl = MK.plate([line1, line2], { fs, color: accent, warn: c.noLoE });
+    const pb = pl.getLocalBounds?.() ?? { width: 180, height: 34 };
+    const sc = pl.scale?.x || 1;
+    const pw = pb.width * sc, ph = pb.height * sc;
+    const tx = t.center?.x ?? (t.x + (t.w ?? gs) / 2);
+    const baseBottom = (t.y ?? 0) - 8;
+    const spot = MK.claimPlateSpot("loe", tx, baseBottom - ph / 2, pw, ph, { prefer: "up" });
+    pl.position.set(spot.x, spot.y + ph / 2);
+    box.addChild(pl);
   }
-  layer()?.addChild(box);
+  MK.addOnTop(box, MK.Z.LOE);
 }
 /** Draws again on the next frame (moving tokens refresh many times). */
 const redraw = () => { if (!state || queued) return; queued = true; requestAnimationFrame(draw); };
 
 /** The button: on or off for this token. */
 export function toggleLoE(token) {
-  if (state?.tokenId === token?.id) { state = null; clear(); return false; }
+  if (state?.tokenId === token?.id) { state = null; clear(); redrawRangeRings(); return false; }
   if (!canvas?.grid?.isSquare) { ui.notifications.warn("Line of Effect is drawn on square grids only."); return false; }
   state = { tokenId: token.id };
   if (!game.user.targets.size) ui.notifications.info("Line of Effect is on: target a creature to see the lines to it. Click the button again to hide them.");
   draw();
+  redrawRangeRings();
   return true;
 }
 export const loeOn = token => state?.tokenId === token?.id;
+export const loeShown = () => !!state;
 
 /** v0.0.215 (Lucas, playtest 2): the selected token of yours (the shortcuts), or a warning. */
 function selectedOwn() {
@@ -96,20 +124,23 @@ export function heightShortcut() {
 
 /** v0.0.302: the toolbar's Line of Effect toggle: the lines from your selected token (whichever it is) to your targets. */
 export function setLoEFollow(v) {
-  if (!v) { state = null; clear(); return false; }
+  if (!v) { state = null; clear(); redrawRangeRings(); return false; }
   if (!canvas?.grid?.isSquare) { ui.notifications.warn("Line of Effect is drawn on square grids only."); return false; }
   state = { follow: true };
   if (!game.user.targets.size) ui.notifications.info("Line of Effect is on: select your token and target a creature to see the lines to it.");
   draw();
+  redrawRangeRings();
   return true;
 }
 
 /** The token controls' tools (V12: an array of controls; V13+: objects keyed by name). */
 function addTools(controls) {
   const tools = [
-    { name: "twod12-loe", title: "Line of Effect: the lines your cover is counted with, from your selected token to each creature you target (green clear, red blocked)", icon: "fa-solid fa-bezier-curve", toggle: true, active: !!state, change: (ev, active) => setLoEFollow(active) },
+    { name: "twod12-loe", title: "Line of Effect & 3D Distance: cover lines and distance from your selected token to each target (green clear, red blocked)", icon: "fa-solid fa-bezier-curve", toggle: true, active: !!state, change: (ev, active) => setLoEFollow(active) },
     { name: "twod12-height", title: "Cover height calculation: a side view of your selected token and your target", icon: "fa-solid fa-mountain", button: true, change: () => heightShortcut() },
-    { name: "twod12-flank", title: "Show flanking: who flanks whom, the Field Boons each gets, and who cancels them", icon: "fa-solid fa-people-arrows", toggle: true, active: flankingShown(), change: (ev, active) => toggleFlanking(active) }
+    { name: "twod12-areaheight", title: "Area height calculator (3D): top-down and side cross-section for Burst, Emanation, and Line heights", icon: "fa-solid fa-cube", button: true, change: () => AreaHeightWindow.open() },
+    { name: "twod12-flank", title: "Show flanking: who flanks whom, the Field Boons each gets, and who cancels them", icon: "fa-solid fa-people-arrows", toggle: true, active: flankingShown(), change: (ev, active) => { toggleFlanking(active); redraw(); } },
+    { name: "twod12-range", title: "Weapon Range & Threat Rings: Normal / Far / Max bands and Melee Threat Reach for your selected token", icon: "fa-solid fa-bullseye", toggle: true, active: rangeRingsShown(), change: (ev, active) => toggleRangeRings(active) }
   ];
   if (Array.isArray(controls)) {
     const tc = controls.find(c => c.name === "token");
@@ -122,11 +153,14 @@ function addTools(controls) {
 }
 
 export function registerLoE() {
+  setLoEActiveCheck(loeShown);
   Hooks.on("getSceneControlButtons", controls => { try { addTools(controls); } catch (e) { console.warn("twod12 | token controls", e); } });
   Hooks.on("controlToken", () => { if (state?.follow) redraw(); });
   Hooks.on("targetToken", user => { if (user === game.user) redraw(); });
   Hooks.on("refreshToken", redraw);
+  Hooks.on("canvasPan", redraw);
   for (const h of ["createWall", "updateWall", "deleteWall", "updateToken"]) Hooks.on(h, redraw);
   Hooks.on("deleteToken", doc => { if (state?.tokenId === doc.id) { state = null; clear(); } else redraw(); });
-  Hooks.on("canvasTearDown", () => { state = null; });
+  Hooks.on("canvasTearDown", () => { if (!state?.follow) state = null; clear(); });
+  Hooks.on("canvasReady", () => { if (state?.follow) redraw(); });
 }

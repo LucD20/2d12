@@ -19,7 +19,7 @@ let closedFrom = { item: "", t: 0 };
 export async function openArtCard(actor, item, pick, at = lastEl) {
   if (typeof document === "undefined") return null;
   if (closedFrom.item && closedFrom.item === item?.uuid && Date.now() - closedFrom.t < 600) { closedFrom = { item: "", t: 0 }; return null; }
-  open?.remove();
+  open?._closeArt?.();
   const { buildActionCard } = await import("./actioncard.mjs");
   const { effectiveFrequency } = await import("./config.mjs");
   const div = document.createElement("div");
@@ -35,6 +35,7 @@ export async function openArtCard(actor, item, pick, at = lastEl) {
   div.style.top = `${Math.max(8, Math.min((r.bottom ?? r.top) - h, window.innerHeight - h - 8))}px`;
   open = div;
   const close = () => { div.remove(); if (open === div) open = null; document.removeEventListener("pointerdown", away, true); document.removeEventListener("keydown", key, true); };
+  div._closeArt = close;
   // v0.0.460 (Lucas, checklist v0.0.459: "Allow moving that window"): dragged by its top line; once moved it stays until the ×, Escape or a Use
   let moved = false;
   const away = ev => {

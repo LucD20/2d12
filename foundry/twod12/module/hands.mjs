@@ -55,7 +55,13 @@ export function registerHandSetting() {
 /** v0.0.415 (pack CL): a choice among { action, label } buttons in the pick window (was DialogV2.wait). Resolves the action, or null. */
 export async function pickButtons(o) {
   const { pickOne } = await import("./pickwindow.mjs");
-  return pickOne({ ...o, options: (o.buttons ?? []).filter(b => b.action !== "cancel").map(b => ({ k: b.action, l: b.label })) });
+  const opts = (o.buttons ?? []).filter(b => b.action !== "cancel").map(b => {
+    const act = String(b.action ?? "");
+    const sub = b.sub ?? (act.startsWith("one:") ? "Keep in one hand · free the other" : act.startsWith("ungrab:") ? "Ends Grabbed · frees your hand" : act.startsWith("drop:") ? "Drops to the ground in your square" : "");
+    const tag = b.tag ?? (act.startsWith("one:") || act.startsWith("drop:") || act.startsWith("ungrab:") ? "0 AP" : "");
+    return { k: b.action, l: b.label, icon: b.icon ?? "", sub, tag, cls: b.cls ?? "" };
+  });
+  return pickOne({ ...o, compact: true, options: opts });
 }
 
 export async function ensureHandsFor(actor, weapon, need) {

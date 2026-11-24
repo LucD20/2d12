@@ -152,11 +152,11 @@ export async function spendAP(actor, cost, label = "", { quiet = false, reaction
   // v0.0.243 (book, Reactions): a Reaction is paid with the Reaction Point first, then with AP (kept from the turn, or the turn's own on its own turn).
   const have = getAP(c), rap = reaction ? getRAP(c) : 0, pay = payReaction(cost, have, rap);
   if (c.getFlag(F, "frozen") && pay.fromAp > 0) {
-    const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "Frozen", name: "Frozen", sub: label, icon: "fa-snowflake", confirm: "Use it anyway", text: `<b>${esc(c.name)}</b> swapped initiative, so its remaining actions are frozen until its turn.` });   // v0.0.415 (pack CL): was a DialogV2
+    const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "Frozen", name: "Frozen", sub: label, icon: "fa-snowflake", tone: "warn", confirm: "Use it anyway", text: `<b>${esc(c.name)}</b> swapped initiative, so its remaining actions are frozen until its turn.` });   // v0.0.415 (pack CL): was a DialogV2
     if (!ok) return false;
   }
   if (have < pay.fromAp && !force) {
-    const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "Not enough AP", name: "Not enough AP", sub: label, icon: "fa-bolt", confirm: "Use it anyway", text: `<b>${esc(c.name)}</b> has ${have} AP${reaction ? ` and ${rap} Reaction Point` : ""} and ${esc(label)} costs ${cost}${reaction ? "R" : ""}.` });   // v0.0.415 (pack CL): was a DialogV2
+    const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "Not enough AP", name: "Not enough AP", sub: label, icon: "fa-bolt", tone: "warn", confirm: "Use it anyway", text: `<b>${esc(c.name)}</b> has ${have} AP${reaction ? ` and ${rap} Reaction Point` : ""} and ${esc(label)} costs ${cost}${reaction ? "R" : ""}.` });   // v0.0.415 (pack CL): was a DialogV2
     if (!ok) return false;
   }
   await c.setFlag(F, "acted", true);
@@ -242,7 +242,7 @@ export class TwoD12Combat extends Combat {
   async endCombat() {
     const down = this.combatants.filter(x => x.actor?.statuses?.has("dying") || x.actor?.statuses?.has("shattered")).map(x => x.name);
     if (down.length) {
-      const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "End the encounter?", name: "End the encounter?", icon: "fa-flag-checkered", confirm: "End it anyway", text: `The encounter can't end while a creature is Dying or Shattered: <b>${down.map(esc).join(", ")}</b>. Every creature must be unharmed, stabilized or dead.` });   // v0.0.415 (pack CL): was a DialogV2
+      const ok = await (await import("./pickwindow.mjs")).pickConfirm({ title: "End the encounter?", name: "End the encounter?", icon: "fa-flag-checkered", tone: "warn", confirm: "End it anyway", text: `The encounter can't end while a creature is Dying or Shattered: <b>${down.map(esc).join(", ")}</b>. Every creature must be unharmed, stabilized or dead.` });   // v0.0.415 (pack CL): was a DialogV2
       if (!ok) return this;
     }
     return super.endCombat();
