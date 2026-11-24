@@ -91,15 +91,24 @@ console.log("dragRangeSquares own turn (AP 4, speed 6):", JSON.stringify(MV.drag
   "| immobilized:", JSON.stringify(MV.dragRangeSquares(makeCbt({ ap: 4, speed: 6, immob: true }), combat)),
   "| off turn no free:", JSON.stringify(MV.dragRangeSquares(makeCbt({ id: "c2", ap: 4, speed: 6 }), combat)));
 
-// 4. Undo Movement stack, Foundry revertRecordedMovement, and Ctrl+Z passthrough
-let revertedCalls = 0, updatedPos = null, clearedHist = 0;
+// 4. Undo Movement stack, Foundry revertRecordedMovement(movementId), and Ctrl+Z passthrough
+const revertedIds = [];
+let updatedPos = null, updatedOpts = null, clearedHist = 0;
 const doc = {
   id: "t1", uuid: "Scene.s.Token.t1", name: "Sylwen", isOwner: true,
-  x: 300, y: 100, elevation: 0,
-  movementHistory: [{ x: 100, y: 100 }, { x: 300, y: 100 }],
-  revertRecordedMovement: async () => { revertedCalls++; doc.x = 100; doc.y = 100; doc.movementHistory = []; },
+  x: 500, y: 100, elevation: 0,
+  movementHistory: [
+    { movementId: "m1", x: 100, y: 100 }, { movementId: "m1", x: 300, y: 100 },
+    { movementId: "m2", x: 300, y: 100 }, { movementId: "m2", x: 500, y: 100 }
+  ],
+  revertRecordedMovement: async id => {
+    revertedIds.push(id);
+    if (id === "m2") { doc.x = 300; doc.y = 100; doc.movementHistory = doc.movementHistory.filter(w => w.movementId !== "m2"); return true; }
+    if (id === "m1" || !id) { doc.x = 100; doc.y = 100; doc.movementHistory = []; return true; }
+    return false;
+  },
   clearMovementHistory: async () => { clearedHist++; doc.movementHistory = []; },
-  update: async pos => { updatedPos = pos; doc.x = pos.x; doc.y = pos.y; }
+  update: async (pos, opts) => { updatedPos = pos; updatedOpts = opts; doc.x = pos.x; doc.y = pos.y; }
 };
 globalThis.canvas.tokens.get = id => (id === "t1" ? { id: "t1", isOwner: true, document: doc } : null);
 globalThis.canvas.tokens.controlled = [{ id: "t1", isOwner: true, document: doc }];
@@ -108,40 +117,52 @@ globalThis.canvas.tokens.controlled = [{ id: "t1", isOwner: true, document: doc 
 MV.clearMoveUndo();
 console.log("Ctrl+Z returns false when stack empty:", MV.undoMoveShortcut());
 
-// Simulate a drag-paid 2 sq move from (100,100) to (300,100): AP 4->3, moveLeft 0->4
-const snap = MV.snapshotMoveUndo(syl, { doc, from: { x: 100, y: 100, elevation: 0 }, to: { x: 300, y: 100, elevation: 0 }, histLen: 0 }, 2);
-snap.spentAp = 1;
-snap.openedBanner = true;
+// Simulate 2 drags: A(100,100) -> B(300,100) (m1, spends 1 AP, moveLeft 4), then B(300,100) -> C(500,100) (m2, moveLeft 2)
+const snap1 = MV.snapshotMoveUndo(syl, { doc, from: { x: 100, y: 100, elevation: 0 }, to: { x: 300, y: 100, elevation: 0 }, histLen: 0, movementId: "m1" }, 2);
+snap1.spentAp = 1; snap1.openedBanner = true;
 syl._flags.ap = 3; syl._flags.moveLeft = 4; syl._flags.advOwn = true;
-MV.recordMoveUndo(snap);
-console.log("canUndoMove after drag:", MV.canUndoMove("t1"), "| pickUndoTokenId:", MV.pickUndoTokenId());
+MV.recordMoveUndo(snap1);
 
-const ok = await MV.undoLastMove("t1");
-console.log("undoLastMove ok:", ok,
-  "| revertRecordedMovement called:", revertedCalls,
-  "| doc back at (100,100):", `${doc.x},${doc.y}`,
+const snap2 = MV.snapshotMoveUndo(syl, { doc, from: { x: 300, y: 100, elevation: 0 }, to: { x: 500, y: 100, elevation: 0 }, histLen: 2, movementId: "m2" }, 2);
+syl._flags.moveLeft = 2;
+MV.recordMoveUndo(snap2);
+console.log("canUndoMove after 2 drags:", MV.canUndoMove("t1"), "| pickUndoTokenId:", MV.pickUndoTokenId());
+
+// First Ctrl+Z: reverts ONLY m2 (C -> B), no jump to A, no fallback doc.update!
+const ok1 = await MV.undoLastMove("t1");
+console.log("undo #1 (C->B) ok:", ok1,
+  "| revertedIds:", JSON.stringify(revertedIds),
+  "| doc at B(300,100):", `${doc.x},${doc.y}`,
+  "| m1 still in history:", doc.movementHistory.length === 2,
+  "| no fallback update:", updatedPos === null,
+  "| AP still 3 / moveLeft 4:", `${syl._flags.ap}/${syl._flags.moveLeft}`);
+
+// Second Ctrl+Z: reverts m1 (B -> A), refunds AP to 4, clears movementHistory!
+const ok2 = await MV.undoLastMove("t1");
+console.log("undo #2 (B->A) ok:", ok2,
+  "| revertedIds:", JSON.stringify(revertedIds),
+  "| doc back at A(100,100):", `${doc.x},${doc.y}`,
   "| movementHistory cleared:", doc.movementHistory.length === 0,
-  "| AP restored to 4:", syl._flags.ap,
-  "| moveLeft restored to 0:", syl._flags.moveLeft,
+  "| AP restored to 4 / moveLeft 0:", `${syl._flags.ap}/${syl._flags.moveLeft}`,
   "| stack empty now:", !MV.canUndoMove("t1"),
   "| notification:", infos[infos.length - 1]);
 
-// Fallback path when revertRecordedMovement is unavailable: doc.update + clearMovementHistory
+// Fallback path when revertRecordedMovement is unavailable: doc.update (animate: false) + clearMovementHistory
 const docFallback = {
   id: "t2", uuid: "Scene.s.Token.t2", name: "Kaela", isOwner: true,
   x: 400, y: 200, elevation: 0,
   movementHistory: [{ x: 200, y: 200 }],
   clearMovementHistory: async () => { clearedHist++; docFallback.movementHistory = []; },
-  update: async pos => { updatedPos = pos; docFallback.x = pos.x; docFallback.y = pos.y; }
+  update: async (pos, opts) => { updatedPos = pos; updatedOpts = opts; docFallback.x = pos.x; docFallback.y = pos.y; }
 };
 const kaela = makeCbt({ id: "c2", tokenId: "t2", name: "Kaela", ap: 3, freeMove: 4 });
 combat.combatants.set(kaela.id, kaela);
-const snap2 = MV.snapshotMoveUndo(kaela, { doc: docFallback, from: { x: 200, y: 200, elevation: 0 }, to: { x: 400, y: 200, elevation: 0 }, histLen: 0 }, 2);
+const snapF = MV.snapshotMoveUndo(kaela, { doc: docFallback, from: { x: 200, y: 200, elevation: 0 }, to: { x: 400, y: 200, elevation: 0 }, histLen: 0 }, 2);
 kaela._flags.freeMove = 2;
-MV.recordMoveUndo(snap2);
-const ok2 = await MV.undoLastMove(docFallback);
-console.log("fallback undo ok:", ok2,
-  "| doc.update called:", JSON.stringify(updatedPos),
+MV.recordMoveUndo(snapF);
+const okF = await MV.undoLastMove(docFallback);
+console.log("fallback undo ok:", okF,
+  "| doc.update called (animate false):", JSON.stringify(updatedPos), updatedOpts?.animate,
   "| clearMovementHistory called:", clearedHist,
   "| freeMove restored to 4:", kaela._flags.freeMove);
 

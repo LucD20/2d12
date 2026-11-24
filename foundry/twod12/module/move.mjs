@@ -1699,6 +1699,7 @@ export function snapshotMoveUndo(c, undoCtx, cost) {
     from: { x: Number(undoCtx.from?.x) || 0, y: Number(undoCtx.from?.y) || 0, elevation: Number.isFinite(undoCtx.from?.elevation) ? undoCtx.from.elevation : (undoCtx.doc?.elevation ?? 0) },
     to: { x: Number(undoCtx.to?.x) || 0, y: Number(undoCtx.to?.y) || 0, elevation: Number.isFinite(undoCtx.to?.elevation) ? undoCtx.to.elevation : (undoCtx.doc?.elevation ?? 0) },
     histLen: Number(undoCtx.histLen) || 0,
+    movementId: String(undoCtx.movementId ?? ""),
     squares: Math.round((Number(cost) || 0) * 100) / 100,
     spentAp: 0,
     enclogId: "",
@@ -1766,7 +1767,7 @@ export function pickUndoTokenId() {
 
 /**
  * v0.0.496 (Lucas): Undo the last combat movement for `target` (Token, TokenDocument, tokenId, or auto-picked).
- * Reverts both 2d12 movement/AP/banner/range/logs AND Foundry V14's built-in movementHistory/ruler via revertRecordedMovement().
+ * Reverts both 2d12 movement/AP/banner/range/logs AND Foundry V14's built-in movementHistory/ruler via revertRecordedMovement(movementId).
  */
 export async function undoLastMove(target = null, { alreadyMoved = false } = {}) {
   const tokenId = typeof target === "string"
@@ -1788,16 +1789,22 @@ export async function undoLastMove(target = null, { alreadyMoved = false } = {})
     if (!alreadyMoved && doc) {
       mark(keyOf(doc, entry.from.x, entry.from.y));
       let reverted = false;
-      // Use Foundry V13/V14's native revertRecordedMovement() first so Foundry's movementHistory & ruler step back cleanly too.
-      if (typeof doc.revertRecordedMovement === "function" && (!Array.isArray(doc.movementHistory) || doc.movementHistory.length > entry.histLen)) {
+      const hist = Array.isArray(doc.movementHistory) ? doc.movementHistory : [];
+      const lastW = hist.length ? hist[hist.length - 1] : null;
+      const moveId = String(lastW?.movementId || entry.movementId || "");
+      // v0.0.497 (Lucas): pass the exact movementId to Foundry V14 revertRecordedMovement(movementId) so ONLY this drag is undone
+      // directly to entry.from via displace (omitting movementId reverts the entire turn's history back to the start square!).
+      if (typeof doc.revertRecordedMovement === "function" && hist.length > entry.histLen && (moveId || entry.histLen === 0)) {
         try {
-          await doc.revertRecordedMovement();
-          reverted = Math.hypot((Number(doc.x) || 0) - entry.from.x, (Number(doc.y) || 0) - entry.from.y) <= 2;
+          const res = await doc.revertRecordedMovement(moveId || undefined);
+          const atFrom = Math.hypot((Number(doc.x) || 0) - entry.from.x, (Number(doc.y) || 0) - entry.from.y) <= 2;
+          const stillAtTo = Math.hypot((Number(doc.x) || 0) - entry.to.x, (Number(doc.y) || 0) - entry.to.y) <= 2;
+          reverted = atFrom || (res === true && stillAtTo);
         } catch (e) { reverted = false; }
       }
       if (!reverted) {
         const pos = { x: entry.from.x, y: entry.from.y, ...(Number.isFinite(entry.from.elevation) ? { elevation: entry.from.elevation } : {}) };
-        await doc.update(pos, { twod12Forced: true, twod12Undo: true, animate: true });
+        await doc.update(pos, { twod12Forced: true, twod12Undo: true, animate: false });
         if (entry.histLen === 0 && typeof doc.clearMovementHistory === "function") {
           try { await doc.clearMovementHistory(); } catch (e) { /* ignore */ }
         }
@@ -1902,6 +1909,10 @@ export function registerMovement() {
   // Foundry V13+/V14: token drags come through moveToken with movement.destination before doc.x/y settle; hook both moveToken and updateToken
   Hooks.on("moveToken", (doc, movement, operation) => {
     if (operation?.twod12Lean) return;
+    if (movement?.id && movement?.method !== "undo") {
+      const top = peekMoveUndo(doc.id);
+      if (top && !top.movementId) top.movementId = String(movement.id);
+    }
     const d = movement?.destination;
     const ov = d && Number.isFinite(d.x) && Number.isFinite(d.y) ? new Map([[doc.id, d]]) : null;
     checkUnthreatenedEffects(ov).catch(e => console.warn("twod12 | unthreatened check", e));
@@ -1996,7 +2007,7 @@ export function registerMovement() {
       // v0.0.418 (G6): off its turn a creature moves only the squares a Reaction gave it (no AP spent for more)
       if (game.combat?.combatant?.id !== c.id && squares > offTurnFree(c) + 1e-6) { warn(`${c.name} has ${offTurnFree(c)} free square${offTurnFree(c) === 1 ? "" : "s"} left (it isn't its turn). Choose a shorter path, or use End movement.`); return false; }
       mark(keyOf(doc, to.x, to.y));
-      const undoCtx = { doc, from: { x: origin.x, y: origin.y, elevation: doc.elevation ?? 0 }, to: { x: to.x, y: to.y, elevation: to.elevation ?? doc.elevation ?? 0 }, histLen: Array.isArray(doc.movementHistory) ? doc.movementHistory.length : 0 };
+      const undoCtx = { doc, from: { x: origin.x, y: origin.y, elevation: doc.elevation ?? 0 }, to: { x: to.x, y: to.y, elevation: to.elevation ?? doc.elevation ?? 0 }, histLen: Array.isArray(doc.movementHistory) ? doc.movementHistory.length : 0, movementId: movement?.id ?? "" };
       chargeMovement(c, squares, to, { par, undoCtx }).catch(e => console.error("twod12 | could not charge movement", e));
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
   });
