@@ -14,4 +14,4 @@ a block right under you (doesn't count)      green green green green | No cover:
 origins: center (0.5,0.5) tl (0,1) tr (1,1) bl (0,0) br (1,0)
 flat squares apart: 4, 6, 1, 4
 html: cells 28 | full blocks 1 | half 1 | corners 5 | lines 4
-v0.0.302: a token-controls button next to Line of Effect (not on the HUD): true
+v0.0.487: Cover Height in 2d12 Tools drawer (not on the HUD): true

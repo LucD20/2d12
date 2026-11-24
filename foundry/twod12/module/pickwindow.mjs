@@ -31,7 +31,7 @@ export function pickWindowHtml(m) {
   // v0.0.369 (STYLE-1, Lucas): a section with no title and no pill draws no heading (the empty one left a bar and a line); the text is highlighted
   const head = x => (x.title || x.pill !== undefined ? `<h2>${esc(x.title)} ${x.pill !== undefined ? `<span class="cw-pill${x.done ? " done" : ""}">${esc(x.pill)}</span>` : ""}</h2>` : "");
   const rowsHtml = x => (x.richChoices && x.rows?.length ? x.rows.map(r => choiceListHtml(r.opts ?? [], r.key ?? "one")).join("") : (x.rows ?? []).map(segRowHtml).join(""));
-  const secs = (m.sections ?? []).map(x => `<section class="cw-sec">${head(x)}${x.sub ? `<p class="cw-sub">${highlightText(esc(x.sub))}</p>` : ""}${rowsHtml(x)}${x.choices?.length ? choiceListHtml(x.choices, x.choiceKey ?? "one") : ""}${x.html ?? ""}</section>`).join("");
+  const secs = (m.sections ?? []).map(x => `<section class="cw-sec">${head(x)}${x.leadHtml ?? ""}${x.sub ? `<p class="cw-sub">${highlightText(esc(x.sub))}</p>` : ""}${rowsHtml(x)}${x.choices?.length ? choiceListHtml(x.choices, x.choiceKey ?? "one") : ""}${x.html ?? ""}</section>`).join("");
   const stats = (m.stats ?? []).map(([k, v]) => `<span>${esc(k)}<b>${esc(v)}</b></span>`).join("");
   const pic = m.img ? `<img src="${esc(m.img)}" alt="">` : (m.icon ? `<span class="cw-icon"><i class="fa-solid ${esc(m.icon)}"></i></span>` : "");
   const cancelBtn = m.cancel === false ? "" : `<button type="button" class="cw-btn" data-key="cancel" data-cancel>${esc(m.cancel ?? "Cancel")}</button>`;
@@ -159,7 +159,7 @@ export function pickOne(o) {
     model: () => ({
       name: o.name, sub: o.sub ?? "", icon: o.icon, stats: o.stats ?? [],
       sections: [{
-        title: o.heading ?? "", sub: o.html ? "" : (o.text ?? ""), html: o.html ?? "", richChoices: rich,
+        title: o.heading ?? "", leadHtml: o.leadHtml ?? "", sub: o.html ? "" : (o.text ?? ""), html: o.html ?? "", richChoices: rich,
         rows: [{ key: "one", label: "", opts: (o.options ?? []).map(x => ({ k: x.k, l: x.l, tip: x.tip, sub: x.sub ?? (x.off ? "" : x.tip ?? ""), tag: x.tag ?? "", icon: x.icon ?? "", cls: x.cls ?? "", on: false, off: !!x.off })) }]
       }],
       message: o.message ?? "", confirm: false, cancel: o.cancel

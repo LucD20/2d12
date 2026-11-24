@@ -1,0 +1,6 @@
+1. CSS tokens: zero undefined --s-* vars: true | no --s-pg2: true
+2. Button auto height: pw-opt=true ck-bb=true ck-chip=true tbx-btn=true
+3. PickWindow leadHtml order: lead < sub < choices: true | askEncounterEnd uses leadHtml: true
+4. Initiative theme: iw-s-friendly & iw-s-hostile: true | no inline pastel bg on iw-sh: true | dark iwin rules in theme.css: true
+5. Area Height live tokens only: Aveline@z0, Live Goblin@z2
+6. 2d12 Tools drawer: GM groups: Map Overlays(4), 3D & Rules Tools(3), GM Tools(3) | player groups: Map Overlays, 3D & Rules Tools | active count badge: true | single V12/V14 control: true

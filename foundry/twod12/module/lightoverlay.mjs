@@ -8,19 +8,9 @@ let gfx = null, on = false;
 const COLORS = { dim: [0xd8b02a, 0.3], dark: [0xc0392b, 0.3] };
 const TITLE = "Light levels (2d12): clear Bright, yellow Dim, red Darkness";
 
+export const lightOverlayShown = () => on;
+
 export function registerLightOverlay() {
-  Hooks.on("getSceneControlButtons", controls => {
-    try {
-      const tool = { name: "twod12Light", title: TITLE, icon: "fa-solid fa-lightbulb", toggle: true, active: on, button: false };
-      if (Array.isArray(controls)) {   // V12: an array of controls, tools are arrays
-        const tc = controls.find(c => c.name === "token");
-        if (tc && !tc.tools.some(t => t.name === tool.name)) tc.tools.push({ ...tool, onClick: v => toggle(v) });
-      } else {                          // V13+: objects keyed by name
-        const tc = controls.tokens ?? controls.token;
-        if (tc?.tools) tc.tools[tool.name] = { ...tool, order: Object.keys(tc.tools).length + 1, onChange: (event, active) => toggle(active) };
-      }
-    } catch (e) { console.warn("twod12 | light overlay button", e); }
-  });
   const redraw = foundry.utils.debounce(() => { if (on) draw(); }, 150);
   for (const h of ["lightingRefresh", "sightRefresh", "refreshToken", "createAmbientLight", "updateAmbientLight", "deleteAmbientLight", "updateScene", "canvasReady"]) Hooks.on(h, redraw);
   Hooks.on("canvasTearDown", () => { try { gfx?.destroy(); } catch (e) { /* already gone */ } gfx = null; });

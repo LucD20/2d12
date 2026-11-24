@@ -259,17 +259,5 @@ export function registerClock() {
     const { time } = clockParts();
     document.querySelectorAll(".twod12-timebar .tb-time").forEach(el => { el.textContent = time; });
   });
-  Hooks.on("getSceneControlButtons", controls => {
-    try {
-      const tool = { name: "twod12Clock", title: "World clock (2d12)", icon: "fa-solid fa-clock", button: true };
-      if (Array.isArray(controls)) {   // V12
-        const tc = controls.find(c => c.name === "token");
-        if (tc && !tc.tools.some(t => t.name === tool.name)) tc.tools.push({ ...tool, onClick: () => WorldClock.open() });
-      } else {                          // V13+
-        const tc = controls.tokens ?? controls.token;
-        if (tc?.tools) tc.tools[tool.name] = { ...tool, order: Object.keys(tc.tools).length + 1, onChange: () => WorldClock.open() };
-      }
-    } catch (e) { console.warn("twod12 | world clock button", e); }
-  });
 }
 

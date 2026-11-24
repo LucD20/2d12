@@ -34,5 +34,5 @@ console.log("origins:", ["center", "tl", "tr", "bl", "br"].map(k => `${k} (${H.o
 console.log("flat squares apart:", [[0, 0, 4, 0], [0, 0, 4, 4], [0, 0, 1, 1], [0, 0, 3, 2]].map(([a, b, c, d]) => `${H.flatSquares({ document: { x: a * S, y: b * S } }, { document: { x: c * S, y: d * S } }, S)}`).join(", "));
 const html = H.heightHtml({ ...base, nameA: "Hero", nameT: "Skull", blocks: { "3,0": 2, "3,2": 1 } });
 console.log("html: cells", (html.match(/data-cell=/g) ?? []).length, "| full blocks", (html.match(/hc-block full/g) ?? []).length, "| half", (html.match(/hc-block half/g) ?? []).length, "| corners", (html.match(/data-corner=/g) ?? []).length, "| lines", (html.match(/<line class="hc-line/g) ?? []).length);
-const loe = fs.readFileSync(ROOT + "module/loe.mjs", "utf8");
-console.log("v0.0.302: a token-controls button next to Line of Effect (not on the HUD):", loe.includes("HeightCover.open(token, targets[0])") && loe.includes('name: "twod12-height"') && loe.includes("change: () => heightShortcut()") && !loe.includes("control-icon twod12-height"));
+const loe = fs.readFileSync(ROOT + "module/loe.mjs", "utf8"), tb = fs.readFileSync(ROOT + "module/toolbox.mjs", "utf8");
+console.log("v0.0.487: Cover Height in 2d12 Tools drawer (not on the HUD):", loe.includes("HeightCover.open(token, targets[0])") && tb.includes('id: "height"') && tb.includes("heightShortcut()") && !loe.includes("control-icon twod12-height"));

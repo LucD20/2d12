@@ -4,9 +4,7 @@
 // tokens and your targets, and only you see them. Same test as the roll's cover (cover.mjs coverBetween).
 import { coverBetween } from "./cover.mjs";
 import { HeightCover, flatSquares } from "./heightcover.mjs";
-import { AreaHeightWindow } from "./areaheight.mjs";
-import { toggleFlanking, flankingShown } from "./flankoverlay.mjs";
-import { toggleRangeRings, rangeRingsShown, describeRangeBand, setLoEActiveCheck, redrawRangeRings } from "./rangeoverlay.mjs";
+import { describeRangeBand, setLoEActiveCheck, redrawRangeRings } from "./rangeoverlay.mjs";
 import { tokenDistance, verticalSquares } from "./light.mjs";
 import * as MK from "./mapmark.mjs";
 // v0.0.302 (Lucas tested v0.0.301): the buttons moved from the token HUD to the token controls (the left toolbar): Line of Effect (a toggle that follows
@@ -133,28 +131,10 @@ export function setLoEFollow(v) {
   return true;
 }
 
-/** The token controls' tools (V12: an array of controls; V13+: objects keyed by name). */
-function addTools(controls) {
-  const tools = [
-    { name: "twod12-loe", title: "Line of Effect & 3D Distance: cover lines and distance from your selected token to each target (green clear, red blocked)", icon: "fa-solid fa-bezier-curve", toggle: true, active: !!state, change: (ev, active) => setLoEFollow(active) },
-    { name: "twod12-height", title: "Cover height calculation: a side view of your selected token and your target", icon: "fa-solid fa-mountain", button: true, change: () => heightShortcut() },
-    { name: "twod12-areaheight", title: "Area height calculator (3D): top-down and side cross-section for Burst, Emanation, and Line heights", icon: "fa-solid fa-cube", button: true, change: () => AreaHeightWindow.open() },
-    { name: "twod12-flank", title: "Show flanking: who flanks whom, the Field Boons each gets, and who cancels them", icon: "fa-solid fa-people-arrows", toggle: true, active: flankingShown(), change: (ev, active) => { toggleFlanking(active); redraw(); } },
-    { name: "twod12-range", title: "Weapon Range & Threat Rings: Normal / Far / Max bands and Melee Threat Reach for your selected token", icon: "fa-solid fa-bullseye", toggle: true, active: rangeRingsShown(), change: (ev, active) => toggleRangeRings(active) }
-  ];
-  if (Array.isArray(controls)) {
-    const tc = controls.find(c => c.name === "token");
-    for (const t of tools) if (tc && !tc.tools.some(x => x.name === t.name)) tc.tools.push({ ...t, onClick: v => t.change(null, t.toggle ? v : true) });
-    return;
-  }
-  const tc = controls.tokens ?? controls.token;
-  if (!tc?.tools) return;
-  for (const t of tools) { const { change, ...rest } = t; tc.tools[t.name] = { ...rest, order: Object.keys(tc.tools).length + 1, visible: true, onChange: (ev, active) => change(ev, active) }; }
-}
+export { redraw };
 
 export function registerLoE() {
   setLoEActiveCheck(loeShown);
-  Hooks.on("getSceneControlButtons", controls => { try { addTools(controls); } catch (e) { console.warn("twod12 | token controls", e); } });
   Hooks.on("controlToken", () => { if (state?.follow) redraw(); });
   Hooks.on("targetToken", user => { if (user === game.user) redraw(); });
   Hooks.on("refreshToken", redraw);

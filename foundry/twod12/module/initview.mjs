@@ -43,7 +43,7 @@ export function gmHtml(m) {
     <button type="button" class="iw-gmall" data-act="gmAll">GM rolls all</button></div></header>`;
   const players = `<div class="iw-players">${esc(m.playersLine)}</div>`;
   const cols = '<div class="iw-cols"><span>Creature</span><span>Who rolls</span><span>Check</span><span>Roll</span><span>Boons</span><span>Banes</span></div>';
-  const sides = m.sides.map(s => `<section class="iw-sec"><button type="button" class="iw-sh" data-act="fold" data-key="${s.key}" aria-expanded="${s.open}" style="background:${s.bg}"><b>${s.caret} ${esc(s.name)}</b><span>${esc(s.tag)}</span><span class="iw-cnt">${esc(s.count)}</span></button>${s.open ? s.rows.map(rowHtml).join("") : ""}</section>`).join("");
+  const sides = m.sides.map(s => `<section class="iw-sec"><button type="button" class="iw-sh iw-s-${esc(s.key)}" data-act="fold" data-key="${s.key}" aria-expanded="${s.open}"><b>${s.caret} ${esc(s.name)}</b><span>${esc(s.tag)}</span><span class="iw-cnt">${esc(s.count)}</span></button>${s.open ? s.rows.map(rowHtml).join("") : ""}</section>`).join("");
   const foot = `<footer class="iw-foot"><div class="iw-sum"><div><b>GM rolls now:</b> ${esc(m.sumRoll)}</div><div><b>Their player rolls:</b> ${esc(m.sumPlayer)} · <b>Wait:</b> ${esc(m.sumWait)}</div><div><b>Kept:</b> ${esc(m.sumKept)} · <b>Goes last:</b> ${esc(m.sumLast)}</div></div>
     <div class="iw-fr"><div class="iw-fb"><button type="button" class="iw-btn2 big" data-act="cancel">Cancel</button><button type="button" class="iw-go" data-act="roll"${m.rollN ? "" : " disabled"}>${esc(m.rollLabel)}</button></div><span class="iw-hint">Enter rolls · Esc cancels</span></div></footer>`;
   return `<div class="iw">${head}${players}<div class="iw-body">${cols}${sides || '<p class="iw-empty">No creature in this encounter.</p>'}</div>${foot}</div>`;
@@ -57,8 +57,8 @@ export function playerHtml(m) {
     <div class="iw-yr">${y.rolled ? '<span class="iw-note">Rolled.</span>' : y.last ? '<span class="iw-note">Goes last: no roll.</span>' : y.gmRolls ? '<span class="iw-note">The GM rolls for you.</span>' : `<button type="button" class="iw-go" data-act="proll" data-id="${esc(y.id)}">Roll</button>`}</div>
     ${!y.rolled && !y.gmRolls && !y.last ? `<p class="iw-yn">${esc(y.note)}</p>` : ""}</div>`;
   const line = x => `<div class="iw-pl">${portrait(x.img, true)}<span class="iw-nm">${esc(x.name)}</span><span class="iw-st">${esc(x.status)}</span></div>`;
-  const heroes = m.heroes.length ? `<section class="iw-sec"><div class="iw-sh static" style="background:#dfe7f1"><b>Heroes</b></div>${m.heroes.map(line).join("")}</section>` : "";
-  const others = m.others.map(s => `<section class="iw-sec"><div class="iw-sh static" style="background:${s.bg}"><b>${esc(s.name)}</b></div>${s.hold ? '<p class="iw-note pad">Shown when combat starts.</p>' : s.items.length ? s.items.map(line).join("") : '<p class="iw-note pad">None in sight.</p>'}</section>`).join("");
+  const heroes = m.heroes.length ? `<section class="iw-sec"><div class="iw-sh iw-s-friendly static"><b>Heroes</b></div>${m.heroes.map(line).join("")}</section>` : "";
+  const others = m.others.map(s => `<section class="iw-sec"><div class="iw-sh iw-s-${esc(s.key ?? "hostile")} static"><b>${esc(s.name)}</b></div>${s.hold ? '<p class="iw-note pad">Shown when combat starts.</p>' : s.items.length ? s.items.map(line).join("") : '<p class="iw-note pad">None in sight.</p>'}</section>`).join("");
   return `<div class="iw pl">${head}<div class="iw-body">${m.yours.map(card).join("") || '<p class="iw-empty">You have no creature in this encounter.</p>'}${heroes}${others}</div>
     <footer class="iw-foot"><span class="iw-hint">The order appears in the Combat Tracker.</span><button type="button" class="iw-btn2 big" data-act="cancel">Close</button></footer></div>`;
 }

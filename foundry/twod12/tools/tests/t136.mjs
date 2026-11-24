@@ -23,8 +23,8 @@ console.log("a creature in the way:", loeLabel({ ...cv.coverBetween(A, tok("T", 
 console.log("no Line of Effect:", loeLabel({ blocked: 4, noLoE: true, level: 4, label: "Total cover" }), "| Leaning target:", loeLabel({ blocked: 2, level: 1, label: "Low cover", exposed: true }));
 const src = f => fs.readFileSync(ROOT + f, "utf8");
 console.log("--- wiring");
-const loe = src("module/loe.mjs"), act = src("module/actions.mjs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css");
-console.log("v0.0.302: a toggle in the token controls, not on the token HUD:", loe.includes('Hooks.on("getSceneControlButtons"') && loe.includes('name: "twod12-loe"') && !loe.includes('Hooks.on("renderTokenHUD"'), "| it follows your selected token:", loe.includes("state.follow ? (mine.length === 1 ? mine[0] : null)") && loe.includes('Hooks.on("controlToken"'), "| registered:", src("module/twod12.mjs").includes("registerLoE();"),
+const loe = src("module/loe.mjs"), tb = src("module/toolbox.mjs"), act = src("module/actions.mjs"), sh = src("module/actor-sheets.mjs"), css = src("styles/system.css");
+console.log("v0.0.487: a toggle in the 2d12 Tools drawer (not on the token HUD):", tb.includes('Hooks.on("getSceneControlButtons"') && tb.includes('name: "twod12-tools"') && tb.includes('id: "loe"') && !loe.includes('Hooks.on("renderTokenHUD"'), "| it follows your selected token:", loe.includes("state.follow ? (mine.length === 1 ? mine[0] : null)") && loe.includes('Hooks.on("controlToken"'), "| registered:", src("module/twod12.mjs").includes("registerLoE();"),
   "| follows targets, moves and walls:", ["targetToken", "refreshToken", "updateWall"].every(h => loe.includes(h)), "| only on square grids:", loe.includes("canvas?.grid?.isSquare"));
 console.log("shield: Vs. Attributes in two letters:", act.includes('const VS2 = { body: "Bo", mind: "Mi", appeal: "Ap", instinct: "In" }'), "| AD and WD kept:", act.includes('"armor" ? "AD"') && act.includes('"ward" ? "WD"'));
 console.log("Strike rows: a red line, no gradient:", css.includes(".ar.strike { box-shadow: inset 3px 0 0 #b3261e; }") && !css.includes("linear-gradient(90deg, rgba(178, 34, 34"));

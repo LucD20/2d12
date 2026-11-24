@@ -3615,6 +3615,10 @@ a.twod12-inline i.areaic.line { width: 1.9em; height: 0.55em; vertical-align: 0.
 .twod12.iwin .iw-cols { padding: 8px 26px 2px; font-size: 11px; font-weight: 600; color: #5f5244; text-transform: uppercase; letter-spacing: 0.6px; }
 .twod12.iwin .iw-sec { margin: 6px 12px 10px; border: 1px solid #cdbfa5; border-radius: 5px; background: #f7f1e5; overflow: hidden; }
 .twod12.iwin .iw-sh { display: flex; align-items: baseline; gap: 10px; width: 100%; text-align: left; padding: 8px 10px; border: 0; border-radius: 0; height: auto; color: #4a4038; font-size: 12px; }
+.twod12.iwin .iw-sh.iw-s-friendly { background: #dfe7f1; }
+.twod12.iwin .iw-sh.iw-s-hostile { background: #f1dfdb; }
+.twod12.iwin .iw-sh.iw-s-neutral { background: #e9e4d3; }
+.twod12.iwin .iw-sh.iw-s-fourth { background: #e4e0ea; }
 .twod12.iwin .iw-sh b { font-size: 14px; font-weight: 700; color: #2a2320; }
 .twod12.iwin .iw-sh .iw-cnt { margin-left: auto; }
 .twod12.iwin .iw-row { padding: 7px 8px; border-top: 1px solid #e2d7c1; background: #fffaf0; }

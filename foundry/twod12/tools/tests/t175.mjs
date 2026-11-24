@@ -39,6 +39,6 @@ console.log("--- the copy (short names)");
 console.log(L.exportText(log, { abbr: ab }));
 console.log("--- full names, with damage and conditions");
 console.log(L.exportText(log, { abbr: ab, short: false, details: true }));
-const act = src("module/actions.mjs"), mv = src("module/move.mjs"), cb = src("module/combat.mjs"), tw = src("module/twod12.mjs");
+const act = src("module/actions.mjs"), mv = src("module/move.mjs"), cb = src("module/combat.mjs"), tb = src("module/toolbox.mjs");
 console.log("--- wired: Actions", act.includes("logAction(selfToken ?? actor, item"), "| movement", mv.includes('logMove(c.token?.object ?? c.actor, logMode || (useEvade ? "Evade" : "Advance"), cost, setupLogName)') && mv.includes('{ logMode: "Charge" }'), "| Pushed / Pulled", mv.includes("logPush(origin, target"),
-  "| Reset Turn removes the turn", cb.includes('voidTurn(combat, snap.round, snap.turn, "Reset Turn")'), "| a Charge given up", mv.includes('"Charge given up")'), "| the toolbar button", tw.includes('name: "twod12-enclog"'));
+  "| Reset Turn removes the turn", cb.includes('voidTurn(combat, snap.round, snap.turn, "Reset Turn")'), "| a Charge given up", mv.includes('"Charge given up")'), "| in 2d12 Tools drawer", tb.includes('id: "enclog"'));

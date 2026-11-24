@@ -17,6 +17,7 @@ import { registerObjects } from "./objects.mjs";   // pack TALENTS-PT: a placed 
 import { registerLoE } from "./loe.mjs";
 import { registerFlankOverlay } from "./flankoverlay.mjs";
 import { registerRangeOverlay } from "./rangeoverlay.mjs";
+import { registerToolbox } from "./toolbox.mjs";
 import { solidTiles, tileConfigSolid } from "./corners.mjs";
 import { registerLightRadius } from "./lightradius.mjs";
 import { registerRegionSnap } from "./regionshape.mjs";
@@ -41,7 +42,6 @@ import { registerTurnDock } from "./turndock.mjs";   // v0.0.362: the Turn Break
 import { registerHealthBar } from "./healthbar.mjs";
 import * as CC from "./chatcards.mjs";   // v0.0.283 (pack chat-cards)
 import { registerInline, handleInline, saveRoll, retargetSave, registerInlineSocket } from "./inline.mjs";
-import { openBuilder } from "./builder.mjs";
 import { CharacterSheet, NpcSheet, TwoD12ItemSheet, registerSheetHooks } from "./sheets.mjs";
 import { registerHandSetting } from "./hands.mjs";
 import { grantClassFeatures } from "./grants.mjs";
@@ -59,8 +59,8 @@ import { giveVision, syncVision, globalLight, visionInfo } from "./vision.mjs";
 import { lightInfo } from "./sightgate.mjs";
 import { hearInfo } from "./senses.mjs";   // v0.0.317: why a token hears (or not)
 import { registerLightLabel, registerLightTool, sliderInfo } from "./lightlabel.mjs";
-import { registerDamageReport, toggleDamageReport } from "./damagelog.mjs";
-import { registerEncounterLog, toggleEncounterLog } from "./enclog.mjs";
+import { registerDamageReport } from "./damagelog.mjs";
+import { registerEncounterLog } from "./enclog.mjs";
 import { updateUseButtons, useGrant, registerGrantCardHooks } from "./freeuse.mjs";
 import { registerVersionTabs } from "./preview.mjs";
 import { registerCarousel, renderCarousel } from "./carousel.mjs";
@@ -111,6 +111,7 @@ Hooks.once("init", () => {
   registerLoE();   // Line of Effect, Cover height and Show flanking in the token controls (v0.0.165; moved from the token HUD in v0.0.302)
   registerFlankOverlay();   // v0.0.302
   registerRangeOverlay();
+  registerToolbox();   // v0.0.487: single Token Controls button opening the 2d12 Tools drawer
   // Template parts used by more than one sheet (the settings of an Effect and of a passive).
   (foundry.applications?.handlebars?.loadTemplates ?? globalThis.loadTemplates)?.(["systems/twod12/templates/parts/settings.hbs", "systems/twod12/templates/parts/preds.hbs"]);
   game.settings.register("twod12", "sheetHelp", { name: "Action and Talent sheets: show help", hint: "The grey explanations on the Details tab of Action and Talent sheets. Also switched with the Show help box on the tab.", scope: "client", config: false, type: Boolean, default: true });
@@ -522,16 +523,6 @@ Hooks.once("ready", async () => {
   registerDamageReport();
   registerEncounterLog();   // v0.0.223
   setupPanel();
-});
-
-// Scene controls: a button to build chat buttons.
-Hooks.on("getSceneControlButtons", controls => {
-  if (!game.user.isGM) return;
-  const tool = { name: "twod12-button", title: "Create Button", icon: "fa-solid fa-square-plus", button: true, order: 99, visible: true, onChange: () => openBuilder(), onClick: () => openBuilder() };
-  const report = { name: "twod12-report", title: "Damage Report", icon: "fa-solid fa-chart-column", button: true, order: 100, visible: true, onChange: () => toggleDamageReport(), onClick: () => toggleDamageReport() };
-  const enclog = { name: "twod12-enclog", title: "Encounter Log", icon: "fa-solid fa-book-open", button: true, order: 101, visible: true, onChange: () => toggleEncounterLog(), onClick: () => toggleEncounterLog() };   // v0.0.223
-  if (Array.isArray(controls)) controls.find(c => c.name === "token")?.tools.push(tool, report, enclog);
-  else if (controls?.tokens?.tools) { controls.tokens.tools[tool.name] = tool; controls.tokens.tools[report.name] = report; controls.tokens.tools[enclog.name] = enclog; }
 });
 
 // v0.0.185: the Level before a change, for the class window (each new level in turn; a lower Level removes what the higher levels gave).

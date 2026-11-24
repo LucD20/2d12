@@ -132,8 +132,8 @@ const pic = FL.flankPicture([paladin, archer, goblin, fighter, orc]);
 console.log("overlay: flanked", pic.flanked.map(r => `${r.target.name} by ${r.flankers.map(f => `${f.token.name} +${f.boons} (raw ${f.raw}${f.cancels.length ? `, cancelled by ${f.cancels.map(c => c.name).join("+")}` : ""})`).join(", ")}`).join(" | "), "| idle:", pic.idle.map(x => `${x.token.name}: ${x.why}`).join(" | "));
 const FO = await import(ROOTURL + "module/flankoverlay.mjs");
 console.log("its label:", pic.flanked.map(r => FO.flankedText(r)).join(" | "));
-const loeSrc = src("module/loe.mjs");
-console.log("the token controls: Line of Effect, Cover height, Show flanking:", ["twod12-loe", "twod12-height", "twod12-flank"].every(n => loeSrc.includes(`name: "${n}"`)), "| no HUD buttons any more:", !loeSrc.includes("renderTokenHUD"));
+const loeSrc = src("module/loe.mjs"), tbSrc = src("module/toolbox.mjs");
+console.log("the 2d12 Tools drawer: Line of Effect, Cover height, Show flanking:", ["loe", "height", "flank"].every(n => tbSrc.includes(`id: "${n}"`)) && tbSrc.includes('name: "twod12-tools"'), "| no HUD buttons any more:", !loeSrc.includes("renderTokenHUD"));
 const pcs = src("module/pcsheet.mjs");
 console.log("the sheet's rows have their color again (v0.0.298 had it in a comment):", /\n\s+fc: \(SHEET_FREQ\[reaction \? "reaction" : sec\]/.test(pcs), "| Use's tooltip and the open card:", /\n\s+useTip: r\.useTip \|\| `Use \$\{i\.name\}`, open: r\.open,/.test(pcs), "| every row's Frequency line (v0.0.370; v0.0.302 only a Reaction's):", pcs.includes("freqLine: rowLines("));
 

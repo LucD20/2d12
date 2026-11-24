@@ -210,7 +210,8 @@ export async function askEncounterEnd(combat) {
   const pips = Array.from({ length: 4 }, (_, i) => `<i class="pw-mpip${i < now ? " on" : ""}"></i>`).join("");
   const k = await pickOne({
     title: "The encounter ends", name: "The encounter ends", sub: `Momentum ${now} / 4`, icon: "fa-fire", compact: true,
-    html: `<div class="pw-mombar"><span>Party Momentum</span><span class="pw-mpips">${pips}</span><b>${now} / 4</b></div><p class="cw-sub">How did the encounter end for the party?</p>`,
+    leadHtml: `<div class="pw-mombar"><span>Party Momentum</span><span class="pw-mpips">${pips}</span><b>${now} / 4</b></div>`,
+    text: "How did the encounter end for the party?",
     options: [
       { k: "overcome", l: "Overcome", sub: `Winning a fight, negotiation, sneak, or Challenge → Momentum ${nextUp}`, tag: nextUp > now ? "+1" : "Max 4", icon: "fa-trophy", cls: "good" },
       { k: "retreat", l: "Retreat", sub: "The party withdraws and loses all its Momentum", tag: "→ 0", icon: "fa-person-running", cls: "warn" },

@@ -27,4 +27,4 @@ Human Paladin - Lay on Hands 3A vs Dwarf Paladin. Dwarf Paladin heals 18 (2 RP).
 Round 2
 Ogre Chieftain - Ground Slam vs Dwarf Paladin, Human Paladin (Body Save); Goblin Sneak Pushed 2 (hits a wall). Dwarf Paladin: Prone.
 Goblin Sneak - RK vs Nari T2 (forced).
---- wired: Actions true | movement true | Pushed / Pulled true | Reset Turn removes the turn true | a Charge given up true | the toolbar button true
+--- wired: Actions true | movement true | Pushed / Pulled true | Reset Turn removes the turn true | a Charge given up true | in 2d12 Tools drawer true

@@ -88,10 +88,11 @@ export function evaluateCreature(c, st, lineSet = null) {
 }
 
 /** Seed initial state from tokens on the current Foundry scene (or a sensible sandbox if empty). */
-function seedFromScene() {
+export function seedFromScene() {
   const gm = !!game.user?.isGM;
   const unit = Number(canvas?.scene?.grid?.distance ?? canvas?.dimensions?.distance) || 5;
-  const toks = (canvas?.tokens?.placeables ?? []).filter(t => t.actor && (gm || (!t.document?.hidden && t.visible !== false)));
+  const isDead = t => !!(t.actor?.statuses?.has?.("dead") || t.document?.hasStatusEffect?.("dead") || t.combatant?.defeated || t.combatant?.isDefeated || t.document?.combatant?.isDefeated);
+  const toks = (canvas?.tokens?.placeables ?? []).filter(t => t.actor && !isDead(t) && (gm || (!t.document?.hidden && t.visible !== false)));
   const selected = (canvas?.tokens?.controlled ?? [])[0] ?? [...(game.user?.targets ?? [])][0] ?? toks[0] ?? null;
 
   if (!toks.length) {
