@@ -88,7 +88,7 @@ const shortMemberName = (name, base) => {
  * - Default (no `sqId`, unrolled, `c.minion`): auto-grouped via `minionGroupOf` (book's even split, kept as squad if >= 2 members).
  */
 export function resolveSquads(list) {
-  const arr = list ?? [], byKey = new Map(), ofId = new Map();
+  const arr = (list ?? []).filter(c => !goesLast(c)), byKey = new Map(), ofId = new Map();
   const add = (key, cr) => { if (!byKey.has(key)) byKey.set(key, []); byKey.get(key).push(cr); };
   const explicitIds = new Set();
 
@@ -219,7 +219,7 @@ export function gmModel(list, call, ui = {}, opts = {}) {
       sqTitles.set(sk, meta.title);
       return { sk, index: i + 1, ms, meta };
     });
-    const soloUnrolled = inSide.filter(c => !isRolled(c) && !sqRes.ofId.has(c.id));
+    const soloUnrolled = inSide.filter(c => !isRolled(c) && !goesLast(c) && !sqRes.ofId.has(c.id));
     const unrolledSquads = sideSquads.filter(x => !x.ms.every(isRolled));
 
     // 1. Squad Cards first (if any)
@@ -248,14 +248,14 @@ export function gmModel(list, call, ui = {}, opts = {}) {
         rows.push(rowView(ms, call, { stack: k, expanded: ex, moving: !!moving[`stack:${k}`] }));
         if (ex) ms.forEach(m => rows.push(rowView([m], call, {
           member: true, moving: !!moving[m.id],
-          canSquad: isEnemySide && !isRolled(m), checked: !!sel[m.id], sqPopOpen: pop === `solo:${m.id}`,
+          canSquad: isEnemySide && !isRolled(m) && !goesLast(m), checked: !!sel[m.id], sqPopOpen: pop === `solo:${m.id}`,
           sqJoinTargets: unrolledSquads.map(x => ({ sk: x.sk, index: x.index, n: x.ms.length, label: x.meta.title })),
           sqPairTargets: soloUnrolled.filter(o => o.id !== m.id).map(o => ({ id: o.id, name: o.name }))
         })));
       } else {
         rows.push(rowView([c], call, {
           moving: !!moving[c.id],
-          canSquad: isEnemySide && !isRolled(c), checked: !!sel[c.id], sqPopOpen: pop === `solo:${c.id}`,
+          canSquad: isEnemySide && !isRolled(c) && !goesLast(c), checked: !!sel[c.id], sqPopOpen: pop === `solo:${c.id}`,
           sqJoinTargets: unrolledSquads.map(x => ({ sk: x.sk, index: x.index, n: x.ms.length, label: x.meta.title })),
           sqPairTargets: soloUnrolled.filter(o => o.id !== c.id).map(o => ({ id: o.id, name: o.name }))
         }));
@@ -263,11 +263,11 @@ export function gmModel(list, call, ui = {}, opts = {}) {
     }
 
     const selectedIds = isEnemySide ? soloUnrolled.filter(c => sel[c.id]).map(c => c.id) : [];
-    const hasSquadTools = isEnemySide && inSide.some(c => !isRolled(c)) && (sideSquads.length > 0 || soloUnrolled.length >= 2);
+    const hasSquadTools = isEnemySide && inSide.some(c => !isRolled(c) && !goesLast(c)) && (sideSquads.length > 0 || soloUnrolled.length >= 2);
     return {
       ...def, open: !closed[def.key], caret: closed[def.key] ? "▸" : "▾",
       count: sideSquads.length ? `${plural(inSide.length, "creature")} · ${plural(sideSquads.length, "squad")}` : plural(inSide.length, "creature"),
-      hasSquadTools, squadCount: sideSquads.length, hasMinions: inSide.some(c => c.minion && !isRolled(c)),
+      hasSquadTools, squadCount: sideSquads.length, hasMinions: inSide.some(c => c.minion && !isRolled(c) && !goesLast(c)),
       selectedIds, rows
     };
   }).filter(s => s.rows.length);
@@ -311,7 +311,7 @@ export function gmModel(list, call, ui = {}, opts = {}) {
     attr: call.attr, sub: `${ATTR_NAMES[call.attr]} Check · ${plural(list.length, "creature")} · ${totalSquads ? `${plural(totalSquads, "squad")} · ` : ""}${plural(sides.length, "side")} · ties: higher Modifier, then Friendly`,
     attrBtns: ATTRS.map(a => ({ key: a, label: ATTR_NAMES[a], on: a === call.attr, color: ATTR_COLORS[a] })),
     playersLine: `${opts.playersOpen === false ? "Not opened for the players (setting): they roll from their portraits" : "Open for the players too"}${players.length ? `: ${players.map(p => `${p} (${pState(p)})`).join(" · ")}` : ": no player creatures"} · ${st ? "stacks on: more than 5 enemies" : "no stacks: 5 enemies or fewer"}`,
-    stacking: st, sides,
+    stacking: st, sides, hasOpenPop: !!pop,
     sumRoll: listOf(rolling), sumPlayer: listOf(playerWait), sumWait: listOf(npcWait),
     sumKept: list.filter(isRolled).map(c => `${c.name} ${c.rolled}`).join(", ") || "nobody", sumLast: list.filter(goesLast).map(c => c.name).join(", ") || "nobody",
     rollIds: rolling.map(c => c.id), rollN: rollUnits, pending,
@@ -444,14 +444,11 @@ export function squadDissolve(all, sqKey) {
   });
 }
 
-/** Reset `side` to automatic Minion squads (clears explicit sqId/group on unrolled creatures). */
+/** Reset `side` to automatic Minion squads (explicitly writes sqId: "" and group: 0 so Foundry's updateEmbeddedDocuments deep-merge clears "solo"). */
 export function squadAutoMinions(all, side) {
   const out = {};
-  for (const c of (all ?? []).filter(x => sideOf(x) === side && !isRolled(x))) {
-    const next = { ...(c.set ?? {}) };
-    delete next.sqId;
-    delete next.group;
-    out[c.id] = next;
+  for (const c of (all ?? []).filter(x => sideOf(x) === side && !isRolled(x) && !goesLast(x))) {
+    out[c.id] = { ...(c.set ?? {}), sqId: "", group: 0 };
   }
   return out;
 }
@@ -459,8 +456,8 @@ export function squadAutoMinions(all, side) {
 /** Ungroup all unrolled creatures on `side` to Solo. */
 export function squadUngroupSide(all, side) {
   const out = {};
-  for (const c of (all ?? []).filter(x => sideOf(x) === side && !isRolled(x))) {
-    out[c.id] = { ...(c.set ?? {}), sqId: "solo" };
+  for (const c of (all ?? []).filter(x => sideOf(x) === side && !isRolled(x) && !goesLast(x))) {
+    out[c.id] = { ...(c.set ?? {}), sqId: "solo", group: 0 };
   }
   return out;
 }

@@ -23,17 +23,14 @@ differ):
 
 ## Starting a combat
 
-### ui-init-squads · v0.0.489 · Intuitive Initiative Squads & alignment
-Do: Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Try Auto-Squad Minions, Ungroup All, "+ Squad" / "+ Add" popovers, checkbox multi-select + "Group Selected into Squad", dragging one enemy onto another or into a squad, clicking "×" on a member pill, and rolling Initiative.
-Expect: Minions auto-group into visual brass-bordered Squad Cards ("×2 · 1 roll") sharing one row of Check/Roll/Boons/Banes controls; popovers aren't clipped; rolling rolls once per squad while each member keeps its own turn; all buttons, pills, checkboxes, and icons sit cleanly centered.
+### ui-init-squads · v0.0.490 · Intuitive Initiative Squads & alignment
+Rev: 2
+Do: Start a combat with Aveline, Durgan, Ogre Chieftain, Orc Warrior, and 4 Goblin Sneaks, then open Initiative. Try Ungroup All then Auto-Squad Minions, "+ Squad" / "+ Add" popovers (including on the bottom row), checkbox multi-select + "Group Selected into Squad", dragging one enemy onto another or into a squad, toggling Goes last, clicking "×" on a member pill, and rolling Initiative.
+Expect: Minions auto-group into visual brass-bordered Squad Cards ("×2 · 1 roll") and Auto-Squad Minions re-groups cleanly after Ungroup All; "+ Squad" / "+ Add" popovers open cleanly over neighboring rows without clipping; checkboxes have crisp borders; Goes last rows don't clip their badge or show "+ Squad"; all buttons, pills, dropdowns, and icons sit centered.
 
 ## The roll dialog
 
 ## Chat cards
-
-### ui-chat-poly-sb · v0.0.489 · Polyhedral SVG dice & conditional Bloodied/Strained entry
-Do: With Aveline (Sworn Blade) or Durgan (Drawing Light), attack a healthy Orc Warrior and expand both the 2d12 roll breakdown and the damage dice breakdown; then apply enough damage to make the target Bloodied or Strained (and try Undo).
-Expect: Expanded dice render as true tabletop shapes (d4 triangle, d6 square, d8 diamond, d10 kite, d12 pentagon) with centered numbers and gold exploded "!" glow; the Bloodied/Strained line stays hidden while the target is healthy and appears only when the target actually is Bloodied/Strained (hiding again on Undo).
 
 ## Conditions and their Tiers
 

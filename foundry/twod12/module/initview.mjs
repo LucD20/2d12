@@ -46,7 +46,7 @@ function squadCardHtml(r) {
     <span class="iw-sqtag${m.leader ? " lead" : ""}">${m.leader ? "Roll Leader" : "Shares roll"}</span>${m.roleLabel ? `<span class="iw-role">${esc(m.roleLabel)}</span>` : ""}${(m.chips ?? []).map(t => `<span class="iw-fx">${esc(t)}</span>`).join("")}</div>
     ${r.rolled ? "" : `<button type="button" class="iw-sqbtn sub" data-act="sqRemove" data-id="${esc(m.id)}">Make Solo</button>`}</div>`).join("")}</div>` : "";
   const rowCls = r.rolled || r.last ? "quiet" : r.tint;
-  return `<div class="iw-sqbox" ${r.rolled ? "" : `data-drop-squad="${sk}"`}><div class="iw-row ${rowCls} iw-sqrow">${name}${controlsHtml(r, d)}</div>${membersHtml}</div>`;
+  return `<div class="iw-sqbox${r.sqPopOpen ? " has-pop" : ""}" ${r.rolled ? "" : `data-drop-squad="${sk}"`}><div class="iw-row ${rowCls} iw-sqrow">${name}${controlsHtml(r, d)}</div>${membersHtml}</div>`;
 }
 
 /** One row of the GM window. */
@@ -72,7 +72,7 @@ function rowHtml(r) {
     <button type="button" class="iw-ib${r.last ? " on" : ""}" data-act="last" ${d} ${pressed(r.last)} aria-label="${esc(r.name)} goes last">&#10515;</button></div></div>`;
   const drag = r.canSquad ? ` draggable="true" data-drag-id="${k}" data-drop-solo="${k}"` : "";
   const rowCls = r.rolled || r.last ? "quiet" : r.tint;
-  return `<div class="iw-row ${rowCls}${r.member ? " member" : ""}"${drag}>${name}${controlsHtml(r, d)}</div>`;
+  return `<div class="iw-row ${rowCls}${r.member ? " member" : ""}${r.sqPopOpen ? " has-pop" : ""}"${drag}>${name}${controlsHtml(r, d)}</div>`;
 }
 
 /** The GM window. */
@@ -93,7 +93,7 @@ export function gmHtml(m) {
   }).join("");
   const foot = `<footer class="iw-foot"><div class="iw-sum"><div><b>GM rolls now:</b> ${esc(m.sumRoll)}</div><div><b>Their player rolls:</b> ${esc(m.sumPlayer)} · <b>Wait:</b> ${esc(m.sumWait)}</div><div><b>Kept:</b> ${esc(m.sumKept)} · <b>Goes last:</b> ${esc(m.sumLast)}</div></div>
     <div class="iw-fr"><div class="iw-fb"><button type="button" class="iw-btn2 big" data-act="cancel">Cancel</button><button type="button" class="iw-go" data-act="roll"${m.rollN ? "" : " disabled"}>${esc(m.rollLabel)}</button></div><span class="iw-hint">Enter rolls · Esc cancels</span></div></footer>`;
-  return `<div class="iw">${head}${players}<div class="iw-body">${cols}${sides || '<p class="iw-empty">No creature in this encounter.</p>'}</div>${foot}</div>`;
+  return `<div class="iw">${head}${players}<div class="iw-body${m.hasOpenPop ? " has-pop" : ""}">${cols}${sides || '<p class="iw-empty">No creature in this encounter.</p>'}</div>${foot}</div>`;
 }
 
 /** The players' window. */

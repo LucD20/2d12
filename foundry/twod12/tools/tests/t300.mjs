@@ -53,15 +53,19 @@ const listRem = applySets(list0, IM.squadRemove(list0, [sqRows0[0].ids[0]]));
 const rollGroupsRem = IM.squadGroupsForRoll(listRem);
 console.log("3. Remove Sq1 member dissolves Sq1:", Object.keys(rollGroupsRem).length === 1 && !rollGroupsRem[sqRows0[0].ids[0]] && rollGroupsRem[sq2Ids[0]]?.join(",") === sq2Ids.join(","));
 
-// Ungroup all -> 0 squads, rollN = 6; then Auto-Squad -> back to 2 squads, rollN = 4
-const listSolo = applySets(list0, IM.squadUngroupSide(list0, "hostile"));
-const listAuto = applySets(listSolo, IM.squadAutoMinions(listSolo, "hostile"));
-console.log("4. Ungroup & Auto-Squad:", IM.gmModel(listSolo, call).rollN, "->", IM.gmModel(listAuto, call).rollN);
+// Ungroup all -> 0 squads, rollN = 6; then Auto-Squad using Foundry deep-merge ({ ...old, ...upd }) -> back to 2 squads, rollN = 4
+const mergeSets = (xs, upd) => xs.map(c => (upd[c.id] ? { ...c, set: { ...(c.set ?? {}), ...upd[c.id] } } : c));
+const listSolo = mergeSets(list0, IM.squadUngroupSide(list0, "hostile"));
+const listAuto = mergeSets(listSolo, IM.squadAutoMinions(listSolo, "hostile"));
+console.log("4. Ungroup & Auto-Squad (deep-merge):", IM.gmModel(listSolo, call).rollN, "->", IM.gmModel(listAuto, call).rollN, "| sqId cleared:", listAuto.find(c => c.id === "g1").set.sqId === "");
 
-// Custom squad via checkboxes + Squad Card HTML check
+// Custom squad via checkboxes + Squad Card HTML check + has-pop + goesLast excluded from squad controls
 const listCustom = applySets(listSolo, IM.squadCreate(listSolo, ["oc", "ow"]));
-const htmlPop = IV.gmHtml(IM.gmModel(listCustom, call, { sel: { g1: true, g2: true }, pop: `solo:g1` }));
-console.log("5. Squad HTML pieces:", htmlPop.includes("iw-sqbox") && htmlPop.includes("iw-mpill") && htmlPop.includes("iw-bulkbar") && htmlPop.includes("iw-pop") && htmlPop.includes("Auto-Squad Minions"));
+const listWithLast = listCustom.map(c => (c.id === "g4" ? { ...c, set: { ...(c.set ?? {}), last: true } } : c));
+const mPop = IM.gmModel(listWithLast, call, { open: { "hostile|G": true }, sel: { g1: true, g2: true }, pop: `solo:g1` });
+const htmlPop = IV.gmHtml(mPop);
+const g4Row = mPop.sides.find(s => s.key === "hostile").rows.find(r => r.id === "g4");
+console.log("5. Squad HTML pieces:", htmlPop.includes("iw-sqbox") && htmlPop.includes("iw-mpill") && htmlPop.includes("iw-bulkbar") && htmlPop.includes("iw-pop") && htmlPop.includes("iw-body has-pop") && htmlPop.includes("has-pop") && !g4Row.canSquad);
 
 // 2. Conditional Bloodied / Strained on chat damage cards
 const baseAtk = {

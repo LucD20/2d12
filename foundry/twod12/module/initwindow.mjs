@@ -184,6 +184,7 @@ export class InitWindow extends BaseInitWindow {
   _onFirstRender(context, options) {
     super._onFirstRender(context, options);
     this.element.addEventListener("dragstart", ev => {
+      if (ev.target.closest("button, input, select, option, .iw-pop")) { ev.preventDefault(); return; }
       const el = ev.target.closest("[data-drag-id]");
       if (!el) return;
       this._dragId = el.dataset.dragId || "";
@@ -220,7 +221,7 @@ export class InitWindow extends BaseInitWindow {
   _members(el) { const ids = new Set(String(el.dataset.ids ?? "").split(",").filter(Boolean)); return creaturesOf(this.combat).filter(c => ids.has(c.id)); }
   async _save(byId) {
     const ups = Object.entries(byId).map(([id, set]) => ({ _id: id, [`flags.${F}.init`]: set }));
-    if (ups.length) await this.combat.updateEmbeddedDocuments("Combatant", ups);
+    if (ups.length) { await this.combat.updateEmbeddedDocuments("Combatant", ups); if (this.rendered) this.render(); }
   }
   async _click(ev) {
     if (this.ui.pop && !ev.target.closest(".iw-popwrap")) { this.ui.pop = ""; this.render(); }
