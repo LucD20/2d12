@@ -98,7 +98,7 @@ When a Minion goes Down, each tick it lost counts as the damage that removed it,
 
 **A Grunt is half a Standard:** weaker than a PC. Its default: **Health 18** (Vigor 9, Resolve 9), 3 AP and the Reaction Point, the Defenses and Modifiers of every rank, a Basic attack of [V] 1d4 / 1d6, a 2 AP Round Special of about 5½ / 8½ on one creature or 2½ / 4½ on each of two, about 4 damage to Health a turn at the table. **CV 50.**
 
-A Grunt has Health, so it can be Bloodied or Strained, takes conditions, and a big hit kills it at once; a Minion's ticks don't care how big the hit is. Grunts reward the heavy hitter, Minions the many attacks. Grunts are for mixing in with other enemies: a fight of Grunts alone runs longer than its CV says.
+A Grunt has Health, so a big hit kills it at once; a Minion's ticks don't care how big the hit is. Grunts reward the heavy hitter, Minions the many attacks. Grunts are for mixing in with other enemies: a fight of Grunts alone runs longer than its CV says.
 
 ### Minor enemies
 
