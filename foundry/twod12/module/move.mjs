@@ -98,11 +98,25 @@ export function nearestOriginCell(originCells, cells) {
   const best = [...originCells].sort((a, b) => cheb(a) - cheb(b) || Math.hypot(a.j + 0.5 - t.x, a.i + 0.5 - t.y) - Math.hypot(b.j + 0.5 - t.x, b.i + 0.5 - t.y))[0];
   return [best];
 }
+/**
+ * Pure (v0.0.501, Lucas, 2026-11-25: "Pushing a large creature I think should allow to push to the sides of the cone"; book, Chapter 3, Forced
+ * Movement: "A larger creature being moved is measured from its squares nearest the origin"): the moved creature's squares nearest the origin
+ * (center to center); a one-square creature is itself. Each gives its own straight line and cone; "farther" and "closer" are the distance of
+ * the creature's nearest square (movedDist).
+ */
+export function nearestMovedCells(cells, originCells) {
+  if ((cells ?? []).length <= 1) return cells ?? [];
+  const o = centerOfCells(originCells), d = c => Math.hypot(c.j + 0.5 - o.x, c.i + 0.5 - o.y), m = Math.min(...cells.map(d));
+  return cells.filter(c => d(c) <= m + 1e-9);
+}
+/** Pure (v0.0.501): the distance from the origin's square to the moved creature's nearest square, after a shift s. */
+const movedDist = (cells, o) => s => Math.min(...cells.map(c => Math.hypot(c.j + 0.5 + s.dj - o.x, c.i + 0.5 + s.di - o.y)));
 export function pushShifts(cells, originCells, N, coneDeg = TWOD12.pushCone) {
   originCells = nearestOriginCell(originCells, cells);   // v0.0.470: measured from the origin's nearest square
-  const o = centerOfCells(originCells), t = centerOfCells(cells);
-  const dist = s => Math.hypot(t.x + s.dj - o.x, t.y + s.di - o.y);
-  const dirs = awayDirs(cells, originCells, coneDeg);
+  const o = centerOfCells(originCells);
+  const dist = movedDist(cells, o);   // v0.0.501: from the creature's nearest square (a one-square creature: as before)
+  const seen = new Set(), dirs = [];   // v0.0.501: every cone through the creature's nearest squares
+  for (const n of nearestMovedCells(cells, originCells)) for (const d of awayDirs([n], originCells, coneDeg)) { const k = d.join(","); if (!seen.has(k)) { seen.add(k); dirs.push(d); } }
   const out = new Map([["0,0", { di: 0, dj: 0, steps: 0, parent: null }]]);
   let layer = [out.get("0,0")];
   for (let step = 1; step <= N; step++) {
@@ -128,10 +142,11 @@ export function pushShifts(cells, originCells, N, coneDeg = TWOD12.pushCone) {
  * stops there (it is not pulled any closer). Returns Map key -> { di, dj, steps, parent }, like pushShifts.
  */
 export function pullShifts(cells, originCells, N) {
-  const o = centerOfCells(nearestOriginCell(originCells, cells)), t = centerOfCells(cells);   // v0.0.470: measured from the origin's nearest square
-  const dist = s => Math.hypot(t.x + s.dj - o.x, t.y + s.di - o.y);
-  const bearing = Math.atan2(o.y - t.y, o.x - t.x), lim = Math.PI / 4 - 1e-9;
-  const inCone = s => { let d = Math.atan2(s.di, s.dj) - bearing; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return Math.abs(d) < lim; };
+  const oc = nearestOriginCell(originCells, cells), o = centerOfCells(oc);   // v0.0.470: measured from the origin's nearest square
+  const dist = movedDist(cells, o);   // v0.0.501: from the creature's nearest square (a one-square creature: as before)
+  // v0.0.501: a cone through each of the creature's nearest squares (book, Chapter 3); a square is in when it is inside one of them
+  const bearings = nearestMovedCells(cells, oc).map(n => Math.atan2(o.y - (n.i + 0.5), o.x - (n.j + 0.5))), lim = Math.PI / 4 - 1e-9;
+  const inCone = s => bearings.some(bearing => { let d = Math.atan2(s.di, s.dj) - bearing; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return Math.abs(d) < lim; });
   const oset = new Set(originCells.map(c => `${c.i},${c.j}`));
   const intoOrigin = s => cells.some(c => oset.has(`${c.i + s.di},${c.j + s.dj}`));
   const nextTo = s => cells.some(c => originCells.some(q => Math.max(Math.abs(c.i + s.di - q.i), Math.abs(c.j + s.dj - q.j)) <= 1));
@@ -856,11 +871,19 @@ function wallBetween(a, b) {
  * center only, so a Large token could end with a column of its squares behind a wall. A space (its top-left square c, w x h squares) is in a
  * wall when a wall stands between the space's center and the center of one of its squares.
  */
+/** The points of a square a space's walls are tested to: its center and its corners, 15% in from its sides. */
+function squareProbes(i, j, size) {
+  const t = canvas.grid.getTopLeftPoint({ i, j }), k = 0.15 * size, f = size - k;
+  return [canvas.grid.getCenterPoint({ i, j }), { x: t.x + k, y: t.y + k }, { x: t.x + f, y: t.y + k }, { x: t.x + k, y: t.y + f }, { x: t.x + f, y: t.y + f }];
+}
 export function spaceInWall(c, w = 1, h = 1) {
   if (w <= 1 && h <= 1) return false;
   try {
     const size = canvas.grid.size, t = canvas.grid.getTopLeftPoint({ i: c.i, j: c.j }), mid = { x: t.x + (w * size) / 2, y: t.y + (h * size) / 2 };
-    for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) if (wallBetween(mid, canvas.grid.getCenterPoint({ i: c.i + di, j: c.j + dj }))) return true;
+    // v0.0.501 (Lucas on v0.0.500: "Still ends inside it"): a wall can cut a square without passing between the space's center and the square's
+    // center (a rock over the outer part of a column), so each square's inset corners are tested too (15% in from its sides: a wall on the
+    // space's edge still lets it stand flush against it)
+    for (let di = 0; di < h; di++) for (let dj = 0; dj < w; dj++) for (const p of squareProbes(c.i + di, c.j + dj, size)) if (wallBetween(mid, p)) return true;
   } catch (e) { return false; }
   return false;
 }
@@ -2073,6 +2096,17 @@ export function registerMovement() {
       const undoCtx = { doc, from: { x: origin.x, y: origin.y, elevation: doc.elevation ?? 0 }, to: { x: to.x, y: to.y, elevation: to.elevation ?? doc.elevation ?? 0 }, histLen: Array.isArray(doc.movementHistory) ? doc.movementHistory.length : 0, movementId: movement?.id ?? "" };
       chargeMovement(c, squares, to, { par, undoCtx }).catch(e => console.error("twod12 | could not charge movement", e));
     } catch (e) { console.error("twod12 | movement tracking failed", e); }
+  });
+  // v0.0.501 (Lucas on v0.0.500: "Still ends inside it"): every position change of a larger token is checked here too (whatever path the
+  // drag took to it); the system's own moves (Forced Movement, Leaning, Undo) carry their option and pass
+  Hooks.on("preUpdateToken", (doc, changes, options, userId) => {
+    try {
+      if (userId !== game.user.id || options?.twod12Forced || options?.twod12Lean || options?.twod12Undo || !("x" in changes || "y" in changes)) return;
+      if (!canvas?.grid?.isSquare || !((doc.width ?? 1) > 1 || (doc.height ?? 1) > 1) || doc.parent?.id !== canvas.scene?.id) return;
+      const w = Math.max(1, Math.round(changes.width ?? doc.width ?? 1)), h = Math.max(1, Math.round(changes.height ?? doc.height ?? 1));
+      const x = changes.x ?? doc.x, y = changes.y ?? doc.y;
+      if (spaceInWall(cellAt({ x: x + 2, y: y + 2 }), w, h)) { warn(`${doc.name} doesn't fit there: part of its space would be inside a wall.`); return false; }
+    } catch (e) { /* not checked */ }
   });
   // Fallback when preMoveToken does not report the move: the plain update of the position.
   Hooks.on("preUpdateToken", (doc, changes, options, userId) => {

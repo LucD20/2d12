@@ -111,10 +111,10 @@ const POL_ORD = { debuff: 0, buff: 1, neutral: 2 };
 const sortConds = list => [...(list ?? [])].map(c => ({ ...c, pol: condPolarity(c) })).sort((a, b) => POL_ORD[a.pol] - POL_ORD[b.pol]);
 const condPillHtml = c => {
   const mk = c.pol === "buff" ? '<span class="h3-cmk" aria-hidden="true">▲</span>' : c.pol === "debuff" ? '<span class="h3-cmk" aria-hidden="true">▼</span>' : "";
-  // v0.0.500 (Lucas on v0.0.499: the conditions' numbers "are hard to see"): a condition's number (Vulnerable 1) is a bold badge on its icon, out
-  // of the name that the pill cuts short
+  // v0.0.500 (Lucas on v0.0.499: the conditions' numbers "are hard to see"): a condition's number (Vulnerable 1) is drawn out of the name that
+  // the pill cuts short; v0.0.501 (on v0.0.500: "Nothing changed": the row clips 20 px, the badge on the icon was cut): bold, beside the icon
   const nm = String(c.name ?? "").trim().match(/^(.*\S)\s+(\d+)$/), name = nm ? nm[1] : c.name, num = nm ? nm[2] : "";
-  return `<button type="button" class="h3-c ${c.pol}" data-hud="effect" data-effect="${esc(c.id)}" aria-label="${esc(`${c.name}${c.dur ? ` (${c.dur})` : ""}: open the Effect`)}"><i>${c.img ? `<img src="${esc(c.img)}" alt="">` : esc(String(c.name ?? "?").charAt(0))}${num ? `<b class="h3-cnum">${esc(num)}</b>` : ""}</i>${mk}<span>${esc(name)}${c.dur ? ` <small>${esc(c.dur)}</small>` : ""}</span></button>`;
+  return `<button type="button" class="h3-c ${c.pol}" data-hud="effect" data-effect="${esc(c.id)}" aria-label="${esc(`${c.name}${c.dur ? ` (${c.dur})` : ""}: open the Effect`)}"><i>${c.img ? `<img src="${esc(c.img)}" alt="">` : esc(String(c.name ?? "?").charAt(0))}</i>${num ? `<b class="h3-cnum">${esc(num)}</b>` : ""}${mk}<span>${esc(name)}${c.dur ? ` <small>${esc(c.dur)}</small>` : ""}</span></button>`;
 };
 /** D4: the conditions under AP and Escalation (a row always there, so a condition never changes the HUD's height). c = [{ id, name, dur, img, pol? }] */
 export function condsHtml(conds = [], { max = 3 } = {}) {

@@ -19,35 +19,31 @@ differ):
 
 ## Characters and sheets
 
-### guard-bar · v0.0.500 · The token's Guard bar is taller, closer to the Health bar
-Do: Give Aveline Guard 4 (her sheet's Guard button), and look at her token's bars.
-Expect: The blue Guard bar above the Health bar reaches further down: about 2 pixels from the Health bar (the brass pin may touch it). The whole bar block keeps its height.
-
-### sheet-bars-click · v0.0.500 · The sheet's bars: a click raises, a right-click lowers; the bar stays still
-Do: Open Aveline's sheet. Right-click her Vigor bar a few times, then left-click it; take her Vigor from 10 down to 9, and on to Bloodied (Ctrl+right-click: 5 at a time); do the same on Resolve until Strained.
-Expect: A right-click lowers the bar (1 damage), a left-click raises it (1 healed). The bar's track doesn't move or change width when the number loses a digit (10 to 9) or when the Bloodied / Strained tag appears.
-
 ## The HUD
 
-### hud-hp-boxes · v0.0.500 · The Token HUD's Vigor (red) and Resolve (blue) boxes
-Do: Right-click Orc Warrior's token. In the red Vigor box at the bottom type -5 and Enter; then +2; in the blue Resolve box type 3 (a plain number).
-Expect: Two boxes at the bottom of the Token HUD in place of Foundry's one: Vigor (red) and Resolve (blue), each with its number left and "/ max". -5 deals 5 to Vigor only, +2 heals 2 of it, a plain number sets what is left of that pool (Resolve 3). The token's bars, Bloodied and Strained follow. Guard isn't used (a correction, like the sheet's bars).
+### hud-hp-boxes · v0.0.501 · The Token HUD's Vigor (red) and Resolve (blue) boxes, above the HUD bar
+Do: Right-click Orc Warrior's token (with the system's HUD bar open at the bottom of the screen, and a window open behind it). In the red Vigor box type -5 and Enter; then +2; in the blue Resolve box type 3.
+Expect: Both boxes, and the whole Token HUD, show above the system's HUD bar and the windows, and both can be clicked. -5 deals 5 to Vigor only, +2 heals 2 of it, a plain number sets what is left of that pool (Resolve 3). The token's bars, Bloodied and Strained follow.
+Rev: 2
 
-### status-palette-groups · v0.0.500 · The status palette in groups, with names
-Do: Right-click Orc Warrior's token and open its status effects (the conditions button). Click Prone's icon, then click the word Daunted; right-click an icon.
-Expect: The palette is in five groups (Health, Movement, Senses, Harmful, Helpful), each condition's icon with its name beside it; an active one is lit (bold name, a gold frame). A click on the icon or on the name toggles it as before; a right-click does what Foundry's right-click did.
+### status-palette-groups · v0.0.501 · The status palette in groups, with names, above the HUD bar
+Do: Right-click Orc Warrior's token and open its status effects (the conditions button). Click Prone's icon, then click the word Daunted.
+Expect: The palette shows whole, above the system's HUD bar and the windows: five groups (Health, Movement, Senses, Harmful, Helpful), each icon with its name; a click on the icon or the name toggles it.
+Rev: 2
 
-### cond-numbers · v0.0.500 · A condition's number on the token and on the HUD's pills
-Do: On Aveline's turn, Demoralize Orc Warrior (GM Force Tier 2: Vulnerable 1); give it Slowed 2 from the palette. Look at its token, then select it and look at the HUD's conditions row.
-Expect: On the map, the Vulnerable and Slowed icons show their numbers (1, 2) in a white badge with a dark edge on the icon's corner. In the HUD, the pill's icon carries the number as a small badge, so it shows even when the name is cut short.
+### cond-numbers · v0.0.501 · A condition's number on the token and on the HUD's pills
+Do: On Aveline's turn, Demoralize Orc Warrior (GM Force Tier 2: Vulnerable 1); give it Slowed 2 from the palette (then raise it to 3). Look at its token, then select it and look at the HUD's conditions row. Also look at a creature that already had a valued condition before the update (reload the world as GM).
+Expect: On the map, the Vulnerable and Slowed icons carry their number in a dark disc with a gold ring in the icon's lower right corner (1, then 2, then 3 when it rises). In the HUD's row, the pill shows the number in bold right after the icon, before the name. A condition applied before the update gets its numbered icon when the GM loads the world.
+Rev: 2
 
 ## Starting a combat
 
 ## The roll dialog
 
-### save-tier-words · v0.0.500 · The Save dialog writes each Tier as the card does
-Do: Have Aveline (the level 4 build) use Word of Radiance on Orc Warrior, then click Orc Warrior's Save button on the card.
-Expect: The Save dialog's three Tiers read like the card ("[R] 3d6 Ho.", "No effect.", an effect's words), never the code ("3d6[mind,holy]").
+### save-tier-words · v0.0.501 · The Save dialog writes each Tier as the card does, readable in the dark theme
+Do: In the dark theme, have Aveline (the level 4 build) use Word of Radiance on Orc Warrior, then click Orc Warrior's Save button on the card. Then try a Save Action whose Tier pushes or knocks Prone.
+Expect: The Tiers read like the card ("[R] 3d6 Ho.", "Pushed 1", "Prone"): no "3d6[mind,holy]" and no "@Move". The [R] and the other game words are the light colors of the dark theme (as in the roll dialog), not dark blue.
+Rev: 2
 
 ## Chat cards
 
@@ -55,9 +51,14 @@ Expect: The Save dialog's three Tiers read like the card ("[R] 3d6 Ho.", "No eff
 
 ## Movement
 
-### large-in-wall · v0.0.500 · A Large token can't end partly inside a wall
-Do: Drag Ogre Chieftain (2 x 2) beside a wall so that one column of its squares would end behind it (its center in the open); then, as the GM, Alt-drag it (Forced Movement) toward the wall.
-Expect: The drag is refused: "Ogre Chieftain doesn't fit there: part of its space would be inside a wall." A drag where the whole space fits works as before. The Alt-drag stops on the last space where it fits whole (the rest is a Collision).
+### large-in-wall · v0.0.501 · A Large token can't end partly inside a wall
+Do: Drag Ogre Chieftain (2 x 2) beside a wall so that a column of its squares would end inside the rock, even only its outer part, in combat and out of it; then drag it flush against a straight wall (its side on the wall's line).
+Expect: The drag into the rock is refused: "Ogre Chieftain doesn't fit there: part of its space would be inside a wall." Flush against a wall it stands (nothing of it inside). The GM's Alt-drag still stops before the wall.
+Rev: 2
+
+### push-large-cone · v0.0.501 · Pushing a larger creature: the cone from its nearest square (book, Chapter 3)
+Do: With Aveline beside Ogre Chieftain (2 x 2), level with its top square on its left side, use Shove (GM Force Tier 3: Pushed 3) and hover the squares beyond it; then Pull it with Drawing Light from 3 squares to its left.
+Expect: The push can go straight away or diagonally to either side, the same cone a Medium creature gets (from the Ogre's square nearest Aveline, not from its center): no side is cut off. The pull's cone points straight at Aveline from the Ogre's nearest square.
 
 ## Reactions and Judge
 

@@ -34,8 +34,9 @@ import { registerEffectEditor } from "./fxeditor.mjs";
 import { registerAppliedEditor } from "./fxapplied.mjs";
 import { registerClock, moveClock } from "./clock.mjs";
 import { registerSleep, bumpExhausted } from "./sleep.mjs";
-import { registerHudHp } from "./hudhp.mjs";
-import { registerStatusPalette } from "./statuspal.mjs";   // v0.0.500: the status palette in groups, the numbers on the map's icons   // v0.0.500: the Token HUD's Vigor and Resolve boxes
+import { registerHudHp } from "./hudhp.mjs";   // v0.0.500: the Token HUD's Vigor and Resolve boxes
+import { registerStatusPalette } from "./statuspal.mjs";   // v0.0.500: the status palette in groups, with names
+import { registerCondNumbers } from "./condnum.mjs";   // v0.0.501: the numbered condition icons (a condition's number on the token)
 import { registerLight } from "./light.mjs";
 import { registerLightOverlay } from "./lightoverlay.mjs";
 import { CharacterData, NpcData, SpeciesData, ClassData, FeatureData, ActionData, WeaponData, EffectData, TalentData, ArmorData, GearData } from "./data.mjs";
@@ -88,6 +89,7 @@ Hooks.once("init", () => {
   registerSleep();
   registerHudHp();
   registerStatusPalette();
+  registerCondNumbers();
   registerClock();
   registerEffectEditor();
   registerAppliedEditor();

@@ -3,8 +3,8 @@
 //     Token HUD's status palette is grouped (Health, Movement, Senses, Harmful, Helpful; the book has no groups: Claude's) and each icon has its
 //     name beside it. Foundry's own icons are kept (moved into the groups), so its click and right-click still work on them; a click on a name
 //     clicks its icon.
-//   - "Numbers of conditions dont show in the token": a condition with a value (Vulnerable 1, Slowed 2, Exhausted 3) shows its number on its icon
-//     on the map (a badge drawn over the icon's corner).
+//   - (v0.0.501: the numbers on the map's icons are the numbered icons of condnum.mjs; v0.0.500's drawing over Foundry's effect sprites showed
+//     nothing and is gone. effectNumber stays for the tests.)
 // Pure helpers first (the tests load them).
 
 export const STATUS_GROUPS = [
@@ -70,47 +70,6 @@ export function groupPalette(app, html) {
   return true;
 }
 
-/* ---- the numbers on the map's icons ---- */
-function numberText(n, size) {
-  const t = new PIXI.Text(String(n), { fontFamily: "Source Sans 3, Signika, sans-serif", fontSize: Math.max(10, Math.round(size * 0.62)), fontWeight: "800", fill: 0xffffff, stroke: 0x000000, strokeThickness: Math.max(3, Math.round(size * 0.16)), lineJoin: "round" });
-  t.name = "twod12-cnum"; t.eventMode = "none"; t.zIndex = 10000;
-  return t;
-}
-/** After Foundry draws a token's effect icons: each icon of an effect with a number gets it (the icon's zIndex is its effect's index). */
-function addNumbers(token) {
-  const box = token?.effects;
-  if (!box?.children) return;
-  for (const c of [...box.children]) if (c.name === "twod12-cnum") { box.removeChild(c); c.destroy(); }
-  const list = token.actor?.temporaryEffects ?? [];
-  for (const c of [...box.children]) {
-    if (c === box.bg || c === box.overlay || !(c instanceof PIXI.Sprite)) continue;
-    const n = effectNumber(list[c.zIndex]);
-    if (n > 0) { c._twod12Num = numberText(n, c.height || 20); box.addChild(c._twod12Num); }
-    else c._twod12Num = null;
-  }
-  placeNumbers(token);
-}
-function placeNumbers(token) {
-  const box = token?.effects;
-  for (const c of box?.children ?? []) {
-    const t = c._twod12Num;
-    if (!t || t.destroyed) continue;
-    t.style.fontSize = Math.max(10, Math.round((c.height || 20) * 0.62));
-    t.position.set(c.x + (c.width || 20) - t.width * 0.75, c.y + (c.height || 20) - t.height * 0.8);
-  }
-}
-
 export function registerStatusPalette() {
   Hooks.on("renderTokenHUD", (app, html) => { try { groupPalette(app, html); } catch (e) { console.warn("twod12 | the status palette", e); } });
-  Hooks.once("ready", () => {
-    try {
-      const P = CONFIG.Token?.objectClass?.prototype;
-      if (!P || P._twod12Nums) return;
-      P._twod12Nums = true;
-      const draw = P._drawEffects, refresh = P._refreshEffects;
-      if (typeof draw === "function") P._drawEffects = async function (...args) { const r = await draw.apply(this, args); try { addNumbers(this); } catch (e) { console.warn("twod12 | effect numbers", e); } return r; };
-      if (typeof refresh === "function") P._refreshEffects = function (...args) { const r = refresh.apply(this, args); try { placeNumbers(this); } catch (e) { /* drawn next time */ } return r; };
-      for (const t of canvas?.tokens?.placeables ?? []) t.renderFlags?.set?.({ redrawEffects: true });
-    } catch (e) { console.warn("twod12 | effect numbers", e); }
-  });
 }

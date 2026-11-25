@@ -76,3 +76,18 @@ Rime Strike
 Shared Burden
 Oath of Burden
 Bear the Blow
+
+# 2026-11-25 (Lucas, notes on v0.0.499: "only the old placeholder ones"): the placeholder weapons' Weapon Techniques leave the book (Foundry
+# deprecated them on 2026-11-17); each weapon gets its own when its Weapon Group is redone.
+Stick and Slip
+Hooking Chop
+Rending Chop
+Ringing Blow
+Bowl Over
+Lunge
+Keep Them Off
+Gut Punch
+Sting
+Lock & Loose
+Point Blank
+Thunderclap

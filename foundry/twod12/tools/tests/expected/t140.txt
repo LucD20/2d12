@@ -4,7 +4,7 @@ diagonal   C3 / B3 B4 C4 / A3 A4 B5 C5
 Pulled 5 from 3 squares away stops next to the origin: 2 steps at most | never the origin's square: true | the 45 degree edge is out (1,1): true
 already next to the origin: no square to go to: true
 aimed at the origin's square (the book's example): moves 2, unused 1, damage {"self":1,"other":1} | too far to aim at: null
-a Large creature pulled 4 toward a creature 4 rows below: 1,-1 1,0 2,-1 2,-2 2,0 2,1 3,-1 3,-2 3,0 3,1
+a Large creature pulled 4 toward a creature 4 rows below: 1,0 2,-1 2,0 2,1 3,-1 3,-2 3,0 3,1
 --- Corners
 a wall ends at the corner: blocked                       {"kind":"solid","creatures":[]}
 the same wall is an open door: open                      {"kind":"","creatures":[]}

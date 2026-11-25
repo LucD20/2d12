@@ -6,7 +6,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 |---|---|---|---|---|---|
 | 01-roll.md | Chapter 1: The Roll | core | Part I: Core Rules | 29.3 | 348 |
 | 02-turns.md | Chapter 2: Turns and Actions | core | Part I: Core Rules | 35.9 | 361 |
-| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 45.0 | 495 |
+| 03-movement.md | Chapter 3: Movement and the Environment | core | Part I: Core Rules | 45.4 | 496 |
 | 04-health.md | Chapter 4: Health | core | Part I: Core Rules | 15.1 | 261 |
 | 05-characters.md | Chapter 5: Characters | core | Part II: Characters | 8.8 | 102 |
 | 06-basic-actions.md | Chapter 6: Basic Actions | core | Part III: Reference | 0.9 | 58 |
@@ -17,7 +17,7 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 | 12-paladin.md | Paladin | paladin |  | 5.3 | 143 |
 | 13-archer.md | Archer | archer |  | 5.8 | 146 |
 | 14-bestiary.md | Bestiary: Building NPCs | bestiary |  | 39.2 | 475 |
-| 15-gear.md | Gear | gear |  | 14.4 | 226 |
+| 15-gear.md | Gear | gear |  | 13.9 | 197 |
 
 ## 01-roll.md: Chapter 1: The Roll
 
@@ -107,41 +107,41 @@ Run from the folder that holds `rules-src/`: `python3 build_rules.py` rebuilds t
 - 93:   ### Corners
 - 101: ## Straight Line
 - 115: ## Forced Movement
-- 128:   ### Pushed
-- 141:   ### Pulled
-- 154:   ### Slid
-- 165:   ### Collision
-- 183: ## Reposition
-- 212:   ### Swapping Places
-- 218: ## Steadiness
-- 224: ## Difficult Terrain
-- 230: ## Hazardous Terrain
-- 249:   ### Deadly Hazards
-- 255: ## Reach
-- 265:   ### Weapon Range
-- 273:   ### Weapon Actions and Your Weapon
-- 277: ## Engaged
-- 287:   ### Ranged Combat While Engaged
-- 293: ## Flanking
-- 321: ## Line of Effect
-- 334: ## Cover
-- 353:   ### Leaning
-- 357: ## Areas
-- 363:   ### Cover against an area
-- 367:   ### Emanation
-- 375:   ### Aura
-- 379:   ### Burst
-- 385:   ### Line
-- 407:   ### Other areas
-- 414: ## Light
-- 426:   ### Bright
-- 430:   ### Dim
-- 434:   ### Darkness
-- 438: ## Senses
-- 470:   ### Sight Senses
-- 477:   ### Other Senses
+- 129:   ### Pushed
+- 142:   ### Pulled
+- 155:   ### Slid
+- 166:   ### Collision
+- 184: ## Reposition
+- 213:   ### Swapping Places
+- 219: ## Steadiness
+- 225: ## Difficult Terrain
+- 231: ## Hazardous Terrain
+- 250:   ### Deadly Hazards
+- 256: ## Reach
+- 266:   ### Weapon Range
+- 274:   ### Weapon Actions and Your Weapon
+- 278: ## Engaged
+- 288:   ### Ranged Combat While Engaged
+- 294: ## Flanking
+- 322: ## Line of Effect
+- 335: ## Cover
+- 354:   ### Leaning
+- 358: ## Areas
+- 364:   ### Cover against an area
+- 368:   ### Emanation
+- 376:   ### Aura
+- 380:   ### Burst
+- 386:   ### Line
+- 408:   ### Other areas
+- 415: ## Light
+- 427:   ### Bright
+- 431:   ### Dim
+- 435:   ### Darkness
+- 439: ## Senses
+- 471:   ### Sight Senses
+- 478:   ### Other Senses
 
-Open (to be decided) boxes: 74: "Flying isn't written yet: going up and down, ending a turn in the air,"; 331: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 411: "Cones are not written yet (and Lines wider than 1 square)."; 467: "Hiding and sneaking are not written yet."
+Open (to be decided) boxes: 74: "Flying isn't written yet: going up and down, ending a turn in the air,"; 332: "Targeting walls and objects (and the Breach trait, to hit a creature b"; 412: "Cones are not written yet (and Lines wider than 1 square)."; 468: "Hiding and sneaking are not written yet."
 
 ## 04-health.md: Chapter 4: Health
 
@@ -336,26 +336,26 @@ Open (to be decided) boxes: 49: "Only Stage 0's tables are written. The tables o
 - 11:   ### Weapon Damage [W]
 - 19:   ### Reading the Weapon Tables
 - 31:   ### Melee
-- 49:     #### Melee Weapon Techniques
-- 78:   ### Ranged
-- 91:     #### Ranged Weapon Techniques
-- 110:   ### Hands
-- 123:   ### Properties
-- 129:     #### Barehanded
-- 133:     #### Firearm
-- 137:     #### Light (property)
-- 141:     #### Long
-- 145:     #### Projectile
-- 149:     #### Strung
-- 153:     #### Thrown
-- 157:     #### Non-threatening
-- 161:     #### Reload (property)
-- 167:   ### Weapon Groups
-- 171:   ### Mastery
-- 196:   ### Fists (the weapon)
-- 206: ## Armor
-- 217:   ### Armor Training
+- 46:     #### Melee Weapon Techniques
+- 58:   ### Ranged
+- 71:     #### Ranged Weapon Techniques
+- 81:   ### Hands
+- 94:   ### Properties
+- 100:     #### Barehanded
+- 104:     #### Firearm
+- 108:     #### Light (property)
+- 112:     #### Long
+- 116:     #### Projectile
+- 120:     #### Strung
+- 124:     #### Thrown
+- 128:     #### Non-threatening
+- 132:     #### Reload (property)
+- 138:   ### Weapon Groups
+- 142:   ### Mastery
+- 167:   ### Fists (the weapon)
+- 177: ## Armor
+- 188:   ### Armor Training
 
-Action cards: Seizing Cut (55, Weapon Technique, Round); Thwart Cut (59, Weapon Technique, Round); Stick and Slip (63, Weapon Technique, Round); Hooking Chop (65, Weapon Technique, Round); Rending Chop (67, Weapon Technique, Round); Ringing Blow (69, Weapon Technique, Round); Bowl Over (71, Weapon Technique, Round); Lunge (73, Weapon Technique, Round); Keep Them Off (75, Weapon Technique, Round); Gut Punch (77, Weapon Technique, Round); Wounding Shot (95, Weapon Technique, Round); Circling Shot (99, Weapon Technique, Round); Sting (103, Weapon Technique, Round); Lock & Loose (105, Weapon Technique, Round); Point Blank (107, Weapon Technique, Round); Thunderclap (109, Weapon Technique, Round)
+Action cards: Seizing Cut (52, Weapon Technique, Round); Thwart Cut (56, Weapon Technique, Round); Wounding Shot (75, Weapon Technique, Round); Circling Shot (79, Weapon Technique, Round)
 
-Open (to be decided) boxes: 28: "Every weapon in these tables except the Arming Sword, the Longsword, t"; 46: "The placeholder weapons' Techniques, below and in the Ranged list, sti"; 193: "Only the two Basic swords and the two Basic bows are written this way "; 223: "Armor properties and named armors are not written yet: Resist by damag"
+Open (to be decided) boxes: 28: "Every weapon in these tables except the Arming Sword, the Longsword, t"; 164: "Only the two Basic swords and the two Basic bows are written this way "; 194: "Armor properties and named armors are not written yet: Resist by damag"

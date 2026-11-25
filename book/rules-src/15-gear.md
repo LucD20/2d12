@@ -26,7 +26,7 @@ Your class determines your Weapon Modifier. Each weapon belongs to a [[Weapon Gr
 A melee weapon deals more than a ranged one, which strikes from safety. Among melee weapons, one that takes both hands deals the most and one that leaves a hand free less: what the weapon can do pays for the difference. The die tells weapons apart: a d4 on a big flat number is steady (Hammers, Crossbows), a d8 swings (Axes, Firearms), a d6 is in the middle.
 
 > [!tbd]
-> **Every weapon in these tables except the Arming Sword, the Longsword, the Hunting Bow and the Recurve Bow is a placeholder**, made to playtest and to fill the tables: its numbers, its properties and its Weapon Technique are rewritten when its Weapon Group is. Those four are the model.
+> **Every weapon in these tables except the Arming Sword, the Longsword, the Hunting Bow and the Recurve Bow is a placeholder**, made to playtest and to fill the tables: its numbers and its properties are rewritten when its Weapon Group is, and it has no Weapon Technique until then (its old one left the book, Lucas 2026-11-25). Those four are the model.
 
 ### Melee
 
@@ -43,9 +43,6 @@ A melee weapon deals more than a ranged one, which strikes from safety. Among me
 | Pike | Polearms | Long, Melee, Two-handed | Pierce | 3 | [V] 0 / 4 + 1d6! / 6 + 1d8! | Basic |
 | Knuckle Dagger | Unarmed | Barehanded, Melee | Pierce | 1 | [V] 0 / 2 + 1d4! / 3 + 1d4! | Basic |
 
-> [!tbd]
-> The placeholder weapons' Techniques, below and in the Ranged list, still write the dice of the earlier weapon table (a Greataxe's 1d6 / 2d8), and Point Blank still writes a Bane while Engaged: each is rewritten with its Weapon Group.
-
 #### Melee Weapon Techniques
 
 The two swords are the two ways to hold one. The **Arming Sword** leaves a hand free, and its Technique uses that hand on the foe. The **Longsword** takes both hands, hits half again as hard, and its Technique holds the foe's blade.
@@ -58,23 +55,6 @@ The two swords are the two ways to hold one. The **Arming Sword** leaves a hand 
 
 @@CARD:Thwart Cut@@
 
-**The placeholder weapons:**
-
-@@CARD:Stick and Slip@@
-
-@@CARD:Hooking Chop@@
-
-@@CARD:Rending Chop@@
-
-@@CARD:Ringing Blow@@
-
-@@CARD:Bowl Over@@
-
-@@CARD:Lunge@@
-
-@@CARD:Keep Them Off@@
-
-@@CARD:Gut Punch@@
 ### Ranged
 
 | Name | Group | Properties | Type | Range | Damage | Rung |
@@ -98,15 +78,6 @@ The two bows deal the same on average and are played in opposite ways. The **Hun
 
 @@CARD:Circling Shot@@
 
-**The placeholder weapons:**
-
-@@CARD:Sting@@
-
-@@CARD:Lock & Loose@@
-
-@@CARD:Point Blank@@
-
-@@CARD:Thunderclap@@
 ### Hands
 
 You have two hands: your **main hand** and your **off hand**. You choose which is which when you make your character. Each weapon you hold uses one or two hands.

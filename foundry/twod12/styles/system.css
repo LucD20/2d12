@@ -1493,9 +1493,10 @@ a.twod12-inline .calc { font-size: .8em; opacity: .75; margin-left: 2px; }
 /* v0.0.438 (CARD-ONE step 5): a card carries its own color tokens wherever it is drawn (the sheet, the chat, a tooltip, the HUD): they were set
    only for a card inside the actor sheet, so a card in the chat, a tooltip or the HUD took the page's values (dark ink on the dark card). */
 /* v0.0.450 (Lucas, g3-res: "Still very dark blue" in the chat log): a chat card in the sidebar carries the tokens too (it took :root's);
-   v0.0.452 ("on the roll dialog is still looking with the dark blue"): the roll dialog too */
+   v0.0.452 ("on the roll dialog is still looking with the dark blue"): the roll dialog too; v0.0.501 ("the blue is very dark in dark theme"): the
+   Save / Check dialog (ckwin) too */
 .twod12.acard, .application.twod12.twod12-actor .acard, .application.twod12.twod12-actor .twod12.chat, .twod12.acard .twod12, .application.twod12.twod12-actor .acard .twod12, .application.twod12.twod12-actor .twod12.chat .twod12,
-.application.twod12.twod12-actor .nb, .twod12.chat, .twod12.chat .twod12, .twod12.rolldlg, .twod12.rolldlg .twod12 {
+.application.twod12.twod12-actor .nb, .twod12.chat, .twod12.chat .twod12, .twod12.rolldlg, .twod12.rolldlg .twod12, .twod12.ckwin, .twod12.ckwin .twod12 {
   --g-roll: #1f7a73; --g-requires: #2c5f9e; --g-kind: #b4472a; --g-damage: #8a6a00; --g-keywords: #5c5a55;
   --c-body: #7a1626; --c-mind: #17327a; --c-instinct: #14532d; --c-appeal: #6b4e00; --c-wmod: #9a4a00; --c-pmod: #5b3a9e; --c-smod: #455566;
   --c-bane: #b3261e; --c-boon: #0b5cad; --c-rally: #0a6b62; --c-ap: #3b4cb8; --c-mv: #4d6b0a; }
@@ -5730,7 +5731,5 @@ a.twod12-inline:hover, a.twod12-inline:hover .ti-name, a.twod12-inline .ti-name:
 #token-hud .twod12-statuspal .twod12-sitem:has(.active) { border-color: rgba(201, 162, 39, 0.85); background: rgba(201, 162, 39, 0.12); }
 
 /* v0.0.500 (Lucas on v0.0.499): a condition's number on its HUD pill is a badge on the icon (hudview.mjs condPillHtml) */
-.twod12-hud .h3-c i { position: relative; overflow: visible; }
-.twod12-hud .h3-c i .h3-cnum { position: absolute; right: -5px; bottom: -4px; min-width: 11px; height: 11px; padding: 0 2px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; line-height: 1; color: #fff; background: #111; border: 1px solid var(--s-gold, #c9a227); border-radius: 6px; font-style: normal; }
-.twod12-hud .h3-c { overflow: visible; }
-.twod12-hud .h3-c > span { margin-left: 3px; }
+/* v0.0.501 (on v0.0.500: the row clips at 20 px, so the badge on the icon was cut): the number beside the icon, bold, never cut */
+.twod12-hud .h3-c .h3-cnum { flex: none; font-size: .82rem; font-weight: 800; line-height: 1; color: var(--hud-ink); font-variant-numeric: tabular-nums; }

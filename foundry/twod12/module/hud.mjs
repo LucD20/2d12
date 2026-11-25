@@ -3,6 +3,7 @@
 // it). A Version's stamp opens the roll dialog on that Version ("Skip roll dialog", a per-player setting, rolls at once; Shift does the other);
 // right-click opens the Action card (a PC's menu also pins the Version to the Quick row). The hotbar becomes a row inside it (a setting), and the
 // pick bar (pickbar.mjs) asks its question in the HUD's middle while a choice waits. Client settings: Show the HUD, Skip roll dialog, Hotbar in the HUD.
+import { plainIcon, valueOf } from "./condnum.mjs";   // v0.0.501
 import { emptyHudHtml, hudPanelHtml, HUD_SAVES } from "./hudmodel.mjs";
 import { partyStripHtml, tokenBarHtml, marksHtml, escHtml, condPopHtml, condPolarity, HUD_TABS_PC, HUD_TABS_NPC, FREQ_ORDER, FREQ_LABEL } from "./hudview.mjs";
 import { techniqueState } from "./mastery.mjs";   // v0.0.418 (D6)
@@ -120,10 +121,12 @@ function effectPolarity(e, name) {
   if (pos && !neg) return "buff";
   return "neutral";
 }
+const num = e => valueOf({ name: e.name, flags: { twod12: { value: e.getFlag?.(F, "value") } } });
 function condsOf(actor, durationText) {
   return [...(actor.effects ?? [])].filter(e => !e.disabled && !e.getFlag?.(F, "wound") && !e.getFlag?.(F, "grants")?.length).map(e => {
     const name = String(e.name ?? "").replace(/\s*\([^)]*\)\s*$/, "");
-    return { id: e.id, name, dur: durationText(e), img: e.img ?? e.icon ?? "", pol: effectPolarity(e, name) };   // v0.0.441: its picture (D4)
+    // v0.0.501: a numbered condition icon (condnum.mjs) is drawn plain here: the pill writes the number itself
+    return { id: e.id, name: num(e) && !/\s\d+$/.test(name) ? `${name} ${num(e)}` : name, dur: durationText(e), img: plainIcon(e.img ?? e.icon ?? ""), pol: effectPolarity(e, name) };   // v0.0.441: its picture (D4)
   });
 }
 /** A party card (and the cards of several selected tokens). */

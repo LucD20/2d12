@@ -14,18 +14,35 @@ function showOddsEnabled() {
 }
 
 /**
+ * Pure (v0.0.501, Lucas on v0.0.500: "the @Move still shows as @Move"): a text's chips as the words they stand for ("@Move[pushed|distance:1]"
+ * is "Pushed 1", "@Condition[vulnerable|value:1|eot]" is "Vulnerable 1", a chip with a label is its label).
+ *
  * Pure (v0.0.500, Lucas on v0.0.499: the Save dialog "shows the tiers effect as 3d6[mind,holy] etc instead of just the descriptions"): a Tier
  * written in the @Save chip's code ("3d6+2[mind,holy], \"Pushed 1.\"") as the card writes it ("[R] 3d6 + 2 Ho; Pushed 1."). Plain text is kept.
  */
+export function chipWords(text) {
+  const MOVE = { push: "Pushed", pushed: "Pushed", pull: "Pulled", pulled: "Pulled", slid: "Slid", slide: "Slid", reposition: "Reposition", advance: "Advance", evade: "Evade", shift: "Shift" };
+  const cap = w => String(w ?? "").split("-").map(x => (x ? x[0].toUpperCase() + x.slice(1) : x)).join("-");
+  return String(text ?? "").replace(/@(\w+)\[((?:[^\[\]]|\[[^\[\]]*\])*)\](?:\{([^}]*)\})?/g, (_m, kind, args, label) => {
+    if (label) return label;
+    const seg = String(args).split("|").map(x => x.trim()), opt = k => seg.find(x => x.toLowerCase().startsWith(`${k}:`))?.slice(k.length + 1).trim() ?? "";
+    const lab = opt("label"); if (lab) return lab;
+    const head = seg[0] ?? "";
+    if (kind === "Move") { const d = opt("distance"); return `${MOVE[head.toLowerCase()] ?? cap(head)}${d ? ` ${d}` : ""}`; }
+    if (kind === "Condition") { const v = opt("value"); return `${head.toLowerCase() === "bleed" ? "Lingering" : cap(head)}${v ? ` ${v}` : ""}`; }
+    return cap(head);
+  });
+}
+/** (the Tier's text, its chips as words: chipWords) */
 export function saveTierWords(text) {
   const t = String(text ?? "").trim();
   if (!t || t === "0") return "No effect.";
-  if (!/\[(?:body|mind)(?:,[^\]]*)?\]|^"/i.test(t)) return t;
+  if (!/\[(?:body|mind)(?:,[^\]]*)?\]|^"/i.test(t)) return chipWords(t);
   const codeOf = name => Object.entries(TWOD12.subtypes ?? {}).find(([k, v]) => k && String(v).toLowerCase() === String(name ?? "").trim().toLowerCase())?.[0] ?? "";
   const parts = [], re = /"((?:[^"]|"")*)"|((?:\[[^\]]*\]|[^,\["])+)/g;
   let m;
   while ((m = re.exec(t))) {
-    if (m[1] !== undefined) { const x = m[1].trim(); if (x) parts.push({ text: x }); continue; }
+    if (m[1] !== undefined) { const x = chipWords(m[1]).trim(); if (x) parts.push({ text: x }); continue; }
     const p = m[2].trim(), d = p.match(/^(.*?)\[(body|mind)(?:,([^\]]*))?\]$/i);
     if (!d) { if (p && p !== "0") parts.push({ text: p }); continue; }
     const amt = d[1].replace(/\s*\+\s*/g, " + ").trim(), sub = codeOf(d[3]);

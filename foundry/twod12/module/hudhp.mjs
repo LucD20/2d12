@@ -36,6 +36,11 @@ export function hpHud(app, html) {
   if (!root?.querySelector || !actor || !["character", "npc"].includes(actor.type)) return false;
   const sys = actor.system ?? {};
   if (!(Number(sys.bdt) > 0 || Number(sys.mdt) > 0)) return false;
+  // v0.0.501 (Lucas on v0.0.500: the Resolve box and the status palette "appear under the token hud (the one at the bottom, from this system),
+  // it should likely appear above windows"): the map's HUD layer (Foundry's #hud) goes above the interface (the system's HUD bar is z 60 in it)
+  // and the windows; it lets the mouse through where it has nothing (Foundry's own pointer-events)
+  const layer = root.closest?.("#hud") ?? root.parentElement;
+  if (layer?.style) layer.style.zIndex = "1000";
   root.querySelector(".twod12-hphud")?.remove();
   const bar1 = root.querySelector(".attribute.bar1");
   const wrap = document.createElement("div");
