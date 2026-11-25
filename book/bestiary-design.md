@@ -431,8 +431,10 @@ Lucas, on the Elite's open rule (K6): "Ok, lets settle it and start." **Proposed
 
 **Lucas on Roused (2026-11-25):** "the Risk is quite big. People will have to synergize dealing both kinds of damage to not trigger it earlier, and causing Roused while it is in melee with another PC, hurts that other PC. Should we do per elite? As features? Or its best to do one default elite feature?" **Claude's answer (proposed, not decided): the size is the rank's, the form is the creature's. One default slot: "an Elite has an Encounter Action of its own, worth about a turn"** (used on its own turn, at the GM's moment, on a card the players can read; about 9 or 10 more damage to Health in a fight, or the like in effect). Roused becomes a possible signature for a creature meant to enrage, not the rank's rule. His own set for the ogre (Crushing Grip, Roar, Great Sweep, Hurled Goblin as a second Special, a Ground Slam once an encounter that hits a Line 3 and leaves it Difficult Terrain, a no-roll Backhand as a Turn Reaction, its size) already carries an Elite's worth by the count, with no Roused. The review, one by one: `cards/ogre-chieftain-redesign.md`.
 
+**DECIDED (Lucas, 2026-11-25: "1. Yes"): K6 is closed. An Elite has an Encounter Action of its own, worth about a turn** (the size is the rank's: one extra turn's worth in a fight, about 9 or 10 more damage to Health at the table or the like in effect; the form is the creature's). **The Default Elite:** a Standard with twice the Health (72), the same Defenses, Modifiers, AP and attacks, and that Encounter Action (by default one that hits several creatures for about twice a Round Special); CV 200. The Ogre Chieftain is decided but for the name of its Encounter Action (`cards/ogre-chieftain-redesign.md`, the last section); its Backhand does not disrupt the mover (his ruling: a Trigger, 2 squares of movement and 1 damage, not an Action).
+
 ### What comes next
 
-- **Lucas's choice for the Elite's rule (K6) and the Ogre Chieftain's ideas** (`cards/ogre-chieftain-redesign.md`).
+- **The Ogre Chieftain's last two points** (the name of its Encounter Action; a Charge against its Backhand).
 - A Boss (its turns, its Health a PC, the rule against shutdown: G2, H9).
 - **The Foundry pass for every creature at once** (`foundry/foundry-backlog.md`), then **decision 16, to the table**, and one Foundry version.

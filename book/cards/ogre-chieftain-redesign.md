@@ -1,6 +1,6 @@
 # The Ogre Chieftain: the first Elite (the record)
 
-> **Status (2026-11-25): LUCAS HAS CHOSEN THE OGRE'S CARDS AND QUESTIONED ROUSED; Claude's review, one by one, is the last section. Open: the Elite's rule (Claude now proposes a slot, not one effect), Ground Slam's numbers, the Reaction's reading. Design only: no card source, no Foundry.** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md`, `grave-wisp-redesign.md`, `goblin-sneak-redesign.md`.
+> **Status (2026-11-25): DECIDED but for one name. The Elite's rule is a slot ("an Elite has an Encounter Action of its own, worth about a turn"); the ogre's cards and the Slam's numbers are his; the Backhand is rewritten his way (it does not disrupt the movement). The last section is the sheet. Open: the Slam's name ("more ogreish"), and one consequence of the Backhand for a Charge. Design only: no card source, no Foundry.** The Bestiary's record is `book/bestiary-design.md`; the earlier creatures', `orc-warrior-redesign.md`, `grave-wisp-redesign.md`, `goblin-sneak-redesign.md`.
 
 ## Lucas's words (2026-11-25)
 
@@ -210,4 +210,30 @@ So the "something" has a size: it is worth about seven tenths of a Standard's tu
 - **Hurled Goblin** (Special; Round, 2 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). Requirement: a willing Minion ally is within the ogre's Reach. Tier 2: [V] 1d4! Bl. Tier 3: [V] 1 + 1d6! Bl. Effect: the Minion is Repositioned to an empty square adjacent to the target, the ogre's choice.
 - **Ground Slam** (Special; Encounter, *2 AP*; [Weapon, Save, Area]; Area: Line 3; all creatures in the Area; *Instinct Save against its Weapon DC, 13*). *Tier 1: [V] 5 + 2d8 Bl. Tier 2: [V] 3 + 1d8 Bl. Tier 3: no effect.* Effect: the squares of the Line are Difficult Terrain (EoE).
 - **Backhand** (Reaction; Turn, 1R). Interrupt: an enemy would enter a square adjacent to the ogre. Effect: it takes [V] 1 Bl and is Pushed 2.
+
+## Lucas's answers to the review (2026-11-25)
+
+"1. Yes. 2. Yes, but the name could sound more "ogreish". 3. Not really interrupts it, since the PC can move in with 2 movements only, get backhanded, then still has movement, it doesnt disrupt movemetn."
+
+- **1. Decided: the Elite's rule is a slot. "An Elite has an Encounter Action of its own, worth about a turn."** Roused is only a possible signature for some creature, never the rank's rule. (K6 is closed.)
+- **2. Decided: the Slam's numbers** (2 AP; an Instinct Save against DC 13; [V] 5 + 2d8 Bl / 3 + 1d8 Bl / no effect; the Line 3 is Difficult Terrain for everyone, EoE). **Its name is open:** Claude's candidates, plain and heavy as an ogre would say it: **Crack the Ground** (used below until he picks), Flatten, Pound the Earth, Earthbreaker.
+- **3. Corrected: the Backhand doesn't disrupt the movement.** Claude had it as an Interrupt that stops the mover where it stood and costs it about 1 AP: wrong. His ruling: the PC is knocked back and goes on with the movement it has left. So it is written as a **Trigger** (the enemy has entered the square), with the sentence that says so. What it costs a PC is 2 squares of movement and 1 damage, not an Action.
+
+### What follows from the Backhand as he rules it (Claude's notes)
+
+- **An Evade never triggers it:** an Evade is movement that triggers no Reactions (Chapter 3). So stepping in with an Evade is every PC's answer, from the core.
+- **Once a turn:** a PC knocked back walks in again on the same Advance if it has the squares, and the ogre can't answer twice.
+- **A Charge is the one case where it costs an Action:** a Charge's movement ends on the first square that reaches its target; the Backhand then throws the charger 2 squares back, and its Basic Attack has no target (Chapter 2: the attack is made "if there is a valid target"). **For Lucas to say:** leave it (charging an ogre is a mistake the players learn once), or let a Charge go on.
+- The push is from the ogre: 3 squares from it after the blow, outside its Reach 2. Into a wall or another creature it adds Collision damage.
+
+## The sheet (decided but for the Slam's name; not built)
+
+**Ogre Chieftain.** Elite, CV 200, level 1. Health 72 (Vigor 44, Resolve 28). Armor Defense 14, Ward Defense 12. Weapon +2, Power +2. Body +3, Instinct +1, Appeal +1, Mind -1. Large (4), Reach 2, Steadiness 1, Speed 5. 4 AP and the Reaction Point. A club in one hand, the other free. Tag: Ogre.
+
+- **Crushing Grip** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (2); one creature; Weapon vs. Armor Defense). *A hand closes round you like a door shutting.* Tier 2: [V] 1d4! Bl. Tier 3: [V] 2 + 1d6! Bl; Grabbed. The ogre holds one creature at a time: a new Grab lets the first go.
+- **Roar** (Basic attack; At-will, 1 AP; [Power, Ranged, Strike, Fear]; 6 sq.; one creature; Power vs. Ward Defense). *It turns its whole face toward you and bellows.* Tier 2: [R] 1d4! Ps. Tier 3: [R] 1d4! Ps; Staggered (EoT).
+- **Great Sweep** (Special; Round, 2 AP; [Weapon, Melee, Strike]; Reach (2); up to two creatures; Weapon vs. Armor Defense). *The club goes round at chest height.* Tier 2: [V] 2 + 1d6 Bl. Tier 3: [V] 4 + 1d8 Bl.
+- **Hurled Goblin** (Special; Round, 2 AP; [Weapon, Ranged, Strike]; 6 sq.; one creature; Weapon vs. Armor Defense). *The goblin has time to look surprised.* Requirement: a willing Minion ally is within the ogre's Reach. Tier 2: [V] 1d4! Bl. Tier 3: [V] 1 + 1d6! Bl. Effect: the Minion is Repositioned to an empty square adjacent to the target, the ogre's choice (hit or miss); it takes no damage.
+- **Crack the Ground** (the Elite's Encounter Action; Encounter, 2 AP; [Weapon, Save, Area]; Area: Line 3, from any square of the ogre's edge; all creatures in the Area; Instinct Save against its Weapon DC, 13). *It brings the club down two-handed, and the floor gives.* Tier 1: [V] 5 + 2d8 Bl. Tier 2: [V] 3 + 1d8 Bl. Tier 3: no effect. Effect: the squares of the Line are Difficult Terrain for every creature (EoE).
+- **Backhand** (Reaction; Turn, 1R). *You stepped inside its reach as if it weren't looking.* Trigger: an enemy enters a square adjacent to the ogre. Effect: it takes [V] 1 Bl and is Pushed 2. Its movement isn't disrupted: it goes on with the movement it has left.
 
