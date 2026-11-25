@@ -100,7 +100,8 @@ export function registerHideMarks() {
   Hooks.on("canvasTearDown", () => { focusId = ""; clearLines(); });
   Hooks.on("controlToken", (t, on) => { if (on && t.actor?.getFlag?.(F, "hide")) { focus(t); MK.showLines(); } });
   Hooks.on("hoverToken", (t, on) => { if (on && t.actor?.getFlag?.(F, "hide")) { focus(t); MK.showLines(); } });
-  Hooks.on("updateActor", (actor, ch) => { const f = ch?.flags?.twod12; if (f && "hide" in f) redrawHideMarks();   // V14: an unset flag comes as a ForcedDeletion under its own key });
+  // V14: an unset flag comes as a ForcedDeletion under its own key
+  Hooks.on("updateActor", (actor, ch) => { const f = ch?.flags?.twod12; if (f && "hide" in f) redrawHideMarks(); });
   Hooks.on("updateToken", (doc, ch) => { if (focusId && ("x" in (ch ?? {}) || "y" in (ch ?? {}))) setTimeout(drawLines, 50); });
   Hooks.on("deleteToken", doc => { if (doc.id === focusId) { focusId = ""; clearLines(); } else redrawHideMarks(); });
 }
