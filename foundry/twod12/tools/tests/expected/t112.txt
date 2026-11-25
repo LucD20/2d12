@@ -1,11 +1,11 @@
-documents: 138
-references: 95 | broken: none
+documents: 115
+references: 50 | broken: none
 Paladin features:  | Divine Connection kept for testing (not in the class): false | its id is the old one: undefined
-Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Judge, Smite, Sworn Blade, Drawing Light | Hallmark Action (items, choice, pick 1): Binding Light, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Art (items, choice, pick 1): Lantern of Faith, Hold the Line, Commandment | Escalation 2 Ability (items, choice, pick 1): Armor of Faith, Roving Judgment | Skill Talent (talent, pick 1)
-Level 2: Escalation Hook (items, granted): Kindled Wrath | Encounter Pick (items, choice, pick 1): Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation 4 Ability (items, choice, pick 1): Weight of Judgment, Tireless Vigil | Talent (talent, pick 1)
-Level 3: Second Art (items, choice, pick 1): Lantern of Faith, Hold the Line, Commandment | Escalation 6 Ability (items, choice, pick 1): Reckoning, Hallowed Stance | Skill Talent (talent, pick 1)
+Level 1: Attribute increases (attr: body or appeal, mind or instinct) | Features (items, granted): Judge, Smite, Sworn Blade, Drawing Light | Hallmark Action (items, choice, pick 1): Binding Light, Lay On Hands | Hallmark Reaction (items, choice, pick 1): Shield of Faith, Rebuke | Skill Talent (talent, pick 1)
+Level 2: Escalation Hook (items, granted): Kindled Wrath | Encounter Pick (items, choice, pick 1): Bulwark of Faith, Consecrated Ground, Word of Radiance | Talent (talent, pick 1)
+Level 3: Skill Talent (talent, pick 1)
 Level 4: Stage Talent (talent, pick 1)
-Repertoire: Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation: Armor of Faith, Roving Judgment, Weight of Judgment, Tireless Vigil, Hallowed Stance / Reckoning
+Repertoire: Bulwark of Faith, Consecrated Ground, Word of Radiance | Escalation:  / 
 pick Features gone: true | Health high 20 / low 10 (Stage 1 +0 / +0)
 --- the cards
 Judge: atwill 10 One enemy you can see | marks: true judge | 0 AP: The target is Judged by you (EoE). || 1 AP: The target is Judged by you (EoE). If another creature was Judged by you, it no longer is.
@@ -15,9 +15,9 @@ Lay On Hands: One willing ally | Setup: You @Move[advance|distance:5]{Advance up
 Shield of Faith: turn interrupt strikeDamage 5 | 1R | An enemy's [Strike] Action would damage the target. | That damage is reduced by @Reduce[1+pow]{1 + Pow}, and the triggering creature is @Condition[taunted|rounds:1|to:trigger]{Taunted} by you (1 round). [after: @Reduce[1+pow] @Condition[taunted|rounds:1|to:trigger]]
 Rebuke: turn trigger enemyAway 3 | 1R | The target moves away from you. | The target is @Condition[hindered|eot]. [after: @Condition[hindered|eot]]
 Bulwark of Faith: encounter interrupt strikeDamage 5 | 1R | An enemy's [Strike] Action would damage the target. | The target gains @Guard[rally]{Guard RP}, before the damage. After the damage, they are @Move[slid|distance:1]. [after: @Guard[rally] @Pause[After the damage] @Move[slid|distance:1]]
-Lantern of Faith (Art): Kindle 1 AP: You shed @Book[Bright]{Bright light} 3 (EoE). {Kindle (Bright light 3)} || Reveal 1 AP 5: The target sheds @Book[Bright]{Bright light} 1 (1 round). {Reveal (Bright light 1)} || Glare 1 AP [magic,save] 5 vs instinct: @Condition[half-blinded|eot]{Half-Blinded (EoT)}
-Hold the Line (Art): Brace 1 AP: The squares adjacent to you now are Difficult Terrain for enemies (1 round). They stay where they are if you move. {Brace} || Trade Places 1 AP reach: You and the target @Swap[]{swap squares}. Each of you is moved by a Reposition. || Rescue 1 AP reach: @Move[reposition|distance:2] the target.
-Commandment (Art): Challenge 1 AP 5: The target is @Condition[taunted|rounds:1]{Taunted} by you (1 round). || Courage 1 AP: An @Book[Aura]{Aura} 3 around you (1 round): you and your allies in it ignore the Daunted condition. {Courage} || Kneel 1 AP [magic,save] 5 vs appeal: @Condition[prone]
+Lantern of Faith (Art): Kindle 1 AP: You shed @Book[Bright]{Bright light} 3 (EoE). {} || Reveal 1 AP 5: The target sheds @Book[Bright]{Bright light} 1 (1 round). {} || Glare 1 AP [magic,save] 5 vs instinct: @Condition[half-blinded|eot]{Half-Blinded (EoT)}
+Hold the Line (Art): Brace 1 AP: The squares adjacent to you now are Difficult Terrain for enemies (1 round). They stay where they are if you move. {} || Trade Places 1 AP reach: You and the target @Swap[]{swap squares}. Each of you is moved by a Reposition. || Rescue 1 AP reach: @Move[reposition|distance:2] the target.
+Commandment (Art): Challenge 1 AP 5: The target is @Condition[taunted|rounds:1]{Taunted} by you (1 round). || Courage 1 AP: An @Book[Aura]{Aura} 3 around you (1 round): you and your allies in it ignore the Daunted condition. {} || Kneel 1 AP [magic,save] 5 vs appeal: @Condition[prone]
 Word of Radiance: Escalation undefined encounter 2 AP All enemies in the Area | 2 emanation (enemies) | 3d6 Ho / 2d6 Ho / 1d6 Ho | @Move[pushed|distance:1|t1:3|t2:2|t3:1|pick:yes|from:area]
 Reckoning: Escalation 6 encounter 0 AP All enemies in the Area | 2 emanation (enemies) | - / - / - | @Move[pushed|distance:2|pick:yes|from:area] @Condition[daunted|rounds:1]
 Consecrated Ground: For 3 rounds, the Area is Difficult Terrain for enemies. Whenever you or an ally starts a turn in the Area, that creature gains @Guard[pow]{Guard Pow}. | the Zone: {"carry":{"on":false,"who":"enemies","self":false,"fx":"","fxName":""},"carry2":{"who":"enemies","on":false,"self":false,"fx":"","fxName":""},"heal":{"on":false,"who":"allies","self":true,"formula":"1d4"},"ht":{"gives":{"on":false,"fx":"","fxName":""},"on":false,"who":"all","self":false,"entering":t
@@ -33,10 +33,10 @@ Reveal (Bright light 1): rounds | light | The creature sheds Bright light 1 (Dim
 Brace: rounds | map | For 1 round, the squares in a 1 Emanation around where you stood are Difficult Terrain for enemies (Hold the Line, Brace). They stay where they are if you move.
 Courage: rounds | aura | For 1 round, an Aura 3 around you: you and your allies in it ignore the Daunted condition (Commandment, Courage).
 the old cards out of Foundry: all gone | old cards kept in their folder:  | in no level: true
-Aveline (Human Paladin, Smite): Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Commandment, Roving Judgment, Kindled Wrath, Word of Radiance, Weight of Judgment, Lantern of Faith, Reckoning, Cold Domain, Rime Strike, Thwart Cut | ids unique: true
-Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Kindled Wrath, Bulwark of Faith, Tireless Vigil, Commandment, Hallowed Stance, Shared Burden, Oath of Burden, Bear the Blow, Seizing Cut | ids unique: true
-Sylwen (Elf Archer, Quick Shots): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow, Take Aim, Take Aim, Wounding Shot | ids unique: true
-Kaela (Human Archer, Strafe): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet, Ricochet, Ricochet, Circling Shot | ids unique: true
+Aveline (Human Paladin, Smite): Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke, Kindled Wrath, Word of Radiance, Cold Domain, Rime Strike, Thwart Cut | ids unique: true
+Durgan (Dwarf Paladin, Lay On Hands): Judge, Smite, Sworn Blade, Drawing Light, Lay On Hands, Shield of Faith, Kindled Wrath, Bulwark of Faith, Shared Burden, Oath of Burden, Bear the Blow, Seizing Cut | ids unique: true
+Sylwen (Elf Archer, Quick Shots): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Thrill of the Kill, Volley, Take Aim, Take Aim, Wounding Shot | ids unique: true
+Kaela (Human Archer, Strafe): Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Thrill of the Kill, Hit and Run, Ricochet, Ricochet, Circling Shot | ids unique: true
 Goblin Sneak (minion, speed 7): Rusty Knife atwill, Dirty Trick round
 Grave Wisp (standard, speed 5): Chilling Touch atwill, Dread Whisper round
 Ice Pillar (minion, speed 0): 

@@ -18,7 +18,7 @@ console.log("cards checked:", cards.length, "| e.g.", ["Mark Quarry", "Brawler",
 function scrub(src) {
   let out = src.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, " "));
   out = out.split("\n").map(l => l.replace(/(^|[^:"'`\\])\/\/.*$/, "$1")).join("\n");
-  for (const re of [/export async function giveSettingsV\d+\s*\(/g, /static migrateData\s*\(/g, /export function paladinLeftovers\s*\(/g, /export function archerLeftovers\s*\(/g]) {   // v0.0.409: the Paladin migration's list of old cards
+  for (const re of [/export async function giveSettingsV\d+\s*\(/g, /static migrateData\s*\(/g, /export function paladinLeftovers\s*\(/g, /export function archerLeftovers\s*\(/g, /export function b5NamesList\s*\(/g]) {   // v0.0.409: the Paladin migration's list of old cards
     let m;
     while ((m = re.exec(out))) {
       let i = out.indexOf("{", m.index), depth = 0, j = i;

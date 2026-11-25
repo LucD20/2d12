@@ -5,6 +5,9 @@ Everything finished up to v0.0.207 (the done items, the per-version "to check" n
 
 **2026-11-12, after SIM-4 (no Foundry version):** `book/ruler/worth.json` was written again (the engine's fix: an enemy at 0 Health is out at once), so the tiny "Ruler:" line of five class cards changes at the next rebuild of the packs (Font of Mercy 0.26, Mending Light 0.71, Hallowed Stance 0.58, Overwatch 0.72, Covering Shot 1.00 AP a turn). The 245 tests pass with it.
 
+## THE CORE REWORK, BATCH 5, FIRST STEP (v0.0.507, 2026-11-25, branch `pack-batch5-escalation`): BUILT
+- The Arts, the Escalation Passives and Reckoning left the packs, the classes and the pregens; `migrateB5` removes them from an old world (docs/reference.md, v0.0.507). **Left in the code, unused:** the hooks that ran the removed Passives (`hooks.mjs`: Armor of Faith, Roving Judgment, Tireless Vigil, Hallowed Stance, Blade and Bow, One More Arrow, Fleet, Clear Lines, Opening Shot), the Arts' Modes window and `artcard.mjs` (a Mode-card face): kept for a return of the Arts; delete them if Lucas drops the Arts for good. **Not run:** the gallery (no card changed; removed cards only). **Next for batch 5 in Foundry:** the level 2 Escalation 3 ability (the Encounter Pick merged), the Archer's dE line on Steady Draw (once decided), dE as a die notation (`explode.mjs`, the roll dialog).
+
 ## PLAYTEST 8, PASS 1 (v0.0.494, 2026-11-24, branch `pack-batch3-foundry`)
 - [ ] **Future-proofing (Lucas, 2026-11-24): Rename internal Foundry trait key `"magic"` → `"power"`** (with a world migration for existing items/actors/effects, and matching cleanup of `shot` → `projectile` / `gun` → `firearm`) so `"magic"` never collides mentally or in code with the new `"magical"` (`[Magical]`) Keyword trait.
 

@@ -1,7 +1,7 @@
 --- the class and the cards
-Level 1: Features: Shifting Aim, Darting Blade, Steady Draw, Harrying Shot | Hallmark Action: Quick Shots, Strafe | Hallmark Reaction: Slip Away, Snap Shot | Art: Footwork, Trick Shots, Spotter | Escalation 2 Ability: Lean and Loose, Blade and Bow | Skill Talent
-Level 2: Escalation Hook: Thrill of the Kill | Encounter Pick: Volley, Hit and Run, Covering Fire | Escalation 4 Ability: Clear Lines, Opening Shot | Talent
-Level 3: Second Art: Footwork, Trick Shots, Spotter | Escalation 6 Ability: One More Arrow, Fleet | Skill Talent
+Level 1: Features: Shifting Aim, Darting Blade, Steady Draw, Harrying Shot | Hallmark Action: Quick Shots, Strafe | Hallmark Reaction: Slip Away, Snap Shot | Skill Talent
+Level 2: Escalation Hook: Thrill of the Kill | Encounter Pick: Volley, Hit and Run, Covering Fire | Talent
+Level 3: Skill Talent
 Level 4: Stage Talent
 Light armor, Weapon +2 / Power +1, Speed +1: light 2 1 either 1
 Quick Shots' Tiers: Mod / 2[W]+Mod / 3[W]+Mod | traits: ranged,shot,strike,weapon | Critical: You gain 1 AP.
@@ -9,7 +9,7 @@ Snap Shot and Slip Away: Snap Shot interrupt enemyAdjacent | Slip Away interrupt
 the Arts' Modes: Footwork: Sidestep/Weave/Hands Busy | Trick Shots: Pin/Startle/Knock Back | Spotter: Call Out/Find the Gap/Keep Low | Weave ignores terrain: true
 the hooks: Shifting Aim movedBoon | Lean and Loose apCost | Blade and Bow alternateBoon | Clear Lines clearLines | Opening Shot openingShot | One More Arrow moreW | Fleet evadeMore | Thrill of the Kill: [["eschook","damagedDown"]]
 Covering Fire's Zone: [{"dice":"2 + @origin.wpn","pool":"B","sub":"Pi"}] 2 rounds | Spotter's effects: true
-no quarry in the compendium (but the old cards' folder): true | the pregens: Sylwen: Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Spotter, Lean and Loose, Thrill of the Kill, Volley, Clear Lines, Trick Shots, One More Arrow, Take Aim, Wounding Shot || Kaela: Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Footwork, Blade and Bow, Thrill of the Kill, Hit and Run, Opening Shot, Spotter, Fleet, Ricochet, Circling Shot
+no quarry in the compendium (but the old cards' folder): true | the pregens: Sylwen: Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Quick Shots, Snap Shot, Thrill of the Kill, Volley, Take Aim, Wounding Shot || Kaela: Shifting Aim, Darting Blade, Steady Draw, Harrying Shot, Strafe, Slip Away, Thrill of the Kill, Hit and Run, Ricochet, Circling Shot
 Projectile and Firearm (the keys stay shot and gun): Projectile Firearm
 --- the turn's Strike state (hooks.mjs)
 a fresh turn: {"key":"k","moved":false,"left":false,"last":"","altUsed":false,"moreW":false} | another turn's state is fresh: true

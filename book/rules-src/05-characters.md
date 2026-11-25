@@ -9,11 +9,11 @@
 4. **Choices.** When a species or class says "or", pick one. A class's choices between two Attributes must be different from each other (see [[Distinct Choices]]). Choose which of your class's two Modifier values is your Weapon Modifier and which your Power Modifier (see [[Weapon, Power and Signature Modifiers]]).
 5. **[[Health Pool]].** Assign your class's high Health value to Vigor or to Resolve and the low one to the other, then add your species' bonuses (neither can be under a third of the total). Your Health Pool is the two added together.
 6. **[[Rally Points]]** = your class' Rally value + 1 (it grows with your [[Stages|Stage]]).
-7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each), an **Art**, and your **Escalation 2** ability (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
+7. **Level 1.** Take what your class's level list gives at level 1: its Features, its **Hallmark Action** and **Hallmark Reaction** (a choice of two each) (see [[Leveling Up]]). Weapons and armor are in the [[Gear]] document.
 
 ## Classes
 
-Your class gives you Attribute increases, a **high** and a **low Health value** with their Stage steps (used for your Health Pool), a **Rally** value (used for Rally Points), a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**, an **[[Armor Training]]**, and a list of **Escalation** abilities.
+Your class gives you Attribute increases, a **high** and a **low Health value** with their Stage steps (used for your Health Pool), a **Rally** value (used for Rally Points), a **Speed Modifier**, a **Weapon Modifier** and a **Power Modifier**, and an **[[Armor Training]]**.
 
 When you pick your class, you choose its Attribute increases when they say "or", and the order of its Modifiers. The Attribute choices can't be changed later; the rest can, for a while (see [[Swapping on a Rest]]).
 
@@ -25,27 +25,24 @@ Over its first levels, every class gives you the same kinds of things:
 
 - A **Hallmark Action**: a choice of two Actions that are the class's fantasy; you take one, and the other is not yours. A Hallmark Action doesn't need the [[Signature]] trait: that trait only sets the Modifier an Action rolls.
 - A **Hallmark Reaction**: a choice of two Reactions, the same way.
-- An **Art**: a small Action with three **Modes** (see [[Reading an Action]]), for the things that are neither damage nor healing (at most a Modifier's damage, as Trick Shots). A class offers three; you take one at level 1 and a second at level 3.
 - An **Encounter Pick**.
-- The **Escalation** abilities: one for each of Escalation 2, 4 and 6, then the Apex (see [[Escalation Abilities]]).
+- The **Apex**, at level 4 (see [[Escalation Abilities]]).
 - Its **Features**.
 
 A class's **Class Actions** are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them. Its **Repertoire** is everything else it offers, listed by [[Frequency]]: **Passive** (it works on its own), **Turn**, **Round**, **Encounter** and **Daily**. A **Pick** is one choice from the Repertoire: the level list says how many Picks you take at each level and from which list (an Encounter Pick comes from the Encounter list; a Pick "from any list" can come from any of them). Two classes' lists don't need to match: each offers what fits it.
 
 ### Leveling Up
 
-Each class has a **level list**: what you gain at each level (Features, Class Actions, Picks and Escalation abilities). When you reach a new level, you take what its entry gives you. **Levels give options; Stages change the numbers** (below).
+Each class has a **level list**: what you gain at each level (Features, Class Actions and Picks). When you reach a new level, you take what its entry gives you. **Levels give options; Stages change the numbers** (below).
 
 The first three levels have the same shape for every class:
 
 | Level | You gain |
 |---|---|
-| **1** | Your class's Features, a Hallmark Action, a Hallmark Reaction, an Art, your **Escalation 2** ability, a Skill Talent |
-| **2** | Your class's Escalation hook, an Encounter Pick, your **Escalation 4** ability, a Talent |
-| **3** | A second Art, your **Escalation 6** ability, a Skill Talent |
+| **1** | Your class's Features, a Hallmark Action, a Hallmark Reaction, a Skill Talent |
+| **2** | Your class's Escalation hook, an Encounter Pick, a Talent |
+| **3** | A Skill Talent |
 | **4** | The Apex, a Stage Talent and the numbers of Stage 1 |
-
-So a level 1 character's Escalation ability starts working at Escalation 2: round 2 of a fight, or from the start with [[Momentum]].
 
 ### Talents
 
@@ -56,7 +53,7 @@ A **Talent** is a feature any character can take, apart from their class. The le
 
 ### Swapping on a Rest
 
-When you complete a [[Rest]], you can change any of the choices your class's level list gave you: your Hallmark Action, your Hallmark Reaction, your Arts, your Picks, your Escalation abilities and your Talents. Each new choice must be one you could have made at that level.
+When you complete a [[Rest]], you can change any of the choices your class's level list gave you: your Hallmark Action, your Hallmark Reaction, your Picks and your Talents. Each new choice must be one you could have made at that level.
 
 During Stage 0 you can also swap the order of your Modifiers on a Rest. From Stage 1 on, that order and the Modifier you raise at Stage 1 are permanent.
 
@@ -98,4 +95,8 @@ Your **Attributes** set your Checks (Initiative is one), your Saves, your Defens
 
 ### Escalation Abilities
 
-Each class has a list of **Escalation** abilities, two for each of Escalation 2, 4 and 6, and **Apex** Actions, the class's big Encounter Action that needs Escalation 6. An Escalation ability is a **Passive**, which works while your Escalation is at least the number on its card, or an Action that you can use only while your Escalation is at least that number. You choose one for each of Escalation 2, 4 and 6: the Escalation 2 one at level 1, the Escalation 4 one at level 2 and the Escalation 6 one at level 3. You choose your Apex at level 4. Nothing spends Escalation. See [[Escalation]] for how it rises.
+An **Escalation ability** is an Action whose card says **Escalation N**: you can use it only while your Escalation is at least that number, and it spends nothing (see [[Escalation]]). Each class's **Apex** is its big Encounter Action that needs Escalation 6; you choose it at level 4.
+
+> [!tbd]
+> No class has an Escalation ability at levels 1 to 3 now; the Escalation abilities of levels 2 and 4 are being redesigned.
+

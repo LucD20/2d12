@@ -10,7 +10,7 @@ const mv = await import(ROOTURL + "module/move.mjs"), SH = await import(ROOTURL 
 const BO = await import(ROOTURL + "module/bounce.mjs"), MK = await import(ROOTURL + "module/mark.mjs"), ST = await import(ROOTURL + "module/setup.mjs");
 const { parseInline } = await import(ROOTURL + "module/inline.mjs"), { parseTierFull } = await import(ROOTURL + "module/gen.mjs"), { tierTokens } = await import(ROOTURL + "tools/cardgen.mjs");
 const { cardModel, modelLabels } = await import(ROOTURL + "module/cardmodel.mjs"), R = await import(ROOTURL + "module/fxrules.mjs"), { MOMENTS } = await import(ROOTURL + "module/moment.mjs");
-const doc = (t, n) => C.docs.find(d => d.type === t && d.name === n);
+const doc = (t, n) => [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].find(d => d.type === t && d.name === n);
 
 console.log("--- the cards in the compendium");
 for (const [t, n] of [["talent", "Take Aim"], ["action", "Take Aim"], ["talent", "Cold Domain"], ["action", "Rime Strike"], ["talent", "Shared Burden"], ["action", "Oath of Burden"], ["action", "Bear the Blow"], ["talent", "Ricochet"], ["action", "Ricochet"], ["effect", "Take Aim"]]) {
@@ -71,7 +71,7 @@ console.log("--- the book's rules");
 const hold = (dc, prior) => ({ effects: [{ statuses: new Set(["immobilized"]), getFlag: (s, k) => (k === "actionDc" ? dc : k === "immobileDc" ? prior : undefined) }], system: { attributes: { body: 2, instinct: 3 } } });
 console.log("Break Free's Check:", JSON.stringify(mv.breakFreeCheck(hold(15))), "| a tie is Body:", mv.breakFreeCheck({ effects: [], system: { attributes: { body: 1, instinct: 1 } } }).attr, "| an old Immobilized (immobileDc):", mv.heldDc(hold(undefined, 14)), "| none stored:", mv.heldDc(hold(undefined)));
 console.log("it rolls (actions.mjs):", src("module/actions.mjs").includes("const bf = breakFreeCheck(actor)") && src("module/actions.mjs").includes("if ((Number(r?.tier) || 0) >= 2)"), "| Gold:", (await import(ROOTURL + "module/basic-data.mjs")).BASIC_ACTIONS.breakFree.automation, "| no Immobilized DC left in the code:", !/immobilizedDc|immobilizedOutcome/.test(["module/move.mjs", "module/actions.mjs", "module/effects.mjs"].map(src).join("")));
-console.log("EoE:", R.endsSentence({ time: { on: true, mode: "encounter" } }), "|", src("module/zonetip.mjs").includes('"EoE"'), "| Kindle:", C.docs.find(d => d.name === "Kindle (Bright light 3)").system.description.includes("EoE"));
+console.log("EoE:", R.endsSentence({ time: { on: true, mode: "encounter" } }), "|", src("module/zonetip.mjs").includes('"EoE"'), "| Kindle:", [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].find(d => d.name === "Kindle (Bright light 3)").system.description.includes("EoE"));
 console.log("[Melee]'s text:", src("module/config.mjs").match(/melee: "(These[^"]*)"/)?.[1] ?? "not found");
 
 console.log("--- v0.0.476 (Lucas's checklist on v0.0.475)");

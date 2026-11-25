@@ -19,6 +19,18 @@ differ):
 
 ## Characters and sheets
 
+### b5-migrate · v0.0.507 · An old world: the Arts and the Escalation Passives removed once
+Do: In your playtest world (back it up first), load as the GM. A window "Arts and Escalation" asks to Remove: click Remove. Then open Durgan's sheet (or any of your Paladins and Archers that had an Art).
+Expect: The window lists the characters that had them. A GM chat card lists, per character, what was removed. Durgan has no Hold the Line, Commandment, Armor of Faith, Tireless Vigil or Hallowed Stance any more; Smite, Judge, Lay On Hands, Shield of Faith, Kindled Wrath and Bulwark of Faith are still there. The window doesn't come back at the next load.
+
+### b5-build-tab · v0.0.507 · The class window: no Art and no Escalation choices
+Do: Open Kaela's sheet, the Build tab, and open the class window (Change level or the Class entry) at levels 1, 2 and 3. Do the same for Aveline.
+Expect: Level 1: Features, a Hallmark Action, a Hallmark Reaction, a Skill Talent (no Art, no Escalation 2 ability). Level 2: the Escalation Hook, an Encounter Pick, a Talent (no Escalation 4 ability). Level 3: only a Skill Talent. Nothing is marked as missing or incomplete because of a removed choice.
+
+### b5-pregens · v0.0.507 · The compendium's pregens without Arts or Escalation abilities
+Do: Import Aveline, Durgan, Sylwen and Kaela (level 1 and level 4) from the PCs compendium and look at their Actions tab and the HUD in a combat.
+Expect: No Art (no Modes button), no Escalation Passive, no Reckoning. Aveline level 1: Judge, Smite, Sworn Blade, Drawing Light, Binding Light, Rebuke and the Basic Actions. Smite still rolls 1 die per Escalation; the Escalation ladder and Momentum still show.
+
 ## The HUD
 
 ## Starting a combat

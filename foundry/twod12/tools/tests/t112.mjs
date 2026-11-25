@@ -8,7 +8,10 @@ const SRC = path.join(ROOT, "packs/_source");
 const docs = [];
 const walk = d => { for (const f of fs.readdirSync(d)) { const p = path.join(d, f); if (fs.statSync(p).isDirectory()) walk(p); else if (f.endsWith(".json") && !f.startsWith("_folder")) docs.push({ pack: path.basename(path.dirname(p)), ...JSON.parse(fs.readFileSync(p, "utf8")) }); } };
 walk(SRC);
-const byId = new Map(docs.map(d => [`${d.pack}:${d._id}`, d])), byName = (pack, name) => docs.find(d => d.pack === pack && d.name === name);
+globalThis.foundry ??= { utils: {} };
+const C = await import(ROOTURL + "tools/content.mjs");   // batch 5 (v0.0.507): the removed Arts and Escalation abilities, still read as fixtures
+const REMOVED = C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name));
+const byId = new Map(docs.map(d => [`${d.pack}:${d._id}`, d])), byName = (pack, name) => docs.find(d => d.pack === pack && d.name === name) ?? REMOVED.find(d => d.pack === pack && d.name === name);
 console.log("documents:", docs.length);
 // every Compendium.twod12.<pack>.Item.<id> found anywhere in the Items resolves
 let refs = 0; const broken = [];

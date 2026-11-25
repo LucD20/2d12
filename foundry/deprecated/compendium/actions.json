@@ -89,6 +89,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d8",
        "useAt": false,
        "subtype": "Ho"
@@ -114,6 +116,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Ho"
@@ -124,6 +128,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Ho"
@@ -149,6 +155,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Ho"
@@ -159,6 +167,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Ho"
@@ -207,6 +217,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4+1",
        "useAt": false,
        "subtype": "Ho"
@@ -217,6 +229,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6+1",
        "useAt": false,
        "subtype": "Ho"
@@ -227,6 +241,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d8+1",
        "useAt": false,
        "subtype": "Ho"
@@ -252,6 +268,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6+1",
        "useAt": false,
        "subtype": "Ho"
@@ -262,6 +280,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d8+1",
        "useAt": false,
        "subtype": "Ho"
@@ -272,6 +292,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d10+1",
        "useAt": false,
        "subtype": "Ho"
@@ -377,6 +399,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -385,6 +409,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d10",
        "useAt": false,
        "subtype": "Ho"
@@ -395,6 +421,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -403,6 +431,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d12",
        "useAt": false,
        "subtype": "Ho"
@@ -413,6 +443,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -421,6 +453,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d8",
        "useAt": false,
        "subtype": "Ho"
@@ -447,6 +481,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d8",
        "useAt": false,
        "subtype": "Ho"
@@ -457,6 +493,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d10",
        "useAt": false,
        "subtype": "Ho"
@@ -467,6 +505,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d12",
        "useAt": false,
        "subtype": "Ho"
@@ -493,6 +533,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -501,6 +543,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d10",
        "useAt": false,
        "subtype": "Ho"
@@ -511,6 +555,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -519,6 +565,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d12",
        "useAt": false,
        "subtype": "Ho"
@@ -529,6 +577,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -537,6 +587,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d8",
        "useAt": false,
        "subtype": "Ho"
@@ -563,6 +615,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d8",
        "useAt": false,
        "subtype": "Ho"
@@ -573,6 +627,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d10",
        "useAt": false,
        "subtype": "Ho"
@@ -583,6 +639,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d12",
        "useAt": false,
        "subtype": "Ho"
@@ -670,6 +728,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d6",
        "useAt": false,
        "subtype": "Ho"
@@ -680,6 +740,8 @@
        "pool": "M",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d8",
        "useAt": false,
        "subtype": "Ho"
@@ -867,6 +929,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -877,6 +941,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -885,6 +951,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Pi"
@@ -895,6 +963,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -903,6 +973,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Pi"
@@ -1100,6 +1172,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Pi"
@@ -1110,6 +1184,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Pi"
@@ -1120,6 +1196,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d8",
        "useAt": false,
        "subtype": "Pi"
@@ -1166,6 +1244,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Sl"
@@ -1176,6 +1256,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Sl"
@@ -1186,6 +1268,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d8",
        "useAt": false,
        "subtype": "Sl"
@@ -1232,6 +1316,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Sl"
@@ -1242,6 +1328,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Sl"
@@ -1252,6 +1340,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d8",
        "useAt": false,
        "subtype": "Sl"
@@ -1298,6 +1388,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Bl"
@@ -1308,6 +1400,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4+1",
        "useAt": false,
        "subtype": "Bl"
@@ -1318,6 +1412,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d8+1",
        "useAt": false,
        "subtype": "Bl"
@@ -1364,6 +1460,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Bl"
@@ -1374,6 +1472,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4+2",
        "useAt": false,
        "subtype": "Bl"
@@ -1384,6 +1484,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d10+2",
        "useAt": false,
        "subtype": "Bl"
@@ -1430,6 +1532,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Pi"
@@ -1440,6 +1544,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Pi"
@@ -1450,6 +1556,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d8",
        "useAt": false,
        "subtype": "Pi"
@@ -1496,6 +1604,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Pi"
@@ -1506,6 +1616,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Pi"
@@ -1516,6 +1628,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d10",
        "useAt": false,
        "subtype": "Pi"
@@ -1562,6 +1676,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Pi"
@@ -1572,6 +1688,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Pi"
@@ -1582,6 +1700,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Pi"
@@ -1629,6 +1749,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Pi"
@@ -1639,6 +1761,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Pi"
@@ -1649,6 +1773,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d8",
        "useAt": false,
        "subtype": "Pi"
@@ -1696,6 +1822,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Pi"
@@ -1706,6 +1834,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4+2",
        "useAt": false,
        "subtype": "Pi"
@@ -1716,6 +1846,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d10",
        "useAt": false,
        "subtype": "Pi"
@@ -1764,6 +1896,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Pi"
@@ -1774,6 +1908,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Pi"
@@ -1784,6 +1920,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d6",
        "useAt": false,
        "subtype": "Pi"
@@ -1831,6 +1969,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Pi"
@@ -1841,6 +1981,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Pi"
@@ -1851,6 +1993,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2d8",
        "useAt": false,
        "subtype": "Pi"
@@ -1908,6 +2052,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -1916,6 +2062,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": ""
@@ -1926,6 +2074,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -1934,6 +2084,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "4",
        "useAt": false,
        "subtype": ""
@@ -1944,6 +2096,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -1952,6 +2106,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "6",
        "useAt": false,
        "subtype": ""
@@ -2043,6 +2199,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": "Bl"
@@ -2053,6 +2211,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Bl"
@@ -2063,6 +2223,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Bl"
@@ -2112,6 +2274,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Bl"
@@ -2122,6 +2286,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d4",
        "useAt": false,
        "subtype": "Bl"
@@ -2132,6 +2298,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "1d6",
        "useAt": false,
        "subtype": "Bl"
@@ -2227,6 +2395,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": true,
        "subtype": ""
@@ -2237,6 +2407,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -2247,6 +2419,8 @@
        "pool": "B",
        "useW": true,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "",
        "useAt": false,
        "subtype": ""
@@ -2255,6 +2429,8 @@
        "pool": "B",
        "useW": false,
        "wCount": 1,
+       "useD": false,
+       "dCount": 1,
        "dice": "2",
        "useAt": false,
        "subtype": ""
@@ -2418,6 +2594,661 @@
    "flavor": "A single touch undoes what the enemy worked for.",
    "automation": "bronze",
    "automationNote": "ending the effect (the Rally Point button works)."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Lantern of Faith",
+  "type": "action",
+  "img": "icons/svg/light.svg",
+  "folder": "Paladin",
+  "system": {
+   "category": "Paladin Art",
+   "level": 1,
+   "traits": [
+    "divine"
+   ],
+   "targets": "",
+   "distance": "self",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You shed @Book[Bright]{Bright light} 3 (EoE).",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.WsTXi2ccSQzPpQyQ",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Kindle"
+    },
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "The target sheds @Book[Bright]{Bright light} 1 (1 round).",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.rYGpAASaODuivvQ2",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Reveal",
+     "modeDistance": "5",
+     "modeTargets": "One creature you perceive"
+    },
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "@Condition[half-blinded|eot]{Half-Blinded (EoT)}",
+     "x2": "@Condition[half-blinded|eot]{Half-Blinded (EoT)}",
+     "x3": "No effect.",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Glare",
+     "orTiers": "12",
+     "tiersWritten": "12",
+     "modeTraits": [
+      "magic",
+      "save"
+     ],
+     "modeDistance": "5",
+     "modeTargets": "One enemy you can see",
+     "modeVs": "instinct"
+    }
+   ],
+   "flavor": "You call your god's light: around you, onto a foe, or into a foe's eyes.",
+   "structure": true,
+   "automation": "gold",
+   "automationNote": "the Mode's pick; Kindle and Reveal light the token (an effect); Glare's Instinct Save and Half-Blinded (EoT)."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hold the Line",
+  "type": "action",
+  "img": "icons/svg/statue.svg",
+  "folder": "Paladin",
+  "system": {
+   "category": "Paladin Art",
+   "level": 1,
+   "traits": [],
+   "targets": "",
+   "distance": "self",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "The squares adjacent to you now are Difficult Terrain for enemies (1 round). They stay where they are if you move.",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.izjEIErljLTIY8O1",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Brace"
+    },
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You and the target @Swap[]{swap squares}. Each of you is moved by a Reposition.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Trade Places",
+     "modeDistance": "reach",
+     "modeTargets": "One willing ally of your Size"
+    },
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "@Move[reposition|distance:2] the target.",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Rescue",
+     "modeDistance": "reach",
+     "modeTargets": "One willing ally"
+    }
+   ],
+   "flavor": "You plant yourself where the fight is worst: you crowd the ground at your feet, trade places with an ally, or carry one clear.",
+   "structure": true,
+   "automation": "gold",
+   "automationNote": "the Mode's pick; Brace places a fixed 1-round Zone on the adjacent squares (Difficult Terrain for enemies; stays put if you move); Trade Places (Swap button, Size checked); Rescue's Reposition 2."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Commandment",
+  "type": "action",
+  "img": "icons/svg/sound.svg",
+  "folder": "Paladin",
+  "system": {
+   "category": "Paladin Art",
+   "level": 1,
+   "traits": [
+    "divine"
+   ],
+   "targets": "",
+   "distance": "self",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "The target is @Condition[taunted|rounds:1]{Taunted} by you (1 round).",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "after": "@Condition[taunted|rounds:1]",
+     "mode": "Challenge",
+     "modeDistance": "5",
+     "modeTargets": "One enemy"
+    },
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "An @Book[Aura]{Aura} 3 around you (1 round): you and your allies in it ignore the Daunted condition.",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.Xv8OlOd0MYAxGBBx",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Courage"
+    },
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "@Condition[prone]",
+     "x2": "@Condition[hindered|eot]",
+     "x3": "No effect.",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Kneel",
+     "tiersWritten": "12",
+     "modeTraits": [
+      "magic",
+      "save"
+     ],
+     "modeDistance": "5",
+     "modeTargets": "One enemy",
+     "modeVs": "appeal"
+    }
+   ],
+   "flavor": "You speak with your god's authority: you call a foe to face you, steady the hearts around you, or order a foe to its knees.",
+   "structure": true,
+   "automation": "gold",
+   "automationNote": "the Mode's pick; Challenge's Taunted (1 round); Kneel's Appeal Save (Prone on Tier 1, Hindered on Tier 2); Courage Aura 3 (1 round) ignoring Daunted's Banes and movement limit."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Reckoning",
+  "type": "action",
+  "img": "icons/svg/sun.svg",
+  "folder": "Paladin",
+  "system": {
+   "category": "Paladin Escalation Action",
+   "level": 3,
+   "traits": [
+    "area",
+    "divine",
+    "magic",
+    "save",
+    "self"
+   ],
+   "targets": "All enemies in the Area",
+   "frequency": "encounter",
+   "areaCfg": {
+    "size": 2,
+    "shape": "emanation",
+    "within": 0,
+    "targets": "enemies",
+    "center": true,
+    "keep": false,
+    "rounds": 0
+   },
+   "vs": "appeal",
+   "escalation": 6,
+   "setup": "You @Move[advance|distance:speed]{Advance}.",
+   "versions": [
+    {
+     "ap": 0,
+     "noTiers": false,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "@Condition[daunted|rounds:1]{Daunted} of you (1 round).",
+     "x2": "@Condition[daunted|rounds:1]{Daunted} of you (1 round).",
+     "x3": "No effect.",
+     "effects": "Each target is @Move[pushed|distance:2].",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "after": "@Move[pushed|distance:2|pick:yes|from:area] @Condition[daunted|rounds:1]",
+     "orTiers": "12",
+     "tiersWritten": "12",
+     "effectFirst": true
+    }
+   ],
+   "flavor": "You stride among your foes, and your god's light breaks from you and throws them back.",
+   "structure": true,
+   "automation": "gold",
+   "automationNote": "the Setup's Advance (the button), then the Emanation around you, the Pushes one by one and the Appeal Save: Daunted of you (1 round) on a Tier 1 or 2."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Footwork",
+  "type": "action",
+  "img": "icons/svg/wing.svg",
+  "folder": "Archer",
+  "system": {
+   "category": "Archer Art",
+   "level": 1,
+   "traits": [],
+   "targets": "",
+   "distance": "self",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You @Move[evade|distance:3].",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Sidestep"
+    },
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You @Move[advance|distance:speed|terrain:ignore]{Advance}. During this Advance, Difficult Terrain doesn't slow you, and you can move through the squares of unwilling creatures (you can't end in one).",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Weave",
+     "modeTraits": [
+      "move"
+     ]
+    },
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "You @Move[evade|distance:1], and before or after it you use the @Use[Interact|ap:0|label:Interact] or @Use[Reload|ap:0|label:Reload] Action (1A).",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Hands Busy"
+    }
+   ],
+   "flavor": "You are never where you were a breath ago: a long sidestep, a run through the press, or a step with your hands already busy.",
+   "structure": true,
+   "automation": "gold",
+   "automationNote": "the Mode's pick; Sidestep's Evade 3; Weave's Advance ignores Difficult Terrain and moves through unwilling creatures; Hands Busy's Evade 1 plus free Interact or Reload buttons."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Trick Shots",
+  "type": "action",
+  "img": "icons/svg/target.svg",
+  "folder": "Archer",
+  "system": {
+   "category": "Archer Art",
+   "level": 1,
+   "traits": [
+    "ranged",
+    "shot",
+    "strike",
+    "weapon"
+   ],
+   "targets": "One creature",
+   "distance": "weapon",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "useD": false,
+       "dCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": ""
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "useD": false,
+       "dCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": ""
+      }
+     ],
+     "x1": "No effect.",
+     "x2": "@Condition[hindered|rounds:1]",
+     "x3": "@Condition[hindered|rounds:1]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Pin",
+     "orTiers": "23",
+     "tiersWritten": "23"
+    },
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "useD": false,
+       "dCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": ""
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "useD": false,
+       "dCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": ""
+      }
+     ],
+     "x1": "No effect.",
+     "x2": "@Condition[vulnerable|value:1|eot]",
+     "x3": "@Condition[vulnerable|value:1|eot]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Startle",
+     "orTiers": "23",
+     "tiersWritten": "23"
+    },
+    {
+     "ap": 1,
+     "noTiers": false,
+     "t1": [],
+     "t2": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "useD": false,
+       "dCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": ""
+      }
+     ],
+     "t3": [
+      {
+       "pool": "B",
+       "useW": false,
+       "wCount": 1,
+       "useD": false,
+       "dCount": 1,
+       "dice": "",
+       "useAt": true,
+       "subtype": ""
+      }
+     ],
+     "x1": "No effect.",
+     "x2": "@Move[pushed|distance:1]",
+     "x3": "@Move[pushed|distance:2]",
+     "effects": "",
+     "fx": {
+      "all": [],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Knock Back",
+     "tiersWritten": "23"
+    }
+   ],
+   "flavor": "You put the arrow where it will do something other than wound: through a cloak, past an ear, square on a shield.",
+   "structure": true,
+   "automation": "gold",
+   "automationNote": "the Mode's pick, the shot and each Mode's Tier 2 or 3 (Hindered, Vulnerable 1, the Pushes)."
+  },
+  "flags": {}
+ },
+ {
+  "name": "Spotter",
+  "type": "action",
+  "img": "icons/svg/eye.svg",
+  "folder": "Archer",
+  "system": {
+   "category": "Archer Art",
+   "level": 1,
+   "traits": [],
+   "targets": "",
+   "distance": "self",
+   "frequency": "round",
+   "versions": [
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Your allies perceive the target one step better than they do: Hidden as Obscured, Obscured as Clear; Unsensed stays Unsensed (1 round).",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.62yZEA2gzI3jYAJy",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Call Out",
+     "modeDistance": "10",
+     "modeTargets": "One creature you perceive"
+    },
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Your next [Ranged, Strike] Action this turn ignores the Banes of far and maximum range, and counts each target's Cover as one level lower (Total Cover stays Total).",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.NDDj4hjhji1MM3yw",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Find the Gap"
+    },
+    {
+     "ap": 1,
+     "noTiers": true,
+     "t1": [],
+     "t2": [],
+     "t3": [],
+     "x1": "",
+     "x2": "",
+     "x3": "",
+     "effects": "Against each creature you have Cover from, your Cover is one level higher, up to High (1 round).",
+     "fx": {
+      "all": [
+       {
+        "uuid": "Compendium.twod12.effects.Item.HppcjwQdBHGUQUR4",
+        "mode": "auto"
+       }
+      ],
+      "t1": [],
+      "t2": [],
+      "t3": []
+     },
+     "mode": "Keep Low"
+    }
+   ],
+   "flavor": "You read the field the way others read a page: where a foe hides, where the gap in its cover is, where you yourself are hardest to hit.",
+   "structure": true,
+   "automation": "gold",
+   "automationNote": "the Mode's pick; Call Out (enemies perceive target one step better, 1 round); Find the Gap (ignores far/max range Banes and lowers Cover 1 level, Total stays Total); Keep Low (raises your Cover 1 level up to High, 1 round)."
   },
   "flags": {}
  }

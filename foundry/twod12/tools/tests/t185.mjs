@@ -46,14 +46,14 @@ const smite = G.loadCards().find(c => c.name === "Smite"), sys = G.cardSystem(sm
 for (const v of sys.versions) console.log(`${v.ap} AP: dice rule ${v.diceRule} | tiers ${["t1", "t2", "t3"].map(t => v[t].map(x => (x.useW ? "[W]" : "") + (x.dice ? ` ${x.dice} ${x.pool}${x.subtype}` : "")).join("+")).join(" / ")}`);
 console.log("the Structure card's tiers say 'your Smite dice'; Foundry rolls them:", smite.structure === 2, "|", sys.frequency, sys.traits.join(","));
 console.log("automation:", sys.automation, "|", sys.automationNote);
-console.log("the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16):", src("../../book/cards.py").includes("def structure("), "| the built book links Bright light on a card:", /sheds <a class="xref" href="[^"]*#bright">Bright light<\/a>/.test(src("../../book/paladin.html")), "| every card an anchor:", src("../../book/core-rules.html").includes('id="card-basic-attack"'));
+console.log("the book draws a card from its data (cards.py structure, since the card Structure of 2026-11-16):", src("../../book/cards.py").includes("def structure("), "| the built book links a rule on a card (Covering Fire's Hazardous Terrain; was Lantern of Faith's Bright light until batch 5):", /<a class="xref" href="[^"]*">Hazardous Terrain<\/a>/.test(src("../../book/archer.html")), "| every card an anchor:", src("../../book/core-rules.html").includes('id="card-basic-attack"'));
 
 console.log("--- the placeholder card (Hide) and the Smite light effects");
 const hide = G.loadCards().find(c => c.name === "Hide"), hs = G.cardSystem(hide);
 console.log("Hide: placeholder", hide.placeholder, "| an Action:", G.isAction(hide), "| versions:", hs.versions.length, "| frequency:", JSON.stringify(hs.frequency), "| text:", hs.description.replace(/<[^>]+>/g, ""));
 console.log("in the Actions pack:", C.docs.filter(d => d.name === "Hide").map(d => `${d.pack}/${d.type}`).join(", "), "| placed in Chapter 6:", src("../../book/rules-src/06-basic-actions.md").includes("@@CARD:Hide@@"));
 // v0.0.409 (pack F2): the light effects of Lantern of Faith (the old Smite's are in the old cards' folder)
-const fx = C.docs.filter(d => d.type === "effect" && /^(Kindle|Reveal) \(/.test(d.name));
+const fx = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].filter(d => d.type === "effect" && /^(Kindle|Reveal) \(/.test(d.name));
 console.log("effects:", fx.map(d => `${d.name}: ${d.system.settings.map(s => s.type === "light" ? `light ${s.bright}/${s.dim}` : s.type).join(", ")}, ${d.system.duration.type} ${d.system.duration.rounds}`).join(" | "), "| the old +1 Defense is gone:", !C.docs.some(d => d.name === "Smite (+1 Defense)"));
 
 console.log("--- the chain and the pickers in the code");

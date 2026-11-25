@@ -47,7 +47,7 @@ const riSrc = fs.readFileSync(ROOT + "module/rollinput.mjs", "utf8");
 console.log("pushCoverChanges wired:", actSrc.includes("no Cover to raise") && actSrc.includes("no Cover to lower"), "| rollinput preserves active & tone:", riSrc.includes("active: !!n.active, tone: n.tone"));
 
 console.log("--- 3. Inline buttons in Footwork (Hands Busy) and Basic Actions");
-const fw = C.docs.find(d => d.type === "action" && d.name === "Footwork");
+const fw = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].find(d => d.type === "action" && d.name === "Footwork");
 const hb = fw?.system?.versions?.find(v => v.mode === "Hands Busy")?.effects ?? "";
 console.log("Hands Busy inline:", hb.includes("use the @Use[Interact|ap:0|label:Interact] or @Use[Reload|ap:0|label:Reload] Action"), "| no (free) tail:", !hb.includes("(free)"));
 
@@ -62,7 +62,7 @@ const rwSrc = fs.readFileSync(ROOT + "module/rollwindow.mjs", "utf8");
 const mvSrc = fs.readFileSync(ROOT + "module/move.mjs", "utf8");
 const fxSrc = fs.readFileSync(ROOT + "module/effects.mjs", "utf8");
 const cdSrc = fs.readFileSync(ROOT + "module/conditions.mjs", "utf8");
-const brace = C.docs.find(d => d.type === "effect" && d.name === "Brace");
+const brace = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].find(d => d.type === "effect" && d.name === "Brace");
 console.log("rollwindow returns state:", rwSrc.includes("{ ...RD.result(this.inp, this.st), state: this.st }"));
 console.log("moveToken unthreatened hook:", mvSrc.includes('Hooks.on("moveToken"') && mvSrc.includes("movement?.destination") && mvSrc.includes("checkUnthreatenedEffects(ov)"));
 console.log("Grabbed cascade guard:", fxSrc.includes("twod12Cascade: true") && cdSrc.includes("options?.twod12Cascade"));

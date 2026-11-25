@@ -7,7 +7,7 @@ globalThis.foundry ??= { utils: {} };
 const L = await import(ROOTURL + "module/classlevels.mjs");
 const C = await import(ROOTURL + "tools/content.mjs");
 const PACK = { feature: "features", talent: "features", action: "actions" };
-const byUuid = new Map(C.docs.filter(d => PACK[d.type]).map(d => [C.uuidOf(PACK[d.type], d.name), d]));
+const byUuid = new Map([...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].filter(d => PACK[d.type]).map(d => [C.uuidOf(PACK[d.type], d.name), d]));
 const info = u => { const d = byUuid.get(u); return d ? { uuid: u, name: d.name, type: d.type, frequency: d.system.frequency ?? "", escalation: d.system.escalation ?? 0, category: d.system.category ?? "" } : null; };
 const U = n => [...byUuid].find(([, d]) => d.name === n && PACK[d.type])?.[0];
 const N = u => info(u)?.name ?? u;
@@ -23,8 +23,8 @@ console.log("--- the Paladin's level 1");
 let picks = {}, attrs = {};
 const m0 = L.levelModel(pal, 1, { info, talents });
 show(m0, "nothing chosen");
-const pass = m0.sections.find(x => x.s.id === "pal1esc2");   // v0.0.409 (pack F2): the redesigned Paladin's Escalation 2 ability (a pick), its Art
-console.log("Armor of Faith is an Escalation 2 pick:", pass.list.includes(U("Armor of Faith")), "| offers:", pass.list.map(N).join(", "), "| Art:", m0.sections.find(x => x.s.id === "pal1art").list.map(N).join(", "));
+// batch 5 (v0.0.507, Lucas 2026-11-25): no Art and no Escalation ability at level 1 any more
+console.log("no Art or Escalation section at level 1:", !m0.sections.some(x => ["pal1art", "pal1esc2"].includes(x.s.id)));
 const hall = pal.levels[0].sections.find(s => s.id === "pal1hall");
 picks = L.togglePick(picks, hall, U("Binding Light"));
 picks = L.togglePick(picks, hall, U("Lay On Hands"));
@@ -45,7 +45,7 @@ let da = L.setAttr({}, dist, "d", 0, "appeal");
 da = L.setAttr(da, dist, "d", 1, "appeal");
 console.log("the book's example (Body or Appeal, Appeal or Instinct): Appeal moves to the second pair and the first must be chosen again:", JSON.stringify(da.d));
 console.log("an Attribute chosen at an earlier level can't be chosen:", JSON.stringify(L.setAttr({}, dist, "d", 0, "appeal", ["appeal"])));
-for (const [id, n] of [["pal1hall", "Binding Light"], ["pal1react", "Shield of Faith"], ["pal1art", "Hold the Line"], ["pal1esc2", "Armor of Faith"]]) picks = L.togglePick(picks, pal.levels[0].sections.find(s => s.id === id), U(n));
+for (const [id, n] of [["pal1hall", "Binding Light"], ["pal1react", "Shield of Faith"]]) picks = L.togglePick(picks, pal.levels[0].sections.find(s => s.id === id), U(n));
 show(L.levelModel(pal, 1, { info, talents, picks, attrs }), "all but the Talent");
 picks = L.togglePick(picks, pal.levels[0].sections.find(s => s.id === "pal1skill"), U("Heavy Blows"));
 const m1 = L.levelModel(pal, 1, { info, talents, picks, attrs });

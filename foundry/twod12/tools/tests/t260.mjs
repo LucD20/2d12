@@ -20,7 +20,7 @@ globalThis.foundry.applications.ux = { TextEditor: { implementation: { enrichHTM
 const CM = await import(ROOTURL + "module/cardmodel.mjs");
 const AC = await import(ROOTURL + "module/actioncard.mjs");
 const asItem = d => ({ id: d.name, name: d.name, type: d.type, getFlag: (s, k) => d.flags?.twod12?.[k], system: { ...d.system, traits: new Set(d.system.traits ?? []), versions: d.system.versions ?? [] } });
-const acts = C.docs.filter(d => d.type === "action").map(asItem).sort((a, b) => a.name.localeCompare(b.name));
+const acts = [...C.docs, ...C.deprecatedDocs.filter(d => C.REMOVED_B5.includes(d.name))].filter(d => d.type === "action").map(asItem).sort((a, b) => a.name.localeCompare(b.name));
 
 console.log("--- 1. every face that shows the whole card has every line of the model");
 const missing = [];

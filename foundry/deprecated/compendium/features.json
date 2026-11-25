@@ -318,7 +318,10 @@
       "high": false,
       "range": "none",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -477,32 +480,6 @@
   "flags": {}
  },
  {
-  "name": "Ricochet",
-  "type": "talent",
-  "img": "icons/svg/target.svg",
-  "folder": "Talent",
-  "system": {
-   "category": "Talent",
-   "level": 1,
-   "group": "combat",
-   "theme": "Marksman",
-   "prereqs": [
-    {
-     "kind": "talent",
-     "name": "Aim",
-     "value": 0
-    }
-   ],
-   "description": "<p>Your [Ranged, Weapon] Actions can bounce off one surface on the way. The projectile goes from the surface to the creature, and you calculate Line of Effect, Cover and Sight from the center of the surface. The distance is the total the projectile travels: if you shoot at a surface 5 squares from you and the target is within 6 squares of the surface, that is an 11-square shot. You must still perceive the creature to target them. A bounced shot takes 1 Bane.</p>",
-   "flavor": "Walls, shields and stones are just more angles.",
-   "automation": "none",
-   "rules": [],
-   "rulesOn": true,
-   "autoHover": ""
-  },
-  "flags": {}
- },
- {
   "name": "Long Draw",
   "type": "talent",
   "img": "icons/svg/target.svg",
@@ -580,7 +557,10 @@
       "high": false,
       "range": "one",
       "engaged": false,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -675,7 +655,10 @@
       "high": false,
       "range": "none",
       "engaged": true,
-      "engagedTarget": false
+      "engagedTarget": false,
+      "coverLower": false,
+      "coverHigher": false,
+      "daunted": false
      },
      "note": {
       "on": false,
@@ -842,6 +825,294 @@
    "description": "<p>Choose one Encounter or Daily Action from your class's Repertoire that you don't have. You gain it. (Drag it from the compendium onto your sheet.)</p>",
    "flavor": "You have studied your craft longer than most.",
    "automation": "none",
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Armor of Faith",
+  "type": "feature",
+  "img": "icons/svg/shield.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Paladin Escalation Passive",
+   "level": 1,
+   "description": "<p>When you use a [Divine] Reaction (not Judge's 0R), you gain Guard equal to 1 + your Power Modifier.</p>",
+   "flavor": "Each time you answer for an ally, your god's light settles on you like mail.",
+   "automation": "gold",
+   "automationNote": "the Guard (1 + Pow, the higher kept) each time you use a [Divine] Reaction, while your Escalation is 2 or more.",
+   "hooks": [
+    {
+     "kind": "reactionGuard",
+     "traits": [
+      "divine"
+     ],
+     "formula": "1+pow"
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 2,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Roving Judgment",
+  "type": "feature",
+  "img": "icons/svg/eye.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Paladin Escalation Passive",
+   "level": 1,
+   "description": "<p>The 1 AP use of Judge costs you 0 AP.</p>",
+   "flavor": "Your eye passes from one guilty foe to the next, and your god's attention follows it.",
+   "automation": "gold",
+   "automationNote": "Judge's 1 AP Version costs 0 AP while your Escalation is 2 or more.",
+   "hooks": [
+    {
+     "kind": "apCost",
+     "markKind": "judge",
+     "ap": 1,
+     "cost": 0
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 2,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Weight of Judgment",
+  "type": "feature",
+  "img": "icons/svg/downgrade.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Paladin Escalation Passive",
+   "level": 2,
+   "description": "<p>A creature Judged by you has its Speed reduced by 2 (to a minimum of 1).</p>",
+   "flavor": "Your judgment hangs on your foe like a chain, and its steps drag.",
+   "automation": "bronze",
+   "automationNote": "the Speed of the creature you Judged: by hand (its Speed reduced by 2, to a minimum of 1).",
+   "escalationPassive": true,
+   "escalationRung": 4,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Tireless Vigil",
+  "type": "feature",
+  "img": "icons/svg/eye.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Paladin Escalation Passive",
+   "level": 2,
+   "description": "<p>You gain 1 more Reaction Point when you regain AP. It pays only for [Divine] Reactions.</p>",
+   "flavor": "The longer the fight lasts, the less escapes you: your guard is on two allies at once.",
+   "automation": "silver",
+   "automationNote": "the second Reaction Point while your Escalation is 4 or more; that it pays only for [Divine] Reactions: by hand.",
+   "hooks": [
+    {
+     "kind": "rapMore",
+     "n": 1
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 4,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Hallowed Stance",
+  "type": "feature",
+  "img": "icons/svg/statue.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Paladin Escalation Passive",
+   "level": 3,
+   "description": "<p>Once on your turn, a [Divine] Action you use gains \"Setup: You Advance 3.\"</p>",
+   "flavor": "Your god's light carries you: wherever you are needed, you are already there.",
+   "automation": "silver",
+   "automationNote": "a [Divine] Action you use shows \"Setup: You Advance 3\" with its button while your Escalation is 6 or more; once on your turn: by hand.",
+   "hooks": [
+    {
+     "kind": "setupAdvance",
+     "traits": [
+      "divine"
+     ],
+     "n": 3
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 6,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Lean and Loose",
+  "type": "feature",
+  "img": "icons/svg/eye.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Archer Escalation Passive",
+   "level": 1,
+   "description": "<p>The @Book[Lean]{Lean} Action costs you 0 AP.</p>",
+   "flavor": "A wall is a quiver's best friend: you are out, the arrow is gone, and you are back.",
+   "automation": "gold",
+   "automationNote": "Lean costs 0 AP while your Escalation is 2 or more.",
+   "hooks": [
+    {
+     "kind": "apCost",
+     "basic": "leaning",
+     "ap": 1,
+     "cost": 0
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 2,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Blade and Bow",
+  "type": "feature",
+  "img": "icons/svg/sword.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Archer Escalation Passive",
+   "level": 1,
+   "description": "<p>Once on each of your turns, when you use a [Melee, Strike] Action after a [Ranged, Strike] Action this turn, or a [Ranged, Strike] Action after a [Melee, Strike] Action this turn, it gains 1 Boon.</p>",
+   "flavor": "Arrow, knife, arrow: each sets up the next.",
+   "automation": "gold",
+   "automationNote": "the Boon in the roll dialog, once on each of your turns, on a [Melee, Strike] after a [Ranged, Strike] (or the reverse) this turn, while your Escalation is 2 or more.",
+   "hooks": [
+    {
+     "kind": "alternateBoon",
+     "boons": 1
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 2,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Clear Lines",
+  "type": "feature",
+  "img": "icons/svg/target.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Archer Escalation Passive",
+   "level": 2,
+   "description": "<p>Your allies give your targets no Cover, and your [Ranged] Actions take no Field Bane for a target Engaged with one of your allies.</p>",
+   "flavor": "Your friends have learned where not to stand, and you have learned to shoot past their ears.",
+   "automation": "gold",
+   "automationNote": "your allies give your targets no Cover, and no Field Bane for a target Engaged with an ally, while your Escalation is 4 or more.",
+   "hooks": [
+    {
+     "kind": "clearLines"
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 4,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Opening Shot",
+  "type": "feature",
+  "img": "icons/svg/target.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Archer Escalation Passive",
+   "level": 2,
+   "description": "<p>Once a round, when you get a Tier 3 with a [Ranged, Strike] Action against a creature, one ally who threatens it can spend 1R to make a Basic Attack (1A) against it.</p>",
+   "flavor": "Your arrow staggers the foe, and your ally's blade is already coming.",
+   "automation": "bronze",
+   "automationNote": "on a Tier 3 of a [Ranged, Strike] Action, a line on the card names the allies who threaten the target; the ally's Basic Attack (1R) by hand, once a round.",
+   "hooks": [
+    {
+     "kind": "openingShot"
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 4,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "One More Arrow",
+  "type": "feature",
+  "img": "icons/svg/target.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Archer Escalation Passive",
+   "level": 3,
+   "description": "<p>Once on each of your turns, when a [Strike] Action of yours deals [W] on a Tier, it deals 1[W] more to each creature on that Tier.</p>",
+   "flavor": "By now your hands move faster than you can think: there is always one more arrow in the air.",
+   "automation": "gold",
+   "automationNote": "the first [Strike] that deals [W] on each of your turns deals 1[W] more (the damage roll), while your Escalation is 6.",
+   "hooks": [
+    {
+     "kind": "moreW",
+     "n": 1
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 6,
+   "rules": [],
+   "rulesOn": true,
+   "autoHover": ""
+  },
+  "flags": {}
+ },
+ {
+  "name": "Fleet",
+  "type": "feature",
+  "img": "icons/svg/wing.svg",
+  "folder": "Feature",
+  "system": {
+   "category": "Archer Escalation Passive",
+   "level": 3,
+   "description": "<p>Each Evade of yours moves you 1 more square, and your Evades can enter Difficult Terrain.</p>",
+   "flavor": "Nothing on this field is as fast as you are now.",
+   "automation": "silver",
+   "automationNote": "each Evade button moves you 1 more square while your Escalation is 6; entering Difficult Terrain with an Evade by hand.",
+   "hooks": [
+    {
+     "kind": "evadeMore",
+     "n": 1
+    }
+   ],
+   "escalationPassive": true,
+   "escalationRung": 6,
    "rules": [],
    "rulesOn": true,
    "autoHover": ""

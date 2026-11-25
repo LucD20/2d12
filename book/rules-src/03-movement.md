@@ -51,7 +51,7 @@ An Action that lets you move gives a distance, written "Advance 5" or "Evade 2".
 
 **Creatures in your way.** Your own movement (an Advance, an Evade, a Charge, a Crawl) **can't enter or pass through an unwilling creature's space**: an enemy holds its ground. **An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (at its double cost). **A Down creature** (Dying, Shattered, Unconscious or Desperate) **and a dead one** are Difficult Terrain too, whichever side they are on. Size doesn't change this. The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise (Footwork's Weave). Forced Movement and Reposition keep their own rules (see [[Collision]]).
 
-**Changes to your Speed.** Apply every other change first, then halve it: with Speed 6, Weight of Judgment's −2 and Hindered, your Speed is (6 − 2) halved = 2. Halving rounds down.
+**Changes to your Speed.** Apply every other change first, then halve it: with Speed 6, a −2 to your Speed and Hindered, your Speed is (6 − 2) halved = 2. Halving rounds down.
 
 ### Advance
 

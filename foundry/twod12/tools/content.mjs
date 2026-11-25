@@ -218,22 +218,22 @@ const sec = (id, title, kind, o = {}) => ({ id, title, kind, mode: o.mode ?? "ch
 // Skill Talent; level 2: the Escalation hook (Kindled Wrath), an Encounter Pick, the Escalation 4 ability, a Talent; level 3: a second Art, the
 // Escalation 6 ability, a Skill Talent; level 4 (not written yet): a Stage Talent. The Talent slots stay empty (Talents set aside). The rung of an
 // Escalation ability is its section's title ("Escalation 2 Ability": escblock.mjs passiveThreshold). Modifiers fixed: Weapon +1, Power +2.
-const PAL_ARTS = ["Lantern of Faith", "Hold the Line", "Commandment"], PAL_ENC = ["Bulwark of Faith", "Consecrated Ground", "Word of Radiance"];
-const PAL_E2 = ["Armor of Faith", "Roving Judgment"], PAL_E4 = ["Weight of Judgment", "Tireless Vigil"], PAL_E6 = ["Reckoning", "Hallowed Stance"];
+const PAL_ENC = ["Bulwark of Faith", "Consecrated Ground", "Word of Radiance"];
 add("classes", "class", "Paladin", "icons/svg/angel.svg", {
   description: "<p>You stand in front so the others can stand back. A holy warrior who judges a foe before their god, shields the allies near them, and, when the fight has built long enough, brings all of it down in one blow.</p>", category: "Class", flavor: "Your god's strength flows through your weapon and your hands.",
   // Pack R (v0.0.243; book, Chapter 4 and the class stat block): high 20 / low 10; v0.0.408: the Stage steps 0 until the book writes them; Rally 6 (+ 1 / 2 / 3 / 4 by Stage).
   choiceA: ["body", "appeal"], choiceB: ["mind", "instinct"], healthHigh: 20, healthLow: 10, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 6, speedMod: 0,
   // core rework batch 3 (H1, book, Chapter 5): every class chooses its Modifier order (+2 / +1 either way).
   modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "heavy", features: [],
-  repertoire: U(PAL_ENC), escPassives: U(["Armor of Faith", "Roving Judgment", "Weight of Judgment", "Tireless Vigil", "Hallowed Stance"]), escActives: U(["Reckoning"]),
+  // batch 5 (Lucas, 2026-11-25): the Arts and the Escalation abilities (Passives and Reckoning) left the class; level 3 keeps only its Skill Talent.
+  repertoire: U(PAL_ENC), escPassives: [], escActives: [],
   levels: [
     { sections: [sec("pal1attr", "Attribute increases", "attr", { pairs: [["body", "appeal"], ["mind", "instinct"]] }), sec("pal1core", "Features", "items", { mode: "granted", items: U(["Judge", "Smite", "Sworn Blade", "Drawing Light"]) }),
       sec("pal1hall", "Hallmark Action", "items", { items: U(["Binding Light", "Lay On Hands"]) }), sec("pal1react", "Hallmark Reaction", "items", { items: U(["Shield of Faith", "Rebuke"]) }),
-      sec("pal1art", "Art", "items", { items: U(PAL_ARTS) }), sec("pal1esc2", "Escalation 2 Ability", "items", { items: U(PAL_E2) }), sec("pal1skill", "Skill Talent", "talent")] },
+      sec("pal1skill", "Skill Talent", "talent")] },
     { sections: [sec("pal2hook", "Escalation Hook", "items", { mode: "granted", items: U(["Kindled Wrath"]) }), sec("pal2enc", "Encounter Pick", "items", { items: U(PAL_ENC) }),
-      sec("pal2esc4", "Escalation 4 Ability", "items", { items: U(PAL_E4) }), sec("pal2tal", "Talent", "talent")] },
-    { sections: [sec("pal3art", "Second Art", "items", { items: U(PAL_ARTS) }), sec("pal3esc6", "Escalation 6 Ability", "items", { items: U(PAL_E6) }), sec("pal3skill", "Skill Talent", "talent")] },
+      sec("pal2tal", "Talent", "talent")] },
+    { sections: [sec("pal3skill", "Skill Talent", "talent")] },
     { sections: [sec("pal4tal", "Stage Talent", "talent")] }   // level 4 (the Apex, Stage 1) is not written yet
   ]
 });
@@ -241,21 +241,22 @@ add("classes", "class", "Paladin", "icons/svg/angel.svg", {
 // Blade, a Hallmark Action (Quick Shots or Strafe), a Hallmark Reaction (Slip Away or Snap Shot), an Art (Footwork, Trick Shots, Spotter), the
 // Escalation 2 ability, a Skill Talent; level 2 Thrill of the Kill, an Encounter Pick (Volley, Hit and Run, Covering Fire), the Escalation 4 ability,
 // a Talent; level 3 a second Art, the Escalation 6 ability, a Skill Talent. Light Armor Training (was Medium); no quarry.
-const ARC_ARTS = ["Footwork", "Trick Shots", "Spotter"], ARC_ENC = ["Volley", "Hit and Run", "Covering Fire"];
+const ARC_ENC = ["Volley", "Hit and Run", "Covering Fire"];
 add("classes", "class", "Archer", "icons/svg/target.svg", {
   description: "<p>An Archer fights from a distance and never stands still: many small hits, a knife for the foe who gets close, and gone again.</p>", category: "Class", flavor: "You were made for the shot no one else would take.",
   // Pack R (v0.0.243): high 16 / low 8; v0.0.408: the Stage steps 0 until the book writes them; Rally 5 (+ 1 / 2 / 3 / 4 by Stage).
   choiceA: ["body", "instinct"], choiceB: ["mind", "appeal"], healthHigh: 16, healthLow: 8, stepHigh1: 0, stepLow1: 0, stepHigh2: 0, stepLow2: 0, stepHigh3: 0, stepLow3: 0, bodyMult: 0, mindMult: 0, rallyMod: 5,
   // core rework batch 3 (H1, book, Chapter 5): every class chooses its Modifier order (+2 / +1 either way). v0.0.411: Light Armor Training.
   modHigh: 2, modLow: 1, modOrder: "either", armorTraining: "light", speedMod: 1, features: [],
-  repertoire: U(ARC_ENC), escPassives: U(["Lean and Loose", "Blade and Bow", "Clear Lines", "Opening Shot", "One More Arrow", "Fleet"]), escActives: [],
+  // batch 5 (Lucas, 2026-11-25): the Arts and the Escalation Passives left the class; level 3 keeps only its Skill Talent.
+  repertoire: U(ARC_ENC), escPassives: [], escActives: [],
   levels: [
     { sections: [sec("arc1attr", "Attribute increases", "attr", { pairs: [["body", "instinct"], ["mind", "appeal"]] }), sec("arc1core", "Features", "items", { mode: "granted", items: U(["Shifting Aim", "Darting Blade", "Steady Draw", "Harrying Shot"]) }),
       sec("arc1hall", "Hallmark Action", "items", { items: U(["Quick Shots", "Strafe"]) }), sec("arc1react", "Hallmark Reaction", "items", { items: U(["Slip Away", "Snap Shot"]) }),
-      sec("arc1art", "Art", "items", { items: U(ARC_ARTS) }), sec("arc1esc2", "Escalation 2 Ability", "items", { items: U(["Lean and Loose", "Blade and Bow"]) }), sec("arc1skill", "Skill Talent", "talent")] },
+      sec("arc1skill", "Skill Talent", "talent")] },
     { sections: [sec("arc2hook", "Escalation Hook", "items", { mode: "granted", items: U(["Thrill of the Kill"]) }), sec("arc2enc", "Encounter Pick", "items", { items: U(ARC_ENC) }),
-      sec("arc2esc4", "Escalation 4 Ability", "items", { items: U(["Clear Lines", "Opening Shot"]) }), sec("arc2tal", "Talent", "talent")] },
-    { sections: [sec("arc3art", "Second Art", "items", { items: U(ARC_ARTS) }), sec("arc3esc6", "Escalation 6 Ability", "items", { items: U(["One More Arrow", "Fleet"]) }), sec("arc3skill", "Skill Talent", "talent")] },
+      sec("arc2tal", "Talent", "talent")] },
+    { sections: [sec("arc3skill", "Skill Talent", "talent")] },
     { sections: [sec("arc4tal", "Stage Talent", "talent")] }   // level 4 (the Apex, Stage 1) is not written yet
   ]
 });
@@ -532,25 +533,23 @@ const ART = n => `systems/twod12/art/pcs/${n}`;
 // v0.0.332 (Lucas: "make level 1 versions, at least one using a shortbow and another a greatsword"): each build at level 4 and at level 1
 // (its level 1 picks only: the first Talent, no Daily Pick), named "..., level 1)"; Aveline's Greatsword and Kaela's Shortbow are among them.
 const pcBoth = o => { pc(o); pc({ ...o, name: o.name.replace(/\)$/, ", level 1)"), level: 1, picks: { 1: o.picks[1] }, talents: [] }); };   // pack TALENTS-PT: the playtest Talent only at level 4
-// The judging Paladin: Binding Light and the Greatsword, Rebuke, Commandment, Roving Judgment, Word of Radiance, Weight of Judgment, Lantern of
-// Faith and Reckoning (v0.0.409, pack F2: the redesigned Paladin; Smite and Judge come with every Paladin)
+// The judging Paladin: Binding Light, Rebuke, Word of Radiance (v0.0.409, pack F2; batch 5, v0.0.507: no Art, no Escalation ability)
 pcBoth({ name: "Aveline (Human Paladin, Smite)", token: "Aveline", img: ART("aveline.png"), species: "Human", chosen: ["body", "appeal"], cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
-  picks: { 1: { pal1hall: "Binding Light", pal1react: "Rebuke", pal1art: "Commandment", pal1esc2: "Roving Judgment" },
-    2: { pal2enc: "Word of Radiance", pal2esc4: "Weight of Judgment" }, 3: { pal3art: "Lantern of Faith", pal3esc6: "Reckoning" } }, weapon: "Longsword", armor: "Heavy Armor", talents: ["Cold Domain"] });
-// The shield Paladin: Lay On Hands, Shield of Faith, Hold the Line, Armor of Faith, Bulwark of Faith, Tireless Vigil (two [Divine] Reactions a round),
-// Commandment and Hallowed Stance (v0.0.409, pack F2: the redesigned Paladin)
+  picks: { 1: { pal1hall: "Binding Light", pal1react: "Rebuke" },
+    2: { pal2enc: "Word of Radiance" } }, weapon: "Longsword", armor: "Heavy Armor", talents: ["Cold Domain"] });
+// The shield Paladin: Lay On Hands, Shield of Faith, Bulwark of Faith (v0.0.409, pack F2; batch 5, v0.0.507: no Art, no Escalation ability)
 pcBoth({ name: "Durgan (Dwarf Paladin, Lay On Hands)", token: "Durgan", img: ART("durgan.png"), species: "Dwarf", cls: "Paladin", attrs: ["body", "instinct"], level: 4, lead: "power", health: "vigor",
-  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith", pal1art: "Hold the Line", pal1esc2: "Armor of Faith" },
-    2: { pal2enc: "Bulwark of Faith", pal2esc4: "Tireless Vigil" }, 3: { pal3art: "Commandment", pal3esc6: "Hallowed Stance" } }, weapon: "Arming Sword", armor: "Heavy Armor", talents: ["Shared Burden"] });
+  picks: { 1: { pal1hall: "Lay On Hands", pal1react: "Shield of Faith" },
+    2: { pal2enc: "Bulwark of Faith" } }, weapon: "Arming Sword", armor: "Heavy Armor", talents: ["Shared Burden"] });
 // v0.0.411 (pack F3, the redesigned Archer; no Starting Mastery Feature: the book's Starting Mastery comes with the weapons pass):
-// the far Archer: Quick Shots, Snap Shot, Spotter, Lean and Loose, Volley, Clear Lines, Trick Shots, One More Arrow; the Longbow and a Dagger.
+// the far Archer: Quick Shots, Snap Shot, Volley; the Hunting Bow and a Dagger (batch 5, v0.0.507: no Art, no Escalation Passive).
 pcBoth({ name: "Sylwen (Elf Archer, Quick Shots)", token: "Sylwen", img: ART("sylwen.webp"), species: "Elf", cls: "Archer", attrs: ["instinct", "mind"], level: 4, health: "vigor", start: "Shifting Aim",
-  picks: { 1: { arc1hall: "Quick Shots", arc1react: "Snap Shot", arc1art: "Spotter", arc1esc2: "Lean and Loose" },
-    2: { arc2enc: "Volley", arc2esc4: "Clear Lines" }, 3: { arc3art: "Trick Shots", arc3esc6: "One More Arrow" } }, extras: [["weapon", "Dagger"]], weapon: "Hunting Bow", armor: "Light Armor", talents: ["Take Aim"] });
-// the close Archer: Strafe, Slip Away, Footwork, Blade and Bow, Hit and Run, Opening Shot, Spotter, Fleet; the Shortbow and a Dagger.
+  picks: { 1: { arc1hall: "Quick Shots", arc1react: "Snap Shot" },
+    2: { arc2enc: "Volley" } }, extras: [["weapon", "Dagger"]], weapon: "Hunting Bow", armor: "Light Armor", talents: ["Take Aim"] });
+// the close Archer: Strafe, Slip Away, Hit and Run; the Recurve Bow and a Dagger (batch 5, v0.0.507: no Art, no Escalation Passive).
 pcBoth({ name: "Kaela (Human Archer, Strafe)", token: "Kaela", img: ART("kaela.webp"), species: "Human", chosen: ["body", "instinct"], cls: "Archer", attrs: ["instinct", "appeal"], level: 4, health: "vigor", start: "Shifting Aim",
-  picks: { 1: { arc1hall: "Strafe", arc1react: "Slip Away", arc1art: "Footwork", arc1esc2: "Blade and Bow" },
-    2: { arc2enc: "Hit and Run", arc2esc4: "Opening Shot" }, 3: { arc3art: "Spotter", arc3esc6: "Fleet" } }, extras: [["weapon", "Dagger"]], weapon: "Recurve Bow", armor: "Light Armor", talents: ["Ricochet"] });
+  picks: { 1: { arc1hall: "Strafe", arc1react: "Slip Away" },
+    2: { arc2enc: "Hit and Run" } }, extras: [["weapon", "Dagger"]], weapon: "Recurve Bow", armor: "Light Armor", talents: ["Ricochet"] });
 
 const FOLDER_OF = { species: "Species", class: "Class", feature: "Feature", talent: "Talent" };
 for (const d of docs) if ((d.pack === "classes" || d.pack === "features") && !d.folder) d.folder = FOLDER_OF[d.type] ?? null;
@@ -655,10 +654,16 @@ for (const a of [...actors, ...pcs]) for (const it of (a.items ?? [])) if (["act
 // cards" folders), the Talents (set aside in the book) and what they grant, the placeholder weapons and their Techniques, the test Zone, Divine
 // Connection, the Bandit Thug (not in the book). They are written to foundry/deprecated/ (tools/dump-deprecated.mjs; Foundry's own data, ready to
 // import) and kept here as deprecatedDocs / deprecatedActors for the tests of the machinery they exercised.
+export const REMOVED_B5 = ["Lantern of Faith", "Hold the Line", "Commandment", "Footwork", "Trick Shots", "Spotter",
+  "Kindle (Bright light 3)", "Reveal (Bright light 1)", "Brace", "Courage (ignore Daunted)", "Courage",
+  "Armor of Faith", "Roving Judgment", "Weight of Judgment", "Tireless Vigil", "Reckoning", "Hallowed Stance",
+  "Lean and Loose", "Blade and Bow", "Clear Lines", "Opening Shot", "One More Arrow", "Fleet"];
 export const DEPRECATED = {
   folders: ["Paladin (old cards)", "Archer (old cards)", "Testing", "Talents", "Lesser Blessing", "Weapon Techniques"],
   types: ["talent"],
-  names: ["Divine Connection", "Hindered (until Move)", "Handaxe", "Greataxe", "Mace", "Maul", "Spear", "Pike", "Knuckle Dagger", "Hand Crossbow", "Crossbow", "Pistol", "Musket"],
+  // batch 5 (Lucas, 2026-11-25: "Remove arts, remove escalation passives"): the six Arts, their effects, the Escalation Passives and Reckoning
+  // (an Apex candidate: rules-backlog.md). Their cards stay in book/cards/stage0/ (unprinted) for a later return.
+  names: [...REMOVED_B5, "Divine Connection", "Hindered (until Move)", "Handaxe", "Greataxe", "Mace", "Maul", "Spear", "Pike", "Knuckle Dagger", "Hand Crossbow", "Crossbow", "Pistol", "Musket"],
   actors: ["Bandit Thug"]
 };
 // pack TALENTS-PT: the playtest Talents (book/cards/stage0/talents-pt.json) stay; every other Talent is still set aside

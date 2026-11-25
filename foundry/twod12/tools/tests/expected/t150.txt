@@ -1,5 +1,5 @@
-the compendium Paladin's class copy: body, instinct | picks: pal1hall, pal1react, pal1art, pal1esc2
-Class tab, level 1: granted Sworn Blade | picks Features: Judge, Smite, Drawing Light | Hallmark Action: Binding Light | Hallmark Reaction: Rebuke | Art: Commandment | Escalation 2 Ability: Roving Judgment | not reached Escalation Hook (2), Encounter Pick (2), Escalation 4 Ability (2), Talent (2), Second Art (3), Escalation 6 Ability (3), Skill Talent (3), Stage Talent (4)
+the compendium Paladin's class copy: body, instinct | picks: pal1hall, pal1react
+Class tab, level 1: granted Sworn Blade | picks Features: Judge, Smite, Drawing Light | Hallmark Action: Binding Light | Hallmark Reaction: Rebuke | not reached Escalation Hook (2), Encounter Pick (2), Talent (2), Skill Talent (3), Stage Talent (4)
 Talent slots at level 1: [{"key":"class:1:pal1skill:0","feature":"Skill Talent (Level 1)"}] | Heavy Blows is in it: undefined
 at level 3 (nothing chosen yet): slots Skill Talent (Level 1), Talent (Level 2), Skill Talent (Level 3) | not reached: 1
 hasLevels: the compendium classes Paladin true, Archer true | a class without levels: false
