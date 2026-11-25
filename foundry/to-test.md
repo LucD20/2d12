@@ -21,11 +21,6 @@ differ):
 
 ## The HUD
 
-### hud-hp-boxes · v0.0.505 · The Token HUD's two plain boxes, small: Vigor (red outline) and Resolve (blue outline)
-Do: Right-click Orc Warrior's token. In the red-outlined box type -5 and Enter; then +2; in the blue-outlined box type 3. Then click the Token HUD's other buttons (the conditions, the target, the visibility).
-Expect: Two small plain boxes (about Foundry's own Health box's height, a few digits wide) with only the number, side by side and centered under the token: red outline for Vigor, blue for Resolve. -5 deals 5 to Vigor, +2 heals 2, a plain number sets what is left (Resolve 3). Every other button of the Token HUD can be clicked. No "Invalid Asset" error in the console on load.
-Rev: 6
-
 ## Starting a combat
 
 ## The roll dialog
