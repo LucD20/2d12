@@ -375,11 +375,14 @@ His words: "I think this is the same problem we were having, but lessened: NPCs 
 
 "Lets do one default standard first. It will be the Orc Warrior as the Standard. dont copy anything from the old sheet. The NPC has to have: One melee basic, one ranged basic (both share at-will, like PCs), one special, one reaction. They can also have features." **A Standard's sheet, from now on: a melee Basic attack, a ranged Basic attack (one At-will count), one Special, one Reaction, Features if wanted.** Its record, with the ideas shown (three for each slot): `cards/orc-warrior-redesign.md`. **He chose a set the same day** (Hamstringing Axe, Barbed Javelin, War Howl with Vulnerable 1 in place of Daunted, Blood for Blood, a Boon to Shove while Bloodied), **under review, not built. Two rules of his from it:** don't lean on Daunted; no damage line that is only a flat number (so decision 15's fixed Specials are gone: every damage line has a die). **Built the same day** (the card source and Foundry's compendium build, no Foundry version: "only push it all when we have all NPCs done"), with Vigor 22, Resolve 14 and Mind -1 (his: "the orcs should actually have -1 mind, 14 resolve and 22 vigor"; a creature moves Health between its two thresholds, the total held). **Waiting for his review of the build before the next creature.**
 
-### The second creature: the Grave Wisp (2026-11-25)
+### The second creature: the Grave Wisp, as a Grunt (2026-11-25)
 
-Lucas: "Push it to the work branch, then lets do the next NPC. Also, I think its best we do the foundry pass when all NPCs are done." **From here each creature is designed and recorded; the card source and Foundry come in one pass at the end.** Claude chose the Grave Wisp (a Standard that deals only [R] against Ward Defense: the Default Standard's twin, and the one creature that waits on no open rank rule). Its ideas, three a slot: `cards/grave-wisp-redesign.md`. Waiting for his review.
+Lucas: "Push it to the work branch, then lets do the next NPC. Also, I think its best we do the foundry pass when all NPCs are done." **From here each creature is designed and recorded; the card source and Foundry come in one pass at the end.** Claude chose the Grave Wisp (the creature that deals only [R] against Ward Defense) as a second Standard; **Lucas: "Wait, lets do the grave wisp as a grunt."**
 
+**So decision 17's first rank is opened: the Default Grunt (proposed, Claude's derivation):** half a Standard. Health 18 (9 / 9); Defenses 13 / 13 and Modifiers +2 / +2 (a rank moves none); about 4 damage to Health a turn at the table (eight Grunts get about 12.4 turns in a normal fight: 51 ÷ 12.4), about 4½ on paper moving and 6 standing; 3 AP and dice that never explode (Chapter 14's two rules for Minor enemies, kept: K7); a Basic attack of 1d4 / 1d6; a 2 AP Special of about 5½ / 8½ on one creature or 2½ / 4½ on each of two. **Open with it: how many cards a Grunt's sheet has** (the Standard's four, or its Basic attacks and one more: Claude's pick). The wisp's record, with the ideas at Grunt size: `cards/grave-wisp-redesign.md`. Waiting for his review.
 
-- **Lucas's review of the Orc Warrior as built** (`cards/orc-warrior-redesign.md`, the last section), then the next creature.
-- **Decision 16, to the table:** four Orc Warriors against the four pregens, the Encounter Log reading decision 1's two yardsticks.
-- Block B (decisions 5 to 10) in its order, then the ranks as multiples.
+### What comes next
+
+- **Lucas's review of the Grave Wisp's ideas and of the Default Grunt** (`cards/grave-wisp-redesign.md`).
+- The creatures that need block B: a Minion (the ticks, K2), an Elite (K6), a Boss (its turns).
+- **The Foundry pass for every creature at once** (`foundry/foundry-backlog.md`), then **decision 16, to the table**, and one Foundry version.
