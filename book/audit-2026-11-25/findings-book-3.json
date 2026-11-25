@@ -1,0 +1,1923 @@
+[
+ {
+  "id": "B3-001",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 4,
+  "where": "Chapter 9, Glossary: entries that are missing",
+  "kind": "other",
+  "quote": "| Term | Meaning |",
+  "other": [],
+  "problem": "Several words a player meets on a class sheet or a card have no row of their own: Initiative (only \"Initiative slot\"), Health Pool (only under \"Resolve, Vigor\"), Talent and Skill Talent (only \"Stage Talent\"), the Round and Encounter Frequencies (the rows are the round of turns and the scene; \"Turn\" has both rows), and the traits Divine, Focus and Fear (Magical, Subtle and Unfailing have rows).",
+  "options": [
+   "Add a row for each of them",
+   "Add only Initiative, Health Pool, Talent / Skill Talent and Round (the Frequency)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-002",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 19,
+  "where": "Chapter 9, Glossary: Armor (and Ward)",
+  "kind": "contradiction",
+  "quote": "The Defense against Weapon Actions.",
+  "other": [
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 221,
+    "quote": "The Defense against Power Actions."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 164,
+    "quote": "are the usual sets, not a limit"
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 96,
+    "quote": "A Weapon roll normally targets Armor."
+   }
+  ],
+  "problem": "The Armor and Ward rows say flatly which Actions each Defense is for. No chapter says that: an Action's Attack line names its Defense, Chapter 7 says \"normally\", and Chapter 14 makes the Defense and the Modifier separate choices.",
+  "options": [
+   "Reword the two rows' last sentences: \"The Defense a Weapon Action usually attacks.\" and \"The Defense a Power Action usually attacks.\"",
+   "Remove the two sentences",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-003",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 26,
+  "where": "Chapter 9, Glossary: Basic Attack",
+  "kind": "stale",
+  "quote": "a Strike with the weapon you wield ([V] [Mod] / 1[W] + [Mod] / 1[W] + 1[D] + [Mod])",
+  "other": [
+   {
+    "file": "book/cards/basic-actions.json",
+    "line": 380,
+    "quote": "\"[V] 1d4!\","
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 286,
+    "quote": "> **Tier 1:** [V] [Mod]"
+   }
+  ],
+  "problem": "The Basic Attack card's Tier 1 is [V] 1d4! (changed on 2026-11-23, v0.0.481). The glossary row and Chapter 1's example card (\"As X AP\") still write the old Tier 1, [V] [Mod].",
+  "options": [
+   "The card wins: write Tier 1 as [V] 1d4! in the glossary row and in Chapter 1's example card",
+   "The glossary wins: put the Basic Attack card's Tier 1 back to [V] [Mod]",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-004",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 28,
+  "where": "Chapter 9, Glossary: Basic attack",
+  "kind": "ambiguity",
+  "quote": "An NPC's own attack: 1 AP, At-will.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 45,
+    "quote": "**A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[Basic attacks|Basic attack]]) deals **1d10!** more damage."
+   }
+  ],
+  "problem": "\"Basic attack\" with a small a means two things. In Chapter 1's Critical rule it is a family of four attacks (the Basic Attack card, Fists, a class's Power Basic attack, an NPC's). The glossary and Chapter 14 define it as an NPC's own attack only, so a player checking whether Drawing Light or Harrying Shot is a Basic attack reads \"an NPC's own attack\".",
+  "options": [
+   "Reword the row: \"The plain attacks whose Critical deals 1d10! more: the Basic Attack card, Fists, a class's Power Basic attack and an NPC's own Basic attacks. An NPC's are 1 AP and At-will; every NPC has two by default (a melee and a ranged one, or one against each Defense), sharing one At-will count; their Tier 1 deals nothing unless the card says so.\"",
+   "Keep the word for NPCs only: Chapter 1's Critical lists the four attacks without calling them \"a Basic attack\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-005",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 30,
+  "where": "Chapter 9, Glossary: Bloodied, Strained",
+  "kind": "contradiction",
+  "quote": "No effect by itself: Actions and features use them.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 158,
+    "quote": "- Your **Speed** is lowered by 2 (to a minimum of 1)."
+   },
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 163,
+    "quote": "**at the start of your turn, you don't regain your [[Action Points|Reaction Point]]**"
+   }
+  ],
+  "problem": "The glossary says Bloodied and Strained do nothing by themselves. Chapter 4 gives each an effect: Bloodied lowers Speed by 2 and Steadiness by 1, Strained stops you regaining your Reaction Point.",
+  "options": [
+   "Chapter 4 wins. Reword the row's last sentence: \"Bloodied: your Speed is lowered by 2 (minimum 1) and your Steadiness by 1. Strained: you don't regain your Reaction Point. Actions and features use them too.\"",
+   "The glossary wins: Bloodied and Strained do nothing by themselves (their effects leave Chapter 4)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-006",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 37,
+  "where": "Chapter 9, Glossary: Class Actions",
+  "kind": "ambiguity",
+  "quote": "(or a Hallmark Action: a choice of two)",
+  "other": [
+   {
+    "file": "book/rules-src/05-characters.md",
+    "line": 32,
+    "quote": "A class's **Class Actions** are the Actions it gives you at level 1, the Hallmark Action and the Hallmark Reaction among them."
+   }
+  ],
+  "problem": "The parenthesis reads as if a Hallmark Action were an alternative to the Class Actions. Chapter 5 says the Hallmark Action and the Hallmark Reaction are among them.",
+  "options": [
+   "Reword the row: \"The Actions your class gives you at level 1, the Hallmark Action and the Hallmark Reaction among them.\"",
+   "Remove the parenthesis",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-007",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 45,
+  "where": "Chapter 9, Glossary: Critical",
+  "kind": "contradiction",
+  "quote": "Only Actions with a Critical row use it",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 45,
+    "quote": "**A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[Basic attacks|Basic attack]]) deals **1d10!** more damage."
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 26,
+    "quote": "A Basic attack's Critical deals 1d10! more."
+   }
+  ],
+  "problem": "The Critical row says only Actions with a Critical row use a Critical. Chapter 1 (and the glossary's own Basic Attack row) gives every Basic attack 1d10! more on a Critical, with no row needed.",
+  "options": [
+   "Chapter 1 wins. Reword the row's second sentence: \"A Basic attack deals 1d10! more, an Action with a Critical row gets that row, any other Action gets nothing more; applying it is optional. Once an encounter, it also raises your Escalation by 1.\"",
+   "The glossary wins: only a Critical row matters (the Basic attacks' 1d10! leaves Chapter 1)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-008",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 66,
+  "where": "Chapter 9, Glossary: Emanation",
+  "kind": "wording-instruction",
+  "quote": "(the 1-2-1 shape; 21 squares)",
+  "other": [],
+  "problem": "\"The 1-2-1 shape\" is the writer's shorthand: no chapter uses or explains it (Chapter 3 says every second diagonal counts as 2). And 21 squares is true only around one square or a Medium creature.",
+  "options": [
+   "Reword the parenthesis: \"(counted like any distance, every second diagonal as 2: 21 squares around a single square)\"",
+   "Remove the parenthesis",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-009",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 72,
+  "where": "Chapter 9, Glossary: Escalation",
+  "kind": "stale",
+  "quote": "Escalation Passives (at 2, 4 and 6) and the Apex work while it is high enough.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 336,
+    "quote": "An Action whose card says **Escalation N** can be used only while your Escalation is at least N; it spends nothing."
+   }
+  ],
+  "problem": "The Escalation Passives were removed on 2026-11-25; the glossary still names them.",
+  "options": [
+   "Reword the sentence: \"A card that says Escalation N (the Apex: 6) can be used only while it is at least N, and your Escalation die (dE) grows with it.\"",
+   "Remove the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-010",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 149,
+  "where": "Chapter 9, Glossary: Reaction Point",
+  "kind": "contradiction",
+  "quote": "that pays only for Reactions",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 48,
+    "quote": "The Reaction Point pays only for [[Reactions]], on your turn or another creature's."
+   },
+   {
+    "file": "book/cards/stage0/paladin.json",
+    "line": 104,
+    "quote": "When you use Smite, you can spend your Reaction Point to roll 1 more Smite die."
+   },
+   {
+    "file": "book/cards/stage0/archer.json",
+    "line": 111,
+    "quote": "you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target"
+   }
+  ],
+  "problem": "The rule says the Reaction Point pays only for Reactions; Smite and Steady Draw both spend it on extra dice, which is no Reaction. \"Specific beats general\" covers it, but the two places say \"only\", and nothing says whether a Staggered creature (no Reactions) can still spend the point this way.",
+  "options": [
+   "Reword the row and Chapter 2's sentence: \"...pays for Reactions, and for what a card says it can be spent on (Smite's extra die, Steady Draw's 2dE); spending it that way is not a Reaction.\"",
+   "Keep it as it is (a card beats the general rule)",
+   "The rule wins: Smite and Steady Draw get another cost"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-011",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 154,
+  "where": "Chapter 9, Glossary: Reload Shot",
+  "kind": "contradiction",
+  "quote": "A Favored and Empowered shot with a Reload weapon.",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 136,
+    "quote": "as [[Empowered]] does (even if you already dealt damage this turn; you don't become Empowered)"
+   }
+  ],
+  "problem": "The glossary calls a Reload Shot \"Empowered\"; Chapter 15 says its damage adds 1d6! as Empowered does and that you do not become Empowered (the two differ: Empowered works once a turn and has its own rules).",
+  "options": [
+   "Reword the row: \"A Favored shot with a Reload weapon that adds 1d6! to its damage; the weapon must be reloaded afterwards.\"",
+   "The glossary wins: a Reload Shot makes the Strike Empowered (Chapter 15 changes)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-012",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 155,
+  "where": "Chapter 9, Glossary: Repertoire (and Pick)",
+  "kind": "stale",
+  "quote": "listed by Frequency: Passive, Turn, Round, Encounter, Daily",
+  "other": [
+   {
+    "file": "book/rules-src/05-characters.md",
+    "line": 32,
+    "quote": "Its **Repertoire** is everything else it offers, listed by [[Frequency]]: **Passive** (it works on its own), **Turn**, **Round**, **Encounter** and **Daily**."
+   },
+   {
+    "file": "book/rules-src/12-paladin.md",
+    "line": 77,
+    "quote": "### Level 2: Encounter Pick"
+   }
+  ],
+  "problem": "Neither class document has a Repertoire or lists by Frequency any more: each offers one choice, the Encounter Pick of level 2, and the Passive Picks left with the Escalation Passives. The word Repertoire is in no class document.",
+  "options": [
+   "Reword the row (and Chapter 5's sentence): \"Everything a class offers beyond its Class Actions. For now each class has one list: its Encounter Picks.\"",
+   "Remove the Repertoire row and the word from Chapter 5 until a class has more than one list",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-013",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 162,
+  "where": "Chapter 9, Glossary: Role",
+  "kind": "stale",
+  "quote": "What an NPC does in a fight: a ready set of numbers and a way to play it, with no rules of its own (not rebuilt yet).",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 137,
+    "quote": "the roles (ready sets of numbers and a way to play a creature)"
+   }
+  ],
+  "problem": "The glossary defines Role, but the book has no roles: Chapter 14 names them only inside an open box. \"(not rebuilt yet)\" is a note about the writing, not a meaning.",
+  "options": [
+   "Remove the row until roles are written",
+   "Reword the row: \"A ready set of numbers and a way to play an NPC. Not written yet.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-014",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 190,
+  "where": "Chapter 9, Glossary: Stage",
+  "kind": "stale",
+  "quote": "and it sets the Bestiary's tables",
+  "other": [
+   {
+    "file": "book/rules-src/05-characters.md",
+    "line": 64,
+    "quote": "the NPCs of the [[Bestiary]] follow them (their tables are written by Stage)"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 134,
+    "quote": "The creatures in this chapter are level 1 ([[Stages|Stage]] 0)."
+   }
+  ],
+  "problem": "The rebuilt Bestiary has no tables by Stage: it has one set of rank defaults, for Stage 0. The glossary and Chapter 5 still point to the old chapter's Stage tables.",
+  "options": [
+   "Remove \", and it sets the Bestiary's tables\" from the row and \"(their tables are written by Stage)\" from Chapter 5",
+   "Reword both: \"The Bestiary's numbers are written for Stage 0 only so far.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-015",
+  "file": "book/rules-src/09-glossary.md",
+  "line": 207,
+  "where": "Chapter 9, Glossary: Thrown",
+  "kind": "contradiction",
+  "quote": "A thrown weapon stays in your hand for the rules: the game doesn't track where it lands.",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 126,
+    "quote": "A thrown weapon leaves your hand."
+   }
+  ],
+  "problem": "The glossary says a thrown weapon stays in your hand for the rules; Chapter 15's Thrown property ends with \"A thrown weapon leaves your hand.\" (The rules log has Lucas's decision of 2026-11-19: it stays in hand.)",
+  "options": [
+   "The glossary wins: Chapter 15's last sentence becomes \"A thrown weapon stays in your hand for the rules: the game doesn't track where it lands.\"",
+   "Chapter 15 wins: a thrown weapon leaves your hand, and the glossary row says so",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-016",
+  "file": "book/rules-src/12-paladin.md",
+  "line": 26,
+  "where": "Paladin, The Paladin by Level (and the Archer's table)",
+  "kind": "ambiguity",
+  "quote": "| 2 | Kindled Wrath, your Escalation hook | an Encounter Pick, a Talent |",
+  "other": [
+   {
+    "file": "book/rules-src/13-archer.md",
+    "line": 27,
+    "quote": "| 2 | Thrill of the Kill, your Escalation hook | an Encounter Pick, a Talent |"
+   }
+  ],
+  "problem": "In a column where commas separate the things you gain (level 1: Judge, Smite, Sworn Blade, Drawing Light), \"Kindled Wrath, your Escalation hook\" reads as two things. It is one: Kindled Wrath is the hook.",
+  "options": [
+   "Reword the two rows: \"| 2 | Kindled Wrath (your Escalation hook) | an Encounter Pick, a Talent |\" and \"| 2 | Thrill of the Kill (your Escalation hook) | an Encounter Pick, a Talent |\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-017",
+  "file": "book/rules-src/12-paladin.md",
+  "line": 41,
+  "where": "Paladin, Level 1: Features (and the Archer's same sentence)",
+  "kind": "wording-rationale",
+  "quote": "A Weapon Basic attack (Vigor damage) pays off against a Strained foe, a Power one (Resolve damage) against a Bloodied foe, so the two feed each other.",
+  "other": [
+   {
+    "file": "book/rules-src/13-archer.md",
+    "line": 44,
+    "quote": "A Weapon Basic attack (Vigor damage) pays off against a Strained foe, a Power one (Resolve damage) against a Bloodied foe, so the two feed each other."
+   }
+  ],
+  "problem": "This sentence explains why the two Basic attacks were designed as a pair. It gives no rule the cards don't give, and it is written word for word in both class documents.",
+  "options": [
+   "Reword it in both classes: \"Your Basic Attack does more against a Strained foe, and your Power Basic attack more against a Bloodied one.\"",
+   "Remove it from both classes",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-018",
+  "file": "book/rules-src/12-paladin.md",
+  "line": 60,
+  "where": "Paladin, Level 1: Hallmark Reaction (and the Archer's)",
+  "kind": "wording-repeat",
+  "quote": "Both are paid with your Reaction Point or with AP you kept from your turn (see [[Reactions]]).",
+  "other": [
+   {
+    "file": "book/rules-src/13-archer.md",
+    "line": 63,
+    "quote": "both are paid with your Reaction Point or with AP you kept from your turn (see [[Reactions]])"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 73,
+    "quote": "A Reaction is paid with your **Reaction Point**, with AP you kept from your turn (see [[Unspent AP]]), or with both"
+   }
+  ],
+  "problem": "Both class documents restate Chapter 2's rule for paying a Reaction, and only part of it (both together can pay; on your own turn, that turn's AP can pay too).",
+  "options": [
+   "Reword in both classes to a pointer: \"How a Reaction (1R) is paid: see [[Reactions]].\"",
+   "Remove the sentence from both classes",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-019",
+  "file": "book/rules-src/12-paladin.md",
+  "line": 62,
+  "where": "Paladin and Archer, the one-line summaries of the options",
+  "kind": "ambiguity",
+  "quote": "you take some of it off and draw the foe to you",
+  "other": [
+   {
+    "file": "book/rules-src/12-paladin.md",
+    "line": 63,
+    "quote": "it slows and may stop"
+   },
+   {
+    "file": "book/rules-src/12-paladin.md",
+    "line": 82,
+    "quote": "holy ground that slows foes and steadies allies, for 3 rounds"
+   },
+   {
+    "file": "book/rules-src/12-paladin.md",
+    "line": 83,
+    "quote": "a burst of light that burns and throws back the foes around you"
+   },
+   {
+    "file": "book/rules-src/13-archer.md",
+    "line": 66,
+    "quote": "and slow or stop it"
+   }
+  ],
+  "problem": "Five summary lines use everyday words that are game terms for something else: \"draw the foe to you\" (Shield of Faith Taunts; the card that pulls is Drawing Light), \"slows\" (Rebuke and Snap Shot give Hindered, Consecrated Ground is Difficult Terrain; Slowed is another condition), \"steadies\" (it gives Guard, not Steadiness), \"a burst\" (Word of Radiance is an Emanation, not a Burst).",
+  "options": [
+   "Reword the five lines with the cards' words. Shield of Faith: \"when a foe would damage an ally, you take some of it off and the foe is Taunted by you.\" Rebuke: \"when a foe moves away from you, it is Hindered and may be stopped.\" Consecrated Ground: \"holy ground that is Difficult Terrain for foes and gives your side Guard, for 3 rounds.\" Word of Radiance: \"light around you that burns the foes near you and pushes them back.\" Snap Shot: \"you shoot the foe as it comes; it is Hindered or Immobilized.\"",
+   "Keep it as it is (the summaries are a taste, the cards are the rule)",
+   "Remove the one-line summaries: the cards are right below them"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-020",
+  "file": "book/rules-src/12-paladin.md",
+  "line": 81,
+  "where": "Paladin, Level 2: Encounter Pick, Bulwark of Faith's summary",
+  "kind": "other",
+  "quote": "- **Bulwark of Faith** (1R): you step into a blow meant for an ally.",
+  "other": [
+   {
+    "file": "book/cards/stage0/paladin.json",
+    "line": 673,
+    "quote": "The target gains Guard equal to what one of their Rally Points heals, before the damage. After the damage, they are Slid 1."
+   }
+  ],
+  "problem": "The summary says the Paladin steps into the blow. The card does not move the Paladin and gives them none of the damage: the ally gains Guard, then the ally is Slid 1.",
+  "options": [
+   "Reword: \"- **Bulwark of Faith** (1R): when a blow is about to land on an ally, they gain a large Guard first, and you slide them 1 square after.\"",
+   "Change the card so the Paladin does step in (a card decision for Lucas)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-021",
+  "file": "book/cards/stage0/paladin.json",
+  "line": 15,
+  "where": "Paladin cards, Judge: the Judged line",
+  "kind": "ambiguity",
+  "quote": "A creature stops being Judged when it goes Down.",
+  "other": [
+   {
+    "file": "book/rules-src/08-conditions.md",
+    "line": 4,
+    "quote": "**It ends when its source goes Down or is Unconscious**"
+   }
+  ],
+  "problem": "Judge never says whether Judged is a condition. If it is a condition with a source (Chapter 8), it ends when the Paladin goes Down or is Unconscious, and the Paladin pays 1 AP to Judge again; if it is only the card's own word, it lasts the whole encounter. The card names one ending only: the creature goes Down.",
+  "options": [
+   "Reword the Judged line's start: \"Judged is not a condition: it ends only when the creature goes Down, when you Judge another creature, or with the encounter.\"",
+   "Reword the Judged line's start: \"Judged is a condition with a source (you): it ends when the creature goes Down, and when you go Down or are Unconscious.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-022",
+  "file": "book/cards/stage0/paladin.json",
+  "line": 29,
+  "where": "Paladin cards, Judge: the 0 AP Version's Special",
+  "kind": "other",
+  "quote": "or as a 0R when the creature you Judged goes Down",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 71,
+    "quote": "Its card has an **Interrupt** or a **Trigger** line that says what it responds to"
+   }
+  ],
+  "problem": "Judge's free re-Judge is a Reaction hidden in a Special line: it has no Trigger line, which Chapter 2 says every Reaction's card has. A table has to work out by itself that it is a Reaction like the others (Staggered stops it, it comes after the creature goes Down).",
+  "options": [
+   "Reword the Special: \"You can use this only at the start of an encounter, or as a Reaction (0R; Trigger: the creature you Judged goes Down).\"",
+   "Make it no Reaction: \"You can use this only at the start of an encounter, or right after the creature you Judged goes Down (this is not a Reaction).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-023",
+  "file": "book/cards/stage0/paladin.json",
+  "line": 104,
+  "where": "Paladin cards, Smite: its Special",
+  "kind": "ambiguity",
+  "quote": "When you use Smite, you can spend your Reaction Point to roll 1 more Smite die.",
+  "other": [
+   {
+    "file": "book/cards/stage0/archer.json",
+    "line": 111,
+    "quote": "when this Action gets a Tier 2 or 3, you can spend your Reaction Point"
+   }
+  ],
+  "problem": "Smite doesn't say when you choose to spend the Reaction Point: before the roll (it can be lost on a bad roll) or after you see the Tier. Steady Draw's sister line says it plainly (after a Tier 2 or 3).",
+  "options": [
+   "Reword: \"Before you roll Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4.\"",
+   "Reword: \"After you roll Smite, you can spend your Reaction Point to roll 1 more Smite die. Neither extra die counts toward the 4.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-024",
+  "file": "book/cards/stage0/paladin.json",
+  "line": 141,
+  "where": "Paladin cards, Sworn Blade",
+  "kind": "ambiguity",
+  "quote": "Your [[Basic Attack]] gains: **Strained:** You can Slide the target 1.",
+  "other": [
+   {
+    "file": "book/cards/stage0/archer.json",
+    "line": 111,
+    "quote": "Your [[Basic Attack]] gains, above its Attack line:"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 204,
+    "quote": "**Where it is written decides when it counts:**"
+   }
+  ],
+  "problem": "A Strained line works differently above the Tiers (before the roll, and the target must already be Strained) and after them (after the damage). Steady Draw says where its line goes on the Basic Attack; Sworn Blade doesn't, so the table can't tell whether the Slide comes before the attack roll or after the damage.",
+  "options": [
+   "Reword: \"Your [[Basic Attack]] gains, after its Tiers: **Strained:** You can Slide the target 1.\"",
+   "Reword: \"Your [[Basic Attack]] gains, above its Attack line: **Strained:** You can Slide the target 1.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-025",
+  "file": "book/cards/stage0/paladin.json",
+  "line": 176,
+  "where": "Paladin cards, Drawing Light (a [Ranged] Action)",
+  "kind": "other",
+  "quote": "[R] 1d8! Ho; Pulled 1.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 292,
+    "quote": "Using a [Ranged] Action while you are [[Engaged]] is very hard: the roll is **[[Favored and Doomed Rolls|Doomed]]**."
+   }
+  ],
+  "problem": "Drawing Light has the Ranged trait, so by Chapter 3 its roll is Doomed whenever the Paladin is Engaged: the usual state of the class that \"stands in front\". Each Pull it lands also brings a foe next to the Paladin, which Dooms the next use. Probably not meant.",
+  "options": [
+   "Add a line to the card: \"Special: This Action isn't Doomed for being Engaged.\"",
+   "Take the Ranged trait off Drawing Light (a Power Action with Distance 5 sq.)",
+   "Keep it as it is (the Paladin uses it before the lines meet)"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-026",
+  "file": "book/cards/stage0/archer.json",
+  "line": 14,
+  "where": "Archer cards, Shifting Aim",
+  "kind": "ambiguity",
+  "quote": "(or since your turn began)",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 327,
+    "quote": "\"This turn\" is the turn in progress, whoever's it is"
+   }
+  ],
+  "problem": "On a Reaction (Snap Shot on an enemy's turn), \"this turn\" is the enemy's turn by Chapter 1, yet the card adds \"since your turn began\". One reader counts the step the Archer took on their own turn after their last Strike; another counts only a move made during the enemy's turn, which almost never happens.",
+  "options": [
+   "Reword: \"Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square this turn and have made no [Strike] Action since.\" (on another creature's turn, only a move made during that turn counts)",
+   "Reword: \"Your [Ranged, Strike] Actions gain 1 Field Boon if you have left your square since your last [Strike] Action (or since your last turn began, if you have made none since).\" (a step on your own turn counts for a later Reaction)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-027",
+  "file": "book/cards/stage0/archer.json",
+  "line": 111,
+  "where": "Archer cards, Steady Draw: the Strained line",
+  "kind": "wording-repeat",
+  "quote": "**Strained:** Against a Strained target, a Tier 3 deals 1[D] more.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 204,
+    "quote": "A **Bloodied** or **Strained** line happens only against a target that is [[Bloodied]] or [[Strained]]."
+   },
+   {
+    "file": "book/cards/stage0/archer.json",
+    "line": 156,
+    "quote": "On a Tier 3, the target is Daunted of you (EoT)."
+   }
+  ],
+  "problem": "The label \"Strained:\" already means \"against a Strained target\" (Chapter 2); the line says it a second time. Harrying Shot's Bloodied line shows the short form.",
+  "options": [
+   "Reword: \"**Strained:** On a Tier 3, this Action deals 1[D] more.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-028",
+  "file": "book/cards/stage0/archer.json",
+  "line": 111,
+  "where": "Archer cards, Steady Draw: the 2dE",
+  "kind": "ambiguity",
+  "quote": "you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target",
+  "other": [],
+  "problem": "The 2dE has no pool and no damage type, where every other damage in the book writes its pool ([V] or [R]). The table has to guess it is the weapon's own damage, which decides Vigor or Resolve and whether a Resistance or Weakness applies.",
+  "options": [
+   "Reword: \"...you can spend your Reaction Point to deal 2dE more to the target, as the weapon's damage (its pool and subtype).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-029",
+  "file": "book/cards/stage0/archer.json",
+  "line": 283,
+  "where": "Archer cards, Slip Away: its Distance line",
+  "kind": "other",
+  "quote": "\"distance\": \"5 sq.\",",
+  "other": [],
+  "problem": "Slip Away's Distance of 5 squares can never matter: its Interrupt is an enemy about to enter a square adjacent to you, and such an enemy is always within 2 squares. It reads like a leftover of an earlier version.",
+  "options": [
+   "Remove the Distance line from Slip Away",
+   "Change the Interrupt so the Distance matters (a card decision for Lucas)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-030",
+  "file": "book/cards/stage0/archer.json",
+  "line": 677,
+  "where": "Archer cards, Hit and Run: who is hit",
+  "kind": "ambiguity",
+  "quote": "After each square of this Advance, you hit each enemy adjacent to you that this Action hasn't hit yet with a [[Light (property)|Light]] weapon.",
+  "other": [
+   {
+    "file": "book/cards/stage0/archer.json",
+    "line": 710,
+    "quote": "Each enemy adjacent to you at any point of the Advance, and one creature within your bow's Range"
+   }
+  ],
+  "problem": "Three things are open on Hit and Run. \"Hit\" is not a rules word (here it means \"this Action attacks it\", whatever the Tier). Enemies adjacent before the first step: the Effect says \"after each square\", the Target line \"at any point of the Advance\". And \"hasn't hit yet with a Light weapon\" can mean \"not hit at all yet\" (the enemy the bow shot is skipped) or \"not yet hit with the knife\" (it can take both).",
+  "options": [
+   "Reword the Effect: \"You Advance. Before the first square and after each square of this Advance, each enemy adjacent to you becomes a target of your Light weapon, once each. Once, at any point of the Advance, one creature within your bow's Range becomes a target of your bow; it can be a target of the Light weapon too. You draw and stow the two weapons freely during this Action.\"",
+   "Reword the same way, but a creature is a target only once: \"...becomes a target of your Light weapon, once each, unless your bow already targeted it. ...\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-031",
+  "file": "book/cards/stage0/archer.json",
+  "line": 685,
+  "where": "Archer cards, Hit and Run: the single roll",
+  "kind": "ambiguity",
+  "quote": "Roll once, when the first creature is hit: every hit of this Action uses that roll.",
+  "other": [
+   {
+    "file": "book/cards/stage0/archer.json",
+    "line": 681,
+    "quote": "The bow's hit is Doomed if you are Engaged when you make it."
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 227,
+    "quote": "If any target has Favored or Doomed, roll 3d12"
+   }
+  ],
+  "problem": "The one roll is made at the first hit, but whether the bow's hit is Doomed is only known later in the run, and every creature can have its own Boons, Banes, Cover or Favored. The card doesn't say that the dice are shared and each hit is worked out on its own (Several Targets), nor that a third d12 may be needed for a hit not yet made.",
+  "options": [
+   "Reword the Attack line: \"Weapon vs. Armor Defense. Roll 3d12 once, when the first creature is hit: every hit of this Action uses those dice, each worked out on its own as for [[Several Targets]] (the first two dice, unless that hit is Favored or Doomed).\"",
+   "Each hit gets its own roll (the single roll leaves the card)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-032",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 5,
+  "where": "Bestiary, the opening note",
+  "kind": "wording-instruction",
+  "quote": "This chapter was rebuilt from zero: it holds only what is decided for the next playtest",
+  "other": [],
+  "problem": "The note tells the history of the chapter (\"rebuilt from zero\") and how it is organised (\"what is not rebuilt yet is an open box\"). A GM needs only one thing from it: the numbers are playtest values.",
+  "options": [
+   "Reword the note: \"**Playtest rules.** Every number in this chapter is a playtest value, checked at the table before it is final.\"",
+   "Remove the note",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-033",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 7,
+  "where": "Bestiary, the opening paragraph",
+  "kind": "contradiction",
+  "quote": "**An NPC's items are flavor and loot:** its Health, Defenses and damage never come from its weapons or armor.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 167,
+    "quote": "**Its [Weapon] Actions need the weapon its entry describes**, in hand"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 180,
+    "quote": "the GM adjusts its Actions in the middle of the fight (usually the damage type, or the damage dice a step)"
+   }
+  ],
+  "problem": "The opening says an NPC's items are flavor and its damage never comes from its weapon. Later the chapter makes its [Weapon] Actions need that weapon in hand, and has the GM change the damage type or the damage dice when it picks up another kind of weapon.",
+  "options": [
+   "Items are flavor all the way: remove \"Its [Weapon] Actions need the weapon its entry describes\" and the section \"Losing its weapon\" (an NPC's Actions never depend on what it holds)",
+   "The weapon matters: reword the opening to \"**An NPC's numbers are its rank's, not its gear's:** its Health, Defenses and damage are written on its sheet; its weapon only decides which [Weapon] Actions it can use.\" and cut \"(usually the damage type, or the damage dice a step)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-034",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 18,
+  "where": "Bestiary, The cost of a fight",
+  "kind": "wording-rationale",
+  "quote": "A total of damage hides a PC who dropped, so the Downs are always counted beside the cost.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 13,
+    "quote": "A fight is measured by two things, always together:"
+   }
+  ],
+  "problem": "This sentence only gives the reason for counting the Downs, and repeats \"always together\" from five lines above.",
+  "options": [
+   "Remove it",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-035",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 26,
+  "where": "Bestiary, The bands",
+  "kind": "other",
+  "quote": "| **Hard** | about 2½ (2 to 3) |",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 25,
+    "quote": "| **Normal** | about 1½ (1¼ to 1¾) |"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 24,
+    "quote": "| **Easy** | about 1 (¾ to 1¼) |"
+   }
+  ],
+  "problem": "The bands leave a hole: Normal ends at 1¾ and Hard starts at 2, so a fight that cost 1.9 Rally Points a PC is in no band. A cost under ¾ is in none either, and 1¼ is in two.",
+  "options": [
+   "Close the table: Easy up to 1¼; Normal above 1¼, up to 2; Hard above 2, up to 3; Deadly above 3",
+   "Keep it as it is (the ranges are only \"about\")"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-036",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 38,
+  "where": "Bestiary, The normal fight",
+  "kind": "wording-rationale",
+  "quote": "A Standard's Health is sized on two rounds of a PC's turn; the dice carry the fight into round 3.",
+  "other": [],
+  "problem": "This sentence explains how the designer sized a Standard's Health. The rule a GM uses is the one before it (decided in round 2, over in round 3).",
+  "options": [
+   "Remove it",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-037",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 39,
+  "where": "Bestiary, The normal fight: Momentum",
+  "kind": "ambiguity",
+  "quote": "Late in a good expedition, a party can take a band more.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 39,
+    "quote": "**Momentum doesn't change the budget:** it is the party's reward."
+   }
+  ],
+  "problem": "Two sentences side by side pull opposite ways: Momentum doesn't change the budget, yet a party late in a good expedition can take a harder band. \"The budget\" is used nowhere else, and late in an expedition a party has Momentum but fewer of the Rally Points the same bullet says a normal fight counts on.",
+  "options": [
+   "Reword the bullet: \"- **It is built for a fresh party at Momentum 0:** full Health, Rally Points in hand. **Momentum doesn't change a fight's CV:** it is the party's reward.\"",
+   "Reword the last sentence into guidance with a condition: \"A party with Momentum 3 or 4 that still has most of its Rally Points can take a band more.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-038",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 42,
+  "where": "Bestiary, The normal fight: \"No number assumes a class\"",
+  "kind": "wording-rationale",
+  "quote": "**No number in this chapter assumes a class.**",
+  "other": [],
+  "problem": "This paragraph records how the numbers were derived (measured against a PC with no class cards). The one thing a GM takes from it is its last point: with their class cards, the PCs find a fight cheaper or shorter than its band.",
+  "options": [
+   "Reword the paragraph to one sentence: \"The bands are measured without the PCs' class cards: what a class adds (damage, protection, healing, control) shows as a fight cheaper or shorter than its band.\"",
+   "Remove the paragraph",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-039",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 48,
+  "where": "Bestiary, Building an encounter: a Minion's CV",
+  "kind": "ambiguity",
+  "quote": "A Minion's CV assumes it is mixed with other enemies, about three a PC.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 48,
+    "quote": "A fight of Minions alone is not a straight line: the last ones standing act the most"
+   }
+  ],
+  "problem": "\"About three a PC\" can mean \"use about three Minions for each PC\" (which is a fight of Minions alone, the case the next sentence warns about) or \"about three Minions count for one PC\". \"Not a straight line\" and \"the last ones standing act the most\" are the writer's shorthand.",
+  "options": [
+   "Reword the bullet: \"- A Minion's CV of 30 is for Minions mixed with other enemies. A fight of Minions alone doesn't add up the same way: eight against four PCs are less than an easy fight, and sixteen are a hard one.\"",
+   "Reword with a cap: \"- A Minion's CV of 30 is for Minions mixed with other enemies, at most about three Minions for each PC. ...\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-040",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 64,
+  "where": "Bestiary, The ranks: every rank's Defenses and Modifiers",
+  "kind": "wording-rationale",
+  "quote": "what makes an Elite stronger is never the PCs' cards working less often.",
+  "other": [],
+  "problem": "The clause justifies the rule before it (a rank never moves its Defenses or its Modifiers); it adds nothing a GM applies.",
+  "options": [
+   "Remove the clause: the bullet ends at \"**A rank never moves its Defenses or its Modifiers.**\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-041",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 65,
+  "where": "Bestiary, The ranks: the damage a turn",
+  "kind": "wording-instruction",
+  "quote": "On paper a Standard deals about 9 in a turn that has to move and 12 in one that doesn't.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 114,
+    "quote": "- **About 8 damage to Health a turn at the table** (a playtest value)"
+   }
+  ],
+  "problem": "\"On paper\" and \"at the table\" are the design record's two measures. A GM gets three numbers for one thing (8, 9 and 12), and only the first is used anywhere else.",
+  "options": [
+   "Remove the sentence",
+   "Remove the whole bullet and name the table's column \"Damage to Health a turn (a playtest value)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-042",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 66,
+  "where": "Bestiary, The ranks: a Basic attack's Tier 1",
+  "kind": "wording-repeat",
+  "quote": "- A Basic attack's Tier 1 deals nothing (see [[Basic attacks]]).",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 151,
+    "quote": "- **An NPC's Tier 1 deals nothing unless its card says so:** a creature can be designed to do something on it."
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 28,
+    "quote": "its Tier 1 deals nothing unless its card says so"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 252,
+    "quote": "a Tier that isn't written does nothing"
+   }
+  ],
+  "problem": "The rule is written here, under \"An NPC's Actions\" and in the glossary, and Chapter 1 already says a Tier that isn't written does nothing. This bullet also points to \"Basic attacks\", a section that doesn't say it.",
+  "options": [
+   "Remove this bullet",
+   "Reword: \"- A Basic attack's Tier 1 deals nothing (see [[An NPC's Actions]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-043",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 70,
+  "where": "Bestiary, Minions: the first sentence",
+  "kind": "wording-rationale",
+  "quote": "**A Minion is fodder:** it hits like a Grunt and dies like a Minion.",
+  "other": [],
+  "problem": "\"Dies like a Minion\" explains a Minion by itself: the sentence is a line from the design notes and tells a GM nothing.",
+  "options": [
+   "Reword: \"**A Minion is fodder:** it hits like a Grunt and goes Down in one or two hits.\"",
+   "Remove the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-044",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 70,
+  "where": "Bestiary, The ranks: each rank's default, written twice",
+  "kind": "wording-repeat",
+  "quote": "Its default: **2 ticks** (no Health), 3 AP, no Reaction Point, the Defenses and Modifiers of every rank, a Basic attack of [V] 1d4 / 1d6, about 3½ damage to Health a turn at the table. **CV 30.**",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 59,
+    "quote": "| **Minion** | 30 | 2 ticks | 3, no Reaction Point | [V] 1d4 / 1d6 | about 3½ |"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 99,
+    "quote": "Its default: **Health 18** (Vigor 9, Resolve 9), 3 AP and the Reaction Point, the Defenses and Modifiers of every rank, a Basic attack of [V] 1d4 / 1d6"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 109,
+    "quote": "**Health 36** (Vigor 18, Resolve 18), 4 AP and the Reaction Point, the Defenses and Modifiers of every rank."
+   }
+  ],
+  "problem": "Each rank's section writes its default again in a sentence, right after the table gave the same numbers (the Minion's, the Grunt's, the Standard's). Every number has two places to change.",
+  "options": [
+   "Keep the table; cut each rank's \"Its default: ...\" sentence down to what the table lacks (the Grunt's and the Standard's Special)",
+   "Keep the sentences; cut the table down to Rank and CV",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-045",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 73,
+  "where": "Bestiary, Minions",
+  "kind": "wording-instruction",
+  "quote": "- A Minion threatens and flanks like any creature.",
+  "other": [],
+  "problem": "No rule says a Minion doesn't threaten or flank: the sentence only rules out a misreading nobody at a table would make.",
+  "options": [
+   "Remove it",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-046",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 74,
+  "where": "Bestiary, Minions: \"A Minion's Reaction\"",
+  "kind": "wording-repeat",
+  "quote": "It can have a Reaction (written on its card, as any NPC's), and it pays for it with an AP it kept from its turn",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 188,
+    "quote": "a Minion, which has no Reaction Point, only with an AP it kept. **An NPC gains no Guard from unspent AP:**"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 204,
+    "quote": "It pays with an AP it kept."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 59,
+    "quote": "3, no Reaction Point"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 57,
+    "quote": "- An NPC gains no Guard from unspent AP (see [[NPC Reactions]])."
+   }
+  ],
+  "problem": "That a Minion has no Reaction Point and pays a Reaction with a kept AP is written in the table, in this bullet, under \"NPC Reactions\" and again in the Goblin Sneak's stat block; \"an NPC's kept AP gives no Guard\" is in this bullet, under \"NPC Reactions\" and in Chapter 2.",
+  "options": [
+   "Remove the bullet \"A Minion's Reaction\" and the stat block's \"It pays with an AP it kept.\" (the table and \"NPC Reactions\" keep the rule)",
+   "Keep this bullet; cut the Minion's clause and the Guard sentence from \"NPC Reactions\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-047",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 78,
+  "where": "Bestiary, Ticks: \"no overflow\"",
+  "kind": "wording-instruction",
+  "quote": "**There is no overflow:** ticks removed from one Minion never pass to another.",
+  "other": [],
+  "problem": "Nothing in the book suggests that ticks could pass from one Minion to another: the sentence answers a rule of other games.",
+  "options": [
+   "Remove it",
+   "Keep it as it is (players who know other games expect overflow)"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-048",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 83,
+  "where": "Bestiary, Ticks, rule 4: damage with no Tier",
+  "kind": "ambiguity",
+  "quote": "**Damage with no Tier removes 1 tick, when it comes from something that hasn't already removed ticks from that Minion:**",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 83,
+    "quote": "An Action whose Tier removed ticks removes no more through its own Forced Movement's Collision."
+   }
+  ],
+  "problem": "\"Something that hasn't already removed ticks\" is there so that an Action's own Collision doesn't count twice. As written it also covers repeats: a Lingering that removed a tick last turn, or a hazard the Minion stood in last round, has \"already removed ticks\", so one GM lets it remove another and one doesn't.",
+  "options": [
+   "Reword: \"**Damage with no Tier removes 1 tick each time it lands:** a [[Lingering]] at the end of its turn, a hazard, a zone, a [[Collision]] from an Action that dealt it no damage (a Shove). **An Action removes ticks only once:** if its Tier removed ticks, its own Forced Movement's Collision removes no more.\"",
+   "Reword so each source counts once: \"**Damage with no Tier removes 1 tick, once for each source:** a Lingering, a hazard or a zone that has removed a tick from that Minion removes no more. ...\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-049",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 101,
+  "where": "Bestiary, Grunts",
+  "kind": "wording-rationale",
+  "quote": "A Grunt has Health, so a big hit kills it at once; a Minion's ticks don't care how big the hit is. Grunts reward the heavy hitter, Minions the many attacks.",
+  "other": [],
+  "problem": "These two sentences explain why the game has both ranks. The paragraph's guidance for a GM is its last sentence (Grunts are for mixing in; a fight of Grunts alone runs long).",
+  "options": [
+   "Remove the two sentences",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-050",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 105,
+  "where": "Bestiary, Minor enemies: the definition",
+  "kind": "stated-once",
+  "quote": "**Minor enemies** are the Minion and Grunt ranks.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 254,
+    "quote": "A Forced Movement into one kills [[Minor enemies]]"
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 118,
+    "quote": "The Minion and Grunt ranks: 3 AP a turn, and their damage dice never explode."
+   }
+  ],
+  "problem": "The one core rule that uses \"Minor enemies\" (a Forced Movement into a Deadly Hazard kills them) is only in Chapter 3. The section that defines them and their glossary row list what they share and leave it out.",
+  "options": [
+   "Add to the section and to the glossary row: \"A Forced Movement into a [[Deadly Hazards|Deadly Hazard]] kills a Minor enemy.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-051",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 105,
+  "where": "Bestiary, Minor enemies: which dice",
+  "kind": "ambiguity",
+  "quote": "**their dice never explode**",
+  "other": [
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 118,
+    "quote": "their damage dice never explode"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 199,
+    "quote": "Its dice never explode."
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 26,
+    "quote": "When a d12 shows a **12**, it **explodes**"
+   }
+  ],
+  "problem": "\"Their dice\", read plainly, includes the 2d12 of their rolls, where a 12 explodes for everyone. The glossary says \"damage dice\". Two tables would treat a goblin's 12 differently.",
+  "options": [
+   "The glossary wins: write \"their damage dice never explode\" here, and \"Its damage dice never explode.\" in the Goblin Sneak's and the Grave Wisp's stat blocks",
+   "The chapter wins: a Minor enemy's d12s don't explode either (the glossary row changes)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-052",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 105,
+  "where": "Bestiary, Minor enemies: the Critical's die",
+  "kind": "ambiguity",
+  "quote": "A Critical on a Basic attack still adds the 1d10! of [[Critical|Chapter 1]].",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 105,
+    "quote": "an [[Empowered]] die included"
+   }
+  ],
+  "problem": "One sentence says a Minor enemy's dice never explode, an Empowered die included; the next gives it the Critical's 1d10!, written with the \"!\" that means the die explodes. Does a goblin's Critical die explode?",
+  "options": [
+   "It explodes. Reword: \"The one exception: a Critical on a Basic attack adds Chapter 1's 1d10!, which explodes.\"",
+   "It doesn't. Reword: \"A Critical on a Basic attack still adds Chapter 1's die, as a plain 1d10.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-053",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 109,
+  "where": "Bestiary, Standards (and Elites, Grunts, the normal fight)",
+  "kind": "contradiction",
+  "quote": "**A Standard is one PC: CV 100.**",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 36,
+    "quote": "It is not an even match."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 118,
+    "quote": "**An Elite is above a PC: CV 200, two PCs' worth.**"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 99,
+    "quote": "**A Grunt is half a Standard:** weaker than a PC."
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 193,
+    "quote": "An NPC rank with CV 100, one PC's worth: Health 36 by default."
+   }
+  ],
+  "problem": "The chapter says a Standard \"is one PC\" and an Elite is \"two PCs' worth\", and also that one Standard for each PC is a fight the party wins and \"not an even match\". A GM who reads \"one PC's worth\" expects four Standards against four PCs to be a coin flip.",
+  "options": [
+   "Reword: \"**A Standard is the unit: CV 100, one for each PC in a normal fight.**\"; the Elite: \"**An Elite counts as two Standards: CV 200.**\"; the glossary's Standard row: \"An NPC rank with CV 100: a normal fight has one for each PC. Health 36 by default.\"",
+   "Keep \"one PC\" and remove \"It is not an even match.\" from the normal fight",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-054",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 109,
+  "where": "Bestiary, Standards and Elites: two names never used",
+  "kind": "wording-instruction",
+  "quote": "Its default (the **Default Standard**):",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 118,
+    "quote": "Its default (the **Default Elite**)"
+   }
+  ],
+  "problem": "\"Default Standard\" and \"Default Elite\" are defined in bold and used nowhere else in the book: they are the design record's labels.",
+  "options": [
+   "Remove the two parentheses",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-055",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 120,
+  "where": "Bestiary, Elites: the size of the Encounter Action",
+  "kind": "contradiction",
+  "quote": "(9 or 10 more damage to Health at the table, or the like in effect)",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 114,
+    "quote": "- **About 8 damage to Health a turn at the table** (a playtest value)"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 120,
+    "quote": "about one extra Standard's turn in a fight"
+   }
+  ],
+  "problem": "An Elite's Encounter Action is \"about one extra Standard's turn\", given as 9 or 10 damage at the table. A Standard's turn at the table is given three times in the chapter as about 8.",
+  "options": [
+   "Reword: \"(about 8 more damage to Health at the table, or the like in effect)\"",
+   "Reword the sentence: \"about one extra Standard's turn in a fight, a strong one (9 or 10 more damage to Health at the table, or the like in effect)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-056",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 120,
+  "where": "Bestiary, Elites: \"where the players can read it\"",
+  "kind": "ambiguity",
+  "quote": "written on its card where the players can read it",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 72,
+    "quote": "- **Minions are announced:** the players know which enemies are Minions and how many ticks each has left."
+   }
+  ],
+  "problem": "It isn't clear whether this is a rule (the players are shown an Elite's Encounter Action, as Minions are announced) or only a way of saying the Action is on the card.",
+  "options": [
+   "Make it a rule: \"**An Elite's Encounter Action is announced:** the players can read its card.\"",
+   "Remove \"where the players can read it\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-057",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 120,
+  "where": "Bestiary, Elites: \"on its own turn\"",
+  "kind": "wording-instruction",
+  "quote": "An Elite uses it on its own turn.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 81,
+    "quote": "- You can't use an Action outside your turn unless it is a Reaction."
+   }
+  ],
+  "problem": "Every Action with an AP cost is used on its user's own turn (Chapter 2). The sentence only guards against reading \"worth about a turn\" as an extra turn.",
+  "options": [
+   "Remove it",
+   "Reword: \"It is an Action of the Elite's own turn, never a Reaction and never an extra turn.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-058",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 129,
+  "where": "Bestiary, An NPC's numbers",
+  "kind": "ambiguity",
+  "quote": "Nothing else on its sheet moves with its rank.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 141,
+    "quote": "Speed, [[Size]] and [[Steadiness]] are free, but balanced inside the creature"
+   }
+  ],
+  "problem": "The sentence can mean \"a creature may change nothing else from its rank's default\" (but its Speed, Size, Steadiness, Reach and every attack are chosen for it) or \"nothing else depends on the rank\". Neither reading adds a rule.",
+  "options": [
+   "Remove it",
+   "Reword: \"Everything else on its sheet (Speed, Size, Steadiness, Reach, its Actions) is chosen for the creature.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-059",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 131,
+  "where": "Bestiary, An NPC's numbers and NPCs and Health: core rules said again",
+  "kind": "wording-repeat",
+  "quote": "Bloodied and Strained work as for anyone (see [[Bloodied]] and [[Strained]]).",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 132,
+    "quote": "(11 + the Attribute, as for anyone)"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 145,
+    "quote": "NPCs have no Rally Points and no Steel Yourself"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 149,
+    "quote": "except Steel Yourself and the Basic Attack card"
+   },
+   {
+    "file": "book/rules-src/06-basic-actions.md",
+    "line": 4,
+    "quote": "and no Steel Yourself (it has no Rally Points)"
+   },
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 107,
+    "quote": "**NPCs.** NPCs have no Rally Points."
+   }
+  ],
+  "problem": "These lines restate core rules that are the same for every creature (\"as for anyone\"), and \"no Rally Points, no Steel Yourself\" is written four times across Chapters 4, 6 and 14.",
+  "options": [
+   "Cut the \"as for anyone\" sentences, and reduce \"NPCs and Health\" to a pointer: \"What differs for an NPC's Health: see [[Rally Points]] and [[NPCs Going Down]].\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-060",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 134,
+  "where": "Bestiary, An NPC's numbers: its level",
+  "kind": "ambiguity",
+  "quote": "- **Its level is guidance.**",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 38,
+    "quote": "they are Vulnerable equal to half their level (rounded up)"
+   }
+  ],
+  "problem": "Guidance for what is not said (which PCs the creature is built for?). And one core rule does read a creature's level as a number: Squeezing makes it Vulnerable equal to half its level.",
+  "options": [
+   "Reword: \"- **Its level says which PCs it is built for.** A higher level gives a creature options (more Actions, riders, Features), never a number on a roll, a Defense or a DC. The creatures in this chapter are level 1 ([[Stages|Stage]] 0).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-061",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 141,
+  "where": "Bestiary, Speed, Size and Steadiness (and the Goblin Sneak's Defenses)",
+  "kind": "contradiction",
+  "quote": "a slow one (Speed 4 or less) gets an upside (more Health, Reach)",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 129,
+    "quote": "It can move Health between its Vigor and its Resolve, the total held"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 141,
+    "quote": "it pays with a downside (less Vigor, a lower Armor Defense)"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 199,
+    "quote": "Armor Defense 13, Ward Defense 12."
+   }
+  ],
+  "problem": "\"An NPC's numbers\" lets a creature only move Health and one Defense point inside its rank's totals. The Speed paragraph gives a slow creature \"more Health\" and a fast one \"a lower Armor Defense\", and the Goblin Sneak (Speed 6) has Defenses 13 and 12: a point dropped from the total of 26, not moved.",
+  "options": [
+   "Speed can break the totals: add to \"An NPC's numbers\": \"The one exception: a fast creature can give up a Defense point or some Health, and a slow one can gain Health (see [[Speed, Size and Steadiness]]).\" (the goblin stays as it is)",
+   "The totals win: reword to \"it pays inside its totals (Health moved off Vigor, the Defense point moved off Armor Defense); a slow one gets an upside (Reach, Steadiness)\" and give the Goblin Sneak Ward Defense 13",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-062",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 149,
+  "where": "Bestiary, An NPC's Actions: Fists",
+  "kind": "contradiction",
+  "quote": "(see [[Chapter 6: Basic Actions|Basic Actions]]: Fists, Shove and Trip included)",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 180,
+    "quote": "An NPC uses Fists only when it has no weapon that fits its Basic attack."
+   },
+   {
+    "file": "book/rules-src/06-basic-actions.md",
+    "line": 4,
+    "quote": "it uses Fists only without a weapon that fits them"
+   }
+  ],
+  "problem": "One sentence gives an NPC every Basic Action, \"Fists included\"; two others say it uses Fists only when it has no weapon. Can the Orc Warrior, an axe in one hand and the other free, punch?",
+  "options": [
+   "Fists only without a weapon. Reword: \"**Every Basic Action is an NPC's too** (Shove and Trip included), except Steel Yourself, the Basic Attack card, whose place its own Basic attacks take, and Fists while it has its weapon.\"",
+   "Fists always: remove \"An NPC uses Fists only when it has no weapon that fits its Basic attack.\" and the same clause in Chapter 6",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-063",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 152,
+  "where": "Bestiary, An NPC's Actions: flat numbers",
+  "kind": "wording-instruction",
+  "quote": "- **No damage line is only a flat number** unless its card says otherwise: every damage line has a die.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 237,
+    "quote": "(The flat 1 is this card's own exception.)"
+   }
+  ],
+  "problem": "This is a note on how to write an NPC's cards, and \"unless its card says otherwise\" empties it: no card writes a flat number unless the card writes one. A GM reading a card needs none of it.",
+  "options": [
+   "Reword as building advice: \"- Give every damage line a die: a flat number alone is rare.\"",
+   "Remove the bullet",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-064",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 153,
+  "where": "Bestiary, An NPC's Actions: damage written whole",
+  "kind": "wording-repeat",
+  "quote": "- **Its damage is written whole** (2 + 1d6, no [Mod]).",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 133,
+    "quote": "its damage is written whole on its cards, with nothing added"
+   }
+  ],
+  "problem": "The same rule is written twenty lines above, under \"Its Modifiers\".",
+  "options": [
+   "Remove this bullet",
+   "Keep this bullet and cut the clause from \"Its Modifiers\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-065",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 167,
+  "where": "Bestiary, What an Action attacks: the weapon a [Weapon] Action needs",
+  "kind": "ambiguity",
+  "quote": "**Its [Weapon] Actions need the weapon its entry describes**, in hand",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 230,
+    "quote": "A club in one hand, the other free."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 232,
+    "quote": "- **Crushing Grip** (Basic attack; At-will, 1 AP; [Weapon, Melee, Strike]; Reach (2)"
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 235,
+    "quote": "- **Hurled Goblin** (Special; Round, 2 AP; [Weapon, Ranged, Strike]; 6 sq."
+   }
+  ],
+  "problem": "No card says which weapon it needs. The Ogre Chieftain's entry describes a club, but its [Weapon] Actions are a grab with its free hand, a thrown goblin and two club blows: without its club, can it still grab and throw? The Orc's two weapons raise the same question.",
+  "options": [
+   "Remove the rule: an NPC's [Weapon] Actions never depend on what it holds (its items are flavor)",
+   "Each [Weapon] card names its weapon in the stat block (Crushing Grip: its free hand; Hurled Goblin: a Minion; Great Sweep, Crack the Ground: the club), and the rule becomes \"A [Weapon] Action needs the weapon its card names, in hand.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-066",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 172,
+  "where": "Bestiary, Basic attacks",
+  "kind": "wording-instruction",
+  "quote": "(two melee Basic attacks against different Defenses are fine; there is no hard limit)",
+  "other": [],
+  "problem": "\"Are fine\" and \"there is no hard limit\" are the writer's notes on what a design may do, and it isn't said what has no limit (how many Basic attacks, or which kinds).",
+  "options": [
+   "Remove the parenthesis",
+   "Reword: \"(a creature can have another pair, or more than two)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-067",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 175,
+  "where": "Bestiary, Basic attacks: which dice explode",
+  "kind": "ambiguity",
+  "quote": "**A Standard's or an Elite's Basic attack die explodes:**",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 224,
+    "quote": "Tier 1: [R] 1 + 1d6! Ps; Vulnerable 1 (EoT). Tier 2: [R] 1 + 1d4 Ps."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 234,
+    "quote": "Tier 2: [V] 2 + 1d6 Bl. Tier 3: [V] 4 + 1d8 Bl."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 235,
+    "quote": "Tier 2: [V] 1d4! Bl. Tier 3: [V] 1 + 1d6! Bl."
+   }
+  ],
+  "problem": "The rule covers only the Basic attack. A GM writing a Special has no rule, and the four creatures go three ways: the Ogre's Great Sweep and Crack the Ground don't explode, its Hurled Goblin does, and the Orc's War Howl explodes on its Tier 1 and not on its Tier 2.",
+  "options": [
+   "Add: \"The dice of its other Actions explode only where the card writes !\" and make War Howl's two Tiers alike",
+   "Add: \"Every damage die of a Standard or an Elite explodes.\" and write ! on Great Sweep, Crack the Ground and War Howl's Tier 2",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-068",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 176,
+  "where": "Bestiary, Basic attacks: the Critical's 1d10!",
+  "kind": "wording-repeat",
+  "quote": "- On a Critical, a Basic attack adds the 1d10! of [[Critical|Chapter 1]].",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 105,
+    "quote": "A Critical on a Basic attack still adds the 1d10! of [[Critical|Chapter 1]]."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 111,
+    "quote": "and the Critical's 1d10!"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 45,
+    "quote": "an NPC's [[Basic attacks|Basic attack]]) deals **1d10!** more damage"
+   }
+  ],
+  "problem": "The chapter says three times that a Basic attack's Critical adds 1d10!, and Chapter 1 already names an NPC's Basic attack in that rule.",
+  "options": [
+   "Remove this bullet and \"and the Critical's 1d10!\" from the Standard's Basic attack (Chapter 1 and the Minor enemies' sentence keep it)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-069",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 180,
+  "where": "Bestiary, Losing its weapon",
+  "kind": "undefined-word",
+  "quote": "One that loses its weapon (disarmed, the weapon broken)",
+  "other": [
+   {
+    "file": "book/rules-src/15-gear.md",
+    "line": 102,
+    "quote": "A **Barehanded** weapon can't be disarmed"
+   }
+  ],
+  "problem": "No rule in the book disarms a creature or breaks a weapon: no Action, no condition, no Weapon Technique. The section rules on an event the game cannot cause yet.",
+  "options": [
+   "Remove the section \"Losing its weapon\" until a disarm rule exists",
+   "Turn it into an open box: \"Disarming and breaking weapons are not written yet. Until they are: ...\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-070",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 184,
+  "where": "Bestiary, Special Actions: the definition",
+  "kind": "ambiguity",
+  "quote": "A **Special Action** is any NPC Action that is not a Basic attack.",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 204,
+    "quote": "- **Shriek and Scatter** (Reaction; Encounter, 1R)."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 236,
+    "quote": "- **Crack the Ground** (its Encounter Action; Encounter, 2 AP;"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 263,
+    "quote": "| **Special** | A rule about the card itself: a limit, an exception, an extra cost. |"
+   }
+  ],
+  "problem": "By this definition a Reaction, an Elite's Encounter Action and a Shove are all Special Actions (\"2 AP and Round by default\"), yet the stat blocks label them apart (Special, Reaction, its Encounter Action). \"Special\" is also already the name of a card line (a rule about the card itself).",
+  "options": [
+   "Reword: \"A **Special Action** is an NPC's own Action that costs AP and is not a Basic attack, a Reaction or an Elite's Encounter Action.\"",
+   "Reword the same way and give it another name, so it isn't the card line's (for Lucas to choose)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-071",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 184,
+  "where": "Bestiary, Special Actions: \"up to two creatures\"",
+  "kind": "contradiction",
+  "quote": "A Special can hit up to two creatures, but not all of them do",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 224,
+    "quote": "- **War Howl** (Special; Round, 2 AP; [Power, Save, Area, Fear]; Area: 2 Emanation; all enemies in the Area"
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 182,
+    "quote": "it can hit up to two creatures"
+   }
+  ],
+  "problem": "The rule and the glossary give a Special at most two creatures. The Orc Warrior's War Howl, a Special, hits every enemy in a 2 Emanation. Is two a limit or only the default?",
+  "options": [
+   "A default. Reword: \"By default a Special hits one creature, or two for less damage each; a creature's own Special can do otherwise (an area, for example).\" and the glossary row the same way",
+   "A limit: War Howl targets up to two enemies in its Area",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-072",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 195,
+  "where": "Bestiary, The playtest creatures: the lead-in",
+  "kind": "wording-instruction",
+  "quote": "What each card does is written as its card writes it; the Flavor line is in italics.",
+  "other": [],
+  "problem": "The first half is a note to the writer (keep the stat blocks equal to the cards); a reader needs at most the half about the italics.",
+  "options": [
+   "Reword: \"The Flavor line of each card is in italics.\"",
+   "Remove the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B3-073",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 204,
+  "where": "Bestiary, the Goblin Sneak's Shriek and Scatter (and the Ogre's Backhand): no Target",
+  "kind": "other",
+  "quote": "- **Shriek and Scatter** (Reaction; Encounter, 1R).",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 94,
+    "quote": "Every Reaction has a Target line, and its Interrupt or Trigger is written about **the target**."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 237,
+    "quote": "- **Backhand** (Reaction; Turn, 1R)."
+   },
+   {
+    "file": "book/cards/stage0/bestiary.json",
+    "line": 782,
+    "quote": "\"target\": \"The triggering creature\","
+   }
+  ],
+  "problem": "Chapter 2 says every Reaction has a Target line. Shriek and Scatter has none, in the chapter or on its card, so what the goblin must perceive and have Line of Effect to is open. Backhand's stat block leaves out the target its card has (the triggering creature).",
+  "options": [
+   "Write the targets: Shriek and Scatter \"(Reaction; Encounter, 1R; 6 sq.; one ally with the Goblin Tag)\" with \"Trigger: the target goes Down.\"; Backhand \"(Reaction; Turn, 1R; the triggering creature)\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-074",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 235,
+  "where": "Bestiary, the Ogre Chieftain's Hurled Goblin: the throw",
+  "kind": "ambiguity",
+  "quote": "This is not a Reposition or a Forced Movement: it triggers no Reactions, and the Minion takes no damage.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 83,
+    "quote": "| Movement | A Move Action | You moved | You left your square |"
+   }
+  ],
+  "problem": "Being \"placed\" is a movement Chapter 3 doesn't have. The card says what it is not, and leaves open whether the Minion has left its square (Leaning, Hide and \"until you leave your square\" end), whether Steadiness or Immobilized stops the throw, and whether the ogre needs Line of Effect to the landing square.",
+  "options": [
+   "Reword the Effect: \"The Minion is thrown: the ogre places it in an empty square adjacent to the target to which the ogre has Line of Effect (hit or miss). The Minion has left its square but has not moved; nothing reduces or stops the throw, it triggers no Reactions, and the Minion takes no damage.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B3-075",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 236,
+  "where": "Bestiary, the stat blocks against their cards",
+  "kind": "other",
+  "quote": "Area: Line 3, from any square of the ogre's edge",
+  "other": [
+   {
+    "file": "book/cards/stage0/bestiary.json",
+    "line": 731,
+    "quote": "\"area\": \"Line 3\","
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 395,
+    "quote": "A creature bigger than Medium starts the Line from one of the squares of its space on the side it aims toward."
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 166,
+    "quote": "An NPC's melee Action has Distance Reach (X), X its Reach: written \"Reach (1)\"."
+   },
+   {
+    "file": "book/cards/stage0/bestiary.json",
+    "line": 19,
+    "quote": "\"distance\": \"Reach\","
+   },
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 225,
+    "quote": "Requirement: the orc is Bloodied. Trigger: the target deals Vigor damage to the orc"
+   },
+   {
+    "file": "book/cards/stage0/bestiary.json",
+    "line": 143,
+    "quote": "The target deals Vigor damage to the orc (the blow that makes it Bloodied counts)."
+   }
+  ],
+  "problem": "The stat blocks and the cards don't say quite the same. Crack the Ground's \"from any square of the ogre's edge\" is not on its card (and Chapter 3 already says where a Large creature's Line starts). The chapter writes \"Reach (1)\" and \"Reach (2)\" where the six melee cards write \"Reach\". Blood for Blood's card puts its Trigger before its Requirement; the chapter and Chapter 2 put the Requirement first.",
+  "options": [
+   "The chapter wins, less one clause: the cards write \"Reach (1)\" / \"Reach (2)\" and put Blood for Blood's Requirement first; \"from any square of the ogre's edge\" leaves the chapter",
+   "The cards win: the chapter writes \"Reach\" and drops \"from any square of the ogre's edge\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B3-076",
+  "file": "book/rules-src/14-bestiary.md",
+  "line": 237,
+  "where": "Bestiary, the Ogre Chieftain's Backhand",
+  "kind": "wording-instruction",
+  "quote": "(The flat 1 is this card's own exception.)",
+  "other": [
+   {
+    "file": "book/rules-src/14-bestiary.md",
+    "line": 152,
+    "quote": "- **No damage line is only a flat number** unless its card says otherwise"
+   }
+  ],
+  "problem": "The parenthesis is a note to the writer: it excuses the card for breaking a writing guideline. It is not on the card and no player needs it.",
+  "options": [
+   "Remove it",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ }
+]

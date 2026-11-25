@@ -22,10 +22,15 @@ const CHAPTER = f => {
 };
 const ORDER = f => { const m = /rules-src\/(\d+)-/.exec(f || ""); return m ? Number(m[1]) : 50; };
 
+/** Findings left out after Claude's review, each with its reason. */
+const DROP = {
+  "B1-057": "Lucas decided on 2026-11-25 that the book says nothing about an NPC's Escalation (\"They might have\").",
+};
 const out = [], bad = [];
 for (const file of ["findings-book-1.json", "findings-book-2.json", "findings-book-3.json"]) {
   const list = read(file); if (!list) { console.log(`(no ${file} yet)`); continue; }
   for (const f of list) {
+    if (DROP[f.id]) continue;
     const n = place(f); if (n == null) { bad.push(`${f.id}: quote not found in ${f.file}:${f.line}`); continue; }
     const other = [];
     for (const o of f.other ?? []) { const k = place(o); if (k == null) bad.push(`${f.id}: the other quote not found in ${o.file}:${o.line} (kept without it)`); else other.push({ ...o, line: k }); }
@@ -35,6 +40,7 @@ for (const file of ["findings-book-1.json", "findings-book-2.json", "findings-bo
 out.sort((a, b) => a.order - b.order || a.file.localeCompare(b.file) || a.line - b.line);
 const GROUP = { "dropped-rule": "Rules the book dropped that the system still carries", "two-sources": "Two sources for the same thing", tool: "Tools that are frozen, failing or stale", dead: "Dead code and dead files", records: "Files that are history, not current" };
 for (const f of read("findings-foundry.json") ?? []) {
+  if (DROP[f.id]) continue;
   const sec = f.group === "records" ? "records" : "foundry";
   out.push({ id: f.id, section: sec, group: GROUP[f.group] ?? f.group, kind: f.group, what: f.what, paths: f.where, evidence: f.evidence, size: f.size, risk: f.risk, options: f.options, pick: f.pick, confidence: f.confidence });
 }
@@ -45,4 +51,5 @@ for (const f of out) delete f.order;
 fs.writeFileSync(path.join(HERE, "findings.json"), JSON.stringify(out, null, 1).replace(/</g, "\\u003c"));
 const by = {}; for (const f of out) by[f.section] = (by[f.section] ?? 0) + 1;
 console.log(`findings.json: ${out.length} questions`, JSON.stringify(by));
+console.log("left out after review:", Object.keys(DROP).join(", ") || "none");
 if (bad.length) console.log("NOT FOUND:\n" + bad.join("\n")); else console.log("every quote is in its file");

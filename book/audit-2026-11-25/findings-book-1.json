@@ -1,0 +1,1919 @@
+[
+ {
+  "id": "B1-001",
+  "file": "book/rules-src/01-roll.md",
+  "line": 20,
+  "where": "Chapter 1, Outcome Tiers",
+  "kind": "other",
+  "quote": "The names of the tiers are flavor: the rules use Tier 1, 2 and 3.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 35,
+    "quote": "Failure becomes Marginal Success, and Marginal Success becomes Full Success"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 346,
+    "quote": "below it is a Failure, from the DC up to DC + 6 is a Marginal Success, and DC + 7 or more is a Full Success"
+   }
+  ],
+  "problem": "The chapter says the rules only use Tier 1, 2 and 3, but Doubles (a few lines down) and the Summary are written with the names Failure, Marginal Success and Full Success.",
+  "options": [
+   "Reword Doubles: \"If both d12s show the **same number** (before explosions), the result moves **up one tier**: Tier 1 becomes Tier 2, and Tier 2 becomes Tier 3. Tier 3 can't go higher: it becomes a **Critical** instead (see below).\" And the Summary's step 4: \"Compare to the **DC**: below it is Tier 1, from the DC up to DC + 6 is Tier 2, and DC + 7 or more is Tier 3.\"",
+   "Drop the three names from the book (the Result column of the table and this sentence too)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-002",
+  "file": "book/rules-src/01-roll.md",
+  "line": 22,
+  "where": "Chapter 1, Outcome Tiers",
+  "kind": "wording-rationale",
+  "quote": "coming up with them every time can take a toll on the GM",
+  "other": [],
+  "problem": "This half sentence only explains why the yes-or-no option exists; the rule reads the same without it.",
+  "options": [
+   "Reword: \"For improvised rolls, such as during roleplay, you don't always need three results. When you just want a yes or no, Tier 1 is a failure and Tier 2 or 3 is a success.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-003",
+  "file": "book/rules-src/01-roll.md",
+  "line": 45,
+  "where": "Chapter 1, Critical",
+  "kind": "contradiction",
+  "quote": "- **A Basic attack** (the [[Basic Attack]], [[Fists]], a class's Power Basic attack, an NPC's [[Basic attacks|Basic attack]]) deals **1d10!** more damage.",
+  "other": [
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 45,
+    "quote": "Only Actions with a Critical row use it; once an encounter, it also raises your Escalation by 1."
+   }
+  ],
+  "problem": "Chapter 1 gives every Basic attack 1d10! more on a Critical, with no Critical row needed. The Glossary's Critical entry says only Actions with a Critical row use a Critical.",
+  "options": [
+   "Chapter 1 wins: reword the Glossary entry's second sentence to \"A Basic attack deals 1d10! more, an Action with a Critical row gets that row, and any other Action gets its Tier 3; once an encounter, it also raises your Escalation by 1.\"",
+   "The Glossary wins: only an Action with a Critical row gains anything; remove the 1d10! of Basic attacks from Chapter 1 and from the Bestiary",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-004",
+  "file": "book/rules-src/01-roll.md",
+  "line": 87,
+  "where": "Chapter 1, Favored and Doomed Rolls",
+  "kind": "wording-repeat",
+  "quote": "Roll three dice, then see if there are any explosions, calculated per die.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 96,
+    "quote": "2. Each die explodes on its own (a 12 counts as 11 and is rolled again; further 12s explode again). After all explosions, each die has its own total."
+   }
+  ],
+  "problem": "The section gives the same procedure twice: as prose (ending with this sentence), then again as a numbered list of four steps that stands after the two examples with no line to introduce it.",
+  "options": [
+   "Keep the numbered list, move it above the two examples under the words \"Step by step:\", and remove this sentence",
+   "Remove the numbered list (steps 1 to 4) and keep the prose",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-005",
+  "file": "book/rules-src/01-roll.md",
+  "line": 113,
+  "where": "Chapter 1, Rolls",
+  "kind": "wording-repeat",
+  "quote": "If an Action has multiple traits that reference the type of roll, such as the Trip Basic Action that has both Body and Instinct traits, it is both a Body and Instinct Action, even though you only use one Attribute.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 337,
+    "quote": "an Action can be more than one (Trip is both a Body and an Instinct Action)"
+   },
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 14,
+    "quote": "The Action still has all of them: Trip is a Body Action and an Instinct Action, whichever it rolls."
+   }
+  ],
+  "problem": "That Trip is both a Body Action and an Instinct Action is said three times: here, again in Rules Language at the end of this chapter, and in Chapter 7 where the rule lives.",
+  "options": [
+   "Remove this paragraph (Chapter 7 and Rules Language keep it)",
+   "Remove it here and in Rules Language; Chapter 7 alone keeps it",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-006",
+  "file": "book/rules-src/01-roll.md",
+  "line": 145,
+  "where": "Chapter 1, Saves",
+  "kind": "ambiguity",
+  "quote": "if no DC is listed, it is usually 13",
+  "other": [],
+  "problem": "The DC of a Save is \"usually\" 11 + a Modifier and \"usually\" 13 when none is listed. For a Save that writes no DC (from a condition, a hazard, a feature) one reader takes 13, another takes 11 + the Modifier of whoever caused it.",
+  "options": [
+   "Reword the paragraph: \"A Save Action's DC is 11 + the Modifier or the Attribute its traits name (see [[Save Actions]]). Any other Save rolls against the DC its effect writes; if it writes none, the DC is 13.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-007",
+  "file": "book/rules-src/01-roll.md",
+  "line": 153,
+  "where": "Chapter 1, Save Actions",
+  "kind": "stale",
+  "quote": "a [Save, Weapon] Action deals its [Mod] on **Tier 1 and 2**",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 163,
+    "quote": "The damage of an Action is what its card says: it adds a Modifier or a weapon's damage only when the card writes [Mod] or [W]."
+   }
+  ],
+  "problem": "This reads as a rule (a Save Action with the Weapon trait always deals its Modifier on Tier 1 and 2), but damage is only what a card writes, and the one such card in the book (the Ogre Chieftain's Crack the Ground) writes whole numbers. It is left from when Weapon Actions always added the Modifier.",
+  "options": [
+   "Reword the paragraph: \"The tiers are the target's result: **Tier 1 is the worst for them**. A line for two Tiers is written **Tier 1 or 2**.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-008",
+  "file": "book/rules-src/01-roll.md",
+  "line": 171,
+  "where": "Chapter 1, Modifier Damage [Mod]",
+  "kind": "wording-instruction",
+  "quote": "**Power Actions** don't add their Modifier to damage on any Tier: their damage is the dice on the card.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 163,
+    "quote": "A Weapon Action writes the weapon's damage and its Modifier on the card; a Power Action writes its dice."
+   }
+  ],
+  "problem": "This sentence, and \"A Weapon Action writes the weapon's damage and its Modifier on the card; a Power Action writes its dice\" above it, say how cards are written, not something a player applies: the rule already says damage is only what the card writes. They are also not always true (Seizing Cut's Tier 2 is 1[W] with no [Mod]).",
+  "options": [
+   "Remove both sentences",
+   "Remove only this sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-009",
+  "file": "book/rules-src/01-roll.md",
+  "line": 175,
+  "where": "Chapter 1, Damage Types",
+  "kind": "wording-instruction",
+  "quote": "Blunt damage will almost always be Vigor damage, but not always.",
+  "other": [],
+  "problem": "The sentence gives no rule and nothing a player can act on: each card writes its own pool.",
+  "options": [
+   "Remove the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-010",
+  "file": "book/rules-src/01-roll.md",
+  "line": 179,
+  "where": "Chapter 1, Damage Types",
+  "kind": "stale",
+  "quote": "- **[C]:** the origin chooses which type (Vigor or Resolve) the damage deals.",
+  "other": [],
+  "problem": "No card in the book writes [C]. The notation is defined here, named again under Damage Subtypes, and has a row in the Notation table and in the Glossary.",
+  "options": [
+   "Remove [C] from the four places until a card uses it",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-011",
+  "file": "book/rules-src/01-roll.md",
+  "line": 181,
+  "where": "Chapter 1, Damage Types",
+  "kind": "wording-instruction",
+  "quote": "Vigor and Resolve are not the Body and Mind Attributes: an Action of any Attribute can deal either.",
+  "other": [
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 9,
+    "quote": "Vigor and Resolve are the thresholds of your Health Pool, not the Body and Mind Attributes."
+   }
+  ],
+  "problem": "This guards against a mix-up from the time damage was written [B] and [M]. With the names Vigor and Resolve a player has no reason to make it; the Glossary repeats the same warning.",
+  "options": [
+   "Remove the sentence here and the same warning in the Glossary's [V], [R], [C] entry",
+   "Remove it here only",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-012",
+  "file": "book/rules-src/01-roll.md",
+  "line": 183,
+  "where": "Chapter 1, Damage Types",
+  "kind": "stale",
+  "quote": "\"[V] 1d4+1d6+3 Sl + [R] 1d8 Ps\" deals 1d4+1d6+3 Slash Vigor damage and 1d8 Psychic Resolve damage",
+  "other": [],
+  "problem": "The example writes damage in a form the book no longer uses (two dice, then the flat number). Damage is now a flat number and at most one small die, written \"6 + 1d4!\".",
+  "options": [
+   "Reword: \"Some Actions include two types of damage. For example, \"[V] 3 + 1d6 Sl + [R] 1d8 Ps\" deals 3 + 1d6 Slash Vigor damage and 1d8 Psychic Resolve damage.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-013",
+  "file": "book/rules-src/01-roll.md",
+  "line": 187,
+  "where": "Chapter 1, Damage Subtypes",
+  "kind": "wording-rationale",
+  "quote": "so they never look like the damage types [V], [R] and [C]",
+  "other": [],
+  "problem": "This explains why the short forms have two letters; it is a design reason, not a rule.",
+  "options": [
+   "Reword: \"Subtypes don't have rules by themselves, but other rules use them, such as Resistance and Weakness. They are shortened to **two letters**:\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-014",
+  "file": "book/rules-src/01-roll.md",
+  "line": 208,
+  "where": "Chapter 1, Riders",
+  "kind": "stale",
+  "quote": "In a tier cell, what follows the damage is a **rider**",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 208,
+    "quote": "A Save Action's cells read the same way, each on its own result."
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 161,
+    "quote": "What follows the damage in a tier cell"
+   }
+  ],
+  "problem": "Cards no longer have a tier table with cells: each Tier is a labeled line. \"Cell\" is used twice in this paragraph and once in the Glossary's Rider entry.",
+  "options": [
+   "Reword the first sentence: \"On a Tier line, what follows the damage is a **rider**: \"[V] 2d8 Pi; Prone\" knocks the target Prone on that Tier.\" And the last: \"A Save Action's Tier lines read the same way, each on its own result.\" (the Glossary's Rider entry: \"What follows the damage on a Tier line\")",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-015",
+  "file": "book/rules-src/01-roll.md",
+  "line": 212,
+  "where": "Chapter 1, Cleave",
+  "kind": "stale",
+  "quote": "When you **Cleave** N, you deal the Modifier used as damage",
+  "other": [],
+  "problem": "No card in the book uses Cleave now (only old and placeholder cards did), but it keeps a section in Chapter 1 and a Glossary entry.",
+  "options": [
+   "Remove the Cleave section and its Glossary entry until a card uses it",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-016",
+  "file": "book/rules-src/01-roll.md",
+  "line": 225,
+  "where": "Chapter 1, Several Targets",
+  "kind": "wording-repeat",
+  "quote": "All damage is rolled per die.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 221,
+    "quote": "- **Damage is rolled per Tier:** once the Action is rolled and you see which creatures landed on which Tier, roll that Tier's damage once and apply it to every creature on that Tier."
+   }
+  ],
+  "problem": "This paragraph says a third time, with a second example, what the bullet \"Damage is rolled per Tier\" and the \"For instance\" paragraph just said. Only its last sentence (the Empowered die) is new, and \"rolled per die\" is unclear.",
+  "options": [
+   "Reword the paragraph to its new part only: \"If the creature that makes the roll or causes the Save is Empowered, its 1d6! goes to one creature it damages (see [[Empowered]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-017",
+  "file": "book/rules-src/01-roll.md",
+  "line": 253,
+  "where": "Chapter 1, Reading an Action",
+  "kind": "stated-once",
+  "quote": "9. **The other lines.** Every line of a card has a label that says what it is:",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 204,
+    "quote": "- A **Bloodied** or **Strained** line happens only against a target that is [[Bloodied]] or [[Strained]]."
+   }
+  ],
+  "problem": "The table of card labels has no row for the Bloodied and Strained lines, which the classes' Basic attacks carry (Sworn Blade, Drawing Light, Harrying Shot). They are explained only in Chapter 2, Effect Timing.",
+  "options": [
+   "Add a row to the table: \"| **Bloodied**, **Strained** | What happens only against a target that is Bloodied or Strained (see [[Effect Timing]]). |\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-018",
+  "file": "book/rules-src/01-roll.md",
+  "line": 274,
+  "where": "Chapter 1, Reading an Action (\"As X AP\")",
+  "kind": "stale",
+  "quote": "**\"As X AP\".** Some results refer to another cell of the tier table:",
+  "other": [],
+  "problem": "No card in the book writes \"As X AP\", \"As X AP, TY\" or \"As Tier N\" any more, and the three bullets speak of cells and columns of a tier table that cards no longer have.",
+  "options": [
+   "Remove the paragraph and its three bullets",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-019",
+  "file": "book/rules-src/01-roll.md",
+  "line": 286,
+  "where": "Chapter 1, Reading an Action (the example)",
+  "kind": "stale",
+  "quote": "**Tier 1:** [V] [Mod]",
+  "other": [
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 26,
+    "quote": "([V] [Mod] / 1[W] + [Mod] / 1[W] + 1[D] + [Mod])"
+   }
+  ],
+  "problem": "The Basic Attack written out as an example has Tier 1 \"[V] [Mod]\", but the real card in Chapter 6 has \"[V] 1d4!\" (changed on 2026-11-22); the Glossary's Basic Attack entry has the same old Tier 1. The example also stands under \"As X AP\" without showing it, right after the two sample cards.",
+  "options": [
+   "Remove the example (the two sample cards above already show a card) and correct the Glossary entry to \"[V] 1d4! / 1[W] + [Mod] / 1[W] + 1[D] + [Mod]\"",
+   "Keep the example and correct its Tier 1 to \"[V] 1d4!\" (and the Glossary entry)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-020",
+  "file": "book/rules-src/01-roll.md",
+  "line": 290,
+  "where": "Chapter 1, Reading an Action (values with slashes)",
+  "kind": "stale",
+  "quote": "**Values written with slashes.** Some cards write an entry under the traits once for all their Versions",
+  "other": [],
+  "problem": "No card in the book writes its target, distance or area with slashes: each Version now has its own block with its own Distance and Target. Its example \"Aura 2 / 3 / 3\" matches no card either.",
+  "options": [
+   "Keep only the paragraph's last two sentences: \"Target counts are spelled out in words; distances, areas and other mechanical values use numerals. A distance in squares is written with \"sq.\" (**Distance: 5 sq.**).\"",
+   "Remove the whole paragraph",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-021",
+  "file": "book/rules-src/01-roll.md",
+  "line": 306,
+  "where": "Chapter 1, Notation",
+  "kind": "stale",
+  "quote": "| [[Effect Timing\\|**(T2/T3)**]] | The effect only happens on those tiers. |",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 209,
+    "quote": "Some cards mark an effect for some Tiers only, with the Tiers in parentheses"
+   }
+  ],
+  "problem": "No card in the book marks an effect with \"(T2/T3)\" or \"(T3)\": since the card Structure every Tier has its own line. The notation is explained here and in Chapter 2, Effect Timing.",
+  "options": [
+   "Remove this row and the paragraph of Chapter 2 that starts \"Some cards mark an effect for some Tiers only\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-022",
+  "file": "book/rules-src/01-roll.md",
+  "line": 307,
+  "where": "Chapter 1, Notation",
+  "kind": "contradiction",
+  "quote": "An extra effect on Doubles with a result that is already Tier 3, or a total 20 or more above the DC.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 41,
+    "quote": "or when a **Favored** roll shows **the same number on all three dice**"
+   }
+  ],
+  "problem": "The Notation table gives two ways to score a Critical; the Critical section gives three (it adds three matching dice on a Favored roll).",
+  "options": [
+   "The Critical section wins: reword the row to \"What a Critical adds (see [[Critical]]): Doubles on a result that is already Tier 3, a total 20 or more above the DC, or three matching dice on a Favored roll.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-023",
+  "file": "book/rules-src/01-roll.md",
+  "line": 329,
+  "where": "Chapter 1, Rules Language (Up to)",
+  "kind": "ambiguity",
+  "quote": "**Up to.** A number of things you can use, gain or move is a maximum: you can use fewer, or none, unless the rule says you **must**.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 159,
+    "quote": "\"Up to\" means any number from one to that many."
+   }
+  ],
+  "problem": "\"Up to\" is defined twice with different floors: here it allows none, while Chapter 2's Targets says \"up to\" means from one to that many. A reader of this chapter alone would let \"up to three creatures\" be zero.",
+  "options": [
+   "Reword: \"**Up to.** A number of things you can use, gain or move is a maximum: you can use fewer, or none, unless the rule says you **must**. Targets are the exception: \"up to three creatures\" is one, two or three (see [[Targets]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-024",
+  "file": "book/rules-src/01-roll.md",
+  "line": 335,
+  "where": "Chapter 1, Rules Language (traits in brackets)",
+  "kind": "other",
+  "quote": "It doesn't mean *only*, it just must include the trait: a [Melee] Basic Attack (1A) is the Basic Attack Action that uses 1 AP and has the Melee trait, so it doesn't apply to a [Ranged] Basic Attack (1A).",
+  "other": [],
+  "problem": "The sentence says brackets don't mean \"only these traits\", but its example shows something else (a rule about a [Melee] Basic Attack doesn't cover a [Ranged] one), so it reads as if it contradicted itself.",
+  "options": [
+   "Reword: \"The Action can have other traits too: a [Melee] Basic Attack (1A) is a Basic Attack at 1 AP that has the Melee trait, whatever else it has. A rule about it doesn't apply to a [Ranged] Basic Attack (1A), which lacks that trait.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-025",
+  "file": "book/rules-src/02-turns.md",
+  "line": 6,
+  "where": "Chapter 2, Encounters",
+  "kind": "ambiguity",
+  "quote": "every creature must be unharmed, stabilized or dead",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 9,
+    "quote": "an ally can stabilize them easily"
+   },
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 193,
+    "quote": "You stabilize: roll on the Dying Table."
+   }
+  ],
+  "problem": "\"Unharmed\" is not a state of the game (a creature at half Health is harmed and not Dying), and \"stabilized\" is only what a collapsed creature does itself on a Tier 3: no rule lets an ally stabilize someone, though the tip below says an ally can.",
+  "options": [
+   "Reword: \"It can't end while a creature is Dying or Shattered: each one must first stabilize, have its damage brought back below its Health Pool, or die.\" And in the tip: \"and an ally can easily get them back up\" for \"and an ally can stabilize them easily\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-026",
+  "file": "book/rules-src/02-turns.md",
+  "line": 6,
+  "where": "Chapter 2, Encounters",
+  "kind": "ambiguity",
+  "quote": "If a creature becomes Dying or Shattered outside of an encounter, it rolls on the Dying or Shattered Table, then Initiative is rolled and that creature goes last.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 185,
+    "quote": "When you become Dying for the first time in an encounter, roll on the Dying Table."
+   }
+  ],
+  "problem": "Chapter 4 says you roll on the Table when you become Dying \"for the first time in an encounter\". It is not said whether the roll made here, before Initiative, is that roll or whether the creature rolls again once the encounter has started.",
+  "options": [
+   "Reword: \"If a creature becomes Dying or Shattered outside of an encounter, it rolls on the Dying or Shattered Table (this is its roll for the encounter that follows), then Initiative is rolled and that creature goes last.\"",
+   "Reword: \"If a creature becomes Dying or Shattered outside of an encounter, it rolls on the Dying or Shattered Table, then Initiative is rolled and that creature goes last. That roll is not the encounter's: it rolls again when it becomes Dying or Shattered in the encounter.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-027",
+  "file": "book/rules-src/02-turns.md",
+  "line": 20,
+  "where": "Chapter 2, Initiative",
+  "kind": "other",
+  "quote": "The order is Mark, Kobold Mage, Goblin Warrior, Nick, Kobold Shaman, Goblin Scoundrel.",
+  "other": [],
+  "problem": "In the three-way example Mark and the Kobold Mage both rolled 13. The example puts Mark first without a word, and the rule for ties only comes in the next paragraph.",
+  "options": [
+   "Change Mark's roll to 14, so the example has no tie",
+   "Reword the last sentence: \"Mark and the Kobold Mage tie at 13 and the PC goes first (see Ties, below): the order is Mark, Kobold Mage, Goblin Warrior, Nick, Kobold Shaman, Goblin Scoundrel.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-028",
+  "file": "book/rules-src/02-turns.md",
+  "line": 35,
+  "where": "Chapter 2, Swapping Initiative",
+  "kind": "ambiguity",
+  "quote": "Until then, your remaining Actions are **frozen**: you can't use them.",
+  "other": [],
+  "problem": "It says \"Actions\" where it means the AP you had left, and it doesn't say whether those AP can pay for a Reaction while you wait. One reader freezes everything; another treats them as kept AP, which normally pay for Reactions.",
+  "options": [
+   "Reword: \"Until then, the AP you had left are **frozen**: they pay for nothing, not even a Reaction (your Reaction Point still can). When your new turn arrives, you carry on with those AP instead of gaining new AP, and none of them becomes Guard.\"",
+   "Reword: \"Until then, the AP you had left are kept AP: they can pay for Reactions, like any unspent AP. When your new turn arrives, you carry on with what is left of them instead of gaining new AP.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-029",
+  "file": "book/rules-src/02-turns.md",
+  "line": 48,
+  "where": "Chapter 2, Action Points",
+  "kind": "contradiction",
+  "quote": "The Reaction Point pays only for [[Reactions]], on your turn or another creature's.",
+  "other": [
+   {
+    "file": "book/cards/stage0/paladin.json",
+    "line": 104,
+    "quote": "When you use Smite, you can spend your Reaction Point to roll 1 more Smite die."
+   },
+   {
+    "file": "book/cards/stage0/archer.json",
+    "line": 111,
+    "quote": "you can spend your Reaction Point to deal [[Escalation die|2dE]] more to the target"
+   },
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 149,
+    "quote": "pays only for Reactions"
+   }
+  ],
+  "problem": "Two class Features spend the Reaction Point on something that is not a Reaction: the Paladin's Smite (one more Smite die) and the Archer's Steady Draw (2dE more).",
+  "options": [
+   "The cards win: reword to \"The Reaction Point pays for [[Reactions]], on your turn or another creature's, and for the few cards that say you spend it (the Paladin's Smite, the Archer's Steady Draw).\" (the Glossary's Reaction Point entry too)",
+   "The rule wins: Smite and Steady Draw pay for their extra dice another way",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-030",
+  "file": "book/rules-src/02-turns.md",
+  "line": 54,
+  "where": "Chapter 2, Unspent AP",
+  "kind": "contradiction",
+  "quote": "what is left of it ends 1 round later, when you regain AP again",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 308,
+    "quote": "Nothing lasts \"until the start of your next turn\"."
+   },
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 115,
+    "quote": "it lasts 1 round (from the start of your turn until you regain AP again)"
+   }
+  ],
+  "problem": "The Guard from unspent AP is said to last \"1 round\" and to end at the start of your next turn. By the Rounds rule of the same chapter, an effect gained on your turn for 1 round ends at the END of your next turn, and that rule also says nothing lasts until the start of your next turn.",
+  "options": [
+   "The start of your next turn wins, and it is no longer called a round: here \"gives you **[[Guard]]** until you regain AP at the start of your next turn\" and \"what is left of it ends when you regain AP again\"; in Chapter 4 \"it lasts until you regain AP again\"; and in Rounds \"Nothing else lasts until the start of your next turn.\"",
+   "The Rounds rule wins: this Guard lasts 1 round like any effect, so it ends at the end of your next turn",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-031",
+  "file": "book/rules-src/02-turns.md",
+  "line": 55,
+  "where": "Chapter 2, Unspent AP",
+  "kind": "wording-instruction",
+  "quote": "- A kept AP you spend on a Reaction is one AP less when your turn starts, so it gives no Guard.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 56,
+    "quote": "your first turn of an encounter has no unused AP"
+   }
+  ],
+  "problem": "This bullet, and \"your first turn of an encounter has no unused AP\" in the next one, state what follows by itself from the rule above (Guard comes from each AP \"you still had unused\").",
+  "options": [
+   "Remove this bullet and shorten the next to \"- Your Reaction Point never becomes Guard.\"",
+   "Remove only this bullet",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-032",
+  "file": "book/rules-src/02-turns.md",
+  "line": 73,
+  "where": "Chapter 2, Reactions (Paying)",
+  "kind": "stale",
+  "quote": "A feature can give you a second Reaction Point: it follows the same rules, and the feature says what it can pay for.",
+  "other": [],
+  "problem": "This was written for the Paladin's Tireless Vigil, an Escalation Passive removed on 2026-11-25. No feature in the book gives a second Reaction Point now.",
+  "options": [
+   "Remove the sentence",
+   "Keep it for later features",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-033",
+  "file": "book/rules-src/02-turns.md",
+  "line": 76,
+  "where": "Chapter 2, Reactions (Interrupt and Trigger)",
+  "kind": "contradiction",
+  "quote": "- **Trigger:** A Trigger happens **after** the Action that triggers it.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 117,
+    "quote": "A Trigger that names a Move Action fires at any point during the Move Action (after the first square it moves)"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 75,
+    "quote": "An Interrupt happens **before** the Action that triggers it."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 123,
+    "quote": "An Interrupt checks this before the creature enters the square"
+   },
+   {
+    "file": "book/cards/stage0/paladin.json",
+    "line": 359,
+    "quote": "Its Move Action is disrupted."
+   }
+  ],
+  "problem": "The two bullets put an Interrupt before and a Trigger after the whole Action. Later rules and the cards work on a moment inside the Action: Snap Shot interrupts one step into a square, and Rebuke is a Trigger that stops a movement in progress, which could never happen if it waited for the Action to end.",
+  "options": [
+   "The moment wins. Reword the Interrupt bullet's start: \"An Interrupt happens **before** the moment it names: \"Interrupt: The target would enter a square adjacent to you\" happens before the creature enters that square.\" And this bullet: \"**Trigger:** A Trigger happens **after** the moment it names, which can be in the middle of an Action: \"Trigger: The target moves away from you\" happens after the first square that takes it farther, while it is still moving; \"Trigger: A creature deals damage to you\" happens after you take that damage.\"",
+   "The bullets win: a Trigger always waits for the whole Action to end (Rebuke and the Move Action paragraph change)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-034",
+  "file": "book/rules-src/02-turns.md",
+  "line": 85,
+  "where": "Chapter 2, What a Reaction Responds To",
+  "kind": "wording-instruction",
+  "quote": "A card can name another moment, as long as the rules define when it happens: \"ends a Move Action\" is not one.",
+  "other": [],
+  "problem": "The paragraph is a catalogue for whoever writes cards (it ends by saying which trigger a card must not use). A player needs only its first sentence, and several moments in the list belong to cards that are no longer in the book (the Stand Action, a Charge, a Tier 3, a Rally Point).",
+  "options": [
+   "Keep only the first sentence: \"An Interrupt or a Trigger names a **moment** the rules define, and the Action that holds the moment is the triggering Action.\"",
+   "Remove only this last sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-035",
+  "file": "book/rules-src/02-turns.md",
+  "line": 87,
+  "where": "Chapter 2, What a Reaction Responds To",
+  "kind": "wording-repeat",
+  "quote": "The **triggering creature** is the creature who caused the Reaction to happen; the **triggering Action** is the Action that caused the Reaction to happen, and so on.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 94,
+    "quote": "The creature whose Action sets the Reaction off is the **triggering creature**."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 85,
+    "quote": "the Action that holds the moment is the triggering Action"
+   }
+  ],
+  "problem": "The triggering creature is defined here and again four paragraphs later (A Reaction's Target), and the triggering Action was defined in the paragraph just above. \"And so on\" points at nothing.",
+  "options": [
+   "Reword the paragraph to one sentence: \"\"Triggering\" is used for both kinds of Reaction: an Interrupt has a triggering creature and a triggering Action too.\"",
+   "Remove the paragraph",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-036",
+  "file": "book/rules-src/02-turns.md",
+  "line": 90,
+  "where": "Chapter 2, What a Reaction Responds To (the tip)",
+  "kind": "other",
+  "quote": "> The clarification above might make you think you need to move one square at a time during a game, but this slows the game down a lot.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 78,
+    "quote": "you decide when you take the Reaction"
+   }
+  ],
+  "problem": "The tip is about the bullet \"Once per triggering Action\", which is one section earlier: where it stands, \"the clarification above\" and \"(see below)\" point at the wrong paragraphs. It also ends \"The table should decide how to run it\", though the rule says the reacting creature chooses when.",
+  "options": [
+   "Move it under the Reactions list and reword it: \"You don't need to move one square at a time: make the full movement and let the reacting creature say where along it the Reaction happens. If the Reaction disrupts the movement, move the token back to that square.\"",
+   "Remove the tip",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-037",
+  "file": "book/rules-src/02-turns.md",
+  "line": 115,
+  "where": "Chapter 2, Disrupting Actions",
+  "kind": "ambiguity",
+  "quote": "An Interrupt disrupts the Action before it happens.",
+  "other": [],
+  "problem": "Read alone, this says every Interrupt cancels the Action it answers. The book's Interrupts don't (Shield of Faith lowers damage, Snap Shot shoots). Its example uses an Action \"that Stands and then Advances (1 AP)\" and a trigger \"A creature uses a Move Action\" that no card has.",
+  "options": [
+   "Reword: \"A Reaction disrupts an Action only when its card says so. When an Interrupt does, the Action never starts and nothing of it happens. When a Trigger does, the Action stops where it is (see below).\" And remove the Stand-then-Advance example",
+   "Every Interrupt does cancel its triggering Action: say so in the Interrupt bullet too",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-038",
+  "file": "book/rules-src/02-turns.md",
+  "line": 123,
+  "where": "Chapter 2, Moving Closer",
+  "kind": "ambiguity",
+  "quote": "A creature **moves closer to you** when the distance between you, counted in squares (every second diagonal counts as 2, as always), is smaller after their movement than before.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 123,
+    "quote": "The creature moves closer when it would enter a square that is nearer to you than the square it came from."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 131,
+    "quote": "- A movement that comes closer and then goes away (a creature running past you) moves away from its first farther square."
+   }
+  ],
+  "problem": "The first sentence compares the distance before and after the whole movement; the rest of the section checks each square. A creature that runs past you ends farther away: by the first sentence it never moved closer, by the others it did at its first nearer square. Moving Away has the same two readings.",
+  "options": [
+   "Each square wins. Reword: \"A creature **moves closer to you** when it enters a square that is nearer to you than the square it came from, counted in squares (every second diagonal counts as 2, as always).\" The same in Moving Away with \"farther\", and remove the later sentence that says it a second time",
+   "The whole movement wins: only where the movement ends is compared",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-039",
+  "file": "book/rules-src/02-turns.md",
+  "line": 123,
+  "where": "Chapter 2, Moving Closer",
+  "kind": "contradiction",
+  "quote": "Evade, Forced Movement and Reposition don't trigger Reactions, so a Reaction to a creature moving closer can't react to any of them.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 121,
+    "quote": "(A Reaction that triggers on the Forced Movement itself, \"a creature would be moved by Forced Movement\", still does.)"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 85,
+    "quote": "a creature would be moved by [[Forced Movement]], or would fall Prone"
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 135,
+    "quote": "- Evade, Forced Movement and Reposition don't trigger Reactions, so they are never \"moving away\"."
+   }
+  ],
+  "problem": "Said flatly here and again in Moving Away, but Chapter 3 says a Reaction can trigger on the Forced Movement itself, and the list of moments in this chapter includes \"a creature would be moved by Forced Movement\".",
+  "options": [
+   "Chapter 3 wins: reword to \"Evade, Forced Movement and Reposition don't trigger Reactions from movement, so they are never moving closer or moving away.\" (once, here; remove the same bullet from Moving Away, which already mirrors this section)",
+   "Chapter 2 wins: nothing reacts to a Forced Movement; remove Chapter 3's parenthesis and the moment from the list",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-040",
+  "file": "book/rules-src/02-turns.md",
+  "line": 141,
+  "where": "Chapter 2, Actions",
+  "kind": "other",
+  "quote": "An Action is something you spend AP on.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 171,
+    "quote": "A **0 AP** Action costs no AP, but it is still an Action"
+   }
+  ],
+  "problem": "A few paragraphs later the chapter says a 0 AP Action \"costs no AP, but it is still an Action\", and Linked Actions and 0R Reactions cost none either.",
+  "options": [
+   "Reword: \"An Action is something a creature does in a fight. Most cost AP. Every Action is written as a card; see [[Reading an Action]].\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-041",
+  "file": "book/rules-src/02-turns.md",
+  "line": 145,
+  "where": "Chapter 2, Actions",
+  "kind": "stale",
+  "quote": "Whenever an Action is mentioned in the rules, its **traits** appear next to it.",
+  "other": [],
+  "problem": "This is not how the book is written: the rules name Actions all the time without their traits, and the example sentence (\"You must use 1 AP [Move] to get up from Prone\") is in no chapter. Rules Language (Chapter 1) already explains what a trait in brackets means.",
+  "options": [
+   "Remove the paragraph",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-042",
+  "file": "book/rules-src/02-turns.md",
+  "line": 167,
+  "where": "Chapter 2, Requirements",
+  "kind": "stale",
+  "quote": "written under the Frequency line (and above the Interrupt or Trigger of a Reaction)",
+  "other": [],
+  "problem": "Cards have no Frequency line any more: the Frequency is in the title bar and the Requirement is the first labeled line.",
+  "options": [
+   "Reword: \"Some Actions have a **Requirement** line, the first of the card's labeled lines.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-043",
+  "file": "book/rules-src/02-turns.md",
+  "line": 180,
+  "where": "Chapter 2, Linked Actions",
+  "kind": "stated-once",
+  "quote": "- It doesn't count toward its own uses: not toward its Frequency, the 3 Strikes of the turn, or At-will Banes, unless the Action says otherwise (a Charge's Basic Attack counts toward At-will Banes).",
+  "other": [
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 82,
+    "quote": "You can make at most 3 Strikes per turn."
+   }
+  ],
+  "problem": "The limit of 3 Strikes a turn and the shared At-will count are in Chapter 7 (Strike), which doesn't say that a Strike made as a Linked Action counts toward neither. A reader who looks up Strike won't find the exception.",
+  "options": [
+   "Add to Chapter 7, Strike: \"A Strike made as a Linked Action counts toward neither, unless its Action says otherwise (see [[Linked Actions]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-044",
+  "file": "book/rules-src/02-turns.md",
+  "line": 184,
+  "where": "Chapter 2, Linked Actions",
+  "kind": "ambiguity",
+  "quote": "If a Linked Action has no valid target, the rest of the Action is disrupted (that Linked Action and anything after it don't happen); what already happened stays.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 181,
+    "quote": "- If it isn't optional and you can't make it, the whole Action is **[[Disrupting Actions|disrupted]]**, except for a movement (below)."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 113,
+    "quote": "When an Action is **disrupted**, it doesn't happen, and the resources and AP spent on it are wasted."
+   }
+  ],
+  "problem": "The same case is ruled three ways: the bullet above says \"the whole Action is disrupted\", this sentence says only the rest is and what happened stays, and the definition says a disrupted Action \"doesn't happen\". It is also unclear whether an optional Linked Action with no target stops what comes after it.",
+  "options": [
+   "One rule. Reword the bullet: \"- If it is required and you can't make it (no valid target, a requirement you don't meet), the Action stops there: that Linked Action and everything after it don't happen, what already happened stays, and the cost is still paid. An optional one you can't make is skipped, and the Action goes on.\" And remove this sentence",
+   "A missing target always stops the rest of the Action, optional or not: say so in the bullet",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-045",
+  "file": "book/rules-src/02-turns.md",
+  "line": 187,
+  "where": "Chapter 2, Linked Actions (the example)",
+  "kind": "other",
+  "quote": "> A card lets an ally make a Basic Attack (1A) as part of it. On that ally's own turn they can still use Basic Attack as its own Action, and that first use has no At-will Bane.",
+  "other": [],
+  "problem": "The example can't show the rule: At-will Banes count within one turn, and the ally's Linked attack happened on another creature's turn, so the ally's own turn would start with no Bane anyway.",
+  "options": [
+   "Reword: \"A card lets you make a Basic Attack (1A) as part of it. If you then use Basic Attack as its own Action in the same turn, that is your first use: no At-will Bane.\"",
+   "Remove the example",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-046",
+  "file": "book/rules-src/02-turns.md",
+  "line": 191,
+  "where": "Chapter 2, Targets of Effects",
+  "kind": "wording-repeat",
+  "quote": "Remember, if the Action doesn't have a target, you choose who to target on each individual Linked Action.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 179,
+    "quote": "If the original Action doesn't list a target, you can choose the target per Linked Action."
+   }
+  ],
+  "problem": "A reminder of a rule written a few lines above, in Linked Actions.",
+  "options": [
+   "Remove the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-047",
+  "file": "book/rules-src/02-turns.md",
+  "line": 202,
+  "where": "Chapter 2, Effect Timing",
+  "kind": "wording-repeat",
+  "quote": "- An **Effect** line happens whenever the card is used, whatever the roll. Before the roll's line, it happens before the roll; after the Tiers, after them.",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 261,
+    "quote": "| **Effect** | What happens when the card is used, whatever the roll. Before the roll's line, it happens before the roll; after the Tiers, after them. |"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 252,
+    "quote": "a Tier that isn't written does nothing"
+   }
+  ],
+  "problem": "The Tier, Effect, no-roll and Critical bullets of this list restate Chapter 1's \"Reading an Action\" (this one word for word). Only the Bloodied and Strained bullet and the paragraph on the semicolon are new here.",
+  "options": [
+   "Cut the Tier, Effect, no-roll and Critical bullets; open the section with \"Every line of a card says when it happens (see [[Reading an Action]]). Two cases need more:\" and keep the Bloodied and Strained bullet and the semicolon paragraph",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-048",
+  "file": "book/rules-src/02-turns.md",
+  "line": 216,
+  "where": "Chapter 2, Buffs",
+  "kind": "stale",
+  "quote": "- A Buff that gives a value per Tier (\"+[R] 1d4/1d6/1d8 Co\") applies its Tier 1 value on a Tier 1, its Tier 2 value on a Tier 2 and its Tier 3 value on a Tier 3.",
+  "other": [],
+  "problem": "The first three bullets explain a way of writing a Buff (\"+[R] 1d6 Co\", with slashes, with a 0 on Tier 1) that no card in the book uses now.",
+  "options": [
+   "Remove the three bullets about written values (keep the definition, the several-targets bullet and Raising Defenses)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-049",
+  "file": "book/rules-src/02-turns.md",
+  "line": 218,
+  "where": "Chapter 2, Buffs",
+  "kind": "undefined-word",
+  "quote": "- On an Action with several targets, a Buff or a Debuff is rolled once per Tier, not per creature (see [[Several Targets]]).",
+  "other": [],
+  "problem": "\"Debuff\" appears only here; the book defines Buff and never Debuff.",
+  "options": [
+   "Reword: \"- On an Action with several targets, a Buff's dice are rolled once per Tier, not per creature (see [[Several Targets]]).\"",
+   "Define it in the first sentence: \"A Buff that harms the Action it modifies is a Debuff.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-050",
+  "file": "book/rules-src/02-turns.md",
+  "line": 231,
+  "where": "Chapter 2, Stacking",
+  "kind": "other",
+  "quote": "- An effect that **increases** your [[Slowed]] value (being Desperate, Dying or Shattered).",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 228,
+    "quote": "- An effect that says it **increases** a value: \"increase your Slowed value by 1\" adds to the Slowed you have."
+   }
+  ],
+  "problem": "The list of \"five things\" that add up names one thing twice: its first bullet is any effect that says it increases a value, with Slowed as its example, and this fourth bullet is the same rule again.",
+  "options": [
+   "Remove this bullet and write \"Four things do add up:\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-051",
+  "file": "book/rules-src/02-turns.md",
+  "line": 253,
+  "where": "Chapter 2, At-will",
+  "kind": "wording-repeat",
+  "quote": "Each use after the first in a turn adds 1 Bane per specific At-will Action.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 251,
+    "quote": "each use after the first in a turn adds **1 Bane** to the roll"
+   }
+  ],
+  "problem": "It repeats the first sentence of the paragraph above; only \"each At-will Action has its own count\" is new.",
+  "options": [
+   "Reword the paragraph: \"Each At-will Action has its own count, except At-will [Strike] Actions, which share one (see [[Strike]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-052",
+  "file": "book/rules-src/02-turns.md",
+  "line": 255,
+  "where": "Chapter 2, Frequency",
+  "kind": "wording-instruction",
+  "quote": "On an Action with no roll, At-will has no mechanical effect: it is a stylistic default for Actions that can be used freely on your turn.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 245,
+    "quote": "Actions with no Frequency can be used as often as you have AP."
+   }
+  ],
+  "problem": "This explains a writing convention (\"a stylistic default\"), not a rule. The section also opens with \"Some Actions have a Frequency\" and \"Actions with no Frequency can be used as often as you have AP\", though every card with a cost carries a Frequency.",
+  "options": [
+   "Reword the opening to \"Every Action has a **Frequency**, written in the title bar of its card\" (dropping \"Actions with no Frequency can be used as often as you have AP.\") and this sentence to \"An At-will Action with no roll has no Bane to take: use it as often as you can pay for it.\"",
+   "Remove only this sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-053",
+  "file": "book/rules-src/02-turns.md",
+  "line": 263,
+  "where": "Chapter 2, Round",
+  "kind": "other",
+  "quote": "if you are at the end of the Initiative order, use a Round Action, end your turn and a new round begins, you still can't use it again until your whole turn-cycle completes",
+  "other": [],
+  "problem": "The example describes a case where nothing could happen anyway: an Action is only used on your own turn, which is when your turn-cycle ends. The difference from \"once per round\" shows only with a Reaction.",
+  "options": [
+   "Reword: \"A **Round** Action can be used once per turn-cycle, not once per round number: a Round Reaction you use late in one round can't be used again early in the next, before your own turn has started.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-054",
+  "file": "book/rules-src/02-turns.md",
+  "line": 279,
+  "where": "Chapter 2, Defenses",
+  "kind": "other",
+  "quote": "A creature has three kinds:",
+  "other": [],
+  "problem": "The table under it has four rows; the fourth (a set DC) is not something a creature has.",
+  "options": [
+   "Reword: \"An Action against a creature rolls against one of its three **Defenses**; some Actions roll against a set DC instead:\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-055",
+  "file": "book/rules-src/02-turns.md",
+  "line": 317,
+  "where": "Chapter 2, End of Turn",
+  "kind": "ambiguity",
+  "quote": "An EoT effect on yourself still ends at the end of the current turn.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 315,
+    "quote": "When an effect lasts until the end of the turn of the affected creature, it is marked **EoT**."
+   }
+  ],
+  "problem": "EoT is \"until the end of the turn of the affected creature\". If you give yourself an EoT effect with a Reaction on another creature's turn, \"the current turn\" is theirs: one reader ends it then, another at the end of your own next turn.",
+  "options": [
+   "Reword: \"An EoT effect you gain on your own turn ends at the end of that turn; one you gain on another creature's turn lasts until the end of your next turn.\"",
+   "Reword: \"An EoT effect on yourself ends at the end of the turn in progress, whoever's turn it is.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-056",
+  "file": "book/rules-src/02-turns.md",
+  "line": 323,
+  "where": "Chapter 2, End of Encounter",
+  "kind": "other",
+  "quote": "Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 308,
+    "quote": "(the origin's own slot when it was applied on its turn, the current slot when it was applied as a Reaction or out of turn)"
+   }
+  ],
+  "problem": "The definition of the initiative slot stands under the heading \"End of Encounter\", though it is about EoT and rounds; Rounds uses the word three paragraphs before it is defined. Its last part repeats Rounds' parenthesis word for word.",
+  "options": [
+   "Move it to the start of \"Rounds and Durations\" and cut the repeat: \"Each position in the turn order is an **initiative slot**. Effects end at the end of an initiative slot, not of a creature: if a creature swaps initiative, an EoT effect still ends at the end of the slot the creature was in when the effect was applied.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-057",
+  "file": "book/rules-src/02-turns.md",
+  "line": 327,
+  "where": "Chapter 2, Escalation",
+  "kind": "ambiguity",
+  "quote": "Each PC has their own.",
+  "other": [],
+  "problem": "The chapter never says that NPCs have no Escalation (the rules log says the sentence was added here on 2026-11-25, but it is not in the text). A GM whose NPC scores a Critical can't tell from the book.",
+  "options": [
+   "Reword: \"Each PC has their own; NPCs have no Escalation.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-058",
+  "file": "book/rules-src/02-turns.md",
+  "line": 349,
+  "where": "Chapter 2, Momentum",
+  "kind": "undefined-word",
+  "quote": "- **Gaining:** +1 after each encounter the party overcomes: a fight, a negotiation, a sneak, a Challenge.",
+  "other": [],
+  "problem": "\"Challenge\" is written as a game word and has no rule. And an encounter is defined as starting when Initiative is rolled, which a negotiation or a sneak doesn't do.",
+  "options": [
+   "Reword: \"- **Gaining:** +1 after each encounter the party overcomes. Until scenes outside a fight have rules, the GM says which of them count (a negotiation, a sneak past a guard post).\"",
+   "Reword only the word: \"a fight, a negotiation, a sneak, or another challenge the GM sets\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-059",
+  "file": "book/rules-src/02-turns.md",
+  "line": 358,
+  "where": "Chapter 2, Momentum (the tip)",
+  "kind": "wording-repeat",
+  "quote": "It is the only raise outside the rules above, and nothing spends Escalation.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 327,
+    "quote": "It is never spent: the cards that need it or grow with it read it."
+   },
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 336,
+    "quote": "it spends nothing"
+   },
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 316,
+    "quote": "Nothing is spent."
+   },
+   {
+    "file": "book/rules-src/05-characters.md",
+    "line": 98,
+    "quote": "and it spends nothing (see [[Escalation]])"
+   }
+  ],
+  "problem": "That Escalation is never spent is said five times: three times in this section, once in Chapter 1's Notation and once in Chapter 5.",
+  "options": [
+   "Keep it once, in the first paragraph of Escalation (\"It is never spent\"), and cut the other four mentions",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-060",
+  "file": "book/rules-src/03-movement.md",
+  "line": 32,
+  "where": "Chapter 3, Size",
+  "kind": "wording-rationale",
+  "quote": "This might feel odd for some creatures, such as a horse, but the simplification is necessary for the game to work.",
+  "other": [],
+  "problem": "A sentence that defends the rule (every creature is a cube) and gives no rule.",
+  "options": [
+   "Remove the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-061",
+  "file": "book/rules-src/03-movement.md",
+  "line": 38,
+  "where": "Chapter 3, Squeezing",
+  "kind": "ambiguity",
+  "quote": "If a creature stops moving while squeezing to do another Action, meaning they don't fit completely in the space they are in, all their Rolls are Doomed and they are Vulnerable equal to half their level (rounded up) until they move to a space where they fit completely.",
+  "other": [],
+  "problem": "The penalty is tied to stopping \"to do another Action\", but the end of the paragraph speaks of ending a turn while squeezing. One reader applies it only when the creature acts; another whenever it stands in a space where it doesn't fit.",
+  "options": [
+   "Reword: \"While a creature stands in a space where it doesn't fit completely and is not in the middle of a movement (it stopped there to act, or ended its turn there), all its Rolls are Doomed and it is Vulnerable equal to half its level (rounded up).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-062",
+  "file": "book/rules-src/03-movement.md",
+  "line": 52,
+  "where": "Chapter 3, Movement (Creatures in your way)",
+  "kind": "contradiction",
+  "quote": "**can't enter or pass through an unwilling creature's space**",
+  "other": [
+   {
+    "file": "book/rules-src/07-traits.md",
+    "line": 46,
+    "quote": "Otherwise, passing through the squares of an unwilling creature is Difficult Terrain."
+   }
+  ],
+  "problem": "Chapter 3 says an enemy's space blocks your movement. Chapter 7 (Move) still says passing through an unwilling creature's squares is Difficult Terrain.",
+  "options": [
+   "Chapter 3 wins: reword Chapter 7, Move: \"You can't end your movement in another creature's space, and you can't enter an unwilling creature's space at all; a willing creature's space is Difficult Terrain (see [[Movement]]).\"",
+   "Chapter 7 wins: an unwilling creature's space is Difficult Terrain, not a wall",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-063",
+  "file": "book/rules-src/03-movement.md",
+  "line": 52,
+  "where": "Chapter 3, Movement (Creatures in your way)",
+  "kind": "ambiguity",
+  "quote": "**A Down creature** (Dying, Shattered, Unconscious or Desperate) **and a dead one** are Difficult Terrain too, whichever side they are on.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 260,
+    "quote": "A creature that keeps fighting while Dying or Shattered is still a threat, and is attacked like anyone else."
+   }
+  ],
+  "problem": "A Desperate creature, or a Dying or Shattered one that keeps fighting, is on its feet and attacking, yet by this line enemies walk through its square. One reader applies it as written; another only to creatures lying on the ground.",
+  "options": [
+   "Reword: \"**An Unconscious creature and a dead one** are Difficult Terrain too, whichever side they are on; a creature that is Down and still fighting holds its space like any other.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-064",
+  "file": "book/rules-src/03-movement.md",
+  "line": 52,
+  "where": "Chapter 3, Movement (Creatures in your way)",
+  "kind": "stale",
+  "quote": "The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise (Footwork's Weave).",
+  "other": [],
+  "problem": "Footwork is one of the Archer's Arts, which left the classes on 2026-11-25: no card in the book has a Weave.",
+  "options": [
+   "Reword: \"The [[Tumble]] Action is the way past an enemy, and an Action can say otherwise.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-065",
+  "file": "book/rules-src/03-movement.md",
+  "line": 148,
+  "where": "Chapter 3, Pulled",
+  "kind": "ambiguity",
+  "quote": "That cone is every direction less than 45° from the straight line from you to the origin: the 45° edge is not part of it.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 135,
+    "quote": "That cone is every step going in a direction within 45° of the straight line from the origin to you."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 153,
+    "quote": "or any of the 3 squares next to you after 2 steps"
+   }
+  ],
+  "problem": "Pushed describes its cone by the direction of each step. Read the same way here, a diagonal step is exactly 45° and never allowed when the creature stands straight in line with you, yet the example lets it end in any of the 3 squares next to you, which needs one. (The diagram could not be checked.)",
+  "options": [
+   "Reword: \"That cone is measured from the square the creature starts in: every square of the path must lie less than 45° off the straight line from that square to the origin (the 45° edge is not part of it).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-066",
+  "file": "book/rules-src/03-movement.md",
+  "line": 197,
+  "where": "Chapter 3, Reposition (the example)",
+  "kind": "contradiction",
+  "quote": "> You hold a weapon with Reach 2.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 262,
+    "quote": "Weapons don't change your Reach: they have a [[Weapon Range|Range]] of their own"
+   }
+  ],
+  "problem": "A Reposition stays within your Reach, and Reach is your body's: the same chapter says weapons don't change your Reach, they have a Range. The example gives the Reach to a weapon.",
+  "options": [
+   "Reach wins: reword to \"Your Reach is 2.\"",
+   "A weapon's Range counts when the Reposition comes from a Weapon Action: say so in Reposition and write \"You hold a weapon with Range 2.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-067",
+  "file": "book/rules-src/03-movement.md",
+  "line": 229,
+  "where": "Chapter 3, Difficult Terrain",
+  "kind": "wording-repeat",
+  "quote": "An ally's space, and a Down or dead creature's, is Difficult Terrain too; an unwilling creature's space blocks your movement (see [[Movement|Creatures in your way]]).",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 52,
+    "quote": "**An ally's space** (any willing creature's) is [[Difficult Terrain]]: you can pass through it, never end in it, and it is the one Difficult Terrain an Evade can cross (at its double cost)."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 68,
+    "quote": "You can't Evade into or pass through Difficult Terrain, except an ally's space, which an Evade can cross at its double cost (it can't end there)."
+   }
+  ],
+  "problem": "The rule about creatures' spaces is written in full in Movement, again in Evade and again here.",
+  "options": [
+   "Keep the full rule in Movement. Here: \"Creatures' spaces: see [[Movement|Creatures in your way]].\" In Evade: \"You can't Evade into or pass through Difficult Terrain (an ally's space is the one exception: see [[Movement|Creatures in your way]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-068",
+  "file": "book/rules-src/03-movement.md",
+  "line": 237,
+  "where": "Chapter 3, Hazardous Terrain",
+  "kind": "wording-instruction",
+  "quote": "**[HT]** is notation, like [W] and [Mod]: it is written in the text of the effect that creates the area, not among the Action's traits (a Basic Attack whose Tier 2 leaves caltrops is not a hazard itself).",
+  "other": [],
+  "problem": "This tells the writer where to put the mark (in the text, not among the traits). A player who reads a card needs only what the mark means.",
+  "options": [
+   "Reword the paragraph: \"The effect declares its pattern(s) after a colon, such as **[HT: Entering]** or **[HT: Entering, Turn]**: \"The area lasts 2 rounds [HT: Entering, Turn].\" The three patterns are:\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-069",
+  "file": "book/rules-src/03-movement.md",
+  "line": 272,
+  "where": "Chapter 3, Weapon Range",
+  "kind": "stale",
+  "quote": "Most melee weapons have Range 1; a lance has Range 1 / 2.",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 273,
+    "quote": "with Reach 2, a lance attacks at 2 / 3"
+   }
+  ],
+  "problem": "There is no lance in the Gear document, and no melee weapon there has a far range. The only melee weapon with a Range above 1 is the Pike (Range 3).",
+  "options": [
+   "Reword: \"Most melee weapons have Range 1; a Pike has Range 3.\" And in the next bullet: \"with Reach 2, a Pike attacks at Range 4.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-070",
+  "file": "book/rules-src/03-movement.md",
+  "line": 358,
+  "where": "Chapter 3, Leaning",
+  "kind": "ambiguity",
+  "quote": "Leaning lasts until the end of your turn, so Reactions can use it",
+  "other": [],
+  "problem": "Leaning ends with your turn, so it never helps the Reactions you make on other creatures' turns, which is when most Reactions happen. \"So Reactions can use it\" suggests that it does.",
+  "options": [
+   "Reword: \"Leaning lasts until the end of your turn and ends early when you **leave your square** (any movement: an Advance, an Evade, a Forced Movement).\"",
+   "Leaning lasts until the start of your next turn, so that your Reactions use it (the Lean card changes too)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-071",
+  "file": "book/rules-src/03-movement.md",
+  "line": 372,
+  "where": "Chapter 3, Emanation",
+  "kind": "stale",
+  "quote": "For example, a creature using Ground Slam (an Emanation around itself) decides whether it is affected.",
+  "other": [],
+  "problem": "Ground Slam was a card of the old Bestiary; no card in the book has that name now.",
+  "options": [
+   "Reword: \"For example, a creature that slams the ground in an Emanation around itself decides whether it is affected.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-072",
+  "file": "book/rules-src/03-movement.md",
+  "line": 402,
+  "where": "Chapter 3, Line (the example)",
+  "kind": "other",
+  "quote": "a different shape, the same 5 squares",
+  "other": [],
+  "problem": "It means the same number of squares; as written it says the squares are the same, which a different shape rules out.",
+  "options": [
+   "Reword: \"Had you chosen right, it would start with the square diagonally southeast of you: a different shape, the same number of squares.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-073",
+  "file": "book/rules-src/03-movement.md",
+  "line": 421,
+  "where": "Chapter 3, Light",
+  "kind": "stale",
+  "quote": "Lantern of Faith's Bright light 3 gives Bright light in a 3 Emanation and Dim light from 4 to 6.",
+  "other": [],
+  "problem": "Lantern of Faith was one of the Paladin's Arts, which left the classes on 2026-11-25.",
+  "options": [
+   "Remove the sentence (the torch example before it shows the rule)",
+   "Reword: \"A lantern with Bright light 3 gives Bright light in a 3 Emanation and Dim light from 4 to 6.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-074",
+  "file": "book/rules-src/03-movement.md",
+  "line": 448,
+  "where": "Chapter 3, Senses (the table)",
+  "kind": "contradiction",
+  "quote": "| **Obscured** | 1 Field Bane. | 1 Field Boon, if it is Clear to you. |",
+  "other": [
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 449,
+    "quote": "| **Hidden** | **Doomed**. | **[[Favored and Doomed Rolls\\|Favored]]**. |"
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 457,
+    "quote": "**You never gain this against a creature that is Hidden to you.**"
+   }
+  ],
+  "problem": "The row is about a creature that is Obscured to you, so \"if it is Clear to you\" can never be true (it should be \"if you are Clear to it\"). The Hidden and Unsensed rows give Favored with no condition, while the rule under the table gives it only to the creature that perceives the other better.",
+  "options": [
+   "The rule under the table wins. Reword the last column: Obscured \"1 Field Boon, if you are Clear to it.\"; Hidden \"Favored, if you are Clear or Obscured to it.\"; Unsensed \"Favored, if you are Clear or Obscured to it.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-075",
+  "file": "book/rules-src/03-movement.md",
+  "line": 466,
+  "where": "Chapter 3, Senses (Hearing)",
+  "kind": "ambiguity",
+  "quote": "Creatures in combat make noise, even standing in the same square on their turn.",
+  "other": [],
+  "problem": "\"Standing in the same square\" can be read as \"in the same square as you\"; it means a creature that doesn't move.",
+  "options": [
+   "Reword: \"Creatures in combat make noise, even when they don't move.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-076",
+  "file": "book/rules-src/03-movement.md",
+  "line": 484,
+  "where": "Chapter 3, Hiding",
+  "kind": "other",
+  "quote": "and your Senses are back to normal",
+  "other": [],
+  "problem": "Hide doesn't change your own senses: what goes back to normal is how the other creatures perceive you.",
+  "options": [
+   "Reword: \"once that Action is resolved, Hide ends against every creature, and each perceives you with its own senses again.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-077",
+  "file": "book/rules-src/03-movement.md",
+  "line": 507,
+  "where": "Chapter 3, Other Senses (the example)",
+  "kind": "other",
+  "quote": "the Snake perceives her as Obscured (1 Bane on its Actions), while she only hears the Snake (Hidden: Doomed against it, and the Snake is Favored against her)",
+  "other": [
+   {
+    "file": "book/rules-src/01-roll.md",
+    "line": 74,
+    "quote": "counts as **5 Boons** or **5 Banes**, with no name: put them in with the others before cancelling"
+   }
+  ],
+  "problem": "The example gives the Snake 1 Bane and Favored and stops there. By Chapter 1, Favored counts as 5 Boons and the Bane cancels one: the Snake rolls normally with 4 Boons, it is not Favored.",
+  "options": [
+   "Reword the end: \"(Hidden: Doomed against it). The Snake gains Favored against her, which is 5 Boons: less its 1 Field Bane, it rolls normally and adds 4 (see [[Five Boons or Banes]]).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-078",
+  "file": "book/rules-src/04-health.md",
+  "line": 35,
+  "where": "Chapter 4, Instances of Damage",
+  "kind": "wording-instruction",
+  "quote": "Rules that count instances count them this way.",
+  "other": [],
+  "problem": "No rule or card in the book counts instances of damage (Resistance, for one, is applied once per Action, not per instance), so the sentence points at nothing.",
+  "options": [
+   "Remove the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-079",
+  "file": "book/rules-src/04-health.md",
+  "line": 39,
+  "where": "Chapter 4, Lethal and Nonlethal",
+  "kind": "wording-repeat",
+  "quote": "Actions deal **Lethal** damage by default.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 29,
+    "quote": "Damage is **Lethal** unless an Action or effect says it is Nonlethal."
+   }
+  ],
+  "problem": "The Damage section a few lines above already says damage is Lethal unless stated, and Chapter 7 (Nonlethal) has the rest; the first two sentences here say both again.",
+  "options": [
+   "Reword the start of the paragraph: \"A Nonlethal Action can deal Lethal damage by taking a Bane, and any other Action can deal Nonlethal damage by taking a Bane as well.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-080",
+  "file": "book/rules-src/04-health.md",
+  "line": 41,
+  "where": "Chapter 4, Lethal and Nonlethal",
+  "kind": "wording-instruction",
+  "quote": "How damage is written on a card ([V], [R], [W], [Mod] and the damage types) is in [[Roll Effects]]. Empowered, which adds a die to your damage, is in [[Chapter 8: Conditions|Conditions]].",
+  "other": [],
+  "problem": "The paragraph only says where other rules are kept (they once stood in this chapter). It is a note on how the book is organised, not a rule.",
+  "options": [
+   "Remove the paragraph",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-081",
+  "file": "book/rules-src/04-health.md",
+  "line": 63,
+  "where": "Chapter 4, Dominant Damage",
+  "kind": "wording-instruction",
+  "quote": "Dominant Damage doesn't do anything by itself, but it determines the condition you gain when you go Down. Some abilities might also make use of it.",
+  "other": [],
+  "problem": "The two bullets right under it say what Dominant Damage does; \"some abilities might also make use of it\" promises nothing.",
+  "options": [
+   "Remove these two sentences and keep \"You know which Dominant Damage a creature has if you perceive them (Hidden is enough).\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-082",
+  "file": "book/rules-src/04-health.md",
+  "line": 101,
+  "where": "Chapter 4, Rally Points",
+  "kind": "contradiction",
+  "quote": "While **Down** (Desperate, Dying or Shattered) or **Unconscious**, you can't use Steel Yourself.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 45,
+    "quote": "When your total damage equals or goes above your Health Pool, you are **Down**."
+   },
+   {
+    "file": "book/rules-src/03-movement.md",
+    "line": 52,
+    "quote": "(Dying, Shattered, Unconscious or Desperate)"
+   },
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 256,
+    "quote": "- You can't wake up while Dying or Shattered, or while your damage is equal to or more than your Health Pool."
+   }
+  ],
+  "problem": "\"Down\" is listed three ways: Going Down makes it any creature whose damage reaches its Health Pool (so one knocked Unconscious is Down); this line lists three states and puts Unconscious beside them; Chapter 3 lists four states with Unconscious among them, which would make a sleeping creature Down.",
+  "options": [
+   "Going Down wins: Down is damage equal to or above your Health Pool, whatever state follows, and nothing lists its states. Here: \"While **Down** or **Unconscious**, you can't use Steel Yourself.\" Chapter 3: \"**A Down creature, an Unconscious one and a dead one** are Difficult Terrain too\". Unconscious: remove the bullet \"You can't wake up while Dying or Shattered, or while your damage is equal to or more than your Health Pool.\" (the bullet above it says it)",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-083",
+  "file": "book/rules-src/04-health.md",
+  "line": 113,
+  "where": "Chapter 4, Guard",
+  "kind": "stated-once",
+  "quote": "Reductions from different effects add up (Judge's and Shield of Faith's), and each applies once to an Action's damage to that creature",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 224,
+    "quote": "bonuses from different effects don't add up either"
+   }
+  ],
+  "problem": "Chapter 2's Stacking says effects don't add up and lists the exceptions. That damage reductions add up is an exception written only here.",
+  "options": [
+   "Add a bullet to Chapter 2, Stacking: \"- **Damage reductions** from different effects (see [[Guard]]).\"",
+   "Stacking wins: only the highest damage reduction applies",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-084",
+  "file": "book/rules-src/04-health.md",
+  "line": 128,
+  "where": "Chapter 4, Take a Breather",
+  "kind": "wording-instruction",
+  "quote": "It is not a Rest (see below).",
+  "other": [],
+  "problem": "The warning is only needed because the sentence before it calls a Breather \"10 minutes of rest\".",
+  "options": [
+   "Reword the paragraph: \"**Taking a Breather** is a pause of 10 minutes. It removes all of your Nonlethal damage.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-085",
+  "file": "book/rules-src/04-health.md",
+  "line": 142,
+  "where": "Chapter 4, Rest",
+  "kind": "wording-repeat",
+  "quote": "The GM decides what is a safe place. Towns are almost always safe.",
+  "other": [],
+  "problem": "The paragraph says three times that a town is safe and twice that the GM decides.",
+  "options": [
+   "Reword the paragraph: \"A **safe place** is a place where you are sure you can rest safely, such as a town; the wilderness, where a beast could show up at any moment, is not one. The GM decides.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-086",
+  "file": "book/rules-src/04-health.md",
+  "line": 144,
+  "where": "Chapter 4, Rest",
+  "kind": "wording-repeat",
+  "quote": "Each check removes Wounds of its own type only (Body Check → Body Wounds; Mind Check → Mind Wounds).",
+  "other": [],
+  "problem": "The sentence before it already says \"a Body Check for your Body Wounds and a Mind Check for your Mind Wounds\".",
+  "options": [
+   "Remove the sentence",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-087",
+  "file": "book/rules-src/04-health.md",
+  "line": 158,
+  "where": "Chapter 4, Bloodied",
+  "kind": "contradiction",
+  "quote": "- Your **Speed** is lowered by 2 (to a minimum of 1).",
+  "other": [
+   {
+    "file": "book/rules-src/09-glossary.md",
+    "line": 30,
+    "quote": "No effect by itself: Actions and features use them."
+   }
+  ],
+  "problem": "Chapter 4 gives Bloodied and Strained effects of their own (Speed −2 and Steadiness −1; no Reaction Point regained). The Glossary says they have no effect by themselves.",
+  "options": [
+   "Chapter 4 wins: reword the Glossary entry's last sentence to \"Bloodied: Speed −2 (minimum 1) and Steadiness −1. Strained: you don't regain your Reaction Point. Actions and features use them too.\"",
+   "The Glossary wins: Bloodied and Strained do nothing by themselves",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "high"
+ },
+ {
+  "id": "B1-088",
+  "file": "book/rules-src/04-health.md",
+  "line": 170,
+  "where": "Chapter 4, Strained (the tip)",
+  "kind": "wording-repeat",
+  "quote": "> A card's Bloodied line written **after** the Tiers rewards the blow that bloodies: the Action's own damage counts. Written **above** them, it rewards finding a target already hurt.",
+  "other": [
+   {
+    "file": "book/rules-src/02-turns.md",
+    "line": 204,
+    "quote": "**Where it is written decides when it counts:** above the Tiers, the target must already be Bloodied (Strained) when the Action is used"
+   }
+  ],
+  "problem": "The tip restates the rule of Chapter 2, Effect Timing (where a Bloodied line is written decides when it counts) and adds the design reason.",
+  "options": [
+   "Remove the tip",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-089",
+  "file": "book/rules-src/04-health.md",
+  "line": 193,
+  "where": "Chapter 4, Dying",
+  "kind": "ambiguity",
+  "quote": "| **Tier 3** | You stabilize: roll on the Dying Table. You are no longer Dying, but you stay Unconscious. |",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 227,
+    "quote": "| **Tier 3** | You stabilize: roll on the Shattered Table. You are no longer Shattered, but you stay Unconscious. |"
+   }
+  ],
+  "problem": "On the best result the creature rolls on the Dying Table again (a new Wound, as on a Tier 1), while a Tier 2 costs nothing. It is not clear whether that roll is the price of stabilizing or a copy of Tier 1's text. Shattered has the same line.",
+  "options": [
+   "No roll. Reword both tables: \"You stabilize: you are no longer Dying, but you stay Unconscious.\" (Shattered: \"no longer Shattered\")",
+   "The roll is meant: reword to \"You stabilize, at the price of one last roll on the Dying Table. You are no longer Dying, but you stay Unconscious.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ },
+ {
+  "id": "B1-090",
+  "file": "book/rules-src/04-health.md",
+  "line": 219,
+  "where": "Chapter 4, Shattered",
+  "kind": "wording-repeat",
+  "quote": "When you become Shattered for the first time in an encounter, roll on the Shattered Table. Then choose to **give up** or **keep fighting**.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 185,
+    "quote": "When you become Dying for the first time in an encounter, roll on the Dying Table. Then choose to **collapse** or **keep fighting**."
+   }
+  ],
+  "problem": "Shattered is Dying copied line for line (33 lines and three tables), with the Mind Check for the Body Check, \"give up\" for \"collapse\" and the other Table. The two copies have to be kept equal by hand.",
+  "options": [
+   "Write the rules once, under Dying, and make Shattered: \"Shattered works as [[Dying]], with three changes: you roll on the Shattered Table, the Check at the end of each of your turns is a Mind Check, and collapsing is called giving up.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "low"
+ },
+ {
+  "id": "B1-091",
+  "file": "book/rules-src/04-health.md",
+  "line": 258,
+  "where": "Chapter 4, Unconscious",
+  "kind": "ambiguity",
+  "quote": "- If you take damage while Down, you roll on the Dying or Shattered Table. If you weren't Dying or Shattered yet, check your Dominant Damage first and become one of them.",
+  "other": [
+   {
+    "file": "book/rules-src/04-health.md",
+    "line": 177,
+    "quote": "- If you take any **Lethal** damage, check your Dominant Damage and become **Dying** or **Shattered**."
+   }
+  ],
+  "problem": "The bullet is in the Unconscious list but says \"while Down\": read alone, a Desperate creature (Down and awake) that takes Nonlethal damage would roll too, against Desperate's own rules. It also doesn't say what an NPC knocked Unconscious does when it is hit again (an NPC is never Dying or Shattered).",
+  "options": [
+   "Reword: \"- If you take damage while you are both Unconscious and Down, you roll on the Dying or Shattered Table. If you weren't Dying or Shattered yet, check your Dominant Damage first and become one of them. An NPC doesn't roll: [[NPCs Going Down]] decides again.\"",
+   "Keep it as it is"
+  ],
+  "pick": 0,
+  "confidence": "medium"
+ }
+]
